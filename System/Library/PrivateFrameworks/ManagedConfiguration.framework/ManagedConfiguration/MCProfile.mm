@@ -1,37 +1,37 @@
 @interface MCProfile
-+ (BOOL)checkString:(id)a3 isOneOfStrings:(id)a4 key:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7 errorString:(id)a8 outError:(id *)a9;
++ (BOOL)checkString:(id)string isOneOfStrings:(id)strings key:(id)key errorDomain:(id)domain errorCode:(int64_t)code errorString:(id)errorString outError:(id *)error;
 + (id)_malformedProfileError;
 + (id)_unsupportedEnrollmentServiceProfileError;
 + (id)_unsupportedProfileTypeError;
-+ (id)badFieldTypeErrorWithField:(id)a3;
-+ (id)dataFromCMSEncodedData:(id)a3 outSignerCertificates:(id *)a4;
-+ (id)missingFieldErrorWithField:(id)a3;
-+ (id)profileDictionaryFromProfileData:(id)a3 outSignerCerts:(id *)a4 outError:(id *)a5;
-+ (id)removeOptionalNonZeroLengthStringInDictionary:(id)a3 key:(id)a4 errorDomain:(id)a5 invalidDataCode:(int64_t)a6 invalidDataErrorString:(id)a7 outError:(id *)a8;
-+ (id)removeOptionalObjectInDictionary:(id)a3 key:(id)a4 type:(Class)a5 errorDomain:(id)a6 invalidDataCode:(int64_t)a7 invalidDataErrorString:(id)a8 outError:(id *)a9;
-+ (id)removeRequiredNonZeroLengthStringInDictionary:(id)a3 key:(id)a4 errorDomain:(id)a5 missingDataCode:(int64_t)a6 missingDataErrorString:(id)a7 invalidDataCode:(int64_t)a8 invalidDataErrorString:(id)a9 outError:(id *)a10;
-+ (id)removeRequiredObjectInDictionary:(id)a3 key:(id)a4 type:(Class)a5 errorDomain:(id)a6 missingDataCode:(int64_t)a7 missingDataErrorString:(id)a8 invalidDataCode:(int64_t)a9 invalidDataErrorString:(id)a10 outError:(id *)a11;
-+ (id)signerSummaryOfCertificate:(__SecCertificate *)a3;
-+ (id)stringForDeviceType:(unint64_t)a3;
-+ (int)evaluateTrust:(__SecTrust *)a3;
-+ (int)evaluateTrustOfCertificateChain:(id)a3 signatureVersion:(id)a4 outIsAllowedToInstallUnsupportedPayloads:(BOOL *)a5 outIsAllowedToWriteDefaults:(BOOL *)a6 outIsAllowedToInstallSupervisedRestrictionsOnUnsupervisedDevices:(BOOL *)a7;
++ (id)badFieldTypeErrorWithField:(id)field;
++ (id)dataFromCMSEncodedData:(id)data outSignerCertificates:(id *)certificates;
++ (id)missingFieldErrorWithField:(id)field;
++ (id)profileDictionaryFromProfileData:(id)data outSignerCerts:(id *)certs outError:(id *)error;
++ (id)removeOptionalNonZeroLengthStringInDictionary:(id)dictionary key:(id)key errorDomain:(id)domain invalidDataCode:(int64_t)code invalidDataErrorString:(id)string outError:(id *)error;
++ (id)removeOptionalObjectInDictionary:(id)dictionary key:(id)key type:(Class)type errorDomain:(id)domain invalidDataCode:(int64_t)code invalidDataErrorString:(id)string outError:(id *)error;
++ (id)removeRequiredNonZeroLengthStringInDictionary:(id)dictionary key:(id)key errorDomain:(id)domain missingDataCode:(int64_t)code missingDataErrorString:(id)string invalidDataCode:(int64_t)dataCode invalidDataErrorString:(id)errorString outError:(id *)self0;
++ (id)removeRequiredObjectInDictionary:(id)dictionary key:(id)key type:(Class)type errorDomain:(id)domain missingDataCode:(int64_t)code missingDataErrorString:(id)string invalidDataCode:(int64_t)dataCode invalidDataErrorString:(id)self0 outError:(id *)self1;
++ (id)signerSummaryOfCertificate:(__SecCertificate *)certificate;
++ (id)stringForDeviceType:(unint64_t)type;
++ (int)evaluateTrust:(__SecTrust *)trust;
++ (int)evaluateTrustOfCertificateChain:(id)chain signatureVersion:(id)version outIsAllowedToInstallUnsupportedPayloads:(BOOL *)payloads outIsAllowedToWriteDefaults:(BOOL *)defaults outIsAllowedToInstallSupervisedRestrictionsOnUnsupervisedDevices:(BOOL *)devices;
 + (unint64_t)thisDeviceType;
-- (BOOL)containsAnyPayloadOfClasses:(id)a3;
-- (BOOL)containsOnlyPayloadsOfClasses:(id)a3;
-- (BOOL)containsPayloadOfClass:(Class)a3;
-- (BOOL)doesSigningAllowReplacementWithProfile:(id)a3;
-- (BOOL)doesSigningAllowReplacementWithProfile:(id)a3 useOriginalCheck:(BOOL)a4;
+- (BOOL)containsAnyPayloadOfClasses:(id)classes;
+- (BOOL)containsOnlyPayloadsOfClasses:(id)classes;
+- (BOOL)containsPayloadOfClass:(Class)class;
+- (BOOL)doesSigningAllowReplacementWithProfile:(id)profile;
+- (BOOL)doesSigningAllowReplacementWithProfile:(id)profile useOriginalCheck:(BOOL)check;
 - (BOOL)isManagedByMDM;
 - (BOOL)isProfileUIInstallationEffectivelyAllowed;
 - (BOOL)isSigned;
 - (BOOL)isSupervisionProfile;
 - (BOOL)isUserEnrollmentProfile;
-- (BOOL)mayInstallWithOptions:(id)a3 hasInteractionClient:(BOOL)a4 outError:(id *)a5;
+- (BOOL)mayInstallWithOptions:(id)options hasInteractionClient:(BOOL)client outError:(id *)error;
 - (BOOL)mustInstallNonInteractively;
 - (BOOL)shouldHaveFullSSLTrust;
-- (BOOL)writeStubToDirectory:(id)a3;
-- (BOOL)writeStubToPath:(id)a3;
-- (MCProfile)initWithDictionary:(id)a3 signerCerts:(id)a4 allowEmptyPayload:(BOOL)a5 outError:(id *)a6;
+- (BOOL)writeStubToDirectory:(id)directory;
+- (BOOL)writeStubToPath:(id)path;
+- (MCProfile)initWithDictionary:(id)dictionary signerCerts:(id)certs allowEmptyPayload:(BOOL)payload outError:(id *)error;
 - (NSArray)payloadsContentInfo;
 - (NSArray)signerCertificates;
 - (NSArray)signerCertificatesData;
@@ -47,22 +47,22 @@
 - (__SecCertificate)signerCertificate;
 - (id)description;
 - (id)hasRequiredAppIDForMDM;
-- (id)installationWarningsIncludeUnsignedProfileWarning:(BOOL)a3;
+- (id)installationWarningsIncludeUnsignedProfileWarning:(BOOL)warning;
 - (id)loggingID;
-- (id)malformedProfileErrorWithError:(id)a3;
-- (id)payloadsOfKindOfClass:(Class)a3;
-- (id)payloadsWithClass:(Class)a3;
-- (id)restrictionsWithHeuristicsAppliedOutError:(id *)a3;
+- (id)malformedProfileErrorWithError:(id)error;
+- (id)payloadsOfKindOfClass:(Class)class;
+- (id)payloadsWithClass:(Class)class;
+- (id)restrictionsWithHeuristicsAppliedOutError:(id *)error;
 - (id)serializedDictionary;
 - (id)signatureVersion;
 - (id)stubDictionary;
 - (id)verboseDescription;
 - (int)trustLevel;
 - (int64_t)installType;
-- (unint64_t)countOfPayloadsOfClass:(Class)a3;
-- (void)evaluateSignerTrustAsynchronouslyWithCompletion:(id)a3;
-- (void)setRemovalPasscode:(id)a3;
-- (void)setSignerCertificates:(id)a3;
+- (unint64_t)countOfPayloadsOfClass:(Class)class;
+- (void)evaluateSignerTrustAsynchronouslyWithCompletion:(id)completion;
+- (void)setRemovalPasscode:(id)passcode;
+- (void)setSignerCertificates:(id)certificates;
 @end
 
 @implementation MCProfile
@@ -70,31 +70,31 @@
 - (BOOL)isUserEnrollmentProfile
 {
   v2 = [(MCProfile *)self payloadsWithClass:objc_opt_class()];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    v4 = [v3 isUserEnrollment];
+    isUserEnrollment = [firstObject isUserEnrollment];
   }
 
   else
   {
-    v4 = 0;
+    isUserEnrollment = 0;
   }
 
-  return v4;
+  return isUserEnrollment;
 }
 
-- (void)setRemovalPasscode:(id)a3
+- (void)setRemovalPasscode:(id)passcode
 {
-  v5 = a3;
+  passcodeCopy = passcode;
   removalPasscode = self->_removalPasscode;
   p_removalPasscode = &self->_removalPasscode;
-  if (removalPasscode != v5)
+  if (removalPasscode != passcodeCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_removalPasscode, a3);
-    v5 = v8;
+    v8 = passcodeCopy;
+    objc_storeStrong(p_removalPasscode, passcode);
+    passcodeCopy = v8;
   }
 }
 
@@ -105,18 +105,18 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(MCProfile *)self payloads];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
-  if (v3)
+  payloads = [(MCProfile *)self payloads];
+  requiredAppIDForMDM2 = [payloads countByEnumeratingWithState:&v11 objects:v15 count:16];
+  if (requiredAppIDForMDM2)
   {
     v4 = *v12;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != requiredAppIDForMDM2; i = i + 1)
       {
         if (*v12 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(payloads);
         }
 
         v6 = *(*(&v11 + 1) + 8 * i);
@@ -124,19 +124,19 @@
         if (objc_opt_isKindOfClass())
         {
           v7 = v6;
-          v8 = [v7 requiredAppIDForMDM];
+          requiredAppIDForMDM = [v7 requiredAppIDForMDM];
 
-          if (v8)
+          if (requiredAppIDForMDM)
           {
-            v3 = [v7 requiredAppIDForMDM];
+            requiredAppIDForMDM2 = [v7 requiredAppIDForMDM];
 
             goto LABEL_13;
           }
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
-      if (v3)
+      requiredAppIDForMDM2 = [payloads countByEnumeratingWithState:&v11 objects:v15 count:16];
+      if (requiredAppIDForMDM2)
       {
         continue;
       }
@@ -149,7 +149,7 @@ LABEL_13:
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return requiredAppIDForMDM2;
 }
 
 - (int)trustLevel
@@ -179,18 +179,18 @@ void __23__MCProfile_trustLevel__block_invoke(uint64_t a1)
 
 - (__SecCertificate)signerCertificate
 {
-  v2 = [(MCProfile *)self signerCertificates];
-  if ([v2 count])
+  signerCertificates = [(MCProfile *)self signerCertificates];
+  if ([signerCertificates count])
   {
-    v3 = [v2 firstObject];
+    firstObject = [signerCertificates firstObject];
   }
 
   else
   {
-    v3 = 0;
+    firstObject = 0;
   }
 
-  return v3;
+  return firstObject;
 }
 
 - (NSArray)signerCertificates
@@ -291,10 +291,10 @@ uint64_t __35__MCProfile_signerCertificatesData__block_invoke(uint64_t a1)
 
 - (NSString)signerSummary
 {
-  v2 = [(MCProfile *)self signerCertificates];
-  if ([v2 count])
+  signerCertificates = [(MCProfile *)self signerCertificates];
+  if ([signerCertificates count])
   {
-    v3 = +[MCProfile signerSummaryOfCertificate:](MCProfile, "signerSummaryOfCertificate:", [v2 firstObject]);
+    v3 = +[MCProfile signerSummaryOfCertificate:](MCProfile, "signerSummaryOfCertificate:", [signerCertificates firstObject]);
   }
 
   else
@@ -305,48 +305,48 @@ uint64_t __35__MCProfile_signerCertificatesData__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setSignerCertificates:(id)a3
+- (void)setSignerCertificates:(id)certificates
 {
-  v4 = a3;
+  certificatesCopy = certificates;
   signerEvaluationQueue = self->_signerEvaluationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__MCProfile_setSignerCertificates___block_invoke;
   v7[3] = &unk_1E77D02D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = certificatesCopy;
+  v6 = certificatesCopy;
   dispatch_sync(signerEvaluationQueue, v7);
 }
 
-- (id)installationWarningsIncludeUnsignedProfileWarning:(BOOL)a3
+- (id)installationWarningsIncludeUnsignedProfileWarning:(BOOL)warning
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  if (v3 && [(MCProfile *)self trustLevel]!= 2)
+  warningCopy = warning;
+  array = [MEMORY[0x1E695DF70] array];
+  if (warningCopy && [(MCProfile *)self trustLevel]!= 2)
   {
     if ([(MCProfile *)self isSigned])
     {
       v6 = MCLocalizedString(@"INSTALL_WARNING_NOT_VERIFIED_TITLE");
-      v7 = [(MCProfile *)self friendlyName];
-      v15 = MCLocalizedFormat(@"INSTALL_WARNING_NOT_VERIFIED_P_TITLE", v8, v9, v10, v11, v12, v13, v14, v7);
+      friendlyName = [(MCProfile *)self friendlyName];
+      v15 = MCLocalizedFormat(@"INSTALL_WARNING_NOT_VERIFIED_P_TITLE", v8, v9, v10, v11, v12, v13, v14, friendlyName);
       v16 = [MCProfileWarning warningWithLocalizedTitle:v6 localizedBody:v15 isLongForm:0];
-      [v5 addObject:v16];
+      [array addObject:v16];
     }
 
     else
     {
       v6 = MCLocalizedString(@"INSTALL_WARNING_NOT_SIGNED_TITLE");
-      v7 = MCLocalizedString(@"INSTALL_WARNING_NOT_SIGNED");
-      v15 = [MCProfileWarning warningWithLocalizedTitle:v6 localizedBody:v7 isLongForm:0];
-      [v5 addObject:v15];
+      friendlyName = MCLocalizedString(@"INSTALL_WARNING_NOT_SIGNED");
+      v15 = [MCProfileWarning warningWithLocalizedTitle:v6 localizedBody:friendlyName isLongForm:0];
+      [array addObject:v15];
     }
   }
 
   if ([(MCProfile *)self isLocked])
   {
-    v17 = [(MCProfile *)self removalPasscode];
-    v18 = [v17 length];
+    removalPasscode = [(MCProfile *)self removalPasscode];
+    v18 = [removalPasscode length];
 
     v19 = MCLocalizedString(@"INSTALL_WARNING_NOT_REMOVABLE_TITLE");
     if (v18)
@@ -361,10 +361,10 @@ uint64_t __35__MCProfile_signerCertificatesData__block_invoke(uint64_t a1)
 
     v21 = MCLocalizedString(v20);
     v22 = [MCProfileWarning warningWithLocalizedTitle:v19 localizedBody:v21 isLongForm:0];
-    [v5 addObject:v22];
+    [array addObject:v22];
   }
 
-  return v5;
+  return array;
 }
 
 - (BOOL)mustInstallNonInteractively
@@ -381,8 +381,8 @@ uint64_t __35__MCProfile_signerCertificatesData__block_invoke(uint64_t a1)
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v3 = [(MCProfile *)self payloads];
-    v2 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    payloads = [(MCProfile *)self payloads];
+    v2 = [payloads countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v2)
     {
       v4 = *v9;
@@ -392,7 +392,7 @@ uint64_t __35__MCProfile_signerCertificatesData__block_invoke(uint64_t a1)
         {
           if (*v9 != v4)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(payloads);
           }
 
           if ([*(*(&v8 + 1) + 8 * i) mustInstallNonInteractively])
@@ -402,7 +402,7 @@ uint64_t __35__MCProfile_signerCertificatesData__block_invoke(uint64_t a1)
           }
         }
 
-        v2 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v2 = [payloads countByEnumeratingWithState:&v8 objects:v12 count:16];
         if (v2)
         {
           continue;
@@ -429,13 +429,13 @@ LABEL_13:
 
   else
   {
-    v4 = [(MCProfile *)self payloads];
-    v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    payloads = [(MCProfile *)self payloads];
+    v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(payloads, "count")}];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    obj = v4;
+    obj = payloads;
     v5 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v5)
     {
@@ -455,52 +455,52 @@ LABEL_13:
           v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v9, "version")}];
           [v10 setObject:v11 forKeyedSubscript:@"PayloadVersion"];
 
-          v12 = [v9 type];
+          type = [v9 type];
 
-          if (v12)
+          if (type)
           {
-            v13 = [v9 type];
-            [v10 setObject:v13 forKeyedSubscript:@"PayloadType"];
+            type2 = [v9 type];
+            [v10 setObject:type2 forKeyedSubscript:@"PayloadType"];
           }
 
-          v14 = [v9 identifier];
+          identifier = [v9 identifier];
 
-          if (v14)
+          if (identifier)
           {
-            v15 = [v9 identifier];
-            [v10 setObject:v15 forKeyedSubscript:@"PayloadIdentifier"];
+            identifier2 = [v9 identifier];
+            [v10 setObject:identifier2 forKeyedSubscript:@"PayloadIdentifier"];
           }
 
-          v16 = [v9 UUID];
+          uUID = [v9 UUID];
 
-          if (v16)
+          if (uUID)
           {
-            v17 = [v9 UUID];
-            [v10 setObject:v17 forKeyedSubscript:@"PayloadUUID"];
+            uUID2 = [v9 UUID];
+            [v10 setObject:uUID2 forKeyedSubscript:@"PayloadUUID"];
           }
 
-          v18 = [v9 displayName];
+          displayName = [v9 displayName];
 
-          if (v18)
+          if (displayName)
           {
-            v19 = [v9 displayName];
-            [v10 setObject:v19 forKeyedSubscript:@"PayloadDisplayName"];
+            displayName2 = [v9 displayName];
+            [v10 setObject:displayName2 forKeyedSubscript:@"PayloadDisplayName"];
           }
 
-          v20 = [v9 payloadDescription];
+          payloadDescription = [v9 payloadDescription];
 
-          if (v20)
+          if (payloadDescription)
           {
-            v21 = [v9 payloadDescription];
-            [v10 setObject:v21 forKeyedSubscript:@"PayloadDescription"];
+            payloadDescription2 = [v9 payloadDescription];
+            [v10 setObject:payloadDescription2 forKeyedSubscript:@"PayloadDescription"];
           }
 
-          v22 = [v9 organization];
+          organization = [v9 organization];
 
-          if (v22)
+          if (organization)
           {
-            v23 = [v9 organization];
-            [v10 setObject:v23 forKeyedSubscript:@"PayloadOrganization"];
+            organization2 = [v9 organization];
+            [v10 setObject:organization2 forKeyedSubscript:@"PayloadOrganization"];
           }
 
           [v3 addObject:v10];
@@ -520,50 +520,50 @@ LABEL_13:
 
 - (BOOL)isSigned
 {
-  v2 = [(MCProfile *)self signerCertificates];
-  v3 = [v2 count] != 0;
+  signerCertificates = [(MCProfile *)self signerCertificates];
+  v3 = [signerCertificates count] != 0;
 
   return v3;
 }
 
 - (int64_t)installType
 {
-  v2 = [(MCProfile *)self installOptions];
-  v3 = [v2 objectForKey:@"installationType"];
-  v4 = [v3 intValue];
+  installOptions = [(MCProfile *)self installOptions];
+  v3 = [installOptions objectForKey:@"installationType"];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 - (NSString)friendlyName
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(MCProfile *)self displayName];
-  v4 = [v3 length];
+  displayName = [(MCProfile *)self displayName];
+  v4 = [displayName length];
 
   if (v4)
   {
-    v5 = [(MCProfile *)self displayName];
+    displayName2 = [(MCProfile *)self displayName];
   }
 
   else
   {
-    v6 = [(MCProfile *)self identifier];
-    v7 = [v6 length];
+    identifier = [(MCProfile *)self identifier];
+    v7 = [identifier length];
 
     if (v7)
     {
-      v5 = [(MCProfile *)self identifier];
+      displayName2 = [(MCProfile *)self identifier];
     }
 
     else
     {
-      v8 = [(MCProfile *)self UUID];
-      v9 = [v8 length];
+      uUID = [(MCProfile *)self UUID];
+      v9 = [uUID length];
 
       if (v9)
       {
-        v5 = [(MCProfile *)self UUID];
+        displayName2 = [(MCProfile *)self UUID];
       }
 
       else
@@ -575,19 +575,19 @@ LABEL_13:
           v15 = 138543618;
           v16 = objc_opt_class();
           v17 = 2048;
-          v18 = self;
+          selfCopy = self;
           v12 = v16;
           _os_log_impl(&dword_1A795B000, v11, OS_LOG_TYPE_ERROR, "Profile %{public}@ %p has no friendly name.", &v15, 0x16u);
         }
 
-        v5 = @"Profile";
+        displayName2 = @"Profile";
       }
     }
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return displayName2;
 }
 
 - (id)description
@@ -646,11 +646,11 @@ LABEL_13:
   v7 = MCStringForBool([(MCProfile *)self isSigned]);
   [v3 appendFormat:@"Signed      : %@\n", v7];
 
-  v8 = [(MCProfile *)self expiryDate];
-  v9 = v8;
-  if (v8)
+  expiryDate = [(MCProfile *)self expiryDate];
+  v9 = expiryDate;
+  if (expiryDate)
   {
-    [v3 appendFormat:@"Expires     : %@\n", v8];
+    [v3 appendFormat:@"Expires     : %@\n", expiryDate];
   }
 
   if ([(MCProfile *)self isManagedByProfileService])
@@ -688,8 +688,8 @@ LABEL_13:
   v3 = [(MCProfile *)self description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(MCProfile *)self signerCertificates];
-  v6 = [v5 count];
+  signerCertificates = [(MCProfile *)self signerCertificates];
+  v6 = [signerCertificates count];
 
   if (v6)
   {
@@ -698,8 +698,8 @@ LABEL_13:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = [(MCProfile *)self signerCertificates];
-    v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    signerCertificates2 = [(MCProfile *)self signerCertificates];
+    v8 = [signerCertificates2 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
       v9 = v8;
@@ -711,7 +711,7 @@ LABEL_13:
         {
           if (*v19 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(signerCertificates2);
           }
 
           v13 = *(*(&v18 + 1) + 8 * i);
@@ -728,7 +728,7 @@ LABEL_13:
           v11 = 0;
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v9 = [signerCertificates2 countByEnumeratingWithState:&v18 objects:v22 count:16];
         v11 = 0;
       }
 
@@ -810,21 +810,21 @@ LABEL_13:
   v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[MCProfile isSigned](self, "isSigned")}];
   [v3 setObject:v14 forKeyedSubscript:@"Signed"];
 
-  v15 = [(MCProfile *)self signerCertificates];
-  v16 = [v15 count];
+  signerCertificates = [(MCProfile *)self signerCertificates];
+  v16 = [signerCertificates count];
 
   if (v16)
   {
     v17 = objc_alloc(MEMORY[0x1E695DF70]);
-    v18 = [(MCProfile *)self signerCertificates];
-    v19 = [v17 initWithCapacity:{objc_msgSend(v18, "count")}];
+    signerCertificates2 = [(MCProfile *)self signerCertificates];
+    v19 = [v17 initWithCapacity:{objc_msgSend(signerCertificates2, "count")}];
 
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v20 = [(MCProfile *)self signerCertificates];
-    v21 = [v20 countByEnumeratingWithState:&v37 objects:v41 count:16];
+    signerCertificates3 = [(MCProfile *)self signerCertificates];
+    v21 = [signerCertificates3 countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v21)
     {
       v22 = v21;
@@ -835,7 +835,7 @@ LABEL_13:
         {
           if (*v38 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(signerCertificates3);
           }
 
           v25 = *(*(&v37 + 1) + 8 * i);
@@ -846,7 +846,7 @@ LABEL_13:
           objc_autoreleasePoolPop(v26);
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v37 objects:v41 count:16];
+        v22 = [signerCertificates3 countByEnumeratingWithState:&v37 objects:v41 count:16];
       }
 
       while (v22);
@@ -855,11 +855,11 @@ LABEL_13:
     [v3 setObject:v19 forKeyedSubscript:@"Signers"];
   }
 
-  v28 = [(MCProfile *)self expiryDate];
-  v29 = v28;
-  if (v28)
+  expiryDate = [(MCProfile *)self expiryDate];
+  v29 = expiryDate;
+  if (expiryDate)
   {
-    v30 = [v28 description];
+    v30 = [expiryDate description];
     [v3 setObject:v30 forKeyedSubscript:@"Expiry"];
   }
 
@@ -904,9 +904,9 @@ LABEL_13:
   v9[1] = *MEMORY[0x1E69E9840];
   if (self->_localizedConsentText)
   {
-    v3 = [(MCProfile *)self friendlyName];
+    friendlyName = [(MCProfile *)self friendlyName];
     localizedConsentText = self->_localizedConsentText;
-    v8 = v3;
+    v8 = friendlyName;
     v9[0] = localizedConsentText;
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   }
@@ -923,8 +923,8 @@ LABEL_13:
 
 - (NSDate)expiryDate
 {
-  v3 = [(MCProfile *)self earliestCertificateExpiryDate];
-  if (v3 && (v4 = v3, [MEMORY[0x1E695DF00] dateWithTimeInterval:v3 sinceDate:-1209600.0], v5 = objc_claimAutoreleasedReturnValue(), v4, v5))
+  earliestCertificateExpiryDate = [(MCProfile *)self earliestCertificateExpiryDate];
+  if (earliestCertificateExpiryDate && (v4 = earliestCertificateExpiryDate, [MEMORY[0x1E695DF00] dateWithTimeInterval:earliestCertificateExpiryDate sinceDate:-1209600.0], v5 = objc_claimAutoreleasedReturnValue(), v4, v5))
   {
     if (self->_expiryDate)
     {
@@ -951,14 +951,14 @@ LABEL_13:
 
 - (NSDate)unmodifiedExpiryDate
 {
-  v3 = [(MCProfile *)self earliestCertificateExpiryDate];
-  v4 = v3;
-  if (v3)
+  earliestCertificateExpiryDate = [(MCProfile *)self earliestCertificateExpiryDate];
+  v4 = earliestCertificateExpiryDate;
+  if (earliestCertificateExpiryDate)
   {
-    expiryDate = v3;
+    expiryDate = earliestCertificateExpiryDate;
     if (self->_expiryDate)
     {
-      v6 = [(NSDate *)v3 compare:?];
+      v6 = [(NSDate *)earliestCertificateExpiryDate compare:?];
       expiryDate = v4;
       if (v6 != -1)
       {
@@ -977,17 +977,17 @@ LABEL_13:
   return v7;
 }
 
-- (void)evaluateSignerTrustAsynchronouslyWithCompletion:(id)a3
+- (void)evaluateSignerTrustAsynchronouslyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__MCProfile_evaluateSignerTrustAsynchronouslyWithCompletion___block_invoke;
   v7[3] = &unk_1E77D2E88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, v7);
 }
 
@@ -1006,10 +1006,10 @@ uint64_t __61__MCProfile_evaluateSignerTrustAsynchronouslyWithCompletion___block
   return result;
 }
 
-- (BOOL)doesSigningAllowReplacementWithProfile:(id)a3
+- (BOOL)doesSigningAllowReplacementWithProfile:(id)profile
 {
   keyExistsAndHasValidFormat = 0;
-  v4 = a3;
+  profileCopy = profile;
   if (CFPreferencesGetAppBooleanValue(@"MCOriginalSignerCheck", @"com.apple.profiled", &keyExistsAndHasValidFormat))
   {
     v5 = keyExistsAndHasValidFormat == 0;
@@ -1021,24 +1021,24 @@ uint64_t __61__MCProfile_evaluateSignerTrustAsynchronouslyWithCompletion___block
   }
 
   v6 = !v5;
-  v7 = [(MCProfile *)self doesSigningAllowReplacementWithProfile:v4 useOriginalCheck:v6];
+  v7 = [(MCProfile *)self doesSigningAllowReplacementWithProfile:profileCopy useOriginalCheck:v6];
 
   return v7;
 }
 
-- (BOOL)doesSigningAllowReplacementWithProfile:(id)a3 useOriginalCheck:(BOOL)a4
+- (BOOL)doesSigningAllowReplacementWithProfile:(id)profile useOriginalCheck:(BOOL)check
 {
-  v4 = a4;
+  checkCopy = check;
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(MCProfile *)self signerCertificate];
-  if (v7)
+  profileCopy = profile;
+  signerCertificate = [(MCProfile *)self signerCertificate];
+  if (signerCertificate)
   {
-    v8 = v7;
-    v9 = [v6 signerCertificate];
-    if (v9)
+    v8 = signerCertificate;
+    signerCertificate2 = [profileCopy signerCertificate];
+    if (signerCertificate2)
     {
-      if (v4 && (-[MCProfile installOptions](self, "installOptions"), v10 = objc_claimAutoreleasedReturnValue(), [v10 objectForKeyedSubscript:@"signatureVersion"], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, !v11))
+      if (checkCopy && (-[MCProfile installOptions](self, "installOptions"), v10 = objc_claimAutoreleasedReturnValue(), [v10 objectForKeyedSubscript:@"signatureVersion"], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, !v11))
       {
         [(MCProfile *)self signerCertificates];
         v20 = 0u;
@@ -1060,9 +1060,9 @@ uint64_t __61__MCProfile_evaluateSignerTrustAsynchronouslyWithCompletion___block
               }
 
               v19 = *(*(&v20 + 1) + 8 * i);
-              if (v19 && CFEqual(v9, v19))
+              if (v19 && CFEqual(signerCertificate2, v19))
               {
-                LOBYTE(v9) = 1;
+                LOBYTE(signerCertificate2) = 1;
                 goto LABEL_19;
               }
             }
@@ -1077,24 +1077,24 @@ uint64_t __61__MCProfile_evaluateSignerTrustAsynchronouslyWithCompletion___block
           }
         }
 
-        LOBYTE(v9) = 0;
+        LOBYTE(signerCertificate2) = 0;
 LABEL_19:
       }
 
       else
       {
-        LOBYTE(v9) = CFEqual(v9, v8) != 0;
+        LOBYTE(signerCertificate2) = CFEqual(signerCertificate2, v8) != 0;
       }
     }
   }
 
   else
   {
-    LOBYTE(v9) = 1;
+    LOBYTE(signerCertificate2) = 1;
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return v9;
+  return signerCertificate2;
 }
 
 - (BOOL)isProfileUIInstallationEffectivelyAllowed
@@ -1105,12 +1105,12 @@ LABEL_19:
   return v3 != 2;
 }
 
-- (BOOL)mayInstallWithOptions:(id)a3 hasInteractionClient:(BOOL)a4 outError:(id *)a5
+- (BOOL)mayInstallWithOptions:(id)options hasInteractionClient:(BOOL)client outError:(id *)error
 {
-  v6 = a4;
+  clientCopy = client;
   v67 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (v6 && ([(MCProfile *)self mustInstallNonInteractively]|| ![(MCProfile *)self isProfileUIInstallationEffectivelyAllowed]))
+  optionsCopy = options;
+  if (clientCopy && ([(MCProfile *)self mustInstallNonInteractively]|| ![(MCProfile *)self isProfileUIInstallationEffectivelyAllowed]))
   {
     v37 = MEMORY[0x1E696ABC0];
     v38 = MCErrorArray(@"ERROR_PROFILE_NO_INTERACTIVE_INSTALLATION", v9, v10, v11, v12, v13, v14, v15, 0);
@@ -1119,7 +1119,7 @@ LABEL_19:
     goto LABEL_28;
   }
 
-  v16 = [v8 objectForKeyedSubscript:@"isCloudProfile"];
+  v16 = [optionsCopy objectForKeyedSubscript:@"isCloudProfile"];
 
   if (!v16)
   {
@@ -1137,7 +1137,7 @@ LABEL_19:
 LABEL_28:
     v36 = [v39 MCErrorWithDomain:@"MCInstallationErrorDomain" code:v40 descriptionArray:v38 errorType:@"MCFatalError"];
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_35;
     }
@@ -1154,21 +1154,21 @@ LABEL_28:
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v24 = [(MCProfile *)self payloads];
-  v25 = [v24 countByEnumeratingWithState:&v61 objects:v66 count:16];
+  payloads = [(MCProfile *)self payloads];
+  v25 = [payloads countByEnumeratingWithState:&v61 objects:v66 count:16];
   if (v25)
   {
     v26 = v25;
     v27 = *v62;
-    v55 = a5;
-    v56 = v8;
+    errorCopy = error;
+    v56 = optionsCopy;
     while (1)
     {
       v28 = 0;
 LABEL_11:
       if (*v62 != v27)
       {
-        objc_enumerationMutation(v24);
+        objc_enumerationMutation(payloads);
       }
 
       v29 = *(*(&v61 + 1) + 8 * v28);
@@ -1217,10 +1217,10 @@ LABEL_15:
         goto LABEL_11;
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v61 objects:v66 count:16];
+      v26 = [payloads countByEnumeratingWithState:&v61 objects:v66 count:16];
       v36 = 0;
-      a5 = v55;
-      v8 = v56;
+      error = errorCopy;
+      optionsCopy = v56;
       if (!v26)
       {
         goto LABEL_32;
@@ -1230,12 +1230,12 @@ LABEL_15:
 LABEL_30:
 
     v42 = MEMORY[0x1E696ABC0];
-    v43 = [v29 type];
-    v51 = MCErrorArray(@"ERROR_UNNACEPTABLE_PAYLOAD_P_TYPE", v44, v45, v46, v47, v48, v49, v50, v43);
+    type = [v29 type];
+    v51 = MCErrorArray(@"ERROR_UNNACEPTABLE_PAYLOAD_P_TYPE", v44, v45, v46, v47, v48, v49, v50, type);
     v36 = [v42 MCErrorWithDomain:@"MCInstallationErrorDomain" code:4022 descriptionArray:v51 errorType:@"MCFatalError"];
 
-    a5 = v55;
-    v8 = v56;
+    error = errorCopy;
+    optionsCopy = v56;
   }
 
   else
@@ -1245,13 +1245,13 @@ LABEL_30:
 
 LABEL_32:
 
-  if (a5)
+  if (error)
   {
 LABEL_33:
     if (v36)
     {
       v52 = v36;
-      *a5 = v36;
+      *error = v36;
     }
   }
 
@@ -1273,7 +1273,7 @@ void __65__MCProfile_mayInstallWithOptions_hasInteractionClient_outError___block
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (id)restrictionsWithHeuristicsAppliedOutError:(id *)a3
+- (id)restrictionsWithHeuristicsAppliedOutError:(id *)error
 {
   v51 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -1281,13 +1281,13 @@ void __65__MCProfile_mayInstallWithOptions_hasInteractionClient_outError___block
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v6 = [(MCProfile *)self payloads];
-  v7 = [v6 countByEnumeratingWithState:&v46 objects:v50 count:16];
+  payloads = [(MCProfile *)self payloads];
+  v7 = [payloads countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (v7)
   {
     v8 = v7;
-    v41 = self;
-    v42 = a3;
+    selfCopy = self;
+    errorCopy = error;
     v9 = *v47;
     v10 = 1;
 LABEL_3:
@@ -1297,31 +1297,31 @@ LABEL_3:
     {
       if (*v47 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(payloads);
       }
 
       v13 = *(*(&v46 + 1) + 8 * v11);
       if (v13)
       {
-        v14 = [*(*(&v46 + 1) + 8 * v11) restrictions];
-        v15 = [v14 MCValidateRestrictions];
+        restrictions = [*(*(&v46 + 1) + 8 * v11) restrictions];
+        mCValidateRestrictions = [restrictions MCValidateRestrictions];
       }
 
       else
       {
-        v15 = 1;
+        mCValidateRestrictions = 1;
       }
 
       v16 = MEMORY[0x1E695DF90];
-      v17 = [v13 restrictions];
-      v18 = [v16 dictionaryWithDictionary:v17];
+      restrictions2 = [v13 restrictions];
+      v18 = [v16 dictionaryWithDictionary:restrictions2];
 
-      if ((v15 & 1) == 0)
+      if ((mCValidateRestrictions & 1) == 0)
       {
         [v18 MCSanitizeRestrictions];
       }
 
-      v10 &= v15;
+      v10 &= mCValidateRestrictions;
       v45 = 0;
       v5 = [MCRestrictionManager restrictionsAfterApplyingRestrictionsDictionary:v18 toRestrictionsDictionary:v12 outChangeDetected:0 outError:&v45];
       v19 = v45;
@@ -1335,7 +1335,7 @@ LABEL_3:
       v12 = v5;
       if (v8 == v11)
       {
-        v8 = [v6 countByEnumeratingWithState:&v46 objects:v50 count:16];
+        v8 = [payloads countByEnumeratingWithState:&v46 objects:v50 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -1347,21 +1347,21 @@ LABEL_3:
 
     if (v10)
     {
-      self = v41;
-      a3 = v42;
+      self = selfCopy;
+      error = errorCopy;
     }
 
     else
     {
       v20 = _MCLogObjects;
-      self = v41;
+      self = selfCopy;
       if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         _os_log_impl(&dword_1A795B000, v20, OS_LOG_TYPE_DEFAULT, "Profile contains invalid restrictions", buf, 2u);
       }
 
-      a3 = v42;
+      error = errorCopy;
     }
   }
 
@@ -1371,10 +1371,10 @@ LABEL_3:
     v19 = 0;
   }
 
-  v21 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v22 = [v21 isSupervised];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  isSupervised = [mEMORY[0x1E69AD420] isSupervised];
 
-  if ((v22 & 1) == 0)
+  if ((isSupervised & 1) == 0)
   {
     v23 = [MCRestrictionManager filterGrandfatheredRestrictionsIfNeededFromRestrictions:v5];
     v24 = [v23 mutableCopy];
@@ -1397,8 +1397,8 @@ LABEL_3:
     goto LABEL_26;
   }
 
-  v27 = [(MCProfile *)self friendlyName];
-  v35 = MCLocalizedErrorFormatByDevice(@"ENCRYPTION_POLICY_PAYLOAD_FAILURE_TEXT", v28, v29, v30, v31, v32, v33, v34, v27);
+  friendlyName = [(MCProfile *)self friendlyName];
+  v35 = MCLocalizedErrorFormatByDevice(@"ENCRYPTION_POLICY_PAYLOAD_FAILURE_TEXT", v28, v29, v30, v31, v32, v33, v34, friendlyName);
 
   v36 = +[MCDeviceCapabilities currentDevice];
   v43 = 0;
@@ -1408,11 +1408,11 @@ LABEL_3:
   if (v19)
   {
 LABEL_26:
-    if (a3)
+    if (error)
     {
       v37 = v19;
       v38 = 0;
-      *a3 = v19;
+      *error = v19;
     }
 
     else
@@ -1433,21 +1433,21 @@ LABEL_26:
 
 - (BOOL)shouldHaveFullSSLTrust
 {
-  v3 = [(MCProfile *)self installOptions];
-  v4 = [v3 objectForKey:@"isInstalledByMDM"];
-  v5 = [v4 BOOLValue];
+  installOptions = [(MCProfile *)self installOptions];
+  v4 = [installOptions objectForKey:@"isInstalledByMDM"];
+  bOOLValue = [v4 BOOLValue];
 
-  v6 = [v3 objectForKey:@"isInstalledInteractively"];
+  v6 = [installOptions objectForKey:@"isInstalledInteractively"];
   v7 = v6;
-  v8 = (v5 & 1) != 0 || v6 && ![v6 BOOLValue] || -[MCProfile containsPayloadOfClass:](self, "containsPayloadOfClass:", objc_opt_class());
+  v8 = (bOOLValue & 1) != 0 || v6 && ![v6 BOOLValue] || -[MCProfile containsPayloadOfClass:](self, "containsPayloadOfClass:", objc_opt_class());
 
   return v8;
 }
 
 - (BOOL)isManagedByMDM
 {
-  v2 = [(MCProfile *)self managingProfileIdentifier];
-  v3 = v2 != 0;
+  managingProfileIdentifier = [(MCProfile *)self managingProfileIdentifier];
+  v3 = managingProfileIdentifier != 0;
 
   return v3;
 }
@@ -1457,9 +1457,9 @@ LABEL_26:
   v3 = +[MCDependencyReader sharedReader];
   v4 = [v3 dependentsOfParent:self->_identifier inDomain:@"ManagedProfileToManagingProfile"];
 
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 - (BOOL)isSupervisionProfile
@@ -1475,16 +1475,16 @@ LABEL_26:
   return [(MCProfile *)self containsPayloadOfClass:v3];
 }
 
-- (id)payloadsOfKindOfClass:(Class)a3
+- (id)payloadsOfKindOfClass:(Class)class
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(MCProfile *)self payloads];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  payloads = [(MCProfile *)self payloads];
+  v6 = [payloads countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1495,23 +1495,23 @@ LABEL_26:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(payloads);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
         if (objc_opt_isKindOfClass())
         {
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [payloads countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [v4 copy];
+  v11 = [array copy];
   v12 = *MEMORY[0x1E69E9840];
 
   return v11;
@@ -1544,39 +1544,39 @@ LABEL_26:
   return v10;
 }
 
-+ (id)badFieldTypeErrorWithField:(id)a3
++ (id)badFieldTypeErrorWithField:(id)field
 {
   v8 = MEMORY[0x1E696ABC0];
-  v9 = MCErrorArray(@"ERROR_PROFILE_FIELD_INVALID_P_FIELD", a2, a3, v3, v4, v5, v6, v7, a3);
+  v9 = MCErrorArray(@"ERROR_PROFILE_FIELD_INVALID_P_FIELD", a2, field, v3, v4, v5, v6, v7, field);
   v10 = [v8 MCErrorWithDomain:@"MCProfileErrorDomain" code:1003 descriptionArray:v9 errorType:@"MCFatalError"];
 
   return v10;
 }
 
-+ (id)missingFieldErrorWithField:(id)a3
++ (id)missingFieldErrorWithField:(id)field
 {
   v8 = MEMORY[0x1E696ABC0];
-  v9 = MCErrorArray(@"ERROR_PROFILE_REQUIRED_FIELD_MISSING_P_FIELD", a2, a3, v3, v4, v5, v6, v7, a3);
+  v9 = MCErrorArray(@"ERROR_PROFILE_REQUIRED_FIELD_MISSING_P_FIELD", a2, field, v3, v4, v5, v6, v7, field);
   v10 = [v8 MCErrorWithDomain:@"MCProfileErrorDomain" code:1002 descriptionArray:v9 errorType:@"MCFatalError"];
 
   return v10;
 }
 
-+ (id)profileDictionaryFromProfileData:(id)a3 outSignerCerts:(id *)a4 outError:(id *)a5
++ (id)profileDictionaryFromProfileData:(id)data outSignerCerts:(id *)certs outError:(id *)error
 {
   v57 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (![v8 length])
+  dataCopy = data;
+  if (![dataCopy length])
   {
     v19 = MEMORY[0x1E696ABC0];
     v20 = MCErrorArray(@"ERROR_PROFILE_EMPTY", v9, v10, v11, v12, v13, v14, v15, 0);
-    v21 = [v19 MCErrorWithDomain:@"MCProfileErrorDomain" code:1005 descriptionArray:v20 errorType:@"MCFatalError"];
+    _malformedProfileError = [v19 MCErrorWithDomain:@"MCProfileErrorDomain" code:1005 descriptionArray:v20 errorType:@"MCFatalError"];
 
     v17 = 0;
     goto LABEL_14;
   }
 
-  v16 = [MEMORY[0x1E696AE40] MCSafePropertyListWithData:v8 options:1 format:0 error:0];
+  v16 = [MEMORY[0x1E696AE40] MCSafePropertyListWithData:dataCopy options:1 format:0 error:0];
   if (v16)
   {
     v17 = v16;
@@ -1587,10 +1587,10 @@ LABEL_26:
       goto LABEL_8;
     }
 
-    v21 = [a1 _malformedProfileError];
+    _malformedProfileError = [self _malformedProfileError];
 LABEL_14:
     v18 = 0;
-    if (v21)
+    if (_malformedProfileError)
     {
       goto LABEL_15;
     }
@@ -1599,14 +1599,14 @@ LABEL_14:
   }
 
   v53 = 0;
-  v22 = [MCProfile dataFromCMSEncodedData:v8 outSignerCertificates:&v53];
+  v22 = [MCProfile dataFromCMSEncodedData:dataCopy outSignerCertificates:&v53];
   v18 = v53;
   if (!v22)
   {
     v17 = 0;
 LABEL_19:
-    v21 = [a1 _malformedProfileError];
-    if (v21)
+    _malformedProfileError = [self _malformedProfileError];
+    if (_malformedProfileError)
     {
       goto LABEL_15;
     }
@@ -1634,25 +1634,25 @@ LABEL_8:
   [v23 unsignedIntegerValue];
   if ([v23 unsignedIntegerValue] >= 8)
   {
-    v21 = [a1 _malformedProfileError];
+    _malformedProfileError = [self _malformedProfileError];
     goto LABEL_46;
   }
 
-  v44 = a4;
+  certsCopy = certs;
   v52 = 0;
   v51 = 0;
   v24 = [MCProfile removeOptionalObjectInDictionary:v17 key:@"EncryptedPayloadContent" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v51];
-  v21 = v51;
+  _malformedProfileError = v51;
   v45 = v24;
   if (v24)
   {
-    v50 = v21;
+    v50 = _malformedProfileError;
     v25 = [MCCrypto objectFromEncryptedData:v24 outCertificate:&v52 outError:&v50];
     v26 = v50;
 
     if (v26)
     {
-      v21 = v26;
+      _malformedProfileError = v26;
 LABEL_44:
 
       v24 = v45;
@@ -1664,7 +1664,7 @@ LABEL_44:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v21 = [a1 _malformedProfileError];
+        _malformedProfileError = [self _malformedProfileError];
         goto LABEL_44;
       }
 
@@ -1683,14 +1683,14 @@ LABEL_44:
       [v17 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"ProfileWasEncrypted"];
     }
 
-    v21 = 0;
+    _malformedProfileError = 0;
     v24 = v45;
   }
 
   if ([v18 count])
   {
     v42 = v23;
-    v43 = a5;
+    errorCopy = error;
     v25 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v18, "count")}];
     v46 = 0u;
     v47 = 0u;
@@ -1724,31 +1724,31 @@ LABEL_44:
       while (v37);
     }
 
-    if (v44)
+    if (certsCopy)
     {
       v41 = v25;
-      *v44 = v25;
+      *certsCopy = v25;
     }
 
     v23 = v42;
-    a5 = v43;
+    error = errorCopy;
     goto LABEL_44;
   }
 
 LABEL_45:
 
 LABEL_46:
-  if (!v21)
+  if (!_malformedProfileError)
   {
     goto LABEL_20;
   }
 
 LABEL_15:
-  if (a5)
+  if (error)
   {
-    v27 = v21;
+    v27 = _malformedProfileError;
     v28 = 0;
-    *a5 = v21;
+    *error = _malformedProfileError;
   }
 
   else
@@ -1765,33 +1765,33 @@ LABEL_21:
 
 - (NSString)stubFileName
 {
-  v2 = [(MCProfile *)self identifier];
-  v3 = [v2 MCHashedFilenameWithExtension:@"stub"];
+  identifier = [(MCProfile *)self identifier];
+  v3 = [identifier MCHashedFilenameWithExtension:@"stub"];
 
   return v3;
 }
 
 - (NSString)profileIDHashFileName
 {
-  v2 = [(MCProfile *)self identifier];
-  v3 = [v2 MCHashedFilenameWithExtension:@"plist"];
+  identifier = [(MCProfile *)self identifier];
+  v3 = [identifier MCHashedFilenameWithExtension:@"plist"];
 
   return v3;
 }
 
 - (NSString)profileDataFileName
 {
-  v2 = [(MCProfile *)self identifier];
-  v3 = [v2 MCHashedFilenameWithExtension:@"pdata"];
+  identifier = [(MCProfile *)self identifier];
+  v3 = [identifier MCHashedFilenameWithExtension:@"pdata"];
 
   return v3;
 }
 
-- (MCProfile)initWithDictionary:(id)a3 signerCerts:(id)a4 allowEmptyPayload:(BOOL)a5 outError:(id *)a6
+- (MCProfile)initWithDictionary:(id)dictionary signerCerts:(id)certs allowEmptyPayload:(BOOL)payload outError:(id *)error
 {
   v156 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  dictionaryCopy = dictionary;
+  certsCopy = certs;
   v148.receiver = self;
   v148.super_class = MCProfile;
   v11 = [(MCProfile *)&v148 init];
@@ -1809,26 +1809,26 @@ LABEL_21:
   v11->_signerEvaluationQueue = v14;
 
   v147 = 0;
-  v16 = [MCProfile removeOptionalObjectInDictionary:v9 key:@"MCProfileIsRemovalStub" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v147];
-  v17 = v147;
-  if (!v17)
+  v16 = [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"MCProfileIsRemovalStub" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v147];
+  mCCopyAsPrimaryError = v147;
+  if (!mCCopyAsPrimaryError)
   {
     v11->_isStub = [v16 BOOLValue];
     v146 = 0;
-    v18 = [MCProfile removeRequiredObjectInDictionary:v9 key:@"PayloadVersion" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" missingDataCode:1002 missingDataErrorString:@"ERROR_PROFILE_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v146];
+    v18 = [MCProfile removeRequiredObjectInDictionary:dictionaryCopy key:@"PayloadVersion" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" missingDataCode:1002 missingDataErrorString:@"ERROR_PROFILE_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v146];
     v19 = v146;
     if (v19)
     {
-      v17 = v19;
+      mCCopyAsPrimaryError = v19;
 
       goto LABEL_5;
     }
 
-    v29 = [v18 intValue];
-    v11->_version = v29;
+    intValue = [v18 intValue];
+    v11->_version = intValue;
     if (v11->_isStub)
     {
-      if (v29 >= 3)
+      if (intValue >= 3)
       {
         v37 = _MCLogObjects;
         if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_ERROR))
@@ -1841,16 +1841,16 @@ LABEL_21:
       }
     }
 
-    else if ((v29 - 3) <= 0xFFFFFFFD)
+    else if ((intValue - 3) <= 0xFFFFFFFD)
     {
       v39 = MEMORY[0x1E696ABC0];
       v40 = MCErrorArray(@"ERROR_UNSUPPORTED_VERSION", v30, v31, v32, v33, v34, v35, v36, 0);
       v41 = [v39 MCErrorWithDomain:@"MCProfileErrorDomain" code:1001 descriptionArray:v40 errorType:@"MCFatalError"];
-      v17 = [v41 MCCopyAsPrimaryError];
+      mCCopyAsPrimaryError = [v41 MCCopyAsPrimaryError];
 LABEL_40:
 
 LABEL_41:
-      if (v17)
+      if (mCCopyAsPrimaryError)
       {
         goto LABEL_6;
       }
@@ -1861,21 +1861,21 @@ LABEL_42:
     }
 
     v145 = 0;
-    v42 = [MCProfile removeRequiredNonZeroLengthStringInDictionary:v9 key:@"PayloadIdentifier" errorDomain:@"MCProfileErrorDomain" missingDataCode:1002 missingDataErrorString:@"ERROR_PROFILE_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v145];
-    v17 = v145;
+    v42 = [MCProfile removeRequiredNonZeroLengthStringInDictionary:dictionaryCopy key:@"PayloadIdentifier" errorDomain:@"MCProfileErrorDomain" missingDataCode:1002 missingDataErrorString:@"ERROR_PROFILE_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v145];
+    mCCopyAsPrimaryError = v145;
     identifier = v11->_identifier;
     v11->_identifier = v42;
 
-    if (!v17)
+    if (!mCCopyAsPrimaryError)
     {
       v144 = 0;
-      v44 = [MCProfile removeRequiredNonZeroLengthStringInDictionary:v9 key:@"PayloadUUID" errorDomain:@"MCProfileErrorDomain" missingDataCode:1002 missingDataErrorString:@"ERROR_PROFILE_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v144];
-      v17 = v144;
+      v44 = [MCProfile removeRequiredNonZeroLengthStringInDictionary:dictionaryCopy key:@"PayloadUUID" errorDomain:@"MCProfileErrorDomain" missingDataCode:1002 missingDataErrorString:@"ERROR_PROFILE_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v144];
+      mCCopyAsPrimaryError = v144;
       UUID = v11->_UUID;
       v11->_UUID = v44;
     }
 
-    v40 = [v9 objectForKey:@"PayloadDescription"];
+    v40 = [dictionaryCopy objectForKey:@"PayloadDescription"];
     if (!v40)
     {
       v46 = 0x1E77CF000;
@@ -1907,8 +1907,8 @@ LABEL_42:
 LABEL_27:
 
 LABEL_28:
-        [v9 removeObjectForKey:@"PayloadDescription"];
-        if (v17)
+        [dictionaryCopy removeObjectForKey:@"PayloadDescription"];
+        if (mCCopyAsPrimaryError)
         {
           goto LABEL_41;
         }
@@ -1916,34 +1916,34 @@ LABEL_28:
         v115 = v40;
         v52 = *(v46 + 1640);
         v143 = 0;
-        v53 = [v52 removeOptionalNonZeroLengthStringInDictionary:v9 key:@"PayloadDisplayName" errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v143];
-        v17 = v143;
+        v53 = [v52 removeOptionalNonZeroLengthStringInDictionary:dictionaryCopy key:@"PayloadDisplayName" errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v143];
+        mCCopyAsPrimaryError = v143;
         displayName = v11->_displayName;
         v11->_displayName = v53;
 
-        if (!v17)
+        if (!mCCopyAsPrimaryError)
         {
           v142 = 0;
-          v55 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:v9 key:@"PayloadOrganization" errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v142];
-          v17 = v142;
+          v55 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:dictionaryCopy key:@"PayloadOrganization" errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v142];
+          mCCopyAsPrimaryError = v142;
           organization = v11->_organization;
           v11->_organization = v55;
         }
 
-        v57 = [MEMORY[0x1E69AD420] sharedConfiguration];
-        v58 = [v57 isSupervised];
+        mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+        isSupervised = [mEMORY[0x1E69AD420] isSupervised];
 
-        if (v58)
+        if (isSupervised)
         {
-          if (!v17)
+          if (!mCCopyAsPrimaryError)
           {
             v141 = 0;
-            v41 = [MCProfile removeOptionalObjectInDictionary:v9 key:@"PayloadRemovalDisallowed" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v141];
+            v41 = [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"PayloadRemovalDisallowed" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v141];
             v59 = v141;
             if (v59)
             {
 LABEL_38:
-              v17 = v59;
+              mCCopyAsPrimaryError = v59;
               goto LABEL_39;
             }
 
@@ -1951,7 +1951,7 @@ LABEL_38:
 
 LABEL_37:
             v140 = 0;
-            v41 = [MCProfile removeOptionalObjectInDictionary:v9 key:@"PayloadRebootSuggested" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v140];
+            v41 = [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"PayloadRebootSuggested" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v140];
             v59 = v140;
             if (v59)
             {
@@ -1961,34 +1961,34 @@ LABEL_37:
             v114 = v41;
             v11->_needsReboot = [v41 BOOLValue];
             v139 = 0;
-            v62 = [MCProfile removeOptionalObjectInDictionary:v9 key:@"PayloadExpirationDate" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v139];
-            v17 = v139;
+            v62 = [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"PayloadExpirationDate" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v139];
+            mCCopyAsPrimaryError = v139;
             expiryDate = v11->_expiryDate;
             v11->_expiryDate = v62;
 
-            if (v17)
+            if (mCCopyAsPrimaryError)
             {
               goto LABEL_124;
             }
 
             v138 = 0;
-            v64 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:v9 key:@"ProductVersion" errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v138];
-            v17 = v138;
+            v64 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:dictionaryCopy key:@"ProductVersion" errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v138];
+            mCCopyAsPrimaryError = v138;
             productVersion = v11->_productVersion;
             v11->_productVersion = v64;
 
-            if (v17)
+            if (mCCopyAsPrimaryError)
             {
               goto LABEL_124;
             }
 
             v137 = 0;
-            v66 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:v9 key:@"ProductBuildVersion" errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v137];
-            v17 = v137;
+            v66 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:dictionaryCopy key:@"ProductBuildVersion" errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v137];
+            mCCopyAsPrimaryError = v137;
             productBuildVersion = v11->_productBuildVersion;
             v11->_productBuildVersion = v66;
 
-            if (v17 || (v136 = 0, [MCProfile removeOptionalObjectInDictionary:v9 key:@"RemovalDate" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v136], v68 = objc_claimAutoreleasedReturnValue(), v17 = v136, removalDate = v11->_removalDate, v11->_removalDate = v68, removalDate, v17))
+            if (mCCopyAsPrimaryError || (v136 = 0, [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"RemovalDate" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v136], v68 = objc_claimAutoreleasedReturnValue(), mCCopyAsPrimaryError = v136, removalDate = v11->_removalDate, v11->_removalDate = v68, removalDate, mCCopyAsPrimaryError))
             {
 LABEL_124:
               v41 = v114;
@@ -1997,11 +1997,11 @@ LABEL_124:
             }
 
             v135 = 0;
-            v104 = [MCProfile removeOptionalObjectInDictionary:v9 key:@"TargetDeviceType" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v135];
+            v104 = [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"TargetDeviceType" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v135];
             v70 = v135;
             if (v70)
             {
-              v17 = v70;
+              mCCopyAsPrimaryError = v70;
 LABEL_123:
 
               goto LABEL_124;
@@ -2010,8 +2010,8 @@ LABEL_123:
             v11->_targetDeviceType = [(NSDate *)v104 unsignedIntValue];
 
             v134 = 0;
-            v71 = [MCProfile removeOptionalObjectInDictionary:v9 key:@"DurationUntilRemoval" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v134];
-            v17 = v134;
+            v71 = [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"DurationUntilRemoval" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v134];
+            mCCopyAsPrimaryError = v134;
             v114 = v71;
             if (v71)
             {
@@ -2032,16 +2032,16 @@ LABEL_123:
               v11->_removalDate = v104;
             }
 
-            if (v17 || (v133 = 0, [MCProfile removeOptionalObjectInDictionary:v9 key:@"ConsentText" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v133], v78 = objc_claimAutoreleasedReturnValue(), v17 = v133, (v103 = v78) == 0))
+            if (mCCopyAsPrimaryError || (v133 = 0, [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"ConsentText" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v133], v78 = objc_claimAutoreleasedReturnValue(), mCCopyAsPrimaryError = v133, (v103 = v78) == 0))
             {
               v103 = 0;
             }
 
             else if ([v78 count])
             {
-              v79 = [MEMORY[0x1E695DF58] preferredLanguages];
-              v97 = [v103 allKeys];
-              v102 = v79;
+              preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+              allKeys = [v103 allKeys];
+              v102 = preferredLanguages;
               [MEMORY[0x1E696AAE8] preferredLocalizationsFromArray:? forPreferences:?];
               v129 = 0u;
               v130 = 0u;
@@ -2103,8 +2103,8 @@ LABEL_84:
                         continue;
                       }
 
-                      v85 = v83;
-                      v88 = v98;
+                      firstObject = v83;
+                      allValues = v98;
                       goto LABEL_105;
                     }
 
@@ -2124,20 +2124,20 @@ LABEL_90:
               v84 = [v103 objectForKey:@"default"];
               if (v84 || ([v103 objectForKey:@"en"], (v84 = objc_claimAutoreleasedReturnValue()) != 0))
               {
-                v85 = v84;
+                firstObject = v84;
               }
 
               else
               {
-                v88 = [v103 allValues];
-                v85 = [v88 firstObject];
+                allValues = [v103 allValues];
+                firstObject = [allValues firstObject];
 LABEL_105:
               }
 
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                objc_storeStrong(&v11->_localizedConsentText, v85);
+                objc_storeStrong(&v11->_localizedConsentText, firstObject);
               }
 
               else
@@ -2148,7 +2148,7 @@ LABEL_105:
 
             if (v11->_isStub)
             {
-              if (v17)
+              if (mCCopyAsPrimaryError)
               {
 
 LABEL_122:
@@ -2156,9 +2156,9 @@ LABEL_122:
               }
 
               v124 = 0;
-              v101 = [MCProfile removeOptionalObjectInDictionary:v9 key:@"SignerCerts" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v124];
-              v17 = v124;
-              if (v17)
+              v101 = [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"SignerCerts" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v124];
+              mCCopyAsPrimaryError = v124;
+              if (mCCopyAsPrimaryError)
               {
 LABEL_121:
 
@@ -2168,7 +2168,7 @@ LABEL_121:
 
             else
             {
-              v101 = v10;
+              v101 = certsCopy;
             }
 
             if ([v101 count])
@@ -2214,7 +2214,7 @@ LABEL_121:
             }
 
             objc_storeStrong(&v11->_signerQueueSignerCertificates, v107);
-            if (v17)
+            if (mCCopyAsPrimaryError)
             {
               v86 = 0;
             }
@@ -2222,47 +2222,47 @@ LABEL_121:
             else
             {
               v119 = 0;
-              v86 = [MCProfile removeOptionalObjectInDictionary:v9 key:@"ProfileWasEncrypted" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v119];
+              v86 = [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"ProfileWasEncrypted" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v119];
               v87 = v119;
               if (v87)
               {
-                v17 = v87;
+                mCCopyAsPrimaryError = v87;
               }
 
               else
               {
                 v11->_encrypted = [v86 BOOLValue];
-                [v9 removeObjectForKey:@"ProfileWasTrusted"];
-                [v9 removeObjectForKey:@"ProfileWasSigned"];
-                [v9 removeObjectForKey:@"ProfileTrustLevel"];
+                [dictionaryCopy removeObjectForKey:@"ProfileWasTrusted"];
+                [dictionaryCopy removeObjectForKey:@"ProfileWasSigned"];
+                [dictionaryCopy removeObjectForKey:@"ProfileTrustLevel"];
                 if (v11->_isStub)
                 {
                   v118 = 0;
-                  v89 = [MCProfile removeOptionalObjectInDictionary:v9 key:@"InstallDate" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v118];
-                  v17 = v118;
+                  v89 = [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"InstallDate" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v118];
+                  mCCopyAsPrimaryError = v118;
                   installDate = v11->_installDate;
                   v11->_installDate = v89;
 
-                  if (v17)
+                  if (mCCopyAsPrimaryError)
                   {
                   }
 
                   else
                   {
                     v117 = 0;
-                    v113 = [MCProfile removeOptionalObjectInDictionary:v9 key:@"ProfileWasLocked" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v117];
+                    v113 = [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"ProfileWasLocked" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v117];
                     v92 = v117;
                     if (v92)
                     {
-                      v17 = v92;
+                      mCCopyAsPrimaryError = v92;
                     }
 
                     else
                     {
                       v11->_isLocked = [v113 BOOLValue];
                       v116 = 0;
-                      v93 = [MCProfile removeOptionalObjectInDictionary:v9 key:@"InstallOptions" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v116];
-                      v17 = v116;
+                      v93 = [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"InstallOptions" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v116];
+                      mCCopyAsPrimaryError = v116;
                       installOptions = v11->_installOptions;
                       v11->_installOptions = v93;
 
@@ -2278,7 +2278,7 @@ LABEL_121:
 
                 else
                 {
-                  v17 = 0;
+                  mCCopyAsPrimaryError = 0;
                 }
               }
             }
@@ -2287,7 +2287,7 @@ LABEL_121:
           }
         }
 
-        else if (!v17)
+        else if (!mCCopyAsPrimaryError)
         {
           goto LABEL_37;
         }
@@ -2300,8 +2300,8 @@ LABEL_39:
     }
 
     v51 = [MCProfile badFieldTypeErrorWithField:@"PayloadDescription"];
-    v50 = v17;
-    v17 = v51;
+    v50 = mCCopyAsPrimaryError;
+    mCCopyAsPrimaryError = v51;
     goto LABEL_27;
   }
 
@@ -2314,23 +2314,23 @@ LABEL_6:
   v21 = v11->_trustEvaluationQueue;
   v11->_trustEvaluationQueue = 0;
 
-  v22 = [(MCProfile *)v11 malformedProfileErrorWithError:v17];
+  v22 = [(MCProfile *)v11 malformedProfileErrorWithError:mCCopyAsPrimaryError];
   v23 = v22;
-  if (a6)
+  if (error)
   {
     v24 = v22;
-    *a6 = v23;
+    *error = v23;
   }
 
   v25 = _MCLogObjects;
   if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_ERROR))
   {
     v26 = v25;
-    v27 = [v23 MCVerboseDescription];
+    mCVerboseDescription = [v23 MCVerboseDescription];
     *buf = 134218242;
     v150 = v11;
     v151 = 2114;
-    v152 = v27;
+    v152 = mCVerboseDescription;
     _os_log_impl(&dword_1A795B000, v26, OS_LOG_TYPE_ERROR, "%p Can't parse profile: %{public}@", buf, 0x16u);
   }
 
@@ -2341,15 +2341,15 @@ LABEL_43:
   return v28;
 }
 
-- (id)malformedProfileErrorWithError:(id)a3
+- (id)malformedProfileErrorWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(MCProfile *)self friendlyName];
-  v13 = v5;
+  errorCopy = error;
+  friendlyName = [(MCProfile *)self friendlyName];
+  v13 = friendlyName;
   v14 = MEMORY[0x1E696ABC0];
-  if (v5)
+  if (friendlyName)
   {
-    MCErrorArray(@"ERROR_PROFILE_MALFORMED_P_ID", v6, v7, v8, v9, v10, v11, v12, v5);
+    MCErrorArray(@"ERROR_PROFILE_MALFORMED_P_ID", v6, v7, v8, v9, v10, v11, v12, friendlyName);
   }
 
   else
@@ -2357,26 +2357,26 @@ LABEL_43:
     MCErrorArray(@"MALFORMED_PAYLOAD_ERROR_DESCRIPTION", v6, v7, v8, v9, v10, v11, v12, 0);
   }
   v15 = ;
-  v16 = [v14 MCErrorWithDomain:@"MCProfileErrorDomain" code:1000 descriptionArray:v15 underlyingError:v4 errorType:@"MCFatalError"];
+  v16 = [v14 MCErrorWithDomain:@"MCProfileErrorDomain" code:1000 descriptionArray:v15 underlyingError:errorCopy errorType:@"MCFatalError"];
 
   return v16;
 }
 
-- (BOOL)writeStubToDirectory:(id)a3
+- (BOOL)writeStubToDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [(MCProfile *)self stubFileName];
-  v6 = [v4 stringByAppendingPathComponent:v5];
+  directoryCopy = directory;
+  stubFileName = [(MCProfile *)self stubFileName];
+  v6 = [directoryCopy stringByAppendingPathComponent:stubFileName];
 
   LOBYTE(self) = [(MCProfile *)self writeStubToPath:v6];
   return self;
 }
 
-- (BOOL)writeStubToPath:(id)a3
+- (BOOL)writeStubToPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MCProfile *)self stubDictionary];
-  v6 = [v5 MCWriteToBinaryFile:v4];
+  pathCopy = path;
+  stubDictionary = [(MCProfile *)self stubDictionary];
+  v6 = [stubDictionary MCWriteToBinaryFile:pathCopy];
 
   return v6;
 }
@@ -2445,21 +2445,21 @@ LABEL_43:
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_targetDeviceType];
   [v10 setObject:v16 forKeyedSubscript:@"TargetDeviceType"];
 
-  v17 = [(MCProfile *)self signerCertificates];
-  v18 = [v17 count];
+  signerCertificates = [(MCProfile *)self signerCertificates];
+  v18 = [signerCertificates count];
 
   if (v18)
   {
     v19 = MEMORY[0x1E695DF70];
-    v20 = [(MCProfile *)self signerCertificates];
-    v21 = [v19 arrayWithCapacity:{objc_msgSend(v20, "count")}];
+    signerCertificates2 = [(MCProfile *)self signerCertificates];
+    v21 = [v19 arrayWithCapacity:{objc_msgSend(signerCertificates2, "count")}];
 
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v22 = [(MCProfile *)self signerCertificates];
-    v23 = [v22 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    signerCertificates3 = [(MCProfile *)self signerCertificates];
+    v23 = [signerCertificates3 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v23)
     {
       v24 = v23;
@@ -2470,7 +2470,7 @@ LABEL_43:
         {
           if (*v32 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(signerCertificates3);
           }
 
           v27 = SecCertificateCopyData(*(*(&v31 + 1) + 8 * i));
@@ -2480,7 +2480,7 @@ LABEL_43:
           }
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v24 = [signerCertificates3 countByEnumeratingWithState:&v31 objects:v35 count:16];
       }
 
       while (v24);
@@ -2500,15 +2500,15 @@ LABEL_43:
   return v10;
 }
 
-- (BOOL)containsPayloadOfClass:(Class)a3
+- (BOOL)containsPayloadOfClass:(Class)class
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(MCProfile *)self payloads];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  payloads = [(MCProfile *)self payloads];
+  v4 = [payloads countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2519,7 +2519,7 @@ LABEL_43:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(payloads);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -2530,7 +2530,7 @@ LABEL_43:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [payloads countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -2547,16 +2547,16 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)containsAnyPayloadOfClasses:(id)a3
+- (BOOL)containsAnyPayloadOfClasses:(id)classes
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  classesCopy = classes;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(MCProfile *)self payloads];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  payloads = [(MCProfile *)self payloads];
+  v6 = [payloads countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -2566,18 +2566,18 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(payloads);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v4 containsObject:objc_opt_class()])
+        if ([classesCopy containsObject:objc_opt_class()])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [payloads countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -2593,16 +2593,16 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)containsOnlyPayloadsOfClasses:(id)a3
+- (BOOL)containsOnlyPayloadsOfClasses:(id)classes
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  classesCopy = classes;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(MCProfile *)self payloads];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  payloads = [(MCProfile *)self payloads];
+  v6 = [payloads countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2613,18 +2613,18 @@ LABEL_11:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(payloads);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        if (![v4 containsObject:objc_opt_class()])
+        if (![classesCopy containsObject:objc_opt_class()])
         {
           v11 = 0;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [payloads countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -2641,15 +2641,15 @@ LABEL_11:
   return v11;
 }
 
-- (unint64_t)countOfPayloadsOfClass:(Class)a3
+- (unint64_t)countOfPayloadsOfClass:(Class)class
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(MCProfile *)self payloads];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  payloads = [(MCProfile *)self payloads];
+  v4 = [payloads countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2661,14 +2661,14 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(payloads);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         v6 += objc_opt_isKindOfClass() & 1;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [payloads countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -2683,43 +2683,43 @@ LABEL_11:
   return v6;
 }
 
-+ (id)removeRequiredObjectInDictionary:(id)a3 key:(id)a4 type:(Class)a5 errorDomain:(id)a6 missingDataCode:(int64_t)a7 missingDataErrorString:(id)a8 invalidDataCode:(int64_t)a9 invalidDataErrorString:(id)a10 outError:(id *)a11
++ (id)removeRequiredObjectInDictionary:(id)dictionary key:(id)key type:(Class)type errorDomain:(id)domain missingDataCode:(int64_t)code missingDataErrorString:(id)string invalidDataCode:(int64_t)dataCode invalidDataErrorString:(id)self0 outError:(id *)self1
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a8;
-  v19 = a10;
-  v27 = [v15 objectForKey:v16];
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  domainCopy = domain;
+  stringCopy = string;
+  errorStringCopy = errorString;
+  v27 = [dictionaryCopy objectForKey:keyCopy];
   if (v27)
   {
     if (objc_opt_isKindOfClass())
     {
-      [v15 removeObjectForKey:v16];
+      [dictionaryCopy removeObjectForKey:keyCopy];
       v35 = v27;
       goto LABEL_10;
     }
 
-    if (a11)
+    if (error)
     {
       v41 = MEMORY[0x1E696ABC0];
-      v37 = MCErrorArray(v19, v28, v29, v30, v31, v32, v33, v34, v16);
+      v37 = MCErrorArray(errorStringCopy, v28, v29, v30, v31, v32, v33, v34, keyCopy);
       v38 = v41;
-      v39 = v17;
-      v40 = a9;
+      v39 = domainCopy;
+      codeCopy = dataCode;
       goto LABEL_8;
     }
   }
 
-  else if (a11)
+  else if (error)
   {
     v36 = MEMORY[0x1E696ABC0];
-    v37 = MCErrorArray(v18, v20, v21, v22, v23, v24, v25, v26, v16);
+    v37 = MCErrorArray(stringCopy, v20, v21, v22, v23, v24, v25, v26, keyCopy);
     v38 = v36;
-    v39 = v17;
-    v40 = a7;
+    v39 = domainCopy;
+    codeCopy = code;
 LABEL_8:
-    *a11 = [v38 MCErrorWithDomain:v39 code:v40 descriptionArray:v37 errorType:@"MCFatalError"];
+    *error = [v38 MCErrorWithDomain:v39 code:codeCopy descriptionArray:v37 errorType:@"MCFatalError"];
   }
 
   v35 = 0;
@@ -2728,20 +2728,20 @@ LABEL_10:
   return v35;
 }
 
-+ (id)removeOptionalObjectInDictionary:(id)a3 key:(id)a4 type:(Class)a5 errorDomain:(id)a6 invalidDataCode:(int64_t)a7 invalidDataErrorString:(id)a8 outError:(id *)a9
++ (id)removeOptionalObjectInDictionary:(id)dictionary key:(id)key type:(Class)type errorDomain:(id)domain invalidDataCode:(int64_t)code invalidDataErrorString:(id)string outError:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a8;
-  v17 = [v13 objectForKey:v14];
-  if (v17 && ([v13 removeObjectForKey:v14], (objc_opt_isKindOfClass() & 1) == 0))
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  domainCopy = domain;
+  stringCopy = string;
+  v17 = [dictionaryCopy objectForKey:keyCopy];
+  if (v17 && ([dictionaryCopy removeObjectForKey:keyCopy], (objc_opt_isKindOfClass() & 1) == 0))
   {
-    if (a9)
+    if (error)
     {
       v26 = MEMORY[0x1E696ABC0];
-      v27 = MCErrorArray(v16, v18, v19, v20, v21, v22, v23, v24, v14);
-      *a9 = [v26 MCErrorWithDomain:v15 code:a7 descriptionArray:v27 errorType:@"MCFatalError"];
+      v27 = MCErrorArray(stringCopy, v18, v19, v20, v21, v22, v23, v24, keyCopy);
+      *error = [v26 MCErrorWithDomain:domainCopy code:code descriptionArray:v27 errorType:@"MCFatalError"];
     }
 
     v25 = 0;
@@ -2755,26 +2755,26 @@ LABEL_10:
   return v25;
 }
 
-+ (id)removeRequiredNonZeroLengthStringInDictionary:(id)a3 key:(id)a4 errorDomain:(id)a5 missingDataCode:(int64_t)a6 missingDataErrorString:(id)a7 invalidDataCode:(int64_t)a8 invalidDataErrorString:(id)a9 outError:(id *)a10
++ (id)removeRequiredNonZeroLengthStringInDictionary:(id)dictionary key:(id)key errorDomain:(id)domain missingDataCode:(int64_t)code missingDataErrorString:(id)string invalidDataCode:(int64_t)dataCode invalidDataErrorString:(id)errorString outError:(id *)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a9;
-  v20 = [v15 objectForKey:v16];
-  if (v20 && ([v15 removeObjectForKey:v16], objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  domainCopy = domain;
+  stringCopy = string;
+  errorStringCopy = errorString;
+  v20 = [dictionaryCopy objectForKey:keyCopy];
+  if (v20 && ([dictionaryCopy removeObjectForKey:keyCopy], objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    [v15 removeObjectForKey:v16];
-    if (a10)
+    [dictionaryCopy removeObjectForKey:keyCopy];
+    if (error)
     {
       v36 = MEMORY[0x1E696ABC0];
-      v37 = MCErrorArray(v19, v29, v30, v31, v32, v33, v34, v35, v16);
+      v37 = MCErrorArray(errorStringCopy, v29, v30, v31, v32, v33, v34, v35, keyCopy);
       v38 = v36;
-      v39 = v17;
-      v40 = a8;
+      v39 = domainCopy;
+      codeCopy = dataCode;
 LABEL_9:
-      *a10 = [v38 MCErrorWithDomain:v39 code:v40 descriptionArray:v37 errorType:@"MCFatalError"];
+      *error = [v38 MCErrorWithDomain:v39 code:codeCopy descriptionArray:v37 errorType:@"MCFatalError"];
     }
   }
 
@@ -2786,13 +2786,13 @@ LABEL_9:
       goto LABEL_11;
     }
 
-    if (a10)
+    if (error)
     {
       v41 = MEMORY[0x1E696ABC0];
-      v37 = MCErrorArray(v18, v21, v22, v23, v24, v25, v26, v27, v16);
+      v37 = MCErrorArray(stringCopy, v21, v22, v23, v24, v25, v26, v27, keyCopy);
       v38 = v41;
-      v39 = v17;
-      v40 = a6;
+      v39 = domainCopy;
+      codeCopy = code;
       goto LABEL_9;
     }
   }
@@ -2803,71 +2803,71 @@ LABEL_11:
   return v28;
 }
 
-+ (id)removeOptionalNonZeroLengthStringInDictionary:(id)a3 key:(id)a4 errorDomain:(id)a5 invalidDataCode:(int64_t)a6 invalidDataErrorString:(id)a7 outError:(id *)a8
++ (id)removeOptionalNonZeroLengthStringInDictionary:(id)dictionary key:(id)key errorDomain:(id)domain invalidDataCode:(int64_t)code invalidDataErrorString:(id)string outError:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = [v13 objectForKey:v14];
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  domainCopy = domain;
+  stringCopy = string;
+  v17 = [dictionaryCopy objectForKey:keyCopy];
   if (!v17)
   {
     goto LABEL_4;
   }
 
-  [v13 removeObjectForKey:v14];
+  [dictionaryCopy removeObjectForKey:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     if ([v17 length])
     {
 LABEL_4:
-      a8 = v17;
+      error = v17;
       goto LABEL_8;
     }
   }
 
   else
   {
-    if (!a8)
+    if (!error)
     {
       goto LABEL_8;
     }
 
     v25 = MEMORY[0x1E696ABC0];
-    v26 = MCErrorArray(v16, v18, v19, v20, v21, v22, v23, v24, v14);
-    *a8 = [v25 MCErrorWithDomain:v15 code:a6 descriptionArray:v26 errorType:@"MCFatalError"];
+    v26 = MCErrorArray(stringCopy, v18, v19, v20, v21, v22, v23, v24, keyCopy);
+    *error = [v25 MCErrorWithDomain:domainCopy code:code descriptionArray:v26 errorType:@"MCFatalError"];
   }
 
-  a8 = 0;
+  error = 0;
 LABEL_8:
 
-  return a8;
+  return error;
 }
 
-+ (BOOL)checkString:(id)a3 isOneOfStrings:(id)a4 key:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7 errorString:(id)a8 outError:(id *)a9
++ (BOOL)checkString:(id)string isOneOfStrings:(id)strings key:(id)key errorDomain:(id)domain errorCode:(int64_t)code errorString:(id)errorString outError:(id *)error
 {
-  v14 = a5;
-  v15 = a6;
-  v16 = a8;
-  v17 = [a4 containsObject:a3];
+  keyCopy = key;
+  domainCopy = domain;
+  errorStringCopy = errorString;
+  v17 = [strings containsObject:string];
   v25 = v17;
-  if (a9 && (v17 & 1) == 0)
+  if (error && (v17 & 1) == 0)
   {
     v26 = MEMORY[0x1E696ABC0];
-    v27 = MCErrorArray(v16, v18, v19, v20, v21, v22, v23, v24, v14);
-    *a9 = [v26 MCErrorWithDomain:v15 code:a7 descriptionArray:v27 errorType:@"MCFatalError"];
+    v27 = MCErrorArray(errorStringCopy, v18, v19, v20, v21, v22, v23, v24, keyCopy);
+    *error = [v26 MCErrorWithDomain:domainCopy code:code descriptionArray:v27 errorType:@"MCFatalError"];
   }
 
   return v25;
 }
 
-+ (int)evaluateTrust:(__SecTrust *)a3
++ (int)evaluateTrust:(__SecTrust *)trust
 {
-  if (SecTrustGetCertificateCount(a3) != 1 || (v5 = [MCCrypto copyLeafCertificateFromTrust:a3]) == 0 || ((v6 = v5, !SecCertificateIsSelfSignedCA()) ? (v7 = 1) : ![MCKeychain itemExistsInKeychain:v6 useSystemKeychain:1]? ((v7 = 0, ![MCKeychain itemExistsInKeychain:v6 useSystemKeychain:0]) ? (v3 = 0) : (v3 = 2)) : (v7 = 0, v3 = 2), CFRelease(v6), (v7 & 1) != 0))
+  if (SecTrustGetCertificateCount(trust) != 1 || (v5 = [MCCrypto copyLeafCertificateFromTrust:trust]) == 0 || ((v6 = v5, !SecCertificateIsSelfSignedCA()) ? (v7 = 1) : ![MCKeychain itemExistsInKeychain:v6 useSystemKeychain:1]? ((v7 = 0, ![MCKeychain itemExistsInKeychain:v6 useSystemKeychain:0]) ? (v3 = 0) : (v3 = 2)) : (v7 = 0, v3 = 2), CFRelease(v6), (v7 & 1) != 0))
   {
     error = 0;
-    if (SecTrustEvaluateWithError(a3, &error))
+    if (SecTrustEvaluateWithError(trust, &error))
     {
       return 2;
     }
@@ -2882,17 +2882,17 @@ LABEL_8:
   return v3;
 }
 
-+ (int)evaluateTrustOfCertificateChain:(id)a3 signatureVersion:(id)a4 outIsAllowedToInstallUnsupportedPayloads:(BOOL *)a5 outIsAllowedToWriteDefaults:(BOOL *)a6 outIsAllowedToInstallSupervisedRestrictionsOnUnsupervisedDevices:(BOOL *)a7
++ (int)evaluateTrustOfCertificateChain:(id)chain signatureVersion:(id)version outIsAllowedToInstallUnsupportedPayloads:(BOOL *)payloads outIsAllowedToWriteDefaults:(BOOL *)defaults outIsAllowedToInstallSupervisedRestrictionsOnUnsupervisedDevices:(BOOL *)devices
 {
   v44 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  LODWORD(a4) = [a4 intValue];
-  v12 = [v11 count];
-  if (a4 < 2)
+  chainCopy = chain;
+  LODWORD(version) = [version intValue];
+  v12 = [chainCopy count];
+  if (version < 2)
   {
     if (v12 == 1)
     {
-      [v11 objectAtIndex:0];
+      [chainCopy objectAtIndex:0];
       if (SecCertificateIsSelfSignedCA())
       {
         v16 = 2;
@@ -2908,12 +2908,12 @@ LABEL_8:
     }
 
 LABEL_10:
-    v17 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v11, "count")}];
+    v17 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(chainCopy, "count")}];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v18 = v11;
+    v18 = chainCopy;
     v19 = [v18 countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v19)
     {
@@ -2964,12 +2964,12 @@ LABEL_10:
       v16 = 0;
     }
 
-    if (a6)
+    if (defaults)
     {
       v25 = +[MCHacks sharedHacks];
       v14 = [v25 sanitizedProfileSignerCertificateChainIsAllowedToWriteDefaults:v17];
 
-      if (a5)
+      if (payloads)
       {
         goto LABEL_27;
       }
@@ -2978,13 +2978,13 @@ LABEL_10:
     else
     {
       v14 = 0;
-      if (a5)
+      if (payloads)
       {
 LABEL_27:
         v26 = +[MCHacks sharedHacks];
         v15 = [v26 sanitizedProfileSignerCertificateChainIsAllowedToInstallUnsupportedPayload:v17];
 
-        if (a7)
+        if (devices)
         {
 LABEL_28:
           v27 = +[MCHacks sharedHacks];
@@ -3001,7 +3001,7 @@ LABEL_31:
     }
 
     v15 = 0;
-    if (a7)
+    if (devices)
     {
       goto LABEL_28;
     }
@@ -3009,7 +3009,7 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  if (!v12 || ![v11 objectAtIndex:0] || !SecCertificateIsSelfSignedCA())
+  if (!v12 || ![chainCopy objectAtIndex:0] || !SecCertificateIsSelfSignedCA())
   {
     goto LABEL_10;
   }
@@ -3020,11 +3020,11 @@ LABEL_31:
   v15 = 0;
   v16 = 2 * (SecTrustStoreContains() != 0);
 LABEL_33:
-  if ([v11 count] && !v16)
+  if ([chainCopy count] && !v16)
   {
-    v35 = a7;
+    devicesCopy = devices;
     v28 = v14;
-    v29 = SecCertificateCopySubjectSummary([v11 objectAtIndex:0]);
+    v29 = SecCertificateCopySubjectSummary([chainCopy objectAtIndex:0]);
     v30 = MCHCUCopyHostCertificateForMappedLabel(v29);
     if (!v30)
     {
@@ -3032,14 +3032,14 @@ LABEL_33:
 LABEL_47:
 
       v14 = v28;
-      a7 = v35;
+      devices = devicesCopy;
       goto LABEL_48;
     }
 
     v31 = v30;
     v32 = SecPolicyCreateBasicX509();
     trust = 0;
-    if (!SecTrustCreateWithCertificates(v11, v32, &trust))
+    if (!SecTrustCreateWithCertificates(chainCopy, v32, &trust))
     {
       v42 = v31;
       if (!SecTrustSetAnchorCertificates(trust, [MEMORY[0x1E695DEC8] arrayWithObjects:&v42 count:1]) && !SecTrustSetAnchorCertificatesOnly(trust, 1u))
@@ -3067,26 +3067,26 @@ LABEL_44:
   }
 
 LABEL_48:
-  if (a5)
+  if (payloads)
   {
-    *a5 = v15;
+    *payloads = v15;
   }
 
-  if (a6)
+  if (defaults)
   {
-    *a6 = v14;
+    *defaults = v14;
   }
 
-  if (a7)
+  if (devices)
   {
-    *a7 = v13;
+    *devices = v13;
   }
 
   v33 = *MEMORY[0x1E69E9840];
   return v16;
 }
 
-+ (id)signerSummaryOfCertificate:(__SecCertificate *)a3
++ (id)signerSummaryOfCertificate:(__SecCertificate *)certificate
 {
   v4 = CFDataCreate(0, signerSummaryOfCertificate__emailProtectionOID, 8);
   v5 = SecCertificateCopyExtendedKeyUsage();
@@ -3135,16 +3135,16 @@ LABEL_12:
 
   if (!v9)
   {
-    v9 = SecCertificateCopySubjectSummary(a3);
+    v9 = SecCertificateCopySubjectSummary(certificate);
   }
 
   return v9;
 }
 
-+ (id)dataFromCMSEncodedData:(id)a3 outSignerCertificates:(id *)a4
++ (id)dataFromCMSEncodedData:(id)data outSignerCertificates:(id *)certificates
 {
-  v5 = a3;
-  if ([v5 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
     BasicX509 = SecPolicyCreateBasicX509();
     if (SecCMSVerifyCopyDataAndAttributes())
@@ -3200,10 +3200,10 @@ LABEL_12:
       CFRelease(BasicX509);
     }
 
-    if (a4)
+    if (certificates)
     {
       v8 = v7;
-      *a4 = v7;
+      *certificates = v7;
     }
   }
 
@@ -3214,8 +3214,8 @@ LABEL_12:
 {
   if ([(MCProfile *)self isStub])
   {
-    v3 = [(MCProfile *)self installOptions];
-    v4 = [v3 objectForKey:@"signatureVersion"];
+    installOptions = [(MCProfile *)self installOptions];
+    v4 = [installOptions objectForKey:@"signatureVersion"];
   }
 
   else
@@ -3226,65 +3226,65 @@ LABEL_12:
   return v4;
 }
 
-+ (id)stringForDeviceType:(unint64_t)a3
++ (id)stringForDeviceType:(unint64_t)type
 {
   v3 = @"vision";
   v4 = @"error";
-  if (a3 != 99)
+  if (type != 99)
   {
     v4 = 0;
   }
 
-  if (a3 != 6)
+  if (type != 6)
   {
     v3 = v4;
   }
 
   v5 = @"mac";
-  if (a3 != 5)
+  if (type != 5)
   {
     v5 = 0;
   }
 
-  if (a3 == 4)
+  if (type == 4)
   {
     v5 = @"tv";
   }
 
-  if (a3 <= 5)
+  if (type <= 5)
   {
     v3 = v5;
   }
 
   v6 = @"watch";
   v7 = @"homepod";
-  if (a3 != 3)
+  if (type != 3)
   {
     v7 = 0;
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
     v6 = v7;
   }
 
   v8 = @"phone";
-  if (a3 != 1)
+  if (type != 1)
   {
     v8 = 0;
   }
 
-  if (!a3)
+  if (!type)
   {
     v8 = @"any";
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
     v6 = v8;
   }
 
-  if (a3 <= 3)
+  if (type <= 3)
   {
     return v6;
   }
@@ -3323,23 +3323,23 @@ LABEL_12:
 - (id)loggingID
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MCProfile *)self identifier];
-  v5 = [(MCProfile *)self UUID];
-  v6 = [v3 stringWithFormat:@"%@-%@", v4, v5];
+  identifier = [(MCProfile *)self identifier];
+  uUID = [(MCProfile *)self UUID];
+  v6 = [v3 stringWithFormat:@"%@-%@", identifier, uUID];
 
   return v6;
 }
 
-- (id)payloadsWithClass:(Class)a3
+- (id)payloadsWithClass:(Class)class
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(MCProfile *)self payloads];
+  payloads = [(MCProfile *)self payloads];
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = payloads;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {

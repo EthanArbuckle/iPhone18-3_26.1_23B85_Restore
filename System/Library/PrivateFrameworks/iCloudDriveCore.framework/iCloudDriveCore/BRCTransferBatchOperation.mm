@@ -1,58 +1,58 @@
 @interface BRCTransferBatchOperation
-- (BRCTransferBatchOperation)initWithName:(id)a3 syncContext:(id)a4 sessionContext:(id)a5 group:(id)a6;
-- (BRCTransferBatchOperation)initWithName:(id)a3 syncContext:(id)a4 sessionContext:(id)a5 group:(id)a6 callBackQueueTarget:(id)a7;
+- (BRCTransferBatchOperation)initWithName:(id)name syncContext:(id)context sessionContext:(id)sessionContext group:(id)group;
+- (BRCTransferBatchOperation)initWithName:(id)name syncContext:(id)context sessionContext:(id)sessionContext group:(id)group callBackQueueTarget:(id)target;
 - (NSString)description;
-- (double)progressForTransferID:(id)a3;
-- (id)_finishedTransferForRecord:(id)a3 recordID:(id)a4 error:(id)a5;
+- (double)progressForTransferID:(id)d;
+- (id)_finishedTransferForRecord:(id)record recordID:(id)d error:(id)error;
 - (id)createActivity;
-- (id)fetchOperationForTransfers:(id)a3 traceCode:(int)a4;
-- (id)getTransferForTransferID:(id)a3;
-- (id)subclassableDescriptionWithContext:(id)a3;
-- (void)_addTransfer:(id)a3;
-- (void)_cancelTransferID:(id)a3;
-- (void)_finishedTransfer:(id)a3 error:(id)a4;
-- (void)_setProgress:(double)a3 forTransfer:(id)a4;
-- (void)addTransfer:(id)a3;
-- (void)cancelTransferID:(id)a3;
-- (void)finishWithResult:(id)a3 error:(id)a4;
-- (void)finishedTransferForRecord:(id)a3 recordID:(id)a4 error:(id)a5;
+- (id)fetchOperationForTransfers:(id)transfers traceCode:(int)code;
+- (id)getTransferForTransferID:(id)d;
+- (id)subclassableDescriptionWithContext:(id)context;
+- (void)_addTransfer:(id)transfer;
+- (void)_cancelTransferID:(id)d;
+- (void)_finishedTransfer:(id)transfer error:(id)error;
+- (void)_setProgress:(double)progress forTransfer:(id)transfer;
+- (void)addTransfer:(id)transfer;
+- (void)cancelTransferID:(id)d;
+- (void)finishWithResult:(id)result error:(id)error;
+- (void)finishedTransferForRecord:(id)record recordID:(id)d error:(id)error;
 - (void)main;
-- (void)mainWithTransfers:(id)a3;
+- (void)mainWithTransfers:(id)transfers;
 - (void)sendBatchProgressedCallback;
-- (void)sendTransferCompletionCallBack:(id)a3 error:(id)a4;
-- (void)setProgress:(double)a3 forRecordID:(id)a4;
+- (void)sendTransferCompletionCallBack:(id)back error:(id)error;
+- (void)setProgress:(double)progress forRecordID:(id)d;
 @end
 
 @implementation BRCTransferBatchOperation
 
-- (BRCTransferBatchOperation)initWithName:(id)a3 syncContext:(id)a4 sessionContext:(id)a5 group:(id)a6 callBackQueueTarget:(id)a7
+- (BRCTransferBatchOperation)initWithName:(id)name syncContext:(id)context sessionContext:(id)sessionContext group:(id)group callBackQueueTarget:(id)target
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [v15 contextIdentifier];
-  v18 = [v16 stringByAppendingPathComponent:v17];
+  targetCopy = target;
+  groupCopy = group;
+  sessionContextCopy = sessionContext;
+  contextCopy = context;
+  nameCopy = name;
+  contextIdentifier = [contextCopy contextIdentifier];
+  v18 = [nameCopy stringByAppendingPathComponent:contextIdentifier];
 
-  v19 = [(BRCTransferBatchOperation *)self initWithName:v18 syncContext:v15 sessionContext:v14 group:v13];
+  v19 = [(BRCTransferBatchOperation *)self initWithName:v18 syncContext:contextCopy sessionContext:sessionContextCopy group:groupCopy];
   if (v19)
   {
-    v20 = [(_BRCOperation *)v19 callbackQueue];
-    dispatch_set_target_queue(v20, v12);
+    callbackQueue = [(_BRCOperation *)v19 callbackQueue];
+    dispatch_set_target_queue(callbackQueue, targetCopy);
   }
 
   return v19;
 }
 
-- (id)fetchOperationForTransfers:(id)a3 traceCode:(int)a4
+- (id)fetchOperationForTransfers:(id)transfers traceCode:(int)code
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transfersCopy = transfers;
   v5 = +[BRCAccountsManager sharedManager];
-  v6 = [v5 isInSyncBubble];
+  isInSyncBubble = [v5 isInSyncBubble];
 
-  if (v6)
+  if (isInSyncBubble)
   {
     [BRCTransferBatchOperation(Downloads) fetchOperationForTransfers:traceCode:];
   }
@@ -63,7 +63,7 @@
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v9 = v4;
+  v9 = transfersCopy;
   v10 = [v9 countByEnumeratingWithState:&v44 objects:v52 count:16];
   if (v10)
   {
@@ -78,22 +78,22 @@
         }
 
         v13 = *(*(&v44 + 1) + 8 * i);
-        v14 = [v13 recordID];
-        v15 = [v8 objectForKey:v14];
+        recordID = [v13 recordID];
+        v15 = [v8 objectForKey:recordID];
         v16 = v15 == 0;
 
         if (v16)
         {
-          v20 = [v13 secondaryRecordID];
+          secondaryRecordID = [v13 secondaryRecordID];
 
-          if (v20)
+          if (secondaryRecordID)
           {
-            v21 = [v13 secondaryRecordID];
-            [v7 addObject:v21];
+            secondaryRecordID2 = [v13 secondaryRecordID];
+            [v7 addObject:secondaryRecordID2];
           }
 
-          v22 = [v13 recordID];
-          [v7 addObject:v22];
+          recordID2 = [v13 recordID];
+          [v7 addObject:recordID2];
 
           if (([v13 progressPublished] & 1) == 0)
           {
@@ -110,29 +110,29 @@
               _os_log_debug_impl(&dword_223E7A000, v24, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ - Publishing download progress for %@%@", buf, 0x20u);
             }
 
-            v25 = [v13 progress];
-            [v25 brc_publish];
+            progress = [v13 progress];
+            [progress brc_publish];
 
             [v13 setProgressPublished:1];
           }
 
-          v17 = [v13 etag];
-          v18 = [v13 recordID];
-          [v8 setObject:v17 forKeyedSubscript:v18];
+          etag = [v13 etag];
+          recordID3 = [v13 recordID];
+          [v8 setObject:etag forKeyedSubscript:recordID3];
         }
 
         else
         {
-          v17 = brc_bread_crumbs();
-          v18 = brc_default_log();
-          if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
+          etag = brc_bread_crumbs();
+          recordID3 = brc_default_log();
+          if (os_log_type_enabled(recordID3, OS_LOG_TYPE_FAULT))
           {
-            v19 = [v13 recordID];
+            recordID4 = [v13 recordID];
             *buf = 138412546;
-            *&buf[4] = v19;
+            *&buf[4] = recordID4;
             *&buf[12] = 2112;
-            *&buf[14] = v17;
-            _os_log_fault_impl(&dword_223E7A000, v18, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: We got two downloads for the same record ID: %@%@", buf, 0x16u);
+            *&buf[14] = etag;
+            _os_log_fault_impl(&dword_223E7A000, recordID3, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: We got two downloads for the same record ID: %@%@", buf, 0x16u);
           }
         }
       }
@@ -149,33 +149,33 @@
   v49 = __Block_byref_object_copy__37;
   v50 = __Block_byref_object_dispose__37;
   v51 = 0;
-  v26 = [(BRCTransferBatchOperation *)self pendingGroup];
-  dispatch_group_enter(v26);
+  pendingGroup = [(BRCTransferBatchOperation *)self pendingGroup];
+  dispatch_group_enter(pendingGroup);
 
-  v27 = [(BRCTransferBatchOperation *)self pendingGroup];
-  v28 = [(_BRCOperation *)self callbackQueue];
+  pendingGroup2 = [(BRCTransferBatchOperation *)self pendingGroup];
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__BRCTransferBatchOperation_Downloads__fetchOperationForTransfers_traceCode___block_invoke;
   block[3] = &unk_278505400;
   block[4] = self;
   block[5] = buf;
-  v43 = a4;
-  dispatch_group_notify(v27, v28, block);
+  codeCopy = code;
+  dispatch_group_notify(pendingGroup2, callbackQueue, block);
 
   [(BRCTransferBatchOperation *)self hash];
   kdebug_trace();
   v29 = [[BRFetchRecordsOperation alloc] initWithRecordIDs:v7];
   [(BRFetchRecordsOperation *)v29 setShouldFetchAssetContent:1];
-  v30 = [(_BRCOperation *)self callbackQueue];
-  [(BRFetchRecordsOperation *)v29 setCallbackQueue:v30];
+  callbackQueue2 = [(_BRCOperation *)self callbackQueue];
+  [(BRFetchRecordsOperation *)v29 setCallbackQueue:callbackQueue2];
 
   [(BRFetchRecordsOperation *)v29 setRecordIDsToVersionETags:v8];
   objc_initWeak(&location, v29);
   v31 = [BRCUserDefaults defaultsForMangledID:0];
-  v32 = [v31 requestCKCacheAssetClone];
+  requestCKCacheAssetClone = [v31 requestCKCacheAssetClone];
 
-  if (v32)
+  if (requestCKCacheAssetClone)
   {
     [(BRFetchRecordsOperation *)v29 setShouldCloneFileInAssetCache:1];
   }
@@ -311,18 +311,18 @@ void __77__BRCTransferBatchOperation_Downloads__fetchOperationForTransfers_trace
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(_BRCOperation *)self operationID];
-  v6 = [v5 UUIDString];
-  v7 = [v3 stringWithFormat:@"%@(%@)", v4, v6];
+  operationID = [(_BRCOperation *)self operationID];
+  uUIDString = [operationID UUIDString];
+  v7 = [v3 stringWithFormat:@"%@(%@)", v4, uUIDString];
 
   return v7;
 }
 
-- (BRCTransferBatchOperation)initWithName:(id)a3 syncContext:(id)a4 sessionContext:(id)a5 group:(id)a6
+- (BRCTransferBatchOperation)initWithName:(id)name syncContext:(id)context sessionContext:(id)sessionContext group:(id)group
 {
   v17.receiver = self;
   v17.super_class = BRCTransferBatchOperation;
-  v6 = [(_BRCOperation *)&v17 initWithName:a3 syncContext:a4 sessionContext:a5 group:a6];
+  v6 = [(_BRCOperation *)&v17 initWithName:name syncContext:context sessionContext:sessionContext group:group];
   if (v6)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -354,7 +354,7 @@ void __77__BRCTransferBatchOperation_Downloads__fetchOperationForTransfers_trace
   return v2;
 }
 
-- (void)mainWithTransfers:(id)a3
+- (void)mainWithTransfers:(id)transfers
 {
   v8 = *MEMORY[0x277D85DE8];
   v3 = brc_bread_crumbs();
@@ -390,37 +390,37 @@ void __33__BRCTransferBatchOperation_main__block_invoke(uint64_t a1)
   }
 }
 
-- (id)subclassableDescriptionWithContext:(id)a3
+- (id)subclassableDescriptionWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [(BRCTransferBatchOperation *)self doneSize]* 100.0;
   v6 = v5 / [(BRCTransferBatchOperation *)self totalSize];
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(BRCTransferBatchOperation *)self itemsCount];
-  v9 = [BRCDumpContext stringFromByteCount:self->_totalSize context:v4];
+  itemsCount = [(BRCTransferBatchOperation *)self itemsCount];
+  v9 = [BRCDumpContext stringFromByteCount:self->_totalSize context:contextCopy];
 
-  v10 = [v7 stringWithFormat:@"records-left:%ld progress:%.1f%% size:%@", v8, *&v6, v9];
+  v10 = [v7 stringWithFormat:@"records-left:%ld progress:%.1f%% size:%@", itemsCount, *&v6, v9];
 
   return v10;
 }
 
-- (void)_addTransfer:(id)a3
+- (void)_addTransfer:(id)transfer
 {
-  v13 = a3;
+  transferCopy = transfer;
   dispatch_assert_queue_V2(self->_queue);
-  self->_totalSize += [v13 totalSize];
+  self->_totalSize += [transferCopy totalSize];
   entriesByRecordID = self->_entriesByRecordID;
-  v5 = [v13 recordID];
-  [(NSMutableDictionary *)entriesByRecordID setObject:v13 forKeyedSubscript:v5];
+  recordID = [transferCopy recordID];
+  [(NSMutableDictionary *)entriesByRecordID setObject:transferCopy forKeyedSubscript:recordID];
 
   entriesByTransferID = self->_entriesByTransferID;
-  v7 = [v13 transferID];
-  [(NSMutableDictionary *)entriesByTransferID setObject:v13 forKeyedSubscript:v7];
+  transferID = [transferCopy transferID];
+  [(NSMutableDictionary *)entriesByTransferID setObject:transferCopy forKeyedSubscript:transferID];
 
   ++self->_itemsCount;
-  v8 = [v13 secondaryRecordID];
+  secondaryRecordID = [transferCopy secondaryRecordID];
 
-  if (v8)
+  if (secondaryRecordID)
   {
     entriesBySecondaryRecordID = self->_entriesBySecondaryRecordID;
     if (!entriesBySecondaryRecordID)
@@ -432,31 +432,31 @@ void __33__BRCTransferBatchOperation_main__block_invoke(uint64_t a1)
       entriesBySecondaryRecordID = self->_entriesBySecondaryRecordID;
     }
 
-    v12 = [v13 secondaryRecordID];
-    [(NSMutableDictionary *)entriesBySecondaryRecordID setObject:v13 forKeyedSubscript:v12];
+    secondaryRecordID2 = [transferCopy secondaryRecordID];
+    [(NSMutableDictionary *)entriesBySecondaryRecordID setObject:transferCopy forKeyedSubscript:secondaryRecordID2];
   }
 }
 
-- (void)addTransfer:(id)a3
+- (void)addTransfer:(id)transfer
 {
-  v4 = a3;
+  transferCopy = transfer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__BRCTransferBatchOperation_addTransfer___block_invoke;
   v7[3] = &unk_2784FF478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = transferCopy;
+  v6 = transferCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)_cancelTransferID:(id)a3
+- (void)_cancelTransferID:(id)d
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(NSMutableDictionary *)self->_entriesByTransferID objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_entriesByTransferID objectForKeyedSubscript:dCopy];
   if (v5)
   {
     v6 = brc_bread_crumbs();
@@ -464,11 +464,11 @@ void __33__BRCTransferBatchOperation_main__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
-      v16 = v4;
+      selfCopy2 = dCopy;
       v17 = 2112;
-      v18 = v6;
+      selfCopy3 = v6;
       _os_log_debug_impl(&dword_223E7A000, v7, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ - cancelling %@%@", buf, 0x20u);
     }
 
@@ -483,11 +483,11 @@ void __33__BRCTransferBatchOperation_main__block_invoke(uint64_t a1)
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134218754;
-        v14 = v12[0];
+        selfCopy = v12[0];
         v15 = 2112;
-        v16 = self;
+        selfCopy2 = self;
         v17 = 2112;
-        v18 = self;
+        selfCopy3 = self;
         v19 = 2112;
         v20 = v9;
         _os_log_debug_impl(&dword_223E7A000, v10, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx %@ - operation is now empty, cancelling %@%@", buf, 0x2Au);
@@ -501,23 +501,23 @@ void __33__BRCTransferBatchOperation_main__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelTransferID:(id)a3
+- (void)cancelTransferID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__BRCTransferBatchOperation_cancelTransferID___block_invoke;
   v7[3] = &unk_2784FF478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async_with_logs_10(queue, v7);
 }
 
-- (double)progressForTransferID:(id)a3
+- (double)progressForTransferID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -528,9 +528,9 @@ void __33__BRCTransferBatchOperation_main__block_invoke(uint64_t a1)
   block[2] = __51__BRCTransferBatchOperation_progressForTransferID___block_invoke;
   block[3] = &unk_278502B88;
   block[4] = self;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   v7 = v13[3];
 
@@ -558,43 +558,43 @@ void __51__BRCTransferBatchOperation_progressForTransferID___block_invoke(void *
   *(*(a1[6] + 8) + 24) = v5;
 }
 
-- (void)_setProgress:(double)a3 forTransfer:(id)a4
+- (void)_setProgress:(double)progress forTransfer:(id)transfer
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  transferCopy = transfer;
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [v6 totalSize] * (a3 * 1000.0) / 0x3E8;
-  v8 = [v6 doneSize];
-  v9 = v7 - v8;
-  if (v7 > v8)
+  v7 = [transferCopy totalSize] * (progress * 1000.0) / 0x3E8;
+  doneSize = [transferCopy doneSize];
+  v9 = v7 - doneSize;
+  if (v7 > doneSize)
   {
-    v10 = v8;
-    [v6 setDoneSize:v7];
+    v10 = doneSize;
+    [transferCopy setDoneSize:v7];
     [(BRCTransferBatchOperation *)self setDoneSize:v9 + [(BRCTransferBatchOperation *)self doneSize]];
-    v11 = [v6 progress];
-    v12 = ([v11 totalUnitCount] * a3);
+    progress = [transferCopy progress];
+    v12 = ([progress totalUnitCount] * progress);
 
-    v13 = [v6 progress];
-    v14 = [v13 completedUnitCount];
+    progress2 = [transferCopy progress];
+    completedUnitCount = [progress2 completedUnitCount];
 
-    if (v14 < v12)
+    if (completedUnitCount < v12)
     {
-      v15 = [v6 progress];
-      [v15 setCompletedUnitCount:v12];
+      progress3 = [transferCopy progress];
+      [progress3 setCompletedUnitCount:v12];
     }
 
-    if ((a3 < 0.0 || os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG)) && round(v7 / [v6 totalSize] * 1000.0) != round(v10 / objc_msgSend(v6, "totalSize") * 1000.0))
+    if ((progress < 0.0 || os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG)) && round(v7 / [transferCopy totalSize] * 1000.0) != round(v10 / objc_msgSend(transferCopy, "totalSize") * 1000.0))
     {
       v16 = brc_bread_crumbs();
       v17 = brc_default_log();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
         v19 = 138413058;
-        v20 = self;
+        selfCopy = self;
         v21 = 2112;
-        v22 = v6;
+        v22 = transferCopy;
         v23 = 2048;
-        v24 = a3 * 100.0;
+        v24 = progress * 100.0;
         v25 = 2112;
         v26 = v16;
         _os_log_debug_impl(&dword_223E7A000, v17, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ - %@ progress %.1f%%%@", &v19, 0x2Au);
@@ -605,11 +605,11 @@ void __51__BRCTransferBatchOperation_progressForTransferID___block_invoke(void *
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setProgress:(double)a3 forRecordID:(id)a4
+- (void)setProgress:(double)progress forRecordID:(id)d
 {
-  v6 = a4;
-  v7 = [(_BRCOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v7);
+  dCopy = d;
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -617,9 +617,9 @@ void __51__BRCTransferBatchOperation_progressForTransferID___block_invoke(void *
   block[2] = __53__BRCTransferBatchOperation_setProgress_forRecordID___block_invoke;
   block[3] = &unk_2785010A0;
   block[4] = self;
-  v11 = v6;
-  v12 = a3;
-  v9 = v6;
+  v11 = dCopy;
+  progressCopy = progress;
+  v9 = dCopy;
   dispatch_sync(queue, block);
   [(BRCTransferBatchOperation *)self sendBatchProgressedCallback];
 }
@@ -637,27 +637,27 @@ uint64_t __53__BRCTransferBatchOperation_setProgress_forRecordID___block_invoke(
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_finishedTransfer:(id)a3 error:(id)a4
+- (void)_finishedTransfer:(id)transfer error:(id)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  transferCopy = transfer;
+  errorCopy = error;
+  if (!errorCopy)
   {
-    [(BRCTransferBatchOperation *)self _setProgress:v6 forTransfer:1.0];
+    [(BRCTransferBatchOperation *)self _setProgress:transferCopy forTransfer:1.0];
   }
 
   entriesByRecordID = self->_entriesByRecordID;
-  v9 = [v6 recordID];
-  [(NSMutableDictionary *)entriesByRecordID removeObjectForKey:v9];
+  recordID = [transferCopy recordID];
+  [(NSMutableDictionary *)entriesByRecordID removeObjectForKey:recordID];
 
   entriesByTransferID = self->_entriesByTransferID;
-  v11 = [v6 transferID];
-  [(NSMutableDictionary *)entriesByTransferID removeObjectForKey:v11];
+  transferID = [transferCopy transferID];
+  [(NSMutableDictionary *)entriesByTransferID removeObjectForKey:transferID];
 
   entriesBySecondaryRecordID = self->_entriesBySecondaryRecordID;
-  v13 = [v6 secondaryRecordID];
-  [(NSMutableDictionary *)entriesBySecondaryRecordID removeObjectForKey:v13];
+  secondaryRecordID = [transferCopy secondaryRecordID];
+  [(NSMutableDictionary *)entriesBySecondaryRecordID removeObjectForKey:secondaryRecordID];
 
   v14 = brc_bread_crumbs();
   v15 = brc_default_log();
@@ -665,14 +665,14 @@ uint64_t __53__BRCTransferBatchOperation_setProgress_forRecordID___block_invoke(
   {
     v17 = @"success";
     v18 = 138413058;
-    if (v7)
+    if (errorCopy)
     {
-      v17 = v7;
+      v17 = errorCopy;
     }
 
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
-    v21 = v6;
+    v21 = transferCopy;
     v22 = 2112;
     v23 = v17;
     v24 = 2112;
@@ -685,8 +685,8 @@ uint64_t __53__BRCTransferBatchOperation_setProgress_forRecordID___block_invoke(
 
 - (void)sendBatchProgressedCallback
 {
-  v3 = [(_BRCOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v3);
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
   didProgressBlock = self->_didProgressBlock;
   if (didProgressBlock)
@@ -697,7 +697,7 @@ uint64_t __53__BRCTransferBatchOperation_setProgress_forRecordID___block_invoke(
   }
 }
 
-- (void)sendTransferCompletionCallBack:(id)a3 error:(id)a4
+- (void)sendTransferCompletionCallBack:(id)back error:(id)error
 {
   v4 = brc_bread_crumbs();
   v5 = brc_default_log();
@@ -707,43 +707,43 @@ uint64_t __53__BRCTransferBatchOperation_setProgress_forRecordID___block_invoke(
   }
 }
 
-- (id)getTransferForTransferID:(id)a3
+- (id)getTransferForTransferID:(id)d
 {
   queue = self->_queue;
-  v5 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(queue);
-  v6 = [(NSMutableDictionary *)self->_entriesByTransferID objectForKeyedSubscript:v5];
+  v6 = [(NSMutableDictionary *)self->_entriesByTransferID objectForKeyedSubscript:dCopy];
 
   return v6;
 }
 
-- (id)_finishedTransferForRecord:(id)a3 recordID:(id)a4 error:(id)a5
+- (id)_finishedTransferForRecord:(id)record recordID:(id)d error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recordCopy = record;
+  dCopy = d;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
-  v11 = [(NSMutableDictionary *)self->_entriesByRecordID objectForKeyedSubscript:v9];
+  v11 = [(NSMutableDictionary *)self->_entriesByRecordID objectForKeyedSubscript:dCopy];
   if (v11)
   {
     v12 = v11;
-    [(NSMutableDictionary *)self->_entriesByRecordID removeObjectForKey:v9];
-    [v12 setRecord:v8];
-    v13 = [v12 secondaryRecordID];
-    if (!v13)
+    [(NSMutableDictionary *)self->_entriesByRecordID removeObjectForKey:dCopy];
+    [v12 setRecord:recordCopy];
+    secondaryRecordID = [v12 secondaryRecordID];
+    if (!secondaryRecordID)
     {
       v18 = 1;
       goto LABEL_8;
     }
 
     entriesBySecondaryRecordID = self->_entriesBySecondaryRecordID;
-    v15 = [v12 secondaryRecordID];
-    v16 = [(NSMutableDictionary *)entriesBySecondaryRecordID objectForKeyedSubscript:v15];
+    secondaryRecordID2 = [v12 secondaryRecordID];
+    v16 = [(NSMutableDictionary *)entriesBySecondaryRecordID objectForKeyedSubscript:secondaryRecordID2];
   }
 
   else
   {
-    v12 = [(NSMutableDictionary *)self->_entriesBySecondaryRecordID objectForKeyedSubscript:v9];
+    v12 = [(NSMutableDictionary *)self->_entriesBySecondaryRecordID objectForKeyedSubscript:dCopy];
     if (!v12)
     {
 LABEL_10:
@@ -751,23 +751,23 @@ LABEL_10:
       goto LABEL_12;
     }
 
-    [(NSMutableDictionary *)self->_entriesBySecondaryRecordID removeObjectForKey:v9];
-    [v12 setSecondaryRecord:v8];
+    [(NSMutableDictionary *)self->_entriesBySecondaryRecordID removeObjectForKey:dCopy];
+    [v12 setSecondaryRecord:recordCopy];
     entriesByRecordID = self->_entriesByRecordID;
-    v13 = [v12 recordID];
-    v15 = [(NSMutableDictionary *)entriesByRecordID objectForKeyedSubscript:v13];
-    v16 = v15;
+    secondaryRecordID = [v12 recordID];
+    secondaryRecordID2 = [(NSMutableDictionary *)entriesByRecordID objectForKeyedSubscript:secondaryRecordID];
+    v16 = secondaryRecordID2;
   }
 
   v18 = v16 == 0;
 
 LABEL_8:
-  if (!v10 && !v18)
+  if (!errorCopy && !v18)
   {
     goto LABEL_10;
   }
 
-  [(BRCTransferBatchOperation *)self _finishedTransfer:v12 error:v10];
+  [(BRCTransferBatchOperation *)self _finishedTransfer:v12 error:errorCopy];
   v12 = v12;
   v19 = v12;
 LABEL_12:
@@ -775,14 +775,14 @@ LABEL_12:
   return v19;
 }
 
-- (void)finishedTransferForRecord:(id)a3 recordID:(id)a4 error:(id)a5
+- (void)finishedTransferForRecord:(id)record recordID:(id)d error:(id)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_BRCOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v11);
+  recordCopy = record;
+  dCopy = d;
+  errorCopy = error;
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
   v12 = brc_bread_crumbs();
   v13 = brc_default_log();
@@ -791,9 +791,9 @@ LABEL_12:
     *buf = 138413058;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = dCopy;
     *&buf[22] = 2112;
-    v28 = v10;
+    v28 = errorCopy;
     LOWORD(v29) = 2112;
     *(&v29 + 2) = v12;
     _os_log_debug_impl(&dword_223E7A000, v13, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ - Finished transfer for recordID: %@ with error: %@%@", buf, 0x2Au);
@@ -812,11 +812,11 @@ LABEL_12:
   block[3] = &unk_2785025F8;
   v26 = buf;
   block[4] = self;
-  v15 = v8;
+  v15 = recordCopy;
   v23 = v15;
-  v16 = v9;
+  v16 = dCopy;
   v24 = v16;
-  v17 = v10;
+  v17 = errorCopy;
   v25 = v17;
   dispatch_sync(queue, block);
   v18 = *(*&buf[8] + 40);
@@ -834,8 +834,8 @@ LABEL_12:
 
   if ([v19 progressPublished])
   {
-    v20 = [*(*&buf[8] + 40) progress];
-    [v20 brc_unpublish];
+    progress = [*(*&buf[8] + 40) progress];
+    [progress brc_unpublish];
 
     [*(*&buf[8] + 40) setProgressPublished:0];
   }
@@ -854,11 +854,11 @@ uint64_t __70__BRCTransferBatchOperation_finishedTransferForRecord_recordID_erro
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
   v62 = *MEMORY[0x277D85DE8];
-  v27 = a3;
-  v6 = a4;
+  resultCopy = result;
+  errorCopy = error;
   v49 = 0;
   v50 = &v49;
   v51 = 0x3032000000;
@@ -872,20 +872,20 @@ uint64_t __70__BRCTransferBatchOperation_finishedTransferForRecord_recordID_erro
   block[3] = &unk_278500D08;
   v48 = &v49;
   block[4] = self;
-  v30 = v6;
+  v30 = errorCopy;
   v47 = v30;
   dispatch_sync(queue, block);
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v8 = [v50[5] objectEnumerator];
-  v9 = [v8 countByEnumeratingWithState:&v42 objects:v61 count:16];
+  objectEnumerator = [v50[5] objectEnumerator];
+  v9 = [objectEnumerator countByEnumeratingWithState:&v42 objects:v61 count:16];
   if (v9)
   {
     v10 = *v43;
     v28 = *MEMORY[0x277CFACB0];
-    obj = v8;
+    obj = objectEnumerator;
     do
     {
       v11 = 0;
@@ -898,8 +898,8 @@ uint64_t __70__BRCTransferBatchOperation_finishedTransferForRecord_recordID_erro
 
         v12 = *(*(&v42 + 1) + 8 * v11);
         v13 = objc_autoreleasePoolPush();
-        v14 = [v12 recordID];
-        v15 = [v30 brc_cloudKitErrorForRecordID:v14];
+        recordID = [v12 recordID];
+        v15 = [v30 brc_cloudKitErrorForRecordID:recordID];
 
         if (!v15)
         {
@@ -910,7 +910,7 @@ uint64_t __70__BRCTransferBatchOperation_finishedTransferForRecord_recordID_erro
             *buf = 138412546;
             v56 = v12;
             v57 = 2112;
-            v58 = v16;
+            selfCopy = v16;
             _os_log_fault_impl(&dword_223E7A000, v17, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: Missing transfer error for record %@%@", buf, 0x16u);
           }
 
@@ -934,7 +934,7 @@ uint64_t __70__BRCTransferBatchOperation_finishedTransferForRecord_recordID_erro
       }
 
       while (v9 != v11);
-      v8 = obj;
+      objectEnumerator = obj;
       v9 = [obj countByEnumeratingWithState:&v42 objects:v61 count:16];
     }
 
@@ -952,7 +952,7 @@ uint64_t __70__BRCTransferBatchOperation_finishedTransferForRecord_recordID_erro
     *buf = 134218498;
     v56 = v36;
     v57 = 2112;
-    v58 = self;
+    selfCopy = self;
     v59 = 2112;
     v60 = v20;
     _os_log_debug_impl(&dword_223E7A000, v21, OS_LOG_TYPE_DEBUG, "[DEBUG] ┣%llx %@ - waiting for callback...%@", buf, 0x20u);
@@ -961,7 +961,7 @@ uint64_t __70__BRCTransferBatchOperation_finishedTransferForRecord_recordID_erro
   v38 = v36;
   v39 = v37;
   pendingGroup = self->_pendingGroup;
-  v23 = [(_BRCOperation *)self callbackQueue];
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __52__BRCTransferBatchOperation_finishWithResult_error___block_invoke_28;
@@ -969,11 +969,11 @@ uint64_t __70__BRCTransferBatchOperation_finishedTransferForRecord_recordID_erro
   v34 = v38;
   v35 = v39;
   v31[4] = self;
-  v32 = v27;
+  v32 = resultCopy;
   v33 = v30;
   v24 = v30;
-  v25 = v27;
-  dispatch_group_notify(pendingGroup, v23, v31);
+  v25 = resultCopy;
+  dispatch_group_notify(pendingGroup, callbackQueue, v31);
 
   _Block_object_dispose(&v49, 8);
   v26 = *MEMORY[0x277D85DE8];

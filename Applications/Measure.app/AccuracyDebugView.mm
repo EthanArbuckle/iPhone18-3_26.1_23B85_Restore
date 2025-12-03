@@ -1,11 +1,11 @@
 @interface AccuracyDebugView
-- (_TtC7Measure17AccuracyDebugView)initWithCoder:(id)a3;
+- (_TtC7Measure17AccuracyDebugView)initWithCoder:(id)coder;
 - (void)didMoveToSuperview;
 @end
 
 @implementation AccuracyDebugView
 
-- (_TtC7Measure17AccuracyDebugView)initWithCoder:(id)a3
+- (_TtC7Measure17AccuracyDebugView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7Measure17AccuracyDebugView_maxWidth) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -15,7 +15,7 @@
 
 - (void)didMoveToSuperview
 {
-  v2 = self;
+  selfCopy = self;
   sub_10004F1E8();
 }
 

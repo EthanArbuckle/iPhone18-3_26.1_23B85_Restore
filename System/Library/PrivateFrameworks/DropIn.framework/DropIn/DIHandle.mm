@@ -1,55 +1,55 @@
 @interface DIHandle
-+ (id)stringForHandleType:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (DIHandle)initWithCoder:(id)a3;
-- (DIHandle)initWithType:(unint64_t)a3 value:(id)a4;
-- (DIHandle)initWithType:(unint64_t)a3 value:(id)a4 givenName:(id)a5 familyName:(id)a6 displayName:(id)a7 imageData:(id)a8;
++ (id)stringForHandleType:(unint64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (DIHandle)initWithCoder:(id)coder;
+- (DIHandle)initWithType:(unint64_t)type value:(id)value;
+- (DIHandle)initWithType:(unint64_t)type value:(id)value givenName:(id)name familyName:(id)familyName displayName:(id)displayName imageData:(id)data;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DIHandle
 
-- (DIHandle)initWithType:(unint64_t)a3 value:(id)a4
+- (DIHandle)initWithType:(unint64_t)type value:(id)value
 {
-  v7 = a4;
+  valueCopy = value;
   v11.receiver = self;
   v11.super_class = DIHandle;
   v8 = [(DIHandle *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_value, a4);
+    v8->_type = type;
+    objc_storeStrong(&v8->_value, value);
   }
 
   return v9;
 }
 
-- (DIHandle)initWithType:(unint64_t)a3 value:(id)a4 givenName:(id)a5 familyName:(id)a6 displayName:(id)a7 imageData:(id)a8
+- (DIHandle)initWithType:(unint64_t)type value:(id)value givenName:(id)name familyName:(id)familyName displayName:(id)displayName imageData:(id)data
 {
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = [(DIHandle *)self initWithType:a3 value:a4];
+  nameCopy = name;
+  familyNameCopy = familyName;
+  displayNameCopy = displayName;
+  dataCopy = data;
+  v18 = [(DIHandle *)self initWithType:type value:value];
   v19 = v18;
   if (v18)
   {
-    [(DIHandle *)v18 setGivenName:v14];
-    [(DIHandle *)v19 setFamilyName:v15];
-    [(DIHandle *)v19 setDisplayName:v16];
-    [(DIHandle *)v19 setImageData:v17];
+    [(DIHandle *)v18 setGivenName:nameCopy];
+    [(DIHandle *)v19 setFamilyName:familyNameCopy];
+    [(DIHandle *)v19 setDisplayName:displayNameCopy];
+    [(DIHandle *)v19 setImageData:dataCopy];
   }
 
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v16 = 1;
   }
@@ -59,28 +59,28 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(DIHandle *)self type];
-      if (v6 != [(DIHandle *)v5 type])
+      v5 = equalCopy;
+      type = [(DIHandle *)self type];
+      if (type != [(DIHandle *)v5 type])
       {
         goto LABEL_31;
       }
 
-      v7 = [(DIHandle *)self value];
-      v8 = [(DIHandle *)v5 value];
-      v9 = [v7 isEqualToString:v8];
+      value = [(DIHandle *)self value];
+      value2 = [(DIHandle *)v5 value];
+      v9 = [value isEqualToString:value2];
 
       if (!v9)
       {
         goto LABEL_31;
       }
 
-      v10 = [(DIHandle *)v5 givenName];
-      if (v10 && (v11 = v10, [(DIHandle *)self givenName], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v12))
+      givenName = [(DIHandle *)v5 givenName];
+      if (givenName && (v11 = givenName, [(DIHandle *)self givenName], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v12))
       {
-        v13 = [(DIHandle *)self givenName];
-        v14 = [(DIHandle *)v5 givenName];
-        v15 = [v13 isEqualToString:v14];
+        givenName2 = [(DIHandle *)self givenName];
+        givenName3 = [(DIHandle *)v5 givenName];
+        v15 = [givenName2 isEqualToString:givenName3];
 
         if ((v15 & 1) == 0)
         {
@@ -90,26 +90,26 @@
 
       else
       {
-        v17 = [(DIHandle *)v5 givenName];
-        if (v17)
+        givenName4 = [(DIHandle *)v5 givenName];
+        if (givenName4)
         {
           goto LABEL_30;
         }
 
-        v18 = [(DIHandle *)self givenName];
+        givenName5 = [(DIHandle *)self givenName];
 
-        if (v18)
+        if (givenName5)
         {
           goto LABEL_31;
         }
       }
 
-      v19 = [(DIHandle *)v5 familyName];
-      if (v19 && (v20 = v19, [(DIHandle *)self familyName], v21 = objc_claimAutoreleasedReturnValue(), v21, v20, v21))
+      familyName = [(DIHandle *)v5 familyName];
+      if (familyName && (v20 = familyName, [(DIHandle *)self familyName], v21 = objc_claimAutoreleasedReturnValue(), v21, v20, v21))
       {
-        v22 = [(DIHandle *)self familyName];
-        v23 = [(DIHandle *)v5 familyName];
-        v24 = [v22 isEqualToString:v23];
+        familyName2 = [(DIHandle *)self familyName];
+        familyName3 = [(DIHandle *)v5 familyName];
+        v24 = [familyName2 isEqualToString:familyName3];
 
         if ((v24 & 1) == 0)
         {
@@ -119,26 +119,26 @@
 
       else
       {
-        v17 = [(DIHandle *)v5 familyName];
-        if (v17)
+        givenName4 = [(DIHandle *)v5 familyName];
+        if (givenName4)
         {
           goto LABEL_30;
         }
 
-        v25 = [(DIHandle *)self familyName];
+        familyName4 = [(DIHandle *)self familyName];
 
-        if (v25)
+        if (familyName4)
         {
           goto LABEL_31;
         }
       }
 
-      v26 = [(DIHandle *)v5 displayName];
-      if (v26 && (v27 = v26, [(DIHandle *)self displayName], v28 = objc_claimAutoreleasedReturnValue(), v28, v27, v28))
+      displayName = [(DIHandle *)v5 displayName];
+      if (displayName && (v27 = displayName, [(DIHandle *)self displayName], v28 = objc_claimAutoreleasedReturnValue(), v28, v27, v28))
       {
-        v29 = [(DIHandle *)self displayName];
-        v30 = [(DIHandle *)v5 displayName];
-        v31 = [v29 isEqualToString:v30];
+        displayName2 = [(DIHandle *)self displayName];
+        displayName3 = [(DIHandle *)v5 displayName];
+        v31 = [displayName2 isEqualToString:displayName3];
 
         if ((v31 & 1) == 0)
         {
@@ -148,31 +148,31 @@
 
       else
       {
-        v17 = [(DIHandle *)v5 displayName];
-        if (v17)
+        givenName4 = [(DIHandle *)v5 displayName];
+        if (givenName4)
         {
           goto LABEL_30;
         }
 
-        v32 = [(DIHandle *)self displayName];
+        displayName4 = [(DIHandle *)self displayName];
 
-        if (v32)
+        if (displayName4)
         {
           goto LABEL_31;
         }
       }
 
-      v33 = [(DIHandle *)v5 imageData];
-      if (v33)
+      imageData = [(DIHandle *)v5 imageData];
+      if (imageData)
       {
-        v34 = v33;
-        v35 = [(DIHandle *)self imageData];
+        v34 = imageData;
+        imageData2 = [(DIHandle *)self imageData];
 
-        if (v35)
+        if (imageData2)
         {
-          v36 = [(DIHandle *)self imageData];
-          v37 = [(DIHandle *)v5 imageData];
-          v38 = [v36 isEqualToData:v37];
+          imageData3 = [(DIHandle *)self imageData];
+          imageData4 = [(DIHandle *)v5 imageData];
+          v38 = [imageData3 isEqualToData:imageData4];
 
           if (v38)
           {
@@ -183,12 +183,12 @@
         }
       }
 
-      v17 = [(DIHandle *)v5 imageData];
-      if (!v17)
+      givenName4 = [(DIHandle *)v5 imageData];
+      if (!givenName4)
       {
-        v40 = [(DIHandle *)self imageData];
+        imageData5 = [(DIHandle *)self imageData];
 
-        if (!v40)
+        if (!imageData5)
         {
 LABEL_35:
           v16 = 1;
@@ -215,71 +215,71 @@ LABEL_33:
   return v16;
 }
 
-+ (id)stringForHandleType:(unint64_t)a3
++ (id)stringForHandleType:(unint64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     v5 = @"Unknown";
   }
 
   else
   {
-    v5 = off_278FB9148[a3];
+    v5 = off_278FB9148[type];
   }
 
-  return [MEMORY[0x277CCACA8] stringWithFormat:@"(%lu) %@", a3, v5, v3, v4];
+  return [MEMORY[0x277CCACA8] stringWithFormat:@"(%lu) %@", type, v5, v3, v4];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(DIHandle *)self type];
-  v4 = [(DIHandle *)self value];
-  v5 = [v4 hash];
+  type = [(DIHandle *)self type];
+  value = [(DIHandle *)self value];
+  v5 = [value hash];
 
-  return v5 ^ v3;
+  return v5 ^ type;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(DIHandle *)self type];
+  type = [(DIHandle *)self type];
   v5 = [DIHandle stringForHandleType:[(DIHandle *)self type]];
-  v6 = [(DIHandle *)self value];
-  v7 = [(DIHandle *)self givenName];
-  v8 = [(DIHandle *)self familyName];
-  v9 = [(DIHandle *)self displayName];
-  v10 = [(DIHandle *)self imageData];
-  v11 = [v3 stringWithFormat:@"Type = %lu (%@), Value = %@, GivenName = %@, FamilyName = %@, DisplayName = %@, Image = %@", v4, v5, v6, v7, v8, v9, v10];
+  value = [(DIHandle *)self value];
+  givenName = [(DIHandle *)self givenName];
+  familyName = [(DIHandle *)self familyName];
+  displayName = [(DIHandle *)self displayName];
+  imageData = [(DIHandle *)self imageData];
+  v11 = [v3 stringWithFormat:@"Type = %lu (%@), Value = %@, GivenName = %@, FamilyName = %@, DisplayName = %@, Image = %@", type, v5, value, givenName, familyName, displayName, imageData];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:{-[DIHandle type](self, "type")}];
-  [v5 encodeObject:v6 forKey:@"Type"];
+  [coderCopy encodeObject:v6 forKey:@"Type"];
 
-  v7 = [(DIHandle *)self value];
-  [v5 encodeObject:v7 forKey:@"Value"];
+  value = [(DIHandle *)self value];
+  [coderCopy encodeObject:value forKey:@"Value"];
 
-  v8 = [(DIHandle *)self givenName];
-  [v5 encodeObject:v8 forKey:@"GivenName"];
+  givenName = [(DIHandle *)self givenName];
+  [coderCopy encodeObject:givenName forKey:@"GivenName"];
 
-  v9 = [(DIHandle *)self familyName];
-  [v5 encodeObject:v9 forKey:@"FamilyName"];
+  familyName = [(DIHandle *)self familyName];
+  [coderCopy encodeObject:familyName forKey:@"FamilyName"];
 
-  v10 = [(DIHandle *)self displayName];
-  [v5 encodeObject:v10 forKey:@"DisplayName"];
+  displayName = [(DIHandle *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"DisplayName"];
 
-  v11 = [(DIHandle *)self imageData];
-  [v5 encodeObject:v11 forKey:@"ImageData"];
+  imageData = [(DIHandle *)self imageData];
+  [coderCopy encodeObject:imageData forKey:@"ImageData"];
 }
 
-- (DIHandle)initWithCoder:(id)a3
+- (DIHandle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(DIHandle *)self init];
   if (!v5)
   {
@@ -288,12 +288,12 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Type"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Type"];
   v7 = v6;
   if (v6)
   {
     v5->_type = [(DIHandle *)v6 unsignedIntegerValue];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Value"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Value"];
     if (!v8)
     {
 
@@ -303,25 +303,25 @@ LABEL_13:
 
     v9 = v8;
     objc_storeStrong(&v5->_value, v8);
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"GivenName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"GivenName"];
     if (v10)
     {
       objc_storeStrong(&v5->_givenName, v10);
     }
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FamilyName"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FamilyName"];
     if (v11)
     {
       objc_storeStrong(&v5->_familyName, v11);
     }
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DisplayName"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DisplayName"];
     if (v12)
     {
       objc_storeStrong(&v5->_displayName, v12);
     }
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ImageData"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ImageData"];
     if (v13)
     {
       objc_storeStrong(&v5->_imageData, v13);

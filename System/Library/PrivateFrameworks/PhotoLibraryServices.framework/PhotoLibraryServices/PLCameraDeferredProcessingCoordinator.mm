@@ -1,25 +1,25 @@
 @interface PLCameraDeferredProcessingCoordinator
-- (BOOL)cancelAllPrewarming:(id *)a3;
-- (BOOL)prewarmWithPhotoSettings:(id)a3 error:(id *)a4;
+- (BOOL)cancelAllPrewarming:(id *)prewarming;
+- (BOOL)prewarmWithPhotoSettings:(id)settings error:(id *)error;
 - (PLCameraDeferredProcessingCoordinator)init;
-- (PLCameraDeferredProcessingCoordinator)initWithAssetdClient:(id)a3;
-- (void)cancelAllPrewarmingWithCompletionHandler:(id)a3;
-- (void)prewarmWithPhotoSettings:(id)a3 completionHandler:(id)a4;
+- (PLCameraDeferredProcessingCoordinator)initWithAssetdClient:(id)client;
+- (void)cancelAllPrewarmingWithCompletionHandler:(id)handler;
+- (void)prewarmWithPhotoSettings:(id)settings completionHandler:(id)handler;
 @end
 
 @implementation PLCameraDeferredProcessingCoordinator
 
-- (void)cancelAllPrewarmingWithCompletionHandler:(id)a3
+- (void)cancelAllPrewarmingWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PLCameraDeferredProcessingCoordinator *)self resourceInternalClient];
+  handlerCopy = handler;
+  resourceInternalClient = [(PLCameraDeferredProcessingCoordinator *)self resourceInternalClient];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __82__PLCameraDeferredProcessingCoordinator_cancelAllPrewarmingWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E75774A8;
-  v8 = v4;
-  v6 = v4;
-  [v5 cancelAllPrewarmingWithCompletionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [resourceInternalClient cancelAllPrewarmingWithCompletionHandler:v7];
 }
 
 uint64_t __82__PLCameraDeferredProcessingCoordinator_cancelAllPrewarmingWithCompletionHandler___block_invoke(uint64_t a1)
@@ -33,26 +33,26 @@ uint64_t __82__PLCameraDeferredProcessingCoordinator_cancelAllPrewarmingWithComp
   return result;
 }
 
-- (BOOL)cancelAllPrewarming:(id *)a3
+- (BOOL)cancelAllPrewarming:(id *)prewarming
 {
-  v4 = [(PLCameraDeferredProcessingCoordinator *)self resourceInternalClient];
-  LOBYTE(a3) = [v4 cancelAllPrewarming:a3];
+  resourceInternalClient = [(PLCameraDeferredProcessingCoordinator *)self resourceInternalClient];
+  LOBYTE(prewarming) = [resourceInternalClient cancelAllPrewarming:prewarming];
 
-  return a3;
+  return prewarming;
 }
 
-- (void)prewarmWithPhotoSettings:(id)a3 completionHandler:(id)a4
+- (void)prewarmWithPhotoSettings:(id)settings completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [PLCapturePhotoSettings photoSettingsWithPhotoSettings:a3];
-  v8 = [(PLCameraDeferredProcessingCoordinator *)self resourceInternalClient];
+  handlerCopy = handler;
+  v7 = [PLCapturePhotoSettings photoSettingsWithPhotoSettings:settings];
+  resourceInternalClient = [(PLCameraDeferredProcessingCoordinator *)self resourceInternalClient];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __84__PLCameraDeferredProcessingCoordinator_prewarmWithPhotoSettings_completionHandler___block_invoke;
   v10[3] = &unk_1E75774A8;
-  v11 = v6;
-  v9 = v6;
-  [v8 prewarmWithCapturePhotoSettings:v7 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [resourceInternalClient prewarmWithCapturePhotoSettings:v7 completionHandler:v10];
 }
 
 uint64_t __84__PLCameraDeferredProcessingCoordinator_prewarmWithPhotoSettings_completionHandler___block_invoke(uint64_t a1)
@@ -66,25 +66,25 @@ uint64_t __84__PLCameraDeferredProcessingCoordinator_prewarmWithPhotoSettings_co
   return result;
 }
 
-- (BOOL)prewarmWithPhotoSettings:(id)a3 error:(id *)a4
+- (BOOL)prewarmWithPhotoSettings:(id)settings error:(id *)error
 {
-  v6 = [PLCapturePhotoSettings photoSettingsWithPhotoSettings:a3];
-  v7 = [(PLCameraDeferredProcessingCoordinator *)self resourceInternalClient];
-  LOBYTE(a4) = [v7 prewarmWithCapturePhotoSettings:v6 error:a4];
+  v6 = [PLCapturePhotoSettings photoSettingsWithPhotoSettings:settings];
+  resourceInternalClient = [(PLCameraDeferredProcessingCoordinator *)self resourceInternalClient];
+  LOBYTE(error) = [resourceInternalClient prewarmWithCapturePhotoSettings:v6 error:error];
 
-  return a4;
+  return error;
 }
 
-- (PLCameraDeferredProcessingCoordinator)initWithAssetdClient:(id)a3
+- (PLCameraDeferredProcessingCoordinator)initWithAssetdClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v10.receiver = self;
   v10.super_class = PLCameraDeferredProcessingCoordinator;
   v6 = [(PLCameraDeferredProcessingCoordinator *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_assetsdClient, a3);
+    objc_storeStrong(&v6->_assetsdClient, client);
     v8 = v7;
   }
 
@@ -93,8 +93,8 @@ uint64_t __84__PLCameraDeferredProcessingCoordinator_prewarmWithPhotoSettings_co
 
 - (PLCameraDeferredProcessingCoordinator)init
 {
-  v3 = [MEMORY[0x1E69BF198] sharedSystemLibraryAssetsdClient];
-  v4 = [(PLCameraDeferredProcessingCoordinator *)self initWithAssetdClient:v3];
+  mEMORY[0x1E69BF198] = [MEMORY[0x1E69BF198] sharedSystemLibraryAssetsdClient];
+  v4 = [(PLCameraDeferredProcessingCoordinator *)self initWithAssetdClient:mEMORY[0x1E69BF198]];
 
   return v4;
 }

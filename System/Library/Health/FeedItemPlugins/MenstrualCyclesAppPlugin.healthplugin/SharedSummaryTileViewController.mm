@@ -1,14 +1,14 @@
 @interface SharedSummaryTileViewController
 - (NSString)title;
-- (_TtC24MenstrualCyclesAppPlugin31SharedSummaryTileViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC24MenstrualCyclesAppPlugin31SharedSummaryTileViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation SharedSummaryTileViewController
 
-- (_TtC24MenstrualCyclesAppPlugin31SharedSummaryTileViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC24MenstrualCyclesAppPlugin31SharedSummaryTileViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = _sSo25HKMCDisplayTypeIdentifiera24MenstrualCyclesAppPluginE2idSSvg_0();
     v7 = v6;
@@ -20,19 +20,19 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_29DF42A00(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_29DF42A00(v5, v7, bundle);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_29DF42E40();
 }
 
 - (NSString)title
 {
-  v2 = self;
+  selfCopy = self;
   sub_29DF454F8();
   v4 = v3;
 

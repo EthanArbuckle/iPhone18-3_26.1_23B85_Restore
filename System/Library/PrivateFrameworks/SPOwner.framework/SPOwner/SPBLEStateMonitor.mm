@@ -1,8 +1,8 @@
 @interface SPBLEStateMonitor
 - (SPBLEStateMonitor)init;
 - (SPBLEStateMonitorDelegate)delegate;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)notifyDelegate:(unint64_t)a3;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)notifyDelegate:(unint64_t)delegate;
 - (void)startMonitoring;
 @end
 
@@ -42,21 +42,21 @@ void __36__SPBLEStateMonitor_startMonitoring__block_invoke(uint64_t a1)
   [v4 centralManagerDidUpdateState:v5];
 }
 
-- (void)notifyDelegate:(unint64_t)a3
+- (void)notifyDelegate:(unint64_t)delegate
 {
-  if ([(SPBLEStateMonitor *)self bleState]!= a3)
+  if ([(SPBLEStateMonitor *)self bleState]!= delegate)
   {
-    v4 = [(SPBLEStateMonitor *)self delegate];
-    [v4 bleMonitor:self didChangeState:{-[SPBLEStateMonitor bleState](self, "bleState")}];
+    delegate = [(SPBLEStateMonitor *)self delegate];
+    [delegate bleMonitor:self didChangeState:{-[SPBLEStateMonitor bleState](self, "bleState")}];
   }
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SPBLEStateMonitor *)self bleState];
-  if ([v4 state] == 5)
+  stateCopy = state;
+  bleState = [(SPBLEStateMonitor *)self bleState];
+  if ([stateCopy state] == 5)
   {
     v6 = 1;
   }
@@ -71,11 +71,11 @@ void __36__SPBLEStateMonitor_startMonitoring__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134217984;
-    v10 = [v4 state];
+    state = [stateCopy state];
     _os_log_impl(&dword_2643D0000, v7, OS_LOG_TYPE_DEFAULT, "BluetoothState: %lu", &v9, 0xCu);
   }
 
-  [(SPBLEStateMonitor *)self notifyDelegate:v5];
+  [(SPBLEStateMonitor *)self notifyDelegate:bleState];
   v8 = *MEMORY[0x277D85DE8];
 }
 

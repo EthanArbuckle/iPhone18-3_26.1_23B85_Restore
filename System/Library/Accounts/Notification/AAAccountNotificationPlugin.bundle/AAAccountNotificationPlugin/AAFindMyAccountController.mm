@@ -1,27 +1,27 @@
 @interface AAFindMyAccountController
-+ (id)_findOrphanedAccountForAccountType:(id)a3 forAppleAccount:(id)a4 withStore:(id)a5;
-+ (void)addDeviceLocatorChildAccountToAppleAccount:(id)a3;
-+ (void)addFMFChildAccountToAppleAccount:(id)a3;
-+ (void)updateDeviceLocatorChildAccountForAppleAccount:(id)a3;
-+ (void)updateFMFChildAccountForAppleAccount:(id)a3;
++ (id)_findOrphanedAccountForAccountType:(id)type forAppleAccount:(id)account withStore:(id)store;
++ (void)addDeviceLocatorChildAccountToAppleAccount:(id)account;
++ (void)addFMFChildAccountToAppleAccount:(id)account;
++ (void)updateDeviceLocatorChildAccountForAppleAccount:(id)account;
++ (void)updateFMFChildAccountForAppleAccount:(id)account;
 @end
 
 @implementation AAFindMyAccountController
 
-+ (void)addFMFChildAccountToAppleAccount:(id)a3
++ (void)addFMFChildAccountToAppleAccount:(id)account
 {
   v83 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  accountCopy = account;
   v9 = objc_msgSend_defaultStore(MEMORY[0x29EDB83C8], v5, v6, v7, v8);
   v13 = objc_msgSend_accountTypeWithAccountTypeIdentifier_(v9, v10, *MEMORY[0x29EDB8220], v11, v12);
   v14 = objc_alloc(MEMORY[0x29EDB83B8]);
   v18 = objc_msgSend_initWithAccountType_(v14, v15, v13, v16, v17);
-  v23 = objc_msgSend_username(v4, v19, v20, v21, v22);
+  v23 = objc_msgSend_username(accountCopy, v19, v20, v21, v22);
   v27 = objc_msgSend_aa_appleAccountWithUsername_(v9, v24, v23, v25, v26);
 
   if (v27)
   {
-    v32 = objc_msgSend__findOrphanedAccountForAccountType_forAppleAccount_withStore_(a1, v28, v13, v27, v9);
+    v32 = objc_msgSend__findOrphanedAccountForAccountType_forAppleAccount_withStore_(self, v28, v13, v27, v9);
     v76 = v13;
     if (v32)
     {
@@ -41,8 +41,8 @@
     v39 = objc_msgSend_username(v27, v35, v36, v37, v38);
     objc_msgSend_setUsername_(v18, v40, v39, v41, v42);
 
-    v77 = v4;
-    v47 = objc_msgSend_credential(v4, v43, v44, v45, v46);
+    v77 = accountCopy;
+    v47 = objc_msgSend_credential(accountCopy, v43, v44, v45, v46);
     v48 = *MEMORY[0x29EDB8310];
     v52 = objc_msgSend_credentialItemForKey_(v47, v49, *MEMORY[0x29EDB8310], v50, v51);
     v53 = *MEMORY[0x29EDB8308];
@@ -101,7 +101,7 @@
     }
 
     v13 = v76;
-    v4 = v77;
+    accountCopy = v77;
   }
 
   else
@@ -109,23 +109,23 @@
     v32 = _AALogSystem();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
-      sub_29C84ED58(v4, v32);
+      sub_29C84ED58(accountCopy, v32);
     }
   }
 
   v75 = *MEMORY[0x29EDCA608];
 }
 
-+ (void)updateFMFChildAccountForAppleAccount:(id)a3
++ (void)updateFMFChildAccountForAppleAccount:(id)account
 {
   v74 = *MEMORY[0x29EDCA608];
-  v3 = a3;
-  v8 = objc_msgSend_credential(v3, v4, v5, v6, v7);
+  accountCopy = account;
+  v8 = objc_msgSend_credential(accountCopy, v4, v5, v6, v7);
   v9 = *MEMORY[0x29EDB8310];
   v13 = objc_msgSend_credentialItemForKey_(v8, v10, *MEMORY[0x29EDB8310], v11, v12);
   v14 = *MEMORY[0x29EDB8308];
   v18 = objc_msgSend_credentialItemForKey_(v8, v15, *MEMORY[0x29EDB8308], v16, v17);
-  v22 = objc_msgSend_childAccountsWithAccountTypeIdentifier_(v3, v19, *MEMORY[0x29EDB8220], v20, v21);
+  v22 = objc_msgSend_childAccountsWithAccountTypeIdentifier_(accountCopy, v19, *MEMORY[0x29EDB8220], v20, v21);
   v27 = objc_msgSend_firstObject(v22, v23, v24, v25, v26);
 
   v32 = objc_msgSend_credential(v27, v28, v29, v30, v31);
@@ -134,7 +134,7 @@
   if (!objc_msgSend_isEqualToString_(v36, v41, v13, v42, v43) || (objc_msgSend_isEqualToString_(v40, v44, v18, v46, v47) & 1) == 0)
   {
     v68 = v40;
-    if (objc_msgSend_isAuthenticated(v3, v44, v45, v46, v47))
+    if (objc_msgSend_isAuthenticated(accountCopy, v44, v45, v46, v47))
     {
       objc_msgSend_setAuthenticated_(v27, v48, 1, v49, v50);
     }
@@ -219,39 +219,39 @@ LABEL_22:
   v66 = *MEMORY[0x29EDCA608];
 }
 
-+ (id)_findOrphanedAccountForAccountType:(id)a3 forAppleAccount:(id)a4 withStore:(id)a5
++ (id)_findOrphanedAccountForAccountType:(id)type forAppleAccount:(id)account withStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
-  v13 = objc_msgSend_accountsWithAccountType_(a5, v10, v9, v11, v12);
+  typeCopy = type;
+  accountCopy = account;
+  v9 = typeCopy;
+  v13 = objc_msgSend_accountsWithAccountType_(store, v10, v9, v11, v12);
   v21[0] = MEMORY[0x29EDCA5F8];
   v21[1] = 3221225472;
   v21[2] = sub_29C84C70C;
   v21[3] = &unk_29F329838;
-  v22 = v8;
+  v22 = accountCopy;
   v23 = v9;
-  v14 = v8;
+  v14 = accountCopy;
   v15 = v9;
   v19 = objc_msgSend_aaf_firstObjectPassingTest_(v13, v16, v21, v17, v18);
 
   return v19;
 }
 
-+ (void)addDeviceLocatorChildAccountToAppleAccount:(id)a3
++ (void)addDeviceLocatorChildAccountToAppleAccount:(id)account
 {
   v113 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  accountCopy = account;
   v9 = objc_msgSend_defaultStore(MEMORY[0x29EDB83C8], v5, v6, v7, v8);
   v13 = objc_msgSend_accountTypeWithAccountTypeIdentifier_(v9, v10, *MEMORY[0x29EDB8208], v11, v12);
   v14 = objc_alloc(MEMORY[0x29EDB83B8]);
   v18 = objc_msgSend_initWithAccountType_(v14, v15, v13, v16, v17);
-  v23 = objc_msgSend_username(v4, v19, v20, v21, v22);
+  v23 = objc_msgSend_username(accountCopy, v19, v20, v21, v22);
   v27 = objc_msgSend_aa_appleAccountWithUsername_(v9, v24, v23, v25, v26);
 
   if (v27)
   {
-    v29 = objc_msgSend__findOrphanedAccountForAccountType_forAppleAccount_withStore_(a1, v28, v13, v27, v9);
+    v29 = objc_msgSend__findOrphanedAccountForAccountType_forAppleAccount_withStore_(self, v28, v13, v27, v9);
     v105 = v29;
     v106 = v13;
     if (v29)
@@ -273,7 +273,7 @@ LABEL_22:
     v40 = objc_msgSend_username(v27, v36, v37, v38, v39);
     objc_msgSend_setUsername_(v18, v41, v40, v42, v43);
 
-    v48 = objc_msgSend_credential(v4, v44, v45, v46, v47);
+    v48 = objc_msgSend_credential(accountCopy, v44, v45, v46, v47);
     v49 = objc_alloc_init(MEMORY[0x29EDB83C0]);
     v57 = objc_msgSend_findMyiPhoneToken(v48, v50, v51, v52, v53);
     if (v57)
@@ -317,7 +317,7 @@ LABEL_22:
     v73 = objc_msgSend_credentialItemForKey_(v48, v68, *MEMORY[0x29EDB83A8], v69, v70, v102);
     v74 = _AALogSystem();
     v75 = os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT);
-    v107 = v4;
+    v107 = accountCopy;
     if (v73)
     {
       if (v75)
@@ -389,7 +389,7 @@ LABEL_22:
     }
 
     v13 = v106;
-    v4 = v107;
+    accountCopy = v107;
     v71 = v105;
   }
 
@@ -398,22 +398,22 @@ LABEL_22:
     v71 = _AALogSystem();
     if (os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
     {
-      sub_29C84ED58(v4, v71);
+      sub_29C84ED58(accountCopy, v71);
     }
   }
 
   v101 = *MEMORY[0x29EDCA608];
 }
 
-+ (void)updateDeviceLocatorChildAccountForAppleAccount:(id)a3
++ (void)updateDeviceLocatorChildAccountForAppleAccount:(id)account
 {
   v100 = *MEMORY[0x29EDCA608];
-  v3 = a3;
-  v7 = objc_msgSend_childAccountsWithAccountTypeIdentifier_(v3, v4, *MEMORY[0x29EDB8208], v5, v6);
+  accountCopy = account;
+  v7 = objc_msgSend_childAccountsWithAccountTypeIdentifier_(accountCopy, v4, *MEMORY[0x29EDB8208], v5, v6);
   v12 = objc_msgSend_firstObject(v7, v8, v9, v10, v11);
 
-  v87 = v3;
-  v17 = objc_msgSend_credential(v3, v13, v14, v15, v16);
+  v87 = accountCopy;
+  v17 = objc_msgSend_credential(accountCopy, v13, v14, v15, v16);
   v18 = *MEMORY[0x29EDB8328];
   v22 = objc_msgSend_credentialItemForKey_(v17, v19, *MEMORY[0x29EDB8328], v20, v21);
   v23 = *MEMORY[0x29EDB8318];

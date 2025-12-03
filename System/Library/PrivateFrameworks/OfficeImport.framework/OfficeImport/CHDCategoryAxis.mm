@@ -1,14 +1,14 @@
 @interface CHDCategoryAxis
-- (CHDCategoryAxis)initWithResources:(id)a3;
+- (CHDCategoryAxis)initWithResources:(id)resources;
 @end
 
 @implementation CHDCategoryAxis
 
-- (CHDCategoryAxis)initWithResources:(id)a3
+- (CHDCategoryAxis)initWithResources:(id)resources
 {
   v4.receiver = self;
   v4.super_class = CHDCategoryAxis;
-  result = [(CHDAxis *)&v4 initWithResources:a3];
+  result = [(CHDAxis *)&v4 initWithResources:resources];
   if (result)
   {
     result->mAutomatic = 1;

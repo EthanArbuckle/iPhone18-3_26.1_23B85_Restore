@@ -1,13 +1,13 @@
 @interface DataConnectionAgentInterfaceObserver
 - (BOOL)pathSatisfied;
-- (DataConnectionAgentInterfaceObserver)initWithPathSatisfactionObserver:(DataConnectionAgentPathSatisfactionObserver *)a3 domain:(id)a4 agentType:(id)a5 agentClass:(Class)a6 logName:(const char *)a7 uuid:()basic_string<char queue:()std:(std::allocator<char>> *)a8 :char_traits<char> registry:connectionType:;
+- (DataConnectionAgentInterfaceObserver)initWithPathSatisfactionObserver:(DataConnectionAgentPathSatisfactionObserver *)observer domain:(id)domain agentType:(id)type agentClass:(Class)class logName:(const char *)name uuid:()basic_string<char queue:()std:(std::allocator<char>> *)std :char_traits<char> registry:connectionType:;
 - (basic_string<char,)agentType;
 - (id).cxx_construct;
 - (void)dealloc;
 - (void)doUpdateInterface:()basic_string<char;
 - (void)dumpState;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)slicingSupport:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)slicingSupport:(BOOL)support;
 @end
 
 @implementation DataConnectionAgentInterfaceObserver
@@ -44,8 +44,8 @@ LABEL_33:
   }
 
   v4 = self->fPathAvailable && self->fAgentAvailable;
-  v7 = [(NWPathEvaluator *)fAgentEvaluator path];
-  if ([v7 usesNetworkAgentType:self->fAgentClass])
+  path = [(NWPathEvaluator *)fAgentEvaluator path];
+  if ([path usesNetworkAgentType:self->fAgentClass])
   {
 
     goto LABEL_12;
@@ -74,10 +74,10 @@ LABEL_31:
   }
 
 LABEL_12:
-  v8 = [(NWPathEvaluator *)self->fPathEvaluator path];
-  v9 = [v8 status];
+  path2 = [(NWPathEvaluator *)self->fPathEvaluator path];
+  status = [path2 status];
 
-  if (v9 == 1)
+  if (status == 1)
   {
     *&self->fPathAvailable = 257;
     if (!v4)
@@ -132,7 +132,7 @@ LABEL_12:
       }
     }
 
-    v18 = self;
+    selfCopy = self;
     v19 = sub_100032AC8(&self->fQueue.fObj.fObj);
     operator new();
   }
@@ -161,10 +161,10 @@ LABEL_34:
   return result;
 }
 
-- (DataConnectionAgentInterfaceObserver)initWithPathSatisfactionObserver:(DataConnectionAgentPathSatisfactionObserver *)a3 domain:(id)a4 agentType:(id)a5 agentClass:(Class)a6 logName:(const char *)a7 uuid:()basic_string<char queue:()std:(std::allocator<char>> *)a8 :char_traits<char> registry:connectionType:
+- (DataConnectionAgentInterfaceObserver)initWithPathSatisfactionObserver:(DataConnectionAgentPathSatisfactionObserver *)observer domain:(id)domain agentType:(id)type agentClass:(Class)class logName:(const char *)name uuid:()basic_string<char queue:()std:(std::allocator<char>> *)std :char_traits<char> registry:connectionType:
 {
-  v13 = a4;
-  v14 = a5;
+  domainCopy = domain;
+  typeCopy = type;
   v27.receiver = self;
   v27.super_class = DataConnectionAgentInterfaceObserver;
   v15 = [(DataConnectionAgentInterfaceObserver *)&v27 init];
@@ -178,7 +178,7 @@ LABEL_34:
     fAgentEvaluator = v17->fAgentEvaluator;
     v17->fAgentEvaluator = 0;
 
-    v17->fPathSatisfactionObserver = a3;
+    v17->fPathSatisfactionObserver = observer;
     v28 = 0;
     v29 = 0uLL;
     ctu::cf::assign();
@@ -213,9 +213,9 @@ LABEL_34:
     v17->fAgentType.__rep_.__l.__size_ = v25;
     *(&v17->fAgentType.__rep_.__l.__size_ + 7) = *(v30 + 7);
     *(&v17->fAgentType.__rep_.__l + 23) = v24;
-    v17->fAgentClass = a6;
+    v17->fAgentClass = class;
     *&v17->fPathAvailable = 0;
-    std::string::operator=(v16 + 4, a8);
+    std::string::operator=(v16 + 4, std);
     objc_storeStrong(&v16[5].__r_.__value_.__l.__data_, *v31);
     operator new();
   }
@@ -223,11 +223,11 @@ LABEL_34:
   return 0;
 }
 
-- (void)slicingSupport:(BOOL)a3
+- (void)slicingSupport:(BOOL)support
 {
-  if (self->fSlicingSupported != a3)
+  if (self->fSlicingSupported != support)
   {
-    self->fSlicingSupported = a3;
+    self->fSlicingSupported = support;
     ptr = self->fLogger.__ptr_;
     if (ptr)
     {
@@ -237,7 +237,7 @@ LABEL_34:
         v6 = 136315394;
         v7 = "[DataConnectionAgentInterfaceObserver slicingSupport:]";
         v8 = 2080;
-        v9 = asStringBool(a3);
+        v9 = asStringBool(support);
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I %s: NWAgent: slicing support update: %s", &v6, 0x16u);
       }
     }
@@ -262,9 +262,9 @@ LABEL_34:
         }
 
         v8 = [(NWPathEvaluator *)self->fPathEvaluator description];
-        v9 = [(NWPathEvaluator *)self->fPathEvaluator parameters];
-        v10 = [v9 requiredInterface];
-        v11 = [v10 interfaceName];
+        parameters = [(NWPathEvaluator *)self->fPathEvaluator parameters];
+        requiredInterface = [parameters requiredInterface];
+        interfaceName = [requiredInterface interfaceName];
         *buf = 136315906;
         v68 = "[DataConnectionAgentInterfaceObserver doUpdateInterface:]";
         v69 = 2082;
@@ -272,7 +272,7 @@ LABEL_34:
         v71 = 2114;
         v72 = v8;
         v73 = 2114;
-        v74 = v11;
+        v74 = interfaceName;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#I %s: NWAgent %{public}s remove pathEvaluator %{public}@ from %{public}@", buf, 0x2Au);
       }
 
@@ -299,9 +299,9 @@ LABEL_34:
         }
 
         v16 = [(NWPathEvaluator *)self->fAgentEvaluator description];
-        v17 = [(NWPathEvaluator *)self->fAgentEvaluator parameters];
-        v18 = [v17 requiredInterface];
-        v19 = [v18 interfaceName];
+        parameters2 = [(NWPathEvaluator *)self->fAgentEvaluator parameters];
+        requiredInterface2 = [parameters2 requiredInterface];
+        interfaceName2 = [requiredInterface2 interfaceName];
         *buf = 136315906;
         v68 = "[DataConnectionAgentInterfaceObserver doUpdateInterface:]";
         v69 = 2082;
@@ -309,7 +309,7 @@ LABEL_34:
         v71 = 2114;
         v72 = v16;
         v73 = 2114;
-        v74 = v19;
+        v74 = interfaceName2;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "#I %s: NWAgent %{public}s remove agentEvaluator %{public}@ from %{public}@", buf, 0x2Au);
       }
 
@@ -574,12 +574,12 @@ LABEL_34:
   [(DataConnectionAgentInterfaceObserver *)&v7 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = self;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  selfCopy = self;
   v13 = sub_100032AC8(&self->fQueue.fObj.fObj);
   operator new();
 }
@@ -644,8 +644,8 @@ LABEL_34:
         data = data->__rep_.__l.__data_;
       }
 
-      v13 = [(NWPathEvaluator *)self->fAgentEvaluator parameters];
-      v14 = [v13 description];
+      parameters = [(NWPathEvaluator *)self->fAgentEvaluator parameters];
+      v14 = [parameters description];
       v38 = 136315394;
       v39 = data;
       v40 = 2114;
@@ -662,8 +662,8 @@ LABEL_34:
         v16 = v16->__rep_.__l.__data_;
       }
 
-      v17 = [(NWPathEvaluator *)self->fAgentEvaluator path];
-      v18 = [v17 description];
+      path = [(NWPathEvaluator *)self->fAgentEvaluator path];
+      v18 = [path description];
       v38 = 136315394;
       v39 = v16;
       v40 = 2114;
@@ -675,8 +675,8 @@ LABEL_34:
   fPathEvaluator = self->fPathEvaluator;
   if (fPathEvaluator)
   {
-    v20 = [(NWPathEvaluator *)fPathEvaluator path];
-    v21 = [v20 status];
+    path2 = [(NWPathEvaluator *)fPathEvaluator path];
+    status = [path2 status];
 
     v22 = sub_100032AC8(self->fLogger.__ptr_);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -721,7 +721,7 @@ LABEL_34:
       v48 = 1024;
       v49 = v28;
       v50 = 1024;
-      LODWORD(v51[0]) = v21;
+      LODWORD(v51[0]) = status;
       WORD2(v51[0]) = 2082;
       *(v51 + 6) = v29;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "#I DATA:: dump fPathEvaluator: NWAgent %s Observe: DataConnectionAgentInterfaceObserver agent domain = %s, type = %s, fSlicingSupported = %s: fAvailability = %d, check satisfied path = %d, status = %d, interface=%{public}s", &v38, 0x46u);
@@ -736,8 +736,8 @@ LABEL_34:
         v31 = v31->__rep_.__l.__data_;
       }
 
-      v32 = [(NWPathEvaluator *)self->fPathEvaluator parameters];
-      v33 = [v32 description];
+      parameters2 = [(NWPathEvaluator *)self->fPathEvaluator parameters];
+      v33 = [parameters2 description];
       v38 = 136315394;
       v39 = v31;
       v40 = 2114;
@@ -754,8 +754,8 @@ LABEL_34:
         v35 = v35->__rep_.__l.__data_;
       }
 
-      v36 = [(NWPathEvaluator *)self->fPathEvaluator path];
-      v37 = [v36 description];
+      path3 = [(NWPathEvaluator *)self->fPathEvaluator path];
+      v37 = [path3 description];
       v38 = 136315394;
       v39 = v35;
       v40 = 2114;

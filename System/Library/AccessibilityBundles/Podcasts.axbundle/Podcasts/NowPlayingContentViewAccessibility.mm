@@ -1,5 +1,5 @@
 @interface NowPlayingContentViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsVideo;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
@@ -8,17 +8,17 @@
 
 @implementation NowPlayingContentViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVPlayerViewController"];
-  [v3 validateClass:@"AVPlayerViewController" hasInstanceMethod:@"isReadyForDisplay" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVPlayerViewController"];
+  [validationsCopy validateClass:@"AVPlayerViewController" hasInstanceMethod:@"isReadyForDisplay" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(NowPlayingContentViewAccessibility *)self accessibilityIdentifier];
-  v3 = [v2 isEqualToString:@"MiniPlayerArtworkNotVisible"];
+  accessibilityIdentifier = [(NowPlayingContentViewAccessibility *)self accessibilityIdentifier];
+  v3 = [accessibilityIdentifier isEqualToString:@"MiniPlayerArtworkNotVisible"];
 
   return v3 ^ 1;
 }
@@ -26,9 +26,9 @@
 - (BOOL)_axIsVideo
 {
   v2 = [(NowPlayingContentViewAccessibility *)self _accessibilityFindSubviewDescendant:&__block_literal_global_2];
-  v3 = [v2 _accessibilityViewController];
+  _accessibilityViewController = [v2 _accessibilityViewController];
 
-  LOBYTE(v2) = [v3 safeBoolForKey:@"isReadyForDisplay"];
+  LOBYTE(v2) = [_accessibilityViewController safeBoolForKey:@"isReadyForDisplay"];
   return v2;
 }
 
@@ -62,15 +62,15 @@ uint64_t __48__NowPlayingContentViewAccessibility__axIsVideo__block_invoke(uint6
 {
   v7.receiver = self;
   v7.super_class = NowPlayingContentViewAccessibility;
-  v3 = [(NowPlayingContentViewAccessibility *)&v7 accessibilityTraits];
-  v4 = [(NowPlayingContentViewAccessibility *)self _axIsVideo];
+  accessibilityTraits = [(NowPlayingContentViewAccessibility *)&v7 accessibilityTraits];
+  _axIsVideo = [(NowPlayingContentViewAccessibility *)self _axIsVideo];
   v5 = *MEMORY[0x29EDC7F88];
-  if (v4)
+  if (_axIsVideo)
   {
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
 @end

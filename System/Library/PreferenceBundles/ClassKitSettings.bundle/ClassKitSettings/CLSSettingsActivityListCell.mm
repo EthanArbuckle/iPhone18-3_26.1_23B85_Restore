@@ -1,31 +1,31 @@
 @interface CLSSettingsActivityListCell
-- (id)constructSubtitleStringWithSpecifier:(id)a3;
+- (id)constructSubtitleStringWithSpecifier:(id)specifier;
 - (id)subtitleDateFormatter;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation CLSSettingsActivityListCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = CLSSettingsActivityListCell;
-  v4 = a3;
-  [(CLSSettingsActivityListCell *)&v7 refreshCellContentsWithSpecifier:v4];
-  v5 = [(CLSSettingsActivityListCell *)self constructSubtitleStringWithSpecifier:v4, v7.receiver, v7.super_class];
+  specifierCopy = specifier;
+  [(CLSSettingsActivityListCell *)&v7 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [(CLSSettingsActivityListCell *)self constructSubtitleStringWithSpecifier:specifierCopy, v7.receiver, v7.super_class];
 
-  v6 = [(CLSSettingsActivityListCell *)self detailTextLabel];
-  [v6 setText:v5];
+  detailTextLabel = [(CLSSettingsActivityListCell *)self detailTextLabel];
+  [detailTextLabel setText:v5];
 }
 
-- (id)constructSubtitleStringWithSpecifier:(id)a3
+- (id)constructSubtitleStringWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"CLSSettingsSpecifierActivityLastModifiedDate"];
+  specifierCopy = specifier;
+  v5 = [specifierCopy propertyForKey:@"CLSSettingsSpecifierActivityLastModifiedDate"];
   if (v5)
   {
-    v6 = [(CLSSettingsActivityListCell *)self subtitleDateFormatter];
-    v7 = [v6 stringFromDate:v5];
+    subtitleDateFormatter = [(CLSSettingsActivityListCell *)self subtitleDateFormatter];
+    v7 = [subtitleDateFormatter stringFromDate:v5];
   }
 
   else
@@ -33,7 +33,7 @@
     v7 = 0;
   }
 
-  v8 = [v4 propertyForKey:@"CLSSettingsSpecifierContextType"];
+  v8 = [specifierCopy propertyForKey:@"CLSSettingsSpecifierContextType"];
   if (![v7 length])
   {
     v12 = v8;

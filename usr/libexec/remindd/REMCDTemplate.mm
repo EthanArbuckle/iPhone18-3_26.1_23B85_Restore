@@ -1,20 +1,20 @@
 @interface REMCDTemplate
 + (NSString)cdEntityName;
-+ (id)existingCloudObjectForRecordID:(id)a3 accountID:(id)a4 context:(id)a5;
++ (id)existingCloudObjectForRecordID:(id)d accountID:(id)iD context:(id)context;
 + (id)keyPathsForValuesAffectingEffectiveMinimumSupportedVersion;
-+ (id)newCloudObjectForRecord:(id)a3 account:(id)a4 context:(id)a5;
++ (id)newCloudObjectForRecord:(id)record account:(id)account context:(id)context;
 + (id)recordTypes;
-- (BOOL)isConnectedToAccountObject:(id)a3;
-- (BOOL)mergeWithLocalObject:(id)a3;
-- (REMCDTemplate)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
-- (id)existingLocalObjectToMergeWithPredicate:(id)a3;
+- (BOOL)isConnectedToAccountObject:(id)object;
+- (BOOL)mergeWithLocalObject:(id)object;
+- (REMCDTemplate)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
+- (id)existingLocalObjectToMergeWithPredicate:(id)predicate;
 - (id)newlyCreatedRecord;
 - (id)objectsToBeDeletedBeforeThisObject;
 - (id)recordType;
 - (int64_t)parentEffectiveMinimumSupportedVersion;
 - (void).cxx_construct;
 - (void)cleanUpAfterLocalObjectMerge;
-- (void)mergeDataFromRecord:(id)a3 accountID:(id)a4;
+- (void)mergeDataFromRecord:(id)record accountID:(id)d;
 - (void)sortChildrenObjects;
 - (void)willSave_Swift;
 @end
@@ -28,25 +28,25 @@
   return v2.super.isa;
 }
 
-+ (id)existingCloudObjectForRecordID:(id)a3 accountID:(id)a4 context:(id)a5
++ (id)existingCloudObjectForRecordID:(id)d accountID:(id)iD context:(id)context
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
   swift_getObjCClassMetadata();
-  v10 = a3;
-  v11 = a5;
-  v12 = static REMCDTemplate.existingCloudObject(for:accountID:managedObjectContext:)(v10, v7, v9, v11);
+  dCopy = d;
+  contextCopy = context;
+  v12 = static REMCDTemplate.existingCloudObject(for:accountID:managedObjectContext:)(dCopy, v7, v9, contextCopy);
 
   return v12;
 }
 
-+ (id)newCloudObjectForRecord:(id)a3 account:(id)a4 context:(id)a5
++ (id)newCloudObjectForRecord:(id)record account:(id)account context:(id)context
 {
   swift_getObjCClassMetadata();
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = static REMCDTemplate.newCloudObject(for:account:managedObjectContext:)(v8, v9, v10);
+  recordCopy = record;
+  accountCopy = account;
+  contextCopy = context;
+  v11 = static REMCDTemplate.newCloudObject(for:account:managedObjectContext:)(recordCopy, accountCopy, contextCopy);
 
   return v11;
 }
@@ -60,42 +60,42 @@
 
 - (void)sortChildrenObjects
 {
-  v2 = self;
+  selfCopy = self;
   _s7remindd13REMCDTemplateC19sortChildrenObjectsyyF_0();
 }
 
-- (void)mergeDataFromRecord:(id)a3 accountID:(id)a4
+- (void)mergeDataFromRecord:(id)record accountID:(id)d
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
+  recordCopy = record;
+  selfCopy = self;
   v11._countAndFlagsBits = v6;
   v11._object = v8;
-  REMCDTemplate.mergeData(from:accountID:)(v9, v11);
+  REMCDTemplate.mergeData(from:accountID:)(recordCopy, v11);
 }
 
 - (id)newlyCreatedRecord
 {
-  v2 = self;
+  selfCopy = self;
   v3 = REMCDTemplate.newlyCreatedRecord()();
 
   return v3;
 }
 
-- (id)existingLocalObjectToMergeWithPredicate:(id)a3
+- (id)existingLocalObjectToMergeWithPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = self;
+  predicateCopy = predicate;
+  selfCopy = self;
   v6 = _s7remindd13REMCDTemplateC26existingLocalObjectToMerge4withSo11REMCDObjectCSgSo11NSPredicateCSg_tF_0();
 
   return v6;
 }
 
-- (BOOL)mergeWithLocalObject:(id)a3
+- (BOOL)mergeWithLocalObject:(id)object
 {
-  v4 = a3;
-  v5 = self;
+  objectCopy = object;
+  selfCopy = self;
   LOBYTE(self) = _s7remindd13REMCDTemplateC5merge15withLocalObjectSbSo11REMCDObjectC_tF_0();
 
   return self & 1;
@@ -103,17 +103,17 @@
 
 - (void)cleanUpAfterLocalObjectMerge
 {
-  v2 = self;
+  selfCopy = self;
   REMCDTemplate.cleanUpAfterLocalObjectMerge()();
 }
 
 - (id)objectsToBeDeletedBeforeThisObject
 {
-  v2 = self;
-  v3 = [(REMCDTemplate *)v2 savedReminders];
-  if (v3)
+  selfCopy = self;
+  savedReminders = [(REMCDTemplate *)selfCopy savedReminders];
+  if (savedReminders)
   {
-    v4 = v3;
+    v4 = savedReminders;
     type metadata accessor for REMCDSavedReminder();
     sub_10027D940(&qword_100944240, type metadata accessor for REMCDSavedReminder);
     v5 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
@@ -132,34 +132,34 @@
 
 + (NSString)cdEntityName
 {
-  v2 = [objc_opt_self() cdEntityName];
-  if (!v2)
+  cdEntityName = [objc_opt_self() cdEntityName];
+  if (!cdEntityName)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v3 = String._bridgeToObjectiveC()();
 
-    v2 = v3;
+    cdEntityName = v3;
   }
 
-  return v2;
+  return cdEntityName;
 }
 
 - (int64_t)parentEffectiveMinimumSupportedVersion
 {
-  v2 = self;
-  v3 = [(REMCDTemplate *)v2 parentAccount];
-  if (v3)
+  selfCopy = self;
+  parentAccount = [(REMCDTemplate *)selfCopy parentAccount];
+  if (parentAccount)
   {
-    v4 = v3;
-    v5 = [v4 effectiveMinimumSupportedVersion];
+    v4 = parentAccount;
+    effectiveMinimumSupportedVersion = [v4 effectiveMinimumSupportedVersion];
   }
 
   else
   {
-    v5 = kREMSupportedVersionUnset;
+    effectiveMinimumSupportedVersion = kREMSupportedVersionUnset;
   }
 
-  return v5;
+  return effectiveMinimumSupportedVersion;
 }
 
 + (id)keyPathsForValuesAffectingEffectiveMinimumSupportedVersion
@@ -171,20 +171,20 @@
   return v2.super.isa;
 }
 
-- (BOOL)isConnectedToAccountObject:(id)a3
+- (BOOL)isConnectedToAccountObject:(id)object
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = REMCDTemplate.isConnected(toAccountObject:)(v4);
+  objectCopy = object;
+  selfCopy = self;
+  LOBYTE(self) = REMCDTemplate.isConnected(toAccountObject:)(objectCopy);
 
   return self & 1;
 }
 
-- (REMCDTemplate)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (REMCDTemplate)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for REMCDTemplate();
-  return [(REMCDTemplate *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(REMCDTemplate *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 - (void).cxx_construct
@@ -200,7 +200,7 @@
   if ((*(&self->super.super.super.isa + OBJC_IVAR___REMCDTemplate_didCleanUpManualSortHintOnMarkingForDeletion) & 1) == 0)
   {
     *(&self->super.super.super.isa + OBJC_IVAR___REMCDTemplate_didCleanUpManualSortHintOnMarkingForDeletion) = 1;
-    v3 = self;
+    selfCopy = self;
     sub_10043ACE0();
   }
 }

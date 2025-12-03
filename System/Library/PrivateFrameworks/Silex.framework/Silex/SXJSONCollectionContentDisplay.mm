@@ -1,18 +1,18 @@
 @interface SXJSONCollectionContentDisplay
-- (unint64_t)alignmentWithValue:(id)a3 withType:(int)a4;
-- (unint64_t)distributionWithValue:(id)a3 withType:(int)a4;
-- (unint64_t)widowsWithValue:(id)a3 withType:(int)a4;
+- (unint64_t)alignmentWithValue:(id)value withType:(int)type;
+- (unint64_t)distributionWithValue:(id)value withType:(int)type;
+- (unint64_t)widowsWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXJSONCollectionContentDisplay
 
-- (unint64_t)widowsWithValue:(id)a3 withType:(int)a4
+- (unint64_t)widowsWithValue:(id)value withType:(int)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 == 3)
+  valueCopy = value;
+  v6 = valueCopy;
+  if (type == 3)
   {
-    if ([v5 isEqualToString:@"equalize"])
+    if ([valueCopy isEqualToString:@"equalize"])
     {
       v7 = 1;
     }
@@ -36,13 +36,13 @@
   return v7;
 }
 
-- (unint64_t)alignmentWithValue:(id)a3 withType:(int)a4
+- (unint64_t)alignmentWithValue:(id)value withType:(int)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 == 3)
+  valueCopy = value;
+  v6 = valueCopy;
+  if (type == 3)
   {
-    if ([v5 isEqualToString:@"center"])
+    if ([valueCopy isEqualToString:@"center"])
     {
       v7 = 1;
     }
@@ -66,11 +66,11 @@
   return v7;
 }
 
-- (unint64_t)distributionWithValue:(id)a3 withType:(int)a4
+- (unint64_t)distributionWithValue:(id)value withType:(int)type
 {
-  if (a4 == 3)
+  if (type == 3)
   {
-    return [a3 isEqualToString:{@"narrow", v4, v5}];
+    return [value isEqualToString:{@"narrow", v4, v5}];
   }
 
   else

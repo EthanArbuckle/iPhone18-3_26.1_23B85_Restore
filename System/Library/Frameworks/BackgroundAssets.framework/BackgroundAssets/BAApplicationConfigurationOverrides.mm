@@ -1,23 +1,23 @@
 @interface BAApplicationConfigurationOverrides
-+ (BOOL)_saveOverrides:(void *)a3 forAppBundleIdentifier:;
++ (BOOL)_saveOverrides:(void *)overrides forAppBundleIdentifier:;
 + (BOOL)clearAllOverrides;
 + (id)_getInternalAppOverridesDict;
-+ (id)_getOverridesForAppBundleIdentifier:(uint64_t)a1;
-- (void)setDomainAllowlist:(id)a3;
-- (void)setDownloadAllowance:(id)a3;
-- (void)setEssentialDownloadAllowance:(id)a3;
-- (void)setEssentialMaxInstallSize:(id)a3;
-- (void)setManifestURL:(id)a3;
-- (void)setMaxInstallSize:(id)a3;
++ (id)_getOverridesForAppBundleIdentifier:(uint64_t)identifier;
+- (void)setDomainAllowlist:(id)allowlist;
+- (void)setDownloadAllowance:(id)allowance;
+- (void)setEssentialDownloadAllowance:(id)allowance;
+- (void)setEssentialMaxInstallSize:(id)size;
+- (void)setManifestURL:(id)l;
+- (void)setMaxInstallSize:(id)size;
 @end
 
 @implementation BAApplicationConfigurationOverrides
 
-- (void)setEssentialMaxInstallSize:(id)a3
+- (void)setEssentialMaxInstallSize:(id)size
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [(NSNumber *)v4 integerValue]< 0)
+  sizeCopy = size;
+  v5 = sizeCopy;
+  if (sizeCopy && [(NSNumber *)sizeCopy integerValue]< 0)
   {
     v7 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT);
     if (v7)
@@ -36,11 +36,11 @@
   }
 }
 
-- (void)setMaxInstallSize:(id)a3
+- (void)setMaxInstallSize:(id)size
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [(NSNumber *)v4 integerValue]< 0)
+  sizeCopy = size;
+  v5 = sizeCopy;
+  if (sizeCopy && [(NSNumber *)sizeCopy integerValue]< 0)
   {
     v7 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT);
     if (v7)
@@ -59,11 +59,11 @@
   }
 }
 
-- (void)setEssentialDownloadAllowance:(id)a3
+- (void)setEssentialDownloadAllowance:(id)allowance
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [(NSNumber *)v4 integerValue]< 0)
+  allowanceCopy = allowance;
+  v5 = allowanceCopy;
+  if (allowanceCopy && [(NSNumber *)allowanceCopy integerValue]< 0)
   {
     v7 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT);
     if (v7)
@@ -82,11 +82,11 @@
   }
 }
 
-- (void)setDownloadAllowance:(id)a3
+- (void)setDownloadAllowance:(id)allowance
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [(NSNumber *)v4 integerValue]< 0)
+  allowanceCopy = allowance;
+  v5 = allowanceCopy;
+  if (allowanceCopy && [(NSNumber *)allowanceCopy integerValue]< 0)
   {
     v7 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT);
     if (v7)
@@ -105,11 +105,11 @@
   }
 }
 
-- (void)setManifestURL:(id)a3
+- (void)setManifestURL:(id)l
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ![(NSString *)v4 length])
+  lCopy = l;
+  v5 = lCopy;
+  if (lCopy && ![(NSString *)lCopy length])
   {
     v7 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT);
     if (v7)
@@ -128,12 +128,12 @@
   }
 }
 
-- (void)setDomainAllowlist:(id)a3
+- (void)setDomainAllowlist:(id)allowlist
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  allowlistCopy = allowlist;
+  v5 = allowlistCopy;
+  if (!allowlistCopy)
   {
 LABEL_12:
     domainAllowlist = self->_domainAllowlist;
@@ -143,7 +143,7 @@ LABEL_12:
     return;
   }
 
-  if ([(NSArray *)v4 count])
+  if ([(NSArray *)allowlistCopy count])
   {
     v31 = 0u;
     v32 = 0u;
@@ -196,7 +196,7 @@ LABEL_12:
   __break(0xB001u);
 }
 
-+ (id)_getOverridesForAppBundleIdentifier:(uint64_t)a1
++ (id)_getOverridesForAppBundleIdentifier:(uint64_t)identifier
 {
   v2 = a2;
   objc_opt_self();
@@ -228,70 +228,70 @@ LABEL_12:
   return v3;
 }
 
-+ (BOOL)_saveOverrides:(void *)a3 forAppBundleIdentifier:
++ (BOOL)_saveOverrides:(void *)overrides forAppBundleIdentifier:
 {
   v4 = a2;
-  v5 = a3;
+  overridesCopy = overrides;
   objc_opt_self();
   v6 = +[BAApplicationConfigurationOverrides _getInternalAppOverridesDict];
   v7 = v6;
   if (v4)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
-    v9 = [v4 manifestURL];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    manifestURL = [v4 manifestURL];
 
-    if (v9)
+    if (manifestURL)
     {
-      v10 = [v4 manifestURL];
-      [v8 setValue:v10 forKey:@"BAManifestURL"];
+      manifestURL2 = [v4 manifestURL];
+      [dictionary setValue:manifestURL2 forKey:@"BAManifestURL"];
     }
 
-    v11 = [v4 domainAllowlist];
+    domainAllowlist = [v4 domainAllowlist];
 
-    if (v11)
+    if (domainAllowlist)
     {
-      v12 = [v4 domainAllowlist];
-      [v8 setValue:v12 forKey:@"BADownloadDomainAllowList"];
+      domainAllowlist2 = [v4 domainAllowlist];
+      [dictionary setValue:domainAllowlist2 forKey:@"BADownloadDomainAllowList"];
     }
 
-    v13 = [v4 essentialMaxInstallSize];
+    essentialMaxInstallSize = [v4 essentialMaxInstallSize];
 
-    if (v13)
+    if (essentialMaxInstallSize)
     {
-      v14 = [v4 essentialMaxInstallSize];
-      [v8 setValue:v14 forKey:@"BAEssentialMaxInstallSize"];
+      essentialMaxInstallSize2 = [v4 essentialMaxInstallSize];
+      [dictionary setValue:essentialMaxInstallSize2 forKey:@"BAEssentialMaxInstallSize"];
     }
 
-    v15 = [v4 maxInstallSize];
+    maxInstallSize = [v4 maxInstallSize];
 
-    if (v15)
+    if (maxInstallSize)
     {
-      v16 = [v4 maxInstallSize];
-      [v8 setValue:v16 forKey:@"BAMaxInstallSize"];
+      maxInstallSize2 = [v4 maxInstallSize];
+      [dictionary setValue:maxInstallSize2 forKey:@"BAMaxInstallSize"];
     }
 
-    v17 = [v4 essentialDownloadAllowance];
+    essentialDownloadAllowance = [v4 essentialDownloadAllowance];
 
-    if (v17)
+    if (essentialDownloadAllowance)
     {
-      v18 = [v4 essentialDownloadAllowance];
-      [v8 setValue:v18 forKey:@"BAEssentialDownloadAllowance"];
+      essentialDownloadAllowance2 = [v4 essentialDownloadAllowance];
+      [dictionary setValue:essentialDownloadAllowance2 forKey:@"BAEssentialDownloadAllowance"];
     }
 
-    v19 = [v4 downloadAllowance];
+    downloadAllowance = [v4 downloadAllowance];
 
-    if (v19)
+    if (downloadAllowance)
     {
-      v20 = [v4 downloadAllowance];
-      [v8 setValue:v20 forKey:@"BADownloadAllowance"];
+      downloadAllowance2 = [v4 downloadAllowance];
+      [dictionary setValue:downloadAllowance2 forKey:@"BADownloadAllowance"];
     }
 
-    [v7 setValue:v8 forKey:v5];
+    [v7 setValue:dictionary forKey:overridesCopy];
   }
 
   else
   {
-    [v6 removeObjectForKey:v5];
+    [v6 removeObjectForKey:overridesCopy];
   }
 
   CFPreferencesSetAppValue(@"InternalAppOverrides", v7, @"com.apple.backgroundassets");
@@ -302,8 +302,8 @@ LABEL_12:
 
 + (BOOL)clearAllOverrides
 {
-  v2 = [MEMORY[0x277CBEAC0] dictionary];
-  CFPreferencesSetAppValue(@"InternalAppOverrides", v2, @"com.apple.backgroundassets");
+  dictionary = [MEMORY[0x277CBEAC0] dictionary];
+  CFPreferencesSetAppValue(@"InternalAppOverrides", dictionary, @"com.apple.backgroundassets");
   v3 = CFPreferencesAppSynchronize(@"com.apple.backgroundassets") != 0;
 
   return v3;
@@ -316,15 +316,15 @@ LABEL_12:
   v1 = v0;
   if (v0)
   {
-    v2 = [v0 mutableCopy];
+    dictionary = [v0 mutableCopy];
   }
 
   else
   {
-    v2 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v3 = v2;
+  v3 = dictionary;
 
   return v3;
 }

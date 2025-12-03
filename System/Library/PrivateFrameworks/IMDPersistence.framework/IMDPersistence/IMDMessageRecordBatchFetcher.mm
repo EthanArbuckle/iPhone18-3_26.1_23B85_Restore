@@ -1,7 +1,7 @@
 @interface IMDMessageRecordBatchFetcher
-- (IMDMessageRecordBatchFetcher)initWithChatPredicate:(id)a3 sortAscending:(BOOL)a4;
+- (IMDMessageRecordBatchFetcher)initWithChatPredicate:(id)predicate sortAscending:(BOOL)ascending;
 - (id)_rowIDPredicate;
-- (id)nextBatchWithSize:(unint64_t)a3;
+- (id)nextBatchWithSize:(unint64_t)size;
 @end
 
 @implementation IMDMessageRecordBatchFetcher
@@ -33,23 +33,23 @@
   return v12;
 }
 
-- (IMDMessageRecordBatchFetcher)initWithChatPredicate:(id)a3 sortAscending:(BOOL)a4
+- (IMDMessageRecordBatchFetcher)initWithChatPredicate:(id)predicate sortAscending:(BOOL)ascending
 {
-  v7 = a3;
+  predicateCopy = predicate;
   v11.receiver = self;
   v11.super_class = IMDMessageRecordBatchFetcher;
   v8 = [(IMDRecordBatchFetcher *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_chatPredicate, a3);
-    v9->_sortAscending = a4;
+    objc_storeStrong(&v8->_chatPredicate, predicate);
+    v9->_sortAscending = ascending;
   }
 
   return v9;
 }
 
-- (id)nextBatchWithSize:(unint64_t)a3
+- (id)nextBatchWithSize:(unint64_t)size
 {
   v67[2] = *MEMORY[0x1E69E9840];
   v59 = 0;
@@ -102,7 +102,7 @@ LABEL_7:
     v58[2] = sub_1B7B08264;
     v58[3] = &unk_1E7CB6860;
     v58[4] = &v59;
-    objc_msgSend_fetchMessageRecordsFilteredUsingPredicate_sortedUsingDescriptors_inChatsFilteredUsingPredicate_limit_completionHandler_(v32, v38, v25, v34, v37, a3, v58);
+    objc_msgSend_fetchMessageRecordsFilteredUsingPredicate_sortedUsingDescriptors_inChatsFilteredUsingPredicate_limit_completionHandler_(v32, v38, v25, v34, v37, size, v58);
   }
 
   else
@@ -115,7 +115,7 @@ LABEL_7:
     v57[2] = sub_1B7B08274;
     v57[3] = &unk_1E7CB6860;
     v57[4] = &v59;
-    objc_msgSend_fetchMessageRecordsFilteredUsingPredicate_sortedUsingDescriptors_parentedOnly_limit_completionHandler_(v32, v43, v25, v34, v42, a3, v57);
+    objc_msgSend_fetchMessageRecordsFilteredUsingPredicate_sortedUsingDescriptors_parentedOnly_limit_completionHandler_(v32, v43, v25, v34, v42, size, v57);
   }
 
   if (objc_msgSend_count(v60[5], v44, v45))

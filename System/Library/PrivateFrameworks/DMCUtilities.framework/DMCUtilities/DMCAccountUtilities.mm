@@ -1,35 +1,35 @@
 @interface DMCAccountUtilities
-+ (id)_appleAccountWithPersonaID:(id)a3;
-+ (id)accountIdentifierForAppleAccountWithPersonaID:(id)a3;
-+ (id)appStoreAccountIdentifierForPersona:(id)a3;
-+ (id)managedAppleIDNameWithPersonaID:(id)a3;
-- (BOOL)_signIniCloudAccountWithAuthenticationResult:(id)a3 personaID:(id)a4 baseViewController:(id)a5 outError:(id *)a6;
-- (BOOL)_signIniTunesAccountWithAuthenticationResult:(id)a3 personaID:(id)a4 canMakeAccountActive:(BOOL)a5 baseViewController:(id)a6 outError:(id *)a7;
++ (id)_appleAccountWithPersonaID:(id)d;
++ (id)accountIdentifierForAppleAccountWithPersonaID:(id)d;
++ (id)appStoreAccountIdentifierForPersona:(id)persona;
++ (id)managedAppleIDNameWithPersonaID:(id)d;
+- (BOOL)_signIniCloudAccountWithAuthenticationResult:(id)result personaID:(id)d baseViewController:(id)controller outError:(id *)error;
+- (BOOL)_signIniTunesAccountWithAuthenticationResult:(id)result personaID:(id)d canMakeAccountActive:(BOOL)active baseViewController:(id)controller outError:(id *)error;
 - (DMCHangDetectionQueue)signInQueue;
-- (void)signInAccountsWithTypes:(id)a3 authenticationResult:(id)a4 personaID:(id)a5 canMakeAccountActive:(BOOL)a6 baseViewController:(id)a7 completionHandler:(id)a8;
+- (void)signInAccountsWithTypes:(id)types authenticationResult:(id)result personaID:(id)d canMakeAccountActive:(BOOL)active baseViewController:(id)controller completionHandler:(id)handler;
 - (void)signOutAllPrimaryAccounts;
 @end
 
 @implementation DMCAccountUtilities
 
-+ (id)appStoreAccountIdentifierForPersona:(id)a3
++ (id)appStoreAccountIdentifierForPersona:(id)persona
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  personaCopy = persona;
+  if (personaCopy)
   {
-    v4 = [DMCAccountUtilities _appleAccountWithPersonaID:v3];
+    v4 = [DMCAccountUtilities _appleAccountWithPersonaID:personaCopy];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 ams_DSID];
+      ams_DSID = [v4 ams_DSID];
       v7 = *DMCLogObjects();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138543618;
-        v12 = v3;
+        v12 = personaCopy;
         v13 = 2114;
-        v14 = v6;
+        v14 = ams_DSID;
         _os_log_impl(&dword_1B1630000, v7, OS_LOG_TYPE_DEFAULT, "appStoreAccountIdentifierForPersona FOUND persona:%{public}@ -> accountIdentifier:%{public}@", &v11, 0x16u);
       }
     }
@@ -40,47 +40,47 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138543362;
-        v12 = v3;
+        v12 = personaCopy;
         _os_log_impl(&dword_1B1630000, v8, OS_LOG_TYPE_DEFAULT, "appStoreAccountIdentifierForPersona NOT FOUND persona:%{public}@", &v11, 0xCu);
       }
 
-      v6 = 0;
+      ams_DSID = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    ams_DSID = 0;
   }
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return ams_DSID;
 }
 
-+ (id)managedAppleIDNameWithPersonaID:(id)a3
++ (id)managedAppleIDNameWithPersonaID:(id)d
 {
-  v3 = [DMCAccountUtilities _appleAccountWithPersonaID:a3];
-  v4 = [v3 username];
+  v3 = [DMCAccountUtilities _appleAccountWithPersonaID:d];
+  username = [v3 username];
 
-  return v4;
+  return username;
 }
 
-+ (id)accountIdentifierForAppleAccountWithPersonaID:(id)a3
++ (id)accountIdentifierForAppleAccountWithPersonaID:(id)d
 {
-  v3 = [DMCAccountUtilities _appleAccountWithPersonaID:a3];
-  v4 = [v3 identifier];
+  v3 = [DMCAccountUtilities _appleAccountWithPersonaID:d];
+  identifier = [v3 identifier];
 
-  return v4;
+  return identifier;
 }
 
-+ (id)_appleAccountWithPersonaID:(id)a3
++ (id)_appleAccountWithPersonaID:(id)d
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E6959A48] defaultStore];
-  v5 = [v4 accountTypeWithAccountTypeIdentifier:*MEMORY[0x1E69597F8]];
-  [v4 accountsWithAccountType:v5];
+  dCopy = d;
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  v5 = [defaultStore accountTypeWithAccountTypeIdentifier:*MEMORY[0x1E69597F8]];
+  [defaultStore accountsWithAccountType:v5];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -104,7 +104,7 @@
         v12 = *(*(&v18 + 1) + 8 * i);
         v13 = [v12 objectForKeyedSubscript:v10];
         objc_opt_class();
-        if (objc_opt_isKindOfClass() & 1) != 0 && ([v13 isEqualToString:v3])
+        if (objc_opt_isKindOfClass() & 1) != 0 && ([v13 isEqualToString:dCopy])
         {
           v14 = v12;
 
@@ -136,31 +136,31 @@ LABEL_12:
   return v14;
 }
 
-- (void)signInAccountsWithTypes:(id)a3 authenticationResult:(id)a4 personaID:(id)a5 canMakeAccountActive:(BOOL)a6 baseViewController:(id)a7 completionHandler:(id)a8
+- (void)signInAccountsWithTypes:(id)types authenticationResult:(id)result personaID:(id)d canMakeAccountActive:(BOOL)active baseViewController:(id)controller completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = [(DMCAccountUtilities *)self signInQueue];
+  typesCopy = types;
+  resultCopy = result;
+  dCopy = d;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  signInQueue = [(DMCAccountUtilities *)self signInQueue];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __136__DMCAccountUtilities_signInAccountsWithTypes_authenticationResult_personaID_canMakeAccountActive_baseViewController_completionHandler___block_invoke;
   v25[3] = &unk_1E7ADC370;
-  v26 = v14;
-  v27 = self;
-  v28 = v15;
-  v29 = v16;
-  v30 = v17;
-  v31 = v18;
-  v32 = a6;
-  v20 = v17;
-  v21 = v16;
-  v22 = v15;
-  v23 = v18;
-  v24 = v14;
-  [v19 queueBlock:v25];
+  v26 = typesCopy;
+  selfCopy = self;
+  v28 = resultCopy;
+  v29 = dCopy;
+  v30 = controllerCopy;
+  v31 = handlerCopy;
+  activeCopy = active;
+  v20 = controllerCopy;
+  v21 = dCopy;
+  v22 = resultCopy;
+  v23 = handlerCopy;
+  v24 = typesCopy;
+  [signInQueue queueBlock:v25];
 }
 
 void __136__DMCAccountUtilities_signInAccountsWithTypes_authenticationResult_personaID_canMakeAccountActive_baseViewController_completionHandler___block_invoke(uint64_t a1)
@@ -276,11 +276,11 @@ LABEL_28:
   v26();
 }
 
-- (BOOL)_signIniCloudAccountWithAuthenticationResult:(id)a3 personaID:(id)a4 baseViewController:(id)a5 outError:(id *)a6
+- (BOOL)_signIniCloudAccountWithAuthenticationResult:(id)result personaID:(id)d baseViewController:(id)controller outError:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  resultCopy = result;
+  dCopy = d;
+  controllerCopy = controller;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -295,16 +295,16 @@ LABEL_28:
   v22[1] = 3221225472;
   v22[2] = __106__DMCAccountUtilities__signIniCloudAccountWithAuthenticationResult_personaID_baseViewController_outError___block_invoke;
   v22[3] = &unk_1E7ADC398;
-  v13 = v10;
+  v13 = resultCopy;
   v23 = v13;
-  v14 = v12;
+  v14 = controllerCopy;
   v24 = v14;
-  v25 = self;
+  selfCopy = self;
   v26 = &v28;
   v27 = &v32;
   v15 = MEMORY[0x1B2731A20](v22);
   v16 = v15;
-  if (v11)
+  if (dCopy)
   {
     v17 = *DMCLogObjects();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -313,7 +313,7 @@ LABEL_28:
       _os_log_impl(&dword_1B1630000, v17, OS_LOG_TYPE_DEBUG, "DMCAccountUtilities: Has enterprise persona, will sign in iCloud under enterprise persona", v21, 2u);
     }
 
-    v18 = [DMCPersonaHelper performBlockUnderPersona:v11 block:v16];
+    v18 = [DMCPersonaHelper performBlockUnderPersona:dCopy block:v16];
   }
 
   else
@@ -321,9 +321,9 @@ LABEL_28:
     (*(v15 + 16))(v15);
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = v33[5];
+    *error = v33[5];
   }
 
   v19 = *(v29 + 24);
@@ -420,29 +420,29 @@ void __106__DMCAccountUtilities__signIniCloudAccountWithAuthenticationResult_per
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_signIniTunesAccountWithAuthenticationResult:(id)a3 personaID:(id)a4 canMakeAccountActive:(BOOL)a5 baseViewController:(id)a6 outError:(id *)a7
+- (BOOL)_signIniTunesAccountWithAuthenticationResult:(id)result personaID:(id)d canMakeAccountActive:(BOOL)active baseViewController:(id)controller outError:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v30 = a6;
+  resultCopy = result;
+  dCopy = d;
+  controllerCopy = controller;
   v13 = DMCAKAuthenticationUsernameKey();
-  v29 = [v11 objectForKeyedSubscript:v13];
+  v29 = [resultCopy objectForKeyedSubscript:v13];
 
   v14 = DMCAKAuthenticationPasswordKey();
-  v15 = [v11 objectForKeyedSubscript:v14];
+  v15 = [resultCopy objectForKeyedSubscript:v14];
 
   v16 = DMCAKAuthenticationAlternateDSIDKey();
-  v17 = [v11 objectForKeyedSubscript:v16];
+  v17 = [resultCopy objectForKeyedSubscript:v16];
 
-  v18 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-  v19 = [v18 ams_activeiTunesAccount];
-  v20 = v19;
-  if (v19 && ([v19 dmc_altDSID], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqualToString:", v17), v21, v22))
+  ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+  ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
+  v20 = ams_activeiTunesAccount;
+  if (ams_activeiTunesAccount && ([ams_activeiTunesAccount dmc_altDSID], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqualToString:", v17), v21, v22))
   {
-    if (a7)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E6959978] code:5 userInfo:0];
-      *a7 = v23 = 0;
+      *error = v23 = 0;
     }
 
     else
@@ -467,8 +467,8 @@ void __106__DMCAccountUtilities__signIniCloudAccountWithAuthenticationResult_per
     v32[1] = 3221225472;
     v32[2] = __127__DMCAccountUtilities__signIniTunesAccountWithAuthenticationResult_personaID_canMakeAccountActive_baseViewController_outError___block_invoke;
     v32[3] = &unk_1E7ADC3E8;
-    v39 = a5;
-    v33 = v30;
+    activeCopy = active;
+    v33 = controllerCopy;
     v34 = v29;
     v35 = v17;
     v36 = v15;
@@ -476,7 +476,7 @@ void __106__DMCAccountUtilities__signIniCloudAccountWithAuthenticationResult_per
     v38 = &v44;
     v24 = MEMORY[0x1B2731A20](v32);
     v25 = v24;
-    if (v12)
+    if (dCopy)
     {
       v26 = *DMCLogObjects();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -485,7 +485,7 @@ void __106__DMCAccountUtilities__signIniCloudAccountWithAuthenticationResult_per
         _os_log_impl(&dword_1B1630000, v26, OS_LOG_TYPE_DEBUG, "DMCAccountUtilities: Has enterprise persona, will sign in iTunes under enterprise persona", buf, 2u);
       }
 
-      v27 = [DMCPersonaHelper performBlockUnderPersona:v12 block:v25, v29];
+      v27 = [DMCPersonaHelper performBlockUnderPersona:dCopy block:v25, v29];
     }
 
     else
@@ -493,9 +493,9 @@ void __106__DMCAccountUtilities__signIniCloudAccountWithAuthenticationResult_per
       (*(v24 + 16))(v24);
     }
 
-    if (a7)
+    if (error)
     {
-      *a7 = v45[5];
+      *error = v45[5];
     }
 
     v23 = *(v41 + 24);
@@ -588,11 +588,11 @@ void __127__DMCAccountUtilities__signIniTunesAccountWithAuthenticationResult_per
 
 - (void)signOutAllPrimaryAccounts
 {
-  v3 = [(DMCAccountUtilities *)self signInQueue];
-  [v3 queueBlock:&__block_literal_global_0];
+  signInQueue = [(DMCAccountUtilities *)self signInQueue];
+  [signInQueue queueBlock:&__block_literal_global_0];
 
-  v4 = [(DMCAccountUtilities *)self signInQueue];
-  [v4 waitUntilAllBlocksAreFinished];
+  signInQueue2 = [(DMCAccountUtilities *)self signInQueue];
+  [signInQueue2 waitUntilAllBlocksAreFinished];
 }
 
 void __48__DMCAccountUtilities_signOutAllPrimaryAccounts__block_invoke()

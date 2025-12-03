@@ -1,12 +1,12 @@
 @interface UNMutableNotificationContent
-- (void)setNotificationProviderIdentifier:(id)a3;
+- (void)setNotificationProviderIdentifier:(id)identifier;
 @end
 
 @implementation UNMutableNotificationContent
 
-- (void)setNotificationProviderIdentifier:(id)a3
+- (void)setNotificationProviderIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -18,7 +18,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1002E222C(v4, v6);
 }
 

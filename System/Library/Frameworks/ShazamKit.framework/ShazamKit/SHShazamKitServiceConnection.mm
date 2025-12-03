@@ -1,23 +1,23 @@
 @interface SHShazamKitServiceConnection
 - (NSXPCConnection)connection;
-- (SHShazamKitServiceConnection)initWithConnectionProvider:(id)a3;
+- (SHShazamKitServiceConnection)initWithConnectionProvider:(id)provider;
 - (id)delegate;
-- (id)matcherDelegateErrorHandlerForSignature:(id)a3;
-- (void)_libraryInfoWithCompletionHandler:(id)a3;
-- (void)_queryLibraryWithParameters:(id)a3 completionHandler:(id)a4;
-- (void)_synchronizeSnapshot:(id)a3 startCondition:(id)a4;
+- (id)matcherDelegateErrorHandlerForSignature:(id)signature;
+- (void)_libraryInfoWithCompletionHandler:(id)handler;
+- (void)_queryLibraryWithParameters:(id)parameters completionHandler:(id)handler;
+- (void)_synchronizeSnapshot:(id)snapshot startCondition:(id)condition;
 - (void)attachDefaultConnectionHandlers;
 - (void)dealloc;
-- (void)hapticsForMediaItems:(id)a3 completionHandler:(id)a4;
-- (void)isHapticTrackAvailableForMediaItem:(id)a3 completionHandler:(id)a4;
-- (void)matcher:(id)a3 didProduceResponse:(id)a4;
-- (void)mediaItemsForShazamIDs:(id)a3 completionHandler:(id)a4;
-- (void)prepareMatcherForRequestID:(id)a3 completionHandler:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)startRecognitionForRequest:(id)a3;
+- (void)hapticsForMediaItems:(id)items completionHandler:(id)handler;
+- (void)isHapticTrackAvailableForMediaItem:(id)item completionHandler:(id)handler;
+- (void)matcher:(id)matcher didProduceResponse:(id)response;
+- (void)mediaItemsForShazamIDs:(id)ds completionHandler:(id)handler;
+- (void)prepareMatcherForRequestID:(id)d completionHandler:(id)handler;
+- (void)setDelegate:(id)delegate;
+- (void)startRecognitionForRequest:(id)request;
 - (void)stopRecognition;
-- (void)stopRecognitionForRequestID:(id)a3;
-- (void)synchronouslyFetchRawSongResponseDataForMediaItemIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)stopRecognitionForRequestID:(id)d;
+- (void)synchronouslyFetchRawSongResponseDataForMediaItemIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)tearDownConnection;
 @end
 
@@ -31,9 +31,9 @@
   [(SHShazamKitServiceConnection *)&v3 dealloc];
 }
 
-- (SHShazamKitServiceConnection)initWithConnectionProvider:(id)a3
+- (SHShazamKitServiceConnection)initWithConnectionProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = SHShazamKitServiceConnection;
   v6 = [(SHShazamKitServiceConnection *)&v10 init];
@@ -43,7 +43,7 @@
     shazamKitClient = v6->_shazamKitClient;
     v6->_shazamKitClient = v7;
 
-    objc_storeStrong(&v6->_connectionProvider, a3);
+    objc_storeStrong(&v6->_connectionProvider, provider);
     v6->_connectionLock._os_unfair_lock_opaque = 0;
   }
 
@@ -52,17 +52,17 @@
 
 - (id)delegate
 {
-  v2 = [(SHShazamKitServiceConnection *)self shazamKitClient];
-  v3 = [v2 delegate];
+  shazamKitClient = [(SHShazamKitServiceConnection *)self shazamKitClient];
+  delegate = [shazamKitClient delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(SHShazamKitServiceConnection *)self shazamKitClient];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  shazamKitClient = [(SHShazamKitServiceConnection *)self shazamKitClient];
+  [shazamKitClient setDelegate:delegateCopy];
 }
 
 - (NSXPCConnection)connection
@@ -70,13 +70,13 @@
   os_unfair_lock_lock(&self->_connectionLock);
   if (!self->_connection)
   {
-    v3 = [(SHShazamKitServiceConnection *)self connectionProvider];
-    v4 = [v3 shazamKitServiceConnection];
+    connectionProvider = [(SHShazamKitServiceConnection *)self connectionProvider];
+    shazamKitServiceConnection = [connectionProvider shazamKitServiceConnection];
     connection = self->_connection;
-    self->_connection = v4;
+    self->_connection = shazamKitServiceConnection;
 
-    v6 = [(SHShazamKitServiceConnection *)self shazamKitClient];
-    [(NSXPCConnection *)self->_connection setExportedObject:v6];
+    shazamKitClient = [(SHShazamKitServiceConnection *)self shazamKitClient];
+    [(NSXPCConnection *)self->_connection setExportedObject:shazamKitClient];
 
     [(SHShazamKitServiceConnection *)self attachDefaultConnectionHandlers];
     [(NSXPCConnection *)self->_connection resume];
@@ -166,17 +166,17 @@ void __63__SHShazamKitServiceConnection_attachDefaultConnectionHandlers__block_i
   }
 }
 
-- (id)matcherDelegateErrorHandlerForSignature:(id)a3
+- (id)matcherDelegateErrorHandlerForSignature:(id)signature
 {
-  v4 = a3;
+  signatureCopy = signature;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __72__SHShazamKitServiceConnection_matcherDelegateErrorHandlerForSignature___block_invoke;
   aBlock[3] = &unk_2788F81B8;
   objc_copyWeak(&v10, &location);
-  v9 = v4;
-  v5 = v4;
+  v9 = signatureCopy;
+  v5 = signatureCopy;
   v6 = _Block_copy(aBlock);
 
   objc_destroyWeak(&v10);
@@ -207,21 +207,21 @@ void __72__SHShazamKitServiceConnection_matcherDelegateErrorHandlerForSignature_
   objc_destroyWeak(&to);
 }
 
-- (void)prepareMatcherForRequestID:(id)a3 completionHandler:(id)a4
+- (void)prepareMatcherForRequestID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SHShazamKitServiceConnection *)self connection];
+  handlerCopy = handler;
+  dCopy = d;
+  connection = [(SHShazamKitServiceConnection *)self connection];
   v9 = objc_opt_new();
   v10 = [(SHShazamKitServiceConnection *)self matcherDelegateErrorHandlerForSignature:v9];
-  v11 = [v8 remoteObjectProxyWithErrorHandler:v10];
+  v11 = [connection remoteObjectProxyWithErrorHandler:v10];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __77__SHShazamKitServiceConnection_prepareMatcherForRequestID_completionHandler___block_invoke;
   v13[3] = &unk_2788F8078;
-  v14 = v6;
-  v12 = v6;
-  [v11 prepareMatcherForRequestID:v7 completionHandler:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [v11 prepareMatcherForRequestID:dCopy completionHandler:v13];
 }
 
 uint64_t __77__SHShazamKitServiceConnection_prepareMatcherForRequestID_completionHandler___block_invoke(uint64_t a1)
@@ -236,22 +236,22 @@ uint64_t __77__SHShazamKitServiceConnection_prepareMatcherForRequestID_completio
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)startRecognitionForRequest:(id)a3
+- (void)startRecognitionForRequest:(id)request
 {
-  v9 = a3;
-  v4 = [(SHShazamKitServiceConnection *)self connection];
-  v5 = [v9 signature];
-  v6 = v5;
-  if (!v5)
+  requestCopy = request;
+  connection = [(SHShazamKitServiceConnection *)self connection];
+  signature = [requestCopy signature];
+  v6 = signature;
+  if (!signature)
   {
     v6 = objc_opt_new();
   }
 
   v7 = [(SHShazamKitServiceConnection *)self matcherDelegateErrorHandlerForSignature:v6];
-  v8 = [v4 remoteObjectProxyWithErrorHandler:v7];
-  [v8 startRecognitionForRequest:v9 completionHandler:&__block_literal_global_8];
+  v8 = [connection remoteObjectProxyWithErrorHandler:v7];
+  [v8 startRecognitionForRequest:requestCopy completionHandler:&__block_literal_global_8];
 
-  if (!v5)
+  if (!signature)
   {
   }
 }
@@ -266,48 +266,48 @@ void __59__SHShazamKitServiceConnection_startRecognitionForRequest___block_invok
   }
 }
 
-- (void)matcher:(id)a3 didProduceResponse:(id)a4
+- (void)matcher:(id)matcher didProduceResponse:(id)response
 {
-  v6 = a4;
-  v7 = a3;
-  v11 = [(SHShazamKitServiceConnection *)self connection];
-  v8 = [v6 signature];
-  v9 = [(SHShazamKitServiceConnection *)self matcherDelegateErrorHandlerForSignature:v8];
-  v10 = [v11 remoteObjectProxyWithErrorHandler:v9];
-  [v10 matcher:v7 didProduceResponse:v6];
+  responseCopy = response;
+  matcherCopy = matcher;
+  connection = [(SHShazamKitServiceConnection *)self connection];
+  signature = [responseCopy signature];
+  v9 = [(SHShazamKitServiceConnection *)self matcherDelegateErrorHandlerForSignature:signature];
+  v10 = [connection remoteObjectProxyWithErrorHandler:v9];
+  [v10 matcher:matcherCopy didProduceResponse:responseCopy];
 }
 
 - (void)stopRecognition
 {
-  v3 = [(SHShazamKitServiceConnection *)self connection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 stopRecognition];
+  connection = [(SHShazamKitServiceConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy stopRecognition];
 }
 
-- (void)stopRecognitionForRequestID:(id)a3
+- (void)stopRecognitionForRequestID:(id)d
 {
-  v4 = a3;
-  v6 = [(SHShazamKitServiceConnection *)self connection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 stopRecognitionForRequestID:v4];
+  dCopy = d;
+  connection = [(SHShazamKitServiceConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy stopRecognitionForRequestID:dCopy];
 }
 
-- (void)_synchronizeSnapshot:(id)a3 startCondition:(id)a4
+- (void)_synchronizeSnapshot:(id)snapshot startCondition:(id)condition
 {
-  v6 = a3;
-  v7 = a4;
+  snapshotCopy = snapshot;
+  conditionCopy = condition;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __68__SHShazamKitServiceConnection__synchronizeSnapshot_startCondition___block_invoke;
   aBlock[3] = &unk_2788F81B8;
   objc_copyWeak(&v14, &location);
-  v8 = v6;
+  v8 = snapshotCopy;
   v13 = v8;
   v9 = _Block_copy(aBlock);
-  v10 = [(SHShazamKitServiceConnection *)self connection];
-  v11 = [v10 remoteObjectProxyWithErrorHandler:v9];
-  [v11 synchronizeSnapshot:v8 startCondition:v7 completionHandler:&__block_literal_global_69];
+  connection = [(SHShazamKitServiceConnection *)self connection];
+  v11 = [connection remoteObjectProxyWithErrorHandler:v9];
+  [v11 synchronizeSnapshot:v8 startCondition:conditionCopy completionHandler:&__block_literal_global_69];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -349,18 +349,18 @@ void __68__SHShazamKitServiceConnection__synchronizeSnapshot_startCondition___bl
   }
 }
 
-- (void)_libraryInfoWithCompletionHandler:(id)a3
+- (void)_libraryInfoWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __66__SHShazamKitServiceConnection__libraryInfoWithCompletionHandler___block_invoke;
   aBlock[3] = &unk_2788F8078;
-  v10 = v4;
-  v5 = v4;
+  v10 = handlerCopy;
+  v5 = handlerCopy;
   v6 = _Block_copy(aBlock);
-  v7 = [(SHShazamKitServiceConnection *)self connection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  connection = [(SHShazamKitServiceConnection *)self connection];
+  v8 = [connection remoteObjectProxyWithErrorHandler:v6];
   [v8 _libraryInfoWithCompletionHandler:v5];
 }
 
@@ -370,20 +370,20 @@ void __66__SHShazamKitServiceConnection__libraryInfoWithCompletionHandler___bloc
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_queryLibraryWithParameters:(id)a3 completionHandler:(id)a4
+- (void)_queryLibraryWithParameters:(id)parameters completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __78__SHShazamKitServiceConnection__queryLibraryWithParameters_completionHandler___block_invoke;
   aBlock[3] = &unk_2788F8078;
-  v13 = v6;
-  v7 = v6;
-  v8 = a3;
+  v13 = handlerCopy;
+  v7 = handlerCopy;
+  parametersCopy = parameters;
   v9 = _Block_copy(aBlock);
-  v10 = [(SHShazamKitServiceConnection *)self connection];
-  v11 = [v10 remoteObjectProxyWithErrorHandler:v9];
-  [v11 _queryLibraryWithParameters:v8 completionHandler:v7];
+  connection = [(SHShazamKitServiceConnection *)self connection];
+  v11 = [connection remoteObjectProxyWithErrorHandler:v9];
+  [v11 _queryLibraryWithParameters:parametersCopy completionHandler:v7];
 }
 
 void __78__SHShazamKitServiceConnection__queryLibraryWithParameters_completionHandler___block_invoke(uint64_t a1)
@@ -392,20 +392,20 @@ void __78__SHShazamKitServiceConnection__queryLibraryWithParameters_completionHa
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)mediaItemsForShazamIDs:(id)a3 completionHandler:(id)a4
+- (void)mediaItemsForShazamIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __73__SHShazamKitServiceConnection_mediaItemsForShazamIDs_completionHandler___block_invoke;
   aBlock[3] = &unk_2788F8078;
-  v13 = v6;
-  v7 = v6;
-  v8 = a3;
+  v13 = handlerCopy;
+  v7 = handlerCopy;
+  dsCopy = ds;
   v9 = _Block_copy(aBlock);
-  v10 = [(SHShazamKitServiceConnection *)self connection];
-  v11 = [v10 remoteObjectProxyWithErrorHandler:v9];
-  [v11 mediaItemsForShazamIDs:v8 completionHandler:v7];
+  connection = [(SHShazamKitServiceConnection *)self connection];
+  v11 = [connection remoteObjectProxyWithErrorHandler:v9];
+  [v11 mediaItemsForShazamIDs:dsCopy completionHandler:v7];
 }
 
 void __73__SHShazamKitServiceConnection_mediaItemsForShazamIDs_completionHandler___block_invoke(uint64_t a1)
@@ -414,20 +414,20 @@ void __73__SHShazamKitServiceConnection_mediaItemsForShazamIDs_completionHandler
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)synchronouslyFetchRawSongResponseDataForMediaItemIdentifier:(id)a3 completionHandler:(id)a4
+- (void)synchronouslyFetchRawSongResponseDataForMediaItemIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __110__SHShazamKitServiceConnection_synchronouslyFetchRawSongResponseDataForMediaItemIdentifier_completionHandler___block_invoke;
   aBlock[3] = &unk_2788F8078;
-  v13 = v6;
-  v7 = v6;
-  v8 = a3;
+  v13 = handlerCopy;
+  v7 = handlerCopy;
+  identifierCopy = identifier;
   v9 = _Block_copy(aBlock);
-  v10 = [(SHShazamKitServiceConnection *)self connection];
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v9];
-  [v11 synchronouslyFetchRawSongResponseDataForMediaItemIdentifier:v8 completionHandler:v7];
+  connection = [(SHShazamKitServiceConnection *)self connection];
+  v11 = [connection synchronousRemoteObjectProxyWithErrorHandler:v9];
+  [v11 synchronouslyFetchRawSongResponseDataForMediaItemIdentifier:identifierCopy completionHandler:v7];
 }
 
 void __110__SHShazamKitServiceConnection_synchronouslyFetchRawSongResponseDataForMediaItemIdentifier_completionHandler___block_invoke(uint64_t a1)
@@ -446,20 +446,20 @@ void __110__SHShazamKitServiceConnection_synchronouslyFetchRawSongResponseDataFo
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hapticsForMediaItems:(id)a3 completionHandler:(id)a4
+- (void)hapticsForMediaItems:(id)items completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __71__SHShazamKitServiceConnection_hapticsForMediaItems_completionHandler___block_invoke;
   aBlock[3] = &unk_2788F8078;
-  v13 = v6;
-  v7 = v6;
-  v8 = a3;
+  v13 = handlerCopy;
+  v7 = handlerCopy;
+  itemsCopy = items;
   v9 = _Block_copy(aBlock);
-  v10 = [(SHShazamKitServiceConnection *)self connection];
-  v11 = [v10 remoteObjectProxyWithErrorHandler:v9];
-  [v11 hapticsForMediaItems:v8 completionHandler:v7];
+  connection = [(SHShazamKitServiceConnection *)self connection];
+  v11 = [connection remoteObjectProxyWithErrorHandler:v9];
+  [v11 hapticsForMediaItems:itemsCopy completionHandler:v7];
 }
 
 void __71__SHShazamKitServiceConnection_hapticsForMediaItems_completionHandler___block_invoke(uint64_t a1)
@@ -468,20 +468,20 @@ void __71__SHShazamKitServiceConnection_hapticsForMediaItems_completionHandler__
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)isHapticTrackAvailableForMediaItem:(id)a3 completionHandler:(id)a4
+- (void)isHapticTrackAvailableForMediaItem:(id)item completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __85__SHShazamKitServiceConnection_isHapticTrackAvailableForMediaItem_completionHandler___block_invoke;
   aBlock[3] = &unk_2788F8078;
-  v13 = v6;
-  v7 = v6;
-  v8 = a3;
+  v13 = handlerCopy;
+  v7 = handlerCopy;
+  itemCopy = item;
   v9 = _Block_copy(aBlock);
-  v10 = [(SHShazamKitServiceConnection *)self connection];
-  v11 = [v10 remoteObjectProxyWithErrorHandler:v9];
-  [v11 isHapticTrackAvailableForMediaItem:v8 completionHandler:v7];
+  connection = [(SHShazamKitServiceConnection *)self connection];
+  v11 = [connection remoteObjectProxyWithErrorHandler:v9];
+  [v11 isHapticTrackAvailableForMediaItem:itemCopy completionHandler:v7];
 }
 
 void __85__SHShazamKitServiceConnection_isHapticTrackAvailableForMediaItem_completionHandler___block_invoke(uint64_t a1)

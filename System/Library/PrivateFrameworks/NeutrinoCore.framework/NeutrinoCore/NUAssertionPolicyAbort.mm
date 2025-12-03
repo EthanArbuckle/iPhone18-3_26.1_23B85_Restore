@@ -1,13 +1,13 @@
 @interface NUAssertionPolicyAbort
-- (void)notifyAssertion:(id)a3;
+- (void)notifyAssertion:(id)assertion;
 @end
 
 @implementation NUAssertionPolicyAbort
 
-- (void)notifyAssertion:(id)a3
+- (void)notifyAssertion:(id)assertion
 {
-  v3 = a3;
-  if ([v3 isFatal])
+  assertionCopy = assertion;
+  if ([assertionCopy isFatal])
   {
     abort();
   }

@@ -1,7 +1,7 @@
 @interface OrgApacheLuceneSearchDocIdSetIterator
-+ (id)allWithInt:(int)a3;
++ (id)allWithInt:(int)int;
 + (id)empty;
-- (int)slowAdvanceWithInt:(int)a3;
+- (int)slowAdvanceWithInt:(int)int;
 @end
 
 @implementation OrgApacheLuceneSearchDocIdSetIterator
@@ -14,23 +14,23 @@
   return v2;
 }
 
-+ (id)allWithInt:(int)a3
++ (id)allWithInt:(int)int
 {
   v4 = [OrgApacheLuceneSearchDocIdSetIterator__2 alloc];
-  v4->val$maxDoc_ = a3;
+  v4->val$maxDoc_ = int;
   v4->doc_ = -1;
 
   return v4;
 }
 
-- (int)slowAdvanceWithInt:(int)a3
+- (int)slowAdvanceWithInt:(int)int
 {
   do
   {
     result = [(OrgApacheLuceneSearchDocIdSetIterator *)self nextDoc];
   }
 
-  while (result < a3);
+  while (result < int);
   return result;
 }
 

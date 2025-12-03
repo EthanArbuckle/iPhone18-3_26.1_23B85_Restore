@@ -1,23 +1,23 @@
 @interface SBDeviceApplicationSceneHandle
-+ (double)_homeAffordanceInsetTopForWindowScene:(id)a3;
++ (double)_homeAffordanceInsetTopForWindowScene:(id)scene;
 - (BOOL)_classicAppPhoneOnPadPrefersLandscape;
 - (BOOL)_classicAppPhoneOnPadSupportsOldStyleMixedOrientation;
 - (BOOL)_currentClassicModeAllowsLaunchingToAnySupportedOrientation;
 - (BOOL)_isEnhancedWindowingEffectivelyEnabled;
 - (BOOL)_isSettingUpSceneOrientationRequest;
 - (BOOL)_supportsMixedOrientation;
-- (BOOL)_supportsMixedOrientationOnWindowScene:(id)a3;
+- (BOOL)_supportsMixedOrientationOnWindowScene:(id)scene;
 - (BOOL)_supportsMultiWindowLayouts;
 - (BOOL)_supportsSolariumSafeAreas;
 - (BOOL)_supportsWindowControls;
-- (BOOL)defaultStatusBarHiddenForOrientation:(int64_t)a3;
+- (BOOL)defaultStatusBarHiddenForOrientation:(int64_t)orientation;
 - (BOOL)forbidsActivationByBreadcrumbAction;
-- (BOOL)handleHardwareButtonEventType:(int64_t)a3;
+- (BOOL)handleHardwareButtonEventType:(int64_t)type;
 - (BOOL)isAutoHideEnabledForHomeAffordance;
 - (BOOL)isEdgeProtectEnabledForHomeGesture;
 - (BOOL)isReachabilitySupported;
-- (BOOL)isStatusBarForcedHiddenForOrientation:(int64_t)a3;
-- (BOOL)isStatusBarHiddenForActivationSettings:(id)a3 withOrientation:(int64_t)a4;
+- (BOOL)isStatusBarForcedHiddenForOrientation:(int64_t)orientation;
+- (BOOL)isStatusBarHiddenForActivationSettings:(id)settings withOrientation:(int64_t)orientation;
 - (BOOL)isTranslucent;
 - (BOOL)prefersClosingInSwitcherDisabled;
 - (BOOL)prefersHeaderHiddenInSwitcher;
@@ -25,7 +25,7 @@
 - (BOOL)requestedFullScreenCenterWindow;
 - (BOOL)shouldAlwaysDisplayLiveContent;
 - (BOOL)shouldPrioritizeForSwitcherOrdering;
-- (BOOL)shouldSuppressAlertForSuppressionContexts:(id)a3 sectionIdentifier:(id)a4;
+- (BOOL)shouldSuppressAlertForSuppressionContexts:(id)contexts sectionIdentifier:(id)identifier;
 - (BOOL)supportsCenterWindow;
 - (BOOL)wantsDeviceOrientationEventsEnabled;
 - (CGRect)statusBarAvoidanceFrame;
@@ -34,53 +34,53 @@
 - (NSString)sceneTitle;
 - (SBDeviceApplicationSceneStatusBarStateProvider)statusBarStateProvider;
 - (SBIdleTimerCoordinating)_idleTimerCoordinator;
-- (SBWindowControlsLayout)windowControlsLayoutForApplicationFrame:(SEL)a3 screenBounds:(CGRect)a4 activationSettings:(CGRect)a5;
-- (UIEdgeInsets)_safeAreaInsetsForInterfaceOrientation:(int64_t)a3 isPhone:(BOOL)a4 portraitSafeAreaInsets:(UIEdgeInsets)result statusBarHeight:(double)a6 homeAffordanceOverlayAllowance:(double)a7;
+- (SBWindowControlsLayout)windowControlsLayoutForApplicationFrame:(SEL)frame screenBounds:(CGRect)bounds activationSettings:(CGRect)settings;
+- (UIEdgeInsets)_safeAreaInsetsForInterfaceOrientation:(int64_t)orientation isPhone:(BOOL)phone portraitSafeAreaInsets:(UIEdgeInsets)result statusBarHeight:(double)height homeAffordanceOverlayAllowance:(double)allowance;
 - (_UIStatusBarData)overlayStatusBarData;
 - (char)_computeActivityMode;
 - (char)_computeJetsamMode;
 - (char)_computeResourceElevation;
 - (char)activityMode;
-- (double)defaultStatusBarHeightForOrientation:(int64_t)a3;
+- (double)defaultStatusBarHeightForOrientation:(int64_t)orientation;
 - (double)statusBarAlpha;
-- (double)statusBarHeightForOrientation:(int64_t)a3;
+- (double)statusBarHeightForOrientation:(int64_t)orientation;
 - (id)_defaultStatusBarForAssociatedDisplay;
 - (id)_defaultStatusBarHeights;
 - (id)_potentiallyJailedDisplayConfiguration;
-- (id)_safeAreaCornerInsetResolverForApplicationFrame:(CGRect)a3 screenBounds:(CGRect)a4 activationSettings:(id)a5;
-- (id)_sceneCornerRadiusConfigurationFromRequestContext:(id)a3 forEntity:(id)a4;
-- (id)_sceneDataStoreCreatingIfNecessary:(BOOL)a3;
-- (id)_sceneHostingInfoForSnapshottingAssertionWithView:(id)a3;
+- (id)_safeAreaCornerInsetResolverForApplicationFrame:(CGRect)frame screenBounds:(CGRect)bounds activationSettings:(id)settings;
+- (id)_sceneCornerRadiusConfigurationFromRequestContext:(id)context forEntity:(id)entity;
+- (id)_sceneDataStoreCreatingIfNecessary:(BOOL)necessary;
+- (id)_sceneHostingInfoForSnapshottingAssertionWithView:(id)view;
 - (id)_windowScene;
-- (id)acquireActiveAppearanceAssertionWithReason:(id)a3 activeAppearance:(int64_t)a4 priority:(int64_t)a5;
-- (id)acquireAssertionsForRelevancyResult:(id)a3 reason:(id)a4;
-- (id)acquireSceneActivityModeAssertionWithReason:(id)a3 activityMode:(char)a4;
-- (id)acquireSceneJetsamModeAssertionWithReason:(id)a3 jetsamMode:(char)a4;
-- (id)acquireSceneResourceElevationAssertionWithReason:(id)a3 resourceElevation:(char)a4;
+- (id)acquireActiveAppearanceAssertionWithReason:(id)reason activeAppearance:(int64_t)appearance priority:(int64_t)priority;
+- (id)acquireAssertionsForRelevancyResult:(id)result reason:(id)reason;
+- (id)acquireSceneActivityModeAssertionWithReason:(id)reason activityMode:(char)mode;
+- (id)acquireSceneJetsamModeAssertionWithReason:(id)reason jetsamMode:(char)mode;
+- (id)acquireSceneResourceElevationAssertionWithReason:(id)reason resourceElevation:(char)elevation;
 - (id)currentEffectiveStatusBarStyleRequest;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)displayEdgeInfoForLayoutEnvironment:(int64_t)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)displayEdgeInfoForLayoutEnvironment:(int64_t)environment;
 - (id)effectiveBackgroundActivities;
-- (id)effectiveStatusBarStyleRequestForActivationSettings:(id)a3;
-- (id)mostRecentSceneSnapshotsForScale:(double)a3 launchingOrientation:(int64_t)a4;
-- (id)newScenePlaceholderContentContextWithActivationSettings:(id)a3;
+- (id)effectiveStatusBarStyleRequestForActivationSettings:(id)settings;
+- (id)mostRecentSceneSnapshotsForScale:(double)scale launchingOrientation:(int64_t)orientation;
+- (id)newScenePlaceholderContentContextWithActivationSettings:(id)settings;
 - (id)newSceneViewController;
-- (id)newSceneViewWithReferenceSize:(CGSize)a3 contentOrientation:(int64_t)a4 containerOrientation:(int64_t)a5 hostRequester:(id)a6;
-- (id)safeAreaEdgeInsetResolverForApplicationFrame:(CGRect)a3 screenBounds:(CGRect)a4 activationSettings:(id)a5;
-- (id)statusBarEffectiveStyleRequestWithStyle:(int64_t)a3;
-- (int64_t)_bestSupportedInterfaceOrientationForOrientation:(int64_t)a3;
-- (int64_t)_classicPhoneOnPadActivationOrientationForOrientation:(int64_t)a3;
+- (id)newSceneViewWithReferenceSize:(CGSize)size contentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation hostRequester:(id)requester;
+- (id)safeAreaEdgeInsetResolverForApplicationFrame:(CGRect)frame screenBounds:(CGRect)bounds activationSettings:(id)settings;
+- (id)statusBarEffectiveStyleRequestWithStyle:(int64_t)style;
+- (int64_t)_bestSupportedInterfaceOrientationForOrientation:(int64_t)orientation;
+- (int64_t)_classicPhoneOnPadActivationOrientationForOrientation:(int64_t)orientation;
 - (int64_t)_computeActiveAppearance;
 - (int64_t)_defaultStatusBarStyleFromSceneDataStore;
 - (int64_t)_initialDeviceOrientationFromSceneOrientationRequestSetup;
-- (int64_t)_initialMainSceneCompabilityMode:(id)a3;
+- (int64_t)_initialMainSceneCompabilityMode:(id)mode;
 - (int64_t)_interfaceOrientationFromUserResizing;
 - (int64_t)_interfaceOrientationMode;
-- (int64_t)_launchingInterfaceOrientationForOrientation:(int64_t)a3;
-- (int64_t)_preferredSizingPolicyForContentOrientation:(int64_t)a3 containerOrientation:(int64_t)a4;
-- (int64_t)_resumingInterfaceOrientationForOrientation:(int64_t)a3;
-- (int64_t)_statusBarStyleWithActivationSettings:(id)a3;
-- (int64_t)activationInterfaceOrientationForOrientation:(int64_t)a3;
+- (int64_t)_launchingInterfaceOrientationForOrientation:(int64_t)orientation;
+- (int64_t)_preferredSizingPolicyForContentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation;
+- (int64_t)_resumingInterfaceOrientationForOrientation:(int64_t)orientation;
+- (int64_t)_statusBarStyleWithActivationSettings:(id)settings;
+- (int64_t)activationInterfaceOrientationForOrientation:(int64_t)orientation;
 - (int64_t)backgroundStyle;
 - (int64_t)currentInterfaceOrientation;
 - (int64_t)currentStatusBarStyle;
@@ -91,82 +91,82 @@
 - (int64_t)wallpaperStyle;
 - (unint64_t)_mainSceneSupportedInterfaceOrientations;
 - (unint64_t)_supportedInterfaceOrientationsFromSceneOrientationRequestSetup;
-- (unint64_t)_supportedSizingPoliciesForContentOrientation:(int64_t)a3 containerOrientation:(int64_t)a4;
+- (unint64_t)_supportedSizingPoliciesForContentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation;
 - (unint64_t)preferredHardwareButtonEventTypes;
 - (unint64_t)screenEdgesDeferringSystemGestures;
 - (unsigned)jetsamPriority;
-- (void)_addSnapshottingInfoAssertion:(id)a3;
-- (void)_commonInitWithApplication:(id)a3 sceneIdentifier:(id)a4 displayIdentity:(id)a5;
-- (void)_didCreateScene:(id)a3;
-- (void)_didDestroyScene:(id)a3;
-- (void)_didUpdateClientSettings:(id)a3;
+- (void)_addSnapshottingInfoAssertion:(id)assertion;
+- (void)_commonInitWithApplication:(id)application sceneIdentifier:(id)identifier displayIdentity:(id)identity;
+- (void)_didCreateScene:(id)scene;
+- (void)_didDestroyScene:(id)scene;
+- (void)_didUpdateClientSettings:(id)settings;
 - (void)_didUpdateDisplayIdentity;
-- (void)_didUpdateSettingsWithDiff:(id)a3 previousSettings:(id)a4;
-- (void)_modifyApplicationSceneClientSettings:(id)a3 fromRequestContext:(id)a4 entity:(id)a5 initialSceneSettings:(id)a6;
-- (void)_modifyApplicationSceneSettings:(id)a3 fromRequestContext:(id)a4 entity:(id)a5;
-- (void)_modifyApplicationTransitionContext:(id)a3 fromRequestContext:(id)a4 entity:(id)a5;
-- (void)_modifyProcessExecutionContext:(id)a3 fromRequestContext:(id)a4 entity:(id)a5;
-- (void)_modifySafeAreaInsetsOnApplicationSceneSettings:(id)a3 isFloating:(BOOL)a4;
+- (void)_didUpdateSettingsWithDiff:(id)diff previousSettings:(id)settings;
+- (void)_modifyApplicationSceneClientSettings:(id)settings fromRequestContext:(id)context entity:(id)entity initialSceneSettings:(id)sceneSettings;
+- (void)_modifyApplicationSceneSettings:(id)settings fromRequestContext:(id)context entity:(id)entity;
+- (void)_modifyApplicationTransitionContext:(id)context fromRequestContext:(id)requestContext entity:(id)entity;
+- (void)_modifyProcessExecutionContext:(id)context fromRequestContext:(id)requestContext entity:(id)entity;
+- (void)_modifySafeAreaInsetsOnApplicationSceneSettings:(id)settings isFloating:(BOOL)floating;
 - (void)_needsInterfaceAppearanceUpdate;
 - (void)_noteActivationConditionsChanged;
 - (void)_noteBackgroundActivitiesToSuppressChanged;
 - (void)_noteContentPrefersToDisableClippingChanged;
-- (void)_noteDidMoveFromSceneManager:(id)a3;
+- (void)_noteDidMoveFromSceneManager:(id)manager;
 - (void)_noteMainSceneBackgroundStyleChanged;
-- (void)_noteReplacedWithSceneHandle:(id)a3;
+- (void)_noteReplacedWithSceneHandle:(id)handle;
 - (void)_noteSceneTitleChanged;
-- (void)_populateSettingsWithDefaultStatusBarHeight:(id)a3;
+- (void)_populateSettingsWithDefaultStatusBarHeight:(id)height;
 - (void)_reevaluateActiveAppearanceFromAssertions;
 - (void)_reevaluateActivityModeFromAssertions;
 - (void)_reevaluateJetsamModeFromAssertions;
 - (void)_reevaluateOcclusionBySystemUI;
 - (void)_reevaluateResourceElevationFromAssertions;
-- (void)_reevaluateSafeAreaSettingsForSceneSettings:(id)a3;
-- (void)_removeSnapshottingInfoAssertion:(id)a3;
+- (void)_reevaluateSafeAreaSettingsForSceneSettings:(id)settings;
+- (void)_removeSnapshottingInfoAssertion:(id)assertion;
 - (void)_resetSceneOrientationRequestState;
-- (void)_setClassicAppPhoneOnPadPrefersLandscape:(BOOL)a3;
-- (void)_setInitialDeviceOrientationFromSceneOrientationRequestSetup:(int64_t)a3;
-- (void)_setInterfaceOrientationFromUserResizing:(int64_t)a3;
-- (void)_setSettingUpSceneOrientationRequest:(BOOL)a3;
-- (void)_setSupportedInterfaceOrientationsFromSceneOrientationRequestSetup:(unint64_t)a3;
+- (void)_setClassicAppPhoneOnPadPrefersLandscape:(BOOL)landscape;
+- (void)_setInitialDeviceOrientationFromSceneOrientationRequestSetup:(int64_t)setup;
+- (void)_setInterfaceOrientationFromUserResizing:(int64_t)resizing;
+- (void)_setSettingUpSceneOrientationRequest:(BOOL)request;
+- (void)_setSupportedInterfaceOrientationsFromSceneOrientationRequestSetup:(unint64_t)setup;
 - (void)_updateActivityMode;
 - (void)_updateApplicationOcclusionRects;
 - (void)_updateCapturingContentForAdditionalRenderingDestination;
 - (void)_updateDisableMultitaskingWhileForegroundAssertionIfNeeded;
-- (void)_updateIdleTimerForReason:(id)a3;
+- (void)_updateIdleTimerForReason:(id)reason;
 - (void)_updateInterfaceActiveAppearance;
-- (void)_updateIsCapturingContentForAdditionalRenderingDestinationOfMutableSceneSettings:(id)a3 withDisplayIdentity:(id)a4;
+- (void)_updateIsCapturingContentForAdditionalRenderingDestinationOfMutableSceneSettings:(id)settings withDisplayIdentity:(id)identity;
 - (void)_updateJetsamPriority;
-- (void)_updateSceneHostingInfoForSnapshottingWithAssertion:(id)a3 forceUpdate:(BOOL)a4;
+- (void)_updateSceneHostingInfoForSnapshottingWithAssertion:(id)assertion forceUpdate:(BOOL)update;
 - (void)_updateSystemOcclusionRectsAndActiveAppearance;
-- (void)addObserver:(id)a3;
-- (void)appProtectionAssistantShouldShieldDidChange:(id)a3;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
-- (void)applicationProcessDidExit:(id)a3 withContext:(id)a4;
-- (void)applicationSceneHandle:(id)a3 appendToSceneSettings:(id)a4 fromRequestContext:(id)a5 entity:(id)a6;
+- (void)addObserver:(id)observer;
+- (void)appProtectionAssistantShouldShieldDidChange:(id)change;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
+- (void)applicationProcessDidExit:(id)exit withContext:(id)context;
+- (void)applicationSceneHandle:(id)handle appendToSceneSettings:(id)settings fromRequestContext:(id)context entity:(id)entity;
 - (void)dealloc;
-- (void)layoutPreferencesCoordinator:(id)a3 didUpdatePreferencesForScene:(id)a4 transitionContext:(id)a5;
-- (void)layoutPreferencesCoordinatorDidRecognizeDoubleTapInDraggableArea:(id)a3;
-- (void)reevaluateSafeAreaSettingsUsingAnimationSettings:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)saveSuspendSnapshot:(id)a3;
-- (void)setAlertSuppressionContextsBySectionIdentifier:(id)a3;
-- (void)setBackgroundActivitiesToSuppress:(id)a3;
-- (void)setContentPrefersToDisableClipping:(BOOL)a3;
-- (void)setKeyboardContextMaskStyle:(unint64_t)a3;
-- (void)setOccluded:(BOOL)a3;
-- (void)setPreferredWindowControlsPlacement:(int64_t)a3;
-- (void)setStatusBarAvoidanceFrame:(CGRect)a3;
-- (void)setStatusBarForceHidden:(BOOL)a3 forReason:(id)a4 animationSettings:(id)a5;
-- (void)setStatusBarParts:(int64_t)a3;
+- (void)layoutPreferencesCoordinator:(id)coordinator didUpdatePreferencesForScene:(id)scene transitionContext:(id)context;
+- (void)layoutPreferencesCoordinatorDidRecognizeDoubleTapInDraggableArea:(id)area;
+- (void)reevaluateSafeAreaSettingsUsingAnimationSettings:(id)settings;
+- (void)removeObserver:(id)observer;
+- (void)saveSuspendSnapshot:(id)snapshot;
+- (void)setAlertSuppressionContextsBySectionIdentifier:(id)identifier;
+- (void)setBackgroundActivitiesToSuppress:(id)suppress;
+- (void)setContentPrefersToDisableClipping:(BOOL)clipping;
+- (void)setKeyboardContextMaskStyle:(unint64_t)style;
+- (void)setOccluded:(BOOL)occluded;
+- (void)setPreferredWindowControlsPlacement:(int64_t)placement;
+- (void)setStatusBarAvoidanceFrame:(CGRect)frame;
+- (void)setStatusBarForceHidden:(BOOL)hidden forReason:(id)reason animationSettings:(id)settings;
+- (void)setStatusBarParts:(int64_t)parts;
 @end
 
 @implementation SBDeviceApplicationSceneHandle
 
 - (id)_windowScene
 {
-  v3 = [SBApp windowSceneManager];
-  v4 = [v3 windowSceneForSceneHandle:self];
+  windowSceneManager = [SBApp windowSceneManager];
+  v4 = [windowSceneManager windowSceneForSceneHandle:self];
 
   return v4;
 }
@@ -178,15 +178,15 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
-  return v5;
+  return integerValue;
 }
 
 - (SBDeviceApplicationSceneStatusBarStateProvider)statusBarStateProvider
@@ -228,8 +228,8 @@
 
   else
   {
-    v2 = [MEMORY[0x277D75418] currentDevice];
-    if ([v2 userInterfaceIdiom] || SBFEffectiveHomeButtonType() != 2)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom] || SBFEffectiveHomeButtonType() != 2)
     {
 LABEL_12:
 
@@ -237,12 +237,12 @@ LABEL_12:
     }
   }
 
-  v6 = [(SBApplicationSceneHandle *)self application];
-  v7 = [v6 isClassic];
+  application = [(SBApplicationSceneHandle *)self application];
+  isClassic = [application isClassic];
 
   if (v5)
   {
-    if ((v7 & 1) == 0)
+    if ((isClassic & 1) == 0)
     {
       return [(SBDeviceApplicationSceneHandle *)self wallpaperStyle]!= 1;
     }
@@ -251,7 +251,7 @@ LABEL_12:
   else
   {
 
-    if ((v7 & 1) == 0)
+    if ((isClassic & 1) == 0)
     {
       return [(SBDeviceApplicationSceneHandle *)self wallpaperStyle]!= 1;
     }
@@ -269,94 +269,94 @@ LABEL_12:
 
 - (int64_t)backgroundStyle
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  if (v3)
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  if (sceneIfExists)
   {
-    v4 = [(SBApplicationSceneHandle *)self application];
-    v5 = [v4 info];
-    v6 = [v3 uiClientSettings];
-    v7 = [v5 backgroundStyleForRequestedBackgroundStyle:{objc_msgSend(v6, "backgroundStyle")}];
+    application = [(SBApplicationSceneHandle *)self application];
+    info = [application info];
+    uiClientSettings = [sceneIfExists uiClientSettings];
+    defaultBackgroundStyle = [info backgroundStyleForRequestedBackgroundStyle:{objc_msgSend(uiClientSettings, "backgroundStyle")}];
   }
 
   else
   {
-    v7 = [(SBDeviceApplicationSceneHandle *)self defaultBackgroundStyle];
+    defaultBackgroundStyle = [(SBDeviceApplicationSceneHandle *)self defaultBackgroundStyle];
   }
 
-  return v7;
+  return defaultBackgroundStyle;
 }
 
 - (BOOL)isAutoHideEnabledForHomeAffordance
 {
-  v2 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  v3 = [v2 uiClientSettings];
-  v4 = [v3 homeIndicatorAutoHidden];
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  uiClientSettings = [sceneIfExists uiClientSettings];
+  homeIndicatorAutoHidden = [uiClientSettings homeIndicatorAutoHidden];
 
-  return v4;
+  return homeIndicatorAutoHidden;
 }
 
 - (unint64_t)_mainSceneSupportedInterfaceOrientations
 {
-  v3 = [(SBApplicationSceneHandle *)self application];
-  v4 = [v3 info];
-  if ([v3 isMedusaCapable])
+  application = [(SBApplicationSceneHandle *)self application];
+  info = [application info];
+  if ([application isMedusaCapable])
   {
-    v5 = 30;
+    supportedInterfaceOrientations = 30;
   }
 
   else
   {
-    v5 = [v4 supportedInterfaceOrientations];
-    v6 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-    v7 = v6;
-    if (v6)
+    supportedInterfaceOrientations = [info supportedInterfaceOrientations];
+    sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+    v7 = sceneIfExists;
+    if (sceneIfExists)
     {
-      v8 = [v6 uiClientSettings];
-      v5 = [v8 supportedInterfaceOrientations];
+      uiClientSettings = [sceneIfExists uiClientSettings];
+      supportedInterfaceOrientations = [uiClientSettings supportedInterfaceOrientations];
     }
   }
 
-  return v5;
+  return supportedInterfaceOrientations;
 }
 
 - (int64_t)defaultStatusBarStyle
 {
-  v2 = [(SBDeviceApplicationSceneHandle *)self statusBarStateProvider];
-  v3 = [v2 defaultStatusBarStyle];
+  statusBarStateProvider = [(SBDeviceApplicationSceneHandle *)self statusBarStateProvider];
+  defaultStatusBarStyle = [statusBarStateProvider defaultStatusBarStyle];
 
-  return v3;
+  return defaultStatusBarStyle;
 }
 
 - (id)currentEffectiveStatusBarStyleRequest
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self currentStatusBarStyle];
+  currentStatusBarStyle = [(SBDeviceApplicationSceneHandle *)self currentStatusBarStyle];
 
-  return [(SBDeviceApplicationSceneHandle *)self statusBarEffectiveStyleRequestWithStyle:v3];
+  return [(SBDeviceApplicationSceneHandle *)self statusBarEffectiveStyleRequestWithStyle:currentStatusBarStyle];
 }
 
 - (int64_t)currentStatusBarStyle
 {
-  v2 = [(SBDeviceApplicationSceneHandle *)self statusBarStateProvider];
-  v3 = [v2 statusBarStyle];
+  statusBarStateProvider = [(SBDeviceApplicationSceneHandle *)self statusBarStateProvider];
+  statusBarStyle = [statusBarStateProvider statusBarStyle];
 
-  return v3;
+  return statusBarStyle;
 }
 
 - (int64_t)statusBarOrientation
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  v4 = v3;
-  if (v3)
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  v4 = sceneIfExists;
+  if (sceneIfExists)
   {
-    v5 = [v3 currentInterfaceOrientation];
+    currentInterfaceOrientation = [sceneIfExists currentInterfaceOrientation];
   }
 
   else
   {
-    v5 = [(SBDeviceApplicationSceneHandle *)self activationInterfaceOrientationForCurrentOrientation];
+    currentInterfaceOrientation = [(SBDeviceApplicationSceneHandle *)self activationInterfaceOrientationForCurrentOrientation];
   }
 
-  v6 = v5;
+  v6 = currentInterfaceOrientation;
 
   return v6;
 }
@@ -367,14 +367,14 @@ LABEL_12:
   if (interfaceOrientationFromUserResizeIfAny == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = [(SBDeviceApplicationSceneHandle *)self _sceneDataStoreCreatingIfNecessary:0];
-    v5 = [v4 safeObjectForKey:@"interfaceOrientationFromUserResizing" ofType:objc_opt_class()];
-    v6 = v5;
-    if (v5)
+    integerValue = [v4 safeObjectForKey:@"interfaceOrientationFromUserResizing" ofType:objc_opt_class()];
+    v6 = integerValue;
+    if (integerValue)
     {
-      v5 = [v5 integerValue];
+      integerValue = [integerValue integerValue];
     }
 
-    self->_interfaceOrientationFromUserResizeIfAny = v5;
+    self->_interfaceOrientationFromUserResizeIfAny = integerValue;
 
     interfaceOrientationFromUserResizeIfAny = self->_interfaceOrientationFromUserResizeIfAny;
   }
@@ -392,11 +392,11 @@ LABEL_12:
 
 - (int64_t)defaultInterfaceOrientation
 {
-  v2 = [(SBApplicationSceneHandle *)self application];
-  v3 = [v2 info];
-  v4 = [v3 _launchingInterfaceOrientation];
+  application = [(SBApplicationSceneHandle *)self application];
+  info = [application info];
+  _launchingInterfaceOrientation = [info _launchingInterfaceOrientation];
 
-  return v4;
+  return _launchingInterfaceOrientation;
 }
 
 - (int64_t)_defaultStatusBarStyleFromSceneDataStore
@@ -406,22 +406,22 @@ LABEL_12:
 
   if (v3)
   {
-    v4 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v4 = -1;
+    intValue = -1;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (id)_potentiallyJailedDisplayConfiguration
 {
-  v2 = [(SBApplicationSceneHandle *)self application];
-  v3 = [MEMORY[0x277D0AA90] mainConfiguration];
-  v4 = [v2 restrictedClassicModeDisplayConfigurationForDisplayConfiguration:v3];
+  application = [(SBApplicationSceneHandle *)self application];
+  mainConfiguration = [MEMORY[0x277D0AA90] mainConfiguration];
+  v4 = [application restrictedClassicModeDisplayConfigurationForDisplayConfiguration:mainConfiguration];
 
   return v4;
 }
@@ -441,10 +441,10 @@ LABEL_12:
 
 - (int64_t)currentInterfaceOrientation
 {
-  v2 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  v3 = [v2 currentInterfaceOrientation];
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  currentInterfaceOrientation = [sceneIfExists currentInterfaceOrientation];
 
-  return v3;
+  return currentInterfaceOrientation;
 }
 
 - (BOOL)_currentClassicModeAllowsLaunchingToAnySupportedOrientation
@@ -456,50 +456,50 @@ LABEL_12:
       if (SBFEffectiveDeviceClass() != 2)
       {
 LABEL_4:
-        v3 = [(SBApplicationSceneHandle *)self application];
-        v4 = [v3 _classicMode];
+        application = [(SBApplicationSceneHandle *)self application];
+        _classicMode = [application _classicMode];
 
-        return (v4 - 3) < 0xFFFFFFFFFFFFFFFELL;
+        return (_classicMode - 3) < 0xFFFFFFFFFFFFFFFELL;
       }
     }
 
     else
     {
-      v6 = [MEMORY[0x277D75418] currentDevice];
-      v7 = [v6 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v7 != 1)
+      if (userInterfaceIdiom != 1)
       {
         goto LABEL_4;
       }
     }
   }
 
-  v8 = [(SBApplicationSceneHandle *)self application];
-  v9 = [v8 classicAppPhoneAppRunningOnPad];
+  application2 = [(SBApplicationSceneHandle *)self application];
+  classicAppPhoneAppRunningOnPad = [application2 classicAppPhoneAppRunningOnPad];
 
-  return v9 ^ 1;
+  return classicAppPhoneAppRunningOnPad ^ 1;
 }
 
 - (BOOL)_isEnhancedWindowingEffectivelyEnabled
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self wantsEnhancedWindowingEnabled];
-  if (v3)
+  wantsEnhancedWindowingEnabled = [(SBDeviceApplicationSceneHandle *)self wantsEnhancedWindowingEnabled];
+  if (wantsEnhancedWindowingEnabled)
   {
-    LOBYTE(v3) = ![(SBDeviceApplicationSceneHandle *)self isHostedSecureApp];
+    LOBYTE(wantsEnhancedWindowingEnabled) = ![(SBDeviceApplicationSceneHandle *)self isHostedSecureApp];
   }
 
-  return v3;
+  return wantsEnhancedWindowingEnabled;
 }
 
 - (BOOL)shouldPrioritizeForSwitcherOrdering
 {
-  v2 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  if (v2)
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  if (sceneIfExists)
   {
     v3 = objc_opt_class();
-    v4 = [v2 uiClientSettings];
-    v5 = SBSafeCast(v3, v4);
+    uiClientSettings = [sceneIfExists uiClientSettings];
+    v5 = SBSafeCast(v3, uiClientSettings);
 
     v6 = v5 != 0;
   }
@@ -520,22 +520,22 @@ LABEL_4:
     [SBDeviceApplicationSceneHandle _defaultStatusBarHeights];
   }
 
-  v3 = [(SBApplicationSceneHandle *)self application];
-  v30 = [(SBDeviceApplicationSceneHandle *)self _defaultStatusBarForAssociatedDisplay];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  if (![v3 isClassic])
+  application = [(SBApplicationSceneHandle *)self application];
+  _defaultStatusBarForAssociatedDisplay = [(SBDeviceApplicationSceneHandle *)self _defaultStatusBarForAssociatedDisplay];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (![application isClassic])
   {
     *&v8 = 1.79769313e308;
     goto LABEL_9;
   }
 
   v5 = 20.0;
-  if (SBApplicationClassicModeExpectsRoundedCorners([v3 _classicMode]))
+  if (SBApplicationClassicModeExpectsRoundedCorners([application _classicMode]))
   {
-    v6 = [MEMORY[0x277D75418] currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v7 & 0xFFFFFFFFFFFFFFFBLL) != 1 || (v5 = 24.0, [v3 classicAppPhoneAppRunningOnPad]))
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1 || (v5 = 24.0, [application classicAppPhoneAppRunningOnPad]))
     {
       *&v8 = 44.0;
 LABEL_9:
@@ -543,7 +543,7 @@ LABEL_9:
     }
   }
 
-  v29 = v3;
+  v29 = application;
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
@@ -567,8 +567,8 @@ LABEL_9:
         }
 
         v14 = *(*(&v33 + 1) + 8 * v13);
-        v15 = [v14 integerValue];
-        v16 = [(SBDeviceApplicationSceneHandle *)self isStatusBarForcedHiddenForOrientation:v15];
+        integerValue = [v14 integerValue];
+        v16 = [(SBDeviceApplicationSceneHandle *)self isStatusBarForcedHiddenForOrientation:integerValue];
         if (v16)
         {
           v17 = 0.0;
@@ -581,27 +581,27 @@ LABEL_9:
 
         if (!v16 && v5 == 1.79769313e308)
         {
-          v18 = [(SBApplicationSceneHandle *)self application];
-          v19 = [v18 info];
-          if (v19)
+          application2 = [(SBApplicationSceneHandle *)self application];
+          info = [application2 info];
+          if (info)
           {
-            v20 = [(SBApplicationSceneHandle *)self application];
-            [v20 info];
-            v21 = self;
+            application3 = [(SBApplicationSceneHandle *)self application];
+            [application3 info];
+            selfCopy = self;
             v22 = v11;
-            v24 = v23 = v4;
-            [v30 heightForOrientation:v15 isAzulBLinked:{objc_msgSend(v24, "isAzulBLinked")}];
+            v24 = v23 = dictionary;
+            [_defaultStatusBarForAssociatedDisplay heightForOrientation:integerValue isAzulBLinked:{objc_msgSend(v24, "isAzulBLinked")}];
             v17 = v25;
 
-            v4 = v23;
+            dictionary = v23;
             v11 = v22;
-            self = v21;
+            self = selfCopy;
             v12 = 0x277CCA000;
           }
 
           else
           {
-            [v30 heightForOrientation:v15 isAzulBLinked:1];
+            [_defaultStatusBarForAssociatedDisplay heightForOrientation:integerValue isAzulBLinked:1];
             v17 = v26;
           }
 
@@ -609,7 +609,7 @@ LABEL_9:
         }
 
         v27 = [*(v12 + 2992) numberWithDouble:v17];
-        [v4 setObject:v27 forKeyedSubscript:v14];
+        [dictionary setObject:v27 forKeyedSubscript:v14];
 
         ++v13;
       }
@@ -621,32 +621,32 @@ LABEL_9:
     while (v10);
   }
 
-  return v4;
+  return dictionary;
 }
 
 - (BOOL)_supportsSolariumSafeAreas
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self _windowScene];
-  v4 = [v3 switcherController];
-  v5 = [v4 windowManagementContext];
-  v6 = [(SBApplicationSceneHandle *)self application];
-  v7 = [v6 info];
+  _windowScene = [(SBDeviceApplicationSceneHandle *)self _windowScene];
+  switcherController = [_windowScene switcherController];
+  windowManagementContext = [switcherController windowManagementContext];
+  application = [(SBApplicationSceneHandle *)self application];
+  info = [application info];
 
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  if ([v8 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
-    v9 = [(SBApplicationSceneHandle *)self application];
-    v10 = [v9 classicAppPhoneAppRunningOnPad];
+    application2 = [(SBApplicationSceneHandle *)self application];
+    classicAppPhoneAppRunningOnPad = [application2 classicAppPhoneAppRunningOnPad];
   }
 
   else
   {
-    v10 = 1;
+    classicAppPhoneAppRunningOnPad = 1;
   }
 
-  if (_UISolariumEnabled() && [v7 isLuckLinked] && ((objc_msgSend(v7, "wantsFullScreen") | v10) & 1) == 0 && objc_msgSend(v5, "isFlexibleWindowingEnabled"))
+  if (_UISolariumEnabled() && [info isLuckLinked] && ((objc_msgSend(info, "wantsFullScreen") | classicAppPhoneAppRunningOnPad) & 1) == 0 && objc_msgSend(windowManagementContext, "isFlexibleWindowingEnabled"))
   {
-    v11 = [v7 requiresPreSolariumDesign] ^ 1;
+    v11 = [info requiresPreSolariumDesign] ^ 1;
   }
 
   else
@@ -659,21 +659,21 @@ LABEL_9:
 
 - (id)_defaultStatusBarForAssociatedDisplay
 {
-  v2 = [(SBDeviceApplicationSceneHandle *)self _windowScene];
-  v3 = [v2 statusBarManager];
-  v4 = [v3 statusBar];
+  _windowScene = [(SBDeviceApplicationSceneHandle *)self _windowScene];
+  statusBarManager = [_windowScene statusBarManager];
+  statusBar = [statusBarManager statusBar];
 
-  return v4;
+  return statusBar;
 }
 
 - (double)statusBarAlpha
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  v4 = v3;
-  if (v3)
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  v4 = sceneIfExists;
+  if (sceneIfExists)
   {
-    v5 = [v3 uiClientSettings];
-    [v5 statusBarAlpha];
+    uiClientSettings = [sceneIfExists uiClientSettings];
+    [uiClientSettings statusBarAlpha];
     v7 = v6;
   }
 
@@ -688,12 +688,12 @@ LABEL_9:
 
 - (BOOL)shouldAlwaysDisplayLiveContent
 {
-  v2 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  if (v2)
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  if (sceneIfExists)
   {
     v3 = objc_opt_class();
-    v4 = [v2 uiClientSettings];
-    v5 = SBSafeCast(v3, v4);
+    uiClientSettings = [sceneIfExists uiClientSettings];
+    v5 = SBSafeCast(v3, uiClientSettings);
 
     v6 = v5 != 0;
   }
@@ -708,21 +708,21 @@ LABEL_9:
 
 - (BOOL)_supportsMixedOrientation
 {
-  v2 = self;
-  v3 = [(SBDeviceApplicationSceneHandle *)self _windowScene];
-  LOBYTE(v2) = [(SBDeviceApplicationSceneHandle *)v2 _supportsMixedOrientationOnWindowScene:v3];
+  selfCopy = self;
+  _windowScene = [(SBDeviceApplicationSceneHandle *)self _windowScene];
+  LOBYTE(selfCopy) = [(SBDeviceApplicationSceneHandle *)selfCopy _supportsMixedOrientationOnWindowScene:_windowScene];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)prefersKillingInSwitcherDisabled
 {
-  v2 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  if (v2)
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  if (sceneIfExists)
   {
     v3 = objc_opt_class();
-    v4 = [v2 uiClientSettings];
-    v5 = SBSafeCast(v3, v4);
+    uiClientSettings = [sceneIfExists uiClientSettings];
+    v5 = SBSafeCast(v3, uiClientSettings);
 
     v6 = v5 != 0;
   }
@@ -737,12 +737,12 @@ LABEL_9:
 
 - (BOOL)prefersHeaderHiddenInSwitcher
 {
-  v2 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  if (v2)
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  if (sceneIfExists)
   {
     v3 = objc_opt_class();
-    v4 = [v2 uiSettings];
-    v5 = SBSafeCast(v3, v4);
+    uiSettings = [sceneIfExists uiSettings];
+    v5 = SBSafeCast(v3, uiSettings);
 
     if (v5)
     {
@@ -780,21 +780,21 @@ LABEL_9:
 
 - (unint64_t)screenEdgesDeferringSystemGestures
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  v4 = v3;
-  if (v3)
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  v4 = sceneIfExists;
+  if (sceneIfExists)
   {
-    v5 = [v3 uiClientSettings];
-    v6 = [v5 screenEdgesDeferringSystemGestures];
-    v7 = [(SBApplicationSceneHandle *)self application];
-    if (![v7 isClassic] || (objc_msgSend(v7, "classicAppFullScreen") & 1) != 0)
+    uiClientSettings = [sceneIfExists uiClientSettings];
+    screenEdgesDeferringSystemGestures = [uiClientSettings screenEdgesDeferringSystemGestures];
+    application = [(SBApplicationSceneHandle *)self application];
+    if (![application isClassic] || (objc_msgSend(application, "classicAppFullScreen") & 1) != 0)
     {
       goto LABEL_16;
     }
 
-    if ([v7 classicAppPhoneAppRunningOnPad])
+    if ([application classicAppPhoneAppRunningOnPad])
     {
-      v6 = 0;
+      screenEdgesDeferringSystemGestures = 0;
 LABEL_16:
 
       goto LABEL_17;
@@ -810,10 +810,10 @@ LABEL_16:
 
     else
     {
-      v8 = [MEMORY[0x277D75418] currentDevice];
-      v9 = [v8 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v9)
+      if (userInterfaceIdiom)
       {
         goto LABEL_16;
       }
@@ -829,53 +829,53 @@ LABEL_16:
       v10 = -6;
     }
 
-    v6 &= v10;
+    screenEdgesDeferringSystemGestures &= v10;
     goto LABEL_16;
   }
 
-  v6 = 0;
+  screenEdgesDeferringSystemGestures = 0;
 LABEL_17:
 
-  return v6;
+  return screenEdgesDeferringSystemGestures;
 }
 
 - (int64_t)_interfaceOrientationMode
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  v4 = v3;
-  if (v3)
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  v4 = sceneIfExists;
+  if (sceneIfExists)
   {
-    v5 = [v3 uiSettings];
-    v6 = [v5 interfaceOrientationMode];
+    uiSettings = [sceneIfExists uiSettings];
+    interfaceOrientationMode = [uiSettings interfaceOrientationMode];
   }
 
   else
   {
-    v5 = [(SBApplicationSceneHandle *)self application];
-    if (_SBApplicationClassicModeIsClassic([v5 _defaultClassicMode]))
+    uiSettings = [(SBApplicationSceneHandle *)self application];
+    if (_SBApplicationClassicModeIsClassic([uiSettings _defaultClassicMode]))
     {
-      v6 = 1;
+      interfaceOrientationMode = 1;
     }
 
     else
     {
-      v6 = 2;
+      interfaceOrientationMode = 2;
     }
   }
 
-  return v6;
+  return interfaceOrientationMode;
 }
 
 - (void)_noteMainSceneBackgroundStyleChanged
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  v4 = [v3 uiPresentationManager];
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  uiPresentationManager = [sceneIfExists uiPresentationManager];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __70__SBDeviceApplicationSceneHandle__noteMainSceneBackgroundStyleChanged__block_invoke;
   v5[3] = &unk_2783A9210;
   v5[4] = self;
-  [v4 modifyDefaultPresentationContext:v5];
+  [uiPresentationManager modifyDefaultPresentationContext:v5];
 }
 
 void __70__SBDeviceApplicationSceneHandle__noteMainSceneBackgroundStyleChanged__block_invoke(uint64_t a1, void *a2)
@@ -898,18 +898,18 @@ void __70__SBDeviceApplicationSceneHandle__noteMainSceneBackgroundStyleChanged__
 
 - (BOOL)wantsDeviceOrientationEventsEnabled
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  v4 = v3;
-  if (v3)
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  v4 = sceneIfExists;
+  if (sceneIfExists)
   {
-    v5 = [v3 uiSettings];
-    IsClassic = [v5 deviceOrientationEventsEnabled];
+    uiSettings = [sceneIfExists uiSettings];
+    IsClassic = [uiSettings deviceOrientationEventsEnabled];
   }
 
   else
   {
-    v5 = [(SBApplicationSceneHandle *)self application];
-    IsClassic = _SBApplicationClassicModeIsClassic([v5 _defaultClassicMode]);
+    uiSettings = [(SBApplicationSceneHandle *)self application];
+    IsClassic = _SBApplicationClassicModeIsClassic([uiSettings _defaultClassicMode]);
   }
 
   v7 = IsClassic;
@@ -919,12 +919,12 @@ void __70__SBDeviceApplicationSceneHandle__noteMainSceneBackgroundStyleChanged__
 
 - (BOOL)forbidsActivationByBreadcrumbAction
 {
-  v2 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  if (v2)
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  if (sceneIfExists)
   {
     v3 = objc_opt_class();
-    v4 = [v2 uiClientSettings];
-    v5 = SBSafeCast(v3, v4);
+    uiClientSettings = [sceneIfExists uiClientSettings];
+    v5 = SBSafeCast(v3, uiClientSettings);
 
     v6 = v5 != 0;
   }
@@ -939,31 +939,31 @@ void __70__SBDeviceApplicationSceneHandle__noteMainSceneBackgroundStyleChanged__
 
 - (void)_noteSceneTitleChanged
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self sceneTitle];
+  sceneTitle = [(SBDeviceApplicationSceneHandle *)self sceneTitle];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __56__SBDeviceApplicationSceneHandle__noteSceneTitleChanged__block_invoke;
   v5[3] = &unk_2783B8FE0;
   v5[4] = self;
-  v6 = v3;
-  v4 = v3;
+  v6 = sceneTitle;
+  v4 = sceneTitle;
   [(SBDeviceApplicationSceneHandle *)self _enumerateObserversWithBlock:v5];
 }
 
 - (NSString)sceneTitle
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  v4 = v3;
-  if (v3)
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  v4 = sceneIfExists;
+  if (sceneIfExists)
   {
-    v5 = [v3 uiClientSettings];
-    [v5 canvasTitle];
+    uiClientSettings = [sceneIfExists uiClientSettings];
+    [uiClientSettings canvasTitle];
   }
 
   else
   {
-    v5 = [(SBDeviceApplicationSceneHandle *)self _sceneDataStoreCreatingIfNecessary:0];
-    [v5 objectForKey:@"canvasTitle"];
+    uiClientSettings = [(SBDeviceApplicationSceneHandle *)self _sceneDataStoreCreatingIfNecessary:0];
+    [uiClientSettings objectForKey:@"canvasTitle"];
   }
   v6 = ;
 
@@ -990,9 +990,9 @@ void __56__SBDeviceApplicationSceneHandle__noteSceneTitleChanged__block_invoke(u
   breadcrumbProvider = self->_breadcrumbProvider;
   self->_breadcrumbProvider = v4;
 
-  v6 = [(SBDeviceApplicationSceneHandle *)self _windowScene];
-  v7 = [v6 assistantController];
-  [v7 addObserver:self];
+  _windowScene = [(SBDeviceApplicationSceneHandle *)self _windowScene];
+  assistantController = [_windowScene assistantController];
+  [assistantController addObserver:self];
 
   [(SBDeviceApplicationSceneHandle *)self _reevaluateOcclusionBySystemUI];
   if (self->_occludedBySystemUI)
@@ -1005,14 +1005,14 @@ void __56__SBDeviceApplicationSceneHandle__noteSceneTitleChanged__block_invoke(u
 
 - (void)_reevaluateOcclusionBySystemUI
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self _windowScene];
-  v4 = [v3 assistantController];
-  v7 = [v4 presentationContext];
+  _windowScene = [(SBDeviceApplicationSceneHandle *)self _windowScene];
+  assistantController = [_windowScene assistantController];
+  presentationContext = [assistantController presentationContext];
 
   occludedBySystemUI = self->_occludedBySystemUI;
-  if ([v7 isAssistantPresented])
+  if ([presentationContext isAssistantPresented])
   {
-    v6 = [v7 allowsHDRContentBelow] ^ 1;
+    v6 = [presentationContext allowsHDRContentBelow] ^ 1;
   }
 
   else
@@ -1029,18 +1029,18 @@ void __56__SBDeviceApplicationSceneHandle__noteSceneTitleChanged__block_invoke(u
 
 - (void)_updateCapturingContentForAdditionalRenderingDestination
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self sceneManager];
-  v4 = [v3 displayIdentity];
+  sceneManager = [(SBDeviceApplicationSceneHandle *)self sceneManager];
+  displayIdentity = [sceneManager displayIdentity];
 
-  v5 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __90__SBDeviceApplicationSceneHandle__updateCapturingContentForAdditionalRenderingDestination__block_invoke;
   v7[3] = &unk_2783B90C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 updateSettings:v7];
+  v8 = displayIdentity;
+  v6 = displayIdentity;
+  [sceneIfExists updateSettings:v7];
 }
 
 - (void)dealloc
@@ -1048,17 +1048,17 @@ void __56__SBDeviceApplicationSceneHandle__noteSceneTitleChanged__block_invoke(u
   v60 = *MEMORY[0x277D85DE8];
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    v3 = [(SBDeviceApplicationSceneHandle *)self _windowScene];
-    v4 = [v3 assistantController];
-    [v4 removeObserver:self];
+    _windowScene = [(SBDeviceApplicationSceneHandle *)self _windowScene];
+    assistantController = [_windowScene assistantController];
+    [assistantController removeObserver:self];
   }
 
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v5 = [(NSHashTable *)self->_activityModeAssertions allObjects];
-  v6 = [v5 countByEnumeratingWithState:&v52 objects:v59 count:16];
+  allObjects = [(NSHashTable *)self->_activityModeAssertions allObjects];
+  v6 = [allObjects countByEnumeratingWithState:&v52 objects:v59 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1070,14 +1070,14 @@ void __56__SBDeviceApplicationSceneHandle__noteSceneTitleChanged__block_invoke(u
       {
         if (*v53 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
         [*(*(&v52 + 1) + 8 * v9++) invalidate];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v52 objects:v59 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v52 objects:v59 count:16];
     }
 
     while (v7);
@@ -1087,8 +1087,8 @@ void __56__SBDeviceApplicationSceneHandle__noteSceneTitleChanged__block_invoke(u
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v10 = [(NSHashTable *)self->_jetsamModeAssertions allObjects];
-  v11 = [v10 countByEnumeratingWithState:&v48 objects:v58 count:16];
+  allObjects2 = [(NSHashTable *)self->_jetsamModeAssertions allObjects];
+  v11 = [allObjects2 countByEnumeratingWithState:&v48 objects:v58 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1100,14 +1100,14 @@ void __56__SBDeviceApplicationSceneHandle__noteSceneTitleChanged__block_invoke(u
       {
         if (*v49 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allObjects2);
         }
 
         [*(*(&v48 + 1) + 8 * v14++) invalidate];
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v48 objects:v58 count:16];
+      v12 = [allObjects2 countByEnumeratingWithState:&v48 objects:v58 count:16];
     }
 
     while (v12);
@@ -1117,8 +1117,8 @@ void __56__SBDeviceApplicationSceneHandle__noteSceneTitleChanged__block_invoke(u
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v15 = [(NSHashTable *)self->_resourceElevationAssertions allObjects];
-  v16 = [v15 countByEnumeratingWithState:&v44 objects:v57 count:16];
+  allObjects3 = [(NSHashTable *)self->_resourceElevationAssertions allObjects];
+  v16 = [allObjects3 countByEnumeratingWithState:&v44 objects:v57 count:16];
   if (v16)
   {
     v17 = v16;
@@ -1130,14 +1130,14 @@ void __56__SBDeviceApplicationSceneHandle__noteSceneTitleChanged__block_invoke(u
       {
         if (*v45 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(allObjects3);
         }
 
         [*(*(&v44 + 1) + 8 * v19++) invalidate];
       }
 
       while (v17 != v19);
-      v17 = [v15 countByEnumeratingWithState:&v44 objects:v57 count:16];
+      v17 = [allObjects3 countByEnumeratingWithState:&v44 objects:v57 count:16];
     }
 
     while (v17);
@@ -1213,49 +1213,49 @@ void __56__SBDeviceApplicationSceneHandle__noteSceneTitleChanged__block_invoke(u
   [(SBApplicationSceneHandle *)&v32 dealloc];
 }
 
-- (void)_commonInitWithApplication:(id)a3 sceneIdentifier:(id)a4 displayIdentity:(id)a5
+- (void)_commonInitWithApplication:(id)application sceneIdentifier:(id)identifier displayIdentity:(id)identity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  applicationCopy = application;
+  identifierCopy = identifier;
+  identityCopy = identity;
   v32.receiver = self;
   v32.super_class = SBDeviceApplicationSceneHandle;
-  [(SBApplicationSceneHandle *)&v32 _commonInitWithApplication:v8 sceneIdentifier:v9 displayIdentity:v10];
-  v11 = [v8 info];
-  self->_defaultBackgroundStyle = [v11 backgroundStyle];
+  [(SBApplicationSceneHandle *)&v32 _commonInitWithApplication:applicationCopy sceneIdentifier:identifierCopy displayIdentity:identityCopy];
+  info = [applicationCopy info];
+  self->_defaultBackgroundStyle = [info backgroundStyle];
 
-  v12 = [[SBDeviceApplicationSceneViewPlaceholderContentViewProvider alloc] initWithApplication:v8];
+  v12 = [[SBDeviceApplicationSceneViewPlaceholderContentViewProvider alloc] initWithApplication:applicationCopy];
   placeholderContentProvider = self->_placeholderContentProvider;
   self->_placeholderContentProvider = v12;
 
-  v14 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+  weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
   activityModeAssertions = self->_activityModeAssertions;
-  self->_activityModeAssertions = v14;
+  self->_activityModeAssertions = weakObjectsHashTable;
 
-  v16 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+  weakObjectsHashTable2 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
   jetsamModeAssertions = self->_jetsamModeAssertions;
-  self->_jetsamModeAssertions = v16;
+  self->_jetsamModeAssertions = weakObjectsHashTable2;
 
-  v18 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+  weakObjectsHashTable3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
   resourceElevationAssertions = self->_resourceElevationAssertions;
-  self->_resourceElevationAssertions = v18;
+  self->_resourceElevationAssertions = weakObjectsHashTable3;
 
-  v20 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   activeAppearanceAssertions = self->_activeAppearanceAssertions;
-  self->_activeAppearanceAssertions = v20;
+  self->_activeAppearanceAssertions = array;
 
   self->_computedActiveAppearance = -1;
   self->_preferredWindowControlsPlacement = 0;
   self->_interfaceOrientationFromUserResizeIfAny = 0x7FFFFFFFFFFFFFFFLL;
   [(SBApplicationSceneHandle *)self addSceneUpdateContributer:self];
   [(SBDeviceApplicationSceneHandle *)self _didUpdateDisplayIdentity];
-  v22 = [v8 appProtectionAssistant];
-  [v22 addObserver:self];
+  appProtectionAssistant = [applicationCopy appProtectionAssistant];
+  [appProtectionAssistant addObserver:self];
 
   v23 = MEMORY[0x277CCACA8];
   v24 = objc_opt_class();
   v25 = NSStringFromClass(v24);
-  v26 = [v23 stringWithFormat:@"SpringBoard - %@ - %@", v25, v9];
+  identifierCopy = [v23 stringWithFormat:@"SpringBoard - %@ - %@", v25, identifierCopy];
 
   objc_initWeak(&location, self);
   v27 = MEMORY[0x277D85CD0];
@@ -1285,41 +1285,41 @@ __CFString *__93__SBDeviceApplicationSceneHandle__commonInitWithApplication_scen
   return v3;
 }
 
-- (void)saveSuspendSnapshot:(id)a3
+- (void)saveSuspendSnapshot:(id)snapshot
 {
-  v9 = a3;
-  v4 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  v5 = [v4 layerManager];
-  v6 = [v5 layers];
-  v7 = [v6 count];
+  snapshotCopy = snapshot;
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  layerManager = [sceneIfExists layerManager];
+  layers = [layerManager layers];
+  v7 = [layers count];
 
-  if (v9 && v7)
+  if (snapshotCopy && v7)
   {
-    v8 = [(SBApplicationSceneHandle *)self application];
-    [v8 saveSuspendSnapshot:v9 forSceneHandle:self];
+    application = [(SBApplicationSceneHandle *)self application];
+    [application saveSuspendSnapshot:snapshotCopy forSceneHandle:self];
   }
 }
 
-- (id)mostRecentSceneSnapshotsForScale:(double)a3 launchingOrientation:(int64_t)a4
+- (id)mostRecentSceneSnapshotsForScale:(double)scale launchingOrientation:(int64_t)orientation
 {
-  v7 = [(SBApplicationSceneHandle *)self application];
-  v8 = [v7 mostRecentSceneSnapshotsForSceneHandle:self scale:a4 launchingOrientation:a3];
+  application = [(SBApplicationSceneHandle *)self application];
+  v8 = [application mostRecentSceneSnapshotsForSceneHandle:self scale:orientation launchingOrientation:scale];
 
   return v8;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = SBDeviceApplicationSceneHandle;
-  [(SBDeviceApplicationSceneHandle *)&v3 addObserver:a3];
+  [(SBDeviceApplicationSceneHandle *)&v3 addObserver:observer];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = SBDeviceApplicationSceneHandle;
-  [(SBDeviceApplicationSceneHandle *)&v3 removeObserver:a3];
+  [(SBDeviceApplicationSceneHandle *)&v3 removeObserver:observer];
 }
 
 - (BOOL)isReachabilitySupported
@@ -1330,8 +1330,8 @@ __CFString *__93__SBDeviceApplicationSceneHandle__commonInitWithApplication_scen
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [v3 externalForegroundApplicationSceneHandles];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  externalForegroundApplicationSceneHandles = [v3 externalForegroundApplicationSceneHandles];
+  v5 = [externalForegroundApplicationSceneHandles countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1343,18 +1343,18 @@ __CFString *__93__SBDeviceApplicationSceneHandle__commonInitWithApplication_scen
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(externalForegroundApplicationSceneHandles);
         }
 
-        v9 = [*(*(&v17 + 1) + 8 * i) application];
-        v10 = [(SBApplicationSceneHandle *)self application];
-        if ([v9 isSameExecutableAsApplication:v10])
+        application = [*(*(&v17 + 1) + 8 * i) application];
+        application2 = [(SBApplicationSceneHandle *)self application];
+        if ([application isSameExecutableAsApplication:application2])
         {
-          v11 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-          v12 = [v11 uiClientSettings];
-          v13 = [v12 isReachabilitySupported];
+          sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+          uiClientSettings = [sceneIfExists uiClientSettings];
+          isReachabilitySupported = [uiClientSettings isReachabilitySupported];
 
-          if (!v13)
+          if (!isReachabilitySupported)
           {
             v14 = 0;
             goto LABEL_13;
@@ -1366,7 +1366,7 @@ __CFString *__93__SBDeviceApplicationSceneHandle__commonInitWithApplication_scen
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [externalForegroundApplicationSceneHandles countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
@@ -1383,40 +1383,40 @@ LABEL_13:
   return v14;
 }
 
-- (void)setAlertSuppressionContextsBySectionIdentifier:(id)a3
+- (void)setAlertSuppressionContextsBySectionIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (self->_alertSuppressionContextsBySectionIdentifier != v5)
+  identifierCopy = identifier;
+  if (self->_alertSuppressionContextsBySectionIdentifier != identifierCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_alertSuppressionContextsBySectionIdentifier, a3);
-    v5 = v6;
+    v6 = identifierCopy;
+    objc_storeStrong(&self->_alertSuppressionContextsBySectionIdentifier, identifier);
+    identifierCopy = v6;
   }
 }
 
-- (BOOL)shouldSuppressAlertForSuppressionContexts:(id)a3 sectionIdentifier:(id)a4
+- (BOOL)shouldSuppressAlertForSuppressionContexts:(id)contexts sectionIdentifier:(id)identifier
 {
   alertSuppressionContextsBySectionIdentifier = self->_alertSuppressionContextsBySectionIdentifier;
-  v6 = a3;
-  v7 = [(NSDictionary *)alertSuppressionContextsBySectionIdentifier objectForKey:a4];
-  LOBYTE(alertSuppressionContextsBySectionIdentifier) = [v6 intersectsSet:v7];
+  contextsCopy = contexts;
+  v7 = [(NSDictionary *)alertSuppressionContextsBySectionIdentifier objectForKey:identifier];
+  LOBYTE(alertSuppressionContextsBySectionIdentifier) = [contextsCopy intersectsSet:v7];
 
   return alertSuppressionContextsBySectionIdentifier;
 }
 
 - (CGSize)layoutPreferencesMinimumSize
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  v4 = v3;
-  if (v3)
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  v4 = sceneIfExists;
+  if (sceneIfExists)
   {
-    v5 = [v3 ui_layoutPreferencesCoordinator];
-    [v5 systemLayoutSizeFittingSize:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+    ui_layoutPreferencesCoordinator = [sceneIfExists ui_layoutPreferencesCoordinator];
+    [ui_layoutPreferencesCoordinator systemLayoutSizeFittingSize:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
     v7 = v6;
     v9 = v8;
-    v10 = [(SBDeviceApplicationSceneHandle *)self _windowScene];
-    v11 = [v10 switcherController];
-    [v11 _maxScreenSizeWithDockAndStripInset];
+    _windowScene = [(SBDeviceApplicationSceneHandle *)self _windowScene];
+    switcherController = [_windowScene switcherController];
+    [switcherController _maxScreenSizeWithDockAndStripInset];
     v13 = v12;
     v15 = v14;
 
@@ -1433,10 +1433,10 @@ LABEL_13:
 
   else
   {
-    v5 = [(SBDeviceApplicationSceneHandle *)self _sceneDataStoreCreatingIfNecessary:0];
-    v10 = [v5 objectForKey:@"minimumWidth"];
-    v16 = [v5 objectForKey:@"minimumHeight"];
-    [v10 bs_CGFloatValue];
+    ui_layoutPreferencesCoordinator = [(SBDeviceApplicationSceneHandle *)self _sceneDataStoreCreatingIfNecessary:0];
+    _windowScene = [ui_layoutPreferencesCoordinator objectForKey:@"minimumWidth"];
+    v16 = [ui_layoutPreferencesCoordinator objectForKey:@"minimumHeight"];
+    [_windowScene bs_CGFloatValue];
     v7 = v17;
     [v16 bs_CGFloatValue];
     v9 = v18;
@@ -1449,11 +1449,11 @@ LABEL_13:
   return result;
 }
 
-+ (double)_homeAffordanceInsetTopForWindowScene:(id)a3
++ (double)_homeAffordanceInsetTopForWindowScene:(id)scene
 {
-  v3 = [a3 statusBarManager];
-  v4 = [v3 statusBar];
-  [v4 defaultHeight];
+  statusBarManager = [scene statusBarManager];
+  statusBar = [statusBarManager statusBar];
+  [statusBar defaultHeight];
   v6 = v5;
 
   return v6;
@@ -1461,12 +1461,12 @@ LABEL_13:
 
 - (_UIStatusBarData)overlayStatusBarData
 {
-  v2 = [(SBDeviceApplicationSceneStatusBarBreadcrumbProvider *)self->_breadcrumbProvider breadcrumbTitle];
-  if (v2)
+  breadcrumbTitle = [(SBDeviceApplicationSceneStatusBarBreadcrumbProvider *)self->_breadcrumbProvider breadcrumbTitle];
+  if (breadcrumbTitle)
   {
     if (SBStatusBarIsSpeakeasy())
     {
-      v3 = [MEMORY[0x277D6BAF0] entryWithStringValue:v2];
+      v3 = [MEMORY[0x277D6BAF0] entryWithStringValue:breadcrumbTitle];
       v4 = objc_alloc(MEMORY[0x277D6BA48]);
       v5 = [v4 initWithEntry:v3 forKey:*MEMORY[0x277D6BD70]];
     }
@@ -1475,7 +1475,7 @@ LABEL_13:
     {
       v5 = objc_alloc_init(MEMORY[0x277D76298]);
       v3 = objc_alloc_init(MEMORY[0x277D76308]);
-      [v3 setStringValue:v2];
+      [v3 setStringValue:breadcrumbTitle];
       [v5 setBackNavigationEntry:v3];
     }
   }
@@ -1488,16 +1488,16 @@ LABEL_13:
   return v5;
 }
 
-- (id)effectiveStatusBarStyleRequestForActivationSettings:(id)a3
+- (id)effectiveStatusBarStyleRequestForActivationSettings:(id)settings
 {
-  v4 = [(SBDeviceApplicationSceneHandle *)self _statusBarStyleWithActivationSettings:a3];
+  v4 = [(SBDeviceApplicationSceneHandle *)self _statusBarStyleWithActivationSettings:settings];
 
   return [(SBDeviceApplicationSceneHandle *)self statusBarEffectiveStyleRequestWithStyle:v4];
 }
 
-- (id)statusBarEffectiveStyleRequestWithStyle:(int64_t)a3
+- (id)statusBarEffectiveStyleRequestWithStyle:(int64_t)style
 {
-  v3 = [objc_alloc(MEMORY[0x277D6BFE8]) initWithResolvedStyle:a3 foregroundColor:0];
+  v3 = [objc_alloc(MEMORY[0x277D6BFE8]) initWithResolvedStyle:style foregroundColor:0];
 
   return v3;
 }
@@ -1508,32 +1508,32 @@ LABEL_13:
   v3 = STUIBackgroundActivityIdentifiersForStyleOverrides();
   v4 = [v3 mutableCopy];
 
-  v5 = [(SBApplicationSceneHandle *)self application];
-  v6 = [v5 bundleIdentifier];
-  if ([v6 isEqual:@"com.apple.Maps"])
+  application = [(SBApplicationSceneHandle *)self application];
+  bundleIdentifier = [application bundleIdentifier];
+  if ([bundleIdentifier isEqual:@"com.apple.Maps"])
   {
     [v4 removeObject:*MEMORY[0x277D6BC80]];
   }
 
-  if ([v5 isNowRecordingApplication])
+  if ([application isNowRecordingApplication])
   {
     [v4 removeObject:*MEMORY[0x277D6BCA8]];
   }
 
   [v4 minusSet:self->_backgroundActivitiesToSuppress];
-  v7 = [v5 info];
-  v8 = [v7 ignoredBackgroundActivityIdentifiers];
-  [v4 minusSet:v8];
+  info = [application info];
+  ignoredBackgroundActivityIdentifiers = [info ignoredBackgroundActivityIdentifiers];
+  [v4 minusSet:ignoredBackgroundActivityIdentifiers];
 
   return v4;
 }
 
-- (void)setStatusBarForceHidden:(BOOL)a3 forReason:(id)a4 animationSettings:(id)a5
+- (void)setStatusBarForceHidden:(BOOL)hidden forReason:(id)reason animationSettings:(id)settings
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  hiddenCopy = hidden;
+  reasonCopy = reason;
+  settingsCopy = settings;
+  if (!reasonCopy)
   {
     [SBDeviceApplicationSceneHandle setStatusBarForceHidden:forReason:animationSettings:];
   }
@@ -1542,12 +1542,12 @@ LABEL_13:
   v17 = 3221225472;
   v18 = __86__SBDeviceApplicationSceneHandle_setStatusBarForceHidden_forReason_animationSettings___block_invoke;
   v19 = &unk_2783A8BF0;
-  v20 = self;
-  v10 = v9;
+  selfCopy = self;
+  v10 = settingsCopy;
   v21 = v10;
   v11 = MEMORY[0x223D6F7F0](&v16);
   statusBarForcedHiddenReasons = self->_statusBarForcedHiddenReasons;
-  if (v6)
+  if (hiddenCopy)
   {
     if (!statusBarForcedHiddenReasons)
     {
@@ -1559,12 +1559,12 @@ LABEL_13:
       statusBarForcedHiddenReasons = self->_statusBarForcedHiddenReasons;
     }
 
-    [(NSMutableSet *)statusBarForcedHiddenReasons addObject:v8, v16, v17, v18, v19, v20];
+    [(NSMutableSet *)statusBarForcedHiddenReasons addObject:reasonCopy, v16, v17, v18, v19, selfCopy];
   }
 
   else
   {
-    [(NSMutableSet *)statusBarForcedHiddenReasons removeObject:v8, v16, v17, v18, v19, v20];
+    [(NSMutableSet *)statusBarForcedHiddenReasons removeObject:reasonCopy, v16, v17, v18, v19, selfCopy];
     if (![(NSMutableSet *)self->_statusBarForcedHiddenReasons count])
     {
       v15 = self->_statusBarForcedHiddenReasons;
@@ -1637,86 +1637,86 @@ id __86__SBDeviceApplicationSceneHandle_setStatusBarForceHidden_forReason_animat
   return v6;
 }
 
-- (BOOL)isStatusBarForcedHiddenForOrientation:(int64_t)a3
+- (BOOL)isStatusBarForcedHiddenForOrientation:(int64_t)orientation
 {
-  v5 = [(SBApplicationSceneHandle *)self application];
-  v6 = [v5 info];
-  v7 = [(SBDeviceApplicationSceneHandle *)self _potentiallyJailedDisplayConfiguration];
-  LOBYTE(a3) = [v6 statusBarForcedHiddenForInterfaceOrientation:a3 onDisplay:v7];
+  application = [(SBApplicationSceneHandle *)self application];
+  info = [application info];
+  _potentiallyJailedDisplayConfiguration = [(SBDeviceApplicationSceneHandle *)self _potentiallyJailedDisplayConfiguration];
+  LOBYTE(orientation) = [info statusBarForcedHiddenForInterfaceOrientation:orientation onDisplay:_potentiallyJailedDisplayConfiguration];
 
-  return a3;
+  return orientation;
 }
 
-- (BOOL)defaultStatusBarHiddenForOrientation:(int64_t)a3
+- (BOOL)defaultStatusBarHiddenForOrientation:(int64_t)orientation
 {
   v5 = [(SBDeviceApplicationSceneHandle *)self _sceneDataStoreCreatingIfNecessary:0];
   v6 = [v5 safeObjectForKey:@"statusBarHidden" ofType:objc_opt_class()];
 
   if (v6)
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v8 = [(SBApplicationSceneHandle *)self application];
-    v9 = [v8 info];
-    v10 = [(SBDeviceApplicationSceneHandle *)self _potentiallyJailedDisplayConfiguration];
-    v7 = [v9 statusBarHiddenForInterfaceOrientation:a3 onDisplay:v10];
+    application = [(SBApplicationSceneHandle *)self application];
+    info = [application info];
+    _potentiallyJailedDisplayConfiguration = [(SBDeviceApplicationSceneHandle *)self _potentiallyJailedDisplayConfiguration];
+    bOOLValue = [info statusBarHiddenForInterfaceOrientation:orientation onDisplay:_potentiallyJailedDisplayConfiguration];
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)isStatusBarHiddenForActivationSettings:(id)a3 withOrientation:(int64_t)a4
+- (BOOL)isStatusBarHiddenForActivationSettings:(id)settings withOrientation:(int64_t)orientation
 {
-  v6 = [a3 objectForActivationSetting:5];
-  v7 = [v6 scheme];
+  v6 = [settings objectForActivationSetting:5];
+  scheme = [v6 scheme];
 
-  v8 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
 
-  if (!v8 || v7)
+  if (!sceneIfExists || scheme)
   {
-    v11 = [(SBDeviceApplicationSceneHandle *)self defaultStatusBarHiddenForOrientation:a4];
+    statusBarHidden = [(SBDeviceApplicationSceneHandle *)self defaultStatusBarHiddenForOrientation:orientation];
   }
 
   else
   {
-    v9 = [(SBDeviceApplicationSceneHandle *)self scene];
-    v10 = [v9 uiClientSettings];
-    v11 = [v10 statusBarHidden];
+    scene = [(SBDeviceApplicationSceneHandle *)self scene];
+    uiClientSettings = [scene uiClientSettings];
+    statusBarHidden = [uiClientSettings statusBarHidden];
   }
 
-  return v11;
+  return statusBarHidden;
 }
 
-- (double)statusBarHeightForOrientation:(int64_t)a3
+- (double)statusBarHeightForOrientation:(int64_t)orientation
 {
   if ([(SBDeviceApplicationSceneHandle *)self isCurrentStatusBarHiddenForOrientation:?])
   {
     return 0.0;
   }
 
-  [(SBDeviceApplicationSceneHandle *)self defaultStatusBarHeightForOrientation:a3];
+  [(SBDeviceApplicationSceneHandle *)self defaultStatusBarHeightForOrientation:orientation];
   return result;
 }
 
-- (double)defaultStatusBarHeightForOrientation:(int64_t)a3
+- (double)defaultStatusBarHeightForOrientation:(int64_t)orientation
 {
-  v5 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  v6 = v5;
-  if (v5)
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  v6 = sceneIfExists;
+  if (sceneIfExists)
   {
-    v7 = [v5 uiSettings];
-    [v7 defaultStatusBarHeightForOrientation:a3];
+    uiSettings = [sceneIfExists uiSettings];
+    [uiSettings defaultStatusBarHeightForOrientation:orientation];
     v9 = v8;
   }
 
   else
   {
-    v7 = [(SBDeviceApplicationSceneHandle *)self _defaultStatusBarHeights];
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-    v11 = [v7 objectForKey:v10];
+    uiSettings = [(SBDeviceApplicationSceneHandle *)self _defaultStatusBarHeights];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:orientation];
+    v11 = [uiSettings objectForKey:v10];
     [v11 doubleValue];
     v9 = v12;
   }
@@ -1724,19 +1724,19 @@ id __86__SBDeviceApplicationSceneHandle_setStatusBarForceHidden_forReason_animat
   return v9;
 }
 
-- (void)setStatusBarParts:(int64_t)a3
+- (void)setStatusBarParts:(int64_t)parts
 {
-  if (self->_statusBarParts != a3)
+  if (self->_statusBarParts != parts)
   {
     v5[6] = v3;
     v5[7] = v4;
-    self->_statusBarParts = a3;
+    self->_statusBarParts = parts;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __52__SBDeviceApplicationSceneHandle_setStatusBarParts___block_invoke;
     v5[3] = &unk_2783B8DB8;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = parts;
     [(SBDeviceApplicationSceneHandle *)self _enumerateObserversWithBlock:v5];
   }
 }
@@ -1750,14 +1750,14 @@ void __52__SBDeviceApplicationSceneHandle_setStatusBarParts___block_invoke(uint6
   }
 }
 
-- (void)setStatusBarAvoidanceFrame:(CGRect)a3
+- (void)setStatusBarAvoidanceFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_statusBarAvoidanceFrame = &self->_statusBarAvoidanceFrame;
-  if (!CGRectEqualToRect(self->_statusBarAvoidanceFrame, a3))
+  if (!CGRectEqualToRect(self->_statusBarAvoidanceFrame, frame))
   {
     p_statusBarAvoidanceFrame->origin.x = x;
     p_statusBarAvoidanceFrame->origin.y = y;
@@ -1785,12 +1785,12 @@ void __61__SBDeviceApplicationSceneHandle_setStatusBarAvoidanceFrame___block_inv
   }
 }
 
-- (void)setBackgroundActivitiesToSuppress:(id)a3
+- (void)setBackgroundActivitiesToSuppress:(id)suppress
 {
-  v6 = a3;
+  suppressCopy = suppress;
   if ((BSEqualSets() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [suppressCopy copy];
     backgroundActivitiesToSuppress = self->_backgroundActivitiesToSuppress;
     self->_backgroundActivitiesToSuppress = v4;
 
@@ -1798,21 +1798,21 @@ void __61__SBDeviceApplicationSceneHandle_setStatusBarAvoidanceFrame___block_inv
   }
 }
 
-- (void)setPreferredWindowControlsPlacement:(int64_t)a3
+- (void)setPreferredWindowControlsPlacement:(int64_t)placement
 {
-  if ([(SBDeviceApplicationSceneHandle *)self _supportsWindowControls]&& self->_preferredWindowControlsPlacement != a3)
+  if ([(SBDeviceApplicationSceneHandle *)self _supportsWindowControls]&& self->_preferredWindowControlsPlacement != placement)
   {
-    self->_preferredWindowControlsPlacement = a3;
-    v5 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-    v6 = v5;
-    if (v5)
+    self->_preferredWindowControlsPlacement = placement;
+    sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+    v6 = sceneIfExists;
+    if (sceneIfExists)
     {
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __70__SBDeviceApplicationSceneHandle_setPreferredWindowControlsPlacement___block_invoke;
       v7[3] = &unk_2783ACB10;
       v7[4] = self;
-      [v5 updateSettings:v7];
+      [sceneIfExists updateSettings:v7];
     }
   }
 }
@@ -1840,24 +1840,24 @@ void __61__SBDeviceApplicationSceneHandle_setStatusBarAvoidanceFrame___block_inv
   return preferredWindowControlsPlacement;
 }
 
-- (SBWindowControlsLayout)windowControlsLayoutForApplicationFrame:(SEL)a3 screenBounds:(CGRect)a4 activationSettings:(CGRect)a5
+- (SBWindowControlsLayout)windowControlsLayoutForApplicationFrame:(SEL)frame screenBounds:(CGRect)bounds activationSettings:(CGRect)settings
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a4.size.height;
-  v11 = a4.size.width;
-  v12 = a4.origin.y;
-  v13 = a4.origin.x;
+  height = settings.size.height;
+  width = settings.size.width;
+  y = settings.origin.y;
+  x = settings.origin.x;
+  v10 = bounds.size.height;
+  v11 = bounds.size.width;
+  v12 = bounds.origin.y;
+  v13 = bounds.origin.x;
   v16 = a6;
   if ([(SBDeviceApplicationSceneHandle *)self _supportsWindowControls])
   {
     v40 = y;
     v42 = height;
-    v17 = [(SBApplicationSceneHandle *)self application];
-    v18 = [v17 info];
-    v19 = [MEMORY[0x277D77750] sb_thisDeviceDisplayEdgeInfo];
+    application = [(SBApplicationSceneHandle *)self application];
+    info = [application info];
+    sb_thisDeviceDisplayEdgeInfo = [MEMORY[0x277D77750] sb_thisDeviceDisplayEdgeInfo];
     v20 = 0.0;
     if (![(SBDeviceApplicationSceneHandle *)self isStatusBarHiddenForActivationSettings:v16 withOrientation:1])
     {
@@ -1872,8 +1872,8 @@ void __61__SBDeviceApplicationSceneHandle_setStatusBarAvoidanceFrame___block_inv
       }
     }
 
-    v21 = [v19 safeAreaInsetsPortrait];
-    [v21 topInset];
+    safeAreaInsetsPortrait = [sb_thisDeviceDisplayEdgeInfo safeAreaInsetsPortrait];
+    [safeAreaInsetsPortrait topInset];
     v23 = v22;
 
     if (v20 >= v23)
@@ -1900,13 +1900,13 @@ void __61__SBDeviceApplicationSceneHandle_setStatusBarAvoidanceFrame___block_inv
     v61.size.width = width;
     v25 = CGRectEqualToRect(v59, v61);
     v26 = +[SBAppSwitcherDomain rootSettings];
-    v27 = [v26 windowingSettings];
+    windowingSettings = [v26 windowingSettings];
 
     v56[0] = MEMORY[0x277D85DD0];
     v56[1] = 3221225472;
     v56[2] = __106__SBDeviceApplicationSceneHandle_windowControlsLayoutForApplicationFrame_screenBounds_activationSettings___block_invoke;
     v56[3] = &unk_2783B8E08;
-    v28 = v27;
+    v28 = windowingSettings;
     v57 = v28;
     v29 = MEMORY[0x223D6F7F0](v56);
     v30 = v29;
@@ -1918,13 +1918,13 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    v41 = v19;
+    v41 = sb_thisDeviceDisplayEdgeInfo;
     v53[0] = MEMORY[0x277D85DD0];
     v53[1] = 3221225472;
     v53[2] = __106__SBDeviceApplicationSceneHandle_windowControlsLayoutForApplicationFrame_screenBounds_activationSettings___block_invoke_2;
     v53[3] = &unk_2783B8E30;
     v55 = v24;
-    v31 = v18;
+    v31 = info;
     v32 = v28;
     v54 = v32;
     v33 = MEMORY[0x223D6F7F0](v53);
@@ -1932,7 +1932,7 @@ LABEL_25:
     v48[1] = 3221225472;
     v48[2] = __106__SBDeviceApplicationSceneHandle_windowControlsLayoutForApplicationFrame_screenBounds_activationSettings___block_invoke_3;
     v48[3] = &unk_2783B8E58;
-    v49 = v17;
+    v49 = application;
     v52 = v24;
     v50 = v32;
     v51 = v23;
@@ -1948,13 +1948,13 @@ LABEL_25:
     v36 = v34;
     v47 = v36;
     v37 = MEMORY[0x223D6F7F0](v44);
-    v38 = [(SBDeviceApplicationSceneHandle *)self preferredWindowControlsPlacement];
-    if (v38 <= 1)
+    preferredWindowControlsPlacement = [(SBDeviceApplicationSceneHandle *)self preferredWindowControlsPlacement];
+    if (preferredWindowControlsPlacement <= 1)
     {
-      if (v38)
+      if (preferredWindowControlsPlacement)
       {
-        v19 = v41;
-        if (v38 == 1)
+        sb_thisDeviceDisplayEdgeInfo = v41;
+        if (preferredWindowControlsPlacement == 1)
         {
           SBWindowControlsLayoutHidden(retstr);
         }
@@ -1967,15 +1967,15 @@ LABEL_25:
 
     else
     {
-      if (v38 != 2)
+      if (preferredWindowControlsPlacement != 2)
       {
-        v19 = v41;
-        if (v38 == 3)
+        sb_thisDeviceDisplayEdgeInfo = v41;
+        if (preferredWindowControlsPlacement == 3)
         {
           v36[2](v36);
         }
 
-        else if (v38 == 4)
+        else if (preferredWindowControlsPlacement == 4)
         {
           v35[2](v35);
         }
@@ -1986,10 +1986,10 @@ LABEL_25:
       v37[2](v37);
     }
 
-    v19 = v41;
+    sb_thisDeviceDisplayEdgeInfo = v41;
 LABEL_24:
 
-    v18 = v43;
+    info = v43;
     goto LABEL_25;
   }
 
@@ -2059,21 +2059,21 @@ uint64_t __106__SBDeviceApplicationSceneHandle_windowControlsLayoutForApplicatio
   return v4();
 }
 
-- (int64_t)activationInterfaceOrientationForOrientation:(int64_t)a3
+- (int64_t)activationInterfaceOrientationForOrientation:(int64_t)orientation
 {
-  v5 = [(SBDeviceApplicationSceneHandle *)self currentInterfaceOrientation];
-  if (v5)
+  currentInterfaceOrientation = [(SBDeviceApplicationSceneHandle *)self currentInterfaceOrientation];
+  if (currentInterfaceOrientation)
   {
-    v6 = v5;
+    v6 = currentInterfaceOrientation;
     result = [(SBDeviceApplicationSceneHandle *)self _interfaceOrientationFromUserResizing];
     if (!result)
     {
-      v8 = [(SBApplicationSceneHandle *)self application];
-      v9 = [v8 classicAppPhoneAppRunningOnPad];
+      application = [(SBApplicationSceneHandle *)self application];
+      classicAppPhoneAppRunningOnPad = [application classicAppPhoneAppRunningOnPad];
 
-      if (v9)
+      if (classicAppPhoneAppRunningOnPad)
       {
-        result = [(SBDeviceApplicationSceneHandle *)self _classicPhoneOnPadActivationOrientationForOrientation:a3];
+        result = [(SBDeviceApplicationSceneHandle *)self _classicPhoneOnPadActivationOrientationForOrientation:orientation];
         if (!result)
         {
           return v6;
@@ -2090,25 +2090,25 @@ uint64_t __106__SBDeviceApplicationSceneHandle_windowControlsLayoutForApplicatio
   else
   {
 
-    return [(SBDeviceApplicationSceneHandle *)self _launchingInterfaceOrientationForOrientation:a3];
+    return [(SBDeviceApplicationSceneHandle *)self _launchingInterfaceOrientationForOrientation:orientation];
   }
 
   return result;
 }
 
-- (void)reevaluateSafeAreaSettingsUsingAnimationSettings:(id)a3
+- (void)reevaluateSafeAreaSettingsUsingAnimationSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  if (v5)
+  settingsCopy = settings;
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  if (sceneIfExists)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __83__SBDeviceApplicationSceneHandle_reevaluateSafeAreaSettingsUsingAnimationSettings___block_invoke;
     v6[3] = &unk_2783B8EA8;
     v6[4] = self;
-    v7 = v4;
-    [v5 performUpdate:v6];
+    v7 = settingsCopy;
+    [sceneIfExists performUpdate:v6];
   }
 }
 
@@ -2122,32 +2122,32 @@ void __83__SBDeviceApplicationSceneHandle_reevaluateSafeAreaSettingsUsingAnimati
   }
 }
 
-- (void)_reevaluateSafeAreaSettingsForSceneSettings:(id)a3
+- (void)_reevaluateSafeAreaSettingsForSceneSettings:(id)settings
 {
-  v29 = a3;
-  v4 = [v29 ui_safeAreaSettings];
-  if (v4)
+  settingsCopy = settings;
+  ui_safeAreaSettings = [settingsCopy ui_safeAreaSettings];
+  if (ui_safeAreaSettings)
   {
-    v5 = [(SBDeviceApplicationSceneHandle *)self _windowScene];
-    [v5 _boundsForInterfaceOrientation:{objc_msgSend(v5, "_interfaceOrientation")}];
+    _windowScene = [(SBDeviceApplicationSceneHandle *)self _windowScene];
+    [_windowScene _boundsForInterfaceOrientation:{objc_msgSend(_windowScene, "_interfaceOrientation")}];
     [(SBDeviceApplicationSceneHandle *)self currentInterfaceOrientation];
     _UIConvertRectFromOrientationToOrientation();
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    [v29 convertFrameInRect:?];
+    [settingsCopy convertFrameInRect:?];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v22 = [SBDeviceApplicationSceneHandle _safeAreaCornerInsetResolverForApplicationFrame:"_safeAreaCornerInsetResolverForApplicationFrame:screenBounds:activationSettings:" screenBounds:0 activationSettings:?];
-    v23 = [v4 safeAreaCornerInsetResolver];
-    v24 = [v23 isEqual:v22];
+    safeAreaCornerInsetResolver = [ui_safeAreaSettings safeAreaCornerInsetResolver];
+    v24 = [safeAreaCornerInsetResolver isEqual:v22];
 
     if ((v24 & 1) == 0)
     {
-      [v4 setSafeAreaCornerInsetResolver:v22];
+      [ui_safeAreaSettings setSafeAreaCornerInsetResolver:v22];
     }
 
     preferredSafeAreaSettings = self->_preferredSafeAreaSettings;
@@ -2161,17 +2161,17 @@ void __83__SBDeviceApplicationSceneHandle_reevaluateSafeAreaSettingsUsingAnimati
       [(SBDeviceApplicationSceneHandle *)self safeAreaEdgeInsetResolverForApplicationFrame:0 screenBounds:v15 activationSettings:v17, v19, v21, v7, v9, v11, v13];
     }
     v26 = ;
-    v27 = [v4 safeAreaEdgeInsetResolver];
-    v28 = [v27 isEqual:v26];
+    safeAreaEdgeInsetResolver = [ui_safeAreaSettings safeAreaEdgeInsetResolver];
+    v28 = [safeAreaEdgeInsetResolver isEqual:v26];
 
     if ((v28 & 1) == 0)
     {
-      [v4 setSafeAreaEdgeInsetResolver:v26];
+      [ui_safeAreaSettings setSafeAreaEdgeInsetResolver:v26];
     }
   }
 }
 
-- (UIEdgeInsets)_safeAreaInsetsForInterfaceOrientation:(int64_t)a3 isPhone:(BOOL)a4 portraitSafeAreaInsets:(UIEdgeInsets)result statusBarHeight:(double)a6 homeAffordanceOverlayAllowance:(double)a7
+- (UIEdgeInsets)_safeAreaInsetsForInterfaceOrientation:(int64_t)orientation isPhone:(BOOL)phone portraitSafeAreaInsets:(UIEdgeInsets)result statusBarHeight:(double)height homeAffordanceOverlayAllowance:(double)allowance
 {
   v9.f64[0] = result.top;
   v9.f64[1] = result.left;
@@ -2179,44 +2179,44 @@ void __83__SBDeviceApplicationSceneHandle_reevaluateSafeAreaSettingsUsingAnimati
   v10.f64[1] = result.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v9, *MEMORY[0x277D768C8]), vceqq_f64(v10, *(MEMORY[0x277D768C8] + 16))))) & 1) == 0)
   {
-    if (a4)
+    if (phone)
     {
-      _SB_UIEdgeInsetsRotateFromPortraitToOrientation(a3);
+      _SB_UIEdgeInsetsRotateFromPortraitToOrientation(orientation);
       result.right = fmax(v11, v12);
       result.left = result.right;
     }
 
-    result.bottom = fmax(result.bottom, a7);
+    result.bottom = fmax(result.bottom, allowance);
   }
 
-  v13 = fmax(result.top, a6);
+  v13 = fmax(result.top, height);
   result.top = v13;
   return result;
 }
 
-- (id)safeAreaEdgeInsetResolverForApplicationFrame:(CGRect)a3 screenBounds:(CGRect)a4 activationSettings:(id)a5
+- (id)safeAreaEdgeInsetResolverForApplicationFrame:(CGRect)frame screenBounds:(CGRect)bounds activationSettings:(id)settings
 {
-  y = a4.origin.y;
-  height = a4.size.height;
-  width = a4.size.width;
-  x = a4.origin.x;
-  v7 = a3.size.height;
-  v8 = a3.size.width;
-  v9 = a3.origin.y;
-  v10 = a3.origin.x;
-  v12 = a5;
-  v13 = [MEMORY[0x277D77750] sb_thisDeviceDisplayEdgeInfo];
-  v14 = 1;
-  v15 = [(SBDeviceApplicationSceneHandle *)self isStatusBarHiddenForActivationSettings:v12 withOrientation:1];
-  v16 = [MEMORY[0x277D75418] currentDevice];
-  if ([v16 userInterfaceIdiom])
+  y = bounds.origin.y;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  x = bounds.origin.x;
+  v7 = frame.size.height;
+  v8 = frame.size.width;
+  v9 = frame.origin.y;
+  v10 = frame.origin.x;
+  settingsCopy = settings;
+  sb_thisDeviceDisplayEdgeInfo = [MEMORY[0x277D77750] sb_thisDeviceDisplayEdgeInfo];
+  classicAppPhoneAppRunningOnPad = 1;
+  v15 = [(SBDeviceApplicationSceneHandle *)self isStatusBarHiddenForActivationSettings:settingsCopy withOrientation:1];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
-    v17 = [(SBApplicationSceneHandle *)self application];
-    v14 = [v17 classicAppPhoneAppRunningOnPad];
+    application = [(SBApplicationSceneHandle *)self application];
+    classicAppPhoneAppRunningOnPad = [application classicAppPhoneAppRunningOnPad];
   }
 
-  v18 = [v13 safeAreaInsetsPortrait];
-  [v18 edgeInsets];
+  safeAreaInsetsPortrait = [sb_thisDeviceDisplayEdgeInfo safeAreaInsetsPortrait];
+  [safeAreaInsetsPortrait edgeInsets];
   v20 = v19;
   v64 = v21;
   v65 = v22;
@@ -2224,7 +2224,7 @@ void __83__SBDeviceApplicationSceneHandle_reevaluateSafeAreaSettingsUsingAnimati
 
   if ([(SBDeviceApplicationSceneHandle *)self _supportsSolariumSafeAreas])
   {
-    [(SBDeviceApplicationSceneHandle *)self windowControlsLayoutForApplicationFrame:v12 screenBounds:v10 activationSettings:v9, v8, v7, x, y, width, height];
+    [(SBDeviceApplicationSceneHandle *)self windowControlsLayoutForApplicationFrame:settingsCopy screenBounds:v10 activationSettings:v9, v8, v7, x, y, width, height];
     v25 = 0.0;
     if (!v15)
     {
@@ -2239,8 +2239,8 @@ void __83__SBDeviceApplicationSceneHandle_reevaluateSafeAreaSettingsUsingAnimati
       }
     }
 
-    v26 = [v13 safeAreaInsetsPortrait];
-    [v26 topInset];
+    safeAreaInsetsPortrait2 = [sb_thisDeviceDisplayEdgeInfo safeAreaInsetsPortrait];
+    [safeAreaInsetsPortrait2 topInset];
     v28 = v27;
 
     if (v25 >= v28)
@@ -2289,7 +2289,7 @@ void __83__SBDeviceApplicationSceneHandle_reevaluateSafeAreaSettingsUsingAnimati
 
   else
   {
-    if (v14)
+    if (classicAppPhoneAppRunningOnPad)
     {
       if (v15)
       {
@@ -2344,21 +2344,21 @@ LABEL_30:
   return v60;
 }
 
-- (id)displayEdgeInfoForLayoutEnvironment:(int64_t)a3
+- (id)displayEdgeInfoForLayoutEnvironment:(int64_t)environment
 {
-  v5 = [(SBApplicationSceneHandle *)self application];
-  IsClassic = _SBApplicationClassicModeIsClassic([v5 _classicMode]);
+  application = [(SBApplicationSceneHandle *)self application];
+  IsClassic = _SBApplicationClassicModeIsClassic([application _classicMode]);
 
   if (IsClassic)
   {
     v7 = MEMORY[0x277D77750];
-    v8 = [(SBApplicationSceneHandle *)self application];
-    v9 = [v7 sb_displayEdgeInfoForApplication:v8];
+    application2 = [(SBApplicationSceneHandle *)self application];
+    v9 = [v7 sb_displayEdgeInfoForApplication:application2];
   }
 
   else
   {
-    if (a3 == 2)
+    if (environment == 2)
     {
       [MEMORY[0x277D77750] sb_floatingApplicationDisplayEdgeInfo];
     }
@@ -2375,23 +2375,23 @@ LABEL_30:
 
 - (NSData)activationConditionsData
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v5 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-    v6 = v5;
-    if (v5)
+    sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+    v6 = sceneIfExists;
+    if (sceneIfExists)
     {
-      v7 = [v5 uiClientSettings];
-      [v7 activationConditionsData];
+      uiClientSettings = [sceneIfExists uiClientSettings];
+      [uiClientSettings activationConditionsData];
     }
 
     else
     {
-      v7 = [(SBDeviceApplicationSceneHandle *)self _sceneDataStoreCreatingIfNecessary:0];
-      [v7 objectForKey:@"activationConditions"];
+      uiClientSettings = [(SBDeviceApplicationSceneHandle *)self _sceneDataStoreCreatingIfNecessary:0];
+      [uiClientSettings objectForKey:@"activationConditions"];
     }
     v8 = ;
   }
@@ -2404,22 +2404,22 @@ LABEL_30:
   return v8;
 }
 
-- (void)setKeyboardContextMaskStyle:(unint64_t)a3
+- (void)setKeyboardContextMaskStyle:(unint64_t)style
 {
-  v5 = [(SBApplicationSceneHandle *)self application];
-  v6 = [v5 supportsChamoisSceneResizing];
+  application = [(SBApplicationSceneHandle *)self application];
+  supportsChamoisSceneResizing = [application supportsChamoisSceneResizing];
 
-  if (a3 != 2 || v6)
+  if (style != 2 || supportsChamoisSceneResizing)
   {
-    self->_keyboardLayerMaskStyle = a3;
-    v7 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-    v8 = [v7 uiPresentationManager];
+    self->_keyboardLayerMaskStyle = style;
+    sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+    uiPresentationManager = [sceneIfExists uiPresentationManager];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __62__SBDeviceApplicationSceneHandle_setKeyboardContextMaskStyle___block_invoke;
     v9[3] = &__block_descriptor_40_e43_v16__0__UIMutableScenePresentationContext_8l;
-    v9[4] = a3;
-    [v8 modifyDefaultPresentationContext:v9];
+    v9[4] = style;
+    [uiPresentationManager modifyDefaultPresentationContext:v9];
   }
 }
 
@@ -2431,7 +2431,7 @@ LABEL_30:
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
@@ -2444,16 +2444,16 @@ LABEL_30:
       v16 = 0;
       v10 = [v8 _suitabilityForTargetContentIdentifier:&stru_283094718 errorString:&v16];
       v11 = v16;
-      v6 = v10 == 0;
+      bOOLValue = v10 == 0;
       if (v10)
       {
         v12 = SBLogCommon();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
-          v13 = [(SBApplicationSceneHandle *)self application];
-          v14 = [v13 bundleIdentifier];
+          application = [(SBApplicationSceneHandle *)self application];
+          bundleIdentifier = [application bundleIdentifier];
           *buf = 138543618;
-          v18 = v14;
+          v18 = bundleIdentifier;
           v19 = 2114;
           v20 = v11;
           _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_INFO, "Error decoding activation conditions for %{public}@:%{public}@", buf, 0x16u);
@@ -2463,11 +2463,11 @@ LABEL_30:
 
     else
     {
-      v6 = 0;
+      bOOLValue = 0;
     }
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 - (BOOL)requestedFullScreenCenterWindow
@@ -2477,27 +2477,27 @@ LABEL_30:
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setContentPrefersToDisableClipping:(BOOL)a3
+- (void)setContentPrefersToDisableClipping:(BOOL)clipping
 {
-  if (self->_contentPrefersToDisableClipping != a3)
+  if (self->_contentPrefersToDisableClipping != clipping)
   {
-    self->_contentPrefersToDisableClipping = a3;
+    self->_contentPrefersToDisableClipping = clipping;
     [(SBDeviceApplicationSceneHandle *)self _noteContentPrefersToDisableClippingChanged];
   }
 }
 
-- (BOOL)handleHardwareButtonEventType:(int64_t)a3
+- (BOOL)handleHardwareButtonEventType:(int64_t)type
 {
   v34 = *MEMORY[0x277D85DE8];
   if ((SBSUIHardwareButtonEventTypeIsValid() & 1) == 0)
@@ -2505,16 +2505,16 @@ LABEL_30:
     [SBDeviceApplicationSceneHandle handleHardwareButtonEventType:];
   }
 
-  v5 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  if (!v5)
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  if (!sceneIfExists)
   {
     v8 = SBLogInCallPresentation();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(SBDeviceApplicationSceneHandle *)self sceneIdentifier];
+      sceneIdentifier = [(SBDeviceApplicationSceneHandle *)self sceneIdentifier];
       v19 = SBSUIHardwareButtonEventTypeDescription();
       *buf = 138543618;
-      v31 = v18;
+      v31 = sceneIdentifier;
       v32 = 2114;
       v33 = v19;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: Unable to handle %{public}@ event because the scene doesn't exist", buf, 0x16u);
@@ -2524,18 +2524,18 @@ LABEL_30:
   }
 
   v6 = objc_opt_class();
-  v7 = [v5 uiClientSettings];
-  v8 = SBSafeCast(v6, v7);
+  uiClientSettings = [sceneIfExists uiClientSettings];
+  v8 = SBSafeCast(v6, uiClientSettings);
 
   if (!v8)
   {
     v10 = SBLogInCallPresentation();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(SBDeviceApplicationSceneHandle *)self sceneIdentifier];
+      sceneIdentifier2 = [(SBDeviceApplicationSceneHandle *)self sceneIdentifier];
       v21 = SBSUIHardwareButtonEventTypeDescription();
       *buf = 138543618;
-      v31 = v20;
+      v31 = sceneIdentifier2;
       v32 = 2114;
       v33 = v21;
       _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Unable to handle %{public}@ event because scene client settings are not of the appropriate class", buf, 0x16u);
@@ -2544,17 +2544,17 @@ LABEL_30:
     goto LABEL_16;
   }
 
-  v9 = ([v8 preferredHardwareButtonEventTypes]& (1 << a3)) == 0;
+  v9 = ([v8 preferredHardwareButtonEventTypes]& (1 << type)) == 0;
   v10 = SBLogInCallPresentation();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
   if (v9)
   {
     if (v11)
     {
-      v22 = [(SBDeviceApplicationSceneHandle *)self sceneIdentifier];
+      sceneIdentifier3 = [(SBDeviceApplicationSceneHandle *)self sceneIdentifier];
       v23 = SBSUIHardwareButtonEventTypeDescription();
       *buf = 138543618;
-      v31 = v22;
+      v31 = sceneIdentifier3;
       v32 = 2114;
       v33 = v23;
       _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Unable to handle %{public}@ event because it's not in the preferred types mask", buf, 0x16u);
@@ -2569,10 +2569,10 @@ LABEL_17:
 
   if (v11)
   {
-    v12 = [(SBDeviceApplicationSceneHandle *)self sceneIdentifier];
+    sceneIdentifier4 = [(SBDeviceApplicationSceneHandle *)self sceneIdentifier];
     v13 = SBSUIHardwareButtonEventTypeDescription();
     *buf = 138543618;
-    v31 = v12;
+    v31 = sceneIdentifier4;
     v32 = 2114;
     v33 = v13;
     _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Sending hardware event action: %{public}@", buf, 0x16u);
@@ -2585,10 +2585,10 @@ LABEL_17:
   v27 = __64__SBDeviceApplicationSceneHandle_handleHardwareButtonEventType___block_invoke;
   v28 = &unk_2783B8EF0;
   objc_copyWeak(v29, buf);
-  v29[1] = a3;
-  v15 = [v14 initWithButtonEventType:a3 timeout:&v25 withResponseHandler:5.0];
+  v29[1] = type;
+  v15 = [v14 initWithButtonEventType:type timeout:&v25 withResponseHandler:5.0];
   v16 = [MEMORY[0x277CBEB98] setWithObject:{v15, v25, v26, v27, v28}];
-  [v5 sendActions:v16];
+  [sceneIfExists sendActions:v16];
 
   objc_destroyWeak(v29);
   objc_destroyWeak(buf);
@@ -2620,49 +2620,49 @@ void __64__SBDeviceApplicationSceneHandle_handleHardwareButtonEventType___block_
 
 - (unint64_t)preferredHardwareButtonEventTypes
 {
-  v2 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  if (v2 && (v3 = objc_opt_class(), [v2 uiClientSettings], v4 = objc_claimAutoreleasedReturnValue(), SBSafeCast(v3, v4), v5 = objc_claimAutoreleasedReturnValue(), v4, v5))
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  if (sceneIfExists && (v3 = objc_opt_class(), [sceneIfExists uiClientSettings], v4 = objc_claimAutoreleasedReturnValue(), SBSafeCast(v3, v4), v5 = objc_claimAutoreleasedReturnValue(), v4, v5))
   {
-    v6 = [v5 preferredHardwareButtonEventTypes];
+    preferredHardwareButtonEventTypes = [v5 preferredHardwareButtonEventTypes];
   }
 
   else
   {
-    v6 = 0;
+    preferredHardwareButtonEventTypes = 0;
   }
 
-  return v6;
+  return preferredHardwareButtonEventTypes;
 }
 
 - (BOOL)prefersClosingInSwitcherDisabled
 {
   v3 = +[SBWorkspace mainWorkspace];
-  v4 = [v3 inCallPresentationManager];
-  LOBYTE(self) = [v4 isSceneHandleCloseableInSwitcher:self];
+  inCallPresentationManager = [v3 inCallPresentationManager];
+  LOBYTE(self) = [inCallPresentationManager isSceneHandleCloseableInSwitcher:self];
 
   return self ^ 1;
 }
 
-- (id)acquireAssertionsForRelevancyResult:(id)a3 reason:(id)a4
+- (id)acquireAssertionsForRelevancyResult:(id)result reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  reasonCopy = reason;
   v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
-  if ([v6 activityMode])
+  if ([resultCopy activityMode])
   {
-    v9 = -[SBDeviceApplicationSceneHandle acquireSceneActivityModeAssertionWithReason:activityMode:](self, "acquireSceneActivityModeAssertionWithReason:activityMode:", v7, [v6 activityMode]);
+    v9 = -[SBDeviceApplicationSceneHandle acquireSceneActivityModeAssertionWithReason:activityMode:](self, "acquireSceneActivityModeAssertionWithReason:activityMode:", reasonCopy, [resultCopy activityMode]);
     [v8 setObject:v9 forKey:&unk_2833711B0];
   }
 
-  if ([v6 jetsamMode])
+  if ([resultCopy jetsamMode])
   {
-    v10 = -[SBDeviceApplicationSceneHandle acquireSceneJetsamModeAssertionWithReason:jetsamMode:](self, "acquireSceneJetsamModeAssertionWithReason:jetsamMode:", v7, [v6 jetsamMode]);
+    v10 = -[SBDeviceApplicationSceneHandle acquireSceneJetsamModeAssertionWithReason:jetsamMode:](self, "acquireSceneJetsamModeAssertionWithReason:jetsamMode:", reasonCopy, [resultCopy jetsamMode]);
     [v8 setObject:v10 forKey:&unk_2833711C8];
   }
 
-  if ([v6 resourceElevation])
+  if ([resultCopy resourceElevation])
   {
-    v11 = -[SBDeviceApplicationSceneHandle acquireSceneResourceElevationAssertionWithReason:resourceElevation:](self, "acquireSceneResourceElevationAssertionWithReason:resourceElevation:", v7, [v6 resourceElevation]);
+    v11 = -[SBDeviceApplicationSceneHandle acquireSceneResourceElevationAssertionWithReason:resourceElevation:](self, "acquireSceneResourceElevationAssertionWithReason:resourceElevation:", reasonCopy, [resultCopy resourceElevation]);
     [v8 setObject:v11 forKey:&unk_2833711E0];
   }
 
@@ -2671,12 +2671,12 @@ void __64__SBDeviceApplicationSceneHandle_handleHardwareButtonEventType___block_
 
 - (char)activityMode
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  v4 = v3;
-  if (v3)
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  v4 = sceneIfExists;
+  if (sceneIfExists)
   {
-    v5 = [v3 settings];
-    computedActivityMode = [v5 activityMode];
+    settings = [sceneIfExists settings];
+    computedActivityMode = [settings activityMode];
   }
 
   else
@@ -2689,26 +2689,26 @@ void __64__SBDeviceApplicationSceneHandle_handleHardwareButtonEventType___block_
 
 - (unsigned)jetsamPriority
 {
-  v2 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  v3 = v2;
-  if (v2)
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  v3 = sceneIfExists;
+  if (sceneIfExists)
   {
-    v4 = [v2 settings];
-    v5 = [v4 jetsamPriority];
+    settings = [sceneIfExists settings];
+    jetsamPriority = [settings jetsamPriority];
   }
 
   else
   {
-    v5 = FBSSceneJetsamPriorityCreate();
+    jetsamPriority = FBSSceneJetsamPriorityCreate();
   }
 
-  return v5;
+  return jetsamPriority;
 }
 
-- (id)acquireActiveAppearanceAssertionWithReason:(id)a3 activeAppearance:(int64_t)a4 priority:(int64_t)a5
+- (id)acquireActiveAppearanceAssertionWithReason:(id)reason activeAppearance:(int64_t)appearance priority:(int64_t)priority
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  reasonCopy = reason;
   objc_initWeak(&location, self);
   v9 = [SBSceneHandleActiveAppearanceAssertion alloc];
   v19[0] = MEMORY[0x277D85DD0];
@@ -2716,7 +2716,7 @@ void __64__SBDeviceApplicationSceneHandle_handleHardwareButtonEventType___block_
   v19[2] = __103__SBDeviceApplicationSceneHandle_acquireActiveAppearanceAssertionWithReason_activeAppearance_priority___block_invoke;
   v19[3] = &unk_2783B8F18;
   objc_copyWeak(&v20, &location);
-  v10 = [(SBSceneHandleActiveAppearanceAssertion *)v9 initWithReason:v8 activeAppearance:a4 priority:a5 invalidationBlock:v19];
+  v10 = [(SBSceneHandleActiveAppearanceAssertion *)v9 initWithReason:reasonCopy activeAppearance:appearance priority:priority invalidationBlock:v19];
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -2727,7 +2727,7 @@ void __64__SBDeviceApplicationSceneHandle_handleHardwareButtonEventType___block_
   v14[2] = __103__SBDeviceApplicationSceneHandle_acquireActiveAppearanceAssertionWithReason_activeAppearance_priority___block_invoke_2;
   v14[3] = &unk_2783B8F40;
   v14[4] = &v15;
-  v14[5] = a5;
+  v14[5] = priority;
   [(NSMutableArray *)activeAppearanceAssertions enumerateObjectsUsingBlock:v14];
   [(NSMutableArray *)self->_activeAppearanceAssertions insertObject:v10 atIndex:v16[3]];
   v12 = SBLogCommon();
@@ -2771,11 +2771,11 @@ uint64_t __103__SBDeviceApplicationSceneHandle_acquireActiveAppearanceAssertionW
   return result;
 }
 
-- (id)acquireSceneActivityModeAssertionWithReason:(id)a3 activityMode:(char)a4
+- (id)acquireSceneActivityModeAssertionWithReason:(id)reason activityMode:(char)mode
 {
-  v4 = a4;
+  modeCopy = mode;
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  reasonCopy = reason;
   objc_initWeak(&location, self);
   v7 = [SBSceneHandleActivityModeAssertion alloc];
   v11 = MEMORY[0x277D85DD0];
@@ -2783,7 +2783,7 @@ uint64_t __103__SBDeviceApplicationSceneHandle_acquireActiveAppearanceAssertionW
   v13 = __91__SBDeviceApplicationSceneHandle_acquireSceneActivityModeAssertionWithReason_activityMode___block_invoke;
   v14 = &unk_2783B8F68;
   objc_copyWeak(&v15, &location);
-  v8 = [(SBSceneHandleActivityModeAssertion *)v7 initWithReason:v6 activityMode:v4 invalidationBlock:&v11];
+  v8 = [(SBSceneHandleActivityModeAssertion *)v7 initWithReason:reasonCopy activityMode:modeCopy invalidationBlock:&v11];
   [(NSHashTable *)self->_activityModeAssertions addObject:v8, v11, v12, v13, v14];
   v9 = SBLogSceneRelevancy();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -2812,11 +2812,11 @@ void __91__SBDeviceApplicationSceneHandle_acquireSceneActivityModeAssertionWithR
   }
 }
 
-- (id)acquireSceneJetsamModeAssertionWithReason:(id)a3 jetsamMode:(char)a4
+- (id)acquireSceneJetsamModeAssertionWithReason:(id)reason jetsamMode:(char)mode
 {
-  v4 = a4;
+  modeCopy = mode;
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  reasonCopy = reason;
   objc_initWeak(&location, self);
   v7 = [SBSceneHandleJetsamModeAssertion alloc];
   v11 = MEMORY[0x277D85DD0];
@@ -2824,7 +2824,7 @@ void __91__SBDeviceApplicationSceneHandle_acquireSceneActivityModeAssertionWithR
   v13 = __87__SBDeviceApplicationSceneHandle_acquireSceneJetsamModeAssertionWithReason_jetsamMode___block_invoke;
   v14 = &unk_2783B8F90;
   objc_copyWeak(&v15, &location);
-  v8 = [(SBSceneHandleJetsamModeAssertion *)v7 initWithReason:v6 jetsamMode:v4 invalidationBlock:&v11];
+  v8 = [(SBSceneHandleJetsamModeAssertion *)v7 initWithReason:reasonCopy jetsamMode:modeCopy invalidationBlock:&v11];
   [(NSHashTable *)self->_jetsamModeAssertions addObject:v8, v11, v12, v13, v14];
   v9 = SBLogSceneRelevancy();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -2853,11 +2853,11 @@ void __87__SBDeviceApplicationSceneHandle_acquireSceneJetsamModeAssertionWithRea
   }
 }
 
-- (id)acquireSceneResourceElevationAssertionWithReason:(id)a3 resourceElevation:(char)a4
+- (id)acquireSceneResourceElevationAssertionWithReason:(id)reason resourceElevation:(char)elevation
 {
-  v4 = a4;
+  elevationCopy = elevation;
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  reasonCopy = reason;
   objc_initWeak(&location, self);
   v7 = [SBSceneHandleResourceElevationAssertion alloc];
   v11 = MEMORY[0x277D85DD0];
@@ -2865,7 +2865,7 @@ void __87__SBDeviceApplicationSceneHandle_acquireSceneJetsamModeAssertionWithRea
   v13 = __101__SBDeviceApplicationSceneHandle_acquireSceneResourceElevationAssertionWithReason_resourceElevation___block_invoke;
   v14 = &unk_2783B8FB8;
   objc_copyWeak(&v15, &location);
-  v8 = [(SBSceneHandleResourceElevationAssertion *)v7 initWithReason:v6 resourceElevation:v4 invalidationBlock:&v11];
+  v8 = [(SBSceneHandleResourceElevationAssertion *)v7 initWithReason:reasonCopy resourceElevation:elevationCopy invalidationBlock:&v11];
   [(NSHashTable *)self->_resourceElevationAssertions addObject:v8, v11, v12, v13, v14];
   v9 = SBLogSceneRelevancy();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -2894,31 +2894,31 @@ void __101__SBDeviceApplicationSceneHandle_acquireSceneResourceElevationAssertio
   }
 }
 
-- (int64_t)_bestSupportedInterfaceOrientationForOrientation:(int64_t)a3
+- (int64_t)_bestSupportedInterfaceOrientationForOrientation:(int64_t)orientation
 {
-  v5 = [(SBDeviceApplicationSceneHandle *)self currentInterfaceOrientation];
-  v6 = [(SBDeviceApplicationSceneHandle *)self _mainSceneSupportedInterfaceOrientations];
+  currentInterfaceOrientation = [(SBDeviceApplicationSceneHandle *)self currentInterfaceOrientation];
+  _mainSceneSupportedInterfaceOrientations = [(SBDeviceApplicationSceneHandle *)self _mainSceneSupportedInterfaceOrientations];
   v7 = 1;
   v8 = 4;
   v9 = 3;
-  if ((v6 & 8) == 0)
+  if ((_mainSceneSupportedInterfaceOrientations & 8) == 0)
   {
-    v9 = (v6 >> 1) & 2;
+    v9 = (_mainSceneSupportedInterfaceOrientations >> 1) & 2;
   }
 
-  if ((v6 & 0x10) == 0)
+  if ((_mainSceneSupportedInterfaceOrientations & 0x10) == 0)
   {
     v8 = v9;
   }
 
-  if ((v6 & 2) == 0)
+  if ((_mainSceneSupportedInterfaceOrientations & 2) == 0)
   {
     v7 = v8;
   }
 
-  if ((v6 & (1 << v5)) != 0)
+  if ((_mainSceneSupportedInterfaceOrientations & (1 << currentInterfaceOrientation)) != 0)
   {
-    v10 = v5;
+    v10 = currentInterfaceOrientation;
   }
 
   else
@@ -2926,9 +2926,9 @@ void __101__SBDeviceApplicationSceneHandle_acquireSceneResourceElevationAssertio
     v10 = v7;
   }
 
-  if ((v6 & (1 << a3)) != 0)
+  if ((_mainSceneSupportedInterfaceOrientations & (1 << orientation)) != 0)
   {
-    return a3;
+    return orientation;
   }
 
   else
@@ -2937,13 +2937,13 @@ void __101__SBDeviceApplicationSceneHandle_acquireSceneResourceElevationAssertio
   }
 }
 
-- (int64_t)_resumingInterfaceOrientationForOrientation:(int64_t)a3
+- (int64_t)_resumingInterfaceOrientationForOrientation:(int64_t)orientation
 {
-  v5 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
 
-  if (v5)
+  if (sceneIfExists)
   {
-    if (!a3)
+    if (!orientation)
     {
       goto LABEL_22;
     }
@@ -2952,28 +2952,28 @@ void __101__SBDeviceApplicationSceneHandle_acquireSceneResourceElevationAssertio
   else
   {
     [SBDeviceApplicationSceneHandle _resumingInterfaceOrientationForOrientation:];
-    if (!a3)
+    if (!orientation)
     {
       goto LABEL_22;
     }
   }
 
-  v6 = [(SBApplicationSceneHandle *)self application];
-  v7 = [v6 info];
-  v8 = [v7 builtOnOrAfterSDKVersion:@"8.0"];
+  application = [(SBApplicationSceneHandle *)self application];
+  info = [application info];
+  v8 = [info builtOnOrAfterSDKVersion:@"8.0"];
 
-  v9 = [(SBDeviceApplicationSceneHandle *)self _mainSceneSupportsInterfaceOrientation:a3];
-  v10 = [(SBDeviceApplicationSceneHandle *)self _interfaceOrientationFromUserResizing];
-  if (v10)
+  v9 = [(SBDeviceApplicationSceneHandle *)self _mainSceneSupportsInterfaceOrientation:orientation];
+  orientationCopy2 = [(SBDeviceApplicationSceneHandle *)self _interfaceOrientationFromUserResizing];
+  if (orientationCopy2)
   {
 LABEL_4:
 
-    return v10;
+    return orientationCopy2;
   }
 
-  if ([v6 classicAppPhoneAppRunningOnPad])
+  if ([application classicAppPhoneAppRunningOnPad])
   {
-    v10 = [(SBDeviceApplicationSceneHandle *)self _classicPhoneOnPadActivationOrientationForOrientation:a3];
+    orientationCopy2 = [(SBDeviceApplicationSceneHandle *)self _classicPhoneOnPadActivationOrientationForOrientation:orientation];
     goto LABEL_11;
   }
 
@@ -2984,14 +2984,14 @@ LABEL_4:
       if (!((SBFEffectiveDeviceClass() != 1) | v8 & 1))
       {
 LABEL_10:
-        v11 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-        v12 = [v11 uiClientSettings];
-        v10 = [v12 sb_effectiveInterfaceOrientation];
+        sceneIfExists2 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+        uiClientSettings = [sceneIfExists2 uiClientSettings];
+        orientationCopy2 = [uiClientSettings sb_effectiveInterfaceOrientation];
 
 LABEL_11:
-        if (v10)
+        if (orientationCopy2)
         {
-          return v10;
+          return orientationCopy2;
         }
 
         goto LABEL_22;
@@ -3006,8 +3006,8 @@ LABEL_11:
 
   else
   {
-    v14 = [MEMORY[0x277D75418] currentDevice];
-    v15 = [v14 userInterfaceIdiom] != 0;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v15 = [currentDevice userInterfaceIdiom] != 0;
 
     if (((v15 | v8) & 1) == 0)
     {
@@ -3017,23 +3017,23 @@ LABEL_11:
 
   if (v9)
   {
-    v16 = [(SBApplicationSceneHandle *)self application];
-    v17 = [v16 isMedusaCapable];
+    application2 = [(SBApplicationSceneHandle *)self application];
+    isMedusaCapable = [application2 isMedusaCapable];
 
-    if (v17)
+    if (isMedusaCapable)
     {
-      v10 = a3;
+      orientationCopy2 = orientation;
       goto LABEL_4;
     }
 
-    v18 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-    v19 = [v18 uiClientSettings];
-    v20 = [v19 supportedInterfaceOrientations];
+    sceneIfExists3 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+    uiClientSettings2 = [sceneIfExists3 uiClientSettings];
+    supportedInterfaceOrientations = [uiClientSettings2 supportedInterfaceOrientations];
 
-    if (v20)
+    if (supportedInterfaceOrientations)
     {
-      v10 = a3;
-      if ((XBInterfaceOrientationMaskForInterfaceOrientation() & v20) != 0)
+      orientationCopy2 = orientation;
+      if ((XBInterfaceOrientationMaskForInterfaceOrientation() & supportedInterfaceOrientations) != 0)
       {
         goto LABEL_4;
       }
@@ -3045,57 +3045,57 @@ LABEL_22:
   return [(SBDeviceApplicationSceneHandle *)self currentInterfaceOrientation];
 }
 
-- (int64_t)_launchingInterfaceOrientationForOrientation:(int64_t)a3
+- (int64_t)_launchingInterfaceOrientationForOrientation:(int64_t)orientation
 {
   if ([(SBDeviceApplicationSceneHandle *)self currentInterfaceOrientation])
   {
     [SBDeviceApplicationSceneHandle _launchingInterfaceOrientationForOrientation:];
   }
 
-  v5 = [(SBApplicationSceneHandle *)self application];
-  if (!a3)
+  application = [(SBApplicationSceneHandle *)self application];
+  if (!orientation)
   {
-    a3 = [SBApp interfaceOrientationForCurrentDeviceOrientation:1];
+    orientation = [SBApp interfaceOrientationForCurrentDeviceOrientation:1];
   }
 
-  v6 = [(SBApplicationSceneHandle *)self application];
-  v7 = [v6 isMedusaCapable];
+  application2 = [(SBApplicationSceneHandle *)self application];
+  isMedusaCapable = [application2 isMedusaCapable];
 
-  if (v7)
+  if (isMedusaCapable)
   {
     goto LABEL_6;
   }
 
-  v12 = [SBApp homeScreenRotationStyle];
-  v13 = [v5 info];
-  v14 = [v13 builtOnOrAfterSDKVersion:@"8.0"];
+  homeScreenRotationStyle = [SBApp homeScreenRotationStyle];
+  info = [application info];
+  v14 = [info builtOnOrAfterSDKVersion:@"8.0"];
 
-  v15 = [(SBDeviceApplicationSceneHandle *)self _currentClassicModeAllowsLaunchingToAnySupportedOrientation];
-  v16 = [(SBDeviceApplicationSceneHandle *)self _mainSceneSupportsInterfaceOrientation:a3];
-  v8 = [(SBDeviceApplicationSceneHandle *)self _interfaceOrientationFromUserResizing];
-  if (v8)
+  _currentClassicModeAllowsLaunchingToAnySupportedOrientation = [(SBDeviceApplicationSceneHandle *)self _currentClassicModeAllowsLaunchingToAnySupportedOrientation];
+  v16 = [(SBDeviceApplicationSceneHandle *)self _mainSceneSupportsInterfaceOrientation:orientation];
+  _interfaceOrientationFromUserResizing = [(SBDeviceApplicationSceneHandle *)self _interfaceOrientationFromUserResizing];
+  if (_interfaceOrientationFromUserResizing)
   {
     goto LABEL_12;
   }
 
-  if ((((v12 != 0) | v14) & v15 & 1) == 0)
+  if ((((homeScreenRotationStyle != 0) | v14) & _currentClassicModeAllowsLaunchingToAnySupportedOrientation & 1) == 0)
   {
-    v21 = [(SBApplicationSceneHandle *)self application];
-    v22 = [v21 classicAppPhoneAppRunningOnPad];
+    application3 = [(SBApplicationSceneHandle *)self application];
+    classicAppPhoneAppRunningOnPad = [application3 classicAppPhoneAppRunningOnPad];
 
-    if (!v22)
+    if (!classicAppPhoneAppRunningOnPad)
     {
       goto LABEL_7;
     }
 
-    a3 = [(SBDeviceApplicationSceneHandle *)self _classicPhoneOnPadActivationOrientationForOrientation:a3];
+    orientation = [(SBDeviceApplicationSceneHandle *)self _classicPhoneOnPadActivationOrientationForOrientation:orientation];
     goto LABEL_6;
   }
 
   if (v16)
   {
 LABEL_6:
-    if (a3)
+    if (orientation)
     {
       goto LABEL_13;
     }
@@ -3104,15 +3104,15 @@ LABEL_6:
   }
 
   v18 = +[SBOrientationLockManager sharedInstance];
-  v19 = [v18 isUserLocked];
+  isUserLocked = [v18 isUserLocked];
 
-  if (v19)
+  if (isUserLocked)
   {
-    v20 = [SBApp rawDeviceOrientationIgnoringOrientationLocks];
-    if ((v20 - 5) >= 0xFFFFFFFFFFFFFFFCLL && v20 != a3)
+    rawDeviceOrientationIgnoringOrientationLocks = [SBApp rawDeviceOrientationIgnoringOrientationLocks];
+    if ((rawDeviceOrientationIgnoringOrientationLocks - 5) >= 0xFFFFFFFFFFFFFFFCLL && rawDeviceOrientationIgnoringOrientationLocks != orientation)
     {
-      a3 = v20;
-      if ([(SBDeviceApplicationSceneHandle *)self _mainSceneSupportsInterfaceOrientation:v20])
+      orientation = rawDeviceOrientationIgnoringOrientationLocks;
+      if ([(SBDeviceApplicationSceneHandle *)self _mainSceneSupportsInterfaceOrientation:rawDeviceOrientationIgnoringOrientationLocks])
       {
         goto LABEL_13;
       }
@@ -3120,11 +3120,11 @@ LABEL_6:
   }
 
 LABEL_7:
-  v8 = [(SBDeviceApplicationSceneHandle *)self defaultInterfaceOrientation];
-  if (v8)
+  _interfaceOrientationFromUserResizing = [(SBDeviceApplicationSceneHandle *)self defaultInterfaceOrientation];
+  if (_interfaceOrientationFromUserResizing)
   {
 LABEL_12:
-    a3 = v8;
+    orientation = _interfaceOrientationFromUserResizing;
     goto LABEL_13;
   }
 
@@ -3133,43 +3133,43 @@ LABEL_12:
 
   if (v10)
   {
-    v11 = [(SBDeviceApplicationSceneHandle *)self sceneIdentifier];
-    NSLog(&cfstr_NoFallbackOrie.isa, v11);
+    sceneIdentifier = [(SBDeviceApplicationSceneHandle *)self sceneIdentifier];
+    NSLog(&cfstr_NoFallbackOrie.isa, sceneIdentifier);
   }
 
-  a3 = 1;
+  orientation = 1;
 LABEL_13:
 
-  return a3;
+  return orientation;
 }
 
-- (int64_t)_classicPhoneOnPadActivationOrientationForOrientation:(int64_t)a3
+- (int64_t)_classicPhoneOnPadActivationOrientationForOrientation:(int64_t)orientation
 {
-  v5 = [(SBDeviceApplicationSceneHandle *)self _classicAppPhoneOnPadPrefersLandscape];
-  v6 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  v7 = [v6 uiClientSettings];
-  v8 = [v7 supportedInterfaceOrientations];
+  _classicAppPhoneOnPadPrefersLandscape = [(SBDeviceApplicationSceneHandle *)self _classicAppPhoneOnPadPrefersLandscape];
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  uiClientSettings = [sceneIfExists uiClientSettings];
+  supportedInterfaceOrientations = [uiClientSettings supportedInterfaceOrientations];
 
-  if (v8 && v5)
+  if (supportedInterfaceOrientations && _classicAppPhoneOnPadPrefersLandscape)
   {
-    v9 = [(SBDeviceApplicationSceneHandle *)self currentInterfaceOrientation];
-    if ((v9 - 3) <= 1)
+    currentInterfaceOrientation = [(SBDeviceApplicationSceneHandle *)self currentInterfaceOrientation];
+    if ((currentInterfaceOrientation - 3) <= 1)
     {
-      v10 = v9;
-      if ((v8 & (1 << v9)) != 0)
+      v10 = currentInterfaceOrientation;
+      if ((supportedInterfaceOrientations & (1 << currentInterfaceOrientation)) != 0)
       {
         return v10;
       }
     }
 
-    if ((a3 - 3) > 1)
+    if ((orientation - 3) > 1)
     {
-      if ((v8 & 0x10) != 0)
+      if ((supportedInterfaceOrientations & 0x10) != 0)
       {
         return 4;
       }
 
-      if ((v8 & 8) != 0)
+      if ((supportedInterfaceOrientations & 8) != 0)
       {
         return 3;
       }
@@ -3177,12 +3177,12 @@ LABEL_13:
 
     else
     {
-      if ((v8 & (1 << a3)) != 0)
+      if ((supportedInterfaceOrientations & (1 << orientation)) != 0)
       {
-        return a3;
+        return orientation;
       }
 
-      if (a3 == 4)
+      if (orientation == 4)
       {
         v10 = 3;
       }
@@ -3192,7 +3192,7 @@ LABEL_13:
         v10 = 4;
       }
 
-      if ((v8 & (1 << v10)) != 0)
+      if ((supportedInterfaceOrientations & (1 << v10)) != 0)
       {
         return v10;
       }
@@ -3210,14 +3210,14 @@ LABEL_13:
 
 - (void)_noteActivationConditionsChanged
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self activationConditionsData];
+  activationConditionsData = [(SBDeviceApplicationSceneHandle *)self activationConditionsData];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __66__SBDeviceApplicationSceneHandle__noteActivationConditionsChanged__block_invoke;
   v5[3] = &unk_2783B8FE0;
   v5[4] = self;
-  v6 = v3;
-  v4 = v3;
+  v6 = activationConditionsData;
+  v4 = activationConditionsData;
   [(SBDeviceApplicationSceneHandle *)self _enumerateObserversWithBlock:v5];
 }
 
@@ -3232,14 +3232,14 @@ void __66__SBDeviceApplicationSceneHandle__noteActivationConditionsChanged__bloc
 
 - (void)_noteBackgroundActivitiesToSuppressChanged
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self backgroundActivitiesToSuppress];
+  backgroundActivitiesToSuppress = [(SBDeviceApplicationSceneHandle *)self backgroundActivitiesToSuppress];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __76__SBDeviceApplicationSceneHandle__noteBackgroundActivitiesToSuppressChanged__block_invoke;
   v5[3] = &unk_2783B8FE0;
   v5[4] = self;
-  v6 = v3;
-  v4 = v3;
+  v6 = backgroundActivitiesToSuppress;
+  v4 = backgroundActivitiesToSuppress;
   [(SBDeviceApplicationSceneHandle *)self _enumerateObserversWithBlock:v5];
 }
 
@@ -3254,13 +3254,13 @@ void __76__SBDeviceApplicationSceneHandle__noteBackgroundActivitiesToSuppressCha
 
 - (void)_noteContentPrefersToDisableClippingChanged
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self contentPrefersToDisableClipping];
+  contentPrefersToDisableClipping = [(SBDeviceApplicationSceneHandle *)self contentPrefersToDisableClipping];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __77__SBDeviceApplicationSceneHandle__noteContentPrefersToDisableClippingChanged__block_invoke;
   v4[3] = &unk_2783B9008;
   v4[4] = self;
-  v5 = v3;
+  v5 = contentPrefersToDisableClipping;
   [(SBDeviceApplicationSceneHandle *)self _enumerateObserversWithBlock:v4];
 }
 
@@ -3273,17 +3273,17 @@ void __77__SBDeviceApplicationSceneHandle__noteContentPrefersToDisableClippingCh
   }
 }
 
-- (int64_t)_initialMainSceneCompabilityMode:(id)a3
+- (int64_t)_initialMainSceneCompabilityMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(SBApplicationSceneHandle *)self application];
-  v6 = [v5 isClassic];
-  v7 = [v4 objectForActivationSetting:20];
+  modeCopy = mode;
+  application = [(SBApplicationSceneHandle *)self application];
+  isClassic = [application isClassic];
+  v7 = [modeCopy objectForActivationSetting:20];
 
-  v8 = [v7 integerValue];
-  if (_SBApplicationClassicModeIsClassic(v8) || v6)
+  integerValue = [v7 integerValue];
+  if (_SBApplicationClassicModeIsClassic(integerValue) || isClassic)
   {
-    if ([v5 classicAppZoomedIn])
+    if ([application classicAppZoomedIn])
     {
       v9 = 2;
     }
@@ -3302,17 +3302,17 @@ void __77__SBDeviceApplicationSceneHandle__noteContentPrefersToDisableClippingCh
   return v9;
 }
 
-- (void)_populateSettingsWithDefaultStatusBarHeight:(id)a3
+- (void)_populateSettingsWithDefaultStatusBarHeight:(id)height
 {
-  v4 = a3;
-  v5 = [(SBDeviceApplicationSceneHandle *)self _defaultStatusBarHeights];
+  heightCopy = height;
+  _defaultStatusBarHeights = [(SBDeviceApplicationSceneHandle *)self _defaultStatusBarHeights];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__SBDeviceApplicationSceneHandle__populateSettingsWithDefaultStatusBarHeight___block_invoke;
   v7[3] = &unk_2783B9030;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = heightCopy;
+  v6 = heightCopy;
+  [_defaultStatusBarHeights enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 uint64_t __78__SBDeviceApplicationSceneHandle__populateSettingsWithDefaultStatusBarHeight___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3325,16 +3325,16 @@ uint64_t __78__SBDeviceApplicationSceneHandle__populateSettingsWithDefaultStatus
   return [v4 setDefaultStatusBarHeight:v7 forOrientation:v6];
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
-  v5 = a3;
+  changedCopy = changed;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __79__SBDeviceApplicationSceneHandle_appProtectionSubjectsChanged_forSubscription___block_invoke;
   v7[3] = &unk_2783A92D8;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = changedCopy;
+  v6 = changedCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -3361,30 +3361,30 @@ void __79__SBDeviceApplicationSceneHandle_appProtectionSubjectsChanged_forSubscr
   }
 }
 
-- (void)appProtectionAssistantShouldShieldDidChange:(id)a3
+- (void)appProtectionAssistantShouldShieldDidChange:(id)change
 {
-  v4 = [a3 shouldShield];
+  shouldShield = [change shouldShield];
   preventKeyboardFocusDueToAppProtectionAssertion = self->_preventKeyboardFocusDueToAppProtectionAssertion;
-  if (v4)
+  if (shouldShield)
   {
     if (preventKeyboardFocusDueToAppProtectionAssertion)
     {
       return;
     }
 
-    v7 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-    v12 = [v7 identityToken];
+    sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+    identityToken = [sceneIfExists identityToken];
 
-    v6 = v12;
-    if (v12)
+    v6 = identityToken;
+    if (identityToken)
     {
       v8 = +[SBWorkspace mainWorkspace];
-      v9 = [v8 keyboardFocusController];
-      v10 = [v9 preventFocusForSceneWithIdentityToken:v12 reason:@"SBDeviceApplicationSceneHandle is preventing focus for shielded scene due to app protection"];
+      keyboardFocusController = [v8 keyboardFocusController];
+      v10 = [keyboardFocusController preventFocusForSceneWithIdentityToken:identityToken reason:@"SBDeviceApplicationSceneHandle is preventing focus for shielded scene due to app protection"];
       v11 = self->_preventKeyboardFocusDueToAppProtectionAssertion;
       self->_preventKeyboardFocusDueToAppProtectionAssertion = v10;
 
-      v6 = v12;
+      v6 = identityToken;
     }
   }
 
@@ -3396,14 +3396,14 @@ void __79__SBDeviceApplicationSceneHandle_appProtectionSubjectsChanged_forSubscr
   }
 }
 
-- (void)layoutPreferencesCoordinator:(id)a3 didUpdatePreferencesForScene:(id)a4 transitionContext:(id)a5
+- (void)layoutPreferencesCoordinator:(id)coordinator didUpdatePreferencesForScene:(id)scene transitionContext:(id)context
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __110__SBDeviceApplicationSceneHandle_layoutPreferencesCoordinator_didUpdatePreferencesForScene_transitionContext___block_invoke;
   v5[3] = &unk_2783B9058;
   v5[4] = self;
-  [(SBDeviceApplicationSceneHandle *)self _enumerateObserversWithBlock:v5, a4, a5];
+  [(SBDeviceApplicationSceneHandle *)self _enumerateObserversWithBlock:v5, scene, context];
 }
 
 void __110__SBDeviceApplicationSceneHandle_layoutPreferencesCoordinator_didUpdatePreferencesForScene_transitionContext___block_invoke(uint64_t a1, void *a2)
@@ -3415,7 +3415,7 @@ void __110__SBDeviceApplicationSceneHandle_layoutPreferencesCoordinator_didUpdat
   }
 }
 
-- (void)layoutPreferencesCoordinatorDidRecognizeDoubleTapInDraggableArea:(id)a3
+- (void)layoutPreferencesCoordinatorDidRecognizeDoubleTapInDraggableArea:(id)area
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -3434,29 +3434,29 @@ void __99__SBDeviceApplicationSceneHandle_layoutPreferencesCoordinatorDidRecogni
   }
 }
 
-- (void)_didCreateScene:(id)a3
+- (void)_didCreateScene:(id)scene
 {
-  v4 = a3;
-  v5 = [v4 settings];
-  self->_isEffectivelyForeground = [v5 isForeground];
+  sceneCopy = scene;
+  settings = [sceneCopy settings];
+  self->_isEffectivelyForeground = [settings isForeground];
 
   v33.receiver = self;
   v33.super_class = SBDeviceApplicationSceneHandle;
-  [(SBDeviceApplicationSceneHandle *)&v33 _didCreateScene:v4];
+  [(SBDeviceApplicationSceneHandle *)&v33 _didCreateScene:sceneCopy];
   if (SBFIsFlexibleWindowingUIAvailable())
   {
-    v6 = [MEMORY[0x277D29510] sharedInstance];
-    if ([v6 isStoreDemoModeEnabled:0])
+    mEMORY[0x277D29510] = [MEMORY[0x277D29510] sharedInstance];
+    if ([mEMORY[0x277D29510] isStoreDemoModeEnabled:0])
     {
 LABEL_7:
 
 LABEL_8:
-      [v4 addExtension:objc_opt_class()];
+      [sceneCopy addExtension:objc_opt_class()];
       goto LABEL_9;
     }
 
-    v7 = [MEMORY[0x277D29510] sharedInstance];
-    if ([v7 isPressDemoModeEnabled:0])
+    mEMORY[0x277D29510]2 = [MEMORY[0x277D29510] sharedInstance];
+    if ([mEMORY[0x277D29510]2 isPressDemoModeEnabled:0])
     {
 LABEL_6:
 
@@ -3464,16 +3464,16 @@ LABEL_6:
     }
 
     v8 = +[SBDefaults localDefaults];
-    v9 = [v8 demoDefaults];
-    if ([v9 allowsTestingStoreDemoMode])
+    demoDefaults = [v8 demoDefaults];
+    if ([demoDefaults allowsTestingStoreDemoMode])
     {
 
       goto LABEL_6;
     }
 
-    v29 = [(SBApplicationSceneHandle *)self application];
-    v30 = [v29 bundleIdentifier];
-    v31 = [v30 isEqualToString:@"com.apple.QRCode"];
+    application = [(SBApplicationSceneHandle *)self application];
+    bundleIdentifier = [application bundleIdentifier];
+    v31 = [bundleIdentifier isEqualToString:@"com.apple.QRCode"];
 
     if (v31)
     {
@@ -3483,57 +3483,57 @@ LABEL_6:
 
 LABEL_9:
   v10 = [(SBDeviceApplicationSceneHandle *)self _sceneDataStoreCreatingIfNecessary:1];
-  v11 = [(SBDeviceApplicationSceneHandle *)self _definition];
-  v12 = [v11 specification];
-  v13 = [v12 uiSceneSessionRole];
+  _definition = [(SBDeviceApplicationSceneHandle *)self _definition];
+  specification = [_definition specification];
+  uiSceneSessionRole = [specification uiSceneSessionRole];
 
-  [v10 setObject:v13 forKey:@"sceneSessionRole"];
-  v14 = [[SBModalAlertPresenter alloc] initWithScene:v4];
+  [v10 setObject:uiSceneSessionRole forKey:@"sceneSessionRole"];
+  v14 = [[SBModalAlertPresenter alloc] initWithScene:sceneCopy];
   modalAlertPresenter = self->_modalAlertPresenter;
   self->_modalAlertPresenter = v14;
 
   [(SBDeviceApplicationSceneHandle *)self _noteMainSceneBackgroundStyleChanged];
-  v16 = [(SBApplicationSceneHandle *)self application];
-  v17 = [v16 info];
-  -[SBDeviceApplicationSceneHandle setWhitePointAdaptivityStyle:](self, "setWhitePointAdaptivityStyle:", [v17 whitePointAdaptivityStyle]);
+  application2 = [(SBApplicationSceneHandle *)self application];
+  info = [application2 info];
+  -[SBDeviceApplicationSceneHandle setWhitePointAdaptivityStyle:](self, "setWhitePointAdaptivityStyle:", [info whitePointAdaptivityStyle]);
 
-  v18 = [v4 uiPresentationManager];
+  uiPresentationManager = [sceneCopy uiPresentationManager];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __50__SBDeviceApplicationSceneHandle__didCreateScene___block_invoke;
   v32[3] = &unk_2783A9210;
   v32[4] = self;
-  [v18 modifyDefaultPresentationContext:v32];
+  [uiPresentationManager modifyDefaultPresentationContext:v32];
 
-  v19 = [v4 clientProcess];
-  LODWORD(v17) = [v19 isApplicationProcess];
+  clientProcess = [sceneCopy clientProcess];
+  LODWORD(info) = [clientProcess isApplicationProcess];
 
-  if (v17)
+  if (info)
   {
-    v20 = [v4 clientProcess];
-    [v20 addObserver:self];
+    clientProcess2 = [sceneCopy clientProcess];
+    [clientProcess2 addObserver:self];
   }
 
-  v21 = [(SBDeviceApplicationSceneHandle *)self _windowScene];
-  v22 = [v21 supportsMultitasking];
+  _windowScene = [(SBDeviceApplicationSceneHandle *)self _windowScene];
+  supportsMultitasking = [_windowScene supportsMultitasking];
 
-  if (v22)
+  if (supportsMultitasking)
   {
-    v23 = [v4 ui_layoutPreferencesCoordinator];
-    [v23 setDelegate:self];
+    ui_layoutPreferencesCoordinator = [sceneCopy ui_layoutPreferencesCoordinator];
+    [ui_layoutPreferencesCoordinator setDelegate:self];
   }
 
   if ([(SBDeviceApplicationSceneHandle *)self shouldApplyAppProtectionSceneSettings]&& !self->_appProtectionSubscription)
   {
-    v24 = [MEMORY[0x277CEBEB8] subjectMonitorRegistry];
-    v25 = [v24 addMonitor:self subjectMask:1];
+    subjectMonitorRegistry = [MEMORY[0x277CEBEB8] subjectMonitorRegistry];
+    v25 = [subjectMonitorRegistry addMonitor:self subjectMask:1];
     appProtectionSubscription = self->_appProtectionSubscription;
     self->_appProtectionSubscription = v25;
   }
 
-  v27 = [(SBApplicationSceneHandle *)self application];
-  v28 = [v27 appProtectionAssistant];
-  [(SBDeviceApplicationSceneHandle *)self appProtectionAssistantShouldShieldDidChange:v28];
+  application3 = [(SBApplicationSceneHandle *)self application];
+  appProtectionAssistant = [application3 appProtectionAssistant];
+  [(SBDeviceApplicationSceneHandle *)self appProtectionAssistantShouldShieldDidChange:appProtectionAssistant];
 
   if (self->_occludedByApplication)
   {
@@ -3563,19 +3563,19 @@ LABEL_9:
   [(SBDeviceApplicationSceneHandle *)self _needsInterfaceAppearanceUpdate];
 }
 
-- (void)_didDestroyScene:(id)a3
+- (void)_didDestroyScene:(id)scene
 {
   appProtectionSubscription = self->_appProtectionSubscription;
-  v5 = a3;
+  sceneCopy = scene;
   [(APSubjectMonitorSubscription *)appProtectionSubscription invalidate];
   v6 = self->_appProtectionSubscription;
   self->_appProtectionSubscription = 0;
 
-  v7 = [v5 ui_layoutPreferencesCoordinator];
-  [v7 setDelegate:0];
+  ui_layoutPreferencesCoordinator = [sceneCopy ui_layoutPreferencesCoordinator];
+  [ui_layoutPreferencesCoordinator setDelegate:0];
 
-  v8 = [v5 clientProcess];
-  [v8 removeObserver:self];
+  clientProcess = [sceneCopy clientProcess];
+  [clientProcess removeObserver:self];
 
   [(SBModalAlertPresenter *)self->_modalAlertPresenter invalidate];
   modalAlertPresenter = self->_modalAlertPresenter;
@@ -3586,23 +3586,23 @@ LABEL_9:
 
   self->_isEffectivelyForeground = 0;
   [(SBDeviceApplicationSceneHandle *)self setAlertSuppressionContextsBySectionIdentifier:0];
-  v11 = [(SBApplicationSceneHandle *)self application];
-  v12 = [v11 info];
-  -[SBDeviceApplicationSceneHandle setWhitePointAdaptivityStyle:](self, "setWhitePointAdaptivityStyle:", [v12 whitePointAdaptivityStyle]);
+  application = [(SBApplicationSceneHandle *)self application];
+  info = [application info];
+  -[SBDeviceApplicationSceneHandle setWhitePointAdaptivityStyle:](self, "setWhitePointAdaptivityStyle:", [info whitePointAdaptivityStyle]);
 
   v13.receiver = self;
   v13.super_class = SBDeviceApplicationSceneHandle;
-  [(SBDeviceApplicationSceneHandle *)&v13 _didDestroyScene:v5];
+  [(SBDeviceApplicationSceneHandle *)&v13 _didDestroyScene:sceneCopy];
 }
 
-- (void)_didUpdateClientSettings:(id)a3
+- (void)_didUpdateClientSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [v4 settingsDiff];
-  v6 = [v4 transitionContext];
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
+  transitionContext = [settingsCopy transitionContext];
   v17.receiver = self;
   v17.super_class = SBDeviceApplicationSceneHandle;
-  [(SBDeviceApplicationSceneHandle *)&v17 _didUpdateClientSettings:v4];
+  [(SBDeviceApplicationSceneHandle *)&v17 _didUpdateClientSettings:settingsCopy];
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBDeviceApplicationSceneHandle _didUpdateClientSettings:];
@@ -3636,7 +3636,7 @@ LABEL_9:
     clientSettingsInspector = self->_clientSettingsInspector;
   }
 
-  [(UIApplicationSceneClientSettingsDiffInspector *)clientSettingsInspector inspectDiff:v5 withContext:v6];
+  [(UIApplicationSceneClientSettingsDiffInspector *)clientSettingsInspector inspectDiff:settingsDiff withContext:transitionContext];
   [(SBDeviceApplicationSceneHandle *)self _updateDisableMultitaskingWhileForegroundAssertionIfNeeded];
 }
 
@@ -3663,19 +3663,19 @@ void __59__SBDeviceApplicationSceneHandle__didUpdateClientSettings___block_invok
   }
 }
 
-- (void)_didUpdateSettingsWithDiff:(id)a3 previousSettings:(id)a4
+- (void)_didUpdateSettingsWithDiff:(id)diff previousSettings:(id)settings
 {
   v10.receiver = self;
   v10.super_class = SBDeviceApplicationSceneHandle;
-  [(SBDeviceApplicationSceneHandle *)&v10 _didUpdateSettingsWithDiff:a3 previousSettings:a4];
-  v5 = [(SBDeviceApplicationSceneHandle *)self scene];
-  v6 = [v5 settings];
-  v7 = [v6 isForeground];
+  [(SBDeviceApplicationSceneHandle *)&v10 _didUpdateSettingsWithDiff:diff previousSettings:settings];
+  scene = [(SBDeviceApplicationSceneHandle *)self scene];
+  settings = [scene settings];
+  isForeground = [settings isForeground];
 
-  if (self->_isEffectivelyForeground != v7)
+  if (self->_isEffectivelyForeground != isForeground)
   {
-    self->_isEffectivelyForeground = v7;
-    if ((v7 & 1) == 0)
+    self->_isEffectivelyForeground = isForeground;
+    if ((isForeground & 1) == 0)
     {
       [(SBDeviceApplicationSceneHandle *)self _resetSceneOrientationRequestState];
     }
@@ -3686,7 +3686,7 @@ void __59__SBDeviceApplicationSceneHandle__didUpdateClientSettings___block_invok
     v8[2] = __78__SBDeviceApplicationSceneHandle__didUpdateSettingsWithDiff_previousSettings___block_invoke;
     v8[3] = &unk_2783B9008;
     v8[4] = self;
-    v9 = v7;
+    v9 = isForeground;
     [(SBDeviceApplicationSceneHandle *)self _enumerateObserversWithBlock:v8];
   }
 
@@ -3702,29 +3702,29 @@ void __78__SBDeviceApplicationSceneHandle__didUpdateSettingsWithDiff_previousSet
   }
 }
 
-- (void)_modifyProcessExecutionContext:(id)a3 fromRequestContext:(id)a4 entity:(id)a5
+- (void)_modifyProcessExecutionContext:(id)context fromRequestContext:(id)requestContext entity:(id)entity
 {
-  v8 = a3;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = SBDeviceApplicationSceneHandle;
-  v9 = a5;
-  [(SBApplicationSceneHandle *)&v18 _modifyProcessExecutionContext:v8 fromRequestContext:a4 entity:v9];
+  entityCopy = entity;
+  [(SBApplicationSceneHandle *)&v18 _modifyProcessExecutionContext:contextCopy fromRequestContext:requestContext entity:entityCopy];
   v10 = [(SBApplicationSceneHandle *)self application:v18.receiver];
-  v11 = [v9 objectForActivationSetting:20];
+  v11 = [entityCopy objectForActivationSetting:20];
 
-  v12 = [v10 _defaultClassicMode];
-  v13 = [v11 integerValue];
+  _defaultClassicMode = [v10 _defaultClassicMode];
+  integerValue = [v11 integerValue];
   if (v11)
   {
-    v12 = v13;
+    _defaultClassicMode = integerValue;
   }
 
-  v14 = [v8 environment];
-  if (v14)
+  environment = [contextCopy environment];
+  if (environment)
   {
     v15 = objc_alloc(MEMORY[0x277CBEB38]);
-    v16 = [v8 environment];
-    v17 = [v15 initWithDictionary:v16];
+    environment2 = [contextCopy environment];
+    v17 = [v15 initWithDictionary:environment2];
   }
 
   else
@@ -3732,110 +3732,110 @@ void __78__SBDeviceApplicationSceneHandle__didUpdateSettingsWithDiff_previousSet
     v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
   }
 
-  if (v12 != -1)
+  if (_defaultClassicMode != -1)
   {
-    [v10 _setCurrentClassicMode:v12];
+    [v10 _setCurrentClassicMode:_defaultClassicMode];
     if (v11)
     {
       [v17 setObject:v11 forKey:@"CLASSIC_OVERRIDE"];
     }
 
-    [v10 _setCurrentClassicMode:v12];
+    [v10 _setCurrentClassicMode:_defaultClassicMode];
     if ([v10 classicAppPhoneAppRunningOnPad])
     {
       [v17 setObject:@"iphone" forKey:@"CLASSIC_SUFFIX"];
     }
   }
 
-  [v8 setEnvironment:v17];
+  [contextCopy setEnvironment:v17];
 }
 
-- (void)_modifyApplicationSceneSettings:(id)a3 fromRequestContext:(id)a4 entity:(id)a5
+- (void)_modifyApplicationSceneSettings:(id)settings fromRequestContext:(id)context entity:(id)entity
 {
   v113 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  settingsCopy = settings;
+  contextCopy = context;
+  entityCopy = entity;
   v104.receiver = self;
   v104.super_class = SBDeviceApplicationSceneHandle;
-  v99 = v9;
-  [(SBApplicationSceneHandle *)&v104 _modifyApplicationSceneSettings:v8 fromRequestContext:v9 entity:v10];
-  v11 = [(SBApplicationSceneHandle *)self application];
-  v98 = [(SBDeviceApplicationSceneHandle *)self _windowScene];
-  v12 = [v98 switcherController];
-  v13 = [v11 isClassic];
-  v102 = v12;
-  v14 = [v12 windowManagementContext];
-  v15 = [v14 isChamoisOrFlexibleWindowing];
+  v99 = contextCopy;
+  [(SBApplicationSceneHandle *)&v104 _modifyApplicationSceneSettings:settingsCopy fromRequestContext:contextCopy entity:entityCopy];
+  application = [(SBApplicationSceneHandle *)self application];
+  _windowScene = [(SBDeviceApplicationSceneHandle *)self _windowScene];
+  switcherController = [_windowScene switcherController];
+  isClassic = [application isClassic];
+  v102 = switcherController;
+  windowManagementContext = [switcherController windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-  v16 = [v10 BOOLForActivationSetting:72];
-  v17 = v13;
-  if ((v13 & 1) == 0)
+  v16 = [entityCopy BOOLForActivationSetting:72];
+  v17 = isClassic;
+  if ((isClassic & 1) == 0)
   {
-    v17 = v13;
-    if (v15)
+    v17 = isClassic;
+    if (isChamoisOrFlexibleWindowing)
     {
-      v17 = ([v11 supportsChamoisSceneResizing] | v16) ^ 1;
+      v17 = ([application supportsChamoisSceneResizing] | v16) ^ 1;
     }
   }
 
-  if (v13)
+  if (isClassic)
   {
     v18 = 1;
   }
 
   else
   {
-    v18 = [v11 supportsChamoisOnExternalDisplay] ^ 1;
+    v18 = [application supportsChamoisOnExternalDisplay] ^ 1;
   }
 
   v19 = SBFIsShellSceneKitAvailable();
-  v20 = [v11 supportsChamoisOnExternalDisplay];
-  v101 = v11;
+  supportsChamoisOnExternalDisplay = [application supportsChamoisOnExternalDisplay];
+  v101 = application;
   if (v19)
   {
-    if (v20)
+    if (supportsChamoisOnExternalDisplay)
     {
-      v21 = [v8 displayIdentity];
-      if ([v21 isContinuityDisplay])
+      displayIdentity = [settingsCopy displayIdentity];
+      if ([displayIdentity isContinuityDisplay])
       {
-        v22 = 1;
+        isMainDisplay = 1;
       }
 
       else
       {
-        v23 = [v8 displayIdentity];
-        v22 = [v23 isMainDisplay];
+        displayIdentity2 = [settingsCopy displayIdentity];
+        isMainDisplay = [displayIdentity2 isMainDisplay];
       }
 
       goto LABEL_15;
     }
   }
 
-  else if (v20)
+  else if (supportsChamoisOnExternalDisplay)
   {
-    v21 = [v8 displayIdentity];
-    v22 = [v21 isContinuityDisplay];
+    displayIdentity = [settingsCopy displayIdentity];
+    isMainDisplay = [displayIdentity isContinuityDisplay];
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v22 = 1;
+  isMainDisplay = 1;
 LABEL_16:
-  v24 = [v8 displayConfiguration];
-  if (((v18 | v17) & 1) != 0 || v22)
+  displayConfiguration = [settingsCopy displayConfiguration];
+  if (((v18 | v17) & 1) != 0 || isMainDisplay)
   {
-    v25 = [MEMORY[0x277D0AA90] mainConfiguration];
-    v26 = [v101 restrictedClassicModeDisplayConfigurationForDisplayConfiguration:v25];
+    mainConfiguration = [MEMORY[0x277D0AA90] mainConfiguration];
+    v26 = [v101 restrictedClassicModeDisplayConfigurationForDisplayConfiguration:mainConfiguration];
     if (v17)
     {
       [v101 defaultLaunchingSizeForDisplayConfiguration:v26];
       BSRectWithSize();
-      [v8 setFrame:?];
+      [settingsCopy setFrame:?];
     }
 
-    if ((v18 | v22))
+    if ((v18 | isMainDisplay))
     {
       if (v18)
       {
@@ -3844,15 +3844,15 @@ LABEL_16:
 
       else
       {
-        v27 = v25;
+        v27 = mainConfiguration;
       }
 
-      [v8 setDisplayConfiguration:v27];
+      [settingsCopy setDisplayConfiguration:v27];
     }
   }
 
-  v28 = [v8 displayConfiguration];
-  v29 = [v28 isEqual:v24];
+  displayConfiguration2 = [settingsCopy displayConfiguration];
+  v29 = [displayConfiguration2 isEqual:displayConfiguration];
 
   if (v29)
   {
@@ -3861,17 +3861,17 @@ LABEL_16:
 
   else
   {
-    v30 = v24;
+    v30 = displayConfiguration;
   }
 
-  [v8 sb_setDisplayConfigurationForSceneManagers:v30];
-  if (v15)
+  [settingsCopy sb_setDisplayConfigurationForSceneManagers:v30];
+  if (isChamoisOrFlexibleWindowing)
   {
-    v31 = [v8 sb_displayIdentityForSceneManagers];
-    v32 = [v31 isExternal];
+    sb_displayIdentityForSceneManagers = [settingsCopy sb_displayIdentityForSceneManagers];
+    isExternal = [sb_displayIdentityForSceneManagers isExternal];
 
     v33 = v99;
-    if (v22 & 1 | ((v32 & 1) == 0))
+    if (isMainDisplay & 1 | ((isExternal & 1) == 0))
     {
       v34 = 0;
     }
@@ -3888,10 +3888,10 @@ LABEL_16:
     v33 = v99;
   }
 
-  [v8 setScreenBoundsIgnoresSceneOrientation:v34];
+  [settingsCopy setScreenBoundsIgnoresSceneOrientation:v34];
 
-  v35 = [SBApp modalAlertPresentationCoordinator];
-  [v8 setCanShowAlerts:{objc_msgSend(v35, "canShowApplicationModalAlerts")}];
+  modalAlertPresentationCoordinator = [SBApp modalAlertPresentationCoordinator];
+  [settingsCopy setCanShowAlerts:{objc_msgSend(modalAlertPresentationCoordinator, "canShowApplicationModalAlerts")}];
 
   v36 = +[SBCoverSheetPresentationManager sharedInstance];
   v37 = [v36 traitsParticipantForSceneHandle:self];
@@ -3906,7 +3906,7 @@ LABEL_16:
   {
     v37 = v38;
 LABEL_37:
-    v39 = [v37 delegate];
+    delegate = [v37 delegate];
     v40 = SBFSafeProtocolCast();
 
     if (!v40)
@@ -3914,16 +3914,16 @@ LABEL_37:
       [SBDeviceApplicationSceneHandle _modifyApplicationSceneSettings:fromRequestContext:entity:];
     }
 
-    [v40 updateOrientationSceneSettingsForParticipant:v8];
+    [v40 updateOrientationSceneSettingsForParticipant:settingsCopy];
     v41 = SBLogTraitsArbiter();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
-      v42 = [v8 interfaceOrientation];
-      v43 = [(SBDeviceApplicationSceneHandle *)self sceneIdentifier];
+      interfaceOrientation = [settingsCopy interfaceOrientation];
+      sceneIdentifier = [(SBDeviceApplicationSceneHandle *)self sceneIdentifier];
       *buf = 134218242;
-      v106 = v42;
+      v106 = interfaceOrientation;
       v107 = 2112;
-      v108 = v43;
+      v108 = sceneIdentifier;
       _os_log_impl(&dword_21ED4E000, v41, OS_LOG_TYPE_DEFAULT, "[DeviceSceneHandle] Did set interfaceOrientation[%ld] on scene with identifier[%@]", buf, 0x16u);
     }
 
@@ -3933,17 +3933,17 @@ LABEL_37:
   v37 = SBLogTraitsArbiter();
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
   {
-    v97 = [(SBDeviceApplicationSceneHandle *)self sceneIdentifier];
+    sceneIdentifier2 = [(SBDeviceApplicationSceneHandle *)self sceneIdentifier];
     *buf = 138412290;
-    v106 = v97;
+    v106 = sceneIdentifier2;
     _os_log_impl(&dword_21ED4E000, v37, OS_LOG_TYPE_DEFAULT, "[DeviceSceneHandle] Participant not found for scene identifier: %@", buf, 0xCu);
   }
 
 LABEL_42:
 
-  [(SBDeviceApplicationSceneHandle *)self _populateSettingsWithDefaultStatusBarHeight:v8];
-  v44 = [v10 layoutRole];
-  if (v44 == 3)
+  [(SBDeviceApplicationSceneHandle *)self _populateSettingsWithDefaultStatusBarHeight:settingsCopy];
+  layoutRole = [entityCopy layoutRole];
+  if (layoutRole == 3)
   {
     v45 = 2;
   }
@@ -3953,90 +3953,90 @@ LABEL_42:
     v45 = 1;
   }
 
-  [(SBDeviceApplicationSceneHandle *)self _modifySafeAreaInsetsOnApplicationSceneSettings:v8 isFloating:v44 == 3];
+  [(SBDeviceApplicationSceneHandle *)self _modifySafeAreaInsetsOnApplicationSceneSettings:settingsCopy isFloating:layoutRole == 3];
   v46 = [(SBDeviceApplicationSceneHandle *)self displayEdgeInfoForLayoutEnvironment:v45];
-  [v46 sb_applyDisplayEdgeInfoToSceneSettings:v8];
-  v47 = [(SBDeviceApplicationSceneHandle *)self _sceneCornerRadiusConfigurationFromRequestContext:v33 forEntity:v10];
-  [v8 setCornerRadiusConfiguration:v47];
+  [v46 sb_applyDisplayEdgeInfoToSceneSettings:settingsCopy];
+  v47 = [(SBDeviceApplicationSceneHandle *)self _sceneCornerRadiusConfigurationFromRequestContext:v33 forEntity:entityCopy];
+  [settingsCopy setCornerRadiusConfiguration:v47];
 
-  [v8 setStatusBarParts:{-[SBDeviceApplicationSceneHandle statusBarParts](self, "statusBarParts")}];
-  [v8 setStatusBarAvoidanceFrame:{self->_statusBarAvoidanceFrame.origin.x, self->_statusBarAvoidanceFrame.origin.y, self->_statusBarAvoidanceFrame.size.width, self->_statusBarAvoidanceFrame.size.height}];
-  v100 = [v102 windowManagementContext];
-  v103 = [v8 ui_safeAreaSettings];
-  if (v103)
+  [settingsCopy setStatusBarParts:{-[SBDeviceApplicationSceneHandle statusBarParts](self, "statusBarParts")}];
+  [settingsCopy setStatusBarAvoidanceFrame:{self->_statusBarAvoidanceFrame.origin.x, self->_statusBarAvoidanceFrame.origin.y, self->_statusBarAvoidanceFrame.size.width, self->_statusBarAvoidanceFrame.size.height}];
+  windowManagementContext2 = [v102 windowManagementContext];
+  ui_safeAreaSettings = [settingsCopy ui_safeAreaSettings];
+  if (ui_safeAreaSettings)
   {
-    v48 = [(SBDeviceApplicationSceneHandle *)self _windowScene];
-    [v48 _boundsForInterfaceOrientation:{objc_msgSend(v48, "_interfaceOrientation")}];
-    v49 = [v33 layoutState];
-    [v49 interfaceOrientation];
+    _windowScene2 = [(SBDeviceApplicationSceneHandle *)self _windowScene];
+    [_windowScene2 _boundsForInterfaceOrientation:{objc_msgSend(_windowScene2, "_interfaceOrientation")}];
+    layoutState = [v33 layoutState];
+    [layoutState interfaceOrientation];
 
     _UIConvertRectFromOrientationToOrientation();
     v51 = v50;
     v53 = v52;
     v55 = v54;
     v57 = v56;
-    [v8 convertFrameInRect:?];
+    [settingsCopy convertFrameInRect:?];
     v59 = v58;
     v61 = v60;
     v63 = v62;
     v65 = v64;
-    if ([v100 isFlexibleWindowingEnabled])
+    if ([windowManagementContext2 isFlexibleWindowingEnabled])
     {
-      v66 = [v10 activationSettings];
-      v67 = [(SBDeviceApplicationSceneHandle *)self _safeAreaCornerInsetResolverForApplicationFrame:v66 screenBounds:v59 activationSettings:v61, v63, v65, v51, v53, v55, v57];
+      activationSettings = [entityCopy activationSettings];
+      v67 = [(SBDeviceApplicationSceneHandle *)self _safeAreaCornerInsetResolverForApplicationFrame:activationSettings screenBounds:v59 activationSettings:v61, v63, v65, v51, v53, v55, v57];
 
-      v68 = [v103 safeAreaCornerInsetResolver];
-      v69 = [v68 isEqual:v67];
+      safeAreaCornerInsetResolver = [ui_safeAreaSettings safeAreaCornerInsetResolver];
+      v69 = [safeAreaCornerInsetResolver isEqual:v67];
 
       if ((v69 & 1) == 0)
       {
-        [v103 setSafeAreaCornerInsetResolver:v67];
+        [ui_safeAreaSettings setSafeAreaCornerInsetResolver:v67];
       }
     }
 
     preferredSafeAreaSettings = self->_preferredSafeAreaSettings;
     if (preferredSafeAreaSettings)
     {
-      v71 = [(_UISceneSafeAreaSettings *)preferredSafeAreaSettings safeAreaEdgeInsetResolver];
+      safeAreaEdgeInsetResolver = [(_UISceneSafeAreaSettings *)preferredSafeAreaSettings safeAreaEdgeInsetResolver];
     }
 
     else
     {
-      v72 = [v10 activationSettings];
-      v71 = [(SBDeviceApplicationSceneHandle *)self safeAreaEdgeInsetResolverForApplicationFrame:v72 screenBounds:v59 activationSettings:v61, v63, v65, v51, v53, v55, v57];
+      activationSettings2 = [entityCopy activationSettings];
+      safeAreaEdgeInsetResolver = [(SBDeviceApplicationSceneHandle *)self safeAreaEdgeInsetResolverForApplicationFrame:activationSettings2 screenBounds:v59 activationSettings:v61, v63, v65, v51, v53, v55, v57];
     }
 
-    v73 = [v103 safeAreaEdgeInsetResolver];
-    v74 = [v73 isEqual:v71];
+    safeAreaEdgeInsetResolver2 = [ui_safeAreaSettings safeAreaEdgeInsetResolver];
+    v74 = [safeAreaEdgeInsetResolver2 isEqual:safeAreaEdgeInsetResolver];
 
     if ((v74 & 1) == 0)
     {
-      [v103 setSafeAreaEdgeInsetResolver:v71];
+      [ui_safeAreaSettings setSafeAreaEdgeInsetResolver:safeAreaEdgeInsetResolver];
     }
   }
 
-  v75 = [(SBApplicationSceneHandle *)self application];
-  v76 = [v75 info];
-  v77 = [v76 supportedUserInterfaceStyle];
+  application2 = [(SBApplicationSceneHandle *)self application];
+  info = [application2 info];
+  supportedUserInterfaceStyle = [info supportedUserInterfaceStyle];
 
-  if (!v77)
+  if (!supportedUserInterfaceStyle)
   {
     v78 = SBApp;
-    v79 = [v8 sb_displayIdentityForSceneManagers];
-    v80 = [v78 userInterfaceStyleProviderForDisplay:v79];
-    v77 = [v80 currentStyle];
+    sb_displayIdentityForSceneManagers2 = [settingsCopy sb_displayIdentityForSceneManagers];
+    v80 = [v78 userInterfaceStyleProviderForDisplay:sb_displayIdentityForSceneManagers2];
+    supportedUserInterfaceStyle = [v80 currentStyle];
   }
 
   v81 = SBLogContinuitySession();
   if (os_log_type_enabled(v81, OS_LOG_TYPE_DEFAULT))
   {
     v82 = @"Unspecified";
-    if (v77 == 1)
+    if (supportedUserInterfaceStyle == 1)
     {
       v82 = @"Light";
     }
 
-    if (v77 == 2)
+    if (supportedUserInterfaceStyle == 2)
     {
       v83 = @"Dark";
     }
@@ -4046,64 +4046,64 @@ LABEL_42:
       v83 = v82;
     }
 
-    v84 = [v8 displayIdentity];
-    v85 = [v8 sb_displayIdentityForSceneManagers];
+    displayIdentity3 = [settingsCopy displayIdentity];
+    sb_displayIdentityForSceneManagers3 = [settingsCopy sb_displayIdentityForSceneManagers];
     [(SBDeviceApplicationSceneHandle *)self succinctDescription];
-    v86 = v10;
+    v86 = entityCopy;
     v88 = v87 = v46;
     *buf = 138544130;
     v106 = v83;
     v33 = v99;
     v107 = 2114;
-    v108 = v84;
+    v108 = displayIdentity3;
     v109 = 2114;
-    v110 = v85;
+    v110 = sb_displayIdentityForSceneManagers3;
     v111 = 2114;
     v112 = v88;
     _os_log_impl(&dword_21ED4E000, v81, OS_LOG_TYPE_DEFAULT, "modifying scene setting userInterfaceStyle to %{public}@ displayIdentity: %{public}@ forSceneManagers: %{public}@ %{public}@ ", buf, 0x2Au);
 
     v46 = v87;
-    v10 = v86;
+    entityCopy = v86;
   }
 
-  [v8 setUserInterfaceStyle:v77];
-  [v8 setEnhancedWindowingEnabled:{-[SBDeviceApplicationSceneHandle _isEnhancedWindowingEffectivelyEnabled](self, "_isEnhancedWindowingEffectivelyEnabled")}];
+  [settingsCopy setUserInterfaceStyle:supportedUserInterfaceStyle];
+  [settingsCopy setEnhancedWindowingEnabled:{-[SBDeviceApplicationSceneHandle _isEnhancedWindowingEffectivelyEnabled](self, "_isEnhancedWindowingEffectivelyEnabled")}];
   if ([(SBDeviceApplicationSceneHandle *)self shouldApplyAppProtectionSceneSettings])
   {
-    v89 = [(SBApplicationSceneHandle *)self application];
-    v90 = [SBApplicationAppProtectionAssistant assistantForApplication:v89];
+    application3 = [(SBApplicationSceneHandle *)self application];
+    v90 = [SBApplicationAppProtectionAssistant assistantForApplication:application3];
 
     v91 = SBLogAppProtection();
     if (os_log_type_enabled(v91, OS_LOG_TYPE_DEFAULT))
     {
-      v92 = [v90 shouldShield];
+      shouldShield = [v90 shouldShield];
       *buf = 67109120;
-      LODWORD(v106) = v92;
+      LODWORD(v106) = shouldShield;
       _os_log_impl(&dword_21ED4E000, v91, OS_LOG_TYPE_DEFAULT, "modifying scene setting underAppProtection to %d", buf, 8u);
     }
 
     if ([v90 shouldShield])
     {
-      v93 = [v8 transientLocalSettings];
-      [v93 setFlag:1 forSetting:*MEMORY[0x277D77528]];
+      transientLocalSettings = [settingsCopy transientLocalSettings];
+      [transientLocalSettings setFlag:1 forSetting:*MEMORY[0x277D77528]];
     }
   }
 
-  if ([v8 conformsToProtocol:&unk_2835FD268])
+  if ([settingsCopy conformsToProtocol:&unk_2835FD268])
   {
-    v94 = [(SBDeviceApplicationSceneHandle *)self _windowScene];
-    v95 = [v94 homeScreenController];
+    _windowScene3 = [(SBDeviceApplicationSceneHandle *)self _windowScene];
+    homeScreenController = [_windowScene3 homeScreenController];
 
-    v96 = [v95 currentHomeScreenIconStyleConfiguration];
-    [v8 setIconStyleConfiguration:v96];
+    currentHomeScreenIconStyleConfiguration = [homeScreenController currentHomeScreenIconStyleConfiguration];
+    [settingsCopy setIconStyleConfiguration:currentHomeScreenIconStyleConfiguration];
   }
 }
 
-- (void)setOccluded:(BOOL)a3
+- (void)setOccluded:(BOOL)occluded
 {
-  if (self->_occludedByApplication != a3)
+  if (self->_occludedByApplication != occluded)
   {
-    self->_occludedByApplication = a3;
+    self->_occludedByApplication = occluded;
     goto LABEL_5;
   }
 
@@ -4117,15 +4117,15 @@ LABEL_5:
 - (void)_updateApplicationOcclusionRects
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  v4 = v3;
-  if (v3)
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  v4 = sceneIfExists;
+  if (sceneIfExists)
   {
     if (self->_occludedByApplication)
     {
       v5 = MEMORY[0x277CCAE60];
-      v6 = [v3 settings];
-      [v6 frame];
+      settings = [sceneIfExists settings];
+      [settings frame];
       v7 = [v5 bs_valueWithCGRect:?];
       v13[0] = v7;
       v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
@@ -4157,15 +4157,15 @@ void __66__SBDeviceApplicationSceneHandle__updateApplicationOcclusionRects__bloc
 - (void)_updateSystemOcclusionRectsAndActiveAppearance
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  v4 = v3;
-  if (v3)
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  v4 = sceneIfExists;
+  if (sceneIfExists)
   {
     if (self->_occludedBySystemUI)
     {
       v5 = MEMORY[0x277CCAE60];
-      v6 = [v3 settings];
-      [v6 frame];
+      settings = [sceneIfExists settings];
+      [settings frame];
       v7 = [v5 bs_valueWithCGRect:?];
       v14[0] = v7;
       v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
@@ -4182,7 +4182,7 @@ void __66__SBDeviceApplicationSceneHandle__updateApplicationOcclusionRects__bloc
     block[3] = &unk_2783A8ED8;
     v11 = v4;
     v12 = v8;
-    v13 = self;
+    selfCopy = self;
     v9 = v8;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
@@ -4198,18 +4198,18 @@ uint64_t __80__SBDeviceApplicationSceneHandle__updateSystemOcclusionRectsAndActi
   return [v3 _reevaluateActiveAppearanceFromAssertions];
 }
 
-- (void)_modifySafeAreaInsetsOnApplicationSceneSettings:(id)a3 isFloating:(BOOL)a4
+- (void)_modifySafeAreaInsetsOnApplicationSceneSettings:(id)settings isFloating:(BOOL)floating
 {
-  v6 = a3;
-  v7 = [(SBApplicationSceneHandle *)self application];
-  if ([v7 isClassic])
+  settingsCopy = settings;
+  application = [(SBApplicationSceneHandle *)self application];
+  if ([application isClassic])
   {
-    v8 = [MEMORY[0x277D77750] sb_displayEdgeInfoForApplication:v7];
+    v8 = [MEMORY[0x277D77750] sb_displayEdgeInfoForApplication:application];
   }
 
   else
   {
-    if (a4)
+    if (floating)
     {
       [MEMORY[0x277D77750] sb_floatingApplicationDisplayEdgeInfo];
     }
@@ -4222,7 +4222,7 @@ uint64_t __80__SBDeviceApplicationSceneHandle__updateSystemOcclusionRectsAndActi
   }
 
   v9 = v8;
-  [v8 sb_applyDisplayEdgeInfoToSceneSettings:v6];
+  [v8 sb_applyDisplayEdgeInfoToSceneSettings:settingsCopy];
 }
 
 void __58__SBDeviceApplicationSceneHandle__defaultStatusBarHeights__block_invoke()
@@ -4231,45 +4231,45 @@ void __58__SBDeviceApplicationSceneHandle__defaultStatusBarHeights__block_invoke
   _defaultStatusBarHeights_sEnumerator = &unk_28336E5F8;
 }
 
-- (id)_sceneCornerRadiusConfigurationFromRequestContext:(id)a3 forEntity:(id)a4
+- (id)_sceneCornerRadiusConfigurationFromRequestContext:(id)context forEntity:(id)entity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBApplicationSceneHandle *)self application];
+  contextCopy = context;
+  entityCopy = entity;
+  application = [(SBApplicationSceneHandle *)self application];
   v9 = +[SBPlatformController sharedInstance];
-  v10 = [v6 displayIdentity];
-  v11 = [SBApp windowSceneManager];
-  v12 = [v11 windowSceneForDisplayIdentity:v10];
+  displayIdentity = [contextCopy displayIdentity];
+  windowSceneManager = [SBApp windowSceneManager];
+  v12 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
 
-  v13 = [v12 switcherController];
-  v14 = [v13 windowManagementContext];
+  switcherController = [v12 switcherController];
+  windowManagementContext = [switcherController windowManagementContext];
   if (([v9 isRoundCornerPhone] & 1) == 0 && (objc_msgSend(v9, "isRoundCornerPad") & 1) == 0)
   {
     v15 = 0.0;
     v16 = 0.0;
     v17 = 0.0;
     v18 = 0.0;
-    if (![v14 isChamoisOrFlexibleWindowing])
+    if (![windowManagementContext isChamoisOrFlexibleWindowing])
     {
       goto LABEL_20;
     }
   }
 
-  v58 = v14;
+  v58 = windowManagementContext;
   v55 = v12;
   v56 = v9;
-  v19 = v7;
-  v20 = [v13 contentViewController];
-  v21 = [v20 liveOverlayForSceneHandle:self];
+  v19 = entityCopy;
+  contentViewController = [switcherController contentViewController];
+  v21 = [contentViewController liveOverlayForSceneHandle:self];
 
-  v57 = v6;
-  v22 = [v6 applicationSceneEntityForLayoutRole:1];
+  v57 = contextCopy;
+  v22 = [contextCopy applicationSceneEntityForLayoutRole:1];
 
-  v23 = [v21 isMaximized];
-  v24 = [v8 isClassic];
-  v25 = [v10 UIScreen];
-  v26 = [v25 traitCollection];
-  [v26 displayCornerRadius];
+  isMaximized = [v21 isMaximized];
+  isClassic = [application isClassic];
+  uIScreen = [displayIdentity UIScreen];
+  traitCollection = [uIScreen traitCollection];
+  [traitCollection displayCornerRadius];
   v28 = v27;
 
   [v21 cornerRadii];
@@ -4277,9 +4277,9 @@ void __58__SBDeviceApplicationSceneHandle__defaultStatusBarHeights__block_invoke
   v17 = v31;
   v16 = v32;
   v15 = v33;
-  if (v24)
+  if (isClassic)
   {
-    -[SBApplication _screenTypeForClassicMode:](v8, [v8 _classicMode]);
+    -[SBApplication _screenTypeForClassicMode:](application, [application _classicMode]);
     SBHDisplayCornerRadiusForScreenType();
     v35 = v34;
     v36 = SBHScreenTypeForCurrentDevice();
@@ -4288,7 +4288,7 @@ void __58__SBDeviceApplicationSceneHandle__defaultStatusBarHeights__block_invoke
     v18 = v37;
     if ([v58 isChamoisOrFlexibleWindowing])
     {
-      if (v23)
+      if (isMaximized)
       {
         v15 = v18;
         v16 = v18;
@@ -4303,7 +4303,7 @@ void __58__SBDeviceApplicationSceneHandle__defaultStatusBarHeights__block_invoke
 
     else
     {
-      if ([v8 classicAppFullScreen])
+      if ([application classicAppFullScreen])
       {
         v15 = v18;
       }
@@ -4323,7 +4323,7 @@ void __58__SBDeviceApplicationSceneHandle__defaultStatusBarHeights__block_invoke
 
   if ([v58 isChamoisOrFlexibleWindowing])
   {
-    if (v23)
+    if (isMaximized)
     {
       v15 = v28;
       v16 = v28;
@@ -4337,13 +4337,13 @@ void __58__SBDeviceApplicationSceneHandle__defaultStatusBarHeights__block_invoke
     }
 
 LABEL_17:
-    v7 = v19;
-    v6 = v57;
+    entityCopy = v19;
+    contextCopy = v57;
     goto LABEL_18;
   }
 
-  v7 = v19;
-  v6 = v57;
+  entityCopy = v19;
+  contextCopy = v57;
   if ([v58 isMedusaEnabled])
   {
     v44 = [v57 applicationSceneEntityForLayoutRole:?];
@@ -4351,7 +4351,7 @@ LABEL_17:
     v45 = [v57 applicationSceneEntityForLayoutRole:3];
 
     v9 = v56;
-    if (v45 == v7 || (v15 = 0.0, v16 = 0.0, v17 = 0.0, v18 = 0.0, v44))
+    if (v45 == entityCopy || (v15 = 0.0, v16 = 0.0, v17 = 0.0, v18 = 0.0, v44))
     {
       +[SBMedusaDomain rootSettings];
       v46 = v54 = v44;
@@ -4361,13 +4361,13 @@ LABEL_17:
       v49 = v48;
       [v46 cornerRadiusForInnerCorners];
       v51 = 0.0;
-      if (v45 == v7)
+      if (v45 == entityCopy)
       {
         v51 = v49;
       }
 
-      v52 = v47 == v7;
-      v6 = v57;
+      v52 = v47 == entityCopy;
+      contextCopy = v57;
       if (v52)
       {
         v53 = v28;
@@ -4388,7 +4388,7 @@ LABEL_17:
         v50 = v28;
       }
 
-      if (v22 == v7)
+      if (v22 == entityCopy)
       {
         v15 = v50;
       }
@@ -4398,7 +4398,7 @@ LABEL_17:
         v15 = v53;
       }
 
-      if (v22 == v7)
+      if (v22 == entityCopy)
       {
         v17 = v28;
       }
@@ -4460,10 +4460,10 @@ LABEL_18:
 LABEL_19:
 
   v12 = v55;
-  v14 = v58;
+  windowManagementContext = v58;
 LABEL_20:
-  v38 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
-  if (v38 == 1)
+  userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+  if (userInterfaceLayoutDirection == 1)
   {
     v39 = v18;
   }
@@ -4473,7 +4473,7 @@ LABEL_20:
     v39 = v15;
   }
 
-  if (v38 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v40 = v17;
   }
@@ -4483,7 +4483,7 @@ LABEL_20:
     v40 = v16;
   }
 
-  if (v38 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v17 = v16;
     v41 = v15;
@@ -4499,106 +4499,106 @@ LABEL_20:
   return v42;
 }
 
-- (void)_modifyApplicationSceneClientSettings:(id)a3 fromRequestContext:(id)a4 entity:(id)a5 initialSceneSettings:(id)a6
+- (void)_modifyApplicationSceneClientSettings:(id)settings fromRequestContext:(id)context entity:(id)entity initialSceneSettings:(id)sceneSettings
 {
-  v10 = a3;
+  settingsCopy = settings;
   v22.receiver = self;
   v22.super_class = SBDeviceApplicationSceneHandle;
-  v11 = a6;
-  v12 = a5;
-  [(SBApplicationSceneHandle *)&v22 _modifyApplicationSceneClientSettings:v10 fromRequestContext:a4 entity:v12 initialSceneSettings:v11];
-  v13 = [(SBApplicationSceneHandle *)self application];
-  v14 = [v11 interfaceOrientation];
-  [v10 setInterfaceOrientation:v14];
-  v15 = [v11 interfaceOrientationMode];
+  sceneSettingsCopy = sceneSettings;
+  entityCopy = entity;
+  [(SBApplicationSceneHandle *)&v22 _modifyApplicationSceneClientSettings:settingsCopy fromRequestContext:context entity:entityCopy initialSceneSettings:sceneSettingsCopy];
+  application = [(SBApplicationSceneHandle *)self application];
+  interfaceOrientation = [sceneSettingsCopy interfaceOrientation];
+  [settingsCopy setInterfaceOrientation:interfaceOrientation];
+  interfaceOrientationMode = [sceneSettingsCopy interfaceOrientationMode];
 
-  if (v15 == 1)
+  if (interfaceOrientationMode == 1)
   {
-    [v10 setSupportedInterfaceOrientations:{-[SBDeviceApplicationSceneHandle _mainSceneSupportedInterfaceOrientations](self, "_mainSceneSupportedInterfaceOrientations")}];
+    [settingsCopy setSupportedInterfaceOrientations:{-[SBDeviceApplicationSceneHandle _mainSceneSupportedInterfaceOrientations](self, "_mainSceneSupportedInterfaceOrientations")}];
   }
 
-  [v10 setBackgroundStyle:{-[SBDeviceApplicationSceneHandle backgroundStyle](self, "backgroundStyle")}];
-  [v10 setProximityDetectionModes:1];
-  v16 = [v12 activationSettings];
-  [v10 setStatusBarModernStyle:{-[SBDeviceApplicationSceneHandle _statusBarStyleWithActivationSettings:](self, "_statusBarStyleWithActivationSettings:", v16)}];
+  [settingsCopy setBackgroundStyle:{-[SBDeviceApplicationSceneHandle backgroundStyle](self, "backgroundStyle")}];
+  [settingsCopy setProximityDetectionModes:1];
+  activationSettings = [entityCopy activationSettings];
+  [settingsCopy setStatusBarModernStyle:{-[SBDeviceApplicationSceneHandle _statusBarStyleWithActivationSettings:](self, "_statusBarStyleWithActivationSettings:", activationSettings)}];
 
-  v17 = [v12 activationSettings];
-  [v10 setStatusBarHidden:{-[SBDeviceApplicationSceneHandle isStatusBarHiddenForActivationSettings:withOrientation:](self, "isStatusBarHiddenForActivationSettings:withOrientation:", v17, v14)}];
+  activationSettings2 = [entityCopy activationSettings];
+  [settingsCopy setStatusBarHidden:{-[SBDeviceApplicationSceneHandle isStatusBarHiddenForActivationSettings:withOrientation:](self, "isStatusBarHiddenForActivationSettings:withOrientation:", activationSettings2, interfaceOrientation)}];
 
   [(SBDeviceApplicationSceneHandle *)self statusBarAlpha];
-  [v10 setStatusBarAlpha:?];
-  [v10 setDefaultStatusBarStyle:{_SBStatusBarLegacyStyleFromStyle(-[SBDeviceApplicationSceneHandle defaultStatusBarStyle](self, "defaultStatusBarStyle"))}];
-  [v10 setDefaultStatusBarHidden:{-[SBDeviceApplicationSceneHandle defaultStatusBarHiddenForOrientation:](self, "defaultStatusBarHiddenForOrientation:", v14)}];
+  [settingsCopy setStatusBarAlpha:?];
+  [settingsCopy setDefaultStatusBarStyle:{_SBStatusBarLegacyStyleFromStyle(-[SBDeviceApplicationSceneHandle defaultStatusBarStyle](self, "defaultStatusBarStyle"))}];
+  [settingsCopy setDefaultStatusBarHidden:{-[SBDeviceApplicationSceneHandle defaultStatusBarHiddenForOrientation:](self, "defaultStatusBarHiddenForOrientation:", interfaceOrientation)}];
   v21 = 0.0;
-  v18 = [(SBDeviceApplicationSceneHandle *)self sceneIdentifier];
-  v19 = [v13 _defaultPNGNameFromSuspensionSettingsWithExpiration:&v21 sceneID:v18];
+  sceneIdentifier = [(SBDeviceApplicationSceneHandle *)self sceneIdentifier];
+  v19 = [application _defaultPNGNameFromSuspensionSettingsWithExpiration:&v21 sceneID:sceneIdentifier];
 
-  [v10 setDefaultPNGName:v19];
-  [v10 setDefaultPNGExpirationTime:v21];
-  v20 = [v12 activationSettings];
+  [settingsCopy setDefaultPNGName:v19];
+  [settingsCopy setDefaultPNGExpirationTime:v21];
+  activationSettings3 = [entityCopy activationSettings];
 
-  [v10 setCompatibilityMode:{-[SBDeviceApplicationSceneHandle _initialMainSceneCompabilityMode:](self, "_initialMainSceneCompabilityMode:", v20)}];
-  [v10 setReachabilitySupported:1];
-  [v10 setWhitePointAdaptivityStyle:{-[SBDeviceApplicationSceneHandle whitePointAdaptivityStyle](self, "whitePointAdaptivityStyle")}];
+  [settingsCopy setCompatibilityMode:{-[SBDeviceApplicationSceneHandle _initialMainSceneCompabilityMode:](self, "_initialMainSceneCompabilityMode:", activationSettings3)}];
+  [settingsCopy setReachabilitySupported:1];
+  [settingsCopy setWhitePointAdaptivityStyle:{-[SBDeviceApplicationSceneHandle whitePointAdaptivityStyle](self, "whitePointAdaptivityStyle")}];
 }
 
-- (void)_modifyApplicationTransitionContext:(id)a3 fromRequestContext:(id)a4 entity:(id)a5
+- (void)_modifyApplicationTransitionContext:(id)context fromRequestContext:(id)requestContext entity:(id)entity
 {
-  v8 = a4;
-  v9 = a5;
+  requestContextCopy = requestContext;
+  entityCopy = entity;
   v15.receiver = self;
   v15.super_class = SBDeviceApplicationSceneHandle;
-  [(SBApplicationSceneHandle *)&v15 _modifyApplicationTransitionContext:a3 fromRequestContext:v8 entity:v9];
-  v10 = [v8 request];
-  v11 = [v10 source];
+  [(SBApplicationSceneHandle *)&v15 _modifyApplicationTransitionContext:context fromRequestContext:requestContextCopy entity:entityCopy];
+  request = [requestContextCopy request];
+  source = [request source];
 
-  v12 = [v8 previousEntities];
-  if ([v12 containsObject:v9])
+  previousEntities = [requestContextCopy previousEntities];
+  if ([previousEntities containsObject:entityCopy])
   {
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v13 = [v8 entities];
-  v14 = [v13 containsObject:v9];
+  entities = [requestContextCopy entities];
+  v14 = [entities containsObject:entityCopy];
 
   if (v14)
   {
-    if (v11 != 11)
+    if (source != 11)
     {
-      [(SBDeviceApplicationSceneHandle *)self setLastActivationSource:v11];
+      [(SBDeviceApplicationSceneHandle *)self setLastActivationSource:source];
     }
 
-    v12 = [v9 objectForActivationSetting:46];
-    [(SBDeviceApplicationSceneHandle *)self setLastActivationIconLeafIdentifier:v12];
+    previousEntities = [entityCopy objectForActivationSetting:46];
+    [(SBDeviceApplicationSceneHandle *)self setLastActivationIconLeafIdentifier:previousEntities];
     goto LABEL_6;
   }
 
 LABEL_7:
 }
 
-- (void)_noteDidMoveFromSceneManager:(id)a3
+- (void)_noteDidMoveFromSceneManager:(id)manager
 {
   v6.receiver = self;
   v6.super_class = SBDeviceApplicationSceneHandle;
-  [(SBApplicationSceneHandle *)&v6 _noteDidMoveFromSceneManager:a3];
-  v4 = [(SBDeviceApplicationSceneHandle *)self _windowScene];
-  v5 = [v4 assistantController];
-  [v5 removeObserver:self];
+  [(SBApplicationSceneHandle *)&v6 _noteDidMoveFromSceneManager:manager];
+  _windowScene = [(SBDeviceApplicationSceneHandle *)self _windowScene];
+  assistantController = [_windowScene assistantController];
+  [assistantController removeObserver:self];
 
   [(SBDeviceApplicationSceneHandle *)self _didUpdateDisplayIdentity];
   [(SBDeviceApplicationSceneHandle *)self _updateCapturingContentForAdditionalRenderingDestination];
 }
 
-- (void)_noteReplacedWithSceneHandle:(id)a3
+- (void)_noteReplacedWithSceneHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v9.receiver = self;
   v9.super_class = SBDeviceApplicationSceneHandle;
-  [(SBDeviceApplicationSceneHandle *)&v9 _noteReplacedWithSceneHandle:v4];
+  [(SBDeviceApplicationSceneHandle *)&v9 _noteReplacedWithSceneHandle:handleCopy];
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = handleCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -4622,32 +4622,32 @@ LABEL_7:
   [v8 _updateCapturingContentForAdditionalRenderingDestination];
 }
 
-- (void)applicationSceneHandle:(id)a3 appendToSceneSettings:(id)a4 fromRequestContext:(id)a5 entity:(id)a6
+- (void)applicationSceneHandle:(id)handle appendToSceneSettings:(id)settings fromRequestContext:(id)context entity:(id)entity
 {
-  v8 = a4;
-  v9 = [a5 displayIdentity];
-  [(SBDeviceApplicationSceneHandle *)self _updateIsCapturingContentForAdditionalRenderingDestinationOfMutableSceneSettings:v8 withDisplayIdentity:v9];
+  settingsCopy = settings;
+  displayIdentity = [context displayIdentity];
+  [(SBDeviceApplicationSceneHandle *)self _updateIsCapturingContentForAdditionalRenderingDestinationOfMutableSceneSettings:settingsCopy withDisplayIdentity:displayIdentity];
 }
 
-- (void)_updateSceneHostingInfoForSnapshottingWithAssertion:(id)a3 forceUpdate:(BOOL)a4
+- (void)_updateSceneHostingInfoForSnapshottingWithAssertion:(id)assertion forceUpdate:(BOOL)update
 {
-  v6 = a3;
-  v7 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  if ([v7 isValid])
+  assertionCopy = assertion;
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  if ([sceneIfExists isValid])
   {
-    v8 = [v6 contextId];
-    v9 = [v6 renderId];
-    v10 = [v7 uiSettings];
-    v11 = v10;
-    if (a4 || [v10 hostContextIdentifierForSnapshotting] == v8 && objc_msgSend(v11, "scenePresenterRenderIdentifierForSnapshotting") == v9)
+    contextId = [assertionCopy contextId];
+    renderId = [assertionCopy renderId];
+    uiSettings = [sceneIfExists uiSettings];
+    v11 = uiSettings;
+    if (update || [uiSettings hostContextIdentifierForSnapshotting] == contextId && objc_msgSend(v11, "scenePresenterRenderIdentifierForSnapshotting") == renderId)
     {
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __98__SBDeviceApplicationSceneHandle__updateSceneHostingInfoForSnapshottingWithAssertion_forceUpdate___block_invoke;
       v12[3] = &__block_descriptor_44_e43_v16__0__UIMutableApplicationSceneSettings_8l;
-      v13 = v8;
-      v12[4] = v9;
-      [v7 updateUISettingsWithBlock:v12];
+      v13 = contextId;
+      v12[4] = renderId;
+      [sceneIfExists updateUISettingsWithBlock:v12];
     }
   }
 }
@@ -4660,21 +4660,21 @@ void __98__SBDeviceApplicationSceneHandle__updateSceneHostingInfoForSnapshotting
   [v4 setScenePresenterRenderIdentifierForSnapshotting:*(a1 + 32)];
 }
 
-- (id)_sceneHostingInfoForSnapshottingAssertionWithView:(id)a3
+- (id)_sceneHostingInfoForSnapshottingAssertionWithView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 window];
-  v6 = v5;
+  viewCopy = view;
+  window = [viewCopy window];
+  v6 = window;
   v7 = 0;
-  if (v4 && v5)
+  if (viewCopy && window)
   {
-    v8 = [v5 _contextId];
-    v9 = [v4 layer];
+    _contextId = [window _contextId];
+    layer = [viewCopy layer];
     RenderId = CALayerGetRenderId();
 
     v11 = MEMORY[0x277CCACA8];
-    v12 = [(SBDeviceApplicationSceneHandle *)self sceneIdentifier];
-    v13 = [v11 stringWithFormat:@"%@-%lu-%lu", v12, v8, RenderId];
+    sceneIdentifier = [(SBDeviceApplicationSceneHandle *)self sceneIdentifier];
+    renderId = [v11 stringWithFormat:@"%@-%lu-%lu", sceneIdentifier, _contextId, RenderId];
 
     objc_initWeak(&location, self);
     v14 = [_SBDeviceApplicationSceneHandleSnapshottingAssertion alloc];
@@ -4683,7 +4683,7 @@ void __98__SBDeviceApplicationSceneHandle__updateSceneHostingInfoForSnapshotting
     v16[2] = __84__SBDeviceApplicationSceneHandle__sceneHostingInfoForSnapshottingAssertionWithView___block_invoke;
     v16[3] = &unk_2783B90A0;
     objc_copyWeak(&v17, &location);
-    v7 = [(_SBDeviceApplicationSceneHandleSnapshottingAssertion *)v14 initWithIdentifier:v13 forReason:@"SnapshottingMetadata" contextId:v8 renderId:RenderId invalidationBlock:v16];
+    v7 = [(_SBDeviceApplicationSceneHandleSnapshottingAssertion *)v14 initWithIdentifier:renderId forReason:@"SnapshottingMetadata" contextId:_contextId renderId:RenderId invalidationBlock:v16];
     [(SBDeviceApplicationSceneHandle *)self _addSnapshottingInfoAssertion:v7];
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -4699,55 +4699,55 @@ void __84__SBDeviceApplicationSceneHandle__sceneHostingInfoForSnapshottingAssert
   [WeakRetained _removeSnapshottingInfoAssertion:v3];
 }
 
-- (void)_addSnapshottingInfoAssertion:(id)a3
+- (void)_addSnapshottingInfoAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   snapshottingInfoAssertions = self->_snapshottingInfoAssertions;
-  obj = v4;
+  obj = assertionCopy;
   if (!snapshottingInfoAssertions)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v7 = self->_snapshottingInfoAssertions;
-    self->_snapshottingInfoAssertions = v6;
+    self->_snapshottingInfoAssertions = array;
 
-    v4 = obj;
+    assertionCopy = obj;
     snapshottingInfoAssertions = self->_snapshottingInfoAssertions;
   }
 
-  [(NSMutableArray *)snapshottingInfoAssertions addObject:v4];
+  [(NSMutableArray *)snapshottingInfoAssertions addObject:assertionCopy];
   objc_storeWeak(&self->_currentSnapshottingInfoAssertion, obj);
   [(SBDeviceApplicationSceneHandle *)self _updateSceneHostingInfoForSnapshottingWithAssertion:obj forceUpdate:1];
 }
 
-- (void)_removeSnapshottingInfoAssertion:(id)a3
+- (void)_removeSnapshottingInfoAssertion:(id)assertion
 {
   snapshottingInfoAssertions = self->_snapshottingInfoAssertions;
-  v5 = a3;
-  [(NSMutableArray *)snapshottingInfoAssertions removeObject:v5];
+  assertionCopy = assertion;
+  [(NSMutableArray *)snapshottingInfoAssertions removeObject:assertionCopy];
   WeakRetained = objc_loadWeakRetained(&self->_currentSnapshottingInfoAssertion);
 
-  if (WeakRetained == v5)
+  if (WeakRetained == assertionCopy)
   {
-    v7 = [(NSMutableArray *)self->_snapshottingInfoAssertions lastObject];
-    objc_storeWeak(&self->_currentSnapshottingInfoAssertion, v7);
-    [(SBDeviceApplicationSceneHandle *)self _updateSceneHostingInfoForSnapshottingWithAssertion:v7 forceUpdate:0];
+    lastObject = [(NSMutableArray *)self->_snapshottingInfoAssertions lastObject];
+    objc_storeWeak(&self->_currentSnapshottingInfoAssertion, lastObject);
+    [(SBDeviceApplicationSceneHandle *)self _updateSceneHostingInfoForSnapshottingWithAssertion:lastObject forceUpdate:0];
   }
 }
 
-- (id)newSceneViewWithReferenceSize:(CGSize)a3 contentOrientation:(int64_t)a4 containerOrientation:(int64_t)a5 hostRequester:(id)a6
+- (id)newSceneViewWithReferenceSize:(CGSize)size contentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation hostRequester:(id)requester
 {
-  height = a3.height;
-  width = a3.width;
-  v11 = a6;
-  v12 = [[SBDeviceApplicationSceneView alloc] initWithSceneHandle:self referenceSize:a4 contentOrientation:a5 containerOrientation:v11 hostRequester:width, height];
+  height = size.height;
+  width = size.width;
+  requesterCopy = requester;
+  height = [[SBDeviceApplicationSceneView alloc] initWithSceneHandle:self referenceSize:orientation contentOrientation:containerOrientation containerOrientation:requesterCopy hostRequester:width, height];
 
-  return v12;
+  return height;
 }
 
-- (id)newScenePlaceholderContentContextWithActivationSettings:(id)a3
+- (id)newScenePlaceholderContentContextWithActivationSettings:(id)settings
 {
-  v3 = a3;
-  v4 = [[SBDeviceApplicationScenePlaceholderContentContext alloc] initWithActivationSettings:v3];
+  settingsCopy = settings;
+  v4 = [[SBDeviceApplicationScenePlaceholderContentContext alloc] initWithActivationSettings:settingsCopy];
 
   return v4;
 }
@@ -4759,10 +4759,10 @@ void __84__SBDeviceApplicationSceneHandle__sceneHostingInfoForSnapshottingAssert
   return [(SBDeviceApplicationSceneViewController *)v3 initWithSceneHandle:self];
 }
 
-- (void)applicationProcessDidExit:(id)a3 withContext:(id)a4
+- (void)applicationProcessDidExit:(id)exit withContext:(id)context
 {
-  v5 = a4;
-  v4 = v5;
+  contextCopy = context;
+  v4 = contextCopy;
   BSDispatchMain();
 }
 
@@ -4777,13 +4777,13 @@ void __72__SBDeviceApplicationSceneHandle_applicationProcessDidExit_withContext_
   }
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v12.receiver = self;
   v12.super_class = SBDeviceApplicationSceneHandle;
-  v4 = a3;
-  v5 = [(SBDeviceApplicationSceneHandle *)&v12 descriptionBuilderWithMultilinePrefix:v4];
-  [v5 setActiveMultilinePrefix:v4];
+  prefixCopy = prefix;
+  v5 = [(SBDeviceApplicationSceneHandle *)&v12 descriptionBuilderWithMultilinePrefix:prefixCopy];
+  [v5 setActiveMultilinePrefix:prefixCopy];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __72__SBDeviceApplicationSceneHandle_descriptionBuilderWithMultilinePrefix___block_invoke;
@@ -4791,7 +4791,7 @@ void __72__SBDeviceApplicationSceneHandle_applicationProcessDidExit_withContext_
   v10[4] = self;
   v6 = v5;
   v11 = v6;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v10];
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v7 = v11;
   v8 = v6;
@@ -4841,58 +4841,58 @@ uint64_t __72__SBDeviceApplicationSceneHandle_descriptionBuilderWithMultilinePre
   return [v18 appendArraySection:v19 withName:@"activeAppearanceAssertions" skipIfEmpty:1];
 }
 
-- (id)_sceneDataStoreCreatingIfNecessary:(BOOL)a3
+- (id)_sceneDataStoreCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
-  v5 = [(SBApplicationSceneHandle *)self application];
-  v6 = [v5 _dataStore];
-  v7 = [(SBDeviceApplicationSceneHandle *)self sceneIdentifier];
-  v8 = [v6 sceneStoreForIdentifier:v7 creatingIfNecessary:v3];
+  necessaryCopy = necessary;
+  application = [(SBApplicationSceneHandle *)self application];
+  _dataStore = [application _dataStore];
+  sceneIdentifier = [(SBDeviceApplicationSceneHandle *)self sceneIdentifier];
+  v8 = [_dataStore sceneStoreForIdentifier:sceneIdentifier creatingIfNecessary:necessaryCopy];
 
   return v8;
 }
 
-- (int64_t)_statusBarStyleWithActivationSettings:(id)a3
+- (int64_t)_statusBarStyleWithActivationSettings:(id)settings
 {
-  v4 = [a3 objectForActivationSetting:5];
-  v5 = [v4 scheme];
+  v4 = [settings objectForActivationSetting:5];
+  scheme = [v4 scheme];
 
-  if (!v5 || (v6 = [(SBDeviceApplicationSceneHandle *)self _defaultStatusBarStyleFromSceneDataStore], v6 == -1))
+  if (!scheme || (v6 = [(SBDeviceApplicationSceneHandle *)self _defaultStatusBarStyleFromSceneDataStore], v6 == -1))
   {
-    v8 = [(SBDeviceApplicationSceneHandle *)self statusBarStateProvider];
-    v7 = [v8 statusBarStyle];
+    statusBarStateProvider = [(SBDeviceApplicationSceneHandle *)self statusBarStateProvider];
+    statusBarStyle = [statusBarStateProvider statusBarStyle];
   }
 
   else
   {
-    v7 = _SBStatusBarStyleFromLegacyStyle(v6);
+    statusBarStyle = _SBStatusBarStyleFromLegacyStyle(v6);
   }
 
-  return v7;
+  return statusBarStyle;
 }
 
-- (void)_updateIdleTimerForReason:(id)a3
+- (void)_updateIdleTimerForReason:(id)reason
 {
-  v7 = a3;
-  v4 = [(SBDeviceApplicationSceneHandle *)self _generateIdleTimerBehavior];
-  v5 = [(SBDeviceApplicationSceneHandle *)self _idleTimerCoordinator];
-  v6 = [v5 idleTimerProvider:self didProposeBehavior:v4 forReason:v7];
+  reasonCopy = reason;
+  _generateIdleTimerBehavior = [(SBDeviceApplicationSceneHandle *)self _generateIdleTimerBehavior];
+  _idleTimerCoordinator = [(SBDeviceApplicationSceneHandle *)self _idleTimerCoordinator];
+  v6 = [_idleTimerCoordinator idleTimerProvider:self didProposeBehavior:_generateIdleTimerBehavior forReason:reasonCopy];
 }
 
-- (void)_updateIsCapturingContentForAdditionalRenderingDestinationOfMutableSceneSettings:(id)a3 withDisplayIdentity:(id)a4
+- (void)_updateIsCapturingContentForAdditionalRenderingDestinationOfMutableSceneSettings:(id)settings withDisplayIdentity:(id)identity
 {
-  v20 = a3;
-  v6 = a4;
-  v7 = [v20 isCapturingContentForAdditionalRenderingDestination];
-  if ([v6 isContinuityDisplay])
+  settingsCopy = settings;
+  identityCopy = identity;
+  isCapturingContentForAdditionalRenderingDestination = [settingsCopy isCapturingContentForAdditionalRenderingDestination];
+  if ([identityCopy isContinuityDisplay])
   {
-    v8 = [SBApp windowSceneManager];
-    v9 = [v8 windowSceneForDisplayIdentity:v6];
+    windowSceneManager = [SBApp windowSceneManager];
+    v9 = [windowSceneManager windowSceneForDisplayIdentity:identityCopy];
 
-    v10 = [v9 _FBSScene];
-    v11 = [v10 settings];
+    _FBSScene = [v9 _FBSScene];
+    settings = [_FBSScene settings];
     v12 = objc_opt_class();
-    v13 = v11;
+    v13 = settings;
     if (v12)
     {
       if (objc_opt_isKindOfClass())
@@ -4913,28 +4913,28 @@ uint64_t __72__SBDeviceApplicationSceneHandle_descriptionBuilderWithMultilinePre
 
     v15 = v14;
 
-    v16 = [v15 isCapturingContentForAdditionalRenderingDestination];
-    [v20 setIsCapturingContentForAdditionalRenderingDestination:v16];
+    isCapturingContentForAdditionalRenderingDestination2 = [v15 isCapturingContentForAdditionalRenderingDestination];
+    [settingsCopy setIsCapturingContentForAdditionalRenderingDestination:isCapturingContentForAdditionalRenderingDestination2];
   }
 
   else
   {
-    [v20 setIsCapturingContentForAdditionalRenderingDestination:0];
+    [settingsCopy setIsCapturingContentForAdditionalRenderingDestination:0];
   }
 
-  if (v7 != [v20 isCapturingContentForAdditionalRenderingDestination])
+  if (isCapturingContentForAdditionalRenderingDestination != [settingsCopy isCapturingContentForAdditionalRenderingDestination])
   {
-    v17 = [v20 isCapturingContentForAdditionalRenderingDestination];
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    v19 = v18;
-    if (v17)
+    isCapturingContentForAdditionalRenderingDestination3 = [settingsCopy isCapturingContentForAdditionalRenderingDestination];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    v19 = defaultCenter;
+    if (isCapturingContentForAdditionalRenderingDestination3)
     {
-      [v18 addObserver:self selector:sel__updateCapturingContentForAdditionalRenderingDestination name:*MEMORY[0x277D76E90] object:0];
+      [defaultCenter addObserver:self selector:sel__updateCapturingContentForAdditionalRenderingDestination name:*MEMORY[0x277D76E90] object:0];
     }
 
     else
     {
-      [v18 removeObserver:self name:*MEMORY[0x277D76E90] object:0];
+      [defaultCenter removeObserver:self name:*MEMORY[0x277D76E90] object:0];
     }
   }
 }
@@ -4970,10 +4970,10 @@ void __90__SBDeviceApplicationSceneHandle__updateCapturingContentForAdditionalRe
 
 - (void)_reevaluateActivityModeFromAssertions
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self _computeActivityMode];
-  if (self->_computedActivityMode != v3)
+  _computeActivityMode = [(SBDeviceApplicationSceneHandle *)self _computeActivityMode];
+  if (self->_computedActivityMode != _computeActivityMode)
   {
-    self->_computedActivityMode = v3;
+    self->_computedActivityMode = _computeActivityMode;
 
     [(SBDeviceApplicationSceneHandle *)self _updateActivityMode];
   }
@@ -4988,8 +4988,8 @@ void __90__SBDeviceApplicationSceneHandle__updateCapturingContentForAdditionalRe
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(NSHashTable *)self->_activityModeAssertions allObjects];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    allObjects = [(NSHashTable *)self->_activityModeAssertions allObjects];
+    v4 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -5001,17 +5001,17 @@ void __90__SBDeviceApplicationSceneHandle__updateCapturingContentForAdditionalRe
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allObjects);
           }
 
-          v9 = [*(*(&v11 + 1) + 8 * i) activityMode];
-          if (v7 <= v9)
+          activityMode = [*(*(&v11 + 1) + 8 * i) activityMode];
+          if (v7 <= activityMode)
           {
-            v7 = v9;
+            v7 = activityMode;
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v5);
@@ -5033,15 +5033,15 @@ void __90__SBDeviceApplicationSceneHandle__updateCapturingContentForAdditionalRe
 
 - (void)_updateActivityMode
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  v4 = v3;
-  if (v3)
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  v4 = sceneIfExists;
+  if (sceneIfExists)
   {
-    v5 = [v3 settings];
-    v6 = [v5 activityMode];
+    settings = [sceneIfExists settings];
+    activityMode = [settings activityMode];
     computedActivityMode = self->_computedActivityMode;
 
-    if (computedActivityMode != v6)
+    if (computedActivityMode != activityMode)
     {
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
@@ -5055,10 +5055,10 @@ void __90__SBDeviceApplicationSceneHandle__updateCapturingContentForAdditionalRe
 
 - (void)_reevaluateJetsamModeFromAssertions
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self _computeJetsamMode];
-  if (self->_computedJetsamMode != v3)
+  _computeJetsamMode = [(SBDeviceApplicationSceneHandle *)self _computeJetsamMode];
+  if (self->_computedJetsamMode != _computeJetsamMode)
   {
-    self->_computedJetsamMode = v3;
+    self->_computedJetsamMode = _computeJetsamMode;
 
     [(SBDeviceApplicationSceneHandle *)self _updateJetsamPriority];
   }
@@ -5073,8 +5073,8 @@ void __90__SBDeviceApplicationSceneHandle__updateCapturingContentForAdditionalRe
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(NSHashTable *)self->_jetsamModeAssertions allObjects];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    allObjects = [(NSHashTable *)self->_jetsamModeAssertions allObjects];
+    v4 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -5086,17 +5086,17 @@ void __90__SBDeviceApplicationSceneHandle__updateCapturingContentForAdditionalRe
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allObjects);
           }
 
-          v9 = [*(*(&v11 + 1) + 8 * i) jetsamMode];
-          if (v7 <= v9)
+          jetsamMode = [*(*(&v11 + 1) + 8 * i) jetsamMode];
+          if (v7 <= jetsamMode)
           {
-            v7 = v9;
+            v7 = jetsamMode;
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v5);
@@ -5118,10 +5118,10 @@ void __90__SBDeviceApplicationSceneHandle__updateCapturingContentForAdditionalRe
 
 - (void)_reevaluateResourceElevationFromAssertions
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self _computeResourceElevation];
-  if (self->_computedResourceElevation != v3)
+  _computeResourceElevation = [(SBDeviceApplicationSceneHandle *)self _computeResourceElevation];
+  if (self->_computedResourceElevation != _computeResourceElevation)
   {
-    self->_computedResourceElevation = v3;
+    self->_computedResourceElevation = _computeResourceElevation;
 
     [(SBDeviceApplicationSceneHandle *)self _updateJetsamPriority];
   }
@@ -5136,8 +5136,8 @@ void __90__SBDeviceApplicationSceneHandle__updateCapturingContentForAdditionalRe
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(NSHashTable *)self->_resourceElevationAssertions allObjects];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    allObjects = [(NSHashTable *)self->_resourceElevationAssertions allObjects];
+    v4 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -5149,17 +5149,17 @@ void __90__SBDeviceApplicationSceneHandle__updateCapturingContentForAdditionalRe
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allObjects);
           }
 
-          v9 = [*(*(&v11 + 1) + 8 * i) resourceElevation];
-          if (v6 <= v9)
+          resourceElevation = [*(*(&v11 + 1) + 8 * i) resourceElevation];
+          if (v6 <= resourceElevation)
           {
-            v6 = v9;
+            v6 = resourceElevation;
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v5);
@@ -5181,31 +5181,31 @@ void __90__SBDeviceApplicationSceneHandle__updateCapturingContentForAdditionalRe
 
 - (void)_updateJetsamPriority
 {
-  v2 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  if (v2)
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  if (sceneIfExists)
   {
     v3 = FBSSceneJetsamPriorityCreate();
-    v4 = [v2 settings];
-    v5 = [v4 jetsamPriority];
+    settings = [sceneIfExists settings];
+    jetsamPriority = [settings jetsamPriority];
 
-    if (v5 != v3)
+    if (jetsamPriority != v3)
     {
       v6[0] = MEMORY[0x277D85DD0];
       v6[1] = 3221225472;
       v6[2] = __55__SBDeviceApplicationSceneHandle__updateJetsamPriority__block_invoke;
       v6[3] = &__block_descriptor_34_e33_v16__0__FBSMutableSceneSettings_8l;
       v7 = v3;
-      [v2 updateSettingsWithBlock:v6];
+      [sceneIfExists updateSettingsWithBlock:v6];
     }
   }
 }
 
 - (void)_reevaluateActiveAppearanceFromAssertions
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self _computeActiveAppearance];
-  if (v3 != self->_computedActiveAppearance)
+  _computeActiveAppearance = [(SBDeviceApplicationSceneHandle *)self _computeActiveAppearance];
+  if (_computeActiveAppearance != self->_computedActiveAppearance)
   {
-    self->_computedActiveAppearance = v3;
+    self->_computedActiveAppearance = _computeActiveAppearance;
 
     [(SBDeviceApplicationSceneHandle *)self _updateInterfaceActiveAppearance];
   }
@@ -5213,23 +5213,23 @@ void __90__SBDeviceApplicationSceneHandle__updateCapturingContentForAdditionalRe
 
 - (int64_t)_computeActiveAppearance
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self _windowScene];
-  v4 = [v3 assistantController];
-  v5 = [v4 isOccludingSystemContent];
+  _windowScene = [(SBDeviceApplicationSceneHandle *)self _windowScene];
+  assistantController = [_windowScene assistantController];
+  isOccludingSystemContent = [assistantController isOccludingSystemContent];
 
-  v6 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  v7 = [v6 settings];
-  v8 = [v7 isForeground];
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  settings = [sceneIfExists settings];
+  isForeground = [settings isForeground];
 
   result = 0;
-  if (v8 && (v5 & 1) == 0)
+  if (isForeground && (isOccludingSystemContent & 1) == 0)
   {
     if ([(NSMutableArray *)self->_activeAppearanceAssertions count])
     {
-      v10 = [(NSMutableArray *)self->_activeAppearanceAssertions lastObject];
-      v11 = [v10 activeAppearance];
+      lastObject = [(NSMutableArray *)self->_activeAppearanceAssertions lastObject];
+      activeAppearance = [lastObject activeAppearance];
 
-      return v11;
+      return activeAppearance;
     }
 
     else
@@ -5243,18 +5243,18 @@ void __90__SBDeviceApplicationSceneHandle__updateCapturingContentForAdditionalRe
 
 - (void)_updateInterfaceActiveAppearance
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  v4 = [v3 renderingEnvironment];
-  v5 = v4;
-  if (v3 && v4)
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  renderingEnvironment = [sceneIfExists renderingEnvironment];
+  v5 = renderingEnvironment;
+  if (sceneIfExists && renderingEnvironment)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __66__SBDeviceApplicationSceneHandle__updateInterfaceActiveAppearance__block_invoke;
     v6[3] = &unk_2783B8EA8;
-    v7 = v4;
-    v8 = self;
-    [v3 performUpdate:v6];
+    v7 = renderingEnvironment;
+    selfCopy = self;
+    [sceneIfExists performUpdate:v6];
   }
 }
 
@@ -5268,27 +5268,27 @@ void __66__SBDeviceApplicationSceneHandle__updateInterfaceActiveAppearance__bloc
   [v5 setAnimationSettings:v6];
 }
 
-- (id)_safeAreaCornerInsetResolverForApplicationFrame:(CGRect)a3 screenBounds:(CGRect)a4 activationSettings:(id)a5
+- (id)_safeAreaCornerInsetResolverForApplicationFrame:(CGRect)frame screenBounds:(CGRect)bounds activationSettings:(id)settings
 {
   v23 = 0u;
   v24 = 0u;
-  [(SBDeviceApplicationSceneHandle *)self windowControlsLayoutForApplicationFrame:a5 screenBounds:a3.origin.x activationSettings:a3.origin.y, a3.size.width, a3.size.height, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(SBDeviceApplicationSceneHandle *)self windowControlsLayoutForApplicationFrame:settings screenBounds:frame.origin.x activationSettings:frame.origin.y, frame.size.width, frame.size.height, bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   if ([(SBDeviceApplicationSceneHandle *)self _supportsSolariumSafeAreas]&& v23 == 2)
   {
     preferredSafeAreaSettings = self->_preferredSafeAreaSettings;
     if (preferredSafeAreaSettings)
     {
-      v7 = [(_UISceneSafeAreaSettings *)preferredSafeAreaSettings safeAreaCornerInsetResolver];
+      safeAreaCornerInsetResolver = [(_UISceneSafeAreaSettings *)preferredSafeAreaSettings safeAreaCornerInsetResolver];
     }
 
     else
     {
       v8 = MEMORY[0x277D76620];
-      v9 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
-      v10 = [*v8 userInterfaceLayoutDirection];
+      userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+      userInterfaceLayoutDirection2 = [*v8 userInterfaceLayoutDirection];
       v11 = objc_alloc(MEMORY[0x277D76200]);
       v12 = *MEMORY[0x277CBF3A8];
-      if (v9 == 1)
+      if (userInterfaceLayoutDirection == 1)
       {
         v13 = *MEMORY[0x277CBF3A8];
       }
@@ -5298,7 +5298,7 @@ void __66__SBDeviceApplicationSceneHandle__updateInterfaceActiveAppearance__bloc
         v13 = *&v24 + 45.0;
       }
 
-      if (v9 == 1)
+      if (userInterfaceLayoutDirection == 1)
       {
         v14 = *(MEMORY[0x277CBF3A8] + 8);
       }
@@ -5308,7 +5308,7 @@ void __66__SBDeviceApplicationSceneHandle__updateInterfaceActiveAppearance__bloc
         v14 = *(&v24 + 1) + 32.0;
       }
 
-      if (v10 == 1)
+      if (userInterfaceLayoutDirection2 == 1)
       {
         v15 = *&v24 + 45.0;
       }
@@ -5320,7 +5320,7 @@ void __66__SBDeviceApplicationSceneHandle__updateInterfaceActiveAppearance__bloc
 
       *v18 = v13;
       *&v18[1] = v14;
-      if (v10 == 1)
+      if (userInterfaceLayoutDirection2 == 1)
       {
         v16 = *(&v24 + 1) + 32.0;
       }
@@ -5334,34 +5334,34 @@ void __66__SBDeviceApplicationSceneHandle__updateInterfaceActiveAppearance__bloc
       v20 = v12;
       v21 = v15;
       v22 = v16;
-      v7 = [v11 initWithSafeAreaCornerInsets:v18];
+      safeAreaCornerInsetResolver = [v11 initWithSafeAreaCornerInsets:v18];
     }
   }
 
   else
   {
-    v7 = objc_alloc_init(MEMORY[0x277D76200]);
+    safeAreaCornerInsetResolver = objc_alloc_init(MEMORY[0x277D76200]);
   }
 
-  return v7;
+  return safeAreaCornerInsetResolver;
 }
 
 - (BOOL)_supportsWindowControls
 {
-  v2 = [(SBDeviceApplicationSceneHandle *)self _windowScene];
-  v3 = [v2 switcherController];
-  v4 = [v3 windowManagementContext];
+  _windowScene = [(SBDeviceApplicationSceneHandle *)self _windowScene];
+  switcherController = [_windowScene switcherController];
+  windowManagementContext = [switcherController windowManagementContext];
   if (_UISolariumEnabled())
   {
-    v5 = [v4 isFlexibleWindowingEnabled];
+    isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
   }
 
   else
   {
-    v5 = 0;
+    isFlexibleWindowingEnabled = 0;
   }
 
-  return v5;
+  return isFlexibleWindowingEnabled;
 }
 
 - (SBIdleTimerCoordinating)_idleTimerCoordinator
@@ -5373,44 +5373,44 @@ void __66__SBDeviceApplicationSceneHandle__updateInterfaceActiveAppearance__bloc
 
 - (BOOL)_classicAppPhoneOnPadPrefersLandscape
 {
-  v3 = [(SBApplicationSceneHandle *)self application];
-  v4 = [v3 _classicAppScaledPhoneOnPad];
+  application = [(SBApplicationSceneHandle *)self application];
+  _classicAppScaledPhoneOnPad = [application _classicAppScaledPhoneOnPad];
 
-  if (!v4)
+  if (!_classicAppScaledPhoneOnPad)
   {
     return 0;
   }
 
   v5 = [(SBDeviceApplicationSceneHandle *)self _sceneDataStoreCreatingIfNecessary:0];
   v6 = [v5 safeObjectForKey:@"classicPhoneAppPrefersLandscape" ofType:objc_opt_class()];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
-- (void)_setClassicAppPhoneOnPadPrefersLandscape:(BOOL)a3
+- (void)_setClassicAppPhoneOnPadPrefersLandscape:(BOOL)landscape
 {
-  v3 = a3;
-  v5 = [(SBApplicationSceneHandle *)self application];
-  v6 = [v5 _classicAppScaledPhoneOnPad];
+  landscapeCopy = landscape;
+  application = [(SBApplicationSceneHandle *)self application];
+  _classicAppScaledPhoneOnPad = [application _classicAppScaledPhoneOnPad];
 
-  if (v6)
+  if (_classicAppScaledPhoneOnPad)
   {
     v8 = [(SBDeviceApplicationSceneHandle *)self _sceneDataStoreCreatingIfNecessary:1];
-    v7 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+    v7 = [MEMORY[0x277CCABB0] numberWithBool:landscapeCopy];
     [v8 setObject:v7 forKey:@"classicPhoneAppPrefersLandscape"];
   }
 }
 
 - (BOOL)_classicAppPhoneOnPadSupportsOldStyleMixedOrientation
 {
-  v3 = [(SBApplicationSceneHandle *)self application];
-  if ([v3 _classicAppScaledPhoneOnPad])
+  application = [(SBApplicationSceneHandle *)self application];
+  if ([application _classicAppScaledPhoneOnPad])
   {
-    v4 = [(SBDeviceApplicationSceneHandle *)self _windowScene];
-    v5 = [v4 switcherController];
-    v6 = [v5 windowManagementContext];
-    v7 = [v6 isChamoisOrFlexibleWindowing] ^ 1;
+    _windowScene = [(SBDeviceApplicationSceneHandle *)self _windowScene];
+    switcherController = [_windowScene switcherController];
+    windowManagementContext = [switcherController windowManagementContext];
+    v7 = [windowManagementContext isChamoisOrFlexibleWindowing] ^ 1;
   }
 
   else
@@ -5423,27 +5423,27 @@ void __66__SBDeviceApplicationSceneHandle__updateInterfaceActiveAppearance__bloc
 
 - (void)_updateDisableMultitaskingWhileForegroundAssertionIfNeeded
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  v15 = [v3 uiClientSettings];
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  uiClientSettings = [sceneIfExists uiClientSettings];
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-    v5 = [v4 uiSettings];
+    sceneIfExists2 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+    uiSettings = [sceneIfExists2 uiSettings];
 
-    if (([v15 disablesMultitaskingWhileForeground] & 1) != 0 || (-[SBApplicationSceneHandle application](self, "application"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "bundleIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", @"com.apple.QRCode"), v7, v6, v8))
+    if (([uiClientSettings disablesMultitaskingWhileForeground] & 1) != 0 || (-[SBApplicationSceneHandle application](self, "application"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "bundleIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", @"com.apple.QRCode"), v7, v6, v8))
     {
-      if ([v5 isForeground])
+      if ([uiSettings isForeground])
       {
-        v9 = [v5 deactivationReasons];
-        v10 = [v5 isForeground];
-        if (!v9)
+        deactivationReasons = [uiSettings deactivationReasons];
+        isForeground = [uiSettings isForeground];
+        if (!deactivationReasons)
         {
           if (!self->_disableMultitaskingAssertion)
           {
             v11 = +[SBSceneManagerCoordinator sharedInstance];
-            v12 = [v11 sceneHandleDisableMultitaskingAssertionManager];
-            v13 = [v12 acquireDisableMultitaskingAssertionForSceneHandle:self];
+            sceneHandleDisableMultitaskingAssertionManager = [v11 sceneHandleDisableMultitaskingAssertionManager];
+            v13 = [sceneHandleDisableMultitaskingAssertionManager acquireDisableMultitaskingAssertionForSceneHandle:self];
             disableMultitaskingAssertion = self->_disableMultitaskingAssertion;
             self->_disableMultitaskingAssertion = v13;
 
@@ -5458,10 +5458,10 @@ LABEL_12:
 
       else
       {
-        v10 = [v5 isForeground];
+        isForeground = [uiSettings isForeground];
       }
 
-      if (v10)
+      if (isForeground)
       {
         goto LABEL_12;
       }
@@ -5476,78 +5476,78 @@ LABEL_12:
 LABEL_13:
 }
 
-- (int64_t)_preferredSizingPolicyForContentOrientation:(int64_t)a3 containerOrientation:(int64_t)a4
+- (int64_t)_preferredSizingPolicyForContentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation
 {
-  v7 = [(SBDeviceApplicationSceneHandle *)self _windowScene];
-  v8 = [v7 switcherController];
+  _windowScene = [(SBDeviceApplicationSceneHandle *)self _windowScene];
+  switcherController = [_windowScene switcherController];
 
-  v9 = [v8 windowManagementContext];
-  v10 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  v11 = [v10 settings];
-  v12 = [v11 sb_displayIdentityForSceneManagers];
+  windowManagementContext = [switcherController windowManagementContext];
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  settings = [sceneIfExists settings];
+  sb_displayIdentityForSceneManagers = [settings sb_displayIdentityForSceneManagers];
 
-  v13 = [(SBApplicationSceneHandle *)self application];
-  v14 = [v13 preferredSizingPolicyForSwitcherWindowManagementContext:v9 displayIdentity:v12 contentOrientation:a3 containerOrientation:a4];
+  application = [(SBApplicationSceneHandle *)self application];
+  v14 = [application preferredSizingPolicyForSwitcherWindowManagementContext:windowManagementContext displayIdentity:sb_displayIdentityForSceneManagers contentOrientation:orientation containerOrientation:containerOrientation];
 
   return v14;
 }
 
-- (unint64_t)_supportedSizingPoliciesForContentOrientation:(int64_t)a3 containerOrientation:(int64_t)a4
+- (unint64_t)_supportedSizingPoliciesForContentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation
 {
-  v7 = [(SBDeviceApplicationSceneHandle *)self _windowScene];
-  v8 = [v7 switcherController];
+  _windowScene = [(SBDeviceApplicationSceneHandle *)self _windowScene];
+  switcherController = [_windowScene switcherController];
 
-  v9 = [v8 windowManagementContext];
-  v10 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  v11 = [v10 settings];
-  v12 = [v11 sb_displayIdentityForSceneManagers];
+  windowManagementContext = [switcherController windowManagementContext];
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  settings = [sceneIfExists settings];
+  sb_displayIdentityForSceneManagers = [settings sb_displayIdentityForSceneManagers];
 
-  v13 = [(SBApplicationSceneHandle *)self application];
-  v14 = [v13 supportedSizingPoliciesForSwitcherWindowManagementContext:v9 displayIdentity:v12 contentOrientation:a3 containerOrientation:a4];
+  application = [(SBApplicationSceneHandle *)self application];
+  v14 = [application supportedSizingPoliciesForSwitcherWindowManagementContext:windowManagementContext displayIdentity:sb_displayIdentityForSceneManagers contentOrientation:orientation containerOrientation:containerOrientation];
 
   return v14;
 }
 
 - (BOOL)_supportsMultiWindowLayouts
 {
-  v3 = [(SBDeviceApplicationSceneHandle *)self _windowScene];
-  v4 = [v3 switcherController];
-  v5 = [v4 windowManagementContext];
+  _windowScene = [(SBDeviceApplicationSceneHandle *)self _windowScene];
+  switcherController = [_windowScene switcherController];
+  windowManagementContext = [switcherController windowManagementContext];
 
-  v6 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  v7 = [v6 settings];
-  v8 = [v7 sb_displayIdentityForSceneManagers];
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  settings = [sceneIfExists settings];
+  sb_displayIdentityForSceneManagers = [settings sb_displayIdentityForSceneManagers];
 
-  v9 = [(SBApplicationSceneHandle *)self application];
-  LOBYTE(v6) = [v9 supportsMultiWindowLayoutsForSwitcherWindowManagementContext:v5 displayIdentity:v8];
+  application = [(SBApplicationSceneHandle *)self application];
+  LOBYTE(sceneIfExists) = [application supportsMultiWindowLayoutsForSwitcherWindowManagementContext:windowManagementContext displayIdentity:sb_displayIdentityForSceneManagers];
 
-  return v6;
+  return sceneIfExists;
 }
 
-- (BOOL)_supportsMixedOrientationOnWindowScene:(id)a3
+- (BOOL)_supportsMixedOrientationOnWindowScene:(id)scene
 {
-  v4 = [a3 switcherController];
-  v5 = [v4 windowManagementContext];
+  switcherController = [scene switcherController];
+  windowManagementContext = [switcherController windowManagementContext];
 
-  v6 = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
-  v7 = [v6 settings];
-  v8 = [v7 sb_displayIdentityForSceneManagers];
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self sceneIfExists];
+  settings = [sceneIfExists settings];
+  sb_displayIdentityForSceneManagers = [settings sb_displayIdentityForSceneManagers];
 
-  v9 = [(SBApplicationSceneHandle *)self application];
-  LOBYTE(v6) = [v9 supportsMixedOrientationForSwitcherWindowManagementContext:v5 displayIdentity:v8];
+  application = [(SBApplicationSceneHandle *)self application];
+  LOBYTE(sceneIfExists) = [application supportsMixedOrientationForSwitcherWindowManagementContext:windowManagementContext displayIdentity:sb_displayIdentityForSceneManagers];
 
-  return v6;
+  return sceneIfExists;
 }
 
-- (void)_setInterfaceOrientationFromUserResizing:(int64_t)a3
+- (void)_setInterfaceOrientationFromUserResizing:(int64_t)resizing
 {
-  if (self->_interfaceOrientationFromUserResizeIfAny != a3)
+  if (self->_interfaceOrientationFromUserResizeIfAny != resizing)
   {
-    self->_interfaceOrientationFromUserResizeIfAny = a3;
-    if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+    self->_interfaceOrientationFromUserResizeIfAny = resizing;
+    if (resizing != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v5 = [(SBDeviceApplicationSceneHandle *)self _sceneDataStoreCreatingIfNecessary:a3 != 0];
-      v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+      v5 = [(SBDeviceApplicationSceneHandle *)self _sceneDataStoreCreatingIfNecessary:resizing != 0];
+      v4 = [MEMORY[0x277CCABB0] numberWithInteger:resizing];
       [v5 setObject:v4 forKey:@"interfaceOrientationFromUserResizing"];
     }
   }
@@ -5561,25 +5561,25 @@ LABEL_13:
   [(SBDeviceApplicationSceneHandle *)self _setSupportedInterfaceOrientationsFromSceneOrientationRequestSetup:0];
 }
 
-- (void)_setSettingUpSceneOrientationRequest:(BOOL)a3
+- (void)_setSettingUpSceneOrientationRequest:(BOOL)request
 {
-  v3 = a3;
+  requestCopy = request;
   v5 = [(SBDeviceApplicationSceneHandle *)self _sceneDataStoreCreatingIfNecessary:?];
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:requestCopy];
   [v5 setObject:v4 forKey:@"settingUpSceneOrientationRequest"];
 }
 
-- (void)_setInitialDeviceOrientationFromSceneOrientationRequestSetup:(int64_t)a3
+- (void)_setInitialDeviceOrientationFromSceneOrientationRequestSetup:(int64_t)setup
 {
-  v5 = [(SBDeviceApplicationSceneHandle *)self _sceneDataStoreCreatingIfNecessary:a3 != 0];
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v5 = [(SBDeviceApplicationSceneHandle *)self _sceneDataStoreCreatingIfNecessary:setup != 0];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:setup];
   [v5 setObject:v4 forKey:@"initialDeviceOrientationFromSceneOrientationRequestSetup"];
 }
 
-- (void)_setSupportedInterfaceOrientationsFromSceneOrientationRequestSetup:(unint64_t)a3
+- (void)_setSupportedInterfaceOrientationsFromSceneOrientationRequestSetup:(unint64_t)setup
 {
-  v5 = [(SBDeviceApplicationSceneHandle *)self _sceneDataStoreCreatingIfNecessary:a3 != 0];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v5 = [(SBDeviceApplicationSceneHandle *)self _sceneDataStoreCreatingIfNecessary:setup != 0];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:setup];
   [v5 setObject:v4 forKey:@"supportedInterfaceOrientationsFromSceneOrientationRequestSetup"];
 }
 
@@ -5608,15 +5608,15 @@ LABEL_13:
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
-  return v5;
+  return integerValue;
 }
 
 - (void)setStatusBarForceHidden:forReason:animationSettings:.cold.1()

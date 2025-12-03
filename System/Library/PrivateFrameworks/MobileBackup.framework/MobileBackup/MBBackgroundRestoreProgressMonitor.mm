@@ -1,9 +1,9 @@
 @interface MBBackgroundRestoreProgressMonitor
 - (BOOL)_firePromptForCellular;
 - (BOOL)_isContinuouslyThermallyThrottled;
-- (MBBackgroundRestoreProgressMonitor)initWithAccount:(id)a3 serviceManager:(id)a4 thermalPressureMonitor:(id)a5 snapshotUUID:(id)a6;
+- (MBBackgroundRestoreProgressMonitor)initWithAccount:(id)account serviceManager:(id)manager thermalPressureMonitor:(id)monitor snapshotUUID:(id)d;
 - (MBCKManager)serviceManager;
-- (unint64_t)estimatedBackgroundRestoreSizeWithError:(id *)a3;
+- (unint64_t)estimatedBackgroundRestoreSizeWithError:(id *)error;
 - (void)_cancel;
 - (void)_cancelBackgroundRestoreCellularAccessChangedNotification;
 - (void)_cancelMonitoringForSetupAssistantFinished;
@@ -14,7 +14,7 @@
 - (void)_clearRestoreInProgressFollowUp;
 - (void)_firePromptForWiFi;
 - (void)_handleNetworkAccessTimer;
-- (void)_postRestoreInProgressFollowUpWithReason:(id)a3;
+- (void)_postRestoreInProgressFollowUpWithReason:(id)reason;
 - (void)_postRestoreTelemetryHeartbeat;
 - (void)_registerForBackgroundRestoreCellularAccessChangedNotification;
 - (void)_registerForThermalPressureNotifications;
@@ -25,25 +25,25 @@
 - (void)_startRestoreTelemetryHeartbeatTimer;
 - (void)cancel;
 - (void)dealloc;
-- (void)handleNetworkPathUpdateWithType:(int)a3 state:(id)a4;
+- (void)handleNetworkPathUpdateWithType:(int)type state:(id)state;
 - (void)start;
-- (void)thermalPressureLevelDidChange:(id)a3;
+- (void)thermalPressureLevelDidChange:(id)change;
 @end
 
 @implementation MBBackgroundRestoreProgressMonitor
 
-- (MBBackgroundRestoreProgressMonitor)initWithAccount:(id)a3 serviceManager:(id)a4 thermalPressureMonitor:(id)a5 snapshotUUID:(id)a6
+- (MBBackgroundRestoreProgressMonitor)initWithAccount:(id)account serviceManager:(id)manager thermalPressureMonitor:(id)monitor snapshotUUID:(id)d
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v12)
+  accountCopy = account;
+  managerCopy = manager;
+  monitorCopy = monitor;
+  dCopy = d;
+  if (!managerCopy)
   {
     __assert_rtn("[MBBackgroundRestoreProgressMonitor initWithAccount:serviceManager:thermalPressureMonitor:snapshotUUID:]", "MBBackgroundRestoreProgressMonitor.m", 59, "serviceManager");
   }
 
-  v15 = v14;
+  v15 = dCopy;
   v29.receiver = self;
   v29.super_class = MBBackgroundRestoreProgressMonitor;
   v16 = [(MBBackgroundRestoreProgressMonitor *)&v29 init];
@@ -52,13 +52,13 @@
   {
     atomic_store(0, &v16->_setupAssistantFinished);
     atomic_store(0, &v16->_cancelled);
-    objc_storeStrong(&v16->_account, a3);
-    objc_storeWeak(&v17->_serviceManager, v12);
+    objc_storeStrong(&v16->_account, account);
+    objc_storeWeak(&v17->_serviceManager, managerCopy);
     v18 = objc_opt_new();
     restoreNetworkAccessPrompt = v17->_restoreNetworkAccessPrompt;
     v17->_restoreNetworkAccessPrompt = v18;
 
-    v20 = [[MBBackgroundRestoreSizeEstimator alloc] initWithAccount:v11 serviceManager:v12 snapshotUUID:v15];
+    v20 = [[MBBackgroundRestoreSizeEstimator alloc] initWithAccount:accountCopy serviceManager:managerCopy snapshotUUID:v15];
     estimator = v17->_estimator;
     v17->_estimator = v20;
 
@@ -72,7 +72,7 @@
     queue = v17->_queue;
     v17->_queue = v26;
 
-    objc_storeStrong(&v17->_thermalPressureMonitor, a5);
+    objc_storeStrong(&v17->_thermalPressureMonitor, monitor);
   }
 
   return v17;
@@ -110,13 +110,13 @@
     }
 
     [(MBBackgroundRestoreProgressMonitor *)self _clearRestoreInProgressFollowUp];
-    v4 = [(MBBackgroundRestoreProgressMonitor *)self queue];
+    queue = [(MBBackgroundRestoreProgressMonitor *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001B9964;
     block[3] = &unk_1003BC0B0;
     block[4] = self;
-    dispatch_async(v4, block);
+    dispatch_async(queue, block);
   }
 }
 
@@ -130,25 +130,25 @@
     _MBLog();
   }
 
-  v4 = [(MBBackgroundRestoreProgressMonitor *)self queue];
+  queue = [(MBBackgroundRestoreProgressMonitor *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001B9A50;
   block[3] = &unk_1003BC0B0;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_startMonitoringForSetupAssistantFinished
 {
-  v3 = [(MBBackgroundRestoreProgressMonitor *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(MBBackgroundRestoreProgressMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = atomic_load(&self->_cancelled);
   if ((v4 & 1) == 0)
   {
-    v5 = [(MBBackgroundRestoreProgressMonitor *)self queue];
-    v6 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v5);
+    queue2 = [(MBBackgroundRestoreProgressMonitor *)self queue];
+    v6 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue2);
 
     v7 = dispatch_time(0, 0);
     dispatch_source_set_timer(v6, v7, 0x6FC23AC00uLL, 0);
@@ -161,16 +161,16 @@
     [(MBBackgroundRestoreProgressMonitor *)self setSetupAssistantTimer:v6];
     dispatch_resume(v6);
     v8 = BYSetupAssistantFinishedDarwinNotification;
-    v9 = [v8 UTF8String];
-    v10 = [(MBBackgroundRestoreProgressMonitor *)self queue];
+    uTF8String = [v8 UTF8String];
+    queue3 = [(MBBackgroundRestoreProgressMonitor *)self queue];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_1001B9D58;
     v14[3] = &unk_1003C0ED0;
     v11 = v8;
     v15 = v11;
-    v16 = self;
-    v12 = notify_register_dispatch(v9, &self->_setupAssistantFinishedToken, v10, v14);
+    selfCopy = self;
+    v12 = notify_register_dispatch(uTF8String, &self->_setupAssistantFinishedToken, queue3, v14);
 
     if (v12)
     {
@@ -214,48 +214,48 @@
   {
     if (MBIsInternalInstall())
     {
-      v3 = [(MBServiceAccount *)self->_account persona];
-      [MBRestoreCloudFormatPolicy promptTTRIfFileListForegroundRestoreFailed:v3];
+      persona = [(MBServiceAccount *)self->_account persona];
+      [MBRestoreCloudFormatPolicy promptTTRIfFileListForegroundRestoreFailed:persona];
     }
 
     [(MBBackgroundRestoreProgressMonitor *)self _cancelMonitoringForSetupAssistantFinished];
-    v4 = [(MBBackgroundRestoreProgressMonitor *)self serviceManager];
-    if (!v4)
+    serviceManager = [(MBBackgroundRestoreProgressMonitor *)self serviceManager];
+    if (!serviceManager)
     {
       __assert_rtn("[MBBackgroundRestoreProgressMonitor _setupAssistantDidFinish]", "MBBackgroundRestoreProgressMonitor.m", 159, "serviceManager");
     }
 
-    v5 = v4;
+    v5 = serviceManager;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1001B9FA4;
     v6[3] = &unk_1003C0F20;
     v6[4] = self;
-    [v4 fetchNetworkConnectivityWithBlock:v6];
+    [serviceManager fetchNetworkConnectivityWithBlock:v6];
   }
 }
 
-- (void)handleNetworkPathUpdateWithType:(int)a3 state:(id)a4
+- (void)handleNetworkPathUpdateWithType:(int)type state:(id)state
 {
   v4 = atomic_load(&self->_setupAssistantFinished);
   if (v4)
   {
-    v8 = [(MBBackgroundRestoreProgressMonitor *)self queue];
+    queue = [(MBBackgroundRestoreProgressMonitor *)self queue];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1001BA228;
     v9[3] = &unk_1003BDAE8;
-    v10 = a3;
-    v11 = a4;
+    typeCopy = type;
+    stateCopy = state;
     v9[4] = self;
-    dispatch_async(v8, v9);
+    dispatch_async(queue, v9);
   }
 }
 
 - (void)_cancelNetworkAccessTimer
 {
-  v3 = [(MBBackgroundRestoreProgressMonitor *)self restoreNetworkAccessPrompt];
-  [v3 cancel];
+  restoreNetworkAccessPrompt = [(MBBackgroundRestoreProgressMonitor *)self restoreNetworkAccessPrompt];
+  [restoreNetworkAccessPrompt cancel];
 
   v4 = self->_networkAccessTimer;
   networkAccessTimer = self->_networkAccessTimer;
@@ -277,8 +277,8 @@
 
 - (void)_startNetworkAccessTimer
 {
-  v3 = [(MBBackgroundRestoreProgressMonitor *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(MBBackgroundRestoreProgressMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(MBBackgroundRestoreProgressMonitor *)self _cancelNetworkAccessTimer];
   v4 = MBGetDefaultLog();
@@ -289,8 +289,8 @@
     _MBLog();
   }
 
-  v5 = [(MBBackgroundRestoreProgressMonitor *)self queue];
-  v6 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v5);
+  queue2 = [(MBBackgroundRestoreProgressMonitor *)self queue];
+  v6 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue2);
 
   v7 = dispatch_time(0, 30000000000);
   dispatch_source_set_timer(v6, v7, 0xFFFFFFFFFFFFFFFFLL, 0);
@@ -312,23 +312,23 @@
 
 - (void)_handleNetworkAccessTimer
 {
-  v3 = [(MBBackgroundRestoreProgressMonitor *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(MBBackgroundRestoreProgressMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(MBBackgroundRestoreProgressMonitor *)self _cancelNetworkAccessTimer];
-  v4 = [(MBBackgroundRestoreProgressMonitor *)self serviceManager];
-  if (!v4)
+  serviceManager = [(MBBackgroundRestoreProgressMonitor *)self serviceManager];
+  if (!serviceManager)
   {
     __assert_rtn("[MBBackgroundRestoreProgressMonitor _handleNetworkAccessTimer]", "MBBackgroundRestoreProgressMonitor.m", 234, "serviceManager");
   }
 
-  v5 = v4;
+  v5 = serviceManager;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001BA6E8;
   v6[3] = &unk_1003C0F20;
   v6[4] = self;
-  [v4 fetchNetworkConnectivityWithBlock:v6];
+  [serviceManager fetchNetworkConnectivityWithBlock:v6];
 }
 
 - (void)_firePromptForWiFi
@@ -344,8 +344,8 @@
       _MBLog();
     }
 
-    v5 = [(MBBackgroundRestoreProgressMonitor *)self restoreNetworkAccessPrompt];
-    [v5 fireWiFiPromptWithCompletion:&stru_1003C0F60];
+    restoreNetworkAccessPrompt = [(MBBackgroundRestoreProgressMonitor *)self restoreNetworkAccessPrompt];
+    [restoreNetworkAccessPrompt fireWiFiPromptWithCompletion:&stru_1003C0F60];
   }
 }
 
@@ -362,9 +362,9 @@
       _MBLog();
     }
 
-    v6 = [(MBBackgroundRestoreProgressMonitor *)self account];
-    v7 = v6;
-    if (!v6)
+    account = [(MBBackgroundRestoreProgressMonitor *)self account];
+    v7 = account;
+    if (!account)
     {
       v9 = MBGetDefaultLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -378,8 +378,8 @@
       goto LABEL_27;
     }
 
-    v8 = [v6 persona];
-    v9 = [v8 copyPreferencesValueForKey:@"BackgroundCellularAccessConfirmationDate" class:objc_opt_class()];
+    persona = [account persona];
+    v9 = [persona copyPreferencesValueForKey:@"BackgroundCellularAccessConfirmationDate" class:objc_opt_class()];
 
     if (v9)
     {
@@ -396,8 +396,8 @@
       goto LABEL_26;
     }
 
-    v11 = [v7 persona];
-    v10 = [v11 copyPreferencesValueForKey:@"BackgroundRestoreCellularAccess" class:objc_opt_class()];
+    persona2 = [v7 persona];
+    v10 = [persona2 copyPreferencesValueForKey:@"BackgroundRestoreCellularAccess" class:objc_opt_class()];
 
     if (v10)
     {
@@ -413,9 +413,9 @@
 
     else
     {
-      v13 = [(MBBackgroundRestoreProgressMonitor *)self estimator];
+      estimator = [(MBBackgroundRestoreProgressMonitor *)self estimator];
       v25 = 0;
-      v14 = [v13 estimatedBackgroundRestoreSizeWithError:&v25];
+      v14 = [estimator estimatedBackgroundRestoreSizeWithError:&v25];
       v12 = v25;
 
       v15 = MBGetDefaultLog();
@@ -442,14 +442,14 @@
         _MBLog();
       }
 
-      v17 = [(MBBackgroundRestoreProgressMonitor *)self serviceManager];
-      if (!v17)
+      serviceManager = [(MBBackgroundRestoreProgressMonitor *)self serviceManager];
+      if (!serviceManager)
       {
         __assert_rtn("[MBBackgroundRestoreProgressMonitor _firePromptForCellular]", "MBBackgroundRestoreProgressMonitor.m", 305, "serviceManager");
       }
 
-      v18 = v17;
-      v19 = [(MBBackgroundRestoreProgressMonitor *)self restoreNetworkAccessPrompt];
+      v18 = serviceManager;
+      restoreNetworkAccessPrompt = [(MBBackgroundRestoreProgressMonitor *)self restoreNetworkAccessPrompt];
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_1001BAFD4;
@@ -457,7 +457,7 @@
       v23 = v18;
       v24 = v7;
       v20 = v18;
-      [v19 fireCellularPromptWithEstimate:v14 completion:v22];
+      [restoreNetworkAccessPrompt fireCellularPromptWithEstimate:v14 completion:v22];
 
       v12 = 0;
     }
@@ -479,14 +479,14 @@ LABEL_27:
   objc_initWeak(&location, self);
   self->_cellularAccessToken = -1;
   p_cellularAccessToken = &self->_cellularAccessToken;
-  v4 = [kMBBackgroundRestoreCellularAccessChangedNotification UTF8String];
+  uTF8String = [kMBBackgroundRestoreCellularAccessChangedNotification UTF8String];
   queue = self->_queue;
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_1001BB4D8;
   handler[3] = &unk_1003C1000;
   objc_copyWeak(&v9, &location);
-  v6 = notify_register_dispatch(v4, p_cellularAccessToken, queue, handler);
+  v6 = notify_register_dispatch(uTF8String, p_cellularAccessToken, queue, handler);
   if (v6)
   {
     *p_cellularAccessToken = -1;
@@ -494,7 +494,7 @@ LABEL_27:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 136446466;
-      v12 = v4;
+      v12 = uTF8String;
       v13 = 1024;
       v14 = v6;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "notify_register_dispatch(%{public}s) failed: %u", buf, 0x12u);
@@ -508,7 +508,7 @@ LABEL_27:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136446210;
-      v12 = v4;
+      v12 = uTF8String;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Registered for %{public}s notifications", buf, 0xCu);
       _MBLog();
     }
@@ -528,17 +528,17 @@ LABEL_27:
   }
 }
 
-- (void)thermalPressureLevelDidChange:(id)a3
+- (void)thermalPressureLevelDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_initWeak(&location, self);
-  v5 = [(MBBackgroundRestoreProgressMonitor *)self queue];
+  queue = [(MBBackgroundRestoreProgressMonitor *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001BB620;
   v6[3] = &unk_1003BE6A0;
   objc_copyWeak(&v7, &location);
-  dispatch_async(v5, v6);
+  dispatch_async(queue, v6);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -552,13 +552,13 @@ LABEL_27:
 
 - (BOOL)_isContinuouslyThermallyThrottled
 {
-  v3 = [(MBBackgroundRestoreProgressMonitor *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(MBBackgroundRestoreProgressMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(MBBackgroundRestoreProgressMonitor *)self thermalPressureMonitor];
-  v5 = [v4 thermalPressureLevel];
+  thermalPressureMonitor = [(MBBackgroundRestoreProgressMonitor *)self thermalPressureMonitor];
+  thermalPressureLevel = [thermalPressureMonitor thermalPressureLevel];
 
-  if (v5 == kOSThermalPressureLevelUndefined)
+  if (thermalPressureLevel == kOSThermalPressureLevelUndefined)
   {
     v6 = MBGetDefaultLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -571,17 +571,17 @@ LABEL_27:
     goto LABEL_8;
   }
 
-  if (v5 <= 0x13)
+  if (thermalPressureLevel <= 0x13)
   {
 LABEL_8:
     [(MBBackgroundRestoreProgressMonitor *)self setDateOfThermalThrottleStart:0];
     return 0;
   }
 
-  v7 = [(MBBackgroundRestoreProgressMonitor *)self dateOfThermalThrottleStart];
-  if (v7)
+  dateOfThermalThrottleStart = [(MBBackgroundRestoreProgressMonitor *)self dateOfThermalThrottleStart];
+  if (dateOfThermalThrottleStart)
   {
-    [(MBBackgroundRestoreProgressMonitor *)self setDateOfThermalThrottleStart:v7];
+    [(MBBackgroundRestoreProgressMonitor *)self setDateOfThermalThrottleStart:dateOfThermalThrottleStart];
   }
 
   else
@@ -591,8 +591,8 @@ LABEL_8:
   }
 
   v10 = +[NSDate now];
-  v11 = [(MBBackgroundRestoreProgressMonitor *)self dateOfThermalThrottleStart];
-  [v10 timeIntervalSinceDate:v11];
+  dateOfThermalThrottleStart2 = [(MBBackgroundRestoreProgressMonitor *)self dateOfThermalThrottleStart];
+  [v10 timeIntervalSinceDate:dateOfThermalThrottleStart2];
   v8 = v12 >= 300.0;
 
   return v8;
@@ -615,8 +615,8 @@ LABEL_8:
   }
 
   objc_initWeak(buf, self);
-  v4 = [(MBBackgroundRestoreProgressMonitor *)self queue];
-  v5 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v4);
+  queue = [(MBBackgroundRestoreProgressMonitor *)self queue];
+  v5 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
 
   v6 = dispatch_time(0, 5000000000);
   dispatch_source_set_timer(v5, v6, 0xDF8475800uLL, 0);
@@ -638,8 +638,8 @@ LABEL_8:
 - (void)_clearRestoreInProgressFollowUp
 {
   v4 = +[MBFollowUpManager sharedManager];
-  v3 = [(MBBackgroundRestoreProgressMonitor *)self account];
-  [v4 clearPendingFollowUpsWithAccount:v3 identifiers:&off_1003E2390];
+  account = [(MBBackgroundRestoreProgressMonitor *)self account];
+  [v4 clearPendingFollowUpsWithAccount:account identifiers:&off_1003E2390];
 }
 
 - (void)_cancelRestoreInProgressFollowUpTimer
@@ -664,24 +664,24 @@ LABEL_8:
   [(MBBackgroundRestoreProgressMonitor *)self _clearRestoreInProgressFollowUp];
 }
 
-- (void)_postRestoreInProgressFollowUpWithReason:(id)a3
+- (void)_postRestoreInProgressFollowUpWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v20 = v4;
+    v20 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Attempting to post restore in progress follow-up (%@)", buf, 0xCu);
     _MBLog();
   }
 
-  v6 = [(MBBackgroundRestoreProgressMonitor *)self account];
-  if (v6)
+  account = [(MBBackgroundRestoreProgressMonitor *)self account];
+  if (account)
   {
-    v7 = [(MBBackgroundRestoreProgressMonitor *)self estimator];
+    estimator = [(MBBackgroundRestoreProgressMonitor *)self estimator];
     v18 = 0;
-    v8 = [v7 estimatedBackgroundRestoreSizeWithError:&v18];
+    v8 = [estimator estimatedBackgroundRestoreSizeWithError:&v18];
     v9 = v18;
 
     if (v9)
@@ -698,22 +698,22 @@ LABEL_8:
 
     else
     {
-      v11 = [(MBBackgroundRestoreProgressMonitor *)self serviceManager];
-      if (!v11)
+      serviceManager = [(MBBackgroundRestoreProgressMonitor *)self serviceManager];
+      if (!serviceManager)
       {
         __assert_rtn("[MBBackgroundRestoreProgressMonitor _postRestoreInProgressFollowUpWithReason:]", "MBBackgroundRestoreProgressMonitor.m", 450, "serviceManager");
       }
 
-      v12 = v11;
+      v12 = serviceManager;
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_1001BBE90;
       v13[3] = &unk_1003C0FD8;
       v13[4] = self;
-      v14 = v11;
-      v15 = v6;
+      v14 = serviceManager;
+      v15 = account;
       v17 = v8;
-      v16 = v4;
+      v16 = reasonCopy;
       v10 = v12;
       [v10 fetchNetworkConnectivityWithBlock:v13];
     }
@@ -725,38 +725,38 @@ LABEL_8:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v20 = v4;
+      v20 = reasonCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "No account found, skipping follow-up (%@)", buf, 0xCu);
       _MBLog();
     }
   }
 }
 
-- (unint64_t)estimatedBackgroundRestoreSizeWithError:(id *)a3
+- (unint64_t)estimatedBackgroundRestoreSizeWithError:(id *)error
 {
-  v4 = [(MBBackgroundRestoreProgressMonitor *)self estimator];
-  v5 = [v4 estimatedBackgroundRestoreSizeWithError:a3];
+  estimator = [(MBBackgroundRestoreProgressMonitor *)self estimator];
+  v5 = [estimator estimatedBackgroundRestoreSizeWithError:error];
 
   return v5;
 }
 
 - (void)_postRestoreTelemetryHeartbeat
 {
-  v6 = [(MBBackgroundRestoreProgressMonitor *)self serviceManager];
-  if (!v6)
+  serviceManager = [(MBBackgroundRestoreProgressMonitor *)self serviceManager];
+  if (!serviceManager)
   {
     __assert_rtn("[MBBackgroundRestoreProgressMonitor _postRestoreTelemetryHeartbeat]", "MBBackgroundRestoreProgressMonitor.m", 485, "manager");
   }
 
-  v3 = [(MBBackgroundRestoreProgressMonitor *)self account];
-  if (!v3)
+  account = [(MBBackgroundRestoreProgressMonitor *)self account];
+  if (!account)
   {
     __assert_rtn("[MBBackgroundRestoreProgressMonitor _postRestoreTelemetryHeartbeat]", "MBBackgroundRestoreProgressMonitor.m", 487, "account");
   }
 
-  v4 = v3;
-  v5 = [v6 backgroundRestoreInfoWithAccount:v3];
-  +[MBTelemetry sendBackgroundRestoreHeartbeat:restoreInfo:](MBTelemetry, "sendBackgroundRestoreHeartbeat:restoreInfo:", [v6 restoreTelemetryID], v5);
+  v4 = account;
+  v5 = [serviceManager backgroundRestoreInfoWithAccount:account];
+  +[MBTelemetry sendBackgroundRestoreHeartbeat:restoreInfo:](MBTelemetry, "sendBackgroundRestoreHeartbeat:restoreInfo:", [serviceManager restoreTelemetryID], v5);
 }
 
 - (void)_startRestoreTelemetryHeartbeatTimer
@@ -770,8 +770,8 @@ LABEL_8:
   }
 
   objc_initWeak(buf, self);
-  v4 = [(MBBackgroundRestoreProgressMonitor *)self queue];
-  v5 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v4);
+  queue = [(MBBackgroundRestoreProgressMonitor *)self queue];
+  v5 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
 
   v6 = dispatch_time(0, 3600000000000);
   dispatch_source_set_timer(v5, v6, 0x34630B8A000uLL, 0);

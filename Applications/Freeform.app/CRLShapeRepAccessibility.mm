@@ -1,6 +1,6 @@
 @interface CRLShapeRepAccessibility
-+ (id)crlaxCastFrom:(id)a3;
-- (BOOL)containsPoint:(CGPoint)a3 withPrecision:(BOOL)a4;
++ (id)crlaxCastFrom:(id)from;
+- (BOOL)containsPoint:(CGPoint)point withPrecision:(BOOL)precision;
 - (BOOL)crlaxCanOccludeConnectionKnobDragging;
 - (BOOL)crlaxIsIgnored;
 - (CRLShapeItemAccessibility)crlaxShapeInfo;
@@ -16,43 +16,43 @@
 {
   v16.receiver = self;
   v16.super_class = CRLShapeRepAccessibility;
-  v3 = [(CRLCanvasRepAccessibility *)&v16 accessibilityHint];
-  v4 = [(CRLShapeRepAccessibility *)self crlaxShapeInfo];
-  v5 = [v4 crlaxShapeStyleName];
+  accessibilityHint = [(CRLCanvasRepAccessibility *)&v16 accessibilityHint];
+  crlaxShapeInfo = [(CRLShapeRepAccessibility *)self crlaxShapeInfo];
+  crlaxShapeStyleName = [crlaxShapeInfo crlaxShapeStyleName];
 
-  v6 = [(CRLShapeRepAccessibility *)self crlaxShapeInfo];
-  v7 = [v6 crlaxShapeTypeHint];
+  crlaxShapeInfo2 = [(CRLShapeRepAccessibility *)self crlaxShapeInfo];
+  crlaxShapeTypeHint = [crlaxShapeInfo2 crlaxShapeTypeHint];
 
-  v14 = __CRLAccessibilityStringForVariables(1, v7, v8, v9, v10, v11, v12, v13, v5);
+  v14 = __CRLAccessibilityStringForVariables(1, crlaxShapeTypeHint, v8, v9, v10, v11, v12, v13, crlaxShapeStyleName);
 
   return v14;
 }
 
 - (id)crlaxSummaryDescription
 {
-  v2 = [(CRLShapeRepAccessibility *)self crlaxShapeInfo];
-  v3 = [v2 crlaxShapeStyleName];
+  crlaxShapeInfo = [(CRLShapeRepAccessibility *)self crlaxShapeInfo];
+  crlaxShapeStyleName = [crlaxShapeInfo crlaxShapeStyleName];
 
-  return v3;
+  return crlaxShapeStyleName;
 }
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
 - (NSString)crlaxLabel
 {
-  v2 = [(CRLShapeRepAccessibility *)self crlaxTarget];
-  v3 = [v2 shapeInfo];
+  crlaxTarget = [(CRLShapeRepAccessibility *)self crlaxTarget];
+  shapeInfo = [crlaxTarget shapeInfo];
 
-  v4 = [v3 localizedName];
-  v5 = [v3 accessibilityDescription];
-  v12 = __CRLAccessibilityStringForVariables(1, v4, v6, v7, v8, v9, v10, v11, v5);
+  localizedName = [shapeInfo localizedName];
+  accessibilityDescription = [shapeInfo accessibilityDescription];
+  v12 = __CRLAccessibilityStringForVariables(1, localizedName, v6, v7, v8, v9, v10, v11, accessibilityDescription);
 
   return v12;
 }
@@ -60,11 +60,11 @@
 - (CRLShapeItemAccessibility)crlaxShapeInfo
 {
   v8 = 0;
-  v2 = [(CRLShapeRepAccessibility *)self crlaxTarget];
-  v3 = [v2 shapeInfo];
+  crlaxTarget = [(CRLShapeRepAccessibility *)self crlaxTarget];
+  shapeInfo = [crlaxTarget shapeInfo];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, shapeInfo, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -85,21 +85,21 @@
 
 - (BOOL)crlaxIsIgnored
 {
-  v2 = [(CRLCanvasRepAccessibility *)self crlaxInteractiveCanvasController];
-  v3 = [v2 crlaxShapeRepsAreIgnored];
+  crlaxInteractiveCanvasController = [(CRLCanvasRepAccessibility *)self crlaxInteractiveCanvasController];
+  crlaxShapeRepsAreIgnored = [crlaxInteractiveCanvasController crlaxShapeRepsAreIgnored];
 
-  return v3;
+  return crlaxShapeRepsAreIgnored;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3 withPrecision:(BOOL)a4
+- (BOOL)containsPoint:(CGPoint)point withPrecision:(BOOL)precision
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  precisionCopy = precision;
+  y = point.y;
+  x = point.x;
   v8 = +[CRLAccessibility sharedInstance];
-  v9 = [v8 needsAccessibilityElements];
+  needsAccessibilityElements = [v8 needsAccessibilityElements];
 
-  if (v9)
+  if (needsAccessibilityElements)
   {
     [(CRLCanvasRepAccessibility *)self crlaxNaturalBounds];
     v14 = x;
@@ -112,14 +112,14 @@
   {
     v17.receiver = self;
     v17.super_class = CRLShapeRepAccessibility;
-    return [(CRLShapeRepAccessibility *)&v17 containsPoint:v4 withPrecision:x, y];
+    return [(CRLShapeRepAccessibility *)&v17 containsPoint:precisionCopy withPrecision:x, y];
   }
 }
 
 - (BOOL)crlaxCanOccludeConnectionKnobDragging
 {
-  v2 = [(CRLShapeRepAccessibility *)self crlaxTarget];
-  v3 = [v2 info];
+  crlaxTarget = [(CRLShapeRepAccessibility *)self crlaxTarget];
+  info = [crlaxTarget info];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

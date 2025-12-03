@@ -5,45 +5,45 @@
 - (NSString)customGlitterVariant;
 - (NSString)customVariant;
 - (float)luminance;
-- (void)setCustomGlitterVariant:(id)a3;
-- (void)setCustomVariant:(id)a3;
-- (void)setLuminance:(float)a3;
+- (void)setCustomGlitterVariant:(id)variant;
+- (void)setCustomVariant:(id)variant;
+- (void)setLuminance:(float)luminance;
 @end
 
 @implementation NSUserDefaults
 
 - (BOOL)enableCustomGlitter
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000417CC();
-  v4 = [(NSUserDefaults *)v2 BOOLForKey:v3];
+  v4 = [(NSUserDefaults *)selfCopy BOOLForKey:v3];
 
   return v4;
 }
 
 - (float)luminance
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000417CC();
-  [(NSUserDefaults *)v2 floatForKey:v3];
+  [(NSUserDefaults *)selfCopy floatForKey:v3];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setLuminance:(float)a3
+- (void)setLuminance:(float)luminance
 {
-  v6 = self;
+  selfCopy = self;
   v4 = sub_1000417CC();
-  *&v5 = a3;
-  [(NSUserDefaults *)v6 setFloat:v4 forKey:v5];
+  *&v5 = luminance;
+  [(NSUserDefaults *)selfCopy setFloat:v4 forKey:v5];
 }
 
 - (NSString)customVariant
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000417CC();
-  v4 = [(NSUserDefaults *)v2 stringForKey:v3];
+  v4 = [(NSUserDefaults *)selfCopy stringForKey:v3];
 
   if (v4)
   {
@@ -61,18 +61,18 @@
   return v5;
 }
 
-- (void)setCustomVariant:(id)a3
+- (void)setCustomVariant:(id)variant
 {
-  if (a3)
+  if (variant)
   {
     sub_1000417FC();
-    v4 = self;
+    selfCopy = self;
     v5 = sub_1000417CC();
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
     v5 = 0;
   }
 
@@ -84,9 +84,9 @@
 
 - (NSString)customGlitterVariant
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000417CC();
-  v4 = [(NSUserDefaults *)v2 stringForKey:v3];
+  v4 = [(NSUserDefaults *)selfCopy stringForKey:v3];
 
   if (v4)
   {
@@ -104,18 +104,18 @@
   return v5;
 }
 
-- (void)setCustomGlitterVariant:(id)a3
+- (void)setCustomGlitterVariant:(id)variant
 {
-  if (a3)
+  if (variant)
   {
     sub_1000417FC();
-    v4 = self;
+    selfCopy = self;
     v5 = sub_1000417CC();
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
     v5 = 0;
   }
 
@@ -127,18 +127,18 @@
 
 - (BOOL)deleteSnaphotsAtLaunch
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000417CC();
-  v4 = [(NSUserDefaults *)v2 BOOLForKey:v3];
+  v4 = [(NSUserDefaults *)selfCopy BOOLForKey:v3];
 
   return v4;
 }
 
 - (BOOL)resumeFromLastPlayTime
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000417CC();
-  v4 = [(NSUserDefaults *)v2 BOOLForKey:v3];
+  v4 = [(NSUserDefaults *)selfCopy BOOLForKey:v3];
 
   return v4;
 }

@@ -1,17 +1,17 @@
 @interface ObjectCaptureThumbnailProvider
 - (_TtC17ASVAssetThumbnail30ObjectCaptureThumbnailProvider)init;
-- (void)provideThumbnailForFileRequest:(id)a3 completionHandler:(id)a4;
+- (void)provideThumbnailForFileRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation ObjectCaptureThumbnailProvider
 
-- (void)provideThumbnailForFileRequest:(id)a3 completionHandler:(id)a4
+- (void)provideThumbnailForFileRequest:(id)request completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_10000AE6C(v7, v8, v6);
+  requestCopy = request;
+  selfCopy = self;
+  sub_10000AE6C(requestCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }

@@ -1,10 +1,10 @@
 @interface FCArticle
 - (FCArticle)init;
-- (FCArticle)initWithContext:(id)a3 articleID:(id)a4 forceArticleUpdate:(BOOL)a5 qualityOfService:(int64_t)a6 relativePriority:(int64_t)a7;
-- (FCArticle)initWithContext:(id)a3 headline:(id)a4;
+- (FCArticle)initWithContext:(id)context articleID:(id)d forceArticleUpdate:(BOOL)update qualityOfService:(int64_t)service relativePriority:(int64_t)priority;
+- (FCArticle)initWithContext:(id)context headline:(id)headline;
 - (void)dealloc;
-- (void)performBlockWhenContentIsLoaded:(id)a3;
-- (void)performBlockWhenFullyLoaded:(id)a3;
+- (void)performBlockWhenContentIsLoaded:(id)loaded;
+- (void)performBlockWhenFullyLoaded:(id)loaded;
 @end
 
 @implementation FCArticle
@@ -35,21 +35,21 @@
   objc_exception_throw(v6);
 }
 
-- (FCArticle)initWithContext:(id)a3 headline:(id)a4
+- (FCArticle)initWithContext:(id)context headline:(id)headline
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  headlineCopy = headline;
   v16.receiver = self;
   v16.super_class = FCArticle;
   v8 = [(FCArticle *)&v16 init];
   if (v8)
   {
-    v9 = [v7 articleID];
+    articleID = [headlineCopy articleID];
     articleID = v8->_articleID;
-    v8->_articleID = v9;
+    v8->_articleID = articleID;
 
-    objc_storeStrong(&v8->_headline, a4);
-    v11 = [(FCHeadlineProviding *)v8->_headline contentWithContext:v6];
+    objc_storeStrong(&v8->_headline, headline);
+    v11 = [(FCHeadlineProviding *)v8->_headline contentWithContext:contextCopy];
     content = v8->_content;
     v8->_content = v11;
 
@@ -61,29 +61,29 @@
   return v8;
 }
 
-- (FCArticle)initWithContext:(id)a3 articleID:(id)a4 forceArticleUpdate:(BOOL)a5 qualityOfService:(int64_t)a6 relativePriority:(int64_t)a7
+- (FCArticle)initWithContext:(id)context articleID:(id)d forceArticleUpdate:(BOOL)update qualityOfService:(int64_t)service relativePriority:(int64_t)priority
 {
-  v9 = a5;
+  updateCopy = update;
   v34[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
+  contextCopy = context;
+  dCopy = d;
   v33.receiver = self;
   v33.super_class = FCArticle;
   v14 = [(FCArticle *)&v33 init];
   if (v14)
   {
-    v15 = [v13 copy];
+    v15 = [dCopy copy];
     articleID = v14->_articleID;
     v14->_articleID = v15;
 
-    v17 = [v12 articleController];
-    v34[0] = v13;
+    articleController = [contextCopy articleController];
+    v34[0] = dCopy;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
-    v19 = [v17 headlinesFetchOperationForArticleIDs:v18];
+    v19 = [articleController headlinesFetchOperationForArticleIDs:v18];
 
-    [v19 setQualityOfService:a6];
-    [v19 setRelativePriority:a7];
-    if (v9)
+    [v19 setQualityOfService:service];
+    [v19 setRelativePriority:priority];
+    if (updateCopy)
     {
       [v19 setOverrideArticleCachePolicy:1];
       [v19 setArticleCachePolicy:1];
@@ -99,13 +99,13 @@
     v27 = __92__FCArticle_initWithContext_articleID_forceArticleUpdate_qualityOfService_relativePriority___block_invoke;
     v28 = &unk_1E7C42068;
     objc_copyWeak(&v31, &location);
-    v29 = v12;
+    v29 = contextCopy;
     v21 = v20;
     v30 = v21;
     [(FCFetchOperation *)v14->_headlineFetchOperation setFetchCompletionBlock:&v25];
     objc_storeStrong(&v14->_fetchGroup, v20);
-    v22 = [MEMORY[0x1E696ADC8] fc_sharedConcurrentQueue];
-    [v22 addOperation:v14->_headlineFetchOperation];
+    fc_sharedConcurrentQueue = [MEMORY[0x1E696ADC8] fc_sharedConcurrentQueue];
+    [fc_sharedConcurrentQueue addOperation:v14->_headlineFetchOperation];
 
     objc_destroyWeak(&v31);
     objc_destroyWeak(&location);
@@ -147,11 +147,11 @@ void __92__FCArticle_initWithContext_articleID_forceArticleUpdate_qualityOfServi
   [(FCArticle *)&v3 dealloc];
 }
 
-- (void)performBlockWhenFullyLoaded:(id)a3
+- (void)performBlockWhenFullyLoaded:(id)loaded
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  loadedCopy = loaded;
+  if (!loadedCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "block != nil"];
     *location = 136315906;
@@ -166,8 +166,8 @@ void __92__FCArticle_initWithContext_articleID_forceArticleUpdate_qualityOfServi
   }
 
   objc_initWeak(location, self);
-  v5 = [(FCArticle *)self fetchGroup];
-  IsEmpty = FCDispatchGroupIsEmpty(v5);
+  fetchGroup = [(FCArticle *)self fetchGroup];
+  IsEmpty = FCDispatchGroupIsEmpty(fetchGroup);
 
   if (IsEmpty)
   {
@@ -175,7 +175,7 @@ void __92__FCArticle_initWithContext_articleID_forceArticleUpdate_qualityOfServi
     v15[1] = 3221225472;
     v15[2] = __41__FCArticle_performBlockWhenFullyLoaded___block_invoke;
     v15[3] = &unk_1E7C42090;
-    v16 = v4;
+    v16 = loadedCopy;
     v7 = &v17;
     objc_copyWeak(&v17, location);
     __41__FCArticle_performBlockWhenFullyLoaded___block_invoke(v15);
@@ -184,15 +184,15 @@ void __92__FCArticle_initWithContext_articleID_forceArticleUpdate_qualityOfServi
 
   else
   {
-    v9 = [(FCArticle *)self fetchGroup];
+    fetchGroup2 = [(FCArticle *)self fetchGroup];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __41__FCArticle_performBlockWhenFullyLoaded___block_invoke_2;
     block[3] = &unk_1E7C42090;
-    v13 = v4;
+    v13 = loadedCopy;
     v7 = &v14;
     objc_copyWeak(&v14, location);
-    dispatch_group_notify(v9, MEMORY[0x1E69E96A0], block);
+    dispatch_group_notify(fetchGroup2, MEMORY[0x1E69E96A0], block);
 
     v8 = &v13;
   }
@@ -219,11 +219,11 @@ void __41__FCArticle_performBlockWhenFullyLoaded___block_invoke_2(uint64_t a1)
   (*(v1 + 16))(v1, v3, v2);
 }
 
-- (void)performBlockWhenContentIsLoaded:(id)a3
+- (void)performBlockWhenContentIsLoaded:(id)loaded
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  loadedCopy = loaded;
+  if (!loadedCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "block != nil"];
     *location = 136315906;
@@ -238,8 +238,8 @@ void __41__FCArticle_performBlockWhenFullyLoaded___block_invoke_2(uint64_t a1)
   }
 
   objc_initWeak(location, self);
-  v5 = [(FCArticle *)self fetchGroup];
-  IsEmpty = FCDispatchGroupIsEmpty(v5);
+  fetchGroup = [(FCArticle *)self fetchGroup];
+  IsEmpty = FCDispatchGroupIsEmpty(fetchGroup);
 
   if (IsEmpty)
   {
@@ -247,7 +247,7 @@ void __41__FCArticle_performBlockWhenFullyLoaded___block_invoke_2(uint64_t a1)
     v15[1] = 3221225472;
     v15[2] = __45__FCArticle_performBlockWhenContentIsLoaded___block_invoke;
     v15[3] = &unk_1E7C42090;
-    v16 = v4;
+    v16 = loadedCopy;
     v7 = &v17;
     objc_copyWeak(&v17, location);
     __45__FCArticle_performBlockWhenContentIsLoaded___block_invoke(v15);
@@ -256,15 +256,15 @@ void __41__FCArticle_performBlockWhenFullyLoaded___block_invoke_2(uint64_t a1)
 
   else
   {
-    v9 = [(FCArticle *)self fetchGroup];
+    fetchGroup2 = [(FCArticle *)self fetchGroup];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __45__FCArticle_performBlockWhenContentIsLoaded___block_invoke_2;
     block[3] = &unk_1E7C42090;
-    v13 = v4;
+    v13 = loadedCopy;
     v7 = &v14;
     objc_copyWeak(&v14, location);
-    dispatch_group_notify(v9, MEMORY[0x1E69E96A0], block);
+    dispatch_group_notify(fetchGroup2, MEMORY[0x1E69E96A0], block);
 
     v8 = &v13;
   }

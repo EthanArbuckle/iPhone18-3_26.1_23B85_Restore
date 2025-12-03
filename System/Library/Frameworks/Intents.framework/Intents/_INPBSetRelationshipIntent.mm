@@ -1,13 +1,13 @@
 @interface _INPBSetRelationshipIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBSetRelationshipIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSetRelationshipIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addContactIdentifiers:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setContactIdentifiers:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addContactIdentifiers:(id)identifiers;
+- (void)encodeWithCoder:(id)coder;
+- (void)setContactIdentifiers:(id)identifiers;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSetRelationshipIntent
@@ -15,10 +15,10 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_contactIdentifiers count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -38,8 +38,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -48,20 +48,20 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"contactIdentifiers"];
+    [dictionary setObject:array forKeyedSubscript:@"contactIdentifiers"];
   }
 
-  v11 = [(_INPBSetRelationshipIntent *)self intentMetadata];
-  v12 = [v11 dictionaryRepresentation];
-  [v3 setObject:v12 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBSetRelationshipIntent *)self intentMetadata];
+  dictionaryRepresentation2 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"intentMetadata"];
 
-  v13 = [(_INPBSetRelationshipIntent *)self targetRelationship];
-  v14 = [v13 dictionaryRepresentation];
-  [v3 setObject:v14 forKeyedSubscript:@"targetRelationship"];
+  targetRelationship = [(_INPBSetRelationshipIntent *)self targetRelationship];
+  dictionaryRepresentation3 = [targetRelationship dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"targetRelationship"];
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -71,28 +71,28 @@
   return v4 ^ [(_INPBModifyRelationship *)self->_targetRelationship hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_INPBSetRelationshipIntent *)self contactIdentifiers];
-  v6 = [v4 contactIdentifiers];
-  if ((v5 != 0) == (v6 == 0))
+  contactIdentifiers = [(_INPBSetRelationshipIntent *)self contactIdentifiers];
+  contactIdentifiers2 = [equalCopy contactIdentifiers];
+  if ((contactIdentifiers != 0) == (contactIdentifiers2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_INPBSetRelationshipIntent *)self contactIdentifiers];
-  if (v7)
+  contactIdentifiers3 = [(_INPBSetRelationshipIntent *)self contactIdentifiers];
+  if (contactIdentifiers3)
   {
-    v8 = v7;
-    v9 = [(_INPBSetRelationshipIntent *)self contactIdentifiers];
-    v10 = [v4 contactIdentifiers];
-    v11 = [v9 isEqual:v10];
+    v8 = contactIdentifiers3;
+    contactIdentifiers4 = [(_INPBSetRelationshipIntent *)self contactIdentifiers];
+    contactIdentifiers5 = [equalCopy contactIdentifiers];
+    v11 = [contactIdentifiers4 isEqual:contactIdentifiers5];
 
     if (!v11)
     {
@@ -104,20 +104,20 @@
   {
   }
 
-  v5 = [(_INPBSetRelationshipIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  contactIdentifiers = [(_INPBSetRelationshipIntent *)self intentMetadata];
+  contactIdentifiers2 = [equalCopy intentMetadata];
+  if ((contactIdentifiers != 0) == (contactIdentifiers2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_INPBSetRelationshipIntent *)self intentMetadata];
-  if (v12)
+  intentMetadata = [(_INPBSetRelationshipIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v13 = v12;
-    v14 = [(_INPBSetRelationshipIntent *)self intentMetadata];
-    v15 = [v4 intentMetadata];
-    v16 = [v14 isEqual:v15];
+    v13 = intentMetadata;
+    intentMetadata2 = [(_INPBSetRelationshipIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v16 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v16)
     {
@@ -129,12 +129,12 @@
   {
   }
 
-  v5 = [(_INPBSetRelationshipIntent *)self targetRelationship];
-  v6 = [v4 targetRelationship];
-  if ((v5 != 0) != (v6 == 0))
+  contactIdentifiers = [(_INPBSetRelationshipIntent *)self targetRelationship];
+  contactIdentifiers2 = [equalCopy targetRelationship];
+  if ((contactIdentifiers != 0) != (contactIdentifiers2 == 0))
   {
-    v17 = [(_INPBSetRelationshipIntent *)self targetRelationship];
-    if (!v17)
+    targetRelationship = [(_INPBSetRelationshipIntent *)self targetRelationship];
+    if (!targetRelationship)
     {
 
 LABEL_20:
@@ -142,10 +142,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_INPBSetRelationshipIntent *)self targetRelationship];
-    v20 = [v4 targetRelationship];
-    v21 = [v19 isEqual:v20];
+    v18 = targetRelationship;
+    targetRelationship2 = [(_INPBSetRelationshipIntent *)self targetRelationship];
+    targetRelationship3 = [equalCopy targetRelationship];
+    v21 = [targetRelationship2 isEqual:targetRelationship3];
 
     if (v21)
     {
@@ -165,49 +165,49 @@ LABEL_18:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSetRelationshipIntent allocWithZone:](_INPBSetRelationshipIntent init];
-  v6 = [(NSArray *)self->_contactIdentifiers copyWithZone:a3];
+  v6 = [(NSArray *)self->_contactIdentifiers copyWithZone:zone];
   [(_INPBSetRelationshipIntent *)v5 setContactIdentifiers:v6];
 
-  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBSetRelationshipIntent *)v5 setIntentMetadata:v7];
 
-  v8 = [(_INPBModifyRelationship *)self->_targetRelationship copyWithZone:a3];
+  v8 = [(_INPBModifyRelationship *)self->_targetRelationship copyWithZone:zone];
   [(_INPBSetRelationshipIntent *)v5 setTargetRelationship:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSetRelationshipIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBSetRelationshipIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSetRelationshipIntent)initWithCoder:(id)a3
+- (_INPBSetRelationshipIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSetRelationshipIntent *)self initWithData:v6];
+    self = [(_INPBSetRelationshipIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -240,46 +240,46 @@ LABEL_18:
     while (v7);
   }
 
-  v11 = [(_INPBSetRelationshipIntent *)self intentMetadata];
+  intentMetadata = [(_INPBSetRelationshipIntent *)self intentMetadata];
 
-  if (v11)
+  if (intentMetadata)
   {
-    v12 = [(_INPBSetRelationshipIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBSetRelationshipIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v13 = [(_INPBSetRelationshipIntent *)self targetRelationship];
+  targetRelationship = [(_INPBSetRelationshipIntent *)self targetRelationship];
 
-  if (v13)
+  if (targetRelationship)
   {
-    v14 = [(_INPBSetRelationshipIntent *)self targetRelationship];
+    targetRelationship2 = [(_INPBSetRelationshipIntent *)self targetRelationship];
     PBDataWriterWriteSubmessage();
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addContactIdentifiers:(id)a3
+- (void)addContactIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   contactIdentifiers = self->_contactIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!contactIdentifiers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_contactIdentifiers;
-    self->_contactIdentifiers = v6;
+    self->_contactIdentifiers = array;
 
-    v4 = v8;
+    identifiersCopy = v8;
     contactIdentifiers = self->_contactIdentifiers;
   }
 
-  [(NSArray *)contactIdentifiers addObject:v4];
+  [(NSArray *)contactIdentifiers addObject:identifiersCopy];
 }
 
-- (void)setContactIdentifiers:(id)a3
+- (void)setContactIdentifiers:(id)identifiers
 {
-  v4 = [a3 mutableCopy];
+  v4 = [identifiers mutableCopy];
   contactIdentifiers = self->_contactIdentifiers;
   self->_contactIdentifiers = v4;
 

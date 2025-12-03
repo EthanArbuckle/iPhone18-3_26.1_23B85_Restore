@@ -1,7 +1,7 @@
 @interface VUITimeMetadataFactory
 + (id)sharedInstance;
 - (VUITimeMetadataFactory)init;
-- (id)makeViewControllerWithPlaybackInfo:(id)a3;
+- (id)makeViewControllerWithPlaybackInfo:(id)info;
 @end
 
 @implementation VUITimeMetadataFactory
@@ -38,11 +38,11 @@ void __40__VUITimeMetadataFactory_sharedInstance__block_invoke()
   return v2;
 }
 
-- (id)makeViewControllerWithPlaybackInfo:(id)a3
+- (id)makeViewControllerWithPlaybackInfo:(id)info
 {
-  v4 = a3;
-  v5 = self;
-  v6 = VUITimeMetadataFactory.makeViewController(playbackInfo:)(v4);
+  infoCopy = info;
+  selfCopy = self;
+  v6 = VUITimeMetadataFactory.makeViewController(playbackInfo:)(infoCopy);
 
   return v6;
 }

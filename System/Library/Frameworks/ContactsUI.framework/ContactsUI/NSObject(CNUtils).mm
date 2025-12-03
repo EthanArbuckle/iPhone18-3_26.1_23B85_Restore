@@ -8,7 +8,7 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 valueForKey:v7];
+  v8 = [self valueForKey:v7];
   v9 = [v8 mutableCopy];
 
   if (!v9)
@@ -23,7 +23,7 @@
   v12 = v9;
   v10 = v9;
   [v6 enumerateKeysAndObjectsUsingBlock:v11];
-  [a1 setValue:v10 forKey:v7];
+  [self setValue:v10 forKey:v7];
 }
 
 @end

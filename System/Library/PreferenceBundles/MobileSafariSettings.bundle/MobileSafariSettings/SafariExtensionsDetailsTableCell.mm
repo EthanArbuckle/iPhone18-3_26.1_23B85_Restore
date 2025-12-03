@@ -1,20 +1,20 @@
 @interface SafariExtensionsDetailsTableCell
-- (SafariExtensionsDetailsTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (SafariExtensionsDetailsTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 - (void)updateConstraints;
 @end
 
 @implementation SafariExtensionsDetailsTableCell
 
-- (SafariExtensionsDetailsTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SafariExtensionsDetailsTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v65.receiver = self;
   v65.super_class = SafariExtensionsDetailsTableCell;
-  v4 = [(SafariExtensionsDetailsTableCell *)&v65 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(SafariExtensionsDetailsTableCell *)&v65 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(SafariExtensionsDetailsTableCell *)v4 contentView];
+    contentView = [(SafariExtensionsDetailsTableCell *)v4 contentView];
     v7 = objc_alloc_init(UILabel);
     primaryLabel = v5->_primaryLabel;
     v5->_primaryLabel = v7;
@@ -28,7 +28,7 @@
     [(UILabel *)v5->_primaryLabel setNumberOfLines:0];
     [(UILabel *)v5->_primaryLabel setAdjustsFontForContentSizeCategory:1];
     [(UILabel *)v5->_primaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v6 addSubview:v5->_primaryLabel];
+    [contentView addSubview:v5->_primaryLabel];
     v11 = objc_alloc_init(UILabel);
     secondaryLabel = v5->_secondaryLabel;
     v5->_secondaryLabel = v11;
@@ -42,7 +42,7 @@
     [(UILabel *)v5->_secondaryLabel setNumberOfLines:4];
     [(UILabel *)v5->_secondaryLabel setAdjustsFontForContentSizeCategory:1];
     [(UILabel *)v5->_secondaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v6 addSubview:v5->_secondaryLabel];
+    [contentView addSubview:v5->_secondaryLabel];
     v15 = objc_alloc_init(UIImageView);
     imageView = v5->_imageView;
     v5->_imageView = v15;
@@ -57,59 +57,59 @@
     [(UIImageView *)v5->_imageView setContentCompressionResistancePriority:0 forAxis:v19];
     LODWORD(v20) = 1144750080;
     [(UIImageView *)v5->_imageView setContentCompressionResistancePriority:1 forAxis:v20];
-    v64 = v6;
-    [v6 addSubview:v5->_imageView];
-    v21 = [v6 layoutMarginsGuide];
-    v22 = [(UILabel *)v5->_primaryLabel leadingAnchor];
-    v23 = v21;
-    v24 = [v21 leadingAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24 constant:0.0];
+    v64 = contentView;
+    [contentView addSubview:v5->_imageView];
+    layoutMarginsGuide = [contentView layoutMarginsGuide];
+    leadingAnchor = [(UILabel *)v5->_primaryLabel leadingAnchor];
+    v23 = layoutMarginsGuide;
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
     primaryLabelToContentViewLeadingConstraint = v5->_primaryLabelToContentViewLeadingConstraint;
     v5->_primaryLabelToContentViewLeadingConstraint = v25;
 
-    v27 = [(UILabel *)v5->_primaryLabel leadingAnchor];
-    v28 = [(UIImageView *)v5->_imageView layoutMarginsGuide];
-    v29 = [v28 trailingAnchor];
-    v30 = [v27 constraintEqualToAnchor:v29];
+    leadingAnchor3 = [(UILabel *)v5->_primaryLabel leadingAnchor];
+    layoutMarginsGuide2 = [(UIImageView *)v5->_imageView layoutMarginsGuide];
+    trailingAnchor = [layoutMarginsGuide2 trailingAnchor];
+    v30 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor];
     primaryLabelToImageViewLeadingConstraint = v5->_primaryLabelToImageViewLeadingConstraint;
     v5->_primaryLabelToImageViewLeadingConstraint = v30;
 
-    v63 = [(UIImageView *)v5->_imageView layoutMarginsGuide];
-    v62 = [v63 leadingAnchor];
-    v61 = [v23 leadingAnchor];
-    v60 = [v62 constraintEqualToAnchor:v61];
+    layoutMarginsGuide3 = [(UIImageView *)v5->_imageView layoutMarginsGuide];
+    leadingAnchor4 = [layoutMarginsGuide3 leadingAnchor];
+    leadingAnchor5 = [v23 leadingAnchor];
+    v60 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
     v66[0] = v60;
-    v59 = [(UIImageView *)v5->_imageView layoutMarginsGuide];
-    v58 = [v59 centerYAnchor];
-    v57 = [v23 centerYAnchor];
-    v56 = [v58 constraintEqualToAnchor:v57];
+    layoutMarginsGuide4 = [(UIImageView *)v5->_imageView layoutMarginsGuide];
+    centerYAnchor = [layoutMarginsGuide4 centerYAnchor];
+    centerYAnchor2 = [v23 centerYAnchor];
+    v56 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v66[1] = v56;
-    v55 = [(UILabel *)v5->_primaryLabel trailingAnchor];
-    v54 = [v23 trailingAnchor];
-    v53 = [v55 constraintEqualToAnchor:v54];
+    trailingAnchor2 = [(UILabel *)v5->_primaryLabel trailingAnchor];
+    trailingAnchor3 = [v23 trailingAnchor];
+    v53 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
     v66[2] = v53;
-    v52 = [(UILabel *)v5->_primaryLabel topAnchor];
+    topAnchor = [(UILabel *)v5->_primaryLabel topAnchor];
     v32 = v23;
-    v51 = [v23 topAnchor];
-    v50 = [v52 constraintEqualToAnchor:v51];
+    topAnchor2 = [v23 topAnchor];
+    v50 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v66[3] = v50;
-    v49 = [(UILabel *)v5->_secondaryLabel topAnchor];
-    v48 = [(UILabel *)v5->_primaryLabel lastBaselineAnchor];
-    v47 = [v49 constraintEqualToAnchor:v48 constant:6.0];
+    topAnchor3 = [(UILabel *)v5->_secondaryLabel topAnchor];
+    lastBaselineAnchor = [(UILabel *)v5->_primaryLabel lastBaselineAnchor];
+    v47 = [topAnchor3 constraintEqualToAnchor:lastBaselineAnchor constant:6.0];
     v66[4] = v47;
-    v46 = [(UILabel *)v5->_secondaryLabel leadingAnchor];
-    v45 = [(UILabel *)v5->_primaryLabel leadingAnchor];
-    v33 = [v46 constraintEqualToAnchor:v45];
+    leadingAnchor6 = [(UILabel *)v5->_secondaryLabel leadingAnchor];
+    leadingAnchor7 = [(UILabel *)v5->_primaryLabel leadingAnchor];
+    v33 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
     v66[5] = v33;
-    v34 = [(UILabel *)v5->_secondaryLabel bottomAnchor];
+    bottomAnchor = [(UILabel *)v5->_secondaryLabel bottomAnchor];
     v35 = v32;
-    v36 = [v32 bottomAnchor];
-    v37 = [v34 constraintEqualToAnchor:v36];
+    bottomAnchor2 = [v32 bottomAnchor];
+    v37 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v66[6] = v37;
-    v38 = [(UILabel *)v5->_secondaryLabel trailingAnchor];
+    trailingAnchor4 = [(UILabel *)v5->_secondaryLabel trailingAnchor];
     v39 = v35;
-    v40 = [v35 trailingAnchor];
-    v41 = [v38 constraintEqualToAnchor:v40];
+    trailingAnchor5 = [v35 trailingAnchor];
+    v41 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
     v66[7] = v41;
     v42 = [NSArray arrayWithObjects:v66 count:8];
     [NSLayoutConstraint activateConstraints:v42];
@@ -120,15 +120,15 @@
   return v5;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v17.receiver = self;
   v17.super_class = SafariExtensionsDetailsTableCell;
-  v4 = a3;
-  [(SafariExtensionsDetailsTableCell *)&v17 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 userInfo];
+  specifierCopy = specifier;
+  [(SafariExtensionsDetailsTableCell *)&v17 refreshCellContentsWithSpecifier:specifierCopy];
+  userInfo = [specifierCopy userInfo];
 
-  v6 = v5;
+  v6 = userInfo;
   v7 = [v6 safari_stringForKey:@"title"];
   v8 = [v6 safari_stringForKey:@"subtitle"];
   v9 = [v6 safari_numberForKey:@"subtitleNumberOfLines"];
@@ -170,9 +170,9 @@
   v8.receiver = self;
   v8.super_class = SafariExtensionsDetailsTableCell;
   [(SafariExtensionsDetailsTableCell *)&v8 updateConstraints];
-  v3 = [(UIImageView *)self->_imageView image];
-  v4 = v3 == 0;
-  v5 = v3 != 0;
+  image = [(UIImageView *)self->_imageView image];
+  v4 = image == 0;
+  v5 = image != 0;
 
   primaryLabelToImageViewLeadingConstraint = self->_primaryLabelToImageViewLeadingConstraint;
   v6 = [NSArray arrayWithObjects:&primaryLabelToImageViewLeadingConstraint count:1];

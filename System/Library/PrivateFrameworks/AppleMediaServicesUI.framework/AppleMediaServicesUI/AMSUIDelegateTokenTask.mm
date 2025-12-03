@@ -1,42 +1,42 @@
 @interface AMSUIDelegateTokenTask
-- (AMSUIDelegateTokenTask)initWithDelegateAuthenticateRequest:(id)a3 account:(id)a4 presentingViewController:(id)a5;
-- (AMSUIDelegateTokenTask)initWithDelegateAuthenticateRequest:(id)a3 account:(id)a4 processInfo:(id)a5 presentingViewController:(id)a6;
-- (id)authenticateTaskWithRequest:(id)a3;
+- (AMSUIDelegateTokenTask)initWithDelegateAuthenticateRequest:(id)request account:(id)account presentingViewController:(id)controller;
+- (AMSUIDelegateTokenTask)initWithDelegateAuthenticateRequest:(id)request account:(id)account processInfo:(id)info presentingViewController:(id)controller;
+- (id)authenticateTaskWithRequest:(id)request;
 - (id)perform;
 @end
 
 @implementation AMSUIDelegateTokenTask
 
-- (AMSUIDelegateTokenTask)initWithDelegateAuthenticateRequest:(id)a3 account:(id)a4 presentingViewController:(id)a5
+- (AMSUIDelegateTokenTask)initWithDelegateAuthenticateRequest:(id)request account:(id)account presentingViewController:(id)controller
 {
   v8 = MEMORY[0x1E698CAC8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 currentProcess];
-  v13 = [(AMSUIDelegateTokenTask *)self initWithDelegateAuthenticateRequest:v11 account:v10 processInfo:v12 presentingViewController:v9];
+  controllerCopy = controller;
+  accountCopy = account;
+  requestCopy = request;
+  currentProcess = [v8 currentProcess];
+  v13 = [(AMSUIDelegateTokenTask *)self initWithDelegateAuthenticateRequest:requestCopy account:accountCopy processInfo:currentProcess presentingViewController:controllerCopy];
 
   return v13;
 }
 
-- (AMSUIDelegateTokenTask)initWithDelegateAuthenticateRequest:(id)a3 account:(id)a4 processInfo:(id)a5 presentingViewController:(id)a6
+- (AMSUIDelegateTokenTask)initWithDelegateAuthenticateRequest:(id)request account:(id)account processInfo:(id)info presentingViewController:(id)controller
 {
-  v21 = a6;
+  controllerCopy = controller;
   v11 = MEMORY[0x1E698C7D8];
   v12 = MEMORY[0x1E698C8A0];
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [v12 bagSubProfile];
-  v17 = [MEMORY[0x1E698C8A0] bagSubProfileVersion];
-  v18 = [v11 bagForProfile:v16 profileVersion:v17];
+  infoCopy = info;
+  accountCopy = account;
+  requestCopy = request;
+  bagSubProfile = [v12 bagSubProfile];
+  bagSubProfileVersion = [MEMORY[0x1E698C8A0] bagSubProfileVersion];
+  v18 = [v11 bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
   v22.receiver = self;
   v22.super_class = AMSUIDelegateTokenTask;
-  v19 = [(AMSDelegateTokenTask *)&v22 initWithDelegateAuthenticateRequest:v15 bag:v18 processInfo:v13 account:v14];
+  v19 = [(AMSDelegateTokenTask *)&v22 initWithDelegateAuthenticateRequest:requestCopy bag:v18 processInfo:infoCopy account:accountCopy];
 
   if (v19)
   {
-    objc_storeStrong(&v19->_presentingViewController, a6);
+    objc_storeStrong(&v19->_presentingViewController, controller);
   }
 
   return v19;
@@ -86,12 +86,12 @@ id __33__AMSUIDelegateTokenTask_perform__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (id)authenticateTaskWithRequest:(id)a3
+- (id)authenticateTaskWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [AMSUIAuthenticateTask alloc];
-  v6 = [(AMSUIDelegateTokenTask *)self presentingViewController];
-  v7 = [(AMSUIAuthenticateTask *)v5 initWithRequest:v4 presentingViewController:v6];
+  presentingViewController = [(AMSUIDelegateTokenTask *)self presentingViewController];
+  v7 = [(AMSUIAuthenticateTask *)v5 initWithRequest:requestCopy presentingViewController:presentingViewController];
 
   return v7;
 }

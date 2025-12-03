@@ -1,11 +1,11 @@
 @interface BuyButtonDataManager
-- (void)networkReachabilityChangedWithNotification:(id)a3;
+- (void)networkReachabilityChangedWithNotification:(id)notification;
 - (void)preorderedStateChanged;
 @end
 
 @implementation BuyButtonDataManager
 
-- (void)networkReachabilityChangedWithNotification:(id)a3
+- (void)networkReachabilityChangedWithNotification:(id)notification
 {
   if (swift_unknownObjectWeakLoadStrong())
   {

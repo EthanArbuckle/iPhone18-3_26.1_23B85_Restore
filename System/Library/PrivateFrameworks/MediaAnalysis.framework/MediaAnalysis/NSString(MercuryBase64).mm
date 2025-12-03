@@ -6,9 +6,9 @@
 
 - (id)vcp_mercuryBase64ToLocalIdentifier
 {
-  if ([a1 vcp_isMercuryBase64])
+  if ([self vcp_isMercuryBase64])
   {
-    v2 = [a1 copy];
+    v2 = [self copy];
     v3 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"%"];
     v5 = [v2 rangeOfCharacterFromSet:v3 options:0];
     while (v5 != 0x7FFFFFFFFFFFFFFFLL)
@@ -26,8 +26,8 @@
     {
       v10 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:{objc_msgSend(v9, "bytes")}];
       v11 = MEMORY[0x1E6978628];
-      v12 = [v10 UUIDString];
-      v7 = [v11 localIdentifierWithUUID:v12];
+      uUIDString = [v10 UUIDString];
+      v7 = [v11 localIdentifierWithUUID:uUIDString];
     }
 
     else

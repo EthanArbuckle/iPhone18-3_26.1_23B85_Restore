@@ -1,33 +1,33 @@
 @interface LPStaticAPFSVolume
-+ (const)roleMetadataForRole:(int)a3;
-+ (id)defaultVolumeNameGivenRole:(int)a3;
++ (const)roleMetadataForRole:(int)role;
++ (id)defaultVolumeNameGivenRole:(int)role;
 + (id)supportedContentTypes;
-+ (void)_loadMountPointTableForMode:(int)a3;
-+ (void)enumerateRoleMetadataUsingBlock:(id)a3;
++ (void)_loadMountPointTableForMode:(int)mode;
++ (void)enumerateRoleMetadataUsingBlock:(id)block;
 + (void)initialize;
-- (BOOL)_pathIsTemporaryMount:(id)a3;
-- (BOOL)createSnapshot:(id)a3 error:(id *)a4;
-- (BOOL)deleteSnapshots:(id)a3 waitForDeletionFor:(double)a4 error:(id *)a5;
-- (BOOL)deleteVolumeWithError:(id *)a3;
-- (BOOL)eraseVolumeWithError:(id *)a3;
+- (BOOL)_pathIsTemporaryMount:(id)mount;
+- (BOOL)createSnapshot:(id)snapshot error:(id *)error;
+- (BOOL)deleteSnapshots:(id)snapshots waitForDeletionFor:(double)for error:(id *)error;
+- (BOOL)deleteVolumeWithError:(id *)error;
+- (BOOL)eraseVolumeWithError:(id *)error;
 - (BOOL)isEncrypted;
 - (BOOL)isFilevaultEncrypted;
 - (BOOL)isMounted;
-- (BOOL)mountAtPath:(id)a3 options:(id)a4 error:(id *)a5;
-- (BOOL)mountWithError:(id *)a3;
-- (BOOL)renameSnapshot:(id)a3 to:(id)a4 error:(id *)a5;
-- (BOOL)revertToSnapshot:(id)a3 options:(id)a4 error:(id *)a5;
-- (BOOL)rootToSnapshot:(id)a3 error:(id *)a4;
-- (BOOL)setRole:(int)a3 withError:(id *)a4;
-- (BOOL)unmountAllWithError:(id *)a3;
-- (BOOL)unmountWithOptions:(id)a3 error:(id *)a4;
-- (id)_createTemporaryMountPointWithError:(id *)a3;
+- (BOOL)mountAtPath:(id)path options:(id)options error:(id *)error;
+- (BOOL)mountWithError:(id *)error;
+- (BOOL)renameSnapshot:(id)snapshot to:(id)to error:(id *)error;
+- (BOOL)revertToSnapshot:(id)snapshot options:(id)options error:(id *)error;
+- (BOOL)rootToSnapshot:(id)snapshot error:(id *)error;
+- (BOOL)setRole:(int)role withError:(id *)error;
+- (BOOL)unmountAllWithError:(id *)error;
+- (BOOL)unmountWithOptions:(id)options error:(id *)error;
+- (id)_createTemporaryMountPointWithError:(id *)error;
 - (id)container;
-- (id)mountAtTemporaryPathWithOptions:(id)a3 error:(id *)a4;
+- (id)mountAtTemporaryPathWithOptions:(id)options error:(id *)error;
 - (id)pairedVolume;
-- (id)snapshotInfoWithError:(id *)a3;
+- (id)snapshotInfoWithError:(id *)error;
 - (id)snapshotMountPoints;
-- (id)snapshotsWithError:(id *)a3;
+- (id)snapshotsWithError:(id *)error;
 - (id)volumeGroupUUID;
 - (int)role;
 @end
@@ -36,7 +36,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (_is_running_in_ramdisk_onceToken != -1)
     {
@@ -51,7 +51,7 @@
 
 + (id)supportedContentTypes
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v6 = LPAPFSVolumeMediaTypeUUID[0];
     v3 = [NSArray arrayWithObjects:&v6 count:1];
@@ -59,7 +59,7 @@
 
   else
   {
-    v5.receiver = a1;
+    v5.receiver = self;
     v5.super_class = &OBJC_METACLASS___LPStaticAPFSVolume;
     v3 = objc_msgSendSuper2(&v5, "supportedContentTypes");
   }
@@ -67,9 +67,9 @@
   return v3;
 }
 
-+ (void)_loadMountPointTableForMode:(int)a3
++ (void)_loadMountPointTableForMode:(int)mode
 {
-  v3 = (&kLPDefaultMountPointTable + 16 * a3);
+  v3 = (&kLPDefaultMountPointTable + 16 * mode);
   v4 = *v3;
   v5 = *(v3 + 1);
   v6 = [NSMutableDictionary dictionaryWithCapacity:v4];
@@ -96,13 +96,13 @@
   sMountPointLookupTable = v12;
 }
 
-+ (void)enumerateRoleMetadataUsingBlock:(id)a3
++ (void)enumerateRoleMetadataUsingBlock:(id)block
 {
   v4 = &enumerateRoleMetadataUsingBlock__sRoleMetadata;
   v5 = 17;
   do
   {
-    (*(a3 + 2))(a3, v4);
+    (*(block + 2))(block, v4);
     v4 += 24;
     --v5;
   }
@@ -110,7 +110,7 @@
   while (v5);
 }
 
-+ (const)roleMetadataForRole:(int)a3
++ (const)roleMetadataForRole:(int)role
 {
   v7 = 0;
   v8 = &v7;
@@ -120,9 +120,9 @@
   v5[1] = 3254779904;
   v5[2] = __42__LPStaticAPFSVolume_roleMetadataForRole___block_invoke;
   v5[3] = &__block_descriptor_44_e8_32r_e17_v16__0r____iS___8l;
-  v6 = a3;
+  roleCopy = role;
   v5[4] = &v7;
-  [a1 enumerateRoleMetadataUsingBlock:v5];
+  [self enumerateRoleMetadataUsingBlock:v5];
   v3 = v8[3];
   _Block_object_dispose(&v7, 8);
   return v3;
@@ -138,7 +138,7 @@ uint64_t __42__LPStaticAPFSVolume_roleMetadataForRole___block_invoke(uint64_t re
   return result;
 }
 
-+ (id)defaultVolumeNameGivenRole:(int)a3
++ (id)defaultVolumeNameGivenRole:(int)role
 {
   v7 = 0;
   v8 = &v7;
@@ -150,9 +150,9 @@ uint64_t __42__LPStaticAPFSVolume_roleMetadataForRole___block_invoke(uint64_t re
   v5[1] = 3254779904;
   v5[2] = __49__LPStaticAPFSVolume_defaultVolumeNameGivenRole___block_invoke;
   v5[3] = &__block_descriptor_44_e8_32r_e17_v16__0r____iS___8l;
-  v6 = a3;
+  roleCopy = role;
   v5[4] = &v7;
-  [a1 enumerateRoleMetadataUsingBlock:v5];
+  [self enumerateRoleMetadataUsingBlock:v5];
   v3 = v8[5];
   _Block_object_dispose(&v7, 8);
 
@@ -173,7 +173,7 @@ void __49__LPStaticAPFSVolume_defaultVolumeNameGivenRole___block_invoke(uint64_t
   }
 }
 
-- (BOOL)setRole:(int)a3 withError:(id *)a4
+- (BOOL)setRole:(int)role withError:(id *)error
 {
   v11[0] = 0;
   v11[1] = v11;
@@ -183,16 +183,16 @@ void __49__LPStaticAPFSVolume_defaultVolumeNameGivenRole___block_invoke(uint64_t
   v9[1] = 3254779904;
   v9[2] = __40__LPStaticAPFSVolume_setRole_withError___block_invoke;
   v9[3] = &__block_descriptor_44_e8_32r_e17_v16__0r____iS___8l;
-  v10 = a3;
+  roleCopy = role;
   v9[4] = v11;
   [objc_opt_class() enumerateRoleMetadataUsingBlock:v9];
-  v6 = [(LPStaticMedia *)self BSDName];
-  [v6 fileSystemRepresentation];
+  bSDName = [(LPStaticMedia *)self BSDName];
+  [bSDName fileSystemRepresentation];
   v7 = APFSVolumeRole();
 
-  if (a4 && v7)
+  if (error && v7)
   {
-    *a4 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v7 userInfo:0];
+    *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:v7 userInfo:0];
   }
 
   _Block_object_dispose(v11, 8);
@@ -216,9 +216,9 @@ uint64_t __40__LPStaticAPFSVolume_setRole_withError___block_invoke(uint64_t resu
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v3 = [(LPStaticMedia *)self BSDName];
-  v4 = v3;
-  [v3 fileSystemRepresentation];
+  bSDName = [(LPStaticMedia *)self BSDName];
+  v4 = bSDName;
+  [bSDName fileSystemRepresentation];
   v5 = APFSVolumeRole();
 
   if (v5)
@@ -247,13 +247,13 @@ uint64_t __40__LPStaticAPFSVolume_setRole_withError___block_invoke(uint64_t resu
   v8 = *(v19 + 6);
   if (!v8)
   {
-    v9 = [(LPStaticMedia *)self name];
+    name = [(LPStaticMedia *)self name];
     v10 = objc_opt_class();
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3254779904;
     v13[2] = __26__LPStaticAPFSVolume_role__block_invoke_122;
     v13[3] = &__block_descriptor_48_e8_32s40r_e17_v16__0r____iS___8l;
-    v11 = v9;
+    v11 = name;
     v14 = v11;
     v15 = &v18;
     [v10 enumerateRoleMetadataUsingBlock:v13];
@@ -293,9 +293,9 @@ void __26__LPStaticAPFSVolume_role__block_invoke_122(uint64_t a1, uint64_t a2)
 - (id)volumeGroupUUID
 {
   v2 = [(LPStaticMedia *)self getStringPropertyWithName:@"VolGroupUUID"];
-  v3 = [v2 UTF8String];
+  uTF8String = [v2 UTF8String];
   memset(uu, 0, sizeof(uu));
-  if (!v3 || uuid_parse(v3, uu) || uuid_is_null(uu))
+  if (!uTF8String || uuid_parse(uTF8String, uu) || uuid_is_null(uu))
   {
     v4 = 0;
   }
@@ -372,8 +372,8 @@ void __26__LPStaticAPFSVolume_role__block_invoke_122(uint64_t a1, uint64_t a2)
 
 - (BOOL)isEncrypted
 {
-  v2 = [(LPStaticMedia *)self devNodePath];
-  [v2 fileSystemRepresentation];
+  devNodePath = [(LPStaticMedia *)self devNodePath];
+  [devNodePath fileSystemRepresentation];
   APFSVolumeGetVEKState();
 
   return 0;
@@ -381,8 +381,8 @@ void __26__LPStaticAPFSVolume_role__block_invoke_122(uint64_t a1, uint64_t a2)
 
 - (BOOL)isFilevaultEncrypted
 {
-  v2 = [(LPStaticMedia *)self devNodePath];
-  [v2 fileSystemRepresentation];
+  devNodePath = [(LPStaticMedia *)self devNodePath];
+  [devNodePath fileSystemRepresentation];
   APFSVolumeGetVEKState();
 
   return 0;
@@ -390,14 +390,14 @@ void __26__LPStaticAPFSVolume_role__block_invoke_122(uint64_t a1, uint64_t a2)
 
 - (id)pairedVolume
 {
-  v3 = [(LPStaticAPFSVolume *)self role];
-  if (v3 == 1)
+  role = [(LPStaticAPFSVolume *)self role];
+  if (role == 1)
   {
     v4 = 3;
     goto LABEL_5;
   }
 
-  if (v3 == 3)
+  if (role == 3)
   {
     v4 = 1;
 LABEL_5:
@@ -413,10 +413,10 @@ LABEL_7:
 
 - (id)snapshotMountPoints
 {
-  v2 = [(LPStaticMedia *)self devNodePath];
-  if (v2)
+  devNodePath = [(LPStaticMedia *)self devNodePath];
+  if (devNodePath)
   {
-    v3 = [NSString stringWithFormat:@"@%@", v2];
+    v3 = [NSString stringWithFormat:@"@%@", devNodePath];
     v21 = 0;
     v4 = getmntinfo_r_np(&v21, 0);
     v5 = [NSMutableArray arrayWithCapacity:13];
@@ -424,7 +424,7 @@ LABEL_7:
     if (v4 >= 1)
     {
       v19 = v6;
-      v20 = v2;
+      v20 = devNodePath;
       v7 = 0;
       v8 = 0;
       v9 = v4;
@@ -436,15 +436,15 @@ LABEL_7:
         {
           v12 = [(NSString *)v11 substringToIndex:[(NSString *)v11 rangeOfString:@"@" options:4]];
 
-          v13 = [NSString stringWithUTF8String:v21 + v10 - 1024];
+          1024 = [NSString stringWithUTF8String:v21 + v10 - 1024];
           v22[0] = LPAPFSVolumeSnapshotMountPointKeyName[0];
           v22[1] = LPAPFSVolumeSnapshotMountPointKeyMountPoint[0];
           v23[0] = v12;
-          v23[1] = v13;
+          v23[1] = 1024;
           v14 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:2];
           [(NSMutableArray *)v5 addObject:v14];
 
-          v8 = v13;
+          v8 = 1024;
           v7 = v12;
         }
 
@@ -455,7 +455,7 @@ LABEL_7:
       while (v9);
 
       v6 = v19;
-      v2 = v20;
+      devNodePath = v20;
     }
 
     objc_autoreleasePoolPop(v6);
@@ -492,31 +492,31 @@ LABEL_7:
 
 - (BOOL)isMounted
 {
-  v3 = [(LPStaticMedia *)self mountPoint];
-  if (v3)
+  mountPoint = [(LPStaticMedia *)self mountPoint];
+  if (mountPoint)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(LPStaticAPFSVolume *)self snapshotMountPoints];
-    v4 = v5 != 0;
+    snapshotMountPoints = [(LPStaticAPFSVolume *)self snapshotMountPoints];
+    v4 = snapshotMountPoints != 0;
   }
 
   return v4;
 }
 
-- (BOOL)eraseVolumeWithError:(id *)a3
+- (BOOL)eraseVolumeWithError:(id *)error
 {
-  v4 = [(LPStaticMedia *)self mountPoint];
-  v5 = v4;
-  if (v4)
+  mountPoint = [(LPStaticMedia *)self mountPoint];
+  v5 = mountPoint;
+  if (mountPoint)
   {
-    v6 = _lp2_delete_directory_contents([v4 fileSystemRepresentation]);
-    if (a3 && v6)
+    v6 = _lp2_delete_directory_contents([mountPoint fileSystemRepresentation]);
+    if (error && v6)
     {
-      *a3 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v6 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:v6 userInfo:0];
     }
 
     v7 = *__error() == 0;
@@ -524,9 +524,9 @@ LABEL_7:
 
   else
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
     }
 
     _os_log_pack_size();
@@ -540,11 +540,11 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)mountWithError:(id *)a3
+- (BOOL)mountWithError:(id *)error
 {
-  v5 = [(LPStaticMedia *)self mountPoint];
+  mountPoint = [(LPStaticMedia *)self mountPoint];
 
-  if (v5)
+  if (mountPoint)
   {
     return 1;
   }
@@ -552,22 +552,22 @@ LABEL_7:
   v7 = [LPStaticAPFSVolume defaultMountPointGivenRole:[(LPStaticAPFSVolume *)self role]];
   if (v7 && (v8 = [LPStaticMedia mediaForPath:v7], v8, !v8))
   {
-    v6 = [(LPStaticAPFSVolume *)self mountAtPath:v7 error:a3];
+    v6 = [(LPStaticAPFSVolume *)self mountAtPath:v7 error:error];
   }
 
   else
   {
-    v9 = [(LPStaticAPFSVolume *)self mountAtTemporaryPathWithError:a3];
+    v9 = [(LPStaticAPFSVolume *)self mountAtTemporaryPathWithError:error];
     v6 = v9 != 0;
   }
 
   return v6;
 }
 
-- (BOOL)_pathIsTemporaryMount:(id)a3
+- (BOOL)_pathIsTemporaryMount:(id)mount
 {
-  v3 = a3;
-  if ([v3 containsString:@"tmp-mount-"])
+  mountCopy = mount;
+  if ([mountCopy containsString:@"tmp-mount-"])
   {
     if (_is_running_in_ramdisk_onceToken != -1)
     {
@@ -584,11 +584,11 @@ LABEL_7:
       v4 = @"/tmp/";
     }
 
-    v5 = [(__CFString *)v4 stringByResolvingSymlinksInPath];
-    v6 = [v3 stringByResolvingSymlinksInPath];
-    v7 = [v6 stringByDeletingLastPathComponent];
+    stringByResolvingSymlinksInPath = [(__CFString *)v4 stringByResolvingSymlinksInPath];
+    stringByResolvingSymlinksInPath2 = [mountCopy stringByResolvingSymlinksInPath];
+    stringByDeletingLastPathComponent = [stringByResolvingSymlinksInPath2 stringByDeletingLastPathComponent];
 
-    v8 = [v7 isEqualToString:v5];
+    v8 = [stringByDeletingLastPathComponent isEqualToString:stringByResolvingSymlinksInPath];
   }
 
   else
@@ -599,7 +599,7 @@ LABEL_7:
   return v8;
 }
 
-- (id)_createTemporaryMountPointWithError:(id *)a3
+- (id)_createTemporaryMountPointWithError:(id *)error
 {
   if (_is_running_in_ramdisk_onceToken != -1)
   {
@@ -621,12 +621,12 @@ LABEL_7:
     *v5 = 136315138;
     *(v5 + 4) = v9;
     _LPLogPack(1);
-    if (*a3)
+    if (*error)
     {
       v6 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
       v7 = v6;
       v4 = 0;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -638,11 +638,11 @@ LABEL_7:
   return v4;
 }
 
-- (id)mountAtTemporaryPathWithOptions:(id)a3 error:(id *)a4
+- (id)mountAtTemporaryPathWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [(LPStaticAPFSVolume *)self _createTemporaryMountPointWithError:a4];
-  if (v7 && [(LPStaticAPFSVolume *)self mountAtPath:v7 options:v6 error:a4])
+  optionsCopy = options;
+  v7 = [(LPStaticAPFSVolume *)self _createTemporaryMountPointWithError:error];
+  if (v7 && [(LPStaticAPFSVolume *)self mountAtPath:v7 options:optionsCopy error:error])
   {
     v8 = v7;
   }
@@ -655,18 +655,18 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)mountAtPath:(id)a3 options:(id)a4 error:(id *)a5
+- (BOOL)mountAtPath:(id)path options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(LPStaticMedia *)self devNodePath];
-  if (v10)
+  pathCopy = path;
+  optionsCopy = options;
+  devNodePath = [(LPStaticMedia *)self devNodePath];
+  if (devNodePath)
   {
-    v11 = [(LPStaticMedia *)self mountPoint];
-    v12 = [v11 isEqualToString:v8];
-    if (v9 || !v12)
+    mountPoint = [(LPStaticMedia *)self mountPoint];
+    v12 = [mountPoint isEqualToString:pathCopy];
+    if (optionsCopy || !v12)
     {
-      if (!v11)
+      if (!mountPoint)
       {
         goto LABEL_10;
       }
@@ -674,40 +674,40 @@ LABEL_7:
       _os_log_pack_size();
       v18 = _os_log_pack_fill();
       *v18 = 138412546;
-      *(v18 + 4) = v11;
+      *(v18 + 4) = mountPoint;
       *(v18 + 12) = 2112;
-      *(v18 + 14) = v8;
+      *(v18 + 14) = pathCopy;
       _LPLogPack(2);
       v14 = 0;
-      if ([(LPStaticAPFSVolume *)self unmountWithError:a5])
+      if ([(LPStaticAPFSVolume *)self unmountWithError:error])
       {
 LABEL_10:
-        v19 = mkpath_np([v8 fileSystemRepresentation], 0x1FFu);
+        v19 = mkpath_np([pathCopy fileSystemRepresentation], 0x1FFu);
         if (v19 && v19 != 17)
         {
-          v23 = v9;
-          if (a5)
+          v23 = optionsCopy;
+          if (error)
           {
             v24 = v19;
             v67 = NSFilePathErrorKey;
-            v68 = v8;
+            v68 = pathCopy;
             v25 = [NSDictionary dictionaryWithObjects:&v68 forKeys:&v67 count:1];
-            *a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v24 userInfo:v25];
+            *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:v24 userInfo:v25];
           }
 
           _os_log_pack_size();
           v26 = _os_log_pack_fill();
           v27 = [(LPStaticMedia *)self description];
-          v28 = [v27 UTF8String];
-          v29 = [v8 fileSystemRepresentation];
+          uTF8String = [v27 UTF8String];
+          fileSystemRepresentation = [pathCopy fileSystemRepresentation];
           *v26 = 136380931;
-          *(v26 + 4) = v28;
+          *(v26 + 4) = uTF8String;
           *(v26 + 12) = 2081;
-          *(v26 + 14) = v29;
+          *(v26 + 14) = fileSystemRepresentation;
 
           _LPLogPack(1);
           v14 = 0;
-          v9 = v23;
+          optionsCopy = v23;
         }
 
         else
@@ -718,7 +718,7 @@ LABEL_10:
           v66 = 0;
           v61 = off_2C9C8;
           v62 = unk_2C9D8;
-          v20 = [v9 objectForKeyedSubscript:LPAPFSVolumeMountOptionReadOnly[0]];
+          v20 = [optionsCopy objectForKeyedSubscript:LPAPFSVolumeMountOptionReadOnly[0]];
           v21 = v20;
           if (v20)
           {
@@ -744,7 +744,7 @@ LABEL_10:
             v31 = 1;
           }
 
-          v32 = [v9 objectForKeyedSubscript:LPAPFSVolumeMountOptionNoBrowse[0]];
+          v32 = [optionsCopy objectForKeyedSubscript:LPAPFSVolumeMountOptionNoBrowse[0]];
           v33 = v32;
           if (v32)
           {
@@ -766,7 +766,7 @@ LABEL_10:
             *(&v61 + v36) = "nobrowse";
           }
 
-          v37 = [v9 objectForKeyedSubscript:LPAPFSVolumeMountOptionNoFirmlinks[0]];
+          v37 = [optionsCopy objectForKeyedSubscript:LPAPFSVolumeMountOptionNoFirmlinks[0]];
           v38 = v37;
           if (v37)
           {
@@ -786,8 +786,8 @@ LABEL_10:
           }
 
           v58 = v30;
-          v55 = a5;
-          v41 = [v9 objectForKeyedSubscript:LPAPFSVolumeMountOptionSnapshotName[0]];
+          errorCopy = error;
+          v41 = [optionsCopy objectForKeyedSubscript:LPAPFSVolumeMountOptionSnapshotName[0]];
           v54 = [v41 length];
           v57 = v35;
           v56 = v40;
@@ -799,8 +799,8 @@ LABEL_10:
             *(&v61 + v42) = [v41 fileSystemRepresentation];
           }
 
-          *(&v61 + v31) = [v10 fileSystemRepresentation];
-          *(&v61 + v31 + 1) = [v8 fileSystemRepresentation];
+          *(&v61 + v31) = [devNodePath fileSystemRepresentation];
+          *(&v61 + v31 + 1) = [pathCopy fileSystemRepresentation];
           v43 = _execForLibpartition(&v61);
           if (v43 == 75)
           {
@@ -810,7 +810,7 @@ LABEL_10:
             {
               v45 = _os_log_pack_fill();
               *v45 = 138412802;
-              *(v45 + 4) = v10;
+              *(v45 + 4) = devNodePath;
               *(v45 + 12) = 1024;
               *(v45 + 14) = 75;
               *(v45 + 18) = 1024;
@@ -830,7 +830,7 @@ LABEL_10:
           v14 = v43 == 0;
           if (v43)
           {
-            if (v55)
+            if (errorCopy)
             {
               v47 = [NSString stringWithFormat:@"mount_apfs returned : %d", v43];
               v59[0] = NSLocalizedFailureReasonErrorKey;
@@ -838,13 +838,13 @@ LABEL_10:
               v60[0] = @"Mount failed";
               v60[1] = v47;
               v48 = [NSDictionary dictionaryWithObjects:v60 forKeys:v59 count:2];
-              *v55 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:v48];
+              *errorCopy = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:v48];
             }
 
             _os_log_pack_size();
             v49 = _os_log_pack_fill();
             *v49 = 138412546;
-            *(v49 + 4) = v10;
+            *(v49 + 4) = devNodePath;
             *(v49 + 12) = 1024;
             *(v49 + 14) = v43;
             _LPLogPack(1);
@@ -861,19 +861,19 @@ LABEL_10:
             if (v54)
             {
               *v52 = 138412803;
-              *(v52 + 4) = v10;
+              *(v52 + 4) = devNodePath;
               *(v52 + 12) = 2113;
               *(v52 + 14) = v41;
               *(v52 + 22) = 2113;
-              *(v52 + 24) = v8;
+              *(v52 + 24) = pathCopy;
             }
 
             else
             {
               *v52 = 138412547;
-              *(v52 + 4) = v10;
+              *(v52 + 4) = devNodePath;
               *(v52 + 12) = 2113;
-              *(v52 + 14) = v8;
+              *(v52 + 14) = pathCopy;
             }
 
             _LPLogPack(2);
@@ -887,7 +887,7 @@ LABEL_10:
       _os_log_pack_size();
       v13 = _os_log_pack_fill();
       *v13 = 138412290;
-      *(v13 + 4) = v8;
+      *(v13 + 4) = pathCopy;
       _LPLogPack(2);
       v14 = 1;
     }
@@ -895,17 +895,17 @@ LABEL_10:
 
   else
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
     }
 
     _os_log_pack_size();
     v15 = _os_log_pack_fill();
     v16 = [(LPStaticMedia *)self description];
-    v17 = [v16 UTF8String];
+    uTF8String2 = [v16 UTF8String];
     *v15 = 136315138;
-    *(v15 + 4) = v17;
+    *(v15 + 4) = uTF8String2;
 
     _LPLogPack(1);
     v14 = 0;
@@ -914,14 +914,14 @@ LABEL_10:
   return v14;
 }
 
-- (BOOL)unmountWithOptions:(id)a3 error:(id *)a4
+- (BOOL)unmountWithOptions:(id)options error:(id *)error
 {
-  v5 = a3;
+  optionsCopy = options;
   v61 = [NSMutableArray arrayWithCapacity:1];
-  v6 = [v5 objectForKey:LPAPFSVolumeUnmountOptionAll[0]];
-  v7 = [v6 BOOLValue];
+  v6 = [optionsCopy objectForKey:LPAPFSVolumeUnmountOptionAll[0]];
+  bOOLValue = [v6 BOOLValue];
 
-  v8 = [v5 objectForKey:LPAPFSVolumeUnmountOptionSnapshotName[0]];
+  v8 = [optionsCopy objectForKey:LPAPFSVolumeUnmountOptionSnapshotName[0]];
   if (v8)
   {
     v9 = 0;
@@ -929,37 +929,37 @@ LABEL_10:
 
   else
   {
-    v9 = v7 == 0;
+    v9 = bOOLValue == 0;
   }
 
-  v71 = self;
+  selfCopy = self;
   if (v9)
   {
-    v28 = [(LPStaticMedia *)self mountPoint];
+    mountPoint = [(LPStaticMedia *)self mountPoint];
 
-    if (!v28)
+    if (!mountPoint)
     {
       goto LABEL_28;
     }
 
-    v10 = [(LPStaticMedia *)self mountPoint];
-    [(NSMutableArray *)v61 addObject:v10];
+    mountPoint2 = [(LPStaticMedia *)self mountPoint];
+    [(NSMutableArray *)v61 addObject:mountPoint2];
   }
 
   else
   {
-    v10 = [(LPStaticAPFSVolume *)self snapshotMountPoints];
-    v11 = [(LPStaticMedia *)self mountPoint];
-    v12 = v11;
-    if (v10)
+    mountPoint2 = [(LPStaticAPFSVolume *)self snapshotMountPoints];
+    mountPoint3 = [(LPStaticMedia *)self mountPoint];
+    v12 = mountPoint3;
+    if (mountPoint2)
     {
-      v66 = v11;
+      v66 = mountPoint3;
       v81 = 0u;
       v82 = 0u;
       v79 = 0u;
       v80 = 0u;
-      v69 = v10;
-      v72 = v10;
+      v69 = mountPoint2;
+      v72 = mountPoint2;
       v13 = [v72 countByEnumeratingWithState:&v79 objects:v84 count:16];
       if (v13)
       {
@@ -977,7 +977,7 @@ LABEL_10:
             }
 
             v17 = *(*(&v79 + 1) + 8 * v16);
-            if (v7)
+            if (bOOLValue)
             {
               v18 = [v17 objectForKey:LPAPFSVolumeSnapshotMountPointKeyMountPoint[0]];
               [(NSMutableArray *)v61 addObject:v18];
@@ -985,15 +985,15 @@ LABEL_10:
 
             else
             {
-              v19 = [v5 objectForKey:LPAPFSVolumeSnapshotMountPointKeyName[0]];
+              v19 = [optionsCopy objectForKey:LPAPFSVolumeSnapshotMountPointKeyName[0]];
               v20 = v15;
-              v21 = v7;
+              v21 = bOOLValue;
               v22 = [v17 objectForKey:v19];
-              v23 = [v5 objectForKey:LPAPFSVolumeUnmountOptionSnapshotName[0]];
+              v23 = [optionsCopy objectForKey:LPAPFSVolumeUnmountOptionSnapshotName[0]];
               v24 = [v22 isEqualToString:v23];
 
               v25 = v22;
-              v7 = v21;
+              bOOLValue = v21;
               v15 = v20;
               v14 = v70;
 
@@ -1002,11 +1002,11 @@ LABEL_10:
                 v26 = [v17 objectForKey:LPAPFSVolumeSnapshotMountPointKeyMountPoint[0]];
                 [(NSMutableArray *)v61 addObject:v26];
 
-                if ((v7 & 1) == 0)
+                if ((bOOLValue & 1) == 0)
                 {
 
-                  self = v71;
-                  v10 = v69;
+                  self = selfCopy;
+                  mountPoint2 = v69;
                   v12 = v66;
                   goto LABEL_26;
                 }
@@ -1027,14 +1027,14 @@ LABEL_10:
         }
       }
 
-      self = v71;
-      v10 = v69;
+      self = selfCopy;
+      mountPoint2 = v69;
       v12 = v66;
     }
 
     if (v12)
     {
-      v27 = v7;
+      v27 = bOOLValue;
     }
 
     else
@@ -1051,7 +1051,7 @@ LABEL_26:
   }
 
 LABEL_28:
-  v64 = v5;
+  v64 = optionsCopy;
   if ([(NSMutableArray *)v61 count])
   {
     [(NSMutableArray *)v61 sortUsingComparator:&__block_literal_global_2];
@@ -1080,13 +1080,13 @@ LABEL_28:
 
         v67 = v29;
         v30 = *(*(&v75 + 1) + 8 * v29);
-        if (v5)
+        if (optionsCopy)
         {
-          v31 = [v5 objectForKey:LPAPFSVolumeUnmountOptionForce[0]];
+          v31 = [optionsCopy objectForKey:LPAPFSVolumeUnmountOptionForce[0]];
           v32 = v31 != 0;
 
           v73 = v32 << 19;
-          v33 = [v5 objectForKey:LPAPFSVolumeUnmountOptionDoNotLock[0]];
+          v33 = [optionsCopy objectForKey:LPAPFSVolumeUnmountOptionDoNotLock[0]];
 
           if (v33)
           {
@@ -1097,9 +1097,9 @@ LABEL_28:
               {
                 _os_log_pack_size();
                 v34 = _os_log_pack_fill();
-                v35 = [(LPStaticMedia *)self devNodePath];
+                devNodePath = [(LPStaticMedia *)self devNodePath];
                 *v34 = 138412290;
-                *(v34 + 4) = v35;
+                *(v34 + 4) = devNodePath;
                 v36 = 2;
               }
 
@@ -1107,10 +1107,10 @@ LABEL_28:
               {
                 _os_log_pack_size();
                 v37 = _os_log_pack_fill();
-                v35 = [(LPStaticMedia *)self devNodePath];
+                devNodePath = [(LPStaticMedia *)self devNodePath];
                 v38 = *__error();
                 *v37 = 138412546;
-                *(v37 + 4) = v35;
+                *(v37 + 4) = devNodePath;
                 *(v37 + 12) = 1024;
                 *(v37 + 14) = v38;
                 v36 = 1;
@@ -1130,7 +1130,7 @@ LABEL_28:
         while (unmount([v30 fileSystemRepresentation], v73))
         {
           v40 = *__error();
-          v41 = v71;
+          v41 = selfCopy;
           if (v40 == 22)
           {
             _os_log_pack_size();
@@ -1153,27 +1153,27 @@ LABEL_28:
 
           else
           {
-            if (v39 == 3 && v40 == 16 && [(LPStaticAPFSVolume *)v71 role]!= 12)
+            if (v39 == 3 && v40 == 16 && [(LPStaticAPFSVolume *)selfCopy role]!= 12)
             {
               v73 |= 0x80000u;
               sleep(3u);
               _os_log_pack_size();
               v47 = _os_log_pack_fill();
-              v48 = [(LPStaticMedia *)v71 devNodePath];
+              devNodePath2 = [(LPStaticMedia *)selfCopy devNodePath];
               *v47 = 138412546;
-              *(v47 + 4) = v48;
+              *(v47 + 4) = devNodePath2;
               *(v47 + 12) = 1024;
               *(v47 + 14) = 16;
               v42 = 1;
               _LPLogPack(1);
-              v49 = v48;
-              v41 = v71;
+              v49 = devNodePath2;
+              v41 = selfCopy;
 
               v39 = 4;
               goto LABEL_56;
             }
 
-            if (!a4)
+            if (!error)
             {
 LABEL_55:
               v42 = 0;
@@ -1181,14 +1181,14 @@ LABEL_55:
             }
 
             v42 = 0;
-            *a4 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v40 userInfo:0];
+            *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:v40 userInfo:0];
           }
 
 LABEL_56:
           _os_log_pack_size();
           v43 = _os_log_pack_fill();
-          v44 = [(LPStaticMedia *)v41 devNodePath];
-          v45 = v44;
+          devNodePath3 = [(LPStaticMedia *)v41 devNodePath];
+          v45 = devNodePath3;
           *v43 = 138412802;
           v46 = "no";
           if (v42)
@@ -1196,7 +1196,7 @@ LABEL_56:
             v46 = "yes";
           }
 
-          *(v43 + 4) = v44;
+          *(v43 + 4) = devNodePath3;
           *(v43 + 12) = 2080;
           *(v43 + 14) = v46;
           *(v43 + 22) = 1024;
@@ -1205,7 +1205,7 @@ LABEL_56:
 
           if ((v42 & 1) == 0)
           {
-            self = v71;
+            self = selfCopy;
             v55 = v67;
             v56 = v40 == 22;
             goto LABEL_67;
@@ -1214,15 +1214,15 @@ LABEL_56:
 
         _os_log_pack_size();
         v50 = _os_log_pack_fill();
-        self = v71;
-        v51 = [(LPStaticMedia *)v71 devNodePath];
+        self = selfCopy;
+        devNodePath4 = [(LPStaticMedia *)selfCopy devNodePath];
         *v50 = 138412547;
-        *(v50 + 4) = v51;
+        *(v50 + 4) = devNodePath4;
         *(v50 + 12) = 2113;
         *(v50 + 14) = v30;
         _LPLogPack(2);
 
-        if ([(LPStaticAPFSVolume *)v71 _pathIsTemporaryMount:v30])
+        if ([(LPStaticAPFSVolume *)selfCopy _pathIsTemporaryMount:v30])
         {
           if (rmdir([v30 fileSystemRepresentation]))
           {
@@ -1248,7 +1248,7 @@ LABEL_56:
         v55 = v67;
 LABEL_67:
         v29 = v55 + 1;
-        v5 = v64;
+        optionsCopy = v64;
       }
 
       while (v29 != v65);
@@ -1264,12 +1264,12 @@ LABEL_72:
 
   _os_log_pack_size();
   v57 = _os_log_pack_fill();
-  v58 = [(LPStaticMedia *)self devNodePath];
+  devNodePath5 = [(LPStaticMedia *)self devNodePath];
   *v57 = 138412290;
-  *(v57 + 4) = v58;
+  *(v57 + 4) = devNodePath5;
   _LPLogPack(2);
-  v59 = v58;
-  v5 = v64;
+  v59 = devNodePath5;
+  optionsCopy = v64;
 
   v56 = 1;
 LABEL_73:
@@ -1277,21 +1277,21 @@ LABEL_73:
   return v56;
 }
 
-- (BOOL)unmountAllWithError:(id *)a3
+- (BOOL)unmountAllWithError:(id *)error
 {
   v8 = LPAPFSVolumeUnmountOptionAll[0];
   v5 = [NSNumber numberWithBool:1];
   v9 = v5;
   v6 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
-  LOBYTE(a3) = [(LPStaticAPFSVolume *)self unmountWithOptions:v6 error:a3];
+  LOBYTE(error) = [(LPStaticAPFSVolume *)self unmountWithOptions:v6 error:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)deleteVolumeWithError:(id *)a3
+- (BOOL)deleteVolumeWithError:(id *)error
 {
-  v4 = [(LPStaticMedia *)self devNodePath];
-  if (v4)
+  devNodePath = [(LPStaticMedia *)self devNodePath];
+  if (devNodePath)
   {
     _os_log_pack_size();
     v5 = _os_log_pack_fill();
@@ -1300,9 +1300,9 @@ LABEL_73:
     *v5 = 136315394;
     *(v5 + 4) = "[LPStaticAPFSVolume deleteVolumeWithError:]";
     *(v5 + 12) = 2112;
-    *(v5 + 14) = v4;
+    *(v5 + 14) = devNodePath;
     _LPLogPack(2);
-    [v4 fileSystemRepresentation];
+    [devNodePath fileSystemRepresentation];
     v7 = APFSVolumeDelete();
     if (!v7)
     {
@@ -1321,14 +1321,14 @@ LABEL_73:
       *(v9 + 12) = 1024;
       *(v9 + 14) = v10;
       _LPLogPack(1);
-      if (a3)
+      if (error)
       {
         v11 = @"com.apple.IOKit";
 LABEL_14:
         v16 = v10;
 LABEL_17:
         v13 = 0;
-        *a3 = [NSError errorWithDomain:v11 code:v16 userInfo:0, v19];
+        *error = [NSError errorWithDomain:v11 code:v16 userInfo:0, v19];
         goto LABEL_18;
       }
     }
@@ -1346,7 +1346,7 @@ LABEL_17:
         *(v15 + 12) = 1024;
         *(v15 + 14) = v10;
         _LPLogPack(1);
-        if (a3)
+        if (error)
         {
           v11 = NSPOSIXErrorDomain;
           goto LABEL_14;
@@ -1361,7 +1361,7 @@ LABEL_17:
         *(v17 + 12) = 1024;
         *(v17 + 14) = v8;
         _LPLogPack(1);
-        if (a3)
+        if (error)
         {
           v11 = NSOSStatusErrorDomain;
           v16 = v8;
@@ -1373,9 +1373,9 @@ LABEL_17:
 
   else
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
     }
 
     _os_log_pack_size();
@@ -1391,9 +1391,9 @@ LABEL_18:
   return v13;
 }
 
-- (id)snapshotsWithError:(id *)a3
+- (id)snapshotsWithError:(id *)error
 {
-  v3 = [(LPStaticAPFSVolume *)self snapshotInfoWithError:a3];
+  v3 = [(LPStaticAPFSVolume *)self snapshotInfoWithError:error];
   v4 = [NSMutableArray arrayWithCapacity:10];
   if (v3)
   {
@@ -1433,15 +1433,15 @@ LABEL_18:
   return v4;
 }
 
-- (id)snapshotInfoWithError:(id *)a3
+- (id)snapshotInfoWithError:(id *)error
 {
-  v5 = [(LPStaticMedia *)self mountPoint];
-  v6 = v5;
-  if (!v5)
+  mountPoint = [(LPStaticMedia *)self mountPoint];
+  v6 = mountPoint;
+  if (!mountPoint)
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
     }
 
     _os_log_pack_size();
@@ -1456,12 +1456,12 @@ LABEL_18:
     goto LABEL_36;
   }
 
-  v7 = open([v5 fileSystemRepresentation], 0x100000);
+  v7 = open([mountPoint fileSystemRepresentation], 0x100000);
   if (v7 < 0)
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
     }
 
     _os_log_pack_size();
@@ -1479,7 +1479,7 @@ LABEL_36:
   }
 
   v8 = v7;
-  v34 = a3;
+  errorCopy = error;
   v35 = v6;
   v36 = [NSMutableArray arrayWithCapacity:10];
   *&v38.volattr = 0;
@@ -1564,7 +1564,7 @@ LABEL_26:
       {
 LABEL_9:
         v17 = *v12;
-        v18 = [NSNumber numberWithUnsignedLongLong:*v12 & 0x3FFFFFFFFFFFFFFFLL];
+        0x3FFFFFFFFFFFFFFFLL = [NSNumber numberWithUnsignedLongLong:*v12 & 0x3FFFFFFFFFFFFFFFLL];
         v19 = [NSNumber numberWithBool:(v17 >> 62) & 1];
         v20 = [NSNumber numberWithBool:v17 >> 63];
 LABEL_15:
@@ -1575,9 +1575,9 @@ LABEL_15:
           [(NSMutableDictionary *)v25 setObject:v15 forKey:LPAPFSSnapshotPropertyKeyName[0]];
         }
 
-        if (v18)
+        if (0x3FFFFFFFFFFFFFFFLL)
         {
-          [(NSMutableDictionary *)v26 setObject:v18 forKey:LPAPFSSnapshotPropertyKeyXID[0]];
+          [(NSMutableDictionary *)v26 setObject:0x3FFFFFFFFFFFFFFFLL forKey:LPAPFSSnapshotPropertyKeyXID[0]];
         }
 
         if (v19)
@@ -1602,7 +1602,7 @@ LABEL_15:
 
     v20 = 0;
     v19 = 0;
-    v18 = 0;
+    0x3FFFFFFFFFFFFFFFLL = 0;
     goto LABEL_15;
   }
 
@@ -1619,9 +1619,9 @@ LABEL_28:
     close(v8);
     v27 = v36;
     v28 = 0;
-    if (v34)
+    if (errorCopy)
     {
-      *v34 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v9 userInfo:0];
+      *errorCopy = [NSError errorWithDomain:NSPOSIXErrorDomain code:v9 userInfo:0];
     }
   }
 
@@ -1638,25 +1638,25 @@ LABEL_40:
   return v28;
 }
 
-- (BOOL)createSnapshot:(id)a3 error:(id *)a4
+- (BOOL)createSnapshot:(id)snapshot error:(id *)error
 {
-  v6 = a3;
-  v7 = [(LPStaticMedia *)self mountPoint];
-  if (!v6 || ![v6 length])
+  snapshotCopy = snapshot;
+  mountPoint = [(LPStaticMedia *)self mountPoint];
+  if (!snapshotCopy || ![snapshotCopy length])
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
     }
 
     goto LABEL_12;
   }
 
-  if (!v7)
+  if (!mountPoint)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
     }
 
 LABEL_12:
@@ -1670,12 +1670,12 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v8 = open([v7 fileSystemRepresentation], 0);
+  v8 = open([mountPoint fileSystemRepresentation], 0);
   if (v8 < 0)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
     }
 
     _os_log_pack_size();
@@ -1683,19 +1683,19 @@ LABEL_13:
     *v17 = 136315395;
     *(v17 + 4) = "[LPStaticAPFSVolume createSnapshot:error:]";
     *(v17 + 12) = 2113;
-    *(v17 + 14) = v7;
+    *(v17 + 14) = mountPoint;
     goto LABEL_13;
   }
 
   v9 = v8;
-  v10 = fs_snapshot_create(v8, [v6 fileSystemRepresentation], 0);
+  v10 = fs_snapshot_create(v8, [snapshotCopy fileSystemRepresentation], 0);
   v11 = v10 == 0;
   if (v10)
   {
     v12 = *__error();
-    if (a4)
+    if (error)
     {
-      *a4 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v12 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:v12 userInfo:0];
     }
 
     _os_log_pack_size();
@@ -1714,31 +1714,31 @@ LABEL_14:
   return v11;
 }
 
-- (BOOL)deleteSnapshots:(id)a3 waitForDeletionFor:(double)a4 error:(id *)a5
+- (BOOL)deleteSnapshots:(id)snapshots waitForDeletionFor:(double)for error:(id *)error
 {
-  v8 = a3;
-  v9 = [(LPStaticMedia *)self mountPoint];
-  if (!v8)
+  snapshotsCopy = snapshots;
+  mountPoint = [(LPStaticMedia *)self mountPoint];
+  if (!snapshotsCopy)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
     }
 
     goto LABEL_25;
   }
 
-  if (![v8 count])
+  if (![snapshotsCopy count])
   {
     v21 = 1;
     goto LABEL_27;
   }
 
-  if (!v9)
+  if (!mountPoint)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
     }
 
 LABEL_25:
@@ -1752,12 +1752,12 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v10 = open([v9 fileSystemRepresentation], 0);
+  v10 = open([mountPoint fileSystemRepresentation], 0);
   if (v10 < 0)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
     }
 
     _os_log_pack_size();
@@ -1775,13 +1775,13 @@ LABEL_26:
   v33 = 0u;
   v32 = 0u;
   v31 = 0u;
-  v12 = v8;
+  v12 = snapshotsCopy;
   v13 = [v12 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v13)
   {
     v14 = v13;
-    v27 = a5;
-    v28 = v9;
+    errorCopy = error;
+    v28 = mountPoint;
     v15 = 0;
     v29 = 0;
     v16 = *v32;
@@ -1821,20 +1821,20 @@ LABEL_26:
 
     while (v14);
 
-    if (v27)
+    if (errorCopy)
     {
       v21 = v29;
       if (v15)
       {
-        *v27 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v15 userInfo:0];
+        *errorCopy = [NSError errorWithDomain:NSPOSIXErrorDomain code:v15 userInfo:0];
       }
 
-      v9 = v28;
+      mountPoint = v28;
     }
 
     else
     {
-      v9 = v28;
+      mountPoint = v28;
       v21 = v29;
     }
   }
@@ -1845,7 +1845,7 @@ LABEL_26:
     v21 = 0;
   }
 
-  if (a4 != 0.0)
+  if (for != 0.0)
   {
     v30[2] = 0;
     v30[1] = 0;
@@ -1866,36 +1866,36 @@ LABEL_27:
   return v21 & 1;
 }
 
-- (BOOL)renameSnapshot:(id)a3 to:(id)a4 error:(id *)a5
+- (BOOL)renameSnapshot:(id)snapshot to:(id)to error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(LPStaticMedia *)self mountPoint];
-  if (!v8 || ![v8 length])
+  snapshotCopy = snapshot;
+  toCopy = to;
+  mountPoint = [(LPStaticMedia *)self mountPoint];
+  if (!snapshotCopy || ![snapshotCopy length])
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
     }
 
     goto LABEL_17;
   }
 
-  if (!v9 || ![v9 length])
+  if (!toCopy || ![toCopy length])
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
     }
 
     goto LABEL_17;
   }
 
-  if (!v10)
+  if (!mountPoint)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
     }
 
 LABEL_17:
@@ -1909,12 +1909,12 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v11 = open([v10 fileSystemRepresentation], 0);
+  v11 = open([mountPoint fileSystemRepresentation], 0);
   if (v11 < 0)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
     }
 
     _os_log_pack_size();
@@ -1922,19 +1922,19 @@ LABEL_18:
     *v20 = 136315395;
     *(v20 + 4) = "[LPStaticAPFSVolume renameSnapshot:to:error:]";
     *(v20 + 12) = 2113;
-    *(v20 + 14) = v10;
+    *(v20 + 14) = mountPoint;
     goto LABEL_18;
   }
 
   v12 = v11;
-  v13 = fs_snapshot_rename(v11, [v8 fileSystemRepresentation], objc_msgSend(v9, "fileSystemRepresentation"), 0);
+  v13 = fs_snapshot_rename(v11, [snapshotCopy fileSystemRepresentation], objc_msgSend(toCopy, "fileSystemRepresentation"), 0);
   v14 = v13 == 0;
   if (v13)
   {
     v15 = *__error();
-    if (a5)
+    if (error)
     {
-      *a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v15 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:v15 userInfo:0];
     }
 
     _os_log_pack_size();
@@ -1953,26 +1953,26 @@ LABEL_19:
   return v14;
 }
 
-- (BOOL)revertToSnapshot:(id)a3 options:(id)a4 error:(id *)a5
+- (BOOL)revertToSnapshot:(id)snapshot options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(LPStaticMedia *)self mountPoint];
-  if (!v8 || ![v8 length])
+  snapshotCopy = snapshot;
+  optionsCopy = options;
+  mountPoint = [(LPStaticMedia *)self mountPoint];
+  if (!snapshotCopy || ![snapshotCopy length])
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
     }
 
     goto LABEL_13;
   }
 
-  if (!v10)
+  if (!mountPoint)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
     }
 
 LABEL_13:
@@ -1985,12 +1985,12 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v11 = open([v10 fileSystemRepresentation], 0);
+  v11 = open([mountPoint fileSystemRepresentation], 0);
   if (v11 < 0)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
     }
 
     _os_log_pack_size();
@@ -1998,7 +1998,7 @@ LABEL_13:
     *v22 = 136315395;
     *(v22 + 4) = "[LPStaticAPFSVolume revertToSnapshot:options:error:]";
     *(v22 + 12) = 2113;
-    *(v22 + 14) = v10;
+    *(v22 + 14) = mountPoint;
     v14 = 1;
     _LPLogPack(1);
   }
@@ -2006,14 +2006,14 @@ LABEL_13:
   else
   {
     v12 = v11;
-    v13 = fs_snapshot_revert(v11, [v8 fileSystemRepresentation], 0);
+    v13 = fs_snapshot_revert(v11, [snapshotCopy fileSystemRepresentation], 0);
     v14 = v13 == 0;
     if (v13)
     {
       v15 = *__error();
-      if (a5)
+      if (error)
       {
-        *a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v15 userInfo:0];
+        *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:v15 userInfo:0];
       }
 
       _os_log_pack_size();
@@ -2028,7 +2028,7 @@ LABEL_13:
     }
 
     close(v12);
-    v18 = [v9 objectForKeyedSubscript:LPAPFSVolumeRevertOptionSkipRemount[0]];
+    v18 = [optionsCopy objectForKeyedSubscript:LPAPFSVolumeRevertOptionSkipRemount[0]];
     if ([v18 BOOLValue])
     {
       _os_log_pack_size();
@@ -2036,11 +2036,11 @@ LABEL_13:
       *v19 = 136315394;
       *(v19 + 4) = "[LPStaticAPFSVolume revertToSnapshot:options:error:]";
       *(v19 + 12) = 2112;
-      *(v19 + 14) = v10;
+      *(v19 + 14) = mountPoint;
       _LPLogPack(2);
     }
 
-    else if ([(LPStaticAPFSVolume *)self unmountWithError:a5]&& [(LPStaticAPFSVolume *)self mountAtPath:v10 options:v9 error:a5])
+    else if ([(LPStaticAPFSVolume *)self unmountWithError:error]&& [(LPStaticAPFSVolume *)self mountAtPath:mountPoint options:optionsCopy error:error])
     {
       v14 = 1;
     }
@@ -2064,24 +2064,24 @@ LABEL_14:
   return v14;
 }
 
-- (BOOL)rootToSnapshot:(id)a3 error:(id *)a4
+- (BOOL)rootToSnapshot:(id)snapshot error:(id *)error
 {
-  v6 = a3;
+  snapshotCopy = snapshot;
   _os_log_pack_size();
   v7 = _os_log_pack_fill();
   *v7 = 136315138;
   *(v7 + 4) = "[LPStaticAPFSVolume rootToSnapshot:error:]";
   _LPLogPack(3);
-  v8 = [(LPStaticMedia *)self mountPoint];
-  if (v6 && [v6 length])
+  mountPoint = [(LPStaticMedia *)self mountPoint];
+  if (snapshotCopy && [snapshotCopy length])
   {
-    [v6 fileSystemRepresentation];
-    if (!v8)
+    [snapshotCopy fileSystemRepresentation];
+    if (!mountPoint)
     {
 LABEL_4:
-      if (a4)
+      if (error)
       {
-        *a4 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
+        *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
       }
 
       v9 = _os_log_pack_fill();
@@ -2094,7 +2094,7 @@ LABEL_17:
     }
   }
 
-  else if (!v8)
+  else if (!mountPoint)
   {
     goto LABEL_4;
   }
@@ -2104,21 +2104,21 @@ LABEL_17:
   *v10 = 136315395;
   *(v10 + 4) = "[LPStaticAPFSVolume rootToSnapshot:error:]";
   *(v10 + 12) = 2113;
-  *(v10 + 14) = v8;
+  *(v10 + 14) = mountPoint;
   _LPLogPack(3);
-  v11 = open([v8 fileSystemRepresentation], 0);
+  v11 = open([mountPoint fileSystemRepresentation], 0);
   if (v11 < 0)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
     }
 
     v17 = _os_log_pack_fill();
     *v17 = 136315395;
     *(v17 + 4) = "[LPStaticAPFSVolume rootToSnapshot:error:]";
     *(v17 + 12) = 2113;
-    *(v17 + 14) = v8;
+    *(v17 + 14) = mountPoint;
     goto LABEL_17;
   }
 
@@ -2128,9 +2128,9 @@ LABEL_17:
   if (v13)
   {
     v15 = *__error();
-    if (a4)
+    if (error)
     {
-      *a4 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v15 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:v15 userInfo:0];
     }
 
     _os_log_pack_size();

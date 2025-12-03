@@ -1,49 +1,49 @@
 @interface _COMeshControllerPing
 + (id)acceptableResponses;
-- (_COMeshControllerPing)initWithCoder:(id)a3;
-- (_COMeshControllerPing)initWithTimeout:(double)a3 listeningPort:(int)a4;
-- (void)encodeWithCoder:(id)a3;
+- (_COMeshControllerPing)initWithCoder:(id)coder;
+- (_COMeshControllerPing)initWithTimeout:(double)timeout listeningPort:(int)port;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _COMeshControllerPing
 
-- (_COMeshControllerPing)initWithTimeout:(double)a3 listeningPort:(int)a4
+- (_COMeshControllerPing)initWithTimeout:(double)timeout listeningPort:(int)port
 {
   v7.receiver = self;
   v7.super_class = _COMeshControllerPing;
   result = [(COMeshCommand *)&v7 init];
   if (result)
   {
-    result->_responseTimeout = a3;
-    result->_listeningPort = a4;
+    result->_responseTimeout = timeout;
+    result->_listeningPort = port;
   }
 
   return result;
 }
 
-- (_COMeshControllerPing)initWithCoder:(id)a3
+- (_COMeshControllerPing)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = _COMeshControllerPing;
-  v5 = [(COMeshCommand *)&v7 initWithCoder:v4];
+  v5 = [(COMeshCommand *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_listeningPort = [v4 decodeInt32ForKey:@"listeningPort"];
+    v5->_listeningPort = [coderCopy decodeInt32ForKey:@"listeningPort"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = _COMeshControllerPing;
-  [(COMeshCommand *)&v5 encodeWithCoder:v4];
+  [(COMeshCommand *)&v5 encodeWithCoder:coderCopy];
   if (self->_listeningPort >= 1)
   {
-    [v4 encodeInt32:? forKey:?];
+    [coderCopy encodeInt32:? forKey:?];
   }
 }
 

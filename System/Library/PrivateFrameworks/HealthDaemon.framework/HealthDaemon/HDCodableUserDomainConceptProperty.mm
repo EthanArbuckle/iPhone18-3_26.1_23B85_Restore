@@ -1,25 +1,25 @@
 @interface HDCodableUserDomainConceptProperty
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBoolValue:(BOOL)a3;
-- (void)setHasIntegerValue:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)setHasValueType:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBoolValue:(BOOL)value;
+- (void)setHasIntegerValue:(BOOL)value;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasType:(BOOL)type;
+- (void)setHasValueType:(BOOL)type;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableUserDomainConceptProperty
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -32,9 +32,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 32;
   }
@@ -47,9 +47,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -62,9 +62,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasValueType:(BOOL)a3
+- (void)setHasValueType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -77,9 +77,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasIntegerValue:(BOOL)a3
+- (void)setHasIntegerValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }
@@ -92,9 +92,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasBoolValue:(BOOL)a3
+- (void)setHasBoolValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 64;
   }
@@ -113,20 +113,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableUserDomainConceptProperty;
   v4 = [(HDCodableUserDomainConceptProperty *)&v8 description];
-  v5 = [(HDCodableUserDomainConceptProperty *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableUserDomainConceptProperty *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_type];
-    [v3 setObject:v11 forKey:@"type"];
+    [dictionary setObject:v11 forKey:@"type"];
 
     has = self->_has;
     if ((has & 0x20) == 0)
@@ -147,7 +147,7 @@ LABEL_3:
   }
 
   v12 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_version];
-  [v3 setObject:v12 forKey:@"version"];
+  [dictionary setObject:v12 forKey:@"version"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -163,27 +163,27 @@ LABEL_4:
 
 LABEL_19:
   v13 = [MEMORY[0x277CCABB0] numberWithDouble:self->_timestamp];
-  [v3 setObject:v13 forKey:@"timestamp"];
+  [dictionary setObject:v13 forKey:@"timestamp"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_valueType];
-    [v3 setObject:v5 forKey:@"valueType"];
+    [dictionary setObject:v5 forKey:@"valueType"];
   }
 
 LABEL_6:
   stringValue = self->_stringValue;
   if (stringValue)
   {
-    [v3 setObject:stringValue forKey:@"stringValue"];
+    [dictionary setObject:stringValue forKey:@"stringValue"];
   }
 
   v7 = self->_has;
   if (v7)
   {
     v14 = [MEMORY[0x277CCABB0] numberWithDouble:self->_doubleValue];
-    [v3 setObject:v14 forKey:@"doubleValue"];
+    [dictionary setObject:v14 forKey:@"doubleValue"];
 
     v7 = self->_has;
     if ((v7 & 2) == 0)
@@ -204,35 +204,35 @@ LABEL_10:
   }
 
   v15 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_integerValue];
-  [v3 setObject:v15 forKey:@"integerValue"];
+  [dictionary setObject:v15 forKey:@"integerValue"];
 
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_11:
     v8 = [MEMORY[0x277CCABB0] numberWithBool:self->_BOOLValue];
-    [v3 setObject:v8 forKey:@"BOOLValue"];
+    [dictionary setObject:v8 forKey:@"BOOLValue"];
   }
 
 LABEL_12:
   dataValue = self->_dataValue;
   if (dataValue)
   {
-    [v3 setObject:dataValue forKey:@"dataValue"];
+    [dictionary setObject:dataValue forKey:@"dataValue"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v14 = v4;
+  v14 = toCopy;
   if ((has & 8) != 0)
   {
     type = self->_type;
     PBDataWriterWriteInt64Field();
-    v4 = v14;
+    toCopy = v14;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -253,7 +253,7 @@ LABEL_3:
 
   version = self->_version;
   PBDataWriterWriteInt64Field();
-  v4 = v14;
+  toCopy = v14;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -269,20 +269,20 @@ LABEL_4:
 LABEL_19:
   timestamp = self->_timestamp;
   PBDataWriterWriteDoubleField();
-  v4 = v14;
+  toCopy = v14;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_5:
     valueType = self->_valueType;
     PBDataWriterWriteInt64Field();
-    v4 = v14;
+    toCopy = v14;
   }
 
 LABEL_6:
   if (self->_stringValue)
   {
     PBDataWriterWriteStringField();
-    v4 = v14;
+    toCopy = v14;
   }
 
   v7 = self->_has;
@@ -290,7 +290,7 @@ LABEL_6:
   {
     doubleValue = self->_doubleValue;
     PBDataWriterWriteDoubleField();
-    v4 = v14;
+    toCopy = v14;
     v7 = self->_has;
     if ((v7 & 2) == 0)
     {
@@ -311,31 +311,31 @@ LABEL_10:
 
   integerValue = self->_integerValue;
   PBDataWriterWriteInt64Field();
-  v4 = v14;
+  toCopy = v14;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_11:
     BOOLValue = self->_BOOLValue;
     PBDataWriterWriteBOOLField();
-    v4 = v14;
+    toCopy = v14;
   }
 
 LABEL_12:
   if (self->_dataValue)
   {
     PBDataWriterWriteDataField();
-    v4 = v14;
+    toCopy = v14;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[4] = self->_type;
-    *(v4 + 76) |= 8u;
+    toCopy[4] = self->_type;
+    *(toCopy + 76) |= 8u;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -354,8 +354,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[6] = self->_version;
-  *(v4 + 76) |= 0x20u;
+  toCopy[6] = self->_version;
+  *(toCopy + 76) |= 0x20u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -369,28 +369,28 @@ LABEL_4:
   }
 
 LABEL_19:
-  v4[3] = *&self->_timestamp;
-  *(v4 + 76) |= 4u;
+  toCopy[3] = *&self->_timestamp;
+  *(toCopy + 76) |= 4u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_5:
-    v4[5] = self->_valueType;
-    *(v4 + 76) |= 0x10u;
+    toCopy[5] = self->_valueType;
+    *(toCopy + 76) |= 0x10u;
   }
 
 LABEL_6:
-  v7 = v4;
+  v7 = toCopy;
   if (self->_stringValue)
   {
-    [v4 setStringValue:?];
-    v4 = v7;
+    [toCopy setStringValue:?];
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if (v6)
   {
-    v4[1] = *&self->_doubleValue;
-    *(v4 + 76) |= 1u;
+    toCopy[1] = *&self->_doubleValue;
+    *(toCopy + 76) |= 1u;
     v6 = self->_has;
     if ((v6 & 2) == 0)
     {
@@ -409,26 +409,26 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v4[2] = self->_integerValue;
-  *(v4 + 76) |= 2u;
+  toCopy[2] = self->_integerValue;
+  *(toCopy + 76) |= 2u;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_11:
-    *(v4 + 72) = self->_BOOLValue;
-    *(v4 + 76) |= 0x40u;
+    *(toCopy + 72) = self->_BOOLValue;
+    *(toCopy + 76) |= 0x40u;
   }
 
 LABEL_12:
   if (self->_dataValue)
   {
     [v7 setDataValue:?];
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 8) != 0)
@@ -478,7 +478,7 @@ LABEL_5:
   }
 
 LABEL_6:
-  v8 = [(NSString *)self->_stringValue copyWithZone:a3];
+  v8 = [(NSString *)self->_stringValue copyWithZone:zone];
   v9 = *(v6 + 64);
   *(v6 + 64) = v8;
 
@@ -518,77 +518,77 @@ LABEL_9:
   }
 
 LABEL_10:
-  v11 = [(NSData *)self->_dataValue copyWithZone:a3];
+  v11 = [(NSData *)self->_dataValue copyWithZone:zone];
   v12 = *(v6 + 56);
   *(v6 + 56) = v11;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_40;
   }
 
   has = self->_has;
-  v6 = *(v4 + 76);
+  v6 = *(equalCopy + 76);
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 76) & 8) == 0 || self->_type != *(v4 + 4))
+    if ((*(equalCopy + 76) & 8) == 0 || self->_type != *(equalCopy + 4))
     {
       goto LABEL_40;
     }
   }
 
-  else if ((*(v4 + 76) & 8) != 0)
+  else if ((*(equalCopy + 76) & 8) != 0)
   {
     goto LABEL_40;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 76) & 0x20) == 0 || self->_version != *(v4 + 6))
+    if ((*(equalCopy + 76) & 0x20) == 0 || self->_version != *(equalCopy + 6))
     {
       goto LABEL_40;
     }
   }
 
-  else if ((*(v4 + 76) & 0x20) != 0)
+  else if ((*(equalCopy + 76) & 0x20) != 0)
   {
     goto LABEL_40;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 76) & 4) == 0 || self->_timestamp != *(v4 + 3))
+    if ((*(equalCopy + 76) & 4) == 0 || self->_timestamp != *(equalCopy + 3))
     {
       goto LABEL_40;
     }
   }
 
-  else if ((*(v4 + 76) & 4) != 0)
+  else if ((*(equalCopy + 76) & 4) != 0)
   {
     goto LABEL_40;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 76) & 0x10) == 0 || self->_valueType != *(v4 + 5))
+    if ((*(equalCopy + 76) & 0x10) == 0 || self->_valueType != *(equalCopy + 5))
     {
       goto LABEL_40;
     }
   }
 
-  else if ((*(v4 + 76) & 0x10) != 0)
+  else if ((*(equalCopy + 76) & 0x10) != 0)
   {
     goto LABEL_40;
   }
 
   stringValue = self->_stringValue;
-  if (stringValue | *(v4 + 8))
+  if (stringValue | *(equalCopy + 8))
   {
     if (![(NSString *)stringValue isEqual:?])
     {
@@ -596,12 +596,12 @@ LABEL_10:
     }
 
     has = self->_has;
-    v6 = *(v4 + 76);
+    v6 = *(equalCopy + 76);
   }
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_doubleValue != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_doubleValue != *(equalCopy + 1))
     {
       goto LABEL_40;
     }
@@ -614,7 +614,7 @@ LABEL_10:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_integerValue != *(v4 + 2))
+    if ((v6 & 2) == 0 || self->_integerValue != *(equalCopy + 2))
     {
       goto LABEL_40;
     }
@@ -642,23 +642,23 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  v11 = *(v4 + 72);
+  v11 = *(equalCopy + 72);
   if (self->_BOOLValue)
   {
-    if ((*(v4 + 72) & 1) == 0)
+    if ((*(equalCopy + 72) & 1) == 0)
     {
       goto LABEL_40;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_40;
   }
 
 LABEL_37:
   dataValue = self->_dataValue;
-  if (dataValue | *(v4 + 7))
+  if (dataValue | *(equalCopy + 7))
   {
     v9 = [(NSData *)dataValue isEqual:?];
   }
@@ -803,15 +803,15 @@ LABEL_26:
   return v6 ^ v5 ^ v10 ^ v11 ^ v15 ^ v19 ^ v20 ^ v12 ^ [(NSData *)self->_dataValue hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 76);
+  fromCopy = from;
+  v5 = *(fromCopy + 76);
   if ((v5 & 8) != 0)
   {
-    self->_type = *(v4 + 4);
+    self->_type = *(fromCopy + 4);
     *&self->_has |= 8u;
-    v5 = *(v4 + 76);
+    v5 = *(fromCopy + 76);
     if ((v5 & 0x20) == 0)
     {
 LABEL_3:
@@ -824,14 +824,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 76) & 0x20) == 0)
+  else if ((*(fromCopy + 76) & 0x20) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_version = *(v4 + 6);
+  self->_version = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 76);
+  v5 = *(fromCopy + 76);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -844,29 +844,29 @@ LABEL_4:
   }
 
 LABEL_19:
-  self->_timestamp = *(v4 + 3);
+  self->_timestamp = *(fromCopy + 3);
   *&self->_has |= 4u;
-  if ((*(v4 + 76) & 0x10) != 0)
+  if ((*(fromCopy + 76) & 0x10) != 0)
   {
 LABEL_5:
-    self->_valueType = *(v4 + 5);
+    self->_valueType = *(fromCopy + 5);
     *&self->_has |= 0x10u;
   }
 
 LABEL_6:
-  v7 = v4;
-  if (*(v4 + 8))
+  v7 = fromCopy;
+  if (*(fromCopy + 8))
   {
     [(HDCodableUserDomainConceptProperty *)self setStringValue:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 76);
+  v6 = *(fromCopy + 76);
   if (v6)
   {
-    self->_doubleValue = *(v4 + 1);
+    self->_doubleValue = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 76);
+    v6 = *(fromCopy + 76);
     if ((v6 & 2) == 0)
     {
 LABEL_10:
@@ -879,25 +879,25 @@ LABEL_10:
     }
   }
 
-  else if ((*(v4 + 76) & 2) == 0)
+  else if ((*(fromCopy + 76) & 2) == 0)
   {
     goto LABEL_10;
   }
 
-  self->_integerValue = *(v4 + 2);
+  self->_integerValue = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if ((*(v4 + 76) & 0x40) != 0)
+  if ((*(fromCopy + 76) & 0x40) != 0)
   {
 LABEL_11:
-    self->_BOOLValue = *(v4 + 72);
+    self->_BOOLValue = *(fromCopy + 72);
     *&self->_has |= 0x40u;
   }
 
 LABEL_12:
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(HDCodableUserDomainConceptProperty *)self setDataValue:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 }
 

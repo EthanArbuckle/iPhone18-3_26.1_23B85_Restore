@@ -3,38 +3,38 @@
 + (void)load;
 - (CAFMediaItems)mediaItemsValue;
 - (id)formattedValue;
-- (void)setMediaItemsValue:(id)a3;
+- (void)setMediaItemsValue:(id)value;
 @end
 
 @implementation CAFMediaItemsCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFMediaItemsCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (CAFMediaItems)mediaItemsValue
 {
-  v2 = [(CAFArrayCharacteristic *)self arrayValue];
-  v3 = [CAFMediaItems mediaItemsWithArray:v2];
+  arrayValue = [(CAFArrayCharacteristic *)self arrayValue];
+  v3 = [CAFMediaItems mediaItemsWithArray:arrayValue];
 
   return v3;
 }
 
-- (void)setMediaItemsValue:(id)a3
+- (void)setMediaItemsValue:(id)value
 {
-  v4 = [a3 arrayRepresentation];
-  [(CAFArrayCharacteristic *)self setArrayValue:v4];
+  arrayRepresentation = [value arrayRepresentation];
+  [(CAFArrayCharacteristic *)self setArrayValue:arrayRepresentation];
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFMediaItemsCharacteristic *)self mediaItemsValue];
-  v3 = [v2 formattedValue];
+  mediaItemsValue = [(CAFMediaItemsCharacteristic *)self mediaItemsValue];
+  formattedValue = [mediaItemsValue formattedValue];
 
-  return v3;
+  return formattedValue;
 }
 
 + (id)secondaryCharacteristicFormats

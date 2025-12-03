@@ -1,17 +1,17 @@
 @interface HKSourceRevision
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKSourceRevision)init;
-- (HKSourceRevision)initWithCoder:(id)a3;
+- (HKSourceRevision)initWithCoder:(id)coder;
 - (HKSourceRevision)initWithSource:(HKSource *)source version:(NSString *)version;
 - (HKSourceRevision)initWithSource:(HKSource *)source version:(NSString *)version productType:(NSString *)productType operatingSystemVersion:(NSOperatingSystemVersion *)operatingSystemVersion;
 - (id)_init;
-- (id)_initWithSource:(id)a3;
+- (id)_initWithSource:(id)source;
 - (id)asJSONObject;
 - (id)description;
 - (unint64_t)hash;
-- (void)_setSource:(id)a3;
-- (void)_setVersion:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setSource:(id)source;
+- (void)_setVersion:(id)version;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSourceRevision
@@ -19,15 +19,15 @@
 - (id)asJSONObject
 {
   v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:4];
-  v4 = [(HKSourceRevision *)self source];
-  v5 = [v4 asJSONObject];
-  [v3 setObject:v5 forKeyedSubscript:@"source"];
+  source = [(HKSourceRevision *)self source];
+  asJSONObject = [source asJSONObject];
+  [v3 setObject:asJSONObject forKeyedSubscript:@"source"];
 
-  v6 = [(HKSourceRevision *)self version];
-  [v3 setObject:v6 forKeyedSubscript:@"version"];
+  version = [(HKSourceRevision *)self version];
+  [v3 setObject:version forKeyedSubscript:@"version"];
 
-  v7 = [(HKSourceRevision *)self productType];
-  [v3 setObject:v7 forKeyedSubscript:@"productType"];
+  productType = [(HKSourceRevision *)self productType];
+  [v3 setObject:productType forKeyedSubscript:@"productType"];
 
   [(HKSourceRevision *)self operatingSystemVersion];
   v8 = HKNSOperatingSystemVersionString(v10);
@@ -46,11 +46,11 @@
   return 0;
 }
 
-- (id)_initWithSource:(id)a3
+- (id)_initWithSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = HKProgramSDKAtLeast();
-  if (!v4 && v5)
+  if (!sourceCopy && v5)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"A valid source is required."];
   }
@@ -60,7 +60,7 @@
   v6 = [(HKSourceRevision *)&v11 init];
   if (v6)
   {
-    v7 = [v4 copy];
+    v7 = [sourceCopy copy];
     source = v6->_source;
     v6->_source = v7;
 
@@ -100,11 +100,11 @@
   return [(HKSourceRevision *)self initWithSource:source version:version productType:@"HKSourceRevisionAnyProductType" operatingSystemVersion:&v5];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v11 = (objc_opt_isKindOfClass() & 1) != 0 && ((source = self->_source, v6 = v4[1], source == v6) || v6 && [(HKSource *)source isEqual:?]) && ((version = self->_version, v8 = v4[2], version == v8) || v8 && [(NSString *)version isEqualToString:?]) && ((productType = self->_productType, v10 = v4[3], productType == v10) || v10 && [(NSString *)productType isEqualToString:?]) && self->_operatingSystemVersion.majorVersion == v4[4] && self->_operatingSystemVersion.minorVersion == v4[5] && self->_operatingSystemVersion.patchVersion == v4[6];
+  v11 = (objc_opt_isKindOfClass() & 1) != 0 && ((source = self->_source, v6 = equalCopy[1], source == v6) || v6 && [(HKSource *)source isEqual:?]) && ((version = self->_version, v8 = equalCopy[2], version == v8) || v8 && [(NSString *)version isEqualToString:?]) && ((productType = self->_productType, v10 = equalCopy[3], productType == v10) || v10 && [(NSString *)productType isEqualToString:?]) && self->_operatingSystemVersion.majorVersion == equalCopy[4] && self->_operatingSystemVersion.minorVersion == equalCopy[5] && self->_operatingSystemVersion.patchVersion == equalCopy[6];
 
   return v11;
 }
@@ -121,29 +121,29 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HKSource *)self->_source name];
-  v7 = [(HKSource *)self->_source bundleIdentifier];
+  name = [(HKSource *)self->_source name];
+  bundleIdentifier = [(HKSource *)self->_source bundleIdentifier];
   version = self->_version;
   productType = self->_productType;
   operatingSystemVersion = self->_operatingSystemVersion;
   v10 = HKNSOperatingSystemVersionString(&operatingSystemVersion);
-  v11 = [v3 stringWithFormat:@"<%@ name:%@, bundle:%@, version:%@, productType:%@, operatingSystemVersion:%@>", v5, v6, v7, version, productType, v10];
+  v11 = [v3 stringWithFormat:@"<%@ name:%@, bundle:%@, version:%@, productType:%@, operatingSystemVersion:%@>", v5, name, bundleIdentifier, version, productType, v10];
 
   return v11;
 }
 
-- (void)_setSource:(id)a3
+- (void)_setSource:(id)source
 {
-  v4 = [a3 copy];
+  v4 = [source copy];
   source = self->_source;
   self->_source = v4;
 
   MEMORY[0x1EEE66BB8](v4, source);
 }
 
-- (void)_setVersion:(id)a3
+- (void)_setVersion:(id)version
 {
-  v4 = [a3 copy];
+  v4 = [version copy];
   version = self->_version;
   self->_version = v4;
 
@@ -157,40 +157,40 @@
   return [(HKSourceRevision *)&v3 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   source = self->_source;
-  v5 = a3;
-  [v5 encodeObject:source forKey:@"source"];
-  [v5 encodeObject:self->_version forKey:@"version"];
-  [v5 encodeInteger:self->_operatingSystemVersion.majorVersion forKey:@"operatingSystemMajorVersion"];
-  [v5 encodeInteger:self->_operatingSystemVersion.minorVersion forKey:@"operatingSystemMinorVersion"];
-  [v5 encodeInteger:self->_operatingSystemVersion.patchVersion forKey:@"operatingSystemPatchVersion"];
-  [v5 encodeObject:self->_productType forKey:@"productType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:source forKey:@"source"];
+  [coderCopy encodeObject:self->_version forKey:@"version"];
+  [coderCopy encodeInteger:self->_operatingSystemVersion.majorVersion forKey:@"operatingSystemMajorVersion"];
+  [coderCopy encodeInteger:self->_operatingSystemVersion.minorVersion forKey:@"operatingSystemMinorVersion"];
+  [coderCopy encodeInteger:self->_operatingSystemVersion.patchVersion forKey:@"operatingSystemPatchVersion"];
+  [coderCopy encodeObject:self->_productType forKey:@"productType"];
 }
 
-- (HKSourceRevision)initWithCoder:(id)a3
+- (HKSourceRevision)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"source"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"source"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productType"];
-    v10[0] = [v4 decodeIntegerForKey:@"operatingSystemMajorVersion"];
-    v10[1] = [v4 decodeIntegerForKey:@"operatingSystemMinorVersion"];
-    v10[2] = [v4 decodeIntegerForKey:@"operatingSystemPatchVersion"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productType"];
+    v10[0] = [coderCopy decodeIntegerForKey:@"operatingSystemMajorVersion"];
+    v10[1] = [coderCopy decodeIntegerForKey:@"operatingSystemMinorVersion"];
+    v10[2] = [coderCopy decodeIntegerForKey:@"operatingSystemPatchVersion"];
     self = [(HKSourceRevision *)self initWithSource:v5 version:v6 productType:v7 operatingSystemVersion:v10];
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

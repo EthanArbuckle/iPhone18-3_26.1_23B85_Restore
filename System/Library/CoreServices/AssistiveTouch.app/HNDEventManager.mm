@@ -7,7 +7,7 @@
 - (HNDEventManagerDelegate)delegate;
 - (double)volumeLevel;
 - (void)_disableIOFilter;
-- (void)_handleIOHIDEvent:(id)a3;
+- (void)_handleIOHIDEvent:(id)event;
 - (void)_initializeASTNotificationCenter;
 - (void)_initializeClarityBoardActionHandler;
 - (void)_initializeSpringBoardItems;
@@ -15,18 +15,18 @@
 - (void)_startDistributedThread;
 - (void)_startIOThread;
 - (void)dealloc;
-- (void)keyboardStatusChanged:(id)a3 userInfo:(id)a4;
-- (void)manipulateDimTimer:(BOOL)a3;
+- (void)keyboardStatusChanged:(id)changed userInfo:(id)info;
+- (void)manipulateDimTimer:(BOOL)timer;
 - (void)notifyUserEventOccurred;
-- (void)observer:(id)a3 didObserveNotification:(int)a4 notificationData:(void *)a5;
+- (void)observer:(id)observer didObserveNotification:(int)notification notificationData:(void *)data;
 - (void)openCreateCustomGestureForAST;
 - (void)openCreateCustomGestureForSCAT;
 - (void)ringerSwitchChanged;
 - (void)rotationLockChanged;
-- (void)setCaptureEvents:(BOOL)a3;
-- (void)setMenuVisible:(BOOL)a3;
-- (void)setNubbitMoving:(BOOL)a3;
-- (void)setOrientationLocked:(BOOL)a3;
+- (void)setCaptureEvents:(BOOL)events;
+- (void)setMenuVisible:(BOOL)visible;
+- (void)setNubbitMoving:(BOOL)moving;
+- (void)setOrientationLocked:(BOOL)locked;
 - (void)substantialTransitionOccurred;
 - (void)systemServerRestarted;
 - (void)wakeDeviceFromSleepIfNecessary;
@@ -37,9 +37,9 @@
 + (id)sharedManager
 {
   v2 = +[HNDHandManager sharedManager];
-  v3 = [v2 eventManager];
+  eventManager = [v2 eventManager];
 
-  return v3;
+  return eventManager;
 }
 
 - (HNDEventManager)init
@@ -96,23 +96,23 @@
 
 - (void)substantialTransitionOccurred
 {
-  v3 = [(HNDEventManager *)self delegate];
-  [v3 substantialTransitionOccurred];
+  delegate = [(HNDEventManager *)self delegate];
+  [delegate substantialTransitionOccurred];
 
-  v4 = [(HNDEventManager *)self delegate];
-  [v4 mediaControlsChanged:0];
+  delegate2 = [(HNDEventManager *)self delegate];
+  [delegate2 mediaControlsChanged:0];
 }
 
 - (void)ringerSwitchChanged
 {
-  v2 = [(HNDEventManager *)self delegate];
-  [v2 ringerSwitchChanged];
+  delegate = [(HNDEventManager *)self delegate];
+  [delegate ringerSwitchChanged];
 }
 
 - (void)rotationLockChanged
 {
-  v2 = [(HNDEventManager *)self delegate];
-  [v2 rotationLockChanged];
+  delegate = [(HNDEventManager *)self delegate];
+  [delegate rotationLockChanged];
 }
 
 - (void)_initializeSpringBoardItems
@@ -158,13 +158,13 @@
   }
 }
 
-- (void)keyboardStatusChanged:(id)a3 userInfo:(id)a4
+- (void)keyboardStatusChanged:(id)changed userInfo:(id)info
 {
-  v5 = a4;
-  v6 = [v5 objectForKey:@"visible"];
-  v7 = [v6 BOOLValue];
+  infoCopy = info;
+  v6 = [infoCopy objectForKey:@"visible"];
+  bOOLValue = [v6 BOOLValue];
 
-  v8 = [v5 objectForKey:@"frame"];
+  v8 = [infoCopy objectForKey:@"frame"];
   v9 = v8;
   if (v8)
   {
@@ -187,7 +187,7 @@
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v19 = v5;
+    v19 = infoCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "AST keyboard update: %{public}@", buf, 0xCu);
   }
 
@@ -198,7 +198,7 @@
   v16[2] = sub_10003F230;
   v16[3] = &unk_1001D4918;
   v16[4] = self;
-  v17 = v7;
+  v17 = bOOLValue;
   *&v16[5] = x;
   *&v16[6] = y;
   *&v16[7] = width;
@@ -219,9 +219,9 @@
   [(HNDEventManager *)self setMessagingCenter:v4];
 }
 
-- (void)manipulateDimTimer:(BOOL)a3
+- (void)manipulateDimTimer:(BOOL)timer
 {
-  if (a3)
+  if (timer)
   {
     disableIdleTimerAssertionQueue = self->_disableIdleTimerAssertionQueue;
     block[0] = _NSConcreteStackBlock;
@@ -249,33 +249,33 @@
   }
 }
 
-- (void)setNubbitMoving:(BOOL)a3
+- (void)setNubbitMoving:(BOOL)moving
 {
-  v3 = a3;
+  movingCopy = moving;
   v5 = ASTLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v10[0] = 67109120;
-    v10[1] = v3;
+    v10[1] = movingCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Setting nubbit moving: %d", v10, 8u);
   }
 
-  if (v3)
+  if (movingCopy)
   {
     [(HNDEventManager *)self manipulateDimTimer:1];
     if (+[AXAssertion isSupported])
     {
-      v6 = [(HNDEventManager *)self disableSystemGesturesAssertion];
+      disableSystemGesturesAssertion = [(HNDEventManager *)self disableSystemGesturesAssertion];
 
-      if (!v6)
+      if (!disableSystemGesturesAssertion)
       {
         v7 = [AXAssertion assertionWithType:AXAssertionTypeDisableSystemGestures identifier:@"AST Nubbit Moving"];
         [(HNDEventManager *)self setDisableSystemGesturesAssertion:v7];
       }
 
-      v8 = [(HNDEventManager *)self disableDashBoardGesturesAssertion];
+      disableDashBoardGesturesAssertion = [(HNDEventManager *)self disableDashBoardGesturesAssertion];
 
-      if (!v8)
+      if (!disableDashBoardGesturesAssertion)
       {
         v9 = [AXAssertion assertionWithType:AXAssertionTypeDisableDashboardSystemGestures identifier:@"AST Nubbit Moving"];
         [(HNDEventManager *)self setDisableDashBoardGesturesAssertion:v9];
@@ -290,7 +290,7 @@
     [(HNDEventManager *)self setDisableSystemGesturesAssertion:0];
   }
 
-  self->_nubbitMoving = v3;
+  self->_nubbitMoving = movingCopy;
 }
 
 - (double)volumeLevel
@@ -305,16 +305,16 @@
 - (BOOL)isVoiceControlRunning
 {
   v2 = +[AXSpringBoardServer server];
-  v3 = [v2 isVoiceControlRunning];
+  isVoiceControlRunning = [v2 isVoiceControlRunning];
 
-  return v3;
+  return isVoiceControlRunning;
 }
 
-- (void)setMenuVisible:(BOOL)a3
+- (void)setMenuVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v4 = +[AXSpringBoardServer server];
-  [v4 setCancelGestureActivation:4 cancelEnabled:v3];
+  [v4 setCancelGestureActivation:4 cancelEnabled:visibleCopy];
 }
 
 - (void)wakeDeviceFromSleepIfNecessary
@@ -323,13 +323,13 @@
   [v2 wakeUpDeviceIfNecessary];
 }
 
-- (void)_handleIOHIDEvent:(id)a3
+- (void)_handleIOHIDEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_autoreleasePoolPush();
   v6 = +[HNDHandManager sharedManager];
-  v7 = [v6 currentDisplayManager];
-  [v7 portraitUpScreenBounds];
+  currentDisplayManager = [v6 currentDisplayManager];
+  [currentDisplayManager portraitUpScreenBounds];
   v9 = v8;
   v11 = v10;
 
@@ -339,9 +339,9 @@
   v13[3] = &unk_1001D4938;
   v13[4] = v9;
   v13[5] = v11;
-  [v4 modifyPoints:v13];
-  v12 = [(HNDEventManager *)self delegate];
-  [v12 handleRealEvent:v4];
+  [eventCopy modifyPoints:v13];
+  delegate = [(HNDEventManager *)self delegate];
+  [delegate handleRealEvent:eventCopy];
 
   objc_autoreleasePoolPop(v5);
 }
@@ -435,10 +435,10 @@
   }
 }
 
-- (void)setCaptureEvents:(BOOL)a3
+- (void)setCaptureEvents:(BOOL)events
 {
-  self->_isCapturingEvents = a3;
-  if (a3)
+  self->_isCapturingEvents = events;
+  if (events)
   {
     if (!self->_ioSystemFilterClient)
     {
@@ -482,24 +482,24 @@
 - (BOOL)sideSwitchUsedForOrientation
 {
   v2 = +[AXSpringBoardServer server];
-  v3 = [v2 isSideSwitchUsedForOrientation];
+  isSideSwitchUsedForOrientation = [v2 isSideSwitchUsedForOrientation];
 
-  return v3;
+  return isSideSwitchUsedForOrientation;
 }
 
 - (BOOL)orientationLocked
 {
   v2 = +[AXSpringBoardServer server];
-  v3 = [v2 isOrientationLocked];
+  isOrientationLocked = [v2 isOrientationLocked];
 
-  return v3;
+  return isOrientationLocked;
 }
 
-- (void)setOrientationLocked:(BOOL)a3
+- (void)setOrientationLocked:(BOOL)locked
 {
-  v3 = a3;
+  lockedCopy = locked;
   v4 = +[AXSpringBoardServer server];
-  [v4 setOrientationLocked:v3];
+  [v4 setOrientationLocked:lockedCopy];
 }
 
 - (void)openCreateCustomGestureForAST
@@ -525,27 +525,27 @@
   }
 }
 
-- (void)observer:(id)a3 didObserveNotification:(int)a4 notificationData:(void *)a5
+- (void)observer:(id)observer didObserveNotification:(int)notification notificationData:(void *)data
 {
-  if (a4 == 1028)
+  if (notification == 1028)
   {
-    v7 = [AXEventRepresentation representationWithData:a5];
-    v8 = v7;
-    if (v7)
+    additionalFlags = [AXEventRepresentation representationWithData:data];
+    v8 = additionalFlags;
+    if (additionalFlags)
     {
-      v10 = v7;
-      v7 = [v7 additionalFlags];
+      v10 = additionalFlags;
+      additionalFlags = [additionalFlags additionalFlags];
       v8 = v10;
-      if ((v7 & 0x4000000) != 0)
+      if ((additionalFlags & 0x4000000) != 0)
       {
-        v9 = [(HNDEventManager *)self delegate];
-        [v9 handleRealEvent:v10];
+        delegate = [(HNDEventManager *)self delegate];
+        [delegate handleRealEvent:v10];
 
         v8 = v10;
       }
     }
 
-    _objc_release_x1(v7, v8);
+    _objc_release_x1(additionalFlags, v8);
   }
 }
 

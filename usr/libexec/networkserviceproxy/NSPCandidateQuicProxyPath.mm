@@ -1,18 +1,18 @@
 @interface NSPCandidateQuicProxyPath
-- (BOOL)proxyPathIsValid:(id)a3 proxyPathList:(id)a4;
+- (BOOL)proxyPathIsValid:(id)valid proxyPathList:(id)list;
 @end
 
 @implementation NSPCandidateQuicProxyPath
 
-- (BOOL)proxyPathIsValid:(id)a3 proxyPathList:(id)a4
+- (BOOL)proxyPathIsValid:(id)valid proxyPathList:(id)list
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NSPCandidateProxyPath *)self ingressProxy];
-  v9 = v8;
-  if (v8)
+  listCopy = list;
+  validCopy = valid;
+  ingressProxy = [(NSPCandidateProxyPath *)self ingressProxy];
+  v9 = ingressProxy;
+  if (ingressProxy)
   {
-    v10 = *(v8 + 24);
+    v10 = *(ingressProxy + 24);
   }
 
   else
@@ -21,11 +21,11 @@
   }
 
   v11 = v10;
-  v12 = [(NSPCandidateProxyPath *)self egressProxy];
-  v13 = v12;
-  if (v12)
+  egressProxy = [(NSPCandidateProxyPath *)self egressProxy];
+  v13 = egressProxy;
+  if (egressProxy)
   {
-    v14 = *(v12 + 24);
+    v14 = *(egressProxy + 24);
   }
 
   else
@@ -34,7 +34,7 @@
   }
 
   v15 = v14;
-  v16 = [NSPPrivacyProxyAgentManager proxiesMatch:v7 proxyPathList:v6 ingressProxy:v11 egressProxy:v15 pathWeight:[(NSPCandidateProxyPath *)self proxyPathWeight] supportsFallback:0];
+  v16 = [NSPPrivacyProxyAgentManager proxiesMatch:validCopy proxyPathList:listCopy ingressProxy:v11 egressProxy:v15 pathWeight:[(NSPCandidateProxyPath *)self proxyPathWeight] supportsFallback:0];
 
   return v16;
 }

@@ -1,11 +1,11 @@
 @interface RMUIPluginViewModelProvider
 - (RMUIPluginViewModelProvider)init;
-- (id)_modelForDeclarationInfo:(id)a3;
-- (id)_sectionNameForDeclarationType:(id)a3;
-- (signed)_symbolForDeclarationType:(id)a3;
-- (void)_addModel:(id)a3 toSection:(id)a4;
-- (void)_updateViewModelsWithDeclarations:(id)a3;
-- (void)loadPluginsFromConfigurationsWithCompletionHandler:(id)a3;
+- (id)_modelForDeclarationInfo:(id)info;
+- (id)_sectionNameForDeclarationType:(id)type;
+- (signed)_symbolForDeclarationType:(id)type;
+- (void)_addModel:(id)model toSection:(id)section;
+- (void)_updateViewModelsWithDeclarations:(id)declarations;
+- (void)loadPluginsFromConfigurationsWithCompletionHandler:(id)handler;
 @end
 
 @implementation RMUIPluginViewModelProvider
@@ -29,22 +29,22 @@
   return v2;
 }
 
-- (void)_updateViewModelsWithDeclarations:(id)a3
+- (void)_updateViewModelsWithDeclarations:(id)declarations
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RMUIPluginViewModelProvider *)self pluginSectionViewModels];
-  [v5 removeAllObjects];
+  declarationsCopy = declarations;
+  pluginSectionViewModels = [(RMUIPluginViewModelProvider *)self pluginSectionViewModels];
+  [pluginSectionViewModels removeAllObjects];
 
-  v6 = [(RMUIPluginViewModelProvider *)self pluginViewModels];
-  [v6 removeAllObjects];
+  pluginViewModels = [(RMUIPluginViewModelProvider *)self pluginViewModels];
+  [pluginViewModels removeAllObjects];
 
   v7 = objc_opt_new();
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v8 = v4;
+  v8 = declarationsCopy;
   v9 = [v8 countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (v9)
   {
@@ -61,8 +61,8 @@
 
         v13 = [(RMUIPluginViewModelProvider *)self _modelForDeclarationInfo:*(*(&v41 + 1) + 8 * i)];
         [(RMUIPluginViewModelProvider *)self _addModel:v13 toSection:v7];
-        v14 = [(RMUIPluginViewModelProvider *)self pluginViewModels];
-        [v14 addObject:v13];
+        pluginViewModels2 = [(RMUIPluginViewModelProvider *)self pluginViewModels];
+        [pluginViewModels2 addObject:v13];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v41 objects:v47 count:16];
@@ -83,11 +83,11 @@
   v32 = v17;
   v46[2] = v17;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:3];
-  v19 = [(RMUIPluginViewModelProvider *)self pluginViewModels];
-  [v19 sortUsingDescriptors:v18];
+  pluginViewModels3 = [(RMUIPluginViewModelProvider *)self pluginViewModels];
+  [pluginViewModels3 sortUsingDescriptors:v18];
 
-  v20 = [v7 allKeys];
-  v21 = [v20 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
+  allKeys = [v7 allKeys];
+  v21 = [allKeys sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
 
   v39 = 0u;
   v40 = 0u;
@@ -113,8 +113,8 @@
         v28 = [v27 sortedArrayUsingDescriptors:v18];
         v29 = [RMUIPluginSectionViewModel newPluginSectionViewModelWithHeading:v26 viewModels:v28];
 
-        v30 = [(RMUIPluginViewModelProvider *)self pluginSectionViewModels];
-        [v30 addObject:v29];
+        pluginSectionViewModels2 = [(RMUIPluginViewModelProvider *)self pluginSectionViewModels];
+        [pluginSectionViewModels2 addObject:v29];
       }
 
       v23 = [obj countByEnumeratingWithState:&v37 objects:v45 count:16];
@@ -126,45 +126,45 @@
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_modelForDeclarationInfo:(id)a3
+- (id)_modelForDeclarationInfo:(id)info
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v5 = objc_opt_new();
-  v6 = [v4 label];
-  [v5 setTitle:v6];
+  label = [infoCopy label];
+  [v5 setTitle:label];
 
-  v7 = [v4 declarationType];
-  [v5 setSymbol:{-[RMUIPluginViewModelProvider _symbolForDeclarationType:](self, "_symbolForDeclarationType:", v7)}];
+  declarationType = [infoCopy declarationType];
+  [v5 setSymbol:{-[RMUIPluginViewModelProvider _symbolForDeclarationType:](self, "_symbolForDeclarationType:", declarationType)}];
 
-  v8 = [v4 declarationIdentifier];
-  [v5 setDeclarationIdentifier:v8];
+  declarationIdentifier = [infoCopy declarationIdentifier];
+  [v5 setDeclarationIdentifier:declarationIdentifier];
 
-  v9 = [v4 declarationServerToken];
-  [v5 setDeclarationServerToken:v9];
+  declarationServerToken = [infoCopy declarationServerToken];
+  [v5 setDeclarationServerToken:declarationServerToken];
 
-  v10 = [v4 declarationType];
-  [v5 setDeclarationType:v10];
+  declarationType2 = [infoCopy declarationType];
+  [v5 setDeclarationType:declarationType2];
 
-  v11 = [v4 hiddenDetails];
+  hiddenDetails = [infoCopy hiddenDetails];
 
-  if (v11)
+  if (hiddenDetails)
   {
-    v12 = [v4 hiddenDetails];
-    [v5 setHiddenDetails:v12];
+    hiddenDetails2 = [infoCopy hiddenDetails];
+    [v5 setHiddenDetails:hiddenDetails2];
   }
 
-  v13 = [v4 details];
-  if (v13)
+  details = [infoCopy details];
+  if (details)
   {
     v28 = v5;
-    v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v13, "count")}];
+    v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(details, "count")}];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v27 = v13;
-    v15 = v13;
+    v27 = details;
+    v15 = details;
     v16 = [v15 countByEnumeratingWithState:&v29 objects:v35 count:16];
     if (v16)
     {
@@ -210,7 +210,7 @@
     v5 = v28;
     [v28 setDetailViewModels:v14];
 
-    v13 = v27;
+    details = v27;
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -218,37 +218,37 @@
   return v5;
 }
 
-- (void)_addModel:(id)a3 toSection:(id)a4
+- (void)_addModel:(id)model toSection:(id)section
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v10 declarationType];
-  v8 = [(RMUIPluginViewModelProvider *)self _sectionNameForDeclarationType:v7];
+  modelCopy = model;
+  sectionCopy = section;
+  declarationType = [modelCopy declarationType];
+  v8 = [(RMUIPluginViewModelProvider *)self _sectionNameForDeclarationType:declarationType];
 
-  v9 = [v6 objectForKeyedSubscript:v8];
+  v9 = [sectionCopy objectForKeyedSubscript:v8];
   if (!v9)
   {
     v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
-    [v6 setObject:v9 forKeyedSubscript:v8];
+    [sectionCopy setObject:v9 forKeyedSubscript:v8];
   }
 
-  [v9 addObject:v10];
+  [v9 addObject:modelCopy];
 }
 
-- (void)loadPluginsFromConfigurationsWithCompletionHandler:(id)a3
+- (void)loadPluginsFromConfigurationsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __82__RMUIPluginViewModelProvider_loadPluginsFromConfigurationsWithCompletionHandler___block_invoke;
   v11[3] = &unk_279B07CB0;
   objc_copyWeak(&v13, &location);
-  v5 = v4;
+  v5 = handlerCopy;
   v12 = v5;
   v6 = MEMORY[0x266720D10](v11);
-  v7 = [(RMUIPluginViewModelProvider *)self observerStore];
-  if (v7)
+  observerStore = [(RMUIPluginViewModelProvider *)self observerStore];
+  if (observerStore)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
@@ -256,7 +256,7 @@
     v9[3] = &unk_279B07D00;
     v9[4] = self;
     v10 = v6;
-    [v7 displayPropertiesForConfigurationsWithCompletionHandler:v9];
+    [observerStore displayPropertiesForConfigurationsWithCompletionHandler:v9];
   }
 
   else
@@ -405,9 +405,9 @@ void __82__RMUIPluginViewModelProvider_loadPluginsFromConfigurationsWithCompleti
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (signed)_symbolForDeclarationType:(id)a3
+- (signed)_symbolForDeclarationType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -416,7 +416,7 @@ void __82__RMUIPluginViewModelProvider_loadPluginsFromConfigurationsWithCompleti
   v7[1] = 3221225472;
   v7[2] = __57__RMUIPluginViewModelProvider__symbolForDeclarationType___block_invoke;
   v7[3] = &unk_279B07D28;
-  v4 = v3;
+  v4 = typeCopy;
   v8 = v4;
   v9 = &v10;
   [&unk_287477058 enumerateKeysAndObjectsUsingBlock:v7];
@@ -436,9 +436,9 @@ void __57__RMUIPluginViewModelProvider__symbolForDeclarationType___block_invoke(
   }
 }
 
-- (id)_sectionNameForDeclarationType:(id)a3
+- (id)_sectionNameForDeclarationType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -449,7 +449,7 @@ void __57__RMUIPluginViewModelProvider__symbolForDeclarationType___block_invoke(
   v7[1] = 3221225472;
   v7[2] = __62__RMUIPluginViewModelProvider__sectionNameForDeclarationType___block_invoke;
   v7[3] = &unk_279B07D50;
-  v4 = v3;
+  v4 = typeCopy;
   v8 = v4;
   v9 = &v10;
   [&unk_287477080 enumerateKeysAndObjectsUsingBlock:v7];

@@ -1,8 +1,8 @@
 @interface FRCBlit
 - (BOOL)setupMetal;
 - (FRCBlit)init;
-- (void)copyBuffer:(__CVBuffer *)a3 toTexture:(id)a4 commandBuffer:(id)a5;
-- (void)copyTexture:(id)a3 toBuffer:(__CVBuffer *)a4 commandBuffer:(id)a5;
+- (void)copyBuffer:(__CVBuffer *)buffer toTexture:(id)texture commandBuffer:(id)commandBuffer;
+- (void)copyTexture:(id)texture toBuffer:(__CVBuffer *)buffer commandBuffer:(id)commandBuffer;
 @end
 
 @implementation FRCBlit
@@ -57,82 +57,82 @@
   return self->_textureToBufferTwoComponent != 0;
 }
 
-- (void)copyBuffer:(__CVBuffer *)a3 toTexture:(id)a4 commandBuffer:(id)a5
+- (void)copyBuffer:(__CVBuffer *)buffer toTexture:(id)texture commandBuffer:(id)commandBuffer
 {
-  v8 = a4;
-  v9 = a5;
-  CVPixelBufferGetWidth(a3);
-  CVPixelBufferGetHeight(a3);
-  v20 = CVPixelBufferGetBytesPerRow(a3) >> 1;
-  v10 = [(MTLDevice *)self->super._device newBufferWithIOSurface:CVPixelBufferGetIOSurface(a3)];
-  v11 = [v8 pixelFormat];
-  [v8 height];
-  if (v11 != 65)
+  textureCopy = texture;
+  commandBufferCopy = commandBuffer;
+  CVPixelBufferGetWidth(buffer);
+  CVPixelBufferGetHeight(buffer);
+  v20 = CVPixelBufferGetBytesPerRow(buffer) >> 1;
+  v10 = [(MTLDevice *)self->super._device newBufferWithIOSurface:CVPixelBufferGetIOSurface(buffer)];
+  pixelFormat = [textureCopy pixelFormat];
+  [textureCopy height];
+  if (pixelFormat != 65)
   {
-    [v8 arrayLength];
+    [textureCopy arrayLength];
   }
 
-  v12 = [v8 width];
-  v13 = [v8 height];
-  v14 = [v9 computeCommandEncoder];
+  width = [textureCopy width];
+  height = [textureCopy height];
+  computeCommandEncoder = [commandBufferCopy computeCommandEncoder];
 
-  v15 = [v8 pixelFormat];
+  pixelFormat2 = [textureCopy pixelFormat];
   v16 = &OBJC_IVAR___FRCBlit__bufferToTexture;
-  if (v15 == 65)
+  if (pixelFormat2 == 65)
   {
     v16 = &OBJC_IVAR___FRCBlit__bufferToTextureTwoComponent;
   }
 
-  [v14 setComputePipelineState:*(&self->super.super.isa + *v16)];
-  [v14 setBuffer:v10 offset:0 atIndex:0];
-  [v14 setBytes:&v20 length:4 atIndex:1];
-  [v14 setTexture:v8 atIndex:0];
-  v19[0] = (v12 + 15) >> 4;
-  v19[1] = (v13 + 15) >> 4;
+  [computeCommandEncoder setComputePipelineState:*(&self->super.super.isa + *v16)];
+  [computeCommandEncoder setBuffer:v10 offset:0 atIndex:0];
+  [computeCommandEncoder setBytes:&v20 length:4 atIndex:1];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
+  v19[0] = (width + 15) >> 4;
+  v19[1] = (height + 15) >> 4;
   v19[2] = 1;
   v17 = vdupq_n_s64(0x10uLL);
   v18 = 1;
-  [v14 dispatchThreadgroups:v19 threadsPerThreadgroup:&v17];
-  [v14 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v19 threadsPerThreadgroup:&v17];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)copyTexture:(id)a3 toBuffer:(__CVBuffer *)a4 commandBuffer:(id)a5
+- (void)copyTexture:(id)texture toBuffer:(__CVBuffer *)buffer commandBuffer:(id)commandBuffer
 {
-  v8 = a3;
-  v9 = a5;
-  CVPixelBufferGetWidth(a4);
-  CVPixelBufferGetHeight(a4);
-  v20 = CVPixelBufferGetBytesPerRow(a4) >> 1;
-  v10 = [(MTLDevice *)self->super._device newBufferWithIOSurface:CVPixelBufferGetIOSurface(a4)];
-  v11 = [v8 pixelFormat];
-  [v8 height];
-  if (v11 != 65)
+  textureCopy = texture;
+  commandBufferCopy = commandBuffer;
+  CVPixelBufferGetWidth(buffer);
+  CVPixelBufferGetHeight(buffer);
+  v20 = CVPixelBufferGetBytesPerRow(buffer) >> 1;
+  v10 = [(MTLDevice *)self->super._device newBufferWithIOSurface:CVPixelBufferGetIOSurface(buffer)];
+  pixelFormat = [textureCopy pixelFormat];
+  [textureCopy height];
+  if (pixelFormat != 65)
   {
-    [v8 arrayLength];
+    [textureCopy arrayLength];
   }
 
-  v12 = [v8 width];
-  v13 = [v8 height];
-  v14 = [v9 computeCommandEncoder];
+  width = [textureCopy width];
+  height = [textureCopy height];
+  computeCommandEncoder = [commandBufferCopy computeCommandEncoder];
 
-  v15 = [v8 pixelFormat];
+  pixelFormat2 = [textureCopy pixelFormat];
   v16 = &OBJC_IVAR___FRCBlit__textureToBuffer;
-  if (v15 == 65)
+  if (pixelFormat2 == 65)
   {
     v16 = &OBJC_IVAR___FRCBlit__textureToBufferTwoComponent;
   }
 
-  [v14 setComputePipelineState:*(&self->super.super.isa + *v16)];
-  [v14 setTexture:v8 atIndex:0];
-  [v14 setBuffer:v10 offset:0 atIndex:0];
-  [v14 setBytes:&v20 length:4 atIndex:1];
-  v19[0] = (v12 + 15) >> 4;
-  v19[1] = (v13 + 15) >> 4;
+  [computeCommandEncoder setComputePipelineState:*(&self->super.super.isa + *v16)];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
+  [computeCommandEncoder setBuffer:v10 offset:0 atIndex:0];
+  [computeCommandEncoder setBytes:&v20 length:4 atIndex:1];
+  v19[0] = (width + 15) >> 4;
+  v19[1] = (height + 15) >> 4;
   v19[2] = 1;
   v17 = vdupq_n_s64(0x10uLL);
   v18 = 1;
-  [v14 dispatchThreadgroups:v19 threadsPerThreadgroup:&v17];
-  [v14 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v19 threadsPerThreadgroup:&v17];
+  [computeCommandEncoder endEncoding];
 }
 
 @end

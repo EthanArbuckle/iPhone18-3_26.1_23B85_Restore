@@ -1,13 +1,13 @@
 @interface RCDispatchGroup
-- (RCDispatchGroup)initWithEnterCount:(int)a3 completionQueue:(id)a4 completion:(id)a5;
+- (RCDispatchGroup)initWithEnterCount:(int)count completionQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation RCDispatchGroup
 
-- (RCDispatchGroup)initWithEnterCount:(int)a3 completionQueue:(id)a4 completion:(id)a5
+- (RCDispatchGroup)initWithEnterCount:(int)count completionQueue:(id)queue completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  completionCopy = completion;
   v14.receiver = self;
   v14.super_class = RCDispatchGroup;
   v10 = [(RCDispatchGroup *)&v14 init];
@@ -17,18 +17,18 @@
     v12 = *(v10 + 1);
     *(v10 + 1) = v11;
 
-    if (a3 >= 1)
+    if (count >= 1)
     {
       do
       {
         dispatch_group_enter(*(v10 + 1));
-        --a3;
+        --count;
       }
 
-      while (a3);
+      while (count);
     }
 
-    dispatch_group_notify(*(v10 + 1), v8, v9);
+    dispatch_group_notify(*(v10 + 1), queueCopy, completionCopy);
   }
 
   return v10;

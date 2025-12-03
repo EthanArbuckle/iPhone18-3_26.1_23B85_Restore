@@ -1,30 +1,30 @@
 @interface CTCarrierSpaceClientDelegateProxy
 - (CTCarrierSpaceClientDelegate)delegate;
 - (void)appsDidChange;
-- (void)capabilitiesDidChange:(id)a3;
+- (void)capabilitiesDidChange:(id)change;
 - (void)dataPlanMetricsDidChange;
 - (void)plansDidChange;
-- (void)purchasedPlan:(id)a3 didChangeStatus:(int64_t)a4 context:(id)a5;
-- (void)remoteObjectRespondsToSelector:(SEL)a3 handler:(id)a4;
+- (void)purchasedPlan:(id)plan didChangeStatus:(int64_t)status context:(id)context;
+- (void)remoteObjectRespondsToSelector:(SEL)selector handler:(id)handler;
 - (void)usageDidChange;
 - (void)userConsentFlowInfoDidChange;
 @end
 
 @implementation CTCarrierSpaceClientDelegateProxy
 
-- (void)remoteObjectRespondsToSelector:(SEL)a3 handler:(id)a4
+- (void)remoteObjectRespondsToSelector:(SEL)selector handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
-  (*(a4 + 2))(v6, v7 & 1);
+  (*(handler + 2))(handlerCopy, v7 & 1);
 }
 
-- (void)capabilitiesDidChange:(id)a3
+- (void)capabilitiesDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained capabilitiesDidChange:v4];
+  [WeakRetained capabilitiesDidChange:changeCopy];
 }
 
 - (void)userConsentFlowInfoDidChange
@@ -57,12 +57,12 @@
   [WeakRetained dataPlanMetricsDidChange];
 }
 
-- (void)purchasedPlan:(id)a3 didChangeStatus:(int64_t)a4 context:(id)a5
+- (void)purchasedPlan:(id)plan didChangeStatus:(int64_t)status context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  planCopy = plan;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained purchasedPlan:v9 didChangeStatus:a4 context:v8];
+  [WeakRetained purchasedPlan:planCopy didChangeStatus:status context:contextCopy];
 }
 
 - (CTCarrierSpaceClientDelegate)delegate

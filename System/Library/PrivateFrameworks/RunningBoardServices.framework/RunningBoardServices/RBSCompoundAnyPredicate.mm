@@ -1,11 +1,11 @@
 @interface RBSCompoundAnyPredicate
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesProcess:(id)a3;
-- (RBSCompoundAnyPredicate)initWithRBSXPCCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesProcess:(id)process;
+- (RBSCompoundAnyPredicate)initWithRBSXPCCoder:(id)coder;
 - (id)description;
 - (id)processIdentifier;
 - (id)processIdentifiers;
-- (void)initWithPredicates:(void *)a1;
+- (void)initWithPredicates:(void *)predicates;
 @end
 
 @implementation RBSCompoundAnyPredicate
@@ -33,9 +33,9 @@
           objc_enumerationMutation(v2);
         }
 
-        v8 = [*(*(&v15 + 1) + 8 * i) processIdentifier];
-        v9 = v8;
-        if (v8)
+        processIdentifier = [*(*(&v15 + 1) + 8 * i) processIdentifier];
+        v9 = processIdentifier;
+        if (processIdentifier)
         {
           if (v5)
           {
@@ -50,7 +50,7 @@
             goto LABEL_17;
           }
 
-          v5 = v8;
+          v5 = processIdentifier;
         }
       }
 
@@ -101,20 +101,20 @@ LABEL_17:
           objc_enumerationMutation(v2);
         }
 
-        v8 = [*(*(&v13 + 1) + 8 * i) processIdentifiers];
-        v9 = v8;
-        if (v8)
+        processIdentifiers = [*(*(&v13 + 1) + 8 * i) processIdentifiers];
+        v9 = processIdentifiers;
+        if (processIdentifiers)
         {
           if (v5)
           {
-            v10 = [v5 setByAddingObjectsFromSet:v8];
+            v10 = [v5 setByAddingObjectsFromSet:processIdentifiers];
 
             v5 = v10;
           }
 
           else
           {
-            v5 = v8;
+            v5 = processIdentifiers;
           }
         }
       }
@@ -135,10 +135,10 @@ LABEL_17:
   return v5;
 }
 
-- (BOOL)matchesProcess:(id)a3
+- (BOOL)matchesProcess:(id)process
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  processCopy = process;
   if ([(NSSet *)self->_predicates count])
   {
     v13 = 0u;
@@ -159,7 +159,7 @@ LABEL_17:
             objc_enumerationMutation(v5);
           }
 
-          if ([*(*(&v11 + 1) + 8 * i) matchesProcess:{v4, v11}])
+          if ([*(*(&v11 + 1) + 8 * i) matchesProcess:{processCopy, v11}])
           {
             LOBYTE(v6) = 1;
             goto LABEL_12;
@@ -188,16 +188,16 @@ LABEL_12:
   return v6;
 }
 
-- (RBSCompoundAnyPredicate)initWithRBSXPCCoder:(id)a3
+- (RBSCompoundAnyPredicate)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = RBSCompoundAnyPredicate;
   v5 = [(RBSCompoundAnyPredicate *)&v10 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v4 decodeCollectionOfClass:v6 containingClass:objc_opt_class() forKey:@"_predicates"];
+    v7 = [coderCopy decodeCollectionOfClass:v6 containingClass:objc_opt_class() forKey:@"_predicates"];
     predicates = v5->_predicates;
     v5->_predicates = v7;
   }
@@ -205,10 +205,10 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_11;
   }
@@ -220,7 +220,7 @@ LABEL_12:
   }
 
   predicates = self->_predicates;
-  v8 = v4->_predicates;
+  v8 = equalCopy->_predicates;
   if (predicates == v8)
   {
 LABEL_11:
@@ -259,30 +259,30 @@ LABEL_12:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = [objc_opt_class() description];
-  v5 = [(NSSet *)self->_predicates allObjects];
-  v6 = [v5 componentsJoinedByString:{@", "}];
+  allObjects = [(NSSet *)self->_predicates allObjects];
+  v6 = [allObjects componentsJoinedByString:{@", "}];
   v7 = [v3 initWithFormat:@"<%@ [%@]>", v4, v6];
 
   return v7;
 }
 
-- (void)initWithPredicates:(void *)a1
+- (void)initWithPredicates:(void *)predicates
 {
   v3 = a2;
-  if (a1)
+  if (predicates)
   {
-    v7.receiver = a1;
+    v7.receiver = predicates;
     v7.super_class = RBSCompoundAnyPredicate;
-    a1 = objc_msgSendSuper2(&v7, sel_init);
-    if (a1)
+    predicates = objc_msgSendSuper2(&v7, sel_init);
+    if (predicates)
     {
       v4 = [MEMORY[0x1E695DFD8] setWithArray:v3];
-      v5 = a1[1];
-      a1[1] = v4;
+      v5 = predicates[1];
+      predicates[1] = v4;
     }
   }
 
-  return a1;
+  return predicates;
 }
 
 @end

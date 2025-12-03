@@ -1,14 +1,14 @@
 @interface PLModelMigrationAction_SetRunOnceFlagToReconcileSharedStreamCollectionShareParticipants
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_SetRunOnceFlagToReconcileSharedStreamCollectionShareParticipants
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v5 = [(PLModelMigrationActionCore *)self cancellableDiscreteProgressWithTotalUnitCount:1 pendingParentUnitCount:0];
-  v6 = [(PLModelMigrationActionCore *)self pathManager];
-  v7 = [PLCPLSettings settingsWithPathManager:v6];
+  pathManager = [(PLModelMigrationActionCore *)self pathManager];
+  v7 = [PLCPLSettings settingsWithPathManager:pathManager];
 
   [v7 setRunOnceFlag:256 error:0];
   [v5 setCompletedUnitCount:{objc_msgSend(v5, "completedUnitCount") + 1}];

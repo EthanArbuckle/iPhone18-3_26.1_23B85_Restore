@@ -1,51 +1,51 @@
 @interface CCUIButtonModuleViewController
 - (BOOL)hasGlyph;
-- (CCUIButtonModuleViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CCUIButtonModuleViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (double)glyphScale;
 - (void)_applyCompactContinuousCornerRadius;
-- (void)_buttonTapped:(id)a3 forEvent:(id)a4;
-- (void)_updatePropertiesAnimated:(BOOL)a3;
-- (void)setCompactContinuousCornerRadius:(double)a3;
-- (void)setContentMetrics:(id)a3;
-- (void)setContentRenderingMode:(unint64_t)a3;
-- (void)setGlyphColor:(id)a3;
-- (void)setGlyphImage:(id)a3;
-- (void)setGlyphPackageDescription:(id)a3;
-- (void)setGlyphScale:(double)a3;
-- (void)setGlyphState:(id)a3;
-- (void)setGlyphView:(id)a3;
-- (void)setGridSizeClass:(int64_t)a3;
-- (void)setResizing:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setSelectedGlyphColor:(id)a3;
-- (void)setSelectedGlyphImage:(id)a3;
-- (void)setSelectedValueText:(id)a3;
-- (void)setSupportsAccessibilityContentSizeCategories:(BOOL)a3;
-- (void)setSuppressesContentTransitions:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)setValueText:(id)a3;
+- (void)_buttonTapped:(id)tapped forEvent:(id)event;
+- (void)_updatePropertiesAnimated:(BOOL)animated;
+- (void)setCompactContinuousCornerRadius:(double)radius;
+- (void)setContentMetrics:(id)metrics;
+- (void)setContentRenderingMode:(unint64_t)mode;
+- (void)setGlyphColor:(id)color;
+- (void)setGlyphImage:(id)image;
+- (void)setGlyphPackageDescription:(id)description;
+- (void)setGlyphScale:(double)scale;
+- (void)setGlyphState:(id)state;
+- (void)setGlyphView:(id)view;
+- (void)setGridSizeClass:(int64_t)class;
+- (void)setResizing:(BOOL)resizing;
+- (void)setSelected:(BOOL)selected;
+- (void)setSelectedGlyphColor:(id)color;
+- (void)setSelectedGlyphImage:(id)image;
+- (void)setSelectedValueText:(id)text;
+- (void)setSupportsAccessibilityContentSizeCategories:(BOOL)categories;
+- (void)setSuppressesContentTransitions:(BOOL)transitions;
+- (void)setTitle:(id)title;
+- (void)setValueText:(id)text;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)willTransitionToExpandedContentMode:(BOOL)a3;
+- (void)willTransitionToExpandedContentMode:(BOOL)mode;
 @end
 
 @implementation CCUIButtonModuleViewController
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v5.receiver = self;
   v5.super_class = CCUIButtonModuleViewController;
-  v4 = a3;
-  [(CCUIButtonModuleViewController *)&v5 setTitle:v4];
-  [(CCUIControlTemplateView *)self->_buttonModuleView setTitle:v4, v5.receiver, v5.super_class];
+  titleCopy = title;
+  [(CCUIButtonModuleViewController *)&v5 setTitle:titleCopy];
+  [(CCUIControlTemplateView *)self->_buttonModuleView setTitle:titleCopy, v5.receiver, v5.super_class];
 }
 
-- (void)setValueText:(id)a3
+- (void)setValueText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   if ((BSEqualStrings() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [textCopy copy];
     valueText = self->_valueText;
     self->_valueText = v4;
 
@@ -53,12 +53,12 @@
   }
 }
 
-- (void)setSelectedValueText:(id)a3
+- (void)setSelectedValueText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   if ((BSEqualStrings() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [textCopy copy];
     selectedValueText = self->_selectedValueText;
     self->_selectedValueText = v4;
 
@@ -66,61 +66,61 @@
   }
 }
 
-- (void)setGlyphView:(id)a3
+- (void)setGlyphView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(CCUIButtonModuleViewController *)self loadViewIfNeeded];
-  [(CCUIButtonModuleView *)self->_buttonModuleView setGlyphView:v4];
+  [(CCUIButtonModuleView *)self->_buttonModuleView setGlyphView:viewCopy];
 }
 
-- (void)setGlyphImage:(id)a3
+- (void)setGlyphImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   [(CCUIButtonModuleViewController *)self loadViewIfNeeded];
-  [(CCUIButtonModuleView *)self->_buttonModuleView setGlyphImage:v4];
+  [(CCUIButtonModuleView *)self->_buttonModuleView setGlyphImage:imageCopy];
 }
 
-- (void)setGlyphColor:(id)a3
+- (void)setGlyphColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   [(CCUIButtonModuleViewController *)self loadViewIfNeeded];
-  [(CCUIButtonModuleView *)self->_buttonModuleView setGlyphColor:v4];
+  [(CCUIButtonModuleView *)self->_buttonModuleView setGlyphColor:colorCopy];
 }
 
-- (void)setSelectedGlyphImage:(id)a3
+- (void)setSelectedGlyphImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   [(CCUIButtonModuleViewController *)self loadViewIfNeeded];
-  [(CCUIButtonModuleView *)self->_buttonModuleView setSelectedGlyphImage:v4];
+  [(CCUIButtonModuleView *)self->_buttonModuleView setSelectedGlyphImage:imageCopy];
 }
 
-- (void)setSelectedGlyphColor:(id)a3
+- (void)setSelectedGlyphColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   [(CCUIButtonModuleViewController *)self loadViewIfNeeded];
-  [(CCUIButtonModuleView *)self->_buttonModuleView setSelectedGlyphColor:v4];
+  [(CCUIButtonModuleView *)self->_buttonModuleView setSelectedGlyphColor:colorCopy];
 }
 
-- (void)setGlyphPackageDescription:(id)a3
+- (void)setGlyphPackageDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   [(CCUIButtonModuleViewController *)self loadViewIfNeeded];
-  [(CCUIButtonModuleView *)self->_buttonModuleView setGlyphPackageDescription:v4];
+  [(CCUIButtonModuleView *)self->_buttonModuleView setGlyphPackageDescription:descriptionCopy];
 }
 
-- (void)setGlyphState:(id)a3
+- (void)setGlyphState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   [(CCUIButtonModuleViewController *)self loadViewIfNeeded];
-  [(CCUIButtonModuleView *)self->_buttonModuleView setGlyphState:v4];
+  [(CCUIButtonModuleView *)self->_buttonModuleView setGlyphState:stateCopy];
 }
 
-- (void)setGlyphScale:(double)a3
+- (void)setGlyphScale:(double)scale
 {
   [(CCUIButtonModuleViewController *)self loadViewIfNeeded];
   buttonModuleView = self->_buttonModuleView;
 
-  [(CCUIButtonModuleView *)buttonModuleView setGlyphScale:a3];
+  [(CCUIButtonModuleView *)buttonModuleView setGlyphScale:scale];
 }
 
 - (double)glyphScale
@@ -135,55 +135,55 @@
   return result;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    self->_selected = a3;
+    self->_selected = selected;
     [(CCUIButtonModuleViewController *)self loadViewIfNeeded];
 
     [(CCUIButtonModuleViewController *)self _updatePropertiesAnimated:1];
   }
 }
 
-- (void)_buttonTapped:(id)a3 forEvent:(id)a4
+- (void)_buttonTapped:(id)tapped forEvent:(id)event
 {
-  [(CCUIButtonModuleViewController *)self buttonTapped:a3 forEvent:a4];
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v4 _deactivateReachability];
+  [(CCUIButtonModuleViewController *)self buttonTapped:tapped forEvent:event];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] _deactivateReachability];
 }
 
 - (BOOL)hasGlyph
 {
-  v3 = [(CCUIButtonModuleViewController *)self glyphView];
-  if (v3)
+  glyphView = [(CCUIButtonModuleViewController *)self glyphView];
+  if (glyphView)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(CCUIButtonModuleViewController *)self glyphImage];
-    if (v5)
+    glyphImage = [(CCUIButtonModuleViewController *)self glyphImage];
+    if (glyphImage)
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(CCUIButtonModuleViewController *)self glyphPackageDescription];
-      v4 = v6 != 0;
+      glyphPackageDescription = [(CCUIButtonModuleViewController *)self glyphPackageDescription];
+      v4 = glyphPackageDescription != 0;
     }
   }
 
   return v4;
 }
 
-- (CCUIButtonModuleViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CCUIButtonModuleViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v12.receiver = self;
   v12.super_class = CCUIButtonModuleViewController;
-  v4 = [(CCUIButtonModuleViewController *)&v12 initWithNibName:a3 bundle:a4];
+  v4 = [(CCUIButtonModuleViewController *)&v12 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -205,12 +205,12 @@
   v9.receiver = self;
   v9.super_class = CCUIButtonModuleViewController;
   [(CCUIButtonModuleViewController *)&v9 viewDidLoad];
-  v3 = [(CCUIButtonModuleViewController *)self view];
+  view = [(CCUIButtonModuleViewController *)self view];
   v4 = [CCUIControlTemplateView alloc];
-  [v3 bounds];
+  [view bounds];
   v5 = [(CCUIControlTemplateView *)v4 initWithFrame:?];
-  v6 = [(CCUIButtonModuleViewController *)self title];
-  [(CCUIControlTemplateView *)v5 setTitle:v6];
+  title = [(CCUIButtonModuleViewController *)self title];
+  [(CCUIControlTemplateView *)v5 setTitle:title];
 
   [(CCUIControlTemplateView *)v5 setSupportsAccessibilityContentSizeCategories:[(CCUIButtonModuleViewController *)self supportsAccessibilityContentSizeCategories]];
   [(CCUIControlTemplateView *)v5 setSuppressesLabelTransitions:[(CCUIButtonModuleViewController *)self suppressesContentTransitions]];
@@ -218,7 +218,7 @@
   self->_buttonModuleView = v5;
   v8 = v5;
 
-  [v3 addSubview:self->_buttonModuleView];
+  [view addSubview:self->_buttonModuleView];
   [(CCUIButtonModuleViewController *)self _updatePropertiesAnimated:0];
   [(CCUIControlTemplateView *)self->_buttonModuleView addTarget:self action:sel__buttonTouchDown_forEvent_ forControlEvents:1];
   [(CCUIControlTemplateView *)self->_buttonModuleView addTarget:self action:sel__buttonTapped_forEvent_ forControlEvents:64];
@@ -229,8 +229,8 @@
   v7.receiver = self;
   v7.super_class = CCUIButtonModuleViewController;
   [(CCUIButtonModuleViewController *)&v7 viewWillLayoutSubviews];
-  v3 = [(CCUIButtonModuleViewController *)self isExpanded];
-  if (v3)
+  isExpanded = [(CCUIButtonModuleViewController *)self isExpanded];
+  if (isExpanded)
   {
     if (objc_opt_respondsToSelector())
     {
@@ -250,50 +250,50 @@
     [(CCUIButtonModuleViewController *)self _applyCompactContinuousCornerRadius];
   }
 
-  [(CCUIControlTemplateView *)self->_buttonModuleView setExpanded:v3];
+  [(CCUIControlTemplateView *)self->_buttonModuleView setExpanded:isExpanded];
   buttonModuleView = self->_buttonModuleView;
-  v6 = [(CCUIButtonModuleViewController *)self view];
-  [v6 bounds];
+  view = [(CCUIButtonModuleViewController *)self view];
+  [view bounds];
   [(CCUIControlTemplateView *)buttonModuleView setFrame:?];
 }
 
-- (void)setResizing:(BOOL)a3
+- (void)setResizing:(BOOL)resizing
 {
-  v3 = a3;
+  resizingCopy = resizing;
   [(CCUIButtonModuleViewController *)self loadViewIfNeeded];
   buttonModuleView = self->_buttonModuleView;
 
-  [(CCUIControlTemplateView *)buttonModuleView setResizing:v3];
+  [(CCUIControlTemplateView *)buttonModuleView setResizing:resizingCopy];
 }
 
-- (void)setSuppressesContentTransitions:(BOOL)a3
+- (void)setSuppressesContentTransitions:(BOOL)transitions
 {
-  if (self->_suppressesContentTransitions != a3)
+  if (self->_suppressesContentTransitions != transitions)
   {
-    v3 = a3;
-    self->_suppressesContentTransitions = a3;
+    transitionsCopy = transitions;
+    self->_suppressesContentTransitions = transitions;
     if ([(CCUIButtonModuleViewController *)self isViewLoaded])
     {
       buttonModuleView = self->_buttonModuleView;
 
-      [(CCUIControlTemplateView *)buttonModuleView setSuppressesLabelTransitions:v3];
+      [(CCUIControlTemplateView *)buttonModuleView setSuppressesLabelTransitions:transitionsCopy];
     }
   }
 }
 
-- (void)setGridSizeClass:(int64_t)a3
+- (void)setGridSizeClass:(int64_t)class
 {
   [(CCUIButtonModuleViewController *)self loadViewIfNeeded];
   buttonModuleView = self->_buttonModuleView;
 
-  [(CCUIControlTemplateView *)buttonModuleView setGridSizeClass:a3];
+  [(CCUIControlTemplateView *)buttonModuleView setGridSizeClass:class];
 }
 
-- (void)setCompactContinuousCornerRadius:(double)a3
+- (void)setCompactContinuousCornerRadius:(double)radius
 {
-  if (self->_compactContinuousCornerRadius != a3)
+  if (self->_compactContinuousCornerRadius != radius)
   {
-    self->_compactContinuousCornerRadius = a3;
+    self->_compactContinuousCornerRadius = radius;
     if ([(CCUIButtonModuleViewController *)self isResizing])
     {
 
@@ -302,31 +302,31 @@
 
     else
     {
-      v4 = [(CCUIButtonModuleViewController *)self viewIfLoaded];
-      [v4 setNeedsLayout];
+      viewIfLoaded = [(CCUIButtonModuleViewController *)self viewIfLoaded];
+      [viewIfLoaded setNeedsLayout];
     }
   }
 }
 
-- (void)setContentRenderingMode:(unint64_t)a3
+- (void)setContentRenderingMode:(unint64_t)mode
 {
-  if (self->_contentRenderingMode != a3)
+  if (self->_contentRenderingMode != mode)
   {
-    self->_contentRenderingMode = a3;
+    self->_contentRenderingMode = mode;
     [(CCUIButtonModuleViewController *)self _updatePropertiesAnimated:0];
   }
 }
 
-- (void)setContentMetrics:(id)a3
+- (void)setContentMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   [(CCUIButtonModuleViewController *)self loadViewIfNeeded];
-  [(CCUIControlTemplateView *)self->_buttonModuleView setContentMetrics:v4];
+  [(CCUIControlTemplateView *)self->_buttonModuleView setContentMetrics:metricsCopy];
 }
 
-- (void)willTransitionToExpandedContentMode:(BOOL)a3
+- (void)willTransitionToExpandedContentMode:(BOOL)mode
 {
-  self->_expanded = a3;
+  self->_expanded = mode;
   if ([(CCUIControlTemplateView *)self->_buttonModuleView isHighlighted])
   {
     v4[0] = MEMORY[0x1E69E9820];
@@ -338,11 +338,11 @@
   }
 }
 
-- (void)setSupportsAccessibilityContentSizeCategories:(BOOL)a3
+- (void)setSupportsAccessibilityContentSizeCategories:(BOOL)categories
 {
-  if (self->_supportsAccessibilityContentSizeCategories != a3)
+  if (self->_supportsAccessibilityContentSizeCategories != categories)
   {
-    self->_supportsAccessibilityContentSizeCategories = a3;
+    self->_supportsAccessibilityContentSizeCategories = categories;
     [(CCUIControlTemplateView *)self->_buttonModuleView setSupportsAccessibilityContentSizeCategories:?];
   }
 }
@@ -354,11 +354,11 @@
   [(CCUIButtonModuleViewController *)self _applyContinuousCornerRadius:?];
 }
 
-- (void)_updatePropertiesAnimated:(BOOL)a3
+- (void)_updatePropertiesAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CCUIButtonModuleViewController *)self appearsSelected];
-  if (v5)
+  animatedCopy = animated;
+  appearsSelected = [(CCUIButtonModuleViewController *)self appearsSelected];
+  if (appearsSelected)
   {
     [(CCUIButtonModuleViewController *)self selectedValueText];
   }
@@ -373,10 +373,10 @@
   v9[1] = 3221225472;
   v9[2] = __60__CCUIButtonModuleViewController__updatePropertiesAnimated___block_invoke;
   v9[3] = &unk_1E83EA4A0;
-  v11 = v5;
+  v11 = appearsSelected;
   v10 = v6;
   v8 = v6;
-  [(CCUIControlTemplateView *)buttonModuleView updateProperties:v9 animated:v3];
+  [(CCUIControlTemplateView *)buttonModuleView updateProperties:v9 animated:animatedCopy];
 }
 
 void __60__CCUIButtonModuleViewController__updatePropertiesAnimated___block_invoke(uint64_t a1, void *a2)

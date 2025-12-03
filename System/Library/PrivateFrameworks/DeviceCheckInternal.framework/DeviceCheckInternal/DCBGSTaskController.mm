@@ -1,13 +1,13 @@
 @interface DCBGSTaskController
 + (id)sharedInstance;
-- (BOOL)registerForTask:(id)a3;
-- (BOOL)updateTaskWithIdentifier:(id)a3 withRefreshInterval:(double)a4;
+- (BOOL)registerForTask:(id)task;
+- (BOOL)updateTaskWithIdentifier:(id)identifier withRefreshInterval:(double)interval;
 - (NSMutableArray)tasks;
 - (NSUserDefaults)defaultsSuite;
 - (OS_dispatch_queue)expiryQueue;
-- (id)fetchTaskForTaskIdentifier:(id)a3;
-- (void)handleTask:(id)a3 shouldExit:(BOOL *)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (id)fetchTaskForTaskIdentifier:(id)identifier;
+- (void)handleTask:(id)task shouldExit:(BOOL *)exit;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation DCBGSTaskController
@@ -64,7 +64,7 @@
   block[1] = 3221225472;
   block[2] = __37__DCBGSTaskController_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -82,27 +82,27 @@ uint64_t __37__DCBGSTaskController_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)registerForTask:(id)a3
+- (BOOL)registerForTask:(id)task
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(DCBGSTaskController *)v5 tasks];
-  [v6 addObject:v4];
+  taskCopy = task;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  tasks = [(DCBGSTaskController *)selfCopy tasks];
+  [tasks addObject:taskCopy];
 
-  v7 = [MEMORY[0x277CF0810] sharedScheduler];
-  v8 = [v4 taskID];
+  mEMORY[0x277CF0810] = [MEMORY[0x277CF0810] sharedScheduler];
+  taskID = [taskCopy taskID];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __39__DCBGSTaskController_registerForTask___block_invoke;
   v24[3] = &unk_278F59D30;
-  v24[4] = v5;
-  v9 = [v7 registerForTaskWithIdentifier:v8 usingQueue:0 launchHandler:v24];
+  v24[4] = selfCopy;
+  v9 = [mEMORY[0x277CF0810] registerForTaskWithIdentifier:taskID usingQueue:0 launchHandler:v24];
 
-  v10 = [(DCBGSTaskController *)v5 defaultsSuite];
-  v11 = [v4 observerID];
-  [v10 addObserver:v5 forKeyPath:v11 options:1 context:0];
+  defaultsSuite = [(DCBGSTaskController *)selfCopy defaultsSuite];
+  observerID = [taskCopy observerID];
+  [defaultsSuite addObserver:selfCopy forKeyPath:observerID options:1 context:0];
 
   if (DCInternalLogSystem_onceToken_5 != -1)
   {
@@ -141,21 +141,21 @@ uint64_t __37__DCBGSTaskController_sharedInstance__block_invoke(uint64_t a1)
       v18 = "/Library/Caches/com.apple.xbs/Sources/TwoBit/DeviceCheckInternal/Source/Interfaces/DCBGSTaskController.m";
     }
 
-    v19 = [v4 taskID];
-    v20 = v19;
-    v21 = [v19 UTF8String];
+    taskID2 = [taskCopy taskID];
+    v20 = taskID2;
+    uTF8String = [taskID2 UTF8String];
     *buf = 136315906;
     v26 = v18;
     v27 = 1024;
     v28 = 86;
     v29 = 2080;
-    v30 = v21;
+    v30 = uTF8String;
     v31 = 1024;
     v32 = v9;
     _os_log_impl(&dword_2488FB000, v12, OS_LOG_TYPE_DEBUG, "%25s:%-5d Registered task. { taskID=%s, success=%d }", buf, 0x22u);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v22 = *MEMORY[0x277D85DE8];
   return v9;
 }
@@ -286,18 +286,18 @@ void __39__DCBGSTaskController_registerForTask___block_invoke_9(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchTaskForTaskIdentifier:(id)a3
+- (id)fetchTaskForTaskIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(DCBGSTaskController *)v5 tasks];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  tasks = [(DCBGSTaskController *)selfCopy tasks];
+  v7 = [tasks countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -307,12 +307,12 @@ void __39__DCBGSTaskController_registerForTask___block_invoke_9(uint64_t a1)
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(tasks);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 taskID];
-        v12 = [v4 isEqualToString:v11];
+        taskID = [v10 taskID];
+        v12 = [identifierCopy isEqualToString:taskID];
 
         if (v12)
         {
@@ -321,7 +321,7 @@ void __39__DCBGSTaskController_registerForTask___block_invoke_9(uint64_t a1)
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [tasks countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -333,22 +333,22 @@ void __39__DCBGSTaskController_registerForTask___block_invoke_9(uint64_t a1)
 
 LABEL_11:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v13 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-- (BOOL)updateTaskWithIdentifier:(id)a3 withRefreshInterval:(double)a4
+- (BOOL)updateTaskWithIdentifier:(id)identifier withRefreshInterval:(double)interval
 {
   v80 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   for (i = 0; ; ++i)
   {
-    v9 = [(DCBGSTaskController *)v7 tasks];
-    v10 = [v9 count];
+    tasks = [(DCBGSTaskController *)selfCopy tasks];
+    v10 = [tasks count];
 
     if (v10 <= i)
     {
@@ -356,11 +356,11 @@ LABEL_11:
       goto LABEL_94;
     }
 
-    v11 = [(DCBGSTaskController *)v7 tasks];
-    v12 = [v11 objectAtIndexedSubscript:i];
+    tasks2 = [(DCBGSTaskController *)selfCopy tasks];
+    v12 = [tasks2 objectAtIndexedSubscript:i];
 
-    v13 = [v12 taskID];
-    v14 = [v13 isEqualToString:v6];
+    taskID = [v12 taskID];
+    v14 = [taskID isEqualToString:identifierCopy];
 
     if (v14)
     {
@@ -368,7 +368,7 @@ LABEL_11:
     }
   }
 
-  if (a4 < 300.0)
+  if (interval < 300.0)
   {
     if (DCInternalLogSystem_onceToken_5 != -1)
     {
@@ -414,9 +414,9 @@ LABEL_11:
       v74 = 1024;
       v75 = 141;
       v76 = 2048;
-      v77 = a4;
+      intervalCopy = interval;
       v78 = 1024;
-      LODWORD(v79) = 300;
+      LODWORD(intervalCopy4) = 300;
       _os_log_impl(&dword_2488FB000, v16, OS_LOG_TYPE_DEBUG, "%25s:%-5d Requested refresh interval must be greater than base refresh interval. { refreshInterval=%f, baseRefreshInterval=%d }", buf, 0x22u);
     }
 
@@ -463,31 +463,31 @@ LABEL_11:
       v28 = "/Library/Caches/com.apple.xbs/Sources/TwoBit/DeviceCheckInternal/Source/Interfaces/DCBGSTaskController.m";
     }
 
-    v29 = [v12 taskID];
+    taskID2 = [v12 taskID];
     *buf = 136315906;
     v73 = v28;
     v74 = 1024;
     v75 = 112;
     v76 = 2080;
-    v77 = COERCE_DOUBLE([v29 UTF8String]);
+    intervalCopy = COERCE_DOUBLE([taskID2 UTF8String]);
     v78 = 2048;
-    v79 = a4;
+    intervalCopy4 = interval;
     _os_log_impl(&dword_2488FB000, v23, OS_LOG_TYPE_DEBUG, "%25s:%-5d Attempting to update task's refresh interval. { taskID=%s, refreshInterval=%f }", buf, 0x26u);
   }
 
-  v30 = [MEMORY[0x277CF0810] sharedScheduler];
-  v31 = [v12 taskID];
-  v32 = [v30 taskRequestForIdentifier:v31];
+  mEMORY[0x277CF0810] = [MEMORY[0x277CF0810] sharedScheduler];
+  taskID3 = [v12 taskID];
+  v32 = [mEMORY[0x277CF0810] taskRequestForIdentifier:taskID3];
 
   if (v32)
   {
-    [v32 setInterval:a4];
-    v33 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    [v32 setInterval:interval];
+    v33 = [MEMORY[0x277CCABB0] numberWithDouble:interval];
     [v12 setRefreshInterval:v33];
 
-    v34 = [MEMORY[0x277CF0810] sharedScheduler];
+    mEMORY[0x277CF0810]2 = [MEMORY[0x277CF0810] sharedScheduler];
     v71 = 0;
-    v35 = [v34 updateTaskRequest:v32 error:&v71];
+    v35 = [mEMORY[0x277CF0810]2 updateTaskRequest:v32 error:&v71];
     v36 = v71;
 
     if (v36)
@@ -521,8 +521,8 @@ LABEL_11:
         }
 
         while (!v21);
-        v42 = [v36 localizedDescription];
-        v43 = v42;
+        localizedDescription = [v36 localizedDescription];
+        v43 = localizedDescription;
         if (v39)
         {
           v44 = v39 + 1;
@@ -538,7 +538,7 @@ LABEL_11:
         v74 = 1024;
         v75 = 127;
         v76 = 2112;
-        v77 = *&v42;
+        intervalCopy = *&localizedDescription;
         _os_log_impl(&dword_2488FB000, v37, OS_LOG_TYPE_DEBUG, "%25s:%-5d Failed to update task. { error=%@ }", buf, 0x1Cu);
       }
     }
@@ -586,22 +586,22 @@ LABEL_11:
             v58 = "/Library/Caches/com.apple.xbs/Sources/TwoBit/DeviceCheckInternal/Source/Interfaces/DCBGSTaskController.m";
           }
 
-          v59 = [v12 taskID];
-          v60 = v59;
-          v61 = [v59 UTF8String];
+          taskID4 = [v12 taskID];
+          v60 = taskID4;
+          uTF8String = [taskID4 UTF8String];
           *buf = 136315906;
           v73 = v58;
           v74 = 1024;
           v75 = 136;
           v76 = 2080;
-          v77 = *&v61;
+          intervalCopy = *&uTF8String;
           v78 = 2048;
-          v79 = a4;
+          intervalCopy4 = interval;
           _os_log_impl(&dword_2488FB000, v53, OS_LOG_TYPE_DEBUG, "%25s:%-5d Updated task. { taskID=%s, refreshInterval=%f }", buf, 0x26u);
         }
 
-        v62 = [(DCBGSTaskController *)v7 tasks];
-        [v62 replaceObjectAtIndex:i withObject:v12];
+        tasks3 = [(DCBGSTaskController *)selfCopy tasks];
+        [tasks3 replaceObjectAtIndex:i withObject:v12];
 
         v15 = 1;
         goto LABEL_92;
@@ -696,17 +696,17 @@ LABEL_11:
         v49 = "/Library/Caches/com.apple.xbs/Sources/TwoBit/DeviceCheckInternal/Source/Interfaces/DCBGSTaskController.m";
       }
 
-      v50 = [v12 taskID];
-      v51 = v50;
-      v52 = [v50 UTF8String];
+      taskID5 = [v12 taskID];
+      v51 = taskID5;
+      uTF8String2 = [taskID5 UTF8String];
       *buf = 136315906;
       v73 = v49;
       v74 = 1024;
       v75 = 116;
       v76 = 2080;
-      v77 = *&v52;
+      intervalCopy = *&uTF8String2;
       v78 = 2048;
-      v79 = a4;
+      intervalCopy4 = interval;
       _os_log_impl(&dword_2488FB000, v36, OS_LOG_TYPE_DEBUG, "%25s:%-5d Cannot update to refresh interval, failed to fetch task. { taskID=%s, refreshInterval=%f }", buf, 0x26u);
     }
   }
@@ -716,18 +716,18 @@ LABEL_92:
 
 LABEL_93:
 LABEL_94:
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
   v69 = *MEMORY[0x277D85DE8];
   return v15;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v40 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   if (DCInternalLogSystem_onceToken_5 != -1)
   {
     __39__DCBGSTaskController_registerForTask___block_invoke_cold_1();
@@ -770,38 +770,38 @@ LABEL_94:
     v36 = 1024;
     v37 = 154;
     v38 = 2112;
-    v39 = v9;
+    v39 = pathCopy;
     _os_log_impl(&dword_2488FB000, v12, OS_LOG_TYPE_DEBUG, "%25s:%-5d Key was changed. { key=%@ }", &v34, 0x1Cu);
   }
 
-  v19 = [(DCBGSTaskController *)self tasks];
-  v20 = [v19 count];
+  tasks = [(DCBGSTaskController *)self tasks];
+  v20 = [tasks count];
 
   if (v20)
   {
     v21 = 0;
     do
     {
-      v22 = [(DCBGSTaskController *)self tasks];
-      v23 = [v22 objectAtIndexedSubscript:v21];
-      v24 = [v23 observerID];
-      v25 = [v24 isEqualToString:v9];
+      tasks2 = [(DCBGSTaskController *)self tasks];
+      v23 = [tasks2 objectAtIndexedSubscript:v21];
+      observerID = [v23 observerID];
+      v25 = [observerID isEqualToString:pathCopy];
 
       if (v25)
       {
-        v26 = [(DCBGSTaskController *)self tasks];
-        v27 = [v26 objectAtIndexedSubscript:v21];
+        tasks3 = [(DCBGSTaskController *)self tasks];
+        v27 = [tasks3 objectAtIndexedSubscript:v21];
 
-        v28 = [(DCBGSTaskController *)self defaultsSuite];
-        v29 = [v28 integerForKey:v9];
+        defaultsSuite = [(DCBGSTaskController *)self defaultsSuite];
+        v29 = [defaultsSuite integerForKey:pathCopy];
 
-        v30 = [v27 taskID];
-        [(DCBGSTaskController *)self updateTaskWithIdentifier:v30 withRefreshInterval:v29];
+        taskID = [v27 taskID];
+        [(DCBGSTaskController *)self updateTaskWithIdentifier:taskID withRefreshInterval:v29];
       }
 
       ++v21;
-      v31 = [(DCBGSTaskController *)self tasks];
-      v32 = [v31 count];
+      tasks4 = [(DCBGSTaskController *)self tasks];
+      v32 = [tasks4 count];
     }
 
     while (v32 > v21);
@@ -810,19 +810,19 @@ LABEL_94:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleTask:(id)a3 shouldExit:(BOOL *)a4
+- (void)handleTask:(id)task shouldExit:(BOOL *)exit
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
+  taskCopy = task;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v6;
-  v7 = [(DCBGSTaskController *)v6 tasks];
-  v8 = [v7 countByEnumeratingWithState:&v28 objects:v38 count:16];
+  obj = selfCopy;
+  tasks = [(DCBGSTaskController *)selfCopy tasks];
+  v8 = [tasks countByEnumeratingWithState:&v28 objects:v38 count:16];
   if (v8)
   {
     v9 = *v29;
@@ -833,13 +833,13 @@ LABEL_94:
       {
         if (*v29 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(tasks);
         }
 
         v11 = *(*(&v28 + 1) + 8 * v10);
-        v12 = [v11 taskID];
-        v13 = [v5 identifier];
-        v14 = v12 == v13;
+        taskID = [v11 taskID];
+        identifier = [taskCopy identifier];
+        v14 = taskID == identifier;
 
         if (v14)
         {
@@ -870,8 +870,8 @@ LABEL_94:
             }
 
             while (v16++ < 0xFFF);
-            v21 = [v11 taskID];
-            v22 = v21;
+            taskID2 = [v11 taskID];
+            v22 = taskID2;
             *buf = 136315650;
             if (v17)
             {
@@ -887,19 +887,19 @@ LABEL_94:
             v34 = 1024;
             v35 = 171;
             v36 = 2112;
-            v37 = v21;
+            v37 = taskID2;
             _os_log_impl(&dword_2488FB000, v15, OS_LOG_TYPE_DEBUG, "%25s:%-5d Invoking handler for task. { taskID=%@ }", buf, 0x1Cu);
           }
 
-          v24 = [v11 taskHandler];
-          (v24)[2](v24, v5, a4);
+          taskHandler = [v11 taskHandler];
+          (taskHandler)[2](taskHandler, taskCopy, exit);
         }
 
         ++v10;
       }
 
       while (v10 != v8);
-      v8 = [v7 countByEnumeratingWithState:&v28 objects:v38 count:16];
+      v8 = [tasks countByEnumeratingWithState:&v28 objects:v38 count:16];
     }
 
     while (v8);

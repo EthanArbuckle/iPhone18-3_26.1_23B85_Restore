@@ -1,44 +1,44 @@
 @interface PKExpressPassInformation
-+ (BOOL)extractApplicationIdentifier:(id *)a3 subcredentialIdentifier:(id *)a4 fromIdentifiers:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)extractApplicationIdentifier:(id *)identifier subcredentialIdentifier:(id *)subcredentialIdentifier fromIdentifiers:(id)identifiers;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)subcredentialCredentialIdentifiers;
-- (PKExpressPassInformation)initWithCoder:(id)a3;
-- (PKExpressPassInformation)initWithExpressPassInformation:(id)a3;
+- (PKExpressPassInformation)initWithCoder:(id)coder;
+- (PKExpressPassInformation)initWithExpressPassInformation:(id)information;
 - (id)_init;
-- (id)_initForPaymentPass:(id)a3 configuration:(id)a4;
-- (id)criteriaForApplication:(id)a3;
-- (id)criteriaForPaymentApplicationIdentifier:(id)a3;
+- (id)_initForPaymentPass:(id)pass configuration:(id)configuration;
+- (id)criteriaForApplication:(id)application;
+- (id)criteriaForPaymentApplicationIdentifier:(id)identifier;
 - (id)description;
 - (id)expressMode;
-- (id)initDummyExpressInfoForAutomaticSelectionCriteriaUpgradeRequest:(id)a3 paymentPass:(id)a4 withTechologyTest:(id)a5;
-- (id)initForExpressMode:(id)a3 withPassUniqueIdentifier:(id)a4 paymentApplicationIdentifier:(id)a5;
-- (id)initForPaymentPass:(id)a3 withTechologyTest:(id)a4;
+- (id)initDummyExpressInfoForAutomaticSelectionCriteriaUpgradeRequest:(id)request paymentPass:(id)pass withTechologyTest:(id)test;
+- (id)initForExpressMode:(id)mode withPassUniqueIdentifier:(id)identifier paymentApplicationIdentifier:(id)applicationIdentifier;
+- (id)initForPaymentPass:(id)pass withTechologyTest:(id)test;
 - (id)paymentApplicationIdentifier;
 - (id)paymentApplicationIdentifiers;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateCredentialsUsingBlock:(id)a3;
-- (void)enumerateCredentialsWithHandler:(id)a3;
-- (void)enumerateCriteriaWithHandler:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateCredentialsUsingBlock:(id)block;
+- (void)enumerateCredentialsWithHandler:(id)handler;
+- (void)enumerateCriteriaWithHandler:(id)handler;
 @end
 
 @implementation PKExpressPassInformation
 
-+ (BOOL)extractApplicationIdentifier:(id *)a3 subcredentialIdentifier:(id *)a4 fromIdentifiers:(id)a5
++ (BOOL)extractApplicationIdentifier:(id *)identifier subcredentialIdentifier:(id *)subcredentialIdentifier fromIdentifiers:(id)identifiers
 {
-  v7 = a5;
-  v8 = v7;
-  if (v7 && (v9 = [v7 count], (v9 - 1) <= 1))
+  identifiersCopy = identifiers;
+  v8 = identifiersCopy;
+  if (identifiersCopy && (v9 = [identifiersCopy count], (v9 - 1) <= 1))
   {
     v10 = v9;
-    if (a3)
+    if (identifier)
     {
       v11 = [v8 objectAtIndexedSubscript:0];
-      v12 = *a3;
-      *a3 = v11;
+      v12 = *identifier;
+      *identifier = v11;
     }
 
-    if (a4)
+    if (subcredentialIdentifier)
     {
       if (v10 < 2)
       {
@@ -50,8 +50,8 @@
         v13 = [v8 objectAtIndexedSubscript:1];
       }
 
-      v15 = *a4;
-      *a4 = v13;
+      v15 = *subcredentialIdentifier;
+      *subcredentialIdentifier = v13;
     }
 
     v14 = 1;
@@ -72,67 +72,67 @@
   return [(PKExpressPassInformation *)&v3 init];
 }
 
-- (id)_initForPaymentPass:(id)a3 configuration:(id)a4
+- (id)_initForPaymentPass:(id)pass configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 uniqueID];
-  if (v8 && [v7 count])
+  passCopy = pass;
+  configurationCopy = configuration;
+  uniqueID = [passCopy uniqueID];
+  if (uniqueID && [configurationCopy count])
   {
-    v9 = [(PKExpressPassInformation *)self _init];
-    if (v9)
+    _init = [(PKExpressPassInformation *)self _init];
+    if (_init)
     {
-      v9[4] = [v6 cardType];
-      v10 = [v8 copy];
-      v11 = v9[5];
-      v9[5] = v10;
+      _init[4] = [passCopy cardType];
+      v10 = [uniqueID copy];
+      v11 = _init[5];
+      _init[5] = v10;
 
-      *(v9 + 24) = [v6 contactlessActivationGroupingType] == 2;
-      v12 = [v7 copy];
-      v13 = v9[1];
-      v9[1] = v12;
+      *(_init + 24) = [passCopy contactlessActivationGroupingType] == 2;
+      v12 = [configurationCopy copy];
+      v13 = _init[1];
+      _init[1] = v12;
 
-      if (!v9[4])
+      if (!_init[4])
       {
-        if ([v6 isTransitPass])
+        if ([passCopy isTransitPass])
         {
           v14 = 2;
         }
 
         else
         {
-          v16 = [v6 isAccessPass];
+          isAccessPass = [passCopy isAccessPass];
           v14 = 3;
-          if (!v16)
+          if (!isAccessPass)
           {
             v14 = 1;
           }
         }
 
-        v9[4] = v14;
+        _init[4] = v14;
       }
     }
 
-    self = v9;
-    v15 = self;
+    self = _init;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (PKExpressPassInformation)initWithExpressPassInformation:(id)a3
+- (PKExpressPassInformation)initWithExpressPassInformation:(id)information
 {
-  v4 = a3;
+  informationCopy = information;
   v14.receiver = self;
   v14.super_class = PKExpressPassInformation;
   v5 = [(PKExpressPassInformation *)&v14 init];
   v6 = v5;
-  if (v5 && (v5->_cardType = *(v4 + 4), v7 = [*(v4 + 5) copy], passUniqueIdentifier = v6->_passUniqueIdentifier, v6->_passUniqueIdentifier = v7, passUniqueIdentifier, v6->_userChoice = *(v4 + 24), v9 = objc_msgSend(*(v4 + 1), "copy"), configuration = v6->_configuration, v6->_configuration = v9, configuration, v11 = objc_msgSend(*(v4 + 2), "copy"), v0_expressMode = v6->_v0_expressMode, v6->_v0_expressMode = v11, v0_expressMode, *(v4 + 25) == 1))
+  if (v5 && (v5->_cardType = *(informationCopy + 4), v7 = [*(informationCopy + 5) copy], passUniqueIdentifier = v6->_passUniqueIdentifier, v6->_passUniqueIdentifier = v7, passUniqueIdentifier, v6->_userChoice = *(informationCopy + 24), v9 = objc_msgSend(*(informationCopy + 1), "copy"), configuration = v6->_configuration, v6->_configuration = v9, configuration, v11 = objc_msgSend(*(informationCopy + 2), "copy"), v0_expressMode = v6->_v0_expressMode, v6->_v0_expressMode = v11, v0_expressMode, *(informationCopy + 25) == 1))
   {
     __break(1u);
   }
@@ -146,26 +146,26 @@
   return result;
 }
 
-- (id)initForPaymentPass:(id)a3 withTechologyTest:(id)a4
+- (id)initForPaymentPass:(id)pass withTechologyTest:(id)test
 {
   v71 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  passCopy = pass;
+  testCopy = test;
   v51 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v43 = v5;
-  v7 = [v5 devicePaymentApplications];
-  v8 = [v7 countByEnumeratingWithState:&v62 objects:v70 count:16];
+  v43 = passCopy;
+  devicePaymentApplications = [passCopy devicePaymentApplications];
+  v8 = [devicePaymentApplications countByEnumeratingWithState:&v62 objects:v70 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = *v63;
     v44 = *v63;
-    v45 = v7;
-    v47 = v6;
+    v45 = devicePaymentApplications;
+    v47 = testCopy;
     do
     {
       v11 = 0;
@@ -174,16 +174,16 @@
       {
         if (*v63 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(devicePaymentApplications);
         }
 
         v12 = *(*(&v62 + 1) + 8 * v11);
         if ([v12 supportsContactlessPayment] && objc_msgSend(v12, "supportsExpress"))
         {
-          v13 = [v12 applicationIdentifier];
-          v14 = [v12 automaticSelectionCriteria];
-          v52 = v13;
-          if ([v13 length] && objc_msgSend(v14, "count"))
+          applicationIdentifier = [v12 applicationIdentifier];
+          automaticSelectionCriteria = [v12 automaticSelectionCriteria];
+          v52 = applicationIdentifier;
+          if ([applicationIdentifier length] && objc_msgSend(automaticSelectionCriteria, "count"))
           {
             v50 = v11;
             v53 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -191,8 +191,8 @@
             v59 = 0u;
             v60 = 0u;
             v61 = 0u;
-            v49 = v14;
-            v15 = v14;
+            v49 = automaticSelectionCriteria;
+            v15 = automaticSelectionCriteria;
             v16 = [v15 countByEnumeratingWithState:&v58 objects:v69 count:16];
             if (v16)
             {
@@ -210,10 +210,10 @@
                   v20 = *(*(&v58 + 1) + 8 * i);
                   if ([v20 supportsExpress])
                   {
-                    v21 = [v20 technologyType];
-                    if (v21)
+                    technologyType = [v20 technologyType];
+                    if (technologyType)
                     {
-                      if (!v6 || v6[2](v6, v21))
+                      if (!testCopy || testCopy[2](testCopy, technologyType))
                       {
                         [v53 addObject:v20];
                       }
@@ -229,19 +229,19 @@
 
             if ([v53 count])
             {
-              v22 = [v12 subcredentials];
-              if ([v22 count])
+              subcredentials = [v12 subcredentials];
+              if ([subcredentials count])
               {
                 v56 = 0u;
                 v57 = 0u;
                 v54 = 0u;
                 v55 = 0u;
-                v23 = [v12 subcredentials];
-                v24 = [v23 countByEnumeratingWithState:&v54 objects:v68 count:16];
+                subcredentials2 = [v12 subcredentials];
+                v24 = [subcredentials2 countByEnumeratingWithState:&v54 objects:v68 count:16];
                 if (v24)
                 {
                   v25 = v24;
-                  v46 = v22;
+                  v46 = subcredentials;
                   v26 = *v55;
                   do
                   {
@@ -249,53 +249,53 @@
                     {
                       if (*v55 != v26)
                       {
-                        objc_enumerationMutation(v23);
+                        objc_enumerationMutation(subcredentials2);
                       }
 
                       v28 = *(*(&v54 + 1) + 8 * j);
-                      v29 = [v28 identifier];
-                      v30 = v29;
-                      if (v29)
+                      identifier = [v28 identifier];
+                      v30 = identifier;
+                      if (identifier)
                       {
                         v67[0] = v52;
-                        v67[1] = v29;
+                        v67[1] = identifier;
                         v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:2];
                         v32 = [PKExpressPassCredentialEntry alloc];
                         v33 = PKPaymentApplicationSubcredentialEffectiveReaderIdentifier(v12, v28);
-                        v34 = [v12 associatedReaders];
-                        v35 = [(PKExpressPassCredentialEntry *)v32 initWithSelectionCriteria:v53 readerIdentifier:v33 associatedReaders:v34];
+                        associatedReaders = [v12 associatedReaders];
+                        v35 = [(PKExpressPassCredentialEntry *)v32 initWithSelectionCriteria:v53 readerIdentifier:v33 associatedReaders:associatedReaders];
 
                         [v51 setObject:v35 forKeyedSubscript:v31];
                       }
                     }
 
-                    v25 = [v23 countByEnumeratingWithState:&v54 objects:v68 count:16];
+                    v25 = [subcredentials2 countByEnumeratingWithState:&v54 objects:v68 count:16];
                   }
 
                   while (v25);
                   v10 = v44;
-                  v7 = v45;
-                  v22 = v46;
+                  devicePaymentApplications = v45;
+                  subcredentials = v46;
                 }
               }
 
               else
               {
                 v66 = v52;
-                v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v66 count:1];
+                subcredentials2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v66 count:1];
                 v36 = [PKExpressPassCredentialEntry alloc];
                 v37 = PKPaymentApplicationSubcredentialEffectiveReaderIdentifier(v12, 0);
-                v38 = [v12 associatedReaders];
-                v39 = [(PKExpressPassCredentialEntry *)v36 initWithSelectionCriteria:v53 readerIdentifier:v37 associatedReaders:v38];
+                associatedReaders2 = [v12 associatedReaders];
+                v39 = [(PKExpressPassCredentialEntry *)v36 initWithSelectionCriteria:v53 readerIdentifier:v37 associatedReaders:associatedReaders2];
 
-                [v51 setObject:v39 forKeyedSubscript:v23];
+                [v51 setObject:v39 forKeyedSubscript:subcredentials2];
               }
 
-              v6 = v47;
+              testCopy = v47;
             }
 
             v9 = v48;
-            v14 = v49;
+            automaticSelectionCriteria = v49;
             v11 = v50;
           }
         }
@@ -304,7 +304,7 @@
       }
 
       while (v11 != v9);
-      v9 = [v7 countByEnumeratingWithState:&v62 objects:v70 count:16];
+      v9 = [devicePaymentApplications countByEnumeratingWithState:&v62 objects:v70 count:16];
     }
 
     while (v9);
@@ -314,20 +314,20 @@
   return v40;
 }
 
-- (id)initDummyExpressInfoForAutomaticSelectionCriteriaUpgradeRequest:(id)a3 paymentPass:(id)a4 withTechologyTest:(id)a5
+- (id)initDummyExpressInfoForAutomaticSelectionCriteriaUpgradeRequest:(id)request paymentPass:(id)pass withTechologyTest:(id)test
 {
   v53 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v38 = a4;
-  v8 = a5;
+  requestCopy = request;
+  passCopy = pass;
+  testCopy = test;
   v41 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v39 = v7;
-  v9 = [v7 technologyTypes];
-  v10 = [v9 countByEnumeratingWithState:&v46 objects:v52 count:16];
+  v39 = requestCopy;
+  technologyTypes = [requestCopy technologyTypes];
+  v10 = [technologyTypes countByEnumeratingWithState:&v46 objects:v52 count:16];
   if (v10)
   {
     v11 = v10;
@@ -338,12 +338,12 @@
       {
         if (*v47 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(technologyTypes);
         }
 
         v14 = *(*(&v46 + 1) + 8 * i);
         v15 = PKPassAutomaticSelectionTechnologyTypeFromType(v14);
-        if (!v8 || v8[2](v8, v15))
+        if (!testCopy || testCopy[2](testCopy, v15))
         {
           v16 = objc_alloc(MEMORY[0x1E695DF90]);
           v17 = [v16 initWithObjectsAndKeys:{v14, @"type", MEMORY[0x1E695E118], @"supportsExpress", 0}];
@@ -361,7 +361,7 @@
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v46 objects:v52 count:16];
+      v11 = [technologyTypes countByEnumeratingWithState:&v46 objects:v52 count:16];
     }
 
     while (v11);
@@ -371,15 +371,15 @@
   if ([v41 count])
   {
     v21 = objc_alloc(MEMORY[0x1E695DFD8]);
-    v22 = [v7 paymentApplicationIdentifiers];
-    v23 = [v21 initWithArray:v22];
+    paymentApplicationIdentifiers = [requestCopy paymentApplicationIdentifiers];
+    v23 = [v21 initWithArray:paymentApplicationIdentifiers];
 
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v24 = [v38 devicePaymentApplications];
-    v25 = [v24 countByEnumeratingWithState:&v42 objects:v51 count:16];
+    devicePaymentApplications = [passCopy devicePaymentApplications];
+    v25 = [devicePaymentApplications countByEnumeratingWithState:&v42 objects:v51 count:16];
     if (v25)
     {
       v26 = v25;
@@ -390,14 +390,14 @@
         {
           if (*v43 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(devicePaymentApplications);
           }
 
           v29 = *(*(&v42 + 1) + 8 * j);
-          v30 = [v29 applicationIdentifier];
-          if ([v29 supportsContactlessPayment] && objc_msgSend(v23, "containsObject:", v30))
+          applicationIdentifier = [v29 applicationIdentifier];
+          if ([v29 supportsContactlessPayment] && objc_msgSend(v23, "containsObject:", applicationIdentifier))
           {
-            v50 = v30;
+            v50 = applicationIdentifier;
             v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v50 count:1];
             v32 = [PKExpressPassCredentialEntry alloc];
             v33 = PKPaymentApplicationSubcredentialEffectiveReaderIdentifier(v29, 0);
@@ -406,23 +406,23 @@
           }
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v42 objects:v51 count:16];
+        v26 = [devicePaymentApplications countByEnumeratingWithState:&v42 objects:v51 count:16];
       }
 
       while (v26);
     }
   }
 
-  v35 = [(PKExpressPassInformation *)self _initForPaymentPass:v38 configuration:v40];
+  v35 = [(PKExpressPassInformation *)self _initForPaymentPass:passCopy configuration:v40];
 
   return v35;
 }
 
-- (PKExpressPassInformation)initWithCoder:(id)a3
+- (PKExpressPassInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PKExpressPassInformation *)self _init];
-  if (!v5)
+  coderCopy = coder;
+  _init = [(PKExpressPassInformation *)self _init];
+  if (!_init)
   {
     goto LABEL_12;
   }
@@ -433,24 +433,24 @@
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v11 = [v6 initWithObjects:{v7, v8, v9, v10, objc_opt_class(), 0}];
-  v12 = [v4 decodeObjectOfClasses:v11 forKey:@"configuration.3"];
-  v13 = v5[1];
-  v5[1] = v12;
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"configuration.3"];
+  v13 = _init[1];
+  _init[1] = v12;
 
-  if (v5[1])
+  if (_init[1])
   {
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueIdentifier"];
-    v15 = v5[5];
-    v5[5] = v14;
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueIdentifier"];
+    v15 = _init[5];
+    _init[5] = v14;
 
-    *(v5 + 24) = [v4 decodeBoolForKey:@"userChoice"];
-    v5[4] = [v4 decodeIntegerForKey:@"cardType"];
+    *(_init + 24) = [coderCopy decodeBoolForKey:@"userChoice"];
+    _init[4] = [coderCopy decodeIntegerForKey:@"cardType"];
     goto LABEL_10;
   }
 
   v65 = v11;
-  v16 = v5;
-  v17 = v4;
+  v16 = _init;
+  v17 = coderCopy;
   v18 = objc_opt_class();
   v19 = objc_opt_class();
   v20 = objc_opt_class();
@@ -478,8 +478,8 @@
     *(v16 + 24) = v25;
     v16[4] = v26;
     v31 = [v28 copy];
-    v32 = v5[1];
-    v5[1] = v31;
+    v32 = _init[1];
+    _init[1] = v31;
   }
 
   else
@@ -528,8 +528,8 @@
 
       v51[4] = v58;
       v61 = ConfigurationFromV0(v54, v60, v56);
-      v62 = v5[1];
-      v5[1] = v61;
+      v62 = _init[1];
+      _init[1] = v61;
 
       goto LABEL_9;
     }
@@ -557,17 +557,17 @@
     *(v16 + 24) = v64;
     v16[4] = v38;
     v46 = [v43 copy];
-    v47 = v5[1];
-    v5[1] = v46;
+    v47 = _init[1];
+    _init[1] = v46;
   }
 
 LABEL_9:
   v11 = v65;
 LABEL_10:
-  if (!v5[5])
+  if (!_init[5])
   {
     v49 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PKExpressPassInformation" code:0 userInfo:0];
-    [v4 failWithError:v49];
+    [coderCopy failWithError:v49];
 
 LABEL_14:
     v48 = 0;
@@ -575,26 +575,26 @@ LABEL_14:
   }
 
 LABEL_12:
-  v48 = v5;
+  v48 = _init;
 LABEL_15:
 
   return v48;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_passUniqueIdentifier forKey:@"passUniqueIdentifier"];
-  [v4 encodeBool:self->_userChoice forKey:@"userChoice"];
-  [v4 encodeInteger:self->_cardType forKey:@"cardType"];
-  [v4 encodeObject:self->_configuration forKey:@"configuration.3"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_passUniqueIdentifier forKey:@"passUniqueIdentifier"];
+  [coderCopy encodeBool:self->_userChoice forKey:@"userChoice"];
+  [coderCopy encodeInteger:self->_cardType forKey:@"cardType"];
+  [coderCopy encodeObject:self->_configuration forKey:@"configuration.3"];
   if (!self->_forceModernEncoding)
   {
     if (self->_configuration)
     {
       v5 = MEMORY[0x1E695DF90];
-      v6 = self;
-      v7 = v4;
+      selfCopy = self;
+      v7 = coderCopy;
       v8 = objc_alloc_init(v5);
       configuration = self->_configuration;
 
@@ -608,8 +608,8 @@ LABEL_15:
       [v7 encodeObject:v10 forKey:@"configuration.1"];
     }
 
-    v11 = self;
-    v12 = v4;
+    selfCopy2 = self;
+    v12 = coderCopy;
     if (self->_configuration)
     {
       v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -637,20 +637,20 @@ LABEL_15:
     v23 = 0;
     v17 = 0;
     v16 = v12;
-    ExtractV0Format(v11, &v23, &v17);
+    ExtractV0Format(selfCopy2, &v23, &v17);
     [v16 encodeObject:v23 forKey:@"expressMode"];
     [v16 encodeObject:v17 forKey:@"paymentApplicationIdentifier"];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v6 = v4;
+    v6 = equalCopy;
   }
 
   else
@@ -659,13 +659,13 @@ LABEL_15:
   }
 
   v7 = v6;
-  if ((isKindOfClass & 1) == 0 || self->_cardType != *(v4 + 4) || self->_userChoice != v4[24])
+  if ((isKindOfClass & 1) == 0 || self->_cardType != *(equalCopy + 4) || self->_userChoice != equalCopy[24])
   {
     goto LABEL_14;
   }
 
   passUniqueIdentifier = self->_passUniqueIdentifier;
-  v9 = *(v4 + 5);
+  v9 = *(equalCopy + 5);
   if (!passUniqueIdentifier || !v9)
   {
     if (passUniqueIdentifier == v9)
@@ -685,7 +685,7 @@ LABEL_14:
 
 LABEL_10:
   configuration = self->_configuration;
-  v11 = *(v4 + 1);
+  v11 = *(equalCopy + 1);
   if (configuration && v11)
   {
     v12 = [(NSDictionary *)configuration isEqual:?];
@@ -783,30 +783,30 @@ void __62__PKExpressPassInformation_subcredentialCredentialIdentifiers__block_in
   }
 }
 
-- (id)criteriaForApplication:(id)a3
+- (id)criteriaForApplication:(id)application
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  applicationCopy = application;
+  v5 = applicationCopy;
+  if (applicationCopy)
   {
-    v24 = [v4 applicationIdentifier];
-    if (v24)
+    applicationIdentifier = [applicationCopy applicationIdentifier];
+    if (applicationIdentifier)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-      v7 = [v5 subcredentials];
-      if ([v7 count])
+      subcredentials = [v5 subcredentials];
+      if ([subcredentials count])
       {
         v27 = 0u;
         v28 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v8 = [v5 subcredentials];
-        v9 = [v8 countByEnumeratingWithState:&v25 objects:v31 count:16];
+        subcredentials2 = [v5 subcredentials];
+        v9 = [subcredentials2 countByEnumeratingWithState:&v25 objects:v31 count:16];
         if (v9)
         {
           v10 = v9;
-          v22 = v7;
+          v22 = subcredentials;
           v23 = v5;
           v11 = *v26;
           do
@@ -815,38 +815,38 @@ void __62__PKExpressPassInformation_subcredentialCredentialIdentifiers__block_in
             {
               if (*v26 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(subcredentials2);
               }
 
-              v13 = [*(*(&v25 + 1) + 8 * i) identifier];
-              v14 = v13;
-              if (v13)
+              identifier = [*(*(&v25 + 1) + 8 * i) identifier];
+              v14 = identifier;
+              if (identifier)
               {
-                v30[0] = v24;
-                v30[1] = v13;
+                v30[0] = applicationIdentifier;
+                v30[1] = identifier;
                 v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
                 v16 = [(NSDictionary *)self->_configuration objectForKeyedSubscript:v15];
-                v17 = [v16 selectionCriteria];
-                [v6 unionSet:v17];
+                selectionCriteria = [v16 selectionCriteria];
+                [v6 unionSet:selectionCriteria];
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v25 objects:v31 count:16];
+            v10 = [subcredentials2 countByEnumeratingWithState:&v25 objects:v31 count:16];
           }
 
           while (v10);
-          v7 = v22;
+          subcredentials = v22;
           v5 = v23;
         }
       }
 
       else
       {
-        v29 = v24;
-        v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v29 count:1];
-        v19 = [(NSDictionary *)self->_configuration objectForKeyedSubscript:v8];
-        v20 = [v19 selectionCriteria];
-        [v6 unionSet:v20];
+        v29 = applicationIdentifier;
+        subcredentials2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v29 count:1];
+        v19 = [(NSDictionary *)self->_configuration objectForKeyedSubscript:subcredentials2];
+        selectionCriteria2 = [v19 selectionCriteria];
+        [v6 unionSet:selectionCriteria2];
       }
 
       if ([v6 count])
@@ -874,11 +874,11 @@ void __62__PKExpressPassInformation_subcredentialCredentialIdentifiers__block_in
   return v18;
 }
 
-- (id)criteriaForPaymentApplicationIdentifier:(id)a3
+- (id)criteriaForPaymentApplicationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -891,7 +891,7 @@ void __62__PKExpressPassInformation_subcredentialCredentialIdentifiers__block_in
     v9[1] = 3221225472;
     v9[2] = __68__PKExpressPassInformation_criteriaForPaymentApplicationIdentifier___block_invoke;
     v9[3] = &unk_1E79DDB10;
-    v10 = v4;
+    v10 = identifierCopy;
     v11 = &v12;
     [(NSDictionary *)configuration enumerateKeysAndObjectsUsingBlock:v9];
     v7 = v13[5];
@@ -946,33 +946,33 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)enumerateCredentialsUsingBlock:(id)a3
+- (void)enumerateCredentialsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     configuration = self->_configuration;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __59__PKExpressPassInformation_enumerateCredentialsUsingBlock___block_invoke;
     v7[3] = &unk_1E79DDB38;
-    v8 = v4;
+    v8 = blockCopy;
     [(NSDictionary *)configuration enumerateKeysAndObjectsUsingBlock:v7];
   }
 }
 
-- (void)enumerateCriteriaWithHandler:(id)a3
+- (void)enumerateCriteriaWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __57__PKExpressPassInformation_enumerateCriteriaWithHandler___block_invoke;
     v6[3] = &unk_1E79DDB38;
-    v7 = v4;
+    v7 = handlerCopy;
     [(PKExpressPassInformation *)self enumerateCredentialsUsingBlock:v6];
   }
 }
@@ -989,17 +989,17 @@ void __57__PKExpressPassInformation_enumerateCriteriaWithHandler___block_invoke(
   }
 }
 
-- (void)enumerateCredentialsWithHandler:(id)a3
+- (void)enumerateCredentialsWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __60__PKExpressPassInformation_enumerateCredentialsWithHandler___block_invoke;
     v6[3] = &unk_1E79DDB38;
-    v7 = v4;
+    v7 = handlerCopy;
     [(PKExpressPassInformation *)self enumerateCredentialsUsingBlock:v6];
   }
 }
@@ -1039,42 +1039,42 @@ void __60__PKExpressPassInformation_enumerateCredentialsWithHandler___block_invo
   return v7;
 }
 
-- (id)initForExpressMode:(id)a3 withPassUniqueIdentifier:(id)a4 paymentApplicationIdentifier:(id)a5
+- (id)initForExpressMode:(id)mode withPassUniqueIdentifier:(id)identifier paymentApplicationIdentifier:(id)applicationIdentifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (PKExpressPassTypeForExpressMode(v8))
+  modeCopy = mode;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  if (PKExpressPassTypeForExpressMode(modeCopy))
   {
     v20.receiver = self;
     v20.super_class = PKExpressPassInformation;
     v11 = [(PKExpressPassInformation *)&v20 init];
     if (v11)
     {
-      v12 = [v8 copy];
+      v12 = [modeCopy copy];
       v13 = *(v11 + 2);
       *(v11 + 2) = v12;
 
-      v14 = [v9 copy];
+      v14 = [identifierCopy copy];
       v15 = *(v11 + 5);
       *(v11 + 5) = v14;
 
       *(v11 + 4) = 0;
-      v16 = ConfigurationFromV0(v8, *(v11 + 5), v10);
+      v16 = ConfigurationFromV0(modeCopy, *(v11 + 5), applicationIdentifierCopy);
       v17 = *(v11 + 1);
       *(v11 + 1) = v16;
     }
 
     self = v11;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 - (id)paymentApplicationIdentifier

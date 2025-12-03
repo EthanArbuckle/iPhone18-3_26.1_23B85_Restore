@@ -1,5 +1,5 @@
 @interface CNAutocompleteObservableBuilderBatchingHelperFactory
-+ (id)batchingHelperForSearchType:(unint64_t)a3;
++ (id)batchingHelperForSearchType:(unint64_t)type;
 + (id)calendarBatchingHelper;
 + (id)standardBatchingHelper;
 @end
@@ -13,16 +13,16 @@
   return v2;
 }
 
-+ (id)batchingHelperForSearchType:(unint64_t)a3
++ (id)batchingHelperForSearchType:(unint64_t)type
 {
-  if (a3 == 3)
+  if (type == 3)
   {
-    [a1 calendarBatchingHelper];
+    [self calendarBatchingHelper];
   }
 
   else
   {
-    [a1 standardBatchingHelper];
+    [self standardBatchingHelper];
   }
   v3 = ;
 

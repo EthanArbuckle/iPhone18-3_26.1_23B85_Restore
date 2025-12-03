@@ -1,9 +1,9 @@
 @interface SwiftUIProvider
-- (BOOL)shouldInitializeWithLogger:(id)a3 machine:(void *)a4 options:(id)a5 error:(id *)a6;
-- (BOOL)shouldStartTracingWithConfiguration:(void *)a3 error:(id *)a4;
+- (BOOL)shouldInitializeWithLogger:(id)logger machine:(void *)machine options:(id)options error:(id *)error;
+- (BOOL)shouldStartTracingWithConfiguration:(void *)configuration error:(id *)error;
 - (SwiftUIProvider)init;
-- (id)describeChunk:(void *)a3;
-- (void)willFinishWithCatalog:(void *)a3 file:(void *)a4;
+- (id)describeChunk:(void *)chunk;
+- (void)willFinishWithCatalog:(void *)catalog file:(void *)file;
 @end
 
 @implementation SwiftUIProvider
@@ -22,7 +22,7 @@
   return [(SwiftUIProvider *)&v8 init];
 }
 
-- (BOOL)shouldInitializeWithLogger:(id)a3 machine:(void *)a4 options:(id)a5 error:(id *)a6
+- (BOOL)shouldInitializeWithLogger:(id)logger machine:(void *)machine options:(id)options error:(id *)error
 {
   v8 = type metadata accessor for TraceConfig();
   v9 = *(v8 - 8);
@@ -31,9 +31,9 @@
   v12 = &v17[-((v11 + 15) & 0xFFFFFFFFFFFFFFF0)];
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = *(&self->super.isa + OBJC_IVAR___SwiftUIProvider_logger);
-  *(&self->super.isa + OBJC_IVAR___SwiftUIProvider_logger) = a3;
+  *(&self->super.isa + OBJC_IVAR___SwiftUIProvider_logger) = logger;
   swift_unknownObjectRetain_n();
-  v14 = self;
+  selfCopy = self;
   swift_unknownObjectRelease();
 
   TraceConfig.init(_:)();
@@ -41,27 +41,27 @@
   swift_unknownObjectRelease();
   v15 = OBJC_IVAR___SwiftUIProvider_config;
   swift_beginAccess();
-  (*(v9 + 40))(v14 + v15, v12, v8);
+  (*(v9 + 40))(selfCopy + v15, v12, v8);
   swift_endAccess();
 
   return 1;
 }
 
-- (BOOL)shouldStartTracingWithConfiguration:(void *)a3 error:(id *)a4
+- (BOOL)shouldStartTracingWithConfiguration:(void *)configuration error:(id *)error
 {
-  v4 = self;
+  selfCopy = self;
   specialized SwiftUIProvider.shouldStartTracing(configuration:)();
 
   return 1;
 }
 
-- (void)willFinishWithCatalog:(void *)a3 file:(void *)a4
+- (void)willFinishWithCatalog:(void *)catalog file:(void *)file
 {
-  v5 = self;
-  specialized SwiftUIProvider.willFinish(catalog:file:)(a4);
+  selfCopy = self;
+  specialized SwiftUIProvider.willFinish(catalog:file:)(file);
 }
 
-- (id)describeChunk:(void *)a3
+- (id)describeChunk:(void *)chunk
 {
   v3 = String._bridgeToObjectiveC()();
 

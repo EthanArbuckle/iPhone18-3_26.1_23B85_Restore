@@ -1,39 +1,39 @@
 @interface AMSNotificationSettingsSection
-- (AMSNotificationSettingsSection)initWithDictionaryRepresentation:(id)a3;
-- (AMSNotificationSettingsSection)initWithTitle:(id)a3 footer:(id)a4 items:(id)a5;
+- (AMSNotificationSettingsSection)initWithDictionaryRepresentation:(id)representation;
+- (AMSNotificationSettingsSection)initWithTitle:(id)title footer:(id)footer items:(id)items;
 - (id)description;
 @end
 
 @implementation AMSNotificationSettingsSection
 
-- (AMSNotificationSettingsSection)initWithTitle:(id)a3 footer:(id)a4 items:(id)a5
+- (AMSNotificationSettingsSection)initWithTitle:(id)title footer:(id)footer items:(id)items
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  titleCopy = title;
+  footerCopy = footer;
+  itemsCopy = items;
   v15.receiver = self;
   v15.super_class = AMSNotificationSettingsSection;
   v12 = [(AMSNotificationSettingsSection *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_title, a3);
-    objc_storeStrong(&v13->_footer, a4);
-    objc_storeStrong(&v13->_items, a5);
+    objc_storeStrong(&v12->_title, title);
+    objc_storeStrong(&v13->_footer, footer);
+    objc_storeStrong(&v13->_items, items);
   }
 
   return v13;
 }
 
-- (AMSNotificationSettingsSection)initWithDictionaryRepresentation:(id)a3
+- (AMSNotificationSettingsSection)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v19.receiver = self;
   v19.super_class = AMSNotificationSettingsSection;
   v5 = [(AMSNotificationSettingsSection *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"disclaimer"];
+    v6 = [representationCopy objectForKeyedSubscript:@"disclaimer"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,7 +48,7 @@
     footer = v5->_footer;
     v5->_footer = v7;
 
-    v9 = [v4 objectForKeyedSubscript:@"sectionId"];
+    v9 = [representationCopy objectForKeyedSubscript:@"sectionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -63,12 +63,12 @@
     identifier = v5->_identifier;
     v5->_identifier = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"settings"];
+    v12 = [representationCopy objectForKeyedSubscript:@"settings"];
     v13 = [v12 ams_mapWithTransformIgnoresNil:&__block_literal_global_107];
     items = v5->_items;
     v5->_items = v13;
 
-    v15 = [v4 objectForKeyedSubscript:@"title"];
+    v15 = [representationCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -99,17 +99,17 @@ AMSNotificationSettingsItem *__67__AMSNotificationSettingsSection_initWithDictio
 {
   v11[4] = *MEMORY[0x1E69E9840];
   v10[0] = @"sectionId";
-  v3 = [(AMSNotificationSettingsSection *)self identifier];
-  v11[0] = v3;
+  identifier = [(AMSNotificationSettingsSection *)self identifier];
+  v11[0] = identifier;
   v10[1] = @"title";
-  v4 = [(AMSNotificationSettingsSection *)self title];
-  v11[1] = v4;
+  title = [(AMSNotificationSettingsSection *)self title];
+  v11[1] = title;
   v10[2] = @"footer";
-  v5 = [(AMSNotificationSettingsSection *)self footer];
-  v11[2] = v5;
+  footer = [(AMSNotificationSettingsSection *)self footer];
+  v11[2] = footer;
   v10[3] = @"items";
-  v6 = [(AMSNotificationSettingsSection *)self items];
-  v11[3] = v6;
+  items = [(AMSNotificationSettingsSection *)self items];
+  v11[3] = items;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:4];
   v8 = [self ams_generateDescriptionWithSubObjects:v7];
 

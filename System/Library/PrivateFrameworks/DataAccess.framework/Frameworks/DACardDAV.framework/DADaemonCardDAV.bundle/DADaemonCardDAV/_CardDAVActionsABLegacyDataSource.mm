@@ -1,227 +1,227 @@
 @interface _CardDAVActionsABLegacyDataSource
-- (BOOL)_fillOutExternalURLForRecordType:(unsigned int)a3 localId:(int)a4 changeType:(unint64_t)a5 inFolderWithURL:(id)a6 outNewExternalURL:(id *)a7 outTouchedDB:(BOOL *)a8;
-- (BOOL)_fillOutExternalUUIDForRecordType:(unsigned int)a3 localId:(int)a4 changeType:(unint64_t)a5 outTouchedDB:(BOOL *)a6;
-- (BOOL)_isValidRecordType:(unsigned int)a3 forDACardDAVRecord:(id)a4;
-- (_CardDAVActionsABLegacyDataSource)initWithAddressBook:(void *)a3;
-- (id)_copyCoalescedChangesInContainer:(id)a3 isPrimaryAppleAccount:(BOOL)a4 isU18Account:(BOOL)a5 isImageUploadRestricted:(BOOL)a6 databaseHelper:(id)a7 accountHomeURL:(id)a8 changeTrackingID:(id)a9 existingActions:(id)a10 maxImageSize:(int64_t)a11 maxResourceSize:(int64_t)a12 changeContext:(id)a13 outTouchedDB:(BOOL *)a14;
-- (id)copyWithoutImageAction:(id)a3 withFolderURL:(id)a4 maxResourceSize:(int64_t)a5;
-- (void)_addChangeForType:(unint64_t)a3 changedItemId:(id)a4 changeId:(id)a5 addedIdsToChangeId:(id)a6 modifiedIdsToChangeId:(id)a7 deletedIdsToChangeId:(id)a8 changeIdsToClear:(id)a9;
+- (BOOL)_fillOutExternalURLForRecordType:(unsigned int)type localId:(int)id changeType:(unint64_t)changeType inFolderWithURL:(id)l outNewExternalURL:(id *)rL outTouchedDB:(BOOL *)b;
+- (BOOL)_fillOutExternalUUIDForRecordType:(unsigned int)type localId:(int)id changeType:(unint64_t)changeType outTouchedDB:(BOOL *)b;
+- (BOOL)_isValidRecordType:(unsigned int)type forDACardDAVRecord:(id)record;
+- (_CardDAVActionsABLegacyDataSource)initWithAddressBook:(void *)book;
+- (id)_copyCoalescedChangesInContainer:(id)container isPrimaryAppleAccount:(BOOL)account isU18Account:(BOOL)u18Account isImageUploadRestricted:(BOOL)restricted databaseHelper:(id)helper accountHomeURL:(id)l changeTrackingID:(id)d existingActions:(id)self0 maxImageSize:(int64_t)self1 maxResourceSize:(int64_t)self2 changeContext:(id)self3 outTouchedDB:(BOOL *)self4;
+- (id)copyWithoutImageAction:(id)action withFolderURL:(id)l maxResourceSize:(int64_t)size;
+- (void)_addChangeForType:(unint64_t)type changedItemId:(id)id changeId:(id)changeId addedIdsToChangeId:(id)toChangeId modifiedIdsToChangeId:(id)idsToChangeId deletedIdsToChangeId:(id)deletedIdsToChangeId changeIdsToClear:(id)clear;
 @end
 
 @implementation _CardDAVActionsABLegacyDataSource
 
-- (_CardDAVActionsABLegacyDataSource)initWithAddressBook:(void *)a3
+- (_CardDAVActionsABLegacyDataSource)initWithAddressBook:(void *)book
 {
   v5.receiver = self;
   v5.super_class = _CardDAVActionsABLegacyDataSource;
   result = [(_CardDAVActionsABLegacyDataSource *)&v5 init];
   if (result)
   {
-    result->_addressBook = a3;
+    result->_addressBook = book;
   }
 
   return result;
 }
 
-- (id)_copyCoalescedChangesInContainer:(id)a3 isPrimaryAppleAccount:(BOOL)a4 isU18Account:(BOOL)a5 isImageUploadRestricted:(BOOL)a6 databaseHelper:(id)a7 accountHomeURL:(id)a8 changeTrackingID:(id)a9 existingActions:(id)a10 maxImageSize:(int64_t)a11 maxResourceSize:(int64_t)a12 changeContext:(id)a13 outTouchedDB:(BOOL *)a14
+- (id)_copyCoalescedChangesInContainer:(id)container isPrimaryAppleAccount:(BOOL)account isU18Account:(BOOL)u18Account isImageUploadRestricted:(BOOL)restricted databaseHelper:(id)helper accountHomeURL:(id)l changeTrackingID:(id)d existingActions:(id)self0 maxImageSize:(int64_t)self1 maxResourceSize:(int64_t)self2 changeContext:(id)self3 outTouchedDB:(BOOL *)self4
 {
-  v48 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  v49 = a13;
+  u18AccountCopy = u18Account;
+  accountCopy = account;
+  containerCopy = container;
+  lCopy = l;
+  dCopy = d;
+  actionsCopy = actions;
+  contextCopy = context;
   v21 = objc_opt_new();
-  v22 = [v17 asSource];
-  if ([v17 isGuardianStateDirty])
+  asSource = [containerCopy asSource];
+  if ([containerCopy isGuardianStateDirty])
   {
-    v23 = [v17 externalIdentifier];
-    v46 = v23;
-    v24 = [v17 isGuardianRestricted];
+    externalIdentifier = [containerCopy externalIdentifier];
+    v46 = externalIdentifier;
+    isGuardianRestricted = [containerCopy isGuardianRestricted];
     v25 = @"true";
-    if (!v24)
+    if (!isGuardianRestricted)
     {
       v25 = 0;
     }
 
-    v47 = a6;
-    v26 = v20;
+    restrictedCopy = restricted;
+    v26 = actionsCopy;
     v27 = v25;
-    v28 = [v23 da_absoluteURLForChildLeastInfoRepresentationRelativeToParentURL:v18];
+    v28 = [externalIdentifier da_absoluteURLForChildLeastInfoRepresentationRelativeToParentURL:lCopy];
     v29 = [DAEditPropertyAction alloc];
-    v30 = v19;
-    v31 = v18;
-    v32 = [v29 initWithChangedItem:v17 propertyName:cdXMLCardDAVGuardianRestricted value:v27 propertyNamespace:cdXMLMMeDAVURI serverId:v28];
+    v30 = dCopy;
+    v31 = lCopy;
+    v32 = [v29 initWithChangedItem:containerCopy propertyName:cdXMLCardDAVGuardianRestricted value:v27 propertyNamespace:cdXMLMMeDAVURI serverId:v28];
 
-    v20 = v26;
-    a6 = v47;
-    [v32 setIgnoresGuardianRestrictions:v16 & v48];
+    actionsCopy = v26;
+    restricted = restrictedCopy;
+    [v32 setIgnoresGuardianRestrictions:accountCopy & u18AccountCopy];
     [v21 addObject:v32];
 
-    v18 = v31;
-    v19 = v30;
+    lCopy = v31;
+    dCopy = v30;
   }
 
-  BYTE1(v44) = a6;
-  LOBYTE(v44) = v16;
-  v33 = [(_CardDAVActionsABLegacyDataSource *)self _copyABActionsOfType:0 inContainer:v22 accountHomeURL:v18 changeTrackingID:v19 existingActions:v20 maxImageSize:a11 maxResourceSize:a12 isPrimaryAppleAccount:v44 isImageUploadRestricted:?];
-  v34 = [v33 actions];
+  BYTE1(v44) = restricted;
+  LOBYTE(v44) = accountCopy;
+  v33 = [(_CardDAVActionsABLegacyDataSource *)self _copyABActionsOfType:0 inContainer:asSource accountHomeURL:lCopy changeTrackingID:dCopy existingActions:actionsCopy maxImageSize:size maxResourceSize:resourceSize isPrimaryAppleAccount:v44 isImageUploadRestricted:?];
+  actions = [v33 actions];
 
-  if (v34)
+  if (actions)
   {
-    v35 = [v33 actions];
-    [v21 addObjectsFromArray:v35];
+    actions2 = [v33 actions];
+    [v21 addObjectsFromArray:actions2];
   }
 
-  BYTE1(v45) = a6;
-  LOBYTE(v45) = v16;
-  v36 = [(_CardDAVActionsABLegacyDataSource *)self _copyABActionsOfType:1 inContainer:v22 accountHomeURL:v18 changeTrackingID:v19 existingActions:v20 maxImageSize:a11 maxResourceSize:a12 isPrimaryAppleAccount:v45 isImageUploadRestricted:?];
-  v37 = [v36 actions];
+  BYTE1(v45) = restricted;
+  LOBYTE(v45) = accountCopy;
+  v36 = [(_CardDAVActionsABLegacyDataSource *)self _copyABActionsOfType:1 inContainer:asSource accountHomeURL:lCopy changeTrackingID:dCopy existingActions:actionsCopy maxImageSize:size maxResourceSize:resourceSize isPrimaryAppleAccount:v45 isImageUploadRestricted:?];
+  actions3 = [v36 actions];
 
-  if (v37)
+  if (actions3)
   {
-    v38 = [v36 actions];
-    [v21 addObjectsFromArray:v38];
+    actions4 = [v36 actions];
+    [v21 addObjectsFromArray:actions4];
   }
 
-  [v49 setAbPersonChangeId:{objc_msgSend(v33, "highestChangeID")}];
-  [v49 setAbGroupChangeId:{objc_msgSend(v36, "highestChangeID")}];
-  v39 = [v33 latestSequenceNumber];
-  v40 = [v36 latestSequenceNumber];
-  if (v39 >= v40)
+  [contextCopy setAbPersonChangeId:{objc_msgSend(v33, "highestChangeID")}];
+  [contextCopy setAbGroupChangeId:{objc_msgSend(v36, "highestChangeID")}];
+  latestSequenceNumber = [v33 latestSequenceNumber];
+  latestSequenceNumber2 = [v36 latestSequenceNumber];
+  if (latestSequenceNumber >= latestSequenceNumber2)
   {
-    v41 = v40;
+    v41 = latestSequenceNumber2;
   }
 
   else
   {
-    v41 = v39;
+    v41 = latestSequenceNumber;
   }
 
-  [v49 setLatestSequenceNumber:v41];
+  [contextCopy setLatestSequenceNumber:v41];
   if (([v33 isChangeHistoryTruncated] & 1) != 0 || objc_msgSend(v36, "isChangeHistoryTruncated"))
   {
-    [v49 setChangeHistoryTruncated:1];
+    [contextCopy setChangeHistoryTruncated:1];
   }
 
   if ([v33 touchedDatabase])
   {
-    v42 = 1;
+    touchedDatabase = 1;
   }
 
   else
   {
-    v42 = [v36 touchedDatabase];
+    touchedDatabase = [v36 touchedDatabase];
   }
 
-  *a14 = v42;
+  *b = touchedDatabase;
 
   return v21;
 }
 
-- (BOOL)_isValidRecordType:(unsigned int)a3 forDACardDAVRecord:(id)a4
+- (BOOL)_isValidRecordType:(unsigned int)type forDACardDAVRecord:(id)record
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 == 1)
+  recordCopy = record;
+  v6 = recordCopy;
+  if (type == 1)
   {
-    v7 = [v5 isGroup];
+    isGroup = [recordCopy isGroup];
   }
 
   else
   {
-    if (a3)
+    if (type)
     {
       v8 = 0;
       goto LABEL_7;
     }
 
-    v7 = [v5 isContact];
+    isGroup = [recordCopy isContact];
   }
 
-  v8 = v7;
+  v8 = isGroup;
 LABEL_7:
 
   return v8;
 }
 
-- (void)_addChangeForType:(unint64_t)a3 changedItemId:(id)a4 changeId:(id)a5 addedIdsToChangeId:(id)a6 modifiedIdsToChangeId:(id)a7 deletedIdsToChangeId:(id)a8 changeIdsToClear:(id)a9
+- (void)_addChangeForType:(unint64_t)type changedItemId:(id)id changeId:(id)changeId addedIdsToChangeId:(id)toChangeId modifiedIdsToChangeId:(id)idsToChangeId deletedIdsToChangeId:(id)deletedIdsToChangeId changeIdsToClear:(id)clear
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  idCopy = id;
+  changeIdCopy = changeId;
+  toChangeIdCopy = toChangeId;
+  idsToChangeIdCopy = idsToChangeId;
+  deletedIdsToChangeIdCopy = deletedIdsToChangeId;
+  clearCopy = clear;
   v20 = DALoggingwithCategory();
   v21 = _CPLog_to_os_log_type[7];
   if (os_log_type_enabled(v20, v21))
   {
     v32 = 134219522;
-    v33 = a3;
+    typeCopy = type;
     v34 = 2112;
-    v35 = v14;
+    v35 = idCopy;
     v36 = 2112;
-    v37 = v15;
+    v37 = changeIdCopy;
     v38 = 2112;
-    v39 = v16;
+    v39 = toChangeIdCopy;
     v40 = 2112;
-    v41 = v17;
+    v41 = idsToChangeIdCopy;
     v42 = 2112;
-    v43 = v18;
+    v43 = deletedIdsToChangeIdCopy;
     v44 = 2112;
-    v45 = v19;
+    v45 = clearCopy;
     _os_log_impl(&dword_0, v20, v21, "_addChange for type %lu, changedItemId %@ changeId %@ addedIds %@ modifiedIds %@ deletedIds %@, changeIdsToClear %@", &v32, 0x48u);
   }
 
-  if (!v15)
+  if (!changeIdCopy)
   {
-    v15 = &off_3DC90;
+    changeIdCopy = &off_3DC90;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 2uLL:
-      v28 = [v16 objectForKeyedSubscript:v14];
+      v28 = [toChangeIdCopy objectForKeyedSubscript:idCopy];
 
       if (!v28)
       {
-        v30 = [v17 objectForKeyedSubscript:v14];
+        v30 = [idsToChangeIdCopy objectForKeyedSubscript:idCopy];
 
         if (v30)
         {
-          v31 = [v17 objectForKeyedSubscript:v14];
-          [v19 addObject:v31];
+          v31 = [idsToChangeIdCopy objectForKeyedSubscript:idCopy];
+          [clearCopy addObject:v31];
 
-          [v17 removeObjectForKey:v14];
+          [idsToChangeIdCopy removeObjectForKey:idCopy];
         }
 
-        [v18 setObject:v15 forKeyedSubscript:v14];
+        [deletedIdsToChangeIdCopy setObject:changeIdCopy forKeyedSubscript:idCopy];
         break;
       }
 
-      v29 = [v16 objectForKeyedSubscript:v14];
-      [v19 addObject:v29];
+      v29 = [toChangeIdCopy objectForKeyedSubscript:idCopy];
+      [clearCopy addObject:v29];
 
-      [v16 removeObjectForKey:v14];
+      [toChangeIdCopy removeObjectForKey:idCopy];
 LABEL_18:
-      [v19 addObject:v15];
+      [clearCopy addObject:changeIdCopy];
       break;
     case 1uLL:
-      v24 = [v16 objectForKeyedSubscript:v14];
+      v24 = [toChangeIdCopy objectForKeyedSubscript:idCopy];
 
       if (!v24)
       {
-        v25 = [v17 objectForKeyedSubscript:v14];
+        v25 = [idsToChangeIdCopy objectForKeyedSubscript:idCopy];
         v22 = v25;
         if (v25)
         {
-          v26 = [v25 intValue];
-          v27 = [v15 intValue];
-          if (v26 == -1 || v27 == -1)
+          intValue = [v25 intValue];
+          intValue2 = [changeIdCopy intValue];
+          if (intValue == -1 || intValue2 == -1)
           {
-            if (v27 == -1)
+            if (intValue2 == -1)
             {
 LABEL_25:
 
@@ -231,42 +231,42 @@ LABEL_25:
 
           else
           {
-            [v19 addObject:v22];
+            [clearCopy addObject:v22];
           }
         }
 
-        v23 = v17;
+        v23 = idsToChangeIdCopy;
 LABEL_24:
-        [v23 setObject:v15 forKeyedSubscript:v14];
+        [v23 setObject:changeIdCopy forKeyedSubscript:idCopy];
         goto LABEL_25;
       }
 
       goto LABEL_18;
     case 0uLL:
-      v22 = [v17 objectForKeyedSubscript:v14];
+      v22 = [idsToChangeIdCopy objectForKeyedSubscript:idCopy];
       if (v22)
       {
-        [v19 addObject:v22];
-        [v17 removeObjectForKey:v14];
+        [clearCopy addObject:v22];
+        [idsToChangeIdCopy removeObjectForKey:idCopy];
       }
 
-      v23 = v16;
+      v23 = toChangeIdCopy;
       goto LABEL_24;
   }
 }
 
-- (BOOL)_fillOutExternalUUIDForRecordType:(unsigned int)a3 localId:(int)a4 changeType:(unint64_t)a5 outTouchedDB:(BOOL *)a6
+- (BOOL)_fillOutExternalUUIDForRecordType:(unsigned int)type localId:(int)id changeType:(unint64_t)changeType outTouchedDB:(BOOL *)b
 {
-  if (a5 > 1)
+  if (changeType > 1)
   {
     LOBYTE(GroupWithRecordID) = 1;
     return GroupWithRecordID;
   }
 
-  v9 = [(_CardDAVActionsABLegacyDataSource *)self addressBook];
-  if (a3)
+  addressBook = [(_CardDAVActionsABLegacyDataSource *)self addressBook];
+  if (type)
   {
-    GroupWithRecordID = ABAddressBookGetGroupWithRecordID(v9, a4);
+    GroupWithRecordID = ABAddressBookGetGroupWithRecordID(addressBook, id);
     if (!GroupWithRecordID)
     {
       return GroupWithRecordID;
@@ -278,7 +278,7 @@ LABEL_24:
 
   else
   {
-    GroupWithRecordID = ABAddressBookGetPersonWithRecordID(v9, a4);
+    GroupWithRecordID = ABAddressBookGetPersonWithRecordID(addressBook, id);
     if (!GroupWithRecordID)
     {
       return GroupWithRecordID;
@@ -297,7 +297,7 @@ LABEL_24:
 
   else
   {
-    *a6 = 1;
+    *b = 1;
     v15 = +[NSString da_newGUID];
     ABRecordSetValue(v11, v13, v15, 0);
   }
@@ -306,10 +306,10 @@ LABEL_24:
   return GroupWithRecordID;
 }
 
-- (BOOL)_fillOutExternalURLForRecordType:(unsigned int)a3 localId:(int)a4 changeType:(unint64_t)a5 inFolderWithURL:(id)a6 outNewExternalURL:(id *)a7 outTouchedDB:(BOOL *)a8
+- (BOOL)_fillOutExternalURLForRecordType:(unsigned int)type localId:(int)id changeType:(unint64_t)changeType inFolderWithURL:(id)l outNewExternalURL:(id *)rL outTouchedDB:(BOOL *)b
 {
-  v14 = a6;
-  if (a5 > 1)
+  lCopy = l;
+  if (changeType > 1)
   {
     v19 = DALoggingwithCategory();
     v20 = _CPLog_to_os_log_type[6];
@@ -322,10 +322,10 @@ LABEL_24:
     goto LABEL_8;
   }
 
-  v15 = [(_CardDAVActionsABLegacyDataSource *)self addressBook];
-  if (!a3)
+  addressBook = [(_CardDAVActionsABLegacyDataSource *)self addressBook];
+  if (!type)
   {
-    PersonWithRecordID = ABAddressBookGetPersonWithRecordID(v15, a4);
+    PersonWithRecordID = ABAddressBookGetPersonWithRecordID(addressBook, id);
     if (PersonWithRecordID)
     {
       v17 = PersonWithRecordID;
@@ -338,7 +338,7 @@ LABEL_8:
     goto LABEL_15;
   }
 
-  GroupWithRecordID = ABAddressBookGetGroupWithRecordID(v15, a4);
+  GroupWithRecordID = ABAddressBookGetGroupWithRecordID(addressBook, id);
   if (!GroupWithRecordID)
   {
     goto LABEL_8;
@@ -352,17 +352,17 @@ LABEL_11:
   if (v24)
   {
     v25 = v24;
-    *a7 = [v24 da_absoluteURLForChildLeastInfoRepresentationRelativeToParentURL:v14];
+    *rL = [v24 da_absoluteURLForChildLeastInfoRepresentationRelativeToParentURL:lCopy];
   }
 
   else
   {
-    *a8 = 1;
+    *b = 1;
     v26 = +[NSString da_newGUID];
     v27 = [NSString stringWithFormat:@"%@.vcf", v26];
-    *a7 = [v14 URLByAppendingPathComponent:v27];
+    *rL = [lCopy URLByAppendingPathComponent:v27];
 
-    v25 = [*a7 da_leastInfoStringRepresentationRelativeToParentURL:v14];
+    v25 = [*rL da_leastInfoStringRepresentationRelativeToParentURL:lCopy];
     ABRecordSetValue(v17, v23, v25, 0);
   }
 
@@ -372,27 +372,27 @@ LABEL_15:
   return v21;
 }
 
-- (id)copyWithoutImageAction:(id)a3 withFolderURL:(id)a4 maxResourceSize:(int64_t)a5
+- (id)copyWithoutImageAction:(id)action withFolderURL:(id)l maxResourceSize:(int64_t)size
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 changedItem];
-  v11 = [v10 clientID];
-  v12 = [v11 intValue];
+  actionCopy = action;
+  lCopy = l;
+  changedItem = [actionCopy changedItem];
+  clientID = [changedItem clientID];
+  intValue = [clientID intValue];
 
-  PersonWithRecordID = ABAddressBookGetPersonWithRecordID([(_CardDAVActionsABLegacyDataSource *)self addressBook], v12);
+  PersonWithRecordID = ABAddressBookGetPersonWithRecordID([(_CardDAVActionsABLegacyDataSource *)self addressBook], intValue);
   if (PersonWithRecordID)
   {
     buf[0] = 0;
     LOBYTE(v22) = 1;
-    v14 = [CardDAVVCardItem itemWithABRecord:PersonWithRecordID addressBook:[(_CardDAVActionsABLegacyDataSource *)self addressBook] outNeedsDBSave:buf maxImageSize:0 maxResourceSize:a5 inContainerWithURL:v9 afterImageSyncFailed:v22];
+    v14 = [CardDAVVCardItem itemWithABRecord:PersonWithRecordID addressBook:[(_CardDAVActionsABLegacyDataSource *)self addressBook] outNeedsDBSave:buf maxImageSize:0 maxResourceSize:size inContainerWithURL:lCopy afterImageSyncFailed:v22];
     v15 = [DAAction alloc];
-    v16 = [v8 itemChangeType];
-    v17 = [v8 serverId];
-    v18 = [v15 initWithItemChangeType:v16 changedItem:v14 serverId:v17];
+    itemChangeType = [actionCopy itemChangeType];
+    serverId = [actionCopy serverId];
+    v18 = [v15 initWithItemChangeType:itemChangeType changedItem:v14 serverId:serverId];
 
-    [v18 setChangeId:{objc_msgSend(v8, "changeId")}];
-    [v18 setIgnoresGuardianRestrictions:{objc_msgSend(v8, "ignoresGuardianRestrictions")}];
+    [v18 setChangeId:{objc_msgSend(actionCopy, "changeId")}];
+    [v18 setIgnoresGuardianRestrictions:{objc_msgSend(actionCopy, "ignoresGuardianRestrictions")}];
   }
 
   else
@@ -402,7 +402,7 @@ LABEL_15:
     if (os_log_type_enabled(v19, v20))
     {
       *buf = 67109120;
-      v24 = v12;
+      v24 = intValue;
       _os_log_impl(&dword_0, v19, v20, "Missing item with id %d for sync retry!", buf, 8u);
     }
 

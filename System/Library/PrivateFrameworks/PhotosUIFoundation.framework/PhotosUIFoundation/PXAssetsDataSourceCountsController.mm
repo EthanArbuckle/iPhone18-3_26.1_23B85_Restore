@@ -1,16 +1,16 @@
 @interface PXAssetsDataSourceCountsController
 - (PXAssetsDataSourceCountsController)init;
-- (PXAssetsDataSourceCountsController)initWithAssetsDataSourceManager:(id)a3;
+- (PXAssetsDataSourceCountsController)initWithAssetsDataSourceManager:(id)manager;
 - (void)_dataSourceManagerDidChange;
 - (void)_handlePreparationCompletion;
 - (void)_prepareCounts;
-- (void)_prepareDataSource:(id)a3;
+- (void)_prepareDataSource:(id)source;
 - (void)_updateCounts;
-- (void)assetsDataSourceManagerDidFinishBackgroundFetching:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)assetsDataSourceManagerDidFinishBackgroundFetching:(id)fetching;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)prepareCountsIfNeeded;
-- (void)setCounts:(id *)a3;
-- (void)setGuestCounts:(id *)a3;
+- (void)setCounts:(id *)counts;
+- (void)setGuestCounts:(id *)counts;
 @end
 
 @implementation PXAssetsDataSourceCountsController
@@ -24,7 +24,7 @@
     v4 = 138543618;
     v5 = objc_opt_class();
     v6 = 2048;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B3F73000, v3, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Prepare Counts If Needed", &v4, 0x16u);
   }
 
@@ -34,35 +34,35 @@
 - (void)_prepareCounts
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(PXAssetsDataSourceCountsController *)self isPreparingAssetTypeCounts];
-  v4 = [(PXAssetsDataSourceCountsController *)self hasUsableCounts];
-  v5 = v4;
-  if (v3 || v4)
+  isPreparingAssetTypeCounts = [(PXAssetsDataSourceCountsController *)self isPreparingAssetTypeCounts];
+  hasUsableCounts = [(PXAssetsDataSourceCountsController *)self hasUsableCounts];
+  v5 = hasUsableCounts;
+  if (isPreparingAssetTypeCounts || hasUsableCounts)
   {
-    v6 = PFAssetsDataSourceCountsGetLog();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    assetsDataSourceManager = PFAssetsDataSourceCountsGetLog();
+    if (os_log_type_enabled(assetsDataSourceManager, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138544130;
       *&buf[4] = objc_opt_class();
       *&buf[12] = 2048;
       *&buf[14] = self;
       *&buf[22] = 1024;
-      *&buf[24] = v3;
+      *&buf[24] = isPreparingAssetTypeCounts;
       *&buf[28] = 1024;
       *&buf[30] = v5;
-      _os_log_impl(&dword_1B3F73000, v6, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Skipping Prepare (preparing:%d || usable:%d)", buf, 0x22u);
+      _os_log_impl(&dword_1B3F73000, assetsDataSourceManager, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Skipping Prepare (preparing:%d || usable:%d)", buf, 0x22u);
     }
   }
 
   else
   {
-    v6 = [(PXAssetsDataSourceCountsController *)self assetsDataSourceManager];
-    v7 = [v6 dataSource];
-    v8 = [v6 isBackgroundFetching];
-    v9 = [v7 areAllSectionsConsideredAccurate];
+    assetsDataSourceManager = [(PXAssetsDataSourceCountsController *)self assetsDataSourceManager];
+    dataSource = [assetsDataSourceManager dataSource];
+    isBackgroundFetching = [assetsDataSourceManager isBackgroundFetching];
+    areAllSectionsConsideredAccurate = [dataSource areAllSectionsConsideredAccurate];
     v10 = PFAssetsDataSourceCountsGetLog();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-    if ((v8 & 1) != 0 || !v9)
+    if ((isBackgroundFetching & 1) != 0 || !areAllSectionsConsideredAccurate)
     {
       if (v11)
       {
@@ -71,9 +71,9 @@
         *&buf[12] = 2048;
         *&buf[14] = self;
         *&buf[22] = 1024;
-        *&buf[24] = v8;
+        *&buf[24] = isBackgroundFetching;
         *&buf[28] = 1024;
-        *&buf[30] = v9;
+        *&buf[30] = areAllSectionsConsideredAccurate;
         _os_log_impl(&dword_1B3F73000, v10, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Skipping Prepare (fetching:%d || !accurate:%d)", buf, 0x22u);
       }
     }
@@ -91,20 +91,20 @@
 
       [(PXAssetsDataSourceCountsController *)self setIsPreparingAssetTypeCounts:1];
       v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v12 = [v7 numberOfSections];
-      if (v12 >= 1)
+      numberOfSections = [dataSource numberOfSections];
+      if (numberOfSections >= 1)
       {
-        v13 = v12;
+        v13 = numberOfSections;
         v14 = 0;
         v15.f64[0] = NAN;
         v15.f64[1] = NAN;
         v23 = vnegq_f64(v15);
         do
         {
-          *buf = [v7 identifier];
+          *buf = [dataSource identifier];
           *&buf[8] = v14;
           *&buf[16] = v23;
-          v16 = [v7 assetsInSectionIndexPath:buf];
+          v16 = [dataSource assetsInSectionIndexPath:buf];
           if (v16)
           {
             [v10 addObject:v16];
@@ -123,16 +123,16 @@
       block[2] = __52__PXAssetsDataSourceCountsController__prepareCounts__block_invoke;
       block[3] = &unk_1E7BB6C78;
       objc_copyWeak(&v26, buf);
-      v25 = v7;
+      v25 = dataSource;
       dispatch_async(prepareCountsQueue, block);
 
       objc_destroyWeak(&v26);
       objc_destroyWeak(buf);
     }
 
-    v18 = [(PXAssetsDataSourceCountsController *)self isPreparingAssetTypeCounts];
-    v19 = [(PXAssetsDataSourceCountsController *)self hasUsableCounts];
-    v20 = v18 || v19;
+    isPreparingAssetTypeCounts2 = [(PXAssetsDataSourceCountsController *)self isPreparingAssetTypeCounts];
+    hasUsableCounts2 = [(PXAssetsDataSourceCountsController *)self hasUsableCounts];
+    v20 = isPreparingAssetTypeCounts2 || hasUsableCounts2;
     v21 = PFAssetsDataSourceCountsGetLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
@@ -144,9 +144,9 @@
       *&buf[22] = 1024;
       *&buf[24] = v20;
       *&buf[28] = 1024;
-      *&buf[30] = v18;
+      *&buf[30] = isPreparingAssetTypeCounts2;
       v28 = 1024;
-      v29 = v19;
+      v29 = hasUsableCounts2;
       _os_log_impl(&dword_1B3F73000, v21, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Is Prepared:%d (preparing:%d || usable:%d)", buf, 0x28u);
     }
 
@@ -154,7 +154,7 @@
   }
 }
 
-- (void)assetsDataSourceManagerDidFinishBackgroundFetching:(id)a3
+- (void)assetsDataSourceManagerDidFinishBackgroundFetching:(id)fetching
 {
   v9 = *MEMORY[0x1E69E9840];
   v4 = PFAssetsDataSourceCountsGetLog();
@@ -163,28 +163,28 @@
     v5 = 138543618;
     v6 = objc_opt_class();
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B3F73000, v4, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Received assetsDataSourceManagerDidFinishBackgroundFetching", &v5, 0x16u);
   }
 
   [(PXAssetsDataSourceCountsController *)self _dataSourceManagerDidChange];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
+  changeCopy = change;
   v17 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if (AssetsDataSourceManagerObserverContext != a5)
+  observableCopy = observable;
+  if (AssetsDataSourceManagerObserverContext != context)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXAssetsDataSourceCountsController.m" lineNumber:195 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetsDataSourceCountsController.m" lineNumber:195 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v10 = v9;
-  if (v6)
+  v10 = observableCopy;
+  if (changeCopy)
   {
     v11 = PFAssetsDataSourceCountsGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -192,7 +192,7 @@
       v13 = 138543618;
       v14 = objc_opt_class();
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B3F73000, v11, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Received PXDataSourceManagerChangedDataSource", &v13, 0x16u);
     }
 
@@ -220,13 +220,13 @@
   v19 = *MEMORY[0x1E69E9840];
   if ([(PXAssetsDataSourceCountsController *)self hasUsableCounts])
   {
-    v3 = [(PXAssetsDataSourceCountsController *)self assetsDataSourceManager];
-    v4 = [v3 dataSource];
+    assetsDataSourceManager = [(PXAssetsDataSourceCountsController *)self assetsDataSourceManager];
+    dataSource = [assetsDataSourceManager dataSource];
     *buf = PXDisplayAssetDetailedCountsUndefined;
     *&buf[16] = 0x7FFFFFFFFFFFFFFFLL;
     v12 = PXDisplayAssetDetailedCountsUndefined;
     v13 = 0x7FFFFFFFFFFFFFFFLL;
-    if ([v4 getAssetCounts:buf guestAssetCounts:&v12 allowFetch:0])
+    if ([dataSource getAssetCounts:buf guestAssetCounts:&v12 allowFetch:0])
     {
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
@@ -248,7 +248,7 @@
         *v14 = 138543618;
         v15 = v6;
         v16 = 2048;
-        v17 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1B3F73000, v5, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Re-Prepare Counts", v14, 0x16u);
       }
 
@@ -259,14 +259,14 @@
 
   else
   {
-    v3 = PFAssetsDataSourceCountsGetLog();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    assetsDataSourceManager = PFAssetsDataSourceCountsGetLog();
+    if (os_log_type_enabled(assetsDataSourceManager, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
       *&buf[4] = objc_opt_class();
       *&buf[12] = 2048;
       *&buf[14] = self;
-      _os_log_impl(&dword_1B3F73000, v3, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Skipping Update", buf, 0x16u);
+      _os_log_impl(&dword_1B3F73000, assetsDataSourceManager, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Skipping Update", buf, 0x16u);
     }
   }
 }
@@ -292,7 +292,7 @@ void __51__PXAssetsDataSourceCountsController__updateCounts__block_invoke(uint64
     v4 = 138543618;
     v5 = objc_opt_class();
     v6 = 2048;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B3F73000, v3, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> ⎣ Did Prepare Asset Type Counts", &v4, 0x16u);
   }
 
@@ -301,13 +301,13 @@ void __51__PXAssetsDataSourceCountsController__updateCounts__block_invoke(uint64
   [(PXAssetsDataSourceCountsController *)self _updateCounts];
 }
 
-- (void)_prepareDataSource:(id)a3
+- (void)_prepareDataSource:(id)source
 {
   v19 = *MEMORY[0x1E69E9840];
   prepareCountsQueue = self->_prepareCountsQueue;
-  v5 = a3;
+  sourceCopy = source;
   dispatch_assert_queue_V2(prepareCountsQueue);
-  v6 = [v5 getAssetCounts:0 guestAssetCounts:0 allowFetch:1];
+  v6 = [sourceCopy getAssetCounts:0 guestAssetCounts:0 allowFetch:1];
 
   v7 = PFAssetsDataSourceCountsGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -323,7 +323,7 @@ void __51__PXAssetsDataSourceCountsController__updateCounts__block_invoke(uint64
     *buf = 138543874;
     v14 = v8;
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = v10;
     _os_log_impl(&dword_1B3F73000, v7, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> ⎜ Prepare Asset Type Counts success:%@", buf, 0x20u);
@@ -352,23 +352,23 @@ void __52__PXAssetsDataSourceCountsController__prepareCounts__block_invoke(uint6
   [WeakRetained _prepareDataSource:*(a1 + 32)];
 }
 
-- (void)setGuestCounts:(id *)a3
+- (void)setGuestCounts:(id *)counts
 {
   v24 = *MEMORY[0x1E69E9840];
   p_guestCounts = &self->_guestCounts;
-  if (a3->var0 != self->_guestCounts.photosCount || a3->var1 != self->_guestCounts.videosCount || a3->var2 != self->_guestCounts.othersCount)
+  if (counts->var0 != self->_guestCounts.photosCount || counts->var1 != self->_guestCounts.videosCount || counts->var2 != self->_guestCounts.othersCount)
   {
     v8 = PFAssetsDataSourceCountsGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = objc_opt_class();
-      var0 = a3->var0;
-      var1 = a3->var1;
-      var2 = a3->var2;
+      var0 = counts->var0;
+      var1 = counts->var1;
+      var2 = counts->var2;
       v14 = 138544386;
       v15 = v9;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2048;
       v19 = var0;
       v20 = 2048;
@@ -378,30 +378,30 @@ void __52__PXAssetsDataSourceCountsController__prepareCounts__block_invoke(uint6
       _os_log_impl(&dword_1B3F73000, v8, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> >>> Guest Counts (photos:%lu, videos:%lu, others:%lu)", &v14, 0x34u);
     }
 
-    v13 = *&a3->var0;
-    p_guestCounts->othersCount = a3->var2;
+    v13 = *&counts->var0;
+    p_guestCounts->othersCount = counts->var2;
     *&p_guestCounts->photosCount = v13;
     [(PXObservable *)self signalChange:1];
   }
 }
 
-- (void)setCounts:(id *)a3
+- (void)setCounts:(id *)counts
 {
   v24 = *MEMORY[0x1E69E9840];
   p_counts = &self->_counts;
-  if (a3->var0 != self->_counts.photosCount || a3->var1 != self->_counts.videosCount || a3->var2 != self->_counts.othersCount)
+  if (counts->var0 != self->_counts.photosCount || counts->var1 != self->_counts.videosCount || counts->var2 != self->_counts.othersCount)
   {
     v8 = PFAssetsDataSourceCountsGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = objc_opt_class();
-      var0 = a3->var0;
-      var1 = a3->var1;
-      var2 = a3->var2;
+      var0 = counts->var0;
+      var1 = counts->var1;
+      var2 = counts->var2;
       v14 = 138544386;
       v15 = v9;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2048;
       v19 = var0;
       v20 = 2048;
@@ -411,20 +411,20 @@ void __52__PXAssetsDataSourceCountsController__prepareCounts__block_invoke(uint6
       _os_log_impl(&dword_1B3F73000, v8, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> >>> Counts (photos:%lu, videos:%lu, others:%lu)", &v14, 0x34u);
     }
 
-    v13 = *&a3->var0;
-    p_counts->othersCount = a3->var2;
+    v13 = *&counts->var0;
+    p_counts->othersCount = counts->var2;
     *&p_counts->photosCount = v13;
     [(PXObservable *)self signalChange:1];
   }
 }
 
-- (PXAssetsDataSourceCountsController)initWithAssetsDataSourceManager:(id)a3
+- (PXAssetsDataSourceCountsController)initWithAssetsDataSourceManager:(id)manager
 {
-  v6 = a3;
-  if (!v6)
+  managerCopy = manager;
+  if (!managerCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXAssetsDataSourceCountsController.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"assetsDataSourceManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetsDataSourceCountsController.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"assetsDataSourceManager"}];
   }
 
   v15.receiver = self;
@@ -437,7 +437,7 @@ void __52__PXAssetsDataSourceCountsController__prepareCounts__block_invoke(uint6
     *(v7 + 120) = PXDisplayAssetDetailedCountsUndefined;
     *(v7 + 20) = 0x7FFFFFFFFFFFFFFFLL;
     *(v7 + 9) = PXDisplayAssetDetailedCountsUndefined;
-    objc_storeStrong(v7 + 14, a3);
+    objc_storeStrong(v7 + 14, manager);
     [(PXAssetsDataSourceManager *)v8->_assetsDataSourceManager registerChangeObserver:v8 context:AssetsDataSourceManagerObserverContext];
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_attr_make_with_qos_class(v9, QOS_CLASS_UTILITY, 0);
@@ -452,8 +452,8 @@ void __52__PXAssetsDataSourceCountsController__prepareCounts__block_invoke(uint6
 
 - (PXAssetsDataSourceCountsController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAssetsDataSourceCountsController.m" lineNumber:41 description:{@"%s is not available as initializer", "-[PXAssetsDataSourceCountsController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetsDataSourceCountsController.m" lineNumber:41 description:{@"%s is not available as initializer", "-[PXAssetsDataSourceCountsController init]"}];
 
   abort();
 }

@@ -6,8 +6,8 @@
 
 - (NSArray)mr_allAirPlayDevices
 {
-  v2 = [(MRAVOutputContext *)self outputDevices];
-  v3 = [v2 msv_flatMap:&stru_1004C19F0];
+  outputDevices = [(MRAVOutputContext *)self outputDevices];
+  v3 = [outputDevices msv_flatMap:&stru_1004C19F0];
 
   return v3;
 }

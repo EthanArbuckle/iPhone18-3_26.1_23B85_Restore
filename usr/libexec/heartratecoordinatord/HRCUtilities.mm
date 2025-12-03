@@ -1,39 +1,39 @@
 @interface HRCUtilities
-+ (id)translateToHRCDevice:(id)a3;
-+ (int64_t)translateToHealthKitContextType:(int64_t)a3;
++ (id)translateToHRCDevice:(id)device;
++ (int64_t)translateToHealthKitContextType:(int64_t)type;
 @end
 
 @implementation HRCUtilities
 
-+ (id)translateToHRCDevice:(id)a3
++ (id)translateToHRCDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v15 = [HRCDevice alloc];
-  v4 = [v3 name];
-  v5 = [v3 manufacturer];
-  v6 = [v3 model];
-  v7 = [v3 hardwareVersion];
-  v8 = [v3 firmwareVersion];
-  v9 = [v3 softwareVersion];
-  v10 = [v3 localIdentifier];
-  v11 = [v3 UDIDeviceIdentifier];
-  v12 = [v3 bluetoothIdentifier];
+  name = [deviceCopy name];
+  manufacturer = [deviceCopy manufacturer];
+  model = [deviceCopy model];
+  hardwareVersion = [deviceCopy hardwareVersion];
+  firmwareVersion = [deviceCopy firmwareVersion];
+  softwareVersion = [deviceCopy softwareVersion];
+  localIdentifier = [deviceCopy localIdentifier];
+  uDIDeviceIdentifier = [deviceCopy UDIDeviceIdentifier];
+  bluetoothIdentifier = [deviceCopy bluetoothIdentifier];
 
-  v13 = [v15 initWithName:v4 manufacturer:v5 model:v6 hardwareVersion:v7 firmwareVersion:v8 softwareVersion:v9 localIdentifier:v10 UDIDeviceIdentifier:v11 bluetoothIdentifier:v12];
+  v13 = [v15 initWithName:name manufacturer:manufacturer model:model hardwareVersion:hardwareVersion firmwareVersion:firmwareVersion softwareVersion:softwareVersion localIdentifier:localIdentifier UDIDeviceIdentifier:uDIDeviceIdentifier bluetoothIdentifier:bluetoothIdentifier];
 
   return v13;
 }
 
-+ (int64_t)translateToHealthKitContextType:(int64_t)a3
++ (int64_t)translateToHealthKitContextType:(int64_t)type
 {
-  if ((a3 - 1) >= 0xB)
+  if ((type - 1) >= 0xB)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 

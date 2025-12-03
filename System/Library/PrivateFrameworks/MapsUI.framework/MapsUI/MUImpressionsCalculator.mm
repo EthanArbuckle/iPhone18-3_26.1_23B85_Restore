@@ -1,25 +1,25 @@
 @interface MUImpressionsCalculator
 - (BOOL)hasImpressionElements;
-- (MUImpressionsCalculator)initWithConfiguration:(id)a3;
+- (MUImpressionsCalculator)initWithConfiguration:(id)configuration;
 - (NSString)debugState;
-- (id)_uiElementForIdentifier:(id)a3;
-- (void)_checkVisibilityForAllItemsOnDate:(id)a3;
-- (void)_checkVisibilityForElement:(id)a3 onDate:(id)a4;
-- (void)_didEnterBackground:(id)a3;
-- (void)_logEnterForImpressionUIElement:(id)a3 usingStartDate:(id)a4;
-- (void)_logExitForImpressionUIElement:(id)a3 usingExitDate:(id)a4;
-- (void)_logWorkingSetWithDidBecomeVisible:(BOOL)a3;
+- (id)_uiElementForIdentifier:(id)identifier;
+- (void)_checkVisibilityForAllItemsOnDate:(id)date;
+- (void)_checkVisibilityForElement:(id)element onDate:(id)date;
+- (void)_didEnterBackground:(id)background;
+- (void)_logEnterForImpressionUIElement:(id)element usingStartDate:(id)date;
+- (void)_logExitForImpressionUIElement:(id)element usingExitDate:(id)date;
+- (void)_logWorkingSetWithDidBecomeVisible:(BOOL)visible;
 - (void)_registerForBackgroundingNotifications;
-- (void)_willEnterForeground:(id)a3;
-- (void)setActive:(BOOL)a3;
-- (void)setSessionIdentifier:(id)a3;
+- (void)_willEnterForeground:(id)foreground;
+- (void)setActive:(BOOL)active;
+- (void)setSessionIdentifier:(id)identifier;
 @end
 
 @implementation MUImpressionsCalculator
 
-- (void)_didEnterBackground:(id)a3
+- (void)_didEnterBackground:(id)background
 {
-  v4 = a3;
+  backgroundCopy = background;
   v5 = MUGetMUImpressionCalculatorBackgroundingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -27,12 +27,12 @@
     _os_log_impl(&dword_1C5620000, v5, OS_LOG_TYPE_INFO, "Did enter background", v6, 2u);
   }
 
-  [(MUImpressionsCalculator *)self _handleNotification:v4 withProposedActiveState:0];
+  [(MUImpressionsCalculator *)self _handleNotification:backgroundCopy withProposedActiveState:0];
 }
 
-- (void)_willEnterForeground:(id)a3
+- (void)_willEnterForeground:(id)foreground
 {
-  v4 = a3;
+  foregroundCopy = foreground;
   v5 = MUGetMUImpressionCalculatorBackgroundingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -40,98 +40,98 @@
     _os_log_impl(&dword_1C5620000, v5, OS_LOG_TYPE_INFO, "Will enter foreground", v6, 2u);
   }
 
-  [(MUImpressionsCalculator *)self _handleNotification:v4 withProposedActiveState:1];
+  [(MUImpressionsCalculator *)self _handleNotification:foregroundCopy withProposedActiveState:1];
 }
 
 - (void)_registerForBackgroundingNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__willEnterForeground_ name:*MEMORY[0x1E69DE360] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__willEnterForeground_ name:*MEMORY[0x1E69DE360] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__didEnterBackground_ name:*MEMORY[0x1E69DE348] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__didEnterBackground_ name:*MEMORY[0x1E69DE348] object:0];
 }
 
 - (BOOL)hasImpressionElements
 {
-  v2 = [(MUImpressionsCalculator *)self uiElementsByIdentifiers];
-  v3 = [v2 count] != 0;
+  uiElementsByIdentifiers = [(MUImpressionsCalculator *)self uiElementsByIdentifiers];
+  v3 = [uiElementsByIdentifiers count] != 0;
 
   return v3;
 }
 
-- (void)_logWorkingSetWithDidBecomeVisible:(BOOL)a3
+- (void)_logWorkingSetWithDidBecomeVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v32 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = [(MUImpressionsCalculator *)self uiElementsByIdentifiers];
-  v7 = [v6 allValues];
+  uiElementsByIdentifiers = [(MUImpressionsCalculator *)self uiElementsByIdentifiers];
+  allValues = [uiElementsByIdentifiers allValues];
 
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v31 count:16];
+  v8 = [allValues countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v8)
   {
     v10 = v8;
     v11 = *v26;
     *&v9 = 138412290;
     v23 = v9;
-    v24 = v3;
+    v24 = visibleCopy;
     do
     {
       for (i = 0; i != v10; ++i)
       {
         if (*v26 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
         if ([v13 state] == 1)
         {
-          if (v3)
+          if (visibleCopy)
           {
-            v14 = [v13 startDate];
+            startDate = [v13 startDate];
 
-            if (!v14)
+            if (!startDate)
             {
               v15 = MUGetMUImpressionVisibilityCheckingLog();
               if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
               {
-                v16 = [v13 clientElement];
-                v17 = [v16 elementIdentifier];
+                clientElement = [v13 clientElement];
+                elementIdentifier = [clientElement elementIdentifier];
                 *buf = v23;
-                v30 = v17;
+                v30 = elementIdentifier;
                 _os_log_impl(&dword_1C5620000, v15, OS_LOG_TYPE_INFO, "Did become visible so Start date of element is nil %@", buf, 0xCu);
 
-                v3 = v24;
+                visibleCopy = v24;
               }
             }
 
-            [v13 setStartDate:v5];
-            [(MUImpressionsCalculator *)self _logEnterForImpressionUIElement:v13 usingStartDate:v5];
+            [v13 setStartDate:date];
+            [(MUImpressionsCalculator *)self _logEnterForImpressionUIElement:v13 usingStartDate:date];
           }
 
           else
           {
-            [(MUImpressionsCalculator *)self _logExitForImpressionUIElement:v13 usingExitDate:v5];
-            v18 = [v13 startDate];
+            [(MUImpressionsCalculator *)self _logExitForImpressionUIElement:v13 usingExitDate:date];
+            startDate2 = [v13 startDate];
 
-            if (!v18)
+            if (!startDate2)
             {
               v19 = MUGetMUImpressionVisibilityCheckingLog();
               if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
               {
-                v20 = [v13 clientElement];
-                v21 = [v20 elementIdentifier];
+                clientElement2 = [v13 clientElement];
+                elementIdentifier2 = [clientElement2 elementIdentifier];
                 *buf = v23;
-                v30 = v21;
+                v30 = elementIdentifier2;
                 _os_log_impl(&dword_1C5620000, v19, OS_LOG_TYPE_INFO, "Start date is already nil %@", buf, 0xCu);
 
-                v3 = v24;
+                visibleCopy = v24;
               }
             }
 
@@ -140,7 +140,7 @@
         }
       }
 
-      v10 = [v7 countByEnumeratingWithState:&v25 objects:v31 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v25 objects:v31 count:16];
     }
 
     while (v10);
@@ -149,18 +149,18 @@
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
+    self->_active = active;
     [(MUImpressionsCalculator *)self _logWorkingSetWithDidBecomeVisible:?];
   }
 }
 
-- (id)_uiElementForIdentifier:(id)a3
+- (id)_uiElementForIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = [(NSMutableDictionary *)self->_uiElementsByIdentifiers objectForKeyedSubscript:?];
   }
@@ -173,44 +173,44 @@
   return v4;
 }
 
-- (void)_checkVisibilityForElement:(id)a3 onDate:(id)a4
+- (void)_checkVisibilityForElement:(id)element onDate:(id)date
 {
   v65 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  dateCopy = date;
   if ([(MUImpressionsCalculator *)self isActive])
   {
-    v8 = [v6 clientElement];
-    [v8 visibilityThreshold];
+    clientElement = [elementCopy clientElement];
+    [clientElement visibilityThreshold];
     v10 = v9;
 
-    v11 = [v6 state];
+    state = [elementCopy state];
     v12 = 0.0;
-    if (v11 != 1)
+    if (state != 1)
     {
       v12 = v10;
     }
 
     v58 = v12;
-    v13 = [(MUImpressionsCalculator *)self scrollView];
-    [v6 frame];
+    scrollView = [(MUImpressionsCalculator *)self scrollView];
+    [elementCopy frame];
     v15 = v14;
-    [v6 frame];
+    [elementCopy frame];
     v17 = v16;
-    [v13 contentInset];
+    [scrollView contentInset];
     v19 = v17 + v18;
-    [v6 frame];
+    [elementCopy frame];
     v21 = v20;
-    [v6 frame];
+    [elementCopy frame];
     v23 = v22;
-    v24 = [(MUImpressionsCalculatorConfiguration *)self->_configuration hostingContainerView];
-    [v13 convertRect:v24 toView:{v15, v19, v21, v23}];
+    hostingContainerView = [(MUImpressionsCalculatorConfiguration *)self->_configuration hostingContainerView];
+    [scrollView convertRect:hostingContainerView toView:{v15, v19, v21, v23}];
     v26 = v25;
     v28 = v27;
     v30 = v29;
     v32 = v31;
 
-    [v13 frame];
+    [scrollView frame];
     v72.origin.x = v33;
     v72.origin.y = v34;
     v72.size.width = v35;
@@ -224,20 +224,20 @@
     y = v67.origin.y;
     width = v67.size.width;
     height = v67.size.height;
-    v41 = [v6 clientElement];
-    v42 = [v41 sessionIdentifier];
-    v43 = [v42 isEqual:self->_sessionIdentifier];
+    clientElement2 = [elementCopy clientElement];
+    sessionIdentifier = [clientElement2 sessionIdentifier];
+    v43 = [sessionIdentifier isEqual:self->_sessionIdentifier];
 
     if ((v43 & 1) == 0)
     {
       v44 = MUGetMUImpressionVisibilityCheckingLog();
       if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
       {
-        v45 = [v6 clientElement];
-        v46 = [v45 sessionIdentifier];
+        clientElement3 = [elementCopy clientElement];
+        sessionIdentifier2 = [clientElement3 sessionIdentifier];
         sessionIdentifier = self->_sessionIdentifier;
         *buf = 138412546;
-        v60 = v46;
+        v60 = sessionIdentifier2;
         v61 = 2112;
         v62 = sessionIdentifier;
         _os_log_impl(&dword_1C5620000, v44, OS_LOG_TYPE_INFO, "Mismatch of session identifiers %@ with element identifier %@", buf, 0x16u);
@@ -287,11 +287,11 @@
       v51 = v58;
       if (v57 >= v58)
       {
-        if (![v6 state])
+        if (![elementCopy state])
         {
-          [v6 setState:1];
-          [v6 setStartDate:v7];
-          [(MUImpressionsCalculator *)self _logEnterForImpressionUIElement:v6 usingStartDate:v7];
+          [elementCopy setState:1];
+          [elementCopy setStartDate:dateCopy];
+          [(MUImpressionsCalculator *)self _logEnterForImpressionUIElement:elementCopy usingStartDate:dateCopy];
         }
 
 LABEL_24:
@@ -300,14 +300,14 @@ LABEL_24:
       }
     }
 
-    if ([v6 state] == 1)
+    if ([elementCopy state] == 1)
     {
-      [v6 setState:0];
-      v54 = [v6 startDate];
+      [elementCopy setState:0];
+      startDate = [elementCopy startDate];
 
-      if (v54)
+      if (startDate)
       {
-        [(MUImpressionsCalculator *)self _logExitForImpressionUIElement:v6 usingExitDate:v7];
+        [(MUImpressionsCalculator *)self _logExitForImpressionUIElement:elementCopy usingExitDate:dateCopy];
       }
 
       else
@@ -329,18 +329,18 @@ LABEL_25:
   v56 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_checkVisibilityForAllItemsOnDate:(id)a3
+- (void)_checkVisibilityForAllItemsOnDate:(id)date
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dateCopy = date;
   if ([(MUImpressionsCalculator *)self isActive])
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(NSMutableDictionary *)self->_uiElementsByIdentifiers allValues];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    allValues = [(NSMutableDictionary *)self->_uiElementsByIdentifiers allValues];
+    v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -352,14 +352,14 @@ LABEL_25:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allValues);
           }
 
-          [(MUImpressionsCalculator *)self _checkVisibilityForElement:*(*(&v11 + 1) + 8 * v9++) onDate:v4];
+          [(MUImpressionsCalculator *)self _checkVisibilityForElement:*(*(&v11 + 1) + 8 * v9++) onDate:dateCopy];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -369,11 +369,11 @@ LABEL_25:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSessionIdentifier:(id)a3
+- (void)setSessionIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (([(NSUUID *)self->_sessionIdentifier isEqual:v5]& 1) == 0)
+  identifierCopy = identifier;
+  if (([(NSUUID *)self->_sessionIdentifier isEqual:identifierCopy]& 1) == 0)
   {
     v6 = MUGetMUImpressionVisibilityCheckingLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -382,11 +382,11 @@ LABEL_25:
       v10 = 138412546;
       v11 = sessionIdentifier;
       v12 = 2112;
-      v13 = v5;
+      v13 = identifierCopy;
       _os_log_impl(&dword_1C5620000, v6, OS_LOG_TYPE_INFO, "Rotating Session Identifier %@ with %@", &v10, 0x16u);
     }
 
-    objc_storeStrong(&self->_sessionIdentifier, a3);
+    objc_storeStrong(&self->_sessionIdentifier, identifier);
     [(NSMutableDictionary *)self->_uiElementsByIdentifiers removeAllObjects];
     v8 = MUGetMUImpressionVisibilityCheckingLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -399,16 +399,16 @@ LABEL_25:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (MUImpressionsCalculator)initWithConfiguration:(id)a3
+- (MUImpressionsCalculator)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = MUImpressionsCalculator;
   v6 = [(MUImpressionsCalculator *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     uiElementsByIdentifiers = v7->_uiElementsByIdentifiers;
     v7->_uiElementsByIdentifiers = v8;
@@ -422,8 +422,8 @@ LABEL_25:
 - (NSString)debugState
 {
   v48 = *MEMORY[0x1E69E9840];
-  v2 = [(NSMutableDictionary *)self->_uiElementsByIdentifiers allValues];
-  v3 = [v2 copy];
+  allValues = [(NSMutableDictionary *)self->_uiElementsByIdentifiers allValues];
+  v3 = [allValues copy];
 
   v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_10613];
 
@@ -449,16 +449,16 @@ LABEL_25:
         }
 
         v10 = *(*(&v42 + 1) + 8 * i);
-        v11 = [v10 state];
+        state = [v10 state];
         v12 = MEMORY[0x1E696AEC0];
-        v13 = [v10 clientElement];
-        v14 = [v13 debugString];
-        v15 = [v10 startDate];
+        clientElement = [v10 clientElement];
+        debugString = [clientElement debugString];
+        startDate = [v10 startDate];
         [v10 frame];
         v16 = NSStringFromCGRect(v52);
-        v17 = [v12 stringWithFormat:@"%@ | %@    |   %@", v14, v15, v16];
+        v17 = [v12 stringWithFormat:@"%@ | %@    |   %@", debugString, startDate, v16];
 
-        if (v11 == 1)
+        if (state == 1)
         {
           v18 = v5;
         }
@@ -483,14 +483,14 @@ LABEL_25:
   v37 = [v5 componentsJoinedByString:@"\n"];
   [v41 insertObject:@"Nonvisible Elements" atIndex:0];
   v20 = [v41 componentsJoinedByString:@"\n"];
-  v21 = [(MUImpressionsCalculator *)self scrollView];
-  [v21 contentOffset];
+  scrollView = [(MUImpressionsCalculator *)self scrollView];
+  [scrollView contentOffset];
   v23 = v22;
   v25 = v24;
   v26 = MEMORY[0x1E696AEC0];
-  [v21 frame];
+  [scrollView frame];
   v27 = NSStringFromCGRect(v53);
-  [v21 contentSize];
+  [scrollView contentSize];
   v28 = NSStringFromCGSize(v50);
   v51.x = v23;
   v51.y = v25;
@@ -521,41 +521,41 @@ uint64_t __37__MUImpressionsCalculator_debugState__block_invoke(uint64_t a1, voi
   return v7;
 }
 
-- (void)_logEnterForImpressionUIElement:(id)a3 usingStartDate:(id)a4
+- (void)_logEnterForImpressionUIElement:(id)element usingStartDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MUImpressionsCalculator *)self observerBlock];
+  dateCopy = date;
+  elementCopy = element;
+  observerBlock = [(MUImpressionsCalculator *)self observerBlock];
 
-  if (v8)
+  if (observerBlock)
   {
-    v9 = [(MUImpressionsCalculator *)self observerBlock];
-    v9[2]();
+    observerBlock2 = [(MUImpressionsCalculator *)self observerBlock];
+    observerBlock2[2]();
   }
 
-  v11 = [(MUImpressionsCalculatorConfiguration *)self->_configuration logger];
-  v10 = [v7 clientElement];
+  logger = [(MUImpressionsCalculatorConfiguration *)self->_configuration logger];
+  clientElement = [elementCopy clientElement];
 
-  [v11 logImpressionElementDidEnter:v10 onDate:v6];
+  [logger logImpressionElementDidEnter:clientElement onDate:dateCopy];
 }
 
-- (void)_logExitForImpressionUIElement:(id)a3 usingExitDate:(id)a4
+- (void)_logExitForImpressionUIElement:(id)element usingExitDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MUImpressionsCalculator *)self observerBlock];
+  dateCopy = date;
+  elementCopy = element;
+  observerBlock = [(MUImpressionsCalculator *)self observerBlock];
 
-  if (v8)
+  if (observerBlock)
   {
-    v9 = [(MUImpressionsCalculator *)self observerBlock];
-    v9[2]();
+    observerBlock2 = [(MUImpressionsCalculator *)self observerBlock];
+    observerBlock2[2]();
   }
 
-  v12 = [(MUImpressionsCalculatorConfiguration *)self->_configuration logger];
-  v10 = [v7 clientElement];
-  v11 = [v7 startDate];
+  logger = [(MUImpressionsCalculatorConfiguration *)self->_configuration logger];
+  clientElement = [elementCopy clientElement];
+  startDate = [elementCopy startDate];
 
-  [v12 logImpressionElementDidExit:v10 usingEnterDate:v11 exitDate:v6];
+  [logger logImpressionElementDidExit:clientElement usingEnterDate:startDate exitDate:dateCopy];
 }
 
 @end

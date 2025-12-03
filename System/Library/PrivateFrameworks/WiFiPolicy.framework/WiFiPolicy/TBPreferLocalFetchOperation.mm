@@ -1,14 +1,14 @@
 @interface TBPreferLocalFetchOperation
-- (BOOL)_doResults:(id)a3 satisfyFetchRequest:(id)a4 keysToFetchRemotely:(id *)a5 satisfiedKeys:(id *)a6;
-- (TBPreferLocalFetchOperation)initWithFetchRequest:(id)a3 dataSource:(id)a4 fetchQueue:(id)a5;
-- (id)_tileItemsFromTileKeys:(id)a3;
+- (BOOL)_doResults:(id)results satisfyFetchRequest:(id)request keysToFetchRemotely:(id *)remotely satisfiedKeys:(id *)keys;
+- (TBPreferLocalFetchOperation)initWithFetchRequest:(id)request dataSource:(id)source fetchQueue:(id)queue;
+- (id)_tileItemsFromTileKeys:(id)keys;
 - (id)name;
-- (void)_captureCacheEventWithStatus:(unint64_t)a3 userInfo:(id)a4 error:(id)a5 type:(unint64_t)a6;
+- (void)_captureCacheEventWithStatus:(unint64_t)status userInfo:(id)info error:(id)error type:(unint64_t)type;
 - (void)_fetchLocal;
 - (void)_fetchRemote;
-- (void)_mergeLocalAndRemoteResults:(id)a3;
+- (void)_mergeLocalAndRemoteResults:(id)results;
 - (void)finish;
-- (void)finishAndCallCompletionWithResponse:(id)a3;
+- (void)finishAndCallCompletionWithResponse:(id)response;
 - (void)start;
 @end
 
@@ -100,12 +100,12 @@ void __42__TBPreferLocalFetchOperation__fetchLocal__block_invoke_2(uint64_t a1, 
 - (void)start
 {
   self->_finished = 0;
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   start = self->_start;
-  self->_start = v3;
+  self->_start = date;
 
-  v5 = [(TBPreferLocalFetchOperation *)self fetchRequest];
-  v6 = [v5 copyWithZone:0];
+  fetchRequest = [(TBPreferLocalFetchOperation *)self fetchRequest];
+  v6 = [fetchRequest copyWithZone:0];
   [(TBPreferLocalFetchOperation *)self setFetchRequestCopy:v6];
 
   [(TBPreferLocalFetchOperation *)self _fetchLocal];
@@ -114,9 +114,9 @@ void __42__TBPreferLocalFetchOperation__fetchLocal__block_invoke_2(uint64_t a1, 
 - (void)_fetchLocal
 {
   objc_initWeak(&location, self);
-  v3 = [(TBPreferLocalFetchOperation *)self fetchRequest];
-  v4 = [v3 descriptor];
-  if ([v4 type] == 1)
+  fetchRequest = [(TBPreferLocalFetchOperation *)self fetchRequest];
+  descriptor = [fetchRequest descriptor];
+  if ([descriptor type] == 1)
   {
     v5 = 1;
   }
@@ -126,8 +126,8 @@ void __42__TBPreferLocalFetchOperation__fetchLocal__block_invoke_2(uint64_t a1, 
     v5 = 2;
   }
 
-  v6 = [(TBPreferLocalFetchOperation *)self fetchRequestCopy];
-  objc_initWeak(&from, v6);
+  fetchRequestCopy = [(TBPreferLocalFetchOperation *)self fetchRequestCopy];
+  objc_initWeak(&from, fetchRequestCopy);
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -135,8 +135,8 @@ void __42__TBPreferLocalFetchOperation__fetchLocal__block_invoke_2(uint64_t a1, 
   v14[3] = &unk_2789C7B00;
   objc_copyWeak(&v15, &location);
   objc_copyWeak(&v16, &from);
-  v7 = [(TBPreferLocalFetchOperation *)self fetchRequestCopy];
-  [v7 setPreferLocalHandler:v14];
+  fetchRequestCopy2 = [(TBPreferLocalFetchOperation *)self fetchRequestCopy];
+  [fetchRequestCopy2 setPreferLocalHandler:v14];
 
   v12 = MEMORY[0x277D85DD0];
   objc_copyWeak(v13, &location);
@@ -144,10 +144,10 @@ void __42__TBPreferLocalFetchOperation__fetchLocal__block_invoke_2(uint64_t a1, 
   v8 = [(TBPreferLocalFetchOperation *)self fetchRequestCopy:v12];
   [v8 setResultsHandler:&v12];
 
-  v9 = [(TBPreferLocalFetchOperation *)self dataSource];
-  v10 = [v9 localDataSource];
-  v11 = [(TBPreferLocalFetchOperation *)self fetchRequestCopy];
-  [v10 executeFetchRequest:v11];
+  dataSource = [(TBPreferLocalFetchOperation *)self dataSource];
+  localDataSource = [dataSource localDataSource];
+  fetchRequestCopy3 = [(TBPreferLocalFetchOperation *)self fetchRequestCopy];
+  [localDataSource executeFetchRequest:fetchRequestCopy3];
 
   objc_destroyWeak(v13);
   objc_destroyWeak(&v16);
@@ -190,9 +190,9 @@ uint64_t __42__TBPreferLocalFetchOperation__fetchLocal__block_invoke(uint64_t a1
 
 - (void)finish
 {
-  v3 = [(TBPreferLocalFetchOperation *)self name];
+  name = [(TBPreferLocalFetchOperation *)self name];
   [(NSDate *)self->_start timeIntervalSinceNow];
-  NSLog(&cfstr_FinishedElapse.isa, v3, -v4);
+  NSLog(&cfstr_FinishedElapse.isa, name, -v4);
 
   [(TBPreferLocalFetchOperation *)self willChangeValueForKey:@"isFinished"];
   self->_finished = 1;
@@ -200,46 +200,46 @@ uint64_t __42__TBPreferLocalFetchOperation__fetchLocal__block_invoke(uint64_t a1
   [(TBPreferLocalFetchOperation *)self didChangeValueForKey:@"isFinished"];
 }
 
-- (TBPreferLocalFetchOperation)initWithFetchRequest:(id)a3 dataSource:(id)a4 fetchQueue:(id)a5
+- (TBPreferLocalFetchOperation)initWithFetchRequest:(id)request dataSource:(id)source fetchQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  sourceCopy = source;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = TBPreferLocalFetchOperation;
   v11 = [(TBPreferLocalFetchOperation *)&v18 init];
   fetchRequest = v11->_fetchRequest;
-  v11->_fetchRequest = v8;
-  v13 = v8;
+  v11->_fetchRequest = requestCopy;
+  v13 = requestCopy;
 
   dataSource = v11->_dataSource;
-  v11->_dataSource = v9;
-  v15 = v9;
+  v11->_dataSource = sourceCopy;
+  v15 = sourceCopy;
 
   fetchQueue = v11->_fetchQueue;
-  v11->_fetchQueue = v10;
+  v11->_fetchQueue = queueCopy;
 
   return v11;
 }
 
-- (BOOL)_doResults:(id)a3 satisfyFetchRequest:(id)a4 keysToFetchRemotely:(id *)a5 satisfiedKeys:(id *)a6
+- (BOOL)_doResults:(id)results satisfyFetchRequest:(id)request keysToFetchRemotely:(id *)remotely satisfiedKeys:(id *)keys
 {
   v34 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = [v10 descriptor];
-  if ([v11 type] == 2)
+  resultsCopy = results;
+  requestCopy = request;
+  descriptor = [requestCopy descriptor];
+  if ([descriptor type] == 2)
   {
   }
 
   else
   {
-    v12 = [v10 descriptor];
-    v13 = [v12 type];
+    descriptor2 = [requestCopy descriptor];
+    type = [descriptor2 type];
 
-    if (v13 != 3)
+    if (type != 3)
     {
-      v25 = [v9 count] != 0;
+      v25 = [resultsCopy count] != 0;
       goto LABEL_20;
     }
   }
@@ -249,10 +249,10 @@ uint64_t __42__TBPreferLocalFetchOperation__fetchLocal__block_invoke(uint64_t a1
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v15 = [v10 descriptor];
-  v16 = [v15 tileItems];
+  descriptor3 = [requestCopy descriptor];
+  tileItems = [descriptor3 tileItems];
 
-  v17 = [v16 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  v17 = [tileItems countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v17)
   {
     v18 = v17;
@@ -263,20 +263,20 @@ uint64_t __42__TBPreferLocalFetchOperation__fetchLocal__block_invoke(uint64_t a1
       {
         if (*v30 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(tileItems);
         }
 
         v21 = [*(*(&v29 + 1) + 8 * i) key];
         [v14 addObject:v21];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v18 = [tileItems countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v18);
   }
 
-  v22 = [v9 valueForKey:@"key"];
+  v22 = [resultsCopy valueForKey:@"key"];
   if (v22)
   {
     v23 = [MEMORY[0x277CBEB98] setWithArray:v22];
@@ -284,15 +284,15 @@ uint64_t __42__TBPreferLocalFetchOperation__fetchLocal__block_invoke(uint64_t a1
 
     v24 = [v14 count];
     v25 = v24 == 0;
-    if (a5 && v24)
+    if (remotely && v24)
     {
-      *a5 = [v14 allObjects];
+      *remotely = [v14 allObjects];
     }
 
-    if (a6)
+    if (keys)
     {
       v26 = v22;
-      *a6 = v22;
+      *keys = v22;
     }
   }
 
@@ -308,41 +308,41 @@ LABEL_20:
 
 - (void)_fetchRemote
 {
-  v3 = [(TBPreferLocalFetchOperation *)self remoteKeysToFetch];
-  if (!v3)
+  remoteKeysToFetch = [(TBPreferLocalFetchOperation *)self remoteKeysToFetch];
+  if (!remoteKeysToFetch)
   {
     goto LABEL_6;
   }
 
-  v4 = v3;
-  v5 = [(TBPreferLocalFetchOperation *)self fetchRequest];
-  v6 = [v5 descriptor];
-  if ([v6 type] != 2)
+  v4 = remoteKeysToFetch;
+  fetchRequest = [(TBPreferLocalFetchOperation *)self fetchRequest];
+  descriptor = [fetchRequest descriptor];
+  if ([descriptor type] != 2)
   {
-    v7 = [(TBPreferLocalFetchOperation *)self fetchRequest];
-    v8 = [v7 descriptor];
-    v9 = [v8 type];
+    fetchRequest2 = [(TBPreferLocalFetchOperation *)self fetchRequest];
+    descriptor2 = [fetchRequest2 descriptor];
+    type = [descriptor2 type];
 
-    if (v9 == 3)
+    if (type == 3)
     {
       goto LABEL_5;
     }
 
 LABEL_6:
     v23 = [TBRemoteFetchAndCacheDataSource alloc];
-    v24 = [(TBPreferLocalFetchOperation *)self dataSource];
-    v25 = [v24 remoteDataSource];
-    v26 = [(TBPreferLocalFetchOperation *)self dataSource];
-    v27 = [v26 cacheProvider];
-    v11 = [(TBRemoteFetchAndCacheDataSource *)v23 initWithFetchDataSource:v25 cacheProvider:v27];
+    dataSource = [(TBPreferLocalFetchOperation *)self dataSource];
+    remoteDataSource = [dataSource remoteDataSource];
+    dataSource2 = [(TBPreferLocalFetchOperation *)self dataSource];
+    cacheProvider = [dataSource2 cacheProvider];
+    v11 = [(TBRemoteFetchAndCacheDataSource *)v23 initWithFetchDataSource:remoteDataSource cacheProvider:cacheProvider];
 
     v28 = [TBRemoteFetchAndCacheOperation alloc];
-    v29 = [(TBPreferLocalFetchOperation *)self fetchRequest];
-    v12 = [(TBRemoteFetchAndCacheOperation *)v28 initWithFetchRequest:v29 dataSource:v11];
+    fetchRequest3 = [(TBPreferLocalFetchOperation *)self fetchRequest];
+    v12 = [(TBRemoteFetchAndCacheOperation *)v28 initWithFetchRequest:fetchRequest3 dataSource:v11];
 
     [(TBPreferLocalFetchOperation *)self addDependency:v12];
-    v30 = [(TBPreferLocalFetchOperation *)self fetchQueue];
-    [v30 addOperation:v12];
+    fetchQueue = [(TBPreferLocalFetchOperation *)self fetchQueue];
+    [fetchQueue addOperation:v12];
 
     objc_initWeak(&location, self);
     objc_initWeak(&from, v12);
@@ -361,24 +361,24 @@ LABEL_6:
   }
 
 LABEL_5:
-  v10 = [(TBPreferLocalFetchOperation *)self remoteKeysToFetch];
-  v11 = [(TBPreferLocalFetchOperation *)self _tileItemsFromTileKeys:v10];
+  remoteKeysToFetch2 = [(TBPreferLocalFetchOperation *)self remoteKeysToFetch];
+  v11 = [(TBPreferLocalFetchOperation *)self _tileItemsFromTileKeys:remoteKeysToFetch2];
 
   v12 = [[TBTileFetchRequestDescriptor alloc] initWithTileItems:v11];
-  v13 = [(TBPreferLocalFetchOperation *)self fetchRequest];
-  v14 = +[TBTileFetchRequest fetchRequestWithDescriptor:sourcePolicy:cacheable:](TBTileFetchRequest, "fetchRequestWithDescriptor:sourcePolicy:cacheable:", v12, 2, [v13 cacheable]);
+  fetchRequest4 = [(TBPreferLocalFetchOperation *)self fetchRequest];
+  v14 = +[TBTileFetchRequest fetchRequestWithDescriptor:sourcePolicy:cacheable:](TBTileFetchRequest, "fetchRequestWithDescriptor:sourcePolicy:cacheable:", v12, 2, [fetchRequest4 cacheable]);
 
   v15 = [TBRemoteFetchAndCacheDataSource alloc];
-  v16 = [(TBPreferLocalFetchOperation *)self dataSource];
-  v17 = [v16 remoteDataSource];
-  v18 = [(TBPreferLocalFetchOperation *)self dataSource];
-  v19 = [v18 cacheProvider];
-  v20 = [(TBRemoteFetchAndCacheDataSource *)v15 initWithFetchDataSource:v17 cacheProvider:v19];
+  dataSource3 = [(TBPreferLocalFetchOperation *)self dataSource];
+  remoteDataSource2 = [dataSource3 remoteDataSource];
+  dataSource4 = [(TBPreferLocalFetchOperation *)self dataSource];
+  cacheProvider2 = [dataSource4 cacheProvider];
+  v20 = [(TBRemoteFetchAndCacheDataSource *)v15 initWithFetchDataSource:remoteDataSource2 cacheProvider:cacheProvider2];
 
   v21 = [[TBRemoteFetchAndCacheOperation alloc] initWithFetchRequest:v14 dataSource:v20];
   [(TBPreferLocalFetchOperation *)self addDependency:v21];
-  v22 = [(TBPreferLocalFetchOperation *)self fetchQueue];
-  [v22 addOperation:v21];
+  fetchQueue2 = [(TBPreferLocalFetchOperation *)self fetchQueue];
+  [fetchQueue2 addOperation:v21];
 
   objc_initWeak(&location, self);
   objc_initWeak(&from, v21);
@@ -416,40 +416,40 @@ void __43__TBPreferLocalFetchOperation__fetchRemote__block_invoke_2(uint64_t a1)
   [v5 finish];
 }
 
-- (void)_mergeLocalAndRemoteResults:(id)a3
+- (void)_mergeLocalAndRemoteResults:(id)results
 {
-  v4 = a3;
-  v5 = [(TBPreferLocalFetchOperation *)self satisfiedLocalKeys];
-  if (!v5)
+  resultsCopy = results;
+  satisfiedLocalKeys = [(TBPreferLocalFetchOperation *)self satisfiedLocalKeys];
+  if (!satisfiedLocalKeys)
   {
     goto LABEL_6;
   }
 
-  v6 = v5;
-  v7 = [(TBPreferLocalFetchOperation *)self fetchRequest];
-  v8 = [v7 descriptor];
-  if ([v8 type] != 2)
+  v6 = satisfiedLocalKeys;
+  fetchRequest = [(TBPreferLocalFetchOperation *)self fetchRequest];
+  descriptor = [fetchRequest descriptor];
+  if ([descriptor type] != 2)
   {
-    v9 = [(TBPreferLocalFetchOperation *)self fetchRequest];
-    v10 = [v9 descriptor];
-    v11 = [v10 type];
+    fetchRequest2 = [(TBPreferLocalFetchOperation *)self fetchRequest];
+    descriptor2 = [fetchRequest2 descriptor];
+    type = [descriptor2 type];
 
-    if (v11 == 3)
+    if (type == 3)
     {
       goto LABEL_5;
     }
 
 LABEL_6:
-    [(TBPreferLocalFetchOperation *)self finishAndCallCompletionWithResponse:v4];
+    [(TBPreferLocalFetchOperation *)self finishAndCallCompletionWithResponse:resultsCopy];
     goto LABEL_7;
   }
 
 LABEL_5:
-  v12 = [(TBPreferLocalFetchOperation *)self satisfiedLocalKeys];
-  NSLog(&cfstr_SFetchingRemai.isa, "[TBPreferLocalFetchOperation _mergeLocalAndRemoteResults:]", v12);
+  satisfiedLocalKeys2 = [(TBPreferLocalFetchOperation *)self satisfiedLocalKeys];
+  NSLog(&cfstr_SFetchingRemai.isa, "[TBPreferLocalFetchOperation _mergeLocalAndRemoteResults:]", satisfiedLocalKeys2);
 
-  v13 = [(TBPreferLocalFetchOperation *)self satisfiedLocalKeys];
-  v14 = [(TBPreferLocalFetchOperation *)self _tileItemsFromTileKeys:v13];
+  satisfiedLocalKeys3 = [(TBPreferLocalFetchOperation *)self satisfiedLocalKeys];
+  v14 = [(TBPreferLocalFetchOperation *)self _tileItemsFromTileKeys:satisfiedLocalKeys3];
 
   v15 = [[TBTileFetchRequestDescriptor alloc] initWithTileItems:v14];
   v16 = [TBTileFetchRequest fetchRequestWithDescriptor:v15 sourcePolicy:1 cacheable:0];
@@ -458,12 +458,12 @@ LABEL_5:
   v19[1] = 3221225472;
   v19[2] = __59__TBPreferLocalFetchOperation__mergeLocalAndRemoteResults___block_invoke;
   v19[3] = &unk_2789C7B78;
-  v20 = v4;
+  v20 = resultsCopy;
   objc_copyWeak(&v21, &location);
   [v16 setResultsHandler:v19];
-  v17 = [(TBPreferLocalFetchOperation *)self dataSource];
-  v18 = [v17 localDataSource];
-  [v18 executeFetchRequest:v16];
+  dataSource = [(TBPreferLocalFetchOperation *)self dataSource];
+  localDataSource = [dataSource localDataSource];
+  [localDataSource executeFetchRequest:v16];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
@@ -482,17 +482,17 @@ void __59__TBPreferLocalFetchOperation__mergeLocalAndRemoteResults___block_invok
   [WeakRetained finishAndCallCompletionWithResponse:v5];
 }
 
-- (id)_tileItemsFromTileKeys:(id)a3
+- (id)_tileItemsFromTileKeys:(id)keys
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  keysCopy = keys;
   v4 = [MEMORY[0x277CBEB58] set];
   v5 = objc_autoreleasePoolPush();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v3;
+  v6 = keysCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -528,38 +528,38 @@ void __59__TBPreferLocalFetchOperation__mergeLocalAndRemoteResults___block_invok
   return v4;
 }
 
-- (void)finishAndCallCompletionWithResponse:(id)a3
+- (void)finishAndCallCompletionWithResponse:(id)response
 {
-  v4 = a3;
-  [(TBPreferLocalFetchOperation *)self setResponse:v4];
-  v5 = [(TBPreferLocalFetchOperation *)self fetchRequest];
-  v6 = [v5 resultsHandler];
-  (v6)[2](v6, v4, 0, 1);
+  responseCopy = response;
+  [(TBPreferLocalFetchOperation *)self setResponse:responseCopy];
+  fetchRequest = [(TBPreferLocalFetchOperation *)self fetchRequest];
+  resultsHandler = [fetchRequest resultsHandler];
+  (resultsHandler)[2](resultsHandler, responseCopy, 0, 1);
 
   [(TBPreferLocalFetchOperation *)self finish];
 }
 
-- (void)_captureCacheEventWithStatus:(unint64_t)a3 userInfo:(id)a4 error:(id)a5 type:(unint64_t)a6
+- (void)_captureCacheEventWithStatus:(unint64_t)status userInfo:(id)info error:(id)error type:(unint64_t)type
 {
-  v15 = a4;
-  v9 = a5;
-  v10 = [v15 objectForKeyedSubscript:@"staleness"];
+  infoCopy = info;
+  errorCopy = error;
+  unsignedIntegerValue = [infoCopy objectForKeyedSubscript:@"staleness"];
 
-  if (v10)
+  if (unsignedIntegerValue)
   {
-    v11 = [v15 objectForKeyedSubscript:@"staleness"];
-    v10 = [v11 unsignedIntegerValue];
+    v11 = [infoCopy objectForKeyedSubscript:@"staleness"];
+    unsignedIntegerValue = [v11 unsignedIntegerValue];
   }
 
-  v12 = [v15 objectForKeyedSubscript:@"tileKey"];
+  unsignedIntegerValue2 = [infoCopy objectForKeyedSubscript:@"tileKey"];
 
-  if (v12)
+  if (unsignedIntegerValue2)
   {
-    v13 = [v15 objectForKeyedSubscript:@"tileKey"];
-    v12 = [v13 unsignedIntegerValue];
+    v13 = [infoCopy objectForKeyedSubscript:@"tileKey"];
+    unsignedIntegerValue2 = [v13 unsignedIntegerValue];
   }
 
-  v14 = [TBCacheAnalyticsEvent cacheAnalyticsEventWithStatus:a3 staleness:v10 tileKey:v12 type:a6 error:v9];
+  v14 = [TBCacheAnalyticsEvent cacheAnalyticsEventWithStatus:status staleness:unsignedIntegerValue tileKey:unsignedIntegerValue2 type:type error:errorCopy];
   [TBAnalytics captureEvent:v14];
 }
 

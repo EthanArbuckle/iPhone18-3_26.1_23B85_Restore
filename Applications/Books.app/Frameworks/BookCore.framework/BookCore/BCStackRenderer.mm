@@ -1,10 +1,10 @@
 @interface BCStackRenderer
 - (BCStackRenderer)init;
-- (id)_bookFilter:(id)a3;
-- (id)_seriesFilter:(id)a3;
-- (void)_applySeriesFilter:(id)a3 toImages:(id)a4 filters:(id)a5 size:(CGSize)a6 completion:(id)a7;
-- (void)_renderStackFromSource:(id)a3 images:(id)a4 forRequest:(id)a5 onQueue:(id)a6 withCompletion:(id)a7;
-- (void)renderStackFromSource:(id)a3 forRequest:(id)a4 onQueue:(id)a5 completion:(id)a6;
+- (id)_bookFilter:(id)filter;
+- (id)_seriesFilter:(id)filter;
+- (void)_applySeriesFilter:(id)filter toImages:(id)images filters:(id)filters size:(CGSize)size completion:(id)completion;
+- (void)_renderStackFromSource:(id)source images:(id)images forRequest:(id)request onQueue:(id)queue withCompletion:(id)completion;
+- (void)renderStackFromSource:(id)source forRequest:(id)request onQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation BCStackRenderer
@@ -26,17 +26,17 @@
   return v3;
 }
 
-- (id)_bookFilter:(id)a3
+- (id)_bookFilter:(id)filter
 {
-  v3 = a3;
+  filterCopy = filter;
   v4 = +[BCCoverEffects sharedInstance];
-  v5 = [v4 bookCoverEffectFilters];
+  bookCoverEffectFilters = [v4 bookCoverEffectFilters];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v5;
+  v6 = bookCoverEffectFilters;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -51,8 +51,8 @@
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v11 isEqualToString:v3];
+        identifier = [v10 identifier];
+        v12 = [identifier isEqualToString:filterCopy];
 
         if (v12)
         {
@@ -76,17 +76,17 @@ LABEL_11:
   return v7;
 }
 
-- (id)_seriesFilter:(id)a3
+- (id)_seriesFilter:(id)filter
 {
-  v3 = a3;
+  filterCopy = filter;
   v4 = +[BCCoverEffects sharedInstance];
-  v5 = [v4 seriesCoverEffectFilters];
+  seriesCoverEffectFilters = [v4 seriesCoverEffectFilters];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v5;
+  v6 = seriesCoverEffectFilters;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -101,8 +101,8 @@ LABEL_11:
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v11 isEqualToString:v3];
+        identifier = [v10 identifier];
+        v12 = [identifier isEqualToString:filterCopy];
 
         if (v12)
         {
@@ -126,58 +126,58 @@ LABEL_11:
   return v7;
 }
 
-- (void)renderStackFromSource:(id)a3 forRequest:(id)a4 onQueue:(id)a5 completion:(id)a6
+- (void)renderStackFromSource:(id)source forRequest:(id)request onQueue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sourceCopy = source;
+  requestCopy = request;
+  queueCopy = queue;
+  completionCopy = completion;
   v14 = +[NSMutableArray array];
-  v15 = [(BCStackRenderer *)self seriesDecomposer];
-  v16 = [v10 identifier];
+  seriesDecomposer = [(BCStackRenderer *)self seriesDecomposer];
+  identifier = [sourceCopy identifier];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_14424C;
   v22[3] = &unk_2CE128;
-  v23 = v11;
-  v24 = v12;
-  v25 = v10;
-  v26 = self;
+  v23 = requestCopy;
+  v24 = queueCopy;
+  v25 = sourceCopy;
+  selfCopy = self;
   v27 = v14;
-  v28 = v13;
+  v28 = completionCopy;
   v17 = v14;
-  v18 = v10;
-  v19 = v12;
-  v20 = v13;
-  v21 = v11;
-  [v15 assetIDsAndOptionsForBooksInSeries:v16 completion:v22];
+  v18 = sourceCopy;
+  v19 = queueCopy;
+  v20 = completionCopy;
+  v21 = requestCopy;
+  [seriesDecomposer assetIDsAndOptionsForBooksInSeries:identifier completion:v22];
 }
 
-- (void)_renderStackFromSource:(id)a3 images:(id)a4 forRequest:(id)a5 onQueue:(id)a6 withCompletion:(id)a7
+- (void)_renderStackFromSource:(id)source images:(id)images forRequest:(id)request onQueue:(id)queue withCompletion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  sourceCopy = source;
+  imagesCopy = images;
+  requestCopy = request;
+  queueCopy = queue;
+  completionCopy = completion;
   v54 = objc_opt_new();
   v53 = objc_opt_new();
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v16 = v12;
+  v16 = imagesCopy;
   v58 = [v16 countByEnumeratingWithState:&v65 objects:v69 count:16];
   if (v58)
   {
-    v49 = v15;
-    v50 = v14;
-    v51 = v11;
-    v52 = v13;
+    v49 = completionCopy;
+    v50 = queueCopy;
+    v51 = sourceCopy;
+    v52 = requestCopy;
     v17 = 0;
     v18 = 0;
     v56 = *v66;
-    v19 = &stru_B8 + 24;
+    quality = &stru_B8 + 24;
     do
     {
       for (i = 0; i != v58; i = i + 1)
@@ -189,9 +189,9 @@ LABEL_11:
 
         v21 = *(*(&v65 + 1) + 8 * i);
         v22 = ([v21 processingOptions] >> 7) & 1;
-        v23 = [v21 processingOptions];
-        v24 = v23;
-        v25 = (v23 >> 6) & 1;
+        processingOptions = [v21 processingOptions];
+        v24 = processingOptions;
+        v25 = (processingOptions >> 6) & 1;
         if (([v21 processingOptions] & 8) != 0)
         {
           v26 = 2;
@@ -219,20 +219,20 @@ LABEL_11:
         {
           [v21 image];
           v55 = v17;
-          v31 = v19;
+          v31 = quality;
           v33 = v32 = v16;
           v34 = +[UIImage imageWithCGImage:](UIImage, "imageWithCGImage:", [v33 CGImage]);
           [v54 addObject:v34];
 
           v16 = v32;
-          v19 = v31;
+          quality = v31;
           v17 = v55;
           [v53 addObject:v29];
         }
 
-        if ([v21 quality] < v19)
+        if ([v21 quality] < quality)
         {
-          v19 = [v21 quality];
+          quality = [v21 quality];
         }
 
         v18 |= [v21 isGeneric];
@@ -251,13 +251,13 @@ LABEL_11:
 
     else
     {
-      v35 = v19;
+      v35 = quality;
     }
 
-    v11 = v51;
-    v13 = v52;
-    v15 = v49;
-    v14 = v50;
+    sourceCopy = v51;
+    requestCopy = v52;
+    completionCopy = v49;
+    queueCopy = v50;
   }
 
   else
@@ -268,16 +268,16 @@ LABEL_11:
   }
 
   v36 = mainScreenScaleFactor();
-  [v11 imageSize];
+  [sourceCopy imageSize];
   v38 = v37;
   v40 = v39;
   v41 = BCUCoverEffectsIdentifierSeriesStackDiagonal;
   v42 = v16;
-  if (([v13 processingOptions] & 0x1000) != 0)
+  if (([requestCopy processingOptions] & 0x1000) != 0)
   {
-    v43 = [v13 processingOptions];
+    processingOptions2 = [requestCopy processingOptions];
     v44 = &BCUCoverEffectsIdentifierSeriesStackHorizontal;
-    if ((v43 & 0x80) != 0)
+    if ((processingOptions2 & 0x80) != 0)
     {
       v44 = &BCUCoverEffectsIdentifierSeriesStackHorizontalRTL;
     }
@@ -291,44 +291,44 @@ LABEL_11:
   v59[0] = _NSConcreteStackBlock;
   v59[2] = sub_145280;
   v59[3] = &unk_2CE178;
-  v60 = v14;
-  v61 = v11;
+  v60 = queueCopy;
+  v61 = sourceCopy;
   v63 = v17;
   v64 = v35;
-  v62 = v15;
-  v46 = v15;
-  v47 = v11;
-  v48 = v14;
+  v62 = completionCopy;
+  v46 = completionCopy;
+  v47 = sourceCopy;
+  v48 = queueCopy;
   [(BCStackRenderer *)self _applySeriesFilter:v41 toImages:v54 filters:v53 size:v59 completion:v38 / v36, v40 / v36];
 }
 
-- (void)_applySeriesFilter:(id)a3 toImages:(id)a4 filters:(id)a5 size:(CGSize)a6 completion:(id)a7
+- (void)_applySeriesFilter:(id)filter toImages:(id)images filters:(id)filters size:(CGSize)size completion:(id)completion
 {
-  height = a6.height;
-  width = a6.width;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = [(BCStackRenderer *)self _seriesFilter:a3];
-  v17 = [v13 count];
-  v18 = [v14 count];
+  height = size.height;
+  width = size.width;
+  imagesCopy = images;
+  filtersCopy = filters;
+  completionCopy = completion;
+  v16 = [(BCStackRenderer *)self _seriesFilter:filter];
+  v17 = [imagesCopy count];
+  v18 = [filtersCopy count];
   if (v16 && v17 && v18 == v17)
   {
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_145748;
     v29[3] = &unk_2CE1A0;
-    v30 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v13, "count")}];
+    v30 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(imagesCopy, "count")}];
     v19 = v30;
-    [v13 enumerateObjectsUsingBlock:v29];
+    [imagesCopy enumerateObjectsUsingBlock:v29];
     v20 = mainScreenScaleFactor();
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = sub_145794;
     v27[3] = &unk_2CE1C8;
     v27[4] = self;
-    v28 = v15;
-    v21 = [v16 newOperationWithImages:v19 filters:v14 size:1 contentsScale:v27 waitForCPUSynchronization:width completion:{height, v20}];
+    v28 = completionCopy;
+    v21 = [v16 newOperationWithImages:v19 filters:filtersCopy size:1 contentsScale:v27 waitForCPUSynchronization:width completion:{height, v20}];
     [v21 start];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
@@ -344,7 +344,7 @@ LABEL_11:
 
   else
   {
-    v23 = objc_retainBlock(v15);
+    v23 = objc_retainBlock(completionCopy);
     v24 = v23;
     if (v23)
     {

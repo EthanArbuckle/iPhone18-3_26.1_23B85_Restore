@@ -1,19 +1,19 @@
 @interface CNVisualIdentityItemEditorViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (void)setupStyleCollectionView;
 @end
 
 @implementation CNVisualIdentityItemEditorViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNVisualIdentityItemEditorViewController" hasInstanceMethod:@"variantProviderItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNVisualIdentityItemEditorViewController" hasInstanceMethod:@"collectionView:cellForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"CNVisualIdentityItemEditorViewController" hasInstanceMethod:@"setupStyleCollectionView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CNVisualIdentityItemEditorViewController" hasProperty:@"styleCollectionView" withType:"@"];
-  [v3 validateClass:@"CNPhotoPickerCollectionViewCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNVisualIdentityItemEditorViewController" hasInstanceMethod:@"variantProviderItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNVisualIdentityItemEditorViewController" hasInstanceMethod:@"collectionView:cellForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"CNVisualIdentityItemEditorViewController" hasInstanceMethod:@"setupStyleCollectionView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CNVisualIdentityItemEditorViewController" hasProperty:@"styleCollectionView" withType:"@"];
+  [validationsCopy validateClass:@"CNPhotoPickerCollectionViewCell"];
 }
 
 - (void)setupStyleCollectionView
@@ -26,19 +26,19 @@
   [v3 setAccessibilityLabel:v4];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = CNVisualIdentityItemEditorViewControllerAccessibility;
-  v8 = [(CNVisualIdentityItemEditorViewControllerAccessibility *)&v18 collectionView:v6 cellForItemAtIndexPath:v7];
+  v8 = [(CNVisualIdentityItemEditorViewControllerAccessibility *)&v18 collectionView:viewCopy cellForItemAtIndexPath:pathCopy];
   MEMORY[0x29C2D1D40](@"CNPhotoPickerCollectionViewCell");
   if (objc_opt_isKindOfClass())
   {
-    objc_initWeak(&location, v6);
+    objc_initWeak(&location, viewCopy);
     v9 = [(CNVisualIdentityItemEditorViewControllerAccessibility *)self safeArrayForKey:@"variantProviderItems"];
-    v10 = [v9 axSafeObjectAtIndex:{objc_msgSend(v7, "row")}];
+    v10 = [v9 axSafeObjectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
     v16 = 0;
     objc_opt_class();
@@ -50,7 +50,7 @@
     v13[2] = __95__CNVisualIdentityItemEditorViewControllerAccessibility_collectionView_cellForItemAtIndexPath___block_invoke;
     v13[3] = &unk_29F2B5A98;
     objc_copyWeak(&v15, &location);
-    v14 = v7;
+    v14 = pathCopy;
     [v11 _setAccessibilityAdditionalTraitsBlock:v13];
 
     objc_destroyWeak(&v15);

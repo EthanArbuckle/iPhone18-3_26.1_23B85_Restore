@@ -1,23 +1,23 @@
 @interface SAURLSizerMock
-- (void)startObservingURLs:(id)a3 withUpdateHandler:(id)a4;
+- (void)startObservingURLs:(id)ls withUpdateHandler:(id)handler;
 @end
 
 @implementation SAURLSizerMock
 
-- (void)startObservingURLs:(id)a3 withUpdateHandler:(id)a4
+- (void)startObservingURLs:(id)ls withUpdateHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  NSLog(&cfstr_SaurlsizerStar.isa, v5);
+  lsCopy = ls;
+  handlerCopy = handler;
+  NSLog(&cfstr_SaurlsizerStar.isa, lsCopy);
   v7 = dispatch_time(0, 3000000000);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__SAURLSizerMock_startObservingURLs_withUpdateHandler___block_invoke;
   block[3] = &unk_279D22338;
-  v11 = v5;
-  v12 = v6;
-  v8 = v5;
-  v9 = v6;
+  v11 = lsCopy;
+  v12 = handlerCopy;
+  v8 = lsCopy;
+  v9 = handlerCopy;
   dispatch_after(v7, MEMORY[0x277D85CD0], block);
 }
 

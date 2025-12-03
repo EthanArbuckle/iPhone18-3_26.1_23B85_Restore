@@ -1,10 +1,10 @@
 @interface _UIFieldEditorHost
-+ (id)fieldEditorHostForTextField:(id)a3;
-- (_UIFieldEditorHost)initWithHostingView:(id)a3;
++ (id)fieldEditorHostForTextField:(id)field;
+- (_UIFieldEditorHost)initWithHostingView:(id)view;
 - (_UIFieldEditorHostingViewRequirements)hostingView;
 - (id)_viewForHostingFieldEditor;
-- (void)addFieldEditor:(id)a3;
-- (void)addPlaceholderLabel:(id)a3;
+- (void)addFieldEditor:(id)editor;
+- (void)addPlaceholderLabel:(id)label;
 - (void)removeFieldEditor;
 @end
 
@@ -27,87 +27,87 @@
 - (id)_viewForHostingFieldEditor
 {
   WeakRetained = objc_loadWeakRetained(&self->_hostingView);
-  v3 = [WeakRetained _contentView];
+  _contentView = [WeakRetained _contentView];
 
-  return v3;
+  return _contentView;
 }
 
-+ (id)fieldEditorHostForTextField:(id)a3
++ (id)fieldEditorHostForTextField:(id)field
 {
-  v3 = a3;
-  if ([UISystemInputViewController canUseSystemInputViewControllerForResponder:v3])
+  fieldCopy = field;
+  if ([UISystemInputViewController canUseSystemInputViewControllerForResponder:fieldCopy])
   {
     v4 = off_1E70EB6B8;
   }
 
   else
   {
-    v5 = [v3 _isPasscodeStyle];
+    _isPasscodeStyle = [fieldCopy _isPasscodeStyle];
     v4 = off_1E70EB6A8;
-    if (v5)
+    if (_isPasscodeStyle)
     {
       v4 = off_1E70EB6B0;
     }
   }
 
-  v6 = [objc_alloc(*v4) initWithHostingView:v3];
+  v6 = [objc_alloc(*v4) initWithHostingView:fieldCopy];
 
   return v6;
 }
 
-- (_UIFieldEditorHost)initWithHostingView:(id)a3
+- (_UIFieldEditorHost)initWithHostingView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = _UIFieldEditorHost;
   v5 = [(_UIFieldEditorHost *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_hostingView, v4);
+    objc_storeWeak(&v5->_hostingView, viewCopy);
   }
 
   return v6;
 }
 
-- (void)addFieldEditor:(id)a3
+- (void)addFieldEditor:(id)editor
 {
-  v5 = a3;
-  v11 = [(_UIFieldEditorHost *)self _viewForHostingFieldEditor];
+  editorCopy = editor;
+  _viewForHostingFieldEditor = [(_UIFieldEditorHost *)self _viewForHostingFieldEditor];
   hostedFieldEditor = self->_hostedFieldEditor;
   if (hostedFieldEditor)
   {
-    v7 = [(UIView *)hostedFieldEditor superview];
+    superview = [(UIView *)hostedFieldEditor superview];
 
-    if (v7 == v11)
+    if (superview == _viewForHostingFieldEditor)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"_UIFieldEditorHost.m" lineNumber:61 description:{@"The field editor host (%@) is already hosting a field editor!", self}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFieldEditorHost.m" lineNumber:61 description:{@"The field editor host (%@) is already hosting a field editor!", self}];
     }
   }
 
   v9 = self->_hostedFieldEditor;
-  self->_hostedFieldEditor = v5;
-  v10 = v5;
+  self->_hostedFieldEditor = editorCopy;
+  v10 = editorCopy;
 
-  [v11 addSubview:self->_hostedFieldEditor];
+  [_viewForHostingFieldEditor addSubview:self->_hostedFieldEditor];
 }
 
-- (void)addPlaceholderLabel:(id)a3
+- (void)addPlaceholderLabel:(id)label
 {
   hostedFieldEditor = self->_hostedFieldEditor;
-  v5 = a3;
+  labelCopy = label;
   WeakRetained = objc_loadWeakRetained(&self->_hostingView);
-  v6 = [WeakRetained _contentView];
-  v7 = v6;
+  _contentView = [WeakRetained _contentView];
+  v7 = _contentView;
   if (hostedFieldEditor)
   {
-    [v6 insertSubview:v5 belowSubview:self->_hostedFieldEditor];
+    [_contentView insertSubview:labelCopy belowSubview:self->_hostedFieldEditor];
   }
 
   else
   {
-    [v6 addSubview:v5];
+    [_contentView addSubview:labelCopy];
   }
 }
 

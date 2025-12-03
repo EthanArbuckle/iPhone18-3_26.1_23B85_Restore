@@ -1,53 +1,53 @@
 @interface FPDXPCDomainServicer
 - (FPDExtensionSessionProtocol)sessionOrNil;
-- (FPDXPCDomainServicer)initWithServer:(id)a3 providerDomainID:(id)a4 domain:(id)a5 connection:(id)a6;
+- (FPDXPCDomainServicer)initWithServer:(id)server providerDomainID:(id)d domain:(id)domain connection:(id)connection;
 - (id)__providerIfExists;
 - (id)description;
-- (id)domainOrNil:(unint64_t *)a3;
+- (id)domainOrNil:(unint64_t *)nil;
 - (id)newFileProviderProxy;
-- (id)providerOrNilWithReason:(unint64_t *)a3;
+- (id)providerOrNilWithReason:(unint64_t *)reason;
 - (void)_registerLifetimeExtension;
-- (void)_t_setFilePresenterObserver:(id)a3;
+- (void)_t_setFilePresenterObserver:(id)observer;
 - (void)_unregisterLifetimeExtension;
-- (void)currentMaterializedSetSyncAnchorWithCompletionHandler:(id)a3;
-- (void)currentPendingSetSyncAnchorWithCompletionHandler:(id)a3;
+- (void)currentMaterializedSetSyncAnchorWithCompletionHandler:(id)handler;
+- (void)currentPendingSetSyncAnchorWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)deleteSearchableItemsWithSpotlightDomainIdentifiers:(id)a3 indexReason:(int64_t)a4 completionHandler:(id)a5;
-- (void)didChangeItemID:(id)a3 completionHandler:(id)a4;
-- (void)enumerateMaterializedSetFromSyncAnchor:(id)a3 suggestedBatchSize:(int64_t)a4 completionHandler:(id)a5;
-- (void)enumeratePendingSetFromSyncAnchor:(id)a3 suggestedBatchSize:(int64_t)a4 completionHandler:(id)a5;
-- (void)evictItemWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)getDiagnosticAttributesForItems:(id)a3 completionHandler:(id)a4;
-- (void)ingestFromCacheItemWithIdentifier:(id)a3 requestedFields:(unint64_t)a4 completionHandler:(id)a5;
+- (void)deleteSearchableItemsWithSpotlightDomainIdentifiers:(id)identifiers indexReason:(int64_t)reason completionHandler:(id)handler;
+- (void)didChangeItemID:(id)d completionHandler:(id)handler;
+- (void)enumerateMaterializedSetFromSyncAnchor:(id)anchor suggestedBatchSize:(int64_t)size completionHandler:(id)handler;
+- (void)enumeratePendingSetFromSyncAnchor:(id)anchor suggestedBatchSize:(int64_t)size completionHandler:(id)handler;
+- (void)evictItemWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)getDiagnosticAttributesForItems:(id)items completionHandler:(id)handler;
+- (void)ingestFromCacheItemWithIdentifier:(id)identifier requestedFields:(unint64_t)fields completionHandler:(id)handler;
 - (void)invalidate;
-- (void)listAvailableTestingOperationsWithCompletionHandler:(id)a3;
-- (void)materializeItemWithIdentifier:(id)a3 requestedRange:(_NSRange)a4 completionHandler:(id)a5;
-- (void)reimportItemsBelowItemWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)requestDiagnosticCollectionForItemWithIdentifier:(id)a3 errorReason:(id)a4 completionHandler:(id)a5;
-- (void)resolveItemID:(id)a3 completionHandler:(id)a4;
-- (void)runTestingOperations:(id)a3 completionHandler:(id)a4;
-- (void)setDomainEjectable:(BOOL)a3 completionHandler:(id)a4;
-- (void)signalErrorResolved:(id)a3 completionHandler:(id)a4;
-- (void)startAccessingServiceWithName:(id)a3 itemID:(id)a4 completionHandler:(id)a5;
+- (void)listAvailableTestingOperationsWithCompletionHandler:(id)handler;
+- (void)materializeItemWithIdentifier:(id)identifier requestedRange:(_NSRange)range completionHandler:(id)handler;
+- (void)reimportItemsBelowItemWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)requestDiagnosticCollectionForItemWithIdentifier:(id)identifier errorReason:(id)reason completionHandler:(id)handler;
+- (void)resolveItemID:(id)d completionHandler:(id)handler;
+- (void)runTestingOperations:(id)operations completionHandler:(id)handler;
+- (void)setDomainEjectable:(BOOL)ejectable completionHandler:(id)handler;
+- (void)signalErrorResolved:(id)resolved completionHandler:(id)handler;
+- (void)startAccessingServiceWithName:(id)name itemID:(id)d completionHandler:(id)handler;
 - (void)startExtendingLifetime;
-- (void)stateDirectoryWithCompletionHandler:(id)a3;
-- (void)subscribeToDownloadProgressUpdates:(id)a3 completionHandler:(id)a4;
-- (void)subscribeToUploadProgressUpdates:(id)a3 completionHandler:(id)a4;
-- (void)temporaryDirectoryWithCompletionHandler:(id)a3;
-- (void)waitForChangesOnItemsBelowItemWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)waitForStabilizationWithMode:(unint64_t)a3 completionHandler:(id)a4;
+- (void)stateDirectoryWithCompletionHandler:(id)handler;
+- (void)subscribeToDownloadProgressUpdates:(id)updates completionHandler:(id)handler;
+- (void)subscribeToUploadProgressUpdates:(id)updates completionHandler:(id)handler;
+- (void)temporaryDirectoryWithCompletionHandler:(id)handler;
+- (void)waitForChangesOnItemsBelowItemWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)waitForStabilizationWithMode:(unint64_t)mode completionHandler:(id)handler;
 @end
 
 @implementation FPDXPCDomainServicer
 
 - (id)__providerIfExists
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  provider = v2->__provider;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  provider = selfCopy->__provider;
   if (provider && ![(FPDProvider *)provider invalidated])
   {
-    v4 = v2->__provider;
+    v4 = selfCopy->__provider;
   }
 
   else
@@ -55,21 +55,21 @@
     v4 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (void)startExtendingLifetime
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"FPDXPCDomainServicer.m" lineNumber:215 description:@"it's unsupported to call -_startAccessingProviderEndpointForProtocolName:itemURL:completionHandler: twice"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"FPDXPCDomainServicer.m" lineNumber:215 description:@"it's unsupported to call -_startAccessingProviderEndpointForProtocolName:itemURL:completionHandler: twice"];
 }
 
 - (void)_registerLifetimeExtension
 {
-  v3 = [(FPDXPCDomainServicer *)self sessionOrNil];
-  [v3 registerLifetimeExtensionForObject:self->_lifetimeExtender];
+  sessionOrNil = [(FPDXPCDomainServicer *)self sessionOrNil];
+  [sessionOrNil registerLifetimeExtensionForObject:self->_lifetimeExtender];
 
   self->_isALifetimerExtender = 1;
 }
@@ -77,19 +77,19 @@
 - (FPDExtensionSessionProtocol)sessionOrNil
 {
   v2 = [(FPDXPCDomainServicer *)self domainOrNil:0];
-  v3 = [v2 session];
+  session = [v2 session];
 
-  return v3;
+  return session;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(NSString *)self->_providerDomainID fp_obfuscatedProviderDomainID];
+  fp_obfuscatedProviderDomainID = [(NSString *)self->_providerDomainID fp_obfuscatedProviderDomainID];
   [(FPDXPCDomainServicer *)self pid];
   v6 = FPExecutableNameForProcessIdentifier();
-  v7 = [v3 stringWithFormat:@"<%@:%p:%@> for %@[%d]", v4, self, v5, v6, -[FPDXPCDomainServicer pid](self, "pid")];
+  v7 = [v3 stringWithFormat:@"<%@:%p:%@> for %@[%d]", v4, self, fp_obfuscatedProviderDomainID, v6, -[FPDXPCDomainServicer pid](self, "pid")];
 
   return v7;
 }
@@ -99,12 +99,12 @@
   if (self->_isALifetimerExtender)
   {
     self->_isALifetimerExtender = 0;
-    v4 = [(FPDXPCDomainServicer *)self sessionOrNil];
-    if (v4)
+    sessionOrNil = [(FPDXPCDomainServicer *)self sessionOrNil];
+    if (sessionOrNil)
     {
-      v5 = v4;
-      [v4 asyncUnregisterLifetimeExtensionForObject:self->_lifetimeExtender];
-      v4 = v5;
+      v5 = sessionOrNil;
+      [sessionOrNil asyncUnregisterLifetimeExtensionForObject:self->_lifetimeExtender];
+      sessionOrNil = v5;
     }
   }
 }
@@ -121,27 +121,27 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1CEFC7000, a2, OS_LOG_TYPE_DEBUG, "[DEBUG] invalidating %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (FPDXPCDomainServicer)initWithServer:(id)a3 providerDomainID:(id)a4 domain:(id)a5 connection:(id)a6
+- (FPDXPCDomainServicer)initWithServer:(id)server providerDomainID:(id)d domain:(id)domain connection:(id)connection
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  serverCopy = server;
+  dCopy = d;
+  domainCopy = domain;
+  connectionCopy = connection;
   v31.receiver = self;
   v31.super_class = FPDXPCDomainServicer;
   v14 = [(FPDXPCDomainServicer *)&v31 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_server, v10);
-    objc_storeStrong(&v15->_providerDomainID, a4);
-    objc_storeWeak(&v15->_domain, v12);
-    v16 = [v12 log];
+    objc_storeWeak(&v14->_server, serverCopy);
+    objc_storeStrong(&v15->_providerDomainID, d);
+    objc_storeWeak(&v15->_domain, domainCopy);
+    v16 = [domainCopy log];
     v17 = v16;
     if (v16)
     {
@@ -152,7 +152,7 @@
 
     else
     {
-      log = [v11 fp_obfuscatedProviderDomainID];
+      log = [dCopy fp_obfuscatedProviderDomainID];
       [log UTF8String];
       v20 = fpfs_create_log_for_provider();
       v21 = v15->_log;
@@ -164,12 +164,12 @@
     requestQueue = v15->_requestQueue;
     v15->_requestQueue = v23;
 
-    objc_storeWeak(&v15->_connection, v13);
+    objc_storeWeak(&v15->_connection, connectionCopy);
     v25 = objc_opt_new();
     lifetimeExtender = v15->_lifetimeExtender;
     v15->_lifetimeExtender = v25;
 
-    -[FPDXPCDomainServicerLifetimeExtender setRequestEffectivePID:](v15->_lifetimeExtender, "setRequestEffectivePID:", [v13 processIdentifier]);
+    -[FPDXPCDomainServicerLifetimeExtender setRequestEffectivePID:](v15->_lifetimeExtender, "setRequestEffectivePID:", [connectionCopy processIdentifier]);
     v27 = MEMORY[0x1E696AEC0];
     v28 = FPExecutableNameForProcessIdentifier();
     v29 = [v27 stringWithFormat:@"servicer for %@", v28];
@@ -179,62 +179,62 @@
   return v15;
 }
 
-- (id)providerOrNilWithReason:(unint64_t *)a3
+- (id)providerOrNilWithReason:(unint64_t *)reason
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(FPDXPCDomainServicer *)v4 __providerIfExists];
-  v6 = v5;
-  if (!v5)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  __providerIfExists = [(FPDXPCDomainServicer *)selfCopy __providerIfExists];
+  v6 = __providerIfExists;
+  if (!__providerIfExists)
   {
-    WeakRetained = objc_loadWeakRetained(&v4->_server);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_server);
 
     if (WeakRetained)
     {
-      v8 = objc_loadWeakRetained(&v4->_server);
-      v9 = [v8 extensionManager];
-      v10 = [(NSString *)v4->_providerDomainID fp_toProviderID];
-      v11 = [v9 providerWithIdentifier:v10 reason:a3];
-      provider = v4->__provider;
-      v4->__provider = v11;
+      v8 = objc_loadWeakRetained(&selfCopy->_server);
+      extensionManager = [v8 extensionManager];
+      fp_toProviderID = [(NSString *)selfCopy->_providerDomainID fp_toProviderID];
+      v11 = [extensionManager providerWithIdentifier:fp_toProviderID reason:reason];
+      provider = selfCopy->__provider;
+      selfCopy->__provider = v11;
     }
 
-    if (v4->_isALifetimerExtender)
+    if (selfCopy->_isALifetimerExtender)
     {
-      [(FPDXPCDomainServicer *)v4 _registerLifetimeExtension];
+      [(FPDXPCDomainServicer *)selfCopy _registerLifetimeExtension];
     }
 
-    v6 = v4->__provider;
+    v6 = selfCopy->__provider;
   }
 
   v13 = v6;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v13;
 }
 
-- (id)domainOrNil:(unint64_t *)a3
+- (id)domainOrNil:(unint64_t *)nil
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  WeakRetained = objc_loadWeakRetained(&v4->_domain);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_domain);
 
   if (WeakRetained)
   {
-    v6 = objc_loadWeakRetained(&v4->_domain);
-    objc_sync_exit(v4);
+    v6 = objc_loadWeakRetained(&selfCopy->_domain);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
-    v7 = [(FPDXPCDomainServicer *)v4 providerOrNilWithReason:a3];
+    v7 = [(FPDXPCDomainServicer *)selfCopy providerOrNilWithReason:nil];
     if (v7)
     {
-      v8 = [(NSString *)v4->_providerDomainID fp_toDomainIdentifier];
-      v6 = [(FPDXPCDomainServicer *)v7 domainForIdentifier:v8 reason:a3];
+      fp_toDomainIdentifier = [(NSString *)selfCopy->_providerDomainID fp_toDomainIdentifier];
+      v6 = [(FPDXPCDomainServicer *)v7 domainForIdentifier:fp_toDomainIdentifier reason:nil];
     }
 
     else
@@ -242,7 +242,7 @@
       v6 = 0;
     }
 
-    v4 = v7;
+    selfCopy = v7;
   }
 
   return v6;
@@ -250,10 +250,10 @@
 
 - (id)newFileProviderProxy
 {
-  v3 = [(FPDXPCDomainServicer *)self sessionOrNil];
-  if (v3)
+  sessionOrNil = [(FPDXPCDomainServicer *)self sessionOrNil];
+  if (sessionOrNil)
   {
-    v4 = [v3 newFileProviderProxyWithTimeout:-[FPDXPCDomainServicer pid](self pid:{"pid"), 180.0}];
+    v4 = [sessionOrNil newFileProviderProxyWithTimeout:-[FPDXPCDomainServicer pid](self pid:{"pid"), 180.0}];
   }
 
   else
@@ -268,24 +268,24 @@
   return v4;
 }
 
-- (void)deleteSearchableItemsWithSpotlightDomainIdentifiers:(id)a3 indexReason:(int64_t)a4 completionHandler:(id)a5
+- (void)deleteSearchableItemsWithSpotlightDomainIdentifiers:(id)identifiers indexReason:(int64_t)reason completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(NSString *)self->_providerDomainID fp_toDomainIdentifier];
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  fp_toDomainIdentifier = [(NSString *)self->_providerDomainID fp_toDomainIdentifier];
   requestQueue = self->_requestQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __106__FPDXPCDomainServicer_deleteSearchableItemsWithSpotlightDomainIdentifiers_indexReason_completionHandler___block_invoke;
   block[3] = &unk_1E83BE1D0;
   block[4] = self;
-  v16 = v8;
-  v18 = v9;
-  v19 = a4;
-  v17 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = identifiersCopy;
+  v18 = handlerCopy;
+  reasonCopy = reason;
+  v17 = fp_toDomainIdentifier;
+  v12 = handlerCopy;
+  v13 = fp_toDomainIdentifier;
+  v14 = identifiersCopy;
   dispatch_sync(requestQueue, block);
 }
 
@@ -333,20 +333,20 @@ void __106__FPDXPCDomainServicer_deleteSearchableItemsWithSpotlightDomainIdentif
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didChangeItemID:(id)a3 completionHandler:(id)a4
+- (void)didChangeItemID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   requestQueue = self->_requestQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__FPDXPCDomainServicer_didChangeItemID_completionHandler___block_invoke;
   block[3] = &unk_1E83BE1F8;
-  v12 = v6;
-  v13 = v7;
+  v12 = dCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = dCopy;
+  v10 = handlerCopy;
   dispatch_sync(requestQueue, block);
 }
 
@@ -441,20 +441,20 @@ void __58__FPDXPCDomainServicer_didChangeItemID_completionHandler___block_invoke
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resolveItemID:(id)a3 completionHandler:(id)a4
+- (void)resolveItemID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   requestQueue = self->_requestQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__FPDXPCDomainServicer_resolveItemID_completionHandler___block_invoke;
   block[3] = &unk_1E83BE1F8;
-  v12 = v6;
-  v13 = v7;
+  v12 = dCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = dCopy;
+  v10 = handlerCopy;
   dispatch_sync(requestQueue, block);
 }
 
@@ -560,18 +560,18 @@ void __56__FPDXPCDomainServicer_resolveItemID_completionHandler___block_invoke_2
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDomainEjectable:(BOOL)a3 completionHandler:(id)a4
+- (void)setDomainEjectable:(BOOL)ejectable completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   requestQueue = self->_requestQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__FPDXPCDomainServicer_setDomainEjectable_completionHandler___block_invoke;
   block[3] = &unk_1E83BE248;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = handlerCopy;
+  ejectableCopy = ejectable;
+  v8 = handlerCopy;
   dispatch_sync(requestQueue, block);
 }
 
@@ -672,21 +672,21 @@ void __61__FPDXPCDomainServicer_setDomainEjectable_completionHandler___block_inv
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ingestFromCacheItemWithIdentifier:(id)a3 requestedFields:(unint64_t)a4 completionHandler:(id)a5
+- (void)ingestFromCacheItemWithIdentifier:(id)identifier requestedFields:(unint64_t)fields completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   requestQueue = self->_requestQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __92__FPDXPCDomainServicer_ingestFromCacheItemWithIdentifier_requestedFields_completionHandler___block_invoke;
   v13[3] = &unk_1E83BE270;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v8;
-  v12 = v9;
+  v14 = identifierCopy;
+  v15 = handlerCopy;
+  fieldsCopy = fields;
+  v11 = identifierCopy;
+  v12 = handlerCopy;
   dispatch_sync(requestQueue, v13);
 }
 
@@ -823,20 +823,20 @@ void __92__FPDXPCDomainServicer_ingestFromCacheItemWithIdentifier_requestedField
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reimportItemsBelowItemWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)reimportItemsBelowItemWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   requestQueue = self->_requestQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__FPDXPCDomainServicer_reimportItemsBelowItemWithIdentifier_completionHandler___block_invoke;
   block[3] = &unk_1E83BE1F8;
-  v12 = v6;
-  v13 = v7;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = handlerCopy;
   dispatch_sync(requestQueue, block);
 }
 
@@ -932,20 +932,20 @@ void __79__FPDXPCDomainServicer_reimportItemsBelowItemWithIdentifier_completionH
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)evictItemWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)evictItemWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   requestQueue = self->_requestQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__FPDXPCDomainServicer_evictItemWithIdentifier_completionHandler___block_invoke;
   block[3] = &unk_1E83BE1F8;
-  v12 = v6;
-  v13 = v7;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = handlerCopy;
   dispatch_sync(requestQueue, block);
 }
 
@@ -1043,24 +1043,24 @@ void __66__FPDXPCDomainServicer_evictItemWithIdentifier_completionHandler___bloc
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)materializeItemWithIdentifier:(id)a3 requestedRange:(_NSRange)a4 completionHandler:(id)a5
+- (void)materializeItemWithIdentifier:(id)identifier requestedRange:(_NSRange)range completionHandler:(id)handler
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
+  length = range.length;
+  location = range.location;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   requestQueue = self->_requestQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __87__FPDXPCDomainServicer_materializeItemWithIdentifier_requestedRange_completionHandler___block_invoke;
   block[3] = &unk_1E83BE298;
-  v16 = v10;
+  v16 = handlerCopy;
   v17 = location;
   v18 = length;
   block[4] = self;
-  v15 = v9;
-  v12 = v9;
-  v13 = v10;
+  v15 = identifierCopy;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
   dispatch_sync(requestQueue, block);
 }
 
@@ -1193,21 +1193,21 @@ void __87__FPDXPCDomainServicer_materializeItemWithIdentifier_requestedRange_com
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateMaterializedSetFromSyncAnchor:(id)a3 suggestedBatchSize:(int64_t)a4 completionHandler:(id)a5
+- (void)enumerateMaterializedSetFromSyncAnchor:(id)anchor suggestedBatchSize:(int64_t)size completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  anchorCopy = anchor;
+  handlerCopy = handler;
   requestQueue = self->_requestQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __100__FPDXPCDomainServicer_enumerateMaterializedSetFromSyncAnchor_suggestedBatchSize_completionHandler___block_invoke;
   v13[3] = &unk_1E83BE270;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v8;
-  v12 = v9;
+  v14 = anchorCopy;
+  v15 = handlerCopy;
+  sizeCopy = size;
+  v11 = anchorCopy;
+  v12 = handlerCopy;
   dispatch_sync(requestQueue, v13);
 }
 
@@ -1328,17 +1328,17 @@ void __100__FPDXPCDomainServicer_enumerateMaterializedSetFromSyncAnchor_suggeste
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)currentMaterializedSetSyncAnchorWithCompletionHandler:(id)a3
+- (void)currentMaterializedSetSyncAnchorWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   requestQueue = self->_requestQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __78__FPDXPCDomainServicer_currentMaterializedSetSyncAnchorWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E83BE310;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(requestQueue, v7);
 }
 
@@ -1426,21 +1426,21 @@ void __78__FPDXPCDomainServicer_currentMaterializedSetSyncAnchorWithCompletionHa
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumeratePendingSetFromSyncAnchor:(id)a3 suggestedBatchSize:(int64_t)a4 completionHandler:(id)a5
+- (void)enumeratePendingSetFromSyncAnchor:(id)anchor suggestedBatchSize:(int64_t)size completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  anchorCopy = anchor;
+  handlerCopy = handler;
   requestQueue = self->_requestQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __95__FPDXPCDomainServicer_enumeratePendingSetFromSyncAnchor_suggestedBatchSize_completionHandler___block_invoke;
   v13[3] = &unk_1E83BE270;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v8;
-  v12 = v9;
+  v14 = anchorCopy;
+  v15 = handlerCopy;
+  sizeCopy = size;
+  v11 = anchorCopy;
+  v12 = handlerCopy;
   dispatch_sync(requestQueue, v13);
 }
 
@@ -1569,17 +1569,17 @@ void __95__FPDXPCDomainServicer_enumeratePendingSetFromSyncAnchor_suggestedBatch
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)currentPendingSetSyncAnchorWithCompletionHandler:(id)a3
+- (void)currentPendingSetSyncAnchorWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   requestQueue = self->_requestQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __73__FPDXPCDomainServicer_currentPendingSetSyncAnchorWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E83BE310;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(requestQueue, v7);
 }
 
@@ -1671,20 +1671,20 @@ void __73__FPDXPCDomainServicer_currentPendingSetSyncAnchorWithCompletionHandler
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)waitForChangesOnItemsBelowItemWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)waitForChangesOnItemsBelowItemWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   requestQueue = self->_requestQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __87__FPDXPCDomainServicer_waitForChangesOnItemsBelowItemWithIdentifier_completionHandler___block_invoke;
   block[3] = &unk_1E83BE1F8;
-  v12 = v6;
-  v13 = v7;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = handlerCopy;
   dispatch_sync(requestQueue, block);
 }
 
@@ -1817,18 +1817,18 @@ void __87__FPDXPCDomainServicer_waitForChangesOnItemsBelowItemWithIdentifier_com
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)waitForStabilizationWithMode:(unint64_t)a3 completionHandler:(id)a4
+- (void)waitForStabilizationWithMode:(unint64_t)mode completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   requestQueue = self->_requestQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__FPDXPCDomainServicer_waitForStabilizationWithMode_completionHandler___block_invoke;
   block[3] = &unk_1E83BE388;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = handlerCopy;
+  modeCopy = mode;
+  v8 = handlerCopy;
   dispatch_sync(requestQueue, block);
 }
 
@@ -1927,20 +1927,20 @@ void __71__FPDXPCDomainServicer_waitForStabilizationWithMode_completionHandler__
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)signalErrorResolved:(id)a3 completionHandler:(id)a4
+- (void)signalErrorResolved:(id)resolved completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  resolvedCopy = resolved;
+  handlerCopy = handler;
   requestQueue = self->_requestQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__FPDXPCDomainServicer_signalErrorResolved_completionHandler___block_invoke;
   block[3] = &unk_1E83BE1F8;
-  v12 = v6;
-  v13 = v7;
+  v12 = resolvedCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = resolvedCopy;
+  v10 = handlerCopy;
   dispatch_sync(requestQueue, block);
 }
 
@@ -2093,17 +2093,17 @@ void __62__FPDXPCDomainServicer_signalErrorResolved_completionHandler___block_in
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)temporaryDirectoryWithCompletionHandler:(id)a3
+- (void)temporaryDirectoryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   requestQueue = self->_requestQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__FPDXPCDomainServicer_temporaryDirectoryWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E83BE310;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(requestQueue, v7);
 }
 
@@ -2229,17 +2229,17 @@ void __64__FPDXPCDomainServicer_temporaryDirectoryWithCompletionHandler___block_
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stateDirectoryWithCompletionHandler:(id)a3
+- (void)stateDirectoryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   requestQueue = self->_requestQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__FPDXPCDomainServicer_stateDirectoryWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E83BE310;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(requestQueue, v7);
 }
 
@@ -2365,17 +2365,17 @@ void __60__FPDXPCDomainServicer_stateDirectoryWithCompletionHandler___block_invo
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)listAvailableTestingOperationsWithCompletionHandler:(id)a3
+- (void)listAvailableTestingOperationsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   requestQueue = self->_requestQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __76__FPDXPCDomainServicer_listAvailableTestingOperationsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E83BE310;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(requestQueue, v7);
 }
 
@@ -2585,20 +2585,20 @@ void __76__FPDXPCDomainServicer_listAvailableTestingOperationsWithCompletionHand
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)runTestingOperations:(id)a3 completionHandler:(id)a4
+- (void)runTestingOperations:(id)operations completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  operationsCopy = operations;
+  handlerCopy = handler;
   requestQueue = self->_requestQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__FPDXPCDomainServicer_runTestingOperations_completionHandler___block_invoke;
   block[3] = &unk_1E83BE1F8;
-  v12 = v6;
-  v13 = v7;
+  v12 = operationsCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = operationsCopy;
+  v10 = handlerCopy;
   dispatch_sync(requestQueue, block);
 }
 
@@ -2808,20 +2808,20 @@ void __63__FPDXPCDomainServicer_runTestingOperations_completionHandler___block_i
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)subscribeToUploadProgressUpdates:(id)a3 completionHandler:(id)a4
+- (void)subscribeToUploadProgressUpdates:(id)updates completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  updatesCopy = updates;
+  handlerCopy = handler;
   requestQueue = self->_requestQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__FPDXPCDomainServicer_subscribeToUploadProgressUpdates_completionHandler___block_invoke;
   block[3] = &unk_1E83BE1F8;
-  v12 = v6;
-  v13 = v7;
+  v12 = updatesCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = updatesCopy;
+  v10 = handlerCopy;
   dispatch_sync(requestQueue, block);
 }
 
@@ -2983,20 +2983,20 @@ void __75__FPDXPCDomainServicer_subscribeToUploadProgressUpdates_completionHandl
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)subscribeToDownloadProgressUpdates:(id)a3 completionHandler:(id)a4
+- (void)subscribeToDownloadProgressUpdates:(id)updates completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  updatesCopy = updates;
+  handlerCopy = handler;
   requestQueue = self->_requestQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__FPDXPCDomainServicer_subscribeToDownloadProgressUpdates_completionHandler___block_invoke;
   block[3] = &unk_1E83BE1F8;
-  v12 = v6;
-  v13 = v7;
+  v12 = updatesCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = updatesCopy;
+  v10 = handlerCopy;
   dispatch_sync(requestQueue, block);
 }
 
@@ -3158,23 +3158,23 @@ void __77__FPDXPCDomainServicer_subscribeToDownloadProgressUpdates_completionHan
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startAccessingServiceWithName:(id)a3 itemID:(id)a4 completionHandler:(id)a5
+- (void)startAccessingServiceWithName:(id)name itemID:(id)d completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  dCopy = d;
+  handlerCopy = handler;
   requestQueue = self->_requestQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __79__FPDXPCDomainServicer_startAccessingServiceWithName_itemID_completionHandler___block_invoke;
   v15[3] = &unk_1E83BE4A0;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
+  v16 = dCopy;
+  v17 = nameCopy;
+  v18 = handlerCopy;
+  v12 = nameCopy;
+  v13 = dCopy;
+  v14 = handlerCopy;
   dispatch_sync(requestQueue, v15);
 }
 
@@ -3417,20 +3417,20 @@ void __79__FPDXPCDomainServicer_startAccessingServiceWithName_itemID_completionH
   [WeakRetained unregisterLifetimeExtensionForObject:v3];
 }
 
-- (void)getDiagnosticAttributesForItems:(id)a3 completionHandler:(id)a4
+- (void)getDiagnosticAttributesForItems:(id)items completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  handlerCopy = handler;
   requestQueue = self->_requestQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__FPDXPCDomainServicer_getDiagnosticAttributesForItems_completionHandler___block_invoke;
   block[3] = &unk_1E83BE1F8;
-  v12 = v6;
-  v13 = v7;
+  v12 = itemsCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = itemsCopy;
+  v10 = handlerCopy;
   dispatch_sync(requestQueue, block);
 }
 
@@ -3607,17 +3607,17 @@ void __74__FPDXPCDomainServicer_getDiagnosticAttributesForItems_completionHandle
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_t_setFilePresenterObserver:(id)a3
+- (void)_t_setFilePresenterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   requestQueue = self->_requestQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__FPDXPCDomainServicer__t_setFilePresenterObserver___block_invoke;
   v7[3] = &unk_1E83BE158;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(requestQueue, v7);
 }
 
@@ -3704,17 +3704,17 @@ void __52__FPDXPCDomainServicer__t_setFilePresenterObserver___block_invoke_3(uin
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestDiagnosticCollectionForItemWithIdentifier:(id)a3 errorReason:(id)a4 completionHandler:(id)a5
+- (void)requestDiagnosticCollectionForItemWithIdentifier:(id)identifier errorReason:(id)reason completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   requestQueue = self->_requestQueue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __103__FPDXPCDomainServicer_requestDiagnosticCollectionForItemWithIdentifier_errorReason_completionHandler___block_invoke;
   v9[3] = &unk_1E83BE310;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_sync(requestQueue, v9);
 }
 

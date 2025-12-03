@@ -1,49 +1,49 @@
 @interface POMMESSchemaPOMMESCacheMaintenanceEnded
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (POMMESSchemaPOMMESCacheMaintenanceEnded)initWithDictionary:(id)a3;
-- (POMMESSchemaPOMMESCacheMaintenanceEnded)initWithJSON:(id)a3;
+- (POMMESSchemaPOMMESCacheMaintenanceEnded)initWithDictionary:(id)dictionary;
+- (POMMESSchemaPOMMESCacheMaintenanceEnded)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasReason:(BOOL)a3;
-- (void)setHasTimeSinceMaintenanceStartedInSeconds:(BOOL)a3;
-- (void)setHasTotalCacheEntries:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasReason:(BOOL)reason;
+- (void)setHasTimeSinceMaintenanceStartedInSeconds:(BOOL)seconds;
+- (void)setHasTotalCacheEntries:(BOOL)entries;
+- (void)writeTo:(id)to;
 @end
 
 @implementation POMMESSchemaPOMMESCacheMaintenanceEnded
 
-- (POMMESSchemaPOMMESCacheMaintenanceEnded)initWithDictionary:(id)a3
+- (POMMESSchemaPOMMESCacheMaintenanceEnded)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = POMMESSchemaPOMMESCacheMaintenanceEnded;
   v5 = [(POMMESSchemaPOMMESCacheMaintenanceEnded *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"numberOfEntriesUpdated"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"numberOfEntriesUpdated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESCacheMaintenanceEnded setNumberOfEntriesUpdated:](v5, "setNumberOfEntriesUpdated:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"totalCacheEntries"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"totalCacheEntries"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESCacheMaintenanceEnded setTotalCacheEntries:](v5, "setTotalCacheEntries:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"timeSinceMaintenanceStartedInSeconds"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceMaintenanceStartedInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESCacheMaintenanceEnded setTimeSinceMaintenanceStartedInSeconds:](v5, "setTimeSinceMaintenanceStartedInSeconds:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"reason"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"reason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,30 +56,30 @@
   return v5;
 }
 
-- (POMMESSchemaPOMMESCacheMaintenanceEnded)initWithJSON:(id)a3
+- (POMMESSchemaPOMMESCacheMaintenanceEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POMMESSchemaPOMMESCacheMaintenanceEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(POMMESSchemaPOMMESCacheMaintenanceEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(POMMESSchemaPOMMESCacheMaintenanceEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -92,12 +92,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[POMMESSchemaPOMMESCacheMaintenanceEnded numberOfEntriesUpdated](self, "numberOfEntriesUpdated")}];
-    [v3 setObject:v7 forKeyedSubscript:@"numberOfEntriesUpdated"];
+    [dictionary setObject:v7 forKeyedSubscript:@"numberOfEntriesUpdated"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -117,14 +117,14 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v8 = [(POMMESSchemaPOMMESCacheMaintenanceEnded *)self reason];
+  reason = [(POMMESSchemaPOMMESCacheMaintenanceEnded *)self reason];
   v9 = @"POMMESCACHEMAINTENANCEENDEDREASON_UNKNOWN";
-  if (v8 == 1)
+  if (reason == 1)
   {
     v9 = @"POMMESCACHEMAINTENANCEENDEDREASON_COMPLETE";
   }
 
-  if (v8 == 2)
+  if (reason == 2)
   {
     v10 = @"POMMESCACHEMAINTENANCEENDEDREASON_DEFERRED";
   }
@@ -134,7 +134,7 @@ LABEL_3:
     v10 = v9;
   }
 
-  [v3 setObject:v10 forKeyedSubscript:@"reason"];
+  [dictionary setObject:v10 forKeyedSubscript:@"reason"];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -149,19 +149,19 @@ LABEL_4:
 
 LABEL_16:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[POMMESSchemaPOMMESCacheMaintenanceEnded timeSinceMaintenanceStartedInSeconds](self, "timeSinceMaintenanceStartedInSeconds")}];
-  [v3 setObject:v11 forKeyedSubscript:@"timeSinceMaintenanceStartedInSeconds"];
+  [dictionary setObject:v11 forKeyedSubscript:@"timeSinceMaintenanceStartedInSeconds"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[POMMESSchemaPOMMESCacheMaintenanceEnded totalCacheEntries](self, "totalCacheEntries")}];
-    [v3 setObject:v5 forKeyedSubscript:@"totalCacheEntries"];
+    [dictionary setObject:v5 forKeyedSubscript:@"totalCacheEntries"];
   }
 
 LABEL_6:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -218,16 +218,16 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_18;
@@ -236,13 +236,13 @@ LABEL_5:
   if (*&has)
   {
     numberOfEntriesUpdated = self->_numberOfEntriesUpdated;
-    if (numberOfEntriesUpdated != [v4 numberOfEntriesUpdated])
+    if (numberOfEntriesUpdated != [equalCopy numberOfEntriesUpdated])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -254,13 +254,13 @@ LABEL_5:
   if (v8)
   {
     totalCacheEntries = self->_totalCacheEntries;
-    if (totalCacheEntries != [v4 totalCacheEntries])
+    if (totalCacheEntries != [equalCopy totalCacheEntries])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -272,10 +272,10 @@ LABEL_5:
   if (v10)
   {
     timeSinceMaintenanceStartedInSeconds = self->_timeSinceMaintenanceStartedInSeconds;
-    if (timeSinceMaintenanceStartedInSeconds == [v4 timeSinceMaintenanceStartedInSeconds])
+    if (timeSinceMaintenanceStartedInSeconds == [equalCopy timeSinceMaintenanceStartedInSeconds])
     {
       has = self->_has;
-      v6 = v4[24];
+      v6 = equalCopy[24];
       goto LABEL_14;
     }
 
@@ -294,7 +294,7 @@ LABEL_14:
   if (v12)
   {
     reason = self->_reason;
-    if (reason != [v4 reason])
+    if (reason != [equalCopy reason])
     {
       goto LABEL_18;
     }
@@ -306,9 +306,9 @@ LABEL_19:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -355,9 +355,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasReason:(BOOL)a3
+- (void)setHasReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 8;
   }
@@ -370,9 +370,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasTimeSinceMaintenanceStartedInSeconds:(BOOL)a3
+- (void)setHasTimeSinceMaintenanceStartedInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 4;
   }
@@ -385,9 +385,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasTotalCacheEntries:(BOOL)a3
+- (void)setHasTotalCacheEntries:(BOOL)entries
 {
-  if (a3)
+  if (entries)
   {
     v3 = 2;
   }

@@ -5,15 +5,15 @@
 - (BOOL)systemControlsShouldPresentAsEmbedded;
 - (CGRect)windowedAccessoryCutoutFrameInScreen;
 - (NSUUID)requestedPresentationConfigurationIdentifier;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 - (int64_t)inCallPresentationMode;
 @end
 
 @implementation SBSUIInCallSceneSettings
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [SBSUIMutableInCallSceneSettings alloc];
 
@@ -22,26 +22,26 @@
 
 - (int64_t)inCallPresentationMode
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3001];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:3001];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)isAttachedToWindowedAccessory
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3002];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:3002];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (CGRect)windowedAccessoryCutoutFrameInScreen
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3003];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:3003];
   [v3 CGRectValue];
   v5 = v4;
   v7 = v6;
@@ -61,42 +61,42 @@
 
 - (BOOL)isScreenSharingPresentation
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3004];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:3004];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)systemControlsShouldPresentAsEmbedded
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3005];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:3005];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isBeingShownAboveCoverSheet
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3006];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:3006];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSUUID)requestedPresentationConfigurationIdentifier
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3007];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:3007];
 
   return v3;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 - 3001 > 6)
+  if (setting - 3001 > 6)
   {
     v5.receiver = self;
     v5.super_class = SBSUIInCallSceneSettings;
@@ -105,24 +105,24 @@
 
   else
   {
-    v3 = SBSUIInCallSceneClientSettingKeyDescription_0(a3);
+    v3 = SBSUIInCallSceneClientSettingKeyDescription_0(setting);
   }
 
   return v3;
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  if (a5 - 3001 > 6)
+  if (setting - 3001 > 6)
   {
     v7.receiver = self;
     v7.super_class = SBSUIInCallSceneSettings;
-    v5 = [(FBSSettings *)&v7 valueDescriptionForFlag:a3 object:a4 ofSetting:?];
+    v5 = [(FBSSettings *)&v7 valueDescriptionForFlag:flag object:object ofSetting:?];
   }
 
   else
   {
-    v5 = SBSUIInCallSceneClientSettingValueDescription_0(a5, a4);
+    v5 = SBSUIInCallSceneClientSettingValueDescription_0(setting, object);
   }
 
   return v5;

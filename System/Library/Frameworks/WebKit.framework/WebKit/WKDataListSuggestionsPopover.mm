@@ -1,21 +1,21 @@
 @interface WKDataListSuggestionsPopover
-- (WKDataListSuggestionsPopover)initWithInformation:(void *)a3 inView:(id)a4;
+- (WKDataListSuggestionsPopover)initWithInformation:(void *)information inView:(id)view;
 - (id).cxx_construct;
-- (void)didSelectOptionAtIndex:(int64_t)a3;
-- (void)showSuggestionsDropdown:(void *)a3 activationType:(unsigned __int8)a4;
-- (void)updateWithInformation:(void *)a3;
+- (void)didSelectOptionAtIndex:(int64_t)index;
+- (void)showSuggestionsDropdown:(void *)dropdown activationType:(unsigned __int8)type;
+- (void)updateWithInformation:(void *)information;
 @end
 
 @implementation WKDataListSuggestionsPopover
 
-- (WKDataListSuggestionsPopover)initWithInformation:(void *)a3 inView:(id)a4
+- (WKDataListSuggestionsPopover)initWithInformation:(void *)information inView:(id)view
 {
   v9.receiver = self;
   v9.super_class = WKDataListSuggestionsPopover;
-  v5 = [(WKDataListSuggestionsControl *)&v9 initWithInformation:a3 inView:?];
+  v5 = [(WKDataListSuggestionsControl *)&v9 initWithInformation:information inView:?];
   if (v5)
   {
-    v6 = [[WKFormRotatingAccessoryPopover alloc] initWithView:a4];
+    v6 = [[WKFormRotatingAccessoryPopover alloc] initWithView:view];
     m_ptr = v5->_popover.m_ptr;
     v5->_popover.m_ptr = v6;
     if (m_ptr)
@@ -26,20 +26,20 @@
   return v5;
 }
 
-- (void)updateWithInformation:(void *)a3
+- (void)updateWithInformation:(void *)information
 {
   v4.receiver = self;
   v4.super_class = WKDataListSuggestionsPopover;
-  [(WKDataListSuggestionsControl *)&v4 updateWithInformation:a3];
+  [(WKDataListSuggestionsControl *)&v4 updateWithInformation:information];
   [(WKDataListSuggestionsViewController *)self->_suggestionsViewController.m_ptr reloadData];
   [(WKContentView *)[(WKDataListSuggestionsControl *)self view] setDataListTextSuggestions:[(WKDataListSuggestionsControl *)self textSuggestions]];
 }
 
-- (void)showSuggestionsDropdown:(void *)a3 activationType:(unsigned __int8)a4
+- (void)showSuggestionsDropdown:(void *)dropdown activationType:(unsigned __int8)type
 {
   v9.receiver = self;
   v9.super_class = WKDataListSuggestionsPopover;
-  [(WKDataListSuggestionsControl *)&v9 showSuggestionsDropdown:a3 activationType:a4];
+  [(WKDataListSuggestionsControl *)&v9 showSuggestionsDropdown:dropdown activationType:type];
   v5 = [[WKDataListSuggestionsViewController alloc] initWithStyle:0];
   m_ptr = self->_suggestionsViewController.m_ptr;
   self->_suggestionsViewController.m_ptr = v5;
@@ -62,14 +62,14 @@
   [(WKRotatingPopover *)self->_popover.m_ptr presentPopoverAnimated:0];
 }
 
-- (void)didSelectOptionAtIndex:(int64_t)a3
+- (void)didSelectOptionAtIndex:(int64_t)index
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = WKDataListSuggestionsPopover;
   [(WKDataListSuggestionsControl *)&v11 didSelectOptionAtIndex:?];
   [(UIPopoverController *)[(WKRotatingPopover *)self->_popover.m_ptr popoverController] dismissPopoverAnimated:1];
-  [(WKDataListSuggestionsControl *)self suggestionAtIndex:a3];
+  [(WKDataListSuggestionsControl *)self suggestionAtIndex:index];
   if (v9)
   {
     atomic_fetch_add_explicit(v9, 2u, memory_order_relaxed);

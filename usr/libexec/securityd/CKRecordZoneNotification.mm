@@ -1,6 +1,6 @@
 @interface CKRecordZoneNotification
 - (BOOL)ckksPushTracingEnabled;
-- (void)setCkksPushTracingEnabled:(BOOL)a3;
+- (void)setCkksPushTracingEnabled:(BOOL)enabled;
 @end
 
 @implementation CKRecordZoneNotification
@@ -8,14 +8,14 @@
 - (BOOL)ckksPushTracingEnabled
 {
   v2 = objc_getAssociatedObject(self, "ckksPushTracingEnabled");
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setCkksPushTracingEnabled:(BOOL)a3
+- (void)setCkksPushTracingEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = &__kCFBooleanTrue;
   }

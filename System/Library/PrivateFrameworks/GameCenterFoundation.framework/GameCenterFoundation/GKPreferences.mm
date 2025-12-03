@@ -1,10 +1,10 @@
 @interface GKPreferences
 + (GKPreferences)shared;
-+ (id)displayNameForEnvironment:(int64_t)a3;
-+ (id)hostNameForEnvironment:(int64_t)a3;
-+ (id)sharedWithSupport:(id)a3;
-+ (int64_t)environmentForString:(id)a3;
-- (BOOL)BOOLeanValueForKey:(id)a3 defaultValue:(BOOL)a4;
++ (id)displayNameForEnvironment:(int64_t)environment;
++ (id)hostNameForEnvironment:(int64_t)environment;
++ (id)sharedWithSupport:(id)support;
++ (int64_t)environmentForString:(id)string;
+- (BOOL)BOOLeanValueForKey:(id)key defaultValue:(BOOL)value;
 - (BOOL)HTTPShouldUsePipelining;
 - (BOOL)forceDeadlockFetchingUserRecordID;
 - (BOOL)inboxContactsOnly;
@@ -17,27 +17,27 @@
 - (BOOL)multiplayerHealthCheckEnabled;
 - (BOOL)shouldAllowCustomCommunication;
 - (BOOL)shouldAllowNearbyMultiplayer;
-- (GKPreferences)initWithNotificationsAndSupport:(id)a3;
-- (GKPreferences)initWithoutNotificationsWithSupport:(id)a3;
+- (GKPreferences)initWithNotificationsAndSupport:(id)support;
+- (GKPreferences)initWithoutNotificationsWithSupport:(id)support;
 - (NSArray)forceDisabledTransportVersions;
 - (NSArray)forceEnabledTransportVersions;
 - (NSDictionary)overrideValues;
-- (const)lookupRestrictionLimitsForEachAgeCategory:(int)a3;
-- (double)timeIntervalForKey:(id)a3 defaultValue:(double)a4;
-- (id)dictionaryValueForKey:(id)a3;
-- (id)effectiveValueForSetting:(id)a3;
-- (id)overrideValueForKey:(id)a3;
-- (id)preferencesValueForKey:(id)a3;
-- (id)stringValueForKey:(id)a3 defaultValue:(id)a4;
-- (int)clampNumericRestriction:(id)a3 tableEntry:(const RestrictionsLimitsForEachAgeCategory *)a4;
-- (int)effectiveBoolValueForSetting:(id)a3;
+- (const)lookupRestrictionLimitsForEachAgeCategory:(int)category;
+- (double)timeIntervalForKey:(id)key defaultValue:(double)value;
+- (id)dictionaryValueForKey:(id)key;
+- (id)effectiveValueForSetting:(id)setting;
+- (id)overrideValueForKey:(id)key;
+- (id)preferencesValueForKey:(id)key;
+- (id)stringValueForKey:(id)key defaultValue:(id)value;
+- (int)clampNumericRestriction:(id)restriction tableEntry:(const RestrictionsLimitsForEachAgeCategory *)entry;
+- (int)effectiveBoolValueForSetting:(id)setting;
 - (int)forceAgeCategory;
-- (int)getRestrictionLimitForLocalPlayer:(const RestrictionsLimitsForEachAgeCategory *)a3;
+- (int)getRestrictionLimitForLocalPlayer:(const RestrictionsLimitsForEachAgeCategory *)player;
 - (int)localPlayerAgeCategory;
 - (int64_t)environment;
-- (int64_t)integerValueForKey:(id)a3 defaultValue:(int64_t)a4;
-- (int64_t)recentPlayerPickerSortPreferenceForBundleID:(id)a3;
-- (int64_t)unsignedIntegerValueForKey:(id)a3 defaultValue:(int64_t)a4;
+- (int64_t)integerValueForKey:(id)key defaultValue:(int64_t)value;
+- (int64_t)recentPlayerPickerSortPreferenceForBundleID:(id)d;
+- (int64_t)unsignedIntegerValueForKey:(id)key defaultValue:(int64_t)value;
 - (unint64_t)exchangeDataDefaultMaximumSize;
 - (unint64_t)exchangeDataMaximumSize;
 - (unint64_t)exchangeDefaultMaxInitiatedExchangesPerPlayer;
@@ -51,29 +51,29 @@
 - (unint64_t)maxPlayersP2P;
 - (unint64_t)maxPlayersTurnBased;
 - (unint64_t)multiplayerAllowedPlayerType;
-- (unint64_t)recentNumberOfPlayersForBundleID:(id)a3;
-- (void)_didWriteKey:(id)a3;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)removeOverrideForKey:(id)a3;
-- (void)setBooleanValue:(BOOL)a3 forKey:(id)a4;
-- (void)setEnvironment:(int64_t)a3;
-- (void)setForceAgeCategory:(int)a3;
-- (void)setForceUnderage:(BOOL)a3;
-- (void)setIntegerValue:(int64_t)a3 forKey:(id)a4;
-- (void)setOverrideValues:(id)a3;
-- (void)setPreferencesDelegate:(id)a3;
-- (void)setRecentNumberOfPlayers:(unint64_t)a3 forBundleID:(id)a4;
-- (void)setRecentPlayerPickerSortPreference:(int64_t)a3 forBundleID:(id)a4;
-- (void)setStoreBagURL:(id)a3;
-- (void)setTimeInterval:(double)a3 forKey:(id)a4;
-- (void)setUnsignedIntegerValue:(int64_t)a3 forKey:(id)a4;
+- (unint64_t)recentNumberOfPlayersForBundleID:(id)d;
+- (void)_didWriteKey:(id)key;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)removeOverrideForKey:(id)key;
+- (void)setBooleanValue:(BOOL)value forKey:(id)key;
+- (void)setEnvironment:(int64_t)environment;
+- (void)setForceAgeCategory:(int)category;
+- (void)setForceUnderage:(BOOL)underage;
+- (void)setIntegerValue:(int64_t)value forKey:(id)key;
+- (void)setOverrideValues:(id)values;
+- (void)setPreferencesDelegate:(id)delegate;
+- (void)setRecentNumberOfPlayers:(unint64_t)players forBundleID:(id)d;
+- (void)setRecentPlayerPickerSortPreference:(int64_t)preference forBundleID:(id)d;
+- (void)setStoreBagURL:(id)l;
+- (void)setTimeInterval:(double)interval forKey:(id)key;
+- (void)setUnsignedIntegerValue:(int64_t)value forKey:(id)key;
 @end
 
 @implementation GKPreferences
 
 + (GKPreferences)shared
 {
-  v2 = [a1 sharedWithSupport:0];
+  v2 = [self sharedWithSupport:0];
   if ([v2 _shouldSynchronizeOnNextRead])
   {
     [v2 synchronize];
@@ -83,50 +83,50 @@
   return v2;
 }
 
-- (GKPreferences)initWithNotificationsAndSupport:(id)a3
+- (GKPreferences)initWithNotificationsAndSupport:(id)support
 {
-  v4 = a3;
-  v5 = [(GKPreferences *)self initWithoutNotificationsWithSupport:v4];
-  v6 = [v4 shouldRefreshPreferencesAfterBackgrounding];
+  supportCopy = support;
+  v5 = [(GKPreferences *)self initWithoutNotificationsWithSupport:supportCopy];
+  shouldRefreshPreferencesAfterBackgrounding = [supportCopy shouldRefreshPreferencesAfterBackgrounding];
 
-  if (v6)
+  if (shouldRefreshPreferencesAfterBackgrounding)
   {
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v8 = +[GKApplicationNotificationNames didEnterBackground];
-    [v7 addObserver:v5 selector:sel_applicationWillEnterBackground_ name:v8 object:0];
+    [defaultCenter addObserver:v5 selector:sel_applicationWillEnterBackground_ name:v8 object:0];
   }
 
   return v5;
 }
 
-- (GKPreferences)initWithoutNotificationsWithSupport:(id)a3
+- (GKPreferences)initWithoutNotificationsWithSupport:(id)support
 {
-  v5 = a3;
+  supportCopy = support;
   v10.receiver = self;
   v10.super_class = GKPreferences;
   v6 = [(GKPreferences *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_support, a3);
-    v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v8 addSuiteNamed:@"com.apple.demo-settings"];
+    objc_storeStrong(&v6->_support, support);
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults addSuiteNamed:@"com.apple.demo-settings"];
     [(GKPreferences *)v7 synchronize];
   }
 
   return v7;
 }
 
-+ (id)sharedWithSupport:(id)a3
++ (id)sharedWithSupport:(id)support
 {
-  v3 = a3;
+  supportCopy = support;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__GKPreferences_sharedWithSupport___block_invoke;
   block[3] = &unk_2785DD760;
-  v10 = v3;
+  v10 = supportCopy;
   v4 = sharedWithSupport__sDispatchOnceToken;
-  v5 = v3;
+  v5 = supportCopy;
   if (v4 != -1)
   {
     dispatch_once(&sharedWithSupport__sDispatchOnceToken, block);
@@ -186,130 +186,130 @@ uint64_t __32__GKPreferences_isInternalBuild__block_invoke()
   return result;
 }
 
-- (void)_didWriteKey:(id)a3
+- (void)_didWriteKey:(id)key
 {
-  [(GKPreferences *)self removeOverrideForKey:a3];
+  [(GKPreferences *)self removeOverrideForKey:key];
 
   CFPreferencesAppSynchronize(@"com.apple.gamecenter");
 }
 
-- (id)preferencesValueForKey:(id)a3
+- (id)preferencesValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(GKPreferences *)self overrideValueForKey:v4];
+  keyCopy = key;
+  v5 = [(GKPreferences *)self overrideValueForKey:keyCopy];
   if (!v5)
   {
-    v5 = CFPreferencesCopyAppValue(v4, @"com.apple.gamecenter");
+    v5 = CFPreferencesCopyAppValue(keyCopy, @"com.apple.gamecenter");
   }
 
   return v5;
 }
 
-- (void)setOverrideValues:(id)a3
+- (void)setOverrideValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   obj = self;
   objc_sync_enter(obj);
   overrideValues = obj->_overrideValues;
-  obj->_overrideValues = v4;
+  obj->_overrideValues = valuesCopy;
 
   objc_sync_exit(obj);
 }
 
 - (NSDictionary)overrideValues
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_overrideValues;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_overrideValues;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)overrideValueForKey:(id)a3
+- (id)overrideValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSDictionary *)v5->_overrideValues objectForKey:v4];
-  objc_sync_exit(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSDictionary *)selfCopy->_overrideValues objectForKey:keyCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (BOOL)BOOLeanValueForKey:(id)a3 defaultValue:(BOOL)a4
+- (BOOL)BOOLeanValueForKey:(id)key defaultValue:(BOOL)value
 {
-  v5 = [(GKPreferences *)self preferencesValueForKey:a3];
+  v5 = [(GKPreferences *)self preferencesValueForKey:key];
   v6 = v5;
   if (v5)
   {
-    a4 = [v5 BOOLValue];
+    value = [v5 BOOLValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (void)setBooleanValue:(BOOL)a3 forKey:(id)a4
+- (void)setBooleanValue:(BOOL)value forKey:(id)key
 {
   v5 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!value)
   {
     v5 = MEMORY[0x277CBED10];
   }
 
   v6 = *v5;
-  v7 = a4;
-  CFPreferencesSetAppValue(v7, v6, @"com.apple.gamecenter");
-  [(GKPreferences *)self _didWriteKey:v7];
+  keyCopy = key;
+  CFPreferencesSetAppValue(keyCopy, v6, @"com.apple.gamecenter");
+  [(GKPreferences *)self _didWriteKey:keyCopy];
 }
 
-- (int64_t)integerValueForKey:(id)a3 defaultValue:(int64_t)a4
+- (int64_t)integerValueForKey:(id)key defaultValue:(int64_t)value
 {
-  v5 = [(GKPreferences *)self preferencesValueForKey:a3];
+  v5 = [(GKPreferences *)self preferencesValueForKey:key];
   v6 = v5;
   if (v5)
   {
-    a4 = [v5 integerValue];
+    value = [v5 integerValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (void)setIntegerValue:(int64_t)a3 forKey:(id)a4
+- (void)setIntegerValue:(int64_t)value forKey:(id)key
 {
   v6 = MEMORY[0x277CCABB0];
-  key = a4;
-  v7 = [v6 numberWithInteger:a3];
+  key = key;
+  v7 = [v6 numberWithInteger:value];
   CFPreferencesSetAppValue(key, v7, @"com.apple.gamecenter");
 
   [(GKPreferences *)self _didWriteKey:key];
 }
 
-- (int64_t)unsignedIntegerValueForKey:(id)a3 defaultValue:(int64_t)a4
+- (int64_t)unsignedIntegerValueForKey:(id)key defaultValue:(int64_t)value
 {
-  v5 = [(GKPreferences *)self preferencesValueForKey:a3];
+  v5 = [(GKPreferences *)self preferencesValueForKey:key];
   v6 = v5;
   if (v5)
   {
-    a4 = [v5 unsignedIntegerValue];
+    value = [v5 unsignedIntegerValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (void)setUnsignedIntegerValue:(int64_t)a3 forKey:(id)a4
+- (void)setUnsignedIntegerValue:(int64_t)value forKey:(id)key
 {
   v6 = MEMORY[0x277CCABB0];
-  key = a4;
-  v7 = [v6 numberWithUnsignedInteger:a3];
+  key = key;
+  v7 = [v6 numberWithUnsignedInteger:value];
   CFPreferencesSetAppValue(key, v7, @"com.apple.gamecenter");
 
   [(GKPreferences *)self _didWriteKey:key];
 }
 
-- (id)dictionaryValueForKey:(id)a3
+- (id)dictionaryValueForKey:(id)key
 {
-  v3 = CFPreferencesCopyAppValue(a3, @"com.apple.gamecenter");
+  v3 = CFPreferencesCopyAppValue(key, @"com.apple.gamecenter");
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v4 = v3;
@@ -323,33 +323,33 @@ uint64_t __32__GKPreferences_isInternalBuild__block_invoke()
   return v4;
 }
 
-- (double)timeIntervalForKey:(id)a3 defaultValue:(double)a4
+- (double)timeIntervalForKey:(id)key defaultValue:(double)value
 {
-  v5 = [(GKPreferences *)self preferencesValueForKey:a3];
+  v5 = [(GKPreferences *)self preferencesValueForKey:key];
   v6 = v5;
   if (v5)
   {
     [v5 doubleValue];
-    a4 = v7;
+    value = v7;
   }
 
-  return a4;
+  return value;
 }
 
-- (void)setTimeInterval:(double)a3 forKey:(id)a4
+- (void)setTimeInterval:(double)interval forKey:(id)key
 {
   v6 = MEMORY[0x277CCABB0];
-  key = a4;
-  v7 = [v6 numberWithDouble:a3];
+  key = key;
+  v7 = [v6 numberWithDouble:interval];
   CFPreferencesSetAppValue(key, v7, @"com.apple.gamecenter");
 
   [(GKPreferences *)self _didWriteKey:key];
 }
 
-- (id)stringValueForKey:(id)a3 defaultValue:(id)a4
+- (id)stringValueForKey:(id)key defaultValue:(id)value
 {
-  v6 = a4;
-  v7 = [(GKPreferences *)self preferencesValueForKey:a3];
+  valueCopy = value;
+  v7 = [(GKPreferences *)self preferencesValueForKey:key];
   v8 = v7;
   if (v7)
   {
@@ -358,7 +358,7 @@ uint64_t __32__GKPreferences_isInternalBuild__block_invoke()
 
   else
   {
-    v9 = v6;
+    v9 = valueCopy;
   }
 
   v10 = v9;
@@ -366,30 +366,30 @@ uint64_t __32__GKPreferences_isInternalBuild__block_invoke()
   return v10;
 }
 
-- (void)removeOverrideForKey:(id)a3
+- (void)removeOverrideForKey:(id)key
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v4->_overrideValues];
-  [v5 removeObjectForKey:v6];
-  [(GKPreferences *)v4 setOverrideValues:v5];
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:selfCopy->_overrideValues];
+  [v5 removeObjectForKey:keyCopy];
+  [(GKPreferences *)selfCopy setOverrideValues:v5];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)lockedDown
 {
-  v2 = [(GKPreferences *)self supportLockdownMode];
-  if (v2)
+  supportLockdownMode = [(GKPreferences *)self supportLockdownMode];
+  if (supportLockdownMode)
   {
-    v3 = [MEMORY[0x277D243A8] shared];
-    v4 = [v3 enabled];
+    mEMORY[0x277D243A8] = [MEMORY[0x277D243A8] shared];
+    enabled = [mEMORY[0x277D243A8] enabled];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(supportLockdownMode) = enabled;
   }
 
-  return v2;
+  return supportLockdownMode;
 }
 
 - (int64_t)environment
@@ -402,27 +402,27 @@ uint64_t __32__GKPreferences_isInternalBuild__block_invoke()
   return [(GKPreferences *)self integerValueForKey:@"GKStoreBagEnvironment" defaultValue:5];
 }
 
-- (void)setEnvironment:(int64_t)a3
+- (void)setEnvironment:(int64_t)environment
 {
-  if (a3 && a3 <= 11)
+  if (environment && environment <= 11)
   {
     [GKPreferences setIntegerValue:"setIntegerValue:forKey:" forKey:?];
-    v5 = [(GKPreferences *)self support];
-    [v5 didSetEnvironment];
+    support = [(GKPreferences *)self support];
+    [support didSetEnvironment];
   }
 }
 
-- (void)setStoreBagURL:(id)a3
+- (void)setStoreBagURL:(id)l
 {
-  CFPreferencesSetAppValue(@"GKCustomStoreBagURL", a3, @"com.apple.gamecenter");
+  CFPreferencesSetAppValue(@"GKCustomStoreBagURL", l, @"com.apple.gamecenter");
   [(GKPreferences *)self _didWriteKey:@"GKCustomStoreBagURL"];
-  v4 = [(GKPreferences *)self support];
-  [v4 didSetStoreBagUrl];
+  support = [(GKPreferences *)self support];
+  [support didSetStoreBagUrl];
 }
 
-- (void)setForceUnderage:(BOOL)a3
+- (void)setForceUnderage:(BOOL)underage
 {
-  if (a3)
+  if (underage)
   {
     v3 = 3;
   }
@@ -455,205 +455,205 @@ uint64_t __32__GKPreferences_isInternalBuild__block_invoke()
   return result;
 }
 
-- (void)setForceAgeCategory:(int)a3
+- (void)setForceAgeCategory:(int)category
 {
-  if ((a3 - 1) >= 3)
+  if ((category - 1) >= 3)
   {
-    v4 = 0;
+    categoryCopy = 0;
   }
 
   else
   {
-    v4 = a3;
+    categoryCopy = category;
   }
 
-  [(GKPreferences *)self setIntegerValue:v4 forKey:@"GKForceAgeCategory"];
+  [(GKPreferences *)self setIntegerValue:categoryCopy forKey:@"GKForceAgeCategory"];
 
-  [(GKPreferences *)self setBooleanValue:v4 == 3 forKey:@"GKForceUnderage"];
+  [(GKPreferences *)self setBooleanValue:categoryCopy == 3 forKey:@"GKForceUnderage"];
 }
 
 - (NSArray)forceEnabledTransportVersions
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([(GKPreferences *)self multiplayerTransportOverrideV1Enabled])
   {
-    [v3 addObject:&unk_283B331C0];
+    [array addObject:&unk_283B331C0];
   }
 
   if ([(GKPreferences *)self multiplayerTransportOverrideV2Enabled])
   {
-    [v3 addObject:&unk_283B331D8];
+    [array addObject:&unk_283B331D8];
   }
 
-  return v3;
+  return array;
 }
 
 - (NSArray)forceDisabledTransportVersions
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([(GKPreferences *)self multiplayerTransportOverrideV1Disabled])
   {
-    [v3 addObject:&unk_283B331C0];
+    [array addObject:&unk_283B331C0];
   }
 
   if ([(GKPreferences *)self multiplayerTransportOverrideV2Disabled])
   {
-    [v3 addObject:&unk_283B331D8];
+    [array addObject:&unk_283B331D8];
   }
 
-  return v3;
+  return array;
 }
 
-- (unint64_t)recentNumberOfPlayersForBundleID:(id)a3
+- (unint64_t)recentNumberOfPlayersForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(GKPreferences *)self recentNumberOfPlayersPerGame];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  recentNumberOfPlayersPerGame = [(GKPreferences *)self recentNumberOfPlayersPerGame];
+  v6 = [recentNumberOfPlayersPerGame objectForKeyedSubscript:dCopy];
 
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = [(GKPreferences *)self recentNumberOfPlayers];
+    unsignedIntegerValue = [(GKPreferences *)self recentNumberOfPlayers];
   }
 
-  v8 = v7;
+  v8 = unsignedIntegerValue;
 
   return v8;
 }
 
-- (void)setRecentNumberOfPlayers:(unint64_t)a3 forBundleID:(id)a4
+- (void)setRecentNumberOfPlayers:(unint64_t)players forBundleID:(id)d
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a4;
+  dCopy = d;
   v8 = [v6 alloc];
-  v9 = [(GKPreferences *)self recentNumberOfPlayersPerGame];
-  v11 = [v8 initWithDictionary:v9];
+  recentNumberOfPlayersPerGame = [(GKPreferences *)self recentNumberOfPlayersPerGame];
+  v11 = [v8 initWithDictionary:recentNumberOfPlayersPerGame];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v11 setObject:v10 forKeyedSubscript:v7];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:players];
+  [v11 setObject:v10 forKeyedSubscript:dCopy];
 
   [(GKPreferences *)self setRecentNumberOfPlayersPerGame:v11];
 }
 
-- (int64_t)recentPlayerPickerSortPreferenceForBundleID:(id)a3
+- (int64_t)recentPlayerPickerSortPreferenceForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(GKPreferences *)self recentPickerSortPreferencePerGame];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  recentPickerSortPreferencePerGame = [(GKPreferences *)self recentPickerSortPreferencePerGame];
+  v6 = [recentPickerSortPreferencePerGame objectForKeyedSubscript:dCopy];
 
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = -1;
+    integerValue = -1;
   }
 
-  return v7;
+  return integerValue;
 }
 
-- (void)setRecentPlayerPickerSortPreference:(int64_t)a3 forBundleID:(id)a4
+- (void)setRecentPlayerPickerSortPreference:(int64_t)preference forBundleID:(id)d
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a4;
+  dCopy = d;
   v8 = [v6 alloc];
-  v9 = [(GKPreferences *)self recentPickerSortPreferencePerGame];
-  v11 = [v8 initWithDictionary:v9];
+  recentPickerSortPreferencePerGame = [(GKPreferences *)self recentPickerSortPreferencePerGame];
+  v11 = [v8 initWithDictionary:recentPickerSortPreferencePerGame];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  [v11 setObject:v10 forKeyedSubscript:v7];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:preference];
+  [v11 setObject:v10 forKeyedSubscript:dCopy];
 
   [(GKPreferences *)self setRecentPickerSortPreferencePerGame:v11];
 }
 
 - (unint64_t)maxPlayersP2P
 {
-  v3 = [(GKPreferences *)self maxDefaultPlayersP2P];
+  maxDefaultPlayersP2P = [(GKPreferences *)self maxDefaultPlayersP2P];
 
-  return [(GKPreferences *)self unsignedIntegerValueForKey:@"GKMaxPlayersP2P" defaultValue:v3];
+  return [(GKPreferences *)self unsignedIntegerValueForKey:@"GKMaxPlayersP2P" defaultValue:maxDefaultPlayersP2P];
 }
 
 - (unint64_t)maxPlayersHosted
 {
-  v3 = [(GKPreferences *)self maxDefaultPlayersHosted];
+  maxDefaultPlayersHosted = [(GKPreferences *)self maxDefaultPlayersHosted];
 
-  return [(GKPreferences *)self unsignedIntegerValueForKey:@"GKMaxPlayersHosted" defaultValue:v3];
+  return [(GKPreferences *)self unsignedIntegerValueForKey:@"GKMaxPlayersHosted" defaultValue:maxDefaultPlayersHosted];
 }
 
 - (unint64_t)maxPlayersTurnBased
 {
-  v3 = [(GKPreferences *)self maxDefaultPlayersTurnBased];
+  maxDefaultPlayersTurnBased = [(GKPreferences *)self maxDefaultPlayersTurnBased];
 
-  return [(GKPreferences *)self unsignedIntegerValueForKey:@"GKMaxPlayersTurnBased" defaultValue:v3];
+  return [(GKPreferences *)self unsignedIntegerValueForKey:@"GKMaxPlayersTurnBased" defaultValue:maxDefaultPlayersTurnBased];
 }
 
 - (unint64_t)maxGameStateSizeTurnBased
 {
-  v3 = [(GKPreferences *)self maxDefaultGameStateSizeTurnBased];
+  maxDefaultGameStateSizeTurnBased = [(GKPreferences *)self maxDefaultGameStateSizeTurnBased];
 
-  return [(GKPreferences *)self unsignedIntegerValueForKey:@"GKMaxGameStateSizeTurnBased" defaultValue:v3];
+  return [(GKPreferences *)self unsignedIntegerValueForKey:@"GKMaxGameStateSizeTurnBased" defaultValue:maxDefaultGameStateSizeTurnBased];
 }
 
 - (unint64_t)exchangeDataMaximumSize
 {
-  v3 = [(GKPreferences *)self exchangeDataDefaultMaximumSize];
+  exchangeDataDefaultMaximumSize = [(GKPreferences *)self exchangeDataDefaultMaximumSize];
 
-  return [(GKPreferences *)self unsignedIntegerValueForKey:@"GKExchangeDataMaximumSize" defaultValue:v3];
+  return [(GKPreferences *)self unsignedIntegerValueForKey:@"GKExchangeDataMaximumSize" defaultValue:exchangeDataDefaultMaximumSize];
 }
 
 - (unint64_t)exchangeMaxInitiatedExchangesPerPlayer
 {
-  v3 = [(GKPreferences *)self exchangeDefaultMaxInitiatedExchangesPerPlayer];
+  exchangeDefaultMaxInitiatedExchangesPerPlayer = [(GKPreferences *)self exchangeDefaultMaxInitiatedExchangesPerPlayer];
 
-  return [(GKPreferences *)self unsignedIntegerValueForKey:@"GKExchangeMaxPerPlayer" defaultValue:v3];
+  return [(GKPreferences *)self unsignedIntegerValueForKey:@"GKExchangeMaxPerPlayer" defaultValue:exchangeDefaultMaxInitiatedExchangesPerPlayer];
 }
 
-+ (id)hostNameForEnvironment:(int64_t)a3
++ (id)hostNameForEnvironment:(int64_t)environment
 {
-  if ((a3 - 3) > 7)
+  if ((environment - 3) > 7)
   {
     v3 = GKURLComponentHostProduction;
   }
 
   else
   {
-    v3 = off_2785DDD68[a3 - 3];
+    v3 = off_2785DDD68[environment - 3];
   }
 
   return *v3;
 }
 
-+ (id)displayNameForEnvironment:(int64_t)a3
++ (id)displayNameForEnvironment:(int64_t)environment
 {
-  v4 = a3 - 3;
-  if (a3 - 3) < 8 && ((0xA7u >> v4))
+  v4 = environment - 3;
+  if (environment - 3) < 8 && ((0xA7u >> v4))
   {
-    v5 = off_2785DDDA8[v4];
+    environment = off_2785DDDA8[v4];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"unknown (%d)", a3];
+    environment = [MEMORY[0x277CCACA8] stringWithFormat:@"unknown (%d)", environment];
   }
 
-  return v5;
+  return environment;
 }
 
-+ (int64_t)environmentForString:(id)a3
++ (int64_t)environmentForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"TD2"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"TD2"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"TD3"])
+  else if ([stringCopy isEqualToString:@"TD3"])
   {
     v4 = 10;
   }
@@ -668,23 +668,23 @@ uint64_t __32__GKPreferences_isInternalBuild__block_invoke()
 
 - (BOOL)shouldAllowNearbyMultiplayer
 {
-  v2 = self;
-  v3 = [(GKPreferences *)self isNearbyMultiplayerRestricted];
+  selfCopy = self;
+  isNearbyMultiplayerRestricted = [(GKPreferences *)self isNearbyMultiplayerRestricted];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(GKPreferences *)v2 support];
-  v6 = [v5 localPlayerID];
-  v7 = [v4 stringWithFormat:@"%@-%@", @"GKAllowNearbyMultiplayer", v6];
+  support = [(GKPreferences *)selfCopy support];
+  localPlayerID = [support localPlayerID];
+  v7 = [v4 stringWithFormat:@"%@-%@", @"GKAllowNearbyMultiplayer", localPlayerID];
 
-  v8 = !v3;
-  LOBYTE(v2) = [(GKPreferences *)v2 BOOLeanValueForKey:v7 defaultValue:v8];
+  v8 = !isNearbyMultiplayerRestricted;
+  LOBYTE(selfCopy) = [(GKPreferences *)selfCopy BOOLeanValueForKey:v7 defaultValue:v8];
 
-  return v8 & v2;
+  return v8 & selfCopy;
 }
 
 - (BOOL)shouldAllowCustomCommunication
 {
-  v3 = [(GKPreferences *)self support];
-  if ([v3 localPlayerIsUnderage])
+  support = [(GKPreferences *)self support];
+  if ([support localPlayerIsUnderage])
   {
     LOBYTE(v4) = 0;
   }
@@ -703,15 +703,15 @@ uint64_t __32__GKPreferences_isInternalBuild__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 16;
+    unsignedIntegerValue = 16;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)maxDefaultPlayersHosted
@@ -720,15 +720,15 @@ uint64_t __32__GKPreferences_isInternalBuild__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 16;
+    unsignedIntegerValue = 16;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)maxDefaultPlayersTurnBased
@@ -737,15 +737,15 @@ uint64_t __32__GKPreferences_isInternalBuild__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 16;
+    unsignedIntegerValue = 16;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)maxDefaultGameStateSizeTurnBased
@@ -754,15 +754,15 @@ uint64_t __32__GKPreferences_isInternalBuild__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0x10000;
+    unsignedIntegerValue = 0x10000;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)exchangeDataDefaultMaximumSize
@@ -771,15 +771,15 @@ uint64_t __32__GKPreferences_isInternalBuild__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 1024;
+    unsignedIntegerValue = 1024;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)exchangeDefaultMaxInitiatedExchangesPerPlayer
@@ -788,15 +788,15 @@ uint64_t __32__GKPreferences_isInternalBuild__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 30;
+    unsignedIntegerValue = 30;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)HTTPShouldUsePipelining
@@ -805,15 +805,15 @@ uint64_t __32__GKPreferences_isInternalBuild__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)multiplayerHealthCheckEnabled
@@ -834,51 +834,51 @@ uint64_t __32__GKPreferences_isInternalBuild__block_invoke()
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 isUnderage];
+    isUnderage = [v3 isUnderage];
   }
 
   else
   {
-    v5 = 1;
+    isUnderage = 1;
   }
 
-  v6 = [(GKPreferences *)self BOOLeanValueForKey:@"GKFriendRequestsInboxContactsOnly" defaultValue:v5];
+  v6 = [(GKPreferences *)self BOOLeanValueForKey:@"GKFriendRequestsInboxContactsOnly" defaultValue:isUnderage];
 
   return v6;
 }
 
 - (BOOL)forceDeadlockFetchingUserRecordID
 {
-  v3 = [(GKPreferences *)self isInternalBuild];
-  if (v3)
+  isInternalBuild = [(GKPreferences *)self isInternalBuild];
+  if (isInternalBuild)
   {
 
-    LOBYTE(v3) = [(GKPreferences *)self BOOLeanValueForKey:@"GKForceDeadlockFetchingUserRecordID" defaultValue:0];
+    LOBYTE(isInternalBuild) = [(GKPreferences *)self BOOLeanValueForKey:@"GKForceDeadlockFetchingUserRecordID" defaultValue:0];
   }
 
-  return v3;
+  return isInternalBuild;
 }
 
-- (const)lookupRestrictionLimitsForEachAgeCategory:(int)a3
+- (const)lookupRestrictionLimitsForEachAgeCategory:(int)category
 {
-  if (a3 >= 0xD)
+  if (category >= 0xD)
   {
     v6 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Unknown RestrictionCategory" userInfo:{0, v3, v4}];
     objc_exception_throw(v6);
   }
 
-  return *(&off_2785E02B0 + a3);
+  return *(&off_2785E02B0 + category);
 }
 
 - (int)localPlayerAgeCategory
 {
   v3 = +[GKPreferences shared];
-  v4 = [v3 forceAgeCategory];
+  forceAgeCategory = [v3 forceAgeCategory];
 
-  if (v4)
+  if (forceAgeCategory)
   {
     v5 = +[GKPreferences shared];
-    v6 = [v5 forceAgeCategory];
+    forceAgeCategory2 = [v5 forceAgeCategory];
 
     v7 = os_log_GKGeneral;
     if (!os_log_GKGeneral)
@@ -895,10 +895,10 @@ uint64_t __32__GKPreferences_isInternalBuild__block_invoke()
 
   else
   {
-    v9 = [(GKPreferences *)self support];
-    v10 = [v9 localPlayerIsUnderage];
+    support = [(GKPreferences *)self support];
+    localPlayerIsUnderage = [support localPlayerIsUnderage];
 
-    if (v10)
+    if (localPlayerIsUnderage)
     {
       v11 = os_log_GKGeneral;
       if (!os_log_GKGeneral)
@@ -912,13 +912,13 @@ uint64_t __32__GKPreferences_isInternalBuild__block_invoke()
         [(GKPreferences(AgeCategoryRestrictions) *)v11 localPlayerAgeCategory];
       }
 
-      LODWORD(v6) = 3;
+      LODWORD(forceAgeCategory2) = 3;
     }
 
     else
     {
-      v13 = [(GKPreferences *)self support];
-      v6 = [v13 localPlayerAgeCategory];
+      support2 = [(GKPreferences *)self support];
+      forceAgeCategory2 = [support2 localPlayerAgeCategory];
 
       v14 = os_log_GKGeneral;
       if (!os_log_GKGeneral)
@@ -934,22 +934,22 @@ uint64_t __32__GKPreferences_isInternalBuild__block_invoke()
     }
   }
 
-  return v6;
+  return forceAgeCategory2;
 }
 
-- (int)getRestrictionLimitForLocalPlayer:(const RestrictionsLimitsForEachAgeCategory *)a3
+- (int)getRestrictionLimitForLocalPlayer:(const RestrictionsLimitsForEachAgeCategory *)player
 {
-  v4 = [(GKPreferences *)self localPlayerAgeCategory];
-  switch(v4)
+  localPlayerAgeCategory = [(GKPreferences *)self localPlayerAgeCategory];
+  switch(localPlayerAgeCategory)
   {
     case 3:
-      a3 = (a3 + 4);
+      player = (player + 4);
       break;
     case 2:
-      a3 = (a3 + 8);
+      player = (player + 8);
       break;
     case 1:
-      a3 = (a3 + 12);
+      player = (player + 12);
       break;
     default:
       v5 = os_log_GKGeneral;
@@ -967,36 +967,36 @@ uint64_t __32__GKPreferences_isInternalBuild__block_invoke()
       break;
   }
 
-  return a3->var0;
+  return player->var0;
 }
 
-- (int)clampNumericRestriction:(id)a3 tableEntry:(const RestrictionsLimitsForEachAgeCategory *)a4
+- (int)clampNumericRestriction:(id)restriction tableEntry:(const RestrictionsLimitsForEachAgeCategory *)entry
 {
-  v6 = a3;
-  v7 = [(GKPreferences *)self getRestrictionLimitForLocalPlayer:a4];
-  if (v6)
+  restrictionCopy = restriction;
+  v7 = [(GKPreferences *)self getRestrictionLimitForLocalPlayer:entry];
+  if (restrictionCopy)
   {
-    v8 = [v6 intValue];
-    if (v8 < v7)
+    intValue = [restrictionCopy intValue];
+    if (intValue < v7)
     {
-      v7 = v8;
+      v7 = intValue;
     }
   }
 
   return v7;
 }
 
-- (void)setPreferencesDelegate:(id)a3
+- (void)setPreferencesDelegate:(id)delegate
 {
-  value = a3;
-  v4 = [(GKPreferences *)self preferencesDelegate];
+  value = delegate;
+  preferencesDelegate = [(GKPreferences *)self preferencesDelegate];
 
   v5 = value;
-  if (v4 != value)
+  if (preferencesDelegate != value)
   {
-    v6 = [(GKPreferences *)self preferencesDelegate];
+    preferencesDelegate2 = [(GKPreferences *)self preferencesDelegate];
 
-    if (v6)
+    if (preferencesDelegate2)
     {
       if (value)
       {
@@ -1006,14 +1006,14 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      v7 = [MEMORY[0x277D262A0] sharedConnection];
-      [v7 removeObserver:self];
+      mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+      [mEMORY[0x277D262A0] removeObserver:self];
     }
 
     else
     {
-      v7 = [MEMORY[0x277D262A0] sharedConnection];
-      [v7 addObserver:self];
+      mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+      [mEMORY[0x277D262A0] addObserver:self];
     }
 
     goto LABEL_7;
@@ -1066,8 +1066,8 @@ LABEL_8:
 
 - (BOOL)isAppInstallationRestricted
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  if ([v3 isUIAppInstallationAllowed])
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  if ([mEMORY[0x277D262A0] isUIAppInstallationAllowed])
   {
     v4 = 1;
   }
@@ -1100,11 +1100,11 @@ LABEL_8:
   return [(GKPreferences *)self isGameCenterRestricted];
 }
 
-- (int)effectiveBoolValueForSetting:(id)a3
+- (int)effectiveBoolValueForSetting:(id)setting
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  v5 = [v4 effectiveBoolValueForSetting:v3];
+  settingCopy = setting;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v5 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:settingCopy];
 
   v6 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
@@ -1115,28 +1115,28 @@ LABEL_8:
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(GKPreferences(Restrictions) *)v3 effectiveBoolValueForSetting:v5, v6];
+    [(GKPreferences(Restrictions) *)settingCopy effectiveBoolValueForSetting:v5, v6];
   }
 
   return v5;
 }
 
-- (id)effectiveValueForSetting:(id)a3
+- (id)effectiveValueForSetting:(id)setting
 {
   v3 = MEMORY[0x277D262A0];
-  v4 = a3;
-  v5 = [v3 sharedConnection];
-  v6 = [v5 effectiveValueForSetting:v4];
+  settingCopy = setting;
+  sharedConnection = [v3 sharedConnection];
+  v6 = [sharedConnection effectiveValueForSetting:settingCopy];
 
   return v6;
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
-  if ([(GKPreferences *)self isGameCenterRestricted:a3])
+  if ([(GKPreferences *)self isGameCenterRestricted:notification])
   {
-    v5 = [(GKPreferences *)self preferencesDelegate];
-    [v5 gameCenterDidBecomeRestricted];
+    preferencesDelegate = [(GKPreferences *)self preferencesDelegate];
+    [preferencesDelegate gameCenterDidBecomeRestricted];
   }
 
   else
@@ -1146,8 +1146,8 @@ LABEL_8:
       return;
     }
 
-    v5 = +[GKPreferences shared];
-    [v5 setShouldAllowNearbyMultiplayer:0];
+    preferencesDelegate = +[GKPreferences shared];
+    [preferencesDelegate setShouldAllowNearbyMultiplayer:0];
   }
 }
 

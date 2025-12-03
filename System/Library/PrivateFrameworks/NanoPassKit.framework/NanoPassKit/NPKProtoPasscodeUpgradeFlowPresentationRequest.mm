@@ -1,14 +1,14 @@
 @interface NPKProtoPasscodeUpgradeFlowPresentationRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsChangeType:(id)a3;
+- (int)StringAsChangeType:(id)type;
 - (int)changeType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoPasscodeUpgradeFlowPresentationRequest
@@ -26,17 +26,17 @@
   }
 }
 
-- (int)StringAsChangeType:(id)a3
+- (int)StringAsChangeType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Simple"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Simple"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Complex"];
+    v4 = [typeCopy isEqualToString:@"Complex"];
   }
 
   return v4;
@@ -48,15 +48,15 @@
   v8.receiver = self;
   v8.super_class = NPKProtoPasscodeUpgradeFlowPresentationRequest;
   v4 = [(NPKProtoPasscodeUpgradeFlowPresentationRequest *)&v8 description];
-  v5 = [(NPKProtoPasscodeUpgradeFlowPresentationRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoPasscodeUpgradeFlowPresentationRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     changeType = self->_changeType;
@@ -78,13 +78,13 @@
       v5 = @"Simple";
     }
 
-    [v3 setObject:v5 forKey:@"changeType"];
+    [dictionary setObject:v5 forKey:@"changeType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -93,18 +93,18 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 2) = self->_changeType;
-    *(a3 + 12) |= 1u;
+    *(to + 2) = self->_changeType;
+    *(to + 12) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (*&self->_has)
   {
     *(result + 2) = self->_changeType;
@@ -114,18 +114,18 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_6;
   }
 
-  v5 = (*(v4 + 12) & 1) == 0;
+  v5 = (*(equalCopy + 12) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 12) & 1) != 0 && self->_changeType == *(v4 + 2))
+    if ((*(equalCopy + 12) & 1) != 0 && self->_changeType == *(equalCopy + 2))
     {
       v5 = 1;
       goto LABEL_7;
@@ -153,11 +153,11 @@ LABEL_7:
   }
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 12))
+  if (*(from + 12))
   {
-    self->_changeType = *(a3 + 2);
+    self->_changeType = *(from + 2);
     *&self->_has |= 1u;
   }
 }

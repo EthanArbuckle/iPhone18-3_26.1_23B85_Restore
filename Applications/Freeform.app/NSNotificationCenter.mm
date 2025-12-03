@@ -1,20 +1,20 @@
 @interface NSNotificationCenter
-- (id)crl_addObserverForName:(id)a3 object:(id)a4 queue:(id)a5 usingBlock:(id)a6;
+- (id)crl_addObserverForName:(id)name object:(id)object queue:(id)queue usingBlock:(id)block;
 @end
 
 @implementation NSNotificationCenter
 
-- (id)crl_addObserverForName:(id)a3 object:(id)a4 queue:(id)a5 usingBlock:(id)a6
+- (id)crl_addObserverForName:(id)name object:(id)object queue:(id)queue usingBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  nameCopy = name;
+  objectCopy = object;
+  queueCopy = queue;
+  blockCopy = block;
+  if (!nameCopy)
   {
     v14 = +[NSOperationQueue mainQueue];
 
-    if (v14 == v12)
+    if (v14 == queueCopy)
     {
       v17 = +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -49,7 +49,7 @@
     }
   }
 
-  v15 = [(NSNotificationCenter *)self addObserverForName:v10 object:v11 queue:v12 usingBlock:v13];
+  v15 = [(NSNotificationCenter *)self addObserverForName:nameCopy object:objectCopy queue:queueCopy usingBlock:blockCopy];
 
   return v15;
 }

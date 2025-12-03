@@ -1,26 +1,26 @@
 @interface LifetimeServoController
 - (BOOL)getFastDieEngagementStatus;
-- (LifetimeServoController)initWithParams:(id)a3 sensorList:(__CFArray *)a4;
-- (__CFDictionary)newChannelForDriver:(const char *)a3 channelID:(unint64_t)a4;
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3;
-- (__CFString)copyHeaderForIndex:(int)a3;
-- (int)initPerfStateVoltages:(const char *)a3 propertyName:(__CFString *)a4 voltages:(int *)a5 maxVoltageCount:(int)a6;
+- (LifetimeServoController)initWithParams:(id)params sensorList:(__CFArray *)list;
+- (__CFDictionary)newChannelForDriver:(const char *)driver channelID:(unint64_t)d;
+- (__CFString)copyFieldCurrentValueForIndex:(int)index;
+- (__CFString)copyHeaderForIndex:(int)index;
+- (int)initPerfStateVoltages:(const char *)voltages propertyName:(__CFString *)name voltages:(int *)a5 maxVoltageCount:(int)count;
 - (int)initPerfStateVoltagesCPU;
-- (int)writeToDriverService:(unsigned int)a3 key:(__CFString *)a4 value:(int64_t)a5;
+- (int)writeToDriverService:(unsigned int)service key:(__CFString *)key value:(int64_t)value;
 - (void)initPerfStateReportingCPU;
 - (void)initPerfStateReportingGPU;
-- (void)initSensorList:(__CFArray *)a3;
-- (void)overrideInstantaneousAF:(id)a3 value:(float)a4;
+- (void)initSensorList:(__CFArray *)list;
+- (void)overrideInstantaneousAF:(id)f value:(float)value;
 - (void)updateCoreAnalyticsInfo;
-- (void)updateForTempMax:(int)a3 tempAverage:(int)a4;
+- (void)updateForTempMax:(int)max tempAverage:(int)average;
 - (void)updatePerfStateReportingCPU;
 - (void)updatePerfStateReportingGPU;
-- (void)updateSystemPowerState:(BOOL)a3;
+- (void)updateSystemPowerState:(BOOL)state;
 @end
 
 @implementation LifetimeServoController
 
-- (LifetimeServoController)initWithParams:(id)a3 sensorList:(__CFArray *)a4
+- (LifetimeServoController)initWithParams:(id)params sensorList:(__CFArray *)list
 {
   v53.receiver = self;
   v53.super_class = LifetimeServoController;
@@ -35,8 +35,8 @@
   *(v6 + 91) = -1;
   *(v6 + 92) = -1;
   [+[TGraphSampler sharedInstance](TGraphSampler addtGraphDataSource:"addtGraphDataSource:", v6];
-  v7[398] = sub_100031D64(a3, @"useRestoreSafePartition", 0);
-  v8 = sub_100031D64(a3, @"updateCPUFastDieTargetPMP", 0);
+  v7[398] = sub_100031D64(params, @"useRestoreSafePartition", 0);
+  v8 = sub_100031D64(params, @"updateCPUFastDieTargetPMP", 0);
   v7[397] = v8;
   if (v8)
   {
@@ -56,7 +56,7 @@
     sub_100059EC0();
   }
 
-  v12 = sub_100031D64(a3, @"updateGPUFastDieTarget", 0);
+  v12 = sub_100031D64(params, @"updateGPUFastDieTarget", 0);
   v7[396] = v12;
   if (v12)
   {
@@ -78,7 +78,7 @@
 
   *(v7 + 4) = 0;
   v16 = (v7 + 16);
-  if (sub_100002A20(a3, @"variant", kCFNumberIntType, v7 + 16))
+  if (sub_100002A20(params, @"variant", kCFNumberIntType, v7 + 16))
   {
     if (!byte_1000AB2F8)
     {
@@ -224,7 +224,7 @@ LABEL_35:
     }
 
     while (v41 != 16);
-    v35 = [a3 objectForKeyedSubscript:@"params"];
+    v35 = [params objectForKeyedSubscript:@"params"];
     *(v7 + 3) = 0;
     v36 = [LifetimeServoControlLoop alloc];
     v37 = [v35 objectForKeyedSubscript:@"coreTypeP"];
@@ -248,7 +248,7 @@ LABEL_35:
       else
       {
         *(v7 + 3) = 0;
-        *(v7 + 4) = [[LifetimeServoControlLoop alloc] initWithParams:a3 perfStateVoltages:v7 + 72 voltageCount:*(v7 + 50) loopType:0 persistancePath:v27 filer:*(v7 + 52)];
+        *(v7 + 4) = [[LifetimeServoControlLoop alloc] initWithParams:params perfStateVoltages:v7 + 72 voltageCount:*(v7 + 50) loopType:0 persistancePath:v27 filer:*(v7 + 52)];
         *(v7 + 5) = 0;
       }
 
@@ -290,7 +290,7 @@ LABEL_35:
     }
 
     while (v31 != 16);
-    v35 = [a3 objectForKeyedSubscript:@"params"];
+    v35 = [params objectForKeyedSubscript:@"params"];
     *(v7 + 3) = -[LifetimeServoControlLoop initWithParams:perfStateVoltages:voltageCount:loopType:persistancePath:filer:]([LifetimeServoControlLoop alloc], "initWithParams:perfStateVoltages:voltageCount:loopType:persistancePath:filer:", [v35 objectForKeyedSubscript:@"coreTypeE"], v7 + 72, 3, 1, v27, *(v7 + 52));
     v36 = [LifetimeServoControlLoop alloc];
     v37 = [v35 objectForKeyedSubscript:@"coreTypeP"];
@@ -301,7 +301,7 @@ LABEL_35:
 
   *(v7 + 4) = [(LifetimeServoControlLoop *)v36 initWithParams:v37 perfStateVoltages:v40 voltageCount:v38 loopType:2 persistancePath:v27 filer:v39];
   *(v7 + 5) = -[LifetimeServoControlLoop initWithParams:perfStateVoltages:voltageCount:loopType:persistancePath:filer:]([LifetimeServoControlLoop alloc], "initWithParams:perfStateVoltages:voltageCount:loopType:persistancePath:filer:", [v35 objectForKeyedSubscript:@"coreTypeG"], v7 + 232, *(v7 + 90), 3, v27, *(v7 + 52));
-  [v7 initSensorList:a4];
+  [v7 initSensorList:list];
 LABEL_60:
   [*(v7 + 3) updatePersistedState];
   [*(v7 + 4) updatePersistedState];
@@ -336,9 +336,9 @@ LABEL_60:
   return v7;
 }
 
-- (__CFDictionary)newChannelForDriver:(const char *)a3 channelID:(unint64_t)a4
+- (__CFDictionary)newChannelForDriver:(const char *)driver channelID:(unint64_t)d
 {
-  v4 = IOServiceMatching(a3);
+  v4 = IOServiceMatching(driver);
   if (v4)
   {
     v5 = v4;
@@ -441,7 +441,7 @@ LABEL_60:
   return [(LifetimeServoController *)self initPerfStateVoltages:":/arm-io/pmgr" propertyName:v2 voltages:self->_perfStateVoltagesCPU maxVoltageCount:16];
 }
 
-- (int)initPerfStateVoltages:(const char *)a3 propertyName:(__CFString *)a4 voltages:(int *)a5 maxVoltageCount:(int)a6
+- (int)initPerfStateVoltages:(const char *)voltages propertyName:(__CFString *)name voltages:(int *)a5 maxVoltageCount:(int)count
 {
   v53 = 0u;
   v54 = 0u;
@@ -475,7 +475,7 @@ LABEL_60:
   v26 = 0u;
   *__str = 0u;
   v24 = 0u;
-  v9 = snprintf(__str, 0x200uLL, "%s%s", "IODeviceTree", a3);
+  v9 = snprintf(__str, 0x200uLL, "%s%s", "IODeviceTree", voltages);
   if (v9 <= 0)
   {
     sub_10005A488();
@@ -496,7 +496,7 @@ LABEL_60:
   }
 
   v11 = v10;
-  v12 = sub_100005E68(a4, v10);
+  v12 = sub_100005E68(name, v10);
   if (v12)
   {
     v13 = v12;
@@ -508,9 +508,9 @@ LABEL_60:
       v16 = Length;
     }
 
-    if (v16 >> 3 <= a6)
+    if (v16 >> 3 <= count)
     {
-      a6 = v16 >> 3;
+      count = v16 >> 3;
     }
 
     else if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
@@ -518,9 +518,9 @@ LABEL_60:
       sub_10005A240();
     }
 
-    if (a6 >= 1)
+    if (count >= 1)
     {
-      v17 = a6;
+      countCopy = count;
       v18 = (BytePtr + 4);
       do
       {
@@ -533,10 +533,10 @@ LABEL_60:
         }
 
         ++a5;
-        --v17;
+        --countCopy;
       }
 
-      while (v17);
+      while (countCopy);
     }
 
     CFRelease(v13);
@@ -545,27 +545,27 @@ LABEL_60:
   else
   {
     sub_10005A2B4();
-    a6 = v22;
+    count = v22;
   }
 
   IOObjectRelease(v11);
-  return a6;
+  return count;
 }
 
-- (void)initSensorList:(__CFArray *)a3
+- (void)initSensorList:(__CFArray *)list
 {
   if (self->_controllerVariant)
   {
     v4 = [[NSMutableArray alloc] initWithCapacity:0];
     v20 = [[NSMutableArray alloc] initWithCapacity:0];
     v19 = [[NSMutableArray alloc] initWithCapacity:0];
-    if (CFArrayGetCount(a3) >= 1)
+    if (CFArrayGetCount(list) >= 1)
     {
       v5 = 0;
-      theArray = a3;
+      theArray = list;
       do
       {
-        ValueAtIndex = CFArrayGetValueAtIndex(a3, v5);
+        ValueAtIndex = CFArrayGetValueAtIndex(list, v5);
         Value = CFDictionaryGetValue(ValueAtIndex, @"lsSensorType");
         if (Value)
         {
@@ -622,7 +622,7 @@ LABEL_60:
         }
 
         ++v5;
-        a3 = theArray;
+        list = theArray;
       }
 
       while (CFArrayGetCount(theArray) > v5);
@@ -645,10 +645,10 @@ LABEL_60:
   }
 }
 
-- (int)writeToDriverService:(unsigned int)a3 key:(__CFString *)a4 value:(int64_t)a5
+- (int)writeToDriverService:(unsigned int)service key:(__CFString *)key value:(int64_t)value
 {
-  valuePtr = a5;
-  if (!a3)
+  valuePtr = value;
+  if (!service)
   {
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
     {
@@ -670,7 +670,7 @@ LABEL_60:
   }
 
   v8 = v7;
-  v9 = IORegistryEntrySetCFProperty(a3, a4, v7);
+  v9 = IORegistryEntrySetCFProperty(service, key, v7);
   if (v9 && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
   {
     sub_10005A524();
@@ -680,9 +680,9 @@ LABEL_60:
   return v9;
 }
 
-- (void)updateForTempMax:(int)a3 tempAverage:(int)a4
+- (void)updateForTempMax:(int)max tempAverage:(int)average
 {
-  LODWORD(v4) = a4;
+  LODWORD(v4) = average;
   [(LifetimeServoController *)self updatePerfStateReportingCPU];
   if (self->_gCoreLoop)
   {
@@ -692,12 +692,12 @@ LABEL_60:
   override_tempMax = self->_override_tempMax;
   if (override_tempMax == -1)
   {
-    v8 = a3;
+    maxCopy = max;
   }
 
   else
   {
-    v8 = override_tempMax;
+    maxCopy = override_tempMax;
   }
 
   override_tempAverage = self->_override_tempAverage;
@@ -715,42 +715,42 @@ LABEL_60:
   switch(controllerVariant)
   {
     case 2:
-      v16 = [(LifetimeServoControlLoop *)self->_pCoreLoop updateTempMax:v8];
+      v16 = [(LifetimeServoControlLoop *)self->_pCoreLoop updateTempMax:maxCopy];
       [(LifetimeServoControlLoop *)self->_pCoreLoop updateForPerfStateResidency:self->_perfStateFractionCPU count:self->_perfStateCountCPU tempMax:v16 tempAverage:v4];
       [(LifetimeServoControlLoop *)self->_gCoreLoop updateForPerfStateResidency:self->_perfStateFractionGPU count:self->_perfStateCountGPU tempMax:[(LifetimeServoControlLoop *)self->_gCoreLoop updateTempMax:v16] tempAverage:v4];
-      v15 = [(LifetimeServoControlLoop *)self->_pCoreLoop dieTempTarget];
+      dieTempTarget = [(LifetimeServoControlLoop *)self->_pCoreLoop dieTempTarget];
 LABEL_16:
-      self->_dieTempTargetCPU = v15;
+      self->_dieTempTargetCPU = dieTempTarget;
 LABEL_17:
-      v11 = [(LifetimeServoControlLoop *)self->_gCoreLoop dieTempTarget];
+      dieTempTarget2 = [(LifetimeServoControlLoop *)self->_gCoreLoop dieTempTarget];
       goto LABEL_19;
     case 1:
-      v13 = [(LifetimeServoControlLoop *)self->_eCoreLoop updateTempMax:v8];
+      v13 = [(LifetimeServoControlLoop *)self->_eCoreLoop updateTempMax:maxCopy];
       [(LifetimeServoControlLoop *)self->_eCoreLoop updateForPerfStateResidency:self->_perfStateFractionCPU count:3 tempMax:v13 tempAverage:v4];
       v14 = [(LifetimeServoControlLoop *)self->_pCoreLoop updateTempMax:v13];
       [(LifetimeServoControlLoop *)self->_pCoreLoop updateForPerfStateResidency:&self->_perfStateFractionCPU[3] count:(self->_perfStateCountCPU - 3) tempMax:v14 tempAverage:v4];
       [(LifetimeServoControlLoop *)self->_gCoreLoop updateForPerfStateResidency:self->_perfStateFractionGPU count:self->_perfStateCountGPU tempMax:[(LifetimeServoControlLoop *)self->_gCoreLoop updateTempMax:v14] tempAverage:v4];
       self->_dieTempTargetCPU = [(LifetimeServoControlLoop *)self->_pCoreLoop dieTempTarget];
-      v15 = [(LifetimeServoControlLoop *)self->_eCoreLoop dieTempTarget];
-      if (v15 >= self->_dieTempTargetCPU)
+      dieTempTarget = [(LifetimeServoControlLoop *)self->_eCoreLoop dieTempTarget];
+      if (dieTempTarget >= self->_dieTempTargetCPU)
       {
         goto LABEL_17;
       }
 
       goto LABEL_16;
     case 0:
-      [(LifetimeServoControlLoop *)self->_pCoreLoop updateForPerfStateResidency:self->_perfStateFractionCPU count:self->_perfStateCountCPU tempMax:v8 tempAverage:v4];
-      v11 = [(LifetimeServoControlLoop *)self->_pCoreLoop dieTempTarget];
+      [(LifetimeServoControlLoop *)self->_pCoreLoop updateForPerfStateResidency:self->_perfStateFractionCPU count:self->_perfStateCountCPU tempMax:maxCopy tempAverage:v4];
+      dieTempTarget2 = [(LifetimeServoControlLoop *)self->_pCoreLoop dieTempTarget];
       v12 = 372;
       goto LABEL_20;
   }
 
-  v11 = 9500;
+  dieTempTarget2 = 9500;
   self->_dieTempTargetCPU = 9500;
 LABEL_19:
   v12 = 376;
 LABEL_20:
-  *(&self->super.isa + v12) = v11;
+  *(&self->super.isa + v12) = dieTempTarget2;
   override_dieTempTarget = self->_override_dieTempTarget;
   if (override_dieTempTarget != -1)
   {
@@ -779,25 +779,25 @@ LABEL_20:
   [(LifetimeServoController *)self updateCoreAnalyticsInfo];
 }
 
-- (void)overrideInstantaneousAF:(id)a3 value:(float)a4
+- (void)overrideInstantaneousAF:(id)f value:(float)value
 {
-  if ([a3 isEqualToString:@"LifetimeServoInstantaneousAF_E"])
+  if ([f isEqualToString:@"LifetimeServoInstantaneousAF_E"])
   {
     eCoreLoop = self->_eCoreLoop;
 LABEL_7:
-    *&v7 = a4;
+    *&v7 = value;
 
     [(LifetimeServoControlLoop *)eCoreLoop overrideInstantaneousAF:v7];
     return;
   }
 
-  if ([a3 isEqualToString:@"LifetimeServoInstantaneousAF_P"])
+  if ([f isEqualToString:@"LifetimeServoInstantaneousAF_P"])
   {
     eCoreLoop = self->_pCoreLoop;
     goto LABEL_7;
   }
 
-  if ([a3 isEqualToString:@"LifetimeServoInstantaneousAF_G"])
+  if ([f isEqualToString:@"LifetimeServoInstantaneousAF_G"])
   {
     eCoreLoop = self->_gCoreLoop;
     goto LABEL_7;
@@ -809,9 +809,9 @@ LABEL_7:
   }
 }
 
-- (void)updateSystemPowerState:(BOOL)a3
+- (void)updateSystemPowerState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     if (self->_lastSleepEntry == -1)
     {
@@ -902,8 +902,8 @@ LABEL_18:
 - (void)updateCoreAnalyticsInfo
 {
   [(LifetimeServoController *)self getFastDieEngagementStatus];
-  v3 = [(LifetimeServoControlLoop *)self->_eCoreLoop dieTempTarget];
-  v4 = v3 - [(LifetimeServoControlLoop *)self->_eCoreLoop defaultDieTempTarget];
+  dieTempTarget = [(LifetimeServoControlLoop *)self->_eCoreLoop dieTempTarget];
+  v4 = dieTempTarget - [(LifetimeServoControlLoop *)self->_eCoreLoop defaultDieTempTarget];
   if (v4 >= 0)
   {
     v5 = v4;
@@ -914,8 +914,8 @@ LABEL_18:
     v5 = -v4;
   }
 
-  v6 = [(LifetimeServoControlLoop *)self->_pCoreLoop dieTempTarget];
-  v7 = v6 - [(LifetimeServoControlLoop *)self->_pCoreLoop defaultDieTempTarget];
+  dieTempTarget2 = [(LifetimeServoControlLoop *)self->_pCoreLoop dieTempTarget];
+  v7 = dieTempTarget2 - [(LifetimeServoControlLoop *)self->_pCoreLoop defaultDieTempTarget];
   if (v7 >= 0)
   {
     v8 = v7;
@@ -926,8 +926,8 @@ LABEL_18:
     v8 = -v7;
   }
 
-  v9 = [(LifetimeServoControlLoop *)self->_gCoreLoop dieTempTarget];
-  v10 = v9 - [(LifetimeServoControlLoop *)self->_gCoreLoop defaultDieTempTarget];
+  dieTempTarget3 = [(LifetimeServoControlLoop *)self->_gCoreLoop dieTempTarget];
+  v10 = dieTempTarget3 - [(LifetimeServoControlLoop *)self->_gCoreLoop defaultDieTempTarget];
   if (v10 >= 0)
   {
     v11 = v10;
@@ -978,15 +978,15 @@ LABEL_18:
   }
 }
 
-- (__CFString)copyHeaderForIndex:(int)a3
+- (__CFString)copyHeaderForIndex:(int)index
 {
   v3 = @"LS-target-GPU";
-  if (a3 != 1)
+  if (index != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (index)
   {
     return v3;
   }
@@ -997,15 +997,15 @@ LABEL_18:
   }
 }
 
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3
+- (__CFString)copyFieldCurrentValueForIndex:(int)index
 {
-  if (!a3)
+  if (!index)
   {
     v3 = 372;
     return CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%d", *(&self->super.isa + v3));
   }
 
-  if (a3 == 1)
+  if (index == 1)
   {
     v3 = 376;
     return CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%d", *(&self->super.isa + v3));

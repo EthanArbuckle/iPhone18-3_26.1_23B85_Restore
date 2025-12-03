@@ -1,44 +1,44 @@
 @interface RBSSavedEndowmentGrant
-+ (id)grantWithNamespace:(id)a3 key:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (RBSSavedEndowmentGrant)initWithRBSXPCCoder:(id)a3;
++ (id)grantWithNamespace:(id)namespace key:(id)key;
+- (BOOL)isEqual:(id)equal;
+- (RBSSavedEndowmentGrant)initWithRBSXPCCoder:(id)coder;
 - (id)description;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSSavedEndowmentGrant
 
-+ (id)grantWithNamespace:(id)a3 key:(id)a4
++ (id)grantWithNamespace:(id)namespace key:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[a1 alloc] _init];
-  if (v8)
+  namespaceCopy = namespace;
+  keyCopy = key;
+  _init = [[self alloc] _init];
+  if (_init)
   {
-    v9 = [v6 copy];
-    v10 = v8[1];
-    v8[1] = v9;
+    v9 = [namespaceCopy copy];
+    v10 = _init[1];
+    _init[1] = v9;
 
-    v11 = [v7 copy];
-    v12 = v8[2];
-    v8[2] = v11;
+    v11 = [keyCopy copy];
+    v12 = _init[2];
+    _init[2] = v11;
   }
 
-  return v8;
+  return _init;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = RBSSavedEndowmentGrant;
-  if (![(RBSAttribute *)&v13 isEqual:v4])
+  if (![(RBSAttribute *)&v13 isEqual:equalCopy])
   {
     goto LABEL_14;
   }
 
   endowmentNamespace = self->_endowmentNamespace;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (endowmentNamespace != v6)
   {
     v7 = !endowmentNamespace || v6 == 0;
@@ -49,7 +49,7 @@
   }
 
   key = self->_key;
-  v9 = v4[2];
+  v9 = equalCopy[2];
   if (key == v9)
   {
     v12 = 1;
@@ -82,28 +82,28 @@ LABEL_15:
   return v6;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = RBSSavedEndowmentGrant;
-  v4 = a3;
-  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:v4];
-  [v4 encodeObject:self->_endowmentNamespace forKey:{@"_endowmentNamespace", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_key forKey:@"_key"];
+  coderCopy = coder;
+  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:coderCopy];
+  [coderCopy encodeObject:self->_endowmentNamespace forKey:{@"_endowmentNamespace", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_key forKey:@"_key"];
 }
 
-- (RBSSavedEndowmentGrant)initWithRBSXPCCoder:(id)a3
+- (RBSSavedEndowmentGrant)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeStringForKey:@"_endowmentNamespace"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeStringForKey:@"_endowmentNamespace"];
   if (v5)
   {
-    v6 = [v4 decodeStringForKey:@"_key"];
+    v6 = [coderCopy decodeStringForKey:@"_key"];
     if (v6)
     {
       v11.receiver = self;
       v11.super_class = RBSSavedEndowmentGrant;
-      v7 = [(RBSAttribute *)&v11 initWithRBSXPCCoder:v4];
+      v7 = [(RBSAttribute *)&v11 initWithRBSXPCCoder:coderCopy];
       p_isa = &v7->super.super.super.isa;
       if (v7)
       {
@@ -112,21 +112,21 @@ LABEL_15:
       }
 
       self = p_isa;
-      v9 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

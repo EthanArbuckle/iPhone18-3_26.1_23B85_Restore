@@ -1,53 +1,53 @@
 @interface WFRowTemplateValue
-- (WFRowTemplateValue)initWithCoder:(id)a3;
-- (WFRowTemplateValue)initWithContentItemClass:(Class)a3 contentPropertyName:(id)a4 comparisonOperator:(int64_t)a5 removable:(BOOL)a6;
+- (WFRowTemplateValue)initWithCoder:(id)coder;
+- (WFRowTemplateValue)initWithContentItemClass:(Class)class contentPropertyName:(id)name comparisonOperator:(int64_t)operator removable:(BOOL)removable;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFRowTemplateValue
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contentItemClass = self->_contentItemClass;
-  v8 = a3;
+  coderCopy = coder;
   v5 = NSStringFromClass(contentItemClass);
-  [v8 encodeObject:v5 forKey:@"contentItemClass"];
+  [coderCopy encodeObject:v5 forKey:@"contentItemClass"];
 
-  [v8 encodeObject:self->_contentPropertyName forKey:@"contentPropertyName"];
+  [coderCopy encodeObject:self->_contentPropertyName forKey:@"contentPropertyName"];
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:self->_comparisonOperator];
-  [v8 encodeObject:v6 forKey:@"comparisonOperator"];
+  [coderCopy encodeObject:v6 forKey:@"comparisonOperator"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_removable];
-  [v8 encodeObject:v7 forKey:@"removable"];
+  [coderCopy encodeObject:v7 forKey:@"removable"];
 
-  [v8 encodeObject:self->_enumeration forKey:@"enumeration"];
-  [v8 encodeObject:self->_string forKey:@"string"];
-  [v8 encodeObject:self->_BOOLean forKey:@"BOOLean"];
-  [v8 encodeObject:self->_number forKey:@"number"];
-  [v8 encodeObject:self->_phone forKey:@"phone"];
-  [v8 encodeObject:self->_email forKey:@"email"];
-  [v8 encodeObject:self->_calendarUnit forKey:@"calendarUnit"];
-  [v8 encodeObject:self->_byteCountUnit forKey:@"byteCountUnit"];
-  [v8 encodeObject:self->_measurementUnit forKey:@"measurementUnit"];
-  [v8 encodeObject:self->_date forKey:@"date"];
-  [v8 encodeObject:self->_anotherDate forKey:@"anotherDate"];
+  [coderCopy encodeObject:self->_enumeration forKey:@"enumeration"];
+  [coderCopy encodeObject:self->_string forKey:@"string"];
+  [coderCopy encodeObject:self->_BOOLean forKey:@"BOOLean"];
+  [coderCopy encodeObject:self->_number forKey:@"number"];
+  [coderCopy encodeObject:self->_phone forKey:@"phone"];
+  [coderCopy encodeObject:self->_email forKey:@"email"];
+  [coderCopy encodeObject:self->_calendarUnit forKey:@"calendarUnit"];
+  [coderCopy encodeObject:self->_byteCountUnit forKey:@"byteCountUnit"];
+  [coderCopy encodeObject:self->_measurementUnit forKey:@"measurementUnit"];
+  [coderCopy encodeObject:self->_date forKey:@"date"];
+  [coderCopy encodeObject:self->_anotherDate forKey:@"anotherDate"];
 }
 
-- (WFRowTemplateValue)initWithCoder:(id)a3
+- (WFRowTemplateValue)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentItemClass"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentItemClass"];
   v6 = NSClassFromString(v5);
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentPropertyName"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"comparisonOperator"];
-  v9 = [v8 integerValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentPropertyName"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"comparisonOperator"];
+  integerValue = [v8 integerValue];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"removable"];
-  v11 = [v10 BOOLValue];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"removable"];
+  bOOLValue = [v10 BOOLValue];
 
-  v12 = [(WFRowTemplateValue *)self initWithContentItemClass:v6 contentPropertyName:v7 comparisonOperator:v9 removable:v11];
+  v12 = [(WFRowTemplateValue *)self initWithContentItemClass:v6 contentPropertyName:v7 comparisonOperator:integerValue removable:bOOLValue];
   if (v12)
   {
     v13 = MEMORY[0x1E695DFD8];
@@ -55,47 +55,47 @@
     v15 = objc_opt_class();
     v16 = objc_opt_class();
     v17 = [v13 setWithObjects:{v14, v15, v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"enumeration"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"enumeration"];
     enumeration = v12->_enumeration;
     v12->_enumeration = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"string"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"string"];
     string = v12->_string;
     v12->_string = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BOOLean"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BOOLean"];
     BOOLean = v12->_BOOLean;
     v12->_BOOLean = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"number"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"number"];
     number = v12->_number;
     v12->_number = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phone"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phone"];
     phone = v12->_phone;
     v12->_phone = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"email"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"email"];
     email = v12->_email;
     v12->_email = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"calendarUnit"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"calendarUnit"];
     calendarUnit = v12->_calendarUnit;
     v12->_calendarUnit = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"byteCountUnit"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"byteCountUnit"];
     byteCountUnit = v12->_byteCountUnit;
     v12->_byteCountUnit = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"measurementUnit"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"measurementUnit"];
     measurementUnit = v12->_measurementUnit;
     v12->_measurementUnit = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
     date = v12->_date;
     v12->_date = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"anotherDate"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"anotherDate"];
     anotherDate = v12->_anotherDate;
     v12->_anotherDate = v38;
 
@@ -105,22 +105,22 @@
   return v12;
 }
 
-- (WFRowTemplateValue)initWithContentItemClass:(Class)a3 contentPropertyName:(id)a4 comparisonOperator:(int64_t)a5 removable:(BOOL)a6
+- (WFRowTemplateValue)initWithContentItemClass:(Class)class contentPropertyName:(id)name comparisonOperator:(int64_t)operator removable:(BOOL)removable
 {
-  v10 = a4;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = WFRowTemplateValue;
   v11 = [(WFRowTemplateValue *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_contentItemClass, a3);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_contentItemClass, class);
+    v13 = [nameCopy copy];
     contentPropertyName = v12->_contentPropertyName;
     v12->_contentPropertyName = v13;
 
-    v12->_comparisonOperator = a5;
-    v12->_removable = a6;
+    v12->_comparisonOperator = operator;
+    v12->_removable = removable;
     v15 = v12;
   }
 

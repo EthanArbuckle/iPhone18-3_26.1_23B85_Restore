@@ -1,9 +1,9 @@
 @interface CalDAVCalendarQueryTask
-- (id)_icsDateStringForNSDateComponents:(id)a3;
+- (id)_icsDateStringForNSDateComponents:(id)components;
 - (id)description;
 - (id)requestBody;
-- (void)_appendComponentFiltersToXMLData:(id)a3;
-- (void)_appendTimeRangeFilterToXMLData:(id)a3 startDate:(id)a4 endDate:(id)a5;
+- (void)_appendComponentFiltersToXMLData:(id)data;
+- (void)_appendTimeRangeFilterToXMLData:(id)data startDate:(id)date endDate:(id)endDate;
 @end
 
 @implementation CalDAVCalendarQueryTask
@@ -31,34 +31,34 @@
     v8 = &stru_285505238;
   }
 
-  v9 = [(CalDAVCalendarQueryTask *)self syncTodos];
+  syncTodos = [(CalDAVCalendarQueryTask *)self syncTodos];
   v10 = @" Todos";
-  if (!v9)
+  if (!syncTodos)
   {
     v10 = &stru_285505238;
   }
 
   [v3 appendFormat:@"\n  Syncing:%@%@", v8, v10];
-  v11 = [(CalDAVCalendarQueryTask *)self eventFilterStartDate];
-  if (v11)
+  eventFilterStartDate = [(CalDAVCalendarQueryTask *)self eventFilterStartDate];
+  if (eventFilterStartDate)
   {
   }
 
   else
   {
-    v12 = [(CalDAVCalendarQueryTask *)self eventFilterEndDate];
+    eventFilterEndDate = [(CalDAVCalendarQueryTask *)self eventFilterEndDate];
 
-    if (!v12)
+    if (!eventFilterEndDate)
     {
       goto LABEL_22;
     }
   }
 
-  v13 = [(CalDAVCalendarQueryTask *)self eventFilterStartDate];
-  if (v13)
+  eventFilterStartDate2 = [(CalDAVCalendarQueryTask *)self eventFilterStartDate];
+  if (eventFilterStartDate2)
   {
-    v14 = [(CalDAVCalendarQueryTask *)self eventFilterStartDate];
-    v15 = [v5 dateFromComponents:v14];
+    eventFilterStartDate3 = [(CalDAVCalendarQueryTask *)self eventFilterStartDate];
+    v15 = [v5 dateFromComponents:eventFilterStartDate3];
   }
 
   else
@@ -66,12 +66,12 @@
     v15 = 0;
   }
 
-  v16 = [(CalDAVCalendarQueryTask *)self eventFilterEndDate];
-  if (v16)
+  eventFilterEndDate2 = [(CalDAVCalendarQueryTask *)self eventFilterEndDate];
+  if (eventFilterEndDate2)
   {
-    v17 = v16;
-    v18 = [(CalDAVCalendarQueryTask *)self eventFilterEndDate];
-    v19 = [v5 dateFromComponents:v18];
+    v17 = eventFilterEndDate2;
+    eventFilterEndDate3 = [(CalDAVCalendarQueryTask *)self eventFilterEndDate];
+    v19 = [v5 dateFromComponents:eventFilterEndDate3];
 
     if (v15 && v19)
     {
@@ -114,38 +114,38 @@ LABEL_22:
   return v3;
 }
 
-- (id)_icsDateStringForNSDateComponents:(id)a3
+- (id)_icsDateStringForNSDateComponents:(id)components
 {
-  if (a3)
+  if (components)
   {
     v3 = MEMORY[0x277D7F0F0];
-    v4 = a3;
+    componentsCopy = components;
     v5 = [v3 alloc];
-    v6 = [v4 year];
-    v7 = [v4 month];
-    v8 = [v4 day];
-    v9 = [v4 hour] != 0x7FFFFFFFFFFFFFFFLL;
-    v10 = [v4 minute] != 0x7FFFFFFFFFFFFFFFLL;
-    v11 = [v4 second];
+    year = [componentsCopy year];
+    month = [componentsCopy month];
+    v8 = [componentsCopy day];
+    v9 = [componentsCopy hour] != 0x7FFFFFFFFFFFFFFFLL;
+    v10 = [componentsCopy minute] != 0x7FFFFFFFFFFFFFFFLL;
+    second = [componentsCopy second];
 
-    v12 = [v5 initWithYear:v6 month:v7 day:v8 hour:v9 minute:v10 second:v11 != 0x7FFFFFFFFFFFFFFFLL];
-    v13 = [v12 icsString];
+    0x7FFFFFFFFFFFFFFFLL = [v5 initWithYear:year month:month day:v8 hour:v9 minute:v10 second:second != 0x7FFFFFFFFFFFFFFFLL];
+    icsString = [0x7FFFFFFFFFFFFFFFLL icsString];
   }
 
   else
   {
-    v13 = 0;
+    icsString = 0;
   }
 
-  return v13;
+  return icsString;
 }
 
-- (void)_appendTimeRangeFilterToXMLData:(id)a3 startDate:(id)a4 endDate:(id)a5
+- (void)_appendTimeRangeFilterToXMLData:(id)data startDate:(id)date endDate:(id)endDate
 {
-  v16 = a3;
-  v8 = a5;
-  v9 = [(CalDAVCalendarQueryTask *)self _icsDateStringForNSDateComponents:a4];
-  v10 = [(CalDAVCalendarQueryTask *)self _icsDateStringForNSDateComponents:v8];
+  dataCopy = data;
+  endDateCopy = endDate;
+  v9 = [(CalDAVCalendarQueryTask *)self _icsDateStringForNSDateComponents:date];
+  v10 = [(CalDAVCalendarQueryTask *)self _icsDateStringForNSDateComponents:endDateCopy];
 
   if (v9 && v10)
   {
@@ -155,7 +155,7 @@ LABEL_22:
     v15 = 0;
     v13 = @"end";
 LABEL_6:
-    [v16 appendElement:v11 inNamespace:v12 withStringContent:0 withAttributeNamesAndValues:{@"start", v9, v13, v14, v15}];
+    [dataCopy appendElement:v11 inNamespace:v12 withStringContent:0 withAttributeNamesAndValues:{@"start", v9, v13, v14, v15}];
     goto LABEL_7;
   }
 
@@ -169,15 +169,15 @@ LABEL_6:
 
   if (v10)
   {
-    [v16 appendElement:*MEMORY[0x277CFE038] inNamespace:*MEMORY[0x277CFDDC0] withStringContent:0 withAttributeNamesAndValues:{@"end", v10, 0, v14, v15}];
+    [dataCopy appendElement:*MEMORY[0x277CFE038] inNamespace:*MEMORY[0x277CFDDC0] withStringContent:0 withAttributeNamesAndValues:{@"end", v10, 0, v14, v15}];
   }
 
 LABEL_7:
 }
 
-- (void)_appendComponentFiltersToXMLData:(id)a3
+- (void)_appendComponentFiltersToXMLData:(id)data
 {
-  v11 = a3;
+  dataCopy = data;
   v4 = objc_alloc(MEMORY[0x277CBEB38]);
   v5 = *MEMORY[0x277CFDFA8];
   v6 = [v4 initWithObjectsAndKeys:{@"VCALENDAR", *MEMORY[0x277CFDFA8], 0}];
@@ -188,25 +188,25 @@ LABEL_7:
 
   v7 = *MEMORY[0x277CFDEE8];
   v8 = *MEMORY[0x277CFDDC0];
-  [v11 startElement:*MEMORY[0x277CFDEE8] inNamespace:*MEMORY[0x277CFDDC0] withAttributes:v6];
+  [dataCopy startElement:*MEMORY[0x277CFDEE8] inNamespace:*MEMORY[0x277CFDDC0] withAttributes:v6];
   if ([(CalDAVCalendarQueryTask *)self syncEvents])
   {
-    [v11 startElement:v7 inNamespace:v8 withAttributeNamesAndValues:{v5, @"VEVENT", 0}];
-    v9 = [(CalDAVCalendarQueryTask *)self eventFilterStartDate];
-    v10 = [(CalDAVCalendarQueryTask *)self eventFilterEndDate];
-    [(CalDAVCalendarQueryTask *)self _appendTimeRangeFilterToXMLData:v11 startDate:v9 endDate:v10];
+    [dataCopy startElement:v7 inNamespace:v8 withAttributeNamesAndValues:{v5, @"VEVENT", 0}];
+    eventFilterStartDate = [(CalDAVCalendarQueryTask *)self eventFilterStartDate];
+    eventFilterEndDate = [(CalDAVCalendarQueryTask *)self eventFilterEndDate];
+    [(CalDAVCalendarQueryTask *)self _appendTimeRangeFilterToXMLData:dataCopy startDate:eventFilterStartDate endDate:eventFilterEndDate];
 
-    [v11 endElement:v7 inNamespace:v8];
+    [dataCopy endElement:v7 inNamespace:v8];
   }
 
-  [v11 endElement:v7 inNamespace:v8];
+  [dataCopy endElement:v7 inNamespace:v8];
 }
 
 - (id)requestBody
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(CoreDAVPropertyFindBaseTask *)self propertiesToFind];
-  if (v3 && (v4 = v3, -[CoreDAVPropertyFindBaseTask propertiesToFind](self, "propertiesToFind"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, v6))
+  propertiesToFind = [(CoreDAVPropertyFindBaseTask *)self propertiesToFind];
+  if (propertiesToFind && (v4 = propertiesToFind, -[CoreDAVPropertyFindBaseTask propertiesToFind](self, "propertiesToFind"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, v6))
   {
     v7 = objc_alloc_init(MEMORY[0x277CFDCA0]);
     v8 = *MEMORY[0x277CFDDC0];
@@ -219,8 +219,8 @@ LABEL_7:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v10 = [(CoreDAVPropertyFindBaseTask *)self propertiesToFind];
-    v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    propertiesToFind2 = [(CoreDAVPropertyFindBaseTask *)self propertiesToFind];
+    v11 = [propertiesToFind2 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v11)
     {
       v12 = v11;
@@ -231,16 +231,16 @@ LABEL_7:
         {
           if (*v25 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(propertiesToFind2);
           }
 
           v15 = *(*(&v24 + 1) + 8 * i);
-          v16 = [v15 name];
-          v17 = [v15 nameSpace];
-          [v7 appendElement:v16 inNamespace:v17 withStringContent:0 withAttributeNamesAndValues:0];
+          name = [v15 name];
+          nameSpace = [v15 nameSpace];
+          [v7 appendElement:name inNamespace:nameSpace withStringContent:0 withAttributeNamesAndValues:0];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v12 = [propertiesToFind2 countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v12);
@@ -252,17 +252,17 @@ LABEL_7:
     [(CalDAVCalendarQueryTask *)self _appendComponentFiltersToXMLData:v7];
     [v7 endElement:v18 inNamespace:v8];
     [v7 endElement:v23 inNamespace:v8];
-    v19 = [v7 data];
+    data = [v7 data];
   }
 
   else
   {
-    v19 = 0;
+    data = 0;
   }
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v19;
+  return data;
 }
 
 @end

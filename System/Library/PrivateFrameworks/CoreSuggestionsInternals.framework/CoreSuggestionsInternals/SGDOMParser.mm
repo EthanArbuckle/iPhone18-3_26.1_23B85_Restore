@@ -1,19 +1,19 @@
 @interface SGDOMParser
-- (id)_parseDocument:(id)a3;
-- (id)parseHTML:(id)a3;
+- (id)_parseDocument:(id)document;
+- (id)parseHTML:(id)l;
 - (id)webView;
-- (void)runJavascriptOnWebView:(id)a3 withCallback:(id)a4;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
-- (void)webViewWebContentProcessDidTerminate:(id)a3;
+- (void)runJavascriptOnWebView:(id)view withCallback:(id)callback;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
+- (void)webViewWebContentProcessDidTerminate:(id)terminate;
 @end
 
 @implementation SGDOMParser
 
-- (void)runJavascriptOnWebView:(id)a3 withCallback:(id)a4
+- (void)runJavascriptOnWebView:(id)view withCallback:(id)callback
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  viewCopy = view;
+  callbackCopy = callback;
   v7 = +[SGAsset localeAsset];
   v8 = [v7 filesystemPathForAssetDataRelativePath:@"HTMLPreprocessor.js"];
 
@@ -28,8 +28,8 @@
       v14[1] = 3221225472;
       v14[2] = __51__SGDOMParser_runJavascriptOnWebView_withCallback___block_invoke;
       v14[3] = &unk_27894E6A8;
-      v15 = v6;
-      [v5 evaluateJavaScript:v9 completionHandler:v14];
+      v15 = callbackCopy;
+      [viewCopy evaluateJavaScript:v9 completionHandler:v14];
     }
 
     else
@@ -42,7 +42,7 @@
         _os_log_error_impl(&dword_231E60000, v12, OS_LOG_TYPE_ERROR, "SGDOMParser: jsContent nil: %@", buf, 0xCu);
       }
 
-      (*(v6 + 2))(v6, MEMORY[0x277CBEC10]);
+      (*(callbackCopy + 2))(callbackCopy, MEMORY[0x277CBEC10]);
     }
   }
 
@@ -55,7 +55,7 @@
       _os_log_error_impl(&dword_231E60000, v11, OS_LOG_TYPE_ERROR, "SGDOMParser: Nil path for HTMLPreprocessor from asset", buf, 2u);
     }
 
-    (*(v6 + 2))(v6, MEMORY[0x277CBEC10]);
+    (*(callbackCopy + 2))(callbackCopy, MEMORY[0x277CBEC10]);
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -89,7 +89,7 @@ void __51__SGDOMParser_runJavascriptOnWebView_withCallback___block_invoke(uint64
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)webViewWebContentProcessDidTerminate:(id)a3
+- (void)webViewWebContentProcessDidTerminate:(id)terminate
 {
   loadedSem = self->_loadedSem;
   if (loadedSem)
@@ -98,7 +98,7 @@ void __51__SGDOMParser_runJavascriptOnWebView_withCallback___block_invoke(uint64
   }
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
   loadedSem = self->_loadedSem;
   if (loadedSem)
@@ -107,9 +107,9 @@ void __51__SGDOMParser_runJavascriptOnWebView_withCallback___block_invoke(uint64
   }
 }
 
-- (id)_parseDocument:(id)a3
+- (id)_parseDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v5 = MEMORY[0x277D85CD0];
   dispatch_assert_queue_not_V2(MEMORY[0x277D85CD0]);
   v33[0] = 0;
@@ -134,7 +134,7 @@ void __51__SGDOMParser_runJavascriptOnWebView_withCallback___block_invoke(uint64
   block[3] = &unk_2789561A8;
   v26 = v33;
   block[4] = self;
-  v8 = v4;
+  v8 = documentCopy;
   v25 = v8;
   dispatch_async(v5, block);
 
@@ -153,7 +153,7 @@ void __51__SGDOMParser_runJavascriptOnWebView_withCallback___block_invoke(uint64
     v16 = 3221225472;
     v17 = __30__SGDOMParser__parseDocument___block_invoke_20;
     v18 = &unk_278956180;
-    v19 = self;
+    selfCopy = self;
     v21 = v33;
     v22 = &v27;
     v11 = v10;
@@ -161,7 +161,7 @@ void __51__SGDOMParser_runJavascriptOnWebView_withCallback___block_invoke(uint64
     v12 = MEMORY[0x277D85CD0];
     dispatch_async(MEMORY[0x277D85CD0], &v15);
 
-    [MEMORY[0x277D425A0] waitForSemaphore:{v11, v15, v16, v17, v18, v19}];
+    [MEMORY[0x277D425A0] waitForSemaphore:{v11, v15, v16, v17, v18, selfCopy}];
     v13 = v28[5];
   }
 
@@ -251,10 +251,10 @@ LABEL_18:
   if (v6)
   {
     v7 = v6;
-    v8 = [getWKWebsiteDataStoreClass() nonPersistentDataStore];
-    if (v8)
+    nonPersistentDataStore = [getWKWebsiteDataStoreClass() nonPersistentDataStore];
+    if (nonPersistentDataStore)
     {
-      [v7 setWebsiteDataStore:v8];
+      [v7 setWebsiteDataStore:nonPersistentDataStore];
     }
 
     else
@@ -267,50 +267,50 @@ LABEL_18:
       }
     }
 
-    v12 = [v7 preferences];
-    [v12 setJavaScriptCanOpenWindowsAutomatically:0];
+    preferences = [v7 preferences];
+    [preferences setJavaScriptCanOpenWindowsAutomatically:0];
 
-    v13 = [v7 preferences];
-    [v13 _setWebAudioEnabled:0];
+    preferences2 = [v7 preferences];
+    [preferences2 _setWebAudioEnabled:0];
 
-    v14 = [v7 preferences];
-    [v14 _setJavaScriptCanAccessClipboard:0];
+    preferences3 = [v7 preferences];
+    [preferences3 _setJavaScriptCanAccessClipboard:0];
 
-    v15 = [v7 preferences];
-    [v15 _setStorageBlockingPolicy:2];
+    preferences4 = [v7 preferences];
+    [preferences4 _setStorageBlockingPolicy:2];
 
-    v16 = [v7 preferences];
-    [v16 _setScreenCaptureEnabled:0];
+    preferences5 = [v7 preferences];
+    [preferences5 _setScreenCaptureEnabled:0];
 
-    v17 = [v7 preferences];
-    [v17 _setPeerConnectionEnabled:0];
+    preferences6 = [v7 preferences];
+    [preferences6 _setPeerConnectionEnabled:0];
 
-    v18 = [v7 preferences];
-    [v18 _setMediaDevicesEnabled:0];
+    preferences7 = [v7 preferences];
+    [preferences7 _setMediaDevicesEnabled:0];
 
-    v19 = [v7 preferences];
-    [v19 _setDOMPasteAllowed:0];
+    preferences8 = [v7 preferences];
+    [preferences8 _setDOMPasteAllowed:0];
 
-    v20 = [v7 preferences];
-    [v20 _setAVFoundationEnabled:0];
+    preferences9 = [v7 preferences];
+    [preferences9 _setAVFoundationEnabled:0];
 
-    v21 = [v7 preferences];
-    [v21 _setLoadsImagesAutomatically:0];
+    preferences10 = [v7 preferences];
+    [preferences10 _setLoadsImagesAutomatically:0];
 
-    v22 = [v7 preferences];
-    [v22 _setRemotePlaybackEnabled:0];
+    preferences11 = [v7 preferences];
+    [preferences11 _setRemotePlaybackEnabled:0];
 
-    v23 = [v7 preferences];
-    [v23 _setWebAudioEnabled:0];
+    preferences12 = [v7 preferences];
+    [preferences12 _setWebAudioEnabled:0];
 
-    v24 = [v7 preferences];
-    [v24 _setTextAutosizingEnabled:0];
+    preferences13 = [v7 preferences];
+    [preferences13 _setTextAutosizingEnabled:0];
 
-    v25 = [v7 preferences];
-    [v25 _setShouldEnableTextAutosizingBoost:0];
+    preferences14 = [v7 preferences];
+    [preferences14 _setShouldEnableTextAutosizingBoost:0];
 
-    v26 = [getWKWebsiteDataStoreClass() nonPersistentDataStore];
-    [v7 setWebsiteDataStore:v26];
+    nonPersistentDataStore2 = [getWKWebsiteDataStoreClass() nonPersistentDataStore];
+    [v7 setWebsiteDataStore:nonPersistentDataStore2];
 
     [v7 setAllowsAirPlayForMediaPlayback:0];
     [v7 _setAllowUniversalAccessFromFileURLs:0];
@@ -380,13 +380,13 @@ LABEL_19:
   return v10;
 }
 
-- (id)parseHTML:(id)a3
+- (id)parseHTML:(id)l
 {
   v50 = *MEMORY[0x277D85DE8];
-  v30 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  objc_storeStrong(&v5->_html, a3);
+  lCopy = l;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_html, l);
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
@@ -405,8 +405,8 @@ LABEL_19:
     block[2] = __25__SGDOMParser_parseHTML___block_invoke;
     block[3] = &unk_278956180;
     v37 = &v43;
-    block[4] = v5;
-    v36 = v30;
+    block[4] = selfCopy;
+    v36 = lCopy;
     v38 = buf;
     dispatch_async(v6, block);
 
@@ -418,9 +418,9 @@ LABEL_19:
         break;
       }
 
-      v8 = [MEMORY[0x277CBEB88] currentRunLoop];
-      v9 = [MEMORY[0x277CBEAA8] distantFuture];
-      v10 = [v8 runMode:v7 beforeDate:v9];
+      currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+      distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+      v10 = [currentRunLoop runMode:v7 beforeDate:distantFuture];
     }
 
     while ((v10 & 1) != 0);
@@ -430,7 +430,7 @@ LABEL_19:
 
   else
   {
-    v11 = [(SGDOMParser *)v5 _parseDocument:v30];
+    v11 = [(SGDOMParser *)selfCopy _parseDocument:lCopy];
     v12 = v44[5];
     v44[5] = v11;
   }
@@ -510,10 +510,10 @@ LABEL_25:
 
   _Block_object_dispose(&v43, 8);
 
-  html = v5->_html;
-  v5->_html = 0;
+  html = selfCopy->_html;
+  selfCopy->_html = 0;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v28 = *MEMORY[0x277D85DE8];
 
   return v26;

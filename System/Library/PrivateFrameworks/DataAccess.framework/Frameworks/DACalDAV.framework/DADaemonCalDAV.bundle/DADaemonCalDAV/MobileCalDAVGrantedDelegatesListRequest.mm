@@ -1,7 +1,7 @@
 @interface MobileCalDAVGrantedDelegatesListRequest
-+ (id)_grantedDelegateFromCalDAVDetails:(id)a3 allowWrite:(BOOL)a4;
-- (MobileCalDAVGrantedDelegatesListRequest)initWithConsumer:(id)a3 account:(id)a4;
-- (void)_finishedWithResults:(id)a3 error:(id)a4;
++ (id)_grantedDelegateFromCalDAVDetails:(id)details allowWrite:(BOOL)write;
+- (MobileCalDAVGrantedDelegatesListRequest)initWithConsumer:(id)consumer account:(id)account;
+- (void)_finishedWithResults:(id)results error:(id)error;
 - (void)cancel;
 - (void)dealloc;
 - (void)performRequest;
@@ -9,18 +9,18 @@
 
 @implementation MobileCalDAVGrantedDelegatesListRequest
 
-- (MobileCalDAVGrantedDelegatesListRequest)initWithConsumer:(id)a3 account:(id)a4
+- (MobileCalDAVGrantedDelegatesListRequest)initWithConsumer:(id)consumer account:(id)account
 {
-  v7 = a3;
-  v8 = a4;
+  consumerCopy = consumer;
+  accountCopy = account;
   v16.receiver = self;
   v16.super_class = MobileCalDAVGrantedDelegatesListRequest;
   v9 = [(MobileCalDAVGrantedDelegatesListRequest *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_consumer, a3);
-    objc_storeStrong(&v10->_account, a4);
+    objc_storeStrong(&v9->_consumer, consumer);
+    objc_storeStrong(&v10->_account, account);
     v11 = +[NSString da_newGUID];
     requestID = v10->_requestID;
     v10->_requestID = v11;
@@ -48,16 +48,16 @@
 
 - (void)performRequest
 {
-  v3 = [(MobileCalDAVDADaemonAccount *)self->_account mobileCalDAVAccount];
-  v4 = [v3 mainPrincipal];
+  mobileCalDAVAccount = [(MobileCalDAVDADaemonAccount *)self->_account mobileCalDAVAccount];
+  mainPrincipal = [mobileCalDAVAccount mainPrincipal];
 
   v5 = [CalDAVGetGrantedDelegatesTaskGroup alloc];
-  v6 = [v4 principalURL];
-  v7 = [v5 initWithAccountInfoProvider:v4 principalURL:v6 taskManager:self->_taskManager];
+  principalURL = [mainPrincipal principalURL];
+  v7 = [v5 initWithAccountInfoProvider:mainPrincipal principalURL:principalURL taskManager:self->_taskManager];
   taskGroup = self->_taskGroup;
   self->_taskGroup = v7;
 
-  -[CalDAVGetGrantedDelegatesTaskGroup setServerSupportsExpandPropertyReport:](self->_taskGroup, "setServerSupportsExpandPropertyReport:", [v4 isExpandPropertyReportSupported]);
+  -[CalDAVGetGrantedDelegatesTaskGroup setServerSupportsExpandPropertyReport:](self->_taskGroup, "setServerSupportsExpandPropertyReport:", [mainPrincipal isExpandPropertyReportSupported]);
   [(CalDAVGetGrantedDelegatesTaskGroup *)self->_taskGroup setFetchPrincipalDetails:1];
   objc_initWeak(&location, self);
   objc_initWeak(&from, self->_taskGroup);
@@ -92,53 +92,53 @@
   [(MobileCalDAVGrantedDelegatesListRequest *)self _finishedWithResults:0 error:v3];
 }
 
-- (void)_finishedWithResults:(id)a3 error:(id)a4
+- (void)_finishedWithResults:(id)results error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   if (!self->_finished)
   {
-    v7 = a3;
+    resultsCopy = results;
     v8 = DALoggingwithCategory();
     v9 = _CPLog_to_os_log_type[6];
     if (os_log_type_enabled(v8, v9))
     {
       v10 = 138412546;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
-      v13 = v6;
+      v13 = errorCopy;
       _os_log_impl(&dword_0, v8, v9, "[%@] finished with error %@", &v10, 0x16u);
     }
 
     self->_finished = 1;
-    [(DAEventsGrantedDelegatesListResponseConsumer *)self->_consumer grantedDelegatesListRequestFinishedWithResults:v7 error:v6];
+    [(DAEventsGrantedDelegatesListResponseConsumer *)self->_consumer grantedDelegatesListRequestFinishedWithResults:resultsCopy error:errorCopy];
 
     [(MobileCalDAVDADaemonAccount *)self->_account grantedDelegatesListRequestIsGoingAway:self];
   }
 }
 
-+ (id)_grantedDelegateFromCalDAVDetails:(id)a3 allowWrite:(BOOL)a4
++ (id)_grantedDelegateFromCalDAVDetails:(id)details allowWrite:(BOOL)write
 {
-  v4 = a4;
-  v5 = a3;
+  writeCopy = write;
+  detailsCopy = details;
   v6 = objc_opt_new();
-  v7 = [v5 principalURL];
-  v8 = [v7 CDVRawPath];
-  [v6 setUri:v8];
+  principalURL = [detailsCopy principalURL];
+  cDVRawPath = [principalURL CDVRawPath];
+  [v6 setUri:cDVRawPath];
 
-  v9 = [v5 displayName];
-  [v6 setDisplayName:v9];
+  displayName = [detailsCopy displayName];
+  [v6 setDisplayName:displayName];
 
-  v10 = [v5 addresses];
-  v11 = [v10 count];
+  addresses = [detailsCopy addresses];
+  v11 = [addresses count];
 
   if (v11)
   {
-    v12 = [v5 preferredAddresses];
-    v13 = [CalDAVCalendarUserAddress preferredAddress:v12];
+    preferredAddresses = [detailsCopy preferredAddresses];
+    v13 = [CalDAVCalendarUserAddress preferredAddress:preferredAddresses];
     [v6 setPreferredUserAddress:v13];
   }
 
-  if (v4)
+  if (writeCopy)
   {
     v14 = 2;
   }

@@ -1,40 +1,40 @@
 @interface PSESchemaPSEMapsUserFollowup
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PSESchemaPSEMapsUserFollowup)initWithDictionary:(id)a3;
-- (PSESchemaPSEMapsUserFollowup)initWithJSON:(id)a3;
+- (PSESchemaPSEMapsUserFollowup)initWithDictionary:(id)dictionary;
+- (PSESchemaPSEMapsUserFollowup)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasMapsAction:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasMapsAction:(BOOL)action;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PSESchemaPSEMapsUserFollowup
 
-- (PSESchemaPSEMapsUserFollowup)initWithDictionary:(id)a3
+- (PSESchemaPSEMapsUserFollowup)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PSESchemaPSEMapsUserFollowup;
   v5 = [(PSESchemaPSEMapsUserFollowup *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"followupType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"followupType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PSESchemaPSEMapsUserFollowup setFollowupType:](v5, "setFollowupType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"mapsAction"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"mapsAction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PSESchemaPSEMapsUserFollowup setMapsAction:](v5, "setMapsAction:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"mapsActionType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"mapsActionType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (PSESchemaPSEMapsUserFollowup)initWithJSON:(id)a3
+- (PSESchemaPSEMapsUserFollowup)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PSESchemaPSEMapsUserFollowup *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PSESchemaPSEMapsUserFollowup *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PSESchemaPSEMapsUserFollowup *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,18 +84,18 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
-    v5 = [(PSESchemaPSEMapsUserFollowup *)self followupType];
+    followupType = [(PSESchemaPSEMapsUserFollowup *)self followupType];
     v6 = @"PSEMAPSFOLLOWUP_UNKNOWN";
-    if (v5 == 1)
+    if (followupType == 1)
     {
       v6 = @"PSEMAPSFOLLOWUP_SIRI_RESULT";
     }
 
-    if (v5 == 2)
+    if (followupType == 2)
     {
       v7 = @"PSEMAPSFOLLOWUP_USER_INITIATED_NEW_SEARCH";
     }
@@ -105,7 +105,7 @@
       v7 = v6;
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"followupType"];
+    [dictionary setObject:v7 forKeyedSubscript:@"followupType"];
     has = self->_has;
   }
 
@@ -122,19 +122,19 @@
       v9 = off_1E78E1470[v8];
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"mapsAction"];
+    [dictionary setObject:v9 forKeyedSubscript:@"mapsAction"];
   }
 
   if (self->_mapsActionType)
   {
-    v10 = [(PSESchemaPSEMapsUserFollowup *)self mapsActionType];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"mapsActionType"];
+    mapsActionType = [(PSESchemaPSEMapsUserFollowup *)self mapsActionType];
+    v11 = [mapsActionType copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"mapsActionType"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -163,16 +163,16 @@ LABEL_3:
   return v7 ^ v6 ^ [(NSString *)self->_mapsActionType hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -181,27 +181,27 @@ LABEL_3:
   if (*&has)
   {
     followupType = self->_followupType;
-    if (followupType != [v4 followupType])
+    if (followupType != [equalCopy followupType])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
   if (v8 == ((v6 >> 1) & 1))
   {
-    if (!v8 || (mapsAction = self->_mapsAction, mapsAction == [v4 mapsAction]))
+    if (!v8 || (mapsAction = self->_mapsAction, mapsAction == [equalCopy mapsAction]))
     {
-      v10 = [(PSESchemaPSEMapsUserFollowup *)self mapsActionType];
-      v11 = [v4 mapsActionType];
-      v12 = v11;
-      if ((v10 != 0) != (v11 == 0))
+      mapsActionType = [(PSESchemaPSEMapsUserFollowup *)self mapsActionType];
+      mapsActionType2 = [equalCopy mapsActionType];
+      v12 = mapsActionType2;
+      if ((mapsActionType != 0) != (mapsActionType2 == 0))
       {
-        v13 = [(PSESchemaPSEMapsUserFollowup *)self mapsActionType];
-        if (!v13)
+        mapsActionType3 = [(PSESchemaPSEMapsUserFollowup *)self mapsActionType];
+        if (!mapsActionType3)
         {
 
 LABEL_17:
@@ -209,10 +209,10 @@ LABEL_17:
           goto LABEL_15;
         }
 
-        v14 = v13;
-        v15 = [(PSESchemaPSEMapsUserFollowup *)self mapsActionType];
-        v16 = [v4 mapsActionType];
-        v17 = [v15 isEqual:v16];
+        v14 = mapsActionType3;
+        mapsActionType4 = [(PSESchemaPSEMapsUserFollowup *)self mapsActionType];
+        mapsActionType5 = [equalCopy mapsActionType];
+        v17 = [mapsActionType4 isEqual:mapsActionType5];
 
         if (v17)
         {
@@ -233,9 +233,9 @@ LABEL_15:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -248,19 +248,19 @@ LABEL_15:
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(PSESchemaPSEMapsUserFollowup *)self mapsActionType];
+  mapsActionType = [(PSESchemaPSEMapsUserFollowup *)self mapsActionType];
 
-  v6 = v7;
-  if (v5)
+  v6 = toCopy;
+  if (mapsActionType)
   {
     PBDataWriterWriteStringField();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasMapsAction:(BOOL)a3
+- (void)setHasMapsAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = 2;
   }

@@ -1,9 +1,9 @@
 @interface CRKTimeoutHarnessOperation
 + (id)timeoutTimerIdentifier;
-- (CRKTimeoutHarnessOperation)initWithOperationQueue:(id)a3 operation:(id)a4 timout:(double)a5;
-- (CRKTimeoutHarnessOperation)initWithTimerPrimitives:(id)a3 operationQueue:(id)a4 operation:(id)a5 timerIdentifier:(id)a6 timeout:(double)a7;
+- (CRKTimeoutHarnessOperation)initWithOperationQueue:(id)queue operation:(id)operation timout:(double)timout;
+- (CRKTimeoutHarnessOperation)initWithTimerPrimitives:(id)primitives operationQueue:(id)queue operation:(id)operation timerIdentifier:(id)identifier timeout:(double)timeout;
 - (void)cancel;
-- (void)dependentOperationDidFinish:(id)a3;
+- (void)dependentOperationDidFinish:(id)finish;
 - (void)main;
 - (void)run;
 - (void)timeoutDidFire;
@@ -11,39 +11,39 @@
 
 @implementation CRKTimeoutHarnessOperation
 
-- (CRKTimeoutHarnessOperation)initWithTimerPrimitives:(id)a3 operationQueue:(id)a4 operation:(id)a5 timerIdentifier:(id)a6 timeout:(double)a7
+- (CRKTimeoutHarnessOperation)initWithTimerPrimitives:(id)primitives operationQueue:(id)queue operation:(id)operation timerIdentifier:(id)identifier timeout:(double)timeout
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  primitivesCopy = primitives;
+  queueCopy = queue;
+  operationCopy = operation;
+  identifierCopy = identifier;
   v22.receiver = self;
   v22.super_class = CRKTimeoutHarnessOperation;
   v17 = [(CRKTimeoutHarnessOperation *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_timerPrimitives, a3);
-    objc_storeStrong(&v18->_operationQueue, a4);
-    objc_storeStrong(&v18->_operation, a5);
-    v19 = [v16 copy];
+    objc_storeStrong(&v17->_timerPrimitives, primitives);
+    objc_storeStrong(&v18->_operationQueue, queue);
+    objc_storeStrong(&v18->_operation, operation);
+    v19 = [identifierCopy copy];
     timerIdentifier = v18->_timerIdentifier;
     v18->_timerIdentifier = v19;
 
-    v18->_timeout = a7;
+    v18->_timeout = timeout;
   }
 
   return v18;
 }
 
-- (CRKTimeoutHarnessOperation)initWithOperationQueue:(id)a3 operation:(id)a4 timout:(double)a5
+- (CRKTimeoutHarnessOperation)initWithOperationQueue:(id)queue operation:(id)operation timout:(double)timout
 {
-  v8 = a4;
-  v9 = a3;
+  operationCopy = operation;
+  queueCopy = queue;
   v10 = objc_opt_new();
-  v11 = [v10 makePrimitives];
-  v12 = [objc_opt_class() timeoutTimerIdentifier];
-  v13 = [(CRKTimeoutHarnessOperation *)self initWithTimerPrimitives:v11 operationQueue:v9 operation:v8 timerIdentifier:v12 timeout:a5];
+  makePrimitives = [v10 makePrimitives];
+  timeoutTimerIdentifier = [objc_opt_class() timeoutTimerIdentifier];
+  v13 = [(CRKTimeoutHarnessOperation *)self initWithTimerPrimitives:makePrimitives operationQueue:queueCopy operation:operationCopy timerIdentifier:timeoutTimerIdentifier timeout:timout];
 
   return v13;
 }
@@ -89,9 +89,9 @@ void __36__CRKTimeoutHarnessOperation_cancel__block_invoke(uint64_t a1)
 
 - (void)run
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  v4 = NSStringFromSelector(a1);
-  [v5 handleFailureInMethod:a1 object:a2 file:@"CRKTimeoutHarnessOperation.m" lineNumber:95 description:{@"%@ must be called from the main thread", v4}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  v4 = NSStringFromSelector(self);
+  [currentHandler handleFailureInMethod:self object:a2 file:@"CRKTimeoutHarnessOperation.m" lineNumber:95 description:{@"%@ must be called from the main thread", v4}];
 }
 
 void __33__CRKTimeoutHarnessOperation_run__block_invoke(uint64_t a1)
@@ -100,26 +100,26 @@ void __33__CRKTimeoutHarnessOperation_run__block_invoke(uint64_t a1)
   [WeakRetained timeoutDidFire];
 }
 
-- (void)dependentOperationDidFinish:(id)a3
+- (void)dependentOperationDidFinish:(id)finish
 {
-  v7 = a3;
-  v4 = [(CRKTimeoutHarnessOperation *)self timeoutTimer];
-  [v4 cancel];
+  finishCopy = finish;
+  timeoutTimer = [(CRKTimeoutHarnessOperation *)self timeoutTimer];
+  [timeoutTimer cancel];
 
   if ([(CRKTimeoutHarnessOperation *)self isExecuting])
   {
-    v5 = [v7 error];
+    error = [finishCopy error];
 
-    if (v5)
+    if (error)
     {
-      v6 = [v7 error];
-      [(CRKTimeoutHarnessOperation *)self endOperationWithError:v6];
+      error2 = [finishCopy error];
+      [(CRKTimeoutHarnessOperation *)self endOperationWithError:error2];
     }
 
     else
     {
-      v6 = [v7 resultObject];
-      [(CRKTimeoutHarnessOperation *)self endOperationWithResultObject:v6];
+      error2 = [finishCopy resultObject];
+      [(CRKTimeoutHarnessOperation *)self endOperationWithResultObject:error2];
     }
   }
 }
@@ -128,8 +128,8 @@ void __33__CRKTimeoutHarnessOperation_run__block_invoke(uint64_t a1)
 {
   if ([(CRKTimeoutHarnessOperation *)self isExecuting])
   {
-    v3 = [(CRKTimeoutHarnessOperation *)self operation];
-    [v3 cancel];
+    operation = [(CRKTimeoutHarnessOperation *)self operation];
+    [operation cancel];
 
     v4 = CRKErrorWithCodeAndUserInfo(32, 0);
     [(CRKTimeoutHarnessOperation *)self endOperationWithError:v4];
@@ -139,7 +139,7 @@ void __33__CRKTimeoutHarnessOperation_run__block_invoke(uint64_t a1)
 + (id)timeoutTimerIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = NSStringFromClass(a1);
+  v3 = NSStringFromClass(self);
   v4 = [v2 stringWithFormat:@"%@-timeoutTimer", v3];
 
   return v4;

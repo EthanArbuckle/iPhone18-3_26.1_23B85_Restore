@@ -1,71 +1,71 @@
 @interface AKDServerUIController
-- (AKDServerUIController)initWithClient:(id)a3;
-- (AKDServerUIController)initWithLiaison:(id)a3 client:(id)a4 delegate:(id)a5;
+- (AKDServerUIController)initWithClient:(id)client;
+- (AKDServerUIController)initWithLiaison:(id)liaison client:(id)client delegate:(id)delegate;
 - (id)_AKIDSCertificateFetchQueue;
-- (id)_errorFromServerResponse:(id)a3;
-- (id)_fetchPhoneInformationWithAdditionalInfo:(id)a3 error:(id *)a4;
-- (id)resourceLoadDelegateWithContext:(id)a3;
-- (id)resourceLoadDelegateWithContext:(id)a3 authResponse:(id)a4;
-- (void)_decorateLoadDelegate:(id)a3 withContext:(id)a4;
-- (void)_fetchIDSCertificateWithContext:(id)a3 completionHandler:(id)a4;
-- (void)_reportPacTelemetryForEvent:(id)a3 context:(id)a4 error:(id)a5;
-- (void)_showServerUIWithContext:(id)a3 completion:(id)a4;
-- (void)getServerUILoadDelegateWithContext:(id)a3 completion:(id)a4;
-- (void)getServerUILoadDelegateWithServerContext:(id)a3 completion:(id)a4;
-- (void)showServerUIWithContext:(id)a3 completion:(id)a4;
+- (id)_errorFromServerResponse:(id)response;
+- (id)_fetchPhoneInformationWithAdditionalInfo:(id)info error:(id *)error;
+- (id)resourceLoadDelegateWithContext:(id)context;
+- (id)resourceLoadDelegateWithContext:(id)context authResponse:(id)response;
+- (void)_decorateLoadDelegate:(id)delegate withContext:(id)context;
+- (void)_fetchIDSCertificateWithContext:(id)context completionHandler:(id)handler;
+- (void)_reportPacTelemetryForEvent:(id)event context:(id)context error:(id)error;
+- (void)_showServerUIWithContext:(id)context completion:(id)completion;
+- (void)getServerUILoadDelegateWithContext:(id)context completion:(id)completion;
+- (void)getServerUILoadDelegateWithServerContext:(id)context completion:(id)completion;
+- (void)showServerUIWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation AKDServerUIController
 
-- (AKDServerUIController)initWithClient:(id)a3
+- (AKDServerUIController)initWithClient:(id)client
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, client);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6 = [(AKDServerUIController *)v3 init];
-  v8 = v6;
-  objc_storeStrong(&v8, v6);
+  selfCopy = v6;
+  objc_storeStrong(&selfCopy, v6);
   if (v6)
   {
-    objc_storeStrong(&v8->_client, location[0]);
+    objc_storeStrong(&selfCopy->_client, location[0]);
   }
 
-  v5 = _objc_retain(v8);
+  v5 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (AKDServerUIController)initWithLiaison:(id)a3 client:(id)a4 delegate:(id)a5
+- (AKDServerUIController)initWithLiaison:(id)liaison client:(id)client delegate:(id)delegate
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, liaison);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, client);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
-  v5 = v14;
-  v14 = 0;
+  objc_storeStrong(&v11, delegate);
+  v5 = selfCopy;
+  selfCopy = 0;
   v10 = [(AKDServerUIController *)v5 init];
-  v14 = v10;
-  objc_storeStrong(&v14, v10);
+  selfCopy = v10;
+  objc_storeStrong(&selfCopy, v10);
   if (v10)
   {
-    objc_storeStrong(&v14->_authUILiaison, location[0]);
-    objc_storeWeak(&v14->_delegate, v11);
-    objc_storeStrong(&v14->_client, v12);
+    objc_storeStrong(&selfCopy->_authUILiaison, location[0]);
+    objc_storeWeak(&selfCopy->_delegate, v11);
+    objc_storeStrong(&selfCopy->_client, v12);
   }
 
-  v7 = _objc_retain(v14);
+  v7 = _objc_retain(selfCopy);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
@@ -85,36 +85,36 @@
   return v2;
 }
 
-- (void)showServerUIWithContext:(id)a3 completion:(id)a4
+- (void)showServerUIWithContext:(id)context completion:(id)completion
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, completion);
   v19 = _AKLogSystem();
   v18 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [location[0] requestConfiguration];
-    sub_1000194D4(v23, v7);
+    requestConfiguration = [location[0] requestConfiguration];
+    sub_1000194D4(v23, requestConfiguration);
     _os_log_impl(&_mh_execute_header, v19, v18, "Asking client to show server UI with %@...", v23, 0xCu);
-    _objc_release(v7);
+    _objc_release(requestConfiguration);
   }
 
   objc_storeStrong(&v19, 0);
-  v6 = [location[0] requestConfiguration];
-  v17 = [v6 resourceLoadDelegate];
-  _objc_release(v6);
-  if (v17)
+  requestConfiguration2 = [location[0] requestConfiguration];
+  resourceLoadDelegate = [requestConfiguration2 resourceLoadDelegate];
+  _objc_release(requestConfiguration2);
+  if (resourceLoadDelegate)
   {
-    [(AKDServerUIController *)v22 _showServerUIWithContext:location[0] completion:v20];
+    [(AKDServerUIController *)selfCopy _showServerUIWithContext:location[0] completion:v20];
   }
 
   else
   {
-    v5 = v22;
+    v5 = selfCopy;
     v4 = location[0];
     v9 = _NSConcreteStackBlock;
     v10 = -1073741824;
@@ -123,51 +123,51 @@
     v13 = &unk_100324DF8;
     v16 = _objc_retain(v20);
     v14 = _objc_retain(location[0]);
-    v15 = _objc_retain(v22);
+    v15 = _objc_retain(selfCopy);
     [(AKDServerUIController *)v5 getServerUILoadDelegateWithServerContext:v4 completion:&v9];
     objc_storeStrong(&v15, 0);
     objc_storeStrong(&v14, 0);
     objc_storeStrong(&v16, 0);
   }
 
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&resourceLoadDelegate, 0);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_showServerUIWithContext:(id)a3 completion:(id)a4
+- (void)_showServerUIWithContext:(id)context completion:(id)completion
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, completion);
   v27 = _AKLogSystem();
   v26 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [location[0] requestConfiguration];
-    v11 = [v12 request];
-    v10 = [location[0] requestConfiguration];
-    v9 = [v10 request];
-    v8 = [v9 allHTTPHeaderFields];
-    sub_10001B098(v31, v11, v8);
+    requestConfiguration = [location[0] requestConfiguration];
+    request = [requestConfiguration request];
+    requestConfiguration2 = [location[0] requestConfiguration];
+    request2 = [requestConfiguration2 request];
+    allHTTPHeaderFields = [request2 allHTTPHeaderFields];
+    sub_10001B098(v31, request, allHTTPHeaderFields);
     _os_log_debug_impl(&_mh_execute_header, v27, v26, "Showing server UI with request: %@, %@", v31, 0x16u);
-    _objc_release(v8);
-    _objc_release(v9);
-    _objc_release(v10);
-    _objc_release(v11);
-    _objc_release(v12);
+    _objc_release(allHTTPHeaderFields);
+    _objc_release(request2);
+    _objc_release(requestConfiguration2);
+    _objc_release(request);
+    _objc_release(requestConfiguration);
   }
 
   objc_storeStrong(&v27, 0);
-  v25 = [location[0] authContext];
-  objc_initWeak(&from, v30);
-  authUILiaison = v30->_authUILiaison;
-  v6 = v25;
-  client = v30->_client;
-  v4 = [location[0] requestConfiguration];
+  authContext = [location[0] authContext];
+  objc_initWeak(&from, selfCopy);
+  authUILiaison = selfCopy->_authUILiaison;
+  v6 = authContext;
+  client = selfCopy->_client;
+  requestConfiguration3 = [location[0] requestConfiguration];
   v14 = _NSConcreteStackBlock;
   v15 = -1073741824;
   v16 = 0;
@@ -176,27 +176,27 @@
   objc_copyWeak(v23, &from);
   v19 = _objc_retain(location[0]);
   v22 = _objc_retain(v28);
-  v20 = _objc_retain(v30);
-  v21 = _objc_retain(v25);
-  [(AKAuthenticationUILiaison *)authUILiaison presentServerProvidedUIForContext:v6 client:client withConfiguration:v4 completion:&v14];
-  _objc_release(v4);
+  v20 = _objc_retain(selfCopy);
+  v21 = _objc_retain(authContext);
+  [(AKAuthenticationUILiaison *)authUILiaison presentServerProvidedUIForContext:v6 client:client withConfiguration:requestConfiguration3 completion:&v14];
+  _objc_release(requestConfiguration3);
   objc_storeStrong(&v21, 0);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(&v22, 0);
   objc_storeStrong(&v19, 0);
   objc_destroyWeak(v23);
   objc_destroyWeak(&from);
-  objc_storeStrong(&v25, 0);
+  objc_storeStrong(&authContext, 0);
   objc_storeStrong(&v28, 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)_errorFromServerResponse:(id)a3
+- (id)_errorFromServerResponse:(id)response
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v26 = [AKAppleIDServerResourceLoadDelegate signalFromServerResponse:location[0]];
   if (v26 == 2)
   {
@@ -278,17 +278,17 @@
   return v3;
 }
 
-- (void)getServerUILoadDelegateWithServerContext:(id)a3 completion:(id)a4
+- (void)getServerUILoadDelegateWithServerContext:(id)context completion:(id)completion
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v31 = 0;
-  objc_storeStrong(&v31, a4);
+  objc_storeStrong(&v31, completion);
   v30 = 0;
-  v29 = [location[0] initiatingServerResponse];
-  if (v29)
+  initiatingServerResponse = [location[0] initiatingServerResponse];
+  if (initiatingServerResponse)
   {
     v28 = _AKLogSystem();
     v27 = OS_LOG_TYPE_DEFAULT;
@@ -301,57 +301,57 @@
     }
 
     objc_storeStrong(&v28, 0);
-    v12 = v33;
-    v13 = [location[0] authContext];
+    v12 = selfCopy;
+    authContext = [location[0] authContext];
     v4 = [AKDServerUIController resourceLoadDelegateWithContext:v12 authResponse:"resourceLoadDelegateWithContext:authResponse:"];
     v5 = v30;
     v30 = v4;
     _objc_release(v5);
-    _objc_release(v13);
+    _objc_release(authContext);
   }
 
   else
   {
-    v10 = v33;
-    v11 = [location[0] authContext];
+    v10 = selfCopy;
+    authContext2 = [location[0] authContext];
     v6 = [(AKDServerUIController *)v10 resourceLoadDelegateWithContext:?];
     v7 = v30;
     v30 = v6;
     _objc_release(v7);
-    _objc_release(v11);
+    _objc_release(authContext2);
   }
 
-  v8 = v33;
-  v9 = [location[0] authContext];
+  v8 = selfCopy;
+  authContext3 = [location[0] authContext];
   v17 = _NSConcreteStackBlock;
   v18 = -1073741824;
   v19 = 0;
   v20 = sub_100164DC4;
   v21 = &unk_100324E70;
   v22 = _objc_retain(v30);
-  v23 = _objc_retain(v33);
+  v23 = _objc_retain(selfCopy);
   v24 = _objc_retain(location[0]);
   v25 = _objc_retain(v31);
-  [(AKDServerUIController *)v8 _fetchIDSCertificateWithContext:v9 completionHandler:&v17];
-  _objc_release(v9);
+  [(AKDServerUIController *)v8 _fetchIDSCertificateWithContext:authContext3 completionHandler:&v17];
+  _objc_release(authContext3);
   objc_storeStrong(&v25, 0);
   objc_storeStrong(&v24, 0);
   objc_storeStrong(&v23, 0);
   objc_storeStrong(&v22, 0);
-  objc_storeStrong(&v29, 0);
+  objc_storeStrong(&initiatingServerResponse, 0);
   objc_storeStrong(&v30, 0);
   objc_storeStrong(&v31, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)getServerUILoadDelegateWithContext:(id)a3 completion:(id)a4
+- (void)getServerUILoadDelegateWithContext:(id)context completion:(id)completion
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, completion);
   v21 = _AKLogSystem();
   v20 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -363,8 +363,8 @@
   }
 
   objc_storeStrong(&v21, 0);
-  v18 = [(AKDServerUIController *)v24 resourceLoadDelegateWithContext:location[0]];
-  v5 = v24;
+  v18 = [(AKDServerUIController *)selfCopy resourceLoadDelegateWithContext:location[0]];
+  v5 = selfCopy;
   v4 = location[0];
   v9 = _NSConcreteStackBlock;
   v10 = -1073741824;
@@ -372,7 +372,7 @@
   v12 = sub_1001652F4;
   v13 = &unk_100324E70;
   v14 = _objc_retain(v18);
-  v15 = _objc_retain(v24);
+  v15 = _objc_retain(selfCopy);
   v16 = _objc_retain(location[0]);
   v17 = _objc_retain(v22);
   [(AKDServerUIController *)v5 _fetchIDSCertificateWithContext:v4 completionHandler:&v9];
@@ -385,14 +385,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)resourceLoadDelegateWithContext:(id)a3
+- (id)resourceLoadDelegateWithContext:(id)context
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v5 = objc_alloc_init(AKAppleIDServerResourceLoadDelegate);
-  [(AKDServerUIController *)v7 _decorateLoadDelegate:v5 withContext:location[0]];
+  [(AKDServerUIController *)selfCopy _decorateLoadDelegate:v5 withContext:location[0]];
   v4 = _objc_retain(v5);
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
@@ -400,21 +400,21 @@
   return v4;
 }
 
-- (id)resourceLoadDelegateWithContext:(id)a3 authResponse:(id)a4
+- (id)resourceLoadDelegateWithContext:(id)context authResponse:(id)response
 {
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, response);
   v37 = 0;
   v36 = 0;
   v35 = 0;
   v34 = 0;
-  v28 = [location[0] proxiedDevice];
-  _objc_release(v28);
-  if (v28)
+  proxiedDevice = [location[0] proxiedDevice];
+  _objc_release(proxiedDevice);
+  if (proxiedDevice)
   {
     v33 = _AKLogSystem();
     v32 = OS_LOG_TYPE_DEFAULT;
@@ -428,9 +428,9 @@
 
     objc_storeStrong(&v33, 0);
     v19 = +[AKAccountManager sharedInstance];
-    v8 = [(AKAccountManager *)v19 altDSIDforPrimaryiCloudAccount];
+    altDSIDforPrimaryiCloudAccount = [(AKAccountManager *)v19 altDSIDforPrimaryiCloudAccount];
     v9 = v37;
-    v37 = v8;
+    v37 = altDSIDforPrimaryiCloudAccount;
     _objc_release(v9);
     _objc_release(v19);
     v20 = +[AKAccountManager sharedInstance];
@@ -438,37 +438,37 @@
     _objc_release(v20);
     v22 = +[AKAccountManager sharedInstance];
     v21 = [(AKAccountManager *)v22 masterTokenForAccount:v30];
-    v10 = [v21 stringValue];
+    stringValue = [v21 stringValue];
     v11 = v36;
-    v36 = v10;
+    v36 = stringValue;
     _objc_release(v11);
     _objc_release(v21);
     _objc_release(v22);
-    v12 = [v38 altDSID];
+    altDSID = [v38 altDSID];
     v13 = v35;
-    v35 = v12;
+    v35 = altDSID;
     _objc_release(v13);
-    v23 = [v38 masterToken];
-    v14 = [v23 stringValue];
+    masterToken = [v38 masterToken];
+    stringValue2 = [masterToken stringValue];
     v15 = v34;
-    v34 = v14;
+    v34 = stringValue2;
     _objc_release(v15);
-    _objc_release(v23);
+    _objc_release(masterToken);
     objc_storeStrong(&v30, 0);
   }
 
   else
   {
-    v4 = [v38 altDSID];
+    altDSID2 = [v38 altDSID];
     v5 = v37;
-    v37 = v4;
+    v37 = altDSID2;
     _objc_release(v5);
-    v26 = [v38 masterToken];
-    v6 = [v26 stringValue];
+    masterToken2 = [v38 masterToken];
+    stringValue3 = [masterToken2 stringValue];
     v7 = v36;
-    v36 = v6;
+    v36 = stringValue3;
     _objc_release(v7);
-    _objc_release(v26);
+    _objc_release(masterToken2);
   }
 
   v16 = [AKAppleIDServerResourceLoadDelegate alloc];
@@ -476,7 +476,7 @@
   [v29 setProxiedAltDSID:v35];
   [v29 setProxiedIdentityToken:v34];
   [v29 setShouldSendSigningHeaders:{objc_msgSend(v38, "requireSigningHeaders")}];
-  [(AKDServerUIController *)v40 _decorateLoadDelegate:v29 withContext:location[0]];
+  [(AKDServerUIController *)selfCopy _decorateLoadDelegate:v29 withContext:location[0]];
   v18 = _objc_retain(v29);
   objc_storeStrong(&v29, 0);
   objc_storeStrong(&v34, 0);
@@ -489,23 +489,23 @@
   return v18;
 }
 
-- (void)_decorateLoadDelegate:(id)a3 withContext:(id)a4
+- (void)_decorateLoadDelegate:(id)delegate withContext:(id)context
 {
-  v41 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, delegate);
   v39 = 0;
-  objc_storeStrong(&v39, a4);
+  objc_storeStrong(&v39, context);
   [location[0] decorateWithContext:v39];
   v24 = location[0];
-  v25 = [(AKClient *)v41->_client name];
+  name = [(AKClient *)selfCopy->_client name];
   [v24 setClientAppName:?];
-  _objc_release(v25);
+  _objc_release(name);
   v26 = location[0];
-  v27 = [(AKClient *)v41->_client bundleID];
+  bundleID = [(AKClient *)selfCopy->_client bundleID];
   [v26 setClientBundleID:?];
-  _objc_release(v27);
+  _objc_release(bundleID);
   v38 = 0;
   v36 = 0;
   v28 = [v39 authKitAccount:&v36];
@@ -531,14 +531,14 @@
       v22 = 0;
       if ([v39 _shouldSendIdentityTokenForRemoteUI])
       {
-        v33 = [location[0] identityToken];
+        identityToken = [location[0] identityToken];
         v32 = 1;
-        v22 = v33 == 0;
+        v22 = identityToken == 0;
       }
 
       if (v32)
       {
-        _objc_release(v33);
+        _objc_release(identityToken);
       }
 
       if (v22)
@@ -546,9 +546,9 @@
         v12 = location[0];
         v15 = +[AKAccountManager sharedInstance];
         v14 = [(AKAccountManager *)v15 masterTokenForAccount:v37];
-        v13 = [v14 stringValue];
+        stringValue = [v14 stringValue];
         [v12 setIdentityToken:?];
-        _objc_release(v13);
+        _objc_release(stringValue);
         _objc_release(v14);
         _objc_release(v15);
       }
@@ -605,18 +605,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_fetchIDSCertificateWithContext:(id)a3 completionHandler:(id)a4
+- (void)_fetchIDSCertificateWithContext:(id)context completionHandler:(id)handler
 {
-  v43 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v41 = 0;
-  objc_storeStrong(&v41, a4);
+  objc_storeStrong(&v41, handler);
   v17 = +[AKDevice currentDevice];
-  v18 = [v17 isMultiUserMode];
+  isMultiUserMode = [v17 isMultiUserMode];
   _objc_release(v17);
-  if (v18)
+  if (isMultiUserMode)
   {
     v14 = v41;
     v15 = [NSError ak_errorWithCode:-7027];
@@ -666,9 +666,9 @@
     objc_storeStrong(&v31, 0);
     v37 = v36;
     v5 = [IDSPhoneCertificateVendor alloc];
-    v6 = [(AKDServerUIController *)v43 _AKIDSCertificateFetchQueue];
+    _AKIDSCertificateFetchQueue = [(AKDServerUIController *)selfCopy _AKIDSCertificateFetchQueue];
     v29 = [v5 initWithQueue:?];
-    _objc_release(v6);
+    _objc_release(_AKIDSCertificateFetchQueue);
     v7 = v29;
     v19 = _NSConcreteStackBlock;
     v20 = -1073741824;
@@ -676,7 +676,7 @@
     v22 = sub_100166578;
     v23 = &unk_100324E98;
     v28 = v37;
-    v24 = _objc_retain(v43);
+    v24 = _objc_retain(selfCopy);
     v25 = _objc_retain(location[0]);
     v26 = _objc_retain(v29);
     v27 = _objc_retain(v41);
@@ -692,30 +692,30 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)_fetchPhoneInformationWithAdditionalInfo:(id)a3 error:(id *)a4
+- (id)_fetchPhoneInformationWithAdditionalInfo:(id)info error:(id *)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, info);
   v6 = +[AKCarrierBundleUtilities sharedInstance];
-  v7 = [(AKCarrierBundleUtilities *)v6 phoneBundleInfoWithAdditionalInfo:location[0] error:a4];
+  v7 = [(AKCarrierBundleUtilities *)v6 phoneBundleInfoWithAdditionalInfo:location[0] error:error];
   _objc_release(v6);
   objc_storeStrong(location, 0);
 
   return v7;
 }
 
-- (void)_reportPacTelemetryForEvent:(id)a3 context:(id)a4 error:(id)a5
+- (void)_reportPacTelemetryForEvent:(id)event context:(id)context error:(id)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, event);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, context);
   v13 = 0;
-  objc_storeStrong(&v13, a5);
+  objc_storeStrong(&v13, error);
   v12 = _AKLogSystem();
   v11 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))

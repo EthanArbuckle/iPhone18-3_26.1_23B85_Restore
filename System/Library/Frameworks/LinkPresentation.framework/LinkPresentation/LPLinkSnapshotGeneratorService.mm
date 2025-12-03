@@ -1,26 +1,26 @@
 @interface LPLinkSnapshotGeneratorService
-- (void)internalSnapshotForMetadata:(id)a3 configurations:(id)a4 completionHandler:(id)a5;
-- (void)snapshotForMetadata:(id)a3 configurations:(id)a4 completionHandler:(id)a5;
+- (void)internalSnapshotForMetadata:(id)metadata configurations:(id)configurations completionHandler:(id)handler;
+- (void)snapshotForMetadata:(id)metadata configurations:(id)configurations completionHandler:(id)handler;
 @end
 
 @implementation LPLinkSnapshotGeneratorService
 
-- (void)snapshotForMetadata:(id)a3 configurations:(id)a4 completionHandler:(id)a5
+- (void)snapshotForMetadata:(id)metadata configurations:(id)configurations completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  configurationsCopy = configurations;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __87__LPLinkSnapshotGeneratorService_snapshotForMetadata_configurations_completionHandler___block_invoke;
   v14[3] = &unk_1E7A35A18;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = metadataCopy;
+  v16 = configurationsCopy;
+  v17 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = configurationsCopy;
+  v13 = metadataCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v14);
 }
 
@@ -44,24 +44,24 @@ void __87__LPLinkSnapshotGeneratorService_snapshotForMetadata_configurations_com
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)internalSnapshotForMetadata:(id)a3 configurations:(id)a4 completionHandler:(id)a5
+- (void)internalSnapshotForMetadata:(id)metadata configurations:(id)configurations completionHandler:(id)handler
 {
   v59 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v51 = a4;
-  v49 = v7;
-  v50 = a5;
-  v8 = [[LPLinkView alloc] initWithMetadata:v7];
+  metadataCopy = metadata;
+  configurationsCopy = configurations;
+  v49 = metadataCopy;
+  handlerCopy = handler;
+  v8 = [[LPLinkView alloc] initWithMetadata:metadataCopy];
   [(LPLinkView *)v8 _setUseLowMemoryImageFilters:1];
   [(LPLinkView *)v8 _setDisableAutoPlay:1];
   [(LPLinkView *)v8 _setAllowsAsynchronousImageDecoding:0];
   [(LPLinkView *)v8 _setUseCPURenderingForMaterials:1];
-  v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v51, "count")}];
+  v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(configurationsCopy, "count")}];
   v56 = 0u;
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obj = v51;
+  obj = configurationsCopy;
   v10 = [obj countByEnumeratingWithState:&v54 objects:v58 count:16];
   if (v10)
   {
@@ -80,30 +80,30 @@ void __87__LPLinkSnapshotGeneratorService_snapshotForMetadata_configurations_com
 
         v15 = *(*(&v54 + 1) + 8 * v14);
         v16 = objc_alloc_init(MEMORY[0x1E69DD250]);
-        v17 = [v15 traitCollection];
-        v18 = [v17 userInterfaceStyle];
-        v19 = [v16 traitOverrides];
-        [v19 setUserInterfaceStyle:v18];
+        traitCollection = [v15 traitCollection];
+        userInterfaceStyle = [traitCollection userInterfaceStyle];
+        traitOverrides = [v16 traitOverrides];
+        [traitOverrides setUserInterfaceStyle:userInterfaceStyle];
 
-        v20 = [v15 traitCollection];
-        v21 = [v20 userInterfaceIdiom];
-        v22 = [v16 traitOverrides];
-        [v22 setUserInterfaceIdiom:v21];
+        traitCollection2 = [v15 traitCollection];
+        userInterfaceIdiom = [traitCollection2 userInterfaceIdiom];
+        traitOverrides2 = [v16 traitOverrides];
+        [traitOverrides2 setUserInterfaceIdiom:userInterfaceIdiom];
 
         [v15 scale];
         v24 = v23;
-        v25 = [v16 traitOverrides];
-        [v25 setDisplayScale:v24];
+        traitOverrides3 = [v16 traitOverrides];
+        [traitOverrides3 setDisplayScale:v24];
 
         [v16 addSubview:v8];
         [v16 updateTraitsIfNeeded];
         [(LPLinkView *)v8 updateTraitsIfNeeded];
         -[LPLinkView _setPreferredSizeClass:](v8, "_setPreferredSizeClass:", [v15 preferredSizeClass]);
-        v26 = [v15 sizeClassParameters];
-        [(LPLinkView *)v8 _setSizeClassParameters:v26];
+        sizeClassParameters = [v15 sizeClassParameters];
+        [(LPLinkView *)v8 _setSizeClassParameters:sizeClassParameters];
 
-        v27 = [v15 overrideBackgroundColor];
-        [(LPLinkView *)v8 _setOverrideBackgroundColor:v27];
+        overrideBackgroundColor = [v15 overrideBackgroundColor];
+        [(LPLinkView *)v8 _setOverrideBackgroundColor:overrideBackgroundColor];
 
         [v15 size];
         if (v29 == v12 && v28 == v13)
@@ -124,8 +124,8 @@ void __87__LPLinkSnapshotGeneratorService_snapshotForMetadata_configurations_com
         [(LPLinkView *)v8 setFrame:0.0, 0.0, v31, v32];
         [(LPLinkView *)v8 _effectiveCornerRadius];
         v35 = v34;
-        v36 = [(LPLinkView *)v8 layer];
-        [v36 setCornerRadius:v35];
+        layer = [(LPLinkView *)v8 layer];
+        [layer setCornerRadius:v35];
 
         [(LPLinkView *)v8 layoutIfNeeded];
         [(LPLinkView *)v8 updateTraitsIfNeeded];
@@ -137,8 +137,8 @@ void __87__LPLinkSnapshotGeneratorService_snapshotForMetadata_configurations_com
         v60.width = v38;
         v60.height = v40;
         UIGraphicsBeginImageContextWithOptions(v60, 0, v42);
-        v43 = [(LPLinkView *)v8 layer];
-        [v43 renderInContext:UIGraphicsGetCurrentContext()];
+        layer2 = [(LPLinkView *)v8 layer];
+        [layer2 renderInContext:UIGraphicsGetCurrentContext()];
 
         if ([v15 showDebugIndicators])
         {
@@ -171,7 +171,7 @@ void __87__LPLinkSnapshotGeneratorService_snapshotForMetadata_configurations_com
     _os_log_impl(&dword_1AE886000, v48, OS_LOG_TYPE_DEFAULT, "LPLinkSnapshotGeneratorService: finished snapshotting", buf, 2u);
   }
 
-  v50[2](v50, 0, v9);
+  handlerCopy[2](handlerCopy, 0, v9);
 }
 
 @end

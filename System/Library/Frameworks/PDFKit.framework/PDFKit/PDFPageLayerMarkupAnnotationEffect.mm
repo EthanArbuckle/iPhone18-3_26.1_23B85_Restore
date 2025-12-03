@@ -18,9 +18,9 @@
 - (id)UUID
 {
   WeakRetained = objc_loadWeakRetained(&self->super._private->annotation);
-  v3 = [WeakRetained pdfAnnotationUUID];
+  pdfAnnotationUUID = [WeakRetained pdfAnnotationUUID];
 
-  return v3;
+  return pdfAnnotationUUID;
 }
 
 - (void)update
@@ -30,13 +30,13 @@
   v4 = WeakRetained;
   if (WeakRetained)
   {
-    v52 = self;
+    selfCopy = self;
     [WeakRetained bounds];
     v6 = v5;
     v8 = v7;
-    v9 = [v4 quadrilateralPoints];
-    v10 = [v4 markupType];
-    v11 = [v9 count];
+    quadrilateralPoints = [v4 quadrilateralPoints];
+    markupType = [v4 markupType];
+    v11 = [quadrilateralPoints count];
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
     if (v11 >= 4)
     {
@@ -49,22 +49,22 @@
       v15 = MEMORY[0x1E695EFD0];
       do
       {
-        v16 = [v9 objectAtIndex:4 * v13];
+        v16 = [quadrilateralPoints objectAtIndex:4 * v13];
         [v16 PDFKitPDFPointValue];
         v58.f64[0] = v17;
         v58.f64[1] = v18;
 
-        v19 = [v9 objectAtIndex:(4 * v13) | 1];
+        v19 = [quadrilateralPoints objectAtIndex:(4 * v13) | 1];
         [v19 PDFKitPDFPointValue];
         v59 = v20;
         v60 = v21;
 
-        v22 = [v9 objectAtIndex:(4 * v13) | 2];
+        v22 = [quadrilateralPoints objectAtIndex:(4 * v13) | 2];
         [v22 PDFKitPDFPointValue];
         v61 = v23;
         v62 = v24;
 
-        v25 = [v9 objectAtIndex:(4 * v13) | 3];
+        v25 = [quadrilateralPoints objectAtIndex:(4 * v13) | 3];
         [v25 PDFKitPDFPointValue];
         v63 = v26;
         v64 = v27;
@@ -97,9 +97,9 @@
             }
 
             while (v34 != 64);
-            if (v10)
+            if (markupType)
             {
-              if (v10 == 1)
+              if (markupType == 1)
               {
                 height = fmax((v35.f64[1] - v33.f64[1]) * 0.08, 1.0);
                 y = height * -0.5 + (v35.f64[1] + v33.f64[1]) * 0.5;
@@ -114,7 +114,7 @@ LABEL_17:
                 width = v54;
                 y = v55;
                 x = v56;
-                if (v10 == 2)
+                if (markupType == 2)
                 {
                   y = v33.f64[1];
                   height = fmax((v35.f64[1] - v33.f64[1]) * 0.08, 1.0);
@@ -156,26 +156,26 @@ LABEL_17:
       while (v13 != v14);
     }
 
-    if (!v52->super._private->markupEffectLayers)
+    if (!selfCopy->super._private->markupEffectLayers)
     {
       v46 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v47 = v52->super._private;
+      v47 = selfCopy->super._private;
       markupEffectLayers = v47->markupEffectLayers;
       v47->markupEffectLayers = v46;
     }
 
-    v49 = [v4 color];
-    v50 = [v49 CGColor];
+    color = [v4 color];
+    cGColor = [color CGColor];
 
-    v51 = v52->super._private->markupEffectLayers;
+    v51 = selfCopy->super._private->markupEffectLayers;
     v57[0] = MEMORY[0x1E69E9820];
     v57[1] = 3221225472;
     v57[2] = __44__PDFPageLayerMarkupAnnotationEffect_update__block_invoke;
     v57[3] = &unk_1E8151C08;
-    v57[4] = v52;
-    v57[5] = v50;
-    UpdateRectTransformDictionary(v51, v12, v50, v57, &__block_literal_global_14);
-    [(PDFPageLayerMarkupAnnotationEffect *)v52 _updateNoteLayer];
+    v57[4] = selfCopy;
+    v57[5] = cGColor;
+    UpdateRectTransformDictionary(v51, v12, cGColor, v57, &__block_literal_global_14);
+    [(PDFPageLayerMarkupAnnotationEffect *)selfCopy _updateNoteLayer];
   }
 }
 
@@ -201,32 +201,32 @@ id __44__PDFPageLayerMarkupAnnotationEffect_update__block_invoke(uint64_t a1, vo
 {
   WeakRetained = objc_loadWeakRetained(&self->super._private->pageLayer);
   v3 = objc_loadWeakRetained(&self->super._private->annotation);
-  v4 = [v3 contents];
+  contents = [v3 contents];
   noteLayer = self->super._private->noteLayer;
-  if (v4)
+  if (contents)
   {
     if (noteLayer)
     {
-      v6 = [(PDFPageLayerEffect *)noteLayer UUID];
-      [WeakRetained updatePageLayerEffectForID:v6];
+      uUID = [(PDFPageLayerEffect *)noteLayer UUID];
+      [WeakRetained updatePageLayerEffectForID:uUID];
     }
 
     else
     {
       v9 = [PDFPageLayerEffect createPDFNoteLayerEffectForAnnotation:v3 withLayer:WeakRetained];
       v10 = self->super._private;
-      v6 = v10->noteLayer;
+      uUID = v10->noteLayer;
       v10->noteLayer = v9;
     }
   }
 
   else
   {
-    v7 = [(PDFPageLayerEffect *)noteLayer UUID];
-    [WeakRetained removePageLayerEffectForID:v7];
+    uUID2 = [(PDFPageLayerEffect *)noteLayer UUID];
+    [WeakRetained removePageLayerEffectForID:uUID2];
 
     v8 = self->super._private;
-    v6 = v8->noteLayer;
+    uUID = v8->noteLayer;
     v8->noteLayer = 0;
   }
 }
@@ -237,8 +237,8 @@ id __44__PDFPageLayerMarkupAnnotationEffect_update__block_invoke(uint64_t a1, vo
   v5.super_class = PDFPageLayerMarkupAnnotationEffect;
   [(PDFPageLayerMarkupAnnotationEffect *)&v5 removeFromSuperlayer];
   WeakRetained = objc_loadWeakRetained(&self->super._private->pageLayer);
-  v4 = [(PDFPageLayerEffect *)self->super._private->noteLayer UUID];
-  [WeakRetained removePageLayerEffectForID:v4];
+  uUID = [(PDFPageLayerEffect *)self->super._private->noteLayer UUID];
+  [WeakRetained removePageLayerEffectForID:uUID];
 }
 
 @end

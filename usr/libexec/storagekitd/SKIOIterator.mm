@@ -1,15 +1,15 @@
 @interface SKIOIterator
-- (SKIOIterator)initWithClassName:(id)a3;
+- (SKIOIterator)initWithClassName:(id)name;
 - (unsigned)copyNextObject;
 @end
 
 @implementation SKIOIterator
 
-- (SKIOIterator)initWithClassName:(id)a3
+- (SKIOIterator)initWithClassName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   existing = 0;
-  v5 = IOServiceMatching([v4 UTF8String]);
+  v5 = IOServiceMatching([nameCopy UTF8String]);
   if (IOServiceGetMatchingServices(kIOMainPortDefault, v5, &existing))
   {
     v6 = 1;
@@ -26,20 +26,20 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v12 = v4;
+      v12 = nameCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Cannot find IO object of class %@", buf, 0xCu);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SKIOObject *)self initWithIOObject:?];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (unsigned)copyNextObject

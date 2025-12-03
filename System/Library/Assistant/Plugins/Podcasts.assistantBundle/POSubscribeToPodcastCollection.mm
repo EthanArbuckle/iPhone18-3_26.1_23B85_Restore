@@ -1,21 +1,21 @@
 @interface POSubscribeToPodcastCollection
-+ (id)_commandStatusForRemoteStatus:(unsigned int)a3 assistantError:(id)a4;
++ (id)_commandStatusForRemoteStatus:(unsigned int)status assistantError:(id)error;
 - (id)_subscribeRequestIdentifier;
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper;
 @end
 
 @implementation POSubscribeToPodcastCollection
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper
 {
   v59 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  completionCopy = completion;
   v10 = objc_msgSend__validate(self, v6, v7, v8, v9);
   v15 = v10;
   if (v10)
   {
     v16 = objc_msgSend_dictionary(v10, v11, v12, v13, v14);
-    v5[2](v5, v16);
+    completionCopy[2](completionCopy, v16);
   }
 
   else
@@ -60,7 +60,7 @@
     v54[1] = 3221225472;
     v54[2] = sub_233532814;
     v54[3] = &unk_2789DE2C0;
-    v55 = v5;
+    v55 = completionCopy;
     objc_msgSend_performPodcastsPlaybackRequestWithIdentifier_assetInfo_hashedRouteUIDs_startPlaying_requesterSharedUserId_sharedUserIdFromPlayableITunesAccount_context_allowsFallback_completion_(POUtilities, v52, v41, v46, v36, 0, 0, 0, v51, 0, v54);
   }
 
@@ -78,13 +78,13 @@
   return v18;
 }
 
-+ (id)_commandStatusForRemoteStatus:(unsigned int)a3 assistantError:(id)a4
++ (id)_commandStatusForRemoteStatus:(unsigned int)status assistantError:(id)error
 {
-  v5 = a4;
-  v10 = objc_msgSend_domain(v5, v6, v7, v8, v9);
+  errorCopy = error;
+  v10 = objc_msgSend_domain(errorCopy, v6, v7, v8, v9);
   if (objc_msgSend_isEqualToString_(v10, v11, *MEMORY[0x277D277F8], v12, v13))
   {
-    v18 = objc_msgSend_code(v5, v14, v15, v16, v17);
+    v18 = objc_msgSend_code(errorCopy, v14, v15, v16, v17);
 
     if (v18)
     {
@@ -111,9 +111,9 @@
     v28 = MEMORY[0x277D86220];
   }
 
-  if (a3 > 1)
+  if (status > 1)
   {
-    if (a3 == 2)
+    if (status == 2)
     {
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
       {
@@ -126,7 +126,7 @@
       goto LABEL_28;
     }
 
-    if (a3 == 10)
+    if (status == 10)
     {
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
       {
@@ -142,13 +142,13 @@
 LABEL_18:
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      sub_2335382B4(a3, v28);
+      sub_2335382B4(status, v28);
     }
 
     goto LABEL_20;
   }
 
-  if (!a3)
+  if (!status)
   {
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
@@ -160,7 +160,7 @@ LABEL_18:
     goto LABEL_24;
   }
 
-  if (a3 != 1)
+  if (status != 1)
   {
     goto LABEL_18;
   }

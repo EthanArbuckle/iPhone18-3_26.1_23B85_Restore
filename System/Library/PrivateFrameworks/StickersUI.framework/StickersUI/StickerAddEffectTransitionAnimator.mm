@@ -1,11 +1,11 @@
 @interface StickerAddEffectTransitionAnimator
-- (CGRect)frameIncludingStrokeForView:(id)a3;
-- (double)transitionScaleForView:(id)a3;
+- (CGRect)frameIncludingStrokeForView:(id)view;
+- (double)transitionScaleForView:(id)view;
 @end
 
 @implementation StickerAddEffectTransitionAnimator
 
-- (double)transitionScaleForView:(id)a3
+- (double)transitionScaleForView:(id)view
 {
   objc_opt_self();
   v4 = swift_dynamicCastObjCClass();
@@ -16,12 +16,12 @@
 
   v5 = v4;
   v6 = objc_opt_self();
-  v7 = a3;
+  viewCopy = view;
 
-  v8 = [v5 effect];
-  v9 = [v8 type];
+  effect = [v5 effect];
+  type = [effect type];
 
-  if ((v9 & 0x8000000000000000) != 0)
+  if ((type & 0x8000000000000000) != 0)
   {
     __break(1u);
   }
@@ -29,7 +29,7 @@
   else
   {
     [v5 bounds];
-    [v6 extraScaleToIncludeStrokeWithEffectType:v9 bounds:?];
+    [v6 extraScaleToIncludeStrokeWithEffectType:type bounds:?];
     v12 = v11;
 
     return v12;
@@ -38,7 +38,7 @@
   return result;
 }
 
-- (CGRect)frameIncludingStrokeForView:(id)a3
+- (CGRect)frameIncludingStrokeForView:(id)view
 {
   objc_opt_self();
   v5 = swift_dynamicCastObjCClass();
@@ -46,13 +46,13 @@
   {
     v6 = v5;
     v7 = *(self->super.isa + 58);
-    v8 = a3;
+    viewCopy = view;
 
     v9 = v7(v6);
-    [v8 frame];
+    [viewCopy frame];
     v14 = sub_26BA8C95C(v10, v11, v12, v13);
     v16 = v15;
-    [v8 frame];
+    [viewCopy frame];
     v18 = sub_26BA8C944(v14, v16, v9 * v17);
     v20 = v19;
     v22 = v21;
@@ -66,7 +66,7 @@
 
   else
   {
-    [a3 frame];
+    [view frame];
   }
 
   result.size.height = v25;

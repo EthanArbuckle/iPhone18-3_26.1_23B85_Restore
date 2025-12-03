@@ -1,83 +1,83 @@
 @interface PLNotificationManager
 + (id)_bestDateForDeliveringNotification;
-+ (id)_bestDateForDeliveringNotificationFromCoreDuetWithError:(id *)a3;
++ (id)_bestDateForDeliveringNotificationFromCoreDuetWithError:(id *)error;
 + (id)_notificationDeliveryDate;
-+ (id)filteredAlbumListForContentMode:(int)a3 library:(id)a4;
++ (id)filteredAlbumListForContentMode:(int)mode library:(id)library;
 + (id)sharedManager;
 + (unint64_t)sharedAlbumsUnreadCount;
-+ (void)processAssetsForSensitivityIfNecessary:(id)a3 inPhotoLibrary:(id)a4 completionHandler:(id)a5;
++ (void)processAssetsForSensitivityIfNecessary:(id)necessary inPhotoLibrary:(id)library completionHandler:(id)handler;
 - (BOOL)_alertFiltrationEnabled;
-- (BOOL)_notificationType:(int64_t)a3 matchesCommentsOrLikeNotifications:(BOOL)a4 andPhotosAddedToAlbumNotifications:(BOOL)a5;
-- (BOOL)_shouldAllowAlertsFromContactWithEmail:(id)a3;
+- (BOOL)_notificationType:(int64_t)type matchesCommentsOrLikeNotifications:(BOOL)notifications andPhotosAddedToAlbumNotifications:(BOOL)albumNotifications;
+- (BOOL)_shouldAllowAlertsFromContactWithEmail:(id)email;
 - (PLNotificationManager)init;
-- (id)_addWaitingNotification:(id)a3 forPhotosBatchID:(id)a4;
-- (id)_generateMemoryNotificationRepresentationWithMemoryUUID:(id)a3 keyAssetUUID:(id)a4 notificationTitle:(id)a5 notificationSubtitle:(id)a6 notificationDeliveryDate:(id)a7 pathManager:(id)a8;
+- (id)_addWaitingNotification:(id)notification forPhotosBatchID:(id)d;
+- (id)_generateMemoryNotificationRepresentationWithMemoryUUID:(id)d keyAssetUUID:(id)iD notificationTitle:(id)title notificationSubtitle:(id)subtitle notificationDeliveryDate:(id)date pathManager:(id)manager;
 - (id)_initSharedInstance;
-- (id)_memoryNotificationFromDictionaryRepresentation:(id)a3;
-- (id)_waitingNotificationForPhotosBatchID:(id)a3;
+- (id)_memoryNotificationFromDictionaryRepresentation:(id)representation;
+- (id)_waitingNotificationForPhotosBatchID:(id)d;
 - (id)contactStore;
-- (unint64_t)currentAppBadgeCountForNotificationUNCenter:(id)a3;
-- (void)_deleteNotificationsForAssetWithUUID:(id)a3 shouldDeleteCommentsOrLikeNotifications:(BOOL)a4 shouldDeletePhotosAddedToAlbumNotifications:(BOOL)a5;
-- (void)_deleteNotificationsForObjectWithUUID:(id)a3 notificationDictionaryKey:(id)a4 notificationTypes:(id)a5;
-- (void)_postAsyncNotificationForAcceptedSharedLibraryWithScopeIdentifier:(id)a3 participantName:(id)a4 NotificationDeliveryDate:(id)a5 transaction:(id)a6;
-- (void)_postAsyncNotificationForPhotosChallengeNewQuestionsWithNotificationDeliveryDate:(id)a3 transaction:(id)a4;
-- (void)_postAsyncNotificationForPhotosChallengeSubmissionWithNotificationDeliveryDate:(id)a3 transaction:(id)a4;
-- (void)_postAsyncNotificationForSharedLibraryParticipantAssetTrashWithTrashedAssetPhotoCount:(unint64_t)a3 videoCount:(unint64_t)a4 itemCount:(unint64_t)a5 withNotificationDeliveryDate:(id)a6 transaction:(id)a7;
-- (void)_postAsyncNotificationForSharedLibrarySuggestionsWithNotificationDeliveryDate:(id)a3 transaction:(id)a4;
-- (void)_postNotificationForSharedLibraryExitInitatedByOwnerWithTypeWithExitType:(signed __int16)a3 retentionPolicy:(int64_t)a4 ownerName:(id)a5 notificationDeliveryDate:(id)a6 transaction:(id)a7;
-- (void)_removeWaitingNotificationForPhotosBatchID:(id)a3;
-- (void)_updateImageDataForNotification:(id)a3;
-- (void)calculateCurrentBadgeCountWithCompletionHandler:(id)a3;
+- (unint64_t)currentAppBadgeCountForNotificationUNCenter:(id)center;
+- (void)_deleteNotificationsForAssetWithUUID:(id)d shouldDeleteCommentsOrLikeNotifications:(BOOL)notifications shouldDeletePhotosAddedToAlbumNotifications:(BOOL)albumNotifications;
+- (void)_deleteNotificationsForObjectWithUUID:(id)d notificationDictionaryKey:(id)key notificationTypes:(id)types;
+- (void)_postAsyncNotificationForAcceptedSharedLibraryWithScopeIdentifier:(id)identifier participantName:(id)name NotificationDeliveryDate:(id)date transaction:(id)transaction;
+- (void)_postAsyncNotificationForPhotosChallengeNewQuestionsWithNotificationDeliveryDate:(id)date transaction:(id)transaction;
+- (void)_postAsyncNotificationForPhotosChallengeSubmissionWithNotificationDeliveryDate:(id)date transaction:(id)transaction;
+- (void)_postAsyncNotificationForSharedLibraryParticipantAssetTrashWithTrashedAssetPhotoCount:(unint64_t)count videoCount:(unint64_t)videoCount itemCount:(unint64_t)itemCount withNotificationDeliveryDate:(id)date transaction:(id)transaction;
+- (void)_postAsyncNotificationForSharedLibrarySuggestionsWithNotificationDeliveryDate:(id)date transaction:(id)transaction;
+- (void)_postNotificationForSharedLibraryExitInitatedByOwnerWithTypeWithExitType:(signed __int16)type retentionPolicy:(int64_t)policy ownerName:(id)name notificationDeliveryDate:(id)date transaction:(id)transaction;
+- (void)_removeWaitingNotificationForPhotosBatchID:(id)d;
+- (void)_updateImageDataForNotification:(id)notification;
+- (void)calculateCurrentBadgeCountWithCompletionHandler:(id)handler;
 - (void)dealloc;
 - (void)discardAllNotifications;
-- (void)getThumbnailImageDataAssetUUID:(id)a3 completionHandler:(id)a4;
-- (void)noteCollectionShareUnseenStatusDidChange:(id)a3;
-- (void)noteDidChangePlaceholderKindForAsset:(id)a3 fromOldKind:(signed __int16)a4 forCollectionShare:(id)a5 mstreamdInfo:(id)a6;
-- (void)noteDidChangePlaceholderKindForAsset:(id)a3 fromOldKind:(signed __int16)a4 forSharedAlbum:(id)a5 mstreamdInfo:(id)a6;
-- (void)noteDidDeleteCollectionShare:(id)a3;
-- (void)noteDidDeleteSharedAlbum:(id)a3;
-- (void)noteDidDeleteSharedAssetsWithUUIDs:(id)a3;
-- (void)noteDidReceiveAssets:(id)a3 forCollectionShare:(id)a4 mstreamdInfo:(id)a5;
-- (void)noteDidReceiveAssets:(id)a3 forSharedAlbum:(id)a4 mstreamdInfo:(id)a5;
-- (void)noteDidReceiveCMMInvitationWithMomentShare:(id)a3;
-- (void)noteDidReceiveComment:(id)a3 mstreamdInfo:(id)a4;
-- (void)noteDidReceiveExpiringCMMInvitationsWithMomentShares:(id)a3;
-- (void)noteDidReceiveInvitationForCollectionShare:(id)a3;
-- (void)noteDidReceiveInvitationForSharedAlbum:(id)a3;
-- (void)noteDidReceiveLike:(id)a3 mstreamdInfo:(id)a4;
-- (void)noteInvitationRecordStatusChanged:(id)a3 fromOldState:(int64_t)a4 mstreamdInfo:(id)a5;
-- (void)noteMultipleContributorStatusChangedForAlbum:(id)a3 mstreamdInfo:(id)a4;
-- (void)noteMultipleContributorStatusChangedForCollectionShare:(id)a3 mstreamdInfo:(id)a4;
-- (void)noteParticipantAcceptanceStatusChanged:(id)a3 fromOldAcceptanceStatus:(int64_t)a4 mstreamdInfo:(id)a5;
-- (void)noteSharedAlbumUnseenStatusDidChange:(id)a3;
-- (void)noteSharedAssetCommentsUnreadStatusDidChange:(id)a3;
-- (void)noteUserAssetsAreReadyForMomentShare:(id)a3;
-- (void)noteUserDidChangeStatusForMomentShare:(id)a3 photoLibrary:(id)a4;
-- (void)noteUserDidDeleteSharedAlbumWithUUID:(id)a3;
-- (void)noteUserDidDeleteSharedAssetsWithUUIDs:(id)a3;
+- (void)getThumbnailImageDataAssetUUID:(id)d completionHandler:(id)handler;
+- (void)noteCollectionShareUnseenStatusDidChange:(id)change;
+- (void)noteDidChangePlaceholderKindForAsset:(id)asset fromOldKind:(signed __int16)kind forCollectionShare:(id)share mstreamdInfo:(id)info;
+- (void)noteDidChangePlaceholderKindForAsset:(id)asset fromOldKind:(signed __int16)kind forSharedAlbum:(id)album mstreamdInfo:(id)info;
+- (void)noteDidDeleteCollectionShare:(id)share;
+- (void)noteDidDeleteSharedAlbum:(id)album;
+- (void)noteDidDeleteSharedAssetsWithUUIDs:(id)ds;
+- (void)noteDidReceiveAssets:(id)assets forCollectionShare:(id)share mstreamdInfo:(id)info;
+- (void)noteDidReceiveAssets:(id)assets forSharedAlbum:(id)album mstreamdInfo:(id)info;
+- (void)noteDidReceiveCMMInvitationWithMomentShare:(id)share;
+- (void)noteDidReceiveComment:(id)comment mstreamdInfo:(id)info;
+- (void)noteDidReceiveExpiringCMMInvitationsWithMomentShares:(id)shares;
+- (void)noteDidReceiveInvitationForCollectionShare:(id)share;
+- (void)noteDidReceiveInvitationForSharedAlbum:(id)album;
+- (void)noteDidReceiveLike:(id)like mstreamdInfo:(id)info;
+- (void)noteInvitationRecordStatusChanged:(id)changed fromOldState:(int64_t)state mstreamdInfo:(id)info;
+- (void)noteMultipleContributorStatusChangedForAlbum:(id)album mstreamdInfo:(id)info;
+- (void)noteMultipleContributorStatusChangedForCollectionShare:(id)share mstreamdInfo:(id)info;
+- (void)noteParticipantAcceptanceStatusChanged:(id)changed fromOldAcceptanceStatus:(int64_t)status mstreamdInfo:(id)info;
+- (void)noteSharedAlbumUnseenStatusDidChange:(id)change;
+- (void)noteSharedAssetCommentsUnreadStatusDidChange:(id)change;
+- (void)noteUserAssetsAreReadyForMomentShare:(id)share;
+- (void)noteUserDidChangeStatusForMomentShare:(id)share photoLibrary:(id)library;
+- (void)noteUserDidDeleteSharedAlbumWithUUID:(id)d;
+- (void)noteUserDidDeleteSharedAssetsWithUUIDs:(id)ds;
 - (void)noteUserDidLeavePhotosApplication;
-- (void)noteUserDidNavigateAwayFromCollectionShare:(id)a3 photoLibrary:(id)a4;
-- (void)noteUserDidNavigateAwayFromSharedAlbum:(id)a3 photoLibrary:(id)a4;
-- (void)noteUserDidNavigateIntoCollectionShare:(id)a3 photoLibrary:(id)a4;
-- (void)noteUserDidNavigateIntoSharedAlbum:(id)a3 photoLibrary:(id)a4;
-- (void)noteUserDidReadCommentOnSharedAsset:(id)a3 photoLibrary:(id)a4;
-- (void)noteUserDidViewCloudFeedContent:(unint64_t)a3 photoLibrary:(id)a4;
-- (void)postNotificationForAcceptedSharedLibraryWithScopeIdentifier:(id)a3 participantName:(id)a4 library:(id)a5 notificationDeliveryDate:(id)a6;
-- (void)postNotificationForExpiringCMMsWithUUIDs:(id)a3 thumbnailImageData:(id)a4 notificationTitle:(id)a5 notificationSubtitle:(id)a6;
+- (void)noteUserDidNavigateAwayFromCollectionShare:(id)share photoLibrary:(id)library;
+- (void)noteUserDidNavigateAwayFromSharedAlbum:(id)album photoLibrary:(id)library;
+- (void)noteUserDidNavigateIntoCollectionShare:(id)share photoLibrary:(id)library;
+- (void)noteUserDidNavigateIntoSharedAlbum:(id)album photoLibrary:(id)library;
+- (void)noteUserDidReadCommentOnSharedAsset:(id)asset photoLibrary:(id)library;
+- (void)noteUserDidViewCloudFeedContent:(unint64_t)content photoLibrary:(id)library;
+- (void)postNotificationForAcceptedSharedLibraryWithScopeIdentifier:(id)identifier participantName:(id)name library:(id)library notificationDeliveryDate:(id)date;
+- (void)postNotificationForExpiringCMMsWithUUIDs:(id)ds thumbnailImageData:(id)data notificationTitle:(id)title notificationSubtitle:(id)subtitle;
 - (void)postNotificationForInterestInUnrenderedCinematicVideoItems;
-- (void)postNotificationForInterestingMemoryWithMemoryUUID:(id)a3 library:(id)a4 notificationDeliveryDate:(id)a5;
-- (void)postNotificationForPhotosChallengeNewQuestionsWithNotificationDeliveryDate:(id)a3;
-- (void)postNotificationForPhotosChallengeSubmissionWithNotificationDeliveryDate:(id)a3;
-- (void)postNotificationForReadyToViewMomentShareWithUUID:(id)a3 photoLibrary:(id)a4;
-- (void)postNotificationForSharedLibraryExitInitatedByOwnerWithTypeWithExitType:(signed __int16)a3 retentionPolicy:(int64_t)a4 ownerName:(id)a5 notificationDeliveryDate:(id)a6;
-- (void)postNotificationForSharedLibraryParticipantAssetTrashWithTrashedAssetPhotoCount:(unint64_t)a3 videoCount:(unint64_t)a4 itemCount:(unint64_t)a5 withNotificationDeliveryDate:(id)a6;
-- (void)postNotificationForSharedLibrarySuggestionsWithNotificationDeliveryDate:(id)a3;
-- (void)removeNotificationForInterestingMemoryWithUUID:(id)a3;
+- (void)postNotificationForInterestingMemoryWithMemoryUUID:(id)d library:(id)library notificationDeliveryDate:(id)date;
+- (void)postNotificationForPhotosChallengeNewQuestionsWithNotificationDeliveryDate:(id)date;
+- (void)postNotificationForPhotosChallengeSubmissionWithNotificationDeliveryDate:(id)date;
+- (void)postNotificationForReadyToViewMomentShareWithUUID:(id)d photoLibrary:(id)library;
+- (void)postNotificationForSharedLibraryExitInitatedByOwnerWithTypeWithExitType:(signed __int16)type retentionPolicy:(int64_t)policy ownerName:(id)name notificationDeliveryDate:(id)date;
+- (void)postNotificationForSharedLibraryParticipantAssetTrashWithTrashedAssetPhotoCount:(unint64_t)count videoCount:(unint64_t)videoCount itemCount:(unint64_t)itemCount withNotificationDeliveryDate:(id)date;
+- (void)postNotificationForSharedLibrarySuggestionsWithNotificationDeliveryDate:(id)date;
+- (void)removeNotificationForInterestingMemoryWithUUID:(id)d;
 - (void)removeNotificationForSharedLibraryParticipantAssetTrash;
-- (void)reportAsJunkPhotoStreamInvitationForAlbumWithCloudGUID:(id)a3;
-- (void)sendResponse:(BOOL)a3 toPhotoStreamInvitationForAlbumWithCloudGUID:(id)a4;
-- (void)triggerNotificationThumbnailUpdateForAsset:(id)a3;
-- (void)userViewedNotificationWithAlbumCloudGUID:(id)a3;
+- (void)reportAsJunkPhotoStreamInvitationForAlbumWithCloudGUID:(id)d;
+- (void)sendResponse:(BOOL)response toPhotoStreamInvitationForAlbumWithCloudGUID:(id)d;
+- (void)triggerNotificationThumbnailUpdateForAsset:(id)asset;
+- (void)userViewedNotificationWithAlbumCloudGUID:(id)d;
 @end
 
 @implementation PLNotificationManager
@@ -108,15 +108,15 @@
   return alertFiltrationEnabled != 0;
 }
 
-- (BOOL)_shouldAllowAlertsFromContactWithEmail:(id)a3
+- (BOOL)_shouldAllowAlertsFromContactWithEmail:(id)email
 {
-  v4 = a3;
+  emailCopy = email;
   if ([(PLNotificationManager *)self _alertFiltrationEnabled])
   {
-    if (v4)
+    if (emailCopy)
     {
-      v5 = [(PLNotificationManager *)self contactStore];
-      v6 = [v5 contactsMatchingEmailAddress:v4 keysToFetch:MEMORY[0x1E695E0F0]];
+      contactStore = [(PLNotificationManager *)self contactStore];
+      v6 = [contactStore contactsMatchingEmailAddress:emailCopy keysToFetch:MEMORY[0x1E695E0F0]];
 
       v7 = v6 != 0;
     }
@@ -150,18 +150,18 @@
   return contactStore;
 }
 
-- (void)reportAsJunkPhotoStreamInvitationForAlbumWithCloudGUID:(id)a3
+- (void)reportAsJunkPhotoStreamInvitationForAlbumWithCloudGUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[PLPhotoLibrary cloudSharingPhotoLibrary];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __80__PLNotificationManager_reportAsJunkPhotoStreamInvitationForAlbumWithCloudGUID___block_invoke;
   v7[3] = &unk_1E7578848;
-  v8 = v3;
+  v8 = dCopy;
   v9 = v4;
   v5 = v4;
-  v6 = v3;
+  v6 = dCopy;
   [v5 performBlock:v7];
 }
 
@@ -212,19 +212,19 @@ void __80__PLNotificationManager_reportAsJunkPhotoStreamInvitationForAlbumWithCl
   }
 }
 
-- (void)sendResponse:(BOOL)a3 toPhotoStreamInvitationForAlbumWithCloudGUID:(id)a4
+- (void)sendResponse:(BOOL)response toPhotoStreamInvitationForAlbumWithCloudGUID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   v6 = +[PLPhotoLibrary cloudSharingPhotoLibrary];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __83__PLNotificationManager_sendResponse_toPhotoStreamInvitationForAlbumWithCloudGUID___block_invoke;
   v9[3] = &unk_1E7576AC8;
-  v10 = v5;
+  v10 = dCopy;
   v11 = v6;
-  v12 = a3;
+  responseCopy = response;
   v7 = v6;
-  v8 = v5;
+  v8 = dCopy;
   [v7 performBlock:v9];
 }
 
@@ -335,31 +335,31 @@ uint64_t __48__PLNotificationManager_discardAllNotifications__block_invoke(uint6
   return [v4 stillAlive];
 }
 
-- (void)_updateImageDataForNotification:(id)a3
+- (void)_updateImageDataForNotification:(id)notification
 {
-  v4 = a3;
-  if (v4)
+  notificationCopy = notification;
+  if (notificationCopy)
   {
     v5 = self->_isolationQueue;
     objc_initWeak(&location, self);
-    v6 = [v4 mainAssetUUID];
+    mainAssetUUID = [notificationCopy mainAssetUUID];
     v7 = MEMORY[0x1E695DFA0];
-    if (v6)
+    if (mainAssetUUID)
     {
-      v8 = [v4 mainAssetUUID];
-      v9 = [v7 orderedSetWithObject:v8];
+      mainAssetUUID2 = [notificationCopy mainAssetUUID];
+      orderedSet = [v7 orderedSetWithObject:mainAssetUUID2];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFA0] orderedSet];
+      orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
     }
 
-    v10 = [v4 lowResThumbAssetUUIDs];
-    [v9 unionOrderedSet:v10];
+    lowResThumbAssetUUIDs = [notificationCopy lowResThumbAssetUUIDs];
+    [orderedSet unionOrderedSet:lowResThumbAssetUUIDs];
 
-    v11 = [v4 placeholderAssetUUIDs];
-    [v9 unionOrderedSet:v11];
+    placeholderAssetUUIDs = [notificationCopy placeholderAssetUUIDs];
+    [orderedSet unionOrderedSet:placeholderAssetUUIDs];
 
     v12 = objc_opt_class();
     v13 = +[PLPhotoLibrary cloudSharingPhotoLibrary];
@@ -370,8 +370,8 @@ uint64_t __48__PLNotificationManager_discardAllNotifications__block_invoke(uint6
     objc_copyWeak(&v18, &location);
     v14 = v5;
     v16 = v14;
-    v17 = v4;
-    [v12 processAssetsForSensitivityIfNecessary:v9 inPhotoLibrary:v13 completionHandler:v15];
+    v17 = notificationCopy;
+    [v12 processAssetsForSensitivityIfNecessary:orderedSet inPhotoLibrary:v13 completionHandler:v15];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -430,12 +430,12 @@ void __57__PLNotificationManager__updateImageDataForNotification___block_invoke_
   [v2 updateImageData:v3 forNotificationWithIdentifier:v4];
 }
 
-- (void)getThumbnailImageDataAssetUUID:(id)a3 completionHandler:(id)a4
+- (void)getThumbnailImageDataAssetUUID:(id)d completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  dCopy = d;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (dCopy)
   {
     v8 = +[PLPhotoLibrary cloudSharingPhotoLibrary];
     v10[0] = MEMORY[0x1E69E9820];
@@ -443,15 +443,15 @@ void __57__PLNotificationManager__updateImageDataForNotification___block_invoke_
     v10[2] = __74__PLNotificationManager_getThumbnailImageDataAssetUUID_completionHandler___block_invoke;
     v10[3] = &unk_1E7576F38;
     v11 = v8;
-    v12 = v5;
+    v12 = dCopy;
     v13 = v7;
     v9 = v8;
     [v9 performBlock:v10 withPriority:0];
   }
 
-  else if (v6)
+  else if (handlerCopy)
   {
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -509,32 +509,32 @@ void __74__PLNotificationManager_getThumbnailImageDataAssetUUID_completionHandle
   }
 }
 
-- (void)triggerNotificationThumbnailUpdateForAsset:(id)a3
+- (void)triggerNotificationThumbnailUpdateForAsset:(id)asset
 {
-  v5 = a3;
-  if (!v5)
+  assetCopy = asset;
+  if (!assetCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1844 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1844 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
-  v6 = [v5 cloudSharedPlaceholderKind];
-  if (v6 <= 8 && ((1 << v6) & 0x1B8) != 0)
+  cloudSharedPlaceholderKind = [assetCopy cloudSharedPlaceholderKind];
+  if (cloudSharedPlaceholderKind <= 8 && ((1 << cloudSharedPlaceholderKind) & 0x1B8) != 0)
   {
-    v7 = [v5 uuid];
+    uuid = [assetCopy uuid];
     v8 = self->_isolationQueue;
     objc_initWeak(&location, self);
-    v9 = [(PLNotificationManager *)self UNCenter];
+    uNCenter = [(PLNotificationManager *)self UNCenter];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __68__PLNotificationManager_triggerNotificationThumbnailUpdateForAsset___block_invoke;
     v13[3] = &unk_1E7572118;
-    v10 = v7;
+    v10 = uuid;
     v14 = v10;
     v11 = v8;
     v15 = v11;
     objc_copyWeak(&v16, &location);
-    [v9 enumerateExistingNotificationsUsingBlock:v13];
+    [uNCenter enumerateExistingNotificationsUsingBlock:v13];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
@@ -615,43 +615,43 @@ void __68__PLNotificationManager_triggerNotificationThumbnailUpdateForAsset___bl
   [v2 updateImageData:*(a1 + 32) forNotificationWithIdentifier:*(a1 + 40)];
 }
 
-- (void)_removeWaitingNotificationForPhotosBatchID:(id)a3
+- (void)_removeWaitingNotificationForPhotosBatchID:(id)d
 {
-  v5 = a3;
-  v7 = v5;
-  if (!v5)
+  dCopy = d;
+  v7 = dCopy;
+  if (!dCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1836 description:{@"Invalid parameter not satisfying: %@", @"photosBatchID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1836 description:{@"Invalid parameter not satisfying: %@", @"photosBatchID"}];
 
-    v5 = 0;
+    dCopy = 0;
   }
 
-  [(NSMutableDictionary *)self->_waitingAssetsAddNotifications removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->_waitingAssetsAddNotifications removeObjectForKey:dCopy];
 }
 
-- (id)_waitingNotificationForPhotosBatchID:(id)a3
+- (id)_waitingNotificationForPhotosBatchID:(id)d
 {
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1829 description:{@"Invalid parameter not satisfying: %@", @"photosBatchID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1829 description:{@"Invalid parameter not satisfying: %@", @"photosBatchID"}];
   }
 
-  v6 = [(NSMutableDictionary *)self->_waitingAssetsAddNotifications objectForKey:v5];
+  v6 = [(NSMutableDictionary *)self->_waitingAssetsAddNotifications objectForKey:dCopy];
 
   return v6;
 }
 
-- (id)_addWaitingNotification:(id)a3 forPhotosBatchID:(id)a4
+- (id)_addWaitingNotification:(id)notification forPhotosBatchID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  notificationCopy = notification;
+  dCopy = d;
+  v9 = dCopy;
+  if (notificationCopy)
   {
-    if (v8)
+    if (dCopy)
     {
       goto LABEL_3;
     }
@@ -659,8 +659,8 @@ void __68__PLNotificationManager_triggerNotificationThumbnailUpdateForAsset___bl
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1811 description:{@"Invalid parameter not satisfying: %@", @"notification"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1811 description:{@"Invalid parameter not satisfying: %@", @"notification"}];
 
     if (v9)
     {
@@ -668,15 +668,15 @@ void __68__PLNotificationManager_triggerNotificationThumbnailUpdateForAsset___bl
     }
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1812 description:{@"Invalid parameter not satisfying: %@", @"photosBatchID"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1812 description:{@"Invalid parameter not satisfying: %@", @"photosBatchID"}];
 
 LABEL_3:
   v10 = [(NSMutableDictionary *)self->_waitingAssetsAddNotifications objectForKey:v9];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 notificationByMergingWithNotification:v7];
+    v12 = [v10 notificationByMergingWithNotification:notificationCopy];
   }
 
   else
@@ -691,7 +691,7 @@ LABEL_3:
 
   else
   {
-    v13 = v7;
+    v13 = notificationCopy;
   }
 
   v14 = v13;
@@ -701,17 +701,17 @@ LABEL_3:
   return v14;
 }
 
-- (void)calculateCurrentBadgeCountWithCompletionHandler:(id)a3
+- (void)calculateCurrentBadgeCountWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[PLPhotoLibrary cloudSharingPhotoLibrary];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __73__PLNotificationManager_calculateCurrentBadgeCountWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7577C08;
   v8 = v4;
-  v9 = v3;
-  v5 = v3;
+  v9 = handlerCopy;
+  v5 = handlerCopy;
   v6 = v4;
   [v6 performBlock:v7 withPriority:0];
 }
@@ -736,42 +736,42 @@ void __73__PLNotificationManager_calculateCurrentBadgeCountWithCompletionHandler
   }
 }
 
-- (unint64_t)currentAppBadgeCountForNotificationUNCenter:(id)a3
+- (unint64_t)currentAppBadgeCountForNotificationUNCenter:(id)center
 {
   v3 = objc_opt_class();
 
   return [v3 sharedAlbumsUnreadCount];
 }
 
-- (void)_postNotificationForSharedLibraryExitInitatedByOwnerWithTypeWithExitType:(signed __int16)a3 retentionPolicy:(int64_t)a4 ownerName:(id)a5 notificationDeliveryDate:(id)a6 transaction:(id)a7
+- (void)_postNotificationForSharedLibraryExitInitatedByOwnerWithTypeWithExitType:(signed __int16)type retentionPolicy:(int64_t)policy ownerName:(id)name notificationDeliveryDate:(id)date transaction:(id)transaction
 {
-  v10 = a3;
-  v16 = a6;
-  v12 = a7;
-  v13 = a5;
-  v14 = [[PLNotification alloc] initForSharedLibraryExitInitatedByOwnerWithType:v10 retentionPolicy:a4 ownerName:v13];
+  typeCopy = type;
+  dateCopy = date;
+  transactionCopy = transaction;
+  nameCopy = name;
+  v14 = [[PLNotification alloc] initForSharedLibraryExitInitatedByOwnerWithType:typeCopy retentionPolicy:policy ownerName:nameCopy];
 
   if (v14)
   {
-    [v14 setNotificationDeliveryDate:v16];
-    v15 = [(PLNotificationManager *)self UNCenter];
-    [v15 sendNotificationForNotification:v14];
+    [v14 setNotificationDeliveryDate:dateCopy];
+    uNCenter = [(PLNotificationManager *)self UNCenter];
+    [uNCenter sendNotificationForNotification:v14];
   }
 
-  [v12 stillAlive];
+  [transactionCopy stillAlive];
 }
 
-- (void)postNotificationForSharedLibraryExitInitatedByOwnerWithTypeWithExitType:(signed __int16)a3 retentionPolicy:(int64_t)a4 ownerName:(id)a5 notificationDeliveryDate:(id)a6
+- (void)postNotificationForSharedLibraryExitInitatedByOwnerWithTypeWithExitType:(signed __int16)type retentionPolicy:(int64_t)policy ownerName:(id)name notificationDeliveryDate:(id)date
 {
-  v10 = a5;
-  v11 = a6;
+  nameCopy = name;
+  dateCopy = date;
   v12 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager postNotificationForSharedLibraryExitInitatedByOwnerWithTypeWithExitType:retentionPolicy:ownerName:notificationDeliveryDate:]"];
   objc_initWeak(&location, self);
   objc_copyWeak(v16, &location);
-  v17 = a3;
-  v16[1] = a4;
-  v13 = v10;
-  v14 = v11;
+  typeCopy = type;
+  v16[1] = policy;
+  v13 = nameCopy;
+  v14 = dateCopy;
   v15 = v12;
   pl_dispatch_async();
 
@@ -807,55 +807,55 @@ void __80__PLNotificationManager_removeNotificationForSharedLibraryParticipantAs
   [*(a1 + 32) stillAlive];
 }
 
-- (void)_postAsyncNotificationForSharedLibraryParticipantAssetTrashWithTrashedAssetPhotoCount:(unint64_t)a3 videoCount:(unint64_t)a4 itemCount:(unint64_t)a5 withNotificationDeliveryDate:(id)a6 transaction:(id)a7
+- (void)_postAsyncNotificationForSharedLibraryParticipantAssetTrashWithTrashedAssetPhotoCount:(unint64_t)count videoCount:(unint64_t)videoCount itemCount:(unint64_t)itemCount withNotificationDeliveryDate:(id)date transaction:(id)transaction
 {
-  v12 = a7;
-  v13 = a6;
-  v15 = [[PLNotification alloc] initForSharedLibraryParticipantAssetTrashNotificationWithTrashedPhotoCount:a3 videoCount:a4 itemCount:a5];
-  [v15 setNotificationDeliveryDate:v13];
+  transactionCopy = transaction;
+  dateCopy = date;
+  v15 = [[PLNotification alloc] initForSharedLibraryParticipantAssetTrashNotificationWithTrashedPhotoCount:count videoCount:videoCount itemCount:itemCount];
+  [v15 setNotificationDeliveryDate:dateCopy];
 
-  v14 = [(PLNotificationManager *)self UNCenter];
-  [v14 sendNotificationForNotification:v15];
+  uNCenter = [(PLNotificationManager *)self UNCenter];
+  [uNCenter sendNotificationForNotification:v15];
 
-  [v12 stillAlive];
+  [transactionCopy stillAlive];
 }
 
-- (void)postNotificationForSharedLibraryParticipantAssetTrashWithTrashedAssetPhotoCount:(unint64_t)a3 videoCount:(unint64_t)a4 itemCount:(unint64_t)a5 withNotificationDeliveryDate:(id)a6
+- (void)postNotificationForSharedLibraryParticipantAssetTrashWithTrashedAssetPhotoCount:(unint64_t)count videoCount:(unint64_t)videoCount itemCount:(unint64_t)itemCount withNotificationDeliveryDate:(id)date
 {
-  v6 = a6;
+  dateCopy = date;
   v9 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager postNotificationForSharedLibraryParticipantAssetTrashWithTrashedAssetPhotoCount:videoCount:itemCount:withNotificationDeliveryDate:]"];
   v7 = v9;
-  v8 = v6;
+  v8 = dateCopy;
   pl_dispatch_async();
 }
 
-- (void)_postAsyncNotificationForAcceptedSharedLibraryWithScopeIdentifier:(id)a3 participantName:(id)a4 NotificationDeliveryDate:(id)a5 transaction:(id)a6
+- (void)_postAsyncNotificationForAcceptedSharedLibraryWithScopeIdentifier:(id)identifier participantName:(id)name NotificationDeliveryDate:(id)date transaction:(id)transaction
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v15 = [[PLNotification alloc] initForSharedLibraryScopeAcceptWithLibraryScopeIdentifier:v13 participantName:v12];
+  transactionCopy = transaction;
+  dateCopy = date;
+  nameCopy = name;
+  identifierCopy = identifier;
+  v15 = [[PLNotification alloc] initForSharedLibraryScopeAcceptWithLibraryScopeIdentifier:identifierCopy participantName:nameCopy];
 
-  [v15 setNotificationDeliveryDate:v11];
-  v14 = [(PLNotificationManager *)self UNCenter];
-  [v14 sendNotificationForNotification:v15];
+  [v15 setNotificationDeliveryDate:dateCopy];
+  uNCenter = [(PLNotificationManager *)self UNCenter];
+  [uNCenter sendNotificationForNotification:v15];
 
-  [v10 stillAlive];
+  [transactionCopy stillAlive];
 }
 
-- (void)postNotificationForAcceptedSharedLibraryWithScopeIdentifier:(id)a3 participantName:(id)a4 library:(id)a5 notificationDeliveryDate:(id)a6
+- (void)postNotificationForAcceptedSharedLibraryWithScopeIdentifier:(id)identifier participantName:(id)name library:(id)library notificationDeliveryDate:(id)date
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  nameCopy = name;
+  libraryCopy = library;
+  dateCopy = date;
   v14 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager postNotificationForAcceptedSharedLibraryWithScopeIdentifier:participantName:library:notificationDeliveryDate:]"];
   objc_initWeak(&location, self);
   objc_copyWeak(&v19, &location);
-  v15 = v10;
-  v16 = v11;
-  v17 = v13;
+  v15 = identifierCopy;
+  v16 = nameCopy;
+  v17 = dateCopy;
   v18 = v14;
   pl_dispatch_async();
 
@@ -869,26 +869,26 @@ void __134__PLNotificationManager_postNotificationForAcceptedSharedLibraryWithSc
   [WeakRetained _postAsyncNotificationForAcceptedSharedLibraryWithScopeIdentifier:*(a1 + 32) participantName:*(a1 + 40) NotificationDeliveryDate:*(a1 + 48) transaction:*(a1 + 56)];
 }
 
-- (void)_postAsyncNotificationForSharedLibrarySuggestionsWithNotificationDeliveryDate:(id)a3 transaction:(id)a4
+- (void)_postAsyncNotificationForSharedLibrarySuggestionsWithNotificationDeliveryDate:(id)date transaction:(id)transaction
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [[PLNotification alloc] initForSharedLibrarySuggestions];
-  [v9 setNotificationDeliveryDate:v7];
+  transactionCopy = transaction;
+  dateCopy = date;
+  initForSharedLibrarySuggestions = [[PLNotification alloc] initForSharedLibrarySuggestions];
+  [initForSharedLibrarySuggestions setNotificationDeliveryDate:dateCopy];
 
-  v8 = [(PLNotificationManager *)self UNCenter];
-  [v8 sendNotificationForNotification:v9];
+  uNCenter = [(PLNotificationManager *)self UNCenter];
+  [uNCenter sendNotificationForNotification:initForSharedLibrarySuggestions];
 
-  [v6 stillAlive];
+  [transactionCopy stillAlive];
 }
 
-- (void)postNotificationForSharedLibrarySuggestionsWithNotificationDeliveryDate:(id)a3
+- (void)postNotificationForSharedLibrarySuggestionsWithNotificationDeliveryDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager postNotificationForSharedLibrarySuggestionsWithNotificationDeliveryDate:]"];
   objc_initWeak(&location, self);
   objc_copyWeak(&v8, &location);
-  v6 = v4;
+  v6 = dateCopy;
   v7 = v5;
   pl_dispatch_async();
 
@@ -902,26 +902,26 @@ void __97__PLNotificationManager_postNotificationForSharedLibrarySuggestionsWith
   [WeakRetained _postAsyncNotificationForSharedLibrarySuggestionsWithNotificationDeliveryDate:*(a1 + 32) transaction:*(a1 + 40)];
 }
 
-- (void)_postAsyncNotificationForPhotosChallengeNewQuestionsWithNotificationDeliveryDate:(id)a3 transaction:(id)a4
+- (void)_postAsyncNotificationForPhotosChallengeNewQuestionsWithNotificationDeliveryDate:(id)date transaction:(id)transaction
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [[PLNotification alloc] initForPhotosChallengeNewQuestions];
-  [v9 setNotificationDeliveryDate:v7];
+  transactionCopy = transaction;
+  dateCopy = date;
+  initForPhotosChallengeNewQuestions = [[PLNotification alloc] initForPhotosChallengeNewQuestions];
+  [initForPhotosChallengeNewQuestions setNotificationDeliveryDate:dateCopy];
 
-  v8 = [(PLNotificationManager *)self UNCenter];
-  [v8 sendNotificationForNotification:v9];
+  uNCenter = [(PLNotificationManager *)self UNCenter];
+  [uNCenter sendNotificationForNotification:initForPhotosChallengeNewQuestions];
 
-  [v6 stillAlive];
+  [transactionCopy stillAlive];
 }
 
-- (void)postNotificationForPhotosChallengeNewQuestionsWithNotificationDeliveryDate:(id)a3
+- (void)postNotificationForPhotosChallengeNewQuestionsWithNotificationDeliveryDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager postNotificationForPhotosChallengeNewQuestionsWithNotificationDeliveryDate:]"];
   objc_initWeak(&location, self);
   objc_copyWeak(&v8, &location);
-  v6 = v4;
+  v6 = dateCopy;
   v7 = v5;
   pl_dispatch_async();
 
@@ -935,26 +935,26 @@ void __100__PLNotificationManager_postNotificationForPhotosChallengeNewQuestions
   [WeakRetained _postAsyncNotificationForPhotosChallengeNewQuestionsWithNotificationDeliveryDate:*(a1 + 32) transaction:*(a1 + 40)];
 }
 
-- (void)_postAsyncNotificationForPhotosChallengeSubmissionWithNotificationDeliveryDate:(id)a3 transaction:(id)a4
+- (void)_postAsyncNotificationForPhotosChallengeSubmissionWithNotificationDeliveryDate:(id)date transaction:(id)transaction
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [[PLNotification alloc] initForPhotosChallengeSubmission];
-  [v9 setNotificationDeliveryDate:v7];
+  transactionCopy = transaction;
+  dateCopy = date;
+  initForPhotosChallengeSubmission = [[PLNotification alloc] initForPhotosChallengeSubmission];
+  [initForPhotosChallengeSubmission setNotificationDeliveryDate:dateCopy];
 
-  v8 = [(PLNotificationManager *)self UNCenter];
-  [v8 sendNotificationForNotification:v9];
+  uNCenter = [(PLNotificationManager *)self UNCenter];
+  [uNCenter sendNotificationForNotification:initForPhotosChallengeSubmission];
 
-  [v6 stillAlive];
+  [transactionCopy stillAlive];
 }
 
-- (void)postNotificationForPhotosChallengeSubmissionWithNotificationDeliveryDate:(id)a3
+- (void)postNotificationForPhotosChallengeSubmissionWithNotificationDeliveryDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager postNotificationForPhotosChallengeSubmissionWithNotificationDeliveryDate:]"];
   objc_initWeak(&location, self);
   objc_copyWeak(&v8, &location);
-  v6 = v4;
+  v6 = dateCopy;
   v7 = v5;
   pl_dispatch_async();
 
@@ -1018,7 +1018,7 @@ void __85__PLNotificationManager_removeNotificationForInterestInUnrenderedCinema
     v21 = 3221225472;
     v22 = __83__PLNotificationManager_postNotificationForInterestInUnrenderedCinematicVideoItems__block_invoke;
     v23 = &unk_1E7577B90;
-    v24 = self;
+    selfCopy = self;
     v25 = v13;
     PLRunWithUnfairLock();
     v14 = dispatch_get_global_queue(25, 0);
@@ -1089,28 +1089,28 @@ void __83__PLNotificationManager_postNotificationForInterestInUnrenderedCinemati
   *(v2 + 48) = 0;
 }
 
-- (void)postNotificationForReadyToViewMomentShareWithUUID:(id)a3 photoLibrary:(id)a4
+- (void)postNotificationForReadyToViewMomentShareWithUUID:(id)d photoLibrary:(id)library
 {
-  v7 = a3;
-  v8 = a4;
-  if (![v7 length])
+  dCopy = d;
+  libraryCopy = library;
+  if (![dCopy length])
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1563 description:{@"Invalid parameter not satisfying: %@", @"momentShareUUID.length"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1563 description:{@"Invalid parameter not satisfying: %@", @"momentShareUUID.length"}];
 
-    if (v8)
+    if (libraryCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1564 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1564 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!libraryCopy)
   {
     goto LABEL_5;
   }
@@ -1126,8 +1126,8 @@ LABEL_3:
   v17[1] = 3221225472;
   v17[2] = __88__PLNotificationManager_postNotificationForReadyToViewMomentShareWithUUID_photoLibrary___block_invoke;
   v17[3] = &unk_1E7578820;
-  v18 = v7;
-  v9 = v8;
+  v18 = dCopy;
+  v9 = libraryCopy;
   v19 = v9;
   v20 = v21;
   v13[0] = MEMORY[0x1E69E9820];
@@ -1137,7 +1137,7 @@ LABEL_3:
   v16 = v21;
   v10 = v18;
   v14 = v10;
-  v15 = self;
+  selfCopy = self;
   [v9 performBlock:v17 completionHandler:v13 withPriority:0];
 
   _Block_object_dispose(v21, 8);
@@ -1206,44 +1206,44 @@ uint64_t __88__PLNotificationManager_postNotificationForReadyToViewMomentShareWi
   return [*(a1 + 32) stillAlive];
 }
 
-- (void)postNotificationForExpiringCMMsWithUUIDs:(id)a3 thumbnailImageData:(id)a4 notificationTitle:(id)a5 notificationSubtitle:(id)a6
+- (void)postNotificationForExpiringCMMsWithUUIDs:(id)ds thumbnailImageData:(id)data notificationTitle:(id)title notificationSubtitle:(id)subtitle
 {
   v30 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dsCopy = ds;
+  dataCopy = data;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   v15 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v25 = v11;
+    v25 = dsCopy;
     v26 = 2112;
-    v27 = v13;
+    v27 = titleCopy;
     v28 = 2112;
-    v29 = v14;
+    v29 = subtitleCopy;
     _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEFAULT, "[CMM Notification] Notifications: Trying to post notification for about to expire CMMs %@, title %@, subtitle %@.", buf, 0x20u);
   }
 
-  if (!v11)
+  if (!dsCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1548 description:{@"Invalid parameter not satisfying: %@", @"CMMUUIDs"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1548 description:{@"Invalid parameter not satisfying: %@", @"CMMUUIDs"}];
   }
 
-  if (!v13)
+  if (!titleCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1549 description:{@"Invalid parameter not satisfying: %@", @"notificationTitle"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1549 description:{@"Invalid parameter not satisfying: %@", @"notificationTitle"}];
   }
 
-  if (!v14)
+  if (!subtitleCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1550 description:{@"Invalid parameter not satisfying: %@", @"notificationSubtitle"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1550 description:{@"Invalid parameter not satisfying: %@", @"notificationSubtitle"}];
   }
 
-  v16 = [[PLNotification alloc] initWithExpiringMomentShareUUIDs:v11 thumbnailImageData:v12 notificationTitle:v13 notificationSubtitle:v14];
+  v16 = [[PLNotification alloc] initWithExpiringMomentShareUUIDs:dsCopy thumbnailImageData:dataCopy notificationTitle:titleCopy notificationSubtitle:subtitleCopy];
   v17 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager postNotificationForExpiringCMMsWithUUIDs:thumbnailImageData:notificationTitle:notificationSubtitle:]"];
   objc_initWeak(buf, self);
   objc_copyWeak(&v23, buf);
@@ -1266,17 +1266,17 @@ uint64_t __124__PLNotificationManager_postNotificationForExpiringCMMsWithUUIDs_t
   return [v4 stillAlive];
 }
 
-- (void)_deleteNotificationsForAssetWithUUID:(id)a3 shouldDeleteCommentsOrLikeNotifications:(BOOL)a4 shouldDeletePhotosAddedToAlbumNotifications:(BOOL)a5
+- (void)_deleteNotificationsForAssetWithUUID:(id)d shouldDeleteCommentsOrLikeNotifications:(BOOL)notifications shouldDeletePhotosAddedToAlbumNotifications:(BOOL)albumNotifications
 {
-  v8 = a3;
-  if (v8)
+  dCopy = d;
+  if (dCopy)
   {
     v9 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager _deleteNotificationsForAssetWithUUID:shouldDeleteCommentsOrLikeNotifications:shouldDeletePhotosAddedToAlbumNotifications:]"];
     objc_initWeak(&location, self);
     objc_copyWeak(&v12, &location);
-    v13 = a4;
-    v14 = a5;
-    v10 = v8;
+    notificationsCopy = notifications;
+    albumNotificationsCopy = albumNotifications;
+    v10 = dCopy;
     v11 = v9;
     pl_dispatch_async();
 
@@ -1340,17 +1340,17 @@ void __146__PLNotificationManager__deleteNotificationsForAssetWithUUID_shouldDel
   }
 }
 
-- (BOOL)_notificationType:(int64_t)a3 matchesCommentsOrLikeNotifications:(BOOL)a4 andPhotosAddedToAlbumNotifications:(BOOL)a5
+- (BOOL)_notificationType:(int64_t)type matchesCommentsOrLikeNotifications:(BOOL)notifications andPhotosAddedToAlbumNotifications:(BOOL)albumNotifications
 {
-  if (a4 && a5)
+  if (notifications && albumNotifications)
   {
-    return a3 == 3 || (a3 & 0xFFFFFFFFFFFFFFFELL) == 4;
+    return type == 3 || (type & 0xFFFFFFFFFFFFFFFELL) == 4;
   }
 
-  v7 = a3 == 3 && a5;
-  if (a4)
+  v7 = type == 3 && albumNotifications;
+  if (notifications)
   {
-    return (a3 & 0xFFFFFFFFFFFFFFFELL) == 4;
+    return (type & 0xFFFFFFFFFFFFFFFELL) == 4;
   }
 
   else
@@ -1359,13 +1359,13 @@ void __146__PLNotificationManager__deleteNotificationsForAssetWithUUID_shouldDel
   }
 }
 
-- (void)_deleteNotificationsForObjectWithUUID:(id)a3 notificationDictionaryKey:(id)a4 notificationTypes:(id)a5
+- (void)_deleteNotificationsForObjectWithUUID:(id)d notificationDictionaryKey:(id)key notificationTypes:(id)types
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8 && [v10 count])
+  dCopy = d;
+  keyCopy = key;
+  typesCopy = types;
+  v11 = typesCopy;
+  if (dCopy && [typesCopy count])
   {
     v21 = 0;
     v22 = &v21;
@@ -1378,27 +1378,27 @@ void __146__PLNotificationManager__deleteNotificationsForAssetWithUUID_shouldDel
     v17[1] = 3221225472;
     v17[2] = __107__PLNotificationManager__deleteNotificationsForObjectWithUUID_notificationDictionaryKey_notificationTypes___block_invoke;
     v17[3] = &unk_1E7571F88;
-    v18 = v8;
+    v18 = dCopy;
     v20 = &v21;
     v13 = v12;
     v19 = v13;
     [v11 enumerateIndexesUsingBlock:v17];
     if ([v13 count])
     {
-      v14 = [(PLNotificationManager *)self UNCenter];
-      [v14 removeNotificationWithRequestIdentifiers:v13];
+      uNCenter = [(PLNotificationManager *)self UNCenter];
+      [uNCenter removeNotificationWithRequestIdentifiers:v13];
     }
 
     if (v22[5])
     {
-      v15 = [(PLNotificationManager *)self UNCenter];
+      uNCenter2 = [(PLNotificationManager *)self UNCenter];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __107__PLNotificationManager__deleteNotificationsForObjectWithUUID_notificationDictionaryKey_notificationTypes___block_invoke_2;
       v16[3] = &unk_1E7571FB0;
       v16[4] = self;
       v16[5] = &v21;
-      [v15 enumerateExistingNotificationsUsingBlock:v16];
+      [uNCenter2 enumerateExistingNotificationsUsingBlock:v16];
     }
 
     _Block_object_dispose(&v21, 8);
@@ -1435,11 +1435,11 @@ void __107__PLNotificationManager__deleteNotificationsForObjectWithUUID_notifica
   }
 }
 
-- (void)removeNotificationForInterestingMemoryWithUUID:(id)a3
+- (void)removeNotificationForInterestingMemoryWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager removeNotificationForInterestingMemoryWithUUID:]"];
-  v6 = [v4 copy];
+  v6 = [dCopy copy];
   objc_initWeak(&location, self);
   objc_copyWeak(&v9, &location);
   v7 = v6;
@@ -1460,24 +1460,24 @@ void __72__PLNotificationManager_removeNotificationForInterestingMemoryWithUUID_
   [*(a1 + 40) stillAlive];
 }
 
-- (void)postNotificationForInterestingMemoryWithMemoryUUID:(id)a3 library:(id)a4 notificationDeliveryDate:(id)a5
+- (void)postNotificationForInterestingMemoryWithMemoryUUID:(id)d library:(id)library notificationDeliveryDate:(id)date
 {
   v56 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  libraryCopy = library;
+  dateCopy = date;
   v12 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v9;
+    *(&buf + 4) = dCopy;
     _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "[Memories Notification] Notifications: Trying to post notification for memory %@.", &buf, 0xCu);
   }
 
-  if (!v9)
+  if (!dCopy)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1374 description:{@"Invalid parameter not satisfying: %@", @"memoryUUID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1374 description:{@"Invalid parameter not satisfying: %@", @"memoryUUID"}];
   }
 
   if (PLIsFeaturedContentAllowed())
@@ -1504,13 +1504,13 @@ void __72__PLNotificationManager_removeNotificationForInterestingMemoryWithUUID_
     v38 = __Block_byref_object_copy__77630;
     v39 = __Block_byref_object_dispose__77631;
     v40 = 0;
-    if (v10 && (v28[0] = MEMORY[0x1E69E9820], v28[1] = 3221225472, v28[2] = __109__PLNotificationManager_postNotificationForInterestingMemoryWithMemoryUUID_library_notificationDeliveryDate___block_invoke, v28[3] = &unk_1E7571F60, v13 = v9, v29 = v13, v14 = v10, v30 = v14, v31 = &v47, p_buf = &buf, v33 = &v41, v34 = &v35, [v14 performBlockAndWait:v28], v30, v29, (v48[3] & 1) != 0))
+    if (libraryCopy && (v28[0] = MEMORY[0x1E69E9820], v28[1] = 3221225472, v28[2] = __109__PLNotificationManager_postNotificationForInterestingMemoryWithMemoryUUID_library_notificationDeliveryDate___block_invoke, v28[3] = &unk_1E7571F60, v13 = dCopy, v29 = v13, v14 = libraryCopy, v30 = v14, v31 = &v47, p_buf = &buf, v33 = &v41, v34 = &v35, [v14 performBlockAndWait:v28], v30, v29, (v48[3] & 1) != 0))
     {
       v15 = *(*(&buf + 1) + 40);
       v16 = v42[5];
       v17 = v36[5];
-      v18 = [v14 pathManager];
-      v19 = [(PLNotificationManager *)self _generateMemoryNotificationRepresentationWithMemoryUUID:v13 keyAssetUUID:v15 notificationTitle:v16 notificationSubtitle:v17 notificationDeliveryDate:v11 pathManager:v18];
+      pathManager = [v14 pathManager];
+      v19 = [(PLNotificationManager *)self _generateMemoryNotificationRepresentationWithMemoryUUID:v13 keyAssetUUID:v15 notificationTitle:v16 notificationSubtitle:v17 notificationDeliveryDate:dateCopy pathManager:pathManager];
 
       v20 = self->_isolationQueue;
       v21 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager postNotificationForInterestingMemoryWithMemoryUUID:library:notificationDeliveryDate:]"];
@@ -1624,17 +1624,17 @@ void __109__PLNotificationManager_postNotificationForInterestingMemoryWithMemory
   [*(a1 + 40) stillAlive];
 }
 
-- (id)_generateMemoryNotificationRepresentationWithMemoryUUID:(id)a3 keyAssetUUID:(id)a4 notificationTitle:(id)a5 notificationSubtitle:(id)a6 notificationDeliveryDate:(id)a7 pathManager:(id)a8
+- (id)_generateMemoryNotificationRepresentationWithMemoryUUID:(id)d keyAssetUUID:(id)iD notificationTitle:(id)title notificationSubtitle:(id)subtitle notificationDeliveryDate:(id)date pathManager:(id)manager
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v35 = a6;
-  v34 = a7;
-  v18 = a8;
-  if (v15)
+  dCopy = d;
+  iDCopy = iD;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  dateCopy = date;
+  managerCopy = manager;
+  if (dCopy)
   {
-    if (v17)
+    if (titleCopy)
     {
       goto LABEL_3;
     }
@@ -1642,61 +1642,61 @@ void __109__PLNotificationManager_postNotificationForInterestingMemoryWithMemory
 
   else
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1352 description:{@"Invalid parameter not satisfying: %@", @"memoryUUID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1352 description:{@"Invalid parameter not satisfying: %@", @"memoryUUID"}];
 
-    if (v17)
+    if (titleCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v31 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v31 handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1353 description:{@"Invalid parameter not satisfying: %@", @"notificationTitle"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1353 description:{@"Invalid parameter not satisfying: %@", @"notificationTitle"}];
 
 LABEL_3:
-  v19 = v17;
-  if (!v35)
+  v19 = titleCopy;
+  if (!subtitleCopy)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1354 description:{@"Invalid parameter not satisfying: %@", @"notificationSubtitle"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1354 description:{@"Invalid parameter not satisfying: %@", @"notificationSubtitle"}];
   }
 
-  v20 = v16;
-  v21 = v15;
-  if (!v18)
+  v20 = iDCopy;
+  v21 = dCopy;
+  if (!managerCopy)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1355 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1355 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
   }
 
   v22 = MEMORY[0x1E695DF90];
   v23 = *MEMORY[0x1E69C0220];
   v24 = *MEMORY[0x1E69C0240];
   v25 = *MEMORY[0x1E69C0238];
-  v26 = [v18 libraryURL];
-  v27 = [v26 absoluteString];
-  v28 = [v22 dictionaryWithObjectsAndKeys:{v21, v23, v19, v24, v35, v25, v27, *MEMORY[0x1E69C0268], 0}];
+  libraryURL = [managerCopy libraryURL];
+  absoluteString = [libraryURL absoluteString];
+  v28 = [v22 dictionaryWithObjectsAndKeys:{v21, v23, v19, v24, subtitleCopy, v25, absoluteString, *MEMORY[0x1E69C0268], 0}];
 
   [v28 setObject:v20 forKeyedSubscript:*MEMORY[0x1E69C01B0]];
-  if (v34)
+  if (dateCopy)
   {
-    [v28 setObject:v34 forKey:*MEMORY[0x1E69C01F8]];
+    [v28 setObject:dateCopy forKey:*MEMORY[0x1E69C01F8]];
   }
 
   return v28;
 }
 
-- (id)_memoryNotificationFromDictionaryRepresentation:(id)a3
+- (id)_memoryNotificationFromDictionaryRepresentation:(id)representation
 {
   v3 = *MEMORY[0x1E69C0220];
-  v4 = a3;
-  v5 = [v4 objectForKey:v3];
-  v6 = [v4 objectForKey:*MEMORY[0x1E69C01B0]];
-  v7 = [v4 objectForKey:*MEMORY[0x1E69C0240]];
-  v8 = [v4 objectForKey:*MEMORY[0x1E69C0238]];
-  v9 = [v4 objectForKey:*MEMORY[0x1E69C01F8]];
-  v10 = [v4 objectForKey:*MEMORY[0x1E69C0268]];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKey:v3];
+  v6 = [representationCopy objectForKey:*MEMORY[0x1E69C01B0]];
+  v7 = [representationCopy objectForKey:*MEMORY[0x1E69C0240]];
+  v8 = [representationCopy objectForKey:*MEMORY[0x1E69C0238]];
+  v9 = [representationCopy objectForKey:*MEMORY[0x1E69C01F8]];
+  v10 = [representationCopy objectForKey:*MEMORY[0x1E69C0268]];
 
   v11 = [[PLNotification alloc] initWithInterestingMemoryNotificationWithMemoryUUID:v5 keyAssetUUID:v6 notificationTitle:v7 notificationSubtitle:v8 photoLibraryURLString:v10];
   [(PLNotification *)v11 setNotificationDeliveryDate:v9];
@@ -1704,17 +1704,17 @@ LABEL_3:
   return v11;
 }
 
-- (void)userViewedNotificationWithAlbumCloudGUID:(id)a3
+- (void)userViewedNotificationWithAlbumCloudGUID:(id)d
 {
-  v3 = a3;
-  if (v3)
+  dCopy = d;
+  if (dCopy)
   {
     v4 = +[PLPhotoLibrary cloudSharingPhotoLibrary];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __66__PLNotificationManager_userViewedNotificationWithAlbumCloudGUID___block_invoke;
     v6[3] = &unk_1E7578848;
-    v7 = v3;
+    v7 = dCopy;
     v8 = v4;
     v5 = v4;
     [v5 performBlock:v6];
@@ -1750,10 +1750,10 @@ void __66__PLNotificationManager_userViewedNotificationWithAlbumCloudGUID___bloc
   }
 }
 
-- (void)noteUserDidChangeStatusForMomentShare:(id)a3 photoLibrary:(id)a4
+- (void)noteUserDidChangeStatusForMomentShare:(id)share photoLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
+  shareCopy = share;
+  libraryCopy = library;
   v8 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteUserDidChangeStatusForMomentShare:photoLibrary:]"];
   objc_initWeak(&location, self);
   objc_copyWeak(&v10, &location);
@@ -1798,12 +1798,12 @@ uint64_t __58__PLNotificationManager_noteUserDidLeavePhotosApplication__block_in
   return [v4 stillAlive];
 }
 
-- (void)noteUserDidDeleteSharedAssetsWithUUIDs:(id)a3
+- (void)noteUserDidDeleteSharedAssetsWithUUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteUserDidDeleteSharedAssetsWithUUIDs:]"];
   objc_initWeak(&location, self);
-  v6 = v4;
+  v6 = dsCopy;
   objc_copyWeak(&v8, &location);
   v7 = v5;
   pl_dispatch_async();
@@ -1852,13 +1852,13 @@ uint64_t __64__PLNotificationManager_noteUserDidDeleteSharedAssetsWithUUIDs___bl
   return [a1[5] stillAlive];
 }
 
-- (void)noteUserDidDeleteSharedAlbumWithUUID:(id)a3
+- (void)noteUserDidDeleteSharedAlbumWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteUserDidDeleteSharedAlbumWithUUID:]"];
   objc_initWeak(&location, self);
   objc_copyWeak(&v8, &location);
-  v6 = v4;
+  v6 = dCopy;
   v7 = v5;
   pl_dispatch_async();
 
@@ -1881,30 +1881,30 @@ void __62__PLNotificationManager_noteUserDidDeleteSharedAlbumWithUUID___block_in
   [*(a1 + 40) stillAlive];
 }
 
-- (void)noteUserDidReadCommentOnSharedAsset:(id)a3 photoLibrary:(id)a4
+- (void)noteUserDidReadCommentOnSharedAsset:(id)asset photoLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 cloudHasUnseenComments])
+  assetCopy = asset;
+  libraryCopy = library;
+  if ([assetCopy cloudHasUnseenComments])
   {
     v8 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteUserDidReadCommentOnSharedAsset:photoLibrary:]"];
-    v9 = [v6 photoLibrary];
+    photoLibrary = [assetCopy photoLibrary];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __74__PLNotificationManager_noteUserDidReadCommentOnSharedAsset_photoLibrary___block_invoke;
     v20[3] = &unk_1E75781E8;
-    v21 = v6;
+    v21 = assetCopy;
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __74__PLNotificationManager_noteUserDidReadCommentOnSharedAsset_photoLibrary___block_invoke_2;
     v18[3] = &unk_1E75781E8;
     v19 = v8;
     v10 = v8;
-    [v9 performTransaction:v20 completionHandler:v18 withPriority:0];
+    [photoLibrary performTransaction:v20 completionHandler:v18 withPriority:0];
   }
 
-  v11 = [v6 uuid];
-  v12 = [v11 copy];
+  uuid = [assetCopy uuid];
+  v12 = [uuid copy];
 
   v13 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteUserDidReadCommentOnSharedAsset:photoLibrary:]"];
   objc_initWeak(&location, self);
@@ -1927,28 +1927,28 @@ uint64_t __74__PLNotificationManager_noteUserDidReadCommentOnSharedAsset_photoLi
   return [v3 stillAlive];
 }
 
-- (void)noteUserDidNavigateAwayFromSharedAlbum:(id)a3 photoLibrary:(id)a4
+- (void)noteUserDidNavigateAwayFromSharedAlbum:(id)album photoLibrary:(id)library
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 hasUnseenContentBoolValue];
-  v8 = [v5 unseenAssetsCountIntegerValue];
-  if ((v7 & 1) != 0 || v8)
+  albumCopy = album;
+  libraryCopy = library;
+  hasUnseenContentBoolValue = [albumCopy hasUnseenContentBoolValue];
+  unseenAssetsCountIntegerValue = [albumCopy unseenAssetsCountIntegerValue];
+  if ((hasUnseenContentBoolValue & 1) != 0 || unseenAssetsCountIntegerValue)
   {
     v9 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteUserDidNavigateAwayFromSharedAlbum:photoLibrary:]"];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __77__PLNotificationManager_noteUserDidNavigateAwayFromSharedAlbum_photoLibrary___block_invoke;
     v13[3] = &unk_1E7576F80;
-    v15 = v7;
-    v14 = v5;
+    v15 = hasUnseenContentBoolValue;
+    v14 = albumCopy;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __77__PLNotificationManager_noteUserDidNavigateAwayFromSharedAlbum_photoLibrary___block_invoke_2;
     v11[3] = &unk_1E75781E8;
     v12 = v9;
     v10 = v9;
-    [v6 performTransaction:v13 completionHandler:v11 withPriority:0];
+    [libraryCopy performTransaction:v13 completionHandler:v11 withPriority:0];
   }
 }
 
@@ -1963,29 +1963,29 @@ void __77__PLNotificationManager_noteUserDidNavigateAwayFromSharedAlbum_photoLib
   [PLPhotoSharingHelper markAlbumGUIDAsViewed:v2 clearUnseenAssetsCount:1];
 }
 
-- (void)noteUserDidNavigateAwayFromCollectionShare:(id)a3 photoLibrary:(id)a4
+- (void)noteUserDidNavigateAwayFromCollectionShare:(id)share photoLibrary:(id)library
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 unseenContentState];
-  v8 = [v5 unseenAssetsCount];
-  if (v7 == 2 || v8)
+  shareCopy = share;
+  libraryCopy = library;
+  unseenContentState = [shareCopy unseenContentState];
+  unseenAssetsCount = [shareCopy unseenAssetsCount];
+  if (unseenContentState == 2 || unseenAssetsCount)
   {
-    v9 = v7 == 2;
+    v9 = unseenContentState == 2;
     v10 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteUserDidNavigateAwayFromCollectionShare:photoLibrary:]"];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __81__PLNotificationManager_noteUserDidNavigateAwayFromCollectionShare_photoLibrary___block_invoke;
     v14[3] = &unk_1E7576F80;
     v16 = v9;
-    v15 = v5;
+    v15 = shareCopy;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __81__PLNotificationManager_noteUserDidNavigateAwayFromCollectionShare_photoLibrary___block_invoke_2;
     v12[3] = &unk_1E75781E8;
     v13 = v10;
     v11 = v10;
-    [v6 performTransaction:v14 completionHandler:v12 withPriority:0];
+    [libraryCopy performTransaction:v14 completionHandler:v12 withPriority:0];
   }
 }
 
@@ -2001,29 +2001,29 @@ uint64_t __81__PLNotificationManager_noteUserDidNavigateAwayFromCollectionShare_
   return [v2 markAsViewed];
 }
 
-- (void)noteUserDidNavigateIntoSharedAlbum:(id)a3 photoLibrary:(id)a4
+- (void)noteUserDidNavigateIntoSharedAlbum:(id)album photoLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 hasUnseenContentBoolValue])
+  albumCopy = album;
+  libraryCopy = library;
+  if ([albumCopy hasUnseenContentBoolValue])
   {
     v8 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteUserDidNavigateIntoSharedAlbum:photoLibrary:]"];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __73__PLNotificationManager_noteUserDidNavigateIntoSharedAlbum_photoLibrary___block_invoke;
     v19[3] = &unk_1E75781E8;
-    v20 = v6;
+    v20 = albumCopy;
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __73__PLNotificationManager_noteUserDidNavigateIntoSharedAlbum_photoLibrary___block_invoke_2;
     v17[3] = &unk_1E75781E8;
     v18 = v8;
     v9 = v8;
-    [v7 performTransaction:v19 completionHandler:v17 withPriority:0];
+    [libraryCopy performTransaction:v19 completionHandler:v17 withPriority:0];
   }
 
-  v10 = [v6 uuid];
-  v11 = [v10 copy];
+  uuid = [albumCopy uuid];
+  v11 = [uuid copy];
 
   v12 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteUserDidNavigateIntoSharedAlbum:photoLibrary:]"];
   objc_initWeak(&location, self);
@@ -2056,29 +2056,29 @@ void __73__PLNotificationManager_noteUserDidNavigateIntoSharedAlbum_photoLibrary
   [*(a1 + 40) stillAlive];
 }
 
-- (void)noteUserDidNavigateIntoCollectionShare:(id)a3 photoLibrary:(id)a4
+- (void)noteUserDidNavigateIntoCollectionShare:(id)share photoLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 unseenContentState] == 2)
+  shareCopy = share;
+  libraryCopy = library;
+  if ([shareCopy unseenContentState] == 2)
   {
     v8 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteUserDidNavigateIntoCollectionShare:photoLibrary:]"];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __77__PLNotificationManager_noteUserDidNavigateIntoCollectionShare_photoLibrary___block_invoke;
     v19[3] = &unk_1E75781E8;
-    v20 = v6;
+    v20 = shareCopy;
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __77__PLNotificationManager_noteUserDidNavigateIntoCollectionShare_photoLibrary___block_invoke_2;
     v17[3] = &unk_1E75781E8;
     v18 = v8;
     v9 = v8;
-    [v7 performTransaction:v19 completionHandler:v17 withPriority:0];
+    [libraryCopy performTransaction:v19 completionHandler:v17 withPriority:0];
   }
 
-  v10 = [v6 uuid];
-  v11 = [v10 copy];
+  uuid = [shareCopy uuid];
+  v11 = [uuid copy];
 
   v12 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteUserDidNavigateIntoCollectionShare:photoLibrary:]"];
   objc_initWeak(&location, self);
@@ -2112,17 +2112,17 @@ void __77__PLNotificationManager_noteUserDidNavigateIntoCollectionShare_photoLib
   [*(a1 + 40) stillAlive];
 }
 
-- (void)noteUserDidViewCloudFeedContent:(unint64_t)a3 photoLibrary:(id)a4
+- (void)noteUserDidViewCloudFeedContent:(unint64_t)content photoLibrary:(id)library
 {
-  v4 = a3;
+  contentCopy = content;
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [v6 managedObjectContext];
-  if (v4)
+  libraryCopy = library;
+  managedObjectContext = [libraryCopy managedObjectContext];
+  if (contentCopy)
   {
     v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d AND %K == %d", @"collectionShareKind", 2, @"unseenContentState", 2];
-    v10 = [v6 managedObjectContext];
-    v8 = [(PLShare *)PLCollectionShare sharesWithPredicate:v9 fetchLimit:0 inManagedObjectContext:v10];
+    managedObjectContext2 = [libraryCopy managedObjectContext];
+    v8 = [(PLShare *)PLCollectionShare sharesWithPredicate:v9 fetchLimit:0 inManagedObjectContext:managedObjectContext2];
 
     if (!v8)
     {
@@ -2141,7 +2141,7 @@ void __77__PLNotificationManager_noteUserDidNavigateIntoCollectionShare_photoLib
     v8 = 0;
   }
 
-  if ((v4 & 2) != 0)
+  if ((contentCopy & 2) != 0)
   {
     v14 = MEMORY[0x1E695D5E0];
     v15 = +[PLManagedAsset entityName];
@@ -2157,7 +2157,7 @@ void __77__PLNotificationManager_noteUserDidNavigateIntoCollectionShare_photoLib
 
     [v16 setPredicate:v21];
     v35 = 0;
-    v12 = [v7 executeFetchRequest:v16 error:&v35];
+    v12 = [managedObjectContext executeFetchRequest:v16 error:&v35];
     v13 = v35;
     if (!v12)
     {
@@ -2194,11 +2194,11 @@ void __77__PLNotificationManager_noteUserDidNavigateIntoCollectionShare_photoLib
     v26 = v33;
     v27 = 0;
     v28 = v34;
-    v29 = self;
+    selfCopy = self;
     objc_copyWeak(&v31, buf);
     v24 = v23;
     v30 = v24;
-    [v6 performTransaction:v32 completionHandler:v25 withPriority:0];
+    [libraryCopy performTransaction:v32 completionHandler:v25 withPriority:0];
 
     objc_destroyWeak(&v31);
     objc_destroyWeak(buf);
@@ -2400,15 +2400,15 @@ void __70__PLNotificationManager_noteUserDidViewCloudFeedContent_photoLibrary___
   [a1[7] stillAlive];
 }
 
-- (void)noteUserAssetsAreReadyForMomentShare:(id)a3
+- (void)noteUserAssetsAreReadyForMomentShare:(id)share
 {
-  v4 = a3;
+  shareCopy = share;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x3032000000;
   v9[3] = __Block_byref_object_copy__77630;
   v9[4] = __Block_byref_object_dispose__77631;
-  v10 = [[PLNotification alloc] initCMMInvitationReadyToViewWithMomentShare:v4];
+  v10 = [[PLNotification alloc] initCMMInvitationReadyToViewWithMomentShare:shareCopy];
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteUserAssetsAreReadyForMomentShare:]"];
   objc_initWeak(&location, self);
   objc_copyWeak(&v7, &location);
@@ -2432,30 +2432,30 @@ uint64_t __62__PLNotificationManager_noteUserAssetsAreReadyForMomentShare___bloc
   return [v4 stillAlive];
 }
 
-- (void)noteDidReceiveExpiringCMMInvitationsWithMomentShares:(id)a3
+- (void)noteDidReceiveExpiringCMMInvitationsWithMomentShares:(id)shares
 {
-  v5 = a3;
-  if (![v5 count])
+  sharesCopy = shares;
+  if (![sharesCopy count])
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1003 description:{@"Invalid parameter not satisfying: %@", @"momentShares.count"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:1003 description:{@"Invalid parameter not satisfying: %@", @"momentShares.count"}];
   }
 
-  v6 = [[PLNotification alloc] initWithExpiringMomentShares:v5];
-  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  v6 = [[PLNotification alloc] initWithExpiringMomentShares:sharesCopy];
+  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(sharesCopy, "count")}];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __78__PLNotificationManager_noteDidReceiveExpiringCMMInvitationsWithMomentShares___block_invoke;
   v14[3] = &unk_1E7572220;
   v15 = v7;
   v8 = v7;
-  [v5 enumerateObjectsUsingBlock:v14];
-  v9 = [v5 firstObject];
+  [sharesCopy enumerateObjectsUsingBlock:v14];
+  firstObject = [sharesCopy firstObject];
 
-  v10 = [v9 thumbnailImageData];
-  v11 = [(PLNotification *)v6 title];
-  v12 = [(PLNotification *)v6 message];
-  [(PLNotificationManager *)self postNotificationForExpiringCMMsWithUUIDs:v8 thumbnailImageData:v10 notificationTitle:v11 notificationSubtitle:v12];
+  thumbnailImageData = [firstObject thumbnailImageData];
+  title = [(PLNotification *)v6 title];
+  message = [(PLNotification *)v6 message];
+  [(PLNotificationManager *)self postNotificationForExpiringCMMsWithUUIDs:v8 thumbnailImageData:thumbnailImageData notificationTitle:title notificationSubtitle:message];
 }
 
 void __78__PLNotificationManager_noteDidReceiveExpiringCMMInvitationsWithMomentShares___block_invoke(uint64_t a1, void *a2)
@@ -2465,14 +2465,14 @@ void __78__PLNotificationManager_noteDidReceiveExpiringCMMInvitationsWithMomentS
   [v2 addObject:v3];
 }
 
-- (void)noteDidReceiveCMMInvitationWithMomentShare:(id)a3
+- (void)noteDidReceiveCMMInvitationWithMomentShare:(id)share
 {
-  v4 = a3;
-  v5 = [[PLNotification alloc] initCMMInvitationWithMomentShare:v4];
-  v6 = [v5 senderEmailAddress];
-  if (v6)
+  shareCopy = share;
+  v5 = [[PLNotification alloc] initCMMInvitationWithMomentShare:shareCopy];
+  senderEmailAddress = [v5 senderEmailAddress];
+  if (senderEmailAddress)
   {
-    if ([v4 status] == 1)
+    if ([shareCopy status] == 1)
     {
       v7 = PLPhotoSharingGetLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -2486,7 +2486,7 @@ LABEL_10:
 
     else
     {
-      if (![(PLNotificationManager *)self _shouldAllowAlertsFromContactWithEmail:v6])
+      if (![(PLNotificationManager *)self _shouldAllowAlertsFromContactWithEmail:senderEmailAddress])
       {
         v9 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteDidReceiveCMMInvitationWithMomentShare:]"];
         objc_initWeak(buf, self);
@@ -2534,33 +2534,33 @@ uint64_t __68__PLNotificationManager_noteDidReceiveCMMInvitationWithMomentShare_
   return [v4 stillAlive];
 }
 
-- (void)noteSharedAssetCommentsUnreadStatusDidChange:(id)a3
+- (void)noteSharedAssetCommentsUnreadStatusDidChange:(id)change
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 cloudHasUnseenComments];
-  v6 = [v4 uuid];
-  v7 = [v6 copy];
+  changeCopy = change;
+  cloudHasUnseenComments = [changeCopy cloudHasUnseenComments];
+  uuid = [changeCopy uuid];
+  v7 = [uuid copy];
 
   v8 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v4 uuid];
-    v10 = v9;
+    uuid2 = [changeCopy uuid];
+    v10 = uuid2;
     v11 = @"NO";
-    if (v5)
+    if (cloudHasUnseenComments)
     {
       v11 = @"YES";
     }
 
     *buf = 138412546;
-    v17 = v9;
+    v17 = uuid2;
     v18 = 2112;
     v19 = v11;
     _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "Notifications: Processing assetCommentsUnreadStatusDidChange for asset %@, unread: %@", buf, 0x16u);
   }
 
-  if ((v5 & 1) == 0)
+  if ((cloudHasUnseenComments & 1) == 0)
   {
     v12 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteSharedAssetCommentsUnreadStatusDidChange:]"];
     objc_initWeak(buf, self);
@@ -2584,23 +2584,23 @@ uint64_t __70__PLNotificationManager_noteSharedAssetCommentsUnreadStatusDidChang
   return [v3 stillAlive];
 }
 
-- (void)noteSharedAlbumUnseenStatusDidChange:(id)a3
+- (void)noteSharedAlbumUnseenStatusDidChange:(id)change
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 hasUnseenContentBoolValue];
-  v6 = [v4 uuid];
-  v7 = [v6 copy];
+  changeCopy = change;
+  hasUnseenContentBoolValue = [changeCopy hasUnseenContentBoolValue];
+  uuid = [changeCopy uuid];
+  v7 = [uuid copy];
 
   v8 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v4 localizedTitle];
+    localizedTitle = [changeCopy localizedTitle];
     v10 = @"NO";
     *buf = 138412802;
-    v17 = v9;
+    v17 = localizedTitle;
     v18 = 2112;
-    if (v5)
+    if (hasUnseenContentBoolValue)
     {
       v10 = @"YES";
     }
@@ -2613,7 +2613,7 @@ uint64_t __70__PLNotificationManager_noteSharedAssetCommentsUnreadStatusDidChang
 
   v11 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteSharedAlbumUnseenStatusDidChange:]"];
   objc_initWeak(buf, self);
-  v15 = v5;
+  v15 = hasUnseenContentBoolValue;
   objc_copyWeak(&v14, buf);
   v12 = v7;
   v13 = v11;
@@ -2640,23 +2640,23 @@ uint64_t __62__PLNotificationManager_noteSharedAlbumUnseenStatusDidChange___bloc
   return [v4 stillAlive];
 }
 
-- (void)noteCollectionShareUnseenStatusDidChange:(id)a3
+- (void)noteCollectionShareUnseenStatusDidChange:(id)change
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 unseenContentState];
-  v6 = v5 == 2;
-  v7 = [v4 uuid];
-  v8 = [v7 copy];
+  changeCopy = change;
+  unseenContentState = [changeCopy unseenContentState];
+  v6 = unseenContentState == 2;
+  uuid = [changeCopy uuid];
+  v8 = [uuid copy];
 
   v9 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = v5 == 2;
-    v11 = [v4 title];
+    v10 = unseenContentState == 2;
+    title = [changeCopy title];
     v12 = @"NO";
     *buf = 138412802;
-    v19 = v11;
+    v19 = title;
     v20 = 2112;
     if (v10)
     {
@@ -2698,48 +2698,48 @@ uint64_t __66__PLNotificationManager_noteCollectionShareUnseenStatusDidChange___
   return [v4 stillAlive];
 }
 
-- (void)noteDidReceiveLike:(id)a3 mstreamdInfo:(id)a4
+- (void)noteDidReceiveLike:(id)like mstreamdInfo:(id)info
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (([v6 shouldNotifyAsNotificationWithMediaStreamInfo:v7 asCaptionOnly:0] & 1) == 0)
+  likeCopy = like;
+  infoCopy = info;
+  if (([likeCopy shouldNotifyAsNotificationWithMediaStreamInfo:infoCopy asCaptionOnly:0] & 1) == 0)
   {
     v13 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v6 commenterHashedPersonID];
-      v18 = [v6 asset];
-      v19 = [v18 uuid];
+      commenterHashedPersonID = [likeCopy commenterHashedPersonID];
+      asset = [likeCopy asset];
+      uuid = [asset uuid];
       *buf = 138412546;
-      *&buf[4] = v17;
+      *&buf[4] = commenterHashedPersonID;
       *&buf[12] = 2112;
-      *&buf[14] = v19;
+      *&buf[14] = uuid;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Notifications: Ignoring received like from %@, asset: %@", buf, 0x16u);
     }
 
     goto LABEL_6;
   }
 
-  v8 = [v6 asset];
-  v9 = [v8 isCloudSharedAsset];
+  asset2 = [likeCopy asset];
+  isCloudSharedAsset = [asset2 isCloudSharedAsset];
 
-  if (v9)
+  if (isCloudSharedAsset)
   {
-    v10 = [v6 asset];
-    v11 = [v10 collectionShare];
-    v12 = [v11 notificationState];
+    asset3 = [likeCopy asset];
+    collectionShare = [asset3 collectionShare];
+    notificationState = [collectionShare notificationState];
 
-    if (v12 == 1)
+    if (notificationState == 1)
     {
       v13 = PLPhotoSharingGetLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v6 asset];
-        v15 = [v14 collectionShare];
-        v16 = [v15 title];
+        asset4 = [likeCopy asset];
+        collectionShare2 = [asset4 collectionShare];
+        title = [collectionShare2 title];
         *buf = 138412290;
-        *&buf[4] = v16;
+        *&buf[4] = title;
         _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Notifications: Ignoring received like notification since we are currently not accepting notification for collection share %@.", buf, 0xCu);
       }
 
@@ -2749,12 +2749,12 @@ LABEL_6:
     }
   }
 
-  v20 = [v7 valueForKey:*MEMORY[0x1E6998038]];
-  v21 = [v20 BOOLValue];
+  v20 = [infoCopy valueForKey:*MEMORY[0x1E6998038]];
+  bOOLValue = [v20 BOOLValue];
 
   v22 = PLPhotoSharingGetLog();
   v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
-  if (v21)
+  if (bOOLValue)
   {
     if (v23)
     {
@@ -2767,13 +2767,13 @@ LABEL_6:
   {
     if (v23)
     {
-      v24 = [v6 commenterHashedPersonID];
-      v25 = [v6 asset];
-      v26 = [v25 uuid];
+      commenterHashedPersonID2 = [likeCopy commenterHashedPersonID];
+      asset5 = [likeCopy asset];
+      uuid2 = [asset5 uuid];
       *buf = 138412546;
-      *&buf[4] = v24;
+      *&buf[4] = commenterHashedPersonID2;
       *&buf[12] = 2112;
-      *&buf[14] = v26;
+      *&buf[14] = uuid2;
       _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_DEFAULT, "Notifications: Processing recevedLike ID: %@. asset: %@", buf, 0x16u);
     }
 
@@ -2782,7 +2782,7 @@ LABEL_6:
     *&buf[16] = 0x3032000000;
     v33 = __Block_byref_object_copy__77630;
     v34 = __Block_byref_object_dispose__77631;
-    v35 = [[PLNotification alloc] initWithLikeAdded:v6];
+    v35 = [[PLNotification alloc] initWithLikeAdded:likeCopy];
     v27 = self->_isolationQueue;
     v28 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteDidReceiveLike:mstreamdInfo:]"];
     objc_initWeak(&location, self);
@@ -2822,33 +2822,33 @@ void __57__PLNotificationManager_noteDidReceiveLike_mstreamdInfo___block_invoke_
   [WeakRetained _updateImageDataForNotification:*(*(*(a1 + 32) + 8) + 40)];
 }
 
-- (void)noteDidReceiveComment:(id)a3 mstreamdInfo:(id)a4
+- (void)noteDidReceiveComment:(id)comment mstreamdInfo:(id)info
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  commentCopy = comment;
+  infoCopy = info;
   v38 = 0;
-  v8 = [v6 shouldNotifyAsNotificationWithMediaStreamInfo:v7 asCaptionOnly:&v38];
+  v8 = [commentCopy shouldNotifyAsNotificationWithMediaStreamInfo:infoCopy asCaptionOnly:&v38];
   if ((v8 & 1) == 0 && (v38 & 1) == 0)
   {
     v14 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [v6 cloudGUID];
-      v28 = [v6 asset];
-      v29 = [v28 cloudAssetGUID];
-      v30 = [v6 isCaption];
-      v31 = [v30 BOOLValue];
+      cloudGUID = [commentCopy cloudGUID];
+      asset = [commentCopy asset];
+      cloudAssetGUID = [asset cloudAssetGUID];
+      isCaption = [commentCopy isCaption];
+      bOOLValue = [isCaption BOOLValue];
       v32 = @"N";
       *buf = 138412802;
-      *&buf[4] = v27;
+      *&buf[4] = cloudGUID;
       *&buf[12] = 2112;
-      if (v31)
+      if (bOOLValue)
       {
         v32 = @"Y";
       }
 
-      *&buf[14] = v29;
+      *&buf[14] = cloudAssetGUID;
       *&buf[22] = 2112;
       v40 = v32;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "Notifications: Ignoring received comment: %@, for asset: %@, isCaption: %@", buf, 0x20u);
@@ -2857,25 +2857,25 @@ void __57__PLNotificationManager_noteDidReceiveLike_mstreamdInfo___block_invoke_
     goto LABEL_17;
   }
 
-  v9 = [v6 asset];
-  v10 = [v9 isCloudSharedAsset];
+  asset2 = [commentCopy asset];
+  isCloudSharedAsset = [asset2 isCloudSharedAsset];
 
-  if (v10)
+  if (isCloudSharedAsset)
   {
-    v11 = [v6 asset];
-    v12 = [v11 collectionShare];
-    v13 = [v12 notificationState] == 1;
+    asset3 = [commentCopy asset];
+    collectionShare = [asset3 collectionShare];
+    v13 = [collectionShare notificationState] == 1;
 
     if (v13)
     {
       v14 = PLPhotoSharingGetLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v6 asset];
-        v16 = [v15 collectionShare];
-        v17 = [v16 scopeIdentifier];
+        asset4 = [commentCopy asset];
+        collectionShare2 = [asset4 collectionShare];
+        scopeIdentifier = [collectionShare2 scopeIdentifier];
         *buf = 138412290;
-        *&buf[4] = v17;
+        *&buf[4] = scopeIdentifier;
         _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "Notifications: Ignoring received comment notification since we are currently not accepting notification for collection share %@.", buf, 0xCu);
       }
 
@@ -2888,21 +2888,21 @@ LABEL_17:
   v18 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v6 cloudGUID];
-    v20 = [v6 asset];
-    v21 = [v20 cloudAssetGUID];
-    v22 = [v6 isCaption];
-    v23 = [v22 BOOLValue];
+    cloudGUID2 = [commentCopy cloudGUID];
+    asset5 = [commentCopy asset];
+    cloudAssetGUID2 = [asset5 cloudAssetGUID];
+    isCaption2 = [commentCopy isCaption];
+    bOOLValue2 = [isCaption2 BOOLValue];
     v24 = @"N";
     *buf = 138412802;
-    *&buf[4] = v19;
+    *&buf[4] = cloudGUID2;
     *&buf[12] = 2112;
-    if (v23)
+    if (bOOLValue2)
     {
       v24 = @"Y";
     }
 
-    *&buf[14] = v21;
+    *&buf[14] = cloudAssetGUID2;
     *&buf[22] = 2112;
     v40 = v24;
     _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEFAULT, "Notifications: Processing received comment: %@, for asset: %@, isCaption: %@", buf, 0x20u);
@@ -2913,7 +2913,7 @@ LABEL_17:
   *&buf[16] = 0x3032000000;
   v40 = __Block_byref_object_copy__77630;
   v41 = __Block_byref_object_dispose__77631;
-  v42 = [[PLNotification alloc] initWithCommentAdded:v6];
+  v42 = [[PLNotification alloc] initWithCommentAdded:commentCopy];
   v25 = self->_isolationQueue;
   v26 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteDidReceiveComment:mstreamdInfo:]"];
   objc_initWeak(&location, self);
@@ -3045,53 +3045,53 @@ void __60__PLNotificationManager_noteDidReceiveComment_mstreamdInfo___block_invo
   [WeakRetained _updateImageDataForNotification:*(*(*(a1 + 32) + 8) + 40)];
 }
 
-- (void)noteDidChangePlaceholderKindForAsset:(id)a3 fromOldKind:(signed __int16)a4 forSharedAlbum:(id)a5 mstreamdInfo:(id)a6
+- (void)noteDidChangePlaceholderKindForAsset:(id)asset fromOldKind:(signed __int16)kind forSharedAlbum:(id)album mstreamdInfo:(id)info
 {
   *&v20[5] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  if ([v9 cloudIsMyAsset] && !-[PLNotificationManager enableTemporaryDebugMode](self, "enableTemporaryDebugMode"))
+  assetCopy = asset;
+  albumCopy = album;
+  infoCopy = info;
+  if ([assetCopy cloudIsMyAsset] && !-[PLNotificationManager enableTemporaryDebugMode](self, "enableTemporaryDebugMode"))
   {
     v16 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v10 localizedTitle];
+      localizedTitle = [albumCopy localizedTitle];
       v19 = 138412290;
-      *v20 = v17;
+      *v20 = localizedTitle;
       v18 = "Notifications: Ignoring placeholderKindChanged notification since we own the album %@.";
       goto LABEL_13;
     }
   }
 
-  else if ([v10 cloudNotificationsEnabled])
+  else if ([albumCopy cloudNotificationsEnabled])
   {
-    v12 = [v9 cloudSharedPlaceholderKind];
+    cloudSharedPlaceholderKind = [assetCopy cloudSharedPlaceholderKind];
     v13 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 67109378;
-      v20[0] = v12;
+      v20[0] = cloudSharedPlaceholderKind;
       LOWORD(v20[1]) = 2112;
-      *(&v20[1] + 2) = v9;
+      *(&v20[1] + 2) = assetCopy;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Notifications: Processing placeholderKindChanged. Asset changed to %d. (asset: %@)", &v19, 0x12u);
     }
 
-    v14 = [v11 valueForKey:*MEMORY[0x1E6998038]];
-    v15 = [v14 BOOLValue];
+    v14 = [infoCopy valueForKey:*MEMORY[0x1E6998038]];
+    bOOLValue = [v14 BOOLValue];
 
-    if (!v15)
+    if (!bOOLValue)
     {
-      [(PLNotificationManager *)self triggerNotificationThumbnailUpdateForAsset:v9];
+      [(PLNotificationManager *)self triggerNotificationThumbnailUpdateForAsset:assetCopy];
       goto LABEL_15;
     }
 
     v16 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v10 localizedTitle];
+      localizedTitle = [albumCopy localizedTitle];
       v19 = 138412290;
-      *v20 = v17;
+      *v20 = localizedTitle;
       v18 = "Notifications: Ignoring placeholderKindChanged notification for album %@ beause it's not interesting as per mstreamd dictionary.";
 LABEL_13:
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, v18, &v19, 0xCu);
@@ -3103,9 +3103,9 @@ LABEL_13:
     v16 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v10 localizedTitle];
+      localizedTitle = [albumCopy localizedTitle];
       v19 = 138412290;
-      *v20 = v17;
+      *v20 = localizedTitle;
       v18 = "Notifications: Ignoring placeholderKindChanged notification since we are currently not accepting notification for album %@.";
       goto LABEL_13;
     }
@@ -3114,33 +3114,33 @@ LABEL_13:
 LABEL_15:
 }
 
-- (void)noteDidChangePlaceholderKindForAsset:(id)a3 fromOldKind:(signed __int16)a4 forCollectionShare:(id)a5 mstreamdInfo:(id)a6
+- (void)noteDidChangePlaceholderKindForAsset:(id)asset fromOldKind:(signed __int16)kind forCollectionShare:(id)share mstreamdInfo:(id)info
 {
   *&v20[5] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  if ([v9 cloudIsMyAsset] && !-[PLNotificationManager enableTemporaryDebugMode](self, "enableTemporaryDebugMode"))
+  assetCopy = asset;
+  shareCopy = share;
+  infoCopy = info;
+  if ([assetCopy cloudIsMyAsset] && !-[PLNotificationManager enableTemporaryDebugMode](self, "enableTemporaryDebugMode"))
   {
     v12 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v10 title];
+      title = [shareCopy title];
       v19 = 138412290;
-      *v20 = v13;
+      *v20 = title;
       v14 = "Notifications: Ignoring placeholderKindChanged notification since we own the collection share %@.";
       goto LABEL_13;
     }
   }
 
-  else if ([v10 notificationState] == 1)
+  else if ([shareCopy notificationState] == 1)
   {
     v12 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v10 title];
+      title = [shareCopy title];
       v19 = 138412290;
-      *v20 = v13;
+      *v20 = title;
       v14 = "Notifications: Ignoring placeholderKindChanged notification since we are currently not accepting notification for collection share %@.";
 LABEL_13:
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, v14, &v19, 0xCu);
@@ -3149,32 +3149,32 @@ LABEL_13:
 
   else
   {
-    v15 = [v9 cloudSharedPlaceholderKind];
+    cloudSharedPlaceholderKind = [assetCopy cloudSharedPlaceholderKind];
     v16 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 67109378;
-      v20[0] = v15;
+      v20[0] = cloudSharedPlaceholderKind;
       LOWORD(v20[1]) = 2112;
-      *(&v20[1] + 2) = v9;
+      *(&v20[1] + 2) = assetCopy;
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "Notifications: Processing placeholderKindChanged. Asset changed to %d. (asset: %@)", &v19, 0x12u);
     }
 
-    v17 = [v11 valueForKey:*MEMORY[0x1E6998038]];
-    v18 = [v17 BOOLValue];
+    v17 = [infoCopy valueForKey:*MEMORY[0x1E6998038]];
+    bOOLValue = [v17 BOOLValue];
 
-    if (!v18)
+    if (!bOOLValue)
     {
-      [(PLNotificationManager *)self triggerNotificationThumbnailUpdateForAsset:v9];
+      [(PLNotificationManager *)self triggerNotificationThumbnailUpdateForAsset:assetCopy];
       goto LABEL_15;
     }
 
     v12 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v10 title];
+      title = [shareCopy title];
       v19 = 138412290;
-      *v20 = v13;
+      *v20 = title;
       v14 = "Notifications: Ignoring placeholderKindChanged notification for collection share %@ beause it's not interesting as per mstreamd dictionary.";
       goto LABEL_13;
     }
@@ -3183,25 +3183,25 @@ LABEL_13:
 LABEL_15:
 }
 
-- (void)noteDidReceiveAssets:(id)a3 forSharedAlbum:(id)a4 mstreamdInfo:(id)a5
+- (void)noteDidReceiveAssets:(id)assets forSharedAlbum:(id)album mstreamdInfo:(id)info
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 firstObject];
-  if ([v11 cloudIsMyAsset])
+  assetsCopy = assets;
+  albumCopy = album;
+  infoCopy = info;
+  firstObject = [assetsCopy firstObject];
+  if ([firstObject cloudIsMyAsset])
   {
-    v12 = [(PLNotificationManager *)self enableTemporaryDebugMode];
+    enableTemporaryDebugMode = [(PLNotificationManager *)self enableTemporaryDebugMode];
 
-    if (!v12)
+    if (!enableTemporaryDebugMode)
     {
       v13 = PLPhotoSharingGetLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v9 localizedTitle];
+        localizedTitle = [albumCopy localizedTitle];
         *buf = 138412290;
-        *&buf[4] = v14;
+        *&buf[4] = localizedTitle;
         _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Notifications: Ignoring addedAsset notification since we own the  asset in the album %@.", buf, 0xCu);
       }
 
@@ -3213,38 +3213,38 @@ LABEL_15:
   {
   }
 
-  if ([v9 cloudNotificationsEnabled])
+  if ([albumCopy cloudNotificationsEnabled])
   {
-    v15 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __74__PLNotificationManager_noteDidReceiveAssets_forSharedAlbum_mstreamdInfo___block_invoke;
     v29[3] = &unk_1E7575368;
-    v13 = v15;
+    v13 = array;
     v30 = v13;
-    [v8 enumerateObjectsUsingBlock:v29];
+    [assetsCopy enumerateObjectsUsingBlock:v29];
     v16 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v9 localizedTitle];
+      localizedTitle2 = [albumCopy localizedTitle];
       *buf = 138412546;
-      *&buf[4] = v17;
+      *&buf[4] = localizedTitle2;
       *&buf[12] = 2112;
       *&buf[14] = v13;
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "Notifications: Processing addedAsset to %@, UUIDs: %@.", buf, 0x16u);
     }
 
-    v18 = [v10 valueForKey:*MEMORY[0x1E6998038]];
-    v19 = [v18 BOOLValue];
+    v18 = [infoCopy valueForKey:*MEMORY[0x1E6998038]];
+    bOOLValue = [v18 BOOLValue];
 
-    if (v19)
+    if (bOOLValue)
     {
       v20 = PLPhotoSharingGetLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [v9 localizedTitle];
+        localizedTitle3 = [albumCopy localizedTitle];
         *buf = 138412290;
-        *&buf[4] = v21;
+        *&buf[4] = localizedTitle3;
         _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_DEFAULT, "Notifications: Ignoring addedAsset notification for album %@ beause it's not interesting as per mstreamd dictionary.", buf, 0xCu);
       }
     }
@@ -3256,7 +3256,7 @@ LABEL_15:
       *&buf[16] = 0x3032000000;
       v32 = __Block_byref_object_copy__77630;
       v33 = __Block_byref_object_dispose__77631;
-      v34 = [[PLNotification alloc] initWithAssetsAdded:v8 toAlbum:v9];
+      v34 = [[PLNotification alloc] initWithAssetsAdded:assetsCopy toAlbum:albumCopy];
       v23 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteDidReceiveAssets:forSharedAlbum:mstreamdInfo:]"];
       v24 = self->_isolationQueue;
       objc_initWeak(&location, self);
@@ -3277,9 +3277,9 @@ LABEL_15:
     v13 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [v9 localizedTitle];
+      localizedTitle4 = [albumCopy localizedTitle];
       *buf = 138412290;
-      *&buf[4] = v22;
+      *&buf[4] = localizedTitle4;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Notifications: Ignoring addedAsset notification since we are currently not accepting notification for album %@.", buf, 0xCu);
     }
   }
@@ -3398,25 +3398,25 @@ void __74__PLNotificationManager_noteDidReceiveAssets_forSharedAlbum_mstreamdInf
   [WeakRetained _updateImageDataForNotification:*(a1 + 32)];
 }
 
-- (void)noteDidReceiveAssets:(id)a3 forCollectionShare:(id)a4 mstreamdInfo:(id)a5
+- (void)noteDidReceiveAssets:(id)assets forCollectionShare:(id)share mstreamdInfo:(id)info
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 firstObject];
-  if ([v11 cloudIsMyAsset])
+  assetsCopy = assets;
+  shareCopy = share;
+  infoCopy = info;
+  firstObject = [assetsCopy firstObject];
+  if ([firstObject cloudIsMyAsset])
   {
-    v12 = [(PLNotificationManager *)self enableTemporaryDebugMode];
+    enableTemporaryDebugMode = [(PLNotificationManager *)self enableTemporaryDebugMode];
 
-    if (!v12)
+    if (!enableTemporaryDebugMode)
     {
       v13 = PLPhotoSharingGetLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v9 title];
+        title = [shareCopy title];
         *buf = 138412290;
-        *&buf[4] = v14;
+        *&buf[4] = title;
         _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Notifications: Ignoring addedAsset notification since we own the asset in the collection share %@.", buf, 0xCu);
       }
 
@@ -3428,50 +3428,50 @@ void __74__PLNotificationManager_noteDidReceiveAssets_forSharedAlbum_mstreamdInf
   {
   }
 
-  if ([v9 notificationState] == 1)
+  if ([shareCopy notificationState] == 1)
   {
     v13 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v9 title];
+      title2 = [shareCopy title];
       *buf = 138412290;
-      *&buf[4] = v15;
+      *&buf[4] = title2;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Notifications: Ignoring addedAsset notification since we are currently not accepting notification for collection share %@.", buf, 0xCu);
     }
   }
 
   else
   {
-    v16 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __78__PLNotificationManager_noteDidReceiveAssets_forCollectionShare_mstreamdInfo___block_invoke;
     v29[3] = &unk_1E7575368;
-    v13 = v16;
+    v13 = array;
     v30 = v13;
-    [v8 enumerateObjectsUsingBlock:v29];
+    [assetsCopy enumerateObjectsUsingBlock:v29];
     v17 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v9 title];
+      title3 = [shareCopy title];
       *buf = 138412546;
-      *&buf[4] = v18;
+      *&buf[4] = title3;
       *&buf[12] = 2112;
       *&buf[14] = v13;
       _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEFAULT, "Notifications: Processing addedAsset to %@, UUIDs: %@.", buf, 0x16u);
     }
 
-    v19 = [v10 valueForKey:*MEMORY[0x1E6998038]];
-    v20 = [v19 BOOLValue];
+    v19 = [infoCopy valueForKey:*MEMORY[0x1E6998038]];
+    bOOLValue = [v19 BOOLValue];
 
-    if (v20)
+    if (bOOLValue)
     {
       v21 = PLPhotoSharingGetLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v9 title];
+        title4 = [shareCopy title];
         *buf = 138412290;
-        *&buf[4] = v22;
+        *&buf[4] = title4;
         _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_DEFAULT, "Notifications: Ignoring addedAsset notification for collection share %@ beause it's not interesting as per mstreamd dictionary.", buf, 0xCu);
       }
     }
@@ -3483,7 +3483,7 @@ void __74__PLNotificationManager_noteDidReceiveAssets_forSharedAlbum_mstreamdInf
       *&buf[16] = 0x3032000000;
       v32 = __Block_byref_object_copy__77630;
       v33 = __Block_byref_object_dispose__77631;
-      v34 = [[PLNotification alloc] initWithAssetsAdded:v8 toCollectionShare:v9];
+      v34 = [[PLNotification alloc] initWithAssetsAdded:assetsCopy toCollectionShare:shareCopy];
       v23 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteDidReceiveAssets:forCollectionShare:mstreamdInfo:]"];
       v24 = self->_isolationQueue;
       objc_initWeak(&location, self);
@@ -3613,48 +3613,48 @@ void __78__PLNotificationManager_noteDidReceiveAssets_forCollectionShare_mstream
   [WeakRetained _updateImageDataForNotification:*(a1 + 32)];
 }
 
-- (void)noteMultipleContributorStatusChangedForAlbum:(id)a3 mstreamdInfo:(id)a4
+- (void)noteMultipleContributorStatusChangedForAlbum:(id)album mstreamdInfo:(id)info
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 valueForKey:*MEMORY[0x1E6998038]];
-  v9 = [v8 BOOLValue];
+  albumCopy = album;
+  infoCopy = info;
+  v8 = [infoCopy valueForKey:*MEMORY[0x1E6998038]];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
     v10 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v6 localizedTitle];
+      localizedTitle = [albumCopy localizedTitle];
       *buf = 138412290;
-      v28 = v11;
+      v28 = localizedTitle;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEFAULT, "Notifications: Ignoring multipleContributorStatusChanged notification for album %@ beause it's not interesting as per mstreamd dictionary.", buf, 0xCu);
     }
   }
 
-  else if ([v6 cloudNotificationsEnabled])
+  else if ([albumCopy cloudNotificationsEnabled])
   {
-    if ([v6 isOwnedCloudSharedAlbum] && !-[PLNotificationManager enableTemporaryDebugMode](self, "enableTemporaryDebugMode"))
+    if ([albumCopy isOwnedCloudSharedAlbum] && !-[PLNotificationManager enableTemporaryDebugMode](self, "enableTemporaryDebugMode"))
     {
       v10 = PLPhotoSharingGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v6 localizedTitle];
+        localizedTitle2 = [albumCopy localizedTitle];
         *buf = 138412290;
-        v28 = v22;
+        v28 = localizedTitle2;
         _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEFAULT, "Notifications: Ignoring multiple status changed notification because we are not subscribed to this the album %@.", buf, 0xCu);
       }
     }
 
     else
     {
-      v12 = [v6 cloudMultipleContributorsEnabled];
-      v13 = [v12 BOOLValue];
+      cloudMultipleContributorsEnabled = [albumCopy cloudMultipleContributorsEnabled];
+      bOOLValue2 = [cloudMultipleContributorsEnabled BOOLValue];
 
-      if (v13)
+      if (bOOLValue2)
       {
-        v14 = [[PLNotification alloc] initWithMultipleContributorEnabledForAlbum:v6];
+        v14 = [[PLNotification alloc] initWithMultipleContributorEnabledForAlbum:albumCopy];
         v15 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteMultipleContributorStatusChangedForAlbum:mstreamdInfo:]"];
         objc_initWeak(buf, self);
         v24[1] = MEMORY[0x1E69E9820];
@@ -3673,15 +3673,15 @@ void __78__PLNotificationManager_noteDidReceiveAssets_forCollectionShare_mstream
 
       else
       {
-        v17 = [v6 uuid];
-        v18 = [v17 copy];
+        uuid = [albumCopy uuid];
+        v18 = [uuid copy];
 
         v19 = PLPhotoSharingGetLog();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v6 localizedTitle];
+          localizedTitle3 = [albumCopy localizedTitle];
           *buf = 138412290;
-          v28 = v20;
+          v28 = localizedTitle3;
           _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEFAULT, "Notifications: Deleting notifications for multiple contributor status change for album: %@.", buf, 0xCu);
         }
 
@@ -3703,9 +3703,9 @@ void __78__PLNotificationManager_noteDidReceiveAssets_forCollectionShare_mstream
     v10 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v6 localizedTitle];
+      localizedTitle4 = [albumCopy localizedTitle];
       *buf = 138412290;
-      v28 = v16;
+      v28 = localizedTitle4;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEFAULT, "Notifications: Ignoring multipleContributorStatusChanged notification since we are currently not accepting notification for album %@.", buf, 0xCu);
     }
   }
@@ -3747,53 +3747,53 @@ void __83__PLNotificationManager_noteMultipleContributorStatusChangedForAlbum_ms
   [*(a1 + 40) stillAlive];
 }
 
-- (void)noteMultipleContributorStatusChangedForCollectionShare:(id)a3 mstreamdInfo:(id)a4
+- (void)noteMultipleContributorStatusChangedForCollectionShare:(id)share mstreamdInfo:(id)info
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 valueForKey:*MEMORY[0x1E6998038]];
-  v9 = [v8 BOOLValue];
+  shareCopy = share;
+  infoCopy = info;
+  v8 = [infoCopy valueForKey:*MEMORY[0x1E6998038]];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
     v10 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v6 title];
+      title = [shareCopy title];
       *buf = 138412290;
-      v26 = v11;
+      v26 = title;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEFAULT, "Notifications: Ignoring multipleContributorStatusChanged notification for collection share %@ beause it's not interesting as per mstreamd dictionary.", buf, 0xCu);
     }
   }
 
-  else if ([v6 notificationState] == 1)
+  else if ([shareCopy notificationState] == 1)
   {
     v10 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v6 title];
+      title2 = [shareCopy title];
       *buf = 138412290;
-      v26 = v12;
+      v26 = title2;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEFAULT, "Notifications: Ignoring multipleContributorStatusChanged notification since we are currently not accepting notification for collection share %@.", buf, 0xCu);
     }
   }
 
-  else if ([v6 isCurrentUserOwner] && !-[PLNotificationManager enableTemporaryDebugMode](self, "enableTemporaryDebugMode"))
+  else if ([shareCopy isCurrentUserOwner] && !-[PLNotificationManager enableTemporaryDebugMode](self, "enableTemporaryDebugMode"))
   {
     v10 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v6 title];
+      title3 = [shareCopy title];
       *buf = 138412290;
-      v26 = v20;
+      v26 = title3;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEFAULT, "Notifications: Ignoring multiple status changed notification because we are not subscribed to this the collection share %@.", buf, 0xCu);
     }
   }
 
-  else if ([v6 publicPermission] == 3)
+  else if ([shareCopy publicPermission] == 3)
   {
-    v13 = [[PLNotification alloc] initWithMultipleContributorEnabledForCollectionShare:v6];
+    v13 = [[PLNotification alloc] initWithMultipleContributorEnabledForCollectionShare:shareCopy];
     v14 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteMultipleContributorStatusChangedForCollectionShare:mstreamdInfo:]"];
     objc_initWeak(buf, self);
     v22[1] = MEMORY[0x1E69E9820];
@@ -3812,15 +3812,15 @@ void __83__PLNotificationManager_noteMultipleContributorStatusChangedForAlbum_ms
 
   else
   {
-    v15 = [v6 uuid];
-    v16 = [v15 copy];
+    uuid = [shareCopy uuid];
+    v16 = [uuid copy];
 
     v17 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v6 title];
+      title4 = [shareCopy title];
       *buf = 138412290;
-      v26 = v18;
+      v26 = title4;
       _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEFAULT, "Notifications: Deleting notifications for multiple contributor status change for collection share: %@.", buf, 0xCu);
     }
 
@@ -3872,33 +3872,33 @@ void __93__PLNotificationManager_noteMultipleContributorStatusChangedForCollecti
   [*(a1 + 40) stillAlive];
 }
 
-- (void)noteInvitationRecordStatusChanged:(id)a3 fromOldState:(int64_t)a4 mstreamdInfo:(id)a5
+- (void)noteInvitationRecordStatusChanged:(id)changed fromOldState:(int64_t)state mstreamdInfo:(id)info
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 album];
-  v11 = [v9 valueForKey:*MEMORY[0x1E6998038]];
-  v12 = [v11 BOOLValue];
+  changedCopy = changed;
+  infoCopy = info;
+  album = [changedCopy album];
+  v11 = [infoCopy valueForKey:*MEMORY[0x1E6998038]];
+  bOOLValue = [v11 BOOLValue];
 
-  if (v12)
+  if (bOOLValue)
   {
     v13 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v10 localizedTitle];
+      localizedTitle = [album localizedTitle];
       *buf = 138412546;
-      v38 = v14;
+      stateCopy = localizedTitle;
       v39 = 2112;
-      v40 = v8;
+      v40 = changedCopy;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Notifications: Ignoring invitatitionRecordStatusChanged notification for album %@ and invitationRecord %@ beause it's not interesting as per mstreamd dictionary.", buf, 0x16u);
     }
   }
 
-  v15 = [v8 invitationState];
-  v16 = [v15 intValue];
+  invitationState = [changedCopy invitationState];
+  intValue = [invitationState intValue];
 
-  if (([v10 isOwnedCloudSharedAlbum] & 1) != 0 || -[PLNotificationManager enableTemporaryDebugMode](self, "enableTemporaryDebugMode"))
+  if (([album isOwnedCloudSharedAlbum] & 1) != 0 || -[PLNotificationManager enableTemporaryDebugMode](self, "enableTemporaryDebugMode"))
   {
     v17 = 0;
   }
@@ -3908,34 +3908,34 @@ void __93__PLNotificationManager_noteMultipleContributorStatusChangedForCollecti
     v18 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v10 localizedTitle];
+      localizedTitle2 = [album localizedTitle];
       *buf = 138412290;
-      v38 = v19;
+      stateCopy = localizedTitle2;
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEFAULT, "Notifications: Ignoring invitation status changed because we don't own the album %@.", buf, 0xCu);
     }
 
     v17 = 1;
   }
 
-  if (([v10 cloudNotificationsEnabled] & 1) == 0)
+  if (([album cloudNotificationsEnabled] & 1) == 0)
   {
     v22 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v10 localizedTitle];
+      localizedTitle3 = [album localizedTitle];
       *buf = 138412290;
-      v38 = v23;
+      stateCopy = localizedTitle3;
       _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_DEFAULT, "Notifications: Ignoring invitation status changed since we are currently not accepting notification for album %@.", buf, 0xCu);
     }
 
     goto LABEL_29;
   }
 
-  if ([(PLNotificationManager *)self enableTemporaryDebugMode]|| v16 != a4 && (v16 == 2 || v16 == 4))
+  if ([(PLNotificationManager *)self enableTemporaryDebugMode]|| intValue != state && (intValue == 2 || intValue == 4))
   {
-    if (((v17 | v12) & 1) == 0)
+    if (((v17 | bOOLValue) & 1) == 0)
     {
-      v20 = [[PLNotification alloc] initWithInvitationRecordStatusChanged:v8];
+      v20 = [[PLNotification alloc] initWithInvitationRecordStatusChanged:changedCopy];
       v21 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteInvitationRecordStatusChanged:fromOldState:mstreamdInfo:]"];
       objc_initWeak(buf, self);
       v34[1] = MEMORY[0x1E69E9820];
@@ -3962,34 +3962,34 @@ LABEL_29:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v38 = a4;
+      stateCopy = state;
       v39 = 2048;
-      v40 = v16;
+      v40 = intValue;
       _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_DEFAULT, "Notifications: Ignoring invitation status changed because it changed from %ld to %ld.", buf, 0x16u);
     }
   }
 
-  v25 = [v10 isOwnedCloudSharedAlbum];
-  if (v16 < 2)
+  isOwnedCloudSharedAlbum = [album isOwnedCloudSharedAlbum];
+  if (intValue < 2)
   {
     v26 = 1;
   }
 
   else
   {
-    v26 = v25;
+    v26 = isOwnedCloudSharedAlbum;
   }
 
   if ((v26 & 1) == 0)
   {
-    v27 = [v8 inviteeEmails];
-    v28 = [v27 firstObject];
-    v29 = [PLPhotoSharingHelper accountMatchesEmail:v28];
+    inviteeEmails = [changedCopy inviteeEmails];
+    firstObject = [inviteeEmails firstObject];
+    v29 = [PLPhotoSharingHelper accountMatchesEmail:firstObject];
 
     if (v29)
     {
-      v30 = [v10 uuid];
-      v31 = [v30 copy];
+      uuid = [album uuid];
+      v31 = [uuid copy];
 
       v32 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteInvitationRecordStatusChanged:fromOldState:mstreamdInfo:]"];
       objc_initWeak(buf, self);
@@ -4044,31 +4044,31 @@ void __85__PLNotificationManager_noteInvitationRecordStatusChanged_fromOldState_
   [*(a1 + 40) stillAlive];
 }
 
-- (void)noteParticipantAcceptanceStatusChanged:(id)a3 fromOldAcceptanceStatus:(int64_t)a4 mstreamdInfo:(id)a5
+- (void)noteParticipantAcceptanceStatusChanged:(id)changed fromOldAcceptanceStatus:(int64_t)status mstreamdInfo:(id)info
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 share];
-  v11 = [v9 valueForKey:*MEMORY[0x1E6998038]];
-  v12 = [v11 BOOLValue];
+  changedCopy = changed;
+  infoCopy = info;
+  share = [changedCopy share];
+  v11 = [infoCopy valueForKey:*MEMORY[0x1E6998038]];
+  bOOLValue = [v11 BOOLValue];
 
-  if (v12)
+  if (bOOLValue)
   {
     v13 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v10 title];
+      title = [share title];
       *buf = 138412546;
-      v36 = v14;
+      statusCopy = title;
       v37 = 2112;
-      v38 = v8;
+      v38 = changedCopy;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Notifications: Ignoring participantStatusChanged notification for collection share %@ and participant %@ beause it's not interesting as per mstreamd dictionary.", buf, 0x16u);
     }
   }
 
-  v15 = [v8 acceptanceStatus];
-  if (([v10 isCurrentUserOwner] & 1) != 0 || -[PLNotificationManager enableTemporaryDebugMode](self, "enableTemporaryDebugMode"))
+  acceptanceStatus = [changedCopy acceptanceStatus];
+  if (([share isCurrentUserOwner] & 1) != 0 || -[PLNotificationManager enableTemporaryDebugMode](self, "enableTemporaryDebugMode"))
   {
     v16 = 0;
   }
@@ -4078,34 +4078,34 @@ void __85__PLNotificationManager_noteInvitationRecordStatusChanged_fromOldState_
     v17 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v10 title];
+      title2 = [share title];
       *buf = 138412290;
-      v36 = v18;
+      statusCopy = title2;
       _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEFAULT, "Notifications: Ignoring acceptance status changed because we don't own the collection share %@.", buf, 0xCu);
     }
 
     v16 = 1;
   }
 
-  if ([v10 notificationState] == 1)
+  if ([share notificationState] == 1)
   {
     v19 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v10 title];
+      title3 = [share title];
       *buf = 138412290;
-      v36 = v20;
+      statusCopy = title3;
       _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEFAULT, "Notifications: Ignoring acceptance status changed since we are currently not accepting notification for collection share %@.", buf, 0xCu);
     }
 
     goto LABEL_17;
   }
 
-  if ([(PLNotificationManager *)self enableTemporaryDebugMode]|| v15 != a4 && (v15 == 2 || v15 == 5))
+  if ([(PLNotificationManager *)self enableTemporaryDebugMode]|| acceptanceStatus != status && (acceptanceStatus == 2 || acceptanceStatus == 5))
   {
-    if (((v16 | v12) & 1) == 0)
+    if (((v16 | bOOLValue) & 1) == 0)
     {
-      v21 = [[PLNotification alloc] initWithParticipantAcceptanceStatusChanged:v8];
+      v21 = [[PLNotification alloc] initWithParticipantAcceptanceStatusChanged:changedCopy];
       v22 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteParticipantAcceptanceStatusChanged:fromOldAcceptanceStatus:mstreamdInfo:]"];
       objc_initWeak(buf, self);
       v32[1] = MEMORY[0x1E69E9820];
@@ -4132,33 +4132,33 @@ LABEL_17:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v36 = a4;
+      statusCopy = status;
       v37 = 2048;
-      v38 = v15;
+      v38 = acceptanceStatus;
       _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_DEFAULT, "Notifications: Ignoring invitation status changed because it changed from %ld to %ld.", buf, 0x16u);
     }
   }
 
-  v24 = [v10 isCurrentUserOwner];
-  if (v15 == 1)
+  isCurrentUserOwner = [share isCurrentUserOwner];
+  if (acceptanceStatus == 1)
   {
     v25 = 1;
   }
 
   else
   {
-    v25 = v24;
+    v25 = isCurrentUserOwner;
   }
 
-  if ((v25 & 1) == 0 && [v8 role] != 1)
+  if ((v25 & 1) == 0 && [changedCopy role] != 1)
   {
-    v26 = [v8 emailAddress];
-    v27 = [PLPhotoSharingHelper accountMatchesEmail:v26];
+    emailAddress = [changedCopy emailAddress];
+    v27 = [PLPhotoSharingHelper accountMatchesEmail:emailAddress];
 
     if (v27)
     {
-      v28 = [v10 uuid];
-      v29 = [v28 copy];
+      uuid = [share uuid];
+      v29 = [uuid copy];
 
       v30 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteParticipantAcceptanceStatusChanged:fromOldAcceptanceStatus:mstreamdInfo:]"];
       objc_initWeak(buf, self);
@@ -4213,12 +4213,12 @@ void __101__PLNotificationManager_noteParticipantAcceptanceStatusChanged_fromOld
   [*(a1 + 40) stillAlive];
 }
 
-- (void)noteDidDeleteSharedAssetsWithUUIDs:(id)a3
+- (void)noteDidDeleteSharedAssetsWithUUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteDidDeleteSharedAssetsWithUUIDs:]"];
   objc_initWeak(&location, self);
-  v6 = v4;
+  v6 = dsCopy;
   objc_copyWeak(&v8, &location);
   v7 = v5;
   pl_dispatch_async();
@@ -4267,12 +4267,12 @@ uint64_t __60__PLNotificationManager_noteDidDeleteSharedAssetsWithUUIDs___block_
   return [a1[5] stillAlive];
 }
 
-- (void)noteDidDeleteSharedAlbum:(id)a3
+- (void)noteDidDeleteSharedAlbum:(id)album
 {
-  v4 = a3;
+  albumCopy = album;
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteDidDeleteSharedAlbum:]"];
-  v6 = [v4 uuid];
-  v7 = [v6 copy];
+  uuid = [albumCopy uuid];
+  v7 = [uuid copy];
 
   objc_initWeak(&location, self);
   objc_copyWeak(&v10, &location);
@@ -4299,12 +4299,12 @@ void __50__PLNotificationManager_noteDidDeleteSharedAlbum___block_invoke(uint64_
   [*(a1 + 40) stillAlive];
 }
 
-- (void)noteDidDeleteCollectionShare:(id)a3
+- (void)noteDidDeleteCollectionShare:(id)share
 {
-  v4 = a3;
+  shareCopy = share;
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteDidDeleteCollectionShare:]"];
-  v6 = [v4 uuid];
-  v7 = [v6 copy];
+  uuid = [shareCopy uuid];
+  v7 = [uuid copy];
 
   objc_initWeak(&location, self);
   objc_copyWeak(&v10, &location);
@@ -4331,10 +4331,10 @@ void __54__PLNotificationManager_noteDidDeleteCollectionShare___block_invoke(uin
   [*(a1 + 40) stillAlive];
 }
 
-- (void)noteDidReceiveInvitationForSharedAlbum:(id)a3
+- (void)noteDidReceiveInvitationForSharedAlbum:(id)album
 {
-  v4 = a3;
-  v5 = [[PLNotification alloc] initWithInvitationAlbum:v4];
+  albumCopy = album;
+  v5 = [[PLNotification alloc] initWithInvitationAlbum:albumCopy];
   objc_initWeak(&location, self);
   v6 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteDidReceiveInvitationForSharedAlbum:]"];
   objc_copyWeak(&v9, &location);
@@ -4403,10 +4403,10 @@ void __64__PLNotificationManager_noteDidReceiveInvitationForSharedAlbum___block_
   }
 }
 
-- (void)noteDidReceiveInvitationForCollectionShare:(id)a3
+- (void)noteDidReceiveInvitationForCollectionShare:(id)share
 {
-  v4 = a3;
-  v5 = [[PLNotification alloc] initWithInvitationCollectionShare:v4];
+  shareCopy = share;
+  v5 = [[PLNotification alloc] initWithInvitationCollectionShare:shareCopy];
   objc_initWeak(&location, self);
   v6 = [MEMORY[0x1E69BF360] transaction:"-[PLNotificationManager noteDidReceiveInvitationForCollectionShare:]"];
   objc_copyWeak(&v9, &location);
@@ -4512,43 +4512,43 @@ void __68__PLNotificationManager_noteDidReceiveInvitationForCollectionShare___bl
 
 - (PLNotificationManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:176 description:@"Do not use this initializer"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotificationManager.m" lineNumber:176 description:@"Do not use this initializer"];
 
   return 0;
 }
 
-+ (id)_bestDateForDeliveringNotificationFromCoreDuetWithError:(id *)a3
++ (id)_bestDateForDeliveringNotificationFromCoreDuetWithError:(id *)error
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF00] date];
-  v5 = [MEMORY[0x1E69979A0] knowledgeStore];
-  v6 = [MEMORY[0x1E69979C8] predictorWithKnowledgeStore:v5];
+  date = [MEMORY[0x1E695DF00] date];
+  knowledgeStore = [MEMORY[0x1E69979A0] knowledgeStore];
+  v6 = [MEMORY[0x1E69979C8] predictorWithKnowledgeStore:knowledgeStore];
   v7 = [v6 launchLikelihoodPredictionForApp:0];
-  v8 = [MEMORY[0x1E69979C0] predictionUnavailable];
+  predictionUnavailable = [MEMORY[0x1E69979C0] predictionUnavailable];
 
-  if (v7 != v8)
+  if (v7 != predictionUnavailable)
   {
-    v9 = [MEMORY[0x1E695DF00] distantFuture];
-    v10 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v11 = [v7 startDate];
-    v12 = [v7 endDate];
-    [v11 timeIntervalSinceDate:v12];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    startDate = [v7 startDate];
+    endDate = [v7 endDate];
+    [startDate timeIntervalSinceDate:endDate];
     v14 = v13;
 
     if (v14 < 0.0)
     {
-      v40 = v5;
-      v41 = v4;
+      v40 = knowledgeStore;
+      v41 = date;
       v15 = 0;
       v16 = 0;
       v17 = 0.0;
       do
       {
-        v18 = v11;
-        if ([v10 isDateInToday:{v11, v40, v41}])
+        v18 = startDate;
+        if ([currentCalendar isDateInToday:{startDate, v40, v41}])
         {
-          v19 = [v7 valueAtDate:v11];
+          v19 = [v7 valueAtDate:startDate];
           [v19 doubleValue];
           v21 = v20;
 
@@ -4558,16 +4558,16 @@ void __68__PLNotificationManager_noteDidReceiveInvitationForCollectionShare___bl
 
             v16 = 1;
             v17 = v21;
-            v9 = v22;
+            distantFuture = v22;
           }
         }
 
-        v23 = [v7 transitionDates];
+        transitionDates = [v7 transitionDates];
         v24 = v15 + 1;
-        v11 = [v23 objectAtIndexedSubscript:v15];
+        startDate = [transitionDates objectAtIndexedSubscript:v15];
 
-        v25 = [v7 endDate];
-        [v11 timeIntervalSinceDate:v25];
+        endDate2 = [v7 endDate];
+        [startDate timeIntervalSinceDate:endDate2];
         v27 = v26;
 
         v15 = v24;
@@ -4579,8 +4579,8 @@ void __68__PLNotificationManager_noteDidReceiveInvitationForCollectionShare___bl
         v28 = PLPhotoSharingGetLog();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
-          v29 = [MEMORY[0x1E695DF58] currentLocale];
-          v30 = [v9 descriptionWithLocale:v29];
+          currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+          v30 = [distantFuture descriptionWithLocale:currentLocale];
           *buf = 138412546;
           v43 = v30;
           v44 = 2048;
@@ -4588,21 +4588,21 @@ void __68__PLNotificationManager_noteDidReceiveInvitationForCollectionShare___bl
           _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_DEFAULT, "Most likely to use device at date %@ with likelihood %2.2f", buf, 0x16u);
         }
 
-        v5 = v40;
-        v4 = v41;
+        knowledgeStore = v40;
+        date = v41;
 LABEL_20:
 
-        v34 = v9;
+        v34 = distantFuture;
         v37 = v34;
         goto LABEL_21;
       }
 
-      v5 = v40;
-      v4 = v41;
+      knowledgeStore = v40;
+      date = v41;
     }
 
-    v38 = v9;
-    v9 = v4;
+    v38 = distantFuture;
+    distantFuture = date;
 
     v28 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -4621,10 +4621,10 @@ LABEL_20:
   v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:&v46 count:1];
   v34 = [v31 errorWithDomain:v32 code:0 userInfo:v33];
 
-  if (a3)
+  if (error)
   {
     v35 = v34;
-    *a3 = v34;
+    *error = v34;
   }
 
   v36 = PLPhotoSharingGetLog();
@@ -4635,7 +4635,7 @@ LABEL_20:
     _os_log_impl(&dword_19BF1F000, v36, OS_LOG_TYPE_ERROR, "Error: %@, can't predict best time to notify", buf, 0xCu);
   }
 
-  v37 = v4;
+  v37 = date;
 LABEL_21:
 
   return v37;
@@ -4644,8 +4644,8 @@ LABEL_21:
 + (id)_bestDateForDeliveringNotification
 {
   v53 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v3 = [MEMORY[0x1E695DF00] date];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  date = [MEMORY[0x1E695DF00] date];
   v4 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v4 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
   v5 = arc4random_uniform(0x708u);
@@ -4669,15 +4669,15 @@ LABEL_21:
         }
 
         v10 = *(*(&v45 + 1) + 8 * i);
-        v11 = [v2 components:124 fromDate:v3];
+        v11 = [currentCalendar components:124 fromDate:date];
         [v11 setHour:{objc_msgSend(v10, "integerValue")}];
         [v11 setMinute:0];
-        v12 = [v2 dateFromComponents:v11];
+        v12 = [currentCalendar dateFromComponents:v11];
         v13 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v12 duration:7200.0];
-        if ([v13 containsDate:v3])
+        if ([v13 containsDate:date])
         {
           v31 = v11;
-          v32 = [v3 dateByAddingTimeInterval:v5];
+          v32 = [date dateByAddingTimeInterval:v5];
 
           v33 = PLPhotoSharingGetLog();
           if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -4688,8 +4688,8 @@ LABEL_21:
             _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_DEFAULT, "Memory Notification scheduled within best content time with offset: %@ (local time)", buf, 0xCu);
           }
 
-          v3 = v32;
-          v29 = v3;
+          date = v32;
+          v29 = date;
           goto LABEL_28;
         }
       }
@@ -4705,7 +4705,7 @@ LABEL_21:
   }
 
   v44 = 0;
-  obj = [a1 _bestDateForDeliveringNotificationFromCoreDuetWithError:&v44];
+  obj = [self _bestDateForDeliveringNotificationFromCoreDuetWithError:&v44];
   v14 = v44;
   if (v14)
   {
@@ -4717,7 +4717,7 @@ LABEL_21:
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "Error while calling +[PLNotificationManager(Private) _bestDateForDeliveringNotificationFromCoreDuetWithError:]: %@", buf, 0xCu);
     }
 
-    v16 = v3;
+    v16 = date;
     obj = v16;
   }
 
@@ -4733,7 +4733,7 @@ LABEL_21:
   v36 = v14;
   v38 = v4;
 
-  v19 = [MEMORY[0x1E695DF00] distantFuture];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -4754,11 +4754,11 @@ LABEL_21:
         }
 
         v25 = *(*(&v40 + 1) + 8 * j);
-        v26 = [v2 nextDateAfterDate:obj matchingHour:objc_msgSend(v25 minute:"integerValue") second:0 options:{0, 1024}];
-        v27 = [v2 nextDateAfterDate:v3 matchingHour:objc_msgSend(v25 minute:"integerValue") second:0 options:{0, 1024}];
-        v28 = [v19 earlierDate:v26];
+        v26 = [currentCalendar nextDateAfterDate:obj matchingHour:objc_msgSend(v25 minute:"integerValue") second:0 options:{0, 1024}];
+        v27 = [currentCalendar nextDateAfterDate:date matchingHour:objc_msgSend(v25 minute:"integerValue") second:0 options:{0, 1024}];
+        v28 = [distantFuture earlierDate:v26];
 
-        v19 = [v28 earlierDate:v27];
+        distantFuture = [v28 earlierDate:v27];
       }
 
       v22 = [v20 countByEnumeratingWithState:&v40 objects:v49 count:16];
@@ -4767,7 +4767,7 @@ LABEL_21:
     while (v22);
   }
 
-  v29 = [v19 dateByAddingTimeInterval:v5];
+  v29 = [distantFuture dateByAddingTimeInterval:v5];
 
   v12 = PLPhotoSharingGetLog();
   v4 = v38;
@@ -4788,8 +4788,8 @@ LABEL_28:
 + (id)_notificationDeliveryDate
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PhotosMemoriesNotificationDelayOverride"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PhotosMemoriesNotificationDelayOverride"];
 
   if (v3)
   {
@@ -4797,8 +4797,8 @@ LABEL_28:
     v5 = v4;
     if (v4 >= 0.0)
     {
-      v11 = [MEMORY[0x1E695DF00] date];
-      v6 = [v11 dateByAddingTimeInterval:v5];
+      date = [MEMORY[0x1E695DF00] date];
+      v6 = [date dateByAddingTimeInterval:v5];
     }
 
     else
@@ -4843,12 +4843,12 @@ LABEL_10:
   return v6;
 }
 
-+ (void)processAssetsForSensitivityIfNecessary:(id)a3 inPhotoLibrary:(id)a4 completionHandler:(id)a5
++ (void)processAssetsForSensitivityIfNecessary:(id)necessary inPhotoLibrary:(id)library completionHandler:(id)handler
 {
   v43 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v7 = a4;
-  v23 = a5;
+  necessaryCopy = necessary;
+  libraryCopy = library;
+  handlerCopy = handler;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2050000000;
@@ -4880,7 +4880,7 @@ LABEL_10:
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    obj = v20;
+    obj = necessaryCopy;
     v11 = [obj countByEnumeratingWithState:&v28 objects:v38 count:16];
     if (v11)
     {
@@ -4902,17 +4902,17 @@ LABEL_7:
         v37 = *(*(&v28 + 1) + 8 * v13);
         v14 = v37;
         v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v37 count:1];
-        v16 = [v7 libraryBundle];
-        v17 = [v16 libraryURL];
+        libraryBundle = [libraryCopy libraryBundle];
+        libraryURL = [libraryBundle libraryURL];
         v24[0] = MEMORY[0x1E69E9820];
         v24[1] = 3221225472;
         v24[2] = __97__PLNotificationManager_processAssetsForSensitivityIfNecessary_inPhotoLibrary_completionHandler___block_invoke_2;
         v24[3] = &unk_1E7572140;
         p_buf = &buf;
         v24[4] = v14;
-        v25 = v7;
-        v26 = v23;
-        [PLMediaAnalysisServiceRequestAdapter requestProcessingTypes:1 forAssetsWithLocalIdentifiers:v15 fromPhotoLibraryWithURL:v17 progressHandler:&__block_literal_global_77823 completionHandler:v24];
+        v25 = libraryCopy;
+        v26 = handlerCopy;
+        [PLMediaAnalysisServiceRequestAdapter requestProcessingTypes:1 forAssetsWithLocalIdentifiers:v15 fromPhotoLibraryWithURL:libraryURL progressHandler:&__block_literal_global_77823 completionHandler:v24];
 
         if (v11 == ++v13)
         {
@@ -4943,8 +4943,8 @@ LABEL_7:
       }
     }
 
-    v19 = [v20 firstObject];
-    (*(v23 + 2))(v23, v19);
+    firstObject = [necessaryCopy firstObject];
+    (*(handlerCopy + 2))(handlerCopy, firstObject);
   }
 }
 
@@ -5085,12 +5085,12 @@ void __48__PLNotificationManager_sharedAlbumsUnreadCount__block_invoke(uint64_t 
   }
 }
 
-+ (id)filteredAlbumListForContentMode:(int)a3 library:(id)a4
++ (id)filteredAlbumListForContentMode:(int)mode library:(id)library
 {
-  v5 = [a4 albumListForContentMode:?];
+  v5 = [library albumListForContentMode:?];
   if (v5)
   {
-    if (a3 == 13)
+    if (mode == 13)
     {
       v6 = 17174528;
     }
@@ -5100,7 +5100,7 @@ void __48__PLNotificationManager_sharedAlbumsUnreadCount__block_invoke(uint64_t 
       v6 = 397312;
     }
 
-    if (a3 == 1)
+    if (mode == 1)
     {
       v7 = 462848;
     }

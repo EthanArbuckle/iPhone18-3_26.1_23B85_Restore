@@ -22,14 +22,14 @@
 - (CGSize)preferredContentSize;
 - (EKEvent)event;
 - (EKEventViewDelegate)delegate;
-- (_TtC10EventKitUI28EKEventViewControllerOOPImpl)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC10EventKitUI28EKEventViewControllerOOPImpl)initWithNibName:(id)name bundle:(id)bundle;
 - (void)doneButtonTapped;
-- (void)eventEditViewCompletedWith:(int64_t)a3 eventID:(id)a4 waitUntil:(id)a5;
-- (void)eventEditViewPresented:(BOOL)a3;
-- (void)setDelegate:(id)a3;
-- (void)setEvent:(id)a3;
-- (void)setHasInProcessNavBar:(BOOL)a3;
-- (void)setShowsDoneButton:(BOOL)a3;
+- (void)eventEditViewCompletedWith:(int64_t)with eventID:(id)d waitUntil:(id)until;
+- (void)eventEditViewPresented:(BOOL)presented;
+- (void)setDelegate:(id)delegate;
+- (void)setEvent:(id)event;
+- (void)setHasInProcessNavBar:(BOOL)bar;
+- (void)setShowsDoneButton:(BOOL)button;
 - (void)viewDidLoad;
 @end
 
@@ -42,16 +42,16 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setHasInProcessNavBar:(BOOL)a3
+- (void)setHasInProcessNavBar:(BOOL)bar
 {
   v5 = OBJC_IVAR____TtC10EventKitUI28EKEventViewControllerOOPImpl_hasInProcessNavBar;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = bar;
 }
 
-- (_TtC10EventKitUI28EKEventViewControllerOOPImpl)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10EventKitUI28EKEventViewControllerOOPImpl)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1D35DF384();
     v7 = v6;
@@ -63,13 +63,13 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1D35CB1B8(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1D35CB1B8(v5, v7, bundle);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D35CB450();
 }
 
@@ -106,7 +106,7 @@
     v7 = *(v3 + 1);
     v12 = *(v3 + 2);
     v11 = v7;
-    v8 = self;
+    selfCopy = self;
     sub_1D35D2934(v15, v9);
     sub_1D35B4DD8();
 
@@ -114,7 +114,7 @@
   }
 }
 
-- (void)eventEditViewCompletedWith:(int64_t)a3 eventID:(id)a4 waitUntil:(id)a5
+- (void)eventEditViewCompletedWith:(int64_t)with eventID:(id)d waitUntil:(id)until
 {
   v8 = sub_1D35DF384();
   v10 = v9;
@@ -138,10 +138,10 @@
     v15 = *(v11 + 1);
     v21 = *(v11 + 2);
     v20 = v15;
-    v16 = a5;
-    v17 = self;
+    untilCopy = until;
+    selfCopy = self;
     sub_1D35D2934(v24, v18);
-    sub_1D35B4F58(a3, v8, v10, a5);
+    sub_1D35B4F58(with, v8, v10, until);
 
     sub_1D35D14D8(v24);
   }
@@ -151,9 +151,9 @@
   }
 }
 
-- (void)eventEditViewPresented:(BOOL)a3
+- (void)eventEditViewPresented:(BOOL)presented
 {
-  v3 = a3;
+  presentedCopy = presented;
   v5 = self + OBJC_IVAR____TtC10EventKitUI28EKEventViewControllerOOPImpl_hostView;
   swift_beginAccess();
   v6 = *(v5 + 1);
@@ -174,9 +174,9 @@
     v9 = *(v5 + 1);
     v14 = *(v5 + 2);
     v13 = v9;
-    v10 = self;
+    selfCopy = self;
     sub_1D35D2934(v17, v11);
-    sub_1D35B507C(v3);
+    sub_1D35B507C(presentedCopy);
 
     sub_1D35D14D8(v17);
   }
@@ -189,11 +189,11 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setEvent:(id)a3
+- (void)setEvent:(id)event
 {
-  v6 = a3;
-  v5 = self;
-  sub_1D35D17B4(a3);
+  eventCopy = event;
+  selfCopy = self;
+  sub_1D35D17B4(event);
 }
 
 - (BOOL)allowsEditing
@@ -211,11 +211,11 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5 = OBJC_IVAR____TtC10EventKitUI28EKEventViewControllerOOPImpl_delegate;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = delegate;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
@@ -241,11 +241,11 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setShowsDoneButton:(BOOL)a3
+- (void)setShowsDoneButton:(BOOL)button
 {
   v5 = OBJC_IVAR____TtC10EventKitUI28EKEventViewControllerOOPImpl_showsDoneButton;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = button;
 }
 
 - (BOOL)calendarPreviewIsInlineDayView

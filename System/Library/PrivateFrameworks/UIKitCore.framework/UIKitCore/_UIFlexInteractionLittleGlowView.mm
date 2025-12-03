@@ -1,13 +1,13 @@
 @interface _UIFlexInteractionLittleGlowView
 - (CGRect)bounds;
-- (_UIFlexInteractionLittleGlowView)initWithCoder:(id)a3;
-- (_UIFlexInteractionLittleGlowView)initWithFrame:(CGRect)a3;
-- (void)setBounds:(CGRect)a3;
+- (_UIFlexInteractionLittleGlowView)initWithCoder:(id)coder;
+- (_UIFlexInteractionLittleGlowView)initWithFrame:(CGRect)frame;
+- (void)setBounds:(CGRect)bounds;
 @end
 
 @implementation _UIFlexInteractionLittleGlowView
 
-- (_UIFlexInteractionLittleGlowView)initWithFrame:(CGRect)a3
+- (_UIFlexInteractionLittleGlowView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -26,22 +26,22 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v9.receiver = self;
   v9.super_class = _s14LittleGlowViewCMa();
   v7 = v9.receiver;
   [(UIView *)&v9 setBounds:x, y, width, height];
-  v8 = [v7 layer];
+  layer = [v7 layer];
   [v7 bounds];
-  [v8 setShadowRadius_];
+  [layer setShadowRadius_];
 }
 
-- (_UIFlexInteractionLittleGlowView)initWithCoder:(id)a3
+- (_UIFlexInteractionLittleGlowView)initWithCoder:(id)coder
 {
   result = sub_18A4A8398();
   __break(1u);

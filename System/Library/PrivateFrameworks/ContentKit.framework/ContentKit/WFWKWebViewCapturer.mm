@@ -1,19 +1,19 @@
 @interface WFWKWebViewCapturer
 + (id)deniedExternalResourcesLoadError;
-+ (void)loadWebResource:(id)a3 withSize:(CGSize)a4 configuration:(id)a5 coercionOptions:(id)a6 completionHandler:(id)a7;
-- (WFWKWebViewCapturer)initWithSize:(CGSize)a3 configuration:(id)a4 coercionOptions:(id)a5;
-- (id)errorWithErrorCode:(int64_t)a3;
-- (void)_webView:(id)a3 contentRuleListWithIdentifier:(id)a4 performedAction:(id)a5 forURL:(id)a6;
-- (void)generateBlockingContentRuleListWithCompletionHandler:(id)a3;
-- (void)loadWebResource:(id)a3 completionHandler:(id)a4;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
++ (void)loadWebResource:(id)resource withSize:(CGSize)size configuration:(id)configuration coercionOptions:(id)options completionHandler:(id)handler;
+- (WFWKWebViewCapturer)initWithSize:(CGSize)size configuration:(id)configuration coercionOptions:(id)options;
+- (id)errorWithErrorCode:(int64_t)code;
+- (void)_webView:(id)view contentRuleListWithIdentifier:(id)identifier performedAction:(id)action forURL:(id)l;
+- (void)generateBlockingContentRuleListWithCompletionHandler:(id)handler;
+- (void)loadWebResource:(id)resource completionHandler:(id)handler;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
 @end
 
 @implementation WFWKWebViewCapturer
 
-- (id)errorWithErrorCode:(int64_t)a3
+- (id)errorWithErrorCode:(int64_t)code
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCA9B8];
@@ -21,35 +21,35 @@
   v5 = WFLocalizedString(@"The web content could not be loaded because an internal error occurred.");
   v10[0] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-  v7 = [v4 errorWithDomain:@"WFWKWebViewCapturerErrorDomain" code:a3 userInfo:v6];
+  v7 = [v4 errorWithDomain:@"WFWKWebViewCapturerErrorDomain" code:code userInfo:v6];
 
   return v7;
 }
 
-- (void)_webView:(id)a3 contentRuleListWithIdentifier:(id)a4 performedAction:(id)a5 forURL:(id)a6
+- (void)_webView:(id)view contentRuleListWithIdentifier:(id)identifier performedAction:(id)action forURL:(id)l
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a6;
+  actionCopy = action;
+  lCopy = l;
   if (![(WFWKWebViewCapturer *)self didPresentSmartPrompt])
   {
     if ([(WFWKWebViewCapturer *)self userDidAllowLoadingExternalResources])
     {
-      v10 = getWFSecurityLogObject();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+      coercionOptions = getWFSecurityLogObject();
+      if (os_log_type_enabled(coercionOptions, OS_LOG_TYPE_DEBUG))
       {
         *buf = 136315138;
         v33 = "[WFWKWebViewCapturer _webView:contentRuleListWithIdentifier:performedAction:forURL:]";
-        _os_log_impl(&dword_21E1BD000, v10, OS_LOG_TYPE_DEBUG, "%s Ignoring WebKit content blocker delegate call because the user has already provided authorization to load external resources.", buf, 0xCu);
+        _os_log_impl(&dword_21E1BD000, coercionOptions, OS_LOG_TYPE_DEBUG, "%s Ignoring WebKit content blocker delegate call because the user has already provided authorization to load external resources.", buf, 0xCu);
       }
 
       goto LABEL_21;
     }
 
-    if ([v8 blockedLoad])
+    if ([actionCopy blockedLoad])
     {
-      v10 = [(WFWKWebViewCapturer *)self coercionOptions];
-      if ([v10 shouldContinueLoadingWebContentIfExternalResourcesAreDenied])
+      coercionOptions = [(WFWKWebViewCapturer *)self coercionOptions];
+      if ([coercionOptions shouldContinueLoadingWebContentIfExternalResourcesAreDenied])
       {
         v11 = getWFSecurityLogObject();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -69,21 +69,21 @@
       aBlock[3] = &unk_278349550;
       aBlock[4] = self;
       v26 = _Block_copy(aBlock);
-      v12 = [v9 host];
+      host = [lCopy host];
       v13 = getWFSecurityLogObject();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
         *buf = 136315394;
         v33 = "[WFWKWebViewCapturer _webView:contentRuleListWithIdentifier:performedAction:forURL:]";
         v34 = 2112;
-        v35 = v12;
+        v35 = host;
         _os_log_impl(&dword_21E1BD000, v13, OS_LOG_TYPE_DEBUG, "%s WFWKWebViewCapturer prevented loading of external resource at %@, using coercion options to request permission to load.", buf, 0x16u);
       }
 
       [(WFWKWebViewCapturer *)self setDidPresentSmartPrompt:1];
       [(WFWKWebViewCapturer *)self setPageNavigation:0];
-      v14 = [(WFWKWebViewCapturer *)self webView];
-      v15 = [v14 URL];
+      webView = [(WFWKWebViewCapturer *)self webView];
+      v15 = [webView URL];
       v16 = v15;
       if (v15)
       {
@@ -92,39 +92,39 @@
 
       else
       {
-        v17 = v9;
+        v17 = lCopy;
       }
 
       v18 = v17;
 
-      v19 = [(WFWKWebViewCapturer *)self webView];
-      v20 = [v19 URL];
-      v21 = [v20 scheme];
-      if ([v21 isEqualToString:@"data"])
+      webView2 = [(WFWKWebViewCapturer *)self webView];
+      v20 = [webView2 URL];
+      scheme = [v20 scheme];
+      if ([scheme isEqualToString:@"data"])
       {
-        v22 = [v9 isFileURL];
+        isFileURL = [lCopy isFileURL];
 
-        if (v22)
+        if (isFileURL)
         {
 LABEL_20:
-          v23 = [v10 permissionRequestor];
+          permissionRequestor = [coercionOptions permissionRequestor];
           v27[0] = MEMORY[0x277D85DD0];
           v27[1] = 3221225472;
           v27[2] = __85__WFWKWebViewCapturer__webView_contentRuleListWithIdentifier_performedAction_forURL___block_invoke_125;
           v27[3] = &unk_2783478E0;
-          v28 = v12;
-          v29 = self;
+          v28 = host;
+          selfCopy = self;
           v30 = v26;
           v24 = v26;
-          v25 = v12;
-          [v23 requestUserConsentToLoadWebContentAtURL:v18 completionHandler:v27];
+          v25 = host;
+          [permissionRequestor requestUserConsentToLoadWebContentAtURL:v18 completionHandler:v27];
 
 LABEL_21:
           goto LABEL_22;
         }
 
-        v19 = v18;
-        v18 = v9;
+        webView2 = v18;
+        v18 = lCopy;
       }
 
       else
@@ -208,21 +208,21 @@ void __85__WFWKWebViewCapturer__webView_contentRuleListWithIdentifier_performedA
   [v2 loadWebResource:v4 completionHandler:v3];
 }
 
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error
 {
-  v12 = a5;
-  v7 = a4;
-  v8 = [(WFWKWebViewCapturer *)self pageNavigation];
-  v9 = [v8 isEqual:v7];
+  errorCopy = error;
+  navigationCopy = navigation;
+  pageNavigation = [(WFWKWebViewCapturer *)self pageNavigation];
+  v9 = [pageNavigation isEqual:navigationCopy];
 
   if (v9)
   {
-    v10 = [(WFWKWebViewCapturer *)self completionHandler];
+    completionHandler = [(WFWKWebViewCapturer *)self completionHandler];
 
-    if (v10)
+    if (completionHandler)
     {
-      v11 = [(WFWKWebViewCapturer *)self completionHandler];
-      (v11)[2](v11, 0, v12);
+      completionHandler2 = [(WFWKWebViewCapturer *)self completionHandler];
+      (completionHandler2)[2](completionHandler2, 0, errorCopy);
     }
 
     [(WFWKWebViewCapturer *)self setCompletionHandler:0];
@@ -230,21 +230,21 @@ void __85__WFWKWebViewCapturer__webView_contentRuleListWithIdentifier_performedA
   }
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
-  v12 = a5;
-  v7 = a4;
-  v8 = [(WFWKWebViewCapturer *)self pageNavigation];
-  v9 = [v8 isEqual:v7];
+  errorCopy = error;
+  navigationCopy = navigation;
+  pageNavigation = [(WFWKWebViewCapturer *)self pageNavigation];
+  v9 = [pageNavigation isEqual:navigationCopy];
 
   if (v9)
   {
-    v10 = [(WFWKWebViewCapturer *)self completionHandler];
+    completionHandler = [(WFWKWebViewCapturer *)self completionHandler];
 
-    if (v10)
+    if (completionHandler)
     {
-      v11 = [(WFWKWebViewCapturer *)self completionHandler];
-      (v11)[2](v11, 0, v12);
+      completionHandler2 = [(WFWKWebViewCapturer *)self completionHandler];
+      (completionHandler2)[2](completionHandler2, 0, errorCopy);
     }
 
     [(WFWKWebViewCapturer *)self setCompletionHandler:0];
@@ -252,12 +252,12 @@ void __85__WFWKWebViewCapturer__webView_contentRuleListWithIdentifier_performedA
   }
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFWKWebViewCapturer *)self pageNavigation];
-  v9 = [v8 isEqual:v7];
+  viewCopy = view;
+  navigationCopy = navigation;
+  pageNavigation = [(WFWKWebViewCapturer *)self pageNavigation];
+  v9 = [pageNavigation isEqual:navigationCopy];
 
   if (v9)
   {
@@ -267,7 +267,7 @@ void __85__WFWKWebViewCapturer__webView_contentRuleListWithIdentifier_performedA
     v11[2] = __51__WFWKWebViewCapturer_webView_didFinishNavigation___block_invoke;
     v11[3] = &unk_278347FF0;
     v11[4] = self;
-    v12 = v6;
+    v12 = viewCopy;
     dispatch_after(v10, MEMORY[0x277D85CD0], v11);
   }
 }
@@ -301,10 +301,10 @@ void __51__WFWKWebViewCapturer_webView_didFinishNavigation___block_invoke(uint64
   }
 }
 
-- (void)generateBlockingContentRuleListWithCompletionHandler:(id)a3
+- (void)generateBlockingContentRuleListWithCompletionHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v17 = 0;
   v5 = [MEMORY[0x277CCAAA0] dataWithJSONObject:&unk_282F7BE48 options:0 error:&v17];
   v6 = v17;
@@ -320,7 +320,7 @@ void __51__WFWKWebViewCapturer_webView_didFinishNavigation___block_invoke(uint64
       _os_log_impl(&dword_21E1BD000, v7, OS_LOG_TYPE_FAULT, "%s Failed to serialize JSON content rule list: %@", buf, 0x16u);
     }
 
-    v4[2](v4, 0, v6);
+    handlerCopy[2](handlerCopy, 0, v6);
   }
 
   else
@@ -355,14 +355,14 @@ void __51__WFWKWebViewCapturer_webView_didFinishNavigation___block_invoke(uint64
       v15[1] = 3221225472;
       v15[2] = __76__WFWKWebViewCapturer_generateBlockingContentRuleListWithCompletionHandler___block_invoke;
       v15[3] = &unk_2783478B8;
-      v16 = v4;
+      v16 = handlerCopy;
       [v14 compileContentRuleListForIdentifier:@"com.apple.ContentKit.WFWKWebViewCapturerContentRuleList" encodedContentRuleList:v8 completionHandler:v15];
     }
 
     else
     {
       v14 = [(WFWKWebViewCapturer *)self errorWithErrorCode:1000];
-      v4[2](v4, 0, v14);
+      handlerCopy[2](handlerCopy, 0, v14);
     }
   }
 }
@@ -394,35 +394,35 @@ void __76__WFWKWebViewCapturer_generateBlockingContentRuleListWithCompletionHand
   v6();
 }
 
-- (void)loadWebResource:(id)a3 completionHandler:(id)a4
+- (void)loadWebResource:(id)resource completionHandler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  resourceCopy = resource;
+  handlerCopy = handler;
   v8 = getWFGeneralLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v33 = "[WFWKWebViewCapturer loadWebResource:completionHandler:]";
     v34 = 2112;
-    v35 = v6;
+    v35 = resourceCopy;
     _os_log_impl(&dword_21E1BD000, v8, OS_LOG_TYPE_DEFAULT, "%s WFWKWebViewCapturer is loading resource: %@", buf, 0x16u);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v6 file];
+    file = [resourceCopy file];
     v10 = +[WFApplicationContext sharedContext];
-    v11 = [v10 provider];
+    provider = [v10 provider];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v9 fileURL];
+      fileURL = [file fileURL];
       v13 = MEMORY[0x277CBEBC0];
       v14 = NSHomeDirectory();
       v15 = [v13 fileURLWithPath:v14 isDirectory:1];
-      v16 = [v12 wf_isContainedByDirectoryAtURL:v15];
+      v16 = [fileURL wf_isContainedByDirectoryAtURL:v15];
 
       if (v16)
       {
@@ -431,21 +431,21 @@ LABEL_8:
         goto LABEL_9;
       }
 
-      v10 = [v9 copy];
+      v10 = [file copy];
       [WFWebResource webResourceWithFile:v10];
-      v6 = v11 = v6;
+      resourceCopy = provider = resourceCopy;
     }
 
     goto LABEL_8;
   }
 
 LABEL_9:
-  [(WFWKWebViewCapturer *)self setCompletionHandler:v7];
-  [(WFWKWebViewCapturer *)self setWebResource:v6];
-  v17 = [(WFWKWebViewCapturer *)self userDidAllowLoadingExternalResources];
+  [(WFWKWebViewCapturer *)self setCompletionHandler:handlerCopy];
+  [(WFWKWebViewCapturer *)self setWebResource:resourceCopy];
+  userDidAllowLoadingExternalResources = [(WFWKWebViewCapturer *)self userDidAllowLoadingExternalResources];
   v18 = getWFSecurityLogObject();
   v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG);
-  if (v17)
+  if (userDidAllowLoadingExternalResources)
   {
     if (v19)
     {
@@ -454,13 +454,13 @@ LABEL_9:
       _os_log_impl(&dword_21E1BD000, v18, OS_LOG_TYPE_DEBUG, "%s User allowed loading external resources, removing content block list.", buf, 0xCu);
     }
 
-    v20 = [(WFWKWebViewCapturer *)self webView];
-    v21 = [v20 configuration];
-    v22 = [v21 userContentController];
-    [v22 removeAllContentRuleLists];
+    webView = [(WFWKWebViewCapturer *)self webView];
+    configuration = [webView configuration];
+    userContentController = [configuration userContentController];
+    [userContentController removeAllContentRuleLists];
 
-    v23 = [(WFWKWebViewCapturer *)self webView];
-    v24 = [v6 loadInWKWebView:v23];
+    webView2 = [(WFWKWebViewCapturer *)self webView];
+    v24 = [resourceCopy loadInWKWebView:webView2];
     [(WFWKWebViewCapturer *)self setPageNavigation:v24];
   }
 
@@ -477,8 +477,8 @@ LABEL_9:
     v27 = 3221225472;
     v28 = __57__WFWKWebViewCapturer_loadWebResource_completionHandler___block_invoke;
     v29 = &unk_278347890;
-    v30 = self;
-    v31 = v6;
+    selfCopy = self;
+    v31 = resourceCopy;
     [(WFWKWebViewCapturer *)self generateBlockingContentRuleListWithCompletionHandler:&v26];
   }
 
@@ -522,16 +522,16 @@ void __57__WFWKWebViewCapturer_loadWebResource_completionHandler___block_invoke(
   }
 }
 
-- (WFWKWebViewCapturer)initWithSize:(CGSize)a3 configuration:(id)a4 coercionOptions:(id)a5
+- (WFWKWebViewCapturer)initWithSize:(CGSize)size configuration:(id)configuration coercionOptions:(id)options
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  height = size.height;
+  width = size.width;
+  configurationCopy = configuration;
+  optionsCopy = options;
+  if (!optionsCopy)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"WFWKWebViewCapturer.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"coercionOptions"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWKWebViewCapturer.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"coercionOptions"}];
   }
 
   v22.receiver = self;
@@ -539,7 +539,7 @@ void __57__WFWKWebViewCapturer_loadWebResource_completionHandler___block_invoke(
   v12 = [(WFWKWebViewCapturer *)&v22 init];
   if (v12)
   {
-    if (!v10)
+    if (!configurationCopy)
     {
       v28 = 0;
       v29 = &v28;
@@ -559,7 +559,7 @@ void __57__WFWKWebViewCapturer_loadWebResource_completionHandler___block_invoke(
 
       v14 = v13;
       _Block_object_dispose(&v28, 8);
-      v10 = objc_opt_new();
+      configurationCopy = objc_opt_new();
     }
 
     v28 = 0;
@@ -580,12 +580,12 @@ void __57__WFWKWebViewCapturer_loadWebResource_completionHandler___block_invoke(
 
     v16 = v15;
     _Block_object_dispose(&v28, 8);
-    v17 = [[v15 alloc] initWithFrame:v10 configuration:{0.0, 0.0, width, height}];
+    v17 = [[v15 alloc] initWithFrame:configurationCopy configuration:{0.0, 0.0, width, height}];
     webView = v12->_webView;
     v12->_webView = v17;
 
     [(WKWebView *)v12->_webView setNavigationDelegate:v12];
-    objc_storeStrong(&v12->_coercionOptions, a5);
+    objc_storeStrong(&v12->_coercionOptions, options);
     *&v12->_didAttemptToLoadRemoteResources = 0;
     v12->_didPresentSmartPrompt = 0;
     v19 = v12;
@@ -607,27 +607,27 @@ void __57__WFWKWebViewCapturer_loadWebResource_completionHandler___block_invoke(
   return v5;
 }
 
-+ (void)loadWebResource:(id)a3 withSize:(CGSize)a4 configuration:(id)a5 coercionOptions:(id)a6 completionHandler:(id)a7
++ (void)loadWebResource:(id)resource withSize:(CGSize)size configuration:(id)configuration coercionOptions:(id)options completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  height = size.height;
+  width = size.width;
+  resourceCopy = resource;
+  configurationCopy = configuration;
+  optionsCopy = options;
+  handlerCopy = handler;
   v23 = MEMORY[0x277D85DD0];
   v24 = 3221225472;
   v25 = __96__WFWKWebViewCapturer_loadWebResource_withSize_configuration_coercionOptions_completionHandler___block_invoke;
   v26 = &unk_278347868;
   v31 = width;
   v32 = height;
-  v16 = v13;
+  v16 = configurationCopy;
   v27 = v16;
-  v17 = v14;
+  v17 = optionsCopy;
   v28 = v17;
-  v18 = v12;
+  v18 = resourceCopy;
   v29 = v18;
-  v19 = v15;
+  v19 = handlerCopy;
   v30 = v19;
   v20 = _Block_copy(&v23);
   v21 = MEMORY[0x277CCACC8];

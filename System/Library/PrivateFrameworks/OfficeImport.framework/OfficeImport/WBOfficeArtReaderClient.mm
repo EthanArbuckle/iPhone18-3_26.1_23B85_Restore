@@ -1,48 +1,48 @@
 @interface WBOfficeArtReaderClient
-+ (BOOL)allowOverlap:(EshContentProperties *)a3;
-+ (BOOL)behindText:(EshContentProperties *)a3;
-+ (double)wrapDistanceBottom:(EshContentProperties *)a3;
-+ (double)wrapDistanceLeft:(EshContentProperties *)a3;
-+ (double)wrapDistanceRight:(EshContentProperties *)a3;
-+ (double)wrapDistanceTop:(EshContentProperties *)a3;
-+ (id)readDrawableFromPackagePart:(id)a3 foundInObject:(id)a4 state:(id)a5;
-+ (int)horizontalPosition:(EshContentProperties *)a3;
-+ (int)relativeHorizontalPosition:(EshContentProperties *)a3;
-+ (int)relativeVerticalPosition:(EshContentProperties *)a3;
-+ (int)verticalPosition:(EshContentProperties *)a3;
-+ (void)readClientDataFromGroup:(id)a3 toGroup:(id)a4 state:(id)a5;
-+ (void)readClientDataFromObject:(id)a3 toDrawable:(id)a4 state:(id)a5;
-+ (void)readClientDataFromShape:(id)a3 toGraphic:(id)a4 includeText:(BOOL)a5 state:(id)a6;
-+ (void)readFrom:(EshContentProperties *)a3 to:(id)a4;
++ (BOOL)allowOverlap:(EshContentProperties *)overlap;
++ (BOOL)behindText:(EshContentProperties *)text;
++ (double)wrapDistanceBottom:(EshContentProperties *)bottom;
++ (double)wrapDistanceLeft:(EshContentProperties *)left;
++ (double)wrapDistanceRight:(EshContentProperties *)right;
++ (double)wrapDistanceTop:(EshContentProperties *)top;
++ (id)readDrawableFromPackagePart:(id)part foundInObject:(id)object state:(id)state;
++ (int)horizontalPosition:(EshContentProperties *)position;
++ (int)relativeHorizontalPosition:(EshContentProperties *)position;
++ (int)relativeVerticalPosition:(EshContentProperties *)position;
++ (int)verticalPosition:(EshContentProperties *)position;
++ (void)readClientDataFromGroup:(id)group toGroup:(id)toGroup state:(id)state;
++ (void)readClientDataFromObject:(id)object toDrawable:(id)drawable state:(id)state;
++ (void)readClientDataFromShape:(id)shape toGraphic:(id)graphic includeText:(BOOL)text state:(id)state;
++ (void)readFrom:(EshContentProperties *)from to:(id)to;
 @end
 
 @implementation WBOfficeArtReaderClient
 
-+ (void)readClientDataFromShape:(id)a3 toGraphic:(id)a4 includeText:(BOOL)a5 state:(id)a6
++ (void)readClientDataFromShape:(id)shape toGraphic:(id)graphic includeText:(BOOL)text state:(id)state
 {
-  v7 = a5;
-  v20 = a3;
-  v10 = a4;
-  v11 = a6;
+  textCopy = text;
+  shapeCopy = shape;
+  graphicCopy = graphic;
+  stateCopy = state;
   v12 = objc_alloc_init(WDAContent);
-  [v10 setClientData:v12];
-  [(WDAContent *)v12 setDrawable:v10];
+  [graphicCopy setClientData:v12];
+  [(WDAContent *)v12 setDrawable:graphicCopy];
   objc_opt_class();
-  v13 = v11;
+  v13 = stateCopy;
   -[WDAContent setTextType:](v12, "setTextType:", [v13 currentTextType]);
 
-  v14 = [v20 eshShape];
-  if ([OABReaderClient sourceDrawableIsTopLevel:v20])
+  eshShape = [shapeCopy eshShape];
+  if ([OABReaderClient sourceDrawableIsTopLevel:shapeCopy])
   {
-    v15 = [(WDAContent *)v12 createAnchor];
-    v16 = (*(*v14 + 168))(v14);
-    v17 = [(WDAContent *)v12 anchor];
-    [a1 readFrom:v16 to:v17];
+    createAnchor = [(WDAContent *)v12 createAnchor];
+    v16 = (*(*eshShape + 168))(eshShape);
+    anchor = [(WDAContent *)v12 anchor];
+    [self readFrom:v16 to:anchor];
   }
 
-  if (v7)
+  if (textCopy)
   {
-    if (v14)
+    if (eshShape)
     {
     }
 
@@ -52,60 +52,60 @@
     }
 
     objc_opt_class();
-    v19 = [v13 reader];
-    [WBTextBox readFrom:v18 parent:v12 reader:v19];
+    reader = [v13 reader];
+    [WBTextBox readFrom:v18 parent:v12 reader:reader];
   }
 }
 
-+ (void)readClientDataFromGroup:(id)a3 toGroup:(id)a4 state:(id)a5
++ (void)readClientDataFromGroup:(id)group toGroup:(id)toGroup state:(id)state
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
+  groupCopy = group;
+  toGroupCopy = toGroup;
+  stateCopy = state;
   v10 = objc_alloc_init(WDAContent);
-  [v8 setClientData:v10];
-  [(WDAContent *)v10 setDrawable:v8];
+  [toGroupCopy setClientData:v10];
+  [(WDAContent *)v10 setDrawable:toGroupCopy];
   objc_opt_class();
-  v11 = v9;
+  v11 = stateCopy;
   -[WDAContent setTextType:](v10, "setTextType:", [v11 currentTextType]);
 
-  if ([OABReaderClient sourceDrawableIsTopLevel:v16])
+  if ([OABReaderClient sourceDrawableIsTopLevel:groupCopy])
   {
-    v12 = [(WDAContent *)v10 createAnchor];
-    v13 = [v16 eshGroup];
-    v14 = (*(*v13 + 136))(v13);
-    v15 = [(WDAContent *)v10 anchor];
-    [a1 readFrom:v14 to:v15];
+    createAnchor = [(WDAContent *)v10 createAnchor];
+    eshGroup = [groupCopy eshGroup];
+    v14 = (*(*eshGroup + 136))(eshGroup);
+    anchor = [(WDAContent *)v10 anchor];
+    [self readFrom:v14 to:anchor];
   }
 }
 
-+ (void)readClientDataFromObject:(id)a3 toDrawable:(id)a4 state:(id)a5
++ (void)readClientDataFromObject:(id)object toDrawable:(id)drawable state:(id)state
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  drawableCopy = drawable;
+  stateCopy = state;
   v11 = objc_opt_class();
-  v12 = TSUDynamicCast(v11, v9);
+  v12 = TSUDynamicCast(v11, drawableCopy);
   objc_opt_class();
   if (v12)
   {
-    v13 = v8;
-    [a1 readClientDataFromGroup:v13 toGroup:v12 state:v10];
-    v14 = [v12 children];
+    v13 = objectCopy;
+    [self readClientDataFromGroup:v13 toGroup:v12 state:stateCopy];
+    children = [v12 children];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __69__WBOfficeArtReaderClient_readClientDataFromObject_toDrawable_state___block_invoke;
     v16[3] = &unk_2799CD930;
-    v19 = a1;
+    selfCopy = self;
     v15 = v13;
     v17 = v15;
-    v18 = v10;
-    [v14 enumerateObjectsUsingBlock:v16];
+    v18 = stateCopy;
+    [children enumerateObjectsUsingBlock:v16];
   }
 
   else
   {
-    [a1 readClientDataFromShape:v8 toGraphic:v9 includeText:1 state:v10];
+    [self readClientDataFromShape:objectCopy toGraphic:drawableCopy includeText:1 state:stateCopy];
   }
 }
 
@@ -117,23 +117,23 @@ void __69__WBOfficeArtReaderClient_readClientDataFromObject_toDrawable_state___b
   [v5 readClientDataFromObject:v6 toDrawable:v7 state:*(a1 + 40)];
 }
 
-+ (id)readDrawableFromPackagePart:(id)a3 foundInObject:(id)a4 state:(id)a5
++ (id)readDrawableFromPackagePart:(id)part foundInObject:(id)object state:(id)state
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  partCopy = part;
+  objectCopy = object;
+  stateCopy = state;
   objc_opt_class();
-  v11 = v10;
-  v12 = [v11 xmlDrawingState];
-  [v12 setPackagePart:v8];
-  v13 = OCXGetRootElement([v8 xmlDocument]);
-  v14 = [v8 contentType];
-  v15 = [v14 isEqualToString:@"application/vnd.ms-office.DrsE2oDoc+xml"];
+  v11 = stateCopy;
+  xmlDrawingState = [v11 xmlDrawingState];
+  [xmlDrawingState setPackagePart:partCopy];
+  v13 = OCXGetRootElement([partCopy xmlDocument]);
+  contentType = [partCopy contentType];
+  v15 = [contentType isEqualToString:@"application/vnd.ms-office.DrsE2oDoc+xml"];
 
   if (v15)
   {
-    v16 = [OAXGraphicalObject readFromParentXmlNode:v13 inNamespace:0 drawingState:v12];
-    [a1 readClientDataFromObject:v9 toDrawable:v16 state:v11];
+    v16 = [OAXGraphicalObject readFromParentXmlNode:v13 inNamespace:0 drawingState:xmlDrawingState];
+    [self readClientDataFromObject:objectCopy toDrawable:v16 state:v11];
   }
 
   else
@@ -141,41 +141,41 @@ void __69__WBOfficeArtReaderClient_readClientDataFromObject_toDrawable_state___b
     v16 = 0;
   }
 
-  [v12 setPackagePart:0];
+  [xmlDrawingState setPackagePart:0];
 
   return v16;
 }
 
-+ (void)readFrom:(EshContentProperties *)a3 to:(id)a4
++ (void)readFrom:(EshContentProperties *)from to:(id)to
 {
-  v6 = a4;
-  [v6 setHorizontalPosition:{objc_msgSend(a1, "horizontalPosition:", a3)}];
-  [v6 setRelativeHorizontalPosition:{objc_msgSend(a1, "relativeHorizontalPosition:", a3)}];
-  [v6 setVerticalPosition:{objc_msgSend(a1, "verticalPosition:", a3)}];
-  [v6 setRelativeVerticalPosition:{objc_msgSend(a1, "relativeVerticalPosition:", a3)}];
-  [a1 wrapDistanceLeft:a3];
-  [v6 setWrapDistanceLeft:?];
-  [a1 wrapDistanceTop:a3];
-  [v6 setWrapDistanceTop:?];
-  [a1 wrapDistanceRight:a3];
-  [v6 setWrapDistanceRight:?];
-  [a1 wrapDistanceBottom:a3];
-  [v6 setWrapDistanceBottom:?];
-  [v6 setAllowOverlap:{objc_msgSend(a1, "allowOverlap:", a3)}];
-  [v6 setZIndex:{objc_msgSend(v6, "zIndex") + 2}];
-  if ([a1 behindText:a3])
+  toCopy = to;
+  [toCopy setHorizontalPosition:{objc_msgSend(self, "horizontalPosition:", from)}];
+  [toCopy setRelativeHorizontalPosition:{objc_msgSend(self, "relativeHorizontalPosition:", from)}];
+  [toCopy setVerticalPosition:{objc_msgSend(self, "verticalPosition:", from)}];
+  [toCopy setRelativeVerticalPosition:{objc_msgSend(self, "relativeVerticalPosition:", from)}];
+  [self wrapDistanceLeft:from];
+  [toCopy setWrapDistanceLeft:?];
+  [self wrapDistanceTop:from];
+  [toCopy setWrapDistanceTop:?];
+  [self wrapDistanceRight:from];
+  [toCopy setWrapDistanceRight:?];
+  [self wrapDistanceBottom:from];
+  [toCopy setWrapDistanceBottom:?];
+  [toCopy setAllowOverlap:{objc_msgSend(self, "allowOverlap:", from)}];
+  [toCopy setZIndex:{objc_msgSend(toCopy, "zIndex") + 2}];
+  if ([self behindText:from])
   {
-    [v6 setZIndex:{objc_msgSend(v6, "zIndex") - 503316480}];
+    [toCopy setZIndex:{objc_msgSend(toCopy, "zIndex") - 503316480}];
   }
 }
 
-+ (BOOL)behindText:(EshContentProperties *)a3
++ (BOOL)behindText:(EshContentProperties *)text
 {
-  isBehindTextSet = EshContentProperties::isBehindTextSet(a3);
+  isBehindTextSet = EshContentProperties::isBehindTextSet(text);
   if (isBehindTextSet)
   {
 
-    return EshContentProperties::getBehindText(a3);
+    return EshContentProperties::getBehindText(text);
   }
 
   else
@@ -185,13 +185,13 @@ void __69__WBOfficeArtReaderClient_readClientDataFromObject_toDrawable_state___b
   }
 }
 
-+ (BOOL)allowOverlap:(EshContentProperties *)a3
++ (BOOL)allowOverlap:(EshContentProperties *)overlap
 {
-  isAllowOverlapSet = EshContentProperties::isAllowOverlapSet(a3);
+  isAllowOverlapSet = EshContentProperties::isAllowOverlapSet(overlap);
   if (isAllowOverlapSet)
   {
 
-    return EshContentProperties::getAllowOverlap(a3);
+    return EshContentProperties::getAllowOverlap(overlap);
   }
 
   else
@@ -201,12 +201,12 @@ void __69__WBOfficeArtReaderClient_readClientDataFromObject_toDrawable_state___b
   }
 }
 
-+ (int)horizontalPosition:(EshContentProperties *)a3
++ (int)horizontalPosition:(EshContentProperties *)position
 {
-  isPositionHorizontalSet = EshContentProperties::isPositionHorizontalSet(a3);
+  isPositionHorizontalSet = EshContentProperties::isPositionHorizontalSet(position);
   if (isPositionHorizontalSet)
   {
-    result = EshContentProperties::getPositionHorizontal(a3);
+    result = EshContentProperties::getPositionHorizontal(position);
   }
 
   else
@@ -222,12 +222,12 @@ void __69__WBOfficeArtReaderClient_readClientDataFromObject_toDrawable_state___b
   return result;
 }
 
-+ (int)relativeHorizontalPosition:(EshContentProperties *)a3
++ (int)relativeHorizontalPosition:(EshContentProperties *)position
 {
-  isPositionHorizontalRelativeSet = EshContentProperties::isPositionHorizontalRelativeSet(a3);
+  isPositionHorizontalRelativeSet = EshContentProperties::isPositionHorizontalRelativeSet(position);
   if (isPositionHorizontalRelativeSet)
   {
-    result = EshContentProperties::getPositionHorizontalRelative(a3);
+    result = EshContentProperties::getPositionHorizontalRelative(position);
   }
 
   else
@@ -243,12 +243,12 @@ void __69__WBOfficeArtReaderClient_readClientDataFromObject_toDrawable_state___b
   return result;
 }
 
-+ (int)verticalPosition:(EshContentProperties *)a3
++ (int)verticalPosition:(EshContentProperties *)position
 {
-  isPositionVerticalSet = EshContentProperties::isPositionVerticalSet(a3);
+  isPositionVerticalSet = EshContentProperties::isPositionVerticalSet(position);
   if (isPositionVerticalSet)
   {
-    result = EshContentProperties::getPositionVertical(a3);
+    result = EshContentProperties::getPositionVertical(position);
   }
 
   else
@@ -264,12 +264,12 @@ void __69__WBOfficeArtReaderClient_readClientDataFromObject_toDrawable_state___b
   return result;
 }
 
-+ (int)relativeVerticalPosition:(EshContentProperties *)a3
++ (int)relativeVerticalPosition:(EshContentProperties *)position
 {
-  isPositionVerticalRelativeSet = EshContentProperties::isPositionVerticalRelativeSet(a3);
+  isPositionVerticalRelativeSet = EshContentProperties::isPositionVerticalRelativeSet(position);
   if (isPositionVerticalRelativeSet)
   {
-    result = EshContentProperties::getPositionVerticalRelative(a3);
+    result = EshContentProperties::getPositionVerticalRelative(position);
   }
 
   else
@@ -285,12 +285,12 @@ void __69__WBOfficeArtReaderClient_readClientDataFromObject_toDrawable_state___b
   return result;
 }
 
-+ (double)wrapDistanceLeft:(EshContentProperties *)a3
++ (double)wrapDistanceLeft:(EshContentProperties *)left
 {
-  isWrapDistanceLeftSet = EshContentProperties::isWrapDistanceLeftSet(a3);
+  isWrapDistanceLeftSet = EshContentProperties::isWrapDistanceLeftSet(left);
   if (isWrapDistanceLeftSet)
   {
-    WrapDistanceLeft = EshContentProperties::getWrapDistanceLeft(a3);
+    WrapDistanceLeft = EshContentProperties::getWrapDistanceLeft(left);
   }
 
   else
@@ -301,12 +301,12 @@ void __69__WBOfficeArtReaderClient_readClientDataFromObject_toDrawable_state___b
   return WrapDistanceLeft / 12700.0;
 }
 
-+ (double)wrapDistanceTop:(EshContentProperties *)a3
++ (double)wrapDistanceTop:(EshContentProperties *)top
 {
-  isWrapDistanceTopSet = EshContentProperties::isWrapDistanceTopSet(a3);
+  isWrapDistanceTopSet = EshContentProperties::isWrapDistanceTopSet(top);
   if (isWrapDistanceTopSet)
   {
-    WrapDistanceTop = EshContentProperties::getWrapDistanceTop(a3);
+    WrapDistanceTop = EshContentProperties::getWrapDistanceTop(top);
   }
 
   else
@@ -317,12 +317,12 @@ void __69__WBOfficeArtReaderClient_readClientDataFromObject_toDrawable_state___b
   return WrapDistanceTop / 12700.0;
 }
 
-+ (double)wrapDistanceRight:(EshContentProperties *)a3
++ (double)wrapDistanceRight:(EshContentProperties *)right
 {
-  isWrapDistanceRightSet = EshContentProperties::isWrapDistanceRightSet(a3);
+  isWrapDistanceRightSet = EshContentProperties::isWrapDistanceRightSet(right);
   if (isWrapDistanceRightSet)
   {
-    WrapDistanceRight = EshContentProperties::getWrapDistanceRight(a3);
+    WrapDistanceRight = EshContentProperties::getWrapDistanceRight(right);
   }
 
   else
@@ -333,12 +333,12 @@ void __69__WBOfficeArtReaderClient_readClientDataFromObject_toDrawable_state___b
   return WrapDistanceRight / 12700.0;
 }
 
-+ (double)wrapDistanceBottom:(EshContentProperties *)a3
++ (double)wrapDistanceBottom:(EshContentProperties *)bottom
 {
-  isWrapDistanceBottomSet = EshContentProperties::isWrapDistanceBottomSet(a3);
+  isWrapDistanceBottomSet = EshContentProperties::isWrapDistanceBottomSet(bottom);
   if (isWrapDistanceBottomSet)
   {
-    WrapDistanceBottom = EshContentProperties::getWrapDistanceBottom(a3);
+    WrapDistanceBottom = EshContentProperties::getWrapDistanceBottom(bottom);
   }
 
   else

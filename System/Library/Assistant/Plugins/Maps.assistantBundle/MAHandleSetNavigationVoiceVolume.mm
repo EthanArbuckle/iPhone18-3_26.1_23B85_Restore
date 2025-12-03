@@ -1,30 +1,30 @@
 @interface MAHandleSetNavigationVoiceVolume
 - (id)_navVolumeSettingValue;
 - (int)_actionForVolume;
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper;
 @end
 
 @implementation MAHandleSetNavigationVoiceVolume
 
 - (id)_navVolumeSettingValue
 {
-  v2 = [(MAHandleSetNavigationVoiceVolume *)self volume];
-  if ([v2 isEqualToString:SALocalSearchNavigationVoiceVolumeOffValue])
+  volume = [(MAHandleSetNavigationVoiceVolume *)self volume];
+  if ([volume isEqualToString:SALocalSearchNavigationVoiceVolumeOffValue])
   {
     v3 = @"Off Volume";
   }
 
-  else if ([v2 isEqualToString:SALocalSearchNavigationVoiceVolumeLowValue])
+  else if ([volume isEqualToString:SALocalSearchNavigationVoiceVolumeLowValue])
   {
     v3 = @"Low Volume";
   }
 
-  else if ([v2 isEqualToString:SALocalSearchNavigationVoiceVolumeNormalValue])
+  else if ([volume isEqualToString:SALocalSearchNavigationVoiceVolumeNormalValue])
   {
     v3 = @"Normal Volume";
   }
 
-  else if ([v2 isEqualToString:SALocalSearchNavigationVoiceVolumeLoudValue])
+  else if ([volume isEqualToString:SALocalSearchNavigationVoiceVolumeLoudValue])
   {
     v3 = @"Loud Volume";
   }
@@ -48,16 +48,16 @@
   v8[2] = &off_53728;
   v8[3] = &off_53740;
   v3 = [NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:4];
-  v4 = [(MAHandleSetNavigationVoiceVolume *)self volume];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  volume = [(MAHandleSetNavigationVoiceVolume *)self volume];
+  v5 = [v3 objectForKeyedSubscript:volume];
 
-  LODWORD(v4) = [v5 intValue];
-  return v4;
+  LODWORD(volume) = [v5 intValue];
+  return volume;
 }
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = [SACommandFailed alloc];
   v7 = [v6 initWithErrorCode:SALocalSearchNavigationNotRunningErrorCode];
   v8 = +[MKMapService sharedService];
@@ -67,16 +67,16 @@
   [v9 initializeBrokerConnectionIfNeeded];
   if ([v9 canReceiveMessages] && !objc_msgSend(v9, "isMapsBackgroundTaskSuspended"))
   {
-    v10 = [(MAHandleSetNavigationVoiceVolume *)self _navVolumeSettingValue];
-    if (v10)
+    _navVolumeSettingValue = [(MAHandleSetNavigationVoiceVolume *)self _navVolumeSettingValue];
+    if (_navVolumeSettingValue)
     {
       v11 = objc_alloc_init(IPCSetNavigationVoiceVolumeMessage);
-      [(IPCSetNavigationVoiceVolumeMessage *)v11 setRequestedVolume:v10];
+      [(IPCSetNavigationVoiceVolumeMessage *)v11 setRequestedVolume:_navVolumeSettingValue];
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_EC80;
       v14[3] = &unk_34C68;
-      v15 = v5;
+      v15 = completionCopy;
       [v9 setNavigationVoiceVolume:v11 completion:v14];
     }
 
@@ -84,15 +84,15 @@
     {
       v12 = [SACommandFailed alloc];
       v11 = [v12 initWithErrorCode:SALocalSearchStateUnchangedErrorCode];
-      v13 = [(IPCSetNavigationVoiceVolumeMessage *)v11 dictionary];
-      (*(v5 + 2))(v5, v13);
+      dictionary = [(IPCSetNavigationVoiceVolumeMessage *)v11 dictionary];
+      (*(completionCopy + 2))(completionCopy, dictionary);
     }
   }
 
   else
   {
-    v10 = [v7 dictionary];
-    (*(v5 + 2))(v5, v10);
+    _navVolumeSettingValue = [v7 dictionary];
+    (*(completionCopy + 2))(completionCopy, _navVolumeSettingValue);
   }
 }
 

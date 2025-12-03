@@ -1,11 +1,11 @@
 @interface HMBModelQuery
 - (BOOL)hasExpectedIndexes;
-- (HMBModelQuery)initWithSQLPredicate:(id)a3 initialSequence:(id)a4 maximumRowsPerSelect:(unint64_t)a5 arguments:(id)a6;
+- (HMBModelQuery)initWithSQLPredicate:(id)predicate initialSequence:(id)sequence maximumRowsPerSelect:(unint64_t)select arguments:(id)arguments;
 - (id)description;
-- (id)performQueryOn:(id)a3 arguments:(id)a4;
-- (id)prepareOnTable:(id)a3;
-- (id)sqlSelectStatementForModelType:(id)a3;
-- (void)setModelClass:(Class)a3;
+- (id)performQueryOn:(id)on arguments:(id)arguments;
+- (id)prepareOnTable:(id)table;
+- (id)sqlSelectStatementForModelType:(id)type;
+- (void)setModelClass:(Class)class;
 @end
 
 @implementation HMBModelQuery
@@ -21,9 +21,9 @@
   return 1;
 }
 
-- (id)sqlSelectStatementForModelType:(id)a3
+- (id)sqlSelectStatementForModelType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -35,10 +35,10 @@
   objc_exception_throw(v10);
 }
 
-- (id)performQueryOn:(id)a3 arguments:(id)a4
+- (id)performQueryOn:(id)on arguments:(id)arguments
 {
-  v6 = a3;
-  v7 = a4;
+  onCopy = on;
+  argumentsCopy = arguments;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -53,8 +53,8 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMBModelQuery *)self modelClass];
-  if (v4)
+  modelClass = [(HMBModelQuery *)self modelClass];
+  if (modelClass)
   {
     v5 = NSStringFromClass([(HMBModelQuery *)self modelClass]);
   }
@@ -64,23 +64,23 @@
     v5 = @"Unknown";
   }
 
-  v6 = [(HMBModelQuery *)self sqlPredicate];
-  v7 = [v3 stringWithFormat:@"<HMBModelUnindexedQuery class: %@ query: '%@'>", v5, v6];
+  sqlPredicate = [(HMBModelQuery *)self sqlPredicate];
+  v7 = [v3 stringWithFormat:@"<HMBModelUnindexedQuery class: %@ query: '%@'>", v5, sqlPredicate];
 
-  if (v4)
+  if (modelClass)
   {
   }
 
   return v7;
 }
 
-- (id)prepareOnTable:(id)a3
+- (id)prepareOnTable:(id)table
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 context];
-  v6 = [(HMBModelQuery *)self preparedQueries];
-  v7 = [v6 objectForKey:v5];
+  tableCopy = table;
+  context = [tableCopy context];
+  preparedQueries = [(HMBModelQuery *)self preparedQueries];
+  v7 = [preparedQueries objectForKey:context];
 
   if (v7)
   {
@@ -89,14 +89,14 @@
 
   else
   {
-    v9 = [v4 modelType];
-    v8 = [(HMBModelQuery *)self sqlSelectStatementForModelType:v9];
+    modelType = [tableCopy modelType];
+    v8 = [(HMBModelQuery *)self sqlSelectStatementForModelType:modelType];
 
-    v10 = [[HMBSQLQueryStatement alloc] initWithContext:v5 statement:v8];
+    v10 = [[HMBSQLQueryStatement alloc] initWithContext:context statement:v8];
     if (!v10)
     {
       v30 = objc_autoreleasePoolPush();
-      v31 = self;
+      selfCopy = self;
       v32 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
@@ -119,43 +119,43 @@
     }
 
     v7 = v10;
-    v11 = [(HMBModelQuery *)self preparedQueries];
-    [v11 setObject:v7 forKey:v5];
+    preparedQueries2 = [(HMBModelQuery *)self preparedQueries];
+    [preparedQueries2 setObject:v7 forKey:context];
 
     if (!self->_sqlSelect && v8)
     {
       v12 = MEMORY[0x277CBEB38];
-      v13 = [(HMBModelQuery *)self arguments];
-      v14 = [v12 dictionaryWithCapacity:{objc_msgSend(v13, "count")}];
+      arguments = [(HMBModelQuery *)self arguments];
+      v14 = [v12 dictionaryWithCapacity:{objc_msgSend(arguments, "count")}];
 
       v15 = MEMORY[0x277CBEB38];
-      v16 = [(HMBModelQuery *)self arguments];
-      v17 = [v15 dictionaryWithCapacity:{objc_msgSend(v16, "count")}];
+      arguments2 = [(HMBModelQuery *)self arguments];
+      v17 = [v15 dictionaryWithCapacity:{objc_msgSend(arguments2, "count")}];
 
-      v18 = [(objc_class *)[(HMBModelQuery *)self modelClass] hmbProperties];
-      v19 = [v7 arguments];
+      hmbProperties = [(objc_class *)[(HMBModelQuery *)self modelClass] hmbProperties];
+      arguments3 = [v7 arguments];
       v42[0] = MEMORY[0x277D85DD0];
       v42[1] = 3221225472;
       v42[2] = __32__HMBModelQuery_prepareOnTable___block_invoke;
       v42[3] = &unk_2786E1418;
       v42[4] = self;
-      v43 = v18;
+      v43 = hmbProperties;
       v20 = v14;
       v44 = v20;
       v21 = v17;
       v45 = v21;
-      v22 = v18;
-      [v19 enumerateKeysAndObjectsUsingBlock:v42];
+      v22 = hmbProperties;
+      [arguments3 enumerateKeysAndObjectsUsingBlock:v42];
 
-      v23 = [(HMBModelQuery *)self arguments];
+      arguments4 = [(HMBModelQuery *)self arguments];
       v39[0] = MEMORY[0x277D85DD0];
       v39[1] = 3221225472;
       v39[2] = __32__HMBModelQuery_prepareOnTable___block_invoke_42;
       v39[3] = &unk_2786E1440;
       v7 = v7;
       v40 = v7;
-      v41 = self;
-      [v23 enumerateKeysAndObjectsUsingBlock:v39];
+      selfCopy2 = self;
+      [arguments4 enumerateKeysAndObjectsUsingBlock:v39];
 
       argumentFields = self->_argumentFields;
       self->_argumentFields = v20;
@@ -312,9 +312,9 @@ void __32__HMBModelQuery_prepareOnTable___block_invoke_42(uint64_t a1, void *a2,
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setModelClass:(Class)a3
+- (void)setModelClass:(Class)class
 {
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
     _HMFPreconditionFailure();
 LABEL_7:
@@ -325,36 +325,36 @@ LABEL_7:
 
   if (!self->_modelClass)
   {
-    objc_storeStrong(&self->_modelClass, a3);
+    objc_storeStrong(&self->_modelClass, class);
   }
 
-  if ([(HMBModelQuery *)self modelClass]!= a3)
+  if ([(HMBModelQuery *)self modelClass]!= class)
   {
     goto LABEL_7;
   }
 }
 
-- (HMBModelQuery)initWithSQLPredicate:(id)a3 initialSequence:(id)a4 maximumRowsPerSelect:(unint64_t)a5 arguments:(id)a6
+- (HMBModelQuery)initWithSQLPredicate:(id)predicate initialSequence:(id)sequence maximumRowsPerSelect:(unint64_t)select arguments:(id)arguments
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  predicateCopy = predicate;
+  sequenceCopy = sequence;
+  argumentsCopy = arguments;
   v21.receiver = self;
   v21.super_class = HMBModelQuery;
   v14 = [(HMBModelQuery *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_sqlPredicate, a3);
-    v16 = [v13 copy];
+    objc_storeStrong(&v14->_sqlPredicate, predicate);
+    v16 = [argumentsCopy copy];
     arguments = v15->_arguments;
     v15->_arguments = v16;
 
-    objc_storeStrong(&v15->_initialSequence, a4);
-    v15->_maximumRowsPerSelect = a5;
-    v18 = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
+    objc_storeStrong(&v15->_initialSequence, sequence);
+    v15->_maximumRowsPerSelect = select;
+    weakToWeakObjectsMapTable = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
     preparedQueries = v15->_preparedQueries;
-    v15->_preparedQueries = v18;
+    v15->_preparedQueries = weakToWeakObjectsMapTable;
   }
 
   return v15;

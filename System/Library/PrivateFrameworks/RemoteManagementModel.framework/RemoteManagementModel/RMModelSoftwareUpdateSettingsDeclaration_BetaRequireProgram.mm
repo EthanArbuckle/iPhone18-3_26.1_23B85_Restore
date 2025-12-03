@@ -1,11 +1,11 @@
 @interface RMModelSoftwareUpdateSettingsDeclaration_BetaRequireProgram
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithDescription:(id)a3 token:(id)a4;
-+ (id)buildWithDescription:(id)a3 token:(id)a4;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
-- (void)combineWithOther:(id)a3;
++ (id)buildRequiredOnlyWithDescription:(id)description token:(id)token;
++ (id)buildWithDescription:(id)description token:(id)token;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
+- (void)combineWithOther:(id)other;
 @end
 
 @implementation RMModelSoftwareUpdateSettingsDeclaration_BetaRequireProgram
@@ -24,36 +24,36 @@
   return v4;
 }
 
-+ (id)buildWithDescription:(id)a3 token:(id)a4
++ (id)buildWithDescription:(id)description token:(id)token
 {
-  v5 = a4;
-  v6 = a3;
+  tokenCopy = token;
+  descriptionCopy = description;
   v7 = objc_opt_new();
-  [v7 setPayloadDescription:v6];
+  [v7 setPayloadDescription:descriptionCopy];
 
-  [v7 setPayloadToken:v5];
+  [v7 setPayloadToken:tokenCopy];
 
   return v7;
 }
 
-+ (id)buildRequiredOnlyWithDescription:(id)a3 token:(id)a4
++ (id)buildRequiredOnlyWithDescription:(id)description token:(id)token
 {
-  v5 = a4;
-  v6 = a3;
+  tokenCopy = token;
+  descriptionCopy = description;
   v7 = objc_opt_new();
-  [v7 setPayloadDescription:v6];
+  [v7 setPayloadDescription:descriptionCopy];
 
-  [v7 setPayloadToken:v5];
+  [v7 setPayloadToken:tokenCopy];
 
   return v7;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelSoftwareUpdateSettingsDeclaration_BetaRequireProgram allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -61,9 +61,9 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  if ([(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"Description" forKeyPath:@"payloadDescription" isRequired:1 defaultValue:0 error:a5])
+  if ([(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"Description" forKeyPath:@"payloadDescription" isRequired:1 defaultValue:0 error:error])
   {
-    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"Token" forKeyPath:@"payloadToken" isRequired:1 defaultValue:0 error:a5];
+    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"Token" forKeyPath:@"payloadToken" isRequired:1 defaultValue:0 error:error];
   }
 
   else
@@ -74,40 +74,40 @@
   return v13;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelSoftwareUpdateSettingsDeclaration_BetaRequireProgram *)self payloadDescription];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Description" value:v5 isRequired:1 defaultValue:0];
+  payloadDescription = [(RMModelSoftwareUpdateSettingsDeclaration_BetaRequireProgram *)self payloadDescription];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Description" value:payloadDescription isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelSoftwareUpdateSettingsDeclaration_BetaRequireProgram *)self payloadToken];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Token" value:v6 isRequired:1 defaultValue:0];
+  payloadToken = [(RMModelSoftwareUpdateSettingsDeclaration_BetaRequireProgram *)self payloadToken];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Token" value:payloadToken isRequired:1 defaultValue:0];
 
   v7 = [v4 copy];
 
   return v7;
 }
 
-- (void)combineWithOther:(id)a3
+- (void)combineWithOther:(id)other
 {
-  v4 = a3;
-  v5 = [(RMModelSoftwareUpdateSettingsDeclaration_BetaRequireProgram *)self payloadDescription];
-  v6 = [v4 payloadDescription];
-  v7 = [RMModelConfigurationBase combineFirst:v5 other:v6];
+  otherCopy = other;
+  payloadDescription = [(RMModelSoftwareUpdateSettingsDeclaration_BetaRequireProgram *)self payloadDescription];
+  payloadDescription2 = [otherCopy payloadDescription];
+  v7 = [RMModelConfigurationBase combineFirst:payloadDescription other:payloadDescription2];
   [(RMModelSoftwareUpdateSettingsDeclaration_BetaRequireProgram *)self setPayloadDescription:v7];
 
-  v10 = [(RMModelSoftwareUpdateSettingsDeclaration_BetaRequireProgram *)self payloadToken];
-  v8 = [v4 payloadToken];
+  payloadToken = [(RMModelSoftwareUpdateSettingsDeclaration_BetaRequireProgram *)self payloadToken];
+  payloadToken2 = [otherCopy payloadToken];
 
-  v9 = [RMModelConfigurationBase combineFirst:v10 other:v8];
+  v9 = [RMModelConfigurationBase combineFirst:payloadToken other:payloadToken2];
   [(RMModelSoftwareUpdateSettingsDeclaration_BetaRequireProgram *)self setPayloadToken:v9];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = RMModelSoftwareUpdateSettingsDeclaration_BetaRequireProgram;
-  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadDescription copy];
   v6 = v4[2];
   v4[2] = v5;

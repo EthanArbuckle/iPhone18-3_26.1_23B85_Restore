@@ -7,8 +7,8 @@
 
 - (BOOL)_isEmpty
 {
-  v2 = [(FANavigationController *)self viewControllers];
-  v3 = [v2 count] == 0;
+  viewControllers = [(FANavigationController *)self viewControllers];
+  v3 = [viewControllers count] == 0;
 
   return v3;
 }

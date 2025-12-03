@@ -7,7 +7,7 @@
 
 + (id)components
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___ACCComponents;
   return objc_msgSendSuper2(&v3, sel_components);
 }

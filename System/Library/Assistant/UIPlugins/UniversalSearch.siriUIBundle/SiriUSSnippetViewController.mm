@@ -1,46 +1,46 @@
 @interface SiriUSSnippetViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (SiriUSSnippetViewController)initWithUniversalSearchResults:(id)a3 snippet:(id)a4;
-- (double)desiredHeightForWidth:(double)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_configureSnippetBackgroundForCell:(id)a3;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (SiriUSSnippetViewController)initWithUniversalSearchResults:(id)results snippet:(id)snippet;
+- (double)desiredHeightForWidth:(double)width;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_configureSnippetBackgroundForCell:(id)cell;
 - (void)loadView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation SiriUSSnippetViewController
 
-- (SiriUSSnippetViewController)initWithUniversalSearchResults:(id)a3 snippet:(id)a4
+- (SiriUSSnippetViewController)initWithUniversalSearchResults:(id)results snippet:(id)snippet
 {
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  snippetCopy = snippet;
   v61.receiver = self;
   v61.super_class = SiriUSSnippetViewController;
   v56 = [(SiriUSSnippetViewController *)&v61 init];
   if (v56)
   {
-    v51 = v7;
+    v51 = snippetCopy;
     v55 = +[NSMutableArray array];
     v8 = +[NSMutableArray array];
     v9 = +[NSMutableArray array];
-    if ([v6 count])
+    if ([resultsCopy count])
     {
       v10 = 0;
       height = CGSizeZero.height;
-      v52 = v6;
+      v52 = resultsCopy;
       do
       {
         v54 = v10;
-        v12 = [v6 objectAtIndex:v10];
-        v13 = [v12 title];
+        v12 = [resultsCopy objectAtIndex:v10];
+        title = [v12 title];
 
-        if (v13)
+        if (title)
         {
           v14 = [SiriUIPlatterSectionHeaderTableViewCell alloc];
-          v15 = [v12 title];
-          v16 = [v14 initWithText:v15];
+          title2 = [v12 title];
+          v16 = [v14 initWithText:title2];
 
           v17 = +[UIColor clearColor];
           [v16 setBackgroundColor:v17];
@@ -62,8 +62,8 @@
         v57 = 0u;
         v58 = 0u;
         v53 = v12;
-        v20 = [v12 results];
-        v21 = [v20 countByEnumeratingWithState:&v57 objects:v63 count:16];
+        results = [v12 results];
+        v21 = [results countByEnumeratingWithState:&v57 objects:v63 count:16];
         if (v21)
         {
           v22 = v21;
@@ -74,12 +74,12 @@
             {
               if (*v58 != v23)
               {
-                objc_enumerationMutation(v20);
+                objc_enumerationMutation(results);
               }
 
               v25 = *(*(&v57 + 1) + 8 * i);
-              v26 = [v25 thumbnail];
-              [v26 size];
+              thumbnail = [v25 thumbnail];
+              [thumbnail size];
               v28 = v27;
               v30 = v29;
 
@@ -91,22 +91,22 @@
               v62 = v25;
               v32 = [NSArray arrayWithObjects:&v62 count:1];
               v33 = [SearchUI rowViewsForResults:v32 feedbackDelegate:0];
-              v34 = [v33 firstObject];
+              firstObject = [v33 firstObject];
 
-              if (v34)
+              if (firstObject)
               {
-                [v34 recursive_setSemanticContentAttribute:SiriLanguageSemanticContentAttribute()];
+                [firstObject recursive_setSemanticContentAttribute:SiriLanguageSemanticContentAttribute()];
                 v35 = +[UIColor clearColor];
-                [v34 setBackgroundColor:v35];
+                [firstObject setBackgroundColor:v35];
 
-                [(NSArray *)v55 addObject:v34];
+                [(NSArray *)v55 addObject:firstObject];
                 [(NSArray *)v19 addObject:&__kCFBooleanTrue];
               }
 
-              v36 = [v25 punchout];
-              if (v36)
+              punchout = [v25 punchout];
+              if (punchout)
               {
-                [(NSArray *)v8 addObject:v36];
+                [(NSArray *)v8 addObject:punchout];
               }
 
               else
@@ -115,35 +115,35 @@
                 [(NSArray *)v8 addObject:v37];
               }
 
-              [(SiriUSSnippetViewController *)v56 _configureSnippetBackgroundForCell:v34];
+              [(SiriUSSnippetViewController *)v56 _configureSnippetBackgroundForCell:firstObject];
             }
 
-            v22 = [v20 countByEnumeratingWithState:&v57 objects:v63 count:16];
+            v22 = [results countByEnumeratingWithState:&v57 objects:v63 count:16];
           }
 
           while (v22);
         }
 
-        v38 = [v53 punchOut];
+        punchOut = [v53 punchOut];
 
         v9 = v19;
-        if (v38)
+        if (punchOut)
         {
           v39 = [SiriUSSectionFooterCell alloc];
-          v40 = [v53 punchOut];
-          v41 = [(SiriUSSectionFooterCell *)v39 initWithPunchOut:v40];
+          punchOut2 = [v53 punchOut];
+          v41 = [(SiriUSSectionFooterCell *)v39 initWithPunchOut:punchOut2];
 
           [(SiriUSSectionFooterCell *)v41 recursive_setSemanticContentAttribute:SiriLanguageSemanticContentAttribute()];
           [(NSArray *)v55 addObject:v41];
           [(NSArray *)v19 addObject:&__kCFBooleanTrue];
-          v42 = [v53 punchOut];
-          [(NSArray *)v8 addObject:v42];
+          punchOut3 = [v53 punchOut];
+          [(NSArray *)v8 addObject:punchOut3];
 
           [(SiriUSSnippetViewController *)v56 _configureSnippetBackgroundForCell:v41];
         }
 
         v10 = v54 + 1;
-        v6 = v52;
+        resultsCopy = v52;
       }
 
       while (v54 + 1 < [v52 count]);
@@ -180,32 +180,32 @@
     separators = v56->_separators;
     v56->_separators = v9;
 
-    v7 = v51;
+    snippetCopy = v51;
   }
 
   return v56;
 }
 
-- (void)_configureSnippetBackgroundForCell:(id)a3
+- (void)_configureSnippetBackgroundForCell:(id)cell
 {
-  v6 = a3;
+  cellCopy = cell;
   if ((SiriUIIsWhitePlatterSnippetBackgroundEnabledForAllSnippets() & 1) == 0)
   {
     v3 = +[UIColor siriui_snippetBackgroundColor];
-    [v6 setBackgroundColor:v3];
+    [cellCopy setBackgroundColor:v3];
   }
 
   v4 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   v5 = +[UIColor siriui_highlightColor];
   [v4 setBackgroundColor:v5];
 
-  [v6 setSelectedBackgroundView:v4];
+  [cellCopy setSelectedBackgroundView:v4];
 }
 
 - (void)loadView
 {
-  v3 = [(SiriUSSnippetViewController *)self delegate];
-  [v3 siriViewControllerExpectedWidth:self];
+  delegate = [(SiriUSSnippetViewController *)self delegate];
+  [delegate siriViewControllerExpectedWidth:self];
   v5 = v4;
 
   v6 = [[UITableView alloc] initWithFrame:{0.0, 0.0, v5, 0.0}];
@@ -233,11 +233,11 @@
   v4.receiver = self;
   v4.super_class = SiriUSSnippetViewController;
   [(SiriUSSnippetViewController *)&v4 viewDidLayoutSubviews];
-  v3 = [(SiriUSSnippetViewController *)self delegate];
-  [v3 siriViewControllerHeightDidChange:self];
+  delegate = [(SiriUSSnippetViewController *)self delegate];
+  [delegate siriViewControllerHeightDidChange:self];
 }
 
-- (double)desiredHeightForWidth:(double)a3
+- (double)desiredHeightForWidth:(double)width
 {
   v15 = 0u;
   v16 = 0u;
@@ -264,7 +264,7 @@
         [v10 updateConstraintsIfNeeded];
         LODWORD(v11) = 1148846080;
         LODWORD(v12) = 1112014848;
-        [v10 systemLayoutSizeFittingSize:a3 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v11, v12}];
+        [v10 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:0.0 verticalFittingPriority:{v11, v12}];
         v8 = v8 + v13;
       }
 
@@ -282,36 +282,36 @@
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   cells = self->_cells;
-  v5 = [a4 row];
+  v5 = [path row];
 
   return [(NSArray *)cells objectAtIndex:v5];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   separators = self->_separators;
-  v8 = a4;
-  v7 = -[NSArray objectAtIndex:](separators, "objectAtIndex:", [a5 row]);
-  [v8 setSeparatorStyle:{objc_msgSend(v7, "BOOLValue")}];
+  cellCopy = cell;
+  v7 = -[NSArray objectAtIndex:](separators, "objectAtIndex:", [path row]);
+  [cellCopy setSeparatorStyle:{objc_msgSend(v7, "BOOLValue")}];
 
-  [v8 setSeparatorInset:{0.0, SiriUIPlatterStyle[32], 0.0, SiriUIPlatterStyle[34]}];
+  [cellCopy setSeparatorInset:{0.0, SiriUIPlatterStyle[32], 0.0, SiriUIPlatterStyle[34]}];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v4 = -[NSArray objectAtIndex:](self->_punchOuts, "objectAtIndex:", [a4 row]);
+  v4 = -[NSArray objectAtIndex:](self->_punchOuts, "objectAtIndex:", [path row]);
   v5 = +[NSNull null];
   v6 = [v4 isEqual:v5];
 
   return v6 ^ 1;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = -[NSArray objectAtIndex:](self->_punchOuts, "objectAtIndex:", [a4 row]);
+  v5 = -[NSArray objectAtIndex:](self->_punchOuts, "objectAtIndex:", [path row]);
   v6 = +[NSNull null];
   v7 = [v5 isEqual:v6];
 
@@ -319,19 +319,19 @@
   {
     if ([v5 isMemberOfClass:objc_opt_class()])
     {
-      v8 = [(SiriUSSnippetViewController *)self delegate];
+      delegate = [(SiriUSSnippetViewController *)self delegate];
       v13 = v5;
       v9 = [NSArray arrayWithObjects:&v13 count:1];
-      [v8 siriViewController:self performAceCommands:v9];
+      [delegate siriViewController:self performAceCommands:v9];
     }
 
     else if ([v5 isMemberOfClass:objc_opt_class()])
     {
       v10 = v5;
-      v11 = [(SiriUSSnippetViewController *)self delegate];
-      v12 = [v10 preferredOpenableURL];
+      delegate2 = [(SiriUSSnippetViewController *)self delegate];
+      preferredOpenableURL = [v10 preferredOpenableURL];
 
-      [v11 siriViewController:self openURL:v12 completion:0];
+      [delegate2 siriViewController:self openURL:preferredOpenableURL completion:0];
     }
   }
 }

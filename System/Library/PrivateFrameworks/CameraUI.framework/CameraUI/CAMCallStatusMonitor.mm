@@ -1,20 +1,20 @@
 @interface CAMCallStatusMonitor
-+ (id)_processNameForPid:(id)a3;
-- (CAMCallStatusMonitor)initWithInitialDisabledReasons:(id)a3;
-- (id)_descriptionForReasons:(id)a3;
-- (id)_descriptionStringForReason:(int64_t)a3;
++ (id)_processNameForPid:(id)pid;
+- (CAMCallStatusMonitor)initWithInitialDisabledReasons:(id)reasons;
+- (id)_descriptionForReasons:(id)reasons;
+- (id)_descriptionStringForReason:(int64_t)reason;
 - (id)initDisabledForLaunch;
 - (int)_processIdentifer;
-- (void)_accessQueue_queryCallActiveStatusForReason:(id)a3;
-- (void)_accessQueue_subscribeToAVSystemControllerNotificationsWithCompletion:(id)a3;
-- (void)_asyncQueryCallActiveStatusForReason:(id)a3;
-- (void)_handleServerConnectionDiedNotification:(id)a3;
+- (void)_accessQueue_queryCallActiveStatusForReason:(id)reason;
+- (void)_accessQueue_subscribeToAVSystemControllerNotificationsWithCompletion:(id)completion;
+- (void)_asyncQueryCallActiveStatusForReason:(id)reason;
+- (void)_handleServerConnectionDiedNotification:(id)notification;
 - (void)_registerForAVSystemControllerNotificationsAndQueryState;
-- (void)_setCallActive:(BOOL)a3;
+- (void)_setCallActive:(BOOL)active;
 - (void)_unregisterForAVSystemControllerNotifications;
-- (void)addDisabledReason:(int64_t)a3;
+- (void)addDisabledReason:(int64_t)reason;
 - (void)dealloc;
-- (void)removeDisabledReason:(int64_t)a3;
+- (void)removeDisabledReason:(int64_t)reason;
 @end
 
 @implementation CAMCallStatusMonitor
@@ -29,16 +29,16 @@
 
 - (void)_unregisterForAVSystemControllerNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69AEA40] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69AECB8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69AEB70] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69AECC0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69AEA40] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69AECB8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69AEB70] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69AECC0] object:0];
 }
 
-- (CAMCallStatusMonitor)initWithInitialDisabledReasons:(id)a3
+- (CAMCallStatusMonitor)initWithInitialDisabledReasons:(id)reasons
 {
-  v4 = a3;
+  reasonsCopy = reasons;
   v17.receiver = self;
   v17.super_class = CAMCallStatusMonitor;
   v5 = [(CAMCallStatusMonitor *)&v17 init];
@@ -46,9 +46,9 @@
   if (v5)
   {
     v5->_callActive = 0;
-    if (v4)
+    if (reasonsCopy)
     {
-      v7 = [v4 mutableCopy];
+      v7 = [reasonsCopy mutableCopy];
     }
 
     else
@@ -100,13 +100,13 @@
 {
   [(CAMCallStatusMonitor *)self _unregisterForAVSystemControllerNotifications];
   objc_initWeak(&location, self);
-  v3 = [(CAMCallStatusMonitor *)self _avscAccessQueue];
+  _avscAccessQueue = [(CAMCallStatusMonitor *)self _avscAccessQueue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __80__CAMCallStatusMonitor__registerForAVSystemControllerNotificationsAndQueryState__block_invoke;
   v4[3] = &unk_1E76F8580;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(_avscAccessQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -152,14 +152,14 @@ void __80__CAMCallStatusMonitor__registerForAVSystemControllerNotificationsAndQu
   [WeakRetained _accessQueue_queryCallActiveStatusForReason:@"initial query"];
 }
 
-- (void)_accessQueue_subscribeToAVSystemControllerNotificationsWithCompletion:(id)a3
+- (void)_accessQueue_subscribeToAVSystemControllerNotificationsWithCompletion:(id)completion
 {
   v18[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CAMCallStatusMonitor *)self _avscAccessQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  _avscAccessQueue = [(CAMCallStatusMonitor *)self _avscAccessQueue];
+  dispatch_assert_queue_V2(_avscAccessQueue);
 
-  v6 = [MEMORY[0x1E69AED10] sharedAVSystemController];
+  mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
   v7 = *MEMORY[0x1E69AEB70];
   v18[0] = *MEMORY[0x1E69AEA40];
   v18[1] = v7;
@@ -167,7 +167,7 @@ void __80__CAMCallStatusMonitor__registerForAVSystemControllerNotificationsAndQu
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:3];
   v9 = *MEMORY[0x1E69AECD8];
   v17 = 0;
-  [v6 setAttribute:v8 forKey:v9 error:&v17];
+  [mEMORY[0x1E69AED10] setAttribute:v8 forKey:v9 error:&v17];
   v10 = v17;
   if (v10)
   {
@@ -184,8 +184,8 @@ void __80__CAMCallStatusMonitor__registerForAVSystemControllerNotificationsAndQu
   v13[2] = __94__CAMCallStatusMonitor__accessQueue_subscribeToAVSystemControllerNotificationsWithCompletion___block_invoke;
   v13[3] = &unk_1E76FA3A0;
   objc_copyWeak(&v15, &location);
-  v14 = v4;
-  v12 = v4;
+  v14 = completionCopy;
+  v12 = completionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v13);
 
   objc_destroyWeak(&v15);
@@ -214,16 +214,16 @@ void __94__CAMCallStatusMonitor__accessQueue_subscribeToAVSystemControllerNotifi
   }
 }
 
-- (void)addDisabledReason:(int64_t)a3
+- (void)addDisabledReason:(int64_t)reason
 {
   v18 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(CAMCallStatusMonitor *)self _disabledReasons];
-  v6 = [v5 count];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 addObject:v7];
+  _disabledReasons = [(CAMCallStatusMonitor *)self _disabledReasons];
+  v6 = [_disabledReasons count];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:reason];
+  [_disabledReasons addObject:v7];
 
-  v8 = [v5 count];
+  v8 = [_disabledReasons count];
   if (v6 || !v8)
   {
     if (v6 != v8)
@@ -231,8 +231,8 @@ void __94__CAMCallStatusMonitor__accessQueue_subscribeToAVSystemControllerNotifi
       v11 = os_log_create("com.apple.camera", "CallStatus");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(CAMCallStatusMonitor *)self _descriptionStringForReason:a3];
-        v13 = [(CAMCallStatusMonitor *)self _descriptionForReasons:v5];
+        v12 = [(CAMCallStatusMonitor *)self _descriptionStringForReason:reason];
+        v13 = [(CAMCallStatusMonitor *)self _descriptionForReasons:_disabledReasons];
         v14 = 138543618;
         v15 = v12;
         v16 = 2114;
@@ -247,7 +247,7 @@ void __94__CAMCallStatusMonitor__accessQueue_subscribeToAVSystemControllerNotifi
     v9 = os_log_create("com.apple.camera", "CallStatus");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(CAMCallStatusMonitor *)self _descriptionStringForReason:a3];
+      v10 = [(CAMCallStatusMonitor *)self _descriptionStringForReason:reason];
       v14 = 138543362;
       v15 = v10;
       _os_log_impl(&dword_1A3640000, v9, OS_LOG_TYPE_DEFAULT, "Disabling call status monitoring for reason %{public}@", &v14, 0xCu);
@@ -257,16 +257,16 @@ void __94__CAMCallStatusMonitor__accessQueue_subscribeToAVSystemControllerNotifi
   }
 }
 
-- (void)removeDisabledReason:(int64_t)a3
+- (void)removeDisabledReason:(int64_t)reason
 {
   v18 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(CAMCallStatusMonitor *)self _disabledReasons];
-  v6 = [v5 count];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 removeObject:v7];
+  _disabledReasons = [(CAMCallStatusMonitor *)self _disabledReasons];
+  v6 = [_disabledReasons count];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:reason];
+  [_disabledReasons removeObject:v7];
 
-  v8 = [v5 count];
+  v8 = [_disabledReasons count];
   if (!v6 || v8)
   {
     if (v6 != v8)
@@ -274,8 +274,8 @@ void __94__CAMCallStatusMonitor__accessQueue_subscribeToAVSystemControllerNotifi
       v11 = os_log_create("com.apple.camera", "CallStatus");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(CAMCallStatusMonitor *)self _descriptionStringForReason:a3];
-        v13 = [(CAMCallStatusMonitor *)self _descriptionForReasons:v5];
+        v12 = [(CAMCallStatusMonitor *)self _descriptionStringForReason:reason];
+        v13 = [(CAMCallStatusMonitor *)self _descriptionForReasons:_disabledReasons];
         v14 = 138543618;
         v15 = v12;
         v16 = 2114;
@@ -290,7 +290,7 @@ void __94__CAMCallStatusMonitor__accessQueue_subscribeToAVSystemControllerNotifi
     v9 = os_log_create("com.apple.camera", "CallStatus");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(CAMCallStatusMonitor *)self _descriptionStringForReason:a3];
+      v10 = [(CAMCallStatusMonitor *)self _descriptionStringForReason:reason];
       v14 = 138543362;
       v15 = v10;
       _os_log_impl(&dword_1A3640000, v9, OS_LOG_TYPE_DEFAULT, "Enabling call status monitoring after removing final disabled reason %{public}@", &v14, 0xCu);
@@ -300,15 +300,15 @@ void __94__CAMCallStatusMonitor__accessQueue_subscribeToAVSystemControllerNotifi
   }
 }
 
-- (id)_descriptionStringForReason:(int64_t)a3
+- (id)_descriptionStringForReason:(int64_t)reason
 {
   v3 = @"ApplicationBackgrounded";
-  if (a3 != 1)
+  if (reason != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (reason)
   {
     return v3;
   }
@@ -319,10 +319,10 @@ void __94__CAMCallStatusMonitor__accessQueue_subscribeToAVSystemControllerNotifi
   }
 }
 
-- (id)_descriptionForReasons:(id)a3
+- (id)_descriptionForReasons:(id)reasons
 {
-  v4 = a3;
-  if ([v4 count])
+  reasonsCopy = reasons;
+  if ([reasonsCopy count])
   {
     v5 = [MEMORY[0x1E695DFA8] set];
     v21[0] = MEMORY[0x1E69E9820];
@@ -330,11 +330,11 @@ void __94__CAMCallStatusMonitor__accessQueue_subscribeToAVSystemControllerNotifi
     v21[2] = __47__CAMCallStatusMonitor__descriptionForReasons___block_invoke;
     v21[3] = &unk_1E76FA878;
     v22 = v5;
-    v23 = self;
+    selfCopy = self;
     v6 = v5;
-    [v4 enumerateObjectsUsingBlock:v21];
-    v7 = [v6 allObjects];
-    v8 = [v7 sortedArrayUsingComparator:&__block_literal_global_19];
+    [reasonsCopy enumerateObjectsUsingBlock:v21];
+    allObjects = [v6 allObjects];
+    v8 = [allObjects sortedArrayUsingComparator:&__block_literal_global_19];
 
     v9 = objc_msgSend(objc_alloc(MEMORY[0x1E696AD60]), "initWithString:", @"(");
     v15 = MEMORY[0x1E69E9820];
@@ -381,18 +381,18 @@ uint64_t __47__CAMCallStatusMonitor__descriptionForReasons___block_invoke_3(uint
   return result;
 }
 
-- (void)_accessQueue_queryCallActiveStatusForReason:(id)a3
+- (void)_accessQueue_queryCallActiveStatusForReason:(id)reason
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CAMCallStatusMonitor *)self _avscAccessQueue];
-  dispatch_assert_queue_V2(v5);
+  reasonCopy = reason;
+  _avscAccessQueue = [(CAMCallStatusMonitor *)self _avscAccessQueue];
+  dispatch_assert_queue_V2(_avscAccessQueue);
 
-  v6 = [MEMORY[0x1E69AED10] sharedAVSystemController];
-  v7 = [v6 attributeForKey:*MEMORY[0x1E69AEA38]];
-  v8 = [v6 attributeForKey:*MEMORY[0x1E69AEB30]];
-  v9 = [v6 attributeForKey:*MEMORY[0x1E69AEA88]];
-  v35 = [v6 attributeForKey:*MEMORY[0x1E69AE9D0]];
+  mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
+  v7 = [mEMORY[0x1E69AED10] attributeForKey:*MEMORY[0x1E69AEA38]];
+  v8 = [mEMORY[0x1E69AED10] attributeForKey:*MEMORY[0x1E69AEB30]];
+  v9 = [mEMORY[0x1E69AED10] attributeForKey:*MEMORY[0x1E69AEA88]];
+  v35 = [mEMORY[0x1E69AED10] attributeForKey:*MEMORY[0x1E69AE9D0]];
   v10 = [v35 objectForKeyedSubscript:*MEMORY[0x1E69AE9D8]];
   v11 = [v8 count];
   v37 = v8;
@@ -411,9 +411,9 @@ uint64_t __47__CAMCallStatusMonitor__descriptionForReasons___block_invoke_3(uint
   }
 
   v16 = [v9 isEqualToString:@"Ringtone"];
-  v17 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
   v34 = v10;
-  v18 = [v10 BOOLValue];
+  bOOLValue2 = [v10 BOOLValue];
   if (v16)
   {
     v19 = 1;
@@ -421,19 +421,19 @@ uint64_t __47__CAMCallStatusMonitor__descriptionForReasons___block_invoke_3(uint
 
   else
   {
-    v19 = v17 & (v15 | v18);
+    v19 = bOOLValue & (v15 | bOOLValue2);
   }
 
-  v36 = self;
+  selfCopy = self;
   if (v15)
   {
     v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v21 = [(CAMCallStatusMonitor *)self _processIdentifer];
+    _processIdentifer = [(CAMCallStatusMonitor *)self _processIdentifer];
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
     v40[2] = __68__CAMCallStatusMonitor__accessQueue_queryCallActiveStatusForReason___block_invoke;
     v40[3] = &unk_1E76FA8E8;
-    v42 = v21;
+    v42 = _processIdentifer;
     v41 = v20;
     v22 = v20;
     [v37 enumerateObjectsUsingBlock:v40];
@@ -441,10 +441,10 @@ uint64_t __47__CAMCallStatusMonitor__descriptionForReasons___block_invoke_3(uint
     [v22 componentsJoinedByString:{@", "}];
     v24 = v9;
     v25 = v7;
-    v27 = v26 = v4;
+    v27 = v26 = reasonCopy;
     v28 = [v23 stringWithFormat:@" Recording PIDs (%@)", v27];
 
-    v4 = v26;
+    reasonCopy = v26;
     v7 = v25;
     v9 = v24;
   }
@@ -474,7 +474,7 @@ uint64_t __47__CAMCallStatusMonitor__descriptionForReasons___block_invoke_3(uint
     v32 = @" HighPriority";
     v45 = 2114;
     v46 = v31;
-    if (!v18)
+    if (!bOOLValue2)
     {
       v32 = &stru_1F1660A30;
     }
@@ -494,7 +494,7 @@ uint64_t __47__CAMCallStatusMonitor__descriptionForReasons___block_invoke_3(uint
 
     v50 = v33;
     v51 = 2114;
-    v52 = v4;
+    v52 = reasonCopy;
     _os_log_impl(&dword_1A3640000, v29, OS_LOG_TYPE_DEFAULT, "Call status: %{public}@%{public}@%{public}@%{public}@ (%{public}@)", buf, 0x34u);
   }
 
@@ -502,7 +502,7 @@ uint64_t __47__CAMCallStatusMonitor__descriptionForReasons___block_invoke_3(uint
   block[1] = 3221225472;
   block[2] = __68__CAMCallStatusMonitor__accessQueue_queryCallActiveStatusForReason___block_invoke_72;
   block[3] = &unk_1E76F7850;
-  block[4] = v36;
+  block[4] = selfCopy;
   v39 = v19;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
@@ -534,37 +534,37 @@ void __41__CAMCallStatusMonitor__processIdentifer__block_invoke()
   _processIdentifer_pid = [v0 processIdentifier];
 }
 
-+ (id)_processNameForPid:(id)a3
++ (id)_processNameForPid:(id)pid
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (proc_name([v3 intValue], buffer, 0x100u))
+  pidCopy = pid;
+  if (proc_name([pidCopy intValue], buffer, 0x100u))
   {
     [MEMORY[0x1E696AEC0] stringWithUTF8String:buffer];
   }
 
   else
   {
-    [v3 stringValue];
+    [pidCopy stringValue];
   }
   v4 = ;
 
   return v4;
 }
 
-- (void)_asyncQueryCallActiveStatusForReason:(id)a3
+- (void)_asyncQueryCallActiveStatusForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   objc_initWeak(&location, self);
-  v5 = [(CAMCallStatusMonitor *)self _avscAccessQueue];
+  _avscAccessQueue = [(CAMCallStatusMonitor *)self _avscAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__CAMCallStatusMonitor__asyncQueryCallActiveStatusForReason___block_invoke;
   block[3] = &unk_1E76F7DC0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = reasonCopy;
+  v6 = reasonCopy;
+  dispatch_async(_avscAccessQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -576,7 +576,7 @@ void __61__CAMCallStatusMonitor__asyncQueryCallActiveStatusForReason___block_inv
   [WeakRetained _accessQueue_queryCallActiveStatusForReason:*(a1 + 32)];
 }
 
-- (void)_handleServerConnectionDiedNotification:(id)a3
+- (void)_handleServerConnectionDiedNotification:(id)notification
 {
   v4 = os_log_create("com.apple.camera", "CallStatus");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -588,15 +588,15 @@ void __61__CAMCallStatusMonitor__asyncQueryCallActiveStatusForReason___block_inv
   [(CAMCallStatusMonitor *)self _registerForAVSystemControllerNotificationsAndQueryState];
 }
 
-- (void)_setCallActive:(BOOL)a3
+- (void)_setCallActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if ([(CAMCallStatusMonitor *)self isCallActive]!= v3)
+  if ([(CAMCallStatusMonitor *)self isCallActive]!= activeCopy)
   {
-    [(CAMCallStatusMonitor *)self setCallActive:v3];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 postNotificationName:@"CAMCallStatusMonitorDidChangeCallActiveNotification" object:self];
+    [(CAMCallStatusMonitor *)self setCallActive:activeCopy];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"CAMCallStatusMonitorDidChangeCallActiveNotification" object:self];
   }
 }
 

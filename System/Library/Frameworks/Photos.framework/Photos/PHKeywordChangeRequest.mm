@@ -1,28 +1,28 @@
 @interface PHKeywordChangeRequest
-+ (id)changeRequestForKeyword:(id)a3;
++ (id)changeRequestForKeyword:(id)keyword;
 + (id)creationRequestForKeyword;
-+ (void)deleteKeywords:(id)a3;
-- (BOOL)_validateMutationOfTitleToKeyword:(id)a3 error:(id *)a4;
-- (BOOL)allowMutationToManagedObject:(id)a3 propertyKey:(id)a4 error:(id *)a5;
++ (void)deleteKeywords:(id)keywords;
+- (BOOL)_validateMutationOfTitleToKeyword:(id)keyword error:(id *)error;
+- (BOOL)allowMutationToManagedObject:(id)object propertyKey:(id)key error:(id *)error;
 - (NSString)shortcut;
 - (NSString)title;
-- (PHKeywordChangeRequest)initWithUUID:(id)a3 objectID:(id)a4;
-- (PHKeywordChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5;
+- (PHKeywordChangeRequest)initWithUUID:(id)d objectID:(id)iD;
+- (PHKeywordChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization;
 - (PHObjectPlaceholder)placeholderForCreatedKeyword;
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4;
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error;
 - (id)initForNewObject;
-- (void)encodeToXPCDict:(id)a3;
-- (void)setShortcut:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)encodeToXPCDict:(id)dict;
+- (void)setShortcut:(id)shortcut;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PHKeywordChangeRequest
 
-- (BOOL)_validateMutationOfTitleToKeyword:(id)a3 error:(id *)a4
+- (BOOL)_validateMutationOfTitleToKeyword:(id)keyword error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v5 = [(PHKeywordChangeRequest *)self title];
-  if (v5 && (v6 = v5, v7 = [v5 isEqualToString:&stru_1F0FC60C8], v6, v6, !v7))
+  title = [(PHKeywordChangeRequest *)self title];
+  if (title && (v6 = title, v7 = [title isEqualToString:&stru_1F0FC60C8], v6, v6, !v7))
   {
     v11 = 0;
     v13 = 1;
@@ -37,11 +37,11 @@
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     v11 = [v8 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3300 userInfo:v10];
 
-    if (a4)
+    if (error)
     {
       v12 = v11;
       v13 = 0;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -53,12 +53,12 @@
   return v13;
 }
 
-- (BOOL)allowMutationToManagedObject:(id)a3 propertyKey:(id)a4 error:(id *)a5
+- (BOOL)allowMutationToManagedObject:(id)object propertyKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  objectCopy = object;
+  keyCopy = key;
   v10 = objc_opt_class();
-  v11 = v8;
+  v11 = objectCopy;
   if (v11)
   {
     if (objc_opt_isKindOfClass())
@@ -77,15 +77,15 @@
       goto LABEL_8;
     }
 
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"id  _Nullable _PLAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nullable __strong)"}];
-    [v14 handleFailureInFunction:v15 file:@"PLHelperExtension.h" lineNumber:78 description:{@"Expected class of %@ but was %@", v10, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v15 file:@"PLHelperExtension.h" lineNumber:78 description:{@"Expected class of %@ but was %@", v10, objc_opt_class()}];
   }
 
   v13 = 0;
 LABEL_8:
 
-  if ([v9 isEqualToString:@"title"] && !-[PHKeywordChangeRequest _validateMutationOfTitleToKeyword:error:](self, "_validateMutationOfTitleToKeyword:error:", v13, a5))
+  if ([keyCopy isEqualToString:@"title"] && !-[PHKeywordChangeRequest _validateMutationOfTitleToKeyword:error:](self, "_validateMutationOfTitleToKeyword:error:", v13, error))
   {
     v16 = 0;
   }
@@ -94,30 +94,30 @@ LABEL_8:
   {
     v18.receiver = self;
     v18.super_class = PHKeywordChangeRequest;
-    v16 = [(PHChangeRequest *)&v18 allowMutationToManagedObject:v11 propertyKey:v9 error:a5];
+    v16 = [(PHChangeRequest *)&v18 allowMutationToManagedObject:v11 propertyKey:keyCopy error:error];
   }
 
   return v16;
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
-  v4 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 encodeToXPCDict:v4];
+  dictCopy = dict;
+  helper = [(PHChangeRequest *)self helper];
+  [helper encodeToXPCDict:dictCopy];
 }
 
-- (PHKeywordChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5
+- (PHKeywordChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictCopy = dict;
+  requestCopy = request;
+  authorizationCopy = authorization;
   v15.receiver = self;
   v15.super_class = PHKeywordChangeRequest;
   v11 = [(PHChangeRequest *)&v15 init];
   if (v11)
   {
-    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:v8 changeRequest:v11 request:v9 clientAuthorization:v10];
+    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:dictCopy changeRequest:v11 request:requestCopy clientAuthorization:authorizationCopy];
     helper = v11->super._helper;
     v11->super._helper = v12;
   }
@@ -125,16 +125,16 @@ LABEL_8:
   return v11;
 }
 
-- (PHKeywordChangeRequest)initWithUUID:(id)a3 objectID:(id)a4
+- (PHKeywordChangeRequest)initWithUUID:(id)d objectID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v12.receiver = self;
   v12.super_class = PHKeywordChangeRequest;
   v8 = [(PHChangeRequest *)&v12 init];
   if (v8)
   {
-    v9 = [[PHChangeRequestHelper alloc] initWithUUID:v6 objectID:v7 changeRequest:v8];
+    v9 = [[PHChangeRequestHelper alloc] initWithUUID:dCopy objectID:iDCopy changeRequest:v8];
     helper = v8->super._helper;
     v8->super._helper = v9;
   }
@@ -142,78 +142,78 @@ LABEL_8:
   return v8;
 }
 
-- (void)setShortcut:(id)a3
+- (void)setShortcut:(id)shortcut
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  shortcutCopy = shortcut;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (shortcutCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"shortcut"];
+    [mutations setObject:shortcutCopy forKeyedSubscript:@"shortcut"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"shortcut"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"shortcut"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"shortcut"];
+    [mutations removeObjectForKey:@"shortcut"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"shortcut"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"shortcut"];
   }
 }
 
 - (NSString)shortcut
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"shortcut"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"shortcut"];
 
   return v5;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  titleCopy = title;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (titleCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"title"];
+    [mutations setObject:titleCopy forKeyedSubscript:@"title"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"title"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"title"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"title"];
+    [mutations removeObjectForKey:@"title"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"title"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"title"];
   }
 }
 
 - (NSString)title
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"title"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"title"];
 
   if (v5)
   {
@@ -230,17 +230,17 @@ LABEL_8:
   return &v6->isa;
 }
 
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 keywordManager];
-  v8 = [(PHKeywordChangeRequest *)self title];
-  v9 = [v7 createOrLookupKeywordForTitle:v8 photoLibrary:v6 error:a4];
+  libraryCopy = library;
+  keywordManager = [libraryCopy keywordManager];
+  title = [(PHKeywordChangeRequest *)self title];
+  v9 = [keywordManager createOrLookupKeywordForTitle:title photoLibrary:libraryCopy error:error];
 
   if (v9)
   {
-    v10 = [(PHChangeRequest *)self uuid];
-    [v9 setUuid:v10];
+    uuid = [(PHChangeRequest *)self uuid];
+    [v9 setUuid:uuid];
   }
 
   return v9;
@@ -248,8 +248,8 @@ LABEL_8:
 
 - (PHObjectPlaceholder)placeholderForCreatedKeyword
 {
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
+  helper = [(PHChangeRequest *)self helper];
+  v4 = [helper placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
 
   return v4;
 }
@@ -269,29 +269,29 @@ LABEL_8:
   return v2;
 }
 
-+ (void)deleteKeywords:(id)a3
++ (void)deleteKeywords:(id)keywords
 {
-  v5 = a3;
-  v4 = [(PHObjectDeleteRequest *)PHKeywordDeleteRequest deleteRequestsForObjects:v5 ofType:objc_opt_class() forSelector:a2];
+  keywordsCopy = keywords;
+  v4 = [(PHObjectDeleteRequest *)PHKeywordDeleteRequest deleteRequestsForObjects:keywordsCopy ofType:objc_opt_class() forSelector:a2];
 }
 
-+ (id)changeRequestForKeyword:(id)a3
++ (id)changeRequestForKeyword:(id)keyword
 {
-  v3 = a3;
+  keywordCopy = keyword;
   v4 = [PHKeywordChangeRequest alloc];
-  v5 = [v3 uuid];
-  v6 = [v3 objectID];
+  uuid = [keywordCopy uuid];
+  objectID = [keywordCopy objectID];
 
-  v7 = [(PHKeywordChangeRequest *)v4 initWithUUID:v5 objectID:v6];
+  v7 = [(PHKeywordChangeRequest *)v4 initWithUUID:uuid objectID:objectID];
 
   return v7;
 }
 
 + (id)creationRequestForKeyword
 {
-  v2 = [[PHKeywordChangeRequest alloc] initForNewObject];
+  initForNewObject = [[PHKeywordChangeRequest alloc] initForNewObject];
 
-  return v2;
+  return initForNewObject;
 }
 
 @end

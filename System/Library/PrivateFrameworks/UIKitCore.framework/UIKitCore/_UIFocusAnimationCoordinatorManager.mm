@@ -1,11 +1,11 @@
 @interface _UIFocusAnimationCoordinatorManager
 + (id)activeCoordinatorMap;
-+ (id)animationCoordinatorForContext:(id)a3;
++ (id)animationCoordinatorForContext:(id)context;
 - (_UIFocusAnimationCoordinatorManager)init;
-- (id)willUpdateFocusInContext:(id)a3;
+- (id)willUpdateFocusInContext:(id)context;
 - (void)_performDelayedFocusingAnimationIfNecessary;
-- (void)_scheduleDelayedFocusingAnimationWithDelay:(double)a3;
-- (void)didUpdateFocusInContext:(id)a3 fromItem:(id)a4;
+- (void)_scheduleDelayedFocusingAnimationWithDelay:(double)delay;
+- (void)didUpdateFocusInContext:(id)context fromItem:(id)item;
 @end
 
 @implementation _UIFocusAnimationCoordinatorManager
@@ -25,13 +25,13 @@
 - (void)_performDelayedFocusingAnimationIfNecessary
 {
   [MEMORY[0x1E696AF00] cancelPreviousPerformRequestsWithTarget:self selector:a2 object:0];
-  v3 = [(_UIFocusAnimationCoordinatorManager *)self lastFocusingItemAnimationCoordinator];
-  if (v3)
+  lastFocusingItemAnimationCoordinator = [(_UIFocusAnimationCoordinatorManager *)self lastFocusingItemAnimationCoordinator];
+  if (lastFocusingItemAnimationCoordinator)
   {
-    v4 = v3;
-    [v3 _animateFocusAnimation:0];
+    v4 = lastFocusingItemAnimationCoordinator;
+    [lastFocusingItemAnimationCoordinator _animateFocusAnimation:0];
     [(_UIFocusAnimationCoordinatorManager *)self setLastFocusingItemAnimationCoordinator:0];
-    v3 = v4;
+    lastFocusingItemAnimationCoordinator = v4;
   }
 }
 
@@ -54,63 +54,63 @@
   return v2;
 }
 
-+ (id)animationCoordinatorForContext:(id)a3
++ (id)animationCoordinatorForContext:(id)context
 {
-  v4 = a3;
-  v5 = [a1 activeCoordinatorMap];
-  v6 = [v5 objectForKey:v4];
+  contextCopy = context;
+  activeCoordinatorMap = [self activeCoordinatorMap];
+  v6 = [activeCoordinatorMap objectForKey:contextCopy];
 
-  v7 = [v6 activeFocusAnimationCoordinator];
+  activeFocusAnimationCoordinator = [v6 activeFocusAnimationCoordinator];
 
-  return v7;
+  return activeFocusAnimationCoordinator;
 }
 
-- (id)willUpdateFocusInContext:(id)a3
+- (id)willUpdateFocusInContext:(id)context
 {
-  v5 = a3;
-  v6 = [_UIFocusAnimationCoordinatorManager animationCoordinatorForContext:v5];
+  contextCopy = context;
+  v6 = [_UIFocusAnimationCoordinatorManager animationCoordinatorForContext:contextCopy];
 
   if (v6)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_UIFocusAnimationCoordinatorManager.m" lineNumber:59 description:@"Unbalanced will/did update focus calls to focus animation manager."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusAnimationCoordinatorManager.m" lineNumber:59 description:@"Unbalanced will/did update focus calls to focus animation manager."];
   }
 
   [(_UIFocusAnimationCoordinatorManager *)self _performDelayedFocusingAnimationIfNecessary];
-  v7 = [(_UIFocusAnimationCoordinatorManager *)self activeFocusAnimationCoordinator];
-  if (v7)
+  activeFocusAnimationCoordinator = [(_UIFocusAnimationCoordinatorManager *)self activeFocusAnimationCoordinator];
+  if (activeFocusAnimationCoordinator)
   {
-    v8 = v7;
-    v9 = [(_UIFocusAnimationCoordinatorManager *)self inheritedAnimationCoordinatorActiveAnimationStack];
+    v8 = activeFocusAnimationCoordinator;
+    inheritedAnimationCoordinatorActiveAnimationStack = [(_UIFocusAnimationCoordinatorManager *)self inheritedAnimationCoordinatorActiveAnimationStack];
     v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "activeFocusAnimation")}];
-    [v9 addObject:v10];
+    [inheritedAnimationCoordinatorActiveAnimationStack addObject:v10];
   }
 
   else
   {
-    v8 = [[UIFocusAnimationCoordinator alloc] _initWithFocusUpdateContext:v5];
+    v8 = [[UIFocusAnimationCoordinator alloc] _initWithFocusUpdateContext:contextCopy];
     [(_UIFocusAnimationCoordinatorManager *)self setActiveFocusAnimationCoordinator:v8];
   }
 
-  v11 = [objc_opt_class() activeCoordinatorMap];
-  [v11 setObject:self forKey:v5];
+  activeCoordinatorMap = [objc_opt_class() activeCoordinatorMap];
+  [activeCoordinatorMap setObject:self forKey:contextCopy];
 
   return v8;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 fromItem:(id)a4
+- (void)didUpdateFocusInContext:(id)context fromItem:(id)item
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [_UIFocusAnimationCoordinatorManager animationCoordinatorForContext:v7];
+  contextCopy = context;
+  itemCopy = item;
+  v9 = [_UIFocusAnimationCoordinatorManager animationCoordinatorForContext:contextCopy];
   if (!v9)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"_UIFocusAnimationCoordinatorManager.m" lineNumber:79 description:@"Unbalanced will/did update focus calls to focus animation manager."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusAnimationCoordinatorManager.m" lineNumber:79 description:@"Unbalanced will/did update focus calls to focus animation manager."];
   }
 
-  v10 = [(_UIFocusAnimationCoordinatorManager *)self unfocusingItems];
-  v11 = [v7 nextFocusedItem];
+  unfocusingItems = [(_UIFocusAnimationCoordinatorManager *)self unfocusingItems];
+  nextFocusedItem = [contextCopy nextFocusedItem];
   v12 = CACurrentMediaTime();
   [(_UIFocusAnimationCoordinatorManager *)self lastFocusUpdateTime];
   v14 = v13;
@@ -125,9 +125,9 @@
   [v20 minimumFocusDuration];
   v22 = v21;
 
-  if (v11)
+  if (nextFocusedItem)
   {
-    [v10 removeObject:v11];
+    [unfocusingItems removeObject:nextFocusedItem];
   }
 
   [v9 _prepareForFocusAnimation:0];
@@ -135,7 +135,7 @@
   if (fabs(v19) < 2.22044605e-16 || v23 < 2.22044605e-16)
   {
     [v9 _animateFocusAnimation:{0, 2.22044605e-16, v23}];
-    if (!v8)
+    if (!itemCopy)
     {
       goto LABEL_15;
     }
@@ -145,7 +145,7 @@
   {
     [(_UIFocusAnimationCoordinatorManager *)self setLastFocusingItemAnimationCoordinator:v9, 2.22044605e-16, v23];
     [(_UIFocusAnimationCoordinatorManager *)self _scheduleDelayedFocusingAnimationWithDelay:v19];
-    if (!v8)
+    if (!itemCopy)
     {
       goto LABEL_15;
     }
@@ -154,8 +154,8 @@
   v25 = v12 - v14;
   if (v25 < v22)
   {
-    objc_initWeak(&location, v8);
-    [v10 addObject:v8];
+    objc_initWeak(&location, itemCopy);
+    [unfocusingItems addObject:itemCopy];
     v26 = dispatch_time(0, ((v22 - v25) * 1000000000.0));
     v34 = MEMORY[0x1E69E9820];
     v35 = 3221225472;
@@ -163,7 +163,7 @@
     v37 = &unk_1E7108028;
     v38 = v9;
     objc_copyWeak(&v40, &location);
-    v39 = v10;
+    v39 = unfocusingItems;
     dispatch_after(v26, MEMORY[0x1E69E96A0], &v34);
 
     objc_destroyWeak(&v40);
@@ -180,12 +180,12 @@ LABEL_16:
 
   if (v28)
   {
-    v29 = [(_UIFocusAnimationCoordinatorManager *)self inheritedAnimationCoordinatorActiveAnimationStack];
-    v30 = [v29 lastObject];
+    inheritedAnimationCoordinatorActiveAnimationStack = [(_UIFocusAnimationCoordinatorManager *)self inheritedAnimationCoordinatorActiveAnimationStack];
+    lastObject = [inheritedAnimationCoordinatorActiveAnimationStack lastObject];
 
-    [v9 _prepareForFocusAnimation:{objc_msgSend(v30, "integerValue")}];
-    v31 = [(_UIFocusAnimationCoordinatorManager *)self inheritedAnimationCoordinatorActiveAnimationStack];
-    [v31 removeLastObject];
+    [v9 _prepareForFocusAnimation:{objc_msgSend(lastObject, "integerValue")}];
+    inheritedAnimationCoordinatorActiveAnimationStack2 = [(_UIFocusAnimationCoordinatorManager *)self inheritedAnimationCoordinatorActiveAnimationStack];
+    [inheritedAnimationCoordinatorActiveAnimationStack2 removeLastObject];
   }
 
   else
@@ -193,17 +193,17 @@ LABEL_16:
     [(_UIFocusAnimationCoordinatorManager *)self setActiveFocusAnimationCoordinator:0];
   }
 
-  v32 = [objc_opt_class() activeCoordinatorMap];
-  [v32 removeObjectForKey:v7];
+  activeCoordinatorMap = [objc_opt_class() activeCoordinatorMap];
+  [activeCoordinatorMap removeObjectForKey:contextCopy];
 }
 
-- (void)_scheduleDelayedFocusingAnimationWithDelay:(double)a3
+- (void)_scheduleDelayedFocusingAnimationWithDelay:(double)delay
 {
   v6[1] = *MEMORY[0x1E69E9840];
   [MEMORY[0x1E696AF00] cancelPreviousPerformRequestsWithTarget:self selector:sel__performDelayedFocusingAnimationIfNecessary object:0];
   v6[0] = *MEMORY[0x1E695DA28];
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
-  [(_UIFocusAnimationCoordinatorManager *)self performSelector:sel__performDelayedFocusingAnimationIfNecessary withObject:0 afterDelay:v5 inModes:a3];
+  [(_UIFocusAnimationCoordinatorManager *)self performSelector:sel__performDelayedFocusingAnimationIfNecessary withObject:0 afterDelay:v5 inModes:delay];
 }
 
 @end

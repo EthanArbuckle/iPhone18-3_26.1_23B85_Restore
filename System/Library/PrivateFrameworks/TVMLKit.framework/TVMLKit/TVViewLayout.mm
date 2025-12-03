@@ -1,29 +1,29 @@
 @interface TVViewLayout
-+ (Class)layoutClassForElement:(id)a3;
-+ (id)layoutWithLayout:(id)a3 element:(id)a4;
++ (Class)layoutClassForElement:(id)element;
++ (id)layoutWithLayout:(id)layout element:(id)element;
 - (CGAffineTransform)focusTransform;
 - (TVViewLayout)init;
 - (UIEdgeInsets)focusMargin;
 - (UIEdgeInsets)margin;
 - (UIEdgeInsets)padding;
 - (double)focusSizeIncrease;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)tv_layoutPropertyGetterForStyle:(id)a3;
-- (id)tv_layoutPropertySetterForStyle:(id)a3;
-- (void)setFocusTransform:(CGAffineTransform *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)tv_layoutPropertyGetterForStyle:(id)style;
+- (id)tv_layoutPropertySetterForStyle:(id)style;
+- (void)setFocusTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation TVViewLayout
 
-- (id)tv_layoutPropertySetterForStyle:(id)a3
+- (id)tv_layoutPropertySetterForStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   if (tv_layoutPropertySetterForStyle__onceToken != -1)
   {
     [TVViewLayout(LayoutStyleAdditions) tv_layoutPropertySetterForStyle:];
   }
 
-  v5 = [tv_layoutPropertySetterForStyle__map objectForKeyedSubscript:v4];
+  v5 = [tv_layoutPropertySetterForStyle__map objectForKeyedSubscript:styleCopy];
   v6 = v5;
   if (v5)
   {
@@ -538,15 +538,15 @@ id __70__TVViewLayout_LayoutStyleAdditions__tv_layoutPropertySetterForStyle___bl
   return v4;
 }
 
-- (id)tv_layoutPropertyGetterForStyle:(id)a3
+- (id)tv_layoutPropertyGetterForStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   if (tv_layoutPropertyGetterForStyle__onceToken != -1)
   {
     [TVViewLayout(LayoutStyleAdditions) tv_layoutPropertyGetterForStyle:];
   }
 
-  v5 = [tv_layoutPropertyGetterForStyle__map objectForKeyedSubscript:v4];
+  v5 = [tv_layoutPropertyGetterForStyle__map objectForKeyedSubscript:styleCopy];
   v6 = v5;
   if (v5)
   {
@@ -1058,17 +1058,17 @@ id __70__TVViewLayout_LayoutStyleAdditions__tv_layoutPropertyGetterForStyle___bl
   return v4;
 }
 
-+ (Class)layoutClassForElement:(id)a3
++ (Class)layoutClassForElement:(id)element
 {
-  [a3 tv_elementType];
+  [element tv_elementType];
   v3 = objc_opt_class();
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setMargin:{self->_margin.top, self->_margin.left, self->_margin.bottom, self->_margin.right}];
   [v4 setPadding:{self->_padding.top, self->_padding.left, self->_padding.bottom, self->_padding.right}];
   [v4 setTintColor:self->_tintColor];
@@ -1100,212 +1100,212 @@ id __70__TVViewLayout_LayoutStyleAdditions__tv_layoutPropertyGetterForStyle___bl
   return v4;
 }
 
-+ (id)layoutWithLayout:(id)a3 element:(id)a4
++ (id)layoutWithLayout:(id)layout element:(id)element
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  layoutCopy = layout;
+  elementCopy = element;
+  if (!layoutCopy)
   {
-    v5 = objc_opt_new();
+    layoutCopy = objc_opt_new();
   }
 
-  v7 = [v6 style];
-  v8 = [v7 tv_valueForStyle:@"tv-tint-color"];
+  style = [elementCopy style];
+  v8 = [style tv_valueForStyle:@"tv-tint-color"];
 
   if (v8)
   {
-    v9 = [v7 tv_tintColor];
-    v10 = [v9 color];
+    tv_tintColor = [style tv_tintColor];
+    color = [tv_tintColor color];
 
-    [v5 setTintColor:v10];
-    [v5 setDarkTintColor:v10];
+    [layoutCopy setTintColor:color];
+    [layoutCopy setDarkTintColor:color];
   }
 
-  v11 = [v7 tv_valueForStyle:@"tv-dark-tint-color"];
+  v11 = [style tv_valueForStyle:@"tv-dark-tint-color"];
 
   if (v11)
   {
-    v12 = [v7 tv_darkTintColor];
-    v13 = [v12 color];
+    tv_darkTintColor = [style tv_darkTintColor];
+    color2 = [tv_darkTintColor color];
 
-    [v5 setDarkTintColor:v13];
+    [layoutCopy setDarkTintColor:color2];
   }
 
-  v14 = [v7 tv_valueForStyle:@"background-color"];
+  v14 = [style tv_valueForStyle:@"background-color"];
 
   if (v14)
   {
-    v15 = [v7 tv_backgroundColor];
-    v16 = [v15 color];
+    tv_backgroundColor = [style tv_backgroundColor];
+    color3 = [tv_backgroundColor color];
 
-    [v5 setBackgroundColor:v16];
-    [v5 setDarkBackgroundColor:v16];
+    [layoutCopy setBackgroundColor:color3];
+    [layoutCopy setDarkBackgroundColor:color3];
   }
 
-  v17 = [v7 tv_valueForStyle:@"margin"];
+  v17 = [style tv_valueForStyle:@"margin"];
 
   if (v17)
   {
-    [v7 tv_margin];
-    [v5 setMargin:?];
+    [style tv_margin];
+    [layoutCopy setMargin:?];
   }
 
-  v18 = [v7 tv_valueForStyle:@"tv-focus-margin"];
+  v18 = [style tv_valueForStyle:@"tv-focus-margin"];
 
   if (v18)
   {
-    [v7 tv_focusMargin];
-    [v5 setFocusMargin:?];
+    [style tv_focusMargin];
+    [layoutCopy setFocusMargin:?];
   }
 
-  v19 = [v7 tv_valueForStyle:@"padding"];
+  v19 = [style tv_valueForStyle:@"padding"];
 
   if (v19)
   {
-    [v7 tv_padding];
-    [v5 setPadding:?];
+    [style tv_padding];
+    [layoutCopy setPadding:?];
   }
 
-  v20 = [v7 tv_valueForStyle:@"tv-interitem-spacing"];
+  v20 = [style tv_valueForStyle:@"tv-interitem-spacing"];
 
   if (v20)
   {
-    [v7 tv_interitemSpacing];
-    [v5 setInteritemSpacing:?];
+    [style tv_interitemSpacing];
+    [layoutCopy setInteritemSpacing:?];
   }
 
-  v21 = [v7 tv_valueForStyle:@"tv-line-spacing"];
+  v21 = [style tv_valueForStyle:@"tv-line-spacing"];
 
   if (v21)
   {
-    [v7 tv_lineSpacing];
-    [v5 setLineSpacing:?];
+    [style tv_lineSpacing];
+    [layoutCopy setLineSpacing:?];
   }
 
-  v22 = [v7 tv_valueForStyle:@"tv-align"];
+  v22 = [style tv_valueForStyle:@"tv-align"];
 
   if (v22)
   {
-    [v5 setAlignment:{objc_msgSend(v7, "tv_alignment")}];
+    [layoutCopy setAlignment:{objc_msgSend(style, "tv_alignment")}];
   }
 
-  v23 = [v7 tv_valueForStyle:@"tv-content-align"];
+  v23 = [style tv_valueForStyle:@"tv-content-align"];
 
   if (v23)
   {
-    [v5 setContentAlignment:{objc_msgSend(v7, "tv_contentAlignment")}];
+    [layoutCopy setContentAlignment:{objc_msgSend(style, "tv_contentAlignment")}];
   }
 
-  v24 = [v7 tv_valueForStyle:@"tv-position"];
+  v24 = [style tv_valueForStyle:@"tv-position"];
 
   if (v24)
   {
-    [v5 setPosition:{objc_msgSend(v7, "tv_position")}];
+    [layoutCopy setPosition:{objc_msgSend(style, "tv_position")}];
   }
 
-  v25 = [v7 tv_valueForStyle:@"width"];
+  v25 = [style tv_valueForStyle:@"width"];
 
   if (v25)
   {
-    [v7 tv_width];
-    [v5 setWidth:?];
+    [style tv_width];
+    [layoutCopy setWidth:?];
   }
 
-  v26 = [v7 tv_valueForStyle:@"height"];
+  v26 = [style tv_valueForStyle:@"height"];
 
   if (v26)
   {
-    [v7 tv_height];
-    [v5 setHeight:?];
+    [style tv_height];
+    [layoutCopy setHeight:?];
   }
 
-  v27 = [v7 tv_valueForStyle:@"max-width"];
+  v27 = [style tv_valueForStyle:@"max-width"];
 
   if (v27)
   {
-    [v7 tv_maxWidth];
-    [v5 setMaxWidth:?];
+    [style tv_maxWidth];
+    [layoutCopy setMaxWidth:?];
   }
 
-  v28 = [v7 tv_valueForStyle:@"max-height"];
+  v28 = [style tv_valueForStyle:@"max-height"];
 
   if (v28)
   {
-    [v7 tv_maxHeight];
-    [v5 setMaxHeight:?];
+    [style tv_maxHeight];
+    [layoutCopy setMaxHeight:?];
   }
 
-  v29 = [v7 tv_valueForStyle:@"min-width"];
+  v29 = [style tv_valueForStyle:@"min-width"];
 
   if (v29)
   {
-    [v7 tv_minWidth];
-    [v5 setMinWidth:?];
+    [style tv_minWidth];
+    [layoutCopy setMinWidth:?];
   }
 
-  v30 = [v7 tv_valueForStyle:@"min-height"];
+  v30 = [style tv_valueForStyle:@"min-height"];
 
   if (v30)
   {
-    [v7 tv_minHeight];
-    [v5 setMinHeight:?];
+    [style tv_minHeight];
+    [layoutCopy setMinHeight:?];
   }
 
-  v31 = [v7 tv_valueForStyle:@"tv-highlight-color"];
+  v31 = [style tv_valueForStyle:@"tv-highlight-color"];
 
   if (v31)
   {
-    v32 = [v7 tv_highlightColor];
-    v33 = [v32 color];
-    [v5 setHighlightColor:v33];
+    tv_highlightColor = [style tv_highlightColor];
+    color4 = [tv_highlightColor color];
+    [layoutCopy setHighlightColor:color4];
   }
 
-  v34 = [v7 tv_valueForStyle:@"tv-focus-align"];
+  v34 = [style tv_valueForStyle:@"tv-focus-align"];
 
   if (v34)
   {
-    v35 = [v7 tv_focusAlign];
-    [v5 setFocusAlign:v35];
+    tv_focusAlign = [style tv_focusAlign];
+    [layoutCopy setFocusAlign:tv_focusAlign];
   }
 
-  v36 = [v7 tv_valueForStyle:@"tv-focus-size-increase"];
+  v36 = [style tv_valueForStyle:@"tv-focus-size-increase"];
 
   if (v36)
   {
-    [v7 tv_focusSizeIncrease];
-    [v5 setFocusSizeIncrease:?];
+    [style tv_focusSizeIncrease];
+    [layoutCopy setFocusSizeIncrease:?];
   }
 
-  v37 = [v7 tv_valueForStyle:@"tv-progress-style"];
+  v37 = [style tv_valueForStyle:@"tv-progress-style"];
 
   if (v37)
   {
-    v38 = [v7 tv_progressStyle];
-    [v5 setProgressStyle:v38];
+    tv_progressStyle = [style tv_progressStyle];
+    [layoutCopy setProgressStyle:tv_progressStyle];
   }
 
-  v39 = [v7 tv_valueForStyle:@"tv-accepts-focus"];
+  v39 = [style tv_valueForStyle:@"tv-accepts-focus"];
 
   if (v39)
   {
-    [v5 setAcceptsFocus:{objc_msgSend(v7, "tv_acceptsFocus")}];
+    [layoutCopy setAcceptsFocus:{objc_msgSend(style, "tv_acceptsFocus")}];
   }
 
-  v40 = [v7 tv_valueForStyle:@"tv-highlight-style"];
+  v40 = [style tv_valueForStyle:@"tv-highlight-style"];
 
   if (v40)
   {
-    v41 = [v7 tv_highlightStyle];
-    [v5 setHighlightStyle:v41];
+    tv_highlightStyle = [style tv_highlightStyle];
+    [layoutCopy setHighlightStyle:tv_highlightStyle];
   }
 
-  v42 = [v7 tv_valueForStyle:@"tv-focus-transform"];
+  v42 = [style tv_valueForStyle:@"tv-focus-transform"];
 
   if (v42)
   {
-    if (v7)
+    if (style)
     {
-      [v7 tv_focusTransform];
+      [style tv_focusTransform];
     }
 
     else
@@ -1315,18 +1315,18 @@ id __70__TVViewLayout_LayoutStyleAdditions__tv_layoutPropertyGetterForStyle___bl
       v46 = 0u;
     }
 
-    [v5 setFocusTransform:&v46];
+    [layoutCopy setFocusTransform:&v46];
   }
 
-  v43 = [v7 tv_valueForStyle:{@"tv-group", v46, v47, v48}];
+  v43 = [style tv_valueForStyle:{@"tv-group", v46, v47, v48}];
 
   if (v43)
   {
-    v44 = [v7 tv_group];
-    [v5 setGroup:v44];
+    tv_group = [style tv_group];
+    [layoutCopy setGroup:tv_group];
   }
 
-  return v5;
+  return layoutCopy;
 }
 
 - (TVViewLayout)init
@@ -1348,9 +1348,9 @@ id __70__TVViewLayout_LayoutStyleAdditions__tv_layoutPropertyGetterForStyle___bl
 
 - (double)focusSizeIncrease
 {
-  v3 = [(TVViewLayout *)self acceptsFocus];
+  acceptsFocus = [(TVViewLayout *)self acceptsFocus];
   result = 0.0;
-  if (v3)
+  if (acceptsFocus)
   {
     result = self->_focusSizeIncrease;
     if (result == 0.0)
@@ -1411,11 +1411,11 @@ id __70__TVViewLayout_LayoutStyleAdditions__tv_layoutPropertyGetterForStyle___bl
   return self;
 }
 
-- (void)setFocusTransform:(CGAffineTransform *)a3
+- (void)setFocusTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_focusTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_focusTransform.c = *&transform->c;
   *&self->_focusTransform.tx = v4;
   *&self->_focusTransform.a = v3;
 }

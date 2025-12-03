@@ -1,23 +1,23 @@
 @interface _ATXScoreInterpreterCoreMLModel
-+ (double)scoreForOutputValue:(id)a3 outputIndexedSubscript:(int64_t)a4;
-+ (id)coreMLModelForCoreMLModelName:(id)a3;
-- (_ATXScoreInterpreterCoreMLModel)initWithModelName:(id)a3 features:(id)a4 outputSpecification:(id)a5;
-- (double)predictionForEvaluatedFeatures:(id)a3 withOutputIndexedSubscript:(int64_t)a4;
-- (id)getArgumentsToEvaluateByInitializingInstanceVariablesFromFeatures:(id)a3 outputSpecification:(id)a4;
++ (double)scoreForOutputValue:(id)value outputIndexedSubscript:(int64_t)subscript;
++ (id)coreMLModelForCoreMLModelName:(id)name;
+- (_ATXScoreInterpreterCoreMLModel)initWithModelName:(id)name features:(id)features outputSpecification:(id)specification;
+- (double)predictionForEvaluatedFeatures:(id)features withOutputIndexedSubscript:(int64_t)subscript;
+- (id)getArgumentsToEvaluateByInitializingInstanceVariablesFromFeatures:(id)features outputSpecification:(id)specification;
 @end
 
 @implementation _ATXScoreInterpreterCoreMLModel
 
-- (_ATXScoreInterpreterCoreMLModel)initWithModelName:(id)a3 features:(id)a4 outputSpecification:(id)a5
+- (_ATXScoreInterpreterCoreMLModel)initWithModelName:(id)name features:(id)features outputSpecification:(id)specification
 {
-  v6 = a3;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = _ATXScoreInterpreterCoreMLModel;
   v7 = [(_ATXScoreInterpreterCoreMLModel *)&v14 init];
   if (v7)
   {
     v8 = objc_opt_new();
-    v9 = [_ATXScoreInterpreterCoreMLModel coreMLModelForCoreMLModelName:v6];
+    v9 = [_ATXScoreInterpreterCoreMLModel coreMLModelForCoreMLModelName:nameCopy];
     v10 = v8[1];
     v8[1] = v9;
 
@@ -29,10 +29,10 @@
   return v7;
 }
 
-+ (id)coreMLModelForCoreMLModelName:(id)a3
++ (id)coreMLModelForCoreMLModelName:(id)name
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CEB3C0] pathForResource:v3 ofType:@"mlmodelc" isDirectory:1];
+  nameCopy = name;
+  v4 = [MEMORY[0x277CEB3C0] pathForResource:nameCopy ofType:@"mlmodelc" isDirectory:1];
   if (v4)
   {
     v5 = MEMORY[0x277CBFF20];
@@ -46,7 +46,7 @@
       v9 = __atxlog_handle_default();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        [(_ATXScoreInterpreterCoreMLModel *)v3 coreMLModelForCoreMLModelName:v8, v9];
+        [(_ATXScoreInterpreterCoreMLModel *)nameCopy coreMLModelForCoreMLModelName:v8, v9];
       }
     }
   }
@@ -65,10 +65,10 @@
   return v7;
 }
 
-- (id)getArgumentsToEvaluateByInitializingInstanceVariablesFromFeatures:(id)a3 outputSpecification:(id)a4
+- (id)getArgumentsToEvaluateByInitializingInstanceVariablesFromFeatures:(id)features outputSpecification:(id)specification
 {
-  v6 = a4;
-  v7 = a3;
+  specificationCopy = specification;
+  featuresCopy = features;
   v8 = objc_opt_new();
   v9 = objc_opt_new();
   v22 = MEMORY[0x277D85DD0];
@@ -79,17 +79,17 @@
   v26 = v10;
   v11 = v8;
   v27 = v11;
-  [v7 enumerateKeysAndObjectsUsingBlock:&v22];
+  [featuresCopy enumerateKeysAndObjectsUsingBlock:&v22];
 
   v12 = [v11 copy];
   coreMLInputFeatures = self->_coreMLInputFeatures;
   self->_coreMLInputFeatures = v12;
 
-  v14 = [v6 objectForKeyedSubscript:@"outputName"];
+  v14 = [specificationCopy objectForKeyedSubscript:@"outputName"];
   coreMLModelOutputName = self->_coreMLModelOutputName;
   self->_coreMLModelOutputName = v14;
 
-  v16 = [v6 objectForKeyedSubscript:@"outputIndexedSubscript"];
+  v16 = [specificationCopy objectForKeyedSubscript:@"outputIndexedSubscript"];
 
   v17 = [v10 mutableCopy];
   v18 = v17;
@@ -110,9 +110,9 @@
   return v20;
 }
 
-- (double)predictionForEvaluatedFeatures:(id)a3 withOutputIndexedSubscript:(int64_t)a4
+- (double)predictionForEvaluatedFeatures:(id)features withOutputIndexedSubscript:(int64_t)subscript
 {
-  v6 = a3;
+  featuresCopy = features;
   v43 = 0;
   v44[0] = &v43;
   v44[1] = 0x3032000000;
@@ -122,7 +122,7 @@
   v7 = objc_alloc(MEMORY[0x277CBFED0]);
   v8 = (v44[0] + 40);
   obj = *(v44[0] + 40);
-  v9 = [v7 initWithDictionary:v6 error:&obj];
+  v9 = [v7 initWithDictionary:featuresCopy error:&obj];
   objc_storeStrong(v8, obj);
   if (*(v44[0] + 40))
   {
@@ -166,7 +166,7 @@
     else
     {
       v26 = [v37[5] featureValueForName:{self->_coreMLModelOutputName, v29, v30, v31, v32}];
-      [_ATXScoreInterpreterCoreMLModel scoreForOutputValue:v26 outputIndexedSubscript:a4];
+      [_ATXScoreInterpreterCoreMLModel scoreForOutputValue:v26 outputIndexedSubscript:subscript];
       v17 = v27;
     }
 
@@ -177,48 +177,48 @@
   return v17;
 }
 
-+ (double)scoreForOutputValue:(id)a3 outputIndexedSubscript:(int64_t)a4
++ (double)scoreForOutputValue:(id)value outputIndexedSubscript:(int64_t)subscript
 {
-  v5 = a3;
-  v6 = [v5 type];
-  v7 = v6;
-  if (v6 > 4)
+  valueCopy = value;
+  type = [valueCopy type];
+  v7 = type;
+  if (type > 4)
   {
-    if (v6 == 5)
+    if (type == 5)
     {
-      v10 = [v5 multiArrayValue];
-      v11 = [v10 objectAtIndexedSubscript:a4];
+      multiArrayValue = [valueCopy multiArrayValue];
+      v11 = [multiArrayValue objectAtIndexedSubscript:subscript];
       [v11 doubleValue];
-      v9 = v21;
+      int64Value = v21;
     }
 
     else
     {
-      if (v6 != 6)
+      if (type != 6)
       {
         goto LABEL_8;
       }
 
-      v10 = [v5 dictionaryValue];
-      v11 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-      v12 = [v10 objectForKeyedSubscript:v11];
+      multiArrayValue = [valueCopy dictionaryValue];
+      v11 = [MEMORY[0x277CCABB0] numberWithInteger:subscript];
+      v12 = [multiArrayValue objectForKeyedSubscript:v11];
       [v12 doubleValue];
-      v9 = v13;
+      int64Value = v13;
     }
 
     goto LABEL_14;
   }
 
-  if (v6 == 1)
+  if (type == 1)
   {
-    v9 = [v5 int64Value];
+    int64Value = [valueCopy int64Value];
     goto LABEL_14;
   }
 
-  if (v6 == 2)
+  if (type == 2)
   {
-    [v5 doubleValue];
-    v9 = v8;
+    [valueCopy doubleValue];
+    int64Value = v8;
     goto LABEL_14;
   }
 
@@ -229,10 +229,10 @@ LABEL_8:
     [(_ATXScoreInterpreterCoreMLModel *)v7 scoreForOutputValue:v14 outputIndexedSubscript:v15, v16, v17, v18, v19, v20];
   }
 
-  v9 = -31337.0;
+  int64Value = -31337.0;
 LABEL_14:
 
-  return v9;
+  return int64Value;
 }
 
 + (void)coreMLModelForCoreMLModelName:(os_log_t)log .cold.1(uint64_t a1, uint64_t a2, os_log_t log)

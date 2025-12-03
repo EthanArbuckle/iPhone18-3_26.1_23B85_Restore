@@ -1,10 +1,10 @@
 @interface MPCSample
-- (MPCSample)initWithLevel:(double)a3 time:(double)a4 state:(int64_t)a5;
+- (MPCSample)initWithLevel:(double)level time:(double)time state:(int64_t)state;
 @end
 
 @implementation MPCSample
 
-- (MPCSample)initWithLevel:(double)a3 time:(double)a4 state:(int64_t)a5
+- (MPCSample)initWithLevel:(double)level time:(double)time state:(int64_t)state
 {
   v10.receiver = self;
   v10.super_class = MPCSample;
@@ -12,10 +12,10 @@
   v9 = initWithLevel_time_state__number;
   if (result)
   {
-    result->_level = a3;
-    result->_time = a4;
+    result->_level = level;
+    result->_time = time;
     result->_number = v9;
-    result->_state = a5;
+    result->_state = state;
   }
 
   initWithLevel_time_state__number = v9 + 1;

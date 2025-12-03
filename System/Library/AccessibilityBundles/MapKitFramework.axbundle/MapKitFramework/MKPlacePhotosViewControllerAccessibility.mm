@@ -1,5 +1,5 @@
 @interface MKPlacePhotosViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnotateImageViews;
 - (void)_axAnnotateViews;
@@ -8,21 +8,21 @@
 
 @implementation MKPlacePhotosViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MKPlacePhotosViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"MKPlacePhotosViewController" hasInstanceVariable:@"_mapItem" withType:"MKMapItem"];
-  [v3 validateClass:@"MKPlacePhotosViewController" hasInstanceVariable:@"_externalView" withType:"UIView"];
-  [v3 validateClass:@"MKPlacePhotosViewController" hasInstanceVariable:@"_photoViews" withType:"NSArray"];
-  [v3 validateClass:@"MKPlacePhotosViewController" hasInstanceVariable:@"_photosContainer" withType:"UIView"];
-  [v3 validateClass:@"MKPlacePhotosViewController" hasInstanceVariable:@"_previousPageButton" withType:"UIButton"];
-  [v3 validateClass:@"MKPlacePhotosViewController" hasInstanceVariable:@"_nextPageButton" withType:"UIButton"];
-  [v3 validateClass:@"MKPlacePhotosViewController" hasInstanceMethod:@"_createImageViews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MKPlacePhotosViewController" hasInstanceVariable:@"_canUseFullscreenViewer" withType:"B"];
-  [v3 validateClass:@"MKMapItem" hasInstanceMethod:@"_photosAttribution" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_MKMapItemPhotosAttribution" isKindOfClass:@"_MKMapItemAttribution"];
-  [v3 validateClass:@"_MKMapItemAttribution" hasInstanceMethod:@"providerName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MKPlacePhotosViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"MKPlacePhotosViewController" hasInstanceVariable:@"_mapItem" withType:"MKMapItem"];
+  [validationsCopy validateClass:@"MKPlacePhotosViewController" hasInstanceVariable:@"_externalView" withType:"UIView"];
+  [validationsCopy validateClass:@"MKPlacePhotosViewController" hasInstanceVariable:@"_photoViews" withType:"NSArray"];
+  [validationsCopy validateClass:@"MKPlacePhotosViewController" hasInstanceVariable:@"_photosContainer" withType:"UIView"];
+  [validationsCopy validateClass:@"MKPlacePhotosViewController" hasInstanceVariable:@"_previousPageButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"MKPlacePhotosViewController" hasInstanceVariable:@"_nextPageButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"MKPlacePhotosViewController" hasInstanceMethod:@"_createImageViews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MKPlacePhotosViewController" hasInstanceVariable:@"_canUseFullscreenViewer" withType:"B"];
+  [validationsCopy validateClass:@"MKMapItem" hasInstanceMethod:@"_photosAttribution" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_MKMapItemPhotosAttribution" isKindOfClass:@"_MKMapItemAttribution"];
+  [validationsCopy validateClass:@"_MKMapItemAttribution" hasInstanceMethod:@"providerName" withFullSignature:{"@", 0}];
 }
 
 - (void)_axAnnotateViews
@@ -47,7 +47,7 @@
   v33 = *MEMORY[0x29EDCA608];
   v31 = 0;
   objc_opt_class();
-  v26 = self;
+  selfCopy = self;
   v3 = [(MKPlacePhotosViewControllerAccessibility *)self safeValueForKey:@"_mapItem"];
   v4 = [v3 safeValueForKey:@"_photosAttribution"];
   v5 = [v4 safeValueForKey:@"providerName"];
@@ -66,12 +66,12 @@
     v25 = AXMapKitLocString(@"REVIEW_PHOTO");
   }
 
-  v9 = [(MKPlacePhotosViewControllerAccessibility *)v26 _axPhotoViews];
+  _axPhotoViews = [(MKPlacePhotosViewControllerAccessibility *)selfCopy _axPhotoViews];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  v10 = [_axPhotoViews countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v10)
   {
     v11 = v10;
@@ -85,7 +85,7 @@
       {
         if (*v28 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(_axPhotoViews);
         }
 
         v17 = *(*(&v27 + 1) + 8 * i);
@@ -94,7 +94,7 @@
         {
           [v17 setIsAccessibilityElement:1];
           [v17 setAccessibilityLabel:v25];
-          if ([(MKPlacePhotosViewControllerAccessibility *)v26 safeBoolForKey:@"_canUseFullscreenViewer"])
+          if ([(MKPlacePhotosViewControllerAccessibility *)selfCopy safeBoolForKey:@"_canUseFullscreenViewer"])
           {
             v18 = v14;
           }
@@ -108,14 +108,14 @@
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v11 = [_axPhotoViews countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
     while (v11);
   }
 
-  v19 = v9;
-  v20 = [(MKPlacePhotosViewControllerAccessibility *)v26 safeValueForKey:@"_externalView"];
+  v19 = _axPhotoViews;
+  v20 = [(MKPlacePhotosViewControllerAccessibility *)selfCopy safeValueForKey:@"_externalView"];
   v21 = v19;
   if (v20)
   {
@@ -123,7 +123,7 @@
     [v21 insertObject:v20 atIndex:0];
   }
 
-  v22 = [(MKPlacePhotosViewControllerAccessibility *)v26 safeUIViewForKey:@"_photosContainer"];
+  v22 = [(MKPlacePhotosViewControllerAccessibility *)selfCopy safeUIViewForKey:@"_photosContainer"];
   [v22 setAccessibilityElements:v21];
 
   v23 = *MEMORY[0x29EDCA608];

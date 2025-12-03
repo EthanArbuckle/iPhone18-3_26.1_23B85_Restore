@@ -1,7 +1,7 @@
 @interface BLSHSceneEnvironmentObserverToken
-+ (id)tokenWithObserver:(id)a3 sceneIdentityToken:(id)a4;
-- (BLSHSceneEnvironmentObserverToken)initWithObserver:(id)a3 sceneIdentityToken:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)tokenWithObserver:(id)observer sceneIdentityToken:(id)token;
+- (BLSHSceneEnvironmentObserverToken)initWithObserver:(id)observer sceneIdentityToken:(id)token;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -10,52 +10,52 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
+  builder = [MEMORY[0x277CF0C40] builder];
   WeakRetained = objc_loadWeakRetained(&self->_observer);
-  v5 = [v3 appendPointer:WeakRetained];
+  v5 = [builder appendPointer:WeakRetained];
 
-  v6 = [v3 appendObject:self->_sceneIdentityToken];
-  v7 = [v3 hash];
+  v6 = [builder appendObject:self->_sceneIdentityToken];
+  v7 = [builder hash];
 
   return v7;
 }
 
-+ (id)tokenWithObserver:(id)a3 sceneIdentityToken:(id)a4
++ (id)tokenWithObserver:(id)observer sceneIdentityToken:(id)token
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithObserver:v7 sceneIdentityToken:v6];
+  tokenCopy = token;
+  observerCopy = observer;
+  v8 = [[self alloc] initWithObserver:observerCopy sceneIdentityToken:tokenCopy];
 
   return v8;
 }
 
-- (BLSHSceneEnvironmentObserverToken)initWithObserver:(id)a3 sceneIdentityToken:(id)a4
+- (BLSHSceneEnvironmentObserverToken)initWithObserver:(id)observer sceneIdentityToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  tokenCopy = token;
   v11.receiver = self;
   v11.super_class = BLSHSceneEnvironmentObserverToken;
   v8 = [(BLSHSceneEnvironmentObserverToken *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_observer, v6);
-    objc_storeStrong(&v9->_sceneIdentityToken, a4);
+    objc_storeWeak(&v8->_observer, observerCopy);
+    objc_storeStrong(&v9->_sceneIdentityToken, token);
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   WeakRetained = objc_loadWeakRetained(&self->_observer);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __45__BLSHSceneEnvironmentObserverToken_isEqual___block_invoke;
   v18[3] = &unk_27841E868;
-  v7 = v4;
+  v7 = equalCopy;
   v19 = v7;
   v8 = [v5 appendPointer:WeakRetained counterpart:v18];
 
@@ -87,7 +87,7 @@ id __45__BLSHSceneEnvironmentObserverToken_isEqual___block_invoke(uint64_t a1)
   v9 = __48__BLSHSceneEnvironmentObserverToken_description__block_invoke;
   v10 = &unk_27841E538;
   v11 = v3;
-  v12 = self;
+  selfCopy = self;
   v4 = v3;
   [v4 appendProem:self block:&v7];
   v5 = [v4 description];

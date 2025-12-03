@@ -1,26 +1,26 @@
 @interface ASRSchemaASRIntermediateUtteranceInfoTier1
-- (ASRSchemaASRIntermediateUtteranceInfoTier1)initWithDictionary:(id)a3;
-- (ASRSchemaASRIntermediateUtteranceInfoTier1)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASRIntermediateUtteranceInfoTier1)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRIntermediateUtteranceInfoTier1)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRIntermediateUtteranceInfoTier1
 
-- (ASRSchemaASRIntermediateUtteranceInfoTier1)initWithDictionary:(id)a3
+- (ASRSchemaASRIntermediateUtteranceInfoTier1)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = ASRSchemaASRIntermediateUtteranceInfoTier1;
   v5 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"unrepairedPostItn"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"unrepairedPostItn"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)v5 setUnrepairedPostItn:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"phoneticMatchInput"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"phoneticMatchInput"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)v5 setPhoneticMatchInput:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"phoneticMatchOutput"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"phoneticMatchOutput"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)v5 setPhoneticMatchOutput:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"loggableSharedUserId"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"loggableSharedUserId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)v5 setLoggableSharedUserId:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"loggableUserIdHash"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"loggableUserIdHash"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,30 +66,30 @@
   return v5;
 }
 
-- (ASRSchemaASRIntermediateUtteranceInfoTier1)initWithJSON:(id)a3
+- (ASRSchemaASRIntermediateUtteranceInfoTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -102,45 +102,45 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_loggableSharedUserId)
   {
-    v4 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self loggableSharedUserId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"loggableSharedUserId"];
+    loggableSharedUserId = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self loggableSharedUserId];
+    v5 = [loggableSharedUserId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"loggableSharedUserId"];
   }
 
   if (self->_loggableUserIdHash)
   {
-    v6 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self loggableUserIdHash];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"loggableUserIdHash"];
+    loggableUserIdHash = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self loggableUserIdHash];
+    v7 = [loggableUserIdHash copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"loggableUserIdHash"];
   }
 
   if (self->_phoneticMatchInput)
   {
-    v8 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self phoneticMatchInput];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"phoneticMatchInput"];
+    phoneticMatchInput = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self phoneticMatchInput];
+    v9 = [phoneticMatchInput copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"phoneticMatchInput"];
   }
 
   if (self->_phoneticMatchOutput)
   {
-    v10 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self phoneticMatchOutput];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"phoneticMatchOutput"];
+    phoneticMatchOutput = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self phoneticMatchOutput];
+    v11 = [phoneticMatchOutput copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"phoneticMatchOutput"];
   }
 
   if (self->_unrepairedPostItn)
   {
-    v12 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self unrepairedPostItn];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"unrepairedPostItn"];
+    unrepairedPostItn = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self unrepairedPostItn];
+    v13 = [unrepairedPostItn copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"unrepairedPostItn"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -152,28 +152,28 @@
   return v6 ^ [(NSString *)self->_loggableUserIdHash hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self unrepairedPostItn];
-  v6 = [v4 unrepairedPostItn];
-  if ((v5 != 0) == (v6 == 0))
+  unrepairedPostItn = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self unrepairedPostItn];
+  unrepairedPostItn2 = [equalCopy unrepairedPostItn];
+  if ((unrepairedPostItn != 0) == (unrepairedPostItn2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self unrepairedPostItn];
-  if (v7)
+  unrepairedPostItn3 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self unrepairedPostItn];
+  if (unrepairedPostItn3)
   {
-    v8 = v7;
-    v9 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self unrepairedPostItn];
-    v10 = [v4 unrepairedPostItn];
-    v11 = [v9 isEqual:v10];
+    v8 = unrepairedPostItn3;
+    unrepairedPostItn4 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self unrepairedPostItn];
+    unrepairedPostItn5 = [equalCopy unrepairedPostItn];
+    v11 = [unrepairedPostItn4 isEqual:unrepairedPostItn5];
 
     if (!v11)
     {
@@ -185,20 +185,20 @@
   {
   }
 
-  v5 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self phoneticMatchInput];
-  v6 = [v4 phoneticMatchInput];
-  if ((v5 != 0) == (v6 == 0))
+  unrepairedPostItn = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self phoneticMatchInput];
+  unrepairedPostItn2 = [equalCopy phoneticMatchInput];
+  if ((unrepairedPostItn != 0) == (unrepairedPostItn2 == 0))
   {
     goto LABEL_26;
   }
 
-  v12 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self phoneticMatchInput];
-  if (v12)
+  phoneticMatchInput = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self phoneticMatchInput];
+  if (phoneticMatchInput)
   {
-    v13 = v12;
-    v14 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self phoneticMatchInput];
-    v15 = [v4 phoneticMatchInput];
-    v16 = [v14 isEqual:v15];
+    v13 = phoneticMatchInput;
+    phoneticMatchInput2 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self phoneticMatchInput];
+    phoneticMatchInput3 = [equalCopy phoneticMatchInput];
+    v16 = [phoneticMatchInput2 isEqual:phoneticMatchInput3];
 
     if (!v16)
     {
@@ -210,20 +210,20 @@
   {
   }
 
-  v5 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self phoneticMatchOutput];
-  v6 = [v4 phoneticMatchOutput];
-  if ((v5 != 0) == (v6 == 0))
+  unrepairedPostItn = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self phoneticMatchOutput];
+  unrepairedPostItn2 = [equalCopy phoneticMatchOutput];
+  if ((unrepairedPostItn != 0) == (unrepairedPostItn2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self phoneticMatchOutput];
-  if (v17)
+  phoneticMatchOutput = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self phoneticMatchOutput];
+  if (phoneticMatchOutput)
   {
-    v18 = v17;
-    v19 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self phoneticMatchOutput];
-    v20 = [v4 phoneticMatchOutput];
-    v21 = [v19 isEqual:v20];
+    v18 = phoneticMatchOutput;
+    phoneticMatchOutput2 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self phoneticMatchOutput];
+    phoneticMatchOutput3 = [equalCopy phoneticMatchOutput];
+    v21 = [phoneticMatchOutput2 isEqual:phoneticMatchOutput3];
 
     if (!v21)
     {
@@ -235,20 +235,20 @@
   {
   }
 
-  v5 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self loggableSharedUserId];
-  v6 = [v4 loggableSharedUserId];
-  if ((v5 != 0) == (v6 == 0))
+  unrepairedPostItn = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self loggableSharedUserId];
+  unrepairedPostItn2 = [equalCopy loggableSharedUserId];
+  if ((unrepairedPostItn != 0) == (unrepairedPostItn2 == 0))
   {
     goto LABEL_26;
   }
 
-  v22 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self loggableSharedUserId];
-  if (v22)
+  loggableSharedUserId = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self loggableSharedUserId];
+  if (loggableSharedUserId)
   {
-    v23 = v22;
-    v24 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self loggableSharedUserId];
-    v25 = [v4 loggableSharedUserId];
-    v26 = [v24 isEqual:v25];
+    v23 = loggableSharedUserId;
+    loggableSharedUserId2 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self loggableSharedUserId];
+    loggableSharedUserId3 = [equalCopy loggableSharedUserId];
+    v26 = [loggableSharedUserId2 isEqual:loggableSharedUserId3];
 
     if (!v26)
     {
@@ -260,12 +260,12 @@
   {
   }
 
-  v5 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self loggableUserIdHash];
-  v6 = [v4 loggableUserIdHash];
-  if ((v5 != 0) != (v6 == 0))
+  unrepairedPostItn = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self loggableUserIdHash];
+  unrepairedPostItn2 = [equalCopy loggableUserIdHash];
+  if ((unrepairedPostItn != 0) != (unrepairedPostItn2 == 0))
   {
-    v27 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self loggableUserIdHash];
-    if (!v27)
+    loggableUserIdHash = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self loggableUserIdHash];
+    if (!loggableUserIdHash)
     {
 
 LABEL_30:
@@ -273,10 +273,10 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v28 = v27;
-    v29 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self loggableUserIdHash];
-    v30 = [v4 loggableUserIdHash];
-    v31 = [v29 isEqual:v30];
+    v28 = loggableUserIdHash;
+    loggableUserIdHash2 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self loggableUserIdHash];
+    loggableUserIdHash3 = [equalCopy loggableUserIdHash];
+    v31 = [loggableUserIdHash2 isEqual:loggableUserIdHash3];
 
     if (v31)
     {
@@ -296,89 +296,89 @@ LABEL_28:
   return v32;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
-  v4 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self unrepairedPostItn];
+  toCopy = to;
+  unrepairedPostItn = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self unrepairedPostItn];
 
-  if (v4)
+  if (unrepairedPostItn)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self phoneticMatchInput];
+  phoneticMatchInput = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self phoneticMatchInput];
 
-  if (v5)
+  if (phoneticMatchInput)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self phoneticMatchOutput];
+  phoneticMatchOutput = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self phoneticMatchOutput];
 
-  if (v6)
+  if (phoneticMatchOutput)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self loggableSharedUserId];
+  loggableSharedUserId = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self loggableSharedUserId];
 
-  if (v7)
+  if (loggableSharedUserId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self loggableUserIdHash];
+  loggableUserIdHash = [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self loggableUserIdHash];
 
-  v9 = v10;
-  if (v8)
+  v9 = toCopy;
+  if (loggableUserIdHash)
   {
     PBDataWriterWriteStringField();
-    v9 = v10;
+    v9 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v7.receiver = self;
   v7.super_class = ASRSchemaASRIntermediateUtteranceInfoTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self deleteUnrepairedPostItn];
     [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self deletePhoneticMatchInput];
     [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self deletePhoneticMatchOutput];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self deleteUnrepairedPostItn];
     [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self deletePhoneticMatchInput];
     [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self deletePhoneticMatchOutput];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self deleteUnrepairedPostItn];
     [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self deletePhoneticMatchInput];
     [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self deletePhoneticMatchOutput];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self deleteUnrepairedPostItn];
     [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self deletePhoneticMatchInput];
     [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self deletePhoneticMatchOutput];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self deleteUnrepairedPostItn];
     [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self deletePhoneticMatchInput];
     [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self deletePhoneticMatchOutput];
   }
 
-  if ([v4 isConditionSet:8])
+  if ([policyCopy isConditionSet:8])
   {
     [(ASRSchemaASRIntermediateUtteranceInfoTier1 *)self deleteLoggableSharedUserId];
   }

@@ -1,10 +1,10 @@
 @interface StatusBarSpinnerController
 - (StatusBarSpinnerController)init;
 - (void)_updateProgressIndicator;
-- (void)didFailLoadingResource:(id)a3;
+- (void)didFailLoadingResource:(id)resource;
 - (void)didStartLoadingResource;
 - (void)didStopLoadingResource;
-- (void)updateProgressWithResource:(id)a3;
+- (void)updateProgressWithResource:(id)resource;
 @end
 
 @implementation StatusBarSpinnerController
@@ -44,16 +44,16 @@
   }
 }
 
-- (void)updateProgressWithResource:(id)a3
+- (void)updateProgressWithResource:(id)resource
 {
-  v4 = a3;
-  v5 = v4;
+  resourceCopy = resource;
+  v5 = resourceCopy;
   if (self->_enabled)
   {
-    obj = v4;
-    v6 = [v4 isActive];
+    obj = resourceCopy;
+    isActive = [resourceCopy isActive];
     v5 = obj;
-    if (v6)
+    if (isActive)
     {
       [obj estimatedProgress];
       v8 = v7;
@@ -81,9 +81,9 @@ LABEL_13:
   }
 }
 
-- (void)didFailLoadingResource:(id)a3
+- (void)didFailLoadingResource:(id)resource
 {
-  if ([a3 isActive])
+  if ([resource isActive])
   {
 
     [(StatusBarSpinnerController *)self _setResourcesLoading:0];

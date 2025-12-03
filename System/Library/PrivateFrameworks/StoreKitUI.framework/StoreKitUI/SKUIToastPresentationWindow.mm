@@ -2,8 +2,8 @@
 - (SKUIToastPresentationWindow)init;
 - (id)_presentationViewController;
 - (void)init;
-- (void)presentAlertController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)presentAlertController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation SKUIToastPresentationWindow
@@ -22,11 +22,11 @@
   if (v3)
   {
     [(SKUIToastPresentationWindow *)v3 setOpaque:0];
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(SKUIToastPresentationWindow *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SKUIToastPresentationWindow *)v4 setBackgroundColor:clearColor];
 
-    v6 = [MEMORY[0x277D759A0] mainScreen];
-    [(SKUIToastPresentationWindow *)v4 setScreen:v6];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [(SKUIToastPresentationWindow *)v4 setScreen:mainScreen];
 
     [(SKUIToastPresentationWindow *)v4 setWindowLevel:*MEMORY[0x277D772A8]];
     [(SKUIToastPresentationWindow *)v4 setHidden:1];
@@ -35,19 +35,19 @@
   return v4;
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(SKUIToastPresentationWindow *)self _presentationViewController];
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
+  _presentationViewController = [(SKUIToastPresentationWindow *)self _presentationViewController];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __73__SKUIToastPresentationWindow_presentViewController_animated_completion___block_invoke;
   v12[3] = &unk_2781F9990;
-  v13 = v8;
-  v11 = v8;
-  [v10 presentViewController:v9 animated:v5 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [_presentationViewController presentViewController:controllerCopy animated:animatedCopy completion:v12];
 }
 
 uint64_t __73__SKUIToastPresentationWindow_presentViewController_animated_completion___block_invoke(uint64_t a1)
@@ -61,32 +61,32 @@ uint64_t __73__SKUIToastPresentationWindow_presentViewController_animated_comple
   return result;
 }
 
-- (void)presentAlertController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentAlertController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v11 = a3;
-  v8 = a5;
-  v9 = [(SKUIToastPresentationWindow *)self _presentationViewController];
-  v10 = [v9 presentedViewController];
-  if (v10)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  _presentationViewController = [(SKUIToastPresentationWindow *)self _presentationViewController];
+  presentedViewController = [_presentationViewController presentedViewController];
+  if (presentedViewController)
   {
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, v10 == v11);
+      completionCopy[2](completionCopy, presentedViewController == controllerCopy);
     }
   }
 
   else
   {
-    [(SKUIToastPresentationWindow *)self presentViewController:v11 animated:v6 completion:v8];
+    [(SKUIToastPresentationWindow *)self presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
   }
 }
 
 - (id)_presentationViewController
 {
-  v3 = [(SKUIToastPresentationWindow *)self rootViewController];
+  rootViewController = [(SKUIToastPresentationWindow *)self rootViewController];
 
-  if (!v3)
+  if (!rootViewController)
   {
     v4 = objc_alloc_init(MEMORY[0x277D75150]);
     [v4 setSizesWindowToScene:1];

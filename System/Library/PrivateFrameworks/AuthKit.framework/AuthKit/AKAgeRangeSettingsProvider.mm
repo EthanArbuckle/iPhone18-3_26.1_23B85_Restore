@@ -1,6 +1,6 @@
 @interface AKAgeRangeSettingsProvider
 - (AKAgeRangeSettingsProvider)init;
-- (void)refreshAgeRangeWithCompletion:(id)a3;
+- (void)refreshAgeRangeWithCompletion:(id)completion;
 @end
 
 @implementation AKAgeRangeSettingsProvider
@@ -30,12 +30,12 @@
   return v7;
 }
 
-- (void)refreshAgeRangeWithCompletion:(id)a3
+- (void)refreshAgeRangeWithCompletion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v14 = _AKLogSystem();
   v13 = 2;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -47,7 +47,7 @@
   }
 
   objc_storeStrong(&v14, 0);
-  authController = v16->_authController;
+  authController = selfCopy->_authController;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;

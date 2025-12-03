@@ -1,18 +1,18 @@
 @interface SearchUIStoreButtonItemGenerator
-- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)a3 completion:(id)a4;
+- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)item completion:(id)completion;
 @end
 
 @implementation SearchUIStoreButtonItemGenerator
 
-- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)a3 completion:(id)a4
+- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)item completion:(id)completion
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SearchUIButtonItemGenerator *)self delegate];
-  if ([v8 deviceIsAuthenticated])
+  itemCopy = item;
+  completionCopy = completion;
+  delegate = [(SearchUIButtonItemGenerator *)self delegate];
+  if ([delegate deviceIsAuthenticated])
   {
-    v9 = [[SearchUIButtonItem alloc] initWithSFButtonItem:v6];
+    v9 = [[SearchUIButtonItem alloc] initWithSFButtonItem:itemCopy];
   }
 
   else
@@ -27,12 +27,12 @@
   {
     v12[0] = v9;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-    v7[2](v7, v11, 1);
+    completionCopy[2](completionCopy, v11, 1);
   }
 
   else
   {
-    v7[2](v7, 0, 1);
+    completionCopy[2](completionCopy, 0, 1);
   }
 }
 

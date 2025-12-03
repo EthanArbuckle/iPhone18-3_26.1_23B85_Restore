@@ -2,9 +2,9 @@
 + (AXLTLiveTranscription)sharedInstance;
 - (AXLTLiveTranscription)init;
 - (AXLTLiveTranscriptionDelegate)delegate;
-- (void)audioInfoData:(id)a3;
-- (void)resetTranscribing:(int64_t)a3;
-- (void)transcriberOutputData:(id)a3;
+- (void)audioInfoData:(id)data;
+- (void)resetTranscribing:(int64_t)transcribing;
+- (void)transcriberOutputData:(id)data;
 @end
 
 @implementation AXLTLiveTranscription
@@ -50,83 +50,83 @@ uint64_t __39__AXLTLiveTranscription_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)resetTranscribing:(int64_t)a3
+- (void)resetTranscribing:(int64_t)transcribing
 {
   v5 = AXLogLiveTranscription();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(AXLTLiveTranscription *)a3 resetTranscribing:v5];
+    [(AXLTLiveTranscription *)transcribing resetTranscribing:v5];
   }
 
-  if (a3 == 1)
+  if (transcribing == 1)
   {
-    v6 = +[AXLTAudioOutManager sharedInstance];
+    speechTranscriber = +[AXLTAudioOutManager sharedInstance];
   }
 
   else
   {
-    if (a3)
+    if (transcribing)
     {
       return;
     }
 
-    v6 = [(AXLTLiveTranscription *)self speechTranscriber];
+    speechTranscriber = [(AXLTLiveTranscription *)self speechTranscriber];
   }
 
-  v7 = v6;
-  [v6 resetTranscription];
+  v7 = speechTranscriber;
+  [speechTranscriber resetTranscription];
 }
 
-- (void)transcriberOutputData:(id)a3
+- (void)transcriberOutputData:(id)data
 {
-  v4 = a3;
-  v5 = -[AXLTLiveTranscription _receiverKeyForRequestType:targetPID:](self, "_receiverKeyForRequestType:targetPID:", [v4 requestType], objc_msgSend(v4, "pid"));
+  dataCopy = data;
+  v5 = -[AXLTLiveTranscription _receiverKeyForRequestType:targetPID:](self, "_receiverKeyForRequestType:targetPID:", [dataCopy requestType], objc_msgSend(dataCopy, "pid"));
   v6 = AXLogLiveTranscription();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [AXLTLiveTranscription transcriberOutputData:];
   }
 
-  v7 = [(AXLTLiveTranscription *)self dataReceivers];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  dataReceivers = [(AXLTLiveTranscription *)self dataReceivers];
+  v8 = [dataReceivers objectForKeyedSubscript:v5];
 
   if (v8)
   {
-    v9 = [v8 callbackBlock];
-    (v9)[2](v9, v4);
+    callbackBlock = [v8 callbackBlock];
+    (callbackBlock)[2](callbackBlock, dataCopy);
   }
 }
 
-- (void)audioInfoData:(id)a3
+- (void)audioInfoData:(id)data
 {
-  v4 = a3;
-  v5 = -[AXLTLiveTranscription _receiverKeyForRequestType:targetPID:](self, "_receiverKeyForRequestType:targetPID:", [v4 requestType], objc_msgSend(v4, "pid"));
+  dataCopy = data;
+  v5 = -[AXLTLiveTranscription _receiverKeyForRequestType:targetPID:](self, "_receiverKeyForRequestType:targetPID:", [dataCopy requestType], objc_msgSend(dataCopy, "pid"));
   v6 = AXLogLiveTranscription();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [AXLTLiveTranscription audioInfoData:];
   }
 
-  v7 = [(AXLTLiveTranscription *)self dataReceivers];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  dataReceivers = [(AXLTLiveTranscription *)self dataReceivers];
+  v8 = [dataReceivers objectForKeyedSubscript:v5];
 
   if (v8)
   {
-    v9 = [v8 audioInfoBlock];
+    audioInfoBlock = [v8 audioInfoBlock];
 
-    if (v9)
+    if (audioInfoBlock)
     {
-      v10 = [v8 audioInfoBlock];
-      (v10)[2](v10, v4);
+      audioInfoBlock2 = [v8 audioInfoBlock];
+      (audioInfoBlock2)[2](audioInfoBlock2, dataCopy);
     }
   }
 
-  v11 = [(AXLTLiveTranscription *)self delegate];
+  delegate = [(AXLTLiveTranscription *)self delegate];
 
-  if (v11)
+  if (delegate)
   {
-    v12 = [(AXLTLiveTranscription *)self delegate];
-    [v12 liveTranscriptionAudioInfoDataArrived:v4];
+    delegate2 = [(AXLTLiveTranscription *)self delegate];
+    [delegate2 liveTranscriptionAudioInfoDataArrived:dataCopy];
   }
 }
 

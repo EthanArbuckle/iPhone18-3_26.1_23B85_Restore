@@ -1,15 +1,15 @@
 @interface PDCKBootstrap
-- (BOOL)isSubscribedTo:(id)a3;
+- (BOOL)isSubscribedTo:(id)to;
 - (BOOL)maySyncWithProgressZone;
 - (BOOL)maySyncWithSurveyAnswerZone;
 - (BOOL)maySyncWithTeacherZone;
-- (BOOL)writeZoneNamesForUserID:(id)a3;
+- (BOOL)writeZoneNamesForUserID:(id)d;
 - (void)cleanupStaleZoneInfo;
-- (void)createMissingZones:(id)a3;
+- (void)createMissingZones:(id)zones;
 - (void)createRecordZonesIfNeeded;
 - (void)execute;
 - (void)markAsBootstrapped;
-- (void)setSubscribed:(BOOL)a3 toSubscriptionWithID:(id)a4;
+- (void)setSubscribed:(BOOL)subscribed toSubscriptionWithID:(id)d;
 - (void)setupZones;
 - (void)subscribeToZonesIfNeeded;
 @end
@@ -18,8 +18,8 @@
 
 - (BOOL)maySyncWithProgressZone
 {
-  v2 = [(PDOperation *)self database];
-  v3 = sub_100043B24(v2);
+  database = [(PDOperation *)self database];
+  v3 = sub_100043B24(database);
 
   if (v3)
   {
@@ -44,11 +44,11 @@
 
 - (BOOL)maySyncWithTeacherZone
 {
-  v2 = [(PDOperation *)self database];
-  v3 = v2;
-  if (v2)
+  database = [(PDOperation *)self database];
+  v3 = database;
+  if (database)
   {
-    v4 = (sub_1000717E8(v2) >> 1) & 1;
+    v4 = (sub_1000717E8(database) >> 1) & 1;
   }
 
   else
@@ -61,11 +61,11 @@
 
 - (BOOL)maySyncWithSurveyAnswerZone
 {
-  v2 = [(PDOperation *)self database];
-  v3 = v2;
-  if (v2)
+  database = [(PDOperation *)self database];
+  v3 = database;
+  if (database)
   {
-    v4 = sub_1000717E8(v2) & 1;
+    v4 = sub_1000717E8(database) & 1;
   }
 
   else
@@ -94,13 +94,13 @@
 
 - (void)cleanupStaleZoneInfo
 {
-  v3 = [(PDOperation *)self database];
+  database = [(PDOperation *)self database];
   if (![(PDCKBootstrap *)self maySyncWithProgressZone])
   {
     v4 = objc_opt_class();
     v15 = @"PDCK_ClassKitZoneName";
     v5 = [NSArray arrayWithObjects:&v15 count:1];
-    [v3 deleteAll:v4 where:@"name = ?" bindings:v5];
+    [database deleteAll:v4 where:@"name = ?" bindings:v5];
   }
 
   if (![(PDCKBootstrap *)self maySyncWithTeacherZone])
@@ -108,7 +108,7 @@
     v6 = objc_opt_class();
     v14 = @"PDCK_TeacherZoneName";
     v7 = [NSArray arrayWithObjects:&v14 count:1];
-    [v3 deleteAll:v6 where:@"name = ?" bindings:v7];
+    [database deleteAll:v6 where:@"name = ?" bindings:v7];
   }
 
   if (![(PDCKBootstrap *)self maySyncWithAssetZone])
@@ -116,7 +116,7 @@
     v8 = objc_opt_class();
     v13 = @"PDCK_ClassKitSharedAssetZone";
     v9 = [NSArray arrayWithObjects:&v13 count:1];
-    [v3 deleteAll:v8 where:@"name = ?" bindings:v9];
+    [database deleteAll:v8 where:@"name = ?" bindings:v9];
   }
 
   if (![(PDCKBootstrap *)self maySyncWithSurveyAnswerZone])
@@ -124,7 +124,7 @@
     v10 = objc_opt_class();
     v12 = @"PDCK_StudentZoneName";
     v11 = [NSArray arrayWithObjects:&v12 count:1];
-    [v3 deleteAll:v10 where:@"name = ?" bindings:v11];
+    [database deleteAll:v10 where:@"name = ?" bindings:v11];
   }
 }
 
@@ -132,8 +132,8 @@
 {
   if (![(PDOperation *)self isAborted])
   {
-    v3 = [(PDOperation *)self database];
-    v4 = sub_10016A49C(v3, @"PDCK_iCloudUserID");
+    database = [(PDOperation *)self database];
+    v4 = sub_10016A49C(database, @"PDCK_iCloudUserID");
 
     if ([v4 length])
     {
@@ -172,9 +172,9 @@
   }
 }
 
-- (BOOL)writeZoneNamesForUserID:(id)a3
+- (BOOL)writeZoneNamesForUserID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if ([(PDOperation *)self isAborted])
   {
     v5 = 0;
@@ -182,15 +182,15 @@
 
   else
   {
-    v6 = [(PDOperation *)self database];
+    database = [(PDOperation *)self database];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1000D2CD0;
     v11[3] = &unk_1002038B0;
     v11[4] = self;
-    v12 = v4;
-    v13 = v6;
-    v7 = v6;
+    v12 = dCopy;
+    v13 = database;
+    v7 = database;
     v8 = v7;
     if (v7)
     {
@@ -213,7 +213,7 @@
   if (![(PDOperation *)self isAborted])
   {
     v3 = objc_alloc_init(NSMutableDictionary);
-    v4 = [(PDOperation *)self database];
+    database = [(PDOperation *)self database];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_1000D3044;
@@ -221,24 +221,24 @@
     v17[4] = self;
     v5 = v3;
     v18 = v5;
-    sub_10010BE68(v4, v17);
+    sub_10010BE68(database, v17);
 
     if ([v5 count])
     {
       objc_initWeak(&location, self);
       v6 = [CKFetchRecordZonesOperation alloc];
-      v7 = [v5 allKeys];
-      v8 = [v6 initWithRecordZoneIDs:v7];
+      allKeys = [v5 allKeys];
+      v8 = [v6 initWithRecordZoneIDs:allKeys];
 
       v9 = _NSConcreteStackBlock;
       v10 = 3221225472;
       v11 = sub_1000D3188;
       v12 = &unk_100204960;
       objc_copyWeak(&v15, &location);
-      v13 = self;
+      selfCopy = self;
       v14 = v5;
       [v8 setFetchRecordZonesCompletionBlock:&v9];
-      [(PDCKOperation *)self performCKDatabaseOperation:v8, v9, v10, v11, v12, v13];
+      [(PDCKOperation *)self performCKDatabaseOperation:v8, v9, v10, v11, v12, selfCopy];
 
       objc_destroyWeak(&v15);
       objc_destroyWeak(&location);
@@ -251,13 +251,13 @@
   }
 }
 
-- (void)createMissingZones:(id)a3
+- (void)createMissingZones:(id)zones
 {
-  v4 = a3;
+  zonesCopy = zones;
   if (![(PDOperation *)self isAborted])
   {
     objc_initWeak(&location, self);
-    v5 = [[CKModifyRecordZonesOperation alloc] initWithRecordZonesToSave:v4 recordZoneIDsToDelete:0];
+    v5 = [[CKModifyRecordZonesOperation alloc] initWithRecordZonesToSave:zonesCopy recordZoneIDsToDelete:0];
     v6 = _NSConcreteStackBlock;
     v7 = 3221225472;
     v8 = sub_1000D3628;
@@ -271,18 +271,18 @@
   }
 }
 
-- (void)setSubscribed:(BOOL)a3 toSubscriptionWithID:(id)a4
+- (void)setSubscribed:(BOOL)subscribed toSubscriptionWithID:(id)d
 {
-  v6 = a4;
-  v7 = [(PDOperation *)self database];
-  sub_100169F38(v7, a3, v6);
+  dCopy = d;
+  database = [(PDOperation *)self database];
+  sub_100169F38(database, subscribed, dCopy);
 }
 
-- (BOOL)isSubscribedTo:(id)a3
+- (BOOL)isSubscribedTo:(id)to
 {
-  v4 = a3;
-  v5 = [(PDOperation *)self database];
-  v6 = sub_100169FD0(v5, v4);
+  toCopy = to;
+  database = [(PDOperation *)self database];
+  v6 = sub_100169FD0(database, toCopy);
 
   return v6;
 }
@@ -300,43 +300,43 @@
   {
     objc_initWeak(&location, self);
     v3 = objc_opt_new();
-    v4 = [(PDCKOperation *)self progressZone];
-    v5 = [v4 zoneID];
+    progressZone = [(PDCKOperation *)self progressZone];
+    zoneID = [progressZone zoneID];
 
-    if (v5 && ![(PDCKBootstrap *)self isSubscribedTo:@"com.apple.orion.ClassKit.progressSubscription"])
+    if (zoneID && ![(PDCKBootstrap *)self isSubscribedTo:@"com.apple.orion.ClassKit.progressSubscription"])
     {
-      [v3 setObject:v5 forKeyedSubscript:@"com.apple.orion.ClassKit.progressSubscription"];
+      [v3 setObject:zoneID forKeyedSubscript:@"com.apple.orion.ClassKit.progressSubscription"];
     }
 
-    v6 = [(PDCKOperation *)self teacherZone];
-    v7 = [v6 zoneID];
+    teacherZone = [(PDCKOperation *)self teacherZone];
+    zoneID2 = [teacherZone zoneID];
 
-    if (v7 && ![(PDCKBootstrap *)self isSubscribedTo:@"com.apple.orion.ClassKit.teacherSubscription"])
+    if (zoneID2 && ![(PDCKBootstrap *)self isSubscribedTo:@"com.apple.orion.ClassKit.teacherSubscription"])
     {
-      [v3 setObject:v7 forKeyedSubscript:@"com.apple.orion.ClassKit.teacherSubscription"];
+      [v3 setObject:zoneID2 forKeyedSubscript:@"com.apple.orion.ClassKit.teacherSubscription"];
     }
 
-    v8 = [(PDCKOperation *)self assetZone];
-    v9 = [v8 zoneID];
+    assetZone = [(PDCKOperation *)self assetZone];
+    zoneID3 = [assetZone zoneID];
 
-    if (v9 && ![(PDCKBootstrap *)self isSubscribedTo:@"com.apple.orion.ClassKit.assetSubscription"])
+    if (zoneID3 && ![(PDCKBootstrap *)self isSubscribedTo:@"com.apple.orion.ClassKit.assetSubscription"])
     {
-      [v3 setObject:v9 forKeyedSubscript:@"com.apple.orion.ClassKit.assetSubscription"];
+      [v3 setObject:zoneID3 forKeyedSubscript:@"com.apple.orion.ClassKit.assetSubscription"];
     }
 
-    v10 = [(PDCKOperation *)self surveyAnswerZone];
-    v11 = [v10 zoneID];
+    surveyAnswerZone = [(PDCKOperation *)self surveyAnswerZone];
+    zoneID4 = [surveyAnswerZone zoneID];
 
-    if (v11 && ![(PDCKBootstrap *)self isSubscribedTo:@"com.apple.orion.ClassKit.surveyAnswerSubscription"])
+    if (zoneID4 && ![(PDCKBootstrap *)self isSubscribedTo:@"com.apple.orion.ClassKit.surveyAnswerSubscription"])
     {
-      [v3 setObject:v11 forKeyedSubscript:@"com.apple.orion.ClassKit.surveyAnswerSubscription"];
+      [v3 setObject:zoneID4 forKeyedSubscript:@"com.apple.orion.ClassKit.surveyAnswerSubscription"];
     }
 
     if ([v3 count])
     {
       v12 = [CKFetchSubscriptionsOperation alloc];
-      v13 = [v3 allKeys];
-      v14 = [v12 initWithSubscriptionIDs:v13];
+      allKeys = [v3 allKeys];
+      v14 = [v12 initWithSubscriptionIDs:allKeys];
 
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;

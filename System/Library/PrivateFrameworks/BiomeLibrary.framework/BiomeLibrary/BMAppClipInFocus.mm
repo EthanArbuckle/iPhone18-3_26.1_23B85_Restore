@@ -1,15 +1,15 @@
 @interface BMAppClipInFocus
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMAppClipInFocus)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMAppClipInFocus)initWithURLHash:(id)a3 clipBundleID:(id)a4 appBundleID:(id)a5 webAppBundleID:(id)a6 launchReason:(id)a7 fullURL:(id)a8 referrerURL:(id)a9 referrerBundleID:(id)a10;
-- (BOOL)isEqual:(id)a3;
+- (BMAppClipInFocus)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMAppClipInFocus)initWithURLHash:(id)hash clipBundleID:(id)d appBundleID:(id)iD webAppBundleID:(id)bundleID launchReason:(id)reason fullURL:(id)l referrerURL:(id)rL referrerBundleID:(id)self0;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMAppClipInFocus
@@ -40,25 +40,25 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMAppClipInFocus *)self URLHash];
-    v7 = [v5 URLHash];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    uRLHash = [(BMAppClipInFocus *)self URLHash];
+    uRLHash2 = [v5 URLHash];
+    v8 = uRLHash2;
+    if (uRLHash == uRLHash2)
     {
     }
 
     else
     {
-      v9 = [(BMAppClipInFocus *)self URLHash];
-      v10 = [v5 URLHash];
-      v11 = [v9 isEqual:v10];
+      uRLHash3 = [(BMAppClipInFocus *)self URLHash];
+      uRLHash4 = [v5 URLHash];
+      v11 = [uRLHash3 isEqual:uRLHash4];
 
       if (!v11)
       {
@@ -66,18 +66,18 @@
       }
     }
 
-    v13 = [(BMAppClipInFocus *)self clipBundleID];
-    v14 = [v5 clipBundleID];
-    v15 = v14;
-    if (v13 == v14)
+    clipBundleID = [(BMAppClipInFocus *)self clipBundleID];
+    clipBundleID2 = [v5 clipBundleID];
+    v15 = clipBundleID2;
+    if (clipBundleID == clipBundleID2)
     {
     }
 
     else
     {
-      v16 = [(BMAppClipInFocus *)self clipBundleID];
-      v17 = [v5 clipBundleID];
-      v18 = [v16 isEqual:v17];
+      clipBundleID3 = [(BMAppClipInFocus *)self clipBundleID];
+      clipBundleID4 = [v5 clipBundleID];
+      v18 = [clipBundleID3 isEqual:clipBundleID4];
 
       if (!v18)
       {
@@ -85,18 +85,18 @@
       }
     }
 
-    v19 = [(BMAppClipInFocus *)self appBundleID];
-    v20 = [v5 appBundleID];
-    v21 = v20;
-    if (v19 == v20)
+    appBundleID = [(BMAppClipInFocus *)self appBundleID];
+    appBundleID2 = [v5 appBundleID];
+    v21 = appBundleID2;
+    if (appBundleID == appBundleID2)
     {
     }
 
     else
     {
-      v22 = [(BMAppClipInFocus *)self appBundleID];
-      v23 = [v5 appBundleID];
-      v24 = [v22 isEqual:v23];
+      appBundleID3 = [(BMAppClipInFocus *)self appBundleID];
+      appBundleID4 = [v5 appBundleID];
+      v24 = [appBundleID3 isEqual:appBundleID4];
 
       if (!v24)
       {
@@ -104,18 +104,18 @@
       }
     }
 
-    v25 = [(BMAppClipInFocus *)self webAppBundleID];
-    v26 = [v5 webAppBundleID];
-    v27 = v26;
-    if (v25 == v26)
+    webAppBundleID = [(BMAppClipInFocus *)self webAppBundleID];
+    webAppBundleID2 = [v5 webAppBundleID];
+    v27 = webAppBundleID2;
+    if (webAppBundleID == webAppBundleID2)
     {
     }
 
     else
     {
-      v28 = [(BMAppClipInFocus *)self webAppBundleID];
-      v29 = [v5 webAppBundleID];
-      v30 = [v28 isEqual:v29];
+      webAppBundleID3 = [(BMAppClipInFocus *)self webAppBundleID];
+      webAppBundleID4 = [v5 webAppBundleID];
+      v30 = [webAppBundleID3 isEqual:webAppBundleID4];
 
       if (!v30)
       {
@@ -123,18 +123,18 @@
       }
     }
 
-    v31 = [(BMAppClipInFocus *)self launchReason];
-    v32 = [v5 launchReason];
-    v33 = v32;
-    if (v31 == v32)
+    launchReason = [(BMAppClipInFocus *)self launchReason];
+    launchReason2 = [v5 launchReason];
+    v33 = launchReason2;
+    if (launchReason == launchReason2)
     {
     }
 
     else
     {
-      v34 = [(BMAppClipInFocus *)self launchReason];
-      v35 = [v5 launchReason];
-      v36 = [v34 isEqual:v35];
+      launchReason3 = [(BMAppClipInFocus *)self launchReason];
+      launchReason4 = [v5 launchReason];
+      v36 = [launchReason3 isEqual:launchReason4];
 
       if (!v36)
       {
@@ -142,18 +142,18 @@
       }
     }
 
-    v37 = [(BMAppClipInFocus *)self fullURL];
-    v38 = [v5 fullURL];
-    v39 = v38;
-    if (v37 == v38)
+    fullURL = [(BMAppClipInFocus *)self fullURL];
+    fullURL2 = [v5 fullURL];
+    v39 = fullURL2;
+    if (fullURL == fullURL2)
     {
     }
 
     else
     {
-      v40 = [(BMAppClipInFocus *)self fullURL];
-      v41 = [v5 fullURL];
-      v42 = [v40 isEqual:v41];
+      fullURL3 = [(BMAppClipInFocus *)self fullURL];
+      fullURL4 = [v5 fullURL];
+      v42 = [fullURL3 isEqual:fullURL4];
 
       if (!v42)
       {
@@ -161,18 +161,18 @@
       }
     }
 
-    v43 = [(BMAppClipInFocus *)self referrerURL];
-    v44 = [v5 referrerURL];
-    v45 = v44;
-    if (v43 == v44)
+    referrerURL = [(BMAppClipInFocus *)self referrerURL];
+    referrerURL2 = [v5 referrerURL];
+    v45 = referrerURL2;
+    if (referrerURL == referrerURL2)
     {
     }
 
     else
     {
-      v46 = [(BMAppClipInFocus *)self referrerURL];
-      v47 = [v5 referrerURL];
-      v48 = [v46 isEqual:v47];
+      referrerURL3 = [(BMAppClipInFocus *)self referrerURL];
+      referrerURL4 = [v5 referrerURL];
+      v48 = [referrerURL3 isEqual:referrerURL4];
 
       if (!v48)
       {
@@ -184,18 +184,18 @@ LABEL_30:
       }
     }
 
-    v50 = [(BMAppClipInFocus *)self referrerBundleID];
-    v51 = [v5 referrerBundleID];
-    if (v50 == v51)
+    referrerBundleID = [(BMAppClipInFocus *)self referrerBundleID];
+    referrerBundleID2 = [v5 referrerBundleID];
+    if (referrerBundleID == referrerBundleID2)
     {
       v12 = 1;
     }
 
     else
     {
-      v52 = [(BMAppClipInFocus *)self referrerBundleID];
-      v53 = [v5 referrerBundleID];
-      v12 = [v52 isEqual:v53];
+      referrerBundleID3 = [(BMAppClipInFocus *)self referrerBundleID];
+      referrerBundleID4 = [v5 referrerBundleID];
+      v12 = [referrerBundleID3 isEqual:referrerBundleID4];
     }
 
     goto LABEL_30;
@@ -210,95 +210,95 @@ LABEL_31:
 - (id)jsonDictionary
 {
   v29[8] = *MEMORY[0x1E69E9840];
-  v3 = [(BMAppClipInFocus *)self URLHash];
-  v4 = [(BMAppClipInFocus *)self clipBundleID];
-  v5 = [(BMAppClipInFocus *)self appBundleID];
-  v6 = [(BMAppClipInFocus *)self webAppBundleID];
-  v7 = [(BMAppClipInFocus *)self launchReason];
-  v8 = [(BMAppClipInFocus *)self fullURL];
-  v9 = [(BMAppClipInFocus *)self referrerURL];
-  v10 = [(BMAppClipInFocus *)self referrerBundleID];
+  uRLHash = [(BMAppClipInFocus *)self URLHash];
+  clipBundleID = [(BMAppClipInFocus *)self clipBundleID];
+  appBundleID = [(BMAppClipInFocus *)self appBundleID];
+  webAppBundleID = [(BMAppClipInFocus *)self webAppBundleID];
+  launchReason = [(BMAppClipInFocus *)self launchReason];
+  fullURL = [(BMAppClipInFocus *)self fullURL];
+  referrerURL = [(BMAppClipInFocus *)self referrerURL];
+  referrerBundleID = [(BMAppClipInFocus *)self referrerBundleID];
   v28[0] = @"URLHash";
-  v11 = v3;
-  if (!v3)
+  null = uRLHash;
+  if (!uRLHash)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23 = v11;
-  v29[0] = v11;
+  v23 = null;
+  v29[0] = null;
   v28[1] = @"clipBundleID";
-  v12 = v4;
-  if (!v4)
+  null2 = clipBundleID;
+  if (!clipBundleID)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v12;
-  v29[1] = v12;
+  v22 = null2;
+  v29[1] = null2;
   v28[2] = @"appBundleID";
-  v13 = v5;
-  if (!v5)
+  null3 = appBundleID;
+  if (!appBundleID)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v3;
-  v21 = v13;
-  v29[2] = v13;
+  v27 = uRLHash;
+  v21 = null3;
+  v29[2] = null3;
   v28[3] = @"webAppBundleID";
-  v14 = v6;
-  if (!v6)
+  null4 = webAppBundleID;
+  if (!webAppBundleID)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v4;
-  v29[3] = v14;
+  v26 = clipBundleID;
+  v29[3] = null4;
   v28[4] = @"launchReason";
-  v15 = v7;
-  if (!v7)
+  null5 = launchReason;
+  if (!launchReason)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25 = v5;
-  v29[4] = v15;
+  v25 = appBundleID;
+  v29[4] = null5;
   v28[5] = @"fullURL";
-  v16 = v8;
-  if (!v8)
+  null6 = fullURL;
+  if (!fullURL)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[5] = v16;
+  v29[5] = null6;
   v28[6] = @"referrerURL";
-  v17 = v9;
-  if (!v9)
+  null7 = referrerURL;
+  if (!referrerURL)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[6] = v17;
+  v29[6] = null7;
   v28[7] = @"referrerBundleID";
-  v18 = v10;
-  if (!v10)
+  null8 = referrerBundleID;
+  if (!referrerBundleID)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[7] = v18;
+  v29[7] = null8;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:8];
-  if (v10)
+  if (referrerBundleID)
   {
-    if (v9)
+    if (referrerURL)
     {
       goto LABEL_19;
     }
 
 LABEL_31:
 
-    if (v8)
+    if (fullURL)
     {
       goto LABEL_20;
     }
@@ -306,13 +306,13 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  if (!v9)
+  if (!referrerURL)
   {
     goto LABEL_31;
   }
 
 LABEL_19:
-  if (v8)
+  if (fullURL)
   {
     goto LABEL_20;
   }
@@ -320,11 +320,11 @@ LABEL_19:
 LABEL_32:
 
 LABEL_20:
-  if (!v7)
+  if (!launchReason)
   {
   }
 
-  if (!v6)
+  if (!webAppBundleID)
   {
   }
 
@@ -364,28 +364,28 @@ LABEL_27:
   return v24;
 }
 
-- (BMAppClipInFocus)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMAppClipInFocus)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v87[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"URLHash"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"URLHash"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"clipBundleID"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"clipBundleID"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v25 = 0;
           goto LABEL_45;
         }
 
-        v32 = a4;
+        errorCopy = error;
         v33 = objc_alloc(MEMORY[0x1E696ABC0]);
         v34 = *MEMORY[0x1E698F240];
         v84 = *MEMORY[0x1E696A578];
@@ -396,8 +396,8 @@ LABEL_4:
         v11 = v35;
         v37 = [v33 initWithDomain:v36 code:2 userInfo:v35];
         v25 = 0;
-        a4 = 0;
-        *v32 = v37;
+        error = 0;
+        *errorCopy = v37;
         goto LABEL_44;
       }
 
@@ -409,16 +409,16 @@ LABEL_4:
       v71 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"appBundleID"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"appBundleID"];
     v69 = v7;
     v67 = v10;
-    v62 = a4;
+    errorCopy2 = error;
     if (v10 && (v11 = v10, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v15 = 0;
           v25 = v71;
@@ -433,14 +433,14 @@ LABEL_4:
         v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v83 forKeys:&v82 count:1];
         v40 = [v38 initWithDomain:v39 code:2 userInfo:v24];
         v15 = 0;
-        a4 = 0;
-        *v62 = v40;
+        error = 0;
+        *errorCopy2 = v40;
         goto LABEL_42;
       }
 
       v12 = v8;
       v13 = v9;
-      v14 = self;
+      selfCopy2 = self;
       v15 = v11;
     }
 
@@ -448,22 +448,22 @@ LABEL_4:
     {
       v12 = v8;
       v13 = v9;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 0;
     }
 
-    v16 = [v6 objectForKeyedSubscript:@"webAppBundleID"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"webAppBundleID"];
     if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v70 = 0;
           v25 = v71;
           v24 = v16;
-          self = v14;
+          self = selfCopy2;
           v9 = v13;
           v8 = v12;
           v7 = v69;
@@ -482,9 +482,9 @@ LABEL_4:
         v24 = v16;
         v45 = [v41 initWithDomain:v44 code:2 userInfo:v17];
         v70 = 0;
-        a4 = 0;
-        *v62 = v45;
-        self = v14;
+        error = 0;
+        *errorCopy2 = v45;
+        self = selfCopy2;
         v9 = v13;
         v8 = v12;
         goto LABEL_75;
@@ -500,8 +500,8 @@ LABEL_4:
       v70 = 0;
     }
 
-    v17 = [v6 objectForKeyedSubscript:@"launchReason"];
-    self = v14;
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"launchReason"];
+    self = selfCopy2;
     v66 = v12;
     if (!v17)
     {
@@ -516,7 +516,7 @@ LABEL_4:
     {
       v68 = 0;
 LABEL_27:
-      v18 = [v6 objectForKeyedSubscript:@"fullURL"];
+      v18 = [dictionaryCopy objectForKeyedSubscript:@"fullURL"];
       v63 = v15;
       if (v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
@@ -524,14 +524,14 @@ LABEL_27:
         v7 = v69;
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v64 = 0;
-            a4 = 0;
+            error = 0;
             goto LABEL_39;
           }
 
-          v20 = self;
+          errorCopy3 = self;
           v65 = objc_alloc(MEMORY[0x1E696ABC0]);
           v52 = *MEMORY[0x1E698F240];
           v76 = *MEMORY[0x1E696A578];
@@ -540,11 +540,11 @@ LABEL_27:
           v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v77 forKeys:&v76 count:1];
           v53 = [v65 initWithDomain:v52 code:2 userInfo:v19];
           v64 = 0;
-          a4 = 0;
-          *v62 = v53;
+          error = 0;
+          *errorCopy2 = v53;
 LABEL_38:
 
-          self = v20;
+          self = errorCopy3;
           v7 = v69;
 LABEL_39:
           v15 = v63;
@@ -572,17 +572,17 @@ LABEL_44:
         v64 = 0;
       }
 
-      v19 = [v6 objectForKeyedSubscript:@"referrerURL"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"referrerURL"];
       if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
-        v20 = self;
+        errorCopy3 = self;
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v21 = 0;
-            a4 = 0;
+            error = 0;
             goto LABEL_38;
           }
 
@@ -594,8 +594,8 @@ LABEL_44:
           v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v75 forKeys:&v74 count:1];
           v55 = [v59 initWithDomain:v54 code:2 userInfo:v22];
           v21 = 0;
-          a4 = 0;
-          *v62 = v55;
+          error = 0;
+          *errorCopy2 = v55;
           goto LABEL_37;
         }
 
@@ -604,17 +604,17 @@ LABEL_44:
 
       else
       {
-        v20 = self;
+        errorCopy3 = self;
         v21 = 0;
       }
 
-      v22 = [v6 objectForKeyedSubscript:@"referrerBundleID"];
+      v22 = [dictionaryCopy objectForKeyedSubscript:@"referrerBundleID"];
       if (v22 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v60 = objc_alloc(MEMORY[0x1E696ABC0]);
             v58 = *MEMORY[0x1E698F240];
@@ -622,11 +622,11 @@ LABEL_44:
             v56 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"referrerBundleID"];
             v73 = v56;
             v57 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v73 forKeys:&v72 count:1];
-            *v62 = [v60 initWithDomain:v58 code:2 userInfo:v57];
+            *errorCopy2 = [v60 initWithDomain:v58 code:2 userInfo:v57];
           }
 
           v23 = 0;
-          a4 = 0;
+          error = 0;
           goto LABEL_37;
         }
 
@@ -638,8 +638,8 @@ LABEL_44:
         v23 = 0;
       }
 
-      a4 = [(BMAppClipInFocus *)v20 initWithURLHash:v66 clipBundleID:v71 appBundleID:v63 webAppBundleID:v70 launchReason:v68 fullURL:v64 referrerURL:v21 referrerBundleID:v23];
-      v20 = a4;
+      error = [(BMAppClipInFocus *)errorCopy3 initWithURLHash:v66 clipBundleID:v71 appBundleID:v63 webAppBundleID:v70 launchReason:v68 fullURL:v64 referrerURL:v21 referrerBundleID:v23];
+      errorCopy3 = error;
 LABEL_37:
 
       goto LABEL_38;
@@ -652,9 +652,9 @@ LABEL_37:
       goto LABEL_27;
     }
 
-    if (a4)
+    if (error)
     {
-      v46 = a4;
+      errorCopy4 = error;
       v47 = objc_alloc(MEMORY[0x1E696ABC0]);
       v48 = v15;
       v49 = *MEMORY[0x1E698F240];
@@ -666,8 +666,8 @@ LABEL_37:
       v15 = v48;
       v51 = [v47 initWithDomain:v50 code:2 userInfo:v18];
       v68 = 0;
-      a4 = 0;
-      *v46 = v51;
+      error = 0;
+      *errorCopy4 = v51;
       v24 = v61;
       v7 = v69;
       goto LABEL_40;
@@ -688,13 +688,13 @@ LABEL_75:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     goto LABEL_46;
   }
 
-  v28 = a4;
+  errorCopy5 = error;
   v29 = objc_alloc(MEMORY[0x1E696ABC0]);
   v30 = *MEMORY[0x1E698F240];
   v86 = *MEMORY[0x1E696A578];
@@ -703,80 +703,80 @@ LABEL_75:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v87 forKeys:&v86 count:1];
   v31 = [v29 initWithDomain:v30 code:2 userInfo:v9];
   v8 = 0;
-  a4 = 0;
-  *v28 = v31;
+  error = 0;
+  *errorCopy5 = v31;
 LABEL_45:
 
 LABEL_46:
   v26 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMAppClipInFocus *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_URLHash)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_clipBundleID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_appBundleID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_webAppBundleID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_launchReason)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_fullURL)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_referrerURL)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_referrerBundleID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v23.receiver = self;
   v23.super_class = BMAppClipInFocus;
   v5 = [(BMEventBase *)&v23 init];
@@ -785,12 +785,12 @@ LABEL_46:
     goto LABEL_24;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -801,18 +801,18 @@ LABEL_46:
       while (1)
       {
         v24 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v24 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v24 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v24 & 0x7F) << v7;
@@ -829,9 +829,9 @@ LABEL_46:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -854,13 +854,13 @@ LABEL_16:
         *(&v5->super.super.isa + v18) = v17;
       }
 
-      v20 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v20 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_23:
     v21 = 0;
@@ -878,43 +878,43 @@ LABEL_24:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMAppClipInFocus *)self URLHash];
-  v5 = [(BMAppClipInFocus *)self clipBundleID];
-  v6 = [(BMAppClipInFocus *)self appBundleID];
-  v7 = [(BMAppClipInFocus *)self webAppBundleID];
-  v8 = [(BMAppClipInFocus *)self launchReason];
-  v9 = [(BMAppClipInFocus *)self fullURL];
-  v10 = [(BMAppClipInFocus *)self referrerURL];
-  v11 = [(BMAppClipInFocus *)self referrerBundleID];
-  v12 = [v3 initWithFormat:@"BMAppClipInFocus with URLHash: %@, clipBundleID: %@, appBundleID: %@, webAppBundleID: %@, launchReason: %@, fullURL: %@, referrerURL: %@, referrerBundleID: %@", v4, v5, v6, v7, v8, v9, v10, v11];
+  uRLHash = [(BMAppClipInFocus *)self URLHash];
+  clipBundleID = [(BMAppClipInFocus *)self clipBundleID];
+  appBundleID = [(BMAppClipInFocus *)self appBundleID];
+  webAppBundleID = [(BMAppClipInFocus *)self webAppBundleID];
+  launchReason = [(BMAppClipInFocus *)self launchReason];
+  fullURL = [(BMAppClipInFocus *)self fullURL];
+  referrerURL = [(BMAppClipInFocus *)self referrerURL];
+  referrerBundleID = [(BMAppClipInFocus *)self referrerBundleID];
+  v12 = [v3 initWithFormat:@"BMAppClipInFocus with URLHash: %@, clipBundleID: %@, appBundleID: %@, webAppBundleID: %@, launchReason: %@, fullURL: %@, referrerURL: %@, referrerBundleID: %@", uRLHash, clipBundleID, appBundleID, webAppBundleID, launchReason, fullURL, referrerURL, referrerBundleID];
 
   return v12;
 }
 
-- (BMAppClipInFocus)initWithURLHash:(id)a3 clipBundleID:(id)a4 appBundleID:(id)a5 webAppBundleID:(id)a6 launchReason:(id)a7 fullURL:(id)a8 referrerURL:(id)a9 referrerBundleID:(id)a10
+- (BMAppClipInFocus)initWithURLHash:(id)hash clipBundleID:(id)d appBundleID:(id)iD webAppBundleID:(id)bundleID launchReason:(id)reason fullURL:(id)l referrerURL:(id)rL referrerBundleID:(id)self0
 {
-  v26 = a3;
-  v25 = a4;
-  v24 = a5;
-  v23 = a6;
-  v22 = a7;
-  v21 = a8;
-  v20 = a9;
-  v17 = a10;
+  hashCopy = hash;
+  dCopy = d;
+  iDCopy = iD;
+  bundleIDCopy = bundleID;
+  reasonCopy = reason;
+  lCopy = l;
+  rLCopy = rL;
+  referrerBundleIDCopy = referrerBundleID;
   v27.receiver = self;
   v27.super_class = BMAppClipInFocus;
   v18 = [(BMEventBase *)&v27 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v18->_URLHash, a3);
-    objc_storeStrong(&v18->_clipBundleID, a4);
-    objc_storeStrong(&v18->_appBundleID, a5);
-    objc_storeStrong(&v18->_webAppBundleID, a6);
-    objc_storeStrong(&v18->_launchReason, a7);
-    objc_storeStrong(&v18->_fullURL, a8);
-    objc_storeStrong(&v18->_referrerURL, a9);
-    objc_storeStrong(&v18->_referrerBundleID, a10);
+    objc_storeStrong(&v18->_URLHash, hash);
+    objc_storeStrong(&v18->_clipBundleID, d);
+    objc_storeStrong(&v18->_appBundleID, iD);
+    objc_storeStrong(&v18->_webAppBundleID, bundleID);
+    objc_storeStrong(&v18->_launchReason, reason);
+    objc_storeStrong(&v18->_fullURL, l);
+    objc_storeStrong(&v18->_referrerURL, rL);
+    objc_storeStrong(&v18->_referrerBundleID, referrerBundleID);
   }
 
   return v18;
@@ -946,13 +946,13 @@ LABEL_24:
   return v10;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
     v4 = MEMORY[0x1E69C65B8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithData:v5];
+    dataCopy = data;
+    v6 = [[v4 alloc] initWithData:dataCopy];
 
     v7 = [[BMAppClipInFocus alloc] initByReadFrom:v6];
     v8 = v7;

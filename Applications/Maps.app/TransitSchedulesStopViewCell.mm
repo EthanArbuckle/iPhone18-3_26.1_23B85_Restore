@@ -1,14 +1,14 @@
 @interface TransitSchedulesStopViewCell
-- (TransitSchedulesStopViewCell)initWithFrame:(CGRect)a3;
+- (TransitSchedulesStopViewCell)initWithFrame:(CGRect)frame;
 - (id)createStationLinkSubview;
 - (id)departureTimeColor;
 - (id)primaryTextColor;
 - (void)createSubviews;
 - (void)createVehicleImageView;
 - (void)prepareForReuse;
-- (void)setHighlightStation:(BOOL)a3;
-- (void)setTransitLine:(id)a3 withTransitTripStop:(id)a4 stopType:(unint64_t)a5 colorStyleType:(unint64_t)a6 vehiclePosition:(unint64_t)a7 showTimeZone:(BOOL)a8;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setHighlightStation:(BOOL)station;
+- (void)setTransitLine:(id)line withTransitTripStop:(id)stop stopType:(unint64_t)type colorStyleType:(unint64_t)styleType vehiclePosition:(unint64_t)position showTimeZone:(BOOL)zone;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updatePrimaryTextFont;
 - (void)updateTransitLinks;
 @end
@@ -18,16 +18,16 @@
 - (id)primaryTextColor
 {
   linkColorStyleType = self->_linkColorStyleType;
-  v3 = [(TransitSchedulesStopViewCell *)self theme];
-  v4 = v3;
+  theme = [(TransitSchedulesStopViewCell *)self theme];
+  v4 = theme;
   if (linkColorStyleType == 2)
   {
-    [v3 transitSchedulesPastStopTextColor];
+    [theme transitSchedulesPastStopTextColor];
   }
 
   else
   {
-    [v3 transitSchedulesOnTimeStopTimeTextColor];
+    [theme transitSchedulesOnTimeStopTimeTextColor];
   }
   v5 = ;
 
@@ -38,45 +38,45 @@
 {
   if (self->_linkColorStyleType == 2)
   {
-    v3 = [(TransitSchedulesStopViewCell *)self theme];
-    v4 = [v3 transitSchedulesPastStopTextColor];
+    theme = [(TransitSchedulesStopViewCell *)self theme];
+    transitSchedulesPastStopTextColor = [theme transitSchedulesPastStopTextColor];
   }
 
   else
   {
-    v5 = [(TransitSchedulesStopViewCell *)self transitLine];
-    [v5 departureTimeDisplayStyle];
+    transitLine = [(TransitSchedulesStopViewCell *)self transitLine];
+    [transitLine departureTimeDisplayStyle];
 
-    v6 = [(TransitSchedulesStopViewCell *)self transitTripStop];
-    v7 = [v6 departure];
-    v8 = [v7 liveStatus];
+    transitTripStop = [(TransitSchedulesStopViewCell *)self transitTripStop];
+    departure = [transitTripStop departure];
+    liveStatus = [departure liveStatus];
 
-    if ([(TransitSchedulesStopViewCell *)self isHighlightedStation]&& (v8 & 0xFFFFFFFFFFFFFFFELL) == 4)
+    if ([(TransitSchedulesStopViewCell *)self isHighlightedStation]&& (liveStatus & 0xFFFFFFFFFFFFFFFELL) == 4)
     {
       v9 = +[UIColor systemRedColor];
       goto LABEL_8;
     }
 
-    v3 = [(TransitSchedulesStopViewCell *)self theme];
-    v4 = [v3 transitSchedulesOnTimeStopTimeTextColor];
+    theme = [(TransitSchedulesStopViewCell *)self theme];
+    transitSchedulesPastStopTextColor = [theme transitSchedulesOnTimeStopTimeTextColor];
   }
 
-  v9 = v4;
+  v9 = transitSchedulesPastStopTextColor;
 
 LABEL_8:
 
   return v9;
 }
 
-- (void)setHighlightStation:(BOOL)a3
+- (void)setHighlightStation:(BOOL)station
 {
-  if (self->_highlightStation != a3)
+  if (self->_highlightStation != station)
   {
-    self->_highlightStation = a3;
+    self->_highlightStation = station;
     [(TransitSchedulesStopViewCell *)self updatePrimaryTextFont];
-    v5 = [(TransitSchedulesStopViewCell *)self departureTimeColor];
-    v6 = [(TransitSchedulesStopViewCell *)self timeLabel];
-    [v6 setTextColor:v5];
+    departureTimeColor = [(TransitSchedulesStopViewCell *)self departureTimeColor];
+    timeLabel = [(TransitSchedulesStopViewCell *)self timeLabel];
+    [timeLabel setTextColor:departureTimeColor];
 
     [(TransitSchedulesStopViewCell *)self layoutIfNeeded];
   }
@@ -95,22 +95,22 @@ LABEL_8:
   }
 
   v5 = objc_retainBlock(v3);
-  v4 = [(TransitSchedulesStopViewCell *)self primaryTextLabel];
-  [DynamicTypeWizard autorefreshLabel:v4 withFontProvider:v5];
+  primaryTextLabel = [(TransitSchedulesStopViewCell *)self primaryTextLabel];
+  [DynamicTypeWizard autorefreshLabel:primaryTextLabel withFontProvider:v5];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = TransitSchedulesStopViewCell;
-  v4 = a3;
-  [(MapsThemeCollectionViewListCell *)&v8 traitCollectionDidChange:v4];
-  v5 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  [(MapsThemeCollectionViewListCell *)&v8 traitCollectionDidChange:changeCopy];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
 
-  v6 = [(TransitSchedulesStopViewCell *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(TransitSchedulesStopViewCell *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(TransitSchedulesStopViewCell *)self updateTransitLinks];
   }
@@ -118,32 +118,32 @@ LABEL_8:
 
 - (void)updateTransitLinks
 {
-  v3 = [(TransitSchedulesStopViewCell *)self transitLine];
+  transitLine = [(TransitSchedulesStopViewCell *)self transitLine];
 
-  if (v3)
+  if (transitLine)
   {
     if (self->_linkColorStyleType == 2)
     {
-      v4 = [(TransitSchedulesStopViewCell *)self theme];
-      [v4 transitSchedulesPastStopLinkColor];
+      theme = [(TransitSchedulesStopViewCell *)self theme];
+      [theme transitSchedulesPastStopLinkColor];
     }
 
     else
     {
-      v4 = [(TransitSchedulesStopViewCell *)self transitLine];
-      [UIColor _mapkit_colorForTransitLine:v4];
+      theme = [(TransitSchedulesStopViewCell *)self transitLine];
+      [UIColor _mapkit_colorForTransitLine:theme];
     }
     v23 = ;
 
-    v5 = [v23 _maps_hexString];
+    _maps_hexString = [v23 _maps_hexString];
     if ([(TransitSchedulesStopViewCell *)self stopType]== 1 || [(TransitSchedulesStopViewCell *)self stopType]== 3)
     {
-      v6 = [MKTransitArtwork stationNodeArtworkWithHexColor:v5];
+      v6 = [MKTransitArtwork stationNodeArtworkWithHexColor:_maps_hexString];
     }
 
     else
     {
-      v6 = [MKTransitArtwork stationNodeOutlinedArtworkWithHexColor:v5];
+      v6 = [MKTransitArtwork stationNodeOutlinedArtworkWithHexColor:_maps_hexString];
     }
 
     v7 = v6;
@@ -163,56 +163,56 @@ LABEL_8:
     }
 
     v13 = [v8 imageForArtwork:v7 size:v12 featureType:2 scale:-[TransitSchedulesStopViewCell _mapkit_isDarkModeEnabled](self nightMode:{"_mapkit_isDarkModeEnabled"), v11}];
-    v14 = [(TransitSchedulesStopViewCell *)self transitLineStopIndicatorImageView];
-    [v14 setImage:v13];
+    transitLineStopIndicatorImageView = [(TransitSchedulesStopViewCell *)self transitLineStopIndicatorImageView];
+    [transitLineStopIndicatorImageView setImage:v13];
 
     linkColorStyleType = self->_linkColorStyleType;
-    v16 = v23;
+    transitSchedulesPastStopLinkColor = v23;
     if (linkColorStyleType == 3)
     {
-      v14 = [(TransitSchedulesStopViewCell *)self theme];
-      v16 = [v14 transitSchedulesPastStopLinkColor];
+      transitLineStopIndicatorImageView = [(TransitSchedulesStopViewCell *)self theme];
+      transitSchedulesPastStopLinkColor = [transitLineStopIndicatorImageView transitSchedulesPastStopLinkColor];
     }
 
-    v17 = [(TransitSchedulesStopViewCell *)self incomingTransitLineSection];
-    [v17 setLineColor:v16];
+    incomingTransitLineSection = [(TransitSchedulesStopViewCell *)self incomingTransitLineSection];
+    [incomingTransitLineSection setLineColor:transitSchedulesPastStopLinkColor];
 
     if (linkColorStyleType == 3)
     {
     }
 
-    v18 = [(TransitSchedulesStopViewCell *)self outgoingTransitLineSection];
-    [v18 setLineColor:v23];
+    outgoingTransitLineSection = [(TransitSchedulesStopViewCell *)self outgoingTransitLineSection];
+    [outgoingTransitLineSection setLineColor:v23];
 
     v19 = [(TransitSchedulesStopViewCell *)self stopType]== 1;
-    v20 = [(TransitSchedulesStopViewCell *)self incomingTransitLineSection];
-    [v20 setHidden:v19];
+    incomingTransitLineSection2 = [(TransitSchedulesStopViewCell *)self incomingTransitLineSection];
+    [incomingTransitLineSection2 setHidden:v19];
 
     v21 = [(TransitSchedulesStopViewCell *)self stopType]== 3;
-    v22 = [(TransitSchedulesStopViewCell *)self outgoingTransitLineSection];
-    [v22 setHidden:v21];
+    outgoingTransitLineSection2 = [(TransitSchedulesStopViewCell *)self outgoingTransitLineSection];
+    [outgoingTransitLineSection2 setHidden:v21];
   }
 }
 
-- (void)setTransitLine:(id)a3 withTransitTripStop:(id)a4 stopType:(unint64_t)a5 colorStyleType:(unint64_t)a6 vehiclePosition:(unint64_t)a7 showTimeZone:(BOOL)a8
+- (void)setTransitLine:(id)line withTransitTripStop:(id)stop stopType:(unint64_t)type colorStyleType:(unint64_t)styleType vehiclePosition:(unint64_t)position showTimeZone:(BOOL)zone
 {
-  v8 = a8;
-  v40 = a7;
-  v42 = a3;
-  v41 = a4;
-  if (self->_stopType == a5 && self->_linkColorStyleType == a6 && [(GEOTransitLine *)self->_transitLine isEqual:v42]&& ([(GEOTransitTripStop *)self->_transitTripStop isEqual:v41]& 1) != 0)
+  zoneCopy = zone;
+  positionCopy = position;
+  lineCopy = line;
+  stopCopy = stop;
+  if (self->_stopType == type && self->_linkColorStyleType == styleType && [(GEOTransitLine *)self->_transitLine isEqual:lineCopy]&& ([(GEOTransitTripStop *)self->_transitTripStop isEqual:stopCopy]& 1) != 0)
   {
     goto LABEL_16;
   }
 
-  objc_storeStrong(&self->_transitLine, a3);
-  self->_stopType = a5;
-  objc_storeStrong(&self->_transitTripStop, a4);
-  self->_linkColorStyleType = a6;
-  v14 = [(TransitSchedulesStopViewCell *)self transitTripStop];
-  v15 = [v14 displayName];
-  v16 = [(TransitSchedulesStopViewCell *)self primaryTextLabel];
-  [v16 setText:v15];
+  objc_storeStrong(&self->_transitLine, line);
+  self->_stopType = type;
+  objc_storeStrong(&self->_transitTripStop, stop);
+  self->_linkColorStyleType = styleType;
+  transitTripStop = [(TransitSchedulesStopViewCell *)self transitTripStop];
+  displayName = [transitTripStop displayName];
+  primaryTextLabel = [(TransitSchedulesStopViewCell *)self primaryTextLabel];
+  [primaryTextLabel setText:displayName];
 
   [(TransitSchedulesStopViewCell *)self updatePrimaryTextFont];
   objc_initWeak(&location, self);
@@ -221,29 +221,29 @@ LABEL_8:
   v43[2] = sub_100FC46FC;
   v43[3] = &unk_101660218;
   objc_copyWeak(&v44, &location);
-  v17 = [(TransitSchedulesStopViewCell *)self primaryTextLabel];
-  [v17 setTextColorProvider:v43];
+  primaryTextLabel2 = [(TransitSchedulesStopViewCell *)self primaryTextLabel];
+  [primaryTextLabel2 setTextColorProvider:v43];
 
-  v18 = [(TransitSchedulesStopViewCell *)self transitTripStop];
-  v19 = [v18 departure];
+  transitTripStop2 = [(TransitSchedulesStopViewCell *)self transitTripStop];
+  departure = [transitTripStop2 departure];
 
-  if ([v19 isCanceled])
+  if ([departure isCanceled])
   {
-    v20 = [(TransitSchedulesStopViewCell *)self isHighlightedStation];
-    v21 = v20;
-    if (v20)
+    isHighlightedStation = [(TransitSchedulesStopViewCell *)self isHighlightedStation];
+    v21 = isHighlightedStation;
+    if (isHighlightedStation)
     {
-      v18 = +[NSBundle mainBundle];
-      v22 = [v18 localizedStringForKey:@"Schedules Stop Cell Canceled" value:@"localized string not found" table:0];
+      transitTripStop2 = +[NSBundle mainBundle];
+      transitTripStop3 = [transitTripStop2 localizedStringForKey:@"Schedules Stop Cell Canceled" value:@"localized string not found" table:0];
     }
 
     else
     {
-      v22 = 0;
+      transitTripStop3 = 0;
     }
 
-    v26 = [(TransitSchedulesStopViewCell *)self timeLabel];
-    [v26 setText:v22];
+    timeLabel = [(TransitSchedulesStopViewCell *)self timeLabel];
+    [timeLabel setText:transitTripStop3];
 
     if ((v21 & 1) == 0)
     {
@@ -253,72 +253,72 @@ LABEL_8:
 
   else
   {
-    v18 = [v19 departureDate];
-    v22 = [(TransitSchedulesStopViewCell *)self transitTripStop];
-    v23 = [v22 timeZone];
-    v24 = [NSDateFormatter _navigation_localizedTimestampStringForDepartureArrivalDate:v18 inTimeZone:v23 canIncludeDate:0 showTimeZone:v8 useShortFormat:0];
-    v25 = [(TransitSchedulesStopViewCell *)self timeLabel];
-    [v25 setText:v24];
+    transitTripStop2 = [departure departureDate];
+    transitTripStop3 = [(TransitSchedulesStopViewCell *)self transitTripStop];
+    timeZone = [transitTripStop3 timeZone];
+    v24 = [NSDateFormatter _navigation_localizedTimestampStringForDepartureArrivalDate:transitTripStop2 inTimeZone:timeZone canIncludeDate:0 showTimeZone:zoneCopy useShortFormat:0];
+    timeLabel2 = [(TransitSchedulesStopViewCell *)self timeLabel];
+    [timeLabel2 setText:v24];
   }
 
 LABEL_12:
-  v27 = [(TransitSchedulesStopViewCell *)self departureTimeColor];
-  v28 = [(TransitSchedulesStopViewCell *)self timeLabel];
-  [v28 setTextColor:v27];
+  departureTimeColor = [(TransitSchedulesStopViewCell *)self departureTimeColor];
+  timeLabel3 = [(TransitSchedulesStopViewCell *)self timeLabel];
+  [timeLabel3 setTextColor:departureTimeColor];
 
-  v29 = [(TransitSchedulesStopViewCell *)self transitTripStop];
-  v30 = [v29 labelItems];
-  v31 = [v30 count] == 0;
+  transitTripStop4 = [(TransitSchedulesStopViewCell *)self transitTripStop];
+  labelItems = [transitTripStop4 labelItems];
+  v31 = [labelItems count] == 0;
 
-  v32 = [(TransitSchedulesStopViewCell *)self connectingTransitShieldsLabelView];
+  connectingTransitShieldsLabelView = [(TransitSchedulesStopViewCell *)self connectingTransitShieldsLabelView];
   if (v31)
   {
-    [v32 setHidden:1];
+    [connectingTransitShieldsLabelView setHidden:1];
 
     [NSLayoutConstraint deactivateConstraints:self->_connectingTransitShieldsConstraints];
     stopTextToBottomConstraint = self->_stopTextToBottomConstraint;
     v37 = [NSArray arrayWithObjects:&stopTextToBottomConstraint count:1];
     [NSLayoutConstraint activateConstraints:v37];
 
-    v34 = [(TransitSchedulesStopViewCell *)self connectingTransitShieldsLabelView];
-    [v34 setLabelItems:0];
+    connectingTransitShieldsLabelView2 = [(TransitSchedulesStopViewCell *)self connectingTransitShieldsLabelView];
+    [connectingTransitShieldsLabelView2 setLabelItems:0];
   }
 
   else
   {
-    [v32 setHidden:0];
+    [connectingTransitShieldsLabelView setHidden:0];
 
     v47 = self->_stopTextToBottomConstraint;
     v33 = [NSArray arrayWithObjects:&v47 count:1];
     [NSLayoutConstraint deactivateConstraints:v33];
 
     [NSLayoutConstraint activateConstraints:self->_connectingTransitShieldsConstraints];
-    v34 = [(TransitSchedulesStopViewCell *)self transitTripStop];
-    v35 = [v34 labelItems];
-    v36 = [(TransitSchedulesStopViewCell *)self connectingTransitShieldsLabelView];
-    [v36 setLabelItems:v35];
+    connectingTransitShieldsLabelView2 = [(TransitSchedulesStopViewCell *)self transitTripStop];
+    labelItems2 = [connectingTransitShieldsLabelView2 labelItems];
+    connectingTransitShieldsLabelView3 = [(TransitSchedulesStopViewCell *)self connectingTransitShieldsLabelView];
+    [connectingTransitShieldsLabelView3 setLabelItems:labelItems2];
   }
 
   [(TransitSchedulesStopViewCell *)self updateTransitLinks];
   objc_destroyWeak(&v44);
   objc_destroyWeak(&location);
 LABEL_16:
-  if (v40)
+  if (positionCopy)
   {
     [(TransitSchedulesStopViewCell *)self createVehicleImageView];
-    if (v40 == 1)
+    if (positionCopy == 1)
     {
       v38 = &OBJC_IVAR___TransitSchedulesStopViewCell__vehicleImageAtStationConstraint;
       v39 = &OBJC_IVAR___TransitSchedulesStopViewCell__vehicleImageLeavingStationConstraint;
       goto LABEL_21;
     }
 
-    if (v40 == 2)
+    if (positionCopy == 2)
     {
       v38 = &OBJC_IVAR___TransitSchedulesStopViewCell__vehicleImageLeavingStationConstraint;
       v39 = &OBJC_IVAR___TransitSchedulesStopViewCell__vehicleImageAtStationConstraint;
 LABEL_21:
-      [*(&self->super + *v39) setActive:{0, v40}];
+      [*(&self->super + *v39) setActive:{0, positionCopy}];
       [*(&self->super + *v38) setActive:1];
     }
   }
@@ -331,53 +331,53 @@ LABEL_21:
   if (!self->_vehicleImageView)
   {
     v3 = [TransitVehicleLineAnnotation alloc];
-    v4 = [(TransitSchedulesStopViewCell *)self transitLine];
-    v37 = [(TransitVehicleLineAnnotation *)v3 initWithTransitLine:v4];
+    transitLine = [(TransitSchedulesStopViewCell *)self transitLine];
+    v37 = [(TransitVehicleLineAnnotation *)v3 initWithTransitLine:transitLine];
 
     v5 = [(TransitVehiclePositionAnnotationView *)[TransitScheduleCardVehiclePositionAnnotationView alloc] initWithAnnotation:v37 reuseIdentifier:@"TransitVehiclePositionAnnotationView"];
     [(TransitSchedulesStopViewCell *)self setVehicleImageView:v5];
 
-    v6 = [(TransitSchedulesStopViewCell *)self vehicleImageView];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+    vehicleImageView = [(TransitSchedulesStopViewCell *)self vehicleImageView];
+    [vehicleImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v7 = [(TransitSchedulesStopViewCell *)self coloredTransitLineContainerView];
-    v8 = [(TransitSchedulesStopViewCell *)self vehicleImageView];
-    [v7 addSubview:v8];
+    coloredTransitLineContainerView = [(TransitSchedulesStopViewCell *)self coloredTransitLineContainerView];
+    vehicleImageView2 = [(TransitSchedulesStopViewCell *)self vehicleImageView];
+    [coloredTransitLineContainerView addSubview:vehicleImageView2];
 
-    v36 = [(TransitSchedulesStopViewCell *)self vehicleImageView];
-    v34 = [v36 centerXAnchor];
-    v35 = [(TransitSchedulesStopViewCell *)self coloredTransitLineContainerView];
-    v33 = [v35 centerXAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33];
+    vehicleImageView3 = [(TransitSchedulesStopViewCell *)self vehicleImageView];
+    centerXAnchor = [vehicleImageView3 centerXAnchor];
+    coloredTransitLineContainerView2 = [(TransitSchedulesStopViewCell *)self coloredTransitLineContainerView];
+    centerXAnchor2 = [coloredTransitLineContainerView2 centerXAnchor];
+    v32 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v38[0] = v32;
-    v31 = [(TransitSchedulesStopViewCell *)self vehicleImageView];
-    v30 = [v31 topAnchor];
-    v9 = [(TransitSchedulesStopViewCell *)self coloredTransitLineContainerView];
-    v10 = [v9 topAnchor];
-    v11 = [v30 constraintGreaterThanOrEqualToAnchor:v10 constant:0.0];
+    vehicleImageView4 = [(TransitSchedulesStopViewCell *)self vehicleImageView];
+    topAnchor = [vehicleImageView4 topAnchor];
+    coloredTransitLineContainerView3 = [(TransitSchedulesStopViewCell *)self coloredTransitLineContainerView];
+    topAnchor2 = [coloredTransitLineContainerView3 topAnchor];
+    v11 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:0.0];
     v38[1] = v11;
-    v12 = [(TransitSchedulesStopViewCell *)self vehicleImageView];
-    v13 = [v12 bottomAnchor];
-    v14 = [(TransitSchedulesStopViewCell *)self coloredTransitLineContainerView];
-    v15 = [v14 bottomAnchor];
-    v16 = [v13 constraintLessThanOrEqualToAnchor:v15 constant:0.0];
+    vehicleImageView5 = [(TransitSchedulesStopViewCell *)self vehicleImageView];
+    bottomAnchor = [vehicleImageView5 bottomAnchor];
+    coloredTransitLineContainerView4 = [(TransitSchedulesStopViewCell *)self coloredTransitLineContainerView];
+    bottomAnchor2 = [coloredTransitLineContainerView4 bottomAnchor];
+    v16 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:0.0];
     v38[2] = v16;
     v17 = [NSArray arrayWithObjects:v38 count:3];
     [NSLayoutConstraint activateConstraints:v17];
 
-    v18 = [(TransitSchedulesStopViewCell *)self vehicleImageView];
-    v19 = [v18 centerYAnchor];
-    v20 = [(TransitSchedulesStopViewCell *)self transitLineStopIndicatorImageView];
-    v21 = [v20 centerYAnchor];
-    v22 = [v19 constraintEqualToAnchor:v21];
+    vehicleImageView6 = [(TransitSchedulesStopViewCell *)self vehicleImageView];
+    centerYAnchor = [vehicleImageView6 centerYAnchor];
+    transitLineStopIndicatorImageView = [(TransitSchedulesStopViewCell *)self transitLineStopIndicatorImageView];
+    centerYAnchor2 = [transitLineStopIndicatorImageView centerYAnchor];
+    v22 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     vehicleImageAtStationConstraint = self->_vehicleImageAtStationConstraint;
     self->_vehicleImageAtStationConstraint = v22;
 
-    v24 = [(TransitSchedulesStopViewCell *)self vehicleImageView];
-    v25 = [v24 bottomAnchor];
-    v26 = [(TransitSchedulesStopViewCell *)self outgoingTransitLineSection];
-    v27 = [v26 bottomAnchor];
-    v28 = [v25 constraintEqualToAnchor:v27];
+    vehicleImageView7 = [(TransitSchedulesStopViewCell *)self vehicleImageView];
+    bottomAnchor3 = [vehicleImageView7 bottomAnchor];
+    outgoingTransitLineSection = [(TransitSchedulesStopViewCell *)self outgoingTransitLineSection];
+    bottomAnchor4 = [outgoingTransitLineSection bottomAnchor];
+    v28 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     vehicleImageLeavingStationConstraint = self->_vehicleImageLeavingStationConstraint;
     self->_vehicleImageLeavingStationConstraint = v28;
   }
@@ -400,46 +400,46 @@ LABEL_21:
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v6 setContentMode:1];
   [v3 addSubview:v6];
-  v39 = [(TransitDirectionsColoredLine *)v4 topAnchor];
-  v38 = [v3 topAnchor];
-  [v39 constraintEqualToAnchor:v38];
+  topAnchor = [(TransitDirectionsColoredLine *)v4 topAnchor];
+  topAnchor2 = [v3 topAnchor];
+  [topAnchor constraintEqualToAnchor:topAnchor2];
   v37 = v36 = v4;
   v40[0] = v37;
-  v35 = [(TransitDirectionsColoredLine *)v4 centerXAnchor];
-  v34 = [v3 centerXAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  centerXAnchor = [(TransitDirectionsColoredLine *)v4 centerXAnchor];
+  centerXAnchor2 = [v3 centerXAnchor];
+  v33 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v40[1] = v33;
-  v32 = [(TransitDirectionsColoredLine *)v4 widthAnchor];
-  v31 = [v32 constraintEqualToConstant:4.0];
+  widthAnchor = [(TransitDirectionsColoredLine *)v4 widthAnchor];
+  v31 = [widthAnchor constraintEqualToConstant:4.0];
   v40[2] = v31;
-  v30 = [(TransitDirectionsColoredLine *)v4 bottomAnchor];
-  v29 = [v6 topAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29 constant:1.0];
+  bottomAnchor = [(TransitDirectionsColoredLine *)v4 bottomAnchor];
+  topAnchor3 = [v6 topAnchor];
+  v28 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:1.0];
   v40[3] = v28;
-  v27 = [v6 centerXAnchor];
-  v26 = [v3 centerXAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  centerXAnchor3 = [v6 centerXAnchor];
+  centerXAnchor4 = [v3 centerXAnchor];
+  v25 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v40[4] = v25;
-  v23 = [v6 topAnchor];
-  v22 = [v3 topAnchor];
-  v21 = [v23 constraintGreaterThanOrEqualToAnchor:v22 constant:2.0];
+  topAnchor4 = [v6 topAnchor];
+  topAnchor5 = [v3 topAnchor];
+  v21 = [topAnchor4 constraintGreaterThanOrEqualToAnchor:topAnchor5 constant:2.0];
   v40[5] = v21;
-  v20 = [(TransitDirectionsColoredLine *)v5 topAnchor];
-  v19 = [v6 bottomAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19 constant:-1.0];
+  topAnchor6 = [(TransitDirectionsColoredLine *)v5 topAnchor];
+  bottomAnchor2 = [v6 bottomAnchor];
+  v18 = [topAnchor6 constraintEqualToAnchor:bottomAnchor2 constant:-1.0];
   v40[6] = v18;
-  v17 = [(TransitDirectionsColoredLine *)v5 bottomAnchor];
-  v7 = [v3 bottomAnchor];
-  v8 = [v17 constraintEqualToAnchor:v7];
+  bottomAnchor3 = [(TransitDirectionsColoredLine *)v5 bottomAnchor];
+  bottomAnchor4 = [v3 bottomAnchor];
+  v8 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v40[7] = v8;
   v9 = v5;
   v24 = v5;
-  v10 = [(TransitDirectionsColoredLine *)v5 centerXAnchor];
-  v11 = [v3 centerXAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  centerXAnchor5 = [(TransitDirectionsColoredLine *)v5 centerXAnchor];
+  centerXAnchor6 = [v3 centerXAnchor];
+  v12 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   v40[8] = v12;
-  v13 = [(TransitDirectionsColoredLine *)v9 widthAnchor];
-  v14 = [v13 constraintEqualToConstant:4.0];
+  widthAnchor2 = [(TransitDirectionsColoredLine *)v9 widthAnchor];
+  v14 = [widthAnchor2 constraintEqualToConstant:4.0];
   v40[9] = v14;
   v15 = [NSArray arrayWithObjects:v40 count:10];
   [NSLayoutConstraint activateConstraints:v15];
@@ -452,28 +452,28 @@ LABEL_21:
   v4.receiver = self;
   v4.super_class = TransitSchedulesStopViewCell;
   [(TransitSchedulesStopViewCell *)&v4 prepareForReuse];
-  v3 = [(TransitSchedulesStopViewCell *)self vehicleImageView];
-  [v3 removeFromSuperview];
+  vehicleImageView = [(TransitSchedulesStopViewCell *)self vehicleImageView];
+  [vehicleImageView removeFromSuperview];
 
   [(TransitSchedulesStopViewCell *)self setVehicleImageView:0];
 }
 
 - (void)createSubviews
 {
-  v3 = [(TransitSchedulesStopViewCell *)self contentView];
-  [v3 setAccessibilityIdentifier:@"TransitSchedulesStopViewCell"];
+  contentView = [(TransitSchedulesStopViewCell *)self contentView];
+  [contentView setAccessibilityIdentifier:@"TransitSchedulesStopViewCell"];
   v4 = +[UIColor clearColor];
   [(TransitSchedulesStopViewCell *)self setBackgroundColor:v4];
 
-  v73 = [(TransitSchedulesStopViewCell *)self createStationLinkSubview];
-  [(TransitSchedulesStopViewCell *)self setColoredTransitLineContainerView:v73];
-  [v3 addSubview:v73];
+  createStationLinkSubview = [(TransitSchedulesStopViewCell *)self createStationLinkSubview];
+  [(TransitSchedulesStopViewCell *)self setColoredTransitLineContainerView:createStationLinkSubview];
+  [contentView addSubview:createStationLinkSubview];
   v5 = objc_alloc_init(MapsThemeLabel);
   [(TransitSchedulesStopViewCell *)self setPrimaryTextLabel:v5];
   [(MapsThemeLabel *)v5 setNumberOfLines:2];
   [(MapsThemeLabel *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(MapsThemeLabel *)v5 setAccessibilityIdentifier:@"TransitSchedulesStopViewCellPrimaryTextLabel"];
-  [v3 addSubview:v5];
+  [contentView addSubview:v5];
   v6 = v5;
   LODWORD(v7) = 1148846080;
   [(MapsThemeLabel *)v5 setContentCompressionResistancePriority:1 forAxis:v7];
@@ -481,8 +481,8 @@ LABEL_21:
   [(TransitSchedulesStopViewCell *)self setTimeLabel:v8];
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v8 setAccessibilityIdentifier:@"TransitSchedulesStopViewCellTimeLabel"];
-  v71 = v3;
-  [v3 addSubview:v8];
+  v71 = contentView;
+  [contentView addSubview:v8];
   v74 = v8;
   LODWORD(v9) = 1148846080;
   [v8 setContentCompressionResistancePriority:0 forAxis:v9];
@@ -491,98 +491,98 @@ LABEL_21:
   v11 = [v10 initWithLabelItems:0 iconSize:3 shieldSize:5 spaceBetweenShields:3.0 maxWidth:MKTransitInfoLabelViewNoMaxWidth];
   [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v11 setAccessibilityIdentifier:@"TransitSchedulesStopViewCellTransitInfoLabelView"];
-  [v3 addSubview:v11];
+  [contentView addSubview:v11];
   LODWORD(v12) = 1148846080;
   [v11 setContentCompressionResistancePriority:0 forAxis:v12];
   LODWORD(v13) = 1148846080;
   [v11 setContentCompressionResistancePriority:1 forAxis:v13];
   [(TransitSchedulesStopViewCell *)self setConnectingTransitShieldsLabelView:v11];
-  v68 = [v11 topAnchor];
+  topAnchor = [v11 topAnchor];
   v72 = v6;
-  v66 = [(MapsThemeLabel *)v6 bottomAnchor];
-  v64 = [v68 constraintEqualToAnchor:v66 constant:2.0];
+  bottomAnchor = [(MapsThemeLabel *)v6 bottomAnchor];
+  v64 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:2.0];
   v76[0] = v64;
-  v62 = [v11 leadingAnchor];
-  v60 = [(MapsThemeLabel *)v6 leadingAnchor];
-  v14 = [v62 constraintEqualToAnchor:v60];
+  leadingAnchor = [v11 leadingAnchor];
+  leadingAnchor2 = [(MapsThemeLabel *)v6 leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v76[1] = v14;
   v15 = v11;
   v70 = v11;
-  v16 = [v11 trailingAnchor];
-  v17 = [(TransitSchedulesStopViewCell *)self contentView];
-  v18 = [v17 trailingAnchor];
-  v19 = [v16 constraintLessThanOrEqualToAnchor:v18 constant:-8.0];
+  trailingAnchor = [v11 trailingAnchor];
+  contentView2 = [(TransitSchedulesStopViewCell *)self contentView];
+  trailingAnchor2 = [contentView2 trailingAnchor];
+  v19 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:-8.0];
   v76[2] = v19;
-  v20 = [v15 bottomAnchor];
-  v21 = [(TransitSchedulesStopViewCell *)self contentView];
-  v22 = [v21 bottomAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22 constant:-10.0];
+  bottomAnchor2 = [v15 bottomAnchor];
+  contentView3 = [(TransitSchedulesStopViewCell *)self contentView];
+  bottomAnchor3 = [contentView3 bottomAnchor];
+  v23 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-10.0];
   v76[3] = v23;
   v24 = [NSArray arrayWithObjects:v76 count:4];
   connectingTransitShieldsConstraints = self->_connectingTransitShieldsConstraints;
   self->_connectingTransitShieldsConstraints = v24;
 
-  v26 = [(MapsThemeLabel *)v72 bottomAnchor];
-  v27 = [v71 bottomAnchor];
-  v28 = [v26 constraintLessThanOrEqualToAnchor:v27 constant:-28.0];
+  bottomAnchor4 = [(MapsThemeLabel *)v72 bottomAnchor];
+  bottomAnchor5 = [v71 bottomAnchor];
+  v28 = [bottomAnchor4 constraintLessThanOrEqualToAnchor:bottomAnchor5 constant:-28.0];
   stopTextToBottomConstraint = self->_stopTextToBottomConstraint;
   self->_stopTextToBottomConstraint = v28;
 
-  v69 = [v73 topAnchor];
-  v67 = [v71 topAnchor];
-  v65 = [v69 constraintEqualToAnchor:v67];
+  topAnchor2 = [createStationLinkSubview topAnchor];
+  topAnchor3 = [v71 topAnchor];
+  v65 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
   v75[0] = v65;
-  v63 = [v73 bottomAnchor];
-  v61 = [v71 bottomAnchor];
-  v59 = [v63 constraintEqualToAnchor:v61];
+  bottomAnchor6 = [createStationLinkSubview bottomAnchor];
+  bottomAnchor7 = [v71 bottomAnchor];
+  v59 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
   v75[1] = v59;
-  v58 = [v73 leadingAnchor];
-  v57 = [v71 leadingAnchor];
-  v56 = [v58 constraintEqualToAnchor:v57 constant:16.0];
+  leadingAnchor3 = [createStationLinkSubview leadingAnchor];
+  leadingAnchor4 = [v71 leadingAnchor];
+  v56 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:16.0];
   v75[2] = v56;
-  v55 = [v73 widthAnchor];
-  v54 = [v55 constraintEqualToConstant:24.0];
+  widthAnchor = [createStationLinkSubview widthAnchor];
+  v54 = [widthAnchor constraintEqualToConstant:24.0];
   v75[3] = v54;
-  v53 = [(MapsThemeLabel *)v72 topAnchor];
-  v52 = [v71 topAnchor];
-  v51 = [v53 constraintGreaterThanOrEqualToAnchor:v52 constant:2.0];
+  topAnchor4 = [(MapsThemeLabel *)v72 topAnchor];
+  topAnchor5 = [v71 topAnchor];
+  v51 = [topAnchor4 constraintGreaterThanOrEqualToAnchor:topAnchor5 constant:2.0];
   v75[4] = v51;
-  v49 = [(MapsThemeLabel *)v72 centerYAnchor];
-  v50 = [(TransitSchedulesStopViewCell *)self transitLineStopIndicatorImageView];
-  v48 = [v50 centerYAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48];
+  centerYAnchor = [(MapsThemeLabel *)v72 centerYAnchor];
+  transitLineStopIndicatorImageView = [(TransitSchedulesStopViewCell *)self transitLineStopIndicatorImageView];
+  centerYAnchor2 = [transitLineStopIndicatorImageView centerYAnchor];
+  v47 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v75[5] = v47;
-  v46 = [(MapsThemeLabel *)v72 leadingAnchor];
-  v45 = [v73 trailingAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45 constant:8.0];
+  leadingAnchor5 = [(MapsThemeLabel *)v72 leadingAnchor];
+  trailingAnchor3 = [createStationLinkSubview trailingAnchor];
+  v44 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor3 constant:8.0];
   v30 = self->_stopTextToBottomConstraint;
   v75[6] = v44;
   v75[7] = v30;
-  v43 = [v74 leadingAnchor];
-  v42 = [(MapsThemeLabel *)v72 trailingAnchor];
-  v41 = [v43 constraintGreaterThanOrEqualToAnchor:v42 constant:8.0];
+  leadingAnchor6 = [v74 leadingAnchor];
+  trailingAnchor4 = [(MapsThemeLabel *)v72 trailingAnchor];
+  v41 = [leadingAnchor6 constraintGreaterThanOrEqualToAnchor:trailingAnchor4 constant:8.0];
   v75[8] = v41;
-  v31 = [v74 trailingAnchor];
-  v32 = [v71 trailingAnchor];
-  v33 = [v31 constraintEqualToAnchor:v32 constant:-16.0];
+  trailingAnchor5 = [v74 trailingAnchor];
+  trailingAnchor6 = [v71 trailingAnchor];
+  v33 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-16.0];
   v75[9] = v33;
-  v34 = [v74 firstBaselineAnchor];
-  v35 = [(MapsThemeLabel *)v72 firstBaselineAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35];
+  firstBaselineAnchor = [v74 firstBaselineAnchor];
+  firstBaselineAnchor2 = [(MapsThemeLabel *)v72 firstBaselineAnchor];
+  v36 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
   v75[10] = v36;
-  v37 = [v74 bottomAnchor];
-  v38 = [v71 bottomAnchor];
-  v39 = [v37 constraintLessThanOrEqualToAnchor:v38];
+  bottomAnchor8 = [v74 bottomAnchor];
+  bottomAnchor9 = [v71 bottomAnchor];
+  v39 = [bottomAnchor8 constraintLessThanOrEqualToAnchor:bottomAnchor9];
   v75[11] = v39;
   v40 = [NSArray arrayWithObjects:v75 count:12];
   [NSLayoutConstraint activateConstraints:v40];
 }
 
-- (TransitSchedulesStopViewCell)initWithFrame:(CGRect)a3
+- (TransitSchedulesStopViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TransitSchedulesStopViewCell;
-  v3 = [(TransitSchedulesStopViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TransitSchedulesStopViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

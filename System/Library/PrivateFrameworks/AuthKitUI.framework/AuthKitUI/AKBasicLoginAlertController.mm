@@ -1,8 +1,8 @@
 @interface AKBasicLoginAlertController
-- (AKBasicLoginAlertController)initWithAlertStyle:(int64_t)a3;
-- (AKBasicLoginAlertController)initWithNibName:(id)a3 bundle:(id)a4;
+- (AKBasicLoginAlertController)initWithAlertStyle:(int64_t)style;
+- (AKBasicLoginAlertController)initWithNibName:(id)name bundle:(id)bundle;
 - (AKBasicLoginControllerDelegate)delegate;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (NSString)authenticateButtonTitle;
 - (NSString)authenticateTitle;
 - (NSString)cancelButtonTitle;
@@ -12,42 +12,42 @@
 - (id)_passwordField;
 - (id)_wrappedCancelAction;
 - (void)_beginObservingDidEnterCodeNotifications;
-- (void)_didEnterCode:(id)a3;
-- (void)_dismissAndShowiForgot:(id)a3;
+- (void)_didEnterCode:(id)code;
+- (void)_dismissAndShowiForgot:(id)forgot;
 - (void)_endObservingDidEnterCodeNotifications;
-- (void)_passwordFieldDidChange:(id)a3;
-- (void)_setupAuthenticateAndCancelButtonsWithIForgot:(BOOL)a3;
+- (void)_passwordFieldDidChange:(id)change;
+- (void)_setupAuthenticateAndCancelButtonsWithIForgot:(BOOL)forgot;
 - (void)_setupViewControllerForAlertStyle;
 - (void)_setupViewControllerForDefaultStyle;
 - (void)_setupViewControllerForIForgotStyle;
 - (void)_setupViewControllerForNonEditableUsernameFieldStyle;
-- (void)_setupViewControllerForSecondFactorEntryStyle:(int64_t)a3;
+- (void)_setupViewControllerForSecondFactorEntryStyle:(int64_t)style;
 - (void)_setupViewControllerForUserOrCreateAppleIDStyle;
 - (void)_syncUsernameAndPasswordPropertiesWithTextFieldContent;
 - (void)clearPasswordField;
 - (void)clearSecondFactorEntry;
 - (void)dealloc;
 - (void)jiggleAView;
-- (void)setAuthenticateButtonTitle:(id)a3;
-- (void)setAuthenticateTitle:(id)a3;
-- (void)setCancelButtonTitle:(id)a3;
-- (void)setPasscodeFieldDisabled:(BOOL)a3;
-- (void)setPassword:(id)a3;
-- (void)setReason:(id)a3;
-- (void)setUsername:(id)a3;
+- (void)setAuthenticateButtonTitle:(id)title;
+- (void)setAuthenticateTitle:(id)title;
+- (void)setCancelButtonTitle:(id)title;
+- (void)setPasscodeFieldDisabled:(BOOL)disabled;
+- (void)setPassword:(id)password;
+- (void)setReason:(id)reason;
+- (void)setUsername:(id)username;
 - (void)startAnimating;
 - (void)stopAnimating;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation AKBasicLoginAlertController
 
-- (AKBasicLoginAlertController)initWithAlertStyle:(int64_t)a3
+- (AKBasicLoginAlertController)initWithAlertStyle:(int64_t)style
 {
   v8 = a2;
-  v7 = a3;
+  styleCopy = style;
   v9 = 0;
   v6.receiver = self;
   v6.super_class = AKBasicLoginAlertController;
@@ -57,7 +57,7 @@
   if (v5)
   {
     [(AKBasicLoginAlertController *)v9 setPreferredStyle:1];
-    [(AKBasicLoginAlertController *)v9 setAlertStyle:v7];
+    [(AKBasicLoginAlertController *)v9 setAlertStyle:styleCopy];
     _AKBasicLoginAlertControllerInitialize(v9);
   }
 
@@ -66,41 +66,41 @@
   return v4;
 }
 
-- (AKBasicLoginAlertController)initWithNibName:(id)a3 bundle:(id)a4
+- (AKBasicLoginAlertController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v4 = v12;
-  v12 = 0;
+  objc_storeStrong(&v10, bundle);
+  v4 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v4;
   v9.super_class = AKBasicLoginAlertController;
   v8 = [(AKBasicLoginAlertController *)&v9 initWithNibName:location[0] bundle:v10];
-  v12 = v8;
-  objc_storeStrong(&v12, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
-    [(AKBasicLoginAlertController *)v12 setPreferredStyle:1];
-    [(AKBasicLoginAlertController *)v12 _setupViewControllerForAlertStyle];
-    _AKBasicLoginAlertControllerInitialize(v12);
+    [(AKBasicLoginAlertController *)selfCopy setPreferredStyle:1];
+    [(AKBasicLoginAlertController *)selfCopy _setupViewControllerForAlertStyle];
+    _AKBasicLoginAlertControllerInitialize(selfCopy);
   }
 
-  v6 = MEMORY[0x277D82BE0](v12);
+  v6 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(AKBasicLoginAlertController *)self _endObservingDidEnterCodeNotifications];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = AKBasicLoginAlertController;
   [(AKBasicLoginAlertController *)&v2 dealloc];
 }
@@ -111,10 +111,10 @@
   [(AKBasicLoginAlertController *)self setTitle:?];
   [(AKBasicLoginAlertController *)self setMessage:0];
   [(AKBasicLoginAlertController *)self setPreferredAction:0];
-  v2 = [(AKBasicLoginAlertController *)self alertStyle];
-  if (v2)
+  alertStyle = [(AKBasicLoginAlertController *)self alertStyle];
+  if (alertStyle)
   {
-    switch(v2)
+    switch(alertStyle)
     {
       case 1:
         [(AKBasicLoginAlertController *)self _setupViewControllerForNonEditableUsernameFieldStyle];
@@ -142,20 +142,20 @@
 
 - (id)_wrappedCancelAction
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   objc_initWeak(location, self);
-  v9 = [MEMORY[0x277CF0228] sharedManager];
-  v10 = [v9 isAuthKitSolariumFeatureEnabled];
-  *&v2 = MEMORY[0x277D82BD8](v9).n128_u64[0];
-  v22 = (v10 & 1) == 0;
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isAuthKitSolariumFeatureEnabled = [mEMORY[0x277CF0228] isAuthKitSolariumFeatureEnabled];
+  *&v2 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
+  v22 = (isAuthKitSolariumFeatureEnabled & 1) == 0;
   v8 = MEMORY[0x277D750F8];
-  v7 = [(AKBasicLoginAlertController *)v24 cancelButtonTitle];
+  cancelButtonTitle = [(AKBasicLoginAlertController *)selfCopy cancelButtonTitle];
   v19 = 0;
   v17 = 0;
-  if (v7)
+  if (cancelButtonTitle)
   {
-    v6 = v7;
+    v6 = cancelButtonTitle;
   }
 
   else
@@ -185,7 +185,7 @@
     MEMORY[0x277D82BD8](v20);
   }
 
-  MEMORY[0x277D82BD8](v7);
+  MEMORY[0x277D82BD8](cancelButtonTitle);
   v4 = MEMORY[0x277D82BE0](v21);
   objc_storeStrong(&v21, 0);
   objc_destroyWeak(&v16);
@@ -239,73 +239,73 @@ void __51__AKBasicLoginAlertController__wrappedCancelAction__block_invoke(id *a1
 
 - (void)_syncUsernameAndPasswordPropertiesWithTextFieldContent
 {
-  v26 = self;
+  selfCopy = self;
   v25[1] = a2;
   v25[0] = 0;
   v24 = 0;
-  v23 = [(AKBasicLoginAlertController *)self alertStyle];
-  if (v23)
+  alertStyle = [(AKBasicLoginAlertController *)self alertStyle];
+  if (alertStyle)
   {
-    v8 = [(AKBasicLoginAlertController *)v26 username];
+    username = [(AKBasicLoginAlertController *)selfCopy username];
     v9 = v25[0];
-    v25[0] = v8;
-    if (v23 == 1)
+    v25[0] = username;
+    if (alertStyle == 1)
     {
-      v18 = [(AKBasicLoginAlertController *)v26 textFields];
-      v17 = [v18 objectAtIndexedSubscript:0];
-      v6 = [v17 text];
+      textFields = [(AKBasicLoginAlertController *)selfCopy textFields];
+      v17 = [textFields objectAtIndexedSubscript:0];
+      text = [v17 text];
       v7 = v24;
-      v24 = v6;
+      v24 = text;
       MEMORY[0x277D82BD8](v7);
       MEMORY[0x277D82BD8](v17);
-      v12 = MEMORY[0x277D82BD8](v18).n128_u64[0];
+      v12 = MEMORY[0x277D82BD8](textFields).n128_u64[0];
     }
 
     else
     {
-      v10 = [(AKBasicLoginAlertController *)v26 password];
+      password = [(AKBasicLoginAlertController *)selfCopy password];
       v11 = v24;
-      v24 = v10;
+      v24 = password;
       v12 = MEMORY[0x277D82BD8](v11).n128_u64[0];
     }
   }
 
   else
   {
-    v20 = [(AKBasicLoginAlertController *)v26 textFields];
-    v19 = [v20 objectAtIndexedSubscript:0];
-    v2 = [v19 text];
+    textFields2 = [(AKBasicLoginAlertController *)selfCopy textFields];
+    v19 = [textFields2 objectAtIndexedSubscript:0];
+    text2 = [v19 text];
     v3 = v25[0];
-    v25[0] = v2;
+    v25[0] = text2;
     MEMORY[0x277D82BD8](v3);
     MEMORY[0x277D82BD8](v19);
-    v22 = [(AKBasicLoginAlertController *)v26 textFields];
-    v21 = [v22 objectAtIndexedSubscript:1];
-    v4 = [v21 text];
+    textFields3 = [(AKBasicLoginAlertController *)selfCopy textFields];
+    v21 = [textFields3 objectAtIndexedSubscript:1];
+    text3 = [v21 text];
     v5 = v24;
-    v24 = v4;
+    v24 = text3;
     MEMORY[0x277D82BD8](v5);
     MEMORY[0x277D82BD8](v21);
-    v12 = MEMORY[0x277D82BD8](v22).n128_u64[0];
+    v12 = MEMORY[0x277D82BD8](textFields3).n128_u64[0];
   }
 
   v13 = [v25[0] copy];
-  ak_username = v26->_ak_username;
-  v26->_ak_username = v13;
+  ak_username = selfCopy->_ak_username;
+  selfCopy->_ak_username = v13;
   v15 = [(NSString *)v24 copy];
-  ak_password = v26->_ak_password;
-  v26->_ak_password = v15;
+  ak_password = selfCopy->_ak_password;
+  selfCopy->_ak_password = v15;
   MEMORY[0x277D82BD8](ak_password);
   objc_storeStrong(&v24, 0);
   objc_storeStrong(v25, 0);
 }
 
-- (void)_setupAuthenticateAndCancelButtonsWithIForgot:(BOOL)a3
+- (void)_setupAuthenticateAndCancelButtonsWithIForgot:(BOOL)forgot
 {
   v43[3] = *MEMORY[0x277D85DE8];
-  v41 = self;
+  selfCopy = self;
   v40 = a2;
-  v39 = a3;
+  forgotCopy = forgot;
   objc_initWeak(&location, self);
   v31 = MEMORY[0x277D85DD0];
   v32 = -1073741824;
@@ -315,7 +315,7 @@ void __51__AKBasicLoginAlertController__wrappedCancelAction__block_invoke(id *a1
   objc_copyWeak(&v36, &location);
   v37 = MEMORY[0x223DB6C90](&v31);
   v30 = 0;
-  if (v39)
+  if (forgotCopy)
   {
     v18 = MEMORY[0x277D750F8];
     v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -325,7 +325,7 @@ void __51__AKBasicLoginAlertController__wrappedCancelAction__block_invoke(id *a1
     v26 = 0;
     v27 = __77__AKBasicLoginAlertController__setupAuthenticateAndCancelButtonsWithIForgot___block_invoke_2;
     v28 = &unk_2784A7810;
-    v29 = MEMORY[0x277D82BE0](v41);
+    v29 = MEMORY[0x277D82BE0](selfCopy);
     v3 = [v18 actionWithTitle:v16 style:0 handler:&v24];
     v4 = v30;
     v30 = v3;
@@ -336,12 +336,12 @@ void __51__AKBasicLoginAlertController__wrappedCancelAction__block_invoke(id *a1
   }
 
   v15 = MEMORY[0x277D750F8];
-  v14 = [(AKBasicLoginAlertController *)v41 authenticateButtonTitle];
+  authenticateButtonTitle = [(AKBasicLoginAlertController *)selfCopy authenticateButtonTitle];
   v21 = 0;
   v19 = 0;
-  if (v14)
+  if (authenticateButtonTitle)
   {
-    v13 = v14;
+    v13 = authenticateButtonTitle;
   }
 
   else
@@ -364,33 +364,33 @@ void __51__AKBasicLoginAlertController__wrappedCancelAction__block_invoke(id *a1
     MEMORY[0x277D82BD8](v22);
   }
 
-  *&v5 = MEMORY[0x277D82BD8](v14).n128_u64[0];
+  *&v5 = MEMORY[0x277D82BD8](authenticateButtonTitle).n128_u64[0];
   if (v30)
   {
-    v12 = v41;
+    v12 = selfCopy;
     v43[0] = v23;
     v43[1] = v30;
-    v11 = [(AKBasicLoginAlertController *)v41 _wrappedCancelAction];
-    v43[2] = v11;
+    _wrappedCancelAction = [(AKBasicLoginAlertController *)selfCopy _wrappedCancelAction];
+    v43[2] = _wrappedCancelAction;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:3];
     [(AKBasicLoginAlertController *)v12 _setActions:?];
     MEMORY[0x277D82BD8](v10);
-    v6 = MEMORY[0x277D82BD8](v11).n128_u64[0];
+    v6 = MEMORY[0x277D82BD8](_wrappedCancelAction).n128_u64[0];
   }
 
   else
   {
-    v9 = v41;
+    v9 = selfCopy;
     v42[0] = v23;
-    v8 = [(AKBasicLoginAlertController *)v41 _wrappedCancelAction];
-    v42[1] = v8;
+    _wrappedCancelAction2 = [(AKBasicLoginAlertController *)selfCopy _wrappedCancelAction];
+    v42[1] = _wrappedCancelAction2;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:2];
     [(AKBasicLoginAlertController *)v9 _setActions:?];
     MEMORY[0x277D82BD8](v7);
-    v6 = MEMORY[0x277D82BD8](v8).n128_u64[0];
+    v6 = MEMORY[0x277D82BD8](_wrappedCancelAction2).n128_u64[0];
   }
 
-  [(AKBasicLoginAlertController *)v41 setPreferredAction:v23, *&v6];
+  [(AKBasicLoginAlertController *)selfCopy setPreferredAction:v23, *&v6];
   objc_storeStrong(&v23, 0);
   objc_storeStrong(&v30, 0);
   objc_storeStrong(&v37, 0);
@@ -439,21 +439,21 @@ void __77__AKBasicLoginAlertController__setupAuthenticateAndCancelButtonsWithIFo
 
 - (void)_setupViewControllerForDefaultStyle
 {
-  v46 = self;
+  selfCopy = self;
   v45[1] = a2;
   v45[0] = [(AKBasicLoginAlertController *)self contentViewController];
   if (!v45[0])
   {
     v45[0] = [[AKBasicLoginContentViewController alloc] initWithNibName:0 bundle:?];
-    [(AKBasicLoginAlertController *)v46 setContentViewController:v45[0], MEMORY[0x277D82BD8](0).n128_f64[0]];
+    [(AKBasicLoginAlertController *)selfCopy setContentViewController:v45[0], MEMORY[0x277D82BD8](0).n128_f64[0]];
   }
 
-  v14 = [(AKBasicLoginAlertController *)v46 authenticateTitle];
+  authenticateTitle = [(AKBasicLoginAlertController *)selfCopy authenticateTitle];
   v43 = 0;
   v41 = 0;
-  if (v14)
+  if (authenticateTitle)
   {
-    v13 = v14;
+    v13 = authenticateTitle;
   }
 
   else
@@ -465,9 +465,9 @@ void __77__AKBasicLoginAlertController__setupAuthenticateAndCancelButtonsWithIFo
     v13 = v42;
   }
 
-  v12 = [v45[0] contentContainerView];
-  [v12 setTitleText:v13];
-  MEMORY[0x277D82BD8](v12);
+  contentContainerView = [v45[0] contentContainerView];
+  [contentContainerView setTitleText:v13];
+  MEMORY[0x277D82BD8](contentContainerView);
   if (v41)
   {
     MEMORY[0x277D82BD8](v42);
@@ -478,23 +478,23 @@ void __77__AKBasicLoginAlertController__setupAuthenticateAndCancelButtonsWithIFo
     MEMORY[0x277D82BD8](v44);
   }
 
-  v7 = [(AKBasicLoginAlertController *)v46 reason];
-  v6 = [v45[0] contentContainerView];
-  [v6 setMessageText:v7];
-  MEMORY[0x277D82BD8](v6);
-  *&v2 = MEMORY[0x277D82BD8](v7).n128_u64[0];
+  reason = [(AKBasicLoginAlertController *)selfCopy reason];
+  contentContainerView2 = [v45[0] contentContainerView];
+  [contentContainerView2 setMessageText:reason];
+  MEMORY[0x277D82BD8](contentContainerView2);
+  *&v2 = MEMORY[0x277D82BD8](reason).n128_u64[0];
   v8 = MEMORY[0x277CF0300];
-  v9 = [(AKBasicLoginAlertController *)v46 username];
+  username = [(AKBasicLoginAlertController *)selfCopy username];
   v40 = [v8 formattedUsernameFromUsername:?];
-  MEMORY[0x277D82BD8](v9);
+  MEMORY[0x277D82BD8](username);
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v39 = [v10 localizedStringForKey:@"APPLE_ID_ALERT_PLACEHOLDER_REBRAND" value:&stru_28358EF68 table:@"Localizable"];
-  v11 = [MEMORY[0x277CF0218] currentDevice];
+  currentDevice = [MEMORY[0x277CF0218] currentDevice];
   v36 = 0;
   v34 = 0;
   v32 = 0;
   v30 = 0;
-  if ([v11 isMultiUserMode])
+  if ([currentDevice isMultiUserMode])
   {
     v37 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v36 = 1;
@@ -533,9 +533,9 @@ void __77__AKBasicLoginAlertController__setupAuthenticateAndCancelButtonsWithIFo
     MEMORY[0x277D82BD8](v37);
   }
 
-  MEMORY[0x277D82BD8](v11);
-  objc_initWeak(&location, v46);
-  v5 = v46;
+  MEMORY[0x277D82BD8](currentDevice);
+  objc_initWeak(&location, selfCopy);
+  v5 = selfCopy;
   v22 = MEMORY[0x277D85DD0];
   v23 = -1073741824;
   v24 = 0;
@@ -544,7 +544,7 @@ void __77__AKBasicLoginAlertController__setupAuthenticateAndCancelButtonsWithIFo
   v27 = MEMORY[0x277D82BE0](v40);
   v28 = MEMORY[0x277D82BE0](v39);
   [(AKBasicLoginAlertController *)v5 addTextFieldWithConfigurationHandler:&v22];
-  v4 = v46;
+  v4 = selfCopy;
   v15 = MEMORY[0x277D85DD0];
   v16 = -1073741824;
   v17 = 0;
@@ -553,7 +553,7 @@ void __77__AKBasicLoginAlertController__setupAuthenticateAndCancelButtonsWithIFo
   objc_copyWeak(v21, &location);
   v20 = MEMORY[0x277D82BE0](v38);
   [(AKBasicLoginAlertController *)v4 addTextFieldWithConfigurationHandler:&v15];
-  [(AKBasicLoginAlertController *)v46 _setupAuthenticateAndCancelButtons];
+  [(AKBasicLoginAlertController *)selfCopy _setupAuthenticateAndCancelButtons];
   objc_storeStrong(&v20, 0);
   objc_destroyWeak(v21);
   objc_storeStrong(&v28, 0);
@@ -609,21 +609,21 @@ void __66__AKBasicLoginAlertController__setupViewControllerForDefaultStyle__bloc
 
 - (void)_setupViewControllerForNonEditableUsernameFieldStyle
 {
-  v39 = self;
+  selfCopy = self;
   v38[1] = a2;
   v38[0] = [(AKBasicLoginAlertController *)self contentViewController];
   if (!v38[0])
   {
     v38[0] = [[AKBasicLoginContentViewController alloc] initWithNibName:0 bundle:?];
-    [(AKBasicLoginAlertController *)v39 setContentViewController:v38[0], MEMORY[0x277D82BD8](0).n128_f64[0]];
+    [(AKBasicLoginAlertController *)selfCopy setContentViewController:v38[0], MEMORY[0x277D82BD8](0).n128_f64[0]];
   }
 
-  v11 = [MEMORY[0x277CF0218] currentDevice];
+  currentDevice = [MEMORY[0x277CF0218] currentDevice];
   v35 = 0;
   v33 = 0;
   v31 = 0;
   v29 = 0;
-  if ([v11 isMultiUserMode])
+  if ([currentDevice isMultiUserMode])
   {
     v36 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v35 = 1;
@@ -662,10 +662,10 @@ void __66__AKBasicLoginAlertController__setupViewControllerForDefaultStyle__bloc
     MEMORY[0x277D82BD8](v36);
   }
 
-  v10 = [(AKBasicLoginAlertController *)v39 authenticateTitle];
-  if (v10)
+  authenticateTitle = [(AKBasicLoginAlertController *)selfCopy authenticateTitle];
+  if (authenticateTitle)
   {
-    v9 = v10;
+    v9 = authenticateTitle;
   }
 
   else
@@ -673,19 +673,19 @@ void __66__AKBasicLoginAlertController__setupViewControllerForDefaultStyle__bloc
     v9 = v37;
   }
 
-  v5 = [v38[0] contentContainerView];
-  [v5 setTitleText:v9];
-  MEMORY[0x277D82BD8](v5);
-  v7 = [(AKBasicLoginAlertController *)v39 reason];
-  v6 = [v38[0] contentContainerView];
-  [v6 setMessageText:v7];
-  MEMORY[0x277D82BD8](v6);
-  v8 = [MEMORY[0x277CF0218] currentDevice];
+  contentContainerView = [v38[0] contentContainerView];
+  [contentContainerView setTitleText:v9];
+  MEMORY[0x277D82BD8](contentContainerView);
+  reason = [(AKBasicLoginAlertController *)selfCopy reason];
+  contentContainerView2 = [v38[0] contentContainerView];
+  [contentContainerView2 setMessageText:reason];
+  MEMORY[0x277D82BD8](contentContainerView2);
+  currentDevice2 = [MEMORY[0x277CF0218] currentDevice];
   v26 = 0;
   v24 = 0;
   v22 = 0;
   v20 = 0;
-  if ([v8 isMultiUserMode])
+  if ([currentDevice2 isMultiUserMode])
   {
     v27 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v26 = 1;
@@ -724,9 +724,9 @@ void __66__AKBasicLoginAlertController__setupViewControllerForDefaultStyle__bloc
     MEMORY[0x277D82BD8](v27);
   }
 
-  MEMORY[0x277D82BD8](v8);
-  objc_initWeak(&location, v39);
-  v4 = v39;
+  MEMORY[0x277D82BD8](currentDevice2);
+  objc_initWeak(&location, selfCopy);
+  v4 = selfCopy;
   v12 = MEMORY[0x277D85DD0];
   v13 = -1073741824;
   v14 = 0;
@@ -735,7 +735,7 @@ void __66__AKBasicLoginAlertController__setupViewControllerForDefaultStyle__bloc
   objc_copyWeak(&v18, &location);
   v17 = MEMORY[0x277D82BE0](v28);
   [(AKBasicLoginAlertController *)v4 addTextFieldWithConfigurationHandler:&v12];
-  [(AKBasicLoginAlertController *)v39 _setupAuthenticateAndCancelButtons];
+  [(AKBasicLoginAlertController *)selfCopy _setupAuthenticateAndCancelButtons];
   objc_storeStrong(&v17, 0);
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
@@ -773,41 +773,41 @@ void __83__AKBasicLoginAlertController__setupViewControllerForNonEditableUsernam
 - (void)_setupViewControllerForUserOrCreateAppleIDStyle
 {
   v35[3] = *MEMORY[0x277D85DE8];
-  v34 = self;
+  selfCopy = self;
   v33[1] = a2;
   v33[0] = [(AKBasicLoginAlertController *)self contentViewController];
   if (!v33[0])
   {
     v33[0] = [[AKBasicLoginContentViewController alloc] initWithNibName:0 bundle:?];
-    [(AKBasicLoginAlertController *)v34 setContentViewController:v33[0], MEMORY[0x277D82BD8](0).n128_f64[0]];
+    [(AKBasicLoginAlertController *)selfCopy setContentViewController:v33[0], MEMORY[0x277D82BD8](0).n128_f64[0]];
   }
 
-  v15 = [(AKBasicLoginAlertController *)v34 authenticateTitle];
+  authenticateTitle = [(AKBasicLoginAlertController *)selfCopy authenticateTitle];
   v31 = 0;
-  if (v15)
+  if (authenticateTitle)
   {
-    v14 = v15;
+    v14 = authenticateTitle;
   }
 
   else
   {
-    v32 = [(AKBasicLoginAlertController *)v34 reason];
+    reason = [(AKBasicLoginAlertController *)selfCopy reason];
     v31 = 1;
-    v14 = v32;
+    v14 = reason;
   }
 
-  v13 = [v33[0] contentContainerView];
-  [v13 setTitleText:v14];
-  MEMORY[0x277D82BD8](v13);
+  contentContainerView = [v33[0] contentContainerView];
+  [contentContainerView setTitleText:v14];
+  MEMORY[0x277D82BD8](contentContainerView);
   if (v31)
   {
-    MEMORY[0x277D82BD8](v32);
+    MEMORY[0x277D82BD8](reason);
   }
 
-  v12 = [v33[0] contentContainerView];
-  [v12 setMessageText:0];
-  MEMORY[0x277D82BD8](v12);
-  objc_initWeak(&location, v34);
+  contentContainerView2 = [v33[0] contentContainerView];
+  [contentContainerView2 setMessageText:0];
+  MEMORY[0x277D82BD8](contentContainerView2);
+  objc_initWeak(&location, selfCopy);
   v11 = MEMORY[0x277D750F8];
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v9 = [v10 localizedStringForKey:@"USE_APPLE_ID_REBRAND" value:&stru_28358EF68 table:@"Localizable"];
@@ -832,15 +832,15 @@ void __83__AKBasicLoginAlertController__setupViewControllerForNonEditableUsernam
   v22 = [v8 actionWithTitle:v6 style:0 handler:&v16];
   MEMORY[0x277D82BD8](v6);
   *&v2 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-  v5 = v34;
+  v5 = selfCopy;
   v35[0] = v29;
   v35[1] = v22;
-  v4 = [(AKBasicLoginAlertController *)v34 _wrappedCancelAction];
-  v35[2] = v4;
+  _wrappedCancelAction = [(AKBasicLoginAlertController *)selfCopy _wrappedCancelAction];
+  v35[2] = _wrappedCancelAction;
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:3];
   [(AKBasicLoginAlertController *)v5 _setActions:?];
   MEMORY[0x277D82BD8](v3);
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](_wrappedCancelAction);
   objc_storeStrong(&v22, 0);
   objc_destroyWeak(&v21);
   objc_storeStrong(&v29, 0);
@@ -901,10 +901,10 @@ void __78__AKBasicLoginAlertController__setupViewControllerForUserOrCreateAppleI
 - (void)_setupViewControllerForIForgotStyle
 {
   v32[3] = *MEMORY[0x277D85DE8];
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   [(AKBasicLoginAlertController *)self setContentViewController:0];
-  objc_initWeak(location, v31);
+  objc_initWeak(location, selfCopy);
   v15 = MEMORY[0x277D750F8];
   v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v13 = [v14 localizedStringForKey:@"FORGOT_APPLE_ID_REBRAND" value:&stru_28358EF68 table:@"Localizable"];
@@ -929,23 +929,23 @@ void __78__AKBasicLoginAlertController__setupViewControllerForUserOrCreateAppleI
   v22 = [v12 actionWithTitle:v10 style:0 handler:&v16];
   MEMORY[0x277D82BD8](v10);
   *&v2 = MEMORY[0x277D82BD8](v11).n128_u64[0];
-  v9 = v31;
+  v9 = selfCopy;
   v32[0] = v29;
   v32[1] = v22;
-  v8 = [(AKBasicLoginAlertController *)v31 _wrappedCancelAction];
-  v32[2] = v8;
+  _wrappedCancelAction = [(AKBasicLoginAlertController *)selfCopy _wrappedCancelAction];
+  v32[2] = _wrappedCancelAction;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:3];
   [(AKBasicLoginAlertController *)v9 _setActions:?];
   MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v8);
+  MEMORY[0x277D82BD8](_wrappedCancelAction);
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v6 localizedStringForKey:@"FORGOT_TITLE" value:&stru_28358EF68 table:@"Localizable"];
-  [(AKBasicLoginAlertController *)v31 setTitle:?];
+  [(AKBasicLoginAlertController *)selfCopy setTitle:?];
   MEMORY[0x277D82BD8](v5);
   MEMORY[0x277D82BD8](v6);
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v3 = [v4 localizedStringForKey:@"FORGOT_DESCRIPTION_REBRAND" value:&stru_28358EF68 table:@"Localizable"];
-  [(AKBasicLoginAlertController *)v31 setMessage:?];
+  [(AKBasicLoginAlertController *)selfCopy setMessage:?];
   MEMORY[0x277D82BD8](v3);
   MEMORY[0x277D82BD8](v4);
   objc_storeStrong(&v22, 0);
@@ -1010,31 +1010,31 @@ void __66__AKBasicLoginAlertController__setupViewControllerForIForgotStyle__bloc
   objc_storeStrong(location, 0);
 }
 
-- (void)_setupViewControllerForSecondFactorEntryStyle:(int64_t)a3
+- (void)_setupViewControllerForSecondFactorEntryStyle:(int64_t)style
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v25 = self;
+  selfCopy = self;
   v24 = a2;
-  v23 = a3;
-  v22 = [(AKBasicLoginAlertController *)self contentViewController];
-  if (!v22 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  styleCopy = style;
+  contentViewController = [(AKBasicLoginAlertController *)self contentViewController];
+  if (!contentViewController || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v13 = [[AKSecondFactorCodeEntryContentViewController alloc] initWithNibName:0 bundle:?];
-    v3 = v22;
-    v22 = v13;
+    v3 = contentViewController;
+    contentViewController = v13;
     *&v4 = MEMORY[0x277D82BD8](v3).n128_u64[0];
-    if (v23 == 5)
+    if (styleCopy == 5)
     {
-      [v22 setPiggybackingForTrustedDevice:{1, v4}];
+      [contentViewController setPiggybackingForTrustedDevice:{1, v4}];
     }
 
-    [(AKBasicLoginAlertController *)v25 setContentViewController:v22];
+    [(AKBasicLoginAlertController *)selfCopy setContentViewController:contentViewController];
   }
 
-  v12 = [(AKBasicLoginAlertController *)v25 reason];
-  [v22 setReason:?];
-  MEMORY[0x277D82BD8](v12);
-  objc_initWeak(&location, v25);
+  reason = [(AKBasicLoginAlertController *)selfCopy reason];
+  [contentViewController setReason:?];
+  MEMORY[0x277D82BD8](reason);
+  objc_initWeak(&location, selfCopy);
   v11 = MEMORY[0x277D750F8];
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v9 = [v10 localizedStringForKey:@"DIDNT_GET_A_CODE" value:&stru_28358EF68 table:@"Localizable"];
@@ -1047,18 +1047,18 @@ void __66__AKBasicLoginAlertController__setupViewControllerForIForgotStyle__bloc
   v20 = [v11 actionWithTitle:v9 style:0 handler:&v14];
   MEMORY[0x277D82BD8](v9);
   *&v5 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-  v8 = v25;
+  v8 = selfCopy;
   v26[0] = v20;
-  v7 = [(AKBasicLoginAlertController *)v25 _wrappedCancelAction];
-  v26[1] = v7;
+  _wrappedCancelAction = [(AKBasicLoginAlertController *)selfCopy _wrappedCancelAction];
+  v26[1] = _wrappedCancelAction;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:2];
   [(AKBasicLoginAlertController *)v8 _setActions:?];
   MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
+  MEMORY[0x277D82BD8](_wrappedCancelAction);
   objc_storeStrong(&v20, 0);
   objc_destroyWeak(v19);
   objc_destroyWeak(&location);
-  objc_storeStrong(&v22, 0);
+  objc_storeStrong(&contentViewController, 0);
   *MEMORY[0x277D85DE8];
 }
 
@@ -1086,40 +1086,40 @@ void __77__AKBasicLoginAlertController__setupViewControllerForSecondFactorEntryS
   objc_storeStrong(location, 0);
 }
 
-- (void)_dismissAndShowiForgot:(id)a3
+- (void)_dismissAndShowiForgot:(id)forgot
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(AKBasicLoginAlertController *)v9 loginActions];
-  v7 = [(AKBasicLoginActions *)v6 forgotPasswordAction];
-  MEMORY[0x277D82BD8](v7);
-  *&v3 = MEMORY[0x277D82BD8](v6).n128_u64[0];
-  if (v7)
+  objc_storeStrong(location, forgot);
+  loginActions = [(AKBasicLoginAlertController *)selfCopy loginActions];
+  forgotPasswordAction = [(AKBasicLoginActions *)loginActions forgotPasswordAction];
+  MEMORY[0x277D82BD8](forgotPasswordAction);
+  *&v3 = MEMORY[0x277D82BD8](loginActions).n128_u64[0];
+  if (forgotPasswordAction)
   {
-    [(AKBasicLoginAlertController *)v9 _syncUsernameAndPasswordPropertiesWithTextFieldContent];
-    v5 = [(AKBasicLoginAlertController *)v9 loginActions];
-    v4 = [(AKBasicLoginActions *)v5 forgotPasswordAction];
-    (v4)[2](v4, v9->_ak_username);
-    MEMORY[0x277D82BD8](v4);
-    MEMORY[0x277D82BD8](v5);
+    [(AKBasicLoginAlertController *)selfCopy _syncUsernameAndPasswordPropertiesWithTextFieldContent];
+    loginActions2 = [(AKBasicLoginAlertController *)selfCopy loginActions];
+    forgotPasswordAction2 = [(AKBasicLoginActions *)loginActions2 forgotPasswordAction];
+    (forgotPasswordAction2)[2](forgotPasswordAction2, selfCopy->_ak_username);
+    MEMORY[0x277D82BD8](forgotPasswordAction2);
+    MEMORY[0x277D82BD8](loginActions2);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setUsername:(id)a3
+- (void)setUsername:(id)username
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, username);
   v3 = [location[0] copy];
-  ak_username = v7->_ak_username;
-  v7->_ak_username = v3;
+  ak_username = selfCopy->_ak_username;
+  selfCopy->_ak_username = v3;
   *&v5 = MEMORY[0x277D82BD8](ak_username).n128_u64[0];
-  [(AKBasicLoginAlertController *)v7 _setupViewControllerForAlertStyle];
+  [(AKBasicLoginAlertController *)selfCopy _setupViewControllerForAlertStyle];
   objc_storeStrong(location, 0);
 }
 
@@ -1130,17 +1130,17 @@ void __77__AKBasicLoginAlertController__setupViewControllerForSecondFactorEntryS
   return v2;
 }
 
-- (void)setPassword:(id)a3
+- (void)setPassword:(id)password
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, password);
   v3 = [location[0] copy];
-  ak_password = v7->_ak_password;
-  v7->_ak_password = v3;
+  ak_password = selfCopy->_ak_password;
+  selfCopy->_ak_password = v3;
   *&v5 = MEMORY[0x277D82BD8](ak_password).n128_u64[0];
-  [(AKBasicLoginAlertController *)v7 _setupViewControllerForAlertStyle];
+  [(AKBasicLoginAlertController *)selfCopy _setupViewControllerForAlertStyle];
   objc_storeStrong(location, 0);
 }
 
@@ -1151,17 +1151,17 @@ void __77__AKBasicLoginAlertController__setupViewControllerForSecondFactorEntryS
   return v2;
 }
 
-- (void)setAuthenticateTitle:(id)a3
+- (void)setAuthenticateTitle:(id)title
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, title);
   v3 = [location[0] copy];
-  ak_title = v7->_ak_title;
-  v7->_ak_title = v3;
+  ak_title = selfCopy->_ak_title;
+  selfCopy->_ak_title = v3;
   *&v5 = MEMORY[0x277D82BD8](ak_title).n128_u64[0];
-  [(AKBasicLoginAlertController *)v7 _setupViewControllerForAlertStyle];
+  [(AKBasicLoginAlertController *)selfCopy _setupViewControllerForAlertStyle];
   objc_storeStrong(location, 0);
 }
 
@@ -1172,17 +1172,17 @@ void __77__AKBasicLoginAlertController__setupViewControllerForSecondFactorEntryS
   return v2;
 }
 
-- (void)setReason:(id)a3
+- (void)setReason:(id)reason
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, reason);
   v3 = [location[0] copy];
-  ak_reason = v7->_ak_reason;
-  v7->_ak_reason = v3;
+  ak_reason = selfCopy->_ak_reason;
+  selfCopy->_ak_reason = v3;
   *&v5 = MEMORY[0x277D82BD8](ak_reason).n128_u64[0];
-  [(AKBasicLoginAlertController *)v7 _setupViewControllerForAlertStyle];
+  [(AKBasicLoginAlertController *)selfCopy _setupViewControllerForAlertStyle];
   objc_storeStrong(location, 0);
 }
 
@@ -1193,17 +1193,17 @@ void __77__AKBasicLoginAlertController__setupViewControllerForSecondFactorEntryS
   return v2;
 }
 
-- (void)setAuthenticateButtonTitle:(id)a3
+- (void)setAuthenticateButtonTitle:(id)title
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, title);
   v3 = [location[0] copy];
-  ak_authenticateButtonTitle = v7->_ak_authenticateButtonTitle;
-  v7->_ak_authenticateButtonTitle = v3;
+  ak_authenticateButtonTitle = selfCopy->_ak_authenticateButtonTitle;
+  selfCopy->_ak_authenticateButtonTitle = v3;
   *&v5 = MEMORY[0x277D82BD8](ak_authenticateButtonTitle).n128_u64[0];
-  [(AKBasicLoginAlertController *)v7 _setupViewControllerForAlertStyle];
+  [(AKBasicLoginAlertController *)selfCopy _setupViewControllerForAlertStyle];
   objc_storeStrong(location, 0);
 }
 
@@ -1214,17 +1214,17 @@ void __77__AKBasicLoginAlertController__setupViewControllerForSecondFactorEntryS
   return v2;
 }
 
-- (void)setCancelButtonTitle:(id)a3
+- (void)setCancelButtonTitle:(id)title
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, title);
   v3 = [location[0] copy];
-  ak_cancelButtonTitle = v7->_ak_cancelButtonTitle;
-  v7->_ak_cancelButtonTitle = v3;
+  ak_cancelButtonTitle = selfCopy->_ak_cancelButtonTitle;
+  selfCopy->_ak_cancelButtonTitle = v3;
   *&v5 = MEMORY[0x277D82BD8](ak_cancelButtonTitle).n128_u64[0];
-  [(AKBasicLoginAlertController *)v7 _setupViewControllerForAlertStyle];
+  [(AKBasicLoginAlertController *)selfCopy _setupViewControllerForAlertStyle];
   objc_storeStrong(location, 0);
 }
 
@@ -1237,7 +1237,7 @@ void __77__AKBasicLoginAlertController__setupViewControllerForSecondFactorEntryS
 
 - (void)clearSecondFactorEntry
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v9 = OS_LOG_TYPE_DEFAULT;
@@ -1250,76 +1250,76 @@ void __77__AKBasicLoginAlertController__setupViewControllerForSecondFactorEntryS
   }
 
   objc_storeStrong(location, 0);
-  v4 = [(AKBasicLoginAlertController *)v11 contentViewController];
-  v5 = [v4 conformsToProtocol:&unk_2835CE5D8];
-  *&v2 = MEMORY[0x277D82BD8](v4).n128_u64[0];
+  contentViewController = [(AKBasicLoginAlertController *)selfCopy contentViewController];
+  v5 = [contentViewController conformsToProtocol:&unk_2835CE5D8];
+  *&v2 = MEMORY[0x277D82BD8](contentViewController).n128_u64[0];
   if (v5)
   {
-    v3 = [(AKBasicLoginAlertController *)v11 contentViewController];
-    [v3 clearSecondFactorEntry];
-    MEMORY[0x277D82BD8](v3);
+    contentViewController2 = [(AKBasicLoginAlertController *)selfCopy contentViewController];
+    [contentViewController2 clearSecondFactorEntry];
+    MEMORY[0x277D82BD8](contentViewController2);
   }
 }
 
-- (void)setPasscodeFieldDisabled:(BOOL)a3
+- (void)setPasscodeFieldDisabled:(BOOL)disabled
 {
-  v5 = [(AKBasicLoginAlertController *)self contentViewController];
-  v6 = [v5 conformsToProtocol:&unk_2835CE5D8];
-  *&v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
+  contentViewController = [(AKBasicLoginAlertController *)self contentViewController];
+  v6 = [contentViewController conformsToProtocol:&unk_2835CE5D8];
+  *&v3 = MEMORY[0x277D82BD8](contentViewController).n128_u64[0];
   if (v6)
   {
-    v4 = [(AKBasicLoginAlertController *)self contentViewController];
-    [v4 setPasscodeFieldDisabled:a3];
-    MEMORY[0x277D82BD8](v4);
+    contentViewController2 = [(AKBasicLoginAlertController *)self contentViewController];
+    [contentViewController2 setPasscodeFieldDisabled:disabled];
+    MEMORY[0x277D82BD8](contentViewController2);
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  appearCopy = appear;
   v4.receiver = self;
   v4.super_class = AKBasicLoginAlertController;
-  [(AKBasicLoginAlertController *)&v4 viewDidAppear:a3];
-  v3 = [(AKBasicLoginAlertController *)v7 delegate];
-  [(AKBasicLoginControllerDelegate *)v3 basicLoginControllerDidPresent:v7];
-  MEMORY[0x277D82BD8](v3);
+  [(AKBasicLoginAlertController *)&v4 viewDidAppear:appear];
+  delegate = [(AKBasicLoginAlertController *)selfCopy delegate];
+  [(AKBasicLoginControllerDelegate *)delegate basicLoginControllerDidPresent:selfCopy];
+  MEMORY[0x277D82BD8](delegate);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  disappearCopy = disappear;
   v4.receiver = self;
   v4.super_class = AKBasicLoginAlertController;
-  [(AKBasicLoginAlertController *)&v4 viewWillDisappear:a3];
-  v3 = [(AKBasicLoginAlertController *)v7 delegate];
-  [(AKBasicLoginControllerDelegate *)v3 basicLoginControllerWillDismiss:v7];
-  MEMORY[0x277D82BD8](v3);
+  [(AKBasicLoginAlertController *)&v4 viewWillDisappear:disappear];
+  delegate = [(AKBasicLoginAlertController *)selfCopy delegate];
+  [(AKBasicLoginControllerDelegate *)delegate basicLoginControllerWillDismiss:selfCopy];
+  MEMORY[0x277D82BD8](delegate);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  disappearCopy = disappear;
   v4.receiver = self;
   v4.super_class = AKBasicLoginAlertController;
-  [(AKBasicLoginAlertController *)&v4 viewDidDisappear:a3];
-  v3 = [(AKBasicLoginAlertController *)v7 delegate];
-  [(AKBasicLoginControllerDelegate *)v3 basicLoginControllerDidDismiss:v7];
-  MEMORY[0x277D82BD8](v3);
+  [(AKBasicLoginAlertController *)&v4 viewDidDisappear:disappear];
+  delegate = [(AKBasicLoginAlertController *)selfCopy delegate];
+  [(AKBasicLoginControllerDelegate *)delegate basicLoginControllerDidDismiss:selfCopy];
+  MEMORY[0x277D82BD8](delegate);
 }
 
 - (id)_passwordField
 {
   location[2] = self;
   location[1] = a2;
-  v4 = [(AKBasicLoginAlertController *)self textFields];
-  location[0] = [v4 copy];
-  v5 = [location[0] indexOfObjectPassingTest:{&__block_literal_global_143, MEMORY[0x277D82BD8](v4).n128_f64[0]}];
+  textFields = [(AKBasicLoginAlertController *)self textFields];
+  location[0] = [textFields copy];
+  v5 = [location[0] indexOfObjectPassingTest:{&__block_literal_global_143, MEMORY[0x277D82BD8](textFields).n128_f64[0]}];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = 0;
@@ -1349,19 +1349,19 @@ BOOL __45__AKBasicLoginAlertController__passwordField__block_invoke(void *a1, vo
 - (void)startAnimating
 {
   v27 = *MEMORY[0x277D85DE8];
-  v24 = self;
+  selfCopy = self;
   v23 = a2;
-  if (![(AKBasicLoginAlertController *)self alertStyle]|| [(AKBasicLoginAlertController *)v24 alertStyle]== 1)
+  if (![(AKBasicLoginAlertController *)self alertStyle]|| [(AKBasicLoginAlertController *)selfCopy alertStyle]== 1)
   {
-    v17 = [(AKBasicLoginAlertController *)v24 textFields];
-    v16 = [v17 lastObject];
-    [v16 _beginPinningInputViews];
-    MEMORY[0x277D82BD8](v16);
-    MEMORY[0x277D82BD8](v17);
+    textFields = [(AKBasicLoginAlertController *)selfCopy textFields];
+    lastObject = [textFields lastObject];
+    [lastObject _beginPinningInputViews];
+    MEMORY[0x277D82BD8](lastObject);
+    MEMORY[0x277D82BD8](textFields);
   }
 
   memset(__b, 0, sizeof(__b));
-  obj = [(AKBasicLoginAlertController *)v24 textFields];
+  obj = [(AKBasicLoginAlertController *)selfCopy textFields];
   v15 = [obj countByEnumeratingWithState:__b objects:v26 count:16];
   if (v15)
   {
@@ -1393,8 +1393,8 @@ BOOL __45__AKBasicLoginAlertController__passwordField__block_invoke(void *a1, vo
 
   MEMORY[0x277D82BD8](obj);
   memset(v19, 0, sizeof(v19));
-  v8 = [(AKBasicLoginAlertController *)v24 actions];
-  v9 = [v8 countByEnumeratingWithState:v19 objects:v25 count:16];
+  actions = [(AKBasicLoginAlertController *)selfCopy actions];
+  v9 = [actions countByEnumeratingWithState:v19 objects:v25 count:16];
   if (v9)
   {
     v5 = *v19[2];
@@ -1405,7 +1405,7 @@ BOOL __45__AKBasicLoginAlertController__passwordField__block_invoke(void *a1, vo
       v4 = v6;
       if (*v19[2] != v5)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(actions);
       }
 
       v20 = *(v19[1] + 8 * v6);
@@ -1414,7 +1414,7 @@ BOOL __45__AKBasicLoginAlertController__passwordField__block_invoke(void *a1, vo
       if (v4 + 1 >= v7)
       {
         v6 = 0;
-        v7 = [v8 countByEnumeratingWithState:v19 objects:v25 count:16];
+        v7 = [actions countByEnumeratingWithState:v19 objects:v25 count:16];
         if (!v7)
         {
           break;
@@ -1423,20 +1423,20 @@ BOOL __45__AKBasicLoginAlertController__passwordField__block_invoke(void *a1, vo
     }
   }
 
-  *&v2 = MEMORY[0x277D82BD8](v8).n128_u64[0];
-  v18 = [(AKBasicLoginAlertController *)v24 _passwordField];
-  v3 = [v18 ak_addActivityIndicator];
-  objc_storeStrong(&v18, 0);
+  *&v2 = MEMORY[0x277D82BD8](actions).n128_u64[0];
+  _passwordField = [(AKBasicLoginAlertController *)selfCopy _passwordField];
+  ak_addActivityIndicator = [_passwordField ak_addActivityIndicator];
+  objc_storeStrong(&_passwordField, 0);
   *MEMORY[0x277D85DE8];
 }
 
 - (void)stopAnimating
 {
   v37 = *MEMORY[0x277D85DE8];
-  v34 = self;
+  selfCopy = self;
   v33 = a2;
   memset(__b, 0, sizeof(__b));
-  obj = [(AKBasicLoginAlertController *)v34 textFields];
+  obj = [(AKBasicLoginAlertController *)selfCopy textFields];
   v27 = [obj countByEnumeratingWithState:__b objects:v36 count:16];
   if (v27)
   {
@@ -1468,8 +1468,8 @@ BOOL __45__AKBasicLoginAlertController__passwordField__block_invoke(void *a1, vo
 
   MEMORY[0x277D82BD8](obj);
   memset(v29, 0, sizeof(v29));
-  v20 = [(AKBasicLoginAlertController *)v34 actions];
-  v21 = [v20 countByEnumeratingWithState:v29 objects:v35 count:16];
+  actions = [(AKBasicLoginAlertController *)selfCopy actions];
+  v21 = [actions countByEnumeratingWithState:v29 objects:v35 count:16];
   if (v21)
   {
     v17 = *v29[2];
@@ -1480,7 +1480,7 @@ BOOL __45__AKBasicLoginAlertController__passwordField__block_invoke(void *a1, vo
       v16 = v18;
       if (*v29[2] != v17)
       {
-        objc_enumerationMutation(v20);
+        objc_enumerationMutation(actions);
       }
 
       v30 = *(v29[1] + 8 * v18);
@@ -1489,7 +1489,7 @@ BOOL __45__AKBasicLoginAlertController__passwordField__block_invoke(void *a1, vo
       if (v16 + 1 >= v19)
       {
         v18 = 0;
-        v19 = [v20 countByEnumeratingWithState:v29 objects:v35 count:16];
+        v19 = [actions countByEnumeratingWithState:v29 objects:v35 count:16];
         if (!v19)
         {
           break;
@@ -1498,11 +1498,11 @@ BOOL __45__AKBasicLoginAlertController__passwordField__block_invoke(void *a1, vo
     }
   }
 
-  *&v2 = MEMORY[0x277D82BD8](v20).n128_u64[0];
-  location = [(AKBasicLoginAlertController *)v34 _passwordField];
-  v14 = [location text];
-  v15 = [v14 length];
-  *&v3 = MEMORY[0x277D82BD8](v14).n128_u64[0];
+  *&v2 = MEMORY[0x277D82BD8](actions).n128_u64[0];
+  location = [(AKBasicLoginAlertController *)selfCopy _passwordField];
+  text = [location text];
+  v15 = [text length];
+  *&v3 = MEMORY[0x277D82BD8](text).n128_u64[0];
   if (v15)
   {
     [location setRightView:{0, v3}];
@@ -1510,26 +1510,26 @@ BOOL __45__AKBasicLoginAlertController__passwordField__block_invoke(void *a1, vo
 
   else
   {
-    v4 = [location ak_addForgotButtonWithTarget:v34 action:{sel__dismissAndShowiForgot_, v3}];
+    v4 = [location ak_addForgotButtonWithTarget:selfCopy action:{sel__dismissAndShowiForgot_, v3}];
   }
 
-  v10 = [(AKBasicLoginAlertController *)v34 textFields];
-  v9 = [v10 lastObject];
-  [v9 becomeFirstResponder];
-  MEMORY[0x277D82BD8](v9);
-  *&v5 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-  v12 = [(AKBasicLoginAlertController *)v34 textFields];
-  v11 = [v12 lastObject];
-  v13 = [v11 _isPinningInputViews];
-  MEMORY[0x277D82BD8](v11);
-  *&v6 = MEMORY[0x277D82BD8](v12).n128_u64[0];
-  if (v13)
+  textFields = [(AKBasicLoginAlertController *)selfCopy textFields];
+  lastObject = [textFields lastObject];
+  [lastObject becomeFirstResponder];
+  MEMORY[0x277D82BD8](lastObject);
+  *&v5 = MEMORY[0x277D82BD8](textFields).n128_u64[0];
+  textFields2 = [(AKBasicLoginAlertController *)selfCopy textFields];
+  lastObject2 = [textFields2 lastObject];
+  _isPinningInputViews = [lastObject2 _isPinningInputViews];
+  MEMORY[0x277D82BD8](lastObject2);
+  *&v6 = MEMORY[0x277D82BD8](textFields2).n128_u64[0];
+  if (_isPinningInputViews)
   {
-    v8 = [(AKBasicLoginAlertController *)v34 textFields];
-    v7 = [v8 lastObject];
-    [v7 _endPinningInputViews];
-    MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v8);
+    textFields3 = [(AKBasicLoginAlertController *)selfCopy textFields];
+    lastObject3 = [textFields3 lastObject];
+    [lastObject3 _endPinningInputViews];
+    MEMORY[0x277D82BD8](lastObject3);
+    MEMORY[0x277D82BD8](textFields3);
   }
 
   objc_storeStrong(&location, 0);
@@ -1538,85 +1538,85 @@ BOOL __45__AKBasicLoginAlertController__passwordField__block_invoke(void *a1, vo
 
 - (void)jiggleAView
 {
-  v11 = self;
+  selfCopy = self;
   v10[1] = a2;
-  v8 = [(AKBasicLoginAlertController *)self contentViewController];
-  v9 = [v8 conformsToProtocol:&unk_2835CE5D8];
-  *&v2 = MEMORY[0x277D82BD8](v8).n128_u64[0];
+  contentViewController = [(AKBasicLoginAlertController *)self contentViewController];
+  v9 = [contentViewController conformsToProtocol:&unk_2835CE5D8];
+  *&v2 = MEMORY[0x277D82BD8](contentViewController).n128_u64[0];
   if (v9)
   {
-    v7 = [(AKBasicLoginAlertController *)v11 contentViewController];
-    [v7 jiggleAView];
-    MEMORY[0x277D82BD8](v7);
+    contentViewController2 = [(AKBasicLoginAlertController *)selfCopy contentViewController];
+    [contentViewController2 jiggleAView];
+    MEMORY[0x277D82BD8](contentViewController2);
   }
 
   else
   {
-    v4 = [(AKBasicLoginAlertController *)v11 view];
-    v10[0] = [v4 layer];
-    *&v3 = MEMORY[0x277D82BD8](v4).n128_u64[0];
+    view = [(AKBasicLoginAlertController *)selfCopy view];
+    v10[0] = [view layer];
+    *&v3 = MEMORY[0x277D82BD8](view).n128_u64[0];
     v5 = v10[0];
-    v6 = [MEMORY[0x277CD9DF8] ak_jiggleAnimation];
+    ak_jiggleAnimation = [MEMORY[0x277CD9DF8] ak_jiggleAnimation];
     [v5 addAnimation:? forKey:?];
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](ak_jiggleAnimation);
     objc_storeStrong(v10, 0);
   }
 }
 
 - (void)clearPasswordField
 {
-  v3 = self;
+  selfCopy = self;
   v2[1] = a2;
   v2[0] = [(AKBasicLoginAlertController *)self _passwordField];
   [v2[0] setText:?];
-  [(AKBasicLoginAlertController *)v3 _passwordFieldDidChange:v2[0]];
+  [(AKBasicLoginAlertController *)selfCopy _passwordFieldDidChange:v2[0]];
   objc_storeStrong(v2, 0);
 }
 
-- (void)_passwordFieldDidChange:(id)a3
+- (void)_passwordFieldDidChange:(id)change
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, change);
   v3 = objc_opt_class();
   v12 = _AKSafeCast_5(v3, location[0]);
   if (v12)
   {
-    v11 = [v12 text];
+    text = [v12 text];
     v9 = 0;
     v6 = 0;
-    if (![v11 length])
+    if (![text length])
     {
-      v10 = [v12 rightView];
+      rightView = [v12 rightView];
       v9 = 1;
-      v6 = v10 == 0;
+      v6 = rightView == 0;
     }
 
     if (v9)
     {
-      MEMORY[0x277D82BD8](v10);
+      MEMORY[0x277D82BD8](rightView);
     }
 
     if (v6)
     {
-      v4 = [v12 ak_addForgotButtonWithTarget:v14 action:sel__dismissAndShowiForgot_];
+      v4 = [v12 ak_addForgotButtonWithTarget:selfCopy action:sel__dismissAndShowiForgot_];
     }
 
     else
     {
       v7 = 0;
       v5 = 0;
-      if ([v11 length])
+      if ([text length])
       {
-        v8 = [v12 rightView];
+        rightView2 = [v12 rightView];
         v7 = 1;
-        v5 = v8 != 0;
+        v5 = rightView2 != 0;
       }
 
       if (v7)
       {
-        MEMORY[0x277D82BD8](v8);
+        MEMORY[0x277D82BD8](rightView2);
       }
 
       if (v5)
@@ -1625,7 +1625,7 @@ BOOL __45__AKBasicLoginAlertController__passwordField__block_invoke(void *a1, vo
       }
     }
 
-    objc_storeStrong(&v11, 0);
+    objc_storeStrong(&text, 0);
   }
 
   objc_storeStrong(&v12, 0);
@@ -1634,23 +1634,23 @@ BOOL __45__AKBasicLoginAlertController__passwordField__block_invoke(void *a1, vo
 
 - (void)_beginObservingDidEnterCodeNotifications
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   objc_initWeak(location, self);
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  v4 = [MEMORY[0x277CCABD8] mainQueue];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
   v9 = __71__AKBasicLoginAlertController__beginObservingDidEnterCodeNotifications__block_invoke;
   v10 = &unk_2784A78C8;
   objc_copyWeak(v11, location);
-  v2 = [v5 addObserverForName:@"AKSecondFactorCodeEntryContentViewControllerDidEnterCodeNotification" object:0 queue:v4 usingBlock:&v6];
-  didEnterCodeObserver = v13->_didEnterCodeObserver;
-  v13->_didEnterCodeObserver = v2;
+  v2 = [defaultCenter addObserverForName:@"AKSecondFactorCodeEntryContentViewControllerDidEnterCodeNotification" object:0 queue:mainQueue usingBlock:&v6];
+  didEnterCodeObserver = selfCopy->_didEnterCodeObserver;
+  selfCopy->_didEnterCodeObserver = v2;
   MEMORY[0x277D82BD8](didEnterCodeObserver);
-  MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
+  MEMORY[0x277D82BD8](mainQueue);
+  MEMORY[0x277D82BD8](defaultCenter);
   objc_destroyWeak(v11);
   objc_destroyWeak(location);
 }
@@ -1667,41 +1667,41 @@ void __71__AKBasicLoginAlertController__beginObservingDidEnterCodeNotifications_
   objc_storeStrong(location, 0);
 }
 
-- (void)_didEnterCode:(id)a3
+- (void)_didEnterCode:(id)code
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(AKBasicLoginAlertController *)v9 secondFactorActions];
-  v7 = [(AKBasicLoginSecondFactorActions *)v6 codeEnteredAction];
-  *&v3 = MEMORY[0x277D82BD8](v6).n128_u64[0];
-  if (v7)
+  objc_storeStrong(location, code);
+  secondFactorActions = [(AKBasicLoginAlertController *)selfCopy secondFactorActions];
+  codeEnteredAction = [(AKBasicLoginSecondFactorActions *)secondFactorActions codeEnteredAction];
+  *&v3 = MEMORY[0x277D82BD8](secondFactorActions).n128_u64[0];
+  if (codeEnteredAction)
   {
-    v5 = [location[0] userInfo];
-    v4 = [v5 objectForKeyedSubscript:@"generatedCode"];
-    (*(v7 + 2))();
+    userInfo = [location[0] userInfo];
+    v4 = [userInfo objectForKeyedSubscript:@"generatedCode"];
+    (*(codeEnteredAction + 2))();
     MEMORY[0x277D82BD8](v4);
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](userInfo);
   }
 
-  objc_storeStrong(&v7, 0);
+  objc_storeStrong(&codeEnteredAction, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)_endObservingDidEnterCodeNotifications
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 removeObserver:self->_didEnterCodeObserver];
-  MEMORY[0x277D82BD8](v2);
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_didEnterCodeObserver];
+  MEMORY[0x277D82BD8](defaultCenter);
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, return);
   objc_storeStrong(location, 0);
   return 1;
 }

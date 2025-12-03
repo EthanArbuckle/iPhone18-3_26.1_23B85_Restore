@@ -1,5 +1,5 @@
 @interface MFTaskAssertion
-- (MFTaskAssertion)initWithName:(id)a3 expiration:(double)a4 preventIdleSleep:(BOOL)a5;
+- (MFTaskAssertion)initWithName:(id)name expiration:(double)expiration preventIdleSleep:(BOOL)sleep;
 - (void)cancelTimer;
 - (void)dealloc;
 - (void)invalidate;
@@ -7,16 +7,16 @@
 
 @implementation MFTaskAssertion
 
-- (MFTaskAssertion)initWithName:(id)a3 expiration:(double)a4 preventIdleSleep:(BOOL)a5
+- (MFTaskAssertion)initWithName:(id)name expiration:(double)expiration preventIdleSleep:(BOOL)sleep
 {
-  v5 = a5;
-  v8 = a3;
+  sleepCopy = sleep;
+  nameCopy = name;
   v25.receiver = self;
   v25.super_class = MFTaskAssertion;
   v9 = [(MFTaskAssertion *)&v25 init];
   if (v9)
   {
-    if (v5)
+    if (sleepCopy)
     {
       v10 = 3;
     }
@@ -32,18 +32,18 @@
     v23[1] = 3221225472;
     v23[2] = __60__MFTaskAssertion_initWithName_expiration_preventIdleSleep___block_invoke;
     v23[3] = &unk_279E343F0;
-    v24 = v8;
+    v24 = nameCopy;
     v13 = [v11 initWithPID:v12 flags:v10 reason:10004 name:v24 withHandler:v23];
     v14 = *(v9 + 1);
     *(v9 + 1) = v13;
 
-    if (a4 > 0.0)
+    if (expiration > 0.0)
     {
       v15 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, MEMORY[0x277D85CD0]);
       v16 = *(v9 + 2);
       *(v9 + 2) = v15;
 
-      v17 = dispatch_time(0, (a4 * 1000000000.0));
+      v17 = dispatch_time(0, (expiration * 1000000000.0));
       dispatch_source_set_timer(*(v9 + 2), v17, 0xFFFFFFFFFFFFFFFFLL, 0);
       v18 = *(v9 + 2);
       v21[0] = MEMORY[0x277D85DD0];
@@ -108,9 +108,9 @@ LABEL_6:
   v3 = vm_imap_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(BKSProcessAssertion *)self->_assertion name];
+    name = [(BKSProcessAssertion *)self->_assertion name];
     v6 = 138543362;
-    v7 = v4;
+    v7 = name;
     _os_log_impl(&dword_2720B1000, v3, OS_LOG_TYPE_DEFAULT, "Invalidating task assertion: %{public}@", &v6, 0xCu);
   }
 

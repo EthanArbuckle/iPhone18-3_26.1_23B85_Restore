@@ -1,24 +1,24 @@
 @interface VSServerTTSClient
-+ (BOOL)shouldUseServerTTSForRequest:(id)a3;
-- (void)ospreyStartStreamingRequest:(id)a3 dataHandler:(id)a4 metaInfoHandler:(id)a5 completion:(id)a6;
-- (void)ospreyStartSynthesisRequest:(id)a3 responseHandler:(id)a4 completion:(id)a5;
++ (BOOL)shouldUseServerTTSForRequest:(id)request;
+- (void)ospreyStartStreamingRequest:(id)request dataHandler:(id)handler metaInfoHandler:(id)infoHandler completion:(id)completion;
+- (void)ospreyStartSynthesisRequest:(id)request responseHandler:(id)handler completion:(id)completion;
 @end
 
 @implementation VSServerTTSClient
 
-+ (BOOL)shouldUseServerTTSForRequest:(id)a3
++ (BOOL)shouldUseServerTTSForRequest:(id)request
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277D79998] standardInstance];
-  v5 = [v4 disableServerTTS];
+  requestCopy = request;
+  standardInstance = [MEMORY[0x277D79998] standardInstance];
+  disableServerTTS = [standardInstance disableServerTTS];
 
-  if (!v5)
+  if (!disableServerTTS)
   {
-    v9 = [MEMORY[0x277D79998] standardInstance];
-    v10 = [v9 forceServerTTS];
+    standardInstance2 = [MEMORY[0x277D79998] standardInstance];
+    forceServerTTS = [standardInstance2 forceServerTTS];
 
-    if (v10)
+    if (forceServerTTS)
     {
       v6 = VSGetLogDefault();
       v8 = 1;
@@ -34,7 +34,7 @@ LABEL_12:
       goto LABEL_31;
     }
 
-    if ([v3 forceServerTTS])
+    if ([requestCopy forceServerTTS])
     {
       v6 = VSGetLogDefault();
       v8 = 1;
@@ -49,7 +49,7 @@ LABEL_12:
     }
 
     v12 = +[VSSpeechCache defaultCacheStore];
-    v13 = [v12 isPreinstalledCacheAvailableForRequest:v3];
+    v13 = [v12 isPreinstalledCacheAvailableForRequest:requestCopy];
 
     if (v13)
     {
@@ -64,17 +64,17 @@ LABEL_12:
       goto LABEL_4;
     }
 
-    v14 = [MEMORY[0x277D79950] sharedManager];
-    v15 = [v3 languageCode];
-    v16 = [v3 voiceName];
-    v6 = [v14 selectVoiceForLang:v15 name:v16 type:objc_msgSend(v3 gender:"voiceType") footprint:{objc_msgSend(v3, "gender"), objc_msgSend(v3, "footprint")}];
+    mEMORY[0x277D79950] = [MEMORY[0x277D79950] sharedManager];
+    languageCode = [requestCopy languageCode];
+    voiceName = [requestCopy voiceName];
+    v6 = [mEMORY[0x277D79950] selectVoiceForLang:languageCode name:voiceName type:objc_msgSend(requestCopy gender:"voiceType") footprint:{objc_msgSend(requestCopy, "gender"), objc_msgSend(requestCopy, "footprint")}];
 
-    v17 = [v6 voiceData];
-    if ([v17 type] == 4)
+    voiceData = [v6 voiceData];
+    if ([voiceData type] == 4)
     {
-      v18 = [MEMORY[0x277D79958] isNeuralFallbackCondition];
+      isNeuralFallbackCondition = [MEMORY[0x277D79958] isNeuralFallbackCondition];
 
-      if ((v18 & 1) == 0)
+      if ((isNeuralFallbackCondition & 1) == 0)
       {
         v19 = VSGetLogDefault();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
@@ -92,8 +92,8 @@ LABEL_12:
     }
 
     v20 = +[VSCachingService standardService];
-    v21 = [v3 text];
-    v22 = [v20 shortTermCacheForHash:v21];
+    text = [requestCopy text];
+    v22 = [v20 shortTermCacheForHash:text];
 
     if (v22)
     {
@@ -108,15 +108,15 @@ LABEL_12:
       goto LABEL_30;
     }
 
-    if (![v3 canUseServerTTS])
+    if (![requestCopy canUseServerTTS])
     {
       goto LABEL_5;
     }
 
     v23 = +[VSSiriServerConfiguration defaultConfig];
-    v24 = [v23 allowedAppID];
-    v25 = [v3 clientBundleIdentifier];
-    v26 = [v24 containsObject:v25];
+    allowedAppID = [v23 allowedAppID];
+    clientBundleIdentifier = [requestCopy clientBundleIdentifier];
+    v26 = [allowedAppID containsObject:clientBundleIdentifier];
 
     if (v26)
     {
@@ -127,9 +127,9 @@ LABEL_12:
     v19 = VSGetLogDefault();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
-      v27 = [v3 clientBundleIdentifier];
+      clientBundleIdentifier2 = [requestCopy clientBundleIdentifier];
       v30 = 138543362;
-      v31 = v27;
+      v31 = clientBundleIdentifier2;
       _os_log_impl(&dword_2727E4000, v19, OS_LOG_TYPE_INFO, "Server TTS is disabled since '%{public}@' is not in the list of allowed apps", &v30, 0xCu);
     }
 
@@ -157,25 +157,25 @@ LABEL_31:
   return v8;
 }
 
-- (void)ospreyStartStreamingRequest:(id)a3 dataHandler:(id)a4 metaInfoHandler:(id)a5 completion:(id)a6
+- (void)ospreyStartStreamingRequest:(id)request dataHandler:(id)handler metaInfoHandler:(id)infoHandler completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [OPTTSMutableTextToSpeechRequest requestFromVSRequest:v9];
+  requestCopy = request;
+  handlerCopy = handler;
+  infoHandlerCopy = infoHandler;
+  completionCopy = completion;
+  v13 = [OPTTSMutableTextToSpeechRequest requestFromVSRequest:requestCopy];
   v32[0] = 0;
   v32[1] = v32;
   v32[2] = 0x3032000000;
   v32[3] = __Block_byref_object_copy__3265;
   v32[4] = __Block_byref_object_dispose__3266;
-  v33 = MEMORY[0x2743CD880](v10);
+  v33 = MEMORY[0x2743CD880](handlerCopy);
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x3032000000;
   v30[3] = __Block_byref_object_copy__3265;
   v30[4] = __Block_byref_object_dispose__3266;
-  v31 = MEMORY[0x2743CD880](v12);
+  v31 = MEMORY[0x2743CD880](completionCopy);
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x4810000000;
@@ -189,7 +189,7 @@ LABEL_31:
   v23[2] = __88__VSServerTTSClient_ospreyStartStreamingRequest_dataHandler_metaInfoHandler_completion___block_invoke;
   v23[3] = &unk_279E4BA58;
   v25 = v26;
-  v15 = v11;
+  v15 = infoHandlerCopy;
   v24 = v15;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -302,27 +302,27 @@ void __88__VSServerTTSClient_ospreyStartStreamingRequest_dataHandler_metaInfoHan
   }
 }
 
-- (void)ospreyStartSynthesisRequest:(id)a3 responseHandler:(id)a4 completion:(id)a5
+- (void)ospreyStartSynthesisRequest:(id)request responseHandler:(id)handler completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [OPTTSMutableTextToSpeechRequest requestFromVSRequest:v7];
+  requestCopy = request;
+  handlerCopy = handler;
+  completionCopy = completion;
+  v10 = [OPTTSMutableTextToSpeechRequest requestFromVSRequest:requestCopy];
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x3032000000;
   v18[3] = __Block_byref_object_copy__3265;
   v18[4] = __Block_byref_object_dispose__3266;
-  v19 = MEMORY[0x2743CD880](v9);
+  v19 = MEMORY[0x2743CD880](completionCopy);
   v11 = +[OspreyTTSService sharedInstance];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __76__VSServerTTSClient_ospreyStartSynthesisRequest_responseHandler_completion___block_invoke;
   v14[3] = &unk_279E4BA30;
   v17 = v18;
-  v12 = v7;
+  v12 = requestCopy;
   v15 = v12;
-  v13 = v8;
+  v13 = handlerCopy;
   v16 = v13;
   [v11 roundTripTTS:v10 responseHandler:v14];
 

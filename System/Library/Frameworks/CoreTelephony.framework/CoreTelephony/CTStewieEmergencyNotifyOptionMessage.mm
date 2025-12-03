@@ -1,23 +1,23 @@
 @interface CTStewieEmergencyNotifyOptionMessage
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEmergencyUpdateNotifyOptionMessage:(id)a3;
-- (CTStewieEmergencyNotifyOptionMessage)initWithCoder:(id)a3;
-- (CTStewieEmergencyNotifyOptionMessage)initWithNotifyOption:(int64_t)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEmergencyUpdateNotifyOptionMessage:(id)message;
+- (CTStewieEmergencyNotifyOptionMessage)initWithCoder:(id)coder;
+- (CTStewieEmergencyNotifyOptionMessage)initWithNotifyOption:(int64_t)option error:(id *)error;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTStewieEmergencyNotifyOptionMessage
 
-- (CTStewieEmergencyNotifyOptionMessage)initWithNotifyOption:(int64_t)a3 error:(id *)a4
+- (CTStewieEmergencyNotifyOptionMessage)initWithNotifyOption:(int64_t)option error:(id *)error
 {
-  v4 = self;
+  selfCopy = self;
   v14[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!option)
   {
-    v7 = a4;
-    if (!a4)
+    errorCopy = error;
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -26,43 +26,43 @@
     v13 = *MEMORY[0x1E696A578];
     v14[0] = @"Invalid notifyOption";
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    v7->super.isa = [v8 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v9];
+    errorCopy->super.isa = [v8 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v9];
 
 LABEL_7:
-    v7 = 0;
+    errorCopy = 0;
     goto LABEL_8;
   }
 
   v12.receiver = self;
   v12.super_class = CTStewieEmergencyNotifyOptionMessage;
-  v6 = [(CTStewieEmergencyNotifyOptionMessage *)&v12 init:a3];
+  v6 = [(CTStewieEmergencyNotifyOptionMessage *)&v12 init:option];
   if (!v6)
   {
-    v4 = 0;
+    selfCopy = 0;
     goto LABEL_7;
   }
 
-  v6->_notifyOption = a3;
-  v4 = v6;
-  v7 = v4;
+  v6->_notifyOption = option;
+  selfCopy = v6;
+  errorCopy = selfCopy;
 LABEL_8:
 
   v10 = *MEMORY[0x1E69E9840];
-  return v7;
+  return errorCopy;
 }
 
 - (NSString)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTStewieEmergencyNotifyOptionMessage *)self notifyOption];
-  if (v4 > 3)
+  notifyOption = [(CTStewieEmergencyNotifyOptionMessage *)self notifyOption];
+  if (notifyOption > 3)
   {
     v5 = "???";
   }
 
   else
   {
-    v5 = off_1E6A471A8[v4];
+    v5 = off_1E6A471A8[notifyOption];
   }
 
   [v3 appendFormat:@", notifyOption=%s", v5];
@@ -71,19 +71,19 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)isEqualToEmergencyUpdateNotifyOptionMessage:(id)a3
+- (BOOL)isEqualToEmergencyUpdateNotifyOptionMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(CTStewieEmergencyNotifyOptionMessage *)self notifyOption];
-  LOBYTE(v5) = v5 == [v4 notifyOption];
+  messageCopy = message;
+  notifyOption = [(CTStewieEmergencyNotifyOptionMessage *)self notifyOption];
+  LOBYTE(notifyOption) = notifyOption == [messageCopy notifyOption];
 
-  return v5;
+  return notifyOption;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -91,34 +91,34 @@ LABEL_8:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieEmergencyNotifyOptionMessage *)self isEqualToEmergencyUpdateNotifyOptionMessage:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieEmergencyNotifyOptionMessage *)self isEqualToEmergencyUpdateNotifyOptionMessage:equalCopy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setNotifyOption:{-[CTStewieEmergencyNotifyOptionMessage notifyOption](self, "notifyOption")}];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[CTStewieEmergencyNotifyOptionMessage notifyOption](self forKey:{"notifyOption"), @"notifyOption"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[CTStewieEmergencyNotifyOptionMessage notifyOption](self forKey:{"notifyOption"), @"notifyOption"}];
 }
 
-- (CTStewieEmergencyNotifyOptionMessage)initWithCoder:(id)a3
+- (CTStewieEmergencyNotifyOptionMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CTStewieEmergencyNotifyOptionMessage;
   v5 = [(CTStewieEmergencyNotifyOptionMessage *)&v8 init];
   if (v5)
   {
-    -[CTStewieEmergencyNotifyOptionMessage setNotifyOption:](v5, "setNotifyOption:", [v4 decodeIntegerForKey:@"notifyOption"]);
+    -[CTStewieEmergencyNotifyOptionMessage setNotifyOption:](v5, "setNotifyOption:", [coderCopy decodeIntegerForKey:@"notifyOption"]);
     v6 = v5;
   }
 

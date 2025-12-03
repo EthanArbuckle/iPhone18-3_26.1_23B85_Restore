@@ -2,8 +2,8 @@
 - (CXSetGroupCallAction)initWithCallUUID:(NSUUID *)callUUID callUUIDToGroupWith:(NSUUID *)callUUIDToGroupWith;
 - (CXSetGroupCallAction)initWithCoder:(NSCoder *)aDecoder;
 - (id)customDescription;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone;
 @end
 
 @implementation CXSetGroupCallAction
@@ -27,21 +27,21 @@
 {
   v6.receiver = self;
   v6.super_class = CXSetGroupCallAction;
-  v3 = [(CXCallAction *)&v6 customDescription];
-  v4 = [(CXSetGroupCallAction *)self callUUIDToGroupWith];
-  [v3 appendFormat:@" callUUIDToGroupWith=%@", v4];
+  customDescription = [(CXCallAction *)&v6 customDescription];
+  callUUIDToGroupWith = [(CXSetGroupCallAction *)self callUUIDToGroupWith];
+  [customDescription appendFormat:@" callUUIDToGroupWith=%@", callUUIDToGroupWith];
 
-  return v3;
+  return customDescription;
 }
 
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = CXSetGroupCallAction;
-  v6 = a3;
-  [(CXCallAction *)&v8 updateSanitizedCopy:v6 withZone:a4];
+  copyCopy = copy;
+  [(CXCallAction *)&v8 updateSanitizedCopy:copyCopy withZone:zone];
   v7 = [(CXSetGroupCallAction *)self callUUIDToGroupWith:v8.receiver];
-  [v6 setCallUUIDToGroupWith:v7];
+  [copyCopy setCallUUIDToGroupWith:v7];
 }
 
 - (CXSetGroupCallAction)initWithCoder:(NSCoder *)aDecoder
@@ -62,15 +62,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CXSetGroupCallAction;
-  v4 = a3;
-  [(CXCallAction *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CXCallAction *)&v7 encodeWithCoder:coderCopy];
   v5 = [(CXSetGroupCallAction *)self callUUIDToGroupWith:v7.receiver];
   v6 = NSStringFromSelector(sel_callUUIDToGroupWith);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:v5 forKey:v6];
 }
 
 @end

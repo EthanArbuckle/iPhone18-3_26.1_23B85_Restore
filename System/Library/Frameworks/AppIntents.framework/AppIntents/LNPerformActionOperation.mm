@@ -1,131 +1,131 @@
 @interface LNPerformActionOperation
-- (BOOL)requestCancelTimeoutAndReturnError:(id *)a3;
-- (BOOL)requestExtendTimeoutAndReturnError:(id *)a3;
-- (LNPerformActionOperation)initWithAction:(id)a3 options:(id)a4 client:(id)a5 completionHandler:(id)a6;
+- (BOOL)requestCancelTimeoutAndReturnError:(id *)error;
+- (BOOL)requestExtendTimeoutAndReturnError:(id *)error;
+- (LNPerformActionOperation)initWithAction:(id)action options:(id)options client:(id)client completionHandler:(id)handler;
 - (NSUUID)identifier;
-- (void)finishWithError:(id)a3;
-- (void)requestActionConfirmation:(id)a3 completionHandler:(id)a4;
-- (void)requestChoice:(id)a3 completionHandler:(id)a4;
-- (void)requestContinueInApp:(id)a3 completionHandler:(id)a4;
-- (void)requestOpenURL:(id)a3 completionHandler:(id)a4;
-- (void)requestParameterConfirmation:(id)a3 completionHandler:(id)a4;
-- (void)requestParameterDisambiguation:(id)a3 completionHandler:(id)a4;
-- (void)requestParameterNeedsValue:(id)a3 completionHandler:(id)a4;
-- (void)requestViewSnippetEnvironmentWithCompletionHandler:(id)a3;
+- (void)finishWithError:(id)error;
+- (void)requestActionConfirmation:(id)confirmation completionHandler:(id)handler;
+- (void)requestChoice:(id)choice completionHandler:(id)handler;
+- (void)requestContinueInApp:(id)app completionHandler:(id)handler;
+- (void)requestOpenURL:(id)l completionHandler:(id)handler;
+- (void)requestParameterConfirmation:(id)confirmation completionHandler:(id)handler;
+- (void)requestParameterDisambiguation:(id)disambiguation completionHandler:(id)handler;
+- (void)requestParameterNeedsValue:(id)value completionHandler:(id)handler;
+- (void)requestViewSnippetEnvironmentWithCompletionHandler:(id)handler;
 - (void)start;
 @end
 
 @implementation LNPerformActionOperation
 
-- (void)requestChoice:(id)a3 completionHandler:(id)a4
+- (void)requestChoice:(id)choice completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(LNPerformActionOperation *)self client];
-  [v8 requestChoice:v7 completionHandler:v6];
+  handlerCopy = handler;
+  choiceCopy = choice;
+  client = [(LNPerformActionOperation *)self client];
+  [client requestChoice:choiceCopy completionHandler:handlerCopy];
 }
 
-- (void)requestOpenURL:(id)a3 completionHandler:(id)a4
+- (void)requestOpenURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(LNPerformActionOperation *)self client];
-  [v8 requestOpenURL:v7 completionHandler:v6];
+  handlerCopy = handler;
+  lCopy = l;
+  client = [(LNPerformActionOperation *)self client];
+  [client requestOpenURL:lCopy completionHandler:handlerCopy];
 }
 
-- (void)requestContinueInApp:(id)a3 completionHandler:(id)a4
+- (void)requestContinueInApp:(id)app completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(LNPerformActionOperation *)self client];
-  [v8 requestContinueInApp:v7 completionHandler:v6];
+  handlerCopy = handler;
+  appCopy = app;
+  client = [(LNPerformActionOperation *)self client];
+  [client requestContinueInApp:appCopy completionHandler:handlerCopy];
 }
 
-- (BOOL)requestExtendTimeoutAndReturnError:(id *)a3
+- (BOOL)requestExtendTimeoutAndReturnError:(id *)error
 {
-  v4 = [(LNPerformActionOperation *)self client];
-  [v4 requestExtendTimeout];
+  client = [(LNPerformActionOperation *)self client];
+  [client requestExtendTimeout];
 
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   return 1;
 }
 
-- (BOOL)requestCancelTimeoutAndReturnError:(id *)a3
+- (BOOL)requestCancelTimeoutAndReturnError:(id *)error
 {
-  v4 = [(LNPerformActionOperation *)self client];
-  [v4 requestCancelTimeout];
+  client = [(LNPerformActionOperation *)self client];
+  [client requestCancelTimeout];
 
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   return 1;
 }
 
-- (void)requestViewSnippetEnvironmentWithCompletionHandler:(id)a3
+- (void)requestViewSnippetEnvironmentWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(LNPerformActionOperation *)self client];
-  [v5 requestViewSnippetEnvironmentWithCompletion:v4];
+  handlerCopy = handler;
+  client = [(LNPerformActionOperation *)self client];
+  [client requestViewSnippetEnvironmentWithCompletion:handlerCopy];
 }
 
-- (void)requestActionConfirmation:(id)a3 completionHandler:(id)a4
+- (void)requestActionConfirmation:(id)confirmation completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(LNPerformActionOperation *)self client];
-  [v8 requestActionConfirmation:v7 completionHandler:v6];
+  handlerCopy = handler;
+  confirmationCopy = confirmation;
+  client = [(LNPerformActionOperation *)self client];
+  [client requestActionConfirmation:confirmationCopy completionHandler:handlerCopy];
 }
 
-- (void)requestParameterNeedsValue:(id)a3 completionHandler:(id)a4
+- (void)requestParameterNeedsValue:(id)value completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(LNPerformActionOperation *)self client];
-  [v8 requestParameterNeedsValue:v7 completionHandler:v6];
+  handlerCopy = handler;
+  valueCopy = value;
+  client = [(LNPerformActionOperation *)self client];
+  [client requestParameterNeedsValue:valueCopy completionHandler:handlerCopy];
 }
 
-- (void)requestParameterDisambiguation:(id)a3 completionHandler:(id)a4
+- (void)requestParameterDisambiguation:(id)disambiguation completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(LNPerformActionOperation *)self client];
-  [v8 requestParameterDisambiguation:v7 completionHandler:v6];
+  handlerCopy = handler;
+  disambiguationCopy = disambiguation;
+  client = [(LNPerformActionOperation *)self client];
+  [client requestParameterDisambiguation:disambiguationCopy completionHandler:handlerCopy];
 }
 
-- (void)requestParameterConfirmation:(id)a3 completionHandler:(id)a4
+- (void)requestParameterConfirmation:(id)confirmation completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(LNPerformActionOperation *)self client];
-  [v8 requestParameterConfirmation:v7 completionHandler:v6];
+  handlerCopy = handler;
+  confirmationCopy = confirmation;
+  client = [(LNPerformActionOperation *)self client];
+  [client requestParameterConfirmation:confirmationCopy completionHandler:handlerCopy];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v10 = a3;
-  v4 = [(LNPerformActionOperation *)self progress];
-  [v4 unpublish];
+  errorCopy = error;
+  progress = [(LNPerformActionOperation *)self progress];
+  [progress unpublish];
 
-  v5 = [(LNPerformActionOperation *)self completionHandler];
+  completionHandler = [(LNPerformActionOperation *)self completionHandler];
 
-  if (v5)
+  if (completionHandler)
   {
-    v6 = [(LNPerformActionOperation *)self completionHandler];
-    v7 = [(LNPerformActionOperation *)self result];
-    (v6)[2](v6, v7, v10);
+    completionHandler2 = [(LNPerformActionOperation *)self completionHandler];
+    result = [(LNPerformActionOperation *)self result];
+    (completionHandler2)[2](completionHandler2, result, errorCopy);
 
     [(LNPerformActionOperation *)self setCompletionHandler:0];
   }
 
-  v8 = [(LNPerformActionOperation *)self delegate];
-  v9 = [(LNPerformActionOperation *)self result];
-  [v8 performActionOperation:self didFinishWithResult:v9 error:v10];
+  delegate = [(LNPerformActionOperation *)self delegate];
+  result2 = [(LNPerformActionOperation *)self result];
+  [delegate performActionOperation:self didFinishWithResult:result2 error:errorCopy];
 }
 
 - (void)start
@@ -133,29 +133,29 @@
   v3 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   [(LNPerformActionOperation *)self setProgress:v3];
 
-  v4 = [(LNPerformActionOperation *)self progress];
-  [v4 setUserInfoObject:*MEMORY[0x1E69ACB30] forKey:*MEMORY[0x1E696A7F8]];
+  progress = [(LNPerformActionOperation *)self progress];
+  [progress setUserInfoObject:*MEMORY[0x1E69ACB30] forKey:*MEMORY[0x1E696A7F8]];
 
-  v5 = [(LNPerformActionOperation *)self progress];
-  v6 = [(LNPerformActionOperation *)self options];
-  v7 = [v6 executionUUID];
-  [v5 setUserInfoObject:v7 forKey:*MEMORY[0x1E69ACB38]];
+  progress2 = [(LNPerformActionOperation *)self progress];
+  options = [(LNPerformActionOperation *)self options];
+  executionUUID = [options executionUUID];
+  [progress2 setUserInfoObject:executionUUID forKey:*MEMORY[0x1E69ACB38]];
 
-  v8 = [(LNPerformActionOperation *)self progress];
-  [v8 publish];
+  progress3 = [(LNPerformActionOperation *)self progress];
+  [progress3 publish];
 
-  v9 = [(LNPerformActionOperation *)self delegate];
-  v10 = [v9 appContext];
-  v11 = [(LNPerformActionOperation *)self action];
-  v12 = [(LNPerformActionOperation *)self options];
-  v13 = [(LNPerformActionOperation *)self progress];
-  v14 = [(LNPerformActionOperation *)self client];
-  v15 = [(LNPerformActionOperation *)self delegate];
-  v16 = [v15 xpcConnection];
-  v17 = v16;
-  if (v16)
+  delegate = [(LNPerformActionOperation *)self delegate];
+  appContext = [delegate appContext];
+  action = [(LNPerformActionOperation *)self action];
+  options2 = [(LNPerformActionOperation *)self options];
+  progress4 = [(LNPerformActionOperation *)self progress];
+  client = [(LNPerformActionOperation *)self client];
+  delegate2 = [(LNPerformActionOperation *)self delegate];
+  xpcConnection = [delegate2 xpcConnection];
+  v17 = xpcConnection;
+  if (xpcConnection)
   {
-    [v16 auditToken];
+    [xpcConnection auditToken];
   }
 
   else
@@ -168,7 +168,7 @@
   v18[2] = __33__LNPerformActionOperation_start__block_invoke;
   v18[3] = &unk_1E72B71B8;
   v18[4] = self;
-  [v10 performAction:v11 options:v12 reportingProgress:v13 delegate:v14 auditToken:v19 completionHandler:v18];
+  [appContext performAction:action options:options2 reportingProgress:progress4 delegate:client auditToken:v19 completionHandler:v18];
 }
 
 void __33__LNPerformActionOperation_start__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -181,21 +181,21 @@ void __33__LNPerformActionOperation_start__block_invoke(uint64_t a1, uint64_t a2
 
 - (NSUUID)identifier
 {
-  v2 = [(LNPerformActionOperation *)self options];
-  v3 = [v2 executionUUID];
+  options = [(LNPerformActionOperation *)self options];
+  executionUUID = [options executionUUID];
 
-  return v3;
+  return executionUUID;
 }
 
-- (LNPerformActionOperation)initWithAction:(id)a3 options:(id)a4 client:(id)a5 completionHandler:(id)a6
+- (LNPerformActionOperation)initWithAction:(id)action options:(id)options client:(id)client completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v12)
+  actionCopy = action;
+  optionsCopy = options;
+  clientCopy = client;
+  handlerCopy = handler;
+  if (actionCopy)
   {
-    if (v13)
+    if (optionsCopy)
     {
       goto LABEL_3;
     }
@@ -203,22 +203,22 @@ void __33__LNPerformActionOperation_start__block_invoke(uint64_t a1, uint64_t a2
 
   else
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"LNPerformActionOperation.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"action"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNPerformActionOperation.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"action"}];
 
-    if (v13)
+    if (optionsCopy)
     {
 LABEL_3:
-      if (v14)
+      if (clientCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v24 handleFailureInMethod:a2 object:self file:@"LNPerformActionOperation.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"client"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNPerformActionOperation.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"client"}];
 
-      if (v15)
+      if (handlerCopy)
       {
         goto LABEL_5;
       }
@@ -227,23 +227,23 @@ LABEL_10:
     }
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"LNPerformActionOperation.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"options"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNPerformActionOperation.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"options"}];
 
-  if (!v14)
+  if (!clientCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (v15)
+  if (handlerCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_11:
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"LNPerformActionOperation.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"LNPerformActionOperation.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_5:
   v26.receiver = self;
@@ -252,10 +252,10 @@ LABEL_5:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_options, a4);
-    objc_storeStrong(&v17->_action, a3);
-    objc_storeStrong(&v17->_client, a5);
-    v18 = [v15 copy];
+    objc_storeStrong(&v16->_options, options);
+    objc_storeStrong(&v17->_action, action);
+    objc_storeStrong(&v17->_client, client);
+    v18 = [handlerCopy copy];
     completionHandler = v17->_completionHandler;
     v17->_completionHandler = v18;
 

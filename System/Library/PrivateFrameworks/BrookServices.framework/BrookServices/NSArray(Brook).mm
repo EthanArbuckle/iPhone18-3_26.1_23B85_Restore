@@ -6,11 +6,11 @@
 
 - (id)brk_shuffledArray
 {
-  v2 = [a1 count];
+  v2 = [self count];
   if (v2 > 1)
   {
     v4 = v2;
-    v5 = [a1 mutableCopy];
+    v5 = [self mutableCopy];
     v6 = 0;
     do
     {
@@ -20,15 +20,15 @@
     }
 
     while (v4 != 1);
-    v3 = [v5 copy];
+    selfCopy = [v5 copy];
   }
 
   else
   {
-    v3 = a1;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

@@ -1,89 +1,89 @@
 @interface NEUtilConfigurationClient
 + (id)allClients;
-+ (id)clientWithName:(id)a3;
-+ (void)removeClientWithName:(id)a3;
-- (BOOL)addOnDemandRuleWithParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)addRelayWithParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)createConfigurationWithParameters:(id)a3 errorStr:(id *)a4;
++ (id)clientWithName:(id)name;
++ (void)removeClientWithName:(id)name;
+- (BOOL)addOnDemandRuleWithParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)addRelayWithParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)createConfigurationWithParameters:(id)parameters errorStr:(id *)str;
 - (BOOL)disconnectOnDemandEnabled;
 - (BOOL)enabled;
 - (BOOL)onDemandEnabled;
 - (BOOL)onDemandUserOverrideDisabled;
-- (BOOL)removeOnDemandRuleWithParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)removeRelayWithParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)setAppPushParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)setCommonParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)setDNSParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)setDNSProxyWithParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)setFilterPluginWithParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)setHotspotProviderParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)setIPSecParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)setPasswordWithParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)setProtocolWithParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)setProviderTypeWithParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)setProxyParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)setProxyServer:(id)a3 errorStr:(id *)a4;
-- (BOOL)setRelayConditionsWithParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)setSharedSecretWithParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)unsetAppPushParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)unsetCommonParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)unsetDNSParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)unsetDNSProxyWithParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)unsetFilterPluginParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)unsetHotspotProviderParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)unsetIPSecParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)unsetPasswordWithParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)unsetProxyParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)unsetProxyServer:(id)a3 errorStr:(id *)a4;
-- (BOOL)unsetRelayConditionsWithParameters:(id)a3 errorStr:(id *)a4;
-- (BOOL)unsetSharedSecretWithParameters:(id)a3 errorStr:(id *)a4;
+- (BOOL)removeOnDemandRuleWithParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)removeRelayWithParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)setAppPushParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)setCommonParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)setDNSParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)setDNSProxyWithParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)setFilterPluginWithParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)setHotspotProviderParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)setIPSecParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)setPasswordWithParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)setProtocolWithParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)setProviderTypeWithParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)setProxyParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)setProxyServer:(id)server errorStr:(id *)str;
+- (BOOL)setRelayConditionsWithParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)setSharedSecretWithParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)unsetAppPushParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)unsetCommonParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)unsetDNSParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)unsetDNSProxyWithParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)unsetFilterPluginParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)unsetHotspotProviderParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)unsetIPSecParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)unsetPasswordWithParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)unsetProxyParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)unsetProxyServer:(id)server errorStr:(id *)str;
+- (BOOL)unsetRelayConditionsWithParameters:(id)parameters errorStr:(id *)str;
+- (BOOL)unsetSharedSecretWithParameters:(id)parameters errorStr:(id *)str;
 - (NEAppPush)appPush;
 - (NEDNSProxyProviderProtocol)dnsProxyConfiguration;
 - (NEDNSSettingsBundle)dnsSettingsBundle;
 - (NEFilterProviderConfiguration)filterConfiguration;
-- (NEUtilConfigurationClient)initWithClientName:(id)a3;
+- (NEUtilConfigurationClient)initWithClientName:(id)name;
 - (NSArray)onDemandRules;
 - (id)hotspot;
-- (id)initInternalWithClientName:(id)a3;
-- (id)protocolForParameters:(id)a3;
+- (id)initInternalWithClientName:(id)name;
+- (id)protocolForParameters:(id)parameters;
 - (id)relayConfiguration;
 - (id)urlFilterConfiguration;
-- (uint64_t)setPPPParameters:(void *)a3 errorStr:;
-- (uint64_t)unsetPPPParameters:(void *)a3 errorStr:;
-- (void)addAppRuleWithParameters:(void *)a3 errorStr:;
-- (void)addPathRuleWithParameters:(__CFString *)a3 errorStr:;
+- (uint64_t)setPPPParameters:(void *)parameters errorStr:;
+- (uint64_t)unsetPPPParameters:(void *)parameters errorStr:;
+- (void)addAppRuleWithParameters:(void *)parameters errorStr:;
+- (void)addPathRuleWithParameters:(__CFString *)parameters errorStr:;
 - (void)dealloc;
-- (void)handleCommand:(int)a3 forConfigWithName:(id)a4 withParameters:(id)a5 completionHandler:(id)a6;
-- (void)loadConfigurationsForceRefresh:(void *)a3 completionHandler:;
-- (void)removeAppRuleWithParameters:(void *)a3 errorStr:;
-- (void)removePathRuleWithParameters:(void *)a3 errorStr:;
-- (void)setAlwaysOnParameters:(__CFString *)a3 errorStr:;
-- (void)setOnDemandRules:(id)a3;
-- (void)setPathControllerWithParameters:(void *)a3 errorStr:;
-- (void)setURLFilterPluginWithParameters:(void *)a3 errorStr:;
-- (void)swapConfigurationTypeWithParameters:(void *)a3 errorStr:;
-- (void)unsetAlwaysOnParameters:(__CFString *)a3 errorStr:;
-- (void)unsetURLFilterPluginParameters:(void *)a3 errorStr:;
+- (void)handleCommand:(int)command forConfigWithName:(id)name withParameters:(id)parameters completionHandler:(id)handler;
+- (void)loadConfigurationsForceRefresh:(void *)refresh completionHandler:;
+- (void)removeAppRuleWithParameters:(void *)parameters errorStr:;
+- (void)removePathRuleWithParameters:(void *)parameters errorStr:;
+- (void)setAlwaysOnParameters:(__CFString *)parameters errorStr:;
+- (void)setOnDemandRules:(id)rules;
+- (void)setPathControllerWithParameters:(void *)parameters errorStr:;
+- (void)setURLFilterPluginWithParameters:(void *)parameters errorStr:;
+- (void)swapConfigurationTypeWithParameters:(void *)parameters errorStr:;
+- (void)unsetAlwaysOnParameters:(__CFString *)parameters errorStr:;
+- (void)unsetURLFilterPluginParameters:(void *)parameters errorStr:;
 @end
 
 @implementation NEUtilConfigurationClient
 
-- (void)handleCommand:(int)a3 forConfigWithName:(id)a4 withParameters:(id)a5 completionHandler:(id)a6
+- (void)handleCommand:(int)command forConfigWithName:(id)name withParameters:(id)parameters completionHandler:(id)handler
 {
   v105 = *MEMORY[0x1E69E9840];
-  v76 = a4;
-  v77 = a5;
-  v10 = a6;
-  v11 = v10;
-  if (a3 == 37)
+  nameCopy = name;
+  parametersCopy = parameters;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (command == 37)
   {
     v90[0] = MEMORY[0x1E69E9820];
     v90[1] = 3221225472;
     v90[2] = __94__NEUtilConfigurationClient_handleCommand_forConfigWithName_withParameters_completionHandler___block_invoke;
     v90[3] = &unk_1E7F0B588;
     v90[4] = self;
-    v13 = v10;
-    v91 = v10;
+    v13 = handlerCopy;
+    v91 = handlerCopy;
     v15 = v90;
     if (self)
     {
@@ -93,7 +93,7 @@
       *&buf[8] = 3221225472;
       *&buf[16] = __69__NEUtilConfigurationClient_reloadIdentityListWithCompletionHandler___block_invoke;
       v99 = &unk_1E7F0AC30;
-      v100 = self;
+      selfCopy3 = self;
       v101 = v15;
       [Property copyIdentities:0 fromDomain:0 withCompletionQueue:MEMORY[0x1E69E96A0] handler:buf];
     }
@@ -101,12 +101,12 @@
     goto LABEL_32;
   }
 
-  if (a3 != 36)
+  if (command != 36)
   {
-    if ((a3 & 0xFFFFFFFE) == 0x1E)
+    if ((command & 0xFFFFFFFE) == 0x1E)
     {
-      v74 = v10;
-      v18 = [v77 objectForKeyedSubscript:@"configuration-file-path"];
+      v74 = handlerCopy;
+      v18 = [parametersCopy objectForKeyedSubscript:@"configuration-file-path"];
       v73 = v18;
       v19 = v18;
       v11 = v74;
@@ -126,10 +126,10 @@ LABEL_70:
         v83[1] = 3221225472;
         v84 = __94__NEUtilConfigurationClient_handleCommand_forConfigWithName_withParameters_completionHandler___block_invoke_2;
         v85 = &unk_1E7F0AC58;
-        v89 = a3;
-        v20 = v76;
+        commandCopy = command;
+        v20 = nameCopy;
         v86 = v20;
-        v87 = self;
+        selfCopy2 = self;
         v88 = v74;
         v69 = v19;
         v75 = v20;
@@ -143,13 +143,13 @@ LABEL_69:
 
         v72 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:0];
         v71 = v69;
-        v21 = [MEMORY[0x1E696AC08] defaultManager];
-        v22 = [v21 isReadableFileAtPath:v71];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        v22 = [defaultManager isReadableFileAtPath:v71];
 
         if (!v22)
         {
-          v42 = [MEMORY[0x1E696AC08] defaultManager];
-          v43 = [v42 fileExistsAtPath:v71];
+          defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+          v43 = [defaultManager2 fileExistsAtPath:v71];
 
           if (v43)
           {
@@ -247,15 +247,15 @@ LABEL_52:
                   v57 = *(*(&v92 + 1) + 8 * v56);
                   v58 = v50;
                   v59 = objc_opt_class();
-                  v60 = [v57 UUIDString];
-                  v51 = [v58 decodeObjectOfClass:v59 forKey:v60];
+                  uUIDString = [v57 UUIDString];
+                  v51 = [v58 decodeObjectOfClass:v59 forKey:uUIDString];
 
                   if (v51)
                   {
                     if (!v75 || ![v75 length] || (objc_msgSend(v51, "name"), v61 = objc_claimAutoreleasedReturnValue(), v62 = objc_msgSend(v75, "isEqualToString:", v61), v61, v62))
                     {
-                      v63 = [v51 identifier];
-                      [v72 setObject:v51 forKeyedSubscript:v63];
+                      identifier = [v51 identifier];
+                      [v72 setObject:v51 forKeyedSubscript:identifier];
 
                       if ([v75 length])
                       {
@@ -333,13 +333,13 @@ LABEL_62:
                 v32 = [v30 objectForKeyedSubscript:*(*(&v92 + 1) + 8 * i)];
               }
 
-              v37 = [v32 allKeys];
+              allKeys = [v32 allKeys];
               if (!v33)
               {
                 v33 = objc_alloc_init(MEMORY[0x1E695DF90]);
               }
 
-              [v33 setObject:v37 forKeyedSubscript:v36];
+              [v33 setObject:allKeys forKeyedSubscript:v36];
             }
 
             v31 = [v30 countByEnumeratingWithState:&v92 objects:buf count:16];
@@ -379,9 +379,9 @@ LABEL_45:
     v13 = v11;
     v81 = v11;
     v78[4] = self;
-    v82 = a3;
-    v79 = v77;
-    v80 = v76;
+    commandCopy2 = command;
+    v79 = parametersCopy;
+    v80 = nameCopy;
     v38 = v80;
     v39 = v78;
     if (self)
@@ -390,7 +390,7 @@ LABEL_45:
       *&buf[8] = 3221225472;
       *&buf[16] = __73__NEUtilConfigurationClient_loadConfigurationWithName_completionHandler___block_invoke;
       v99 = &unk_1E7F0AC08;
-      v100 = self;
+      selfCopy3 = self;
       v101 = v38;
       v102 = v39;
       [(NEUtilConfigurationClient *)self loadConfigurationsForceRefresh:buf completionHandler:?];
@@ -401,8 +401,8 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  v12 = [(NEUtilConfigurationClient *)self clientName];
-  [NEUtilConfigurationClient removeClientWithName:v12];
+  clientName = [(NEUtilConfigurationClient *)self clientName];
+  [NEUtilConfigurationClient removeClientWithName:clientName];
 
   v11[2](v11, MEMORY[0x1E695E0F0]);
 LABEL_33:
@@ -1550,20 +1550,20 @@ void __73__NEUtilConfigurationClient_loadConfigurationWithName_completionHandler
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)loadConfigurationsForceRefresh:(void *)a3 completionHandler:
+- (void)loadConfigurationsForceRefresh:(void *)refresh completionHandler:
 {
-  v6 = a3;
-  if (a1)
+  refreshCopy = refresh;
+  if (self)
   {
-    if (!objc_getProperty(a1, v5, 40, 1) || a2)
+    if (!objc_getProperty(self, v5, 40, 1) || a2)
     {
-      Property = objc_getProperty(a1, v7, 24, 1);
+      Property = objc_getProperty(self, v7, 24, 1);
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __78__NEUtilConfigurationClient_loadConfigurationsForceRefresh_completionHandler___block_invoke;
       v12[3] = &unk_1E7F0B5B0;
-      v12[4] = a1;
-      v13 = v6;
+      v12[4] = self;
+      v13 = refreshCopy;
       [Property loadConfigurationsWithCompletionQueue:MEMORY[0x1E69E96A0] handler:v12];
       v8 = v13;
     }
@@ -1574,7 +1574,7 @@ void __73__NEUtilConfigurationClient_loadConfigurationWithName_completionHandler
       block[1] = 3221225472;
       block[2] = __78__NEUtilConfigurationClient_loadConfigurationsForceRefresh_completionHandler___block_invoke_2;
       block[3] = &unk_1E7F0B600;
-      v11 = v6;
+      v11 = refreshCopy;
       dispatch_async(MEMORY[0x1E69E96A0], block);
       v8 = v11;
     }
@@ -1647,9 +1647,9 @@ void __78__NEUtilConfigurationClient_loadConfigurationsForceRefresh_completionHa
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)swapConfigurationTypeWithParameters:(void *)a3 errorStr:
+- (void)swapConfigurationTypeWithParameters:(void *)parameters errorStr:
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
@@ -1659,7 +1659,7 @@ void __78__NEUtilConfigurationClient_loadConfigurationsForceRefresh_completionHa
   {
     if ([v20 isEqualToString:@"appvpn"])
     {
-      v14 = [objc_getProperty(a1 v13];
+      v14 = [objc_getProperty(self v13];
       if (v14)
       {
         v7 = v14;
@@ -1667,15 +1667,15 @@ void __78__NEUtilConfigurationClient_loadConfigurationsForceRefresh_completionHa
         -[NEVPN setEnabled:](v8, "setEnabled:", [v7 isEnabled]);
         -[NEVPN setOnDemandEnabled:](v8, "setOnDemandEnabled:", [v7 isOnDemandEnabled]);
         -[NEVPN setDisconnectOnDemandEnabled:](v8, "setDisconnectOnDemandEnabled:", [v7 isDisconnectOnDemandEnabled]);
-        v15 = [v7 onDemandRules];
-        [(NEVPN *)v8 setOnDemandRules:v15];
+        onDemandRules = [v7 onDemandRules];
+        [(NEVPN *)v8 setOnDemandRules:onDemandRules];
 
-        v16 = [v7 protocol];
-        [(NEVPN *)v8 setProtocol:v16];
+        protocol = [v7 protocol];
+        [(NEVPN *)v8 setProtocol:protocol];
 
         [(NEVPN *)v8 setTunnelType:1];
-        [objc_getProperty(a1 v17];
-        [objc_getProperty(a1 v18];
+        [objc_getProperty(self v17];
+        [objc_getProperty(self v18];
         goto LABEL_8;
       }
 
@@ -1687,11 +1687,11 @@ void __78__NEUtilConfigurationClient_loadConfigurationsForceRefresh_completionHa
       [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid configuration type for swapping: %@", v20, v19];
     }
 
-    *a3 = LABEL_12:;
+    *parameters = LABEL_12:;
     goto LABEL_13;
   }
 
-  v6 = [objc_getProperty(a1 v5];
+  v6 = [objc_getProperty(self v5];
   if (!v6)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"No configuration found for swapping %@ -> %@", @"appvpn", v20];
@@ -1703,14 +1703,14 @@ void __78__NEUtilConfigurationClient_loadConfigurationsForceRefresh_completionHa
   -[NEVPN setEnabled:](v8, "setEnabled:", [v7 isEnabled]);
   -[NEVPN setOnDemandEnabled:](v8, "setOnDemandEnabled:", [v7 isOnDemandEnabled]);
   -[NEVPN setDisconnectOnDemandEnabled:](v8, "setDisconnectOnDemandEnabled:", [v7 isDisconnectOnDemandEnabled]);
-  v9 = [v7 onDemandRules];
-  [(NEVPN *)v8 setOnDemandRules:v9];
+  onDemandRules2 = [v7 onDemandRules];
+  [(NEVPN *)v8 setOnDemandRules:onDemandRules2];
 
-  v10 = [v7 protocol];
-  [(NEVPN *)v8 setProtocol:v10];
+  protocol2 = [v7 protocol];
+  [(NEVPN *)v8 setProtocol:protocol2];
 
-  [objc_getProperty(a1 v11];
-  [objc_getProperty(a1 v12];
+  [objc_getProperty(self v11];
+  [objc_getProperty(self v12];
 LABEL_8:
 
 LABEL_13:
@@ -1766,20 +1766,20 @@ void __94__NEUtilConfigurationClient_handleCommand_forConfigWithName_withParamet
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setURLFilterPluginWithParameters:(void *)a3 errorStr:
+- (void)setURLFilterPluginWithParameters:(void *)parameters errorStr:
 {
   v35 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [(NEUtilConfigurationClient *)a1 urlFilterConfiguration];
-    if (v6)
+    urlFilterConfiguration = [(NEUtilConfigurationClient *)self urlFilterConfiguration];
+    if (urlFilterConfiguration)
     {
       v7 = [v35 objectForKeyedSubscript:@"enabled"];
 
       if (v7)
       {
         v8 = [v35 objectForKeyedSubscript:@"enabled"];
-        [v6 setEnabled:{objc_msgSend(v8, "BOOLValue")}];
+        [urlFilterConfiguration setEnabled:{objc_msgSend(v8, "BOOLValue")}];
       }
 
       v9 = [v35 objectForKeyedSubscript:@"failClosed"];
@@ -1787,7 +1787,7 @@ void __94__NEUtilConfigurationClient_handleCommand_forConfigWithName_withParamet
       if (v9)
       {
         v10 = [v35 objectForKeyedSubscript:@"failClosed"];
-        [v6 setShouldFailClosed:{objc_msgSend(v10, "BOOLValue")}];
+        [urlFilterConfiguration setShouldFailClosed:{objc_msgSend(v10, "BOOLValue")}];
       }
 
       v11 = [v35 objectForKeyedSubscript:@"bundle-identifier"];
@@ -1795,7 +1795,7 @@ void __94__NEUtilConfigurationClient_handleCommand_forConfigWithName_withParamet
       if (v11)
       {
         v12 = [v35 objectForKeyedSubscript:@"bundle-identifier"];
-        [v6 setAppBundleIdentifier:v12];
+        [urlFilterConfiguration setAppBundleIdentifier:v12];
       }
 
       v13 = [v35 objectForKeyedSubscript:@"pre-filter-provider-bundle-identifier"];
@@ -1803,7 +1803,7 @@ void __94__NEUtilConfigurationClient_handleCommand_forConfigWithName_withParamet
       if (v13)
       {
         v14 = [v35 objectForKeyedSubscript:@"pre-filter-provider-bundle-identifier"];
-        [v6 setControlProviderBundleIdentifier:v14];
+        [urlFilterConfiguration setControlProviderBundleIdentifier:v14];
       }
 
       v15 = [v35 objectForKeyedSubscript:@"pre-filter-provider-designated-requirement"];
@@ -1811,8 +1811,8 @@ void __94__NEUtilConfigurationClient_handleCommand_forConfigWithName_withParamet
       if (v15)
       {
         v16 = [v35 objectForKeyedSubscript:@"pre-filter-provider-designated-requirement"];
-        v17 = [v16 stringByRemovingPercentEncoding];
-        [v6 setControlProviderDesignatedRequirement:v17];
+        stringByRemovingPercentEncoding = [v16 stringByRemovingPercentEncoding];
+        [urlFilterConfiguration setControlProviderDesignatedRequirement:stringByRemovingPercentEncoding];
       }
 
       v18 = [v35 objectForKeyedSubscript:@"prefilter-fetch-frequency"];
@@ -1820,7 +1820,7 @@ void __94__NEUtilConfigurationClient_handleCommand_forConfigWithName_withParamet
       if (v18)
       {
         v19 = [v35 objectForKeyedSubscript:@"prefilter-fetch-frequency"];
-        [v6 setPrefilterFetchInterval:{objc_msgSend(v19, "BOOLValue")}];
+        [urlFilterConfiguration setPrefilterFetchInterval:{objc_msgSend(v19, "BOOLValue")}];
       }
 
       v20 = [v35 objectForKeyedSubscript:@"pir-server"];
@@ -1832,7 +1832,7 @@ void __94__NEUtilConfigurationClient_handleCommand_forConfigWithName_withParamet
         v23 = [v21 initWithFormat:@"https://%@", v22];
 
         v24 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v23];
-        [v6 setPirServerURL:v24];
+        [urlFilterConfiguration setPirServerURL:v24];
       }
 
       v25 = [v35 objectForKeyedSubscript:@"pir-authen-token"];
@@ -1840,7 +1840,7 @@ void __94__NEUtilConfigurationClient_handleCommand_forConfigWithName_withParamet
       if (v25)
       {
         v26 = [v35 objectForKeyedSubscript:@"pir-authen-token"];
-        [v6 setPirAuthenticationToken:v26];
+        [urlFilterConfiguration setPirAuthenticationToken:v26];
       }
 
       v27 = [v35 objectForKeyedSubscript:@"test-group-name"];
@@ -1848,7 +1848,7 @@ void __94__NEUtilConfigurationClient_handleCommand_forConfigWithName_withParamet
       if (v27)
       {
         v28 = [v35 objectForKeyedSubscript:@"test-group-name"];
-        [v6 setPirGroupName:v28];
+        [urlFilterConfiguration setPirGroupName:v28];
       }
 
       v29 = [v35 objectForKeyedSubscript:@"test-use-case"];
@@ -1856,7 +1856,7 @@ void __94__NEUtilConfigurationClient_handleCommand_forConfigWithName_withParamet
       if (v29)
       {
         v30 = [v35 objectForKeyedSubscript:@"test-use-case"];
-        [v6 setPirUseCase:v30];
+        [urlFilterConfiguration setPirUseCase:v30];
       }
 
       v31 = [v35 objectForKeyedSubscript:@"test-privacy-proxy-fail-open"];
@@ -1864,7 +1864,7 @@ void __94__NEUtilConfigurationClient_handleCommand_forConfigWithName_withParamet
       if (v31)
       {
         v32 = [v35 objectForKeyedSubscript:@"test-privacy-proxy-fail-open"];
-        [v6 setPirPrivacyProxyFailOpen:{objc_msgSend(v32, "BOOLValue")}];
+        [urlFilterConfiguration setPirPrivacyProxyFailOpen:{objc_msgSend(v32, "BOOLValue")}];
       }
 
       v33 = [v35 objectForKeyedSubscript:@"test-pir-skip-registration"];
@@ -1872,125 +1872,125 @@ void __94__NEUtilConfigurationClient_handleCommand_forConfigWithName_withParamet
       if (v33)
       {
         v34 = [v35 objectForKeyedSubscript:@"test-pir-skip-registration"];
-        [v6 setPirSkipRegistration:{objc_msgSend(v34, "BOOLValue")}];
+        [urlFilterConfiguration setPirSkipRegistration:{objc_msgSend(v34, "BOOLValue")}];
       }
     }
 
     else
     {
-      *a3 = @"URL Filter configuration has not been created yet";
+      *parameters = @"URL Filter configuration has not been created yet";
     }
   }
 }
 
-- (void)unsetURLFilterPluginParameters:(void *)a3 errorStr:
+- (void)unsetURLFilterPluginParameters:(void *)parameters errorStr:
 {
   v19 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [(NEUtilConfigurationClient *)a1 urlFilterConfiguration];
-    if (v6)
+    urlFilterConfiguration = [(NEUtilConfigurationClient *)self urlFilterConfiguration];
+    if (urlFilterConfiguration)
     {
       v7 = [v19 objectForKeyedSubscript:@"enabled"];
 
       if (v7)
       {
-        [v6 setEnabled:0];
+        [urlFilterConfiguration setEnabled:0];
       }
 
       v8 = [v19 objectForKeyedSubscript:@"failClosed"];
 
       if (v8)
       {
-        [v6 setShouldFailClosed:0];
+        [urlFilterConfiguration setShouldFailClosed:0];
       }
 
       v9 = [v19 objectForKeyedSubscript:@"bundle-identifier"];
 
       if (v9)
       {
-        [v6 setAppBundleIdentifier:0];
+        [urlFilterConfiguration setAppBundleIdentifier:0];
       }
 
       v10 = [v19 objectForKeyedSubscript:@"pre-filter-provider-bundle-identifier"];
 
       if (v10)
       {
-        [v6 setControlProviderBundleIdentifier:0];
+        [urlFilterConfiguration setControlProviderBundleIdentifier:0];
       }
 
       v11 = [v19 objectForKeyedSubscript:@"pre-filter-provider-designated-requirement"];
 
       if (v11)
       {
-        [v6 setControlProviderDesignatedRequirement:0];
+        [urlFilterConfiguration setControlProviderDesignatedRequirement:0];
       }
 
       v12 = [v19 objectForKeyedSubscript:@"prefilter-fetch-frequency"];
 
       if (v12)
       {
-        [v6 setPrefilterFetchInterval:0.0];
+        [urlFilterConfiguration setPrefilterFetchInterval:0.0];
       }
 
       v13 = [v19 objectForKeyedSubscript:@"pir-server"];
 
       if (v13)
       {
-        [v6 setPirServerURL:0];
+        [urlFilterConfiguration setPirServerURL:0];
       }
 
       v14 = [v19 objectForKeyedSubscript:@"pir-authen-token"];
 
       if (v14)
       {
-        [v6 setPirAuthenticationToken:0];
+        [urlFilterConfiguration setPirAuthenticationToken:0];
       }
 
       v15 = [v19 objectForKeyedSubscript:@"test-group-name"];
 
       if (v15)
       {
-        [v6 setPirGroupName:0];
+        [urlFilterConfiguration setPirGroupName:0];
       }
 
       v16 = [v19 objectForKeyedSubscript:@"test-use-case"];
 
       if (v16)
       {
-        [v6 setPirUseCase:0];
+        [urlFilterConfiguration setPirUseCase:0];
       }
 
       v17 = [v19 objectForKeyedSubscript:@"test-privacy-proxy-fail-open"];
 
       if (v17)
       {
-        [v6 setPirPrivacyProxyFailOpen:0];
+        [urlFilterConfiguration setPirPrivacyProxyFailOpen:0];
       }
 
       v18 = [v19 objectForKeyedSubscript:@"test-pir-skip-registration"];
 
       if (v18)
       {
-        [v6 setPirSkipRegistration:0];
+        [urlFilterConfiguration setPirSkipRegistration:0];
       }
     }
 
     else
     {
-      *a3 = @"URL Filter configuration has not been created yet";
+      *parameters = @"URL Filter configuration has not been created yet";
     }
   }
 }
 
-- (uint64_t)setPPPParameters:(void *)a3 errorStr:
+- (uint64_t)setPPPParameters:(void *)parameters errorStr:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v109 = v5;
-    v7 = [a1 protocolForParameters:v5];
+    v7 = [self protocolForParameters:v5];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -2000,14 +2000,14 @@ void __94__NEUtilConfigurationClient_handleCommand_forConfigWithName_withParamet
       v15 = 0;
       v16 = 0;
       v17 = 0;
-      *a3 = @"Configuration VPN type is not L2TP";
+      *parameters = @"Configuration VPN type is not L2TP";
 LABEL_109:
 
       v6 = v109;
       goto LABEL_110;
     }
 
-    v106 = a3;
+    parametersCopy = parameters;
     v8 = [v109 objectForKeyedSubscript:@"authentication-method"];
 
     v9 = v109;
@@ -2038,7 +2038,7 @@ LABEL_109:
       {
         if (([v10 isEqualToString:@"cryptocard"] & 1) == 0)
         {
-          *v106 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, valid values are password, securID, certificate, kerberos, and cryptocard", @"authentication-method"];
+          *parametersCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, valid values are password, securID, certificate, kerberos, and cryptocard", @"authentication-method"];
 
           goto LABEL_117;
         }
@@ -2106,33 +2106,33 @@ LABEL_29:
         v108 = 0;
       }
 
-      v35 = [v7 IPv4Settings];
-      if (!v35)
+      iPv4Settings = [v7 IPv4Settings];
+      if (!iPv4Settings)
       {
         goto LABEL_43;
       }
 
-      v36 = v35;
-      v37 = [v7 IPv4Settings];
+      v36 = iPv4Settings;
+      iPv4Settings2 = [v7 IPv4Settings];
       v38 = v16;
-      v39 = [v37 configMethod];
+      configMethod = [iPv4Settings2 configMethod];
 
-      v40 = v39 == 3;
+      v40 = configMethod == 3;
       v16 = v38;
       if (v40)
       {
         v41 = [[NEIPv4Settings alloc] initWithAddresses:v107 subnetMasks:v38];
         [v7 setIPv4Settings:v41];
 
-        v42 = [v7 IPv4Settings];
-        [v42 setConfigMethod:3];
+        iPv4Settings3 = [v7 IPv4Settings];
+        [iPv4Settings3 setConfigMethod:3];
 
         v15 = v108;
         if (v108)
         {
           v43 = [v109 objectForKeyedSubscript:@"ipv4-router"];
-          v44 = [v7 IPv4Settings];
-          [v44 setRouter:v43];
+          iPv4Settings4 = [v7 IPv4Settings];
+          [iPv4Settings4 setRouter:v43];
 
           v16 = v38;
         }
@@ -2157,23 +2157,23 @@ LABEL_43:
 
       if (v45)
       {
-        v46 = [v7 IPv4Settings];
+        iPv4Settings5 = [v7 IPv4Settings];
 
-        if (!v46)
+        if (!iPv4Settings5)
         {
           v57 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ cannot be specified, %@ is not manual or ppp", @"send-all-traffic", @"ipv4-config-method"];
           v12 = 0;
           v13 = 0;
           v14 = 0;
 LABEL_107:
-          *v106 = v57;
+          *parametersCopy = v57;
           goto LABEL_108;
         }
 
         v47 = [v109 objectForKeyedSubscript:@"send-all-traffic"];
-        v48 = [v47 BOOLValue];
-        v49 = [v7 IPv4Settings];
-        [v49 setOverridePrimary:v48];
+        bOOLValue = [v47 BOOLValue];
+        iPv4Settings6 = [v7 IPv4Settings];
+        [iPv4Settings6 setOverridePrimary:bOOLValue];
       }
 
       v50 = [v109 objectForKeyedSubscript:@"ipv6-config-method"];
@@ -2182,9 +2182,9 @@ LABEL_107:
       if (v50)
       {
         v52 = [v109 objectForKeyedSubscript:@"ipv6-config-method"];
-        v53 = [v7 IPv6Settings];
+        iPv6Settings = [v7 IPv6Settings];
 
-        if (!v53)
+        if (!iPv6Settings)
         {
           v54 = [[NEIPv6Settings alloc] initWithConfigMethod:1];
           [v7 setIPv6Settings:v54];
@@ -2204,7 +2204,7 @@ LABEL_107:
         {
           if (([v52 isEqualToString:@"link-local"] & 1) == 0)
           {
-            *v106 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, valid values are automatic, manual, and link-local", @"ipv6-config-method"];
+            *parametersCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, valid values are automatic, manual, and link-local", @"ipv6-config-method"];
 
             v12 = 0;
             v13 = 0;
@@ -2215,8 +2215,8 @@ LABEL_107:
           v55 = 3;
         }
 
-        v58 = [v7 IPv6Settings];
-        [v58 setConfigMethod:v55];
+        iPv6Settings2 = [v7 IPv6Settings];
+        [iPv6Settings2 setConfigMethod:v55];
 
         v51 = v109;
       }
@@ -2261,29 +2261,29 @@ LABEL_107:
         v12 = 0;
       }
 
-      v66 = [v7 IPv6Settings];
-      if (v66 && (v67 = v66, [v7 IPv6Settings], v68 = objc_claimAutoreleasedReturnValue(), v69 = objc_msgSend(v68, "configMethod"), v68, v67, v69 == 2))
+      iPv6Settings3 = [v7 IPv6Settings];
+      if (iPv6Settings3 && (v67 = iPv6Settings3, [v7 IPv6Settings], v68 = objc_claimAutoreleasedReturnValue(), v69 = objc_msgSend(v68, "configMethod"), v68, v67, v69 == 2))
       {
         v70 = [[NEIPv6Settings alloc] initWithAddresses:v14 networkPrefixLengths:v13];
         [v7 setIPv6Settings:v70];
 
-        v71 = [v7 IPv6Settings];
-        [v71 setConfigMethod:2];
+        iPv6Settings4 = [v7 IPv6Settings];
+        [iPv6Settings4 setConfigMethod:2];
 
-        v72 = [v7 IPv6Settings];
+        iPv6Settings5 = [v7 IPv6Settings];
 
-        if (v72)
+        if (iPv6Settings5)
         {
           v73 = [v109 objectForKeyedSubscript:@"ipv6-router"];
-          v74 = [v7 IPv6Settings];
-          [v74 setRouter:v73];
+          iPv6Settings6 = [v7 IPv6Settings];
+          [iPv6Settings6 setRouter:v73];
         }
       }
 
       else if (v14 || v13 || v12)
       {
         v78 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@ %@ cannot be specified, %@ is not manual", @"ipv6-address", @"ipv6-prefix-length", @"ipv6-router", @"ipv6-config-method"];
-        v79 = v106;
+        v79 = parametersCopy;
         v17 = v107;
         goto LABEL_84;
       }
@@ -2346,23 +2346,23 @@ LABEL_108:
           if ([v7 type] == 2)
           {
             v92 = [v109 objectForKeyedSubscript:@"machine-identity"];
-            v93 = [v92 integerValue];
+            integerValue = [v92 integerValue];
 
-            v95 = objc_getProperty(a1, v94, 48, 1);
+            v95 = objc_getProperty(self, v94, 48, 1);
             if (v95)
             {
               v97 = v95;
-              v98 = [objc_getProperty(a1 v96];
+              v98 = [objc_getProperty(self v96];
 
-              if (v93 < v98)
+              if (integerValue < v98)
               {
-                v100 = [objc_getProperty(a1 v99];
+                v100 = [objc_getProperty(self v99];
                 v101 = [v100 objectForKeyedSubscript:@"domain"];
-                v102 = [v101 integerValue];
+                integerValue2 = [v101 integerValue];
 
-                if (v102)
+                if (integerValue2)
                 {
-                  *v106 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, an identity in the system keychain is required", @"machine-identity"];
+                  *parametersCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, an identity in the system keychain is required", @"machine-identity"];
                 }
 
                 else
@@ -2376,7 +2376,7 @@ LABEL_108:
             }
 
             v78 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@ index, use the list-identities command to obtain a list of available identities and their indicies", @"machine-identity"];
-            v79 = v106;
+            v79 = parametersCopy;
 LABEL_84:
             *v79 = v78;
 LABEL_85:
@@ -2415,7 +2415,7 @@ LABEL_106:
         {
           if (([v76 isEqualToString:@"certificate"] & 1) == 0)
           {
-            *v106 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, valid values are shared-secret and certificate", @"machine-authentication-method"];
+            *parametersCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, valid values are shared-secret and certificate", @"machine-authentication-method"];
 
             goto LABEL_86;
           }
@@ -2431,14 +2431,14 @@ LABEL_106:
 
       v56 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, VPN type is not L2TP", @"machine-authentication-method"];
 LABEL_88:
-      *v106 = v56;
+      *parametersCopy = v56;
       goto LABEL_109;
     }
 
     v22 = [v109 objectForKeyedSubscript:@"ipv4-config-method"];
-    v23 = [v7 IPv4Settings];
+    iPv4Settings7 = [v7 IPv4Settings];
 
-    if (!v23)
+    if (!iPv4Settings7)
     {
       v24 = [[NEIPv4Settings alloc] initWithConfigMethod:2];
       [v7 setIPv4Settings:v24];
@@ -2446,11 +2446,11 @@ LABEL_88:
 
     if ([v22 isEqualToString:@"ppp"])
     {
-      v25 = [v7 IPv4Settings];
-      v26 = v25;
+      iPv4Settings8 = [v7 IPv4Settings];
+      v26 = iPv4Settings8;
       v27 = 2;
 LABEL_27:
-      [v25 setConfigMethod:v27];
+      [iPv4Settings8 setConfigMethod:v27];
 
 LABEL_28:
       v21 = v109;
@@ -2459,16 +2459,16 @@ LABEL_28:
 
     if ([v22 isEqualToString:@"manual"])
     {
-      v25 = [v7 IPv4Settings];
-      v26 = v25;
+      iPv4Settings8 = [v7 IPv4Settings];
+      v26 = iPv4Settings8;
       v27 = 3;
       goto LABEL_27;
     }
 
     if ([v22 isEqualToString:@"automatic"])
     {
-      v25 = [v7 IPv4Settings];
-      v26 = v25;
+      iPv4Settings8 = [v7 IPv4Settings];
+      v26 = iPv4Settings8;
       v27 = 1;
       goto LABEL_27;
     }
@@ -2479,7 +2479,7 @@ LABEL_28:
       goto LABEL_28;
     }
 
-    *v106 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, valid values are ppp, manual, automatic, and off", @"ipv4-config-method"];
+    *parametersCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, valid values are ppp, manual, automatic, and off", @"ipv4-config-method"];
 
 LABEL_117:
     v12 = 0;
@@ -2496,22 +2496,22 @@ LABEL_110:
   return MEMORY[0x1EEE66BB8](v5, v6);
 }
 
-- (uint64_t)unsetPPPParameters:(void *)a3 errorStr:
+- (uint64_t)unsetPPPParameters:(void *)parameters errorStr:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v45 = v5;
-    v7 = [a1 protocolForParameters:v5];
+    v7 = [self protocolForParameters:v5];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v17 = 0;
-      v18 = 0;
-      v19 = 0;
-      v20 = 0;
-      *a3 = @"Configuration VPN type is not L2TP";
+      iPv4Settings5 = 0;
+      iPv4Settings7 = 0;
+      iPv6Settings3 = 0;
+      iPv6Settings5 = 0;
+      *parameters = @"Configuration VPN type is not L2TP";
 LABEL_59:
 
       v6 = v45;
@@ -2529,12 +2529,12 @@ LABEL_59:
 
     if (v9)
     {
-      v10 = [v7 IPv4Settings];
+      iPv4Settings = [v7 IPv4Settings];
 
-      if (v10)
+      if (iPv4Settings)
       {
-        v11 = [v7 IPv4Settings];
-        [v11 setOverridePrimary:0];
+        iPv4Settings2 = [v7 IPv4Settings];
+        [iPv4Settings2 setOverridePrimary:0];
       }
     }
 
@@ -2549,12 +2549,12 @@ LABEL_59:
 
     if (v13)
     {
-      v14 = [v7 IPv4Settings];
+      iPv4Settings3 = [v7 IPv4Settings];
 
-      if (v14)
+      if (iPv4Settings3)
       {
-        v15 = [v7 IPv4Settings];
-        [v15 setConfigMethod:2];
+        iPv4Settings4 = [v7 IPv4Settings];
+        [iPv4Settings4 setConfigMethod:2];
       }
     }
 
@@ -2562,17 +2562,17 @@ LABEL_59:
 
     if (v16)
     {
-      v17 = 0;
+      iPv4Settings5 = 0;
     }
 
     else
     {
-      v17 = [v7 IPv4Settings];
+      iPv4Settings5 = [v7 IPv4Settings];
 
-      if (v17)
+      if (iPv4Settings5)
       {
-        v21 = [v7 IPv4Settings];
-        v17 = [v21 addresses];
+        iPv4Settings6 = [v7 IPv4Settings];
+        iPv4Settings5 = [iPv4Settings6 addresses];
       }
     }
 
@@ -2580,17 +2580,17 @@ LABEL_59:
 
     if (v22)
     {
-      v18 = 0;
+      iPv4Settings7 = 0;
     }
 
     else
     {
-      v18 = [v7 IPv4Settings];
+      iPv4Settings7 = [v7 IPv4Settings];
 
-      if (v18)
+      if (iPv4Settings7)
       {
-        v23 = [v7 IPv4Settings];
-        v18 = [v23 subnetMasks];
+        iPv4Settings8 = [v7 IPv4Settings];
+        iPv4Settings7 = [iPv4Settings8 subnetMasks];
       }
 
       if (!v16)
@@ -2600,12 +2600,12 @@ LABEL_24:
 
         if (v25)
         {
-          v26 = [v7 IPv4Settings];
+          iPv4Settings9 = [v7 IPv4Settings];
 
-          if (v26)
+          if (iPv4Settings9)
           {
-            v27 = [v7 IPv4Settings];
-            [v27 setRouter:0];
+            iPv4Settings10 = [v7 IPv4Settings];
+            [iPv4Settings10 setRouter:0];
           }
         }
 
@@ -2613,12 +2613,12 @@ LABEL_24:
 
         if (v28)
         {
-          v29 = [v7 IPv6Settings];
+          iPv6Settings = [v7 IPv6Settings];
 
-          if (v29)
+          if (iPv6Settings)
           {
-            v30 = [v7 IPv6Settings];
-            [v30 setConfigMethod:1];
+            iPv6Settings2 = [v7 IPv6Settings];
+            [iPv6Settings2 setConfigMethod:1];
           }
         }
 
@@ -2626,17 +2626,17 @@ LABEL_24:
 
         if (v31)
         {
-          v19 = 0;
+          iPv6Settings3 = 0;
         }
 
         else
         {
-          v19 = [v7 IPv6Settings];
+          iPv6Settings3 = [v7 IPv6Settings];
 
-          if (v19)
+          if (iPv6Settings3)
           {
-            v32 = [v7 IPv6Settings];
-            v19 = [v32 addresses];
+            iPv6Settings4 = [v7 IPv6Settings];
+            iPv6Settings3 = [iPv6Settings4 addresses];
           }
         }
 
@@ -2644,17 +2644,17 @@ LABEL_24:
 
         if (v33)
         {
-          v20 = 0;
+          iPv6Settings5 = 0;
         }
 
         else
         {
-          v20 = [v7 IPv6Settings];
+          iPv6Settings5 = [v7 IPv6Settings];
 
-          if (v20)
+          if (iPv6Settings5)
           {
-            v34 = [v7 IPv6Settings];
-            v20 = [v34 networkPrefixLengths];
+            iPv6Settings6 = [v7 IPv6Settings];
+            iPv6Settings5 = [iPv6Settings6 networkPrefixLengths];
           }
 
           if (!v31)
@@ -2663,7 +2663,7 @@ LABEL_24:
           }
         }
 
-        v35 = [[NEIPv6Settings alloc] initWithAddresses:v19 networkPrefixLengths:v20];
+        v35 = [[NEIPv6Settings alloc] initWithAddresses:iPv6Settings3 networkPrefixLengths:iPv6Settings5];
         [v7 setIPv6Settings:v35];
 
 LABEL_40:
@@ -2671,12 +2671,12 @@ LABEL_40:
 
         if (v36)
         {
-          v37 = [v7 IPv6Settings];
+          iPv6Settings7 = [v7 IPv6Settings];
 
-          if (v37)
+          if (iPv6Settings7)
           {
-            v38 = [v7 IPv6Settings];
-            [v38 setRouter:0];
+            iPv6Settings8 = [v7 IPv6Settings];
+            [iPv6Settings8 setRouter:0];
           }
         }
 
@@ -2691,7 +2691,7 @@ LABEL_40:
 
           else
           {
-            *a3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, VPN type is not L2TP", @"machine-authentication-method"];
+            *parameters = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, VPN type is not L2TP", @"machine-authentication-method"];
           }
         }
 
@@ -2701,13 +2701,13 @@ LABEL_40:
         {
           if ([v7 type] == 2)
           {
-            v41 = [v7 sharedSecretKeychainItem];
-            [v41 setIdentifier:0];
+            sharedSecretKeychainItem = [v7 sharedSecretKeychainItem];
+            [sharedSecretKeychainItem setIdentifier:0];
           }
 
           else
           {
-            *a3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, VPN type is not L2TP", @"shared-secret"];
+            *parameters = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, VPN type is not L2TP", @"shared-secret"];
           }
         }
 
@@ -2722,7 +2722,7 @@ LABEL_40:
 
           else
           {
-            *a3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, VPN type is not L2TP", @"shared-secret"];
+            *parameters = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, VPN type is not L2TP", @"shared-secret"];
           }
         }
 
@@ -2737,7 +2737,7 @@ LABEL_40:
 
           else
           {
-            *a3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, VPN type is not L2TP", @"machine-identity"];
+            *parameters = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, VPN type is not L2TP", @"machine-identity"];
           }
         }
 
@@ -2745,7 +2745,7 @@ LABEL_40:
       }
     }
 
-    v24 = [[NEIPv4Settings alloc] initWithAddresses:v17 subnetMasks:v18];
+    v24 = [[NEIPv4Settings alloc] initWithAddresses:iPv4Settings5 subnetMasks:iPv4Settings7];
     [v7 setIPv4Settings:v24];
 
     goto LABEL_24;
@@ -2756,10 +2756,10 @@ LABEL_60:
   return MEMORY[0x1EEE66BB8](v5, v6);
 }
 
-- (void)addAppRuleWithParameters:(void *)a3 errorStr:
+- (void)addAppRuleWithParameters:(void *)parameters errorStr:
 {
   v56[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v5 = a2;
     v6 = [v5 objectForKeyedSubscript:@"match-signing-identifier"];
@@ -2767,81 +2767,81 @@ LABEL_60:
     v8 = [v5 objectForKeyedSubscript:@"match-domains"];
     v9 = [v5 objectForKeyedSubscript:@"match-account-identifiers"];
 
-    v11 = [objc_getProperty(a1 v10];
+    v11 = [objc_getProperty(self v10];
 
     if (v11)
     {
-      v11 = [objc_getProperty(a1 v12];
+      v11 = [objc_getProperty(self v12];
     }
 
-    v13 = [objc_getProperty(a1 v12];
+    v13 = [objc_getProperty(self v12];
 
-    Property = objc_getProperty(a1, v14, 56, 1);
+    Property = objc_getProperty(self, v14, 56, 1);
     if (v13)
     {
-      v16 = [Property contentFilter];
-      v17 = [v16 perApp];
+      contentFilter = [Property contentFilter];
+      perApp = [contentFilter perApp];
 
-      if (!v17)
+      if (!perApp)
       {
         v19 = objc_alloc_init(NEPerApp);
-        v21 = [objc_getProperty(a1 v20];
+        v21 = [objc_getProperty(self v20];
         [v21 setPerApp:v19];
       }
 
-      v22 = [objc_getProperty(a1 v18];
+      v22 = [objc_getProperty(self v18];
     }
 
     else
     {
-      v23 = [Property dnsProxy];
+      dnsProxy = [Property dnsProxy];
 
-      v25 = objc_getProperty(a1, v24, 56, 1);
-      if (v23)
+      v25 = objc_getProperty(self, v24, 56, 1);
+      if (dnsProxy)
       {
-        v26 = [v25 dnsProxy];
-        v27 = [v26 perApp];
+        dnsProxy2 = [v25 dnsProxy];
+        perApp2 = [dnsProxy2 perApp];
 
-        if (!v27)
+        if (!perApp2)
         {
           v29 = objc_alloc_init(NEPerApp);
-          v31 = [objc_getProperty(a1 v30];
+          v31 = [objc_getProperty(self v30];
           [v31 setPerApp:v29];
         }
 
-        v22 = [objc_getProperty(a1 v28];
+        v22 = [objc_getProperty(self v28];
       }
 
       else
       {
-        v32 = [v25 relay];
+        relay = [v25 relay];
 
-        if (!v32)
+        if (!relay)
         {
           goto LABEL_17;
         }
 
-        v34 = [objc_getProperty(a1 v33];
-        v35 = [v34 perApp];
+        v34 = [objc_getProperty(self v33];
+        perApp3 = [v34 perApp];
 
-        if (!v35)
+        if (!perApp3)
         {
           v37 = objc_alloc_init(NEPerApp);
-          v39 = [objc_getProperty(a1 v38];
+          v39 = [objc_getProperty(self v38];
           [v39 setPerApp:v37];
         }
 
-        v22 = [objc_getProperty(a1 v36];
+        v22 = [objc_getProperty(self v36];
       }
     }
 
     v40 = v22;
-    v32 = [v22 perApp];
+    relay = [v22 perApp];
 
 LABEL_17:
-    if (!(v11 | v32))
+    if (!(v11 | relay))
     {
-      *a3 = @"No perApp configuration present to apply app rules to";
+      *parameters = @"No perApp configuration present to apply app rules to";
 LABEL_41:
 
       goto LABEL_42;
@@ -2854,7 +2854,7 @@ LABEL_41:
 
     else
     {
-      v41 = v32;
+      v41 = relay;
     }
 
     v42 = [v41 copyAppRuleByID:v6];
@@ -2894,8 +2894,8 @@ LABEL_27:
         v46 = objc_alloc(MEMORY[0x1E695DF70]);
         if (v11)
         {
-          v47 = [v11 appRules];
-          v48 = [v46 initWithArray:v47];
+          appRules = [v11 appRules];
+          v48 = [v46 initWithArray:appRules];
 
           [v48 addObject:v42];
           v49 = v11;
@@ -2903,19 +2903,19 @@ LABEL_27:
 
         else
         {
-          v50 = [v32 appRules];
-          v48 = [v46 initWithArray:v50];
+          appRules2 = [relay appRules];
+          v48 = [v46 initWithArray:appRules2];
 
           [v48 addObject:v42];
-          v49 = v32;
+          v49 = relay;
         }
 
         [v49 setAppRules:v48];
-        v52 = [objc_getProperty(a1 v51];
+        v52 = [objc_getProperty(self v51];
 
         if (!v52)
         {
-          [objc_getProperty(a1 v53];
+          [objc_getProperty(self v53];
         }
 
         goto LABEL_41;
@@ -2931,7 +2931,7 @@ LABEL_27:
       }
     }
 
-    v43 = v32;
+    v43 = relay;
     goto LABEL_27;
   }
 
@@ -2939,65 +2939,65 @@ LABEL_42:
   v54 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeAppRuleWithParameters:(void *)a3 errorStr:
+- (void)removeAppRuleWithParameters:(void *)parameters errorStr:
 {
   v51 = *MEMORY[0x1E69E9840];
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v7 = [v5 objectForKeyedSubscript:@"match-signing-identifier"];
-    v9 = [objc_getProperty(a1 v8];
+    v9 = [objc_getProperty(self v8];
 
     if (v9)
     {
-      v9 = [objc_getProperty(a1 v10];
+      v9 = [objc_getProperty(self v10];
     }
 
-    v11 = [objc_getProperty(a1 v10];
+    v11 = [objc_getProperty(self v10];
 
-    Property = objc_getProperty(a1, v12, 56, 1);
+    Property = objc_getProperty(self, v12, 56, 1);
     if (v11)
     {
-      v14 = [Property contentFilter];
+      contentFilter = [Property contentFilter];
     }
 
     else
     {
-      v15 = [Property dnsProxy];
+      dnsProxy = [Property dnsProxy];
 
-      v17 = objc_getProperty(a1, v16, 56, 1);
-      if (v15)
+      v17 = objc_getProperty(self, v16, 56, 1);
+      if (dnsProxy)
       {
-        v14 = [v17 dnsProxy];
+        contentFilter = [v17 dnsProxy];
       }
 
       else
       {
-        v18 = [v17 relay];
+        relay = [v17 relay];
 
-        if (!v18)
+        if (!relay)
         {
           goto LABEL_11;
         }
 
-        v14 = [objc_getProperty(a1 v19];
+        contentFilter = [objc_getProperty(self v19];
       }
     }
 
-    v20 = v14;
-    v18 = [v14 perApp];
+    v20 = contentFilter;
+    relay = [contentFilter perApp];
 
 LABEL_11:
-    if (!(v9 | v18))
+    if (!(v9 | relay))
     {
-      *a3 = @"No perApp configuration present to apply app rules to";
+      *parameters = @"No perApp configuration present to apply app rules to";
 LABEL_39:
 
       goto LABEL_40;
     }
 
-    v44 = a3;
+    parametersCopy = parameters;
     v45 = v6;
     v21 = objc_alloc(MEMORY[0x1E695DF70]);
     if (v9)
@@ -3007,11 +3007,11 @@ LABEL_39:
 
     else
     {
-      v22 = v18;
+      v22 = relay;
     }
 
-    v23 = [v22 appRules];
-    v24 = [v21 initWithArray:v23];
+    appRules = [v22 appRules];
+    v24 = [v21 initWithArray:appRules];
 
     v48 = 0u;
     v49 = 0u;
@@ -3022,7 +3022,7 @@ LABEL_39:
     if (v26)
     {
       v27 = v26;
-      v42 = v18;
+      v42 = relay;
       v43 = v9;
       v28 = 0;
       v29 = *v47;
@@ -3036,8 +3036,8 @@ LABEL_39:
           }
 
           v31 = *(*(&v46 + 1) + 8 * i);
-          v32 = [v31 matchSigningIdentifier];
-          v33 = [v32 isEqualToString:v7];
+          matchSigningIdentifier = [v31 matchSigningIdentifier];
+          v33 = [matchSigningIdentifier isEqualToString:v7];
 
           if (v33)
           {
@@ -3052,7 +3052,7 @@ LABEL_39:
 
       while (v27);
 
-      v18 = v42;
+      relay = v42;
       v9 = v43;
       if (v28)
       {
@@ -3085,12 +3085,12 @@ LABEL_39:
           }
 
           [v36 setAppRules:0];
-          v38 = [objc_getProperty(a1 v37];
+          v38 = [objc_getProperty(self v37];
           v39 = [v38 isEqualToString:@"NEUTIL-PERAPP-UUID"];
 
           if (v39)
           {
-            [objc_getProperty(a1 v40];
+            [objc_getProperty(self v40];
           }
         }
 
@@ -3103,7 +3103,7 @@ LABEL_39:
     }
 
     v28 = 0;
-    *v44 = @"No matched rule";
+    *parametersCopy = @"No matched rule";
 LABEL_38:
 
     v6 = v45;
@@ -3115,17 +3115,17 @@ LABEL_40:
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPathControllerWithParameters:(void *)a3 errorStr:
+- (void)setPathControllerWithParameters:(void *)parameters errorStr:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v17 = v5;
-    v7 = [objc_getProperty(a1 v6];
+    v7 = [objc_getProperty(self v6];
 
     if (!v7)
     {
-      *a3 = @"No Path Controller configuration present";
+      *parameters = @"No Path Controller configuration present";
 LABEL_18:
       v5 = v17;
       goto LABEL_19;
@@ -3136,9 +3136,9 @@ LABEL_18:
     if (v8)
     {
       v9 = [v17 objectForKeyedSubscript:@"enabled"];
-      v10 = [v9 BOOLValue];
-      v12 = [objc_getProperty(a1 v11];
-      [v12 setEnabled:v10];
+      bOOLValue = [v9 BOOLValue];
+      v12 = [objc_getProperty(self v11];
+      [v12 setEnabled:bOOLValue];
     }
 
     v13 = [v17 objectForKeyedSubscript:@"cellular-fallback"];
@@ -3174,7 +3174,7 @@ LABEL_17:
       v15 = 11;
     }
 
-    v16 = [objc_getProperty(a1 v14];
+    v16 = [objc_getProperty(self v14];
     [v16 setCellularFallbackFlags:v15];
 
     goto LABEL_17;
@@ -3183,10 +3183,10 @@ LABEL_17:
 LABEL_19:
 }
 
-- (void)addPathRuleWithParameters:(__CFString *)a3 errorStr:
+- (void)addPathRuleWithParameters:(__CFString *)parameters errorStr:
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v5 = a2;
     v6 = [v5 objectForKeyedSubscript:@"match-signing-identifier"];
@@ -3196,7 +3196,7 @@ LABEL_19:
     v10 = [v5 objectForKeyedSubscript:@"cellular-behavior"];
     v11 = [v5 objectForKeyedSubscript:@"wifi-behavior"];
 
-    v13 = [objc_getProperty(a1 v12];
+    v13 = [objc_getProperty(self v12];
     v14 = [v13 copyPathRuleBySigningIdentifier:v6];
 
     if (!v14)
@@ -3204,7 +3204,7 @@ LABEL_19:
       v14 = [(NEAppRule *)[NEPathRule alloc] initWithSigningIdentifier:v6];
     }
 
-    v16 = [objc_getProperty(a1 v15];
+    v16 = [objc_getProperty(self v15];
     [v16 removePathRuleBySigningIdentifier:v6];
 
     [(NEAppRule *)v14 setMatchPath:v7];
@@ -3284,12 +3284,12 @@ LABEL_19:
       [(NEPathRule *)v14 setWifiBehavior:v21];
     }
 
-    v22 = [objc_getProperty(a1 v18];
+    v22 = [objc_getProperty(self v18];
 
     if (v22)
     {
       v23 = objc_alloc(MEMORY[0x1E695DF70]);
-      v25 = [objc_getProperty(a1 v24];
+      v25 = [objc_getProperty(self v24];
       [v25 pathRules];
       v37 = v9;
       v26 = v10;
@@ -3300,7 +3300,7 @@ LABEL_19:
       v32 = [v23 initWithArray:v31];
 
       [v32 addObject:v14];
-      v34 = [objc_getProperty(a1 v33];
+      v34 = [objc_getProperty(self v33];
       [v34 setPathRules:v32];
 
       v7 = v30;
@@ -3316,7 +3316,7 @@ LABEL_32:
 
     v35 = @"No Path Controller configuration present to apply path rules to";
 LABEL_31:
-    *a3 = v35;
+    *parameters = v35;
     goto LABEL_32;
   }
 
@@ -3324,20 +3324,20 @@ LABEL_33:
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removePathRuleWithParameters:(void *)a3 errorStr:
+- (void)removePathRuleWithParameters:(void *)parameters errorStr:
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v5 = [a2 objectForKeyedSubscript:@"match-signing-identifier"];
-    v7 = [objc_getProperty(a1 v6];
+    v7 = [objc_getProperty(self v6];
 
     if (v7)
     {
       v8 = objc_alloc(MEMORY[0x1E695DF70]);
-      v10 = [objc_getProperty(a1 v9];
-      v11 = [v10 pathRules];
-      v12 = [v8 initWithArray:v11];
+      v10 = [objc_getProperty(self v9];
+      pathRules = [v10 pathRules];
+      v12 = [v8 initWithArray:pathRules];
 
       if ([v12 count])
       {
@@ -3345,10 +3345,10 @@ LABEL_33:
         v32 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v14 = [objc_getProperty(a1 v13];
-        v15 = [v14 pathRules];
+        v14 = [objc_getProperty(self v13];
+        pathRules2 = [v14 pathRules];
 
-        v16 = [v15 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v16 = [pathRules2 countByEnumeratingWithState:&v29 objects:v33 count:16];
         if (v16)
         {
           v17 = v16;
@@ -3359,12 +3359,12 @@ LABEL_33:
             {
               if (*v30 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(pathRules2);
               }
 
               v20 = *(*(&v29 + 1) + 8 * i);
-              v21 = [v20 matchSigningIdentifier];
-              v22 = [v21 isEqualToString:v5];
+              matchSigningIdentifier = [v20 matchSigningIdentifier];
+              v22 = [matchSigningIdentifier isEqualToString:v5];
 
               if (v22)
               {
@@ -3372,14 +3372,14 @@ LABEL_33:
               }
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v29 objects:v33 count:16];
+            v17 = [pathRules2 countByEnumeratingWithState:&v29 objects:v33 count:16];
           }
 
           while (v17);
         }
 
         v23 = [v12 count];
-        v25 = [objc_getProperty(a1 v24];
+        v25 = [objc_getProperty(self v24];
         v26 = v25;
         if (v23)
         {
@@ -3396,13 +3396,13 @@ LABEL_33:
 
       else
       {
-        *a3 = @"No rules present";
+        *parameters = @"No rules present";
       }
     }
 
     else
     {
-      *a3 = @"No Path Controller configuration present to apply app rules to";
+      *parameters = @"No Path Controller configuration present to apply app rules to";
     }
   }
 
@@ -3681,15 +3681,15 @@ void __94__NEUtilConfigurationClient_handleCommand_forConfigWithName_withParamet
   (*(*(a1 + 64) + 16))();
 }
 
-- (void)setAlwaysOnParameters:(__CFString *)a3 errorStr:
+- (void)setAlwaysOnParameters:(__CFString *)parameters errorStr:
 {
   v42 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [objc_getProperty(a1 v5];
+    v6 = [objc_getProperty(self v5];
     if (!v6)
     {
-      *a3 = @"Requires AlwaysOn configuraton";
+      *parameters = @"Requires AlwaysOn configuraton";
     }
 
     v7 = [v42 objectForKeyedSubscript:@"ui-toggle-enabled"];
@@ -3749,7 +3749,7 @@ LABEL_17:
       v18 = 0;
       v19 = @"Action is required";
 LABEL_40:
-      *a3 = v19;
+      *parameters = v19;
       goto LABEL_41;
     }
 
@@ -3777,12 +3777,12 @@ LABEL_40:
       v17 = 2;
     }
 
-    v22 = [v6 serviceExceptions];
+    serviceExceptions = [v6 serviceExceptions];
 
-    if (v22)
+    if (serviceExceptions)
     {
-      v23 = [v6 serviceExceptions];
-      v9 = [v23 mutableCopy];
+      serviceExceptions2 = [v6 serviceExceptions];
+      v9 = [serviceExceptions2 mutableCopy];
     }
 
     else
@@ -3823,13 +3823,13 @@ LABEL_28:
       goto LABEL_41;
     }
 
-    v31 = [v6 allowedCaptiveNetworkPlugins];
+    allowedCaptiveNetworkPlugins = [v6 allowedCaptiveNetworkPlugins];
 
-    if (v31)
+    if (allowedCaptiveNetworkPlugins)
     {
-      v32 = [v6 allowedCaptiveNetworkPlugins];
+      allowedCaptiveNetworkPlugins2 = [v6 allowedCaptiveNetworkPlugins];
       v33 = [v42 objectForKeyedSubscript:@"cn-plugin-bundle-id"];
-      v34 = [v32 objectForKeyedSubscript:v33];
+      v34 = [allowedCaptiveNetworkPlugins2 objectForKeyedSubscript:v33];
 
       if (v34)
       {
@@ -3837,10 +3837,10 @@ LABEL_28:
         goto LABEL_40;
       }
 
-      v36 = [v6 allowedCaptiveNetworkPlugins];
-      v35 = [v36 mutableCopy];
+      allowedCaptiveNetworkPlugins3 = [v6 allowedCaptiveNetworkPlugins];
+      v35 = [allowedCaptiveNetworkPlugins3 mutableCopy];
 
-      v9 = v36;
+      v9 = allowedCaptiveNetworkPlugins3;
     }
 
     else
@@ -3863,15 +3863,15 @@ LABEL_41:
   }
 }
 
-- (void)unsetAlwaysOnParameters:(__CFString *)a3 errorStr:
+- (void)unsetAlwaysOnParameters:(__CFString *)parameters errorStr:
 {
   v28 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [objc_getProperty(a1 v5];
+    v6 = [objc_getProperty(self v5];
     if (!v6)
     {
-      *a3 = @"Requires AlwaysOn configuraton";
+      *parameters = @"Requires AlwaysOn configuraton";
     }
 
     v7 = [v28 objectForKeyedSubscript:@"ui-toggle-enabled"];
@@ -3881,38 +3881,38 @@ LABEL_41:
       [v6 setToggleEnabled:0];
     }
 
-    v8 = [v28 objectForKeyedSubscript:@"service-exception-name"];
+    serviceExceptions = [v28 objectForKeyedSubscript:@"service-exception-name"];
 
-    if (v8)
+    if (serviceExceptions)
     {
-      v8 = [v6 serviceExceptions];
+      serviceExceptions = [v6 serviceExceptions];
 
-      if (!v8)
+      if (!serviceExceptions)
       {
         v27 = @"No existing service to be removed";
         goto LABEL_26;
       }
 
-      v9 = [v6 serviceExceptions];
+      serviceExceptions2 = [v6 serviceExceptions];
       v10 = [v28 objectForKeyedSubscript:@"service-exception-name"];
-      v11 = [v9 objectForKeyedSubscript:v10];
+      v11 = [serviceExceptions2 objectForKeyedSubscript:v10];
 
       if (!v11)
       {
-        v8 = 0;
+        serviceExceptions = 0;
         v27 = @"Service does not exist";
         goto LABEL_26;
       }
 
-      v12 = [v6 serviceExceptions];
-      v8 = [v12 mutableCopy];
+      serviceExceptions3 = [v6 serviceExceptions];
+      serviceExceptions = [serviceExceptions3 mutableCopy];
 
       v13 = [v28 objectForKeyedSubscript:@"service-exception-name"];
-      [v8 removeObjectForKey:v13];
+      [serviceExceptions removeObjectForKey:v13];
 
-      if ([v8 count])
+      if ([serviceExceptions count])
       {
-        v14 = v8;
+        v14 = serviceExceptions;
       }
 
       else
@@ -3944,18 +3944,18 @@ LABEL_41:
       goto LABEL_27;
     }
 
-    v18 = [v6 allowedCaptiveNetworkPlugins];
+    allowedCaptiveNetworkPlugins = [v6 allowedCaptiveNetworkPlugins];
 
-    if (v18)
+    if (allowedCaptiveNetworkPlugins)
     {
-      v19 = [v6 allowedCaptiveNetworkPlugins];
+      allowedCaptiveNetworkPlugins2 = [v6 allowedCaptiveNetworkPlugins];
       v20 = [v28 objectForKeyedSubscript:@"cn-plugin-bundle-id"];
-      v21 = [v19 objectForKeyedSubscript:v20];
+      v21 = [allowedCaptiveNetworkPlugins2 objectForKeyedSubscript:v20];
 
       if (v21)
       {
-        v22 = [v6 allowedCaptiveNetworkPlugins];
-        v23 = [v22 mutableCopy];
+        allowedCaptiveNetworkPlugins3 = [v6 allowedCaptiveNetworkPlugins];
+        v23 = [allowedCaptiveNetworkPlugins3 mutableCopy];
 
         v24 = [v28 objectForKeyedSubscript:@"cn-plugin-bundle-id"];
         [v23 removeObjectForKey:v24];
@@ -3973,7 +3973,7 @@ LABEL_41:
         }
 
         [v25 setAllowedCaptiveNetworkPlugins:v26];
-        v8 = v23;
+        serviceExceptions = v23;
         goto LABEL_27;
       }
 
@@ -3986,7 +3986,7 @@ LABEL_41:
     }
 
 LABEL_26:
-    *a3 = v27;
+    *parameters = v27;
 LABEL_27:
   }
 }
@@ -4021,7 +4021,7 @@ void __94__NEUtilConfigurationClient_handleCommand_forConfigWithName_withParamet
 
 - (id)urlFilterConfiguration
 {
-  v2 = [objc_getProperty(a1 a2];
+  v2 = [objc_getProperty(self a2];
 
   return v2;
 }
@@ -4083,74 +4083,74 @@ void __69__NEUtilConfigurationClient_reloadIdentityListWithCompletionHandler___b
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)unsetHotspotProviderParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)unsetHotspotProviderParameters:(id)parameters errorStr:(id *)str
 {
-  v6 = [(NEUtilConfigurationClient *)self hotspot];
+  hotspot = [(NEUtilConfigurationClient *)self hotspot];
 
-  if (v6)
+  if (hotspot)
   {
-    v8 = [(NEUtilConfigurationClient *)self hotspot];
-    [v8 setEnabled:0];
+    hotspot2 = [(NEUtilConfigurationClient *)self hotspot];
+    [hotspot2 setEnabled:0];
   }
 
   else
   {
-    *a4 = @"Missing hotspot provider configuration";
+    *str = @"Missing hotspot provider configuration";
   }
 
-  return v6 != 0;
+  return hotspot != 0;
 }
 
 - (id)hotspot
 {
-  if (a1)
+  if (self)
   {
-    a1 = [objc_getProperty(a1 a2];
+    self = [objc_getProperty(self a2];
     v2 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)setHotspotProviderParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)setHotspotProviderParameters:(id)parameters errorStr:(id *)str
 {
-  v6 = a3;
-  v8 = [(NEUtilConfigurationClient *)self hotspot];
-  if (v8)
+  parametersCopy = parameters;
+  hotspot = [(NEUtilConfigurationClient *)self hotspot];
+  if (hotspot)
   {
-    v9 = [v6 objectForKeyedSubscript:@"hotspot-provider-enabled"];
-    v10 = [v6 objectForKeyedSubscript:@"hotspot-provider-evaluation-id"];
-    v11 = [v6 objectForKeyedSubscript:@"hotspot-provider-auth-id"];
-    v12 = [v6 objectForKeyedSubscript:@"hotspot-provider-plugin-type"];
-    [v8 setEnabled:{objc_msgSend(v9, "BOOLValue")}];
-    [v8 setEvaluationProviderBundleIdentifier:v10];
-    [v8 setAuthenticationProviderBundleIdentifier:v11];
+    v9 = [parametersCopy objectForKeyedSubscript:@"hotspot-provider-enabled"];
+    v10 = [parametersCopy objectForKeyedSubscript:@"hotspot-provider-evaluation-id"];
+    v11 = [parametersCopy objectForKeyedSubscript:@"hotspot-provider-auth-id"];
+    v12 = [parametersCopy objectForKeyedSubscript:@"hotspot-provider-plugin-type"];
+    [hotspot setEnabled:{objc_msgSend(v9, "BOOLValue")}];
+    [hotspot setEvaluationProviderBundleIdentifier:v10];
+    [hotspot setAuthenticationProviderBundleIdentifier:v11];
     if (v12)
     {
-      [v8 setPluginType:v12];
+      [hotspot setPluginType:v12];
     }
   }
 
   else
   {
-    *a4 = @"Missing hotspot provider configuration";
+    *str = @"Missing hotspot provider configuration";
   }
 
-  return v8 != 0;
+  return hotspot != 0;
 }
 
-- (BOOL)unsetProxyServer:(id)a3 errorStr:(id *)a4
+- (BOOL)unsetProxyServer:(id)server errorStr:(id *)str
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"type"];
-  v8 = [(NEUtilConfigurationClient *)self protocolForParameters:v6];
+  serverCopy = server;
+  v7 = [serverCopy objectForKeyedSubscript:@"type"];
+  v8 = [(NEUtilConfigurationClient *)self protocolForParameters:serverCopy];
 
   if (v8)
   {
-    v9 = [v8 proxySettings];
-    if (v9)
+    proxySettings = [v8 proxySettings];
+    if (proxySettings)
     {
-      v10 = v9;
+      v10 = proxySettings;
       if ([v7 isEqualToString:@"http"])
       {
         [v10 setHTTPServer:0];
@@ -4185,7 +4185,7 @@ void __69__NEUtilConfigurationClient_reloadIdentityListWithCompletionHandler___b
       {
         if (![v7 isEqualToString:@"socks"])
         {
-          *a4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid proxy type: %@, valid values are http, https, ftp, rtsp, gopher, and socks", v7];
+          *str = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid proxy type: %@, valid values are http, https, ftp, rtsp, gopher, and socks", v7];
 
           v11 = 0;
           goto LABEL_18;
@@ -4202,7 +4202,7 @@ void __69__NEUtilConfigurationClient_reloadIdentityListWithCompletionHandler___b
   else
   {
     v11 = 0;
-    *a4 = @"Missing protocol";
+    *str = @"Missing protocol";
   }
 
 LABEL_18:
@@ -4210,23 +4210,23 @@ LABEL_18:
   return v11;
 }
 
-- (BOOL)setProxyServer:(id)a3 errorStr:(id *)a4
+- (BOOL)setProxyServer:(id)server errorStr:(id *)str
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"type"];
-  v8 = [(NEUtilConfigurationClient *)self protocolForParameters:v6];
+  serverCopy = server;
+  v7 = [serverCopy objectForKeyedSubscript:@"type"];
+  v8 = [(NEUtilConfigurationClient *)self protocolForParameters:serverCopy];
   v9 = v8;
   if (!v8)
   {
     v12 = 0;
-    *a4 = @"Missing protocol";
+    *str = @"Missing protocol";
     goto LABEL_39;
   }
 
-  v10 = [v8 proxySettings];
-  if (!v10)
+  proxySettings = [v8 proxySettings];
+  if (!proxySettings)
   {
-    v10 = objc_alloc_init(NEProxySettings);
+    proxySettings = objc_alloc_init(NEProxySettings);
   }
 
   if ([v7 isEqualToString:@"http"])
@@ -4258,7 +4258,7 @@ LABEL_18:
   {
     if (([v7 isEqualToString:@"socks"] & 1) == 0)
     {
-      *a4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid proxy type: %@, valid values are http, https, ftp, rtsp, gopher, and socks", v7];
+      *str = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid proxy type: %@, valid values are http, https, ftp, rtsp, gopher, and socks", v7];
 
       goto LABEL_33;
     }
@@ -4267,15 +4267,15 @@ LABEL_18:
   }
 
   v13 = [NEProxyServer alloc];
-  v14 = [v6 objectForKeyedSubscript:@"address"];
-  v15 = [v6 objectForKeyedSubscript:@"port"];
+  v14 = [serverCopy objectForKeyedSubscript:@"address"];
+  v15 = [serverCopy objectForKeyedSubscript:@"port"];
   v16 = -[NEProxyServer initWithType:address:port:](v13, "initWithType:address:port:", v11, v14, [v15 intValue]);
 
-  v17 = [v6 objectForKeyedSubscript:@"authentication-required"];
+  v17 = [serverCopy objectForKeyedSubscript:@"authentication-required"];
 
   if (v17)
   {
-    v18 = [v6 objectForKeyedSubscript:@"authentication-required"];
+    v18 = [serverCopy objectForKeyedSubscript:@"authentication-required"];
     -[NEProxyServer setAuthenticationRequired:](v16, "setAuthenticationRequired:", [v18 BOOLValue]);
   }
 
@@ -4284,23 +4284,23 @@ LABEL_18:
     goto LABEL_23;
   }
 
-  v19 = [v6 objectForKeyedSubscript:@"username"];
+  v19 = [serverCopy objectForKeyedSubscript:@"username"];
 
   if (!v19)
   {
     v23 = @"Authentication is required, but username is missing";
 LABEL_32:
-    *a4 = v23;
+    *str = v23;
 
 LABEL_33:
     v12 = 0;
     goto LABEL_39;
   }
 
-  v20 = [v6 objectForKeyedSubscript:@"username"];
+  v20 = [serverCopy objectForKeyedSubscript:@"username"];
   [(NEProxyServer *)v16 setUsername:v20];
 
-  v21 = [v6 objectForKeyedSubscript:@"password"];
+  v21 = [serverCopy objectForKeyedSubscript:@"password"];
 
   if (!v21)
   {
@@ -4308,7 +4308,7 @@ LABEL_33:
     goto LABEL_32;
   }
 
-  v22 = [v6 objectForKeyedSubscript:@"password"];
+  v22 = [serverCopy objectForKeyedSubscript:@"password"];
   [(NEProxyServer *)v16 setPassword:v22];
 
 LABEL_23:
@@ -4316,42 +4316,42 @@ LABEL_23:
   {
     if (v11 == 4)
     {
-      [(NEProxySettings *)v10 setRTSPServer:v16];
-      [(NEProxySettings *)v10 setRTSPEnabled:1];
+      [(NEProxySettings *)proxySettings setRTSPServer:v16];
+      [(NEProxySettings *)proxySettings setRTSPEnabled:1];
     }
 
     else if (v11 == 5)
     {
-      [(NEProxySettings *)v10 setSOCKSServer:v16];
-      [(NEProxySettings *)v10 setSOCKSEnabled:1];
+      [(NEProxySettings *)proxySettings setSOCKSServer:v16];
+      [(NEProxySettings *)proxySettings setSOCKSEnabled:1];
     }
 
     else
     {
-      [(NEProxySettings *)v10 setGopherServer:v16];
-      [(NEProxySettings *)v10 setGopherEnabled:1];
+      [(NEProxySettings *)proxySettings setGopherServer:v16];
+      [(NEProxySettings *)proxySettings setGopherEnabled:1];
     }
   }
 
   else if (v11 == 1)
   {
-    [(NEProxySettings *)v10 setHTTPServer:v16];
-    [(NEProxySettings *)v10 setHTTPEnabled:1];
+    [(NEProxySettings *)proxySettings setHTTPServer:v16];
+    [(NEProxySettings *)proxySettings setHTTPEnabled:1];
   }
 
   else if (v11 == 2)
   {
-    [(NEProxySettings *)v10 setHTTPSServer:v16];
-    [(NEProxySettings *)v10 setHTTPSEnabled:1];
+    [(NEProxySettings *)proxySettings setHTTPSServer:v16];
+    [(NEProxySettings *)proxySettings setHTTPSEnabled:1];
   }
 
   else
   {
-    [(NEProxySettings *)v10 setFTPServer:v16];
-    [(NEProxySettings *)v10 setFTPEnabled:1];
+    [(NEProxySettings *)proxySettings setFTPServer:v16];
+    [(NEProxySettings *)proxySettings setFTPEnabled:1];
   }
 
-  [v9 setProxySettings:v10];
+  [v9 setProxySettings:proxySettings];
 
   v12 = 1;
 LABEL_39:
@@ -4359,129 +4359,129 @@ LABEL_39:
   return v12;
 }
 
-- (BOOL)unsetProxyParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)unsetProxyParameters:(id)parameters errorStr:(id *)str
 {
-  v6 = a3;
-  v7 = [(NEUtilConfigurationClient *)self protocolForParameters:v6];
+  parametersCopy = parameters;
+  v7 = [(NEUtilConfigurationClient *)self protocolForParameters:parametersCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 proxySettings];
-    if (v9)
+    proxySettings = [v7 proxySettings];
+    if (proxySettings)
     {
-      v10 = [v6 objectForKeyedSubscript:@"auto-proxy-discovery"];
+      v10 = [parametersCopy objectForKeyedSubscript:@"auto-proxy-discovery"];
 
       if (v10)
       {
-        [v9 setAutoProxyDiscovery:0];
+        [proxySettings setAutoProxyDiscovery:0];
       }
 
-      v11 = [v6 objectForKeyedSubscript:@"auto-config-url"];
+      v11 = [parametersCopy objectForKeyedSubscript:@"auto-config-url"];
 
       if (v11)
       {
-        [v9 setAutoProxyConfigurationEnabled:0];
-        [v9 setProxyAutoConfigURL:0];
+        [proxySettings setAutoProxyConfigurationEnabled:0];
+        [proxySettings setProxyAutoConfigURL:0];
       }
 
-      v12 = [v6 objectForKeyedSubscript:@"exclude-simple-hostnames"];
+      v12 = [parametersCopy objectForKeyedSubscript:@"exclude-simple-hostnames"];
 
       if (v12)
       {
-        [v9 setExcludeSimpleHostnames:0];
+        [proxySettings setExcludeSimpleHostnames:0];
       }
 
-      v13 = [v6 objectForKeyedSubscript:@"exception-list"];
+      v13 = [parametersCopy objectForKeyedSubscript:@"exception-list"];
 
       if (v13)
       {
-        [v9 setExceptionList:0];
+        [proxySettings setExceptionList:0];
       }
 
-      v14 = [v6 objectForKeyedSubscript:@"use-passive-ftp"];
+      v14 = [parametersCopy objectForKeyedSubscript:@"use-passive-ftp"];
 
       if (v14)
       {
-        [v9 setUsePassiveFTP:0];
+        [proxySettings setUsePassiveFTP:0];
       }
 
-      v15 = [v6 objectForKeyedSubscript:@"match-domains"];
+      v15 = [parametersCopy objectForKeyedSubscript:@"match-domains"];
 
       if (v15)
       {
-        [v9 setMatchDomains:0];
+        [proxySettings setMatchDomains:0];
       }
     }
   }
 
   else
   {
-    v9 = 0;
-    *a4 = @"Missing protocol";
+    proxySettings = 0;
+    *str = @"Missing protocol";
   }
 
   return v8 != 0;
 }
 
-- (BOOL)setProxyParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)setProxyParameters:(id)parameters errorStr:(id *)str
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(NEUtilConfigurationClient *)self protocolForParameters:v6];
+  parametersCopy = parameters;
+  v7 = [(NEUtilConfigurationClient *)self protocolForParameters:parametersCopy];
   v8 = v7;
   if (!v7)
   {
-    *a4 = @"Missing protocol";
+    *str = @"Missing protocol";
     goto LABEL_24;
   }
 
-  v9 = [v7 proxySettings];
-  if (!v9)
+  proxySettings = [v7 proxySettings];
+  if (!proxySettings)
   {
-    v9 = objc_alloc_init(NEProxySettings);
+    proxySettings = objc_alloc_init(NEProxySettings);
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"auto-proxy-discovery"];
+  v10 = [parametersCopy objectForKeyedSubscript:@"auto-proxy-discovery"];
 
   if (v10)
   {
-    v11 = [v6 objectForKeyedSubscript:@"auto-proxy-discovery"];
-    -[NEProxySettings setAutoProxyDiscovery:](v9, "setAutoProxyDiscovery:", [v11 BOOLValue]);
+    v11 = [parametersCopy objectForKeyedSubscript:@"auto-proxy-discovery"];
+    -[NEProxySettings setAutoProxyDiscovery:](proxySettings, "setAutoProxyDiscovery:", [v11 BOOLValue]);
   }
 
-  v12 = [v6 objectForKeyedSubscript:@"auto-config-url"];
+  v12 = [parametersCopy objectForKeyedSubscript:@"auto-config-url"];
 
   if (v12)
   {
-    [(NEProxySettings *)v9 setAutoProxyConfigurationEnabled:1];
+    [(NEProxySettings *)proxySettings setAutoProxyConfigurationEnabled:1];
     v13 = MEMORY[0x1E695DFF8];
-    v14 = [v6 objectForKeyedSubscript:@"auto-config-url"];
+    v14 = [parametersCopy objectForKeyedSubscript:@"auto-config-url"];
     v15 = [v13 URLWithString:v14];
-    [(NEProxySettings *)v9 setProxyAutoConfigurationURL:v15];
+    [(NEProxySettings *)proxySettings setProxyAutoConfigurationURL:v15];
   }
 
-  v16 = [v6 objectForKeyedSubscript:@"exclude-simple-hostnames"];
+  v16 = [parametersCopy objectForKeyedSubscript:@"exclude-simple-hostnames"];
 
   if (v16)
   {
-    v17 = [v6 objectForKeyedSubscript:@"exclude-simple-hostnames"];
-    -[NEProxySettings setExcludeSimpleHostnames:](v9, "setExcludeSimpleHostnames:", [v17 BOOLValue]);
+    v17 = [parametersCopy objectForKeyedSubscript:@"exclude-simple-hostnames"];
+    -[NEProxySettings setExcludeSimpleHostnames:](proxySettings, "setExcludeSimpleHostnames:", [v17 BOOLValue]);
   }
 
-  v18 = [v6 objectForKeyedSubscript:@"exception-list"];
+  v18 = [parametersCopy objectForKeyedSubscript:@"exception-list"];
 
   if (v18)
   {
-    v19 = [v6 objectForKeyedSubscript:@"exception-list"];
+    v19 = [parametersCopy objectForKeyedSubscript:@"exception-list"];
     v20 = isa_nsstring(v19);
 
-    v21 = [v6 objectForKeyedSubscript:@"exception-list"];
+    v21 = [parametersCopy objectForKeyedSubscript:@"exception-list"];
     v22 = v21;
     if (v20)
     {
       v32[0] = v21;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:1];
-      [(NEProxySettings *)v9 setExceptionList:v23];
+      [(NEProxySettings *)proxySettings setExceptionList:v23];
 
 LABEL_16:
       goto LABEL_17;
@@ -4491,143 +4491,143 @@ LABEL_16:
 
     if (v24)
     {
-      v22 = [v6 objectForKeyedSubscript:@"exception-list"];
-      [(NEProxySettings *)v9 setExceptionList:v22];
+      v22 = [parametersCopy objectForKeyedSubscript:@"exception-list"];
+      [(NEProxySettings *)proxySettings setExceptionList:v22];
       goto LABEL_16;
     }
   }
 
 LABEL_17:
-  v25 = [v6 objectForKeyedSubscript:@"use-passive-ftp"];
+  v25 = [parametersCopy objectForKeyedSubscript:@"use-passive-ftp"];
 
   if (v25)
   {
-    v26 = [v6 objectForKeyedSubscript:@"use-passive-ftp"];
-    -[NEProxySettings setUsePassiveFTP:](v9, "setUsePassiveFTP:", [v26 BOOLValue]);
+    v26 = [parametersCopy objectForKeyedSubscript:@"use-passive-ftp"];
+    -[NEProxySettings setUsePassiveFTP:](proxySettings, "setUsePassiveFTP:", [v26 BOOLValue]);
   }
 
-  v27 = [v6 objectForKeyedSubscript:@"match-domains"];
+  v27 = [parametersCopy objectForKeyedSubscript:@"match-domains"];
   if (isa_nsarray(v27))
   {
-    [(NEProxySettings *)v9 setMatchDomains:v27];
+    [(NEProxySettings *)proxySettings setMatchDomains:v27];
   }
 
   else if (isa_nsstring(v27))
   {
     v31 = v27;
     v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1];
-    [(NEProxySettings *)v9 setMatchDomains:v28];
+    [(NEProxySettings *)proxySettings setMatchDomains:v28];
   }
 
-  [v8 setProxySettings:v9];
+  [v8 setProxySettings:proxySettings];
 
 LABEL_24:
   v29 = *MEMORY[0x1E69E9840];
   return v8 != 0;
 }
 
-- (BOOL)unsetRelayConditionsWithParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)unsetRelayConditionsWithParameters:(id)parameters errorStr:(id *)str
 {
-  v6 = a3;
-  v8 = [(NEUtilConfigurationClient *)self relayConfiguration];
-  if (v8)
+  parametersCopy = parameters;
+  relayConfiguration = [(NEUtilConfigurationClient *)self relayConfiguration];
+  if (relayConfiguration)
   {
-    v9 = [v6 objectForKeyedSubscript:@"match-domains"];
+    v9 = [parametersCopy objectForKeyedSubscript:@"match-domains"];
 
     if (v9)
     {
-      [v8 setMatchDomains:0];
+      [relayConfiguration setMatchDomains:0];
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"excluded-domains"];
+    v10 = [parametersCopy objectForKeyedSubscript:@"excluded-domains"];
 
     if (v10)
     {
-      [v8 setExcludedDomains:0];
+      [relayConfiguration setExcludedDomains:0];
     }
   }
 
   else
   {
-    *a4 = @"Missing relay configuration";
+    *str = @"Missing relay configuration";
   }
 
-  return v8 != 0;
+  return relayConfiguration != 0;
 }
 
 - (id)relayConfiguration
 {
-  if (a1)
+  if (self)
   {
-    a1 = [objc_getProperty(a1 a2];
+    self = [objc_getProperty(self a2];
     v2 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)setRelayConditionsWithParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)setRelayConditionsWithParameters:(id)parameters errorStr:(id *)str
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v8 = [(NEUtilConfigurationClient *)self relayConfiguration];
-  if (v8)
+  parametersCopy = parameters;
+  relayConfiguration = [(NEUtilConfigurationClient *)self relayConfiguration];
+  if (relayConfiguration)
   {
-    v9 = [v6 objectForKeyedSubscript:@"match-domains"];
+    v9 = [parametersCopy objectForKeyedSubscript:@"match-domains"];
     if (isa_nsarray(v9))
     {
-      [v8 setMatchDomains:v9];
+      [relayConfiguration setMatchDomains:v9];
     }
 
     else if (isa_nsstring(v9))
     {
       v16[0] = v9;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-      [v8 setMatchDomains:v10];
+      [relayConfiguration setMatchDomains:v10];
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"excluded-domains"];
+    v11 = [parametersCopy objectForKeyedSubscript:@"excluded-domains"];
     if (isa_nsarray(v11))
     {
-      [v8 setExcludedDomains:v11];
+      [relayConfiguration setExcludedDomains:v11];
     }
 
     else if (isa_nsstring(v11))
     {
       v15 = v11;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
-      [v8 setExcludedDomains:v12];
+      [relayConfiguration setExcludedDomains:v12];
     }
   }
 
   else
   {
-    *a4 = @"Missing relay configuration";
+    *str = @"Missing relay configuration";
   }
 
   v13 = *MEMORY[0x1E69E9840];
-  return v8 != 0;
+  return relayConfiguration != 0;
 }
 
-- (BOOL)removeRelayWithParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)removeRelayWithParameters:(id)parameters errorStr:(id *)str
 {
-  v6 = [a3 objectForKeyedSubscript:@"index"];
-  v7 = [v6 integerValue];
-  v9 = [(NEUtilConfigurationClient *)self relayConfiguration];
-  v10 = v9;
-  if (!v9)
+  v6 = [parameters objectForKeyedSubscript:@"index"];
+  integerValue = [v6 integerValue];
+  relayConfiguration = [(NEUtilConfigurationClient *)self relayConfiguration];
+  v10 = relayConfiguration;
+  if (!relayConfiguration)
   {
     v16 = 0;
     v17 = @"Missing relay configuration";
 LABEL_6:
-    *a4 = v17;
+    *str = v17;
     goto LABEL_7;
   }
 
-  v11 = [v9 relays];
-  v12 = [v11 count];
+  relays = [relayConfiguration relays];
+  v12 = [relays count];
 
-  if (v7 >= v12)
+  if (integerValue >= v12)
   {
     v16 = 0;
     v17 = @"No relay configuration present with given index";
@@ -4635,10 +4635,10 @@ LABEL_6:
   }
 
   v13 = objc_alloc(MEMORY[0x1E695DF70]);
-  v14 = [v10 relays];
-  v15 = [v13 initWithArray:v14];
+  relays2 = [v10 relays];
+  v15 = [v13 initWithArray:relays2];
 
-  [v15 removeObjectAtIndex:v7];
+  [v15 removeObjectAtIndex:integerValue];
   [v10 setRelays:v15];
 
   v16 = 1;
@@ -4647,50 +4647,50 @@ LABEL_7:
   return v16;
 }
 
-- (BOOL)addRelayWithParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)addRelayWithParameters:(id)parameters errorStr:(id *)str
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v8 = [(NEUtilConfigurationClient *)self relayConfiguration];
-  if (v8)
+  parametersCopy = parameters;
+  relayConfiguration = [(NEUtilConfigurationClient *)self relayConfiguration];
+  if (relayConfiguration)
   {
-    v46 = a4;
+    strCopy = str;
     v9 = objc_alloc_init(NERelay);
-    v10 = [v6 objectForKeyedSubscript:@"http3-url"];
-    v11 = [v10 stringByRemovingPercentEncoding];
+    v10 = [parametersCopy objectForKeyedSubscript:@"http3-url"];
+    stringByRemovingPercentEncoding = [v10 stringByRemovingPercentEncoding];
 
-    if (v11)
+    if (stringByRemovingPercentEncoding)
     {
-      v12 = [MEMORY[0x1E695DFF8] URLWithString:v11];
+      v12 = [MEMORY[0x1E695DFF8] URLWithString:stringByRemovingPercentEncoding];
       [(NERelay *)v9 setHTTP3RelayURL:v12];
     }
 
-    v48 = v11;
-    v13 = [v6 objectForKeyedSubscript:@"http2-url"];
-    v14 = [v13 stringByRemovingPercentEncoding];
+    v48 = stringByRemovingPercentEncoding;
+    v13 = [parametersCopy objectForKeyedSubscript:@"http2-url"];
+    stringByRemovingPercentEncoding2 = [v13 stringByRemovingPercentEncoding];
 
-    if (v14)
+    if (stringByRemovingPercentEncoding2)
     {
-      v15 = [MEMORY[0x1E695DFF8] URLWithString:v14];
+      v15 = [MEMORY[0x1E695DFF8] URLWithString:stringByRemovingPercentEncoding2];
       [(NERelay *)v9 setHTTP2RelayURL:v15];
     }
 
-    v47 = v14;
-    v16 = [v6 objectForKeyedSubscript:@"doh-url"];
-    v17 = [v16 stringByRemovingPercentEncoding];
+    v47 = stringByRemovingPercentEncoding2;
+    v16 = [parametersCopy objectForKeyedSubscript:@"doh-url"];
+    stringByRemovingPercentEncoding3 = [v16 stringByRemovingPercentEncoding];
 
-    if (v17)
+    if (stringByRemovingPercentEncoding3)
     {
-      v18 = [MEMORY[0x1E695DFF8] URLWithString:v17];
+      v18 = [MEMORY[0x1E695DFF8] URLWithString:stringByRemovingPercentEncoding3];
       [(NERelay *)v9 setDnsOverHTTPSURL:v18];
     }
 
-    v19 = [v6 objectForKeyedSubscript:@"raw-public-key"];
-    v20 = [v19 stringByRemovingPercentEncoding];
+    v19 = [parametersCopy objectForKeyedSubscript:@"raw-public-key"];
+    stringByRemovingPercentEncoding4 = [v19 stringByRemovingPercentEncoding];
 
-    if (v20)
+    if (stringByRemovingPercentEncoding4)
     {
-      v21 = dispatch_data_create([v20 UTF8String], objc_msgSend(v20, "length"), 0, 0);
+      v21 = dispatch_data_create([stringByRemovingPercentEncoding4 UTF8String], objc_msgSend(stringByRemovingPercentEncoding4, "length"), 0, 0);
       v22 = dispatch_data_create_with_transform();
 
       if (v22)
@@ -4706,27 +4706,27 @@ LABEL_7:
       v22 = 0;
     }
 
-    v25 = [v6 objectForKeyedSubscript:@"identity"];
+    v25 = [parametersCopy objectForKeyedSubscript:@"identity"];
 
     if (v25)
     {
-      v26 = [v6 objectForKeyedSubscript:@"identity"];
-      v27 = [v26 integerValue];
+      v26 = [parametersCopy objectForKeyedSubscript:@"identity"];
+      integerValue = [v26 integerValue];
 
-      if (!self || (v29 = objc_getProperty(self, v28, 48, 1)) == 0 || (v31 = v29, v32 = [objc_getProperty(self v30], v31, v27 >= v32))
+      if (!self || (v29 = objc_getProperty(self, v28, 48, 1)) == 0 || (v31 = v29, v32 = [objc_getProperty(self v30], v31, integerValue >= v32))
       {
         [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@ index, use the list-identities command to obtain a list of available identities and their indicies", @"identity"];
-        *v46 = v24 = 0;
+        *strCopy = v24 = 0;
         goto LABEL_27;
       }
 
       v34 = [objc_getProperty(self v33];
       v35 = [v34 objectForKeyedSubscript:@"domain"];
-      v36 = [v35 integerValue];
+      integerValue2 = [v35 integerValue];
 
-      if (v36)
+      if (integerValue2)
       {
-        *v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, an identity in the %s keychain is required", @"identity", "system"];
+        *strCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, an identity in the %s keychain is required", @"identity", "system"];
 
         v24 = 0;
 LABEL_27:
@@ -4739,18 +4739,18 @@ LABEL_27:
     }
 
     v38 = objc_alloc(MEMORY[0x1E695DF70]);
-    v39 = [v8 relays];
-    v40 = [v38 initWithArray:v39];
+    relays = [relayConfiguration relays];
+    v40 = [v38 initWithArray:relays];
 
-    v41 = [v6 objectForKeyedSubscript:@"index"];
-    v42 = [v40 count];
+    v41 = [parametersCopy objectForKeyedSubscript:@"index"];
+    integerValue3 = [v40 count];
     if (v41)
     {
-      v42 = [v41 integerValue];
+      integerValue3 = [v41 integerValue];
     }
 
-    v43 = v42;
-    if (v42 >= [v40 count])
+    v43 = integerValue3;
+    if (integerValue3 >= [v40 count])
     {
       [v40 addObject:v9];
     }
@@ -4760,78 +4760,78 @@ LABEL_27:
       [v40 insertObject:v9 atIndex:v43];
     }
 
-    [v8 setRelays:v40];
+    [relayConfiguration setRelays:v40];
 
     v24 = 1;
     goto LABEL_27;
   }
 
   v24 = 0;
-  *a4 = @"Missing relay configuration";
+  *str = @"Missing relay configuration";
 LABEL_28:
 
   v44 = *MEMORY[0x1E69E9840];
   return v24;
 }
 
-- (BOOL)unsetAppPushParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)unsetAppPushParameters:(id)parameters errorStr:(id *)str
 {
-  v6 = [(NEUtilConfigurationClient *)self appPush];
+  appPush = [(NEUtilConfigurationClient *)self appPush];
 
-  if (v6)
+  if (appPush)
   {
-    v7 = [(NEUtilConfigurationClient *)self appPush];
-    [v7 setMatchSSIDs:0];
+    appPush2 = [(NEUtilConfigurationClient *)self appPush];
+    [appPush2 setMatchSSIDs:0];
 
-    v8 = [(NEUtilConfigurationClient *)self appPush];
-    [v8 setProviderConfiguration:0];
+    appPush3 = [(NEUtilConfigurationClient *)self appPush];
+    [appPush3 setProviderConfiguration:0];
 
-    v9 = [(NEUtilConfigurationClient *)self appPush];
-    [v9 setPluginType:0];
+    appPush4 = [(NEUtilConfigurationClient *)self appPush];
+    [appPush4 setPluginType:0];
   }
 
   else
   {
-    *a4 = @"Missing app push provider configuration";
+    *str = @"Missing app push provider configuration";
   }
 
-  return v6 != 0;
+  return appPush != 0;
 }
 
-- (BOOL)setAppPushParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)setAppPushParameters:(id)parameters errorStr:(id *)str
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(NEUtilConfigurationClient *)self appPush];
-  if (v7)
+  parametersCopy = parameters;
+  appPush = [(NEUtilConfigurationClient *)self appPush];
+  if (appPush)
   {
-    v8 = [v6 objectForKeyedSubscript:@"match-ssids"];
+    v8 = [parametersCopy objectForKeyedSubscript:@"match-ssids"];
     v9 = v8;
     if (v8)
     {
       if (isa_nsarray(v8))
       {
-        [v7 setMatchSSIDs:v9];
+        [appPush setMatchSSIDs:v9];
       }
 
       else if (isa_nsstring(v9))
       {
         v18[0] = v9;
         v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-        [v7 setMatchSSIDs:v11];
+        [appPush setMatchSSIDs:v11];
       }
 
-      v12 = [v6 objectForKeyedSubscript:@"vendor-config"];
+      v12 = [parametersCopy objectForKeyedSubscript:@"vendor-config"];
       v13 = v12;
       if (v12 && isa_nsdictionary(v12))
       {
-        v14 = [v6 objectForKeyedSubscript:@"vendor-config"];
-        [v7 setProviderConfiguration:v14];
+        v14 = [parametersCopy objectForKeyedSubscript:@"vendor-config"];
+        [appPush setProviderConfiguration:v14];
 
-        v15 = [v6 objectForKeyedSubscript:@"plugin-type"];
+        v15 = [parametersCopy objectForKeyedSubscript:@"plugin-type"];
         if (v15)
         {
-          [v7 setPluginType:v15];
+          [appPush setPluginType:v15];
         }
 
         v10 = 1;
@@ -4840,35 +4840,35 @@ LABEL_28:
       else
       {
         v10 = 0;
-        *a4 = @"Missing app push provider configuration dictionary";
+        *str = @"Missing app push provider configuration dictionary";
       }
     }
 
     else
     {
       v10 = 0;
-      *a4 = @"Missing matching SSIDs in the input parameters";
+      *str = @"Missing matching SSIDs in the input parameters";
     }
   }
 
   else
   {
     v10 = 0;
-    *a4 = @"Missing app push provider configuration";
+    *str = @"Missing app push provider configuration";
   }
 
   v16 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-- (BOOL)unsetDNSParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)unsetDNSParameters:(id)parameters errorStr:(id *)str
 {
-  v6 = [(NEUtilConfigurationClient *)self protocolForParameters:a3];
-  v7 = [(NEUtilConfigurationClient *)self dnsSettingsBundle];
-  v8 = v7;
-  if (v7)
+  v6 = [(NEUtilConfigurationClient *)self protocolForParameters:parameters];
+  dnsSettingsBundle = [(NEUtilConfigurationClient *)self dnsSettingsBundle];
+  v8 = dnsSettingsBundle;
+  if (dnsSettingsBundle)
   {
-    [v7 setSettings:0];
+    [dnsSettingsBundle setSettings:0];
   }
 
   else
@@ -4876,7 +4876,7 @@ LABEL_28:
     if (!v6)
     {
       v9 = 0;
-      *a4 = @"Missing DNS settings or VPN protocol";
+      *str = @"Missing DNS settings or VPN protocol";
       goto LABEL_6;
     }
 
@@ -4889,17 +4889,17 @@ LABEL_6:
   return v9;
 }
 
-- (BOOL)setDNSParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)setDNSParameters:(id)parameters errorStr:(id *)str
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(NEUtilConfigurationClient *)self protocolForParameters:v6];
-  v8 = [(NEUtilConfigurationClient *)self dnsSettingsBundle];
-  v9 = (v8 | v7) != 0;
-  if (v8 | v7)
+  parametersCopy = parameters;
+  v7 = [(NEUtilConfigurationClient *)self protocolForParameters:parametersCopy];
+  dnsSettingsBundle = [(NEUtilConfigurationClient *)self dnsSettingsBundle];
+  v9 = (dnsSettingsBundle | v7) != 0;
+  if (dnsSettingsBundle | v7)
   {
-    v10 = [v6 objectForKeyedSubscript:@"protocol"];
-    v11 = [v6 objectForKeyedSubscript:@"servers"];
+    v10 = [parametersCopy objectForKeyedSubscript:@"protocol"];
+    v11 = [parametersCopy objectForKeyedSubscript:@"servers"];
     v31 = v10;
     if (v11)
     {
@@ -4951,7 +4951,7 @@ LABEL_6:
       v12 = 0;
     }
 
-    v17 = [v6 objectForKeyedSubscript:@"search-domains"];
+    v17 = [parametersCopy objectForKeyedSubscript:@"search-domains"];
     v18 = v17;
     if (v17)
     {
@@ -4968,7 +4968,7 @@ LABEL_6:
       }
     }
 
-    v20 = [v6 objectForKeyedSubscript:@"match-domains"];
+    v20 = [parametersCopy objectForKeyedSubscript:@"match-domains"];
     v21 = v20;
     if (v20)
     {
@@ -4985,13 +4985,13 @@ LABEL_6:
       }
     }
 
-    v23 = [v6 objectForKeyedSubscript:@"domain-name"];
+    v23 = [parametersCopy objectForKeyedSubscript:@"domain-name"];
     if (isa_nsstring(v23))
     {
       [v16 setDomainName:v23];
     }
 
-    v24 = [v6 objectForKeyedSubscript:@"server-name"];
+    v24 = [parametersCopy objectForKeyedSubscript:@"server-name"];
     if (isa_nsstring(v24))
     {
       objc_opt_class();
@@ -5001,7 +5001,7 @@ LABEL_6:
       }
     }
 
-    v25 = [v6 objectForKeyedSubscript:@"url-path"];
+    v25 = [parametersCopy objectForKeyedSubscript:@"url-path"];
     if (isa_nsstring(v24))
     {
       if (isa_nsstring(v25))
@@ -5017,9 +5017,9 @@ LABEL_6:
       }
     }
 
-    if (v8)
+    if (dnsSettingsBundle)
     {
-      [v8 setSettings:v16];
+      [dnsSettingsBundle setSettings:v16];
     }
 
     else if (v7)
@@ -5027,39 +5027,39 @@ LABEL_6:
       [v7 setDNSSettings:v16];
     }
 
-    v9 = (v8 | v7) != 0;
+    v9 = (dnsSettingsBundle | v7) != 0;
   }
 
   else
   {
-    *a4 = @"Missing DNS settings or VPN protocol";
+    *str = @"Missing DNS settings or VPN protocol";
   }
 
   v26 = *MEMORY[0x1E69E9840];
   return v9;
 }
 
-- (BOOL)removeOnDemandRuleWithParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)removeOnDemandRuleWithParameters:(id)parameters errorStr:(id *)str
 {
-  v6 = [a3 objectForKeyedSubscript:@"index"];
-  v7 = [v6 integerValue];
-  v8 = [(NEUtilConfigurationClient *)self onDemandRules];
-  v9 = [v8 count];
+  v6 = [parameters objectForKeyedSubscript:@"index"];
+  integerValue = [v6 integerValue];
+  onDemandRules = [(NEUtilConfigurationClient *)self onDemandRules];
+  v9 = [onDemandRules count];
 
-  if (v7 >= v9)
+  if (integerValue >= v9)
   {
-    *a4 = @"No rule present with given index";
+    *str = @"No rule present with given index";
   }
 
   else
   {
-    v10 = [(NEUtilConfigurationClient *)self onDemandRules];
+    onDemandRules2 = [(NEUtilConfigurationClient *)self onDemandRules];
 
-    if (v10)
+    if (onDemandRules2)
     {
       v11 = objc_alloc(MEMORY[0x1E695DF70]);
-      v12 = [(NEUtilConfigurationClient *)self onDemandRules];
-      v13 = [v11 initWithArray:v12];
+      onDemandRules3 = [(NEUtilConfigurationClient *)self onDemandRules];
+      v13 = [v11 initWithArray:onDemandRules3];
     }
 
     else
@@ -5067,7 +5067,7 @@ LABEL_6:
       v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
 
-    [v13 removeObjectAtIndex:v7];
+    [v13 removeObjectAtIndex:integerValue];
     v14 = [v13 count];
     if (v14)
     {
@@ -5083,14 +5083,14 @@ LABEL_6:
     [(NEUtilConfigurationClient *)self setOnDemandRules:v15];
   }
 
-  return v7 < v9;
+  return integerValue < v9;
 }
 
-- (BOOL)addOnDemandRuleWithParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)addOnDemandRuleWithParameters:(id)parameters errorStr:(id *)str
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"action"];
+  parametersCopy = parameters;
+  v7 = [parametersCopy objectForKeyedSubscript:@"action"];
   if ([v7 isEqualToString:@"connect"])
   {
     v8 = off_1E7F04CF0;
@@ -5111,7 +5111,7 @@ LABEL_6:
     if (([v7 isEqualToString:@"evaluateconnection"] & 1) == 0)
     {
       v38 = 0;
-      *a4 = @"Invalid action";
+      *str = @"Invalid action";
       goto LABEL_36;
     }
 
@@ -5119,11 +5119,11 @@ LABEL_6:
   }
 
   v9 = objc_alloc_init(*v8);
-  v10 = [v6 objectForKeyedSubscript:@"dns-search-domain-match"];
+  v10 = [parametersCopy objectForKeyedSubscript:@"dns-search-domain-match"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v12 = [v6 objectForKeyedSubscript:@"dns-search-domain-match"];
+  v12 = [parametersCopy objectForKeyedSubscript:@"dns-search-domain-match"];
   v13 = v12;
   if (isKindOfClass)
   {
@@ -5137,11 +5137,11 @@ LABEL_6:
     [v9 setDNSSearchDomainMatch:v12];
   }
 
-  v15 = [v6 objectForKeyedSubscript:@"dns-server-match"];
+  v15 = [parametersCopy objectForKeyedSubscript:@"dns-server-match"];
   objc_opt_class();
   v16 = objc_opt_isKindOfClass();
 
-  v17 = [v6 objectForKeyedSubscript:@"dns-server-match"];
+  v17 = [parametersCopy objectForKeyedSubscript:@"dns-server-match"];
   v18 = v17;
   if (v16)
   {
@@ -5155,7 +5155,7 @@ LABEL_6:
     [v9 setDNSServerAddressMatch:v17];
   }
 
-  v20 = [v6 objectForKeyedSubscript:@"interface-type"];
+  v20 = [parametersCopy objectForKeyedSubscript:@"interface-type"];
   v21 = v20;
   if (v20 && ([v20 isEqualToString:@"ethernet"] & 1) == 0)
   {
@@ -5175,11 +5175,11 @@ LABEL_21:
   }
 
 LABEL_22:
-  v23 = [v6 objectForKeyedSubscript:@"ssid-match"];
+  v23 = [parametersCopy objectForKeyedSubscript:@"ssid-match"];
   objc_opt_class();
   v24 = objc_opt_isKindOfClass();
 
-  v25 = [v6 objectForKeyedSubscript:@"ssid-match"];
+  v25 = [parametersCopy objectForKeyedSubscript:@"ssid-match"];
   v26 = v25;
   if (v24)
   {
@@ -5193,22 +5193,22 @@ LABEL_22:
     [v9 setSSIDMatch:v25];
   }
 
-  v28 = [v6 objectForKeyedSubscript:@"probe-url"];
-  v29 = [v28 stringByRemovingPercentEncoding];
+  v28 = [parametersCopy objectForKeyedSubscript:@"probe-url"];
+  stringByRemovingPercentEncoding = [v28 stringByRemovingPercentEncoding];
 
-  if (v29)
+  if (stringByRemovingPercentEncoding)
   {
-    v30 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v29];
+    v30 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:stringByRemovingPercentEncoding];
     [v9 setProbeURL:v30];
   }
 
-  v31 = [(NEUtilConfigurationClient *)self onDemandRules];
+  onDemandRules = [(NEUtilConfigurationClient *)self onDemandRules];
 
-  if (v31)
+  if (onDemandRules)
   {
     v32 = objc_alloc(MEMORY[0x1E695DF70]);
-    v33 = [(NEUtilConfigurationClient *)self onDemandRules];
-    v34 = [v32 initWithArray:v33];
+    onDemandRules2 = [(NEUtilConfigurationClient *)self onDemandRules];
+    v34 = [v32 initWithArray:onDemandRules2];
   }
 
   else
@@ -5216,15 +5216,15 @@ LABEL_22:
     v34 = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
-  v35 = [v6 objectForKeyedSubscript:@"index"];
-  v36 = [v34 count];
+  v35 = [parametersCopy objectForKeyedSubscript:@"index"];
+  integerValue = [v34 count];
   if (v35)
   {
-    v36 = [v35 integerValue];
+    integerValue = [v35 integerValue];
   }
 
-  v37 = v36;
-  if (v36 >= [v34 count])
+  v37 = integerValue;
+  if (integerValue >= [v34 count])
   {
     [v34 addObject:v9];
   }
@@ -5243,33 +5243,33 @@ LABEL_36:
   return v38;
 }
 
-- (BOOL)unsetSharedSecretWithParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)unsetSharedSecretWithParameters:(id)parameters errorStr:(id *)str
 {
-  v5 = a3;
-  v6 = [(NEUtilConfigurationClient *)self protocolForParameters:v5];
-  v7 = [v5 objectForKeyedSubscript:@"shared-secret"];
+  parametersCopy = parameters;
+  v6 = [(NEUtilConfigurationClient *)self protocolForParameters:parametersCopy];
+  v7 = [parametersCopy objectForKeyedSubscript:@"shared-secret"];
 
   if (v7)
   {
-    v8 = [v6 sharedSecretKeychainItem];
+    sharedSecretKeychainItem = [v6 sharedSecretKeychainItem];
 
-    if (v8)
+    if (sharedSecretKeychainItem)
     {
-      v9 = [v6 sharedSecretKeychainItem];
-      [v9 setIdentifier:0];
+      sharedSecretKeychainItem2 = [v6 sharedSecretKeychainItem];
+      [sharedSecretKeychainItem2 setIdentifier:0];
     }
   }
 
   return 1;
 }
 
-- (BOOL)unsetIPSecParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)unsetIPSecParameters:(id)parameters errorStr:(id *)str
 {
-  v6 = a3;
-  v7 = [(NEUtilConfigurationClient *)self protocolForParameters:v6];
+  parametersCopy = parameters;
+  v7 = [(NEUtilConfigurationClient *)self protocolForParameters:parametersCopy];
   if ([(NEUtilConfigurationClient *)self isAlwaysOn])
   {
-    v8 = [v6 objectForKeyedSubscript:@"interface-name"];
+    v8 = [parametersCopy objectForKeyedSubscript:@"interface-name"];
     v9 = isa_nsstring(v8);
 
     if ((v9 & 1) == 0)
@@ -5285,53 +5285,53 @@ LABEL_36:
     v17 = 0;
     v18 = @"Configuration VPN type is not IPSec";
 LABEL_27:
-    *a4 = v18;
+    *str = v18;
     goto LABEL_28;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"authentication-method"];
+  v10 = [parametersCopy objectForKeyedSubscript:@"authentication-method"];
 
   if (v10)
   {
     [v7 setAuthenticationMethod:0];
   }
 
-  v11 = [v6 objectForKeyedSubscript:@"certificate-type"];
+  v11 = [parametersCopy objectForKeyedSubscript:@"certificate-type"];
 
   if (v11 && [v7 type] == 5)
   {
     [v7 setCertificateType:1];
   }
 
-  v12 = [v6 objectForKeyedSubscript:@"use-internal-ip-subnet"];
+  v12 = [parametersCopy objectForKeyedSubscript:@"use-internal-ip-subnet"];
 
   if (v12 && [v7 type] == 5)
   {
     [v7 setUseConfigurationAttributeInternalIPSubnet:0];
   }
 
-  v13 = [v6 objectForKeyedSubscript:@"disable-mobike"];
+  v13 = [parametersCopy objectForKeyedSubscript:@"disable-mobike"];
 
   if (v13 && [v7 type] == 5)
   {
     [v7 setDisableMOBIKE:0];
   }
 
-  v14 = [v6 objectForKeyedSubscript:@"disable-redirect"];
+  v14 = [parametersCopy objectForKeyedSubscript:@"disable-redirect"];
 
   if (v14 && [v7 type] == 5)
   {
     [v7 setDisableRedirect:0];
   }
 
-  v15 = [v6 objectForKeyedSubscript:@"enable-pfs"];
+  v15 = [parametersCopy objectForKeyedSubscript:@"enable-pfs"];
 
   if (v15 && [v7 type] == 5)
   {
     [v7 setEnablePFS:0];
   }
 
-  v16 = [v6 objectForKeyedSubscript:@"enable-revocation-check"];
+  v16 = [parametersCopy objectForKeyedSubscript:@"enable-revocation-check"];
 
   if (v16)
   {
@@ -5345,7 +5345,7 @@ LABEL_31:
 
   else
   {
-    v20 = [v6 objectForKeyedSubscript:@"strict-revocation-check"];
+    v20 = [parametersCopy objectForKeyedSubscript:@"strict-revocation-check"];
 
     if (v20 && [v7 type] == 5)
     {
@@ -5353,41 +5353,41 @@ LABEL_31:
     }
   }
 
-  v21 = [v6 objectForKeyedSubscript:@"tls-minimum-version"];
+  v21 = [parametersCopy objectForKeyedSubscript:@"tls-minimum-version"];
 
   if (v21 && [v7 type] == 5)
   {
     [v7 setMinimumTLSVersion:0];
   }
 
-  v22 = [v6 objectForKeyedSubscript:@"tls-maximum-version"];
+  v22 = [parametersCopy objectForKeyedSubscript:@"tls-maximum-version"];
 
   if (v22 && [v7 type] == 5)
   {
     [v7 setMaximumTLSVersion:0];
   }
 
-  if (![(NEUtilConfigurationClient *)self unsetSharedSecretWithParameters:v6 errorStr:a4])
+  if (![(NEUtilConfigurationClient *)self unsetSharedSecretWithParameters:parametersCopy errorStr:str])
   {
     v17 = 0;
     goto LABEL_28;
   }
 
-  v23 = [v6 objectForKeyedSubscript:@"local-identifier"];
+  v23 = [parametersCopy objectForKeyedSubscript:@"local-identifier"];
 
   if (v23)
   {
     [v7 setLocalIdentifier:0];
   }
 
-  v24 = [v6 objectForKeyedSubscript:@"remote-identifier"];
+  v24 = [parametersCopy objectForKeyedSubscript:@"remote-identifier"];
 
   if (v24)
   {
     [v7 setRemoteIdentifier:0];
   }
 
-  v25 = [v6 objectForKeyedSubscript:@"use-extended-authentication"];
+  v25 = [parametersCopy objectForKeyedSubscript:@"use-extended-authentication"];
 
   if (v25)
   {
@@ -5395,7 +5395,7 @@ LABEL_31:
   }
 
   v26 = @"dead-peer-detection-rate";
-  v27 = [v6 objectForKeyedSubscript:@"dead-peer-detection-rate"];
+  v27 = [parametersCopy objectForKeyedSubscript:@"dead-peer-detection-rate"];
 
   if (v27)
   {
@@ -5407,14 +5407,14 @@ LABEL_31:
     [v7 setDeadPeerDetectionRate:0];
   }
 
-  v28 = [v6 objectForKeyedSubscript:@"server-CA-name"];
+  v28 = [parametersCopy objectForKeyedSubscript:@"server-CA-name"];
 
   if (v28 && [v7 type] == 5)
   {
     [v7 setServerCertificateIssuerCommonName:0];
   }
 
-  v29 = [v6 objectForKeyedSubscript:@"server-cert-name"];
+  v29 = [parametersCopy objectForKeyedSubscript:@"server-cert-name"];
 
   if (v29 && [v7 type] == 5)
   {
@@ -5422,7 +5422,7 @@ LABEL_31:
   }
 
   v26 = @"encryption-algorithm";
-  v30 = [v6 objectForKeyedSubscript:@"encryption-algorithm"];
+  v30 = [parametersCopy objectForKeyedSubscript:@"encryption-algorithm"];
 
   if (v30)
   {
@@ -5431,12 +5431,12 @@ LABEL_31:
       goto LABEL_83;
     }
 
-    v31 = [v7 IKESecurityAssociationParameters];
-    [v31 setEncryptionAlgorithm:4];
+    iKESecurityAssociationParameters = [v7 IKESecurityAssociationParameters];
+    [iKESecurityAssociationParameters setEncryptionAlgorithm:4];
   }
 
   v26 = @"integrity-algorithm";
-  v32 = [v6 objectForKeyedSubscript:@"integrity-algorithm"];
+  v32 = [parametersCopy objectForKeyedSubscript:@"integrity-algorithm"];
 
   if (v32)
   {
@@ -5445,12 +5445,12 @@ LABEL_31:
       goto LABEL_83;
     }
 
-    v33 = [v7 IKESecurityAssociationParameters];
-    [v33 setIntegrityAlgorithm:3];
+    iKESecurityAssociationParameters2 = [v7 IKESecurityAssociationParameters];
+    [iKESecurityAssociationParameters2 setIntegrityAlgorithm:3];
   }
 
   v26 = @"diffie-hellman-group";
-  v34 = [v6 objectForKeyedSubscript:@"diffie-hellman-group"];
+  v34 = [parametersCopy objectForKeyedSubscript:@"diffie-hellman-group"];
 
   if (v34)
   {
@@ -5459,12 +5459,12 @@ LABEL_31:
       goto LABEL_83;
     }
 
-    v35 = [v7 IKESecurityAssociationParameters];
-    [v35 setDiffieHellmanGroup:14];
+    iKESecurityAssociationParameters3 = [v7 IKESecurityAssociationParameters];
+    [iKESecurityAssociationParameters3 setDiffieHellmanGroup:14];
   }
 
   v26 = @"life-time";
-  v36 = [v6 objectForKeyedSubscript:@"life-time"];
+  v36 = [parametersCopy objectForKeyedSubscript:@"life-time"];
 
   if (v36)
   {
@@ -5473,12 +5473,12 @@ LABEL_31:
       goto LABEL_83;
     }
 
-    v37 = [v7 IKESecurityAssociationParameters];
-    [v37 setLifetimeMinutes:10];
+    iKESecurityAssociationParameters4 = [v7 IKESecurityAssociationParameters];
+    [iKESecurityAssociationParameters4 setLifetimeMinutes:10];
   }
 
   v26 = @"child-encryption-algorithm";
-  v38 = [v6 objectForKeyedSubscript:@"child-encryption-algorithm"];
+  v38 = [parametersCopy objectForKeyedSubscript:@"child-encryption-algorithm"];
 
   if (v38)
   {
@@ -5487,12 +5487,12 @@ LABEL_31:
       goto LABEL_83;
     }
 
-    v39 = [v7 childSecurityAssociationParameters];
-    [v39 setEncryptionAlgorithm:4];
+    childSecurityAssociationParameters = [v7 childSecurityAssociationParameters];
+    [childSecurityAssociationParameters setEncryptionAlgorithm:4];
   }
 
   v26 = @"child-integrity-algorithm";
-  v40 = [v6 objectForKeyedSubscript:@"child-integrity-algorithm"];
+  v40 = [parametersCopy objectForKeyedSubscript:@"child-integrity-algorithm"];
 
   if (v40)
   {
@@ -5501,12 +5501,12 @@ LABEL_31:
       goto LABEL_83;
     }
 
-    v41 = [v7 childSecurityAssociationParameters];
-    [v41 setIntegrityAlgorithm:3];
+    childSecurityAssociationParameters2 = [v7 childSecurityAssociationParameters];
+    [childSecurityAssociationParameters2 setIntegrityAlgorithm:3];
   }
 
   v26 = @"child-diffie-hellman-group";
-  v42 = [v6 objectForKeyedSubscript:@"child-diffie-hellman-group"];
+  v42 = [parametersCopy objectForKeyedSubscript:@"child-diffie-hellman-group"];
 
   if (v42)
   {
@@ -5515,12 +5515,12 @@ LABEL_31:
       goto LABEL_83;
     }
 
-    v43 = [v7 childSecurityAssociationParameters];
-    [v43 setDiffieHellmanGroup:14];
+    childSecurityAssociationParameters3 = [v7 childSecurityAssociationParameters];
+    [childSecurityAssociationParameters3 setDiffieHellmanGroup:14];
   }
 
   v26 = @"child-life-time";
-  v44 = [v6 objectForKeyedSubscript:@"child-life-time"];
+  v44 = [parametersCopy objectForKeyedSubscript:@"child-life-time"];
 
   if (!v44)
   {
@@ -5531,15 +5531,15 @@ LABEL_31:
   {
 LABEL_83:
     [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is only available for the IKEv2 protocol", v26];
-    *a4 = v17 = 0;
+    *str = v17 = 0;
     goto LABEL_28;
   }
 
-  v45 = [v7 childSecurityAssociationParameters];
-  [v45 setLifetimeMinutes:10];
+  childSecurityAssociationParameters4 = [v7 childSecurityAssociationParameters];
+  [childSecurityAssociationParameters4 setLifetimeMinutes:10];
 
 LABEL_78:
-  v46 = [v6 objectForKeyedSubscript:@"enable-fallback"];
+  v46 = [parametersCopy objectForKeyedSubscript:@"enable-fallback"];
 
   if (v46 && [v7 type] == 5)
   {
@@ -5552,27 +5552,27 @@ LABEL_28:
   return v17;
 }
 
-- (BOOL)setSharedSecretWithParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)setSharedSecretWithParameters:(id)parameters errorStr:(id *)str
 {
-  v5 = a3;
-  v6 = [(NEUtilConfigurationClient *)self protocolForParameters:v5];
-  v7 = [v5 objectForKeyedSubscript:@"shared-secret"];
+  parametersCopy = parameters;
+  v6 = [(NEUtilConfigurationClient *)self protocolForParameters:parametersCopy];
+  v7 = [parametersCopy objectForKeyedSubscript:@"shared-secret"];
 
   if (v7)
   {
-    v8 = [v6 sharedSecretKeychainItem];
+    sharedSecretKeychainItem = [v6 sharedSecretKeychainItem];
 
-    if (v8)
+    if (sharedSecretKeychainItem)
     {
-      v9 = [v5 objectForKeyedSubscript:@"shared-secret"];
-      v10 = [v6 sharedSecretKeychainItem];
-      [v10 setPassword:v9];
+      v9 = [parametersCopy objectForKeyedSubscript:@"shared-secret"];
+      sharedSecretKeychainItem2 = [v6 sharedSecretKeychainItem];
+      [sharedSecretKeychainItem2 setPassword:v9];
     }
 
     else
     {
       v11 = [NEKeychainItem alloc];
-      v9 = [v5 objectForKeyedSubscript:@"shared-secret"];
+      v9 = [parametersCopy objectForKeyedSubscript:@"shared-secret"];
       if (v6)
       {
         v13 = v6[10];
@@ -5585,8 +5585,8 @@ LABEL_28:
         Property = 0;
       }
 
-      v10 = Property;
-      v15 = [(NEKeychainItem *)v11 initWithPassword:v9 domain:v13 accessGroup:v10];
+      sharedSecretKeychainItem2 = Property;
+      v15 = [(NEKeychainItem *)v11 initWithPassword:v9 domain:v13 accessGroup:sharedSecretKeychainItem2];
       [v6 setSharedSecretKeychainItem:v15];
     }
   }
@@ -5594,13 +5594,13 @@ LABEL_28:
   return 1;
 }
 
-- (BOOL)setIPSecParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)setIPSecParameters:(id)parameters errorStr:(id *)str
 {
-  v6 = a3;
-  v7 = [(NEUtilConfigurationClient *)self protocolForParameters:v6];
+  parametersCopy = parameters;
+  v7 = [(NEUtilConfigurationClient *)self protocolForParameters:parametersCopy];
   if ([(NEUtilConfigurationClient *)self isAlwaysOn])
   {
-    v8 = [v6 objectForKeyedSubscript:@"interface-name"];
+    v8 = [parametersCopy objectForKeyedSubscript:@"interface-name"];
     v9 = isa_nsstring(v8);
 
     if ((v9 & 1) == 0)
@@ -5616,15 +5616,15 @@ LABEL_28:
     v13 = 0;
     v14 = @"Configuration VPN type is not IPSec";
 LABEL_10:
-    *a4 = v14;
+    *str = v14;
     goto LABEL_11;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"authentication-method"];
+  v10 = [parametersCopy objectForKeyedSubscript:@"authentication-method"];
 
   if (v10)
   {
-    v11 = [v6 objectForKeyedSubscript:@"authentication-method"];
+    v11 = [parametersCopy objectForKeyedSubscript:@"authentication-method"];
     if ([v11 isEqualToString:@"none"])
     {
       v12 = 0;
@@ -5639,7 +5639,7 @@ LABEL_10:
     {
       if (([v11 isEqualToString:@"shared-secret"] & 1) == 0)
       {
-        *a4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, valid values are none, certificate, and shared-secret", @"authentication-method"];
+        *str = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, valid values are none, certificate, and shared-secret", @"authentication-method"];
 
         goto LABEL_84;
       }
@@ -5650,18 +5650,18 @@ LABEL_10:
     [v7 setAuthenticationMethod:v12];
   }
 
-  if (![(NEUtilConfigurationClient *)self setSharedSecretWithParameters:v6 errorStr:a4])
+  if (![(NEUtilConfigurationClient *)self setSharedSecretWithParameters:parametersCopy errorStr:str])
   {
 LABEL_84:
     v13 = 0;
     goto LABEL_11;
   }
 
-  v16 = [v6 objectForKeyedSubscript:@"certificate-type"];
+  v16 = [parametersCopy objectForKeyedSubscript:@"certificate-type"];
 
   if (v16 && [v7 type] == 5)
   {
-    v17 = [v6 objectForKeyedSubscript:@"certificate-type"];
+    v17 = [parametersCopy objectForKeyedSubscript:@"certificate-type"];
     if ([v17 isEqualToString:@"RSA"])
     {
       v18 = 1;
@@ -5696,45 +5696,45 @@ LABEL_84:
     [v7 setCertificateType:v18];
   }
 
-  v19 = [v6 objectForKeyedSubscript:@"use-internal-ip-subnet"];
+  v19 = [parametersCopy objectForKeyedSubscript:@"use-internal-ip-subnet"];
 
   if (v19 && [v7 type] == 5)
   {
-    v20 = [v6 objectForKeyedSubscript:@"use-internal-ip-subnet"];
+    v20 = [parametersCopy objectForKeyedSubscript:@"use-internal-ip-subnet"];
     [v7 setUseConfigurationAttributeInternalIPSubnet:{objc_msgSend(v20, "BOOLValue")}];
   }
 
-  v21 = [v6 objectForKeyedSubscript:@"disable-mobike"];
+  v21 = [parametersCopy objectForKeyedSubscript:@"disable-mobike"];
 
   if (v21 && [v7 type] == 5)
   {
-    v22 = [v6 objectForKeyedSubscript:@"disable-mobike"];
+    v22 = [parametersCopy objectForKeyedSubscript:@"disable-mobike"];
     [v7 setDisableMOBIKE:{objc_msgSend(v22, "BOOLValue")}];
   }
 
-  v23 = [v6 objectForKeyedSubscript:@"disable-redirect"];
+  v23 = [parametersCopy objectForKeyedSubscript:@"disable-redirect"];
 
   if (v23 && [v7 type] == 5)
   {
-    v24 = [v6 objectForKeyedSubscript:@"disable-redirect"];
+    v24 = [parametersCopy objectForKeyedSubscript:@"disable-redirect"];
     [v7 setDisableRedirect:{objc_msgSend(v24, "BOOLValue")}];
   }
 
-  v25 = [v6 objectForKeyedSubscript:@"enable-pfs"];
+  v25 = [parametersCopy objectForKeyedSubscript:@"enable-pfs"];
 
   if (v25 && [v7 type] == 5)
   {
-    v26 = [v6 objectForKeyedSubscript:@"enable-pfs"];
+    v26 = [parametersCopy objectForKeyedSubscript:@"enable-pfs"];
     [v7 setEnablePFS:{objc_msgSend(v26, "BOOLValue")}];
   }
 
-  v27 = [v6 objectForKeyedSubscript:@"enable-revocation-check"];
+  v27 = [parametersCopy objectForKeyedSubscript:@"enable-revocation-check"];
 
   if (v27)
   {
     if ([v7 type] == 5)
     {
-      v28 = [v6 objectForKeyedSubscript:@"enable-revocation-check"];
+      v28 = [parametersCopy objectForKeyedSubscript:@"enable-revocation-check"];
       [v7 setEnableRevocationCheck:{objc_msgSend(v28, "BOOLValue")}];
 
       if (([v7 enableRevocationCheck] & 1) == 0)
@@ -5744,20 +5744,20 @@ LABEL_84:
     }
   }
 
-  v29 = [v6 objectForKeyedSubscript:@"strict-revocation-check"];
+  v29 = [parametersCopy objectForKeyedSubscript:@"strict-revocation-check"];
 
   if (v29 && [v7 type] == 5 && objc_msgSend(v7, "enableRevocationCheck"))
   {
-    v30 = [v6 objectForKeyedSubscript:@"strict-revocation-check"];
+    v30 = [parametersCopy objectForKeyedSubscript:@"strict-revocation-check"];
     [v7 setStrictRevocationCheck:{objc_msgSend(v30, "BOOLValue")}];
   }
 
-  v31 = [v6 objectForKeyedSubscript:@"tls-minimum-version"];
+  v31 = [parametersCopy objectForKeyedSubscript:@"tls-minimum-version"];
 
   if (v31 && [v7 type] == 5)
   {
     v32 = @"tls-minimum-version";
-    v17 = [v6 objectForKeyedSubscript:@"tls-minimum-version"];
+    v17 = [parametersCopy objectForKeyedSubscript:@"tls-minimum-version"];
     if ([v17 isEqualToString:@"1.0"])
     {
       v33 = 1;
@@ -5781,12 +5781,12 @@ LABEL_84:
     [v7 setMinimumTLSVersion:v33];
   }
 
-  v34 = [v6 objectForKeyedSubscript:@"tls-maximum-version"];
+  v34 = [parametersCopy objectForKeyedSubscript:@"tls-maximum-version"];
 
   if (v34 && [v7 type] == 5)
   {
     v32 = @"tls-maximum-version";
-    v17 = [v6 objectForKeyedSubscript:@"tls-maximum-version"];
+    v17 = [parametersCopy objectForKeyedSubscript:@"tls-maximum-version"];
     if ([v17 isEqualToString:@"1.0"])
     {
       v35 = 1;
@@ -5814,32 +5814,32 @@ LABEL_82:
   }
 
 LABEL_70:
-  v36 = [v6 objectForKeyedSubscript:@"local-identifier"];
+  v36 = [parametersCopy objectForKeyedSubscript:@"local-identifier"];
 
   if (v36)
   {
-    v37 = [v6 objectForKeyedSubscript:@"local-identifier"];
+    v37 = [parametersCopy objectForKeyedSubscript:@"local-identifier"];
     [v7 setLocalIdentifier:v37];
   }
 
-  v38 = [v6 objectForKeyedSubscript:@"remote-identifier"];
+  v38 = [parametersCopy objectForKeyedSubscript:@"remote-identifier"];
 
   if (v38)
   {
-    v39 = [v6 objectForKeyedSubscript:@"remote-identifier"];
+    v39 = [parametersCopy objectForKeyedSubscript:@"remote-identifier"];
     [v7 setRemoteIdentifier:v39];
   }
 
-  v40 = [v6 objectForKeyedSubscript:@"use-extended-authentication"];
+  v40 = [parametersCopy objectForKeyedSubscript:@"use-extended-authentication"];
 
   if (v40)
   {
-    v41 = [v6 objectForKeyedSubscript:@"use-extended-authentication"];
+    v41 = [parametersCopy objectForKeyedSubscript:@"use-extended-authentication"];
     [v7 setUseExtendedAuthentication:{objc_msgSend(v41, "BOOLValue")}];
   }
 
   v42 = @"dead-peer-detection-rate";
-  v43 = [v6 objectForKeyedSubscript:@"dead-peer-detection-rate"];
+  v43 = [parametersCopy objectForKeyedSubscript:@"dead-peer-detection-rate"];
 
   if (v43)
   {
@@ -5848,7 +5848,7 @@ LABEL_70:
       goto LABEL_170;
     }
 
-    v17 = [v6 objectForKeyedSubscript:@"dead-peer-detection-rate"];
+    v17 = [parametersCopy objectForKeyedSubscript:@"dead-peer-detection-rate"];
     if ([v17 isEqualToString:@"none"])
     {
       v44 = 0;
@@ -5877,30 +5877,30 @@ LABEL_89:
     }
 
     [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, valid values are none, low, medium, and high", @"dead-peer-detection-rate", v84, v85, v86, v87, v88];
-    *a4 = LABEL_83:;
+    *str = LABEL_83:;
 
     goto LABEL_84;
   }
 
 LABEL_90:
-  v45 = [v6 objectForKeyedSubscript:@"server-CA-name"];
+  v45 = [parametersCopy objectForKeyedSubscript:@"server-CA-name"];
 
   if (v45 && [v7 type] == 5)
   {
-    v46 = [v6 objectForKeyedSubscript:@"server-CA-name"];
+    v46 = [parametersCopy objectForKeyedSubscript:@"server-CA-name"];
     [v7 setServerCertificateIssuerCommonName:v46];
   }
 
-  v47 = [v6 objectForKeyedSubscript:@"server-cert-name"];
+  v47 = [parametersCopy objectForKeyedSubscript:@"server-cert-name"];
 
   if (v47 && [v7 type] == 5)
   {
-    v48 = [v6 objectForKeyedSubscript:@"server-cert-name"];
+    v48 = [parametersCopy objectForKeyedSubscript:@"server-cert-name"];
     [v7 setServerCertificateCommonName:v48];
   }
 
   v42 = @"encryption-algorithm";
-  v49 = [v6 objectForKeyedSubscript:@"encryption-algorithm"];
+  v49 = [parametersCopy objectForKeyedSubscript:@"encryption-algorithm"];
 
   if (v49)
   {
@@ -5910,7 +5910,7 @@ LABEL_90:
     }
 
     v50 = @"encryption-algorithm";
-    v17 = [v6 objectForKeyedSubscript:@"encryption-algorithm"];
+    v17 = [parametersCopy objectForKeyedSubscript:@"encryption-algorithm"];
     if ([v17 isEqualToString:@"AES-128"])
     {
       v51 = 3;
@@ -5943,12 +5943,12 @@ LABEL_150:
       v51 = 7;
     }
 
-    v52 = [v7 IKESecurityAssociationParameters];
-    [v52 setEncryptionAlgorithm:v51];
+    iKESecurityAssociationParameters = [v7 IKESecurityAssociationParameters];
+    [iKESecurityAssociationParameters setEncryptionAlgorithm:v51];
   }
 
   v42 = @"integrity-algorithm";
-  v53 = [v6 objectForKeyedSubscript:@"integrity-algorithm"];
+  v53 = [parametersCopy objectForKeyedSubscript:@"integrity-algorithm"];
 
   if (v53)
   {
@@ -5958,7 +5958,7 @@ LABEL_150:
     }
 
     v54 = @"integrity-algorithm";
-    v17 = [v6 objectForKeyedSubscript:@"integrity-algorithm"];
+    v17 = [parametersCopy objectForKeyedSubscript:@"integrity-algorithm"];
     if ([v17 isEqualToString:@"SHA2-256"])
     {
       v55 = 3;
@@ -5981,12 +5981,12 @@ LABEL_172:
       v55 = 5;
     }
 
-    v56 = [v7 IKESecurityAssociationParameters];
-    [v56 setIntegrityAlgorithm:v55];
+    iKESecurityAssociationParameters2 = [v7 IKESecurityAssociationParameters];
+    [iKESecurityAssociationParameters2 setIntegrityAlgorithm:v55];
   }
 
   v42 = @"diffie-hellman-group";
-  v57 = [v6 objectForKeyedSubscript:@"diffie-hellman-group"];
+  v57 = [parametersCopy objectForKeyedSubscript:@"diffie-hellman-group"];
 
   if (v57)
   {
@@ -5995,22 +5995,22 @@ LABEL_172:
       goto LABEL_170;
     }
 
-    v58 = [v6 objectForKeyedSubscript:@"diffie-hellman-group"];
-    v59 = [v58 intValue];
+    v58 = [parametersCopy objectForKeyedSubscript:@"diffie-hellman-group"];
+    intValue = [v58 intValue];
 
-    if (v59 - 14 >= 8 && v59 - 31 >= 2)
+    if (intValue - 14 >= 8 && intValue - 31 >= 2)
     {
       [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, valid values are 14-21, 31, 32", @"diffie-hellman-group", v84, v85];
       goto LABEL_171;
     }
 
-    v60 = v59;
-    v61 = [v7 IKESecurityAssociationParameters];
-    [v61 setDiffieHellmanGroup:v60];
+    v60 = intValue;
+    iKESecurityAssociationParameters3 = [v7 IKESecurityAssociationParameters];
+    [iKESecurityAssociationParameters3 setDiffieHellmanGroup:v60];
   }
 
   v42 = @"life-time";
-  v62 = [v6 objectForKeyedSubscript:@"life-time"];
+  v62 = [parametersCopy objectForKeyedSubscript:@"life-time"];
 
   if (!v62)
   {
@@ -6022,23 +6022,23 @@ LABEL_172:
     goto LABEL_170;
   }
 
-  v63 = [v6 objectForKeyedSubscript:@"life-time"];
-  v64 = [v63 intValue];
+  v63 = [parametersCopy objectForKeyedSubscript:@"life-time"];
+  intValue2 = [v63 intValue];
 
-  if ((v64 - 10) > 0x596)
+  if ((intValue2 - 10) > 0x596)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, valid values are in the range %d - %d minutes (24 hours)", @"life-time", 10, 1440];
 LABEL_171:
-    *a4 = v13 = 0;
+    *str = v13 = 0;
     goto LABEL_11;
   }
 
-  v65 = [v7 IKESecurityAssociationParameters];
-  [v65 setLifetimeMinutes:v64];
+  iKESecurityAssociationParameters4 = [v7 IKESecurityAssociationParameters];
+  [iKESecurityAssociationParameters4 setLifetimeMinutes:intValue2];
 
 LABEL_128:
   v42 = @"child-encryption-algorithm";
-  v66 = [v6 objectForKeyedSubscript:@"child-encryption-algorithm"];
+  v66 = [parametersCopy objectForKeyedSubscript:@"child-encryption-algorithm"];
 
   if (!v66)
   {
@@ -6051,7 +6051,7 @@ LABEL_128:
   }
 
   v50 = @"child-encryption-algorithm";
-  v17 = [v6 objectForKeyedSubscript:@"child-encryption-algorithm"];
+  v17 = [parametersCopy objectForKeyedSubscript:@"child-encryption-algorithm"];
   if (([v17 isEqualToString:@"AES-128"] & 1) == 0)
   {
     if ([v17 isEqualToString:@"AES-256"])
@@ -6083,12 +6083,12 @@ LABEL_128:
 
   v67 = 3;
 LABEL_143:
-  v68 = [v7 childSecurityAssociationParameters];
-  [v68 setEncryptionAlgorithm:v67];
+  childSecurityAssociationParameters = [v7 childSecurityAssociationParameters];
+  [childSecurityAssociationParameters setEncryptionAlgorithm:v67];
 
 LABEL_144:
   v42 = @"child-integrity-algorithm";
-  v69 = [v6 objectForKeyedSubscript:@"child-integrity-algorithm"];
+  v69 = [parametersCopy objectForKeyedSubscript:@"child-integrity-algorithm"];
 
   if (!v69)
   {
@@ -6101,7 +6101,7 @@ LABEL_144:
   }
 
   v54 = @"child-integrity-algorithm";
-  v17 = [v6 objectForKeyedSubscript:@"child-integrity-algorithm"];
+  v17 = [parametersCopy objectForKeyedSubscript:@"child-integrity-algorithm"];
   if (([v17 isEqualToString:@"SHA2-256"] & 1) == 0)
   {
     if ([v17 isEqualToString:@"SHA2-384"])
@@ -6121,12 +6121,12 @@ LABEL_144:
 
   v70 = 3;
 LABEL_153:
-  v71 = [v7 childSecurityAssociationParameters];
-  [v71 setIntegrityAlgorithm:v70];
+  childSecurityAssociationParameters2 = [v7 childSecurityAssociationParameters];
+  [childSecurityAssociationParameters2 setIntegrityAlgorithm:v70];
 
 LABEL_154:
   v42 = @"child-diffie-hellman-group";
-  v72 = [v6 objectForKeyedSubscript:@"child-diffie-hellman-group"];
+  v72 = [parametersCopy objectForKeyedSubscript:@"child-diffie-hellman-group"];
 
   if (!v72)
   {
@@ -6140,21 +6140,21 @@ LABEL_170:
     goto LABEL_171;
   }
 
-  v73 = [v6 objectForKeyedSubscript:@"child-diffie-hellman-group"];
-  v74 = [v73 intValue];
+  v73 = [parametersCopy objectForKeyedSubscript:@"child-diffie-hellman-group"];
+  intValue3 = [v73 intValue];
 
-  if ((v74 > 0x20 || ((1 << v74) & 0x180000026) == 0) && v74 - 22 <= 0xFFFFFFF7)
+  if ((intValue3 > 0x20 || ((1 << intValue3) & 0x180000026) == 0) && intValue3 - 22 <= 0xFFFFFFF7)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, valid values are 1, 2, 5, 14-21, 31, 32", @"child-diffie-hellman-group", v84, v85];
     goto LABEL_171;
   }
 
-  v75 = [v7 childSecurityAssociationParameters];
-  [v75 setDiffieHellmanGroup:v74];
+  childSecurityAssociationParameters3 = [v7 childSecurityAssociationParameters];
+  [childSecurityAssociationParameters3 setDiffieHellmanGroup:intValue3];
 
 LABEL_159:
   v42 = @"child-life-time";
-  v76 = [v6 objectForKeyedSubscript:@"child-life-time"];
+  v76 = [parametersCopy objectForKeyedSubscript:@"child-life-time"];
 
   if (!v76)
   {
@@ -6166,32 +6166,32 @@ LABEL_159:
     goto LABEL_170;
   }
 
-  v77 = [v6 objectForKeyedSubscript:@"child-life-time"];
-  v78 = [v77 intValue];
+  v77 = [parametersCopy objectForKeyedSubscript:@"child-life-time"];
+  intValue4 = [v77 intValue];
 
-  if ((v78 - 10) > 0x596)
+  if ((intValue4 - 10) > 0x596)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, valid values are in the range 10 - 1440 minutes (24 hours)", @"child-life-time", v84, v85];
     goto LABEL_171;
   }
 
-  v79 = [v7 childSecurityAssociationParameters];
-  [v79 setLifetimeMinutes:v78];
+  childSecurityAssociationParameters4 = [v7 childSecurityAssociationParameters];
+  [childSecurityAssociationParameters4 setLifetimeMinutes:intValue4];
 
 LABEL_163:
-  v80 = [v6 objectForKeyedSubscript:@"enable-fallback"];
+  v80 = [parametersCopy objectForKeyedSubscript:@"enable-fallback"];
 
   if (v80 && [v7 type] == 5)
   {
-    v81 = [v6 objectForKeyedSubscript:@"enable-fallback"];
+    v81 = [parametersCopy objectForKeyedSubscript:@"enable-fallback"];
     [v7 setEnableFallback:{objc_msgSend(v81, "BOOLValue")}];
   }
 
-  v82 = [v6 objectForKeyedSubscript:@"mtu"];
+  v82 = [parametersCopy objectForKeyedSubscript:@"mtu"];
 
   if (v82 && [v7 type] == 5)
   {
-    v83 = [v6 objectForKeyedSubscript:@"mtu"];
+    v83 = [parametersCopy objectForKeyedSubscript:@"mtu"];
     [v7 setMtu:{objc_msgSend(v83, "intValue")}];
   }
 
@@ -6201,33 +6201,33 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)unsetPasswordWithParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)unsetPasswordWithParameters:(id)parameters errorStr:(id *)str
 {
-  v5 = a3;
-  v6 = [(NEUtilConfigurationClient *)self protocolForParameters:v5];
-  v7 = [v5 objectForKeyedSubscript:@"password"];
+  parametersCopy = parameters;
+  v6 = [(NEUtilConfigurationClient *)self protocolForParameters:parametersCopy];
+  v7 = [parametersCopy objectForKeyedSubscript:@"password"];
 
   if (v7)
   {
-    v8 = [v6 passwordKeychainItem];
+    passwordKeychainItem = [v6 passwordKeychainItem];
 
-    if (v8)
+    if (passwordKeychainItem)
     {
-      v9 = [v6 passwordKeychainItem];
-      [v9 setIdentifier:0];
+      passwordKeychainItem2 = [v6 passwordKeychainItem];
+      [passwordKeychainItem2 setIdentifier:0];
     }
   }
 
   return 1;
 }
 
-- (BOOL)unsetCommonParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)unsetCommonParameters:(id)parameters errorStr:(id *)str
 {
-  v6 = a3;
-  v7 = [(NEUtilConfigurationClient *)self protocolForParameters:v6];
+  parametersCopy = parameters;
+  v7 = [(NEUtilConfigurationClient *)self protocolForParameters:parametersCopy];
   if ([(NEUtilConfigurationClient *)self isAlwaysOn])
   {
-    v8 = [v6 objectForKeyedSubscript:@"enabled"];
+    v8 = [parametersCopy objectForKeyedSubscript:@"enabled"];
     v9 = isa_nsstring(v8);
 
     if ((v9 & 1) == 0)
@@ -6245,55 +6245,55 @@ LABEL_11:
     goto LABEL_46;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"enabled"];
+  v10 = [parametersCopy objectForKeyedSubscript:@"enabled"];
 
   if (v10)
   {
     [(NEUtilConfigurationClient *)self setEnabled:0];
   }
 
-  v11 = [v6 objectForKeyedSubscript:@"server-address"];
+  v11 = [parametersCopy objectForKeyedSubscript:@"server-address"];
 
   if (v11)
   {
     [v7 setServerAddress:0];
   }
 
-  v12 = [v6 objectForKeyedSubscript:@"username"];
+  v12 = [parametersCopy objectForKeyedSubscript:@"username"];
 
   if (v12)
   {
     [v7 setUsername:0];
   }
 
-  if (![(NEUtilConfigurationClient *)self unsetPasswordWithParameters:v6 errorStr:a4])
+  if (![(NEUtilConfigurationClient *)self unsetPasswordWithParameters:parametersCopy errorStr:str])
   {
     v26 = 0;
     goto LABEL_47;
   }
 
-  v13 = [v6 objectForKeyedSubscript:@"disconnect-on-idle-timeout"];
+  v13 = [parametersCopy objectForKeyedSubscript:@"disconnect-on-idle-timeout"];
 
   if (v13)
   {
     [v7 setDisconnectOnIdleTimeout:0];
   }
 
-  v14 = [v6 objectForKeyedSubscript:@"disconnect-on-sleep"];
+  v14 = [parametersCopy objectForKeyedSubscript:@"disconnect-on-sleep"];
 
   if (v14)
   {
     [v7 setDisconnectOnSleep:0];
   }
 
-  v15 = [v6 objectForKeyedSubscript:@"identity"];
+  v15 = [parametersCopy objectForKeyedSubscript:@"identity"];
 
   if (v15)
   {
     [v7 setIdentityReferenceInternal:0];
   }
 
-  v16 = [v6 objectForKeyedSubscript:@"provider-bundle-identifier"];
+  v16 = [parametersCopy objectForKeyedSubscript:@"provider-bundle-identifier"];
 
   if (v16)
   {
@@ -6308,7 +6308,7 @@ LABEL_11:
     [v7 setProviderBundleIdentifier:0];
   }
 
-  v17 = [v6 objectForKeyedSubscript:@"designated-requirement"];
+  v17 = [parametersCopy objectForKeyedSubscript:@"designated-requirement"];
 
   if (v17)
   {
@@ -6322,61 +6322,61 @@ LABEL_11:
     v26 = 0;
     v27 = @"designated-requirement can only be specified for provider-based configurations";
 LABEL_46:
-    *a4 = v27;
+    *str = v27;
     goto LABEL_47;
   }
 
 LABEL_24:
-  v18 = [v6 objectForKeyedSubscript:@"extensible-sso-provider"];
+  v18 = [parametersCopy objectForKeyedSubscript:@"extensible-sso-provider"];
 
   if (v18)
   {
     [v7 setExtensibleSSOProvider:0];
   }
 
-  v19 = [v6 objectForKeyedSubscript:@"include-all-networks"];
+  v19 = [parametersCopy objectForKeyedSubscript:@"include-all-networks"];
 
   if (v19)
   {
     [v7 setIncludeAllNetworks:0];
   }
 
-  v20 = [v6 objectForKeyedSubscript:@"exclude-local-networks"];
+  v20 = [parametersCopy objectForKeyedSubscript:@"exclude-local-networks"];
 
   if (v20)
   {
     [v7 setExcludeLocalNetworks:0];
   }
 
-  v21 = [v6 objectForKeyedSubscript:@"exclude-cellular-services"];
+  v21 = [parametersCopy objectForKeyedSubscript:@"exclude-cellular-services"];
 
   if (v21)
   {
     [v7 setExcludeCellularServices:0];
   }
 
-  v22 = [v6 objectForKeyedSubscript:@"exclude-apns"];
+  v22 = [parametersCopy objectForKeyedSubscript:@"exclude-apns"];
 
   if (v22)
   {
     [v7 setExcludeAPNs:0];
   }
 
-  v23 = [v6 objectForKeyedSubscript:@"exclude-device-communication"];
+  v23 = [parametersCopy objectForKeyedSubscript:@"exclude-device-communication"];
 
   if (v23)
   {
     [v7 setExcludeDeviceCommunication:0];
   }
 
-  v24 = [v6 objectForKeyedSubscript:@"enforce-routes"];
+  v24 = [parametersCopy objectForKeyedSubscript:@"enforce-routes"];
 
   if (v24)
   {
     [v7 setEnforceRoutes:0];
   }
 
-  v25 = [v6 objectForKeyedSubscript:@"cellular-slice-UUID"];
+  v25 = [parametersCopy objectForKeyedSubscript:@"cellular-slice-UUID"];
 
   if (v25)
   {
@@ -6389,11 +6389,11 @@ LABEL_47:
   return v26;
 }
 
-- (BOOL)setProviderTypeWithParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)setProviderTypeWithParameters:(id)parameters errorStr:(id *)str
 {
-  v6 = a3;
-  v7 = [(NEUtilConfigurationClient *)self protocolForParameters:v6];
-  v8 = [v6 objectForKeyedSubscript:@"provider-type"];
+  parametersCopy = parameters;
+  v7 = [(NEUtilConfigurationClient *)self protocolForParameters:parametersCopy];
+  v8 = [parametersCopy objectForKeyedSubscript:@"provider-type"];
 
   if (!v8)
   {
@@ -6410,20 +6410,20 @@ LABEL_47:
     Property = 0;
   }
 
-  v11 = [Property appVPN];
-  if (!v11 || (v12 = v11, v13 = [v7 type], v12, v13 != 4))
+  appVPN = [Property appVPN];
+  if (!appVPN || (v12 = appVPN, v13 = [v7 type], v12, v13 != 4))
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"Provider type can only be set for plugin-based per-app VPN configurations"];
-    *a4 = v19 = 0;
+    *str = v19 = 0;
     goto LABEL_12;
   }
 
-  v14 = [v6 objectForKeyedSubscript:@"provider-type"];
+  v14 = [parametersCopy objectForKeyedSubscript:@"provider-type"];
   if (![v14 isEqualToString:@"app-proxy"])
   {
     if (![v14 isEqualToString:@"packet-tunnel"])
     {
-      *a4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, must be either app-proxy or packet-tunnel", @"provider-type"];
+      *str = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, must be either app-proxy or packet-tunnel", @"provider-type"];
 
       v19 = 0;
       goto LABEL_12;
@@ -6449,8 +6449,8 @@ LABEL_15:
 LABEL_8:
   v17 = objc_getProperty(self, v15, 56, 1);
 LABEL_9:
-  v18 = [v17 appVPN];
-  [v18 setTunnelType:v16];
+  appVPN2 = [v17 appVPN];
+  [appVPN2 setTunnelType:v16];
 
 LABEL_10:
   v19 = 1;
@@ -6459,27 +6459,27 @@ LABEL_12:
   return v19;
 }
 
-- (BOOL)setPasswordWithParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)setPasswordWithParameters:(id)parameters errorStr:(id *)str
 {
-  v5 = a3;
-  v6 = [(NEUtilConfigurationClient *)self protocolForParameters:v5];
-  v7 = [v5 objectForKeyedSubscript:@"password"];
+  parametersCopy = parameters;
+  v6 = [(NEUtilConfigurationClient *)self protocolForParameters:parametersCopy];
+  v7 = [parametersCopy objectForKeyedSubscript:@"password"];
 
   if (v7)
   {
-    v8 = [v6 passwordKeychainItem];
+    passwordKeychainItem = [v6 passwordKeychainItem];
 
-    if (v8)
+    if (passwordKeychainItem)
     {
-      v9 = [v5 objectForKeyedSubscript:@"password"];
-      v10 = [v6 passwordKeychainItem];
-      [v10 setPassword:v9];
+      v9 = [parametersCopy objectForKeyedSubscript:@"password"];
+      passwordKeychainItem2 = [v6 passwordKeychainItem];
+      [passwordKeychainItem2 setPassword:v9];
     }
 
     else
     {
       v11 = [NEKeychainItem alloc];
-      v9 = [v5 objectForKeyedSubscript:@"password"];
+      v9 = [parametersCopy objectForKeyedSubscript:@"password"];
       if (v6)
       {
         v13 = v6[10];
@@ -6492,8 +6492,8 @@ LABEL_12:
         Property = 0;
       }
 
-      v10 = Property;
-      v15 = [(NEKeychainItem *)v11 initWithPassword:v9 domain:v13 accessGroup:v10];
+      passwordKeychainItem2 = Property;
+      v15 = [(NEKeychainItem *)v11 initWithPassword:v9 domain:v13 accessGroup:passwordKeychainItem2];
       [v6 setPasswordKeychainItem:v15];
     }
   }
@@ -6501,14 +6501,14 @@ LABEL_12:
   return 1;
 }
 
-- (BOOL)setCommonParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)setCommonParameters:(id)parameters errorStr:(id *)str
 {
-  v6 = a3;
-  v7 = [(NEUtilConfigurationClient *)self protocolForParameters:v6];
-  v8 = [(NEUtilConfigurationClient *)self filterConfiguration];
+  parametersCopy = parameters;
+  v7 = [(NEUtilConfigurationClient *)self protocolForParameters:parametersCopy];
+  filterConfiguration = [(NEUtilConfigurationClient *)self filterConfiguration];
   if ([(NEUtilConfigurationClient *)self isAlwaysOn])
   {
-    v9 = [v6 objectForKeyedSubscript:@"interface-name"];
+    v9 = [parametersCopy objectForKeyedSubscript:@"interface-name"];
     v10 = isa_nsstring(v9);
 
     if ((v10 & 1) == 0)
@@ -6519,43 +6519,43 @@ LABEL_12:
     }
   }
 
-  v11 = [v6 objectForKeyedSubscript:@"enabled"];
+  v11 = [parametersCopy objectForKeyedSubscript:@"enabled"];
 
   if (v11)
   {
-    v12 = [v6 objectForKeyedSubscript:@"enabled"];
+    v12 = [parametersCopy objectForKeyedSubscript:@"enabled"];
     -[NEUtilConfigurationClient setEnabled:](self, "setEnabled:", [v12 BOOLValue]);
   }
 
-  v13 = [v6 objectForKeyedSubscript:@"server-address"];
+  v13 = [parametersCopy objectForKeyedSubscript:@"server-address"];
 
   if (v13)
   {
     v14 = v7;
-    if (v7 || (v14 = v8) != 0)
+    if (v7 || (v14 = filterConfiguration) != 0)
     {
-      v15 = [v6 objectForKeyedSubscript:@"server-address"];
-      v16 = [v15 stringByRemovingPercentEncoding];
-      [v14 setServerAddress:v16];
+      v15 = [parametersCopy objectForKeyedSubscript:@"server-address"];
+      stringByRemovingPercentEncoding = [v15 stringByRemovingPercentEncoding];
+      [v14 setServerAddress:stringByRemovingPercentEncoding];
     }
   }
 
-  v17 = [v6 objectForKeyedSubscript:@"username"];
+  v17 = [parametersCopy objectForKeyedSubscript:@"username"];
 
   if (v17)
   {
     if (v7)
     {
-      v18 = [v6 objectForKeyedSubscript:@"username"];
+      v18 = [parametersCopy objectForKeyedSubscript:@"username"];
       [v7 setUsername:v18];
 
       goto LABEL_13;
     }
 
-    if (v8)
+    if (filterConfiguration)
     {
-      v24 = [v6 objectForKeyedSubscript:@"username"];
-      [v8 setUsername:v24];
+      v24 = [parametersCopy objectForKeyedSubscript:@"username"];
+      [filterConfiguration setUsername:v24];
 LABEL_20:
     }
 
@@ -6570,31 +6570,31 @@ LABEL_21:
   }
 
 LABEL_13:
-  if (![(NEUtilConfigurationClient *)self setPasswordWithParameters:v6 errorStr:a4])
+  if (![(NEUtilConfigurationClient *)self setPasswordWithParameters:parametersCopy errorStr:str])
   {
 LABEL_74:
     v22 = 0;
     goto LABEL_75;
   }
 
-  v19 = [v6 objectForKeyedSubscript:@"on-demand-enabled"];
+  v19 = [parametersCopy objectForKeyedSubscript:@"on-demand-enabled"];
 
   if (v19)
   {
-    v20 = [v6 objectForKeyedSubscript:@"on-demand-enabled"];
-    v21 = [v20 BOOLValue];
+    v20 = [parametersCopy objectForKeyedSubscript:@"on-demand-enabled"];
+    bOOLValue = [v20 BOOLValue];
   }
 
   else
   {
-    v21 = 0;
+    bOOLValue = 0;
   }
 
-  v25 = [v6 objectForKeyedSubscript:@"disconnect-on-demand-enabled"];
+  v25 = [parametersCopy objectForKeyedSubscript:@"disconnect-on-demand-enabled"];
 
   if (!v25)
   {
-    v27 = 0;
+    bOOLValue2 = 0;
     if (!v19)
     {
       goto LABEL_26;
@@ -6603,66 +6603,66 @@ LABEL_74:
     goto LABEL_25;
   }
 
-  v26 = [v6 objectForKeyedSubscript:@"disconnect-on-demand-enabled"];
-  v27 = [v26 BOOLValue];
+  v26 = [parametersCopy objectForKeyedSubscript:@"disconnect-on-demand-enabled"];
+  bOOLValue2 = [v26 BOOLValue];
 
   if (v19)
   {
 LABEL_25:
-    [(NEUtilConfigurationClient *)self setOnDemandEnabled:v21];
+    [(NEUtilConfigurationClient *)self setOnDemandEnabled:bOOLValue];
   }
 
 LABEL_26:
   if (v25)
   {
-    [(NEUtilConfigurationClient *)self setDisconnectOnDemandEnabled:v27];
+    [(NEUtilConfigurationClient *)self setDisconnectOnDemandEnabled:bOOLValue2];
   }
 
-  v28 = [v6 objectForKeyedSubscript:@"on-demand-user-override-disabled"];
+  v28 = [parametersCopy objectForKeyedSubscript:@"on-demand-user-override-disabled"];
 
   if (v28)
   {
-    v29 = [v6 objectForKeyedSubscript:@"on-demand-user-override-disabled"];
+    v29 = [parametersCopy objectForKeyedSubscript:@"on-demand-user-override-disabled"];
     -[NEUtilConfigurationClient setOnDemandUserOverrideDisabled:](self, "setOnDemandUserOverrideDisabled:", [v29 BOOLValue]);
   }
 
-  v30 = [v6 objectForKeyedSubscript:@"disconnect-on-idle-timeout"];
+  v30 = [parametersCopy objectForKeyedSubscript:@"disconnect-on-idle-timeout"];
 
   if (v30)
   {
-    v31 = [v6 objectForKeyedSubscript:@"disconnect-on-idle-timeout"];
+    v31 = [parametersCopy objectForKeyedSubscript:@"disconnect-on-idle-timeout"];
     [v7 setDisconnectOnIdleTimeout:{objc_msgSend(v31, "intValue")}];
   }
 
-  v32 = [v6 objectForKeyedSubscript:@"disconnect-on-sleep"];
+  v32 = [parametersCopy objectForKeyedSubscript:@"disconnect-on-sleep"];
 
   if (v32)
   {
-    v33 = [v6 objectForKeyedSubscript:@"disconnect-on-sleep"];
+    v33 = [parametersCopy objectForKeyedSubscript:@"disconnect-on-sleep"];
     [v7 setDisconnectOnSleep:{objc_msgSend(v33, "BOOLValue")}];
   }
 
-  v34 = [v6 objectForKeyedSubscript:@"identity"];
+  v34 = [parametersCopy objectForKeyedSubscript:@"identity"];
 
   if (v34)
   {
-    v35 = [v6 objectForKeyedSubscript:@"identity"];
-    v36 = [v35 integerValue];
+    v35 = [parametersCopy objectForKeyedSubscript:@"identity"];
+    integerValue = [v35 integerValue];
 
-    if (!self || (v38 = objc_getProperty(self, v37, 48, 1)) == 0 || (v40 = v38, v41 = [objc_getProperty(self v39], v40, v36 >= v41))
+    if (!self || (v38 = objc_getProperty(self, v37, 48, 1)) == 0 || (v40 = v38, v41 = [objc_getProperty(self v39], v40, integerValue >= v41))
     {
       [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@ index, use the list-identities command to obtain a list of available identities and their indicies", @"identity"];
-      *a4 = v22 = 0;
+      *str = v22 = 0;
       goto LABEL_75;
     }
 
     v43 = [objc_getProperty(self v42];
     v44 = [v43 objectForKeyedSubscript:@"domain"];
-    v45 = [v44 integerValue];
+    integerValue2 = [v44 integerValue];
 
-    if (v45)
+    if (integerValue2)
     {
-      *a4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, an identity in the %s keychain is required", @"identity", "system"];
+      *str = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid %@, an identity in the %s keychain is required", @"identity", "system"];
 
       goto LABEL_74;
     }
@@ -6671,12 +6671,12 @@ LABEL_26:
     [v7 setIdentityReferenceInternal:v46];
   }
 
-  if (![(NEUtilConfigurationClient *)self setProviderTypeWithParameters:v6 errorStr:a4])
+  if (![(NEUtilConfigurationClient *)self setProviderTypeWithParameters:parametersCopy errorStr:str])
   {
     goto LABEL_74;
   }
 
-  v47 = [v6 objectForKeyedSubscript:@"provider-bundle-identifier"];
+  v47 = [parametersCopy objectForKeyedSubscript:@"provider-bundle-identifier"];
 
   if (v47)
   {
@@ -6688,103 +6688,103 @@ LABEL_26:
       goto LABEL_17;
     }
 
-    v48 = [v6 objectForKeyedSubscript:@"provider-bundle-identifier"];
+    v48 = [parametersCopy objectForKeyedSubscript:@"provider-bundle-identifier"];
     [v7 setProviderBundleIdentifier:v48];
   }
 
-  v49 = [v6 objectForKeyedSubscript:@"designated-requirement"];
+  v49 = [parametersCopy objectForKeyedSubscript:@"designated-requirement"];
 
   if (!v49)
   {
 LABEL_52:
-    v52 = [v6 objectForKeyedSubscript:@"extensible-sso-provider"];
+    v52 = [parametersCopy objectForKeyedSubscript:@"extensible-sso-provider"];
 
     if (v52)
     {
-      v53 = [v6 objectForKeyedSubscript:@"extensible-sso-provider"];
-      v54 = [v53 stringByRemovingPercentEncoding];
-      [v7 setExtensibleSSOProvider:v54];
+      v53 = [parametersCopy objectForKeyedSubscript:@"extensible-sso-provider"];
+      stringByRemovingPercentEncoding2 = [v53 stringByRemovingPercentEncoding];
+      [v7 setExtensibleSSOProvider:stringByRemovingPercentEncoding2];
     }
 
-    v55 = [v6 objectForKeyedSubscript:@"access-group"];
+    v55 = [parametersCopy objectForKeyedSubscript:@"access-group"];
 
     if (v55)
     {
-      v56 = [v7 passwordKeychainItem];
+      passwordKeychainItem = [v7 passwordKeychainItem];
 
-      if (v56)
+      if (passwordKeychainItem)
       {
-        v58 = [v6 objectForKeyedSubscript:@"access-group"];
-        v59 = [v7 passwordKeychainItem];
-        [v59 setAccessGroup:v58];
+        v58 = [parametersCopy objectForKeyedSubscript:@"access-group"];
+        passwordKeychainItem2 = [v7 passwordKeychainItem];
+        [passwordKeychainItem2 setAccessGroup:v58];
       }
 
       v60 = objc_getProperty(v7, v57, 96, 1);
 
       if (v60)
       {
-        v61 = [v6 objectForKeyedSubscript:@"access-group"];
+        v61 = [parametersCopy objectForKeyedSubscript:@"access-group"];
         v63 = objc_getProperty(v7, v62, 96, 1);
         [v63 setAccessGroup:v61];
       }
     }
 
-    v64 = [v6 objectForKeyedSubscript:@"include-all-networks"];
+    v64 = [parametersCopy objectForKeyedSubscript:@"include-all-networks"];
 
     if (v64)
     {
-      v65 = [v6 objectForKeyedSubscript:@"include-all-networks"];
+      v65 = [parametersCopy objectForKeyedSubscript:@"include-all-networks"];
       [v7 setIncludeAllNetworks:{objc_msgSend(v65, "BOOLValue")}];
     }
 
-    v66 = [v6 objectForKeyedSubscript:@"exclude-local-networks"];
+    v66 = [parametersCopy objectForKeyedSubscript:@"exclude-local-networks"];
 
     if (v66)
     {
-      v67 = [v6 objectForKeyedSubscript:@"exclude-local-networks"];
+      v67 = [parametersCopy objectForKeyedSubscript:@"exclude-local-networks"];
       [v7 setExcludeLocalNetworks:{objc_msgSend(v67, "BOOLValue")}];
     }
 
-    v68 = [v6 objectForKeyedSubscript:@"exclude-cellular-services"];
+    v68 = [parametersCopy objectForKeyedSubscript:@"exclude-cellular-services"];
 
     if (v68)
     {
-      v69 = [v6 objectForKeyedSubscript:@"exclude-cellular-services"];
+      v69 = [parametersCopy objectForKeyedSubscript:@"exclude-cellular-services"];
       [v7 setExcludeCellularServices:{objc_msgSend(v69, "BOOLValue")}];
     }
 
-    v70 = [v6 objectForKeyedSubscript:@"exclude-apns"];
+    v70 = [parametersCopy objectForKeyedSubscript:@"exclude-apns"];
 
     if (v70)
     {
-      v71 = [v6 objectForKeyedSubscript:@"exclude-apns"];
+      v71 = [parametersCopy objectForKeyedSubscript:@"exclude-apns"];
       [v7 setExcludeAPNs:{objc_msgSend(v71, "BOOLValue")}];
     }
 
-    v72 = [v6 objectForKeyedSubscript:@"exclude-device-communication"];
+    v72 = [parametersCopy objectForKeyedSubscript:@"exclude-device-communication"];
 
     if (v72)
     {
-      v73 = [v6 objectForKeyedSubscript:@"exclude-device-communication"];
+      v73 = [parametersCopy objectForKeyedSubscript:@"exclude-device-communication"];
       [v7 setExcludeDeviceCommunication:{objc_msgSend(v73, "BOOLValue")}];
     }
 
-    v74 = [v6 objectForKeyedSubscript:@"enforce-routes"];
+    v74 = [parametersCopy objectForKeyedSubscript:@"enforce-routes"];
 
     if (v74)
     {
-      v75 = [v6 objectForKeyedSubscript:@"enforce-routes"];
+      v75 = [parametersCopy objectForKeyedSubscript:@"enforce-routes"];
       [v7 setEnforceRoutes:{objc_msgSend(v75, "BOOLValue")}];
     }
 
-    v76 = [v6 objectForKeyedSubscript:@"cellular-slice-UUID"];
+    v76 = [parametersCopy objectForKeyedSubscript:@"cellular-slice-UUID"];
 
     if (!v76)
     {
       goto LABEL_21;
     }
 
-    v77 = [v6 objectForKeyedSubscript:@"cellular-slice-UUID"];
+    v77 = [parametersCopy objectForKeyedSubscript:@"cellular-slice-UUID"];
     v24 = [v77 componentsSeparatedByString:@"/"];
 
     if ([v24 count] >= 2)
@@ -6802,9 +6802,9 @@ LABEL_52:
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v50 = [v6 objectForKeyedSubscript:@"designated-requirement"];
-    v51 = [v50 stringByRemovingPercentEncoding];
-    [v7 setDesignatedRequirement:v51];
+    v50 = [parametersCopy objectForKeyedSubscript:@"designated-requirement"];
+    stringByRemovingPercentEncoding3 = [v50 stringByRemovingPercentEncoding];
+    [v7 setDesignatedRequirement:stringByRemovingPercentEncoding3];
 
     goto LABEL_52;
   }
@@ -6812,205 +6812,205 @@ LABEL_52:
   v22 = 0;
   v23 = @"designated-requirement can only be specified for provider-based configurations";
 LABEL_17:
-  *a4 = v23;
+  *str = v23;
 LABEL_75:
 
   return v22;
 }
 
-- (BOOL)unsetDNSProxyWithParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)unsetDNSProxyWithParameters:(id)parameters errorStr:(id *)str
 {
-  v5 = a3;
-  v6 = [(NEUtilConfigurationClient *)self dnsProxyConfiguration];
-  v7 = [v5 objectForKeyedSubscript:@"vendor-config"];
+  parametersCopy = parameters;
+  dnsProxyConfiguration = [(NEUtilConfigurationClient *)self dnsProxyConfiguration];
+  v7 = [parametersCopy objectForKeyedSubscript:@"vendor-config"];
   v8 = isa_nsdictionary(v7);
 
   if (v8)
   {
-    [v6 setProviderConfiguration:0];
+    [dnsProxyConfiguration setProviderConfiguration:0];
   }
 
-  v9 = [v5 objectForKeyedSubscript:@"designated-requirement"];
+  v9 = [parametersCopy objectForKeyedSubscript:@"designated-requirement"];
 
   if (v9)
   {
-    [v6 setDesignatedRequirement:0];
+    [dnsProxyConfiguration setDesignatedRequirement:0];
   }
 
   return 1;
 }
 
-- (BOOL)setDNSProxyWithParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)setDNSProxyWithParameters:(id)parameters errorStr:(id *)str
 {
-  v6 = a3;
-  v7 = [(NEUtilConfigurationClient *)self dnsProxyConfiguration];
-  if (v7)
+  parametersCopy = parameters;
+  dnsProxyConfiguration = [(NEUtilConfigurationClient *)self dnsProxyConfiguration];
+  if (dnsProxyConfiguration)
   {
-    v8 = [v6 objectForKeyedSubscript:@"vendor-config"];
+    v8 = [parametersCopy objectForKeyedSubscript:@"vendor-config"];
     v9 = isa_nsdictionary(v8);
 
     if (v9)
     {
-      v10 = [v6 objectForKeyedSubscript:@"vendor-config"];
-      [v7 setProviderConfiguration:v10];
+      v10 = [parametersCopy objectForKeyedSubscript:@"vendor-config"];
+      [dnsProxyConfiguration setProviderConfiguration:v10];
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"designated-requirement"];
+    v11 = [parametersCopy objectForKeyedSubscript:@"designated-requirement"];
 
     if (v11)
     {
-      v12 = [v6 objectForKeyedSubscript:@"designated-requirement"];
-      v13 = [v12 stringByRemovingPercentEncoding];
-      [v7 setDesignatedRequirement:v13];
+      v12 = [parametersCopy objectForKeyedSubscript:@"designated-requirement"];
+      stringByRemovingPercentEncoding = [v12 stringByRemovingPercentEncoding];
+      [dnsProxyConfiguration setDesignatedRequirement:stringByRemovingPercentEncoding];
     }
   }
 
   else
   {
-    *a4 = @"DNS Proxy plugin type has not been set yet";
+    *str = @"DNS Proxy plugin type has not been set yet";
   }
 
-  return v7 != 0;
+  return dnsProxyConfiguration != 0;
 }
 
-- (BOOL)unsetFilterPluginParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)unsetFilterPluginParameters:(id)parameters errorStr:(id *)str
 {
-  v5 = a3;
-  v6 = [(NEUtilConfigurationClient *)self filterConfiguration];
-  v7 = [v5 objectForKeyedSubscript:@"organization"];
+  parametersCopy = parameters;
+  filterConfiguration = [(NEUtilConfigurationClient *)self filterConfiguration];
+  v7 = [parametersCopy objectForKeyedSubscript:@"organization"];
 
   if (v7)
   {
-    [v6 setOrganization:0];
+    [filterConfiguration setOrganization:0];
   }
 
-  v8 = [v5 objectForKeyedSubscript:@"vendor-config"];
+  v8 = [parametersCopy objectForKeyedSubscript:@"vendor-config"];
 
   if (v8)
   {
-    [v6 setVendorConfiguration:0];
+    [filterConfiguration setVendorConfiguration:0];
   }
 
-  v9 = [v5 objectForKeyedSubscript:@"designated-requirement"];
+  v9 = [parametersCopy objectForKeyedSubscript:@"designated-requirement"];
 
   if (v9)
   {
-    [v6 setDataProviderDesignatedRequirement:0];
+    [filterConfiguration setDataProviderDesignatedRequirement:0];
   }
 
   return 1;
 }
 
-- (BOOL)setFilterPluginWithParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)setFilterPluginWithParameters:(id)parameters errorStr:(id *)str
 {
-  v6 = a3;
-  v7 = [(NEUtilConfigurationClient *)self filterConfiguration];
-  if (v7)
+  parametersCopy = parameters;
+  filterConfiguration = [(NEUtilConfigurationClient *)self filterConfiguration];
+  if (filterConfiguration)
   {
-    v8 = [v6 objectForKeyedSubscript:@"organization"];
+    v8 = [parametersCopy objectForKeyedSubscript:@"organization"];
 
     if (v8)
     {
-      v9 = [v6 objectForKeyedSubscript:@"organization"];
-      [v7 setOrganization:v9];
+      v9 = [parametersCopy objectForKeyedSubscript:@"organization"];
+      [filterConfiguration setOrganization:v9];
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"filter-browsers"];
+    v10 = [parametersCopy objectForKeyedSubscript:@"filter-browsers"];
 
     if (v10)
     {
-      v11 = [v6 objectForKeyedSubscript:@"filter-browsers"];
-      [v7 setFilterBrowsers:{objc_msgSend(v11, "BOOLValue")}];
+      v11 = [parametersCopy objectForKeyedSubscript:@"filter-browsers"];
+      [filterConfiguration setFilterBrowsers:{objc_msgSend(v11, "BOOLValue")}];
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"filter-sockets"];
+    v12 = [parametersCopy objectForKeyedSubscript:@"filter-sockets"];
 
     if (v12)
     {
-      v13 = [v6 objectForKeyedSubscript:@"filter-sockets"];
-      [v7 setFilterSockets:{objc_msgSend(v13, "BOOLValue")}];
+      v13 = [parametersCopy objectForKeyedSubscript:@"filter-sockets"];
+      [filterConfiguration setFilterSockets:{objc_msgSend(v13, "BOOLValue")}];
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"filter-packets"];
+    v14 = [parametersCopy objectForKeyedSubscript:@"filter-packets"];
 
     if (v14)
     {
-      v15 = [v6 objectForKeyedSubscript:@"filter-packets"];
-      [v7 setFilterPackets:{objc_msgSend(v15, "BOOLValue")}];
+      v15 = [parametersCopy objectForKeyedSubscript:@"filter-packets"];
+      [filterConfiguration setFilterPackets:{objc_msgSend(v15, "BOOLValue")}];
     }
 
-    v16 = [v6 objectForKeyedSubscript:@"disable-default-drop"];
+    v16 = [parametersCopy objectForKeyedSubscript:@"disable-default-drop"];
 
     if (v16)
     {
-      v17 = [v6 objectForKeyedSubscript:@"disable-default-drop"];
-      [v7 setDisableDefaultDrop:{objc_msgSend(v17, "BOOLValue")}];
+      v17 = [parametersCopy objectForKeyedSubscript:@"disable-default-drop"];
+      [filterConfiguration setDisableDefaultDrop:{objc_msgSend(v17, "BOOLValue")}];
     }
 
-    v18 = [v6 objectForKeyedSubscript:@"preserve-existing-connections"];
+    v18 = [parametersCopy objectForKeyedSubscript:@"preserve-existing-connections"];
 
     if (v18)
     {
-      v19 = [v6 objectForKeyedSubscript:@"preserve-existing-connections"];
-      [v7 setPreserveExistingConnections:{objc_msgSend(v19, "BOOLValue")}];
+      v19 = [parametersCopy objectForKeyedSubscript:@"preserve-existing-connections"];
+      [filterConfiguration setPreserveExistingConnections:{objc_msgSend(v19, "BOOLValue")}];
     }
 
-    v20 = [v6 objectForKeyedSubscript:@"vendor-config"];
+    v20 = [parametersCopy objectForKeyedSubscript:@"vendor-config"];
     v21 = isa_nsdictionary(v20);
 
     if (v21)
     {
-      v22 = [v6 objectForKeyedSubscript:@"vendor-config"];
-      [v7 setVendorConfiguration:v22];
+      v22 = [parametersCopy objectForKeyedSubscript:@"vendor-config"];
+      [filterConfiguration setVendorConfiguration:v22];
     }
 
-    v23 = [v6 objectForKeyedSubscript:@"provider-bundle-identifier"];
+    v23 = [parametersCopy objectForKeyedSubscript:@"provider-bundle-identifier"];
 
     if (v23)
     {
-      v24 = [v6 objectForKeyedSubscript:@"provider-bundle-identifier"];
-      [v7 setFilterDataProviderBundleIdentifier:v24];
+      v24 = [parametersCopy objectForKeyedSubscript:@"provider-bundle-identifier"];
+      [filterConfiguration setFilterDataProviderBundleIdentifier:v24];
     }
 
-    v25 = [v6 objectForKeyedSubscript:@"designated-requirement"];
+    v25 = [parametersCopy objectForKeyedSubscript:@"designated-requirement"];
 
     if (v25)
     {
-      v26 = [v6 objectForKeyedSubscript:@"designated-requirement"];
-      v27 = [v26 stringByRemovingPercentEncoding];
-      [v7 setDataProviderDesignatedRequirement:v27];
+      v26 = [parametersCopy objectForKeyedSubscript:@"designated-requirement"];
+      stringByRemovingPercentEncoding = [v26 stringByRemovingPercentEncoding];
+      [filterConfiguration setDataProviderDesignatedRequirement:stringByRemovingPercentEncoding];
     }
 
-    v28 = [v6 objectForKeyedSubscript:@"packet-provider-bundle-identifier"];
+    v28 = [parametersCopy objectForKeyedSubscript:@"packet-provider-bundle-identifier"];
 
     if (v28)
     {
-      v29 = [v6 objectForKeyedSubscript:@"packet-provider-bundle-identifier"];
-      [v7 setFilterPacketProviderBundleIdentifier:v29];
+      v29 = [parametersCopy objectForKeyedSubscript:@"packet-provider-bundle-identifier"];
+      [filterConfiguration setFilterPacketProviderBundleIdentifier:v29];
     }
 
-    v30 = [v6 objectForKeyedSubscript:@"packet-provider-designated-requirement"];
+    v30 = [parametersCopy objectForKeyedSubscript:@"packet-provider-designated-requirement"];
 
     if (v30)
     {
-      v31 = [v6 objectForKeyedSubscript:@"packet-provider-designated-requirement"];
-      v32 = [v31 stringByRemovingPercentEncoding];
-      [v7 setPacketProviderDesignatedRequirement:v32];
+      v31 = [parametersCopy objectForKeyedSubscript:@"packet-provider-designated-requirement"];
+      stringByRemovingPercentEncoding2 = [v31 stringByRemovingPercentEncoding];
+      [filterConfiguration setPacketProviderDesignatedRequirement:stringByRemovingPercentEncoding2];
     }
   }
 
   else
   {
-    *a4 = @"Filter plugin type has not been set yet";
+    *str = @"Filter plugin type has not been set yet";
   }
 
-  return v7 != 0;
+  return filterConfiguration != 0;
 }
 
-- (BOOL)setProtocolWithParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)setProtocolWithParameters:(id)parameters errorStr:(id *)str
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"type"];
+  parametersCopy = parameters;
+  v7 = [parametersCopy objectForKeyedSubscript:@"type"];
   if ([v7 isEqualToString:@"ikev1"])
   {
     v8 = NEVPNProtocolIPSec;
@@ -7028,7 +7028,7 @@ LABEL_75:
     {
       if ([v7 isEqualToString:@"plugin"])
       {
-        v44 = [v6 objectForKeyedSubscript:@"plugin-type"];
+        v44 = [parametersCopy objectForKeyedSubscript:@"plugin-type"];
         if (v44)
         {
           v45 = v44;
@@ -7052,7 +7052,7 @@ LABEL_75:
         v66 = @"Invalid protocol type";
       }
 
-      *a4 = v66;
+      *str = v66;
       goto LABEL_53;
     }
 
@@ -7074,9 +7074,9 @@ LABEL_8:
 LABEL_47:
   Property = 0;
 LABEL_9:
-  v12 = [Property alwaysOnVPN];
+  alwaysOnVPN = [Property alwaysOnVPN];
 
-  if (!v12)
+  if (!alwaysOnVPN)
   {
     if (self)
     {
@@ -7088,9 +7088,9 @@ LABEL_9:
       v25 = 0;
     }
 
-    v26 = [v25 appVPN];
+    appVPN = [v25 appVPN];
 
-    if (v26)
+    if (appVPN)
     {
       if ([(NEVPNProtocol *)v10 type]!= 4 && [(NEVPNProtocol *)v10 type]!= 1 && [(NEVPNProtocol *)v10 type]!= 5)
       {
@@ -7119,13 +7119,13 @@ LABEL_9:
 
       else
       {
-        v67 = [0 appVPN];
-        [v67 setTunnelType:v29];
+        appVPN2 = [0 appVPN];
+        [appVPN2 setTunnelType:v29];
 
         v32 = 0;
       }
 
-      v33 = [v32 appVPN];
+      appVPN3 = [v32 appVPN];
     }
 
     else
@@ -7154,12 +7154,12 @@ LABEL_9:
           v49 = 0;
         }
 
-        v50 = [v49 contentFilter];
-        if (v50 && (v52 = v50, objc_opt_class(), v53 = objc_opt_isKindOfClass(), v52, (v53 & 1) != 0))
+        contentFilter = [v49 contentFilter];
+        if (contentFilter && (v52 = contentFilter, objc_opt_class(), v53 = objc_opt_isKindOfClass(), v52, (v53 & 1) != 0))
         {
           v54 = objc_alloc_init(NEFilterProviderConfiguration);
-          v55 = [(NETunnelProviderProtocol *)v10 pluginType];
-          [(NEFilterProviderConfiguration *)v54 setPluginType:v55];
+          pluginType = [(NETunnelProviderProtocol *)v10 pluginType];
+          [(NEFilterProviderConfiguration *)v54 setPluginType:pluginType];
 
           if (self)
           {
@@ -7171,8 +7171,8 @@ LABEL_9:
             v57 = 0;
           }
 
-          v58 = [v57 contentFilter];
-          [v58 setProvider:v54];
+          contentFilter2 = [v57 contentFilter];
+          [contentFilter2 setProvider:v54];
         }
 
         else
@@ -7187,16 +7187,16 @@ LABEL_9:
             v59 = 0;
           }
 
-          v60 = [v59 dnsProxy];
-          if (!v60 || (v61 = v60, objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v61, (isKindOfClass & 1) == 0))
+          dnsProxy = [v59 dnsProxy];
+          if (!dnsProxy || (v61 = dnsProxy, objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v61, (isKindOfClass & 1) == 0))
           {
             v34 = @"Configuration does not have a VPN type";
             goto LABEL_30;
           }
 
           v54 = objc_alloc_init(NEDNSProxyProviderProtocol);
-          v63 = [(NETunnelProviderProtocol *)v10 pluginType];
-          [(NEFilterProviderConfiguration *)v54 setPluginType:v63];
+          pluginType2 = [(NETunnelProviderProtocol *)v10 pluginType];
+          [(NEFilterProviderConfiguration *)v54 setPluginType:pluginType2];
 
           if (self)
           {
@@ -7208,8 +7208,8 @@ LABEL_9:
             v65 = 0;
           }
 
-          v58 = [v65 dnsProxy];
-          [v58 setProtocol:v54];
+          contentFilter2 = [v65 dnsProxy];
+          [contentFilter2 setProtocol:v54];
         }
 
 LABEL_52:
@@ -7243,16 +7243,16 @@ LABEL_52:
         v46 = 0;
       }
 
-      v33 = [v46 VPN];
+      appVPN3 = [v46 VPN];
     }
 
-    v47 = v33;
-    [v33 setProtocol:v10];
+    v47 = appVPN3;
+    [appVPN3 setProtocol:v10];
 
     goto LABEL_52;
   }
 
-  v14 = [v6 objectForKeyedSubscript:@"interface-name"];
+  v14 = [parametersCopy objectForKeyedSubscript:@"interface-name"];
   if (v14)
   {
     v16 = v14;
@@ -7266,10 +7266,10 @@ LABEL_52:
       v17 = 0;
     }
 
-    v18 = [v17 alwaysOnVPN];
-    v19 = [v18 interfaceProtocolMapping];
+    alwaysOnVPN2 = [v17 alwaysOnVPN];
+    interfaceProtocolMapping = [alwaysOnVPN2 interfaceProtocolMapping];
 
-    if (v19)
+    if (interfaceProtocolMapping)
     {
       if (self)
       {
@@ -7281,9 +7281,9 @@ LABEL_52:
         v21 = 0;
       }
 
-      v22 = [v21 alwaysOnVPN];
-      v23 = [v22 interfaceProtocolMapping];
-      v24 = [v23 mutableCopy];
+      alwaysOnVPN3 = [v21 alwaysOnVPN];
+      interfaceProtocolMapping2 = [alwaysOnVPN3 interfaceProtocolMapping];
+      v24 = [interfaceProtocolMapping2 mutableCopy];
     }
 
     else
@@ -7302,15 +7302,15 @@ LABEL_52:
       v37 = 0;
     }
 
-    v38 = [v37 alwaysOnVPN];
-    [v38 setInterfaceProtocolMapping:v24];
+    alwaysOnVPN4 = [v37 alwaysOnVPN];
+    [alwaysOnVPN4 setInterfaceProtocolMapping:v24];
 
     goto LABEL_52;
   }
 
   v34 = @"Missing interface name";
 LABEL_30:
-  *a4 = v34;
+  *str = v34;
 
   v35 = 0;
 LABEL_53:
@@ -7318,12 +7318,12 @@ LABEL_53:
   return v35;
 }
 
-- (BOOL)createConfigurationWithParameters:(id)a3 errorStr:(id *)a4
+- (BOOL)createConfigurationWithParameters:(id)parameters errorStr:(id *)str
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"name"];
-  v8 = [v6 objectForKeyedSubscript:@"type"];
-  v9 = [v6 objectForKeyedSubscript:@"grade"];
+  parametersCopy = parameters;
+  v7 = [parametersCopy objectForKeyedSubscript:@"name"];
+  v8 = [parametersCopy objectForKeyedSubscript:@"type"];
+  v9 = [parametersCopy objectForKeyedSubscript:@"grade"];
 
   if (v9 && ([v9 isEqualToString:@"enterprise"] & 1) == 0)
   {
@@ -7337,7 +7337,7 @@ LABEL_53:
       if (([v9 isEqualToString:@"system"] & 1) == 0)
       {
         [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid configuration grade: %@", v9];
-        *a4 = v13 = 0;
+        *str = v13 = 0;
         goto LABEL_36;
       }
 
@@ -7415,7 +7415,7 @@ LABEL_53:
   {
     if (![v8 isEqualToString:@"hotspot"])
     {
-      *a4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid configuration type: %@", v8];
+      *str = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid configuration type: %@", v8];
 
       v13 = 0;
       goto LABEL_36;
@@ -7482,10 +7482,10 @@ LABEL_36:
     self = objc_getProperty(self, a2, 56, 1);
   }
 
-  v2 = [(NEUtilConfigurationClient *)self dnsProxy];
-  v3 = [v2 protocol];
+  dnsProxy = [(NEUtilConfigurationClient *)self dnsProxy];
+  protocol = [dnsProxy protocol];
 
-  return v3;
+  return protocol;
 }
 
 - (NEFilterProviderConfiguration)filterConfiguration
@@ -7495,15 +7495,15 @@ LABEL_36:
     self = objc_getProperty(self, a2, 56, 1);
   }
 
-  v2 = [(NEUtilConfigurationClient *)self contentFilter];
-  v3 = [v2 provider];
+  contentFilter = [(NEUtilConfigurationClient *)self contentFilter];
+  provider = [contentFilter provider];
 
-  return v3;
+  return provider;
 }
 
-- (id)protocolForParameters:(id)a3
+- (id)protocolForParameters:(id)parameters
 {
-  v5 = a3;
+  parametersCopy = parameters;
   if (self)
   {
     Property = objc_getProperty(self, v4, 56, 1);
@@ -7528,10 +7528,10 @@ LABEL_36:
       v9 = 0;
     }
 
-    v10 = [v9 VPN];
+    appVPN2 = [v9 VPN];
 LABEL_13:
-    v15 = v10;
-    v16 = [v10 protocol];
+    v15 = appVPN2;
+    protocol = [appVPN2 protocol];
 LABEL_14:
 
     goto LABEL_15;
@@ -7547,9 +7547,9 @@ LABEL_14:
     v11 = 0;
   }
 
-  v12 = [v11 appVPN];
+  appVPN = [v11 appVPN];
 
-  if (v12)
+  if (appVPN)
   {
     if (self)
     {
@@ -7561,7 +7561,7 @@ LABEL_14:
       v14 = 0;
     }
 
-    v10 = [v14 appVPN];
+    appVPN2 = [v14 appVPN];
     goto LABEL_13;
   }
 
@@ -7575,11 +7575,11 @@ LABEL_14:
     v18 = 0;
   }
 
-  v19 = [v18 alwaysOnVPN];
+  alwaysOnVPN = [v18 alwaysOnVPN];
 
-  if (v19)
+  if (alwaysOnVPN)
   {
-    v15 = [v5 objectForKeyedSubscript:@"interface-name"];
+    v15 = [parametersCopy objectForKeyedSubscript:@"interface-name"];
     if (v15)
     {
       if (self)
@@ -7592,28 +7592,28 @@ LABEL_14:
         v21 = 0;
       }
 
-      v22 = [v21 alwaysOnVPN];
-      v23 = [v22 interfaceProtocolMapping];
-      v16 = [v23 objectForKeyedSubscript:v15];
+      alwaysOnVPN2 = [v21 alwaysOnVPN];
+      interfaceProtocolMapping = [alwaysOnVPN2 interfaceProtocolMapping];
+      protocol = [interfaceProtocolMapping objectForKeyedSubscript:v15];
     }
 
     else
     {
-      v16 = 0;
+      protocol = 0;
     }
 
     goto LABEL_14;
   }
 
-  v16 = 0;
+  protocol = 0;
 LABEL_15:
 
-  return v16;
+  return protocol;
 }
 
-- (void)setOnDemandRules:(id)a3
+- (void)setOnDemandRules:(id)rules
 {
-  v22 = a3;
+  rulesCopy = rules;
   if (self)
   {
     Property = objc_getProperty(self, v4, 56, 1);
@@ -7628,7 +7628,7 @@ LABEL_15:
 
   if (v6)
   {
-    v9 = [v22 copy];
+    v9 = [rulesCopy copy];
     if (self)
     {
       v10 = objc_getProperty(self, v8, 56, 1);
@@ -7639,7 +7639,7 @@ LABEL_15:
       v10 = 0;
     }
 
-    v11 = [v10 VPN];
+    appVPN2 = [v10 VPN];
   }
 
   else
@@ -7654,11 +7654,11 @@ LABEL_15:
       v12 = 0;
     }
 
-    v13 = [v12 appVPN];
+    appVPN = [v12 appVPN];
 
-    if (v13)
+    if (appVPN)
     {
-      v9 = [v22 copy];
+      v9 = [rulesCopy copy];
       if (self)
       {
         v16 = objc_getProperty(self, v15, 56, 1);
@@ -7669,7 +7669,7 @@ LABEL_15:
         v16 = 0;
       }
 
-      v11 = [v16 appVPN];
+      appVPN2 = [v16 appVPN];
     }
 
     else
@@ -7684,14 +7684,14 @@ LABEL_15:
         v17 = 0;
       }
 
-      v18 = [v17 dnsSettings];
+      dnsSettings = [v17 dnsSettings];
 
-      if (!v18)
+      if (!dnsSettings)
       {
         goto LABEL_20;
       }
 
-      v9 = [v22 copy];
+      v9 = [rulesCopy copy];
       if (self)
       {
         v20 = objc_getProperty(self, v19, 56, 1);
@@ -7702,19 +7702,19 @@ LABEL_15:
         v20 = 0;
       }
 
-      v11 = [v20 dnsSettings];
+      appVPN2 = [v20 dnsSettings];
     }
   }
 
-  v21 = v11;
-  [v11 setOnDemandRules:v9];
+  v21 = appVPN2;
+  [appVPN2 setOnDemandRules:v9];
 
 LABEL_20:
 }
 
 - (NSArray)onDemandRules
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 56, 1);
@@ -7724,9 +7724,9 @@ LABEL_20:
 
   if (v3)
   {
-    if (v2)
+    if (selfCopy)
     {
-      Property = objc_getProperty(v2, v4, 56, 1);
+      Property = objc_getProperty(selfCopy, v4, 56, 1);
     }
 
     else
@@ -7734,14 +7734,14 @@ LABEL_20:
       Property = 0;
     }
 
-    v6 = [Property VPN];
+    appVPN2 = [Property VPN];
   }
 
   else
   {
-    if (v2)
+    if (selfCopy)
     {
-      v7 = objc_getProperty(v2, v4, 56, 1);
+      v7 = objc_getProperty(selfCopy, v4, 56, 1);
     }
 
     else
@@ -7749,13 +7749,13 @@ LABEL_20:
       v7 = 0;
     }
 
-    v8 = [v7 appVPN];
+    appVPN = [v7 appVPN];
 
-    if (v8)
+    if (appVPN)
     {
-      if (v2)
+      if (selfCopy)
       {
-        v10 = objc_getProperty(v2, v9, 56, 1);
+        v10 = objc_getProperty(selfCopy, v9, 56, 1);
       }
 
       else
@@ -7763,14 +7763,14 @@ LABEL_20:
         v10 = 0;
       }
 
-      v6 = [v10 appVPN];
+      appVPN2 = [v10 appVPN];
     }
 
     else
     {
-      if (v2)
+      if (selfCopy)
       {
-        v11 = objc_getProperty(v2, v9, 56, 1);
+        v11 = objc_getProperty(selfCopy, v9, 56, 1);
       }
 
       else
@@ -7778,16 +7778,16 @@ LABEL_20:
         v11 = 0;
       }
 
-      v12 = [v11 dnsSettings];
+      dnsSettings = [v11 dnsSettings];
 
-      if (!v12)
+      if (!dnsSettings)
       {
         goto LABEL_20;
       }
 
-      if (v2)
+      if (selfCopy)
       {
-        v14 = objc_getProperty(v2, v13, 56, 1);
+        v14 = objc_getProperty(selfCopy, v13, 56, 1);
       }
 
       else
@@ -7795,21 +7795,21 @@ LABEL_20:
         v14 = 0;
       }
 
-      v6 = [v14 dnsSettings];
+      appVPN2 = [v14 dnsSettings];
     }
   }
 
-  v15 = v6;
-  v12 = [v6 onDemandRules];
+  v15 = appVPN2;
+  dnsSettings = [appVPN2 onDemandRules];
 
 LABEL_20:
 
-  return v12;
+  return dnsSettings;
 }
 
 - (BOOL)disconnectOnDemandEnabled
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 56, 1);
@@ -7819,9 +7819,9 @@ LABEL_20:
 
   if (v3)
   {
-    if (v2)
+    if (selfCopy)
     {
-      Property = objc_getProperty(v2, v4, 56, 1);
+      Property = objc_getProperty(selfCopy, v4, 56, 1);
     }
 
     else
@@ -7829,17 +7829,17 @@ LABEL_20:
       Property = 0;
     }
 
-    v6 = [Property VPN];
+    appVPN2 = [Property VPN];
 LABEL_13:
-    v11 = v6;
-    v12 = [v6 isDisconnectOnDemandEnabled];
+    v11 = appVPN2;
+    isDisconnectOnDemandEnabled = [appVPN2 isDisconnectOnDemandEnabled];
 
-    return v12;
+    return isDisconnectOnDemandEnabled;
   }
 
-  if (v2)
+  if (selfCopy)
   {
-    v7 = objc_getProperty(v2, v4, 56, 1);
+    v7 = objc_getProperty(selfCopy, v4, 56, 1);
   }
 
   else
@@ -7847,13 +7847,13 @@ LABEL_13:
     v7 = 0;
   }
 
-  v8 = [v7 appVPN];
+  appVPN = [v7 appVPN];
 
-  if (v8)
+  if (appVPN)
   {
-    if (v2)
+    if (selfCopy)
     {
-      v10 = objc_getProperty(v2, v9, 56, 1);
+      v10 = objc_getProperty(selfCopy, v9, 56, 1);
     }
 
     else
@@ -7861,7 +7861,7 @@ LABEL_13:
       v10 = 0;
     }
 
-    v6 = [v10 appVPN];
+    appVPN2 = [v10 appVPN];
     goto LABEL_13;
   }
 
@@ -7870,7 +7870,7 @@ LABEL_13:
 
 - (BOOL)onDemandUserOverrideDisabled
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 56, 1);
@@ -7879,9 +7879,9 @@ LABEL_13:
   v4 = [(NEUtilConfigurationClient *)self VPN];
   if (v4)
   {
-    if (v2)
+    if (selfCopy)
     {
-      Property = objc_getProperty(v2, v3, 56, 1);
+      Property = objc_getProperty(selfCopy, v3, 56, 1);
     }
 
     else
@@ -7889,14 +7889,14 @@ LABEL_13:
       Property = 0;
     }
 
-    v6 = [Property VPN];
+    appVPN = [Property VPN];
   }
 
   else
   {
-    if (v2)
+    if (selfCopy)
     {
-      v7 = objc_getProperty(v2, v3, 56, 1);
+      v7 = objc_getProperty(selfCopy, v3, 56, 1);
     }
 
     else
@@ -7904,18 +7904,18 @@ LABEL_13:
       v7 = 0;
     }
 
-    v6 = [v7 appVPN];
+    appVPN = [v7 appVPN];
   }
 
-  v8 = v6;
+  v8 = appVPN;
 
-  v9 = [v8 isOnDemandUserOverrideDisabled];
-  return v9;
+  isOnDemandUserOverrideDisabled = [v8 isOnDemandUserOverrideDisabled];
+  return isOnDemandUserOverrideDisabled;
 }
 
 - (BOOL)onDemandEnabled
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 56, 1);
@@ -7925,9 +7925,9 @@ LABEL_13:
 
   if (v3)
   {
-    if (v2)
+    if (selfCopy)
     {
-      Property = objc_getProperty(v2, v4, 56, 1);
+      Property = objc_getProperty(selfCopy, v4, 56, 1);
     }
 
     else
@@ -7935,17 +7935,17 @@ LABEL_13:
       Property = 0;
     }
 
-    v6 = [Property VPN];
+    appVPN2 = [Property VPN];
 LABEL_13:
-    v11 = v6;
-    v12 = [v6 isOnDemandEnabled];
+    v11 = appVPN2;
+    isOnDemandEnabled = [appVPN2 isOnDemandEnabled];
 
-    return v12;
+    return isOnDemandEnabled;
   }
 
-  if (v2)
+  if (selfCopy)
   {
-    v7 = objc_getProperty(v2, v4, 56, 1);
+    v7 = objc_getProperty(selfCopy, v4, 56, 1);
   }
 
   else
@@ -7953,13 +7953,13 @@ LABEL_13:
     v7 = 0;
   }
 
-  v8 = [v7 appVPN];
+  appVPN = [v7 appVPN];
 
-  if (v8)
+  if (appVPN)
   {
-    if (v2)
+    if (selfCopy)
     {
-      v10 = objc_getProperty(v2, v9, 56, 1);
+      v10 = objc_getProperty(selfCopy, v9, 56, 1);
     }
 
     else
@@ -7967,7 +7967,7 @@ LABEL_13:
       v10 = 0;
     }
 
-    v6 = [v10 appVPN];
+    appVPN2 = [v10 appVPN];
     goto LABEL_13;
   }
 
@@ -7976,7 +7976,7 @@ LABEL_13:
 
 - (BOOL)enabled
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 56, 1);
@@ -7986,9 +7986,9 @@ LABEL_13:
 
   if (v3)
   {
-    if (v2)
+    if (selfCopy)
     {
-      Property = objc_getProperty(v2, v4, 56, 1);
+      Property = objc_getProperty(selfCopy, v4, 56, 1);
     }
 
     else
@@ -7996,17 +7996,17 @@ LABEL_13:
       Property = 0;
     }
 
-    v6 = [Property VPN];
+    appVPN2 = [Property VPN];
 LABEL_49:
-    v35 = v6;
-    v36 = [v6 isEnabled];
+    v35 = appVPN2;
+    isEnabled = [appVPN2 isEnabled];
 
-    return v36;
+    return isEnabled;
   }
 
-  if (v2)
+  if (selfCopy)
   {
-    v7 = objc_getProperty(v2, v4, 56, 1);
+    v7 = objc_getProperty(selfCopy, v4, 56, 1);
   }
 
   else
@@ -8014,13 +8014,13 @@ LABEL_49:
     v7 = 0;
   }
 
-  v8 = [v7 appVPN];
+  appVPN = [v7 appVPN];
 
-  if (v8)
+  if (appVPN)
   {
-    if (v2)
+    if (selfCopy)
     {
-      v10 = objc_getProperty(v2, v9, 56, 1);
+      v10 = objc_getProperty(selfCopy, v9, 56, 1);
     }
 
     else
@@ -8028,13 +8028,13 @@ LABEL_49:
       v10 = 0;
     }
 
-    v6 = [v10 appVPN];
+    appVPN2 = [v10 appVPN];
     goto LABEL_49;
   }
 
-  if (v2)
+  if (selfCopy)
   {
-    v11 = objc_getProperty(v2, v9, 56, 1);
+    v11 = objc_getProperty(selfCopy, v9, 56, 1);
   }
 
   else
@@ -8042,13 +8042,13 @@ LABEL_49:
     v11 = 0;
   }
 
-  v12 = [v11 contentFilter];
+  contentFilter = [v11 contentFilter];
 
-  if (v12)
+  if (contentFilter)
   {
-    if (v2)
+    if (selfCopy)
     {
-      v14 = objc_getProperty(v2, v13, 56, 1);
+      v14 = objc_getProperty(selfCopy, v13, 56, 1);
     }
 
     else
@@ -8056,13 +8056,13 @@ LABEL_49:
       v14 = 0;
     }
 
-    v6 = [v14 contentFilter];
+    appVPN2 = [v14 contentFilter];
     goto LABEL_49;
   }
 
-  if (v2)
+  if (selfCopy)
   {
-    v15 = objc_getProperty(v2, v13, 56, 1);
+    v15 = objc_getProperty(selfCopy, v13, 56, 1);
   }
 
   else
@@ -8070,13 +8070,13 @@ LABEL_49:
     v15 = 0;
   }
 
-  v16 = [v15 alwaysOnVPN];
+  alwaysOnVPN = [v15 alwaysOnVPN];
 
-  if (v16)
+  if (alwaysOnVPN)
   {
-    if (v2)
+    if (selfCopy)
     {
-      v18 = objc_getProperty(v2, v17, 56, 1);
+      v18 = objc_getProperty(selfCopy, v17, 56, 1);
     }
 
     else
@@ -8084,13 +8084,13 @@ LABEL_49:
       v18 = 0;
     }
 
-    v6 = [v18 alwaysOnVPN];
+    appVPN2 = [v18 alwaysOnVPN];
     goto LABEL_49;
   }
 
-  if (v2)
+  if (selfCopy)
   {
-    v19 = objc_getProperty(v2, v17, 56, 1);
+    v19 = objc_getProperty(selfCopy, v17, 56, 1);
   }
 
   else
@@ -8098,13 +8098,13 @@ LABEL_49:
     v19 = 0;
   }
 
-  v20 = [v19 dnsProxy];
+  dnsProxy = [v19 dnsProxy];
 
-  if (v20)
+  if (dnsProxy)
   {
-    if (v2)
+    if (selfCopy)
     {
-      v22 = objc_getProperty(v2, v21, 56, 1);
+      v22 = objc_getProperty(selfCopy, v21, 56, 1);
     }
 
     else
@@ -8112,13 +8112,13 @@ LABEL_49:
       v22 = 0;
     }
 
-    v6 = [v22 dnsProxy];
+    appVPN2 = [v22 dnsProxy];
     goto LABEL_49;
   }
 
-  if (v2)
+  if (selfCopy)
   {
-    v23 = objc_getProperty(v2, v21, 56, 1);
+    v23 = objc_getProperty(selfCopy, v21, 56, 1);
   }
 
   else
@@ -8126,13 +8126,13 @@ LABEL_49:
     v23 = 0;
   }
 
-  v24 = [v23 dnsSettings];
+  dnsSettings = [v23 dnsSettings];
 
-  if (v24)
+  if (dnsSettings)
   {
-    if (v2)
+    if (selfCopy)
     {
-      v26 = objc_getProperty(v2, v25, 56, 1);
+      v26 = objc_getProperty(selfCopy, v25, 56, 1);
     }
 
     else
@@ -8140,13 +8140,13 @@ LABEL_49:
       v26 = 0;
     }
 
-    v6 = [v26 dnsSettings];
+    appVPN2 = [v26 dnsSettings];
     goto LABEL_49;
   }
 
-  if (v2)
+  if (selfCopy)
   {
-    v27 = objc_getProperty(v2, v25, 56, 1);
+    v27 = objc_getProperty(selfCopy, v25, 56, 1);
   }
 
   else
@@ -8154,13 +8154,13 @@ LABEL_49:
     v27 = 0;
   }
 
-  v28 = [v27 relay];
+  relay = [v27 relay];
 
-  if (v28)
+  if (relay)
   {
-    if (v2)
+    if (selfCopy)
     {
-      v30 = objc_getProperty(v2, v29, 56, 1);
+      v30 = objc_getProperty(selfCopy, v29, 56, 1);
     }
 
     else
@@ -8168,13 +8168,13 @@ LABEL_49:
       v30 = 0;
     }
 
-    v6 = [v30 relay];
+    appVPN2 = [v30 relay];
     goto LABEL_49;
   }
 
-  if (v2)
+  if (selfCopy)
   {
-    v31 = objc_getProperty(v2, v29, 56, 1);
+    v31 = objc_getProperty(selfCopy, v29, 56, 1);
   }
 
   else
@@ -8182,13 +8182,13 @@ LABEL_49:
     v31 = 0;
   }
 
-  v32 = [v31 urlFilter];
+  urlFilter = [v31 urlFilter];
 
-  if (v32)
+  if (urlFilter)
   {
-    if (v2)
+    if (selfCopy)
     {
-      v34 = objc_getProperty(v2, v33, 56, 1);
+      v34 = objc_getProperty(selfCopy, v33, 56, 1);
     }
 
     else
@@ -8196,7 +8196,7 @@ LABEL_49:
       v34 = 0;
     }
 
-    v6 = [v34 urlFilter];
+    appVPN2 = [v34 urlFilter];
     goto LABEL_49;
   }
 
@@ -8210,10 +8210,10 @@ LABEL_49:
   [(NEUtilConfigurationClient *)&v2 dealloc];
 }
 
-- (NEUtilConfigurationClient)initWithClientName:(id)a3
+- (NEUtilConfigurationClient)initWithClientName:(id)name
 {
-  v4 = a3;
-  v5 = [(NEUtilConfigurationClient *)self initInternalWithClientName:v4];
+  nameCopy = name;
+  v5 = [(NEUtilConfigurationClient *)self initInternalWithClientName:nameCopy];
   if (v5)
   {
     if (geteuid())
@@ -8253,15 +8253,15 @@ void __48__NEUtilConfigurationClient_initWithClientName___block_invoke(uint64_t 
   [(NEUtilConfigurationClient *)WeakRetained loadConfigurationsForceRefresh:&__block_literal_global_7_25468 completionHandler:?];
 }
 
-- (id)initInternalWithClientName:(id)a3
+- (id)initInternalWithClientName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = NEUtilConfigurationClient;
   v5 = [(NEUtilConfigurationClient *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     clientName = v5->_clientName;
     v5->_clientName = v6;
   }
@@ -8269,11 +8269,11 @@ void __48__NEUtilConfigurationClient_initWithClientName___block_invoke(uint64_t 
   return v5;
 }
 
-+ (void)removeClientWithName:(id)a3
++ (void)removeClientWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[NEUtilConfigurationClient allClients];
-  [v4 removeObjectForKey:v3];
+  [v4 removeObjectForKey:nameCopy];
 }
 
 + (id)allClients
@@ -8298,24 +8298,24 @@ uint64_t __39__NEUtilConfigurationClient_allClients__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)clientWithName:(id)a3
++ (id)clientWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[NEUtilConfigurationClient allClients];
-  v5 = [v4 objectForKeyedSubscript:v3];
+  v5 = [v4 objectForKeyedSubscript:nameCopy];
   if (!v5)
   {
-    v6 = [v3 hasPrefix:@"app:"];
+    v6 = [nameCopy hasPrefix:@"app:"];
     v7 = off_1E7F04DC0;
     if (!v6)
     {
       v7 = off_1E7F04E70;
     }
 
-    v5 = [objc_alloc(*v7) initWithClientName:v3];
+    v5 = [objc_alloc(*v7) initWithClientName:nameCopy];
     if (v5)
     {
-      [v4 setObject:v5 forKeyedSubscript:v3];
+      [v4 setObject:v5 forKeyedSubscript:nameCopy];
     }
   }
 

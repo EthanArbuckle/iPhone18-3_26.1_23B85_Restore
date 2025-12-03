@@ -1,28 +1,28 @@
 @interface CTPendingPlan
-- (BOOL)isEqual:(id)a3;
-- (CTPendingPlan)initWithCoder:(id)a3;
-- (CTPendingPlan)initWithSmdpURL:(id)a3 matchingID:(id)a4 iccidHash:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CTPendingPlan)initWithCoder:(id)coder;
+- (CTPendingPlan)initWithSmdpURL:(id)l matchingID:(id)d iccidHash:(id)hash;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTPendingPlan
 
-- (CTPendingPlan)initWithSmdpURL:(id)a3 matchingID:(id)a4 iccidHash:(id)a5
+- (CTPendingPlan)initWithSmdpURL:(id)l matchingID:(id)d iccidHash:(id)hash
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  dCopy = d;
+  hashCopy = hash;
   v15.receiver = self;
   v15.super_class = CTPendingPlan;
   v12 = [(CTPendingPlan *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_smdpURL, a3);
-    objc_storeStrong(&v13->_matchingID, a4);
-    objc_storeStrong(&v13->_iccidHash, a5);
+    objc_storeStrong(&v12->_smdpURL, l);
+    objc_storeStrong(&v13->_matchingID, d);
+    objc_storeStrong(&v13->_iccidHash, hash);
   }
 
   return v13;
@@ -47,46 +47,46 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   v27.receiver = self;
   v27.super_class = CTPendingPlan;
-  if ([(CTPlan *)&v27 isEqual:v6])
+  if ([(CTPlan *)&v27 isEqual:equalCopy])
   {
-    v7 = [(CTPendingPlan *)self smdpURL];
-    v8 = [v6 smdpURL];
-    if (v7 != v8)
+    smdpURL = [(CTPendingPlan *)self smdpURL];
+    smdpURL2 = [equalCopy smdpURL];
+    if (smdpURL != smdpURL2)
     {
-      v3 = [(CTPendingPlan *)self smdpURL];
-      v4 = [v6 smdpURL];
-      if (![v3 isEqual:v4])
+      smdpURL3 = [(CTPendingPlan *)self smdpURL];
+      smdpURL4 = [equalCopy smdpURL];
+      if (![smdpURL3 isEqual:smdpURL4])
       {
         v9 = 0;
         goto LABEL_16;
       }
     }
 
-    v10 = [(CTPendingPlan *)self matchingID];
-    v11 = [v6 matchingID];
-    if (v10 != v11)
+    matchingID = [(CTPendingPlan *)self matchingID];
+    matchingID2 = [equalCopy matchingID];
+    if (matchingID != matchingID2)
     {
-      v12 = [(CTPendingPlan *)self matchingID];
-      v13 = [v6 matchingID];
-      if (![v12 isEqual:v13])
+      matchingID3 = [(CTPendingPlan *)self matchingID];
+      matchingID4 = [equalCopy matchingID];
+      if (![matchingID3 isEqual:matchingID4])
       {
         v9 = 0;
         goto LABEL_14;
       }
 
-      v25 = v13;
-      v26 = v12;
+      v25 = matchingID4;
+      v26 = matchingID3;
     }
 
-    v14 = [(CTPendingPlan *)self iccidHash];
-    v15 = [v6 iccidHash];
-    v16 = v15;
-    if (v14 == v15)
+    iccidHash = [(CTPendingPlan *)self iccidHash];
+    iccidHash2 = [equalCopy iccidHash];
+    v16 = iccidHash2;
+    if (iccidHash == iccidHash2)
     {
 
       v9 = 1;
@@ -95,29 +95,29 @@
     else
     {
       [(CTPendingPlan *)self iccidHash];
-      v17 = v24 = v3;
-      [v6 iccidHash];
-      v23 = v10;
-      v18 = v8;
-      v19 = v7;
-      v21 = v20 = v4;
+      v17 = v24 = smdpURL3;
+      [equalCopy iccidHash];
+      v23 = matchingID;
+      v18 = smdpURL2;
+      v19 = smdpURL;
+      v21 = v20 = smdpURL4;
       v9 = [v17 isEqual:v21];
 
-      v4 = v20;
-      v7 = v19;
-      v8 = v18;
-      v10 = v23;
+      smdpURL4 = v20;
+      smdpURL = v19;
+      smdpURL2 = v18;
+      matchingID = v23;
 
-      v3 = v24;
+      smdpURL3 = v24;
     }
 
-    v13 = v25;
-    v12 = v26;
-    if (v10 == v11)
+    matchingID4 = v25;
+    matchingID3 = v26;
+    if (matchingID == matchingID2)
     {
 LABEL_15:
 
-      if (v7 == v8)
+      if (smdpURL == smdpURL2)
       {
 LABEL_17:
 
@@ -140,34 +140,34 @@ LABEL_18:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSString *)self->_smdpURL copyWithZone:a3];
-  v7 = [(NSString *)self->_matchingID copyWithZone:a3];
-  v8 = [(NSString *)self->_iccidHash copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSString *)self->_smdpURL copyWithZone:zone];
+  v7 = [(NSString *)self->_matchingID copyWithZone:zone];
+  v8 = [(NSString *)self->_iccidHash copyWithZone:zone];
   v9 = [v5 initWithSmdpURL:v6 matchingID:v7 iccidHash:v8];
 
   return v9;
 }
 
-- (CTPendingPlan)initWithCoder:(id)a3
+- (CTPendingPlan)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CTPendingPlan;
-  v5 = [(CTPlan *)&v13 initWithCoder:v4];
+  v5 = [(CTPlan *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"smdpURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"smdpURL"];
     smdpURL = v5->_smdpURL;
     v5->_smdpURL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"matchingID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"matchingID"];
     matchingID = v5->_matchingID;
     v5->_matchingID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iccidHash"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iccidHash"];
     iccidHash = v5->_iccidHash;
     v5->_iccidHash = v10;
   }
@@ -175,23 +175,23 @@ LABEL_18:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = CTPendingPlan;
-  [(CTPlan *)&v7 encodeWithCoder:v4];
-  [v4 encodeObject:self->_smdpURL forKey:@"smdpURL"];
+  [(CTPlan *)&v7 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_smdpURL forKey:@"smdpURL"];
   matchingID = self->_matchingID;
   if (matchingID)
   {
-    [v4 encodeObject:matchingID forKey:@"matchingID"];
+    [coderCopy encodeObject:matchingID forKey:@"matchingID"];
   }
 
   iccidHash = self->_iccidHash;
   if (iccidHash)
   {
-    [v4 encodeObject:iccidHash forKey:@"iccidHash"];
+    [coderCopy encodeObject:iccidHash forKey:@"iccidHash"];
   }
 }
 

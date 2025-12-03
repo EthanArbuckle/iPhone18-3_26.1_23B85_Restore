@@ -1,39 +1,39 @@
 @interface PKTransactionReceiptDebugViewController
-- (BOOL)shouldMapSection:(unint64_t)a3;
-- (PKTransactionReceiptDebugViewController)initWithPaymentTransaction:(id)a3;
-- (id)_amountCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_headerFieldCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_infoCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_lineItemCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_previewCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_summaryItemCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)provideDataForItem:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (BOOL)shouldMapSection:(unint64_t)section;
+- (PKTransactionReceiptDebugViewController)initWithPaymentTransaction:(id)transaction;
+- (id)_amountCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_headerFieldCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_infoCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_lineItemCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_previewCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_summaryItemCellForTableView:(id)view atIndexPath:(id)path;
+- (id)provideDataForItem:(id)item;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_presentReceiptPreview;
 - (void)dealloc;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)transactionWithIdentifier:(id)a3 didDownloadTransactionReceipt:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)transactionWithIdentifier:(id)identifier didDownloadTransactionReceipt:(id)receipt;
 - (void)viewDidLoad;
 @end
 
 @implementation PKTransactionReceiptDebugViewController
 
-- (PKTransactionReceiptDebugViewController)initWithPaymentTransaction:(id)a3
+- (PKTransactionReceiptDebugViewController)initWithPaymentTransaction:(id)transaction
 {
-  v5 = a3;
+  transactionCopy = transaction;
   v11.receiver = self;
   v11.super_class = PKTransactionReceiptDebugViewController;
   v6 = [(PKSectionTableViewController *)&v11 initWithStyle:1 numberOfSections:6];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transaction, a3);
-    v8 = [MEMORY[0x1E69B8DB8] paymentService];
+    objc_storeStrong(&v6->_transaction, transaction);
+    paymentService = [MEMORY[0x1E69B8DB8] paymentService];
     paymentService = v7->_paymentService;
-    v7->_paymentService = v8;
+    v7->_paymentService = paymentService;
 
     [(PKPaymentService *)v7->_paymentService registerObserver:v7];
   }
@@ -49,52 +49,52 @@
   [(PKSectionTableViewController *)&v3 dealloc];
 }
 
-- (BOOL)shouldMapSection:(unint64_t)a3
+- (BOOL)shouldMapSection:(unint64_t)section
 {
   v4 = 1;
-  if (a3 > 2)
+  if (section > 2)
   {
-    if (a3 == 3)
+    if (section == 3)
     {
-      v5 = [(PKTransactionReceipt *)self->_receipt summaryItems];
+      summaryItems = [(PKTransactionReceipt *)self->_receipt summaryItems];
       goto LABEL_14;
     }
 
-    if (a3 != 4)
+    if (section != 4)
     {
-      if (a3 != 5)
+      if (section != 5)
       {
         return 0;
       }
 
-      v6 = [(PKTransactionReceipt *)self->_receipt htmlReceiptData];
-      if (v6)
+      htmlReceiptData = [(PKTransactionReceipt *)self->_receipt htmlReceiptData];
+      if (htmlReceiptData)
       {
         v4 = 1;
       }
 
       else
       {
-        v8 = [(PKTransactionReceipt *)self->_receipt pdfReceiptData];
-        v4 = v8 != 0;
+        pdfReceiptData = [(PKTransactionReceipt *)self->_receipt pdfReceiptData];
+        v4 = pdfReceiptData != 0;
       }
     }
   }
 
-  else if (a3)
+  else if (section)
   {
-    if (a3 == 1)
+    if (section == 1)
     {
-      v5 = [(PKTransactionReceipt *)self->_receipt headerFields];
+      summaryItems = [(PKTransactionReceipt *)self->_receipt headerFields];
       goto LABEL_14;
     }
 
-    if (a3 == 2)
+    if (section == 2)
     {
-      v5 = [(PKTransactionReceipt *)self->_receipt lineItems];
+      summaryItems = [(PKTransactionReceipt *)self->_receipt lineItems];
 LABEL_14:
-      v7 = v5;
-      v4 = [v5 count] != 0;
+      v7 = summaryItems;
+      v4 = [summaryItems count] != 0;
 
       return v4;
     }
@@ -105,9 +105,9 @@ LABEL_14:
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(PKSectionTableViewController *)self sectionForIndex:a4];
+  v5 = [(PKSectionTableViewController *)self sectionForIndex:section];
   if (v5 <= 2)
   {
     switch(v5)
@@ -115,13 +115,13 @@ LABEL_14:
       case 0:
         return 6;
       case 1:
-        v6 = [(PKTransactionReceipt *)self->_receipt headerFields];
+        headerFields = [(PKTransactionReceipt *)self->_receipt headerFields];
         goto LABEL_14;
       case 2:
-        v6 = [(PKTransactionReceipt *)self->_receipt lineItems];
+        headerFields = [(PKTransactionReceipt *)self->_receipt lineItems];
 LABEL_14:
-        v8 = v6;
-        v9 = [v6 count];
+        v8 = headerFields;
+        v9 = [headerFields count];
 
         return v9;
     }
@@ -131,7 +131,7 @@ LABEL_14:
 
   if (v5 == 3)
   {
-    v6 = [(PKTransactionReceipt *)self->_receipt summaryItems];
+    headerFields = [(PKTransactionReceipt *)self->_receipt summaryItems];
     goto LABEL_14;
   }
 
@@ -143,24 +143,24 @@ LABEL_14:
   return 2;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [pathCopy section]);
   v9 = 0;
   if (v8 > 2)
   {
     switch(v8)
     {
       case 3:
-        v10 = [(PKTransactionReceiptDebugViewController *)self _summaryItemCellForTableView:v6 atIndexPath:v7];
+        v10 = [(PKTransactionReceiptDebugViewController *)self _summaryItemCellForTableView:viewCopy atIndexPath:pathCopy];
         break;
       case 4:
-        v10 = [(PKTransactionReceiptDebugViewController *)self _amountCellForTableView:v6 atIndexPath:v7];
+        v10 = [(PKTransactionReceiptDebugViewController *)self _amountCellForTableView:viewCopy atIndexPath:pathCopy];
         break;
       case 5:
-        v10 = [(PKTransactionReceiptDebugViewController *)self _previewCellForTableView:v6 atIndexPath:v7];
+        v10 = [(PKTransactionReceiptDebugViewController *)self _previewCellForTableView:viewCopy atIndexPath:pathCopy];
         break;
       default:
         goto LABEL_15;
@@ -171,7 +171,7 @@ LABEL_14:
   {
     if (v8 == 1)
     {
-      v10 = [(PKTransactionReceiptDebugViewController *)self _headerFieldCellForTableView:v6 atIndexPath:v7];
+      v10 = [(PKTransactionReceiptDebugViewController *)self _headerFieldCellForTableView:viewCopy atIndexPath:pathCopy];
     }
 
     else
@@ -181,13 +181,13 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v10 = [(PKTransactionReceiptDebugViewController *)self _lineItemCellForTableView:v6 atIndexPath:v7];
+      v10 = [(PKTransactionReceiptDebugViewController *)self _lineItemCellForTableView:viewCopy atIndexPath:pathCopy];
     }
   }
 
   else
   {
-    v10 = [(PKTransactionReceiptDebugViewController *)self _infoCellForTableView:v6 atIndexPath:v7];
+    v10 = [(PKTransactionReceiptDebugViewController *)self _infoCellForTableView:viewCopy atIndexPath:pathCopy];
   }
 
   v9 = v10;
@@ -196,21 +196,21 @@ LABEL_15:
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v7 = a3;
-  v6 = a4;
-  if (-[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [v6 section]) == 5)
+  viewCopy = view;
+  pathCopy = path;
+  if (-[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [pathCopy section]) == 5)
   {
     [(PKTransactionReceiptDebugViewController *)self _presentReceiptPreview];
   }
 
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(PKSectionTableViewController *)self sectionForIndex:a4];
+  v4 = [(PKSectionTableViewController *)self sectionForIndex:section];
   if (v4 - 1 > 2)
   {
     return 0;
@@ -227,16 +227,16 @@ LABEL_15:
   v7.receiver = self;
   v7.super_class = PKTransactionReceiptDebugViewController;
   [(PKSectionTableViewController *)&v7 viewDidLoad];
-  v3 = [(PKTransactionReceiptDebugViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"CellReuseIdentifier"];
+  tableView = [(PKTransactionReceiptDebugViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"CellReuseIdentifier"];
   paymentService = self->_paymentService;
-  v5 = [(PKPaymentTransaction *)self->_transaction identifier];
+  identifier = [(PKPaymentTransaction *)self->_transaction identifier];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__PKTransactionReceiptDebugViewController_viewDidLoad__block_invoke;
   v6[3] = &unk_1E801BC18;
   v6[4] = self;
-  [(PKPaymentService *)paymentService transactionReceiptForTransactionWithIdentifier:v5 updateIfNecessary:1 completion:v6];
+  [(PKPaymentService *)paymentService transactionReceiptForTransactionWithIdentifier:identifier updateIfNecessary:1 completion:v6];
 }
 
 void __54__PKTransactionReceiptDebugViewController_viewDidLoad__block_invoke(uint64_t a1, void *a2)
@@ -260,55 +260,55 @@ uint64_t __54__PKTransactionReceiptDebugViewController_viewDidLoad__block_invoke
   return [v2 reloadData];
 }
 
-- (id)provideDataForItem:(id)a3
+- (id)provideDataForItem:(id)item
 {
-  v4 = [(PKTransactionReceipt *)self->_receipt pdfReceiptData];
-  v5 = v4;
-  if (v4)
+  pdfReceiptData = [(PKTransactionReceipt *)self->_receipt pdfReceiptData];
+  v5 = pdfReceiptData;
+  if (pdfReceiptData)
   {
-    v6 = v4;
+    htmlReceiptData = pdfReceiptData;
   }
 
   else
   {
-    v6 = [(PKTransactionReceipt *)self->_receipt htmlReceiptData];
+    htmlReceiptData = [(PKTransactionReceipt *)self->_receipt htmlReceiptData];
   }
 
-  v7 = v6;
+  v7 = htmlReceiptData;
 
   return v7;
 }
 
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller
 {
-  v4 = [(PKTransactionReceipt *)self->_receipt pdfReceiptData];
-  if (v4)
+  pdfReceiptData = [(PKTransactionReceipt *)self->_receipt pdfReceiptData];
+  if (pdfReceiptData)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(PKTransactionReceipt *)self->_receipt htmlReceiptData];
-    v5 = v6 != 0;
+    htmlReceiptData = [(PKTransactionReceipt *)self->_receipt htmlReceiptData];
+    v5 = htmlReceiptData != 0;
   }
 
   return v5;
 }
 
-- (void)transactionWithIdentifier:(id)a3 didDownloadTransactionReceipt:(id)a4
+- (void)transactionWithIdentifier:(id)identifier didDownloadTransactionReceipt:(id)receipt
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  receiptCopy = receipt;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __99__PKTransactionReceiptDebugViewController_transactionWithIdentifier_didDownloadTransactionReceipt___block_invoke;
   block[3] = &unk_1E8010A88;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  selfCopy = self;
+  v13 = receiptCopy;
+  v8 = receiptCopy;
+  v9 = identifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -355,18 +355,18 @@ LABEL_12:
 
 - (void)_presentReceiptPreview
 {
-  v3 = [(PKTransactionReceipt *)self->_receipt pdfReceiptData];
+  pdfReceiptData = [(PKTransactionReceipt *)self->_receipt pdfReceiptData];
 
-  if (v3)
+  if (pdfReceiptData)
   {
     v4 = MEMORY[0x1E6982F10];
   }
 
   else
   {
-    v5 = [(PKTransactionReceipt *)self->_receipt htmlReceiptData];
+    htmlReceiptData = [(PKTransactionReceipt *)self->_receipt htmlReceiptData];
 
-    if (!v5)
+    if (!htmlReceiptData)
     {
       return;
     }
@@ -374,11 +374,11 @@ LABEL_12:
     v4 = MEMORY[0x1E6982E18];
   }
 
-  v6 = [*v4 identifier];
-  if (v6)
+  identifier = [*v4 identifier];
+  if (identifier)
   {
-    v11 = v6;
-    v7 = [objc_alloc(_MergedGlobals_1_15()) initWithDataProvider:self contentType:v6 previewTitle:@"Receipt"];
+    v11 = identifier;
+    v7 = [objc_alloc(_MergedGlobals_1_15()) initWithDataProvider:self contentType:identifier previewTitle:@"Receipt"];
     receiptPreviewItem = self->_receiptPreviewItem;
     self->_receiptPreviewItem = v7;
 
@@ -392,45 +392,45 @@ LABEL_12:
   }
 }
 
-- (id)_infoCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_infoCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"CellReuseIdentifier" forIndexPath:v6];
-  v8 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"CellReuseIdentifier" forIndexPath:pathCopy];
+  v8 = [pathCopy row];
 
   v9 = 0;
   if (v8 > 2)
   {
     if (v8 == 3)
     {
-      v12 = [(PKTransactionReceipt *)self->_receipt lastUpdatedDate];
-      v10 = PKW3CDateStringFromDate();
+      lastUpdatedDate = [(PKTransactionReceipt *)self->_receipt lastUpdatedDate];
+      absoluteString = PKW3CDateStringFromDate();
 
       v9 = @"Last Updated";
     }
 
     else if (v8 == 4)
     {
-      v13 = [(PKTransactionReceipt *)self->_receipt supportURL];
-      v10 = [v13 absoluteString];
+      supportURL = [(PKTransactionReceipt *)self->_receipt supportURL];
+      absoluteString = [supportURL absoluteString];
 
       v9 = @"Support URL";
     }
 
     else
     {
-      v10 = 0;
+      absoluteString = 0;
       if (v8 == 5)
       {
-        v11 = [(PKTransactionReceipt *)self->_receipt state];
-        if (v11 > 2)
+        state = [(PKTransactionReceipt *)self->_receipt state];
+        if (state > 2)
         {
-          v10 = 0;
+          absoluteString = 0;
         }
 
         else
         {
-          v10 = off_1E801BC50[v11];
+          absoluteString = off_1E801BC50[state];
         }
 
         v9 = @"State";
@@ -442,16 +442,16 @@ LABEL_12:
   {
     if (v8 == 1)
     {
-      v10 = [(PKTransactionReceipt *)self->_receipt receiptProviderIdentifier];
+      absoluteString = [(PKTransactionReceipt *)self->_receipt receiptProviderIdentifier];
       v9 = @"Provider ID";
     }
 
     else
     {
-      v10 = 0;
+      absoluteString = 0;
       if (v8 == 2)
       {
-        v10 = [(PKTransactionReceipt *)self->_receipt receiptIdentifier];
+        absoluteString = [(PKTransactionReceipt *)self->_receipt receiptIdentifier];
         v9 = @"Receipt ID";
       }
     }
@@ -459,141 +459,141 @@ LABEL_12:
 
   else
   {
-    v10 = [(PKTransactionReceipt *)self->_receipt uniqueID];
+    absoluteString = [(PKTransactionReceipt *)self->_receipt uniqueID];
     v9 = @"Unique ID";
   }
 
-  v14 = [v7 keyLabel];
-  [v14 setText:v9];
+  keyLabel = [v7 keyLabel];
+  [keyLabel setText:v9];
 
-  v15 = [v7 valueLabel];
-  [v15 setText:v10];
-
-  return v7;
-}
-
-- (id)_headerFieldCellForTableView:(id)a3 atIndexPath:(id)a4
-{
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"CellReuseIdentifier" forIndexPath:v6];
-  v8 = [(PKTransactionReceipt *)self->_receipt headerFields];
-  v9 = [v6 row];
-
-  v10 = [v8 objectAtIndex:v9];
-
-  v11 = [v7 keyLabel];
-  v12 = [v10 label];
-  [v11 setText:v12];
-
-  v13 = [v7 valueLabel];
-  v14 = [v10 value];
-  [v13 setText:v14];
+  valueLabel = [v7 valueLabel];
+  [valueLabel setText:absoluteString];
 
   return v7;
 }
 
-- (id)_lineItemCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_headerFieldCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"CellReuseIdentifier" forIndexPath:v6];
-  v8 = [(PKTransactionReceipt *)self->_receipt lineItems];
-  v9 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"CellReuseIdentifier" forIndexPath:pathCopy];
+  headerFields = [(PKTransactionReceipt *)self->_receipt headerFields];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndex:v9];
+  v10 = [headerFields objectAtIndex:v9];
 
-  v11 = [v7 keyLabel];
-  v12 = [v10 title];
-  [v11 setText:v12];
+  keyLabel = [v7 keyLabel];
+  label = [v10 label];
+  [keyLabel setText:label];
 
-  v13 = [v7 valueLabel];
-  v14 = [v10 currencyAmount];
-  v15 = [v14 formattedStringValue];
-  [v13 setText:v15];
+  valueLabel = [v7 valueLabel];
+  value = [v10 value];
+  [valueLabel setText:value];
 
-  v16 = [v7 imageView];
+  return v7;
+}
+
+- (id)_lineItemCellForTableView:(id)view atIndexPath:(id)path
+{
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"CellReuseIdentifier" forIndexPath:pathCopy];
+  lineItems = [(PKTransactionReceipt *)self->_receipt lineItems];
+  v9 = [pathCopy row];
+
+  v10 = [lineItems objectAtIndex:v9];
+
+  keyLabel = [v7 keyLabel];
+  title = [v10 title];
+  [keyLabel setText:title];
+
+  valueLabel = [v7 valueLabel];
+  currencyAmount = [v10 currencyAmount];
+  formattedStringValue = [currencyAmount formattedStringValue];
+  [valueLabel setText:formattedStringValue];
+
+  imageView = [v7 imageView];
   v17 = MEMORY[0x1E69DCAB8];
-  v18 = [v10 image];
-  v19 = [v17 imageWithPKImage:v18];
-  [v16 setImage:v19];
+  image = [v10 image];
+  v19 = [v17 imageWithPKImage:image];
+  [imageView setImage:v19];
 
   return v7;
 }
 
-- (id)_summaryItemCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_summaryItemCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"CellReuseIdentifier" forIndexPath:v6];
-  v8 = [(PKTransactionReceipt *)self->_receipt summaryItems];
-  v9 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"CellReuseIdentifier" forIndexPath:pathCopy];
+  summaryItems = [(PKTransactionReceipt *)self->_receipt summaryItems];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndex:v9];
+  v10 = [summaryItems objectAtIndex:v9];
 
-  v11 = [v10 label];
-  if (!v11)
+  label = [v10 label];
+  if (!label)
   {
-    v12 = [v10 type];
-    if (v12 > 4)
+    type = [v10 type];
+    if (type > 4)
     {
-      v11 = 0;
+      label = 0;
     }
 
     else
     {
-      v11 = off_1E801BC68[v12];
+      label = off_1E801BC68[type];
     }
   }
 
-  v13 = [v7 keyLabel];
-  [v13 setText:v11];
+  keyLabel = [v7 keyLabel];
+  [keyLabel setText:label];
 
-  v14 = [v7 valueLabel];
-  v15 = [v10 currencyAmount];
-  v16 = [v15 formattedStringValue];
-  [v14 setText:v16];
+  valueLabel = [v7 valueLabel];
+  currencyAmount = [v10 currencyAmount];
+  formattedStringValue = [currencyAmount formattedStringValue];
+  [valueLabel setText:formattedStringValue];
 
   return v7;
 }
 
-- (id)_amountCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_amountCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"CellReuseIdentifier" forIndexPath:v6];
-  v8 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"CellReuseIdentifier" forIndexPath:pathCopy];
+  v8 = [pathCopy row];
 
   if (v8 == 1)
   {
-    v9 = [(PKTransactionReceipt *)self->_receipt totalCurrencyAmount];
+    totalCurrencyAmount = [(PKTransactionReceipt *)self->_receipt totalCurrencyAmount];
     v10 = @"Total";
     goto LABEL_5;
   }
 
   if (!v8)
   {
-    v9 = [(PKTransactionReceipt *)self->_receipt subtotalCurrencyAmount];
+    totalCurrencyAmount = [(PKTransactionReceipt *)self->_receipt subtotalCurrencyAmount];
     v10 = @"Subtotal";
 LABEL_5:
-    v11 = [v9 formattedStringValue];
+    formattedStringValue = [totalCurrencyAmount formattedStringValue];
 
     goto LABEL_7;
   }
 
   v10 = 0;
-  v11 = 0;
+  formattedStringValue = 0;
 LABEL_7:
-  v12 = [v7 keyLabel];
-  [v12 setText:v10];
+  keyLabel = [v7 keyLabel];
+  [keyLabel setText:v10];
 
-  v13 = [v7 valueLabel];
-  [v13 setText:v11];
+  valueLabel = [v7 valueLabel];
+  [valueLabel setText:formattedStringValue];
 
   return v7;
 }
 
-- (id)_previewCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_previewCellForTableView:(id)view atIndexPath:(id)path
 {
-  v4 = [a3 dequeueReusableCellWithIdentifier:@"CellReuseIdentifier" forIndexPath:a4];
-  v5 = [v4 keyLabel];
-  [v5 setText:@"View Receipt"];
+  v4 = [view dequeueReusableCellWithIdentifier:@"CellReuseIdentifier" forIndexPath:path];
+  keyLabel = [v4 keyLabel];
+  [keyLabel setText:@"View Receipt"];
 
   return v4;
 }

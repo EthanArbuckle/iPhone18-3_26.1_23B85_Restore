@@ -4,8 +4,8 @@
 - (PXPeopleBootstrapSummaryViewController)summaryViewController;
 - (id)_postNamingViewControllers;
 - (void)computeViewControllersForBootstrapFlow;
-- (void)done:(id)a3;
-- (void)recomputeViewControllersForChangeInKeyPath:(id)a3;
+- (void)done:(id)done;
+- (void)recomputeViewControllersForChangeInKeyPath:(id)path;
 @end
 
 @implementation PXUIPeopleBootstrapFlowController
@@ -13,13 +13,13 @@
 - (id)_postNamingViewControllers
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PXUIPeopleBootstrapFlowController *)self sourcePerson];
-  v4 = [(PXPeopleBootstrapFlowController *)self shouldPresentConfirmationForPerson:v3];
+  sourcePerson = [(PXUIPeopleBootstrapFlowController *)self sourcePerson];
+  v4 = [(PXPeopleBootstrapFlowController *)self shouldPresentConfirmationForPerson:sourcePerson];
 
   if (v4)
   {
-    v5 = [(PXUIPeopleBootstrapFlowController *)self confirmationViewController];
-    v10[0] = v5;
+    confirmationViewController = [(PXUIPeopleBootstrapFlowController *)self confirmationViewController];
+    v10[0] = confirmationViewController;
     v6 = v10;
 LABEL_5:
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
@@ -29,8 +29,8 @@ LABEL_5:
 
   if ([(PXPeopleBootstrapFlowController *)self shouldPresentNaming])
   {
-    v5 = [(PXUIPeopleBootstrapFlowController *)self summaryViewController];
-    v9 = v5;
+    confirmationViewController = [(PXUIPeopleBootstrapFlowController *)self summaryViewController];
+    v9 = confirmationViewController;
     v6 = &v9;
     goto LABEL_5;
   }
@@ -46,8 +46,8 @@ LABEL_7:
   v3 = self->_summaryViewController;
   if (!v3)
   {
-    v4 = [(PXPeopleBootstrapFlowController *)self context];
-    v3 = [[PXPeopleBootstrapSummaryViewController alloc] initWithContext:v4];
+    context = [(PXPeopleBootstrapFlowController *)self context];
+    v3 = [[PXPeopleBootstrapSummaryViewController alloc] initWithContext:context];
     [(PXUIPeopleBootstrapFlowController *)self setSummaryViewController:v3];
   }
 
@@ -59,12 +59,12 @@ LABEL_7:
   v3 = self->_confirmationViewController;
   if (!v3)
   {
-    v4 = [(PXPeopleBootstrapFlowController *)self context];
-    v5 = [v4 prefetchedDataSource];
-    v6 = v5;
-    if (v5)
+    context = [(PXPeopleBootstrapFlowController *)self context];
+    prefetchedDataSource = [context prefetchedDataSource];
+    v6 = prefetchedDataSource;
+    if (prefetchedDataSource)
     {
-      v7 = v5;
+      v7 = prefetchedDataSource;
     }
 
     else
@@ -76,7 +76,7 @@ LABEL_7:
 
     [(PXPeopleSuggestionDataSource *)v8 setInitialPageLimit:9];
     [(PXPeopleSuggestionDataSource *)v8 setSuggestionFetchType:0];
-    v3 = [[PXPeopleBootstrapConfirmationViewController alloc] initWithContext:v4 dataSource:v8];
+    v3 = [[PXPeopleBootstrapConfirmationViewController alloc] initWithContext:context dataSource:v8];
     [(PXUIPeopleBootstrapFlowController *)self setConfirmationViewController:v3];
   }
 
@@ -85,13 +85,13 @@ LABEL_7:
 
 - (PHPerson)sourcePerson
 {
-  v2 = [(PXPeopleBootstrapFlowController *)self context];
-  v3 = [v2 sourcePerson];
+  context = [(PXPeopleBootstrapFlowController *)self context];
+  sourcePerson = [context sourcePerson];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = sourcePerson;
   }
 
   else
@@ -102,30 +102,30 @@ LABEL_7:
   return v4;
 }
 
-- (void)done:(id)a3
+- (void)done:(id)done
 {
-  v4 = a3;
-  v5 = [(PXUIPeopleBootstrapFlowController *)self sourcePerson];
-  v6 = [(PXPeopleBootstrapFlowController *)self context];
+  doneCopy = done;
+  sourcePerson = [(PXUIPeopleBootstrapFlowController *)self sourcePerson];
+  context = [(PXPeopleBootstrapFlowController *)self context];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __42__PXUIPeopleBootstrapFlowController_done___block_invoke;
   v14 = &unk_1E774B730;
-  v7 = v4;
+  v7 = doneCopy;
   v15 = v7;
-  v16 = self;
-  [PXPeopleBootstrap performBootstrapWithSourcePerson:v5 context:v6 synchronous:0 completion:&v11];
+  selfCopy = self;
+  [PXPeopleBootstrap performBootstrapWithSourcePerson:sourcePerson context:context synchronous:0 completion:&v11];
   if ([(PXPeopleBootstrapFlowController *)self shouldPresentNaming:v11])
   {
-    v8 = [v6 nameSelection];
-    if (v8)
+    nameSelection = [context nameSelection];
+    if (nameSelection)
     {
     }
 
     else
     {
-      v9 = [v5 px_localizedName];
-      v10 = [v9 length];
+      px_localizedName = [sourcePerson px_localizedName];
+      v10 = [px_localizedName length];
 
       if (!v10)
       {
@@ -160,21 +160,21 @@ void __42__PXUIPeopleBootstrapFlowController_done___block_invoke(uint64_t a1, in
   }
 }
 
-- (void)recomputeViewControllersForChangeInKeyPath:(id)a3
+- (void)recomputeViewControllersForChangeInKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PXPeopleBootstrapFlowController *)self viewControllerIndex];
-  v6 = [v4 isEqualToString:@"nameSelection"];
+  pathCopy = path;
+  viewControllerIndex = [(PXPeopleBootstrapFlowController *)self viewControllerIndex];
+  v6 = [pathCopy isEqualToString:@"nameSelection"];
 
-  if (v6 && !v5)
+  if (v6 && !viewControllerIndex)
   {
-    v11 = [(PXPeopleBootstrapFlowController *)self viewControllers];
-    v7 = [v11 subarrayWithRange:{0, 1}];
+    viewControllers = [(PXPeopleBootstrapFlowController *)self viewControllers];
+    v7 = [viewControllers subarrayWithRange:{0, 1}];
     v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:v7];
-    v9 = [(PXUIPeopleBootstrapFlowController *)self _postNamingViewControllers];
-    if ([v9 count])
+    _postNamingViewControllers = [(PXUIPeopleBootstrapFlowController *)self _postNamingViewControllers];
+    if ([_postNamingViewControllers count])
     {
-      [v8 addObjectsFromArray:v9];
+      [v8 addObjectsFromArray:_postNamingViewControllers];
     }
 
     v10 = [v8 copy];
@@ -184,22 +184,22 @@ void __42__PXUIPeopleBootstrapFlowController_done___block_invoke(uint64_t a1, in
 
 - (void)computeViewControllersForBootstrapFlow
 {
-  v9 = [(PXPeopleBootstrapFlowController *)self context];
-  v3 = [(PXPeopleBootstrapFlowController *)self shouldPresentNaming];
-  v4 = [(PXPeopleBootstrapFlowController *)self shouldPresentPostNaming];
+  context = [(PXPeopleBootstrapFlowController *)self context];
+  shouldPresentNaming = [(PXPeopleBootstrapFlowController *)self shouldPresentNaming];
+  shouldPresentPostNaming = [(PXPeopleBootstrapFlowController *)self shouldPresentPostNaming];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v3)
+  if (shouldPresentNaming)
   {
-    v6 = [[PXUIPeopleBootstrapNamingViewController alloc] initWithContext:v9];
+    v6 = [[PXUIPeopleBootstrapNamingViewController alloc] initWithContext:context];
     [v5 addObject:v6];
   }
 
-  if (v4)
+  if (shouldPresentPostNaming)
   {
-    v7 = [(PXUIPeopleBootstrapFlowController *)self _postNamingViewControllers];
-    if ([v7 count])
+    _postNamingViewControllers = [(PXUIPeopleBootstrapFlowController *)self _postNamingViewControllers];
+    if ([_postNamingViewControllers count])
     {
-      [v5 addObjectsFromArray:v7];
+      [v5 addObjectsFromArray:_postNamingViewControllers];
     }
   }
 

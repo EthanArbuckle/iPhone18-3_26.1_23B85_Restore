@@ -1,17 +1,17 @@
 @interface ICLabel
-- (void)setAttributedString:(id)a3;
-- (void)setLineHeight:(double)a3;
-- (void)setParagraphSpacing:(double)a3;
-- (void)setSpacing:(double)a3;
-- (void)setString:(id)a3;
+- (void)setAttributedString:(id)string;
+- (void)setLineHeight:(double)height;
+- (void)setParagraphSpacing:(double)spacing;
+- (void)setSpacing:(double)spacing;
+- (void)setString:(id)string;
 - (void)updateText;
 @end
 
 @implementation ICLabel
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
-  v4 = [a3 copy];
+  v4 = [string copy];
   string = self->_string;
   self->_string = v4;
 
@@ -21,42 +21,42 @@
   [(ICLabel *)self updateText];
 }
 
-- (void)setAttributedString:(id)a3
+- (void)setAttributedString:(id)string
 {
   string = self->_string;
   self->_string = 0;
-  v5 = a3;
+  stringCopy = string;
 
-  v6 = [v5 copy];
+  v6 = [stringCopy copy];
   attributedString = self->_attributedString;
   self->_attributedString = v6;
 
   [(ICLabel *)self updateText];
 }
 
-- (void)setSpacing:(double)a3
+- (void)setSpacing:(double)spacing
 {
-  if (self->_spacing != a3)
+  if (self->_spacing != spacing)
   {
-    self->_spacing = a3;
+    self->_spacing = spacing;
     [(ICLabel *)self updateText];
   }
 }
 
-- (void)setParagraphSpacing:(double)a3
+- (void)setParagraphSpacing:(double)spacing
 {
-  if (self->_paragraphSpacing != a3)
+  if (self->_paragraphSpacing != spacing)
   {
-    self->_paragraphSpacing = a3;
+    self->_paragraphSpacing = spacing;
     [(ICLabel *)self updateText];
   }
 }
 
-- (void)setLineHeight:(double)a3
+- (void)setLineHeight:(double)height
 {
-  if (self->_lineHeight != a3)
+  if (self->_lineHeight != height)
   {
-    self->_lineHeight = a3;
+    self->_lineHeight = height;
     [(ICLabel *)self updateText];
   }
 }

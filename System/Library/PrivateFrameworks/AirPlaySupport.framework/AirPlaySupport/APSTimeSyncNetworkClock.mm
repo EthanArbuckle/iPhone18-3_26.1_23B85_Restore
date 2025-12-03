@@ -1,36 +1,36 @@
 @interface APSTimeSyncNetworkClock
 - (APSTimeSyncNetworkClock)init;
-- (int)addIPv6PortAndGetIdentity:(__CFString *)a3 destinationAddress:(in6_addr)a4 clockIdentity:(unint64_t *)a5 localPortNumber:(unsigned __int16 *)a6;
-- (int)removeIPv6Port:(__CFString *)a3 destinationAddress:(in6_addr)a4;
-- (int)setAllPortRemoteSyncMessageIntervals:(id *)a3;
+- (int)addIPv6PortAndGetIdentity:(__CFString *)identity destinationAddress:(in6_addr)address clockIdentity:(unint64_t *)clockIdentity localPortNumber:(unsigned __int16 *)number;
+- (int)removeIPv6Port:(__CFString *)port destinationAddress:(in6_addr)address;
+- (int)setAllPortRemoteSyncMessageIntervals:(id *)intervals;
 - (void)dealloc;
 @end
 
 @implementation APSTimeSyncNetworkClock
 
-- (int)setAllPortRemoteSyncMessageIntervals:(id *)a3
+- (int)setAllPortRemoteSyncMessageIntervals:(id *)intervals
 {
   [(APSTimeSyncNetworkClock *)self cm8021ASClock];
-  v5 = *a3;
+  v5 = *intervals;
   return CM8021ASClockSetAllPortRemoteSyncMessageIntervals();
 }
 
-- (int)removeIPv6Port:(__CFString *)a3 destinationAddress:(in6_addr)a4
+- (int)removeIPv6Port:(__CFString *)port destinationAddress:(in6_addr)address
 {
-  v4 = *&a4.__u6_addr32[2];
-  v5 = *a4.__u6_addr8;
-  v7 = [(APSTimeSyncNetworkClock *)self cm8021ASClock];
+  v4 = *&address.__u6_addr32[2];
+  v5 = *address.__u6_addr8;
+  cm8021ASClock = [(APSTimeSyncNetworkClock *)self cm8021ASClock];
 
-  return MEMORY[0x282111A20](v7, a3, v5, v4);
+  return MEMORY[0x282111A20](cm8021ASClock, port, v5, v4);
 }
 
-- (int)addIPv6PortAndGetIdentity:(__CFString *)a3 destinationAddress:(in6_addr)a4 clockIdentity:(unint64_t *)a5 localPortNumber:(unsigned __int16 *)a6
+- (int)addIPv6PortAndGetIdentity:(__CFString *)identity destinationAddress:(in6_addr)address clockIdentity:(unint64_t *)clockIdentity localPortNumber:(unsigned __int16 *)number
 {
-  v8 = *&a4.__u6_addr32[2];
-  v9 = *a4.__u6_addr8;
-  v11 = [(APSTimeSyncNetworkClock *)self cm8021ASClock];
+  v8 = *&address.__u6_addr32[2];
+  v9 = *address.__u6_addr8;
+  cm8021ASClock = [(APSTimeSyncNetworkClock *)self cm8021ASClock];
 
-  return MEMORY[0x2821119D0](v11, a3, v9, v8, a5, a6);
+  return MEMORY[0x2821119D0](cm8021ASClock, identity, v9, v8, clockIdentity, number);
 }
 
 - (void)dealloc

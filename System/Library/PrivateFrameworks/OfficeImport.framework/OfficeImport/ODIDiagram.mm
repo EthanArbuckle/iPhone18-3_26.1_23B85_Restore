@@ -1,90 +1,90 @@
 @interface ODIDiagram
-+ (id)mapDiagram:(id)a3 drawingTheme:(id)a4;
-+ (void)mapLayoutTypeId:(id)a3 state:(id)a4;
++ (id)mapDiagram:(id)diagram drawingTheme:(id)theme;
++ (void)mapLayoutTypeId:(id)id state:(id)state;
 @end
 
 @implementation ODIDiagram
 
-+ (id)mapDiagram:(id)a3 drawingTheme:(id)a4
++ (id)mapDiagram:(id)diagram drawingTheme:(id)theme
 {
-  v5 = a3;
-  v6 = a4;
+  diagramCopy = diagram;
+  themeCopy = theme;
   v7 = objc_alloc_init(OADGroup);
-  -[OADDrawable setHidden:](v7, "setHidden:", [v5 hidden]);
-  -[OADDrawable setId:](v7, "setId:", [v5 id]);
-  v8 = [v5 drawableProperties];
-  v9 = [v8 altDescription];
-  v10 = [(OADDrawable *)v7 drawableProperties];
-  [v10 setAltDescription:v9];
+  -[OADDrawable setHidden:](v7, "setHidden:", [diagramCopy hidden]);
+  -[OADDrawable setId:](v7, "setId:", [diagramCopy id]);
+  drawableProperties = [diagramCopy drawableProperties];
+  altDescription = [drawableProperties altDescription];
+  drawableProperties2 = [(OADDrawable *)v7 drawableProperties];
+  [drawableProperties2 setAltDescription:altDescription];
 
-  v11 = [v5 drawableProperties];
-  v12 = [v11 orientedBounds];
-  v13 = [(OADDrawable *)v7 drawableProperties];
-  [v13 setOrientedBounds:v12];
+  drawableProperties3 = [diagramCopy drawableProperties];
+  orientedBounds = [drawableProperties3 orientedBounds];
+  drawableProperties4 = [(OADDrawable *)v7 drawableProperties];
+  [drawableProperties4 setOrientedBounds:orientedBounds];
 
-  v14 = [(OADDrawable *)v7 drawableProperties];
-  v15 = [v5 drawableProperties];
-  [v14 setAspectRatioLocked:{objc_msgSend(v15, "isAspectRatioLocked")}];
+  drawableProperties5 = [(OADDrawable *)v7 drawableProperties];
+  drawableProperties6 = [diagramCopy drawableProperties];
+  [drawableProperties5 setAspectRatioLocked:{objc_msgSend(drawableProperties6, "isAspectRatioLocked")}];
 
-  v16 = [v5 drawableProperties];
-  v17 = [v16 clickHyperlink];
-  v18 = [(OADDrawable *)v7 drawableProperties];
-  [v18 setClickHyperlink:v17];
+  drawableProperties7 = [diagramCopy drawableProperties];
+  clickHyperlink = [drawableProperties7 clickHyperlink];
+  drawableProperties8 = [(OADDrawable *)v7 drawableProperties];
+  [drawableProperties8 setClickHyperlink:clickHyperlink];
 
-  v19 = [v5 drawableProperties];
-  v20 = [v19 hoverHyperlink];
-  v21 = [(OADDrawable *)v7 drawableProperties];
-  [v21 setHoverHyperlink:v20];
+  drawableProperties9 = [diagramCopy drawableProperties];
+  hoverHyperlink = [drawableProperties9 hoverHyperlink];
+  drawableProperties10 = [(OADDrawable *)v7 drawableProperties];
+  [drawableProperties10 setHoverHyperlink:hoverHyperlink];
 
-  v22 = [(OADDrawable *)v7 drawableProperties];
-  v23 = [v5 drawableProperties];
-  [v22 setWrdInline:{objc_msgSend(v23, "isWrdInline")}];
+  drawableProperties11 = [(OADDrawable *)v7 drawableProperties];
+  drawableProperties12 = [diagramCopy drawableProperties];
+  [drawableProperties11 setWrdInline:{objc_msgSend(drawableProperties12, "isWrdInline")}];
 
-  v24 = [v5 clientData];
-  [(OADDrawable *)v7 setClientData:v24];
+  clientData = [diagramCopy clientData];
+  [(OADDrawable *)v7 setClientData:clientData];
 
-  v25 = [v5 parent];
-  [(OADDrawable *)v7 setParent:v25];
+  parent = [diagramCopy parent];
+  [(OADDrawable *)v7 setParent:parent];
 
-  v26 = [v5 drawableProperties];
-  v27 = [v26 orientedBounds];
+  drawableProperties13 = [diagramCopy drawableProperties];
+  orientedBounds2 = [drawableProperties13 orientedBounds];
 
   v28 = [OADOrientedBounds alloc];
-  [v27 bounds];
+  [orientedBounds2 bounds];
   v30 = v29;
   v32 = v31;
   v34 = v33;
   v36 = v35;
-  [v27 rotation];
+  [orientedBounds2 rotation];
   v38 = v37;
-  v39 = [v27 flipX];
-  v40 = [v27 flipY];
+  flipX = [orientedBounds2 flipX];
+  flipY = [orientedBounds2 flipY];
   LODWORD(v41) = v38;
-  v42 = [(OADOrientedBounds *)v28 initWithBounds:v39 rotation:v40 flipX:v30 flipY:v32, v34, v36, v41];
+  v42 = [(OADOrientedBounds *)v28 initWithBounds:flipX rotation:flipY flipX:v30 flipY:v32, v34, v36, v41];
 
-  v43 = [(OADDrawable *)v7 drawableProperties];
-  [v43 setOrientedBounds:v42];
+  drawableProperties14 = [(OADDrawable *)v7 drawableProperties];
+  [drawableProperties14 setOrientedBounds:v42];
 
-  v44 = [v5 equivalentDrawables];
-  if ([v44 count])
+  equivalentDrawables = [diagramCopy equivalentDrawables];
+  if ([equivalentDrawables count])
   {
-    [(OADGroup *)v7 addChildren:v44];
+    [(OADGroup *)v7 addChildren:equivalentDrawables];
     [(OADOrientedBounds *)v42 bounds];
     [(OADGroup *)v7 setLogicalBounds:TSURectWithSize()];
   }
 
   else
   {
-    v45 = [[ODIState alloc] initWithDiagram:v5 group:v7 drawingTheme:v6];
-    v46 = [v5 documentPoint];
-    v47 = [v46 children];
-    v48 = [v47 count];
+    v45 = [[ODIState alloc] initWithDiagram:diagramCopy group:v7 drawingTheme:themeCopy];
+    documentPoint = [diagramCopy documentPoint];
+    children = [documentPoint children];
+    v48 = [children count];
 
     if (v48)
     {
-      v49 = [v46 propertySet];
-      v50 = [v49 layoutTypeId];
-      [a1 mapLayoutTypeId:v50 state:v45];
+      propertySet = [documentPoint propertySet];
+      layoutTypeId = [propertySet layoutTypeId];
+      [self mapLayoutTypeId:layoutTypeId state:v45];
     }
   }
 
@@ -98,35 +98,35 @@ void __38__ODIDiagram_mapDiagram_drawingTheme___block_invoke()
   TSUDefaultCat_log_t = v0;
 }
 
-+ (void)mapLayoutTypeId:(id)a3 state:(id)a4
++ (void)mapLayoutTypeId:(id)id state:(id)state
 {
-  v12 = a3;
-  v5 = a4;
-  if ([v12 hasPrefix:@"urn:microsoft.com/office/officeart/2005/8/layout/"])
+  idCopy = id;
+  stateCopy = state;
+  if ([idCopy hasPrefix:@"urn:microsoft.com/office/officeart/2005/8/layout/"])
   {
     v6 = @"urn:microsoft.com/office/officeart/2005/8/layout/";
   }
 
   else
   {
-    if (([v12 hasPrefix:@"urn:microsoft.com/office/officeart/2008/layout/"] & 1) == 0)
+    if (([idCopy hasPrefix:@"urn:microsoft.com/office/officeart/2008/layout/"] & 1) == 0)
     {
-      [ODILinear mapUnknownWithState:v5];
+      [ODILinear mapUnknownWithState:stateCopy];
       goto LABEL_29;
     }
 
     v6 = @"urn:microsoft.com/office/officeart/2008/layout/";
   }
 
-  v7 = [v12 rangeOfString:@"#"];
+  v7 = [idCopy rangeOfString:@"#"];
   if (v8)
   {
-    v9 = [v12 substringToIndex:v7];
+    v9 = [idCopy substringToIndex:v7];
 
-    v12 = v9;
+    idCopy = v9;
   }
 
-  v10 = [v12 substringFromIndex:{-[__CFString length](v6, "length")}];
+  v10 = [idCopy substringFromIndex:{-[__CFString length](v6, "length")}];
   if ([v10 isEqualToString:@"AlternatingHexagons"])
   {
     v11 = @"vList2";
@@ -154,9 +154,9 @@ void __38__ODIDiagram_mapDiagram_drawingTheme___block_invoke()
 
   v10 = v11;
 LABEL_17:
-  if (![ODIBending mapIdentifier:v10 state:v5]&& ![ODILinear mapIdentifier:v10 state:v5]&& ![ODICycle mapIdentifier:v10 state:v5]&& ![ODIVenn mapIdentifier:v10 state:v5]&& ![ODIPyramid mapIdentifier:v10 state:v5]&& ![ODIHierarchy mapIdentifier:v10 state:v5]&& ![ODIArrow mapIdentifier:v10 state:v5]&& ![ODIArrow3 mapIdentifier:v10 state:v5]&& ![ODIArrow4 mapIdentifier:v10 state:v5]&& ![ODIHorizonalList3 mapIdentifier:v10 state:v5])
+  if (![ODIBending mapIdentifier:v10 state:stateCopy]&& ![ODILinear mapIdentifier:v10 state:stateCopy]&& ![ODICycle mapIdentifier:v10 state:stateCopy]&& ![ODIVenn mapIdentifier:v10 state:stateCopy]&& ![ODIPyramid mapIdentifier:v10 state:stateCopy]&& ![ODIHierarchy mapIdentifier:v10 state:stateCopy]&& ![ODIArrow mapIdentifier:v10 state:stateCopy]&& ![ODIArrow3 mapIdentifier:v10 state:stateCopy]&& ![ODIArrow4 mapIdentifier:v10 state:stateCopy]&& ![ODIHorizonalList3 mapIdentifier:v10 state:stateCopy])
   {
-    [ODILinear mapUnknownWithState:v5];
+    [ODILinear mapUnknownWithState:stateCopy];
   }
 
 LABEL_29:

@@ -1,10 +1,10 @@
 @interface HDDemoDataSymptomsSampleGenerator
 - (HDDemoDataSymptomsSampleGenerator)init;
-- (HDDemoDataSymptomsSampleGenerator)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)generateObjectsForDemoPerson:(id)a3 fromTime:(double)a4 toTime:(double)a5 currentDate:(id)a6 objectCollection:(id)a7;
-- (void)generateSymptomSamplesForDemoPerson:(void *)a3 atTime:(uint64_t)a4 sampleDate:(void *)a5 nextTime:(void *)a6 condition:(double)a7 sampleTypes:(double)a8 frequency:(double)a9 objectCollection:;
-- (void)setupWithDemoDataGenerator:(id)a3;
+- (HDDemoDataSymptomsSampleGenerator)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)generateObjectsForDemoPerson:(id)person fromTime:(double)time toTime:(double)toTime currentDate:(id)date objectCollection:(id)collection;
+- (void)generateSymptomSamplesForDemoPerson:(void *)person atTime:(uint64_t)time sampleDate:(void *)date nextTime:(void *)nextTime condition:(double)condition sampleTypes:(double)types frequency:(double)frequency objectCollection:;
+- (void)setupWithDemoDataGenerator:(id)generator;
 @end
 
 @implementation HDDemoDataSymptomsSampleGenerator
@@ -24,81 +24,81 @@
   return result;
 }
 
-- (HDDemoDataSymptomsSampleGenerator)initWithCoder:(id)a3
+- (HDDemoDataSymptomsSampleGenerator)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = HDDemoDataSymptomsSampleGenerator;
-  v5 = [(HDDemoDataBaseSampleGenerator *)&v10 initWithCoder:v4];
+  v5 = [(HDDemoDataBaseSampleGenerator *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"NextCommonColdSymptomsTimeKey"];
+    [coderCopy decodeDoubleForKey:@"NextCommonColdSymptomsTimeKey"];
     v5->_nextCommonColdSymptomsTime = v6;
-    [v4 decodeDoubleForKey:@"NextFoodPoisoningSymptomsTimeKey"];
+    [coderCopy decodeDoubleForKey:@"NextFoodPoisoningSymptomsTimeKey"];
     v5->_nextFoodPoisoningSymptomsTime = v7;
-    [v4 decodeDoubleForKey:@"NextSingleRandomSymptomTimeKey"];
+    [coderCopy decodeDoubleForKey:@"NextSingleRandomSymptomTimeKey"];
     v5->_nextSingleRandomSymptomTime = v8;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HDDemoDataSymptomsSampleGenerator;
-  v4 = a3;
-  [(HDDemoDataBaseSampleGenerator *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(HDDemoDataBaseSampleGenerator *)&v6 encodeWithCoder:coderCopy];
   if (self)
   {
-    [v4 encodeDouble:@"NextCommonColdSymptomsTimeKey" forKey:{self->_nextCommonColdSymptomsTime, v6.receiver, v6.super_class}];
-    [v4 encodeDouble:@"NextFoodPoisoningSymptomsTimeKey" forKey:self->_nextFoodPoisoningSymptomsTime];
+    [coderCopy encodeDouble:@"NextCommonColdSymptomsTimeKey" forKey:{self->_nextCommonColdSymptomsTime, v6.receiver, v6.super_class}];
+    [coderCopy encodeDouble:@"NextFoodPoisoningSymptomsTimeKey" forKey:self->_nextFoodPoisoningSymptomsTime];
     nextSingleRandomSymptomTime = self->_nextSingleRandomSymptomTime;
   }
 
   else
   {
-    [v4 encodeDouble:@"NextCommonColdSymptomsTimeKey" forKey:{0.0, v6.receiver, v6.super_class}];
-    [v4 encodeDouble:@"NextFoodPoisoningSymptomsTimeKey" forKey:0.0];
+    [coderCopy encodeDouble:@"NextCommonColdSymptomsTimeKey" forKey:{0.0, v6.receiver, v6.super_class}];
+    [coderCopy encodeDouble:@"NextFoodPoisoningSymptomsTimeKey" forKey:0.0];
     nextSingleRandomSymptomTime = 0.0;
   }
 
-  [v4 encodeDouble:@"NextSingleRandomSymptomTimeKey" forKey:nextSingleRandomSymptomTime];
+  [coderCopy encodeDouble:@"NextSingleRandomSymptomTimeKey" forKey:nextSingleRandomSymptomTime];
 }
 
-- (void)setupWithDemoDataGenerator:(id)a3
+- (void)setupWithDemoDataGenerator:(id)generator
 {
   v3.receiver = self;
   v3.super_class = HDDemoDataSymptomsSampleGenerator;
-  [(HDDemoDataBaseSampleGenerator *)&v3 setupWithDemoDataGenerator:a3];
+  [(HDDemoDataBaseSampleGenerator *)&v3 setupWithDemoDataGenerator:generator];
 }
 
-- (void)generateObjectsForDemoPerson:(id)a3 fromTime:(double)a4 toTime:(double)a5 currentDate:(id)a6 objectCollection:(id)a7
+- (void)generateObjectsForDemoPerson:(id)person fromTime:(double)time toTime:(double)toTime currentDate:(id)date objectCollection:(id)collection
 {
   v43[5] = *MEMORY[0x277D85DE8];
   v40.receiver = self;
   v40.super_class = HDDemoDataSymptomsSampleGenerator;
-  v11 = a7;
-  v12 = a6;
-  v13 = a3;
-  [(HDDemoDataBaseSampleGenerator *)&v40 generateObjectsForDemoPerson:v13 fromTime:v12 toTime:v11 currentDate:a5 objectCollection:a5];
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
+  collectionCopy = collection;
+  dateCopy = date;
+  personCopy = person;
+  [(HDDemoDataBaseSampleGenerator *)&v40 generateObjectsForDemoPerson:personCopy fromTime:dateCopy toTime:collectionCopy currentDate:toTime objectCollection:toTime];
+  v14 = personCopy;
+  v15 = dateCopy;
+  v16 = collectionCopy;
   v17 = 0x277CBE000;
   if (self)
   {
-    if (self->_nextSingleRandomSymptomTime <= a5)
+    if (self->_nextSingleRandomSymptomTime <= toTime)
     {
-      v18 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-      v19 = [v18 sleepSampleGenerator];
-      v20 = [v19 isDemoPersonSleeping:v14 atTime:a5];
+      demoDataGenerator = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+      sleepSampleGenerator = [demoDataGenerator sleepSampleGenerator];
+      v20 = [sleepSampleGenerator isDemoPersonSleeping:v14 atTime:toTime];
 
       if ((v20 & 1) == 0)
       {
-        v21 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-        v22 = [v21 statisticsSampleGenerator];
-        [v22 computeNoiseFromTime:a5 stdDev:3.0];
+        demoDataGenerator2 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+        statisticsSampleGenerator = [demoDataGenerator2 statisticsSampleGenerator];
+        [statisticsSampleGenerator computeNoiseFromTime:toTime stdDev:3.0];
         v24 = v23 + 10.0;
 
         self->_nextSingleRandomSymptomTime = v24 + self->_nextSingleRandomSymptomTime;
@@ -130,53 +130,53 @@
   v42[2] = *MEMORY[0x277CCBA90];
   v42[3] = v34;
   v35 = [*(v17 + 2656) arrayWithObjects:v42 count:4];
-  [(HDDemoDataSymptomsSampleGenerator *)self generateSymptomSamplesForDemoPerson:v14 atTime:v15 sampleDate:0 nextTime:v35 condition:v16 sampleTypes:a5 frequency:self->_nextCommonColdSymptomsTime objectCollection:60.0];
+  [(HDDemoDataSymptomsSampleGenerator *)self generateSymptomSamplesForDemoPerson:v14 atTime:v15 sampleDate:0 nextTime:v35 condition:v16 sampleTypes:toTime frequency:self->_nextCommonColdSymptomsTime objectCollection:60.0];
   v36 = *MEMORY[0x277CCBA40];
   v41[0] = *MEMORY[0x277CCBAF0];
   v41[1] = v36;
   v41[2] = *MEMORY[0x277CCB948];
   v37 = [*(v17 + 2656) arrayWithObjects:v41 count:3];
-  [(HDDemoDataSymptomsSampleGenerator *)self generateSymptomSamplesForDemoPerson:v14 atTime:v15 sampleDate:1 nextTime:v37 condition:v16 sampleTypes:a5 frequency:self->_nextFoodPoisoningSymptomsTime objectCollection:90.0];
+  [(HDDemoDataSymptomsSampleGenerator *)self generateSymptomSamplesForDemoPerson:v14 atTime:v15 sampleDate:1 nextTime:v37 condition:v16 sampleTypes:toTime frequency:self->_nextFoodPoisoningSymptomsTime objectCollection:90.0];
 
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateSymptomSamplesForDemoPerson:(void *)a3 atTime:(uint64_t)a4 sampleDate:(void *)a5 nextTime:(void *)a6 condition:(double)a7 sampleTypes:(double)a8 frequency:(double)a9 objectCollection:
+- (void)generateSymptomSamplesForDemoPerson:(void *)person atTime:(uint64_t)time sampleDate:(void *)date nextTime:(void *)nextTime condition:(double)condition sampleTypes:(double)types frequency:(double)frequency objectCollection:
 {
   v17 = a2;
-  v18 = a3;
-  v19 = a5;
-  v20 = a6;
-  if (a1)
+  personCopy = person;
+  dateCopy = date;
+  nextTimeCopy = nextTime;
+  if (self)
   {
-    if (a7 >= a8)
+    if (condition >= types)
     {
-      v21 = [a1 demoDataGenerator];
-      v22 = [v21 sleepSampleGenerator];
-      v23 = [v22 isDemoPersonSleeping:v17 atTime:a7];
+      demoDataGenerator = [self demoDataGenerator];
+      sleepSampleGenerator = [demoDataGenerator sleepSampleGenerator];
+      v23 = [sleepSampleGenerator isDemoPersonSleeping:v17 atTime:condition];
 
       if ((v23 & 1) == 0)
       {
-        v24 = [a1 demoDataGenerator];
-        v25 = [v24 statisticsSampleGenerator];
-        [v25 computeNoiseFromTime:a7 stdDev:15.0];
-        v27 = v26 + a9;
+        demoDataGenerator2 = [self demoDataGenerator];
+        statisticsSampleGenerator = [demoDataGenerator2 statisticsSampleGenerator];
+        [statisticsSampleGenerator computeNoiseFromTime:condition stdDev:15.0];
+        v27 = v26 + frequency;
 
-        if (!a4)
+        if (!time)
         {
-          a1[4] = v27 + a1[4];
+          self[4] = v27 + self[4];
         }
 
-        a1[5] = v27 + a1[5];
+        self[5] = v27 + self[5];
         v28 = arc4random_uniform(3u);
         v29[0] = MEMORY[0x277D85DD0];
         v29[1] = 3221225472;
         v29[2] = __149__HDDemoDataSymptomsSampleGenerator_generateSymptomSamplesForDemoPerson_atTime_sampleDate_nextTime_condition_sampleTypes_frequency_objectCollection___block_invoke;
         v29[3] = &unk_278628F30;
         v32 = v28 + 2;
-        v30 = v18;
-        v31 = v20;
-        [v19 enumerateObjectsUsingBlock:v29];
+        v30 = personCopy;
+        v31 = nextTimeCopy;
+        [dateCopy enumerateObjectsUsingBlock:v29];
       }
     }
   }

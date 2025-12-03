@@ -1,9 +1,9 @@
 @interface TISupplementalPhraseItem
-- (TISupplementalPhraseItem)initWithCoder:(id)a3;
-- (TISupplementalPhraseItem)initWithTitle:(id)a3;
-- (TISupplementalPhraseItem)initWithTitle:(id)a3 phoneticTitle:(id)a4;
+- (TISupplementalPhraseItem)initWithCoder:(id)coder;
+- (TISupplementalPhraseItem)initWithTitle:(id)title;
+- (TISupplementalPhraseItem)initWithTitle:(id)title phoneticTitle:(id)phoneticTitle;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TISupplementalPhraseItem
@@ -44,29 +44,29 @@
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TISupplementalPhraseItem;
-  v4 = a3;
-  [(TISupplementalItem *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_title forKey:{@"title", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_phoneticTitle forKey:@"phoneticTitle"];
+  coderCopy = coder;
+  [(TISupplementalItem *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_title forKey:{@"title", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_phoneticTitle forKey:@"phoneticTitle"];
 }
 
-- (TISupplementalPhraseItem)initWithCoder:(id)a3
+- (TISupplementalPhraseItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = TISupplementalPhraseItem;
-  v5 = [(TISupplementalItem *)&v12 initWithCoder:v4];
+  v5 = [(TISupplementalItem *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneticTitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneticTitle"];
     phoneticTitle = v5->_phoneticTitle;
     v5->_phoneticTitle = v8;
 
@@ -76,20 +76,20 @@
   return v5;
 }
 
-- (TISupplementalPhraseItem)initWithTitle:(id)a3 phoneticTitle:(id)a4
+- (TISupplementalPhraseItem)initWithTitle:(id)title phoneticTitle:(id)phoneticTitle
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  phoneticTitleCopy = phoneticTitle;
   v15.receiver = self;
   v15.super_class = TISupplementalPhraseItem;
   v8 = [(TISupplementalItem *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [titleCopy copy];
     title = v8->_title;
     v8->_title = v9;
 
-    v11 = [v7 copy];
+    v11 = [phoneticTitleCopy copy];
     phoneticTitle = v8->_phoneticTitle;
     v8->_phoneticTitle = v11;
 
@@ -99,15 +99,15 @@
   return v8;
 }
 
-- (TISupplementalPhraseItem)initWithTitle:(id)a3
+- (TISupplementalPhraseItem)initWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v10.receiver = self;
   v10.super_class = TISupplementalPhraseItem;
   v5 = [(TISupplementalItem *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [titleCopy copy];
     title = v5->_title;
     v5->_title = v6;
 

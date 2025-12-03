@@ -1,27 +1,27 @@
 @interface PLCGPathCache
 + (id)sharedPathCache;
-- (CGPath)pathForKey:(CGRect)a3;
+- (CGPath)pathForKey:(CGRect)key;
 - (PLCGPathCache)init;
 - (void)dealloc;
-- (void)setPath:(CGPath *)a3 forKey:(CGRect)a4;
+- (void)setPath:(CGPath *)path forKey:(CGRect)key;
 @end
 
 @implementation PLCGPathCache
 
-- (CGPath)pathForKey:(CGRect)a3
+- (CGPath)pathForKey:(CGRect)key
 {
   pathCache = self->_pathCache;
-  v4 = [MEMORY[0x277CCAE60] valueWithCGRect:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  v4 = [MEMORY[0x277CCAE60] valueWithCGRect:{key.origin.x, key.origin.y, key.size.width, key.size.height}];
 
   return CFDictionaryGetValue(pathCache, v4);
 }
 
-- (void)setPath:(CGPath *)a3 forKey:(CGRect)a4
+- (void)setPath:(CGPath *)path forKey:(CGRect)key
 {
   pathCache = self->_pathCache;
-  v6 = [MEMORY[0x277CCAE60] valueWithCGRect:{a4.origin.x, a4.origin.y, a4.size.width, a4.size.height}];
+  v6 = [MEMORY[0x277CCAE60] valueWithCGRect:{key.origin.x, key.origin.y, key.size.width, key.size.height}];
 
-  CFDictionarySetValue(pathCache, v6, a3);
+  CFDictionarySetValue(pathCache, v6, path);
 }
 
 - (void)dealloc

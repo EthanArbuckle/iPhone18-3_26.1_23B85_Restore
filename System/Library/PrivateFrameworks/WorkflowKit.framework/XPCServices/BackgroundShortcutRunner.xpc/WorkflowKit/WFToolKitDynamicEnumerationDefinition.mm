@@ -1,9 +1,9 @@
 @interface WFToolKitDynamicEnumerationDefinition
 - (NSString)actionIdentifier;
 - (NSString)parameterKey;
-- (WFToolKitDynamicEnumerationDefinition)initWithActionIdentifier:(id)a3 parameterKey:(id)a4;
-- (void)setActionIdentifier:(id)a3;
-- (void)setParameterKey:(id)a3;
+- (WFToolKitDynamicEnumerationDefinition)initWithActionIdentifier:(id)identifier parameterKey:(id)key;
+- (void)setActionIdentifier:(id)identifier;
+- (void)setParameterKey:(id)key;
 @end
 
 @implementation WFToolKitDynamicEnumerationDefinition
@@ -15,11 +15,11 @@
   return v2;
 }
 
-- (void)setActionIdentifier:(id)a3
+- (void)setActionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  ToolKitHelper.DynamicEnumerationDefinition.actionIdentifier.setter(v4);
+  identifierCopy = identifier;
+  selfCopy = self;
+  ToolKitHelper.DynamicEnumerationDefinition.actionIdentifier.setter(identifierCopy);
 }
 
 - (NSString)parameterKey
@@ -29,14 +29,14 @@
   return v2;
 }
 
-- (void)setParameterKey:(id)a3
+- (void)setParameterKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  ToolKitHelper.DynamicEnumerationDefinition.parameterKey.setter(v4);
+  keyCopy = key;
+  selfCopy = self;
+  ToolKitHelper.DynamicEnumerationDefinition.parameterKey.setter(keyCopy);
 }
 
-- (WFToolKitDynamicEnumerationDefinition)initWithActionIdentifier:(id)a3 parameterKey:(id)a4
+- (WFToolKitDynamicEnumerationDefinition)initWithActionIdentifier:(id)identifier parameterKey:(id)key
 {
   sub_10008A268();
   sub_10008A268();

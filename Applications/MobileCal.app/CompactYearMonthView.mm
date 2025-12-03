@@ -1,8 +1,8 @@
 @interface CompactYearMonthView
-+ (double)heightForInterfaceOrientation:(int64_t)a3 windowSize:(CGSize)a4 heightSizeClass:(int64_t)a5;
-- (CGRect)frameForGridOfDays:(BOOL)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CompactYearMonthView)initWithCalendarDate:(id)a3 calendar:(id)a4;
++ (double)heightForInterfaceOrientation:(int64_t)orientation windowSize:(CGSize)size heightSizeClass:(int64_t)class;
+- (CGRect)frameForGridOfDays:(BOOL)days;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CompactYearMonthView)initWithCalendarDate:(id)date calendar:(id)calendar;
 - (double)_gridOfDaysHeightAdjustment;
 - (double)_gridOfDaysYAdjustment;
 - (double)circleFrameYAdjustment;
@@ -19,16 +19,16 @@
 - (id)dayNumberFont;
 - (id)headerFont;
 - (id)todayNumberFont;
-- (void)_localeChanged:(id)a3;
+- (void)_localeChanged:(id)changed;
 @end
 
 @implementation CompactYearMonthView
 
-- (CompactYearMonthView)initWithCalendarDate:(id)a3 calendar:(id)a4
+- (CompactYearMonthView)initWithCalendarDate:(id)date calendar:(id)calendar
 {
   v8.receiver = self;
   v8.super_class = CompactYearMonthView;
-  v4 = [(CompactYearMonthView *)&v8 init:a3];
+  v4 = [(CompactYearMonthView *)&v8 init:date];
   if (v4)
   {
     v5 = +[UIColor systemBackgroundColor];
@@ -41,13 +41,13 @@
   return v4;
 }
 
-- (void)_localeChanged:(id)a3
+- (void)_localeChanged:(id)changed
 {
   v3 = qword_100251BC8;
   qword_100251BC8 = 0;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   if (qword_100251BD8 != -1)
   {
@@ -81,9 +81,9 @@
   return result;
 }
 
-+ (double)heightForInterfaceOrientation:(int64_t)a3 windowSize:(CGSize)a4 heightSizeClass:(int64_t)a5
++ (double)heightForInterfaceOrientation:(int64_t)orientation windowSize:(CGSize)size heightSizeClass:(int64_t)class
 {
-  width = a4.width;
+  width = size.width;
   if (qword_100251BE8 != -1)
   {
     sub_1001709EC();
@@ -122,9 +122,9 @@
   return result;
 }
 
-- (CGRect)frameForGridOfDays:(BOOL)a3
+- (CGRect)frameForGridOfDays:(BOOL)days
 {
-  v3 = a3;
+  daysCopy = days;
   [(CompactYearMonthView *)self bounds];
   v6 = v5;
   v8 = v7;
@@ -133,18 +133,18 @@
   v12 = v11;
   [(CompactYearMonthView *)self yInset];
   v14 = v8 + v12 + v13 + -1.5;
-  v15 = [(CompactYearMonthView *)self calendar];
-  v16 = [v15 copy];
+  calendar = [(CompactYearMonthView *)self calendar];
+  v16 = [calendar copy];
 
   [v16 setFirstWeekday:CUIKOneIndexedWeekStart()];
-  v17 = [(CompactYearMonthView *)self calendarDate];
-  v18 = [v17 date];
-  [v16 rangeOfUnit:4096 inUnit:8 forDate:v18];
+  calendarDate = [(CompactYearMonthView *)self calendarDate];
+  date = [calendarDate date];
+  [v16 rangeOfUnit:4096 inUnit:8 forDate:date];
   v20 = v19;
 
   [(CompactYearMonthView *)self ySpacing];
   v22 = v21 * v20;
-  if (v3)
+  if (daysCopy)
   {
     [(CompactYearMonthView *)self _gridOfDaysYAdjustment];
     v14 = v14 + v23;

@@ -1,26 +1,26 @@
 @interface HDCodableTimestampedKeyValuePair
-- (BOOL)isEqual:(id)a3;
-- (HDCodableTimestampedKeyValuePair)initWithKey:(id)a3 value:(id)a4 timestamp:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (HDCodableTimestampedKeyValuePair)initWithKey:(id)key value:(id)value timestamp:(id)timestamp;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)decodedTimestamp;
 - (id)decodedValue;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNumberIntValue:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setTimestampWithDate:(id)a3;
-- (void)setValue:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNumberIntValue:(BOOL)value;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setTimestampWithDate:(id)date;
+- (void)setValue:(id)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableTimestampedKeyValuePair
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -33,9 +33,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasNumberIntValue:(BOOL)a3
+- (void)setHasNumberIntValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }
@@ -54,20 +54,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableTimestampedKeyValuePair;
   v4 = [(HDCodableTimestampedKeyValuePair *)&v8 description];
-  v5 = [(HDCodableTimestampedKeyValuePair *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableTimestampedKeyValuePair *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   has = self->_has;
@@ -120,14 +120,14 @@ LABEL_7:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -135,7 +135,7 @@ LABEL_7:
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -156,44 +156,44 @@ LABEL_5:
 
   numberIntValue = self->_numberIntValue;
   PBDataWriterWriteInt64Field();
-  v4 = v9;
+  toCopy = v9;
   if (*&self->_has)
   {
 LABEL_6:
     numberDoubleValue = self->_numberDoubleValue;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_7:
   if (self->_stringValue)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_bytesValue)
   {
     PBDataWriterWriteDataField();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_key)
   {
-    [v4 setKey:?];
-    v4 = v6;
+    [toCopy setKey:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 3) = *&self->_timestamp;
-    *(v4 + 56) |= 4u;
+    *(toCopy + 3) = *&self->_timestamp;
+    *(toCopy + 56) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -212,33 +212,33 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 2) = self->_numberIntValue;
-  *(v4 + 56) |= 2u;
+  *(toCopy + 2) = self->_numberIntValue;
+  *(toCopy + 56) |= 2u;
   if (*&self->_has)
   {
 LABEL_6:
-    *(v4 + 1) = *&self->_numberDoubleValue;
-    *(v4 + 56) |= 1u;
+    *(toCopy + 1) = *&self->_numberDoubleValue;
+    *(toCopy + 56) |= 1u;
   }
 
 LABEL_7:
   if (self->_stringValue)
   {
     [v6 setStringValue:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_bytesValue)
   {
     [v6 setBytesValue:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -278,27 +278,27 @@ LABEL_4:
   }
 
 LABEL_5:
-  v9 = [(NSString *)self->_stringValue copyWithZone:a3];
+  v9 = [(NSString *)self->_stringValue copyWithZone:zone];
   v10 = *(v5 + 48);
   *(v5 + 48) = v9;
 
-  v11 = [(NSData *)self->_bytesValue copyWithZone:a3];
+  v11 = [(NSData *)self->_bytesValue copyWithZone:zone];
   v12 = *(v5 + 32);
   *(v5 + 32) = v11;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   key = self->_key;
-  if (key | *(v4 + 5))
+  if (key | *(equalCopy + 5))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -306,16 +306,16 @@ LABEL_5:
     }
   }
 
-  v6 = *(v4 + 56);
+  v6 = *(equalCopy + 56);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 56) & 4) == 0 || self->_timestamp != *(v4 + 3))
+    if ((*(equalCopy + 56) & 4) == 0 || self->_timestamp != *(equalCopy + 3))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 56) & 4) != 0)
+  else if ((*(equalCopy + 56) & 4) != 0)
   {
 LABEL_23:
     v9 = 0;
@@ -324,38 +324,38 @@ LABEL_23:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_numberIntValue != *(v4 + 2))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_numberIntValue != *(equalCopy + 2))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 56) & 2) != 0)
+  else if ((*(equalCopy + 56) & 2) != 0)
   {
     goto LABEL_23;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_numberDoubleValue != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_numberDoubleValue != *(equalCopy + 1))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
     goto LABEL_23;
   }
 
   stringValue = self->_stringValue;
-  if (stringValue | *(v4 + 6) && ![(NSString *)stringValue isEqual:?])
+  if (stringValue | *(equalCopy + 6) && ![(NSString *)stringValue isEqual:?])
   {
     goto LABEL_23;
   }
 
   bytesValue = self->_bytesValue;
-  if (bytesValue | *(v4 + 4))
+  if (bytesValue | *(equalCopy + 4))
   {
     v9 = [(NSData *)bytesValue isEqual:?];
   }
@@ -457,22 +457,22 @@ LABEL_17:
   return v15 ^ [(NSData *)self->_bytesValue hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 5))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(HDCodableTimestampedKeyValuePair *)self setKey:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 4) != 0)
   {
-    self->_timestamp = *(v4 + 3);
+    self->_timestamp = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v5 = *(v4 + 56);
+    v5 = *(fromCopy + 56);
     if ((v5 & 2) == 0)
     {
 LABEL_5:
@@ -485,68 +485,68 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 56) & 2) == 0)
+  else if ((*(fromCopy + 56) & 2) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_numberIntValue = *(v4 + 2);
+  self->_numberIntValue = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if (*(v4 + 56))
+  if (*(fromCopy + 56))
   {
 LABEL_6:
-    self->_numberDoubleValue = *(v4 + 1);
+    self->_numberDoubleValue = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_7:
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(HDCodableTimestampedKeyValuePair *)self setStringValue:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(HDCodableTimestampedKeyValuePair *)self setBytesValue:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 
-- (HDCodableTimestampedKeyValuePair)initWithKey:(id)a3 value:(id)a4 timestamp:(id)a5
+- (HDCodableTimestampedKeyValuePair)initWithKey:(id)key value:(id)value timestamp:(id)timestamp
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  valueCopy = value;
+  timestampCopy = timestamp;
   v14.receiver = self;
   v14.super_class = HDCodableTimestampedKeyValuePair;
   v11 = [(HDCodableTimestampedKeyValuePair *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(HDCodableTimestampedKeyValuePair *)v11 setKey:v8];
-    [(HDCodableTimestampedKeyValuePair *)v12 setValue:v9];
-    [(HDCodableTimestampedKeyValuePair *)v12 setTimestampWithDate:v10];
+    [(HDCodableTimestampedKeyValuePair *)v11 setKey:keyCopy];
+    [(HDCodableTimestampedKeyValuePair *)v12 setValue:valueCopy];
+    [(HDCodableTimestampedKeyValuePair *)v12 setTimestampWithDate:timestampCopy];
   }
 
   return v12;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v5 hk_hasFloatingPointValue])
+    if ([valueCopy hk_hasFloatingPointValue])
     {
-      [v5 doubleValue];
+      [valueCopy doubleValue];
       [(HDCodableTimestampedKeyValuePair *)self setNumberDoubleValue:?];
     }
 
     else
     {
-      -[HDCodableTimestampedKeyValuePair setNumberIntValue:](self, "setNumberIntValue:", [v5 longLongValue]);
+      -[HDCodableTimestampedKeyValuePair setNumberIntValue:](self, "setNumberIntValue:", [valueCopy longLongValue]);
     }
 
     goto LABEL_10;
@@ -555,7 +555,7 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v5 copy];
+    v4 = [valueCopy copy];
     [(HDCodableTimestampedKeyValuePair *)self setStringValue:v4];
 LABEL_9:
 
@@ -565,22 +565,22 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v5 copy];
+    v4 = [valueCopy copy];
     [(HDCodableTimestampedKeyValuePair *)self setBytesValue:v4];
     goto LABEL_9;
   }
 
-  if (v5)
+  if (valueCopy)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Invalid value %@ of class %@", v5, objc_opt_class()}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Invalid value %@ of class %@", valueCopy, objc_opt_class()}];
   }
 
 LABEL_10:
 }
 
-- (void)setTimestampWithDate:(id)a3
+- (void)setTimestampWithDate:(id)date
 {
-  [a3 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
 
   [(HDCodableTimestampedKeyValuePair *)self setTimestamp:?];
 }

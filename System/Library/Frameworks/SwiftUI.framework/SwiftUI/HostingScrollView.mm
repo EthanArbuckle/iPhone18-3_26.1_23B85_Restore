@@ -2,14 +2,14 @@
 - (BOOL)_shouldScrollToContentBeginningInRightToLeft;
 - (CGRect)bounds;
 - (CGRect)frame;
-- (_TtC7SwiftUI17HostingScrollView)initWithFrame:(CGRect)a3;
-- (id)_focusScrollBoundaryMetricsForItem:(id)a3;
-- (void)_setContentOffset:(CGPoint)a3 animation:(id)a4;
+- (_TtC7SwiftUI17HostingScrollView)initWithFrame:(CGRect)frame;
+- (id)_focusScrollBoundaryMetricsForItem:(id)item;
+- (void)_setContentOffset:(CGPoint)offset animation:(id)animation;
 - (void)adjustedContentInsetDidChange;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setAccessoryView:(id)a3 atEdge:(int64_t)a4;
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4;
+- (void)setAccessoryView:(id)view atEdge:(int64_t)edge;
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated;
 @end
 
 @implementation HostingScrollView
@@ -36,13 +36,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   HostingScrollView.layoutSubviews()();
 }
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   HostingScrollView.didMoveToWindow()();
 }
 
@@ -55,18 +55,18 @@
   ScrollViewHelper.updateScrollBehaviorState(canRetarget:)(1);
 }
 
-- (void)setAccessoryView:(id)a3 atEdge:(int64_t)a4
+- (void)setAccessoryView:(id)view atEdge:(int64_t)edge
 {
-  v6 = a3;
-  v7 = self;
-  HostingScrollView.setAccessory(_:at:)(v6, a4);
+  viewCopy = view;
+  selfCopy = self;
+  HostingScrollView.setAccessory(_:at:)(viewCopy, edge);
 }
 
 - (BOOL)_shouldScrollToContentBeginningInRightToLeft
 {
   if ((*(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC7SwiftUI17HostingScrollView_helper))[OBJC_IVAR____TtC7SwiftUI16ScrollViewHelper_axes])
   {
-    v3 = self;
+    selfCopy = self;
     static Semantics.v6.getter();
     if (isLinkedOnOrAfter(_:)())
     {
@@ -88,31 +88,31 @@
   return v2 & 1;
 }
 
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = self;
-  HostingScrollView.setContentOffset(_:animated:)(__PAIR128__(*&y, *&x), a4);
+  y = offset.y;
+  x = offset.x;
+  selfCopy = self;
+  HostingScrollView.setContentOffset(_:animated:)(__PAIR128__(*&y, *&x), animated);
 }
 
-- (void)_setContentOffset:(CGPoint)a3 animation:(id)a4
+- (void)_setContentOffset:(CGPoint)offset animation:(id)animation
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
+  y = offset.y;
+  x = offset.x;
+  animationCopy = animation;
   v11.value.super.super._attr = self;
   attr = v11.value.super.super._attr;
-  v11.value.super.super.super.isa = a4;
+  v11.value.super.super.super.isa = animation;
   HostingScrollView._setContentOffset(_:animation:)(__PAIR128__(*&y, *&x), v11);
 }
 
-- (id)_focusScrollBoundaryMetricsForItem:(id)a3
+- (id)_focusScrollBoundaryMetricsForItem:(id)item
 {
   v5 = objc_allocWithZone(MEMORY[0x1E69DD4E8]);
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = [v5 initWithFocusItem:a3 scrollView:v6];
+  selfCopy = self;
+  v7 = [v5 initWithFocusItem:item scrollView:selfCopy];
   if ([v7 hasDisprovedAllRelevantAssumptions])
   {
     swift_unknownObjectRelease();
@@ -120,7 +120,7 @@
 
   else
   {
-    HostingScrollView.PlatformGroupContainer.updateFocusScrollBoundaryMetrics(_:for:)(v7, a3);
+    HostingScrollView.PlatformGroupContainer.updateFocusScrollBoundaryMetrics(_:for:)(v7, item);
 
     swift_unknownObjectRelease();
   }
@@ -128,7 +128,7 @@
   return v7;
 }
 
-- (_TtC7SwiftUI17HostingScrollView)initWithFrame:(CGRect)a3
+- (_TtC7SwiftUI17HostingScrollView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

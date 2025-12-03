@@ -1,33 +1,33 @@
 @interface SBFUserAuthenticationModelEducationalMode
 - (BOOL)isPermanentlyBlocked;
 - (BOOL)isTemporarilyBlocked;
-- (SBFUserAuthenticationModelEducationalMode)initWithKeyBag:(id)a3;
+- (SBFUserAuthenticationModelEducationalMode)initWithKeyBag:(id)bag;
 - (double)timeUntilUnblockedSinceReferenceDate;
-- (id)_refreshStateAndNotify:(BOOL)a3;
-- (void)_refreshStateForMkbState:(id)a3 notify:(BOOL)a4;
-- (void)noteNewMkbDeviceLockState:(id)a3;
+- (id)_refreshStateAndNotify:(BOOL)notify;
+- (void)_refreshStateForMkbState:(id)state notify:(BOOL)notify;
+- (void)noteNewMkbDeviceLockState:(id)state;
 - (void)notePasscodeEntryBegan;
 - (void)notePasscodeEntryCancelled;
-- (void)notePasscodeUnlockFailedWithError:(id)a3;
+- (void)notePasscodeUnlockFailedWithError:(id)error;
 - (void)notePasscodeUnlockSucceeded;
-- (void)performPasswordTest:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)performPasswordTest:(id)test;
+- (void)setDelegate:(id)delegate;
 - (void)synchronize;
 @end
 
 @implementation SBFUserAuthenticationModelEducationalMode
 
-- (SBFUserAuthenticationModelEducationalMode)initWithKeyBag:(id)a3
+- (SBFUserAuthenticationModelEducationalMode)initWithKeyBag:(id)bag
 {
-  v4 = a3;
+  bagCopy = bag;
   v10.receiver = self;
   v10.super_class = SBFUserAuthenticationModelEducationalMode;
   v5 = [(SBFUserAuthenticationModelEducationalMode *)&v10 init];
   if (v5)
   {
-    if (v4)
+    if (bagCopy)
     {
-      v6 = v4;
+      v6 = bagCopy;
     }
 
     else
@@ -60,9 +60,9 @@
   }
 
   v3 = [(SBFUserAuthenticationModelEducationalMode *)self _refreshStateAndNotify:0];
-  v4 = [v3 permanentlyBlocked];
+  permanentlyBlocked = [v3 permanentlyBlocked];
 
-  return v4;
+  return permanentlyBlocked;
 }
 
 - (double)timeUntilUnblockedSinceReferenceDate
@@ -71,8 +71,8 @@
   [v2 backOffTime];
   if (v3 <= 0.0)
   {
-    v7 = [MEMORY[0x1E695DF00] distantPast];
-    [v7 timeIntervalSinceReferenceDate];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
+    [distantPast timeIntervalSinceReferenceDate];
     v6 = v8;
   }
 
@@ -86,17 +86,17 @@
   return v6;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  if (self->_delegate != v4)
+  delegateCopy = delegate;
+  if (self->_delegate != delegateCopy)
   {
-    self->_delegate = v4;
+    self->_delegate = delegateCopy;
     if (self->_pendingWipe)
     {
-      v5 = v4;
-      [(SBFUserAuthenticationModelDelegate *)v4 deviceLockModelRequestsDeviceWipe:self];
-      v4 = v5;
+      v5 = delegateCopy;
+      [(SBFUserAuthenticationModelDelegate *)delegateCopy deviceLockModelRequestsDeviceWipe:self];
+      delegateCopy = v5;
     }
   }
 }
@@ -137,21 +137,21 @@
   }
 }
 
-- (void)notePasscodeUnlockFailedWithError:(id)a3
+- (void)notePasscodeUnlockFailedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = SBLogAuthenticationModel();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(SBFUserAuthenticationModelEducationalMode *)v4 notePasscodeUnlockFailedWithError:v5];
+    [(SBFUserAuthenticationModelEducationalMode *)errorCopy notePasscodeUnlockFailedWithError:v5];
   }
 
-  v6 = [v4 domain];
-  if ([v6 isEqualToString:@"com.apple.springboardfoundation.mkb"])
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:@"com.apple.springboardfoundation.mkb"])
   {
-    v7 = [v4 code];
+    code = [errorCopy code];
 
-    if (v7 == -14)
+    if (code == -14)
     {
       v8 = [(SBFUserAuthenticationModelEducationalMode *)self _refreshStateAndNotify:1];
     }
@@ -162,21 +162,21 @@
   }
 }
 
-- (void)noteNewMkbDeviceLockState:(id)a3
+- (void)noteNewMkbDeviceLockState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = SBLogAuthenticationModel();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(SBFUserAuthenticationModelEducationalMode *)v4 noteNewMkbDeviceLockState:v5];
+    [(SBFUserAuthenticationModelEducationalMode *)stateCopy noteNewMkbDeviceLockState:v5];
   }
 
-  [(SBFUserAuthenticationModelEducationalMode *)self _refreshStateForMkbState:v4 notify:1];
+  [(SBFUserAuthenticationModelEducationalMode *)self _refreshStateForMkbState:stateCopy notify:1];
 }
 
-- (void)performPasswordTest:(id)a3
+- (void)performPasswordTest:(id)test
 {
-  v3 = a3;
+  testCopy = test;
   v4 = SBLogAuthenticationModel();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -184,22 +184,22 @@
   }
 
   v5 = 0;
-  v3[2](v3, &v5);
+  testCopy[2](testCopy, &v5);
 }
 
-- (id)_refreshStateAndNotify:(BOOL)a3
+- (id)_refreshStateAndNotify:(BOOL)notify
 {
-  v3 = a3;
-  v5 = [(SBFMobileKeyBag *)self->_keybag state];
-  [(SBFUserAuthenticationModelEducationalMode *)self _refreshStateForMkbState:v5 notify:v3];
+  notifyCopy = notify;
+  state = [(SBFMobileKeyBag *)self->_keybag state];
+  [(SBFUserAuthenticationModelEducationalMode *)self _refreshStateForMkbState:state notify:notifyCopy];
 
-  return v5;
+  return state;
 }
 
-- (void)_refreshStateForMkbState:(id)a3 notify:(BOOL)a4
+- (void)_refreshStateForMkbState:(id)state notify:(BOOL)notify
 {
-  v4 = a4;
-  if ([a3 shouldWipe])
+  notifyCopy = notify;
+  if ([state shouldWipe])
   {
     self->_pendingWipe = 1;
   }
@@ -211,7 +211,7 @@
 
   [(SBFUserAuthenticationModelDelegate *)self->_delegate deviceLockModelRequestsDeviceWipe:self];
 LABEL_5:
-  if (v4)
+  if (notifyCopy)
   {
     delegate = self->_delegate;
 

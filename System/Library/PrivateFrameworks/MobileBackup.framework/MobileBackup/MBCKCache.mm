@@ -1,148 +1,148 @@
 @interface MBCKCache
-- (BOOL)_isNotFoundError:(id)a3;
-- (BOOL)_openWithFlags:(int)a3 error:(id *)a4;
-- (BOOL)committedManifestContainsDomain:(id)a3 relativePath:(id)a4 pendingManifestID:(id)a5 error:(id *)a6;
-- (BOOL)computeSignatureRetainCountsWithError:(id *)a3;
-- (BOOL)domainShouldRestoreToSafeHarbor:(id)a3 error:(id *)a4;
-- (BOOL)hasBackupContentsWithError:(id *)a3;
-- (BOOL)hasPendingBackupContents:(id *)a3;
+- (BOOL)_isNotFoundError:(id)error;
+- (BOOL)_openWithFlags:(int)flags error:(id *)error;
+- (BOOL)committedManifestContainsDomain:(id)domain relativePath:(id)path pendingManifestID:(id)d error:(id *)error;
+- (BOOL)computeSignatureRetainCountsWithError:(id *)error;
+- (BOOL)domainShouldRestoreToSafeHarbor:(id)harbor error:(id *)error;
+- (BOOL)hasBackupContentsWithError:(id *)error;
+- (BOOL)hasPendingBackupContents:(id *)contents;
 - (BOOL)previousSnapshotHasSkippedFiles;
-- (BOOL)removeAllScannedDomains:(id *)a3;
-- (BOOL)saveAccount:(id)a3 error:(id *)a4;
-- (BOOL)saveDevice:(id)a3 error:(id *)a4;
-- (MBCKCache)initWithTracker:(id)a3;
+- (BOOL)removeAllScannedDomains:(id *)domains;
+- (BOOL)saveAccount:(id)account error:(id *)error;
+- (BOOL)saveDevice:(id)device error:(id *)error;
+- (MBCKCache)initWithTracker:(id)tracker;
 - (NSNumber)size;
-- (id)_clientLastError:(id)a3;
-- (id)_enumerateObjectsOfClass:(Class)a3 callback:(id)a4 format:(id)a5;
-- (id)_enumerateRestoreFilesForDomain:(id)a3 state:(unint64_t)a4 negatingStateAndErrorState:(BOOL)a5 foundRestorable:(id)a6 range:(_NSRange)a7;
-- (id)_executeSQL:(id)a3;
-- (id)_fetchObjectOfClass:(Class)a3 error:(id *)a4 format:(id)a5;
-- (id)_removePropertyForKey:(id)a3;
-- (id)addDependentDomains:(id)a3 forApp:(id)a4;
-- (id)addFile:(id)a3 toManifest:(id)a4;
-- (id)addFileToRestoreFiles:(id)a3;
-- (id)addManifest:(id)a3 toPendingSnapshot:(id)a4;
-- (id)addPendingSnapshot:(id)a3;
-- (id)addSnapshotIntoFileChanges:(id)a3;
+- (id)_clientLastError:(id)error;
+- (id)_enumerateObjectsOfClass:(Class)class callback:(id)callback format:(id)format;
+- (id)_enumerateRestoreFilesForDomain:(id)domain state:(unint64_t)state negatingStateAndErrorState:(BOOL)errorState foundRestorable:(id)restorable range:(_NSRange)range;
+- (id)_executeSQL:(id)l;
+- (id)_fetchObjectOfClass:(Class)class error:(id *)error format:(id)format;
+- (id)_removePropertyForKey:(id)key;
+- (id)addDependentDomains:(id)domains forApp:(id)app;
+- (id)addFile:(id)file toManifest:(id)manifest;
+- (id)addFileToRestoreFiles:(id)files;
+- (id)addManifest:(id)manifest toPendingSnapshot:(id)snapshot;
+- (id)addPendingSnapshot:(id)snapshot;
+- (id)addSnapshotIntoFileChanges:(id)changes;
 - (id)clearAllRestoreData;
-- (id)commitSnapshot:(id)a3;
-- (id)dependentDomainsForApp:(id)a3 error:(id *)a4;
-- (id)domainNameForManifestID:(id)a3 error:(id *)a4;
-- (id)domainNamesForRestoreFailures:(id *)a3;
-- (id)enumerateChangedDomainNames:(id)a3;
-- (id)enumerateCloudFilesPendingDeleteForManifestID:(id)a3 withFoundFileID:(id)a4;
-- (id)enumerateDomainNames:(id)a3;
-- (id)enumerateDomainNamesOfPendingSnapshot:(id)a3 domainCallback:(id)a4;
-- (id)enumerateFileChangesForDomainName:(id)a3 skipUnmodified:(BOOL)a4 foundChange:(id)a5;
-- (id)enumerateFiles:(id)a3;
-- (id)enumerateFilesForManifest:(id)a3 foundFile:(id)a4;
-- (id)enumerateFilesForSnapshotOrderedByDomain:(id)a3 block:(id)a4;
-- (id)enumerateFilesMissingEncryptionKeys:(id)a3;
-- (id)enumerateKeybagUUIDsForAllFiles:(id)a3;
-- (id)enumerateManifestsForSnapshot:(id)a3 foundManifest:(id)a4;
-- (id)enumeratePendingRestorableDomainsWithCallback:(id)a3;
-- (id)enumeratePendingRestoreFilesForAnyDomainOrderAscendingWithBlock:(id)a3;
-- (id)enumeratePendingRestoreFilesForDomain:(id)a3 excludingType:(unint64_t)a4 foundRestorable:(id)a5;
-- (id)enumeratePendingRestoreFilesForDomain:(id)a3 forType:(unint64_t)a4 orderAscending:(BOOL)a5 foundRestorable:(id)a6;
-- (id)enumeratePendingRestoreFilesForDomain:(id)a3 orderAscending:(BOOL)a4 foundRestorable:(id)a5;
-- (id)enumeratePendingRestoreRegularFilesForAnyDomainOrderAscendingWithBlock:(id)a3;
-- (id)enumerateSnapshotIDs:(id)a3;
-- (id)enumerateSnapshots:(id)a3;
-- (id)fetchDomainRestoreStateForDomain:(id)a3 callback:(id)a4;
-- (id)fetchDomainsWithTopNFileCounts:(unint64_t)a3 error:(id *)a4;
-- (id)fetchDomainsWithTopNSizes:(unint64_t)a3 error:(id *)a4;
-- (id)fetchFileFromFileID:(id)a3 error:(id *)a4;
-- (id)fetchFileWithDomain:(id)a3 relativePath:(id)a4 snapshotID:(id)a5 error:(id *)a6;
-- (id)fetchManifestPageForManifestID:(id)a3 pageIndex:(unint64_t)a4 error:(id *)a5;
-- (id)fetchMostRecentSnapshotForDevice:(id)a3 error:(id *)a4;
-- (id)fetchMostRecentSnapshotWithError:(id *)a3;
-- (id)fetchPendingRestoreSizeForDomain:(id)a3 callback:(id)a4;
-- (id)fetchRestorableFileForPath:(id)a3 error:(id *)a4;
-- (id)fetchRestoreSizeForDomain:(id)a3 callback:(id)a4;
-- (id)fileAssetMetadataForSignature:(id)a3 volumeType:(unint64_t)a4;
-- (id)fileSeen:(id)a3 changeType:(unint64_t)a4;
-- (id)hasDomainBeenBackedUp:(id)a3 backedUp:(BOOL *)a4;
-- (id)hasRestoreFilesWithCallback:(id)a3;
-- (id)lastBackedUpFileForFile:(id)a3 error:(id *)a4;
-- (id)lastBackedUpFileWithDomainName:(id)a3 relativePath:(id)a4 error:(id *)a5;
-- (id)markFileAsCopyable:(id)a3;
-- (id)markFileChangesAsUnmodifiedForDomainNames:(id)a3;
-- (id)mergeManifest:(id)a3 withNewerManifest:(id)a4 outputManifest:(id)a5 mergeDeletions:(BOOL)a6;
-- (id)performInTransaction:(id)a3;
-- (id)prioritizeRestoreFileWithDomain:(id)a3 relativePath:(id)a4;
-- (id)propertyForKey:(id)a3 error:(id *)a4;
+- (id)commitSnapshot:(id)snapshot;
+- (id)dependentDomainsForApp:(id)app error:(id *)error;
+- (id)domainNameForManifestID:(id)d error:(id *)error;
+- (id)domainNamesForRestoreFailures:(id *)failures;
+- (id)enumerateChangedDomainNames:(id)names;
+- (id)enumerateCloudFilesPendingDeleteForManifestID:(id)d withFoundFileID:(id)iD;
+- (id)enumerateDomainNames:(id)names;
+- (id)enumerateDomainNamesOfPendingSnapshot:(id)snapshot domainCallback:(id)callback;
+- (id)enumerateFileChangesForDomainName:(id)name skipUnmodified:(BOOL)unmodified foundChange:(id)change;
+- (id)enumerateFiles:(id)files;
+- (id)enumerateFilesForManifest:(id)manifest foundFile:(id)file;
+- (id)enumerateFilesForSnapshotOrderedByDomain:(id)domain block:(id)block;
+- (id)enumerateFilesMissingEncryptionKeys:(id)keys;
+- (id)enumerateKeybagUUIDsForAllFiles:(id)files;
+- (id)enumerateManifestsForSnapshot:(id)snapshot foundManifest:(id)manifest;
+- (id)enumeratePendingRestorableDomainsWithCallback:(id)callback;
+- (id)enumeratePendingRestoreFilesForAnyDomainOrderAscendingWithBlock:(id)block;
+- (id)enumeratePendingRestoreFilesForDomain:(id)domain excludingType:(unint64_t)type foundRestorable:(id)restorable;
+- (id)enumeratePendingRestoreFilesForDomain:(id)domain forType:(unint64_t)type orderAscending:(BOOL)ascending foundRestorable:(id)restorable;
+- (id)enumeratePendingRestoreFilesForDomain:(id)domain orderAscending:(BOOL)ascending foundRestorable:(id)restorable;
+- (id)enumeratePendingRestoreRegularFilesForAnyDomainOrderAscendingWithBlock:(id)block;
+- (id)enumerateSnapshotIDs:(id)ds;
+- (id)enumerateSnapshots:(id)snapshots;
+- (id)fetchDomainRestoreStateForDomain:(id)domain callback:(id)callback;
+- (id)fetchDomainsWithTopNFileCounts:(unint64_t)counts error:(id *)error;
+- (id)fetchDomainsWithTopNSizes:(unint64_t)sizes error:(id *)error;
+- (id)fetchFileFromFileID:(id)d error:(id *)error;
+- (id)fetchFileWithDomain:(id)domain relativePath:(id)path snapshotID:(id)d error:(id *)error;
+- (id)fetchManifestPageForManifestID:(id)d pageIndex:(unint64_t)index error:(id *)error;
+- (id)fetchMostRecentSnapshotForDevice:(id)device error:(id *)error;
+- (id)fetchMostRecentSnapshotWithError:(id *)error;
+- (id)fetchPendingRestoreSizeForDomain:(id)domain callback:(id)callback;
+- (id)fetchRestorableFileForPath:(id)path error:(id *)error;
+- (id)fetchRestoreSizeForDomain:(id)domain callback:(id)callback;
+- (id)fileAssetMetadataForSignature:(id)signature volumeType:(unint64_t)type;
+- (id)fileSeen:(id)seen changeType:(unint64_t)type;
+- (id)hasDomainBeenBackedUp:(id)up backedUp:(BOOL *)backedUp;
+- (id)hasRestoreFilesWithCallback:(id)callback;
+- (id)lastBackedUpFileForFile:(id)file error:(id *)error;
+- (id)lastBackedUpFileWithDomainName:(id)name relativePath:(id)path error:(id *)error;
+- (id)markFileAsCopyable:(id)copyable;
+- (id)markFileChangesAsUnmodifiedForDomainNames:(id)names;
+- (id)mergeManifest:(id)manifest withNewerManifest:(id)newerManifest outputManifest:(id)outputManifest mergeDeletions:(BOOL)deletions;
+- (id)performInTransaction:(id)transaction;
+- (id)prioritizeRestoreFileWithDomain:(id)domain relativePath:(id)path;
+- (id)propertyForKey:(id)key error:(id *)error;
 - (id)rebuildEncryptionKeysTable;
 - (id)removeAllOrphanedItems;
-- (id)removeAllOrphanedItemsForSnapshot:(id)a3;
-- (id)removeManifestAndFiles:(id)a3;
-- (id)removeSnapshot:(id)a3;
-- (id)removeSnapshotID:(id)a3;
-- (id)removeUncommittedFileWithDomain:(id)a3 relativePath:(id)a4 pendingManifestID:(id)a5;
-- (id)retainCountForSignature:(id)a3 volumeType:(unint64_t)a4 error:(id *)a5;
-- (id)setDomainRestoreAgent:(id)a3 forDomain:(id)a4;
-- (id)setDomainRestoreState:(unint64_t)a3 forDomain:(id)a4;
-- (id)setFileEncryptionKey:(id)a3 forInodeNumber:(unint64_t)a4 volumeType:(unint64_t)a5 atPath:(id)a6;
-- (id)setFileMissingEncryptionKeyForPath:(id)a3;
-- (id)setFileStateToCompleted:(id)a3;
-- (id)setFileStateToPending:(id)a3;
-- (id)setProperty:(id)a3 forKey:(id)a4;
-- (id)setRestoreState:(unint64_t)a3 forFile:(id)a4;
-- (id)setRestoreType:(int)a3 forFile:(id)a4;
-- (id)summarizeCloudFilesPendingDeleteForManifestID:(id)a3 callback:(id)a4;
-- (id)summarizeFileChanges:(id)a3;
-- (id)summarizeFileChangesForAllChanges:(id)a3;
-- (id)summarizeFileChangesForDomainName:(id)a3 foundChanges:(id)a4;
-- (id)summarizeFileChangesGroupByDomain:(id)a3;
-- (id)updateDecodedAssetPath:(id)a3 forSignature:(id)a4 volumeType:(unint64_t)a5;
-- (id)updateFile:(id)a3;
-- (id)uploadedFileInPendingSnapshotWithDomainName:(id)a3 relativePath:(id)a4 error:(id *)a5;
-- (int)countManifestPagesForManifestID:(id)a3 error:(id *)a4;
-- (int)countManifestsForSnapshot:(id)a3 error:(id *)a4;
-- (int64_t)checksumForManifest:(id)a3 shouldLog:(BOOL)a4 error:(id *)a5;
-- (unint64_t)countDomainHmacForManifest:(id)a3 error:(id *)a4;
-- (unint64_t)countFilesForManifest:(id)a3 error:(id *)a4;
-- (unint64_t)countFilesForManifestID:(id)a3 error:(id *)a4;
-- (unint64_t)countFilesMissingEncryptionKeysWithError:(id *)a3;
-- (unint64_t)countRestoreFilesWithSourceDeviceInode:(unint64_t)a3 signature:(id)a4 volumeType:(unint64_t)a5 error:(id *)a6;
-- (unint64_t)fetchRestoreFileStateForFileID:(id)a3 error:(id *)a4;
-- (unint64_t)fetchRestoreStateForDeviceUUID:(id)a3 snapshotUUID:(id)a4 error:(id *)a5;
-- (unint64_t)sizeOfDomain:(id)a3 error:(id *)a4;
-- (unint64_t)sizeOfPendingRestore:(id *)a3;
-- (unint64_t)sizeOfScannedDomain:(id)a3 error:(id *)a4;
-- (unint64_t)sizeOfSnapshot:(id)a3 error:(id *)a4;
+- (id)removeAllOrphanedItemsForSnapshot:(id)snapshot;
+- (id)removeManifestAndFiles:(id)files;
+- (id)removeSnapshot:(id)snapshot;
+- (id)removeSnapshotID:(id)d;
+- (id)removeUncommittedFileWithDomain:(id)domain relativePath:(id)path pendingManifestID:(id)d;
+- (id)retainCountForSignature:(id)signature volumeType:(unint64_t)type error:(id *)error;
+- (id)setDomainRestoreAgent:(id)agent forDomain:(id)domain;
+- (id)setDomainRestoreState:(unint64_t)state forDomain:(id)domain;
+- (id)setFileEncryptionKey:(id)key forInodeNumber:(unint64_t)number volumeType:(unint64_t)type atPath:(id)path;
+- (id)setFileMissingEncryptionKeyForPath:(id)path;
+- (id)setFileStateToCompleted:(id)completed;
+- (id)setFileStateToPending:(id)pending;
+- (id)setProperty:(id)property forKey:(id)key;
+- (id)setRestoreState:(unint64_t)state forFile:(id)file;
+- (id)setRestoreType:(int)type forFile:(id)file;
+- (id)summarizeCloudFilesPendingDeleteForManifestID:(id)d callback:(id)callback;
+- (id)summarizeFileChanges:(id)changes;
+- (id)summarizeFileChangesForAllChanges:(id)changes;
+- (id)summarizeFileChangesForDomainName:(id)name foundChanges:(id)changes;
+- (id)summarizeFileChangesGroupByDomain:(id)domain;
+- (id)updateDecodedAssetPath:(id)path forSignature:(id)signature volumeType:(unint64_t)type;
+- (id)updateFile:(id)file;
+- (id)uploadedFileInPendingSnapshotWithDomainName:(id)name relativePath:(id)path error:(id *)error;
+- (int)countManifestPagesForManifestID:(id)d error:(id *)error;
+- (int)countManifestsForSnapshot:(id)snapshot error:(id *)error;
+- (int64_t)checksumForManifest:(id)manifest shouldLog:(BOOL)log error:(id *)error;
+- (unint64_t)countDomainHmacForManifest:(id)manifest error:(id *)error;
+- (unint64_t)countFilesForManifest:(id)manifest error:(id *)error;
+- (unint64_t)countFilesForManifestID:(id)d error:(id *)error;
+- (unint64_t)countFilesMissingEncryptionKeysWithError:(id *)error;
+- (unint64_t)countRestoreFilesWithSourceDeviceInode:(unint64_t)inode signature:(id)signature volumeType:(unint64_t)type error:(id *)error;
+- (unint64_t)fetchRestoreFileStateForFileID:(id)d error:(id *)error;
+- (unint64_t)fetchRestoreStateForDeviceUUID:(id)d snapshotUUID:(id)iD error:(id *)error;
+- (unint64_t)sizeOfDomain:(id)domain error:(id *)error;
+- (unint64_t)sizeOfPendingRestore:(id *)restore;
+- (unint64_t)sizeOfScannedDomain:(id)domain error:(id *)error;
+- (unint64_t)sizeOfSnapshot:(id)snapshot error:(id *)error;
 - (void)_invalidate;
-- (void)_perform:(id)a3;
-- (void)_removeCorruptDatabaseWithError:(id)a3 completion:(id)a4;
+- (void)_perform:(id)_perform;
+- (void)_removeCorruptDatabaseWithError:(id)error completion:(id)completion;
 - (void)beginBatch;
 - (void)close;
 - (void)dealloc;
 - (void)flush;
-- (void)removeFileEncryptionKeyForInode:(unint64_t)a3 volumeType:(unint64_t)a4;
+- (void)removeFileEncryptionKeyForInode:(unint64_t)inode volumeType:(unint64_t)type;
 @end
 
 @implementation MBCKCache
 
-- (MBCKCache)initWithTracker:(id)a3
+- (MBCKCache)initWithTracker:(id)tracker
 {
-  v4 = a3;
-  if (!v4)
+  trackerCopy = tracker;
+  if (!trackerCopy)
   {
     __assert_rtn("[MBCKCache initWithTracker:]", "MBCKCache.m", 350, "tracker");
   }
 
-  v5 = v4;
+  v5 = trackerCopy;
   v11.receiver = self;
   v11.super_class = MBCKCache;
   v6 = [(MBCKCache *)&v11 init];
   if (v6)
   {
-    v7 = [v5 path];
+    path = [v5 path];
     path = v6->_path;
-    v6->_path = v7;
+    v6->_path = path;
 
     [(MBCKCache *)v6 setTracker:v5];
-    v9 = [v5 sharedQueue];
-    [(MBCKCache *)v6 setSharedQueue:v9];
+    sharedQueue = [v5 sharedQueue];
+    [(MBCKCache *)v6 setSharedQueue:sharedQueue];
   }
 
   return v6;
@@ -168,25 +168,25 @@
   [(MBCKCache *)&v6 dealloc];
 }
 
-- (BOOL)_openWithFlags:(int)a3 error:(id *)a4
+- (BOOL)_openWithFlags:(int)flags error:(id *)error
 {
   dispatch_assert_queue_V2(self->_sharedQueue);
-  v5 = [(MBCKCache *)self tracker];
-  v37 = v5;
-  if (!v5)
+  tracker = [(MBCKCache *)self tracker];
+  v37 = tracker;
+  if (!tracker)
   {
     __assert_rtn("[MBCKCache _openWithFlags:error:]", "MBCKCache.m", 374, "tracker");
   }
 
-  v6 = [v5 path];
-  v39 = v6;
-  if (!v6)
+  path = [tracker path];
+  v39 = path;
+  if (!path)
   {
     __assert_rtn("[MBCKCache _openWithFlags:error:]", "MBCKCache.m", 376, "path");
   }
 
-  v38 = [v6 stringByDeletingLastPathComponent];
-  if (!v38)
+  stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
+  if (!stringByDeletingLastPathComponent)
   {
     __assert_rtn("[MBCKCache _openWithFlags:error:]", "MBCKCache.m", 378, "dir");
   }
@@ -207,7 +207,7 @@
     v46[1] = @"mobile";
     v13 = [NSDictionary dictionaryWithObjects:v46 forKeys:v45 count:2];
     v42 = 0;
-    v14 = [v12 createDirectoryAtPath:v38 withIntermediateDirectories:1 attributes:v13 error:&v42];
+    v14 = [v12 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:v13 error:&v42];
     v15 = v42;
 
     if ((v14 & 1) == 0)
@@ -228,16 +228,16 @@
     }
 
     v41 = v15;
-    v16 = [(MBCKCache *)self _makePQLConnectionWithFlags:a3 error:&v41];
+    v16 = [(MBCKCache *)self _makePQLConnectionWithFlags:flags error:&v41];
     v8 = v41;
 
-    if (v16 || a3 & 1)
+    if (v16 || flags & 1)
     {
       break;
     }
 
-    v18 = [v8 domain];
-    if ([v18 isEqualToString:v10])
+    domain = [v8 domain];
+    if ([domain isEqualToString:v10])
     {
       v19 = [v8 code] == 13;
 
@@ -303,11 +303,11 @@ LABEL_34:
     }
 
 LABEL_35:
-    if (a4)
+    if (error)
     {
       v30 = v8;
       v16 = 0;
-      *a4 = v8;
+      *error = v8;
     }
 
     else
@@ -319,16 +319,16 @@ LABEL_35:
   }
 
   atomic_store(1u, &self->_openCount);
-  self->_readOnly = a3 & 1;
+  self->_readOnly = flags & 1;
   objc_storeStrong(&self->_pdb, v16);
-  v24 = [v16 serialQueue];
+  serialQueue = [v16 serialQueue];
   queue = self->_queue;
-  self->_queue = v24;
+  self->_queue = serialQueue;
 
   v26 = MBGetDefaultLog();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
   {
-    if (a3)
+    if (flags)
     {
       v27 = 111;
     }
@@ -359,7 +359,7 @@ LABEL_38:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Invalidating cache connection %p", buf, 0xCu);
       _MBLog();
     }
@@ -384,18 +384,18 @@ LABEL_38:
 
   if (add == 1)
   {
-    v4 = [(MBCKCache *)self tracker];
-    if (!v4)
+    tracker = [(MBCKCache *)self tracker];
+    if (!tracker)
     {
       __assert_rtn("[MBCKCache close]", "MBCKCache.m", 460, "tracker");
     }
 
-    v5 = v4;
-    [v4 _closeCache:self];
+    v5 = tracker;
+    [tracker _closeCache:self];
   }
 }
 
-- (id)performInTransaction:(id)a3
+- (id)performInTransaction:(id)transaction
 {
   v10 = 0;
   v11 = &v10;
@@ -407,11 +407,11 @@ LABEL_38:
   v6[1] = 3221225472;
   v6[2] = sub_1000C0A0C;
   v6[3] = &unk_1003BDBF0;
-  v7 = self;
+  selfCopy = self;
   v9 = &v10;
-  v3 = a3;
-  v8 = v3;
-  [(MBCKCache *)v7 _perform:v6];
+  transactionCopy = transaction;
+  v8 = transactionCopy;
+  [(MBCKCache *)selfCopy _perform:v6];
   v4 = v11[5];
 
   _Block_object_dispose(&v10, 8);
@@ -439,30 +439,30 @@ LABEL_38:
   [(MBCKCache *)self _perform:v2];
 }
 
-- (void)_removeCorruptDatabaseWithError:(id)a3 completion:(id)a4
+- (void)_removeCorruptDatabaseWithError:(id)error completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  completionCopy = completion;
   sharedQueue = self->_sharedQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000C0D14;
   block[3] = &unk_1003BD9D8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = errorCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = errorCopy;
   dispatch_async(sharedQueue, block);
 }
 
-- (BOOL)_isNotFoundError:(id)a3
+- (BOOL)_isNotFoundError:(id)error
 {
-  v3 = a3;
-  if ([v3 code] == 12)
+  errorCopy = error;
+  if ([errorCopy code] == 12)
   {
-    v4 = [v3 domain];
-    v5 = [v4 isEqualToString:PQLSqliteErrorDomain];
+    domain = [errorCopy domain];
+    v5 = [domain isEqualToString:PQLSqliteErrorDomain];
   }
 
   else
@@ -473,25 +473,25 @@ LABEL_38:
   return v5;
 }
 
-- (id)_clientLastError:(id)a3
+- (id)_clientLastError:(id)error
 {
-  v3 = a3;
-  if ([v3 code] == 12 && (objc_msgSend(v3, "domain"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", PQLSqliteErrorDomain), v4, (v5 & 1) != 0))
+  errorCopy = error;
+  if ([errorCopy code] == 12 && (objc_msgSend(errorCopy, "domain"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", PQLSqliteErrorDomain), v4, (v5 & 1) != 0))
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = v3;
+    v6 = errorCopy;
   }
 
   return v6;
 }
 
-- (void)_perform:(id)a3
+- (void)_perform:(id)_perform
 {
-  block = a3;
+  block = _perform;
   specific = dispatch_get_specific(self);
   queue = self->_queue;
   if (specific == self)
@@ -509,7 +509,7 @@ LABEL_38:
   }
 }
 
-- (id)_executeSQL:(id)a3
+- (id)_executeSQL:(id)l
 {
   v12 = 0;
   v13 = &v12;
@@ -522,12 +522,12 @@ LABEL_38:
   v6[1] = 3221225472;
   v6[2] = sub_1000C2E84;
   v6[3] = &unk_1003BDF28;
-  v7 = self;
+  selfCopy = self;
   v9 = &v12;
-  v3 = a3;
-  v8 = v3;
+  lCopy = l;
+  v8 = lCopy;
   v10 = &v11;
-  [(MBCKCache *)v7 _perform:v6];
+  [(MBCKCache *)selfCopy _perform:v6];
   v4 = v13[5];
 
   _Block_object_dispose(&v12, 8);
@@ -535,9 +535,9 @@ LABEL_38:
   return v4;
 }
 
-- (id)_enumerateObjectsOfClass:(Class)a3 callback:(id)a4 format:(id)a5
+- (id)_enumerateObjectsOfClass:(Class)class callback:(id)callback format:(id)format
 {
-  v8 = a4;
+  callbackCopy = callback;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -551,11 +551,11 @@ LABEL_38:
   v13[3] = &unk_1003BDF50;
   v13[4] = self;
   v16 = &v20;
-  v9 = a5;
-  v14 = v9;
+  formatCopy = format;
+  v14 = formatCopy;
   v17 = &v19;
-  v18 = a3;
-  v10 = v8;
+  classCopy = class;
+  v10 = callbackCopy;
   v15 = v10;
   [(MBCKCache *)self _perform:v13];
   v11 = v21[5];
@@ -565,7 +565,7 @@ LABEL_38:
   return v11;
 }
 
-- (id)_fetchObjectOfClass:(Class)a3 error:(id *)a4 format:(id)a5
+- (id)_fetchObjectOfClass:(Class)class error:(id *)error format:(id)format
 {
   v24 = 0;
   v25 = &v24;
@@ -584,18 +584,18 @@ LABEL_38:
   v10[1] = 3221225472;
   v10[2] = sub_1000C344C;
   v10[3] = &unk_1003BDF78;
-  v11 = self;
+  selfCopy = self;
   v13 = &v24;
   v14 = &v18;
-  v15 = a3;
-  v6 = a5;
-  v12 = v6;
+  classCopy = class;
+  formatCopy = format;
+  v12 = formatCopy;
   v16 = &v17;
-  [(MBCKCache *)v11 _perform:v10];
+  [(MBCKCache *)selfCopy _perform:v10];
   v7 = v19[5];
-  if (a4 && !v7)
+  if (error && !v7)
   {
-    *a4 = v25[5];
+    *error = v25[5];
     v7 = v19[5];
   }
 
@@ -607,10 +607,10 @@ LABEL_38:
   return v8;
 }
 
-- (id)propertyForKey:(id)a3 error:(id *)a4
+- (id)propertyForKey:(id)key error:(id *)error
 {
-  v11 = a3;
-  if (!v11)
+  keyCopy = key;
+  if (!keyCopy)
   {
     v12 = MBGetDefaultLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -621,24 +621,24 @@ LABEL_38:
     }
   }
 
-  if (sub_10012F400(v11 != 0, a4, @"Null key: %@", v6, v7, v8, v9, v10, v11))
+  if (sub_10012F400(keyCopy != 0, error, @"Null key: %@", v6, v7, v8, v9, v10, keyCopy))
   {
-    v13 = [(MBCKCache *)self _fetchObjectOfClass:objc_opt_class() error:a4 format:@"SELECT value FROM Properties WHERE key = %@ AND key IS NOT NULL", v11];
+    keyCopy = [(MBCKCache *)self _fetchObjectOfClass:objc_opt_class() error:error format:@"SELECT value FROM Properties WHERE key = %@ AND key IS NOT NULL", keyCopy];
   }
 
   else
   {
-    v13 = 0;
+    keyCopy = 0;
   }
 
-  return v13;
+  return keyCopy;
 }
 
-- (id)setProperty:(id)a3 forKey:(id)a4
+- (id)setProperty:(id)property forKey:(id)key
 {
-  v6 = a3;
-  v13 = a4;
-  if (!v13)
+  propertyCopy = property;
+  keyCopy = key;
+  if (!keyCopy)
   {
     v14 = MBGetDefaultLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -649,7 +649,7 @@ LABEL_38:
     }
   }
 
-  v15 = _MBAssert(v13 != 0, @"Null key: %@", v7, v8, v9, v10, v11, v12, v13);
+  v15 = _MBAssert(keyCopy != 0, @"Null key: %@", v7, v8, v9, v10, v11, v12, keyCopy);
   v16 = v15;
   if (v15)
   {
@@ -658,14 +658,14 @@ LABEL_38:
 
   else
   {
-    if (v6)
+    if (propertyCopy)
     {
-      [(MBCKCache *)self _executeSQL:@"INSERT OR REPLACE INTO Properties (key, value) VALUES (%@, %@)", v13, v6];
+      [(MBCKCache *)self _executeSQL:@"INSERT OR REPLACE INTO Properties (key, value) VALUES (%@, %@)", keyCopy, propertyCopy];
     }
 
     else
     {
-      [(MBCKCache *)self _removePropertyForKey:v13];
+      [(MBCKCache *)self _removePropertyForKey:keyCopy];
     }
     v17 = ;
   }
@@ -675,10 +675,10 @@ LABEL_38:
   return v18;
 }
 
-- (id)_removePropertyForKey:(id)a3
+- (id)_removePropertyForKey:(id)key
 {
-  v10 = a3;
-  if (!v10)
+  keyCopy = key;
+  if (!keyCopy)
   {
     v11 = MBGetDefaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
@@ -689,33 +689,33 @@ LABEL_38:
     }
   }
 
-  v12 = _MBAssert(v10 != 0, @"Null key: %@", v4, v5, v6, v7, v8, v9, v10);
+  v12 = _MBAssert(keyCopy != 0, @"Null key: %@", v4, v5, v6, v7, v8, v9, keyCopy);
   v13 = v12;
   if (v12)
   {
-    v14 = v12;
+    keyCopy = v12;
   }
 
   else
   {
-    v14 = [(MBCKCache *)self _executeSQL:@"DELETE FROM Properties WHERE key == %@", v10];
+    keyCopy = [(MBCKCache *)self _executeSQL:@"DELETE FROM Properties WHERE key == %@", keyCopy];
   }
 
-  v15 = v14;
+  v15 = keyCopy;
 
   return v15;
 }
 
-- (BOOL)saveAccount:(id)a3 error:(id *)a4
+- (BOOL)saveAccount:(id)account error:(id *)error
 {
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [a3 devicesByUUID];
-  v7 = [v6 allValues];
+  devicesByUUID = [account devicesByUUID];
+  allValues = [devicesByUUID allValues];
 
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v28 count:16];
+  v8 = [allValues countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v8)
   {
     v9 = v8;
@@ -726,12 +726,12 @@ LABEL_3:
     {
       if (*v23 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(allValues);
       }
 
       v12 = *(*(&v22 + 1) + 8 * v11);
-      v13 = [v12 deviceUUID];
-      v14 = [(MBCKCache *)self _executeSQL:@"INSERT OR REPLACE INTO Devices (deviceUUID, device) VALUES (%@, %@)", v13, v12];
+      deviceUUID = [v12 deviceUUID];
+      v14 = [(MBCKCache *)self _executeSQL:@"INSERT OR REPLACE INTO Devices (deviceUUID, device) VALUES (%@, %@)", deviceUUID, v12];
 
       if (v14)
       {
@@ -740,7 +740,7 @@ LABEL_3:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v22 objects:v28 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v22 objects:v28 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -760,7 +760,7 @@ LABEL_3:
     }
 
     v17 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_18;
     }
@@ -771,9 +771,9 @@ LABEL_3:
 LABEL_9:
 
   v15 = +[NSDate date];
-  v7 = [NSKeyedArchiver archivedDataWithRootObject:v15 requiringSecureCoding:1 error:0];
+  allValues = [NSKeyedArchiver archivedDataWithRootObject:v15 requiringSecureCoding:1 error:0];
 
-  v16 = [v7 base64EncodedStringWithOptions:0];
+  v16 = [allValues base64EncodedStringWithOptions:0];
   v14 = [(MBCKCache *)self setProperty:v16 forKey:@"AccountSaved"];
 
   v17 = v14 == 0;
@@ -788,11 +788,11 @@ LABEL_9:
       _MBLog();
     }
 
-    if (a4)
+    if (error)
     {
 LABEL_17:
       v20 = v14;
-      *a4 = v14;
+      *error = v14;
     }
   }
 
@@ -801,34 +801,34 @@ LABEL_18:
   return v17;
 }
 
-- (BOOL)saveDevice:(id)a3 error:(id *)a4
+- (BOOL)saveDevice:(id)device error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 deviceUUID];
-  v8 = [(MBCKCache *)self _executeSQL:@"INSERT OR REPLACE INTO Devices (deviceUUID, device) VALUES (%@, %@)", v7, v6];
+  deviceCopy = device;
+  deviceUUID = [deviceCopy deviceUUID];
+  deviceCopy = [(MBCKCache *)self _executeSQL:@"INSERT OR REPLACE INTO Devices (deviceUUID, device) VALUES (%@, %@)", deviceUUID, deviceCopy];
 
-  if (v8)
+  if (deviceCopy)
   {
     v9 = MBGetDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v13 = v8;
+      v13 = deviceCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to add device: %@", buf, 0xCu);
       _MBLog();
     }
 
-    if (a4)
+    if (error)
     {
-      v10 = v8;
-      *a4 = v8;
+      v10 = deviceCopy;
+      *error = deviceCopy;
     }
   }
 
-  return v8 == 0;
+  return deviceCopy == 0;
 }
 
-- (BOOL)hasBackupContentsWithError:(id *)a3
+- (BOOL)hasBackupContentsWithError:(id *)error
 {
   v11 = 0;
   v12 = &v11;
@@ -848,9 +848,9 @@ LABEL_18:
   v6[5] = &v11;
   v6[6] = &v7;
   [(MBCKCache *)self _perform:v6];
-  if (a3)
+  if (error)
   {
-    *a3 = v12[5];
+    *error = v12[5];
   }
 
   v4 = *(v8 + 24);
@@ -860,7 +860,7 @@ LABEL_18:
   return v4;
 }
 
-- (BOOL)hasPendingBackupContents:(id *)a3
+- (BOOL)hasPendingBackupContents:(id *)contents
 {
   v11 = 0;
   v12 = &v11;
@@ -880,9 +880,9 @@ LABEL_18:
   v6[5] = &v11;
   v6[6] = &v7;
   [(MBCKCache *)self _perform:v6];
-  if (a3)
+  if (contents)
   {
-    *a3 = v12[5];
+    *contents = v12[5];
   }
 
   v4 = *(v8 + 24);
@@ -895,31 +895,31 @@ LABEL_18:
 - (NSNumber)size
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(MBCKCache *)self path];
-  v5 = [v3 attributesOfItemAtPath:v4 error:0];
+  path = [(MBCKCache *)self path];
+  v5 = [v3 attributesOfItemAtPath:path error:0];
 
-  v6 = [v5 fileSize];
+  fileSize = [v5 fileSize];
   v7 = MBGetDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = objc_opt_class();
-    v9 = [(MBCKCache *)self path];
+    path2 = [(MBCKCache *)self path];
     *buf = 138544130;
     v39 = v8;
     v40 = 2114;
-    v41 = v9;
+    v41 = path2;
     v42 = 2048;
-    v43 = v6;
+    v43 = fileSize;
     v44 = 2048;
-    v45 = [v5 fileSystemFileNumber];
+    fileSystemFileNumber = [v5 fileSystemFileNumber];
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%{public}@: %{public}@, size:%llu, inode:%llu", buf, 0x2Au);
 
     v10 = objc_opt_class();
-    v11 = [(MBCKCache *)self path];
-    v29 = v6;
-    v30 = [v5 fileSystemFileNumber];
+    path3 = [(MBCKCache *)self path];
+    v29 = fileSize;
+    fileSystemFileNumber2 = [v5 fileSystemFileNumber];
     v27 = v10;
-    v28 = v11;
+    v28 = path3;
     _MBLog();
   }
 
@@ -950,33 +950,33 @@ LABEL_18:
         {
           v18 = [v3 attributesOfItemAtPath:v17 error:0];
 
-          v19 = [v18 fileSize];
+          fileSize2 = [v18 fileSize];
           v20 = MBGetDefaultLog();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
           {
-            v21 = v6;
+            v21 = fileSize;
             v22 = objc_opt_class();
-            v23 = [v18 fileSystemFileNumber];
+            fileSystemFileNumber3 = [v18 fileSystemFileNumber];
             *buf = 138544130;
             v39 = v22;
             v40 = 2114;
             v41 = v17;
             v42 = 2048;
-            v43 = v19;
+            v43 = fileSize2;
             v44 = 2048;
-            v45 = v23;
+            fileSystemFileNumber = fileSystemFileNumber3;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "%{public}@: %{public}@, size:%llu, inode:%llu", buf, 0x2Au);
             v24 = objc_opt_class();
-            v29 = v19;
-            v30 = [v18 fileSystemFileNumber];
+            v29 = fileSize2;
+            fileSystemFileNumber2 = [v18 fileSystemFileNumber];
             v27 = v24;
             v28 = v17;
-            v6 = v21;
+            fileSize = v21;
             v3 = v31;
             _MBLog();
           }
 
-          v6 = &v6[v19];
+          fileSize = &fileSize[fileSize2];
           v5 = v18;
         }
       }
@@ -987,38 +987,38 @@ LABEL_18:
     while (v32);
   }
 
-  v25 = [NSNumber numberWithUnsignedLongLong:v6];
+  v25 = [NSNumber numberWithUnsignedLongLong:fileSize];
 
   return v25;
 }
 
-- (id)addPendingSnapshot:(id)a3
+- (id)addPendingSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = [v4 snapshotID];
-  v6 = [v4 committed];
-  v7 = [v4 created];
-  v8 = [(MBCKCache *)self _executeSQL:@"INSERT OR REPLACE INTO Snapshots (snapshotID, committed, created, snapshot) VALUES (%@, %d, %@, %@)", v5, v6, v7, v4];
+  snapshotCopy = snapshot;
+  snapshotID = [snapshotCopy snapshotID];
+  committed = [snapshotCopy committed];
+  created = [snapshotCopy created];
+  snapshotCopy = [(MBCKCache *)self _executeSQL:@"INSERT OR REPLACE INTO Snapshots (snapshotID, committed, created, snapshot) VALUES (%@, %d, %@, %@)", snapshotID, committed, created, snapshotCopy];
 
-  return v8;
+  return snapshotCopy;
 }
 
-- (id)commitSnapshot:(id)a3
+- (id)commitSnapshot:(id)snapshot
 {
-  v4 = a3;
-  [v4 setCommitted:1];
-  v5 = [v4 created];
-  v6 = [v4 snapshotID];
-  v7 = [(MBCKCache *)self _executeSQL:@"UPDATE Snapshots SET committed = 1, created = %@, snapshot = %@ WHERE snapshotID = %@", v5, v4, v6];
+  snapshotCopy = snapshot;
+  [snapshotCopy setCommitted:1];
+  created = [snapshotCopy created];
+  snapshotID = [snapshotCopy snapshotID];
+  v7 = [(MBCKCache *)self _executeSQL:@"UPDATE Snapshots SET committed = 1, created = %@, snapshot = %@ WHERE snapshotID = %@", created, snapshotCopy, snapshotID];
 
   return v7;
 }
 
-- (id)removeSnapshotID:(id)a3
+- (id)removeSnapshotID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v4 = [(MBCKCache *)self _executeSQL:@"DELETE FROM Snapshots WHERE snapshotID = %@", a3];
+    v4 = [(MBCKCache *)self _executeSQL:@"DELETE FROM Snapshots WHERE snapshotID = %@", d];
   }
 
   else
@@ -1029,38 +1029,38 @@ LABEL_18:
   return v4;
 }
 
-- (id)removeSnapshot:(id)a3
+- (id)removeSnapshot:(id)snapshot
 {
-  v4 = [a3 snapshotID];
-  v5 = [(MBCKCache *)self removeSnapshotID:v4];
+  snapshotID = [snapshot snapshotID];
+  v5 = [(MBCKCache *)self removeSnapshotID:snapshotID];
 
   return v5;
 }
 
-- (id)enumerateSnapshots:(id)a3
+- (id)enumerateSnapshots:(id)snapshots
 {
-  v4 = a3;
-  v5 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:v4 format:@"SELECT snapshot FROM Snapshots ORDER BY created DESC"];
+  snapshotsCopy = snapshots;
+  v5 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:snapshotsCopy format:@"SELECT snapshot FROM Snapshots ORDER BY created DESC"];
 
   return v5;
 }
 
-- (id)enumerateSnapshotIDs:(id)a3
+- (id)enumerateSnapshotIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:v4 format:@"SELECT snapshotID FROM Snapshots ORDER BY created DESC"];
+  dsCopy = ds;
+  v5 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:dsCopy format:@"SELECT snapshotID FROM Snapshots ORDER BY created DESC"];
 
   return v5;
 }
 
-- (id)fetchMostRecentSnapshotWithError:(id *)a3
+- (id)fetchMostRecentSnapshotWithError:(id *)error
 {
   v5 = objc_opt_class();
 
-  return [(MBCKCache *)self _fetchObjectOfClass:v5 error:a3 format:@"SELECT snapshot FROM Snapshots ORDER BY created DESC LIMIT 1"];
+  return [(MBCKCache *)self _fetchObjectOfClass:v5 error:error format:@"SELECT snapshot FROM Snapshots ORDER BY created DESC LIMIT 1"];
 }
 
-- (id)fetchMostRecentSnapshotForDevice:(id)a3 error:(id *)a4
+- (id)fetchMostRecentSnapshotForDevice:(id)device error:(id *)error
 {
   v12 = 0;
   v13 = &v12;
@@ -1072,8 +1072,8 @@ LABEL_18:
   v9[1] = 3221225472;
   v9[2] = sub_1000C4900;
   v9[3] = &unk_1003BDFA0;
-  v5 = a3;
-  v10 = v5;
+  deviceCopy = device;
+  v10 = deviceCopy;
   v11 = &v12;
   v6 = [(MBCKCache *)self enumerateSnapshots:v9];
   v7 = v13[5];
@@ -1083,7 +1083,7 @@ LABEL_18:
   return v7;
 }
 
-- (unint64_t)sizeOfSnapshot:(id)a3 error:(id *)a4
+- (unint64_t)sizeOfSnapshot:(id)snapshot error:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -1099,15 +1099,15 @@ LABEL_18:
   v8[1] = 3221225472;
   v8[2] = sub_1000C4AF4;
   v8[3] = &unk_1003BDFC8;
-  v9 = self;
+  selfCopy = self;
   v11 = &v13;
-  v5 = a3;
-  v10 = v5;
+  snapshotCopy = snapshot;
+  v10 = snapshotCopy;
   v12 = &v19;
-  [(MBCKCache *)v9 _perform:v8];
-  if (a4)
+  [(MBCKCache *)selfCopy _perform:v8];
+  if (error)
   {
-    *a4 = v14[5];
+    *error = v14[5];
   }
 
   v6 = v20[3];
@@ -1118,38 +1118,38 @@ LABEL_18:
   return v6;
 }
 
-- (id)addManifest:(id)a3 toPendingSnapshot:(id)a4
+- (id)addManifest:(id)manifest toPendingSnapshot:(id)snapshot
 {
-  v5 = a3;
-  v6 = [v5 manifestID];
-  v7 = [v5 snapshotID];
-  v8 = [v5 domainName];
-  v9 = [(MBCKCache *)self _executeSQL:@"INSERT OR REPLACE INTO Manifests (manifestID, snapshotID, domain, manifest) VALUES (%@, %@, %@, %@)", v6, v7, v8, v5];
+  manifestCopy = manifest;
+  manifestID = [manifestCopy manifestID];
+  snapshotID = [manifestCopy snapshotID];
+  domainName = [manifestCopy domainName];
+  manifestCopy = [(MBCKCache *)self _executeSQL:@"INSERT OR REPLACE INTO Manifests (manifestID, snapshotID, domain, manifest) VALUES (%@, %@, %@, %@)", manifestID, snapshotID, domainName, manifestCopy];
 
-  return v9;
+  return manifestCopy;
 }
 
-- (id)enumerateManifestsForSnapshot:(id)a3 foundManifest:(id)a4
+- (id)enumerateManifestsForSnapshot:(id)snapshot foundManifest:(id)manifest
 {
-  v6 = a4;
-  v7 = a3;
+  manifestCopy = manifest;
+  snapshotCopy = snapshot;
   v8 = objc_opt_class();
-  v9 = [v7 snapshotID];
+  snapshotID = [snapshotCopy snapshotID];
 
-  v10 = [(MBCKCache *)self _enumerateObjectsOfClass:v8 callback:v6 format:@"SELECT manifest FROM Manifests WHERE snapshotID = %@", v9];
+  v10 = [(MBCKCache *)self _enumerateObjectsOfClass:v8 callback:manifestCopy format:@"SELECT manifest FROM Manifests WHERE snapshotID = %@", snapshotID];
 
   return v10;
 }
 
-- (id)removeManifestAndFiles:(id)a3
+- (id)removeManifestAndFiles:(id)files
 {
-  v4 = [a3 manifestID];
-  v5 = [(MBCKCache *)self _executeSQL:@"DELETE FROM Manifests WHERE manifestID = %@", v4];
+  manifestID = [files manifestID];
+  v5 = [(MBCKCache *)self _executeSQL:@"DELETE FROM Manifests WHERE manifestID = %@", manifestID];
 
   return v5;
 }
 
-- (int)countManifestsForSnapshot:(id)a3 error:(id *)a4
+- (int)countManifestsForSnapshot:(id)snapshot error:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -1165,15 +1165,15 @@ LABEL_18:
   v8[1] = 3221225472;
   v8[2] = sub_1000C4F30;
   v8[3] = &unk_1003BDFC8;
-  v9 = self;
+  selfCopy = self;
   v11 = &v17;
-  v5 = a3;
-  v10 = v5;
+  snapshotCopy = snapshot;
+  v10 = snapshotCopy;
   v12 = &v13;
-  [(MBCKCache *)v9 _perform:v8];
-  if (a4)
+  [(MBCKCache *)selfCopy _perform:v8];
+  if (error)
   {
-    *a4 = v18[5];
+    *error = v18[5];
   }
 
   v6 = *(v14 + 6);
@@ -1184,7 +1184,7 @@ LABEL_18:
   return v6;
 }
 
-- (int)countManifestPagesForManifestID:(id)a3 error:(id *)a4
+- (int)countManifestPagesForManifestID:(id)d error:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -1200,15 +1200,15 @@ LABEL_18:
   v8[1] = 3221225472;
   v8[2] = sub_1000C51CC;
   v8[3] = &unk_1003BDFC8;
-  v9 = self;
+  selfCopy = self;
   v11 = &v17;
-  v5 = a3;
-  v10 = v5;
+  dCopy = d;
+  v10 = dCopy;
   v12 = &v13;
-  [(MBCKCache *)v9 _perform:v8];
-  if (a4)
+  [(MBCKCache *)selfCopy _perform:v8];
+  if (error)
   {
-    *a4 = v18[5];
+    *error = v18[5];
   }
 
   v6 = *(v14 + 6);
@@ -1219,71 +1219,71 @@ LABEL_18:
   return v6;
 }
 
-- (id)fetchManifestPageForManifestID:(id)a3 pageIndex:(unint64_t)a4 error:(id *)a5
+- (id)fetchManifestPageForManifestID:(id)d pageIndex:(unint64_t)index error:(id *)error
 {
-  v8 = a3;
-  v9 = [(MBCKCache *)self _fetchObjectOfClass:objc_opt_class() error:a5 format:@"SELECT manifestPage from ManifestPages WHERE manifestID = %@ AND pageIndex = %lu", v8, a4];
+  dCopy = d;
+  index = [(MBCKCache *)self _fetchObjectOfClass:objc_opt_class() error:error format:@"SELECT manifestPage from ManifestPages WHERE manifestID = %@ AND pageIndex = %lu", dCopy, index];
 
-  return v9;
+  return index;
 }
 
-- (id)updateFile:(id)a3
+- (id)updateFile:(id)file
 {
-  v4 = a3;
-  v5 = [v4 fileID];
-  v6 = [(MBCKCache *)self _executeSQL:@"UPDATE Files SET file = %@ WHERE fileID = %@", v4, v5];
+  fileCopy = file;
+  fileID = [fileCopy fileID];
+  v6 = [(MBCKCache *)self _executeSQL:@"UPDATE Files SET file = %@ WHERE fileID = %@", fileCopy, fileID];
 
   return v6;
 }
 
-- (id)addFile:(id)a3 toManifest:(id)a4
+- (id)addFile:(id)file toManifest:(id)manifest
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 deleted] & 1) != 0 || (objc_msgSend(v6, "isDirectory") & 1) != 0 || (v8 = objc_msgSend(v6, "protectionClass"), v8 == 255) || (v9 = v8, +[MBProtectionClassUtils canOpenWhenLocked:](MBProtectionClassUtils, "canOpenWhenLocked:", v8)))
+  fileCopy = file;
+  manifestCopy = manifest;
+  if (([fileCopy deleted] & 1) != 0 || (objc_msgSend(fileCopy, "isDirectory") & 1) != 0 || (v8 = objc_msgSend(fileCopy, "protectionClass"), v8 == 255) || (v9 = v8, +[MBProtectionClassUtils canOpenWhenLocked:](MBProtectionClassUtils, "canOpenWhenLocked:", v8)))
   {
-    v10 = [v6 fileID];
-    v11 = [v7 manifestID];
-    v12 = [v6 domainName];
-    v13 = [v6 relativePath];
-    v14 = [v6 modified];
-    v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 deleted]);
-    v16 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 fileType]);
-    -[MBCKCache _executeSQL:](self, "_executeSQL:", @"INSERT OR REPLACE INTO Files (fileID, manifestID, domain, relativePath, modified, deleted, fileType, file, size) VALUES (%@, %@, %@, %@, %@, %@, %@, %@, %llu)", v10, v11, v12, v13, v14, v15, v16, v6, [v6 size], v19);
+    fileID = [fileCopy fileID];
+    manifestID = [manifestCopy manifestID];
+    domainName = [fileCopy domainName];
+    relativePath = [fileCopy relativePath];
+    modified = [fileCopy modified];
+    v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [fileCopy deleted]);
+    v16 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [fileCopy fileType]);
+    -[MBCKCache _executeSQL:](self, "_executeSQL:", @"INSERT OR REPLACE INTO Files (fileID, manifestID, domain, relativePath, modified, deleted, fileType, file, size) VALUES (%@, %@, %@, %@, %@, %@, %@, %@, %llu)", fileID, manifestID, domainName, relativePath, modified, v15, v16, fileCopy, [fileCopy size], v19);
   }
 
   else
   {
-    [v6 fileID];
-    v10 = v20 = v9;
-    v11 = [v7 manifestID];
-    v12 = [v6 domainName];
-    v13 = [v6 relativePath];
-    v14 = [v6 modified];
-    v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 deleted]);
-    v16 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 fileType]);
-    -[MBCKCache _executeSQL:](self, "_executeSQL:", @"INSERT OR REPLACE INTO Files (fileID, manifestID, domain, relativePath, modified, deleted, fileType, file, size, protectionClass) VALUES (%@, %@, %@, %@, %@, %@, %@, %@, %llu, %d)", v10, v11, v12, v13, v14, v15, v16, v6, [v6 size], v20);
+    [fileCopy fileID];
+    fileID = v20 = v9;
+    manifestID = [manifestCopy manifestID];
+    domainName = [fileCopy domainName];
+    relativePath = [fileCopy relativePath];
+    modified = [fileCopy modified];
+    v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [fileCopy deleted]);
+    v16 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [fileCopy fileType]);
+    -[MBCKCache _executeSQL:](self, "_executeSQL:", @"INSERT OR REPLACE INTO Files (fileID, manifestID, domain, relativePath, modified, deleted, fileType, file, size, protectionClass) VALUES (%@, %@, %@, %@, %@, %@, %@, %@, %llu, %d)", fileID, manifestID, domainName, relativePath, modified, v15, v16, fileCopy, [fileCopy size], v20);
   }
   v17 = ;
 
   return v17;
 }
 
-- (int64_t)checksumForManifest:(id)a3 shouldLog:(BOOL)a4 error:(id *)a5
+- (int64_t)checksumForManifest:(id)manifest shouldLog:(BOOL)log error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
+  logCopy = log;
+  manifestCopy = manifest;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  if (v6)
+  if (logCopy)
   {
     v9 = MBGetDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v25 = v8;
+      v25 = manifestCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "[Cache] Calculating checksum for %@", buf, 0xCu);
       _MBLog();
     }
@@ -1293,18 +1293,18 @@ LABEL_18:
   v18[1] = 3221225472;
   v18[2] = sub_1000C58C0;
   v18[3] = &unk_1003BDFF0;
-  v19 = v6;
+  v19 = logCopy;
   v18[4] = self;
   v18[5] = &v20;
-  v10 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:v18 format:@"SELECT fileID FROM Files WHERE manifestID = %@", v8];
-  v11 = v10;
-  if (a5)
+  manifestCopy = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:v18 format:@"SELECT fileID FROM Files WHERE manifestID = %@", manifestCopy];
+  v11 = manifestCopy;
+  if (error)
   {
-    v12 = v10;
-    *a5 = v11;
+    v12 = manifestCopy;
+    *error = v11;
   }
 
-  if (v6)
+  if (logCopy)
   {
     v13 = MBGetDefaultLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1313,7 +1313,7 @@ LABEL_18:
       *buf = 134218242;
       v25 = v14;
       v26 = 2112;
-      v27 = v8;
+      v27 = manifestCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "[Cache] %llx checksum for %@", buf, 0x16u);
       v17 = v21[3];
       _MBLog();
@@ -1326,40 +1326,40 @@ LABEL_18:
   return v15;
 }
 
-- (id)mergeManifest:(id)a3 withNewerManifest:(id)a4 outputManifest:(id)a5 mergeDeletions:(BOOL)a6
+- (id)mergeManifest:(id)manifest withNewerManifest:(id)newerManifest outputManifest:(id)outputManifest mergeDeletions:(BOOL)deletions
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(MBCKCache *)self _executeSQL:@"INSERT OR REPLACE INTO Files (fileID, manifestID, domain, modified, relativePath, deleted, fileType, size, file, protectionClass) SELECT  fileID, %@, domain, modified, relativePath, deleted, fileType, size, file, protectionClass FROM Files WHERE manifestID == %@", v12, v11];
-  if (!v13)
+  manifestCopy = manifest;
+  newerManifestCopy = newerManifest;
+  outputManifestCopy = outputManifest;
+  newerManifestCopy = [(MBCKCache *)self _executeSQL:@"INSERT OR REPLACE INTO Files (fileID, manifestID, domain, modified, relativePath, deleted, fileType, size, file, protectionClass) SELECT  fileID, %@, domain, modified, relativePath, deleted, fileType, size, file, protectionClass FROM Files WHERE manifestID == %@", outputManifestCopy, newerManifestCopy];
+  if (!newerManifestCopy)
   {
-    v13 = [(MBCKCache *)self _executeSQL:@"INSERT OR IGNORE INTO Files (fileID, manifestID, domain, modified, relativePath, deleted, fileType, size, file, protectionClass) SELECT  fileID, %@, domain, modified, relativePath, deleted, fileType, size, file, protectionClass FROM Files WHERE manifestID == %@", v12, v10];
-    if (!v13 && !a6)
+    newerManifestCopy = [(MBCKCache *)self _executeSQL:@"INSERT OR IGNORE INTO Files (fileID, manifestID, domain, modified, relativePath, deleted, fileType, size, file, protectionClass) SELECT  fileID, %@, domain, modified, relativePath, deleted, fileType, size, file, protectionClass FROM Files WHERE manifestID == %@", outputManifestCopy, manifestCopy];
+    if (!newerManifestCopy && !deletions)
     {
-      v13 = [(MBCKCache *)self _executeSQL:@"DELETE FROM Files WHERE manifestID == %@ AND deleted == 1 AND fileID IN (SELECT fileID FROM Files WHERE manifestID == %@)", v12, v11];
+      newerManifestCopy = [(MBCKCache *)self _executeSQL:@"DELETE FROM Files WHERE manifestID == %@ AND deleted == 1 AND fileID IN (SELECT fileID FROM Files WHERE manifestID == %@)", outputManifestCopy, newerManifestCopy];
     }
   }
 
-  return v13;
+  return newerManifestCopy;
 }
 
-- (id)enumerateFilesForManifest:(id)a3 foundFile:(id)a4
+- (id)enumerateFilesForManifest:(id)manifest foundFile:(id)file
 {
-  v6 = a4;
-  v7 = a3;
+  fileCopy = file;
+  manifestCopy = manifest;
   v8 = objc_opt_class();
-  v9 = [v7 manifestID];
+  manifestID = [manifestCopy manifestID];
 
-  v10 = [(MBCKCache *)self _enumerateObjectsOfClass:v8 callback:v6 format:@"SELECT file FROM Files WHERE manifestID = %@ ORDER BY relativePath ASC", v9];
+  v10 = [(MBCKCache *)self _enumerateObjectsOfClass:v8 callback:fileCopy format:@"SELECT file FROM Files WHERE manifestID = %@ ORDER BY relativePath ASC", manifestID];
 
   return v10;
 }
 
-- (id)enumerateFilesForSnapshotOrderedByDomain:(id)a3 block:(id)a4
+- (id)enumerateFilesForSnapshotOrderedByDomain:(id)domain block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  blockCopy = block;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -1372,9 +1372,9 @@ LABEL_18:
   v12[3] = &unk_1003BE018;
   v12[4] = self;
   v15 = &v16;
-  v8 = v6;
+  v8 = domainCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = blockCopy;
   v14 = v9;
   [(MBCKCache *)self _perform:v12];
   v10 = v17[5];
@@ -1384,50 +1384,50 @@ LABEL_18:
   return v10;
 }
 
-- (id)removeUncommittedFileWithDomain:(id)a3 relativePath:(id)a4 pendingManifestID:(id)a5
+- (id)removeUncommittedFileWithDomain:(id)domain relativePath:(id)path pendingManifestID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MBCKCache *)self _executeSQL:@"DELETE FROM Files WHERE domain = %@ AND relativePath = %@ AND manifestID = %@", v8, v9, a5];
-  if (!v10)
+  domainCopy = domain;
+  pathCopy = path;
+  pathCopy = [(MBCKCache *)self _executeSQL:@"DELETE FROM Files WHERE domain = %@ AND relativePath = %@ AND manifestID = %@", domainCopy, pathCopy, d];
+  if (!pathCopy)
   {
-    v10 = [(MBCKCache *)self _executeSQL:@"DELETE FROM FileChanges WHERE domain = %@ AND relativePath = %@", v8, v9];
+    pathCopy = [(MBCKCache *)self _executeSQL:@"DELETE FROM FileChanges WHERE domain = %@ AND relativePath = %@", domainCopy, pathCopy];
   }
 
-  v11 = v10;
+  v11 = pathCopy;
 
   return v11;
 }
 
-- (id)enumerateFiles:(id)a3
+- (id)enumerateFiles:(id)files
 {
-  v4 = a3;
-  v5 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:v4 format:@"SELECT file FROM Files"];
+  filesCopy = files;
+  v5 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:filesCopy format:@"SELECT file FROM Files"];
 
   return v5;
 }
 
-- (id)fetchFileFromFileID:(id)a3 error:(id *)a4
+- (id)fetchFileFromFileID:(id)d error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MBCKCache *)self _fetchObjectOfClass:objc_opt_class() error:a4 format:@"SELECT file FROM Files where fileID = %@ LIMIT 1", v6];
+  dCopy = d;
+  dCopy = [(MBCKCache *)self _fetchObjectOfClass:objc_opt_class() error:error format:@"SELECT file FROM Files where fileID = %@ LIMIT 1", dCopy];
 
-  return v7;
+  return dCopy;
 }
 
-- (id)domainNameForManifestID:(id)a3 error:(id *)a4
+- (id)domainNameForManifestID:(id)d error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MBCKCache *)self _fetchObjectOfClass:objc_opt_class() error:a4 format:@"SELECT domain FROM Manifests where manifestID = %@", v6];
+  dCopy = d;
+  dCopy = [(MBCKCache *)self _fetchObjectOfClass:objc_opt_class() error:error format:@"SELECT domain FROM Manifests where manifestID = %@", dCopy];
 
-  return v7;
+  return dCopy;
 }
 
-- (BOOL)committedManifestContainsDomain:(id)a3 relativePath:(id)a4 pendingManifestID:(id)a5 error:(id *)a6
+- (BOOL)committedManifestContainsDomain:(id)domain relativePath:(id)path pendingManifestID:(id)d error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  domainCopy = domain;
+  pathCopy = path;
+  dCopy = d;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -1444,11 +1444,11 @@ LABEL_18:
   v19[3] = &unk_1003BE040;
   v19[4] = self;
   v23 = &v29;
-  v13 = v10;
+  v13 = domainCopy;
   v20 = v13;
-  v14 = v11;
+  v14 = pathCopy;
   v21 = v14;
-  v15 = v12;
+  v15 = dCopy;
   v22 = v15;
   v24 = &v25;
   [(MBCKCache *)self _perform:v19];
@@ -1456,9 +1456,9 @@ LABEL_18:
   if (v16)
   {
     v17 = 0;
-    if (a6)
+    if (error)
     {
-      *a6 = v16;
+      *error = v16;
     }
   }
 
@@ -1473,15 +1473,15 @@ LABEL_18:
   return v17 & 1;
 }
 
-- (unint64_t)countFilesForManifest:(id)a3 error:(id *)a4
+- (unint64_t)countFilesForManifest:(id)manifest error:(id *)error
 {
-  v6 = [a3 manifestID];
-  v7 = [(MBCKCache *)self countFilesForManifestID:v6 error:a4];
+  manifestID = [manifest manifestID];
+  v7 = [(MBCKCache *)self countFilesForManifestID:manifestID error:error];
 
   return v7;
 }
 
-- (unint64_t)countFilesForManifestID:(id)a3 error:(id *)a4
+- (unint64_t)countFilesForManifestID:(id)d error:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -1497,16 +1497,16 @@ LABEL_18:
   v8[1] = 3221225472;
   v8[2] = sub_1000C6544;
   v8[3] = &unk_1003BDFC8;
-  v9 = self;
+  selfCopy = self;
   v11 = &v17;
-  v5 = a3;
-  v10 = v5;
+  dCopy = d;
+  v10 = dCopy;
   v12 = &v13;
-  [(MBCKCache *)v9 _perform:v8];
+  [(MBCKCache *)selfCopy _perform:v8];
   v6 = v14[3];
-  if (a4 && !v6)
+  if (error && !v6)
   {
-    *a4 = v18[5];
+    *error = v18[5];
     v6 = v14[3];
   }
 
@@ -1516,7 +1516,7 @@ LABEL_18:
   return v6;
 }
 
-- (unint64_t)countDomainHmacForManifest:(id)a3 error:(id *)a4
+- (unint64_t)countDomainHmacForManifest:(id)manifest error:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -1532,16 +1532,16 @@ LABEL_18:
   v8[1] = 3221225472;
   v8[2] = sub_1000C67B4;
   v8[3] = &unk_1003BDFC8;
-  v9 = self;
+  selfCopy = self;
   v11 = &v17;
-  v5 = a3;
-  v10 = v5;
+  manifestCopy = manifest;
+  v10 = manifestCopy;
   v12 = &v13;
-  [(MBCKCache *)v9 _perform:v8];
+  [(MBCKCache *)selfCopy _perform:v8];
   v6 = v14[3];
-  if (a4 && !v6)
+  if (error && !v6)
   {
-    *a4 = v18[5];
+    *error = v18[5];
     v6 = v14[3];
   }
 
@@ -1551,17 +1551,17 @@ LABEL_18:
   return v6;
 }
 
-- (id)fetchFileWithDomain:(id)a3 relativePath:(id)a4 snapshotID:(id)a5 error:(id *)a6
+- (id)fetchFileWithDomain:(id)domain relativePath:(id)path snapshotID:(id)d error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(MBCKCache *)self _fetchObjectOfClass:objc_opt_class() error:a6 format:@"SELECT file FROM Files WHERE domain = %@ AND relativePath = %@ AND manifestID IN (SELECT manifestID FROM Manifests WHERE snapshotID = %@)", v12, v11, v10];
+  dCopy = d;
+  pathCopy = path;
+  domainCopy = domain;
+  dCopy = [(MBCKCache *)self _fetchObjectOfClass:objc_opt_class() error:error format:@"SELECT file FROM Files WHERE domain = %@ AND relativePath = %@ AND manifestID IN (SELECT manifestID FROM Manifests WHERE snapshotID = %@)", domainCopy, pathCopy, dCopy];
 
-  return v13;
+  return dCopy;
 }
 
-- (unint64_t)countRestoreFilesWithSourceDeviceInode:(unint64_t)a3 signature:(id)a4 volumeType:(unint64_t)a5 error:(id *)a6
+- (unint64_t)countRestoreFilesWithSourceDeviceInode:(unint64_t)inode signature:(id)signature volumeType:(unint64_t)type error:(id *)error
 {
   v23 = 0;
   v24 = &v23;
@@ -1577,23 +1577,23 @@ LABEL_18:
   v12[1] = 3221225472;
   v12[2] = sub_1000C6B04;
   v12[3] = &unk_1003BE068;
-  v13 = self;
+  selfCopy = self;
   v15 = &v23;
-  v17 = a3;
-  v8 = a4;
-  v18 = a5;
-  v14 = v8;
+  inodeCopy = inode;
+  signatureCopy = signature;
+  typeCopy = type;
+  v14 = signatureCopy;
   v16 = &v19;
-  [(MBCKCache *)v13 _perform:v12];
+  [(MBCKCache *)selfCopy _perform:v12];
   v9 = v20[3];
   if (!v9)
   {
-    if (a6)
+    if (error)
     {
       v10 = v24[5];
       if (v10)
       {
-        *a6 = v10;
+        *error = v10;
       }
     }
   }
@@ -1604,7 +1604,7 @@ LABEL_18:
   return v9;
 }
 
-- (id)setFileStateToPending:(id)a3
+- (id)setFileStateToPending:(id)pending
 {
   v12 = 0;
   v13 = &v12;
@@ -1617,10 +1617,10 @@ LABEL_18:
   v8[2] = sub_1000C6D84;
   v8[3] = &unk_1003BE090;
   v11 = &v12;
-  v9 = self;
-  v3 = a3;
-  v10 = v3;
-  v4 = [(MBCKCache *)v9 performInTransaction:v8];
+  selfCopy = self;
+  pendingCopy = pending;
+  v10 = pendingCopy;
+  v4 = [(MBCKCache *)selfCopy performInTransaction:v8];
   v5 = v13;
   if (v4 && !v13[5])
   {
@@ -1635,7 +1635,7 @@ LABEL_18:
   return v6;
 }
 
-- (id)setFileStateToCompleted:(id)a3
+- (id)setFileStateToCompleted:(id)completed
 {
   v12 = 0;
   v13 = &v12;
@@ -1648,10 +1648,10 @@ LABEL_18:
   v8[2] = sub_1000C6F94;
   v8[3] = &unk_1003BE090;
   v11 = &v12;
-  v9 = self;
-  v3 = a3;
-  v10 = v3;
-  v4 = [(MBCKCache *)v9 performInTransaction:v8];
+  selfCopy = self;
+  completedCopy = completed;
+  v10 = completedCopy;
+  v4 = [(MBCKCache *)selfCopy performInTransaction:v8];
   v5 = v13;
   if (v4 && !v13[5])
   {
@@ -1666,10 +1666,10 @@ LABEL_18:
   return v6;
 }
 
-- (id)summarizeCloudFilesPendingDeleteForManifestID:(id)a3 callback:(id)a4
+- (id)summarizeCloudFilesPendingDeleteForManifestID:(id)d callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  callbackCopy = callback;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -1682,9 +1682,9 @@ LABEL_18:
   v12[3] = &unk_1003BE018;
   v12[4] = self;
   v15 = &v16;
-  v8 = v6;
+  v8 = dCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = callbackCopy;
   v14 = v9;
   [(MBCKCache *)self _perform:v12];
   v10 = v17[5];
@@ -1694,18 +1694,18 @@ LABEL_18:
   return v10;
 }
 
-- (id)enumerateCloudFilesPendingDeleteForManifestID:(id)a3 withFoundFileID:(id)a4
+- (id)enumerateCloudFilesPendingDeleteForManifestID:(id)d withFoundFileID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:v6 format:@"SELECT fileID FROM CloudFilesPendingDelete WHERE manifestID = %@", v7];
+  iDCopy = iD;
+  dCopy = d;
+  dCopy = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:iDCopy format:@"SELECT fileID FROM CloudFilesPendingDelete WHERE manifestID = %@", dCopy];
 
-  return v8;
+  return dCopy;
 }
 
-- (id)enumerateKeybagUUIDsForAllFiles:(id)a3
+- (id)enumerateKeybagUUIDsForAllFiles:(id)files
 {
-  v4 = a3;
+  filesCopy = files;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -1718,7 +1718,7 @@ LABEL_18:
   v15[3] = &unk_1003BE0B8;
   v15[4] = &v16;
   v5 = [(MBCKCache *)self enumerateFiles:v15];
-  if (v4)
+  if (filesCopy)
   {
     v13 = 0u;
     v14 = 0u;
@@ -1738,7 +1738,7 @@ LABEL_18:
             objc_enumerationMutation(v6);
           }
 
-          v4[2](v4, *(*(&v11 + 1) + 8 * i));
+          filesCopy[2](filesCopy, *(*(&v11 + 1) + 8 * i));
         }
 
         v7 = [v6 countByEnumeratingWithState:&v11 objects:v22 count:16];
@@ -1753,28 +1753,28 @@ LABEL_18:
   return v5;
 }
 
-- (id)addSnapshotIntoFileChanges:(id)a3
+- (id)addSnapshotIntoFileChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(MBCKCache *)self _executeSQL:@"INSERT or REPLACE INTO FileChanges (domain, relativePath, size, changeType, shouldCopy) SELECT domain, relativePath, size, %d, 0 FROM Files WHERE deleted == 0 AND (manifestID IN (SELECT manifestID FROM Manifests WHERE snapshotID == %@))", 0, v4];
-  if (!v5)
+  changesCopy = changes;
+  changesCopy = [(MBCKCache *)self _executeSQL:@"INSERT or REPLACE INTO FileChanges (domain, relativePath, size, changeType, shouldCopy) SELECT domain, relativePath, size, %d, 0 FROM Files WHERE deleted == 0 AND (manifestID IN (SELECT manifestID FROM Manifests WHERE snapshotID == %@))", 0, changesCopy];
+  if (!changesCopy)
   {
-    v5 = [(MBCKCache *)self _executeSQL:@"INSERT or REPLACE INTO FileChanges (domain, relativePath, size, changeType, shouldCopy) SELECT domain, relativePath, size, %d, 0 FROM Files WHERE deleted == 1 AND (manifestID IN (SELECT manifestID FROM Manifests WHERE snapshotID == %@))", 3, v4];
+    changesCopy = [(MBCKCache *)self _executeSQL:@"INSERT or REPLACE INTO FileChanges (domain, relativePath, size, changeType, shouldCopy) SELECT domain, relativePath, size, %d, 0 FROM Files WHERE deleted == 1 AND (manifestID IN (SELECT manifestID FROM Manifests WHERE snapshotID == %@))", 3, changesCopy];
   }
 
-  v6 = v5;
+  v6 = changesCopy;
 
   return v6;
 }
 
-- (id)markFileChangesAsUnmodifiedForDomainNames:(id)a3
+- (id)markFileChangesAsUnmodifiedForDomainNames:(id)names
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  namesCopy = names;
+  v5 = [namesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1785,7 +1785,7 @@ LABEL_18:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(namesCopy);
         }
 
         v9 = [(MBCKCache *)self _executeSQL:@"UPDATE FileChanges SET changeType = %d WHERE domain = %@", 0, *(*(&v12 + 1) + 8 * i), v12];
@@ -1796,7 +1796,7 @@ LABEL_18:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [namesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -1812,62 +1812,62 @@ LABEL_11:
   return v10;
 }
 
-- (id)fileSeen:(id)a3 changeType:(unint64_t)a4
+- (id)fileSeen:(id)seen changeType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [v6 domainName];
-  v8 = [v6 relativePath];
-  v9 = [v6 size];
+  seenCopy = seen;
+  domainName = [seenCopy domainName];
+  relativePath = [seenCopy relativePath];
+  v9 = [seenCopy size];
 
-  v10 = [(MBCKCache *)self _executeSQL:@"INSERT OR REPLACE INTO FileChanges (domain, relativePath, size, changeType, shouldCopy) VALUES (%@, %@, %llu, %lu, 0)", v7, v8, v9, a4];
+  type = [(MBCKCache *)self _executeSQL:@"INSERT OR REPLACE INTO FileChanges (domain, relativePath, size, changeType, shouldCopy) VALUES (%@, %@, %llu, %lu, 0)", domainName, relativePath, v9, type];
 
-  return v10;
+  return type;
 }
 
-- (id)markFileAsCopyable:(id)a3
+- (id)markFileAsCopyable:(id)copyable
 {
-  v4 = a3;
-  v5 = [v4 domainName];
-  v6 = [v4 relativePath];
+  copyableCopy = copyable;
+  domainName = [copyableCopy domainName];
+  relativePath = [copyableCopy relativePath];
 
-  v7 = [(MBCKCache *)self _executeSQL:@"UPDATE FileChanges SET shouldCopy = 1 WHERE domain = %@ AND relativePath = %@", v5, v6];
+  v7 = [(MBCKCache *)self _executeSQL:@"UPDATE FileChanges SET shouldCopy = 1 WHERE domain = %@ AND relativePath = %@", domainName, relativePath];
 
   return v7;
 }
 
-- (id)lastBackedUpFileWithDomainName:(id)a3 relativePath:(id)a4 error:(id *)a5
+- (id)lastBackedUpFileWithDomainName:(id)name relativePath:(id)path error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(MBCKCache *)self _fetchObjectOfClass:objc_opt_class() error:a5 format:@"WITH LastBackedUpFiles(file, created) AS( SELECT file, %llu from Files where domain = %@ AND relativePath = %@ AND SUBSTR(fileID, 0, 36) == (SELECT SUBSTR(value, 3, 36) from Properties where key == %@) UNION ALL  SELECT Files.file, Snapshots.created FROM Files, Manifests, Snapshots WHERE Files.domain = %@ AND Files.relativePath = %@ AND Files.manifestID == Manifests.manifestID AND Manifests.snapshotID == Snapshots.snapshotID)SELECT file from LastBackedUpFiles ORDER BY created DESC LIMIT 1", 0x7FFFFFFFFFFFFFFFLL, v9, v8, @"PendingSnapshotID", v9, v8];
+  pathCopy = path;
+  nameCopy = name;
+  pathCopy = [(MBCKCache *)self _fetchObjectOfClass:objc_opt_class() error:error format:@"WITH LastBackedUpFiles(file, created) AS( SELECT file, %llu from Files where domain = %@ AND relativePath = %@ AND SUBSTR(fileID, 0, 36) == (SELECT SUBSTR(value, 3, 36) from Properties where key == %@) UNION ALL  SELECT Files.file, Snapshots.created FROM Files, Manifests, Snapshots WHERE Files.domain = %@ AND Files.relativePath = %@ AND Files.manifestID == Manifests.manifestID AND Manifests.snapshotID == Snapshots.snapshotID)SELECT file from LastBackedUpFiles ORDER BY created DESC LIMIT 1", 0x7FFFFFFFFFFFFFFFLL, nameCopy, pathCopy, @"PendingSnapshotID", nameCopy, pathCopy];
+
+  return pathCopy;
+}
+
+- (id)uploadedFileInPendingSnapshotWithDomainName:(id)name relativePath:(id)path error:(id *)error
+{
+  pathCopy = path;
+  nameCopy = name;
+  v10 = [(MBCKCache *)self _fetchObjectOfClass:objc_opt_class() error:error format:@" SELECT file from Files where domain = %@ AND relativePath = %@ AND SUBSTR(manifestID, 0, 36) == (SELECT SUBSTR(value, 3, 36) from Properties where key == %@)", nameCopy, pathCopy, @"PendingSnapshotID"];
 
   return v10;
 }
 
-- (id)uploadedFileInPendingSnapshotWithDomainName:(id)a3 relativePath:(id)a4 error:(id *)a5
+- (id)lastBackedUpFileForFile:(id)file error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(MBCKCache *)self _fetchObjectOfClass:objc_opt_class() error:a5 format:@" SELECT file from Files where domain = %@ AND relativePath = %@ AND SUBSTR(manifestID, 0, 36) == (SELECT SUBSTR(value, 3, 36) from Properties where key == %@)", v9, v8, @"PendingSnapshotID"];
+  fileCopy = file;
+  domainName = [fileCopy domainName];
+  relativePath = [fileCopy relativePath];
 
-  return v10;
-}
-
-- (id)lastBackedUpFileForFile:(id)a3 error:(id *)a4
-{
-  v6 = a3;
-  v7 = [v6 domainName];
-  v8 = [v6 relativePath];
-
-  v9 = [(MBCKCache *)self lastBackedUpFileWithDomainName:v7 relativePath:v8 error:a4];
+  v9 = [(MBCKCache *)self lastBackedUpFileWithDomainName:domainName relativePath:relativePath error:error];
 
   return v9;
 }
 
-- (id)enumerateFileChangesForDomainName:(id)a3 skipUnmodified:(BOOL)a4 foundChange:(id)a5
+- (id)enumerateFileChangesForDomainName:(id)name skipUnmodified:(BOOL)unmodified foundChange:(id)change
 {
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  changeCopy = change;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -1880,10 +1880,10 @@ LABEL_11:
   v14[3] = &unk_1003BE0E0;
   v14[4] = self;
   v17 = &v19;
-  v18 = a4;
-  v10 = v8;
+  unmodifiedCopy = unmodified;
+  v10 = nameCopy;
   v15 = v10;
-  v11 = v9;
+  v11 = changeCopy;
   v16 = v11;
   [(MBCKCache *)self _perform:v14];
   v12 = v20[5];
@@ -1893,10 +1893,10 @@ LABEL_11:
   return v12;
 }
 
-- (id)summarizeFileChangesForDomainName:(id)a3 foundChanges:(id)a4
+- (id)summarizeFileChangesForDomainName:(id)name foundChanges:(id)changes
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  changesCopy = changes;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -1909,9 +1909,9 @@ LABEL_11:
   v12[3] = &unk_1003BE018;
   v12[4] = self;
   v15 = &v16;
-  v8 = v6;
+  v8 = nameCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = changesCopy;
   v14 = v9;
   [(MBCKCache *)self _perform:v12];
   v10 = v17[5];
@@ -1921,7 +1921,7 @@ LABEL_11:
   return v10;
 }
 
-- (id)summarizeFileChangesForAllChanges:(id)a3
+- (id)summarizeFileChangesForAllChanges:(id)changes
 {
   v10 = 0;
   v11 = &v10;
@@ -1933,11 +1933,11 @@ LABEL_11:
   v6[1] = 3221225472;
   v6[2] = sub_1000C849C;
   v6[3] = &unk_1003BDBF0;
-  v7 = self;
+  selfCopy = self;
   v9 = &v10;
-  v3 = a3;
-  v8 = v3;
-  [(MBCKCache *)v7 _perform:v6];
+  changesCopy = changes;
+  v8 = changesCopy;
+  [(MBCKCache *)selfCopy _perform:v6];
   v4 = v11[5];
 
   _Block_object_dispose(&v10, 8);
@@ -1945,7 +1945,7 @@ LABEL_11:
   return v4;
 }
 
-- (id)summarizeFileChanges:(id)a3
+- (id)summarizeFileChanges:(id)changes
 {
   v10 = 0;
   v11 = &v10;
@@ -1957,11 +1957,11 @@ LABEL_11:
   v6[1] = 3221225472;
   v6[2] = sub_1000C86E4;
   v6[3] = &unk_1003BDBF0;
-  v7 = self;
+  selfCopy = self;
   v9 = &v10;
-  v3 = a3;
-  v8 = v3;
-  [(MBCKCache *)v7 _perform:v6];
+  changesCopy = changes;
+  v8 = changesCopy;
+  [(MBCKCache *)selfCopy _perform:v6];
   v4 = v11[5];
 
   _Block_object_dispose(&v10, 8);
@@ -1969,11 +1969,11 @@ LABEL_11:
   return v4;
 }
 
-- (id)hasDomainBeenBackedUp:(id)a3 backedUp:(BOOL *)a4
+- (id)hasDomainBeenBackedUp:(id)up backedUp:(BOOL *)backedUp
 {
-  v6 = a3;
+  upCopy = up;
   v13 = 0;
-  v7 = [(MBCKCache *)self _fetchObjectOfClass:objc_opt_class() error:&v13 format:@"SELECT domain FROM FileChanges WHERE domain = %@ LIMIT 1", v6];
+  upCopy = [(MBCKCache *)self _fetchObjectOfClass:objc_opt_class() error:&v13 format:@"SELECT domain FROM FileChanges WHERE domain = %@ LIMIT 1", upCopy];
 
   v8 = v13;
   v9 = v13;
@@ -1984,16 +1984,16 @@ LABEL_11:
 
   else
   {
-    v10 = v7 == 0;
+    v10 = upCopy == 0;
   }
 
   v11 = !v10;
-  *a4 = v11;
+  *backedUp = v11;
 
   return v8;
 }
 
-- (id)summarizeFileChangesGroupByDomain:(id)a3
+- (id)summarizeFileChangesGroupByDomain:(id)domain
 {
   v10 = 0;
   v11 = &v10;
@@ -2005,11 +2005,11 @@ LABEL_11:
   v6[1] = 3221225472;
   v6[2] = sub_1000C8A18;
   v6[3] = &unk_1003BDBF0;
-  v7 = self;
+  selfCopy = self;
   v9 = &v10;
-  v3 = a3;
-  v8 = v3;
-  [(MBCKCache *)v7 _perform:v6];
+  domainCopy = domain;
+  v8 = domainCopy;
+  [(MBCKCache *)selfCopy _perform:v6];
   v4 = v11[5];
 
   _Block_object_dispose(&v10, 8);
@@ -2062,17 +2062,17 @@ LABEL_11:
   return v3 & 1;
 }
 
-- (id)setFileMissingEncryptionKeyForPath:(id)a3
+- (id)setFileMissingEncryptionKeyForPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MBCKCache *)self setFileEncryptionKey:0 forInodeNumber:0 volumeType:0 atPath:v4];
+  pathCopy = path;
+  v5 = [(MBCKCache *)self setFileEncryptionKey:0 forInodeNumber:0 volumeType:0 atPath:pathCopy];
   if (v5)
   {
     v6 = MBGetDefaultLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v9 = v4;
+      v9 = pathCopy;
       v10 = 2112;
       v11 = v5;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "Failed to track the missing encryption key for %@: %@", buf, 0x16u);
@@ -2083,47 +2083,47 @@ LABEL_11:
   return v5;
 }
 
-- (id)setFileEncryptionKey:(id)a3 forInodeNumber:(unint64_t)a4 volumeType:(unint64_t)a5 atPath:(id)a6
+- (id)setFileEncryptionKey:(id)key forInodeNumber:(unint64_t)number volumeType:(unint64_t)type atPath:(id)path
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = v11;
-  if (!v11 || (!a5 ? (v13 = v10 != 0) : (v13 = 0), (v10 != 0) != (a4 != 0) || v13))
+  keyCopy = key;
+  pathCopy = path;
+  v12 = pathCopy;
+  if (!pathCopy || (!type ? (v13 = keyCopy != 0) : (v13 = 0), (keyCopy != 0) != (number != 0) || v13))
   {
-    v14 = [MBError errorWithCode:1 format:@"Invalid call to setFileEncryptionKey"];
+    keyCopy = [MBError errorWithCode:1 format:@"Invalid call to setFileEncryptionKey"];
   }
 
   else
   {
-    v14 = [(MBCKCache *)self _executeSQL:@"INSERT OR REPLACE INTO FoundEncryptionKeys (inode, volumeType, path, key) VALUES (%llu, %lu, %@, %@)", a4, a5, v11, v10];
+    keyCopy = [(MBCKCache *)self _executeSQL:@"INSERT OR REPLACE INTO FoundEncryptionKeys (inode, volumeType, path, key) VALUES (%llu, %lu, %@, %@)", number, type, pathCopy, keyCopy];
   }
 
-  v15 = v14;
+  v15 = keyCopy;
 
   return v15;
 }
 
-- (void)removeFileEncryptionKeyForInode:(unint64_t)a3 volumeType:(unint64_t)a4
+- (void)removeFileEncryptionKeyForInode:(unint64_t)inode volumeType:(unint64_t)type
 {
-  v7 = [(MBCKCache *)self _executeSQL:@"DELETE FROM FoundEncryptionKeys WHERE inode = %llu AND volumeType = %lu", a3, a4];
-  if (v7)
+  type = [(MBCKCache *)self _executeSQL:@"DELETE FROM FoundEncryptionKeys WHERE inode = %llu AND volumeType = %lu", inode, type];
+  if (type)
   {
     v8 = MBGetDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218498;
-      v13 = a3;
+      inodeCopy2 = inode;
       v14 = 2048;
-      v15 = a4;
+      typeCopy2 = type;
       v16 = 2112;
-      v17 = v7;
+      v17 = type;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Failed to remove the cached encryption key (FoundEncryptionKeys) for inode %llu volumeType %lu: %@", buf, 0x20u);
-      v11 = v7;
+      v11 = type;
       _MBLog();
     }
   }
 
-  v9 = [(MBCKCache *)self _executeSQL:@"DELETE FROM EncryptionKeys WHERE inode = %llu AND volumeType = %lu", a3, a4, v11];
+  v9 = [(MBCKCache *)self _executeSQL:@"DELETE FROM EncryptionKeys WHERE inode = %llu AND volumeType = %lu", inode, type, v11];
 
   if (v9)
   {
@@ -2131,9 +2131,9 @@ LABEL_11:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218498;
-      v13 = a3;
+      inodeCopy2 = inode;
       v14 = 2048;
-      v15 = a4;
+      typeCopy2 = type;
       v16 = 2112;
       v17 = v9;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Failed to remove the cached encryption key (EncryptionKeys) for inode %llu volumeType %lu: %@", buf, 0x20u);
@@ -2142,15 +2142,15 @@ LABEL_11:
   }
 }
 
-- (id)enumerateFilesMissingEncryptionKeys:(id)a3
+- (id)enumerateFilesMissingEncryptionKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:v4 format:@"SELECT path FROM FoundEncryptionKeys WHERE key IS NULL AND inode = 0 AND volumeType = 0"];
+  keysCopy = keys;
+  v5 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:keysCopy format:@"SELECT path FROM FoundEncryptionKeys WHERE key IS NULL AND inode = 0 AND volumeType = 0"];
 
   return v5;
 }
 
-- (unint64_t)countFilesMissingEncryptionKeysWithError:(id *)a3
+- (unint64_t)countFilesMissingEncryptionKeysWithError:(id *)error
 {
   v13 = 0;
   v14 = &v13;
@@ -2170,9 +2170,9 @@ LABEL_11:
   v6[5] = &v7;
   v6[6] = &v13;
   [(MBCKCache *)self _perform:v6];
-  if (a3)
+  if (error)
   {
-    *a3 = v8[5];
+    *error = v8[5];
   }
 
   v4 = v14[3];
@@ -2293,7 +2293,7 @@ LABEL_11:
   return v7;
 }
 
-- (unint64_t)sizeOfDomain:(id)a3 error:(id *)a4
+- (unint64_t)sizeOfDomain:(id)domain error:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -2309,15 +2309,15 @@ LABEL_11:
   v8[1] = 3221225472;
   v8[2] = sub_1000C9E0C;
   v8[3] = &unk_1003BDFC8;
-  v9 = self;
+  selfCopy = self;
   v11 = &v13;
-  v5 = a3;
-  v10 = v5;
+  domainCopy = domain;
+  v10 = domainCopy;
   v12 = &v19;
-  [(MBCKCache *)v9 _perform:v8];
-  if (a4)
+  [(MBCKCache *)selfCopy _perform:v8];
+  if (error)
   {
-    *a4 = v14[5];
+    *error = v14[5];
   }
 
   v6 = v20[3];
@@ -2328,32 +2328,32 @@ LABEL_11:
   return v6;
 }
 
-- (id)enumerateDomainNames:(id)a3
+- (id)enumerateDomainNames:(id)names
 {
-  v4 = a3;
-  v5 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:v4 format:@"SELECT DISTINCT(domain) FROM Manifests WHERE snapshotID IN (SELECT snapshotID FROM Snapshots)"];
+  namesCopy = names;
+  v5 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:namesCopy format:@"SELECT DISTINCT(domain) FROM Manifests WHERE snapshotID IN (SELECT snapshotID FROM Snapshots)"];
 
   return v5;
 }
 
-- (id)enumerateChangedDomainNames:(id)a3
+- (id)enumerateChangedDomainNames:(id)names
 {
-  v4 = a3;
-  v5 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:v4 format:@"SELECT DISTINCT(domain) FROM FileChanges WHERE changeType != %lu", 0];
+  namesCopy = names;
+  v5 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:namesCopy format:@"SELECT DISTINCT(domain) FROM FileChanges WHERE changeType != %lu", 0];
 
   return v5;
 }
 
-- (id)enumerateDomainNamesOfPendingSnapshot:(id)a3 domainCallback:(id)a4
+- (id)enumerateDomainNamesOfPendingSnapshot:(id)snapshot domainCallback:(id)callback
 {
-  v5 = a4;
-  v6 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:v5 format:@"SELECT DISTINCT(domain) FROM Files WHERE manifestID IN (SELECT manifestID FROM Manifests WHERE snapshotID NOT IN (SELECT snapshotID FROM Snapshots))"];
+  callbackCopy = callback;
+  v6 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:callbackCopy format:@"SELECT DISTINCT(domain) FROM Files WHERE manifestID IN (SELECT manifestID FROM Manifests WHERE snapshotID NOT IN (SELECT snapshotID FROM Snapshots))"];
   if (!v6)
   {
-    v6 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:v5 format:@"SELECT DISTINCT(domain) FROM Files WHERE manifestID NOT IN (SELECT manifestID FROM Manifests)"];
+    v6 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:callbackCopy format:@"SELECT DISTINCT(domain) FROM Files WHERE manifestID NOT IN (SELECT manifestID FROM Manifests)"];
     if (!v6)
     {
-      v6 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:v5 format:@"SELECT DISTINCT(domain) FROM Manifests WHERE snapshotID NOT IN (SELECT snapshotID FROM Snapshots) AND manifestID NOT IN (SELECT manifestID FROM Files)"];
+      v6 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:callbackCopy format:@"SELECT DISTINCT(domain) FROM Manifests WHERE snapshotID NOT IN (SELECT snapshotID FROM Snapshots) AND manifestID NOT IN (SELECT manifestID FROM Files)"];
     }
   }
 
@@ -2362,7 +2362,7 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)computeSignatureRetainCountsWithError:(id *)a3
+- (BOOL)computeSignatureRetainCountsWithError:(id *)error
 {
   v9 = 0;
   v10 = &v9;
@@ -2387,7 +2387,7 @@ LABEL_11:
     }
 
     v5 = v4;
-    if (a3)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -2397,38 +2397,38 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  if (!a3)
+  if (!error)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
   v6 = 0;
-  *a3 = v5;
+  *error = v5;
 LABEL_8:
 
   _Block_object_dispose(&v9, 8);
   return v6;
 }
 
-- (id)retainCountForSignature:(id)a3 volumeType:(unint64_t)a4 error:(id *)a5
+- (id)retainCountForSignature:(id)signature volumeType:(unint64_t)type error:(id *)error
 {
-  v8 = a3;
+  signatureCopy = signature;
   if (_os_feature_enabled_impl())
   {
     v9 = objc_opt_class();
     v16 = 0;
-    v10 = [v8 base64EncodedStringWithOptions:0];
-    v11 = [(MBCKCache *)self _fetchObjectOfClass:v9 error:&v16 format:@"SELECT retainCount from HardlinkCloneFiles WHERE signature = %@ AND volumeType = %lu", v10, a4];
+    v10 = [signatureCopy base64EncodedStringWithOptions:0];
+    type = [(MBCKCache *)self _fetchObjectOfClass:v9 error:&v16 format:@"SELECT retainCount from HardlinkCloneFiles WHERE signature = %@ AND volumeType = %lu", v10, type];
     v12 = v16;
 
     if (v12)
     {
-      if (a5)
+      if (error)
       {
         v13 = v12;
         v14 = 0;
-        *a5 = v12;
+        *error = v12;
       }
 
       else
@@ -2439,7 +2439,7 @@ LABEL_8:
 
     else
     {
-      v14 = v11;
+      v14 = type;
     }
   }
 
@@ -2451,9 +2451,9 @@ LABEL_8:
   return v14;
 }
 
-- (id)fileAssetMetadataForSignature:(id)a3 volumeType:(unint64_t)a4
+- (id)fileAssetMetadataForSignature:(id)signature volumeType:(unint64_t)type
 {
-  v6 = a3;
+  signatureCopy = signature;
   if (!_os_feature_enabled_impl())
   {
     v10 = 0;
@@ -2476,7 +2476,7 @@ LABEL_8:
   v30 = sub_1000BE7F8;
   v31 = sub_1000BE808;
   v32 = 0;
-  [v6 base64EncodedStringWithOptions:0];
+  [signatureCopy base64EncodedStringWithOptions:0];
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -2490,7 +2490,7 @@ LABEL_8:
   v14[4] = self;
   v7 = v16 = &v21;
   v19 = &v27;
-  v20 = a4;
+  typeCopy = type;
   v15 = v7;
   v17 = &v37;
   v18 = &v33;
@@ -2544,33 +2544,33 @@ LABEL_11:
   return v10;
 }
 
-- (id)updateDecodedAssetPath:(id)a3 forSignature:(id)a4 volumeType:(unint64_t)a5
+- (id)updateDecodedAssetPath:(id)path forSignature:(id)signature volumeType:(unint64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  signatureCopy = signature;
   if (_os_feature_enabled_impl())
   {
-    v10 = [v9 base64EncodedStringWithOptions:0];
-    v11 = [(MBCKCache *)self _executeSQL:@"UPDATE HardlinkCloneFiles SET decodedAssetPath = %@ WHERE signature = %@ AND volumeType = %lu", v8, v10, a5];
+    v10 = [signatureCopy base64EncodedStringWithOptions:0];
+    type = [(MBCKCache *)self _executeSQL:@"UPDATE HardlinkCloneFiles SET decodedAssetPath = %@ WHERE signature = %@ AND volumeType = %lu", pathCopy, v10, type];
   }
 
   else
   {
-    v11 = 0;
+    type = 0;
   }
 
-  return v11;
+  return type;
 }
 
-- (id)addFileToRestoreFiles:(id)a3
+- (id)addFileToRestoreFiles:(id)files
 {
-  v4 = a3;
-  v5 = [v4 domainName];
+  filesCopy = files;
+  domainName = [filesCopy domainName];
 
-  if (v5)
+  if (domainName)
   {
-    v6 = [v4 signature];
-    if (!v6 && [v4 size])
+    signature = [filesCopy signature];
+    if (!signature && [filesCopy size])
     {
       __assert_rtn("[MBCKCache addFileToRestoreFiles:]", "MBCKCache.m", 2314, "file.signature || file.size == 0");
     }
@@ -2587,7 +2587,7 @@ LABEL_11:
     v12[3] = &unk_1003BE090;
     v14 = &v15;
     v12[4] = self;
-    v13 = v4;
+    v13 = filesCopy;
     v7 = [(MBCKCache *)self performInTransaction:v12];
     v8 = v7;
     v9 = v16[5];
@@ -2612,11 +2612,11 @@ LABEL_11:
   return v10;
 }
 
-- (id)prioritizeRestoreFileWithDomain:(id)a3 relativePath:(id)a4
+- (id)prioritizeRestoreFileWithDomain:(id)domain relativePath:(id)path
 {
-  if (a3)
+  if (domain)
   {
-    [(MBCKCache *)self _executeSQL:@"UPDATE RestoreFiles SET priority = (SELECT COALESCE(MAX(priority), 0)+1 FROM RestoreFiles) WHERE domain = %@ AND relativePath = %@", a3, a4];
+    [(MBCKCache *)self _executeSQL:@"UPDATE RestoreFiles SET priority = (SELECT COALESCE(MAX(priority), 0)+1 FROM RestoreFiles) WHERE domain = %@ AND relativePath = %@", domain, path];
   }
 
   else
@@ -2628,24 +2628,24 @@ LABEL_11:
   return v4;
 }
 
-- (id)setRestoreState:(unint64_t)a3 forFile:(id)a4
+- (id)setRestoreState:(unint64_t)state forFile:(id)file
 {
-  v6 = [a4 fileID];
-  v7 = [(MBCKCache *)self _executeSQL:@"UPDATE RestoreFiles SET restoreState = %lu WHERE fileID = %@", a3, v6];
+  fileID = [file fileID];
+  v7 = [(MBCKCache *)self _executeSQL:@"UPDATE RestoreFiles SET restoreState = %lu WHERE fileID = %@", state, fileID];
 
   return v7;
 }
 
-- (id)setRestoreType:(int)a3 forFile:(id)a4
+- (id)setRestoreType:(int)type forFile:(id)file
 {
-  v5 = a3;
-  v6 = [a4 fileID];
-  v7 = [(MBCKCache *)self _executeSQL:@"UPDATE RestoreFiles SET restoreType = %lu WHERE fileID = %@", v5, v6];
+  typeCopy = type;
+  fileID = [file fileID];
+  v7 = [(MBCKCache *)self _executeSQL:@"UPDATE RestoreFiles SET restoreType = %lu WHERE fileID = %@", typeCopy, fileID];
 
   return v7;
 }
 
-- (id)hasRestoreFilesWithCallback:(id)a3
+- (id)hasRestoreFilesWithCallback:(id)callback
 {
   v10 = 0;
   v11 = &v10;
@@ -2657,11 +2657,11 @@ LABEL_11:
   v6[1] = 3221225472;
   v6[2] = sub_1000CB0A8;
   v6[3] = &unk_1003BDBF0;
-  v7 = self;
+  selfCopy = self;
   v9 = &v10;
-  v3 = a3;
-  v8 = v3;
-  [(MBCKCache *)v7 _perform:v6];
+  callbackCopy = callback;
+  v8 = callbackCopy;
+  [(MBCKCache *)selfCopy _perform:v6];
   v4 = v11[5];
 
   _Block_object_dispose(&v10, 8);
@@ -2669,12 +2669,12 @@ LABEL_11:
   return v4;
 }
 
-- (id)_enumerateRestoreFilesForDomain:(id)a3 state:(unint64_t)a4 negatingStateAndErrorState:(BOOL)a5 foundRestorable:(id)a6 range:(_NSRange)a7
+- (id)_enumerateRestoreFilesForDomain:(id)domain state:(unint64_t)state negatingStateAndErrorState:(BOOL)errorState foundRestorable:(id)restorable range:(_NSRange)range
 {
-  length = a7.length;
-  location = a7.location;
-  v13 = a3;
-  v14 = a6;
+  length = range.length;
+  location = range.location;
+  domainCopy = domain;
+  restorableCopy = restorable;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -2687,13 +2687,13 @@ LABEL_11:
   v19[3] = &unk_1003BE1A8;
   v19[4] = self;
   v22 = &v27;
-  v23 = a4;
-  v26 = a5;
-  v15 = v13;
+  stateCopy = state;
+  errorStateCopy = errorState;
+  v15 = domainCopy;
   v20 = v15;
   v24 = location;
   v25 = length;
-  v16 = v14;
+  v16 = restorableCopy;
   v21 = v16;
   [(MBCKCache *)self _perform:v19];
   v17 = v28[5];
@@ -2703,29 +2703,29 @@ LABEL_11:
   return v17;
 }
 
-- (id)enumeratePendingRestoreFilesForAnyDomainOrderAscendingWithBlock:(id)a3
+- (id)enumeratePendingRestoreFilesForAnyDomainOrderAscendingWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:v4 format:@"SELECT Files.file FROM RestoreFiles JOIN Files ON Files.fileID = RestoreFiles.fileID WHERE RestoreFiles.restoreState < %lu ORDER BY Files.relativePath ASC", 11];
+  blockCopy = block;
+  v5 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:blockCopy format:@"SELECT Files.file FROM RestoreFiles JOIN Files ON Files.fileID = RestoreFiles.fileID WHERE RestoreFiles.restoreState < %lu ORDER BY Files.relativePath ASC", 11];
 
   return v5;
 }
 
-- (id)enumeratePendingRestoreRegularFilesForAnyDomainOrderAscendingWithBlock:(id)a3
+- (id)enumeratePendingRestoreRegularFilesForAnyDomainOrderAscendingWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:v4 format:@"SELECT Files.file FROM RestoreFiles JOIN Files ON Files.fileID = RestoreFiles.fileID WHERE RestoreFiles.restoreState < %lu AND Files.fileType = 0 ORDER BY Files.relativePath ASC", 11];
+  blockCopy = block;
+  v5 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:blockCopy format:@"SELECT Files.file FROM RestoreFiles JOIN Files ON Files.fileID = RestoreFiles.fileID WHERE RestoreFiles.restoreState < %lu AND Files.fileType = 0 ORDER BY Files.relativePath ASC", 11];
 
   return v5;
 }
 
-- (id)enumeratePendingRestoreFilesForDomain:(id)a3 orderAscending:(BOOL)a4 foundRestorable:(id)a5
+- (id)enumeratePendingRestoreFilesForDomain:(id)domain orderAscending:(BOOL)ascending foundRestorable:(id)restorable
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  ascendingCopy = ascending;
+  restorableCopy = restorable;
+  domainCopy = domain;
   v10 = objc_opt_class();
-  if (v5)
+  if (ascendingCopy)
   {
     v11 = @"SELECT Files.file FROM RestoreFiles JOIN Files ON Files.fileID = RestoreFiles.fileID WHERE RestoreFiles.restoreState < %lu AND Files.domain = %@ ORDER BY Files.relativePath ASC";
   }
@@ -2735,18 +2735,18 @@ LABEL_11:
     v11 = @"SELECT Files.file FROM RestoreFiles JOIN Files ON Files.fileID = RestoreFiles.fileID WHERE RestoreFiles.restoreState < %lu AND Files.domain = %@ ORDER BY Files.relativePath DESC";
   }
 
-  v12 = [(MBCKCache *)self _enumerateObjectsOfClass:v10 callback:v8 format:v11, 11, v9];
+  domainCopy = [(MBCKCache *)self _enumerateObjectsOfClass:v10 callback:restorableCopy format:v11, 11, domainCopy];
 
-  return v12;
+  return domainCopy;
 }
 
-- (id)enumeratePendingRestoreFilesForDomain:(id)a3 forType:(unint64_t)a4 orderAscending:(BOOL)a5 foundRestorable:(id)a6
+- (id)enumeratePendingRestoreFilesForDomain:(id)domain forType:(unint64_t)type orderAscending:(BOOL)ascending foundRestorable:(id)restorable
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a3;
+  ascendingCopy = ascending;
+  restorableCopy = restorable;
+  domainCopy = domain;
   v12 = objc_opt_class();
-  if (v6)
+  if (ascendingCopy)
   {
     v13 = @"SELECT Files.file FROM RestoreFiles JOIN Files ON Files.fileID = RestoreFiles.fileID WHERE Files.fileType = %lu AND Files.domain = %@ ORDER BY Files.relativePath ASC";
   }
@@ -2756,29 +2756,29 @@ LABEL_11:
     v13 = @"SELECT Files.file FROM RestoreFiles JOIN Files ON Files.fileID = RestoreFiles.fileID WHERE Files.fileType = %lu AND Files.domain = %@ ORDER BY Files.relativePath DESC";
   }
 
-  v14 = [(MBCKCache *)self _enumerateObjectsOfClass:v12 callback:v10 format:v13, a4, v11];
+  domainCopy = [(MBCKCache *)self _enumerateObjectsOfClass:v12 callback:restorableCopy format:v13, type, domainCopy];
 
-  return v14;
+  return domainCopy;
 }
 
-- (id)enumeratePendingRestoreFilesForDomain:(id)a3 excludingType:(unint64_t)a4 foundRestorable:(id)a5
+- (id)enumeratePendingRestoreFilesForDomain:(id)domain excludingType:(unint64_t)type foundRestorable:(id)restorable
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:v8 format:@"SELECT Files.file FROM RestoreFiles JOIN Files ON Files.fileID = RestoreFiles.fileID WHERE Files.fileType != %lu AND Files.domain = %@ ORDER BY Files.relativePath", a4, v9];
+  restorableCopy = restorable;
+  domainCopy = domain;
+  domainCopy = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:restorableCopy format:@"SELECT Files.file FROM RestoreFiles JOIN Files ON Files.fileID = RestoreFiles.fileID WHERE Files.fileType != %lu AND Files.domain = %@ ORDER BY Files.relativePath", type, domainCopy];
 
-  return v10;
+  return domainCopy;
 }
 
-- (id)fetchRestorableFileForPath:(id)a3 error:(id *)a4
+- (id)fetchRestorableFileForPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  pathCopy = path;
+  if (!pathCopy)
   {
     __assert_rtn("[MBCKCache fetchRestorableFileForPath:error:]", "MBCKCache.m", 2464, "absolutePath");
   }
 
-  v7 = v6;
+  v7 = pathCopy;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -2795,10 +2795,10 @@ LABEL_11:
   v16 = v9;
   v10 = [(MBCKCache *)self _enumerateObjectsOfClass:v8 callback:v15 format:@"SELECT Files.file FROM RestoreFiles JOIN Files ON Files.fileID = RestoreFiles.fileID WHERE absolutePath = %@", v9];
   v11 = v10;
-  if (a4)
+  if (error)
   {
     v12 = v10;
-    *a4 = v11;
+    *error = v11;
   }
 
   v13 = v19[5];
@@ -2808,7 +2808,7 @@ LABEL_11:
   return v13;
 }
 
-- (unint64_t)fetchRestoreFileStateForFileID:(id)a3 error:(id *)a4
+- (unint64_t)fetchRestoreFileStateForFileID:(id)d error:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -2824,15 +2824,15 @@ LABEL_11:
   v8[1] = 3221225472;
   v8[2] = sub_1000CBB7C;
   v8[3] = &unk_1003BDFC8;
-  v9 = self;
+  selfCopy = self;
   v11 = &v13;
-  v5 = a3;
-  v10 = v5;
+  dCopy = d;
+  v10 = dCopy;
   v12 = &v19;
-  [(MBCKCache *)v9 _perform:v8];
-  if (a4)
+  [(MBCKCache *)selfCopy _perform:v8];
+  if (error)
   {
-    *a4 = v14[5];
+    *error = v14[5];
   }
 
   v6 = v20[3];
@@ -2843,48 +2843,48 @@ LABEL_11:
   return v6;
 }
 
-- (id)enumeratePendingRestorableDomainsWithCallback:(id)a3
+- (id)enumeratePendingRestorableDomainsWithCallback:(id)callback
 {
-  v4 = a3;
-  v5 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:v4 format:@"SELECT DISTINCT(Files.domain) FROM RestoreFiles JOIN Files on Files.fileID = RestoreFiles.fileID WHERE RestoreFiles.restoreState < %lu", 11];
+  callbackCopy = callback;
+  v5 = [(MBCKCache *)self _enumerateObjectsOfClass:objc_opt_class() callback:callbackCopy format:@"SELECT DISTINCT(Files.domain) FROM RestoreFiles JOIN Files on Files.fileID = RestoreFiles.fileID WHERE RestoreFiles.restoreState < %lu", 11];
 
   return v5;
 }
 
-- (id)setDomainRestoreState:(unint64_t)a3 forDomain:(id)a4
+- (id)setDomainRestoreState:(unint64_t)state forDomain:(id)domain
 {
-  v6 = a4;
-  v7 = [(MBCKCache *)self _executeSQL:@"UPDATE RestoreDomains SET state = %lu WHERE domain = %@", a3, v6];
-  v8 = v7;
-  if (v7)
+  domainCopy = domain;
+  domainCopy = [(MBCKCache *)self _executeSQL:@"UPDATE RestoreDomains SET state = %lu WHERE domain = %@", state, domainCopy];
+  v8 = domainCopy;
+  if (domainCopy)
   {
-    v9 = v7;
+    domainCopy2 = domainCopy;
   }
 
   else
   {
-    v9 = [(MBCKCache *)self _executeSQL:@"INSERT OR IGNORE INTO RestoreDomains (state, domain) VALUES (%lu, %@)", a3, v6];
+    domainCopy2 = [(MBCKCache *)self _executeSQL:@"INSERT OR IGNORE INTO RestoreDomains (state, domain) VALUES (%lu, %@)", state, domainCopy];
   }
 
-  v10 = v9;
+  v10 = domainCopy2;
 
   return v10;
 }
 
-- (id)setDomainRestoreAgent:(id)a3 forDomain:(id)a4
+- (id)setDomainRestoreAgent:(id)agent forDomain:(id)domain
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MBCKCache *)self _executeSQL:@"UPDATE RestoreDomains SET agent = %@ WHERE domain = %@", v6, v7];
-  v9 = v8;
-  if (v8)
+  agentCopy = agent;
+  domainCopy = domain;
+  domainCopy = [(MBCKCache *)self _executeSQL:@"UPDATE RestoreDomains SET agent = %@ WHERE domain = %@", agentCopy, domainCopy];
+  v9 = domainCopy;
+  if (domainCopy)
   {
-    v10 = v8;
+    v10 = domainCopy;
   }
 
   else
   {
-    v10 = [(MBCKCache *)self _executeSQL:@"INSERT OR IGNORE INTO RestoreDomains (agent, domain, state) VALUES (%@, %@, %lu)", v6, v7, 1];
+    v10 = [(MBCKCache *)self _executeSQL:@"INSERT OR IGNORE INTO RestoreDomains (agent, domain, state) VALUES (%@, %@, %lu)", agentCopy, domainCopy, 1];
   }
 
   v11 = v10;
@@ -2892,7 +2892,7 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)domainShouldRestoreToSafeHarbor:(id)a3 error:(id *)a4
+- (BOOL)domainShouldRestoreToSafeHarbor:(id)harbor error:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -2908,18 +2908,18 @@ LABEL_11:
   v9[1] = 3221225472;
   v9[2] = sub_1000CC07C;
   v9[3] = &unk_1003BDFC8;
-  v10 = self;
+  selfCopy = self;
   v12 = &v18;
-  v5 = a3;
-  v11 = v5;
+  harborCopy = harbor;
+  v11 = harborCopy;
   v13 = &v14;
-  [(MBCKCache *)v10 _perform:v9];
-  if (a4)
+  [(MBCKCache *)selfCopy _perform:v9];
+  if (error)
   {
     v6 = v19[5];
     if (v6)
     {
-      *a4 = v6;
+      *error = v6;
     }
   }
 
@@ -2931,10 +2931,10 @@ LABEL_11:
   return v7;
 }
 
-- (id)fetchDomainRestoreStateForDomain:(id)a3 callback:(id)a4
+- (id)fetchDomainRestoreStateForDomain:(id)domain callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  callbackCopy = callback;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -2947,9 +2947,9 @@ LABEL_11:
   v12[3] = &unk_1003BE018;
   v12[4] = self;
   v15 = &v16;
-  v8 = v6;
+  v8 = domainCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = callbackCopy;
   v14 = v9;
   [(MBCKCache *)self _perform:v12];
   v10 = v17[5];
@@ -2959,10 +2959,10 @@ LABEL_11:
   return v10;
 }
 
-- (id)fetchPendingRestoreSizeForDomain:(id)a3 callback:(id)a4
+- (id)fetchPendingRestoreSizeForDomain:(id)domain callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  callbackCopy = callback;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -2975,9 +2975,9 @@ LABEL_11:
   v12[3] = &unk_1003BE018;
   v12[4] = self;
   v15 = &v16;
-  v8 = v6;
+  v8 = domainCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = callbackCopy;
   v14 = v9;
   [(MBCKCache *)self _perform:v12];
   v10 = v17[5];
@@ -2987,10 +2987,10 @@ LABEL_11:
   return v10;
 }
 
-- (id)fetchRestoreSizeForDomain:(id)a3 callback:(id)a4
+- (id)fetchRestoreSizeForDomain:(id)domain callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  callbackCopy = callback;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -3003,9 +3003,9 @@ LABEL_11:
   v12[3] = &unk_1003BE018;
   v12[4] = self;
   v15 = &v16;
-  v8 = v6;
+  v8 = domainCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = callbackCopy;
   v14 = v9;
   [(MBCKCache *)self _perform:v12];
   v10 = v17[5];
@@ -3015,10 +3015,10 @@ LABEL_11:
   return v10;
 }
 
-- (unint64_t)fetchRestoreStateForDeviceUUID:(id)a3 snapshotUUID:(id)a4 error:(id *)a5
+- (unint64_t)fetchRestoreStateForDeviceUUID:(id)d snapshotUUID:(id)iD error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -3035,15 +3035,15 @@ LABEL_11:
   v14[3] = &unk_1003BD5B8;
   v14[4] = self;
   v17 = &v19;
-  v10 = v8;
+  v10 = dCopy;
   v15 = v10;
-  v11 = v9;
+  v11 = iDCopy;
   v16 = v11;
   v18 = &v25;
   [(MBCKCache *)self _perform:v14];
-  if (a5)
+  if (error)
   {
-    *a5 = v20[5];
+    *error = v20[5];
   }
 
   v12 = v26[3];
@@ -3069,13 +3069,13 @@ LABEL_11:
   return v3;
 }
 
-- (BOOL)removeAllScannedDomains:(id *)a3
+- (BOOL)removeAllScannedDomains:(id *)domains
 {
   v4 = [(MBCKCache *)self _executeSQL:@"DELETE FROM ScannedDomains"];
-  if (a3 && v4)
+  if (domains && v4)
   {
     v4 = v4;
-    *a3 = v4;
+    *domains = v4;
   }
 
   v5 = v4 == 0;
@@ -3083,7 +3083,7 @@ LABEL_11:
   return v5;
 }
 
-- (unint64_t)sizeOfScannedDomain:(id)a3 error:(id *)a4
+- (unint64_t)sizeOfScannedDomain:(id)domain error:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -3099,15 +3099,15 @@ LABEL_11:
   v8[1] = 3221225472;
   v8[2] = sub_1000CCE34;
   v8[3] = &unk_1003BDFC8;
-  v9 = self;
+  selfCopy = self;
   v11 = &v13;
-  v5 = a3;
-  v10 = v5;
+  domainCopy = domain;
+  v10 = domainCopy;
   v12 = &v19;
-  [(MBCKCache *)v9 _perform:v8];
-  if (a4)
+  [(MBCKCache *)selfCopy _perform:v8];
+  if (error)
   {
-    *a4 = v14[5];
+    *error = v14[5];
   }
 
   v6 = v20[3];
@@ -3118,7 +3118,7 @@ LABEL_11:
   return v6;
 }
 
-- (id)domainNamesForRestoreFailures:(id *)a3
+- (id)domainNamesForRestoreFailures:(id *)failures
 {
   v12 = 0;
   v13 = &v12;
@@ -3130,32 +3130,32 @@ LABEL_11:
   v8[1] = 3221225472;
   v8[2] = sub_1000CD088;
   v8[3] = &unk_1003BE1F8;
-  v9 = self;
+  selfCopy = self;
   v11 = &v12;
   v4 = objc_alloc_init(NSMutableSet);
   v10 = v4;
-  [(MBCKCache *)v9 _perform:v8];
+  [(MBCKCache *)selfCopy _perform:v8];
   v5 = v13[5];
   if (v5)
   {
-    v6 = 0;
-    if (a3)
+    allObjects = 0;
+    if (failures)
     {
-      *a3 = v5;
+      *failures = v5;
     }
   }
 
   else
   {
-    v6 = [v4 allObjects];
+    allObjects = [v4 allObjects];
   }
 
   _Block_object_dispose(&v12, 8);
 
-  return v6;
+  return allObjects;
 }
 
-- (unint64_t)sizeOfPendingRestore:(id *)a3
+- (unint64_t)sizeOfPendingRestore:(id *)restore
 {
   v13 = 0;
   v14 = &v13;
@@ -3180,12 +3180,12 @@ LABEL_11:
   v7[6] = v8;
   v7[7] = &v9;
   [(MBCKCache *)self _perform:v7];
-  if (a3)
+  if (restore)
   {
     v4 = v14[5];
     if (v4)
     {
-      *a3 = v4;
+      *restore = v4;
     }
   }
 
@@ -3197,27 +3197,27 @@ LABEL_11:
   return v5;
 }
 
-- (id)dependentDomainsForApp:(id)a3 error:(id *)a4
+- (id)dependentDomainsForApp:(id)app error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MBCKCache *)self _fetchObjectOfClass:objc_opt_class() error:a4 format:@"SELECT dependentDomains from RestoreApps where domain = %@", v6];
+  appCopy = app;
+  appCopy = [(MBCKCache *)self _fetchObjectOfClass:objc_opt_class() error:error format:@"SELECT dependentDomains from RestoreApps where domain = %@", appCopy];
 
-  v8 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v7 error:0];
+  v8 = [[NSKeyedUnarchiver alloc] initForReadingFromData:appCopy error:0];
   v9 = [v8 decodeObjectOfClass:objc_opt_class() forKey:NSKeyedArchiveRootObjectKey];
 
   return v9;
 }
 
-- (id)addDependentDomains:(id)a3 forApp:(id)a4
+- (id)addDependentDomains:(id)domains forApp:(id)app
 {
-  v6 = a4;
-  v7 = [NSKeyedArchiver archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
-  v8 = [(MBCKCache *)self _executeSQL:@"INSERT OR REPLACE INTO RestoreApps (domain, dependentDomains) VALUES (%@, %@)", v6, v7];
+  appCopy = app;
+  v7 = [NSKeyedArchiver archivedDataWithRootObject:domains requiringSecureCoding:1 error:0];
+  v8 = [(MBCKCache *)self _executeSQL:@"INSERT OR REPLACE INTO RestoreApps (domain, dependentDomains) VALUES (%@, %@)", appCopy, v7];
 
   return v8;
 }
 
-- (id)fetchDomainsWithTopNFileCounts:(unint64_t)a3 error:(id *)a4
+- (id)fetchDomainsWithTopNFileCounts:(unint64_t)counts error:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -3229,19 +3229,19 @@ LABEL_11:
   v9[1] = 3221225472;
   v9[2] = sub_1000CD6CC;
   v9[3] = &unk_1003BDF28;
-  v10 = self;
+  selfCopy = self;
   v12 = &v14;
-  v13 = a3;
+  countsCopy = counts;
   v5 = objc_opt_new();
   v11 = v5;
-  [(MBCKCache *)v10 _perform:v9];
+  [(MBCKCache *)selfCopy _perform:v9];
   v6 = v15[5];
   if (v6)
   {
     v7 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = v6;
+      *error = v6;
     }
   }
 
@@ -3255,7 +3255,7 @@ LABEL_11:
   return v7;
 }
 
-- (id)fetchDomainsWithTopNSizes:(unint64_t)a3 error:(id *)a4
+- (id)fetchDomainsWithTopNSizes:(unint64_t)sizes error:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -3267,19 +3267,19 @@ LABEL_11:
   v9[1] = 3221225472;
   v9[2] = sub_1000CD978;
   v9[3] = &unk_1003BDF28;
-  v10 = self;
+  selfCopy = self;
   v12 = &v14;
-  v13 = a3;
+  sizesCopy = sizes;
   v5 = objc_opt_new();
   v11 = v5;
-  [(MBCKCache *)v10 _perform:v9];
+  [(MBCKCache *)selfCopy _perform:v9];
   v6 = v15[5];
   if (v6)
   {
     v7 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = v6;
+      *error = v6;
     }
   }
 
@@ -3293,16 +3293,16 @@ LABEL_11:
   return v7;
 }
 
-- (id)removeAllOrphanedItemsForSnapshot:(id)a3
+- (id)removeAllOrphanedItemsForSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = [v4 snapshotID];
-  v6 = [(MBCKCache *)self _executeSQL:@"DELETE FROM Files WHERE manifestID IN (SELECT manifestID FROM Manifests WHERE snapshotID NOT IN (SELECT snapshotID FROM Snapshots) AND snapshotID != %@)", v5];
+  snapshotCopy = snapshot;
+  snapshotID = [snapshotCopy snapshotID];
+  v6 = [(MBCKCache *)self _executeSQL:@"DELETE FROM Files WHERE manifestID IN (SELECT manifestID FROM Manifests WHERE snapshotID NOT IN (SELECT snapshotID FROM Snapshots) AND snapshotID != %@)", snapshotID];
 
   if (!v6)
   {
-    v7 = [v4 snapshotID];
-    v6 = [(MBCKCache *)self _executeSQL:@"DELETE FROM Manifests WHERE snapshotID NOT IN (SELECT snapshotID FROM Snapshots) AND snapshotID != %@", v7];
+    snapshotID2 = [snapshotCopy snapshotID];
+    v6 = [(MBCKCache *)self _executeSQL:@"DELETE FROM Manifests WHERE snapshotID NOT IN (SELECT snapshotID FROM Snapshots) AND snapshotID != %@", snapshotID2];
   }
 
   v8 = v6;

@@ -1,17 +1,17 @@
 @interface DSMutableArchive
-+ (BOOL)extractArchive:(id)a3 toDirectory:(id)a4;
-+ (BOOL)extractEntry:(archive *)a3 toArchive:(archive *)a4;
++ (BOOL)extractArchive:(id)archive toDirectory:(id)directory;
++ (BOOL)extractEntry:(archive *)entry toArchive:(archive *)archive;
 + (id)archive;
-- (BOOL)_addDirectoryToContents:(id)a3 searchQueue:(id)a4 flatten:(BOOL)a5 error:(id *)a6;
-- (BOOL)_addFile:(id)a3 archive:(archive *)a4 error:(id *)a5;
-- (BOOL)_writeArchive:(archive *)a3 error:(id *)a4;
-- (BOOL)archiveAsFile:(id)a3 error:(id *)a4;
-- (BOOL)archiveAsFileUsingDescriptor:(int)a3 error:(id *)a4;
+- (BOOL)_addDirectoryToContents:(id)contents searchQueue:(id)queue flatten:(BOOL)flatten error:(id *)error;
+- (BOOL)_addFile:(id)file archive:(archive *)archive error:(id *)error;
+- (BOOL)_writeArchive:(archive *)archive error:(id *)error;
+- (BOOL)archiveAsFile:(id)file error:(id *)error;
+- (BOOL)archiveAsFileUsingDescriptor:(int)descriptor error:(id *)error;
 - (DSMutableArchive)init;
-- (id)archiveAsDataWithError:(id *)a3;
-- (id)archiveAsTempDirectoryWithName:(id)a3 error:(id *)a4;
-- (id)archiveAsTempFileWithTemplate:(id)a3 directory:(id)a4 suffix:(id)a5 error:(id *)a6;
-- (void)_setFormatOnArchive:(archive *)a3;
+- (id)archiveAsDataWithError:(id *)error;
+- (id)archiveAsTempDirectoryWithName:(id)name error:(id *)error;
+- (id)archiveAsTempFileWithTemplate:(id)template directory:(id)directory suffix:(id)suffix error:(id *)error;
+- (void)_setFormatOnArchive:(archive *)archive;
 @end
 
 @implementation DSMutableArchive
@@ -40,27 +40,27 @@
   return v2;
 }
 
-- (BOOL)_addDirectoryToContents:(id)a3 searchQueue:(id)a4 flatten:(BOOL)a5 error:(id *)a6
+- (BOOL)_addDirectoryToContents:(id)contents searchQueue:(id)queue flatten:(BOOL)flatten error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  contentsCopy = contents;
+  queueCopy = queue;
   v11 = +[NSFileManager defaultManager];
-  v12 = [v9 sourceUrl];
+  sourceUrl = [contentsCopy sourceUrl];
   v31 = 0;
-  v13 = [v11 contentsOfDirectoryAtURL:v12 includingPropertiesForKeys:0 options:0 error:&v31];
+  v13 = [v11 contentsOfDirectoryAtURL:sourceUrl includingPropertiesForKeys:0 options:0 error:&v31];
   v14 = v31;
 
   if (v13)
   {
-    v15 = [v9 prefix];
+    prefix = [contentsCopy prefix];
     v26 = v14;
-    if (([v9 root] & 1) == 0 && !a5)
+    if (([contentsCopy root] & 1) == 0 && !flatten)
     {
-      v16 = [v9 sourceUrl];
-      v17 = [v16 lastPathComponent];
-      v18 = [v15 stringByAppendingPathComponent:v17];
+      sourceUrl2 = [contentsCopy sourceUrl];
+      lastPathComponent = [sourceUrl2 lastPathComponent];
+      v18 = [prefix stringByAppendingPathComponent:lastPathComponent];
 
-      v15 = v18;
+      prefix = v18;
     }
 
     v29 = 0u;
@@ -83,8 +83,8 @@
             objc_enumerationMutation(v19);
           }
 
-          v24 = [DSArchivePath archivePathWithSource:*(*(&v27 + 1) + 8 * v23) prefix:v15 root:0];
-          [v10 addObject:v24];
+          v24 = [DSArchivePath archivePathWithSource:*(*(&v27 + 1) + 8 * v23) prefix:prefix root:0];
+          [queueCopy addObject:v24];
 
           v23 = v23 + 1;
         }
@@ -101,43 +101,43 @@
 
   else
   {
-    if (a6)
+    if (error)
     {
-      *a6 = [NSError errorWithDomain:@"com.apple.Diagnostics.DSMutableArchive" code:5 userInfo:0];
+      *error = [NSError errorWithDomain:@"com.apple.Diagnostics.DSMutableArchive" code:5 userInfo:0];
     }
 
-    v15 = DiagnosticLogHandleForCategory(3);
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    prefix = DiagnosticLogHandleForCategory(3);
+    if (os_log_type_enabled(prefix, OS_LOG_TYPE_ERROR))
     {
-      [DSMutableArchive _addDirectoryToContents:v9 searchQueue:? flatten:? error:?];
+      [DSMutableArchive _addDirectoryToContents:contentsCopy searchQueue:? flatten:? error:?];
     }
   }
 
   return v13 != 0;
 }
 
-- (BOOL)_addFile:(id)a3 archive:(archive *)a4 error:(id *)a5
+- (BOOL)_addFile:(id)file archive:(archive *)archive error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 sourceUrl];
-  v8 = [v7 path];
+  fileCopy = file;
+  sourceUrl = [fileCopy sourceUrl];
+  path = [sourceUrl path];
 
-  v9 = [v6 prefix];
-  v10 = [v6 sourceUrl];
-  v11 = [v10 lastPathComponent];
-  v12 = [v9 stringByAppendingPathComponent:v11];
+  prefix = [fileCopy prefix];
+  sourceUrl2 = [fileCopy sourceUrl];
+  lastPathComponent = [sourceUrl2 lastPathComponent];
+  v12 = [prefix stringByAppendingPathComponent:lastPathComponent];
 
   v13 = DiagnosticLogHandleForCategory(3);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v26 = v8;
+    v26 = path;
     v27 = 2112;
     v28 = v12;
     _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Archiving [%@] as [%@]", buf, 0x16u);
   }
 
-  v14 = open([v8 UTF8String], 0);
+  v14 = open([path UTF8String], 0);
   if (v14 == -1)
   {
     v15 = [NSError errorWithDomain:@"com.apple.Diagnostics.DSMutableArchive" code:3 userInfo:0];
@@ -240,46 +240,46 @@ LABEL_27:
   }
 
 LABEL_29:
-  if (a5)
+  if (error)
   {
     v22 = v15;
-    *a5 = v15;
+    *error = v15;
   }
 
   return v19;
 }
 
-- (void)_setFormatOnArchive:(archive *)a3
+- (void)_setFormatOnArchive:(archive *)archive
 {
-  v4 = [(DSMutableArchive *)self format];
-  if (v4 == 2)
+  format = [(DSMutableArchive *)self format];
+  if (format == 2)
   {
     archive_write_add_filter_gzip();
     goto LABEL_5;
   }
 
-  if (v4 == 1)
+  if (format == 1)
   {
     archive_write_add_filter_compress();
 LABEL_5:
 
-    _archive_write_set_format_cpio(a3);
+    _archive_write_set_format_cpio(archive);
     return;
   }
 
   archive_write_add_filter_gzip();
 
-  _archive_write_set_format_ustar(a3);
+  _archive_write_set_format_ustar(archive);
 }
 
-- (BOOL)_writeArchive:(archive *)a3 error:(id *)a4
+- (BOOL)_writeArchive:(archive *)archive error:(id *)error
 {
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [(DSMutableArchive *)self tableOfContents];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  tableOfContents = [(DSMutableArchive *)self tableOfContents];
+  v8 = [tableOfContents countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -290,11 +290,11 @@ LABEL_5:
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(tableOfContents);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        if (![(DSMutableArchive *)self _addFile:v12 archive:a3 error:a4])
+        if (![(DSMutableArchive *)self _addFile:v12 archive:archive error:error])
         {
           v15 = DiagnosticLogHandleForCategory(3);
           if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -306,7 +306,7 @@ LABEL_5:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [tableOfContents countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v9)
       {
         continue;
@@ -323,15 +323,15 @@ LABEL_5:
   }
 
   v14 = v13;
-  if (a4)
+  if (error)
   {
-    *a4 = [NSError errorWithDomain:@"com.apple.Diagnostics.DSMutableArchive" code:10 userInfo:0];
+    *error = [NSError errorWithDomain:@"com.apple.Diagnostics.DSMutableArchive" code:10 userInfo:0];
   }
 
-  v7 = DiagnosticLogHandleForCategory(3);
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
+  tableOfContents = DiagnosticLogHandleForCategory(3);
+  if (os_log_type_enabled(tableOfContents, OS_LOG_TYPE_FAULT))
   {
-    [DSMutableArchive _writeArchive:v14 error:v7];
+    [DSMutableArchive _writeArchive:v14 error:tableOfContents];
   }
 
 LABEL_17:
@@ -339,7 +339,7 @@ LABEL_17:
   return 0;
 }
 
-- (id)archiveAsDataWithError:(id *)a3
+- (id)archiveAsDataWithError:(id *)error
 {
   v5 = archive_write_new();
   [(DSMutableArchive *)self _setFormatOnArchive:v5];
@@ -351,36 +351,36 @@ LABEL_17:
       [DSMutableArchive archiveAsDataWithError:];
     }
 
-    if (a3)
+    if (error)
     {
       v7 = [NSError errorWithDomain:@"com.apple.Diagnostics.DSMutableArchive" code:1 userInfo:0];
       v8 = v7;
-      v9 = 0;
-      *a3 = v7;
+      dataBuffer = 0;
+      *error = v7;
       goto LABEL_9;
     }
   }
 
-  else if ([(DSMutableArchive *)self _writeArchive:v5 error:a3])
+  else if ([(DSMutableArchive *)self _writeArchive:v5 error:error])
   {
-    v9 = [(DSMutableArchive *)self dataBuffer];
+    dataBuffer = [(DSMutableArchive *)self dataBuffer];
     goto LABEL_9;
   }
 
-  v9 = 0;
+  dataBuffer = 0;
 LABEL_9:
 
-  return v9;
+  return dataBuffer;
 }
 
-- (id)archiveAsTempDirectoryWithName:(id)a3 error:(id *)a4
+- (id)archiveAsTempDirectoryWithName:(id)name error:(id *)error
 {
-  v6 = a3;
+  nameCopy = name;
   v7 = DiagnosticLogHandleForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v44 = v6;
+    v44 = nameCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Archiving as temp directory with name %@", buf, 0xCu);
   }
 
@@ -388,10 +388,10 @@ LABEL_9:
   v9 = NSTemporaryDirectory();
   v10 = [NSURL fileURLWithPath:v9];
 
-  v11 = [v10 URLByAppendingPathComponent:v6];
+  v11 = [v10 URLByAppendingPathComponent:nameCopy];
 
-  v12 = [v11 path];
-  v13 = [v8 fileExistsAtPath:v12];
+  path = [v11 path];
+  v13 = [v8 fileExistsAtPath:path];
 
   if (!v13)
   {
@@ -406,13 +406,13 @@ LABEL_9:
     _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "Cleaning up prior temp directory archive at [%@]", buf, 0xCu);
   }
 
-  [v8 removeItemAtURL:v11 error:a4];
-  if (*a4)
+  [v8 removeItemAtURL:v11 error:error];
+  if (*error)
   {
     v15 = DiagnosticLogHandleForCategory(0);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [DSMutableArchive archiveAsTempDirectoryWithName:v11 error:a4];
+      [DSMutableArchive archiveAsTempDirectoryWithName:v11 error:error];
     }
 
     v16 = 0;
@@ -421,11 +421,11 @@ LABEL_9:
   else
   {
 LABEL_10:
-    [v8 createDirectoryAtURL:v11 withIntermediateDirectories:1 attributes:0 error:a4];
-    if (!*a4)
+    [v8 createDirectoryAtURL:v11 withIntermediateDirectories:1 attributes:0 error:error];
+    if (!*error)
     {
       v38 = v8;
-      v35 = v6;
+      v35 = nameCopy;
       v41 = 0u;
       v42 = 0u;
       v39 = 0u;
@@ -446,38 +446,38 @@ LABEL_10:
             }
 
             v20 = *(*(&v39 + 1) + 8 * i);
-            v21 = [v20 prefix];
+            prefix = [v20 prefix];
             v22 = v11;
-            v23 = [v11 URLByAppendingPathComponent:v21];
-            v24 = [v20 sourceUrl];
-            v25 = [v24 lastPathComponent];
-            v26 = [v23 URLByAppendingPathComponent:v25];
+            v23 = [v11 URLByAppendingPathComponent:prefix];
+            sourceUrl = [v20 sourceUrl];
+            lastPathComponent = [sourceUrl lastPathComponent];
+            v26 = [v23 URLByAppendingPathComponent:lastPathComponent];
 
-            v27 = [v26 URLByDeletingLastPathComponent];
-            [v38 createDirectoryAtURL:v27 withIntermediateDirectories:1 attributes:0 error:a4];
+            uRLByDeletingLastPathComponent = [v26 URLByDeletingLastPathComponent];
+            [v38 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:error];
 
-            v28 = [v20 sourceUrl];
-            if (*a4)
+            sourceUrl2 = [v20 sourceUrl];
+            if (*error)
             {
-              v29 = 0;
+              errorCopy = 0;
             }
 
             else
             {
-              v29 = a4;
+              errorCopy = error;
             }
 
-            v30 = [v38 copyItemAtURL:v28 toURL:v26 error:v29];
+            v30 = [v38 copyItemAtURL:sourceUrl2 toURL:v26 error:errorCopy];
 
             if ((v30 & 1) == 0)
             {
               v31 = DiagnosticLogHandleForCategory(0);
               if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
               {
-                v32 = [v20 sourceUrl];
-                v33 = [*a4 description];
+                sourceUrl3 = [v20 sourceUrl];
+                v33 = [*error description];
                 *buf = 138412802;
-                v44 = v32;
+                v44 = sourceUrl3;
                 v45 = 2112;
                 v46 = v26;
                 v47 = 2112;
@@ -495,7 +495,7 @@ LABEL_10:
         while (v18);
       }
 
-      v6 = v35;
+      nameCopy = v35;
       v8 = v38;
     }
 
@@ -505,26 +505,26 @@ LABEL_10:
   return v16;
 }
 
-- (id)archiveAsTempFileWithTemplate:(id)a3 directory:(id)a4 suffix:(id)a5 error:(id *)a6
+- (id)archiveAsTempFileWithTemplate:(id)template directory:(id)directory suffix:(id)suffix error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v11)
+  templateCopy = template;
+  directoryCopy = directory;
+  suffixCopy = suffix;
+  if (!directoryCopy)
   {
     v13 = NSTemporaryDirectory();
-    v11 = [NSURL fileURLWithPath:v13];
+    directoryCopy = [NSURL fileURLWithPath:v13];
   }
 
-  v14 = [v11 URLByAppendingPathComponent:v10];
-  v15 = [v14 path];
+  v14 = [directoryCopy URLByAppendingPathComponent:templateCopy];
+  path = [v14 path];
 
-  if (v12)
+  if (suffixCopy)
   {
-    v16 = [v15 stringByAppendingString:v12];
+    v16 = [path stringByAppendingString:suffixCopy];
 
-    v17 = [v12 length];
-    v15 = v16;
+    v17 = [suffixCopy length];
+    path = v16;
   }
 
   else
@@ -532,13 +532,13 @@ LABEL_10:
     v17 = 0;
   }
 
-  v18 = [v15 fileSystemRepresentation];
-  v19 = strlen(v18);
+  fileSystemRepresentation = [path fileSystemRepresentation];
+  v19 = strlen(fileSystemRepresentation);
   v20 = malloc_type_malloc(v19 + 1, 0x100004077774924uLL);
   if (v20)
   {
     v21 = v20;
-    v22 = strcpy(v20, v18);
+    v22 = strcpy(v20, fileSystemRepresentation);
     v23 = mkstemps(v22, v17);
     if ((v23 & 0x80000000) == 0)
     {
@@ -555,7 +555,7 @@ LABEL_10:
     if (!v30)
     {
 LABEL_29:
-      if ([(DSMutableArchive *)self archiveAsFileUsingDescriptor:v23 error:a6])
+      if ([(DSMutableArchive *)self archiveAsFileUsingDescriptor:v23 error:error])
       {
         v24 = +[NSFileManager defaultManager];
         v25 = [v24 stringWithFileSystemRepresentation:v21 length:strlen(v21)];
@@ -594,11 +594,11 @@ LABEL_29:
   }
 
   v26 = 0;
-  if (a6 && v28)
+  if (error && v28)
   {
     v31 = v28;
     v26 = 0;
-    *a6 = v28;
+    *error = v28;
   }
 
 LABEL_24:
@@ -606,22 +606,22 @@ LABEL_24:
   return v26;
 }
 
-- (BOOL)archiveAsFile:(id)a3 error:(id *)a4
+- (BOOL)archiveAsFile:(id)file error:(id *)error
 {
-  v6 = a3;
+  fileCopy = file;
   v7 = archive_write_new();
   [(DSMutableArchive *)self _setFormatOnArchive:v7];
   v8 = DiagnosticLogHandleForCategory(3);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 path];
+    path = [fileCopy path];
     v15 = 138412290;
-    v16 = v9;
+    v16 = path;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Attempting to write archive to [%@]", &v15, 0xCu);
   }
 
-  v10 = [v6 path];
-  [v10 UTF8String];
+  path2 = [fileCopy path];
+  [path2 UTF8String];
   v11 = archive_write_open_filename();
 
   if (v11)
@@ -632,10 +632,10 @@ LABEL_24:
       [DSMutableArchive archiveAsDataWithError:];
     }
 
-    if (a4)
+    if (error)
     {
       [NSError errorWithDomain:@"com.apple.Diagnostics.DSMutableArchive" code:1 userInfo:0];
-      *a4 = v13 = 0;
+      *error = v13 = 0;
     }
 
     else
@@ -646,13 +646,13 @@ LABEL_24:
 
   else
   {
-    v13 = [(DSMutableArchive *)self _writeArchive:v7 error:a4];
+    v13 = [(DSMutableArchive *)self _writeArchive:v7 error:error];
   }
 
   return v13;
 }
 
-- (BOOL)archiveAsFileUsingDescriptor:(int)a3 error:(id *)a4
+- (BOOL)archiveAsFileUsingDescriptor:(int)descriptor error:(id *)error
 {
   v6 = archive_write_new();
   [(DSMutableArchive *)self _setFormatOnArchive:v6];
@@ -665,7 +665,7 @@ LABEL_24:
 
   if (!archive_write_open_fd())
   {
-    return [(DSMutableArchive *)self _writeArchive:v6 error:a4];
+    return [(DSMutableArchive *)self _writeArchive:v6 error:error];
   }
 
   v8 = DiagnosticLogHandleForCategory(3);
@@ -674,7 +674,7 @@ LABEL_24:
     [DSMutableArchive archiveAsDataWithError:];
   }
 
-  if (!a4)
+  if (!error)
   {
     return 0;
   }
@@ -682,11 +682,11 @@ LABEL_24:
   v9 = [NSError errorWithDomain:@"com.apple.Diagnostics.DSMutableArchive" code:1 userInfo:0];
   v10 = v9;
   result = 0;
-  *a4 = v9;
+  *error = v9;
   return result;
 }
 
-+ (BOOL)extractEntry:(archive *)a3 toArchive:(archive *)a4
++ (BOOL)extractEntry:(archive *)entry toArchive:(archive *)archive
 {
   while (1)
   {
@@ -705,15 +705,15 @@ LABEL_24:
   return data_block == 1;
 }
 
-+ (BOOL)extractArchive:(id)a3 toDirectory:(id)a4
++ (BOOL)extractArchive:(id)archive toDirectory:(id)directory
 {
-  v5 = a3;
-  v6 = a4;
+  archiveCopy = archive;
+  directoryCopy = directory;
   v7 = DiagnosticLogHandleForCategory(3);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v30 = v5;
+    v30 = archiveCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Opening archive for extraction: %@", buf, 0xCu);
   }
 
@@ -724,9 +724,9 @@ LABEL_24:
   archive_read_support_format_all();
   archive_read_support_filter_all();
   v10 = malloc_type_malloc(0x400uLL, 0x100004077774924uLL);
-  [v5 getFileSystemRepresentation:v10 maxLength:1024];
+  [archiveCopy getFileSystemRepresentation:v10 maxLength:1024];
   v11 = malloc_type_malloc(0x400uLL, 0x100004077774924uLL);
-  [v6 getFileSystemRepresentation:v11 maxLength:1024];
+  [directoryCopy getFileSystemRepresentation:v11 maxLength:1024];
   v12 = strlen(v11);
   if (v12 + 1 > 0x3FF)
   {
@@ -805,7 +805,7 @@ LABEL_31:
           if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v30 = v5;
+            v30 = archiveCopy;
             _os_log_error_impl(&dword_0, v23, OS_LOG_TYPE_ERROR, "Failed to extract %@", buf, 0xCu);
           }
 
@@ -823,7 +823,7 @@ LABEL_31:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v30 = v5;
+          v30 = archiveCopy;
           _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "Finished extracting %@", buf, 0xCu);
         }
 

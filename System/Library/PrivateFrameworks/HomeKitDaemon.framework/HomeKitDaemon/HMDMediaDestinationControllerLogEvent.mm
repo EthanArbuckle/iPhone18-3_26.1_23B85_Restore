@@ -1,21 +1,21 @@
 @interface HMDMediaDestinationControllerLogEvent
-- (HMDMediaDestinationControllerLogEvent)initWithIsTriggeredOnControllerDevice:(id)a3 userPrivilege:(id)a4;
+- (HMDMediaDestinationControllerLogEvent)initWithIsTriggeredOnControllerDevice:(id)device userPrivilege:(id)privilege;
 @end
 
 @implementation HMDMediaDestinationControllerLogEvent
 
-- (HMDMediaDestinationControllerLogEvent)initWithIsTriggeredOnControllerDevice:(id)a3 userPrivilege:(id)a4
+- (HMDMediaDestinationControllerLogEvent)initWithIsTriggeredOnControllerDevice:(id)device userPrivilege:(id)privilege
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  deviceCopy = device;
+  privilegeCopy = privilege;
+  if (!deviceCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = privilegeCopy;
+  if (!privilegeCopy)
   {
 LABEL_7:
     v13 = _HMFPreconditionFailure();
@@ -29,8 +29,8 @@ LABEL_7:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_isTriggeredOnControllerDevice, a3);
-    objc_storeStrong(&v11->_userPrivilege, a4);
+    objc_storeStrong(&v10->_isTriggeredOnControllerDevice, device);
+    objc_storeStrong(&v11->_userPrivilege, privilege);
   }
 
   return v11;

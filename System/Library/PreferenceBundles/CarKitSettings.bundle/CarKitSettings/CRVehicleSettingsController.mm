@@ -3,22 +3,22 @@
 - (id)assetIdentifier;
 - (id)assetPath;
 - (id)assetVersion;
-- (id)carPlayEnabled:(id)a3;
-- (id)detailTextForOptionsRow:(id)a3;
-- (id)enhancedIntegrationEnabled:(id)a3;
-- (id)internalNotes:(id)a3;
+- (id)carPlayEnabled:(id)enabled;
+- (id)detailTextForOptionsRow:(id)row;
+- (id)enhancedIntegrationEnabled:(id)enabled;
+- (id)internalNotes:(id)notes;
 - (id)isUsingMobileAsset;
 - (id)specifiers;
-- (void)_updateEnabledGroupSpecifier:(id)a3 switchSpecifier:(id)a4;
-- (void)_updateOptionsRowVisibility:(BOOL)a3;
+- (void)_updateEnabledGroupSpecifier:(id)specifier switchSpecifier:(id)switchSpecifier;
+- (void)_updateOptionsRowVisibility:(BOOL)visibility;
 - (void)dealloc;
 - (void)deleteVehicle;
-- (void)handlePairedVehiclesChanged:(id)a3;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
-- (void)setCarPlayEnabled:(id)a3 specifier:(id)a4;
-- (void)setEnhancedIntegrationEnabled:(id)a3 specifier:(id)a4;
-- (void)setInternalNotes:(id)a3 forSpecifier:(id)a4;
+- (void)handlePairedVehiclesChanged:(id)changed;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
+- (void)setCarPlayEnabled:(id)enabled specifier:(id)specifier;
+- (void)setEnhancedIntegrationEnabled:(id)enabled specifier:(id)specifier;
+- (void)setInternalNotes:(id)notes forSpecifier:(id)specifier;
 - (void)stopSession;
 - (void)viewDidLoad;
 @end
@@ -56,12 +56,12 @@
   v5.receiver = self;
   v5.super_class = CRVehicleSettingsController;
   [(CRVehicleSettingsController *)&v5 viewDidLoad];
-  v3 = [(CRVehicleSettingsController *)self vehicleSettingManager];
-  v4 = [v3 sessionStatus];
-  [v4 addSessionObserver:self];
+  vehicleSettingManager = [(CRVehicleSettingsController *)self vehicleSettingManager];
+  sessionStatus = [vehicleSettingManager sessionStatus];
+  [sessionStatus addSessionObserver:self];
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -71,7 +71,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -84,14 +84,14 @@
 - (void)deleteVehicle
 {
   objc_initWeak(&location, self);
-  v3 = [(CRVehicleSettingsController *)self vehicleSettingManager];
+  vehicleSettingManager = [(CRVehicleSettingsController *)self vehicleSettingManager];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_46D4;
   v4[3] = &unk_6E2E8;
   objc_copyWeak(&v5, &location);
   v4[4] = self;
-  [v3 removeVehicleWithCompletion:v4];
+  [vehicleSettingManager removeVehicleWithCompletion:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -99,35 +99,35 @@
 
 - (void)stopSession
 {
-  v2 = [(CRVehicleSettingsController *)self vehicleSettingManager];
-  v3 = [v2 sessionStatus];
-  v4 = [v3 currentSession];
-  v5 = [v4 configuration];
-  v6 = [v5 sessionIdentifier];
+  vehicleSettingManager = [(CRVehicleSettingsController *)self vehicleSettingManager];
+  sessionStatus = [vehicleSettingManager sessionStatus];
+  currentSession = [sessionStatus currentSession];
+  configuration = [currentSession configuration];
+  sessionIdentifier = [configuration sessionIdentifier];
 
   CRStopSessionWithSessionIdentifier();
 }
 
-- (id)carPlayEnabled:(id)a3
+- (id)carPlayEnabled:(id)enabled
 {
-  v3 = [(CRVehicleSettingsController *)self vehicleSettingManager];
-  v4 = [v3 vehicle];
+  vehicleSettingManager = [(CRVehicleSettingsController *)self vehicleSettingManager];
+  vehicle = [vehicleSettingManager vehicle];
 
-  v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 isPaired]);
+  v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [vehicle isPaired]);
 
   return v5;
 }
 
-- (void)setCarPlayEnabled:(id)a3 specifier:(id)a4
+- (void)setCarPlayEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRVehicleSettingsController *)self vehicleSettingManager];
-  v9 = [v8 vehicle];
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  vehicleSettingManager = [(CRVehicleSettingsController *)self vehicleSettingManager];
+  vehicle = [vehicleSettingManager vehicle];
 
-  v10 = [v6 BOOLValue];
-  v11 = v10;
-  if (v10)
+  bOOLValue = [enabledCopy BOOLValue];
+  v11 = bOOLValue;
+  if (bOOLValue)
   {
     v12 = 2;
   }
@@ -137,55 +137,55 @@
     v12 = 1;
   }
 
-  [v9 setPairingStatus:v12];
+  [vehicle setPairingStatus:v12];
   [(CRVehicleSettingsController *)self setSuppressNextReloadForPairedVehicleChanged:1];
   objc_initWeak(&location, self);
-  v13 = [(CRVehicleSettingsController *)self vehicleSettingManager];
+  vehicleSettingManager2 = [(CRVehicleSettingsController *)self vehicleSettingManager];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_4A98;
   v14[3] = &unk_6E330;
   objc_copyWeak(&v15, &location);
   v16 = v11;
-  [v13 saveVehicleWithCompletion:v14];
+  [vehicleSettingManager2 saveVehicleWithCompletion:v14];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
 }
 
-- (void)_updateEnabledGroupSpecifier:(id)a3 switchSpecifier:(id)a4
+- (void)_updateEnabledGroupSpecifier:(id)specifier switchSpecifier:(id)switchSpecifier
 {
-  v27 = a3;
-  v6 = a4;
+  specifierCopy = specifier;
+  switchSpecifierCopy = switchSpecifier;
   v7 = MGGetBoolAnswer();
-  v8 = [(CRVehicleSettingsController *)self vehicleSettingManager];
-  v9 = [v8 vehicle];
+  vehicleSettingManager = [(CRVehicleSettingsController *)self vehicleSettingManager];
+  vehicle = [vehicleSettingManager vehicle];
 
-  v10 = [v9 isPaired];
-  v11 = [v9 supportsWirelessCarPlay];
-  v12 = [v9 supportsUSBCarPlay];
-  v13 = [(CRVehicleSettingsController *)self vehicleSettingManager];
-  v14 = [v13 isCarPlayUltraSupported];
+  isPaired = [vehicle isPaired];
+  supportsWirelessCarPlay = [vehicle supportsWirelessCarPlay];
+  supportsUSBCarPlay = [vehicle supportsUSBCarPlay];
+  vehicleSettingManager2 = [(CRVehicleSettingsController *)self vehicleSettingManager];
+  isCarPlayUltraSupported = [vehicleSettingManager2 isCarPlayUltraSupported];
 
   v15 = [NSBundle bundleForClass:objc_opt_class()];
   v16 = v15;
-  if (v14)
+  if (isCarPlayUltraSupported)
   {
     v17 = [v15 localizedStringForKey:@"CARPLAY_SWITCH" value:&stru_6FD90 table:@"Localizable"];
-    [v6 setName:v17];
+    [switchSpecifierCopy setName:v17];
 
 LABEL_20:
     goto LABEL_21;
   }
 
-  if (v11)
+  if (supportsWirelessCarPlay)
   {
     v18 = [v15 localizedStringForKey:@"CARPLAY_SWITCH" value:&stru_6FD90 table:@"Localizable"];
-    [v6 setName:v18];
+    [switchSpecifierCopy setName:v18];
 
-    if (v10)
+    if (isPaired)
     {
-      if (!v12)
+      if (!supportsUSBCarPlay)
       {
         goto LABEL_21;
       }
@@ -198,7 +198,7 @@ LABEL_20:
 
     else
     {
-      if (!v12)
+      if (!supportsUSBCarPlay)
       {
         goto LABEL_21;
       }
@@ -223,11 +223,11 @@ LABEL_20:
   else
   {
     v23 = [v15 localizedStringForKey:@"ALLOW_LOCKED_CARPLAY_SWITCH" value:&stru_6FD90 table:@"Localizable"];
-    [v6 setName:v23];
+    [switchSpecifierCopy setName:v23];
 
     v19 = [NSBundle bundleForClass:objc_opt_class()];
     v20 = v19;
-    if (v10)
+    if (isPaired)
     {
       v24 = @"CARPLAY_FOOTER_TEXT_WIRED_ON_TOUCHID";
       v25 = @"CARPLAY_FOOTER_TEXT_WIRED_ON_FACEID";
@@ -254,20 +254,20 @@ LABEL_20:
 
   if (v16)
   {
-    [v27 setProperty:v16 forKey:PSFooterTextGroupKey];
+    [specifierCopy setProperty:v16 forKey:PSFooterTextGroupKey];
     goto LABEL_20;
   }
 
 LABEL_21:
 }
 
-- (id)detailTextForOptionsRow:(id)a3
+- (id)detailTextForOptionsRow:(id)row
 {
-  v3 = [(CRVehicleSettingsController *)self vehicleSettingManager];
-  v4 = [v3 isCarPlayUltraEnabled];
+  vehicleSettingManager = [(CRVehicleSettingsController *)self vehicleSettingManager];
+  isCarPlayUltraEnabled = [vehicleSettingManager isCarPlayUltraEnabled];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = v5;
-  if (v4)
+  if (isCarPlayUltraEnabled)
   {
     v7 = @"CARPLAY_OPTIONS_CARPLAY_ULTRA_SUMMARY";
   }
@@ -282,14 +282,14 @@ LABEL_21:
   return v8;
 }
 
-- (void)_updateOptionsRowVisibility:(BOOL)a3
+- (void)_updateOptionsRowVisibility:(BOOL)visibility
 {
-  v3 = a3;
-  v5 = [(CRVehicleSettingsController *)self optionsSpecifier];
-  if (v5)
+  visibilityCopy = visibility;
+  optionsSpecifier = [(CRVehicleSettingsController *)self optionsSpecifier];
+  if (optionsSpecifier)
   {
-    v7 = v5;
-    if (v3 && ([(CRVehicleSettingsController *)self specifierForID:@"CARPLAY_OPTIONS_LINK"], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
+    v7 = optionsSpecifier;
+    if (visibilityCopy && ([(CRVehicleSettingsController *)self specifierForID:@"CARPLAY_OPTIONS_LINK"], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
     {
       [(CRVehicleSettingsController *)self insertSpecifier:v7 afterSpecifierID:@"CARPLAY_SWITCH" animated:1];
     }
@@ -299,28 +299,28 @@ LABEL_21:
       [(CRVehicleSettingsController *)self removeSpecifier:v7 animated:1];
     }
 
-    v5 = v7;
+    optionsSpecifier = v7;
   }
 }
 
-- (id)enhancedIntegrationEnabled:(id)a3
+- (id)enhancedIntegrationEnabled:(id)enabled
 {
-  v3 = [(CRVehicleSettingsController *)self vehicleSettingManager];
-  v4 = [v3 vehicle];
+  vehicleSettingManager = [(CRVehicleSettingsController *)self vehicleSettingManager];
+  vehicle = [vehicleSettingManager vehicle];
 
-  v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 isEnhancedIntegrationEnabled]);
+  v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [vehicle isEnhancedIntegrationEnabled]);
 
   return v5;
 }
 
-- (void)setEnhancedIntegrationEnabled:(id)a3 specifier:(id)a4
+- (void)setEnhancedIntegrationEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRVehicleSettingsController *)self vehicleSettingManager];
-  v9 = [v8 vehicle];
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  vehicleSettingManager = [(CRVehicleSettingsController *)self vehicleSettingManager];
+  vehicle = [vehicleSettingManager vehicle];
 
-  if ([v6 BOOLValue])
+  if ([enabledCopy BOOLValue])
   {
     v10 = 2;
   }
@@ -330,24 +330,24 @@ LABEL_21:
     v10 = 1;
   }
 
-  [v9 setEnhancedIntegrationStatus:v10];
+  [vehicle setEnhancedIntegrationStatus:v10];
   [(CRVehicleSettingsController *)self setSuppressNextReloadForPairedVehicleChanged:1];
   objc_initWeak(&location, self);
-  v11 = [(CRVehicleSettingsController *)self vehicleSettingManager];
+  vehicleSettingManager2 = [(CRVehicleSettingsController *)self vehicleSettingManager];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_5178;
   v13[3] = &unk_6E358;
   objc_copyWeak(&v15, &location);
-  v12 = v9;
+  v12 = vehicle;
   v14 = v12;
-  [v11 saveVehicleWithCompletion:v13];
+  [vehicleSettingManager2 saveVehicleWithCompletion:v13];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
 }
 
-- (void)handlePairedVehiclesChanged:(id)a3
+- (void)handlePairedVehiclesChanged:(id)changed
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -363,22 +363,22 @@ LABEL_21:
   if (!v3)
   {
     v89 = OBJC_IVAR___PSListController__specifiers;
-    v4 = [(CRVehicleSettingsController *)self vehicleSettingManager];
+    vehicleSettingManager = [(CRVehicleSettingsController *)self vehicleSettingManager];
 
-    if (!v4)
+    if (!vehicleSettingManager)
     {
-      v5 = [(CRVehicleSettingsController *)self specifier];
-      v6 = [v5 userInfo];
-      [(CRVehicleSettingsController *)self setVehicleSettingManager:v6];
+      specifier = [(CRVehicleSettingsController *)self specifier];
+      userInfo = [specifier userInfo];
+      [(CRVehicleSettingsController *)self setVehicleSettingManager:userInfo];
     }
 
-    v7 = [(CRVehicleSettingsController *)self vehicleSettingManager];
-    v97 = [v7 vehicle];
+    vehicleSettingManager2 = [(CRVehicleSettingsController *)self vehicleSettingManager];
+    vehicle = [vehicleSettingManager2 vehicle];
 
     v96 = objc_alloc_init(NSMutableArray);
-    v92 = [v97 displayName];
-    [(CRVehicleSettingsController *)self setTitle:v92];
-    v8 = [v97 supportsEnhancedIntegration];
+    displayName = [vehicle displayName];
+    [(CRVehicleSettingsController *)self setTitle:displayName];
+    supportsEnhancedIntegration = [vehicle supportsEnhancedIntegration];
     v91 = [PSSpecifier groupSpecifierWithID:@"SWITCH_GROUP"];
     v95 = [PSSpecifier preferenceSpecifierNamed:0 target:self set:"setCarPlayEnabled:specifier:" get:"carPlayEnabled:" detail:0 cell:6 edit:0];
     [v95 setIdentifier:@"CARPLAY_SWITCH"];
@@ -390,8 +390,8 @@ LABEL_21:
 
     v10 = [(CRVehicleSettingsController *)self carPlayEnabled:v95];
 
-    v11 = [(CRVehicleSettingsController *)self vehicleSettingManager];
-    LODWORD(v9) = [v11 isCarPlayUltraSupported];
+    vehicleSettingManager3 = [(CRVehicleSettingsController *)self vehicleSettingManager];
+    LODWORD(v9) = [vehicleSettingManager3 isCarPlayUltraSupported];
 
     if (v9)
     {
@@ -401,8 +401,8 @@ LABEL_21:
       v15 = [PSSpecifier preferenceSpecifierNamed:v14 target:self set:0 get:"detailTextForOptionsRow:" detail:objc_opt_class() cell:2 edit:0];
 
       [v15 setIdentifier:@"CARPLAY_OPTIONS_LINK"];
-      v16 = [(CRVehicleSettingsController *)self vehicleSettingManager];
-      [v15 setUserInfo:v16];
+      vehicleSettingManager4 = [(CRVehicleSettingsController *)self vehicleSettingManager];
+      [v15 setUserInfo:vehicleSettingManager4];
 
       if (!v12)
       {
@@ -412,26 +412,26 @@ LABEL_21:
       optionsSpecifier = self->_optionsSpecifier;
       self->_optionsSpecifier = v15;
 
-      v8 = 0;
+      supportsEnhancedIntegration = 0;
     }
 
-    v18 = [(CRVehicleSettingsController *)self vehicleSettingManager];
-    v19 = [v18 sessionStatus];
-    v93 = [v19 currentSession];
+    vehicleSettingManager5 = [(CRVehicleSettingsController *)self vehicleSettingManager];
+    sessionStatus = [vehicleSettingManager5 sessionStatus];
+    currentSession = [sessionStatus currentSession];
 
-    v20 = [v93 configuration];
-    LODWORD(v19) = [v20 transportType] == &dword_0 + 3;
+    configuration = [currentSession configuration];
+    LODWORD(sessionStatus) = [configuration transportType] == &dword_0 + 3;
 
-    if (v19)
+    if (sessionStatus)
     {
-      v21 = v93;
-      if (v93)
+      v21 = currentSession;
+      if (currentSession)
       {
-        v22 = [v93 configuration];
-        v23 = [v22 supportedStopSessionDisconnectReasons];
-        v24 = [v23 containsObject:&off_70D48];
+        configuration2 = [currentSession configuration];
+        supportedStopSessionDisconnectReasons = [configuration2 supportedStopSessionDisconnectReasons];
+        v24 = [supportedStopSessionDisconnectReasons containsObject:&off_70D48];
 
-        v21 = v93;
+        v21 = currentSession;
       }
 
       else
@@ -439,9 +439,9 @@ LABEL_21:
         v24 = 0;
       }
 
-      v25 = [v21 MFiCertificateSerialNumber];
-      v26 = [v97 certificateSerialNumber];
-      v27 = [v25 isEqualToData:v26];
+      mFiCertificateSerialNumber = [v21 MFiCertificateSerialNumber];
+      certificateSerialNumber = [vehicle certificateSerialNumber];
+      v27 = [mFiCertificateSerialNumber isEqualToData:certificateSerialNumber];
 
       if ((v24 & v27) == 1)
       {
@@ -480,13 +480,13 @@ LABEL_21:
     v101[4] = self;
     v94 = [(CarPlaySpecifier *)v37 initWithName:v39 setAction:0 getAction:&stru_6E398 detail:0 cell:1 edit:0 buttonAction:v101];
 
-    [(CarPlaySpecifier *)v94 setUserInfo:v97];
+    [(CarPlaySpecifier *)v94 setUserInfo:vehicle];
     v110[0] = v90;
     v110[1] = v94;
     v40 = [NSArray arrayWithObjects:v110 count:2];
     [v96 addObjectsFromArray:v40];
 
-    if ([PSListController shouldShowWidgetSettingsSpecifierFor:v97])
+    if ([PSListController shouldShowWidgetSettingsSpecifierFor:vehicle])
     {
       objc_initWeak(&from, self);
       v41 = [_TtC14CarKitSettings16CarPlaySpecifier alloc];
@@ -500,7 +500,7 @@ LABEL_21:
       v98[4] = self;
       v44 = [(CarPlaySpecifier *)v41 initWithName:v43 setAction:0 getAction:&stru_6E3E0 detail:0 cell:1 edit:0 buttonAction:v98];
 
-      [(CarPlaySpecifier *)v44 setUserInfo:v97];
+      [(CarPlaySpecifier *)v44 setUserInfo:vehicle];
       v109 = v44;
       v45 = [NSArray arrayWithObjects:&v109 count:1];
       [v96 addObjectsFromArray:v45];
@@ -509,7 +509,7 @@ LABEL_21:
       objc_destroyWeak(&from);
     }
 
-    if (v8)
+    if (supportsEnhancedIntegration)
     {
       v46 = [PSSpecifier groupSpecifierWithID:@"INTEGRATION_GROUP"];
       v47 = [NSBundle bundleForClass:objc_opt_class()];
@@ -535,7 +535,7 @@ LABEL_21:
     [v55 setIdentifier:@"FORGET_BUTTON"];
     [v55 setProperty:&off_70D60 forKey:PSAlignmentKey];
     [v55 setProperty:objc_opt_class() forKey:PSCellClassKey];
-    if ([v97 supportsWirelessCarPlay])
+    if ([vehicle supportsWirelessCarPlay])
     {
       v56 = [NSBundle bundleForClass:objc_opt_class()];
       [v56 localizedStringForKey:@"FORGET_CONFIRMATION_BLUETOOTH_TITLE_FORMAT" value:&stru_6FD90 table:@"Localizable"];
@@ -547,8 +547,8 @@ LABEL_21:
       [v56 localizedStringForKey:@"FORGET_CONFIRMATION_WIRED_TITLE_FORMAT" value:&stru_6FD90 table:@"Localizable"];
     }
     v57 = ;
-    v58 = [v97 displayName];
-    v87 = [NSString stringWithFormat:v57, v58];
+    displayName2 = [vehicle displayName];
+    v87 = [NSString stringWithFormat:v57, displayName2];
 
     v107[0] = v87;
     v106[0] = PSConfirmationPromptKey;
@@ -590,8 +590,8 @@ LABEL_21:
       v73 = [NSArray arrayWithObjects:v104 count:2];
       [v96 addObjectsFromArray:v73];
 
-      v74 = [v97 supportsThemeAssets];
-      LODWORD(v70) = [v74 BOOLValue];
+      supportsThemeAssets = [vehicle supportsThemeAssets];
+      LODWORD(v70) = [supportsThemeAssets BOOLValue];
 
       if (v70)
       {
@@ -607,8 +607,8 @@ LABEL_21:
         v79 = [PSSpecifier preferenceSpecifierNamed:@"Using MobileAsset?" target:self set:0 get:"isUsingMobileAsset" detail:0 cell:4 edit:0];
         [v96 addObject:v79];
         v80 = [PSSpecifier preferenceSpecifierNamed:@"AssetPath" target:self set:0 get:"assetPath" detail:0 cell:0 edit:0];
-        v81 = [(CRVehicleSettingsController *)self assetPath];
-        [v80 setProperty:v81 forKey:v78];
+        assetPath = [(CRVehicleSettingsController *)self assetPath];
+        [v80 setProperty:assetPath forKey:v78];
 
         [v96 addObject:v80];
       }
@@ -627,34 +627,34 @@ LABEL_21:
   return v3;
 }
 
-- (id)internalNotes:(id)a3
+- (id)internalNotes:(id)notes
 {
-  v3 = [(CRVehicleSettingsController *)self vehicleSettingManager];
-  v4 = [v3 vehicle];
+  vehicleSettingManager = [(CRVehicleSettingsController *)self vehicleSettingManager];
+  vehicle = [vehicleSettingManager vehicle];
 
-  v5 = [v4 internalNotes];
+  internalNotes = [vehicle internalNotes];
 
-  return v5;
+  return internalNotes;
 }
 
-- (void)setInternalNotes:(id)a3 forSpecifier:(id)a4
+- (void)setInternalNotes:(id)notes forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRVehicleSettingsController *)self vehicleSettingManager];
-  v9 = [v8 vehicle];
+  notesCopy = notes;
+  specifierCopy = specifier;
+  vehicleSettingManager = [(CRVehicleSettingsController *)self vehicleSettingManager];
+  vehicle = [vehicleSettingManager vehicle];
 
-  [v9 setInternalNotes:v6];
+  [vehicle setInternalNotes:notesCopy];
   objc_initWeak(&location, self);
-  v10 = [(CRVehicleSettingsController *)self vehicleSettingManager];
+  vehicleSettingManager2 = [(CRVehicleSettingsController *)self vehicleSettingManager];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_67AC;
   v12[3] = &unk_6E358;
   objc_copyWeak(&v14, &location);
-  v11 = v7;
+  v11 = specifierCopy;
   v13 = v11;
-  [v10 saveVehicleWithCompletion:v12];
+  [vehicleSettingManager2 saveVehicleWithCompletion:v12];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -662,34 +662,34 @@ LABEL_21:
 
 - (id)assetIdentifier
 {
-  v2 = [(CRVehicleSettingsController *)self vehicleSettingManager];
-  v3 = [v2 vehicle];
-  v4 = [v3 clusterAssetIdentifier];
+  vehicleSettingManager = [(CRVehicleSettingsController *)self vehicleSettingManager];
+  vehicle = [vehicleSettingManager vehicle];
+  clusterAssetIdentifier = [vehicle clusterAssetIdentifier];
 
-  return v4;
+  return clusterAssetIdentifier;
 }
 
 - (id)assetVersion
 {
-  v3 = [(CRVehicleSettingsController *)self vehicleSettingManager];
-  v4 = [v3 vehicle];
-  v5 = [v4 clusterAssetVersion];
+  vehicleSettingManager = [(CRVehicleSettingsController *)self vehicleSettingManager];
+  vehicle = [vehicleSettingManager vehicle];
+  clusterAssetVersion = [vehicle clusterAssetVersion];
 
-  v6 = [(CRVehicleSettingsController *)self vehicleSettingManager];
-  v7 = [v6 vehicle];
-  v8 = [v7 stagedClusterAssetVersion];
+  vehicleSettingManager2 = [(CRVehicleSettingsController *)self vehicleSettingManager];
+  vehicle2 = [vehicleSettingManager2 vehicle];
+  stagedClusterAssetVersion = [vehicle2 stagedClusterAssetVersion];
 
-  if (v5 && [v5 intValue] >= 1)
+  if (clusterAssetVersion && [clusterAssetVersion intValue] >= 1)
   {
-    v9 = [v5 stringValue];
+    stringValue = [clusterAssetVersion stringValue];
 LABEL_7:
-    v10 = v9;
+    v10 = stringValue;
     goto LABEL_9;
   }
 
-  if (v8 && [v8 intValue] >= 1)
+  if (stagedClusterAssetVersion && [stagedClusterAssetVersion intValue] >= 1)
   {
-    v9 = [NSString stringWithFormat:@"%@ (Staged)", v8];
+    stringValue = [NSString stringWithFormat:@"%@ (Staged)", stagedClusterAssetVersion];
     goto LABEL_7;
   }
 
@@ -701,25 +701,25 @@ LABEL_9:
 
 - (id)assetPath
 {
-  v3 = [(CRVehicleSettingsController *)self vehicleSettingManager];
-  v4 = [v3 vehicle];
-  v5 = [v4 clusterAssetURL];
+  vehicleSettingManager = [(CRVehicleSettingsController *)self vehicleSettingManager];
+  vehicle = [vehicleSettingManager vehicle];
+  clusterAssetURL = [vehicle clusterAssetURL];
 
-  v6 = [(CRVehicleSettingsController *)self vehicleSettingManager];
-  v7 = [v6 vehicle];
-  v8 = [v7 stagedClusterAssetURL];
+  vehicleSettingManager2 = [(CRVehicleSettingsController *)self vehicleSettingManager];
+  vehicle2 = [vehicleSettingManager2 vehicle];
+  stagedClusterAssetURL = [vehicle2 stagedClusterAssetURL];
 
-  if (v5)
+  if (clusterAssetURL)
   {
-    v9 = [v5 absoluteString];
+    absoluteString = [clusterAssetURL absoluteString];
 LABEL_5:
-    v10 = v9;
+    v10 = absoluteString;
     goto LABEL_6;
   }
 
-  if (v8)
+  if (stagedClusterAssetURL)
   {
-    v9 = [NSString stringWithFormat:@"%@ (Staged)", v8];
+    absoluteString = [NSString stringWithFormat:@"%@ (Staged)", stagedClusterAssetURL];
     goto LABEL_5;
   }
 
@@ -731,8 +731,8 @@ LABEL_6:
 
 - (id)isUsingMobileAsset
 {
-  v2 = [(CRVehicleSettingsController *)self assetPath];
-  [v2 containsString:@"/private/var/MobileAsset"];
+  assetPath = [(CRVehicleSettingsController *)self assetPath];
+  [assetPath containsString:@"/private/var/MobileAsset"];
   v3 = NSStringFromBOOL();
 
   return v3;

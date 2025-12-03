@@ -6,7 +6,7 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   v90 = *MEMORY[0x277D85DE8];
   if (!self)
   {
@@ -15,10 +15,10 @@
     goto LABEL_32;
   }
 
-  v3 = [(HDCloudSyncOperation *)self configuration];
-  v4 = [v3 cachedCloudState];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  cachedCloudState = [configuration cachedCloudState];
   v78 = 0;
-  v5 = [v4 zonesByIdentifierWithError:&v78];
+  v5 = [cachedCloudState zonesByIdentifierWithError:&v78];
   v6 = v78;
 
   if (v5 || !v6)
@@ -49,7 +49,7 @@ LABEL_30:
     v12 = v11;
     v13 = *v75;
     v64 = *v75;
-    v70 = v2;
+    v70 = selfCopy;
 LABEL_9:
     v14 = 0;
     v65 = v12;
@@ -63,17 +63,17 @@ LABEL_9:
       }
 
       v17 = *(*(&v74 + 1) + 8 * v14);
-      v18 = [v17 zoneIdentifier];
-      v19 = [v18 containerIdentifier];
+      zoneIdentifier = [v17 zoneIdentifier];
+      containerIdentifier = [zoneIdentifier containerIdentifier];
 
-      v20 = [(HDCloudSyncOperation *)v2 configuration];
-      v21 = [v20 repository];
-      v22 = [v21 containerForContainerIdentifier:v19];
+      configuration2 = [(HDCloudSyncOperation *)selfCopy configuration];
+      repository = [configuration2 repository];
+      v22 = [repository containerForContainerIdentifier:containerIdentifier];
 
-      v23 = [(HDCloudSyncOperation *)v2 configuration];
-      v24 = [v23 repository];
-      v25 = [v24 profileIdentifier];
-      v26 = HDDatabaseForContainer(v22, v25);
+      configuration3 = [(HDCloudSyncOperation *)selfCopy configuration];
+      repository2 = [configuration3 repository];
+      profileIdentifier = [repository2 profileIdentifier];
+      v26 = HDDatabaseForContainer(v22, profileIdentifier);
 
       v12 = v15;
       v13 = v16;
@@ -84,28 +84,28 @@ LABEL_9:
 
       v67 = v26;
       v68 = v22;
-      v69 = v19;
+      v69 = containerIdentifier;
       v27 = v17;
-      v28 = [v27 zoneIdentifier];
-      v29 = [v28 zoneIdentifier];
+      zoneIdentifier2 = [v27 zoneIdentifier];
+      v28ZoneIdentifier = [zoneIdentifier2 zoneIdentifier];
       v80 = 0;
       *v81 = 0;
-      v30 = [v29 hd_isSharedSummaryZoneIDForUserIdentifier:v81 syncCircleIdentifier:&v80];
+      v30 = [v28ZoneIdentifier hd_isSharedSummaryZoneIDForUserIdentifier:v81 syncCircleIdentifier:&v80];
       v31 = *v81;
       v32 = v80;
 
-      v33 = [v27 zoneIdentifier];
+      zoneIdentifier3 = [v27 zoneIdentifier];
 
-      v34 = [v33 zoneIdentifier];
+      v33ZoneIdentifier = [zoneIdentifier3 zoneIdentifier];
       v79 = v32;
-      v35 = [v34 hd_isUnifiedSyncZoneIDForSyncCircleIdentifier:&v79];
+      v35 = [v33ZoneIdentifier hd_isUnifiedSyncZoneIDForSyncCircleIdentifier:&v79];
       v36 = v79;
 
-      v37 = [(HDCloudSyncOperation *)v70 configuration];
-      v38 = [v37 repository];
-      v39 = [v38 profileType];
+      configuration4 = [(HDCloudSyncOperation *)v70 configuration];
+      repository3 = [configuration4 repository];
+      profileType = [repository3 profileType];
 
-      if (v39 == 2)
+      if (profileType == 2)
       {
         if (v30)
         {
@@ -113,7 +113,7 @@ LABEL_9:
         }
       }
 
-      else if (v39 == 3 && (v35 & 1) != 0)
+      else if (profileType == 3 && (v35 & 1) != 0)
       {
 LABEL_16:
 
@@ -128,11 +128,11 @@ LABEL_16:
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
           {
             v59 = v44;
-            v60 = [v27 zoneIdentifier];
+            zoneIdentifier4 = [v27 zoneIdentifier];
             *v81 = 138543874;
             *&v81[4] = v70;
             v82 = 2114;
-            v83 = v60;
+            v83 = zoneIdentifier4;
             v84 = 2114;
             v85 = v10;
             _os_log_error_impl(&dword_228986000, v59, OS_LOG_TYPE_ERROR, "%{public}@ Failed to fetch CKShare for cached zone %{public}@, %{public}@", v81, 0x20u);
@@ -144,23 +144,23 @@ LABEL_16:
           v6 = v61;
           v5 = v62;
           v43 = v63;
-          v2 = v70;
+          selfCopy = v70;
           goto LABEL_30;
         }
 
-        v19 = v69;
+        containerIdentifier = v69;
         v12 = v65;
         if (v40)
         {
-          v42 = [v40 recordID];
-          [v63 addObject:v42];
+          recordID = [v40 recordID];
+          [v63 addObject:recordID];
         }
 
         v13 = v64;
         goto LABEL_23;
       }
 
-      v19 = v69;
+      containerIdentifier = v69;
       v13 = v64;
       v12 = v65;
 LABEL_23:
@@ -169,7 +169,7 @@ LABEL_23:
 LABEL_24:
 
       ++v14;
-      v2 = v70;
+      selfCopy = v70;
       if (v12 == v14)
       {
         v12 = [obj countByEnumeratingWithState:&v74 objects:buf count:16];
@@ -188,7 +188,7 @@ LABEL_24:
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
-    v87 = v2;
+    v87 = selfCopy;
     v88 = 2114;
     v89 = v6;
     _os_log_error_impl(&dword_228986000, v7, OS_LOG_TYPE_ERROR, "%{public}@ Failed to get cached zones, %{public}@", buf, 0x16u);
@@ -204,7 +204,7 @@ LABEL_32:
   v47 = v46;
   if (!v9 && v46)
   {
-    v48 = v2;
+    v48 = selfCopy;
     v49 = 0;
     v50 = v47;
 LABEL_40:
@@ -219,36 +219,36 @@ LABEL_40:
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v87 = v2;
+      v87 = selfCopy;
       _os_log_impl(&dword_228986000, v57, OS_LOG_TYPE_DEFAULT, "%{public}@: There do not appear to be any shared zones to remove ourselves from.", buf, 0xCu);
     }
 
-    v48 = v2;
+    v48 = selfCopy;
     v49 = 1;
     v50 = 0;
     goto LABEL_40;
   }
 
-  v51 = [(HDCloudSyncOperation *)v2 configuration];
-  v52 = [v51 repository];
-  v53 = [v52 primaryCKContainer];
+  configuration5 = [(HDCloudSyncOperation *)selfCopy configuration];
+  repository4 = [configuration5 repository];
+  primaryCKContainer = [repository4 primaryCKContainer];
 
   v54 = [HDCloudSyncModifyRecordsOperation alloc];
-  v55 = [(HDCloudSyncOperation *)v2 configuration];
-  v56 = [(HDCloudSyncModifyRecordsOperation *)v54 initWithConfiguration:v55 container:v53 recordsToSave:0 recordIDsToDelete:v9];
+  configuration6 = [(HDCloudSyncOperation *)selfCopy configuration];
+  v56 = [(HDCloudSyncModifyRecordsOperation *)v54 initWithConfiguration:configuration6 container:primaryCKContainer recordsToSave:0 recordIDsToDelete:v9];
 
   [(HDCloudSyncModifyRecordsOperation *)v56 setTreatAnyErrorAsFatal:1];
   v72[0] = MEMORY[0x277D85DD0];
   v72[1] = 3221225472;
   v72[2] = __42__HDCloudSyncLeaveAllSharesOperation_main__block_invoke;
   v72[3] = &unk_278613088;
-  v72[4] = v2;
+  v72[4] = selfCopy;
   [(HDCloudSyncOperation *)v56 setOnError:v72];
   v71[0] = MEMORY[0x277D85DD0];
   v71[1] = 3221225472;
   v71[2] = __42__HDCloudSyncLeaveAllSharesOperation_main__block_invoke_293;
   v71[3] = &unk_278613060;
-  v71[4] = v2;
+  v71[4] = selfCopy;
   [(HDCloudSyncOperation *)v56 setOnSuccess:v71];
   [(HDCloudSyncOperation *)v56 start];
 

@@ -1,7 +1,7 @@
 @interface VSAudioRouteInfo
 - (BOOL)isAppleProduct;
 - (BOOL)isBluetoothRoute;
-- (VSAudioRouteInfo)initWithRouteAttributes:(id)a3;
+- (VSAudioRouteInfo)initWithRouteAttributes:(id)attributes;
 @end
 
 @implementation VSAudioRouteInfo
@@ -29,27 +29,27 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (VSAudioRouteInfo)initWithRouteAttributes:(id)a3
+- (VSAudioRouteInfo)initWithRouteAttributes:(id)attributes
 {
-  v5 = a3;
+  attributesCopy = attributes;
   v9.receiver = self;
   v9.super_class = VSAudioRouteInfo;
   v6 = [(VSAudioRouteInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_routeInfo, a3);
+    objc_storeStrong(&v6->_routeInfo, attributes);
   }
 
   return v7;

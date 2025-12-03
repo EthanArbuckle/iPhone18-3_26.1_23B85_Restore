@@ -1,68 +1,68 @@
 @interface GKChallengeCacheObject
-+ (id)challengeWithServerRepresentation:(id)a3 context:(id)a4;
-+ (id)challengesWithChallengeIDs:(id)a3 context:(id)a4;
++ (id)challengeWithServerRepresentation:(id)representation context:(id)context;
++ (id)challengesWithChallengeIDs:(id)ds context:(id)context;
 + (id)fetchSortDescriptors;
 - (BOOL)hasDetails;
 - (id)internalRepresentation;
 - (id)orderedSetOfCompatibleBundleIDs;
 - (void)invalidate;
-- (void)updateWithServerRepresentation:(id)a3;
+- (void)updateWithServerRepresentation:(id)representation;
 @end
 
 @implementation GKChallengeCacheObject
 
-+ (id)challengesWithChallengeIDs:(id)a3 context:(id)a4
++ (id)challengesWithChallengeIDs:(id)ds context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  contextCopy = context;
   v8 = dispatch_get_current_queue();
   if (dispatch_queue_get_specific(v8, @"com.apple.gamed.cachequeue") != @"com.apple.gamed.cachequeue")
   {
     v9 = +[NSThread callStackSymbols];
     v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s not invoked on managed object context queue at %@", "+[GKChallengeCacheObject challengesWithChallengeIDs:context:]", v9);
     v11 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v12 = [v11 lastPathComponent];
-    v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v10, "+[GKChallengeCacheObject challengesWithChallengeIDs:context:]", [v12 UTF8String], 4392);
+    lastPathComponent = [v11 lastPathComponent];
+    v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v10, "+[GKChallengeCacheObject challengesWithChallengeIDs:context:]", [lastPathComponent UTF8String], 4392);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v13];
   }
 
-  v14 = [a1 uniqueObjectIDLookupWithContext:v7];
-  v15 = [v14 uniqueObjectsForKeys:v6 context:v7 newObject:0];
+  v14 = [self uniqueObjectIDLookupWithContext:contextCopy];
+  v15 = [v14 uniqueObjectsForKeys:dsCopy context:contextCopy newObject:0];
 
   return v15;
 }
 
-+ (id)challengeWithServerRepresentation:(id)a3 context:(id)a4
++ (id)challengeWithServerRepresentation:(id)representation context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  representationCopy = representation;
+  contextCopy = context;
   v8 = dispatch_get_current_queue();
   if (dispatch_queue_get_specific(v8, @"com.apple.gamed.cachequeue") != @"com.apple.gamed.cachequeue")
   {
     v9 = +[NSThread callStackSymbols];
     v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s not invoked on managed object context queue at %@", "+[GKChallengeCacheObject challengeWithServerRepresentation:context:]", v9);
     v11 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v12 = [v11 lastPathComponent];
-    v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v10, "+[GKChallengeCacheObject challengeWithServerRepresentation:context:]", [v12 UTF8String], 4398);
+    lastPathComponent = [v11 lastPathComponent];
+    v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v10, "+[GKChallengeCacheObject challengeWithServerRepresentation:context:]", [lastPathComponent UTF8String], 4398);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v13];
   }
 
-  v14 = [a1 uniqueObjectIDLookupWithContext:v7];
-  v22 = v6;
+  v14 = [self uniqueObjectIDLookupWithContext:contextCopy];
+  v22 = representationCopy;
   v15 = [NSArray arrayWithObjects:&v22 count:1];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100139C00;
   v20[3] = &unk_100367EF8;
-  v21 = v7;
-  v16 = v7;
+  v21 = contextCopy;
+  v16 = contextCopy;
   v17 = [v14 insertObjectsForServerRepresentations:v15 context:v16 newObject:v20];
 
-  v18 = [v17 lastObject];
+  lastObject = [v17 lastObject];
 
-  return v18;
+  return lastObject;
 }
 
 + (id)fetchSortDescriptors
@@ -82,8 +82,8 @@
     v4 = +[NSThread callStackSymbols];
     v5 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKChallengeCacheObject internalRepresentation]", v4];
     v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v7 = [v6 lastPathComponent];
-    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKChallengeCacheObject internalRepresentation]", [v7 UTF8String], 4433);
+    lastPathComponent = [v6 lastPathComponent];
+    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKChallengeCacheObject internalRepresentation]", [lastPathComponent UTF8String], 4433);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v8];
   }
@@ -91,31 +91,31 @@
   v9 = objc_opt_class();
   if (v9 == objc_opt_class())
   {
-    v10 = 0;
+    internalRepresentation = 0;
     goto LABEL_12;
   }
 
-  v10 = [(objc_class *)[(GKChallengeCacheObject *)self classForInternalRepresentation] internalRepresentation];
-  v11 = [(GKChallengeCacheObject *)self bundleID];
-  [v10 setBundleID:v11];
+  internalRepresentation = [(objc_class *)[(GKChallengeCacheObject *)self classForInternalRepresentation] internalRepresentation];
+  bundleID = [(GKChallengeCacheObject *)self bundleID];
+  [internalRepresentation setBundleID:bundleID];
 
-  v12 = [(GKChallengeCacheObject *)self issuingPlayerID];
-  if (v12)
+  issuingPlayerID = [(GKChallengeCacheObject *)self issuingPlayerID];
+  if (issuingPlayerID)
   {
     v13 = +[GKPlayerInternal internalRepresentation];
-    [v13 setPlayerID:v12];
-    [v10 setIssuingPlayer:v13];
+    [v13 setPlayerID:issuingPlayerID];
+    [internalRepresentation setIssuingPlayer:v13];
   }
 
-  v14 = [(GKChallengeCacheObject *)self receivingPlayerID];
-  if (v14)
+  receivingPlayerID = [(GKChallengeCacheObject *)self receivingPlayerID];
+  if (receivingPlayerID)
   {
-    v15 = v14;
+    v15 = receivingPlayerID;
 
 LABEL_10:
     v16 = +[GKPlayerInternal internalRepresentation];
     [v16 setPlayerID:v15];
-    [v10 setReceivingPlayer:v16];
+    [internalRepresentation setReceivingPlayer:v16];
 
     goto LABEL_11;
   }
@@ -128,26 +128,26 @@ LABEL_10:
   }
 
 LABEL_11:
-  v17 = [(GKChallengeCacheObject *)self issueDate];
-  [v10 setIssueDate:v17];
+  issueDate = [(GKChallengeCacheObject *)self issueDate];
+  [internalRepresentation setIssueDate:issueDate];
 
-  v18 = [(GKChallengeCacheObject *)self completionDate];
-  [v10 setCompletionDate:v18];
+  completionDate = [(GKChallengeCacheObject *)self completionDate];
+  [internalRepresentation setCompletionDate:completionDate];
 
-  [v10 setState:{-[GKChallengeCacheObject state](self, "state")}];
-  v19 = [(GKChallengeCacheObject *)self challengeID];
-  [v10 setChallengeID:v19];
+  [internalRepresentation setState:{-[GKChallengeCacheObject state](self, "state")}];
+  challengeID = [(GKChallengeCacheObject *)self challengeID];
+  [internalRepresentation setChallengeID:challengeID];
 
-  v20 = [(GKChallengeCacheObject *)self message];
-  [v10 setMessage:v20];
+  message = [(GKChallengeCacheObject *)self message];
+  [internalRepresentation setMessage:message];
 
-  v21 = [(GKChallengeCacheObject *)self compatibleBundleIDs];
-  v22 = [v21 valueForKeyPath:@"bundleID"];
-  [v10 setCompatibleBundleIDs:v22];
+  compatibleBundleIDs = [(GKChallengeCacheObject *)self compatibleBundleIDs];
+  v22 = [compatibleBundleIDs valueForKeyPath:@"bundleID"];
+  [internalRepresentation setCompatibleBundleIDs:v22];
 
 LABEL_12:
 
-  return v10;
+  return internalRepresentation;
 }
 
 - (id)orderedSetOfCompatibleBundleIDs
@@ -158,27 +158,27 @@ LABEL_12:
     v4 = +[NSThread callStackSymbols];
     v5 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKChallengeCacheObject orderedSetOfCompatibleBundleIDs]", v4];
     v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v7 = [v6 lastPathComponent];
-    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKChallengeCacheObject orderedSetOfCompatibleBundleIDs]", [v7 UTF8String], 4470);
+    lastPathComponent = [v6 lastPathComponent];
+    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKChallengeCacheObject orderedSetOfCompatibleBundleIDs]", [lastPathComponent UTF8String], 4470);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v8];
   }
 
-  v9 = [(GKChallengeCacheObject *)self compatibleBundleIDs];
-  v10 = [v9 count];
+  compatibleBundleIDs = [(GKChallengeCacheObject *)self compatibleBundleIDs];
+  v10 = [compatibleBundleIDs count];
 
   if (v10)
   {
     v11 = [NSMutableOrderedSet alloc];
-    v12 = [(GKChallengeCacheObject *)self compatibleBundleIDs];
-    v13 = [v11 initWithCapacity:{objc_msgSend(v12, "count")}];
+    compatibleBundleIDs2 = [(GKChallengeCacheObject *)self compatibleBundleIDs];
+    v13 = [v11 initWithCapacity:{objc_msgSend(compatibleBundleIDs2, "count")}];
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v14 = [(GKChallengeCacheObject *)self compatibleBundleIDs];
-    v15 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    compatibleBundleIDs3 = [(GKChallengeCacheObject *)self compatibleBundleIDs];
+    v15 = [compatibleBundleIDs3 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v15)
     {
       v16 = v15;
@@ -189,14 +189,14 @@ LABEL_12:
         {
           if (*v22 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(compatibleBundleIDs3);
           }
 
-          v19 = [*(*(&v21 + 1) + 8 * i) bundleID];
-          [v13 addObject:v19];
+          bundleID = [*(*(&v21 + 1) + 8 * i) bundleID];
+          [v13 addObject:bundleID];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v16 = [compatibleBundleIDs3 countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v16);
@@ -211,60 +211,60 @@ LABEL_12:
   return v13;
 }
 
-- (void)updateWithServerRepresentation:(id)a3
+- (void)updateWithServerRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = dispatch_get_current_queue();
   if (dispatch_queue_get_specific(v5, @"com.apple.gamed.cachequeue") != @"com.apple.gamed.cachequeue")
   {
     v6 = +[NSThread callStackSymbols];
     v7 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKChallengeCacheObject updateWithServerRepresentation:]", v6];
     v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v9 = [v8 lastPathComponent];
-    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v7, "-[GKChallengeCacheObject updateWithServerRepresentation:]", [v9 UTF8String], 4483);
+    lastPathComponent = [v8 lastPathComponent];
+    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v7, "-[GKChallengeCacheObject updateWithServerRepresentation:]", [lastPathComponent UTF8String], 4483);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v10];
   }
 
   v39.receiver = self;
   v39.super_class = GKChallengeCacheObject;
-  [(GKCacheObject *)&v39 updateWithServerRepresentation:v4];
-  v11 = [(GKChallengeCacheObject *)self managedObjectContext];
-  v12 = [v4 objectForKey:@"challenge-id"];
+  [(GKCacheObject *)&v39 updateWithServerRepresentation:representationCopy];
+  managedObjectContext = [(GKChallengeCacheObject *)self managedObjectContext];
+  v12 = [representationCopy objectForKey:@"challenge-id"];
   [(GKChallengeCacheObject *)self setChallengeID:v12];
 
-  v13 = [v4 objectForKey:@"issue-timestamp"];
+  v13 = [representationCopy objectForKey:@"issue-timestamp"];
   v14 = [NSDate _gkDateFromServerTimestamp:v13];
   [(GKChallengeCacheObject *)self setIssueDate:v14];
 
-  v15 = [v4 objectForKey:@"message"];
+  v15 = [representationCopy objectForKey:@"message"];
   if (v15)
   {
     [(GKChallengeCacheObject *)self setMessage:v15];
   }
 
-  v16 = [v4 objectForKey:@"issuing-player-id"];
+  v16 = [representationCopy objectForKey:@"issuing-player-id"];
 
   if (v16)
   {
     [(GKChallengeCacheObject *)self setIssuingPlayerID:v16];
   }
 
-  v17 = [v4 objectForKey:@"receiving-player-id"];
+  v17 = [representationCopy objectForKey:@"receiving-player-id"];
 
   if (v17)
   {
     [(GKChallengeCacheObject *)self setReceivingPlayerID:v17];
   }
 
-  v18 = [v4 objectForKeyedSubscript:@"bundle-id"];
+  v18 = [representationCopy objectForKeyedSubscript:@"bundle-id"];
 
   if (v18)
   {
     [(GKChallengeCacheObject *)self setBundleID:v18];
   }
 
-  v19 = [v4 objectForKey:@"completion-timestamp"];
+  v19 = [representationCopy objectForKey:@"completion-timestamp"];
   v20 = [NSDate _gkDateFromServerTimestamp:v19];
 
   if (v20)
@@ -272,20 +272,20 @@ LABEL_12:
     [(GKChallengeCacheObject *)self setCompletionDate:v20];
   }
 
-  v21 = [v4 objectForKey:@"completion-status"];
+  v21 = [representationCopy objectForKey:@"completion-status"];
 
   if (v21)
   {
     -[GKChallengeCacheObject setState:](self, "setState:", [v21 unsignedIntValue]);
   }
 
-  v22 = [v4 objectForKey:@"compatible-games"];
+  v22 = [representationCopy objectForKey:@"compatible-games"];
   if (v22)
   {
     v33 = v21;
-    v34 = v4;
-    v23 = [(GKChallengeCacheObject *)self compatibleBundleIDs];
-    v24 = [v23 mutableCopy];
+    v34 = representationCopy;
+    compatibleBundleIDs = [(GKChallengeCacheObject *)self compatibleBundleIDs];
+    v24 = [compatibleBundleIDs mutableCopy];
 
     if (!v24)
     {
@@ -314,15 +314,15 @@ LABEL_12:
           }
 
           v30 = *(*(&v35 + 1) + 8 * v29);
-          v31 = [v24 firstObject];
-          if (!v31)
+          firstObject = [v24 firstObject];
+          if (!firstObject)
           {
-            v31 = [(GKCacheObject *)[GKChallengeCompatibleBundleID alloc] initWithManagedObjectContext:v11];
-            [(GKChallengeCompatibleBundleID *)v31 setChallenge:self];
+            firstObject = [(GKCacheObject *)[GKChallengeCompatibleBundleID alloc] initWithManagedObjectContext:managedObjectContext];
+            [(GKChallengeCompatibleBundleID *)firstObject setChallenge:self];
           }
 
-          [(GKChallengeCompatibleBundleID *)v31 setBundleID:v30];
-          [v24 removeObject:v31];
+          [(GKChallengeCompatibleBundleID *)firstObject setBundleID:v30];
+          [v24 removeObject:firstObject];
 
           v29 = v29 + 1;
         }
@@ -334,9 +334,9 @@ LABEL_12:
       while (v27);
     }
 
-    [v11 _gkDeleteObjects:v24];
+    [managedObjectContext _gkDeleteObjects:v24];
     v21 = v33;
-    v4 = v34;
+    representationCopy = v34;
     v22 = v32;
   }
 }
@@ -349,14 +349,14 @@ LABEL_12:
     v4 = +[NSThread callStackSymbols];
     v5 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKChallengeCacheObject hasDetails]", v4];
     v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v7 = [v6 lastPathComponent];
-    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKChallengeCacheObject hasDetails]", [v7 UTF8String], 4545);
+    lastPathComponent = [v6 lastPathComponent];
+    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKChallengeCacheObject hasDetails]", [lastPathComponent UTF8String], 4545);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v8];
   }
 
-  v9 = [(GKChallengeCacheObject *)self detailsExpirationDate];
-  v10 = v9 != 0;
+  detailsExpirationDate = [(GKChallengeCacheObject *)self detailsExpirationDate];
+  v10 = detailsExpirationDate != 0;
 
   return v10;
 }

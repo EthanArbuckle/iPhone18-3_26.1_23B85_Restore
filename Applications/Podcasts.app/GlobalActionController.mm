@@ -1,5 +1,5 @@
 @interface GlobalActionController
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (_TtC8PodcastsP33_1EBA7FB1085F92D3987B8EDF2EAB73D122GlobalActionController)init;
 - (uint64_t)presentPreferences;
 - (void)addPodcastAction;
@@ -7,31 +7,31 @@
 - (void)cancelVolumeEvent;
 - (void)dealloc;
 - (void)decreaseVolume;
-- (void)didChangeStoreAccount:(id)a3;
+- (void)didChangeStoreAccount:(id)account;
 - (void)focusSearchField;
 - (void)goToCurrentShow;
 - (void)increaseVolume;
 - (void)jumpBackwards;
 - (void)jumpForwards;
-- (void)mainWindowDidChangeKey:(id)a3;
+- (void)mainWindowDidChangeKey:(id)key;
 - (void)manageAccount;
 - (void)manageFavoriteCategories;
 - (void)menuBarNewStation;
 - (void)nextTrack;
-- (void)perShowSettingsDidChange:(id)a3;
+- (void)perShowSettingsDidChange:(id)change;
 - (void)playPause;
 - (void)previousTrack;
 - (void)refreshCommand;
 - (void)reportAConcern;
 - (void)resetIdentifier;
 - (void)setFasterPlaybackSpeed;
-- (void)setPlaybackSpeed:(id)a3;
+- (void)setPlaybackSpeed:(id)speed;
 - (void)setSlowerPlaybackSpeed;
 - (void)showMainWindow;
 - (void)showNotificationSettings;
 - (void)showPrivacyInfo;
-- (void)toggleCustomShowSettings:(id)a3;
-- (void)validateCommand:(id)a3;
+- (void)toggleCustomShowSettings:(id)settings;
+- (void)validateCommand:(id)command;
 @end
 
 @implementation GlobalActionController
@@ -40,11 +40,11 @@
 {
   ObjectType = swift_getObjectType();
   v4 = objc_opt_self();
-  v5 = self;
-  v6 = [v4 defaultCenter];
-  [v6 removeObserver:v5];
+  selfCopy = self;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = ObjectType;
   [(GlobalActionController *)&v7 dealloc];
 }
@@ -55,10 +55,10 @@
   v4 = *(v3 - 8);
   __chkstk_darwin(v3);
   v6 = v8 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   static TextFieldAlertAction.followShowByURL(initialText:then:)();
   memset(v8, 0, sizeof(v8));
-  sub_100251430(v6, v8, 0, v7, &type metadata accessor for TextFieldAlertAction, &qword_100579A18, &type metadata accessor for TextFieldAlertAction);
+  sub_100251430(v6, v8, 0, selfCopy, &type metadata accessor for TextFieldAlertAction, &qword_100579A18, &type metadata accessor for TextFieldAlertAction);
 
   sub_100009104(v8, &unk_1005783D0);
   (*(v4 + 8))(v6, v3);
@@ -66,31 +66,31 @@
 
 - (void)focusSearchField
 {
-  v2 = self;
+  selfCopy = self;
   sub_10024A654();
 }
 
 - (void)refreshCommand
 {
   swift_getObjectType();
-  v3 = self;
+  selfCopy = self;
   dispatch thunk of LibraryDataProviderProtocol.libraryActionController.getter();
   sub_1000044A0(v4, v4[3]);
   dispatch thunk of LibraryActionControllerProtocol.updateAllFeeds()();
 
   sub_100004590(v4);
-  [*(&v3->super.super.isa + OBJC_IVAR____TtC8PodcastsP33_1EBA7FB1085F92D3987B8EDF2EAB73D122GlobalActionController_syncController) syncEverything];
+  [*(&selfCopy->super.super.isa + OBJC_IVAR____TtC8PodcastsP33_1EBA7FB1085F92D3987B8EDF2EAB73D122GlobalActionController_syncController) syncEverything];
 }
 
 - (void)goToCurrentShow
 {
-  v2 = self;
+  selfCopy = self;
   sub_10024B104();
 }
 
 - (void)showNotificationSettings
 {
-  v2 = self;
+  selfCopy = self;
   sub_10024B864();
 }
 
@@ -99,10 +99,10 @@
   v3 = sub_100168088(&qword_100578010);
   __chkstk_darwin(v3 - 8);
   v5 = &v11 - v4;
-  v12 = self;
+  selfCopy = self;
   if (_UIAccessibilityFullKeyboardAccessEnabled() || sub_100256714())
   {
-    v6 = v12;
+    v6 = selfCopy;
   }
 
   else
@@ -110,7 +110,7 @@
     v7 = type metadata accessor for TaskPriority();
     (*(*(v7 - 8) + 56))(v5, 1, 1, v7);
     type metadata accessor for MainActor();
-    v8 = v12;
+    v8 = selfCopy;
     v9 = static MainActor.shared.getter();
     v10 = swift_allocObject();
     v10[2] = v9;
@@ -125,13 +125,13 @@
   v3 = sub_100168088(&qword_100578010);
   __chkstk_darwin(v3 - 8);
   v5 = &v11 - v4;
-  v12 = self;
+  selfCopy = self;
   if (_UIAccessibilityFullKeyboardAccessEnabled())
   {
     v6 = type metadata accessor for TaskPriority();
     (*(*(v6 - 8) + 56))(v5, 1, 1, v6);
     type metadata accessor for MainActor();
-    v7 = v12;
+    v7 = selfCopy;
     v8 = static MainActor.shared.getter();
     v9 = swift_allocObject();
     v9[2] = v8;
@@ -142,68 +142,68 @@
 
   else
   {
-    v10 = v12;
+    v10 = selfCopy;
   }
 }
 
 - (void)nextTrack
 {
-  v2 = self;
+  selfCopy = self;
   sub_10024C418(&enum case for PlaybackController.TransportCommand.moveToNextTrack(_:), &unk_1004E7478, &unk_100406CC8);
 }
 
 - (void)previousTrack
 {
-  v2 = self;
+  selfCopy = self;
   sub_10024C418(&enum case for PlaybackController.TransportCommand.moveToPreviousTrack(_:), &unk_1004E7450, &unk_100406CC0);
 }
 
 - (void)jumpForwards
 {
-  v2 = self;
+  selfCopy = self;
   sub_10024C418(&enum case for PlaybackController.TransportCommand.jumpForward(_:), &unk_1004E7428, &unk_100406CB8);
 }
 
 - (void)jumpBackwards
 {
-  v2 = self;
+  selfCopy = self;
   sub_10024C418(&enum case for PlaybackController.TransportCommand.jumpBackward(_:), &unk_1004E7400, &unk_100406CB0);
 }
 
-- (void)setPlaybackSpeed:(id)a3
+- (void)setPlaybackSpeed:(id)speed
 {
-  v4 = a3;
-  v5 = self;
-  sub_10024C7A4(v4);
+  speedCopy = speed;
+  selfCopy = self;
+  sub_10024C7A4(speedCopy);
 }
 
 - (void)setFasterPlaybackSpeed
 {
-  v2 = self;
+  selfCopy = self;
   sub_10024CD28(&enum case for PlaybackController.TransportCommand.increasePlaybackSpeed(_:), &unk_1004E73B0, &unk_100406CA0);
 }
 
 - (void)setSlowerPlaybackSpeed
 {
-  v2 = self;
+  selfCopy = self;
   sub_10024CD28(&enum case for PlaybackController.TransportCommand.decreasePlaybackSpeed(_:), &unk_1004E7388, &unk_100406C98);
 }
 
-- (void)toggleCustomShowSettings:(id)a3
+- (void)toggleCustomShowSettings:(id)settings
 {
-  v4 = a3;
-  v5 = self;
+  settingsCopy = settings;
+  selfCopy = self;
   sub_1002568D4();
 }
 
-- (void)perShowSettingsDidChange:(id)a3
+- (void)perShowSettingsDidChange:(id)change
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_10024D03C(v7);
 
   (*(v5 + 8))(v7, v4);
@@ -211,23 +211,23 @@
 
 - (void)increaseVolume
 {
-  v2 = self;
+  selfCopy = self;
   dispatch thunk of PlaybackController.increaseVolume()();
 }
 
 - (void)decreaseVolume
 {
-  v2 = self;
+  selfCopy = self;
   dispatch thunk of PlaybackController.decreaseVolume()();
 }
 
 - (void)cancelVolumeEvent
 {
-  v2 = self;
+  selfCopy = self;
   dispatch thunk of PlaybackController.cancelVolumeEvent()();
 }
 
-- (void)didChangeStoreAccount:(id)a3
+- (void)didChangeStoreAccount:(id)account
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);
@@ -240,29 +240,29 @@
 
   if (v7)
   {
-    v9 = [objc_opt_self() mainSystem];
-    [v9 setNeedsRebuild];
+    mainSystem = [objc_opt_self() mainSystem];
+    [mainSystem setNeedsRebuild];
   }
 
   (*(v4 + 8))(v6, v3);
 }
 
-- (void)mainWindowDidChangeKey:(id)a3
+- (void)mainWindowDidChangeKey:(id)key
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);
   __chkstk_darwin(v3);
   v6 = &v8 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = [objc_opt_self() mainSystem];
-  [v7 setNeedsRebuild];
+  mainSystem = [objc_opt_self() mainSystem];
+  [mainSystem setNeedsRebuild];
 
   (*(v4 + 8))(v6, v3);
 }
 
 - (void)manageAccount
 {
-  v2 = self;
+  selfCopy = self;
   sub_10024E330();
 }
 
@@ -273,20 +273,20 @@
   __chkstk_darwin(v3);
   v6 = v10 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   type metadata accessor for FlowAction();
-  v7 = self;
+  selfCopy = self;
   static ActionMetrics.notInstrumented.getter();
   v8 = static FlowAction.manageCategoriesPage(actionMetrics:pushPresentationContext:)();
   (*(v4 + 8))(v6, v3);
   memset(v10, 0, sizeof(v10));
   v9 = UIResponder.firstViewInResponderChain.getter();
-  sub_1002516A8(v8, v10, v9, v7, &type metadata accessor for FlowAction, &unk_10057A0D0, &type metadata accessor for FlowAction);
+  sub_1002516A8(v8, v10, v9, selfCopy, &type metadata accessor for FlowAction, &unk_10057A0D0, &type metadata accessor for FlowAction);
 
   sub_100009104(v10, &unk_1005783D0);
 }
 
 - (void)reportAConcern
 {
-  v2 = [objc_opt_self() sharedInstance];
+  sharedInstance = [objc_opt_self() sharedInstance];
   v4[4] = sub_10024E918;
   v4[5] = 0;
   v4[0] = _NSConcreteStackBlock;
@@ -294,15 +294,15 @@
   v4[2] = sub_1002355D0;
   v4[3] = &unk_1004E72D8;
   v3 = _Block_copy(v4);
-  [v2 reportAConcernURLWithCompletion:v3];
+  [sharedInstance reportAConcernURLWithCompletion:v3];
   _Block_release(v3);
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -311,20 +311,20 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = sub_10024EA68(a3, v10);
+  v8 = sub_10024EA68(action, v10);
 
   sub_100009104(v10, &unk_1005783D0);
   return v8 & 1;
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v4 = a3;
-  v5 = self;
-  sub_10024ECD8(v4);
+  commandCopy = command;
+  selfCopy = self;
+  sub_10024ECD8(commandCopy);
 }
 
 - (_TtC8PodcastsP33_1EBA7FB1085F92D3987B8EDF2EAB73D122GlobalActionController)init
@@ -340,10 +340,10 @@
   v4 = *(v3 - 8);
   __chkstk_darwin(v3);
   v6 = v8 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   static TextFieldAlertAction.newStation(then:)();
   memset(v8, 0, sizeof(v8));
-  sub_100251430(v6, v8, 0, v7, &type metadata accessor for TextFieldAlertAction, &qword_100579A18, &type metadata accessor for TextFieldAlertAction);
+  sub_100251430(v6, v8, 0, selfCopy, &type metadata accessor for TextFieldAlertAction, &qword_100579A18, &type metadata accessor for TextFieldAlertAction);
 
   sub_100009104(v8, &unk_1005783D0);
   (*(v4 + 8))(v6, v3);
@@ -367,7 +367,7 @@
   }
 
   (*(v4 + 32))(v6, v2, v3);
-  v8 = [objc_opt_self() sharedApplication];
+  sharedApplication = [objc_opt_self() sharedApplication];
   URL._bridgeToObjectiveC()(v9);
   v11 = v10;
   sub_10016A31C(_swiftEmptyArrayStorage);
@@ -375,7 +375,7 @@
   sub_100252880(&qword_100573120, type metadata accessor for OpenExternalURLOptionsKey);
   isa = Dictionary._bridgeToObjectiveC()().super.isa;
 
-  [v8 openURL:v11 options:isa completionHandler:0];
+  [sharedApplication openURL:v11 options:isa completionHandler:0];
 
   return (*(v4 + 8))(v6, v3);
 }
@@ -392,26 +392,26 @@
   {
     v2 = objc_opt_self();
     v3 = v7;
-    v4 = [v2 sharedApplication];
-    v5 = [v4 delegate];
+    sharedApplication = [v2 sharedApplication];
+    delegate = [sharedApplication delegate];
 
-    if (v5)
+    if (delegate)
     {
-      if ([v5 respondsToSelector:"window"])
+      if ([delegate respondsToSelector:"window"])
       {
-        v6 = [v5 window];
+        window = [delegate window];
         swift_unknownObjectRelease();
-        v5 = [v6 rootViewController];
+        delegate = [window rootViewController];
       }
 
       else
       {
         swift_unknownObjectRelease();
-        v5 = 0;
+        delegate = 0;
       }
     }
 
-    [v3 setPresentingViewController:v5];
+    [v3 setPresentingViewController:delegate];
 
     v1 = v7;
   }
@@ -422,8 +422,8 @@
 - (void)showMainWindow
 {
   v0 = objc_opt_self();
-  v1 = [v0 sharedApplication];
-  v2 = [v1 connectedScenes];
+  sharedApplication = [v0 sharedApplication];
+  connectedScenes = [sharedApplication connectedScenes];
 
   sub_100009F1C(0, &qword_100579A38);
   sub_100024384(&qword_100579A40, &qword_100579A38);
@@ -472,15 +472,15 @@
 LABEL_25:
       sub_1000319D8();
 
-      v23 = 0;
+      session2 = 0;
       goto LABEL_26;
     }
 
 LABEL_19:
-    v18 = [v16 session];
-    v19 = [v18 userInfo];
+    session = [v16 session];
+    userInfo = [session userInfo];
 
-    if (v19)
+    if (userInfo)
     {
       v20 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -492,11 +492,11 @@ LABEL_19:
         {
           sub_1000319D8();
 
-          v23 = [v16 session];
+          session2 = [v16 session];
 
 LABEL_26:
-          v24 = [v25 sharedApplication];
-          [v24 requestSceneSessionActivation:v23 userActivity:0 options:0 errorHandler:0];
+          sharedApplication2 = [v25 sharedApplication];
+          [sharedApplication2 requestSceneSessionActivation:session2 userActivity:0 options:0 errorHandler:0];
 
           return;
         }
@@ -554,23 +554,23 @@ LABEL_15:
 - (void)resetIdentifier
 {
   v0 = objc_opt_self();
-  v1 = [v0 mainBundle];
+  mainBundle = [v0 mainBundle];
   v26._object = 0x800000010046B050;
   v2._countAndFlagsBits = 0xD00000000000001CLL;
   v2._object = 0x800000010046B030;
   v26._countAndFlagsBits = 0xD000000000000011;
   v3._countAndFlagsBits = 0;
   v3._object = 0xE000000000000000;
-  NSLocalizedString(_:tableName:bundle:value:comment:)(v2, 0, v1, v3, v26);
+  NSLocalizedString(_:tableName:bundle:value:comment:)(v2, 0, mainBundle, v3, v26);
 
-  v4 = [v0 mainBundle];
+  mainBundle2 = [v0 mainBundle];
   v27._object = 0x800000010046B090;
   v5._countAndFlagsBits = 0xD00000000000001ELL;
   v5._object = 0x800000010046B070;
   v27._countAndFlagsBits = 0xD00000000000002ALL;
   v6._countAndFlagsBits = 0;
   v6._object = 0xE000000000000000;
-  NSLocalizedString(_:tableName:bundle:value:comment:)(v5, 0, v4, v6, v27);
+  NSLocalizedString(_:tableName:bundle:value:comment:)(v5, 0, mainBundle2, v6, v27);
 
   v7 = String._bridgeToObjectiveC()();
 
@@ -578,14 +578,14 @@ LABEL_15:
 
   v9 = [objc_opt_self() alertControllerWithTitle:v7 message:v8 preferredStyle:1];
 
-  v10 = [v0 mainBundle];
+  mainBundle3 = [v0 mainBundle];
   v28._object = 0x800000010046B0F0;
   v11._countAndFlagsBits = 0xD000000000000024;
   v11._object = 0x800000010046B0C0;
   v12._countAndFlagsBits = 0;
   v12._object = 0xE000000000000000;
   v28._countAndFlagsBits = 0xD000000000000010;
-  NSLocalizedString(_:tableName:bundle:value:comment:)(v11, 0, v10, v12, v28);
+  NSLocalizedString(_:tableName:bundle:value:comment:)(v11, 0, mainBundle3, v12, v28);
 
   v13 = String._bridgeToObjectiveC()();
 
@@ -602,27 +602,27 @@ LABEL_15:
   _Block_release(v14);
 
   [v9 addAction:v16];
-  v17 = [v0 mainBundle];
+  mainBundle4 = [v0 mainBundle];
   v29._object = 0xE000000000000000;
   v18._countAndFlagsBits = 0x6C65636E6143;
   v18._object = 0xE600000000000000;
   v19._countAndFlagsBits = 0;
   v19._object = 0xE000000000000000;
   v29._countAndFlagsBits = 0;
-  NSLocalizedString(_:tableName:bundle:value:comment:)(v18, 0, v17, v19, v29);
+  NSLocalizedString(_:tableName:bundle:value:comment:)(v18, 0, mainBundle4, v19, v29);
 
   v20 = String._bridgeToObjectiveC()();
 
   v21 = [v15 actionWithTitle:v20 style:1 handler:0];
 
   [v9 addAction:v21];
-  v22 = [objc_opt_self() sharedApplication];
+  sharedApplication = [objc_opt_self() sharedApplication];
   v23 = sub_1002D3F10();
-  v24 = [v23 rootViewController];
+  rootViewController = [v23 rootViewController];
 
-  if (v24)
+  if (rootViewController)
   {
-    [v24 presentViewController:v9 animated:0 completion:0];
+    [rootViewController presentViewController:v9 animated:0 completion:0];
   }
 }
 

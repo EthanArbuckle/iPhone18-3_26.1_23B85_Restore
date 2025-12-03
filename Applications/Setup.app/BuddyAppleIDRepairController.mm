@@ -1,8 +1,8 @@
 @interface BuddyAppleIDRepairController
-- (BOOL)responsibleForViewController:(id)a3;
+- (BOOL)responsibleForViewController:(id)controller;
 - (BuddyAppleIDRepairController)init;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation BuddyAppleIDRepairController
@@ -18,8 +18,8 @@
   objc_storeStrong(&location, v2);
   if (v2)
   {
-    v3 = [location navigationItem];
-    [v3 setHidesBackButton:1 animated:0];
+    navigationItem = [location navigationItem];
+    [navigationItem setHidesBackButton:1 animated:0];
   }
 
   v4 = location;
@@ -27,26 +27,26 @@
   return v4;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = +[ACAccountStore defaultStore];
-  v4 = [v3 aa_primaryAppleAccount];
-  [(BuddyAppleIDRepairController *)v22 setPrimaryAccount:v4];
+  aa_primaryAppleAccount = [v3 aa_primaryAppleAccount];
+  [(BuddyAppleIDRepairController *)selfCopy setPrimaryAccount:aa_primaryAppleAccount];
 
   if (location[0])
   {
-    v5 = [(BuddyAppleIDRepairController *)v22 primaryAccount];
+    primaryAccount = [(BuddyAppleIDRepairController *)selfCopy primaryAccount];
 
-    if (v5)
+    if (primaryAccount)
     {
       v6 = +[AKAccountManager sharedInstance];
-      v7 = [(BuddyAppleIDRepairController *)v22 primaryAccount];
-      v8 = [(ACAccount *)v7 aa_altDSID];
-      v20 = [(AKAccountManager *)v6 authKitAccountWithAltDSID:v8];
+      primaryAccount2 = [(BuddyAppleIDRepairController *)selfCopy primaryAccount];
+      aa_altDSID = [(ACAccount *)primaryAccount2 aa_altDSID];
+      v20 = [(AKAccountManager *)v6 authKitAccountWithAltDSID:aa_altDSID];
 
       v9 = +[AKAccountManager sharedInstance];
       v10 = [(AKAccountManager *)v9 repairStateForAccount:v20];
@@ -60,15 +60,15 @@
       else
       {
         v19[0] = objc_opt_new();
-        v11 = [(BuddyAppleIDRepairController *)v22 primaryAccount];
-        v12 = [(ACAccount *)v11 aa_altDSID];
+        primaryAccount3 = [(BuddyAppleIDRepairController *)selfCopy primaryAccount];
+        aa_altDSID2 = [(ACAccount *)primaryAccount3 aa_altDSID];
         v13 = _NSConcreteStackBlock;
         v14 = -1073741824;
         v15 = 0;
         v16 = sub_10015108C;
         v17 = &unk_10032DA70;
         v18 = location[0];
-        [v19[0] getUserInformationForAltDSID:v12 completion:&v13];
+        [v19[0] getUserInformationForAltDSID:aa_altDSID2 completion:&v13];
 
         objc_storeStrong(&v18, 0);
         objc_storeStrong(v19, 0);
@@ -86,28 +86,28 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v27 = self;
+  selfCopy = self;
   v26 = a2;
-  v25 = a3;
+  appearCopy = appear;
   v24.receiver = self;
   v24.super_class = BuddyAppleIDRepairController;
-  [(BuddyAppleIDSpinnerPage *)&v24 viewDidAppear:a3];
+  [(BuddyAppleIDSpinnerPage *)&v24 viewDidAppear:appear];
   v3 = objc_alloc_init(AKAppleIDAuthenticationPurpleBuddyContext);
-  [(BuddyAppleIDRepairController *)v27 setAuthContext:v3];
+  [(BuddyAppleIDRepairController *)selfCopy setAuthContext:v3];
 
-  v4 = [(BuddyAppleIDRepairController *)v27 primaryAccount];
-  v5 = [(ACAccount *)v4 aa_altDSID];
-  v6 = [(BuddyAppleIDRepairController *)v27 authContext];
-  [(AKAppleIDAuthenticationPurpleBuddyContext *)v6 setAltDSID:v5];
+  primaryAccount = [(BuddyAppleIDRepairController *)selfCopy primaryAccount];
+  aa_altDSID = [(ACAccount *)primaryAccount aa_altDSID];
+  authContext = [(BuddyAppleIDRepairController *)selfCopy authContext];
+  [(AKAppleIDAuthenticationPurpleBuddyContext *)authContext setAltDSID:aa_altDSID];
 
-  v7 = [(BuddyAppleIDRepairController *)v27 authContext];
-  [(AKAppleIDAuthenticationPurpleBuddyContext *)v7 setNeedsRepair:1];
+  authContext2 = [(BuddyAppleIDRepairController *)selfCopy authContext];
+  [(AKAppleIDAuthenticationPurpleBuddyContext *)authContext2 setNeedsRepair:1];
 
-  v8 = [(BuddyAppleIDRepairController *)v27 authContext];
-  v9 = [(BuddyAppleIDRepairController *)v27 navigationController];
-  [(AKAppleIDAuthenticationPurpleBuddyContext *)v8 setPresentingViewController:v9];
+  authContext3 = [(BuddyAppleIDRepairController *)selfCopy authContext];
+  navigationController = [(BuddyAppleIDRepairController *)selfCopy navigationController];
+  [(AKAppleIDAuthenticationPurpleBuddyContext *)authContext3 setPresentingViewController:navigationController];
 
   location = objc_alloc_init(AKAppleIDAuthenticationController);
   oslog = _BYLoggingFacility();
@@ -122,25 +122,25 @@
 
   objc_storeStrong(&oslog, 0);
   v12 = location;
-  v13 = [(BuddyAppleIDRepairController *)v27 authContext];
+  authContext4 = [(BuddyAppleIDRepairController *)selfCopy authContext];
   v14 = _NSConcreteStackBlock;
   v15 = -1073741824;
   v16 = 0;
   v17 = sub_100151494;
   v18 = &unk_10032D598;
-  v19 = v27;
-  [v12 authenticateWithContext:v13 completion:&v14];
+  v19 = selfCopy;
+  [v12 authenticateWithContext:authContext4 completion:&v14];
 
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&location, 0);
 }
 
-- (BOOL)responsibleForViewController:(id)a3
+- (BOOL)responsibleForViewController:(id)controller
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   oslog = _BYLoggingFacility();
   v7 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))

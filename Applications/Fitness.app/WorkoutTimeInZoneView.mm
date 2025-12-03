@@ -1,8 +1,8 @@
 @interface WorkoutTimeInZoneView
 - (CGSize)intrinsicContentSize;
-- (_TtC10FitnessApp21WorkoutTimeInZoneView)initWithCoder:(id)a3;
-- (_TtC10FitnessApp21WorkoutTimeInZoneView)initWithFrame:(CGRect)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC10FitnessApp21WorkoutTimeInZoneView)initWithCoder:(id)coder;
+- (_TtC10FitnessApp21WorkoutTimeInZoneView)initWithFrame:(CGRect)frame;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation WorkoutTimeInZoneView
@@ -16,7 +16,7 @@
   return result;
 }
 
-- (_TtC10FitnessApp21WorkoutTimeInZoneView)initWithCoder:(id)a3
+- (_TtC10FitnessApp21WorkoutTimeInZoneView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC10FitnessApp21WorkoutTimeInZoneView_dividerHeight) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -24,22 +24,22 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC10FitnessApp21WorkoutTimeInZoneView_dividerHeight);
   if (v3)
   {
-    v8 = self;
+    selfCopy = self;
     v4 = v3;
-    v5 = [(WorkoutTimeInZoneView *)v8 traitCollection];
-    [v5 displayScale];
+    traitCollection = [(WorkoutTimeInZoneView *)selfCopy traitCollection];
+    [traitCollection displayScale];
     v7 = v6;
 
     [v4 setConstant:1.0 / v7];
   }
 }
 
-- (_TtC10FitnessApp21WorkoutTimeInZoneView)initWithFrame:(CGRect)a3
+- (_TtC10FitnessApp21WorkoutTimeInZoneView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

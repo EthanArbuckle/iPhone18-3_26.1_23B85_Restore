@@ -1,8 +1,8 @@
 @interface BSSqlitePreparedStatement
-+ (id)_newPreparedStatementForDatabaseConnection:(void *)a3 withSQLQuery:;
-- (BOOL)executeWithBindings:(id)a3 resultRowHandler:(id)a4 error:(id *)a5;
++ (id)_newPreparedStatementForDatabaseConnection:(void *)connection withSQLQuery:;
+- (BOOL)executeWithBindings:(id)bindings resultRowHandler:(id)handler error:(id *)error;
 - (BSSqlitePreparedStatement)init;
-- (id)_initWithDatabaseConnection:(void *)a1;
+- (id)_initWithDatabaseConnection:(void *)connection;
 - (void)dealloc;
 @end
 
@@ -16,19 +16,19 @@
   [(BSSqlitePreparedStatement *)&v3 dealloc];
 }
 
-- (id)_initWithDatabaseConnection:(void *)a1
+- (id)_initWithDatabaseConnection:(void *)connection
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (connection)
   {
     if (!v3)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:sel__initWithDatabaseConnection_ object:a1 file:@"BSSqlitePreparedStatement.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"connection"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__initWithDatabaseConnection_ object:connection file:@"BSSqlitePreparedStatement.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"connection"}];
     }
 
-    v9.receiver = a1;
+    v9.receiver = connection;
     v9.super_class = BSSqlitePreparedStatement;
     v5 = objc_msgSendSuper2(&v9, sel_init);
     v6 = v5;
@@ -48,35 +48,35 @@
 
 - (BSSqlitePreparedStatement)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"BSSqlitePreparedStatement.m" lineNumber:76 description:@"init is not allowed"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"BSSqlitePreparedStatement.m" lineNumber:76 description:@"init is not allowed"];
 
   return [(BSSqlitePreparedStatement *)self _initWithDatabaseConnection:?];
 }
 
-+ (id)_newPreparedStatementForDatabaseConnection:(void *)a3 withSQLQuery:
++ (id)_newPreparedStatementForDatabaseConnection:(void *)connection withSQLQuery:
 {
   v4 = a2;
-  v5 = a3;
+  connectionCopy = connection;
   v6 = objc_opt_self();
   if (!v4)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:sel__newPreparedStatementForDatabaseConnection_withSQLQuery_ object:v6 file:@"BSSqlitePreparedStatement.m" lineNumber:87 description:{@"Invalid parameter not satisfying: %@", @"connection"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__newPreparedStatementForDatabaseConnection_withSQLQuery_ object:v6 file:@"BSSqlitePreparedStatement.m" lineNumber:87 description:{@"Invalid parameter not satisfying: %@", @"connection"}];
 
-    if (v5)
+    if (connectionCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:sel__newPreparedStatementForDatabaseConnection_withSQLQuery_ object:v6 file:@"BSSqlitePreparedStatement.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"sqlQuery"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:sel__newPreparedStatementForDatabaseConnection_withSQLQuery_ object:v6 file:@"BSSqlitePreparedStatement.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"sqlQuery"}];
 
     goto LABEL_3;
   }
 
-  if (!v5)
+  if (!connectionCopy)
   {
     goto LABEL_5;
   }
@@ -92,7 +92,7 @@ LABEL_3:
   v13[1] = 3221225472;
   v13[2] = __85__BSSqlitePreparedStatement__newPreparedStatementForDatabaseConnection_withSQLQuery___block_invoke;
   v13[3] = &unk_1E72CACE8;
-  v7 = v5;
+  v7 = connectionCopy;
   v14 = v7;
   v8 = v4;
   v15 = v8;
@@ -204,10 +204,10 @@ LABEL_12:
 LABEL_25:
 }
 
-- (BOOL)executeWithBindings:(id)a3 resultRowHandler:(id)a4 error:(id *)a5
+- (BOOL)executeWithBindings:(id)bindings resultRowHandler:(id)handler error:(id *)error
 {
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"BSSqlitePreparedStatement.m" lineNumber:136 description:@"Abstract class implementation should never be called"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"BSSqlitePreparedStatement.m" lineNumber:136 description:@"Abstract class implementation should never be called"];
 
   return 0;
 }

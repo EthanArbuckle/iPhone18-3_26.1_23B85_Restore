@@ -1,25 +1,25 @@
 @interface AXElementNamesView
-- (AXElementNamesView)initWithFrame:(CGRect)a3;
+- (AXElementNamesView)initWithFrame:(CGRect)frame;
 - (CGRect)boundsForLastReload;
-- (void)_adjustLabelPositionForView:(id)a3 toAvoidCollidingWithView:(id)a4;
-- (void)_arrangeNameViews:(id)a3 withinContainer:(id)a4;
+- (void)_adjustLabelPositionForView:(id)view toAvoidCollidingWithView:(id)withView;
+- (void)_arrangeNameViews:(id)views withinContainer:(id)container;
 - (void)_reloadViews;
 - (void)layoutSubviews;
-- (void)setItems:(id)a3;
+- (void)setItems:(id)items;
 @end
 
 @implementation AXElementNamesView
 
-- (AXElementNamesView)initWithFrame:(CGRect)a3
+- (AXElementNamesView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = AXElementNamesView;
-  v3 = [(AXElementNamesView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AXElementNamesView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5 = *(v3 + 58);
-    *(v3 + 58) = v4;
+    *(v3 + 58) = array;
 
     v6 = *(MEMORY[0x1E695F050] + 16);
     *(v3 + 472) = *MEMORY[0x1E695F050];
@@ -32,21 +32,21 @@
   return v3;
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  v6 = a3;
+  itemsCopy = items;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v7 = [(AXElementNamesView *)self loggingFacility];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
+    loggingFacility = [(AXElementNamesView *)self loggingFacility];
+    if (os_log_type_enabled(loggingFacility, OS_LOG_TYPE_FAULT))
     {
-      [(AXElementNamesView *)a2 setItems:v7];
+      [(AXElementNamesView *)a2 setItems:loggingFacility];
     }
   }
 
-  if (self->_items != v6)
+  if (self->_items != itemsCopy)
   {
-    objc_storeStrong(&self->_items, a3);
+    objc_storeStrong(&self->_items, items);
     [(AXElementNamesView *)self setDidUpdateItems:1];
     [(AXElementNamesView *)self setNeedsLayout];
   }
@@ -87,8 +87,8 @@
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v3 = [(AXElementNamesView *)self containers];
-  v4 = [v3 countByEnumeratingWithState:&v87 objects:v97 count:16];
+  containers = [(AXElementNamesView *)self containers];
+  v4 = [containers countByEnumeratingWithState:&v87 objects:v97 count:16];
   if (v4)
   {
     v5 = v4;
@@ -99,29 +99,29 @@
       {
         if (*v88 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(containers);
         }
 
         [*(*(&v87 + 1) + 8 * i) removeFromSuperview];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v87 objects:v97 count:16];
+      v5 = [containers countByEnumeratingWithState:&v87 objects:v97 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(AXElementNamesView *)self containers];
-  [v8 removeAllObjects];
+  containers2 = [(AXElementNamesView *)self containers];
+  [containers2 removeAllObjects];
 
   [(AXCyclingView *)self endCycling];
-  v9 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v83 = 0u;
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
-  v10 = [(AXElementNamesView *)self items];
-  v11 = [v10 countByEnumeratingWithState:&v83 objects:v96 count:16];
+  items = [(AXElementNamesView *)self items];
+  v11 = [items countByEnumeratingWithState:&v83 objects:v96 count:16];
   if (v11)
   {
     v13 = v11;
@@ -134,12 +134,12 @@
       {
         if (*v84 != v14)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(items);
         }
 
         v16 = *(*(&v83 + 1) + 8 * j);
-        v17 = [v16 elementName];
-        v18 = [v17 length];
+        elementName = [v16 elementName];
+        v18 = [elementName length];
 
         if (v18)
         {
@@ -154,33 +154,33 @@
           v32 = v24 - (v27 + v31);
           v34 = v26 - (v29 + v33);
           v35 = [AXElementNamesItemView alloc];
-          v36 = [v16 elementName];
+          elementName2 = [v16 elementName];
           [v16 elementFrame];
           v38 = v37;
           v40 = v39;
           v42 = v41;
           v44 = v43;
-          v45 = [(AXElementNamesView *)self styleProvider];
-          v46 = -[AXElementNamesItemView initWithName:elementFrame:availableBounds:styleProvider:isSpacer:](v35, "initWithName:elementFrame:availableBounds:styleProvider:isSpacer:", v36, v45, [v16 isSpacer], v38, v40, v42, v44, v28, v30, v32, v34);
+          styleProvider = [(AXElementNamesView *)self styleProvider];
+          loggingFacility = -[AXElementNamesItemView initWithName:elementFrame:availableBounds:styleProvider:isSpacer:](v35, "initWithName:elementFrame:availableBounds:styleProvider:isSpacer:", elementName2, styleProvider, [v16 isSpacer], v38, v40, v42, v44, v28, v30, v32, v34);
 
           [v16 elementLabelContainerSize];
-          [v46 setForcedLabelContainerSize:?];
-          [v9 addObject:v46];
+          [loggingFacility setForcedLabelContainerSize:?];
+          [array addObject:loggingFacility];
         }
 
         else
         {
-          v46 = [(AXElementNamesView *)self loggingFacility];
-          if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
+          loggingFacility = [(AXElementNamesView *)self loggingFacility];
+          if (os_log_type_enabled(loggingFacility, OS_LOG_TYPE_INFO))
           {
             *buf = v70;
             v95 = v16;
-            _os_log_impl(&dword_1C0DFB000, v46, OS_LOG_TYPE_INFO, "Found element with no name: %@", buf, 0xCu);
+            _os_log_impl(&dword_1C0DFB000, loggingFacility, OS_LOG_TYPE_INFO, "Found element with no name: %@", buf, 0xCu);
           }
         }
       }
 
-      v13 = [v10 countByEnumeratingWithState:&v83 objects:v96 count:16];
+      v13 = [items countByEnumeratingWithState:&v83 objects:v96 count:16];
     }
 
     while (v13);
@@ -189,17 +189,17 @@
   while (1)
   {
 
-    if (![v9 count])
+    if (![array count])
     {
       break;
     }
 
     v47 = objc_alloc(MEMORY[0x1E69DD250]);
     [(AXElementNamesView *)self bounds];
-    v10 = [v47 initWithFrame:?];
-    [(AXElementNamesView *)self _arrangeNameViews:v9 withinContainer:v10];
-    v48 = [v10 subviews];
-    v49 = [v48 count];
+    items = [v47 initWithFrame:?];
+    [(AXElementNamesView *)self _arrangeNameViews:array withinContainer:items];
+    subviews = [items subviews];
+    v49 = [subviews count];
 
     if (!v49)
     {
@@ -207,13 +207,13 @@
       break;
     }
 
-    v50 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v79 = 0u;
     v80 = 0u;
     v81 = 0u;
     v82 = 0u;
-    v51 = [v10 subviews];
-    v52 = [v51 countByEnumeratingWithState:&v79 objects:v93 count:16];
+    subviews2 = [items subviews];
+    v52 = [subviews2 countByEnumeratingWithState:&v79 objects:v93 count:16];
     if (v52)
     {
       v53 = v52;
@@ -225,23 +225,23 @@
         {
           if (*v80 != v55)
           {
-            objc_enumerationMutation(v51);
+            objc_enumerationMutation(subviews2);
           }
 
           v57 = *(*(&v79 + 1) + 8 * k);
           if ([v57 isSpacer])
           {
-            [v50 addObject:v57];
+            [array2 addObject:v57];
           }
 
           else
           {
-            [v9 removeObject:v57];
+            [array removeObject:v57];
             ++v54;
           }
         }
 
-        v53 = [v51 countByEnumeratingWithState:&v79 objects:v93 count:16];
+        v53 = [subviews2 countByEnumeratingWithState:&v79 objects:v93 count:16];
       }
 
       while (v53);
@@ -257,7 +257,7 @@
     v78 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v59 = v50;
+    v59 = array2;
     v60 = [v59 countByEnumeratingWithState:&v75 objects:v92 count:16];
     if (v60)
     {
@@ -302,7 +302,7 @@
               objc_enumerationMutation(v64);
             }
 
-            [v9 removeObject:*(*(&v71 + 1) + 8 * n)];
+            [array removeObject:*(*(&v71 + 1) + 8 * n)];
           }
 
           v66 = [v64 countByEnumeratingWithState:&v71 objects:v91 count:16];
@@ -314,61 +314,61 @@
 
     else
     {
-      v69 = [(AXElementNamesView *)self containers];
-      [v69 addObject:v10];
+      containers3 = [(AXElementNamesView *)self containers];
+      [containers3 addObject:items];
 
-      [(AXElementNamesView *)self addSubview:v10];
+      [(AXElementNamesView *)self addSubview:items];
     }
   }
 
   [(AXCyclingView *)self beginCycling];
 }
 
-- (void)_adjustLabelPositionForView:(id)a3 toAvoidCollidingWithView:(id)a4
+- (void)_adjustLabelPositionForView:(id)view toAvoidCollidingWithView:(id)withView
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  withViewCopy = withView;
   v8 = *MEMORY[0x1E695F058];
   v9 = *(MEMORY[0x1E695F058] + 8);
   v10 = *(MEMORY[0x1E695F058] + 16);
   v11 = *(MEMORY[0x1E695F058] + 24);
   while (1)
   {
-    [v6 labelContainerFrame];
+    [viewCopy labelContainerFrame];
     v18.origin.x = v8;
     v18.origin.y = v9;
     v18.size.width = v10;
     v18.size.height = v11;
-    if (!CGRectEqualToRect(v17, v18) && ![v6 collidesWithView:v7])
+    if (!CGRectEqualToRect(v17, v18) && ![viewCopy collidesWithView:withViewCopy])
     {
       break;
     }
 
-    if ([v6 labelPosition] == 4)
+    if ([viewCopy labelPosition] == 4)
     {
-      v12 = [(AXElementNamesView *)self loggingFacility];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+      loggingFacility = [(AXElementNamesView *)self loggingFacility];
+      if (os_log_type_enabled(loggingFacility, OS_LOG_TYPE_INFO))
       {
-        v13 = [v6 name];
+        name = [viewCopy name];
         v14 = 138412290;
-        v15 = v13;
-        _os_log_impl(&dword_1C0DFB000, v12, OS_LOG_TYPE_INFO, "Could not find a non-colliding position for label for %@", &v14, 0xCu);
+        v15 = name;
+        _os_log_impl(&dword_1C0DFB000, loggingFacility, OS_LOG_TYPE_INFO, "Could not find a non-colliding position for label for %@", &v14, 0xCu);
       }
 
-      [v6 removeFromSuperview];
+      [viewCopy removeFromSuperview];
       break;
     }
 
-    [v6 setLabelPosition:{objc_msgSend(v6, "labelPosition") + 1}];
+    [viewCopy setLabelPosition:{objc_msgSend(viewCopy, "labelPosition") + 1}];
   }
 }
 
-- (void)_arrangeNameViews:(id)a3 withinContainer:(id)a4
+- (void)_arrangeNameViews:(id)views withinContainer:(id)container
 {
-  v21 = a3;
-  v6 = a4;
-  v7 = [v21 count];
+  viewsCopy = views;
+  containerCopy = container;
+  v7 = [viewsCopy count];
   if (v7)
   {
     v8 = v7;
@@ -379,17 +379,17 @@
     v13 = *(MEMORY[0x1E695F058] + 24);
     do
     {
-      v14 = [v21 objectAtIndexedSubscript:v9];
+      v14 = [viewsCopy objectAtIndexedSubscript:v9];
       if ([v14 isSpacer])
       {
         [v14 setLabelPosition:4];
-        [v6 addSubview:v14];
+        [containerCopy addSubview:v14];
       }
 
       else
       {
         [v14 setLabelPosition:0];
-        [v6 addSubview:v14];
+        [containerCopy addSubview:v14];
         while ([v14 labelPosition] != 4)
         {
           [v14 labelContainerFrame];
@@ -412,14 +412,14 @@
           {
             while (1)
             {
-              v16 = [v21 objectAtIndexedSubscript:v15];
-              v17 = [v16 superview];
+              v16 = [viewsCopy objectAtIndexedSubscript:v15];
+              superview = [v16 superview];
 
-              if (v17 == v6)
+              if (superview == containerCopy)
               {
-                v18 = [v14 labelPosition];
+                labelPosition = [v14 labelPosition];
                 [(AXElementNamesView *)self _adjustLabelPositionForView:v14 toAvoidCollidingWithView:v16];
-                if (v18 != [v14 labelPosition])
+                if (labelPosition != [v14 labelPosition])
                 {
                   break;
                 }
@@ -431,23 +431,23 @@
               }
             }
 
-            v19 = [v14 superview];
+            superview2 = [v14 superview];
 
             v15 = 0;
           }
 
-          while (v19);
+          while (superview2);
         }
 
 LABEL_16:
         if ([v14 hasExtendedArrow])
         {
-          v20 = [v14 superview];
+          superview3 = [v14 superview];
 
-          if (v20 == v6)
+          if (superview3 == containerCopy)
           {
             [v14 removeFromSuperview];
-            [v6 insertSubview:v14 atIndex:0];
+            [containerCopy insertSubview:v14 atIndex:0];
           }
         }
       }

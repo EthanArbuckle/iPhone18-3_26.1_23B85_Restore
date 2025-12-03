@@ -1,6 +1,6 @@
 @interface OctagonStateTransitionPath
-+ (id)pathFromDictionary:(id)a3;
-- (OctagonStateTransitionPath)initWithState:(id)a3 pathStep:(id)a4;
++ (id)pathFromDictionary:(id)dictionary;
+- (OctagonStateTransitionPath)initWithState:(id)state pathStep:(id)step;
 - (id)asPathStep;
 - (id)description;
 @end
@@ -10,10 +10,10 @@
 - (id)asPathStep
 {
   v3 = [OctagonStateTransitionPathStep alloc];
-  v4 = [(OctagonStateTransitionPath *)self initialState];
-  v9 = v4;
-  v5 = [(OctagonStateTransitionPath *)self pathStep];
-  v10 = v5;
+  initialState = [(OctagonStateTransitionPath *)self initialState];
+  v9 = initialState;
+  pathStep = [(OctagonStateTransitionPath *)self pathStep];
+  v10 = pathStep;
   v6 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v7 = [(OctagonStateTransitionPathStep *)v3 initWithPath:v6];
 
@@ -22,39 +22,39 @@
 
 - (id)description
 {
-  v3 = [(OctagonStateTransitionPath *)self initialState];
-  v4 = [(OctagonStateTransitionPath *)self pathStep];
-  v5 = [NSString stringWithFormat:@"<OctagonStateTransitionPath: %@ %@", v3, v4];
+  initialState = [(OctagonStateTransitionPath *)self initialState];
+  pathStep = [(OctagonStateTransitionPath *)self pathStep];
+  v5 = [NSString stringWithFormat:@"<OctagonStateTransitionPath: %@ %@", initialState, pathStep];
 
   return v5;
 }
 
-- (OctagonStateTransitionPath)initWithState:(id)a3 pathStep:(id)a4
+- (OctagonStateTransitionPath)initWithState:(id)state pathStep:(id)step
 {
-  v7 = a3;
-  v8 = a4;
+  stateCopy = state;
+  stepCopy = step;
   v12.receiver = self;
   v12.super_class = OctagonStateTransitionPath;
   v9 = [(OctagonStateTransitionPath *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_initialState, a3);
-    objc_storeStrong(&v10->_pathStep, a4);
+    objc_storeStrong(&v9->_initialState, state);
+    objc_storeStrong(&v10->_pathStep, step);
   }
 
   return v10;
 }
 
-+ (id)pathFromDictionary:(id)a3
++ (id)pathFromDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [v3 allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allKeys = [dictionaryCopy allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (!v5)
   {
     v11 = 0;
@@ -69,11 +69,11 @@
     {
       if (*v16 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(allKeys);
       }
 
       v9 = *(*(&v15 + 1) + 8 * i);
-      v10 = [v3 objectForKeyedSubscript:v9];
+      v10 = [dictionaryCopy objectForKeyedSubscript:v9];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -94,7 +94,7 @@ LABEL_14:
       }
     }
 
-    v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v6 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     v11 = 0;
     if (v6)
     {

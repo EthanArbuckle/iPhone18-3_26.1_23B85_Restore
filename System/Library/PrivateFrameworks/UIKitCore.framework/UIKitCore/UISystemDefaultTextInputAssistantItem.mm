@@ -1,27 +1,27 @@
 @interface UISystemDefaultTextInputAssistantItem
-- (BOOL)canPerformSystemButtonActionForStyle:(int64_t)a3;
-- (SEL)_responderSelectorForSystemButtonStyle:(int64_t)a3;
+- (BOOL)canPerformSystemButtonActionForStyle:(int64_t)style;
+- (SEL)_responderSelectorForSystemButtonStyle:(int64_t)style;
 - (UISystemDefaultTextInputAssistantItem)init;
 - (UISystemDefaultTextInputAssistantItemDelegate)delegate;
 - (void)_updateIsSystemItem;
-- (void)analyticsDispatchWithActionStyle:(int64_t)a3;
-- (void)assistantPaste:(id)a3 forEvent:(id)a4;
-- (void)performSystemButtonActionForStyle:(int64_t)a3;
-- (void)setLeadingBarButtonGroups:(id)a3;
-- (void)setTrailingBarButtonGroups:(id)a3;
+- (void)analyticsDispatchWithActionStyle:(int64_t)style;
+- (void)assistantPaste:(id)paste forEvent:(id)event;
+- (void)performSystemButtonActionForStyle:(int64_t)style;
+- (void)setLeadingBarButtonGroups:(id)groups;
+- (void)setTrailingBarButtonGroups:(id)groups;
 @end
 
 @implementation UISystemDefaultTextInputAssistantItem
 
 - (void)_updateIsSystemItem
 {
-  v6 = [(UISystemDefaultTextInputAssistantItem *)self defaultSystemLeadingBarButtonGroups];
-  v3 = [(UITextInputAssistantItem *)self leadingBarButtonGroups];
-  if (_areBarButtonGroupsBasicallyEqualToSystemDefaults(v6, v3))
+  defaultSystemLeadingBarButtonGroups = [(UISystemDefaultTextInputAssistantItem *)self defaultSystemLeadingBarButtonGroups];
+  leadingBarButtonGroups = [(UITextInputAssistantItem *)self leadingBarButtonGroups];
+  if (_areBarButtonGroupsBasicallyEqualToSystemDefaults(defaultSystemLeadingBarButtonGroups, leadingBarButtonGroups))
   {
-    v4 = [(UISystemDefaultTextInputAssistantItem *)self defaultSystemTrailingBarButtonGroups];
-    v5 = [(UITextInputAssistantItem *)self trailingBarButtonGroups];
-    self->_systemItem = _areBarButtonGroupsBasicallyEqualToSystemDefaults(v4, v5);
+    defaultSystemTrailingBarButtonGroups = [(UISystemDefaultTextInputAssistantItem *)self defaultSystemTrailingBarButtonGroups];
+    trailingBarButtonGroups = [(UITextInputAssistantItem *)self trailingBarButtonGroups];
+    self->_systemItem = _areBarButtonGroupsBasicallyEqualToSystemDefaults(defaultSystemTrailingBarButtonGroups, trailingBarButtonGroups);
   }
 
   else
@@ -54,36 +54,36 @@
   return v2;
 }
 
-- (void)setLeadingBarButtonGroups:(id)a3
+- (void)setLeadingBarButtonGroups:(id)groups
 {
   v4.receiver = self;
   v4.super_class = UISystemDefaultTextInputAssistantItem;
-  [(UITextInputAssistantItem *)&v4 setLeadingBarButtonGroups:a3];
+  [(UITextInputAssistantItem *)&v4 setLeadingBarButtonGroups:groups];
   [(UISystemDefaultTextInputAssistantItem *)self _updateIsSystemItem];
 }
 
-- (void)setTrailingBarButtonGroups:(id)a3
+- (void)setTrailingBarButtonGroups:(id)groups
 {
   v4.receiver = self;
   v4.super_class = UISystemDefaultTextInputAssistantItem;
-  [(UITextInputAssistantItem *)&v4 setTrailingBarButtonGroups:a3];
+  [(UITextInputAssistantItem *)&v4 setTrailingBarButtonGroups:groups];
   [(UISystemDefaultTextInputAssistantItem *)self _updateIsSystemItem];
 }
 
-- (void)assistantPaste:(id)a3 forEvent:(id)a4
+- (void)assistantPaste:(id)paste forEvent:(id)event
 {
-  v5 = [a4 _authenticationMessage];
-  [UIPasteboard _attemptAuthenticationWithMessage:v5];
+  _authenticationMessage = [event _authenticationMessage];
+  [UIPasteboard _attemptAuthenticationWithMessage:_authenticationMessage];
 
   [(UISystemDefaultTextInputAssistantItem *)self performSystemButtonActionForStyle:2];
 }
 
-- (SEL)_responderSelectorForSystemButtonStyle:(int64_t)a3
+- (SEL)_responderSelectorForSystemButtonStyle:(int64_t)style
 {
   result = 0;
-  if (a3 > 4)
+  if (style > 4)
   {
-    switch(a3)
+    switch(style)
     {
       case 5:
         return sel_toggleBoldface_;
@@ -94,14 +94,14 @@
     }
   }
 
-  else if (a3)
+  else if (style)
   {
-    if (a3 == 1)
+    if (style == 1)
     {
       return sel_copy_;
     }
 
-    else if (a3 == 2)
+    else if (style == 2)
     {
       return sel_paste_;
     }
@@ -115,16 +115,16 @@
   return result;
 }
 
-- (BOOL)canPerformSystemButtonActionForStyle:(int64_t)a3
+- (BOOL)canPerformSystemButtonActionForStyle:(int64_t)style
 {
   v5 = +[UIKeyboardImpl activeInstance];
-  v6 = [v5 delegateAsResponder];
-  v7 = [v6 _responderForEditing];
+  delegateAsResponder = [v5 delegateAsResponder];
+  _responderForEditing = [delegateAsResponder _responderForEditing];
 
-  v8 = [(UISystemDefaultTextInputAssistantItem *)self _responderSelectorForSystemButtonStyle:a3];
+  v8 = [(UISystemDefaultTextInputAssistantItem *)self _responderSelectorForSystemButtonStyle:style];
   if (v8)
   {
-    v9 = [v7 canPerformAction:v8 withSender:0];
+    v9 = [_responderForEditing canPerformAction:v8 withSender:0];
   }
 
   else
@@ -135,43 +135,43 @@
   return v9;
 }
 
-- (void)analyticsDispatchWithActionStyle:(int64_t)a3
+- (void)analyticsDispatchWithActionStyle:(int64_t)style
 {
-  if (a3 <= 4)
+  if (style <= 4)
   {
-    [UIKBAnalyticsDispatcher analyticsDispatchEventTextEditingOperation:*off_1E71255F0[a3] trigger:@"UCB"];
+    [UIKBAnalyticsDispatcher analyticsDispatchEventTextEditingOperation:*off_1E71255F0[style] trigger:@"UCB"];
   }
 }
 
-- (void)performSystemButtonActionForStyle:(int64_t)a3
+- (void)performSystemButtonActionForStyle:(int64_t)style
 {
   v5 = +[UIKeyboardImpl activeInstance];
   v6 = v5;
-  if (a3 <= 13)
+  if (style <= 13)
   {
-    if (a3 > 11)
+    if (style > 11)
     {
-      if (a3 != 12)
+      if (style != 12)
       {
         v10 = +[UIDictationController sharedInstance];
         [v10 setReasonType:12];
 
-        v11 = +[UIDictationController sharedInstance];
-        [v11 stopDictation];
+        _dictationReplacementAction = +[UIDictationController sharedInstance];
+        [_dictationReplacementAction stopDictation];
 LABEL_38:
 
         goto LABEL_39;
       }
 
       v18 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v19 = [v18 responder];
-      v20 = [v19 inputAssistantItem];
-      v11 = [v20 _dictationReplacementAction];
+      responder = [v18 responder];
+      inputAssistantItem = [responder inputAssistantItem];
+      _dictationReplacementAction = [inputAssistantItem _dictationReplacementAction];
 
-      if (v11)
+      if (_dictationReplacementAction)
       {
-        v17 = [v11 sender];
-        [v11 performWithSender:v17 target:0];
+        sender = [_dictationReplacementAction sender];
+        [_dictationReplacementAction performWithSender:sender target:0];
       }
 
       else if (+[UIDictationController isRunning])
@@ -179,23 +179,23 @@ LABEL_38:
         v24 = +[UIDictationController sharedInstance];
         [v24 setReasonType:12];
 
-        v17 = +[UIDictationController sharedInstance];
-        [v17 stopDictation];
+        sender = +[UIDictationController sharedInstance];
+        [sender stopDictation];
       }
 
       else
       {
-        v17 = +[UIKeyboardInputModeController sharedInputModeController];
+        sender = +[UIKeyboardInputModeController sharedInputModeController];
         v25 = [UIDictationInputModeOptions dictationInputModeOptionsWithInvocationSource:@"UIDictationInputModeInvocationSourceUCBBar"];
-        [v17 switchToDictationInputModeWithOptions:v25];
+        [sender switchToDictationInputModeWithOptions:v25];
       }
     }
 
     else
     {
-      if (a3 != 9)
+      if (style != 9)
       {
-        if (a3 == 11)
+        if (style == 11)
         {
           [v5 presentEmojiPopoverViaTrigger:@"ucb" completion:0];
           goto LABEL_39;
@@ -204,24 +204,24 @@ LABEL_38:
         goto LABEL_28;
       }
 
-      v11 = _getResponderForEditing();
-      v14 = [(UITextInputAssistantItem *)self trailingBarButtonGroups];
-      v15 = [v14 lastObject];
-      v16 = [v15 _items];
-      v17 = [v16 firstObject];
+      _dictationReplacementAction = _getResponderForEditing();
+      trailingBarButtonGroups = [(UITextInputAssistantItem *)self trailingBarButtonGroups];
+      lastObject = [trailingBarButtonGroups lastObject];
+      _items = [lastObject _items];
+      sender = [_items firstObject];
 
-      if (v11 && (objc_opt_respondsToSelector() & 1) != 0 && v17)
+      if (_dictationReplacementAction && (objc_opt_respondsToSelector() & 1) != 0 && sender)
       {
-        [v11 performSelector:sel__showTextFormattingOptions_ withObject:v17];
+        [_dictationReplacementAction performSelector:sel__showTextFormattingOptions_ withObject:sender];
       }
     }
 
     goto LABEL_38;
   }
 
-  if (a3 > 17)
+  if (style > 17)
   {
-    switch(a3)
+    switch(style)
     {
       case 18:
         [v5 lookUpResponderChainForCustomInputView];
@@ -245,7 +245,7 @@ LABEL_38:
     goto LABEL_28;
   }
 
-  if (a3 == 14)
+  if (style == 14)
   {
     if (![v5 isMinimized])
     {
@@ -255,39 +255,39 @@ LABEL_38:
     v21 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
     [v21 setHideSystemInputAssistantView:1];
 
-    v11 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    [v11 minimize];
+    _dictationReplacementAction = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
+    [_dictationReplacementAction minimize];
     goto LABEL_38;
   }
 
-  if (a3 != 15)
+  if (style != 15)
   {
 LABEL_28:
-    if (![(UISystemDefaultTextInputAssistantItem *)self canPerformSystemButtonActionForStyle:a3])
+    if (![(UISystemDefaultTextInputAssistantItem *)self canPerformSystemButtonActionForStyle:style])
     {
       goto LABEL_39;
     }
 
     v22 = _getResponderForEditing();
-    v11 = v22;
-    if (a3 == 4)
+    _dictationReplacementAction = v22;
+    if (style == 4)
     {
-      v23 = [v22 undoManager];
-      [v23 redo];
+      undoManager = [v22 undoManager];
+      [undoManager redo];
     }
 
     else
     {
-      if (a3 != 3)
+      if (style != 3)
       {
-        v34 = [(UISystemDefaultTextInputAssistantItem *)self _responderSelectorForSystemButtonStyle:a3];
+        v34 = [(UISystemDefaultTextInputAssistantItem *)self _responderSelectorForSystemButtonStyle:style];
         v37[0] = MEMORY[0x1E69E9820];
         v37[1] = 3221225472;
         v37[2] = __75__UISystemDefaultTextInputAssistantItem_performSystemButtonActionForStyle___block_invoke;
         v37[3] = &unk_1E70F36D0;
-        v39 = self;
+        selfCopy = self;
         v40 = v34;
-        v38 = v11;
+        v38 = _dictationReplacementAction;
         [UIPasteboard _performAsDataOwnerForAction:v34 responder:v38 block:v37];
         v35 = UIKeyboardGetCurrentInputMode();
         v36 = TIStatisticGetKeyForInputMode();
@@ -296,8 +296,8 @@ LABEL_28:
         goto LABEL_51;
       }
 
-      v23 = [v22 undoManager];
-      [v23 undo];
+      undoManager = [v22 undoManager];
+      [undoManager undo];
     }
 
 LABEL_51:
@@ -305,13 +305,13 @@ LABEL_51:
     goto LABEL_38;
   }
 
-  v12 = [v5 delegateAsResponder];
-  v13 = [v12 _suppressSoftwareKeyboard];
+  delegateAsResponder = [v5 delegateAsResponder];
+  _suppressSoftwareKeyboard = [delegateAsResponder _suppressSoftwareKeyboard];
 
-  if (v13)
+  if (_suppressSoftwareKeyboard)
   {
-    v11 = [v6 delegateAsResponder];
-    [v11 _setSuppressSoftwareKeyboard:0];
+    _dictationReplacementAction = [v6 delegateAsResponder];
+    [_dictationReplacementAction _setSuppressSoftwareKeyboard:0];
     goto LABEL_38;
   }
 
@@ -340,8 +340,8 @@ LABEL_39:
   }
 
   v27 = +[UIKeyboardImpl activeInstance];
-  v28 = [v27 feedbackGenerator];
-  [v28 actionOccurred:v26];
+  feedbackGenerator = [v27 feedbackGenerator];
+  [feedbackGenerator actionOccurred:v26];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -353,11 +353,11 @@ LABEL_39:
     if (v32)
     {
       v33 = objc_loadWeakRetained(&self->_delegate);
-      [v33 didPerformSystemButtonActionForStyle:a3];
+      [v33 didPerformSystemButtonActionForStyle:style];
     }
   }
 
-  [(UISystemDefaultTextInputAssistantItem *)self analyticsDispatchWithActionStyle:a3];
+  [(UISystemDefaultTextInputAssistantItem *)self analyticsDispatchWithActionStyle:style];
 }
 
 id __75__UISystemDefaultTextInputAssistantItem_performSystemButtonActionForStyle___block_invoke(void *a1)

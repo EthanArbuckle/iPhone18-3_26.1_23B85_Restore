@@ -17,15 +17,15 @@
 - (id)_un_extensionContainerBundleIdentifier
 {
   v2 = objc_alloc(MEMORY[0x277CC1E50]);
-  v3 = [a1 identifier];
+  identifier = [self identifier];
   v10 = 0;
-  v4 = [v2 initWithBundleIdentifier:v3 error:&v10];
+  v4 = [v2 initWithBundleIdentifier:identifier error:&v10];
   v5 = v10;
 
   if (v4)
   {
-    v6 = [v4 containingBundleRecord];
-    v7 = [v6 bundleIdentifier];
+    containingBundleRecord = [v4 containingBundleRecord];
+    bundleIdentifier = [containingBundleRecord bundleIdentifier];
   }
 
   else
@@ -36,10 +36,10 @@
       [(NSExtension(UserNotificationsUI) *)v8 _un_extensionContainerBundleIdentifier];
     }
 
-    v7 = 0;
+    bundleIdentifier = 0;
   }
 
-  return v7;
+  return bundleIdentifier;
 }
 
 - (void)_un_customSectionIdentifiers
@@ -53,20 +53,20 @@
 - (id)un_allowedSourceIdentifiers
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v2 = [a1 _un_extensionContainerBundleIdentifier];
-  v3 = v2;
-  if (v2)
+  _un_extensionContainerBundleIdentifier = [self _un_extensionContainerBundleIdentifier];
+  v3 = _un_extensionContainerBundleIdentifier;
+  if (_un_extensionContainerBundleIdentifier)
   {
-    v7[0] = v2;
-    v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
+    v7[0] = _un_extensionContainerBundleIdentifier;
+    _un_customSectionIdentifiers = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
   }
 
   else
   {
-    v4 = [a1 _un_customSectionIdentifiers];
+    _un_customSectionIdentifiers = [self _un_customSectionIdentifiers];
   }
 
-  v5 = v4;
+  v5 = _un_customSectionIdentifiers;
 
   return v5;
 }
@@ -74,8 +74,8 @@
 - (id)un_supportedCategoryIdentifiers
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKey:@"UNNotificationExtensionCategory"];
+  attributes = [self attributes];
+  v2 = [attributes objectForKey:@"UNNotificationExtensionCategory"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -108,19 +108,19 @@ LABEL_9:
 
 - (id)_un_contentSizeRatio
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKey:@"UNNotificationExtensionInitialContentSizeRatio"];
+  attributes = [self attributes];
+  v2 = [attributes objectForKey:@"UNNotificationExtensionInitialContentSizeRatio"];
 
   return v2;
 }
 
 - (double)un_effectiveContentSizeRatio
 {
-  v1 = [a1 _un_contentSizeRatio];
-  v2 = v1;
-  if (v1)
+  _un_contentSizeRatio = [self _un_contentSizeRatio];
+  v2 = _un_contentSizeRatio;
+  if (_un_contentSizeRatio)
   {
-    [v1 floatValue];
+    [_un_contentSizeRatio floatValue];
     v4 = v3;
   }
 
@@ -134,42 +134,42 @@ LABEL_9:
 
 - (uint64_t)un_isDefaultContentHidden
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKey:@"UNNotificationExtensionDefaultContentHidden"];
-  v3 = [v2 BOOLValue];
+  attributes = [self attributes];
+  v2 = [attributes objectForKey:@"UNNotificationExtensionDefaultContentHidden"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)un_isDefaultTitleOverridden
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKey:@"UNNotificationExtensionOverridesDefaultTitle"];
-  v3 = [v2 BOOLValue];
+  attributes = [self attributes];
+  v2 = [attributes objectForKey:@"UNNotificationExtensionOverridesDefaultTitle"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)un_isUserInteractionEnabled
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKey:@"UNNotificationExtensionUserInteractionEnabled"];
-  v3 = [v2 BOOLValue];
+  attributes = [self attributes];
+  v2 = [attributes objectForKey:@"UNNotificationExtensionUserInteractionEnabled"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)_un_extensionContainerBundleIdentifier
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a1;
-  v6 = [a2 identifier];
-  v7 = [a3 localizedDescription];
+  selfCopy = self;
+  identifier = [a2 identifier];
+  localizedDescription = [a3 localizedDescription];
   v8 = 138543618;
-  v9 = v6;
+  v9 = identifier;
   v10 = 2114;
-  v11 = v7;
-  _os_log_error_impl(&dword_23AB78000, v5, OS_LOG_TYPE_ERROR, "Encountered error obtaining application extension record for extension %{public}@: %{public}@", &v8, 0x16u);
+  v11 = localizedDescription;
+  _os_log_error_impl(&dword_23AB78000, selfCopy, OS_LOG_TYPE_ERROR, "Encountered error obtaining application extension record for extension %{public}@: %{public}@", &v8, 0x16u);
 }
 
 - (void)un_supportedCategoryIdentifiers

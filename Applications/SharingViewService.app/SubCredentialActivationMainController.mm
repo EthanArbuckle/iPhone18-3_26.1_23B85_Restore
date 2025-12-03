@@ -1,29 +1,29 @@
 @interface SubCredentialActivationMainController
 - (unint64_t)supportedInterfaceOrientations;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)dismiss:(int)a3;
-- (void)dismissAnimated:(BOOL)a3 completion:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)dismiss:(int)dismiss;
+- (void)dismissAnimated:(BOOL)animated completion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewFetchContent;
 - (void)viewPresentStartViewControllerIfReady;
 - (void)viewUpdateAppInfo;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SubCredentialActivationMainController
 
-- (void)dismissAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   if (!self->_dismissed)
   {
     self->_dismissed = 1;
     if (dword_1001BEEA8 <= 30 && (dword_1001BEEA8 != -1 || _LogCategory_Initialize()))
     {
       v7 = "no";
-      if (v4)
+      if (animatedCopy)
       {
         v7 = "yes";
       }
@@ -32,45 +32,45 @@
       LogPrintF();
     }
 
-    v8 = [(SubCredentialActivationMainController *)self _remoteViewControllerProxy];
-    v9 = [(SubCredentialActivationMainController *)self proxCardNavigationController];
+    _remoteViewControllerProxy = [(SubCredentialActivationMainController *)self _remoteViewControllerProxy];
+    proxCardNavigationController = [(SubCredentialActivationMainController *)self proxCardNavigationController];
 
-    if (v9)
+    if (proxCardNavigationController)
     {
-      v10 = [(SubCredentialActivationMainController *)self proxCardNavigationController];
+      proxCardNavigationController2 = [(SubCredentialActivationMainController *)self proxCardNavigationController];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_10011D9D4;
       v12[3] = &unk_1001959D0;
-      v13 = v8;
-      v14 = v6;
-      [v10 dismissViewControllerAnimated:v4 completion:v12];
+      v13 = _remoteViewControllerProxy;
+      v14 = completionCopy;
+      [proxCardNavigationController2 dismissViewControllerAnimated:animatedCopy completion:v12];
     }
 
     else
     {
-      [v8 dismiss];
-      if (v6)
+      [_remoteViewControllerProxy dismiss];
+      if (completionCopy)
       {
-        v6[2](v6);
+        completionCopy[2](completionCopy);
       }
     }
   }
 }
 
-- (void)dismiss:(int)a3
+- (void)dismiss:(int)dismiss
 {
   if (dword_1001BEEA8 <= 30 && (dword_1001BEEA8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 
-  [(SubCredentialActivationMainController *)self dismissAnimated:a3 != 19 completion:0];
+  [(SubCredentialActivationMainController *)self dismissAnimated:dismiss != 19 completion:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (!self->_dismissed)
   {
     if (dword_1001BEEA8 <= 50 && (dword_1001BEEA8 != -1 || _LogCategory_Initialize()))
@@ -91,12 +91,12 @@
   self->_appeared = 0;
   v7.receiver = self;
   v7.super_class = SubCredentialActivationMainController;
-  [(SVSBaseMainController *)&v7 viewDidDisappear:v3];
+  [(SVSBaseMainController *)&v7 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   self->_appeared = 1;
   if (dword_1001BEEA8 <= 30 && (dword_1001BEEA8 != -1 || _LogCategory_Initialize()))
   {
@@ -105,15 +105,15 @@
 
   v5.receiver = self;
   v5.super_class = SubCredentialActivationMainController;
-  [(SubCredentialActivationMainController *)&v5 viewDidAppear:v3];
+  [(SubCredentialActivationMainController *)&v5 viewDidAppear:appearCopy];
   [(SubCredentialActivationMainController *)self viewPresentStartViewControllerIfReady];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = SubCredentialActivationMainController;
-  [(SubCredentialActivationMainController *)&v3 viewWillAppear:a3];
+  [(SubCredentialActivationMainController *)&v3 viewWillAppear:appear];
   if (dword_1001BEEA8 <= 30 && (dword_1001BEEA8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -192,18 +192,18 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(SubCredentialActivationMainController *)self view];
-  v3 = [v2 window];
+  view = [(SubCredentialActivationMainController *)self view];
+  window = [view window];
 
-  if (!v3)
+  if (!window)
   {
     return 30;
   }
 
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return (1 << [UIApp activeInterfaceOrientation]);
   }
@@ -214,12 +214,12 @@
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 userInfo];
+  completionCopy = completion;
+  userInfo = [context userInfo];
   userInfo = self->super._userInfo;
-  self->super._userInfo = v7;
+  self->super._userInfo = userInfo;
 
   if (dword_1001BEEA8 <= 30 && (dword_1001BEEA8 != -1 || _LogCategory_Initialize()))
   {
@@ -283,9 +283,9 @@
   issuerID = self->_issuerID;
   self->_issuerID = v14;
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 
   [(SubCredentialActivationMainController *)self viewFetchContent];

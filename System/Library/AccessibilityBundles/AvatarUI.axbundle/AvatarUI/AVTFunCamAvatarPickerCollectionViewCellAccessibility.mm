@@ -1,16 +1,16 @@
 @interface AVTFunCamAvatarPickerCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation AVTFunCamAvatarPickerCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVTFunCamAvatarPickerCollectionViewCell" hasInstanceMethod:@"accessoryButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTFunCamAvatarPickerCollectionViewCell" hasInstanceMethod:@"selectionVisible" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVTFunCamAvatarPickerCollectionViewCell" hasInstanceMethod:@"accessoryButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTFunCamAvatarPickerCollectionViewCell" hasInstanceMethod:@"selectionVisible" withFullSignature:{"B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

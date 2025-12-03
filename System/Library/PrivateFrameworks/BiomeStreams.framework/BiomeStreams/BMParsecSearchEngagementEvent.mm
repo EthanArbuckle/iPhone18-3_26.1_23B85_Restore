@@ -1,38 +1,38 @@
 @interface BMParsecSearchEngagementEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMParsecSearchEngagementEvent)initWithCoder:(id)a3;
-- (BMParsecSearchEngagementEvent)initWithProto:(id)a3;
-- (BMParsecSearchEngagementEvent)initWithProtoData:(id)a3;
-- (BMParsecSearchEngagementEvent)initWithUniqueId:(id)a3 resultId:(id)a4 domainId:(id)a5 personaId:(id)a6 absoluteTimestamp:(double)a7 userInput:(id)a8 completedQuery:(id)a9 entities:(id)a10 contentProtection:(id)a11;
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMParsecSearchEngagementEvent)initWithCoder:(id)coder;
+- (BMParsecSearchEngagementEvent)initWithProto:(id)proto;
+- (BMParsecSearchEngagementEvent)initWithProtoData:(id)data;
+- (BMParsecSearchEngagementEvent)initWithUniqueId:(id)id resultId:(id)resultId domainId:(id)domainId personaId:(id)personaId absoluteTimestamp:(double)timestamp userInput:(id)input completedQuery:(id)query entities:(id)self0 contentProtection:(id)self1;
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMParsecSearchEngagementEvent
 
-- (BMParsecSearchEngagementEvent)initWithUniqueId:(id)a3 resultId:(id)a4 domainId:(id)a5 personaId:(id)a6 absoluteTimestamp:(double)a7 userInput:(id)a8 completedQuery:(id)a9 entities:(id)a10 contentProtection:(id)a11
+- (BMParsecSearchEngagementEvent)initWithUniqueId:(id)id resultId:(id)resultId domainId:(id)domainId personaId:(id)personaId absoluteTimestamp:(double)timestamp userInput:(id)input completedQuery:(id)query entities:(id)self0 contentProtection:(id)self1
 {
-  v19 = a3;
-  obj = a4;
-  v20 = a4;
-  v33 = a5;
-  v29 = a6;
-  v32 = a6;
-  v30 = a8;
-  v21 = a8;
-  v31 = a9;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  if (v19)
+  idCopy = id;
+  obj = resultId;
+  resultIdCopy = resultId;
+  domainIdCopy = domainId;
+  personaIdCopy = personaId;
+  personaIdCopy2 = personaId;
+  inputCopy = input;
+  inputCopy2 = input;
+  queryCopy = query;
+  queryCopy2 = query;
+  entitiesCopy = entities;
+  protectionCopy = protection;
+  if (idCopy)
   {
-    if (v20)
+    if (resultIdCopy)
     {
       goto LABEL_3;
     }
@@ -41,10 +41,10 @@
   else
   {
     [BMParsecSearchEngagementEvent initWithUniqueId:resultId:domainId:personaId:absoluteTimestamp:userInput:completedQuery:entities:contentProtection:];
-    if (v20)
+    if (resultIdCopy)
     {
 LABEL_3:
-      if (v21)
+      if (inputCopy2)
       {
         goto LABEL_4;
       }
@@ -54,17 +54,17 @@ LABEL_3:
   }
 
   [BMParsecSearchEngagementEvent initWithUniqueId:resultId:domainId:personaId:absoluteTimestamp:userInput:completedQuery:entities:contentProtection:];
-  if (v21)
+  if (inputCopy2)
   {
 LABEL_4:
-    if (v22)
+    if (queryCopy2)
     {
       goto LABEL_5;
     }
 
 LABEL_12:
     [BMParsecSearchEngagementEvent initWithUniqueId:resultId:domainId:personaId:absoluteTimestamp:userInput:completedQuery:entities:contentProtection:];
-    if (v23)
+    if (entitiesCopy)
     {
       goto LABEL_6;
     }
@@ -74,13 +74,13 @@ LABEL_12:
 
 LABEL_11:
   [BMParsecSearchEngagementEvent initWithUniqueId:resultId:domainId:personaId:absoluteTimestamp:userInput:completedQuery:entities:contentProtection:];
-  if (!v22)
+  if (!queryCopy2)
   {
     goto LABEL_12;
   }
 
 LABEL_5:
-  if (v23)
+  if (entitiesCopy)
   {
     goto LABEL_6;
   }
@@ -94,26 +94,26 @@ LABEL_6:
   v26 = v25;
   if (v25)
   {
-    objc_storeStrong(&v25->_uniqueId, a3);
+    objc_storeStrong(&v25->_uniqueId, id);
     objc_storeStrong(&v26->_resultId, obj);
-    objc_storeStrong(&v26->_domainId, a5);
-    objc_storeStrong(&v26->_personaId, v29);
-    v26->_absoluteTimestamp = a7;
-    objc_storeStrong(&v26->_userInput, v30);
-    objc_storeStrong(&v26->_completedQuery, v31);
-    objc_storeStrong(&v26->_entities, a10);
-    objc_storeStrong(&v26->_contentProtection, a11);
+    objc_storeStrong(&v26->_domainId, domainId);
+    objc_storeStrong(&v26->_personaId, personaIdCopy);
+    v26->_absoluteTimestamp = timestamp;
+    objc_storeStrong(&v26->_userInput, inputCopy);
+    objc_storeStrong(&v26->_completedQuery, queryCopy);
+    objc_storeStrong(&v26->_entities, entities);
+    objc_storeStrong(&v26->_contentProtection, protection);
   }
 
   return v26;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 2)
+  dataCopy = data;
+  if (version == 2)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -132,18 +132,18 @@ LABEL_6:
 
 - (id)jsonDict
 {
-  v2 = [(BMParsecSearchEngagementEvent *)self proto];
-  v3 = [v2 dictionaryRepresentation];
+  proto = [(BMParsecSearchEngagementEvent *)self proto];
+  dictionaryRepresentation = [proto dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMParsecSearchEngagementEvent *)self jsonDict];
+  jsonDict = [(BMParsecSearchEngagementEvent *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (!v4)
@@ -158,66 +158,66 @@ LABEL_6:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BMParsecSearchEngagementEvent *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"dat"];
+  coderCopy = coder;
+  encodeAsProto = [(BMParsecSearchEngagementEvent *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"dat"];
 }
 
-- (BMParsecSearchEngagementEvent)initWithCoder:(id)a3
+- (BMParsecSearchEngagementEvent)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E69C5D78];
-  v5 = a3;
-  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:v5 expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
+  coderCopy = coder;
+  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:coderCopy expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
 
   if (v6)
   {
     self = [(BMParsecSearchEngagementEvent *)self initWithProtoData:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMParsecSearchEngagementEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMParsecSearchEngagementEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMParsecSearchEngagementEvent)initWithProto:(id)a3
+- (BMParsecSearchEngagementEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = protoCopy;
       if ([v5 hasUniqueId]&& [v5 hasResultId]&& [v5 hasAbsoluteTimestamp]&& [v5 hasUserInput]&& ([v5 hasCompletedQuery]& 1) != 0)
       {
-        v19 = [v5 uniqueId];
-        v18 = [v5 resultId];
-        v6 = [v5 domainId];
-        v7 = [v5 personaId];
+        uniqueId = [v5 uniqueId];
+        resultId = [v5 resultId];
+        domainId = [v5 domainId];
+        personaId = [v5 personaId];
         [v5 absoluteTimestamp];
         v9 = v8;
-        v10 = [v5 userInput];
-        v11 = [v5 completedQuery];
-        v12 = [v5 entities];
-        v13 = [v12 _pas_mappedArrayWithTransform:&__block_literal_global_193];
-        v14 = [v5 contentProtection];
-        self = [(BMParsecSearchEngagementEvent *)self initWithUniqueId:v19 resultId:v18 domainId:v6 personaId:v7 absoluteTimestamp:v10 userInput:v11 completedQuery:v9 entities:v13 contentProtection:v14];
+        userInput = [v5 userInput];
+        completedQuery = [v5 completedQuery];
+        entities = [v5 entities];
+        v13 = [entities _pas_mappedArrayWithTransform:&__block_literal_global_193];
+        contentProtection = [v5 contentProtection];
+        self = [(BMParsecSearchEngagementEvent *)self initWithUniqueId:uniqueId resultId:resultId domainId:domainId personaId:personaId absoluteTimestamp:userInput userInput:completedQuery completedQuery:v9 entities:v13 contentProtection:contentProtection];
 
-        v15 = self;
+        selfCopy = self;
 LABEL_16:
 
         goto LABEL_17;
@@ -239,14 +239,14 @@ LABEL_16:
       }
     }
 
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_16;
   }
 
-  v15 = 0;
+  selfCopy = 0;
 LABEL_17:
 
-  return v15;
+  return selfCopy;
 }
 
 BMParsecSearchEntity *__47__BMParsecSearchEngagementEvent_initWithProto___block_invoke(uint64_t a1, void *a2)
@@ -257,55 +257,55 @@ BMParsecSearchEntity *__47__BMParsecSearchEngagementEvent_initWithProto___block_
   return v3;
 }
 
-- (BMParsecSearchEngagementEvent)initWithProtoData:(id)a3
+- (BMParsecSearchEngagementEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBParsecSearchEngagementEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBParsecSearchEngagementEvent alloc] initWithData:dataCopy];
 
     self = [(BMParsecSearchEngagementEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMParsecSearchEngagementEvent *)self uniqueId];
-  [v3 setUniqueId:v4];
+  uniqueId = [(BMParsecSearchEngagementEvent *)self uniqueId];
+  [v3 setUniqueId:uniqueId];
 
-  v5 = [(BMParsecSearchEngagementEvent *)self resultId];
-  [v3 setResultId:v5];
+  resultId = [(BMParsecSearchEngagementEvent *)self resultId];
+  [v3 setResultId:resultId];
 
-  v6 = [(BMParsecSearchEngagementEvent *)self domainId];
-  [v3 setDomainId:v6];
+  domainId = [(BMParsecSearchEngagementEvent *)self domainId];
+  [v3 setDomainId:domainId];
 
-  v7 = [(BMParsecSearchEngagementEvent *)self personaId];
-  [v3 setPersonaId:v7];
+  personaId = [(BMParsecSearchEngagementEvent *)self personaId];
+  [v3 setPersonaId:personaId];
 
   [(BMParsecSearchEngagementEvent *)self absoluteTimestamp];
   [v3 setAbsoluteTimestamp:?];
-  v8 = [(BMParsecSearchEngagementEvent *)self userInput];
-  [v3 setUserInput:v8];
+  userInput = [(BMParsecSearchEngagementEvent *)self userInput];
+  [v3 setUserInput:userInput];
 
-  v9 = [(BMParsecSearchEngagementEvent *)self completedQuery];
-  [v3 setCompletedQuery:v9];
+  completedQuery = [(BMParsecSearchEngagementEvent *)self completedQuery];
+  [v3 setCompletedQuery:completedQuery];
 
-  v10 = [(BMParsecSearchEngagementEvent *)self entities];
-  v11 = [v10 _pas_mappedArrayWithTransform:&__block_literal_global_196];
+  entities = [(BMParsecSearchEngagementEvent *)self entities];
+  v11 = [entities _pas_mappedArrayWithTransform:&__block_literal_global_196];
   v12 = [v11 mutableCopy];
   [v3 setEntities:v12];
 
-  v13 = [(BMParsecSearchEngagementEvent *)self contentProtection];
-  [v3 setContentProtection:v13];
+  contentProtection = [(BMParsecSearchEngagementEvent *)self contentProtection];
+  [v3 setContentProtection:contentProtection];
 
   return v3;
 }
@@ -319,17 +319,17 @@ BMParsecSearchEntity *__47__BMParsecSearchEngagementEvent_initWithProto___block_
   return v5 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMParsecSearchEngagementEvent *)self proto];
-    v7 = [v5 proto];
+    v5 = equalCopy;
+    proto = [(BMParsecSearchEngagementEvent *)self proto];
+    proto2 = [v5 proto];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [proto isEqual:proto2];
   }
 
   else
@@ -340,10 +340,10 @@ BMParsecSearchEntity *__47__BMParsecSearchEngagementEvent_initWithProto___block_
   return v8;
 }
 
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -363,7 +363,7 @@ BMParsecSearchEntity *__47__BMParsecSearchEngagementEvent_initWithProto___block_
           objc_enumerationMutation(v7);
         }
 
-        if (![*(*(&v15 + 1) + 8 * i) isCompleteWithContext:v6 error:{a4, v15}])
+        if (![*(*(&v15 + 1) + 8 * i) isCompleteWithContext:contextCopy error:{error, v15}])
         {
 
           goto LABEL_15;
@@ -385,10 +385,10 @@ BMParsecSearchEntity *__47__BMParsecSearchEngagementEvent_initWithProto___block_
     v12 = 1;
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"BMStreamErrorDomain" code:3 userInfo:0];
-    *a4 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else

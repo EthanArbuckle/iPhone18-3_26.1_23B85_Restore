@@ -1,18 +1,18 @@
 @interface VideoConversionTask
-+ (id)temporaryFileURLWithNameComponent:(id)a3 pathExtension:(id)a4;
++ (id)temporaryFileURLWithNameComponent:(id)component pathExtension:(id)extension;
 - (BOOL)isMetadataTrackExtractionConversion;
 - (BOOL)isPassthroughConversion;
 - (BOOL)requiresPhotosAdjustmentRendering;
 - (BOOL)wantsResultAsData;
 - (NSURL)outputMainResourceURL;
 - (NSURL)sourceMainResourceURL;
-- (VideoConversionTask)initWithSourceBookmarkDictionary:(id)a3 outputURLCollection:(id)a4 options:(id)a5 requestTracker:(id)a6;
+- (VideoConversionTask)initWithSourceBookmarkDictionary:(id)dictionary outputURLCollection:(id)collection options:(id)options requestTracker:(id)tracker;
 - (VideoConversionTaskProgressUpdateObserver)progressObserver;
 - (void)callCompletionHandler;
 - (void)didEnqueue;
 - (void)loadAsset;
 - (void)performConversion;
-- (void)resolveSourceBookmarkDictionary:(id)a3;
+- (void)resolveSourceBookmarkDictionary:(id)dictionary;
 - (void)updateResultTracker;
 @end
 
@@ -27,8 +27,8 @@
 
 - (BOOL)requiresPhotosAdjustmentRendering
 {
-  v2 = [(VideoConversionTask *)self options];
-  v3 = [v2 objectForKey:@"PAMediaConversionServiceOptionAdjustmentInformationKey"];
+  options = [(VideoConversionTask *)self options];
+  v3 = [options objectForKey:@"PAMediaConversionServiceOptionAdjustmentInformationKey"];
   v4 = v3 != 0;
 
   return v4;
@@ -36,27 +36,27 @@
 
 - (BOOL)isMetadataTrackExtractionConversion
 {
-  v2 = [(VideoConversionTask *)self options];
-  v3 = [v2 objectForKeyedSubscript:@"PAMediaConversionServiceOptionIsVideoMetadataTrackExtractionKey"];
-  v4 = [v3 BOOLValue];
+  options = [(VideoConversionTask *)self options];
+  v3 = [options objectForKeyedSubscript:@"PAMediaConversionServiceOptionIsVideoMetadataTrackExtractionKey"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isPassthroughConversion
 {
-  v2 = [(VideoConversionTask *)self options];
-  v3 = [v2 objectForKeyedSubscript:@"PAMediaConversionServiceOptionIsPassthroughConversionKey"];
-  v4 = [v3 BOOLValue];
+  options = [(VideoConversionTask *)self options];
+  v3 = [options objectForKeyedSubscript:@"PAMediaConversionServiceOptionIsPassthroughConversionKey"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (void)performConversion
 {
   v4 = +[NSDate date];
-  v3 = [(VideoConversionTask *)self resultInformation];
-  [v3 setObject:v4 forKeyedSubscript:@"PAMediaConversionServiceConversionStartDateKey"];
+  resultInformation = [(VideoConversionTask *)self resultInformation];
+  [resultInformation setObject:v4 forKeyedSubscript:@"PAMediaConversionServiceConversionStartDateKey"];
 }
 
 - (void)didEnqueue
@@ -68,18 +68,18 @@
 
 - (BOOL)wantsResultAsData
 {
-  v2 = [(VideoConversionTask *)self options];
-  v3 = [v2 objectForKeyedSubscript:@"PAMediaConversionServiceOptionWantsResultAsDataKey"];
-  v4 = [v3 BOOLValue];
+  options = [(VideoConversionTask *)self options];
+  v3 = [options objectForKeyedSubscript:@"PAMediaConversionServiceOptionWantsResultAsDataKey"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (void)updateResultTracker
 {
   [(MediaConversionRequestTracker *)self->_requestTracker setOutputInformation:self->_resultInformation];
-  v3 = [(VideoConversionTask *)self error];
-  [(MediaConversionRequestTracker *)self->_requestTracker setError:v3];
+  error = [(VideoConversionTask *)self error];
+  [(MediaConversionRequestTracker *)self->_requestTracker setError:error];
 
   v8[0] = @"videoConversionStatus";
   v4 = [NSNumber numberWithInteger:self->_status];
@@ -108,9 +108,9 @@
 
     if ([(VideoConversionTask *)obj status]!= 1)
     {
-      v2 = [(VideoConversionTask *)obj error];
+      error = [(VideoConversionTask *)obj error];
 
-      if (!v2)
+      if (!error)
       {
         v15 = NSLocalizedDescriptionKey;
         v16 = @"Conversion failed for unknown reason";
@@ -121,42 +121,42 @@
 
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
-        v8 = [(VideoConversionTask *)obj identifier];
-        v9 = [(VideoConversionTask *)obj error];
+        identifier = [(VideoConversionTask *)obj identifier];
+        error2 = [(VideoConversionTask *)obj error];
         *buf = 138543618;
-        v12 = v8;
+        v12 = identifier;
         v13 = 2114;
-        v14 = v9;
+        v14 = error2;
         _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Video conversion error for conversion task %{public}@: %{public}@", buf, 0x16u);
       }
     }
 
     v5 = +[NSDate date];
-    v6 = [(VideoConversionTask *)obj resultInformation];
-    [v6 setObject:v5 forKeyedSubscript:@"PAMediaConversionServiceConversionEndDateKey"];
+    resultInformation = [(VideoConversionTask *)obj resultInformation];
+    [resultInformation setObject:v5 forKeyedSubscript:@"PAMediaConversionServiceConversionEndDateKey"];
 
     [(VideoConversionTask *)obj updateResultTracker];
-    v7 = [(VideoConversionTask *)obj completionHandler];
-    v7[2](v7, [(VideoConversionTask *)obj status]);
+    completionHandler = [(VideoConversionTask *)obj completionHandler];
+    completionHandler[2](completionHandler, [(VideoConversionTask *)obj status]);
   }
 }
 
 - (void)loadAsset
 {
-  v3 = [(VideoConversionTask *)self error];
+  error = [(VideoConversionTask *)self error];
 
-  if (!v3)
+  if (!error)
   {
     v9 = AVURLAssetPreferPreciseDurationAndTimingKey;
     v10 = &__kCFBooleanTrue;
     v4 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-    v5 = [(VideoConversionTask *)self sourceMainResourceURL];
-    v6 = [AVURLAsset URLAssetWithURL:v5 options:v4];
+    sourceMainResourceURL = [(VideoConversionTask *)self sourceMainResourceURL];
+    v6 = [AVURLAsset URLAssetWithURL:sourceMainResourceURL options:v4];
     [(VideoConversionTask *)self setAsset:v6];
 
-    v7 = [(VideoConversionTask *)self asset];
+    asset = [(VideoConversionTask *)self asset];
 
-    if (!v7)
+    if (!asset)
     {
       v8 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:3 userInfo:0];
       [(VideoConversionTask *)self setError:v8];
@@ -166,29 +166,29 @@
 
 - (NSURL)outputMainResourceURL
 {
-  v2 = [(VideoConversionTask *)self outputURLCollection];
-  v3 = [v2 resourceURLForRole:@"PAMediaConversionResourceRoleMainResource"];
+  outputURLCollection = [(VideoConversionTask *)self outputURLCollection];
+  v3 = [outputURLCollection resourceURLForRole:@"PAMediaConversionResourceRoleMainResource"];
 
   return v3;
 }
 
 - (NSURL)sourceMainResourceURL
 {
-  v2 = [(VideoConversionTask *)self sourceURLCollection];
-  v3 = [v2 resourceURLForRole:@"PAMediaConversionResourceRoleMainResource"];
+  sourceURLCollection = [(VideoConversionTask *)self sourceURLCollection];
+  v3 = [sourceURLCollection resourceURLForRole:@"PAMediaConversionResourceRoleMainResource"];
 
   return v3;
 }
 
-- (void)resolveSourceBookmarkDictionary:(id)a3
+- (void)resolveSourceBookmarkDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [PAMediaConversionServiceResourceURLCollectionAccessProvider alloc];
-  v6 = [(VideoConversionTask *)self options];
-  v7 = [(PAMediaConversionServiceResourceURLCollectionAccessProvider *)v5 initWithOptions:v6];
+  options = [(VideoConversionTask *)self options];
+  v7 = [(PAMediaConversionServiceResourceURLCollectionAccessProvider *)v5 initWithOptions:options];
 
   v13 = 0;
-  v8 = [PAMediaConversionServiceResourceURLCollection collectionForBookmarkDataDictionaryRepresentation:v4 accessProvider:v7 error:&v13];
+  v8 = [PAMediaConversionServiceResourceURLCollection collectionForBookmarkDataDictionaryRepresentation:dictionaryCopy accessProvider:v7 error:&v13];
 
   v9 = v13;
   if (!v8)
@@ -197,8 +197,8 @@
   }
 
   [(VideoConversionTask *)self setSourceURLCollection:v8];
-  v10 = [(VideoConversionTask *)self requestTracker];
-  [v10 setSourceURLCollection:v8];
+  requestTracker = [(VideoConversionTask *)self requestTracker];
+  [requestTracker setSourceURLCollection:v8];
 
   if ([v8 allURLsAreReadable])
   {
@@ -211,9 +211,9 @@
 
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      v12 = [(VideoConversionTask *)self identifier];
+      identifier = [(VideoConversionTask *)self identifier];
       *buf = 138543618;
-      v15 = v12;
+      v15 = identifier;
       v16 = 2114;
       v17 = v11;
       _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Unable to access source URL for conversion task %{public}@: %{public}@", buf, 0x16u);
@@ -223,24 +223,24 @@
   }
 }
 
-- (VideoConversionTask)initWithSourceBookmarkDictionary:(id)a3 outputURLCollection:(id)a4 options:(id)a5 requestTracker:(id)a6
+- (VideoConversionTask)initWithSourceBookmarkDictionary:(id)dictionary outputURLCollection:(id)collection options:(id)options requestTracker:(id)tracker
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dictionaryCopy = dictionary;
+  collectionCopy = collection;
+  optionsCopy = options;
+  trackerCopy = tracker;
   v19.receiver = self;
   v19.super_class = VideoConversionTask;
   v14 = [(VideoConversionTask *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    [(VideoConversionTask *)v14 setRequestTracker:v13];
-    v16 = [NSMutableDictionary dictionaryWithDictionary:v12];
+    [(VideoConversionTask *)v14 setRequestTracker:trackerCopy];
+    v16 = [NSMutableDictionary dictionaryWithDictionary:optionsCopy];
     [(VideoConversionTask *)v15 setOptions:v16];
 
-    [(VideoConversionTask *)v15 resolveSourceBookmarkDictionary:v10];
-    [(VideoConversionTask *)v15 setOutputURLCollection:v11];
+    [(VideoConversionTask *)v15 resolveSourceBookmarkDictionary:dictionaryCopy];
+    [(VideoConversionTask *)v15 setOutputURLCollection:collectionCopy];
     v17 = +[NSMutableDictionary dictionary];
     [(VideoConversionTask *)v15 setResultInformation:v17];
   }
@@ -248,16 +248,16 @@
   return v15;
 }
 
-+ (id)temporaryFileURLWithNameComponent:(id)a3 pathExtension:(id)a4
++ (id)temporaryFileURLWithNameComponent:(id)component pathExtension:(id)extension
 {
-  v5 = a4;
-  v6 = a3;
+  extensionCopy = extension;
+  componentCopy = component;
   v7 = NSTemporaryDirectory();
-  v8 = [v7 stringByAppendingPathComponent:v6];
+  v8 = [v7 stringByAppendingPathComponent:componentCopy];
 
-  if (v5)
+  if (extensionCopy)
   {
-    v9 = [v8 stringByAppendingPathExtension:v5];
+    v9 = [v8 stringByAppendingPathExtension:extensionCopy];
 
     v8 = v9;
   }

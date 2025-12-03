@@ -1,34 +1,34 @@
 @interface ICASResultType
-- (ICASResultType)initWithResultType:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASResultType)initWithResultType:(int64_t)type;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASResultType
 
-- (ICASResultType)initWithResultType:(int64_t)a3
+- (ICASResultType)initWithResultType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = ICASResultType;
   result = [(ICASResultType *)&v5 init];
   if (result)
   {
-    result->_resultType = a3;
+    result->_resultType = type;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASResultType *)self resultType];
-  if ((v3 - 1) > 2)
+  resultType = [(ICASResultType *)self resultType];
+  if ((resultType - 1) > 2)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799AF098[v3 - 1];
+    return off_2799AF098[resultType - 1];
   }
 }
 

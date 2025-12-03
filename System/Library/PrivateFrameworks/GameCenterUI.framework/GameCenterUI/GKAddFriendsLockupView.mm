@@ -1,20 +1,20 @@
 @interface GKAddFriendsLockupView
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtC12GameCenterUI22GKAddFriendsLockupView)initWithFrame:(CGRect)a3 friendState:(int64_t)a4 metricsPageId:(id)a5 metricsPageType:(id)a6;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtC12GameCenterUI22GKAddFriendsLockupView)initWithFrame:(CGRect)frame friendState:(int64_t)state metricsPageId:(id)id metricsPageType:(id)type;
 - (id)addFriendsHandler;
-- (void)didTapButton:(id)a3;
+- (void)didTapButton:(id)button;
 - (void)layoutSubviews;
-- (void)setAddFriendsHandler:(id)a3;
+- (void)setAddFriendsHandler:(id)handler;
 @end
 
 @implementation GKAddFriendsLockupView
 
-- (_TtC12GameCenterUI22GKAddFriendsLockupView)initWithFrame:(CGRect)a3 friendState:(int64_t)a4 metricsPageId:(id)a5 metricsPageType:(id)a6
+- (_TtC12GameCenterUI22GKAddFriendsLockupView)initWithFrame:(CGRect)frame friendState:(int64_t)state metricsPageId:(id)id metricsPageType:(id)type
 {
   v7 = sub_24E347CF8();
   v9 = v8;
   v10 = sub_24E347CF8();
-  return GKAddFriendsLockupView.init(frame:friendState:metricsPageId:metricsPageType:)(a4, v7, v9, v10, v11);
+  return GKAddFriendsLockupView.init(frame:friendState:metricsPageId:metricsPageType:)(state, v7, v9, v10, v11);
 }
 
 - (id)addFriendsHandler
@@ -39,9 +39,9 @@
   return v4;
 }
 
-- (void)setAddFriendsHandler:(id)a3
+- (void)setAddFriendsHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -54,21 +54,21 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   GKAddFriendsLockupView.addFriendsHandler.setter(v4, v5);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   GKAddFriendsLockupView.layoutSubviews()();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
-  width = a3.width;
+  width = fitting.width;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   v7 = GKAddFriendsLockupView.measurements(fitting:in:)(width);
   v9 = v8;
   v11 = v10;
@@ -86,11 +86,11 @@
   return result;
 }
 
-- (void)didTapButton:(id)a3
+- (void)didTapButton:(id)button
 {
-  if (a3)
+  if (button)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_24E3487A8();
     swift_unknownObjectRelease();
@@ -99,7 +99,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_24DFA07AC();

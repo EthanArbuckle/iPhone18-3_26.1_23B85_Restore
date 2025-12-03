@@ -42,17 +42,17 @@
     y = v49.origin.y;
     width = v49.size.width;
     height = v49.size.height;
-    v32 = [(RedEyeRecolor *)self kernelRecovery];
+    kernelRecovery = [(RedEyeRecolor *)self kernelRecovery];
     v43[0] = v14;
     v43[1] = inputSource;
     v43[2] = v13;
     v43[3] = v15;
     v43[4] = self->inputRecovery;
-    v14 = [objc_msgSend(v32 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v43, 5), x, y, width, height), "imageByCroppingToRect:", v4, v6, v8, v10}];
+    v14 = [objc_msgSend(kernelRecovery applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v43, 5), x, y, width, height), "imageByCroppingToRect:", v4, v6, v8, v10}];
   }
 
   v33 = [+[CIFilter filterWithName:withInputParameters:](CIFilter outputImage:@"CheapRandomness"];
-  v34 = [(RedEyeRecolor *)self kernelRepair];
+  kernelRepair = [(RedEyeRecolor *)self kernelRepair];
   [(CIImage *)v14 extent];
   v42[0] = v14;
   v42[1] = inputSource;
@@ -65,7 +65,7 @@
   v42[6] = self->inputNoiseAmount;
   v42[7] = inputWhiteCutoff;
   v42[8] = self->inputChroma;
-  return [v34 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v42, 9), v37, v38, v39, v40}];
+  return [kernelRepair applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v42, 9), v37, v38, v39, v40}];
 }
 
 @end

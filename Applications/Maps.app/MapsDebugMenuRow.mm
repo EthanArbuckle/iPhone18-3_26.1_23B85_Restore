@@ -1,19 +1,19 @@
 @interface MapsDebugMenuRow
-- (void)_setAccessoriesForCell:(id)a3;
-- (void)configureCell:(id)a3;
-- (void)configureCollectionViewCell:(id)a3;
-- (void)setMenu:(id)a3;
+- (void)_setAccessoriesForCell:(id)cell;
+- (void)configureCell:(id)cell;
+- (void)configureCollectionViewCell:(id)cell;
+- (void)setMenu:(id)menu;
 @end
 
 @implementation MapsDebugMenuRow
 
-- (void)_setAccessoriesForCell:(id)a3
+- (void)_setAccessoriesForCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = cellCopy;
     v6 = [UIButton buttonWithType:1];
     v7 = +[UIButtonConfiguration plainButtonConfiguration];
     v8 = [UIImage systemImageNamed:@"ellipsis.circle"];
@@ -31,7 +31,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v4;
+      v9 = cellCopy;
       objc_initWeak(&location, self);
       v10 = [[UICellAccessoryPopUpMenu alloc] initWithMenu:self->_menu];
       v13[0] = _NSConcreteStackBlock;
@@ -52,39 +52,39 @@
   }
 }
 
-- (void)setMenu:(id)a3
+- (void)setMenu:(id)menu
 {
-  v5 = a3;
-  if (self->_menu != v5)
+  menuCopy = menu;
+  if (self->_menu != menuCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_menu, a3);
-    v6 = [(MapsDebugTableRow *)self currentCollectionViewCell];
-    if (v6)
+    v8 = menuCopy;
+    objc_storeStrong(&self->_menu, menu);
+    currentCollectionViewCell = [(MapsDebugTableRow *)self currentCollectionViewCell];
+    if (currentCollectionViewCell)
     {
-      [(MapsDebugMenuRow *)self _setAccessoriesForCell:v6];
+      [(MapsDebugMenuRow *)self _setAccessoriesForCell:currentCollectionViewCell];
     }
 
     else
     {
-      v7 = [(MapsDebugTableRow *)self currentCell];
-      [(MapsDebugMenuRow *)self _setAccessoriesForCell:v7];
+      currentCell = [(MapsDebugTableRow *)self currentCell];
+      [(MapsDebugMenuRow *)self _setAccessoriesForCell:currentCell];
     }
 
-    v5 = v8;
+    menuCopy = v8;
   }
 }
 
-- (void)configureCollectionViewCell:(id)a3
+- (void)configureCollectionViewCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v17.receiver = self;
   v17.super_class = MapsDebugMenuRow;
-  [(MapsDebugTableRow *)&v17 configureCollectionViewCell:v4];
-  v5 = v4;
-  v6 = [(MapsDebugTableRow *)self configureCollectionViewCellBlock];
+  [(MapsDebugTableRow *)&v17 configureCollectionViewCell:cellCopy];
+  v5 = cellCopy;
+  configureCollectionViewCellBlock = [(MapsDebugTableRow *)self configureCollectionViewCellBlock];
 
-  if (v6)
+  if (configureCollectionViewCellBlock)
   {
     objc_initWeak(&location, self);
     v11 = _NSConcreteStackBlock;
@@ -99,25 +99,25 @@
 
   else
   {
-    v7 = [(UIMenu *)self->_menu selectedElements];
-    v8 = [v7 firstObject];
-    v9 = [v8 title];
-    v10 = [v5 detailTextLabel];
-    [v10 setText:v9];
+    selectedElements = [(UIMenu *)self->_menu selectedElements];
+    firstObject = [selectedElements firstObject];
+    title = [firstObject title];
+    detailTextLabel = [v5 detailTextLabel];
+    [detailTextLabel setText:title];
   }
 
   [(MapsDebugMenuRow *)self _setAccessoriesForCell:v5, v11, v12, v13, v14];
 }
 
-- (void)configureCell:(id)a3
+- (void)configureCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v16.receiver = self;
   v16.super_class = MapsDebugMenuRow;
-  [(MapsDebugTableRow *)&v16 configureCell:v4];
-  v5 = [(MapsDebugTableRow *)self configureBlock];
+  [(MapsDebugTableRow *)&v16 configureCell:cellCopy];
+  configureBlock = [(MapsDebugTableRow *)self configureBlock];
 
-  if (v5)
+  if (configureBlock)
   {
     objc_initWeak(&location, self);
     v10 = _NSConcreteStackBlock;
@@ -125,21 +125,21 @@
     v12 = sub_100A84D6C;
     v13 = &unk_101633178;
     objc_copyWeak(&v14, &location);
-    [v4 setConfigurationUpdateHandler:&v10];
+    [cellCopy setConfigurationUpdateHandler:&v10];
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
   }
 
   else
   {
-    v6 = [(UIMenu *)self->_menu selectedElements];
-    v7 = [v6 firstObject];
-    v8 = [v7 title];
-    v9 = [v4 detailTextLabel];
-    [v9 setText:v8];
+    selectedElements = [(UIMenu *)self->_menu selectedElements];
+    firstObject = [selectedElements firstObject];
+    title = [firstObject title];
+    detailTextLabel = [cellCopy detailTextLabel];
+    [detailTextLabel setText:title];
   }
 
-  [(MapsDebugMenuRow *)self _setAccessoriesForCell:v4, v10, v11, v12, v13];
+  [(MapsDebugMenuRow *)self _setAccessoriesForCell:cellCopy, v10, v11, v12, v13];
 }
 
 @end

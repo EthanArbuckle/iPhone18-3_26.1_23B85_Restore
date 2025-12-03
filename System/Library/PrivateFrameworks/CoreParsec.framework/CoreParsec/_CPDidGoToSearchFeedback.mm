@@ -1,42 +1,42 @@
 @interface _CPDidGoToSearchFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPDidGoToSearchFeedback)init;
-- (_CPDidGoToSearchFeedback)initWithFacade:(id)a3;
-- (void)writeTo:(id)a3;
+- (_CPDidGoToSearchFeedback)initWithFacade:(id)facade;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPDidGoToSearchFeedback
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   timestamp = self->_timestamp;
-  if (timestamp != [v4 timestamp])
+  if (timestamp != [equalCopy timestamp])
   {
     goto LABEL_11;
   }
 
-  v6 = [(_CPDidGoToSearchFeedback *)self input];
-  v7 = [v4 input];
-  v8 = v7;
-  if ((v6 != 0) == (v7 == 0))
+  input = [(_CPDidGoToSearchFeedback *)self input];
+  input2 = [equalCopy input];
+  v8 = input2;
+  if ((input != 0) == (input2 == 0))
   {
 
     goto LABEL_11;
   }
 
-  v9 = [(_CPDidGoToSearchFeedback *)self input];
-  if (v9)
+  input3 = [(_CPDidGoToSearchFeedback *)self input];
+  if (input3)
   {
-    v10 = v9;
-    v11 = [(_CPDidGoToSearchFeedback *)self input];
-    v12 = [v4 input];
-    v13 = [v11 isEqual:v12];
+    v10 = input3;
+    input4 = [(_CPDidGoToSearchFeedback *)self input];
+    input5 = [equalCopy input];
+    v13 = [input4 isEqual:input5];
 
     if (!v13)
     {
@@ -49,7 +49,7 @@
   }
 
   endpoint = self->_endpoint;
-  if (endpoint != [v4 endpoint])
+  if (endpoint != [equalCopy endpoint])
   {
 LABEL_11:
     v16 = 0;
@@ -57,24 +57,24 @@ LABEL_11:
   }
 
   triggerEvent = self->_triggerEvent;
-  v16 = triggerEvent == [v4 triggerEvent];
+  v16 = triggerEvent == [equalCopy triggerEvent];
 LABEL_12:
 
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  a3;
+  to;
   if ([(_CPDidGoToSearchFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
   }
 
-  v5 = [(_CPDidGoToSearchFeedback *)self input];
+  input = [(_CPDidGoToSearchFeedback *)self input];
 
-  if (v5)
+  if (input)
   {
     input = self->_input;
     PBDataWriterWriteStringField();
@@ -109,25 +109,25 @@ LABEL_12:
   return v2;
 }
 
-- (_CPDidGoToSearchFeedback)initWithFacade:(id)a3
+- (_CPDidGoToSearchFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v10.receiver = self;
   v10.super_class = _CPDidGoToSearchFeedback;
   v5 = [(_CPDidGoToSearchFeedback *)&v10 init];
   if (v5)
   {
-    -[_CPDidGoToSearchFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    v6 = [v4 input];
+    -[_CPDidGoToSearchFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    input = [facadeCopy input];
 
-    if (v6)
+    if (input)
     {
-      v7 = [v4 input];
-      [(_CPDidGoToSearchFeedback *)v5 setInput:v7];
+      input2 = [facadeCopy input];
+      [(_CPDidGoToSearchFeedback *)v5 setInput:input2];
     }
 
-    -[_CPDidGoToSearchFeedback setEndpoint:](v5, "setEndpoint:", [v4 endpoint]);
-    -[_CPDidGoToSearchFeedback setTriggerEvent:](v5, "setTriggerEvent:", [v4 triggerEvent]);
+    -[_CPDidGoToSearchFeedback setEndpoint:](v5, "setEndpoint:", [facadeCopy endpoint]);
+    -[_CPDidGoToSearchFeedback setTriggerEvent:](v5, "setTriggerEvent:", [facadeCopy triggerEvent]);
     v8 = v5;
   }
 

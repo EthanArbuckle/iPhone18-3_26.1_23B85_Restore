@@ -3,20 +3,20 @@
 - (NSString)urlRawString;
 - (NSURL)url;
 - (_TtC18PodcastsFoundation22DownloadableURLOptions)init;
-- (id)init:(id)a3 nonAppInitiated:(BOOL)a4;
-- (void)setNonAppInitiated:(BOOL)a3;
+- (id)init:(id)init nonAppInitiated:(BOOL)initiated;
+- (void)setNonAppInitiated:(BOOL)initiated;
 @end
 
 @implementation DownloadableURLOptions
 
-- (id)init:(id)a3 nonAppInitiated:(BOOL)a4
+- (id)init:(id)init nonAppInitiated:(BOOL)initiated
 {
   ObjectType = swift_getObjectType();
   v7 = sub_1D917820C();
   v8 = (self + OBJC_IVAR____TtC18PodcastsFoundation22DownloadableURLOptions_urlRawString);
   *v8 = v7;
   v8[1] = v9;
-  *(self + OBJC_IVAR____TtC18PodcastsFoundation22DownloadableURLOptions_nonAppInitiated) = a4;
+  *(self + OBJC_IVAR____TtC18PodcastsFoundation22DownloadableURLOptions_nonAppInitiated) = initiated;
   v11.receiver = self;
   v11.super_class = ObjectType;
   return [(DownloadableURLOptions *)&v11 init];
@@ -30,7 +30,7 @@
   v6 = &v16 - v5;
   v7 = *(self + OBJC_IVAR____TtC18PodcastsFoundation22DownloadableURLOptions_urlRawString);
   v8 = *(self + OBJC_IVAR____TtC18PodcastsFoundation22DownloadableURLOptions_urlRawString + 8);
-  v9 = self;
+  selfCopy = self;
   sub_1D9176BFC();
 
   v10 = sub_1D9176C2C();
@@ -64,11 +64,11 @@
   return v4;
 }
 
-- (void)setNonAppInitiated:(BOOL)a3
+- (void)setNonAppInitiated:(BOOL)initiated
 {
   v5 = OBJC_IVAR____TtC18PodcastsFoundation22DownloadableURLOptions_nonAppInitiated;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = initiated;
 }
 
 - (_TtC18PodcastsFoundation22DownloadableURLOptions)init

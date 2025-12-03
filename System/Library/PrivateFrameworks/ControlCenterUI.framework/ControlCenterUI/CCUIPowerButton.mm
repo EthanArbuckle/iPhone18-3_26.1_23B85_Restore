@@ -1,10 +1,10 @@
 @interface CCUIPowerButton
 - (BOOL)isSelected;
-- (CCUIPowerButton)initWithCoder:(id)a3;
-- (CCUIPowerButton)initWithFrame:(CGRect)a3;
-- (CCUIPowerButton)initWithFrame:(CGRect)a3 luminanceMap:(id)a4;
+- (CCUIPowerButton)initWithCoder:(id)coder;
+- (CCUIPowerButton)initWithFrame:(CGRect)frame;
+- (CCUIPowerButton)initWithFrame:(CGRect)frame luminanceMap:(id)map;
 - (void)layoutSubviews;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 - (void)updateAccessibilityButtonShapeAppearance;
 @end
 
@@ -17,17 +17,17 @@
   return [(CCUIPowerButton *)&v3 isSelected];
 }
 
-- (CCUIPowerButton)initWithFrame:(CGRect)a3 luminanceMap:(id)a4
+- (CCUIPowerButton)initWithFrame:(CGRect)frame luminanceMap:(id)map
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  return sub_21EA5907C(a4, x, y, width, height);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  mapCopy = map;
+  return sub_21EA5907C(map, x, y, width, height);
 }
 
-- (CCUIPowerButton)initWithCoder:(id)a3
+- (CCUIPowerButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR___CCUIPowerButton_accessibilityButtonShapeView) = 0;
   result = sub_21EAA94A0();
@@ -35,20 +35,20 @@
   return result;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v5 = type metadata accessor for PowerButton();
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(CCUIPowerButton *)&v9 isSelected];
-  v8.receiver = v6;
+  selfCopy = self;
+  isSelected = [(CCUIPowerButton *)&v9 isSelected];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(CSProminentButtonControl *)&v8 setSelected:v3];
-  if (v7 != [(CCUIPowerButton *)v6 isSelected])
+  [(CSProminentButtonControl *)&v8 setSelected:selectedCopy];
+  if (isSelected != [(CCUIPowerButton *)selfCopy isSelected])
   {
-    [(CCUIPowerButton *)v6 setSelected:0];
+    [(CCUIPowerButton *)selfCopy setSelected:0];
   }
 }
 
@@ -61,35 +61,35 @@
   v3 = *&v2[OBJC_IVAR___CCUIPowerButton_accessibilityButtonShapeView];
   if (v3)
   {
-    v4 = [v3 layer];
+    layer = [v3 layer];
     [v2 frame];
-    [v4 setCornerRadius_];
+    [layer setCornerRadius_];
 
-    v2 = v4;
+    v2 = layer;
   }
 }
 
 - (void)updateAccessibilityButtonShapeAppearance
 {
-  v5 = self;
+  selfCopy = self;
   if (UIAccessibilityButtonShapesEnabled())
   {
     sub_21EA5943C();
-    v2 = v5;
+    v2 = selfCopy;
   }
 
   else
   {
     v3 = OBJC_IVAR___CCUIPowerButton_accessibilityButtonShapeView;
-    [*(&v5->super.super.super.super.super.isa + OBJC_IVAR___CCUIPowerButton_accessibilityButtonShapeView) removeFromSuperview];
-    v4 = *(&v5->super.super.super.super.super.isa + v3);
-    *(&v5->super.super.super.super.super.isa + v3) = 0;
+    [*(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR___CCUIPowerButton_accessibilityButtonShapeView) removeFromSuperview];
+    v4 = *(&selfCopy->super.super.super.super.super.isa + v3);
+    *(&selfCopy->super.super.super.super.super.isa + v3) = 0;
 
     v2 = v4;
   }
 }
 
-- (CCUIPowerButton)initWithFrame:(CGRect)a3
+- (CCUIPowerButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

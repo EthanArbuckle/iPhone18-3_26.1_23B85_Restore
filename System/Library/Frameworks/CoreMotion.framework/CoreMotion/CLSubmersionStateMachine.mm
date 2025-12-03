@@ -1,12 +1,12 @@
 @interface CLSubmersionStateMachine
-- (CLSubmersionStateMachine)initWithType:(int64_t)a3;
-- (int64_t)stateFromDepth:(id)a3 forceSubmersion:(BOOL)a4;
+- (CLSubmersionStateMachine)initWithType:(int64_t)type;
+- (int64_t)stateFromDepth:(id)depth forceSubmersion:(BOOL)submersion;
 - (void)initializeThresholds;
 @end
 
 @implementation CLSubmersionStateMachine
 
-- (CLSubmersionStateMachine)initWithType:(int64_t)a3
+- (CLSubmersionStateMachine)initWithType:(int64_t)type
 {
   v9.receiver = self;
   v9.super_class = CLSubmersionStateMachine;
@@ -14,7 +14,7 @@
   v7 = v4;
   if (v4)
   {
-    v4->_type = a3;
+    v4->_type = type;
     objc_msgSend_initializeThresholds(v4, v5, v6);
   }
 
@@ -124,21 +124,21 @@ LABEL_16:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)stateFromDepth:(id)a3 forceSubmersion:(BOOL)a4
+- (int64_t)stateFromDepth:(id)depth forceSubmersion:(BOOL)submersion
 {
   v40 = *MEMORY[0x1E69E9840];
-  if (objc_msgSend_state(a3, a2, a3) > 199 || a4)
+  if (objc_msgSend_state(depth, a2, depth) > 199 || submersion)
   {
-    objc_msgSend_depth(a3, v7, v8);
+    objc_msgSend_depth(depth, v7, v8);
     if (v27 <= self->_sensorErrorThreshold)
     {
-      objc_msgSend_depth(a3, v25, v26);
+      objc_msgSend_depth(depth, v25, v26);
       if (v30 <= self->_pastMaxDepthThreshold)
       {
-        objc_msgSend_depth(a3, v28, v29);
+        objc_msgSend_depth(depth, v28, v29);
         if (v33 <= self->_nearDepthLimitThreshold)
         {
-          objc_msgSend_depth(a3, v31, v32);
+          objc_msgSend_depth(depth, v31, v32);
           if (v34 <= self->_deepThreshold)
           {
             result = 200;
@@ -178,8 +178,8 @@ LABEL_16:
     v9 = qword_1EAFE2870;
     if (os_log_type_enabled(qword_1EAFE2870, OS_LOG_TYPE_DEBUG))
     {
-      v12 = objc_msgSend_state(a3, v10, v11);
-      objc_msgSend_depth(a3, v13, v14);
+      v12 = objc_msgSend_state(depth, v10, v11);
+      objc_msgSend_depth(depth, v13, v14);
       *buf = 134218240;
       v37 = v12;
       v38 = 2048;
@@ -196,8 +196,8 @@ LABEL_16:
         dispatch_once(&qword_1EAFE2850, &unk_1F0E29760);
       }
 
-      objc_msgSend_state(a3, v19, v20);
-      objc_msgSend_depth(a3, v21, v22);
+      objc_msgSend_state(depth, v19, v20);
+      objc_msgSend_depth(depth, v21, v22);
       v23 = _os_log_send_and_compose_impl();
       sub_19B6BB7CC("Generic", 1, 0, 2, "[CLSubmersionStateMachine stateFromDepth:forceSubmersion:]", "CoreLocation: %s\n", v23);
       if (v23 != buf)
@@ -206,7 +206,7 @@ LABEL_16:
       }
     }
 
-    result = objc_msgSend_state(a3, v17, v18);
+    result = objc_msgSend_state(depth, v17, v18);
   }
 
   v35 = *MEMORY[0x1E69E9840];

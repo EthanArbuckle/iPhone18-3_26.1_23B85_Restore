@@ -1,17 +1,17 @@
 @interface ICNoteMergePolicy
-- (BOOL)resolveConflictingAttachment:(id)a3 with:(id)a4;
-- (BOOL)resolveConflictingAttachment:(id)a3 withInlineAttachment:(id)a4;
-- (BOOL)resolveConflictingAttachmentPreviewImage:(id)a3 with:(id)a4;
-- (BOOL)resolveConflictingDeviceMigrationState:(id)a3 with:(id)a4;
-- (BOOL)resolveConflictingFolder:(id)a3 with:(id)a4;
-- (BOOL)resolveConflictingInlineAttachment:(id)a3 with:(id)a4;
-- (BOOL)resolveConflictingLegacyTombstone:(id)a3 with:(id)a4;
-- (BOOL)resolveConflictingNote:(id)a3 with:(id)a4;
-- (BOOL)resolveConstraintConflict:(id)a3;
-- (BOOL)resolveConstraintConflicts:(id)a3 error:(id *)a4;
-- (BOOL)resolveOptimisticLockingVersionConflicts:(id)a3 error:(id *)a4;
+- (BOOL)resolveConflictingAttachment:(id)attachment with:(id)with;
+- (BOOL)resolveConflictingAttachment:(id)attachment withInlineAttachment:(id)inlineAttachment;
+- (BOOL)resolveConflictingAttachmentPreviewImage:(id)image with:(id)with;
+- (BOOL)resolveConflictingDeviceMigrationState:(id)state with:(id)with;
+- (BOOL)resolveConflictingFolder:(id)folder with:(id)with;
+- (BOOL)resolveConflictingInlineAttachment:(id)attachment with:(id)with;
+- (BOOL)resolveConflictingLegacyTombstone:(id)tombstone with:(id)with;
+- (BOOL)resolveConflictingNote:(id)note with:(id)with;
+- (BOOL)resolveConstraintConflict:(id)conflict;
+- (BOOL)resolveConstraintConflicts:(id)conflicts error:(id *)error;
+- (BOOL)resolveOptimisticLockingVersionConflicts:(id)conflicts error:(id *)error;
 - (ICNoteMergePolicy)init;
-- (void)resolveConflict:(id)a3 forWallClockMergeablesInObject:(id)a4;
+- (void)resolveConflict:(id)conflict forWallClockMergeablesInObject:(id)object;
 @end
 
 @implementation ICNoteMergePolicy
@@ -23,22 +23,22 @@
   return [(NSMergePolicy *)&v3 initWithMergeType:2];
 }
 
-- (BOOL)resolveOptimisticLockingVersionConflicts:(id)a3 error:(id *)a4
+- (BOOL)resolveOptimisticLockingVersionConflicts:(id)conflicts error:(id *)error
 {
   v89 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v74 = self;
+  conflictsCopy = conflicts;
+  selfCopy = self;
   v81.receiver = self;
   v81.super_class = ICNoteMergePolicy;
-  v7 = [(NSMergePolicy *)&v81 resolveOptimisticLockingVersionConflicts:v6 error:a4];
+  v7 = [(NSMergePolicy *)&v81 resolveOptimisticLockingVersionConflicts:conflictsCopy error:error];
   [MEMORY[0x277D36278] postBasicEvent:15];
-  if (v7 && !*a4)
+  if (v7 && !*error)
   {
     v79 = 0u;
     v80 = 0u;
     v77 = 0u;
     v78 = 0u;
-    obj = v6;
+    obj = conflictsCopy;
     v9 = [obj countByEnumeratingWithState:&v77 objects:v88 count:16];
     if (!v9)
     {
@@ -47,7 +47,7 @@
 
     v10 = v9;
     v64 = v7;
-    v65 = v6;
+    v65 = conflictsCopy;
     v11 = *v78;
     v75 = *v78;
 LABEL_8:
@@ -68,76 +68,76 @@ LABEL_8:
           [(ICNoteMergePolicy *)v86 resolveOptimisticLockingVersionConflicts:v13 error:&v87, v20];
         }
 
-        v16 = [v13 sourceObject];
-        v19 = [v16 managedObjectContext];
-        v21 = [v13 sourceObject];
-        [v19 deleteObject:v21];
+        sourceObject = [v13 sourceObject];
+        managedObjectContext = [sourceObject managedObjectContext];
+        sourceObject2 = [v13 sourceObject];
+        [managedObjectContext deleteObject:sourceObject2];
 
         goto LABEL_63;
       }
 
-      v14 = [v13 sourceObject];
+      sourceObject3 = [v13 sourceObject];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
-      v16 = [v13 sourceObject];
+      sourceObject = [v13 sourceObject];
       if (isKindOfClass)
       {
         objc_opt_class();
-        v17 = [v13 persistedSnapshot];
-        v18 = [v17 objectForKeyedSubscript:@"modificationDate"];
+        persistedSnapshot = [v13 persistedSnapshot];
+        v18 = [persistedSnapshot objectForKeyedSubscript:@"modificationDate"];
         if (v18)
         {
-          v19 = ICDynamicCast();
+          managedObjectContext = ICDynamicCast();
         }
 
         else
         {
-          v28 = [v13 cachedSnapshot];
-          v29 = [v28 objectForKeyedSubscript:@"modificationDate"];
-          v19 = ICDynamicCast();
+          cachedSnapshot = [v13 cachedSnapshot];
+          v29 = [cachedSnapshot objectForKeyedSubscript:@"modificationDate"];
+          managedObjectContext = ICDynamicCast();
 
           v11 = v75;
         }
 
         v30 = v10;
 
-        if (v19)
+        if (managedObjectContext)
         {
-          v31 = [v16 modificationDate];
-          v32 = [v31 compare:v19];
+          modificationDate = [sourceObject modificationDate];
+          v32 = [modificationDate compare:managedObjectContext];
 
           if (v32 == -1)
           {
-            [v16 setModificationDate:v19];
+            [sourceObject setModificationDate:managedObjectContext];
           }
         }
 
-        v33 = [v16 cryptoTag];
-        if (v33)
+        cryptoTag = [sourceObject cryptoTag];
+        if (cryptoTag)
         {
-          v34 = [v16 noteData];
-          v35 = [v34 cryptoTag];
-          if (v35)
+          noteData = [sourceObject noteData];
+          cryptoTag2 = [noteData cryptoTag];
+          if (cryptoTag2)
           {
-            v36 = [v16 cryptoInitializationVector];
-            if (v36)
+            cryptoInitializationVector = [sourceObject cryptoInitializationVector];
+            if (cryptoInitializationVector)
             {
-              v73 = [v16 noteData];
-              v37 = [v73 cryptoInitializationVector];
-              if (v37)
+              noteData2 = [sourceObject noteData];
+              cryptoInitializationVector2 = [noteData2 cryptoInitializationVector];
+              if (cryptoInitializationVector2)
               {
-                v72 = v37;
-                v38 = [v16 cryptoTag];
-                v70 = [v16 noteData];
-                [v70 cryptoTag];
-                v69 = v71 = v38;
-                if ([v38 isEqual:?])
+                v72 = cryptoInitializationVector2;
+                cryptoTag3 = [sourceObject cryptoTag];
+                noteData3 = [sourceObject noteData];
+                [noteData3 cryptoTag];
+                v69 = v71 = cryptoTag3;
+                if ([cryptoTag3 isEqual:?])
                 {
-                  v67 = [v16 cryptoInitializationVector];
-                  v68 = [v16 noteData];
-                  v66 = [v68 cryptoInitializationVector];
-                  v39 = [v67 isEqual:v66];
+                  cryptoInitializationVector3 = [sourceObject cryptoInitializationVector];
+                  noteData4 = [sourceObject noteData];
+                  cryptoInitializationVector4 = [noteData4 cryptoInitializationVector];
+                  v39 = [cryptoInitializationVector3 isEqual:cryptoInitializationVector4];
                 }
 
                 else
@@ -145,7 +145,7 @@ LABEL_8:
                   v39 = 0;
                 }
 
-                v37 = v72;
+                cryptoInitializationVector2 = v72;
               }
 
               else
@@ -174,26 +174,26 @@ LABEL_8:
         }
 
         v10 = v30;
-        if ([v16 isPasswordProtected] && !((+[ICCryptoStrategyFactory cipherVersionForObject:](ICCryptoStrategyFactory, "cipherVersionForObject:", v16) != 0) | v39 & 1))
+        if ([sourceObject isPasswordProtected] && !((+[ICCryptoStrategyFactory cipherVersionForObject:](ICCryptoStrategyFactory, "cipherVersionForObject:", sourceObject) != 0) | v39 & 1))
         {
           v52 = os_log_create("com.apple.notes", "CoreData");
           if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
           {
-            v58 = [v16 noteData];
-            v59 = [v58 ic_loggingIdentifier];
-            v60 = [v16 shortLoggingDescription];
+            noteData5 = [sourceObject noteData];
+            ic_loggingIdentifier = [noteData5 ic_loggingIdentifier];
+            shortLoggingDescription = [sourceObject shortLoggingDescription];
             *buf = 138412546;
-            v83 = v59;
+            v83 = ic_loggingIdentifier;
             v84 = 2112;
-            v85 = v60;
+            v85 = shortLoggingDescription;
             _os_log_error_impl(&dword_214D51000, v52, OS_LOG_TYPE_ERROR, "Re-saving note data (%@) because crypto goo has diverged for note: %@", buf, 0x16u);
           }
 
-          v53 = [v16 noteData];
-          [v53 setNeedsToBeSaved:1];
+          noteData6 = [sourceObject noteData];
+          [noteData6 setNeedsToBeSaved:1];
 
-          v54 = [v16 noteData];
-          [v54 saveNoteDataIfNeeded];
+          noteData7 = [sourceObject noteData];
+          [noteData7 saveNoteDataIfNeeded];
         }
 
         goto LABEL_62;
@@ -202,7 +202,7 @@ LABEL_8:
       objc_opt_class();
       v22 = objc_opt_isKindOfClass();
 
-      v16 = [v13 sourceObject];
+      sourceObject = [v13 sourceObject];
       if (v22)
       {
         break;
@@ -213,50 +213,50 @@ LABEL_8:
 
       if (v25)
       {
-        v16 = [v13 sourceObject];
+        sourceObject = [v13 sourceObject];
         objc_opt_class();
-        v26 = [v13 persistedSnapshot];
-        v27 = [v26 objectForKeyedSubscript:@"mergeableData"];
+        persistedSnapshot2 = [v13 persistedSnapshot];
+        v27 = [persistedSnapshot2 objectForKeyedSubscript:@"mergeableData"];
         if (v27)
         {
-          v19 = ICDynamicCast();
+          managedObjectContext = ICDynamicCast();
         }
 
         else
         {
-          v47 = [v13 cachedSnapshot];
-          v48 = [v47 objectForKeyedSubscript:@"mergeableData"];
-          v19 = ICDynamicCast();
+          cachedSnapshot2 = [v13 cachedSnapshot];
+          v48 = [cachedSnapshot2 objectForKeyedSubscript:@"mergeableData"];
+          managedObjectContext = ICDynamicCast();
 
           v11 = v75;
         }
 
-        if (v19)
+        if (managedObjectContext)
         {
           v49 = os_log_create("com.apple.notes", "CoreData");
           if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
           {
             v61 = objc_opt_class();
             v62 = v61;
-            v63 = [v16 identifier];
+            identifier = [sourceObject identifier];
             *buf = 138412546;
             v83 = v61;
             v84 = 2112;
-            v85 = v63;
+            v85 = identifier;
             _os_log_debug_impl(&dword_214D51000, v49, OS_LOG_TYPE_DEBUG, "Resolving mergeableData conflict for %@ (%@)", buf, 0x16u);
           }
 
-          v50 = [v16 attachmentModel];
-          [v50 mergeWithMergeableData:v19];
+          attachmentModel = [sourceObject attachmentModel];
+          [attachmentModel mergeWithMergeableData:managedObjectContext];
 
-          v51 = [v16 attachmentModel];
-          [v51 setMergeableDataDirty:1];
+          attachmentModel2 = [sourceObject attachmentModel];
+          [attachmentModel2 setMergeableDataDirty:1];
 
-          [v16 saveMergeableDataIfNeeded];
+          [sourceObject saveMergeableDataIfNeeded];
         }
 
 LABEL_62:
-        [(ICNoteMergePolicy *)v74 resolveConflict:v13 forWallClockMergeablesInObject:v16];
+        [(ICNoteMergePolicy *)selfCopy resolveConflict:v13 forWallClockMergeablesInObject:sourceObject];
 LABEL_63:
       }
 
@@ -265,7 +265,7 @@ LABEL_63:
         v10 = [obj countByEnumeratingWithState:&v77 objects:v88 count:16];
         if (!v10)
         {
-          v6 = v65;
+          conflictsCopy = v65;
           LOBYTE(v7) = v64;
           goto LABEL_5;
         }
@@ -275,54 +275,54 @@ LABEL_63:
     }
 
     objc_opt_class();
-    v23 = [v13 persistedSnapshot];
-    v24 = [v23 objectForKeyedSubscript:@"data"];
+    persistedSnapshot3 = [v13 persistedSnapshot];
+    v24 = [persistedSnapshot3 objectForKeyedSubscript:@"data"];
     if (v24)
     {
-      v19 = ICDynamicCast();
+      managedObjectContext = ICDynamicCast();
     }
 
     else
     {
-      v40 = [v13 cachedSnapshot];
-      v41 = [v40 objectForKeyedSubscript:@"data"];
-      v19 = ICDynamicCast();
+      cachedSnapshot3 = [v13 cachedSnapshot];
+      v41 = [cachedSnapshot3 objectForKeyedSubscript:@"data"];
+      managedObjectContext = ICDynamicCast();
 
       v11 = v75;
     }
 
-    if (v19)
+    if (managedObjectContext)
     {
       v42 = os_log_create("com.apple.notes", "CoreData");
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
       {
-        v55 = [v16 ic_loggingIdentifier];
-        v56 = [v16 note];
-        v57 = [v56 shortLoggingDescription];
+        ic_loggingIdentifier2 = [sourceObject ic_loggingIdentifier];
+        note = [sourceObject note];
+        shortLoggingDescription2 = [note shortLoggingDescription];
         *buf = 138412546;
-        v83 = v55;
+        v83 = ic_loggingIdentifier2;
         v84 = 2112;
-        v85 = v57;
+        v85 = shortLoggingDescription2;
         _os_log_debug_impl(&dword_214D51000, v42, OS_LOG_TYPE_DEBUG, "Resolving note data (%@) conflict for note: %@", buf, 0x16u);
       }
 
-      v43 = [v16 note];
-      v44 = [v43 isPasswordProtected];
+      note2 = [sourceObject note];
+      isPasswordProtected = [note2 isPasswordProtected];
 
-      v45 = [v16 note];
-      v46 = v45;
-      if (v44)
+      note3 = [sourceObject note];
+      v46 = note3;
+      if (isPasswordProtected)
       {
-        [v45 mergeEncryptedData:v19 mergeConflict:v13];
+        [note3 mergeEncryptedData:managedObjectContext mergeConflict:v13];
       }
 
       else
       {
-        [v45 mergeWithNoteData:v19];
+        [note3 mergeWithNoteData:managedObjectContext];
       }
 
-      [v16 setNeedsToBeSaved:1];
-      [v16 saveNoteDataIfNeeded];
+      [sourceObject setNeedsToBeSaved:1];
+      [sourceObject saveNoteDataIfNeeded];
     }
 
     goto LABEL_63;
@@ -332,7 +332,7 @@ LABEL_63:
   obj = os_log_create("com.apple.notes", "CoreData");
   if (os_log_type_enabled(obj, OS_LOG_TYPE_ERROR))
   {
-    [(ICNoteMergePolicy *)v6 resolveOptimisticLockingVersionConflicts:a4 error:obj];
+    [(ICNoteMergePolicy *)conflictsCopy resolveOptimisticLockingVersionConflicts:error error:obj];
   }
 
 LABEL_5:
@@ -340,11 +340,11 @@ LABEL_5:
   return v7;
 }
 
-- (void)resolveConflict:(id)a3 forWallClockMergeablesInObject:(id)a4
+- (void)resolveConflict:(id)conflict forWallClockMergeablesInObject:(id)object
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  conflictCopy = conflict;
+  objectCopy = object;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -368,8 +368,8 @@ LABEL_5:
 
         v9 = *(*(&v30 + 1) + 8 * v8);
         objc_opt_class();
-        v10 = [v5 persistedSnapshot];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        persistedSnapshot = [conflictCopy persistedSnapshot];
+        v11 = [persistedSnapshot objectForKeyedSubscript:v9];
         if (v11)
         {
           v12 = ICDynamicCast();
@@ -377,8 +377,8 @@ LABEL_5:
 
         else
         {
-          v13 = [v5 cachedSnapshot];
-          v14 = [v13 objectForKeyedSubscript:v9];
+          cachedSnapshot = [conflictCopy cachedSnapshot];
+          v14 = [cachedSnapshot objectForKeyedSubscript:v9];
           v12 = ICDynamicCast();
         }
 
@@ -389,18 +389,18 @@ LABEL_5:
           {
             v22 = objc_opt_class();
             v23 = v22;
-            v24 = [v6 ic_loggingIdentifier];
+            ic_loggingIdentifier = [objectCopy ic_loggingIdentifier];
             *buf = 138412802;
             v35 = v22;
             v36 = 2112;
             v37 = v9;
             v38 = 2112;
-            v39 = v24;
+            v39 = ic_loggingIdentifier;
             _os_log_debug_impl(&dword_214D51000, v15, OS_LOG_TYPE_DEBUG, "Resolving wall clock mergeable conflict for %@ (key=%@, identifier=%@)", buf, 0x20u);
           }
 
           objc_opt_class();
-          v16 = [v6 valueForKey:v9];
+          v16 = [objectCopy valueForKey:v9];
           v17 = ICDynamicCast();
 
           if ([v17 length])
@@ -412,22 +412,22 @@ LABEL_5:
               v20 = os_log_create("com.apple.notes", "CoreData");
               if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
               {
-                v25 = [v6 ic_loggingIdentifier];
+                ic_loggingIdentifier2 = [objectCopy ic_loggingIdentifier];
                 *buf = v26;
                 v35 = v9;
                 v36 = 2112;
-                v37 = v25;
+                v37 = ic_loggingIdentifier2;
                 _os_log_error_impl(&dword_214D51000, v20, OS_LOG_TYPE_ERROR, "Merge failed when resolving conflict for key (%@): %@", buf, 0x16u);
               }
             }
 
-            v21 = [(ICTTMergeableWallClockValue *)v18 serialize];
-            [v6 setValue:v21 forKeyPath:v9];
+            serialize = [(ICTTMergeableWallClockValue *)v18 serialize];
+            [objectCopy setValue:serialize forKeyPath:v9];
           }
 
           else
           {
-            [v6 setValue:v12 forKeyPath:v9];
+            [objectCopy setValue:v12 forKeyPath:v9];
           }
         }
 
@@ -442,16 +442,16 @@ LABEL_5:
   }
 }
 
-- (BOOL)resolveConstraintConflicts:(id)a3 error:(id *)a4
+- (BOOL)resolveConstraintConflicts:(id)conflicts error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  conflictsCopy = conflicts;
   [MEMORY[0x277D36278] postBasicEvent:17];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v5;
+  obj = conflictsCopy;
   v6 = [obj countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v6)
   {
@@ -472,8 +472,8 @@ LABEL_5:
         v12 = os_log_create("com.apple.notes", "CoreData");
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
-          v25 = [v11 conflictingObjects];
-          v13 = [v25 firstObject];
+          conflictingObjects = [v11 conflictingObjects];
+          firstObject = [conflictingObjects firstObject];
           v14 = objc_opt_class();
           v15 = NSStringFromClass(v14);
           [v11 constraintValues];
@@ -526,30 +526,30 @@ LABEL_5:
 
   v26.receiver = self;
   v26.super_class = ICNoteMergePolicy;
-  v21 = [(NSMergePolicy *)&v26 resolveConstraintConflicts:obj error:a4];
+  v21 = [(NSMergePolicy *)&v26 resolveConstraintConflicts:obj error:error];
 
   return v21;
 }
 
-- (BOOL)resolveConstraintConflict:(id)a3
+- (BOOL)resolveConstraintConflict:(id)conflict
 {
   v44[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 constraint];
+  conflictCopy = conflict;
+  constraint = [conflictCopy constraint];
   v6 = NSStringFromSelector(sel_identifier);
-  v7 = [v5 containsObject:v6];
+  v7 = [constraint containsObject:v6];
 
   if (v7)
   {
-    v8 = [v4 conflictingObjects];
-    v9 = [v8 mutableCopy];
+    conflictingObjects = [conflictCopy conflictingObjects];
+    v9 = [conflictingObjects mutableCopy];
 
-    v10 = [v4 databaseObject];
+    databaseObject = [conflictCopy databaseObject];
 
-    if (v10)
+    if (databaseObject)
     {
-      v11 = [v4 databaseObject];
-      [v9 insertObject:v11 atIndex:0];
+      databaseObject2 = [conflictCopy databaseObject];
+      [v9 insertObject:databaseObject2 atIndex:0];
     }
 
     v12 = MEMORY[0x277CCAC98];
@@ -561,19 +561,19 @@ LABEL_5:
 
     if ([v9 count] == 2)
     {
-      v16 = [v9 firstObject];
+      firstObject = [v9 firstObject];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v17 = [v9 lastObject];
+        lastObject = [v9 lastObject];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v19 = [v9 firstObject];
-          v20 = [v9 lastObject];
-          v21 = [(ICNoteMergePolicy *)self resolveConflictingAttachment:v19 withInlineAttachment:v20];
+          firstObject2 = [v9 firstObject];
+          lastObject2 = [v9 lastObject];
+          v21 = [(ICNoteMergePolicy *)self resolveConflictingAttachment:firstObject2 withInlineAttachment:lastObject2];
           goto LABEL_44;
         }
       }
@@ -585,19 +585,19 @@ LABEL_5:
 
     if ([v9 count] == 2)
     {
-      v23 = [v9 firstObject];
+      firstObject3 = [v9 firstObject];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v24 = [v9 lastObject];
+        lastObject3 = [v9 lastObject];
         objc_opt_class();
         v25 = objc_opt_isKindOfClass();
 
         if (v25)
         {
-          v19 = [v9 firstObject];
-          v20 = [v9 lastObject];
-          v21 = [(ICNoteMergePolicy *)self resolveConflictingNote:v19 with:v20];
+          firstObject2 = [v9 firstObject];
+          lastObject2 = [v9 lastObject];
+          v21 = [(ICNoteMergePolicy *)self resolveConflictingNote:firstObject2 with:lastObject2];
           goto LABEL_44;
         }
       }
@@ -609,19 +609,19 @@ LABEL_5:
 
     if ([v9 count] == 2)
     {
-      v26 = [v9 firstObject];
+      firstObject4 = [v9 firstObject];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v27 = [v9 lastObject];
+        lastObject4 = [v9 lastObject];
         objc_opt_class();
         v28 = objc_opt_isKindOfClass();
 
         if (v28)
         {
-          v19 = [v9 firstObject];
-          v20 = [v9 lastObject];
-          v21 = [(ICNoteMergePolicy *)self resolveConflictingFolder:v19 with:v20];
+          firstObject2 = [v9 firstObject];
+          lastObject2 = [v9 lastObject];
+          v21 = [(ICNoteMergePolicy *)self resolveConflictingFolder:firstObject2 with:lastObject2];
           goto LABEL_44;
         }
       }
@@ -633,19 +633,19 @@ LABEL_5:
 
     if ([v9 count] == 2)
     {
-      v29 = [v9 firstObject];
+      firstObject5 = [v9 firstObject];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v30 = [v9 lastObject];
+        lastObject5 = [v9 lastObject];
         objc_opt_class();
         v31 = objc_opt_isKindOfClass();
 
         if (v31)
         {
-          v19 = [v9 firstObject];
-          v20 = [v9 lastObject];
-          v21 = [(ICNoteMergePolicy *)self resolveConflictingAttachment:v19 with:v20];
+          firstObject2 = [v9 firstObject];
+          lastObject2 = [v9 lastObject];
+          v21 = [(ICNoteMergePolicy *)self resolveConflictingAttachment:firstObject2 with:lastObject2];
           goto LABEL_44;
         }
       }
@@ -657,19 +657,19 @@ LABEL_5:
 
     if ([v9 count] == 2)
     {
-      v32 = [v9 firstObject];
+      firstObject6 = [v9 firstObject];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v33 = [v9 lastObject];
+        lastObject6 = [v9 lastObject];
         objc_opt_class();
         v34 = objc_opt_isKindOfClass();
 
         if (v34)
         {
-          v19 = [v9 firstObject];
-          v20 = [v9 lastObject];
-          v21 = [(ICNoteMergePolicy *)self resolveConflictingAttachmentPreviewImage:v19 with:v20];
+          firstObject2 = [v9 firstObject];
+          lastObject2 = [v9 lastObject];
+          v21 = [(ICNoteMergePolicy *)self resolveConflictingAttachmentPreviewImage:firstObject2 with:lastObject2];
           goto LABEL_44;
         }
       }
@@ -681,19 +681,19 @@ LABEL_5:
 
     if ([v9 count] == 2)
     {
-      v35 = [v9 firstObject];
+      firstObject7 = [v9 firstObject];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v36 = [v9 lastObject];
+        lastObject7 = [v9 lastObject];
         objc_opt_class();
         v37 = objc_opt_isKindOfClass();
 
         if (v37)
         {
-          v19 = [v9 firstObject];
-          v20 = [v9 lastObject];
-          v21 = [(ICNoteMergePolicy *)self resolveConflictingInlineAttachment:v19 with:v20];
+          firstObject2 = [v9 firstObject];
+          lastObject2 = [v9 lastObject];
+          v21 = [(ICNoteMergePolicy *)self resolveConflictingInlineAttachment:firstObject2 with:lastObject2];
           goto LABEL_44;
         }
       }
@@ -705,19 +705,19 @@ LABEL_5:
 
     if ([v9 count] == 2)
     {
-      v38 = [v9 firstObject];
+      firstObject8 = [v9 firstObject];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v39 = [v9 lastObject];
+        lastObject8 = [v9 lastObject];
         objc_opt_class();
         v40 = objc_opt_isKindOfClass();
 
         if (v40)
         {
-          v19 = [v9 firstObject];
-          v20 = [v9 lastObject];
-          v21 = [(ICNoteMergePolicy *)self resolveConflictingDeviceMigrationState:v19 with:v20];
+          firstObject2 = [v9 firstObject];
+          lastObject2 = [v9 lastObject];
+          v21 = [(ICNoteMergePolicy *)self resolveConflictingDeviceMigrationState:firstObject2 with:lastObject2];
           goto LABEL_44;
         }
       }
@@ -732,7 +732,7 @@ LABEL_5:
       goto LABEL_46;
     }
 
-    v19 = [v9 firstObject];
+    firstObject2 = [v9 firstObject];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -740,7 +740,7 @@ LABEL_5:
       goto LABEL_45;
     }
 
-    v41 = [v9 lastObject];
+    lastObject9 = [v9 lastObject];
     objc_opt_class();
     v42 = objc_opt_isKindOfClass();
 
@@ -751,9 +751,9 @@ LABEL_46:
       goto LABEL_47;
     }
 
-    v19 = [v9 firstObject];
-    v20 = [v9 lastObject];
-    v21 = [(ICNoteMergePolicy *)self resolveConflictingLegacyTombstone:v19 with:v20];
+    firstObject2 = [v9 firstObject];
+    lastObject2 = [v9 lastObject];
+    v21 = [(ICNoteMergePolicy *)self resolveConflictingLegacyTombstone:firstObject2 with:lastObject2];
 LABEL_44:
     v22 = v21;
 
@@ -769,18 +769,18 @@ LABEL_48:
   return v22;
 }
 
-- (BOOL)resolveConflictingAttachment:(id)a3 withInlineAttachment:(id)a4
+- (BOOL)resolveConflictingAttachment:(id)attachment withInlineAttachment:(id)inlineAttachment
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5 || !v6)
+  attachmentCopy = attachment;
+  inlineAttachmentCopy = inlineAttachment;
+  v7 = inlineAttachmentCopy;
+  if (!attachmentCopy || !inlineAttachmentCopy)
   {
     goto LABEL_8;
   }
 
-  v8 = [v5 title];
-  if (v8 || ([v5 userTitle], (v8 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v5, "urlString"), (v8 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v5, "media"), (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  title = [attachmentCopy title];
+  if (title || ([attachmentCopy userTitle], (title = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(attachmentCopy, "urlString"), (title = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(attachmentCopy, "media"), (title = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_8:
@@ -794,9 +794,9 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  v12 = [v5 identifier];
-  v13 = [v7 identifier];
-  v14 = [v12 isEqualToString:v13];
+  identifier = [attachmentCopy identifier];
+  identifier2 = [v7 identifier];
+  v14 = [identifier isEqualToString:identifier2];
 
   if (!v14)
   {
@@ -809,8 +809,8 @@ LABEL_8:
     [ICNoteMergePolicy resolveConflictingAttachment:withInlineAttachment:];
   }
 
-  v16 = [v5 managedObjectContext];
-  [v16 deleteObject:v5];
+  managedObjectContext = [attachmentCopy managedObjectContext];
+  [managedObjectContext deleteObject:attachmentCopy];
 
   v10 = 1;
   [v7 setNeedsToBeFetchedFromCloud:1];
@@ -819,78 +819,78 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)resolveConflictingFolder:(id)a3 with:(id)a4
+- (BOOL)resolveConflictingFolder:(id)folder with:(id)with
 {
   v75 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 needsInitialFetchFromCloud] && (objc_msgSend(v6, "needsInitialFetchFromCloud") & 1) == 0)
+  folderCopy = folder;
+  withCopy = with;
+  if ([folderCopy needsInitialFetchFromCloud] && (objc_msgSend(withCopy, "needsInitialFetchFromCloud") & 1) == 0)
   {
-    v7 = v6;
-    v8 = v5;
+    v7 = withCopy;
+    v8 = folderCopy;
     goto LABEL_22;
   }
 
-  if (([v5 needsInitialFetchFromCloud] & 1) == 0 && objc_msgSend(v6, "needsInitialFetchFromCloud") || objc_msgSend(v5, "needsInitialFetchFromCloud") && objc_msgSend(v6, "needsInitialFetchFromCloud"))
+  if (([folderCopy needsInitialFetchFromCloud] & 1) == 0 && objc_msgSend(withCopy, "needsInitialFetchFromCloud") || objc_msgSend(folderCopy, "needsInitialFetchFromCloud") && objc_msgSend(withCopy, "needsInitialFetchFromCloud"))
   {
-    v7 = v5;
-    v8 = v6;
+    v7 = folderCopy;
+    v8 = withCopy;
 LABEL_22:
     v13 = v8;
     goto LABEL_23;
   }
 
-  if (([v5 needsInitialFetchFromCloud] & 1) != 0 || (objc_msgSend(v6, "needsInitialFetchFromCloud") & 1) != 0 || (v9 = objc_msgSend(v5, "folderType"), v9 != objc_msgSend(v6, "folderType")) || (objc_msgSend(v5, "account"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "account"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "isEqual:", v11), v11, v10, !v12))
+  if (([folderCopy needsInitialFetchFromCloud] & 1) != 0 || (objc_msgSend(withCopy, "needsInitialFetchFromCloud") & 1) != 0 || (v9 = objc_msgSend(folderCopy, "folderType"), v9 != objc_msgSend(withCopy, "folderType")) || (objc_msgSend(folderCopy, "account"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(withCopy, "account"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "isEqual:", v11), v11, v10, !v12))
   {
     v7 = 0;
     v13 = 0;
     goto LABEL_46;
   }
 
-  v7 = v5;
-  v13 = v6;
-  v14 = [v13 dateForLastTitleModification];
-  v15 = [v7 dateForLastTitleModification];
-  v16 = [v14 ic_isLaterThanDate:v15];
+  v7 = folderCopy;
+  v13 = withCopy;
+  dateForLastTitleModification = [v13 dateForLastTitleModification];
+  dateForLastTitleModification2 = [v7 dateForLastTitleModification];
+  v16 = [dateForLastTitleModification ic_isLaterThanDate:dateForLastTitleModification2];
 
   if (v16)
   {
-    v17 = [v13 title];
-    [v7 setTitle:v17];
+    title = [v13 title];
+    [v7 setTitle:title];
 
-    v18 = [v13 dateForLastTitleModification];
-    [v7 setDateForLastTitleModification:v18];
+    dateForLastTitleModification3 = [v13 dateForLastTitleModification];
+    [v7 setDateForLastTitleModification:dateForLastTitleModification3];
   }
 
-  v19 = [v13 parentModificationDate];
-  v20 = [v7 parentModificationDate];
-  v21 = [v19 ic_isLaterThanDate:v20];
+  parentModificationDate = [v13 parentModificationDate];
+  parentModificationDate2 = [v7 parentModificationDate];
+  v21 = [parentModificationDate ic_isLaterThanDate:parentModificationDate2];
 
   if (v21)
   {
-    v22 = [v13 parent];
-    [v7 setParent:v22];
+    parent = [v13 parent];
+    [v7 setParent:parent];
   }
 
-  v23 = [v13 customNoteSortTypeModificationDate];
-  v24 = [v7 customNoteSortTypeModificationDate];
-  v25 = [v23 ic_isLaterThanDate:v24];
+  customNoteSortTypeModificationDate = [v13 customNoteSortTypeModificationDate];
+  customNoteSortTypeModificationDate2 = [v7 customNoteSortTypeModificationDate];
+  v25 = [customNoteSortTypeModificationDate ic_isLaterThanDate:customNoteSortTypeModificationDate2];
 
   if (v25)
   {
-    v26 = [v13 customNoteSortTypeValue];
-    [v7 setCustomNoteSortTypeValue:v26];
+    customNoteSortTypeValue = [v13 customNoteSortTypeValue];
+    [v7 setCustomNoteSortTypeValue:customNoteSortTypeValue];
 
-    v27 = [v13 customNoteSortTypeModificationDate];
-    [v7 setCustomNoteSortTypeModificationDate:v27];
+    customNoteSortTypeModificationDate3 = [v13 customNoteSortTypeModificationDate];
+    [v7 setCustomNoteSortTypeModificationDate:customNoteSortTypeModificationDate3];
   }
 
-  v28 = [v13 mergeableData];
+  mergeableData = [v13 mergeableData];
 
-  if (v28)
+  if (mergeableData)
   {
-    v29 = [v13 mergeableData];
-    [v7 mergeWithMergeableData:v29];
+    mergeableData2 = [v13 mergeableData];
+    [v7 mergeWithMergeableData:mergeableData2];
   }
 
 LABEL_23:
@@ -899,20 +899,20 @@ LABEL_23:
     v30 = os_log_create("com.apple.notes", "CoreData");
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
     {
-      v56 = [v5 identifier];
-      v57 = [v7 objectID];
-      v58 = [v13 objectID];
+      identifier = [folderCopy identifier];
+      objectID = [v7 objectID];
+      objectID2 = [v13 objectID];
       *buf = 138412802;
-      v70 = v56;
+      v70 = identifier;
       v71 = 2112;
-      v72 = v57;
+      v72 = objectID;
       v73 = 2112;
-      v74 = v58;
+      v74 = objectID2;
       _os_log_debug_impl(&dword_214D51000, v30, OS_LOG_TYPE_DEBUG, "Resolving folder conflict (%@) by keeping (%@) and deleting (%@)", buf, 0x20u);
     }
 
-    v31 = [v13 notes];
-    v32 = [v31 count];
+    notes = [v13 notes];
+    v32 = [notes count];
 
     if (v32)
     {
@@ -920,8 +920,8 @@ LABEL_23:
       v66 = 0u;
       v63 = 0u;
       v64 = 0u;
-      v33 = [v13 notes];
-      v34 = [v33 copy];
+      notes2 = [v13 notes];
+      v34 = [notes2 copy];
 
       v35 = [v34 countByEnumeratingWithState:&v63 objects:v68 count:16];
       if (v35)
@@ -946,16 +946,16 @@ LABEL_23:
         while (v36);
       }
 
-      v39 = [v13 notes];
-      v40 = [v39 copy];
+      notes3 = [v13 notes];
+      v40 = [notes3 copy];
       [v7 addNotes:v40];
 
       v41 = [MEMORY[0x277CBEB98] set];
       [v13 setNotes:v41];
     }
 
-    v42 = [v13 children];
-    v43 = [v42 count];
+    children = [v13 children];
+    v43 = [children count];
 
     if (v43)
     {
@@ -963,8 +963,8 @@ LABEL_23:
       v62 = 0u;
       v59 = 0u;
       v60 = 0u;
-      v44 = [v13 children];
-      v45 = [v44 copy];
+      children2 = [v13 children];
+      v45 = [children2 copy];
 
       v46 = [v45 countByEnumeratingWithState:&v59 objects:v67 count:16];
       if (v46)
@@ -989,8 +989,8 @@ LABEL_23:
         while (v47);
       }
 
-      v50 = [v13 children];
-      v51 = [v50 copy];
+      children3 = [v13 children];
+      v51 = [children3 copy];
       [v7 addChildren:v51];
 
       v52 = [MEMORY[0x277CBEB98] set];
@@ -1015,49 +1015,49 @@ LABEL_49:
   return v53;
 }
 
-- (BOOL)resolveConflictingInlineAttachment:(id)a3 with:(id)a4
+- (BOOL)resolveConflictingInlineAttachment:(id)attachment with:(id)with
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (![v5 needsInitialFetchFromCloud] || (v7 = objc_msgSend(v6, "needsInitialFetchFromCloud"), v8 = v6, v9 = v5, v7))
+  attachmentCopy = attachment;
+  withCopy = with;
+  if (![attachmentCopy needsInitialFetchFromCloud] || (v7 = objc_msgSend(withCopy, "needsInitialFetchFromCloud"), v8 = withCopy, v9 = attachmentCopy, v7))
   {
-    if (([v5 needsInitialFetchFromCloud] & 1) != 0 || (v10 = objc_msgSend(v6, "needsInitialFetchFromCloud"), v8 = v5, v9 = v6, (v10 & 1) == 0))
+    if (([attachmentCopy needsInitialFetchFromCloud] & 1) != 0 || (v10 = objc_msgSend(withCopy, "needsInitialFetchFromCloud"), v8 = attachmentCopy, v9 = withCopy, (v10 & 1) == 0))
     {
-      if (![v5 needsInitialFetchFromCloud] || (v11 = objc_msgSend(v6, "needsInitialFetchFromCloud"), v8 = v5, v9 = v6, (v11 & 1) == 0))
+      if (![attachmentCopy needsInitialFetchFromCloud] || (v11 = objc_msgSend(withCopy, "needsInitialFetchFromCloud"), v8 = attachmentCopy, v9 = withCopy, (v11 & 1) == 0))
       {
-        if (([v5 needsInitialFetchFromCloud] & 1) != 0 || (objc_msgSend(v6, "needsInitialFetchFromCloud") & 1) != 0 || (objc_msgSend(v5, "tokenContentIdentifier"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "tokenContentIdentifier"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v21, "isEqualToString:", v22), v22, v21, !v23))
+        if (([attachmentCopy needsInitialFetchFromCloud] & 1) != 0 || (objc_msgSend(withCopy, "needsInitialFetchFromCloud") & 1) != 0 || (objc_msgSend(attachmentCopy, "tokenContentIdentifier"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(withCopy, "tokenContentIdentifier"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v21, "isEqualToString:", v22), v22, v21, !v23))
         {
           v12 = 0;
           v13 = 0;
           goto LABEL_31;
         }
 
-        v24 = [v5 markedForDeletion];
-        v25 = [v6 markedForDeletion];
-        v8 = v5;
-        v9 = v6;
-        if (v24 != v25)
+        markedForDeletion = [attachmentCopy markedForDeletion];
+        markedForDeletion2 = [withCopy markedForDeletion];
+        v8 = attachmentCopy;
+        v9 = withCopy;
+        if (markedForDeletion != markedForDeletion2)
         {
-          v26 = [v5 markedForDeletion];
-          if (v26)
+          markedForDeletion3 = [attachmentCopy markedForDeletion];
+          if (markedForDeletion3)
           {
-            v8 = v5;
+            v8 = attachmentCopy;
           }
 
           else
           {
-            v8 = v6;
+            v8 = withCopy;
           }
 
-          if (v26)
+          if (markedForDeletion3)
           {
-            v9 = v6;
+            v9 = withCopy;
           }
 
           else
           {
-            v9 = v5;
+            v9 = attachmentCopy;
           }
         }
       }
@@ -1071,57 +1071,57 @@ LABEL_49:
     v14 = os_log_create("com.apple.notes", "CoreData");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      v28 = [v5 identifier];
-      v29 = [v12 objectID];
-      v30 = [v13 objectID];
+      identifier = [attachmentCopy identifier];
+      objectID = [v12 objectID];
+      objectID2 = [v13 objectID];
       v31 = 138412802;
-      v32 = v28;
+      v32 = identifier;
       v33 = 2112;
-      v34 = v29;
+      v34 = objectID;
       v35 = 2112;
-      v36 = v30;
+      v36 = objectID2;
       _os_log_debug_impl(&dword_214D51000, v14, OS_LOG_TYPE_DEBUG, "Resolving inline attachment conflict (%@) by keeping (%@) and deleting (%@)", &v31, 0x20u);
     }
 
-    v15 = [v12 note];
-    if (!v15)
+    note = [v12 note];
+    if (!note)
     {
-      v16 = [v13 note];
+      note2 = [v13 note];
 
-      if (!v16)
+      if (!note2)
       {
         goto LABEL_15;
       }
 
-      v15 = [v13 note];
-      [v12 setNote:v15];
+      note = [v13 note];
+      [v12 setNote:note];
     }
 
 LABEL_15:
-    v17 = [v12 parentAttachment];
-    if (!v17)
+    parentAttachment = [v12 parentAttachment];
+    if (!parentAttachment)
     {
-      v18 = [v13 parentAttachment];
+      parentAttachment2 = [v13 parentAttachment];
 
-      if (!v18)
+      if (!parentAttachment2)
       {
 LABEL_19:
-        v19 = [v13 managedObjectContext];
-        [v19 deleteObject:v13];
+        managedObjectContext = [v13 managedObjectContext];
+        [managedObjectContext deleteObject:v13];
         v20 = 1;
         goto LABEL_34;
       }
 
-      v17 = [v13 parentAttachment];
-      [v12 setParentAttachment:v17];
+      parentAttachment = [v13 parentAttachment];
+      [v12 setParentAttachment:parentAttachment];
     }
 
     goto LABEL_19;
   }
 
 LABEL_31:
-  v19 = os_log_create("com.apple.notes", "CoreData");
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+  managedObjectContext = os_log_create("com.apple.notes", "CoreData");
+  if (os_log_type_enabled(managedObjectContext, OS_LOG_TYPE_ERROR))
   {
     [ICNoteMergePolicy resolveConflictingInlineAttachment:with:];
   }
@@ -1132,42 +1132,42 @@ LABEL_34:
   return v20;
 }
 
-- (BOOL)resolveConflictingNote:(id)a3 with:(id)a4
+- (BOOL)resolveConflictingNote:(id)note with:(id)with
 {
   v76 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (![v5 needsInitialFetchFromCloud] || (v7 = objc_msgSend(v6, "needsInitialFetchFromCloud"), v8 = v6, v9 = v5, v7))
+  noteCopy = note;
+  withCopy = with;
+  if (![noteCopy needsInitialFetchFromCloud] || (v7 = objc_msgSend(withCopy, "needsInitialFetchFromCloud"), v8 = withCopy, v9 = noteCopy, v7))
   {
-    if (([v5 needsInitialFetchFromCloud] & 1) != 0 || (v10 = objc_msgSend(v6, "needsInitialFetchFromCloud"), v8 = v5, v9 = v6, (v10 & 1) == 0))
+    if (([noteCopy needsInitialFetchFromCloud] & 1) != 0 || (v10 = objc_msgSend(withCopy, "needsInitialFetchFromCloud"), v8 = noteCopy, v9 = withCopy, (v10 & 1) == 0))
     {
-      if (![v5 needsInitialFetchFromCloud] || (v11 = objc_msgSend(v6, "markedForDeletion"), v8 = v6, v9 = v5, (v11 & 1) == 0))
+      if (![noteCopy needsInitialFetchFromCloud] || (v11 = objc_msgSend(withCopy, "markedForDeletion"), v8 = withCopy, v9 = noteCopy, (v11 & 1) == 0))
       {
-        if (![v5 markedForDeletion] || (v12 = objc_msgSend(v6, "needsInitialFetchFromCloud"), v8 = v5, v9 = v6, (v12 & 1) == 0))
+        if (![noteCopy markedForDeletion] || (v12 = objc_msgSend(withCopy, "needsInitialFetchFromCloud"), v8 = noteCopy, v9 = withCopy, (v12 & 1) == 0))
         {
-          v13 = [v5 folder];
-          if (v13)
+          folder = [noteCopy folder];
+          if (folder)
           {
           }
 
           else
           {
-            v21 = [v6 folder];
+            folder2 = [withCopy folder];
 
-            v8 = v6;
-            v9 = v5;
-            if (v21)
+            v8 = withCopy;
+            v9 = noteCopy;
+            if (folder2)
             {
               goto LABEL_21;
             }
           }
 
-          v14 = [v5 folder];
-          if (!v14 || (v15 = v14, [v6 folder], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v8 = v5, v9 = v6, v16))
+          folder3 = [noteCopy folder];
+          if (!folder3 || (v15 = folder3, [withCopy folder], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v8 = noteCopy, v9 = withCopy, v16))
           {
-            v17 = [v5 folder];
-            v18 = [v6 folder];
-            v19 = [v17 isEqual:v18];
+            folder4 = [noteCopy folder];
+            folder5 = [withCopy folder];
+            v19 = [folder4 isEqual:folder5];
 
             if (!v19)
             {
@@ -1176,26 +1176,26 @@ LABEL_34:
               goto LABEL_47;
             }
 
-            v20 = [v5 document];
+            document = [noteCopy document];
 
-            if (v20)
+            if (document)
             {
-              v8 = v5;
+              v8 = noteCopy;
             }
 
             else
             {
-              v8 = v6;
+              v8 = withCopy;
             }
 
-            if (v20)
+            if (document)
             {
-              v9 = v6;
+              v9 = withCopy;
             }
 
             else
             {
-              v9 = v5;
+              v9 = noteCopy;
             }
           }
         }
@@ -1211,20 +1211,20 @@ LABEL_21:
     v24 = os_log_create("com.apple.notes", "CoreData");
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      v51 = [v5 identifier];
-      v52 = [v22 objectID];
-      v53 = [v23 objectID];
+      identifier = [noteCopy identifier];
+      objectID = [v22 objectID];
+      objectID2 = [v23 objectID];
       *buf = 138412802;
-      v71 = v51;
+      v71 = identifier;
       v72 = 2112;
-      v73 = v52;
+      v73 = objectID;
       v74 = 2112;
-      v75 = v53;
+      v75 = objectID2;
       _os_log_debug_impl(&dword_214D51000, v24, OS_LOG_TYPE_DEBUG, "Resolving note conflict (%@) by keeping (%@) and deleting (%@)", buf, 0x20u);
     }
 
-    v25 = [v23 attachments];
-    v26 = [v25 count];
+    attachments = [v23 attachments];
+    v26 = [attachments count];
 
     if (v26)
     {
@@ -1232,8 +1232,8 @@ LABEL_21:
       v67 = 0u;
       v64 = 0u;
       v65 = 0u;
-      v27 = [v23 attachments];
-      v28 = [v27 copy];
+      attachments2 = [v23 attachments];
+      v28 = [attachments2 copy];
 
       v29 = [v28 countByEnumeratingWithState:&v64 objects:v69 count:16];
       if (v29)
@@ -1258,16 +1258,16 @@ LABEL_21:
         while (v30);
       }
 
-      v33 = [v23 attachments];
-      v34 = [v33 copy];
+      attachments3 = [v23 attachments];
+      v34 = [attachments3 copy];
       [v22 addAttachments:v34];
 
       v35 = [MEMORY[0x277CBEB98] set];
       [v23 setAttachments:v35];
     }
 
-    v36 = [v23 inlineAttachments];
-    v37 = [v36 count];
+    inlineAttachments = [v23 inlineAttachments];
+    v37 = [inlineAttachments count];
 
     if (v37)
     {
@@ -1275,8 +1275,8 @@ LABEL_21:
       v63 = 0u;
       v60 = 0u;
       v61 = 0u;
-      v38 = [v23 inlineAttachments];
-      v39 = [v38 copy];
+      inlineAttachments2 = [v23 inlineAttachments];
+      v39 = [inlineAttachments2 copy];
 
       v40 = [v39 countByEnumeratingWithState:&v60 objects:v68 count:16];
       if (v40)
@@ -1301,17 +1301,17 @@ LABEL_21:
         while (v41);
       }
 
-      v44 = [v23 inlineAttachments];
-      v45 = [v44 copy];
+      inlineAttachments3 = [v23 inlineAttachments];
+      v45 = [inlineAttachments3 copy];
       [v22 addInlineAttachments:v45];
 
       v46 = [MEMORY[0x277CBEB98] set];
       [v23 setInlineAttachments:v46];
     }
 
-    v47 = [v23 document];
+    document2 = [v23 document];
 
-    if (v47)
+    if (document2)
     {
       v54 = MEMORY[0x277D85DD0];
       v55 = 3221225472;
@@ -1322,15 +1322,15 @@ LABEL_21:
       [v58 performMerge:&v54];
     }
 
-    v48 = [v23 managedObjectContext];
-    [v48 deleteObject:v23];
+    managedObjectContext = [v23 managedObjectContext];
+    [managedObjectContext deleteObject:v23];
     v49 = 1;
     goto LABEL_50;
   }
 
 LABEL_47:
-  v48 = os_log_create("com.apple.notes", "CoreData");
-  if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
+  managedObjectContext = os_log_create("com.apple.notes", "CoreData");
+  if (os_log_type_enabled(managedObjectContext, OS_LOG_TYPE_ERROR))
   {
     [ICNoteMergePolicy resolveConflictingNote:with:];
   }
@@ -1350,28 +1350,28 @@ uint64_t __49__ICNoteMergePolicy_resolveConflictingNote_with___block_invoke(uint
   return v4;
 }
 
-- (BOOL)resolveConflictingAttachment:(id)a3 with:(id)a4
+- (BOOL)resolveConflictingAttachment:(id)attachment with:(id)with
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (([v5 needsInitialFetchFromCloud] & 1) != 0 || (v7 = objc_msgSend(v6, "needsInitialFetchFromCloud"), v8 = v5, v9 = v6, (v7 & 1) == 0))
+  attachmentCopy = attachment;
+  withCopy = with;
+  if (([attachmentCopy needsInitialFetchFromCloud] & 1) != 0 || (v7 = objc_msgSend(withCopy, "needsInitialFetchFromCloud"), v8 = attachmentCopy, v9 = withCopy, (v7 & 1) == 0))
   {
-    if (![v5 needsInitialFetchFromCloud] || (v10 = objc_msgSend(v6, "needsInitialFetchFromCloud"), v8 = v6, v9 = v5, v10))
+    if (![attachmentCopy needsInitialFetchFromCloud] || (v10 = objc_msgSend(withCopy, "needsInitialFetchFromCloud"), v8 = withCopy, v9 = attachmentCopy, v10))
     {
-      if (![v5 needsInitialFetchFromCloud] || (v11 = objc_msgSend(v6, "needsInitialFetchFromCloud"), v8 = v5, v9 = v6, (v11 & 1) == 0))
+      if (![attachmentCopy needsInitialFetchFromCloud] || (v11 = objc_msgSend(withCopy, "needsInitialFetchFromCloud"), v8 = attachmentCopy, v9 = withCopy, (v11 & 1) == 0))
       {
-        v12 = [v5 serverRecordData];
-        if (!v12 || (v13 = v12, [v6 serverRecordData], v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v8 = v5, v9 = v6, v14))
+        serverRecordData = [attachmentCopy serverRecordData];
+        if (!serverRecordData || (v13 = serverRecordData, [withCopy serverRecordData], v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v8 = attachmentCopy, v9 = withCopy, v14))
         {
-          v15 = [v6 serverRecordData];
-          if (!v15)
+          serverRecordData2 = [withCopy serverRecordData];
+          if (!serverRecordData2)
           {
 LABEL_12:
             v17 = 0;
 LABEL_18:
-            v19 = os_log_create("com.apple.notes", "CoreData");
-            if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+            managedObjectContext = os_log_create("com.apple.notes", "CoreData");
+            if (os_log_type_enabled(managedObjectContext, OS_LOG_TYPE_ERROR))
             {
               [ICNoteMergePolicy resolveConflictingAttachment:with:];
             }
@@ -1380,13 +1380,13 @@ LABEL_18:
             goto LABEL_21;
           }
 
-          v16 = [v5 serverRecordData];
+          serverRecordData3 = [attachmentCopy serverRecordData];
 
-          v8 = v6;
-          v9 = v5;
-          if (v16)
+          v8 = withCopy;
+          v9 = attachmentCopy;
+          if (serverRecordData3)
           {
-            v15 = 0;
+            serverRecordData2 = 0;
             goto LABEL_12;
           }
         }
@@ -1394,9 +1394,9 @@ LABEL_18:
     }
   }
 
-  v15 = v8;
+  serverRecordData2 = v8;
   v17 = v9;
-  if (!v17 || !v15)
+  if (!v17 || !serverRecordData2)
   {
     goto LABEL_18;
   }
@@ -1404,62 +1404,62 @@ LABEL_18:
   v18 = os_log_create("com.apple.notes", "CoreData");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    v22 = [v5 identifier];
-    v23 = [v15 objectID];
-    v24 = [v17 objectID];
+    identifier = [attachmentCopy identifier];
+    objectID = [serverRecordData2 objectID];
+    objectID2 = [v17 objectID];
     v25 = 138412802;
-    v26 = v22;
+    v26 = identifier;
     v27 = 2112;
-    v28 = v23;
+    v28 = objectID;
     v29 = 2112;
-    v30 = v24;
+    v30 = objectID2;
     _os_log_debug_impl(&dword_214D51000, v18, OS_LOG_TYPE_DEBUG, "Resolving attachment conflict (%@) by keeping (%@) and deleting (%@)", &v25, 0x20u);
   }
 
   [v17 suppressFileDeletion];
-  v19 = [v17 managedObjectContext];
-  [v19 deleteObject:v17];
+  managedObjectContext = [v17 managedObjectContext];
+  [managedObjectContext deleteObject:v17];
   v20 = 1;
 LABEL_21:
 
   return v20;
 }
 
-- (BOOL)resolveConflictingAttachmentPreviewImage:(id)a3 with:(id)a4
+- (BOOL)resolveConflictingAttachmentPreviewImage:(id)image with:(id)with
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (([v5 versionOutOfDate] & 1) != 0 || (v7 = objc_msgSend(v6, "versionOutOfDate"), v8 = v5, v9 = v6, (v7 & 1) == 0))
+  imageCopy = image;
+  withCopy = with;
+  if (([imageCopy versionOutOfDate] & 1) != 0 || (v7 = objc_msgSend(withCopy, "versionOutOfDate"), v8 = imageCopy, v9 = withCopy, (v7 & 1) == 0))
   {
-    if (![v5 isInCloud] || (v10 = objc_msgSend(v6, "isInCloud"), v8 = v5, v9 = v6, v10))
+    if (![imageCopy isInCloud] || (v10 = objc_msgSend(withCopy, "isInCloud"), v8 = imageCopy, v9 = withCopy, v10))
     {
-      if (![v5 versionOutOfDate] || (v11 = objc_msgSend(v6, "versionOutOfDate"), v8 = v6, v9 = v5, v11))
+      if (![imageCopy versionOutOfDate] || (v11 = objc_msgSend(withCopy, "versionOutOfDate"), v8 = withCopy, v9 = imageCopy, v11))
       {
-        if (([v5 isInCloud] & 1) != 0 || (v12 = objc_msgSend(v6, "isInCloud"), v8 = v6, v9 = v5, (v12 & 1) == 0))
+        if (([imageCopy isInCloud] & 1) != 0 || (v12 = objc_msgSend(withCopy, "isInCloud"), v8 = withCopy, v9 = imageCopy, (v12 & 1) == 0))
         {
-          v13 = [v5 modifiedDate];
-          v14 = [v6 modifiedDate];
-          v15 = [v13 ic_isLaterThanDate:v14];
+          modifiedDate = [imageCopy modifiedDate];
+          modifiedDate2 = [withCopy modifiedDate];
+          v15 = [modifiedDate ic_isLaterThanDate:modifiedDate2];
 
           if (v15)
           {
-            v8 = v5;
+            v8 = imageCopy;
           }
 
           else
           {
-            v8 = v6;
+            v8 = withCopy;
           }
 
           if (v15)
           {
-            v9 = v6;
+            v9 = withCopy;
           }
 
           else
           {
-            v9 = v5;
+            v9 = imageCopy;
           }
         }
       }
@@ -1480,26 +1480,26 @@ LABEL_21:
 
   v19 = !v18;
   v20 = os_log_create("com.apple.notes", "CoreData");
-  v21 = v20;
+  managedObjectContext = v20;
   if (v19)
   {
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      v23 = [v5 identifier];
-      v24 = [v16 objectID];
-      v25 = [v17 objectID];
+      identifier = [imageCopy identifier];
+      objectID = [v16 objectID];
+      objectID2 = [v17 objectID];
       v26 = 138412802;
-      v27 = v23;
+      v27 = identifier;
       v28 = 2112;
-      v29 = v24;
+      v29 = objectID;
       v30 = 2112;
-      v31 = v25;
-      _os_log_debug_impl(&dword_214D51000, v21, OS_LOG_TYPE_DEBUG, "Resolving attachment preview image conflict (%@) by keeping (%@) and deleting (%@)", &v26, 0x20u);
+      v31 = objectID2;
+      _os_log_debug_impl(&dword_214D51000, managedObjectContext, OS_LOG_TYPE_DEBUG, "Resolving attachment preview image conflict (%@) by keeping (%@) and deleting (%@)", &v26, 0x20u);
     }
 
     [v17 suppressFileDeletion];
-    v21 = [v17 managedObjectContext];
-    [v21 deleteObject:v17];
+    managedObjectContext = [v17 managedObjectContext];
+    [managedObjectContext deleteObject:v17];
   }
 
   else
@@ -1513,37 +1513,37 @@ LABEL_21:
   return v19;
 }
 
-- (BOOL)resolveConflictingDeviceMigrationState:(id)a3 with:(id)a4
+- (BOOL)resolveConflictingDeviceMigrationState:(id)state with:(id)with
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (![v5 isInCloud] || (v7 = objc_msgSend(v6, "isInCloud"), v8 = v5, v9 = v6, v7))
+  stateCopy = state;
+  withCopy = with;
+  if (![stateCopy isInCloud] || (v7 = objc_msgSend(withCopy, "isInCloud"), v8 = stateCopy, v9 = withCopy, v7))
   {
-    if (([v5 isInCloud] & 1) != 0 || (v10 = objc_msgSend(v6, "isInCloud"), v8 = v6, v9 = v5, (v10 & 1) == 0))
+    if (([stateCopy isInCloud] & 1) != 0 || (v10 = objc_msgSend(withCopy, "isInCloud"), v8 = withCopy, v9 = stateCopy, (v10 & 1) == 0))
     {
-      v11 = [v5 stateModificationDate];
-      v12 = [v6 stateModificationDate];
-      v13 = [v11 ic_isLaterThanDate:v12];
+      stateModificationDate = [stateCopy stateModificationDate];
+      stateModificationDate2 = [withCopy stateModificationDate];
+      v13 = [stateModificationDate ic_isLaterThanDate:stateModificationDate2];
 
       if (v13)
       {
-        v8 = v5;
+        v8 = stateCopy;
       }
 
       else
       {
-        v8 = v6;
+        v8 = withCopy;
       }
 
       if (v13)
       {
-        v9 = v6;
+        v9 = withCopy;
       }
 
       else
       {
-        v9 = v5;
+        v9 = stateCopy;
       }
     }
   }
@@ -1562,110 +1562,110 @@ LABEL_21:
 
   v17 = !v16;
   v18 = os_log_create("com.apple.notes", "CoreData");
-  v19 = v18;
+  managedObjectContext = v18;
   if (v17)
   {
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
-      v25 = [v5 identifier];
-      v26 = [v14 objectID];
-      v27 = [v15 objectID];
+      identifier = [stateCopy identifier];
+      objectID = [v14 objectID];
+      objectID2 = [v15 objectID];
       v31 = 138412802;
-      v32 = v25;
+      v32 = identifier;
       v33 = 2112;
-      v34 = v26;
+      v34 = objectID;
       v35 = 2112;
-      v36 = v27;
-      _os_log_debug_impl(&dword_214D51000, v19, OS_LOG_TYPE_DEBUG, "Resolving device migration state conflict (%@) by keeping (%@) and deleting (%@)", &v31, 0x20u);
+      v36 = objectID2;
+      _os_log_debug_impl(&dword_214D51000, managedObjectContext, OS_LOG_TYPE_DEBUG, "Resolving device migration state conflict (%@) by keeping (%@) and deleting (%@)", &v31, 0x20u);
     }
 
-    v20 = [v15 stateModificationDate];
-    v21 = [v14 stateModificationDate];
-    v22 = [v20 ic_isLaterThanDate:v21];
+    stateModificationDate3 = [v15 stateModificationDate];
+    stateModificationDate4 = [v14 stateModificationDate];
+    v22 = [stateModificationDate3 ic_isLaterThanDate:stateModificationDate4];
 
     if (v22)
     {
       [v14 setState:{objc_msgSend(v15, "state")}];
-      v23 = [v15 stateModificationDate];
-      [v14 setStateModificationDate:v23];
+      stateModificationDate5 = [v15 stateModificationDate];
+      [v14 setStateModificationDate:stateModificationDate5];
 
       [v14 updateChangeCountWithReason:@"Resolved Core Data conflict"];
     }
 
-    v19 = [v15 managedObjectContext];
-    [v19 deleteObject:v15];
+    managedObjectContext = [v15 managedObjectContext];
+    [managedObjectContext deleteObject:v15];
   }
 
   else
   {
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v28 = [v5 identifier];
-      v29 = [v14 objectID];
-      v30 = [v15 objectID];
+      identifier2 = [stateCopy identifier];
+      objectID3 = [v14 objectID];
+      objectID4 = [v15 objectID];
       v31 = 138412802;
-      v32 = v28;
+      v32 = identifier2;
       v33 = 2112;
-      v34 = v29;
+      v34 = objectID3;
       v35 = 2112;
-      v36 = v30;
-      _os_log_error_impl(&dword_214D51000, v19, OS_LOG_TYPE_ERROR, "Not resolving device migration state constraint conflict (%@) between (%@) and (%@)", &v31, 0x20u);
+      v36 = objectID4;
+      _os_log_error_impl(&dword_214D51000, managedObjectContext, OS_LOG_TYPE_ERROR, "Not resolving device migration state constraint conflict (%@) between (%@) and (%@)", &v31, 0x20u);
     }
   }
 
   return v17;
 }
 
-- (BOOL)resolveConflictingLegacyTombstone:(id)a3 with:(id)a4
+- (BOOL)resolveConflictingLegacyTombstone:(id)tombstone with:(id)with
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (![v5 isInCloud] || (v7 = objc_msgSend(v6, "isInCloud"), v8 = v5, v9 = v6, v7))
+  tombstoneCopy = tombstone;
+  withCopy = with;
+  if (![tombstoneCopy isInCloud] || (v7 = objc_msgSend(withCopy, "isInCloud"), v8 = tombstoneCopy, v9 = withCopy, v7))
   {
-    if (([v5 isInCloud] & 1) != 0 || (v10 = objc_msgSend(v6, "isInCloud"), v8 = v6, v9 = v5, (v10 & 1) == 0))
+    if (([tombstoneCopy isInCloud] & 1) != 0 || (v10 = objc_msgSend(withCopy, "isInCloud"), v8 = withCopy, v9 = tombstoneCopy, (v10 & 1) == 0))
     {
-      v11 = [v5 account];
-      if (!v11 || (v12 = v11, [v6 account], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v8 = v5, v9 = v6, v13))
+      account = [tombstoneCopy account];
+      if (!account || (v12 = account, [withCopy account], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v8 = tombstoneCopy, v9 = withCopy, v13))
       {
-        v14 = [v5 account];
-        if (v14)
+        account2 = [tombstoneCopy account];
+        if (account2)
         {
         }
 
         else
         {
-          v18 = [v6 account];
+          account3 = [withCopy account];
 
-          v8 = v6;
-          v9 = v5;
-          if (v18)
+          v8 = withCopy;
+          v9 = tombstoneCopy;
+          if (account3)
           {
             goto LABEL_12;
           }
         }
 
-        v15 = [v5 isEquivalentTo:v6];
-        v8 = v5;
-        v9 = v6;
+        v15 = [tombstoneCopy isEquivalentTo:withCopy];
+        v8 = tombstoneCopy;
+        v9 = withCopy;
         if (!v15)
         {
           v16 = 0;
           v17 = 0;
 LABEL_17:
-          v20 = os_log_create("com.apple.notes", "CoreData");
-          if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+          managedObjectContext = os_log_create("com.apple.notes", "CoreData");
+          if (os_log_type_enabled(managedObjectContext, OS_LOG_TYPE_ERROR))
           {
-            v23 = [v5 identifier];
-            v24 = [v16 objectID];
-            v25 = [v17 objectID];
+            identifier = [tombstoneCopy identifier];
+            objectID = [v16 objectID];
+            objectID2 = [v17 objectID];
             v29 = 138412802;
-            v30 = v23;
+            v30 = identifier;
             v31 = 2112;
-            v32 = v24;
+            v32 = objectID;
             v33 = 2112;
-            v34 = v25;
-            _os_log_error_impl(&dword_214D51000, v20, OS_LOG_TYPE_ERROR, "Not resolving legacy tombstone constraint conflict (%@) between (%@) and (%@)", &v29, 0x20u);
+            v34 = objectID2;
+            _os_log_error_impl(&dword_214D51000, managedObjectContext, OS_LOG_TYPE_ERROR, "Not resolving legacy tombstone constraint conflict (%@) between (%@) and (%@)", &v29, 0x20u);
           }
 
           v21 = 0;
@@ -1686,20 +1686,20 @@ LABEL_12:
   v19 = os_log_create("com.apple.notes", "CoreData");
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
-    v26 = [v5 identifier];
-    v27 = [v16 objectID];
-    v28 = [v17 objectID];
+    identifier2 = [tombstoneCopy identifier];
+    objectID3 = [v16 objectID];
+    objectID4 = [v17 objectID];
     v29 = 138412802;
-    v30 = v26;
+    v30 = identifier2;
     v31 = 2112;
-    v32 = v27;
+    v32 = objectID3;
     v33 = 2112;
-    v34 = v28;
+    v34 = objectID4;
     _os_log_debug_impl(&dword_214D51000, v19, OS_LOG_TYPE_DEBUG, "Resolving legacy tombstone conflict (%@) by keeping (%@) and deleting (%@)", &v29, 0x20u);
   }
 
-  v20 = [v17 managedObjectContext];
-  [v20 deleteObject:v17];
+  managedObjectContext = [v17 managedObjectContext];
+  [managedObjectContext deleteObject:v17];
   v21 = 1;
 LABEL_20:
 

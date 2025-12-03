@@ -1,18 +1,18 @@
 @interface PUPickerOnDemandProcessor
-- (PUPickerOnDemandProcessor)initWithConfiguration:(id)a3;
-- (void)_performOnDemandStaticStickerScoringProcessingForRecentAssets:(id)a3;
+- (PUPickerOnDemandProcessor)initWithConfiguration:(id)configuration;
+- (void)_performOnDemandStaticStickerScoringProcessingForRecentAssets:(id)assets;
 - (void)dealloc;
-- (void)performOnDemandProcessingWithCanDisplayUserInterfaceHandler:(id)a3;
+- (void)performOnDemandProcessingWithCanDisplayUserInterfaceHandler:(id)handler;
 @end
 
 @implementation PUPickerOnDemandProcessor
 
-- (void)_performOnDemandStaticStickerScoringProcessingForRecentAssets:(id)a3
+- (void)_performOnDemandStaticStickerScoringProcessingForRecentAssets:(id)assets
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUPickerOnDemandProcessor *)self service];
-  [v5 cancelRequest:{-[PUPickerOnDemandProcessor stickerScoringRequestID](self, "stickerScoringRequestID")}];
+  assetsCopy = assets;
+  service = [(PUPickerOnDemandProcessor *)self service];
+  [service cancelRequest:{-[PUPickerOnDemandProcessor stickerScoringRequestID](self, "stickerScoringRequestID")}];
 
   v6 = PXSharedUserDefaults();
   v7 = [v6 integerForKey:@"PickerStickerScoreOnDemandTarget"];
@@ -27,9 +27,9 @@
     v8 = 100;
   }
 
-  v9 = [(PUPickerOnDemandProcessor *)self service];
-  v10 = [(PUPickerOnDemandProcessor *)self configuration];
-  v11 = [v10 photoLibrary];
+  service2 = [(PUPickerOnDemandProcessor *)self service];
+  configuration = [(PUPickerOnDemandProcessor *)self configuration];
+  photoLibrary = [configuration photoLibrary];
   v21 = *MEMORY[0x1E69AE288];
   v12 = [MEMORY[0x1E696AD98] numberWithInteger:v8];
   v22[0] = v12;
@@ -38,9 +38,9 @@
   v17 = 3221225472;
   v18 = __91__PUPickerOnDemandProcessor__performOnDemandStaticStickerScoringProcessingForRecentAssets___block_invoke;
   v19 = &unk_1E7B76B58;
-  v20 = v4;
-  v14 = v4;
-  v15 = [v9 requestStaticStickerScoringForLibrary:v11 options:v13 completionHandler:&v16];
+  v20 = assetsCopy;
+  v14 = assetsCopy;
+  v15 = [service2 requestStaticStickerScoringForLibrary:photoLibrary options:v13 completionHandler:&v16];
   [(PUPickerOnDemandProcessor *)self setStickerScoringRequestID:v15, v16, v17, v18, v19];
 }
 
@@ -77,9 +77,9 @@ LABEL_6:
   }
 }
 
-- (void)performOnDemandProcessingWithCanDisplayUserInterfaceHandler:(id)a3
+- (void)performOnDemandProcessingWithCanDisplayUserInterfaceHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x2020000000;
@@ -89,14 +89,14 @@ LABEL_6:
   aBlock[2] = __89__PUPickerOnDemandProcessor_performOnDemandProcessingWithCanDisplayUserInterfaceHandler___block_invoke;
   aBlock[3] = &unk_1E7B7E8B0;
   v18 = v19;
-  v5 = v4;
+  v5 = handlerCopy;
   v17 = v5;
   v6 = _Block_copy(aBlock);
-  v7 = [(PUPickerOnDemandProcessor *)self configuration];
-  v8 = [v7 generatedFilter];
-  v9 = [v8 containsStickersFilter];
+  configuration = [(PUPickerOnDemandProcessor *)self configuration];
+  generatedFilter = [configuration generatedFilter];
+  containsStickersFilter = [generatedFilter containsStickersFilter];
 
-  if (v9)
+  if (containsStickersFilter)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -148,27 +148,27 @@ void __89__PUPickerOnDemandProcessor_performOnDemandProcessingWithCanDisplayUser
 
 - (void)dealloc
 {
-  v3 = [(PUPickerOnDemandProcessor *)self service];
-  [v3 cancelRequest:{-[PUPickerOnDemandProcessor stickerScoringRequestID](self, "stickerScoringRequestID")}];
+  service = [(PUPickerOnDemandProcessor *)self service];
+  [service cancelRequest:{-[PUPickerOnDemandProcessor stickerScoringRequestID](self, "stickerScoringRequestID")}];
 
   v4.receiver = self;
   v4.super_class = PUPickerOnDemandProcessor;
   [(PUPickerOnDemandProcessor *)&v4 dealloc];
 }
 
-- (PUPickerOnDemandProcessor)initWithConfiguration:(id)a3
+- (PUPickerOnDemandProcessor)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v10.receiver = self;
   v10.super_class = PUPickerOnDemandProcessor;
   v6 = [(PUPickerOnDemandProcessor *)&v10 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E69AE230] analysisService];
+    analysisService = [MEMORY[0x1E69AE230] analysisService];
     service = v6->_service;
-    v6->_service = v7;
+    v6->_service = analysisService;
 
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
   }
 
   return v6;

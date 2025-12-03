@@ -1,26 +1,26 @@
 @interface RTAuthorizedLocationZDRLocationsStore
-- (RTAuthorizedLocationZDRLocationsStore)initWithPersistenceManager:(id)a3;
-- (double)_getSecondsFromDateWithTimezoneAdjustment:(id)a3;
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5;
-- (void)_deleteAllZDRLocation:(id)a3;
-- (void)_deleteZDRLocation:(id)a3 handler:(id)a4;
-- (void)_fetchZDRLocationWithContext:(id)a3 handler:(id)a4;
-- (void)_fetchZDRLocationWithOptions:(id)a3 handler:(id)a4;
-- (void)_storeZDRLocation:(id)a3 handler:(id)a4;
-- (void)deleteAllZDRLocations:(id)a3;
-- (void)deleteZDRLocation:(id)a3 handler:(id)a4;
-- (void)fetchZDRLocationWithOptions:(id)a3 handler:(id)a4;
-- (void)storeZDRLocation:(id)a3 handler:(id)a4;
+- (RTAuthorizedLocationZDRLocationsStore)initWithPersistenceManager:(id)manager;
+- (double)_getSecondsFromDateWithTimezoneAdjustment:(id)adjustment;
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error;
+- (void)_deleteAllZDRLocation:(id)location;
+- (void)_deleteZDRLocation:(id)location handler:(id)handler;
+- (void)_fetchZDRLocationWithContext:(id)context handler:(id)handler;
+- (void)_fetchZDRLocationWithOptions:(id)options handler:(id)handler;
+- (void)_storeZDRLocation:(id)location handler:(id)handler;
+- (void)deleteAllZDRLocations:(id)locations;
+- (void)deleteZDRLocation:(id)location handler:(id)handler;
+- (void)fetchZDRLocationWithOptions:(id)options handler:(id)handler;
+- (void)storeZDRLocation:(id)location handler:(id)handler;
 @end
 
 @implementation RTAuthorizedLocationZDRLocationsStore
 
-- (RTAuthorizedLocationZDRLocationsStore)initWithPersistenceManager:(id)a3
+- (RTAuthorizedLocationZDRLocationsStore)initWithPersistenceManager:(id)manager
 {
   v15 = *MEMORY[0x277D85DE8];
   v10.receiver = self;
   v10.super_class = RTAuthorizedLocationZDRLocationsStore;
-  v4 = [(RTStore *)&v10 initWithPersistenceManager:a3];
+  v4 = [(RTStore *)&v10 initWithPersistenceManager:manager];
   if (v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
@@ -40,13 +40,13 @@
   return v4;
 }
 
-- (double)_getSecondsFromDateWithTimezoneAdjustment:(id)a3
+- (double)_getSecondsFromDateWithTimezoneAdjustment:(id)adjustment
 {
   v3 = MEMORY[0x277CBEAA8];
   v4 = MEMORY[0x277CBEBB0];
-  v5 = a3;
-  v6 = [v4 systemTimeZone];
-  v7 = [v3 dateWithTimeInterval:v5 sinceDate:{-objc_msgSend(v6, "secondsFromGMT")}];
+  adjustmentCopy = adjustment;
+  systemTimeZone = [v4 systemTimeZone];
+  v7 = [v3 dateWithTimeInterval:adjustmentCopy sinceDate:{-objc_msgSend(systemTimeZone, "secondsFromGMT")}];
 
   [v7 timeIntervalSince1970];
   v9 = v8;
@@ -54,29 +54,29 @@
   return v9;
 }
 
-- (void)fetchZDRLocationWithOptions:(id)a3 handler:(id)a4
+- (void)fetchZDRLocationWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__RTAuthorizedLocationZDRLocationsStore_fetchZDRLocationWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchZDRLocationWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchZDRLocationWithOptions:(id)options handler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -93,11 +93,11 @@
   v11[1] = 3221225472;
   v11[2] = __78__RTAuthorizedLocationZDRLocationsStore__fetchZDRLocationWithOptions_handler___block_invoke;
   v11[3] = &unk_2788C96D0;
-  v12 = v8;
+  v12 = handlerCopy;
   v13 = a2;
   v11[4] = self;
-  v10 = v8;
-  [(RTAuthorizedLocationZDRLocationsStore *)self _fetchZDRLocationWithContext:v7 handler:v11];
+  v10 = handlerCopy;
+  [(RTAuthorizedLocationZDRLocationsStore *)self _fetchZDRLocationWithContext:optionsCopy handler:v11];
 }
 
 void __78__RTAuthorizedLocationZDRLocationsStore__fetchZDRLocationWithOptions_handler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -130,20 +130,20 @@ void __78__RTAuthorizedLocationZDRLocationsStore__fetchZDRLocationWithOptions_ha
   v6();
 }
 
-- (void)_fetchZDRLocationWithContext:(id)a3 handler:(id)a4
+- (void)_fetchZDRLocationWithContext:(id)context handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  contextCopy = context;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __78__RTAuthorizedLocationZDRLocationsStore__fetchZDRLocationWithContext_handler___block_invoke;
     aBlock[3] = &unk_2788CB718;
-    v14 = v7;
+    v14 = contextCopy;
     v17 = a2;
-    v9 = v8;
-    v15 = self;
+    v9 = handlerCopy;
+    selfCopy = self;
     v16 = v9;
     v10 = _Block_copy(aBlock);
     v11[0] = MEMORY[0x277D85DD0];
@@ -345,15 +345,15 @@ void __78__RTAuthorizedLocationZDRLocationsStore__fetchZDRLocationWithContext_ha
   }
 }
 
-- (void)_storeZDRLocation:(id)a3 handler:(id)a4
+- (void)_storeZDRLocation:(id)location handler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  locationCopy = location;
+  handlerCopy = handler;
+  if (locationCopy)
   {
-    v9 = [MEMORY[0x277CBEB18] arrayWithObject:v7];
-    [(RTStore *)self storeWritableObjects:v9 handler:v8];
+    v9 = [MEMORY[0x277CBEB18] arrayWithObject:locationCopy];
+    [(RTStore *)self storeWritableObjects:v9 handler:handlerCopy];
 LABEL_6:
 
     goto LABEL_7;
@@ -380,12 +380,12 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)storeZDRLocation:(id)a3 handler:(id)a4
+- (void)storeZDRLocation:(id)location handler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  locationCopy = location;
+  handlerCopy = handler;
+  if (!locationCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -411,29 +411,29 @@ LABEL_7:
       v22 = 2112;
       v23 = v16;
       v24 = 2114;
-      v25 = v7;
+      v25 = locationCopy;
       _os_log_debug_impl(&dword_2304B3000, v10, OS_LOG_TYPE_DEBUG, "%@:%@zdrLocation,%{public}@", buf, 0x20u);
     }
   }
 
-  v11 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__RTAuthorizedLocationZDRLocationsStore_storeZDRLocation_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v18 = v7;
-  v19 = v8;
-  v12 = v8;
-  v13 = v7;
-  dispatch_async(v11, block);
+  v18 = locationCopy;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = locationCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_deleteZDRLocation:(id)a3 handler:(id)a4
+- (void)_deleteZDRLocation:(id)location handler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  locationCopy = location;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
@@ -454,11 +454,11 @@ LABEL_7:
   aBlock[1] = 3221225472;
   aBlock[2] = __68__RTAuthorizedLocationZDRLocationsStore__deleteZDRLocation_handler___block_invoke;
   aBlock[3] = &unk_2788C4FB0;
-  v18 = v8;
+  v18 = handlerCopy;
   v19 = a2;
-  v17 = v7;
-  v10 = v8;
-  v11 = v7;
+  v17 = locationCopy;
+  v10 = handlerCopy;
+  v11 = locationCopy;
   v12 = _Block_copy(aBlock);
   [(RTStore *)self _performBlock:v12 contextType:0 errorHandler:v10];
 }
@@ -508,24 +508,24 @@ void __68__RTAuthorizedLocationZDRLocationsStore__deleteZDRLocation_handler___bl
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)deleteAllZDRLocations:(id)a3
+- (void)deleteAllZDRLocations:(id)locations
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  locationsCopy = locations;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__RTAuthorizedLocationZDRLocationsStore_deleteAllZDRLocations___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = locationsCopy;
+  v6 = locationsCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_deleteAllZDRLocation:(id)a3
+- (void)_deleteAllZDRLocation:(id)location
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  locationCopy = location;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
@@ -542,15 +542,15 @@ void __68__RTAuthorizedLocationZDRLocationsStore__deleteZDRLocation_handler___bl
     }
   }
 
-  v7 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __63__RTAuthorizedLocationZDRLocationsStore__deleteAllZDRLocation___block_invoke;
   v12[3] = &unk_2788C4938;
   v12[4] = self;
-  v13 = v5;
-  v8 = v5;
-  dispatch_async(v7, v12);
+  v13 = locationCopy;
+  v8 = locationCopy;
+  dispatch_async(queue, v12);
 }
 
 void __63__RTAuthorizedLocationZDRLocationsStore__deleteAllZDRLocation___block_invoke(uint64_t a1)
@@ -561,24 +561,24 @@ void __63__RTAuthorizedLocationZDRLocationsStore__deleteAllZDRLocation___block_i
   [*(a1 + 32) removeAll:v2 handler:*(a1 + 40)];
 }
 
-- (void)deleteZDRLocation:(id)a3 handler:(id)a4
+- (void)deleteZDRLocation:(id)location handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  locationCopy = location;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__RTAuthorizedLocationZDRLocationsStore_deleteZDRLocation_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = locationCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = locationCopy;
+  dispatch_async(queue, block);
 }
 
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCA9B8];
@@ -588,10 +588,10 @@ void __63__RTAuthorizedLocationZDRLocationsStore__deleteAllZDRLocation___block_i
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v9 = [v6 errorWithDomain:v7 code:7 userInfo:v8];
 
-  if (a5)
+  if (error)
   {
     v10 = v9;
-    *a5 = v9;
+    *error = v9;
   }
 
   return 0;

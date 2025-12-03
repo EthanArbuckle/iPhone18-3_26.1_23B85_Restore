@@ -1,39 +1,39 @@
 @interface FinHealthXPCServices
-- (FinHealthXPCServices)initWithConnection:(id)a3;
-- (void)_processFHTransactions:(id)a3 deferFeatureComputation:(BOOL)a4 completion:(id)a5;
-- (void)_sendTransactionFeaturesForApplication:(id)a3 withCompletion:(id)a4;
-- (void)aggregateFeaturesWithProcessSource:(id)a3 completion:(id)a4;
-- (void)allInsightsForDateRange:(id)a3 endDate:(id)a4 insightTypeItems:(id)a5 trendWindow:(int64_t)a6 sourceId:(id)a7 accountType:(int64_t)a8 completion:(id)a9;
-- (void)deleteAllData:(id)a3;
-- (void)deleteDataForPasses:(id)a3 completion:(id)a4;
-- (void)deleteTransactionById:(id)a3 completion:(id)a4;
-- (void)featureResponsesForApplication:(id)a3 completion:(id)a4;
-- (void)featuresForApplication:(id)a3 withCompletion:(id)a4;
-- (void)generatePredictionWithModelType:(id)a3 withModelPathComponent:(id)a4 completion:(id)a5;
-- (void)getComputedFeaturesForTransactions:(BOOL)a3 completion:(id)a4;
-- (void)getDisputeDocumentSuggestionsForTransactionId:(id)a3 completion:(id)a4;
-- (void)getTopTransactionCategoriesWithCountryCode:(id)a3 timeWindow:(unint64_t)a4 minRegularTransactionRatio:(double)a5 discretizedTimeOfDay:(unint64_t)a6 completion:(id)a7;
-- (void)paymentRingSuggestionsFromSearchFeatures:(id)a3 startDate:(id)a4 endDate:(id)a5 completion:(id)a6;
-- (void)peerPaymentForecastingSignals:(id)a3 withCompletion:(id)a4;
-- (void)predictionsByModelName:(id)a3 modelVersion:(id)a4 completion:(id)a5;
-- (void)recomputeFeaturesForTransactions:(id)a3;
-- (void)recordUserInteraction:(id)a3 completion:(id)a4;
-- (void)recordUserInteractions:(id)a3 completion:(id)a4;
-- (void)transactionBatch:(id)a3 moreComing:(BOOL)a4 readyForNextBatch:(id)a5;
-- (void)transactionUpdated:(id)a3 deferFeatureComputation:(BOOL)a4 completion:(id)a5;
-- (void)transactionWithTransaction:(id)a3 completion:(id)a4;
-- (void)transactionWithTransactionID:(id)a3 completion:(id)a4;
-- (void)transactionsByGroupID:(id)a3 completion:(id)a4;
-- (void)transactionsRequireSyncing:(id)a3;
-- (void)updatePeerPaymentAccountBalanceWithTransactionSourceId:(id)a3 amount:(id)a4 currencyCode:(id)a5 completion:(id)a6;
-- (void)updatePeerPaymentForecastingSuggestionStatus:(unint64_t)a3 counterpartHandle:(id)a4 amount:(id)a5 completion:(id)a6;
+- (FinHealthXPCServices)initWithConnection:(id)connection;
+- (void)_processFHTransactions:(id)transactions deferFeatureComputation:(BOOL)computation completion:(id)completion;
+- (void)_sendTransactionFeaturesForApplication:(id)application withCompletion:(id)completion;
+- (void)aggregateFeaturesWithProcessSource:(id)source completion:(id)completion;
+- (void)allInsightsForDateRange:(id)range endDate:(id)date insightTypeItems:(id)items trendWindow:(int64_t)window sourceId:(id)id accountType:(int64_t)type completion:(id)completion;
+- (void)deleteAllData:(id)data;
+- (void)deleteDataForPasses:(id)passes completion:(id)completion;
+- (void)deleteTransactionById:(id)id completion:(id)completion;
+- (void)featureResponsesForApplication:(id)application completion:(id)completion;
+- (void)featuresForApplication:(id)application withCompletion:(id)completion;
+- (void)generatePredictionWithModelType:(id)type withModelPathComponent:(id)component completion:(id)completion;
+- (void)getComputedFeaturesForTransactions:(BOOL)transactions completion:(id)completion;
+- (void)getDisputeDocumentSuggestionsForTransactionId:(id)id completion:(id)completion;
+- (void)getTopTransactionCategoriesWithCountryCode:(id)code timeWindow:(unint64_t)window minRegularTransactionRatio:(double)ratio discretizedTimeOfDay:(unint64_t)day completion:(id)completion;
+- (void)paymentRingSuggestionsFromSearchFeatures:(id)features startDate:(id)date endDate:(id)endDate completion:(id)completion;
+- (void)peerPaymentForecastingSignals:(id)signals withCompletion:(id)completion;
+- (void)predictionsByModelName:(id)name modelVersion:(id)version completion:(id)completion;
+- (void)recomputeFeaturesForTransactions:(id)transactions;
+- (void)recordUserInteraction:(id)interaction completion:(id)completion;
+- (void)recordUserInteractions:(id)interactions completion:(id)completion;
+- (void)transactionBatch:(id)batch moreComing:(BOOL)coming readyForNextBatch:(id)nextBatch;
+- (void)transactionUpdated:(id)updated deferFeatureComputation:(BOOL)computation completion:(id)completion;
+- (void)transactionWithTransaction:(id)transaction completion:(id)completion;
+- (void)transactionWithTransactionID:(id)d completion:(id)completion;
+- (void)transactionsByGroupID:(id)d completion:(id)completion;
+- (void)transactionsRequireSyncing:(id)syncing;
+- (void)updatePeerPaymentAccountBalanceWithTransactionSourceId:(id)id amount:(id)amount currencyCode:(id)code completion:(id)completion;
+- (void)updatePeerPaymentForecastingSuggestionStatus:(unint64_t)status counterpartHandle:(id)handle amount:(id)amount completion:(id)completion;
 @end
 
 @implementation FinHealthXPCServices
 
-- (FinHealthXPCServices)initWithConnection:(id)a3
+- (FinHealthXPCServices)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v13.receiver = self;
   v13.super_class = FinHealthXPCServices;
   v5 = [(FinHealthXPCServices *)&v13 init];
@@ -50,7 +50,7 @@
     [(PKPaymentService *)v5->_paymentService setDelegate:v5];
     v5->_batchesCount = 0;
     v5->_transactionsCount = 0;
-    v10 = [[FinHealthEntitlementsChecker alloc] initWithConnection:v4];
+    v10 = [[FinHealthEntitlementsChecker alloc] initWithConnection:connectionCopy];
     entitlementsChecker = v5->_entitlementsChecker;
     v5->_entitlementsChecker = v10;
   }
@@ -58,13 +58,13 @@
   return v5;
 }
 
-- (void)_processFHTransactions:(id)a3 deferFeatureComputation:(BOOL)a4 completion:(id)a5
+- (void)_processFHTransactions:(id)transactions deferFeatureComputation:(BOOL)computation completion:(id)completion
 {
-  v7 = a5;
-  if (v7)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v10 = v7;
-    v8 = [(FinHealthStateController *)self->_finHealthStateController insertOrUpdateTransactions:a3];
+    v10 = completionCopy;
+    v8 = [(FinHealthStateController *)self->_finHealthStateController insertOrUpdateTransactions:transactions];
     if ([v8 containsString:FHBatchInsertStatusFail])
     {
       v9 = [NSError errorWithDomain:FHErrorDomain code:10010 userInfo:0];
@@ -77,15 +77,15 @@
 
     v10[2](v10, v8, v9);
 
-    v7 = v10;
+    completionCopy = v10;
   }
 }
 
-- (void)transactionBatch:(id)a3 moreComing:(BOOL)a4 readyForNextBatch:(id)a5
+- (void)transactionBatch:(id)batch moreComing:(BOOL)coming readyForNextBatch:(id)nextBatch
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  comingCopy = coming;
+  batchCopy = batch;
+  nextBatchCopy = nextBatch;
   v10 = FinHealthLogObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -116,7 +116,7 @@
   v35[3] = &unk_100020E40;
   v35[4] = self;
   v35[5] = &buf;
-  [v8 enumerateKeysAndObjectsUsingBlock:v35];
+  [batchCopy enumerateKeysAndObjectsUsingBlock:v35];
   self->_transactionsCount += [*(*(&buf + 1) + 40) count];
   v14 = FinHealthLogObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -130,7 +130,7 @@
   v16 = [NSArray arrayWithArray:*(*(&buf + 1) + 40)];
   [(FinHealthXPCServices *)self _processTransactionsFromWallet:v16 deferFeatureComputation:0];
 
-  if (v6)
+  if (comingCopy)
   {
     v17 = FinHealthLogObject();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -163,7 +163,7 @@ LABEL_21:
 
   *p_batchesCount = 0;
   self->_transactionsCount = 0;
-  v23 = [(FinHealthStateController *)self->_finHealthStateController processAggregateFeatures];
+  processAggregateFeatures = [(FinHealthStateController *)self->_finHealthStateController processAggregateFeatures];
   if (self->_allFeaturesCompletionBlock)
   {
     [(FinHealthStateController *)self->_finHealthStateController updateGetAllStatus:1];
@@ -191,8 +191,8 @@ LABEL_21:
           }
 
           finHealthStateController = self->_finHealthStateController;
-          v30 = [*(*(&v31 + 1) + 8 * v28) transactionIdentifier];
-          [(FinHealthStateController *)finHealthStateController updateDeleteFlagInTransactionFeatures:1 forID:v30];
+          transactionIdentifier = [*(*(&v31 + 1) + 8 * v28) transactionIdentifier];
+          [(FinHealthStateController *)finHealthStateController updateDeleteFlagInTransactionFeatures:1 forID:transactionIdentifier];
 
           v28 = v28 + 1;
         }
@@ -209,9 +209,9 @@ LABEL_21:
   }
 
 LABEL_22:
-  if (v9)
+  if (nextBatchCopy)
   {
-    v9[2](v9);
+    nextBatchCopy[2](nextBatchCopy);
   }
 
   else
@@ -222,39 +222,39 @@ LABEL_22:
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)transactionWithTransactionID:(id)a3 completion:(id)a4
+- (void)transactionWithTransactionID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FinHealthXPCServices *)self paymentService];
+  completionCopy = completion;
+  dCopy = d;
+  paymentService = [(FinHealthXPCServices *)self paymentService];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000AEFC;
   v10[3] = &unk_100020CB0;
-  v11 = v6;
-  v9 = v6;
-  [v8 transactionWithTransactionIdentifier:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [paymentService transactionWithTransactionIdentifier:dCopy completion:v10];
 }
 
-- (void)transactionWithTransaction:(id)a3 completion:(id)a4
+- (void)transactionWithTransaction:(id)transaction completion:(id)completion
 {
-  v6 = a4;
-  if (a3)
+  completionCopy = completion;
+  if (transaction)
   {
-    v7 = [a3 identifier];
-    if (v7)
+    identifier = [transaction identifier];
+    if (identifier)
     {
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = sub_10000B178;
       v9[3] = &unk_100020CB0;
-      v10 = v6;
-      [(FinHealthXPCServices *)self transactionWithTransactionID:v7 completion:v9];
+      v10 = completionCopy;
+      [(FinHealthXPCServices *)self transactionWithTransactionID:identifier completion:v9];
     }
 
-    else if (v6)
+    else if (completionCopy)
     {
-      (*(v6 + 2))(v6, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 
@@ -268,26 +268,26 @@ LABEL_22:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s Received nil FHTransaction.", buf, 0xCu);
     }
 
-    if (v6)
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-- (void)transactionUpdated:(id)a3 deferFeatureComputation:(BOOL)a4 completion:(id)a5
+- (void)transactionUpdated:(id)updated deferFeatureComputation:(BOOL)computation completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  updatedCopy = updated;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v10 = [(FinHealthXPCServices *)self entitlementsChecker];
-    v11 = [v10 fhAllAccess];
+    entitlementsChecker = [(FinHealthXPCServices *)self entitlementsChecker];
+    fhAllAccess = [entitlementsChecker fhAllAccess];
 
-    if (v11)
+    if (fhAllAccess)
     {
-      v12 = [(FinHealthStateController *)self->_finHealthStateController insertOrUpdateTransaction:v8];
-      v9[2](v9, v12, 0);
+      v12 = [(FinHealthStateController *)self->_finHealthStateController insertOrUpdateTransaction:updatedCopy];
+      completionCopy[2](completionCopy, v12, 0);
     }
 
     else
@@ -302,116 +302,116 @@ LABEL_22:
       }
 
       v12 = [NSError errorWithDomain:FHErrorDomain code:10012 userInfo:0];
-      (v9)[2](v9, 0, v12);
+      (completionCopy)[2](completionCopy, 0, v12);
     }
   }
 }
 
-- (void)deleteDataForPasses:(id)a3 completion:(id)a4
+- (void)deleteDataForPasses:(id)passes completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (completionCopy)
   {
     finHealthStateController = self->_finHealthStateController;
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10000B770;
     v9[3] = &unk_100020EA8;
-    v10 = v6;
-    [(FinHealthStateController *)finHealthStateController deleteAllDataForPasses:a3 force:1 completion:v9];
+    v10 = completionCopy;
+    [(FinHealthStateController *)finHealthStateController deleteAllDataForPasses:passes force:1 completion:v9];
   }
 }
 
-- (void)deleteTransactionById:(id)a3 completion:(id)a4
+- (void)deleteTransactionById:(id)id completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
-  if (v6)
+  idCopy = id;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if ([(FinHealthStateController *)self->_finHealthStateController invalidateTransactionByIdentifier:v8])
+    if ([(FinHealthStateController *)self->_finHealthStateController invalidateTransactionByIdentifier:idCopy])
     {
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     else
     {
       v7 = [NSError errorWithDomain:FHErrorDomain code:10006 userInfo:0];
-      (v6)[2](v6, v7);
+      (completionCopy)[2](completionCopy, v7);
     }
   }
 }
 
-- (void)paymentRingSuggestionsFromSearchFeatures:(id)a3 startDate:(id)a4 endDate:(id)a5 completion:(id)a6
+- (void)paymentRingSuggestionsFromSearchFeatures:(id)features startDate:(id)date endDate:(id)endDate completion:(id)completion
 {
-  v10 = a6;
-  if (v10)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v12 = v10;
-    v11 = [(FinHealthStateController *)self->_finHealthStateController featuresWithAmountSums:a3 startDate:a4 endDate:a5];
+    v12 = completionCopy;
+    v11 = [(FinHealthStateController *)self->_finHealthStateController featuresWithAmountSums:features startDate:date endDate:endDate];
     if (v11)
     {
       v12[2](v12, v11);
     }
 
-    v10 = v12;
+    completionCopy = v12;
   }
 }
 
-- (void)generatePredictionWithModelType:(id)a3 withModelPathComponent:(id)a4 completion:(id)a5
+- (void)generatePredictionWithModelType:(id)type withModelPathComponent:(id)component completion:(id)completion
 {
   finHealthStateController = self->_finHealthStateController;
-  v9 = a5;
-  v10 = [(FinHealthStateController *)finHealthStateController generatePredictionWithModelType:a3 withModelPathComponent:a4];
-  (*(a5 + 2))(v9, v10);
+  completionCopy = completion;
+  v10 = [(FinHealthStateController *)finHealthStateController generatePredictionWithModelType:type withModelPathComponent:component];
+  (*(completion + 2))(completionCopy, v10);
 }
 
-- (void)predictionsByModelName:(id)a3 modelVersion:(id)a4 completion:(id)a5
+- (void)predictionsByModelName:(id)name modelVersion:(id)version completion:(id)completion
 {
-  v8 = a5;
-  if (v8)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v10 = v8;
-    v9 = [(FinHealthStateController *)self->_finHealthStateController predictionsByModelName:a3 modelVersion:a4];
+    v10 = completionCopy;
+    v9 = [(FinHealthStateController *)self->_finHealthStateController predictionsByModelName:name modelVersion:version];
     if (v9)
     {
       v10[2](v10, v9);
     }
 
-    v8 = v10;
+    completionCopy = v10;
   }
 }
 
-- (void)transactionsByGroupID:(id)a3 completion:(id)a4
+- (void)transactionsByGroupID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = v6;
-    v7 = [(FinHealthStateController *)self->_finHealthStateController transactionsByGroupID:a3];
+    v8 = completionCopy;
+    v7 = [(FinHealthStateController *)self->_finHealthStateController transactionsByGroupID:d];
     if (v7)
     {
       v8[2](v8, v7);
     }
 
-    v6 = v8;
+    completionCopy = v8;
   }
 }
 
-- (void)deleteAllData:(id)a3
+- (void)deleteAllData:(id)data
 {
-  v5 = a3;
-  v6 = [(FinHealthXPCServices *)self entitlementsChecker];
-  v7 = [v6 fhAllAccess];
+  dataCopy = data;
+  entitlementsChecker = [(FinHealthXPCServices *)self entitlementsChecker];
+  fhAllAccess = [entitlementsChecker fhAllAccess];
 
-  if (v7)
+  if (fhAllAccess)
   {
     finHealthStateController = self->_finHealthStateController;
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10000BC1C;
     v12[3] = &unk_100020EA8;
-    v13 = v5;
+    v13 = dataCopy;
     [(FinHealthStateController *)finHealthStateController deleteAllData:v12];
     v9 = v13;
 LABEL_7:
@@ -428,20 +428,20 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Client not entitled for method: %@", buf, 0xCu);
   }
 
-  if (v5)
+  if (dataCopy)
   {
     v9 = [NSError errorWithDomain:FHErrorDomain code:10012 userInfo:0];
-    (*(v5 + 2))(v5, 0, v9);
+    (*(dataCopy + 2))(dataCopy, 0, v9);
     goto LABEL_7;
   }
 
 LABEL_8:
 }
 
-- (void)featuresForApplication:(id)a3 withCompletion:(id)a4
+- (void)featuresForApplication:(id)application withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  applicationCopy = application;
+  completionCopy = completion;
   v9 = FinHealthLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -450,17 +450,17 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
   }
 
-  v10 = [(FinHealthXPCServices *)self entitlementsChecker];
-  v11 = [v10 fhAllAccess];
+  entitlementsChecker = [(FinHealthXPCServices *)self entitlementsChecker];
+  fhAllAccess = [entitlementsChecker fhAllAccess];
 
-  if (v11)
+  if (fhAllAccess)
   {
 LABEL_8:
     v15 = FHApplications();
-    v63 = v7;
-    if ([v15 containsObject:v7])
+    v63 = applicationCopy;
+    if ([v15 containsObject:applicationCopy])
     {
-      v16 = v7;
+      v16 = applicationCopy;
     }
 
     else
@@ -469,7 +469,7 @@ LABEL_8:
     }
 
     v17 = v16;
-    v62 = v8;
+    v62 = completionCopy;
 
     v18 = FHApplicationToTagsMapping();
     v19 = [v18 objectForKey:v17];
@@ -648,7 +648,7 @@ LABEL_8:
       {
         v55 = v54;
         v56 = *v73;
-        v8 = v62;
+        completionCopy = v62;
         do
         {
           for (k = 0; k != v55; k = k + 1)
@@ -674,15 +674,15 @@ LABEL_8:
       }
     }
 
-    v8 = v62;
+    completionCopy = v62;
 LABEL_59:
 
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, v22, 0);
+      completionCopy[2](completionCopy, v22, 0);
     }
 
-    v7 = v63;
+    applicationCopy = v63;
     goto LABEL_62;
   }
 
@@ -695,10 +695,10 @@ LABEL_59:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Client not entitled for method: %@", buf, 0xCu);
   }
 
-  if (v8)
+  if (completionCopy)
   {
     v14 = [NSError errorWithDomain:FHErrorDomain code:10012 userInfo:0];
-    (v8)[2](v8, 0, v14);
+    (completionCopy)[2](completionCopy, 0, v14);
 
     goto LABEL_8;
   }
@@ -706,24 +706,24 @@ LABEL_59:
 LABEL_62:
 }
 
-- (void)featureResponsesForApplication:(id)a3 completion:(id)a4
+- (void)featureResponsesForApplication:(id)application completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  applicationCopy = application;
+  completionCopy = completion;
   v9 = FinHealthLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v18 = 136315394;
     v19 = "[FinHealthXPCServices featureResponsesForApplication:completion:]";
     v20 = 2112;
-    v21 = v7;
+    v21 = applicationCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%s process name:%@", &v18, 0x16u);
   }
 
-  v10 = [(FinHealthXPCServices *)self entitlementsChecker];
-  v11 = [v10 fhAllAccess];
+  entitlementsChecker = [(FinHealthXPCServices *)self entitlementsChecker];
+  fhAllAccess = [entitlementsChecker fhAllAccess];
 
-  if (v11)
+  if (fhAllAccess)
   {
     goto LABEL_8;
   }
@@ -737,16 +737,16 @@ LABEL_62:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Client not entitled for method: %@", &v18, 0xCu);
   }
 
-  if (v8)
+  if (completionCopy)
   {
     v14 = [NSError errorWithDomain:FHErrorDomain code:10012 userInfo:0];
-    v8[2](v8, 0, v14);
+    completionCopy[2](completionCopy, 0, v14);
 
 LABEL_8:
     v15 = FHApplications();
-    if ([v15 containsObject:v7])
+    if ([v15 containsObject:applicationCopy])
     {
-      v16 = v7;
+      v16 = applicationCopy;
     }
 
     else
@@ -756,18 +756,18 @@ LABEL_8:
 
     v17 = v16;
 
-    [(FinHealthXPCServices *)self _sendTransactionFeaturesForApplication:v17 withCompletion:v8];
+    [(FinHealthXPCServices *)self _sendTransactionFeaturesForApplication:v17 withCompletion:completionCopy];
   }
 }
 
-- (void)getComputedFeaturesForTransactions:(BOOL)a3 completion:(id)a4
+- (void)getComputedFeaturesForTransactions:(BOOL)transactions completion:(id)completion
 {
-  v4 = a3;
-  v7 = a4;
-  v8 = [(FinHealthXPCServices *)self entitlementsChecker];
-  v9 = [v8 fhAllAccess];
+  transactionsCopy = transactions;
+  completionCopy = completion;
+  entitlementsChecker = [(FinHealthXPCServices *)self entitlementsChecker];
+  fhAllAccess = [entitlementsChecker fhAllAccess];
 
-  if ((v9 & 1) == 0)
+  if ((fhAllAccess & 1) == 0)
   {
     v10 = FinHealthLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -778,16 +778,16 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Client not entitled for method: %@", &v18, 0xCu);
     }
 
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_16;
     }
 
     v12 = [NSError errorWithDomain:FHErrorDomain code:10012 userInfo:0];
-    v7[2](v7, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
   }
 
-  if (v4)
+  if (transactionsCopy)
   {
     v13 = FinHealthLogObject();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -806,7 +806,7 @@ LABEL_8:
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "First time setup. Getting all transactions first", &v18, 2u);
       }
 
-      v15 = objc_retainBlock(v7);
+      v15 = objc_retainBlock(completionCopy);
       allFeaturesCompletionBlock = self->_allFeaturesCompletionBlock;
       self->_allFeaturesCompletionBlock = v15;
 
@@ -814,24 +814,24 @@ LABEL_8:
       goto LABEL_16;
     }
 
-    v17 = [(FinHealthStateController *)self->_finHealthStateController processAggregateFeatures];
+    processAggregateFeatures = [(FinHealthStateController *)self->_finHealthStateController processAggregateFeatures];
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    [(FinHealthXPCServices *)self _sendTransactionFeaturesWithCompletion:v7];
+    [(FinHealthXPCServices *)self _sendTransactionFeaturesWithCompletion:completionCopy];
   }
 
 LABEL_16:
 }
 
-- (void)recomputeFeaturesForTransactions:(id)a3
+- (void)recomputeFeaturesForTransactions:(id)transactions
 {
-  v5 = a3;
-  v6 = [(FinHealthXPCServices *)self entitlementsChecker];
-  v7 = [v6 fhAllAccess];
+  transactionsCopy = transactions;
+  entitlementsChecker = [(FinHealthXPCServices *)self entitlementsChecker];
+  fhAllAccess = [entitlementsChecker fhAllAccess];
 
-  if (v7)
+  if (fhAllAccess)
   {
     goto LABEL_6;
   }
@@ -845,10 +845,10 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Client not entitled for method: %@", &buf, 0xCu);
   }
 
-  if (v5)
+  if (transactionsCopy)
   {
     v10 = [NSError errorWithDomain:FHErrorDomain code:10012 userInfo:0];
-    v5[2](v5, 0, v10);
+    transactionsCopy[2](transactionsCopy, 0, v10);
 
 LABEL_6:
     v11 = FinHealthLogObject();
@@ -868,7 +868,7 @@ LABEL_6:
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Upgrade entire FinHealth database & Ask Wallet to re-send all transactions", &buf, 2u);
       }
 
-      v13 = objc_retainBlock(v5);
+      v13 = objc_retainBlock(transactionsCopy);
       allFeaturesCompletionBlock = self->_allFeaturesCompletionBlock;
       self->_allFeaturesCompletionBlock = v13;
 
@@ -879,7 +879,7 @@ LABEL_6:
     {
       if ([(FinHealthStateController *)self->_finHealthStateController deleteAllRecordsFromTransactionFeatures])
       {
-        v15 = [(FinHealthStateController *)self->_finHealthStateController processAggregateFeatures];
+        processAggregateFeatures = [(FinHealthStateController *)self->_finHealthStateController processAggregateFeatures];
         v16 = [NSNumber numberWithBool:1];
         *&buf = 0;
         *(&buf + 1) = &buf;
@@ -892,15 +892,15 @@ LABEL_6:
         v17 = v16;
         v24 = v17;
         p_buf = &buf;
-        [v15 enumerateObjectsUsingBlock:&v20];
+        [processAggregateFeatures enumerateObjectsUsingBlock:&v20];
         if (*(*(&buf + 1) + 24) == 1)
         {
           [(FinHealthStateController *)self->_finHealthStateController updateTransactionsInternalStateToState:FHComparisonOperatorEquals oldInternalState:2 newInternalState:3, v20, v21, v22, v23];
         }
 
-        if (v5)
+        if (transactionsCopy)
         {
-          [(FinHealthXPCServices *)self _sendTransactionFeaturesWithCompletion:v5];
+          [(FinHealthXPCServices *)self _sendTransactionFeaturesWithCompletion:transactionsCopy];
         }
 
         _Block_object_dispose(&buf, 8);
@@ -909,34 +909,34 @@ LABEL_6:
       else
       {
         v19 = [NSError errorWithDomain:FHErrorDomain code:10008 userInfo:0];
-        v5[2](v5, 0, v19);
+        transactionsCopy[2](transactionsCopy, 0, v19);
       }
     }
 
     else
     {
       v18 = [NSError errorWithDomain:FHErrorDomain code:10009 userInfo:0];
-      v5[2](v5, 0, v18);
+      transactionsCopy[2](transactionsCopy, 0, v18);
     }
   }
 }
 
-- (void)_sendTransactionFeaturesForApplication:(id)a3 withCompletion:(id)a4
+- (void)_sendTransactionFeaturesForApplication:(id)application withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  completionCopy = completion;
   v8 = FinHealthLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v23 = "[FinHealthXPCServices _sendTransactionFeaturesForApplication:withCompletion:]";
     v24 = 2112;
-    v25 = v6;
+    v25 = applicationCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s Application[%@]", buf, 0x16u);
   }
 
-  v9 = [(FinHealthStateController *)self->_finHealthStateController getTransactionSmartFeaturesForApplication:v6];
-  if ([v6 isEqualToString:FHApplicationSearch])
+  v9 = [(FinHealthStateController *)self->_finHealthStateController getTransactionSmartFeaturesForApplication:applicationCopy];
+  if ([applicationCopy isEqualToString:FHApplicationSearch])
   {
     v19 = 0u;
     v20 = 0u;
@@ -959,8 +959,8 @@ LABEL_6:
           }
 
           finHealthStateController = self->_finHealthStateController;
-          v16 = [*(*(&v17 + 1) + 8 * v14) transactionIdentifier];
-          [(FinHealthStateController *)finHealthStateController updateDeleteFlagInTransactionFeatures:1 forID:v16];
+          transactionIdentifier = [*(*(&v17 + 1) + 8 * v14) transactionIdentifier];
+          [(FinHealthStateController *)finHealthStateController updateDeleteFlagInTransactionFeatures:1 forID:transactionIdentifier];
 
           v14 = v14 + 1;
         }
@@ -973,18 +973,18 @@ LABEL_6:
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, v9, 0);
+    completionCopy[2](completionCopy, v9, 0);
   }
 }
 
-- (void)transactionsRequireSyncing:(id)a3
+- (void)transactionsRequireSyncing:(id)syncing
 {
-  v4 = a3;
-  if (v4)
+  syncingCopy = syncing;
+  if (syncingCopy)
   {
-    v6 = v4;
+    v6 = syncingCopy;
     if ([(FinHealthStateController *)self->_finHealthStateController updateGetAllStatus:0])
     {
       v6[2](v6, 0);
@@ -1000,35 +1000,35 @@ LABEL_6:
   _objc_release_x1();
 }
 
-- (void)aggregateFeaturesWithProcessSource:(id)a3 completion:(id)a4
+- (void)aggregateFeaturesWithProcessSource:(id)source completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (completionCopy)
   {
     finHealthStateController = self->_finHealthStateController;
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10000D008;
     v9[3] = &unk_100020B58;
-    v10 = v6;
-    [(FinHealthStateController *)finHealthStateController aggregateFeaturesWithProcessSource:a3 completion:v9];
+    v10 = completionCopy;
+    [(FinHealthStateController *)finHealthStateController aggregateFeaturesWithProcessSource:source completion:v9];
   }
 }
 
-- (void)recordUserInteractions:(id)a3 completion:(id)a4
+- (void)recordUserInteractions:(id)interactions completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  interactionsCopy = interactions;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
-    v15 = v7;
+    v15 = completionCopy;
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = [v6 countByEnumeratingWithState:&v16 objects:v24 count:16];
+    v9 = [interactionsCopy countByEnumeratingWithState:&v16 objects:v24 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1039,7 +1039,7 @@ LABEL_6:
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(interactionsCopy);
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
@@ -1056,7 +1056,7 @@ LABEL_6:
           [(FinHealthStateController *)self->_finHealthStateController insertInstrumentationRecord:v13];
         }
 
-        v10 = [v6 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        v10 = [interactionsCopy countByEnumeratingWithState:&v16 objects:v24 count:16];
       }
 
       while (v10);
@@ -1067,37 +1067,37 @@ LABEL_6:
   }
 }
 
-- (void)recordUserInteraction:(id)a3 completion:(id)a4
+- (void)recordUserInteraction:(id)interaction completion:(id)completion
 {
-  v6 = a3;
-  if (a4)
+  interactionCopy = interaction;
+  if (completion)
   {
-    v7 = a4;
+    completionCopy = completion;
     v8 = FinHealthLogObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v9 = 136315394;
       v10 = "[FinHealthXPCServices recordUserInteraction:completion:]";
       v11 = 2112;
-      v12 = v6;
+      v12 = interactionCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s instrumentationRecord [%@]", &v9, 0x16u);
     }
 
-    [(FinHealthStateController *)self->_finHealthStateController insertInstrumentationRecord:v6];
-    v7[2](v7);
+    [(FinHealthStateController *)self->_finHealthStateController insertInstrumentationRecord:interactionCopy];
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)peerPaymentForecastingSignals:(id)a3 withCompletion:(id)a4
+- (void)peerPaymentForecastingSignals:(id)signals withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  signalsCopy = signals;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v9 = [(FinHealthXPCServices *)self entitlementsChecker];
-    v10 = [v9 fhAllAccess];
+    entitlementsChecker = [(FinHealthXPCServices *)self entitlementsChecker];
+    fhAllAccess = [entitlementsChecker fhAllAccess];
 
-    if ((v10 & 1) == 0)
+    if ((fhAllAccess & 1) == 0)
     {
       v11 = FinHealthLogObject();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1109,20 +1109,20 @@ LABEL_6:
       }
 
       v13 = [NSError errorWithDomain:FHErrorDomain code:10012 userInfo:0];
-      v8[2](v8, 0, v13);
+      completionCopy[2](completionCopy, 0, v13);
     }
 
-    v14 = [(FinHealthStateController *)self->_finHealthStateController getAllPredictedPeerPaymentsAfterDate:v7];
-    (v8)[2](v8, v14, 0);
+    v14 = [(FinHealthStateController *)self->_finHealthStateController getAllPredictedPeerPaymentsAfterDate:signalsCopy];
+    (completionCopy)[2](completionCopy, v14, 0);
   }
 }
 
-- (void)updatePeerPaymentForecastingSuggestionStatus:(unint64_t)a3 counterpartHandle:(id)a4 amount:(id)a5 completion:(id)a6
+- (void)updatePeerPaymentForecastingSuggestionStatus:(unint64_t)status counterpartHandle:(id)handle amount:(id)amount completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v12)
+  handleCopy = handle;
+  amountCopy = amount;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v13 = FinHealthLogObject();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -1130,61 +1130,61 @@ LABEL_6:
       v15 = 136315906;
       v16 = "[FinHealthXPCServices updatePeerPaymentForecastingSuggestionStatus:counterpartHandle:amount:completion:]";
       v17 = 2048;
-      v18 = a3;
+      statusCopy = status;
       v19 = 2112;
-      v20 = v10;
+      v20 = handleCopy;
       v21 = 2112;
-      v22 = v11;
+      v22 = amountCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%s suggestionStatus [%lu], counterpartHandle [%@], amount [%@]", &v15, 0x2Au);
     }
 
-    if ([(FinHealthStateController *)self->_finHealthStateController recordPeerPaymentForecastingSuggestionStatus:a3 counterpartHandle:v10 amount:v11])
+    if ([(FinHealthStateController *)self->_finHealthStateController recordPeerPaymentForecastingSuggestionStatus:status counterpartHandle:handleCopy amount:amountCopy])
     {
-      v12[2](v12, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
 
     else
     {
       v14 = [NSError errorWithDomain:FHErrorDomain code:10010 userInfo:0];
-      (v12)[2](v12, 0, v14);
+      (completionCopy)[2](completionCopy, 0, v14);
     }
   }
 }
 
-- (void)updatePeerPaymentAccountBalanceWithTransactionSourceId:(id)a3 amount:(id)a4 currencyCode:(id)a5 completion:(id)a6
+- (void)updatePeerPaymentAccountBalanceWithTransactionSourceId:(id)id amount:(id)amount currencyCode:(id)code completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6)
+  idCopy = id;
+  amountCopy = amount;
+  codeCopy = code;
+  if (completion)
   {
-    v13 = a6;
+    completionCopy = completion;
     v14 = FinHealthLogObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       v15 = 138412802;
-      v16 = v11;
+      v16 = amountCopy;
       v17 = 2112;
-      v18 = v12;
+      v18 = codeCopy;
       v19 = 2112;
-      v20 = v10;
+      v20 = idCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "Received updated cash balance of %@ (FHDatabaseAmount) %@, for source_identifier=%@", &v15, 0x20u);
     }
 
-    v13[2](v13, [(FinHealthStateController *)self->_finHealthStateController updatePeerPaymentAccountBalance:v10 amount:v11 currencyCode:v12], 0);
+    completionCopy[2](completionCopy, [(FinHealthStateController *)self->_finHealthStateController updatePeerPaymentAccountBalance:idCopy amount:amountCopy currencyCode:codeCopy], 0);
   }
 }
 
-- (void)getDisputeDocumentSuggestionsForTransactionId:(id)a3 completion:(id)a4
+- (void)getDisputeDocumentSuggestionsForTransactionId:(id)id completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(FinHealthXPCServices *)self entitlementsChecker];
-  v10 = [v9 fhAllAccess];
+  idCopy = id;
+  completionCopy = completion;
+  entitlementsChecker = [(FinHealthXPCServices *)self entitlementsChecker];
+  fhAllAccess = [entitlementsChecker fhAllAccess];
 
-  if (v10)
+  if (fhAllAccess)
   {
-    if (!v8)
+    if (!completionCopy)
     {
       goto LABEL_12;
     }
@@ -1201,48 +1201,48 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Client not entitled for method: %@", &v17, 0xCu);
   }
 
-  if (v8)
+  if (completionCopy)
   {
     v13 = [NSError errorWithDomain:FHErrorDomain code:10012 userInfo:0];
-    v8[2](v8, 0, v13);
+    completionCopy[2](completionCopy, 0, v13);
 
 LABEL_8:
     v14 = +[FinHealthDisputeDocumentProcessing sharedInstance];
-    v15 = [(FinHealthStateController *)self->_finHealthStateController getTransactionByIdentifier:v7];
+    v15 = [(FinHealthStateController *)self->_finHealthStateController getTransactionByIdentifier:idCopy];
     if (v15)
     {
       v16 = [v14 getDisputeDocumentSuggestionsForTransaction:v15];
-      (v8)[2](v8, v16, 0);
+      (completionCopy)[2](completionCopy, v16, 0);
     }
 
     else
     {
       v16 = [NSError errorWithDomain:FHErrorDomain code:10015 userInfo:0];
-      v8[2](v8, 0, v16);
+      completionCopy[2](completionCopy, 0, v16);
     }
   }
 
 LABEL_12:
 }
 
-- (void)allInsightsForDateRange:(id)a3 endDate:(id)a4 insightTypeItems:(id)a5 trendWindow:(int64_t)a6 sourceId:(id)a7 accountType:(int64_t)a8 completion:(id)a9
+- (void)allInsightsForDateRange:(id)range endDate:(id)date insightTypeItems:(id)items trendWindow:(int64_t)window sourceId:(id)id accountType:(int64_t)type completion:(id)completion
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
-  v20 = a9;
-  v21 = [(FinHealthXPCServices *)self entitlementsChecker];
-  v22 = [v21 fhAllAccess];
+  rangeCopy = range;
+  dateCopy = date;
+  itemsCopy = items;
+  idCopy = id;
+  completionCopy = completion;
+  entitlementsChecker = [(FinHealthXPCServices *)self entitlementsChecker];
+  fhAllAccess = [entitlementsChecker fhAllAccess];
 
-  if (v22)
+  if (fhAllAccess)
   {
     if (_os_feature_enabled_impl())
     {
-      if (v20)
+      if (completionCopy)
       {
         v23 = +[FHInsightsFetcher sharedInstance];
-        v24 = [v23 retrieveSpendInsightsWithStartDate:v16 endDate:v17 insightTypeItems:v18 trendWindow:a6 sourceId:v19 accountType:a8];
+        v24 = [v23 retrieveSpendInsightsWithStartDate:rangeCopy endDate:dateCopy insightTypeItems:itemsCopy trendWindow:window sourceId:idCopy accountType:type];
 
         v25 = FinHealthLogObject();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -1256,13 +1256,13 @@ LABEL_12:
       }
     }
 
-    else if (v20)
+    else if (completionCopy)
     {
       v25 = +[FHInsightsFetcher sharedInstance];
-      v24 = [v25 retrieveInsightsWithStartDate:v16 endDate:v17 insightTypeItems:v18 trendWindow:a6];
+      v24 = [v25 retrieveInsightsWithStartDate:rangeCopy endDate:dateCopy insightTypeItems:itemsCopy trendWindow:window];
 LABEL_11:
 
-      v20[2](v20, v24);
+      completionCopy[2](completionCopy, v24);
     }
   }
 
@@ -1277,17 +1277,17 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "Client not entitled for method: %@", &v28, 0xCu);
     }
 
-    v20[2](v20, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)getTopTransactionCategoriesWithCountryCode:(id)a3 timeWindow:(unint64_t)a4 minRegularTransactionRatio:(double)a5 discretizedTimeOfDay:(unint64_t)a6 completion:(id)a7
+- (void)getTopTransactionCategoriesWithCountryCode:(id)code timeWindow:(unint64_t)window minRegularTransactionRatio:(double)ratio discretizedTimeOfDay:(unint64_t)day completion:(id)completion
 {
-  v9 = a7;
-  v10 = [(FinHealthXPCServices *)self entitlementsChecker];
-  v11 = [v10 fhAllAccess];
+  completionCopy = completion;
+  entitlementsChecker = [(FinHealthXPCServices *)self entitlementsChecker];
+  fhAllAccess = [entitlementsChecker fhAllAccess];
 
-  if (v11)
+  if (fhAllAccess)
   {
     goto LABEL_6;
   }
@@ -1301,10 +1301,10 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Client not entitled for method: %@", &v18, 0xCu);
   }
 
-  if (v9)
+  if (completionCopy)
   {
     v14 = [NSError errorWithDomain:FHErrorDomain code:10012 userInfo:0];
-    v9[2](v9, 0, v14);
+    completionCopy[2](completionCopy, 0, v14);
 
 LABEL_6:
     v15 = FinHealthLogObject();
@@ -1316,10 +1316,10 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Feature flag not enabled for method: %@", &v18, 0xCu);
     }
 
-    if (v9)
+    if (completionCopy)
     {
       v17 = [NSError errorWithDomain:FHErrorDomain code:40003 userInfo:0];
-      v9[2](v9, 0, v17);
+      completionCopy[2](completionCopy, 0, v17);
     }
   }
 }

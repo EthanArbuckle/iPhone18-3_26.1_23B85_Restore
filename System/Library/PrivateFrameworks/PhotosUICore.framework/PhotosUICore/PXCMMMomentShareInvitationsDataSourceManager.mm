@@ -1,38 +1,38 @@
 @interface PXCMMMomentShareInvitationsDataSourceManager
 + (id)mostRecentCreationDate;
-+ (id)mostRecentCreationDateForPhotoLibrary:(id)a3;
++ (id)mostRecentCreationDateForPhotoLibrary:(id)library;
 - (PXCMMMomentShareInvitationsDataSourceManager)init;
-- (PXCMMMomentShareInvitationsDataSourceManager)initWithPhotoLibrary:(id)a3 fetchLimit:(int64_t)a4;
+- (PXCMMMomentShareInvitationsDataSourceManager)initWithPhotoLibrary:(id)library fetchLimit:(int64_t)limit;
 - (id)createInitialDataSource;
 - (id)mediaProvider;
-- (id)prepareForPhotoLibraryChange:(id)a3;
-- (void)_handleFinishedFetchingBatch:(id)a3 preparedChangeDetails:(id)a4 forFetchResult:(id)a5 changedObjects:(id)a6;
+- (id)prepareForPhotoLibraryChange:(id)change;
+- (void)_handleFinishedFetchingBatch:(id)batch preparedChangeDetails:(id)details forFetchResult:(id)result changedObjects:(id)objects;
 - (void)_startLoadingIfNeeded;
-- (void)_workerQueue_fetchRemainingMomentSharesInBatchesWithMomentShares:(id)a3;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4;
-- (void)setFilter:(int64_t)a3;
+- (void)_workerQueue_fetchRemainingMomentSharesInBatchesWithMomentShares:(id)shares;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info;
+- (void)setFilter:(int64_t)filter;
 @end
 
 @implementation PXCMMMomentShareInvitationsDataSourceManager
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  infoCopy = info;
   v8 = self->_state;
-  v9 = [v7 objectForKeyedSubscript:@"preparedForCurrentState"];
+  v9 = [infoCopy objectForKeyedSubscript:@"preparedForCurrentState"];
 
   if (v9 == v8)
   {
-    v10 = [v7 objectForKeyedSubscript:@"preparedState"];
-    v11 = [v7 objectForKeyedSubscript:@"preparedChangeDetails"];
+    v10 = [infoCopy objectForKeyedSubscript:@"preparedState"];
+    v11 = [infoCopy objectForKeyedSubscript:@"preparedChangeDetails"];
   }
 
   else
   {
     v24 = 0;
-    v10 = [(PXCMMMomentShareInvitationsDataSourceState *)v8 stateUpdatedWithChange:v6 changeDetails:&v24];
+    v10 = [(PXCMMMomentShareInvitationsDataSourceState *)v8 stateUpdatedWithChange:queueCopy changeDetails:&v24];
     v11 = v24;
   }
 
@@ -40,32 +40,32 @@
   if (v10 != v8)
   {
     objc_storeStrong(&self->_state, v10);
-    v22 = [(PXSectionedDataSourceManager *)self dataSource];
+    dataSource = [(PXSectionedDataSourceManager *)self dataSource];
     v13 = [[PXCMMMomentShareInvitationsDataSource alloc] initWithState:self->_state];
     v21 = [off_1E77218B0 alloc];
-    v14 = [v22 identifier];
-    v15 = [(PXCMMMomentShareInvitationsDataSource *)v13 identifier];
+    identifier = [dataSource identifier];
+    identifier2 = [(PXCMMMomentShareInvitationsDataSource *)v13 identifier];
     [off_1E7721450 changeDetailsWithNoChanges];
-    v16 = v23 = v6;
+    v16 = v23 = queueCopy;
     v25 = &unk_1F1909AD8;
     v26[0] = v12;
     [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
     v17 = v12;
-    v19 = v18 = v7;
-    v20 = [v21 initWithFromDataSourceIdentifier:v14 toDataSourceIdentifier:v15 sectionChanges:v16 itemChangeDetailsBySection:v19 subitemChangeDetailsByItemBySection:0];
+    v19 = v18 = infoCopy;
+    v20 = [v21 initWithFromDataSourceIdentifier:identifier toDataSourceIdentifier:identifier2 sectionChanges:v16 itemChangeDetailsBySection:v19 subitemChangeDetailsByItemBySection:0];
 
-    v7 = v18;
+    infoCopy = v18;
     v12 = v17;
 
-    v6 = v23;
+    queueCopy = v23;
     [(PXSectionedDataSourceManager *)self setDataSource:v13 changeDetails:v20];
   }
 }
 
-- (id)prepareForPhotoLibraryChange:(id)a3
+- (id)prepareForPhotoLibraryChange:(id)change
 {
   v20[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -81,7 +81,7 @@
   dispatch_sync(MEMORY[0x1E69E96A0], block);
   v5 = v14[5];
   v11 = 0;
-  v6 = [v5 stateUpdatedWithChange:v4 changeDetails:&v11];
+  v6 = [v5 stateUpdatedWithChange:changeCopy changeDetails:&v11];
   v7 = v11;
   v8 = v14[5];
   v19[0] = @"preparedForCurrentState";
@@ -97,16 +97,16 @@
   return v9;
 }
 
-- (void)_handleFinishedFetchingBatch:(id)a3 preparedChangeDetails:(id)a4 forFetchResult:(id)a5 changedObjects:(id)a6
+- (void)_handleFinishedFetchingBatch:(id)batch preparedChangeDetails:(id)details forFetchResult:(id)result changedObjects:(id)objects
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  detailsCopy = details;
+  resultCopy = result;
+  objectsCopy = objects;
   v13 = self->_state;
-  v14 = a3;
-  v15 = [(PXCMMMomentShareInvitationsDataSourceState *)v13 invitationsByMomentShareObjectID];
-  v16 = [v15 mutableCopy];
+  batchCopy = batch;
+  invitationsByMomentShareObjectID = [(PXCMMMomentShareInvitationsDataSourceState *)v13 invitationsByMomentShareObjectID];
+  v16 = [invitationsByMomentShareObjectID mutableCopy];
 
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
@@ -114,55 +114,55 @@
   v42[3] = &unk_1E772E898;
   v17 = v16;
   v43 = v17;
-  [v14 enumerateKeysAndObjectsUsingBlock:v42];
+  [batchCopy enumerateKeysAndObjectsUsingBlock:v42];
 
   v18 = [PXCMMMomentShareInvitationsDataSourceState alloc];
-  v19 = [(PXCMMMomentShareInvitationsDataSourceState *)v13 momentShares];
-  v20 = [(PXCMMMomentShareInvitationsDataSourceState *)v18 initWithMomentShares:v19 invitationsByMomentShareObjectID:v17];
+  momentShares = [(PXCMMMomentShareInvitationsDataSourceState *)v13 momentShares];
+  v20 = [(PXCMMMomentShareInvitationsDataSourceState *)v18 initWithMomentShares:momentShares invitationsByMomentShareObjectID:v17];
 
   objc_storeStrong(&self->_state, v20);
   if (self->_hasCreatedInitialDataSource)
   {
     v37 = v13;
-    v41 = v12;
-    v21 = [(PXSectionedDataSourceManager *)self dataSource];
+    v41 = objectsCopy;
+    dataSource = [(PXSectionedDataSourceManager *)self dataSource];
     v22 = [[PXCMMMomentShareInvitationsDataSource alloc] initWithState:self->_state];
-    v23 = [(PXCMMMomentShareInvitationsDataSourceState *)self->_state momentShares];
+    momentShares2 = [(PXCMMMomentShareInvitationsDataSourceState *)self->_state momentShares];
 
-    v38 = v11;
-    v39 = v10;
-    v40 = v21;
-    if (v23 == v11)
+    v38 = resultCopy;
+    v39 = detailsCopy;
+    v40 = dataSource;
+    if (momentShares2 == resultCopy)
     {
-      v30 = v10;
+      v30 = detailsCopy;
     }
 
     else
     {
       v24 = MEMORY[0x1E6978848];
-      v25 = [v21 state];
-      v26 = [v25 momentShares];
-      v27 = [(PXCMMMomentShareInvitationsDataSource *)v22 state];
-      v28 = [v27 momentShares];
-      v29 = [v24 changeDetailsFromFetchResult:v26 toFetchResult:v28 changedObjects:v41];
+      state = [dataSource state];
+      momentShares3 = [state momentShares];
+      state2 = [(PXCMMMomentShareInvitationsDataSource *)v22 state];
+      momentShares4 = [state2 momentShares];
+      v29 = [v24 changeDetailsFromFetchResult:momentShares3 toFetchResult:momentShares4 changedObjects:v41];
 
-      v21 = v40;
+      dataSource = v40;
       v30 = [off_1E7721450 changeDetailsFromFetchResultChangeDetails:v29];
     }
 
     v31 = [off_1E77218B0 alloc];
-    v32 = [v21 identifier];
-    v33 = [(PXCMMMomentShareInvitationsDataSource *)v22 identifier];
-    v34 = [off_1E7721450 changeDetailsWithNoChanges];
+    identifier = [dataSource identifier];
+    identifier2 = [(PXCMMMomentShareInvitationsDataSource *)v22 identifier];
+    changeDetailsWithNoChanges = [off_1E7721450 changeDetailsWithNoChanges];
     v44 = &unk_1F1909AD8;
     v45[0] = v30;
     v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:&v44 count:1];
-    v36 = [v31 initWithFromDataSourceIdentifier:v32 toDataSourceIdentifier:v33 sectionChanges:v34 itemChangeDetailsBySection:v35 subitemChangeDetailsByItemBySection:0];
+    v36 = [v31 initWithFromDataSourceIdentifier:identifier toDataSourceIdentifier:identifier2 sectionChanges:changeDetailsWithNoChanges itemChangeDetailsBySection:v35 subitemChangeDetailsByItemBySection:0];
 
     [(PXSectionedDataSourceManager *)self setDataSource:v22 changeDetails:v36];
-    v11 = v38;
-    v10 = v39;
-    v12 = v41;
+    resultCopy = v38;
+    detailsCopy = v39;
+    objectsCopy = v41;
     v13 = v37;
   }
 
@@ -182,11 +182,11 @@ void __129__PXCMMMomentShareInvitationsDataSourceManager__handleFinishedFetching
   }
 }
 
-- (void)_workerQueue_fetchRemainingMomentSharesInBatchesWithMomentShares:(id)a3
+- (void)_workerQueue_fetchRemainingMomentSharesInBatchesWithMomentShares:(id)shares
 {
   v62 = *MEMORY[0x1E69E9840];
-  v42 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  sharesCopy = shares;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v6 = v5;
   v55 = 0u;
@@ -214,13 +214,13 @@ LABEL_3:
       v60 = v12;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v60 count:1];
       photoLibrary = val->_photoLibrary;
-      v16 = [MEMORY[0x1E6978930] fetchType];
-      v17 = [v13 initWithOids:v14 photoLibrary:photoLibrary fetchType:v16 fetchPropertySets:0 identifier:0 registerIfNeeded:1];
+      fetchType = [MEMORY[0x1E6978930] fetchType];
+      v17 = [v13 initWithOids:v14 photoLibrary:photoLibrary fetchType:fetchType fetchPropertySets:0 identifier:0 registerIfNeeded:1];
 
-      v18 = [v17 firstObject];
-      v19 = [PXCMMMomentShareInvitation invitationWithMomentShare:v18];
+      firstObject = [v17 firstObject];
+      v19 = [PXCMMMomentShareInvitation invitationWithMomentShare:firstObject];
 
-      [v4 setObject:v19 forKeyedSubscript:v12];
+      [dictionary setObject:v19 forKeyedSubscript:v12];
       [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
       v21 = v20 - v6;
 
@@ -242,11 +242,11 @@ LABEL_3:
     }
   }
 
-  if ([v4 count])
+  if ([dictionary count])
   {
     remainingMomentShareObjectIDsToFetch = val->_remainingMomentShareObjectIDsToFetch;
-    v23 = [v4 allKeys];
-    [(NSMutableOrderedSet *)remainingMomentShareObjectIDsToFetch removeObjectsInArray:v23];
+    allKeys = [dictionary allKeys];
+    [(NSMutableOrderedSet *)remainingMomentShareObjectIDsToFetch removeObjectsInArray:allKeys];
   }
 
   if (![(NSMutableOrderedSet *)val->_remainingMomentShareObjectIDsToFetch count])
@@ -255,14 +255,14 @@ LABEL_3:
     val->_remainingMomentShareObjectIDsToFetch = 0;
   }
 
-  v25 = [MEMORY[0x1E696AD50] indexSet];
-  v26 = [MEMORY[0x1E695DF70] array];
-  v27 = [v42 fetchedObjectIDs];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
+  array = [MEMORY[0x1E695DF70] array];
+  fetchedObjectIDs = [sharesCopy fetchedObjectIDs];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v28 = v4;
+  v28 = dictionary;
   v29 = [v28 countByEnumeratingWithState:&v51 objects:v59 count:16];
   if (v29)
   {
@@ -278,13 +278,13 @@ LABEL_3:
         }
 
         v33 = *(*(&v51 + 1) + 8 * i);
-        v34 = [v27 indexOfObject:v33];
+        v34 = [fetchedObjectIDs indexOfObject:v33];
         if (v34 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          [v25 addIndex:v34];
+          [indexSet addIndex:v34];
           v35 = [v28 objectForKeyedSubscript:v33];
-          v36 = [v35 momentShare];
-          [v26 addObject:v36];
+          momentShare = [v35 momentShare];
+          [array addObject:momentShare];
         }
       }
 
@@ -294,7 +294,7 @@ LABEL_3:
     while (v30);
   }
 
-  v37 = [[off_1E7721450 alloc] initWithIncrementalChangeDetailsRemovedIndexes:0 insertedIndexes:0 movesToIndexes:0 movesFromIndexes:0 changedIndexes:v25];
+  v37 = [[off_1E7721450 alloc] initWithIncrementalChangeDetailsRemovedIndexes:0 insertedIndexes:0 movesToIndexes:0 movesFromIndexes:0 changedIndexes:indexSet];
   objc_initWeak(&location, val);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -303,10 +303,10 @@ LABEL_3:
   objc_copyWeak(&v49, &location);
   v45 = v28;
   v46 = v37;
-  v47 = v42;
-  v48 = v26;
-  v38 = v26;
-  v39 = v42;
+  v47 = sharesCopy;
+  v48 = array;
+  v38 = array;
+  v39 = sharesCopy;
   v40 = v37;
   v41 = v28;
   dispatch_async(MEMORY[0x1E69E96A0], block);
@@ -328,7 +328,7 @@ void __113__PXCMMMomentShareInvitationsDataSourceManager__workerQueue_fetchRemai
     if (self->_remainingMomentShareObjectIDsToFetch)
     {
       self->_isLoading = 1;
-      v3 = [(PXCMMMomentShareInvitationsDataSourceManager *)self momentShares];
+      momentShares = [(PXCMMMomentShareInvitationsDataSourceManager *)self momentShares];
       objc_initWeak(&location, self);
       workerQueue = self->_workerQueue;
       block[0] = MEMORY[0x1E69E9820];
@@ -336,8 +336,8 @@ void __113__PXCMMMomentShareInvitationsDataSourceManager__workerQueue_fetchRemai
       block[2] = __69__PXCMMMomentShareInvitationsDataSourceManager__startLoadingIfNeeded__block_invoke;
       block[3] = &unk_1E774B248;
       objc_copyWeak(&v8, &location);
-      v7 = v3;
-      v5 = v3;
+      v7 = momentShares;
+      v5 = momentShares;
       dispatch_async(workerQueue, block);
 
       objc_destroyWeak(&v8);
@@ -356,8 +356,8 @@ void __69__PXCMMMomentShareInvitationsDataSourceManager__startLoadingIfNeeded__b
 {
   if (self->_hasCreatedInitialDataSource)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXCMMMomentShareInvitationsDataSourceManager.m" lineNumber:134 description:{@"Invalid parameter not satisfying: %@", @"!_hasCreatedInitialDataSource"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMMomentShareInvitationsDataSourceManager.m" lineNumber:134 description:{@"Invalid parameter not satisfying: %@", @"!_hasCreatedInitialDataSource"}];
   }
 
   v3 = [[PXCMMMomentShareInvitationsDataSource alloc] initWithState:self->_state];
@@ -367,41 +367,41 @@ void __69__PXCMMMomentShareInvitationsDataSourceManager__startLoadingIfNeeded__b
   return v3;
 }
 
-- (void)setFilter:(int64_t)a3
+- (void)setFilter:(int64_t)filter
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  if (self->_filter != a3)
+  if (self->_filter != filter)
   {
-    self->_filter = a3;
-    v4 = _DataSourceState(self->_photoLibrary, a3, self->_fetchLimit);
+    self->_filter = filter;
+    v4 = _DataSourceState(self->_photoLibrary, filter, self->_fetchLimit);
     state = self->_state;
     self->_state = v4;
 
     v6 = [[PXCMMMomentShareInvitationsDataSource alloc] initWithState:self->_state];
-    v7 = [(PXSectionedDataSourceManager *)self dataSource];
+    dataSource = [(PXSectionedDataSourceManager *)self dataSource];
     v8 = MEMORY[0x1E695DEC8];
     v9 = v6;
-    v10 = [v7 state];
-    v11 = [v10 momentShares];
-    v12 = [v11 fetchedObjects];
-    v25 = [v8 arrayWithArray:v12];
+    state = [dataSource state];
+    momentShares = [state momentShares];
+    fetchedObjects = [momentShares fetchedObjects];
+    v25 = [v8 arrayWithArray:fetchedObjects];
 
     v13 = MEMORY[0x1E695DEC8];
-    v14 = [(PXCMMMomentShareInvitationsDataSource *)v9 state];
-    v15 = [v14 momentShares];
-    v16 = [v15 fetchedObjects];
-    v17 = [v13 arrayWithArray:v16];
+    state2 = [(PXCMMMomentShareInvitationsDataSource *)v9 state];
+    momentShares2 = [state2 momentShares];
+    fetchedObjects2 = [momentShares2 fetchedObjects];
+    v17 = [v13 arrayWithArray:fetchedObjects2];
 
     v18 = [off_1E7721450 changeDetailsFromArray:v25 toArray:v17 changedObjects:MEMORY[0x1E695E0F0] objectComparator:&__block_literal_global_12179];
     v19 = [off_1E77218B0 alloc];
-    v20 = [v7 identifier];
-    v21 = [(PXCMMMomentShareInvitationsDataSource *)v9 identifier];
+    identifier = [dataSource identifier];
+    identifier2 = [(PXCMMMomentShareInvitationsDataSource *)v9 identifier];
 
-    v22 = [off_1E7721450 changeDetailsWithNoChanges];
+    changeDetailsWithNoChanges = [off_1E7721450 changeDetailsWithNoChanges];
     v26 = &unk_1F1909AD8;
     v27[0] = v18;
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
-    v24 = [v19 initWithFromDataSourceIdentifier:v20 toDataSourceIdentifier:v21 sectionChanges:v22 itemChangeDetailsBySection:v23 subitemChangeDetailsByItemBySection:0];
+    v24 = [v19 initWithFromDataSourceIdentifier:identifier toDataSourceIdentifier:identifier2 sectionChanges:changeDetailsWithNoChanges itemChangeDetailsBySection:v23 subitemChangeDetailsByItemBySection:0];
 
     [(PXSectionedDataSourceManager *)self setDataSource:v9 changeDetails:v24];
   }
@@ -414,13 +414,13 @@ void __69__PXCMMMomentShareInvitationsDataSourceManager__startLoadingIfNeeded__b
   return v2;
 }
 
-- (PXCMMMomentShareInvitationsDataSourceManager)initWithPhotoLibrary:(id)a3 fetchLimit:(int64_t)a4
+- (PXCMMMomentShareInvitationsDataSourceManager)initWithPhotoLibrary:(id)library fetchLimit:(int64_t)limit
 {
-  v8 = a3;
-  if (!v8)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PXCMMMomentShareInvitationsDataSourceManager.m" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMMomentShareInvitationsDataSourceManager.m" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
   v24.receiver = self;
@@ -430,8 +430,8 @@ void __69__PXCMMMomentShareInvitationsDataSourceManager__startLoadingIfNeeded__b
   if (v9)
   {
     v9->_filter = 0;
-    objc_storeStrong(&v9->_photoLibrary, a3);
-    v10->_fetchLimit = a4;
+    objc_storeStrong(&v9->_photoLibrary, library);
+    v10->_fetchLimit = limit;
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_attr_make_with_qos_class(v11, QOS_CLASS_UTILITY, 0);
 
@@ -444,9 +444,9 @@ void __69__PXCMMMomentShareInvitationsDataSourceManager__startLoadingIfNeeded__b
     v10->_state = v15;
 
     v17 = MEMORY[0x1E695DFA0];
-    v18 = [(PXCMMMomentShareInvitationsDataSourceState *)v10->_state momentShares];
-    v19 = [v18 fetchedObjectIDs];
-    v20 = [v17 orderedSetWithArray:v19];
+    momentShares = [(PXCMMMomentShareInvitationsDataSourceState *)v10->_state momentShares];
+    fetchedObjectIDs = [momentShares fetchedObjectIDs];
+    v20 = [v17 orderedSetWithArray:fetchedObjectIDs];
     remainingMomentShareObjectIDsToFetch = v10->_remainingMomentShareObjectIDsToFetch;
     v10->_remainingMomentShareObjectIDsToFetch = v20;
 
@@ -458,43 +458,43 @@ void __69__PXCMMMomentShareInvitationsDataSourceManager__startLoadingIfNeeded__b
 
 - (PXCMMMomentShareInvitationsDataSourceManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCMMMomentShareInvitationsDataSourceManager.m" lineNumber:88 description:{@"%s is not available as initializer", "-[PXCMMMomentShareInvitationsDataSourceManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMMomentShareInvitationsDataSourceManager.m" lineNumber:88 description:{@"%s is not available as initializer", "-[PXCMMMomentShareInvitationsDataSourceManager init]"}];
 
   abort();
 }
 
-+ (id)mostRecentCreationDateForPhotoLibrary:(id)a3
++ (id)mostRecentCreationDateForPhotoLibrary:(id)library
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"PXCMMMomentShareInvitationsDataSourceManager.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMMomentShareInvitationsDataSourceManager.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
-  v6 = [v5 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
   v7 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:0];
   v15[0] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  [v6 setSortDescriptors:v8];
+  [librarySpecificFetchOptions setSortDescriptors:v8];
 
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(status != %d && publishState == %d)", 0, 2];
-  [v6 setPredicate:v9];
+  [librarySpecificFetchOptions setPredicate:v9];
 
-  [v6 setFetchLimit:1];
-  v10 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:7 subtype:0x7FFFFFFFFFFFFFFFLL options:v6];
-  v11 = [v10 firstObject];
-  v12 = [v11 creationDate];
+  [librarySpecificFetchOptions setFetchLimit:1];
+  v10 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:7 subtype:0x7FFFFFFFFFFFFFFFLL options:librarySpecificFetchOptions];
+  firstObject = [v10 firstObject];
+  creationDate = [firstObject creationDate];
 
-  return v12;
+  return creationDate;
 }
 
 + (id)mostRecentCreationDate
 {
-  v3 = [MEMORY[0x1E69789A8] sharedMomentSharePhotoLibrary];
-  v4 = [a1 mostRecentCreationDateForPhotoLibrary:v3];
+  mEMORY[0x1E69789A8] = [MEMORY[0x1E69789A8] sharedMomentSharePhotoLibrary];
+  v4 = [self mostRecentCreationDateForPhotoLibrary:mEMORY[0x1E69789A8]];
 
   return v4;
 }

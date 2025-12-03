@@ -11,10 +11,10 @@
 
 - (BOOL)showsBalloonCallout
 {
-  v2 = [(SearchResultMapItem *)self style];
-  v3 = [v2 isLabelPOI];
+  style = [(SearchResultMapItem *)self style];
+  isLabelPOI = [style isLabelPOI];
 
-  return v3 ^ 1;
+  return isLabelPOI ^ 1;
 }
 
 - (id)styleAttributes
@@ -41,8 +41,8 @@
 
   if (GEOConfigGetBOOL())
   {
-    v6 = [(SearchResultMapItemBase *)self mapItem];
-    if ([v6 _venueFeatureType] == 1)
+    mapItem = [(SearchResultMapItemBase *)self mapItem];
+    if ([mapItem _venueFeatureType] == 1)
     {
 
 LABEL_7:
@@ -54,23 +54,23 @@ LABEL_7:
       goto LABEL_8;
     }
 
-    v7 = [(SearchResultMapItemBase *)self mapItem];
-    v8 = [v7 _venueFeatureType];
+    mapItem2 = [(SearchResultMapItemBase *)self mapItem];
+    _venueFeatureType = [mapItem2 _venueFeatureType];
 
-    if (v8 == 2)
+    if (_venueFeatureType == 2)
     {
       goto LABEL_7;
     }
   }
 
 LABEL_8:
-  v10 = [(SearchResultMapItem *)self style];
-  if (MapsFeature_IsEnabled_RealTimeEVCharger() && [v10 poiType] == 335)
+  style = [(SearchResultMapItem *)self style];
+  if (MapsFeature_IsEnabled_RealTimeEVCharger() && [style poiType] == 335)
   {
-    v11 = [(SearchResultMapItemBase *)self mapItem];
-    v12 = [v11 _realTimeAvailableEVCharger];
+    mapItem3 = [(SearchResultMapItemBase *)self mapItem];
+    _realTimeAvailableEVCharger = [mapItem3 _realTimeAvailableEVCharger];
 
-    v13 = [_TtC4Maps16EVChargerUtility realTimeEVChargerStatusWithEvCharger:v12];
+    v13 = [_TtC4Maps16EVChargerUtility realTimeEVChargerStatusWithEvCharger:_realTimeAvailableEVCharger];
     if (v13 > 2)
     {
       v14 = 0;
@@ -88,18 +88,18 @@ LABEL_8:
     [v3 addEntriesFromDictionary:v16];
   }
 
-  v17 = [(SearchResultMapItemBase *)self searchResult];
-  if ([v17 locationType] != 1)
+  searchResult = [(SearchResultMapItemBase *)self searchResult];
+  if ([searchResult locationType] != 1)
   {
 
 LABEL_18:
-    v21 = [(SearchResultMapItemBase *)self searchResult];
-    if ([v21 locationType] == 2)
+    searchResult2 = [(SearchResultMapItemBase *)self searchResult];
+    if ([searchResult2 locationType] == 2)
     {
-      v22 = [(SearchResultMapItemBase *)self searchResult];
-      v23 = [v22 autocompletePerson];
+      searchResult3 = [(SearchResultMapItemBase *)self searchResult];
+      autocompletePerson = [searchResult3 autocompletePerson];
 
-      if (v23)
+      if (autocompletePerson)
       {
         v20 = +[GEOFeatureStyleAttributes workStyleAttributes];
         goto LABEL_35;
@@ -110,13 +110,13 @@ LABEL_18:
     {
     }
 
-    v24 = [(SearchResultMapItemBase *)self searchResult];
-    if ([v24 locationType] == 3)
+    searchResult4 = [(SearchResultMapItemBase *)self searchResult];
+    if ([searchResult4 locationType] == 3)
     {
-      v25 = [(SearchResultMapItemBase *)self searchResult];
-      v26 = [v25 autocompletePerson];
+      searchResult5 = [(SearchResultMapItemBase *)self searchResult];
+      autocompletePerson2 = [searchResult5 autocompletePerson];
 
-      if (v26)
+      if (autocompletePerson2)
       {
         v20 = +[GEOFeatureStyleAttributes schoolStyleAttributes];
         goto LABEL_35;
@@ -127,13 +127,13 @@ LABEL_18:
     {
     }
 
-    v27 = [(SearchResultMapItemBase *)self searchResult];
-    if ([v27 locationType] == 4)
+    searchResult6 = [(SearchResultMapItemBase *)self searchResult];
+    if ([searchResult6 locationType] == 4)
     {
-      v28 = [(SearchResultMapItemBase *)self searchResult];
-      v29 = [v28 autocompletePerson];
+      searchResult7 = [(SearchResultMapItemBase *)self searchResult];
+      autocompletePerson3 = [searchResult7 autocompletePerson];
 
-      if (v29)
+      if (autocompletePerson3)
       {
         v20 = +[GEOFeatureStyleAttributes sharedLocationStyleAttributes];
         goto LABEL_35;
@@ -144,17 +144,17 @@ LABEL_18:
     {
     }
 
-    v30 = [(SearchResultMapItemBase *)self searchResult];
-    if ([v30 locationType])
+    searchResult8 = [(SearchResultMapItemBase *)self searchResult];
+    if ([searchResult8 locationType])
     {
     }
 
     else
     {
-      v33 = [(SearchResultMapItemBase *)self searchResult];
-      v34 = [v33 autocompletePerson];
+      searchResult9 = [(SearchResultMapItemBase *)self searchResult];
+      autocompletePerson4 = [searchResult9 autocompletePerson];
 
-      if (v34)
+      if (autocompletePerson4)
       {
         v20 = +[GEOFeatureStyleAttributes addressMarkerStyleAttributes];
         goto LABEL_35;
@@ -162,14 +162,14 @@ LABEL_18:
     }
 
     v31 = [v3 copy];
-    v32 = [PersonalizedItemStyleAttributesAdornment adornmentWithStyleAttributes:v10 additionalAttributes:v31];
+    v32 = [PersonalizedItemStyleAttributesAdornment adornmentWithStyleAttributes:style additionalAttributes:v31];
     goto LABEL_36;
   }
 
-  v18 = [(SearchResultMapItemBase *)self searchResult];
-  v19 = [v18 autocompletePerson];
+  searchResult10 = [(SearchResultMapItemBase *)self searchResult];
+  autocompletePerson5 = [searchResult10 autocompletePerson];
 
-  if (!v19)
+  if (!autocompletePerson5)
   {
     goto LABEL_18;
   }
@@ -190,8 +190,8 @@ LABEL_36:
   style = self->_style;
   if (!style)
   {
-    v4 = [(SearchResultMapItemBase *)self searchResult];
-    v5 = [GEOFeatureStyleAttributes styleAttributesForSearchResult:v4];
+    searchResult = [(SearchResultMapItemBase *)self searchResult];
+    v5 = [GEOFeatureStyleAttributes styleAttributesForSearchResult:searchResult];
     v6 = self->_style;
     self->_style = v5;
 
@@ -204,91 +204,91 @@ LABEL_36:
 - (id)createSubtitle
 {
   IsEnabled_RealTimeEVCharger = MapsFeature_IsEnabled_RealTimeEVCharger();
-  v4 = [(SearchResultMapItemBase *)self searchResult];
-  v5 = [v4 mapItem];
-  v6 = v5;
+  searchResult = [(SearchResultMapItemBase *)self searchResult];
+  mapItem = [searchResult mapItem];
+  v6 = mapItem;
   if (IsEnabled_RealTimeEVCharger)
   {
-    v7 = [v5 _geoMapItem];
-    v8 = [v7 _hasEVCharger];
+    _geoMapItem = [mapItem _geoMapItem];
+    _hasEVCharger = [_geoMapItem _hasEVCharger];
 
-    if (v8)
+    if (_hasEVCharger)
     {
-      v9 = [(SearchResultMapItemBase *)self searchResult];
-      v10 = [v9 mapItem];
-      v4 = [v10 _realTimeAvailableEVCharger];
+      searchResult2 = [(SearchResultMapItemBase *)self searchResult];
+      mapItem2 = [searchResult2 mapItem];
+      searchResult = [mapItem2 _realTimeAvailableEVCharger];
 
-      v11 = [_TtC4Maps16EVChargerUtility realTimeEVChargerDisplayStringWithEvCharger:v4 mapDisplay:1];
+      subtitle = [_TtC4Maps16EVChargerUtility realTimeEVChargerDisplayStringWithEvCharger:searchResult mapDisplay:1];
     }
 
     else
     {
-      v4 = [(SearchResultMapItem *)self styleAttributes];
-      v14 = [v4 styleAttributes];
-      [v14 poiType];
+      searchResult = [(SearchResultMapItem *)self styleAttributes];
+      styleAttributes = [searchResult styleAttributes];
+      [styleAttributes poiType];
 
-      v11 = &stru_1016631F0;
+      subtitle = &stru_1016631F0;
     }
   }
 
   else
   {
-    v12 = [v5 _firstLocalizedCategoryName];
-    v13 = v12;
-    if (v12)
+    _firstLocalizedCategoryName = [mapItem _firstLocalizedCategoryName];
+    v13 = _firstLocalizedCategoryName;
+    if (_firstLocalizedCategoryName)
     {
-      v11 = v12;
+      subtitle = _firstLocalizedCategoryName;
     }
 
     else
     {
-      v15 = [(SearchResultMapItemBase *)self searchResult];
-      v11 = [v15 subtitle];
+      searchResult3 = [(SearchResultMapItemBase *)self searchResult];
+      subtitle = [searchResult3 subtitle];
     }
   }
 
-  return v11;
+  return subtitle;
 }
 
 - (id)subtitle
 {
-  v3 = [(SearchResultMapItemBase *)self searchResult];
-  v4 = [v3 address];
+  searchResult = [(SearchResultMapItemBase *)self searchResult];
+  address = [searchResult address];
 
-  if (v4)
+  if (address)
   {
-    v5 = [(SearchResultMapItemBase *)self searchResult];
-    v6 = [v5 address];
-    v7 = [v6 addressValue];
+    searchResult2 = [(SearchResultMapItemBase *)self searchResult];
+    address2 = [searchResult2 address];
+    addressValue = [address2 addressValue];
 
-    v8 = [v7 identifier];
+    identifier = [addressValue identifier];
     v9 = +[CNContact _mapkit_sharedLocationContactIdentifer];
-    v10 = [v8 isEqualToString:v9];
+    v10 = [identifier isEqualToString:v9];
 
     if (v10)
     {
-      v11 = [(SearchResultMapItemBase *)self searchResult];
-      v12 = [v11 autocompletePerson];
-      [v12 locationTimestampString:1];
+      searchResult3 = [(SearchResultMapItemBase *)self searchResult];
+      autocompletePerson = [searchResult3 autocompletePerson];
+      [autocompletePerson locationTimestampString:1];
     }
 
     else
     {
-      v11 = [v7 label];
-      v12 = [CNLabeledValue localizedStringForLabel:v11];
-      [v12 capitalizedString];
+      searchResult3 = [addressValue label];
+      autocompletePerson = [CNLabeledValue localizedStringForLabel:searchResult3];
+      [autocompletePerson capitalizedString];
     }
-    v13 = ;
+    createSubtitle = ;
   }
 
   else
   {
-    v13 = [(SearchResultMapItem *)self createSubtitle];
+    createSubtitle = [(SearchResultMapItem *)self createSubtitle];
   }
 
-  if (v13)
+  if (createSubtitle)
   {
-    [PersonalizedItemPrioritizedStringAdornment adornmentWithString:v13 priority:100];
+    [PersonalizedItemPrioritizedStringAdornment adornmentWithString:createSubtitle priority:100];
   }
 
   else
@@ -302,24 +302,24 @@ LABEL_36:
 
 - (id)title
 {
-  v3 = [(SearchResultMapItemBase *)self searchResult];
-  if ([v3 locationType] == 1)
+  searchResult = [(SearchResultMapItemBase *)self searchResult];
+  if ([searchResult locationType] == 1)
   {
-    v4 = [(SearchResultMapItemBase *)self searchResult];
-    v5 = [v4 autocompletePerson];
+    searchResult2 = [(SearchResultMapItemBase *)self searchResult];
+    autocompletePerson = [searchResult2 autocompletePerson];
 
-    if (v5)
+    if (autocompletePerson)
     {
       v6 = +[NSBundle mainBundle];
       v7 = v6;
       v8 = @"Contact's Home [SearchResultMapItem]";
 LABEL_16:
       v18 = [v6 localizedStringForKey:v8 value:@"localized string not found" table:0];
-      v19 = [(SearchResultMapItemBase *)self searchResult];
-      v20 = [v19 title];
-      v21 = [NSString stringWithFormat:v18, v20];
+      searchResult3 = [(SearchResultMapItemBase *)self searchResult];
+      title = [searchResult3 title];
+      v21 = [NSString stringWithFormat:v18, title];
 
-      v22 = [PersonalizedItemPrioritizedStringAdornment adornmentWithString:v21 priority:1];
+      title2 = [PersonalizedItemPrioritizedStringAdornment adornmentWithString:v21 priority:1];
 
       goto LABEL_19;
     }
@@ -329,13 +329,13 @@ LABEL_16:
   {
   }
 
-  v9 = [(SearchResultMapItemBase *)self searchResult];
-  if ([v9 locationType] == 2)
+  searchResult4 = [(SearchResultMapItemBase *)self searchResult];
+  if ([searchResult4 locationType] == 2)
   {
-    v10 = [(SearchResultMapItemBase *)self searchResult];
-    v11 = [v10 autocompletePerson];
+    searchResult5 = [(SearchResultMapItemBase *)self searchResult];
+    autocompletePerson2 = [searchResult5 autocompletePerson];
 
-    if (v11)
+    if (autocompletePerson2)
     {
       v6 = +[NSBundle mainBundle];
       v7 = v6;
@@ -348,13 +348,13 @@ LABEL_16:
   {
   }
 
-  v12 = [(SearchResultMapItemBase *)self searchResult];
-  if ([v12 locationType] == 3)
+  searchResult6 = [(SearchResultMapItemBase *)self searchResult];
+  if ([searchResult6 locationType] == 3)
   {
-    v13 = [(SearchResultMapItemBase *)self searchResult];
-    v14 = [v13 autocompletePerson];
+    searchResult7 = [(SearchResultMapItemBase *)self searchResult];
+    autocompletePerson3 = [searchResult7 autocompletePerson];
 
-    if (v14)
+    if (autocompletePerson3)
     {
       v6 = +[NSBundle mainBundle];
       v7 = v6;
@@ -367,13 +367,13 @@ LABEL_16:
   {
   }
 
-  v15 = [(SearchResultMapItemBase *)self searchResult];
-  if ([v15 locationType] == 4)
+  searchResult8 = [(SearchResultMapItemBase *)self searchResult];
+  if ([searchResult8 locationType] == 4)
   {
-    v16 = [(SearchResultMapItemBase *)self searchResult];
-    v17 = [v16 autocompletePerson];
+    searchResult9 = [(SearchResultMapItemBase *)self searchResult];
+    autocompletePerson4 = [searchResult9 autocompletePerson];
 
-    if (v17)
+    if (autocompletePerson4)
     {
       v6 = +[NSBundle mainBundle];
       v7 = v6;
@@ -388,10 +388,10 @@ LABEL_16:
 
   v24.receiver = self;
   v24.super_class = SearchResultMapItem;
-  v22 = [(SearchResultMapItemBase *)&v24 title];
+  title2 = [(SearchResultMapItemBase *)&v24 title];
 LABEL_19:
 
-  return v22;
+  return title2;
 }
 
 @end

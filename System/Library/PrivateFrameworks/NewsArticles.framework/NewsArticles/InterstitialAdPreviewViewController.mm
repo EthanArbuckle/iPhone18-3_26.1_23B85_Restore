@@ -1,15 +1,15 @@
 @interface InterstitialAdPreviewViewController
-- (_TtC12NewsArticles35InterstitialAdPreviewViewController)initWithCoder:(id)a3;
-- (_TtC12NewsArticles35InterstitialAdPreviewViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC12NewsArticles35InterstitialAdPreviewViewController)initWithCoder:(id)coder;
+- (_TtC12NewsArticles35InterstitialAdPreviewViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation InterstitialAdPreviewViewController
 
-- (_TtC12NewsArticles35InterstitialAdPreviewViewController)initWithCoder:(id)a3
+- (_TtC12NewsArticles35InterstitialAdPreviewViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC12NewsArticles35InterstitialAdPreviewViewController_coverViewManager;
   sub_1D7D2A59C();
@@ -24,7 +24,7 @@
   return result;
 }
 
-- (_TtC12NewsArticles35InterstitialAdPreviewViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12NewsArticles35InterstitialAdPreviewViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -33,17 +33,17 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7BF0338();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(InterstitialAdPreviewViewController *)&v5 viewDidAppear:v3];
+  [(InterstitialAdPreviewViewController *)&v5 viewDidAppear:appearCopy];
   sub_1D7D28C6C();
 }
 
@@ -56,11 +56,11 @@
   sub_1D7D2A55C();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D7BF09C0(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1D7BF09C0(change);
 }
 
 @end

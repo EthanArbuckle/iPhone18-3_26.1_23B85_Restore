@@ -1,24 +1,24 @@
 @interface _DPAppleIntelligenceReportParameters
-+ (BOOL)isValidDonation:(id)a3;
-- (_DPAppleIntelligenceReportParameters)initWithDonation:(id)a3;
++ (BOOL)isValidDonation:(id)donation;
+- (_DPAppleIntelligenceReportParameters)initWithDonation:(id)donation;
 @end
 
 @implementation _DPAppleIntelligenceReportParameters
 
-- (_DPAppleIntelligenceReportParameters)initWithDonation:(id)a3
+- (_DPAppleIntelligenceReportParameters)initWithDonation:(id)donation
 {
-  v4 = a3;
-  if ([objc_opt_class() isValidDonation:v4])
+  donationCopy = donation;
+  if ([objc_opt_class() isValidDonation:donationCopy])
   {
-    v5 = [v4 metadata];
-    v6 = [v5 objectForKeyedSubscript:@"DediscoTaskConfig"];
+    metadata = [donationCopy metadata];
+    v6 = [metadata objectForKeyedSubscript:@"DediscoTaskConfig"];
     v7 = [v6 objectForKeyedSubscript:@"DPConfig"];
     v22.receiver = self;
     v22.super_class = _DPAppleIntelligenceReportParameters;
     v8 = [(_DPAppleIntelligenceReportParameters *)&v22 init];
     if (v8)
     {
-      v9 = [v4 key];
+      v9 = [donationCopy key];
       v10 = [v9 copy];
       key = v8->_key;
       v8->_key = v10;
@@ -29,8 +29,8 @@
       v13 = [v6 objectForKeyedSubscript:@"MinBatchSize"];
       v8->_minBatchSize = [v13 unsignedIntValue];
 
-      v8->_privateAccessToken = [v4 isFeatureEnabled:@"PrivateAccessToken" withError:0];
-      v8->_ohttp = [v4 isFeatureEnabled:@"OHTTP" withError:0];
+      v8->_privateAccessToken = [donationCopy isFeatureEnabled:@"PrivateAccessToken" withError:0];
+      v8->_ohttp = [donationCopy isFeatureEnabled:@"OHTTP" withError:0];
       v14 = [v7 objectForKeyedSubscript:@"TargetCentralEpsilon"];
       [v14 doubleValue];
       v8->_targetCentralEpsilon = v15;
@@ -46,28 +46,28 @@
 
     self = v8;
 
-    v20 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v20 = 0;
+    selfCopy = 0;
   }
 
-  return v20;
+  return selfCopy;
 }
 
-+ (BOOL)isValidDonation:(id)a3
++ (BOOL)isValidDonation:(id)donation
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 metadata];
-  if (_DPDediscoVersionWithMetadata(v4) <= 1)
+  donationCopy = donation;
+  metadata = [donationCopy metadata];
+  if (_DPDediscoVersionWithMetadata(metadata) <= 1)
   {
     v5 = +[_DPLog framework];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(_DPAppleIntelligenceReportParameters *)v3 isValidDonation:v5];
+      [(_DPAppleIntelligenceReportParameters *)donationCopy isValidDonation:v5];
     }
 
 LABEL_17:
@@ -75,7 +75,7 @@ LABEL_17:
     goto LABEL_23;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"DediscoTaskConfig"];
+  v6 = [metadata objectForKeyedSubscript:@"DediscoTaskConfig"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -93,7 +93,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v5 = [v4 objectForKeyedSubscript:@"DediscoTaskConfig"];
+  v5 = [metadata objectForKeyedSubscript:@"DediscoTaskConfig"];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;

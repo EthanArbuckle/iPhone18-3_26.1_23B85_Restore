@@ -1,21 +1,21 @@
 @interface CloudQuotaNotificationItemListManager
 - (_TtC12PhotosUICore37CloudQuotaNotificationItemListManager)init;
-- (id)presentingViewControllerForCloudQuotaControllerHelper:(id)a3;
-- (void)cloudQuotaControllerHelper:(id)a3 informationViewDidChange:(id)a4;
+- (id)presentingViewControllerForCloudQuotaControllerHelper:(id)helper;
+- (void)cloudQuotaControllerHelper:(id)helper informationViewDidChange:(id)change;
 @end
 
 @implementation CloudQuotaNotificationItemListManager
 
-- (void)cloudQuotaControllerHelper:(id)a3 informationViewDidChange:(id)a4
+- (void)cloudQuotaControllerHelper:(id)helper informationViewDidChange:(id)change
 {
-  v4 = self;
+  selfCopy = self;
   sub_1A42D7110();
 }
 
-- (id)presentingViewControllerForCloudQuotaControllerHelper:(id)a3
+- (id)presentingViewControllerForCloudQuotaControllerHelper:(id)helper
 {
   v3 = *(**(&self->super.isa + OBJC_IVAR____TtC12PhotosUICore37CloudQuotaNotificationItemListManager_presentationContext) + 88);
-  v4 = self;
+  selfCopy = self;
   v5 = v3();
   if (v5)
   {

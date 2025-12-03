@@ -5,8 +5,8 @@
 - (void)_appDidBecomeActive;
 - (void)_appWillBecomeInactive;
 - (void)_locked_cacheCommandQueueIfNeeded;
-- (void)addCommandQueueTransaction:(id)a3;
-- (void)removeCommandQueueTransaction:(id)a3;
+- (void)addCommandQueueTransaction:(id)transaction;
+- (void)removeCommandQueueTransaction:(id)transaction;
 @end
 
 @implementation AAUICommandQueueRegistry
@@ -37,20 +37,20 @@ uint64_t __42__AAUICommandQueueRegistry_sharedRegistry__block_invoke()
   v2 = [(AAUICommandQueueRegistry *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     transactions = v2->_transactions;
-    v2->_transactions = v3;
+    v2->_transactions = weakObjectsHashTable;
 
     v5 = MTLCreateSystemDefaultDevice();
     device = v2->_device;
     v2->_device = v5;
 
     v2->_lock._os_unfair_lock_opaque = 0;
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v2 selector:sel__appDidBecomeActive name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__appDidBecomeActive name:*MEMORY[0x277D76758] object:0];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v2 selector:sel__appWillBecomeInactive name:*MEMORY[0x277D76660] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__appWillBecomeInactive name:*MEMORY[0x277D76660] object:0];
   }
 
   return v2;
@@ -71,9 +71,9 @@ uint64_t __42__AAUICommandQueueRegistry_sharedRegistry__block_invoke()
         _os_log_impl(&dword_23E4A3000, v5, OS_LOG_TYPE_DEFAULT, "[AAUICommandQueueRegistry] Creating new command queue", v8, 2u);
       }
 
-      v6 = [(MTLDevice *)self->_device newCommandQueue];
+      newCommandQueue = [(MTLDevice *)self->_device newCommandQueue];
       cachedCommandQueue = self->_cachedCommandQueue;
-      self->_cachedCommandQueue = v6;
+      self->_cachedCommandQueue = newCommandQueue;
     }
   }
 }
@@ -88,22 +88,22 @@ uint64_t __42__AAUICommandQueueRegistry_sharedRegistry__block_invoke()
   return v3;
 }
 
-- (void)addCommandQueueTransaction:(id)a3
+- (void)addCommandQueueTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_transactions addObject:v4];
+  [(NSHashTable *)self->_transactions addObject:transactionCopy];
 
   [(AAUICommandQueueRegistry *)self _locked_cacheCommandQueueIfNeeded];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeCommandQueueTransaction:(id)a3
+- (void)removeCommandQueueTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_transactions removeObject:v4];
+  [(NSHashTable *)self->_transactions removeObject:transactionCopy];
 
   if (![(NSHashTable *)self->_transactions count])
   {

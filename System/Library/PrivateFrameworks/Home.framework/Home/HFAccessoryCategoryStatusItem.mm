@@ -1,43 +1,43 @@
 @interface HFAccessoryCategoryStatusItem
 + (id)statusItemClasses;
-- (HFAccessoryCategoryStatusItem)initWithHome:(id)a3 room:(id)a4 valueSource:(id)a5;
+- (HFAccessoryCategoryStatusItem)initWithHome:(id)home room:(id)room valueSource:(id)source;
 - (HFAccessoryTypeGroup)accessoryTypeGroup;
-- (id)_statusItemOfClass:(Class)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_statusItemOfClass:(Class)class;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)accessoryTypeGroupFilter;
-- (id)sortedActionSetItemsWithProvider:(id)a3;
-- (void)applyInflectionToDescriptions:(id)a3;
+- (id)sortedActionSetItemsWithProvider:(id)provider;
+- (void)applyInflectionToDescriptions:(id)descriptions;
 @end
 
 @implementation HFAccessoryCategoryStatusItem
 
-- (HFAccessoryCategoryStatusItem)initWithHome:(id)a3 room:(id)a4 valueSource:(id)a5
+- (HFAccessoryCategoryStatusItem)initWithHome:(id)home room:(id)room valueSource:(id)source
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  homeCopy = home;
+  roomCopy = room;
+  sourceCopy = source;
   v24.receiver = self;
   v24.super_class = HFAccessoryCategoryStatusItem;
-  v11 = [(HFStatusItem *)&v24 initWithHome:v8 room:v9 valueSource:v10];
+  v11 = [(HFStatusItem *)&v24 initWithHome:homeCopy room:roomCopy valueSource:sourceCopy];
   if (v11)
   {
-    v12 = [objc_opt_class() statusItemClasses];
+    statusItemClasses = [objc_opt_class() statusItemClasses];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __63__HFAccessoryCategoryStatusItem_initWithHome_room_valueSource___block_invoke;
     v20[3] = &unk_277DF4258;
-    v21 = v8;
-    v22 = v9;
-    v23 = v10;
-    v13 = [v12 na_map:v20];
+    v21 = homeCopy;
+    v22 = roomCopy;
+    v23 = sourceCopy;
+    v13 = [statusItemClasses na_map:v20];
     statusItems = v11->_statusItems;
     v11->_statusItems = v13;
 
-    v15 = [(HFAccessoryCategoryStatusItem *)v11 accessoryTypeGroup];
-    v16 = [v15 uniqueIdentifier];
-    v17 = [v16 UUIDString];
+    accessoryTypeGroup = [(HFAccessoryCategoryStatusItem *)v11 accessoryTypeGroup];
+    uniqueIdentifier = [accessoryTypeGroup uniqueIdentifier];
+    uUIDString = [uniqueIdentifier UUIDString];
     uuidString = v11->_uuidString;
-    v11->_uuidString = v17;
+    v11->_uuidString = uUIDString;
   }
 
   return v11;
@@ -52,13 +52,13 @@ id __63__HFAccessoryCategoryStatusItem_initWithHome_room_valueSource___block_inv
 
 - (id)accessoryTypeGroupFilter
 {
-  v2 = [(HFAccessoryCategoryStatusItem *)self accessoryTypeGroup];
+  accessoryTypeGroup = [(HFAccessoryCategoryStatusItem *)self accessoryTypeGroup];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __57__HFAccessoryCategoryStatusItem_accessoryTypeGroupFilter__block_invoke;
   aBlock[3] = &unk_277DF4280;
-  v8 = v2;
-  v3 = v2;
+  v8 = accessoryTypeGroup;
+  v3 = accessoryTypeGroup;
   v4 = _Block_copy(aBlock);
   v5 = [v4 copy];
 
@@ -231,18 +231,18 @@ LABEL_33:
   return v31;
 }
 
-- (id)sortedActionSetItemsWithProvider:(id)a3
+- (id)sortedActionSetItemsWithProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v6 = [(HFStatusItem *)self room];
-  [v4 setRoom:v6];
+  room = [(HFStatusItem *)self room];
+  [providerCopy setRoom:room];
 
-  v7 = [(HFAccessoryCategoryStatusItem *)self accessoryTypeGroupFilter];
-  [v4 setFilter:v7];
+  accessoryTypeGroupFilter = [(HFAccessoryCategoryStatusItem *)self accessoryTypeGroupFilter];
+  [providerCopy setFilter:accessoryTypeGroupFilter];
 
   objc_initWeak(&location, self);
-  v8 = [v4 reloadItems];
+  reloadItems = [providerCopy reloadItems];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __66__HFAccessoryCategoryStatusItem_sortedActionSetItemsWithProvider___block_invoke;
@@ -250,7 +250,7 @@ LABEL_33:
   objc_copyWeak(&v14, &location);
   v9 = v5;
   v13 = v9;
-  v10 = [v8 addCompletionBlock:v12];
+  v10 = [reloadItems addCompletionBlock:v12];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -296,69 +296,69 @@ void __66__HFAccessoryCategoryStatusItem_sortedActionSetItemsWithProvider___bloc
 
 - (HFAccessoryTypeGroup)accessoryTypeGroup
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAccessoryCategoryStatusItem.m" lineNumber:100 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAccessoryCategoryStatusItem accessoryTypeGroup]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessoryCategoryStatusItem.m" lineNumber:100 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAccessoryCategoryStatusItem accessoryTypeGroup]", objc_opt_class()}];
 
   return 0;
 }
 
 + (id)statusItemClasses
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"HFAccessoryCategoryStatusItem.m" lineNumber:106 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAccessoryCategoryStatusItem statusItemClasses]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessoryCategoryStatusItem.m" lineNumber:106 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAccessoryCategoryStatusItem statusItemClasses]", objc_opt_class()}];
 
   return 0;
 }
 
-- (id)_statusItemOfClass:(Class)a3
+- (id)_statusItemOfClass:(Class)class
 {
-  v4 = [(HFAccessoryCategoryStatusItem *)self statusItems];
+  statusItems = [(HFAccessoryCategoryStatusItem *)self statusItems];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__HFAccessoryCategoryStatusItem__statusItemOfClass___block_invoke;
   v7[3] = &__block_descriptor_40_e22_B16__0__HFStatusItem_8lu32l8;
-  v7[4] = a3;
-  v5 = [v4 na_firstObjectPassingTest:v7];
+  v7[4] = class;
+  v5 = [statusItems na_firstObjectPassingTest:v7];
 
   return v5;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v47[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(HFStatusItem *)self room];
-  v7 = [v6 accessories];
-  v8 = v7;
-  if (v7)
+  optionsCopy = options;
+  room = [(HFStatusItem *)self room];
+  accessories = [room accessories];
+  v8 = accessories;
+  if (accessories)
   {
-    v9 = v7;
+    accessories2 = accessories;
   }
 
   else
   {
-    v3 = [(HFStatusItem *)self home];
-    v9 = [v3 accessories];
+    home = [(HFStatusItem *)self home];
+    accessories2 = [home accessories];
   }
 
   if (+[HFUtilities isPressDemoModeEnabled])
   {
-    v10 = [(HFStatusItem *)self room];
-    v11 = [v10 hf_demoModeAccessories];
-    v12 = v11;
-    if (!v11)
+    room2 = [(HFStatusItem *)self room];
+    hf_demoModeAccessories = [room2 hf_demoModeAccessories];
+    hf_demoModeAccessories2 = hf_demoModeAccessories;
+    if (!hf_demoModeAccessories)
     {
-      v3 = [(HFStatusItem *)self home];
-      v12 = [v3 hf_demoModeAccessories];
+      home = [(HFStatusItem *)self home];
+      hf_demoModeAccessories2 = [home hf_demoModeAccessories];
     }
 
-    v13 = [v9 arrayByAddingObjectsFromArray:v12];
+    v13 = [accessories2 arrayByAddingObjectsFromArray:hf_demoModeAccessories2];
 
-    if (!v11)
+    if (!hf_demoModeAccessories)
     {
     }
 
-    v9 = v13;
+    accessories2 = v13;
   }
 
   v45[0] = MEMORY[0x277D85DD0];
@@ -366,14 +366,14 @@ void __66__HFAccessoryCategoryStatusItem_sortedActionSetItemsWithProvider___bloc
   v45[2] = __61__HFAccessoryCategoryStatusItem__subclass_updateWithOptions___block_invoke;
   v45[3] = &unk_277DF3888;
   v45[4] = self;
-  v14 = [v9 na_firstObjectPassingTest:v45];
+  v14 = [accessories2 na_firstObjectPassingTest:v45];
   v15 = v14 == 0;
 
   if (v15 && [(HFAccessoryCategoryStatusItem *)self hidesWithNoAccessories])
   {
     v16 = MEMORY[0x277CBEB98];
-    v17 = [objc_opt_class() statusItemClasses];
-    v18 = [v16 setWithArray:v17];
+    statusItemClasses = [objc_opt_class() statusItemClasses];
+    v18 = [v16 setWithArray:statusItemClasses];
     v19 = [v18 na_flatMap:&__block_literal_global_18];
 
     v20 = MEMORY[0x277D2C900];
@@ -391,11 +391,11 @@ void __66__HFAccessoryCategoryStatusItem_sortedActionSetItemsWithProvider___bloc
 
   else
   {
-    v25 = [v5 objectForKeyedSubscript:HFItemUpdateOptionFastInitialUpdate];
-    v26 = [v25 BOOLValue];
+    v25 = [optionsCopy objectForKeyedSubscript:HFItemUpdateOptionFastInitialUpdate];
+    bOOLValue = [v25 BOOLValue];
 
     v27 = MEMORY[0x277D2C900];
-    if (v26)
+    if (bOOLValue)
     {
       v19 = [HFItemUpdateOutcome outcomeWithResults:MEMORY[0x277CBEC10]];
       v24 = [v27 futureWithResult:v19];
@@ -404,17 +404,17 @@ void __66__HFAccessoryCategoryStatusItem_sortedActionSetItemsWithProvider___bloc
     else
     {
       v28 = objc_alloc_init(MEMORY[0x277D2C900]);
-      v29 = [(HFAccessoryCategoryStatusItem *)self statusItems];
+      statusItems = [(HFAccessoryCategoryStatusItem *)self statusItems];
       v43[0] = MEMORY[0x277D85DD0];
       v43[1] = 3221225472;
       v43[2] = __61__HFAccessoryCategoryStatusItem__subclass_updateWithOptions___block_invoke_4;
       v43[3] = &unk_277DF4310;
-      v44 = v5;
-      v30 = [v29 na_map:v43];
+      v44 = optionsCopy;
+      v30 = [statusItems na_map:v43];
 
       v31 = MEMORY[0x277D2C900];
-      v32 = [MEMORY[0x277D2C938] mainThreadScheduler];
-      v33 = [v31 combineAllFutures:v30 ignoringErrors:1 scheduler:v32];
+      mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+      v33 = [v31 combineAllFutures:v30 ignoringErrors:1 scheduler:mainThreadScheduler];
 
       objc_initWeak(&location, self);
       v39[0] = MEMORY[0x277D85DD0];
@@ -668,41 +668,41 @@ void __61__HFAccessoryCategoryStatusItem__subclass_updateWithOptions___block_inv
   }
 }
 
-- (void)applyInflectionToDescriptions:(id)a3
+- (void)applyInflectionToDescriptions:(id)descriptions
 {
-  v19 = a3;
-  v3 = [v19 objectForKeyedSubscript:@"title"];
-  v4 = [v19 objectForKeyedSubscript:@"description"];
+  descriptionsCopy = descriptions;
+  v3 = [descriptionsCopy objectForKeyedSubscript:@"title"];
+  v4 = [descriptionsCopy objectForKeyedSubscript:@"description"];
 
   if (v4)
   {
     v5 = MEMORY[0x277CCA898];
-    v6 = [v19 objectForKeyedSubscript:@"description"];
+    v6 = [descriptionsCopy objectForKeyedSubscript:@"description"];
     v7 = [v5 hf_attributedStringWithInflectableAccessoryStatus:v6 accessoryName:v3 forcePluralAgreement:1];
-    v8 = [v7 string];
-    [v19 setObject:v8 forKeyedSubscript:@"description"];
+    string = [v7 string];
+    [descriptionsCopy setObject:string forKeyedSubscript:@"description"];
   }
 
-  v9 = [v19 objectForKeyedSubscript:@"controlDescription"];
+  v9 = [descriptionsCopy objectForKeyedSubscript:@"controlDescription"];
 
   if (v9)
   {
     v10 = MEMORY[0x277CCA898];
-    v11 = [v19 objectForKeyedSubscript:@"controlDescription"];
+    v11 = [descriptionsCopy objectForKeyedSubscript:@"controlDescription"];
     v12 = [v10 hf_attributedStringWithInflectableAccessoryStatus:v11 accessoryName:v3 forcePluralAgreement:1];
-    v13 = [v12 string];
-    [v19 setObject:v13 forKeyedSubscript:@"controlDescription"];
+    string2 = [v12 string];
+    [descriptionsCopy setObject:string2 forKeyedSubscript:@"controlDescription"];
   }
 
-  v14 = [v19 objectForKeyedSubscript:@"detailedControlDescription"];
+  v14 = [descriptionsCopy objectForKeyedSubscript:@"detailedControlDescription"];
 
   if (v14)
   {
     v15 = MEMORY[0x277CCA898];
-    v16 = [v19 objectForKeyedSubscript:@"detailedControlDescription"];
+    v16 = [descriptionsCopy objectForKeyedSubscript:@"detailedControlDescription"];
     v17 = [v15 hf_attributedStringWithInflectableAccessoryStatus:v16 accessoryName:v3 forcePluralAgreement:1];
-    v18 = [v17 string];
-    [v19 setObject:v18 forKeyedSubscript:@"detailedControlDescription"];
+    string3 = [v17 string];
+    [descriptionsCopy setObject:string3 forKeyedSubscript:@"detailedControlDescription"];
   }
 }
 

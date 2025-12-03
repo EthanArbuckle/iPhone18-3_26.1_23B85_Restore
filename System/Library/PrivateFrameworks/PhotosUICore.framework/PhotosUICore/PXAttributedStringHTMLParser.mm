@@ -1,41 +1,41 @@
 @interface PXAttributedStringHTMLParser
-- (PXAttributedStringHTMLParser)initWithHTMLString:(id)a3 defaultAttributes:(id)a4;
-- (void)_setCurrentTraits:(unsigned int)a3;
+- (PXAttributedStringHTMLParser)initWithHTMLString:(id)string defaultAttributes:(id)attributes;
+- (void)_setCurrentTraits:(unsigned int)traits;
 - (void)_updateCurrentTraits;
 - (void)parse;
 @end
 
 @implementation PXAttributedStringHTMLParser
 
-- (void)_setCurrentTraits:(unsigned int)a3
+- (void)_setCurrentTraits:(unsigned int)traits
 {
-  if (self->__currentTraits == a3)
+  if (self->__currentTraits == traits)
   {
     return;
   }
 
-  v4 = *&a3;
-  self->__currentTraits = a3;
-  if (a3 == 1)
+  v4 = *&traits;
+  self->__currentTraits = traits;
+  if (traits == 1)
   {
-    v6 = [(PXAttributedStringHTMLParser *)self italicizedAttributes];
+    italicizedAttributes = [(PXAttributedStringHTMLParser *)self italicizedAttributes];
   }
 
   else
   {
-    if (a3 != 2)
+    if (traits != 2)
     {
 LABEL_7:
-      v8 = [(PXAttributedStringHTMLParser *)self _defaultAttributes];
+      _defaultAttributes = [(PXAttributedStringHTMLParser *)self _defaultAttributes];
       v9 = *MEMORY[0x1E69DB648];
-      v10 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
+      v10 = [_defaultAttributes objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
       v11 = MEMORY[0x1E69DB878];
-      v12 = [v10 fontDescriptor];
-      v13 = [v12 fontDescriptorWithSymbolicTraits:v4];
+      fontDescriptor = [v10 fontDescriptor];
+      v13 = [fontDescriptor fontDescriptorWithSymbolicTraits:v4];
       [v10 pointSize];
       v14 = [v11 fontWithDescriptor:v13 size:?];
 
-      v15 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v8];
+      v15 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:_defaultAttributes];
       if (v14)
       {
         [v15 setObject:v14 forKeyedSubscript:v9];
@@ -45,11 +45,11 @@ LABEL_7:
       goto LABEL_10;
     }
 
-    v6 = [(PXAttributedStringHTMLParser *)self emphasizedAttributes];
+    italicizedAttributes = [(PXAttributedStringHTMLParser *)self emphasizedAttributes];
   }
 
-  v7 = v6;
-  if (!v6)
+  v7 = italicizedAttributes;
+  if (!italicizedAttributes)
   {
     goto LABEL_7;
   }
@@ -61,8 +61,8 @@ LABEL_10:
 
 - (void)_updateCurrentTraits
 {
-  v4 = [(PXAttributedStringHTMLParser *)self _currentMarkupElements];
-  if ([v4 containsObject:&unk_1F190BD70])
+  _currentMarkupElements = [(PXAttributedStringHTMLParser *)self _currentMarkupElements];
+  if ([_currentMarkupElements containsObject:&unk_1F190BD70])
   {
     v3 = 2;
   }
@@ -72,14 +72,14 @@ LABEL_10:
     v3 = 0;
   }
 
-  -[PXAttributedStringHTMLParser _setCurrentTraits:](self, "_setCurrentTraits:", v3 | [v4 containsObject:&unk_1F190BD88]);
+  -[PXAttributedStringHTMLParser _setCurrentTraits:](self, "_setCurrentTraits:", v3 | [_currentMarkupElements containsObject:&unk_1F190BD88]);
 }
 
 - (void)parse
 {
   v3 = [PXMiniHTMLParser alloc];
-  v4 = [(PXAttributedStringHTMLParser *)self _htmlString];
-  v5 = [(PXMiniHTMLParser *)v3 initWithString:v4];
+  _htmlString = [(PXAttributedStringHTMLParser *)self _htmlString];
+  v5 = [(PXMiniHTMLParser *)v3 initWithString:_htmlString];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -99,8 +99,8 @@ LABEL_10:
   v7[3] = &unk_1E7748D18;
   v7[4] = self;
   [(PXMiniHTMLParser *)v5 setParsedMarkupElementEndBlock:v7];
-  v6 = [(PXAttributedStringHTMLParser *)self parsedErrorBlock];
-  [(PXMiniHTMLParser *)v5 setParsedErrorBlock:v6];
+  parsedErrorBlock = [(PXAttributedStringHTMLParser *)self parsedErrorBlock];
+  [(PXMiniHTMLParser *)v5 setParsedErrorBlock:parsedErrorBlock];
 
   [(PXMiniHTMLParser *)v5 parse];
 }
@@ -141,20 +141,20 @@ uint64_t __37__PXAttributedStringHTMLParser_parse__block_invoke_3(uint64_t a1, u
   return [v6 _updateCurrentTraits];
 }
 
-- (PXAttributedStringHTMLParser)initWithHTMLString:(id)a3 defaultAttributes:(id)a4
+- (PXAttributedStringHTMLParser)initWithHTMLString:(id)string defaultAttributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  attributesCopy = attributes;
   v16.receiver = self;
   v16.super_class = PXAttributedStringHTMLParser;
   v8 = [(PXAttributedStringHTMLParser *)&v16 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [stringCopy copy];
     htmlString = v8->__htmlString;
     v8->__htmlString = v9;
 
-    v11 = [v7 copy];
+    v11 = [attributesCopy copy];
     defaultAttributes = v8->__defaultAttributes;
     v8->__defaultAttributes = v11;
 

@@ -1,16 +1,16 @@
 @interface STUIStatusBarCellularNetworkTypeViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation STUIStatusBarCellularNetworkTypeViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STUIStatusBarCellularNetworkTypeView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"STUIStatusBarCellularNetworkTypeView" hasProperty:@"type" withType:"q"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STUIStatusBarCellularNetworkTypeView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"STUIStatusBarCellularNetworkTypeView" hasProperty:@"type" withType:"q"];
 }
 
 - (id)accessibilityLabel

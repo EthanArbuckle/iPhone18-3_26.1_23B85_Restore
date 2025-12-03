@@ -1,24 +1,24 @@
 @interface BKSplitViewController
 - (BKRootBarCoordinating)bk_rootBarCoordinator;
-- (BKSplitViewController)initWithCoder:(id)a3;
-- (BKSplitViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (BKSplitViewController)initWithStyle:(int64_t)a3;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BKSplitViewController)initWithCoder:(id)coder;
+- (BKSplitViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (BKSplitViewController)initWithStyle:(int64_t)style;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)prefersStatusBarHidden;
 - (NSString)bc_stringForReturnToRootBarItem;
 - (UIViewController)childViewControllerForHomeIndicatorAutoHidden;
 - (UIViewController)childViewControllerForStatusBarHidden;
 - (UIViewController)childViewControllerForStatusBarStyle;
-- (id)targetForAction:(SEL)a3 withSender:(id)a4;
+- (id)targetForAction:(SEL)action withSender:(id)sender;
 - (int64_t)preferredStatusBarStyle;
-- (void)books_addSelectionToCollection:(id)a3;
-- (void)books_createCollection:(id)a3;
-- (void)books_createCollectionFromSelection:(id)a3;
-- (void)splitViewController:(id)a3 willChangeToDisplayMode:(int64_t)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)books_addSelectionToCollection:(id)collection;
+- (void)books_createCollection:(id)collection;
+- (void)books_createCollectionFromSelection:(id)selection;
+- (void)splitViewController:(id)controller willChangeToDisplayMode:(int64_t)mode;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BKSplitViewController
@@ -31,7 +31,7 @@
   return Strong;
 }
 
-- (BKSplitViewController)initWithCoder:(id)a3
+- (BKSplitViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR___BKSplitViewController_rootBarEventSubject;
   sub_1001F1160(&unk_100AD2090);
@@ -46,11 +46,11 @@
   return result;
 }
 
-- (id)targetForAction:(SEL)a3 withSender:(id)a4
+- (id)targetForAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1007A3504();
     swift_unknownObjectRelease();
@@ -59,10 +59,10 @@
   else
   {
     memset(v16, 0, sizeof(v16));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  sub_10072C524(a3, v16, v17);
+  sub_10072C524(action, v16, v17);
 
   sub_100007840(v16, &unk_100AD5B40);
   v8 = v18;
@@ -86,11 +86,11 @@
   return v14;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1007A3504();
     swift_unknownObjectRelease();
@@ -99,10 +99,10 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = sub_10072CA40(a3, v10);
+  v8 = sub_10072CA40(action, v10);
 
   sub_100007840(v10, &unk_100AD5B40);
   return v8 & 1;
@@ -114,11 +114,11 @@
   v5.super_class = type metadata accessor for SplitViewController();
   v2 = v5.receiver;
   [(BKSplitViewController *)&v5 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    [v3 setAccessibilityIgnoresInvertColors:1];
+    v4 = view;
+    [view setAccessibilityIgnoresInvertColors:1];
   }
 
   else
@@ -127,53 +127,53 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7 = 0;
   v8 = 0;
-  v6 = a3;
+  appearCopy2 = appear;
   v9 = 0;
-  v4 = self;
+  selfCopy = self;
   sub_10079B8C4();
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for SplitViewController();
-  [(BKSplitViewController *)&v5 viewWillAppear:v3];
+  [(BKSplitViewController *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7 = 0;
   v8 = 0;
-  v6 = a3;
+  disappearCopy2 = disappear;
   v9 = 3;
-  v4 = self;
+  selfCopy = self;
   sub_10079B8C4();
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for SplitViewController();
-  [(BKSplitViewController *)&v5 viewDidDisappear:v3];
+  [(BKSplitViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v9[1] = a3;
-  v10 = a4;
+  height = size.height;
+  width = size.width;
+  v9[1] = size;
+  coordinatorCopy = coordinator;
   v11 = 4;
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
   sub_10079B8C4();
-  v9[0].receiver = v8;
+  v9[0].receiver = selfCopy;
   v9[0].super_class = type metadata accessor for SplitViewController();
-  [(objc_super *)v9 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+  [(objc_super *)v9 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
   swift_unknownObjectRelease();
 }
 
 - (UIViewController)childViewControllerForHomeIndicatorAutoHidden
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10072D734();
 
   return v3;
@@ -181,7 +181,7 @@
 
 - (UIViewController)childViewControllerForStatusBarStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10072D840();
 
   return v3;
@@ -189,7 +189,7 @@
 
 - (int64_t)preferredStatusBarStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10072D908();
 
   return v3;
@@ -197,7 +197,7 @@
 
 - (UIViewController)childViewControllerForStatusBarHidden
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10072DA0C();
 
   return v3;
@@ -205,36 +205,36 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10072DBD8();
 
   return v3 & 1;
 }
 
-- (BKSplitViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (BKSplitViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BKSplitViewController)initWithStyle:(int64_t)a3
+- (BKSplitViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)splitViewController:(id)a3 willChangeToDisplayMode:(int64_t)a4
+- (void)splitViewController:(id)controller willChangeToDisplayMode:(int64_t)mode
 {
-  v6 = a3;
-  v7 = self;
-  sub_10072FACC(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_10072FACC(controllerCopy, mode);
 }
 
 - (NSString)bc_stringForReturnToRootBarItem
 {
-  v2 = self;
+  selfCopy = self;
   sub_10072E0B4();
   v4 = v3;
 
@@ -251,11 +251,11 @@
   return v5;
 }
 
-- (void)books_createCollection:(id)a3
+- (void)books_createCollection:(id)collection
 {
-  if (a3)
+  if (collection)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1007A3504();
     swift_unknownObjectRelease();
@@ -264,7 +264,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_10072E408(_swiftEmptyArrayStorage);
@@ -272,11 +272,11 @@
   sub_100007840(v6, &unk_100AD5B40);
 }
 
-- (void)books_createCollectionFromSelection:(id)a3
+- (void)books_createCollectionFromSelection:(id)selection
 {
-  if (a3)
+  if (selection)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1007A3504();
     swift_unknownObjectRelease();
@@ -285,7 +285,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_10072EA3C();
@@ -293,11 +293,11 @@
   sub_100007840(v6, &unk_100AD5B40);
 }
 
-- (void)books_addSelectionToCollection:(id)a3
+- (void)books_addSelectionToCollection:(id)collection
 {
-  if (a3)
+  if (collection)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1007A3504();
     swift_unknownObjectRelease();
@@ -306,7 +306,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_10072F2C8(v6);

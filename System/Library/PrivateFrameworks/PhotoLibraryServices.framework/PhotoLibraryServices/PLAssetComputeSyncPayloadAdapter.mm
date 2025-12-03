@@ -6,9 +6,9 @@
 
 - (id)payloadID
 {
-  v2 = [(PLAssetComputeSyncPayloadAdapter *)self asset];
-  v3 = [v2 cloudAssetGUID];
-  v4 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:v3];
+  asset = [(PLAssetComputeSyncPayloadAdapter *)self asset];
+  cloudAssetGUID = [asset cloudAssetGUID];
+  v4 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:cloudAssetGUID];
 
   return v4;
 }

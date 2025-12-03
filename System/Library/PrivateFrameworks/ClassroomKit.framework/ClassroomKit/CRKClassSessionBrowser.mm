@@ -1,58 +1,58 @@
 @interface CRKClassSessionBrowser
-- (BOOL)hasConnectionToClassWithIdentifier:(id)a3;
+- (BOOL)hasConnectionToClassWithIdentifier:(id)identifier;
 - (CRKClassSessionBrowser)init;
 - (CRKClassSessionBrowserDelegate)delegate;
 - (CRKInvitationSessionBrowserDelegate)invitationSessionDelegate;
 - (NSSet)inRangeClassSessionIdentifiers;
-- (id)clientIdentityForSession:(id)a3;
-- (id)delegateNeedsClientIdentityForGroup:(id)a3;
-- (id)delegateNeedsClientIdentityForInvitationSessionWithEndpoint:(id)a3;
-- (id)delegateNeedsTrustedAnchorCertificatesForGroup:(id)a3;
+- (id)clientIdentityForSession:(id)session;
+- (id)delegateNeedsClientIdentityForGroup:(id)group;
+- (id)delegateNeedsClientIdentityForInvitationSessionWithEndpoint:(id)endpoint;
+- (id)delegateNeedsTrustedAnchorCertificatesForGroup:(id)group;
 - (id)stateDictionariesByClassSessionIdentifierString;
-- (id)trustedAnchorCertificatesForSession:(id)a3;
-- (void)acquireConnectWithoutBeaconAssertionForInvitationSessionWithEndpoint:(id)a3;
-- (void)acquireConnectWithoutBeaconAssertionForSessionIdentifier:(id)a3;
-- (void)addInRangeClassSession:(id)a3;
-- (void)beaconBrowser:(id)a3 didFindBeaconForClassSession:(id)a4 flags:(unsigned __int16)a5;
-- (void)beaconBrowser:(id)a3 didFindBeaconForInvitationSessionWithEndpoint:(id)a4;
-- (void)classSessionInvalidated:(id)a3;
-- (void)classSessionRejected:(id)a3;
-- (void)connectToClassSessionWithIdentifier:(id)a3;
+- (id)trustedAnchorCertificatesForSession:(id)session;
+- (void)acquireConnectWithoutBeaconAssertionForInvitationSessionWithEndpoint:(id)endpoint;
+- (void)acquireConnectWithoutBeaconAssertionForSessionIdentifier:(id)identifier;
+- (void)addInRangeClassSession:(id)session;
+- (void)beaconBrowser:(id)browser didFindBeaconForClassSession:(id)session flags:(unsigned __int16)flags;
+- (void)beaconBrowser:(id)browser didFindBeaconForInvitationSessionWithEndpoint:(id)endpoint;
+- (void)classSessionInvalidated:(id)invalidated;
+- (void)classSessionRejected:(id)rejected;
+- (void)connectToClassSessionWithIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)delegateClassSessionDidBecomeConnectable:(id)a3;
-- (void)delegateClassSessionDidBecomeNotConnectable:(id)a3;
-- (void)delegateDidFailWithError:(id)a3;
-- (void)delegateDidFindClassSession:(id)a3 transport:(id)a4;
-- (void)delegateDidFindInvitationSession:(id)a3 transport:(id)a4;
-- (void)delegateDidRemoveClassSession:(id)a3;
-- (void)delegateDidRemoveInvitationSession:(id)a3;
+- (void)delegateClassSessionDidBecomeConnectable:(id)connectable;
+- (void)delegateClassSessionDidBecomeNotConnectable:(id)connectable;
+- (void)delegateDidFailWithError:(id)error;
+- (void)delegateDidFindClassSession:(id)session transport:(id)transport;
+- (void)delegateDidFindInvitationSession:(id)session transport:(id)transport;
+- (void)delegateDidRemoveClassSession:(id)session;
+- (void)delegateDidRemoveInvitationSession:(id)session;
 - (void)delegateInRangeClassSessionsDidChange;
-- (void)delegateLostConnectionToClassSession:(id)a3;
-- (void)delegateLostConnectionToInvitationSession:(id)a3;
-- (void)handleUntrustedClassSession:(id)a3 ASMInstructorIdentifier:(id)a4 decisionHandler:(id)a5;
-- (void)handleUntrustedInvitationSession:(id)a3 decisionHandler:(id)a4;
+- (void)delegateLostConnectionToClassSession:(id)session;
+- (void)delegateLostConnectionToInvitationSession:(id)session;
+- (void)handleUntrustedClassSession:(id)session ASMInstructorIdentifier:(id)identifier decisionHandler:(id)handler;
+- (void)handleUntrustedInvitationSession:(id)session decisionHandler:(id)handler;
 - (void)init;
-- (void)invitationSessionWithEndpointInvalidated:(id)a3;
-- (void)lostConnectionToClassSession:(id)a3;
-- (void)lostConnectionToInvitationSessionWithEndpoint:(id)a3;
-- (void)reachabilityDidChange:(id)a3;
-- (void)releaseConnectWithoutBeaconAssertionForInvitationSessionWithEndpoint:(id)a3;
-- (void)releaseConnectWithoutBeaconAssertionForSessionIdentifier:(id)a3;
-- (void)removeInRangeClassSession:(id)a3;
-- (void)session:(id)a3 didConnectWithTransport:(id)a4;
-- (void)session:(id)a3 encounteredUntrustedConnectionForASMInstructorIdentifier:(id)a4 decisionHandler:(id)a5;
-- (void)sessionDidBecomeConnectable:(id)a3;
-- (void)sessionDidBecomeNotConnectable:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
-- (void)sessionDidInvalidate:(id)a3;
-- (void)sessionDidLoseBeacon:(id)a3;
-- (void)setAllowInvitationSessions:(BOOL)a3;
-- (void)setAllowUnenrolledSessions:(BOOL)a3;
-- (void)setEnrolledControlGroupIdentifiers:(id)a3;
-- (void)setOrganizationUUIDs:(id)a3;
+- (void)invitationSessionWithEndpointInvalidated:(id)invalidated;
+- (void)lostConnectionToClassSession:(id)session;
+- (void)lostConnectionToInvitationSessionWithEndpoint:(id)endpoint;
+- (void)reachabilityDidChange:(id)change;
+- (void)releaseConnectWithoutBeaconAssertionForInvitationSessionWithEndpoint:(id)endpoint;
+- (void)releaseConnectWithoutBeaconAssertionForSessionIdentifier:(id)identifier;
+- (void)removeInRangeClassSession:(id)session;
+- (void)session:(id)session didConnectWithTransport:(id)transport;
+- (void)session:(id)session encounteredUntrustedConnectionForASMInstructorIdentifier:(id)identifier decisionHandler:(id)handler;
+- (void)sessionDidBecomeConnectable:(id)connectable;
+- (void)sessionDidBecomeNotConnectable:(id)connectable;
+- (void)sessionDidDisconnect:(id)disconnect;
+- (void)sessionDidInvalidate:(id)invalidate;
+- (void)sessionDidLoseBeacon:(id)beacon;
+- (void)setAllowInvitationSessions:(BOOL)sessions;
+- (void)setAllowUnenrolledSessions:(BOOL)sessions;
+- (void)setEnrolledControlGroupIdentifiers:(id)identifiers;
+- (void)setOrganizationUUIDs:(id)ds;
 - (void)stopBrowsing;
 - (void)updateConnectedSessions;
-- (void)updateRequiresBeaconFlagForSession:(id)a3;
+- (void)updateRequiresBeaconFlagForSession:(id)session;
 @end
 
 @implementation CRKClassSessionBrowser
@@ -61,8 +61,8 @@
 {
   [(CATNetworkReachability *)self->mNetworkReachability setDelegate:0];
   mNetworkReachability = self->mNetworkReachability;
-  v4 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [(CATNetworkReachability *)mNetworkReachability removeFromRunLoop:v4 forMode:*MEMORY[0x277CBE640]];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [(CATNetworkReachability *)mNetworkReachability removeFromRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE640]];
 
   v5.receiver = self;
   v5.super_class = CRKClassSessionBrowser;
@@ -93,14 +93,14 @@
     mInvitationSessionsByEndpoint = v3->mInvitationSessionsByEndpoint;
     v3->mInvitationSessionsByEndpoint = v8;
 
-    v10 = [MEMORY[0x277CF9530] reachabilityForLocalWiFi];
+    reachabilityForLocalWiFi = [MEMORY[0x277CF9530] reachabilityForLocalWiFi];
     mNetworkReachability = v3->mNetworkReachability;
-    v3->mNetworkReachability = v10;
+    v3->mNetworkReachability = reachabilityForLocalWiFi;
 
     [(CATNetworkReachability *)v3->mNetworkReachability setDelegate:v3];
     v12 = v3->mNetworkReachability;
-    v13 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [(CATNetworkReachability *)v12 scheduleInRunLoop:v13 forMode:*MEMORY[0x277CBE640]];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [(CATNetworkReachability *)v12 scheduleInRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE640]];
 
     v14 = objc_opt_new();
     mBeaconBrowser = v3->mBeaconBrowser;
@@ -119,136 +119,136 @@
   return v3;
 }
 
-- (void)setOrganizationUUIDs:(id)a3
+- (void)setOrganizationUUIDs:(id)ds
 {
   v4 = MEMORY[0x277CCACC8];
-  v5 = a3;
+  dsCopy = ds;
   if (([v4 isMainThread] & 1) == 0)
   {
     [CRKClassSessionBrowser setOrganizationUUIDs:];
   }
 
-  [(CRKClassSessionBeaconBrowser *)self->mBeaconBrowser setOrganizationUUIDs:v5];
-  v6 = [v5 copy];
+  [(CRKClassSessionBeaconBrowser *)self->mBeaconBrowser setOrganizationUUIDs:dsCopy];
+  v6 = [dsCopy copy];
 
   organizationUUIDs = self->_organizationUUIDs;
   self->_organizationUUIDs = v6;
 }
 
-- (void)setEnrolledControlGroupIdentifiers:(id)a3
+- (void)setEnrolledControlGroupIdentifiers:(id)identifiers
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKClassSessionBrowser setEnrolledControlGroupIdentifiers:];
   }
 
-  v4 = [v6 copy];
+  v4 = [identifiersCopy copy];
   enrolledControlGroupIdentifiers = self->_enrolledControlGroupIdentifiers;
   self->_enrolledControlGroupIdentifiers = v4;
 
   [(CRKClassSessionBrowser *)self updateConnectedSessions];
 }
 
-- (void)setAllowUnenrolledSessions:(BOOL)a3
+- (void)setAllowUnenrolledSessions:(BOOL)sessions
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKClassSessionBrowser setAllowUnenrolledSessions:];
   }
 
-  self->_allowUnenrolledSessions = a3;
-  if (!a3)
+  self->_allowUnenrolledSessions = sessions;
+  if (!sessions)
   {
 
     [(CRKClassSessionBrowser *)self updateConnectedSessions];
   }
 }
 
-- (void)setAllowInvitationSessions:(BOOL)a3
+- (void)setAllowInvitationSessions:(BOOL)sessions
 {
-  v3 = a3;
+  sessionsCopy = sessions;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKClassSessionBrowser setAllowInvitationSessions:];
   }
 
-  [(CRKClassSessionBeaconBrowser *)self->mBeaconBrowser setAllowInvitationSessions:v3];
-  self->_allowInvitationSessions = v3;
-  if (!v3)
+  [(CRKClassSessionBeaconBrowser *)self->mBeaconBrowser setAllowInvitationSessions:sessionsCopy];
+  self->_allowInvitationSessions = sessionsCopy;
+  if (!sessionsCopy)
   {
 
     [(CRKClassSessionBrowser *)self updateConnectedSessions];
   }
 }
 
-- (void)connectToClassSessionWithIdentifier:(id)a3
+- (void)connectToClassSessionWithIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->mClassSessionsByIdentifier objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->mClassSessionsByIdentifier objectForKeyedSubscript:identifier];
   [v3 connect];
 }
 
-- (void)classSessionInvalidated:(id)a3
+- (void)classSessionInvalidated:(id)invalidated
 {
-  v6 = a3;
+  invalidatedCopy = invalidated;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKClassSessionBrowser classSessionInvalidated:];
   }
 
-  v4 = v6;
-  if (v6)
+  v4 = invalidatedCopy;
+  if (invalidatedCopy)
   {
-    v5 = [(NSMutableDictionary *)self->mClassSessionsByIdentifier objectForKeyedSubscript:v6];
+    v5 = [(NSMutableDictionary *)self->mClassSessionsByIdentifier objectForKeyedSubscript:invalidatedCopy];
     [v5 invalidate];
 
-    v4 = v6;
+    v4 = invalidatedCopy;
   }
 }
 
-- (void)classSessionRejected:(id)a3
+- (void)classSessionRejected:(id)rejected
 {
-  v6 = a3;
+  rejectedCopy = rejected;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKClassSessionBrowser classSessionRejected:];
   }
 
-  v4 = v6;
-  if (v6)
+  v4 = rejectedCopy;
+  if (rejectedCopy)
   {
-    v5 = [(NSMutableDictionary *)self->mClassSessionsByIdentifier objectForKeyedSubscript:v6];
+    v5 = [(NSMutableDictionary *)self->mClassSessionsByIdentifier objectForKeyedSubscript:rejectedCopy];
     [v5 rejected];
 
-    v4 = v6;
+    v4 = rejectedCopy;
   }
 }
 
-- (void)lostConnectionToClassSession:(id)a3
+- (void)lostConnectionToClassSession:(id)session
 {
-  v6 = a3;
+  sessionCopy = session;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKClassSessionBrowser lostConnectionToClassSession:];
   }
 
-  v4 = v6;
-  if (v6)
+  v4 = sessionCopy;
+  if (sessionCopy)
   {
-    v5 = [(NSMutableDictionary *)self->mClassSessionsByIdentifier objectForKeyedSubscript:v6];
+    v5 = [(NSMutableDictionary *)self->mClassSessionsByIdentifier objectForKeyedSubscript:sessionCopy];
     [v5 lostConnection];
 
-    v4 = v6;
+    v4 = sessionCopy;
   }
 }
 
-- (BOOL)hasConnectionToClassWithIdentifier:(id)a3
+- (BOOL)hasConnectionToClassWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKClassSessionBrowser hasConnectionToClassWithIdentifier:];
-    if (v4)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -258,66 +258,66 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v4)
+  if (!identifierCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v5 = [(NSMutableDictionary *)self->mClassSessionsByIdentifier objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->mClassSessionsByIdentifier objectForKeyedSubscript:identifierCopy];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (void)invitationSessionWithEndpointInvalidated:(id)a3
+- (void)invitationSessionWithEndpointInvalidated:(id)invalidated
 {
-  v6 = a3;
+  invalidatedCopy = invalidated;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKClassSessionBrowser invitationSessionWithEndpointInvalidated:];
   }
 
-  v4 = v6;
-  if (v6)
+  v4 = invalidatedCopy;
+  if (invalidatedCopy)
   {
-    v5 = [(NSMutableDictionary *)self->mInvitationSessionsByEndpoint objectForKeyedSubscript:v6];
+    v5 = [(NSMutableDictionary *)self->mInvitationSessionsByEndpoint objectForKeyedSubscript:invalidatedCopy];
     [v5 invalidate];
 
-    [(NSMutableDictionary *)self->mInvitationSessionsByEndpoint removeObjectForKey:v6];
-    v4 = v6;
+    [(NSMutableDictionary *)self->mInvitationSessionsByEndpoint removeObjectForKey:invalidatedCopy];
+    v4 = invalidatedCopy;
   }
 }
 
-- (void)lostConnectionToInvitationSessionWithEndpoint:(id)a3
+- (void)lostConnectionToInvitationSessionWithEndpoint:(id)endpoint
 {
-  v6 = a3;
+  endpointCopy = endpoint;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKClassSessionBrowser lostConnectionToInvitationSessionWithEndpoint:];
   }
 
-  v4 = v6;
-  if (v6)
+  v4 = endpointCopy;
+  if (endpointCopy)
   {
-    v5 = [(NSMutableDictionary *)self->mInvitationSessionsByEndpoint objectForKeyedSubscript:v6];
+    v5 = [(NSMutableDictionary *)self->mInvitationSessionsByEndpoint objectForKeyedSubscript:endpointCopy];
     [v5 lostConnection];
 
-    v4 = v6;
+    v4 = endpointCopy;
   }
 }
 
-- (void)acquireConnectWithoutBeaconAssertionForSessionIdentifier:(id)a3
+- (void)acquireConnectWithoutBeaconAssertionForSessionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v13 = v4;
-  if (!v4)
+  identifierCopy = identifier;
+  v13 = identifierCopy;
+  if (!identifierCopy)
   {
     [CRKClassSessionBrowser acquireConnectWithoutBeaconAssertionForSessionIdentifier:];
-    v4 = 0;
+    identifierCopy = 0;
   }
 
-  v5 = [(NSMutableDictionary *)self->mConnectWithoutBeaconAssertionCountBySessionIdentifier objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->mConnectWithoutBeaconAssertionCountBySessionIdentifier objectForKeyedSubscript:identifierCopy];
   v6 = v5;
   v7 = &unk_2856728C8;
   if (v5)
@@ -328,26 +328,26 @@ LABEL_3:
   v8 = v7;
 
   v9 = MEMORY[0x277CCABB0];
-  v10 = [v8 unsignedIntegerValue];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  v11 = [v9 numberWithUnsignedInteger:v10 + 1];
+  v11 = [v9 numberWithUnsignedInteger:unsignedIntegerValue + 1];
   [(NSMutableDictionary *)self->mConnectWithoutBeaconAssertionCountBySessionIdentifier setObject:v11 forKeyedSubscript:v13];
 
   v12 = [(NSMutableDictionary *)self->mClassSessionsByIdentifier objectForKeyedSubscript:v13];
   [(CRKClassSessionBrowser *)self updateRequiresBeaconFlagForSession:v12];
 }
 
-- (void)releaseConnectWithoutBeaconAssertionForSessionIdentifier:(id)a3
+- (void)releaseConnectWithoutBeaconAssertionForSessionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v9 = v4;
-  if (!v4)
+  identifierCopy = identifier;
+  v9 = identifierCopy;
+  if (!identifierCopy)
   {
     [CRKClassSessionBrowser releaseConnectWithoutBeaconAssertionForSessionIdentifier:];
-    v4 = 0;
+    identifierCopy = 0;
   }
 
-  v5 = [(NSMutableDictionary *)self->mConnectWithoutBeaconAssertionCountBySessionIdentifier objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->mConnectWithoutBeaconAssertionCountBySessionIdentifier objectForKeyedSubscript:identifierCopy];
   v6 = v5;
   if (v5)
   {
@@ -367,17 +367,17 @@ LABEL_3:
   }
 }
 
-- (void)acquireConnectWithoutBeaconAssertionForInvitationSessionWithEndpoint:(id)a3
+- (void)acquireConnectWithoutBeaconAssertionForInvitationSessionWithEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v13 = v4;
-  if (!v4)
+  endpointCopy = endpoint;
+  v13 = endpointCopy;
+  if (!endpointCopy)
   {
     [CRKClassSessionBrowser acquireConnectWithoutBeaconAssertionForInvitationSessionWithEndpoint:];
-    v4 = 0;
+    endpointCopy = 0;
   }
 
-  v5 = [(NSMutableDictionary *)self->mConnectWithoutBeaconAssertionCountByInviteSessionEndpoint objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->mConnectWithoutBeaconAssertionCountByInviteSessionEndpoint objectForKeyedSubscript:endpointCopy];
   v6 = v5;
   v7 = &unk_2856728C8;
   if (v5)
@@ -388,26 +388,26 @@ LABEL_3:
   v8 = v7;
 
   v9 = MEMORY[0x277CCABB0];
-  v10 = [v8 unsignedIntegerValue];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  v11 = [v9 numberWithUnsignedInteger:v10 + 1];
+  v11 = [v9 numberWithUnsignedInteger:unsignedIntegerValue + 1];
   [(NSMutableDictionary *)self->mConnectWithoutBeaconAssertionCountByInviteSessionEndpoint setObject:v11 forKeyedSubscript:v13];
 
   v12 = [(NSMutableDictionary *)self->mInvitationSessionsByEndpoint objectForKeyedSubscript:v13];
   [(CRKClassSessionBrowser *)self updateRequiresBeaconFlagForSession:v12];
 }
 
-- (void)releaseConnectWithoutBeaconAssertionForInvitationSessionWithEndpoint:(id)a3
+- (void)releaseConnectWithoutBeaconAssertionForInvitationSessionWithEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v9 = v4;
-  if (!v4)
+  endpointCopy = endpoint;
+  v9 = endpointCopy;
+  if (!endpointCopy)
   {
     [CRKClassSessionBrowser releaseConnectWithoutBeaconAssertionForInvitationSessionWithEndpoint:];
-    v4 = 0;
+    endpointCopy = 0;
   }
 
-  v5 = [(NSMutableDictionary *)self->mConnectWithoutBeaconAssertionCountByInviteSessionEndpoint objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->mConnectWithoutBeaconAssertionCountByInviteSessionEndpoint objectForKeyedSubscript:endpointCopy];
   v6 = v5;
   if (v5)
   {
@@ -444,37 +444,37 @@ LABEL_3:
   return v4;
 }
 
-- (id)clientIdentityForSession:(id)a3
+- (id)clientIdentityForSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 identifier];
+    identifier = [sessionCopy identifier];
 
-    v6 = [v5 groupIdentifier];
-    v7 = [(CRKClassSessionBrowser *)self delegateNeedsClientIdentityForGroup:v6];
+    groupIdentifier = [identifier groupIdentifier];
+    v7 = [(CRKClassSessionBrowser *)self delegateNeedsClientIdentityForGroup:groupIdentifier];
   }
 
   else
   {
-    v5 = [v4 endpoint];
+    identifier = [sessionCopy endpoint];
 
-    v7 = [(CRKClassSessionBrowser *)self delegateNeedsClientIdentityForInvitationSessionWithEndpoint:v5];
+    v7 = [(CRKClassSessionBrowser *)self delegateNeedsClientIdentityForInvitationSessionWithEndpoint:identifier];
   }
 
   return v7;
 }
 
-- (id)trustedAnchorCertificatesForSession:(id)a3
+- (id)trustedAnchorCertificatesForSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 identifier];
-    v6 = [v5 groupIdentifier];
-    v7 = [(CRKClassSessionBrowser *)self delegateNeedsTrustedAnchorCertificatesForGroup:v6];
+    identifier = [sessionCopy identifier];
+    groupIdentifier = [identifier groupIdentifier];
+    v7 = [(CRKClassSessionBrowser *)self delegateNeedsTrustedAnchorCertificatesForGroup:groupIdentifier];
   }
 
   else
@@ -485,13 +485,13 @@ LABEL_3:
   return v7;
 }
 
-- (void)sessionDidBecomeConnectable:(id)a3
+- (void)sessionDidBecomeConnectable:(id)connectable
 {
-  v4 = a3;
+  connectableCopy = connectable;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(CRKClassSessionBrowser *)self delegateClassSessionDidBecomeConnectable:v4];
+    [(CRKClassSessionBrowser *)self delegateClassSessionDidBecomeConnectable:connectableCopy];
   }
 
   else
@@ -499,84 +499,84 @@ LABEL_3:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v4 connect];
+      [connectableCopy connect];
     }
 
     else
     {
-      [v4 invalidate];
+      [connectableCopy invalidate];
     }
   }
 }
 
-- (void)sessionDidBecomeNotConnectable:(id)a3
+- (void)sessionDidBecomeNotConnectable:(id)connectable
 {
-  v4 = a3;
+  connectableCopy = connectable;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(CRKClassSessionBrowser *)self delegateClassSessionDidBecomeNotConnectable:v4];
+    [(CRKClassSessionBrowser *)self delegateClassSessionDidBecomeNotConnectable:connectableCopy];
   }
 }
 
-- (void)session:(id)a3 didConnectWithTransport:(id)a4
+- (void)session:(id)session didConnectWithTransport:(id)transport
 {
-  v8 = a4;
-  v6 = a3;
+  transportCopy = transport;
+  sessionCopy = session;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 identifier];
+    identifier = [sessionCopy identifier];
 
-    [(CRKClassSessionBrowser *)self delegateDidFindClassSession:v7 transport:v8];
-    v6 = v7;
+    [(CRKClassSessionBrowser *)self delegateDidFindClassSession:identifier transport:transportCopy];
+    sessionCopy = identifier;
   }
 
   else
   {
-    [(CRKClassSessionBrowser *)self delegateDidFindInvitationSession:v6 transport:v8];
+    [(CRKClassSessionBrowser *)self delegateDidFindInvitationSession:sessionCopy transport:transportCopy];
   }
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
-  v5 = a3;
+  disconnectCopy = disconnect;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v5 identifier];
+    identifier = [disconnectCopy identifier];
 
-    [(CRKClassSessionBrowser *)self delegateLostConnectionToClassSession:v4];
-    v5 = v4;
+    [(CRKClassSessionBrowser *)self delegateLostConnectionToClassSession:identifier];
+    disconnectCopy = identifier;
   }
 
   else
   {
-    [(CRKClassSessionBrowser *)self delegateLostConnectionToInvitationSession:v5];
+    [(CRKClassSessionBrowser *)self delegateLostConnectionToInvitationSession:disconnectCopy];
   }
 }
 
-- (void)sessionDidLoseBeacon:(id)a3
+- (void)sessionDidLoseBeacon:(id)beacon
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  beaconCopy = beacon;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = beaconCopy;
     v6 = _CRKLogGeneral_22();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v5 identifier];
+      identifier = [v5 identifier];
       v11 = 138543618;
-      v12 = v7;
+      v12 = identifier;
       v13 = 1024;
-      v14 = [v5 flags];
+      flags = [v5 flags];
       _os_log_impl(&dword_243550000, v6, OS_LOG_TYPE_DEFAULT, "Class session lost beacon %{public}@ [%d]", &v11, 0x12u);
     }
 
-    v8 = [v5 identifier];
-    [(CRKClassSessionBrowser *)self delegateDidRemoveClassSession:v8];
+    identifier2 = [v5 identifier];
+    [(CRKClassSessionBrowser *)self delegateDidRemoveClassSession:identifier2];
   }
 
   else
@@ -584,27 +584,27 @@ LABEL_3:
     v5 = _CRKLogGeneral_22();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v4 endpoint];
-      v10 = [v9 stringValue];
+      endpoint = [beaconCopy endpoint];
+      stringValue = [endpoint stringValue];
       v11 = 138543362;
-      v12 = v10;
+      v12 = stringValue;
       _os_log_impl(&dword_243550000, v5, OS_LOG_TYPE_DEFAULT, "Invite session lost beacon %{public}@", &v11, 0xCu);
     }
   }
 
-  [v4 invalidate];
+  [beaconCopy invalidate];
 }
 
-- (void)sessionDidInvalidate:(id)a3
+- (void)sessionDidInvalidate:(id)invalidate
 {
-  v9 = a3;
+  invalidateCopy = invalidate;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     mClassSessionsByIdentifier = self->mClassSessionsByIdentifier;
-    v5 = v9;
-    v6 = [v5 identifier];
-    [(NSMutableDictionary *)mClassSessionsByIdentifier removeObjectForKey:v6];
+    v5 = invalidateCopy;
+    identifier = [v5 identifier];
+    [(NSMutableDictionary *)mClassSessionsByIdentifier removeObjectForKey:identifier];
 
     [(CRKClassSessionBrowser *)self removeInRangeClassSession:v5];
   }
@@ -612,22 +612,22 @@ LABEL_3:
   else
   {
     mInvitationSessionsByEndpoint = self->mInvitationSessionsByEndpoint;
-    v8 = [v9 endpoint];
-    [(NSMutableDictionary *)mInvitationSessionsByEndpoint removeObjectForKey:v8];
+    endpoint = [invalidateCopy endpoint];
+    [(NSMutableDictionary *)mInvitationSessionsByEndpoint removeObjectForKey:endpoint];
 
-    [(CRKClassSessionBrowser *)self delegateDidRemoveInvitationSession:v9];
+    [(CRKClassSessionBrowser *)self delegateDidRemoveInvitationSession:invalidateCopy];
   }
 }
 
-- (void)session:(id)a3 encounteredUntrustedConnectionForASMInstructorIdentifier:(id)a4 decisionHandler:(id)a5
+- (void)session:(id)session encounteredUntrustedConnectionForASMInstructorIdentifier:(id)identifier decisionHandler:(id)handler
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(CRKClassSessionBrowser *)self handleUntrustedInvitationSession:v10 decisionHandler:v9];
+    [(CRKClassSessionBrowser *)self handleUntrustedInvitationSession:sessionCopy decisionHandler:handlerCopy];
   }
 
   else
@@ -635,19 +635,19 @@ LABEL_3:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(CRKClassSessionBrowser *)self handleUntrustedClassSession:v10 ASMInstructorIdentifier:v8 decisionHandler:v9];
+      [(CRKClassSessionBrowser *)self handleUntrustedClassSession:sessionCopy ASMInstructorIdentifier:identifierCopy decisionHandler:handlerCopy];
     }
 
     else
     {
-      v9[2](v9, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 }
 
-- (void)handleUntrustedInvitationSession:(id)a3 decisionHandler:(id)a4
+- (void)handleUntrustedInvitationSession:(id)session decisionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   if ([(CRKClassSessionBrowser *)self allowInvitationSessions])
   {
     v5 = 2;
@@ -658,62 +658,62 @@ LABEL_3:
     v5 = 0;
   }
 
-  v6[2](v6, v5);
+  handlerCopy[2](handlerCopy, v5);
 }
 
-- (void)handleUntrustedClassSession:(id)a3 ASMInstructorIdentifier:(id)a4 decisionHandler:(id)a5
+- (void)handleUntrustedClassSession:(id)session ASMInstructorIdentifier:(id)identifier decisionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [(CRKClassSessionBrowser *)self delegate];
-  v11 = [v10 identifier];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  sessionCopy = session;
+  delegate = [(CRKClassSessionBrowser *)self delegate];
+  identifier = [sessionCopy identifier];
 
-  [v12 browser:self encounteredUntrustedClassSession:v11 ASMInstructorIdentifier:v9 decisionHandler:v8];
+  [delegate browser:self encounteredUntrustedClassSession:identifier ASMInstructorIdentifier:identifierCopy decisionHandler:handlerCopy];
 }
 
-- (void)beaconBrowser:(id)a3 didFindBeaconForClassSession:(id)a4 flags:(unsigned __int16)a5
+- (void)beaconBrowser:(id)browser didFindBeaconForClassSession:(id)session flags:(unsigned __int16)flags
 {
-  v5 = a5;
+  flagsCopy = flags;
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  sessionCopy = session;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKClassSessionBrowser beaconBrowser:didFindBeaconForClassSession:flags:];
   }
 
-  v8 = [(CRKClassSessionBrowser *)self enrolledControlGroupIdentifiers];
-  v9 = [(CRKClassSession *)v7 groupIdentifier];
-  if ([v8 containsObject:v9])
+  enrolledControlGroupIdentifiers = [(CRKClassSessionBrowser *)self enrolledControlGroupIdentifiers];
+  groupIdentifier = [(CRKClassSession *)sessionCopy groupIdentifier];
+  if ([enrolledControlGroupIdentifiers containsObject:groupIdentifier])
   {
   }
 
   else
   {
-    v10 = [(CRKClassSessionBrowser *)self allowUnenrolledSessions];
+    allowUnenrolledSessions = [(CRKClassSessionBrowser *)self allowUnenrolledSessions];
 
-    if ((v5 & 1) == 0 || !v10)
+    if ((flagsCopy & 1) == 0 || !allowUnenrolledSessions)
     {
       goto LABEL_15;
     }
   }
 
-  v11 = [(NSMutableDictionary *)self->mClassSessionsByIdentifier objectForKeyedSubscript:v7];
+  v11 = [(NSMutableDictionary *)self->mClassSessionsByIdentifier objectForKeyedSubscript:sessionCopy];
   if (!v11)
   {
     v12 = _CRKLogGeneral_22();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138543618;
-      v15 = v7;
+      v15 = sessionCopy;
       v16 = 1024;
-      v17 = v5;
+      v17 = flagsCopy;
       _os_log_impl(&dword_243550000, v12, OS_LOG_TYPE_DEFAULT, "Found class session with beacon %{public}@ [%d]", &v14, 0x12u);
     }
 
-    v11 = [[CRKClassSession alloc] initWithIdentifier:v7];
+    v11 = [[CRKClassSession alloc] initWithIdentifier:sessionCopy];
     [(CRKSession *)v11 setDelegate:self];
-    [(NSMutableDictionary *)self->mClassSessionsByIdentifier setObject:v11 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->mClassSessionsByIdentifier setObject:v11 forKeyedSubscript:sessionCopy];
     [(CRKClassSessionBrowser *)self updateRequiresBeaconFlagForSession:v11];
     if (([(CATNetworkReachability *)self->mNetworkReachability isReachable]& 1) == 0)
     {
@@ -728,38 +728,38 @@ LABEL_3:
     v14 = 138543618;
     v15 = v11;
     v16 = 1024;
-    v17 = v5;
+    v17 = flagsCopy;
     _os_log_impl(&dword_243550000, v13, OS_LOG_TYPE_DEFAULT, "Telling class session %{public}@ that we found beacon with flags [%d]", &v14, 0x12u);
   }
 
-  [(CRKClassSession *)v11 foundBeaconWithFlags:v5];
+  [(CRKClassSession *)v11 foundBeaconWithFlags:flagsCopy];
 LABEL_15:
 }
 
-- (void)beaconBrowser:(id)a3 didFindBeaconForInvitationSessionWithEndpoint:(id)a4
+- (void)beaconBrowser:(id)browser didFindBeaconForInvitationSessionWithEndpoint:(id)endpoint
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  endpointCopy = endpoint;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKClassSessionBrowser beaconBrowser:didFindBeaconForInvitationSessionWithEndpoint:];
   }
 
-  v6 = [(NSMutableDictionary *)self->mInvitationSessionsByEndpoint objectForKeyedSubscript:v5];
+  v6 = [(NSMutableDictionary *)self->mInvitationSessionsByEndpoint objectForKeyedSubscript:endpointCopy];
   if (!v6)
   {
     v7 = _CRKLogGeneral_22();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v5 stringValue];
+      stringValue = [endpointCopy stringValue];
       v9 = 138543362;
-      v10 = v8;
+      v10 = stringValue;
       _os_log_impl(&dword_243550000, v7, OS_LOG_TYPE_DEFAULT, "Found invitation session with ip %{public}@", &v9, 0xCu);
     }
 
-    v6 = [(CRKSession *)[CRKInvitationSession alloc] initWithEndpoint:v5];
+    v6 = [(CRKSession *)[CRKInvitationSession alloc] initWithEndpoint:endpointCopy];
     [(CRKSession *)v6 setDelegate:self];
-    [(NSMutableDictionary *)self->mInvitationSessionsByEndpoint setObject:v6 forKeyedSubscript:v5];
+    [(NSMutableDictionary *)self->mInvitationSessionsByEndpoint setObject:v6 forKeyedSubscript:endpointCopy];
     [(CRKClassSessionBrowser *)self updateRequiresBeaconFlagForSession:v6];
     if (([(CATNetworkReachability *)self->mNetworkReachability isReachable]& 1) == 0)
     {
@@ -770,10 +770,10 @@ LABEL_15:
   [(CRKSession *)v6 foundBeacon];
 }
 
-- (void)reachabilityDidChange:(id)a3
+- (void)reachabilityDidChange:(id)change
 {
   v43 = *MEMORY[0x277D85DE8];
-  if ([a3 isReachable])
+  if ([change isReachable])
   {
     if ([(CRKClassSessionBeaconBrowser *)self->mBeaconBrowser isBrowsing])
     {
@@ -786,8 +786,8 @@ LABEL_15:
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v4 = [(NSMutableDictionary *)self->mClassSessionsByIdentifier allValues];
-    v5 = [v4 countByEnumeratingWithState:&v35 objects:v42 count:16];
+    allValues = [(NSMutableDictionary *)self->mClassSessionsByIdentifier allValues];
+    v5 = [allValues countByEnumeratingWithState:&v35 objects:v42 count:16];
     if (v5)
     {
       v6 = v5;
@@ -798,13 +798,13 @@ LABEL_15:
         {
           if (*v36 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v35 + 1) + 8 * i) localWiFiBecameAvailable];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v35 objects:v42 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v35 objects:v42 count:16];
       }
 
       while (v6);
@@ -814,8 +814,8 @@ LABEL_15:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v9 = [(NSMutableDictionary *)self->mInvitationSessionsByEndpoint allValues];
-    v10 = [v9 countByEnumeratingWithState:&v31 objects:v41 count:16];
+    allValues2 = [(NSMutableDictionary *)self->mInvitationSessionsByEndpoint allValues];
+    v10 = [allValues2 countByEnumeratingWithState:&v31 objects:v41 count:16];
     if (v10)
     {
       v11 = v10;
@@ -826,13 +826,13 @@ LABEL_15:
         {
           if (*v32 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allValues2);
           }
 
           [*(*(&v31 + 1) + 8 * j) localWiFiBecameAvailable];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v31 objects:v41 count:16];
+        v11 = [allValues2 countByEnumeratingWithState:&v31 objects:v41 count:16];
       }
 
       while (v11);
@@ -845,8 +845,8 @@ LABEL_15:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v14 = [(NSMutableDictionary *)self->mClassSessionsByIdentifier allValues];
-    v15 = [v14 countByEnumeratingWithState:&v27 objects:v40 count:16];
+    allValues3 = [(NSMutableDictionary *)self->mClassSessionsByIdentifier allValues];
+    v15 = [allValues3 countByEnumeratingWithState:&v27 objects:v40 count:16];
     if (v15)
     {
       v16 = v15;
@@ -857,13 +857,13 @@ LABEL_15:
         {
           if (*v28 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(allValues3);
           }
 
           [*(*(&v27 + 1) + 8 * k) localWiFiBecameUnavailable];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v27 objects:v40 count:16];
+        v16 = [allValues3 countByEnumeratingWithState:&v27 objects:v40 count:16];
       }
 
       while (v16);
@@ -873,8 +873,8 @@ LABEL_15:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v9 = [(NSMutableDictionary *)self->mInvitationSessionsByEndpoint allValues];
-    v19 = [v9 countByEnumeratingWithState:&v23 objects:v39 count:16];
+    allValues2 = [(NSMutableDictionary *)self->mInvitationSessionsByEndpoint allValues];
+    v19 = [allValues2 countByEnumeratingWithState:&v23 objects:v39 count:16];
     if (v19)
     {
       v20 = v19;
@@ -885,13 +885,13 @@ LABEL_15:
         {
           if (*v24 != v21)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allValues2);
           }
 
           [*(*(&v23 + 1) + 8 * m) localWiFiBecameUnavailable];
         }
 
-        v20 = [v9 countByEnumeratingWithState:&v23 objects:v39 count:16];
+        v20 = [allValues2 countByEnumeratingWithState:&v23 objects:v39 count:16];
       }
 
       while (v20);
@@ -899,37 +899,37 @@ LABEL_15:
   }
 }
 
-- (void)addInRangeClassSession:(id)a3
+- (void)addInRangeClassSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   if (([(NSMutableArray *)self->mInRangeClassSessions containsObject:?]& 1) == 0)
   {
-    [(NSMutableArray *)self->mInRangeClassSessions addObject:v4];
+    [(NSMutableArray *)self->mInRangeClassSessions addObject:sessionCopy];
     [(CRKClassSessionBrowser *)self delegateInRangeClassSessionsDidChange];
   }
 }
 
-- (void)removeInRangeClassSession:(id)a3
+- (void)removeInRangeClassSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   if ([(NSMutableArray *)self->mInRangeClassSessions containsObject:?])
   {
-    [(NSMutableArray *)self->mInRangeClassSessions removeObject:v4];
+    [(NSMutableArray *)self->mInRangeClassSessions removeObject:sessionCopy];
     [(CRKClassSessionBrowser *)self delegateInRangeClassSessionsDidChange];
   }
 }
 
-- (void)updateRequiresBeaconFlagForSession:(id)a3
+- (void)updateRequiresBeaconFlagForSession:(id)session
 {
-  v4 = a3;
-  if (v4)
+  sessionCopy = session;
+  if (sessionCopy)
   {
-    v9 = v4;
+    v9 = sessionCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       mConnectWithoutBeaconAssertionCountBySessionIdentifier = self->mConnectWithoutBeaconAssertionCountBySessionIdentifier;
-      v6 = [v9 identifier];
+      identifier = [v9 identifier];
     }
 
     else
@@ -942,16 +942,16 @@ LABEL_15:
       }
 
       mConnectWithoutBeaconAssertionCountBySessionIdentifier = self->mConnectWithoutBeaconAssertionCountByInviteSessionEndpoint;
-      v6 = [v9 endpoint];
+      identifier = [v9 endpoint];
     }
 
-    v7 = v6;
-    v8 = [(NSMutableDictionary *)mConnectWithoutBeaconAssertionCountBySessionIdentifier objectForKeyedSubscript:v6];
+    v7 = identifier;
+    v8 = [(NSMutableDictionary *)mConnectWithoutBeaconAssertionCountBySessionIdentifier objectForKeyedSubscript:identifier];
 
 LABEL_8:
     [v9 setRequiresBeacon:{objc_msgSend(v8, "unsignedIntegerValue") == 0}];
 
-    v4 = v9;
+    sessionCopy = v9;
   }
 }
 
@@ -980,9 +980,9 @@ LABEL_8:
 
         v9 = *(*(&v27 + 1) + 8 * i);
         v10 = [(NSMutableDictionary *)self->mClassSessionsByIdentifier objectForKeyedSubscript:v9];
-        v11 = [v10 stateDictionary];
-        v12 = [v9 stringValue];
-        [v3 setObject:v11 forKeyedSubscript:v12];
+        stateDictionary = [v10 stateDictionary];
+        stringValue = [v9 stringValue];
+        [v3 setObject:stateDictionary forKeyedSubscript:stringValue];
       }
 
       v6 = [(NSMutableDictionary *)v4 countByEnumeratingWithState:&v27 objects:v32 count:16];
@@ -995,8 +995,8 @@ LABEL_8:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v13 = [(NSMutableDictionary *)self->mInvitationSessionsByEndpoint allValues];
-  v14 = [v13 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  allValues = [(NSMutableDictionary *)self->mInvitationSessionsByEndpoint allValues];
+  v14 = [allValues countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v14)
   {
     v15 = v14;
@@ -1007,17 +1007,17 @@ LABEL_8:
       {
         if (*v24 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allValues);
         }
 
         v18 = *(*(&v23 + 1) + 8 * j);
-        v19 = [v18 stateDictionary];
-        v20 = [v18 endpoint];
-        v21 = [v20 stringValue];
-        [v3 setObject:v19 forKeyedSubscript:v21];
+        stateDictionary2 = [v18 stateDictionary];
+        endpoint = [v18 endpoint];
+        stringValue2 = [endpoint stringValue];
+        [v3 setObject:stateDictionary2 forKeyedSubscript:stringValue2];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v15 = [allValues countByEnumeratingWithState:&v23 objects:v31 count:16];
     }
 
     while (v15);
@@ -1030,13 +1030,13 @@ LABEL_8:
 {
   v48 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(CRKClassSessionBrowser *)self enrolledControlGroupIdentifiers];
+  enrolledControlGroupIdentifiers = [(CRKClassSessionBrowser *)self enrolledControlGroupIdentifiers];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v5 = [(NSMutableDictionary *)self->mClassSessionsByIdentifier allValues];
-  v6 = [v5 countByEnumeratingWithState:&v39 objects:v47 count:16];
+  allValues = [(NSMutableDictionary *)self->mClassSessionsByIdentifier allValues];
+  v6 = [allValues countByEnumeratingWithState:&v39 objects:v47 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1047,21 +1047,21 @@ LABEL_8:
       {
         if (*v40 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v39 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v11 groupIdentifier];
+        identifier = [v10 identifier];
+        groupIdentifier = [identifier groupIdentifier];
 
-        if (([v4 containsObject:v12] & 1) == 0 && (!-[CRKClassSessionBrowser allowUnenrolledSessions](self, "allowUnenrolledSessions") || (objc_msgSend(v10, "flags") & 1) == 0))
+        if (([enrolledControlGroupIdentifiers containsObject:groupIdentifier] & 1) == 0 && (!-[CRKClassSessionBrowser allowUnenrolledSessions](self, "allowUnenrolledSessions") || (objc_msgSend(v10, "flags") & 1) == 0))
         {
-          v13 = [v10 identifier];
-          [v3 addObject:v13];
+          identifier2 = [v10 identifier];
+          [v3 addObject:identifier2];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v39 objects:v47 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v39 objects:v47 count:16];
     }
 
     while (v7);
@@ -1114,8 +1114,8 @@ LABEL_8:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v22 = [(NSMutableDictionary *)self->mInvitationSessionsByEndpoint allValues];
-    v23 = [v22 countByEnumeratingWithState:&v31 objects:v43 count:16];
+    allValues2 = [(NSMutableDictionary *)self->mInvitationSessionsByEndpoint allValues];
+    v23 = [allValues2 countByEnumeratingWithState:&v31 objects:v43 count:16];
     if (v23)
     {
       v24 = v23;
@@ -1126,7 +1126,7 @@ LABEL_8:
         {
           if (*v32 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(allValues2);
           }
 
           v27 = *(*(&v31 + 1) + 8 * k);
@@ -1141,7 +1141,7 @@ LABEL_8:
           [v27 invalidate];
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v31 objects:v43 count:16];
+        v24 = [allValues2 countByEnumeratingWithState:&v31 objects:v43 count:16];
       }
 
       while (v24);
@@ -1149,29 +1149,29 @@ LABEL_8:
   }
 }
 
-- (void)delegateDidFailWithError:(id)a3
+- (void)delegateDidFailWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(CRKClassSessionBrowser *)self delegate];
+  errorCopy = error;
+  delegate = [(CRKClassSessionBrowser *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CRKClassSessionBrowser *)self delegate];
-    [v6 browser:self didFailWithError:v7];
+    delegate2 = [(CRKClassSessionBrowser *)self delegate];
+    [delegate2 browser:self didFailWithError:errorCopy];
   }
 }
 
-- (id)delegateNeedsClientIdentityForGroup:(id)a3
+- (id)delegateNeedsClientIdentityForGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(CRKClassSessionBrowser *)self delegate];
+  groupCopy = group;
+  delegate = [(CRKClassSessionBrowser *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CRKClassSessionBrowser *)self delegate];
-    v8 = [v7 browser:self clientIdentityForGroup:v4];
+    delegate2 = [(CRKClassSessionBrowser *)self delegate];
+    v8 = [delegate2 browser:self clientIdentityForGroup:groupCopy];
   }
 
   else
@@ -1182,21 +1182,21 @@ LABEL_8:
   return v8;
 }
 
-- (id)delegateNeedsTrustedAnchorCertificatesForGroup:(id)a3
+- (id)delegateNeedsTrustedAnchorCertificatesForGroup:(id)group
 {
-  v4 = a3;
-  if (!v4)
+  groupCopy = group;
+  if (!groupCopy)
   {
     [CRKClassSessionBrowser delegateNeedsTrustedAnchorCertificatesForGroup:];
   }
 
-  v5 = [(CRKClassSessionBrowser *)self delegate];
+  delegate = [(CRKClassSessionBrowser *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CRKClassSessionBrowser *)self delegate];
-    v8 = [v7 browser:self trustedAnchorCertificatesForGroup:v4];
+    delegate2 = [(CRKClassSessionBrowser *)self delegate];
+    v8 = [delegate2 browser:self trustedAnchorCertificatesForGroup:groupCopy];
   }
 
   else
@@ -1207,40 +1207,40 @@ LABEL_8:
   return v8;
 }
 
-- (void)delegateClassSessionDidBecomeConnectable:(id)a3
+- (void)delegateClassSessionDidBecomeConnectable:(id)connectable
 {
-  v8 = a3;
-  v4 = [(CRKClassSessionBrowser *)self delegate];
+  connectableCopy = connectable;
+  delegate = [(CRKClassSessionBrowser *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CRKClassSessionBrowser *)self delegate];
-    v7 = [v8 identifier];
-    [v6 browser:self classSessionDidBecomeConnectable:v7 withFlags:{objc_msgSend(v8, "flags")}];
+    delegate2 = [(CRKClassSessionBrowser *)self delegate];
+    identifier = [connectableCopy identifier];
+    [delegate2 browser:self classSessionDidBecomeConnectable:identifier withFlags:{objc_msgSend(connectableCopy, "flags")}];
   }
 }
 
-- (void)delegateClassSessionDidBecomeNotConnectable:(id)a3
+- (void)delegateClassSessionDidBecomeNotConnectable:(id)connectable
 {
-  v8 = a3;
-  v4 = [(CRKClassSessionBrowser *)self delegate];
+  connectableCopy = connectable;
+  delegate = [(CRKClassSessionBrowser *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CRKClassSessionBrowser *)self delegate];
-    v7 = [v8 identifier];
-    [v6 browser:self classSessionDidBecomeNotConnectable:v7 withFlags:{objc_msgSend(v8, "flags")}];
+    delegate2 = [(CRKClassSessionBrowser *)self delegate];
+    identifier = [connectableCopy identifier];
+    [delegate2 browser:self classSessionDidBecomeNotConnectable:identifier withFlags:{objc_msgSend(connectableCopy, "flags")}];
   }
 }
 
-- (void)delegateDidFindClassSession:(id)a3 transport:(id)a4
+- (void)delegateDidFindClassSession:(id)session transport:(id)transport
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRKClassSessionBrowser *)self delegate];
+  sessionCopy = session;
+  transportCopy = transport;
+  delegate = [(CRKClassSessionBrowser *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
@@ -1249,33 +1249,33 @@ LABEL_8:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543362;
-      v13 = v6;
+      v13 = sessionCopy;
       _os_log_impl(&dword_243550000, v10, OS_LOG_TYPE_DEFAULT, "Found class session %{public}@", &v12, 0xCu);
     }
 
-    v11 = [(CRKClassSessionBrowser *)self delegate];
-    [v11 browser:self didFindClassSession:v6 transport:v7];
+    delegate2 = [(CRKClassSessionBrowser *)self delegate];
+    [delegate2 browser:self didFindClassSession:sessionCopy transport:transportCopy];
   }
 }
 
-- (void)delegateLostConnectionToClassSession:(id)a3
+- (void)delegateLostConnectionToClassSession:(id)session
 {
-  v7 = a3;
-  v4 = [(CRKClassSessionBrowser *)self delegate];
+  sessionCopy = session;
+  delegate = [(CRKClassSessionBrowser *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CRKClassSessionBrowser *)self delegate];
-    [v6 browser:self lostConnectionToClassSession:v7];
+    delegate2 = [(CRKClassSessionBrowser *)self delegate];
+    [delegate2 browser:self lostConnectionToClassSession:sessionCopy];
   }
 }
 
-- (void)delegateDidRemoveClassSession:(id)a3
+- (void)delegateDidRemoveClassSession:(id)session
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CRKClassSessionBrowser *)self delegate];
+  sessionCopy = session;
+  delegate = [(CRKClassSessionBrowser *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
@@ -1284,38 +1284,38 @@ LABEL_8:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = v4;
+      v10 = sessionCopy;
       _os_log_impl(&dword_243550000, v7, OS_LOG_TYPE_DEFAULT, "Removed class session %{public}@", &v9, 0xCu);
     }
 
-    v8 = [(CRKClassSessionBrowser *)self delegate];
-    [v8 browser:self didRemoveClassSession:v4];
+    delegate2 = [(CRKClassSessionBrowser *)self delegate];
+    [delegate2 browser:self didRemoveClassSession:sessionCopy];
   }
 }
 
 - (void)delegateInRangeClassSessionsDidChange
 {
-  v3 = [(CRKClassSessionBrowser *)self delegate];
+  delegate = [(CRKClassSessionBrowser *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v6 = [(CRKClassSessionBrowser *)self delegate];
-    v5 = [(CRKClassSessionBrowser *)self inRangeClassSessionIdentifiers];
-    [v6 browser:self didUpdateInRangeClassSessions:v5];
+    delegate2 = [(CRKClassSessionBrowser *)self delegate];
+    inRangeClassSessionIdentifiers = [(CRKClassSessionBrowser *)self inRangeClassSessionIdentifiers];
+    [delegate2 browser:self didUpdateInRangeClassSessions:inRangeClassSessionIdentifiers];
   }
 }
 
-- (id)delegateNeedsClientIdentityForInvitationSessionWithEndpoint:(id)a3
+- (id)delegateNeedsClientIdentityForInvitationSessionWithEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [(CRKClassSessionBrowser *)self invitationSessionDelegate];
+  endpointCopy = endpoint;
+  invitationSessionDelegate = [(CRKClassSessionBrowser *)self invitationSessionDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CRKClassSessionBrowser *)self invitationSessionDelegate];
-    v8 = [v7 browser:self needsClientIdentityForEndpoint:v4];
+    invitationSessionDelegate2 = [(CRKClassSessionBrowser *)self invitationSessionDelegate];
+    v8 = [invitationSessionDelegate2 browser:self needsClientIdentityForEndpoint:endpointCopy];
   }
 
   else
@@ -1326,12 +1326,12 @@ LABEL_8:
   return v8;
 }
 
-- (void)delegateDidFindInvitationSession:(id)a3 transport:(id)a4
+- (void)delegateDidFindInvitationSession:(id)session transport:(id)transport
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRKClassSessionBrowser *)self invitationSessionDelegate];
+  sessionCopy = session;
+  transportCopy = transport;
+  invitationSessionDelegate = [(CRKClassSessionBrowser *)self invitationSessionDelegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
@@ -1339,44 +1339,44 @@ LABEL_8:
     v10 = _CRKLogGeneral_22();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v6 endpoint];
-      v12 = [v11 stringValue];
+      endpoint = [sessionCopy endpoint];
+      stringValue = [endpoint stringValue];
       v15 = 138543362;
-      v16 = v12;
+      v16 = stringValue;
       _os_log_impl(&dword_243550000, v10, OS_LOG_TYPE_DEFAULT, "Found invitation session %{public}@", &v15, 0xCu);
     }
 
-    v13 = [(CRKClassSessionBrowser *)self invitationSessionDelegate];
-    v14 = [v6 endpoint];
-    [v13 browser:self didFindInvitationSessionWithEndpoint:v14 transport:v7];
+    invitationSessionDelegate2 = [(CRKClassSessionBrowser *)self invitationSessionDelegate];
+    endpoint2 = [sessionCopy endpoint];
+    [invitationSessionDelegate2 browser:self didFindInvitationSessionWithEndpoint:endpoint2 transport:transportCopy];
   }
 }
 
-- (void)delegateLostConnectionToInvitationSession:(id)a3
+- (void)delegateLostConnectionToInvitationSession:(id)session
 {
-  v8 = a3;
-  v4 = [(CRKClassSessionBrowser *)self invitationSessionDelegate];
+  sessionCopy = session;
+  invitationSessionDelegate = [(CRKClassSessionBrowser *)self invitationSessionDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CRKClassSessionBrowser *)self invitationSessionDelegate];
-    v7 = [v8 endpoint];
-    [v6 browser:self lostConnectionToInvitationSessionWithEndpoint:v7];
+    invitationSessionDelegate2 = [(CRKClassSessionBrowser *)self invitationSessionDelegate];
+    endpoint = [sessionCopy endpoint];
+    [invitationSessionDelegate2 browser:self lostConnectionToInvitationSessionWithEndpoint:endpoint];
   }
 }
 
-- (void)delegateDidRemoveInvitationSession:(id)a3
+- (void)delegateDidRemoveInvitationSession:(id)session
 {
-  v8 = a3;
-  v4 = [(CRKClassSessionBrowser *)self invitationSessionDelegate];
+  sessionCopy = session;
+  invitationSessionDelegate = [(CRKClassSessionBrowser *)self invitationSessionDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CRKClassSessionBrowser *)self invitationSessionDelegate];
-    v7 = [v8 endpoint];
-    [v6 browser:self didRemoveInvitationSessionWithEndpoint:v7];
+    invitationSessionDelegate2 = [(CRKClassSessionBrowser *)self invitationSessionDelegate];
+    endpoint = [sessionCopy endpoint];
+    [invitationSessionDelegate2 browser:self didRemoveInvitationSessionWithEndpoint:endpoint];
   }
 }
 

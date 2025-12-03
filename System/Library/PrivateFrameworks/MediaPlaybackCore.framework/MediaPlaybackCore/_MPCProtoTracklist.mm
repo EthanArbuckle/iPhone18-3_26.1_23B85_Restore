@@ -1,13 +1,13 @@
 @interface _MPCProtoTracklist
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (uint64_t)addAccountInfo:(uint64_t)a1;
-- (uint64_t)addContainer:(uint64_t)a1;
+- (uint64_t)addAccountInfo:(uint64_t)info;
+- (uint64_t)addContainer:(uint64_t)container;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MPCProtoTracklist
@@ -30,16 +30,16 @@
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   accountInfos = self->_accountInfos;
-  if (accountInfos | *(v4 + 1))
+  if (accountInfos | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)accountInfos isEqual:?])
     {
@@ -48,7 +48,7 @@
   }
 
   containers = self->_containers;
-  if (containers | *(v4 + 2))
+  if (containers | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)containers isEqual:?])
     {
@@ -57,7 +57,7 @@
   }
 
   startingItemIndexPath = self->_startingItemIndexPath;
-  if (startingItemIndexPath | *(v4 + 4))
+  if (startingItemIndexPath | *(equalCopy + 4))
   {
     if (![(_MPCProtoTracklistIndexPath *)startingItemIndexPath isEqual:?])
     {
@@ -65,10 +65,10 @@
     }
   }
 
-  v8 = (*(v4 + 40) & 1) == 0;
+  v8 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) != 0 && self->_shuffleMode == *(v4 + 6))
+    if ((*(equalCopy + 40) & 1) != 0 && self->_shuffleMode == *(equalCopy + 6))
     {
       v8 = 1;
       goto LABEL_13;
@@ -83,10 +83,10 @@ LABEL_13:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -107,7 +107,7 @@ LABEL_13:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v25 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v25 + 1) + 8 * v10) copyWithZone:zone];
         [(_MPCProtoTracklist *)v5 addAccountInfo:v11];
 
         ++v10;
@@ -140,7 +140,7 @@ LABEL_13:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v21 + 1) + 8 * v16) copyWithZone:{a3, v21}];
+        v17 = [*(*(&v21 + 1) + 8 * v16) copyWithZone:{zone, v21}];
         [(_MPCProtoTracklist *)v5 addContainer:v17];
 
         ++v16;
@@ -153,7 +153,7 @@ LABEL_13:
     while (v14);
   }
 
-  v18 = [(_MPCProtoTracklistIndexPath *)self->_startingItemIndexPath copyWithZone:a3];
+  v18 = [(_MPCProtoTracklistIndexPath *)self->_startingItemIndexPath copyWithZone:zone];
   v19 = *(v5 + 32);
   *(v5 + 32) = v18;
 
@@ -166,21 +166,21 @@ LABEL_13:
   return v5;
 }
 
-- (uint64_t)addAccountInfo:(uint64_t)a1
+- (uint64_t)addAccountInfo:(uint64_t)info
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (info)
   {
-    v5 = *(a1 + 8);
+    v5 = *(info + 8);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 8);
-      *(a1 + 8) = v6;
+      v7 = *(info + 8);
+      *(info + 8) = v6;
 
-      v5 = *(a1 + 8);
+      v5 = *(info + 8);
     }
 
     v3 = [v5 addObject:v9];
@@ -190,21 +190,21 @@ LABEL_13:
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (uint64_t)addContainer:(uint64_t)a1
+- (uint64_t)addContainer:(uint64_t)container
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (container)
   {
-    v5 = *(a1 + 16);
+    v5 = *(container + 16);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 16);
-      *(a1 + 16) = v6;
+      v7 = *(container + 16);
+      *(container + 16) = v6;
 
-      v5 = *(a1 + 16);
+      v5 = *(container + 16);
     }
 
     v3 = [v5 addObject:v9];
@@ -214,10 +214,10 @@ LABEL_13:
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -291,16 +291,16 @@ LABEL_13:
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -309,18 +309,18 @@ LABEL_13:
       while (1)
       {
         LOBYTE(v25) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v25 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v25 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v25 & 0x7F) << v6;
@@ -338,11 +338,11 @@ LABEL_13:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -354,7 +354,7 @@ LABEL_15:
           objc_storeStrong(&self->_startingItemIndexPath, v15);
           v25 = 0;
           v26 = 0;
-          if (!PBReaderPlaceMark() || !_MPCProtoTracklistIndexPathReadFrom(v15, a3))
+          if (!PBReaderPlaceMark() || !_MPCProtoTracklistIndexPathReadFrom(v15, from))
           {
 LABEL_48:
 
@@ -373,18 +373,18 @@ LABEL_48:
           while (1)
           {
             LOBYTE(v25) = 0;
-            v19 = [a3 position] + 1;
-            if (v19 >= [a3 position] && (v20 = objc_msgSend(a3, "position") + 1, v20 <= objc_msgSend(a3, "length")))
+            v19 = [from position] + 1;
+            if (v19 >= [from position] && (v20 = objc_msgSend(from, "position") + 1, v20 <= objc_msgSend(from, "length")))
             {
-              v21 = [a3 data];
-              [v21 getBytes:&v25 range:{objc_msgSend(a3, "position"), 1}];
+              data2 = [from data];
+              [data2 getBytes:&v25 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v18 |= (v25 & 0x7F) << v16;
@@ -402,7 +402,7 @@ LABEL_48:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v22 = 0;
           }
@@ -426,7 +426,7 @@ LABEL_45:
           [(_MPCProtoTracklist *)self addAccountInfo:v15];
           v25 = 0;
           v26 = 0;
-          if (!PBReaderPlaceMark() || !_MPCProtoDelegateInfoReadFrom(v15, a3))
+          if (!PBReaderPlaceMark() || !_MPCProtoDelegateInfoReadFrom(v15, from))
           {
             goto LABEL_48;
           }
@@ -440,7 +440,7 @@ LABEL_45:
           [(_MPCProtoTracklist *)self addContainer:v15];
           v25 = 0;
           v26 = 0;
-          if (!PBReaderPlaceMark() || !_MPCProtoContainerReadFrom(v15, a3))
+          if (!PBReaderPlaceMark() || !_MPCProtoContainerReadFrom(v15, from))
           {
             goto LABEL_48;
           }
@@ -458,19 +458,19 @@ LABEL_41:
       }
 
 LABEL_46:
-      v23 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v23 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_accountInfos count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_accountInfos, "count")}];
@@ -493,8 +493,8 @@ LABEL_46:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
@@ -503,7 +503,7 @@ LABEL_46:
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"accountInfo"];
+    [dictionary setObject:v4 forKey:@"accountInfo"];
   }
 
   if ([(NSMutableArray *)self->_containers count])
@@ -528,8 +528,8 @@ LABEL_46:
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v22 + 1) + 8 * j) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation2 = [*(*(&v22 + 1) + 8 * j) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation2];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -538,23 +538,23 @@ LABEL_46:
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"container"];
+    [dictionary setObject:v11 forKey:@"container"];
   }
 
   startingItemIndexPath = self->_startingItemIndexPath;
   if (startingItemIndexPath)
   {
-    v19 = [(_MPCProtoTracklistIndexPath *)startingItemIndexPath dictionaryRepresentation];
-    [v3 setObject:v19 forKey:@"startingItemIndexPath"];
+    dictionaryRepresentation3 = [(_MPCProtoTracklistIndexPath *)startingItemIndexPath dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"startingItemIndexPath"];
   }
 
   if (*&self->_has)
   {
     v20 = [MEMORY[0x1E696AD98] numberWithInt:self->_shuffleMode];
-    [v3 setObject:v20 forKey:@"shuffleMode"];
+    [dictionary setObject:v20 forKey:@"shuffleMode"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -563,8 +563,8 @@ LABEL_46:
   v8.receiver = self;
   v8.super_class = _MPCProtoTracklist;
   v4 = [(_MPCProtoTracklist *)&v8 description];
-  v5 = [(_MPCProtoTracklist *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MPCProtoTracklist *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

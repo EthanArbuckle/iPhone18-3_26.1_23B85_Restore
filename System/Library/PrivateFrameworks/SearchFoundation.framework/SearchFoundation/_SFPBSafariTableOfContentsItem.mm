@@ -1,47 +1,47 @@
 @interface _SFPBSafariTableOfContentsItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBSafariTableOfContentsItem)initWithDictionary:(id)a3;
-- (_SFPBSafariTableOfContentsItem)initWithFacade:(id)a3;
-- (_SFPBSafariTableOfContentsItem)initWithJSON:(id)a3;
+- (_SFPBSafariTableOfContentsItem)initWithDictionary:(id)dictionary;
+- (_SFPBSafariTableOfContentsItem)initWithFacade:(id)facade;
+- (_SFPBSafariTableOfContentsItem)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setElementPath:(id)a3;
-- (void)setText:(id)a3;
-- (void)setTrailingText:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setElementPath:(id)path;
+- (void)setText:(id)text;
+- (void)setTrailingText:(id)text;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBSafariTableOfContentsItem
 
-- (_SFPBSafariTableOfContentsItem)initWithFacade:(id)a3
+- (_SFPBSafariTableOfContentsItem)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBSafariTableOfContentsItem *)self init];
   if (v5)
   {
-    v6 = [v4 text];
+    text = [facadeCopy text];
 
-    if (v6)
+    if (text)
     {
-      v7 = [v4 text];
-      [(_SFPBSafariTableOfContentsItem *)v5 setText:v7];
+      text2 = [facadeCopy text];
+      [(_SFPBSafariTableOfContentsItem *)v5 setText:text2];
     }
 
-    v8 = [v4 elementPath];
+    elementPath = [facadeCopy elementPath];
 
-    if (v8)
+    if (elementPath)
     {
-      v9 = [v4 elementPath];
-      [(_SFPBSafariTableOfContentsItem *)v5 setElementPath:v9];
+      elementPath2 = [facadeCopy elementPath];
+      [(_SFPBSafariTableOfContentsItem *)v5 setElementPath:elementPath2];
     }
 
-    v10 = [v4 trailingText];
+    trailingText = [facadeCopy trailingText];
 
-    if (v10)
+    if (trailingText)
     {
-      v11 = [v4 trailingText];
-      [(_SFPBSafariTableOfContentsItem *)v5 setTrailingText:v11];
+      trailingText2 = [facadeCopy trailingText];
+      [(_SFPBSafariTableOfContentsItem *)v5 setTrailingText:trailingText2];
     }
 
     v12 = v5;
@@ -50,15 +50,15 @@
   return v5;
 }
 
-- (_SFPBSafariTableOfContentsItem)initWithDictionary:(id)a3
+- (_SFPBSafariTableOfContentsItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = _SFPBSafariTableOfContentsItem;
   v5 = [(_SFPBSafariTableOfContentsItem *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"text"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"text"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       [(_SFPBSafariTableOfContentsItem *)v5 setText:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"elementPath"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"elementPath"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       [(_SFPBSafariTableOfContentsItem *)v5 setElementPath:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"trailingText"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"trailingText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,30 +88,30 @@
   return v5;
 }
 
-- (_SFPBSafariTableOfContentsItem)initWithJSON:(id)a3
+- (_SFPBSafariTableOfContentsItem)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBSafariTableOfContentsItem *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBSafariTableOfContentsItem *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBSafariTableOfContentsItem *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -124,29 +124,29 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_elementPath)
   {
-    v4 = [(_SFPBSafariTableOfContentsItem *)self elementPath];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"elementPath"];
+    elementPath = [(_SFPBSafariTableOfContentsItem *)self elementPath];
+    v5 = [elementPath copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"elementPath"];
   }
 
   if (self->_text)
   {
-    v6 = [(_SFPBSafariTableOfContentsItem *)self text];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"text"];
+    text = [(_SFPBSafariTableOfContentsItem *)self text];
+    v7 = [text copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"text"];
   }
 
   if (self->_trailingText)
   {
-    v8 = [(_SFPBSafariTableOfContentsItem *)self trailingText];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"trailingText"];
+    trailingText = [(_SFPBSafariTableOfContentsItem *)self trailingText];
+    v9 = [trailingText copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"trailingText"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -156,28 +156,28 @@
   return v4 ^ [(NSString *)self->_trailingText hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_SFPBSafariTableOfContentsItem *)self text];
-  v6 = [v4 text];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBSafariTableOfContentsItem *)self text];
+  text2 = [equalCopy text];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_SFPBSafariTableOfContentsItem *)self text];
-  if (v7)
+  text3 = [(_SFPBSafariTableOfContentsItem *)self text];
+  if (text3)
   {
-    v8 = v7;
-    v9 = [(_SFPBSafariTableOfContentsItem *)self text];
-    v10 = [v4 text];
-    v11 = [v9 isEqual:v10];
+    v8 = text3;
+    text4 = [(_SFPBSafariTableOfContentsItem *)self text];
+    text5 = [equalCopy text];
+    v11 = [text4 isEqual:text5];
 
     if (!v11)
     {
@@ -189,20 +189,20 @@
   {
   }
 
-  v5 = [(_SFPBSafariTableOfContentsItem *)self elementPath];
-  v6 = [v4 elementPath];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBSafariTableOfContentsItem *)self elementPath];
+  text2 = [equalCopy elementPath];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_SFPBSafariTableOfContentsItem *)self elementPath];
-  if (v12)
+  elementPath = [(_SFPBSafariTableOfContentsItem *)self elementPath];
+  if (elementPath)
   {
-    v13 = v12;
-    v14 = [(_SFPBSafariTableOfContentsItem *)self elementPath];
-    v15 = [v4 elementPath];
-    v16 = [v14 isEqual:v15];
+    v13 = elementPath;
+    elementPath2 = [(_SFPBSafariTableOfContentsItem *)self elementPath];
+    elementPath3 = [equalCopy elementPath];
+    v16 = [elementPath2 isEqual:elementPath3];
 
     if (!v16)
     {
@@ -214,12 +214,12 @@
   {
   }
 
-  v5 = [(_SFPBSafariTableOfContentsItem *)self trailingText];
-  v6 = [v4 trailingText];
-  if ((v5 != 0) != (v6 == 0))
+  text = [(_SFPBSafariTableOfContentsItem *)self trailingText];
+  text2 = [equalCopy trailingText];
+  if ((text != 0) != (text2 == 0))
   {
-    v17 = [(_SFPBSafariTableOfContentsItem *)self trailingText];
-    if (!v17)
+    trailingText = [(_SFPBSafariTableOfContentsItem *)self trailingText];
+    if (!trailingText)
     {
 
 LABEL_20:
@@ -227,10 +227,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_SFPBSafariTableOfContentsItem *)self trailingText];
-    v20 = [v4 trailingText];
-    v21 = [v19 isEqual:v20];
+    v18 = trailingText;
+    trailingText2 = [(_SFPBSafariTableOfContentsItem *)self trailingText];
+    trailingText3 = [equalCopy trailingText];
+    v21 = [trailingText2 isEqual:trailingText3];
 
     if (v21)
     {
@@ -250,49 +250,49 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(_SFPBSafariTableOfContentsItem *)self text];
-  if (v4)
+  toCopy = to;
+  text = [(_SFPBSafariTableOfContentsItem *)self text];
+  if (text)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBSafariTableOfContentsItem *)self elementPath];
-  if (v5)
+  elementPath = [(_SFPBSafariTableOfContentsItem *)self elementPath];
+  if (elementPath)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBSafariTableOfContentsItem *)self trailingText];
-  if (v6)
+  trailingText = [(_SFPBSafariTableOfContentsItem *)self trailingText];
+  if (trailingText)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setTrailingText:(id)a3
+- (void)setTrailingText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   trailingText = self->_trailingText;
   self->_trailingText = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setElementPath:(id)a3
+- (void)setElementPath:(id)path
 {
-  v4 = [a3 copy];
+  v4 = [path copy];
   elementPath = self->_elementPath;
   self->_elementPath = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   text = self->_text;
   self->_text = v4;
 

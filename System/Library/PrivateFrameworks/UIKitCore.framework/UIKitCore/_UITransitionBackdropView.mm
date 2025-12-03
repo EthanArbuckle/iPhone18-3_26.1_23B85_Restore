@@ -1,7 +1,7 @@
 @interface _UITransitionBackdropView
 + (Class)layerClass;
-- (_TtC5UIKitP33_F084B5C1489DDF8EC47531A7840D5DBB25_UITransitionBackdropView)initWithCoder:(id)a3;
-- (_TtC5UIKitP33_F084B5C1489DDF8EC47531A7840D5DBB25_UITransitionBackdropView)initWithFrame:(CGRect)a3;
+- (_TtC5UIKitP33_F084B5C1489DDF8EC47531A7840D5DBB25_UITransitionBackdropView)initWithCoder:(id)coder;
+- (_TtC5UIKitP33_F084B5C1489DDF8EC47531A7840D5DBB25_UITransitionBackdropView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation _UITransitionBackdropView
@@ -13,23 +13,23 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC5UIKitP33_F084B5C1489DDF8EC47531A7840D5DBB25_UITransitionBackdropView)initWithFrame:(CGRect)a3
+- (_TtC5UIKitP33_F084B5C1489DDF8EC47531A7840D5DBB25_UITransitionBackdropView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for _UITransitionBackdropView();
   return [(UIView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC5UIKitP33_F084B5C1489DDF8EC47531A7840D5DBB25_UITransitionBackdropView)initWithCoder:(id)a3
+- (_TtC5UIKitP33_F084B5C1489DDF8EC47531A7840D5DBB25_UITransitionBackdropView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for _UITransitionBackdropView();
-  v4 = a3;
-  v5 = [(UIView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(UIView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

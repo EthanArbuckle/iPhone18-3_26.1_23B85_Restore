@@ -3,19 +3,19 @@
 - (BOOL)_cleanup;
 - (BOOL)_isThrottled;
 - (BOOL)isThrottled;
-- (BOOL)shouldDeferIndexingActionWithContext:(id)a3;
+- (BOOL)shouldDeferIndexingActionWithContext:(id)context;
 - (IMDIndexThrottlingController)init;
 - (id)_nextExpiringThrottle;
-- (id)_stringForThrottleState:(int64_t)a3;
+- (id)_stringForThrottleState:(int64_t)state;
 - (int64_t)_calculateThrottleState;
-- (void)_beginThrottlingForIdentifier:(id)a3 untilDate:(id)a4;
-- (void)_finishThrottlingForIdentifier:(id)a3;
+- (void)_beginThrottlingForIdentifier:(id)identifier untilDate:(id)date;
+- (void)_finishThrottlingForIdentifier:(id)identifier;
 - (void)_reload;
 - (void)_rescheduleTimer;
 - (void)_updateThrottleState;
-- (void)beginThrottlingForIdentifier:(id)a3 untilDate:(id)a4;
-- (void)finishThrottlingForIdentifier:(id)a3;
-- (void)isThrottledWithCompletionBlock:(id)a3;
+- (void)beginThrottlingForIdentifier:(id)identifier untilDate:(id)date;
+- (void)finishThrottlingForIdentifier:(id)identifier;
+- (void)isThrottledWithCompletionBlock:(id)block;
 - (void)reload;
 - (void)timerFired;
 @end
@@ -88,9 +88,9 @@
   return v6;
 }
 
-- (void)isThrottledWithCompletionBlock:(id)a3
+- (void)isThrottledWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = dispatch_group_create();
   v18[0] = 0;
   v18[1] = v18;
@@ -113,48 +113,48 @@
   v12[1] = 3221225472;
   v12[2] = sub_1B7BCAA30;
   v12[3] = &unk_1E7CBC388;
-  v13 = v4;
+  v13 = blockCopy;
   v14 = v18;
-  v11 = v4;
+  v11 = blockCopy;
   dispatch_group_notify(v9, v10, v12);
 
   _Block_object_dispose(v18, 8);
 }
 
-- (void)beginThrottlingForIdentifier:(id)a3 untilDate:(id)a4
+- (void)beginThrottlingForIdentifier:(id)identifier untilDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dateCopy = date;
   v10 = objc_msgSend_queue(self, v8, v9);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1B7BCAB74;
   block[3] = &unk_1E7CB6798;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = identifierCopy;
+  v15 = dateCopy;
+  v11 = dateCopy;
+  v12 = identifierCopy;
   dispatch_async(v10, block);
 }
 
-- (void)finishThrottlingForIdentifier:(id)a3
+- (void)finishThrottlingForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v7 = objc_msgSend_queue(self, v5, v6);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_1B7BCAC38;
   v9[3] = &unk_1E7CB6770;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = identifierCopy;
+  v8 = identifierCopy;
   dispatch_async(v7, v9);
 }
 
-- (BOOL)shouldDeferIndexingActionWithContext:(id)a3
+- (BOOL)shouldDeferIndexingActionWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v7 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v5, v6);
   isBGSTMessageProcessingEnabled = objc_msgSend_isBGSTMessageProcessingEnabled(v7, v8, v9);
 
@@ -163,12 +163,12 @@
     goto LABEL_9;
   }
 
-  if ((objc_msgSend_forceDeferral(v4, v11, v12) & 1) == 0)
+  if ((objc_msgSend_forceDeferral(contextCopy, v11, v12) & 1) == 0)
   {
-    objc_msgSend_reason(v4, v13, v14);
-    if ((!IMCoreSpotlightIndexReasonIsCritical() || (objc_msgSend_allowCriticalThrottleBypass(MEMORY[0x1E69A7FF8], v16, v17) & 1) == 0) && (objc_msgSend_ignoreThrottling(MEMORY[0x1E69A7FF8], v16, v17) & 1) == 0 && (objc_msgSend_ignoreThrottle(v4, v18, v19) & 1) == 0 && (objc_msgSend_runningViaBGST(v4, v20, v21) & 1) == 0)
+    objc_msgSend_reason(contextCopy, v13, v14);
+    if ((!IMCoreSpotlightIndexReasonIsCritical() || (objc_msgSend_allowCriticalThrottleBypass(MEMORY[0x1E69A7FF8], v16, v17) & 1) == 0) && (objc_msgSend_ignoreThrottling(MEMORY[0x1E69A7FF8], v16, v17) & 1) == 0 && (objc_msgSend_ignoreThrottle(contextCopy, v18, v19) & 1) == 0 && (objc_msgSend_runningViaBGST(contextCopy, v20, v21) & 1) == 0)
     {
-      if (objc_msgSend_reason(v4, v22, v23) != 7 && objc_msgSend_reason(v4, v25, v26) != 1016 && objc_msgSend_reason(v4, v27, v28) != 1005)
+      if (objc_msgSend_reason(contextCopy, v22, v23) != 7 && objc_msgSend_reason(contextCopy, v25, v26) != 1016 && objc_msgSend_reason(contextCopy, v27, v28) != 1005)
       {
         isThrottled = objc_msgSend_isThrottled(self, v29, v30);
         goto LABEL_10;
@@ -275,15 +275,15 @@ LABEL_14:
   }
 }
 
-- (id)_stringForThrottleState:(int64_t)a3
+- (id)_stringForThrottleState:(int64_t)state
 {
   v3 = @"unknown";
-  if (a3 == 1)
+  if (state == 1)
   {
     v3 = @"throttled";
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
     return @"not throttled";
   }
@@ -455,20 +455,20 @@ LABEL_11:
   }
 }
 
-- (void)_beginThrottlingForIdentifier:(id)a3 untilDate:(id)a4
+- (void)_beginThrottlingForIdentifier:(id)identifier untilDate:(id)date
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v9 = a4;
-  if (!v9)
+  identifierCopy = identifier;
+  dateCopy = date;
+  if (!dateCopy)
   {
-    v9 = objc_msgSend_dateWithTimeIntervalSinceNow_(MEMORY[0x1E695DF00], v7, v8, 900.0);
+    dateCopy = objc_msgSend_dateWithTimeIntervalSinceNow_(MEMORY[0x1E695DF00], v7, v8, 900.0);
   }
 
   v10 = objc_msgSend_throttles(self, v7, v8);
-  v12 = objc_msgSend_objectForKeyedSubscript_(v10, v11, v6);
+  v12 = objc_msgSend_objectForKeyedSubscript_(v10, v11, identifierCopy);
 
-  if (v12 && objc_msgSend_compare_(v9, v13, v12) != 1)
+  if (v12 && objc_msgSend_compare_(dateCopy, v13, v12) != 1)
   {
     if (IMOSLoggingEnabled())
     {
@@ -476,7 +476,7 @@ LABEL_11:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         v23 = 138412546;
-        v24 = v6;
+        v24 = identifierCopy;
         v25 = 2112;
         v26 = v12;
         _os_log_impl(&dword_1B7AD5000, v22, OS_LOG_TYPE_INFO, "Ignoring request to begin throttling for %@ because we are already throttling for a longer duration %@", &v23, 0x16u);
@@ -492,15 +492,15 @@ LABEL_11:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
         v23 = 138412546;
-        v24 = v6;
+        v24 = identifierCopy;
         v25 = 2112;
-        v26 = v9;
+        v26 = dateCopy;
         _os_log_impl(&dword_1B7AD5000, v16, OS_LOG_TYPE_INFO, "Beginning throttling for %@ until %@", &v23, 0x16u);
       }
     }
 
     v17 = objc_msgSend_throttles(self, v14, v15);
-    objc_msgSend_setObject_forKeyedSubscript_(v17, v18, v9, v6);
+    objc_msgSend_setObject_forKeyedSubscript_(v17, v18, dateCopy, identifierCopy);
 
     objc_msgSend__save(self, v19, v20);
   }
@@ -508,23 +508,23 @@ LABEL_11:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_finishThrottlingForIdentifier:(id)a3
+- (void)_finishThrottlingForIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = identifierCopy;
       _os_log_impl(&dword_1B7AD5000, v7, OS_LOG_TYPE_INFO, "Finished throttling for %@", &v13, 0xCu);
     }
   }
 
   v8 = objc_msgSend_throttles(self, v5, v6);
-  objc_msgSend_removeObjectForKey_(v8, v9, v4);
+  objc_msgSend_removeObjectForKey_(v8, v9, identifierCopy);
 
   objc_msgSend__save(self, v10, v11);
   v12 = *MEMORY[0x1E69E9840];

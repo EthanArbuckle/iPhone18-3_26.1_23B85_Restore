@@ -1,8 +1,8 @@
 @interface SUBTransaction
 + (id)getPendingTransactions;
 + (unint64_t)getPendingTransactionsCount;
-- (SUBTransaction)initWithName:(id)a3;
-- (SUBTransaction)initWithNameAndTimeout:(id)a3 timeOut:(unint64_t)a4;
+- (SUBTransaction)initWithName:(id)name;
+- (SUBTransaction)initWithNameAndTimeout:(id)timeout timeOut:(unint64_t)out;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -35,16 +35,16 @@
   return v4;
 }
 
-- (SUBTransaction)initWithNameAndTimeout:(id)a3 timeOut:(unint64_t)a4
+- (SUBTransaction)initWithNameAndTimeout:(id)timeout timeOut:(unint64_t)out
 {
-  v7 = a3;
+  timeoutCopy = timeout;
   v28.receiver = self;
   v28.super_class = SUBTransaction;
   v8 = [(SUBTransaction *)&v28 init];
   if (v8)
   {
-    v9 = v7;
-    [v7 UTF8String];
+    v9 = timeoutCopy;
+    [timeoutCopy UTF8String];
     v10 = os_transaction_create();
     v11 = *(v8 + 1);
     *(v8 + 1) = v10;
@@ -55,8 +55,8 @@
     [v13 addObject:*(v8 + 1)];
 
     objc_sync_exit(v12);
-    objc_storeStrong(v8 + 2, a3);
-    *(v8 + 3) = a4;
+    objc_storeStrong(v8 + 2, timeout);
+    *(v8 + 3) = out;
     v14 = *(v8 + 5);
     *(v8 + 5) = 0;
 
@@ -71,7 +71,7 @@
       v19 = *(v8 + 4);
       *(v8 + 4) = v18;
 
-      v20 = dispatch_time(0, 1000000000 * a4);
+      v20 = dispatch_time(0, 1000000000 * out);
       dispatch_source_set_timer(*(v8 + 4), v20, 0xFFFFFFFFFFFFFFFFLL, 0);
       v21 = *(v8 + 4);
       handler[0] = _NSConcreteStackBlock;
@@ -91,7 +91,7 @@
       *buf = 134218242;
       v30 = v24;
       v31 = 2112;
-      v32 = v7;
+      v32 = timeoutCopy;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "[SUBtransaction]: TX ⬆: Total: %lu Current: %@", buf, 0x16u);
     }
   }
@@ -99,10 +99,10 @@
   return v8;
 }
 
-- (SUBTransaction)initWithName:(id)a3
+- (SUBTransaction)initWithName:(id)name
 {
-  v4 = a3;
-  v5 = [[SUBTransaction alloc] initWithNameAndTimeout:v4 timeOut:0];
+  nameCopy = name;
+  v5 = [[SUBTransaction alloc] initWithNameAndTimeout:nameCopy timeOut:0];
 
   return v5;
 }
@@ -119,32 +119,32 @@
 {
   v3 = objc_opt_class();
   objc_sync_enter(v3);
-  v4 = [(SUBTransaction *)self transaction];
+  transaction = [(SUBTransaction *)self transaction];
 
-  if (v4)
+  if (transaction)
   {
-    v5 = [(SUBTransaction *)self timerSource];
+    timerSource = [(SUBTransaction *)self timerSource];
 
-    if (v5)
+    if (timerSource)
     {
-      v6 = [(SUBTransaction *)self timerSource];
-      dispatch_source_cancel(v6);
+      timerSource2 = [(SUBTransaction *)self timerSource];
+      dispatch_source_cancel(timerSource2);
     }
 
     v7 = +[SUBTransaction getPendingTransactions];
-    v8 = [(SUBTransaction *)self transaction];
-    [v7 removeObject:v8];
+    transaction2 = [(SUBTransaction *)self transaction];
+    [v7 removeObject:transaction2];
 
     [(SUBTransaction *)self setTransaction:0];
     v9 = softwareupdatebridge_log;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = +[SUBTransaction getPendingTransactionsCount];
-      v11 = [(SUBTransaction *)self transactionName];
+      transactionName = [(SUBTransaction *)self transactionName];
       v12 = 134218242;
       v13 = v10;
       v14 = 2112;
-      v15 = v11;
+      v15 = transactionName;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[SUBtransaction]: TX ⬇: Total: %lu Current: %@", &v12, 0x16u);
     }
   }

@@ -1,14 +1,14 @@
 @interface SGDaemonConnection
 + (BOOL)usingSyncXPC;
-+ (void)_useSyncXPCWithBlock:(id)a3;
-- (SGDaemonConnection)initWithMachServiceName:(id)a3 xpcInterface:(id)a4;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (id)waitUntilReturn:(id)a3 withTimeout:(double)a4 error:(id *)a5;
++ (void)_useSyncXPCWithBlock:(id)block;
+- (SGDaemonConnection)initWithMachServiceName:(id)name xpcInterface:(id)interface;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (id)waitUntilReturn:(id)return withTimeout:(double)timeout error:(id *)error;
 - (id)xpcConnection;
 - (void)_callAbortBlocks;
 - (void)_connectToServer;
-- (void)addConnectionInterruptedHandler:(id)a3;
+- (void)addConnectionInterruptedHandler:(id)handler;
 - (void)dealloc;
 - (void)disconnect;
 @end
@@ -17,12 +17,12 @@
 
 + (BOOL)usingSyncXPC
 {
-  v2 = [MEMORY[0x1E696AF00] currentThread];
-  v3 = [v2 threadDictionary];
-  v4 = [v3 objectForKeyedSubscript:@"SGSyncXPC"];
-  v5 = [v4 BOOLValue];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v4 = [threadDictionary objectForKeyedSubscript:@"SGSyncXPC"];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)xpcConnection
@@ -136,24 +136,24 @@ void __38__SGDaemonConnection__connectToServer__block_invoke_12(uint64_t a1)
   [WeakRetained _callAbortBlocks];
 }
 
-- (void)addConnectionInterruptedHandler:(id)a3
+- (void)addConnectionInterruptedHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   pthread_mutex_lock(&self->_abortLock);
   abortBlocks = self->_abortBlocks;
-  v6 = MEMORY[0x1BFAF7240](v4);
+  v6 = MEMORY[0x1BFAF7240](handlerCopy);
 
   [(NSMutableArray *)abortBlocks addObject:v6];
 
   pthread_mutex_unlock(&self->_abortLock);
 }
 
-- (id)waitUntilReturn:(id)a3 withTimeout:(double)a4 error:(id *)a5
+- (id)waitUntilReturn:(id)return withTimeout:(double)timeout error:(id *)error
 {
   v65 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = fmax(a4 * 1000000000.0, 1.0);
-  if (COERCE__INT64(fabs(a4 * 1000000000.0)) >= 0x7FF0000000000000)
+  returnCopy = return;
+  v9 = fmax(timeout * 1000000000.0, 1.0);
+  if (COERCE__INT64(fabs(timeout * 1000000000.0)) >= 0x7FF0000000000000)
   {
     v10 = 0;
   }
@@ -208,7 +208,7 @@ void __38__SGDaemonConnection__connectToServer__block_invoke_12(uint64_t a1)
       handler[1] = 3221225472;
       handler[2] = __56__SGDaemonConnection_waitUntilReturn_withTimeout_error___block_invoke_18;
       handler[3] = &unk_1E7EFD200;
-      v39 = self;
+      selfCopy = self;
       v40 = &v47;
       v38 = v15;
       dispatch_source_set_event_handler(v18, handler);
@@ -236,7 +236,7 @@ LABEL_11:
   v32 = 3221225472;
   v33 = __56__SGDaemonConnection_waitUntilReturn_withTimeout_error___block_invoke_19;
   v34 = &unk_1E7EFD228;
-  v21 = v8;
+  v21 = returnCopy;
   v35 = v21;
   v22 = v16;
   v36 = v22;
@@ -267,9 +267,9 @@ LABEL_11:
       v25 = sgLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
-        v26 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
         *buf = 138412290;
-        v64 = v26;
+        v64 = callStackSymbols;
         _os_log_impl(&dword_1BA729000, v25, OS_LOG_TYPE_INFO, "SGDaemonConnection %@", buf, 0xCu);
       }
     }
@@ -283,10 +283,10 @@ LABEL_11:
   if (v48[3])
   {
     incrementKeyWithSuffix(@"apicalls.all.timedout");
-    if (a5)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"SGErrorDomain" code:10 userInfo:0];
-      *a5 = v27 = 0;
+      *error = v27 = 0;
     }
 
     else
@@ -297,9 +297,9 @@ LABEL_11:
 
   else
   {
-    if (a5)
+    if (error)
     {
-      *a5 = v52[5];
+      *error = v52[5];
     }
 
     if (v52[5])
@@ -398,9 +398,9 @@ void __56__SGDaemonConnection_waitUntilReturn_withTimeout_error___block_invoke_2
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[SGDaemonConnection usingSyncXPC];
   v6 = objc_autoreleasePoolPush();
   if (v5)
@@ -412,14 +412,14 @@ void __56__SGDaemonConnection_waitUntilReturn_withTimeout_error___block_invoke_2
       _os_log_debug_impl(&dword_1BA729000, v7, OS_LOG_TYPE_DEBUG, "SGDaemonConnection providing sync XPC remote object proxy", v12, 2u);
     }
 
-    v8 = [(SGDaemonConnection *)self xpcConnection];
-    v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v4];
+    xpcConnection = [(SGDaemonConnection *)self xpcConnection];
+    v9 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
   {
-    v8 = [(SGDaemonConnection *)self xpcConnection];
-    v9 = [v8 remoteObjectProxyWithErrorHandler:v4];
+    xpcConnection = [(SGDaemonConnection *)self xpcConnection];
+    v9 = [xpcConnection remoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   v10 = v9;
@@ -429,12 +429,12 @@ void __56__SGDaemonConnection_waitUntilReturn_withTimeout_error___block_invoke_2
   return v10;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(SGDaemonConnection *)self xpcConnection];
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  xpcConnection = [(SGDaemonConnection *)self xpcConnection];
+  v7 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   objc_autoreleasePoolPop(v5);
 
@@ -495,20 +495,20 @@ void __38__SGDaemonConnection__connectToServer__block_invoke(uint64_t a1)
   [WeakRetained _callAbortBlocks];
 }
 
-- (SGDaemonConnection)initWithMachServiceName:(id)a3 xpcInterface:(id)a4
+- (SGDaemonConnection)initWithMachServiceName:(id)name xpcInterface:(id)interface
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  interfaceCopy = interface;
   v16.receiver = self;
   v16.super_class = SGDaemonConnection;
   v8 = [(SGDaemonConnection *)&v16 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     machServiceName = v8->_machServiceName;
     v8->_machServiceName = v9;
 
-    objc_storeStrong(&v8->_xpcInterface, a4);
+    objc_storeStrong(&v8->_xpcInterface, interface);
     v11 = dispatch_queue_create("com.apple.suggestions.daemon.connectlock", 0);
     connectLock = v8->_connectLock;
     v8->_connectLock = v11;
@@ -523,18 +523,18 @@ void __38__SGDaemonConnection__connectToServer__block_invoke(uint64_t a1)
   return v8;
 }
 
-+ (void)_useSyncXPCWithBlock:(id)a3
++ (void)_useSyncXPCWithBlock:(id)block
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AF00] currentThread];
-  v5 = [v4 threadDictionary];
+  blockCopy = block;
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v6 = [v5 objectForKeyedSubscript:@"SGSyncXPC"];
-  v7 = [v6 BOOLValue];
+  v6 = [threadDictionary objectForKeyedSubscript:@"SGSyncXPC"];
+  bOOLValue = [v6 BOOLValue];
 
-  if ((v7 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
-    [v5 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"SGSyncXPC"];
+    [threadDictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"SGSyncXPC"];
   }
 
   v8 = objc_autoreleasePoolPush();
@@ -545,7 +545,7 @@ void __38__SGDaemonConnection__connectToServer__block_invoke(uint64_t a1)
     _os_log_debug_impl(&dword_1BA729000, v9, OS_LOG_TYPE_DEBUG, "SGDaemonConnection beginning sync XPC block", buf, 2u);
   }
 
-  v3[2](v3);
+  blockCopy[2](blockCopy);
   v10 = sgLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -554,11 +554,11 @@ void __38__SGDaemonConnection__connectToServer__block_invoke(uint64_t a1)
   }
 
   objc_autoreleasePoolPop(v8);
-  if ((v7 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AF00] currentThread];
-    v12 = [v11 threadDictionary];
-    [v12 removeObjectForKey:@"SGSyncXPC"];
+    currentThread2 = [MEMORY[0x1E696AF00] currentThread];
+    threadDictionary2 = [currentThread2 threadDictionary];
+    [threadDictionary2 removeObjectForKey:@"SGSyncXPC"];
   }
 }
 

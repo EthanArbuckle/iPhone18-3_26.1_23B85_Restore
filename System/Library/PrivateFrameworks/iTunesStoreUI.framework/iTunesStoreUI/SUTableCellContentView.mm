@@ -1,24 +1,24 @@
 @interface SUTableCellContentView
 - (id)_clipPath;
-- (id)_clippedImageForImage:(id)a3;
-- (void)_reloadSubviewAlphasAnimated:(BOOL)a3;
+- (id)_clippedImageForImage:(id)image;
+- (void)_reloadSubviewAlphasAnimated:(BOOL)animated;
 - (void)_reloadSubviewsForConfiguration;
 - (void)_removeSubviewsForConfiguration;
 - (void)_startUsingSubviewLayout;
 - (void)_stopUsingSubviewLayout;
 - (void)_updateDisabledStyleForSubviews;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
 - (void)reloadView;
-- (void)setClipCorners:(int)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setDeleteConfirmationVisisble:(BOOL)a3;
-- (void)setDrawAsDisabled:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setHighlightsOnlyContentView:(BOOL)a3;
-- (void)setUsesSubviews:(BOOL)a3 animated:(BOOL)a4;
+- (void)setClipCorners:(int)corners;
+- (void)setConfiguration:(id)configuration;
+- (void)setDeleteConfirmationVisisble:(BOOL)visisble;
+- (void)setDrawAsDisabled:(BOOL)disabled;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setHighlightsOnlyContentView:(BOOL)view;
+- (void)setUsesSubviews:(BOOL)subviews animated:(BOOL)animated;
 @end
 
 @implementation SUTableCellContentView
@@ -40,10 +40,10 @@
   [(SUTableCellContentView *)&v3 dealloc];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v52[3] = *MEMORY[0x1E69E9840];
-  [(SUTableCellContentView *)self bounds:a3.origin.x];
+  [(SUTableCellContentView *)self bounds:rect.origin.x];
   v5 = v4;
   [(SUCellConfiguration *)self->_configuration setLayoutSize:v6, v7];
   v8 = [(SUTableCellContentView *)self isHighlighted]& 0xFFFFFFF9 | (2 * (*(self + 432) & 1)) & 0xFB | (4 * (*(self + 456) & 1));
@@ -71,10 +71,10 @@ LABEL_4:
   [(SUCellConfiguration *)self->_configuration drawWithModifiers:v8];
   if ((*(self + 456) & 1) == 0)
   {
-    v9 = [(SUCellConfiguration *)self->_configuration numberOfLabels];
-    if (v9)
+    numberOfLabels = [(SUCellConfiguration *)self->_configuration numberOfLabels];
+    if (numberOfLabels)
     {
-      v10 = v9;
+      v10 = numberOfLabels;
       v11 = 0;
       v48 = *MEMORY[0x1E69DB648];
       v47 = *MEMORY[0x1E69DB688];
@@ -126,10 +126,10 @@ LABEL_4:
     }
 
     v28 = *(self + 432);
-    v29 = [(SUCellConfiguration *)self->_configuration numberOfImages];
-    if (v29)
+    numberOfImages = [(SUCellConfiguration *)self->_configuration numberOfImages];
+    if (numberOfImages)
     {
-      v30 = v29;
+      v30 = numberOfImages;
       v31 = 0;
       v32 = *MEMORY[0x1E695F060];
       v33 = *(MEMORY[0x1E695F060] + 8);
@@ -183,8 +183,8 @@ LABEL_4:
     [(SUTableCellContentView *)self bounds];
     v4 = v3;
     [(SUCellConfiguration *)self->_configuration setLayoutSize:v5, v6];
-    v7 = [(SUCellConfiguration *)self->_configuration numberOfImages];
-    v8 = [(SUCellConfiguration *)self->_configuration numberOfLabels];
+    numberOfImages = [(SUCellConfiguration *)self->_configuration numberOfImages];
+    numberOfLabels = [(SUCellConfiguration *)self->_configuration numberOfLabels];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -212,7 +212,7 @@ LABEL_4:
           v19 = [v18 tag];
           if (v19 < 51000)
           {
-            v24 = v19 < 50000 || v19 - 50000 >= v8;
+            v24 = v19 < 50000 || v19 - 50000 >= numberOfLabels;
             v20 = v16;
             v21 = v15;
             v22 = v14;
@@ -229,7 +229,7 @@ LABEL_4:
             v21 = v15;
             v22 = v14;
             v23 = v13;
-            if (v19 - 51000 < v7)
+            if (v19 - 51000 < numberOfImages)
             {
               [(SUCellConfiguration *)self->_configuration frameForImageAtIndex:v13, v14, v15, v16];
             }
@@ -263,11 +263,11 @@ LABEL_4:
   }
 }
 
-- (void)setClipCorners:(int)a3
+- (void)setClipCorners:(int)corners
 {
-  if (self->_clipCorners != a3)
+  if (self->_clipCorners != corners)
   {
-    self->_clipCorners = a3;
+    self->_clipCorners = corners;
 
     self->_clipPath = 0;
     if ((*(self + 456) & 1) == 0)
@@ -278,10 +278,10 @@ LABEL_4:
   }
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   configuration = self->_configuration;
-  if (configuration == a3)
+  if (configuration == configuration)
   {
     if (![(SUCellConfiguration *)configuration needsDisplay])
     {
@@ -296,9 +296,9 @@ LABEL_4:
       [(SUCellConfiguration *)self->_configuration setView:0];
     }
 
-    v6 = a3;
-    self->_configuration = v6;
-    [(SUCellConfiguration *)v6 setView:self];
+    configurationCopy = configuration;
+    self->_configuration = configurationCopy;
+    [(SUCellConfiguration *)configurationCopy setView:self];
     if (![(SUCellConfiguration *)self->_configuration needsDisplay])
     {
       goto LABEL_8;
@@ -312,23 +312,23 @@ LABEL_8:
   [(SUTableCellContentView *)self reloadView];
 }
 
-- (void)setDeleteConfirmationVisisble:(BOOL)a3
+- (void)setDeleteConfirmationVisisble:(BOOL)visisble
 {
-  v3 = a3;
-  if ([(SUCellConfiguration *)self->_configuration isDeleteConfirmationVisible]!= a3)
+  visisbleCopy = visisble;
+  if ([(SUCellConfiguration *)self->_configuration isDeleteConfirmationVisible]!= visisble)
   {
-    [(SUCellConfiguration *)self->_configuration setIsDeleteConfirmationVisible:v3];
+    [(SUCellConfiguration *)self->_configuration setIsDeleteConfirmationVisible:visisbleCopy];
 
     [(SUTableCellContentView *)self _reloadSubviewAlphasAnimated:0];
   }
 }
 
-- (void)setDrawAsDisabled:(BOOL)a3
+- (void)setDrawAsDisabled:(BOOL)disabled
 {
   v3 = *(self + 432);
-  if ((v3 & 1) != a3)
+  if ((v3 & 1) != disabled)
   {
-    *(self + 432) = v3 & 0xFE | a3;
+    *(self + 432) = v3 & 0xFE | disabled;
     if (*(self + 456))
     {
       [(SUTableCellContentView *)self _updateDisabledStyleForSubviews];
@@ -341,12 +341,12 @@ LABEL_8:
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(SUTableCellContentView *)self frame];
   if (v9 != width || v8 != height)
   {
@@ -363,9 +363,9 @@ LABEL_8:
   [(SUTableCellContentView *)&v11 setFrame:x, y, width, height];
 }
 
-- (void)setHighlightsOnlyContentView:(BOOL)a3
+- (void)setHighlightsOnlyContentView:(BOOL)view
 {
-  if (a3)
+  if (view)
   {
     v3 = 4;
   }
@@ -378,12 +378,12 @@ LABEL_8:
   *(self + 432) = *(self + 432) & 0xFB | v3;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v3 = *(self + 432);
-  if (((((v3 & 2) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 2) == 0) ^ highlighted) & 1) == 0)
   {
-    if (a3)
+    if (highlighted)
     {
       v4 = 2;
     }
@@ -401,17 +401,17 @@ LABEL_8:
   }
 }
 
-- (void)setUsesSubviews:(BOOL)a3 animated:(BOOL)a4
+- (void)setUsesSubviews:(BOOL)subviews animated:(BOOL)animated
 {
-  v5 = a3;
+  subviewsCopy = subviews;
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__stopUsingSubviewLayout object:0];
-  if (v5)
+  if (subviewsCopy)
   {
 
     [(SUTableCellContentView *)self _startUsingSubviewLayout];
   }
 
-  else if (a4)
+  else if (animated)
   {
     [(SUTableCellContentView *)self setDeleteConfirmationVisisble:0];
 
@@ -447,9 +447,9 @@ LABEL_8:
   return result;
 }
 
-- (id)_clippedImageForImage:(id)a3
+- (id)_clippedImageForImage:(id)image
 {
-  if (!a3)
+  if (!image)
   {
     return 0;
   }
@@ -464,30 +464,30 @@ LABEL_8:
   v15.height = v10;
   UIGraphicsBeginImageContextWithOptions(v15, 0, v12);
   [-[SUTableCellContentView _clipPath](self "_clipPath")];
-  [a3 drawInRect:{v6, v8, v10, v10}];
+  [image drawInRect:{v6, v8, v10, v10}];
   ImageFromCurrentImageContext = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   return ImageFromCurrentImageContext;
 }
 
-- (void)_reloadSubviewAlphasAnimated:(BOOL)a3
+- (void)_reloadSubviewAlphasAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v28 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_respondsToSelector();
-  v22 = self;
+  selfCopy = self;
   v6 = objc_opt_respondsToSelector();
   if (v6 & 1) != 0 || (v5)
   {
     v7 = *(self + 432);
-    v8 = *(v22 + 456);
-    v21 = [(SUCellConfiguration *)v22->_configuration numberOfImages];
-    v20 = [(SUCellConfiguration *)v22->_configuration numberOfLabels];
+    v8 = *(selfCopy + 456);
+    numberOfImages = [(SUCellConfiguration *)selfCopy->_configuration numberOfImages];
+    numberOfLabels = [(SUCellConfiguration *)selfCopy->_configuration numberOfLabels];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    subviews = v22->_subviews;
+    subviews = selfCopy->_subviews;
     v10 = [(NSMutableArray *)subviews countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v10)
     {
@@ -508,7 +508,7 @@ LABEL_8:
           if (v15 < 51000)
           {
             v16 = 1.0;
-            if (v15 >= 50000 && (v6 & 1) != 0 && v15 - 50000 < v20)
+            if (v15 >= 50000 && (v6 & 1) != 0 && v15 - 50000 < numberOfLabels)
             {
               [SUCellConfiguration alphaForLabelAtIndex:"alphaForLabelAtIndex:fromAlpha:withModifiers:" fromAlpha:? withModifiers:?];
               goto LABEL_15;
@@ -518,7 +518,7 @@ LABEL_8:
           else
           {
             v16 = 1.0;
-            if ((v5 & 1) != 0 && v15 - 51000 < v21)
+            if ((v5 & 1) != 0 && v15 - 51000 < numberOfImages)
             {
               [SUCellConfiguration alphaForImageAtIndex:"alphaForImageAtIndex:fromAlpha:withModifiers:" fromAlpha:? withModifiers:?];
 LABEL_15:
@@ -530,7 +530,7 @@ LABEL_15:
           if (vabdd_f64(v18, v16) > 0.00000011920929)
           {
             [v14 setAlpha:1.0];
-            if (v3)
+            if (animatedCopy)
             {
               [MEMORY[0x1E69DD250] beginAnimations:@"subviewAlphaAnimation" context:0];
               [v14 setAlpha:v16];
@@ -560,10 +560,10 @@ LABEL_15:
   v3 = (2 * (*(self + 432) & 1)) | 4;
   [(SUTableCellContentView *)self bounds];
   [(SUCellConfiguration *)self->_configuration setLayoutSize:v4, v5];
-  v6 = [(SUCellConfiguration *)self->_configuration numberOfLabels];
-  if (v6)
+  numberOfLabels = [(SUCellConfiguration *)self->_configuration numberOfLabels];
+  if (numberOfLabels)
   {
-    v7 = v6;
+    v7 = numberOfLabels;
     for (i = 0; i != v7; ++i)
     {
       Label = __CreateLabel(self->_configuration, i, v3);
@@ -576,10 +576,10 @@ LABEL_15:
     }
   }
 
-  v11 = [(SUCellConfiguration *)self->_configuration numberOfImages];
-  if (v11)
+  numberOfImages = [(SUCellConfiguration *)self->_configuration numberOfImages];
+  if (numberOfImages)
   {
-    v12 = v11;
+    v12 = numberOfImages;
     v13 = 0;
     v14 = 51000;
     do
@@ -692,10 +692,10 @@ LABEL_15:
 - (void)_updateDisabledStyleForSubviews
 {
   v3 = *(self + 432);
-  v4 = [(SUCellConfiguration *)self->_configuration numberOfLabels];
-  if (v4)
+  numberOfLabels = [(SUCellConfiguration *)self->_configuration numberOfLabels];
+  if (numberOfLabels)
   {
-    v5 = v4;
+    v5 = numberOfLabels;
     v6 = 0;
     v7 = 0;
     v8 = 2 * (v3 & 1);
@@ -717,10 +717,10 @@ LABEL_15:
     v7 = 0;
   }
 
-  v9 = [(SUCellConfiguration *)self->_configuration numberOfImages];
-  if (v9)
+  numberOfImages = [(SUCellConfiguration *)self->_configuration numberOfImages];
+  if (numberOfImages)
   {
-    v10 = v9;
+    v10 = numberOfImages;
     for (i = 0; i != v10; ++i)
     {
       if ([(SUCellConfiguration *)self->_configuration imageAtIndex:i withModifiers:0])

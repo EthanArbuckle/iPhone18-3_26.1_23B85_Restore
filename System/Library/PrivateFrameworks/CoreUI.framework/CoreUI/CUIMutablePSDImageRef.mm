@@ -1,19 +1,19 @@
 @interface CUIMutablePSDImageRef
-- (BOOL)saveToURL:(id)a3 completionHandler:(id)a4;
-- (BOOL)saveWithCompletionHandler:(id)a3;
-- (CUIMutablePSDImageRef)initWithPixelWidth:(unint64_t)a3 pixelHeight:(unint64_t)a4;
+- (BOOL)saveToURL:(id)l completionHandler:(id)handler;
+- (BOOL)saveWithCompletionHandler:(id)handler;
+- (CUIMutablePSDImageRef)initWithPixelWidth:(unint64_t)width pixelHeight:(unint64_t)height;
 - (__CFData)copyDefaultICCProfileData;
-- (unsigned)newSliceRectsArray:(PSDRect *)a3 withSliceRects:(id)a4;
-- (unsigned)newSliceRectsArray:(PSDRect *)a3 withXCutPositions:(id)a4 yCutPositions:(id)a5;
-- (unsigned)newUInt32CArray:(unsigned int *)a3 withNSArray:(id)a4 prependNumber:(id)a5 appendNumber:(id)a6;
-- (unsigned)psdLayerBlendModeForCGBlendMode:(int)a3;
-- (void)addLayer:(id)a3;
-- (void)addLayoutMetricsChannel:(id)a3;
-- (void)addOrUpdateSlicesWithSliceRects:(id)a3;
-- (void)addOrUpdateSlicesWithXCutPositions:(id)a3 yCutPositions:(id)a4;
-- (void)newPSDGradientFromCUIPSDGradient:(id)a3;
-- (void)setFileURL:(id)a3;
-- (void)updateSliceName:(id)a3 atIndex:(unsigned int)a4;
+- (unsigned)newSliceRectsArray:(PSDRect *)array withSliceRects:(id)rects;
+- (unsigned)newSliceRectsArray:(PSDRect *)array withXCutPositions:(id)positions yCutPositions:(id)cutPositions;
+- (unsigned)newUInt32CArray:(unsigned int *)array withNSArray:(id)sArray prependNumber:(id)number appendNumber:(id)appendNumber;
+- (unsigned)psdLayerBlendModeForCGBlendMode:(int)mode;
+- (void)addLayer:(id)layer;
+- (void)addLayoutMetricsChannel:(id)channel;
+- (void)addOrUpdateSlicesWithSliceRects:(id)rects;
+- (void)addOrUpdateSlicesWithXCutPositions:(id)positions yCutPositions:(id)cutPositions;
+- (void)newPSDGradientFromCUIPSDGradient:(id)gradient;
+- (void)setFileURL:(id)l;
+- (void)updateSliceName:(id)name atIndex:(unsigned int)index;
 @end
 
 @implementation CUIMutablePSDImageRef
@@ -26,10 +26,10 @@
   return v3;
 }
 
-- (CUIMutablePSDImageRef)initWithPixelWidth:(unint64_t)a3 pixelHeight:(unint64_t)a4
+- (CUIMutablePSDImageRef)initWithPixelWidth:(unint64_t)width pixelHeight:(unint64_t)height
 {
-  v4 = a4;
-  v5 = a3;
+  heightCopy = height;
+  widthCopy = width;
   v14.receiver = self;
   v14.super_class = CUIMutablePSDImageRef;
   v6 = [(CUIMutablePSDImageRef *)&v14 init];
@@ -40,39 +40,39 @@
     v8 = operator new();
     CPSDFile::CPSDFile(v8);
     [(CUIPSDImageRef *)v7 setPsd:v8];
-    v9 = [(CUIMutablePSDImageRef *)v7 copyDefaultICCProfileData];
-    if (v9)
+    copyDefaultICCProfileData = [(CUIMutablePSDImageRef *)v7 copyDefaultICCProfileData];
+    if (copyDefaultICCProfileData)
     {
-      v10 = v9;
-      BytePtr = CFDataGetBytePtr(v9);
+      v10 = copyDefaultICCProfileData;
+      BytePtr = CFDataGetBytePtr(copyDefaultICCProfileData);
       Length = CFDataGetLength(v10);
-      CPSDFile::Init([(CUIPSDImageRef *)v7 psd], v5, v4, BytePtr, Length);
+      CPSDFile::Init([(CUIPSDImageRef *)v7 psd], widthCopy, heightCopy, BytePtr, Length);
       CFRelease(v10);
     }
 
     else
     {
-      CPSDFile::Init([(CUIPSDImageRef *)v7 psd], v5, v4, 0, 0);
+      CPSDFile::Init([(CUIPSDImageRef *)v7 psd], widthCopy, heightCopy, 0, 0);
     }
   }
 
   return v7;
 }
 
-- (void)addLayoutMetricsChannel:(id)a3
+- (void)addLayoutMetricsChannel:(id)channel
 {
-  v5 = NewCPSDStringFromNSString([a3 name]);
+  v5 = NewCPSDStringFromNSString([channel name]);
   v6 = *([(CUIPSDImageRef *)self psd]+ 36);
   v7 = *([(CUIPSDImageRef *)self psd]+ 37);
   v8 = v7 * v6;
   v9 = malloc_type_calloc(v7 * v6, 1uLL, 0x100004077774924uLL);
-  [a3 edgeInsets];
+  [channel edgeInsets];
   v11 = v10;
-  [a3 edgeInsets];
+  [channel edgeInsets];
   v13 = v12;
-  [a3 edgeInsets];
+  [channel edgeInsets];
   v15 = (v6 - v14 - v11);
-  [a3 edgeInsets];
+  [channel edgeInsets];
   if (v15)
   {
     v17 = v13;
@@ -92,7 +92,7 @@
   CPSDFile::AddExtraAlphaChannel([(CUIPSDImageRef *)self psd], v9, v8, v5);
 }
 
-- (void)newPSDGradientFromCUIPSDGradient:(id)a3
+- (void)newPSDGradientFromCUIPSDGradient:(id)gradient
 {
   v4 = operator new();
   *v4 = 0;
@@ -107,10 +107,10 @@
   *(v4 + 88) = 0u;
   *(v4 + 104) = 0u;
   *(v4 + 120) = 0u;
-  [a3 drawingAngle];
+  [gradient drawingAngle];
   *v4 = v5;
-  v6 = [a3 gradientStyle];
-  if (v6 == 1382312992)
+  gradientStyle = [gradient gradientStyle];
+  if (gradientStyle == 1382312992)
   {
     v7 = 1382312992;
   }
@@ -120,7 +120,7 @@
     v7 = 1282306592;
   }
 
-  if (v6 == 1382444131)
+  if (gradientStyle == 1382444131)
   {
     v8 = 1382444131;
   }
@@ -130,7 +130,7 @@
     v8 = v7;
   }
 
-  if (v6 == 1148022372)
+  if (gradientStyle == 1148022372)
   {
     v9 = 1148022372;
   }
@@ -140,7 +140,7 @@
     v9 = 1282306592;
   }
 
-  if (v6 == 1097754476)
+  if (gradientStyle == 1097754476)
   {
     v10 = 1097754476;
   }
@@ -150,7 +150,7 @@
     v10 = v9;
   }
 
-  if (v6 <= 1382312991)
+  if (gradientStyle <= 1382312991)
   {
     v11 = v10;
   }
@@ -161,19 +161,19 @@
   }
 
   *(v4 + 12) = v11;
-  v88 = [a3 evaluator];
-  if (v88)
+  evaluator = [gradient evaluator];
+  if (evaluator)
   {
-    [v88 smoothingCoefficient];
+    [evaluator smoothingCoefficient];
     *(v4 + 1) = v12 * 4096.0;
-    v4[17] = [v88 isDithered];
-    [v88 fillColor];
+    v4[17] = [evaluator isDithered];
+    [evaluator fillColor];
     objb = v13;
-    [v88 fillColor];
+    [evaluator fillColor];
     v84 = v14;
-    [v88 fillColor];
+    [evaluator fillColor];
     v83 = v15;
-    [v88 fillColor];
+    [evaluator fillColor];
     v16.f64[0] = objb;
     v16.f64[1] = v84;
     v17.f64[0] = v83;
@@ -182,12 +182,12 @@
     *(v4 + 56) = vmulq_f64(v16, v19);
     *(v4 + 72) = vmulq_f64(v17, v19);
     v4[18] = 1;
-    v20 = [objc_msgSend(v88 "colorMidpointLocations")];
+    v20 = [objc_msgSend(evaluator "colorMidpointLocations")];
     v93 = 0u;
     v94 = 0u;
     v95 = 0u;
     v96 = 0u;
-    obj = [v88 colorStops];
+    obj = [evaluator colorStops];
     v21 = [obj countByEnumeratingWithState:&v93 objects:v98 count:16];
     if (v21)
     {
@@ -214,7 +214,7 @@
 
           else
           {
-            [objc_msgSend(objc_msgSend(v88 "colorMidpointLocations")];
+            [objc_msgSend(objc_msgSend(evaluator "colorMidpointLocations")];
             v33 = (v32 * 100.0);
           }
 
@@ -302,12 +302,12 @@
       while (v21);
     }
 
-    v54 = [objc_msgSend(v88 "opacityMidpointLocations")];
+    v54 = [objc_msgSend(evaluator "opacityMidpointLocations")];
     v91 = 0u;
     v92 = 0u;
     v89 = 0u;
     v90 = 0u;
-    obja = [v88 opacityStops];
+    obja = [evaluator opacityStops];
     v55 = [obja countByEnumeratingWithState:&v89 objects:v97 count:16];
     if (v55)
     {
@@ -330,7 +330,7 @@
 
           else
           {
-            [objc_msgSend(objc_msgSend(v88 "opacityMidpointLocations")];
+            [objc_msgSend(objc_msgSend(evaluator "opacityMidpointLocations")];
             v61 = (v60 * 100.0);
           }
 
@@ -418,39 +418,39 @@
   return v4;
 }
 
-- (unsigned)psdLayerBlendModeForCGBlendMode:(int)a3
+- (unsigned)psdLayerBlendModeForCGBlendMode:(int)mode
 {
-  if ((a3 - 1) > 0xE)
+  if ((mode - 1) > 0xE)
   {
     return 1852797549;
   }
 
   else
   {
-    return *&aLumnrcsrevokra[4 * (a3 - 1)];
+    return *&aLumnrcsrevokra[4 * (mode - 1)];
   }
 }
 
-- (void)addLayer:(id)a3
+- (void)addLayer:(id)layer
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a3 opacity];
+    [layer opacity];
     v7 = (v6 * 255.0);
-    v8 = -[CUIMutablePSDImageRef psdLayerBlendModeForCGBlendMode:](self, "psdLayerBlendModeForCGBlendMode:", [a3 blendMode]);
-    v9 = NewCPSDStringFromNSString([a3 name]);
+    v8 = -[CUIMutablePSDImageRef psdLayerBlendModeForCGBlendMode:](self, "psdLayerBlendModeForCGBlendMode:", [layer blendMode]);
+    v9 = NewCPSDStringFromNSString([layer name]);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       *v19 = 0u;
       v20 = 0u;
-      v10 = [a3 cgImageRef];
+      cgImageRef = [layer cgImageRef];
       LODWORD(v11) = *([(CUIPSDImageRef *)self psd]+ 37);
       v12 = v11;
       LODWORD(v13) = *([(CUIPSDImageRef *)self psd]+ 36);
-      LODWORD(v10) = CUIGetChannelDataForImage(v10, v19, v12, v13);
-      CPSDFile::AddLayer([(CUIPSDImageRef *)self psd], v19, v10, v9, v7, v8);
+      LODWORD(cgImageRef) = CUIGetChannelDataForImage(cgImageRef, v19, v12, v13);
+      CPSDFile::AddLayer([(CUIPSDImageRef *)self psd], v19, cgImageRef, v9, v7, v8);
     }
 
     else
@@ -458,7 +458,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v14 = -[CUIMutablePSDImageRef newPSDGradientFromCUIPSDGradient:](self, "newPSDGradientFromCUIPSDGradient:", [a3 gradient]);
+        v14 = -[CUIMutablePSDImageRef newPSDGradientFromCUIPSDGradient:](self, "newPSDGradientFromCUIPSDGradient:", [layer gradient]);
         CPSDFile::AddLayer([(CUIPSDImageRef *)self psd], v14, v9, v7, v8);
         if (v14)
         {
@@ -529,14 +529,14 @@ LABEL_19:
     }
   }
 
-  -[NSAssertionHandler handleFailureInMethod:object:file:lineNumber:description:](+[NSAssertionHandler currentHandler](NSAssertionHandler, "currentHandler"), "handleFailureInMethod:object:file:lineNumber:description:", a2, self, @"CUIMutablePSDImageRef.mm", 434, @"AddLayer called with object of unexpected class:%@", [a3 description]);
+  -[NSAssertionHandler handleFailureInMethod:object:file:lineNumber:description:](+[NSAssertionHandler currentHandler](NSAssertionHandler, "currentHandler"), "handleFailureInMethod:object:file:lineNumber:description:", a2, self, @"CUIMutablePSDImageRef.mm", 434, @"AddLayer called with object of unexpected class:%@", [layer description]);
 }
 
-- (unsigned)newUInt32CArray:(unsigned int *)a3 withNSArray:(id)a4 prependNumber:(id)a5 appendNumber:(id)a6
+- (unsigned)newUInt32CArray:(unsigned int *)array withNSArray:(id)sArray prependNumber:(id)number appendNumber:(id)appendNumber
 {
-  v10 = [a4 count];
+  v10 = [sArray count];
   v11 = v10;
-  if (a5)
+  if (number)
   {
     v12 = v10 + 1;
   }
@@ -546,7 +546,7 @@ LABEL_19:
     v12 = v10;
   }
 
-  if (a6)
+  if (appendNumber)
   {
     v13 = v12 + 1;
   }
@@ -564,24 +564,24 @@ LABEL_19:
     if (v11)
     {
       v17 = 0;
-      v18 = &v14[a5 != 0];
+      v18 = &v14[number != 0];
       do
       {
-        v18[v17] = [objc_msgSend(a4 objectAtIndex:{v17), "unsignedIntegerValue"}];
+        v18[v17] = [objc_msgSend(sArray objectAtIndex:{v17), "unsignedIntegerValue"}];
         ++v17;
       }
 
       while (v16 != v17);
     }
 
-    if (a5)
+    if (number)
     {
-      *v15 = [a5 unsignedIntegerValue];
+      *v15 = [number unsignedIntegerValue];
     }
 
-    if (a6)
+    if (appendNumber)
     {
-      v15[v12++] = [a6 unsignedIntegerValue];
+      v15[v12++] = [appendNumber unsignedIntegerValue];
     }
   }
 
@@ -590,13 +590,13 @@ LABEL_19:
     v12 = 0;
   }
 
-  *a3 = v15;
+  *array = v15;
   return v12;
 }
 
-- (unsigned)newSliceRectsArray:(PSDRect *)a3 withSliceRects:(id)a4
+- (unsigned)newSliceRectsArray:(PSDRect *)array withSliceRects:(id)rects
 {
-  v6 = [a4 count];
+  v6 = [rects count];
   if (v6)
   {
     v7 = operator new[]();
@@ -605,7 +605,7 @@ LABEL_19:
     v9 = (v7 + 8);
     do
     {
-      CGRectMakeWithDictionaryRepresentation([a4 objectAtIndex:v8], &v11);
+      CGRectMakeWithDictionaryRepresentation([rects objectAtIndex:v8], &v11);
       *(v9 - 1) = CGRectGetMinX(v11);
       v9[1] = CGRectGetMaxX(v11);
       *(v9 - 2) = CGRectGetMinY(v11);
@@ -622,19 +622,19 @@ LABEL_19:
     v7 = 0;
   }
 
-  *a3 = v7;
+  *array = v7;
   return v6;
 }
 
-- (unsigned)newSliceRectsArray:(PSDRect *)a3 withXCutPositions:(id)a4 yCutPositions:(id)a5
+- (unsigned)newSliceRectsArray:(PSDRect *)array withXCutPositions:(id)positions yCutPositions:(id)cutPositions
 {
   v30 = 0;
-  v8 = [(CUIMutablePSDImageRef *)self newUInt32CArray:&v30 withNSArray:a4 prependNumber:[NSNumber appendNumber:"numberWithInteger:" numberWithInteger:?], [NSNumber numberWithInteger:*([(CUIPSDImageRef *)self psd]+ 37)]];
+  v8 = [(CUIMutablePSDImageRef *)self newUInt32CArray:&v30 withNSArray:positions prependNumber:[NSNumber appendNumber:"numberWithInteger:" numberWithInteger:?], [NSNumber numberWithInteger:*([(CUIPSDImageRef *)self psd]+ 37)]];
   if (v30)
   {
     v9 = v8;
     v29 = 0;
-    v10 = [(CUIMutablePSDImageRef *)self newUInt32CArray:&v29 withNSArray:a5 prependNumber:[NSNumber appendNumber:"numberWithInteger:" numberWithInteger:?], [NSNumber numberWithInteger:*([(CUIPSDImageRef *)self psd]+ 37)]];
+    v10 = [(CUIMutablePSDImageRef *)self newUInt32CArray:&v29 withNSArray:cutPositions prependNumber:[NSNumber appendNumber:"numberWithInteger:" numberWithInteger:?], [NSNumber numberWithInteger:*([(CUIPSDImageRef *)self psd]+ 37)]];
     if (v29)
     {
       v11 = v10;
@@ -701,22 +701,22 @@ LABEL_19:
     }
 
     free(*v27);
-    *a3 = v14;
+    *array = v14;
   }
 
   else
   {
     v13 = 0;
-    *a3 = 0;
+    *array = 0;
   }
 
   return v13;
 }
 
-- (void)addOrUpdateSlicesWithSliceRects:(id)a3
+- (void)addOrUpdateSlicesWithSliceRects:(id)rects
 {
   v6 = 0;
-  v4 = [(CUIMutablePSDImageRef *)self newSliceRectsArray:&v6 withSliceRects:a3];
+  v4 = [(CUIMutablePSDImageRef *)self newSliceRectsArray:&v6 withSliceRects:rects];
   v5 = [(CUIPSDImageRef *)self psd];
   CPSDFile::AddOrUpdateSlices(v5, v6, v4);
   if (v6)
@@ -725,10 +725,10 @@ LABEL_19:
   }
 }
 
-- (void)addOrUpdateSlicesWithXCutPositions:(id)a3 yCutPositions:(id)a4
+- (void)addOrUpdateSlicesWithXCutPositions:(id)positions yCutPositions:(id)cutPositions
 {
   v7 = 0;
-  v5 = [(CUIMutablePSDImageRef *)self newSliceRectsArray:&v7 withXCutPositions:a3 yCutPositions:a4];
+  v5 = [(CUIMutablePSDImageRef *)self newSliceRectsArray:&v7 withXCutPositions:positions yCutPositions:cutPositions];
   v6 = [(CUIPSDImageRef *)self psd];
   CPSDFile::AddOrUpdateSlices(v6, v7, v5);
   if (v7)
@@ -737,45 +737,45 @@ LABEL_19:
   }
 }
 
-- (void)updateSliceName:(id)a3 atIndex:(unsigned int)a4
+- (void)updateSliceName:(id)name atIndex:(unsigned int)index
 {
   v8 = 0;
-  v6 = NSStringToUTF16LEBytes(a3, &v8);
+  v6 = NSStringToUTF16LEBytes(name, &v8);
   v7 = [(CUIPSDImageRef *)self psd];
-  CPSDFile::UpdateSliceNameAtIndex(v7, v6, v8, a4);
+  CPSDFile::UpdateSliceNameAtIndex(v7, v6, v8, index);
 }
 
-- (void)setFileURL:(id)a3
+- (void)setFileURL:(id)l
 {
-  if (([a3 isFileURL] & 1) == 0)
+  if (([l isFileURL] & 1) == 0)
   {
     objc_exception_throw([NSException exceptionWithName:@"Bad URL" reason:@"CUIMutablePSDImageRef setFileURL called with non-file URL" userInfo:0]);
   }
 
-  v5 = [a3 path];
+  path = [l path];
 
-  [(CUIPSDImageRef *)self setPath:v5];
+  [(CUIPSDImageRef *)self setPath:path];
 }
 
-- (BOOL)saveWithCompletionHandler:(id)a3
+- (BOOL)saveWithCompletionHandler:(id)handler
 {
   File = CreateFile([+[NSFileManager fileSystemRepresentationWithPath:"fileSystemRepresentationWithPath:"];
   v6 = [(CUIPSDImageRef *)self psd];
   (*(*v6 + 56))(v6, File);
   CloseHandle(File);
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(handler + 2))(handler, 0);
   }
 
   return 1;
 }
 
-- (BOOL)saveToURL:(id)a3 completionHandler:(id)a4
+- (BOOL)saveToURL:(id)l completionHandler:(id)handler
 {
-  [(CUIMutablePSDImageRef *)self setFileURL:a3];
+  [(CUIMutablePSDImageRef *)self setFileURL:l];
 
-  return [(CUIMutablePSDImageRef *)self saveWithCompletionHandler:a4];
+  return [(CUIMutablePSDImageRef *)self saveWithCompletionHandler:handler];
 }
 
 - (uint64_t)saveWithCompletionHandler:(uint64_t)a3 .cold.1(void *a1, uint64_t a2, uint64_t a3, NSError **a4)

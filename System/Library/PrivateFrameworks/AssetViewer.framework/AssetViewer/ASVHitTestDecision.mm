@@ -1,24 +1,24 @@
 @interface ASVHitTestDecision
-- (ASVHitTestDecision)initWithOriginalResult:(id)a3 interpolatedResult:(id)a4 finalResult:(id)a5;
+- (ASVHitTestDecision)initWithOriginalResult:(id)result interpolatedResult:(id)interpolatedResult finalResult:(id)finalResult;
 - (ASVHitTestResult)interpolatedOrFinalResult;
 @end
 
 @implementation ASVHitTestDecision
 
-- (ASVHitTestDecision)initWithOriginalResult:(id)a3 interpolatedResult:(id)a4 finalResult:(id)a5
+- (ASVHitTestDecision)initWithOriginalResult:(id)result interpolatedResult:(id)interpolatedResult finalResult:(id)finalResult
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  resultCopy = result;
+  interpolatedResultCopy = interpolatedResult;
+  finalResultCopy = finalResult;
   v15.receiver = self;
   v15.super_class = ASVHitTestDecision;
   v12 = [(ASVHitTestDecision *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_originalResult, a3);
-    objc_storeStrong(&v13->_interpolatedResult, a4);
-    objc_storeStrong(&v13->_finalResult, a5);
+    objc_storeStrong(&v12->_originalResult, result);
+    objc_storeStrong(&v13->_interpolatedResult, interpolatedResult);
+    objc_storeStrong(&v13->_finalResult, finalResult);
   }
 
   return v13;

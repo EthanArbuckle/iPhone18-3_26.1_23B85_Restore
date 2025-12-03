@@ -1,41 +1,41 @@
 @interface WiFiAwarePublishServiceSpecificInfo
-- (BOOL)blobEquals:(id)a3;
-- (BOOL)instanceNameEquals:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)txtRecordEquals:(id)a3;
+- (BOOL)blobEquals:(id)equals;
+- (BOOL)instanceNameEquals:(id)equals;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)txtRecordEquals:(id)equals;
 - (WiFiAwarePublishServiceSpecificInfo)init;
-- (WiFiAwarePublishServiceSpecificInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WiFiAwarePublishServiceSpecificInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WiFiAwarePublishServiceSpecificInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WiFiAwarePublishServiceSpecificInfo *)self blob];
-  [v4 encodeObject:v5 forKey:@"WiFiAwarePublishServiceSpecificInfo.blob"];
+  coderCopy = coder;
+  blob = [(WiFiAwarePublishServiceSpecificInfo *)self blob];
+  [coderCopy encodeObject:blob forKey:@"WiFiAwarePublishServiceSpecificInfo.blob"];
 
-  v6 = [(WiFiAwarePublishServiceSpecificInfo *)self txtRecordData];
-  [v4 encodeObject:v6 forKey:@"WiFiAwarePublishServiceSpecificInfo.txt"];
+  txtRecordData = [(WiFiAwarePublishServiceSpecificInfo *)self txtRecordData];
+  [coderCopy encodeObject:txtRecordData forKey:@"WiFiAwarePublishServiceSpecificInfo.txt"];
 
-  v7 = [(WiFiAwarePublishServiceSpecificInfo *)self instanceName];
-  [v4 encodeObject:v7 forKey:@"WiFiAwarePublishServiceSpecificInfo.instanceName"];
+  instanceName = [(WiFiAwarePublishServiceSpecificInfo *)self instanceName];
+  [coderCopy encodeObject:instanceName forKey:@"WiFiAwarePublishServiceSpecificInfo.instanceName"];
 }
 
-- (WiFiAwarePublishServiceSpecificInfo)initWithCoder:(id)a3
+- (WiFiAwarePublishServiceSpecificInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(WiFiAwarePublishServiceSpecificInfo *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishServiceSpecificInfo.blob"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishServiceSpecificInfo.blob"];
   [(WiFiAwarePublishServiceSpecificInfo *)v5 setBlob:v6];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishServiceSpecificInfo.txt"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishServiceSpecificInfo.txt"];
   [(WiFiAwarePublishServiceSpecificInfo *)v5 setTxtRecordData:v7];
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishServiceSpecificInfo.instanceName"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishServiceSpecificInfo.instanceName"];
 
   [(WiFiAwarePublishServiceSpecificInfo *)v5 setInstanceName:v8];
   return v5;
@@ -52,70 +52,70 @@
   return v2;
 }
 
-- (BOOL)blobEquals:(id)a3
+- (BOOL)blobEquals:(id)equals
 {
-  v4 = a3;
-  v5 = [(WiFiAwarePublishServiceSpecificInfo *)self blob];
-  v6 = [v4 blob];
-  if (v5 == v6)
+  equalsCopy = equals;
+  blob = [(WiFiAwarePublishServiceSpecificInfo *)self blob];
+  blob2 = [equalsCopy blob];
+  if (blob == blob2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(WiFiAwarePublishServiceSpecificInfo *)self blob];
-    v8 = [v4 blob];
-    v9 = [v7 isEqual:v8];
+    blob3 = [(WiFiAwarePublishServiceSpecificInfo *)self blob];
+    blob4 = [equalsCopy blob];
+    v9 = [blob3 isEqual:blob4];
   }
 
   return v9;
 }
 
-- (BOOL)txtRecordEquals:(id)a3
+- (BOOL)txtRecordEquals:(id)equals
 {
-  v4 = a3;
-  v5 = [(WiFiAwarePublishServiceSpecificInfo *)self txtRecordData];
-  v6 = [v4 txtRecordData];
-  if (v5 == v6)
+  equalsCopy = equals;
+  txtRecordData = [(WiFiAwarePublishServiceSpecificInfo *)self txtRecordData];
+  txtRecordData2 = [equalsCopy txtRecordData];
+  if (txtRecordData == txtRecordData2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(WiFiAwarePublishServiceSpecificInfo *)self txtRecordData];
-    v8 = [v4 txtRecordData];
-    v9 = [v7 isEqual:v8];
+    txtRecordData3 = [(WiFiAwarePublishServiceSpecificInfo *)self txtRecordData];
+    txtRecordData4 = [equalsCopy txtRecordData];
+    v9 = [txtRecordData3 isEqual:txtRecordData4];
   }
 
   return v9;
 }
 
-- (BOOL)instanceNameEquals:(id)a3
+- (BOOL)instanceNameEquals:(id)equals
 {
-  v4 = a3;
-  v5 = [(WiFiAwarePublishServiceSpecificInfo *)self instanceName];
-  v6 = [v4 instanceName];
-  if (v5 == v6)
+  equalsCopy = equals;
+  instanceName = [(WiFiAwarePublishServiceSpecificInfo *)self instanceName];
+  instanceName2 = [equalsCopy instanceName];
+  if (instanceName == instanceName2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(WiFiAwarePublishServiceSpecificInfo *)self instanceName];
-    v8 = [v4 instanceName];
-    v9 = [v7 isEqual:v8];
+    instanceName3 = [(WiFiAwarePublishServiceSpecificInfo *)self instanceName];
+    instanceName4 = [equalsCopy instanceName];
+    v9 = [instanceName3 isEqual:instanceName4];
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 0;
 LABEL_8:
@@ -131,7 +131,7 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   if ([(WiFiAwarePublishServiceSpecificInfo *)self blobEquals:v5]&& [(WiFiAwarePublishServiceSpecificInfo *)self txtRecordEquals:v5]&& [(WiFiAwarePublishServiceSpecificInfo *)self instanceNameEquals:v5])
   {
     goto LABEL_8;
@@ -146,25 +146,25 @@ LABEL_10:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(WiFiAwarePublishServiceSpecificInfo *)self blob];
-  v5 = [(WiFiAwarePublishServiceSpecificInfo *)self txtRecordData];
-  v6 = [(WiFiAwarePublishServiceSpecificInfo *)self instanceName];
-  v7 = [v3 stringWithFormat:@"<WiFiAwarePublishServiceSpecificInfo: blob=%@, txtRecordData=%@, instanceName=%@>", v4, v5, v6];
+  blob = [(WiFiAwarePublishServiceSpecificInfo *)self blob];
+  txtRecordData = [(WiFiAwarePublishServiceSpecificInfo *)self txtRecordData];
+  instanceName = [(WiFiAwarePublishServiceSpecificInfo *)self instanceName];
+  v7 = [v3 stringWithFormat:@"<WiFiAwarePublishServiceSpecificInfo: blob=%@, txtRecordData=%@, instanceName=%@>", blob, txtRecordData, instanceName];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(WiFiAwarePublishServiceSpecificInfo);
-  v5 = [(WiFiAwarePublishServiceSpecificInfo *)self blob];
-  [(WiFiAwarePublishServiceSpecificInfo *)v4 setBlob:v5];
+  blob = [(WiFiAwarePublishServiceSpecificInfo *)self blob];
+  [(WiFiAwarePublishServiceSpecificInfo *)v4 setBlob:blob];
 
-  v6 = [(WiFiAwarePublishServiceSpecificInfo *)self txtRecordData];
-  [(WiFiAwarePublishServiceSpecificInfo *)v4 setTxtRecordData:v6];
+  txtRecordData = [(WiFiAwarePublishServiceSpecificInfo *)self txtRecordData];
+  [(WiFiAwarePublishServiceSpecificInfo *)v4 setTxtRecordData:txtRecordData];
 
-  v7 = [(WiFiAwarePublishServiceSpecificInfo *)self instanceName];
-  [(WiFiAwarePublishServiceSpecificInfo *)v4 setInstanceName:v7];
+  instanceName = [(WiFiAwarePublishServiceSpecificInfo *)self instanceName];
+  [(WiFiAwarePublishServiceSpecificInfo *)v4 setInstanceName:instanceName];
 
   return v4;
 }

@@ -1,7 +1,7 @@
 @interface _UIImageEmptyContent
 - (CGSize)size;
 - (CGSize)sizeInPixels;
-- (id)renditionWithSize:(CGSize)a3 scale:(double)a4 renditionContext:(id)a5;
+- (id)renditionWithSize:(CGSize)size scale:(double)scale renditionContext:(id)context;
 @end
 
 @implementation _UIImageEmptyContent
@@ -24,7 +24,7 @@
   return result;
 }
 
-- (id)renditionWithSize:(CGSize)a3 scale:(double)a4 renditionContext:(id)a5
+- (id)renditionWithSize:(CGSize)size scale:(double)scale renditionContext:(id)context
 {
   v5 = [_UIImageContentProvider providerWithDrawingProvider:0 CGImageProvider:0 rbSymbolConfigurationProvider:?];
   v6 = [_UIImageContentRendition renditionWithContentProvider:v5];

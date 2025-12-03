@@ -2,40 +2,40 @@
 - (BOOL)_registrantIsUnderAge;
 - (HKOrganDonationRegisterViewController)init;
 - (NSArray)dataEntryItems;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_createTableFooterView;
 - (id)_createTableHeaderView;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_handleAppWillEnterForegroundNotification:(id)a3;
-- (void)_handleResponse:(id)a3 status:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_handleAppWillEnterForegroundNotification:(id)notification;
+- (void)_handleResponse:(id)response status:(int64_t)status;
 - (void)_loadRegistrantInformationIfAvailableAndSetupRegisterView;
 - (void)_reloadRegistrantInformationFromServer;
 - (void)_setupRegisterViewWithDefaultDemographicsInformation;
-- (void)_setupRegisterViewWithRegistrant:(id)a3 demographicsInformation:(id)a4;
-- (void)_toggleLoadingStatusIsLoading:(BOOL)a3;
+- (void)_setupRegisterViewWithRegistrant:(id)registrant demographicsInformation:(id)information;
+- (void)_toggleLoadingStatusIsLoading:(BOOL)loading;
 - (void)_toggleNextButtonEnabledState;
-- (void)cancelButtonTapped:(id)a3;
-- (void)dataEntryItemDonePressed:(id)a3;
-- (void)dataEntryItemNextPressed:(id)a3;
-- (void)dataEntryItemPrevPressed:(id)a3;
+- (void)cancelButtonTapped:(id)tapped;
+- (void)dataEntryItemDonePressed:(id)pressed;
+- (void)dataEntryItemNextPressed:(id)pressed;
+- (void)dataEntryItemPrevPressed:(id)pressed;
 - (void)dealloc;
-- (void)focusItemAtIndex:(int64_t)a3;
-- (void)nextButtonTapped:(id)a3;
-- (void)organDonationConnectionManagerDidRemoveCredential:(id)a3;
-- (void)organDonationConnectionManagerDidStoreCredential:(id)a3;
-- (void)submitOrganDonationFlowImpressionEvent:(int)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateButtonTapped:(id)a3;
+- (void)focusItemAtIndex:(int64_t)index;
+- (void)nextButtonTapped:(id)tapped;
+- (void)organDonationConnectionManagerDidRemoveCredential:(id)credential;
+- (void)organDonationConnectionManagerDidStoreCredential:(id)credential;
+- (void)submitOrganDonationFlowImpressionEvent:(int)event;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateButtonTapped:(id)tapped;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HKOrganDonationRegisterViewController
@@ -63,8 +63,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
 
   [(HKOrganDonationConnectionManager *)self->_connectionManager cleanUp];
   v4.receiver = self;
@@ -99,61 +99,61 @@
   self->_updateBarButtonItem = v12;
 
   [(UIBarButtonItem *)self->_updateBarButtonItem setEnabled:0];
-  v14 = [(HKOrganDonationRegisterViewController *)self navigationController];
-  v15 = [v14 viewControllers];
-  v16 = [v15 firstObject];
+  navigationController = [(HKOrganDonationRegisterViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  if (v16 == self)
+  if (firstObject == self)
   {
-    v17 = [(HKOrganDonationRegisterViewController *)self navigationItem];
+    navigationItem = [(HKOrganDonationRegisterViewController *)self navigationItem];
     v18 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_cancelButtonTapped_];
-    [v17 setLeftBarButtonItem:v18];
+    [navigationItem setLeftBarButtonItem:v18];
   }
 
-  v19 = [(HKOrganDonationRegisterViewController *)self tableView];
-  [v19 setKeyboardDismissMode:2];
+  tableView = [(HKOrganDonationRegisterViewController *)self tableView];
+  [tableView setKeyboardDismissMode:2];
 
-  v20 = [(HKOrganDonationRegisterViewController *)self tableView];
-  [v20 registerClass:objc_opt_class() forCellReuseIdentifier:@"Cell"];
+  tableView2 = [(HKOrganDonationRegisterViewController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"Cell"];
 
   [(HKOrganDonationRegisterViewController *)self setModalInPresentation:1];
   [(HKOrganDonationRegisterViewController *)self _loadRegistrantInformationIfAvailableAndSetupRegisterView];
-  v21 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v21 addObserver:self selector:sel__handleAppWillEnterForegroundNotification_ name:*MEMORY[0x1E69DDBC0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleAppWillEnterForegroundNotification_ name:*MEMORY[0x1E69DDBC0] object:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = HKOrganDonationRegisterViewController;
-  [(HKOrganDonationRegisterViewController *)&v6 viewWillAppear:a3];
-  v4 = [(HKOrganDonationRegisterViewController *)self navigationController];
-  v5 = [v4 navigationBar];
-  [v5 _setHidesShadow:1];
+  [(HKOrganDonationRegisterViewController *)&v6 viewWillAppear:appear];
+  navigationController = [(HKOrganDonationRegisterViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar _setHidesShadow:1];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = HKOrganDonationRegisterViewController;
-  [(HKOrganDonationRegisterViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(HKOrganDonationRegisterViewController *)self view];
-  [v4 endEditing:0];
+  [(HKOrganDonationRegisterViewController *)&v5 viewWillDisappear:disappear];
+  view = [(HKOrganDonationRegisterViewController *)self view];
+  [view endEditing:0];
 }
 
 - (id)_createTableHeaderView
 {
-  v3 = [(HKOrganDonationRegisterViewController *)self view];
+  view = [(HKOrganDonationRegisterViewController *)self view];
   UIRoundToViewScale();
   v5 = v4;
 
-  v6 = [(HKOrganDonationRegisterViewController *)self tableView];
-  [v6 frame];
+  tableView = [(HKOrganDonationRegisterViewController *)self tableView];
+  [tableView frame];
   Width = CGRectGetWidth(v23);
 
   v8 = [[HKTitledLogoBuddyHeaderView alloc] initWithTopInset:0 linkButtonTitle:v5];
-  v9 = [(HKTitledLogoBuddyHeaderView *)v8 widthAnchor];
-  v10 = [v9 constraintEqualToConstant:Width];
+  widthAnchor = [(HKTitledLogoBuddyHeaderView *)v8 widthAnchor];
+  v10 = [widthAnchor constraintEqualToConstant:Width];
   [v10 setActive:1];
 
   v11 = MEMORY[0x1E69DCAB8];
@@ -185,8 +185,8 @@
   }
 
   [(HKTitledLogoBuddyHeaderView *)v8 layoutIfNeeded];
-  v20 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-  [(HKTitledLogoBuddyHeaderView *)v8 setBackgroundColor:v20];
+  secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+  [(HKTitledLogoBuddyHeaderView *)v8 setBackgroundColor:secondarySystemBackgroundColor];
 
   return v8;
 }
@@ -194,8 +194,8 @@
 - (id)_createTableFooterView
 {
   v3 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v4 = [(HKOrganDonationRegisterViewController *)self view];
-  [v4 frame];
+  view = [(HKOrganDonationRegisterViewController *)self view];
+  [view frame];
   Width = CGRectGetWidth(v19);
 
   v6 = MEMORY[0x1E69DC738];
@@ -216,47 +216,47 @@
   return v3;
 }
 
-- (void)_setupRegisterViewWithRegistrant:(id)a3 demographicsInformation:(id)a4
+- (void)_setupRegisterViewWithRegistrant:(id)registrant demographicsInformation:(id)information
 {
-  v6 = a3;
+  registrantCopy = registrant;
   self->_isUpdate = 1;
-  if (!v6)
+  if (!registrantCopy)
   {
     self->_isUpdate = 0;
-    v6 = [HKOrganDonationRegistrant organDonationRegistrantWithDemographicsInformation:a4];
+    registrantCopy = [HKOrganDonationRegistrant organDonationRegistrantWithDemographicsInformation:information];
   }
 
   dataEntryItems = self->_dataEntryItems;
   self->_dataEntryItems = 0;
 
   registrant = self->_registrant;
-  self->_registrant = v6;
-  v9 = v6;
+  self->_registrant = registrantCopy;
+  v9 = registrantCopy;
 
   [(HKOrganDonationRegistrant *)self->_registrant setDelegate:self];
   [(HKOrganDonationRegisterViewController *)self _toggleLoadingStatusIsLoading:0];
-  v10 = [(HKOrganDonationRegisterViewController *)self _createTableHeaderView];
+  _createTableHeaderView = [(HKOrganDonationRegisterViewController *)self _createTableHeaderView];
   headerView = self->_headerView;
-  self->_headerView = v10;
+  self->_headerView = _createTableHeaderView;
 
-  v12 = [(HKOrganDonationRegisterViewController *)self _createTableFooterView];
+  _createTableFooterView = [(HKOrganDonationRegisterViewController *)self _createTableFooterView];
   footerView = self->_footerView;
-  self->_footerView = v12;
+  self->_footerView = _createTableFooterView;
 
   [(HKOrganDonationRegisterViewController *)self _toggleNextButtonEnabledState];
-  v14 = [(HKOrganDonationRegisterViewController *)self tableView];
-  [v14 reloadData];
+  tableView = [(HKOrganDonationRegisterViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)_toggleLoadingStatusIsLoading:(BOOL)a3
+- (void)_toggleLoadingStatusIsLoading:(BOOL)loading
 {
-  v3 = a3;
-  self->_isLoading = a3;
-  if (a3)
+  loadingCopy = loading;
+  self->_isLoading = loading;
+  if (loading)
   {
-    v5 = [(HKOrganDonationRegisterViewController *)self navigationItem];
+    navigationItem = [(HKOrganDonationRegisterViewController *)self navigationItem];
     p_loadingIndicatorBarButtonItem = &self->_loadingIndicatorBarButtonItem;
-    [v5 setRightBarButtonItem:self->_loadingIndicatorBarButtonItem];
+    [navigationItem setRightBarButtonItem:self->_loadingIndicatorBarButtonItem];
 
     [(UIActivityIndicatorView *)self->_loadingIndicator startAnimating];
   }
@@ -265,15 +265,15 @@
   {
     if (+[HKOrganDonationConnectionManager hasStoredRegistrant])
     {
-      v7 = [(HKOrganDonationRegisterViewController *)self navigationItem];
-      [v7 setRightBarButtonItem:self->_updateBarButtonItem];
+      navigationItem2 = [(HKOrganDonationRegisterViewController *)self navigationItem];
+      [navigationItem2 setRightBarButtonItem:self->_updateBarButtonItem];
     }
 
     [(UIActivityIndicatorView *)self->_loadingIndicator stopAnimating];
     p_loadingIndicatorBarButtonItem = &self->_loadingIndicatorBarButtonItem;
   }
 
-  [(UIBarButtonItem *)*p_loadingIndicatorBarButtonItem setHidden:!v3];
+  [(UIBarButtonItem *)*p_loadingIndicatorBarButtonItem setHidden:!loadingCopy];
 
   [(HKOrganDonationRegisterViewController *)self _toggleNextButtonEnabledState];
 }
@@ -294,13 +294,13 @@
   }
 }
 
-- (void)_handleResponse:(id)a3 status:(int64_t)a4
+- (void)_handleResponse:(id)response status:(int64_t)status
 {
-  v6 = a3;
+  responseCopy = response;
   [(HKOrganDonationRegisterViewController *)self _toggleLoadingStatusIsLoading:0];
-  if (a4 > 2)
+  if (status > 2)
   {
-    if (a4 == 3)
+    if (status == 3)
     {
       v27 = MEMORY[0x1E69DC650];
       v28 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -325,7 +325,7 @@
 
     else
     {
-      if (a4 != 4)
+      if (status != 4)
       {
         goto LABEL_14;
       }
@@ -363,7 +363,7 @@ LABEL_12:
 
   else
   {
-    if ((a4 - 1) < 2)
+    if ((status - 1) < 2)
     {
       v7 = MEMORY[0x1E69DC650];
       v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -387,9 +387,9 @@ LABEL_12:
       goto LABEL_12;
     }
 
-    if (!a4)
+    if (!status)
     {
-      v12 = [HKOrganDonationRegistrant organDonationRegistrantWithJSONDictionary:v6];
+      v12 = [HKOrganDonationRegistrant organDonationRegistrantWithJSONDictionary:responseCopy];
       [(HKOrganDonationRegisterViewController *)self _setupRegisterViewWithRegistrant:v12];
 LABEL_13:
     }
@@ -541,7 +541,7 @@ void __79__HKOrganDonationRegisterViewController__reloadRegistrantInformationFro
   }
 }
 
-- (void)_handleAppWillEnterForegroundNotification:(id)a3
+- (void)_handleAppWillEnterForegroundNotification:(id)notification
 {
   if (+[HKOrganDonationConnectionManager hasStoredRegistrant])
   {
@@ -551,18 +551,18 @@ void __79__HKOrganDonationRegisterViewController__reloadRegistrantInformationFro
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v12.receiver = self;
   v12.super_class = HKOrganDonationRegisterViewController;
-  [(HKOrganDonationRegisterViewController *)&v12 traitCollectionDidChange:v4];
-  if (v4)
+  [(HKOrganDonationRegisterViewController *)&v12 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(HKOrganDonationRegisterViewController *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(HKOrganDonationRegisterViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {
@@ -586,7 +586,7 @@ void __66__HKOrganDonationRegisterViewController_traitCollectionDidChange___bloc
   [v1 reloadData];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   v3 = 3;
   if (self->_isLoading)
@@ -605,29 +605,29 @@ void __66__HKOrganDonationRegisterViewController_traitCollectionDidChange___bloc
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 1;
   }
 
-  v5 = [(HKOrganDonationRegisterViewController *)self dataEntryItems];
-  v6 = [v5 count];
+  dataEntryItems = [(HKOrganDonationRegisterViewController *)self dataEntryItems];
+  v6 = [dataEntryItems count];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
-  if (v8 == 2)
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == 2)
   {
-    v11 = [v6 dequeueReusableCellWithIdentifier:@"Cell"];
+    v11 = [viewCopy dequeueReusableCellWithIdentifier:@"Cell"];
     [v11 setAccessoryType:1];
-    v10 = [v11 textLabel];
+    textLabel = [v11 textLabel];
     v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v13 = v12;
     v14 = @"OD_REMOVE_FROM_REGISTRY";
@@ -635,43 +635,43 @@ void __66__HKOrganDonationRegisterViewController_traitCollectionDidChange___bloc
 
   else
   {
-    if (v8 != 1)
+    if (section != 1)
     {
-      if (v8)
+      if (section)
       {
         v16 = objc_opt_class();
-        v10 = NSStringFromClass(v16);
-        HKErrorTableViewCell(v10);
+        textLabel = NSStringFromClass(v16);
+        HKErrorTableViewCell(textLabel);
       }
 
       else
       {
-        v9 = [(HKOrganDonationRegisterViewController *)self dataEntryItems];
-        v10 = [v9 objectAtIndex:{objc_msgSend(v7, "row")}];
+        dataEntryItems = [(HKOrganDonationRegisterViewController *)self dataEntryItems];
+        textLabel = [dataEntryItems objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-        [v10 cell];
+        [textLabel cell];
       }
       v11 = ;
       goto LABEL_10;
     }
 
-    v11 = [v6 dequeueReusableCellWithIdentifier:@"Cell"];
+    v11 = [viewCopy dequeueReusableCellWithIdentifier:@"Cell"];
     [v11 setAccessoryType:0];
-    v10 = [v11 textLabel];
+    textLabel = [v11 textLabel];
     v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v13 = v12;
     v14 = @"OD_EDIT_PREFERENCE";
   }
 
   v15 = [v12 localizedStringForKey:v14 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-  [v10 setText:v15];
+  [textLabel setText:v15];
 
 LABEL_10:
 
   return v11;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   isUpdate = self->_isUpdate;
   bodyFont = self->_bodyFont;
@@ -681,49 +681,49 @@ LABEL_10:
     v6 = 56.0;
   }
 
-  [(UIFont *)bodyFont _scaledValueForValue:a3, a4, v6];
+  [(UIFont *)bodyFont _scaledValueForValue:view, path, v6];
   return result;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v16 = a3;
-  v6 = a4;
-  [v16 deselectRowAtIndexPath:v6 animated:1];
-  v7 = [v6 section];
-  if (v7 == 2)
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  section = [pathCopy section];
+  if (section == 2)
   {
     v10 = [HKOrganDonationConfirmDeleteViewController alloc];
     connectionManager = self->_connectionManager;
-    v12 = [(HKOrganDonationRegisterViewController *)self medicalIDData];
-    v9 = [(HKOrganDonationConfirmDeleteViewController *)v10 initWithConnectionManager:connectionManager medicalIDData:v12];
+    medicalIDData = [(HKOrganDonationRegisterViewController *)self medicalIDData];
+    v9 = [(HKOrganDonationConfirmDeleteViewController *)v10 initWithConnectionManager:connectionManager medicalIDData:medicalIDData];
 
-    v13 = [(HKOrganDonationRegisterViewController *)self registrationCompletionHandler];
-    [(HKOrganDonationBaseViewController *)v9 setRegistrationCompletionHandler:v13];
+    registrationCompletionHandler = [(HKOrganDonationRegisterViewController *)self registrationCompletionHandler];
+    [(HKOrganDonationBaseViewController *)v9 setRegistrationCompletionHandler:registrationCompletionHandler];
 
-    v14 = [(HKOrganDonationRegisterViewController *)self completionButtonTitle];
-    [(HKOrganDonationBaseViewController *)v9 setCompletionButtonTitle:v14];
+    completionButtonTitle = [(HKOrganDonationRegisterViewController *)self completionButtonTitle];
+    [(HKOrganDonationBaseViewController *)v9 setCompletionButtonTitle:completionButtonTitle];
 
-    v15 = [(HKOrganDonationRegisterViewController *)self navigationController];
-    [v15 pushViewController:v9 animated:1];
+    navigationController = [(HKOrganDonationRegisterViewController *)self navigationController];
+    [navigationController pushViewController:v9 animated:1];
   }
 
   else
   {
-    if (v7 == 1)
+    if (section == 1)
     {
       [(HKOrganDonationConnectionManager *)self->_connectionManager openRegisterMeSiteInSafariIfAuthenticated];
       goto LABEL_8;
     }
 
-    if (v7)
+    if (section)
     {
       goto LABEL_8;
     }
 
-    [v16 deselectRowAtIndexPath:v6 animated:1];
-    v8 = [(HKOrganDonationRegisterViewController *)self dataEntryItems];
-    v9 = [v8 objectAtIndex:{objc_msgSend(v6, "row")}];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+    dataEntryItems = [(HKOrganDonationRegisterViewController *)self dataEntryItems];
+    v9 = [dataEntryItems objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
     [(HKOrganDonationConfirmDeleteViewController *)v9 beginEditing];
   }
@@ -731,21 +731,21 @@ LABEL_10:
 LABEL_8:
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 5.0;
   }
 
-  [(UIView *)self->_headerView frame:a3];
+  [(UIView *)self->_headerView frame:view];
 
   return CGRectGetHeight(*&v7);
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     v5 = 0;
   }
@@ -758,19 +758,19 @@ LABEL_8:
   return v5;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
   if (self->_isUpdate)
   {
     return 5.0;
   }
 
-  [(UIView *)self->_footerView frame:a3];
+  [(UIView *)self->_footerView frame:view];
 
   return CGRectGetHeight(*&v7);
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   if (self->_isUpdate)
   {
@@ -785,15 +785,15 @@ LABEL_8:
   return v5;
 }
 
-- (void)dataEntryItemDonePressed:(id)a3
+- (void)dataEntryItemDonePressed:(id)pressed
 {
-  v3 = [(HKOrganDonationRegisterViewController *)self view];
-  [v3 endEditing:0];
+  view = [(HKOrganDonationRegisterViewController *)self view];
+  [view endEditing:0];
 }
 
-- (void)dataEntryItemPrevPressed:(id)a3
+- (void)dataEntryItemPrevPressed:(id)pressed
 {
-  v4 = [(NSArray *)self->_dataEntryItems indexOfObject:a3];
+  v4 = [(NSArray *)self->_dataEntryItems indexOfObject:pressed];
   if (v4 <= 0)
   {
     v4 = [(NSArray *)self->_dataEntryItems count];
@@ -802,9 +802,9 @@ LABEL_8:
   [(HKOrganDonationRegisterViewController *)self focusItemAtIndex:v4 - 1];
 }
 
-- (void)dataEntryItemNextPressed:(id)a3
+- (void)dataEntryItemNextPressed:(id)pressed
 {
-  v4 = [(NSArray *)self->_dataEntryItems indexOfObject:a3];
+  v4 = [(NSArray *)self->_dataEntryItems indexOfObject:pressed];
   if (v4 + 1 < [(NSArray *)self->_dataEntryItems count])
   {
     v5 = v4 + 1;
@@ -818,69 +818,69 @@ LABEL_8:
   [(HKOrganDonationRegisterViewController *)self focusItemAtIndex:v5];
 }
 
-- (void)focusItemAtIndex:(int64_t)a3
+- (void)focusItemAtIndex:(int64_t)index
 {
   v7 = [(NSArray *)self->_dataEntryItems objectAtIndexedSubscript:?];
   [v7 beginEditing];
-  v5 = [MEMORY[0x1E696AC88] indexPathForRow:a3 inSection:0];
-  v6 = [(HKOrganDonationRegisterViewController *)self tableView];
-  [v6 scrollToRowAtIndexPath:v5 atScrollPosition:3 animated:1];
+  v5 = [MEMORY[0x1E696AC88] indexPathForRow:index inSection:0];
+  tableView = [(HKOrganDonationRegisterViewController *)self tableView];
+  [tableView scrollToRowAtIndexPath:v5 atScrollPosition:3 animated:1];
 }
 
-- (void)nextButtonTapped:(id)a3
+- (void)nextButtonTapped:(id)tapped
 {
-  v4 = [(HKOrganDonationRegisterViewController *)self view];
-  [v4 endEditing:0];
+  view = [(HKOrganDonationRegisterViewController *)self view];
+  [view endEditing:0];
 
   if ([(HKOrganDonationRegisterViewController *)self _registrantIsUnderAge])
   {
     v5 = [HKOrganDonationUnderageViewController alloc];
-    v6 = [(HKOrganDonationRegisterViewController *)self medicalIDData];
-    v7 = [(HKOrganDonationBaseViewController *)v5 initWithMedicalIDData:v6];
+    medicalIDData = [(HKOrganDonationRegisterViewController *)self medicalIDData];
+    v7 = [(HKOrganDonationBaseViewController *)v5 initWithMedicalIDData:medicalIDData];
   }
 
   else
   {
     v8 = [HKOrganDonationConfirmationViewController alloc];
     registrant = self->_registrant;
-    v6 = [(HKOrganDonationRegisterViewController *)self medicalIDData];
-    v7 = [(HKOrganDonationConfirmationViewController *)v8 initWithRegistrant:registrant medicalIDData:v6 connectionManager:self->_connectionManager];
+    medicalIDData = [(HKOrganDonationRegisterViewController *)self medicalIDData];
+    v7 = [(HKOrganDonationConfirmationViewController *)v8 initWithRegistrant:registrant medicalIDData:medicalIDData connectionManager:self->_connectionManager];
   }
 
   v12 = v7;
 
-  v10 = [(HKOrganDonationRegisterViewController *)self completionButtonTitle];
-  [v12 setCompletionButtonTitle:v10];
+  completionButtonTitle = [(HKOrganDonationRegisterViewController *)self completionButtonTitle];
+  [v12 setCompletionButtonTitle:completionButtonTitle];
 
   [v12 setRegistrationCompletionHandler:self->_registrationCompletionHandler];
-  v11 = [(HKOrganDonationRegisterViewController *)self navigationController];
-  [v11 pushViewController:v12 animated:1];
+  navigationController = [(HKOrganDonationRegisterViewController *)self navigationController];
+  [navigationController pushViewController:v12 animated:1];
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
   registrationCompletionHandler = self->_registrationCompletionHandler;
   if (registrationCompletionHandler)
   {
-    registrationCompletionHandler[2](registrationCompletionHandler, 0, a3);
+    registrationCompletionHandler[2](registrationCompletionHandler, 0, tapped);
   }
 
   [(HKOrganDonationRegisterViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)updateButtonTapped:(id)a3
+- (void)updateButtonTapped:(id)tapped
 {
   v4 = [HKOrganDonationConfirmUpdateViewController alloc];
   registrant = self->_registrant;
-  v6 = [(HKOrganDonationRegisterViewController *)self medicalIDData];
-  v8 = [(HKOrganDonationConfirmUpdateViewController *)v4 initWithRegistrant:registrant medicalIDData:v6 connectionManager:self->_connectionManager];
+  medicalIDData = [(HKOrganDonationRegisterViewController *)self medicalIDData];
+  v8 = [(HKOrganDonationConfirmUpdateViewController *)v4 initWithRegistrant:registrant medicalIDData:medicalIDData connectionManager:self->_connectionManager];
 
   [(HKOrganDonationBaseViewController *)v8 setRegistrationCompletionHandler:self->_registrationCompletionHandler];
-  v7 = [(HKOrganDonationRegisterViewController *)self navigationController];
-  [v7 pushViewController:v8 animated:1];
+  navigationController = [(HKOrganDonationRegisterViewController *)self navigationController];
+  [navigationController pushViewController:v8 animated:1];
 }
 
-- (void)organDonationConnectionManagerDidStoreCredential:(id)a3
+- (void)organDonationConnectionManagerDidStoreCredential:(id)credential
 {
   [(_HKMedicalIDData *)self->_medicalIDData setIsOrganDonor:&unk_1F4383E98];
   healthStore = self->_healthStore;
@@ -889,7 +889,7 @@ LABEL_8:
   [(HKHealthStore *)healthStore updateMedicalIDData:medicalIDData];
 }
 
-- (void)organDonationConnectionManagerDidRemoveCredential:(id)a3
+- (void)organDonationConnectionManagerDidRemoveCredential:(id)credential
 {
   [(_HKMedicalIDData *)self->_medicalIDData setIsOrganDonor:0];
   healthStore = self->_healthStore;
@@ -898,12 +898,12 @@ LABEL_8:
   [(HKHealthStore *)healthStore updateMedicalIDData:medicalIDData];
 }
 
-- (void)submitOrganDonationFlowImpressionEvent:(int)a3
+- (void)submitOrganDonationFlowImpressionEvent:(int)event
 {
-  v4 = [[HKOrganDonationFlowImpressionAnalyticEvent alloc] initWithImpressionEvent:*&a3];
-  v5 = [(HKOrganDonationConnectionManager *)self->_connectionManager analyticsEventSubmissionManager];
+  v4 = [[HKOrganDonationFlowImpressionAnalyticEvent alloc] initWithImpressionEvent:*&event];
+  analyticsEventSubmissionManager = [(HKOrganDonationConnectionManager *)self->_connectionManager analyticsEventSubmissionManager];
   v6 = 0;
-  [v5 submitEvent:v4 error:&v6];
+  [analyticsEventSubmissionManager submitEvent:v4 error:&v6];
 }
 
 @end

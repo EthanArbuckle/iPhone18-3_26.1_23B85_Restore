@@ -1,30 +1,30 @@
 @interface MapsSuggestionsCompositeSource
-- (BOOL)addChildSource:(id)a3;
-- (BOOL)canProduceEntriesOfType:(int64_t)a3;
-- (BOOL)removeChildSource:(id)a3;
-- (MapsSuggestionsCompositeSource)initWithDelegate:(id)a3 name:(id)a4;
-- (char)removeEntry:(id)a3 behavior:(int64_t)a4 handler:(id)a5;
-- (double)_suppressionTimeForEntry:(int)a3 snoozeOnly:;
-- (double)_updateChildSource:(void *)a3 handler:;
-- (double)test_suppressionDurationForBehavior:(int64_t)a3 type:(int64_t)a4;
-- (double)updateSuggestionEntriesOfType:(int64_t)a3 handler:(id)a4;
-- (double)updateSuggestionEntriesWithHandler:(id)a3;
+- (BOOL)addChildSource:(id)source;
+- (BOOL)canProduceEntriesOfType:(int64_t)type;
+- (BOOL)removeChildSource:(id)source;
+- (MapsSuggestionsCompositeSource)initWithDelegate:(id)delegate name:(id)name;
+- (char)removeEntry:(id)entry behavior:(int64_t)behavior handler:(id)handler;
+- (double)_suppressionTimeForEntry:(int)entry snoozeOnly:;
+- (double)_updateChildSource:(void *)source handler:;
+- (double)test_suppressionDurationForBehavior:(int64_t)behavior type:(int64_t)type;
+- (double)updateSuggestionEntriesOfType:(int64_t)type handler:(id)handler;
+- (double)updateSuggestionEntriesWithHandler:(id)handler;
 - (id).cxx_construct;
 - (id)children;
-- (id)initFromResourceDepot:(id)a3 name:(id)a4;
-- (id)test_dateUntilSuppressedEntry:(id)a3;
-- (uint64_t)_shouldUpdateSource:(uint64_t)a1;
-- (unint64_t)addOrUpdateSuggestionEntries:(id)a3 source:(id)a4;
+- (id)initFromResourceDepot:(id)depot name:(id)name;
+- (id)test_dateUntilSuppressedEntry:(id)entry;
+- (uint64_t)_shouldUpdateSource:(uint64_t)source;
+- (unint64_t)addOrUpdateSuggestionEntries:(id)entries source:(id)source;
 - (void)_initUpdateTimerIfNecessary;
-- (void)_scheduleNextUpdateChildSourcesWithin:(uint64_t)a1;
+- (void)_scheduleNextUpdateChildSourcesWithin:(uint64_t)within;
 - (void)_startUpdateChildSources;
 - (void)_stopUpdateChildSources;
-- (void)_updateChildSourcesForType:(void *)a3 handler:;
-- (void)_updateChildSourcesForceAll:(void *)a3 handler:;
+- (void)_updateChildSourcesForType:(void *)type handler:;
+- (void)_updateChildSourcesForceAll:(void *)all handler:;
 - (void)dealloc;
-- (void)feedbackForContact:(id)a3 action:(int64_t)a4;
-- (void)feedbackForEntry:(id)a3 action:(int64_t)a4;
-- (void)feedbackForMapItem:(id)a3 action:(int64_t)a4;
+- (void)feedbackForContact:(id)contact action:(int64_t)action;
+- (void)feedbackForEntry:(id)entry action:(int64_t)action;
+- (void)feedbackForMapItem:(id)item action:(int64_t)action;
 - (void)start;
 - (void)stop;
 - (void)test_resetSuppressions;
@@ -62,10 +62,10 @@
 
 - (void)_initUpdateTimerIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(a1[5]);
-    if (!a1[7])
+    dispatch_assert_queue_V2(self[5]);
+    if (!self[7])
     {
       v2 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
@@ -74,21 +74,21 @@
         _os_log_impl(&dword_1C5126000, v2, OS_LOG_TYPE_DEBUG, "Re-initializing the _updateTimer", buf, 2u);
       }
 
-      objc_initWeak(buf, a1);
-      v3 = a1[5];
+      objc_initWeak(buf, self);
+      v3 = self[5];
       v4 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v3);
-      v5 = a1[7];
-      a1[7] = v4;
+      v5 = self[7];
+      self[7] = v4;
 
-      dispatch_source_set_timer(a1[7], 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
-      v6 = a1[7];
+      dispatch_source_set_timer(self[7], 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
+      v6 = self[7];
       handler[0] = MEMORY[0x1E69E9820];
       handler[1] = 3221225472;
       handler[2] = __61__MapsSuggestionsCompositeSource__initUpdateTimerIfNecessary__block_invoke;
       handler[3] = &unk_1E81F5208;
       objc_copyWeak(&v8, buf);
       dispatch_source_set_event_handler(v6, handler);
-      dispatch_resume(a1[7]);
+      dispatch_resume(self[7]);
       objc_destroyWeak(&v8);
       objc_destroyWeak(buf);
     }
@@ -123,7 +123,7 @@ void __39__MapsSuggestionsCompositeSource_start__block_invoke(uint64_t a1)
 
 - (void)_startUpdateChildSources
 {
-  dispatch_assert_queue_V2(*(a1 + 40));
+  dispatch_assert_queue_V2(*(self + 40));
   *a2 = *MEMORY[0x1E69A1B08];
   v5 = GEOFindOrCreateLog();
   *a3 = v5;
@@ -183,22 +183,22 @@ void __38__MapsSuggestionsCompositeSource_stop__block_invoke(uint64_t a1)
 - (void)_stopUpdateChildSources
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    *(a1 + 80) = 0;
-    v2 = *(a1 + 56);
+    *(self + 80) = 0;
+    v2 = *(self + 56);
     if (v2)
     {
       dispatch_source_set_timer(v2, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
-      dispatch_source_cancel(*(a1 + 56));
-      v3 = *(a1 + 56);
-      *(a1 + 56) = 0;
+      dispatch_source_cancel(*(self + 56));
+      v3 = *(self + 56);
+      *(self + 56) = 0;
 
       v19 = 0u;
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      obj = *(a1 + 24);
+      obj = *(self + 24);
       v4 = [obj countByEnumeratingWithState:&v17 objects:v23 count:16];
       if (v4)
       {
@@ -216,23 +216,23 @@ void __38__MapsSuggestionsCompositeSource_stop__block_invoke(uint64_t a1)
             v8 = GEOFindOrCreateLog();
             if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
             {
-              v9 = [v7 uniqueName];
+              uniqueName = [v7 uniqueName];
               *buf = 138412290;
-              v22 = v9;
+              v22 = uniqueName;
               _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_DEBUG, "SOURCE{%@} stop", buf, 0xCu);
             }
 
-            v10 = *(a1 + 72);
-            v11 = [v7 uniqueName];
-            v12 = [v10 objectForKeyedSubscript:v11];
-            v13 = [v12 BOOLValue];
+            v10 = *(self + 72);
+            uniqueName2 = [v7 uniqueName];
+            v12 = [v10 objectForKeyedSubscript:uniqueName2];
+            bOOLValue = [v12 BOOLValue];
 
-            if (v13)
+            if (bOOLValue)
             {
               [v7 stop];
-              v14 = *(a1 + 72);
-              v15 = [v7 uniqueName];
-              [v14 setObject:MEMORY[0x1E695E110] forKeyedSubscript:v15];
+              v14 = *(self + 72);
+              uniqueName3 = [v7 uniqueName];
+              [v14 setObject:MEMORY[0x1E695E110] forKeyedSubscript:uniqueName3];
             }
           }
 
@@ -278,12 +278,12 @@ void __38__MapsSuggestionsCompositeSource_stop__block_invoke(uint64_t a1)
   [(MapsSuggestionsCompositeSource *)&v6 dealloc];
 }
 
-- (uint64_t)_shouldUpdateSource:(uint64_t)a1
+- (uint64_t)_shouldUpdateSource:(uint64_t)source
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!source)
   {
     v8 = 0;
     goto LABEL_13;
@@ -298,18 +298,18 @@ void __38__MapsSuggestionsCompositeSource_stop__block_invoke(uint64_t a1)
     goto LABEL_12;
   }
 
-  dispatch_assert_queue_V2(*(a1 + 40));
-  v5 = *(a1 + 32);
-  v6 = [v4 uniqueName];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  dispatch_assert_queue_V2(*(source + 40));
+  v5 = *(source + 32);
+  uniqueName = [v4 uniqueName];
+  v7 = [v5 objectForKeyedSubscript:uniqueName];
 
   if (!v7)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [v4 uniqueName];
-      [(MapsSuggestionsCompositeSource *)v11 _shouldUpdateSource:buf, v10];
+      uniqueName2 = [v4 uniqueName];
+      [(MapsSuggestionsCompositeSource *)uniqueName2 _shouldUpdateSource:buf, v10];
     }
 
     goto LABEL_11;
@@ -320,8 +320,8 @@ void __38__MapsSuggestionsCompositeSource_stop__block_invoke(uint64_t a1)
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [v4 uniqueName];
-      [(MapsSuggestionsCompositeSource *)v12 _shouldUpdateSource:buf, v10];
+      uniqueName3 = [v4 uniqueName];
+      [(MapsSuggestionsCompositeSource *)uniqueName3 _shouldUpdateSource:buf, v10];
     }
 
 LABEL_11:
@@ -363,19 +363,19 @@ void __61__MapsSuggestionsCompositeSource__initUpdateTimerIfNecessary__block_inv
   }
 }
 
-- (void)_updateChildSourcesForceAll:(void *)a3 handler:
+- (void)_updateChildSourcesForceAll:(void *)all handler:
 {
   v65 = *MEMORY[0x1E69E9840];
-  v45 = a3;
-  if (a1)
+  allCopy = all;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 40));
+    dispatch_assert_queue_V2(*(self + 40));
     v5 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [a1 uniqueName];
+      uniqueName = [self uniqueName];
       *buf = 138412546;
-      *&buf[4] = v6;
+      *&buf[4] = uniqueName;
       v60 = 2080;
       v61 = "_updateChildSourcesForceAll";
       _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -402,11 +402,11 @@ void __61__MapsSuggestionsCompositeSource__initUpdateTimerIfNecessary__block_inv
       _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_DEBUG, "Forcing all? %s", buf, 0xCu);
     }
 
-    if (*(a1 + 80))
+    if (*(self + 80))
     {
       GEOConfigGetDouble();
       v11 = v10;
-      v12 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(*(a1 + 24), "count")}];
+      v12 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(*(self + 24), "count")}];
       group = dispatch_group_create();
       v47 = v12;
       v50 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -414,13 +414,13 @@ void __61__MapsSuggestionsCompositeSource__initUpdateTimerIfNecessary__block_inv
       v58 = 0u;
       v55 = 0u;
       v56 = 0u;
-      obj = *(a1 + 24);
+      obj = *(self + 24);
       v13 = [obj countByEnumeratingWithState:&v55 objects:v64 count:16];
       if (v13)
       {
         v14 = "with";
         v15 = *v56;
-        if (!v45)
+        if (!allCopy)
         {
           v14 = "without";
         }
@@ -436,27 +436,27 @@ void __61__MapsSuggestionsCompositeSource__initUpdateTimerIfNecessary__block_inv
             }
 
             v17 = *(*(&v55 + 1) + 8 * i);
-            if ((a2 & 1) != 0 || ([(MapsSuggestionsCompositeSource *)a1 _shouldUpdateSource:?]& 1) != 0)
+            if ((a2 & 1) != 0 || ([(MapsSuggestionsCompositeSource *)self _shouldUpdateSource:?]& 1) != 0)
             {
               v18 = v50;
               objc_sync_enter(v18);
-              v19 = [v17 uniqueName];
-              v20 = [v18 objectForKey:v19];
+              uniqueName2 = [v17 uniqueName];
+              v20 = [v18 objectForKey:uniqueName2];
               v21 = v20 == 0;
 
               if (v21)
               {
-                v24 = [v17 uniqueName];
-                [v18 setValue:&unk_1F4470F48 forKey:v24];
+                uniqueName3 = [v17 uniqueName];
+                [v18 setValue:&unk_1F4470F48 forKey:uniqueName3];
 
                 objc_sync_exit(v18);
                 dispatch_group_enter(group);
                 v25 = GEOFindOrCreateLog();
                 if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
                 {
-                  v26 = [v17 uniqueName];
+                  uniqueName4 = [v17 uniqueName];
                   *buf = 138412802;
-                  *&buf[4] = v26;
+                  *&buf[4] = uniqueName4;
                   v60 = 2080;
                   v61 = v46;
                   v62 = 2112;
@@ -466,8 +466,8 @@ void __61__MapsSuggestionsCompositeSource__initUpdateTimerIfNecessary__block_inv
 
                 v27 = v47;
                 objc_sync_enter(v27);
-                v28 = [v17 uniqueName];
-                [v27 addObject:v28];
+                uniqueName5 = [v17 uniqueName];
+                [v27 addObject:uniqueName5];
 
                 objc_sync_exit(v27);
                 v51[0] = MEMORY[0x1E69E9820];
@@ -478,7 +478,7 @@ void __61__MapsSuggestionsCompositeSource__initUpdateTimerIfNecessary__block_inv
                 v52 = v27;
                 v53 = v18;
                 v54 = group;
-                v29 = [(MapsSuggestionsCompositeSource *)a1 _updateChildSource:v17 handler:v51];
+                v29 = [(MapsSuggestionsCompositeSource *)self _updateChildSource:v17 handler:v51];
                 if (v29 >= v11)
                 {
                   v30 = v11;
@@ -500,9 +500,9 @@ void __61__MapsSuggestionsCompositeSource__initUpdateTimerIfNecessary__block_inv
                 v22 = GEOFindOrCreateLog();
                 if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
                 {
-                  v23 = [v17 uniqueName];
+                  uniqueName6 = [v17 uniqueName];
                   *buf = 138412290;
-                  *&buf[4] = v23;
+                  *&buf[4] = uniqueName6;
                   _os_log_impl(&dword_1C5126000, v22, OS_LOG_TYPE_ERROR, "_updateChildSourcesForceAll: SOURCE{%@} has already been added", buf, 0xCu);
                 }
 
@@ -517,7 +517,7 @@ void __61__MapsSuggestionsCompositeSource__initUpdateTimerIfNecessary__block_inv
         while (v13);
       }
 
-      [(MapsSuggestionsCompositeSource *)a1 _scheduleNextUpdateChildSourcesWithin:v11];
+      [(MapsSuggestionsCompositeSource *)self _scheduleNextUpdateChildSourcesWithin:v11];
       if (_maxUpdateTimeInNSec(void)::s_onceToken != -1)
       {
         [MapsSuggestionsCompositeSource _updateChildSourcesForceAll:handler:];
@@ -526,17 +526,17 @@ void __61__MapsSuggestionsCompositeSource__initUpdateTimerIfNecessary__block_inv
       v31 = dispatch_time(0, _maxUpdateTimeInNSec(void)::s_maxUpdateTimeInNSec);
       if (dispatch_group_wait(group, v31))
       {
-        if (v45)
+        if (allCopy)
         {
-          v45[2]();
+          allCopy[2]();
         }
 
         v32 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
         {
-          v33 = [a1 uniqueName];
+          uniqueName7 = [self uniqueName];
           *buf = 138412546;
-          *&buf[4] = v33;
+          *&buf[4] = uniqueName7;
           v60 = 2080;
           v61 = "_updateChildSourcesForceAll";
           _os_log_impl(&dword_1C5126000, v32, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s FAIL", buf, 0x16u);
@@ -554,9 +554,9 @@ void __61__MapsSuggestionsCompositeSource__initUpdateTimerIfNecessary__block_inv
         v36 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
         {
-          v37 = [v35 allObjects];
-          v38 = [v37 componentsJoinedByString:{@", "}];
-          [(MapsSuggestionsCompositeSource *)v38 _updateChildSourcesForceAll:buf handler:v36, v37];
+          allObjects = [v35 allObjects];
+          v38 = [allObjects componentsJoinedByString:{@", "}];
+          [(MapsSuggestionsCompositeSource *)v38 _updateChildSourcesForceAll:buf handler:v36, allObjects];
         }
 
         objc_sync_exit(v35);
@@ -564,17 +564,17 @@ void __61__MapsSuggestionsCompositeSource__initUpdateTimerIfNecessary__block_inv
 
       else
       {
-        if (v45)
+        if (allCopy)
         {
-          v45[2]();
+          allCopy[2]();
         }
 
         v43 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
         {
-          v44 = [a1 uniqueName];
+          uniqueName8 = [self uniqueName];
           *buf = 138412546;
-          *&buf[4] = v44;
+          *&buf[4] = uniqueName8;
           v60 = 2080;
           v61 = "_updateChildSourcesForceAll";
           _os_log_impl(&dword_1C5126000, v43, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s END", buf, 0x16u);
@@ -598,17 +598,17 @@ void __61__MapsSuggestionsCompositeSource__initUpdateTimerIfNecessary__block_inv
         _os_log_impl(&dword_1C5126000, v39, OS_LOG_TYPE_DEBUG, "Shortcutting. We should not be updating when stopped.", buf, 2u);
       }
 
-      if (v45)
+      if (allCopy)
       {
-        v45[2]();
+        allCopy[2]();
       }
 
       v40 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
       {
-        v41 = [a1 uniqueName];
+        uniqueName9 = [self uniqueName];
         *buf = 138412546;
-        *&buf[4] = v41;
+        *&buf[4] = uniqueName9;
         v60 = 2080;
         v61 = "_updateChildSourcesForceAll";
         _os_log_impl(&dword_1C5126000, v40, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s FAIL", buf, 0x16u);
@@ -622,12 +622,12 @@ void __61__MapsSuggestionsCompositeSource__initUpdateTimerIfNecessary__block_inv
   }
 }
 
-- (double)_updateChildSource:(void *)a3 handler:
+- (double)_updateChildSource:(void *)source handler:
 {
   v18 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (!a1)
+  sourceCopy = source;
+  if (!self)
   {
     v10 = 0.0;
     goto LABEL_9;
@@ -645,20 +645,20 @@ void __61__MapsSuggestionsCompositeSource__initUpdateTimerIfNecessary__block_inv
   v7 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = [v5 uniqueName];
+    uniqueName = [v5 uniqueName];
     *buf = 138412290;
-    *&buf[4] = v8;
+    *&buf[4] = uniqueName;
     _os_log_impl(&dword_1C5126000, v7, OS_LOG_TYPE_DEBUG, "SOURCE{%@} update", buf, 0xCu);
   }
 
-  [v5 updateSuggestionEntriesWithHandler:v6];
+  [v5 updateSuggestionEntriesWithHandler:sourceCopy];
   v10 = v9;
   if (v9 != 0.0)
   {
     v11 = MapsSuggestionsNowWithOffset(v9);
-    v12 = *(a1 + 32);
-    v13 = [v5 uniqueName];
-    [v12 setObject:v11 forKeyedSubscript:v13];
+    v12 = *(self + 32);
+    uniqueName2 = [v5 uniqueName];
+    [v12 setObject:v11 forKeyedSubscript:uniqueName2];
 
 LABEL_8:
   }
@@ -735,22 +735,22 @@ void __70__MapsSuggestionsCompositeSource__updateChildSourcesForceAll_handler___
   }
 }
 
-- (void)_updateChildSourcesForType:(void *)a3 handler:
+- (void)_updateChildSourcesForType:(void *)type handler:
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (a1)
+  typeCopy = type;
+  if (self)
   {
-    v16 = v5;
-    dispatch_assert_queue_V2(*(a1 + 40));
-    if (*(a1 + 80))
+    v16 = typeCopy;
+    dispatch_assert_queue_V2(*(self + 40));
+    if (*(self + 80))
     {
       v6 = dispatch_group_create();
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v7 = *(a1 + 24);
+      v7 = *(self + 24);
       v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v8)
       {
@@ -773,7 +773,7 @@ void __70__MapsSuggestionsCompositeSource__updateChildSourcesForceAll_handler___
               v19[2] = __69__MapsSuggestionsCompositeSource__updateChildSourcesForType_handler___block_invoke;
               v19[3] = &unk_1E81F59C0;
               v20 = v6;
-              [(MapsSuggestionsCompositeSource *)a1 _updateChildSource:v11 handler:v19];
+              [(MapsSuggestionsCompositeSource *)self _updateChildSource:v11 handler:v19];
             }
           }
 
@@ -783,12 +783,12 @@ void __70__MapsSuggestionsCompositeSource__updateChildSourcesForceAll_handler___
         while (v8);
       }
 
-      v12 = *(a1 + 40);
+      v12 = *(self + 40);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __69__MapsSuggestionsCompositeSource__updateChildSourcesForType_handler___block_invoke_2;
       block[3] = &unk_1E81F62F8;
-      block[4] = a1;
+      block[4] = self;
       v18 = v16;
       dispatch_group_notify(v6, v12, block);
     }
@@ -810,9 +810,9 @@ void __70__MapsSuggestionsCompositeSource__updateChildSourcesForceAll_handler___
       v14 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
-        v15 = [a1 uniqueName];
+        uniqueName = [self uniqueName];
         *buf = 138412546;
-        *&buf[4] = v15;
+        *&buf[4] = uniqueName;
         v27 = 2080;
         v28 = "_updateChildSourcesForType";
         _os_log_impl(&dword_1C5126000, v14, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s FAIL", buf, 0x16u);
@@ -824,7 +824,7 @@ void __70__MapsSuggestionsCompositeSource__updateChildSourcesForceAll_handler___
       v6 = *buf;
     }
 
-    v5 = v16;
+    typeCopy = v16;
   }
 }
 
@@ -856,12 +856,12 @@ void __69__MapsSuggestionsCompositeSource__updateChildSourcesForType_handler___b
   }
 }
 
-- (id)initFromResourceDepot:(id)a3 name:(id)a4
+- (id)initFromResourceDepot:(id)depot name:(id)name
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  depotCopy = depot;
+  nameCopy = name;
+  if (!depotCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -880,9 +880,9 @@ void __69__MapsSuggestionsCompositeSource__updateChildSourcesForType_handler___b
     goto LABEL_11;
   }
 
-  v8 = [v6 oneSourceDelegate];
+  oneSourceDelegate = [depotCopy oneSourceDelegate];
 
-  if (!v8)
+  if (!oneSourceDelegate)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -900,32 +900,32 @@ void __69__MapsSuggestionsCompositeSource__updateChildSourcesForType_handler___b
 
 LABEL_11:
 
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
-  v9 = [v6 oneSourceDelegate];
-  v10 = [(MapsSuggestionsCompositeSource *)self initWithDelegate:v9 name:v7];
+  oneSourceDelegate2 = [depotCopy oneSourceDelegate];
+  v10 = [(MapsSuggestionsCompositeSource *)self initWithDelegate:oneSourceDelegate2 name:nameCopy];
 
   if (v10)
   {
-    [v6 setOneSourceDelegate:v10];
+    [depotCopy setOneSourceDelegate:v10];
   }
 
   self = v10;
-  v11 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v11;
+  return selfCopy;
 }
 
-- (MapsSuggestionsCompositeSource)initWithDelegate:(id)a3 name:(id)a4
+- (MapsSuggestionsCompositeSource)initWithDelegate:(id)delegate name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  nameCopy = name;
   v25.receiver = self;
   v25.super_class = MapsSuggestionsCompositeSource;
-  v8 = [(MapsSuggestionsBaseSource *)&v25 initWithDelegate:v6 name:v7];
+  v8 = [(MapsSuggestionsBaseSource *)&v25 initWithDelegate:delegateCopy name:nameCopy];
   if (v8)
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -960,18 +960,18 @@ LABEL_12:
   return v8;
 }
 
-- (double)updateSuggestionEntriesWithHandler:(id)a3
+- (double)updateSuggestionEntriesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__MapsSuggestionsCompositeSource_updateSuggestionEntriesWithHandler___block_invoke;
   block[3] = &unk_1E81F5190;
   objc_copyWeak(&v10, &location);
-  v9 = v4;
+  v9 = handlerCopy;
   innerQueue = self->_queue._innerQueue;
-  v6 = v4;
+  v6 = handlerCopy;
   dispatch_async(innerQueue, block);
 
   objc_destroyWeak(&v10);
@@ -1018,12 +1018,12 @@ void __69__MapsSuggestionsCompositeSource_updateSuggestionEntriesWithHandler___b
   }
 }
 
-- (double)updateSuggestionEntriesOfType:(int64_t)a3 handler:(id)a4
+- (double)updateSuggestionEntriesOfType:(int64_t)type handler:(id)handler
 {
-  v6 = a4;
-  if (a3)
+  handlerCopy = handler;
+  if (type)
   {
-    if ([(MapsSuggestionsCompositeSource *)self canProduceEntriesOfType:a3])
+    if ([(MapsSuggestionsCompositeSource *)self canProduceEntriesOfType:type])
     {
       objc_initWeak(&location, self);
       v10[0] = MEMORY[0x1E69E9820];
@@ -1031,8 +1031,8 @@ void __69__MapsSuggestionsCompositeSource_updateSuggestionEntriesWithHandler___b
       v10[2] = __72__MapsSuggestionsCompositeSource_updateSuggestionEntriesOfType_handler___block_invoke;
       v10[3] = &unk_1E81F7028;
       objc_copyWeak(v12, &location);
-      v12[1] = a3;
-      v11 = v6;
+      v12[1] = type;
+      v11 = handlerCopy;
       dispatch_async(self->_queue._innerQueue, v10);
 
       objc_destroyWeak(v12);
@@ -1043,16 +1043,16 @@ void __69__MapsSuggestionsCompositeSource_updateSuggestionEntriesWithHandler___b
     else
     {
       v7 = 0.0;
-      if (v6)
+      if (handlerCopy)
       {
-        v6[2](v6);
+        handlerCopy[2](handlerCopy);
       }
     }
   }
 
   else
   {
-    [(MapsSuggestionsCompositeSource *)self updateSuggestionEntriesWithHandler:v6];
+    [(MapsSuggestionsCompositeSource *)self updateSuggestionEntriesWithHandler:handlerCopy];
     v7 = v8;
   }
 
@@ -1099,14 +1099,14 @@ void __72__MapsSuggestionsCompositeSource_updateSuggestionEntriesOfType_handler_
   }
 }
 
-- (BOOL)canProduceEntriesOfType:(int64_t)a3
+- (BOOL)canProduceEntriesOfType:(int64_t)type
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __58__MapsSuggestionsCompositeSource_canProduceEntriesOfType___block_invoke;
   v4[3] = &unk_1E81F7050;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = type;
   return MSg::Queue::sync<BOOL>(&self->_queue, v4);
 }
 
@@ -1158,14 +1158,14 @@ LABEL_11:
   return v6;
 }
 
-- (double)_suppressionTimeForEntry:(int)a3 snoozeOnly:
+- (double)_suppressionTimeForEntry:(int)entry snoozeOnly:
 {
   v5 = a2;
   v6 = v5;
   v7 = 0.0;
-  if (a1)
+  if (self)
   {
-    if (a3)
+    if (entry)
     {
       switch([v5 type])
       {
@@ -1254,12 +1254,12 @@ LABEL_9:
   return v7;
 }
 
-- (char)removeEntry:(id)a3 behavior:(int64_t)a4 handler:(id)a5
+- (char)removeEntry:(id)entry behavior:(int64_t)behavior handler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (!v8)
+  entryCopy = entry;
+  handlerCopy = handler;
+  if (!entryCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1278,7 +1278,7 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if (!v9)
+  if (!handlerCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1312,10 +1312,10 @@ LABEL_11:
   v14[1] = 3221225472;
   v14[2] = __63__MapsSuggestionsCompositeSource_removeEntry_behavior_handler___block_invoke;
   v14[3] = &unk_1E81F7078;
-  v17 = a4;
+  behaviorCopy = behavior;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
+  v15 = entryCopy;
+  v16 = handlerCopy;
   v11 = MSg::Queue::sync<MSgCallbackPromise>(&self->_queue, v14);
 
 LABEL_12:
@@ -1398,11 +1398,11 @@ uint64_t __63__MapsSuggestionsCompositeSource_removeEntry_behavior_handler___blo
   return v5;
 }
 
-- (void)feedbackForEntry:(id)a3 action:(int64_t)a4
+- (void)feedbackForEntry:(id)entry action:(int64_t)action
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  entryCopy = entry;
+  if (entryCopy)
   {
     v7 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -1412,7 +1412,7 @@ uint64_t __63__MapsSuggestionsCompositeSource_removeEntry_behavior_handler___blo
       _os_log_impl(&dword_1C5126000, v7, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
     }
 
-    if (a4)
+    if (action)
     {
       v8 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -1427,8 +1427,8 @@ uint64_t __63__MapsSuggestionsCompositeSource_removeEntry_behavior_handler___blo
       block[2] = __58__MapsSuggestionsCompositeSource_feedbackForEntry_action___block_invoke;
       block[3] = &unk_1E81F58A8;
       objc_copyWeak(v14, buf);
-      v13 = v6;
-      v14[1] = a4;
+      v13 = entryCopy;
+      v14[1] = action;
       dispatch_async(self->_queue._innerQueue, block);
 
       objc_destroyWeak(v14);
@@ -1517,11 +1517,11 @@ void __58__MapsSuggestionsCompositeSource_feedbackForEntry_action___block_invoke
   }
 }
 
-- (void)feedbackForMapItem:(id)a3 action:(int64_t)a4
+- (void)feedbackForMapItem:(id)item action:(int64_t)action
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  itemCopy = item;
+  if (itemCopy)
   {
     v7 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -1531,7 +1531,7 @@ void __58__MapsSuggestionsCompositeSource_feedbackForEntry_action___block_invoke
       _os_log_impl(&dword_1C5126000, v7, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
     }
 
-    if (a4)
+    if (action)
     {
       objc_initWeak(buf, self);
       block[0] = MEMORY[0x1E69E9820];
@@ -1539,8 +1539,8 @@ void __58__MapsSuggestionsCompositeSource_feedbackForEntry_action___block_invoke
       block[2] = __60__MapsSuggestionsCompositeSource_feedbackForMapItem_action___block_invoke;
       block[3] = &unk_1E81F58A8;
       objc_copyWeak(v13, buf);
-      v12 = v6;
-      v13[1] = a4;
+      v12 = itemCopy;
+      v13[1] = action;
       dispatch_async(self->_queue._innerQueue, block);
 
       objc_destroyWeak(v13);
@@ -1629,11 +1629,11 @@ void __60__MapsSuggestionsCompositeSource_feedbackForMapItem_action___block_invo
   }
 }
 
-- (void)feedbackForContact:(id)a3 action:(int64_t)a4
+- (void)feedbackForContact:(id)contact action:(int64_t)action
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  contactCopy = contact;
+  if (contactCopy)
   {
     v7 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -1643,7 +1643,7 @@ void __60__MapsSuggestionsCompositeSource_feedbackForMapItem_action___block_invo
       _os_log_impl(&dword_1C5126000, v7, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
     }
 
-    if (a4)
+    if (action)
     {
       objc_initWeak(buf, self);
       block[0] = MEMORY[0x1E69E9820];
@@ -1651,8 +1651,8 @@ void __60__MapsSuggestionsCompositeSource_feedbackForMapItem_action___block_invo
       block[2] = __60__MapsSuggestionsCompositeSource_feedbackForContact_action___block_invoke;
       block[3] = &unk_1E81F58A8;
       objc_copyWeak(v13, buf);
-      v12 = v6;
-      v13[1] = a4;
+      v12 = contactCopy;
+      v13[1] = action;
       dispatch_async(self->_queue._innerQueue, block);
 
       objc_destroyWeak(v13);
@@ -1741,20 +1741,20 @@ void __60__MapsSuggestionsCompositeSource_feedbackForContact_action___block_invo
   }
 }
 
-- (unint64_t)addOrUpdateSuggestionEntries:(id)a3 source:(id)a4
+- (unint64_t)addOrUpdateSuggestionEntries:(id)entries source:(id)source
 {
   v32 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v17 = a4;
+  entriesCopy = entries;
+  sourceCopy = source;
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v25 = v17;
+    v25 = sourceCopy;
     _os_log_impl(&dword_1C5126000, v6, OS_LOG_TYPE_DEBUG, "passing on addOrUpdateSuggestionEntries for SOURCE{%@}", buf, 0xCu);
   }
 
-  if (v18)
+  if (entriesCopy)
   {
     if (self->_suppressor)
     {
@@ -1762,7 +1762,7 @@ void __60__MapsSuggestionsCompositeSource_feedbackForContact_action___block_invo
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v7 = v18;
+      v7 = entriesCopy;
       v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v8)
       {
@@ -1777,15 +1777,15 @@ void __60__MapsSuggestionsCompositeSource_feedbackForContact_action___block_invo
             }
 
             v11 = *(*(&v19 + 1) + 8 * i);
-            if ([(MapsSuggestionsSuppressor *)self->_suppressor isSuppressedEntry:v11, v17])
+            if ([(MapsSuggestionsSuppressor *)self->_suppressor isSuppressedEntry:v11, sourceCopy])
             {
               [v11 setBoolean:1 forKey:@"MapsSuggestionsIsSuppressedKey"];
               v12 = GEOFindOrCreateLog();
               if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
               {
-                v13 = [v11 uniqueIdentifier];
+                uniqueIdentifier = [v11 uniqueIdentifier];
                 *buf = 138412290;
-                v25 = v13;
+                v25 = uniqueIdentifier;
                 _os_log_impl(&dword_1C5126000, v12, OS_LOG_TYPE_DEBUG, "isSuppressedEntry returned YES for %@", buf, 0xCu);
               }
             }
@@ -1798,14 +1798,14 @@ void __60__MapsSuggestionsCompositeSource_feedbackForContact_action___block_invo
       }
     }
 
-    v14 = [(MapsSuggestionsBaseSource *)self delegate];
-    v15 = [v14 addOrUpdateSuggestionEntries:v18 source:v17];
+    delegate = [(MapsSuggestionsBaseSource *)self delegate];
+    v15 = [delegate addOrUpdateSuggestionEntries:entriesCopy source:sourceCopy];
   }
 
   else
   {
-    v14 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    delegate = GEOFindOrCreateLog();
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
     {
       *buf = 136446978;
       v25 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/MapsSuggestionsCompositeSource.mm";
@@ -1815,7 +1815,7 @@ void __60__MapsSuggestionsCompositeSource_feedbackForContact_action___block_invo
       v29 = "[MapsSuggestionsCompositeSource addOrUpdateSuggestionEntries:source:]";
       v30 = 2082;
       v31 = "nil == (entries)";
-      _os_log_impl(&dword_1C5126000, v14, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires zero or more entries", buf, 0x26u);
+      _os_log_impl(&dword_1C5126000, delegate, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires zero or more entries", buf, 0x26u);
     }
 
     v15 = 0;
@@ -1824,18 +1824,18 @@ void __60__MapsSuggestionsCompositeSource_feedbackForContact_action___block_invo
   return v15;
 }
 
-- (BOOL)addChildSource:(id)a3
+- (BOOL)addChildSource:(id)source
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  sourceCopy = source;
+  if (sourceCopy)
   {
     v5 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [v4 uniqueName];
+      uniqueName = [sourceCopy uniqueName];
       *buf = 138412290;
-      v13 = v6;
+      v13 = uniqueName;
       _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "addChildSource:SOURCE{%@}", buf, 0xCu);
     }
 
@@ -1845,7 +1845,7 @@ void __60__MapsSuggestionsCompositeSource_feedbackForContact_action___block_invo
     v9[2] = __49__MapsSuggestionsCompositeSource_addChildSource___block_invoke;
     v9[3] = &unk_1E81F5970;
     objc_copyWeak(&v11, buf);
-    v10 = v4;
+    v10 = sourceCopy;
     dispatch_async(self->_queue._innerQueue, v9);
 
     objc_destroyWeak(&v11);
@@ -1869,7 +1869,7 @@ void __60__MapsSuggestionsCompositeSource_feedbackForContact_action___block_invo
     }
   }
 
-  return v4 != 0;
+  return sourceCopy != 0;
 }
 
 void __49__MapsSuggestionsCompositeSource_addChildSource___block_invoke(uint64_t a1)
@@ -1899,28 +1899,28 @@ void __49__MapsSuggestionsCompositeSource_addChildSource___block_invoke(uint64_t
   }
 }
 
-- (BOOL)removeChildSource:(id)a3
+- (BOOL)removeChildSource:(id)source
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  sourceCopy = source;
+  if (sourceCopy)
   {
     v5 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [v4 uniqueName];
+      uniqueName = [sourceCopy uniqueName];
       *buf = 138412290;
-      v12 = v6;
+      v12 = uniqueName;
       _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "removeChildSource:SOURCE{%@}", buf, 0xCu);
     }
 
-    [v4 stop];
+    [sourceCopy stop];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __52__MapsSuggestionsCompositeSource_removeChildSource___block_invoke;
     v9[3] = &unk_1E81F69F0;
     v9[4] = self;
-    v10 = v4;
+    v10 = sourceCopy;
     dispatch_sync(self->_queue._innerQueue, v9);
   }
 
@@ -1941,7 +1941,7 @@ void __49__MapsSuggestionsCompositeSource_addChildSource___block_invoke(uint64_t
     }
   }
 
-  return v4 != 0;
+  return sourceCopy != 0;
 }
 
 - (id)children
@@ -1973,19 +1973,19 @@ void __43__MapsSuggestionsCompositeSource_test_sync__block_invoke()
   }
 }
 
-- (id)test_dateUntilSuppressedEntry:(id)a3
+- (id)test_dateUntilSuppressedEntry:(id)entry
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  entryCopy = entry;
+  v5 = entryCopy;
+  if (entryCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __64__MapsSuggestionsCompositeSource_test_dateUntilSuppressedEntry___block_invoke;
     v9[3] = &unk_1E81F70C8;
     v9[4] = self;
-    v10 = v4;
+    v10 = entryCopy;
     v6 = MSg::Queue::sync<NSDate * {__strong}>(&self->_queue, v9);
   }
 
@@ -2011,12 +2011,12 @@ void __43__MapsSuggestionsCompositeSource_test_sync__block_invoke()
   return v6;
 }
 
-- (double)test_suppressionDurationForBehavior:(int64_t)a3 type:(int64_t)a4
+- (double)test_suppressionDurationForBehavior:(int64_t)behavior type:(int64_t)type
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3 == 1)
+  if (behavior == 1)
   {
-    switch(a4)
+    switch(type)
     {
       case 0:
         return 0.0;
@@ -2068,9 +2068,9 @@ LABEL_5:
     }
   }
 
-  if (a3 == 2)
+  if (behavior == 2)
   {
-    switch(a4)
+    switch(type)
     {
       case 0:
         return 0.0;
@@ -2136,12 +2136,12 @@ LABEL_13:
   dispatch_sync(self->_queue._innerQueue, block);
 }
 
-- (void)_scheduleNextUpdateChildSourcesWithin:(uint64_t)a1
+- (void)_scheduleNextUpdateChildSourcesWithin:(uint64_t)within
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (within)
   {
-    dispatch_assert_queue_V2(*(a1 + 40));
+    dispatch_assert_queue_V2(*(within + 40));
     v4 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
@@ -2150,10 +2150,10 @@ LABEL_13:
       _os_log_impl(&dword_1C5126000, v4, OS_LOG_TYPE_DEBUG, "_scheduleNextUpdateChildSourcesWithin:%0.3f", &v9, 0xCu);
     }
 
-    if (*(a1 + 80))
+    if (*(within + 80))
     {
-      [(MapsSuggestionsCompositeSource *)a1 _initUpdateTimerIfNecessary];
-      v5 = *(a1 + 56);
+      [(MapsSuggestionsCompositeSource *)within _initUpdateTimerIfNecessary];
+      v5 = *(within + 56);
       v6 = dispatch_time(0, (a2 * 1000000000.0));
       dispatch_source_set_timer(v5, v6, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
     }

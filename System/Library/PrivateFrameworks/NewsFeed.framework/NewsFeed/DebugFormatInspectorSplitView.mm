@@ -1,11 +1,11 @@
 @interface DebugFormatInspectorSplitView
-- (_TtC8NewsFeed29DebugFormatInspectorSplitView)initWithCoder:(id)a3;
+- (_TtC8NewsFeed29DebugFormatInspectorSplitView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation DebugFormatInspectorSplitView
 
-- (_TtC8NewsFeed29DebugFormatInspectorSplitView)initWithCoder:(id)a3
+- (_TtC8NewsFeed29DebugFormatInspectorSplitView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8NewsFeed29DebugFormatInspectorSplitView_left;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x1E69DD250]) initWithFrame_];
@@ -18,7 +18,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6A484B8();
 }
 

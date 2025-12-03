@@ -1,221 +1,221 @@
 @interface PBFPosterExtensionDataStore
-+ (id)dataStoreExtensionContainerURLForBaseURL:(id)a3;
-+ (id)galleryCacheURLForBaseURL:(id)a3;
-- (BOOL)_executeCleanupOfServerPosterIdentity:(id)a3 error:(id *)a4;
-- (BOOL)_forceExtensionUpdate:(id)a3;
++ (id)dataStoreExtensionContainerURLForBaseURL:(id)l;
++ (id)galleryCacheURLForBaseURL:(id)l;
+- (BOOL)_executeCleanupOfServerPosterIdentity:(id)identity error:(id *)error;
+- (BOOL)_forceExtensionUpdate:(id)update;
 - (BOOL)_stateLock_canPersistNewPosterConfiguration;
-- (BOOL)_stateLock_cleanupAfterDeletedExtension:(id)a3 error:(id *)a4;
-- (BOOL)_stateLock_deletePosterDescriptorsForExtensionBundleIdentifier:(id)a3 waitForPushToProactive:(BOOL)a4 error:(id *)a5;
-- (BOOL)_stateLock_executeDataStoreUpdateWithChanges:(id)a3 diffs:(id *)a4 options:(unint64_t)a5 reason:(id)a6 context:(id)a7 error:(id *)a8;
+- (BOOL)_stateLock_cleanupAfterDeletedExtension:(id)extension error:(id *)error;
+- (BOOL)_stateLock_deletePosterDescriptorsForExtensionBundleIdentifier:(id)identifier waitForPushToProactive:(BOOL)proactive error:(id *)error;
+- (BOOL)_stateLock_executeDataStoreUpdateWithChanges:(id)changes diffs:(id *)diffs options:(unint64_t)options reason:(id)reason context:(id)context error:(id *)error;
 - (BOOL)_stateLock_hasBeenUnlockedSinceBoot;
-- (BOOL)_stateLock_ingestReloadedDescriptorsForExtensionBundleIdentifier:(id)a3 preReloadDescriptors:(id)a4 postReloadDescriptors:(id)a5 error:(id *)a6;
-- (BOOL)_stateLock_issueDescriptorUpdatedEventsForExtension:(id)a3 preUpdate:(id)a4 postUpdate:(id)a5 error:(id *)a6;
-- (BOOL)_stateLock_processEvents:(id)a3 context:(id)a4 error:(id *)a5;
-- (BOOL)_stateLock_processEvents:(id)a3 roles:(id)a4 context:(id)a5 error:(id *)a6;
-- (BOOL)_stateLock_setupEnvironmentForExtension:(id)a3 wasUpdated:(BOOL *)a4 error:(id *)a5;
-- (BOOL)_stateLock_updateDescriptorsFromStaticDescriptorsForExtensionBundleIdentifier:(id)a3 reason:(int64_t)a4 error:(id *)a5;
-- (BOOL)_stateLock_updateEnvironmentForExtension:(id)a3 fromExtension:(id)a4 error:(id *)a5;
-- (BOOL)_stateLock_updatePosterConfigurationsFromHostForRole:(id)a3 error:(id *)a4;
+- (BOOL)_stateLock_ingestReloadedDescriptorsForExtensionBundleIdentifier:(id)identifier preReloadDescriptors:(id)descriptors postReloadDescriptors:(id)reloadDescriptors error:(id *)error;
+- (BOOL)_stateLock_issueDescriptorUpdatedEventsForExtension:(id)extension preUpdate:(id)update postUpdate:(id)postUpdate error:(id *)error;
+- (BOOL)_stateLock_processEvents:(id)events context:(id)context error:(id *)error;
+- (BOOL)_stateLock_processEvents:(id)events roles:(id)roles context:(id)context error:(id *)error;
+- (BOOL)_stateLock_setupEnvironmentForExtension:(id)extension wasUpdated:(BOOL *)updated error:(id *)error;
+- (BOOL)_stateLock_updateDescriptorsFromStaticDescriptorsForExtensionBundleIdentifier:(id)identifier reason:(int64_t)reason error:(id *)error;
+- (BOOL)_stateLock_updateEnvironmentForExtension:(id)extension fromExtension:(id)fromExtension error:(id *)error;
+- (BOOL)_stateLock_updatePosterConfigurationsFromHostForRole:(id)role error:(id *)error;
 - (BOOL)canPersistNewPosterConfiguration;
-- (BOOL)deletePosterConfigurationsMatchingUUID:(id)a3 error:(id *)a4;
-- (BOOL)deletePosterDescriptorsForExtensionBundleIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)executeDataStoreUpdateWithChanges:(id)a3 diffs:(id *)a4 options:(unint64_t)a5 reason:(id)a6 error:(id *)a7;
-- (BOOL)markPosterConfigurationAsActive:(id)a3 forRole:(id)a4;
-- (BOOL)resetRole:(id)a3 error:(id *)a4;
-- (BOOL)togglePosterConfigurationHiddenMatchingUUID:(id)a3 error:(id *)a4;
-- (BOOL)updateDataStoreForIncomingActiveChargerIdentifierUpdate:(id)a3 error:(id *)a4;
-- (BOOL)updateDataStoreForIncomingAvailableFocusModeChange:(id)a3 error:(id *)a4;
-- (BOOL)updateDataStoreForIncomingFocusModeChange:(id)a3 error:(id *)a4;
-- (BOOL)updatePosterConfigurationsFromHostForRole:(id)a3 error:(id *)a4;
-- (BOOL)updateSelectedPosterUUID:(id)a3 role:(id)a4 from:(id)a5 error:(id *)a6;
+- (BOOL)deletePosterConfigurationsMatchingUUID:(id)d error:(id *)error;
+- (BOOL)deletePosterDescriptorsForExtensionBundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)executeDataStoreUpdateWithChanges:(id)changes diffs:(id *)diffs options:(unint64_t)options reason:(id)reason error:(id *)error;
+- (BOOL)markPosterConfigurationAsActive:(id)active forRole:(id)role;
+- (BOOL)resetRole:(id)role error:(id *)error;
+- (BOOL)togglePosterConfigurationHiddenMatchingUUID:(id)d error:(id *)error;
+- (BOOL)updateDataStoreForIncomingActiveChargerIdentifierUpdate:(id)update error:(id *)error;
+- (BOOL)updateDataStoreForIncomingAvailableFocusModeChange:(id)change error:(id *)error;
+- (BOOL)updateDataStoreForIncomingFocusModeChange:(id)change error:(id *)error;
+- (BOOL)updatePosterConfigurationsFromHostForRole:(id)role error:(id *)error;
+- (BOOL)updateSelectedPosterUUID:(id)d role:(id)role from:(id)from error:(id *)error;
 - (PBFGalleryConfiguration)currentGalleryConfiguration;
-- (PBFPosterExtensionDataStore)initWithURL:(id)a3 runtimeAssertionProvider:(id)a4 extensionProvider:(id)a5 observer:(id)a6 wasMigrationJustPerformed:(BOOL)a7 applicationStateMonitor:(id)a8 error:(id *)a9;
+- (PBFPosterExtensionDataStore)initWithURL:(id)l runtimeAssertionProvider:(id)provider extensionProvider:(id)extensionProvider observer:(id)observer wasMigrationJustPerformed:(BOOL)performed applicationStateMonitor:(id)monitor error:(id *)error;
 - (PRSwitcherConfiguration)switcherConfiguration;
 - (id)_activeActivity;
-- (id)_activityModeForFocusUUID:(id)a3;
+- (id)_activityModeForFocusUUID:(id)d;
 - (id)_buildRoleCoordinatorTransitionContext;
-- (id)_buildRoleCoordinatorTransitionContextForActiveFocusMode:(id)a3 chargerIdentifier:(id)a4;
-- (id)_buildRoleCoordinatorTransitionContextForActivity:(id)a3;
-- (id)_buildRoleCoordinatorTransitionContextForChargerIdentifier:(id)a3;
-- (id)_buildRoleCoordinatorTransitionContextWithDesiredActivePosterUUID:(id)a3 role:(id)a4;
+- (id)_buildRoleCoordinatorTransitionContextForActiveFocusMode:(id)mode chargerIdentifier:(id)identifier;
+- (id)_buildRoleCoordinatorTransitionContextForActivity:(id)activity;
+- (id)_buildRoleCoordinatorTransitionContextForChargerIdentifier:(id)identifier;
+- (id)_buildRoleCoordinatorTransitionContextWithDesiredActivePosterUUID:(id)d role:(id)role;
 - (id)_buildRoleCoordinatorTransitionNotingInitialUpdate;
-- (id)_buildSwitcherConfigurationWithContext:(id)a3;
-- (id)_stateLock_buildSwitcherConfigurationWithContext:(id)a3 outMutated:(BOOL *)a4;
+- (id)_buildSwitcherConfigurationWithContext:(id)context;
+- (id)_stateLock_buildSwitcherConfigurationWithContext:(id)context outMutated:(BOOL *)mutated;
 - (id)_stateLock_currentGalleryConfiguration;
-- (id)_stateLock_enqueueReloadDescriptorsOperationForExtensionBundleIdentifier:(id)a3 reason:(id)a4 powerLogReason:(int64_t)a5 postEnqueueGalleryUpdateOptions:(unint64_t)a6 sessionInfo:(id)a7 completion:(id)a8;
-- (id)_stateLock_extensionBundleIdentifierForConfigurationUUID:(id)a3;
-- (id)_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier:(id)a3;
-- (id)_stateLock_extensionStoreCoordinatorForPosterUUID:(id)a3;
+- (id)_stateLock_enqueueReloadDescriptorsOperationForExtensionBundleIdentifier:(id)identifier reason:(id)reason powerLogReason:(int64_t)logReason postEnqueueGalleryUpdateOptions:(unint64_t)options sessionInfo:(id)info completion:(id)completion;
+- (id)_stateLock_extensionBundleIdentifierForConfigurationUUID:(id)d;
+- (id)_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier:(id)identifier;
+- (id)_stateLock_extensionStoreCoordinatorForPosterUUID:(id)d;
 - (id)_stateLock_extensionStoreCoordinators;
-- (id)_stateLock_fetchPosterConfigurationsSortedByUse:(BOOL)a3 forRole:(id)a4;
-- (id)_stateLock_fetchSuggestionDescriptorsForConfigurationMatchingUUID:(id)a3 error:(id *)a4;
-- (id)_stateLock_incomingPosterConfigurationForProviderIdentifier:(id)a3 posterDescriptorIdentifier:(id)a4 role:(id)a5 error:(id *)a6;
-- (id)_stateLock_knownPosterDescriptorsForExtensionBundleIdentifier:(id)a3;
-- (id)_stateLock_knownStaticPosterDescriptorsForExtensionBundleIdentifier:(id)a3;
+- (id)_stateLock_fetchPosterConfigurationsSortedByUse:(BOOL)use forRole:(id)role;
+- (id)_stateLock_fetchSuggestionDescriptorsForConfigurationMatchingUUID:(id)d error:(id *)error;
+- (id)_stateLock_incomingPosterConfigurationForProviderIdentifier:(id)identifier posterDescriptorIdentifier:(id)descriptorIdentifier role:(id)role error:(id *)error;
+- (id)_stateLock_knownPosterDescriptorsForExtensionBundleIdentifier:(id)identifier;
+- (id)_stateLock_knownStaticPosterDescriptorsForExtensionBundleIdentifier:(id)identifier;
 - (id)_stateLock_lastUseDatesForPosterCollection;
-- (id)_stateLock_posterConfigurationPathForUUID:(id)a3;
-- (id)_stateLock_posterWithUUID:(id)a3 error:(id *)a4;
-- (id)_stateLock_prepareReloadConfigurationOperationForExtension:(id)a3 path:(id)a4 locationInUse:(BOOL)a5 sessionInfo:(id)a6 powerLogReason:(int64_t)a7 assetUpdater:(id)a8 error:(id *)a9;
+- (id)_stateLock_posterConfigurationPathForUUID:(id)d;
+- (id)_stateLock_posterWithUUID:(id)d error:(id *)error;
+- (id)_stateLock_prepareReloadConfigurationOperationForExtension:(id)extension path:(id)path locationInUse:(BOOL)use sessionInfo:(id)info powerLogReason:(int64_t)reason assetUpdater:(id)updater error:(id *)error;
 - (id)_stateLock_switcherConfiguration;
-- (id)_stateLock_updateDataStoreForSwitcherConfiguration:(id)a3 options:(unint64_t)a4 reason:(id)a5 error:(id *)a6;
+- (id)_stateLock_updateDataStoreForSwitcherConfiguration:(id)configuration options:(unint64_t)options reason:(id)reason error:(id *)error;
 - (id)_stateLock_updatedSuggestionDescriptorPathsForPosterUUID;
 - (id)_stateLock_updatedSuggestionDescriptorsForPosterUUID;
 - (id)_updatedSuggestionDescriptorsForPosterUUID;
-- (id)activePosterConfigurationForRole:(id)a3 assocPoster:(id *)a4;
+- (id)activePosterConfigurationForRole:(id)role assocPoster:(id *)poster;
 - (id)activePosterConfigurations;
-- (id)activePosterForRole:(id)a3 assocPoster:(id *)a4 error:(id *)a5;
+- (id)activePosterForRole:(id)role assocPoster:(id *)poster error:(id *)error;
 - (id)buildExtensionProvider;
-- (id)buildPrewarmPlanWithIdentifier:(id)a3 refreshStrategy:(int64_t)a4 galleryUpdateOptions:(unint64_t)a5 powerLogReason:(int64_t)a6 cleanupOldResources:(BOOL)a7 prewarmDisplayContext:(id)a8;
-- (id)dataFreshnessForComponents:(id)a3 refreshStrategy:(int64_t)a4;
-- (id)exportPosterConfigurationMatchingUUID:(id)a3 error:(id *)a4;
+- (id)buildPrewarmPlanWithIdentifier:(id)identifier refreshStrategy:(int64_t)strategy galleryUpdateOptions:(unint64_t)options powerLogReason:(int64_t)reason cleanupOldResources:(BOOL)resources prewarmDisplayContext:(id)context;
+- (id)dataFreshnessForComponents:(id)components refreshStrategy:(int64_t)strategy;
+- (id)exportPosterConfigurationMatchingUUID:(id)d error:(id *)error;
 - (id)extensionStoreCoordinators;
-- (id)fetchPosterConfigurationsSortedByUseForRole:(id)a3;
-- (id)fetchSuggestionDescriptorsForConfigurationMatchingUUID:(id)a3 error:(id *)a4;
-- (id)pbf_posterExtensionStoreCoordinatorForProviderIdentifier:(id)a3 error:(id *)a4;
-- (id)pbf_posterExtensionStoreCoordinatorsForRole:(id)a3;
-- (id)pbf_posterSnapshotCoordinatorForIdentity:(id)a3;
-- (id)posterCollectionForRole:(id)a3 error:(id *)a4;
-- (id)posterConfigurationsForExtension:(id)a3;
-- (id)posterConfigurationsForRole:(id)a3 error:(id *)a4;
-- (id)posterDescriptorsForExtensionBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)posterWithUUID:(id)a3 error:(id *)a4;
-- (id)providerForExtensionIdentifier:(id)a3;
-- (id)providerForPath:(id)a3;
-- (id)selectedPosterForRole:(id)a3 error:(id *)a4;
-- (id)staticPosterDescriptorsForExtensionBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)updateDataStoreForSwitcherConfiguration:(id)a3 options:(unint64_t)a4 reason:(id)a5 error:(id *)a6;
+- (id)fetchPosterConfigurationsSortedByUseForRole:(id)role;
+- (id)fetchSuggestionDescriptorsForConfigurationMatchingUUID:(id)d error:(id *)error;
+- (id)pbf_posterExtensionStoreCoordinatorForProviderIdentifier:(id)identifier error:(id *)error;
+- (id)pbf_posterExtensionStoreCoordinatorsForRole:(id)role;
+- (id)pbf_posterSnapshotCoordinatorForIdentity:(id)identity;
+- (id)posterCollectionForRole:(id)role error:(id *)error;
+- (id)posterConfigurationsForExtension:(id)extension;
+- (id)posterConfigurationsForRole:(id)role error:(id *)error;
+- (id)posterDescriptorsForExtensionBundleIdentifier:(id)identifier error:(id *)error;
+- (id)posterWithUUID:(id)d error:(id *)error;
+- (id)providerForExtensionIdentifier:(id)identifier;
+- (id)providerForPath:(id)path;
+- (id)selectedPosterForRole:(id)role error:(id *)error;
+- (id)staticPosterDescriptorsForExtensionBundleIdentifier:(id)identifier error:(id *)error;
+- (id)updateDataStoreForSwitcherConfiguration:(id)configuration options:(unint64_t)options reason:(id)reason error:(id *)error;
 - (int64_t)maximumPosterConfigurationCount;
-- (void)_finishUpdateExtensionUpdateWithOptions:(unint64_t)a3 updateExtensionSession:(id)a4 pushToProactiveError:(id)a5 didUpdateProactiveDescriptors:(BOOL)a6;
-- (void)_ingestRefreshPosterConfiguration:(id)a3 completion:(id)a4;
-- (void)_notifyObserversDidAddConfiguration:(id)a3;
-- (void)_notifyObserversDidDeleteConfiguration:(id)a3;
-- (void)_notifyObserversDidInitializeRoles:(id)a3 suggestionDescriptors:(id)a4 roleToPosterCollection:(id)a5;
-- (void)_notifyObserversDidInitializeWithSwitcherConfiguration:(id)a3 withChanges:(BOOL)a4;
-- (void)_notifyObserversDidUpdateActiveConfiguration:(id)a3 associatedConfiguration:(id)a4 reason:(id)a5;
-- (void)_notifyObserversDidUpdateActivePosterForRoles:(id)a3 suggestionDescriptors:(id)a4;
-- (void)_notifyObserversDidUpdateConfiguration:(id)a3;
-- (void)_notifyObserversDidUpdateConfiguration:(id)a3 homeScreenAssociatedConfiguration:(id)a4;
+- (void)_finishUpdateExtensionUpdateWithOptions:(unint64_t)options updateExtensionSession:(id)session pushToProactiveError:(id)error didUpdateProactiveDescriptors:(BOOL)descriptors;
+- (void)_ingestRefreshPosterConfiguration:(id)configuration completion:(id)completion;
+- (void)_notifyObserversDidAddConfiguration:(id)configuration;
+- (void)_notifyObserversDidDeleteConfiguration:(id)configuration;
+- (void)_notifyObserversDidInitializeRoles:(id)roles suggestionDescriptors:(id)descriptors roleToPosterCollection:(id)collection;
+- (void)_notifyObserversDidInitializeWithSwitcherConfiguration:(id)configuration withChanges:(BOOL)changes;
+- (void)_notifyObserversDidUpdateActiveConfiguration:(id)configuration associatedConfiguration:(id)associatedConfiguration reason:(id)reason;
+- (void)_notifyObserversDidUpdateActivePosterForRoles:(id)roles suggestionDescriptors:(id)descriptors;
+- (void)_notifyObserversDidUpdateConfiguration:(id)configuration;
+- (void)_notifyObserversDidUpdateConfiguration:(id)configuration homeScreenAssociatedConfiguration:(id)associatedConfiguration;
 - (void)_notifyObserversDidUpdateConfigurations;
 - (void)_notifyObserversDidUpdateExtensions;
-- (void)_notifyObserversDidUpdateGalleryConfiguration:(id)a3;
-- (void)_notifyObserversDidUpdatePosterCollectionsForRoles:(id)a3;
-- (void)_notifyObserversDidUpdatePosterDescriptorsForExtensionBundleIdentifier:(id)a3;
-- (void)_notifyObserversDidUpdateSelectedConfiguration:(id)a3 associatedConfiguration:(id)a4 reason:(id)a5;
-- (void)_notifyObserversDidUpdateSnapshotForConfiguration:(id)a3;
+- (void)_notifyObserversDidUpdateGalleryConfiguration:(id)configuration;
+- (void)_notifyObserversDidUpdatePosterCollectionsForRoles:(id)roles;
+- (void)_notifyObserversDidUpdatePosterDescriptorsForExtensionBundleIdentifier:(id)identifier;
+- (void)_notifyObserversDidUpdateSelectedConfiguration:(id)configuration associatedConfiguration:(id)associatedConfiguration reason:(id)reason;
+- (void)_notifyObserversDidUpdateSnapshotForConfiguration:(id)configuration;
 - (void)_notifyObserversDidUpdateSuggestionDescriptors;
-- (void)_notifyObserversDidUpdateSuggestionDescriptors:(id)a3 forConfiguration:(id)a4;
-- (void)_notifyObserversDidUpdateSuggestionDescriptorsForPosterUUID:(id)a3;
-- (void)_notifyObserversDidUpdateSwitcherConfiguration:(id)a3;
+- (void)_notifyObserversDidUpdateSuggestionDescriptors:(id)descriptors forConfiguration:(id)configuration;
+- (void)_notifyObserversDidUpdateSuggestionDescriptorsForPosterUUID:(id)d;
+- (void)_notifyObserversDidUpdateSwitcherConfiguration:(id)configuration;
 - (void)_setupDebugViewFactory;
 - (void)_setupExtensionEnvironment;
 - (void)_setupExtensionProvider;
 - (void)_setupGalleryEnvironment;
-- (void)_stateLock_applyUpdatesAndIngestConfiguration:(id)a3 toPath:(id)a4 powerLogReason:(int64_t)a5 completion:(id)a6;
-- (void)_stateLock_commitSuggestionsForConfigurationMatchingUUID:(id)a3 selectSuggestionDescriptorUUID:(id)a4 completion:(id)a5;
-- (void)_stateLock_convertPosterUpdatesToRoleCoordinatorChanges:(id)a3 toPath:(id)a4 powerLogReason:(int64_t)a5 completion:(id)a6;
-- (void)_stateLock_createTemporaryPosterConfigurationForPosterMatchingUUID:(id)a3 andApplyUpdates:(id)a4 completion:(id)a5;
-- (void)_stateLock_duplicatePosterConfigurationMatchingUUID:(id)a3 completion:(id)a4;
-- (void)_stateLock_enqueueRefreshPosterConfigurationMatchingUUID:(id)a3 sessionInfo:(id)a4 powerLogReason:(int64_t)a5 completion:(id)a6;
-- (void)_stateLock_enumerateConfigurationStoreCoordinators:(id)a3;
-- (void)_stateLock_enumerateExtensionStoreCoordinators:(id)a3;
-- (void)_stateLock_executeExtensionUpdate:(id)a3;
-- (void)_stateLock_fetchPosterSnapshotsWithClientRequest:(id)a3 completion:(id)a4;
-- (void)_stateLock_findStoreCoordinatorsForUUID:(id)a3 extensionStoreCoordinator:(id *)a4 configurationStoreCoordinator:(id *)a5;
+- (void)_stateLock_applyUpdatesAndIngestConfiguration:(id)configuration toPath:(id)path powerLogReason:(int64_t)reason completion:(id)completion;
+- (void)_stateLock_commitSuggestionsForConfigurationMatchingUUID:(id)d selectSuggestionDescriptorUUID:(id)iD completion:(id)completion;
+- (void)_stateLock_convertPosterUpdatesToRoleCoordinatorChanges:(id)changes toPath:(id)path powerLogReason:(int64_t)reason completion:(id)completion;
+- (void)_stateLock_createTemporaryPosterConfigurationForPosterMatchingUUID:(id)d andApplyUpdates:(id)updates completion:(id)completion;
+- (void)_stateLock_duplicatePosterConfigurationMatchingUUID:(id)d completion:(id)completion;
+- (void)_stateLock_enqueueRefreshPosterConfigurationMatchingUUID:(id)d sessionInfo:(id)info powerLogReason:(int64_t)reason completion:(id)completion;
+- (void)_stateLock_enumerateConfigurationStoreCoordinators:(id)coordinators;
+- (void)_stateLock_enumerateExtensionStoreCoordinators:(id)coordinators;
+- (void)_stateLock_executeExtensionUpdate:(id)update;
+- (void)_stateLock_fetchPosterSnapshotsWithClientRequest:(id)request completion:(id)completion;
+- (void)_stateLock_findStoreCoordinatorsForUUID:(id)d extensionStoreCoordinator:(id *)coordinator configurationStoreCoordinator:(id *)storeCoordinator;
 - (void)_stateLock_hasBeenUnlockedSinceBoot;
 - (void)_stateLock_initialRoleCoordinatorSetup;
-- (void)_stateLock_processIncomingPosterConfiguration:(id)a3 completion:(id)a4;
-- (void)_stateLock_pushPosterConfigurationsToProactiveWithCompletion:(id)a3;
-- (void)_stateLock_pushPosterDescriptorsToProactiveForReason:(id)a3 force:(BOOL)a4 completion:(id)a5;
-- (void)_stateLock_pushUpdateNotificationsForRole:(id)a3 diff:(id)a4 previouslyActiveConfiguration:(id)a5 newActiveConfiguration:(id)a6 options:(unint64_t)a7 reason:(id)a8 context:(id)a9;
-- (void)_stateLock_refreshSuggestionDescriptorsForConfigurationMatchingUUID:(id)a3 sessionInfo:(id)a4 completion:(id)a5;
-- (void)_stateLock_setupPathAssertionsAndUpdateActivePosterFromDiff:(id)a3 roleCoordinator:(id)a4 context:(id)a5;
+- (void)_stateLock_processIncomingPosterConfiguration:(id)configuration completion:(id)completion;
+- (void)_stateLock_pushPosterConfigurationsToProactiveWithCompletion:(id)completion;
+- (void)_stateLock_pushPosterDescriptorsToProactiveForReason:(id)reason force:(BOOL)force completion:(id)completion;
+- (void)_stateLock_pushUpdateNotificationsForRole:(id)role diff:(id)diff previouslyActiveConfiguration:(id)configuration newActiveConfiguration:(id)activeConfiguration options:(unint64_t)options reason:(id)reason context:(id)context;
+- (void)_stateLock_refreshSuggestionDescriptorsForConfigurationMatchingUUID:(id)d sessionInfo:(id)info completion:(id)completion;
+- (void)_stateLock_setupPathAssertionsAndUpdateActivePosterFromDiff:(id)diff roleCoordinator:(id)coordinator context:(id)context;
 - (void)_stateLock_setupRoleCoordinatorsIfNeeded;
-- (void)_stateLock_updateExtensions:(id)a3 refreshDescriptors:(int64_t)a4 powerLogReason:(int64_t)a5 galleryUpdateOptions:(unint64_t)a6 queuedUpOperations:(id *)a7;
+- (void)_stateLock_updateExtensions:(id)extensions refreshDescriptors:(int64_t)descriptors powerLogReason:(int64_t)reason galleryUpdateOptions:(unint64_t)options queuedUpOperations:(id *)operations;
 - (void)_stateLock_updateFocusModeForActivePosterChange;
-- (void)_stateLock_updateGalleryWithSuggestedLayout:(id)a3 descriptorsByExtensionBundleIdentifier:(id)a4 staticDescriptorsByExtensionBundleIdentifier:(id)a5;
-- (void)_stateLock_updatePosterConfiguration:(id)a3 updates:(id)a4 completion:(id)a5;
-- (void)_stateLock_updatePosterConfigurationMatchingUUID:(id)a3 updates:(id)a4 completion:(id)a5;
-- (void)_transitionToNewSwitcherConfigurationIfNeededForReason:(id)a3 error:(id *)a4;
-- (void)_updateActiveActivity:(id)a3 active:(BOOL)a4 reason:(id)a5;
-- (void)addObserver:(id)a3;
-- (void)assertionManager:(id)a3 identityIsNowMarkedAsInUse:(id)a4;
-- (void)assertionManager:(id)a3 identityIsNowMarkedAsNOTInUse:(id)a4;
+- (void)_stateLock_updateGalleryWithSuggestedLayout:(id)layout descriptorsByExtensionBundleIdentifier:(id)identifier staticDescriptorsByExtensionBundleIdentifier:(id)bundleIdentifier;
+- (void)_stateLock_updatePosterConfiguration:(id)configuration updates:(id)updates completion:(id)completion;
+- (void)_stateLock_updatePosterConfigurationMatchingUUID:(id)d updates:(id)updates completion:(id)completion;
+- (void)_transitionToNewSwitcherConfigurationIfNeededForReason:(id)reason error:(id *)error;
+- (void)_updateActiveActivity:(id)activity active:(BOOL)active reason:(id)reason;
+- (void)addObserver:(id)observer;
+- (void)assertionManager:(id)manager identityIsNowMarkedAsInUse:(id)use;
+- (void)assertionManager:(id)manager identityIsNowMarkedAsNOTInUse:(id)use;
 - (void)cancel;
 - (void)checkForGalleryUpdates;
-- (void)commitSuggestionsForConfigurationMatchingUUID:(id)a3 selectSuggestionDescriptorUUID:(id)a4 completion:(id)a5;
-- (void)createPosterConfigurationForProviderIdentifier:(id)a3 posterDescriptorIdentifier:(id)a4 role:(id)a5 completion:(id)a6;
-- (void)createTemporaryPosterConfigurationForPosterMatchingUUID:(id)a3 andApplyUpdates:(id)a4 completion:(id)a5;
-- (void)duplicatePosterConfigurationMatchingUUID:(id)a3 completion:(id)a4;
-- (void)enqueueGalleryConfigurationUpdateWithOptions:(unint64_t)a3 powerLogReason:(int64_t)a4 completion:(id)a5;
-- (void)enumerateExtensionStoreCoordinators:(id)a3;
-- (void)executeUpdate:(id)a3 hostContext:(id)a4 refreshStrategy:(int64_t)a5 galleryUpdateOptions:(unint64_t)a6 powerLogReason:(int64_t)a7 cleanupOldResources:(BOOL)a8 completion:(id)a9;
-- (void)fetchCurrentGalleryConfiguration:(id)a3;
-- (void)fetchGallerySnapshotForConfiguration:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)fetchHomeScreenAssociatedPosterConfigurationForConfigurationUUID:(id)a3 completion:(id)a4;
-- (void)fetchPosterSnapshotsWithClientRequest:(id)a3 completion:(id)a4;
-- (void)fetchPosterSuggestionsForFocusModeWithUUID:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)fetchSwitcherSnapshotForConfiguration:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)galleryController:(id)a3 didUpdateCurrentGalleryConfiguration:(id)a4;
-- (void)importPosterConfigurationFromArchiveData:(id)a3 completion:(id)a4;
-- (void)ingestSnapshotCollection:(id)a3 forPosterConfigurationUUID:(id)a4 error:(id *)a5;
+- (void)commitSuggestionsForConfigurationMatchingUUID:(id)d selectSuggestionDescriptorUUID:(id)iD completion:(id)completion;
+- (void)createPosterConfigurationForProviderIdentifier:(id)identifier posterDescriptorIdentifier:(id)descriptorIdentifier role:(id)role completion:(id)completion;
+- (void)createTemporaryPosterConfigurationForPosterMatchingUUID:(id)d andApplyUpdates:(id)updates completion:(id)completion;
+- (void)duplicatePosterConfigurationMatchingUUID:(id)d completion:(id)completion;
+- (void)enqueueGalleryConfigurationUpdateWithOptions:(unint64_t)options powerLogReason:(int64_t)reason completion:(id)completion;
+- (void)enumerateExtensionStoreCoordinators:(id)coordinators;
+- (void)executeUpdate:(id)update hostContext:(id)context refreshStrategy:(int64_t)strategy galleryUpdateOptions:(unint64_t)options powerLogReason:(int64_t)reason cleanupOldResources:(BOOL)resources completion:(id)completion;
+- (void)fetchCurrentGalleryConfiguration:(id)configuration;
+- (void)fetchGallerySnapshotForConfiguration:(id)configuration context:(id)context completion:(id)completion;
+- (void)fetchHomeScreenAssociatedPosterConfigurationForConfigurationUUID:(id)d completion:(id)completion;
+- (void)fetchPosterSnapshotsWithClientRequest:(id)request completion:(id)completion;
+- (void)fetchPosterSuggestionsForFocusModeWithUUID:(id)d context:(id)context completion:(id)completion;
+- (void)fetchSwitcherSnapshotForConfiguration:(id)configuration context:(id)context completion:(id)completion;
+- (void)galleryController:(id)controller didUpdateCurrentGalleryConfiguration:(id)configuration;
+- (void)importPosterConfigurationFromArchiveData:(id)data completion:(id)completion;
+- (void)ingestSnapshotCollection:(id)collection forPosterConfigurationUUID:(id)d error:(id *)error;
 - (void)invalidate;
-- (void)notePosterConfigurationUnderlyingModelDidChange:(id)a3;
-- (void)pbf_enumerateSnapshotCoordinators:(id)a3;
-- (void)posterExtensionProvider:(id)a3 updatedExtensionsFrom:(id)a4 to:(id)a5;
-- (void)prewarm:(id)a3 completion:(id)a4;
-- (void)processEvents:(id)a3 context:(id)a4 QOS:(unsigned int)a5 reason:(id)a6 completion:(id)a7;
-- (void)processIncomingPosterConfiguration:(id)a3 completion:(id)a4;
-- (void)pushPosterDescriptorsToProactiveForReason:(id)a3 completion:(id)a4;
-- (void)pushToProactiveWithCompletion:(id)a3;
-- (void)refreshPosterConfigurationMatchingUUID:(id)a3 sessionInfo:(id)a4 completion:(id)a5;
-- (void)refreshSnapshotForGalleryItemsMatchingDescriptorIdentifier:(id)a3 extensionIdentifier:(id)a4 completion:(id)a5;
-- (void)refreshSnapshotForGalleryItemsMatchingDescriptorIdentifier:(id)a3 extensionIdentifier:(id)a4 displayContexts:(id)a5 completion:(id)a6;
-- (void)refreshSnapshotForPosterConfigurationMatchUUID:(id)a3 completion:(id)a4;
-- (void)refreshSuggestionDescriptorsForConfigurationMatchingUUID:(id)a3 sessionInfo:(id)a4 completion:(id)a5;
-- (void)reloadPosterDescriptorsForExtensionBundleIdentifier:(id)a3 sessionInfo:(id)a4 completion:(id)a5;
-- (void)removeObserver:(id)a3;
-- (void)roleCoordinatorWasReset:(id)a3 processInitialStateSetupEvents:(id *)a4;
-- (void)roleProcessor:(id)a3 transactionFinished:(id)a4 success:(BOOL)a5 results:(id)a6 error:(id)a7;
-- (void)setMaximumPosterConfigurationCount:(int64_t)a3;
-- (void)snapshotManager:(id)a3 didUpdateSnapshotForPath:(id)a4 forDefinition:(id)a5;
-- (void)updateExtensionsAndNotifyWhenComplete:(id)a3;
+- (void)notePosterConfigurationUnderlyingModelDidChange:(id)change;
+- (void)pbf_enumerateSnapshotCoordinators:(id)coordinators;
+- (void)posterExtensionProvider:(id)provider updatedExtensionsFrom:(id)from to:(id)to;
+- (void)prewarm:(id)prewarm completion:(id)completion;
+- (void)processEvents:(id)events context:(id)context QOS:(unsigned int)s reason:(id)reason completion:(id)completion;
+- (void)processIncomingPosterConfiguration:(id)configuration completion:(id)completion;
+- (void)pushPosterDescriptorsToProactiveForReason:(id)reason completion:(id)completion;
+- (void)pushToProactiveWithCompletion:(id)completion;
+- (void)refreshPosterConfigurationMatchingUUID:(id)d sessionInfo:(id)info completion:(id)completion;
+- (void)refreshSnapshotForGalleryItemsMatchingDescriptorIdentifier:(id)identifier extensionIdentifier:(id)extensionIdentifier completion:(id)completion;
+- (void)refreshSnapshotForGalleryItemsMatchingDescriptorIdentifier:(id)identifier extensionIdentifier:(id)extensionIdentifier displayContexts:(id)contexts completion:(id)completion;
+- (void)refreshSnapshotForPosterConfigurationMatchUUID:(id)d completion:(id)completion;
+- (void)refreshSuggestionDescriptorsForConfigurationMatchingUUID:(id)d sessionInfo:(id)info completion:(id)completion;
+- (void)reloadPosterDescriptorsForExtensionBundleIdentifier:(id)identifier sessionInfo:(id)info completion:(id)completion;
+- (void)removeObserver:(id)observer;
+- (void)roleCoordinatorWasReset:(id)reset processInitialStateSetupEvents:(id *)events;
+- (void)roleProcessor:(id)processor transactionFinished:(id)finished success:(BOOL)success results:(id)results error:(id)error;
+- (void)setMaximumPosterConfigurationCount:(int64_t)count;
+- (void)snapshotManager:(id)manager didUpdateSnapshotForPath:(id)path forDefinition:(id)definition;
+- (void)updateExtensionsAndNotifyWhenComplete:(id)complete;
 - (void)updateFocusModeForActivePosterChange;
-- (void)updateGallery:(id)a3 completion:(id)a4;
-- (void)updatePosterConfiguration:(id)a3 updates:(id)a4 completion:(id)a5;
-- (void)updatePosterConfigurationMatchingUUID:(id)a3 updates:(id)a4 completion:(id)a5;
-- (void)updateSnapshotsForGallery:(id)a3 intention:(unint64_t)a4 powerLogReason:(int64_t)a5 completion:(id)a6;
+- (void)updateGallery:(id)gallery completion:(id)completion;
+- (void)updatePosterConfiguration:(id)configuration updates:(id)updates completion:(id)completion;
+- (void)updatePosterConfigurationMatchingUUID:(id)d updates:(id)updates completion:(id)completion;
+- (void)updateSnapshotsForGallery:(id)gallery intention:(unint64_t)intention powerLogReason:(int64_t)reason completion:(id)completion;
 @end
 
 @implementation PBFPosterExtensionDataStore
 
-+ (id)galleryCacheURLForBaseURL:(id)a3
++ (id)galleryCacheURLForBaseURL:(id)l
 {
   v4 = MEMORY[0x277CBEBC0];
-  v5 = a3;
-  v6 = [v4 pbf_galleryCacheURLForBaseURL:v5 version:{objc_msgSend(a1, "dataStoreVersion")}];
+  lCopy = l;
+  v6 = [v4 pbf_galleryCacheURLForBaseURL:lCopy version:{objc_msgSend(self, "dataStoreVersion")}];
 
   return v6;
 }
 
-+ (id)dataStoreExtensionContainerURLForBaseURL:(id)a3
++ (id)dataStoreExtensionContainerURLForBaseURL:(id)l
 {
   v4 = MEMORY[0x277CBEBC0];
-  v5 = a3;
-  v6 = [v4 pbf_dataStoreExtensionContainerURLForBaseURL:v5 version:{objc_msgSend(a1, "dataStoreVersion")}];
+  lCopy = l;
+  v6 = [v4 pbf_dataStoreExtensionContainerURLForBaseURL:lCopy version:{objc_msgSend(self, "dataStoreVersion")}];
 
   return v6;
 }
 
-- (PBFPosterExtensionDataStore)initWithURL:(id)a3 runtimeAssertionProvider:(id)a4 extensionProvider:(id)a5 observer:(id)a6 wasMigrationJustPerformed:(BOOL)a7 applicationStateMonitor:(id)a8 error:(id *)a9
+- (PBFPosterExtensionDataStore)initWithURL:(id)l runtimeAssertionProvider:(id)provider extensionProvider:(id)extensionProvider observer:(id)observer wasMigrationJustPerformed:(BOOL)performed applicationStateMonitor:(id)monitor error:(id *)error
 {
-  v90 = a7;
+  performedCopy = performed;
   v101 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v91 = a8;
-  v19 = v15;
+  lCopy = l;
+  providerCopy = provider;
+  extensionProviderCopy = extensionProvider;
+  observerCopy = observer;
+  monitorCopy = monitor;
+  v19 = lCopy;
   NSClassFromString(&cfstr_Nsurl.isa);
   if (!v19)
   {
@@ -227,7 +227,7 @@
     [PBFPosterExtensionDataStore initWithURL:a2 runtimeAssertionProvider:? extensionProvider:? observer:? wasMigrationJustPerformed:? applicationStateMonitor:? error:?];
   }
 
-  v20 = v17;
+  v20 = extensionProviderCopy;
   if (v20)
   {
     NSClassFromString(&cfstr_Pfposterextens.isa);
@@ -237,7 +237,7 @@
     }
   }
 
-  v21 = v16;
+  v21 = providerCopy;
   if (!v21)
   {
     [PBFPosterExtensionDataStore initWithURL:a2 runtimeAssertionProvider:? extensionProvider:? observer:? wasMigrationJustPerformed:? applicationStateMonitor:? error:?];
@@ -257,7 +257,7 @@
     goto LABEL_42;
   }
 
-  v89 = v18;
+  v89 = observerCopy;
   v24 = PBFLogDataStore();
   v25 = os_signpost_id_generate(v24);
 
@@ -269,15 +269,15 @@
     *buf = 138543618;
     v96 = v19;
     v97 = 1024;
-    v98 = v90;
+    v98 = performedCopy;
     _os_signpost_emit_with_name_impl(&dword_21B526000, v27, OS_SIGNPOST_INTERVAL_BEGIN, v25, "PBFPosterExtensionDataStore Init", "URL: %{public}@ wasMigrationJustPerformed: %{BOOL}u", buf, 0x12u);
   }
 
   spid = v25;
 
-  objc_storeStrong(&v23->_applicationStateMonitor, a8);
-  objc_storeStrong(&v23->_runtimeAssertionProvider, a4);
-  objc_storeStrong(&v23->_extensionProvider, a5);
+  objc_storeStrong(&v23->_applicationStateMonitor, monitor);
+  objc_storeStrong(&v23->_runtimeAssertionProvider, provider);
+  objc_storeStrong(&v23->_extensionProvider, extensionProvider);
   v28 = [objc_alloc(MEMORY[0x277CF0B78]) initWithFlag:0];
   invalidationFlag = v23->_invalidationFlag;
   v23->_invalidationFlag = v28;
@@ -318,7 +318,7 @@
   v23->_activePosterLock_roleToActivePosterConfiguration = v44;
 
   v23->_stateLock_maximumPosterConfigurationCount = [objc_opt_class() defaultMaximumPosterConfigurationCount];
-  if (v90)
+  if (performedCopy)
   {
     stateLock_wasMigrationJustPerformed = v23->_stateLock_wasMigrationJustPerformed;
     v23->_stateLock_wasMigrationJustPerformed = MEMORY[0x277CBEC38];
@@ -332,21 +332,21 @@
     v49 = v93;
     if (PBFPosterExtensionDataStoreMigratorResultIsFailure(v48))
     {
-      if (a9 && v49)
+      if (error && v49)
       {
         v50 = v49;
-        *a9 = v49;
+        *error = v49;
       }
 
       v51 = PBFLogDataStore();
       v52 = v51;
-      v18 = v89;
+      observerCopy = v89;
       if (v88 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v51))
       {
         *buf = 138543874;
         v96 = v19;
         v97 = 1024;
-        v98 = v90;
+        v98 = performedCopy;
         v99 = 2114;
         v100 = v49;
         _os_signpost_emit_with_name_impl(&dword_21B526000, v52, OS_SIGNPOST_INTERVAL_END, spid, "PBFPosterExtensionDataStore Init", "URL: %{public}@ wasMigrationJustPerformed: %{BOOL}u -- could not setup data store: %{public}@", buf, 0x1Cu);
@@ -355,7 +355,7 @@
 LABEL_33:
       v59 = 0;
 LABEL_43:
-      v83 = v91;
+      v83 = monitorCopy;
       goto LABEL_44;
     }
   }
@@ -366,21 +366,21 @@ LABEL_43:
   v55 = v54;
   if (!v53)
   {
-    if (a9 && v54)
+    if (error && v54)
     {
       v56 = v54;
-      *a9 = v55;
+      *error = v55;
     }
 
     v57 = PBFLogDataStore();
     v58 = v57;
-    v18 = v89;
+    observerCopy = v89;
     if (v88 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v57))
     {
       *buf = 138543874;
       v96 = v19;
       v97 = 1024;
-      v98 = v90;
+      v98 = performedCopy;
       v99 = 2114;
       v100 = v55;
       _os_signpost_emit_with_name_impl(&dword_21B526000, v58, OS_SIGNPOST_INTERVAL_END, spid, "PBFPosterExtensionDataStore Init", "URL: %{public}@ wasMigrationJustPerformed: %{BOOL}u -- could not validate data store integrity: %{public}@", buf, 0x1Cu);
@@ -413,21 +413,21 @@ LABEL_43:
   stateLock_staticDescriptorsForExtensionBundleIdentifier = v23->_stateLock_staticDescriptorsForExtensionBundleIdentifier;
   v23->_stateLock_staticDescriptorsForExtensionBundleIdentifier = v64;
 
-  v66 = [objc_opt_class() dataStoreVersion];
-  v67 = [MEMORY[0x277CBEBC0] pbf_dataStoreURLForBaseURL:v23->_baseURL version:v66];
+  dataStoreVersion = [objc_opt_class() dataStoreVersion];
+  v67 = [MEMORY[0x277CBEBC0] pbf_dataStoreURLForBaseURL:v23->_baseURL version:dataStoreVersion];
   URL = v23->_URL;
   v23->_URL = v67;
 
-  v69 = [MEMORY[0x277CBEBC0] pbf_dataStoreExtensionContainerURLForBaseURL:v23->_baseURL version:v66];
+  v69 = [MEMORY[0x277CBEBC0] pbf_dataStoreExtensionContainerURLForBaseURL:v23->_baseURL version:dataStoreVersion];
   extensionStoreCoordinatorContainerURL = v23->_extensionStoreCoordinatorContainerURL;
   v23->_extensionStoreCoordinatorContainerURL = v69;
 
-  v71 = [MEMORY[0x277CBEBC0] pbf_galleryCacheURLForBaseURL:v23->_baseURL version:v66];
+  v71 = [MEMORY[0x277CBEBC0] pbf_galleryCacheURLForBaseURL:v23->_baseURL version:dataStoreVersion];
   galleryCacheURL = v23->_galleryCacheURL;
   v23->_galleryCacheURL = v71;
 
-  v73 = [MEMORY[0x277CBEBC0] pbf_dataStoreSQLiteDatabaseURLForBaseURL:v23->_baseURL version:v66];
-  v74 = [[PBFPosterExtensionDataStoreSQLiteDatabase alloc] initWithURL:v73 options:1 error:a9];
+  v73 = [MEMORY[0x277CBEBC0] pbf_dataStoreSQLiteDatabaseURLForBaseURL:v23->_baseURL version:dataStoreVersion];
+  v74 = [[PBFPosterExtensionDataStoreSQLiteDatabase alloc] initWithURL:v73 options:1 error:error];
   database = v23->_database;
   v23->_database = v74;
 
@@ -438,7 +438,7 @@ LABEL_43:
     v23->_snapshotManager = v76;
 
     [(PBFPosterSnapshotManager *)v23->_snapshotManager addObserver:v23];
-    v18 = v89;
+    observerCopy = v89;
     if (v89)
     {
       [(PBFPosterExtensionDataStore *)v23 addObserver:v89];
@@ -461,7 +461,7 @@ LABEL_43:
       *buf = 138543618;
       v96 = v19;
       v97 = 1024;
-      v98 = v90;
+      v98 = performedCopy;
       _os_signpost_emit_with_name_impl(&dword_21B526000, v82, OS_SIGNPOST_INTERVAL_END, spid, "initWithURL:runtimeAssertionProvider:extensionProvider:observer:wasMigrationJustPerformed:error", "URL: %{public}@ wasMigrationJustPerformed: %{BOOL}u", buf, 0x12u);
     }
 
@@ -472,14 +472,14 @@ LABEL_42:
 
   v85 = PBFLogDataStore();
   v86 = v85;
-  v18 = v89;
-  v83 = v91;
+  observerCopy = v89;
+  v83 = monitorCopy;
   if (v88 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v85))
   {
     *buf = 138543618;
     v96 = v19;
     v97 = 1024;
-    v98 = v90;
+    v98 = performedCopy;
     _os_signpost_emit_with_name_impl(&dword_21B526000, v86, OS_SIGNPOST_INTERVAL_END, spid, "PBFPosterExtensionDataStore Init", "URL: %{public}@ wasMigrationJustPerformed: %{BOOL}u -- failed to setup database", buf, 0x12u);
   }
 
@@ -531,68 +531,68 @@ LABEL_44:
 
     [(PBFPosterExtensionDataStorePrewarmHelper *)self->_prewarmer invalidate];
     [(NSDictionary *)self->_roleToRoleCoordinator enumerateKeysAndObjectsUsingBlock:&__block_literal_global_0];
-    v11 = self;
-    objc_sync_enter(v11);
-    [(BSInvalidatable *)v11->_foregroundKeepDatabaseAliveAssertion invalidate];
-    foregroundKeepDatabaseAliveAssertion = v11->_foregroundKeepDatabaseAliveAssertion;
-    v11->_foregroundKeepDatabaseAliveAssertion = 0;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(BSInvalidatable *)selfCopy->_foregroundKeepDatabaseAliveAssertion invalidate];
+    foregroundKeepDatabaseAliveAssertion = selfCopy->_foregroundKeepDatabaseAliveAssertion;
+    selfCopy->_foregroundKeepDatabaseAliveAssertion = 0;
 
-    objc_sync_exit(v11);
-    [(PBFPosterExtensionDataStoreSQLiteDatabase *)v11->_database invalidate];
-    database = v11->_database;
-    v11->_database = 0;
+    objc_sync_exit(selfCopy);
+    [(PBFPosterExtensionDataStoreSQLiteDatabase *)selfCopy->_database invalidate];
+    database = selfCopy->_database;
+    selfCopy->_database = 0;
 
-    [(PFPosterExtensionProvider *)v11->_extensionProvider removeObserver:v11];
-    [(PFPosterExtensionProvider *)v11->_extensionProvider cancel];
-    extensionProvider = v11->_extensionProvider;
-    v11->_extensionProvider = 0;
+    [(PFPosterExtensionProvider *)selfCopy->_extensionProvider removeObserver:selfCopy];
+    [(PFPosterExtensionProvider *)selfCopy->_extensionProvider cancel];
+    extensionProvider = selfCopy->_extensionProvider;
+    selfCopy->_extensionProvider = 0;
 
-    [(PBFPosterSnapshotManager *)v11->_snapshotManager removeObserver:v11];
-    [(PBFPosterSnapshotManager *)v11->_snapshotManager invalidate];
-    os_unfair_lock_lock(&v11->_stateLock);
-    [(PBFGalleryController *)v11->_galleryController removeObserver:v11];
-    [(PBFGalleryController *)v11->_galleryController invalidate];
-    [(PBFComplicationSnapshotService *)v11->_complicationSnapshotService invalidate];
-    [(PBFPosterExtensionDataStoreAssertionManager *)v11->_assertionManager removeObserver:v11];
-    [(PBFPosterExtensionDataStoreAssertionManager *)v11->_assertionManager invalidate];
-    [(NSMutableDictionary *)v11->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier enumerateKeysAndObjectsUsingBlock:&__block_literal_global_156];
-    URL = v11->_URL;
-    v11->_URL = 0;
+    [(PBFPosterSnapshotManager *)selfCopy->_snapshotManager removeObserver:selfCopy];
+    [(PBFPosterSnapshotManager *)selfCopy->_snapshotManager invalidate];
+    os_unfair_lock_lock(&selfCopy->_stateLock);
+    [(PBFGalleryController *)selfCopy->_galleryController removeObserver:selfCopy];
+    [(PBFGalleryController *)selfCopy->_galleryController invalidate];
+    [(PBFComplicationSnapshotService *)selfCopy->_complicationSnapshotService invalidate];
+    [(PBFPosterExtensionDataStoreAssertionManager *)selfCopy->_assertionManager removeObserver:selfCopy];
+    [(PBFPosterExtensionDataStoreAssertionManager *)selfCopy->_assertionManager invalidate];
+    [(NSMutableDictionary *)selfCopy->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier enumerateKeysAndObjectsUsingBlock:&__block_literal_global_156];
+    URL = selfCopy->_URL;
+    selfCopy->_URL = 0;
 
-    extensionStoreCoordinatorContainerURL = v11->_extensionStoreCoordinatorContainerURL;
-    v11->_extensionStoreCoordinatorContainerURL = 0;
+    extensionStoreCoordinatorContainerURL = selfCopy->_extensionStoreCoordinatorContainerURL;
+    selfCopy->_extensionStoreCoordinatorContainerURL = 0;
 
-    galleryCacheURL = v11->_galleryCacheURL;
-    v11->_galleryCacheURL = 0;
+    galleryCacheURL = selfCopy->_galleryCacheURL;
+    selfCopy->_galleryCacheURL = 0;
 
-    snapshotManager = v11->_snapshotManager;
-    v11->_snapshotManager = 0;
+    snapshotManager = selfCopy->_snapshotManager;
+    selfCopy->_snapshotManager = 0;
 
-    complicationSnapshotService = v11->_complicationSnapshotService;
-    v11->_complicationSnapshotService = 0;
+    complicationSnapshotService = selfCopy->_complicationSnapshotService;
+    selfCopy->_complicationSnapshotService = 0;
 
-    assertionManager = v11->_assertionManager;
-    v11->_assertionManager = 0;
+    assertionManager = selfCopy->_assertionManager;
+    selfCopy->_assertionManager = 0;
 
-    stateLock_configuration = v11->_stateLock_configuration;
-    v11->_stateLock_configuration = 0;
+    stateLock_configuration = selfCopy->_stateLock_configuration;
+    selfCopy->_stateLock_configuration = 0;
 
-    stateLock_descriptorsForExtensionBundleIdentifier = v11->_stateLock_descriptorsForExtensionBundleIdentifier;
-    v11->_stateLock_descriptorsForExtensionBundleIdentifier = 0;
+    stateLock_descriptorsForExtensionBundleIdentifier = selfCopy->_stateLock_descriptorsForExtensionBundleIdentifier;
+    selfCopy->_stateLock_descriptorsForExtensionBundleIdentifier = 0;
 
-    stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier = v11->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier;
-    v11->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier = 0;
+    stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier = selfCopy->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier;
+    selfCopy->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier = 0;
 
-    stateLock_staticDescriptorsForExtensionBundleIdentifier = v11->_stateLock_staticDescriptorsForExtensionBundleIdentifier;
-    v11->_stateLock_staticDescriptorsForExtensionBundleIdentifier = 0;
+    stateLock_staticDescriptorsForExtensionBundleIdentifier = selfCopy->_stateLock_staticDescriptorsForExtensionBundleIdentifier;
+    selfCopy->_stateLock_staticDescriptorsForExtensionBundleIdentifier = 0;
 
-    stateLock_suggestedLayout = v11->_stateLock_suggestedLayout;
-    v11->_stateLock_suggestedLayout = 0;
+    stateLock_suggestedLayout = selfCopy->_stateLock_suggestedLayout;
+    selfCopy->_stateLock_suggestedLayout = 0;
 
-    stateLock_switcherConfiguration = v11->_stateLock_switcherConfiguration;
-    v11->_stateLock_switcherConfiguration = 0;
+    stateLock_switcherConfiguration = selfCopy->_stateLock_switcherConfiguration;
+    selfCopy->_stateLock_switcherConfiguration = 0;
 
-    os_unfair_lock_unlock(&v11->_stateLock);
+    os_unfair_lock_unlock(&selfCopy->_stateLock);
     v27 = PBFLogDataStore();
     v28 = v27;
     if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v27))
@@ -617,8 +617,8 @@ LABEL_44:
   }
 
   v7 = objc_opt_new();
-  v8 = [(NSURL *)self->_galleryCacheURL path];
-  v9 = [v7 fileExistsAtPath:v8];
+  path = [(NSURL *)self->_galleryCacheURL path];
+  v9 = [v7 fileExistsAtPath:path];
 
   if (v9)
   {
@@ -644,7 +644,7 @@ LABEL_7:
       [(PBFGalleryController *)self->_galleryController addObserver:self];
     }
 
-    v16 = [(PBFPosterExtensionDataStore *)self currentGalleryConfiguration];
+    currentGalleryConfiguration = [(PBFPosterExtensionDataStore *)self currentGalleryConfiguration];
     v17 = PBFLogDataStore();
     v13 = v17;
     if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
@@ -667,23 +667,23 @@ LABEL_15:
 
 - (void)_setupDebugViewFactory
 {
-  v2 = [(PBFGalleryController *)self->_galleryController galleryControllerState];
-  [_TtC11PosterBoard28PBFDebugViewFactoryUtilities setupFactoryWithGalleryControllerState:v2];
+  galleryControllerState = [(PBFGalleryController *)self->_galleryController galleryControllerState];
+  [_TtC11PosterBoard28PBFDebugViewFactoryUtilities setupFactoryWithGalleryControllerState:galleryControllerState];
 }
 
-- (id)dataFreshnessForComponents:(id)a3 refreshStrategy:(int64_t)a4
+- (id)dataFreshnessForComponents:(id)components refreshStrategy:(int64_t)strategy
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  componentsCopy = components;
   v22 = objc_alloc_init(PBFMutableDataFreshnessState);
-  v6 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   os_unfair_lock_lock(&self->_stateLock);
-  v20 = [(PFPosterExtensionProvider *)self->_extensionProvider extensionForIdentifier];
+  extensionForIdentifier = [(PFPosterExtensionProvider *)self->_extensionProvider extensionForIdentifier];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v5;
+  obj = componentsCopy;
   v7 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v7)
   {
@@ -704,8 +704,8 @@ LABEL_15:
           v12 = [PBFDataComponentObjectEntity alloc];
           galleryController = self->_galleryController;
           v14 = [PBFDataRefreshContext alloc];
-          v15 = [(PBFGalleryController *)self->_galleryController lastUpdateDate];
-          v16 = [(PBFDataRefreshContext *)v14 initWithComponent:@"PBFDataComponentGallery" now:v6 lastRefreshDate:v15 userInfo:0];
+          lastUpdateDate = [(PBFGalleryController *)self->_galleryController lastUpdateDate];
+          v16 = [(PBFDataRefreshContext *)v14 initWithComponent:@"PBFDataComponentGallery" now:date lastRefreshDate:lastUpdateDate userInfo:0];
           v17 = [(PBFDataComponentObjectEntity *)v12 initWithComponent:@"PBFDataComponentGallery" object:galleryController context:v16];
 
           [(PBFMutableDataFreshnessState *)v22 track:v17];
@@ -720,10 +720,10 @@ LABEL_12:
           v23[1] = 3221225472;
           v23[2] = __74__PBFPosterExtensionDataStore_dataFreshnessForComponents_refreshStrategy___block_invoke;
           v23[3] = &unk_2782C5980;
-          v24 = v20;
+          v24 = extensionForIdentifier;
           v25 = v11;
-          v26 = v6;
-          v28 = a4;
+          v26 = date;
+          strategyCopy = strategy;
           v27 = v22;
           [(PBFPosterExtensionDataStore *)self _stateLock_enumerateExtensionStoreCoordinators:v23];
 
@@ -809,10 +809,10 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)prewarm:(id)a3 completion:(id)a4
+- (void)prewarm:(id)prewarm completion:(id)completion
 {
-  v6 = a4;
-  v11 = a3;
+  completionCopy = completion;
+  prewarmCopy = prewarm;
   os_unfair_lock_lock(&self->_stateLock);
   if ([(PBFPosterExtensionDataStore *)self _stateLock_hasBeenUnlockedSinceBoot]&& (v7 = self->_stateLock_wasMigrationJustPerformed) != 0 && [(NSNumber *)v7 BOOLValue])
   {
@@ -830,17 +830,17 @@ LABEL_13:
   }
 
   os_unfair_lock_unlock(&self->_stateLock);
-  [(PBFPosterExtensionDataStore *)self executeUpdate:@"prewarm" hostContext:v11 refreshStrategy:v10 galleryUpdateOptions:v9 powerLogReason:1 cleanupOldResources:0 completion:v6];
+  [(PBFPosterExtensionDataStore *)self executeUpdate:@"prewarm" hostContext:prewarmCopy refreshStrategy:v10 galleryUpdateOptions:v9 powerLogReason:1 cleanupOldResources:0 completion:completionCopy];
 }
 
-- (void)executeUpdate:(id)a3 hostContext:(id)a4 refreshStrategy:(int64_t)a5 galleryUpdateOptions:(unint64_t)a6 powerLogReason:(int64_t)a7 cleanupOldResources:(BOOL)a8 completion:(id)a9
+- (void)executeUpdate:(id)update hostContext:(id)context refreshStrategy:(int64_t)strategy galleryUpdateOptions:(unint64_t)options powerLogReason:(int64_t)reason cleanupOldResources:(BOOL)resources completion:(id)completion
 {
-  v64 = a8;
+  resourcesCopy = resources;
   v109 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v71 = a4;
-  v13 = a9;
-  v14 = [MEMORY[0x277CBEAA8] date];
+  updateCopy = update;
+  contextCopy = context;
+  completionCopy = completion;
+  date = [MEMORY[0x277CBEAA8] date];
   v15 = PBFLogPrewarm();
   spid = os_signpost_id_generate(v15);
 
@@ -848,15 +848,15 @@ LABEL_13:
   v17 = v16;
   if ((spid - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
-    v18 = PBFDescriptorRefreshStrategyToString(a5);
+    v18 = PBFDescriptorRefreshStrategyToString(strategy);
     *buf = 138544130;
-    v102 = v12;
+    v102 = updateCopy;
     v103 = 2114;
     v104 = v18;
     v105 = 2048;
-    v106 = a6;
+    optionsCopy = options;
     v107 = 2048;
-    v108 = a7;
+    reasonCopy = reason;
     _os_signpost_emit_with_name_impl(&dword_21B526000, v17, OS_SIGNPOST_INTERVAL_BEGIN, spid, "executeUpdate:hostContext:refreshStrategy:galleryUpdateOptions:powerLogReason:completion:", "updateDescription: %{public}@ refreshStrategy: %{public}@ galleryUpdateOptions: %lu powerLogReason: %lu", buf, 0x2Au);
   }
 
@@ -867,14 +867,14 @@ LABEL_13:
   aBlock[3] = &unk_2782C59A8;
   v68 = v19;
   v88 = v68;
-  v70 = v13;
+  v70 = completionCopy;
   v91 = v70;
-  v67 = v14;
+  v67 = date;
   v89 = v67;
-  v73 = v12;
+  v73 = updateCopy;
   v90 = v73;
-  v92 = a5;
-  v93 = a6;
+  strategyCopy = strategy;
+  optionsCopy2 = options;
   v20 = _Block_copy(aBlock);
   if ((PBFCurrentDeviceClassSupported() & 1) == 0)
   {
@@ -889,26 +889,26 @@ LABEL_13:
 
   if (![MEMORY[0x277CBEBD0] pbf_keynoteModeEnabled])
   {
-    v25 = [MEMORY[0x277CCAD78] UUID];
-    v26 = [v25 UUIDString];
-    v22 = [v26 substringToIndex:7];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v22 = [uUIDString substringToIndex:7];
 
     v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", v22, v73];
     v27 = MEMORY[0x277CCACA8];
-    v28 = PBFDescriptorRefreshStrategyToString(a5);
-    v29 = NSStringFromPBFPosterExtensionDataStoreGalleryConfigurationOptions(a6);
-    v30 = NSStringFromPBFPowerLogReason(a7);
+    v28 = PBFDescriptorRefreshStrategyToString(strategy);
+    v29 = NSStringFromPBFPosterExtensionDataStoreGalleryConfigurationOptions(options);
+    v30 = NSStringFromPBFPowerLogReason(reason);
     v61 = [v27 stringWithFormat:@"(%@)-(%@)-(%@)-(%@)", v23, v28, v29, v30];
 
     v96[0] = @"PBFDataComponentStaticDescriptors";
     v96[1] = @"PBFDataComponentDynamicDescriptors";
     v65 = [MEMORY[0x277CBEA60] arrayWithObjects:v96 count:2];
-    v62 = [(NSDictionary *)self->_roleToRoleCoordinator allKeys];
-    if ([v62 bs_containsObjectPassingTest:&__block_literal_global_213])
+    allKeys = [(NSDictionary *)self->_roleToRoleCoordinator allKeys];
+    if ([allKeys bs_containsObjectPassingTest:&__block_literal_global_213])
     {
       v31 = [v65 arrayByAddingObject:@"PBFDataComponentGallery"];
 
-      if ([v62 containsObject:*MEMORY[0x277D3EBC0]])
+      if ([allKeys containsObject:*MEMORY[0x277D3EBC0]])
       {
         v65 = [v31 arrayByAddingObject:@"PBFDataComponentSnapshots"];
       }
@@ -919,7 +919,7 @@ LABEL_13:
       }
     }
 
-    v63 = [(PBFPosterExtensionDataStore *)self dataFreshnessForComponents:v65 refreshStrategy:a5];
+    v63 = [(PBFPosterExtensionDataStore *)self dataFreshnessForComponents:v65 refreshStrategy:strategy];
     v32 = PBFLogPrewarm();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
@@ -946,11 +946,11 @@ LABEL_13:
     }
 
     os_unfair_lock_lock(&self->_stateLock);
-    v35 = [(PBFPosterExtensionDataStore *)self _stateLock_hasBeenUnlockedSinceBoot];
+    _stateLock_hasBeenUnlockedSinceBoot = [(PBFPosterExtensionDataStore *)self _stateLock_hasBeenUnlockedSinceBoot];
     os_unfair_lock_unlock(&self->_stateLock);
     v36 = PBFLogPrewarm();
     v37 = os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT);
-    if (!v35)
+    if (!_stateLock_hasBeenUnlockedSinceBoot)
     {
       if (v37)
       {
@@ -991,27 +991,27 @@ LABEL_13:
 
       runtimeAssertionProvider = self->_runtimeAssertionProvider;
       v40 = [MEMORY[0x277CCACA8] stringWithFormat:@"Prewarm session '%@/%@' initiated from XPC", v22, v73];
-      v41 = [MEMORY[0x277D47008] currentProcess];
+      currentProcess = [MEMORY[0x277D47008] currentProcess];
       v84[0] = MEMORY[0x277D85DD0];
       v84[1] = 3221225472;
       v84[2] = __140__PBFPosterExtensionDataStore_executeUpdate_hostContext_refreshStrategy_galleryUpdateOptions_powerLogReason_cleanupOldResources_completion___block_invoke_222;
       v84[3] = &unk_2782C59F0;
       v42 = v23;
       v85 = v42;
-      v60 = [(PBFRuntimeAssertionProviding *)runtimeAssertionProvider acquirePrewarmRuntimeAssertionForReason:v40 target:v41 invalidationHandler:v84];
+      v60 = [(PBFRuntimeAssertionProviding *)runtimeAssertionProvider acquirePrewarmRuntimeAssertionForReason:v40 target:currentProcess invalidationHandler:v84];
 
       v43 = +[PBFGenericDisplayContext mainScreen];
-      v44 = [v71 primaryDisplayInfo];
+      primaryDisplayInfo = [contextCopy primaryDisplayInfo];
 
-      if (v44)
+      if (primaryDisplayInfo)
       {
-        v45 = [v71 primaryDisplayInfo];
-        v46 = [v43 displayContextWithUpdatedInterfaceOrientation:{objc_msgSend(v45, "interfaceOrientation")}];
+        primaryDisplayInfo2 = [contextCopy primaryDisplayInfo];
+        v46 = [v43 displayContextWithUpdatedInterfaceOrientation:{objc_msgSend(primaryDisplayInfo2, "interfaceOrientation")}];
 
-        v43 = [v46 displayContextWithUpdatedUserInterfaceStyle:{objc_msgSend(v71, "userInterfaceStyle")}];
+        v43 = [v46 displayContextWithUpdatedUserInterfaceStyle:{objc_msgSend(contextCopy, "userInterfaceStyle")}];
       }
 
-      v47 = [(PBFPosterExtensionDataStore *)self buildPrewarmPlanWithIdentifier:v42 refreshStrategy:a5 galleryUpdateOptions:a6 powerLogReason:a7 cleanupOldResources:v64 prewarmDisplayContext:v43];
+      v47 = [(PBFPosterExtensionDataStore *)self buildPrewarmPlanWithIdentifier:v42 refreshStrategy:strategy galleryUpdateOptions:options powerLogReason:reason cleanupOldResources:resourcesCopy prewarmDisplayContext:v43];
       v48 = [[PBFPosterExtensionDataStorePrewarmHelper alloc] initWithPlan:v47];
       prewarmer = self->_prewarmer;
       self->_prewarmer = v48;
@@ -1027,9 +1027,9 @@ LABEL_13:
       v80 = v51;
       v83[1] = spid;
       v81 = v73;
-      v83[2] = a5;
-      v83[3] = a6;
-      v83[4] = a7;
+      v83[2] = strategy;
+      v83[3] = options;
+      v83[4] = reason;
       v82 = v20;
       [(PBFPosterExtensionDataStorePrewarmHelper *)v50 executePrewarmWithExecutor:0 completion:v78];
 
@@ -1048,8 +1048,8 @@ LABEL_36:
         goto LABEL_37;
       }
 
-      v56 = [(PBFPosterExtensionDataStorePrewarmHelper *)self->_prewarmer plan];
-      v57 = [v56 identifier];
+      plan = [(PBFPosterExtensionDataStorePrewarmHelper *)self->_prewarmer plan];
+      identifier = [plan identifier];
 
       v58 = PBFLogPrewarm();
       if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
@@ -1057,7 +1057,7 @@ LABEL_36:
         *buf = 138543618;
         v102 = v23;
         v103 = 2114;
-        v104 = v57;
+        v104 = identifier;
         _os_log_impl(&dword_21B526000, v58, OS_LOG_TYPE_DEFAULT, "(%{public}@) prewarm already in progress (%{public}@) -- tacking on completion handler and moving on with our lives.", buf, 0x16u);
       }
 
@@ -1067,7 +1067,7 @@ LABEL_36:
       v74[2] = __140__PBFPosterExtensionDataStore_executeUpdate_hostContext_refreshStrategy_galleryUpdateOptions_powerLogReason_cleanupOldResources_completion___block_invoke_230;
       v74[3] = &unk_2782C5A40;
       v75 = v23;
-      v52 = v57;
+      v52 = identifier;
       v76 = v52;
       v77 = v70;
       [(PBFPosterExtensionDataStorePrewarmHelper *)v59 appendCompletionObserver:v74];
@@ -1299,19 +1299,19 @@ void __140__PBFPosterExtensionDataStore_executeUpdate_hostContext_refreshStrateg
   (*(a1[6] + 16))();
 }
 
-- (void)setMaximumPosterConfigurationCount:(int64_t)a3
+- (void)setMaximumPosterConfigurationCount:(int64_t)count
 {
   v16 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_stateLock);
-  if (self->_stateLock_maximumPosterConfigurationCount != a3)
+  if (self->_stateLock_maximumPosterConfigurationCount != count)
   {
-    self->_stateLock_maximumPosterConfigurationCount = a3;
+    self->_stateLock_maximumPosterConfigurationCount = count;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(NSDictionary *)self->_roleToRoleCoordinator keyEnumerator];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    keyEnumerator = [(NSDictionary *)self->_roleToRoleCoordinator keyEnumerator];
+    v6 = [keyEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1323,17 +1323,17 @@ void __140__PBFPosterExtensionDataStore_executeUpdate_hostContext_refreshStrateg
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v10 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:*(*(&v11 + 1) + 8 * v9)];
-          [v10 setMaximumNumberOfPosters:a3];
+          [v10 setMaximumNumberOfPosters:count];
 
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [keyEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -1346,25 +1346,25 @@ void __140__PBFPosterExtensionDataStore_executeUpdate_hostContext_refreshStrateg
 - (int64_t)maximumPosterConfigurationCount
 {
   os_unfair_lock_lock(&self->_stateLock);
-  v3 = [(PBFPosterExtensionDataStore *)self _stateLock_maximumPosterConfigurationCount];
+  _stateLock_maximumPosterConfigurationCount = [(PBFPosterExtensionDataStore *)self _stateLock_maximumPosterConfigurationCount];
   os_unfair_lock_unlock(&self->_stateLock);
-  return v3;
+  return _stateLock_maximumPosterConfigurationCount;
 }
 
-- (void)updateExtensionsAndNotifyWhenComplete:(id)a3
+- (void)updateExtensionsAndNotifyWhenComplete:(id)complete
 {
-  v10 = a3;
+  completeCopy = complete;
   os_unfair_lock_lock(&self->_stateLock);
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) != 0 || ![(PFPosterExtensionProvider *)self->_extensionProvider reloadExtensions])
   {
     os_unfair_lock_unlock(&self->_stateLock);
-    v9 = v10;
-    if (!v10)
+    v9 = completeCopy;
+    if (!completeCopy)
     {
       goto LABEL_9;
     }
 
-    v10[2](v10);
+    completeCopy[2](completeCopy);
   }
 
   else
@@ -1379,41 +1379,41 @@ void __140__PBFPosterExtensionDataStore_executeUpdate_hostContext_refreshStrateg
       stateLock_updateExtensionCompletionBlocks = self->_stateLock_updateExtensionCompletionBlocks;
     }
 
-    v7 = [v10 copy];
+    v7 = [completeCopy copy];
     v8 = _Block_copy(v7);
     [(NSMutableArray *)stateLock_updateExtensionCompletionBlocks addObject:v8];
 
     os_unfair_lock_unlock(&self->_stateLock);
   }
 
-  v9 = v10;
+  v9 = completeCopy;
 LABEL_9:
 }
 
-- (BOOL)updatePosterConfigurationsFromHostForRole:(id)a3 error:(id *)a4
+- (BOOL)updatePosterConfigurationsFromHostForRole:(id)role error:(id *)error
 {
-  v6 = a3;
+  roleCopy = role;
   os_unfair_lock_lock(&self->_stateLock);
-  LOBYTE(a4) = [(PBFPosterExtensionDataStore *)self _stateLock_updatePosterConfigurationsFromHostForRole:v6 error:a4];
+  LOBYTE(error) = [(PBFPosterExtensionDataStore *)self _stateLock_updatePosterConfigurationsFromHostForRole:roleCopy error:error];
 
   os_unfair_lock_unlock(&self->_stateLock);
-  return a4;
+  return error;
 }
 
-- (BOOL)_stateLock_updatePosterConfigurationsFromHostForRole:(id)a3 error:(id *)a4
+- (BOOL)_stateLock_updatePosterConfigurationsFromHostForRole:(id)role error:(id *)error
 {
   v123[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:v6];
+  roleCopy = role;
+  v7 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:roleCopy];
   v8 = v7;
   if (v7)
   {
-    v79 = a4;
+    errorCopy = error;
     v81 = v7;
-    v84 = self;
-    v85 = v6;
-    v9 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:v6];
-    v10 = [v9 posterCollection];
+    selfCopy = self;
+    v85 = roleCopy;
+    v9 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:roleCopy];
+    posterCollection = [v9 posterCollection];
 
     v89 = objc_opt_new();
     v88 = objc_opt_new();
@@ -1422,9 +1422,9 @@ LABEL_9:
     v106 = 0u;
     v107 = 0u;
     v108 = 0u;
-    v80 = v10;
-    v11 = [v10 orderedPosters];
-    v12 = [v11 countByEnumeratingWithState:&v105 objects:v121 count:16];
+    v80 = posterCollection;
+    orderedPosters = [posterCollection orderedPosters];
+    v12 = [orderedPosters countByEnumeratingWithState:&v105 objects:v121 count:16];
     if (v12)
     {
       v13 = v12;
@@ -1435,23 +1435,23 @@ LABEL_9:
         {
           if (*v106 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(orderedPosters);
           }
 
           v16 = *(*(&v105 + 1) + 8 * i);
-          v17 = [v16 descriptorIdentifier];
-          if (v17)
+          descriptorIdentifier = [v16 descriptorIdentifier];
+          if (descriptorIdentifier)
           {
-            v18 = [v16 pbf_posterProvider];
-            if (v18)
+            pbf_posterProvider = [v16 pbf_posterProvider];
+            if (pbf_posterProvider)
             {
               v19 = MEMORY[0x277D3E958];
-              v20 = [v16 pbf_posterUUID];
-              v21 = [v19 entryWithExtensionID:v18 descriptorID:v17 posterUUID:v20];
+              pbf_posterUUID = [v16 pbf_posterUUID];
+              v21 = [v19 entryWithExtensionID:pbf_posterProvider descriptorID:descriptorIdentifier posterUUID:pbf_posterUUID];
 
               [v89 addObject:v21];
-              v22 = [v16 pbf_posterUUID];
-              [v88 addObject:v22];
+              pbf_posterUUID2 = [v16 pbf_posterUUID];
+              [v88 addObject:pbf_posterUUID2];
 
               [v87 setObject:v16 forKey:v21];
             }
@@ -1468,15 +1468,15 @@ LABEL_9:
 
           else
           {
-            v18 = PBFLogHostConfiguration();
-            if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+            pbf_posterProvider = PBFLogHostConfiguration();
+            if (os_log_type_enabled(pbf_posterProvider, OS_LOG_TYPE_ERROR))
             {
-              [(PBFPosterExtensionDataStore *)&v103 _stateLock_updatePosterConfigurationsFromHostForRole:v104 error:v18];
+              [(PBFPosterExtensionDataStore *)&v103 _stateLock_updatePosterConfigurationsFromHostForRole:v104 error:pbf_posterProvider];
             }
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v105 objects:v121 count:16];
+        v13 = [orderedPosters countByEnumeratingWithState:&v105 objects:v121 count:16];
       }
 
       while (v13);
@@ -1484,7 +1484,7 @@ LABEL_9:
 
     v23 = [MEMORY[0x277D3E950] hostConfigurationWithConfigurationEntries:v89];
     v24 = PBFLogDataStore();
-    v6 = v85;
+    roleCopy = v85;
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
@@ -1494,9 +1494,9 @@ LABEL_9:
       _os_log_impl(&dword_21B526000, v24, OS_LOG_TYPE_DEFAULT, "Getting updated poster configurations for role %{public}@; initial posters: %{public}@", buf, 0x16u);
     }
 
-    v25 = [MEMORY[0x277D3EF28] sharedHostConfigurationManager];
+    mEMORY[0x277D3EF28] = [MEMORY[0x277D3EF28] sharedHostConfigurationManager];
     v100 = 0;
-    v26 = [v25 updatedSwitcherConfigurationForRole:v85 currentSwitcherConfiguration:v23 error:&v100];
+    v26 = [mEMORY[0x277D3EF28] updatedSwitcherConfigurationForRole:v85 currentSwitcherConfiguration:v23 error:&v100];
     v27 = v100;
     v28 = PBFLogDataStore();
     v29 = v28;
@@ -1513,9 +1513,9 @@ LABEL_9:
         _os_log_impl(&dword_21B526000, v29, OS_LOG_TYPE_DEFAULT, "Got updated host configuration for role %{public}@: %{public}@", buf, 0x16u);
       }
 
-      v31 = [(__CFString *)v26 entries];
+      entries = [(__CFString *)v26 entries];
 
-      if (v31)
+      if (entries)
       {
         if (([(__CFString *)v26 isEqual:v23]& 1) != 0)
         {
@@ -1524,7 +1524,7 @@ LABEL_9:
           goto LABEL_73;
         }
 
-        v76 = v25;
+        v76 = mEMORY[0x277D3EF28];
         v77 = v23;
         context = objc_autoreleasePoolPush();
         v82 = objc_opt_new();
@@ -1555,20 +1555,20 @@ LABEL_9:
             }
 
             v45 = *(*(&v96 + 1) + 8 * v44);
-            v46 = [(__CFString *)v45 posterUUID];
-            if (v46)
+            posterUUID = [(__CFString *)v45 posterUUID];
+            if (posterUUID)
             {
-              v47 = v46;
+              destinationUUID = posterUUID;
 LABEL_49:
-              [v40 addObject:v47];
+              [v40 addObject:destinationUUID];
               goto LABEL_50;
             }
 
             v48 = v40;
-            v49 = [(__CFString *)v45 extensionID];
-            v50 = [(__CFString *)v45 descriptorID];
+            extensionID = [(__CFString *)v45 extensionID];
+            descriptorID = [(__CFString *)v45 descriptorID];
             v95 = v27;
-            v51 = [(PBFPosterExtensionDataStore *)v84 _stateLock_incomingPosterConfigurationForProviderIdentifier:v49 posterDescriptorIdentifier:v50 role:v85 error:&v95];
+            v51 = [(PBFPosterExtensionDataStore *)selfCopy _stateLock_incomingPosterConfigurationForProviderIdentifier:extensionID posterDescriptorIdentifier:descriptorID role:v85 error:&v95];
             v52 = v95;
             v53 = v27;
             v27 = v52;
@@ -1577,15 +1577,15 @@ LABEL_49:
             {
               v54 = [PBFPosterRoleCoordinatorChange addPosterToRole:v85 incomingPoster:v51];
               [v82 addObject:v54];
-              v47 = [v51 destinationUUID];
+              destinationUUID = [v51 destinationUUID];
 
               v40 = v48;
               v43 = v83;
               goto LABEL_49;
             }
 
-            v47 = PBFLogDataStore();
-            if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
+            destinationUUID = PBFLogDataStore();
+            if (os_log_type_enabled(destinationUUID, OS_LOG_TYPE_ERROR))
             {
               *buf = 138543874;
               v113 = v45;
@@ -1593,7 +1593,7 @@ LABEL_49:
               v115 = v85;
               v116 = 2114;
               v117 = v27;
-              _os_log_error_impl(&dword_21B526000, v47, OS_LOG_TYPE_ERROR, "Failed to create new poster configuration %{public}@ for role %{public}@: %{public}@", buf, 0x20u);
+              _os_log_error_impl(&dword_21B526000, destinationUUID, OS_LOG_TYPE_ERROR, "Failed to create new poster configuration %{public}@ for role %{public}@: %{public}@", buf, 0x20u);
             }
 
             v40 = v48;
@@ -1619,7 +1619,7 @@ LABEL_56:
             v92 = 0u;
             v57 = v56;
             v58 = [v57 countByEnumeratingWithState:&v91 objects:v111 count:16];
-            v6 = v85;
+            roleCopy = v85;
             if (v58)
             {
               v59 = v58;
@@ -1645,13 +1645,13 @@ LABEL_56:
 
             v63 = [PBFPosterRoleCoordinatorChange reorderPostersForRole:v85 sortedPosterUUIDs:v40];
             [v82 addObject:v63];
-            v64 = [v40 firstObject];
-            v65 = [PBFPosterRoleCoordinatorChange selectPosterForRole:v85 matchingUUID:v64];
+            firstObject = [v40 firstObject];
+            v65 = [PBFPosterRoleCoordinatorChange selectPosterForRole:v85 matchingUUID:firstObject];
 
             [v82 addObject:v65];
             v66 = [MEMORY[0x277CCACA8] stringWithFormat:@"updatePosterConfigurationsFromHostForRole:%@", v85];
             v90 = 0;
-            v32 = [(PBFPosterExtensionDataStore *)v84 _stateLock_executeDataStoreUpdateWithChanges:v82 diffs:0 options:1 reason:v66 context:0 error:&v90];
+            v32 = [(PBFPosterExtensionDataStore *)selfCopy _stateLock_executeDataStoreUpdateWithChanges:v82 diffs:0 options:1 reason:v66 context:0 error:&v90];
             v67 = v90;
 
             if ((v32 & 1) == 0)
@@ -1677,10 +1677,10 @@ LABEL_56:
                 [PBFPosterExtensionDataStore _stateLock_updatePosterConfigurationsFromHostForRole:error:];
               }
 
-              if (v79)
+              if (errorCopy)
               {
                 v72 = v68;
-                *v79 = v68;
+                *errorCopy = v68;
               }
 
               v78 = v68;
@@ -1689,7 +1689,7 @@ LABEL_56:
             objc_autoreleasePoolPop(context);
             v30 = v80;
             v8 = v81;
-            v25 = v76;
+            mEMORY[0x277D3EF28] = v76;
             v23 = v77;
             v26 = v75;
 LABEL_73:
@@ -1708,13 +1708,13 @@ LABEL_74:
 
       v78 = v27;
 
-      if (v79)
+      if (errorCopy)
       {
         v38 = MEMORY[0x277CCA9B8];
         v119 = *MEMORY[0x277CCA470];
         v120 = @"updatePosterConfigurationsFromHostForRole: Updated host configuration is empty";
         v39 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v120 forKeys:&v119 count:1];
-        *v79 = [v38 pbf_dataStoreErrorWithCode:-2202 userInfo:v39];
+        *errorCopy = [v38 pbf_dataStoreErrorWithCode:-2202 userInfo:v39];
       }
     }
 
@@ -1726,12 +1726,12 @@ LABEL_74:
       }
 
       v78 = v27;
-      if (v79)
+      if (errorCopy)
       {
         v35 = v27;
         v36 = v27;
         v32 = 0;
-        *v79 = v36;
+        *errorCopy = v36;
         goto LABEL_73;
       }
     }
@@ -1740,12 +1740,12 @@ LABEL_74:
     goto LABEL_73;
   }
 
-  if (a4)
+  if (error)
   {
     v33 = MEMORY[0x277CCA9B8];
-    if (v6)
+    if (roleCopy)
     {
-      v34 = v6;
+      v34 = roleCopy;
     }
 
     else
@@ -1757,7 +1757,7 @@ LABEL_74:
     v123[0] = v34;
     v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v123 forKeys:&v122 count:1];
     [v33 pbf_dataStoreErrorWithCode:-2203 userInfo:v30];
-    *a4 = v32 = 0;
+    *error = v32 = 0;
     goto LABEL_74;
   }
 
@@ -1767,12 +1767,12 @@ LABEL_75:
   return v32;
 }
 
-- (id)posterDescriptorsForExtensionBundleIdentifier:(id)a3 error:(id *)a4
+- (id)posterDescriptorsForExtensionBundleIdentifier:(id)identifier error:(id *)error
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  identifierCopy = identifier;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v7)
+  if (!identifierCopy)
   {
     [PBFPosterExtensionDataStore posterDescriptorsForExtensionBundleIdentifier:a2 error:?];
   }
@@ -1783,17 +1783,17 @@ LABEL_75:
   }
 
   os_unfair_lock_lock(&self->_stateLock);
-  v8 = [(PBFPosterExtensionDataStore *)self _stateLock_knownPosterDescriptorsForExtensionBundleIdentifier:v7];
+  v8 = [(PBFPosterExtensionDataStore *)self _stateLock_knownPosterDescriptorsForExtensionBundleIdentifier:identifierCopy];
   os_unfair_lock_unlock(&self->_stateLock);
-  if (a4 && !v8)
+  if (error && !v8)
   {
     v9 = MEMORY[0x277CCA9B8];
     v14[0] = @"extensionBundleIdentifier";
     v14[1] = @"descriptorType";
-    v15[0] = v7;
+    v15[0] = identifierCopy;
     v15[1] = @"dynamic";
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
-    *a4 = [v9 pbf_dataStoreErrorWithCode:-2218 userInfo:v10];
+    *error = [v9 pbf_dataStoreErrorWithCode:-2218 userInfo:v10];
   }
 
   if (v8)
@@ -1811,12 +1811,12 @@ LABEL_75:
   return v11;
 }
 
-- (id)staticPosterDescriptorsForExtensionBundleIdentifier:(id)a3 error:(id *)a4
+- (id)staticPosterDescriptorsForExtensionBundleIdentifier:(id)identifier error:(id *)error
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  identifierCopy = identifier;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v7)
+  if (!identifierCopy)
   {
     [PBFPosterExtensionDataStore staticPosterDescriptorsForExtensionBundleIdentifier:a2 error:?];
   }
@@ -1827,17 +1827,17 @@ LABEL_75:
   }
 
   os_unfair_lock_lock(&self->_stateLock);
-  v8 = [(PBFPosterExtensionDataStore *)self _stateLock_knownStaticPosterDescriptorsForExtensionBundleIdentifier:v7];
+  v8 = [(PBFPosterExtensionDataStore *)self _stateLock_knownStaticPosterDescriptorsForExtensionBundleIdentifier:identifierCopy];
   os_unfair_lock_unlock(&self->_stateLock);
-  if (a4 && !v8)
+  if (error && !v8)
   {
     v9 = MEMORY[0x277CCA9B8];
     v14[0] = @"extensionBundleIdentifier";
     v14[1] = @"descriptorType";
-    v15[0] = v7;
+    v15[0] = identifierCopy;
     v15[1] = @"static";
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
-    *a4 = [v9 pbf_dataStoreErrorWithCode:-2218 userInfo:v10];
+    *error = [v9 pbf_dataStoreErrorWithCode:-2218 userInfo:v10];
   }
 
   if (v8)
@@ -1855,12 +1855,12 @@ LABEL_75:
   return v11;
 }
 
-- (void)reloadPosterDescriptorsForExtensionBundleIdentifier:(id)a3 sessionInfo:(id)a4 completion:(id)a5
+- (void)reloadPosterDescriptorsForExtensionBundleIdentifier:(id)identifier sessionInfo:(id)info completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v13 = v9;
+  identifierCopy = identifier;
+  infoCopy = info;
+  completionCopy = completion;
+  v13 = identifierCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v13)
   {
@@ -1872,21 +1872,21 @@ LABEL_75:
     [PBFPosterExtensionDataStore reloadPosterDescriptorsForExtensionBundleIdentifier:a2 sessionInfo:? completion:?];
   }
 
-  if (!v11)
+  if (!completionCopy)
   {
     [PBFPosterExtensionDataStore reloadPosterDescriptorsForExtensionBundleIdentifier:a2 sessionInfo:? completion:?];
   }
 
   os_unfair_lock_lock(&self->_stateLock);
-  v12 = [(PBFPosterExtensionDataStore *)self _stateLock_enqueueReloadDescriptorsOperationForExtensionBundleIdentifier:v13 reason:@"External Client Refresh Request" powerLogReason:3 postEnqueueGalleryUpdateOptions:8 sessionInfo:v10 completion:v11];
+  v12 = [(PBFPosterExtensionDataStore *)self _stateLock_enqueueReloadDescriptorsOperationForExtensionBundleIdentifier:v13 reason:@"External Client Refresh Request" powerLogReason:3 postEnqueueGalleryUpdateOptions:8 sessionInfo:infoCopy completion:completionCopy];
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (BOOL)deletePosterDescriptorsForExtensionBundleIdentifier:(id)a3 error:(id *)a4
+- (BOOL)deletePosterDescriptorsForExtensionBundleIdentifier:(id)identifier error:(id *)error
 {
-  v7 = a3;
+  identifierCopy = identifier;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v7)
+  if (!identifierCopy)
   {
     [PBFPosterExtensionDataStore deletePosterDescriptorsForExtensionBundleIdentifier:a2 error:?];
   }
@@ -1898,10 +1898,10 @@ LABEL_75:
 
   if ([(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-      *a4 = v8 = 0;
+      *error = v8 = 0;
     }
 
     else
@@ -1913,18 +1913,18 @@ LABEL_75:
   else
   {
     os_unfair_lock_lock(&self->_stateLock);
-    v8 = [(PBFPosterExtensionDataStore *)self _stateLock_deletePosterDescriptorsForExtensionBundleIdentifier:v7 waitForPushToProactive:1 error:a4];
+    v8 = [(PBFPosterExtensionDataStore *)self _stateLock_deletePosterDescriptorsForExtensionBundleIdentifier:identifierCopy waitForPushToProactive:1 error:error];
     os_unfair_lock_unlock(&self->_stateLock);
   }
 
   return v8;
 }
 
-- (void)updateGallery:(id)a3 completion:(id)a4
+- (void)updateGallery:(id)gallery completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  galleryCopy = gallery;
+  completionCopy = completion;
+  v9 = galleryCopy;
   NSClassFromString(&cfstr_Prspostergalle.isa);
   if (!v9)
   {
@@ -1936,33 +1936,33 @@ LABEL_75:
     [PBFPosterExtensionDataStore updateGallery:a2 completion:?];
   }
 
-  if (!v8)
+  if (!completionCopy)
   {
     [PBFPosterExtensionDataStore updateGallery:a2 completion:?];
   }
 
-  [(PBFGalleryController *)self->_galleryController updateGallery:v9 completion:v8];
+  [(PBFGalleryController *)self->_galleryController updateGallery:v9 completion:completionCopy];
 }
 
-- (void)refreshSnapshotForGalleryItemsMatchingDescriptorIdentifier:(id)a3 extensionIdentifier:(id)a4 completion:(id)a5
+- (void)refreshSnapshotForGalleryItemsMatchingDescriptorIdentifier:(id)identifier extensionIdentifier:(id)extensionIdentifier completion:(id)completion
 {
   v8 = MEMORY[0x277CBEB98];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  completionCopy = completion;
+  extensionIdentifierCopy = extensionIdentifier;
+  identifierCopy = identifier;
   v13 = +[PBFGenericDisplayContext mainScreen];
   v12 = [v8 setWithObject:v13];
-  [(PBFPosterExtensionDataStore *)self refreshSnapshotForGalleryItemsMatchingDescriptorIdentifier:v11 extensionIdentifier:v10 displayContexts:v12 completion:v9];
+  [(PBFPosterExtensionDataStore *)self refreshSnapshotForGalleryItemsMatchingDescriptorIdentifier:identifierCopy extensionIdentifier:extensionIdentifierCopy displayContexts:v12 completion:completionCopy];
 }
 
-- (void)refreshSnapshotForGalleryItemsMatchingDescriptorIdentifier:(id)a3 extensionIdentifier:(id)a4 displayContexts:(id)a5 completion:(id)a6
+- (void)refreshSnapshotForGalleryItemsMatchingDescriptorIdentifier:(id)identifier extensionIdentifier:(id)extensionIdentifier displayContexts:(id)contexts completion:(id)completion
 {
   v43 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v12;
+  identifierCopy = identifier;
+  extensionIdentifierCopy = extensionIdentifier;
+  contextsCopy = contexts;
+  completionCopy = completion;
+  v15 = extensionIdentifierCopy;
   if (v15)
   {
     NSClassFromString(&cfstr_Nsstring.isa);
@@ -1972,7 +1972,7 @@ LABEL_75:
     }
   }
 
-  v16 = v11;
+  v16 = identifierCopy;
   if (v16)
   {
     NSClassFromString(&cfstr_Nsstring.isa);
@@ -1982,25 +1982,25 @@ LABEL_75:
     }
   }
 
-  if (!v14)
+  if (!completionCopy)
   {
     [PBFPosterExtensionDataStore refreshSnapshotForGalleryItemsMatchingDescriptorIdentifier:a2 extensionIdentifier:? displayContexts:? completion:?];
   }
 
   os_unfair_lock_lock(&self->_stateLock);
-  v17 = [(PBFPosterExtensionDataStore *)self _stateLock_currentGalleryConfiguration];
+  _stateLock_currentGalleryConfiguration = [(PBFPosterExtensionDataStore *)self _stateLock_currentGalleryConfiguration];
   os_unfair_lock_unlock(&self->_stateLock);
-  v30 = v17;
-  if (v17)
+  v30 = _stateLock_currentGalleryConfiguration;
+  if (_stateLock_currentGalleryConfiguration)
   {
-    v28 = v14;
+    v28 = completionCopy;
     v18 = v16;
     v19 = objc_opt_new();
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    obj = v13;
+    obj = contextsCopy;
     v20 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
     if (v20)
     {
@@ -2036,7 +2036,7 @@ LABEL_75:
     v25 = [v19 bs_map:&__block_literal_global_286];
     v26 = [v25 mutableCopy];
 
-    v14 = v28;
+    completionCopy = v28;
     if ([v26 count])
     {
       snapshotManager = self->_snapshotManager;
@@ -2058,7 +2058,7 @@ LABEL_75:
 
   else
   {
-    (*(v14 + 2))(v14, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -2152,11 +2152,11 @@ uint64_t __137__PBFPosterExtensionDataStore_refreshSnapshotForGalleryItemsMatchi
   return result;
 }
 
-- (void)fetchPosterSnapshotsWithClientRequest:(id)a3 completion:(id)a4
+- (void)fetchPosterSnapshotsWithClientRequest:(id)request completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  requestCopy = request;
+  completionCopy = completion;
+  v9 = requestCopy;
   NSClassFromString(&cfstr_Prspostersnaps.isa);
   if (!v9)
   {
@@ -2168,45 +2168,45 @@ uint64_t __137__PBFPosterExtensionDataStore_refreshSnapshotForGalleryItemsMatchi
     [PBFPosterExtensionDataStore fetchPosterSnapshotsWithClientRequest:a2 completion:?];
   }
 
-  if (!v8)
+  if (!completionCopy)
   {
     [PBFPosterExtensionDataStore fetchPosterSnapshotsWithClientRequest:a2 completion:?];
   }
 
   os_unfair_lock_lock(&self->_stateLock);
-  [(PBFPosterExtensionDataStore *)self _stateLock_fetchPosterSnapshotsWithClientRequest:v9 completion:v8];
+  [(PBFPosterExtensionDataStore *)self _stateLock_fetchPosterSnapshotsWithClientRequest:v9 completion:completionCopy];
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)_stateLock_fetchPosterSnapshotsWithClientRequest:(id)a3 completion:(id)a4
+- (void)_stateLock_fetchPosterSnapshotsWithClientRequest:(id)request completion:(id)completion
 {
   v204[1] = *MEMORY[0x277D85DE8];
-  v120 = a3;
-  v6 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   if ([(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    if (v6)
+    if (completionCopy)
     {
       v7 = [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-      v6[2](v6, 0, v7);
+      completionCopy[2](completionCopy, 0, v7);
     }
 
     goto LABEL_32;
   }
 
-  v116 = v6;
+  v116 = completionCopy;
   v128 = self->_snapshotManager;
   v8 = [[PBFApplicationStateNode alloc] initWithDescription:@"Client Snapshot"];
   [(PBFApplicationStateMonitor *)self->_applicationStateMonitor pushState:v8];
   v9 = self->_clientSnapshotRequestQueue;
-  v117 = [(PBFPosterExtensionDataStore *)self _stateLock_switcherConfiguration];
+  _stateLock_switcherConfiguration = [(PBFPosterExtensionDataStore *)self _stateLock_switcherConfiguration];
   v10 = dispatch_group_create();
   dispatch_group_enter(v10);
-  [v120 orientation];
+  [requestCopy orientation];
   IsValid = BSInterfaceOrientationIsValid();
   if (IsValid)
   {
-    v11 = [v120 orientation];
+    orientation = [requestCopy orientation];
   }
 
   else
@@ -2215,15 +2215,15 @@ uint64_t __137__PBFPosterExtensionDataStore_refreshSnapshotForGalleryItemsMatchi
     v190[1] = 3221225472;
     v190[2] = __91__PBFPosterExtensionDataStore__stateLock_fetchPosterSnapshotsWithClientRequest_completion___block_invoke;
     v190[3] = &unk_2782C5AD8;
-    v191 = v120;
-    v11 = __91__PBFPosterExtensionDataStore__stateLock_fetchPosterSnapshotsWithClientRequest_completion___block_invoke(v190);
+    v191 = requestCopy;
+    orientation = __91__PBFPosterExtensionDataStore__stateLock_fetchPosterSnapshotsWithClientRequest_completion___block_invoke(v190);
     v108 = &v191;
   }
 
   v118 = +[PBFGenericDisplayContext mainScreen];
-  if (v11)
+  if (orientation)
   {
-    v12 = [v118 displayContextWithUpdatedInterfaceOrientation:v11];
+    v12 = [v118 displayContextWithUpdatedInterfaceOrientation:orientation];
 
     v118 = v12;
   }
@@ -2282,19 +2282,19 @@ uint64_t __137__PBFPosterExtensionDataStore_refreshSnapshotForGalleryItemsMatchi
   v167[3] = &unk_2782C5BC8;
   v167[4] = self;
   v114 = _Block_copy(v167);
-  v16 = [v120 requestOptions];
-  v17 = [v16 objectForKey:*MEMORY[0x277D3EA48]];
+  requestOptions = [requestCopy requestOptions];
+  v17 = [requestOptions objectForKey:*MEMORY[0x277D3EA48]];
   LODWORD(v15) = [v17 BOOLValue];
 
   if (!v15)
   {
-    v35 = [v120 requestOptions];
+    requestOptions2 = [requestCopy requestOptions];
     v36 = *MEMORY[0x277D3EA40];
-    v37 = [v35 objectForKey:*MEMORY[0x277D3EA40]];
+    v37 = [requestOptions2 objectForKey:*MEMORY[0x277D3EA40]];
     if (v37)
     {
-      v38 = [v120 requestOptions];
-      v39 = [v38 objectForKey:v36];
+      requestOptions3 = [requestCopy requestOptions];
+      v39 = [requestOptions3 objectForKey:v36];
       [v39 doubleValue];
       v41 = v40;
     }
@@ -2304,12 +2304,12 @@ uint64_t __137__PBFPosterExtensionDataStore_refreshSnapshotForGalleryItemsMatchi
       v41 = *MEMORY[0x277D3EA58];
     }
 
-    v124 = [v120 variantType];
-    v121 = [v120 configurationType];
-    if (v121 == -1)
+    variantType = [requestCopy variantType];
+    configurationType = [requestCopy configurationType];
+    if (configurationType == -1)
     {
-      v43 = [v120 path];
-      v42 = v43 == 0;
+      path = [requestCopy path];
+      v42 = path == 0;
     }
 
     else
@@ -2317,62 +2317,62 @@ uint64_t __137__PBFPosterExtensionDataStore_refreshSnapshotForGalleryItemsMatchi
       v42 = 0;
     }
 
-    v44 = [v120 options];
-    v45 = _UIUserInterfaceStyleFromPRSPosterSnapshotRequestOptions(v44);
-    v122 = v44;
-    v46 = [v120 requestOptions];
-    v109 = [v46 objectForKey:*MEMORY[0x277D3EA50]];
+    options = [requestCopy options];
+    v45 = _UIUserInterfaceStyleFromPRSPosterSnapshotRequestOptions(options);
+    v122 = options;
+    requestOptions4 = [requestCopy requestOptions];
+    v109 = [requestOptions4 objectForKey:*MEMORY[0x277D3EA50]];
 
-    v47 = [v120 path];
+    path2 = [requestCopy path];
 
-    if (v47)
+    if (path2)
     {
-      v48 = [v120 path];
+      path3 = [requestCopy path];
     }
 
     else
     {
-      if (v121)
+      if (configurationType)
       {
-        if (v121 != 1)
+        if (configurationType != 1)
         {
-          v48 = 0;
+          path3 = 0;
           goto LABEL_39;
         }
 
-        v49 = [v117 activeConfiguration];
-        v50 = [v49 _path];
+        activeConfiguration = [_stateLock_switcherConfiguration activeConfiguration];
+        _path = [activeConfiguration _path];
       }
 
       else
       {
-        v49 = [v117 selectedConfiguration];
-        v50 = [v49 _path];
+        activeConfiguration = [_stateLock_switcherConfiguration selectedConfiguration];
+        _path = [activeConfiguration _path];
       }
 
-      v48 = v50;
+      path3 = _path;
     }
 
-    if ((v122 & 0x80) != 0 && v48)
+    if ((v122 & 0x80) != 0 && path3)
     {
-      v53 = v114[2](v114, v48);
+      v53 = v114[2](v114, path3);
 
-      v48 = v53;
+      path3 = v53;
     }
 
 LABEL_39:
-    v127 = v48;
-    if (v124 == 1)
+    v127 = path3;
+    if (variantType == 1)
     {
-      v54 = [MEMORY[0x277D3EDE8] loadHomeScreenConfigurationForPath:v48 error:0];
+      v54 = [MEMORY[0x277D3EDE8] loadHomeScreenConfigurationForPath:path3 error:0];
       if ([v54 selectedAppearanceType] == 3)
       {
-        v55 = [objc_alloc(MEMORY[0x277D3ED58]) _initWithPath:v48];
-        v56 = [v117 _childPosterConfigurationForConfiguration:v55];
-        v123 = [v56 _path];
+        v55 = [objc_alloc(MEMORY[0x277D3ED58]) _initWithPath:path3];
+        v56 = [_stateLock_switcherConfiguration _childPosterConfigurationForConfiguration:v55];
+        _path2 = [v56 _path];
         v125 = v54;
 
-        if (!v123)
+        if (!_path2)
         {
           v57 = v181[5];
           v58 = MEMORY[0x277CCA9B8];
@@ -2390,7 +2390,7 @@ LABEL_71:
 
       else
       {
-        v123 = 0;
+        _path2 = 0;
       }
 
       v62 = v109;
@@ -2398,11 +2398,11 @@ LABEL_71:
 
     else
     {
-      v123 = 0;
+      _path2 = 0;
       v62 = v109;
     }
 
-    if (v48)
+    if (path3)
     {
       v63 = 1;
     }
@@ -2423,7 +2423,7 @@ LABEL_71:
       (*(v67 + 16))(v67, 0, v60);
 LABEL_70:
       v61 = 0;
-      v125 = v123;
+      v125 = _path2;
       goto LABEL_71;
     }
 
@@ -2474,9 +2474,9 @@ LABEL_68:
             *&v151[7] = v81;
             v60 = [v82 imageWithActions:v151];
 
-            (*(v129 + 2))(v129, 0, 0, v124, v121, v122, v60, v130, v41);
+            (*(v129 + 2))(v129, 0, 0, variantType, configurationType, v122, v60, v130, v41);
             v61 = 1;
-            v125 = v123;
+            v125 = _path2;
             goto LABEL_72;
           }
         }
@@ -2490,44 +2490,44 @@ LABEL_68:
           }
         }
 
-        if (v123)
+        if (_path2)
         {
-          v73 = v123;
+          v73 = _path2;
         }
 
         v85 = v73;
         v107 = [MEMORY[0x277D3EDE8] loadConfiguredPropertiesForPath:v85 error:0];
-        v86 = [v85 identity];
+        identity = [v85 identity];
         v119 = v85;
-        LOBYTE(v85) = [v86 type] == 3;
+        LOBYTE(v85) = [identity type] == 3;
 
         if (v85)
         {
           v87 = [PBFPosterSnapshotRequest alloc];
-          v88 = [v119 serverIdentity];
-          v89 = [v88 provider];
-          v90 = [(PBFPosterSnapshotRequest *)v87 initWithPath:v119 provider:v89 configuredProperties:v107 definitions:v59 context:v130];
+          serverIdentity = [v119 serverIdentity];
+          provider = [serverIdentity provider];
+          v90 = [(PBFPosterSnapshotRequest *)v87 initWithPath:v119 provider:provider configuredProperties:v107 definitions:v59 context:v130];
           v91 = [(PBFPosterSnapshotRequest *)v90 requestWithLoadFromCacheIfAvailable:(v122 & 0x40) == 0];
           v125 = [v91 requestWithPowerLogReason:3];
-          v92 = v59;
+          definitions = v59;
         }
 
         else
         {
-          v88 = [(PBFPosterExtensionDataStore *)self _stateLock_currentGalleryConfiguration];
-          v93 = [v127 descriptorIdentifier];
-          v94 = [v119 identity];
-          v95 = [v94 provider];
-          v90 = [v88 posterSnapshotRequestsForExtensionBundleIdentifier:v95 context:v130];
+          serverIdentity = [(PBFPosterExtensionDataStore *)self _stateLock_currentGalleryConfiguration];
+          descriptorIdentifier = [v127 descriptorIdentifier];
+          identity2 = [v119 identity];
+          provider2 = [identity2 provider];
+          v90 = [serverIdentity posterSnapshotRequestsForExtensionBundleIdentifier:provider2 context:v130];
 
           v149[0] = MEMORY[0x277D85DD0];
           v149[1] = 3221225472;
           v149[2] = __91__PBFPosterExtensionDataStore__stateLock_fetchPosterSnapshotsWithClientRequest_completion___block_invoke_2_329;
           v149[3] = &unk_2782C5C60;
-          v89 = v93;
-          v150 = v89;
+          provider = descriptorIdentifier;
+          v150 = provider;
           v96 = [(PBFPosterSnapshotRequest *)v90 bs_firstObjectPassingTest:v149];
-          v92 = [v96 definitions];
+          definitions = [v96 definitions];
           v125 = v96;
 
           if (!v96)
@@ -2535,18 +2535,18 @@ LABEL_68:
             v102 = v181[5];
             v103 = MEMORY[0x277CCA9B8];
             v193 = *MEMORY[0x277CCA470];
-            v104 = [MEMORY[0x277CCACA8] stringWithFormat:@"unable to find descriptorIdentifier %@ within gallery", v89];
+            v104 = [MEMORY[0x277CCACA8] stringWithFormat:@"unable to find descriptorIdentifier %@ within gallery", provider];
             v194 = v104;
             v105 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v194 forKeys:&v193 count:1];
             v106 = [v103 pbf_dataStoreErrorWithCode:-2214 userInfo:v105];
             (*(v102 + 16))(v102, 0, v106);
 
             v61 = 0;
-            v125 = v123;
-            v97 = v89;
+            v125 = _path2;
+            v97 = provider;
 LABEL_91:
 
-            v59 = v92;
+            v59 = definitions;
             v60 = v119;
 LABEL_72:
 
@@ -2565,7 +2565,7 @@ LABEL_72:
         v148 = 0u;
         v145 = 0u;
         v146 = 0u;
-        v97 = v92;
+        v97 = definitions;
         v98 = [v97 countByEnumeratingWithState:&v145 objects:v192 count:16];
         if (v98)
         {
@@ -2589,10 +2589,10 @@ LABEL_72:
               v135 = group;
               v139 = v129;
               v136 = v127;
-              v92 = v123;
-              v137 = v92;
-              v141 = v124;
-              v142 = v121;
+              definitions = _path2;
+              v137 = definitions;
+              v141 = variantType;
+              v142 = configurationType;
               v143 = v122;
               v144 = v41;
               v138 = v130;
@@ -2604,7 +2604,7 @@ LABEL_72:
 
           while (v98);
           v61 = 1;
-          v88 = v107;
+          serverIdentity = v107;
           v107 = v119;
           v119 = v97;
         }
@@ -2612,10 +2612,10 @@ LABEL_72:
         else
         {
           v61 = 1;
-          v88 = v107;
+          serverIdentity = v107;
           v107 = v119;
           v119 = v97;
-          v92 = v123;
+          definitions = _path2;
         }
 
         goto LABEL_91;
@@ -2624,7 +2624,7 @@ LABEL_72:
       goto LABEL_69;
     }
 
-    if (v124 == 1)
+    if (variantType == 1)
     {
       v65 = +[PBFPosterSnapshotDefinition switcherUnlockedSnapshotDefinition];
       v199 = v65;
@@ -2634,7 +2634,7 @@ LABEL_64:
       goto LABEL_65;
     }
 
-    if ((v124 + 1) <= 1)
+    if ((variantType + 1) <= 1)
     {
       v65 = +[PBFPosterSnapshotDefinition gallerySnapshotWithComplicationsDefinition];
       v198 = v65;
@@ -2642,10 +2642,10 @@ LABEL_64:
       goto LABEL_64;
     }
 
-    if (v48)
+    if (path3)
     {
-      v70 = [v48 identity];
-      if ([v70 type] == 1)
+      identity3 = [path3 identity];
+      if ([identity3 type] == 1)
       {
 
 LABEL_63:
@@ -2655,8 +2655,8 @@ LABEL_63:
         goto LABEL_64;
       }
 
-      v71 = [v48 identity];
-      v72 = [v71 type] == 2;
+      identity4 = [path3 identity];
+      v72 = [identity4 type] == 2;
 
       if (v72)
       {
@@ -2675,36 +2675,36 @@ LABEL_69:
     goto LABEL_70;
   }
 
-  v18 = [objc_alloc(MEMORY[0x277D3E948]) initWithPosterRequest:v120];
-  v19 = [v18 variant];
-  v20 = [v18 configurationType];
-  v21 = [v18 options];
+  v18 = [objc_alloc(MEMORY[0x277D3E948]) initWithPosterRequest:requestCopy];
+  variant = [v18 variant];
+  configurationType2 = [v18 configurationType];
+  options2 = [v18 options];
   [v18 imageScaleRelativeToScreen];
   v23 = v22;
-  v126 = [v18 focusModeUUID];
-  v24 = [v18 maxCount];
-  v25 = _UIUserInterfaceStyleFromPRSPosterSnapshotRequestOptions(v21);
-  if ((v21 & 8) != 0)
+  focusModeUUID = [v18 focusModeUUID];
+  maxCount = [v18 maxCount];
+  userInterfaceStyle = _UIUserInterfaceStyleFromPRSPosterSnapshotRequestOptions(options2);
+  if ((options2 & 8) != 0)
   {
-    v26 = [v120 hostContext];
-    v27 = [v26 connectedDisplays];
-    v28 = [v27 count] == 0;
+    hostContext = [requestCopy hostContext];
+    connectedDisplays = [hostContext connectedDisplays];
+    v28 = [connectedDisplays count] == 0;
 
     if (!v28)
     {
-      v29 = [v120 hostContext];
-      v25 = [v29 userInterfaceStyle];
+      hostContext2 = [requestCopy hostContext];
+      userInterfaceStyle = [hostContext2 userInterfaceStyle];
     }
   }
 
   v166 = 0;
   v165 = 0;
   v164 = 0;
-  [PBFFocusSnapshotPreferredConfigurationArbiter determineDesiredConfigurations:&v166 preferredConfiguration:&v165 snapshotDefinition:&v164 fromSwitcherConfiguration:v117 configurationType:v20 variantType:v19 options:v21 andFocusModeUUID:v126 maxCount:v24];
+  [PBFFocusSnapshotPreferredConfigurationArbiter determineDesiredConfigurations:&v166 preferredConfiguration:&v165 snapshotDefinition:&v164 fromSwitcherConfiguration:_stateLock_switcherConfiguration configurationType:configurationType2 variantType:variant options:options2 andFocusModeUUID:focusModeUUID maxCount:maxCount];
   v30 = v166;
   v31 = v165;
   v32 = v164;
-  v130 = [v118 displayContextWithUpdatedUserInterfaceStyle:PBFUserInterfaceStyleFromUIUserInterfaceStyle(v25)];
+  v130 = [v118 displayContextWithUpdatedUserInterfaceStyle:PBFUserInterfaceStyleFromUIUserInterfaceStyle(userInterfaceStyle)];
 
   v33 = [v30 count];
   if (v33)
@@ -2713,16 +2713,16 @@ LABEL_69:
     v152[1] = 3221225472;
     v152[2] = __91__PBFPosterExtensionDataStore__stateLock_fetchPosterSnapshotsWithClientRequest_completion___block_invoke_8;
     v152[3] = &unk_2782C5C18;
-    v153 = v117;
-    v160 = v19;
+    v153 = _stateLock_switcherConfiguration;
+    v160 = variant;
     v154 = v32;
     v155 = v130;
     v156 = group;
     v157 = v128;
     v159 = v186;
     v158 = v129;
-    v161 = v20;
-    v162 = v21;
+    v161 = configurationType2;
+    v162 = options2;
     v163 = v23;
     [v30 enumerateObjectsUsingBlock:v152];
 
@@ -2768,7 +2768,7 @@ LABEL_29:
   {
   }
 
-  v6 = v116;
+  completionCopy = v116;
 LABEL_32:
 }
 
@@ -3123,100 +3123,100 @@ void __91__PBFPosterExtensionDataStore__stateLock_fetchPosterSnapshotsWithClient
   }
 }
 
-- (void)fetchGallerySnapshotForConfiguration:(id)a3 context:(id)a4 completion:(id)a5
+- (void)fetchGallerySnapshotForConfiguration:(id)configuration context:(id)context completion:(id)completion
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  contextCopy = context;
+  configurationCopy = configuration;
   v11 = +[PBFPosterSnapshotDefinition gallerySnapshotDefinition];
   v12 = [PBFPosterSnapshotRequest alloc];
   v16[0] = v11;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-  v14 = [(PBFPosterSnapshotRequest *)v12 initWithConfiguration:v10 definitions:v13 context:v9];
+  v14 = [(PBFPosterSnapshotRequest *)v12 initWithConfiguration:configurationCopy definitions:v13 context:contextCopy];
 
   v15 = [(PBFPosterSnapshotRequest *)v14 requestWithPowerLogReason:0];
 
-  [(PBFPosterSnapshotManager *)self->_snapshotManager fetchPosterSnapshotForRequest:v15 definition:v11 completion:v8];
+  [(PBFPosterSnapshotManager *)self->_snapshotManager fetchPosterSnapshotForRequest:v15 definition:v11 completion:completionCopy];
 }
 
-- (void)fetchSwitcherSnapshotForConfiguration:(id)a3 context:(id)a4 completion:(id)a5
+- (void)fetchSwitcherSnapshotForConfiguration:(id)configuration context:(id)context completion:(id)completion
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  contextCopy = context;
+  configurationCopy = configuration;
   v11 = +[PBFPosterSnapshotDefinition switcherSnapshotDefinition];
   v12 = [PBFPosterSnapshotRequest alloc];
   v16[0] = v11;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-  v14 = [(PBFPosterSnapshotRequest *)v12 initWithConfiguration:v10 definitions:v13 context:v9];
+  v14 = [(PBFPosterSnapshotRequest *)v12 initWithConfiguration:configurationCopy definitions:v13 context:contextCopy];
 
   v15 = [(PBFPosterSnapshotRequest *)v14 requestWithPowerLogReason:0];
 
-  [(PBFPosterSnapshotManager *)self->_snapshotManager fetchPosterSnapshotForRequest:v15 definition:v11 completion:v8];
+  [(PBFPosterSnapshotManager *)self->_snapshotManager fetchPosterSnapshotForRequest:v15 definition:v11 completion:completionCopy];
 }
 
-- (void)fetchHomeScreenAssociatedPosterConfigurationForConfigurationUUID:(id)a3 completion:(id)a4
+- (void)fetchHomeScreenAssociatedPosterConfigurationForConfigurationUUID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   os_unfair_lock_lock(&self->_stateLock);
-  v8 = [(PBFPosterExtensionDataStore *)self _stateLock_switcherConfiguration];
-  v9 = [v8 _childPosterConfigurationForConfigurationUUID:v7];
+  _stateLock_switcherConfiguration = [(PBFPosterExtensionDataStore *)self _stateLock_switcherConfiguration];
+  v9 = [_stateLock_switcherConfiguration _childPosterConfigurationForConfigurationUUID:dCopy];
 
-  v10 = [v9 _path];
+  _path = [v9 _path];
 
   os_unfair_lock_unlock(&self->_stateLock);
-  v6[2](v6, v10, 0);
+  completionCopy[2](completionCopy, _path, 0);
 }
 
-- (void)updatePosterConfigurationMatchingUUID:(id)a3 updates:(id)a4 completion:(id)a5
+- (void)updatePosterConfigurationMatchingUUID:(id)d updates:(id)updates completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  updatesCopy = updates;
+  dCopy = d;
   os_unfair_lock_lock(&self->_stateLock);
-  [(PBFPosterExtensionDataStore *)self _stateLock_updatePosterConfigurationMatchingUUID:v10 updates:v9 completion:v8];
-
-  os_unfair_lock_unlock(&self->_stateLock);
-}
-
-- (void)updatePosterConfiguration:(id)a3 updates:(id)a4 completion:(id)a5
-{
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  os_unfair_lock_lock(&self->_stateLock);
-  [(PBFPosterExtensionDataStore *)self _stateLock_updatePosterConfiguration:v10 updates:v9 completion:v8];
+  [(PBFPosterExtensionDataStore *)self _stateLock_updatePosterConfigurationMatchingUUID:dCopy updates:updatesCopy completion:completionCopy];
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)createTemporaryPosterConfigurationForPosterMatchingUUID:(id)a3 andApplyUpdates:(id)a4 completion:(id)a5
+- (void)updatePosterConfiguration:(id)configuration updates:(id)updates completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  updatesCopy = updates;
+  configurationCopy = configuration;
   os_unfair_lock_lock(&self->_stateLock);
-  [(PBFPosterExtensionDataStore *)self _stateLock_createTemporaryPosterConfigurationForPosterMatchingUUID:v10 andApplyUpdates:v9 completion:v8];
+  [(PBFPosterExtensionDataStore *)self _stateLock_updatePosterConfiguration:configurationCopy updates:updatesCopy completion:completionCopy];
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)_stateLock_createTemporaryPosterConfigurationForPosterMatchingUUID:(id)a3 andApplyUpdates:(id)a4 completion:(id)a5
+- (void)createTemporaryPosterConfigurationForPosterMatchingUUID:(id)d andApplyUpdates:(id)updates completion:(id)completion
+{
+  completionCopy = completion;
+  updatesCopy = updates;
+  dCopy = d;
+  os_unfair_lock_lock(&self->_stateLock);
+  [(PBFPosterExtensionDataStore *)self _stateLock_createTemporaryPosterConfigurationForPosterMatchingUUID:dCopy andApplyUpdates:updatesCopy completion:completionCopy];
+
+  os_unfair_lock_unlock(&self->_stateLock);
+}
+
+- (void)_stateLock_createTemporaryPosterConfigurationForPosterMatchingUUID:(id)d andApplyUpdates:(id)updates completion:(id)completion
 {
   v58[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  updatesCopy = updates;
+  completionCopy = completion;
   if (![(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    if (![v9 count])
+    if (![updatesCopy count])
     {
       v31 = MEMORY[0x277CCA9B8];
       v57[0] = @"configurationUUID";
-      v32 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:v8];
+      v32 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:dCopy];
       v57[1] = *MEMORY[0x277CCA470];
       v58[0] = v32;
       v58[1] = @"No updates to execute?";
@@ -3228,7 +3228,7 @@ void __91__PBFPosterExtensionDataStore__stateLock_fetchPosterSnapshotsWithClient
 
     v54 = 0;
     v53 = 0;
-    [(PBFPosterExtensionDataStore *)self _stateLock_findStoreCoordinatorsForUUID:v8 extensionStoreCoordinator:&v54 configurationStoreCoordinator:&v53];
+    [(PBFPosterExtensionDataStore *)self _stateLock_findStoreCoordinatorsForUUID:dCopy extensionStoreCoordinator:&v54 configurationStoreCoordinator:&v53];
     v12 = v54;
     v13 = v53;
     v14 = v13;
@@ -3236,12 +3236,12 @@ void __91__PBFPosterExtensionDataStore__stateLock_fetchPosterSnapshotsWithClient
     {
       v34 = MEMORY[0x277CCA9B8];
       v55 = @"configurationUUID";
-      v35 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:v8];
+      v35 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:dCopy];
       v56 = v35;
       v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v56 forKeys:&v55 count:1];
-      v15 = [v34 pbf_dataStoreErrorWithCode:-2219 userInfo:v36];
+      pathOfLatestVersion = [v34 pbf_dataStoreErrorWithCode:-2219 userInfo:v36];
 
-      (*(v10 + 2))(v10, 0, 0, v15);
+      (*(completionCopy + 2))(completionCopy, 0, 0, pathOfLatestVersion);
 LABEL_16:
 
       goto LABEL_17;
@@ -3249,32 +3249,32 @@ LABEL_16:
 
     v44 = v12;
     v42 = v13;
-    v15 = [v13 pathOfLatestVersion];
-    v43 = [objc_alloc(MEMORY[0x277D3ED58]) _initWithPath:v15];
+    pathOfLatestVersion = [v13 pathOfLatestVersion];
+    v43 = [objc_alloc(MEMORY[0x277D3ED58]) _initWithPath:pathOfLatestVersion];
     v16 = MEMORY[0x277D3EB88];
-    v17 = [v15 role];
-    v18 = [v16 temporaryPathForRole:v17];
+    role = [pathOfLatestVersion role];
+    v18 = [v16 temporaryPathForRole:role];
 
-    v19 = [v15 identity];
+    identity = [pathOfLatestVersion identity];
     v20 = MEMORY[0x277D3EBA0];
-    v21 = [v18 contentsURL];
-    v41 = v19;
-    v22 = [v20 pathWithContainerURL:v21 identity:v19];
+    contentsURL = [v18 contentsURL];
+    v41 = identity;
+    v22 = [v20 pathWithContainerURL:contentsURL identity:identity];
 
-    v23 = [v22 instanceURL];
-    v24 = [MEMORY[0x277CCAA00] defaultManager];
+    instanceURL = [v22 instanceURL];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v52 = 0;
     v38 = v22;
     v25 = [v22 ensureContentsURLIsReachableAndReturnError:&v52];
     v26 = v52;
-    v39 = v24;
-    v40 = v23;
+    v39 = defaultManager;
+    v40 = instanceURL;
     if (v25)
     {
-      [v24 removeItemAtURL:v23 error:0];
-      v27 = [v15 instanceURL];
+      [defaultManager removeItemAtURL:instanceURL error:0];
+      instanceURL2 = [pathOfLatestVersion instanceURL];
       v51 = v26;
-      v28 = [v24 copyItemAtURL:v27 toURL:v23 error:&v51];
+      v28 = [defaultManager copyItemAtURL:instanceURL2 toURL:instanceURL error:&v51];
       v37 = v51;
 
       if (v28)
@@ -3284,13 +3284,13 @@ LABEL_16:
         v45[2] = __125__PBFPosterExtensionDataStore__stateLock_createTemporaryPosterConfigurationForPosterMatchingUUID_andApplyUpdates_completion___block_invoke;
         v45[3] = &unk_2782C5CD8;
         v46 = v18;
-        v50 = v10;
-        v47 = v24;
+        v50 = completionCopy;
+        v47 = defaultManager;
         v29 = v38;
         v48 = v38;
         v30 = v43;
         v49 = v43;
-        [(PBFPosterExtensionDataStore *)self _stateLock_convertPosterUpdatesToRoleCoordinatorChanges:v9 toPath:v48 powerLogReason:0 completion:v45];
+        [(PBFPosterExtensionDataStore *)self _stateLock_convertPosterUpdatesToRoleCoordinatorChanges:updatesCopy toPath:v48 powerLogReason:0 completion:v45];
 
         v26 = v37;
         v12 = v44;
@@ -3302,13 +3302,13 @@ LABEL_15:
 
       [v18 invalidate];
       v26 = v37;
-      (*(v10 + 2))(v10, 0, 0, v37);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v37);
     }
 
     else
     {
       [v18 invalidate];
-      (*(v10 + 2))(v10, 0, 0, v26);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v26);
     }
 
     v30 = v43;
@@ -3317,11 +3317,11 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v11 = [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
 LABEL_10:
-    (*(v10 + 2))(v10, 0, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v11);
   }
 
 LABEL_17:
@@ -3373,30 +3373,30 @@ void __125__PBFPosterExtensionDataStore__stateLock_createTemporaryPosterConfigur
   }
 }
 
-- (void)_stateLock_updatePosterConfiguration:(id)a3 updates:(id)a4 completion:(id)a5
+- (void)_stateLock_updatePosterConfiguration:(id)configuration updates:(id)updates completion:(id)completion
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 pbf_posterUUID];
-  if (v11 && ([v8 _path], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isServerPosterPath"), v12, (v13 & 1) != 0))
+  configurationCopy = configuration;
+  updatesCopy = updates;
+  completionCopy = completion;
+  pbf_posterUUID = [configurationCopy pbf_posterUUID];
+  if (pbf_posterUUID && ([configurationCopy _path], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isServerPosterPath"), v12, (v13 & 1) != 0))
   {
-    v14 = [v8 role];
-    v15 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:v14];
-    v16 = [v15 posterCollection];
+    role = [configurationCopy role];
+    v15 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:role];
+    posterCollection = [v15 posterCollection];
 
-    v30 = v16;
-    v17 = [v16 posterWithUUID:v11];
-    v18 = [v17 _path];
-    v19 = [v18 serverIdentity];
+    v30 = posterCollection;
+    v17 = [posterCollection posterWithUUID:pbf_posterUUID];
+    _path = [v17 _path];
+    serverIdentity = [_path serverIdentity];
 
-    v20 = [v8 _path];
-    v21 = [v20 serverIdentity];
+    _path2 = [configurationCopy _path];
+    serverIdentity2 = [_path2 serverIdentity];
 
-    if ([v19 isEqual:v21])
+    if ([serverIdentity isEqual:serverIdentity2])
     {
-      [(PBFPosterExtensionDataStore *)self _stateLock_updatePosterConfigurationMatchingUUID:v11 updates:v9 completion:v10];
+      [(PBFPosterExtensionDataStore *)self _stateLock_updatePosterConfigurationMatchingUUID:pbf_posterUUID updates:updatesCopy completion:completionCopy];
       v22 = 0;
     }
 
@@ -3407,10 +3407,10 @@ void __125__PBFPosterExtensionDataStore__stateLock_createTemporaryPosterConfigur
       v32[0] = @"Poster Configuration specified is not the most up to date version; please re-run your command after you've received a more up to date poster";
       v31[0] = v24;
       v31[1] = @"version";
-      v27 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v19, "version")}];
+      v27 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(serverIdentity, "version")}];
       v32[1] = v27;
       v31[2] = @"supplement";
-      [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v19, "supplement")}];
+      [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(serverIdentity, "supplement")}];
       v25 = v29 = v17;
       v32[2] = v25;
       v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:3];
@@ -3425,39 +3425,39 @@ void __125__PBFPosterExtensionDataStore__stateLock_createTemporaryPosterConfigur
     v23 = MEMORY[0x277CCA9B8];
     v33 = *MEMORY[0x277CCA470];
     v34[0] = @"Invalid configuration specified";
-    v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:&v33 count:1];
-    v22 = [v23 pbf_dataStoreErrorWithCode:-2214 userInfo:v14];
+    role = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:&v33 count:1];
+    v22 = [v23 pbf_dataStoreErrorWithCode:-2214 userInfo:role];
   }
 
   if (v22)
   {
-    (*(v10 + 2))(v10, 0, 0, v22);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v22);
   }
 }
 
-- (void)_stateLock_updatePosterConfigurationMatchingUUID:(id)a3 updates:(id)a4 completion:(id)a5
+- (void)_stateLock_updatePosterConfigurationMatchingUUID:(id)d updates:(id)updates completion:(id)completion
 {
   v33[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  updatesCopy = updates;
+  completionCopy = completion;
   if ([(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    if (v10)
+    if (completionCopy)
     {
       v11 = [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
 LABEL_8:
-      (*(v10 + 2))(v10, 0, 0, v11);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v11);
     }
   }
 
   else
   {
-    if (![v9 count])
+    if (![updatesCopy count])
     {
       v17 = MEMORY[0x277CCA9B8];
       v32[0] = @"configurationUUID";
-      v18 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:v8];
+      v18 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:dCopy];
       v32[1] = *MEMORY[0x277CCA470];
       v33[0] = v18;
       v33[1] = @"No updates to execute?";
@@ -3469,20 +3469,20 @@ LABEL_8:
 
     v28 = 0;
     v29 = 0;
-    [(PBFPosterExtensionDataStore *)self _stateLock_findStoreCoordinatorsForUUID:v8 extensionStoreCoordinator:&v29 configurationStoreCoordinator:&v28];
+    [(PBFPosterExtensionDataStore *)self _stateLock_findStoreCoordinatorsForUUID:dCopy extensionStoreCoordinator:&v29 configurationStoreCoordinator:&v28];
     v13 = v28;
     v12 = v29;
     if (v28)
     {
       v14 = v28;
       v15 = v12;
-      v16 = [v14 pathOfLatestVersion];
+      pathOfLatestVersion = [v14 pathOfLatestVersion];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __99__PBFPosterExtensionDataStore__stateLock_updatePosterConfigurationMatchingUUID_updates_completion___block_invoke;
       v26[3] = &unk_2782C5D00;
-      v27 = v10;
-      [(PBFPosterExtensionDataStore *)self _stateLock_applyUpdatesAndIngestConfiguration:v9 toPath:v16 powerLogReason:3 completion:v26];
+      v27 = completionCopy;
+      [(PBFPosterExtensionDataStore *)self _stateLock_applyUpdatesAndIngestConfiguration:updatesCopy toPath:pathOfLatestVersion powerLogReason:3 completion:v26];
     }
 
     else
@@ -3492,39 +3492,39 @@ LABEL_8:
       v21 = MEMORY[0x277CCAD78];
       v22 = 0;
       v23 = v12;
-      v24 = [v21 pf_nonnullUUIDStringOrSentinel:v8];
+      v24 = [v21 pf_nonnullUUIDStringOrSentinel:dCopy];
       v31 = v24;
       v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-      v16 = [v20 pbf_dataStoreErrorWithCode:-2219 userInfo:v25];
+      pathOfLatestVersion = [v20 pbf_dataStoreErrorWithCode:-2219 userInfo:v25];
 
-      (*(v10 + 2))(v10, 0, 0, v16);
+      (*(completionCopy + 2))(completionCopy, 0, 0, pathOfLatestVersion);
     }
   }
 }
 
-- (void)_stateLock_applyUpdatesAndIngestConfiguration:(id)a3 toPath:(id)a4 powerLogReason:(int64_t)a5 completion:(id)a6
+- (void)_stateLock_applyUpdatesAndIngestConfiguration:(id)configuration toPath:(id)path powerLogReason:(int64_t)reason completion:(id)completion
 {
   v55 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  configurationCopy = configuration;
+  pathCopy = path;
+  completionCopy = completion;
   if ([(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    if (v12)
+    if (completionCopy)
     {
       v13 = [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-      (*(v12 + 2))(v12, 0, 0, v13);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v13);
     }
   }
 
   else
   {
-    v32 = self;
-    v33 = a5;
-    v34 = v12;
-    v14 = [MEMORY[0x277CCAD78] UUID];
-    v15 = [v14 UUIDString];
-    v16 = [v15 substringToIndex:7];
+    selfCopy = self;
+    reasonCopy = reason;
+    v34 = completionCopy;
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v16 = [uUIDString substringToIndex:7];
 
     v17 = PBFLogDataStore();
     v18 = os_signpost_id_generate(v17);
@@ -3534,9 +3534,9 @@ LABEL_8:
     if (v18 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v19))
     {
       *buf = 138543874;
-      v50 = v11;
+      v50 = pathCopy;
       v51 = 2114;
-      v52 = v10;
+      v52 = configurationCopy;
       v53 = 2114;
       v54 = v16;
       _os_signpost_emit_with_name_impl(&dword_21B526000, v20, OS_SIGNPOST_INTERVAL_BEGIN, v18, "_stateLock_applyUpdatesAndIngestConfiguration", "path: %{public}@ ; updates: %{public}@; id %{public}@", buf, 0x20u);
@@ -3550,18 +3550,18 @@ LABEL_8:
       *buf = 138543618;
       v50 = v16;
       v51 = 2114;
-      v52 = v11;
+      v52 = pathCopy;
       _os_log_impl(&dword_21B526000, v21, OS_LOG_TYPE_DEFAULT, "[%{public}@] BEGIN POSTER UPDATES FOR PATH %{public}@", buf, 0x16u);
     }
 
-    v35 = v11;
+    v35 = pathCopy;
 
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v36 = v10;
-    v22 = v10;
+    v36 = configurationCopy;
+    v22 = configurationCopy;
     v23 = [v22 countByEnumeratingWithState:&v44 objects:v48 count:16];
     if (v23)
     {
@@ -3601,16 +3601,16 @@ LABEL_8:
     v29 = v16;
     v38 = v16;
     v43 = v31;
-    v11 = v35;
+    pathCopy = v35;
     v39 = v35;
     v40 = v22;
-    v12 = v34;
-    v41 = v32;
+    completionCopy = v34;
+    v41 = selfCopy;
     v42 = v34;
     v30 = v29;
-    [(PBFPosterExtensionDataStore *)v32 _stateLock_convertPosterUpdatesToRoleCoordinatorChanges:v40 toPath:v39 powerLogReason:v33 completion:v37];
+    [(PBFPosterExtensionDataStore *)selfCopy _stateLock_convertPosterUpdatesToRoleCoordinatorChanges:v40 toPath:v39 powerLogReason:reasonCopy completion:v37];
 
-    v10 = v36;
+    configurationCopy = v36;
   }
 }
 
@@ -3987,32 +3987,32 @@ uint64_t __110__PBFPosterExtensionDataStore__stateLock_applyUpdatesAndIngestConf
   return (*(*(a1 + 64) + 16))();
 }
 
-- (void)_stateLock_convertPosterUpdatesToRoleCoordinatorChanges:(id)a3 toPath:(id)a4 powerLogReason:(int64_t)a5 completion:(id)a6
+- (void)_stateLock_convertPosterUpdatesToRoleCoordinatorChanges:(id)changes toPath:(id)path powerLogReason:(int64_t)reason completion:(id)completion
 {
   v370[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  changesCopy = changes;
+  pathCopy = path;
+  completionCopy = completion;
   if ([(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    if (v12)
+    if (completionCopy)
     {
       v13 = [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-      (*(v12 + 2))(v12, 0, 0, v13);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v13);
     }
 
     goto LABEL_226;
   }
 
-  v14 = [v11 identity];
-  v15 = [v14 type];
+  identity = [pathCopy identity];
+  type = [identity type];
 
-  if (v15 != 3)
+  if (type != 3)
   {
     [PBFPosterExtensionDataStore _stateLock_convertPosterUpdatesToRoleCoordinatorChanges:a2 toPath:? powerLogReason:? completion:?];
   }
 
-  v16 = v10;
+  v16 = changesCopy;
   NSClassFromString(&cfstr_Nsarray.isa);
   if (!v16)
   {
@@ -4025,18 +4025,18 @@ uint64_t __110__PBFPosterExtensionDataStore__stateLock_applyUpdatesAndIngestConf
   }
 
   v17 = MEMORY[0x277CCACA8];
-  if (!v12)
+  if (!completionCopy)
   {
     [PBFPosterExtensionDataStore _stateLock_convertPosterUpdatesToRoleCoordinatorChanges:a2 toPath:? powerLogReason:? completion:?];
   }
 
-  v18 = [MEMORY[0x277CCAD78] UUID];
-  v19 = [v17 stringWithFormat:@"PosterUpdates-%@", v18];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v19 = [v17 stringWithFormat:@"PosterUpdates-%@", uUID];
 
-  v286 = [objc_alloc(MEMORY[0x277D3ED58]) _initWithPath:v11];
-  v290 = [v11 identity];
-  v287 = [v290 role];
-  v289 = [v290 provider];
+  v286 = [objc_alloc(MEMORY[0x277D3ED58]) _initWithPath:pathCopy];
+  identity2 = [pathCopy identity];
+  role = [identity2 role];
+  provider = [identity2 provider];
   v336[0] = 0;
   v336[1] = v336;
   v336[2] = 0x3032000000;
@@ -4044,8 +4044,8 @@ uint64_t __110__PBFPosterExtensionDataStore__stateLock_applyUpdatesAndIngestConf
   v336[4] = __Block_byref_object_dispose_;
   runtimeAssertionProvider = self->_runtimeAssertionProvider;
   v21 = NSStringFromSelector(a2);
-  v22 = [MEMORY[0x277D47008] currentProcess];
-  v337 = [(PBFRuntimeAssertionProviding *)runtimeAssertionProvider acquirePosterUpdateRuntimeAssertionForReason:v21 target:v22];
+  currentProcess = [MEMORY[0x277D47008] currentProcess];
+  v337 = [(PBFRuntimeAssertionProviding *)runtimeAssertionProvider acquirePosterUpdateRuntimeAssertionForReason:v21 target:currentProcess];
 
   v330 = 0;
   v331 = &v330;
@@ -4054,12 +4054,12 @@ uint64_t __110__PBFPosterExtensionDataStore__stateLock_applyUpdatesAndIngestConf
   v334 = __Block_byref_object_dispose_;
   v335 = 0;
   v23 = self->_instanceCollection;
-  v24 = [(PFPosterExtensionProvider *)self->_extensionProvider extensionForIdentifier];
-  v25 = [v24 objectForKey:v289];
+  extensionForIdentifier = [(PFPosterExtensionProvider *)self->_extensionProvider extensionForIdentifier];
+  v25 = [extensionForIdentifier objectForKey:provider];
 
-  v26 = [(PFPosterExtensionProvider *)self->_extensionProvider instanceProvider];
+  instanceProvider = [(PFPosterExtensionProvider *)self->_extensionProvider instanceProvider];
   v329 = 0;
-  v27 = [v26 acquireInstanceForExtension:v25 reason:v19 error:&v329];
+  v27 = [instanceProvider acquireInstanceForExtension:v25 reason:v19 error:&v329];
   v288 = v329;
 
   v323 = 0;
@@ -4079,7 +4079,7 @@ uint64_t __110__PBFPosterExtensionDataStore__stateLock_applyUpdatesAndIngestConf
   aBlock[1] = 3221225472;
   aBlock[2] = __120__PBFPosterExtensionDataStore__stateLock_convertPosterUpdatesToRoleCoordinatorChanges_toPath_powerLogReason_completion___block_invoke;
   aBlock[3] = &unk_2782C5D98;
-  v312 = v12;
+  v312 = completionCopy;
   v285 = v27;
   v309 = v285;
   v281 = v23;
@@ -4100,17 +4100,17 @@ uint64_t __110__PBFPosterExtensionDataStore__stateLock_applyUpdatesAndIngestConf
       v369[0] = *MEMORY[0x277CCA450];
       v369[1] = @"provider";
       v370[0] = @"Unable to build up a new extension instance to service applying updates";
-      v34 = [v290 provider];
-      v23 = v34;
+      provider2 = [identity2 provider];
+      v23 = provider2;
       v35 = @"(null provider)";
-      if (v34)
+      if (provider2)
       {
-        v35 = v34;
+        v35 = provider2;
       }
 
       v370[1] = v35;
-      v284 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v370 forKeys:v369 count:2];
-      v32 = [v33 pbf_dataStoreErrorWithCode:-2211 userInfo:v284];
+      posterCollection = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v370 forKeys:v369 count:2];
+      v32 = [v33 pbf_dataStoreErrorWithCode:-2211 userInfo:posterCollection];
     }
 
     (*(v28 + 2))(v28, 0, 0, v32);
@@ -4123,11 +4123,11 @@ uint64_t __110__PBFPosterExtensionDataStore__stateLock_applyUpdatesAndIngestConf
     goto LABEL_225;
   }
 
-  v29 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKey:v287];
-  v284 = [v29 posterCollection];
+  v29 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKey:role];
+  posterCollection = [v29 posterCollection];
   v279 = v29;
-  v30 = [objc_opt_class() supportedAttributes];
-  v277 = [v284 attributesForPoster:v286 ofTypes:v30];
+  supportedAttributes = [objc_opt_class() supportedAttributes];
+  v277 = [posterCollection attributesForPoster:v286 ofTypes:supportedAttributes];
 
   v307 = 0;
   v278 = [v285 pr_assetUpdaterWithError:&v307];
@@ -4146,16 +4146,16 @@ uint64_t __110__PBFPosterExtensionDataStore__stateLock_applyUpdatesAndIngestConf
     goto LABEL_222;
   }
 
-  v274 = [v278 auditToken];
-  if (!v274)
+  auditToken = [v278 auditToken];
+  if (!auditToken)
   {
     v47 = [MEMORY[0x277CCA9B8] pbf_dataStoreErrorWithCode:-2210 userInfo:MEMORY[0x277CBEC10]];
     (*(v28 + 2))(v28, 0, 0, v47);
     goto LABEL_221;
   }
 
-  v271 = [v278 target];
-  if (!v271)
+  target = [v278 target];
+  if (!target)
   {
     v48 = [MEMORY[0x277CCA9B8] pbf_dataStoreErrorWithCode:-2209 userInfo:MEMORY[0x277CBEC10]];
     (*(v28 + 2))(v28, 0, 0, v48);
@@ -4163,23 +4163,23 @@ uint64_t __110__PBFPosterExtensionDataStore__stateLock_applyUpdatesAndIngestConf
   }
 
   v36 = self->_runtimeAssertionProvider;
-  v37 = [@"applyUpdates:toPath:powerLogReason:completion: update for " stringByAppendingString:v289];
-  v38 = [(PBFRuntimeAssertionProviding *)v36 acquirePosterEditingRuntimeAssertionForReason:v37 target:v271];
+  v37 = [@"applyUpdates:toPath:powerLogReason:completion: update for " stringByAppendingString:provider];
+  v38 = [(PBFRuntimeAssertionProviding *)v36 acquirePosterEditingRuntimeAssertionForReason:v37 target:target];
   v39 = v331[5];
   v331[5] = v38;
 
-  v40 = [(PBFPosterExtensionDataStore *)self _stateLock_switcherConfiguration];
-  v270 = [v40 _childPosterConfigurationForConfiguration:v286];
+  _stateLock_switcherConfiguration = [(PBFPosterExtensionDataStore *)self _stateLock_switcherConfiguration];
+  v270 = [_stateLock_switcherConfiguration _childPosterConfigurationForConfiguration:v286];
 
-  v41 = [v270 _path];
-  v42 = [v41 serverIdentity];
+  _path = [v270 _path];
+  serverIdentity = [_path serverIdentity];
 
-  v43 = [MEMORY[0x277D3ECF8] mutableConfigurationWithRole:v287];
-  v258 = [v43 _path];
-  v268 = v42;
-  [MEMORY[0x277D3ECF8] mutableConfigurationWithRole:v287];
+  v43 = [MEMORY[0x277D3ECF8] mutableConfigurationWithRole:role];
+  _path2 = [v43 _path];
+  v268 = serverIdentity;
+  [MEMORY[0x277D3ECF8] mutableConfigurationWithRole:role];
   v266 = v264 = v43;
-  v261 = [v266 _path];
+  _path3 = [v266 _path];
   v262 = objc_opt_new();
   v306 = 0;
   v44 = [v286 loadConfiguredPropertiesWithError:&v306];
@@ -4203,7 +4203,7 @@ uint64_t __110__PBFPosterExtensionDataStore__stateLock_applyUpdatesAndIngestConf
 
   else
   {
-    v269 = [MEMORY[0x277D3EDD8] defaultConfiguredPropertiesForRole:v287];
+    v269 = [MEMORY[0x277D3EDD8] defaultConfiguredPropertiesForRole:role];
   }
 
   v51 = [v277 mutableCopy];
@@ -4311,29 +4311,29 @@ LABEL_37:
       }
 
       v272 = *(*(&v300 + 1) + 8 * v273);
-      v59 = [v272 type];
-      v275 = v59;
-      v60 = v59;
-      if (v59 > 9)
+      type2 = [v272 type];
+      v275 = type2;
+      v60 = type2;
+      if (type2 > 9)
       {
-        if (v59 > 0x15)
+        if (type2 > 0x15)
         {
           goto LABEL_80;
         }
 
-        if (((1 << v59) & 0x3BE000) != 0)
+        if (((1 << type2) & 0x3BE000) != 0)
         {
           goto LABEL_49;
         }
 
-        if (v59 != 12)
+        if (type2 != 12)
         {
-          v60 = v59;
-          if (v59 == 18)
+          v60 = type2;
+          if (type2 == 18)
           {
-            v81 = [v272 payload];
+            payload = [v272 payload];
             v82 = objc_opt_class();
-            v83 = __BSSafeCast(v81, v82);
+            v83 = __BSSafeCast(payload, v82);
 
             v291 = 0;
             v62 = [v269 applyUpdate:v272 error:&v291];
@@ -4345,15 +4345,15 @@ LABEL_37:
 LABEL_80:
           if (v60 == 10)
           {
-            v98 = [v272 payload];
+            payload2 = [v272 payload];
             v99 = objc_opt_class();
-            v246 = __BSSafeCast(v98, v99);
+            v246 = __BSSafeCast(payload2, v99);
 
-            v100 = [v246 propertyListRoot];
-            v239 = [v100 objectForKey:@"chargerIdentifier"];
+            propertyListRoot = [v246 propertyListRoot];
+            v239 = [propertyListRoot objectForKey:@"chargerIdentifier"];
 
-            v101 = [objc_opt_class() supportedAttributes];
-            v102 = [v101 containsObject:v242];
+            supportedAttributes2 = [objc_opt_class() supportedAttributes];
+            v102 = [supportedAttributes2 containsObject:v242];
 
             if (v102)
             {
@@ -4392,8 +4392,8 @@ LABEL_80:
                   v174 = [v105 copy];
                   if (v244)
                   {
-                    v175 = [v286 pbf_posterUUID];
-                    v176 = [PBFPosterRoleCoordinatorChange assignAttributeToPosterWithinRole:v287 matchingUUID:v175 attribute:v174];
+                    pbf_posterUUID = [v286 pbf_posterUUID];
+                    v176 = [PBFPosterRoleCoordinatorChange assignAttributeToPosterWithinRole:role matchingUUID:pbf_posterUUID attribute:v174];
                     [v249 addObject:v176];
                   }
 
@@ -4437,15 +4437,15 @@ LABEL_80:
               goto LABEL_209;
             }
 
-            v84 = [v272 payload];
+            payload3 = [v272 payload];
             v85 = objc_opt_class();
-            v246 = __BSSafeCast(v84, v85);
+            v246 = __BSSafeCast(payload3, v85);
 
-            v86 = [v246 propertyListRoot];
-            v239 = [v86 objectForKey:@"chargerIdentifier"];
+            propertyListRoot2 = [v246 propertyListRoot];
+            v239 = [propertyListRoot2 objectForKey:@"chargerIdentifier"];
 
-            v87 = [objc_opt_class() supportedAttributes];
-            v88 = [v87 containsObject:v242];
+            supportedAttributes3 = [objc_opt_class() supportedAttributes];
+            v88 = [supportedAttributes3 containsObject:v242];
 
             if (v88)
             {
@@ -4462,8 +4462,8 @@ LABEL_80:
                   v91 = [v90 copy];
                   if (v244)
                   {
-                    v92 = [v286 pbf_posterUUID];
-                    v93 = [PBFPosterRoleCoordinatorChange assignAttributeToPosterWithinRole:v287 matchingUUID:v92 attribute:v91];
+                    pbf_posterUUID2 = [v286 pbf_posterUUID];
+                    v93 = [PBFPosterRoleCoordinatorChange assignAttributeToPosterWithinRole:role matchingUUID:pbf_posterUUID2 attribute:v91];
                     [v249 addObject:v93];
                   }
 
@@ -4512,11 +4512,11 @@ LABEL_158:
 
       else
       {
-        if (v59 <= 5)
+        if (type2 <= 5)
         {
-          if ((v59 - 1) >= 5)
+          if ((type2 - 1) >= 5)
           {
-            if (v59)
+            if (type2)
             {
               goto LABEL_209;
             }
@@ -4527,7 +4527,7 @@ LABEL_158:
           }
 
 LABEL_49:
-          if (![v287 isEqual:v250])
+          if (![role isEqual:v250])
           {
             v198 = MEMORY[0x277CCA9B8];
             v362 = v243;
@@ -4562,15 +4562,15 @@ LABEL_209:
           if (v275 == 3)
           {
             v65 = objc_alloc(MEMORY[0x277D3E9C8]);
-            v66 = [v64 payload];
+            payload4 = [v64 payload];
             if (v270)
             {
-              v67 = [v65 _initWithUpdateType:4 payload:v66];
+              v67 = [v65 _initWithUpdateType:4 payload:payload4];
             }
 
             else
             {
-              v67 = [v65 _initWithUpdateType:5 payload:v66];
+              v67 = [v65 _initWithUpdateType:5 payload:payload4];
             }
 
             v68 = v67;
@@ -4588,13 +4588,13 @@ LABEL_209:
           goto LABEL_63;
         }
 
-        if (v59 <= 7)
+        if (type2 <= 7)
         {
-          if (v59 != 6)
+          if (type2 != 6)
           {
-            v69 = [v272 payload];
+            payload5 = [v272 payload];
             v70 = objc_opt_class();
-            v245 = __BSSafeCast(v69, v70);
+            v245 = __BSSafeCast(payload5, v70);
 
             if (!v245 || ([v245 switcherProviderUpdateSessionInfo], v71 = objc_claimAutoreleasedReturnValue(), v72 = v71 == 0, v71, v72))
             {
@@ -4608,38 +4608,38 @@ LABEL_209:
 
             else
             {
-              v73 = [v245 switcherProviderUpdateSessionInfo];
-              v74 = [v11 identity];
-              v75 = [v74 provider];
+              switcherProviderUpdateSessionInfo = [v245 switcherProviderUpdateSessionInfo];
+              identity3 = [pathCopy identity];
+              provider3 = [identity3 provider];
               v293 = 0;
-              v238 = [(PBFPosterExtensionDataStore *)self _stateLock_prepareReloadConfigurationOperationForExtension:v75 path:v11 locationInUse:0 sessionInfo:v73 powerLogReason:a5 assetUpdater:v278 error:&v293];
-              v233 = v73;
+              v238 = [(PBFPosterExtensionDataStore *)self _stateLock_prepareReloadConfigurationOperationForExtension:provider3 path:pathCopy locationInUse:0 sessionInfo:switcherProviderUpdateSessionInfo powerLogReason:reason assetUpdater:v278 error:&v293];
+              v233 = switcherProviderUpdateSessionInfo;
               v76 = v293;
 
               if (v76)
               {
-                v77 = v76;
+                error2 = v76;
                 goto LABEL_112;
               }
 
               [v285 pr_addRefreshConfigurationOperation:v238 waitUntilFinished:1];
-              v129 = [v238 error];
+              error = [v238 error];
 
-              if (v129)
+              if (error)
               {
-                v77 = [v238 error];
+                error2 = [v238 error];
 LABEL_112:
-                v61 = v77;
+                v61 = error2;
                 v62 = 0;
               }
 
               else
               {
-                v232 = [v238 postRefreshPosterConfiguration];
-                v158 = [v232 contentsURL];
-                v159 = [v238 preRefreshPosterConfiguration];
-                v160 = [v159 contentsURL];
-                v161 = [v158 isEqual:v160];
+                postRefreshPosterConfiguration = [v238 postRefreshPosterConfiguration];
+                contentsURL = [postRefreshPosterConfiguration contentsURL];
+                preRefreshPosterConfiguration = [v238 preRefreshPosterConfiguration];
+                contentsURL2 = [preRefreshPosterConfiguration contentsURL];
+                v161 = [contentsURL isEqual:contentsURL2];
 
                 if (v161)
                 {
@@ -4653,8 +4653,8 @@ LABEL_112:
 
                 else
                 {
-                  v163 = [objc_alloc(MEMORY[0x277D3ED58]) _initWithPath:v232];
-                  v180 = [MEMORY[0x277D3ECF8] mutableConfigurationWithRole:v287];
+                  v163 = [objc_alloc(MEMORY[0x277D3ED58]) _initWithPath:postRefreshPosterConfiguration];
+                  v180 = [MEMORY[0x277D3ECF8] mutableConfigurationWithRole:role];
                   v292 = 0;
                   v62 = [v180 copyContentsOfConfiguration:v163 error:&v292];
                   v61 = v292;
@@ -4662,9 +4662,9 @@ LABEL_112:
                   {
                     v227 = v180;
 
-                    v267 = [v227 _path];
+                    _path4 = [v227 _path];
 
-                    v261 = v267;
+                    _path3 = _path4;
                   }
 
                   else
@@ -4684,9 +4684,9 @@ LABEL_112:
             goto LABEL_63;
           }
 
-          v94 = [v272 payload];
+          payload6 = [v272 payload];
           v95 = objc_opt_class();
-          v247 = __BSSafeCast(v94, v95);
+          v247 = __BSSafeCast(payload6, v95);
 
           if (!v247)
           {
@@ -4700,8 +4700,8 @@ LABEL_112:
             goto LABEL_176;
           }
 
-          v235 = [v269 homeScreenConfiguration];
-          v96 = [v235 mutableCopy];
+          homeScreenConfiguration = [v269 homeScreenConfiguration];
+          v96 = [homeScreenConfiguration mutableCopy];
           v97 = v96;
           if (v96)
           {
@@ -4711,10 +4711,10 @@ LABEL_112:
           else
           {
             v115 = MEMORY[0x277D3ED08];
-            v230 = [v11 identity];
-            v116 = [v230 provider];
-            v117 = [v11 role];
-            v240 = [v115 defaultHomeScreenConfigurationForProvider:v116 role:v117];
+            identity4 = [pathCopy identity];
+            provider4 = [identity4 provider];
+            role2 = [pathCopy role];
+            v240 = [v115 defaultHomeScreenConfigurationForProvider:provider4 role:role2];
           }
 
           v224 = [v247 updatedAppearanceType] - 1;
@@ -4723,19 +4723,19 @@ LABEL_112:
             [v240 setSelectedAppearanceType:v224];
           }
 
-          v231 = [v247 solidColorAppearance];
+          solidColorAppearance = [v247 solidColorAppearance];
 
-          if (v231)
+          if (solidColorAppearance)
           {
-            v225 = [v235 solidColorAppearance];
+            solidColorAppearance2 = [homeScreenConfiguration solidColorAppearance];
             v118 = objc_alloc(MEMORY[0x277D3ED40]);
-            v119 = [v247 solidColorAppearance];
-            v120 = [v119 color];
-            v121 = [v120 UIColor];
-            v122 = [v118 initWithColor:v121];
+            solidColorAppearance3 = [v247 solidColorAppearance];
+            color = [solidColorAppearance3 color];
+            uIColor = [color UIColor];
+            v122 = [v118 initWithColor:uIColor];
 
-            v123 = [v225 colorPickerConfiguration];
-            v124 = [v123 copy];
+            colorPickerConfiguration = [solidColorAppearance2 colorPickerConfiguration];
+            v124 = [colorPickerConfiguration copy];
             v125 = v124;
             if (v124)
             {
@@ -4754,19 +4754,19 @@ LABEL_112:
             [v240 setSolidColorAppearance:v131];
           }
 
-          v226 = [v247 gradientColorAppearance];
+          gradientColorAppearance = [v247 gradientColorAppearance];
 
-          if (v226)
+          if (gradientColorAppearance)
           {
-            v222 = [v235 gradientAppearance];
+            gradientAppearance = [homeScreenConfiguration gradientAppearance];
             v132 = objc_alloc(MEMORY[0x277D3ED40]);
-            v133 = [v247 gradientColorAppearance];
-            v134 = [v133 color];
-            v135 = [v134 UIColor];
-            v136 = [v132 initWithColor:v135];
+            gradientColorAppearance2 = [v247 gradientColorAppearance];
+            color2 = [gradientColorAppearance2 color];
+            uIColor2 = [color2 UIColor];
+            v136 = [v132 initWithColor:uIColor2];
 
-            v137 = [v222 colorPickerConfiguration];
-            v138 = [v137 copy];
+            colorPickerConfiguration2 = [gradientAppearance colorPickerConfiguration];
+            v138 = [colorPickerConfiguration2 copy];
             v139 = v138;
             if (v138)
             {
@@ -4785,30 +4785,30 @@ LABEL_112:
             [v240 setGradientAppearance:v142];
           }
 
-          v143 = [v247 homeProviderIdentifier];
-          if (!v143 || ([v247 homeProviderIdentifier], v144 = objc_claimAutoreleasedReturnValue(), v145 = v144 == 0, v144, v143, v145))
+          homeProviderIdentifier = [v247 homeProviderIdentifier];
+          if (!homeProviderIdentifier || ([v247 homeProviderIdentifier], v144 = objc_claimAutoreleasedReturnValue(), v145 = v144 == 0, v144, homeProviderIdentifier, v145))
           {
             v150 = 0;
             v151 = 0;
             goto LABEL_165;
           }
 
-          v220 = [v270 _path];
-          v146 = [v220 identity];
-          v221 = [v146 provider];
+          _path5 = [v270 _path];
+          identity5 = [_path5 identity];
+          provider5 = [identity5 provider];
 
-          v223 = [v247 homeProviderIdentifier];
-          v147 = [(PBFPosterExtensionDataStore *)self _stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier:v223];
-          LODWORD(v146) = v147 == 0;
+          homeProviderIdentifier2 = [v247 homeProviderIdentifier];
+          v147 = [(PBFPosterExtensionDataStore *)self _stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier:homeProviderIdentifier2];
+          LODWORD(identity5) = v147 == 0;
 
-          if (v146)
+          if (identity5)
           {
             v155 = MEMORY[0x277CCA9B8];
             v346 = @"providerIdentifier";
             v156 = @"(null)";
-            if (v223)
+            if (homeProviderIdentifier2)
             {
-              v156 = v223;
+              v156 = homeProviderIdentifier2;
             }
 
             v347 = v156;
@@ -4818,16 +4818,16 @@ LABEL_112:
             goto LABEL_164;
           }
 
-          v219 = [v247 homeProviderUpdateSessionInfo];
-          if (v270 && ((v148 = [v221 isEqual:v223], !v223) ? (v149 = 1) : (v149 = v148), (v149 & 1) == 0))
+          homeProviderUpdateSessionInfo = [v247 homeProviderUpdateSessionInfo];
+          if (v270 && ((v148 = [provider5 isEqual:homeProviderIdentifier2], !homeProviderIdentifier2) ? (v149 = 1) : (v149 = v148), (v149 & 1) == 0))
           {
             [v262 addObject:v270];
-            v217 = [MEMORY[0x277D3ECF8] mutableConfigurationWithRole:v287];
+            v217 = [MEMORY[0x277D3ECF8] mutableConfigurationWithRole:role];
 
-            v164 = [v217 _path];
+            _path6 = [v217 _path];
 
             v257 = 0;
-            v258 = v164;
+            _path2 = _path6;
           }
 
           else
@@ -4835,8 +4835,8 @@ LABEL_112:
             v217 = v264;
           }
 
-          v165 = [(PFPosterExtensionProvider *)self->_extensionProvider extensionForIdentifier];
-          v166 = [v165 objectForKey:v223];
+          extensionForIdentifier2 = [(PFPosterExtensionProvider *)self->_extensionProvider extensionForIdentifier];
+          v166 = [extensionForIdentifier2 objectForKey:homeProviderIdentifier2];
 
           v297 = 0;
           v167 = [(PFPosterExtensionInstanceProvider *)v281 acquireInstanceForExtension:v166 reason:v280 error:&v297];
@@ -4865,30 +4865,30 @@ LABEL_112:
           }
 
           v151 = 0;
-          if (!v258 || v150)
+          if (!_path2 || v150)
           {
             goto LABEL_163;
           }
 
           v172 = v318[5];
           v295 = 0;
-          v265 = [(PBFPosterExtensionDataStore *)self _stateLock_prepareReloadConfigurationOperationForExtension:v223 path:v258 locationInUse:0 sessionInfo:v219 powerLogReason:a5 assetUpdater:v172 error:&v295];
+          v265 = [(PBFPosterExtensionDataStore *)self _stateLock_prepareReloadConfigurationOperationForExtension:homeProviderIdentifier2 path:_path2 locationInUse:0 sessionInfo:homeProviderUpdateSessionInfo powerLogReason:reason assetUpdater:v172 error:&v295];
           v216 = v295;
           if (v216)
           {
-            v173 = v216;
+            error4 = v216;
             goto LABEL_161;
           }
 
           [v324[5] pr_addRefreshConfigurationOperation:v265 waitUntilFinished:1];
-          v177 = [v265 error];
-          v178 = v177 == 0;
+          error3 = [v265 error];
+          v178 = error3 == 0;
 
           if (!v178)
           {
-            v173 = [v265 error];
+            error4 = [v265 error];
 LABEL_161:
-            v150 = v173;
+            v150 = error4;
             v151 = 0;
 LABEL_162:
             [(PFPosterExtensionInstanceProvider *)v281 relinquishExtensionInstance:v324[5] reason:v280];
@@ -4896,7 +4896,7 @@ LABEL_162:
             [v318[5] invalidate];
 
 LABEL_163:
-            v157 = v219;
+            v157 = homeProviderUpdateSessionInfo;
             v264 = v217;
 LABEL_164:
 
@@ -4912,12 +4912,12 @@ LABEL_165:
               v179 = v151;
             }
 
-            if (v231)
+            if (solidColorAppearance)
             {
               v179 = 1;
             }
 
-            if (v226)
+            if (gradientColorAppearance)
             {
               v179 = 1;
             }
@@ -4938,11 +4938,11 @@ LABEL_176:
             goto LABEL_63;
           }
 
-          v181 = [v265 postRefreshPosterConfiguration];
-          v213 = [v181 contentsURL];
-          v182 = [v265 preRefreshPosterConfiguration];
-          v183 = [v182 contentsURL];
-          v184 = [v213 isEqual:v183];
+          postRefreshPosterConfiguration2 = [v265 postRefreshPosterConfiguration];
+          contentsURL3 = [postRefreshPosterConfiguration2 contentsURL];
+          preRefreshPosterConfiguration2 = [v265 preRefreshPosterConfiguration];
+          contentsURL4 = [preRefreshPosterConfiguration2 contentsURL];
+          v184 = [contentsURL3 isEqual:contentsURL4];
 
           if (v184)
           {
@@ -4954,18 +4954,18 @@ LABEL_176:
             goto LABEL_190;
           }
 
-          if (v181)
+          if (postRefreshPosterConfiguration2)
           {
-            v214 = [objc_alloc(MEMORY[0x277D3ED58]) _initWithPath:v181];
+            v214 = [objc_alloc(MEMORY[0x277D3ED58]) _initWithPath:postRefreshPosterConfiguration2];
             if (!v257)
             {
               v187 = MEMORY[0x277D3EB98];
-              v188 = [v290 descriptorIdentifier];
+              descriptorIdentifier = [identity2 descriptorIdentifier];
               v189 = objc_opt_new();
-              v257 = [v187 configurationIdentityWithProvider:v223 identifier:v188 role:v287 posterUUID:v189 version:0 supplement:0];
+              v257 = [v187 configurationIdentityWithProvider:homeProviderIdentifier2 identifier:descriptorIdentifier role:role posterUUID:v189 version:0 supplement:0];
             }
 
-            v212 = [MEMORY[0x277D3ECF8] mutableConfigurationWithRole:v287];
+            v212 = [MEMORY[0x277D3ECF8] mutableConfigurationWithRole:role];
             v294 = 0;
             v190 = [v212 copyContentsOfConfiguration:v214 error:&v294];
             v150 = v294;
@@ -4973,25 +4973,25 @@ LABEL_176:
             {
               v211 = v212;
 
-              v210 = [v211 _path];
+              _path7 = [v211 _path];
 
               v191 = objc_alloc(MEMORY[0x277D3ECE0]);
-              v259 = [v257 posterUUID];
-              v218 = [v286 pbf_posterUUID];
-              v192 = [MEMORY[0x277D3ED60] defaultConfiguredPropertiesForRole:v287];
-              v193 = [v191 initWithNewPath:v210 destinationPosterUUID:v259 parentPosterUUID:v218 sourceIdentity:v257 configuredProperties:v192 attributes:0];
+              posterUUID = [v257 posterUUID];
+              pbf_posterUUID3 = [v286 pbf_posterUUID];
+              v192 = [MEMORY[0x277D3ED60] defaultConfiguredPropertiesForRole:role];
+              v193 = [v191 initWithNewPath:_path7 destinationPosterUUID:posterUUID parentPosterUUID:pbf_posterUUID3 sourceIdentity:v257 configuredProperties:v192 attributes:0];
 
               v260 = v193;
             }
 
             else
             {
-              v210 = v258;
+              _path7 = _path2;
               v211 = v217;
             }
 
             v151 = 1;
-            v258 = v210;
+            _path2 = _path7;
             v217 = v211;
           }
 
@@ -5010,13 +5010,13 @@ LABEL_190:
           goto LABEL_162;
         }
 
-        if (v59 == 8)
+        if (type2 == 8)
         {
           goto LABEL_49;
         }
       }
 
-      if (![v287 isEqual:v237])
+      if (![role isEqual:v237])
       {
         v209 = MEMORY[0x277CCA9B8];
         v360 = v243;
@@ -5039,8 +5039,8 @@ LABEL_63:
       {
         if (((1 << v275) & 0xE078) != 0)
         {
-          v78 = [v269 homeScreenConfiguration];
-          v79 = [v78 copy];
+          homeScreenConfiguration2 = [v269 homeScreenConfiguration];
+          v79 = [homeScreenConfiguration2 copy];
           [v256 setObject:v79 forKeyedSubscript:v252];
 LABEL_68:
 
@@ -5049,8 +5049,8 @@ LABEL_68:
 
         if (v275 == 12)
         {
-          v78 = [v269 ambientConfiguration];
-          v79 = [v78 copy];
+          homeScreenConfiguration2 = [v269 ambientConfiguration];
+          v79 = [homeScreenConfiguration2 copy];
           [v256 setObject:v79 forKeyedSubscript:v241];
           goto LABEL_68;
         }
@@ -5079,17 +5079,17 @@ LABEL_212:
   if (v244)
   {
     v202 = [PBFPosterConfigurationUpdateResult alloc];
-    v203 = [objc_alloc(MEMORY[0x277D3ED58]) _initWithPath:v11];
+    v203 = [objc_alloc(MEMORY[0x277D3ED58]) _initWithPath:pathCopy];
     v204 = [(PBFPosterConfigurationUpdateResult *)v202 initWithConfiguration:v203 updates:obj changes:v249];
   }
 
   else
   {
     v205 = objc_alloc(MEMORY[0x277D3ECE0]);
-    v206 = [v11 identity];
-    v207 = [v206 posterUUID];
-    v208 = [v11 identity];
-    v203 = [v205 initWithUpdatedPath:v261 updatedPosterUUID:v207 sourceIdentity:v208 configuredProperties:v269 attributes:v256];
+    identity6 = [pathCopy identity];
+    posterUUID2 = [identity6 posterUUID];
+    identity7 = [pathCopy identity];
+    v203 = [v205 initWithUpdatedPath:_path3 updatedPosterUUID:posterUUID2 sourceIdentity:identity7 configuredProperties:v269 attributes:v256];
 
     v204 = [[PBFPosterConfigurationUpdateResult alloc] initWithIncomingPosterConfiguration:v203 incomingAssocPosterConfiguration:v260 postersToDelete:v262];
   }
@@ -5109,10 +5109,10 @@ LABEL_219:
   v48 = v270;
 LABEL_220:
 
-  v47 = v271;
+  v47 = target;
 LABEL_221:
 
-  v46 = v274;
+  v46 = auditToken;
 LABEL_222:
 
 LABEL_223:
@@ -5161,51 +5161,51 @@ void __120__PBFPosterExtensionDataStore__stateLock_convertPosterUpdatesToRoleCoo
   *(v7 + 40) = 0;
 }
 
-- (id)fetchSuggestionDescriptorsForConfigurationMatchingUUID:(id)a3 error:(id *)a4
+- (id)fetchSuggestionDescriptorsForConfigurationMatchingUUID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_stateLock);
   v11 = 0;
-  v7 = [(PBFPosterExtensionDataStore *)self _stateLock_fetchSuggestionDescriptorsForConfigurationMatchingUUID:v6 error:&v11];
+  v7 = [(PBFPosterExtensionDataStore *)self _stateLock_fetchSuggestionDescriptorsForConfigurationMatchingUUID:dCopy error:&v11];
 
   v8 = v11;
   os_unfair_lock_unlock(&self->_stateLock);
-  if (a4 && v8)
+  if (error && v8)
   {
     v9 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v7;
 }
 
-- (void)refreshSuggestionDescriptorsForConfigurationMatchingUUID:(id)a3 sessionInfo:(id)a4 completion:(id)a5
+- (void)refreshSuggestionDescriptorsForConfigurationMatchingUUID:(id)d sessionInfo:(id)info completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  infoCopy = info;
+  dCopy = d;
   os_unfair_lock_lock(&self->_stateLock);
-  [(PBFPosterExtensionDataStore *)self _stateLock_refreshSuggestionDescriptorsForConfigurationMatchingUUID:v10 sessionInfo:v9 completion:v8];
+  [(PBFPosterExtensionDataStore *)self _stateLock_refreshSuggestionDescriptorsForConfigurationMatchingUUID:dCopy sessionInfo:infoCopy completion:completionCopy];
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)commitSuggestionsForConfigurationMatchingUUID:(id)a3 selectSuggestionDescriptorUUID:(id)a4 completion:(id)a5
+- (void)commitSuggestionsForConfigurationMatchingUUID:(id)d selectSuggestionDescriptorUUID:(id)iD completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  iDCopy = iD;
+  dCopy = d;
   os_unfair_lock_lock(&self->_stateLock);
-  [(PBFPosterExtensionDataStore *)self _stateLock_commitSuggestionsForConfigurationMatchingUUID:v10 selectSuggestionDescriptorUUID:v9 completion:v8];
+  [(PBFPosterExtensionDataStore *)self _stateLock_commitSuggestionsForConfigurationMatchingUUID:dCopy selectSuggestionDescriptorUUID:iDCopy completion:completionCopy];
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (id)_stateLock_fetchSuggestionDescriptorsForConfigurationMatchingUUID:(id)a3 error:(id *)a4
+- (id)_stateLock_fetchSuggestionDescriptorsForConfigurationMatchingUUID:(id)d error:(id *)error
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  dCopy = d;
+  if (!dCopy)
   {
 LABEL_5:
     v7 = 0;
@@ -5214,43 +5214,43 @@ LABEL_5:
 
   if ([(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-      *a4 = v7 = 0;
+      *error = v7 = 0;
       goto LABEL_14;
     }
 
     goto LABEL_5;
   }
 
-  v8 = [(PBFPosterExtensionDataStore *)self _stateLock_extensionStoreCoordinatorForPosterUUID:v6];
+  v8 = [(PBFPosterExtensionDataStore *)self _stateLock_extensionStoreCoordinatorForPosterUUID:dCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 suggestionDescriptorStoreCoordinatorsForConfigurationUUID:v6];
+    v10 = [v8 suggestionDescriptorStoreCoordinatorsForConfigurationUUID:dCopy];
     v7 = [v10 bs_mapNoNulls:&__block_literal_global_466];
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
       v11 = MEMORY[0x277CCA9B8];
       v17[0] = *MEMORY[0x277CCA470];
       v17[1] = @"posterUUID";
       v18[0] = @"unable to find extension store coordinator for poster uuid";
-      v12 = [v6 UUIDString];
-      v13 = v12;
+      uUIDString = [dCopy UUIDString];
+      v13 = uUIDString;
       v14 = @"(null)";
-      if (v12)
+      if (uUIDString)
       {
-        v14 = v12;
+        v14 = uUIDString;
       }
 
       v18[1] = v14;
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
-      *a4 = [v11 pbf_dataStoreErrorWithCode:-2220 userInfo:v15];
+      *error = [v11 pbf_dataStoreErrorWithCode:-2220 userInfo:v15];
     }
 
     v7 = 0;
@@ -5261,23 +5261,23 @@ LABEL_14:
   return v7;
 }
 
-- (void)_stateLock_refreshSuggestionDescriptorsForConfigurationMatchingUUID:(id)a3 sessionInfo:(id)a4 completion:(id)a5
+- (void)_stateLock_refreshSuggestionDescriptorsForConfigurationMatchingUUID:(id)d sessionInfo:(id)info completion:(id)completion
 {
   v55[2] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v35 = a4;
-  v10 = a5;
+  dCopy = d;
+  infoCopy = info;
+  completionCopy = completion;
   if (![(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    v12 = [(PBFPosterExtensionDataStore *)self _stateLock_extensionStoreCoordinatorForPosterUUID:v9];
+    v12 = [(PBFPosterExtensionDataStore *)self _stateLock_extensionStoreCoordinatorForPosterUUID:dCopy];
     if (v12)
     {
       v13 = objc_alloc(MEMORY[0x277D3ED58]);
-      v14 = [v12 configurationStoreCoordinatorForPosterUUID:v9];
-      v15 = [v14 pathOfLatestVersion];
-      v34 = [v13 _initWithPath:v15];
+      v14 = [v12 configurationStoreCoordinatorForPosterUUID:dCopy];
+      pathOfLatestVersion = [v14 pathOfLatestVersion];
+      v34 = [v13 _initWithPath:pathOfLatestVersion];
 
-      v16 = [v12 suggestionDescriptorStoreCoordinatorsForConfigurationUUID:v9];
+      v16 = [v12 suggestionDescriptorStoreCoordinatorsForConfigurationUUID:dCopy];
       v17 = [v16 bs_mapNoNulls:&__block_literal_global_469];
 
       if (![v17 count])
@@ -5286,20 +5286,20 @@ LABEL_14:
         v17 = 0;
       }
 
-      v18 = [v12 extensionIdentifier];
+      extensionIdentifier = [v12 extensionIdentifier];
       v33 = self->_extensionProvider;
-      v19 = [v9 UUIDString];
+      uUIDString = [dCopy UUIDString];
       v20 = NSStringFromSelector(a2);
-      v32 = [v19 stringByAppendingFormat:@"-%@", v20];
+      v32 = [uUIDString stringByAppendingFormat:@"-%@", v20];
 
       v53 = 0;
-      v30 = [(PFPosterExtensionProvider *)v33 acquireInstanceForExtensionWithIdentifier:v18 reason:v32 error:&v53];
+      v30 = [(PFPosterExtensionProvider *)v33 acquireInstanceForExtensionWithIdentifier:extensionIdentifier reason:v32 error:&v53];
       v31 = v53;
       if (v31)
       {
-        if (v10)
+        if (completionCopy)
         {
-          v10[2](v10, 0, v31);
+          completionCopy[2](completionCopy, 0, v31);
         }
       }
 
@@ -5309,22 +5309,22 @@ LABEL_14:
         aBlock[1] = 3221225472;
         aBlock[2] = __122__PBFPosterExtensionDataStore__stateLock_refreshSuggestionDescriptorsForConfigurationMatchingUUID_sessionInfo_completion___block_invoke_2;
         aBlock[3] = &unk_2782C5E00;
-        v52 = v10;
+        v52 = completionCopy;
         v24 = v33;
         v49 = v24;
-        v25 = v18;
+        v25 = extensionIdentifier;
         v50 = v25;
         v26 = v32;
         v51 = v26;
         v27 = _Block_copy(aBlock);
         objc_initWeak(&location, self);
-        v28 = [v30 pr_updateSuggestions:v17 forConfiguration:v34 sessionInfo:v35];
+        v28 = [v30 pr_updateSuggestions:v17 forConfiguration:v34 sessionInfo:infoCopy];
         v38[0] = MEMORY[0x277D85DD0];
         v38[1] = 3221225472;
         v38[2] = __122__PBFPosterExtensionDataStore__stateLock_refreshSuggestionDescriptorsForConfigurationMatchingUUID_sessionInfo_completion___block_invoke_3;
         v38[3] = &unk_2782C5E48;
         v39 = v12;
-        v40 = v9;
+        v40 = dCopy;
         v45 = v27;
         v41 = v24;
         v42 = v25;
@@ -5346,7 +5346,7 @@ LABEL_14:
 
     else
     {
-      if (!v10)
+      if (!completionCopy)
       {
 LABEL_17:
 
@@ -5357,27 +5357,27 @@ LABEL_17:
       v54[0] = *MEMORY[0x277CCA470];
       v54[1] = @"posterUUID";
       v55[0] = @"unable to find extension store coordinator for poster uuid";
-      v22 = [v9 UUIDString];
-      v34 = v22;
+      uUIDString2 = [dCopy UUIDString];
+      v34 = uUIDString2;
       v23 = @"(null)";
-      if (v22)
+      if (uUIDString2)
       {
-        v23 = v22;
+        v23 = uUIDString2;
       }
 
       v55[1] = v23;
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v55 forKeys:v54 count:2];
-      v18 = [v21 pbf_dataStoreErrorWithCode:-2220 userInfo:v17];
-      v10[2](v10, 0, v18);
+      extensionIdentifier = [v21 pbf_dataStoreErrorWithCode:-2220 userInfo:v17];
+      completionCopy[2](completionCopy, 0, extensionIdentifier);
     }
 
     goto LABEL_17;
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v11 = [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-    v10[2](v10, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
   }
 
 LABEL_18:
@@ -5451,19 +5451,19 @@ id __122__PBFPosterExtensionDataStore__stateLock_refreshSuggestionDescriptorsFor
   return v4;
 }
 
-- (void)_stateLock_commitSuggestionsForConfigurationMatchingUUID:(id)a3 selectSuggestionDescriptorUUID:(id)a4 completion:(id)a5
+- (void)_stateLock_commitSuggestionsForConfigurationMatchingUUID:(id)d selectSuggestionDescriptorUUID:(id)iD completion:(id)completion
 {
   v59[2] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
   if (![(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    v13 = [(PBFPosterExtensionDataStore *)self _stateLock_extensionStoreCoordinatorForPosterUUID:v9];
+    v13 = [(PBFPosterExtensionDataStore *)self _stateLock_extensionStoreCoordinatorForPosterUUID:dCopy];
     v14 = v13;
     if (!v13)
     {
-      if (!v11)
+      if (!completionCopy)
       {
 LABEL_24:
 
@@ -5475,35 +5475,35 @@ LABEL_24:
       v59[0] = @"unable to find extension store coordinator for poster uuid";
       v58[0] = v37;
       v58[1] = @"posterUUID";
-      v38 = [v9 UUIDString];
-      v15 = v38;
+      uUIDString = [dCopy UUIDString];
+      v15 = uUIDString;
       v39 = @"(null)";
-      if (v38)
+      if (uUIDString)
       {
-        v39 = v38;
+        v39 = uUIDString;
       }
 
       v59[1] = v39;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v59 forKeys:v58 count:2];
-      v35 = [v36 pbf_dataStoreErrorWithCode:-2220 userInfo:v16];
-      v11[2](v11, v35);
+      _stateLock_updatedSuggestionDescriptorsForPosterUUID = [v36 pbf_dataStoreErrorWithCode:-2220 userInfo:v16];
+      completionCopy[2](completionCopy, _stateLock_updatedSuggestionDescriptorsForPosterUUID);
       goto LABEL_22;
     }
 
-    if (v10)
+    if (iDCopy)
     {
-      v15 = [v13 suggestionDescriptorStoreCoordinatorsForConfigurationUUID:v9];
-      v16 = [v14 suggestionDescriptorStoreCoordinatorForPosterUUID:v10];
+      v15 = [v13 suggestionDescriptorStoreCoordinatorsForConfigurationUUID:dCopy];
+      v16 = [v14 suggestionDescriptorStoreCoordinatorForPosterUUID:iDCopy];
       if (([v15 containsObject:v16] & 1) == 0)
       {
-        if (v11)
+        if (completionCopy)
         {
           v41 = MEMORY[0x277CCA9B8];
           v56 = *MEMORY[0x277CCA470];
           v57 = @"selected suggestion descriptor poster uuid does not belong to this poster. Sacre bleu!";
-          v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
-          v42 = [v41 pbf_dataStoreErrorWithCode:-2214 userInfo:v35];
-          v11[2](v11, v42);
+          _stateLock_updatedSuggestionDescriptorsForPosterUUID = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
+          v42 = [v41 pbf_dataStoreErrorWithCode:-2214 userInfo:_stateLock_updatedSuggestionDescriptorsForPosterUUID];
+          completionCopy[2](completionCopy, v42);
 
           goto LABEL_22;
         }
@@ -5513,33 +5513,33 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v47 = v10;
+      v47 = iDCopy;
       v51 = v15;
       v52 = v14;
-      v17 = [v14 configurationStoreCoordinatorForPosterUUID:v9];
-      v18 = [v17 pathOfLatestVersion];
+      v17 = [v14 configurationStoreCoordinatorForPosterUUID:dCopy];
+      pathOfLatestVersion = [v17 pathOfLatestVersion];
 
-      v45 = [v18 role];
-      v19 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKey:v45];
-      v20 = [v19 posterCollection];
-      v21 = [v20 posterWithUUID:v9];
+      role = [pathOfLatestVersion role];
+      v19 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKey:role];
+      posterCollection = [v19 posterCollection];
+      v21 = [posterCollection posterWithUUID:dCopy];
 
-      v22 = [v19 posterCollection];
+      posterCollection2 = [v19 posterCollection];
       v49 = v19;
-      v23 = [objc_opt_class() supportedAttributes];
+      supportedAttributes = [objc_opt_class() supportedAttributes];
       v48 = v21;
-      v24 = [v22 attributesForPoster:v21 ofTypes:v23];
+      v24 = [posterCollection2 attributesForPoster:v21 ofTypes:supportedAttributes];
 
       v25 = objc_alloc(MEMORY[0x277D3ECE0]);
-      v26 = [v16 pathOfLatestVersion];
-      v27 = [v18 serverIdentity];
-      v50 = v18;
-      v28 = [MEMORY[0x277D3EDE0] modelObjectCacheForPath:v18];
+      pathOfLatestVersion2 = [v16 pathOfLatestVersion];
+      serverIdentity = [pathOfLatestVersion serverIdentity];
+      v50 = pathOfLatestVersion;
+      v28 = [MEMORY[0x277D3EDE0] modelObjectCacheForPath:pathOfLatestVersion];
       [v28 configuredProperties];
       v29 = v46 = v16;
-      v30 = [v25 initWithUpdatedPath:v26 updatedPosterUUID:v9 sourceIdentity:v27 configuredProperties:v29 attributes:v24];
+      v30 = [v25 initWithUpdatedPath:pathOfLatestVersion2 updatedPosterUUID:dCopy sourceIdentity:serverIdentity configuredProperties:v29 attributes:v24];
 
-      v31 = [PBFPosterRoleCoordinatorChange updatePosterWithinRole:v45 incomingPoster:v30];
+      v31 = [PBFPosterRoleCoordinatorChange updatePosterWithinRole:role incomingPoster:v30];
       v55 = v31;
       v32 = [MEMORY[0x277CBEA60] arrayWithObjects:&v55 count:1];
       v33 = NSStringFromSelector(a2);
@@ -5549,10 +5549,10 @@ LABEL_23:
 
       if (v34)
       {
-        v11[2](v11, v34);
+        completionCopy[2](completionCopy, v34);
 
-        v35 = v46;
-        v10 = v47;
+        _stateLock_updatedSuggestionDescriptorsForPosterUUID = v46;
+        iDCopy = v47;
         v16 = v51;
         v14 = v52;
         v15 = v49;
@@ -5563,7 +5563,7 @@ LABEL_22:
 
       v14 = v52;
       v40 = v49;
-      v10 = v47;
+      iDCopy = v47;
     }
 
     else
@@ -5572,22 +5572,22 @@ LABEL_22:
     }
 
     v53 = 0;
-    [v14 updateSuggestionDescriptors:MEMORY[0x277CBEBF8] forConfigurationUUID:v9 error:&v53];
+    [v14 updateSuggestionDescriptors:MEMORY[0x277CBEBF8] forConfigurationUUID:dCopy error:&v53];
     v16 = v53;
-    if (v11)
+    if (completionCopy)
     {
-      v11[2](v11, v16);
+      completionCopy[2](completionCopy, v16);
     }
 
     if (!v16)
     {
-      v43 = [v40 posterCollection];
-      v44 = [v43 posterWithUUID:v9];
+      posterCollection3 = [v40 posterCollection];
+      v44 = [posterCollection3 posterWithUUID:dCopy];
       [(PBFPosterExtensionDataStore *)self _notifyObserversDidUpdateSuggestionDescriptors:MEMORY[0x277CBEBF8] forConfiguration:v44];
 
       v16 = 0;
-      v35 = [(PBFPosterExtensionDataStore *)self _stateLock_updatedSuggestionDescriptorsForPosterUUID];
-      [(PBFPosterExtensionDataStore *)self _notifyObserversDidUpdateSuggestionDescriptorsForPosterUUID:v35];
+      _stateLock_updatedSuggestionDescriptorsForPosterUUID = [(PBFPosterExtensionDataStore *)self _stateLock_updatedSuggestionDescriptorsForPosterUUID];
+      [(PBFPosterExtensionDataStore *)self _notifyObserversDidUpdateSuggestionDescriptorsForPosterUUID:_stateLock_updatedSuggestionDescriptorsForPosterUUID];
       v15 = v40;
       goto LABEL_22;
     }
@@ -5596,27 +5596,27 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (v11)
+  if (completionCopy)
   {
     v12 = [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-    v11[2](v11, v12);
+    completionCopy[2](completionCopy, v12);
   }
 
 LABEL_25:
 }
 
-- (id)_stateLock_extensionStoreCoordinatorForPosterUUID:(id)a3
+- (id)_stateLock_extensionStoreCoordinatorForPosterUUID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = [(NSDictionary *)self->_roleToRoleCoordinator objectEnumerator];
-    v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    objectEnumerator = [(NSDictionary *)self->_roleToRoleCoordinator objectEnumerator];
+    v6 = [objectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v6)
     {
       v7 = v6;
@@ -5627,17 +5627,17 @@ LABEL_25:
         {
           if (*v18 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(objectEnumerator);
           }
 
-          v10 = [*(*(&v17 + 1) + 8 * i) posterCollection];
-          v11 = [v10 posterWithUUID:v4];
+          posterCollection = [*(*(&v17 + 1) + 8 * i) posterCollection];
+          v11 = [posterCollection posterWithUUID:dCopy];
 
           if (v11)
           {
 
-            v13 = [v11 pr_posterProvider];
-            v14 = [(PBFPosterExtensionDataStore *)self _stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier:v13];
+            pr_posterProvider = [v11 pr_posterProvider];
+            v14 = [(PBFPosterExtensionDataStore *)self _stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier:pr_posterProvider];
             v12 = v14;
             if (v14)
             {
@@ -5648,7 +5648,7 @@ LABEL_25:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v7 = [objectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v7)
         {
           continue;
@@ -5659,7 +5659,7 @@ LABEL_25:
     }
 
     v12 = 0;
-    v11 = v5;
+    v11 = objectEnumerator;
 LABEL_14:
   }
 
@@ -5671,47 +5671,47 @@ LABEL_14:
   return v12;
 }
 
-- (id)providerForPath:(id)a3
+- (id)providerForPath:(id)path
 {
-  v4 = [a3 identity];
-  v5 = [v4 provider];
+  identity = [path identity];
+  provider = [identity provider];
 
-  v6 = [(PBFPosterExtensionDataStore *)self providerForExtensionIdentifier:v5];
+  v6 = [(PBFPosterExtensionDataStore *)self providerForExtensionIdentifier:provider];
 
   return v6;
 }
 
-- (id)providerForExtensionIdentifier:(id)a3
+- (id)providerForExtensionIdentifier:(id)identifier
 {
   extensionProvider = self->_extensionProvider;
-  v4 = a3;
-  v5 = [(PFPosterExtensionProvider *)extensionProvider extensionForIdentifier];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  extensionForIdentifier = [(PFPosterExtensionProvider *)extensionProvider extensionForIdentifier];
+  v6 = [extensionForIdentifier objectForKey:identifierCopy];
 
   return v6;
 }
 
-- (id)pbf_posterSnapshotCoordinatorForIdentity:(id)a3
+- (id)pbf_posterSnapshotCoordinatorForIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [v4 provider];
-  v6 = [(PBFPosterExtensionDataStore *)self pbf_posterExtensionStoreCoordinatorForProviderIdentifier:v5 error:0];
-  v7 = [v6 pbf_posterSnapshotCoordinatorForIdentity:v4];
+  identityCopy = identity;
+  provider = [identityCopy provider];
+  v6 = [(PBFPosterExtensionDataStore *)self pbf_posterExtensionStoreCoordinatorForProviderIdentifier:provider error:0];
+  v7 = [v6 pbf_posterSnapshotCoordinatorForIdentity:identityCopy];
 
   return v7;
 }
 
-- (void)pbf_enumerateSnapshotCoordinators:(id)a3
+- (void)pbf_enumerateSnapshotCoordinators:(id)coordinators
 {
-  v4 = a3;
+  coordinatorsCopy = coordinators;
   os_unfair_lock_lock(&self->_extensionProvidingLock);
   extensionProvidingLock_extensionStoreCoordinatorForExtensionBundleIdentifier = self->_extensionProvidingLock_extensionStoreCoordinatorForExtensionBundleIdentifier;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__PBFPosterExtensionDataStore_pbf_enumerateSnapshotCoordinators___block_invoke;
   v7[3] = &unk_2782C5E98;
-  v8 = v4;
-  v6 = v4;
+  v8 = coordinatorsCopy;
+  v6 = coordinatorsCopy;
   [(NSMutableDictionary *)extensionProvidingLock_extensionStoreCoordinatorForExtensionBundleIdentifier enumerateKeysAndObjectsUsingBlock:v7];
   os_unfair_lock_unlock(&self->_extensionProvidingLock);
 }
@@ -5727,30 +5727,30 @@ void __65__PBFPosterExtensionDataStore_pbf_enumerateSnapshotCoordinators___block
   [a3 pbf_enumerateSnapshotCoordinators:v6];
 }
 
-- (id)pbf_posterExtensionStoreCoordinatorForProviderIdentifier:(id)a3 error:(id *)a4
+- (id)pbf_posterExtensionStoreCoordinatorForProviderIdentifier:(id)identifier error:(id *)error
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     os_unfair_lock_lock(&self->_extensionProvidingLock);
-    v7 = [(NSMutableDictionary *)self->_extensionProvidingLock_extensionStoreCoordinatorForExtensionBundleIdentifier objectForKey:v6];
+    v7 = [(NSMutableDictionary *)self->_extensionProvidingLock_extensionStoreCoordinatorForExtensionBundleIdentifier objectForKey:identifierCopy];
     os_unfair_lock_unlock(&self->_extensionProvidingLock);
-    if (a4 && !v7)
+    if (error && !v7)
     {
       v8 = MEMORY[0x277CCA9B8];
       v13 = @"providerIdentifier";
-      v14 = v6;
+      v14 = identifierCopy;
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
       v10 = [v8 pbf_dataStoreErrorWithCode:-2220 userInfo:v9];
 LABEL_7:
-      *a4 = v10;
+      *error = v10;
     }
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
       v11 = MEMORY[0x277CCA9B8];
       v15 = *MEMORY[0x277CCA470];
@@ -5767,19 +5767,19 @@ LABEL_7:
   return v7;
 }
 
-- (id)pbf_posterExtensionStoreCoordinatorsForRole:(id)a3
+- (id)pbf_posterExtensionStoreCoordinatorsForRole:(id)role
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PFPosterExtensionProvider *)self->_extensionProvider extensionForIdentifier];
-  v6 = [v5 allValues];
+  roleCopy = role;
+  extensionForIdentifier = [(PFPosterExtensionProvider *)self->_extensionProvider extensionForIdentifier];
+  allValues = [extensionForIdentifier allValues];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __75__PBFPosterExtensionDataStore_pbf_posterExtensionStoreCoordinatorsForRole___block_invoke;
   v23[3] = &unk_2782C5EC0;
-  v7 = v4;
+  v7 = roleCopy;
   v24 = v7;
-  v8 = [v6 bs_filter:v23];
+  v8 = [allValues bs_filter:v23];
   v9 = [v8 bs_mapNoNulls:&__block_literal_global_490];
 
   if ([v9 count])
@@ -5835,20 +5835,20 @@ uint64_t __75__PBFPosterExtensionDataStore_pbf_posterExtensionStoreCoordinatorsF
   return v4;
 }
 
-- (void)createPosterConfigurationForProviderIdentifier:(id)a3 posterDescriptorIdentifier:(id)a4 role:(id)a5 completion:(id)a6
+- (void)createPosterConfigurationForProviderIdentifier:(id)identifier posterDescriptorIdentifier:(id)descriptorIdentifier role:(id)role completion:(id)completion
 {
   v60[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v14)
+  identifierCopy = identifier;
+  descriptorIdentifierCopy = descriptorIdentifier;
+  roleCopy = role;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PBFPosterExtensionDataStore createPosterConfigurationForProviderIdentifier:a2 posterDescriptorIdentifier:? role:? completion:?];
   }
 
-  v15 = v14;
-  v16 = v11;
+  v15 = completionCopy;
+  v16 = identifierCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v16)
   {
@@ -5860,7 +5860,7 @@ uint64_t __75__PBFPosterExtensionDataStore_pbf_posterExtensionStoreCoordinatorsF
     [PBFPosterExtensionDataStore createPosterConfigurationForProviderIdentifier:a2 posterDescriptorIdentifier:? role:? completion:?];
   }
 
-  v17 = v13;
+  v17 = roleCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v17)
   {
@@ -5872,7 +5872,7 @@ uint64_t __75__PBFPosterExtensionDataStore_pbf_posterExtensionStoreCoordinatorsF
     [PBFPosterExtensionDataStore createPosterConfigurationForProviderIdentifier:a2 posterDescriptorIdentifier:? role:? completion:?];
   }
 
-  v18 = v12;
+  v18 = descriptorIdentifierCopy;
   if (v18)
   {
     NSClassFromString(&cfstr_Nsstring.isa);
@@ -5919,9 +5919,9 @@ uint64_t __75__PBFPosterExtensionDataStore_pbf_posterExtensionStoreCoordinatorsF
       v58 = v44;
       v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v58 count:1];
       v52 = 0;
-      v28 = [(PBFPosterExtensionDataStore *)self _buildRoleCoordinatorTransitionContext];
+      _buildRoleCoordinatorTransitionContext = [(PBFPosterExtensionDataStore *)self _buildRoleCoordinatorTransitionContext];
       v51 = 0;
-      v29 = [(PBFPosterExtensionDataStore *)self _stateLock_executeDataStoreUpdateWithChanges:v27 diffs:&v52 options:0 reason:@"posterCreation" context:v28 error:&v51];
+      v29 = [(PBFPosterExtensionDataStore *)self _stateLock_executeDataStoreUpdateWithChanges:v27 diffs:&v52 options:0 reason:@"posterCreation" context:_buildRoleCoordinatorTransitionContext error:&v51];
       v30 = v52;
       v31 = v51;
 
@@ -5937,13 +5937,13 @@ uint64_t __75__PBFPosterExtensionDataStore_pbf_posterExtensionStoreCoordinatorsF
         }
 
         v34 = v33;
-        v35 = [v33 newCollection];
-        v36 = [v50 destinationUUID];
-        v37 = [v35 posterWithUUID:v36];
+        newCollection = [v33 newCollection];
+        destinationUUID = [v50 destinationUUID];
+        v37 = [newCollection posterWithUUID:destinationUUID];
 
-        v38 = [v37 _path];
+        _path = [v37 _path];
         v31 = v32;
-        (*(v48 + 2))(v48, v38, v32);
+        (*(v48 + 2))(v48, _path, v32);
 
         v19 = v45;
         v15 = v46;
@@ -5990,34 +5990,34 @@ void __121__PBFPosterExtensionDataStore_createPosterConfigurationForProviderIden
   }
 }
 
-- (id)_stateLock_incomingPosterConfigurationForProviderIdentifier:(id)a3 posterDescriptorIdentifier:(id)a4 role:(id)a5 error:(id *)a6
+- (id)_stateLock_incomingPosterConfigurationForProviderIdentifier:(id)identifier posterDescriptorIdentifier:(id)descriptorIdentifier role:(id)role error:(id *)error
 {
   v57[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:v12];
+  identifierCopy = identifier;
+  descriptorIdentifierCopy = descriptorIdentifier;
+  roleCopy = role;
+  v13 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:roleCopy];
   if (v13)
   {
-    v14 = [(PBFPosterExtensionDataStore *)self pbf_posterExtensionStoreCoordinatorForProviderIdentifier:v10 error:a6];
+    v14 = [(PBFPosterExtensionDataStore *)self pbf_posterExtensionStoreCoordinatorForProviderIdentifier:identifierCopy error:error];
     if (!v14)
     {
-      if (a6 && !*a6)
+      if (error && !*error)
       {
         v30 = MEMORY[0x277CCA9B8];
         v54[0] = @"providerIdentifier";
         v54[1] = @"posterDescriptorIdentifier";
         v31 = @"(null descriptorIdentifier)";
-        if (v11)
+        if (descriptorIdentifierCopy)
         {
-          v31 = v11;
+          v31 = descriptorIdentifierCopy;
         }
 
-        v55[0] = v10;
+        v55[0] = identifierCopy;
         v55[1] = v31;
         v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v55 forKeys:v54 count:2];
         [v30 pbf_dataStoreErrorWithCode:-2220 userInfo:v42];
-        *a6 = v28 = 0;
+        *error = v28 = 0;
       }
 
       else
@@ -6028,8 +6028,8 @@ void __121__PBFPosterExtensionDataStore_createPosterConfigurationForProviderIden
       goto LABEL_34;
     }
 
-    v41 = [MEMORY[0x277D3ECF8] mutableConfigurationWithRole:v12];
-    if (!v11)
+    v41 = [MEMORY[0x277D3ECF8] mutableConfigurationWithRole:roleCopy];
+    if (!descriptorIdentifierCopy)
     {
       v40 = 0;
       goto LABEL_29;
@@ -6045,7 +6045,7 @@ void __121__PBFPosterExtensionDataStore_createPosterConfigurationForProviderIden
     v43[1] = 3221225472;
     v43[2] = __129__PBFPosterExtensionDataStore__stateLock_incomingPosterConfigurationForProviderIdentifier_posterDescriptorIdentifier_role_error___block_invoke;
     v43[3] = &unk_2782C5F30;
-    v15 = v11;
+    v15 = descriptorIdentifierCopy;
     v44 = v15;
     v45 = &v46;
     [v14 enumerateDescriptorStoreCoordinators:v43];
@@ -6053,21 +6053,21 @@ void __121__PBFPosterExtensionDataStore_createPosterConfigurationForProviderIden
     v17 = v16 != 0;
     if (v16)
     {
-      v18 = [v16 pathOfLatestVersion];
-      v19 = [v41 copyContentsOfPath:v18 error:a6];
+      pathOfLatestVersion = [v16 pathOfLatestVersion];
+      v19 = [v41 copyContentsOfPath:pathOfLatestVersion error:error];
 
       if (v19)
       {
-        v20 = [v47[5] identityOfLatestVersion];
+        identityOfLatestVersion = [v47[5] identityOfLatestVersion];
         v21 = MEMORY[0x277D3EDE8];
-        v22 = [v47[5] pathOfLatestVersion];
-        v23 = [v21 loadConfigurableOptionsForPath:v22 error:0];
+        pathOfLatestVersion2 = [v47[5] pathOfLatestVersion];
+        v23 = [v21 loadConfigurableOptionsForPath:pathOfLatestVersion2 error:0];
 
-        v24 = [v23 preferredRenderingConfiguration];
-        v25 = v24;
-        if (v24)
+        preferredRenderingConfiguration = [v23 preferredRenderingConfiguration];
+        v25 = preferredRenderingConfiguration;
+        if (preferredRenderingConfiguration)
         {
-          v40 = v24;
+          v40 = preferredRenderingConfiguration;
         }
 
         else
@@ -6079,17 +6079,17 @@ void __121__PBFPosterExtensionDataStore_createPosterConfigurationForProviderIden
       }
     }
 
-    else if (a6)
+    else if (error)
     {
       v29 = MEMORY[0x277CCA9B8];
       v52[0] = @"providerIdentifier";
       v52[1] = @"posterDescriptorIdentifier";
-      v53[0] = v10;
+      v53[0] = identifierCopy;
       v53[1] = v15;
       v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v53 forKeys:v52 count:2];
       [v29 pbf_dataStoreErrorWithCode:-2218 userInfo:v23];
       v40 = 0;
-      *a6 = v20 = 0;
+      *error = identityOfLatestVersion = 0;
 LABEL_26:
 
 LABEL_27:
@@ -6103,16 +6103,16 @@ LABEL_32:
         goto LABEL_34;
       }
 
-      if (v20)
+      if (identityOfLatestVersion)
       {
 LABEL_30:
-        v34 = [v13 defaultAttributesForNewPosterFromProvider:{v10, v40}];
+        v34 = [v13 defaultAttributesForNewPosterFromProvider:{identifierCopy, v40}];
         v35 = [v34 mutableCopy];
 
-        v36 = [MEMORY[0x277D3ED60] defaultConfiguredPropertiesForRole:v12 renderingConfiguration:v40];
+        v36 = [MEMORY[0x277D3ED60] defaultConfiguredPropertiesForRole:roleCopy renderingConfiguration:v40];
         v37 = objc_alloc(MEMORY[0x277D3ECE0]);
-        v38 = [v41 _path];
-        v28 = [v37 initWithNewPath:v38 destinationPosterUUID:0 sourceIdentity:v20 configuredProperties:v36 attributes:v35];
+        _path = [v41 _path];
+        v28 = [v37 initWithNewPath:_path destinationPosterUUID:0 sourceIdentity:identityOfLatestVersion configuredProperties:v36 attributes:v35];
 
         [v28 trackTemporaryState:v41];
         goto LABEL_32;
@@ -6120,28 +6120,28 @@ LABEL_30:
 
 LABEL_29:
       v32 = MEMORY[0x277D3EB98];
-      v33 = [MEMORY[0x277CCAD78] UUID];
-      v20 = [v32 configurationIdentityWithProvider:v10 identifier:v11 role:v12 posterUUID:v33 version:0 supplement:0];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      identityOfLatestVersion = [v32 configurationIdentityWithProvider:identifierCopy identifier:descriptorIdentifierCopy role:roleCopy posterUUID:uUID version:0 supplement:0];
 
       goto LABEL_30;
     }
 
     v40 = 0;
-    v20 = 0;
+    identityOfLatestVersion = 0;
     v17 = 0;
     goto LABEL_27;
   }
 
-  if (!a6)
+  if (!error)
   {
     v28 = 0;
     goto LABEL_35;
   }
 
   v26 = MEMORY[0x277CCA9B8];
-  if (v12)
+  if (roleCopy)
   {
-    v27 = v12;
+    v27 = roleCopy;
   }
 
   else
@@ -6153,7 +6153,7 @@ LABEL_29:
   v57[0] = v27;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v57 forKeys:&v56 count:1];
   [v26 pbf_dataStoreErrorWithCode:-2203 userInfo:v14];
-  *a6 = v28 = 0;
+  *error = v28 = 0;
 LABEL_34:
 
 LABEL_35:
@@ -6174,12 +6174,12 @@ void __129__PBFPosterExtensionDataStore__stateLock_incomingPosterConfigurationFo
   }
 }
 
-- (void)refreshPosterConfigurationMatchingUUID:(id)a3 sessionInfo:(id)a4 completion:(id)a5
+- (void)refreshPosterConfigurationMatchingUUID:(id)d sessionInfo:(id)info completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v9;
+  dCopy = d;
+  infoCopy = info;
+  completionCopy = completion;
+  v12 = dCopy;
   NSClassFromString(&cfstr_Nsuuid.isa);
   if (!v12)
   {
@@ -6192,38 +6192,38 @@ void __129__PBFPosterExtensionDataStore__stateLock_incomingPosterConfigurationFo
   }
 
   os_unfair_lock_lock(&self->_stateLock);
-  [(PBFPosterExtensionDataStore *)self _stateLock_enqueueRefreshPosterConfigurationMatchingUUID:v12 sessionInfo:v10 powerLogReason:3 completion:v11];
+  [(PBFPosterExtensionDataStore *)self _stateLock_enqueueRefreshPosterConfigurationMatchingUUID:v12 sessionInfo:infoCopy powerLogReason:3 completion:completionCopy];
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (id)posterConfigurationsForRole:(id)a3 error:(id *)a4
+- (id)posterConfigurationsForRole:(id)role error:(id *)error
 {
-  v4 = [(PBFPosterExtensionDataStore *)self posterCollectionForRole:a3 error:a4];
-  v5 = [v4 orderedPosters];
-  v6 = [v5 array];
-  v7 = [v6 bs_mapNoNulls:&__block_literal_global_510];
+  v4 = [(PBFPosterExtensionDataStore *)self posterCollectionForRole:role error:error];
+  orderedPosters = [v4 orderedPosters];
+  array = [orderedPosters array];
+  v7 = [array bs_mapNoNulls:&__block_literal_global_510];
 
   return v7;
 }
 
-- (id)posterCollectionForRole:(id)a3 error:(id *)a4
+- (id)posterCollectionForRole:(id)role error:(id *)error
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  roleCopy = role;
   os_unfair_lock_lock(&self->_stateLock);
-  v7 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:v6];
+  v7 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:roleCopy];
   if (v7)
   {
-    v8 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:v6];
-    a4 = [v8 posterCollection];
+    v8 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:roleCopy];
+    error = [v8 posterCollection];
   }
 
-  else if (a4)
+  else if (error)
   {
     v9 = MEMORY[0x277CCA9B8];
-    if (v6)
+    if (roleCopy)
     {
-      v10 = v6;
+      v10 = roleCopy;
     }
 
     else
@@ -6234,19 +6234,19 @@ void __129__PBFPosterExtensionDataStore__stateLock_incomingPosterConfigurationFo
     v13 = @"roleIdentifier";
     v14[0] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    *a4 = [v9 pbf_dataStoreErrorWithCode:-2203 userInfo:v11];
+    *error = [v9 pbf_dataStoreErrorWithCode:-2203 userInfo:v11];
 
-    a4 = 0;
+    error = 0;
   }
 
   os_unfair_lock_unlock(&self->_stateLock);
 
-  return a4;
+  return error;
 }
 
-- (id)posterConfigurationsForExtension:(id)a3
+- (id)posterConfigurationsForExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v5 = objc_opt_new();
   os_unfair_lock_lock(&self->_stateLock);
   roleToRoleCoordinator = self->_roleToRoleCoordinator;
@@ -6254,10 +6254,10 @@ void __129__PBFPosterExtensionDataStore__stateLock_incomingPosterConfigurationFo
   v12 = 3221225472;
   v13 = __64__PBFPosterExtensionDataStore_posterConfigurationsForExtension___block_invoke;
   v14 = &unk_2782C5FA0;
-  v15 = v4;
+  v15 = extensionCopy;
   v16 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = extensionCopy;
   [(NSDictionary *)roleToRoleCoordinator enumerateKeysAndObjectsUsingBlock:&v11];
   os_unfair_lock_unlock(&self->_stateLock);
   v9 = [v7 copy];
@@ -6293,10 +6293,10 @@ void __64__PBFPosterExtensionDataStore_posterConfigurationsForExtension___block_
   }
 }
 
-- (id)activePosterForRole:(id)a3 assocPoster:(id *)a4 error:(id *)a5
+- (id)activePosterForRole:(id)role assocPoster:(id *)poster error:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  roleCopy = role;
   v9 = PBFLogDataStore();
   v10 = os_signpost_id_generate(v9);
 
@@ -6305,22 +6305,22 @@ void __64__PBFPosterExtensionDataStore_posterConfigurationsForExtension___block_
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
   {
     *buf = 138543362;
-    v31 = v8;
+    v31 = roleCopy;
     _os_signpost_emit_with_name_impl(&dword_21B526000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "activePosterForRole", "role: %{public}@", buf, 0xCu);
   }
 
-  v13 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:v8];
+  v13 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:roleCopy];
   if (v13)
   {
     os_unfair_lock_lock(&self->_activePosterLock);
-    v14 = [v13 posterCollection];
-    v15 = [(NSMutableDictionary *)self->_activePosterLock_roleToActivePosterConfiguration objectForKeyedSubscript:v8];
+    posterCollection = [v13 posterCollection];
+    v15 = [(NSMutableDictionary *)self->_activePosterLock_roleToActivePosterConfiguration objectForKeyedSubscript:roleCopy];
     os_unfair_lock_unlock(&self->_activePosterLock);
-    if (!a5 || v15)
+    if (!error || v15)
     {
-      if (a4 && v15)
+      if (poster && v15)
       {
-        *a4 = [v14 associatedPosterForPoster:v15];
+        *poster = [posterCollection associatedPosterForPoster:v15];
       }
     }
 
@@ -6328,9 +6328,9 @@ void __64__PBFPosterExtensionDataStore_posterConfigurationsForExtension___block_
     {
       v16 = MEMORY[0x277CCA9B8];
       v17 = @"(null role identifier)";
-      if (v8)
+      if (roleCopy)
       {
-        v17 = v8;
+        v17 = roleCopy;
       }
 
       v18 = *MEMORY[0x277CCA470];
@@ -6339,7 +6339,7 @@ void __64__PBFPosterExtensionDataStore_posterConfigurationsForExtension___block_
       v27[0] = v17;
       v27[1] = @"No active poster could be determined for role";
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
-      *a5 = [v16 pbf_dataStoreErrorWithCode:-2219 userInfo:v19];
+      *error = [v16 pbf_dataStoreErrorWithCode:-2219 userInfo:v19];
     }
   }
 
@@ -6351,16 +6351,16 @@ void __64__PBFPosterExtensionDataStore_posterConfigurationsForExtension___block_
       [PBFPosterExtensionDataStore activePosterForRole:assocPoster:error:];
     }
 
-    if (!a5)
+    if (!error)
     {
       v15 = 0;
       goto LABEL_21;
     }
 
     v21 = MEMORY[0x277CCA9B8];
-    if (v8)
+    if (roleCopy)
     {
-      v22 = v8;
+      v22 = roleCopy;
     }
 
     else
@@ -6370,9 +6370,9 @@ void __64__PBFPosterExtensionDataStore_posterConfigurationsForExtension___block_
 
     v28 = @"roleIdentifier";
     v29 = v22;
-    v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-    [v21 pbf_dataStoreErrorWithCode:-2203 userInfo:v14];
-    *a5 = v15 = 0;
+    posterCollection = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
+    [v21 pbf_dataStoreErrorWithCode:-2203 userInfo:posterCollection];
+    *error = v15 = 0;
   }
 
 LABEL_21:
@@ -6381,32 +6381,32 @@ LABEL_21:
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
   {
     *buf = 138543362;
-    v31 = v8;
+    v31 = roleCopy;
     _os_signpost_emit_with_name_impl(&dword_21B526000, v24, OS_SIGNPOST_INTERVAL_END, v10, "activePosterForRole", "role: %{public}@", buf, 0xCu);
   }
 
   return v15;
 }
 
-- (id)selectedPosterForRole:(id)a3 error:(id *)a4
+- (id)selectedPosterForRole:(id)role error:(id *)error
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  roleCopy = role;
   os_unfair_lock_lock(&self->_stateLock);
-  v7 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:v6];
+  v7 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:roleCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 posterCollection];
-    a4 = [v9 selectedPoster];
+    posterCollection = [v7 posterCollection];
+    error = [posterCollection selectedPoster];
   }
 
-  else if (a4)
+  else if (error)
   {
     v10 = MEMORY[0x277CCA9B8];
-    if (v6)
+    if (roleCopy)
     {
-      v11 = v6;
+      v11 = roleCopy;
     }
 
     else
@@ -6417,23 +6417,23 @@ LABEL_21:
     v14 = @"roleIdentifier";
     v15[0] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-    *a4 = [v10 pbf_dataStoreErrorWithCode:-2203 userInfo:v12];
+    *error = [v10 pbf_dataStoreErrorWithCode:-2203 userInfo:v12];
 
-    a4 = 0;
+    error = 0;
   }
 
   os_unfair_lock_unlock(&self->_stateLock);
 
-  return a4;
+  return error;
 }
 
-- (BOOL)updateSelectedPosterUUID:(id)a3 role:(id)a4 from:(id)a5 error:(id *)a6
+- (BOOL)updateSelectedPosterUUID:(id)d role:(id)role from:(id)from error:(id *)error
 {
   v70[2] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (v11)
+  dCopy = d;
+  roleCopy = role;
+  fromCopy = from;
+  if (dCopy)
   {
     v14 = PBFLogDataStore();
     spid = os_signpost_id_generate(v14);
@@ -6443,11 +6443,11 @@ LABEL_21:
     if (spid - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
     {
       *buf = 138543874;
-      *&buf[4] = v12;
+      *&buf[4] = roleCopy;
       *&buf[12] = 2114;
-      *&buf[14] = v13;
+      *&buf[14] = fromCopy;
       *&buf[22] = 2114;
-      v64 = v11;
+      v64 = dCopy;
       _os_signpost_emit_with_name_impl(&dword_21B526000, v16, OS_SIGNPOST_INTERVAL_BEGIN, spid, "updateSelectedPosterUUID:role:from:", "role: %{public}@ bundleIdentifier: %{public}@ configurationUUID: %{public}@", buf, 0x20u);
     }
 
@@ -6456,19 +6456,19 @@ LABEL_21:
     v57 = 0x2020000000;
     v58 = 0;
     os_unfair_lock_lock(&self->_stateLock);
-    v17 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:v12];
+    v17 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:roleCopy];
     v18 = v17;
     if (!v17)
     {
-      if (!a6)
+      if (!error)
       {
         goto LABEL_44;
       }
 
       v29 = MEMORY[0x277CCA9B8];
-      if (v12)
+      if (roleCopy)
       {
-        v30 = v12;
+        v30 = roleCopy;
       }
 
       else
@@ -6478,8 +6478,8 @@ LABEL_21:
 
       v67 = @"roleIdentifier";
       v68 = v30;
-      v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v68 forKeys:&v67 count:1];
-      *a6 = [v29 pbf_dataStoreErrorWithCode:-2203 userInfo:v19];
+      posterCollection = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v68 forKeys:&v67 count:1];
+      *error = [v29 pbf_dataStoreErrorWithCode:-2203 userInfo:posterCollection];
 LABEL_43:
 
 LABEL_44:
@@ -6489,11 +6489,11 @@ LABEL_44:
       if (spid - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v43))
       {
         *buf = 138543874;
-        *&buf[4] = v12;
+        *&buf[4] = roleCopy;
         *&buf[12] = 2114;
-        *&buf[14] = v13;
+        *&buf[14] = fromCopy;
         *&buf[22] = 2114;
-        v64 = v11;
+        v64 = dCopy;
         _os_signpost_emit_with_name_impl(&dword_21B526000, v44, OS_SIGNPOST_INTERVAL_END, spid, "updateSelectedPosterUUID:role:from:", "role: %{public}@ bundleIdentifier: %{public}@ configurationUUID: %{public}@", buf, 0x20u);
       }
 
@@ -6502,11 +6502,11 @@ LABEL_44:
       goto LABEL_48;
     }
 
-    v19 = [v17 posterCollection];
-    v52 = [v19 posterWithUUID:v11];
-    v51 = [MEMORY[0x277CBEBD0] pbf_activeChargerIdentifier];
-    v20 = [(__CFString *)v12 isEqual:*MEMORY[0x277D3EE98]];
-    if (v51)
+    posterCollection = [v17 posterCollection];
+    v52 = [posterCollection posterWithUUID:dCopy];
+    pbf_activeChargerIdentifier = [MEMORY[0x277CBEBD0] pbf_activeChargerIdentifier];
+    v20 = [(__CFString *)roleCopy isEqual:*MEMORY[0x277D3EE98]];
+    if (pbf_activeChargerIdentifier)
     {
       v21 = v20;
     }
@@ -6518,7 +6518,7 @@ LABEL_44:
 
     if (v21 == 1)
     {
-      v49 = [MEMORY[0x277D3E9C8] posterUpdateAssociateWithChargerIdentifier:?];
+      selectedPoster = [MEMORY[0x277D3E9C8] posterUpdateAssociateWithChargerIdentifier:?];
       if (v52)
       {
         *buf = 0;
@@ -6527,7 +6527,7 @@ LABEL_44:
         v64 = __Block_byref_object_copy_;
         v65 = __Block_byref_object_dispose_;
         v66 = 0;
-        v62 = v49;
+        v62 = selectedPoster;
         v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v62 count:1];
         v54[0] = MEMORY[0x277D85DD0];
         v54[1] = 3221225472;
@@ -6537,12 +6537,12 @@ LABEL_44:
         v54[5] = &v55;
         [(PBFPosterExtensionDataStore *)self _stateLock_updatePosterConfiguration:v52 updates:v22 completion:v54];
 
-        if (a6)
+        if (error)
         {
           v23 = *(*&buf[8] + 40);
           if (v23)
           {
-            *a6 = v23;
+            *error = v23;
           }
         }
 
@@ -6554,12 +6554,12 @@ LABEL_44:
     {
       if (!v52)
       {
-        if (a6)
+        if (error)
         {
           v32 = MEMORY[0x277CCA9B8];
-          if (v12)
+          if (roleCopy)
           {
-            v33 = v12;
+            v33 = roleCopy;
           }
 
           else
@@ -6570,35 +6570,35 @@ LABEL_44:
           v60[0] = @"roleIdentifier";
           v60[1] = @"configurationUUID";
           v61[0] = v33;
-          v50 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:v11];
+          v50 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:dCopy];
           v61[1] = v50;
           v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v61 forKeys:v60 count:2];
-          *a6 = [v32 pbf_dataStoreErrorWithCode:-2219 userInfo:v34];
+          *error = [v32 pbf_dataStoreErrorWithCode:-2219 userInfo:v34];
         }
 
         goto LABEL_42;
       }
 
-      v49 = [v19 selectedPoster];
-      v48 = [(PBFPosterExtensionDataStore *)self activePosterConfigurationForRole:v12 assocPoster:0];
-      v31 = [v49 isEqual:v52];
-      if ((v31 & [v49 isEqual:v48]) == 1)
+      selectedPoster = [posterCollection selectedPoster];
+      v48 = [(PBFPosterExtensionDataStore *)self activePosterConfigurationForRole:roleCopy assocPoster:0];
+      v31 = [selectedPoster isEqual:v52];
+      if ((v31 & [selectedPoster isEqual:v48]) == 1)
       {
         *(v56 + 24) = 1;
       }
 
       else
       {
-        v35 = [(PBFPosterExtensionDataStore *)self _buildRoleCoordinatorTransitionContextWithDesiredActivePosterUUID:v11 role:v12];
-        v47 = v13;
-        if ((v31 & 1) != 0 || -[__CFString isEqual:](v12, "isEqual:", *MEMORY[0x277D3EEF0]) && ([v52 loadFocusConfigurationWithError:0], v36 = objc_claimAutoreleasedReturnValue(), v37 = v36 == 0, v36, !v37))
+        v35 = [(PBFPosterExtensionDataStore *)self _buildRoleCoordinatorTransitionContextWithDesiredActivePosterUUID:dCopy role:roleCopy];
+        v47 = fromCopy;
+        if ((v31 & 1) != 0 || -[__CFString isEqual:](roleCopy, "isEqual:", *MEMORY[0x277D3EEF0]) && ([v52 loadFocusConfigurationWithError:0], v36 = objc_claimAutoreleasedReturnValue(), v37 = v36 == 0, v36, !v37))
         {
           v46 = 0;
         }
 
         else
         {
-          v38 = [PBFPosterRoleCoordinatorChange selectPosterForRole:v12 matchingUUID:v11];
+          v38 = [PBFPosterRoleCoordinatorChange selectPosterForRole:roleCopy matchingUUID:dCopy];
           v59 = v38;
           v46 = [MEMORY[0x277CBEA60] arrayWithObjects:&v59 count:1];
         }
@@ -6607,10 +6607,10 @@ LABEL_44:
         v40 = NSStringFromSelector(a2);
         v41 = [v39 stringWithFormat:@"%@ from %@", v40, v47];
 
-        v42 = [(PBFPosterExtensionDataStore *)self _stateLock_executeDataStoreUpdateWithChanges:v46 diffs:0 options:0 reason:v41 context:v35 error:a6];
+        v42 = [(PBFPosterExtensionDataStore *)self _stateLock_executeDataStoreUpdateWithChanges:v46 diffs:0 options:0 reason:v41 context:v35 error:error];
         *(v56 + 24) = v42;
 
-        v13 = v47;
+        fromCopy = v47;
       }
     }
 
@@ -6618,12 +6618,12 @@ LABEL_42:
     goto LABEL_43;
   }
 
-  if (a6)
+  if (error)
   {
     v24 = MEMORY[0x277CCA9B8];
-    if (v12)
+    if (roleCopy)
     {
-      v25 = v12;
+      v25 = roleCopy;
     }
 
     else
@@ -6637,7 +6637,7 @@ LABEL_42:
     v26 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:0];
     v70[1] = v26;
     v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v70 forKeys:v69 count:2];
-    *a6 = [v24 pbf_dataStoreErrorWithCode:-2219 userInfo:v27];
+    *error = [v24 pbf_dataStoreErrorWithCode:-2219 userInfo:v27];
   }
 
   v28 = 0;
@@ -6656,29 +6656,29 @@ void __72__PBFPosterExtensionDataStore_updateSelectedPosterUUID_role_from_error_
   }
 }
 
-- (BOOL)executeDataStoreUpdateWithChanges:(id)a3 diffs:(id *)a4 options:(unint64_t)a5 reason:(id)a6 error:(id *)a7
+- (BOOL)executeDataStoreUpdateWithChanges:(id)changes diffs:(id *)diffs options:(unint64_t)options reason:(id)reason error:(id *)error
 {
-  v12 = a6;
-  v13 = a3;
+  reasonCopy = reason;
+  changesCopy = changes;
   os_unfair_lock_lock(&self->_stateLock);
-  LOBYTE(a7) = [(PBFPosterExtensionDataStore *)self _stateLock_executeDataStoreUpdateWithChanges:v13 diffs:a4 options:a5 reason:v12 context:0 error:a7];
+  LOBYTE(error) = [(PBFPosterExtensionDataStore *)self _stateLock_executeDataStoreUpdateWithChanges:changesCopy diffs:diffs options:options reason:reasonCopy context:0 error:error];
 
   os_unfair_lock_unlock(&self->_stateLock);
-  return a7;
+  return error;
 }
 
-- (BOOL)deletePosterConfigurationsMatchingUUID:(id)a3 error:(id *)a4
+- (BOOL)deletePosterConfigurationsMatchingUUID:(id)d error:(id *)error
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_stateLock);
-  v8 = [(PBFPosterExtensionDataStore *)self _stateLock_posterWithUUID:v7 error:0];
+  v8 = [(PBFPosterExtensionDataStore *)self _stateLock_posterWithUUID:dCopy error:0];
   v9 = v8;
-  if (v7 && v8)
+  if (dCopy && v8)
   {
     v10 = [PBFPosterDataStoreEventBuilder posterDeleted:v8];
-    v11 = [v10 userInfo];
-    v12 = [v11 mutableCopy];
+    userInfo = [v10 userInfo];
+    v12 = [userInfo mutableCopy];
     v13 = v12;
     if (v12)
     {
@@ -6695,13 +6695,13 @@ void __72__PBFPosterExtensionDataStore_updateSelectedPosterUUID_role_from_error_
     v18 = NSStringFromSelector(a2);
     [v16 setObject:v18 forKeyedSubscript:@"origin"];
 
-    v19 = [v10 buildWithError:a4];
+    v19 = [v10 buildWithError:error];
     v20 = v19;
     if (v19)
     {
       v23 = v19;
       v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v23 count:1];
-      v17 = [(PBFPosterExtensionDataStore *)self _stateLock_processEvents:v21 context:0 error:a4];
+      v17 = [(PBFPosterExtensionDataStore *)self _stateLock_processEvents:v21 context:0 error:error];
     }
 
     else
@@ -6712,15 +6712,15 @@ void __72__PBFPosterExtensionDataStore_updateSelectedPosterUUID_role_from_error_
     goto LABEL_13;
   }
 
-  if (a4)
+  if (error)
   {
     v15 = MEMORY[0x277CCA9B8];
     v24 = @"configurationUUID";
-    v10 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:v7];
+    v10 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:dCopy];
     v25[0] = v10;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     [v15 pbf_dataStoreErrorWithCode:-2219 userInfo:v16];
-    *a4 = v17 = 0;
+    *error = v17 = 0;
 LABEL_13:
 
     goto LABEL_14;
@@ -6733,41 +6733,41 @@ LABEL_14:
   return v17;
 }
 
-- (BOOL)togglePosterConfigurationHiddenMatchingUUID:(id)a3 error:(id *)a4
+- (BOOL)togglePosterConfigurationHiddenMatchingUUID:(id)d error:(id *)error
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_stateLock);
-  v7 = [(PBFPosterExtensionDataStore *)self _stateLock_posterWithUUID:v6 error:0];
+  v7 = [(PBFPosterExtensionDataStore *)self _stateLock_posterWithUUID:dCopy error:0];
   v8 = v7;
-  if (v6 && v7)
+  if (dCopy && v7)
   {
     v9 = [v7 loadConfiguredPropertiesWithError:0];
     v10 = [v9 mutableCopy];
 
-    v11 = [v10 ambientConfiguration];
-    v12 = [v11 mutableCopy];
+    ambientConfiguration = [v10 ambientConfiguration];
+    v12 = [ambientConfiguration mutableCopy];
 
     [v12 setHidden:{objc_msgSend(v12, "hidden") ^ 1}];
     [v10 setAmbientConfiguration:v12];
     v13 = objc_opt_new();
-    v14 = [PBFPosterRoleCoordinatorChange updateConfiguredProperties:v10 forPosterWithinRole:*MEMORY[0x277D3EE98] matchingUUID:v6];
+    v14 = [PBFPosterRoleCoordinatorChange updateConfiguredProperties:v10 forPosterWithinRole:*MEMORY[0x277D3EE98] matchingUUID:dCopy];
     [v13 addObject:v14];
 
-    v15 = [(PBFPosterExtensionDataStore *)self _buildRoleCoordinatorTransitionContext];
-    v16 = [(PBFPosterExtensionDataStore *)self _stateLock_executeDataStoreUpdateWithChanges:v13 diffs:0 options:0 reason:@"toggledHidden" context:v15 error:0];
+    _buildRoleCoordinatorTransitionContext = [(PBFPosterExtensionDataStore *)self _buildRoleCoordinatorTransitionContext];
+    v16 = [(PBFPosterExtensionDataStore *)self _stateLock_executeDataStoreUpdateWithChanges:v13 diffs:0 options:0 reason:@"toggledHidden" context:_buildRoleCoordinatorTransitionContext error:0];
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
       v17 = MEMORY[0x277CCA9B8];
       v21 = @"configurationUUID";
-      v18 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:v6];
+      v18 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:dCopy];
       v22[0] = v18;
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-      *a4 = [v17 pbf_dataStoreErrorWithCode:-2219 userInfo:v19];
+      *error = [v17 pbf_dataStoreErrorWithCode:-2219 userInfo:v19];
     }
 
     v16 = 0;
@@ -6778,11 +6778,11 @@ LABEL_14:
   return v16;
 }
 
-- (void)duplicatePosterConfigurationMatchingUUID:(id)a3 completion:(id)a4
+- (void)duplicatePosterConfigurationMatchingUUID:(id)d completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  dCopy = d;
+  completionCopy = completion;
+  v9 = dCopy;
   NSClassFromString(&cfstr_Nsuuid.isa);
   if (!v9)
   {
@@ -6794,31 +6794,31 @@ LABEL_14:
     [PBFPosterExtensionDataStore duplicatePosterConfigurationMatchingUUID:a2 completion:?];
   }
 
-  if (!v8)
+  if (!completionCopy)
   {
     [PBFPosterExtensionDataStore duplicatePosterConfigurationMatchingUUID:a2 completion:self];
   }
 
   os_unfair_lock_lock(&self->_stateLock);
-  [(PBFPosterExtensionDataStore *)self _stateLock_duplicatePosterConfigurationMatchingUUID:v9 completion:v8];
+  [(PBFPosterExtensionDataStore *)self _stateLock_duplicatePosterConfigurationMatchingUUID:v9 completion:completionCopy];
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)_stateLock_duplicatePosterConfigurationMatchingUUID:(id)a3 completion:(id)a4
+- (void)_stateLock_duplicatePosterConfigurationMatchingUUID:(id)d completion:(id)completion
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if (![(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
     aSelector = a2;
-    v31 = v8;
+    v31 = completionCopy;
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v10 = [(NSDictionary *)self->_roleToRoleCoordinator keyEnumerator];
-    v11 = [v10 countByEnumeratingWithState:&v33 objects:v41 count:16];
+    keyEnumerator = [(NSDictionary *)self->_roleToRoleCoordinator keyEnumerator];
+    v11 = [keyEnumerator countByEnumeratingWithState:&v33 objects:v41 count:16];
     if (v11)
     {
       v12 = v11;
@@ -6829,13 +6829,13 @@ LABEL_6:
       {
         if (*v34 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v15 = *(*(&v33 + 1) + 8 * v14);
         v16 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKey:v15];
-        v17 = [v16 posterCollection];
-        v18 = [v17 posterWithUUID:v7];
+        posterCollection = [v16 posterCollection];
+        v18 = [posterCollection posterWithUUID:dCopy];
 
         if (v18)
         {
@@ -6844,7 +6844,7 @@ LABEL_6:
 
         if (v12 == ++v14)
         {
-          v12 = [v10 countByEnumeratingWithState:&v33 objects:v41 count:16];
+          v12 = [keyEnumerator countByEnumeratingWithState:&v33 objects:v41 count:16];
           if (v12)
           {
             goto LABEL_6;
@@ -6855,13 +6855,13 @@ LABEL_6:
       }
 
       v9 = v15;
-      v22 = [v16 posterCollection];
-      v19 = [v22 posterWithUUID:v7];
+      posterCollection2 = [v16 posterCollection];
+      v19 = [posterCollection2 posterWithUUID:dCopy];
 
       if (v9 && v19)
       {
-        v23 = [MEMORY[0x277CCAD78] UUID];
-        v24 = [PBFPosterRoleCoordinatorChange duplicatePosterWithinRole:v9 matchingUUID:v7 toUUID:v23];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        v24 = [PBFPosterRoleCoordinatorChange duplicatePosterWithinRole:v9 matchingUUID:dCopy toUUID:uUID];
         v37 = v24;
         v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v37 count:1];
         v26 = NSStringFromSelector(aSelector);
@@ -6869,7 +6869,7 @@ LABEL_6:
         [(PBFPosterExtensionDataStore *)self _stateLock_executeDataStoreUpdateWithChanges:v25 diffs:0 options:0 reason:v26 context:0 error:&v32];
         v27 = v32;
 
-        v8 = v31;
+        completionCopy = v31;
         if (v31)
         {
           if (v27)
@@ -6879,7 +6879,7 @@ LABEL_6:
 
           else
           {
-            v28 = v23;
+            v28 = uUID;
           }
 
           (v31)[2](v31, v28, v27);
@@ -6891,7 +6891,7 @@ LABEL_6:
       v20 = MEMORY[0x277CCA9B8];
       v38 = @"configurationID";
       v39 = @"role";
-      v40[0] = v7;
+      v40[0] = dCopy;
       v21 = @"(null role)";
       if (v9)
       {
@@ -6908,35 +6908,35 @@ LABEL_12:
       v20 = MEMORY[0x277CCA9B8];
       v38 = @"configurationID";
       v39 = @"role";
-      v40[0] = v7;
+      v40[0] = dCopy;
       v21 = @"(null role)";
     }
 
     v40[1] = v21;
     v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:&v38 count:2];
-    v23 = [v20 pbf_dataStoreErrorWithCode:-2219 userInfo:v29];
+    uUID = [v20 pbf_dataStoreErrorWithCode:-2219 userInfo:v29];
 
-    v8 = v31;
-    v31[2](v31, 0, v23);
+    completionCopy = v31;
+    v31[2](v31, 0, uUID);
 LABEL_24:
 
     goto LABEL_25;
   }
 
-  if (v8)
+  if (completionCopy)
   {
     v9 = [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-    v8[2](v8, 0, v9);
+    completionCopy[2](completionCopy, 0, v9);
 LABEL_25:
   }
 }
 
-- (id)exportPosterConfigurationMatchingUUID:(id)a3 error:(id *)a4
+- (id)exportPosterConfigurationMatchingUUID:(id)d error:(id *)error
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  dCopy = d;
   NSClassFromString(&cfstr_Nsuuid.isa);
-  if (!v7)
+  if (!dCopy)
   {
     [PBFPosterExtensionDataStore exportPosterConfigurationMatchingUUID:a2 error:?];
   }
@@ -6949,24 +6949,24 @@ LABEL_25:
   os_unfair_lock_lock(&self->_stateLock);
   v17 = 0;
   v18 = 0;
-  [(PBFPosterExtensionDataStore *)self _stateLock_findStoreCoordinatorsForUUID:v7 extensionStoreCoordinator:&v18 configurationStoreCoordinator:&v17];
+  [(PBFPosterExtensionDataStore *)self _stateLock_findStoreCoordinatorsForUUID:dCopy extensionStoreCoordinator:&v18 configurationStoreCoordinator:&v17];
   v8 = v18;
   v9 = v17;
   os_unfair_lock_unlock(&self->_stateLock);
   if (v8 && v9)
   {
-    a4 = [PBFPosterConfigurationStoreArchiver archiveConfigurationStoreWithCoordinator:v9 error:a4];
+    error = [PBFPosterConfigurationStoreArchiver archiveConfigurationStoreWithCoordinator:v9 error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
     v10 = MEMORY[0x277CCA9B8];
     v19[0] = @"providerIdentifier";
-    v11 = [v8 extensionIdentifier];
-    v12 = v11;
-    if (v11)
+    extensionIdentifier = [v8 extensionIdentifier];
+    v12 = extensionIdentifier;
+    if (extensionIdentifier)
     {
-      v13 = v11;
+      v13 = extensionIdentifier;
     }
 
     else
@@ -6976,23 +6976,23 @@ LABEL_25:
 
     v19[1] = @"configurationUUID";
     v20[0] = v13;
-    v14 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:v7];
+    v14 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:dCopy];
     v20[1] = v14;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
-    *a4 = [v10 pbf_dataStoreErrorWithCode:-2219 userInfo:v15];
+    *error = [v10 pbf_dataStoreErrorWithCode:-2219 userInfo:v15];
 
-    a4 = 0;
+    error = 0;
   }
 
-  return a4;
+  return error;
 }
 
-- (void)importPosterConfigurationFromArchiveData:(id)a3 completion:(id)a4
+- (void)importPosterConfigurationFromArchiveData:(id)data completion:(id)completion
 {
   v59[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  dataCopy = data;
+  completionCopy = completion;
+  v9 = dataCopy;
   NSClassFromString(&cfstr_Nsdata.isa);
   if (!v9)
   {
@@ -7011,9 +7011,9 @@ LABEL_25:
   v12 = v52;
   if (v10)
   {
-    v13 = [v11 extensionIdentifier];
+    extensionIdentifier = [v11 extensionIdentifier];
     v51 = 0;
-    v14 = [(PBFPosterExtensionDataStore *)self pbf_posterExtensionStoreCoordinatorForProviderIdentifier:v13 error:&v51];
+    v14 = [(PBFPosterExtensionDataStore *)self pbf_posterExtensionStoreCoordinatorForProviderIdentifier:extensionIdentifier error:&v51];
     v46 = v51;
 
     if (!v14 || v46)
@@ -7027,26 +7027,26 @@ LABEL_25:
       {
         v27 = MEMORY[0x277CCA9B8];
         v58 = @"providerIdentifier";
-        v28 = [v11 extensionIdentifier];
-        v59[0] = v28;
+        extensionIdentifier2 = [v11 extensionIdentifier];
+        v59[0] = extensionIdentifier2;
         v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v59 forKeys:&v58 count:1];
         v19 = [v27 pbf_dataStoreErrorWithCode:-2220 userInfo:v29];
 
-        v12 = v28;
+        v12 = extensionIdentifier2;
       }
 
-      v8[2](v8, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
       goto LABEL_23;
     }
 
     v45 = v14;
-    v15 = [v11 role];
+    role = [v11 role];
     if ((PFPosterRoleIsValid() & 1) == 0)
     {
       v24 = MEMORY[0x277CCA9B8];
-      if (v15)
+      if (role)
       {
-        v25 = v15;
+        v25 = role;
       }
 
       else
@@ -7059,38 +7059,38 @@ LABEL_25:
       v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
       v19 = [v24 pbf_dataStoreErrorWithCode:-2203 userInfo:v26];
 
-      v8[2](v8, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
       goto LABEL_22;
     }
 
     os_unfair_lock_lock(&self->_stateLock);
-    v44 = [PBFPosterRoleCoordinatorChange addPosterToRole:v15 incomingPoster:v10];
+    v44 = [PBFPosterRoleCoordinatorChange addPosterToRole:role incomingPoster:v10];
     v55 = v44;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v55 count:1];
     v50 = 0;
-    v17 = v15;
+    v17 = role;
     v18 = [(PBFPosterExtensionDataStore *)self _stateLock_executeDataStoreUpdateWithChanges:v16 diffs:0 options:0 reason:@"importPoster" context:0 error:&v50];
     v19 = v50;
 
     if (v18)
     {
       v41 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:v17];
-      v20 = [v41 posterCollection];
-      v21 = [v10 destinationUUID];
-      v42 = [v20 posterWithUUID:v21];
+      posterCollection = [v41 posterCollection];
+      destinationUUID = [v10 destinationUUID];
+      v42 = [posterCollection posterWithUUID:destinationUUID];
 
       os_unfair_lock_unlock(&self->_stateLock);
-      v15 = v17;
-      v43 = v20;
+      role = v17;
+      v43 = posterCollection;
       if (!v19)
       {
         v39 = [PBFPosterSnapshotRequest alloc];
-        v38 = [v42 _path];
-        v37 = [v42 pbf_posterProvider];
-        v35 = [v20 configuredPropertiesForPoster:v42];
+        _path = [v42 _path];
+        pbf_posterProvider = [v42 pbf_posterProvider];
+        v35 = [posterCollection configuredPropertiesForPoster:v42];
         v30 = +[PBFPosterSnapshotDefinition defaultConfigurationDefinitions];
         v31 = +[PBFGenericDisplayContext mainScreen];
-        v36 = [(PBFPosterSnapshotRequest *)v39 initWithPath:v38 provider:v37 configuredProperties:v35 definitions:v30 context:v31];
+        v36 = [(PBFPosterSnapshotRequest *)v39 initWithPath:_path provider:pbf_posterProvider configuredProperties:v35 definitions:v30 context:v31];
 
         v32 = [(PBFPosterSnapshotRequest *)v36 requestWithLoadFromCacheIfAvailable:0];
         v40 = [v32 requestWithPowerLogReason:6];
@@ -7105,10 +7105,10 @@ LABEL_25:
         v47[4] = self;
         v23 = v42;
         v48 = v23;
-        v49 = v8;
+        v49 = completionCopy;
         [(PBFPosterSnapshotManager *)snapshotManager prewarmSnapshotsForRequests:v34 completion:v47];
 
-        v15 = v17;
+        role = v17;
         v14 = v45;
         v22 = v41;
         goto LABEL_21;
@@ -7124,10 +7124,10 @@ LABEL_25:
       v23 = 0;
       v43 = 0;
       v22 = 0;
-      v15 = v17;
+      role = v17;
     }
 
-    v8[2](v8, 0, v19);
+    completionCopy[2](completionCopy, 0, v19);
     v14 = v45;
 LABEL_21:
 
@@ -7138,7 +7138,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v8[2](v8, 0, v12);
+  completionCopy[2](completionCopy, 0, v12);
 LABEL_24:
 }
 
@@ -7151,18 +7151,18 @@ void __83__PBFPosterExtensionDataStore_importPosterConfigurationFromArchiveData_
   (*(v2 + 16))(v2, v3, 0);
 }
 
-- (void)refreshSnapshotForPosterConfigurationMatchUUID:(id)a3 completion:(id)a4
+- (void)refreshSnapshotForPosterConfigurationMatchUUID:(id)d completion:(id)completion
 {
   v59[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  dCopy = d;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PBFPosterExtensionDataStore refreshSnapshotForPosterConfigurationMatchUUID:a2 completion:?];
   }
 
-  v9 = v8;
-  v10 = v7;
+  v9 = completionCopy;
+  v10 = dCopy;
   NSClassFromString(&cfstr_Nsuuid.isa);
   if (!v10)
   {
@@ -7175,14 +7175,14 @@ void __83__PBFPosterExtensionDataStore_importPosterConfigurationFromArchiveData_
   }
 
   os_unfair_lock_lock(&self->_stateLock);
-  v11 = [(PBFPosterExtensionDataStore *)self _stateLock_fetchPosterConfigurations];
+  _stateLock_fetchPosterConfigurations = [(PBFPosterExtensionDataStore *)self _stateLock_fetchPosterConfigurations];
   v53[0] = MEMORY[0x277D85DD0];
   v53[1] = 3221225472;
   v53[2] = __89__PBFPosterExtensionDataStore_refreshSnapshotForPosterConfigurationMatchUUID_completion___block_invoke;
   v53[3] = &unk_2782C6018;
   v12 = v10;
   v54 = v12;
-  v13 = [v11 bs_firstObjectPassingTest:v53];
+  v13 = [_stateLock_fetchPosterConfigurations bs_firstObjectPassingTest:v53];
 
   os_unfair_lock_unlock(&self->_stateLock);
   if (v13)
@@ -7308,12 +7308,12 @@ void __89__PBFPosterExtensionDataStore_refreshSnapshotForPosterConfigurationMatc
   (*(v1 + 16))(v1, v4);
 }
 
-- (void)ingestSnapshotCollection:(id)a3 forPosterConfigurationUUID:(id)a4 error:(id *)a5
+- (void)ingestSnapshotCollection:(id)collection forPosterConfigurationUUID:(id)d error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v9;
+  collectionCopy = collection;
+  dCopy = d;
+  v11 = collectionCopy;
   NSClassFromString(&cfstr_Prspostersnaps_0.isa);
   if (!v11)
   {
@@ -7325,7 +7325,7 @@ void __89__PBFPosterExtensionDataStore_refreshSnapshotForPosterConfigurationMatc
     [PBFPosterExtensionDataStore ingestSnapshotCollection:a2 forPosterConfigurationUUID:? error:?];
   }
 
-  v12 = v10;
+  v12 = dCopy;
   NSClassFromString(&cfstr_Nsuuid.isa);
   if (!v12)
   {
@@ -7351,20 +7351,20 @@ void __89__PBFPosterExtensionDataStore_refreshSnapshotForPosterConfigurationMatc
   }
 
   os_unfair_lock_lock(&self->_stateLock);
-  v18 = [(PBFPosterExtensionDataStore *)self _stateLock_fetchPosterConfigurations];
+  _stateLock_fetchPosterConfigurations = [(PBFPosterExtensionDataStore *)self _stateLock_fetchPosterConfigurations];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __89__PBFPosterExtensionDataStore_ingestSnapshotCollection_forPosterConfigurationUUID_error___block_invoke;
   v28[3] = &unk_2782C6018;
   v19 = v12;
   v29 = v19;
-  v20 = [v18 bs_firstObjectPassingTest:v28];
+  v20 = [_stateLock_fetchPosterConfigurations bs_firstObjectPassingTest:v28];
 
   os_unfair_lock_unlock(&self->_stateLock);
   if (v20)
   {
     v21 = [objc_alloc(MEMORY[0x277D3ED58]) _initWithPath:v20];
-    if ([(PBFPosterSnapshotManager *)self->_snapshotManager ingestSnapshotCollection:v11 forConfiguration:v21 error:a5])
+    if ([(PBFPosterSnapshotManager *)self->_snapshotManager ingestSnapshotCollection:v11 forConfiguration:v21 error:error])
     {
       [(PBFPosterExtensionDataStore *)self _notifyObserversDidUpdateSnapshotForConfiguration:v21];
     }
@@ -7381,14 +7381,14 @@ void __89__PBFPosterExtensionDataStore_refreshSnapshotForPosterConfigurationMatc
 
   else
   {
-    if (a5)
+    if (error)
     {
       v24 = MEMORY[0x277CCA9B8];
       v30 = @"configurationUUID";
       v25 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:v19];
       v31 = v25;
       v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-      *a5 = [v24 pbf_dataStoreErrorWithCode:-2219 userInfo:v26];
+      *error = [v24 pbf_dataStoreErrorWithCode:-2219 userInfo:v26];
     }
 
     v27 = PBFLogDataStore();
@@ -7411,28 +7411,28 @@ uint64_t __89__PBFPosterExtensionDataStore_ingestSnapshotCollection_forPosterCon
   return v5;
 }
 
-- (id)fetchPosterConfigurationsSortedByUseForRole:(id)a3
+- (id)fetchPosterConfigurationsSortedByUseForRole:(id)role
 {
-  v4 = a3;
+  roleCopy = role;
   os_unfair_lock_lock(&self->_stateLock);
-  v5 = [(PBFPosterExtensionDataStore *)self _stateLock_fetchPosterConfigurationsSortedByUse:1 forRole:v4];
+  v5 = [(PBFPosterExtensionDataStore *)self _stateLock_fetchPosterConfigurationsSortedByUse:1 forRole:roleCopy];
 
   os_unfair_lock_unlock(&self->_stateLock);
 
   return v5;
 }
 
-- (void)notePosterConfigurationUnderlyingModelDidChange:(id)a3
+- (void)notePosterConfigurationUnderlyingModelDidChange:(id)change
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   os_unfair_lock_lock(&self->_stateLock);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NSDictionary *)self->_roleToRoleCoordinator allValues];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allValues = [(NSDictionary *)self->_roleToRoleCoordinator allValues];
+  v6 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -7443,23 +7443,23 @@ uint64_t __89__PBFPosterExtensionDataStore_ingestSnapshotCollection_forPosterCon
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) posterCollection];
-        v11 = [v10 posterWithUUID:v4];
+        posterCollection = [*(*(&v14 + 1) + 8 * i) posterCollection];
+        v11 = [posterCollection posterWithUUID:changeCopy];
 
         if (v11)
         {
           v12 = MEMORY[0x277D3EDE0];
-          v13 = [v11 _path];
-          [v12 invalidateModelObjectCacheForPath:v13];
+          _path = [v11 _path];
+          [v12 invalidateModelObjectCacheForPath:_path];
 
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -7474,20 +7474,20 @@ LABEL_11:
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (id)_stateLock_prepareReloadConfigurationOperationForExtension:(id)a3 path:(id)a4 locationInUse:(BOOL)a5 sessionInfo:(id)a6 powerLogReason:(int64_t)a7 assetUpdater:(id)a8 error:(id *)a9
+- (id)_stateLock_prepareReloadConfigurationOperationForExtension:(id)extension path:(id)path locationInUse:(BOOL)use sessionInfo:(id)info powerLogReason:(int64_t)reason assetUpdater:(id)updater error:(id *)error
 {
-  v12 = a5;
+  useCopy = use;
   v58[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a8;
+  extensionCopy = extension;
+  pathCopy = path;
+  infoCopy = info;
+  updaterCopy = updater;
   if (![(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    v45 = v12;
-    v47 = v16;
-    v46 = v15;
-    if ([v18 isValid])
+    v45 = useCopy;
+    v47 = pathCopy;
+    v46 = extensionCopy;
+    if ([updaterCopy isValid])
     {
       v20 = 0;
       v21 = 0;
@@ -7496,8 +7496,8 @@ LABEL_11:
     else
     {
       v21 = self->_instanceCollection;
-      v31 = [(PFPosterExtensionProvider *)self->_extensionProvider extensionForIdentifier];
-      v30 = [v31 objectForKey:v15];
+      extensionForIdentifier = [(PFPosterExtensionProvider *)self->_extensionProvider extensionForIdentifier];
+      v30 = [extensionForIdentifier objectForKey:extensionCopy];
 
       v56 = 0;
       v20 = [(PFPosterExtensionInstanceProvider *)v21 acquireInstanceForExtension:v30 reason:@"ReloadConfiguration" error:&v56];
@@ -7505,11 +7505,11 @@ LABEL_11:
       if (v32)
       {
         v24 = v32;
-        if (a9)
+        if (error)
         {
           v33 = v32;
           v19 = 0;
-          *a9 = v24;
+          *error = v24;
         }
 
         else
@@ -7520,9 +7520,9 @@ LABEL_11:
 LABEL_26:
 
 LABEL_27:
-        v15 = v46;
+        extensionCopy = v46;
 
-        v16 = v47;
+        pathCopy = v47;
         goto LABEL_28;
       }
 
@@ -7541,12 +7541,12 @@ LABEL_27:
       }
 
       v37 = !v36;
-      if (a9 && (v37 & 1) == 0)
+      if (error && (v37 & 1) == 0)
       {
         if (v35)
         {
           v38 = v35;
-          *a9 = v35;
+          *error = v35;
         }
 
         else
@@ -7561,32 +7561,32 @@ LABEL_27:
           v57 = @"extensionIdentifier";
           v58[0] = v40;
           [MEMORY[0x277CBEAC0] dictionaryWithObjects:v58 forKeys:&v57 count:1];
-          v41 = v44 = a7;
+          v41 = v44 = reason;
           v42 = [v43 pbf_dataStoreErrorWithCode:-2220 userInfo:v41];
-          *a9 = v42;
+          *error = v42;
 
-          a7 = v44;
+          reason = v44;
         }
       }
 
       if (!v37)
       {
         v19 = 0;
-        v18 = v34;
+        updaterCopy = v34;
         goto LABEL_27;
       }
 
-      v18 = v34;
-      v15 = v46;
+      updaterCopy = v34;
+      extensionCopy = v46;
     }
 
-    v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"extensionIdentifier:%@ sessionInfo:%@ assetUpdater: %@", v15, v17, v18];;
+    updaterCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"extensionIdentifier:%@ sessionInfo:%@ assetUpdater: %@", extensionCopy, infoCopy, updaterCopy];;
     v23 = MEMORY[0x277D46DB8];
     v53[0] = MEMORY[0x277D85DD0];
     v53[1] = 3221225472;
     v53[2] = __155__PBFPosterExtensionDataStore__stateLock_prepareReloadConfigurationOperationForExtension_path_locationInUse_sessionInfo_powerLogReason_assetUpdater_error___block_invoke;
     v53[3] = &unk_2782C59F0;
-    v24 = v22;
+    v24 = updaterCopy;
     v54 = v24;
     v25 = [v23 pf_finishTaskInterruptableWithExplanation:@"Finish Reload Configuration Operation" invalidationHandler:v53];
     v52 = 0;
@@ -7594,17 +7594,17 @@ LABEL_27:
     v26 = v52;
     if (v26)
     {
-      v27 = a7;
+      reasonCopy = reason;
       v28 = PBFLogReloadConfiguration();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
         [PBFPosterExtensionDataStore _stateLock_prepareReloadConfigurationOperationForExtension:path:locationInUse:sessionInfo:powerLogReason:assetUpdater:error:];
       }
 
-      a7 = v27;
+      reason = reasonCopy;
     }
 
-    v19 = [[PBFPosterExtensionReloadConfigurationOperation alloc] initWithUpdatingService:v18 sessionInfo:v17 existingConfigurationPath:v47 locationInUse:v45 runtimeAssertionProvider:self->_runtimeAssertionProvider timeout:a7 powerLogReason:90.0];
+    v19 = [[PBFPosterExtensionReloadConfigurationOperation alloc] initWithUpdatingService:updaterCopy sessionInfo:infoCopy existingConfigurationPath:v47 locationInUse:v45 runtimeAssertionProvider:self->_runtimeAssertionProvider timeout:reason powerLogReason:90.0];
     v48[0] = MEMORY[0x277D85DD0];
     v48[1] = 3221225472;
     v48[2] = __155__PBFPosterExtensionDataStore__stateLock_prepareReloadConfigurationOperationForExtension_path_locationInUse_sessionInfo_powerLogReason_assetUpdater_error___block_invoke_574;
@@ -7621,10 +7621,10 @@ LABEL_27:
     goto LABEL_26;
   }
 
-  if (a9)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-    *a9 = v19 = 0;
+    *error = v19 = 0;
   }
 
   else
@@ -7668,24 +7668,24 @@ uint64_t __155__PBFPosterExtensionDataStore__stateLock_prepareReloadConfiguratio
   return [v2 invalidate];
 }
 
-- (void)_stateLock_enqueueRefreshPosterConfigurationMatchingUUID:(id)a3 sessionInfo:(id)a4 powerLogReason:(int64_t)a5 completion:(id)a6
+- (void)_stateLock_enqueueRefreshPosterConfigurationMatchingUUID:(id)d sessionInfo:(id)info powerLogReason:(int64_t)reason completion:(id)completion
 {
   v116[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  dCopy = d;
+  infoCopy = info;
+  completionCopy = completion;
   if (![(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
     if (![(PBFPosterExtensionDataStore *)self _stateLock_hasBeenUnlockedSinceBoot])
     {
       v22 = MEMORY[0x277CCA9B8];
       v115 = @"posterUUID";
-      v23 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:v11];
+      v23 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:dCopy];
       v116[0] = v23;
       v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v116 forKeys:&v115 count:1];
       v25 = [v22 pbf_dataStoreErrorWithCode:-2205 userInfo:v24];
 
-      v13[2](v13, 0, v25);
+      completionCopy[2](completionCopy, 0, v25);
       goto LABEL_39;
     }
 
@@ -7697,7 +7697,7 @@ uint64_t __155__PBFPosterExtensionDataStore__stateLock_prepareReloadConfiguratio
     v106 = 0;
     v99 = 0;
     v100 = 0;
-    [(PBFPosterExtensionDataStore *)self _stateLock_findStoreCoordinatorsForUUID:v11 extensionStoreCoordinator:&v100 configurationStoreCoordinator:&v99];
+    [(PBFPosterExtensionDataStore *)self _stateLock_findStoreCoordinatorsForUUID:dCopy extensionStoreCoordinator:&v100 configurationStoreCoordinator:&v99];
     v15 = v100;
     objc_storeStrong(&v106, v99);
     v16 = v102[5];
@@ -7705,35 +7705,35 @@ uint64_t __155__PBFPosterExtensionDataStore__stateLock_prepareReloadConfiguratio
     {
       if (v15)
       {
-        v17 = [v16 identityOfLatestVersion];
-        if (!v17)
+        identityOfLatestVersion = [v16 identityOfLatestVersion];
+        if (!identityOfLatestVersion)
         {
           v32 = MEMORY[0x277CCA9B8];
           v109 = @"posterUUID";
-          v33 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:v11];
+          v33 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:dCopy];
           v110 = v33;
           v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v110 forKeys:&v109 count:1];
-          v18 = [v32 pbf_dataStoreErrorWithCode:-2213 userInfo:v34];
+          extensionIdentifier = [v32 pbf_dataStoreErrorWithCode:-2213 userInfo:v34];
 
-          v13[2](v13, 0, v18);
+          completionCopy[2](completionCopy, 0, extensionIdentifier);
 LABEL_37:
 
           goto LABEL_38;
         }
 
-        v18 = [v15 extensionIdentifier];
+        extensionIdentifier = [v15 extensionIdentifier];
         v72 = self->_extensionProvider;
-        v19 = [v11 UUIDString];
+        uUIDString = [dCopy UUIDString];
         v20 = NSStringFromSelector(a2);
-        v71 = [v19 stringByAppendingFormat:@"-%@", v20];
+        v71 = [uUIDString stringByAppendingFormat:@"-%@", v20];
 
         v98 = 0;
-        v70 = [(PFPosterExtensionProvider *)v72 acquireInstanceForExtensionWithIdentifier:v18 reason:v71 error:&v98];
+        v70 = [(PFPosterExtensionProvider *)v72 acquireInstanceForExtensionWithIdentifier:extensionIdentifier reason:v71 error:&v98];
         v21 = v98;
         v69 = v21;
         if (v21)
         {
-          v13[2](v13, 0, v21);
+          completionCopy[2](completionCopy, 0, v21);
 LABEL_36:
 
           goto LABEL_37;
@@ -7744,8 +7744,8 @@ LABEL_36:
         v68 = v97;
         if (v68)
         {
-          [(PFPosterExtensionProvider *)v72 relinquishExtensionInstanceWithIdentifier:v18 reason:v71];
-          v13[2](v13, 0, v68);
+          [(PFPosterExtensionProvider *)v72 relinquishExtensionInstanceWithIdentifier:extensionIdentifier reason:v71];
+          completionCopy[2](completionCopy, 0, v68);
 LABEL_35:
 
           goto LABEL_36;
@@ -7753,18 +7753,18 @@ LABEL_35:
 
         v66 = v35;
         v36 = MEMORY[0x277D3EBA0];
-        v37 = [v15 containerURL];
-        v67 = [v36 pathWithProviderURL:v37 identity:v17];
+        containerURL = [v15 containerURL];
+        v67 = [v36 pathWithProviderURL:containerURL identity:identityOfLatestVersion];
 
-        if (!v12 || [v12 isEmpty])
+        if (!infoCopy || [infoCopy isEmpty])
         {
-          v38 = [v70 pr_refreshConfigurationOperations];
+          pr_refreshConfigurationOperations = [v70 pr_refreshConfigurationOperations];
           v95[0] = MEMORY[0x277D85DD0];
           v95[1] = 3221225472;
           v95[2] = __126__PBFPosterExtensionDataStore__stateLock_enqueueRefreshPosterConfigurationMatchingUUID_sessionInfo_powerLogReason_completion___block_invoke;
           v95[3] = &unk_2782C60B8;
           v96 = v67;
-          v39 = [v38 bs_firstObjectPassingTest:v95];
+          v39 = [pr_refreshConfigurationOperations bs_firstObjectPassingTest:v95];
 
           if (v39)
           {
@@ -7772,10 +7772,10 @@ LABEL_35:
             v89[1] = 3221225472;
             v89[2] = __126__PBFPosterExtensionDataStore__stateLock_enqueueRefreshPosterConfigurationMatchingUUID_sessionInfo_powerLogReason_completion___block_invoke_2;
             v89[3] = &unk_2782C60E0;
-            v93 = v13;
+            v93 = completionCopy;
             v94 = &v101;
             v90 = v72;
-            v91 = v18;
+            v91 = extensionIdentifier;
             v92 = v71;
             [v39 addCompletionObserver:v89];
 
@@ -7787,30 +7787,30 @@ LABEL_34:
           }
         }
 
-        v41 = [(PBFPosterExtensionDataStore *)self _stateLock_switcherConfiguration];
-        v42 = [v41 selectedConfiguration];
-        v63 = [v42 _path];
-        v61 = [v63 serverIdentity];
-        v60 = [v61 posterUUID];
-        v59 = v41;
-        if ([v60 isEqual:v11])
+        _stateLock_switcherConfiguration = [(PBFPosterExtensionDataStore *)self _stateLock_switcherConfiguration];
+        selectedConfiguration = [_stateLock_switcherConfiguration selectedConfiguration];
+        _path = [selectedConfiguration _path];
+        serverIdentity = [_path serverIdentity];
+        posterUUID = [serverIdentity posterUUID];
+        v59 = _stateLock_switcherConfiguration;
+        if ([posterUUID isEqual:dCopy])
         {
         }
 
         else
         {
-          v58 = [v41 activeConfiguration];
-          v57 = [v58 _path];
-          v56 = [v57 serverIdentity];
-          v43 = [v56 posterUUID];
-          v55 = [v43 isEqual:v11];
+          activeConfiguration = [_stateLock_switcherConfiguration activeConfiguration];
+          _path2 = [activeConfiguration _path];
+          serverIdentity2 = [_path2 serverIdentity];
+          posterUUID2 = [serverIdentity2 posterUUID];
+          v55 = [posterUUID2 isEqual:dCopy];
 
           if ((v55 & 1) == 0)
           {
-            v45 = 0;
+            pf_wantsLocation = 0;
 LABEL_25:
             v88 = 0;
-            v46 = [(PBFPosterExtensionDataStore *)self _stateLock_prepareReloadConfigurationOperationForExtension:v18 path:v67 locationInUse:v45 sessionInfo:v12 powerLogReason:a5 assetUpdater:v66 error:&v88];
+            v46 = [(PBFPosterExtensionDataStore *)self _stateLock_prepareReloadConfigurationOperationForExtension:extensionIdentifier path:v67 locationInUse:pf_wantsLocation sessionInfo:infoCopy powerLogReason:reason assetUpdater:v66 error:&v88];
             v47 = v88;
             v48 = v47;
             v39 = v46;
@@ -7826,17 +7826,17 @@ LABEL_25:
                 v53 = [v54 pbf_dataStoreErrorWithCode:-2222 userInfo:self];
               }
 
-              v13[2](v13, 0, v53);
+              completionCopy[2](completionCopy, 0, v53);
               if (!v48)
               {
               }
 
-              [(PFPosterExtensionProvider *)v72 relinquishExtensionInstanceWithIdentifier:v18 reason:v71];
+              [(PFPosterExtensionProvider *)v72 relinquishExtensionInstanceWithIdentifier:extensionIdentifier reason:v71];
             }
 
             else
             {
-              v49 = [(PBFPosterExtensionDataStore *)self snapshotManager];
+              snapshotManager = [(PBFPosterExtensionDataStore *)self snapshotManager];
               v50 = [objc_alloc(MEMORY[0x277CF0B78]) initWithFlag:0];
               aBlock[0] = MEMORY[0x277D85DD0];
               aBlock[1] = 3221225472;
@@ -7844,13 +7844,13 @@ LABEL_25:
               aBlock[3] = &unk_2782C6130;
               v62 = v50;
               v81 = v62;
-              v87 = v13;
-              v65 = v17;
+              v87 = completionCopy;
+              v65 = identityOfLatestVersion;
               v82 = v65;
-              v48 = v49;
+              v48 = snapshotManager;
               v83 = v48;
               v84 = v72;
-              v85 = v18;
+              v85 = extensionIdentifier;
               v86 = v71;
               v51 = _Block_copy(aBlock);
               objc_initWeak(&location, self);
@@ -7863,7 +7863,7 @@ LABEL_25:
               v77 = v52;
               v74 = v65;
               v75 = v67;
-              v76 = v11;
+              v76 = dCopy;
               [v39 addCompletionObserver:v73];
               [v70 pr_addRefreshConfigurationOperation:v39 waitUntilFinished:0];
 
@@ -7876,33 +7876,33 @@ LABEL_25:
           }
         }
 
-        v64 = [v70 extension];
-        v44 = [v64 posterExtensionInfoPlist];
-        v45 = [v44 pf_wantsLocation];
+        extension = [v70 extension];
+        posterExtensionInfoPlist = [extension posterExtensionInfoPlist];
+        pf_wantsLocation = [posterExtensionInfoPlist pf_wantsLocation];
 
         goto LABEL_25;
       }
 
       v29 = MEMORY[0x277CCA9B8];
       v111 = @"posterUUID";
-      v30 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:v11];
+      v30 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:dCopy];
       v112 = v30;
       v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v112 forKeys:&v111 count:1];
-      v17 = [v29 pbf_dataStoreErrorWithCode:-2220 userInfo:v31];
+      identityOfLatestVersion = [v29 pbf_dataStoreErrorWithCode:-2220 userInfo:v31];
 
-      v13[2](v13, 0, v17);
+      completionCopy[2](completionCopy, 0, identityOfLatestVersion);
     }
 
     else
     {
       v26 = MEMORY[0x277CCA9B8];
       v113 = @"posterUUID";
-      v27 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:v11];
+      v27 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:dCopy];
       v114 = v27;
       v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v114 forKeys:&v113 count:1];
-      v17 = [v26 pbf_dataStoreErrorWithCode:-2219 userInfo:v28];
+      identityOfLatestVersion = [v26 pbf_dataStoreErrorWithCode:-2219 userInfo:v28];
 
-      v13[2](v13, 0, v17);
+      completionCopy[2](completionCopy, 0, identityOfLatestVersion);
     }
 
 LABEL_38:
@@ -7911,10 +7911,10 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  if (v13)
+  if (completionCopy)
   {
     v14 = [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-    v13[2](v13, 0, v14);
+    completionCopy[2](completionCopy, 0, v14);
   }
 
 LABEL_39:
@@ -8169,37 +8169,37 @@ void __126__PBFPosterExtensionDataStore__stateLock_enqueueRefreshPosterConfigura
   }
 }
 
-- (void)_ingestRefreshPosterConfiguration:(id)a3 completion:(id)a4
+- (void)_ingestRefreshPosterConfiguration:(id)configuration completion:(id)completion
 {
   v52[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   if (![(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
     os_unfair_lock_lock(&self->_stateLock);
-    v10 = [v7 sourceIdentity];
-    v11 = [v7 role];
-    v12 = [v7 destinationUUID];
+    sourceIdentity = [configurationCopy sourceIdentity];
+    role = [configurationCopy role];
+    destinationUUID = [configurationCopy destinationUUID];
     v13 = @"(null role)";
-    if (v11)
+    if (role)
     {
-      v13 = v11;
+      v13 = role;
     }
 
     v14 = v13;
-    v15 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:v11];
+    v15 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:role];
     v16 = v15;
     if (v15)
     {
       v42 = v14;
-      v17 = [v15 posterCollection];
-      v18 = [v17 posterWithUUID:v12];
+      posterCollection = [v15 posterCollection];
+      v18 = [posterCollection posterWithUUID:destinationUUID];
 
       if (v18)
       {
-        v40 = v17;
-        v41 = v12;
-        v39 = [PBFPosterRoleCoordinatorChange updatePosterWithinRole:v11 incomingPoster:v7];
+        v40 = posterCollection;
+        v41 = destinationUUID;
+        v39 = [PBFPosterRoleCoordinatorChange updatePosterWithinRole:role incomingPoster:configurationCopy];
         v48 = v39;
         v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v48 count:1];
         v20 = NSStringFromSelector(a2);
@@ -8209,22 +8209,22 @@ void __126__PBFPosterExtensionDataStore__stateLock_enqueueRefreshPosterConfigura
 
         if (v21)
         {
-          v23 = [v16 posterCollection];
-          v24 = [v23 orderedPosters];
+          posterCollection2 = [v16 posterCollection];
+          orderedPosters = [posterCollection2 orderedPosters];
           v43[0] = MEMORY[0x277D85DD0];
           v43[1] = 3221225472;
           v43[2] = __76__PBFPosterExtensionDataStore__ingestRefreshPosterConfiguration_completion___block_invoke;
           v43[3] = &unk_2782C61F8;
-          v44 = v10;
-          v25 = [v24 bs_firstObjectPassingTest:v43];
+          v44 = sourceIdentity;
+          v25 = [orderedPosters bs_firstObjectPassingTest:v43];
 
           os_unfair_lock_unlock(&self->_stateLock);
-          v26 = [v25 _path];
-          v8[2](v8, v26, v22);
+          _path = [v25 _path];
+          completionCopy[2](completionCopy, _path, v22);
 
-          v12 = v41;
+          destinationUUID = v41;
           v14 = v42;
-          v17 = v40;
+          posterCollection = v40;
         }
 
         else
@@ -8236,10 +8236,10 @@ void __126__PBFPosterExtensionDataStore__stateLock_enqueueRefreshPosterConfigura
             [PBFPosterExtensionDataStore _ingestRefreshPosterConfiguration:completion:];
           }
 
-          v12 = v41;
+          destinationUUID = v41;
           v14 = v42;
-          v17 = v40;
-          if (v8)
+          posterCollection = v40;
+          if (completionCopy)
           {
             if (!v22)
             {
@@ -8253,14 +8253,14 @@ void __126__PBFPosterExtensionDataStore__stateLock_enqueueRefreshPosterConfigura
               v47[2] = v36;
               v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:v46 count:3];
               v38 = v35;
-              v12 = v41;
+              destinationUUID = v41;
               v22 = [v38 pbf_dataStoreErrorWithCode:-2222 userInfo:v37];
 
-              v17 = v40;
+              posterCollection = v40;
               v14 = v42;
             }
 
-            v8[2](v8, 0, v22);
+            completionCopy[2](completionCopy, 0, v22);
           }
         }
       }
@@ -8275,7 +8275,7 @@ void __126__PBFPosterExtensionDataStore__stateLock_enqueueRefreshPosterConfigura
         }
 
         v14 = v42;
-        if (!v8)
+        if (!completionCopy)
         {
           goto LABEL_28;
         }
@@ -8286,13 +8286,13 @@ void __126__PBFPosterExtensionDataStore__stateLock_enqueueRefreshPosterConfigura
         v50[0] = @"Poster w/ UUID could not be found";
         v50[1] = v42;
         v49[2] = @"posterUUID";
-        v32 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:v12];
+        v32 = [MEMORY[0x277CCAD78] pf_nonnullUUIDStringOrSentinel:destinationUUID];
         v50[2] = v32;
         v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:v49 count:3];
         v22 = [v31 pbf_dataStoreErrorWithCode:-2213 userInfo:v33];
 
         v14 = v42;
-        v8[2](v8, 0, v22);
+        completionCopy[2](completionCopy, 0, v22);
       }
     }
 
@@ -8305,7 +8305,7 @@ void __126__PBFPosterExtensionDataStore__stateLock_enqueueRefreshPosterConfigura
         [PBFPosterExtensionDataStore _ingestRefreshPosterConfiguration:completion:];
       }
 
-      if (!v8)
+      if (!completionCopy)
       {
         goto LABEL_29;
       }
@@ -8316,9 +8316,9 @@ void __126__PBFPosterExtensionDataStore__stateLock_enqueueRefreshPosterConfigura
       v52[0] = @"RoleCoordinator not setup for role";
       v52[1] = v14;
       v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:v51 count:2];
-      v17 = [v28 pbf_generalErrorWithCode:1 userInfo:v29];
+      posterCollection = [v28 pbf_generalErrorWithCode:1 userInfo:v29];
 
-      v8[2](v8, 0, v17);
+      completionCopy[2](completionCopy, 0, posterCollection);
     }
 
 LABEL_28:
@@ -8333,10 +8333,10 @@ LABEL_29:
     [PBFPosterExtensionDataStore _ingestRefreshPosterConfiguration:a2 completion:?];
   }
 
-  if (v8)
+  if (completionCopy)
   {
-    v10 = [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-    v8[2](v8, 0, v10);
+    sourceIdentity = [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
+    completionCopy[2](completionCopy, 0, sourceIdentity);
 LABEL_30:
   }
 }
@@ -8362,10 +8362,10 @@ BOOL __76__PBFPosterExtensionDataStore__ingestRefreshPosterConfiguration_complet
   return v8;
 }
 
-- (id)_stateLock_fetchPosterConfigurationsSortedByUse:(BOOL)a3 forRole:(id)a4
+- (id)_stateLock_fetchPosterConfigurationsSortedByUse:(BOOL)use forRole:(id)role
 {
-  v4 = a3;
-  v6 = a4;
+  useCopy = use;
+  roleCopy = role;
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) != 0)
   {
     v7 = MEMORY[0x277CBEBF8];
@@ -8373,7 +8373,7 @@ BOOL __76__PBFPosterExtensionDataStore__ingestRefreshPosterConfiguration_complet
 
   else
   {
-    v8 = [(PBFPosterExtensionDataStoreSQLiteDatabase *)self->_database sortedPosterUUIDsForRole:v6 error:0];
+    v8 = [(PBFPosterExtensionDataStoreSQLiteDatabase *)self->_database sortedPosterUUIDsForRole:roleCopy error:0];
     v9 = v8;
     if (v8)
     {
@@ -8397,15 +8397,15 @@ BOOL __76__PBFPosterExtensionDataStore__ingestRefreshPosterConfiguration_complet
     v14 = v12;
     v24 = v14;
     [(PBFPosterExtensionDataStore *)self _stateLock_enumerateConfigurationStoreCoordinators:v22];
-    if (v4)
+    if (useCopy)
     {
-      v15 = [(PBFPosterExtensionDataStore *)self _stateLock_lastUseDatesForPosterCollection];
+      _stateLock_lastUseDatesForPosterCollection = [(PBFPosterExtensionDataStore *)self _stateLock_lastUseDatesForPosterCollection];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __87__PBFPosterExtensionDataStore__stateLock_fetchPosterConfigurationsSortedByUse_forRole___block_invoke_2;
       v20[3] = &unk_2782C6248;
-      v21 = v15;
-      v16 = v15;
+      v21 = _stateLock_lastUseDatesForPosterCollection;
+      v16 = _stateLock_lastUseDatesForPosterCollection;
       [v14 sortUsingComparator:v20];
     }
 
@@ -8518,12 +8518,12 @@ uint64_t __87__PBFPosterExtensionDataStore__stateLock_fetchPosterConfigurationsS
 
   else
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __73__PBFPosterExtensionDataStore__stateLock_lastUseDatesForPosterCollection__block_invoke;
     v6[3] = &unk_2782C6270;
-    v3 = v4;
+    v3 = dictionary;
     v7 = v3;
     [(PBFPosterExtensionDataStore *)self _stateLock_enumerateConfigurationStoreCoordinators:v6];
   }
@@ -8547,10 +8547,10 @@ void __73__PBFPosterExtensionDataStore__stateLock_lastUseDatesForPosterCollectio
   [v6 setObject:v5 forKey:v7];
 }
 
-- (void)_stateLock_findStoreCoordinatorsForUUID:(id)a3 extensionStoreCoordinator:(id *)a4 configurationStoreCoordinator:(id *)a5
+- (void)_stateLock_findStoreCoordinatorsForUUID:(id)d extensionStoreCoordinator:(id *)coordinator configurationStoreCoordinator:(id *)storeCoordinator
 {
-  v8 = a3;
-  if (a4 | a5 && ([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) == 0)
+  dCopy = d;
+  if (coordinator | storeCoordinator && ([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) == 0)
   {
     v19 = 0;
     v20 = &v19;
@@ -8568,18 +8568,18 @@ void __73__PBFPosterExtensionDataStore__stateLock_lastUseDatesForPosterCollectio
     v9[1] = 3221225472;
     v9[2] = __127__PBFPosterExtensionDataStore__stateLock_findStoreCoordinatorsForUUID_extensionStoreCoordinator_configurationStoreCoordinator___block_invoke;
     v9[3] = &unk_2782C6298;
-    v10 = v8;
+    v10 = dCopy;
     v11 = &v19;
     v12 = &v13;
     [(PBFPosterExtensionDataStore *)self _stateLock_enumerateConfigurationStoreCoordinators:v9];
-    if (a4)
+    if (coordinator)
     {
-      *a4 = v20[5];
+      *coordinator = v20[5];
     }
 
-    if (a5)
+    if (storeCoordinator)
     {
-      *a5 = v14[5];
+      *storeCoordinator = v14[5];
     }
 
     _Block_object_dispose(&v13, 8);
@@ -8602,9 +8602,9 @@ void __127__PBFPosterExtensionDataStore__stateLock_findStoreCoordinatorsForUUID_
   }
 }
 
-- (void)_stateLock_enumerateConfigurationStoreCoordinators:(id)a3
+- (void)_stateLock_enumerateConfigurationStoreCoordinators:(id)coordinators
 {
-  v4 = a3;
+  coordinatorsCopy = coordinators;
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) == 0)
   {
     stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier = self->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier;
@@ -8612,7 +8612,7 @@ void __127__PBFPosterExtensionDataStore__stateLock_findStoreCoordinatorsForUUID_
     v6[1] = 3221225472;
     v6[2] = __82__PBFPosterExtensionDataStore__stateLock_enumerateConfigurationStoreCoordinators___block_invoke;
     v6[3] = &unk_2782C5E98;
-    v7 = v4;
+    v7 = coordinatorsCopy;
     [(NSMutableDictionary *)stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier enumerateKeysAndObjectsUsingBlock:v6];
   }
 }
@@ -8655,18 +8655,18 @@ uint64_t __82__PBFPosterExtensionDataStore__stateLock_enumerateConfigurationStor
 - (PRSwitcherConfiguration)switcherConfiguration
 {
   os_unfair_lock_lock(&self->_stateLock);
-  v3 = [(PBFPosterExtensionDataStore *)self _stateLock_switcherConfiguration];
+  _stateLock_switcherConfiguration = [(PBFPosterExtensionDataStore *)self _stateLock_switcherConfiguration];
   os_unfair_lock_unlock(&self->_stateLock);
 
-  return v3;
+  return _stateLock_switcherConfiguration;
 }
 
 - (BOOL)canPersistNewPosterConfiguration
 {
   os_unfair_lock_lock(&self->_stateLock);
-  v3 = [(PBFPosterExtensionDataStore *)self _stateLock_canPersistNewPosterConfiguration];
+  _stateLock_canPersistNewPosterConfiguration = [(PBFPosterExtensionDataStore *)self _stateLock_canPersistNewPosterConfiguration];
   os_unfair_lock_unlock(&self->_stateLock);
-  return v3;
+  return _stateLock_canPersistNewPosterConfiguration;
 }
 
 - (BOOL)_stateLock_canPersistNewPosterConfiguration
@@ -8676,26 +8676,26 @@ uint64_t __82__PBFPosterExtensionDataStore__stateLock_enumerateConfigurationStor
     return 0;
   }
 
-  v4 = [(PBFPosterExtensionDataStore *)self _stateLock_switcherConfiguration];
-  v5 = [v4 configurations];
-  v6 = [v5 count];
+  _stateLock_switcherConfiguration = [(PBFPosterExtensionDataStore *)self _stateLock_switcherConfiguration];
+  configurations = [_stateLock_switcherConfiguration configurations];
+  v6 = [configurations count];
 
-  v7 = [(PBFPosterExtensionDataStore *)self _stateLock_maximumPosterConfigurationCount];
-  v3 = v7 >= 0 && v6 < v7;
+  _stateLock_maximumPosterConfigurationCount = [(PBFPosterExtensionDataStore *)self _stateLock_maximumPosterConfigurationCount];
+  v3 = _stateLock_maximumPosterConfigurationCount >= 0 && v6 < _stateLock_maximumPosterConfigurationCount;
 
   return v3;
 }
 
-- (BOOL)updateDataStoreForIncomingFocusModeChange:(id)a3 error:(id *)a4
+- (BOOL)updateDataStoreForIncomingFocusModeChange:(id)change error:(id *)error
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277D262A0] sharedConnection];
-  v8 = [v7 isWallpaperModificationAllowed];
+  changeCopy = change;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isWallpaperModificationAllowed = [mEMORY[0x277D262A0] isWallpaperModificationAllowed];
 
   v9 = PBFLogDataStore();
   v10 = v9;
-  if (v8)
+  if (isWallpaperModificationAllowed)
   {
     v11 = os_signpost_id_generate(v9);
 
@@ -8705,7 +8705,7 @@ uint64_t __82__PBFPosterExtensionDataStore__stateLock_enumerateConfigurationStor
     if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
     {
       *buf = 138543362;
-      v35 = v6;
+      v35 = changeCopy;
       _os_signpost_emit_with_name_impl(&dword_21B526000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v11, "updateDataStoreForIncomingFocusModeChange:", "newFocusModeIdentifier: %{public}@", buf, 0xCu);
     }
 
@@ -8715,18 +8715,18 @@ uint64_t __82__PBFPosterExtensionDataStore__stateLock_enumerateConfigurationStor
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v35 = v6;
+      v35 = changeCopy;
       _os_log_impl(&dword_21B526000, v14, OS_LOG_TYPE_DEFAULT, "Incoming focus mode change: %@", buf, 0xCu);
     }
 
     os_unfair_lock_lock(&self->_stateLock);
-    v15 = [(PBFPosterExtensionDataStore *)self _activityModeForFocusUUID:v6];
+    v15 = [(PBFPosterExtensionDataStore *)self _activityModeForFocusUUID:changeCopy];
     v16 = PBFLogDataStore();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(PBFPosterExtensionDataStore *)self _activeActivity];
+      _activeActivity = [(PBFPosterExtensionDataStore *)self _activeActivity];
       *buf = 138412546;
-      v35 = v17;
+      v35 = _activeActivity;
       v36 = 2112;
       v37 = v15;
       _os_log_impl(&dword_21B526000, v16, OS_LOG_TYPE_DEFAULT, "Beginning transition from activity mode: %@ to activity mode: %@", buf, 0x16u);
@@ -8752,23 +8752,23 @@ uint64_t __82__PBFPosterExtensionDataStore__stateLock_enumerateConfigurationStor
         _os_log_impl(&dword_21B526000, v26, OS_LOG_TYPE_DEFAULT, "Executing incoming focus mode transition to %{public}@, new active poster configuration: %@ does not match current active poster configuration: %@", buf, 0x20u);
       }
 
-      v27 = [v21 pbf_posterUUID];
-      [v18 setDesiredActiveConfiguration:v27 forRole:v19];
+      pbf_posterUUID = [v21 pbf_posterUUID];
+      [v18 setDesiredActiveConfiguration:pbf_posterUUID forRole:v19];
 
-      v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"updateDataStoreForIncomingFocusModeChange:%@", v6];
-      v24 = [(PBFPosterExtensionDataStore *)self _stateLock_executeDataStoreUpdateWithChanges:0 diffs:0 options:0 reason:v23 context:v18 error:a4];
+      changeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"updateDataStoreForIncomingFocusModeChange:%@", changeCopy];
+      v24 = [(PBFPosterExtensionDataStore *)self _stateLock_executeDataStoreUpdateWithChanges:0 diffs:0 options:0 reason:changeCopy context:v18 error:error];
     }
 
     else
     {
-      v23 = PBFLogDataStore();
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+      changeCopy = PBFLogDataStore();
+      if (os_log_type_enabled(changeCopy, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
         v35 = v15;
         v36 = 2112;
         v37 = v22;
-        _os_log_impl(&dword_21B526000, v23, OS_LOG_TYPE_DEFAULT, "Incoming focus mode transition to activity mode %@; already setup for configuration %@", buf, 0x16u);
+        _os_log_impl(&dword_21B526000, changeCopy, OS_LOG_TYPE_DEFAULT, "Incoming focus mode transition to activity mode %@; already setup for configuration %@", buf, 0x16u);
       }
 
       v24 = 1;
@@ -8788,7 +8788,7 @@ uint64_t __82__PBFPosterExtensionDataStore__stateLock_enumerateConfigurationStor
     if (v33 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v29))
     {
       *buf = 138543362;
-      v35 = v6;
+      v35 = changeCopy;
       _os_signpost_emit_with_name_impl(&dword_21B526000, v30, OS_SIGNPOST_INTERVAL_END, spid, "updateDataStoreForIncomingFocusModeChange:", "newFocusModeIdentifier: %{public}@", buf, 0xCu);
     }
 
@@ -8801,14 +8801,14 @@ uint64_t __82__PBFPosterExtensionDataStore__stateLock_enumerateConfigurationStor
     _os_log_impl(&dword_21B526000, v10, OS_LOG_TYPE_DEFAULT, "Ignoring incoming focus mode change because MDM blocks wallpaper changes", buf, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     v25 = MEMORY[0x277CCA9B8];
     v40 = *MEMORY[0x277CCA470];
     v41[0] = @"Forbidden by ManagedConfiguration";
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:&v40 count:1];
     [v25 pbf_generalErrorWithCode:7 userInfo:v15];
-    *a4 = LOBYTE(v24) = 0;
+    *error = LOBYTE(v24) = 0;
 LABEL_28:
 
     goto LABEL_29;
@@ -8820,30 +8820,30 @@ LABEL_29:
   return v24;
 }
 
-- (BOOL)updateDataStoreForIncomingAvailableFocusModeChange:(id)a3 error:(id *)a4
+- (BOOL)updateDataStoreForIncomingAvailableFocusModeChange:(id)change error:(id *)error
 {
   v64[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [MEMORY[0x277D262A0] sharedConnection];
-  v9 = [v8 isWallpaperModificationAllowed];
+  changeCopy = change;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isWallpaperModificationAllowed = [mEMORY[0x277D262A0] isWallpaperModificationAllowed];
 
-  if (v9)
+  if (isWallpaperModificationAllowed)
   {
     v10 = *MEMORY[0x277D3EEF0];
     v11 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:v10];
     v12 = v11;
     if (v11)
     {
-      v47 = [v11 posterCollection];
+      posterCollection = [v11 posterCollection];
       v43 = v12;
-      v44 = v7;
-      v41 = self;
-      v42 = a4;
+      v44 = changeCopy;
+      selfCopy = self;
+      errorCopy = error;
       v48 = v10;
       aSelector = a2;
-      if ([v7 count])
+      if ([changeCopy count])
       {
-        [MEMORY[0x277CBEB98] setWithArray:v7];
+        [MEMORY[0x277CBEB98] setWithArray:changeCopy];
       }
 
       else
@@ -8856,8 +8856,8 @@ LABEL_29:
       v53 = 0u;
       v54 = 0u;
       v55 = 0u;
-      v21 = [v47 orderedPosters];
-      v22 = [v21 countByEnumeratingWithState:&v52 objects:v60 count:16];
+      orderedPosters = [posterCollection orderedPosters];
+      v22 = [orderedPosters countByEnumeratingWithState:&v52 objects:v60 count:16];
       if (v22)
       {
         v23 = v22;
@@ -8865,14 +8865,14 @@ LABEL_29:
         v45 = v20;
         v46 = v19;
         v49 = *v53;
-        v50 = v21;
+        v50 = orderedPosters;
         do
         {
           for (i = 0; i != v23; ++i)
           {
             if (*v53 != v24)
             {
-              objc_enumerationMutation(v21);
+              objc_enumerationMutation(orderedPosters);
             }
 
             v26 = *(*(&v52 + 1) + 8 * i);
@@ -8881,23 +8881,23 @@ LABEL_29:
             v28 = v51;
             if (v28)
             {
-              v29 = PBFLogDataStore();
-              if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+              activityUUID = PBFLogDataStore();
+              if (os_log_type_enabled(activityUUID, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412546;
                 v57 = v26;
                 v58 = 2114;
                 v59 = v27;
-                _os_log_error_impl(&dword_21B526000, v29, OS_LOG_TYPE_ERROR, "Could not load focus mode for poster %@: %{public}@", buf, 0x16u);
+                _os_log_error_impl(&dword_21B526000, activityUUID, OS_LOG_TYPE_ERROR, "Could not load focus mode for poster %@: %{public}@", buf, 0x16u);
               }
             }
 
             else
             {
-              v29 = [v27 activityUUID];
-              if (v29)
+              activityUUID = [v27 activityUUID];
+              if (activityUUID)
               {
-                v30 = [v19 containsObject:v29];
+                v30 = [v19 containsObject:activityUUID];
                 v31 = PBFLogDataStore();
                 v32 = os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT);
                 if (v30)
@@ -8923,14 +8923,14 @@ LABEL_29:
                     _os_log_impl(&dword_21B526000, v31, OS_LOG_TYPE_DEFAULT, "Focus mode %@ unavailable for %@; updating poster", buf, 0x16u);
                   }
 
-                  v31 = [v47 configuredPropertiesForPoster:v26];
+                  v31 = [posterCollection configuredPropertiesForPoster:v26];
                   v33 = [v31 mutableCopy];
                   if (v33 || ([MEMORY[0x277D3EDD8] defaultConfiguredPropertiesForRole:v48], (v33 = objc_claimAutoreleasedReturnValue()) != 0))
                   {
                     v34 = v33;
                     [v33 setFocusConfiguration:0];
-                    v35 = [v26 pbf_posterUUID];
-                    v36 = [PBFPosterRoleCoordinatorChange updateConfiguredProperties:v34 forPosterWithinRole:v48 matchingUUID:v35];
+                    pbf_posterUUID = [v26 pbf_posterUUID];
+                    v36 = [PBFPosterRoleCoordinatorChange updateConfiguredProperties:v34 forPosterWithinRole:v48 matchingUUID:pbf_posterUUID];
 
                     v37 = PBFLogDataStore();
                     if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
@@ -8947,14 +8947,14 @@ LABEL_29:
                   }
                 }
 
-                v21 = v50;
+                orderedPosters = v50;
 
                 v24 = v49;
               }
             }
           }
 
-          v23 = [v21 countByEnumeratingWithState:&v52 objects:v60 count:16];
+          v23 = [orderedPosters countByEnumeratingWithState:&v52 objects:v60 count:16];
         }
 
         while (v23);
@@ -8962,11 +8962,11 @@ LABEL_29:
 
       if ([v20 count])
       {
-        os_unfair_lock_lock(&v41->_stateLock);
+        os_unfair_lock_lock(&selfCopy->_stateLock);
         v38 = NSStringFromSelector(aSelector);
-        v15 = [(PBFPosterExtensionDataStore *)v41 _stateLock_executeDataStoreUpdateWithChanges:v20 diffs:0 options:0 reason:v38 context:0 error:v42];
+        v15 = [(PBFPosterExtensionDataStore *)selfCopy _stateLock_executeDataStoreUpdateWithChanges:v20 diffs:0 options:0 reason:v38 context:0 error:errorCopy];
 
-        os_unfair_lock_unlock(&v41->_stateLock);
+        os_unfair_lock_unlock(&selfCopy->_stateLock);
       }
 
       else
@@ -8975,13 +8975,13 @@ LABEL_29:
       }
 
       v12 = v43;
-      v7 = v44;
+      changeCopy = v44;
       v10 = v48;
     }
 
     else
     {
-      if (a4)
+      if (error)
       {
         v16 = MEMORY[0x277CCA9B8];
         v61[0] = *MEMORY[0x277CCA470];
@@ -8995,11 +8995,11 @@ LABEL_29:
         v62[0] = @"RoleCoordinator not setup for role";
         v62[1] = v17;
         v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v62 forKeys:v61 count:2];
-        *a4 = [v16 pbf_generalErrorWithCode:1 userInfo:v18];
+        *error = [v16 pbf_generalErrorWithCode:1 userInfo:v18];
       }
 
-      v47 = PBFLogRoleCoordinator();
-      if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
+      posterCollection = PBFLogRoleCoordinator();
+      if (os_log_type_enabled(posterCollection, OS_LOG_TYPE_ERROR))
       {
         [PBFPosterExtensionDataStore updateDataStoreForIncomingAvailableFocusModeChange:error:];
       }
@@ -9017,14 +9017,14 @@ LABEL_29:
     _os_log_impl(&dword_21B526000, v13, OS_LOG_TYPE_DEFAULT, "Ignoring incoming focus mode change because MDM blocks wallpaper changes", buf, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     v14 = MEMORY[0x277CCA9B8];
     v63 = *MEMORY[0x277CCA470];
     v64[0] = @"Forbidden by ManagedConfiguration";
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v64 forKeys:&v63 count:1];
     [v14 pbf_generalErrorWithCode:7 userInfo:v10];
-    *a4 = v15 = 0;
+    *error = v15 = 0;
 LABEL_45:
 
     goto LABEL_46;
@@ -9036,10 +9036,10 @@ LABEL_46:
   return v15;
 }
 
-- (BOOL)updateDataStoreForIncomingActiveChargerIdentifierUpdate:(id)a3 error:(id *)a4
+- (BOOL)updateDataStoreForIncomingActiveChargerIdentifierUpdate:(id)update error:(id *)error
 {
   v54[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  updateCopy = update;
   v7 = PBFLogDataStore();
   v8 = os_signpost_id_generate(v7);
 
@@ -9049,15 +9049,15 @@ LABEL_46:
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
   {
     *buf = 138543362;
-    v50 = v6;
+    v50 = updateCopy;
     _os_signpost_emit_with_name_impl(&dword_21B526000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "updateDataStoreForIncomingActiveChargerIdentifierUpdate:", "activeChargerIdentifierUpdate: %{public}@", buf, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_stateLock);
-  v12 = [MEMORY[0x277CBEBD0] pbf_activeChargerIdentifier];
+  pbf_activeChargerIdentifier = [MEMORY[0x277CBEBD0] pbf_activeChargerIdentifier];
   if (!BSEqualStrings())
   {
-    v14 = [PBFPosterDataStoreEventBuilder activeChargerIdentifierDidUpdate:v6 from:v12];
+    v14 = [PBFPosterDataStoreEventBuilder activeChargerIdentifierDidUpdate:updateCopy from:pbf_activeChargerIdentifier];
     v47 = 0;
     v16 = [v14 buildWithError:&v47];
     v45 = v47;
@@ -9069,12 +9069,12 @@ LABEL_46:
       if (v11 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v27))
       {
         *buf = 138543362;
-        v50 = v6;
+        v50 = updateCopy;
         _os_signpost_emit_with_name_impl(&dword_21B526000, v28, OS_SIGNPOST_INTERVAL_END, v8, "updateDataStoreForIncomingActiveChargerIdentifierUpdate:", "activeChargerIdentifierUpdate: %{public}@", buf, 0xCu);
       }
 
       v29 = v45;
-      if (a4)
+      if (error)
       {
         if (!v45)
         {
@@ -9087,7 +9087,7 @@ LABEL_46:
 
         v32 = v29;
         LOBYTE(v15) = 0;
-        *a4 = v29;
+        *error = v29;
       }
 
       else
@@ -9098,15 +9098,15 @@ LABEL_46:
       goto LABEL_35;
     }
 
-    v42 = a4;
+    errorCopy = error;
     v44 = v16;
     spid = v8;
     v17 = *MEMORY[0x277D3EE98];
-    v18 = [(PBFPosterExtensionDataStore *)self _buildRoleCoordinatorTransitionContextForChargerIdentifier:v6];
+    v18 = [(PBFPosterExtensionDataStore *)self _buildRoleCoordinatorTransitionContextForChargerIdentifier:updateCopy];
     v19 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:v17];
     v20 = [(PBFPosterExtensionDataStore *)self activePosterConfigurationForRole:v17 assocPoster:0];
-    v21 = [v20 pbf_posterUUID];
-    [v18 setDesiredActiveConfiguration:v21 forRole:v17];
+    pbf_posterUUID = [v20 pbf_posterUUID];
+    [v18 setDesiredActiveConfiguration:pbf_posterUUID forRole:v17];
 
     v41 = v19;
     v46 = v18;
@@ -9114,12 +9114,12 @@ LABEL_46:
     v43 = v20;
     if (!v22)
     {
-      v33 = PBFLogDataStore();
-      if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
+      pbf_posterUUID2 = PBFLogDataStore();
+      if (os_log_type_enabled(pbf_posterUUID2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v50 = v6;
-        _os_log_impl(&dword_21B526000, v33, OS_LOG_TYPE_DEFAULT, "Incoming charger id update to %{public}@ did not find a matching configuration", buf, 0xCu);
+        v50 = updateCopy;
+        _os_log_impl(&dword_21B526000, pbf_posterUUID2, OS_LOG_TYPE_DEFAULT, "Incoming charger id update to %{public}@ did not find a matching configuration", buf, 0xCu);
       }
 
       goto LABEL_27;
@@ -9133,7 +9133,7 @@ LABEL_46:
       if (v25)
       {
         *buf = 138543618;
-        v50 = v6;
+        v50 = updateCopy;
         v51 = 2114;
         v52 = v43;
         v26 = "Incoming charger id update to %{public}@ sticking with current active poster configuration: %{public}@";
@@ -9145,33 +9145,33 @@ LABEL_25:
     else if (v25)
     {
       *buf = 138543618;
-      v50 = v6;
+      v50 = updateCopy;
       v51 = 2114;
       v52 = v22;
       v26 = "Executing charger id update to %{public}@ to new active poster configuration: %{public}@";
       goto LABEL_25;
     }
 
-    v33 = [v22 pbf_posterUUID];
-    [v46 setDesiredActiveConfiguration:v33 forRole:v17];
+    pbf_posterUUID2 = [v22 pbf_posterUUID];
+    [v46 setDesiredActiveConfiguration:pbf_posterUUID2 forRole:v17];
 LABEL_27:
 
     v34 = PBFLogDataStore();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v50 = v6;
+      v50 = updateCopy;
       _os_log_impl(&dword_21B526000, v34, OS_LOG_TYPE_DEFAULT, "Transitioning to new active charger identifier: %{public}@", buf, 0xCu);
     }
 
     v48 = v44;
     v35 = [MEMORY[0x277CBEA60] arrayWithObjects:&v48 count:1];
     v36 = [MEMORY[0x277CBEB98] setWithObject:v17];
-    v15 = [(PBFPosterExtensionDataStore *)self _stateLock_processEvents:v35 roles:v36 context:v46 error:v42];
+    v15 = [(PBFPosterExtensionDataStore *)self _stateLock_processEvents:v35 roles:v36 context:v46 error:errorCopy];
 
     if (v15)
     {
-      [MEMORY[0x277CBEBD0] pbf_setActiveChargerIdentifier:v6];
+      [MEMORY[0x277CBEBD0] pbf_setActiveChargerIdentifier:updateCopy];
     }
 
     os_unfair_lock_unlock(&self->_stateLock);
@@ -9180,7 +9180,7 @@ LABEL_27:
     if (v11 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v37))
     {
       *buf = 138543362;
-      v50 = v6;
+      v50 = updateCopy;
       _os_signpost_emit_with_name_impl(&dword_21B526000, v38, OS_SIGNPOST_INTERVAL_END, spid, "updateDataStoreForIncomingActiveChargerIdentifierUpdate:", "activeChargerIdentifierUpdate: %{public}@", buf, 0xCu);
     }
 
@@ -9197,7 +9197,7 @@ LABEL_35:
   if (v11 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
     *buf = 138543362;
-    v50 = v6;
+    v50 = updateCopy;
     _os_signpost_emit_with_name_impl(&dword_21B526000, v14, OS_SIGNPOST_INTERVAL_END, v8, "updateDataStoreForIncomingActiveChargerIdentifierUpdate:", "activeChargerIdentifierUpdate: %{public}@", buf, 0xCu);
   }
 
@@ -9207,11 +9207,11 @@ LABEL_36:
   return v15;
 }
 
-- (void)processIncomingPosterConfiguration:(id)a3 completion:(id)a4
+- (void)processIncomingPosterConfiguration:(id)configuration completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  configurationCopy = configuration;
+  completionCopy = completion;
+  v9 = configurationCopy;
   NSClassFromString(&cfstr_Princomingpost.isa);
   if (!v9)
   {
@@ -9229,8 +9229,8 @@ LABEL_36:
   v12[3] = &unk_2782C62E8;
   v12[4] = self;
   v13 = v9;
-  v14 = v8;
-  v10 = v8;
+  v14 = completionCopy;
+  v10 = completionCopy;
   v11 = v9;
   PBFDispatchAsyncWithString(@"processIncomingPosterConfiguration", QOS_CLASS_USER_INTERACTIVE, v12);
 }
@@ -9244,23 +9244,23 @@ void __77__PBFPosterExtensionDataStore_processIncomingPosterConfiguration_comple
   os_unfair_lock_unlock(v2);
 }
 
-- (void)_stateLock_processIncomingPosterConfiguration:(id)a3 completion:(id)a4
+- (void)_stateLock_processIncomingPosterConfiguration:(id)configuration completion:(id)completion
 {
   v55[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   if (![(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    v10 = [v7 path];
-    v9 = [v10 role];
+    path = [configurationCopy path];
+    role = [path role];
 
-    v11 = [v7 incomingPosterType];
+    incomingPosterType = [configurationCopy incomingPosterType];
     v12 = 0;
-    if (v11 > 2)
+    if (incomingPosterType > 2)
     {
-      if (v11 == 3)
+      if (incomingPosterType == 3)
       {
-        if (!v8)
+        if (!completionCopy)
         {
           goto LABEL_24;
         }
@@ -9277,7 +9277,7 @@ void __77__PBFPosterExtensionDataStore_processIncomingPosterConfiguration_comple
         v46[2] = __88__PBFPosterExtensionDataStore__stateLock_processIncomingPosterConfiguration_completion___block_invoke;
         v46[3] = &unk_2782C6310;
         v47 = v33;
-        v48 = v8;
+        v48 = completionCopy;
         v12 = v33;
         dispatch_async(notificationQueue, v46);
 
@@ -9285,14 +9285,14 @@ void __77__PBFPosterExtensionDataStore_processIncomingPosterConfiguration_comple
         goto LABEL_23;
       }
 
-      if (v11 == 5)
+      if (incomingPosterType == 5)
       {
 LABEL_13:
-        v13 = [PBFPosterRoleCoordinatorChange updatePosterWithinRole:v9 incomingPoster:v7];
+        v13 = [PBFPosterRoleCoordinatorChange updatePosterWithinRole:role incomingPoster:configurationCopy];
         goto LABEL_14;
       }
 
-      if (v11 != 4)
+      if (incomingPosterType != 4)
       {
         goto LABEL_15;
       }
@@ -9300,9 +9300,9 @@ LABEL_13:
 
     else
     {
-      if (!v11)
+      if (!incomingPosterType)
       {
-        if (!v8)
+        if (!completionCopy)
         {
           goto LABEL_24;
         }
@@ -9319,7 +9319,7 @@ LABEL_13:
         v43[2] = __88__PBFPosterExtensionDataStore__stateLock_processIncomingPosterConfiguration_completion___block_invoke_2;
         v43[3] = &unk_2782C6310;
         v44 = v29;
-        v45 = v8;
+        v45 = completionCopy;
         v12 = v29;
         dispatch_async(v30, v43);
 
@@ -9327,9 +9327,9 @@ LABEL_13:
         goto LABEL_23;
       }
 
-      if (v11 != 1)
+      if (incomingPosterType != 1)
       {
-        if (v11 != 2)
+        if (incomingPosterType != 2)
         {
 LABEL_15:
           v51 = v12;
@@ -9341,19 +9341,19 @@ LABEL_15:
 
           if (v16)
           {
-            if (v8)
+            if (completionCopy)
             {
-              v18 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:v9];
-              v19 = [v18 posterCollection];
-              v20 = [v7 destinationUUID];
-              v21 = [v19 posterWithUUID:v20];
+              v18 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:role];
+              posterCollection = [v18 posterCollection];
+              destinationUUID = [configurationCopy destinationUUID];
+              v21 = [posterCollection posterWithUUID:destinationUUID];
 
               v22 = self->_notificationQueue;
               block[0] = MEMORY[0x277D85DD0];
               block[1] = 3221225472;
               block[2] = __88__PBFPosterExtensionDataStore__stateLock_processIncomingPosterConfiguration_completion___block_invoke_4;
               block[3] = &unk_2782C6180;
-              v38 = v8;
+              v38 = completionCopy;
               v36 = v21;
               v17 = v17;
               v37 = v17;
@@ -9364,7 +9364,7 @@ LABEL_22:
             }
           }
 
-          else if (v8)
+          else if (completionCopy)
           {
             if (!v17)
             {
@@ -9380,7 +9380,7 @@ LABEL_22:
             v39[1] = 3221225472;
             v39[2] = __88__PBFPosterExtensionDataStore__stateLock_processIncomingPosterConfiguration_completion___block_invoke_3;
             v39[3] = &unk_2782C6310;
-            v41 = v8;
+            v41 = completionCopy;
             v17 = v17;
             v40 = v17;
             dispatch_async(v26, v39);
@@ -9398,16 +9398,16 @@ LABEL_23:
       }
     }
 
-    v13 = [PBFPosterRoleCoordinatorChange addPosterToRole:v9 incomingPoster:v7];
+    v13 = [PBFPosterRoleCoordinatorChange addPosterToRole:role incomingPoster:configurationCopy];
 LABEL_14:
     v12 = v13;
     goto LABEL_15;
   }
 
-  if (v8)
+  if (completionCopy)
   {
-    v9 = [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-    (*(v8 + 2))(v8, 0, v9);
+    role = [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
+    (*(completionCopy + 2))(completionCopy, 0, role);
 LABEL_24:
   }
 }
@@ -9442,12 +9442,12 @@ LABEL_24:
 
   v8 = *MEMORY[0x277D3EEF0];
   v9 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:*MEMORY[0x277D3EEF0]];
-  v10 = [v9 posterCollection];
+  posterCollection = [v9 posterCollection];
   v11 = [(PBFPosterExtensionDataStore *)self activePosterConfigurationForRole:v8 assocPoster:0];
-  v12 = [(PBFPosterExtensionDataStore *)self _activeActivity];
-  v38 = v10;
-  v13 = [v10 configuredPropertiesForPoster:v11];
-  v14 = [v13 focusConfiguration];
+  _activeActivity = [(PBFPosterExtensionDataStore *)self _activeActivity];
+  v38 = posterCollection;
+  v13 = [posterCollection configuredPropertiesForPoster:v11];
+  focusConfiguration = [v13 focusConfiguration];
 
   v15 = PBFLogPosterContents();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -9455,16 +9455,16 @@ LABEL_24:
     *buf = 138412802;
     v45 = v11;
     v46 = 2112;
-    v47 = v14;
+    v47 = focusConfiguration;
     v48 = 2112;
-    v49 = v12;
+    v49 = _activeActivity;
     _os_log_impl(&dword_21B526000, v15, OS_LOG_TYPE_DEFAULT, "[Transitioning to newly active poster] %@ with focusConfiguration: %@ from current active activity: %@", buf, 0x20u);
   }
 
-  if (v14)
+  if (focusConfiguration)
   {
-    v16 = [v14 activityUUID];
-    v17 = [(PBFPosterExtensionDataStore *)self _activityModeForFocusUUID:v16];
+    activityUUID = [focusConfiguration activityUUID];
+    v17 = [(PBFPosterExtensionDataStore *)self _activityModeForFocusUUID:activityUUID];
     if (v17 && (BSEqualObjects() & 1) == 0)
     {
       [(PBFPosterExtensionDataStore *)self _updateActiveActivity:v17 active:1 reason:@"PosterBoard is transitioning to a newly active poster which so happens to have this activity."];
@@ -9495,7 +9495,7 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (v12)
+  if (_activeActivity)
   {
     v34 = v4 - 1;
     v35 = v11;
@@ -9505,8 +9505,8 @@ LABEL_28:
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v20 = [v38 orderedPosters];
-    v21 = [v20 countByEnumeratingWithState:&v39 objects:v43 count:16];
+    orderedPosters = [v38 orderedPosters];
+    v21 = [orderedPosters countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (v21)
     {
       v22 = v21;
@@ -9517,15 +9517,15 @@ LABEL_28:
         {
           if (*v40 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(orderedPosters);
           }
 
           v25 = [v38 configuredPropertiesForPoster:*(*(&v39 + 1) + 8 * i)];
-          v26 = [v25 focusConfiguration];
+          focusConfiguration2 = [v25 focusConfiguration];
 
-          v27 = [v26 activityUUID];
-          v28 = [v12 activityUniqueIdentifier];
-          v29 = [v27 isEqual:v28];
+          activityUUID2 = [focusConfiguration2 activityUUID];
+          activityUniqueIdentifier = [_activeActivity activityUniqueIdentifier];
+          v29 = [activityUUID2 isEqual:activityUniqueIdentifier];
 
           if (v29)
           {
@@ -9534,13 +9534,13 @@ LABEL_28:
             if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v45 = v12;
+              v45 = _activeActivity;
               _os_log_impl(&dword_21B526000, v31, OS_LOG_TYPE_DEFAULT, "[Transitioning to newly active poster] without linked focus activity. Turning off focus activity: %@ because it is linked to another poster.", buf, 0xCu);
             }
 
             v32 = PBFLogDataStore();
             v33 = v32;
-            v14 = 0;
+            focusConfiguration = 0;
             v11 = v35;
             v9 = v36;
             if (v34 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v32))
@@ -9553,7 +9553,7 @@ LABEL_28:
           }
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v39 objects:v43 count:16];
+        v22 = [orderedPosters countByEnumeratingWithState:&v39 objects:v43 count:16];
         if (v22)
         {
           continue;
@@ -9563,17 +9563,17 @@ LABEL_28:
       }
     }
 
-    v16 = PBFLogPosterContents();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    activityUUID = PBFLogPosterContents();
+    if (os_log_type_enabled(activityUUID, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v45 = v12;
-      _os_log_impl(&dword_21B526000, v16, OS_LOG_TYPE_DEFAULT, "[Transitioning to newly active poster] without linked focus activity. Leaving focus activity: %@ on because it is not linked to another poster.", buf, 0xCu);
+      v45 = _activeActivity;
+      _os_log_impl(&dword_21B526000, activityUUID, OS_LOG_TYPE_DEFAULT, "[Transitioning to newly active poster] without linked focus activity. Leaving focus activity: %@ on because it is not linked to another poster.", buf, 0xCu);
     }
 
     v9 = v36;
     v4 = v37;
-    v14 = 0;
+    focusConfiguration = 0;
     v11 = v35;
     v7 = v34;
     goto LABEL_28;
@@ -9581,33 +9581,33 @@ LABEL_28:
 
 LABEL_29:
   v30 = PBFLogDataStore();
-  v20 = v30;
+  orderedPosters = v30;
   if (v7 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v30))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&dword_21B526000, v20, OS_SIGNPOST_INTERVAL_END, v4, "_stateLock_updateFocusModeForActivePosterChange", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_21B526000, orderedPosters, OS_SIGNPOST_INTERVAL_END, v4, "_stateLock_updateFocusModeForActivePosterChange", "", buf, 2u);
   }
 
 LABEL_38:
 }
 
-- (void)processEvents:(id)a3 context:(id)a4 QOS:(unsigned int)a5 reason:(id)a6 completion:(id)a7
+- (void)processEvents:(id)events context:(id)context QOS:(unsigned int)s reason:(id)reason completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  eventsCopy = events;
+  contextCopy = context;
+  completionCopy = completion;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __75__PBFPosterExtensionDataStore_processEvents_context_QOS_reason_completion___block_invoke;
   v18[3] = &unk_2782C6338;
   v18[4] = self;
-  v19 = v12;
-  v20 = v13;
-  v21 = v14;
-  v15 = v14;
-  v16 = v13;
-  v17 = v12;
-  PBFDispatchAsyncWithString(a6, a5, v18);
+  v19 = eventsCopy;
+  v20 = contextCopy;
+  v21 = completionCopy;
+  v15 = completionCopy;
+  v16 = contextCopy;
+  v17 = eventsCopy;
+  PBFDispatchAsyncWithString(reason, s, v18);
 }
 
 void __75__PBFPosterExtensionDataStore_processEvents_context_QOS_reason_completion___block_invoke(void *a1)
@@ -9633,38 +9633,38 @@ void __75__PBFPosterExtensionDataStore_processEvents_context_QOS_reason_completi
   (*(a1[7] + 16))();
 }
 
-- (id)updateDataStoreForSwitcherConfiguration:(id)a3 options:(unint64_t)a4 reason:(id)a5 error:(id *)a6
+- (id)updateDataStoreForSwitcherConfiguration:(id)configuration options:(unint64_t)options reason:(id)reason error:(id *)error
 {
-  v10 = a5;
-  v11 = a3;
+  reasonCopy = reason;
+  configurationCopy = configuration;
   os_unfair_lock_lock(&self->_stateLock);
-  v12 = [(PBFPosterExtensionDataStore *)self _stateLock_updateDataStoreForSwitcherConfiguration:v11 options:a4 reason:v10 error:a6];
+  v12 = [(PBFPosterExtensionDataStore *)self _stateLock_updateDataStoreForSwitcherConfiguration:configurationCopy options:options reason:reasonCopy error:error];
 
   os_unfair_lock_unlock(&self->_stateLock);
 
   return v12;
 }
 
-- (void)_transitionToNewSwitcherConfigurationIfNeededForReason:(id)a3 error:(id *)a4
+- (void)_transitionToNewSwitcherConfigurationIfNeededForReason:(id)reason error:(id *)error
 {
-  v6 = a3;
+  reasonCopy = reason;
   os_unfair_lock_lock(&self->_stateLock);
-  [(PBFPosterExtensionDataStore *)self _transitionToNewSwitcherConfigurationIfNeededForReason:v6 error:a4];
+  [(PBFPosterExtensionDataStore *)self _transitionToNewSwitcherConfigurationIfNeededForReason:reasonCopy error:error];
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (id)_stateLock_updateDataStoreForSwitcherConfiguration:(id)a3 options:(unint64_t)a4 reason:(id)a5 error:(id *)a6
+- (id)_stateLock_updateDataStoreForSwitcherConfiguration:(id)configuration options:(unint64_t)options reason:(id)reason error:(id *)error
 {
   v172 = *MEMORY[0x277D85DE8];
-  v144 = a3;
-  v11 = a5;
+  configurationCopy = configuration;
+  reasonCopy = reason;
   if ([(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    if (a6)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-      *a6 = v12 = 0;
+      *error = v12 = 0;
     }
 
     else
@@ -9684,48 +9684,48 @@ void __75__PBFPosterExtensionDataStore_processEvents_context_QOS_reason_completi
     goto LABEL_111;
   }
 
-  v131 = a4;
-  v132 = a6;
+  optionsCopy = options;
+  errorCopy = error;
   v133 = v13;
-  v15 = [(PBFPosterExtensionDataStore *)self _stateLock_switcherConfiguration];
+  _stateLock_switcherConfiguration = [(PBFPosterExtensionDataStore *)self _stateLock_switcherConfiguration];
   v16 = MEMORY[0x277CBEB98];
-  v137 = self;
-  v17 = [(PFPosterExtensionProvider *)self->_extensionProvider extensionForIdentifier];
-  v18 = [v17 allKeys];
-  v143 = [v16 setWithArray:v18];
+  selfCopy = self;
+  extensionForIdentifier = [(PFPosterExtensionProvider *)self->_extensionProvider extensionForIdentifier];
+  allKeys = [extensionForIdentifier allKeys];
+  v143 = [v16 setWithArray:allKeys];
 
-  v19 = [v15 configurations];
-  v20 = [v19 bs_mapNoNulls:&__block_literal_global_638];
+  configurations = [_stateLock_switcherConfiguration configurations];
+  v20 = [configurations bs_mapNoNulls:&__block_literal_global_638];
 
-  v21 = [v144 configurations];
-  v22 = [v21 bs_mapNoNulls:&__block_literal_global_640];
+  configurations2 = [configurationCopy configurations];
+  v22 = [configurations2 bs_mapNoNulls:&__block_literal_global_640];
 
-  v23 = [v144 desiredActiveConfiguration];
-  v24 = [v15 activeConfiguration];
-  v25 = [v23 isEqual:v24];
+  desiredActiveConfiguration = [configurationCopy desiredActiveConfiguration];
+  activeConfiguration = [_stateLock_switcherConfiguration activeConfiguration];
+  v25 = [desiredActiveConfiguration isEqual:activeConfiguration];
 
-  v26 = [v144 selectedConfiguration];
-  v135 = v15;
-  v27 = [v15 selectedConfiguration];
-  v28 = [v26 isEqual:v27];
+  selectedConfiguration = [configurationCopy selectedConfiguration];
+  v135 = _stateLock_switcherConfiguration;
+  selectedConfiguration2 = [_stateLock_switcherConfiguration selectedConfiguration];
+  v28 = [selectedConfiguration isEqual:selectedConfiguration2];
 
   v142 = v22;
   v134 = v20;
   v29 = [v22 isEqualToArray:v20];
-  v30 = [v144 posterConfigurationsNeedingFocusConfigurationDeleted];
-  v139 = [v30 count];
+  posterConfigurationsNeedingFocusConfigurationDeleted = [configurationCopy posterConfigurationsNeedingFocusConfigurationDeleted];
+  v139 = [posterConfigurationsNeedingFocusConfigurationDeleted count];
 
-  v31 = [v144 posterConfigurationsNeedingFocusConfigurationUpdates];
-  v138 = [v31 count];
+  posterConfigurationsNeedingFocusConfigurationUpdates = [configurationCopy posterConfigurationsNeedingFocusConfigurationUpdates];
+  v138 = [posterConfigurationsNeedingFocusConfigurationUpdates count];
 
-  v32 = [v144 posterConfigurationsNeedingHomeScreenConfigurationUpdates];
-  v136 = [v32 count];
+  posterConfigurationsNeedingHomeScreenConfigurationUpdates = [configurationCopy posterConfigurationsNeedingHomeScreenConfigurationUpdates];
+  v136 = [posterConfigurationsNeedingHomeScreenConfigurationUpdates count];
 
-  v33 = [v144 incomingPosterConfigurations];
-  v34 = [v33 count];
+  incomingPosterConfigurations = [configurationCopy incomingPosterConfigurations];
+  v34 = [incomingPosterConfigurations count];
 
-  v35 = [v144 incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs];
-  v36 = [v35 count];
+  incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs = [configurationCopy incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs];
+  v36 = [incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs count];
 
   v130 = v28;
   if (v28 && v25 && v29 && !v139 && !v138 && !v136 && !v34 && !v36)
@@ -9736,13 +9736,13 @@ void __75__PBFPosterExtensionDataStore_processEvents_context_QOS_reason_completi
     goto LABEL_110;
   }
 
-  if (v34 && ![(PBFPosterExtensionDataStore *)v137 _stateLock_canPersistNewPosterConfiguration])
+  if (v34 && ![(PBFPosterExtensionDataStore *)selfCopy _stateLock_canPersistNewPosterConfiguration])
   {
     v37 = v135;
-    v111 = [v135 configurations];
-    v112 = [v111 count];
+    configurations3 = [v135 configurations];
+    v112 = [configurations3 count];
 
-    v113 = [(PBFPosterExtensionDataStore *)v137 _stateLock_maximumPosterConfigurationCount];
+    _stateLock_maximumPosterConfigurationCount = [(PBFPosterExtensionDataStore *)selfCopy _stateLock_maximumPosterConfigurationCount];
     v114 = PBFLogDataStore();
     v14 = v133;
     if (os_log_type_enabled(v114, OS_LOG_TYPE_DEFAULT))
@@ -9750,13 +9750,13 @@ void __75__PBFPosterExtensionDataStore_processEvents_context_QOS_reason_completi
       *buf = 134218240;
       v169 = v112;
       v170 = 2048;
-      v171 = v113;
+      v171 = _stateLock_maximumPosterConfigurationCount;
       _os_log_impl(&dword_21B526000, v114, OS_LOG_TYPE_DEFAULT, "refusing to ingest a new poster configuration because there are %lu existing configurations (limit: %li)", buf, 0x16u);
     }
 
-    if (v132)
+    if (errorCopy)
     {
-      *v132 = [MEMORY[0x277CCA9B8] pbf_dataStoreErrorWithCode:-2206 userInfo:0];
+      *errorCopy = [MEMORY[0x277CCA9B8] pbf_dataStoreErrorWithCode:-2206 userInfo:0];
     }
 
     v12 = v135;
@@ -9767,16 +9767,16 @@ void __75__PBFPosterExtensionDataStore_processEvents_context_QOS_reason_completi
   if ((v29 & 1) == 0)
   {
     v38 = a2;
-    v39 = [v135 collection];
-    v40 = [v39 orderedPosterUUIDs];
+    collection = [v135 collection];
+    orderedPosterUUIDs = [collection orderedPosterUUIDs];
 
     v41 = MEMORY[0x277CBEB70];
-    v42 = [v144 configurations];
-    v43 = [v42 bs_mapNoNulls:&__block_literal_global_643];
+    configurations4 = [configurationCopy configurations];
+    v43 = [configurations4 bs_mapNoNulls:&__block_literal_global_643];
     v44 = [v41 orderedSetWithArray:v43];
 
-    v45 = [v40 count];
-    if (v45 == [v44 count] && (objc_msgSend(v40, "isEqual:", v44) & 1) == 0)
+    v45 = [orderedPosterUUIDs count];
+    if (v45 == [v44 count] && (objc_msgSend(orderedPosterUUIDs, "isEqual:", v44) & 1) == 0)
     {
       v46 = [PBFPosterRoleCoordinatorChange reorderPostersForRole:v146 sortedPosterUUIDs:v44];
       [v145 addObject:v46];
@@ -9785,15 +9785,15 @@ void __75__PBFPosterExtensionDataStore_processEvents_context_QOS_reason_completi
     a2 = v38;
   }
 
-  v129 = v11;
+  v129 = reasonCopy;
   if (v34)
   {
     v162 = 0u;
     v163 = 0u;
     v160 = 0u;
     v161 = 0u;
-    v47 = [v144 incomingPosterConfigurations];
-    v48 = [v47 countByEnumeratingWithState:&v160 objects:v167 count:16];
+    incomingPosterConfigurations2 = [configurationCopy incomingPosterConfigurations];
+    v48 = [incomingPosterConfigurations2 countByEnumeratingWithState:&v160 objects:v167 count:16];
     if (!v48)
     {
       goto LABEL_42;
@@ -9808,26 +9808,26 @@ void __75__PBFPosterExtensionDataStore_processEvents_context_QOS_reason_completi
       {
         if (*v161 != v50)
         {
-          objc_enumerationMutation(v47);
+          objc_enumerationMutation(incomingPosterConfigurations2);
         }
 
         v52 = *(*(&v160 + 1) + 8 * v51);
-        v53 = [v52 incomingPosterType];
-        if (v53 <= 1)
+        incomingPosterType = [v52 incomingPosterType];
+        if (incomingPosterType <= 1)
         {
-          if (v53 == 1)
+          if (incomingPosterType == 1)
           {
             v54 = [PBFPosterRoleCoordinatorChange addPosterToRole:v146 incomingPoster:v52];
             goto LABEL_34;
           }
 
-          if (!v53)
+          if (!incomingPosterType)
           {
 LABEL_115:
             v126 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unsupported incoming poster: %@", v52];
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
-              [PBFPosterExtensionDataStore _stateLock_updateDataStoreForSwitcherConfiguration:a2 options:v137 reason:v126 error:?];
+              [PBFPosterExtensionDataStore _stateLock_updateDataStoreForSwitcherConfiguration:a2 options:selfCopy reason:v126 error:?];
             }
 
             [v126 UTF8String];
@@ -9839,7 +9839,7 @@ LABEL_115:
 
         else
         {
-          if (v53 == 2)
+          if (incomingPosterType == 2)
           {
             v54 = [PBFPosterRoleCoordinatorChange updatePosterWithinRole:v146 incomingPoster:v52];
 LABEL_34:
@@ -9849,7 +9849,7 @@ LABEL_34:
             goto LABEL_35;
           }
 
-          if ((v53 - 3) < 3)
+          if ((incomingPosterType - 3) < 3)
           {
             goto LABEL_115;
           }
@@ -9860,13 +9860,13 @@ LABEL_35:
       }
 
       while (v49 != v51);
-      v56 = [v47 countByEnumeratingWithState:&v160 objects:v167 count:16];
+      v56 = [incomingPosterConfigurations2 countByEnumeratingWithState:&v160 objects:v167 count:16];
       v49 = v56;
       if (!v56)
       {
 LABEL_42:
 
-        v11 = v129;
+        reasonCopy = v129;
         break;
       }
     }
@@ -9878,13 +9878,13 @@ LABEL_42:
   }
 
   obj = a2;
-  v57 = [v144 incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs];
+  incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs2 = [configurationCopy incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs];
   v156 = 0u;
   v157 = 0u;
   v158 = 0u;
   v159 = 0u;
-  v58 = [v57 keyEnumerator];
-  v59 = [v58 countByEnumeratingWithState:&v156 objects:v166 count:16];
+  keyEnumerator = [incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs2 keyEnumerator];
+  v59 = [keyEnumerator countByEnumeratingWithState:&v156 objects:v166 count:16];
   if (!v59)
   {
     goto LABEL_58;
@@ -9898,12 +9898,12 @@ LABEL_42:
     {
       if (*v157 != v61)
       {
-        objc_enumerationMutation(v58);
+        objc_enumerationMutation(keyEnumerator);
       }
 
-      v63 = [v57 objectForKey:*(*(&v156 + 1) + 8 * i)];
-      v64 = [v63 incomingPosterType];
-      if (v64 == 4)
+      v63 = [incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs2 objectForKey:*(*(&v156 + 1) + 8 * i)];
+      incomingPosterType2 = [v63 incomingPosterType];
+      if (incomingPosterType2 == 4)
       {
         v65 = [PBFPosterRoleCoordinatorChange addPosterToRole:v146 incomingPoster:v63];
 LABEL_55:
@@ -9913,18 +9913,18 @@ LABEL_55:
         goto LABEL_56;
       }
 
-      if (v64 == 5)
+      if (incomingPosterType2 == 5)
       {
         v65 = [PBFPosterRoleCoordinatorChange updatePosterWithinRole:v146 incomingPoster:v63];
         goto LABEL_55;
       }
 
-      if (v64 < 4)
+      if (incomingPosterType2 < 4)
       {
         v127 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unsupported assoc incoming poster: %@", v63];
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
-          [PBFPosterExtensionDataStore _stateLock_updateDataStoreForSwitcherConfiguration:v137 options:v127 reason:? error:?];
+          [PBFPosterExtensionDataStore _stateLock_updateDataStoreForSwitcherConfiguration:selfCopy options:v127 reason:? error:?];
         }
 
         [v127 UTF8String];
@@ -9936,13 +9936,13 @@ LABEL_55:
 LABEL_56:
     }
 
-    v60 = [v58 countByEnumeratingWithState:&v156 objects:v166 count:16];
+    v60 = [keyEnumerator countByEnumeratingWithState:&v156 objects:v166 count:16];
   }
 
   while (v60);
 LABEL_58:
 
-  v11 = v129;
+  reasonCopy = v129;
 LABEL_59:
   if ((v29 & 1) == 0)
   {
@@ -9972,15 +9972,15 @@ LABEL_59:
           v151[3] = &unk_2782C6018;
           v151[4] = v71;
           v72 = [v142 bs_containsObjectPassingTest:v151];
-          v73 = [v71 serverIdentity];
-          v74 = [v73 provider];
-          v75 = [v143 containsObject:v74];
+          serverIdentity = [v71 serverIdentity];
+          provider = [serverIdentity provider];
+          v75 = [v143 containsObject:provider];
 
           if ((v72 & 1) == 0 && v75)
           {
-            v76 = [v71 serverIdentity];
-            v77 = [v76 posterUUID];
-            v78 = [PBFPosterRoleCoordinatorChange removePosterFromRole:v146 matchingUUID:v77];
+            serverIdentity2 = [v71 serverIdentity];
+            posterUUID = [serverIdentity2 posterUUID];
+            v78 = [PBFPosterRoleCoordinatorChange removePosterFromRole:v146 matchingUUID:posterUUID];
             [v145 addObject:v78];
           }
         }
@@ -9991,25 +9991,25 @@ LABEL_59:
       while (v68);
     }
 
-    v11 = v129;
+    reasonCopy = v129;
   }
 
   if (v139 || v138 || v136)
   {
     v79 = objc_opt_new();
-    v80 = [v144 posterConfigurationsNeedingHomeScreenConfigurationUpdates];
-    v81 = [v80 keyEnumerator];
-    v82 = [v81 allObjects];
-    [v79 addObjectsFromArray:v82];
+    posterConfigurationsNeedingHomeScreenConfigurationUpdates2 = [configurationCopy posterConfigurationsNeedingHomeScreenConfigurationUpdates];
+    keyEnumerator2 = [posterConfigurationsNeedingHomeScreenConfigurationUpdates2 keyEnumerator];
+    allObjects = [keyEnumerator2 allObjects];
+    [v79 addObjectsFromArray:allObjects];
 
-    v83 = [v144 posterConfigurationsNeedingFocusConfigurationUpdates];
-    v84 = [v83 keyEnumerator];
-    v85 = [v84 allObjects];
-    [v79 addObjectsFromArray:v85];
+    posterConfigurationsNeedingFocusConfigurationUpdates2 = [configurationCopy posterConfigurationsNeedingFocusConfigurationUpdates];
+    keyEnumerator3 = [posterConfigurationsNeedingFocusConfigurationUpdates2 keyEnumerator];
+    allObjects2 = [keyEnumerator3 allObjects];
+    [v79 addObjectsFromArray:allObjects2];
 
-    v86 = [v144 posterConfigurationsNeedingFocusConfigurationDeleted];
-    v87 = [v86 allObjects];
-    [v79 addObjectsFromArray:v87];
+    posterConfigurationsNeedingFocusConfigurationDeleted2 = [configurationCopy posterConfigurationsNeedingFocusConfigurationDeleted];
+    allObjects3 = [posterConfigurationsNeedingFocusConfigurationDeleted2 allObjects];
+    [v79 addObjectsFromArray:allObjects3];
 
     v149 = 0u;
     v150 = 0u;
@@ -10031,14 +10031,14 @@ LABEL_59:
           }
 
           v93 = *(*(&v147 + 1) + 8 * k);
-          v94 = [v144 posterConfigurationsNeedingHomeScreenConfigurationUpdates];
-          v95 = [v94 objectForKey:v93];
+          posterConfigurationsNeedingHomeScreenConfigurationUpdates3 = [configurationCopy posterConfigurationsNeedingHomeScreenConfigurationUpdates];
+          v95 = [posterConfigurationsNeedingHomeScreenConfigurationUpdates3 objectForKey:v93];
 
-          v96 = [v144 posterConfigurationsNeedingFocusConfigurationUpdates];
-          v97 = [v96 objectForKey:v93];
+          posterConfigurationsNeedingFocusConfigurationUpdates3 = [configurationCopy posterConfigurationsNeedingFocusConfigurationUpdates];
+          v97 = [posterConfigurationsNeedingFocusConfigurationUpdates3 objectForKey:v93];
 
-          v98 = [v144 posterConfigurationsNeedingFocusConfigurationDeleted];
-          v99 = [v98 containsObject:v93];
+          posterConfigurationsNeedingFocusConfigurationDeleted3 = [configurationCopy posterConfigurationsNeedingFocusConfigurationDeleted];
+          v99 = [posterConfigurationsNeedingFocusConfigurationDeleted3 containsObject:v93];
 
           v100 = [v93 loadConfiguredPropertiesWithError:0];
           v101 = [v100 mutableCopy];
@@ -10063,8 +10063,8 @@ LABEL_59:
             [v101 setHomeScreenConfiguration:v95];
           }
 
-          v103 = [v93 pbf_posterUUID];
-          v104 = [PBFPosterRoleCoordinatorChange updateConfiguredProperties:v101 forPosterWithinRole:v146 matchingUUID:v103];
+          pbf_posterUUID = [v93 pbf_posterUUID];
+          v104 = [PBFPosterRoleCoordinatorChange updateConfiguredProperties:v101 forPosterWithinRole:v146 matchingUUID:pbf_posterUUID];
           [v145 addObject:v104];
         }
 
@@ -10074,72 +10074,72 @@ LABEL_59:
       while (v90);
     }
 
-    v11 = v129;
+    reasonCopy = v129;
   }
 
   v37 = v135;
-  v105 = v137;
+  v105 = selfCopy;
   if ((v130 & 1) == 0)
   {
-    v106 = [v144 selectedConfiguration];
+    selectedConfiguration3 = [configurationCopy selectedConfiguration];
     v107 = MEMORY[0x277D3EDE8];
-    v108 = [v106 _path];
-    v109 = [v107 loadFocusConfigurationForPath:v108 error:0];
+    _path = [selectedConfiguration3 _path];
+    v109 = [v107 loadFocusConfigurationForPath:_path error:0];
 
     if (v109)
     {
-      v110 = PBFLogDataStore();
-      if (os_log_type_enabled(v110, OS_LOG_TYPE_DEFAULT))
+      selectedConfiguration4 = PBFLogDataStore();
+      if (os_log_type_enabled(selectedConfiguration4, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v169 = v106;
-        _os_log_impl(&dword_21B526000, v110, OS_LOG_TYPE_DEFAULT, "Making poster %@ with paired focus mode the new selected configuration- this should never occur!", buf, 0xCu);
+        v169 = selectedConfiguration3;
+        _os_log_impl(&dword_21B526000, selectedConfiguration4, OS_LOG_TYPE_DEFAULT, "Making poster %@ with paired focus mode the new selected configuration- this should never occur!", buf, 0xCu);
       }
 
 LABEL_101:
     }
 
-    else if (v106)
+    else if (selectedConfiguration3)
     {
-      v110 = [v144 selectedConfiguration];
-      v115 = [v110 pbf_posterUUID];
-      v116 = [PBFPosterRoleCoordinatorChange selectPosterForRole:v146 matchingUUID:v115];
+      selectedConfiguration4 = [configurationCopy selectedConfiguration];
+      pbf_posterUUID2 = [selectedConfiguration4 pbf_posterUUID];
+      v116 = [PBFPosterRoleCoordinatorChange selectPosterForRole:v146 matchingUUID:pbf_posterUUID2];
       [v145 addObject:v116];
 
-      v105 = v137;
+      v105 = selfCopy;
       goto LABEL_101;
     }
   }
 
-  v117 = [v144 desiredActiveConfiguration];
-  v118 = [(PBFPosterExtensionDataStore *)v105 _buildRoleCoordinatorTransitionContext];
-  [v118 setTransitionFromIncomingFocusModeChange:{objc_msgSend(v144, "activeConfigurationDueToIncomingFocusModeChange")}];
-  v119 = [v117 pbf_posterUUID];
-  [v118 setDesiredActiveConfiguration:v119 forRole:v146];
+  desiredActiveConfiguration2 = [configurationCopy desiredActiveConfiguration];
+  _buildRoleCoordinatorTransitionContext = [(PBFPosterExtensionDataStore *)v105 _buildRoleCoordinatorTransitionContext];
+  [_buildRoleCoordinatorTransitionContext setTransitionFromIncomingFocusModeChange:{objc_msgSend(configurationCopy, "activeConfigurationDueToIncomingFocusModeChange")}];
+  pbf_posterUUID3 = [desiredActiveConfiguration2 pbf_posterUUID];
+  [_buildRoleCoordinatorTransitionContext setDesiredActiveConfiguration:pbf_posterUUID3 forRole:v146];
 
   v120 = PBFLogDataStore();
   if (os_log_type_enabled(v120, OS_LOG_TYPE_DEFAULT))
   {
-    v121 = [v144 activeConfigurationDueToIncomingFocusModeChange];
+    activeConfigurationDueToIncomingFocusModeChange = [configurationCopy activeConfigurationDueToIncomingFocusModeChange];
     v122 = @"NO";
-    if (v121)
+    if (activeConfigurationDueToIncomingFocusModeChange)
     {
       v122 = @"YES";
     }
 
     *buf = 138412546;
-    v169 = v117;
+    v169 = desiredActiveConfiguration2;
     v170 = 2112;
     v171 = v122;
     _os_log_impl(&dword_21B526000, v120, OS_LOG_TYPE_DEFAULT, "_updateDataStoreForSwitcherConfiguration created context with desiredActiveConfiguration: %@ dueToIncomingFocusModeChange: %@", buf, 0x16u);
   }
 
-  v123 = [(PBFPosterExtensionDataStore *)v137 _stateLock_executeDataStoreUpdateWithChanges:v145 diffs:0 options:v131 reason:v11 context:v118 error:v132];
+  v123 = [(PBFPosterExtensionDataStore *)selfCopy _stateLock_executeDataStoreUpdateWithChanges:v145 diffs:0 options:optionsCopy reason:reasonCopy context:_buildRoleCoordinatorTransitionContext error:errorCopy];
   stateLock_switcherConfiguration = v135;
   v14 = v133;
   if (v123)
   {
-    stateLock_switcherConfiguration = v137->_stateLock_switcherConfiguration;
+    stateLock_switcherConfiguration = selfCopy->_stateLock_switcherConfiguration;
   }
 
   v12 = stateLock_switcherConfiguration;
@@ -10163,61 +10163,61 @@ uint64_t __103__PBFPosterExtensionDataStore__stateLock_updateDataStoreForSwitche
   return v7;
 }
 
-- (id)_buildRoleCoordinatorTransitionContextForActivity:(id)a3
+- (id)_buildRoleCoordinatorTransitionContextForActivity:(id)activity
 {
   v4 = MEMORY[0x277CBEBD0];
-  v5 = a3;
-  v6 = [v4 pbf_activeChargerIdentifier];
-  v7 = [(PBFPosterExtensionDataStore *)self _buildRoleCoordinatorTransitionContextForActiveFocusMode:v5 chargerIdentifier:v6];
+  activityCopy = activity;
+  pbf_activeChargerIdentifier = [v4 pbf_activeChargerIdentifier];
+  v7 = [(PBFPosterExtensionDataStore *)self _buildRoleCoordinatorTransitionContextForActiveFocusMode:activityCopy chargerIdentifier:pbf_activeChargerIdentifier];
 
   return v7;
 }
 
-- (id)_buildRoleCoordinatorTransitionContextForChargerIdentifier:(id)a3
+- (id)_buildRoleCoordinatorTransitionContextForChargerIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PBFPosterExtensionDataStore *)self _activeActivity];
-  v6 = [(PBFPosterExtensionDataStore *)self _buildRoleCoordinatorTransitionContextForActiveFocusMode:v5 chargerIdentifier:v4];
+  identifierCopy = identifier;
+  _activeActivity = [(PBFPosterExtensionDataStore *)self _activeActivity];
+  v6 = [(PBFPosterExtensionDataStore *)self _buildRoleCoordinatorTransitionContextForActiveFocusMode:_activeActivity chargerIdentifier:identifierCopy];
 
   return v6;
 }
 
 - (id)_buildRoleCoordinatorTransitionNotingInitialUpdate
 {
-  v2 = [(PBFPosterExtensionDataStore *)self _buildRoleCoordinatorTransitionContext];
-  [v2 setInitialUpdate:1];
+  _buildRoleCoordinatorTransitionContext = [(PBFPosterExtensionDataStore *)self _buildRoleCoordinatorTransitionContext];
+  [_buildRoleCoordinatorTransitionContext setInitialUpdate:1];
 
-  return v2;
+  return _buildRoleCoordinatorTransitionContext;
 }
 
 - (id)_buildRoleCoordinatorTransitionContext
 {
-  v3 = [(PBFPosterExtensionDataStore *)self _activeActivity];
-  v4 = [MEMORY[0x277CBEBD0] pbf_activeChargerIdentifier];
-  v5 = [(PBFPosterExtensionDataStore *)self _buildRoleCoordinatorTransitionContextForActiveFocusMode:v3 chargerIdentifier:v4];
+  _activeActivity = [(PBFPosterExtensionDataStore *)self _activeActivity];
+  pbf_activeChargerIdentifier = [MEMORY[0x277CBEBD0] pbf_activeChargerIdentifier];
+  v5 = [(PBFPosterExtensionDataStore *)self _buildRoleCoordinatorTransitionContextForActiveFocusMode:_activeActivity chargerIdentifier:pbf_activeChargerIdentifier];
 
   return v5;
 }
 
-- (id)_buildRoleCoordinatorTransitionContextWithDesiredActivePosterUUID:(id)a3 role:(id)a4
+- (id)_buildRoleCoordinatorTransitionContextWithDesiredActivePosterUUID:(id)d role:(id)role
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PBFPosterExtensionDataStore *)self _buildRoleCoordinatorTransitionContext];
-  v9 = v8;
-  if (v6 && v7)
+  dCopy = d;
+  roleCopy = role;
+  _buildRoleCoordinatorTransitionContext = [(PBFPosterExtensionDataStore *)self _buildRoleCoordinatorTransitionContext];
+  v9 = _buildRoleCoordinatorTransitionContext;
+  if (dCopy && roleCopy)
   {
-    [v8 setDesiredActiveConfiguration:v6 forRole:v7];
+    [_buildRoleCoordinatorTransitionContext setDesiredActiveConfiguration:dCopy forRole:roleCopy];
   }
 
   return v9;
 }
 
-- (id)_buildRoleCoordinatorTransitionContextForActiveFocusMode:(id)a3 chargerIdentifier:(id)a4
+- (id)_buildRoleCoordinatorTransitionContextForActiveFocusMode:(id)mode chargerIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  modeCopy = mode;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_extensionProvidingLock);
   v8 = [(NSMutableDictionary *)self->_extensionProvidingLock_extensionStoreCoordinatorForExtensionBundleIdentifier copy];
   os_unfair_lock_unlock(&self->_extensionProvidingLock);
@@ -10227,33 +10227,33 @@ uint64_t __103__PBFPosterExtensionDataStore__stateLock_updateDataStoreForSwitche
   v10 = PBFLogDataStore();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 activityUniqueIdentifier];
+    activityUniqueIdentifier = [modeCopy activityUniqueIdentifier];
     v14 = 138412290;
-    v15 = v11;
+    v15 = activityUniqueIdentifier;
     _os_log_impl(&dword_21B526000, v10, OS_LOG_TYPE_DEFAULT, "Creating transitionContext with activeActivity: %@", &v14, 0xCu);
   }
 
-  v12 = [[PBFPosterRoleCoordinatorGenericTransitionContext alloc] initWithActiveFocusMode:v6 activeChargerIdentifier:v7 extensionStoreCoordinators:v8 currentActivePosterForRole:v9];
+  v12 = [[PBFPosterRoleCoordinatorGenericTransitionContext alloc] initWithActiveFocusMode:modeCopy activeChargerIdentifier:identifierCopy extensionStoreCoordinators:v8 currentActivePosterForRole:v9];
 
   return v12;
 }
 
-- (BOOL)_stateLock_executeDataStoreUpdateWithChanges:(id)a3 diffs:(id *)a4 options:(unint64_t)a5 reason:(id)a6 context:(id)a7 error:(id *)a8
+- (BOOL)_stateLock_executeDataStoreUpdateWithChanges:(id)changes diffs:(id *)diffs options:(unint64_t)options reason:(id)reason context:(id)context error:(id *)error
 {
   v59 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
+  changesCopy = changes;
+  reasonCopy = reason;
+  contextCopy = context;
   if (![(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    if (!v16)
+    if (!contextCopy)
     {
-      v16 = [(PBFPosterExtensionDataStore *)self _buildRoleCoordinatorTransitionContext];
+      contextCopy = [(PBFPosterExtensionDataStore *)self _buildRoleCoordinatorTransitionContext];
     }
 
-    v18 = [v16 pbf_transitionContextIdentifier];
-    v19 = [v18 UUIDString];
-    v20 = [v19 substringToIndex:7];
+    pbf_transitionContextIdentifier = [contextCopy pbf_transitionContextIdentifier];
+    uUIDString = [pbf_transitionContextIdentifier UUIDString];
+    v20 = [uUIDString substringToIndex:7];
 
     v21 = PBFLogDataStore();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -10261,13 +10261,13 @@ uint64_t __103__PBFPosterExtensionDataStore__stateLock_updateDataStoreForSwitche
       *buf = 138543618;
       v56 = v20;
       v57 = 2114;
-      v58 = v15;
+      v58 = reasonCopy;
       _os_log_impl(&dword_21B526000, v21, OS_LOG_TYPE_DEFAULT, "(%{public}@} executing data store update for reason: %{public}@", buf, 0x16u);
     }
 
     if (!self->_database)
     {
-      if (!a8)
+      if (!error)
       {
         v17 = 0;
         goto LABEL_24;
@@ -10279,7 +10279,7 @@ uint64_t __103__PBFPosterExtensionDataStore__stateLock_updateDataStoreForSwitche
       v54 = @"Database is nil when trying to initialize Poster role processor";
       v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
       [v28 pbf_generalErrorWithCode:1 userInfo:v25];
-      *a8 = v17 = 0;
+      *error = v17 = 0;
 LABEL_23:
 
       v20 = v45;
@@ -10288,19 +10288,19 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    v44 = v14;
+    v44 = changesCopy;
     v45 = v20;
-    v43 = v15;
+    v43 = reasonCopy;
     v22 = [PBFPosterRoleProcessor alloc];
     database = self->_database;
-    v24 = [(NSDictionary *)self->_roleToRoleCoordinator allValues];
-    v25 = [(PBFPosterRoleProcessor *)v22 initWithDataStorage:database roleCoordinators:v24];
+    allValues = [(NSDictionary *)self->_roleToRoleCoordinator allValues];
+    v25 = [(PBFPosterRoleProcessor *)v22 initWithDataStorage:database roleCoordinators:allValues];
 
     [(PBFPosterRoleProcessor *)v25 addObserver:self];
-    if (a5)
+    if (options)
     {
       v51 = @"updateOptions";
-      v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+      v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:options];
       v52 = v26;
       v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
     }
@@ -10312,29 +10312,29 @@ LABEL_24:
 
     runtimeAssertionProvider = self->_runtimeAssertionProvider;
     v30 = [@"dataStoreUpdate-" stringByAppendingString:v45];
-    v31 = [MEMORY[0x277D47008] currentProcess];
+    currentProcess = [MEMORY[0x277D47008] currentProcess];
     v49[0] = MEMORY[0x277D85DD0];
     v49[1] = 3221225472;
     v49[2] = __111__PBFPosterExtensionDataStore__stateLock_executeDataStoreUpdateWithChanges_diffs_options_reason_context_error___block_invoke;
     v49[3] = &unk_2782C59F0;
     v32 = v45;
     v50 = v32;
-    v33 = [(PBFRuntimeAssertionProviding *)runtimeAssertionProvider acquirePrewarmRuntimeAssertionForReason:v30 target:v31 invalidationHandler:v49];
+    v33 = [(PBFRuntimeAssertionProviding *)runtimeAssertionProvider acquirePrewarmRuntimeAssertionForReason:v30 target:currentProcess invalidationHandler:v49];
 
     v34 = [@"executeDataStoreUpdateWithChanges-%@" stringByAppendingString:v32];
     v48 = 0;
-    v35 = [(PBFPosterRoleProcessor *)v25 processChanges:v44 context:v16 reason:v34 userInfo:v27 error:&v48];
+    v35 = [(PBFPosterRoleProcessor *)v25 processChanges:v44 context:contextCopy reason:v34 userInfo:v27 error:&v48];
     v36 = v48;
 
     v17 = v35 != 0;
     if (v35)
     {
-      if (a4)
+      if (diffs)
       {
-        *a4 = [v35 collectionDiffsPerRole];
+        *diffs = [v35 collectionDiffsPerRole];
       }
 
-      if (!a8)
+      if (!error)
       {
         goto LABEL_20;
       }
@@ -10348,14 +10348,14 @@ LABEL_24:
         [PBFPosterExtensionDataStore _stateLock_executeDataStoreUpdateWithChanges:diffs:options:reason:context:error:];
       }
 
-      if (!a8)
+      if (!error)
       {
         goto LABEL_20;
       }
     }
 
     v37 = v36;
-    *a8 = v36;
+    *error = v36;
 LABEL_20:
     v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PBFPosterExtensionDataStore _stateLock_executeDataStoreUpdateWithChanges:diffs:options:reason:context:error:]"];
     v46[0] = MEMORY[0x277D85DD0];
@@ -10374,15 +10374,15 @@ LABEL_20:
       _os_log_impl(&dword_21B526000, v40, OS_LOG_TYPE_DEFAULT, "(%{public}@} Fin.", buf, 0xCu);
     }
 
-    v15 = v43;
-    v14 = v44;
+    reasonCopy = v43;
+    changesCopy = v44;
     goto LABEL_23;
   }
 
-  if (a8)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-    *a8 = v17 = 0;
+    *error = v17 = 0;
   }
 
   else
@@ -10411,12 +10411,12 @@ void __111__PBFPosterExtensionDataStore__stateLock_executeDataStoreUpdateWithCha
   }
 }
 
-- (void)_stateLock_setupPathAssertionsAndUpdateActivePosterFromDiff:(id)a3 roleCoordinator:(id)a4 context:(id)a5
+- (void)_stateLock_setupPathAssertionsAndUpdateActivePosterFromDiff:(id)diff roleCoordinator:(id)coordinator context:(id)context
 {
   v121 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  diffCopy = diff;
+  coordinatorCopy = coordinator;
+  contextCopy = context;
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) != 0)
   {
     goto LABEL_54;
@@ -10432,46 +10432,46 @@ void __111__PBFPosterExtensionDataStore__stateLock_executeDataStoreUpdateWithCha
   if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
   {
     *buf = 138543618;
-    v112 = v10;
+    v112 = coordinatorCopy;
     v113 = 2114;
-    v114 = v11;
+    v114 = contextCopy;
     _os_signpost_emit_with_name_impl(&dword_21B526000, v15, OS_SIGNPOST_INTERVAL_BEGIN, v13, "_stateLock_setupPathAssertionsAndUpdateActivePosterFromDiff:roleCoordinator:context:", "roleCoordinator: %{public}@ context: %{public}@", buf, 0x16u);
   }
 
   spid = v13;
 
-  v16 = [v10 role];
-  v17 = [v16 stringByAppendingFormat:@"-%@", @"Configuration Used in Switcher"];
-  v18 = [v16 stringByAppendingFormat:@"-%@", @"In use by home screen poster"];
-  v85 = [v16 stringByAppendingFormat:@"-%@", @"User-Selected Configuration"];
-  v87 = [v16 stringByAppendingFormat:@"-%@", @"Active Configuration"];
-  v19 = [v9 initialCollection];
-  v20 = [v9 newCollection];
+  role = [coordinatorCopy role];
+  v17 = [role stringByAppendingFormat:@"-%@", @"Configuration Used in Switcher"];
+  v18 = [role stringByAppendingFormat:@"-%@", @"In use by home screen poster"];
+  v85 = [role stringByAppendingFormat:@"-%@", @"User-Selected Configuration"];
+  v87 = [role stringByAppendingFormat:@"-%@", @"Active Configuration"];
+  initialCollection = [diffCopy initialCollection];
+  newCollection = [diffCopy newCollection];
   v21 = self->_assertionManager;
-  v89 = v16;
-  v90 = self;
-  v22 = [(PBFPosterExtensionDataStore *)self activePosterConfigurationForRole:v16 assocPoster:0];
-  v78 = v11;
-  v79 = v10;
-  v23 = [v10 determineActivePosterConfigurationForContext:v11];
-  v24 = [v19 selectedPoster];
-  v25 = [v20 selectedPoster];
+  v89 = role;
+  selfCopy = self;
+  v22 = [(PBFPosterExtensionDataStore *)self activePosterConfigurationForRole:role assocPoster:0];
+  v78 = contextCopy;
+  v79 = coordinatorCopy;
+  v23 = [coordinatorCopy determineActivePosterConfigurationForContext:contextCopy];
+  selectedPoster = [initialCollection selectedPoster];
+  selectedPoster2 = [newCollection selectedPoster];
   v99[0] = MEMORY[0x277D85DD0];
   v99[1] = 3221225472;
   v99[2] = __115__PBFPosterExtensionDataStore__stateLock_setupPathAssertionsAndUpdateActivePosterFromDiff_roleCoordinator_context___block_invoke;
   v99[3] = &unk_2782C63B0;
-  v80 = v9;
-  v100 = v9;
+  v80 = diffCopy;
+  v100 = diffCopy;
   v26 = v17;
   v101 = v26;
-  v102 = v19;
+  v102 = initialCollection;
   v27 = v18;
   v103 = v27;
-  v82 = v24;
+  v82 = selectedPoster;
   v104 = v82;
   v28 = v85;
   v105 = v28;
-  v81 = v25;
+  v81 = selectedPoster2;
   v106 = v81;
   v29 = v23;
   v107 = v29;
@@ -10479,7 +10479,7 @@ void __111__PBFPosterExtensionDataStore__stateLock_executeDataStoreUpdateWithCha
   v108 = v83;
   v88 = v87;
   v109 = v88;
-  v30 = v20;
+  v30 = newCollection;
   v110 = v30;
   v76 = v102;
   v84 = v29;
@@ -10493,14 +10493,14 @@ void __111__PBFPosterExtensionDataStore__stateLock_executeDataStoreUpdateWithCha
       v33 = v89;
       v112 = v89;
       _os_log_impl(&dword_21B526000, v32, OS_LOG_TYPE_DEFAULT, "Role %{public}@ had no changes... moving on...", buf, 0xCu);
-      v10 = v79;
-      v11 = v78;
+      coordinatorCopy = v79;
+      contextCopy = v78;
     }
 
     else
     {
-      v10 = v79;
-      v11 = v78;
+      coordinatorCopy = v79;
+      contextCopy = v78;
       v33 = v89;
     }
 
@@ -10517,10 +10517,10 @@ void __111__PBFPosterExtensionDataStore__stateLock_executeDataStoreUpdateWithCha
     v31 = 0;
   }
 
-  [(PBFPosterExtensionDataStore *)v90 markPosterConfigurationAsActive:v31 forRole:v89];
-  v34 = [(PBFPosterExtensionDataStoreAssertionManager *)v90->_assertionManager numberOfAssertionsForReason:v26];
-  v35 = [v30 orderedPosters];
-  v36 = [v35 count];
+  [(PBFPosterExtensionDataStore *)selfCopy markPosterConfigurationAsActive:v31 forRole:v89];
+  v34 = [(PBFPosterExtensionDataStoreAssertionManager *)selfCopy->_assertionManager numberOfAssertionsForReason:v26];
+  orderedPosters = [v30 orderedPosters];
+  v36 = [orderedPosters count];
 
   v37 = PBFLogDataStore();
   v38 = v37;
@@ -10544,13 +10544,13 @@ void __111__PBFPosterExtensionDataStore__stateLock_executeDataStoreUpdateWithCha
   }
 
   v71 = v26;
-  v32 = [(PBFPosterExtensionDataStoreAssertionManager *)v90->_assertionManager inUsePosterPathIdentitiesForReason:v26];
+  v32 = [(PBFPosterExtensionDataStoreAssertionManager *)selfCopy->_assertionManager inUsePosterPathIdentitiesForReason:v26];
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
   v98 = 0u;
-  v39 = [v30 orderedPosters];
-  v40 = [v39 countByEnumeratingWithState:&v95 objects:v120 count:16];
+  orderedPosters2 = [v30 orderedPosters];
+  v40 = [orderedPosters2 countByEnumeratingWithState:&v95 objects:v120 count:16];
   if (v40)
   {
     v41 = v40;
@@ -10561,12 +10561,12 @@ void __111__PBFPosterExtensionDataStore__stateLock_executeDataStoreUpdateWithCha
       {
         if (*v96 != v42)
         {
-          objc_enumerationMutation(v39);
+          objc_enumerationMutation(orderedPosters2);
         }
 
-        v44 = [*(*(&v95 + 1) + 8 * i) _path];
-        v45 = [v44 serverIdentity];
-        v46 = [v32 containsObject:v45];
+        _path = [*(*(&v95 + 1) + 8 * i) _path];
+        serverIdentity = [_path serverIdentity];
+        v46 = [v32 containsObject:serverIdentity];
 
         if ((v46 & 1) == 0)
         {
@@ -10574,20 +10574,20 @@ void __111__PBFPosterExtensionDataStore__stateLock_executeDataStoreUpdateWithCha
         }
       }
 
-      v41 = [v39 countByEnumeratingWithState:&v95 objects:v120 count:16];
+      v41 = [orderedPosters2 countByEnumeratingWithState:&v95 objects:v120 count:16];
     }
 
     while (v41);
   }
 
   v86 = v27;
-  v47 = [(PBFPosterExtensionDataStoreAssertionManager *)v90->_assertionManager inUsePosterPathIdentitiesForReason:v27];
+  v47 = [(PBFPosterExtensionDataStoreAssertionManager *)selfCopy->_assertionManager inUsePosterPathIdentitiesForReason:v27];
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
   v94 = 0u;
-  v48 = [v30 associatedPosters];
-  v49 = [v48 countByEnumeratingWithState:&v91 objects:v119 count:16];
+  associatedPosters = [v30 associatedPosters];
+  v49 = [associatedPosters countByEnumeratingWithState:&v91 objects:v119 count:16];
   if (v49)
   {
     v50 = v49;
@@ -10598,12 +10598,12 @@ void __111__PBFPosterExtensionDataStore__stateLock_executeDataStoreUpdateWithCha
       {
         if (*v92 != v51)
         {
-          objc_enumerationMutation(v48);
+          objc_enumerationMutation(associatedPosters);
         }
 
-        v53 = [*(*(&v91 + 1) + 8 * j) _path];
-        v54 = [v53 serverIdentity];
-        v55 = [v47 containsObject:v54];
+        _path2 = [*(*(&v91 + 1) + 8 * j) _path];
+        serverIdentity2 = [_path2 serverIdentity];
+        v55 = [v47 containsObject:serverIdentity2];
 
         if ((v55 & 1) == 0)
         {
@@ -10611,13 +10611,13 @@ void __111__PBFPosterExtensionDataStore__stateLock_executeDataStoreUpdateWithCha
         }
       }
 
-      v50 = [v48 countByEnumeratingWithState:&v91 objects:v119 count:16];
+      v50 = [associatedPosters countByEnumeratingWithState:&v91 objects:v119 count:16];
     }
 
     while (v50);
   }
 
-  v56 = [(PBFPosterExtensionDataStoreAssertionManager *)v90->_assertionManager numberOfAssertionsForReason:v88];
+  v56 = [(PBFPosterExtensionDataStoreAssertionManager *)selfCopy->_assertionManager numberOfAssertionsForReason:v88];
   v57 = PBFLogDataStore();
   v58 = v57;
   if (v56 < 2)
@@ -10656,7 +10656,7 @@ void __111__PBFPosterExtensionDataStore__stateLock_executeDataStoreUpdateWithCha
     }
   }
 
-  v60 = [(PBFPosterExtensionDataStoreAssertionManager *)v90->_assertionManager numberOfAssertionsForReason:v59];
+  v60 = [(PBFPosterExtensionDataStoreAssertionManager *)selfCopy->_assertionManager numberOfAssertionsForReason:v59];
   if (v60 && ([v30 selectedPoster], v61 = objc_claimAutoreleasedReturnValue(), v61, v61))
   {
     v62 = PBFLogDataStore();
@@ -10691,51 +10691,51 @@ void __111__PBFPosterExtensionDataStore__stateLock_executeDataStoreUpdateWithCha
     }
   }
 
-  v63 = [(PBFPosterExtensionDataStoreAssertionManager *)v90->_assertionManager numberOfAssertionsForReason:v86];
-  v64 = [v30 associatedPosterUUIDs];
-  v65 = [v64 count];
+  v63 = [(PBFPosterExtensionDataStoreAssertionManager *)selfCopy->_assertionManager numberOfAssertionsForReason:v86];
+  associatedPosterUUIDs = [v30 associatedPosterUUIDs];
+  v65 = [associatedPosterUUIDs count];
 
   v66 = PBFLogDataStore();
   v67 = v66;
   if (v63 != v65)
   {
-    v9 = v80;
+    diffCopy = v80;
     v21 = v72;
     if (!os_log_type_enabled(v66, OS_LOG_TYPE_FAULT))
     {
       goto LABEL_49;
     }
 
-    v68 = [v30 associatedPosterUUIDs];
+    associatedPosterUUIDs2 = [v30 associatedPosterUUIDs];
     *buf = 138543874;
     v112 = v33;
     v113 = 2048;
     v114 = v63;
     v115 = 2114;
-    v116 = v68;
+    v116 = associatedPosterUUIDs2;
     _os_log_fault_impl(&dword_21B526000, v67, OS_LOG_TYPE_FAULT, "Role %{public}@ numberOfInUseAssocPostersInUseAssertions %lu; associatedPosterUUIDs: %{public}@", buf, 0x20u);
     goto LABEL_47;
   }
 
-  v9 = v80;
+  diffCopy = v80;
   v21 = v72;
   if (os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
   {
-    v68 = [v30 associatedPosterUUIDs];
+    associatedPosterUUIDs2 = [v30 associatedPosterUUIDs];
     *buf = 138543874;
     v112 = v33;
     v113 = 2048;
     v114 = v63;
     v115 = 2114;
-    v116 = v68;
+    v116 = associatedPosterUUIDs2;
     _os_log_impl(&dword_21B526000, v67, OS_LOG_TYPE_DEFAULT, "Role %{public}@ numberOfInUseAssocPostersInUseAssertions %lu; associatedPosterUUIDs: %{public}@", buf, 0x20u);
 LABEL_47:
   }
 
 LABEL_49:
 
-  v11 = v78;
-  v10 = v79;
+  contextCopy = v78;
+  coordinatorCopy = v79;
   v26 = v71;
   v28 = v73;
 LABEL_50:
@@ -10745,9 +10745,9 @@ LABEL_50:
   if (v77 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v69))
   {
     *buf = 138543618;
-    v112 = v10;
+    v112 = coordinatorCopy;
     v113 = 2114;
-    v114 = v11;
+    v114 = contextCopy;
     _os_signpost_emit_with_name_impl(&dword_21B526000, v70, OS_SIGNPOST_INTERVAL_END, spid, "_stateLock_setupPathAssertionsAndUpdateActivePosterFromDiff:roleCoordinator:context:", "roleCoordinator: %{public}@ context: %{public}@", buf, 0x16u);
   }
 
@@ -11023,25 +11023,25 @@ id __115__PBFPosterExtensionDataStore__stateLock_setupPathAssertionsAndUpdateAct
   return v3;
 }
 
-- (void)_stateLock_pushUpdateNotificationsForRole:(id)a3 diff:(id)a4 previouslyActiveConfiguration:(id)a5 newActiveConfiguration:(id)a6 options:(unint64_t)a7 reason:(id)a8 context:(id)a9
+- (void)_stateLock_pushUpdateNotificationsForRole:(id)role diff:(id)diff previouslyActiveConfiguration:(id)configuration newActiveConfiguration:(id)activeConfiguration options:(unint64_t)options reason:(id)reason context:(id)context
 {
   v197 = *MEMORY[0x277D85DE8];
-  v139 = a3;
-  v136 = a4;
-  v124 = a5;
-  v125 = a6;
-  v122 = a8;
-  v14 = a9;
-  v138 = self;
+  roleCopy = role;
+  diffCopy = diff;
+  configurationCopy = configuration;
+  activeConfigurationCopy = activeConfiguration;
+  reasonCopy = reason;
+  contextCopy = context;
+  selfCopy = self;
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) != 0)
   {
     goto LABEL_171;
   }
 
-  v120 = v14;
-  v15 = [v14 pbf_transitionContextIdentifier];
-  v16 = [v15 UUIDString];
-  v137 = [v16 substringToIndex:7];
+  v120 = contextCopy;
+  pbf_transitionContextIdentifier = [contextCopy pbf_transitionContextIdentifier];
+  uUIDString = [pbf_transitionContextIdentifier UUIDString];
+  v137 = [uUIDString substringToIndex:7];
 
   v17 = PBFLogDataStore();
   spid = os_signpost_id_generate(v17);
@@ -11051,17 +11051,17 @@ id __115__PBFPosterExtensionDataStore__stateLock_setupPathAssertionsAndUpdateAct
   if (spid - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
   {
     *buf = 138544642;
-    v188 = v139;
+    v188 = roleCopy;
     v189 = 2114;
-    v190 = v124;
+    v190 = configurationCopy;
     v191 = 2114;
-    *v192 = v125;
+    *v192 = activeConfigurationCopy;
     *&v192[8] = 2048;
-    v193 = a7;
+    optionsCopy = options;
     *v194 = 2114;
-    *&v194[2] = v122;
+    *&v194[2] = reasonCopy;
     v195 = 2114;
-    v196 = v14;
+    v196 = contextCopy;
     _os_signpost_emit_with_name_impl(&dword_21B526000, v19, OS_SIGNPOST_INTERVAL_BEGIN, spid, "pushUpdateNotificationsForRole", "role: '%{public}@'; previousActivePosterConfiguration:'%{public}@' newlyActivatedConfiguration:'%{public}@'; options:'%lu' reason:'%{public}@'; context:'%{public}@';", buf, 0x3Eu);
   }
 
@@ -11071,30 +11071,30 @@ id __115__PBFPosterExtensionDataStore__stateLock_setupPathAssertionsAndUpdateAct
     *buf = 138543618;
     v188 = v137;
     v189 = 2114;
-    v190 = v139;
+    v190 = roleCopy;
     _os_log_impl(&dword_21B526000, v20, OS_LOG_TYPE_DEFAULT, "(%{public}@) Preparing to issue update notifications for role %{public}@", buf, 0x16u);
   }
 
-  v118 = [v136 newCollection];
-  v116 = [v118 selectedPoster];
-  v123 = [v136 addedPosters];
-  v119 = [v136 updatedPosters];
-  v121 = [v136 removedPosters];
-  v127 = [v136 selectedPostersAreEqual];
+  newCollection = [diffCopy newCollection];
+  selectedPoster = [newCollection selectedPoster];
+  addedPosters = [diffCopy addedPosters];
+  updatedPosters = [diffCopy updatedPosters];
+  removedPosters = [diffCopy removedPosters];
+  selectedPostersAreEqual = [diffCopy selectedPostersAreEqual];
   v131 = BSEqualObjects();
-  v21 = ![v136 orderedPostersAreEqual] || !objc_msgSend(v136, "associatedPostersAreEqual") || objc_msgSend(v119, "count") != 0;
+  v21 = ![diffCopy orderedPostersAreEqual] || !objc_msgSend(diffCopy, "associatedPostersAreEqual") || objc_msgSend(updatedPosters, "count") != 0;
   v112 = v21;
-  v113 = [v123 count];
-  v111 = [v121 count];
-  v135 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  v113 = [addedPosters count];
+  v111 = [removedPosters count];
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   v178 = 0u;
   v179 = 0u;
   v176 = 0u;
   v177 = 0u;
-  v22 = [v136 newCollection];
-  v23 = [v22 orderedPosters];
+  newCollection2 = [diffCopy newCollection];
+  orderedPosters = [newCollection2 orderedPosters];
 
-  v24 = [v23 countByEnumeratingWithState:&v176 objects:v186 count:16];
+  v24 = [orderedPosters countByEnumeratingWithState:&v176 objects:v186 count:16];
   if (v24)
   {
     v25 = *v177;
@@ -11104,29 +11104,29 @@ id __115__PBFPosterExtensionDataStore__stateLock_setupPathAssertionsAndUpdateAct
       {
         if (*v177 != v25)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(orderedPosters);
         }
 
         v27 = *(*(&v176 + 1) + 8 * i);
-        v28 = [v136 newCollection];
-        v29 = [v28 associatedPosterForPoster:v27];
+        newCollection3 = [diffCopy newCollection];
+        v29 = [newCollection3 associatedPosterForPoster:v27];
 
         if (v29)
         {
-          [v135 setObject:v29 forKey:v27];
+          [strongToStrongObjectsMapTable setObject:v29 forKey:v27];
         }
       }
 
-      v24 = [v23 countByEnumeratingWithState:&v176 objects:v186 count:16];
+      v24 = [orderedPosters countByEnumeratingWithState:&v176 objects:v186 count:16];
     }
 
     while (v24);
   }
 
   v133 = *MEMORY[0x277D3EEF0];
-  if ([v139 isEqual:?])
+  if ([roleCopy isEqual:?])
   {
-    if (([v136 isEqual] & v127 & v131) == 1 && (objc_msgSend(v120, "isInitialUpdate") & 1) == 0 && v138->_stateLock_switcherConfiguration)
+    if (([diffCopy isEqual] & selectedPostersAreEqual & v131) == 1 && (objc_msgSend(v120, "isInitialUpdate") & 1) == 0 && selfCopy->_stateLock_switcherConfiguration)
     {
       v30 = PBFLogDataStore();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -11134,7 +11134,7 @@ id __115__PBFPosterExtensionDataStore__stateLock_setupPathAssertionsAndUpdateAct
         *buf = 138543618;
         v188 = v137;
         v189 = 2114;
-        v190 = v139;
+        v190 = roleCopy;
         _os_log_impl(&dword_21B526000, v30, OS_LOG_TYPE_DEFAULT, "(%{public}@) Did *NOT* update switcher model for role %{public}@", buf, 0x16u);
       }
 
@@ -11147,16 +11147,16 @@ id __115__PBFPosterExtensionDataStore__stateLock_setupPathAssertionsAndUpdateAct
       *buf = 138543618;
       v188 = v137;
       v189 = 2114;
-      v190 = v139;
+      v190 = roleCopy;
       _os_log_impl(&dword_21B526000, v31, OS_LOG_TYPE_DEFAULT, "(%{public}@) preparing to update switcher model for role %{public}@", buf, 0x16u);
     }
 
     v175 = 0;
-    v32 = [(PBFPosterExtensionDataStore *)v138 _stateLock_buildSwitcherConfigurationWithContext:v120 outMutated:&v175];
-    if (([v120 isInitialUpdate] & 1) != 0 || !v138->_stateLock_switcherConfiguration)
+    v32 = [(PBFPosterExtensionDataStore *)selfCopy _stateLock_buildSwitcherConfigurationWithContext:v120 outMutated:&v175];
+    if (([v120 isInitialUpdate] & 1) != 0 || !selfCopy->_stateLock_switcherConfiguration)
     {
-      v36 = [v118 orderedPosters];
-      v37 = [v36 count];
+      orderedPosters2 = [newCollection orderedPosters];
+      v37 = [orderedPosters2 count];
 
       v38 = PBFLogDataStore();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
@@ -11164,12 +11164,12 @@ id __115__PBFPosterExtensionDataStore__stateLock_setupPathAssertionsAndUpdateAct
         *buf = 138543618;
         v188 = v137;
         v189 = 2114;
-        v190 = v139;
+        v190 = roleCopy;
         _os_log_impl(&dword_21B526000, v38, OS_LOG_TYPE_DEFAULT, "(%{public}@) Initializing switcher model for role %{public}@", buf, 0x16u);
       }
 
-      objc_storeStrong(&v138->_stateLock_switcherConfiguration, v32);
-      [(PBFPosterExtensionDataStore *)v138 _notifyObserversDidInitializeWithSwitcherConfiguration:v138->_stateLock_switcherConfiguration withChanges:(v37 == 0) | (v175 & 1)];
+      objc_storeStrong(&selfCopy->_stateLock_switcherConfiguration, v32);
+      [(PBFPosterExtensionDataStore *)selfCopy _notifyObserversDidInitializeWithSwitcherConfiguration:selfCopy->_stateLock_switcherConfiguration withChanges:(v37 == 0) | (v175 & 1)];
       v34 = PBFLogDataStore();
       if (!os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
@@ -11179,24 +11179,24 @@ id __115__PBFPosterExtensionDataStore__stateLock_setupPathAssertionsAndUpdateAct
       *buf = 138543618;
       v188 = v137;
       v189 = 2114;
-      v190 = v139;
+      v190 = roleCopy;
       v35 = "(%{public}@) Initialized switcher model for role %{public}@";
     }
 
     else
     {
-      objc_storeStrong(&v138->_stateLock_switcherConfiguration, v32);
+      objc_storeStrong(&selfCopy->_stateLock_switcherConfiguration, v32);
       v33 = PBFLogDataStore();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
         v188 = v137;
         v189 = 2114;
-        v190 = v139;
+        v190 = roleCopy;
         _os_log_impl(&dword_21B526000, v33, OS_LOG_TYPE_DEFAULT, "(%{public}@) Updated switcher model for role %{public}@", buf, 0x16u);
       }
 
-      [(PBFPosterExtensionDataStore *)v138 _notifyObserversDidUpdateSwitcherConfiguration:v32];
+      [(PBFPosterExtensionDataStore *)selfCopy _notifyObserversDidUpdateSwitcherConfiguration:v32];
       v34 = PBFLogDataStore();
       if (!os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
@@ -11206,7 +11206,7 @@ id __115__PBFPosterExtensionDataStore__stateLock_setupPathAssertionsAndUpdateAct
       *buf = 138543618;
       v188 = v137;
       v189 = 2114;
-      v190 = v139;
+      v190 = roleCopy;
       v35 = "(%{public}@) Notified observers for updated switcher configuration for role %{public}@";
     }
 
@@ -11214,7 +11214,7 @@ id __115__PBFPosterExtensionDataStore__stateLock_setupPathAssertionsAndUpdateAct
 LABEL_40:
 
 LABEL_41:
-    if (v127)
+    if (selectedPostersAreEqual)
     {
       v39 = PBFLogDataStore();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -11222,22 +11222,22 @@ LABEL_41:
         *buf = 138543618;
         v188 = v137;
         v189 = 2114;
-        v190 = v139;
+        v190 = roleCopy;
         _os_log_impl(&dword_21B526000, v39, OS_LOG_TYPE_DEFAULT, "(%{public}@) Skipping notify of updated selected configuration for role %{public}@", buf, 0x16u);
       }
     }
 
     else
     {
-      v39 = [(PRSwitcherConfiguration *)v138->_stateLock_switcherConfiguration homeScreenPosterConfigurationForPosterConfiguration:v116];
-      [(PBFPosterExtensionDataStore *)v138 _notifyObserversDidUpdateSelectedConfiguration:v116 associatedConfiguration:v39 reason:v122];
+      v39 = [(PRSwitcherConfiguration *)selfCopy->_stateLock_switcherConfiguration homeScreenPosterConfigurationForPosterConfiguration:selectedPoster];
+      [(PBFPosterExtensionDataStore *)selfCopy _notifyObserversDidUpdateSelectedConfiguration:selectedPoster associatedConfiguration:v39 reason:reasonCopy];
       v40 = PBFLogDataStore();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
         v188 = v137;
         v189 = 2114;
-        v190 = v139;
+        v190 = roleCopy;
         _os_log_impl(&dword_21B526000, v40, OS_LOG_TYPE_DEFAULT, "(%{public}@) Did notify of updated selected configuration for role %{public}@", buf, 0x16u);
       }
     }
@@ -11251,7 +11251,7 @@ LABEL_41:
         *buf = 138543618;
         v188 = v137;
         v189 = 2114;
-        v190 = v139;
+        v190 = roleCopy;
         _os_log_impl(&dword_21B526000, v41, OS_LOG_TYPE_DEFAULT, "(%{public}@) Did *NOT* notify of updated active configuration for role %{public}@", buf, 0x16u);
       }
     }
@@ -11263,35 +11263,35 @@ LABEL_41:
         *buf = 138543618;
         v188 = v137;
         v189 = 2114;
-        v190 = v139;
+        v190 = roleCopy;
         _os_log_impl(&dword_21B526000, v41, OS_LOG_TYPE_DEFAULT, "(%{public}@) preparing to update last activated date for role %{public}@", buf, 0x16u);
       }
 
-      v43 = [v125 _path];
-      v44 = [v43 serverIdentity];
-      v45 = [v44 posterUUID];
+      _path = [activeConfigurationCopy _path];
+      serverIdentity = [_path serverIdentity];
+      posterUUID = [serverIdentity posterUUID];
 
       v174 = 0;
-      [(PBFPosterExtensionDataStore *)v138 _stateLock_findStoreCoordinatorsForUUID:v45 extensionStoreCoordinator:0 configurationStoreCoordinator:&v174];
+      [(PBFPosterExtensionDataStore *)selfCopy _stateLock_findStoreCoordinatorsForUUID:posterUUID extensionStoreCoordinator:0 configurationStoreCoordinator:&v174];
       v41 = v174;
-      v46 = [v41 providerInfo];
-      v47 = [v46 mutableCopy];
+      providerInfo = [v41 providerInfo];
+      v47 = [providerInfo mutableCopy];
       v48 = v47;
       if (v47)
       {
-        v49 = v47;
+        dictionary = v47;
       }
 
       else
       {
-        v49 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
       }
 
       v50 = [MEMORY[0x277CBEAA8] now];
-      [v49 setObject:v50 forKeyedSubscript:@"kConfigurationLastUseDateKey"];
+      [dictionary setObject:v50 forKeyedSubscript:@"kConfigurationLastUseDateKey"];
 
       v173 = 0;
-      LODWORD(v50) = [v41 setProviderInfo:v49 error:&v173];
+      LODWORD(v50) = [v41 setProviderInfo:dictionary error:&v173];
       v51 = v173;
       v52 = PBFLogDataStore();
       v53 = v52;
@@ -11302,9 +11302,9 @@ LABEL_41:
           *buf = 138543874;
           v188 = v137;
           v189 = 2114;
-          v190 = v45;
+          v190 = posterUUID;
           v191 = 2114;
-          *v192 = v139;
+          *v192 = roleCopy;
           _os_log_impl(&dword_21B526000, v53, OS_LOG_TYPE_DEFAULT, "(%{public}@) Success updating last activated date for poster %{public}@ in role %{public}@", buf, 0x20u);
         }
       }
@@ -11314,11 +11314,11 @@ LABEL_41:
         *buf = 138544130;
         v188 = v137;
         v189 = 2114;
-        v190 = v45;
+        v190 = posterUUID;
         v191 = 2114;
-        *v192 = v139;
+        *v192 = roleCopy;
         *&v192[8] = 2114;
-        v193 = v51;
+        optionsCopy = v51;
         _os_log_error_impl(&dword_21B526000, v53, OS_LOG_TYPE_ERROR, "(%{public}@) FAILED updating last activated date for poster %{public}@ in role %{public}@: %{public}@", buf, 0x2Au);
       }
 
@@ -11328,31 +11328,31 @@ LABEL_41:
         *buf = 138543618;
         v188 = v137;
         v189 = 2114;
-        v190 = v139;
+        v190 = roleCopy;
         _os_log_impl(&dword_21B526000, v54, OS_LOG_TYPE_DEFAULT, "(%{public}@) Preparing to notify observers for updated active configuration for role %{public}@", buf, 0x16u);
       }
 
-      v55 = [v118 associatedPosterForPoster:v125];
-      [(PBFPosterExtensionDataStore *)v138 _notifyObserversDidUpdateActiveConfiguration:v125 associatedConfiguration:v55 reason:v122];
+      v55 = [newCollection associatedPosterForPoster:activeConfigurationCopy];
+      [(PBFPosterExtensionDataStore *)selfCopy _notifyObserversDidUpdateActiveConfiguration:activeConfigurationCopy associatedConfiguration:v55 reason:reasonCopy];
       v56 = PBFLogDataStore();
       if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
         v188 = v137;
         v189 = 2114;
-        v190 = v139;
+        v190 = roleCopy;
         _os_log_impl(&dword_21B526000, v56, OS_LOG_TYPE_DEFAULT, "(%{public}@) Notified observers for updated active configuration for role %{public}@", buf, 0x16u);
       }
     }
   }
 
-  if ([v119 count])
+  if ([updatedPosters count])
   {
     v171 = 0u;
     v172 = 0u;
     v169 = 0u;
     v170 = 0u;
-    v57 = v119;
+    v57 = updatedPosters;
     v58 = [v57 countByEnumeratingWithState:&v169 objects:v185 count:16];
     if (v58)
     {
@@ -11375,11 +11375,11 @@ LABEL_41:
             v189 = 2114;
             v190 = v61;
             v191 = 2114;
-            *v192 = v139;
+            *v192 = roleCopy;
             _os_log_impl(&dword_21B526000, v62, OS_LOG_TYPE_DEFAULT, "(%{public}@) Preparing to notify observers for updated configuration %{public}@ for role %{public}@", buf, 0x20u);
           }
 
-          [(PBFPosterExtensionDataStore *)v138 _notifyObserversDidUpdateConfiguration:v61];
+          [(PBFPosterExtensionDataStore *)selfCopy _notifyObserversDidUpdateConfiguration:v61];
           v63 = PBFLogDataStore();
           if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
           {
@@ -11388,7 +11388,7 @@ LABEL_41:
             v189 = 2114;
             v190 = v61;
             v191 = 2114;
-            *v192 = v139;
+            *v192 = roleCopy;
             _os_log_impl(&dword_21B526000, v63, OS_LOG_TYPE_DEFAULT, "(%{public}@) Notified observers for updated configuration %{public}@ for role %{public}@", buf, 0x20u);
           }
         }
@@ -11408,18 +11408,18 @@ LABEL_41:
       *buf = 138543618;
       v188 = v137;
       v189 = 2114;
-      v190 = v139;
+      v190 = roleCopy;
       _os_log_impl(&dword_21B526000, v57, OS_LOG_TYPE_DEFAULT, "(%{public}@) Did *NOT* notify observers for specific updated configurations for role %{public}@", buf, 0x16u);
     }
   }
 
-  if ([v123 count] || (objc_msgSend(v136, "isEqual") & 1) == 0)
+  if ([addedPosters count] || (objc_msgSend(diffCopy, "isEqual") & 1) == 0)
   {
     v167 = 0u;
     v168 = 0u;
     v165 = 0u;
     v166 = 0u;
-    v64 = v123;
+    v64 = addedPosters;
     v65 = [v64 countByEnumeratingWithState:&v165 objects:v184 count:16];
     if (v65)
     {
@@ -11442,11 +11442,11 @@ LABEL_41:
             v189 = 2114;
             v190 = v68;
             v191 = 2114;
-            *v192 = v139;
+            *v192 = roleCopy;
             _os_log_impl(&dword_21B526000, v69, OS_LOG_TYPE_DEFAULT, "(%{public}@) Preparing to notify observers for added configuration %{public}@ for role %{public}@", buf, 0x20u);
           }
 
-          [(PBFPosterExtensionDataStore *)v138 _notifyObserversDidAddConfiguration:v68];
+          [(PBFPosterExtensionDataStore *)selfCopy _notifyObserversDidAddConfiguration:v68];
           v70 = PBFLogDataStore();
           if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
           {
@@ -11455,7 +11455,7 @@ LABEL_41:
             v189 = 2114;
             v190 = v68;
             v191 = 2114;
-            *v192 = v139;
+            *v192 = roleCopy;
             _os_log_impl(&dword_21B526000, v70, OS_LOG_TYPE_DEFAULT, "(%{public}@) Notified observers for added configuration %{public}@ for role %{public}@", buf, 0x20u);
           }
         }
@@ -11475,18 +11475,18 @@ LABEL_41:
       *buf = 138543618;
       v188 = v137;
       v189 = 2114;
-      v190 = v139;
+      v190 = roleCopy;
       _os_log_impl(&dword_21B526000, v64, OS_LOG_TYPE_DEFAULT, "(%{public}@) Did *NOT* notify observers for added configurations for role %{public}@", buf, 0x16u);
     }
   }
 
-  if ([v121 count])
+  if ([removedPosters count])
   {
     v163 = 0u;
     v164 = 0u;
     v161 = 0u;
     v162 = 0u;
-    v71 = v121;
+    v71 = removedPosters;
     v72 = [v71 countByEnumeratingWithState:&v161 objects:v183 count:16];
     if (v72)
     {
@@ -11509,11 +11509,11 @@ LABEL_41:
             v189 = 2114;
             v190 = v75;
             v191 = 2114;
-            *v192 = v139;
+            *v192 = roleCopy;
             _os_log_impl(&dword_21B526000, v76, OS_LOG_TYPE_DEFAULT, "(%{public}@) Preparing to notify observers for deleted configuration %{public}@ for role %{public}@", buf, 0x20u);
           }
 
-          [(PBFPosterExtensionDataStore *)v138 _notifyObserversDidDeleteConfiguration:v75];
+          [(PBFPosterExtensionDataStore *)selfCopy _notifyObserversDidDeleteConfiguration:v75];
           v77 = PBFLogDataStore();
           if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
           {
@@ -11522,7 +11522,7 @@ LABEL_41:
             v189 = 2114;
             v190 = v75;
             v191 = 2114;
-            *v192 = v139;
+            *v192 = roleCopy;
             _os_log_impl(&dword_21B526000, v77, OS_LOG_TYPE_DEFAULT, "(%{public}@) Notified observers for deleted configuration %{public}@ for role %{public}@", buf, 0x20u);
           }
         }
@@ -11542,12 +11542,12 @@ LABEL_41:
       *buf = 138543618;
       v188 = v137;
       v189 = 2114;
-      v190 = v139;
+      v190 = roleCopy;
       _os_log_impl(&dword_21B526000, v71, OS_LOG_TYPE_DEFAULT, "(%{public}@) Did *NOT* notify observers for deleted configurations for role %{public}@", buf, 0x16u);
     }
   }
 
-  if ([v135 count] && objc_msgSend(v139, "isEqual:", v133))
+  if ([strongToStrongObjectsMapTable count] && objc_msgSend(roleCopy, "isEqual:", v133))
   {
     v78 = PBFLogDataStore();
     if (os_log_type_enabled(v78, OS_LOG_TYPE_DEFAULT))
@@ -11555,9 +11555,9 @@ LABEL_41:
       *buf = 138543874;
       v188 = v137;
       v189 = 2114;
-      v190 = v135;
+      v190 = strongToStrongObjectsMapTable;
       v191 = 2114;
-      *v192 = v139;
+      *v192 = roleCopy;
       _os_log_impl(&dword_21B526000, v78, OS_LOG_TYPE_DEFAULT, "(%{public}@) Preparing to notify observers for changes to associated posters %{public}@ for role %{public}@", buf, 0x20u);
     }
 
@@ -11565,8 +11565,8 @@ LABEL_41:
     v160 = 0u;
     v157 = 0u;
     v158 = 0u;
-    v79 = [v135 keyEnumerator];
-    v80 = [v79 countByEnumeratingWithState:&v157 objects:v182 count:16];
+    keyEnumerator = [strongToStrongObjectsMapTable keyEnumerator];
+    v80 = [keyEnumerator countByEnumeratingWithState:&v157 objects:v182 count:16];
     if (v80)
     {
       v81 = *v158;
@@ -11576,11 +11576,11 @@ LABEL_41:
         {
           if (*v158 != v81)
           {
-            objc_enumerationMutation(v79);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v83 = *(*(&v157 + 1) + 8 * n);
-          v84 = [v135 objectForKey:v83];
+          v84 = [strongToStrongObjectsMapTable objectForKey:v83];
           if (v84)
           {
             v85 = PBFLogDataStore();
@@ -11591,11 +11591,11 @@ LABEL_41:
               v189 = 2114;
               v190 = v84;
               v191 = 2114;
-              *v192 = v139;
+              *v192 = roleCopy;
               _os_log_impl(&dword_21B526000, v85, OS_LOG_TYPE_DEFAULT, "(%{public}@) Preparing to notify observers for updated associated poster %{public}@ for role %{public}@", buf, 0x20u);
             }
 
-            [(PBFPosterExtensionDataStore *)v138 _notifyObserversDidUpdateConfiguration:v83 homeScreenAssociatedConfiguration:v84];
+            [(PBFPosterExtensionDataStore *)selfCopy _notifyObserversDidUpdateConfiguration:v83 homeScreenAssociatedConfiguration:v84];
             v86 = PBFLogDataStore();
             if (os_log_type_enabled(v86, OS_LOG_TYPE_DEFAULT))
             {
@@ -11604,13 +11604,13 @@ LABEL_41:
               v189 = 2114;
               v190 = v84;
               v191 = 2114;
-              *v192 = v139;
+              *v192 = roleCopy;
               _os_log_impl(&dword_21B526000, v86, OS_LOG_TYPE_DEFAULT, "(%{public}@) Notified observers for updated associated poster %{public}@ for role %{public}@", buf, 0x20u);
             }
           }
         }
 
-        v80 = [v79 countByEnumeratingWithState:&v157 objects:v182 count:16];
+        v80 = [keyEnumerator countByEnumeratingWithState:&v157 objects:v182 count:16];
       }
 
       while (v80);
@@ -11619,22 +11619,22 @@ LABEL_41:
 
   else
   {
-    v79 = PBFLogDataStore();
-    if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
+    keyEnumerator = PBFLogDataStore();
+    if (os_log_type_enabled(keyEnumerator, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
       v188 = v137;
       v189 = 2114;
-      v190 = v139;
-      _os_log_impl(&dword_21B526000, v79, OS_LOG_TYPE_DEFAULT, "(%{public}@) Did *NOT* notify observers for changes to associated posters for role %{public}@", buf, 0x16u);
+      v190 = roleCopy;
+      _os_log_impl(&dword_21B526000, keyEnumerator, OS_LOG_TYPE_DEFAULT, "(%{public}@) Did *NOT* notify observers for changes to associated posters for role %{public}@", buf, 0x16u);
     }
   }
 
   v114 = v131 ^ 1;
-  v115 = v127 ^ 1;
-  if ([MEMORY[0x277D3EF30] proactiveGallerySupportedForRole:v139])
+  v115 = selectedPostersAreEqual ^ 1;
+  if ([MEMORY[0x277D3EF30] proactiveGallerySupportedForRole:roleCopy])
   {
-    if (((v114 | v115) & 1) != 0 || [v123 count] || objc_msgSend(v121, "count") != 0 || v112 || v111 != 0 || v113 != 0)
+    if (((v114 | v115) & 1) != 0 || [addedPosters count] || objc_msgSend(removedPosters, "count") != 0 || v112 || v111 != 0 || v113 != 0)
     {
       v87 = PBFLogDataStore();
       if (os_log_type_enabled(v87, OS_LOG_TYPE_DEFAULT))
@@ -11642,12 +11642,12 @@ LABEL_41:
         *buf = 138543618;
         v188 = v137;
         v189 = 2114;
-        v190 = v139;
+        v190 = roleCopy;
         _os_log_impl(&dword_21B526000, v87, OS_LOG_TYPE_DEFAULT, "(%{public}@) Pushing updated poster configurations for role %{public}@", buf, 0x16u);
       }
 
-      [(PBFPosterExtensionDataStore *)v138 _stateLock_pushPosterConfigurationsToProactiveWithCompletion:0];
-      [(PBFPosterExtensionDataStore *)v138 _notifyObserversDidUpdateConfigurations];
+      [(PBFPosterExtensionDataStore *)selfCopy _stateLock_pushPosterConfigurationsToProactiveWithCompletion:0];
+      [(PBFPosterExtensionDataStore *)selfCopy _notifyObserversDidUpdateConfigurations];
     }
 
     else
@@ -11658,13 +11658,13 @@ LABEL_41:
         *buf = 138543618;
         v188 = v137;
         v189 = 2114;
-        v190 = v139;
+        v190 = roleCopy;
         _os_log_impl(&dword_21B526000, v109, OS_LOG_TYPE_DEFAULT, "(%{public}@) DID NOT push updated poster configurations for role %{public}@", buf, 0x16u);
       }
     }
   }
 
-  if (!(v131 & 1 | (([v139 isEqual:v133] & 1) == 0)) && (objc_msgSend(v120, "pbf_transitionFromIncomingFocusModeChange") & 1) == 0 && objc_msgSend(v139, "isEqual:", v133))
+  if (!(v131 & 1 | (([roleCopy isEqual:v133] & 1) == 0)) && (objc_msgSend(v120, "pbf_transitionFromIncomingFocusModeChange") & 1) == 0 && objc_msgSend(roleCopy, "isEqual:", v133))
   {
     v88 = PBFLogDataStore();
     if (os_log_type_enabled(v88, OS_LOG_TYPE_DEFAULT))
@@ -11672,23 +11672,23 @@ LABEL_41:
       *buf = 138543618;
       v188 = v137;
       v189 = 2114;
-      v190 = v139;
+      v190 = roleCopy;
       _os_log_impl(&dword_21B526000, v88, OS_LOG_TYPE_DEFAULT, "(%{public}@) will update focus mode for active poster change for role %{public}@", buf, 0x16u);
     }
 
-    [(PBFPosterExtensionDataStore *)v138 _stateLock_updateFocusModeForActivePosterChange];
+    [(PBFPosterExtensionDataStore *)selfCopy _stateLock_updateFocusModeForActivePosterChange];
     v89 = PBFLogDataStore();
     if (os_log_type_enabled(v89, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
       v188 = v137;
       v189 = 2114;
-      v190 = v139;
+      v190 = roleCopy;
       _os_log_impl(&dword_21B526000, v89, OS_LOG_TYPE_DEFAULT, "(%{public}@) did update focus mode for active poster change for role %{public}@", buf, 0x16u);
     }
   }
 
-  if (!(a7 & 1 | (([v139 isEqual:v133] & 1) == 0)) && (objc_msgSend(v136, "isEqual") & 1) == 0 && objc_msgSend(v139, "isEqual:", v133) && (objc_msgSend(v120, "isInitialUpdate") & 1) == 0)
+  if (!(options & 1 | (([roleCopy isEqual:v133] & 1) == 0)) && (objc_msgSend(diffCopy, "isEqual") & 1) == 0 && objc_msgSend(roleCopy, "isEqual:", v133) && (objc_msgSend(v120, "isInitialUpdate") & 1) == 0)
   {
     v90 = PBFLogDataStore();
     if (os_log_type_enabled(v90, OS_LOG_TYPE_DEFAULT))
@@ -11696,26 +11696,26 @@ LABEL_41:
       *buf = 138543618;
       v188 = v137;
       v189 = 2114;
-      v190 = v139;
+      v190 = roleCopy;
       _os_log_impl(&dword_21B526000, v90, OS_LOG_TYPE_DEFAULT, "(%{public}@) will prewarm snapshots for role %{public}@", buf, 0x16u);
     }
 
     v91 = objc_opt_new();
-    v92 = [v136 addedPosters];
-    [v91 unionSet:v92];
+    addedPosters2 = [diffCopy addedPosters];
+    [v91 unionSet:addedPosters2];
 
-    v93 = [v136 addedAssocPosters];
-    [v91 unionSet:v93];
+    addedAssocPosters = [diffCopy addedAssocPosters];
+    [v91 unionSet:addedAssocPosters];
 
-    v94 = [v136 updatedPosters];
-    [v91 unionSet:v94];
+    updatedPosters2 = [diffCopy updatedPosters];
+    [v91 unionSet:updatedPosters2];
 
-    v95 = [v136 updatedAssocPosters];
-    [v91 unionSet:v95];
+    updatedAssocPosters = [diffCopy updatedAssocPosters];
+    [v91 unionSet:updatedAssocPosters];
 
     v130 = +[PBFGenericDisplayContext mainScreenDisplayContextsForKnownOrientations];
-    v96 = v138->_snapshotManager;
-    objc_initWeak(buf, v138);
+    v96 = selfCopy->_snapshotManager;
+    objc_initWeak(buf, selfCopy);
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __154__PBFPosterExtensionDataStore__stateLock_pushUpdateNotificationsForRole_diff_previouslyActiveConfiguration_newActiveConfiguration_options_reason_context___block_invoke;
@@ -11796,15 +11796,15 @@ LABEL_41:
     }
 
     dispatch_group_leave(v98);
-    v106 = [MEMORY[0x277D3EBA8] sharedWorkloop];
+    mEMORY[0x277D3EBA8] = [MEMORY[0x277D3EBA8] sharedWorkloop];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __154__PBFPosterExtensionDataStore__stateLock_pushUpdateNotificationsForRole_diff_previouslyActiveConfiguration_newActiveConfiguration_options_reason_context___block_invoke_3;
     block[3] = &unk_2782C6428;
-    block[4] = v138;
+    block[4] = selfCopy;
     v142 = v137;
-    v143 = v139;
-    dispatch_group_notify(v98, v106, block);
+    v143 = roleCopy;
+    dispatch_group_notify(v98, mEMORY[0x277D3EBA8], block);
 
     objc_destroyWeak(&v156);
     objc_destroyWeak(buf);
@@ -11815,23 +11815,23 @@ LABEL_41:
   if (spid - 1 < 0xFFFFFFFFFFFFFFFELL && os_signpost_enabled(v107))
   {
     *buf = 138544898;
-    v188 = v139;
+    v188 = roleCopy;
     v189 = 2114;
     v190 = v120;
     v191 = 1024;
     *v192 = v115;
     *&v192[4] = 1024;
     *&v192[6] = v114;
-    LOWORD(v193) = 1024;
-    *(&v193 + 2) = v112;
-    HIWORD(v193) = 1024;
+    LOWORD(optionsCopy) = 1024;
+    *(&optionsCopy + 2) = v112;
+    HIWORD(optionsCopy) = 1024;
     *v194 = v113 != 0;
     *&v194[4] = 1024;
     *&v194[6] = v111 != 0;
     _os_signpost_emit_with_name_impl(&dword_21B526000, v108, OS_SIGNPOST_INTERVAL_END, spid, "pushUpdateNotificationsForRole", "role: '%{public}@'; context:'%{public}@'; didUpdateSelectedConfiguration:'%{BOOL}u' didUpdateActiveConfiguration:'%{BOOL}u' configurationsWereUpdate:'%{BOOL}u' configurationsWereAdded:'%{BOOL}u' configurationsWereDeleted:'%{BOOL}u'", buf, 0x34u);
   }
 
-  v14 = v120;
+  contextCopy = v120;
 LABEL_171:
 }
 
@@ -11886,28 +11886,28 @@ void __154__PBFPosterExtensionDataStore__stateLock_pushUpdateNotificationsForRol
   }
 }
 
-- (BOOL)_stateLock_processEvents:(id)a3 context:(id)a4 error:(id *)a5
+- (BOOL)_stateLock_processEvents:(id)events context:(id)context error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_opt_class() supportedRoles];
-  LOBYTE(a5) = [(PBFPosterExtensionDataStore *)self _stateLock_processEvents:v9 roles:v10 context:v8 error:a5];
+  contextCopy = context;
+  eventsCopy = events;
+  supportedRoles = [objc_opt_class() supportedRoles];
+  LOBYTE(error) = [(PBFPosterExtensionDataStore *)self _stateLock_processEvents:eventsCopy roles:supportedRoles context:contextCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)_stateLock_processEvents:(id)a3 roles:(id)a4 context:(id)a5 error:(id *)a6
+- (BOOL)_stateLock_processEvents:(id)events roles:(id)roles context:(id)context error:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  eventsCopy = events;
+  rolesCopy = roles;
+  contextCopy = context;
   if ([(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    if (a6)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-      *a6 = v13 = 0;
+      *error = v13 = 0;
     }
 
     else
@@ -11918,23 +11918,23 @@ void __154__PBFPosterExtensionDataStore__stateLock_pushUpdateNotificationsForRol
 
   else
   {
-    if (!v12)
+    if (!contextCopy)
     {
-      v12 = [(PBFPosterExtensionDataStore *)self _buildRoleCoordinatorTransitionContext];
+      contextCopy = [(PBFPosterExtensionDataStore *)self _buildRoleCoordinatorTransitionContext];
     }
 
-    v35 = v10;
-    v14 = [v12 pbf_transitionContextIdentifier];
-    v15 = [v14 UUIDString];
-    v16 = [v15 substringToIndex:7];
+    v35 = eventsCopy;
+    pbf_transitionContextIdentifier = [contextCopy pbf_transitionContextIdentifier];
+    uUIDString = [pbf_transitionContextIdentifier UUIDString];
+    v16 = [uUIDString substringToIndex:7];
 
     v17 = objc_opt_new();
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v34 = v11;
-    v18 = v11;
+    v34 = rolesCopy;
+    v18 = rolesCopy;
     v19 = [v18 countByEnumeratingWithState:&v40 objects:v44 count:16];
     if (v19)
     {
@@ -11963,17 +11963,17 @@ void __154__PBFPosterExtensionDataStore__stateLock_pushUpdateNotificationsForRol
     [(PBFPosterRoleProcessor *)v24 addObserver:self];
     runtimeAssertionProvider = self->_runtimeAssertionProvider;
     v26 = [@"processEvents-" stringByAppendingString:v16];
-    v27 = [MEMORY[0x277D47008] currentProcess];
+    currentProcess = [MEMORY[0x277D47008] currentProcess];
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = __76__PBFPosterExtensionDataStore__stateLock_processEvents_roles_context_error___block_invoke;
     v38[3] = &unk_2782C59F0;
     v39 = v16;
     v28 = v16;
-    v29 = [(PBFRuntimeAssertionProviding *)runtimeAssertionProvider acquirePrewarmRuntimeAssertionForReason:v26 target:v27 invalidationHandler:v38];
+    v29 = [(PBFRuntimeAssertionProviding *)runtimeAssertionProvider acquirePrewarmRuntimeAssertionForReason:v26 target:currentProcess invalidationHandler:v38];
 
-    v10 = v35;
-    v30 = [(PBFPosterRoleProcessor *)v24 processEvents:v35 context:v12 reason:@"processEvents" userInfo:0 error:a6];
+    eventsCopy = v35;
+    v30 = [(PBFPosterRoleProcessor *)v24 processEvents:v35 context:contextCopy reason:@"processEvents" userInfo:0 error:error];
     v13 = v30 != 0;
     v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PBFPosterExtensionDataStore _stateLock_processEvents:roles:context:error:]"];
     v36[0] = MEMORY[0x277D85DD0];
@@ -11984,7 +11984,7 @@ void __154__PBFPosterExtensionDataStore__stateLock_pushUpdateNotificationsForRol
     v32 = v29;
     PBFDispatchAsyncWithString(v31, QOS_CLASS_DEFAULT, v36);
 
-    v11 = v34;
+    rolesCopy = v34;
   }
 
   return v13;
@@ -12011,7 +12011,7 @@ void __76__PBFPosterExtensionDataStore__stateLock_processEvents_roles_context_er
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_3();
     v4 = NSStringFromClass(v3);
@@ -12175,10 +12175,10 @@ LABEL_22:
   return v4;
 }
 
-- (id)_stateLock_buildSwitcherConfigurationWithContext:(id)a3 outMutated:(BOOL *)a4
+- (id)_stateLock_buildSwitcherConfigurationWithContext:(id)context outMutated:(BOOL *)mutated
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  contextCopy = context;
   if ([(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
     v7 = PBFLogPosterContents();
@@ -12198,19 +12198,19 @@ LABEL_22:
     v7 = v10;
     if (v10)
     {
-      v11 = [v10 posterCollection];
-      v12 = [v11 orderedPosters];
-      v13 = [v12 bs_map:&__block_literal_global_701];
-      v14 = [v13 array];
+      posterCollection = [v10 posterCollection];
+      orderedPosters = [posterCollection orderedPosters];
+      v13 = [orderedPosters bs_map:&__block_literal_global_701];
+      array = [v13 array];
 
-      v43 = v14;
-      v15 = [v14 bs_mapNoNulls:&__block_literal_global_703];
-      v16 = [(PBFPosterExtensionDataStore *)self _stateLock_lastUseDatesForPosterCollection];
+      v43 = array;
+      v15 = [array bs_mapNoNulls:&__block_literal_global_703];
+      _stateLock_lastUseDatesForPosterCollection = [(PBFPosterExtensionDataStore *)self _stateLock_lastUseDatesForPosterCollection];
       v46[0] = MEMORY[0x277D85DD0];
       v46[1] = 3221225472;
       v46[2] = __91__PBFPosterExtensionDataStore__stateLock_buildSwitcherConfigurationWithContext_outMutated___block_invoke_3;
       v46[3] = &unk_2782C6498;
-      v42 = v16;
+      v42 = _stateLock_lastUseDatesForPosterCollection;
       v47 = v42;
       v44 = v15;
       v17 = [v15 sortedArrayUsingComparator:v46];
@@ -12222,7 +12222,7 @@ LABEL_22:
 
       else
       {
-        [v11 selectedPoster];
+        [posterCollection selectedPoster];
       }
       v45 = ;
       v19 = self->_stateLock_switcherConfiguration;
@@ -12250,7 +12250,7 @@ LABEL_22:
 
       v24 = v23;
 
-      v25 = [v11 selectedPoster];
+      selectedPoster = [posterCollection selectedPoster];
       v26 = PBFLogPosterContents();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
@@ -12271,14 +12271,14 @@ LABEL_22:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v49 = v25;
+        v49 = selectedPoster;
         _os_log_impl(&dword_21B526000, v28, OS_LOG_TYPE_DEFAULT, "(_buildSwitcherConfiguration...) selectedConfiguration: %{public}@", buf, 0xCu);
       }
 
-      if (!v25)
+      if (!selectedPoster)
       {
-        v25 = [v11 fallbackSelectedForSortedConfigurations:v17 reverse:1];
-        if (!v25)
+        selectedPoster = [posterCollection fallbackSelectedForSortedConfigurations:v17 reverse:1];
+        if (!selectedPoster)
         {
           v29 = PBFLogPosterContents();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -12287,14 +12287,14 @@ LABEL_22:
             _os_log_impl(&dword_21B526000, v29, OS_LOG_TYPE_DEFAULT, "(_buildSwitcherConfiguration...) No selected configuration, no configuration to fallback to. Get ready for a bumpy ride.", buf, 2u);
           }
 
-          v25 = 0;
+          selectedPoster = 0;
         }
       }
 
       v41 = v20;
-      if (v6)
+      if (contextCopy)
       {
-        v30 = [v7 determineActivePosterConfigurationForContext:v6, v20];
+        v30 = [v7 determineActivePosterConfigurationForContext:contextCopy, v20];
 
         v24 = v30;
       }
@@ -12308,14 +12308,14 @@ LABEL_22:
         _os_log_impl(&dword_21B526000, v32, OS_LOG_TYPE_DEFAULT, "(_buildSwitcherConfiguration...) determined activeConfiguration: %{public}@", buf, 0xCu);
       }
 
-      v8 = [objc_alloc(MEMORY[0x277D3ED10]) _initWithCollection:v11 activeConfiguration:v24];
-      [v8 setActiveConfigurationDueToIncomingFocusModeChange:{objc_msgSend(v6, "pbf_transitionFromIncomingFocusModeChange")}];
+      v8 = [objc_alloc(MEMORY[0x277D3ED10]) _initWithCollection:posterCollection activeConfiguration:v24];
+      [v8 setActiveConfigurationDueToIncomingFocusModeChange:{objc_msgSend(contextCopy, "pbf_transitionFromIncomingFocusModeChange")}];
       v33 = PBFLogPosterContents();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
       {
-        v34 = [v6 pbf_transitionFromIncomingFocusModeChange];
+        pbf_transitionFromIncomingFocusModeChange = [contextCopy pbf_transitionFromIncomingFocusModeChange];
         v35 = @"NO";
-        if (v34)
+        if (pbf_transitionFromIncomingFocusModeChange)
         {
           v35 = @"YES";
         }
@@ -12343,24 +12343,24 @@ LABEL_22:
         _os_log_impl(&dword_21B526000, v37, OS_LOG_TYPE_DEFAULT, "(_buildSwitcherConfiguration...) activeConfiguration: %{public}@", buf, 0xCu);
       }
 
-      if (a4)
+      if (mutated)
       {
-        v38 = [v8 selectedConfiguration];
+        selectedConfiguration = [v8 selectedConfiguration];
         v39 = BSEqualObjects();
 
         if ((v39 & 1) == 0)
         {
-          *a4 = 1;
+          *mutated = 1;
         }
       }
     }
 
     else
     {
-      v11 = PBFLogPosterContents();
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+      posterCollection = PBFLogPosterContents();
+      if (os_log_type_enabled(posterCollection, OS_LOG_TYPE_FAULT))
       {
-        [PBFPosterExtensionDataStore _stateLock_buildSwitcherConfigurationWithContext:v11 outMutated:?];
+        [PBFPosterExtensionDataStore _stateLock_buildSwitcherConfigurationWithContext:posterCollection outMutated:?];
       }
 
       v8 = 0;
@@ -12423,10 +12423,10 @@ uint64_t __91__PBFPosterExtensionDataStore__stateLock_buildSwitcherConfiguration
   return v22;
 }
 
-- (void)enqueueGalleryConfigurationUpdateWithOptions:(unint64_t)a3 powerLogReason:(int64_t)a4 completion:(id)a5
+- (void)enqueueGalleryConfigurationUpdateWithOptions:(unint64_t)options powerLogReason:(int64_t)reason completion:(id)completion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  completionCopy = completion;
   v9 = PBFLogGallery();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -12435,7 +12435,7 @@ uint64_t __91__PBFPosterExtensionDataStore__stateLock_buildSwitcherConfiguration
     _os_log_impl(&dword_21B526000, v9, OS_LOG_TYPE_DEFAULT, "(%{public}s) Queuing up a new gallery update...", &v10, 0xCu);
   }
 
-  [(PBFGalleryController *)self->_galleryController enqueueGalleryConfigurationUpdateWithOptions:a3 powerLogReason:a4 completion:v8];
+  [(PBFGalleryController *)self->_galleryController enqueueGalleryConfigurationUpdateWithOptions:options powerLogReason:reason completion:completionCopy];
 }
 
 - (void)checkForGalleryUpdates
@@ -12639,16 +12639,16 @@ LABEL_40:
 LABEL_45:
 }
 
-- (void)pushToProactiveWithCompletion:(id)a3
+- (void)pushToProactiveWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_stateLock);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61__PBFPosterExtensionDataStore_pushToProactiveWithCompletion___block_invoke;
   v6[3] = &unk_2782C64C0;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(PBFPosterExtensionDataStore *)self _stateLock_pushPosterDescriptorsToProactiveForReason:@"DataStore XPC call" force:1 completion:v6];
   os_unfair_lock_unlock(&self->_stateLock);
 }
@@ -12664,14 +12664,14 @@ uint64_t __61__PBFPosterExtensionDataStore_pushToProactiveWithCompletion___block
   return result;
 }
 
-- (void)pushPosterDescriptorsToProactiveForReason:(id)a3 completion:(id)a4
+- (void)pushPosterDescriptorsToProactiveForReason:(id)reason completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  reasonCopy = reason;
   os_unfair_lock_lock(&self->_stateLock);
-  if (v7)
+  if (reasonCopy)
   {
-    v8 = v7;
+    v8 = reasonCopy;
   }
 
   else
@@ -12683,8 +12683,8 @@ uint64_t __61__PBFPosterExtensionDataStore_pushToProactiveWithCompletion___block
   v10[1] = 3221225472;
   v10[2] = __84__PBFPosterExtensionDataStore_pushPosterDescriptorsToProactiveForReason_completion___block_invoke;
   v10[3] = &unk_2782C64C0;
-  v11 = v6;
-  v9 = v6;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [(PBFPosterExtensionDataStore *)self _stateLock_pushPosterDescriptorsToProactiveForReason:v8 force:1 completion:v10];
 
   os_unfair_lock_unlock(&self->_stateLock);
@@ -12701,14 +12701,14 @@ uint64_t __84__PBFPosterExtensionDataStore_pushPosterDescriptorsToProactiveForRe
   return result;
 }
 
-- (void)fetchPosterSuggestionsForFocusModeWithUUID:(id)a3 context:(id)a4 completion:(id)a5
+- (void)fetchPosterSuggestionsForFocusModeWithUUID:(id)d context:(id)context completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  completionCopy = completion;
   v10 = MEMORY[0x277CEB538];
-  v11 = a3;
+  dCopy = d;
   v12 = [v10 alloc];
-  if ([v11 length])
+  if ([dCopy length])
   {
     v13 = 0;
   }
@@ -12718,25 +12718,25 @@ uint64_t __84__PBFPosterExtensionDataStore_pushPosterDescriptorsToProactiveForRe
     v13 = 6;
   }
 
-  v14 = [v12 initWithType:v13 uuid:v11];
+  v14 = [v12 initWithType:v13 uuid:dCopy];
 
-  v15 = [(PBFPosterExtensionDataStore *)self currentGalleryConfiguration];
+  currentGalleryConfiguration = [(PBFPosterExtensionDataStore *)self currentGalleryConfiguration];
   v16 = self->_snapshotManager;
-  v17 = [MEMORY[0x277CEB530] sharedInstance];
+  mEMORY[0x277CEB530] = [MEMORY[0x277CEB530] sharedInstance];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __93__PBFPosterExtensionDataStore_fetchPosterSuggestionsForFocusModeWithUUID_context_completion___block_invoke;
   v22[3] = &unk_2782C6538;
-  v26 = self;
-  v27 = v9;
-  v23 = v15;
-  v24 = v8;
+  selfCopy = self;
+  v27 = completionCopy;
+  v23 = currentGalleryConfiguration;
+  v24 = contextCopy;
   v25 = v16;
   v18 = v16;
-  v19 = v8;
-  v20 = v15;
-  v21 = v9;
-  [v17 fetchFaceSuggestionsForFocusMode:v14 completion:v22];
+  v19 = contextCopy;
+  v20 = currentGalleryConfiguration;
+  v21 = completionCopy;
+  [mEMORY[0x277CEB530] fetchFaceSuggestionsForFocusMode:v14 completion:v22];
 }
 
 void __93__PBFPosterExtensionDataStore_fetchPosterSuggestionsForFocusModeWithUUID_context_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -12906,17 +12906,17 @@ void __93__PBFPosterExtensionDataStore_fetchPosterSuggestionsForFocusModeWithUUI
 {
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) != 0)
   {
-    v3 = 0;
+    _stateLock_currentGalleryConfiguration = 0;
   }
 
   else
   {
     os_unfair_lock_lock(&self->_stateLock);
-    v3 = [(PBFPosterExtensionDataStore *)self _stateLock_currentGalleryConfiguration];
+    _stateLock_currentGalleryConfiguration = [(PBFPosterExtensionDataStore *)self _stateLock_currentGalleryConfiguration];
     os_unfair_lock_unlock(&self->_stateLock);
   }
 
-  return v3;
+  return _stateLock_currentGalleryConfiguration;
 }
 
 - (id)_stateLock_currentGalleryConfiguration
@@ -12933,8 +12933,8 @@ void __93__PBFPosterExtensionDataStore_fetchPosterSuggestionsForFocusModeWithUUI
     {
       if (!self->_stateLock_suggestedLayout)
       {
-        v4 = [(PBFGalleryController *)self->_galleryController currentGalleryConfiguration];
-        [(PBFPosterExtensionDataStore *)self _stateLock_updateGalleryWithSuggestedLayout:v4 descriptorsByExtensionBundleIdentifier:0 staticDescriptorsByExtensionBundleIdentifier:0];
+        currentGalleryConfiguration = [(PBFGalleryController *)self->_galleryController currentGalleryConfiguration];
+        [(PBFPosterExtensionDataStore *)self _stateLock_updateGalleryWithSuggestedLayout:currentGalleryConfiguration descriptorsByExtensionBundleIdentifier:0 staticDescriptorsByExtensionBundleIdentifier:0];
       }
 
       v5 = self->_stateLock_configuration;
@@ -12949,10 +12949,10 @@ void __93__PBFPosterExtensionDataStore_fetchPosterSuggestionsForFocusModeWithUUI
   return v3;
 }
 
-- (void)fetchCurrentGalleryConfiguration:(id)a3
+- (void)fetchCurrentGalleryConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (v5)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
     v6 = NSStringFromSelector(a2);
     v7[0] = MEMORY[0x277D85DD0];
@@ -12960,7 +12960,7 @@ void __93__PBFPosterExtensionDataStore_fetchPosterSuggestionsForFocusModeWithUUI
     v7[2] = __64__PBFPosterExtensionDataStore_fetchCurrentGalleryConfiguration___block_invoke;
     v7[3] = &unk_2782C6310;
     v7[4] = self;
-    v8 = v5;
+    v8 = configurationCopy;
     PBFDispatchAsyncWithString(v6, QOS_CLASS_USER_INITIATED, v7);
   }
 }
@@ -12972,18 +12972,18 @@ void __64__PBFPosterExtensionDataStore_fetchCurrentGalleryConfiguration___block_
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)galleryController:(id)a3 didUpdateCurrentGalleryConfiguration:(id)a4
+- (void)galleryController:(id)controller didUpdateCurrentGalleryConfiguration:(id)configuration
 {
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  configurationCopy = configuration;
+  v6 = configurationCopy;
+  if (configurationCopy)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __86__PBFPosterExtensionDataStore_galleryController_didUpdateCurrentGalleryConfiguration___block_invoke;
     v7[3] = &unk_2782C58B0;
     v7[4] = self;
-    v8 = v5;
+    v8 = configurationCopy;
     PBFDispatchAsyncWithString(@"galleryController:didUpdateCurrentGalleryConfiguration:", QOS_CLASS_DEFAULT, v7);
   }
 }
@@ -12997,20 +12997,20 @@ void __86__PBFPosterExtensionDataStore_galleryController_didUpdateCurrentGallery
   os_unfair_lock_unlock(v2);
 }
 
-- (void)snapshotManager:(id)a3 didUpdateSnapshotForPath:(id)a4 forDefinition:(id)a5
+- (void)snapshotManager:(id)manager didUpdateSnapshotForPath:(id)path forDefinition:(id)definition
 {
-  v7 = a4;
-  v8 = a5;
+  pathCopy = path;
+  definitionCopy = definition;
   notificationQueue = self->_notificationQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __86__PBFPosterExtensionDataStore_snapshotManager_didUpdateSnapshotForPath_forDefinition___block_invoke;
   block[3] = &unk_2782C6428;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = pathCopy;
+  v14 = definitionCopy;
+  v10 = definitionCopy;
+  v11 = pathCopy;
   dispatch_async(notificationQueue, block);
 }
 
@@ -13057,17 +13057,17 @@ void __86__PBFPosterExtensionDataStore_snapshotManager_didUpdateSnapshotForPath_
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__PBFPosterExtensionDataStore_addObserver___block_invoke;
   v7[3] = &unk_2782C58B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(notificationQueue, v7);
 }
 
@@ -13095,17 +13095,17 @@ uint64_t __43__PBFPosterExtensionDataStore_addObserver___block_invoke(uint64_t a
   return result;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__PBFPosterExtensionDataStore_removeObserver___block_invoke;
   v7[3] = &unk_2782C58B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(notificationQueue, v7);
 }
 
@@ -13177,18 +13177,18 @@ void __66__PBFPosterExtensionDataStore__notifyObserversDidUpdateExtensions__bloc
   }
 }
 
-- (void)_notifyObserversDidInitializeWithSwitcherConfiguration:(id)a3 withChanges:(BOOL)a4
+- (void)_notifyObserversDidInitializeWithSwitcherConfiguration:(id)configuration withChanges:(BOOL)changes
 {
-  v6 = a3;
+  configurationCopy = configuration;
   notificationQueue = self->_notificationQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __98__PBFPosterExtensionDataStore__notifyObserversDidInitializeWithSwitcherConfiguration_withChanges___block_invoke;
   block[3] = &unk_2782C6560;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = configurationCopy;
+  changesCopy = changes;
+  v8 = configurationCopy;
   dispatch_async(notificationQueue, block);
 }
 
@@ -13235,23 +13235,23 @@ void __98__PBFPosterExtensionDataStore__notifyObserversDidInitializeWithSwitcher
   }
 }
 
-- (void)_notifyObserversDidInitializeRoles:(id)a3 suggestionDescriptors:(id)a4 roleToPosterCollection:(id)a5
+- (void)_notifyObserversDidInitializeRoles:(id)roles suggestionDescriptors:(id)descriptors roleToPosterCollection:(id)collection
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  rolesCopy = roles;
+  descriptorsCopy = descriptors;
+  collectionCopy = collection;
   notificationQueue = self->_notificationQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __111__PBFPosterExtensionDataStore__notifyObserversDidInitializeRoles_suggestionDescriptors_roleToPosterCollection___block_invoke;
   v15[3] = &unk_2782C6588;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = rolesCopy;
+  v17 = descriptorsCopy;
+  v18 = collectionCopy;
+  v12 = collectionCopy;
+  v13 = descriptorsCopy;
+  v14 = rolesCopy;
   dispatch_async(notificationQueue, v15);
 }
 
@@ -13298,20 +13298,20 @@ void __111__PBFPosterExtensionDataStore__notifyObserversDidInitializeRoles_sugge
   }
 }
 
-- (void)_notifyObserversDidUpdateActivePosterForRoles:(id)a3 suggestionDescriptors:(id)a4
+- (void)_notifyObserversDidUpdateActivePosterForRoles:(id)roles suggestionDescriptors:(id)descriptors
 {
-  v6 = a3;
-  v7 = a4;
+  rolesCopy = roles;
+  descriptorsCopy = descriptors;
   notificationQueue = self->_notificationQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __99__PBFPosterExtensionDataStore__notifyObserversDidUpdateActivePosterForRoles_suggestionDescriptors___block_invoke;
   block[3] = &unk_2782C6428;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = rolesCopy;
+  v13 = descriptorsCopy;
+  v9 = descriptorsCopy;
+  v10 = rolesCopy;
   dispatch_async(notificationQueue, block);
 }
 
@@ -13358,17 +13358,17 @@ void __99__PBFPosterExtensionDataStore__notifyObserversDidUpdateActivePosterForR
   }
 }
 
-- (void)_notifyObserversDidUpdatePosterCollectionsForRoles:(id)a3
+- (void)_notifyObserversDidUpdatePosterCollectionsForRoles:(id)roles
 {
-  v4 = a3;
+  rolesCopy = roles;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __82__PBFPosterExtensionDataStore__notifyObserversDidUpdatePosterCollectionsForRoles___block_invoke;
   v7[3] = &unk_2782C58B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = rolesCopy;
+  v6 = rolesCopy;
   dispatch_async(notificationQueue, v7);
 }
 
@@ -13415,17 +13415,17 @@ void __82__PBFPosterExtensionDataStore__notifyObserversDidUpdatePosterCollection
   }
 }
 
-- (void)_notifyObserversDidUpdateSwitcherConfiguration:(id)a3
+- (void)_notifyObserversDidUpdateSwitcherConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__PBFPosterExtensionDataStore__notifyObserversDidUpdateSwitcherConfiguration___block_invoke;
   v7[3] = &unk_2782C58B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   dispatch_async(notificationQueue, v7);
 }
 
@@ -13472,17 +13472,17 @@ void __78__PBFPosterExtensionDataStore__notifyObserversDidUpdateSwitcherConfigur
   }
 }
 
-- (void)_notifyObserversDidUpdateGalleryConfiguration:(id)a3
+- (void)_notifyObserversDidUpdateGalleryConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __77__PBFPosterExtensionDataStore__notifyObserversDidUpdateGalleryConfiguration___block_invoke;
   v7[3] = &unk_2782C58B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   dispatch_async(notificationQueue, v7);
 }
 
@@ -13529,17 +13529,17 @@ void __77__PBFPosterExtensionDataStore__notifyObserversDidUpdateGalleryConfigura
   }
 }
 
-- (void)_notifyObserversDidUpdatePosterDescriptorsForExtensionBundleIdentifier:(id)a3
+- (void)_notifyObserversDidUpdatePosterDescriptorsForExtensionBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __102__PBFPosterExtensionDataStore__notifyObserversDidUpdatePosterDescriptorsForExtensionBundleIdentifier___block_invoke;
   v7[3] = &unk_2782C58B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(notificationQueue, v7);
 }
 
@@ -13640,17 +13640,17 @@ void __70__PBFPosterExtensionDataStore__notifyObserversDidUpdateConfigurations__
   }
 }
 
-- (void)_notifyObserversDidUpdateConfiguration:(id)a3
+- (void)_notifyObserversDidUpdateConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__PBFPosterExtensionDataStore__notifyObserversDidUpdateConfiguration___block_invoke;
   v7[3] = &unk_2782C58B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   dispatch_async(notificationQueue, v7);
 }
 
@@ -13697,17 +13697,17 @@ void __70__PBFPosterExtensionDataStore__notifyObserversDidUpdateConfiguration___
   }
 }
 
-- (void)_notifyObserversDidAddConfiguration:(id)a3
+- (void)_notifyObserversDidAddConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__PBFPosterExtensionDataStore__notifyObserversDidAddConfiguration___block_invoke;
   v7[3] = &unk_2782C58B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   dispatch_async(notificationQueue, v7);
 }
 
@@ -13754,17 +13754,17 @@ void __67__PBFPosterExtensionDataStore__notifyObserversDidAddConfiguration___blo
   }
 }
 
-- (void)_notifyObserversDidDeleteConfiguration:(id)a3
+- (void)_notifyObserversDidDeleteConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__PBFPosterExtensionDataStore__notifyObserversDidDeleteConfiguration___block_invoke;
   v7[3] = &unk_2782C58B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   dispatch_async(notificationQueue, v7);
 }
 
@@ -13811,23 +13811,23 @@ void __70__PBFPosterExtensionDataStore__notifyObserversDidDeleteConfiguration___
   }
 }
 
-- (void)_notifyObserversDidUpdateSelectedConfiguration:(id)a3 associatedConfiguration:(id)a4 reason:(id)a5
+- (void)_notifyObserversDidUpdateSelectedConfiguration:(id)configuration associatedConfiguration:(id)associatedConfiguration reason:(id)reason
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configurationCopy = configuration;
+  associatedConfigurationCopy = associatedConfiguration;
+  reasonCopy = reason;
   notificationQueue = self->_notificationQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __109__PBFPosterExtensionDataStore__notifyObserversDidUpdateSelectedConfiguration_associatedConfiguration_reason___block_invoke;
   v15[3] = &unk_2782C6588;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = configurationCopy;
+  v17 = associatedConfigurationCopy;
+  v18 = reasonCopy;
+  v12 = reasonCopy;
+  v13 = associatedConfigurationCopy;
+  v14 = configurationCopy;
   dispatch_async(notificationQueue, v15);
 }
 
@@ -13874,23 +13874,23 @@ void __109__PBFPosterExtensionDataStore__notifyObserversDidUpdateSelectedConfigu
   }
 }
 
-- (void)_notifyObserversDidUpdateActiveConfiguration:(id)a3 associatedConfiguration:(id)a4 reason:(id)a5
+- (void)_notifyObserversDidUpdateActiveConfiguration:(id)configuration associatedConfiguration:(id)associatedConfiguration reason:(id)reason
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configurationCopy = configuration;
+  associatedConfigurationCopy = associatedConfiguration;
+  reasonCopy = reason;
   notificationQueue = self->_notificationQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __107__PBFPosterExtensionDataStore__notifyObserversDidUpdateActiveConfiguration_associatedConfiguration_reason___block_invoke;
   v15[3] = &unk_2782C6588;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = configurationCopy;
+  v17 = associatedConfigurationCopy;
+  v18 = reasonCopy;
+  v12 = reasonCopy;
+  v13 = associatedConfigurationCopy;
+  v14 = configurationCopy;
   dispatch_async(notificationQueue, v15);
 }
 
@@ -13937,20 +13937,20 @@ void __107__PBFPosterExtensionDataStore__notifyObserversDidUpdateActiveConfigura
   }
 }
 
-- (void)_notifyObserversDidUpdateConfiguration:(id)a3 homeScreenAssociatedConfiguration:(id)a4
+- (void)_notifyObserversDidUpdateConfiguration:(id)configuration homeScreenAssociatedConfiguration:(id)associatedConfiguration
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  associatedConfigurationCopy = associatedConfiguration;
   notificationQueue = self->_notificationQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __104__PBFPosterExtensionDataStore__notifyObserversDidUpdateConfiguration_homeScreenAssociatedConfiguration___block_invoke;
   block[3] = &unk_2782C6428;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = configurationCopy;
+  v13 = associatedConfigurationCopy;
+  v9 = associatedConfigurationCopy;
+  v10 = configurationCopy;
   dispatch_async(notificationQueue, block);
 }
 
@@ -13997,17 +13997,17 @@ void __104__PBFPosterExtensionDataStore__notifyObserversDidUpdateConfiguration_h
   }
 }
 
-- (void)_notifyObserversDidUpdateSnapshotForConfiguration:(id)a3
+- (void)_notifyObserversDidUpdateSnapshotForConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __81__PBFPosterExtensionDataStore__notifyObserversDidUpdateSnapshotForConfiguration___block_invoke;
   v7[3] = &unk_2782C58B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   dispatch_async(notificationQueue, v7);
 }
 
@@ -14054,20 +14054,20 @@ void __81__PBFPosterExtensionDataStore__notifyObserversDidUpdateSnapshotForConfi
   }
 }
 
-- (void)_notifyObserversDidUpdateSuggestionDescriptors:(id)a3 forConfiguration:(id)a4
+- (void)_notifyObserversDidUpdateSuggestionDescriptors:(id)descriptors forConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorsCopy = descriptors;
+  configurationCopy = configuration;
   notificationQueue = self->_notificationQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __95__PBFPosterExtensionDataStore__notifyObserversDidUpdateSuggestionDescriptors_forConfiguration___block_invoke;
   block[3] = &unk_2782C6428;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = descriptorsCopy;
+  v13 = configurationCopy;
+  v9 = configurationCopy;
+  v10 = descriptorsCopy;
   dispatch_async(notificationQueue, block);
 }
 
@@ -14114,17 +14114,17 @@ void __95__PBFPosterExtensionDataStore__notifyObserversDidUpdateSuggestionDescri
   }
 }
 
-- (void)_notifyObserversDidUpdateSuggestionDescriptorsForPosterUUID:(id)a3
+- (void)_notifyObserversDidUpdateSuggestionDescriptorsForPosterUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __91__PBFPosterExtensionDataStore__notifyObserversDidUpdateSuggestionDescriptorsForPosterUUID___block_invoke;
   v7[3] = &unk_2782C58B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(notificationQueue, v7);
 }
 
@@ -14173,25 +14173,25 @@ void __91__PBFPosterExtensionDataStore__notifyObserversDidUpdateSuggestionDescri
 
 - (void)_notifyObserversDidUpdateSuggestionDescriptors
 {
-  v3 = [(PBFPosterExtensionDataStore *)self _updatedSuggestionDescriptorsForPosterUUID];
-  [(PBFPosterExtensionDataStore *)self _notifyObserversDidUpdateSuggestionDescriptorsForPosterUUID:v3];
+  _updatedSuggestionDescriptorsForPosterUUID = [(PBFPosterExtensionDataStore *)self _updatedSuggestionDescriptorsForPosterUUID];
+  [(PBFPosterExtensionDataStore *)self _notifyObserversDidUpdateSuggestionDescriptorsForPosterUUID:_updatedSuggestionDescriptorsForPosterUUID];
 }
 
-- (id)posterWithUUID:(id)a3 error:(id *)a4
+- (id)posterWithUUID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_stateLock);
-  v7 = [(PBFPosterExtensionDataStore *)self _stateLock_posterWithUUID:v6 error:a4];
+  v7 = [(PBFPosterExtensionDataStore *)self _stateLock_posterWithUUID:dCopy error:error];
 
   os_unfair_lock_unlock(&self->_stateLock);
 
   return v7;
 }
 
-- (id)_stateLock_posterWithUUID:(id)a3 error:(id *)a4
+- (id)_stateLock_posterWithUUID:(id)d error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dCopy = d;
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) != 0)
   {
     v6 = 0;
@@ -14203,8 +14203,8 @@ void __91__PBFPosterExtensionDataStore__notifyObserversDidUpdateSuggestionDescri
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [(NSDictionary *)self->_roleToRoleCoordinator objectEnumerator];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    objectEnumerator = [(NSDictionary *)self->_roleToRoleCoordinator objectEnumerator];
+    v8 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -14215,11 +14215,11 @@ LABEL_5:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v11) posterCollection];
-        v6 = [v12 posterWithUUID:v5];
+        posterCollection = [*(*(&v14 + 1) + 8 * v11) posterCollection];
+        v6 = [posterCollection posterWithUUID:dCopy];
 
         if (v6)
         {
@@ -14228,7 +14228,7 @@ LABEL_5:
 
         if (v9 == ++v11)
         {
-          v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+          v9 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
           if (v9)
           {
             goto LABEL_5;
@@ -14249,12 +14249,12 @@ LABEL_11:
   return v6;
 }
 
-- (void)updateSnapshotsForGallery:(id)a3 intention:(unint64_t)a4 powerLogReason:(int64_t)a5 completion:(id)a6
+- (void)updateSnapshotsForGallery:(id)gallery intention:(unint64_t)intention powerLogReason:(int64_t)reason completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   v34 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v19 = a6;
+  galleryCopy = gallery;
+  completionCopy = completion;
   v9 = objc_opt_new();
   +[PBFGenericDisplayContext mainScreenDisplayContextsForKnownOrientations];
   v28 = 0u;
@@ -14275,7 +14275,7 @@ LABEL_11:
           objc_enumerationMutation(obj);
         }
 
-        v11 = [v22 posterSnapshotRequestsForContext:{*(*(&v28 + 1) + 8 * v10), v18}];
+        v11 = [galleryCopy posterSnapshotRequestsForContext:{*(*(&v28 + 1) + 8 * v10), selfCopy}];
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
@@ -14295,8 +14295,8 @@ LABEL_11:
                 objc_enumerationMutation(v11);
               }
 
-              v16 = [*(*(&v24 + 1) + 8 * v15) requestWithIntention:a4];
-              v17 = [v16 requestWithPowerLogReason:a5];
+              v16 = [*(*(&v24 + 1) + 8 * v15) requestWithIntention:intention];
+              v17 = [v16 requestWithPowerLogReason:reason];
               [v9 addObject:v17];
 
               ++v15;
@@ -14319,17 +14319,17 @@ LABEL_11:
     while (v23);
   }
 
-  [(PBFPosterSnapshotManager *)v18->_snapshotManager prewarmSnapshotsForRequests:v9 completion:v19, v18];
+  [(PBFPosterSnapshotManager *)selfCopy->_snapshotManager prewarmSnapshotsForRequests:v9 completion:completionCopy, selfCopy];
 }
 
-- (void)_stateLock_updateExtensions:(id)a3 refreshDescriptors:(int64_t)a4 powerLogReason:(int64_t)a5 galleryUpdateOptions:(unint64_t)a6 queuedUpOperations:(id *)a7
+- (void)_stateLock_updateExtensions:(id)extensions refreshDescriptors:(int64_t)descriptors powerLogReason:(int64_t)reason galleryUpdateOptions:(unint64_t)options queuedUpOperations:(id *)operations
 {
   v316 = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  extensionsCopy = extensions;
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) == 0)
   {
-    v205 = a6;
-    v211 = v11;
+    optionsCopy = options;
+    v211 = extensionsCopy;
     stateLock_initialRoleCoordinatorSetupPerformed = self->_stateLock_initialRoleCoordinatorSetupPerformed;
     v12 = PBFLogPosterContents();
     v13 = os_signpost_id_generate(v12);
@@ -14344,11 +14344,11 @@ LABEL_11:
       _os_signpost_emit_with_name_impl(&dword_21B526000, v15, OS_SIGNPOST_INTERVAL_BEGIN, v13, "updateExtensions", "", buf, 2u);
     }
 
-    v16 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     v17 = MEMORY[0x277CCACA8];
-    v209 = v16;
-    v18 = [v16 UUIDString];
-    v19 = [v18 substringToIndex:7];
+    v209 = uUID;
+    uUIDString = [uUID UUIDString];
+    v19 = [uUIDString substringToIndex:7];
     v243 = [v17 stringWithFormat:@"updateExtensions/%@", v19];
 
     -[BSAtomicFlag setFlag:](self->_extensionsInputIsValidAtomicFlag, "setFlag:", [v211 count] != 0);
@@ -14367,8 +14367,8 @@ LABEL_11:
       }
 
       runtimeAssertionProvider = self->_runtimeAssertionProvider;
-      v24 = [MEMORY[0x277D47008] currentProcess];
-      v210 = [(PBFRuntimeAssertionProviding *)runtimeAssertionProvider acquirePosterUpdateRuntimeAssertionForReason:@"updateExtensions" target:v24];
+      currentProcess = [MEMORY[0x277D47008] currentProcess];
+      v210 = [(PBFRuntimeAssertionProviding *)runtimeAssertionProvider acquirePosterUpdateRuntimeAssertionForReason:@"updateExtensions" target:currentProcess];
 
       v25 = v211;
       stateLock_fromExtensions = self->_stateLock_fromExtensions;
@@ -14387,7 +14387,7 @@ LABEL_11:
       self->_stateLock_fromExtensions = v28;
 
       val = self;
-      v201 = a7;
+      operationsCopy = operations;
       v226 = a2;
       if ((PBFCurrentDeviceClassSupported() & 1) == 0)
       {
@@ -14420,8 +14420,8 @@ LABEL_11:
             }
 
             v37 = *(*(&v293 + 1) + 8 * i);
-            v38 = [v37 posterExtensionBundleIdentifier];
-            [v240 setObject:v37 forKey:v38];
+            posterExtensionBundleIdentifier = [v37 posterExtensionBundleIdentifier];
+            [v240 setObject:v37 forKey:posterExtensionBundleIdentifier];
 
             v39 = PBFLogPosterContents();
             if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -14452,12 +14452,12 @@ LABEL_11:
       v314 = v41;
       v42 = [MEMORY[0x277CBEA60] arrayWithObjects:&v314 count:1];
 
-      v43 = [v32 allObjects];
-      v44 = [v43 sortedArrayUsingDescriptors:v42];
+      allObjects = [v32 allObjects];
+      v44 = [allObjects sortedArrayUsingDescriptors:v42];
 
-      v45 = [(NSSet *)v27 allObjects];
+      allObjects2 = [(NSSet *)v27 allObjects];
       v202 = v42;
-      v46 = [v45 sortedArrayUsingDescriptors:v42];
+      v46 = [allObjects2 sortedArrayUsingDescriptors:v42];
 
       v218 = objc_opt_new();
       v217 = objc_opt_new();
@@ -14474,8 +14474,8 @@ LABEL_11:
         v292 = 0u;
         v289 = 0u;
         v290 = 0u;
-        v48 = [v47 removals];
-        v49 = [v48 countByEnumeratingWithState:&v289 objects:v313 count:16];
+        removals = [v47 removals];
+        v49 = [removals countByEnumeratingWithState:&v289 objects:v313 count:16];
         v219 = v49 != 0;
         if (v49)
         {
@@ -14487,16 +14487,16 @@ LABEL_11:
             {
               if (*v290 != v51)
               {
-                objc_enumerationMutation(v48);
+                objc_enumerationMutation(removals);
               }
 
               v53 = *(*(&v289 + 1) + 8 * j);
-              v54 = [v53 object];
-              v55 = [v54 posterExtensionBundleIdentifier];
+              object = [v53 object];
+              posterExtensionBundleIdentifier2 = [object posterExtensionBundleIdentifier];
 
-              v56 = [v53 object];
+              object2 = [v53 object];
               v288 = 0;
-              v57 = [(PBFPosterExtensionDataStore *)val _stateLock_cleanupAfterDeletedExtension:v56 error:&v288];
+              v57 = [(PBFPosterExtensionDataStore *)val _stateLock_cleanupAfterDeletedExtension:object2 error:&v288];
               v58 = v288;
 
               v59 = PBFLogDataStore();
@@ -14508,7 +14508,7 @@ LABEL_11:
                   *buf = 138543618;
                   v299 = v243;
                   v300 = 2114;
-                  *v301 = v55;
+                  *v301 = posterExtensionBundleIdentifier2;
                   _os_log_impl(&dword_21B526000, v60, OS_LOG_TYPE_DEFAULT, "(%{public}@) Successfully cleaned up environment for extension '%{public}@'", buf, 0x16u);
                 }
               }
@@ -14518,29 +14518,29 @@ LABEL_11:
                 *buf = 138543874;
                 v299 = v243;
                 v300 = 2114;
-                *v301 = v55;
+                *v301 = posterExtensionBundleIdentifier2;
                 *&v301[8] = 2114;
                 v302 = v58;
                 _os_log_error_impl(&dword_21B526000, v60, OS_LOG_TYPE_ERROR, "(%{public}@) Error cleanup up environment for extension '%{public}@': %{public}@", buf, 0x20u);
               }
 
-              [v240 removeObjectForKey:v55];
-              v61 = [v53 object];
-              [v230 addObject:v61];
+              [v240 removeObjectForKey:posterExtensionBundleIdentifier2];
+              object3 = [v53 object];
+              [v230 addObject:object3];
 
               v62 = PBFLogDataStore();
               if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
               {
-                v63 = [v53 object];
+                object4 = [v53 object];
                 *buf = 138543618;
                 v299 = v243;
                 v300 = 2114;
-                *v301 = v63;
+                *v301 = object4;
                 _os_log_impl(&dword_21B526000, v62, OS_LOG_TYPE_DEFAULT, "(%{public}@) _updateExtensions is removing: %{public}@", buf, 0x16u);
               }
             }
 
-            v50 = [v48 countByEnumeratingWithState:&v289 objects:v313 count:16];
+            v50 = [removals countByEnumeratingWithState:&v289 objects:v313 count:16];
           }
 
           while (v50);
@@ -14550,8 +14550,8 @@ LABEL_11:
         v287 = 0u;
         v284 = 0u;
         v285 = 0u;
-        v64 = [v206 insertions];
-        v65 = [v64 countByEnumeratingWithState:&v284 objects:v312 count:16];
+        insertions = [v206 insertions];
+        v65 = [insertions countByEnumeratingWithState:&v284 objects:v312 count:16];
         if (v65)
         {
           v66 = v65;
@@ -14562,12 +14562,12 @@ LABEL_11:
             {
               if (*v285 != v67)
               {
-                objc_enumerationMutation(v64);
+                objc_enumerationMutation(insertions);
               }
 
-              v69 = [*(*(&v284 + 1) + 8 * k) object];
+              object5 = [*(*(&v284 + 1) + 8 * k) object];
               v283 = 0;
-              v70 = [(PBFPosterExtensionDataStore *)val _stateLock_setupEnvironmentForExtension:v69 wasUpdated:0 error:&v283];
+              v70 = [(PBFPosterExtensionDataStore *)val _stateLock_setupEnvironmentForExtension:object5 wasUpdated:0 error:&v283];
               v71 = v283;
               if (v70)
               {
@@ -14577,11 +14577,11 @@ LABEL_11:
                   *buf = 138543618;
                   v299 = v243;
                   v300 = 2112;
-                  *v301 = v69;
+                  *v301 = object5;
                   _os_log_impl(&dword_21B526000, v72, OS_LOG_TYPE_DEFAULT, "(%{public}@) _updateExtensions is adding: %@", buf, 0x16u);
                 }
 
-                [v218 addObject:v69];
+                [v218 addObject:object5];
               }
 
               else
@@ -14598,7 +14598,7 @@ LABEL_11:
               }
             }
 
-            v66 = [v64 countByEnumeratingWithState:&v284 objects:v312 count:16];
+            v66 = [insertions countByEnumeratingWithState:&v284 objects:v312 count:16];
           }
 
           while (v66);
@@ -14606,7 +14606,7 @@ LABEL_11:
         }
 
         v74 = PBFLogDataStore();
-        v75 = val;
+        selfCopy = val;
         v27 = v235;
         if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
         {
@@ -14619,7 +14619,7 @@ LABEL_11:
       else
       {
         v219 = 0;
-        v75 = self;
+        selfCopy = self;
       }
 
       v281 = 0u;
@@ -14641,21 +14641,21 @@ LABEL_11:
             }
 
             v77 = *(*(&v279 + 1) + 8 * m);
-            v78 = [(__CFString *)v77 posterExtensionBundleIdentifier];
+            posterExtensionBundleIdentifier3 = [(__CFString *)v77 posterExtensionBundleIdentifier];
             v277[0] = MEMORY[0x277D85DD0];
             v277[1] = 3221225472;
             v277[2] = __133__PBFPosterExtensionDataStore__stateLock_updateExtensions_refreshDescriptors_powerLogReason_galleryUpdateOptions_queuedUpOperations___block_invoke_788;
             v277[3] = &unk_2782C5EC0;
-            v79 = v78;
+            v79 = posterExtensionBundleIdentifier3;
             v278 = v79;
             v80 = [v234 bs_firstObjectPassingTest:v277];
-            v81 = [(PBFPosterExtensionDataStore *)v75 _stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier:v79];
+            v81 = [(PBFPosterExtensionDataStore *)selfCopy _stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier:v79];
             v82 = [v81 providerInfoObjectForKey:@"StaticPersistentIdentifier"];
             v241 = [v81 providerInfoObjectForKey:@"PersistentIdentifier"];
-            v83 = [v80 persistentIdentifier];
-            v84 = [v80 posterExtensionInfoPlist];
-            v85 = [v84 pbf_staticDescriptorIdentifiers];
-            if ([v85 count])
+            persistentIdentifier = [v80 persistentIdentifier];
+            posterExtensionInfoPlist = [v80 posterExtensionInfoPlist];
+            pbf_staticDescriptorIdentifiers = [posterExtensionInfoPlist pbf_staticDescriptorIdentifiers];
+            if ([pbf_staticDescriptorIdentifiers count])
             {
               v86 = _LSPersistentIdentifierCompare() == 0;
             }
@@ -14665,8 +14665,8 @@ LABEL_11:
               v86 = 0;
             }
 
-            v87 = [v80 posterExtensionInfoPlist];
-            v88 = [v87 pbf_supportsDynamicDescriptors] && objc_msgSend(v80, "pbf_supportsGalleryOrUserDefaultsHasItOverriddenToSupportGallery:", 0) && _LSPersistentIdentifierCompare() == 0;
+            posterExtensionInfoPlist2 = [v80 posterExtensionInfoPlist];
+            v88 = [posterExtensionInfoPlist2 pbf_supportsDynamicDescriptors] && objc_msgSend(v80, "pbf_supportsGalleryOrUserDefaultsHasItOverriddenToSupportGallery:", 0) && _LSPersistentIdentifierCompare() == 0;
 
             v89 = [v80 isEqual:v77];
             if (v86 || v88 || !v89)
@@ -14725,7 +14725,7 @@ LABEL_11:
               }
             }
 
-            v75 = val;
+            selfCopy = val;
           }
 
           v238 = [(NSSet *)obj countByEnumeratingWithState:&v279 objects:v311 count:16];
@@ -14734,14 +14734,14 @@ LABEL_11:
         while (v238);
       }
 
-      if ([(BSAtomicFlag *)v75->_extensionsCurrentlyUpdatingFlag getFlag])
+      if ([(BSAtomicFlag *)selfCopy->_extensionsCurrentlyUpdatingFlag getFlag])
       {
         [PBFPosterExtensionDataStore _stateLock_updateExtensions:v226 refreshDescriptors:? powerLogReason:? galleryUpdateOptions:? queuedUpOperations:?];
       }
 
-      [(BSAtomicFlag *)v75->_extensionsCurrentlyUpdatingFlag setFlag:1];
-      v214 = [(PBFPosterExtensionDataStore *)v75 _stateLock_hasBeenUnlockedSinceBoot];
-      v94 = [(NSMutableDictionary *)v75->_stateLock_staticDescriptorsForExtensionBundleIdentifier mutableCopy];
+      [(BSAtomicFlag *)selfCopy->_extensionsCurrentlyUpdatingFlag setFlag:1];
+      _stateLock_hasBeenUnlockedSinceBoot = [(PBFPosterExtensionDataStore *)selfCopy _stateLock_hasBeenUnlockedSinceBoot];
+      v94 = [(NSMutableDictionary *)selfCopy->_stateLock_staticDescriptorsForExtensionBundleIdentifier mutableCopy];
       v95 = v94;
       if (v94)
       {
@@ -14753,7 +14753,7 @@ LABEL_11:
         v229 = objc_opt_new();
       }
 
-      v96 = [(NSMutableDictionary *)v75->_stateLock_descriptorsForExtensionBundleIdentifier mutableCopy];
+      v96 = [(NSMutableDictionary *)selfCopy->_stateLock_descriptorsForExtensionBundleIdentifier mutableCopy];
       v97 = v96;
       if (v96)
       {
@@ -14765,14 +14765,14 @@ LABEL_11:
         v98 = objc_opt_new();
       }
 
-      v99 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       v216 = objc_opt_new();
       v272 = 0u;
       v273 = 0u;
       v274 = 0u;
       v275 = 0u;
       v232 = v228;
-      v227 = v99;
+      v227 = date;
       v237 = [v232 countByEnumeratingWithState:&v272 objects:v310 count:16];
       if (!v237)
       {
@@ -14797,22 +14797,22 @@ LABEL_11:
           }
 
           v101 = *(*(&v272 + 1) + 8 * n);
-          v102 = [v101 posterExtensionBundleIdentifier];
-          v103 = [(PBFPosterExtensionDataStore *)v75 _stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier:v102];
+          posterExtensionBundleIdentifier4 = [v101 posterExtensionBundleIdentifier];
+          v103 = [(PBFPosterExtensionDataStore *)selfCopy _stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier:posterExtensionBundleIdentifier4];
           if (v103)
           {
-            v239 = [PBFDataRefreshContext staticDescriptorsRefreshContextForNow:v99 extension:v101];
+            v239 = [PBFDataRefreshContext staticDescriptorsRefreshContextForNow:date extension:v101];
             v104 = [[PBFDataComponentObjectEntity alloc] initWithComponent:@"PBFDataComponentStaticDescriptors" object:v103 context:v239];
-            v105 = [(PBFDataComponentObjectEntity *)v104 determineRefreshState];
+            determineRefreshState = [(PBFDataComponentObjectEntity *)v104 determineRefreshState];
 
-            v106 = [(__CFString *)v105 needsRefresh];
-            v242 = v105;
-            v107 = [(__CFString *)v105 refreshReason];
-            v108 = v107;
+            needsRefresh = [(__CFString *)determineRefreshState needsRefresh];
+            v242 = determineRefreshState;
+            refreshReason = [(__CFString *)determineRefreshState refreshReason];
+            v108 = refreshReason;
             v109 = @"NULL REFRESH REASON";
-            if (v107)
+            if (refreshReason)
             {
-              v109 = v107;
+              v109 = refreshReason;
             }
 
             v110 = v109;
@@ -14823,7 +14823,7 @@ LABEL_11:
               *buf = 138543874;
               v299 = v243;
               v300 = 2114;
-              *v301 = v102;
+              *v301 = posterExtensionBundleIdentifier4;
               *&v301[8] = 2114;
               v302 = v242;
               _os_log_impl(&dword_21B526000, v111, OS_LOG_TYPE_DEFAULT, "(%{public}@) refresh state for %{public}@ static descriptors: %{public}@", buf, 0x20u);
@@ -14831,20 +14831,20 @@ LABEL_11:
 
             v112 = PBFLogDataStore();
             v113 = os_log_type_enabled(v112, OS_LOG_TYPE_DEFAULT);
-            if (v106)
+            if (needsRefresh)
             {
               if (v113)
               {
                 *buf = 138543874;
                 v299 = v243;
                 v300 = 2114;
-                *v301 = v102;
+                *v301 = posterExtensionBundleIdentifier4;
                 *&v301[8] = 2114;
                 v302 = v110;
                 _os_log_impl(&dword_21B526000, v112, OS_LOG_TYPE_DEFAULT, "(%{public}@) Static descriptors for %{public}@ are not up to date; proceeding with update for reason %{public}@", buf, 0x20u);
               }
 
-              v114 = [v229 objectForKeyedSubscript:v102];
+              v114 = [v229 objectForKeyedSubscript:posterExtensionBundleIdentifier4];
               v115 = v114;
               v116 = MEMORY[0x277CBEBF8];
               if (!v114)
@@ -14867,7 +14867,7 @@ LABEL_11:
               v120 = v119;
 
               v271 = 0;
-              v121 = [(PBFPosterExtensionDataStore *)v75 _stateLock_updateDescriptorsFromStaticDescriptorsForExtensionBundleIdentifier:v102 reason:a5 error:&v271];
+              v121 = [(PBFPosterExtensionDataStore *)selfCopy _stateLock_updateDescriptorsFromStaticDescriptorsForExtensionBundleIdentifier:posterExtensionBundleIdentifier4 reason:reason error:&v271];
               v112 = v271;
               v122 = PBFLogDataStore();
               v123 = v122;
@@ -14879,13 +14879,13 @@ LABEL_11:
                   *buf = 138543618;
                   v299 = v243;
                   v300 = 2114;
-                  *v301 = v102;
+                  *v301 = posterExtensionBundleIdentifier4;
                   _os_log_impl(&dword_21B526000, v123, OS_LOG_TYPE_DEFAULT, "(%{public}@) Updated static descriptors for %{public}@", buf, 0x16u);
                 }
 
-                v124 = [v103 posterStaticDescriptorLatestVersionPaths];
-                v125 = [v124 allObjects];
-                v126 = [v125 sortedArrayUsingSelector:sel_compareDescriptorIdentifiers_];
+                posterStaticDescriptorLatestVersionPaths = [v103 posterStaticDescriptorLatestVersionPaths];
+                allObjects3 = [posterStaticDescriptorLatestVersionPaths allObjects];
+                v126 = [allObjects3 sortedArrayUsingSelector:sel_compareDescriptorIdentifiers_];
                 v127 = v126;
                 v128 = MEMORY[0x277CBEBF8];
                 if (v126)
@@ -14898,9 +14898,9 @@ LABEL_11:
                   v129 = MEMORY[0x277CBEBF8];
                 }
 
-                [v229 setObject:v129 forKeyedSubscript:v102];
+                [v229 setObject:v129 forKeyedSubscript:posterExtensionBundleIdentifier4];
 
-                v130 = [v229 objectForKeyedSubscript:v102];
+                v130 = [v229 objectForKeyedSubscript:posterExtensionBundleIdentifier4];
                 v131 = [v130 bs_mapNoNulls:&__block_literal_global_802];
                 v132 = v131;
                 if (v131)
@@ -14924,11 +14924,11 @@ LABEL_11:
                 v123 = v134;
                 v268 = v123;
                 v269 = v216;
-                v270 = v102;
+                v270 = posterExtensionBundleIdentifier4;
                 PFPosterRoleEnumerateValidRolesForCurrentDeviceClass();
 
                 v215 = 1;
-                v75 = val;
+                selfCopy = val;
                 v98 = v225;
               }
 
@@ -14939,7 +14939,7 @@ LABEL_11:
                   *buf = 138543874;
                   v299 = v243;
                   v300 = 2114;
-                  *v301 = v102;
+                  *v301 = posterExtensionBundleIdentifier4;
                   *&v301[8] = 2114;
                   v302 = v112;
                   _os_log_error_impl(&dword_21B526000, v123, OS_LOG_TYPE_ERROR, "(%{public}@) Failed to update static descriptors for %{public}@; error: %{public}@", buf, 0x20u);
@@ -14948,7 +14948,7 @@ LABEL_11:
                 v98 = v225;
               }
 
-              v99 = v227;
+              date = v227;
             }
 
             else if (v113)
@@ -14956,38 +14956,38 @@ LABEL_11:
               *buf = 138543618;
               v299 = v243;
               v300 = 2114;
-              *v301 = v102;
+              *v301 = posterExtensionBundleIdentifier4;
               _os_log_impl(&dword_21B526000, v112, OS_LOG_TYPE_DEFAULT, "(%{public}@) Static descriptors do not need updating for %{public}@; bailing", buf, 0x16u);
             }
 
-            v135 = [v101 posterExtensionInfoPlist];
-            if ([v135 pbf_supportsDynamicDescriptors])
+            posterExtensionInfoPlist3 = [v101 posterExtensionInfoPlist];
+            if ([posterExtensionInfoPlist3 pbf_supportsDynamicDescriptors])
             {
               v136 = [v101 pbf_supportsGalleryOrUserDefaultsHasItOverriddenToSupportGallery:0];
 
               if (v136)
               {
-                v137 = [v103 lastRefreshDescriptorDate];
-                v138 = [v103 lastRefreshDescriptorReason];
-                v139 = v138;
+                lastRefreshDescriptorDate = [v103 lastRefreshDescriptorDate];
+                lastRefreshDescriptorReason = [v103 lastRefreshDescriptorReason];
+                v139 = lastRefreshDescriptorReason;
                 v140 = @"Never been refreshed";
-                if (v138)
+                if (lastRefreshDescriptorReason)
                 {
-                  v140 = v138;
+                  v140 = lastRefreshDescriptorReason;
                 }
 
                 v222 = v140;
 
-                v221 = v137;
-                [v99 timeIntervalSinceDate:v137];
+                v221 = lastRefreshDescriptorDate;
+                [date timeIntervalSinceDate:lastRefreshDescriptorDate];
                 v142 = v141;
-                if (v214)
+                if (_stateLock_hasBeenUnlockedSinceBoot)
                 {
-                  v143 = [v103 lastRefreshDescriptorDate];
-                  v144 = [PBFDataRefreshContext dynamicDescriptorsRefreshContextForNow:v99 extension:v101 lastRefreshDate:v143 refreshStrategy:a4];
+                  lastRefreshDescriptorDate2 = [v103 lastRefreshDescriptorDate];
+                  v144 = [PBFDataRefreshContext dynamicDescriptorsRefreshContextForNow:date extension:v101 lastRefreshDate:lastRefreshDescriptorDate2 refreshStrategy:descriptors];
 
                   v145 = [[PBFDataComponentObjectEntity alloc] initWithComponent:@"PBFDataComponentDynamicDescriptors" object:v103 context:v144];
-                  v146 = [(PBFDataComponentObjectEntity *)v145 determineRefreshState];
+                  determineRefreshState2 = [(PBFDataComponentObjectEntity *)v145 determineRefreshState];
 
                   v147 = PBFLogDataStore();
                   if (os_log_type_enabled(v147, OS_LOG_TYPE_DEFAULT))
@@ -14995,27 +14995,27 @@ LABEL_11:
                     *buf = 138543874;
                     v299 = v243;
                     v300 = 2114;
-                    *v301 = v102;
+                    *v301 = posterExtensionBundleIdentifier4;
                     *&v301[8] = 2114;
-                    v302 = v146;
+                    v302 = determineRefreshState2;
                     _os_log_impl(&dword_21B526000, v147, OS_LOG_TYPE_DEFAULT, "(%{public}@) refresh state for %{public}@ dynamic descriptors: %{public}@", buf, 0x20u);
                   }
 
-                  v148 = [(__CFString *)v146 needsRefresh];
-                  v149 = [(__CFString *)v146 refreshReason];
-                  v150 = v149;
+                  needsRefresh2 = [(__CFString *)determineRefreshState2 needsRefresh];
+                  refreshReason2 = [(__CFString *)determineRefreshState2 refreshReason];
+                  v150 = refreshReason2;
                   v151 = @"NULL REFRESH REASON";
-                  if (v149)
+                  if (refreshReason2)
                   {
-                    v151 = v149;
+                    v151 = refreshReason2;
                   }
 
                   v152 = v151;
 
-                  if (v148)
+                  if (needsRefresh2)
                   {
-                    v75 = val;
-                    v153 = [(PBFPosterExtensionDataStore *)val _stateLock_enqueueReloadDescriptorsOperationForExtensionBundleIdentifier:v102 reason:v152 powerLogReason:a5 postEnqueueGalleryUpdateOptions:4 sessionInfo:0 completion:0];
+                    selfCopy = val;
+                    v153 = [(PBFPosterExtensionDataStore *)val _stateLock_enqueueReloadDescriptorsOperationForExtensionBundleIdentifier:posterExtensionBundleIdentifier4 reason:v152 powerLogReason:reason postEnqueueGalleryUpdateOptions:4 sessionInfo:0 completion:0];
                     v154 = v212;
                     if (!v212)
                     {
@@ -15028,17 +15028,17 @@ LABEL_11:
 
                   else
                   {
-                    v160 = [v101 posterExtensionInfoPlist];
-                    v161 = [v160 pbf_refreshDescriptorsFrequency];
+                    posterExtensionInfoPlist4 = [v101 posterExtensionInfoPlist];
+                    pbf_refreshDescriptorsFrequency = [posterExtensionInfoPlist4 pbf_refreshDescriptorsFrequency];
 
                     v153 = PBFLogDataStore();
                     if (os_log_type_enabled(v153, OS_LOG_TYPE_DEFAULT))
                     {
-                      v162 = RefreshDescriptorsFrequencyToDebugString(v161);
+                      v162 = RefreshDescriptorsFrequencyToDebugString(pbf_refreshDescriptorsFrequency);
                       *buf = 138544898;
                       v299 = v243;
                       v300 = 2112;
-                      *v301 = v102;
+                      *v301 = posterExtensionBundleIdentifier4;
                       *&v301[8] = 2112;
                       v302 = v152;
                       *v303 = 2048;
@@ -15046,17 +15046,17 @@ LABEL_11:
                       v304 = 2114;
                       v305 = v222;
                       v306 = 2048;
-                      v307 = a4;
+                      descriptorsCopy = descriptors;
                       v308 = 2114;
                       v309 = v162;
                       _os_log_impl(&dword_21B526000, v153, OS_LOG_TYPE_DEFAULT, "(%{public}@) Avoiding update for %@; reason for no update: %@ (last updated %f ago / reason '%{public}@'); refreshDescriptorsStategy: %ld; extension refresh frequency: %{public}@", buf, 0x48u);
                     }
 
-                    v75 = val;
+                    selfCopy = val;
                   }
 
                   v98 = v225;
-                  v99 = v227;
+                  date = v227;
 LABEL_154:
                   v159 = v222;
                 }
@@ -15072,7 +15072,7 @@ LABEL_154:
                   *buf = 138544130;
                   v299 = v243;
                   v300 = 2114;
-                  *v301 = v102;
+                  *v301 = posterExtensionBundleIdentifier4;
                   *&v301[8] = 2048;
                   v302 = v142;
                   *v303 = 2114;
@@ -15081,18 +15081,18 @@ LABEL_154:
                   _os_log_impl(&dword_21B526000, v144, OS_LOG_TYPE_DEFAULT, "(%{public}@) Avoiding dynamic poster descriptors update for %{public}@; keybag is locked. (%f ago/ reason: '%{public}@')", buf, 0x2Au);
                 }
 
-                v163 = [v98 objectForKeyedSubscript:v102];
+                v163 = [v98 objectForKeyedSubscript:posterExtensionBundleIdentifier4];
 
                 if (!v163)
                 {
-                  v164 = [v103 dynamicPosterDescriptorLatestVersionPaths];
-                  if ([v164 count])
+                  dynamicPosterDescriptorLatestVersionPaths = [v103 dynamicPosterDescriptorLatestVersionPaths];
+                  if ([dynamicPosterDescriptorLatestVersionPaths count])
                   {
-                    v165 = [v164 allObjects];
-                    v166 = [v165 sortedArrayUsingSelector:sel_compareDescriptorIdentifiers_];
-                    [v98 setObject:v166 forKeyedSubscript:v102];
+                    allObjects4 = [dynamicPosterDescriptorLatestVersionPaths allObjects];
+                    v166 = [allObjects4 sortedArrayUsingSelector:sel_compareDescriptorIdentifiers_];
+                    [v98 setObject:v166 forKeyedSubscript:posterExtensionBundleIdentifier4];
 
-                    v75 = val;
+                    selfCopy = val;
                     v223 = 1;
                   }
                 }
@@ -15106,7 +15106,7 @@ LABEL_160:
             {
             }
 
-            v155 = [v98 objectForKey:v102];
+            v155 = [v98 objectForKey:posterExtensionBundleIdentifier4];
             v156 = [v155 count];
 
             v157 = PBFLogDataStore();
@@ -15118,12 +15118,12 @@ LABEL_160:
                 *buf = 138543618;
                 v299 = v243;
                 v300 = 2114;
-                *v301 = v102;
+                *v301 = posterExtensionBundleIdentifier4;
                 _os_log_impl(&dword_21B526000, v157, OS_LOG_TYPE_DEFAULT, "(%{public}@) Dynamic descriptors disabled for %{public}@; terminating them.", buf, 0x16u);
               }
 
               [v103 teardownAllDynamicDescriptors];
-              [v98 removeObjectForKey:v102];
+              [v98 removeObjectForKey:posterExtensionBundleIdentifier4];
               v223 = 1;
             }
 
@@ -15134,7 +15134,7 @@ LABEL_160:
                 *buf = 138543618;
                 v299 = v243;
                 v300 = 2114;
-                *v301 = v102;
+                *v301 = posterExtensionBundleIdentifier4;
                 _os_log_impl(&dword_21B526000, v157, OS_LOG_TYPE_DEFAULT, "(%{public}@) Dynamic descriptors disabled for %{public}@; no descriptors present, moving on.", buf, 0x16u);
               }
             }
@@ -15152,32 +15152,32 @@ LABEL_165:
 
           v167 = v215;
           v168 = v223;
-          if ((((v219 | v215) & 1) != 0 || (v223 & 1) != 0 || !stateLock_initialRoleCoordinatorSetupPerformed) && (([(PBFGalleryController *)v75->_galleryController currentGalleryConfiguration], v169 = objc_claimAutoreleasedReturnValue(), (v223 & 1) == 0) ? (v170 = 0) : (v170 = v98), (v215 & 1) == 0 ? (v171 = 0) : (v171 = v229), [(PBFPosterExtensionDataStore *)v75 _stateLock_updateGalleryWithSuggestedLayout:v169 descriptorsByExtensionBundleIdentifier:v170 staticDescriptorsByExtensionBundleIdentifier:v171], v169, !stateLock_initialRoleCoordinatorSetupPerformed))
+          if ((((v219 | v215) & 1) != 0 || (v223 & 1) != 0 || !stateLock_initialRoleCoordinatorSetupPerformed) && (([(PBFGalleryController *)selfCopy->_galleryController currentGalleryConfiguration], v169 = objc_claimAutoreleasedReturnValue(), (v223 & 1) == 0) ? (v170 = 0) : (v170 = v98), (v215 & 1) == 0 ? (v171 = 0) : (v171 = v229), [(PBFPosterExtensionDataStore *)selfCopy _stateLock_updateGalleryWithSuggestedLayout:v169 descriptorsByExtensionBundleIdentifier:v170 staticDescriptorsByExtensionBundleIdentifier:v171], v169, !stateLock_initialRoleCoordinatorSetupPerformed))
           {
-            [(PBFPosterExtensionDataStore *)v75 _stateLock_initialRoleCoordinatorSetup];
-            v75->_stateLock_initialRoleCoordinatorSetupPerformed = 1;
+            [(PBFPosterExtensionDataStore *)selfCopy _stateLock_initialRoleCoordinatorSetup];
+            selfCopy->_stateLock_initialRoleCoordinatorSetupPerformed = 1;
             v22 = v210;
             if (v215)
             {
-              [(PBFPosterExtensionDataStore *)v75 _stateLock_pushPosterDescriptorsToProactiveForReason:@"Extensions were updated (static/initialRoleCoordinatorSetup)" force:1 completion:0];
+              [(PBFPosterExtensionDataStore *)selfCopy _stateLock_pushPosterDescriptorsToProactiveForReason:@"Extensions were updated (static/initialRoleCoordinatorSetup)" force:1 completion:0];
             }
 
-            [(BSAtomicFlag *)v75->_extensionsCurrentlyUpdatingFlag setFlag:0];
+            [(BSAtomicFlag *)selfCopy->_extensionsCurrentlyUpdatingFlag setFlag:0];
           }
 
           else
           {
-            [(BSAtomicFlag *)v75->_extensionsCurrentlyUpdatingFlag setFlag:0];
+            [(BSAtomicFlag *)selfCopy->_extensionsCurrentlyUpdatingFlag setFlag:0];
             v22 = v210;
             if (v219)
             {
-              v172 = [objc_opt_class() supportedRoles];
+              supportedRoles = [objc_opt_class() supportedRoles];
               v173 = [MEMORY[0x277CBEB98] setWithArray:v204];
               v261[0] = MEMORY[0x277D85DD0];
               v261[1] = 3221225472;
               v261[2] = __133__PBFPosterExtensionDataStore__stateLock_updateExtensions_refreshDescriptors_powerLogReason_galleryUpdateOptions_queuedUpOperations___block_invoke_812;
               v261[3] = &unk_2782C5EC0;
-              v174 = v172;
+              v174 = supportedRoles;
               v262 = v174;
               v175 = [v173 bs_filter:v261];
 
@@ -15221,7 +15221,7 @@ LABEL_165:
                   [v216 bs_safeAddObject:v180];
                 }
 
-                v75 = val;
+                selfCopy = val;
               }
 
               v22 = v210;
@@ -15234,7 +15234,7 @@ LABEL_165:
           {
             v184 = [v216 copy];
             v257 = 0;
-            v185 = [(PBFPosterExtensionDataStore *)v75 _stateLock_processEvents:v184 context:0 error:&v257];
+            v185 = [(PBFPosterExtensionDataStore *)selfCopy _stateLock_processEvents:v184 context:0 error:&v257];
             v186 = v257;
 
             v187 = PBFLogDataStore();
@@ -15257,7 +15257,7 @@ LABEL_165:
             v22 = v210;
           }
 
-          [(PBFPosterExtensionDataStore *)v75 _notifyObserversDidUpdateExtensions];
+          [(PBFPosterExtensionDataStore *)selfCopy _notifyObserversDidUpdateExtensions];
           v189 = PBFLogDataStore();
           if (os_log_type_enabled(v189, OS_LOG_TYPE_DEFAULT))
           {
@@ -15278,9 +15278,9 @@ LABEL_165:
 
           if ([v212 count])
           {
-            if (v201)
+            if (operationsCopy)
             {
-              *v201 = [v212 copy];
+              *operationsCopy = [v212 copy];
             }
 
             v191 = dispatch_group_create();
@@ -15326,7 +15326,7 @@ LABEL_165:
             block[2] = __133__PBFPosterExtensionDataStore__stateLock_updateExtensions_refreshDescriptors_powerLogReason_galleryUpdateOptions_queuedUpOperations___block_invoke_2_816;
             block[3] = &unk_2782C6690;
             objc_copyWeak(v250, buf);
-            v250[1] = v205;
+            v250[1] = optionsCopy;
             v249 = v209;
             dispatch_group_notify(v191, v198, block);
 
@@ -15334,19 +15334,19 @@ LABEL_165:
             objc_destroyWeak(buf);
 
             v22 = v210;
-            v99 = v227;
+            date = v227;
           }
 
-          else if (([(BSAtomicFlag *)v75->_isPrewarmingFlag getFlag]& 1) == 0)
+          else if (([(BSAtomicFlag *)selfCopy->_isPrewarmingFlag getFlag]& 1) == 0)
           {
             v245[0] = MEMORY[0x277D85DD0];
             v245[1] = 3221225472;
             v245[2] = __133__PBFPosterExtensionDataStore__stateLock_updateExtensions_refreshDescriptors_powerLogReason_galleryUpdateOptions_queuedUpOperations___block_invoke_4_824;
             v245[3] = &unk_2782C6668;
-            v245[4] = v75;
-            v247 = v205;
+            v245[4] = selfCopy;
+            v247 = optionsCopy;
             v246 = v209;
-            [(PBFPosterExtensionDataStore *)v75 _stateLock_pushPosterDescriptorsToProactiveForReason:@"Extensions were updated - no updates" force:0 completion:v245];
+            [(PBFPosterExtensionDataStore *)selfCopy _stateLock_pushPosterDescriptorsToProactiveForReason:@"Extensions were updated - no updates" force:0 completion:v245];
           }
 
           [v22 invalidate];
@@ -15369,7 +15369,7 @@ LABEL_165:
     }
 
 LABEL_215:
-    v11 = v211;
+    extensionsCopy = v211;
   }
 }
 
@@ -15509,16 +15509,16 @@ void __133__PBFPosterExtensionDataStore__stateLock_updateExtensions_refreshDescr
   }
 }
 
-- (void)_finishUpdateExtensionUpdateWithOptions:(unint64_t)a3 updateExtensionSession:(id)a4 pushToProactiveError:(id)a5 didUpdateProactiveDescriptors:(BOOL)a6
+- (void)_finishUpdateExtensionUpdateWithOptions:(unint64_t)options updateExtensionSession:(id)session pushToProactiveError:(id)error didUpdateProactiveDescriptors:(BOOL)descriptors
 {
   v20 = *MEMORY[0x277D85DE8];
-  v10 = a5;
+  errorCopy = error;
   v11 = MEMORY[0x277CCACA8];
-  v12 = [a4 UUIDString];
-  v13 = [v12 substringToIndex:7];
+  uUIDString = [session UUIDString];
+  v13 = [uUIDString substringToIndex:7];
   v14 = [v11 stringWithFormat:@"finishUpdateExtension/%@", v13];
 
-  if (v10)
+  if (errorCopy)
   {
     v15 = PBFLogDataStore();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -15527,14 +15527,14 @@ void __133__PBFPosterExtensionDataStore__stateLock_updateExtensions_refreshDescr
     }
   }
 
-  else if (a6)
+  else if (descriptors)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __145__PBFPosterExtensionDataStore__finishUpdateExtensionUpdateWithOptions_updateExtensionSession_pushToProactiveError_didUpdateProactiveDescriptors___block_invoke;
     v16[3] = &unk_2782C66B8;
     v17 = v14;
-    [(PBFPosterExtensionDataStore *)self enqueueGalleryConfigurationUpdateWithOptions:a3 powerLogReason:4 completion:v16];
+    [(PBFPosterExtensionDataStore *)self enqueueGalleryConfigurationUpdateWithOptions:options powerLogReason:4 completion:v16];
     v15 = v17;
   }
 
@@ -15575,10 +15575,10 @@ void __145__PBFPosterExtensionDataStore__finishUpdateExtensionUpdateWithOptions_
   }
 }
 
-- (BOOL)_stateLock_updateDescriptorsFromStaticDescriptorsForExtensionBundleIdentifier:(id)a3 reason:(int64_t)a4 error:(id *)a5
+- (BOOL)_stateLock_updateDescriptorsFromStaticDescriptorsForExtensionBundleIdentifier:(id)identifier reason:(int64_t)reason error:(id *)error
 {
   v139[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  identifierCopy = identifier;
   if (![(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
     v10 = PBFLogPosterContents();
@@ -15589,30 +15589,30 @@ void __145__PBFPosterExtensionDataStore__finishUpdateExtensionUpdateWithOptions_
     if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
     {
       *buf = 138543362;
-      v128 = v8;
+      v128 = identifierCopy;
       _os_signpost_emit_with_name_impl(&dword_21B526000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v11, "_stateLock_updateDescriptorsFromStaticDescriptorsForExtensionBundleIdentifier", "provider identifier: %{public}@", buf, 0xCu);
     }
 
-    v14 = [(PFPosterExtensionProvider *)self->_extensionProvider extensionForIdentifier];
-    v15 = [v14 objectForKey:v8];
+    extensionForIdentifier = [(PFPosterExtensionProvider *)self->_extensionProvider extensionForIdentifier];
+    v15 = [extensionForIdentifier objectForKey:identifierCopy];
 
     if (v15)
     {
       spid = v11;
       v95 = v11 - 1;
-      v16 = [(PBFPosterExtensionDataStore *)self _stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier:v8];
+      v16 = [(PBFPosterExtensionDataStore *)self _stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier:identifierCopy];
       if (v16)
       {
-        v93 = a5;
-        [PBFPowerLogger logUpdate:0 reason:a4 inServiceOfBundleIdentifier:v8];
+        errorCopy = error;
+        [PBFPowerLogger logUpdate:0 reason:reason inServiceOfBundleIdentifier:identifierCopy];
         [v16 teardownAllStaticDescriptorStoreCoordinators];
-        v17 = [v15 posterExtensionInfoPlist];
+        posterExtensionInfoPlist = [v15 posterExtensionInfoPlist];
         v18 = MEMORY[0x277CBEB70];
-        v19 = [v17 pbf_staticDescriptorIdentifiers];
-        v20 = v19;
-        if (v19)
+        pbf_staticDescriptorIdentifiers = [posterExtensionInfoPlist pbf_staticDescriptorIdentifiers];
+        v20 = pbf_staticDescriptorIdentifiers;
+        if (pbf_staticDescriptorIdentifiers)
         {
-          v21 = v19;
+          v21 = pbf_staticDescriptorIdentifiers;
         }
 
         else
@@ -15622,14 +15622,14 @@ void __145__PBFPosterExtensionDataStore__finishUpdateExtensionUpdateWithOptions_
 
         v22 = [v18 orderedSetWithArray:v21];
 
-        v23 = [objc_opt_class() supportedRoles];
+        supportedRoles = [objc_opt_class() supportedRoles];
         v122[0] = MEMORY[0x277D85DD0];
         v122[1] = 3221225472;
         v122[2] = __122__PBFPosterExtensionDataStore__stateLock_updateDescriptorsFromStaticDescriptorsForExtensionBundleIdentifier_reason_error___block_invoke;
         v122[3] = &unk_2782C66E0;
-        v109 = v17;
+        v109 = posterExtensionInfoPlist;
         v123 = v109;
-        v24 = v23;
+        v24 = supportedRoles;
         v124 = v24;
         v25 = [v22 bs_filter:v122];
 
@@ -15637,7 +15637,7 @@ void __145__PBFPosterExtensionDataStore__finishUpdateExtensionUpdateWithOptions_
         {
           v90 = v24;
           v91 = v15;
-          v92 = v8;
+          v92 = identifierCopy;
           v98 = objc_opt_new();
           v118 = 0u;
           v119 = 0u;
@@ -15673,7 +15673,7 @@ void __145__PBFPosterExtensionDataStore__finishUpdateExtensionUpdateWithOptions_
               v30 = v117;
               if (v29)
               {
-                v31 = [v29 posterUUID];
+                posterUUID = [v29 posterUUID];
                 v116 = 0;
                 v32 = [v29 addNewVersionWithContents:0 error:&v116];
                 v33 = v116;
@@ -15684,14 +15684,14 @@ void __145__PBFPosterExtensionDataStore__finishUpdateExtensionUpdateWithOptions_
                 {
                   v35 = MEMORY[0x277CCA9B8];
                   v133 = v104;
-                  v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"descriptor store w/ posterUUID %@ already existed", v31];
+                  v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"descriptor store w/ posterUUID %@ already existed", posterUUID];
                   v134 = v36;
                   [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v134 forKeys:&v133 count:1];
                   v37 = v16;
-                  v39 = v38 = v31;
+                  v39 = v38 = posterUUID;
                   v30 = [v35 pbf_descriptorStoreCoordinatorErrorWithCode:-3333 userInfo:v39];
 
-                  v31 = v38;
+                  posterUUID = v38;
                   v16 = v37;
                 }
 
@@ -15709,7 +15709,7 @@ void __145__PBFPosterExtensionDataStore__finishUpdateExtensionUpdateWithOptions_
 
               else
               {
-                v31 = 0;
+                posterUUID = 0;
               }
 
               v40 = MEMORY[0x277CCA9B8];
@@ -15728,7 +15728,7 @@ LABEL_23:
               }
 
 LABEL_26:
-              v103 = v31;
+              v103 = posterUUID;
               v43 = [objc_alloc(MEMORY[0x277D3ED00]) _initWithPath:v34];
               [v109 pbf_displayNameLocalizationKeyForStaticDescriptorIdentifier:v27];
               v102 = v107 = v43;
@@ -15744,7 +15744,7 @@ LABEL_26:
                 if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138543618;
-                  v128 = v31;
+                  v128 = posterUUID;
                   v129 = 2114;
                   *v130 = v45;
                   _os_log_error_impl(&dword_21B526000, v46, OS_LOG_TYPE_ERROR, "Could not update proactive gallery options for static descriptor ingestion poster uuid %{public}@: %{public}@", buf, 0x16u);
@@ -15776,15 +15776,15 @@ LABEL_26:
                 v52 = PBFLogPosterContents();
                 if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
                 {
-                  v53 = [v51 isDepthEffectDisabled];
-                  v54 = [v51 areMotionEffectsDisabled];
+                  isDepthEffectDisabled = [v51 isDepthEffectDisabled];
+                  areMotionEffectsDisabled = [v51 areMotionEffectsDisabled];
                   *buf = 138412802;
                   v128 = v27;
                   v129 = 1024;
-                  *v130 = v53;
+                  *v130 = isDepthEffectDisabled;
                   v16 = v97;
                   *&v130[4] = 1024;
-                  *&v130[6] = v54;
+                  *&v130[6] = areMotionEffectsDisabled;
                   _os_log_impl(&dword_21B526000, v52, OS_LOG_TYPE_INFO, "Static descriptor %@ provided a preferredRenderingConfiguration %d %d", buf, 0x18u);
                 }
 
@@ -15795,8 +15795,8 @@ LABEL_26:
               if (v55)
               {
                 v56 = v55;
-                v57 = [v107 ambientConfiguration];
-                v58 = [v57 mutableCopy];
+                ambientConfiguration = [v107 ambientConfiguration];
+                v58 = [ambientConfiguration mutableCopy];
 
                 v16 = v97;
                 [v58 setGalleryDisplayBehavior:v56];
@@ -15834,7 +15834,7 @@ LABEL_26:
                 v16 = v97;
               }
 
-              v31 = v103;
+              posterUUID = v103;
 LABEL_48:
             }
 
@@ -15844,7 +15844,7 @@ LABEL_48:
 LABEL_78:
 
               v15 = v91;
-              v8 = v92;
+              identifierCopy = v92;
               if ([v98 count])
               {
                 [v16 teardownAllStaticDescriptorStoreCoordinators];
@@ -15854,7 +15854,7 @@ LABEL_78:
                   [PBFPosterExtensionDataStore _stateLock_updateDescriptorsFromStaticDescriptorsForExtensionBundleIdentifier:reason:error:];
                 }
 
-                if (v93)
+                if (errorCopy)
                 {
                   v78 = MEMORY[0x277CCA9B8];
                   v125 = *MEMORY[0x277CCA578];
@@ -15862,7 +15862,7 @@ LABEL_78:
                   v126 = v79;
                   v99 = 1;
                   v80 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v126 forKeys:&v125 count:1];
-                  *v93 = [v78 pbf_dataStoreErrorWithCode:-2214 userInfo:v80];
+                  *errorCopy = [v78 pbf_dataStoreErrorWithCode:-2214 userInfo:v80];
                 }
 
                 else
@@ -15871,14 +15871,14 @@ LABEL_78:
                 }
               }
 
-              v81 = [obj array];
+              array = [obj array];
               v111[0] = MEMORY[0x277D85DD0];
               v111[1] = 3221225472;
               v111[2] = __122__PBFPosterExtensionDataStore__stateLock_updateDescriptorsFromStaticDescriptorsForExtensionBundleIdentifier_reason_error___block_invoke_840;
               v111[3] = &unk_2782C6708;
               v82 = v16;
               v112 = v82;
-              v83 = [v81 bs_mapNoNulls:v111];
+              v83 = [array bs_mapNoNulls:v111];
 
               if (v83)
               {
@@ -15891,8 +15891,8 @@ LABEL_78:
               }
 
               [v82 providerInfoSetObject:v84 forKey:@"kProactiveStaticPosterDescriptorOrdering"];
-              v85 = [v91 persistentIdentifier];
-              [v82 providerInfoSetObject:v85 forKey:@"StaticPersistentIdentifier"];
+              persistentIdentifier = [v91 persistentIdentifier];
+              [v82 providerInfoSetObject:persistentIdentifier forKey:@"StaticPersistentIdentifier"];
 
               v86 = PBFLogPosterContents();
               v87 = v86;
@@ -15912,15 +15912,15 @@ LABEL_78:
         }
 
         [v16 providerInfoSetObject:0 forKey:@"kProactiveStaticPosterDescriptorOrdering"];
-        v74 = [v15 persistentIdentifier];
-        [v16 providerInfoSetObject:v74 forKey:@"StaticPersistentIdentifier"];
+        persistentIdentifier2 = [v15 persistentIdentifier];
+        [v16 providerInfoSetObject:persistentIdentifier2 forKey:@"StaticPersistentIdentifier"];
 
         v75 = PBFLogPosterContents();
         v76 = v75;
         if (v95 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v75))
         {
           *buf = 138543362;
-          v128 = v8;
+          v128 = identifierCopy;
           _os_signpost_emit_with_name_impl(&dword_21B526000, v76, OS_SIGNPOST_INTERVAL_END, v11, "_stateLock_updateDescriptorsFromStaticDescriptorsForExtensionBundleIdentifier", "provider identifier: %{public}@", buf, 0xCu);
         }
 
@@ -15937,7 +15937,7 @@ LABEL_92:
         if (v95 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v69))
         {
           *buf = 138543362;
-          v128 = v8;
+          v128 = identifierCopy;
           _os_signpost_emit_with_name_impl(&dword_21B526000, v70, OS_SIGNPOST_INTERVAL_END, v11, "_stateLock_updateDescriptorsFromStaticDescriptorsForExtensionBundleIdentifier", "provider identifier: %{public}@", buf, 0xCu);
         }
 
@@ -15947,12 +15947,12 @@ LABEL_92:
           [PBFPosterExtensionDataStore _stateLock_updateDescriptorsFromStaticDescriptorsForExtensionBundleIdentifier:reason:error:];
         }
 
-        if (a5)
+        if (error)
         {
           v72 = MEMORY[0x277CCA9B8];
-          if (v8)
+          if (identifierCopy)
           {
-            v73 = v8;
+            v73 = identifierCopy;
           }
 
           else
@@ -15964,7 +15964,7 @@ LABEL_92:
           v137 = v73;
           v110 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v137 forKeys:&v136 count:1];
           [v72 pbf_dataStoreErrorWithCode:-2217 userInfo:?];
-          *a5 = v9 = 0;
+          *error = v9 = 0;
         }
 
         else
@@ -15981,7 +15981,7 @@ LABEL_92:
       if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v64))
       {
         *buf = 138543362;
-        v128 = v8;
+        v128 = identifierCopy;
         _os_signpost_emit_with_name_impl(&dword_21B526000, v65, OS_SIGNPOST_INTERVAL_END, v11, "_stateLock_updateDescriptorsFromStaticDescriptorsForExtensionBundleIdentifier", "provider identifier: %{public}@", buf, 0xCu);
       }
 
@@ -15991,7 +15991,7 @@ LABEL_92:
         [PBFPosterExtensionDataStore _stateLock_updateDescriptorsFromStaticDescriptorsForExtensionBundleIdentifier:reason:error:];
       }
 
-      if (!a5)
+      if (!error)
       {
         v9 = 0;
 LABEL_94:
@@ -16000,9 +16000,9 @@ LABEL_94:
       }
 
       v67 = MEMORY[0x277CCA9B8];
-      if (v8)
+      if (identifierCopy)
       {
-        v68 = v8;
+        v68 = identifierCopy;
       }
 
       else
@@ -16014,16 +16014,16 @@ LABEL_94:
       v139[0] = v68;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v139 forKeys:&v138 count:1];
       [v67 pbf_dataStoreErrorWithCode:-2217 userInfo:v16];
-      *a5 = v9 = 0;
+      *error = v9 = 0;
     }
 
     goto LABEL_94;
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-    *a5 = v9 = 0;
+    *error = v9 = 0;
   }
 
   else
@@ -16053,15 +16053,15 @@ id __122__PBFPosterExtensionDataStore__stateLock_updateDescriptorsFromStaticDesc
   return v4;
 }
 
-- (BOOL)_stateLock_cleanupAfterDeletedExtension:(id)a3 error:(id *)a4
+- (BOOL)_stateLock_cleanupAfterDeletedExtension:(id)extension error:(id *)error
 {
-  v6 = a3;
+  extensionCopy = extension;
   if ([(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-      *a4 = v7 = 0;
+      *error = v7 = 0;
     }
 
     else
@@ -16072,20 +16072,20 @@ id __122__PBFPosterExtensionDataStore__stateLock_updateDescriptorsFromStaticDesc
 
   else
   {
-    v8 = [v6 posterExtensionBundleIdentifier];
-    [(PBFPosterSnapshotManager *)self->_snapshotManager cancelRequestedSnapshotsForExtensionBundleIdentifier:v8];
-    v9 = [(NSMutableDictionary *)self->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier objectForKey:v8];
+    posterExtensionBundleIdentifier = [extensionCopy posterExtensionBundleIdentifier];
+    [(PBFPosterSnapshotManager *)self->_snapshotManager cancelRequestedSnapshotsForExtensionBundleIdentifier:posterExtensionBundleIdentifier];
+    v9 = [(NSMutableDictionary *)self->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier objectForKey:posterExtensionBundleIdentifier];
     [v9 reapEverythingExceptLatestVersion];
-    v7 = [(PBFPosterExtensionDataStore *)self _stateLock_deletePosterDescriptorsForExtensionBundleIdentifier:v8 waitForPushToProactive:0 error:a4];
+    v7 = [(PBFPosterExtensionDataStore *)self _stateLock_deletePosterDescriptorsForExtensionBundleIdentifier:posterExtensionBundleIdentifier waitForPushToProactive:0 error:error];
   }
 
   return v7;
 }
 
-- (BOOL)_stateLock_setupEnvironmentForExtension:(id)a3 wasUpdated:(BOOL *)a4 error:(id *)a5
+- (BOOL)_stateLock_setupEnvironmentForExtension:(id)extension wasUpdated:(BOOL *)updated error:(id *)error
 {
   v50 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  extensionCopy = extension;
   if (![(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
     v10 = PBFLogPosterContents();
@@ -16096,17 +16096,17 @@ id __122__PBFPosterExtensionDataStore__stateLock_updateDescriptorsFromStaticDesc
     v14 = v11 - 1;
     if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
     {
-      v15 = [v8 posterExtensionBundleIdentifier];
+      posterExtensionBundleIdentifier = [extensionCopy posterExtensionBundleIdentifier];
       *buf = 138543362;
-      v49 = v15;
+      v49 = posterExtensionBundleIdentifier;
       _os_signpost_emit_with_name_impl(&dword_21B526000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v11, "_stateLock_setupEnvironmentForExtension", "provider identifier: %{public}@", buf, 0xCu);
     }
 
-    v16 = [v8 posterExtensionBundleIdentifier];
-    v17 = [(NSMutableDictionary *)self->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier objectForKey:v16];
+    posterExtensionBundleIdentifier2 = [extensionCopy posterExtensionBundleIdentifier];
+    v17 = [(NSMutableDictionary *)self->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier objectForKey:posterExtensionBundleIdentifier2];
     if (v17)
     {
-      if (!a4)
+      if (!updated)
       {
         goto LABEL_10;
       }
@@ -16114,16 +16114,16 @@ id __122__PBFPosterExtensionDataStore__stateLock_updateDescriptorsFromStaticDesc
       goto LABEL_9;
     }
 
-    v22 = [(PBFPosterExtensionDataStore *)self extensionStoreCoordinatorContainerURL];
-    v17 = [v22 URLByAppendingPathComponent:v16 isDirectory:1];
+    extensionStoreCoordinatorContainerURL = [(PBFPosterExtensionDataStore *)self extensionStoreCoordinatorContainerURL];
+    v17 = [extensionStoreCoordinatorContainerURL URLByAppendingPathComponent:posterExtensionBundleIdentifier2 isDirectory:1];
 
     if (([v17 checkResourceIsReachableAndReturnError:0] & 1) == 0)
     {
       v43 = v11;
-      v23 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v24 = PFFileProtectionNoneAttributes();
       v45 = 0;
-      v25 = [v23 createDirectoryAtURL:v17 withIntermediateDirectories:0 attributes:v24 error:&v45];
+      v25 = [defaultManager createDirectoryAtURL:v17 withIntermediateDirectories:0 attributes:v24 error:&v45];
       v42 = v45;
 
       v26 = PBFLogCommon();
@@ -16134,7 +16134,7 @@ id __122__PBFPosterExtensionDataStore__stateLock_updateDescriptorsFromStaticDesc
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v49 = v16;
+          v49 = posterExtensionBundleIdentifier2;
           _os_log_impl(&dword_21B526000, v27, OS_LOG_TYPE_DEFAULT, "Successfully created extension store coordinator container for provider '%{public}@", buf, 0xCu);
         }
       }
@@ -16151,19 +16151,19 @@ id __122__PBFPosterExtensionDataStore__stateLock_updateDescriptorsFromStaticDesc
       v11 = v43;
       if (v28)
       {
-        if (a5)
+        if (error)
         {
           v29 = v28;
-          *a5 = v28;
+          *error = v28;
         }
 
         v30 = PBFLogPosterContents();
         v31 = v30;
         if (v14 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v30))
         {
-          v32 = [v8 posterExtensionBundleIdentifier];
+          posterExtensionBundleIdentifier3 = [extensionCopy posterExtensionBundleIdentifier];
           *buf = 138543362;
-          v49 = v32;
+          v49 = posterExtensionBundleIdentifier3;
           _os_signpost_emit_with_name_impl(&dword_21B526000, v31, OS_SIGNPOST_INTERVAL_END, v43, "_stateLock_setupEnvironmentForExtension", "provider identifier: %{public}@", buf, 0xCu);
         }
 
@@ -16172,27 +16172,27 @@ id __122__PBFPosterExtensionDataStore__stateLock_updateDescriptorsFromStaticDesc
       }
     }
 
-    v33 = [[PBFPosterExtensionStoreCoordinator alloc] initWithContainerURL:v17 extensionIdentifier:v16];
+    v33 = [[PBFPosterExtensionStoreCoordinator alloc] initWithContainerURL:v17 extensionIdentifier:posterExtensionBundleIdentifier2];
     v34 = v33;
     if (v33)
     {
-      v35 = [(PBFPosterExtensionStoreCoordinator *)v33 setupEnvironmentIfNecessary];
-      if (v35)
+      setupEnvironmentIfNecessary = [(PBFPosterExtensionStoreCoordinator *)v33 setupEnvironmentIfNecessary];
+      if (setupEnvironmentIfNecessary)
       {
 LABEL_32:
-        if (a5)
+        if (error)
         {
-          v36 = v35;
-          *a5 = v35;
+          v36 = setupEnvironmentIfNecessary;
+          *error = setupEnvironmentIfNecessary;
         }
 
         v37 = PBFLogPosterContents();
         v38 = v37;
         if (v14 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v37))
         {
-          v39 = [v8 posterExtensionBundleIdentifier];
+          posterExtensionBundleIdentifier4 = [extensionCopy posterExtensionBundleIdentifier];
           *buf = 138543362;
-          v49 = v39;
+          v49 = posterExtensionBundleIdentifier4;
           _os_signpost_emit_with_name_impl(&dword_21B526000, v38, OS_SIGNPOST_INTERVAL_END, v11, "_stateLock_setupEnvironmentForExtension", "provider identifier: %{public}@", buf, 0xCu);
         }
 
@@ -16209,10 +16209,10 @@ LABEL_32:
       v47 = @"Unable to setup extension store coordinator";
       [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
       v41 = v44 = v11;
-      v35 = [v40 pbf_dataStoreErrorWithCode:-2219 userInfo:v41];
+      setupEnvironmentIfNecessary = [v40 pbf_dataStoreErrorWithCode:-2219 userInfo:v41];
 
       v11 = v44;
-      if (v35)
+      if (setupEnvironmentIfNecessary)
       {
         goto LABEL_32;
       }
@@ -16220,21 +16220,21 @@ LABEL_32:
 
     [(PBFPosterExtensionStoreCoordinator *)v34 reapEverythingExceptLatestVersion];
     os_unfair_lock_lock(&self->_extensionProvidingLock);
-    [(NSMutableDictionary *)self->_extensionProvidingLock_extensionStoreCoordinatorForExtensionBundleIdentifier setObject:v34 forKey:v16];
+    [(NSMutableDictionary *)self->_extensionProvidingLock_extensionStoreCoordinatorForExtensionBundleIdentifier setObject:v34 forKey:posterExtensionBundleIdentifier2];
     os_unfair_lock_unlock(&self->_extensionProvidingLock);
-    [(NSMutableDictionary *)self->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier setObject:v34 forKey:v16];
+    [(NSMutableDictionary *)self->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier setObject:v34 forKey:posterExtensionBundleIdentifier2];
 
     v17 = v34;
-    if (!a4)
+    if (!updated)
     {
 LABEL_10:
       v18 = PBFLogPosterContents();
       v19 = v18;
       if (v14 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
       {
-        v20 = [v8 posterExtensionBundleIdentifier];
+        posterExtensionBundleIdentifier5 = [extensionCopy posterExtensionBundleIdentifier];
         *buf = 138543362;
-        v49 = v20;
+        v49 = posterExtensionBundleIdentifier5;
         _os_signpost_emit_with_name_impl(&dword_21B526000, v19, OS_SIGNPOST_INTERVAL_END, v11, "_stateLock_setupEnvironmentForExtension", "provider identifier: %{public}@", buf, 0xCu);
       }
 
@@ -16245,14 +16245,14 @@ LABEL_14:
     }
 
 LABEL_9:
-    *a4 = 0;
+    *updated = 0;
     goto LABEL_10;
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-    *a5 = v9 = 0;
+    *error = v9 = 0;
   }
 
   else
@@ -16265,17 +16265,17 @@ LABEL_16:
   return v9;
 }
 
-- (BOOL)_stateLock_updateEnvironmentForExtension:(id)a3 fromExtension:(id)a4 error:(id *)a5
+- (BOOL)_stateLock_updateEnvironmentForExtension:(id)extension fromExtension:(id)fromExtension error:(id *)error
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  extensionCopy = extension;
+  fromExtensionCopy = fromExtension;
   if ([(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    if (a5)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-      *a5 = LOBYTE(v10) = 0;
+      *error = LOBYTE(v10) = 0;
     }
 
     else
@@ -16294,14 +16294,14 @@ LABEL_16:
     v15 = v12 - 1;
     if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
     {
-      v16 = [v8 posterExtensionBundleIdentifier];
+      posterExtensionBundleIdentifier = [extensionCopy posterExtensionBundleIdentifier];
       v35 = 138543362;
-      v36 = v16;
+      v36 = posterExtensionBundleIdentifier;
       _os_signpost_emit_with_name_impl(&dword_21B526000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "_stateLock_updateEnvironmentForExtension", "provider identifier: %{public}@", &v35, 0xCu);
     }
 
-    v17 = [v8 posterExtensionBundleIdentifier];
-    v18 = [(PBFPosterExtensionDataStore *)self _stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier:v17];
+    posterExtensionBundleIdentifier2 = [extensionCopy posterExtensionBundleIdentifier];
+    v18 = [(PBFPosterExtensionDataStore *)self _stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier:posterExtensionBundleIdentifier2];
     v19 = PBFLogPosterContents();
     v20 = v19;
     if (v18)
@@ -16309,13 +16309,13 @@ LABEL_16:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v35 = 138543362;
-        v36 = v17;
+        v36 = posterExtensionBundleIdentifier2;
         _os_log_impl(&dword_21B526000, v20, OS_LOG_TYPE_DEFAULT, "Updating Extension %{public}@", &v35, 0xCu);
       }
 
-      v21 = [v9 uniqueIdentifier];
-      v22 = [v8 uniqueIdentifier];
-      v23 = [v21 isEqual:v22];
+      uniqueIdentifier = [fromExtensionCopy uniqueIdentifier];
+      uniqueIdentifier2 = [extensionCopy uniqueIdentifier];
+      v23 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
       if (v23)
       {
@@ -16323,11 +16323,11 @@ LABEL_16:
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
         {
           v35 = 138543874;
-          v36 = v17;
+          v36 = posterExtensionBundleIdentifier2;
           v37 = 2114;
-          v38 = v9;
+          v38 = fromExtensionCopy;
           v39 = 2114;
-          v40 = v8;
+          v40 = extensionCopy;
           _os_log_debug_impl(&dword_21B526000, v24, OS_LOG_TYPE_DEBUG, "Extension process for %{public}@ is unchanged; (%{public}@ vs %{public}@)", &v35, 0x20u);
         }
       }
@@ -16338,11 +16338,11 @@ LABEL_16:
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
           v35 = 138543874;
-          v36 = v17;
+          v36 = posterExtensionBundleIdentifier2;
           v37 = 2114;
-          v38 = v9;
+          v38 = fromExtensionCopy;
           v39 = 2114;
-          v40 = v8;
+          v40 = extensionCopy;
           _os_log_impl(&dword_21B526000, v24, OS_LOG_TYPE_DEFAULT, "Extension process for %{public}@ HAS changed; (%{public}@ vs %{public}@)", &v35, 0x20u);
         }
       }
@@ -16352,7 +16352,7 @@ LABEL_16:
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
         v35 = 138543618;
-        v36 = v17;
+        v36 = posterExtensionBundleIdentifier2;
         v37 = 1024;
         LODWORD(v38) = v10;
         _os_log_impl(&dword_21B526000, v31, OS_LOG_TYPE_DEFAULT, "Updated Extension %{public}@: %{BOOL}u", &v35, 0x12u);
@@ -16362,9 +16362,9 @@ LABEL_16:
       v29 = v32;
       if (v15 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v32))
       {
-        v33 = [v8 posterExtensionBundleIdentifier];
+        posterExtensionBundleIdentifier3 = [extensionCopy posterExtensionBundleIdentifier];
         v35 = 138543618;
-        v36 = v33;
+        v36 = posterExtensionBundleIdentifier3;
         v37 = 1024;
         LODWORD(v38) = v10;
         _os_signpost_emit_with_name_impl(&dword_21B526000, v29, OS_SIGNPOST_INTERVAL_END, v12, "_stateLock_updateEnvironmentForExtension", "provider identifier: %{public}@; didUpdate: %{BOOL}u", &v35, 0x12u);
@@ -16378,12 +16378,12 @@ LABEL_16:
         [PBFPosterExtensionDataStore _stateLock_updateEnvironmentForExtension:fromExtension:error:];
       }
 
-      if (a5)
+      if (error)
       {
         v25 = MEMORY[0x277CCA9B8];
-        if (v17)
+        if (posterExtensionBundleIdentifier2)
         {
-          v26 = v17;
+          v26 = posterExtensionBundleIdentifier2;
         }
 
         else
@@ -16394,16 +16394,16 @@ LABEL_16:
         v41 = @"extensionBundleIdentifier";
         v42[0] = v26;
         v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:&v41 count:1];
-        *a5 = [v25 pbf_dataStoreErrorWithCode:-2217 userInfo:v27];
+        *error = [v25 pbf_dataStoreErrorWithCode:-2217 userInfo:v27];
       }
 
       v28 = PBFLogDataStore();
       v29 = v28;
       if (v15 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v28))
       {
-        v30 = [v8 posterExtensionBundleIdentifier];
+        posterExtensionBundleIdentifier4 = [extensionCopy posterExtensionBundleIdentifier];
         v35 = 138543362;
-        v36 = v30;
+        v36 = posterExtensionBundleIdentifier4;
         _os_signpost_emit_with_name_impl(&dword_21B526000, v29, OS_SIGNPOST_INTERVAL_END, v12, "_stateLock_updateEnvironmentForExtension", "provider identifier: %{public}@", &v35, 0xCu);
       }
 
@@ -16414,9 +16414,9 @@ LABEL_16:
   return v10;
 }
 
-- (id)_stateLock_knownPosterDescriptorsForExtensionBundleIdentifier:(id)a3
+- (id)_stateLock_knownPosterDescriptorsForExtensionBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) != 0)
   {
     v5 = MEMORY[0x277CBEBF8];
@@ -16424,15 +16424,15 @@ LABEL_16:
 
   else
   {
-    v5 = [(NSMutableDictionary *)self->_stateLock_descriptorsForExtensionBundleIdentifier objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_stateLock_descriptorsForExtensionBundleIdentifier objectForKey:identifierCopy];
   }
 
   return v5;
 }
 
-- (id)_stateLock_knownStaticPosterDescriptorsForExtensionBundleIdentifier:(id)a3
+- (id)_stateLock_knownStaticPosterDescriptorsForExtensionBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) != 0)
   {
     v5 = MEMORY[0x277CBEBF8];
@@ -16440,15 +16440,15 @@ LABEL_16:
 
   else
   {
-    v5 = [(NSMutableDictionary *)self->_stateLock_staticDescriptorsForExtensionBundleIdentifier objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_stateLock_staticDescriptorsForExtensionBundleIdentifier objectForKey:identifierCopy];
   }
 
   return v5;
 }
 
-- (id)_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier:(id)a3
+- (id)_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) != 0)
   {
     v5 = 0;
@@ -16456,15 +16456,15 @@ LABEL_16:
 
   else
   {
-    v5 = [(NSMutableDictionary *)self->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier objectForKey:identifierCopy];
   }
 
   return v5;
 }
 
-- (id)_stateLock_extensionBundleIdentifierForConfigurationUUID:(id)a3
+- (id)_stateLock_extensionBundleIdentifierForConfigurationUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) != 0)
   {
     v5 = 0;
@@ -16482,7 +16482,7 @@ LABEL_16:
     v7[1] = 3221225472;
     v7[2] = __88__PBFPosterExtensionDataStore__stateLock_extensionBundleIdentifierForConfigurationUUID___block_invoke;
     v7[3] = &unk_2782C6730;
-    v8 = v4;
+    v8 = dCopy;
     v9 = &v10;
     [(PBFPosterExtensionDataStore *)self _stateLock_enumerateConfigurationStoreCoordinators:v7];
     v5 = v11[5];
@@ -16510,11 +16510,11 @@ void __88__PBFPosterExtensionDataStore__stateLock_extensionBundleIdentifierForCo
   }
 }
 
-- (void)enumerateExtensionStoreCoordinators:(id)a3
+- (void)enumerateExtensionStoreCoordinators:(id)coordinators
 {
-  v4 = a3;
+  coordinatorsCopy = coordinators;
   os_unfair_lock_lock(&self->_stateLock);
-  [(PBFPosterExtensionDataStore *)self _stateLock_enumerateExtensionStoreCoordinators:v4];
+  [(PBFPosterExtensionDataStore *)self _stateLock_enumerateExtensionStoreCoordinators:coordinatorsCopy];
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
@@ -16522,45 +16522,45 @@ void __88__PBFPosterExtensionDataStore__stateLock_extensionBundleIdentifierForCo
 - (id)extensionStoreCoordinators
 {
   os_unfair_lock_lock(&self->_stateLock);
-  v3 = [(PBFPosterExtensionDataStore *)self _stateLock_extensionStoreCoordinators];
+  _stateLock_extensionStoreCoordinators = [(PBFPosterExtensionDataStore *)self _stateLock_extensionStoreCoordinators];
   os_unfair_lock_unlock(&self->_stateLock);
 
-  return v3;
+  return _stateLock_extensionStoreCoordinators;
 }
 
 - (id)_stateLock_extensionStoreCoordinators
 {
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) != 0)
   {
-    v3 = MEMORY[0x277CBEBF8];
+    allValues = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v3 = [(NSMutableDictionary *)self->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier allValues];
+    allValues = [(NSMutableDictionary *)self->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier allValues];
   }
 
-  return v3;
+  return allValues;
 }
 
-- (void)_stateLock_enumerateExtensionStoreCoordinators:(id)a3
+- (void)_stateLock_enumerateExtensionStoreCoordinators:(id)coordinators
 {
-  v4 = a3;
+  coordinatorsCopy = coordinators;
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) == 0)
   {
-    v5 = [(NSMutableDictionary *)self->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier allValues];
+    allValues = [(NSMutableDictionary *)self->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier allValues];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __78__PBFPosterExtensionDataStore__stateLock_enumerateExtensionStoreCoordinators___block_invoke;
     v6[3] = &unk_2782C6758;
-    v7 = v4;
-    [v5 enumerateObjectsUsingBlock:v6];
+    v7 = coordinatorsCopy;
+    [allValues enumerateObjectsUsingBlock:v6];
   }
 }
 
-- (id)_stateLock_posterConfigurationPathForUUID:(id)a3
+- (id)_stateLock_posterConfigurationPathForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) != 0)
   {
     v5 = 0;
@@ -16578,7 +16578,7 @@ void __88__PBFPosterExtensionDataStore__stateLock_extensionBundleIdentifierForCo
     v7[1] = 3221225472;
     v7[2] = __73__PBFPosterExtensionDataStore__stateLock_posterConfigurationPathForUUID___block_invoke;
     v7[3] = &unk_2782C6730;
-    v8 = v4;
+    v8 = dCopy;
     v9 = &v10;
     [(PBFPosterExtensionDataStore *)self _stateLock_enumerateConfigurationStoreCoordinators:v7];
     v5 = v11[5];
@@ -16643,18 +16643,18 @@ void __73__PBFPosterExtensionDataStore__stateLock_posterConfigurationPathForUUID
   return [(NSNumber *)self->_stateLock_hasBeenUnlockedSinceBoot BOOLValue];
 }
 
-- (id)_activityModeForFocusUUID:(id)a3
+- (id)_activityModeForFocusUUID:(id)d
 {
-  v3 = a3;
-  v4 = [objc_opt_class() sharedActivityManager];
-  v5 = [v4 availableActivities];
+  dCopy = d;
+  sharedActivityManager = [objc_opt_class() sharedActivityManager];
+  availableActivities = [sharedActivityManager availableActivities];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__PBFPosterExtensionDataStore__activityModeForFocusUUID___block_invoke;
   v9[3] = &unk_2782C57D0;
-  v10 = v3;
-  v6 = v3;
-  v7 = [v5 bs_firstObjectPassingTest:v9];
+  v10 = dCopy;
+  v6 = dCopy;
+  v7 = [availableActivities bs_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -16669,45 +16669,45 @@ uint64_t __57__PBFPosterExtensionDataStore__activityModeForFocusUUID___block_inv
 
 - (id)_activeActivity
 {
-  v2 = [objc_opt_class() sharedActivityManager];
-  v3 = [v2 activeActivity];
+  sharedActivityManager = [objc_opt_class() sharedActivityManager];
+  activeActivity = [sharedActivityManager activeActivity];
 
-  return v3;
+  return activeActivity;
 }
 
-- (void)_updateActiveActivity:(id)a3 active:(BOOL)a4 reason:(id)a5
+- (void)_updateActiveActivity:(id)activity active:(BOOL)active reason:(id)reason
 {
-  v6 = a4;
+  activeCopy = active;
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  activityCopy = activity;
+  reasonCopy = reason;
   v10 = PBFLogDataStore();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(PBFPosterExtensionDataStore *)self _activeActivity];
+    _activeActivity = [(PBFPosterExtensionDataStore *)self _activeActivity];
     v13 = 138412546;
-    v14 = v11;
+    v14 = _activeActivity;
     v15 = 2112;
-    v16 = v8;
+    v16 = activityCopy;
     _os_log_impl(&dword_21B526000, v10, OS_LOG_TYPE_DEFAULT, "Telling FCActivityManager to change active activity from %@ to %@", &v13, 0x16u);
   }
 
-  v12 = [objc_opt_class() sharedActivityManager];
-  [v12 setActivity:v8 active:v6 reason:v9];
+  sharedActivityManager = [objc_opt_class() sharedActivityManager];
+  [sharedActivityManager setActivity:activityCopy active:activeCopy reason:reasonCopy];
 }
 
-- (id)activePosterConfigurationForRole:(id)a3 assocPoster:(id *)a4
+- (id)activePosterConfigurationForRole:(id)role assocPoster:(id *)poster
 {
-  v6 = a3;
+  roleCopy = role;
   os_unfair_lock_lock(&self->_activePosterLock);
-  v7 = [(NSMutableDictionary *)self->_activePosterLock_roleToActivePosterConfiguration objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_activePosterLock_roleToActivePosterConfiguration objectForKeyedSubscript:roleCopy];
   os_unfair_lock_unlock(&self->_activePosterLock);
-  if (a4 && v7)
+  if (poster && v7)
   {
-    v8 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:v6];
-    v9 = [v8 posterCollection];
-    v10 = [v7 pbf_posterUUID];
-    *a4 = [v9 associatedPosterForUUID:v10];
+    v8 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:roleCopy];
+    posterCollection = [v8 posterCollection];
+    pbf_posterUUID = [v7 pbf_posterUUID];
+    *poster = [posterCollection associatedPosterForUUID:pbf_posterUUID];
   }
 
   return v7;
@@ -16722,15 +16722,15 @@ uint64_t __57__PBFPosterExtensionDataStore__activityModeForFocusUUID___block_inv
   return v3;
 }
 
-- (BOOL)markPosterConfigurationAsActive:(id)a3 forRole:(id)a4
+- (BOOL)markPosterConfigurationAsActive:(id)active forRole:(id)role
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  activeCopy = active;
+  roleCopy = role;
   os_unfair_lock_lock(&self->_activePosterLock);
-  v8 = [(NSMutableDictionary *)self->_activePosterLock_roleToActivePosterConfiguration objectForKeyedSubscript:v7];
+  v8 = [(NSMutableDictionary *)self->_activePosterLock_roleToActivePosterConfiguration objectForKeyedSubscript:roleCopy];
   v9 = v8;
-  if (v8 && ([v8 isEqual:v6] & 1) != 0)
+  if (v8 && ([v8 isEqual:activeCopy] & 1) != 0)
   {
     v10 = PBFLogRoleCoordinator();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -16738,7 +16738,7 @@ uint64_t __57__PBFPosterExtensionDataStore__activityModeForFocusUUID___block_inv
       v14 = 138543618;
       v15 = v9;
       v16 = 2114;
-      v17 = v6;
+      v17 = activeCopy;
       _os_log_impl(&dword_21B526000, v10, OS_LOG_TYPE_DEFAULT, "Bailed; Will not transition Active poster from %{public}@ -> %{public}@", &v14, 0x16u);
     }
 
@@ -16748,14 +16748,14 @@ uint64_t __57__PBFPosterExtensionDataStore__activityModeForFocusUUID___block_inv
   else
   {
     activePosterLock_roleToActivePosterConfiguration = self->_activePosterLock_roleToActivePosterConfiguration;
-    if (v6)
+    if (activeCopy)
     {
-      [(NSMutableDictionary *)activePosterLock_roleToActivePosterConfiguration setObject:v6 forKeyedSubscript:v7];
+      [(NSMutableDictionary *)activePosterLock_roleToActivePosterConfiguration setObject:activeCopy forKeyedSubscript:roleCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)activePosterLock_roleToActivePosterConfiguration removeObjectForKey:v7];
+      [(NSMutableDictionary *)activePosterLock_roleToActivePosterConfiguration removeObjectForKey:roleCopy];
     }
 
     v10 = PBFLogRoleCoordinator();
@@ -16764,7 +16764,7 @@ uint64_t __57__PBFPosterExtensionDataStore__activityModeForFocusUUID___block_inv
       v14 = 138543618;
       v15 = v9;
       v16 = 2114;
-      v17 = v6;
+      v17 = activeCopy;
       _os_log_impl(&dword_21B526000, v10, OS_LOG_TYPE_DEFAULT, "Transitioned Active poster from %{public}@ -> %{public}@", &v14, 0x16u);
     }
 
@@ -16778,10 +16778,10 @@ uint64_t __57__PBFPosterExtensionDataStore__activityModeForFocusUUID___block_inv
 - (id)_updatedSuggestionDescriptorsForPosterUUID
 {
   os_unfair_lock_lock(&self->_stateLock);
-  v3 = [(PBFPosterExtensionDataStore *)self _stateLock_updatedSuggestionDescriptorsForPosterUUID];
+  _stateLock_updatedSuggestionDescriptorsForPosterUUID = [(PBFPosterExtensionDataStore *)self _stateLock_updatedSuggestionDescriptorsForPosterUUID];
   os_unfair_lock_unlock(&self->_stateLock);
 
-  return v3;
+  return _stateLock_updatedSuggestionDescriptorsForPosterUUID;
 }
 
 - (id)_stateLock_updatedSuggestionDescriptorPathsForPosterUUID
@@ -16796,8 +16796,8 @@ uint64_t __57__PBFPosterExtensionDataStore__activityModeForFocusUUID___block_inv
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [v3 objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  objectEnumerator = [v3 objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -16808,22 +16808,22 @@ uint64_t __57__PBFPosterExtensionDataStore__activityModeForFocusUUID___block_inv
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 pbf_posterUUID];
-        v11 = [v9 pbf_posterProvider];
-        v12 = [(PBFPosterExtensionDataStore *)self _stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier:v11];
-        v13 = [v12 suggestionDescriptorPathsForConfigurationUUID:v10];
+        pbf_posterUUID = [v9 pbf_posterUUID];
+        pbf_posterProvider = [v9 pbf_posterProvider];
+        v12 = [(PBFPosterExtensionDataStore *)self _stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier:pbf_posterProvider];
+        v13 = [v12 suggestionDescriptorPathsForConfigurationUUID:pbf_posterUUID];
         if ([v13 count])
         {
           v14 = [v13 copy];
-          [v17 setObject:v14 forKeyedSubscript:v10];
+          [v17 setObject:v14 forKeyedSubscript:pbf_posterUUID];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -16835,14 +16835,14 @@ uint64_t __57__PBFPosterExtensionDataStore__activityModeForFocusUUID___block_inv
 - (id)_stateLock_updatedSuggestionDescriptorsForPosterUUID
 {
   v3 = objc_opt_new();
-  v4 = [(PBFPosterExtensionDataStore *)self _stateLock_updatedSuggestionDescriptorPathsForPosterUUID];
+  _stateLock_updatedSuggestionDescriptorPathsForPosterUUID = [(PBFPosterExtensionDataStore *)self _stateLock_updatedSuggestionDescriptorPathsForPosterUUID];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __83__PBFPosterExtensionDataStore__stateLock_updatedSuggestionDescriptorsForPosterUUID__block_invoke;
   v7[3] = &unk_2782C6780;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  [_stateLock_updatedSuggestionDescriptorPathsForPosterUUID enumerateKeysAndObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -16857,19 +16857,19 @@ void __83__PBFPosterExtensionDataStore__stateLock_updatedSuggestionDescriptorsFo
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v6];
 }
 
-- (BOOL)_stateLock_ingestReloadedDescriptorsForExtensionBundleIdentifier:(id)a3 preReloadDescriptors:(id)a4 postReloadDescriptors:(id)a5 error:(id *)a6
+- (BOOL)_stateLock_ingestReloadedDescriptorsForExtensionBundleIdentifier:(id)identifier preReloadDescriptors:(id)descriptors postReloadDescriptors:(id)reloadDescriptors error:(id *)error
 {
   v215 = *MEMORY[0x277D85DE8];
-  v158 = a3;
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  descriptorsCopy = descriptors;
+  reloadDescriptorsCopy = reloadDescriptors;
   v10 = objc_opt_new();
-  v164 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v8, "count")}];
+  v164 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(descriptorsCopy, "count")}];
   v196 = 0u;
   v197 = 0u;
   v198 = 0u;
   v199 = 0u;
-  v11 = v8;
+  v11 = descriptorsCopy;
   v12 = [v11 countByEnumeratingWithState:&v196 objects:v214 count:16];
   if (v12)
   {
@@ -16885,8 +16885,8 @@ void __83__PBFPosterExtensionDataStore__stateLock_updatedSuggestionDescriptorsFo
         }
 
         v16 = *(*(&v196 + 1) + 8 * i);
-        v17 = [v16 descriptorIdentifier];
-        [v164 setObject:v16 forKey:v17];
+        descriptorIdentifier = [v16 descriptorIdentifier];
+        [v164 setObject:v16 forKey:descriptorIdentifier];
 
         v18 = [objc_alloc(MEMORY[0x277D3ED80]) _initWithPath:v16];
         [v10 addObject:v18];
@@ -16900,12 +16900,12 @@ void __83__PBFPosterExtensionDataStore__stateLock_updatedSuggestionDescriptorsFo
 
   v141 = v10;
 
-  v19 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v9, "count")}];
+  v19 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(reloadDescriptorsCopy, "count")}];
   v192 = 0u;
   v193 = 0u;
   v194 = 0u;
   v195 = 0u;
-  obj = v9;
+  obj = reloadDescriptorsCopy;
   v20 = [obj countByEnumeratingWithState:&v192 objects:v213 count:16];
   v162 = v19;
   if (v20)
@@ -16923,9 +16923,9 @@ void __83__PBFPosterExtensionDataStore__stateLock_updatedSuggestionDescriptorsFo
         }
 
         v24 = *(*(&v192 + 1) + 8 * v23);
-        v25 = [(__CFString *)v24 descriptorIdentifier];
-        v26 = v25;
-        if (!v25)
+        descriptorIdentifier2 = [(__CFString *)v24 descriptorIdentifier];
+        v26 = descriptorIdentifier2;
+        if (!descriptorIdentifier2)
         {
           v28 = PBFLogPosterContents();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -16943,7 +16943,7 @@ LABEL_23:
           goto LABEL_24;
         }
 
-        if (![(__CFString *)v25 length])
+        if (![(__CFString *)descriptorIdentifier2 length])
         {
           v28 = PBFLogPosterContents();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -16951,7 +16951,7 @@ LABEL_23:
             *buf = 138412802;
             v208 = v24;
             v209 = 2112;
-            v210 = v158;
+            v210 = identifierCopy;
             v211 = 2112;
             v212 = v26;
             v30 = v28;
@@ -17000,7 +17000,7 @@ LABEL_24:
     while (v33);
   }
 
-  v34 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v188 = 0u;
   v189 = 0u;
   v190 = 0u;
@@ -17021,8 +17021,8 @@ LABEL_24:
         }
 
         v40 = *(*(&v188 + 1) + 8 * j);
-        v41 = [v40 descriptorIdentifier];
-        [v34 setObject:v40 forKey:v41];
+        descriptorIdentifier3 = [v40 descriptorIdentifier];
+        [dictionary setObject:v40 forKey:descriptorIdentifier3];
       }
 
       v37 = [v35 countByEnumeratingWithState:&v188 objects:v206 count:16];
@@ -17031,17 +17031,17 @@ LABEL_24:
     while (v37);
   }
 
-  v42 = v158;
-  v161 = [(PBFPosterExtensionDataStore *)self _stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier:v158];
+  v42 = identifierCopy;
+  v161 = [(PBFPosterExtensionDataStore *)self _stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier:identifierCopy];
   if (!v161)
   {
-    if (a6)
+    if (error)
     {
       v77 = MEMORY[0x277CCA9B8];
       v204 = @"extensionBundleIdentifier";
-      if (v158)
+      if (identifierCopy)
       {
-        v78 = v158;
+        v78 = identifierCopy;
       }
 
       else
@@ -17051,7 +17051,7 @@ LABEL_24:
 
       v205 = v78;
       v79 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v205 forKeys:&v204 count:1];
-      *a6 = [v77 pbf_dataStoreErrorWithCode:-2217 userInfo:v79];
+      *error = [v77 pbf_dataStoreErrorWithCode:-2217 userInfo:v79];
     }
 
     v75 = 0;
@@ -17063,8 +17063,8 @@ LABEL_24:
   v185 = 0u;
   v186 = 0u;
   v187 = 0u;
-  v44 = [v19 allKeys];
-  v146 = [v44 countByEnumeratingWithState:&v184 objects:v203 count:16];
+  allKeys = [v19 allKeys];
+  v146 = [allKeys countByEnumeratingWithState:&v184 objects:v203 count:16];
   if (!v146)
   {
 
@@ -17074,8 +17074,8 @@ LABEL_79:
     v181 = 0u;
     v178 = 0u;
     v179 = 0u;
-    v80 = [v34 allKeys];
-    v81 = [v80 countByEnumeratingWithState:&v178 objects:v202 count:16];
+    allKeys2 = [dictionary allKeys];
+    v81 = [allKeys2 countByEnumeratingWithState:&v178 objects:v202 count:16];
     if (v81)
     {
       v82 = v81;
@@ -17086,11 +17086,11 @@ LABEL_79:
         {
           if (*v179 != v83)
           {
-            objc_enumerationMutation(v80);
+            objc_enumerationMutation(allKeys2);
           }
 
           v85 = *(*(&v178 + 1) + 8 * k);
-          v86 = [v34 objectForKeyedSubscript:v85];
+          v86 = [dictionary objectForKeyedSubscript:v85];
           v87 = [v43 objectForKey:v85];
           if (v87)
           {
@@ -17109,17 +17109,17 @@ LABEL_79:
           v19 = v162;
         }
 
-        v82 = [v80 countByEnumeratingWithState:&v178 objects:v202 count:16];
+        v82 = [allKeys2 countByEnumeratingWithState:&v178 objects:v202 count:16];
       }
 
       while (v82);
     }
 
-    v89 = [v43 allValues];
-    v90 = [v89 copy];
+    allValues = [v43 allValues];
+    v90 = [allValues copy];
 
-    v42 = v158;
-    v75 = [(PBFPosterExtensionDataStore *)self _stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier:v158];
+    v42 = identifierCopy;
+    v75 = [(PBFPosterExtensionDataStore *)self _stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier:identifierCopy];
 
     if (!v75)
     {
@@ -17136,8 +17136,8 @@ LABEL_79:
     }
 
     v91 = MEMORY[0x277CBEB98];
-    v92 = [v164 allKeys];
-    v93 = [v91 setWithArray:v92];
+    allKeys3 = [v164 allKeys];
+    v93 = [v91 setWithArray:allKeys3];
     v94 = v93;
     if (v93)
     {
@@ -17153,8 +17153,8 @@ LABEL_79:
     v98 = v140;
 
     v99 = MEMORY[0x277CBEB98];
-    v100 = [v43 allKeys];
-    v101 = [v99 setWithArray:v100];
+    allKeys4 = [v43 allKeys];
+    v101 = [v99 setWithArray:allKeys4];
     v102 = v101;
     if (v101)
     {
@@ -17196,11 +17196,11 @@ LABEL_79:
             if (([v104 containsObject:v110] & 1) == 0)
             {
               v111 = [v164 objectForKey:v110];
-              v112 = [v111 serverIdentity];
+              serverIdentity = [v111 serverIdentity];
 
-              v113 = [(__CFString *)v112 posterUUID];
+              posterUUID = [(__CFString *)serverIdentity posterUUID];
               v173 = 0;
-              v114 = [v161 teardownDynamicDescriptorStoreCoordinatorForPosterUUID:v113 error:&v173];
+              v114 = [v161 teardownDynamicDescriptorStoreCoordinatorForPosterUUID:posterUUID error:&v173];
               v115 = v173;
 
               if (v114)
@@ -17219,7 +17219,7 @@ LABEL_79:
                 if (os_log_type_enabled(v117, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138412546;
-                  v208 = v112;
+                  v208 = serverIdentity;
                   v209 = 2112;
                   v210 = v115;
                   _os_log_error_impl(&dword_21B526000, v117, OS_LOG_TYPE_ERROR, "failed to remove descriptor from extension store coordinator '%@': %@", buf, 0x16u);
@@ -17239,7 +17239,7 @@ LABEL_79:
 
       v140 = v98;
 
-      v42 = v158;
+      v42 = identifierCopy;
       v90 = v155;
       v43 = v150;
     }
@@ -17268,12 +17268,12 @@ LABEL_129:
         if (v122)
         {
           v96 = 1;
-          v42 = v158;
+          v42 = identifierCopy;
           goto LABEL_136;
         }
 
         v134 = v97;
-        v42 = v158;
+        v42 = identifierCopy;
 LABEL_133:
         v135 = [(NSMutableDictionary *)self->_stateLock_descriptorsForExtensionBundleIdentifier objectForKeyedSubscript:v42];
         v136 = [v135 count];
@@ -17291,7 +17291,7 @@ LABEL_136:
         if (v96)
         {
           [(PBFPosterExtensionDataStore *)self _notifyObserversDidUpdatePosterDescriptorsForExtensionBundleIdentifier:v42];
-          v76 = [(PBFPosterExtensionDataStore *)self _stateLock_issueDescriptorUpdatedEventsForExtension:v42 preUpdate:v141 postUpdate:v75 error:a6];
+          v76 = [(PBFPosterExtensionDataStore *)self _stateLock_issueDescriptorUpdatedEventsForExtension:v42 preUpdate:v141 postUpdate:v75 error:error];
           goto LABEL_139;
         }
 
@@ -17308,9 +17308,9 @@ LABEL_138:
 
     v123 = [(NSMutableDictionary *)self->_stateLock_descriptorsForExtensionBundleIdentifier copy];
     v124 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v123];
-    v125 = [v118 dynamicPosterDescriptorLatestVersionPaths];
-    v126 = [v125 allObjects];
-    v127 = [v126 sortedArrayUsingSelector:sel_compareDescriptorIdentifiers_];
+    dynamicPosterDescriptorLatestVersionPaths = [v118 dynamicPosterDescriptorLatestVersionPaths];
+    allObjects = [dynamicPosterDescriptorLatestVersionPaths allObjects];
+    v127 = [allObjects sortedArrayUsingSelector:sel_compareDescriptorIdentifiers_];
     [v124 setObject:v127 forKeyedSubscript:v42];
 
     v151 = [v124 copy];
@@ -17359,7 +17359,7 @@ LABEL_138:
     goto LABEL_129;
   }
 
-  v145 = v44;
+  v145 = allKeys;
   v154 = 0;
   v140 = 0;
   v46 = *v185;
@@ -17379,28 +17379,28 @@ LABEL_138:
       v48 = *(*(&v184 + 1) + 8 * v47);
       v49 = [v19 objectForKey:{v48, v138}];
       v50 = [v164 objectForKey:v48];
-      v156 = [v34 objectForKey:v48];
-      v51 = [(__CFString *)v49 role];
+      v156 = [dictionary objectForKey:v48];
+      role = [(__CFString *)v49 role];
       v52 = v48;
       v183 = 0;
       v152 = v52;
-      v147 = v51;
+      v147 = role;
       v159 = [v161 dynamicDescriptorStoreCoordinatorForIdentifier:? role:? createIfNil:? error:?];
       v53 = v183;
       v149 = v50;
       if (!v53)
       {
-        v57 = [(__CFString *)v49 serverIdentity];
-        if (v57)
+        serverIdentity2 = [(__CFString *)v49 serverIdentity];
+        if (serverIdentity2)
         {
-          if (v50 && (-[__CFString identity](v50, "identity"), v58 = objc_claimAutoreleasedReturnValue(), v59 = [v58 isEqual:v57], v58, v59))
+          if (v50 && (-[__CFString identity](v50, "identity"), v58 = objc_claimAutoreleasedReturnValue(), v59 = [v58 isEqual:serverIdentity2], v58, v59))
           {
             if (v156)
             {
               v54 = v49;
-              v60 = [v156 descriptorIdentifier];
-              [v43 setObject:v156 forKey:v60];
-              v61 = v60;
+              descriptorIdentifier4 = [v156 descriptorIdentifier];
+              [v43 setObject:v156 forKey:descriptorIdentifier4];
+              v61 = descriptorIdentifier4;
               v56 = 1;
               v62 = v154;
               goto LABEL_53;
@@ -17445,9 +17445,9 @@ LABEL_53:
 
         else
         {
-          v64 = [(__CFString *)v49 contentsURL];
+          contentsURL = [(__CFString *)v49 contentsURL];
           v182 = 0;
-          v65 = [v159 addNewVersionWithContents:v64 error:&v182];
+          v65 = [v159 addNewVersionWithContents:contentsURL error:&v182];
           v62 = v182;
 
           v143 = v65;
@@ -17472,11 +17472,11 @@ LABEL_53:
             v67 = v65;
             v54 = v49;
             v68 = MEMORY[0x277D3EBA0];
-            v69 = [v161 containerURL];
-            v70 = [v68 pathWithProviderURL:v69 identity:v67];
+            containerURL = [v161 containerURL];
+            v70 = [v68 pathWithProviderURL:containerURL identity:v67];
 
-            v71 = [v70 descriptorIdentifier];
-            [v43 setObject:v70 forKey:v71];
+            descriptorIdentifier5 = [v70 descriptorIdentifier];
+            [v43 setObject:v70 forKey:descriptorIdentifier5];
 
             v56 = 1;
             v62 = v154;
@@ -17504,7 +17504,7 @@ LABEL_53:
       }
 
       v56 = 0;
-      v57 = v154;
+      serverIdentity2 = v154;
       v154 = v53;
 LABEL_61:
 
@@ -17530,15 +17530,15 @@ LABEL_68:
     goto LABEL_79;
   }
 
-  if (a6)
+  if (error)
   {
     v74 = v154;
-    *a6 = v74;
+    *error = v74;
   }
 
   v75 = 0;
   v76 = 0;
-  v42 = v158;
+  v42 = identifierCopy;
 LABEL_139:
 
   return v76;
@@ -17605,28 +17605,28 @@ uint64_t __145__PBFPosterExtensionDataStore__stateLock_ingestReloadedDescriptors
   return v6;
 }
 
-- (BOOL)_stateLock_issueDescriptorUpdatedEventsForExtension:(id)a3 preUpdate:(id)a4 postUpdate:(id)a5 error:(id *)a6
+- (BOOL)_stateLock_issueDescriptorUpdatedEventsForExtension:(id)extension preUpdate:(id)update postUpdate:(id)postUpdate error:(id *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ((BSEqualArrays() & 1) == 0 && [v10 length])
+  extensionCopy = extension;
+  updateCopy = update;
+  postUpdateCopy = postUpdate;
+  if ((BSEqualArrays() & 1) == 0 && [extensionCopy length])
   {
-    v35 = a6;
+    errorCopy = error;
     v36 = objc_opt_new();
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v34 = self;
+    selfCopy = self;
     obj = [(NSDictionary *)self->_roleToRoleCoordinator keyEnumerator];
     v40 = [obj countByEnumeratingWithState:&v45 objects:v55 count:16];
     if (v40)
     {
       v13 = *v46;
       v37 = *v46;
-      v38 = v12;
+      v38 = postUpdateCopy;
       do
       {
         v14 = 0;
@@ -17643,18 +17643,18 @@ uint64_t __145__PBFPosterExtensionDataStore__stateLock_ingestReloadedDescriptors
           v44[2] = __110__PBFPosterExtensionDataStore__stateLock_issueDescriptorUpdatedEventsForExtension_preUpdate_postUpdate_error___block_invoke;
           v44[3] = &unk_2782C6820;
           v44[4] = v15;
-          v16 = [v11 bs_mapNoNulls:v44];
+          v16 = [updateCopy bs_mapNoNulls:v44];
           v43[0] = MEMORY[0x277D85DD0];
           v43[1] = 3221225472;
           v43[2] = __110__PBFPosterExtensionDataStore__stateLock_issueDescriptorUpdatedEventsForExtension_preUpdate_postUpdate_error___block_invoke_2;
           v43[3] = &unk_2782C6820;
           v43[4] = v15;
-          v17 = [v12 bs_mapNoNulls:v43];
+          v17 = [postUpdateCopy bs_mapNoNulls:v43];
           if (([v17 count] || objc_msgSend(v16, "count")) && (BSEqualArrays() & 1) == 0)
           {
-            v19 = v11;
-            v20 = v10;
-            v18 = [PBFPosterDataStoreEventBuilder descriptorsUpdatedForProvider:v10 role:v15 from:v16 to:v17];
+            v19 = updateCopy;
+            v20 = extensionCopy;
+            v18 = [PBFPosterDataStoreEventBuilder descriptorsUpdatedForProvider:extensionCopy role:v15 from:v16 to:v17];
             v42 = 0;
             v21 = [v18 buildWithError:&v42];
             v22 = v42;
@@ -17688,10 +17688,10 @@ uint64_t __145__PBFPosterExtensionDataStore__stateLock_ingestReloadedDescriptors
               [v36 addObject:v21];
             }
 
-            v10 = v20;
-            v11 = v19;
+            extensionCopy = v20;
+            updateCopy = v19;
             v13 = v37;
-            v12 = v38;
+            postUpdateCopy = v38;
           }
 
           else
@@ -17702,7 +17702,7 @@ uint64_t __145__PBFPosterExtensionDataStore__stateLock_ingestReloadedDescriptors
               *buf = 138543618;
               v50 = v15;
               v51 = 2114;
-              v52 = v10;
+              v52 = extensionCopy;
               _os_log_impl(&dword_21B526000, v18, OS_LOG_TYPE_DEFAULT, "Skipping building PBFPosterDataStoreEvent for role %{public}@ extension %{public}@ reloadDescriptors: no posters for role", buf, 0x16u);
             }
           }
@@ -17725,12 +17725,12 @@ uint64_t __145__PBFPosterExtensionDataStore__stateLock_ingestReloadedDescriptors
       if (v27)
       {
         *buf = 138543362;
-        v50 = v10;
+        v50 = extensionCopy;
         _os_log_impl(&dword_21B526000, v26, OS_LOG_TYPE_DEFAULT, "Issuing PBFPosterDataStoreEvents for extension %{public}@ reloadDescriptors", buf, 0xCu);
       }
 
       v41 = 0;
-      v28 = [(PBFPosterExtensionDataStore *)v34 _stateLock_processEvents:v36 context:0 error:&v41];
+      v28 = [(PBFPosterExtensionDataStore *)selfCopy _stateLock_processEvents:v36 context:0 error:&v41];
       v26 = v41;
       v29 = PBFLogDataStore();
       v30 = os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT);
@@ -17739,7 +17739,7 @@ uint64_t __145__PBFPosterExtensionDataStore__stateLock_ingestReloadedDescriptors
         if (v30)
         {
           *buf = 138543362;
-          v50 = v10;
+          v50 = extensionCopy;
           _os_log_impl(&dword_21B526000, v29, OS_LOG_TYPE_DEFAULT, "Successfully issued PBFPosterDataStoreEvents for extension %{public}@ reloadDescriptors", buf, 0xCu);
         }
 
@@ -17750,17 +17750,17 @@ uint64_t __145__PBFPosterExtensionDataStore__stateLock_ingestReloadedDescriptors
       if (v30)
       {
         *buf = 138543618;
-        v50 = v10;
+        v50 = extensionCopy;
         v51 = 2114;
         v52 = v26;
         _os_log_impl(&dword_21B526000, v29, OS_LOG_TYPE_DEFAULT, "Failed to process PBFPosterDataStoreEvents for extension %{public}@ reloadDescriptors: %{public}@", buf, 0x16u);
       }
 
-      if (v35)
+      if (errorCopy)
       {
         v32 = v26;
         v31 = 0;
-        *v35 = v26;
+        *errorCopy = v26;
 LABEL_40:
 
         goto LABEL_41;
@@ -17770,7 +17770,7 @@ LABEL_40:
     else if (v27)
     {
       *buf = 138543362;
-      v50 = v10;
+      v50 = extensionCopy;
       _os_log_impl(&dword_21B526000, v26, OS_LOG_TYPE_DEFAULT, "Bailing PBFPosterDataStoreEvents for extension %{public}@ reloadDescriptors; no events generated", buf, 0xCu);
     }
 
@@ -17822,16 +17822,16 @@ id __110__PBFPosterExtensionDataStore__stateLock_issueDescriptorUpdatedEventsFor
   return v5;
 }
 
-- (id)_stateLock_enqueueReloadDescriptorsOperationForExtensionBundleIdentifier:(id)a3 reason:(id)a4 powerLogReason:(int64_t)a5 postEnqueueGalleryUpdateOptions:(unint64_t)a6 sessionInfo:(id)a7 completion:(id)a8
+- (id)_stateLock_enqueueReloadDescriptorsOperationForExtensionBundleIdentifier:(id)identifier reason:(id)reason powerLogReason:(int64_t)logReason postEnqueueGalleryUpdateOptions:(unint64_t)options sessionInfo:(id)info completion:(id)completion
 {
   v132[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = a8;
+  identifierCopy = identifier;
+  reasonCopy = reason;
+  infoCopy = info;
+  completionCopy = completion;
   if (![(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    v21 = v15;
+    v21 = identifierCopy;
     NSClassFromString(&cfstr_Nsstring.isa);
     if (!v21)
     {
@@ -17853,7 +17853,7 @@ id __110__PBFPosterExtensionDataStore__stateLock_issueDescriptorUpdatedEventsFor
       v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v132 forKeys:&v131 count:1];
       v84 = [v27 pbf_dataStoreErrorWithCode:-2205 userInfo:v28];
 
-      v18[2](v18, 0, v84);
+      completionCopy[2](completionCopy, 0, v84);
       v20 = 0;
 LABEL_63:
 
@@ -17861,15 +17861,15 @@ LABEL_63:
     }
 
     v84 = self->_extensionProvider;
-    v23 = [(PFPosterExtensionProvider *)v84 extensionForIdentifier];
-    v83 = [v23 objectForKey:v22];
+    extensionForIdentifier = [(PFPosterExtensionProvider *)v84 extensionForIdentifier];
+    v83 = [extensionForIdentifier objectForKey:v22];
 
     if (v83)
     {
-      v24 = [v83 posterExtensionInfoPlist];
-      v25 = [v24 pbf_supportsDynamicDescriptors];
+      posterExtensionInfoPlist = [v83 posterExtensionInfoPlist];
+      pbf_supportsDynamicDescriptors = [posterExtensionInfoPlist pbf_supportsDynamicDescriptors];
 
-      if (v25)
+      if (pbf_supportsDynamicDescriptors)
       {
         v82 = NSStringFromSelector(a2);
         v116 = 0;
@@ -17877,9 +17877,9 @@ LABEL_63:
         v26 = v116;
         if (v26)
         {
-          if (v18)
+          if (completionCopy)
           {
-            v18[2](v18, 0, v26);
+            completionCopy[2](completionCopy, 0, v26);
           }
 
           v20 = 0;
@@ -17898,9 +17898,9 @@ LABEL_63:
               [PBFPosterExtensionDataStore _stateLock_enqueueReloadDescriptorsOperationForExtensionBundleIdentifier:a2 reason:? powerLogReason:? postEnqueueGalleryUpdateOptions:? sessionInfo:? completion:?];
             }
 
-            if (v18)
+            if (completionCopy)
             {
-              v18[2](v18, 0, v79);
+              completionCopy[2](completionCopy, 0, v79);
             }
 
             [(PFPosterExtensionProvider *)v84 relinquishExtensionInstanceWithIdentifier:v85 reason:v82];
@@ -17909,7 +17909,7 @@ LABEL_63:
 
           else
           {
-            v77 = [v81 pr_reloadDescriptorOperations];
+            pr_reloadDescriptorOperations = [v81 pr_reloadDescriptorOperations];
             v34 = PBFLogReloadDescriptors();
             if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
             {
@@ -17922,7 +17922,7 @@ LABEL_63:
             if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              *&buf[4] = v77;
+              *&buf[4] = pr_reloadDescriptorOperations;
               _os_log_impl(&dword_21B526000, v35, OS_LOG_TYPE_DEFAULT, "Existing operations: %{public}@", buf, 0xCu);
             }
 
@@ -17930,16 +17930,16 @@ LABEL_63:
             if (v78)
             {
               objc_initWeak(&location, self);
-              if ((!v17 || [v17 isEmpty]) && (v111[0] = MEMORY[0x277D85DD0], v111[1] = 3221225472, v111[2] = __181__PBFPosterExtensionDataStore__stateLock_enqueueReloadDescriptorsOperationForExtensionBundleIdentifier_reason_powerLogReason_postEnqueueGalleryUpdateOptions_sessionInfo_completion___block_invoke, v111[3] = &unk_2782C6848, v74 = v85, v112 = v74, v113 = 0, objc_msgSend(v77, "bs_firstObjectPassingTest:", v111), v20 = objc_claimAutoreleasedReturnValue(), v113, v112, v20))
+              if ((!infoCopy || [infoCopy isEmpty]) && (v111[0] = MEMORY[0x277D85DD0], v111[1] = 3221225472, v111[2] = __181__PBFPosterExtensionDataStore__stateLock_enqueueReloadDescriptorsOperationForExtensionBundleIdentifier_reason_powerLogReason_postEnqueueGalleryUpdateOptions_sessionInfo_completion___block_invoke, v111[3] = &unk_2782C6848, v74 = v85, v112 = v74, v113 = 0, objc_msgSend(pr_reloadDescriptorOperations, "bs_firstObjectPassingTest:", v111), v20 = objc_claimAutoreleasedReturnValue(), v113, v112, v20))
               {
                 v36 = PBFLogReloadDescriptors();
                 if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
                 {
-                  v37 = [v17 identifier];
+                  identifier = [infoCopy identifier];
                   *buf = 138543618;
                   *&buf[4] = v74;
                   *&buf[12] = 2114;
-                  *&buf[14] = v37;
+                  *&buf[14] = identifier;
                   _os_log_impl(&dword_21B526000, v36, OS_LOG_TYPE_DEFAULT, "Found a matching operation for %{public}@ / %{public}@; adding completion", buf, 0x16u);
                 }
 
@@ -17947,7 +17947,7 @@ LABEL_63:
                 v86[1] = 3221225472;
                 v86[2] = __181__PBFPosterExtensionDataStore__stateLock_enqueueReloadDescriptorsOperationForExtensionBundleIdentifier_reason_powerLogReason_postEnqueueGalleryUpdateOptions_sessionInfo_completion___block_invoke_883;
                 v86[3] = &unk_2782C68E8;
-                v88 = v18;
+                v88 = completionCopy;
                 objc_copyWeak(&v89, &location);
                 v87 = v74;
                 [(PBFPosterExtensionReloadDescriptorsOperation *)v20 addCompletionObserver:v86];
@@ -17961,19 +17961,19 @@ LABEL_63:
                 v44 = PBFLogReloadDescriptors();
                 if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
                 {
-                  v45 = [v17 identifier];
+                  identifier2 = [infoCopy identifier];
                   *buf = 138543874;
                   *&buf[4] = v85;
                   *&buf[12] = 2114;
-                  *&buf[14] = v45;
+                  *&buf[14] = identifier2;
                   *&buf[22] = 2114;
-                  v122 = v77;
+                  v122 = pr_reloadDescriptorOperations;
                   _os_log_impl(&dword_21B526000, v44, OS_LOG_TYPE_DEFAULT, "Found no matching operation for %{public}@ / %{public}@ / %{public}@", buf, 0x20u);
                 }
 
-                v46 = [v81 extension];
-                v47 = [v46 posterExtensionBundleIdentifier];
-                v69 = [@"PBFPosterExtensionReloadDescriptorsOperation reloadDescriptors for " stringByAppendingString:v47];
+                extension = [v81 extension];
+                posterExtensionBundleIdentifier = [extension posterExtensionBundleIdentifier];
+                v69 = [@"PBFPosterExtensionReloadDescriptorsOperation reloadDescriptors for " stringByAppendingString:posterExtensionBundleIdentifier];
 
                 v67 = objc_opt_new();
                 *buf = 0;
@@ -17983,10 +17983,10 @@ LABEL_63:
                 v123 = __Block_byref_object_dispose_;
                 runtimeAssertionProvider = self->_runtimeAssertionProvider;
                 v75 = [MEMORY[0x277CCACA8] stringWithFormat:@"reloadDescriptors for %@", v85];
-                v48 = [MEMORY[0x277D47008] currentProcess];
-                v124 = [(PBFRuntimeAssertionProviding *)runtimeAssertionProvider acquirePosterUpdateRuntimeAssertionForReason:v75 target:v48];
+                currentProcess = [MEMORY[0x277D47008] currentProcess];
+                v124 = [(PBFRuntimeAssertionProviding *)runtimeAssertionProvider acquirePosterUpdateRuntimeAssertionForReason:v75 target:currentProcess];
 
-                v49 = [MEMORY[0x277CCACA8] stringWithFormat:@"extensionIdentifier:%@ sessionInfo:%@ assetUpdater: %@", v85, v17, v80];;
+                v49 = [MEMORY[0x277CCACA8] stringWithFormat:@"extensionIdentifier:%@ sessionInfo:%@ assetUpdater: %@", v85, infoCopy, v80];;
                 v50 = MEMORY[0x277D46DB8];
                 v109[0] = MEMORY[0x277D85DD0];
                 v109[1] = 3221225472;
@@ -18021,7 +18021,7 @@ LABEL_63:
 
                 v76 = v56;
 
-                v20 = [[PBFPosterExtensionReloadDescriptorsOperation alloc] initWithUpdatingService:v80 extensionBundleIdentifier:v85 sessionInfo:v17 preRefreshPosterDescriptors:v76 runtimeAssertionProvider:self->_runtimeAssertionProvider timeout:a5 powerLogReason:90.0];
+                v20 = [[PBFPosterExtensionReloadDescriptorsOperation alloc] initWithUpdatingService:v80 extensionBundleIdentifier:v85 sessionInfo:infoCopy preRefreshPosterDescriptors:v76 runtimeAssertionProvider:self->_runtimeAssertionProvider timeout:logReason powerLogReason:90.0];
                 v106[0] = 0;
                 v106[1] = v106;
                 v106[2] = 0x3042000000;
@@ -18034,7 +18034,7 @@ LABEL_63:
                 aBlock[3] = &unk_2782C6870;
                 v64 = v67;
                 v99 = v64;
-                v104 = v18;
+                v104 = completionCopy;
                 v105 = buf;
                 v100 = v84;
                 v57 = v85;
@@ -18058,17 +18058,17 @@ LABEL_63:
                 v96 = v106;
                 v60 = v81;
                 v94 = v60;
-                v97[1] = a6;
-                v97[2] = a5;
+                v97[1] = options;
+                v97[2] = logReason;
                 [(PBFPosterExtensionReloadDescriptorsOperation *)v20 addCompletionObserver:v90];
                 v61 = PBFLogReloadDescriptors();
                 if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
                 {
-                  v62 = [v17 identifier];
+                  identifier3 = [infoCopy identifier];
                   *v117 = 138543618;
                   v118 = v59;
                   v119 = 2114;
-                  v120 = v62;
+                  v120 = identifier3;
                   _os_log_impl(&dword_21B526000, v61, OS_LOG_TYPE_DEFAULT, "Queuing operation for %{public}@ / %{public}@", v117, 0x16u);
                 }
 
@@ -18093,9 +18093,9 @@ LABEL_63:
               v41 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v126 forKeys:&v125 count:1];
               v42 = [v40 pbf_dataStoreErrorWithCode:-2217 userInfo:v41];
 
-              if (v18)
+              if (completionCopy)
               {
-                v18[2](v18, 0, v42);
+                completionCopy[2](completionCopy, 0, v42);
               }
 
               v43 = PBFLogReloadDescriptors();
@@ -18121,7 +18121,7 @@ LABEL_63:
         _os_log_impl(&dword_21B526000, v31, OS_LOG_TYPE_DEFAULT, "Extension %{public}@ doesn't support dynamic descriptors.", buf, 0xCu);
       }
 
-      if (!v18)
+      if (!completionCopy)
       {
         v20 = 0;
 LABEL_62:
@@ -18136,7 +18136,7 @@ LABEL_62:
       v128[1] = v85;
       v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v128 forKeys:v127 count:2];
       v33 = [v32 pbf_dataStoreErrorWithCode:-2213 userInfo:v26];
-      v18[2](v18, 0, v33);
+      completionCopy[2](completionCopy, 0, v33);
     }
 
     else
@@ -18147,9 +18147,9 @@ LABEL_62:
       v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v130 forKeys:&v129 count:1];
       v26 = [v29 pbf_dataStoreErrorWithCode:-2220 userInfo:v30];
 
-      if (v18)
+      if (completionCopy)
       {
-        v18[2](v18, 0, v26);
+        completionCopy[2](completionCopy, 0, v26);
       }
     }
 
@@ -18159,10 +18159,10 @@ LABEL_61:
     goto LABEL_62;
   }
 
-  if (v18)
+  if (completionCopy)
   {
     v19 = [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-    v18[2](v18, 0, v19);
+    completionCopy[2](completionCopy, 0, v19);
   }
 
   v20 = 0;
@@ -18441,44 +18441,44 @@ void __181__PBFPosterExtensionDataStore__stateLock_enqueueReloadDescriptorsOpera
   }
 }
 
-- (BOOL)_stateLock_deletePosterDescriptorsForExtensionBundleIdentifier:(id)a3 waitForPushToProactive:(BOOL)a4 error:(id *)a5
+- (BOOL)_stateLock_deletePosterDescriptorsForExtensionBundleIdentifier:(id)identifier waitForPushToProactive:(BOOL)proactive error:(id *)error
 {
-  v6 = a4;
+  proactiveCopy = proactive;
   v61[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  identifierCopy = identifier;
   if (![(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
     v10 = PBFLogDataStore();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      *&buf[4] = v8;
+      *&buf[4] = identifierCopy;
       *&buf[12] = 1024;
-      *&buf[14] = v6;
+      *&buf[14] = proactiveCopy;
       _os_log_impl(&dword_21B526000, v10, OS_LOG_TYPE_DEFAULT, "deletePosterDescriptorsForExtensionBundleIdentifier:%{public}@ waitForPushToProactive:%{BOOL}u", buf, 0x12u);
     }
 
     v11 = objc_opt_new();
     v38 = objc_opt_new();
-    v37 = [objc_opt_class() supportedRoles];
-    v12 = [(PBFPosterExtensionDataStore *)self _stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier:v8];
+    supportedRoles = [objc_opt_class() supportedRoles];
+    v12 = [(PBFPosterExtensionDataStore *)self _stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier:identifierCopy];
     v13 = v12;
     if (v12)
     {
-      v36 = [v12 staticDescriptorStoreCoordinatorsWithError:0];
-      if ([v36 count])
+      identifierCopy = [v12 staticDescriptorStoreCoordinatorsWithError:0];
+      if ([identifierCopy count])
       {
-        v14 = [v13 posterStaticDescriptorLatestVersionPaths];
+        posterStaticDescriptorLatestVersionPaths = [v13 posterStaticDescriptorLatestVersionPaths];
         v49[0] = MEMORY[0x277D85DD0];
         v49[1] = 3221225472;
         v49[2] = __123__PBFPosterExtensionDataStore__stateLock_deletePosterDescriptorsForExtensionBundleIdentifier_waitForPushToProactive_error___block_invoke;
         v49[3] = &unk_2782C6618;
-        v50 = v14;
-        v51 = v8;
+        v50 = posterStaticDescriptorLatestVersionPaths;
+        v51 = identifierCopy;
         v52 = v38;
         v53 = v11;
-        v15 = v14;
-        [v37 enumerateObjectsUsingBlock:v49];
+        v15 = posterStaticDescriptorLatestVersionPaths;
+        [supportedRoles enumerateObjectsUsingBlock:v49];
       }
 
       v16 = [v13 dynamicDescriptorStoreCoordinatorsWithError:0];
@@ -18489,10 +18489,10 @@ void __181__PBFPosterExtensionDataStore__stateLock_enqueueReloadDescriptorsOpera
         v44[2] = __123__PBFPosterExtensionDataStore__stateLock_deletePosterDescriptorsForExtensionBundleIdentifier_waitForPushToProactive_error___block_invoke_3;
         v44[3] = &unk_2782C6618;
         v45 = v13;
-        v46 = v8;
+        v46 = identifierCopy;
         v47 = v38;
         v48 = v11;
-        [v37 enumerateObjectsUsingBlock:v44];
+        [supportedRoles enumerateObjectsUsingBlock:v44];
       }
 
       if ([v11 count])
@@ -18535,7 +18535,7 @@ void __181__PBFPosterExtensionDataStore__stateLock_enqueueReloadDescriptorsOpera
 
           v17 = v22;
 
-          [v17 removeObjectForKey:v8];
+          [v17 removeObjectForKey:identifierCopy];
           v23 = [(NSMutableDictionary *)self->_stateLock_staticDescriptorsForExtensionBundleIdentifier mutableCopy];
           v24 = v23;
           if (v23)
@@ -18550,12 +18550,12 @@ void __181__PBFPosterExtensionDataStore__stateLock_enqueueReloadDescriptorsOpera
 
           v26 = v25;
 
-          [v26 removeObjectForKey:v8];
+          [v26 removeObjectForKey:identifierCopy];
           v27 = PBFLogDataStore();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
           {
             *v54 = 138543362;
-            v55 = v8;
+            v55 = identifierCopy;
             _os_log_impl(&dword_21B526000, v27, OS_LOG_TYPE_DEFAULT, "deletePosterDescriptorsForExtensionBundleIdentifier:%{public}@; did successfully remove descriptors", v54, 0xCu);
           }
 
@@ -18564,34 +18564,34 @@ void __181__PBFPosterExtensionDataStore__stateLock_enqueueReloadDescriptorsOpera
 
         v28 = dispatch_group_create();
         v29 = v28;
-        if (v6)
+        if (proactiveCopy)
         {
           dispatch_group_enter(v28);
         }
 
-        v30 = [@"deleteDescriptors ran for " stringByAppendingString:v8];
+        v30 = [@"deleteDescriptors ran for " stringByAppendingString:identifierCopy];
         v39[0] = MEMORY[0x277D85DD0];
         v39[1] = 3221225472;
         v39[2] = __123__PBFPosterExtensionDataStore__stateLock_deletePosterDescriptorsForExtensionBundleIdentifier_waitForPushToProactive_error___block_invoke_890;
         v39[3] = &unk_2782C6938;
-        v42 = v6;
+        v42 = proactiveCopy;
         v41 = buf;
         v31 = v29;
         v40 = v31;
         [(PBFPosterExtensionDataStore *)self _stateLock_pushPosterDescriptorsToProactiveForReason:v30 force:1 completion:v39];
-        if (v6)
+        if (proactiveCopy)
         {
           v32 = dispatch_time(0, 120000000000);
           dispatch_group_wait(v31, v32);
         }
 
         v33 = *&buf[8];
-        if (a5)
+        if (error)
         {
           v34 = *(*&buf[8] + 40);
           if (v34)
           {
-            *a5 = v34;
+            *error = v34;
             v33 = *&buf[8];
           }
         }
@@ -18615,7 +18615,7 @@ void __181__PBFPosterExtensionDataStore__stateLock_enqueueReloadDescriptorsOpera
         [PBFPosterExtensionDataStore _stateLock_deletePosterDescriptorsForExtensionBundleIdentifier:waitForPushToProactive:error:];
       }
 
-      if (!a5)
+      if (!error)
       {
         v9 = 0;
 LABEL_40:
@@ -18625,20 +18625,20 @@ LABEL_40:
 
       v19 = MEMORY[0x277CCA9B8];
       v60 = *MEMORY[0x277CCA470];
-      v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"No extension store coordinator tracked for %@", v8];
-      v61[0] = v36;
+      identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"No extension store coordinator tracked for %@", identifierCopy];
+      v61[0] = identifierCopy;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v61 forKeys:&v60 count:1];
       [v19 pbf_generalErrorWithCode:1 userInfo:v16];
-      *a5 = v9 = 0;
+      *error = v9 = 0;
     }
 
     goto LABEL_40;
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-    *a5 = v9 = 0;
+    *error = v9 = 0;
   }
 
   else
@@ -18754,20 +18754,20 @@ void __123__PBFPosterExtensionDataStore__stateLock_deletePosterDescriptorsForExt
   }
 }
 
-- (void)_stateLock_pushPosterDescriptorsToProactiveForReason:(id)a3 force:(BOOL)a4 completion:(id)a5
+- (void)_stateLock_pushPosterDescriptorsToProactiveForReason:(id)reason force:(BOOL)force completion:(id)completion
 {
-  v6 = a4;
+  forceCopy = force;
   v95[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  reasonCopy = reason;
+  completionCopy = completion;
   if (![(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    if (!v6)
+    if (!forceCopy)
     {
-      v11 = [(BSAtomicFlag *)self->_isPrewarmingFlag getFlag];
+      getFlag = [(BSAtomicFlag *)self->_isPrewarmingFlag getFlag];
       stateLock_initialRoleCoordinatorSetupPerformed = self->_stateLock_initialRoleCoordinatorSetupPerformed;
-      v13 = [(BSAtomicFlag *)self->_extensionsCurrentlyUpdatingFlag getFlag];
-      if (v11)
+      getFlag2 = [(BSAtomicFlag *)self->_extensionsCurrentlyUpdatingFlag getFlag];
+      if (getFlag)
       {
         v14 = MEMORY[0x277CCA9B8];
         v94 = *MEMORY[0x277CCA470];
@@ -18779,7 +18779,7 @@ void __123__PBFPosterExtensionDataStore__stateLock_deletePosterDescriptorsForExt
 
       else if (stateLock_initialRoleCoordinatorSetupPerformed)
       {
-        if (!v13)
+        if (!getFlag2)
         {
           goto LABEL_15;
         }
@@ -18807,9 +18807,9 @@ void __123__PBFPosterExtensionDataStore__stateLock_deletePosterDescriptorsForExt
 
       if (v19)
       {
-        if (v9)
+        if (completionCopy)
         {
-          v9[2](v9, 0, v19);
+          completionCopy[2](completionCopy, 0, v19);
         }
 
         goto LABEL_36;
@@ -18817,17 +18817,17 @@ void __123__PBFPosterExtensionDataStore__stateLock_deletePosterDescriptorsForExt
     }
 
 LABEL_15:
-    v56 = v6;
-    v57 = v9;
+    v56 = forceCopy;
+    v57 = completionCopy;
     v20 = PBFLogGallery();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v89 = v8;
+      v89 = reasonCopy;
       _os_log_impl(&dword_21B526000, v20, OS_LOG_TYPE_DEFAULT, "Data Store begin _pushPosterDescriptorsToProactiveForReason:'%{public}@'; begin", buf, 0xCu);
     }
 
-    v58 = v8;
+    v58 = reasonCopy;
 
     v59 = objc_opt_new();
     v21 = objc_opt_new();
@@ -18838,24 +18838,24 @@ LABEL_15:
     v22 = v21;
     v86 = v22;
     [(PBFPosterExtensionDataStore *)self _stateLock_enumerateExtensionStoreCoordinators:v85];
-    v23 = [(PFPosterExtensionProvider *)self->_extensionProvider extensionForIdentifier];
+    extensionForIdentifier = [(PFPosterExtensionProvider *)self->_extensionProvider extensionForIdentifier];
     v81 = 0u;
     v82 = 0u;
     v83 = 0u;
     v84 = 0u;
     v55 = v22;
-    v24 = [v22 allObjects];
-    v25 = [v24 sortedArrayUsingSelector:sel_compare_];
+    allObjects = [v22 allObjects];
+    v25 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
     obj = v25;
     v26 = [v25 countByEnumeratingWithState:&v81 objects:v87 count:16];
     if (v26)
     {
       v27 = v26;
-      v61 = v23;
+      v61 = extensionForIdentifier;
       v28 = *v82;
       v60 = *v82;
-      v62 = self;
+      selfCopy = self;
       do
       {
         v29 = 0;
@@ -18868,32 +18868,32 @@ LABEL_15:
           }
 
           v30 = *(*(&v81 + 1) + 8 * v29);
-          v31 = [v23 objectForKey:v30];
-          v32 = [v31 posterExtensionInfoPlist];
-          v33 = [v32 pbf_supportsGallery];
+          v31 = [extensionForIdentifier objectForKey:v30];
+          posterExtensionInfoPlist = [v31 posterExtensionInfoPlist];
+          pbf_supportsGallery = [posterExtensionInfoPlist pbf_supportsGallery];
 
-          if ((v33 & 1) != 0 || ([MEMORY[0x277CBEBD0] standardUserDefaults], v34 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v34, "stringArrayForKey:", @"ShowSamplePoster"), v35 = objc_claimAutoreleasedReturnValue(), v36 = objc_msgSend(v35, "containsObject:", v30), v35, v34, v36))
+          if ((pbf_supportsGallery & 1) != 0 || ([MEMORY[0x277CBEBD0] standardUserDefaults], v34 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v34, "stringArrayForKey:", @"ShowSamplePoster"), v35 = objc_claimAutoreleasedReturnValue(), v36 = objc_msgSend(v35, "containsObject:", v30), v35, v34, v36))
           {
-            v37 = [v31 supportedRoles];
-            v38 = [v37 bs_containsObjectPassingTest:&__block_literal_global_903];
+            supportedRoles = [v31 supportedRoles];
+            v38 = [supportedRoles bs_containsObjectPassingTest:&__block_literal_global_903];
 
             if (v38)
             {
-              v39 = [v31 posterExtensionContainerBundleIdentifier];
+              posterExtensionContainerBundleIdentifier = [v31 posterExtensionContainerBundleIdentifier];
               v40 = [(PBFPosterExtensionDataStore *)self _stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier:v30];
               v41 = [v40 providerInfoObjectForKey:@"kProactiveDynamicPosterDescriptorOrdering"];
               v67 = v40;
               v68 = [v40 providerInfoObjectForKey:@"kProactiveStaticPosterDescriptorOrdering"];
               v42 = [(NSMutableDictionary *)self->_stateLock_descriptorsForExtensionBundleIdentifier objectForKeyedSubscript:v30];
-              v43 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+              strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
               v78[0] = MEMORY[0x277D85DD0];
               v78[1] = 3221225472;
               v78[2] = __101__PBFPosterExtensionDataStore__stateLock_pushPosterDescriptorsToProactiveForReason_force_completion___block_invoke_3;
               v78[3] = &unk_2782C6960;
               v78[4] = v30;
-              v44 = v39;
+              v44 = posterExtensionContainerBundleIdentifier;
               v79 = v44;
-              v45 = v43;
+              v45 = strongToStrongObjectsMapTable;
               v80 = v45;
               v65 = v42;
               v46 = [v42 bs_mapNoNulls:v78];
@@ -18912,7 +18912,7 @@ LABEL_15:
               }
 
               v48 = [(NSMutableDictionary *)self->_stateLock_staticDescriptorsForExtensionBundleIdentifier objectForKeyedSubscript:v30];
-              v49 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+              strongToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
               v72[0] = MEMORY[0x277D85DD0];
               v72[1] = 3221225472;
               v72[2] = __101__PBFPosterExtensionDataStore__stateLock_pushPosterDescriptorsToProactiveForReason_force_completion___block_invoke_2_910;
@@ -18920,7 +18920,7 @@ LABEL_15:
               v72[4] = v30;
               v50 = v44;
               v73 = v50;
-              v51 = v49;
+              v51 = strongToStrongObjectsMapTable2;
               v74 = v51;
               v52 = [v48 bs_mapNoNulls:v72];
               if (v68)
@@ -18944,8 +18944,8 @@ LABEL_15:
                 [v59 setObject:v54 forKey:v30];
               }
 
-              v23 = v61;
-              self = v62;
+              extensionForIdentifier = v61;
+              self = selfCopy;
               v27 = v63;
               v28 = v60;
             }
@@ -18962,17 +18962,17 @@ LABEL_15:
     }
 
     v10 = v59;
-    v9 = v57;
-    v8 = v58;
+    completionCopy = v57;
+    reasonCopy = v58;
     [(PBFGalleryController *)self->_galleryController pushUpdatedPosterDescriptors:v59 reason:v58 force:v56 completion:v57];
 
     goto LABEL_35;
   }
 
-  if (v9)
+  if (completionCopy)
   {
     v10 = [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-    v9[2](v9, 0, v10);
+    completionCopy[2](completionCopy, 0, v10);
 LABEL_35:
   }
 
@@ -19116,12 +19116,12 @@ uint64_t __101__PBFPosterExtensionDataStore__stateLock_pushPosterDescriptorsToPr
   return v15;
 }
 
-- (void)_stateLock_updateGalleryWithSuggestedLayout:(id)a3 descriptorsByExtensionBundleIdentifier:(id)a4 staticDescriptorsByExtensionBundleIdentifier:(id)a5
+- (void)_stateLock_updateGalleryWithSuggestedLayout:(id)layout descriptorsByExtensionBundleIdentifier:(id)identifier staticDescriptorsByExtensionBundleIdentifier:(id)bundleIdentifier
 {
   v59 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  layoutCopy = layout;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) != 0)
   {
     goto LABEL_37;
@@ -19140,14 +19140,14 @@ uint64_t __101__PBFPosterExtensionDataStore__stateLock_pushPosterDescriptorsToPr
   }
 
   runtimeAssertionProvider = self->_runtimeAssertionProvider;
-  v16 = [MEMORY[0x277D47008] currentProcess];
-  v52 = [(PBFRuntimeAssertionProviding *)runtimeAssertionProvider acquirePrewarmRuntimeAssertionForReason:@"updateGallery" target:v16 invalidationHandler:&__block_literal_global_919];
+  currentProcess = [MEMORY[0x277D47008] currentProcess];
+  v52 = [(PBFRuntimeAssertionProviding *)runtimeAssertionProvider acquirePrewarmRuntimeAssertionForReason:@"updateGallery" target:currentProcess invalidationHandler:&__block_literal_global_919];
 
   v17 = objc_opt_new();
-  if (!v8 || self->_stateLock_suggestedLayout && ([v8 isEqual:?] & 1) != 0)
+  if (!layoutCopy || self->_stateLock_suggestedLayout && ([layoutCopy isEqual:?] & 1) != 0)
   {
     v18 = 0;
-    if (!v9)
+    if (!identifierCopy)
     {
       goto LABEL_18;
     }
@@ -19155,7 +19155,7 @@ uint64_t __101__PBFPosterExtensionDataStore__stateLock_pushPosterDescriptorsToPr
     goto LABEL_13;
   }
 
-  v19 = [v8 copy];
+  v19 = [layoutCopy copy];
   stateLock_suggestedLayout = self->_stateLock_suggestedLayout;
   self->_stateLock_suggestedLayout = v19;
 
@@ -19169,12 +19169,12 @@ uint64_t __101__PBFPosterExtensionDataStore__stateLock_pushPosterDescriptorsToPr
   }
 
   v18 = 1;
-  if (v9)
+  if (identifierCopy)
   {
 LABEL_13:
-    if (!-[NSMutableDictionary count](self->_stateLock_descriptorsForExtensionBundleIdentifier, "count") || ([v9 isEqual:self->_stateLock_descriptorsForExtensionBundleIdentifier] & 1) == 0)
+    if (!-[NSMutableDictionary count](self->_stateLock_descriptorsForExtensionBundleIdentifier, "count") || ([identifierCopy isEqual:self->_stateLock_descriptorsForExtensionBundleIdentifier] & 1) == 0)
     {
-      v23 = [v9 mutableCopy];
+      v23 = [identifierCopy mutableCopy];
       stateLock_descriptorsForExtensionBundleIdentifier = self->_stateLock_descriptorsForExtensionBundleIdentifier;
       self->_stateLock_descriptorsForExtensionBundleIdentifier = v23;
 
@@ -19200,9 +19200,9 @@ LABEL_18:
   v28 = v17;
   v56 = v28;
   [(NSMutableDictionary *)v27 enumerateKeysAndObjectsUsingBlock:v55];
-  if (v10 && (!-[NSMutableDictionary count](self->_stateLock_staticDescriptorsForExtensionBundleIdentifier, "count") || ([v10 isEqual:self->_stateLock_staticDescriptorsForExtensionBundleIdentifier] & 1) == 0))
+  if (bundleIdentifierCopy && (!-[NSMutableDictionary count](self->_stateLock_staticDescriptorsForExtensionBundleIdentifier, "count") || ([bundleIdentifierCopy isEqual:self->_stateLock_staticDescriptorsForExtensionBundleIdentifier] & 1) == 0))
   {
-    v29 = [v10 mutableCopy];
+    v29 = [bundleIdentifierCopy mutableCopy];
     stateLock_staticDescriptorsForExtensionBundleIdentifier = self->_stateLock_staticDescriptorsForExtensionBundleIdentifier;
     self->_stateLock_staticDescriptorsForExtensionBundleIdentifier = v29;
 
@@ -19226,8 +19226,8 @@ LABEL_18:
   v34 = v28;
   v54 = v34;
   [(NSMutableDictionary *)v33 enumerateKeysAndObjectsUsingBlock:v53];
-  v35 = [(PFPosterExtensionProvider *)self->_extensionProvider extensionForIdentifier];
-  v36 = v35;
+  extensionForIdentifier = [(PFPosterExtensionProvider *)self->_extensionProvider extensionForIdentifier];
+  v36 = extensionForIdentifier;
   if (!self->_stateLock_suggestedLayout)
   {
     v37 = 1;
@@ -19241,7 +19241,7 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v37 = [v35 count] == 0;
+  v37 = [extensionForIdentifier count] == 0;
   if ((v18 & 1) == 0)
   {
     goto LABEL_28;
@@ -19253,7 +19253,7 @@ LABEL_29:
   if (!v37 && !v38)
   {
     v49 = v12;
-    v50 = v8;
+    v50 = layoutCopy;
     v39 = PBFLogPosterContents();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
     {
@@ -19271,12 +19271,12 @@ LABEL_29:
 
     [(PBFGalleryConfiguration *)v45 setSnapshotProvider:self->_snapshotManager];
     [(PBFGalleryConfiguration *)v45 setComplicationSnapshotProvider:self->_complicationSnapshotService];
-    v46 = [(PBFPosterExtensionDataStore *)self extensionProvider];
-    [(PBFGalleryConfiguration *)v45 setExtensionProvider:v46];
+    extensionProvider = [(PBFPosterExtensionDataStore *)self extensionProvider];
+    [(PBFGalleryConfiguration *)v45 setExtensionProvider:extensionProvider];
 
     [(PBFPosterExtensionDataStore *)self _notifyObserversDidUpdateGalleryConfiguration:v45];
     v12 = v49;
-    v8 = v50;
+    layoutCopy = v50;
   }
 
   [v52 invalidate];
@@ -19301,32 +19301,32 @@ void __159__PBFPosterExtensionDataStore__stateLock_updateGalleryWithSuggestedLay
   }
 }
 
-- (void)_stateLock_pushPosterConfigurationsToProactiveWithCompletion:(id)a3
+- (void)_stateLock_pushPosterConfigurationsToProactiveWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (![(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
     v6 = self->_stateLock_switcherConfiguration;
-    v7 = [(PRSwitcherConfiguration *)v6 configurations];
+    configurations = [(PRSwitcherConfiguration *)v6 configurations];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __92__PBFPosterExtensionDataStore__stateLock_pushPosterConfigurationsToProactiveWithCompletion___block_invoke;
     v9[3] = &unk_2782C6338;
-    v10 = v7;
+    v10 = configurations;
     v11 = v6;
-    v12 = self;
-    v13 = v4;
+    selfCopy = self;
+    v13 = completionCopy;
     v5 = v6;
-    v8 = v7;
+    v8 = configurations;
     PBFDispatchAsyncWithString(@"pushPosterConfigurationsToProactive", QOS_CLASS_UTILITY, v9);
 
     goto LABEL_5;
   }
 
-  if (v4)
+  if (completionCopy)
   {
     v5 = [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-    (*(v4 + 2))(v4, v5);
+    (*(completionCopy + 2))(completionCopy, v5);
 LABEL_5:
   }
 }
@@ -19516,12 +19516,12 @@ void __92__PBFPosterExtensionDataStore__stateLock_pushPosterConfigurationsToProa
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Extension provider is nil!"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_3();
     v4 = NSStringFromClass(v3);
     v7 = 138544642;
-    v8 = a1;
+    selfCopy = self;
     OUTLINED_FUNCTION_8();
     v9 = @"PBFPosterExtensionDataStore.m";
     v10 = 1024;
@@ -19562,8 +19562,8 @@ uint64_t __54__PBFPosterExtensionDataStore__setupExtensionProvider__block_invoke
     _os_signpost_emit_with_name_impl(&dword_21B526000, v6, OS_SIGNPOST_INTERVAL_BEGIN, v4, "_setupExtensionEnvironment", "", buf, 2u);
   }
 
-  v8 = [(PBFPosterExtensionDataStore *)self extensionStoreCoordinatorContainerURL];
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
+  extensionStoreCoordinatorContainerURL = [(PBFPosterExtensionDataStore *)self extensionStoreCoordinatorContainerURL];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   os_unfair_lock_lock(&self->_stateLock);
   stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier = self->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier;
   if (!stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier)
@@ -19572,12 +19572,12 @@ uint64_t __54__PBFPosterExtensionDataStore__setupExtensionProvider__block_invoke
     v41 = v4;
     v11 = objc_opt_new();
     v12 = self->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier;
-    v45 = self;
+    selfCopy = self;
     self->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier = v11;
 
     v52 = 0;
-    v39 = v9;
-    v13 = [v9 contentsOfDirectoryAtURL:v8 includingPropertiesForKeys:0 options:5 error:&v52];
+    v39 = defaultManager;
+    v13 = [defaultManager contentsOfDirectoryAtURL:extensionStoreCoordinatorContainerURL includingPropertiesForKeys:0 options:5 error:&v52];
     v38 = v52;
     v48 = 0u;
     v49 = 0u;
@@ -19594,7 +19594,7 @@ uint64_t __54__PBFPosterExtensionDataStore__setupExtensionProvider__block_invoke
     v16 = *v49;
     v43 = *MEMORY[0x277CCA470];
     v44 = *v49;
-    v42 = v8;
+    v42 = extensionStoreCoordinatorContainerURL;
     while (1)
     {
       v17 = 0;
@@ -19607,17 +19607,17 @@ uint64_t __54__PBFPosterExtensionDataStore__setupExtensionProvider__block_invoke
         }
 
         v18 = *(*(&v48 + 1) + 8 * v17);
-        v19 = [v8 filePathURL];
-        v20 = [v18 lastPathComponent];
-        v21 = [v19 URLByAppendingPathComponent:v20];
+        filePathURL = [extensionStoreCoordinatorContainerURL filePathURL];
+        lastPathComponent = [v18 lastPathComponent];
+        v21 = [filePathURL URLByAppendingPathComponent:lastPathComponent];
 
-        v22 = [v21 lastPathComponent];
-        v23 = [[PBFPosterExtensionStoreCoordinator alloc] initWithContainerURL:v21 extensionIdentifier:v22];
+        lastPathComponent2 = [v21 lastPathComponent];
+        v23 = [[PBFPosterExtensionStoreCoordinator alloc] initWithContainerURL:v21 extensionIdentifier:lastPathComponent2];
         v24 = v23;
         if (v23)
         {
-          v25 = [(PBFPosterExtensionStoreCoordinator *)v23 setupEnvironmentIfNecessary];
-          if (v25)
+          setupEnvironmentIfNecessary = [(PBFPosterExtensionStoreCoordinator *)v23 setupEnvironmentIfNecessary];
+          if (setupEnvironmentIfNecessary)
           {
             goto LABEL_12;
           }
@@ -19629,9 +19629,9 @@ uint64_t __54__PBFPosterExtensionDataStore__setupExtensionProvider__block_invoke
           v57 = v43;
           v58 = @"Unable to setup extension store coordinator";
           v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
-          v25 = [v27 pbf_dataStoreErrorWithCode:-2219 userInfo:v28];
+          setupEnvironmentIfNecessary = [v27 pbf_dataStoreErrorWithCode:-2219 userInfo:v28];
 
-          if (v25)
+          if (setupEnvironmentIfNecessary)
           {
 LABEL_12:
             v26 = PBFLogPosterContents();
@@ -19640,7 +19640,7 @@ LABEL_12:
               *buf = 138543618;
               v54 = v21;
               v55 = 2114;
-              v56 = v25;
+              v56 = setupEnvironmentIfNecessary;
               _os_log_error_impl(&dword_21B526000, v26, OS_LOG_TYPE_ERROR, "Error setting up extension file system environment at URL '%{public}@': %{public}@", buf, 0x16u);
             }
 
@@ -19648,30 +19648,30 @@ LABEL_12:
           }
         }
 
-        v29 = [(PBFPosterExtensionStoreCoordinator *)v24 posterStaticDescriptorLatestVersionPaths];
-        v30 = [v29 allObjects];
-        v26 = [v30 sortedArrayUsingSelector:sel_compareDescriptorIdentifiers_];
+        posterStaticDescriptorLatestVersionPaths = [(PBFPosterExtensionStoreCoordinator *)v24 posterStaticDescriptorLatestVersionPaths];
+        allObjects = [posterStaticDescriptorLatestVersionPaths allObjects];
+        v26 = [allObjects sortedArrayUsingSelector:sel_compareDescriptorIdentifiers_];
 
-        v31 = [(PBFPosterExtensionStoreCoordinator *)v24 dynamicPosterDescriptorLatestVersionPaths];
-        v32 = [v31 allObjects];
-        v33 = [v32 sortedArrayUsingSelector:sel_compareDescriptorIdentifiers_];
+        dynamicPosterDescriptorLatestVersionPaths = [(PBFPosterExtensionStoreCoordinator *)v24 dynamicPosterDescriptorLatestVersionPaths];
+        allObjects2 = [dynamicPosterDescriptorLatestVersionPaths allObjects];
+        v33 = [allObjects2 sortedArrayUsingSelector:sel_compareDescriptorIdentifiers_];
 
         if ([v33 count])
         {
-          [(NSMutableDictionary *)v45->_stateLock_descriptorsForExtensionBundleIdentifier setObject:v33 forKeyedSubscript:v22];
+          [(NSMutableDictionary *)selfCopy->_stateLock_descriptorsForExtensionBundleIdentifier setObject:v33 forKeyedSubscript:lastPathComponent2];
         }
 
         if ([v26 count])
         {
-          [(NSMutableDictionary *)v45->_stateLock_staticDescriptorsForExtensionBundleIdentifier setObject:v26 forKeyedSubscript:v22];
+          [(NSMutableDictionary *)selfCopy->_stateLock_staticDescriptorsForExtensionBundleIdentifier setObject:v26 forKeyedSubscript:lastPathComponent2];
         }
 
-        [(NSMutableDictionary *)v45->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier setObject:v24 forKey:v22];
-        os_unfair_lock_lock(&v45->_extensionProvidingLock);
-        [(NSMutableDictionary *)v45->_extensionProvidingLock_extensionStoreCoordinatorForExtensionBundleIdentifier setObject:v24 forKey:v22];
-        os_unfair_lock_unlock(&v45->_extensionProvidingLock);
+        [(NSMutableDictionary *)selfCopy->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier setObject:v24 forKey:lastPathComponent2];
+        os_unfair_lock_lock(&selfCopy->_extensionProvidingLock);
+        [(NSMutableDictionary *)selfCopy->_extensionProvidingLock_extensionStoreCoordinatorForExtensionBundleIdentifier setObject:v24 forKey:lastPathComponent2];
+        os_unfair_lock_unlock(&selfCopy->_extensionProvidingLock);
 
-        v8 = v42;
+        extensionStoreCoordinatorContainerURL = v42;
         v16 = v44;
         v15 = v46;
 LABEL_20:
@@ -19685,11 +19685,11 @@ LABEL_20:
       {
 LABEL_22:
 
-        self = v45;
-        stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier = v45->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier;
+        self = selfCopy;
+        stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier = selfCopy->_stateLock_extensionStoreCoordinatorForExtensionBundleIdentifier;
         v7 = v40;
         v4 = v41;
-        v9 = v39;
+        defaultManager = v39;
         break;
       }
     }
@@ -19716,7 +19716,7 @@ LABEL_22:
   v69 = *MEMORY[0x277D85DE8];
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) == 0)
   {
-    v44 = self;
+    selfCopy = self;
     v3 = PBFLogRoleCoordinator();
     spid = os_signpost_id_generate(v3);
 
@@ -19729,10 +19729,10 @@ LABEL_22:
       _os_signpost_emit_with_name_impl(&dword_21B526000, v5, OS_SIGNPOST_INTERVAL_BEGIN, spid, "setupRoleCoordinatorsIfNeeded", "", buf, 2u);
     }
 
-    if (!v44->_roleToRoleCoordinator)
+    if (!selfCopy->_roleToRoleCoordinator)
     {
-      stateLock_maximumPosterConfigurationCount = v44->_stateLock_maximumPosterConfigurationCount;
-      v42 = [(NSSet *)v44->_stateLock_fromExtensions copy];
+      stateLock_maximumPosterConfigurationCount = selfCopy->_stateLock_maximumPosterConfigurationCount;
+      v42 = [(NSSet *)selfCopy->_stateLock_fromExtensions copy];
       v37 = objc_opt_new();
       v61 = 0u;
       v62 = 0u;
@@ -19781,13 +19781,13 @@ LABEL_22:
                 }
 
                 v13 = *(*(&v55 + 1) + 8 * i);
-                v14 = [v13 supportedRoles];
-                v15 = [v14 containsObject:v7];
+                supportedRoles = [v13 supportedRoles];
+                v15 = [supportedRoles containsObject:v7];
 
                 if (v15)
                 {
-                  v16 = [v13 posterExtensionBundleIdentifier];
-                  [v8 addObject:v16];
+                  posterExtensionBundleIdentifier = [v13 posterExtensionBundleIdentifier];
+                  [v8 addObject:posterExtensionBundleIdentifier];
                 }
               }
 
@@ -19799,7 +19799,7 @@ LABEL_22:
 
           if ([v7 isEqual:v40])
           {
-            v17 = [[PBFLockScreenRoleCoordinator alloc] initWithStorage:v44->_database modelCoordinatorProvider:v44 providers:v8];
+            v17 = [[PBFLockScreenRoleCoordinator alloc] initWithStorage:selfCopy->_database modelCoordinatorProvider:selfCopy providers:v8];
 LABEL_26:
             v18 = v17;
             goto LABEL_27;
@@ -19807,13 +19807,13 @@ LABEL_26:
 
           if ([v7 isEqual:v38])
           {
-            v17 = [[PBFAmbientRoleCoordinator alloc] initWithStorage:v44->_database modelCoordinatorProvider:v44 providers:v8];
+            v17 = [[PBFAmbientRoleCoordinator alloc] initWithStorage:selfCopy->_database modelCoordinatorProvider:selfCopy providers:v8];
             goto LABEL_26;
           }
 
           if ([v7 isEqual:v35])
           {
-            v17 = [[PBFIncomingCallRoleCoordinator alloc] initWithStorage:v44->_database modelCoordinatorProvider:v44 providers:v8];
+            v17 = [[PBFIncomingCallRoleCoordinator alloc] initWithStorage:selfCopy->_database modelCoordinatorProvider:selfCopy providers:v8];
             goto LABEL_26;
           }
 
@@ -19829,14 +19829,14 @@ LABEL_26:
 
           v18 = 0;
 LABEL_27:
-          [(PBFPosterRoleCoordinator *)v18 setDelegate:v44, v32];
+          [(PBFPosterRoleCoordinator *)v18 setDelegate:selfCopy, v32];
           *buf = 0;
           v50 = buf;
           v51 = 0x3032000000;
           v52 = __Block_byref_object_copy_;
           v53 = __Block_byref_object_dispose_;
           v54 = 0;
-          database = v44->_database;
+          database = selfCopy->_database;
           v46[0] = MEMORY[0x277D85DD0];
           v46[1] = 3221225472;
           v46[2] = __71__PBFPosterExtensionDataStore__stateLock_setupRoleCoordinatorsIfNeeded__block_invoke;
@@ -19851,14 +19851,14 @@ LABEL_27:
           if (v20 && (*(v50 + 5) | v22) == 0 && v21)
           {
             [(PBFPosterRoleCoordinator *)v20 setMaximumNumberOfPosters:stateLock_maximumPosterConfigurationCount];
-            v24 = [(PBFPosterRoleCoordinator *)v20 role];
-            [v37 setObject:v20 forKey:v24];
+            role = [(PBFPosterRoleCoordinator *)v20 role];
+            [v37 setObject:v20 forKey:role];
           }
 
           else
           {
-            v24 = PBFLogRoleCoordinator();
-            if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+            role = PBFLogRoleCoordinator();
+            if (os_log_type_enabled(role, OS_LOG_TYPE_ERROR))
             {
               v26 = *(v50 + 5);
               if (!v26)
@@ -19870,7 +19870,7 @@ LABEL_27:
               v64 = v7;
               v65 = 2114;
               v66 = v26;
-              _os_log_error_impl(&dword_21B526000, v24, OS_LOG_TYPE_ERROR, "Failed to setup role coordinator for role '%{public}@': %{public}@", v63, 0x16u);
+              _os_log_error_impl(&dword_21B526000, role, OS_LOG_TYPE_ERROR, "Failed to setup role coordinator for role '%{public}@': %{public}@", v63, 0x16u);
             }
           }
 
@@ -19886,8 +19886,8 @@ LABEL_27:
 LABEL_42:
 
           v28 = [v37 copy];
-          roleToRoleCoordinator = v44->_roleToRoleCoordinator;
-          v44->_roleToRoleCoordinator = v28;
+          roleToRoleCoordinator = selfCopy->_roleToRoleCoordinator;
+          selfCopy->_roleToRoleCoordinator = v28;
 
           break;
         }
@@ -19914,30 +19914,30 @@ BOOL __71__PBFPosterExtensionDataStore__stateLock_setupRoleCoordinatorsIfNeeded_
   return *(*(*(a1 + 40) + 8) + 40) == 0;
 }
 
-- (BOOL)resetRole:(id)a3 error:(id *)a4
+- (BOOL)resetRole:(id)role error:(id *)error
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  roleCopy = role;
   if (![(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    v8 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:v6];
+    v8 = [(NSDictionary *)self->_roleToRoleCoordinator objectForKeyedSubscript:roleCopy];
     if (!v8)
     {
-      if (a4)
+      if (error)
       {
         v17 = MEMORY[0x277CCA9B8];
         v26[0] = *MEMORY[0x277CCA470];
         v26[1] = @"role";
         v18 = @"(null role)";
-        if (v6)
+        if (roleCopy)
         {
-          v18 = v6;
+          v18 = roleCopy;
         }
 
         v27[0] = @"RoleCoordinator not setup for role";
         v27[1] = v18;
         v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
-        *a4 = [v17 pbf_generalErrorWithCode:1 userInfo:v19];
+        *error = [v17 pbf_generalErrorWithCode:1 userInfo:v19];
       }
 
       v12 = PBFLogRoleCoordinator();
@@ -19954,11 +19954,11 @@ BOOL __71__PBFPosterExtensionDataStore__stateLock_setupRoleCoordinatorsIfNeeded_
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v25 = v6;
+      v25 = roleCopy;
       _os_log_impl(&dword_21B526000, v9, OS_LOG_TYPE_DEFAULT, "Executing reset of role %{public}@", buf, 0xCu);
     }
 
-    v10 = [PBFPosterDataStoreEventBuilder resetRole:v6];
+    v10 = [PBFPosterDataStoreEventBuilder resetRole:roleCopy];
     v22 = 0;
     v11 = [v10 buildWithError:&v22];
     v12 = v22;
@@ -19968,7 +19968,7 @@ BOOL __71__PBFPosterExtensionDataStore__stateLock_setupRoleCoordinatorsIfNeeded_
       os_unfair_lock_lock(&self->_stateLock);
       v23 = v11;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v23 count:1];
-      v14 = [(PBFPosterExtensionDataStore *)self _stateLock_processEvents:v13 context:0 error:a4];
+      v14 = [(PBFPosterExtensionDataStore *)self _stateLock_processEvents:v13 context:0 error:error];
 
       os_unfair_lock_unlock(&self->_stateLock);
       v15 = PBFLogRoleCoordinator();
@@ -19978,7 +19978,7 @@ BOOL __71__PBFPosterExtensionDataStore__stateLock_setupRoleCoordinatorsIfNeeded_
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v25 = v6;
+          v25 = roleCopy;
           _os_log_impl(&dword_21B526000, v16, OS_LOG_TYPE_DEFAULT, "Reset of role %{public}@; role coordinator finished with success", buf, 0xCu);
         }
 
@@ -19994,10 +19994,10 @@ BOOL __71__PBFPosterExtensionDataStore__stateLock_setupRoleCoordinatorsIfNeeded_
 
     else
     {
-      if (a4)
+      if (error)
       {
         v20 = v12;
-        *a4 = v12;
+        *error = v12;
       }
 
       v16 = PBFLogRoleCoordinator();
@@ -20014,10 +20014,10 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] pbf_generalErrorWithCode:3 userInfo:0];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else
@@ -20030,13 +20030,13 @@ LABEL_29:
   return v7;
 }
 
-- (void)posterExtensionProvider:(id)a3 updatedExtensionsFrom:(id)a4 to:(id)a5
+- (void)posterExtensionProvider:(id)provider updatedExtensionsFrom:(id)from to:(id)to
 {
-  v6 = a5;
+  toCopy = to;
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) == 0)
   {
     os_unfair_lock_lock(&self->_stateLock);
-    [(PBFPosterExtensionDataStore *)self _stateLock_executeExtensionUpdate:v6];
+    [(PBFPosterExtensionDataStore *)self _stateLock_executeExtensionUpdate:toCopy];
     v7 = [(NSMutableArray *)self->_stateLock_updateExtensionCompletionBlocks copy];
     stateLock_updateExtensionCompletionBlocks = self->_stateLock_updateExtensionCompletionBlocks;
     self->_stateLock_updateExtensionCompletionBlocks = 0;
@@ -20090,17 +20090,17 @@ void __80__PBFPosterExtensionDataStore_posterExtensionProvider_updatedExtensions
   }
 }
 
-- (void)_stateLock_executeExtensionUpdate:(id)a3
+- (void)_stateLock_executeExtensionUpdate:(id)update
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  updateCopy = update;
+  if ([updateCopy count])
   {
     os_unfair_lock_assert_owner(&self->_stateLock);
     if ([(PBFPosterExtensionDataStore *)self _stateLock_hasBeenUnlockedSinceBoot])
     {
-      v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v6 = [v5 stringForKey:@"stashedBuildVersionString"];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v6 = [standardUserDefaults stringForKey:@"stashedBuildVersionString"];
       v7 = [objc_alloc(MEMORY[0x277CF0BB0]) initWithString:v6];
       v8 = objc_alloc_init(MEMORY[0x277CF0BB0]);
       if (-[NSNumber BOOLValue](self->_stateLock_wasMigrationJustPerformed, "BOOLValue") || ([v7 isEqual:v8] & 1) == 0)
@@ -20108,9 +20108,9 @@ void __80__PBFPosterExtensionDataStore_posterExtensionProvider_updatedExtensions
         v10 = PBFLogDataStore();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [(NSNumber *)self->_stateLock_wasMigrationJustPerformed BOOLValue];
+          bOOLValue = [(NSNumber *)self->_stateLock_wasMigrationJustPerformed BOOLValue];
           v18[0] = 67109376;
-          v18[1] = v11;
+          v18[1] = bOOLValue;
           v19 = 1024;
           v20 = [v7 isEqual:v8] ^ 1;
           _os_log_impl(&dword_21B526000, v10, OS_LOG_TYPE_DEFAULT, "Overriding refresh strategy to PBFDescriptorRefreshStrategyRefreshAlways because %{BOOL}u or the stashed build version is mismatched: %{BOOL}u", v18, 0xEu);
@@ -20133,74 +20133,74 @@ void __80__PBFPosterExtensionDataStore_posterExtensionProvider_updatedExtensions
       stateLock_initialRoleCoordinatorSetupPerformed = 0;
     }
 
-    [(PBFPosterExtensionDataStore *)self _stateLock_updateExtensions:v4 refreshDescriptors:stateLock_initialRoleCoordinatorSetupPerformed powerLogReason:4 galleryUpdateOptions:2 queuedUpOperations:0];
+    [(PBFPosterExtensionDataStore *)self _stateLock_updateExtensions:updateCopy refreshDescriptors:stateLock_initialRoleCoordinatorSetupPerformed powerLogReason:4 galleryUpdateOptions:2 queuedUpOperations:0];
     if ([(PBFPosterExtensionDataStore *)self _stateLock_hasBeenUnlockedSinceBoot])
     {
-      v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v14 = [v13 stringForKey:@"stashedBuildVersionString"];
+      standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v14 = [standardUserDefaults2 stringForKey:@"stashedBuildVersionString"];
       v15 = [objc_alloc(MEMORY[0x277CF0BB0]) initWithString:v14];
       v16 = objc_alloc_init(MEMORY[0x277CF0BB0]);
       if (([v16 isEqual:v15] & 1) == 0)
       {
-        v17 = [v16 stringRepresentation];
-        [v13 setObject:v17 forKey:@"stashedBuildVersionString"];
+        stringRepresentation = [v16 stringRepresentation];
+        [standardUserDefaults2 setObject:stringRepresentation forKey:@"stashedBuildVersionString"];
       }
     }
   }
 }
 
-- (BOOL)_forceExtensionUpdate:(id)a3
+- (BOOL)_forceExtensionUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = MEMORY[0x21CEF7340]("[PBFPosterExtensionDataStore _forceExtensionUpdate:]");
   if (v5)
   {
     os_unfair_lock_lock(&self->_stateLock);
-    [(PBFPosterExtensionDataStore *)self _stateLock_updateExtensions:v4 refreshDescriptors:2 powerLogReason:4 galleryUpdateOptions:2 queuedUpOperations:0];
+    [(PBFPosterExtensionDataStore *)self _stateLock_updateExtensions:updateCopy refreshDescriptors:2 powerLogReason:4 galleryUpdateOptions:2 queuedUpOperations:0];
     os_unfair_lock_unlock(&self->_stateLock);
   }
 
   return v5;
 }
 
-- (void)roleProcessor:(id)a3 transactionFinished:(id)a4 success:(BOOL)a5 results:(id)a6 error:(id)a7
+- (void)roleProcessor:(id)processor transactionFinished:(id)finished success:(BOOL)success results:(id)results error:(id)error
 {
-  v9 = a5;
+  successCopy = success;
   v75 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
+  finishedCopy = finished;
+  resultsCopy = results;
+  errorCopy = error;
   os_unfair_lock_assert_owner(&self->_stateLock);
-  v64 = [v11 shortIdentifier];
-  v61 = [v11 reason];
-  v65 = self;
+  shortIdentifier = [finishedCopy shortIdentifier];
+  reason = [finishedCopy reason];
+  selfCopy = self;
   if (![(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    v54 = v13;
-    v15 = [v11 userInfo];
-    v16 = [v15 objectForKey:@"updateOptions"];
+    v54 = errorCopy;
+    userInfo = [finishedCopy userInfo];
+    v16 = [userInfo objectForKey:@"updateOptions"];
     if (v16)
     {
-      v17 = [v11 userInfo];
-      v18 = [v17 objectForKey:@"updateOptions"];
-      v59 = [v18 unsignedIntegerValue];
+      userInfo2 = [finishedCopy userInfo];
+      v18 = [userInfo2 objectForKey:@"updateOptions"];
+      unsignedIntegerValue = [v18 unsignedIntegerValue];
     }
 
     else
     {
-      v59 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    v14 = [v11 context];
+    context = [finishedCopy context];
     v19 = PBFLogDataStore();
     v20 = v19;
-    if (v9)
+    if (successCopy)
     {
-      v53 = v11;
+      v53 = finishedCopy;
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v71 = v64;
+        v71 = shortIdentifier;
         _os_log_impl(&dword_21B526000, v20, OS_LOG_TYPE_DEFAULT, "(%{public}@} notifying roles of changes", buf, 0xCu);
       }
 
@@ -20210,12 +20210,12 @@ void __80__PBFPosterExtensionDataStore_posterExtensionProvider_updatedExtensions
       v67 = 0u;
       v68 = 0u;
       v69 = 0u;
-      obj = [v12 affectedRoles];
+      obj = [resultsCopy affectedRoles];
       v62 = [obj countByEnumeratingWithState:&v66 objects:v74 count:16];
       if (v62)
       {
         v57 = *v67;
-        v58 = v12;
+        v58 = resultsCopy;
         do
         {
           for (i = 0; i != v62; ++i)
@@ -20230,27 +20230,27 @@ void __80__PBFPosterExtensionDataStore_posterExtensionProvider_updatedExtensions
             if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543618;
-              v71 = v64;
+              v71 = shortIdentifier;
               v72 = 2114;
               v73 = v22;
               _os_log_impl(&dword_21B526000, v23, OS_LOG_TYPE_DEFAULT, "(%{public}@} notifying %{public}@ of changes", buf, 0x16u);
             }
 
-            v24 = [(NSDictionary *)v65->_roleToRoleCoordinator objectForKey:v22];
-            v25 = [v12 collectionDiffsPerRole];
-            v26 = [v25 objectForKey:v22];
+            v24 = [(NSDictionary *)selfCopy->_roleToRoleCoordinator objectForKey:v22];
+            collectionDiffsPerRole = [resultsCopy collectionDiffsPerRole];
+            v26 = [collectionDiffsPerRole objectForKey:v22];
 
-            v27 = [v26 newCollection];
-            if ((-[NSObject isInitialUpdate](v14, "isInitialUpdate") & 1) != 0 || ([v26 isEqual] & 1) == 0)
+            newCollection = [v26 newCollection];
+            if ((-[NSObject isInitialUpdate](context, "isInitialUpdate") & 1) != 0 || ([v26 isEqual] & 1) == 0)
             {
-              v28 = [v27 orderedPosters];
-              v29 = [v28 array];
-              [(__CFString *)v56 setObject:v29 forKeyedSubscript:v22];
+              orderedPosters = [newCollection orderedPosters];
+              array = [orderedPosters array];
+              [(__CFString *)v56 setObject:array forKeyedSubscript:v22];
             }
 
-            if ([v14 isInitialUpdate])
+            if ([context isInitialUpdate])
             {
-              v30 = [objc_alloc(MEMORY[0x277D3ED38]) initWithCollection:0 newCollection:v27];
+              v30 = [objc_alloc(MEMORY[0x277D3ED38]) initWithCollection:0 newCollection:newCollection];
             }
 
             else
@@ -20262,13 +20262,13 @@ void __80__PBFPosterExtensionDataStore_posterExtensionProvider_updatedExtensions
             if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543618;
-              v71 = v64;
+              v71 = shortIdentifier;
               v72 = 2114;
               v73 = v22;
               _os_log_impl(&dword_21B526000, v31, OS_LOG_TYPE_DEFAULT, "(%{public}@} Updating active path assertions for role %{public}@ ", buf, 0x16u);
             }
 
-            if ([v14 isInitialUpdate])
+            if ([context isInitialUpdate])
             {
               v32 = v30;
             }
@@ -20280,17 +20280,17 @@ void __80__PBFPosterExtensionDataStore_posterExtensionProvider_updatedExtensions
 
             v63 = v24;
             v33 = v24;
-            v34 = v14;
-            [(PBFPosterExtensionDataStore *)v65 _stateLock_setupPathAssertionsAndUpdateActivePosterFromDiff:v32 roleCoordinator:v33 context:v14];
-            v35 = [v12 preCommitActivePosterConfigurationForRole];
-            v36 = [v35 objectForKey:v22];
+            v34 = context;
+            [(PBFPosterExtensionDataStore *)selfCopy _stateLock_setupPathAssertionsAndUpdateActivePosterFromDiff:v32 roleCoordinator:v33 context:context];
+            preCommitActivePosterConfigurationForRole = [resultsCopy preCommitActivePosterConfigurationForRole];
+            v36 = [preCommitActivePosterConfigurationForRole objectForKey:v22];
 
-            v37 = [(PBFPosterExtensionDataStore *)v65 activePosterConfigurationForRole:v22 assocPoster:0];
+            v37 = [(PBFPosterExtensionDataStore *)selfCopy activePosterConfigurationForRole:v22 assocPoster:0];
             v38 = PBFLogDataStore();
             if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543618;
-              v71 = v64;
+              v71 = shortIdentifier;
               v72 = 2114;
               v73 = v22;
               _os_log_impl(&dword_21B526000, v38, OS_LOG_TYPE_DEFAULT, "(%{public}@} Issuing update notifications for role %{public}@ ", buf, 0x16u);
@@ -20306,7 +20306,7 @@ void __80__PBFPosterExtensionDataStore_posterExtensionProvider_updatedExtensions
               v39 = v26;
             }
 
-            [(PBFPosterExtensionDataStore *)v65 _stateLock_pushUpdateNotificationsForRole:v22 diff:v39 previouslyActiveConfiguration:v36 newActiveConfiguration:v37 options:v59 reason:v61 context:v34];
+            [(PBFPosterExtensionDataStore *)selfCopy _stateLock_pushUpdateNotificationsForRole:v22 diff:v39 previouslyActiveConfiguration:v36 newActiveConfiguration:v37 options:unsignedIntegerValue reason:reason context:v34];
             [v60 bs_setSafeObject:v37 forKey:v22];
             v40 = BSEqualObjects();
             v41 = PBFLogDataStore();
@@ -20319,7 +20319,7 @@ void __80__PBFPosterExtensionDataStore_posterExtensionProvider_updatedExtensions
               }
 
               *buf = 138543618;
-              v71 = v64;
+              v71 = shortIdentifier;
               v72 = 2114;
               v73 = v22;
               v43 = v41;
@@ -20334,7 +20334,7 @@ void __80__PBFPosterExtensionDataStore_posterExtensionProvider_updatedExtensions
               }
 
               *buf = 138543618;
-              v71 = v64;
+              v71 = shortIdentifier;
               v72 = 2114;
               v73 = v22;
               v43 = v41;
@@ -20344,8 +20344,8 @@ void __80__PBFPosterExtensionDataStore_posterExtensionProvider_updatedExtensions
             _os_log_impl(&dword_21B526000, v43, OS_LOG_TYPE_DEFAULT, v44, buf, 0x16u);
 LABEL_39:
 
-            v12 = v58;
-            v14 = v34;
+            resultsCopy = v58;
+            context = v34;
           }
 
           v62 = [obj countByEnumeratingWithState:&v66 objects:v74 count:16];
@@ -20357,41 +20357,41 @@ LABEL_39:
       v20 = v60;
       if ([v60 count])
       {
-        v45 = [(PBFPosterExtensionDataStore *)v65 _stateLock_updatedSuggestionDescriptorPathsForPosterUUID];
+        _stateLock_updatedSuggestionDescriptorPathsForPosterUUID = [(PBFPosterExtensionDataStore *)selfCopy _stateLock_updatedSuggestionDescriptorPathsForPosterUUID];
         v46 = PBFLogDataStore();
         if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v71 = v64;
+          v71 = shortIdentifier;
           v72 = 2114;
           v73 = v60;
           _os_log_impl(&dword_21B526000, v46, OS_LOG_TYPE_DEFAULT, "(%{public}@} Pushing out active poster for roles update %{public}@", buf, 0x16u);
         }
 
-        [(PBFPosterExtensionDataStore *)v65 _notifyObserversDidUpdateActivePosterForRoles:v60 suggestionDescriptors:v45];
+        [(PBFPosterExtensionDataStore *)selfCopy _notifyObserversDidUpdateActivePosterForRoles:v60 suggestionDescriptors:_stateLock_updatedSuggestionDescriptorPathsForPosterUUID];
       }
 
       else
       {
-        v45 = PBFLogDataStore();
-        if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
+        _stateLock_updatedSuggestionDescriptorPathsForPosterUUID = PBFLogDataStore();
+        if (os_log_type_enabled(_stateLock_updatedSuggestionDescriptorPathsForPosterUUID, OS_LOG_TYPE_DEFAULT))
         {
-          v47 = [v14 isInitialUpdate];
+          isInitialUpdate = [context isInitialUpdate];
           v48 = @"no changes";
-          if (v47)
+          if (isInitialUpdate)
           {
             v48 = @"isInitialUpdate";
           }
 
           *buf = 138543618;
-          v71 = v64;
+          v71 = shortIdentifier;
           v72 = 2114;
           v73 = v48;
-          _os_log_impl(&dword_21B526000, v45, OS_LOG_TYPE_DEFAULT, "(%{public}@} *NOT* pushing out active poster for roles update; %{public}@", buf, 0x16u);
+          _os_log_impl(&dword_21B526000, _stateLock_updatedSuggestionDescriptorPathsForPosterUUID, OS_LOG_TYPE_DEFAULT, "(%{public}@} *NOT* pushing out active poster for roles update; %{public}@", buf, 0x16u);
         }
       }
 
-      v11 = v53;
+      finishedCopy = v53;
 
       v49 = [(__CFString *)v56 count];
       v50 = PBFLogDataStore();
@@ -20401,15 +20401,15 @@ LABEL_39:
         if (v51)
         {
           *buf = 138543618;
-          v71 = v64;
+          v71 = shortIdentifier;
           v72 = 2114;
           v73 = v56;
           _os_log_impl(&dword_21B526000, v50, OS_LOG_TYPE_DEFAULT, "(%{public}@} Pushing out updated poster collections for roles update %{public}@", buf, 0x16u);
         }
 
         v52 = v56;
-        [(PBFPosterExtensionDataStore *)v65 _notifyObserversDidUpdatePosterCollectionsForRoles:v56];
-        v13 = v54;
+        [(PBFPosterExtensionDataStore *)selfCopy _notifyObserversDidUpdatePosterCollectionsForRoles:v56];
+        errorCopy = v54;
       }
 
       else
@@ -20417,18 +20417,18 @@ LABEL_39:
         if (v51)
         {
           *buf = 138543362;
-          v71 = v64;
+          v71 = shortIdentifier;
           _os_log_impl(&dword_21B526000, v50, OS_LOG_TYPE_DEFAULT, "(%{public}@} *NOT* pushing out updated poster collections for roles update; no updated poster collections", buf, 0xCu);
         }
 
-        v13 = v54;
+        errorCopy = v54;
         v52 = v56;
       }
     }
 
     else
     {
-      v13 = v54;
+      errorCopy = v54;
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         [PBFPosterExtensionDataStore _stateLock_executeDataStoreUpdateWithChanges:diffs:options:reason:context:error:];
@@ -20438,44 +20438,44 @@ LABEL_39:
     goto LABEL_60;
   }
 
-  v14 = PBFLogDataStore();
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+  context = PBFLogDataStore();
+  if (os_log_type_enabled(context, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v71 = v64;
-    _os_log_impl(&dword_21B526000, v14, OS_LOG_TYPE_DEFAULT, "(%{public}@} Data store invalidated. Role Processor is bailing.", buf, 0xCu);
+    v71 = shortIdentifier;
+    _os_log_impl(&dword_21B526000, context, OS_LOG_TYPE_DEFAULT, "(%{public}@} Data store invalidated. Role Processor is bailing.", buf, 0xCu);
   }
 
 LABEL_60:
 }
 
-- (void)assertionManager:(id)a3 identityIsNowMarkedAsInUse:(id)a4
+- (void)assertionManager:(id)manager identityIsNowMarkedAsInUse:(id)use
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  useCopy = use;
   v5 = PBFLogDataStore();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = useCopy;
     _os_log_impl(&dword_21B526000, v5, OS_LOG_TYPE_DEFAULT, "Path '%@', is now marked as inuse", &v6, 0xCu);
   }
 }
 
-- (void)assertionManager:(id)a3 identityIsNowMarkedAsNOTInUse:(id)a4
+- (void)assertionManager:(id)manager identityIsNowMarkedAsNOTInUse:(id)use
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  useCopy = use;
   v6 = PBFLogDataStore();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v5;
+    v12 = useCopy;
     _os_log_impl(&dword_21B526000, v6, OS_LOG_TYPE_DEFAULT, "Identity '%@' is no longer marked in use; will remove.", buf, 0xCu);
   }
 
   v10 = 0;
-  [(PBFPosterExtensionDataStore *)self _executeCleanupOfServerPosterIdentity:v5 error:&v10];
+  [(PBFPosterExtensionDataStore *)self _executeCleanupOfServerPosterIdentity:useCopy error:&v10];
   v7 = v10;
   v8 = PBFLogDataStore();
   v9 = v8;
@@ -20490,16 +20490,16 @@ LABEL_60:
   else if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v5;
+    v12 = useCopy;
     _os_log_impl(&dword_21B526000, v9, OS_LOG_TYPE_DEFAULT, "Identity '%@' was cleaned up successfully", buf, 0xCu);
   }
 }
 
-- (BOOL)_executeCleanupOfServerPosterIdentity:(id)a3 error:(id *)a4
+- (BOOL)_executeCleanupOfServerPosterIdentity:(id)identity error:(id *)error
 {
   v60 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(PBFPosterSnapshotManager *)self->_snapshotManager hasRequestsInFlightForIdentity:v6];
+  identityCopy = identity;
+  v7 = [(PBFPosterSnapshotManager *)self->_snapshotManager hasRequestsInFlightForIdentity:identityCopy];
   v8 = PBFLogDataStore();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
   if (!v7)
@@ -20507,20 +20507,20 @@ LABEL_60:
     if (v9)
     {
       *buf = 138412290;
-      v59 = v6;
+      v59 = identityCopy;
       _os_log_impl(&dword_21B526000, v8, OS_LOG_TYPE_DEFAULT, "Identity '%@' has *NO* snapshots in flight for clients; cleaning up now", buf, 0xCu);
     }
 
-    v11 = [(__CFString *)v6 posterUUID];
-    v13 = [(__CFString *)v6 provider];
-    v14 = [(PBFPosterExtensionDataStore *)self knownExtensions];
+    posterUUID = [(__CFString *)identityCopy posterUUID];
+    provider = [(__CFString *)identityCopy provider];
+    knownExtensions = [(PBFPosterExtensionDataStore *)self knownExtensions];
     v50[0] = MEMORY[0x277D85DD0];
     v50[1] = 3221225472;
     v50[2] = __75__PBFPosterExtensionDataStore__executeCleanupOfServerPosterIdentity_error___block_invoke;
     v50[3] = &unk_2782C5EC0;
-    v15 = v13;
+    v15 = provider;
     v51 = v15;
-    v16 = [v14 bs_containsObjectPassingTest:v50];
+    v16 = [knownExtensions bs_containsObjectPassingTest:v50];
 
     if ((v16 & 1) == 0)
     {
@@ -20532,7 +20532,7 @@ LABEL_60:
         _os_log_impl(&dword_21B526000, v27, OS_LOG_TYPE_DEFAULT, "Extension '%@' has been removed; will not delete underlying configurations.", buf, 0xCu);
       }
 
-      if (!a4)
+      if (!error)
       {
         v12 = 0;
 LABEL_44:
@@ -20545,7 +20545,7 @@ LABEL_44:
       v55 = @"Extension could not be found; we don't delete posters when their extensions aren't found; they may come back.";
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
       [v28 pbf_dataStoreErrorWithCode:-2220 userInfo:v18];
-      *a4 = v12 = 0;
+      *error = v12 = 0;
 LABEL_43:
 
       goto LABEL_44;
@@ -20554,7 +20554,7 @@ LABEL_43:
     v49 = 0;
     v17 = [(PBFPosterExtensionDataStore *)self pbf_posterExtensionStoreCoordinatorForProviderIdentifier:v15 error:&v49];
     v18 = v49;
-    v19 = [v17 modelStoreCoordinatorForPosterUUID:v11];
+    v19 = [v17 modelStoreCoordinatorForPosterUUID:posterUUID];
     v20 = v19;
     if (v17 && v19)
     {
@@ -20573,7 +20573,7 @@ LABEL_43:
 
       v47 = 0;
       v42 = v20;
-      [v20 removeSupplement:-[__CFString supplement](v6 forVersion:"supplement") error:{-[__CFString version](v6, "version"), &v47}];
+      [v20 removeSupplement:-[__CFString supplement](identityCopy forVersion:"supplement") error:{-[__CFString version](identityCopy, "version"), &v47}];
       v22 = v47;
       v23 = PBFLogDataStore();
       v24 = v23;
@@ -20590,7 +20590,7 @@ LABEL_43:
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v59 = v6;
+          v59 = identityCopy;
           _os_log_impl(&dword_21B526000, v24, OS_LOG_TYPE_DEFAULT, "Successfully cleaned up after path: %@", buf, 0xCu);
         }
 
@@ -20600,10 +20600,10 @@ LABEL_43:
           v25 = v40;
 LABEL_20:
           [v25 invalidate];
-          if (a4 && v22)
+          if (error && v22)
           {
             v26 = v22;
-            *a4 = v22;
+            *error = v22;
           }
 
           v12 = v22 == 0;
@@ -20616,12 +20616,12 @@ LABEL_20:
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v59 = v11;
+          v59 = posterUUID;
           _os_log_impl(&dword_21B526000, v34, OS_LOG_TYPE_DEFAULT, "Model store coordinator for posterUUID '%@' has no known versions; tearing down", buf, 0xCu);
         }
 
         v46 = 0;
-        [v17 teardownConfigurationStoreCoordinatorForPosterUUID:v11 error:&v46];
+        [v17 teardownConfigurationStoreCoordinatorForPosterUUID:posterUUID error:&v46];
         v24 = v46;
         v35 = PBFLogDataStore();
         v36 = v35;
@@ -20630,7 +20630,7 @@ LABEL_20:
           if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v59 = v11;
+            v59 = posterUUID;
             _os_log_impl(&dword_21B526000, v36, OS_LOG_TYPE_DEFAULT, "Performing backstop database cleanup for posterUUID '%@'", buf, 0xCu);
           }
 
@@ -20639,7 +20639,7 @@ LABEL_20:
           v44[1] = 3221225472;
           v44[2] = __75__PBFPosterExtensionDataStore__executeCleanupOfServerPosterIdentity_error___block_invoke_969;
           v44[3] = &unk_2782C6A98;
-          v45 = v11;
+          v45 = posterUUID;
           v43 = 0;
           [(PBFPosterExtensionDataStoreSQLiteDatabase *)database performChanges:v44 error:&v43];
           v22 = v43;
@@ -20673,13 +20673,13 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    if (a4)
+    if (error)
     {
       if (v18)
       {
         v29 = v18;
         v12 = 0;
-        *a4 = v18;
+        *error = v18;
 LABEL_42:
 
         goto LABEL_43;
@@ -20699,7 +20699,7 @@ LABEL_42:
       v52 = @"posterProvider";
       v53 = v31;
       v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
-      *a4 = [v30 pbf_dataStoreErrorWithCode:-2217 userInfo:v32];
+      *error = [v30 pbf_dataStoreErrorWithCode:-2217 userInfo:v32];
     }
 
     v12 = 0;
@@ -20709,18 +20709,18 @@ LABEL_42:
   if (v9)
   {
     *buf = 138412290;
-    v59 = v6;
+    v59 = identityCopy;
     _os_log_impl(&dword_21B526000, v8, OS_LOG_TYPE_DEFAULT, "Identity '%@' has snapshots in flight for clients; we will let them finish and cleanup later", buf, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
     v10 = MEMORY[0x277CCA9B8];
     v56 = *MEMORY[0x277CCA470];
     v57 = @"snapshots are in progress for this poster.  Will be cleaned up next time datastore is initialized.";
-    v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
-    [v10 pbf_dataStoreErrorWithCode:-2212 userInfo:v11];
-    *a4 = v12 = 0;
+    posterUUID = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
+    [v10 pbf_dataStoreErrorWithCode:-2212 userInfo:posterUUID];
+    *error = v12 = 0;
 LABEL_45:
 
     goto LABEL_46;
@@ -20740,38 +20740,38 @@ uint64_t __75__PBFPosterExtensionDataStore__executeCleanupOfServerPosterIdentity
   return v4;
 }
 
-- (void)roleCoordinatorWasReset:(id)a3 processInitialStateSetupEvents:(id *)a4
+- (void)roleCoordinatorWasReset:(id)reset processInitialStateSetupEvents:(id *)events
 {
   extensionProvider = self->_extensionProvider;
-  v7 = a3;
-  v12 = [(PFPosterExtensionProvider *)extensionProvider knownPosterExtensions];
+  resetCopy = reset;
+  knownPosterExtensions = [(PFPosterExtensionProvider *)extensionProvider knownPosterExtensions];
   os_unfair_lock_lock(&self->_extensionProvidingLock);
-  v8 = [(NSMutableDictionary *)self->_extensionProvidingLock_extensionStoreCoordinatorForExtensionBundleIdentifier objectEnumerator];
-  v9 = [v8 allObjects];
+  objectEnumerator = [(NSMutableDictionary *)self->_extensionProvidingLock_extensionStoreCoordinatorForExtensionBundleIdentifier objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
 
   os_unfair_lock_unlock(&self->_extensionProvidingLock);
-  v10 = [objc_opt_class() buildInitialStateSetupEventsForRoleCoordinator:v7 extensionHandlers:v12 extensionStoreCoordinators:v9];
+  v10 = [objc_opt_class() buildInitialStateSetupEventsForRoleCoordinator:resetCopy extensionHandlers:knownPosterExtensions extensionStoreCoordinators:allObjects];
 
   v11 = v10;
-  *a4 = v10;
+  *events = v10;
 }
 
-- (id)buildPrewarmPlanWithIdentifier:(id)a3 refreshStrategy:(int64_t)a4 galleryUpdateOptions:(unint64_t)a5 powerLogReason:(int64_t)a6 cleanupOldResources:(BOOL)a7 prewarmDisplayContext:(id)a8
+- (id)buildPrewarmPlanWithIdentifier:(id)identifier refreshStrategy:(int64_t)strategy galleryUpdateOptions:(unint64_t)options powerLogReason:(int64_t)reason cleanupOldResources:(BOOL)resources prewarmDisplayContext:(id)context
 {
-  v33 = a7;
-  v12 = a3;
-  v13 = a8;
-  if (!v13)
+  resourcesCopy = resources;
+  identifierCopy = identifier;
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v13 = +[PBFGenericDisplayContext mainScreen];
+    contextCopy = +[PBFGenericDisplayContext mainScreen];
   }
 
   v14 = MEMORY[0x277CBEB98];
-  v15 = [(NSDictionary *)self->_roleToRoleCoordinator allKeys];
-  v16 = [v14 setWithArray:v15];
+  allKeys = [(NSDictionary *)self->_roleToRoleCoordinator allKeys];
+  v16 = [v14 setWithArray:allKeys];
 
   v17 = objc_alloc_init(PBFMutablePosterExtensionDataStorePrewarmPlan);
-  [(PBFPosterExtensionDataStorePrewarmPlan *)v17 setIdentifier:v12];
+  [(PBFPosterExtensionDataStorePrewarmPlan *)v17 setIdentifier:identifierCopy];
   v18 = self->_invalidationFlag;
   v34 = self->_snapshotManager;
   objc_initWeak(location, self);
@@ -20782,9 +20782,9 @@ uint64_t __75__PBFPosterExtensionDataStore__executeCleanupOfServerPosterIdentity
   objc_copyWeak(v61, location);
   v19 = v18;
   v59 = v19;
-  v61[1] = a4;
-  v61[2] = a6;
-  v20 = v12;
+  v61[1] = strategy;
+  v61[2] = reason;
+  v20 = identifierCopy;
   v60 = v20;
   [(PBFMutablePosterExtensionDataStorePrewarmPlan *)v17 setExecutionBlock:v58 forPhase:@"PBFPrewarmPhaseReloadDescriptors"];
   if ([v16 bs_containsObjectPassingTest:&__block_literal_global_978])
@@ -20809,8 +20809,8 @@ uint64_t __75__PBFPosterExtensionDataStore__executeCleanupOfServerPosterIdentity
     v51 = v23;
     v24 = v22;
     v52 = v24;
-    v53[1] = a5;
-    v53[2] = a6;
+    v53[1] = options;
+    v53[2] = reason;
     [(PBFMutablePosterExtensionDataStorePrewarmPlan *)v17 setExecutionBlock:v50 forPhase:@"PBFPrewarmPhaseAcquireNewGallery"];
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
@@ -20819,10 +20819,10 @@ uint64_t __75__PBFPosterExtensionDataStore__executeCleanupOfServerPosterIdentity
     objc_copyWeak(v49, location);
     v25 = v23;
     v44 = v25;
-    v26 = v13;
-    v49[1] = a6;
+    v26 = contextCopy;
+    v49[1] = reason;
     v45 = v26;
-    v46 = self;
+    selfCopy = self;
     v27 = v24;
     v47 = v27;
     v28 = v34;
@@ -20835,7 +20835,7 @@ uint64_t __75__PBFPosterExtensionDataStore__executeCleanupOfServerPosterIdentity
     objc_copyWeak(&v42, location);
     v37 = v25;
     v38 = v26;
-    v39 = self;
+    selfCopy2 = self;
     v40 = v27;
     v41 = v28;
     [(PBFMutablePosterExtensionDataStorePrewarmPlan *)v17 setExecutionBlock:v36 forPhase:@"PBFPrewarmPhaseSnapshotGallery"];
@@ -20848,7 +20848,7 @@ uint64_t __75__PBFPosterExtensionDataStore__executeCleanupOfServerPosterIdentity
     v16 = v31;
   }
 
-  if (v33)
+  if (resourcesCopy)
   {
     [(PBFMutablePosterExtensionDataStorePrewarmPlan *)v17 appendPrewarmPhase:@"PBFPrewarmPhaseFileSystemCleanup"];
     v35[0] = MEMORY[0x277D85DD0];
@@ -21682,11 +21682,11 @@ LABEL_3:
   return [a1[6] finishedWithError:0];
 }
 
-- (id)_buildSwitcherConfigurationWithContext:(id)a3
+- (id)_buildSwitcherConfigurationWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_stateLock);
-  v5 = [(PBFPosterExtensionDataStore *)self _stateLock_buildSwitcherConfigurationWithContext:v4 outMutated:0];
+  v5 = [(PBFPosterExtensionDataStore *)self _stateLock_buildSwitcherConfigurationWithContext:contextCopy outMutated:0];
 
   os_unfair_lock_unlock(&self->_stateLock);
 
@@ -22871,9 +22871,9 @@ void __145__PBFPosterExtensionDataStore__finishUpdateExtensionUpdateWithOptions_
 
 - (void)_stateLock_hasBeenUnlockedSinceBoot
 {
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = [MEMORY[0x277CCACA8] stringWithUTF8String:"BOOL PBF_MKBDeviceUnlockedSinceBoot(void)"];
-  [v0 handleFailureInFunction:v1 file:@"PBFPosterExtensionDataStore.m" lineNumber:126 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"PBFPosterExtensionDataStore.m" lineNumber:126 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

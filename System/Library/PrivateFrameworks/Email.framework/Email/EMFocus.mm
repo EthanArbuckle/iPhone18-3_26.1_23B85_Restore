@@ -1,45 +1,45 @@
 @interface EMFocus
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isFocusedIdentifier:(id)a3;
-- (EMFocus)initWithFocusedAccountIdentifiers:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isFocusedIdentifier:(id)identifier;
+- (EMFocus)initWithFocusedAccountIdentifiers:(id)identifiers;
 - (NSString)ef_publicDescription;
 @end
 
 @implementation EMFocus
 
-- (EMFocus)initWithFocusedAccountIdentifiers:(id)a3
+- (EMFocus)initWithFocusedAccountIdentifiers:(id)identifiers
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v9.receiver = self;
   v9.super_class = EMFocus;
   v6 = [(EMFocus *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_focusedAccountIdentifiers, a3);
+    objc_storeStrong(&v6->_focusedAccountIdentifiers, identifiers);
   }
 
   return v7;
 }
 
-- (BOOL)isFocusedIdentifier:(id)a3
+- (BOOL)isFocusedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(EMFocus *)self focusedAccountIdentifiers];
-  v6 = [v5 containsObject:v4];
+  identifierCopy = identifier;
+  focusedAccountIdentifiers = [(EMFocus *)self focusedAccountIdentifiers];
+  v6 = [focusedAccountIdentifiers containsObject:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 focusedAccountIdentifiers];
-    v6 = [(EMFocus *)self focusedAccountIdentifiers];
-    v7 = [v5 isEqualToSet:v6];
+    focusedAccountIdentifiers = [equalCopy focusedAccountIdentifiers];
+    focusedAccountIdentifiers2 = [(EMFocus *)self focusedAccountIdentifiers];
+    v7 = [focusedAccountIdentifiers isEqualToSet:focusedAccountIdentifiers2];
   }
 
   else
@@ -54,8 +54,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EMFocus *)self focusedAccountIdentifiers];
-  v6 = [v3 stringWithFormat:@"<%@: %p>\n\tFocusedAccountIdentifiers: %@", v4, self, v5];
+  focusedAccountIdentifiers = [(EMFocus *)self focusedAccountIdentifiers];
+  v6 = [v3 stringWithFormat:@"<%@: %p>\n\tFocusedAccountIdentifiers: %@", v4, self, focusedAccountIdentifiers];
 
   return v6;
 }

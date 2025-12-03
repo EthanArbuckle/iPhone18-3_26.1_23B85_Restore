@@ -1,16 +1,16 @@
 @interface IDSPublicKeyStorageCache
-- (id)cachedIdentityForDeviceID:(id)a3;
-- (void)cacheIdentity:(id)a3 forDeviceID:(id)a4 andPushToken:(id)a5;
+- (id)cachedIdentityForDeviceID:(id)d;
+- (void)cacheIdentity:(id)identity forDeviceID:(id)d andPushToken:(id)token;
 - (void)clearCache;
 - (void)logState;
-- (void)removeCachedIdentityForPushToken:(id)a3;
+- (void)removeCachedIdentityForPushToken:(id)token;
 @end
 
 @implementation IDSPublicKeyStorageCache
 
-- (id)cachedIdentityForDeviceID:(id)a3
+- (id)cachedIdentityForDeviceID:(id)d
 {
-  if ([a3 isEqualToString:self->_deviceID])
+  if ([d isEqualToString:self->_deviceID])
   {
     v4 = self->_identity;
   }
@@ -23,26 +23,26 @@
   return v4;
 }
 
-- (void)cacheIdentity:(id)a3 forDeviceID:(id)a4 andPushToken:(id)a5
+- (void)cacheIdentity:(id)identity forDeviceID:(id)d andPushToken:(id)token
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identityCopy = identity;
+  dCopy = d;
+  tokenCopy = token;
   deviceID = self->_deviceID;
-  self->_deviceID = v9;
-  v15 = v9;
+  self->_deviceID = dCopy;
+  v15 = dCopy;
 
   identity = self->_identity;
-  self->_identity = v8;
-  v13 = v8;
+  self->_identity = identityCopy;
+  v13 = identityCopy;
 
   pushToken = self->_pushToken;
-  self->_pushToken = v10;
+  self->_pushToken = tokenCopy;
 }
 
-- (void)removeCachedIdentityForPushToken:(id)a3
+- (void)removeCachedIdentityForPushToken:(id)token
 {
-  if ([a3 isEqualToData:self->_pushToken])
+  if ([token isEqualToData:self->_pushToken])
   {
     deviceID = self->_deviceID;
     self->_deviceID = 0;

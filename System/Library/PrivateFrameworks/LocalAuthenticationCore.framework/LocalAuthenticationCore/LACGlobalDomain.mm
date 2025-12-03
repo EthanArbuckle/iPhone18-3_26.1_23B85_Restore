@@ -2,17 +2,17 @@
 + (BOOL)releaseUIDelegate;
 + (NSData)companionAuthentication;
 + (id)sharedInstance;
-+ (void)setCompanionAuthentication:(id)a3;
++ (void)setCompanionAuthentication:(id)authentication;
 @end
 
 @implementation LACGlobalDomain
 
 + (BOOL)releaseUIDelegate
 {
-  v2 = [objc_opt_self() sharedInstance];
-  v3 = [v2 valueForFlagReleaseUIDelegate];
+  sharedInstance = [objc_opt_self() sharedInstance];
+  valueForFlagReleaseUIDelegate = [sharedInstance valueForFlagReleaseUIDelegate];
 
-  return v3;
+  return valueForFlagReleaseUIDelegate;
 }
 
 + (id)sharedInstance
@@ -36,8 +36,8 @@ uint64_t __33__LACGlobalDomain_sharedInstance__block_invoke()
 
 + (NSData)companionAuthentication
 {
-  v2 = [objc_opt_self() sharedInstance];
-  isa = [v2 valueForFlagCompanionSessionAuthentication];
+  sharedInstance = [objc_opt_self() sharedInstance];
+  isa = [sharedInstance valueForFlagCompanionSessionAuthentication];
 
   if (isa)
   {
@@ -51,11 +51,11 @@ uint64_t __33__LACGlobalDomain_sharedInstance__block_invoke()
   return isa;
 }
 
-+ (void)setCompanionAuthentication:(id)a3
++ (void)setCompanionAuthentication:(id)authentication
 {
-  if (a3)
+  if (authentication)
   {
-    v3 = a3;
+    authenticationCopy = authentication;
     v4 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }

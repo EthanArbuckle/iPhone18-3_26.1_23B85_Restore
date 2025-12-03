@@ -1,8 +1,8 @@
 @interface INVerifyTermsPushHandler
 - (INVerifyTermsPushHandler)init;
-- (INVerifyTermsPushHandler)initWithAccountStore:(id)a3;
-- (void)_refreshAppleAccount:(id)a3 completion:(id)a4;
-- (void)handleIncomingPushNotification:(id)a3;
+- (INVerifyTermsPushHandler)initWithAccountStore:(id)store;
+- (void)_refreshAppleAccount:(id)account completion:(id)completion;
+- (void)handleIncomingPushNotification:(id)notification;
 @end
 
 @implementation INVerifyTermsPushHandler
@@ -14,31 +14,31 @@
   return 0;
 }
 
-- (INVerifyTermsPushHandler)initWithAccountStore:(id)a3
+- (INVerifyTermsPushHandler)initWithAccountStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = INVerifyTermsPushHandler;
   v6 = [(INVerifyTermsPushHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountStore, a3);
+    objc_storeStrong(&v6->_accountStore, store);
   }
 
   return v7;
 }
 
-- (void)handleIncomingPushNotification:(id)a3
+- (void)handleIncomingPushNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"dsid"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"dsid"];
 
   if (v6)
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKeyedSubscript:@"event"];
+    userInfo2 = [notificationCopy userInfo];
+    v8 = [userInfo2 objectForKeyedSubscript:@"event"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -46,17 +46,17 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = v6;
+        stringValue = v6;
         goto LABEL_13;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = [v6 stringValue];
+        stringValue = [v6 stringValue];
 LABEL_13:
-        v10 = v9;
-        v11 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithPersonID:v9];
+        v10 = stringValue;
+        v11 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithPersonID:stringValue];
         if (!v11)
         {
           v14 = _INLogSystem();
@@ -145,21 +145,21 @@ LABEL_30:
 LABEL_31:
 }
 
-- (void)_refreshAppleAccount:(id)a3 completion:(id)a4
+- (void)_refreshAppleAccount:(id)account completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   accountStore = self->_accountStore;
   v13 = kACDiscoverPropertiesShouldSaveKey;
   v14 = &__kCFBooleanTrue;
-  v8 = a3;
+  accountCopy = account;
   v9 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000044A8;
   v11[3] = &unk_1000552A0;
-  v12 = v6;
-  v10 = v6;
-  [(ACAccountStore *)accountStore discoverPropertiesForAccount:v8 options:v9 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [(ACAccountStore *)accountStore discoverPropertiesForAccount:accountCopy options:v9 completion:v11];
 }
 
 @end

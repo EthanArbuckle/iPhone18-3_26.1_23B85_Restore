@@ -1,6 +1,6 @@
 @interface FTCaptionsMachine
 + (double)machTimeScale;
-+ (int)createWebVTTTextSampleBuffer:(__CFString *)a3 startTime:(id *)a4 duration:(id *)a5 sampleBufferOut:(opaqueCMSampleBuffer *)a6;
++ (int)createWebVTTTextSampleBuffer:(__CFString *)buffer startTime:(id *)time duration:(id *)duration sampleBufferOut:(opaqueCMSampleBuffer *)out;
 @end
 
 @implementation FTCaptionsMachine
@@ -26,28 +26,28 @@ double __34__FTCaptionsMachine_machTimeScale__block_invoke()
   return result;
 }
 
-+ (int)createWebVTTTextSampleBuffer:(__CFString *)a3 startTime:(id *)a4 duration:(id *)a5 sampleBufferOut:(opaqueCMSampleBuffer *)a6
++ (int)createWebVTTTextSampleBuffer:(__CFString *)buffer startTime:(id *)time duration:(id *)duration sampleBufferOut:(opaqueCMSampleBuffer *)out
 {
   formatDescriptionOut = 0;
   v29 = 0;
   v10 = *MEMORY[0x1E695E480];
   CMFormatDescriptionCreate(*MEMORY[0x1E695E480], 0x74657874u, 0x77767474u, 0, &formatDescriptionOut);
-  sampleTimingArray.duration = *a5;
-  sampleTimingArray.presentationTimeStamp = *a4;
+  sampleTimingArray.duration = *duration;
+  sampleTimingArray.presentationTimeStamp = *time;
   sampleTimingArray.decodeTimeStamp = **&MEMORY[0x1E6960C70];
   blockBufferOut = 0;
   sampleSizeArray = 0;
-  if (a3)
+  if (buffer)
   {
-    Length = CFStringGetLength(a3);
+    Length = CFStringGetLength(buffer);
     maxBufLen.var0 = 0;
     v30.location = 0;
     v30.length = Length;
-    CFStringGetBytes(a3, v30, 0x8000100u, 0, 0, 0, 0, &maxBufLen.var0);
+    CFStringGetBytes(buffer, v30, 0x8000100u, 0, 0, 0, 0, &maxBufLen.var0);
     v12 = malloc_type_malloc(maxBufLen.var0, 0x22C93461uLL);
     v31.location = 0;
     v31.length = Length;
-    CFStringGetBytes(a3, v31, 0x8000100u, 0, 0, v12, maxBufLen.var0, &maxBufLen.var0);
+    CFStringGetBytes(buffer, v31, 0x8000100u, 0, 0, v12, maxBufLen.var0, &maxBufLen.var0);
     v13 = LODWORD(maxBufLen.var0) + 16;
     v14 = bswap32(LODWORD(maxBufLen.var0) + 8);
     v15 = malloc_type_malloc(v13, 0x58F69FF0uLL);
@@ -70,9 +70,9 @@ double __34__FTCaptionsMachine_machTimeScale__block_invoke()
   if (v16)
   {
     v17 = v16;
-    maxBufLen = *a4;
+    maxBufLen = *time;
     v18 = CMTimeCopyDescription(v10, &maxBufLen);
-    maxBufLen = *a4;
+    maxBufLen = *time;
     v19 = CMTimeCopyDescription(v10, &maxBufLen);
     CFRelease(v18);
     v20 = v19;
@@ -85,9 +85,9 @@ LABEL_6:
   v17 = CMSampleBufferCreate(v10, blockBufferOut, 1u, 0, 0, formatDescriptionOut, 1, 1, &sampleTimingArray, 1, &sampleSizeArray, &v29);
   if (v17)
   {
-    maxBufLen = *a4;
+    maxBufLen = *time;
     v22 = CMTimeCopyDescription(v10, &maxBufLen);
-    maxBufLen = *a4;
+    maxBufLen = *time;
     v23 = CMTimeCopyDescription(v10, &maxBufLen);
     CFRelease(v22);
     CFRelease(v23);
@@ -100,7 +100,7 @@ LABEL_6:
 
   else
   {
-    *a6 = v29;
+    *out = v29;
     v29 = 0;
   }
 

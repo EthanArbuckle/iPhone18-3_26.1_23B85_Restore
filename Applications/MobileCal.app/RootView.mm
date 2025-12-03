@@ -1,16 +1,16 @@
 @interface RootView
-- (RootView)initWithFrame:(CGRect)a3;
+- (RootView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setMainView:(id)a3;
+- (void)setMainView:(id)view;
 @end
 
 @implementation RootView
 
-- (RootView)initWithFrame:(CGRect)a3
+- (RootView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = RootView;
-  v3 = [(RootView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RootView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor systemBackgroundColor];
@@ -20,13 +20,13 @@
   return v3;
 }
 
-- (void)setMainView:(id)a3
+- (void)setMainView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   mainView = self->_mainView;
-  if (mainView != v5)
+  if (mainView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)mainView removeFromSuperview];
     if (v7)
     {
@@ -35,7 +35,7 @@
     }
 
     [(RootView *)self setNeedsLayout];
-    objc_storeStrong(&self->_mainView, a3);
+    objc_storeStrong(&self->_mainView, view);
   }
 
   _objc_release_x1();
@@ -51,8 +51,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(RootView *)self mainView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  mainView = [(RootView *)self mainView];
+  [mainView setFrame:{v4, v6, v8, v10}];
 }
 
 @end

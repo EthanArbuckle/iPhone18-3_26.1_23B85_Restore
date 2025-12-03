@@ -1,37 +1,37 @@
 @interface CRLAccessibilityReaderModeCopyOperator
-+ (BOOL)performCopyOperationWithSelectionPath:(id)a3 interactiveCanvasController:(id)a4 sender:(id)a5;
++ (BOOL)performCopyOperationWithSelectionPath:(id)path interactiveCanvasController:(id)controller sender:(id)sender;
 @end
 
 @implementation CRLAccessibilityReaderModeCopyOperator
 
-+ (BOOL)performCopyOperationWithSelectionPath:(id)a3 interactiveCanvasController:(id)a4 sender:(id)a5
++ (BOOL)performCopyOperationWithSelectionPath:(id)path interactiveCanvasController:(id)controller sender:(id)sender
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [a4 editorController];
-  v10 = v9;
-  if (v9)
+  pathCopy = path;
+  senderCopy = sender;
+  editorController = [controller editorController];
+  v10 = editorController;
+  if (editorController)
   {
-    v11 = [v9 selectionPath];
-    [v10 setSelectionPath:v7];
-    v12 = [v10 editorForEditAction:"copy:" withSender:v8];
+    selectionPath = [editorController selectionPath];
+    [v10 setSelectionPath:pathCopy];
+    v12 = [v10 editorForEditAction:"copy:" withSender:senderCopy];
   }
 
   else
   {
     v12 = 0;
-    v11 = 0;
+    selectionPath = 0;
   }
 
-  v13 = [v12 canPerformEditorAction:"copy:" withSender:v8];
+  v13 = [v12 canPerformEditorAction:"copy:" withSender:senderCopy];
   if (v13)
   {
-    ([v12 methodForSelector:"copy:"])(v12, "copy:", v8);
+    ([v12 methodForSelector:"copy:"])(v12, "copy:", senderCopy);
   }
 
-  if (v11)
+  if (selectionPath)
   {
-    [v10 setSelectionPath:v11];
+    [v10 setSelectionPath:selectionPath];
   }
 
   return v13 != 0;

@@ -1,13 +1,13 @@
 @interface SKEventBasicConfigUpdated
-- (SKEventBasicConfigUpdated)initWithBasicConfig:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
+- (SKEventBasicConfigUpdated)initWithBasicConfig:(id)config;
+- (id)descriptionWithLevel:(int)level;
 @end
 
 @implementation SKEventBasicConfigUpdated
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -35,13 +35,13 @@
   return v8;
 }
 
-- (SKEventBasicConfigUpdated)initWithBasicConfig:(id)a3
+- (SKEventBasicConfigUpdated)initWithBasicConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v5 = [(SKEvent *)self initWithEventType:300];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [configCopy copy];
     basicConfig = v5->_basicConfig;
     v5->_basicConfig = v6;
 

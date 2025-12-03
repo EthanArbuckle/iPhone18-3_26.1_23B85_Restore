@@ -4,13 +4,13 @@
 - (id)getHangEventDuration;
 - (id)getHangEventProcessCreationDate;
 - (id)getHangEventProcessName;
-- (id)makeSpecifierForHangsDataEntry:(id)a3;
-- (id)specifierNameForEntry:(id)a3;
+- (id)makeSpecifierForHangsDataEntry:(id)entry;
+- (id)specifierNameForEntry:(id)entry;
 - (id)specifiers;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (void)setSpecifier:(id)a3;
-- (void)shareAllEntries:(id)a3;
-- (void)shareEntry:(id)a3 forRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
+- (void)setSpecifier:(id)specifier;
+- (void)shareAllEntries:(id)entries;
+- (void)shareEntry:(id)entry forRowAtIndexPath:(id)path;
 - (void)updateRightBarButtonItems;
 - (void)viewDidLoad;
 @end
@@ -45,14 +45,14 @@
   return v2;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   [(HangsDataControllerViewController *)self setCachedEntries:0];
   [(HangsDataControllerViewController *)self setCachedSpecifiers:0];
   v5.receiver = self;
   v5.super_class = HangsDataControllerViewController;
-  [(HangsDataControllerViewController *)&v5 setSpecifier:v4];
+  [(HangsDataControllerViewController *)&v5 setSpecifier:specifierCopy];
 
   [(HangsDataControllerViewController *)self reloadSpecifiers];
   [(HangsDataControllerViewController *)self updateRightBarButtonItems];
@@ -62,13 +62,13 @@
 {
   if (!self->_cachedEntries)
   {
-    v3 = [(HangsDataControllerViewController *)self specifier];
-    v4 = [v3 objectForKeyedSubscript:@"HangsDataControllerHangData"];
+    specifier = [(HangsDataControllerViewController *)self specifier];
+    v4 = [specifier objectForKeyedSubscript:@"HangsDataControllerHangData"];
 
     if (v4)
     {
-      v5 = [(HangsDataControllerViewController *)self specifier];
-      v6 = [v5 objectForKeyedSubscript:@"HangsDataControllerHangData"];
+      specifier2 = [(HangsDataControllerViewController *)self specifier];
+      v6 = [specifier2 objectForKeyedSubscript:@"HangsDataControllerHangData"];
       v7 = [HTHangsDataEntry sortedEntriesByFileType:v6];
     }
 
@@ -85,39 +85,39 @@
 
 - (id)getHangEventProcessName
 {
-  v2 = [(HangsDataControllerViewController *)self entries];
-  v3 = [v2 firstObject];
-  v4 = [v3 displayName];
+  entries = [(HangsDataControllerViewController *)self entries];
+  firstObject = [entries firstObject];
+  displayName = [firstObject displayName];
 
-  return v4;
+  return displayName;
 }
 
 - (id)getHangEventDuration
 {
   v3 = [NSMeasurement alloc];
-  v4 = [(HangsDataControllerViewController *)self entries];
-  v5 = [v4 firstObject];
-  [v5 duration];
+  entries = [(HangsDataControllerViewController *)self entries];
+  firstObject = [entries firstObject];
+  [firstObject duration];
   v7 = v6;
   v8 = +[NSUnitDuration milliseconds];
   v9 = [v3 initWithDoubleValue:v8 unit:v7];
 
-  v10 = [(HangsDataControllerViewController *)self durationFormatter];
-  v11 = [v10 stringFromMeasurement:v9];
+  durationFormatter = [(HangsDataControllerViewController *)self durationFormatter];
+  v11 = [durationFormatter stringFromMeasurement:v9];
 
   return v11;
 }
 
 - (id)getHangEventProcessCreationDate
 {
-  v3 = [(HangsDataControllerViewController *)self entries];
-  v4 = [v3 firstObject];
-  v5 = [v4 creationDate];
+  entries = [(HangsDataControllerViewController *)self entries];
+  firstObject = [entries firstObject];
+  creationDate = [firstObject creationDate];
 
-  if (v5)
+  if (creationDate)
   {
-    v6 = [(HangsDataControllerViewController *)self dateFormatter];
-    v7 = [v6 stringFromDate:v5];
+    dateFormatter = [(HangsDataControllerViewController *)self dateFormatter];
+    v7 = [dateFormatter stringFromDate:creationDate];
   }
 
   else
@@ -130,25 +130,25 @@
 
 - (id)specifiers
 {
-  v3 = [(HangsDataControllerViewController *)self cachedSpecifiers];
+  cachedSpecifiers = [(HangsDataControllerViewController *)self cachedSpecifiers];
 
-  if (!v3)
+  if (!cachedSpecifiers)
   {
     v4 = +[NSMutableArray array];
-    v5 = [(HangsDataControllerViewController *)self entries];
-    v6 = [v5 firstObject];
-    if (v6)
+    entries = [(HangsDataControllerViewController *)self entries];
+    firstObject = [entries firstObject];
+    if (firstObject)
     {
       v7 = HTUIDurationLabel();
       v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:0 get:"getHangEventDuration" detail:0 cell:4 edit:0];
 
       v9 = PSUseModernLayoutKey;
       [v8 setObject:&__kCFBooleanTrue forKeyedSubscript:PSUseModernLayoutKey];
-      [v6 duration];
+      [firstObject duration];
       v10 = [NSNumber numberWithDouble:?];
       [v8 setObject:v10 forKeyedSubscript:@"HangsDataControllerDuration"];
 
-      v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 durationLevel]);
+      v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [firstObject durationLevel]);
       [v8 setObject:v11 forKeyedSubscript:@"HangsDataControllerDurationLevel"];
 
       [v8 setObject:objc_opt_class() forKeyedSubscript:PSCellClassKey];
@@ -168,7 +168,7 @@
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v16 = v5;
+    v16 = entries;
     v17 = [v16 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v17)
     {
@@ -204,9 +204,9 @@
   v23 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v23)
   {
-    v24 = [(HangsDataControllerViewController *)self cachedSpecifiers];
+    cachedSpecifiers2 = [(HangsDataControllerViewController *)self cachedSpecifiers];
     v25 = *&self->PSListController_opaque[v22];
-    *&self->PSListController_opaque[v22] = v24;
+    *&self->PSListController_opaque[v22] = cachedSpecifiers2;
 
     v23 = *&self->PSListController_opaque[v22];
   }
@@ -214,14 +214,14 @@
   return v23;
 }
 
-- (id)makeSpecifierForHangsDataEntry:(id)a3
+- (id)makeSpecifierForHangsDataEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [(HangsDataControllerViewController *)self specifierNameForEntry:v4];
+  entryCopy = entry;
+  v5 = [(HangsDataControllerViewController *)self specifierNameForEntry:entryCopy];
   v6 = objc_opt_class();
-  v7 = [v4 isLogFile];
+  isLogFile = [entryCopy isLogFile];
   v8 = PSTextViewPane_ptr;
-  if (!v7)
+  if (!isLogFile)
   {
     v8 = off_3C8D8;
   }
@@ -229,23 +229,23 @@
   v9 = *v8;
   v10 = [PSSpecifier preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:v6 cell:2 edit:objc_opt_class()];
 
-  v11 = [v4 path];
-  [v10 setObject:v11 forKeyedSubscript:@"file-path"];
+  path = [entryCopy path];
+  [v10 setObject:path forKeyedSubscript:@"file-path"];
 
-  v12 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v4 fileSize]);
+  v12 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [entryCopy fileSize]);
   [v10 setObject:v12 forKeyedSubscript:@"HangsDataControllerFileSize"];
 
-  v13 = [v4 hangID];
-  [v10 setObject:v13 forKeyedSubscript:@"HangsDataControllerHangEvent"];
+  hangID = [entryCopy hangID];
+  [v10 setObject:hangID forKeyedSubscript:@"HangsDataControllerHangEvent"];
 
   [v10 setObject:objc_opt_class() forKeyedSubscript:PSCellClassKey];
 
   return v10;
 }
 
-- (id)specifierNameForEntry:(id)a3
+- (id)specifierNameForEntry:(id)entry
 {
-  if ([a3 isLogFile])
+  if ([entry isLogFile])
   {
     HTUIFileFormatSpindump();
   }
@@ -270,20 +270,20 @@
 - (void)updateRightBarButtonItems
 {
   v4 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:9 target:self action:"shareAllEntries:"];
-  v3 = [(HangsDataControllerViewController *)self navigationItem];
-  [v3 setRightBarButtonItem:v4];
+  navigationItem = [(HangsDataControllerViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v4];
 }
 
-- (void)shareAllEntries:(id)a3
+- (void)shareAllEntries:(id)entries
 {
-  v14 = a3;
+  entriesCopy = entries;
   v4 = +[NSMutableArray array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(HangsDataControllerViewController *)self entries];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  entries = [(HangsDataControllerViewController *)self entries];
+  v6 = [entries countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -295,11 +295,11 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(entries);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * v9) path];
-        v11 = [NSURL fileURLWithPath:v10];
+        path = [*(*(&v15 + 1) + 8 * v9) path];
+        v11 = [NSURL fileURLWithPath:path];
 
         [v4 addObject:v11];
         +[HTHangsAnalytics sendLogSharedEvent];
@@ -308,51 +308,51 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [entries countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
   }
 
   v12 = [[UIActivityViewController alloc] initWithActivityItems:v4 applicationActivities:0];
-  v13 = [v12 popoverPresentationController];
-  [v13 setBarButtonItem:v14];
+  popoverPresentationController = [v12 popoverPresentationController];
+  [popoverPresentationController setBarButtonItem:entriesCopy];
 
   [(HangsDataControllerViewController *)self presentViewController:v12 animated:1 completion:0];
 }
 
-- (void)shareEntry:(id)a3 forRowAtIndexPath:(id)a4
+- (void)shareEntry:(id)entry forRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  entryCopy = entry;
   +[HTHangsAnalytics sendLogSharedEvent];
-  v23 = v7;
+  v23 = entryCopy;
   v8 = [NSArray arrayWithObjects:&v23 count:1];
   v9 = [UIActivityViewController alloc];
 
   v10 = [v9 initWithActivityItems:v8 applicationActivities:0];
-  v11 = [(HangsDataControllerViewController *)self table];
-  v12 = [v10 popoverPresentationController];
-  [v12 setSourceView:v11];
+  table = [(HangsDataControllerViewController *)self table];
+  popoverPresentationController = [v10 popoverPresentationController];
+  [popoverPresentationController setSourceView:table];
 
-  v13 = [(HangsDataControllerViewController *)self table];
-  [v13 rectForRowAtIndexPath:v6];
+  table2 = [(HangsDataControllerViewController *)self table];
+  [table2 rectForRowAtIndexPath:pathCopy];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  v22 = [v10 popoverPresentationController];
-  [v22 setSourceRect:{v15, v17, v19, v21}];
+  popoverPresentationController2 = [v10 popoverPresentationController];
+  [popoverPresentationController2 setSourceRect:{v15, v17, v19, v21}];
 
   [(HangsDataControllerViewController *)self presentViewController:v10 animated:1 completion:0];
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(HangsDataControllerViewController *)self specifierAtIndexPath:v8];
+  viewCopy = view;
+  pathCopy = path;
+  v9 = [(HangsDataControllerViewController *)self specifierAtIndexPath:pathCopy];
   v10 = [v9 objectForKeyedSubscript:@"file-path"];
   if (v10)
   {
@@ -366,7 +366,7 @@
       v14[3] = &unk_3D440;
       objc_copyWeak(&v17, &location);
       v15 = v11;
-      v16 = v8;
+      v16 = pathCopy;
       v12 = [UIContextMenuConfiguration configurationWithIdentifier:v10 previewProvider:&stru_3D3F0 actionProvider:v14];
 
       objc_destroyWeak(&v17);

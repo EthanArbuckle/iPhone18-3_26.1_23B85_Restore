@@ -1,6 +1,6 @@
 @interface MCDLibraryContentManager
 - (id)_modelRequest;
-- (void)setSortingPreference:(id)a3;
+- (void)setSortingPreference:(id)preference;
 @end
 
 @implementation MCDLibraryContentManager
@@ -8,17 +8,17 @@
 - (id)_modelRequest
 {
   v3 = objc_alloc_init(MPModelLibraryRequest);
-  v4 = [(_MCDContentManager *)self dataSource];
-  v5 = [v4 requestItemKind];
-  [v3 setItemKind:v5];
+  dataSource = [(_MCDContentManager *)self dataSource];
+  requestItemKind = [dataSource requestItemKind];
+  [v3 setItemKind:requestItemKind];
 
-  v6 = [(_MCDContentManager *)self dataSource];
-  v7 = [v6 requestSectionProperties];
-  [v3 setSectionProperties:v7];
+  dataSource2 = [(_MCDContentManager *)self dataSource];
+  requestSectionProperties = [dataSource2 requestSectionProperties];
+  [v3 setSectionProperties:requestSectionProperties];
 
-  v8 = [(_MCDContentManager *)self dataSource];
-  v9 = [v8 requestItemProperties];
-  [v3 setItemProperties:v9];
+  dataSource3 = [(_MCDContentManager *)self dataSource];
+  requestItemProperties = [dataSource3 requestItemProperties];
+  [v3 setItemProperties:requestItemProperties];
 
   if ([(_MCDContentManager *)self limitedUI])
   {
@@ -27,65 +27,65 @@
 
   else
   {
-    v10 = [(_MCDContentManager *)self dataSource];
+    dataSource4 = [(_MCDContentManager *)self dataSource];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(_MCDContentManager *)self dataSource];
-      v13 = [v12 contentRange];
-      [v3 setContentRange:{v13, v14}];
+      dataSource5 = [(_MCDContentManager *)self dataSource];
+      contentRange = [dataSource5 contentRange];
+      [v3 setContentRange:{contentRange, v14}];
     }
   }
 
-  v15 = [(_MCDContentManager *)self dataSource];
+  dataSource6 = [(_MCDContentManager *)self dataSource];
   v16 = objc_opt_respondsToSelector();
 
   if (v16)
   {
-    v17 = [(_MCDContentManager *)self dataSource];
-    v18 = [v17 requestLabel];
-    [v3 setLabel:v18];
+    dataSource7 = [(_MCDContentManager *)self dataSource];
+    requestLabel = [dataSource7 requestLabel];
+    [v3 setLabel:requestLabel];
   }
 
-  v19 = [(_MCDContentManager *)self dataSource];
+  dataSource8 = [(_MCDContentManager *)self dataSource];
   v20 = objc_opt_respondsToSelector();
 
   if (v20)
   {
-    v21 = [(_MCDContentManager *)self dataSource];
-    v22 = [v21 itemSortDescriptors];
-    [v3 setItemSortDescriptors:v22];
+    dataSource9 = [(_MCDContentManager *)self dataSource];
+    itemSortDescriptors = [dataSource9 itemSortDescriptors];
+    [v3 setItemSortDescriptors:itemSortDescriptors];
   }
 
-  v23 = [(_MCDContentManager *)self dataSource];
+  dataSource10 = [(_MCDContentManager *)self dataSource];
   v24 = objc_opt_respondsToSelector();
 
   if (v24)
   {
-    v25 = [(_MCDContentManager *)self dataSource];
-    v26 = [v25 scopedContainers];
-    [v3 setScopedContainers:v26];
+    dataSource11 = [(_MCDContentManager *)self dataSource];
+    scopedContainers = [dataSource11 scopedContainers];
+    [v3 setScopedContainers:scopedContainers];
   }
 
-  v27 = [(_MCDContentManager *)self dataSource];
+  dataSource12 = [(_MCDContentManager *)self dataSource];
   v28 = objc_opt_respondsToSelector();
 
   if (v28)
   {
-    v29 = [(_MCDContentManager *)self dataSource];
-    v30 = [v29 allowedSectionIdentifiers];
-    [v3 setAllowedSectionIdentifiers:v30];
+    dataSource13 = [(_MCDContentManager *)self dataSource];
+    allowedSectionIdentifiers = [dataSource13 allowedSectionIdentifiers];
+    [v3 setAllowedSectionIdentifiers:allowedSectionIdentifiers];
   }
 
-  v31 = [(_MCDContentManager *)self dataSource];
+  dataSource14 = [(_MCDContentManager *)self dataSource];
   v32 = objc_opt_respondsToSelector();
 
   if (v32)
   {
-    v33 = [(_MCDContentManager *)self dataSource];
-    v34 = [v33 requestSectionKind];
-    [v3 setSectionKind:v34];
+    dataSource15 = [(_MCDContentManager *)self dataSource];
+    requestSectionKind = [dataSource15 requestSectionKind];
+    [v3 setSectionKind:requestSectionKind];
   }
 
   if ([(_MCDContentManager *)self showLocalContent])
@@ -95,46 +95,46 @@
 
   if ([(_MCDContentManager *)self showFavoriteContent])
   {
-    v35 = [(_MCDContentManager *)self dataSource];
+    dataSource16 = [(_MCDContentManager *)self dataSource];
     v36 = objc_opt_respondsToSelector();
 
     if (v36)
     {
-      v37 = [(_MCDContentManager *)self dataSource];
-      [v3 setFilteringOptions:{objc_msgSend(v3, "filteringOptions") | objc_msgSend(v37, "favoriteFilteringOptions")}];
+      dataSource17 = [(_MCDContentManager *)self dataSource];
+      [v3 setFilteringOptions:{objc_msgSend(v3, "filteringOptions") | objc_msgSend(dataSource17, "favoriteFilteringOptions")}];
     }
   }
 
-  v38 = [(_MCDContentManager *)self dataSource];
+  dataSource18 = [(_MCDContentManager *)self dataSource];
   v39 = objc_opt_respondsToSelector();
 
   if (v39)
   {
-    v40 = [(_MCDContentManager *)self dataSource];
-    [v3 setFilteringOptions:{objc_msgSend(v3, "filteringOptions") | objc_msgSend(v40, "contentRestrictionsFilteringOptions")}];
+    dataSource19 = [(_MCDContentManager *)self dataSource];
+    [v3 setFilteringOptions:{objc_msgSend(v3, "filteringOptions") | objc_msgSend(dataSource19, "contentRestrictionsFilteringOptions")}];
   }
 
   return v3;
 }
 
-- (void)setSortingPreference:(id)a3
+- (void)setSortingPreference:(id)preference
 {
-  v4 = a3;
-  if (self->_sortingPreference != v4)
+  preferenceCopy = preference;
+  if (self->_sortingPreference != preferenceCopy)
   {
-    self->_sortingPreference = v4;
-    v8 = v4;
-    v5 = [(_MCDContentManager *)self dataSource];
+    self->_sortingPreference = preferenceCopy;
+    v8 = preferenceCopy;
+    dataSource = [(_MCDContentManager *)self dataSource];
     v6 = objc_opt_respondsToSelector();
 
-    v4 = v8;
+    preferenceCopy = v8;
     if (v6)
     {
-      v7 = [(_MCDContentManager *)self dataSource];
-      [v7 setSortingPreference:v8];
+      dataSource2 = [(_MCDContentManager *)self dataSource];
+      [dataSource2 setSortingPreference:v8];
 
       [(_MCDContentManager *)self setLastReceivedResponse:0];
-      v4 = v8;
+      preferenceCopy = v8;
     }
   }
 }

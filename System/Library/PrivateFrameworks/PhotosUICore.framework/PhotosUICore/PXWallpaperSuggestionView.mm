@@ -2,12 +2,12 @@
 + (id)sharedWorkQueue;
 - (BOOL)_isPortrait;
 - (CGRect)contentsRect;
-- (PXWallpaperSuggestionView)initWithFrame:(CGRect)a3;
+- (PXWallpaperSuggestionView)initWithFrame:(CGRect)frame;
 - (void)_resetImageRequester;
 - (void)layoutSubviews;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setAsset:(id)a3;
-- (void)setImageRequester:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setAsset:(id)asset;
+- (void)setImageRequester:(id)requester;
 @end
 
 @implementation PXWallpaperSuggestionView
@@ -25,13 +25,13 @@
   return result;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  if (PXImageRequesterObserverContext_107951 == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXImageRequesterObserverContext_107951 == context)
   {
-    if (v6 < 0)
+    if (changeCopy < 0)
     {
       location[1] = MEMORY[0x1E69E9820];
       location[2] = 3221225472;
@@ -41,23 +41,23 @@
       px_dispatch_on_main_queue();
     }
 
-    if ((v6 & 4) != 0)
+    if ((changeCopy & 4) != 0)
     {
-      v9 = [(PXWallpaperSuggestionView *)self imageRequester];
-      v10 = [v9 image];
+      imageRequester = [(PXWallpaperSuggestionView *)self imageRequester];
+      image = [imageRequester image];
       [(PXWallpaperSuggestionView *)self setCurrentImageIdentifier:[(PXWallpaperSuggestionView *)self currentImageIdentifier]+ 1];
-      v11 = [(PXWallpaperSuggestionView *)self currentImageIdentifier];
+      currentImageIdentifier = [(PXWallpaperSuggestionView *)self currentImageIdentifier];
       objc_initWeak(location, self);
-      v12 = [objc_opt_class() sharedWorkQueue];
+      sharedWorkQueue = [objc_opt_class() sharedWorkQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __58__PXWallpaperSuggestionView_observable_didChange_context___block_invoke_2;
       block[3] = &unk_1E7746600;
-      v16[1] = v11;
+      v16[1] = currentImageIdentifier;
       objc_copyWeak(v16, location);
-      v15 = v10;
-      v13 = v10;
-      dispatch_async(v12, block);
+      v15 = image;
+      v13 = image;
+      dispatch_async(sharedWorkQueue, block);
 
       objc_destroyWeak(v16);
       objc_destroyWeak(location);
@@ -100,49 +100,49 @@ void __58__PXWallpaperSuggestionView_observable_didChange_context___block_invoke
   [(PXWallpaperSuggestionView *)self setCurrentImageIdentifier:0];
 }
 
-- (void)setImageRequester:(id)a3
+- (void)setImageRequester:(id)requester
 {
-  v5 = a3;
+  requesterCopy = requester;
   imageRequester = self->_imageRequester;
-  if (imageRequester != v5)
+  if (imageRequester != requesterCopy)
   {
-    v8 = v5;
+    v8 = requesterCopy;
     [(PXImageRequester *)imageRequester unregisterChangeObserver:self context:PXImageRequesterObserverContext_107951];
-    objc_storeStrong(&self->_imageRequester, a3);
+    objc_storeStrong(&self->_imageRequester, requester);
     [(PXImageRequester *)v8 registerChangeObserver:self context:PXImageRequesterObserverContext_107951];
-    v7 = [(PXImageRequester *)v8 image];
-    [(PXWallpaperSuggestionView *)self setImage:v7];
+    image = [(PXImageRequester *)v8 image];
+    [(PXWallpaperSuggestionView *)self setImage:image];
 
     [(PXImageRequester *)v8 contentsRect];
     [(PXWallpaperSuggestionView *)self setContentsRect:?];
-    v5 = v8;
+    requesterCopy = v8;
   }
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v5 = a3;
-  if (self->_asset != v5)
+  assetCopy = asset;
+  if (self->_asset != assetCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_asset, a3);
+    v6 = assetCopy;
+    objc_storeStrong(&self->_asset, asset);
     [(PXWallpaperSuggestionView *)self _resetImageRequester];
-    v5 = v6;
+    assetCopy = v6;
     if (v6)
     {
       [(PXWallpaperSuggestionView *)self setNeedsLayout];
-      v5 = v6;
+      assetCopy = v6;
     }
   }
 }
 
 - (BOOL)_isPortrait
 {
-  v2 = [(PXWallpaperSuggestionView *)self window];
-  v3 = [v2 windowScene];
-  v4 = [v3 interfaceOrientation];
+  window = [(PXWallpaperSuggestionView *)self window];
+  windowScene = [window windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  return (v4 - 1) < 2;
+  return (interfaceOrientation - 1) < 2;
 }
 
 - (void)layoutSubviews
@@ -150,16 +150,16 @@ void __58__PXWallpaperSuggestionView_observable_didChange_context___block_invoke
   [(PXWallpaperSuggestionView *)self bounds];
   v4 = v3;
   [(PXWallpaperSuggestionView *)self px_screenScale];
-  v5 = [(PXWallpaperSuggestionView *)self asset];
-  if (v5)
+  asset = [(PXWallpaperSuggestionView *)self asset];
+  if (asset)
   {
-    v6 = [(PXWallpaperSuggestionView *)self imageRequester];
+    imageRequester = [(PXWallpaperSuggestionView *)self imageRequester];
 
-    if (!v6)
+    if (!imageRequester)
     {
       v7 = [PXImageRequester alloc];
-      v8 = [(PXWallpaperSuggestionView *)self mediaProvider];
-      v9 = [(PXImageRequester *)v7 initWithMediaProvider:v8 asset:v5];
+      mediaProvider = [(PXWallpaperSuggestionView *)self mediaProvider];
+      v9 = [(PXImageRequester *)v7 initWithMediaProvider:mediaProvider asset:asset];
 
       [(PXWallpaperSuggestionView *)self setImageRequester:v9];
     }
@@ -172,11 +172,11 @@ void __58__PXWallpaperSuggestionView_observable_didChange_context___block_invoke
   [(PXWallpaperSuggestionView *)self _resetImageRequester];
   if ([(PXWallpaperSuggestionView *)self needsRoundedCorner])
   {
-    v10 = [(PXWallpaperSuggestionView *)self px_screen];
-    v11 = [v10 traitCollection];
-    [v11 displayCornerRadius];
+    px_screen = [(PXWallpaperSuggestionView *)self px_screen];
+    traitCollection = [px_screen traitCollection];
+    [traitCollection displayCornerRadius];
     v13 = v12;
-    [v10 bounds];
+    [px_screen bounds];
     v15 = v13 * (v4 / v14);
 
     v16 = 4.0;
@@ -194,8 +194,8 @@ void __58__PXWallpaperSuggestionView_observable_didChange_context___block_invoke
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [(PXWallpaperSuggestionView *)self overlayView];
-  [v25 setFrame:{v18, v20, v22, v24}];
+  overlayView = [(PXWallpaperSuggestionView *)self overlayView];
+  [overlayView setFrame:{v18, v20, v22, v24}];
 
   if ([(PXWallpaperSuggestionView *)self _isPortrait])
   {
@@ -207,8 +207,8 @@ void __58__PXWallpaperSuggestionView_observable_didChange_context___block_invoke
     [(PXWallpaperSuggestionView *)self landscapeOverlay];
   }
   v26 = ;
-  v27 = [(PXWallpaperSuggestionView *)self overlayView];
-  [v27 setImage:v26];
+  overlayView2 = [(PXWallpaperSuggestionView *)self overlayView];
+  [overlayView2 setImage:v26];
 }
 
 void __43__PXWallpaperSuggestionView_layoutSubviews__block_invoke(double *a1, void *a2)
@@ -223,25 +223,25 @@ void __43__PXWallpaperSuggestionView_layoutSubviews__block_invoke(double *a1, vo
   [v5 setScale:a1[12]];
 }
 
-- (PXWallpaperSuggestionView)initWithFrame:(CGRect)a3
+- (PXWallpaperSuggestionView)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = PXWallpaperSuggestionView;
-  v3 = [(PXWallpaperSuggestionView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXWallpaperSuggestionView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
-    [(PXWallpaperSuggestionView *)v3 setBackgroundColor:v4];
+    quaternarySystemFillColor = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
+    [(PXWallpaperSuggestionView *)v3 setBackgroundColor:quaternarySystemFillColor];
 
     [(PXWallpaperSuggestionView *)v3 setContentMode:2];
     [(PXWallpaperSuggestionView *)v3 setAccessibilityIgnoresInvertColors:1];
-    v5 = [(PXWallpaperSuggestionView *)v3 layer];
-    [v5 setMasksToBounds:1];
+    layer = [(PXWallpaperSuggestionView *)v3 layer];
+    [layer setMasksToBounds:1];
 
     v3->_needsRoundedCorner = 1;
     v3->_showClockOverlay = 1;
-    v6 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-    v7 = [PXPhotoKitUIMediaProvider mediaProviderWithLibrary:v6];
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    v7 = [PXPhotoKitUIMediaProvider mediaProviderWithLibrary:px_deprecated_appPhotoLibrary];
     mediaProvider = v3->_mediaProvider;
     v3->_mediaProvider = v7;
 
@@ -252,8 +252,8 @@ void __43__PXWallpaperSuggestionView_layoutSubviews__block_invoke(double *a1, vo
 
     [(UIImageView *)v3->_overlayView setContentMode:2];
     v11 = *MEMORY[0x1E6979D68];
-    v12 = [(UIImageView *)v3->_overlayView layer];
-    [v12 setMinificationFilter:v11];
+    layer2 = [(UIImageView *)v3->_overlayView layer];
+    [layer2 setMinificationFilter:v11];
 
     objc_initWeak(&location, v3);
     v13 = objc_opt_class();

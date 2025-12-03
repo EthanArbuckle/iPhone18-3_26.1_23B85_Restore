@@ -1,10 +1,10 @@
 @interface SBRecentDisplayItemsDataStore
 - (NSOrderedSet)displayItems;
 - (SBRecentDisplayItemsDataStore)init;
-- (SBRecentDisplayItemsDataStore)initWithRecentLayouts:(id)a3 fallbackToRecentAppLayouts:(BOOL)a4;
+- (SBRecentDisplayItemsDataStore)initWithRecentLayouts:(id)layouts fallbackToRecentAppLayouts:(BOOL)appLayouts;
 - (SBRecentDisplayItemsPersistenceDelegate)persistenceDelegate;
-- (id)_displayItemsFromRecentAppLayouts:(id)a3;
-- (void)setDisplayItems:(id)a3;
+- (id)_displayItemsFromRecentAppLayouts:(id)layouts;
+- (void)setDisplayItems:(id)items;
 @end
 
 @implementation SBRecentDisplayItemsDataStore
@@ -12,33 +12,33 @@
 - (SBRecentDisplayItemsDataStore)init
 {
   v3 = +[SBMainSwitcherControllerCoordinator sharedInstance];
-  v4 = [v3 recentAppLayouts];
-  v5 = [(SBRecentDisplayItemsDataStore *)self initWithRecentLayouts:v4 fallbackToRecentAppLayouts:1];
+  recentAppLayouts = [v3 recentAppLayouts];
+  v5 = [(SBRecentDisplayItemsDataStore *)self initWithRecentLayouts:recentAppLayouts fallbackToRecentAppLayouts:1];
 
   return v5;
 }
 
-- (SBRecentDisplayItemsDataStore)initWithRecentLayouts:(id)a3 fallbackToRecentAppLayouts:(BOOL)a4
+- (SBRecentDisplayItemsDataStore)initWithRecentLayouts:(id)layouts fallbackToRecentAppLayouts:(BOOL)appLayouts
 {
-  v7 = a3;
+  layoutsCopy = layouts;
   v11.receiver = self;
   v11.super_class = SBRecentDisplayItemsDataStore;
   v8 = [(SBRecentDisplayItemsDataStore *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_recentLayouts, a3);
-    v9->_shouldFallbackToRecentAppLayouts = a4;
+    objc_storeStrong(&v8->_recentLayouts, layouts);
+    v9->_shouldFallbackToRecentAppLayouts = appLayouts;
   }
 
   return v9;
 }
 
-- (void)setDisplayItems:(id)a3
+- (void)setDisplayItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   WeakRetained = objc_loadWeakRetained(&self->_persistenceDelegate);
-  [WeakRetained dataStore:self persistDisplayItems:v4];
+  [WeakRetained dataStore:self persistDisplayItems:itemsCopy];
 }
 
 - (NSOrderedSet)displayItems
@@ -96,10 +96,10 @@
   return v5;
 }
 
-- (id)_displayItemsFromRecentAppLayouts:(id)a3
+- (id)_displayItemsFromRecentAppLayouts:(id)layouts
 {
   v32[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  layoutsCopy = layouts;
   v4 = objc_alloc_init(MEMORY[0x277CBEB40]);
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:1];
@@ -112,7 +112,7 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v3;
+  obj = layoutsCopy;
   v21 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v21)
   {
@@ -147,11 +147,11 @@
               }
 
               v15 = [v9 itemForLayoutRole:{objc_msgSend(*(*(&v22 + 1) + 8 * j), "integerValue")}];
-              v16 = [v15 bundleIdentifier];
-              if (v15 && ([v5 containsObject:v16] & 1) == 0)
+              bundleIdentifier = [v15 bundleIdentifier];
+              if (v15 && ([v5 containsObject:bundleIdentifier] & 1) == 0)
               {
                 [v4 addObject:v15];
-                [v5 addObject:v16];
+                [v5 addObject:bundleIdentifier];
               }
             }
 

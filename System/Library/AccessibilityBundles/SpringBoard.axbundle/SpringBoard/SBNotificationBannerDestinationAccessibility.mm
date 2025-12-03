@@ -1,26 +1,26 @@
 @interface SBNotificationBannerDestinationAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_dismissPresentableCompleted:(id)a3;
-- (void)notificationViewControllerWillBeginUserInteraction:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_dismissPresentableCompleted:(id)completed;
+- (void)notificationViewControllerWillBeginUserInteraction:(id)interaction;
 @end
 
 @implementation SBNotificationBannerDestinationAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBNotificationBannerDestination" hasInstanceMethod:@"_cancelReplaceTimer" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBNotificationBannerDestination" hasInstanceMethod:@"_cancelDismissTimer" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBNotificationBannerDestination" hasInstanceMethod:@"_dismissPresentableCompleted:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBNotificationBannerDestination" hasInstanceMethod:@"notificationViewControllerWillBeginUserInteraction:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBNotificationBannerDestination" hasInstanceMethod:@"notificationViewControllerDidEndUserInteraction:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBNotificationBannerDestination" hasInstanceMethod:@"_cancelReplaceTimer" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBNotificationBannerDestination" hasInstanceMethod:@"_cancelDismissTimer" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBNotificationBannerDestination" hasInstanceMethod:@"_dismissPresentableCompleted:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBNotificationBannerDestination" hasInstanceMethod:@"notificationViewControllerWillBeginUserInteraction:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBNotificationBannerDestination" hasInstanceMethod:@"notificationViewControllerDidEndUserInteraction:" withFullSignature:{"v", "@", 0}];
 }
 
-- (void)_dismissPresentableCompleted:(id)a3
+- (void)_dismissPresentableCompleted:(id)completed
 {
   v3.receiver = self;
   v3.super_class = SBNotificationBannerDestinationAccessibility;
-  [(SBNotificationBannerDestinationAccessibility *)&v3 _dismissPresentableCompleted:a3];
+  [(SBNotificationBannerDestinationAccessibility *)&v3 _dismissPresentableCompleted:completed];
   AXPerformBlockOnMainThreadAfterDelay();
 }
 
@@ -30,14 +30,14 @@ void __77__SBNotificationBannerDestinationAccessibility__dismissPresentableCompl
   [v0 didPotentiallyDismissNonExclusiveSystemUI];
 }
 
-- (void)notificationViewControllerWillBeginUserInteraction:(id)a3
+- (void)notificationViewControllerWillBeginUserInteraction:(id)interaction
 {
-  v4 = a3;
-  if (([v4 safeBoolForKey:@"_axHasFinishedAnnouncement"] & 1) != 0 || !UIAccessibilityIsVoiceOverRunning())
+  interactionCopy = interaction;
+  if (([interactionCopy safeBoolForKey:@"_axHasFinishedAnnouncement"] & 1) != 0 || !UIAccessibilityIsVoiceOverRunning())
   {
     v5.receiver = self;
     v5.super_class = SBNotificationBannerDestinationAccessibility;
-    [(SBNotificationBannerDestinationAccessibility *)&v5 notificationViewControllerWillBeginUserInteraction:v4];
+    [(SBNotificationBannerDestinationAccessibility *)&v5 notificationViewControllerWillBeginUserInteraction:interactionCopy];
   }
 
   else
@@ -46,7 +46,7 @@ void __77__SBNotificationBannerDestinationAccessibility__dismissPresentableCompl
     v7 = 3221225472;
     v8 = __99__SBNotificationBannerDestinationAccessibility_notificationViewControllerWillBeginUserInteraction___block_invoke;
     v9 = &unk_29F2FBA40;
-    v10 = self;
+    selfCopy = self;
     AXPerformSafeBlock();
   }
 }

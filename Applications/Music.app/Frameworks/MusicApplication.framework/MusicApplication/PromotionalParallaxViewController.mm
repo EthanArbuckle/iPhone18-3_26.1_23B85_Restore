@@ -1,24 +1,24 @@
 @interface PromotionalParallaxViewController
-- (_TtC16MusicApplication33PromotionalParallaxViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC16MusicApplication33PromotionalParallaxViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (int64_t)preferredStatusBarStyle;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)loadView;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation PromotionalParallaxViewController
 
-- (_TtC16MusicApplication33PromotionalParallaxViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MusicApplication33PromotionalParallaxViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_AB92A0();
     v7 = v6;
@@ -30,43 +30,43 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return PromotionalParallaxViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return PromotionalParallaxViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 - (int64_t)preferredStatusBarStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PromotionalParallaxViewController.preferredStatusBarStyle.getter();
 
   return v3;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  PromotionalParallaxViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  PromotionalParallaxViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  PromotionalParallaxViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  PromotionalParallaxViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  PromotionalParallaxViewController.viewWillDisappear(_:)(a3);
+  selfCopy = self;
+  PromotionalParallaxViewController.viewWillDisappear(_:)(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(PromotionalParallaxViewController *)&v5 viewDidDisappear:v3];
+  [(PromotionalParallaxViewController *)&v5 viewDidDisappear:disappearCopy];
   sub_3740E4();
   if (*&v4[OBJC_IVAR____TtC16MusicApplication33PromotionalParallaxViewController_artworkVideoPlaybackController])
   {
@@ -81,23 +81,23 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   PromotionalParallaxViewController.loadView()();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   PromotionalParallaxViewController.traitCollectionDidChange(_:)(v9);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   PromotionalParallaxViewController.viewDidLayoutSubviews()();
 }
 
@@ -108,8 +108,8 @@
   v2 = v7.receiver;
   [(PromotionalParallaxViewController *)&v7 viewDidLoad];
   v3 = *&v2[OBJC_IVAR____TtC16MusicApplication33PromotionalParallaxViewController_textDrawingCache];
-  v4 = [v2 traitCollection];
-  [v4 displayScale];
+  traitCollection = [v2 traitCollection];
+  [traitCollection displayScale];
   v6 = v5;
 
   swift_beginAccess();
@@ -117,34 +117,34 @@
   sub_106F0C();
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.super.isa = a3;
+  controllerCopy = controller;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.super.isa = controller;
   PromotionalParallaxViewController.willMove(toParent:)(v9);
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  controllerCopy = controller;
   v5 = v7.receiver;
-  [(PromotionalParallaxViewController *)&v7 didMoveToParentViewController:v4];
+  [(PromotionalParallaxViewController *)&v7 didMoveToParentViewController:controllerCopy];
   v6 = sub_387128();
   sub_374C7C(v6);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  PromotionalParallaxViewController.viewWillTransition(to:with:)(a4, width, height);
+  selfCopy = self;
+  PromotionalParallaxViewController.viewWillTransition(to:with:)(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 

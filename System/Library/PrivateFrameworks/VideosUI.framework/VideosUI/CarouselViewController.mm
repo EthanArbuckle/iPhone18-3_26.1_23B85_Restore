@@ -1,77 +1,77 @@
 @interface CarouselViewController
-- (_TtC8VideosUI22CarouselViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)carouselView:(id)a3 cellForItemAtIndex:(unint64_t)a4;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)contextMenuInteraction:(id)a3 previewForDismissingMenuWithConfiguration:(id)a4;
-- (void)carouselView:(id)a3 didCenterItemAtIndex:(unint64_t)a4;
-- (void)carouselView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndex:(unint64_t)a5;
-- (void)carouselView:(id)a3 didSelectItemAtIndex:(unint64_t)a4;
-- (void)carouselView:(id)a3 willDisplayCell:(id)a4 forItemAtIndex:(unint64_t)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)handleFullscreenPlaybackUIDidChange:(id)a3;
+- (_TtC8VideosUI22CarouselViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)carouselView:(id)view cellForItemAtIndex:(unint64_t)index;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)contextMenuInteraction:(id)interaction previewForDismissingMenuWithConfiguration:(id)configuration;
+- (void)carouselView:(id)view didCenterItemAtIndex:(unint64_t)index;
+- (void)carouselView:(id)view didEndDisplayingCell:(id)cell forItemAtIndex:(unint64_t)index;
+- (void)carouselView:(id)view didSelectItemAtIndex:(unint64_t)index;
+- (void)carouselView:(id)view willDisplayCell:(id)cell forItemAtIndex:(unint64_t)index;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)handleFullscreenPlaybackUIDidChange:(id)change;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)vui_willMoveToParentViewController:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)vui_willMoveToParentViewController:(id)controller;
 @end
 
 @implementation CarouselViewController
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E37C65D4();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_10_0();
   sub_1E37C6834(v4);
 }
 
-- (void)vui_willMoveToParentViewController:(id)a3
+- (void)vui_willMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_1E37C68FC(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1E37C68FC(controller);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_10_0();
   sub_1E37C6A40(v4);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_10_0();
   sub_1E37C7230(v4);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E37C74A0();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_1E37C75FC(a4, width, height);
+  selfCopy = self;
+  sub_1E37C75FC(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (_TtC8VideosUI22CarouselViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8VideosUI22CarouselViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   OUTLINED_FUNCTION_23_17();
   if (v5)
@@ -90,7 +90,7 @@
   return sub_1E37C8258(v6, v8, v4);
 }
 
-- (id)carouselView:(id)a3 cellForItemAtIndex:(unint64_t)a4
+- (id)carouselView:(id)view cellForItemAtIndex:(unint64_t)index
 {
   OUTLINED_FUNCTION_23_17();
   v7 = v6;
@@ -100,25 +100,25 @@
   return v9;
 }
 
-- (void)carouselView:(id)a3 willDisplayCell:(id)a4 forItemAtIndex:(unint64_t)a5
+- (void)carouselView:(id)view willDisplayCell:(id)cell forItemAtIndex:(unint64_t)index
 {
-  v7 = OUTLINED_FUNCTION_16_18(self, a2, a3);
+  v7 = OUTLINED_FUNCTION_16_18(self, a2, view);
   v8 = v5;
   v9 = v6;
   OUTLINED_FUNCTION_13_36();
   sub_1E37C9BA4(v10, v11, v12);
 }
 
-- (void)carouselView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndex:(unint64_t)a5
+- (void)carouselView:(id)view didEndDisplayingCell:(id)cell forItemAtIndex:(unint64_t)index
 {
-  v7 = OUTLINED_FUNCTION_16_18(self, a2, a3);
+  v7 = OUTLINED_FUNCTION_16_18(self, a2, view);
   v8 = v5;
   v9 = v6;
   OUTLINED_FUNCTION_13_36();
   sub_1E37C9E6C(v10, v11, v12);
 }
 
-- (void)carouselView:(id)a3 didCenterItemAtIndex:(unint64_t)a4
+- (void)carouselView:(id)view didCenterItemAtIndex:(unint64_t)index
 {
   OUTLINED_FUNCTION_23_17();
   v7 = v6;
@@ -126,7 +126,7 @@
   sub_1E37CA124(v8, v4);
 }
 
-- (void)carouselView:(id)a3 didSelectItemAtIndex:(unint64_t)a4
+- (void)carouselView:(id)view didSelectItemAtIndex:(unint64_t)index
 {
   OUTLINED_FUNCTION_23_17();
   v6 = v5;
@@ -134,16 +134,16 @@
   sub_1E37CA220();
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_1E37CA724(v5);
+  interactionCopy = interaction;
+  selfCopy = self;
+  v7 = sub_1E37CA724(interactionCopy);
 
   return v7;
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForDismissingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForDismissingMenuWithConfiguration:(id)configuration
 {
   OUTLINED_FUNCTION_23_17();
   v7 = v6;
@@ -154,9 +154,9 @@
   return v10;
 }
 
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = OUTLINED_FUNCTION_16_18(self, a2, a3);
+  v7 = OUTLINED_FUNCTION_16_18(self, a2, interaction);
   v8 = v5;
   swift_unknownObjectRetain();
   v9 = v6;
@@ -165,9 +165,9 @@
   swift_unknownObjectRelease();
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = OUTLINED_FUNCTION_16_18(self, a2, a3);
+  v7 = OUTLINED_FUNCTION_16_18(self, a2, interaction);
   v8 = v5;
   swift_unknownObjectRetain();
   v9 = v6;
@@ -177,7 +177,7 @@
   swift_unknownObjectRelease();
 }
 
-- (void)handleFullscreenPlaybackUIDidChange:(id)a3
+- (void)handleFullscreenPlaybackUIDidChange:(id)change
 {
   OUTLINED_FUNCTION_106();
   v4 = sub_1E41FDF34();

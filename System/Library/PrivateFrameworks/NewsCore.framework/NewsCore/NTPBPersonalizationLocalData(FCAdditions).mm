@@ -8,13 +8,13 @@
 
 - (id)remoteRecord
 {
-  v2 = [a1 remoteRecordData];
-  if (v2)
+  remoteRecordData = [self remoteRecordData];
+  if (remoteRecordData)
   {
     v3 = MEMORY[0x1E696ACD0];
     v4 = objc_opt_class();
-    v5 = [a1 remoteRecordData];
-    v6 = [v3 nf_securelyUnarchiveObjectOfClass:v4 withData:v5];
+    remoteRecordData2 = [self remoteRecordData];
+    v6 = [v3 nf_securelyUnarchiveObjectOfClass:v4 withData:remoteRecordData2];
   }
 
   else
@@ -27,8 +27,8 @@
 
 - (void)openChangeGroupDeltasByFeatureKey
 {
-  v1 = [a1 openChangeGroupDeltas];
-  v2 = [v1 fc_dictionaryWithKeyBlock:&__block_literal_global_155];
+  openChangeGroupDeltas = [self openChangeGroupDeltas];
+  v2 = [openChangeGroupDeltas fc_dictionaryWithKeyBlock:&__block_literal_global_155];
   v3 = v2;
   if (v2)
   {
@@ -50,13 +50,13 @@
   if (a3)
   {
     v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
-    [a1 setRemoteRecordData:v4];
+    [self setRemoteRecordData:v4];
   }
 
   else
   {
 
-    [a1 setRemoteRecordData:?];
+    [self setRemoteRecordData:?];
   }
 }
 

@@ -1,18 +1,18 @@
 @interface VTKeywordAnalyzerNDAPI
-- (VTKeywordAnalyzerNDAPI)initWithConfigPath:(id)a3 resourcePath:(id)a4;
+- (VTKeywordAnalyzerNDAPI)initWithConfigPath:(id)path resourcePath:(id)resourcePath;
 - (float)getLoggingThreshold;
 - (float)getRejectLoggingThreshold;
 - (float)getThreshold;
-- (id)_keywordAnalyzerNDAPIResultFromNovDetectorResult:(id)a3 phId:(unint64_t)a4;
+- (id)_keywordAnalyzerNDAPIResultFromNovDetectorResult:(id)result phId:(unint64_t)id;
 - (id)getAnalyzedResults;
-- (id)getAnalyzedResultsFromFloatAudioBuffer:(id)a3 numSamples:(unint64_t)a4;
-- (id)getAnalyzedResultsFromInt16AudioBuffer:(id)a3 numSamples:(unint64_t)a4;
+- (id)getAnalyzedResultsFromFloatAudioBuffer:(id)buffer numSamples:(unint64_t)samples;
+- (id)getAnalyzedResultsFromInt16AudioBuffer:(id)buffer numSamples:(unint64_t)samples;
 - (id)getBestAnalyzedResults;
-- (id)getBestAnalyzedResultsFromFloatAudioBuffer:(id)a3 numSamples:(unint64_t)a4;
-- (id)getBestAnalyzedResultsFromInt16AudioBuffer:(id)a3 numSamples:(unint64_t)a4;
-- (void)_processAudioFloatBuffer:(id)a3 numSamples:(unint64_t)a4;
-- (void)_processAudioInt16Buffer:(id)a3 numSamples:(unint64_t)a4;
-- (void)_setStartAnalyzeTime:(unint64_t)a3;
+- (id)getBestAnalyzedResultsFromFloatAudioBuffer:(id)buffer numSamples:(unint64_t)samples;
+- (id)getBestAnalyzedResultsFromInt16AudioBuffer:(id)buffer numSamples:(unint64_t)samples;
+- (void)_processAudioFloatBuffer:(id)buffer numSamples:(unint64_t)samples;
+- (void)_processAudioInt16Buffer:(id)buffer numSamples:(unint64_t)samples;
+- (void)_setStartAnalyzeTime:(unint64_t)time;
 - (void)reset;
 @end
 
@@ -95,26 +95,26 @@
 
 - (id)getBestAnalyzedResults
 {
-  v3 = [(VTNovDetector *)self->_novDetector getBestAnalyzedResult];
-  v4 = -[VTKeywordAnalyzerNDAPI _keywordAnalyzerNDAPIResultFromNovDetectorResult:phId:](self, "_keywordAnalyzerNDAPIResultFromNovDetectorResult:phId:", v3, [v3 bestPhrase]);
+  getBestAnalyzedResult = [(VTNovDetector *)self->_novDetector getBestAnalyzedResult];
+  v4 = -[VTKeywordAnalyzerNDAPI _keywordAnalyzerNDAPIResultFromNovDetectorResult:phId:](self, "_keywordAnalyzerNDAPIResultFromNovDetectorResult:phId:", getBestAnalyzedResult, [getBestAnalyzedResult bestPhrase]);
 
   return v4;
 }
 
 - (id)getAnalyzedResults
 {
-  v3 = [(VTNovDetector *)self->_novDetector numResultsAvailable];
-  if (v3)
+  numResultsAvailable = [(VTNovDetector *)self->_novDetector numResultsAvailable];
+  if (numResultsAvailable)
   {
-    v4 = v3;
-    v5 = [MEMORY[0x277CBEB18] array];
+    v4 = numResultsAvailable;
+    array = [MEMORY[0x277CBEB18] array];
     v6 = 0;
     v7 = v4;
     do
     {
       v8 = [(VTNovDetector *)self->_novDetector getAnalyzedResultForPhId:v6];
       v9 = [(VTKeywordAnalyzerNDAPI *)self _keywordAnalyzerNDAPIResultFromNovDetectorResult:v8 phId:v6];
-      [v5 addObject:v9];
+      [array addObject:v9];
 
       ++v6;
     }
@@ -124,29 +124,29 @@
 
   else
   {
-    v5 = 0;
+    array = 0;
   }
 
-  return v5;
+  return array;
 }
 
-- (id)_keywordAnalyzerNDAPIResultFromNovDetectorResult:(id)a3 phId:(unint64_t)a4
+- (id)_keywordAnalyzerNDAPIResultFromNovDetectorResult:(id)result phId:(unint64_t)id
 {
-  if (a3)
+  if (result)
   {
-    v6 = a3;
+    resultCopy = result;
     v7 = objc_alloc_init(VTKeywordAnalyzerNDAPIResult);
-    [(VTKeywordAnalyzerNDAPIResult *)v7 setPhId:a4];
-    -[VTKeywordAnalyzerNDAPIResult setSamplesFed:](v7, "setSamplesFed:", [v6 sampleFed]);
-    -[VTKeywordAnalyzerNDAPIResult setBestPhrase:](v7, "setBestPhrase:", [v6 bestPhrase]);
-    -[VTKeywordAnalyzerNDAPIResult setBestStart:](v7, "setBestStart:", self->_startAnalyzeSampleCount + [v6 bestStart] + self->_sampleFedWrapAroundOffset);
-    -[VTKeywordAnalyzerNDAPIResult setBestEnd:](v7, "setBestEnd:", self->_startAnalyzeSampleCount + [v6 bestEnd] + self->_sampleFedWrapAroundOffset);
-    [v6 bestScore];
+    [(VTKeywordAnalyzerNDAPIResult *)v7 setPhId:id];
+    -[VTKeywordAnalyzerNDAPIResult setSamplesFed:](v7, "setSamplesFed:", [resultCopy sampleFed]);
+    -[VTKeywordAnalyzerNDAPIResult setBestPhrase:](v7, "setBestPhrase:", [resultCopy bestPhrase]);
+    -[VTKeywordAnalyzerNDAPIResult setBestStart:](v7, "setBestStart:", self->_startAnalyzeSampleCount + [resultCopy bestStart] + self->_sampleFedWrapAroundOffset);
+    -[VTKeywordAnalyzerNDAPIResult setBestEnd:](v7, "setBestEnd:", self->_startAnalyzeSampleCount + [resultCopy bestEnd] + self->_sampleFedWrapAroundOffset);
+    [resultCopy bestScore];
     [(VTKeywordAnalyzerNDAPIResult *)v7 setBestScore:?];
-    -[VTKeywordAnalyzerNDAPIResult setIsEarlyWarning:](v7, "setIsEarlyWarning:", [v6 earlyWarning]);
-    v8 = [v6 sampleFed];
+    -[VTKeywordAnalyzerNDAPIResult setIsEarlyWarning:](v7, "setIsEarlyWarning:", [resultCopy earlyWarning]);
+    sampleFed = [resultCopy sampleFed];
 
-    [(VTKeywordAnalyzerNDAPIResult *)v7 setSamplesAtFire:self->_startAnalyzeSampleCount + v8 + self->_sampleFedWrapAroundOffset];
+    [(VTKeywordAnalyzerNDAPIResult *)v7 setSamplesAtFire:self->_startAnalyzeSampleCount + sampleFed + self->_sampleFedWrapAroundOffset];
     [(VTKeywordAnalyzerNDAPIResult *)v7 setStartSampleCount:self->_startAnalyzeSampleCount];
   }
 
@@ -158,9 +158,9 @@
   return v7;
 }
 
-- (void)_processAudioInt16Buffer:(id)a3 numSamples:(unint64_t)a4
+- (void)_processAudioInt16Buffer:(id)buffer numSamples:(unint64_t)samples
 {
-  [(VTKeywordAnalyzerNDAPI *)self analyzeWavData:a3 numSamples:a4];
+  [(VTKeywordAnalyzerNDAPI *)self analyzeWavData:buffer numSamples:samples];
   v5 = [(VTNovDetector *)self->_novDetector getAnalyzedResultForPhId:self->_activePhId];
   if (v5)
   {
@@ -175,9 +175,9 @@
   }
 }
 
-- (void)_processAudioFloatBuffer:(id)a3 numSamples:(unint64_t)a4
+- (void)_processAudioFloatBuffer:(id)buffer numSamples:(unint64_t)samples
 {
-  [(VTKeywordAnalyzerNDAPI *)self analyzeWavFloatData:a3 numSamples:a4];
+  [(VTKeywordAnalyzerNDAPI *)self analyzeWavFloatData:buffer numSamples:samples];
   v5 = [(VTNovDetector *)self->_novDetector getAnalyzedResultForPhId:self->_activePhId];
   if (v5)
   {
@@ -192,46 +192,46 @@
   }
 }
 
-- (id)getBestAnalyzedResultsFromInt16AudioBuffer:(id)a3 numSamples:(unint64_t)a4
+- (id)getBestAnalyzedResultsFromInt16AudioBuffer:(id)buffer numSamples:(unint64_t)samples
 {
-  [(VTKeywordAnalyzerNDAPI *)self _processAudioInt16Buffer:a3 numSamples:a4];
+  [(VTKeywordAnalyzerNDAPI *)self _processAudioInt16Buffer:buffer numSamples:samples];
 
   return [(VTKeywordAnalyzerNDAPI *)self getBestAnalyzedResults];
 }
 
-- (id)getBestAnalyzedResultsFromFloatAudioBuffer:(id)a3 numSamples:(unint64_t)a4
+- (id)getBestAnalyzedResultsFromFloatAudioBuffer:(id)buffer numSamples:(unint64_t)samples
 {
-  [(VTKeywordAnalyzerNDAPI *)self _processAudioFloatBuffer:a3 numSamples:a4];
+  [(VTKeywordAnalyzerNDAPI *)self _processAudioFloatBuffer:buffer numSamples:samples];
 
   return [(VTKeywordAnalyzerNDAPI *)self getBestAnalyzedResults];
 }
 
-- (id)getAnalyzedResultsFromInt16AudioBuffer:(id)a3 numSamples:(unint64_t)a4
+- (id)getAnalyzedResultsFromInt16AudioBuffer:(id)buffer numSamples:(unint64_t)samples
 {
-  [(VTKeywordAnalyzerNDAPI *)self _processAudioInt16Buffer:a3 numSamples:a4];
+  [(VTKeywordAnalyzerNDAPI *)self _processAudioInt16Buffer:buffer numSamples:samples];
 
   return [(VTKeywordAnalyzerNDAPI *)self getAnalyzedResults];
 }
 
-- (id)getAnalyzedResultsFromFloatAudioBuffer:(id)a3 numSamples:(unint64_t)a4
+- (id)getAnalyzedResultsFromFloatAudioBuffer:(id)buffer numSamples:(unint64_t)samples
 {
-  [(VTKeywordAnalyzerNDAPI *)self _processAudioFloatBuffer:a3 numSamples:a4];
+  [(VTKeywordAnalyzerNDAPI *)self _processAudioFloatBuffer:buffer numSamples:samples];
 
   return [(VTKeywordAnalyzerNDAPI *)self getAnalyzedResults];
 }
 
-- (void)_setStartAnalyzeTime:(unint64_t)a3
+- (void)_setStartAnalyzeTime:(unint64_t)time
 {
   v7 = *MEMORY[0x277D85DE8];
   if (!self->_isStartSampleCountMarked)
   {
     self->_isStartSampleCountMarked = 1;
-    self->_startAnalyzeSampleCount = a3;
+    self->_startAnalyzeSampleCount = time;
     v4 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 134349056;
-      v6 = a3;
+      timeCopy = time;
       _os_log_impl(&dword_223A31000, v4, OS_LOG_TYPE_DEFAULT, "set StartAnalyzeSampleCount = %{public}lld", &v5, 0xCu);
     }
   }
@@ -246,14 +246,14 @@
   [(VTKeywordAnalyzerNDAPI *)self _resetStartAnalyzeTime];
 }
 
-- (VTKeywordAnalyzerNDAPI)initWithConfigPath:(id)a3 resourcePath:(id)a4
+- (VTKeywordAnalyzerNDAPI)initWithConfigPath:(id)path resourcePath:(id)resourcePath
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  resourcePathCopy = resourcePath;
   v15.receiver = self;
   v15.super_class = VTKeywordAnalyzerNDAPI;
   v8 = [(VTKeywordAnalyzerNDAPI *)&v15 init];
-  if (v8 && (v9 = [[VTNovDetector alloc] initWithConfigPath:v6 resourcePath:v7], novDetector = v8->_novDetector, v8->_novDetector = v9, novDetector, !v8->_novDetector))
+  if (v8 && (v9 = [[VTNovDetector alloc] initWithConfigPath:pathCopy resourcePath:resourcePathCopy], novDetector = v8->_novDetector, v8->_novDetector = v9, novDetector, !v8->_novDetector))
   {
     v12 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_ERROR))

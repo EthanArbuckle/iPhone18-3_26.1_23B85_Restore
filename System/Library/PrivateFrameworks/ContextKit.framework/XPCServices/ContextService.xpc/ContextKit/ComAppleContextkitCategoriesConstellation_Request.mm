@@ -1,10 +1,10 @@
 @interface ComAppleContextkitCategoriesConstellation_Request
-- (BOOL)hasEntriesForQIDWithNSString:(id)a3;
+- (BOOL)hasEntriesForQIDWithNSString:(id)string;
 - (id)newQIDContainer;
 - (id)trimMatches;
-- (int)highlevelThemeForCategoryIdWithInt:(int)a3;
+- (int)highlevelThemeForCategoryIdWithInt:(int)int;
 - (void)dealloc;
-- (void)prepareItemsWithComAppleContextkitCategoriesConstellation_Request_QIDCountPQ:(id)a3;
+- (void)prepareItemsWithComAppleContextkitCategoriesConstellation_Request_QIDCountPQ:(id)q;
 - (void)subtractAncestorCounts;
 - (void)trimCounts;
 @end
@@ -18,7 +18,7 @@
   return v2;
 }
 
-- (BOOL)hasEntriesForQIDWithNSString:(id)a3
+- (BOOL)hasEntriesForQIDWithNSString:(id)string
 {
   qidToCategoryIdTreasureMap = self->this$0_->qidToCategoryIdTreasureMap_;
   if (!qidToCategoryIdTreasureMap)
@@ -26,7 +26,7 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [(ComAppleContextkitCategoriesQIDCategoryProvider *)qidToCategoryIdTreasureMap categoryIdsForQIDWithNSString:a3];
+  v4 = [(ComAppleContextkitCategoriesQIDCategoryProvider *)qidToCategoryIdTreasureMap categoryIdsForQIDWithNSString:string];
   if (v4)
   {
     LOBYTE(v4) = [v4 isEmpty] ^ 1;
@@ -35,14 +35,14 @@
   return v4;
 }
 
-- (void)prepareItemsWithComAppleContextkitCategoriesConstellation_Request_QIDCountPQ:(id)a3
+- (void)prepareItemsWithComAppleContextkitCategoriesConstellation_Request_QIDCountPQ:(id)q
 {
-  if (!a3)
+  if (!q)
   {
     goto LABEL_27;
   }
 
-  v5 = [a3 size];
+  v5 = [q size];
   if (qword_100554430 != -1)
   {
     sub_1000C2D84();
@@ -50,7 +50,7 @@
 
   JreStrongAssignAndConsume(&self->seenQids_, [IOSObjectArray newArrayWithLength:v5 type:qword_100554428]);
   size = self->seenQids_->super.size_;
-  v7 = [ComAppleContextkitCategoriesConstellation_Request_QIDCountPQ popAllCountsFromArray]_0(a3);
+  v7 = [ComAppleContextkitCategoriesConstellation_Request_QIDCountPQ popAllCountsFromArray]_0(q);
   if (!v7)
   {
 LABEL_27:
@@ -212,12 +212,12 @@ LABEL_17:
   }
 }
 
-- (int)highlevelThemeForCategoryIdWithInt:(int)a3
+- (int)highlevelThemeForCategoryIdWithInt:(int)int
 {
-  v5 = sub_1000C01E4(self, a3);
+  v5 = sub_1000C01E4(self, int);
   if (!v5)
   {
-    return a3;
+    return int;
   }
 
   if (!self->in_)
@@ -303,12 +303,12 @@ LABEL_17:
     goto LABEL_87;
   }
 
-  v3 = self;
+  selfCopy = self;
   size = seenQids->super.size_;
   v85 = JavaLangMath_minWithInt_withInt_(self->minQidCount_, size);
-  v88 = JavaLangMath_minWithInt_withInt_(v3->minWeight_, size);
+  v88 = JavaLangMath_minWithInt_withInt_(selfCopy->minWeight_, size);
   v5 = new_JavaUtilHashMap_init();
-  v6 = [(ComAppleContextkitCategoriesConstellation_Request *)v3 getTopKCategoriesWithInt:v3->maxCategoriesFirstRun_];
+  v6 = [(ComAppleContextkitCategoriesConstellation_Request *)selfCopy getTopKCategoriesWithInt:selfCopy->maxCategoriesFirstRun_];
   if (!v6)
   {
     goto LABEL_87;
@@ -343,10 +343,10 @@ LABEL_17:
   JreStrongAssign(&v14->val$categoryIdToRank_, v5);
   v80 = v14;
   v89 = new_JavaUtilHashMap_init();
-  v15 = v3->seenQids_;
+  v15 = selfCopy->seenQids_;
   p_elementType = &v15->elementType_;
   v95 = &(&v15->elementType_)[v15->super.size_];
-  v97 = v3;
+  v97 = selfCopy;
   if (&v15->elementType_ < v95)
   {
     do
@@ -359,7 +359,7 @@ LABEL_17:
       }
 
       v19 = *(v17 + 8);
-      v20 = [(ComAppleContextkitCategoriesConstellation *)v3->this$0_ qidToCategoryIdWithNSString:v19, v80];
+      v20 = [(ComAppleContextkitCategoriesConstellation *)selfCopy->this$0_ qidToCategoryIdWithNSString:v19, v80];
       v21 = v5;
       if (v20)
       {
@@ -383,7 +383,7 @@ LABEL_17:
         }
       }
 
-      v3 = v97;
+      selfCopy = v97;
     }
 
     while (p_elementType < v95);
@@ -393,16 +393,16 @@ LABEL_17:
   v109 = 0u;
   v106 = 0u;
   v107 = 0u;
-  v28 = [(JavaUtilHashMap *)v13 entrySet];
-  if (!v28)
+  entrySet = [(JavaUtilHashMap *)v13 entrySet];
+  if (!entrySet)
   {
 LABEL_87:
     JreThrowNullPointerException();
   }
 
-  obj = v28;
+  obj = entrySet;
   v29 = v91;
-  v83 = [v28 countByEnumeratingWithState:&v106 objects:v112 count:16];
+  v83 = [entrySet countByEnumeratingWithState:&v106 objects:v112 count:16];
   if (!v83)
   {
     goto LABEL_77;
@@ -427,17 +427,17 @@ LABEL_87:
       }
 
       v33 = v32;
-      v90 = [v31 getKey];
-      v34 = [v31 getValue];
-      if (!v34)
+      getKey = [v31 getKey];
+      getValue = [v31 getValue];
+      if (!getValue)
       {
         goto LABEL_87;
       }
 
-      v35 = v34;
+      v35 = getValue;
       context = v33;
       v87 = v30;
-      if (([v34 isEmpty] & 1) == 0)
+      if (([getValue isEmpty] & 1) == 0)
       {
         v36 = new_JavaUtilTreeSet_initWithJavaUtilComparator_(v81);
         [(JavaUtilTreeSet *)v36 addAllWithJavaUtilCollection:v35];
@@ -454,7 +454,7 @@ LABEL_87:
           v40 = 0;
           v41 = 0;
           v42 = 0;
-          v43 = 0;
+          next = 0;
           v96 = *v103;
           v92 = v37;
           do
@@ -472,25 +472,25 @@ LABEL_87:
                 goto LABEL_87;
               }
 
-              v46 = [v45 intValue];
-              v47 = [(ComAppleContextkitCategoriesConstellation_Request *)v97 highlevelThemeForCategoryIdWithInt:v46];
+              intValue = [v45 intValue];
+              v47 = [(ComAppleContextkitCategoriesConstellation_Request *)v97 highlevelThemeForCategoryIdWithInt:intValue];
               if (v47)
               {
                 v48 = v47;
-                if (!v43)
+                if (!next)
                 {
-                  if (v47 == v46)
+                  if (v47 == intValue)
                   {
-                    v43 = 0;
+                    next = 0;
                   }
 
                   else
                   {
-                    v43 = JavaLangInteger_valueOfWithInt_(v46);
+                    next = JavaLangInteger_valueOfWithInt_(intValue);
                   }
                 }
 
-                v49 = v43;
+                v49 = next;
                 v50 = [(JavaUtilHashMap *)v37 getWithId:JavaLangInteger_valueOfWithInt_(v48)];
                 if (v50)
                 {
@@ -508,21 +508,21 @@ LABEL_87:
                   }
                 }
 
-                v53 = [(JavaUtilConcurrentAtomicAtomicInteger *)v51 incrementAndGet];
-                if (v53 > v42)
+                incrementAndGet = [(JavaUtilConcurrentAtomicAtomicInteger *)v51 incrementAndGet];
+                if (incrementAndGet > v42)
                 {
                   v41 = v48;
-                  v42 = v53;
+                  v42 = incrementAndGet;
                 }
 
-                if (v46 <= v40)
+                if (intValue <= v40)
                 {
                   v54 = v40;
                 }
 
                 else
                 {
-                  v54 = v46;
+                  v54 = intValue;
                 }
 
                 if (v48 == v41)
@@ -531,7 +531,7 @@ LABEL_87:
                 }
 
                 v37 = v92;
-                v43 = v49;
+                next = v49;
               }
             }
 
@@ -540,16 +540,16 @@ LABEL_87:
 
           while (v39);
           v29 = v91;
-          if (!v43)
+          if (!next)
           {
 LABEL_52:
-            v55 = [(JavaUtilTreeSet *)v93 iterator];
-            if (!v55)
+            iterator = [(JavaUtilTreeSet *)v93 iterator];
+            if (!iterator)
             {
               goto LABEL_87;
             }
 
-            v43 = [v55 next];
+            next = [iterator next];
           }
 
           v100 = 0u;
@@ -577,34 +577,34 @@ LABEL_52:
                   goto LABEL_87;
                 }
 
-                v61 = [v60 intValue];
-                v62 = [(JavaUtilHashMap *)v94 getWithId:JavaLangInteger_valueOfWithInt_(v61)];
+                intValue2 = [v60 intValue];
+                v62 = [(JavaUtilHashMap *)v94 getWithId:JavaLangInteger_valueOfWithInt_(intValue2)];
                 if (!v62)
                 {
                   goto LABEL_87;
                 }
 
-                v63 = [v62 intValue];
+                intValue3 = [v62 intValue];
                 v64 = *(v29 + 2);
-                if (v63 < 0 || v63 >= v64)
+                if (intValue3 < 0 || intValue3 >= v64)
                 {
-                  IOSArray_throwOutOfBoundsWithMsg(v64, v63);
+                  IOSArray_throwOutOfBoundsWithMsg(v64, intValue3);
                 }
 
-                if (!v43)
+                if (!next)
                 {
                   goto LABEL_87;
                 }
 
-                v65 = *&v29[8 * v63 + 24];
-                if (v61 == [(JavaLangInteger *)v43 intValue]|| v61 == v40)
+                v65 = *&v29[8 * intValue3 + 24];
+                if (intValue2 == [(JavaLangInteger *)next intValue]|| intValue2 == v40)
                 {
                   if (!v65)
                   {
                     goto LABEL_87;
                   }
 
-                  sub_1000C0D14(v65, v90);
+                  sub_1000C0D14(v65, getKey);
                 }
 
                 else
@@ -615,7 +615,7 @@ LABEL_52:
                   }
 
                   --*(v65 + 12);
-                  v66 = [(JavaUtilHashMap *)v89 getWithId:v90];
+                  v66 = [(JavaUtilHashMap *)v89 getWithId:getKey];
                   if (!v66)
                   {
                     goto LABEL_87;
@@ -646,7 +646,7 @@ LABEL_52:
 LABEL_75:
       objc_autoreleasePoolPop(context);
       v30 = v87 + 1;
-      v3 = v97;
+      selfCopy = v97;
     }
 
     while ((v87 + 1) != v83);
@@ -655,7 +655,7 @@ LABEL_75:
 
   while (v83);
 LABEL_77:
-  v68 = sub_1000BFF80(v3, v3->maxCategories_);
+  v68 = sub_1000BFF80(selfCopy, selfCopy->maxCategories_);
   v69 = (v29 + 24);
   v70 = &v29[8 * *(v29 + 2) + 24];
   v71 = v85;
@@ -680,19 +680,19 @@ LABEL_77:
     while (v69 < v70);
   }
 
-  v74 = [(ComAppleContextkitCategoriesConstellation_Request_CategoryCountPQ *)v68 toArray];
-  if (!v74)
+  toArray = [(ComAppleContextkitCategoriesConstellation_Request_CategoryCountPQ *)v68 toArray];
+  if (!toArray)
   {
     goto LABEL_87;
   }
 
-  v75 = v74;
-  v76 = v74 + 3;
-  v77 = &v74[*(v74 + 2) + 3];
+  v75 = toArray;
+  v76 = toArray + 3;
+  v77 = &toArray[*(toArray + 2) + 3];
   while (v76 < v77)
   {
     v78 = *v76++;
-    *(v78 + 24) = [(ComAppleContextkitCategoriesConstellation_Request *)v3 highlevelThemeForCategoryIdWithInt:*(v78 + 8)];
+    *(v78 + 24) = [(ComAppleContextkitCategoriesConstellation_Request *)selfCopy highlevelThemeForCategoryIdWithInt:*(v78 + 8)];
   }
 
   return v75;

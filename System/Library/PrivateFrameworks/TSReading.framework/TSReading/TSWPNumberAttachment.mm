@@ -1,8 +1,8 @@
 @interface TSWPNumberAttachment
-- (id)copyWithContext:(id)a3;
+- (id)copyWithContext:(id)context;
 - (id)stringEquivalent;
-- (id)stringEquivalentWithLayoutParent:(id)a3;
-- (id)stringWithNumber:(unint64_t)a3;
+- (id)stringEquivalentWithLayoutParent:(id)parent;
+- (id)stringWithNumber:(unint64_t)number;
 - (void)dealloc;
 @end
 
@@ -15,9 +15,9 @@
   [(TSWPNumberAttachment *)&v3 dealloc];
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{-[TSWPNumberAttachment zone](self, "zone")), "initWithContext:", a3}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{-[TSWPNumberAttachment zone](self, "zone")), "initWithContext:", context}];
   [v4 setNumberFormat:self->_numberFormat];
   [v4 setStringValue:self->_stringValue];
   return v4;
@@ -33,27 +33,27 @@
   return [(TSWPNumberAttachment *)self stringValue];
 }
 
-- (id)stringEquivalentWithLayoutParent:(id)a3
+- (id)stringEquivalentWithLayoutParent:(id)parent
 {
-  if (a3)
+  if (parent)
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      v5 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPNumberAttachment stringEquivalentWithLayoutParent:]"];
-      [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPNumberAttachment.mm"), 152, @"Expected protocol support."}];
+      [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPNumberAttachment.mm"), 152, @"Expected protocol support."}];
     }
 
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      v7 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPNumberAttachment stringEquivalentWithLayoutParent:]"];
-      [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPNumberAttachment.mm"), 153, @"Expected protocol support."}];
+      [currentHandler2 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPNumberAttachment.mm"), 153, @"Expected protocol support."}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v9 = [a3 pageCountForAttachment:self];
+      v9 = [parent pageCountForAttachment:self];
     }
 
     else
@@ -63,7 +63,7 @@
 
     if (objc_opt_respondsToSelector())
     {
-      v11 = [a3 pageNumberForAttachment:self];
+      v11 = [parent pageNumberForAttachment:self];
     }
 
     else
@@ -81,19 +81,19 @@
   }
 }
 
-- (id)stringWithNumber:(unint64_t)a3
+- (id)stringWithNumber:(unint64_t)number
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (number == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = 1;
+    numberCopy = 1;
   }
 
   else
   {
-    v4 = a3;
+    numberCopy = number;
   }
 
-  -[TSWPNumberAttachment setStringValue:](self, "setStringValue:", [MEMORY[0x277CCACA8] stringForValue:v4 withPageNumberFormat:-[TSWPNumberAttachment numberFormat](self, "numberFormat")]);
+  -[TSWPNumberAttachment setStringValue:](self, "setStringValue:", [MEMORY[0x277CCACA8] stringForValue:numberCopy withPageNumberFormat:-[TSWPNumberAttachment numberFormat](self, "numberFormat")]);
 
   return [(TSWPNumberAttachment *)self stringValue];
 }

@@ -1,10 +1,10 @@
 @interface BLDownloadPipelineQueue
-- (BLDownloadPipelineQueue)initWithQueue:(id)a3;
-- (BOOL)alreadyHaveCellularDownloadWithDownloadID:(id)a3;
-- (BOOL)alreadyHaveDiscretionaryDownloadWithDownloadID:(id)a3;
-- (BOOL)alreadyHaveNondiscretionaryDownloadWithDownloadID:(id)a3;
-- (BOOL)alreadyHaveSampleDownloadWithDownloadID:(id)a3;
-- (BOOL)downloadIsHighPriorityWithDownloadID:(id)a3;
+- (BLDownloadPipelineQueue)initWithQueue:(id)queue;
+- (BOOL)alreadyHaveCellularDownloadWithDownloadID:(id)d;
+- (BOOL)alreadyHaveDiscretionaryDownloadWithDownloadID:(id)d;
+- (BOOL)alreadyHaveNondiscretionaryDownloadWithDownloadID:(id)d;
+- (BOOL)alreadyHaveSampleDownloadWithDownloadID:(id)d;
+- (BOOL)downloadIsHighPriorityWithDownloadID:(id)d;
 - (NSSet)inFlightCellularDownloadIDs;
 - (NSSet)inFlightDiscretionaryDownloadIDs;
 - (NSSet)inFlightNondiscretionaryDownloadIDs;
@@ -21,24 +21,24 @@
 - (unint64_t)inFlightDiscretionaryDownloadsCount;
 - (unint64_t)inFlightNondiscretionaryDownloadsCount;
 - (unint64_t)inFlightSampleDownloadsCount;
-- (void)addDownloadWithDownloadID:(id)a3 discretionary:(BOOL)a4 sample:(BOOL)a5 cellular:(BOOL)a6;
-- (void)markDownloadAsHighPriorityWithDownloadID:(id)a3;
-- (void)markDownloadAsStandardPriorityWithDownloadID:(id)a3;
-- (void)removeDownloadWithDownloadID:(id)a3;
+- (void)addDownloadWithDownloadID:(id)d discretionary:(BOOL)discretionary sample:(BOOL)sample cellular:(BOOL)cellular;
+- (void)markDownloadAsHighPriorityWithDownloadID:(id)d;
+- (void)markDownloadAsStandardPriorityWithDownloadID:(id)d;
+- (void)removeDownloadWithDownloadID:(id)d;
 @end
 
 @implementation BLDownloadPipelineQueue
 
-- (BLDownloadPipelineQueue)initWithQueue:(id)a3
+- (BLDownloadPipelineQueue)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = BLDownloadPipelineQueue;
   v6 = [(BLDownloadPipelineQueue *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = objc_alloc_init(NSMutableSet);
     mutableInFlightDiscretionaryDownloadIDs = v7->_mutableInFlightDiscretionaryDownloadIDs;
     v7->_mutableInFlightDiscretionaryDownloadIDs = v8;
@@ -65,102 +65,102 @@
 
 - (unint64_t)availableDiscretionaryDownloads
 {
-  v3 = [(BLDownloadPipelineQueue *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(BLDownloadPipelineQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(BLDownloadPipelineQueue *)self mutableInFlightDiscretionaryDownloadIDs];
-  v5 = 3 - [v4 count];
+  mutableInFlightDiscretionaryDownloadIDs = [(BLDownloadPipelineQueue *)self mutableInFlightDiscretionaryDownloadIDs];
+  v5 = 3 - [mutableInFlightDiscretionaryDownloadIDs count];
 
   return v5;
 }
 
 - (unint64_t)availableNondiscretionaryDownloads
 {
-  v3 = [(BLDownloadPipelineQueue *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(BLDownloadPipelineQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(BLDownloadPipelineQueue *)self mutableInFlightNondiscretionaryDownloadIDs];
-  v5 = 3 - [v4 count];
+  mutableInFlightNondiscretionaryDownloadIDs = [(BLDownloadPipelineQueue *)self mutableInFlightNondiscretionaryDownloadIDs];
+  v5 = 3 - [mutableInFlightNondiscretionaryDownloadIDs count];
 
   return v5;
 }
 
 - (unint64_t)availableSampleDownloads
 {
-  v3 = [(BLDownloadPipelineQueue *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(BLDownloadPipelineQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(BLDownloadPipelineQueue *)self mutableInFlightSampleDownloadIDs];
-  v5 = 1 - [v4 count];
+  mutableInFlightSampleDownloadIDs = [(BLDownloadPipelineQueue *)self mutableInFlightSampleDownloadIDs];
+  v5 = 1 - [mutableInFlightSampleDownloadIDs count];
 
   return v5;
 }
 
 - (unint64_t)availableCellularDownloads
 {
-  v3 = [(BLDownloadPipelineQueue *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(BLDownloadPipelineQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(BLDownloadPipelineQueue *)self mutableInFlightCellularDownloadIDs];
-  v5 = 3 - [v4 count];
+  mutableInFlightCellularDownloadIDs = [(BLDownloadPipelineQueue *)self mutableInFlightCellularDownloadIDs];
+  v5 = 3 - [mutableInFlightCellularDownloadIDs count];
 
   return v5;
 }
 
 - (NSSet)inFlightDiscretionaryDownloadIDs
 {
-  v3 = [(BLDownloadPipelineQueue *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(BLDownloadPipelineQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   return [(BLDownloadPipelineQueue *)self mutableInFlightDiscretionaryDownloadIDs];
 }
 
 - (NSSet)inFlightNondiscretionaryDownloadIDs
 {
-  v3 = [(BLDownloadPipelineQueue *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(BLDownloadPipelineQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   return [(BLDownloadPipelineQueue *)self mutableInFlightNondiscretionaryDownloadIDs];
 }
 
 - (NSSet)inFlightSampleDownloadIDs
 {
-  v3 = [(BLDownloadPipelineQueue *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(BLDownloadPipelineQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   return [(BLDownloadPipelineQueue *)self mutableInFlightSampleDownloadIDs];
 }
 
 - (NSSet)inFlightCellularDownloadIDs
 {
-  v3 = [(BLDownloadPipelineQueue *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(BLDownloadPipelineQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   return [(BLDownloadPipelineQueue *)self mutableInFlightCellularDownloadIDs];
 }
 
-- (void)addDownloadWithDownloadID:(id)a3 discretionary:(BOOL)a4 sample:(BOOL)a5 cellular:(BOOL)a6
+- (void)addDownloadWithDownloadID:(id)d discretionary:(BOOL)discretionary sample:(BOOL)sample cellular:(BOOL)cellular
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v13 = a3;
-  v10 = [(BLDownloadPipelineQueue *)self queue];
-  dispatch_assert_queue_V2(v10);
+  cellularCopy = cellular;
+  sampleCopy = sample;
+  discretionaryCopy = discretionary;
+  dCopy = d;
+  queue = [(BLDownloadPipelineQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v7)
+  if (sampleCopy)
   {
-    v11 = [(BLDownloadPipelineQueue *)self mutableInFlightSampleDownloadIDs];
+    mutableInFlightSampleDownloadIDs = [(BLDownloadPipelineQueue *)self mutableInFlightSampleDownloadIDs];
   }
 
-  else if (v6)
+  else if (cellularCopy)
   {
-    v11 = [(BLDownloadPipelineQueue *)self mutableInFlightCellularDownloadIDs];
+    mutableInFlightSampleDownloadIDs = [(BLDownloadPipelineQueue *)self mutableInFlightCellularDownloadIDs];
   }
 
   else
   {
-    if (v8)
+    if (discretionaryCopy)
     {
       [(BLDownloadPipelineQueue *)self mutableInFlightDiscretionaryDownloadIDs];
     }
@@ -169,198 +169,198 @@
     {
       [(BLDownloadPipelineQueue *)self mutableInFlightNondiscretionaryDownloadIDs];
     }
-    v11 = ;
+    mutableInFlightSampleDownloadIDs = ;
   }
 
-  v12 = v11;
-  [v11 addObject:v13];
+  v12 = mutableInFlightSampleDownloadIDs;
+  [mutableInFlightSampleDownloadIDs addObject:dCopy];
 }
 
-- (void)removeDownloadWithDownloadID:(id)a3
+- (void)removeDownloadWithDownloadID:(id)d
 {
-  v4 = a3;
-  v5 = [(BLDownloadPipelineQueue *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(BLDownloadPipelineQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(BLDownloadPipelineQueue *)self mutableInFlightSampleDownloadIDs];
-  [v6 removeObject:v4];
+  mutableInFlightSampleDownloadIDs = [(BLDownloadPipelineQueue *)self mutableInFlightSampleDownloadIDs];
+  [mutableInFlightSampleDownloadIDs removeObject:dCopy];
 
-  v7 = [(BLDownloadPipelineQueue *)self mutableInFlightCellularDownloadIDs];
-  [v7 removeObject:v4];
+  mutableInFlightCellularDownloadIDs = [(BLDownloadPipelineQueue *)self mutableInFlightCellularDownloadIDs];
+  [mutableInFlightCellularDownloadIDs removeObject:dCopy];
 
-  v8 = [(BLDownloadPipelineQueue *)self mutableInFlightDiscretionaryDownloadIDs];
-  [v8 removeObject:v4];
+  mutableInFlightDiscretionaryDownloadIDs = [(BLDownloadPipelineQueue *)self mutableInFlightDiscretionaryDownloadIDs];
+  [mutableInFlightDiscretionaryDownloadIDs removeObject:dCopy];
 
-  v9 = [(BLDownloadPipelineQueue *)self mutableInFlightNondiscretionaryDownloadIDs];
-  [v9 removeObject:v4];
+  mutableInFlightNondiscretionaryDownloadIDs = [(BLDownloadPipelineQueue *)self mutableInFlightNondiscretionaryDownloadIDs];
+  [mutableInFlightNondiscretionaryDownloadIDs removeObject:dCopy];
 }
 
-- (BOOL)alreadyHaveDiscretionaryDownloadWithDownloadID:(id)a3
+- (BOOL)alreadyHaveDiscretionaryDownloadWithDownloadID:(id)d
 {
-  v4 = a3;
-  v5 = [(BLDownloadPipelineQueue *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(BLDownloadPipelineQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(BLDownloadPipelineQueue *)self mutableInFlightDiscretionaryDownloadIDs];
-  LOBYTE(v5) = [v6 containsObject:v4];
+  mutableInFlightDiscretionaryDownloadIDs = [(BLDownloadPipelineQueue *)self mutableInFlightDiscretionaryDownloadIDs];
+  LOBYTE(queue) = [mutableInFlightDiscretionaryDownloadIDs containsObject:dCopy];
 
-  return v5;
+  return queue;
 }
 
-- (BOOL)alreadyHaveNondiscretionaryDownloadWithDownloadID:(id)a3
+- (BOOL)alreadyHaveNondiscretionaryDownloadWithDownloadID:(id)d
 {
-  v4 = a3;
-  v5 = [(BLDownloadPipelineQueue *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(BLDownloadPipelineQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(BLDownloadPipelineQueue *)self mutableInFlightNondiscretionaryDownloadIDs];
-  LOBYTE(v5) = [v6 containsObject:v4];
+  mutableInFlightNondiscretionaryDownloadIDs = [(BLDownloadPipelineQueue *)self mutableInFlightNondiscretionaryDownloadIDs];
+  LOBYTE(queue) = [mutableInFlightNondiscretionaryDownloadIDs containsObject:dCopy];
 
-  return v5;
+  return queue;
 }
 
-- (BOOL)alreadyHaveSampleDownloadWithDownloadID:(id)a3
+- (BOOL)alreadyHaveSampleDownloadWithDownloadID:(id)d
 {
-  v4 = a3;
-  v5 = [(BLDownloadPipelineQueue *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(BLDownloadPipelineQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(BLDownloadPipelineQueue *)self mutableInFlightSampleDownloadIDs];
-  LOBYTE(v5) = [v6 containsObject:v4];
+  mutableInFlightSampleDownloadIDs = [(BLDownloadPipelineQueue *)self mutableInFlightSampleDownloadIDs];
+  LOBYTE(queue) = [mutableInFlightSampleDownloadIDs containsObject:dCopy];
 
-  return v5;
+  return queue;
 }
 
-- (BOOL)alreadyHaveCellularDownloadWithDownloadID:(id)a3
+- (BOOL)alreadyHaveCellularDownloadWithDownloadID:(id)d
 {
-  v4 = a3;
-  v5 = [(BLDownloadPipelineQueue *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(BLDownloadPipelineQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(BLDownloadPipelineQueue *)self mutableInFlightCellularDownloadIDs];
-  LOBYTE(v5) = [v6 containsObject:v4];
+  mutableInFlightCellularDownloadIDs = [(BLDownloadPipelineQueue *)self mutableInFlightCellularDownloadIDs];
+  LOBYTE(queue) = [mutableInFlightCellularDownloadIDs containsObject:dCopy];
 
-  return v5;
+  return queue;
 }
 
 - (unint64_t)inFlightDiscretionaryDownloadsCount
 {
-  v3 = [(BLDownloadPipelineQueue *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(BLDownloadPipelineQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(BLDownloadPipelineQueue *)self mutableInFlightDiscretionaryDownloadIDs];
-  v5 = [v4 count];
+  mutableInFlightDiscretionaryDownloadIDs = [(BLDownloadPipelineQueue *)self mutableInFlightDiscretionaryDownloadIDs];
+  v5 = [mutableInFlightDiscretionaryDownloadIDs count];
 
   return v5;
 }
 
 - (unint64_t)inFlightNondiscretionaryDownloadsCount
 {
-  v3 = [(BLDownloadPipelineQueue *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(BLDownloadPipelineQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(BLDownloadPipelineQueue *)self mutableInFlightNondiscretionaryDownloadIDs];
-  v5 = [v4 count];
+  mutableInFlightNondiscretionaryDownloadIDs = [(BLDownloadPipelineQueue *)self mutableInFlightNondiscretionaryDownloadIDs];
+  v5 = [mutableInFlightNondiscretionaryDownloadIDs count];
 
   return v5;
 }
 
 - (unint64_t)inFlightSampleDownloadsCount
 {
-  v3 = [(BLDownloadPipelineQueue *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(BLDownloadPipelineQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(BLDownloadPipelineQueue *)self mutableInFlightSampleDownloadIDs];
-  v5 = [v4 count];
+  mutableInFlightSampleDownloadIDs = [(BLDownloadPipelineQueue *)self mutableInFlightSampleDownloadIDs];
+  v5 = [mutableInFlightSampleDownloadIDs count];
 
   return v5;
 }
 
 - (unint64_t)inFlightCellularDownloadsCount
 {
-  v3 = [(BLDownloadPipelineQueue *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(BLDownloadPipelineQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(BLDownloadPipelineQueue *)self mutableInFlightCellularDownloadIDs];
-  v5 = [v4 count];
+  mutableInFlightCellularDownloadIDs = [(BLDownloadPipelineQueue *)self mutableInFlightCellularDownloadIDs];
+  v5 = [mutableInFlightCellularDownloadIDs count];
 
   return v5;
 }
 
 - (id)inFlightDiscretionaryDownloadsDescription
 {
-  v3 = [(BLDownloadPipelineQueue *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(BLDownloadPipelineQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(BLDownloadPipelineQueue *)self mutableInFlightDiscretionaryDownloadIDs];
-  v5 = [v4 description];
+  mutableInFlightDiscretionaryDownloadIDs = [(BLDownloadPipelineQueue *)self mutableInFlightDiscretionaryDownloadIDs];
+  v5 = [mutableInFlightDiscretionaryDownloadIDs description];
 
   return v5;
 }
 
 - (id)inFlightNondiscretionaryDownloadsDescription
 {
-  v3 = [(BLDownloadPipelineQueue *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(BLDownloadPipelineQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(BLDownloadPipelineQueue *)self mutableInFlightNondiscretionaryDownloadIDs];
-  v5 = [v4 description];
+  mutableInFlightNondiscretionaryDownloadIDs = [(BLDownloadPipelineQueue *)self mutableInFlightNondiscretionaryDownloadIDs];
+  v5 = [mutableInFlightNondiscretionaryDownloadIDs description];
 
   return v5;
 }
 
 - (id)inFlightSampleDownloadsDescription
 {
-  v3 = [(BLDownloadPipelineQueue *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(BLDownloadPipelineQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(BLDownloadPipelineQueue *)self mutableInFlightSampleDownloadIDs];
-  v5 = [v4 description];
+  mutableInFlightSampleDownloadIDs = [(BLDownloadPipelineQueue *)self mutableInFlightSampleDownloadIDs];
+  v5 = [mutableInFlightSampleDownloadIDs description];
 
   return v5;
 }
 
 - (id)inFlightCellularDownloadsDescription
 {
-  v3 = [(BLDownloadPipelineQueue *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(BLDownloadPipelineQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(BLDownloadPipelineQueue *)self mutableInFlightCellularDownloadIDs];
-  v5 = [v4 description];
-
-  return v5;
-}
-
-- (BOOL)downloadIsHighPriorityWithDownloadID:(id)a3
-{
-  v4 = a3;
-  v5 = [(BLDownloadPipelineQueue *)self queue];
-  dispatch_assert_queue_V2(v5);
-
-  v6 = [(BLDownloadPipelineQueue *)self highPriorityDownloadIds];
-  LOBYTE(v5) = [v6 containsObject:v4];
+  mutableInFlightCellularDownloadIDs = [(BLDownloadPipelineQueue *)self mutableInFlightCellularDownloadIDs];
+  v5 = [mutableInFlightCellularDownloadIDs description];
 
   return v5;
 }
 
-- (void)markDownloadAsHighPriorityWithDownloadID:(id)a3
+- (BOOL)downloadIsHighPriorityWithDownloadID:(id)d
 {
-  v4 = a3;
-  v5 = [(BLDownloadPipelineQueue *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(BLDownloadPipelineQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(BLDownloadPipelineQueue *)self highPriorityDownloadIds];
-  [v6 addObject:v4];
+  highPriorityDownloadIds = [(BLDownloadPipelineQueue *)self highPriorityDownloadIds];
+  LOBYTE(queue) = [highPriorityDownloadIds containsObject:dCopy];
+
+  return queue;
 }
 
-- (void)markDownloadAsStandardPriorityWithDownloadID:(id)a3
+- (void)markDownloadAsHighPriorityWithDownloadID:(id)d
 {
-  v4 = a3;
-  v5 = [(BLDownloadPipelineQueue *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(BLDownloadPipelineQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(BLDownloadPipelineQueue *)self highPriorityDownloadIds];
-  [v6 removeObject:v4];
+  highPriorityDownloadIds = [(BLDownloadPipelineQueue *)self highPriorityDownloadIds];
+  [highPriorityDownloadIds addObject:dCopy];
+}
+
+- (void)markDownloadAsStandardPriorityWithDownloadID:(id)d
+{
+  dCopy = d;
+  queue = [(BLDownloadPipelineQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
+
+  highPriorityDownloadIds = [(BLDownloadPipelineQueue *)self highPriorityDownloadIds];
+  [highPriorityDownloadIds removeObject:dCopy];
 }
 
 @end

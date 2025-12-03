@@ -1,10 +1,10 @@
 @interface TSCHChartValueAxisRenderer
-- (double)unitSpaceValueForAxis:(id)a3 index:(unint64_t)a4;
-- (id)labelStringForAxis:(id)a3 index:(unint64_t)a4;
+- (double)unitSpaceValueForAxis:(id)axis index:(unint64_t)index;
+- (id)labelStringForAxis:(id)axis index:(unint64_t)index;
 - (id)labelsLayoutItem;
 - (id)transparencyLayers;
 - (id)valueAxisLayoutItem;
-- (void)drawIntoLayer:(int)a3 inContext:(CGContext *)a4 visible:(CGRect)a5;
+- (void)drawIntoLayer:(int)layer inContext:(CGContext *)context visible:(CGRect)visible;
 @end
 
 @implementation TSCHChartValueAxisRenderer
@@ -23,8 +23,8 @@
   v3 = objc_alloc(MEMORY[0x277CBEB18]);
   v20.receiver = self;
   v20.super_class = TSCHChartValueAxisRenderer;
-  v4 = [(TSCHChartAxisRenderer *)&v20 transparencyLayers];
-  v9 = objc_msgSend_initWithArray_(v3, v5, v6, v7, v8, v4);
+  transparencyLayers = [(TSCHChartAxisRenderer *)&v20 transparencyLayers];
+  v9 = objc_msgSend_initWithArray_(v3, v5, v6, v7, v8, transparencyLayers);
 
   objc_msgSend_addObject_(v9, v10, v11, v12, v13, &unk_28856BFC0);
   v18 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEA60], v14, v15, v16, v17, v9);
@@ -40,11 +40,11 @@
   return v10;
 }
 
-- (double)unitSpaceValueForAxis:(id)a3 index:(unint64_t)a4
+- (double)unitSpaceValueForAxis:(id)axis index:(unint64_t)index
 {
-  v5 = a3;
-  v10 = objc_msgSend_majorGridLocations(v5, v6, v7, v8, v9);
-  v15 = objc_msgSend_objectAtIndexedSubscript_(v10, v11, v12, v13, v14, a4);
+  axisCopy = axis;
+  v10 = objc_msgSend_majorGridLocations(axisCopy, v6, v7, v8, v9);
+  v15 = objc_msgSend_objectAtIndexedSubscript_(v10, v11, v12, v13, v14, index);
 
   if (v15)
   {
@@ -56,29 +56,29 @@
     v20 = NAN;
   }
 
-  objc_msgSend_unitSpaceValueForDataSpaceValue_(v5, v16, v20, v18, v19);
+  objc_msgSend_unitSpaceValueForDataSpaceValue_(axisCopy, v16, v20, v18, v19);
   v22 = v21;
 
   return v22;
 }
 
-- (id)labelStringForAxis:(id)a3 index:(unint64_t)a4
+- (id)labelStringForAxis:(id)axis index:(unint64_t)index
 {
-  v5 = a3;
-  v10 = objc_msgSend_majorGridLocations(v5, v6, v7, v8, v9);
-  v15 = objc_msgSend_objectAtIndexedSubscript_(v10, v11, v12, v13, v14, a4);
+  axisCopy = axis;
+  v10 = objc_msgSend_majorGridLocations(axisCopy, v6, v7, v8, v9);
+  v15 = objc_msgSend_objectAtIndexedSubscript_(v10, v11, v12, v13, v14, index);
 
-  v20 = objc_msgSend_formattedStringForAxisValue_(v5, v16, v17, v18, v19, v15);
+  v20 = objc_msgSend_formattedStringForAxisValue_(axisCopy, v16, v17, v18, v19, v15);
 
   return v20;
 }
 
-- (void)drawIntoLayer:(int)a3 inContext:(CGContext *)a4 visible:(CGRect)a5
+- (void)drawIntoLayer:(int)layer inContext:(CGContext *)context visible:(CGRect)visible
 {
   v97.receiver = self;
   v97.super_class = TSCHChartValueAxisRenderer;
-  [(TSCHChartAxisRenderer *)&v97 drawIntoLayer:a5.origin.x inContext:a5.origin.y visible:a5.size.width, a5.size.height];
-  if (a3 == 0x7FFFFFFF)
+  [(TSCHChartAxisRenderer *)&v97 drawIntoLayer:visible.origin.x inContext:visible.origin.y visible:visible.size.width, visible.size.height];
+  if (layer == 0x7FFFFFFF)
   {
     v12 = objc_msgSend_valueAxisLayoutItem(self, v8, v9, v10, v11);
     v17 = objc_msgSend_labelsLayoutItem(self, v13, v14, v15, v16);
@@ -130,13 +130,13 @@
           if (!CGRectIsNull(v96))
           {
             v81 = objc_msgSend_labelStringForAxis_index_(v17, v77, v78, v79, v80, v32, v70);
-            CGContextSaveGState(a4);
+            CGContextSaveGState(context);
             transform = v94;
-            CGContextConcatCTM(a4, &transform);
+            CGContextConcatCTM(context, &transform);
             CGContextClipToRectSafe();
             objc_msgSend_viewScale(self, v82, v83, v84, v85);
-            objc_msgSend_drawText_paragraphStyle_intoContext_atPosition_viewScale_(v60, v86, v72, v73, v87, v81, v89, a4);
-            CGContextRestoreGState(a4);
+            objc_msgSend_drawText_paragraphStyle_intoContext_atPosition_viewScale_(v60, v86, v72, v73, v87, v81, v89, context);
+            CGContextRestoreGState(context);
           }
 
           objc_autoreleasePoolPop(v75);

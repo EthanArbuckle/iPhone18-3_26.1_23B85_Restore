@@ -1,93 +1,93 @@
 @interface NSMutableString
-+ (NSMutableString)allocWithZone:(_NSZone *)a3;
++ (NSMutableString)allocWithZone:(_NSZone *)zone;
 + (NSMutableString)stringWithCapacity:(NSUInteger)capacity;
 - (BOOL)applyTransform:(NSStringTransform)transform reverse:(BOOL)reverse range:(NSRange)range updatedRange:(NSRangePointer)resultingRange;
 - (NSUInteger)replaceOccurrencesOfString:(NSString *)target withString:(NSString *)replacement options:(NSStringCompareOptions)options range:(NSRange)searchRange;
-- (unint64_t)_replaceOccurrencesOfRegularExpressionPattern:(id)a3 withTemplate:(id)a4 options:(unint64_t)a5 range:(_NSRange)a6;
-- (void)_cfAppendCString:(const char *)a3 length:(int64_t)a4;
-- (void)_cfCapitalize:(const void *)a3;
-- (void)_cfLowercase:(const void *)a3;
-- (void)_cfNormalize:(int64_t)a3;
-- (void)_cfPad:(__CFString *)a3 length:(unsigned int)a4 padIndex:(unsigned int)a5;
-- (void)_cfTrim:(__CFString *)a3;
+- (unint64_t)_replaceOccurrencesOfRegularExpressionPattern:(id)pattern withTemplate:(id)template options:(unint64_t)options range:(_NSRange)range;
+- (void)_cfAppendCString:(const char *)string length:(int64_t)length;
+- (void)_cfCapitalize:(const void *)capitalize;
+- (void)_cfLowercase:(const void *)lowercase;
+- (void)_cfNormalize:(int64_t)normalize;
+- (void)_cfPad:(__CFString *)pad length:(unsigned int)length padIndex:(unsigned int)index;
+- (void)_cfTrim:(__CFString *)trim;
 - (void)_cfTrimWS;
-- (void)_cfUppercase:(const void *)a3;
-- (void)_trimWithCharacterSet:(id)a3;
-- (void)appendCharacters:(const unsigned __int16 *)a3 length:(unint64_t)a4;
+- (void)_cfUppercase:(const void *)uppercase;
+- (void)_trimWithCharacterSet:(id)set;
+- (void)appendCharacters:(const unsigned __int16 *)characters length:(unint64_t)length;
 - (void)appendFormat:(NSString *)format;
 - (void)appendString:(NSString *)aString;
-- (void)replaceCharactersInRange:(_NSRange)a3 withCString:(const char *)a4 length:(unint64_t)a5;
-- (void)replaceCharactersInRange:(_NSRange)a3 withCharacters:(const unsigned __int16 *)a4 length:(unint64_t)a5;
+- (void)replaceCharactersInRange:(_NSRange)range withCString:(const char *)string length:(unint64_t)length;
+- (void)replaceCharactersInRange:(_NSRange)range withCharacters:(const unsigned __int16 *)characters length:(unint64_t)length;
 - (void)setString:(NSString *)aString;
 @end
 
 @implementation NSMutableString
 
-- (void)appendCharacters:(const unsigned __int16 *)a3 length:(unint64_t)a4
+- (void)appendCharacters:(const unsigned __int16 *)characters length:(unint64_t)length
 {
   v7 = [(NSString *)self length];
 
-  [(NSMutableString *)self replaceCharactersInRange:v7 withCharacters:0 length:a3, a4];
+  [(NSMutableString *)self replaceCharactersInRange:v7 withCharacters:0 length:characters, length];
 }
 
-- (void)_cfAppendCString:(const char *)a3 length:(int64_t)a4
+- (void)_cfAppendCString:(const char *)string length:(int64_t)length
 {
   v7 = [(NSString *)self length];
 
-  [(NSMutableString *)self replaceCharactersInRange:v7 withCString:0 length:a3, a4];
+  [(NSMutableString *)self replaceCharactersInRange:v7 withCString:0 length:string, length];
 }
 
-- (void)_cfLowercase:(const void *)a3
+- (void)_cfLowercase:(const void *)lowercase
 {
   v4 = [(NSString *)self length];
-  v5 = [(NSString *)self lowercaseString];
+  lowercaseString = [(NSString *)self lowercaseString];
 
-  [(NSMutableString *)self replaceCharactersInRange:0 withString:v4, v5];
+  [(NSMutableString *)self replaceCharactersInRange:0 withString:v4, lowercaseString];
 }
 
-- (void)_cfUppercase:(const void *)a3
+- (void)_cfUppercase:(const void *)uppercase
 {
   v4 = [(NSString *)self length];
-  v5 = [(NSString *)self uppercaseString];
+  uppercaseString = [(NSString *)self uppercaseString];
 
-  [(NSMutableString *)self replaceCharactersInRange:0 withString:v4, v5];
+  [(NSMutableString *)self replaceCharactersInRange:0 withString:v4, uppercaseString];
 }
 
-- (void)_cfCapitalize:(const void *)a3
+- (void)_cfCapitalize:(const void *)capitalize
 {
   v4 = [(NSString *)self length];
-  v5 = [(NSString *)self capitalizedString];
+  capitalizedString = [(NSString *)self capitalizedString];
 
-  [(NSMutableString *)self replaceCharactersInRange:0 withString:v4, v5];
+  [(NSMutableString *)self replaceCharactersInRange:0 withString:v4, capitalizedString];
 }
 
-- (void)_cfPad:(__CFString *)a3 length:(unsigned int)a4 padIndex:(unsigned int)a5
+- (void)_cfPad:(__CFString *)pad length:(unsigned int)length padIndex:(unsigned int)index
 {
   v20 = *MEMORY[0x1E69E9840];
   v9 = [(NSString *)self length];
-  v10 = a4;
-  if (v9 > a4)
+  lengthCopy = length;
+  if (v9 > length)
   {
 
-    [(NSMutableString *)self deleteCharactersInRange:a4, v9 - a4];
+    [(NSMutableString *)self deleteCharactersInRange:length, v9 - length];
     return;
   }
 
-  if (v9 >= a4)
+  if (v9 >= length)
   {
     return;
   }
 
-  v11 = a4 - v9;
-  if ((v10 - v9) >= 512)
+  v11 = length - v9;
+  if ((lengthCopy - v9) >= 512)
   {
     v13 = malloc_type_malloc(2 * v11, 0x1000040BDFB0063uLL);
-    Length = CFStringGetLength(a3);
+    Length = CFStringGetLength(pad);
 LABEL_10:
-    v14 = a5;
-    if (v11 >= Length - a5)
+    indexCopy = index;
+    if (v11 >= Length - index)
     {
-      v15 = Length - a5;
+      v15 = Length - index;
     }
 
     else
@@ -99,25 +99,25 @@ LABEL_10:
     do
     {
       v17 = [(NSString *)self length];
-      v22.location = v14;
+      v22.location = indexCopy;
       v22.length = v15;
-      CFStringGetCharacters(a3, v22, &v13[2 * (v10 - v16) + -2 * v17]);
+      CFStringGetCharacters(pad, v22, &v13[2 * (lengthCopy - v16) + -2 * v17]);
       v16 -= v15;
       v18 = v16 < v15;
       v15 = v16;
       if (!v18)
       {
-        v15 = CFStringGetLength(a3);
+        v15 = CFStringGetLength(pad);
       }
 
-      v14 = 0;
+      indexCopy = 0;
     }
 
     while (v16 > 0);
     goto LABEL_17;
   }
 
-  Length = CFStringGetLength(a3);
+  Length = CFStringGetLength(pad);
   v13 = v19;
   if (v11 >= 1)
   {
@@ -132,7 +132,7 @@ LABEL_17:
   }
 }
 
-- (void)_cfTrim:(__CFString *)a3
+- (void)_cfTrim:(__CFString *)trim
 {
   v10 = *MEMORY[0x1E69E9840];
   result.location = 0;
@@ -140,7 +140,7 @@ LABEL_17:
   v5 = [(NSString *)self length];
   v11.location = 0;
   v11.length = v5;
-  if (CFStringFindWithOptions(self, a3, v11, 8uLL, &result))
+  if (CFStringFindWithOptions(self, trim, v11, 8uLL, &result))
   {
     do
     {
@@ -150,7 +150,7 @@ LABEL_17:
       v12.length = v7;
     }
 
-    while (CFStringFindWithOptions(self, a3, v12, 8uLL, &result));
+    while (CFStringFindWithOptions(self, trim, v12, 8uLL, &result));
     v8 = v6;
   }
 
@@ -168,13 +168,13 @@ LABEL_17:
 
   else
   {
-    if (CFStringGetLength(a3) < v7)
+    if (CFStringGetLength(trim) < v7)
     {
       while (1)
       {
         v13.location = v8;
         v13.length = v7;
-        if (!CFStringFindWithOptions(self, a3, v13, 0xCuLL, &result))
+        if (!CFStringFindWithOptions(self, trim, v13, 0xCuLL, &result))
         {
           break;
         }
@@ -189,7 +189,7 @@ LABEL_17:
   [(NSMutableString *)self deleteCharactersInRange:0, v6];
 }
 
-- (void)_trimWithCharacterSet:(id)a3
+- (void)_trimWithCharacterSet:(id)set
 {
   v34 = *MEMORY[0x1E69E9840];
   v5 = [(NSString *)self length];
@@ -231,7 +231,7 @@ LABEL_17:
       goto LABEL_23;
     }
 
-    v11 = [a3 characterIsMember:v8];
+    v11 = [set characterIsMember:v8];
     v12 = v29;
     if (!v11)
     {
@@ -352,7 +352,7 @@ LABEL_24:
   v24 = v16 - v18;
   v30 = v24 + 1;
   WORD4(v33) = *(v32 + v24 + 4);
-  if ([a3 characterIsMember:v28])
+  if ([set characterIsMember:v28])
   {
     do
     {
@@ -393,7 +393,7 @@ LABEL_24:
       WORD4(v33) = v26;
     }
 
-    while (([a3 characterIsMember:?] & 1) != 0);
+    while (([set characterIsMember:?] & 1) != 0);
   }
 
   if (v6 != v30 + *&v32[0])
@@ -414,63 +414,63 @@ LABEL_24:
   [(NSMutableString *)self _trimWithCharacterSet:v3];
 }
 
-- (void)_cfNormalize:(int64_t)a3
+- (void)_cfNormalize:(int64_t)normalize
 {
-  if (a3 > 1)
+  if (normalize > 1)
   {
-    if (a3 == 2)
+    if (normalize == 2)
     {
       v4 = [(NSString *)self length];
-      v5 = [(NSString *)self precomposedStringWithCanonicalMapping];
+      precomposedStringWithCanonicalMapping = [(NSString *)self precomposedStringWithCanonicalMapping];
     }
 
     else
     {
-      if (a3 != 3)
+      if (normalize != 3)
       {
         goto LABEL_13;
       }
 
       v4 = [(NSString *)self length];
-      v5 = [(NSString *)self precomposedStringWithCompatibilityMapping];
+      precomposedStringWithCanonicalMapping = [(NSString *)self precomposedStringWithCompatibilityMapping];
     }
   }
 
   else
   {
-    if (a3)
+    if (normalize)
     {
-      if (a3 == 1)
+      if (normalize == 1)
       {
         v4 = [(NSString *)self length];
-        v5 = [(NSString *)self decomposedStringWithCompatibilityMapping];
+        precomposedStringWithCanonicalMapping = [(NSString *)self decomposedStringWithCompatibilityMapping];
         goto LABEL_10;
       }
 
 LABEL_13:
-      v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: invalid normalization form %ld", objc_opt_class(), a3), 0}];
+      v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: invalid normalization form %ld", objc_opt_class(), normalize), 0}];
       objc_exception_throw(v6);
     }
 
     v4 = [(NSString *)self length];
-    v5 = [(NSString *)self decomposedStringWithCanonicalMapping];
+    precomposedStringWithCanonicalMapping = [(NSString *)self decomposedStringWithCanonicalMapping];
   }
 
 LABEL_10:
 
-  [(NSMutableString *)self replaceCharactersInRange:0 withString:v4, v5];
+  [(NSMutableString *)self replaceCharactersInRange:0 withString:v4, precomposedStringWithCanonicalMapping];
 }
 
-+ (NSMutableString)allocWithZone:(_NSZone *)a3
++ (NSMutableString)allocWithZone:(_NSZone *)zone
 {
-  if (__NSMutableStringClass == a1)
+  if (__NSMutableStringClass == self)
   {
     return &__mutablePlaceholder;
   }
 
   else
   {
-    return NSAllocateObject(a1, 0, a3);
+    return NSAllocateObject(self, 0, zone);
   }
 }
 
@@ -488,19 +488,19 @@ LABEL_10:
   [(NSMutableString *)self replaceCharactersInRange:v5 withString:0, aString];
 }
 
-- (void)replaceCharactersInRange:(_NSRange)a3 withCString:(const char *)a4 length:(unint64_t)a5
+- (void)replaceCharactersInRange:(_NSRange)range withCString:(const char *)string length:(unint64_t)length
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = [objc_allocWithZone(NSString) initWithCString:a4 length:a5];
+  length = range.length;
+  location = range.location;
+  v8 = [objc_allocWithZone(NSString) initWithCString:string length:length];
   [(NSMutableString *)self replaceCharactersInRange:location withString:length, v8];
 }
 
-- (void)replaceCharactersInRange:(_NSRange)a3 withCharacters:(const unsigned __int16 *)a4 length:(unint64_t)a5
+- (void)replaceCharactersInRange:(_NSRange)range withCharacters:(const unsigned __int16 *)characters length:(unint64_t)length
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = [objc_allocWithZone(NSString) initWithCharacters:a4 length:a5];
+  length = range.length;
+  location = range.location;
+  v8 = [objc_allocWithZone(NSString) initWithCharacters:characters length:length];
   [(NSMutableString *)self replaceCharactersInRange:location withString:length, v8];
 }
 
@@ -602,31 +602,31 @@ LABEL_21:
   return v7 != 0;
 }
 
-- (unint64_t)_replaceOccurrencesOfRegularExpressionPattern:(id)a3 withTemplate:(id)a4 options:(unint64_t)a5 range:(_NSRange)a6
+- (unint64_t)_replaceOccurrencesOfRegularExpressionPattern:(id)pattern withTemplate:(id)template options:(unint64_t)options range:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
-  v12 = a5 & 1;
+  length = range.length;
+  location = range.location;
+  v12 = options & 1;
   if (_MergedGlobals_144 != -1)
   {
     dispatch_once(&_MergedGlobals_144, &__block_literal_global_70);
   }
 
-  v13 = [NSString stringWithFormat:@"%lx:%@", v12, a3];
-  v14 = [qword_1ED440028 objectForKey:v13];
+  pattern = [NSString stringWithFormat:@"%lx:%@", v12, pattern];
+  v14 = [qword_1ED440028 objectForKey:pattern];
   if (!v14)
   {
-    result = [[NSRegularExpression alloc] initWithPattern:a3 options:v12 error:0];
+    result = [[NSRegularExpression alloc] initWithPattern:pattern options:v12 error:0];
     if (!result)
     {
       return result;
     }
 
     v14 = result;
-    [qword_1ED440028 setObject:result forKey:v13];
+    [qword_1ED440028 setObject:result forKey:pattern];
   }
 
-  v16 = [v14 replaceMatchesInString:self options:(a5 >> 1) & 4 range:location withTemplate:{length, a4}];
+  v16 = [v14 replaceMatchesInString:self options:(options >> 1) & 4 range:location withTemplate:{length, template}];
 
   return v16;
 }

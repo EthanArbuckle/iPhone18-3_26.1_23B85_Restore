@@ -1,10 +1,10 @@
 @interface NavShareETAHeaderView
-- (NavShareETAHeaderView)initWithFrame:(CGRect)a3;
+- (NavShareETAHeaderView)initWithFrame:(CGRect)frame;
 - (id)_effectiveTraitCollection;
 - (void)_updateFonts;
 - (void)_updateText;
-- (void)setActiveContacts:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setActiveContacts:(id)contacts;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation NavShareETAHeaderView
@@ -12,28 +12,28 @@
 - (void)_updateText
 {
   v3 = [NSOrderedSet alloc];
-  v4 = [(NavShareETAHeaderView *)self activeContacts];
-  v21 = [v3 initWithArray:v4];
+  activeContacts = [(NavShareETAHeaderView *)self activeContacts];
+  v21 = [v3 initWithArray:activeContacts];
 
   v5 = [v21 count];
   if (v5)
   {
     v6 = v5;
-    v7 = [v21 firstObject];
-    v8 = [v7 contact];
-    v9 = [CNContactFormatter stringFromContact:v8 style:1000];
+    firstObject = [v21 firstObject];
+    contact = [firstObject contact];
+    v9 = [CNContactFormatter stringFromContact:contact style:1000];
     v10 = v9;
     if (v9)
     {
-      v11 = v9;
+      displayName = v9;
     }
 
     else
     {
-      v11 = [v7 displayName];
+      displayName = [firstObject displayName];
     }
 
-    v14 = v11;
+    v14 = displayName;
 
     v15 = v6 - 1;
     v16 = +[NSBundle mainBundle];
@@ -53,17 +53,17 @@
     v13 = [v12 localizedStringForKey:@"Share ETA [Card Title value:Not Sharing]" table:{@"localized string not found", 0}];
     [(UILabel *)self->_titleLabel setText:v13];
 
-    v7 = +[NSBundle mainBundle];
-    v14 = [v7 localizedStringForKey:@"Share ETA [Card Subtitle]" value:@"localized string not found" table:0];
+    firstObject = +[NSBundle mainBundle];
+    v14 = [firstObject localizedStringForKey:@"Share ETA [Card Subtitle]" value:@"localized string not found" table:0];
     [(UILabel *)self->_subtitleLabel setText:v14];
   }
 }
 
-- (void)setActiveContacts:(id)a3
+- (void)setActiveContacts:(id)contacts
 {
-  v5 = a3;
+  contactsCopy = contacts;
   v6 = self->_activeContacts;
-  v7 = v5;
+  v7 = contactsCopy;
   if (v7 | v6)
   {
     v9 = v7;
@@ -72,7 +72,7 @@
     v7 = v9;
     if ((v8 & 1) == 0)
     {
-      objc_storeStrong(&self->_activeContacts, a3);
+      objc_storeStrong(&self->_activeContacts, contacts);
       [(NavShareETAHeaderView *)self _updateText];
       v7 = v9;
     }
@@ -81,45 +81,45 @@
 
 - (id)_effectiveTraitCollection
 {
-  v3 = [(NavShareETAHeaderView *)self traitCollection];
-  v4 = [(NavShareETAHeaderView *)self _maximumContentSizeCategory];
-  v5 = [v3 _maps_traitCollectionByClampingContentSizeCategoryWithMinimumContentSizeCategory:0 maximumContentSizeCategory:v4];
+  traitCollection = [(NavShareETAHeaderView *)self traitCollection];
+  _maximumContentSizeCategory = [(NavShareETAHeaderView *)self _maximumContentSizeCategory];
+  v5 = [traitCollection _maps_traitCollectionByClampingContentSizeCategoryWithMinimumContentSizeCategory:0 maximumContentSizeCategory:_maximumContentSizeCategory];
 
   return v5;
 }
 
 - (void)_updateFonts
 {
-  v5 = [(NavShareETAHeaderView *)self _effectiveTraitCollection];
-  v3 = [UIFont system28BoldCompatibleWithTraitCollection:v5];
+  _effectiveTraitCollection = [(NavShareETAHeaderView *)self _effectiveTraitCollection];
+  v3 = [UIFont system28BoldCompatibleWithTraitCollection:_effectiveTraitCollection];
   [(UILabel *)self->_titleLabel setFont:v3];
 
-  v4 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:v5];
+  v4 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:_effectiveTraitCollection];
   [(UILabel *)self->_subtitleLabel setFont:v4];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = NavShareETAHeaderView;
-  v4 = a3;
-  [(NavShareETAHeaderView *)&v9 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(NavShareETAHeaderView *)&v9 traitCollectionDidChange:changeCopy];
   v5 = [(NavShareETAHeaderView *)self traitCollection:v9.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  v8 = sub_10008FB5C(v6, v7);
+  v8 = sub_10008FB5C(preferredContentSizeCategory, preferredContentSizeCategory2);
   if (v8)
   {
     [(NavShareETAHeaderView *)self _updateFonts];
   }
 }
 
-- (NavShareETAHeaderView)initWithFrame:(CGRect)a3
+- (NavShareETAHeaderView)initWithFrame:(CGRect)frame
 {
   v35.receiver = self;
   v35.super_class = NavShareETAHeaderView;
-  v3 = [(NavShareETAHeaderView *)&v35 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NavShareETAHeaderView *)&v35 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_class();
@@ -151,33 +151,33 @@
 
     [(UILabel *)v3->_subtitleLabel setAccessibilityIdentifier:@"SubtitleLabel"];
     [(NavShareETAHeaderView *)v3 addSubview:v3->_subtitleLabel];
-    v34 = [(UILabel *)v3->_titleLabel leadingAnchor];
-    v33 = [(NavShareETAHeaderView *)v3 leadingAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33 constant:16.0];
+    leadingAnchor = [(UILabel *)v3->_titleLabel leadingAnchor];
+    leadingAnchor2 = [(NavShareETAHeaderView *)v3 leadingAnchor];
+    v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v36[0] = v32;
-    v31 = [(UILabel *)v3->_titleLabel trailingAnchor];
-    v30 = [(NavShareETAHeaderView *)v3 trailingAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30];
+    trailingAnchor = [(UILabel *)v3->_titleLabel trailingAnchor];
+    trailingAnchor2 = [(NavShareETAHeaderView *)v3 trailingAnchor];
+    v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v36[1] = v29;
-    v28 = [(UILabel *)v3->_titleLabel topAnchor];
-    v27 = [(NavShareETAHeaderView *)v3 topAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27 constant:17.0];
+    topAnchor = [(UILabel *)v3->_titleLabel topAnchor];
+    topAnchor2 = [(NavShareETAHeaderView *)v3 topAnchor];
+    v26 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:17.0];
     v36[2] = v26;
-    v25 = [(UILabel *)v3->_subtitleLabel leadingAnchor];
-    v24 = [(NavShareETAHeaderView *)v3 leadingAnchor];
-    v23 = [v25 constraintEqualToAnchor:v24 constant:16.0];
+    leadingAnchor3 = [(UILabel *)v3->_subtitleLabel leadingAnchor];
+    leadingAnchor4 = [(NavShareETAHeaderView *)v3 leadingAnchor];
+    v23 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:16.0];
     v36[3] = v23;
-    v22 = [(UILabel *)v3->_subtitleLabel trailingAnchor];
-    v12 = [(NavShareETAHeaderView *)v3 trailingAnchor];
-    v13 = [v22 constraintEqualToAnchor:v12];
+    trailingAnchor3 = [(UILabel *)v3->_subtitleLabel trailingAnchor];
+    trailingAnchor4 = [(NavShareETAHeaderView *)v3 trailingAnchor];
+    v13 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v36[4] = v13;
-    v14 = [(UILabel *)v3->_subtitleLabel topAnchor];
-    v15 = [(UILabel *)v3->_titleLabel bottomAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    topAnchor3 = [(UILabel *)v3->_subtitleLabel topAnchor];
+    bottomAnchor = [(UILabel *)v3->_titleLabel bottomAnchor];
+    v16 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
     v36[5] = v16;
-    v17 = [(NavShareETAHeaderView *)v3 bottomAnchor];
-    v18 = [(UILabel *)v3->_subtitleLabel bottomAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18 constant:17.0];
+    bottomAnchor2 = [(NavShareETAHeaderView *)v3 bottomAnchor];
+    bottomAnchor3 = [(UILabel *)v3->_subtitleLabel bottomAnchor];
+    v19 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:17.0];
     v36[6] = v19;
     v20 = [NSArray arrayWithObjects:v36 count:7];
     [NSLayoutConstraint activateConstraints:v20];

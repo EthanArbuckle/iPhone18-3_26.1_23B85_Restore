@@ -11,9 +11,9 @@
   v2 = v6.receiver;
   [(PlayButton *)&v6 layoutSubviews];
   v3 = OBJC_IVAR____TtC9SeymourUI10PlayButton_visualEffectView;
-  v4 = [*&v2[OBJC_IVAR____TtC9SeymourUI10PlayButton_visualEffectView] layer];
+  layer = [*&v2[OBJC_IVAR____TtC9SeymourUI10PlayButton_visualEffectView] layer];
   [v2 bounds];
-  [v4 setCornerRadius_];
+  [layer setCornerRadius_];
 
   [*&v2[v3] setClipsToBounds_];
 }

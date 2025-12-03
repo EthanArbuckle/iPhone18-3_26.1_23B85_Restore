@@ -2,7 +2,7 @@
 - (NTKAlaskanComplicationsConfiguration)init;
 - (id)complicationSlotDescriptors;
 - (id)orderedComplicationSlots;
-- (id)richComplicationSlotsForDevice:(id)a3;
+- (id)richComplicationSlotsForDevice:(id)device;
 @end
 
 @implementation NTKAlaskanComplicationsConfiguration
@@ -18,8 +18,8 @@
 {
   v7.receiver = self;
   v7.super_class = NTKAlaskanComplicationsConfiguration;
-  v2 = [(NTKAlaskanComplicationsConfiguration *)&v7 complicationSlotDescriptors];
-  v3 = [v2 mutableCopy];
+  complicationSlotDescriptors = [(NTKAlaskanComplicationsConfiguration *)&v7 complicationSlotDescriptors];
+  v3 = [complicationSlotDescriptors mutableCopy];
 
   v4 = NTKWrappedDateComplicationType();
   v5 = NTKComplicationSlotDescriptor();
@@ -40,7 +40,7 @@
   return v2;
 }
 
-- (id)richComplicationSlotsForDevice:(id)a3
+- (id)richComplicationSlotsForDevice:(id)device
 {
   v5[0] = NTKComplicationSlotTopLeft;
   v5[1] = NTKComplicationSlotTopRight;

@@ -1,23 +1,23 @@
 @interface CSResetRestoreViewController
-- (CSResetRestoreViewController)initWithStatusProvider:(id)a3;
+- (CSResetRestoreViewController)initWithStatusProvider:(id)provider;
 - (id)_currentTextForResetOrRestoreState;
-- (void)aggregateAppearance:(id)a3;
-- (void)aggregateBehavior:(id)a3;
+- (void)aggregateAppearance:(id)appearance;
+- (void)aggregateBehavior:(id)behavior;
 - (void)viewDidLoad;
 @end
 
 @implementation CSResetRestoreViewController
 
-- (CSResetRestoreViewController)initWithStatusProvider:(id)a3
+- (CSResetRestoreViewController)initWithStatusProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = CSResetRestoreViewController;
   v6 = [(CSResetRestoreViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_statusProvider, a3);
+    objc_storeStrong(&v6->_statusProvider, provider);
   }
 
   return v7;
@@ -25,67 +25,67 @@
 
 - (void)viewDidLoad
 {
-  v3 = [(CSModalViewControllerBase *)self view];
-  v4 = [(CSResetRestoreViewController *)self _currentTextForResetOrRestoreState];
-  [v3 setTitleText:v4];
+  view = [(CSModalViewControllerBase *)self view];
+  _currentTextForResetOrRestoreState = [(CSResetRestoreViewController *)self _currentTextForResetOrRestoreState];
+  [view setTitleText:_currentTextForResetOrRestoreState];
 
   v5.receiver = self;
   v5.super_class = CSResetRestoreViewController;
   [(CSModalViewControllerBase *)&v5 viewDidLoad];
 }
 
-- (void)aggregateAppearance:(id)a3
+- (void)aggregateAppearance:(id)appearance
 {
   v16.receiver = self;
   v16.super_class = CSResetRestoreViewController;
-  v4 = a3;
-  [(CSModalViewControllerBase *)&v16 aggregateAppearance:v4];
+  appearanceCopy = appearance;
+  [(CSModalViewControllerBase *)&v16 aggregateAppearance:appearanceCopy];
   v5 = [CSComponent homeAffordance:v16.receiver];
   v6 = [v5 priority:80];
-  v7 = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
-  v8 = [v6 identifier:v7];
+  appearanceIdentifier = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
+  v8 = [v6 identifier:appearanceIdentifier];
   v9 = [v8 hidden:1];
-  [v4 addComponent:v9];
+  [appearanceCopy addComponent:v9];
 
   v10 = +[CSComponent proudLock];
   v11 = [v10 priority:80];
   v12 = [v11 hidden:1];
-  [v4 addComponent:v12];
+  [appearanceCopy addComponent:v12];
 
   v13 = +[CSComponent whitePoint];
   v14 = [v13 priority:80];
   v15 = [v14 hidden:1];
-  [v4 addComponent:v15];
+  [appearanceCopy addComponent:v15];
 }
 
-- (void)aggregateBehavior:(id)a3
+- (void)aggregateBehavior:(id)behavior
 {
   v4.receiver = self;
   v4.super_class = CSResetRestoreViewController;
-  v3 = a3;
-  [(CSModalViewControllerBase *)&v4 aggregateBehavior:v3];
-  [v3 addRestrictedCapabilities:{1048632, v4.receiver, v4.super_class}];
+  behaviorCopy = behavior;
+  [(CSModalViewControllerBase *)&v4 aggregateBehavior:behaviorCopy];
+  [behaviorCopy addRestrictedCapabilities:{1048632, v4.receiver, v4.super_class}];
 }
 
 - (id)_currentTextForResetOrRestoreState
 {
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v4 = [(CSResetRestoreStatusProviding *)self->_statusProvider isRestoring];
+  isRestoring = [(CSResetRestoreStatusProviding *)self->_statusProvider isRestoring];
   statusProvider = self->_statusProvider;
-  if (v4)
+  if (isRestoring)
   {
-    v6 = [(CSResetRestoreStatusProviding *)statusProvider restoreState];
+    restoreState = [(CSResetRestoreStatusProviding *)statusProvider restoreState];
     v7 = 0;
-    if (v6 > 2)
+    if (restoreState > 2)
     {
-      if (v6 == 3)
+      if (restoreState == 3)
       {
         v8 = @"RESTORE_CANCELING";
       }
 
       else
       {
-        if (v6 != 4)
+        if (restoreState != 4)
         {
           goto LABEL_17;
         }
@@ -96,9 +96,9 @@
       goto LABEL_16;
     }
 
-    if (v6 != 1)
+    if (restoreState != 1)
     {
-      if (v6 != 2)
+      if (restoreState != 2)
       {
         goto LABEL_17;
       }
@@ -119,14 +119,14 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v9 = [(CSResetRestoreStatusProviding *)self->_statusProvider resetState];
-  if (v9 == 2)
+  resetState = [(CSResetRestoreStatusProviding *)self->_statusProvider resetState];
+  if (resetState == 2)
   {
     v8 = @"RESET_COMPLETE";
     goto LABEL_16;
   }
 
-  if (v9 == 1)
+  if (resetState == 1)
   {
     v10 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"RESET_IN_PROGRESS"];
     v7 = [v3 localizedStringForKey:v10 value:&stru_28302FDA0 table:@"CoverSheet"];

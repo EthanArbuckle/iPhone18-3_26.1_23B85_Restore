@@ -1,16 +1,16 @@
 @interface BMHumanUnderstandingPersonalInference
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMHumanUnderstandingPersonalInference)initWithConfidence:(id)a3 fact:(id)a4 qualifiers:(id)a5 modelVersion:(id)a6;
-- (BMHumanUnderstandingPersonalInference)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMHumanUnderstandingPersonalInference)initWithConfidence:(id)confidence fact:(id)fact qualifiers:(id)qualifiers modelVersion:(id)version;
+- (BMHumanUnderstandingPersonalInference)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_qualifiersJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMHumanUnderstandingPersonalInference
@@ -33,13 +33,13 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMHumanUnderstandingPersonalInference hasConfidence](self, "hasConfidence") || [v5 hasConfidence])
     {
       if (![(BMHumanUnderstandingPersonalInference *)self hasConfidence])
@@ -61,18 +61,18 @@
       }
     }
 
-    v9 = [(BMHumanUnderstandingPersonalInference *)self fact];
-    v10 = [v5 fact];
-    v11 = v10;
-    if (v9 == v10)
+    fact = [(BMHumanUnderstandingPersonalInference *)self fact];
+    fact2 = [v5 fact];
+    v11 = fact2;
+    if (fact == fact2)
     {
     }
 
     else
     {
-      v12 = [(BMHumanUnderstandingPersonalInference *)self fact];
-      v13 = [v5 fact];
-      v14 = [v12 isEqual:v13];
+      fact3 = [(BMHumanUnderstandingPersonalInference *)self fact];
+      fact4 = [v5 fact];
+      v14 = [fact3 isEqual:fact4];
 
       if (!v14)
       {
@@ -80,18 +80,18 @@
       }
     }
 
-    v16 = [(BMHumanUnderstandingPersonalInference *)self qualifiers];
-    v17 = [v5 qualifiers];
-    v18 = v17;
-    if (v16 == v17)
+    qualifiers = [(BMHumanUnderstandingPersonalInference *)self qualifiers];
+    qualifiers2 = [v5 qualifiers];
+    v18 = qualifiers2;
+    if (qualifiers == qualifiers2)
     {
     }
 
     else
     {
-      v19 = [(BMHumanUnderstandingPersonalInference *)self qualifiers];
-      v20 = [v5 qualifiers];
-      v21 = [v19 isEqual:v20];
+      qualifiers3 = [(BMHumanUnderstandingPersonalInference *)self qualifiers];
+      qualifiers4 = [v5 qualifiers];
+      v21 = [qualifiers3 isEqual:qualifiers4];
 
       if (!v21)
       {
@@ -107,8 +107,8 @@
 
     if (-[BMHumanUnderstandingPersonalInference hasModelVersion](self, "hasModelVersion") && [v5 hasModelVersion])
     {
-      v22 = [(BMHumanUnderstandingPersonalInference *)self modelVersion];
-      v15 = v22 == [v5 modelVersion];
+      modelVersion = [(BMHumanUnderstandingPersonalInference *)self modelVersion];
+      v15 = modelVersion == [v5 modelVersion];
 LABEL_22:
 
       goto LABEL_23;
@@ -141,10 +141,10 @@ LABEL_23:
     v5 = [v4 numberWithDouble:?];
   }
 
-  v6 = [(BMHumanUnderstandingPersonalInference *)self fact];
-  v7 = [v6 jsonDictionary];
+  fact = [(BMHumanUnderstandingPersonalInference *)self fact];
+  jsonDictionary = [fact jsonDictionary];
 
-  v8 = [(BMHumanUnderstandingPersonalInference *)self _qualifiersJSONArray];
+  _qualifiersJSONArray = [(BMHumanUnderstandingPersonalInference *)self _qualifiersJSONArray];
   if ([(BMHumanUnderstandingPersonalInference *)self hasModelVersion])
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMHumanUnderstandingPersonalInference modelVersion](self, "modelVersion")}];
@@ -156,41 +156,41 @@ LABEL_23:
   }
 
   v17[0] = @"confidence";
-  v10 = v5;
+  null = v5;
   if (!v5)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[0] = v10;
+  v18[0] = null;
   v17[1] = @"fact";
-  v11 = v7;
-  if (!v7)
+  null2 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[1] = v11;
+  v18[1] = null2;
   v17[2] = @"qualifiers";
-  v12 = v8;
-  if (!v8)
+  null3 = _qualifiersJSONArray;
+  if (!_qualifiersJSONArray)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[2] = v12;
+  v18[2] = null3;
   v17[3] = @"modelVersion";
-  v13 = v9;
+  null4 = v9;
   if (!v9)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[3] = v13;
+  v18[3] = null4;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:4];
   if (v9)
   {
-    if (v8)
+    if (_qualifiersJSONArray)
     {
       goto LABEL_18;
     }
@@ -199,10 +199,10 @@ LABEL_23:
   else
   {
 
-    if (v8)
+    if (_qualifiersJSONArray)
     {
 LABEL_18:
-      if (v7)
+      if (jsonDictionary)
       {
         goto LABEL_19;
       }
@@ -218,7 +218,7 @@ LABEL_25:
     }
   }
 
-  if (!v7)
+  if (!jsonDictionary)
   {
     goto LABEL_25;
   }
@@ -245,8 +245,8 @@ LABEL_20:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMHumanUnderstandingPersonalInference *)self qualifiers];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  qualifiers = [(BMHumanUnderstandingPersonalInference *)self qualifiers];
+  v5 = [qualifiers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -257,14 +257,14 @@ LABEL_20:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(qualifiers);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [qualifiers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -275,17 +275,17 @@ LABEL_20:
   return v3;
 }
 
-- (BMHumanUnderstandingPersonalInference)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMHumanUnderstandingPersonalInference)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v78[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"confidence"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"confidence"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v26 = objc_alloc(MEMORY[0x1E696ABC0]);
         v27 = v6;
@@ -298,13 +298,13 @@ LABEL_20:
         v6 = v27;
         v30 = [v26 initWithDomain:v29 code:2 userInfo:v25];
         v7 = 0;
-        v24 = 0;
-        *a4 = v30;
+        selfCopy3 = 0;
+        *error = v30;
         goto LABEL_55;
       }
 
       v7 = 0;
-      v24 = 0;
+      selfCopy3 = 0;
       goto LABEL_57;
     }
 
@@ -316,13 +316,13 @@ LABEL_20:
     v7 = 0;
   }
 
-  v8 = [v5 objectForKeyedSubscript:@"fact"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"fact"];
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v59 = objc_alloc(MEMORY[0x1E696ABC0]);
         v31 = *MEMORY[0x1E698F240];
@@ -330,13 +330,13 @@ LABEL_20:
         v25 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"fact"];
         v76 = v25;
         v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v76 forKeys:&v75 count:1];
-        *a4 = [v59 initWithDomain:v31 code:2 userInfo:v32];
+        *error = [v59 initWithDomain:v31 code:2 userInfo:v32];
 
-        v24 = 0;
+        selfCopy3 = 0;
         goto LABEL_55;
       }
 
-      v24 = 0;
+      selfCopy3 = 0;
       goto LABEL_56;
     }
 
@@ -347,13 +347,13 @@ LABEL_20:
     v23 = v65;
     if (v23)
     {
-      if (a4)
+      if (error)
       {
         v23 = v23;
-        *a4 = v23;
+        *error = v23;
       }
 
-      v24 = 0;
+      selfCopy3 = 0;
       v25 = v56;
       goto LABEL_55;
     }
@@ -366,16 +366,16 @@ LABEL_20:
     v56 = 0;
   }
 
-  v9 = [v5 objectForKeyedSubscript:@"qualifiers"];
-  v10 = [MEMORY[0x1E695DFB0] null];
-  v11 = [v9 isEqual:v10];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"qualifiers"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v11 = [v9 isEqual:null];
 
   v55 = v8;
   if (v11)
   {
     v52 = v7;
     v53 = v6;
-    v54 = self;
+    selfCopy2 = self;
 
     v9 = 0;
   }
@@ -387,9 +387,9 @@ LABEL_20:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
-          v24 = 0;
+          selfCopy3 = 0;
           v25 = v56;
           goto LABEL_54;
         }
@@ -399,10 +399,10 @@ LABEL_20:
         v73 = *MEMORY[0x1E696A578];
         v58 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"qualifiers"];
         v74 = v58;
-        v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v74 forKeys:&v73 count:1];
-        v44 = [v42 initWithDomain:v43 code:2 userInfo:v21];
-        v24 = 0;
-        *a4 = v44;
+        errorCopy3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v74 forKeys:&v73 count:1];
+        v44 = [v42 initWithDomain:v43 code:2 userInfo:errorCopy3];
+        selfCopy3 = 0;
+        *error = v44;
 LABEL_48:
         v25 = v56;
         goto LABEL_53;
@@ -411,7 +411,7 @@ LABEL_48:
 
     v52 = v7;
     v53 = v6;
-    v54 = self;
+    selfCopy2 = self;
   }
 
   v58 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
@@ -428,7 +428,7 @@ LABEL_48:
 
   v13 = v12;
   v14 = *v62;
-  v51 = v5;
+  v51 = dictionaryCopy;
   while (2)
   {
     for (i = 0; i != v13; ++i)
@@ -442,8 +442,8 @@ LABEL_48:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v33 = a4;
-        if (a4)
+        errorCopy2 = error;
+        if (error)
         {
           v34 = objc_alloc(MEMORY[0x1E696ABC0]);
           v35 = *MEMORY[0x1E698F240];
@@ -455,13 +455,13 @@ LABEL_48:
           v38 = &v70;
 LABEL_40:
           v39 = [v36 dictionaryWithObjects:v37 forKeys:v38 count:1];
-          *v33 = [v34 initWithDomain:v35 code:2 userInfo:v39];
+          *errorCopy2 = [v34 initWithDomain:v35 code:2 userInfo:v39];
 
-          v24 = 0;
-          v21 = v9;
-          v5 = v51;
+          selfCopy3 = 0;
+          errorCopy3 = v9;
+          dictionaryCopy = v51;
           v6 = v53;
-          self = v54;
+          self = selfCopy2;
 LABEL_44:
           v7 = v52;
           v25 = v56;
@@ -474,8 +474,8 @@ LABEL_44:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v33 = a4;
-        if (a4)
+        errorCopy2 = error;
+        if (error)
         {
           v34 = objc_alloc(MEMORY[0x1E696ABC0]);
           v35 = *MEMORY[0x1E698F240];
@@ -489,12 +489,12 @@ LABEL_44:
         }
 
 LABEL_47:
-        v24 = 0;
-        v21 = v9;
-        v5 = v51;
+        selfCopy3 = 0;
+        errorCopy3 = v9;
+        dictionaryCopy = v51;
         v7 = v52;
         v6 = v53;
-        self = v54;
+        self = selfCopy2;
         goto LABEL_48;
       }
 
@@ -507,16 +507,16 @@ LABEL_47:
       {
         v40 = v20;
         v6 = v53;
-        if (a4)
+        if (error)
         {
           v41 = v20;
-          *a4 = v40;
+          *error = v40;
         }
 
-        v24 = 0;
-        v21 = v9;
-        v5 = v51;
-        self = v54;
+        selfCopy3 = 0;
+        errorCopy3 = v9;
+        dictionaryCopy = v51;
+        self = selfCopy2;
         goto LABEL_44;
       }
 
@@ -524,7 +524,7 @@ LABEL_47:
     }
 
     v13 = [v9 countByEnumeratingWithState:&v61 objects:v72 count:16];
-    v5 = v51;
+    dictionaryCopy = v51;
     if (v13)
     {
       continue;
@@ -535,15 +535,15 @@ LABEL_47:
 
 LABEL_22:
 
-  v17 = [v5 objectForKeyedSubscript:@"modelVersion"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"modelVersion"];
   if (v17)
   {
     objc_opt_class();
-    self = v54;
+    self = selfCopy2;
     v7 = v52;
     if (objc_opt_isKindOfClass())
     {
-      v21 = 0;
+      errorCopy3 = 0;
       v6 = v53;
       goto LABEL_50;
     }
@@ -552,14 +552,14 @@ LABEL_22:
     v25 = v56;
     if (objc_opt_isKindOfClass())
     {
-      v21 = v17;
+      errorCopy3 = v17;
       v6 = v53;
       goto LABEL_51;
     }
 
     v6 = v53;
-    v21 = a4;
-    if (a4)
+    errorCopy3 = error;
+    if (error)
     {
       v50 = objc_alloc(MEMORY[0x1E696ABC0]);
       v49 = *MEMORY[0x1E698F240];
@@ -567,25 +567,25 @@ LABEL_22:
       v47 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"modelVersion"];
       v67 = v47;
       v48 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v67 forKeys:&v66 count:1];
-      *a4 = [v50 initWithDomain:v49 code:2 userInfo:v48];
+      *error = [v50 initWithDomain:v49 code:2 userInfo:v48];
 
-      v21 = 0;
+      errorCopy3 = 0;
     }
 
-    v24 = 0;
+    selfCopy3 = 0;
   }
 
   else
   {
-    v21 = 0;
+    errorCopy3 = 0;
     v6 = v53;
-    self = v54;
+    self = selfCopy2;
     v7 = v52;
 LABEL_50:
     v25 = v56;
 LABEL_51:
-    self = [(BMHumanUnderstandingPersonalInference *)self initWithConfidence:v7 fact:v25 qualifiers:v58 modelVersion:v21];
-    v24 = self;
+    self = [(BMHumanUnderstandingPersonalInference *)self initWithConfidence:v7 fact:v25 qualifiers:v58 modelVersion:errorCopy3];
+    selfCopy3 = self;
   }
 
 LABEL_52:
@@ -599,22 +599,22 @@ LABEL_56:
 
 LABEL_57:
   v45 = *MEMORY[0x1E69E9840];
-  return v24;
+  return selfCopy3;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMHumanUnderstandingPersonalInference *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_hasConfidence)
   {
     confidence = self->_confidence;
@@ -625,7 +625,7 @@ LABEL_57:
   {
     v18 = 0;
     PBDataWriterPlaceMark();
-    [(BMHumanUnderstandingPersonalInferenceFact *)self->_fact writeTo:v4];
+    [(BMHumanUnderstandingPersonalInferenceFact *)self->_fact writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -652,7 +652,7 @@ LABEL_57:
         v11 = *(*(&v14 + 1) + 8 * v10);
         v18 = 0;
         PBDataWriterPlaceMark();
-        [v11 writeTo:{v4, v14}];
+        [v11 writeTo:{toCopy, v14}];
         PBDataWriterRecallMark();
         ++v10;
       }
@@ -673,9 +673,9 @@ LABEL_57:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v37.receiver = self;
   v37.super_class = BMHumanUnderstandingPersonalInference;
   v5 = [(BMEventBase *)&v37 init];
@@ -685,12 +685,12 @@ LABEL_57:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -701,18 +701,18 @@ LABEL_57:
       while (1)
       {
         LOBYTE(v38) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v38 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v38 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (LOBYTE(v38) & 0x7F) << v8;
@@ -730,9 +730,9 @@ LABEL_57:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         break;
       }
@@ -751,18 +751,18 @@ LABEL_16:
             while (1)
             {
               LOBYTE(v38) = 0;
-              v22 = [v4 position] + 1;
-              if (v22 >= [v4 position] && (v23 = objc_msgSend(v4, "position") + 1, v23 <= objc_msgSend(v4, "length")))
+              v22 = [fromCopy position] + 1;
+              if (v22 >= [fromCopy position] && (v23 = objc_msgSend(fromCopy, "position") + 1, v23 <= objc_msgSend(fromCopy, "length")))
               {
-                v24 = [v4 data];
-                [v24 getBytes:&v38 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v38 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v21 |= (LOBYTE(v38) & 0x7F) << v19;
@@ -780,7 +780,7 @@ LABEL_16:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v25 = 0;
             }
@@ -806,7 +806,7 @@ LABEL_35:
 
         v38 = 0.0;
         v39 = 0;
-        if (!PBReaderPlaceMark() || (v28 = [[BMHumanUnderstandingPersonalInferenceFact alloc] initByReadFrom:v4]) == 0)
+        if (!PBReaderPlaceMark() || (v28 = [[BMHumanUnderstandingPersonalInferenceFact alloc] initByReadFrom:fromCopy]) == 0)
         {
 LABEL_52:
 
@@ -824,18 +824,18 @@ LABEL_52:
         {
           v5->_hasConfidence = 1;
           v38 = 0.0;
-          v26 = [v4 position] + 8;
-          if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 8, v27 <= objc_msgSend(v4, "length")))
+          v26 = [fromCopy position] + 8;
+          if (v26 >= [fromCopy position] && (v27 = objc_msgSend(fromCopy, "position") + 8, v27 <= objc_msgSend(fromCopy, "length")))
           {
-            v30 = [v4 data];
-            [v30 getBytes:&v38 range:{objc_msgSend(v4, "position"), 8}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v38 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v5->_confidence = v38;
@@ -854,7 +854,7 @@ LABEL_52:
           goto LABEL_52;
         }
 
-        v17 = [[BMHumanUnderstandingPersonalInferenceFact alloc] initByReadFrom:v4];
+        v17 = [[BMHumanUnderstandingPersonalInferenceFact alloc] initByReadFrom:fromCopy];
         if (!v17)
         {
           goto LABEL_52;
@@ -867,18 +867,18 @@ LABEL_52:
       }
 
 LABEL_49:
-      v31 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v31 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v32 = [v6 copy];
   qualifiers = v5->_qualifiers;
   v5->_qualifiers = v32;
 
-  v34 = [v4 hasError];
-  if (v34)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_53:
     v35 = 0;
@@ -899,30 +899,30 @@ LABEL_51:
   v4 = MEMORY[0x1E696AD98];
   [(BMHumanUnderstandingPersonalInference *)self confidence];
   v5 = [v4 numberWithDouble:?];
-  v6 = [(BMHumanUnderstandingPersonalInference *)self fact];
-  v7 = [(BMHumanUnderstandingPersonalInference *)self qualifiers];
+  fact = [(BMHumanUnderstandingPersonalInference *)self fact];
+  qualifiers = [(BMHumanUnderstandingPersonalInference *)self qualifiers];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMHumanUnderstandingPersonalInference modelVersion](self, "modelVersion")}];
-  v9 = [v3 initWithFormat:@"BMHumanUnderstandingPersonalInference with confidence: %@, fact: %@, qualifiers: %@, modelVersion: %@", v5, v6, v7, v8];
+  v9 = [v3 initWithFormat:@"BMHumanUnderstandingPersonalInference with confidence: %@, fact: %@, qualifiers: %@, modelVersion: %@", v5, fact, qualifiers, v8];
 
   return v9;
 }
 
-- (BMHumanUnderstandingPersonalInference)initWithConfidence:(id)a3 fact:(id)a4 qualifiers:(id)a5 modelVersion:(id)a6
+- (BMHumanUnderstandingPersonalInference)initWithConfidence:(id)confidence fact:(id)fact qualifiers:(id)qualifiers modelVersion:(id)version
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  confidenceCopy = confidence;
+  factCopy = fact;
+  qualifiersCopy = qualifiers;
+  versionCopy = version;
   v18.receiver = self;
   v18.super_class = BMHumanUnderstandingPersonalInference;
   v14 = [(BMEventBase *)&v18 init];
   if (v14)
   {
     v14->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v10)
+    if (confidenceCopy)
     {
       v14->_hasConfidence = 1;
-      [v10 doubleValue];
+      [confidenceCopy doubleValue];
     }
 
     else
@@ -932,21 +932,21 @@ LABEL_51:
     }
 
     v14->_confidence = v15;
-    objc_storeStrong(&v14->_fact, a4);
-    objc_storeStrong(&v14->_qualifiers, a5);
-    if (v13)
+    objc_storeStrong(&v14->_fact, fact);
+    objc_storeStrong(&v14->_qualifiers, qualifiers);
+    if (versionCopy)
     {
       v14->_hasModelVersion = 1;
-      v16 = [v13 unsignedIntValue];
+      unsignedIntValue = [versionCopy unsignedIntValue];
     }
 
     else
     {
-      v16 = 0;
+      unsignedIntValue = 0;
       v14->_hasModelVersion = 0;
     }
 
-    v14->_modelVersion = v16;
+    v14->_modelVersion = unsignedIntValue;
   }
 
   return v14;
@@ -989,13 +989,13 @@ id __48__BMHumanUnderstandingPersonalInference_columns__block_invoke(uint64_t a1
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
     v4 = MEMORY[0x1E69C65B8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithData:v5];
+    dataCopy = data;
+    v6 = [[v4 alloc] initWithData:dataCopy];
 
     v7 = [[BMHumanUnderstandingPersonalInference alloc] initByReadFrom:v6];
     v8 = v7;

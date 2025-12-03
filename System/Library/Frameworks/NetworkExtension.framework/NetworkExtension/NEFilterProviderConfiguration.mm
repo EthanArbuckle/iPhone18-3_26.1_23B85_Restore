@@ -1,33 +1,33 @@
 @interface NEFilterProviderConfiguration
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
-- (NEFilterProviderConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
+- (NEFilterProviderConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEFilterProviderConfiguration
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
-  v4 = a3;
-  v5 = [(NEFilterProviderConfiguration *)self pluginType];
-  v6 = v5 != 0;
+  errorsCopy = errors;
+  pluginType = [(NEFilterProviderConfiguration *)self pluginType];
+  v6 = pluginType != 0;
 
-  if (!v5)
+  if (!pluginType)
   {
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
   }
 
   if (![(NEFilterProviderConfiguration *)self filterBrowsers]&& ![(NEFilterProviderConfiguration *)self filterSockets]&& ![(NEFilterProviderConfiguration *)self filterPackets])
   {
-    [NEConfiguration addError:filterSockets toList:or filterPackets must be enabled""), v4];
+    [NEConfiguration addError:filterSockets toList:or filterPackets must be enabled""), errorsCopy];
     v6 = 0;
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NEFilterProviderConfiguration allocWithZone:?]];
   [(NEFilterProviderConfiguration *)v4 setFilterBrowsers:[(NEFilterProviderConfiguration *)self filterBrowsers]];
@@ -35,38 +35,38 @@
   [(NEFilterProviderConfiguration *)v4 setFilterSockets:[(NEFilterProviderConfiguration *)self filterSockets]];
   [(NEFilterProviderConfiguration *)v4 setDisableDefaultDrop:[(NEFilterProviderConfiguration *)self disableDefaultDrop]];
   [(NEFilterProviderConfiguration *)v4 setPreserveExistingConnections:[(NEFilterProviderConfiguration *)self preserveExistingConnections]];
-  v5 = [(NEFilterProviderConfiguration *)self vendorConfiguration];
-  [(NEFilterProviderConfiguration *)v4 setVendorConfiguration:v5];
+  vendorConfiguration = [(NEFilterProviderConfiguration *)self vendorConfiguration];
+  [(NEFilterProviderConfiguration *)v4 setVendorConfiguration:vendorConfiguration];
 
-  v6 = [(NEFilterProviderConfiguration *)self serverAddress];
-  [(NEFilterProviderConfiguration *)v4 setServerAddress:v6];
+  serverAddress = [(NEFilterProviderConfiguration *)self serverAddress];
+  [(NEFilterProviderConfiguration *)v4 setServerAddress:serverAddress];
 
-  v7 = [(NEFilterProviderConfiguration *)self username];
-  [(NEFilterProviderConfiguration *)v4 setUsername:v7];
+  username = [(NEFilterProviderConfiguration *)self username];
+  [(NEFilterProviderConfiguration *)v4 setUsername:username];
 
-  v8 = [(NEFilterProviderConfiguration *)self organization];
-  [(NEFilterProviderConfiguration *)v4 setOrganization:v8];
+  organization = [(NEFilterProviderConfiguration *)self organization];
+  [(NEFilterProviderConfiguration *)v4 setOrganization:organization];
 
-  v9 = [(NEFilterProviderConfiguration *)self passwordReference];
-  [(NEFilterProviderConfiguration *)v4 setPasswordReference:v9];
+  passwordReference = [(NEFilterProviderConfiguration *)self passwordReference];
+  [(NEFilterProviderConfiguration *)v4 setPasswordReference:passwordReference];
 
-  v10 = [(NEFilterProviderConfiguration *)self identityReference];
-  [(NEFilterProviderConfiguration *)v4 setIdentityReference:v10];
+  identityReference = [(NEFilterProviderConfiguration *)self identityReference];
+  [(NEFilterProviderConfiguration *)v4 setIdentityReference:identityReference];
 
-  v11 = [(NEFilterProviderConfiguration *)self pluginType];
-  [(NEFilterProviderConfiguration *)v4 setPluginType:v11];
+  pluginType = [(NEFilterProviderConfiguration *)self pluginType];
+  [(NEFilterProviderConfiguration *)v4 setPluginType:pluginType];
 
-  v12 = [(NEFilterProviderConfiguration *)self dataProviderDesignatedRequirement];
-  [(NEFilterProviderConfiguration *)v4 setDataProviderDesignatedRequirement:v12];
+  dataProviderDesignatedRequirement = [(NEFilterProviderConfiguration *)self dataProviderDesignatedRequirement];
+  [(NEFilterProviderConfiguration *)v4 setDataProviderDesignatedRequirement:dataProviderDesignatedRequirement];
 
-  v13 = [(NEFilterProviderConfiguration *)self packetProviderDesignatedRequirement];
-  [(NEFilterProviderConfiguration *)v4 setPacketProviderDesignatedRequirement:v13];
+  packetProviderDesignatedRequirement = [(NEFilterProviderConfiguration *)self packetProviderDesignatedRequirement];
+  [(NEFilterProviderConfiguration *)v4 setPacketProviderDesignatedRequirement:packetProviderDesignatedRequirement];
 
-  v14 = [(NEFilterProviderConfiguration *)self dataProviderURL];
-  [(NEFilterProviderConfiguration *)v4 setDataProviderURL:v14];
+  dataProviderURL = [(NEFilterProviderConfiguration *)self dataProviderURL];
+  [(NEFilterProviderConfiguration *)v4 setDataProviderURL:dataProviderURL];
 
-  v15 = [(NEFilterProviderConfiguration *)self packetProviderURL];
-  [(NEFilterProviderConfiguration *)v4 setPacketProviderURL:v15];
+  packetProviderURL = [(NEFilterProviderConfiguration *)self packetProviderURL];
+  [(NEFilterProviderConfiguration *)v4 setPacketProviderURL:packetProviderURL];
 
   if (self)
   {
@@ -106,149 +106,149 @@ LABEL_6:
   }
 
 LABEL_7:
-  v19 = [(NEFilterProviderConfiguration *)self filterDataProviderBundleIdentifier];
-  [(NEFilterProviderConfiguration *)v4 setFilterDataProviderBundleIdentifier:v19];
+  filterDataProviderBundleIdentifier = [(NEFilterProviderConfiguration *)self filterDataProviderBundleIdentifier];
+  [(NEFilterProviderConfiguration *)v4 setFilterDataProviderBundleIdentifier:filterDataProviderBundleIdentifier];
 
-  v20 = [(NEFilterProviderConfiguration *)self filterPacketProviderBundleIdentifier];
-  [(NEFilterProviderConfiguration *)v4 setFilterPacketProviderBundleIdentifier:v20];
+  filterPacketProviderBundleIdentifier = [(NEFilterProviderConfiguration *)self filterPacketProviderBundleIdentifier];
+  [(NEFilterProviderConfiguration *)v4 setFilterPacketProviderBundleIdentifier:filterPacketProviderBundleIdentifier];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v19 = a3;
-  [v19 encodeBool:-[NEFilterProviderConfiguration filterBrowsers](self forKey:{"filterBrowsers"), @"FilterBrowsers"}];
-  [v19 encodeBool:-[NEFilterProviderConfiguration filterPackets](self forKey:{"filterPackets"), @"FilterPackets"}];
-  [v19 encodeBool:-[NEFilterProviderConfiguration filterSockets](self forKey:{"filterSockets"), @"FilterSockets"}];
-  [v19 encodeBool:-[NEFilterProviderConfiguration disableDefaultDrop](self forKey:{"disableDefaultDrop"), @"DisableDefaultDrop"}];
-  [v19 encodeBool:-[NEFilterProviderConfiguration preserveExistingConnections](self forKey:{"preserveExistingConnections"), @"PreserveExistingConnections"}];
-  v4 = [(NEFilterProviderConfiguration *)self vendorConfiguration];
-  [v19 encodeObject:v4 forKey:@"VendorConfiguration"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[NEFilterProviderConfiguration filterBrowsers](self forKey:{"filterBrowsers"), @"FilterBrowsers"}];
+  [coderCopy encodeBool:-[NEFilterProviderConfiguration filterPackets](self forKey:{"filterPackets"), @"FilterPackets"}];
+  [coderCopy encodeBool:-[NEFilterProviderConfiguration filterSockets](self forKey:{"filterSockets"), @"FilterSockets"}];
+  [coderCopy encodeBool:-[NEFilterProviderConfiguration disableDefaultDrop](self forKey:{"disableDefaultDrop"), @"DisableDefaultDrop"}];
+  [coderCopy encodeBool:-[NEFilterProviderConfiguration preserveExistingConnections](self forKey:{"preserveExistingConnections"), @"PreserveExistingConnections"}];
+  vendorConfiguration = [(NEFilterProviderConfiguration *)self vendorConfiguration];
+  [coderCopy encodeObject:vendorConfiguration forKey:@"VendorConfiguration"];
 
-  v5 = [(NEFilterProviderConfiguration *)self serverAddress];
-  [v19 encodeObject:v5 forKey:@"ServerAddress"];
+  serverAddress = [(NEFilterProviderConfiguration *)self serverAddress];
+  [coderCopy encodeObject:serverAddress forKey:@"ServerAddress"];
 
-  v6 = [(NEFilterProviderConfiguration *)self username];
-  [v19 encodeObject:v6 forKey:@"Username"];
+  username = [(NEFilterProviderConfiguration *)self username];
+  [coderCopy encodeObject:username forKey:@"Username"];
 
-  v7 = [(NEFilterProviderConfiguration *)self organization];
-  [v19 encodeObject:v7 forKey:@"Organization"];
+  organization = [(NEFilterProviderConfiguration *)self organization];
+  [coderCopy encodeObject:organization forKey:@"Organization"];
 
-  v8 = [(NEFilterProviderConfiguration *)self passwordReference];
-  [v19 encodeObject:v8 forKey:@"Password"];
+  passwordReference = [(NEFilterProviderConfiguration *)self passwordReference];
+  [coderCopy encodeObject:passwordReference forKey:@"Password"];
 
-  v9 = [(NEFilterProviderConfiguration *)self identityReference];
-  [v19 encodeObject:v9 forKey:@"Identity"];
+  identityReference = [(NEFilterProviderConfiguration *)self identityReference];
+  [coderCopy encodeObject:identityReference forKey:@"Identity"];
 
-  v10 = [(NEFilterProviderConfiguration *)self pluginType];
-  [v19 encodeObject:v10 forKey:@"PluginType"];
+  pluginType = [(NEFilterProviderConfiguration *)self pluginType];
+  [coderCopy encodeObject:pluginType forKey:@"PluginType"];
 
-  v11 = [(NEFilterProviderConfiguration *)self dataProviderDesignatedRequirement];
-  [v19 encodeObject:v11 forKey:@"DataProviderDesignatedRequirement"];
+  dataProviderDesignatedRequirement = [(NEFilterProviderConfiguration *)self dataProviderDesignatedRequirement];
+  [coderCopy encodeObject:dataProviderDesignatedRequirement forKey:@"DataProviderDesignatedRequirement"];
 
-  v12 = [(NEFilterProviderConfiguration *)self packetProviderDesignatedRequirement];
-  [v19 encodeObject:v12 forKey:@"PacketProviderDesignatedRequirement"];
+  packetProviderDesignatedRequirement = [(NEFilterProviderConfiguration *)self packetProviderDesignatedRequirement];
+  [coderCopy encodeObject:packetProviderDesignatedRequirement forKey:@"PacketProviderDesignatedRequirement"];
 
-  v13 = [(NEFilterProviderConfiguration *)self dataProviderURL];
-  [v19 encodeObject:v13 forKey:@"DataProviderURL"];
+  dataProviderURL = [(NEFilterProviderConfiguration *)self dataProviderURL];
+  [coderCopy encodeObject:dataProviderURL forKey:@"DataProviderURL"];
 
-  v14 = [(NEFilterProviderConfiguration *)self packetProviderURL];
-  [v19 encodeObject:v14 forKey:@"PacketProviderURL"];
+  packetProviderURL = [(NEFilterProviderConfiguration *)self packetProviderURL];
+  [coderCopy encodeObject:packetProviderURL forKey:@"PacketProviderURL"];
 
   if (self)
   {
-    [v19 encodeBool:self->_controlProviderInitialized forKey:@"ControlProviderInitialized"];
+    [coderCopy encodeBool:self->_controlProviderInitialized forKey:@"ControlProviderInitialized"];
     Property = objc_getProperty(self, v15, 96, 1);
   }
 
   else
   {
-    [v19 encodeBool:0 forKey:@"ControlProviderInitialized"];
+    [coderCopy encodeBool:0 forKey:@"ControlProviderInitialized"];
     Property = 0;
   }
 
-  [v19 encodeObject:Property forKey:@"KeychainAccessGroup"];
-  v17 = [(NEFilterProviderConfiguration *)self filterDataProviderBundleIdentifier];
-  [v19 encodeObject:v17 forKey:@"DataProviderBundleIdentifier"];
+  [coderCopy encodeObject:Property forKey:@"KeychainAccessGroup"];
+  filterDataProviderBundleIdentifier = [(NEFilterProviderConfiguration *)self filterDataProviderBundleIdentifier];
+  [coderCopy encodeObject:filterDataProviderBundleIdentifier forKey:@"DataProviderBundleIdentifier"];
 
-  v18 = [(NEFilterProviderConfiguration *)self filterPacketProviderBundleIdentifier];
-  [v19 encodeObject:v18 forKey:@"PacketProviderBundleIdentifier"];
+  filterPacketProviderBundleIdentifier = [(NEFilterProviderConfiguration *)self filterPacketProviderBundleIdentifier];
+  [coderCopy encodeObject:filterPacketProviderBundleIdentifier forKey:@"PacketProviderBundleIdentifier"];
 }
 
-- (NEFilterProviderConfiguration)initWithCoder:(id)a3
+- (NEFilterProviderConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = NEFilterProviderConfiguration;
   v5 = [(NEFilterProviderConfiguration *)&v41 init];
   if (v5)
   {
-    v5->_filterBrowsers = [v4 decodeBoolForKey:@"FilterBrowsers"];
-    v5->_filterPackets = [v4 decodeBoolForKey:@"FilterPackets"];
-    v5->_filterSockets = [v4 decodeBoolForKey:@"FilterSockets"];
-    v5->_disableDefaultDrop = [v4 decodeBoolForKey:@"DisableDefaultDrop"];
-    v5->_preserveExistingConnections = [v4 decodeBoolForKey:@"PreserveExistingConnections"];
+    v5->_filterBrowsers = [coderCopy decodeBoolForKey:@"FilterBrowsers"];
+    v5->_filterPackets = [coderCopy decodeBoolForKey:@"FilterPackets"];
+    v5->_filterSockets = [coderCopy decodeBoolForKey:@"FilterSockets"];
+    v5->_disableDefaultDrop = [coderCopy decodeBoolForKey:@"DisableDefaultDrop"];
+    v5->_preserveExistingConnections = [coderCopy decodeBoolForKey:@"PreserveExistingConnections"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v6 setWithObjects:{v7, v8, v9, v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"VendorConfiguration"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"VendorConfiguration"];
     vendorConfiguration = v5->_vendorConfiguration;
     v5->_vendorConfiguration = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ServerAddress"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ServerAddress"];
     serverAddress = v5->_serverAddress;
     v5->_serverAddress = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Username"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Username"];
     username = v5->_username;
     v5->_username = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Organization"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Organization"];
     organization = v5->_organization;
     v5->_organization = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Password"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Password"];
     passwordReference = v5->_passwordReference;
     v5->_passwordReference = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Identity"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Identity"];
     identityReference = v5->_identityReference;
     v5->_identityReference = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PluginType"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PluginType"];
     pluginType = v5->_pluginType;
     v5->_pluginType = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DataProviderDesignatedRequirement"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DataProviderDesignatedRequirement"];
     dataProviderDesignatedRequirement = v5->_dataProviderDesignatedRequirement;
     v5->_dataProviderDesignatedRequirement = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PacketProviderDesignatedRequirement"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PacketProviderDesignatedRequirement"];
     packetProviderDesignatedRequirement = v5->_packetProviderDesignatedRequirement;
     v5->_packetProviderDesignatedRequirement = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DataProviderURL"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DataProviderURL"];
     dataProviderURL = v5->_dataProviderURL;
     v5->_dataProviderURL = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PacketProviderURL"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PacketProviderURL"];
     packetProviderURL = v5->_packetProviderURL;
     v5->_packetProviderURL = v32;
 
-    v5->_controlProviderInitialized = [v4 decodeBoolForKey:@"ControlProviderInitialized"];
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"KeychainAccessGroup"];
+    v5->_controlProviderInitialized = [coderCopy decodeBoolForKey:@"ControlProviderInitialized"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"KeychainAccessGroup"];
     keychainAccessGroup = v5->_keychainAccessGroup;
     v5->_keychainAccessGroup = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DataProviderBundleIdentifier"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DataProviderBundleIdentifier"];
     filterDataProviderBundleIdentifier = v5->_filterDataProviderBundleIdentifier;
     v5->_filterDataProviderBundleIdentifier = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PacketProviderBundleIdentifier"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PacketProviderBundleIdentifier"];
     filterPacketProviderBundleIdentifier = v5->_filterPacketProviderBundleIdentifier;
     v5->_filterPacketProviderBundleIdentifier = v38;
   }

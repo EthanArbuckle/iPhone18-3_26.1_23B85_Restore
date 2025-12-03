@@ -25,16 +25,16 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNConnectionPolicySignals *)self preferredBundleIdentifier];
-  v7 = [(LNConnectionPolicySignals *)self processInstanceIdentifier];
-  v8 = [(LNConnectionPolicySignals *)self shouldExecuteActionOnApplicationBasedOnMetadata];
+  preferredBundleIdentifier = [(LNConnectionPolicySignals *)self preferredBundleIdentifier];
+  processInstanceIdentifier = [(LNConnectionPolicySignals *)self processInstanceIdentifier];
+  shouldExecuteActionOnApplicationBasedOnMetadata = [(LNConnectionPolicySignals *)self shouldExecuteActionOnApplicationBasedOnMetadata];
   v9 = @"NO";
-  if (v8)
+  if (shouldExecuteActionOnApplicationBasedOnMetadata)
   {
     v9 = @"YES";
   }
 
-  v10 = [v3 stringWithFormat:@"<%@: %p, preferredBundleIdentifier: %@, processInstanceIdentifier: %@, shouldExecuteActionOnApplicationBasedOnMetadata: %@>", v5, self, v6, v7, v9];
+  v10 = [v3 stringWithFormat:@"<%@: %p, preferredBundleIdentifier: %@, processInstanceIdentifier: %@, shouldExecuteActionOnApplicationBasedOnMetadata: %@>", v5, self, preferredBundleIdentifier, processInstanceIdentifier, v9];
 
   return v10;
 }

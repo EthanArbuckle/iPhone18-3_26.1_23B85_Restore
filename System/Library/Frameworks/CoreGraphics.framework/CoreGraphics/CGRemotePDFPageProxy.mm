@@ -1,16 +1,16 @@
 @interface CGRemotePDFPageProxy
-- (CGRect)rectForBox:(int)a3;
-- (CGRemotePDFPageProxy)initWithRemotePage:(id)a3;
+- (CGRect)rectForBox:(int)box;
+- (CGRemotePDFPageProxy)initWithRemotePage:(id)page;
 - (NSString)pageText;
 - (NSUUID)identifier;
-- (id)getPageTextAndReturnError:(id *)a3;
+- (id)getPageTextAndReturnError:(id *)error;
 - (int64_t)rotation;
-- (void)drawWithBox:(int)a3 size:(CGSize)a4 colorSpace:(id)a5 options:(id)a6 completion:(id)a7;
+- (void)drawWithBox:(int)box size:(CGSize)size colorSpace:(id)space options:(id)options completion:(id)completion;
 @end
 
 @implementation CGRemotePDFPageProxy
 
-- (id)getPageTextAndReturnError:(id *)a3
+- (id)getPageTextAndReturnError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -38,9 +38,9 @@
   v8[4] = &v16;
   [v5 getPageText:v8];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v11[5];
+    *error = v11[5];
   }
 
   v6 = v17[5];
@@ -82,21 +82,21 @@ void __50__CGRemotePDFPageProxy_getPageTextAndReturnError___block_invoke(uint64_
   return v3;
 }
 
-- (void)drawWithBox:(int)a3 size:(CGSize)a4 colorSpace:(id)a5 options:(id)a6 completion:(id)a7
+- (void)drawWithBox:(int)box size:(CGSize)size colorSpace:(id)space options:(id)options completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = *&a3;
-  v13 = a7;
+  height = size.height;
+  width = size.width;
+  v11 = *&box;
+  completionCopy = completion;
   pageProxy = self->_pageProxy;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __71__CGRemotePDFPageProxy_drawWithBox_size_colorSpace_options_completion___block_invoke;
   v22[3] = &unk_1E6E336B8;
-  v15 = v13;
+  v15 = completionCopy;
   v23 = v15;
-  v16 = a6;
-  v17 = a5;
+  optionsCopy = options;
+  spaceCopy = space;
   v18 = [(CGRemotePDFPageProtocol *)pageProxy remoteObjectProxyWithErrorHandler:v22];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
@@ -104,7 +104,7 @@ void __50__CGRemotePDFPageProxy_getPageTextAndReturnError___block_invoke(uint64_
   v20[3] = &unk_1E6E2D3A0;
   v21 = v15;
   v19 = v15;
-  [v18 drawWithBox:v11 size:v17 colorSpace:v16 options:v20 completion:{width, height}];
+  [v18 drawWithBox:v11 size:spaceCopy colorSpace:optionsCopy options:v20 completion:{width, height}];
 }
 
 uint64_t __71__CGRemotePDFPageProxy_drawWithBox_size_colorSpace_options_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -115,9 +115,9 @@ uint64_t __71__CGRemotePDFPageProxy_drawWithBox_size_colorSpace_options_completi
   return v3();
 }
 
-- (CGRect)rectForBox:(int)a3
+- (CGRect)rectForBox:(int)box
 {
-  v3 = *&a3;
+  v3 = *&box;
   v14 = 0;
   v15 = &v14;
   v16 = 0x4010000000;
@@ -199,16 +199,16 @@ uint64_t __35__CGRemotePDFPageProxy_rectForBox___block_invoke_2(uint64_t result,
   return v3;
 }
 
-- (CGRemotePDFPageProxy)initWithRemotePage:(id)a3
+- (CGRemotePDFPageProxy)initWithRemotePage:(id)page
 {
-  v5 = a3;
+  pageCopy = page;
   v9.receiver = self;
   v9.super_class = CGRemotePDFPageProxy;
   v6 = [(CGRemotePDFPageProxy *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pageProxy, a3);
+    objc_storeStrong(&v6->_pageProxy, page);
   }
 
   return v7;

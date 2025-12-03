@@ -1,40 +1,40 @@
 @interface PKPaymentSetupDockView
-- (CGSize)_layoutSubviewsInBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4 includePrivacyLink:(BOOL)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFitsWithoutPrivacyLink:(CGSize)a3;
+- (CGSize)_layoutSubviewsInBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout includePrivacyLink:(BOOL)link;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFitsWithoutPrivacyLink:(CGSize)link;
 - (PKLegacyButtonInterface)primaryButton;
-- (PKPaymentSetupDockView)initWithFrame:(CGRect)a3 context:(int64_t)a4;
+- (PKPaymentSetupDockView)initWithFrame:(CGRect)frame context:(int64_t)context;
 - (PKPaymentSetupFooterView)footerView;
 - (UIColor)primaryButtonTintColor;
 - (UITextView)buttonExplanationTextView;
 - (void)_createEmptyFooterViewIfNecessary;
 - (void)layoutSubviews;
-- (void)pk_applyAppearance:(id)a3;
-- (void)setAdditionalView:(id)a3;
-- (void)setButtonExplanationText:(id)a3;
-- (void)setButtonsEnabled:(BOOL)a3;
-- (void)setFooterView:(id)a3;
-- (void)setLockUpView:(id)a3;
-- (void)setPrimaryButton:(id)a3;
-- (void)setPrimaryButtonTintColor:(id)a3;
-- (void)setPrivacyLink:(id)a3;
+- (void)pk_applyAppearance:(id)appearance;
+- (void)setAdditionalView:(id)view;
+- (void)setButtonExplanationText:(id)text;
+- (void)setButtonsEnabled:(BOOL)enabled;
+- (void)setFooterView:(id)view;
+- (void)setLockUpView:(id)view;
+- (void)setPrimaryButton:(id)button;
+- (void)setPrimaryButtonTintColor:(id)color;
+- (void)setPrivacyLink:(id)link;
 @end
 
 @implementation PKPaymentSetupDockView
 
-- (PKPaymentSetupDockView)initWithFrame:(CGRect)a3 context:(int64_t)a4
+- (PKPaymentSetupDockView)initWithFrame:(CGRect)frame context:(int64_t)context
 {
   v13.receiver = self;
   v13.super_class = PKPaymentSetupDockView;
-  v5 = [(PKPaymentSetupDockView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(PKPaymentSetupDockView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_context = a4;
-    v7 = [(PKPaymentSetupDockView *)v5 traitCollection];
-    v8 = [v7 userInterfaceIdiom];
+    v5->_context = context;
+    traitCollection = [(PKPaymentSetupDockView *)v5 traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if ((v8 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       IsSetupAssistant = PKPaymentSetupContextIsSetupAssistant();
     }
@@ -60,53 +60,53 @@
   return v6;
 }
 
-- (void)setPrivacyLink:(id)a3
+- (void)setPrivacyLink:(id)link
 {
-  v8 = a3;
+  linkCopy = link;
   if ((PKEqualObjects() & 1) == 0)
   {
-    v5 = [(OBPrivacyLinkController *)self->_privacyLink view];
-    [v5 removeFromSuperview];
+    view = [(OBPrivacyLinkController *)self->_privacyLink view];
+    [view removeFromSuperview];
 
-    objc_storeStrong(&self->_privacyLink, a3);
+    objc_storeStrong(&self->_privacyLink, link);
     privacyLink = self->_privacyLink;
     if (privacyLink)
     {
-      v7 = [(OBPrivacyLinkController *)privacyLink view];
-      [(PKPaymentSetupDockView *)self addSubview:v7];
+      view2 = [(OBPrivacyLinkController *)privacyLink view];
+      [(PKPaymentSetupDockView *)self addSubview:view2];
     }
 
     [(PKPaymentSetupDockView *)self setNeedsLayout];
   }
 }
 
-- (void)setAdditionalView:(id)a3
+- (void)setAdditionalView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   additionalView = self->_additionalView;
-  if (additionalView != v5)
+  if (additionalView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)additionalView removeFromSuperview];
-    objc_storeStrong(&self->_additionalView, a3);
+    objc_storeStrong(&self->_additionalView, view);
     if (self->_additionalView)
     {
       [(PKPaymentSetupDockView *)self addSubview:?];
     }
 
     [(PKPaymentSetupDockView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setButtonExplanationText:(id)a3
+- (void)setButtonExplanationText:(id)text
 {
-  v4 = a3;
-  if (v4)
+  textCopy = text;
+  if (textCopy)
   {
-    v8 = v4;
-    v5 = [(PKPaymentSetupDockView *)self buttonExplanationTextView];
-    [v5 setText:v8];
+    v8 = textCopy;
+    buttonExplanationTextView = [(PKPaymentSetupDockView *)self buttonExplanationTextView];
+    [buttonExplanationTextView setText:v8];
     [(PKPaymentSetupDockView *)self setNeedsLayout];
   }
 
@@ -126,7 +126,7 @@
     [(PKPaymentSetupDockView *)self setNeedsLayout];
   }
 
-  v4 = v8;
+  textCopy = v8;
 LABEL_6:
 }
 
@@ -141,8 +141,8 @@ LABEL_6:
 
     [(UITextView *)self->_buttonExplanationTextView setTextAlignment:PKOBKTextAlignment()];
     v6 = self->_buttonExplanationTextView;
-    v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UITextView *)v6 setTextColor:v7];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UITextView *)v6 setTextColor:secondaryLabelColor];
 
     v8 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD10], *MEMORY[0x1E69DDC38]);
     [(UITextView *)self->_buttonExplanationTextView setFont:v8];
@@ -168,18 +168,18 @@ LABEL_6:
   return [(PKPaymentSetupFooterView *)footerView primaryButton];
 }
 
-- (void)setPrimaryButton:(id)a3
+- (void)setPrimaryButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   [(PKPaymentSetupDockView *)self _createEmptyFooterViewIfNecessary];
-  [(PKPaymentSetupFooterView *)self->_footerView setPrimaryButton:v4];
+  [(PKPaymentSetupFooterView *)self->_footerView setPrimaryButton:buttonCopy];
 }
 
-- (void)setPrimaryButtonTintColor:(id)a3
+- (void)setPrimaryButtonTintColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   [(PKPaymentSetupDockView *)self _createEmptyFooterViewIfNecessary];
-  [(PKPaymentSetupFooterView *)self->_footerView setPrimaryButtonTintColor:v4];
+  [(PKPaymentSetupFooterView *)self->_footerView setPrimaryButtonTintColor:colorCopy];
 }
 
 - (UIColor)primaryButtonTintColor
@@ -190,22 +190,22 @@ LABEL_6:
   return [(PKPaymentSetupFooterView *)footerView primaryButtonTintColor];
 }
 
-- (void)setLockUpView:(id)a3
+- (void)setLockUpView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   lockUpView = self->_lockUpView;
-  if (lockUpView != v5)
+  if (lockUpView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(ASCLockupView *)lockUpView removeFromSuperview];
-    objc_storeStrong(&self->_lockUpView, a3);
+    objc_storeStrong(&self->_lockUpView, view);
     if (self->_lockUpView)
     {
       [(PKPaymentSetupDockView *)self addSubview:?];
     }
 
     [(PKPaymentSetupDockView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
@@ -225,15 +225,15 @@ LABEL_6:
   return footerView;
 }
 
-- (void)setFooterView:(id)a3
+- (void)setFooterView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   footerView = self->_footerView;
-  if (footerView != v5)
+  if (footerView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(PKPaymentSetupFooterView *)footerView removeFromSuperview];
-    objc_storeStrong(&self->_footerView, a3);
+    objc_storeStrong(&self->_footerView, view);
     if (v7)
     {
       [(PKPaymentSetupDockView *)self addSubview:self->_footerView];
@@ -244,7 +244,7 @@ LABEL_6:
       [(PKPaymentSetupDockView *)self _createEmptyFooterViewIfNecessary];
     }
 
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
@@ -252,24 +252,24 @@ LABEL_6:
 {
   if (!self->_footerView)
   {
-    v3 = [(PKPaymentSetupDockView *)self footerView];
-    [v3 setSetUpLaterButton:0];
-    [v3 setManualEntryButton:0];
-    [v3 setPrimaryButton:0];
+    footerView = [(PKPaymentSetupDockView *)self footerView];
+    [footerView setSetUpLaterButton:0];
+    [footerView setManualEntryButton:0];
+    [footerView setPrimaryButton:0];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKPaymentSetupDockView *)self _layoutSubviewsInBounds:1 isTemplateLayout:1 includePrivacyLink:0.0, 0.0, a3.width, a3.height];
+  [(PKPaymentSetupDockView *)self _layoutSubviewsInBounds:1 isTemplateLayout:1 includePrivacyLink:0.0, 0.0, fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)sizeThatFitsWithoutPrivacyLink:(CGSize)a3
+- (CGSize)sizeThatFitsWithoutPrivacyLink:(CGSize)link
 {
-  [(PKPaymentSetupDockView *)self _layoutSubviewsInBounds:1 isTemplateLayout:0 includePrivacyLink:0.0, 0.0, a3.width, a3.height];
+  [(PKPaymentSetupDockView *)self _layoutSubviewsInBounds:1 isTemplateLayout:0 includePrivacyLink:0.0, 0.0, link.width, link.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -282,8 +282,8 @@ LABEL_6:
   [(PKPaymentSetupDockView *)&v16 layoutSubviews];
   if (self->_isBuddyiPad)
   {
-    v3 = [(PKPaymentSetupDockView *)self readableContentGuide];
-    [v3 layoutFrame];
+    readableContentGuide = [(PKPaymentSetupDockView *)self readableContentGuide];
+    [readableContentGuide layoutFrame];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -302,14 +302,14 @@ LABEL_6:
   [(PKPaymentSetupDockView *)self _layoutSubviewsInBounds:0 isTemplateLayout:1 includePrivacyLink:v5, v7, v9, v11];
 }
 
-- (CGSize)_layoutSubviewsInBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4 includePrivacyLink:(BOOL)a5
+- (CGSize)_layoutSubviewsInBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout includePrivacyLink:(BOOL)link
 {
-  v5 = a5;
-  v6 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  linkCopy = link;
+  layoutCopy = layout;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v12 = PKSetupViewConstantsViewMargin();
   v58.origin.x = x;
   v58.origin.y = y;
@@ -331,7 +331,7 @@ LABEL_6:
   {
     [(UIView *)additionalView sizeThatFits:v13, v14];
     v18 = v17;
-    if (!v6)
+    if (!layoutCopy)
     {
       [(UIView *)self->_additionalView setFrame:v55, 11.0, v13, v17];
     }
@@ -351,7 +351,7 @@ LABEL_6:
   privacyLink = self->_privacyLink;
   if (privacyLink)
   {
-    v21 = !v5;
+    v21 = !linkCopy;
   }
 
   else
@@ -377,27 +377,27 @@ LABEL_6:
       v24 = 0.0;
     }
 
-    v25 = [(OBPrivacyLinkController *)privacyLink view];
-    [v25 setFrame:{0.0, 0.0, v13, 0.0}];
-    [v25 setNeedsLayout];
-    [v25 layoutIfNeeded];
+    view = [(OBPrivacyLinkController *)privacyLink view];
+    [view setFrame:{0.0, 0.0, v13, 0.0}];
+    [view setNeedsLayout];
+    [view layoutIfNeeded];
     LODWORD(v26) = 1148846080;
     LODWORD(v27) = 1112014848;
-    [v25 systemLayoutSizeFittingSize:v13 withHorizontalFittingPriority:v14 verticalFittingPriority:{v26, v27}];
+    [view systemLayoutSizeFittingSize:v13 withHorizontalFittingPriority:v14 verticalFittingPriority:{v26, v27}];
     v29 = v28;
     v31 = v30;
     v32 = v19 + v24;
-    if (v6)
+    if (layoutCopy)
     {
       v22 = v55;
     }
 
     else
     {
-      v33 = [(OBPrivacyLinkController *)self->_privacyLink view];
+      view2 = [(OBPrivacyLinkController *)self->_privacyLink view];
       v22 = v55;
       PKRectCenteredXInRect();
-      [v33 setFrame:?];
+      [view2 setFrame:?];
     }
 
     v61.origin.x = v22;
@@ -435,7 +435,7 @@ LABEL_6:
 
     [(UITextView *)buttonExplanationTextView sizeThatFits:v13, v56, *&v53];
     v40 = v39;
-    if (!v6)
+    if (!layoutCopy)
     {
       [(UITextView *)self->_buttonExplanationTextView setFrame:v22, v38, v13, v39];
     }
@@ -462,7 +462,7 @@ LABEL_6:
 
     [(ASCLockupView *)lockUpView sizeThatFits:v13, v56, *&v53];
     v44 = v43;
-    if (!v6)
+    if (!layoutCopy)
     {
       [(ASCLockupView *)self->_lockUpView setFrame:v22, v42, v13, v43];
     }
@@ -512,7 +512,7 @@ LABEL_6:
       v48 = v23;
     }
 
-    if (!v6)
+    if (!layoutCopy)
     {
       [(PKPaymentSetupFooterView *)self->_footerView setFrame:v22, v19, v13, v48];
     }
@@ -543,25 +543,25 @@ LABEL_6:
   return result;
 }
 
-- (void)setButtonsEnabled:(BOOL)a3
+- (void)setButtonsEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(PKPaymentSetupFooterView *)self->_footerView setButtonsEnabled:?];
-  [(ASCLockupView *)self->_lockUpView setUserInteractionEnabled:v3];
+  [(ASCLockupView *)self->_lockUpView setUserInteractionEnabled:enabledCopy];
   privacyLink = self->_privacyLink;
 
-  [(OBPrivacyLinkController *)privacyLink setLinkEnabled:v3];
+  [(OBPrivacyLinkController *)privacyLink setLinkEnabled:enabledCopy];
 }
 
-- (void)pk_applyAppearance:(id)a3
+- (void)pk_applyAppearance:(id)appearance
 {
-  v4 = a3;
-  v5 = [v4 tintColor];
-  [(PKPaymentSetupDockView *)self setTintColor:v5];
+  appearanceCopy = appearance;
+  tintColor = [appearanceCopy tintColor];
+  [(PKPaymentSetupDockView *)self setTintColor:tintColor];
 
-  v6 = [v4 continueButtonTintColor];
+  continueButtonTintColor = [appearanceCopy continueButtonTintColor];
 
-  [(PKPaymentSetupDockView *)self setPrimaryButtonTintColor:v6];
+  [(PKPaymentSetupDockView *)self setPrimaryButtonTintColor:continueButtonTintColor];
 }
 
 @end

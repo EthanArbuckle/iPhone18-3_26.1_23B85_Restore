@@ -1,10 +1,10 @@
 @interface PGInvariantMyChildFeatureExtractor
-- (PGInvariantMyChildFeatureExtractor)initWithError:(id *)a3;
+- (PGInvariantMyChildFeatureExtractor)initWithError:(id *)error;
 @end
 
 @implementation PGInvariantMyChildFeatureExtractor
 
-- (PGInvariantMyChildFeatureExtractor)initWithError:(id *)a3
+- (PGInvariantMyChildFeatureExtractor)initWithError:(id *)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v18[0] = @"MyChild";
@@ -13,11 +13,11 @@
   v6 = +[PGGraphMomentNode personInMoment];
   v17[0] = v6;
   v7 = +[PGGraphPersonNode childOfPerson];
-  v8 = [v7 inverse];
-  v17[1] = v8;
+  inverse = [v7 inverse];
+  v17[1] = inverse;
   v9 = +[PGGraphMeNode filter];
-  v10 = [v9 relation];
-  v17[2] = v10;
+  relation = [v9 relation];
+  v17[2] = relation;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:3];
   v12 = [v5 chain:v11];
 

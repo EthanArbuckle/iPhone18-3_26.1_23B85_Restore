@@ -1,13 +1,13 @@
 @interface SODaemonUtils
-+ (BOOL)isAppManagedWithBundleIdentifier:(id)a3;
++ (BOOL)isAppManagedWithBundleIdentifier:(id)identifier;
 + (BOOL)isInternalBuild;
 @end
 
 @implementation SODaemonUtils
 
-+ (BOOL)isAppManagedWithBundleIdentifier:(id)a3
++ (BOOL)isAppManagedWithBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2050000000;
@@ -26,8 +26,8 @@
 
   v5 = v4;
   _Block_object_dispose(&v11, 8);
-  v6 = [v4 sharedConnection];
-  v7 = [v6 isAppManaged:v3];
+  sharedConnection = [v4 sharedConnection];
+  v7 = [sharedConnection isAppManaged:identifierCopy];
 
   v8 = sub_100001EE4();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -39,7 +39,7 @@
     }
 
     *buf = 138543618;
-    *&buf[4] = v3;
+    *&buf[4] = identifierCopy;
     *&buf[12] = 2114;
     *&buf[14] = v9;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ is managed: %{public}@", buf, 0x16u);

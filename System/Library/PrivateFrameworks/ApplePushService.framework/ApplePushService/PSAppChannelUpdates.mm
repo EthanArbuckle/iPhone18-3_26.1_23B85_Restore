@@ -1,32 +1,32 @@
 @interface PSAppChannelUpdates
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addChannelUpdates:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addChannelUpdates:(id)updates;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PSAppChannelUpdates
 
-- (void)addChannelUpdates:(id)a3
+- (void)addChannelUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   channelUpdates = self->_channelUpdates;
-  v8 = v4;
+  v8 = updatesCopy;
   if (!channelUpdates)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_channelUpdates;
     self->_channelUpdates = v6;
 
-    v4 = v8;
+    updatesCopy = v8;
     channelUpdates = self->_channelUpdates;
   }
 
-  [(NSMutableArray *)channelUpdates addObject:v4];
+  [(NSMutableArray *)channelUpdates addObject:updatesCopy];
 }
 
 - (id)description
@@ -34,8 +34,8 @@
   v7.receiver = self;
   v7.super_class = PSAppChannelUpdates;
   v3 = [(PSAppChannelUpdates *)&v7 description];
-  v4 = [(PSAppChannelUpdates *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PSAppChannelUpdates *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -72,8 +72,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -88,9 +88,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_appId)
   {
     PBDataWriterWriteStringField();
@@ -129,34 +129,34 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_appId)
   {
-    [v8 setAppId:?];
+    [toCopy setAppId:?];
   }
 
   if ([(PSAppChannelUpdates *)self channelUpdatesCount])
   {
-    [v8 clearChannelUpdates];
-    v4 = [(PSAppChannelUpdates *)self channelUpdatesCount];
-    if (v4)
+    [toCopy clearChannelUpdates];
+    channelUpdatesCount = [(PSAppChannelUpdates *)self channelUpdatesCount];
+    if (channelUpdatesCount)
     {
-      v5 = v4;
+      v5 = channelUpdatesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PSAppChannelUpdates *)self channelUpdatesAtIndex:i];
-        [v8 addChannelUpdates:v7];
+        [toCopy addChannelUpdates:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_appId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_appId copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -180,7 +180,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{zone, v15}];
         [v5 addChannelUpdates:v13];
 
         v12 = v12 + 1;
@@ -196,13 +196,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((appId = self->_appId, !(appId | v4[1])) || -[NSString isEqual:](appId, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((appId = self->_appId, !(appId | equalCopy[1])) || -[NSString isEqual:](appId, "isEqual:")))
   {
     channelUpdates = self->_channelUpdates;
-    if (channelUpdates | v4[2])
+    if (channelUpdates | equalCopy[2])
     {
       v7 = [(NSMutableArray *)channelUpdates isEqual:?];
     }
@@ -221,10 +221,10 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(PSAppChannelUpdates *)self setAppId:?];
   }
@@ -233,7 +233,7 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {

@@ -1,29 +1,29 @@
 @interface OctopusDecoder
-+ (id)getAAVSAmount:(id)a3;
-+ (id)getBaseDate:(id)a3;
-+ (id)getLoyaltyBalance:(id)a3;
-+ (id)getNegativeValueLimit:(id)a3;
-+ (id)getPhysicalID:(id)a3;
-+ (id)getPurseBalance:(id)a3;
-+ (id)getTransactionTypeModifierStringFromCode:(unsigned __int8)a3;
-+ (id)getTransactionTypeStringFromCode:(unsigned __int8)a3 andServiceProviderID:(unsigned __int8)a4;
-+ (id)getTransitTransactionTypeNameFromCode:(unsigned __int8)a3 andServiceProvider:(unsigned __int16)a4;
-+ (id)injectTLOGAAVS:(id)a3 withAAVSAmount:(id)a4 andBalance:(id)a5;
-+ (id)parseTLOGBlock:(id)a3 withBaseDate:(id)a4;
-+ (int)filterHistoryEntry:(id)a3;
-+ (int)getEnRouteStatus:(id)a3;
-+ (int)isTransitTransactionCode:(unsigned __int8)a3;
++ (id)getAAVSAmount:(id)amount;
++ (id)getBaseDate:(id)date;
++ (id)getLoyaltyBalance:(id)balance;
++ (id)getNegativeValueLimit:(id)limit;
++ (id)getPhysicalID:(id)d;
++ (id)getPurseBalance:(id)balance;
++ (id)getTransactionTypeModifierStringFromCode:(unsigned __int8)code;
++ (id)getTransactionTypeStringFromCode:(unsigned __int8)code andServiceProviderID:(unsigned __int8)d;
++ (id)getTransitTransactionTypeNameFromCode:(unsigned __int8)code andServiceProvider:(unsigned __int16)provider;
++ (id)injectTLOGAAVS:(id)s withAAVSAmount:(id)amount andBalance:(id)balance;
++ (id)parseTLOGBlock:(id)block withBaseDate:(id)date;
++ (int)filterHistoryEntry:(id)entry;
++ (int)getEnRouteStatus:(id)status;
++ (int)isTransitTransactionCode:(unsigned __int8)code;
 @end
 
 @implementation OctopusDecoder
 
-+ (id)getPurseBalance:(id)a3
++ (id)getPurseBalance:(id)balance
 {
-  v3 = a3;
-  if ([SlalomUtils isValidFelicaBlock:v3])
+  balanceCopy = balance;
+  if ([SlalomUtils isValidFelicaBlock:balanceCopy])
   {
-    v4 = [v3 bytes];
-    v5 = [MEMORY[0x277CCA980] decimalNumberWithMantissa:bswap32(*v4) exponent:0xFFFFFFFFLL isNegative:0];
+    bytes = [balanceCopy bytes];
+    v5 = [MEMORY[0x277CCA980] decimalNumberWithMantissa:bswap32(*bytes) exponent:0xFFFFFFFFLL isNegative:0];
   }
 
   else
@@ -41,12 +41,12 @@
   return v5;
 }
 
-+ (id)parseTLOGBlock:(id)a3 withBaseDate:(id)a4
++ (id)parseTLOGBlock:(id)block withBaseDate:(id)date
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (![SlalomUtils isValidFelicaBlock:v6])
+  blockCopy = block;
+  dateCopy = date;
+  if (![SlalomUtils isValidFelicaBlock:blockCopy])
   {
     v14 = ATLLogObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -58,11 +58,11 @@ LABEL_16:
     }
 
 LABEL_17:
-    v15 = 0;
+    dictionary = 0;
     goto LABEL_20;
   }
 
-  if (!v7)
+  if (!dateCopy)
   {
     v14 = ATLLogObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -75,44 +75,44 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v8 = [v6 bytes];
-  v9 = *v8;
-  v10 = v8[1] >> 1;
-  v34 = *(v8 + 1);
-  v11 = bswap32(*(v8 + 1)) >> 3;
-  v12 = [SlalomUtils readBitsValueFromBuffer:v8 bitPosition:61 length:3];
-  [v7 timeIntervalSinceReferenceDate];
+  bytes = [blockCopy bytes];
+  v9 = *bytes;
+  v10 = bytes[1] >> 1;
+  v34 = *(bytes + 1);
+  v11 = bswap32(*(bytes + 1)) >> 3;
+  v12 = [SlalomUtils readBitsValueFromBuffer:bytes bitPosition:61 length:3];
+  [dateCopy timeIntervalSinceReferenceDate];
   v14 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:v13 + v11];
-  v15 = [MEMORY[0x277CBEB38] dictionary];
-  v16 = [MEMORY[0x277CBEA80] currentCalendar];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v17 = [MEMORY[0x277CBEBB0] timeZoneWithAbbreviation:@"UTC"];
-  [v16 setTimeZone:v17];
+  [currentCalendar setTimeZone:v17];
 
-  v18 = [v16 components:252 fromDate:v14];
-  [v15 setObject:v18 forKeyedSubscript:@"TransactionTime"];
+  v18 = [currentCalendar components:252 fromDate:v14];
+  [dictionary setObject:v18 forKeyedSubscript:@"TransactionTime"];
 
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v10];
-  [v15 setObject:v19 forKeyedSubscript:@"TypeDetailRaw"];
+  [dictionary setObject:v19 forKeyedSubscript:@"TypeDetailRaw"];
 
   v35 = v9;
-  v20 = [a1 getTransactionTypeStringFromCode:v10 andServiceProviderID:v9];
-  [v15 setObject:v20 forKeyedSubscript:@"TypeDetail"];
+  v20 = [self getTransactionTypeStringFromCode:v10 andServiceProviderID:v9];
+  [dictionary setObject:v20 forKeyedSubscript:@"TypeDetail"];
 
-  if ([a1 isTransitTransactionCode:v10])
+  if ([self isTransitTransactionCode:v10])
   {
-    v21 = [a1 getTransactionTypeModifierStringFromCode:v10];
+    v21 = [self getTransactionTypeModifierStringFromCode:v10];
     v22 = v21;
     if (v21)
     {
       v37[0] = v21;
       v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:1];
-      [v15 setObject:v23 forKeyedSubscript:@"TypeModifiers"];
+      [dictionary setObject:v23 forKeyedSubscript:@"TypeModifiers"];
     }
   }
 
   v24 = __rev16(v34);
   v25 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v12];
-  [v15 setObject:v25 forKeyedSubscript:@"AddValueTypeRaw"];
+  [dictionary setObject:v25 forKeyedSubscript:@"AddValueTypeRaw"];
 
   if (v12 == 4)
   {
@@ -124,10 +124,10 @@ LABEL_17:
     v26 = MEMORY[0x277CBEC28];
   }
 
-  [v15 setObject:v26 forKeyedSubscript:@"AddValueType"];
+  [dictionary setObject:v26 forKeyedSubscript:@"AddValueType"];
   if (v34)
   {
-    v27 = [a1 isTopUpTransaction:v10];
+    v27 = [self isTopUpTransaction:v10];
   }
 
   else
@@ -136,55 +136,55 @@ LABEL_17:
   }
 
   v29 = [MEMORY[0x277CCA980] decimalNumberWithMantissa:v24 exponent:0xFFFFFFFFLL isNegative:v27];
-  [v15 setObject:v29 forKeyedSubscript:@"Amount"];
+  [dictionary setObject:v29 forKeyedSubscript:@"Amount"];
 
   v30 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v35];
-  [v15 setObject:v30 forKeyedSubscript:@"MerchantCategoryCode"];
+  [dictionary setObject:v30 forKeyedSubscript:@"MerchantCategoryCode"];
 
-  CC_SHA256([v6 bytes], 0x10u, buf);
+  CC_SHA256([blockCopy bytes], 0x10u, buf);
   v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*buf)];
-  [v15 setObject:v31 forKeyedSubscript:@"SerialNumber"];
+  [dictionary setObject:v31 forKeyedSubscript:@"SerialNumber"];
 
 LABEL_20:
   v32 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return dictionary;
 }
 
-+ (id)injectTLOGAAVS:(id)a3 withAAVSAmount:(id)a4 andBalance:(id)a5
++ (id)injectTLOGAAVS:(id)s withAAVSAmount:(id)amount andBalance:(id)balance
 {
   v26[5] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 objectForKeyedSubscript:@"AddValueType"];
-  v11 = [v10 BOOLValue];
+  sCopy = s;
+  amountCopy = amount;
+  balanceCopy = balance;
+  v10 = [sCopy objectForKeyedSubscript:@"AddValueType"];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
-    v12 = [v7 objectForKeyedSubscript:@"Amount"];
-    v13 = [v7 objectForKeyedSubscript:@"TransactionTime"];
+    v12 = [sCopy objectForKeyedSubscript:@"Amount"];
+    v13 = [sCopy objectForKeyedSubscript:@"TransactionTime"];
     if ([v12 compare:&unk_2843C6A40] == 1)
     {
-      [v9 decimalNumberByAdding:v12];
+      [balanceCopy decimalNumberByAdding:v12];
     }
 
     else
     {
-      [v9 decimalNumberBySubtracting:v12];
+      [balanceCopy decimalNumberBySubtracting:v12];
     }
     v15 = ;
 
     v16 = +[HashHelper hashHelper];
-    v17 = [(HashHelper *)v16 addDictionary:v7];
-    v18 = [(HashHelper *)v17 getHash];
-    v19 = [v18 u32BE:0];
+    v17 = [(HashHelper *)v16 addDictionary:sCopy];
+    getHash = [(HashHelper *)v17 getHash];
+    v19 = [getHash u32BE:0];
 
-    v20 = [v8 BOOLValue];
+    bOOLValue2 = [amountCopy BOOLValue];
     v26[0] = @"TopUpAuto";
     v25[0] = @"TypeDetail";
     v25[1] = @"Amount";
-    v21 = [MEMORY[0x277CCA980] decimalNumberWithMantissa:objc_msgSend(v8 exponent:"unsignedLongLongValue") isNegative:{0, v20}];
+    v21 = [MEMORY[0x277CCA980] decimalNumberWithMantissa:objc_msgSend(amountCopy exponent:"unsignedLongLongValue") isNegative:{0, bOOLValue2}];
     v26[1] = v21;
     v26[2] = v13;
     v25[2] = @"TransactionTime";
@@ -195,7 +195,7 @@ LABEL_20:
     v26[4] = v22;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:5];
 
-    v9 = v15;
+    balanceCopy = v15;
   }
 
   else
@@ -208,12 +208,12 @@ LABEL_20:
   return v14;
 }
 
-+ (id)getLoyaltyBalance:(id)a3
++ (id)getLoyaltyBalance:(id)balance
 {
-  v3 = a3;
-  if ([SlalomUtils isValidFelicaBlock:v3])
+  balanceCopy = balance;
+  if ([SlalomUtils isValidFelicaBlock:balanceCopy])
   {
-    v4 = +[SlalomUtils readBitsValueFromBuffer:bitPosition:length:](SlalomUtils, "readBitsValueFromBuffer:bitPosition:length:", [v3 bytes], 52, 18);
+    v4 = +[SlalomUtils readBitsValueFromBuffer:bitPosition:length:](SlalomUtils, "readBitsValueFromBuffer:bitPosition:length:", [balanceCopy bytes], 52, 18);
     v5 = MEMORY[0x277CCABB0];
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v4];
     [v6 doubleValue];
@@ -235,12 +235,12 @@ LABEL_20:
   return v8;
 }
 
-+ (id)getNegativeValueLimit:(id)a3
++ (id)getNegativeValueLimit:(id)limit
 {
-  v3 = a3;
-  if ([SlalomUtils isValidFelicaBlock:v3])
+  limitCopy = limit;
+  if ([SlalomUtils isValidFelicaBlock:limitCopy])
   {
-    v4 = +[SlalomUtils readBitsValueFromBuffer:bitPosition:length:](SlalomUtils, "readBitsValueFromBuffer:bitPosition:length:", [v3 bytes], 34, 10);
+    v4 = +[SlalomUtils readBitsValueFromBuffer:bitPosition:length:](SlalomUtils, "readBitsValueFromBuffer:bitPosition:length:", [limitCopy bytes], 34, 10);
     v5 = [MEMORY[0x277CCA980] decimalNumberWithMantissa:10 * v4 exponent:0xFFFFFFFFLL isNegative:0];
   }
 
@@ -259,29 +259,29 @@ LABEL_20:
   return v5;
 }
 
-+ (id)getBaseDate:(id)a3
++ (id)getBaseDate:(id)date
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length] == 16)
+  dateCopy = date;
+  v4 = dateCopy;
+  if (dateCopy && [dateCopy length] == 16)
   {
     v5 = +[SlalomUtils readBitsValueFromBuffer:bitPosition:length:](SlalomUtils, "readBitsValueFromBuffer:bitPosition:length:", [v4 bytes], 80, 16);
     v6 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-    v7 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     v8 = [MEMORY[0x277CBEBB0] timeZoneWithAbbreviation:@"UTC"];
-    [v7 setTimeZone:v8];
+    [currentCalendar setTimeZone:v8];
 
-    [v6 setCalendar:v7];
+    [v6 setCalendar:currentCalendar];
     [v6 setYear:2000];
     [v6 setMonth:1];
     [v6 setDay:1];
-    v9 = [v6 date];
+    date = [v6 date];
     v10 = objc_alloc_init(MEMORY[0x277CBEAB8]);
     v11 = [MEMORY[0x277CBEBB0] timeZoneWithAbbreviation:@"UTC"];
     [v10 setTimeZone:v11];
 
     [v10 setDay:v5];
-    v12 = [v7 dateByAddingComponents:v10 toDate:v9 options:0];
+    v12 = [currentCalendar dateByAddingComponents:v10 toDate:date options:0];
   }
 
   else
@@ -299,12 +299,12 @@ LABEL_20:
   return v12;
 }
 
-+ (id)getPhysicalID:(id)a3
++ (id)getPhysicalID:(id)d
 {
-  v3 = a3;
-  if ([SlalomUtils isValidFelicaBlock:v3])
+  dCopy = d;
+  if ([SlalomUtils isValidFelicaBlock:dCopy])
   {
-    v4 = [v3 subdataWithRange:{4, 4}];
+    v4 = [dCopy subdataWithRange:{4, 4}];
   }
 
   else
@@ -322,12 +322,12 @@ LABEL_20:
   return v4;
 }
 
-+ (id)getAAVSAmount:(id)a3
++ (id)getAAVSAmount:(id)amount
 {
-  v3 = a3;
-  if ([SlalomUtils isValidFelicaBlock:v3])
+  amountCopy = amount;
+  if ([SlalomUtils isValidFelicaBlock:amountCopy])
   {
-    v4 = +[SlalomUtils readBitsValueFromBuffer:bitPosition:length:](SlalomUtils, "readBitsValueFromBuffer:bitPosition:length:", [v3 bytes], 48, 6);
+    v4 = +[SlalomUtils readBitsValueFromBuffer:bitPosition:length:](SlalomUtils, "readBitsValueFromBuffer:bitPosition:length:", [amountCopy bytes], 48, 6);
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:50 * v4];
   }
 
@@ -346,12 +346,12 @@ LABEL_20:
   return v5;
 }
 
-+ (id)getTransactionTypeModifierStringFromCode:(unsigned __int8)a3
++ (id)getTransactionTypeModifierStringFromCode:(unsigned __int8)code
 {
   result = 0;
-  if (a3 <= 25)
+  if (code <= 25)
   {
-    if (a3 != 2 && a3 != 21)
+    if (code != 2 && code != 21)
     {
       return result;
     }
@@ -359,12 +359,12 @@ LABEL_20:
     return @"FareAdjustment";
   }
 
-  if (a3 == 32)
+  if (code == 32)
   {
     return @"FareRebate";
   }
 
-  if (a3 == 26)
+  if (code == 26)
   {
     return @"FareAdjustment";
   }
@@ -372,10 +372,10 @@ LABEL_20:
   return result;
 }
 
-+ (int)isTransitTransactionCode:(unsigned __int8)a3
++ (int)isTransitTransactionCode:(unsigned __int8)code
 {
   result = 1;
-  if ((a3 > 0x20u || ((1 << a3) & 0x104BA003ELL) == 0) && ((a3 - 100) > 6 || ((1 << (a3 - 100)) & 0x65) == 0))
+  if ((code > 0x20u || ((1 << code) & 0x104BA003ELL) == 0) && ((code - 100) > 6 || ((1 << (code - 100)) & 0x65) == 0))
   {
     return 0;
   }
@@ -383,10 +383,10 @@ LABEL_20:
   return result;
 }
 
-+ (id)getTransactionTypeStringFromCode:(unsigned __int8)a3 andServiceProviderID:(unsigned __int8)a4
++ (id)getTransactionTypeStringFromCode:(unsigned __int8)code andServiceProviderID:(unsigned __int8)d
 {
   v6 = @"Purchase";
-  switch(a3)
+  switch(code)
   {
     case 1u:
     case 2u:
@@ -430,10 +430,10 @@ LABEL_20:
     case 0x1Fu:
       goto LABEL_9;
     default:
-      if ((a3 - 100) <= 6 && ((1 << (a3 - 100)) & 0x65) != 0)
+      if ((code - 100) <= 6 && ((1 << (code - 100)) & 0x65) != 0)
       {
 LABEL_5:
-        v6 = [a1 getTransitTransactionTypeNameFromCode:v4 andServiceProvider:?];
+        v6 = [self getTransitTransactionTypeNameFromCode:v4 andServiceProvider:?];
       }
 
       else
@@ -448,24 +448,24 @@ LABEL_6:
   }
 }
 
-+ (id)getTransitTransactionTypeNameFromCode:(unsigned __int8)a3 andServiceProvider:(unsigned __int16)a4
++ (id)getTransitTransactionTypeNameFromCode:(unsigned __int8)code andServiceProvider:(unsigned __int16)provider
 {
-  if (a3 == 102 && a4 == 253 || a3 <= 0x1Au && ((1 << a3) & 0x4000018) != 0)
+  if (code == 102 && provider == 253 || code <= 0x1Au && ((1 << code) & 0x4000018) != 0)
   {
     return @"TransitBus";
   }
 
   result = @"TransitTrain";
-  if (a4 <= 100)
+  if (provider <= 100)
   {
-    if (a4 <= 3)
+    if (provider <= 3)
     {
-      if ((a4 - 1) < 2)
+      if ((provider - 1) < 2)
       {
         return result;
       }
 
-      if (a4 != 3)
+      if (provider != 3)
       {
         return @"Transit";
       }
@@ -473,14 +473,14 @@ LABEL_6:
       return @"TransitLightRail";
     }
 
-    if ((a4 - 4) < 2)
+    if ((provider - 4) < 2)
     {
       return @"TransitBus";
     }
 
-    if (a4 != 6)
+    if (provider != 6)
     {
-      if (a4 == 7)
+      if (provider == 7)
       {
         return @"TransitBus";
       }
@@ -491,16 +491,16 @@ LABEL_6:
     return @"TransitOtherFerry";
   }
 
-  if (a4 <= 199)
+  if (provider <= 199)
   {
-    v5 = a4 - 101;
-    if ((a4 - 101) <= 0x39)
+    v5 = provider - 101;
+    if ((provider - 101) <= 0x39)
     {
       if (((1 << v5) & 0x281040F80000000) == 0)
       {
         if (((1 << v5) & 0x600000000000) == 0)
         {
-          if (a4 == 101)
+          if (provider == 101)
           {
             return result;
           }
@@ -517,11 +517,11 @@ LABEL_6:
     return @"Transit";
   }
 
-  if (a4 > 248)
+  if (provider > 248)
   {
-    if (a4 != 250)
+    if (provider != 250)
     {
-      if (a4 != 249)
+      if (provider != 249)
       {
         return @"Transit";
       }
@@ -532,7 +532,7 @@ LABEL_6:
     return @"TransitOtherFerry";
   }
 
-  if (a4 != 200 && a4 != 248)
+  if (provider != 200 && provider != 248)
   {
     return @"Transit";
   }
@@ -540,12 +540,12 @@ LABEL_6:
   return result;
 }
 
-+ (int)getEnRouteStatus:(id)a3
++ (int)getEnRouteStatus:(id)status
 {
-  v3 = a3;
-  if ([SlalomUtils isValidFelicaBlock:v3])
+  statusCopy = status;
+  if ([SlalomUtils isValidFelicaBlock:statusCopy])
   {
-    v4 = +[SlalomUtils readBitsValueFromBuffer:bitPosition:length:](SlalomUtils, "readBitsValueFromBuffer:bitPosition:length:", [v3 bytes], 15, 1) == 1;
+    v4 = +[SlalomUtils readBitsValueFromBuffer:bitPosition:length:](SlalomUtils, "readBitsValueFromBuffer:bitPosition:length:", [statusCopy bytes], 15, 1) == 1;
   }
 
   else
@@ -563,19 +563,19 @@ LABEL_6:
   return v4;
 }
 
-+ (int)filterHistoryEntry:(id)a3
++ (int)filterHistoryEntry:(id)entry
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"AddValueTypeRaw"];
+  entryCopy = entry;
+  v4 = [entryCopy objectForKeyedSubscript:@"AddValueTypeRaw"];
   if ([v4 intValue] == 4)
   {
-    v5 = [v3 objectForKeyedSubscript:@"MerchantCategoryCode"];
+    v5 = [entryCopy objectForKeyedSubscript:@"MerchantCategoryCode"];
     if ([v5 intValue] == 1)
     {
-      v6 = [v3 objectForKeyedSubscript:@"TypeDetailRaw"];
+      v6 = [entryCopy objectForKeyedSubscript:@"TypeDetailRaw"];
       if ([v6 intValue] == 18)
       {
-        v7 = [v3 objectForKeyedSubscript:@"Amount"];
+        v7 = [entryCopy objectForKeyedSubscript:@"Amount"];
         v8 = [v7 intValue] == 0;
       }
 

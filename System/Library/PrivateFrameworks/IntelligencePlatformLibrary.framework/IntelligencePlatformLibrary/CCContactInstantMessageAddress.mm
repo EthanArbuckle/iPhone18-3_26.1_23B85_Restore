@@ -1,28 +1,28 @@
 @interface CCContactInstantMessageAddress
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCContactInstantMessageAddress)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCContactInstantMessageAddress)initWithLabel:(id)a3 username:(id)a4 serviceName:(id)a5 error:(id *)a6;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCContactInstantMessageAddress)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCContactInstantMessageAddress)initWithLabel:(id)label username:(id)username serviceName:(id)name error:(id *)error;
 - (NSString)label;
 - (NSString)serviceName;
 - (NSString)username;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCContactInstantMessageAddress
 
-- (CCContactInstantMessageAddress)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCContactInstantMessageAddress)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"label"];
-    v10 = [v6 objectForKeyedSubscript:@"username"];
-    v11 = [v6 objectForKeyedSubscript:@"serviceName"];
-    v12 = [[CCContactInstantMessageAddress alloc] initWithLabel:v9 username:v10 serviceName:v11 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"label"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"username"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"serviceName"];
+    v12 = [[CCContactInstantMessageAddress alloc] initWithLabel:v9 username:v10 serviceName:v11 error:error];
   }
 
   else
@@ -39,20 +39,20 @@
   v3 = objc_opt_new();
   if (self->_label)
   {
-    v4 = [(CCContactInstantMessageAddress *)self label];
-    [v3 setObject:v4 forKeyedSubscript:@"label"];
+    label = [(CCContactInstantMessageAddress *)self label];
+    [v3 setObject:label forKeyedSubscript:@"label"];
   }
 
   if (self->_username)
   {
-    v5 = [(CCContactInstantMessageAddress *)self username];
-    [v3 setObject:v5 forKeyedSubscript:@"username"];
+    username = [(CCContactInstantMessageAddress *)self username];
+    [v3 setObject:username forKeyedSubscript:@"username"];
   }
 
   if (self->_serviceName)
   {
-    v6 = [(CCContactInstantMessageAddress *)self serviceName];
-    [v3 setObject:v6 forKeyedSubscript:@"serviceName"];
+    serviceName = [(CCContactInstantMessageAddress *)self serviceName];
+    [v3 setObject:serviceName forKeyedSubscript:@"serviceName"];
   }
 
   v7 = [v3 copy];
@@ -60,28 +60,28 @@
   return v7;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v9 = a3;
+  blockCopy = block;
   if (self->_label)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19744 stringValue:self->_label];
-    v9[2](v9, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_username)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19745 stringValue:self->_username];
-    v9[2](v9, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
-  v7 = v9;
+  v7 = blockCopy;
   if (self->_serviceName)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19746 stringValue:self->_serviceName];
-    v9[2](v9, v8);
+    blockCopy[2](blockCopy, v8);
 
-    v7 = v9;
+    v7 = blockCopy;
   }
 }
 
@@ -106,10 +106,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -266,13 +266,13 @@ LABEL_40:
   return v31;
 }
 
-- (CCContactInstantMessageAddress)initWithLabel:(id)a3 username:(id)a4 serviceName:(id)a5 error:(id *)a6
+- (CCContactInstantMessageAddress)initWithLabel:(id)label username:(id)username serviceName:(id)name error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  labelCopy = label;
+  usernameCopy = username;
+  nameCopy = name;
   v13 = objc_opt_new();
-  if (v10)
+  if (labelCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -283,11 +283,11 @@ LABEL_40:
     }
 
     CCPBDataWriterWriteStringField();
-    if (!v11)
+    if (!usernameCopy)
     {
 LABEL_4:
       v16 = v15;
-      if (v12)
+      if (nameCopy)
       {
         goto LABEL_5;
       }
@@ -301,7 +301,7 @@ LABEL_11:
   else
   {
     v15 = 0;
-    if (!v11)
+    if (!usernameCopy)
     {
       goto LABEL_4;
     }
@@ -314,13 +314,13 @@ LABEL_11:
   if (!v19)
   {
     CCSetError();
-    v18 = 0;
+    selfCopy = 0;
     v15 = v16;
     goto LABEL_14;
   }
 
   CCPBDataWriterWriteStringField();
-  if (!v12)
+  if (!nameCopy)
   {
     goto LABEL_11;
   }
@@ -334,19 +334,19 @@ LABEL_5:
   {
     CCPBDataWriterWriteStringField();
 LABEL_12:
-    v20 = [v13 immutableData];
-    self = [(CCItemMessage *)self initWithData:v20 error:a6];
+    immutableData = [v13 immutableData];
+    self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-    v18 = self;
+    selfCopy = self;
     goto LABEL_14;
   }
 
 LABEL_7:
   CCSetError();
-  v18 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v18;
+  return selfCopy;
 }
 
 @end

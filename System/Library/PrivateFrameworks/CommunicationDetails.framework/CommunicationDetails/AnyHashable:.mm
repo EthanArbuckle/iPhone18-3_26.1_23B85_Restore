@@ -9,7 +9,7 @@
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation3URLVSgMd);
   MEMORY[0x1EEE9AC00](v6 - 8);
   v8 = &v13 - v7;
-  v9 = *(a1 + 32);
+  v9 = *(self + 32);
   if (a2)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();

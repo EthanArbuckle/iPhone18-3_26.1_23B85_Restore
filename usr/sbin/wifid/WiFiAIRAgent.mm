@@ -1,14 +1,14 @@
 @interface WiFiAIRAgent
 + (id)sharedInstance;
 - (id)_initPrivate;
-- (unint64_t)convertFromNWReliabilityMonitorResult:(unint64_t)a3;
-- (void)_evaluationComplete:(unint64_t)a3;
-- (void)_userInteractivityChangedCallback:(unint64_t)a3;
-- (void)ingestLQMUpdate:(id)a3;
-- (void)processRoamEvent:(__WiFiNetwork *)a3;
-- (void)setWiFiManagerQueue:(id)a3;
+- (unint64_t)convertFromNWReliabilityMonitorResult:(unint64_t)result;
+- (void)_evaluationComplete:(unint64_t)complete;
+- (void)_userInteractivityChangedCallback:(unint64_t)callback;
+- (void)ingestLQMUpdate:(id)update;
+- (void)processRoamEvent:(__WiFiNetwork *)event;
+- (void)setWiFiManagerQueue:(id)queue;
 - (void)terminateRequest;
-- (void)waitForConfirmationWithTimeout:(__WiFiNetwork *)a3 withBssEnvironment:(signed __int16)a4 withMgrCallback:(id)a5;
+- (void)waitForConfirmationWithTimeout:(__WiFiNetwork *)timeout withBssEnvironment:(signed __int16)environment withMgrCallback:(id)callback;
 @end
 
 @implementation WiFiAIRAgent
@@ -33,12 +33,12 @@
   return v3;
 }
 
-- (void)setWiFiManagerQueue:(id)a3
+- (void)setWiFiManagerQueue:(id)queue
 {
-  v5 = a3;
-  if (v5)
+  queueCopy = queue;
+  if (queueCopy)
   {
-    objc_storeStrong(&self->_sharedMgrQueue, a3);
+    objc_storeStrong(&self->_sharedMgrQueue, queue);
   }
 
   else
@@ -47,7 +47,7 @@
   }
 }
 
-- (void)_userInteractivityChangedCallback:(unint64_t)a3
+- (void)_userInteractivityChangedCallback:(unint64_t)callback
 {
   sharedMgrQueue = self->_sharedMgrQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -55,27 +55,27 @@
   v4[2] = sub_100038C44;
   v4[3] = &unk_10025EA50;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = callback;
   dispatch_async(sharedMgrQueue, v4);
 }
 
-- (unint64_t)convertFromNWReliabilityMonitorResult:(unint64_t)a3
+- (unint64_t)convertFromNWReliabilityMonitorResult:(unint64_t)result
 {
-  if (a3 - 1 > 2)
+  if (result - 1 > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_1001CDFF8[a3 - 1];
+    return qword_1001CDFF8[result - 1];
   }
 }
 
-- (void)waitForConfirmationWithTimeout:(__WiFiNetwork *)a3 withBssEnvironment:(signed __int16)a4 withMgrCallback:(id)a5
+- (void)waitForConfirmationWithTimeout:(__WiFiNetwork *)timeout withBssEnvironment:(signed __int16)environment withMgrCallback:(id)callback
 {
-  v8 = a5;
-  v9 = [v8 copy];
+  callbackCopy = callback;
+  v9 = [callbackCopy copy];
   mgrCallback = self->_mgrCallback;
   self->_mgrCallback = v9;
 
@@ -99,7 +99,7 @@
     goto LABEL_11;
   }
 
-  if ((a4 & 0xFFFD) != 4)
+  if ((environment & 0xFFFD) != 4)
   {
     v21 = objc_autoreleasePoolPush();
     if (off_100298C40)
@@ -108,15 +108,15 @@
     }
 
     objc_autoreleasePoolPop(v21);
-    v19 = self;
+    selfCopy3 = self;
     v20 = 3;
     goto LABEL_18;
   }
 
   v12 = +[WiFiUserInteractionMonitor sharedInstance];
-  v13 = [v12 isRealTimeAppActive];
+  isRealTimeAppActive = [v12 isRealTimeAppActive];
 
-  if ((v13 & 1) == 0)
+  if ((isRealTimeAppActive & 1) == 0)
   {
     v22 = objc_autoreleasePoolPush();
     if (off_100298C40)
@@ -125,7 +125,7 @@
     }
 
     objc_autoreleasePoolPop(v22);
-    v19 = self;
+    selfCopy3 = self;
     v20 = 4;
     goto LABEL_18;
   }
@@ -142,10 +142,10 @@
   if (!v17)
   {
 LABEL_11:
-    v19 = self;
+    selfCopy3 = self;
     v20 = 2;
 LABEL_18:
-    [(WiFiAIRAgent *)v19 _evaluationComplete:v20];
+    [(WiFiAIRAgent *)selfCopy3 _evaluationComplete:v20];
     goto LABEL_19;
   }
 
@@ -154,7 +154,7 @@ LABEL_18:
   v23[2] = sub_10003905C;
   v23[3] = &unk_10025EAB8;
   v23[4] = self;
-  [(WiFiNWReliabilityMonitor *)v17 waitForNetworkToBeReliableWithTimeout:a3 withTimeout:60 withMgrCallback:v23];
+  [(WiFiNWReliabilityMonitor *)v17 waitForNetworkToBeReliableWithTimeout:timeout withTimeout:60 withMgrCallback:v23];
 LABEL_19:
 }
 
@@ -165,14 +165,14 @@ LABEL_19:
   [(WiFiAIRAgent *)self _evaluationComplete:6];
 }
 
-- (void)_evaluationComplete:(unint64_t)a3
+- (void)_evaluationComplete:(unint64_t)complete
 {
   if (self->_isEvalInProgress)
   {
     v5 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"%s: AIR agent request complete with result:%lu", "-[WiFiAIRAgent _evaluationComplete:]", a3}];
+      [off_100298C40 WFLog:3 message:{"%s: AIR agent request complete with result:%lu", "-[WiFiAIRAgent _evaluationComplete:]", complete}];
     }
 
     objc_autoreleasePoolPop(v5);
@@ -194,9 +194,9 @@ LABEL_19:
     mgrCallback = self->_mgrCallback;
     if (mgrCallback)
     {
-      if (a3 != 6)
+      if (complete != 6)
       {
-        mgrCallback[2](mgrCallback, a3);
+        mgrCallback[2](mgrCallback, complete);
         mgrCallback = self->_mgrCallback;
       }
 
@@ -205,7 +205,7 @@ LABEL_19:
   }
 }
 
-- (void)processRoamEvent:(__WiFiNetwork *)a3
+- (void)processRoamEvent:(__WiFiNetwork *)event
 {
   if ([(WiFiAIRAgent *)self isInterfaceRankingInProgress])
   {
@@ -213,20 +213,20 @@ LABEL_19:
     if (monitor)
     {
 
-      [(WiFiNWReliabilityMonitor *)monitor processRoamEvent:a3];
+      [(WiFiNWReliabilityMonitor *)monitor processRoamEvent:event];
     }
   }
 }
 
-- (void)ingestLQMUpdate:(id)a3
+- (void)ingestLQMUpdate:(id)update
 {
-  v5 = a3;
+  updateCopy = update;
   if ([(WiFiAIRAgent *)self isInterfaceRankingInProgress])
   {
     monitor = self->_monitor;
     if (monitor)
     {
-      [(WiFiNWReliabilityMonitor *)monitor ingestLQMUpdate:v5];
+      [(WiFiNWReliabilityMonitor *)monitor ingestLQMUpdate:updateCopy];
     }
   }
 }

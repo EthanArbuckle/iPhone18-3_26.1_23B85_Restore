@@ -1,56 +1,56 @@
 @interface ConditionalSubjectParameterSummaryEditor
-- (BOOL)variableMenuSupportsVariableSelectionForSlotWithIdentifier:(id)a3;
-- (id)clearButtonMenuItemForSlotWithIdentifier:(id)a3;
-- (id)customMenuElementsForSlotWithIdentifier:(id)a3 style:(unint64_t)a4;
-- (id)stateByReplacingVariableFromCurrentState:(id)a3 withVariable:(id)a4;
-- (void)beginEditingSlotWithIdentifier:(id)a3 presentationAnchor:(id)a4;
-- (void)cancelEditingWithCompletionHandler:(id)a3;
+- (BOOL)variableMenuSupportsVariableSelectionForSlotWithIdentifier:(id)identifier;
+- (id)clearButtonMenuItemForSlotWithIdentifier:(id)identifier;
+- (id)customMenuElementsForSlotWithIdentifier:(id)identifier style:(unint64_t)style;
+- (id)stateByReplacingVariableFromCurrentState:(id)state withVariable:(id)variable;
+- (void)beginEditingSlotWithIdentifier:(id)identifier presentationAnchor:(id)anchor;
+- (void)cancelEditingWithCompletionHandler:(id)handler;
 @end
 
 @implementation ConditionalSubjectParameterSummaryEditor
 
-- (void)beginEditingSlotWithIdentifier:(id)a3 presentationAnchor:(id)a4
+- (void)beginEditingSlotWithIdentifier:(id)identifier presentationAnchor:(id)anchor
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_2744943F8(v6, v7);
+  identifierCopy = identifier;
+  anchorCopy = anchor;
+  selfCopy = self;
+  sub_2744943F8(identifierCopy, anchorCopy);
 }
 
-- (void)cancelEditingWithCompletionHandler:(id)a3
+- (void)cancelEditingWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;
-  v6 = self;
+  selfCopy = self;
 
   sub_2745EA34C(&unk_274650130, v5);
 }
 
-- (BOOL)variableMenuSupportsVariableSelectionForSlotWithIdentifier:(id)a3
+- (BOOL)variableMenuSupportsVariableSelectionForSlotWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_274495100(v4);
+  identifierCopy = identifier;
+  selfCopy = self;
+  LOBYTE(self) = sub_274495100(identifierCopy);
 
   return self & 1;
 }
 
-- (id)clearButtonMenuItemForSlotWithIdentifier:(id)a3
+- (id)clearButtonMenuItemForSlotWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_2744952FC(v4);
+  identifierCopy = identifier;
+  selfCopy = self;
+  v6 = sub_2744952FC(identifierCopy);
 
   return v6;
 }
 
-- (id)customMenuElementsForSlotWithIdentifier:(id)a3 style:(unint64_t)a4
+- (id)customMenuElementsForSlotWithIdentifier:(id)identifier style:(unint64_t)style
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_274495538(v6, a4);
+  identifierCopy = identifier;
+  selfCopy = self;
+  v8 = sub_274495538(identifierCopy, style);
 
   if (v8)
   {
@@ -66,12 +66,12 @@
   return v9;
 }
 
-- (id)stateByReplacingVariableFromCurrentState:(id)a3 withVariable:(id)a4
+- (id)stateByReplacingVariableFromCurrentState:(id)state withVariable:(id)variable
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_274496B88(a3, a4);
+  stateCopy = state;
+  variableCopy = variable;
+  selfCopy = self;
+  v10 = sub_274496B88(state, variable);
 
   return v10;
 }

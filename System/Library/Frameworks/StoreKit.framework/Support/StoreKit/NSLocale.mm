@@ -1,10 +1,10 @@
 @interface NSLocale
-+ (id)sk_localeWithBagLanguageCode:(id)a3 currencyCode:(id)a4;
++ (id)sk_localeWithBagLanguageCode:(id)code currencyCode:(id)currencyCode;
 @end
 
 @implementation NSLocale
 
-+ (id)sk_localeWithBagLanguageCode:(id)a3 currencyCode:(id)a4
++ (id)sk_localeWithBagLanguageCode:(id)code currencyCode:(id)currencyCode
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;

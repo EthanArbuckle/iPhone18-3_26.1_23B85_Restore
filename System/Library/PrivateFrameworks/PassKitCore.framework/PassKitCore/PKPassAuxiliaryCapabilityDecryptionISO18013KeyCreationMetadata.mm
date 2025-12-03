@@ -1,67 +1,67 @@
 @interface PKPassAuxiliaryCapabilityDecryptionISO18013KeyCreationMetadata
-- (PKPassAuxiliaryCapabilityDecryptionISO18013KeyCreationMetadata)initWithCoder:(id)a3;
-- (PKPassAuxiliaryCapabilityDecryptionISO18013KeyCreationMetadata)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKPassAuxiliaryCapabilityDecryptionISO18013KeyCreationMetadata)initWithCoder:(id)coder;
+- (PKPassAuxiliaryCapabilityDecryptionISO18013KeyCreationMetadata)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassAuxiliaryCapabilityDecryptionISO18013KeyCreationMetadata
 
-- (PKPassAuxiliaryCapabilityDecryptionISO18013KeyCreationMetadata)initWithDictionary:(id)a3
+- (PKPassAuxiliaryCapabilityDecryptionISO18013KeyCreationMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = PKPassAuxiliaryCapabilityDecryptionISO18013KeyCreationMetadata;
-  v5 = [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)&v9 initWithDictionary:v4];
+  v5 = [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)&v9 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"cardType"];
+    v6 = [dictionaryCopy PKStringForKey:@"cardType"];
     v5->_cardType = PKPaymentCardTypeFromString(v6);
 
-    v7 = [v4 PKStringForKey:@"attestationType"];
+    v7 = [dictionaryCopy PKStringForKey:@"attestationType"];
     v5->_attestationType = PKPassAuxiliaryCapabilityKeyAttestationTypeFromString(v7);
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)[PKPassAuxiliaryCapabilityDecryptionISO18013KeyCreationMetadata alloc] _init];
-  [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)self _copyInto:v4];
-  v4[1] = self->_cardType;
-  v4[2] = self->_attestationType;
-  return v4;
+  _init = [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)[PKPassAuxiliaryCapabilityDecryptionISO18013KeyCreationMetadata alloc] _init];
+  [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)self _copyInto:_init];
+  _init[1] = self->_cardType;
+  _init[2] = self->_attestationType;
+  return _init;
 }
 
-- (PKPassAuxiliaryCapabilityDecryptionISO18013KeyCreationMetadata)initWithCoder:(id)a3
+- (PKPassAuxiliaryCapabilityDecryptionISO18013KeyCreationMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKPassAuxiliaryCapabilityDecryptionISO18013KeyCreationMetadata;
-  v5 = [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)&v9 initWithCoder:v4];
+  v5 = [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cardType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cardType"];
     v5->_cardType = PKPaymentCardTypeFromString(v6);
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attestationType"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attestationType"];
     v5->_attestationType = PKPassAuxiliaryCapabilityKeyAttestationTypeFromString(v7);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PKPassAuxiliaryCapabilityDecryptionISO18013KeyCreationMetadata;
-  [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)&v7 encodeWithCoder:v4];
+  [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)&v7 encodeWithCoder:coderCopy];
   v5 = PKPaymentCardTypeToString(self->_cardType);
-  [v4 encodeObject:v5 forKey:@"cardType"];
+  [coderCopy encodeObject:v5 forKey:@"cardType"];
 
   attestationType = self->_attestationType;
   if (attestationType >= 3)
@@ -71,7 +71,7 @@
 
   else
   {
-    [v4 encodeObject:qword_1E79D61D0[attestationType] forKey:@"attestationType"];
+    [coderCopy encodeObject:qword_1E79D61D0[attestationType] forKey:@"attestationType"];
   }
 }
 

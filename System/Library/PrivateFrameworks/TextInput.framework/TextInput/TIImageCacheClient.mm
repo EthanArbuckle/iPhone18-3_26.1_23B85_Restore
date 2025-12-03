@@ -1,33 +1,33 @@
 @interface TIImageCacheClient
-- (BOOL)imageExistsForKey:(id)a3 inGroup:(id)a4;
-- (CGImage)copyImageForKey:(id)a3 inGroup:(id)a4;
+- (BOOL)imageExistsForKey:(id)key inGroup:(id)group;
+- (CGImage)copyImageForKey:(id)key inGroup:(id)group;
 - (OS_dispatch_queue)storeImageQueue;
-- (TIImageCacheClient)initWithLocalAccess:(BOOL)a3;
-- (_img)_imgForItem:(SEL)a3;
+- (TIImageCacheClient)initWithLocalAccess:(BOOL)access;
+- (_img)_imgForItem:(SEL)item;
 - (id)_versionPath;
 - (int)_cacheVersion;
 - (unint64_t)imageCount;
 - (void)_createConnectionIfNecessary;
-- (void)_idleIfNecessary:(BOOL)a3;
-- (void)_localStoreImageForKey:(id)a3 inGroup:(id)a4 withItem:(id)a5;
-- (void)_remoteStoreImageForKey:(id)a3 inGroup:(id)a4 withItem:(id)a5;
-- (void)_setCacheVersion:(int)a3;
+- (void)_idleIfNecessary:(BOOL)necessary;
+- (void)_localStoreImageForKey:(id)key inGroup:(id)group withItem:(id)item;
+- (void)_remoteStoreImageForKey:(id)key inGroup:(id)group withItem:(id)item;
+- (void)_setCacheVersion:(int)version;
 - (void)dealloc;
-- (void)idleAfter:(double)a3;
-- (void)openAndMmap:(id)a3 withInfo:(_img *)a4;
+- (void)idleAfter:(double)after;
+- (void)openAndMmap:(id)mmap withInfo:(_img *)info;
 - (void)purge;
-- (void)removeImagesInGroups:(id)a3 completion:(id)a4;
+- (void)removeImagesInGroups:(id)groups completion:(id)completion;
 - (void)setIdleWhenDone;
-- (void)storeImageDataForKey:(id)a3 inGroup:(id)a4 item:(id)a5;
+- (void)storeImageDataForKey:(id)key inGroup:(id)group item:(id)item;
 @end
 
 @implementation TIImageCacheClient
 
 - (int)_cacheVersion
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(TIImageCacheClient *)self _versionPath];
-  v5 = [v3 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  _versionPath = [(TIImageCacheClient *)self _versionPath];
+  v5 = [defaultManager fileExistsAtPath:_versionPath];
 
   if (!v5)
   {
@@ -35,22 +35,22 @@
   }
 
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(TIImageCacheClient *)self _versionPath];
+  _versionPath2 = [(TIImageCacheClient *)self _versionPath];
   v12 = 0;
-  v8 = [v6 stringWithContentsOfFile:v7 encoding:4 error:&v12];
+  v8 = [v6 stringWithContentsOfFile:_versionPath2 encoding:4 error:&v12];
   v9 = v12;
 
   if (v9)
   {
-    v10 = -1;
+    intValue = -1;
   }
 
   else
   {
-    v10 = [v8 intValue];
+    intValue = [v8 intValue];
   }
 
-  return v10;
+  return intValue;
 }
 
 - (id)_versionPath
@@ -68,35 +68,35 @@
   return versionPath;
 }
 
-- (void)_setCacheVersion:(int)a3
+- (void)_setCacheVersion:(int)version
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithInt:*&a3];
-  v4 = [v6 stringValue];
-  v5 = [(TIImageCacheClient *)self _versionPath];
-  [v4 writeToFile:v5 atomically:1 encoding:4 error:0];
+  v6 = [MEMORY[0x1E696AD98] numberWithInt:*&version];
+  stringValue = [v6 stringValue];
+  _versionPath = [(TIImageCacheClient *)self _versionPath];
+  [stringValue writeToFile:_versionPath atomically:1 encoding:4 error:0];
 }
 
 - (void)purge
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  [v3 removeItemAtPath:self->_path error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager removeItemAtPath:self->_path error:0];
 }
 
 - (unint64_t)imageCount
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(TIImageCacheClient *)self imagePath];
-  v5 = [v3 subpathsAtPath:v4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  imagePath = [(TIImageCacheClient *)self imagePath];
+  v5 = [defaultManager subpathsAtPath:imagePath];
   v6 = [v5 count];
 
   return v6;
 }
 
-- (void)removeImagesInGroups:(id)a3 completion:(id)a4
+- (void)removeImagesInGroups:(id)groups completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  groupsCopy = groups;
+  completionCopy = completion;
+  if ([groupsCopy count])
   {
     if (!self->_serialQueueRemoveImagesDefault)
     {
@@ -114,23 +114,23 @@
       self->_serialQueueRemoveImagesBackground = v12;
     }
 
-    v14 = [(TIImageCacheClient *)self imagePath];
-    v15 = [MEMORY[0x1E696AC08] defaultManager];
-    v16 = [v15 contentsOfDirectoryAtPath:v14 error:0];
+    imagePath = [(TIImageCacheClient *)self imagePath];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v16 = [defaultManager contentsOfDirectoryAtPath:imagePath error:0];
 
-    v17 = [v7 copy];
+    v17 = [completionCopy copy];
     v18 = self->_serialQueueRemoveImagesBackground;
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __54__TIImageCacheClient_removeImagesInGroups_completion___block_invoke;
     v22[3] = &unk_1E6F4D900;
-    v23 = v6;
+    v23 = groupsCopy;
     v24 = v16;
-    v25 = v14;
-    v26 = self;
+    v25 = imagePath;
+    selfCopy = self;
     v27 = v17;
     v19 = v17;
-    v20 = v14;
+    v20 = imagePath;
     v21 = v16;
     TIDispatchAsync(v18, v22);
   }
@@ -259,13 +259,13 @@ void __54__TIImageCacheClient_removeImagesInGroups_completion___block_invoke_2(u
   }
 }
 
-- (void)_idleIfNecessary:(BOOL)a3
+- (void)_idleIfNecessary:(BOOL)necessary
 {
   if (self->_shouldIdleWhenDone)
   {
     if (self->_remoteQueryCount)
     {
-      v4 = !a3;
+      v4 = !necessary;
     }
 
     else
@@ -286,13 +286,13 @@ void __54__TIImageCacheClient_removeImagesInGroups_completion___block_invoke_2(u
   }
 }
 
-- (void)idleAfter:(double)a3
+- (void)idleAfter:(double)after
 {
   requestQueue = self->_requestQueue;
   if (requestQueue)
   {
     self->_shouldIdleWhenDone = 1;
-    if (a3 <= 0.0)
+    if (after <= 0.0)
     {
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
@@ -304,7 +304,7 @@ void __54__TIImageCacheClient_removeImagesInGroups_completion___block_invoke_2(u
 
     else
     {
-      v5 = dispatch_time(0, (a3 * 1000000000.0));
+      v5 = dispatch_time(0, (after * 1000000000.0));
       v6 = self->_requestQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -392,26 +392,26 @@ void __50__TIImageCacheClient__createConnectionIfNecessary__block_invoke_2(uint6
   }
 }
 
-- (void)storeImageDataForKey:(id)a3 inGroup:(id)a4 item:(id)a5
+- (void)storeImageDataForKey:(id)key inGroup:(id)group item:(id)item
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  keyCopy = key;
+  groupCopy = group;
+  itemCopy = item;
+  if (itemCopy)
   {
     if (self->_hasLocalAccess)
     {
-      [(TIImageCacheClient *)self _localStoreImageForKey:v10 inGroup:v8 withItem:v9];
+      [(TIImageCacheClient *)self _localStoreImageForKey:keyCopy inGroup:groupCopy withItem:itemCopy];
     }
 
     else
     {
-      [(TIImageCacheClient *)self _remoteStoreImageForKey:v10 inGroup:v8 withItem:v9];
+      [(TIImageCacheClient *)self _remoteStoreImageForKey:keyCopy inGroup:groupCopy withItem:itemCopy];
     }
   }
 }
 
-- (_img)_imgForItem:(SEL)a3
+- (_img)_imgForItem:(SEL)item
 {
   v20 = a4;
   *&retstr->var4 = 0;
@@ -424,19 +424,19 @@ void __50__TIImageCacheClient__createConnectionIfNecessary__block_invoke_2(uint6
   [v20 scale];
   v11 = vcvtpd_u64_f64(v9 * v10);
   retstr->var2 = v11;
-  v12 = [v20 format];
-  retstr->var4 = v12;
+  format = [v20 format];
+  retstr->var4 = format;
   retstr->var3 = CGBitmapGetAlignedBytesPerRow();
   [v20 format];
   retstr->var0 = (*MEMORY[0x1E69E9AC8] + CGBitmapGetAlignedBytesPerRow() * v11 + 47) & -*MEMORY[0x1E69E9AC8];
   var5 = retstr->var5;
-  v14 = [v20 formatColor];
-  if (v12 == 5)
+  formatColor = [v20 formatColor];
+  if (format == 5)
   {
-    v15 = v14;
-    if (v14)
+    v15 = formatColor;
+    if (formatColor)
     {
-      NumberOfComponents = CGColorGetNumberOfComponents(v14);
+      NumberOfComponents = CGColorGetNumberOfComponents(formatColor);
       for (i = CGColorGetComponents(v15); NumberOfComponents; --NumberOfComponents)
       {
         v18 = *i++;
@@ -448,15 +448,15 @@ void __50__TIImageCacheClient__createConnectionIfNecessary__block_invoke_2(uint6
   return result;
 }
 
-- (void)_remoteStoreImageForKey:(id)a3 inGroup:(id)a4 withItem:(id)a5
+- (void)_remoteStoreImageForKey:(id)key inGroup:(id)group withItem:(id)item
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v10 scale];
+  keyCopy = key;
+  groupCopy = group;
+  itemCopy = item;
+  [itemCopy scale];
   if (v11 == 0.0)
   {
-    [v10 _callDataReleaseHandler];
+    [itemCopy _callDataReleaseHandler];
   }
 
   else
@@ -468,9 +468,9 @@ void __50__TIImageCacheClient__createConnectionIfNecessary__block_invoke_2(uint6
     v13[2] = __63__TIImageCacheClient__remoteStoreImageForKey_inGroup_withItem___block_invoke;
     v13[3] = &unk_1E6F4D838;
     v13[4] = self;
-    v14 = v10;
-    v15 = v8;
-    v16 = v9;
+    v14 = itemCopy;
+    v15 = keyCopy;
+    v16 = groupCopy;
     TIDispatchSync(requestQueue, v13);
   }
 }
@@ -485,32 +485,32 @@ uint64_t __63__TIImageCacheClient__remoteStoreImageForKey_inGroup_withItem___blo
   return [v3 _callDataReleaseHandler];
 }
 
-- (void)_localStoreImageForKey:(id)a3 inGroup:(id)a4 withItem:(id)a5
+- (void)_localStoreImageForKey:(id)key inGroup:(id)group withItem:(id)item
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v10 scale];
-  if (v11 == 0.0 || (-[TIImageCacheClient imagePath](self, "imagePath"), v12 = objc_claimAutoreleasedReturnValue(), v12, !v12) || (v25 = 0, v23 = 0u, v24 = 0u, -[TIImageCacheClient _imgForItem:](self, "_imgForItem:", v10), [v10 data], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "length") + 48, v13, v14))
+  keyCopy = key;
+  groupCopy = group;
+  itemCopy = item;
+  [itemCopy scale];
+  if (v11 == 0.0 || (-[TIImageCacheClient imagePath](self, "imagePath"), v12 = objc_claimAutoreleasedReturnValue(), v12, !v12) || (v25 = 0, v23 = 0u, v24 = 0u, -[TIImageCacheClient _imgForItem:](self, "_imgForItem:", itemCopy), [itemCopy data], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "length") + 48, v13, v14))
   {
-    [v10 _callDataReleaseHandler];
+    [itemCopy _callDataReleaseHandler];
   }
 
   else
   {
-    v15 = [(TIImageCacheClient *)self storeImageQueue];
+    storeImageQueue = [(TIImageCacheClient *)self storeImageQueue];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __62__TIImageCacheClient__localStoreImageForKey_inGroup_withItem___block_invoke;
     v16[3] = &unk_1E6F4D810;
     v16[4] = self;
-    v17 = v10;
+    v17 = itemCopy;
     v20 = v23;
     v21 = v24;
     v22 = v25;
-    v18 = v8;
-    v19 = v9;
-    TIDispatchAsync(v15, v16);
+    v18 = keyCopy;
+    v19 = groupCopy;
+    TIDispatchAsync(storeImageQueue, v16);
   }
 }
 
@@ -705,16 +705,16 @@ LABEL_22:
   return storeImageQueue;
 }
 
-- (CGImage)copyImageForKey:(id)a3 inGroup:(id)a4
+- (CGImage)copyImageForKey:(id)key inGroup:(id)group
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TIImageCacheClient *)self imagePath];
+  keyCopy = key;
+  groupCopy = group;
+  imagePath = [(TIImageCacheClient *)self imagePath];
 
-  if (v8)
+  if (imagePath)
   {
-    v9 = TIImageNameForItem(v6, v7);
+    v9 = TIImageNameForItem(keyCopy, groupCopy);
     v10 = [(NSCache *)self->_cache objectForKey:v9];
     if (v10)
     {
@@ -727,8 +727,8 @@ LABEL_34:
     v36 = 0;
     *size = 0u;
     *bytesPerRow = 0u;
-    v12 = [(TIImageCacheClient *)self imagePath];
-    v13 = [v12 stringByAppendingPathComponent:v9];
+    imagePath2 = [(TIImageCacheClient *)self imagePath];
+    v13 = [imagePath2 stringByAppendingPathComponent:v9];
 
     v14 = [(TIImageCacheClient *)self openAndMmap:v13 withInfo:size];
     if (!v14)
@@ -863,17 +863,17 @@ LABEL_35:
   return v11;
 }
 
-- (BOOL)imageExistsForKey:(id)a3 inGroup:(id)a4
+- (BOOL)imageExistsForKey:(id)key inGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TIImageCacheClient *)self imagePath];
+  keyCopy = key;
+  groupCopy = group;
+  imagePath = [(TIImageCacheClient *)self imagePath];
 
-  if (v8)
+  if (imagePath)
   {
-    v9 = TIImageNameForItem(v6, v7);
-    v10 = [(TIImageCacheClient *)self imagePath];
-    v11 = [v10 stringByAppendingPathComponent:v9];
+    v9 = TIImageNameForItem(keyCopy, groupCopy);
+    imagePath2 = [(TIImageCacheClient *)self imagePath];
+    v11 = [imagePath2 stringByAppendingPathComponent:v9];
 
     v12 = access([v11 fileSystemRepresentation], 4) == 0;
   }
@@ -886,13 +886,13 @@ LABEL_35:
   return v12;
 }
 
-- (void)openAndMmap:(id)a3 withInfo:(_img *)a4
+- (void)openAndMmap:(id)mmap withInfo:(_img *)info
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [a3 fileSystemRepresentation];
+  mmapCopy = mmap;
+  fileSystemRepresentation = [mmap fileSystemRepresentation];
   hasLocalAccess = self->_hasLocalAccess;
-  v10 = open(v8, 256);
+  v10 = open(fileSystemRepresentation, 256);
   if (v10 < 0)
   {
     return 0;
@@ -910,7 +910,7 @@ LABEL_35:
     v12 = TIImageCacheOSLogFacility();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s Cannot open '%s', its been hard-linked", "open_and_mmap", v8];
+      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s Cannot open '%s', its been hard-linked", "open_and_mmap", fileSystemRepresentation];
       *buf = 138412290;
       v37 = v13;
 LABEL_32:
@@ -931,7 +931,7 @@ LABEL_32:
       v31 = MEMORY[0x1E696AEC0];
       v32 = __error();
       v33 = strerror(*v32);
-      v13 = [v31 stringWithFormat:@"%s Mapping '%s' failed: '%s' (%d)", "open_and_mmap", v8, v33, *__error()];
+      v13 = [v31 stringWithFormat:@"%s Mapping '%s' failed: '%s' (%d)", "open_and_mmap", fileSystemRepresentation, v33, *__error()];
       *buf = 138412290;
       v37 = v13;
       goto LABEL_32;
@@ -955,23 +955,23 @@ LABEL_13:
       {
         if (v15[1] == 1)
         {
-          a4->var0 = v15[2];
+          info->var0 = v15[2];
           v21 = *(v15 + 3);
           *&v22 = v21;
           *(&v22 + 1) = HIDWORD(v21);
-          *&a4->var1 = v22;
-          a4->var3 = v15[5];
-          a4->var4 = *(v15 + 28);
-          a4->var5[0] = *(v15 + 29);
-          a4->var5[1] = *(v15 + 30);
-          a4->var5[2] = *(v15 + 31);
-          a4->var5[3] = *(v15 + 32);
+          *&info->var1 = v22;
+          info->var3 = v15[5];
+          info->var4 = *(v15 + 28);
+          info->var5[0] = *(v15 + 29);
+          info->var5[1] = *(v15 + 30);
+          info->var5[2] = *(v15 + 31);
+          info->var5[3] = *(v15 + 32);
           AlignedBytesPerRow = CGBitmapGetAlignedBytesPerRow();
           v24 = AlignedBytesPerRow;
-          if (a4->var3 == AlignedBytesPerRow)
+          if (info->var3 == AlignedBytesPerRow)
           {
-            v25 = (*MEMORY[0x1E69E9AC8] + a4->var2 * AlignedBytesPerRow + 47) & -*MEMORY[0x1E69E9AC8];
-            if (a4->var0 == v25)
+            v25 = (*MEMORY[0x1E69E9AC8] + info->var2 * AlignedBytesPerRow + 47) & -*MEMORY[0x1E69E9AC8];
+            if (info->var0 == v25)
             {
               if (v25 != st_size)
               {
@@ -979,7 +979,7 @@ LABEL_13:
               }
 
               v26 = crc32(0, 0, 0);
-              var2 = a4->var2;
+              var2 = info->var2;
               v28 = CGBitmapGetAlignedBytesPerRow();
               v29 = v28 * var2;
               v30 = v28 * var2 + 48;
@@ -999,18 +999,18 @@ LABEL_13:
                   goto LABEL_36;
                 }
 
-                v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s CRC did not match for cached image at path: %s (%u, %u)", "open_and_mmap_img", v8, v35, v15[6]];
+                1414089027 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s CRC did not match for cached image at path: %s (%u, %u)", "open_and_mmap_img", fileSystemRepresentation, v35, v15[6]];
                 v38.st_dev = 138412290;
-                *&v38.st_mode = v18;
+                *&v38.st_mode = 1414089027;
                 goto LABEL_35;
               }
 
               v17 = TIImageCacheOSLogFacility();
               if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
               {
-                v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s Actual file size is shorter than declared for cached image at path: %s (%lu, %lu)", "open_and_mmap_img", v8, st_size, v30];
+                1414089027 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s Actual file size is shorter than declared for cached image at path: %s (%lu, %lu)", "open_and_mmap_img", fileSystemRepresentation, st_size, v30];
                 v38.st_dev = 138412290;
-                *&v38.st_mode = v18;
+                *&v38.st_mode = 1414089027;
                 goto LABEL_35;
               }
             }
@@ -1020,9 +1020,9 @@ LABEL_13:
               v17 = TIImageCacheOSLogFacility();
               if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
               {
-                v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s Mapping '%s' failed: wrong size %zu (expected %zu)", "read_img_header", v8, a4->var0, v25];
+                1414089027 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s Mapping '%s' failed: wrong size %zu (expected %zu)", "read_img_header", fileSystemRepresentation, info->var0, v25];
                 v38.st_dev = 138412290;
-                *&v38.st_mode = v18;
+                *&v38.st_mode = 1414089027;
                 goto LABEL_35;
               }
             }
@@ -1033,9 +1033,9 @@ LABEL_13:
             v17 = TIImageCacheOSLogFacility();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
             {
-              v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s Mapping '%s' failed: wrong bpr %zu (expected %zu)", "read_img_header", v8, a4->var3, v24];
+              1414089027 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s Mapping '%s' failed: wrong bpr %zu (expected %zu)", "read_img_header", fileSystemRepresentation, info->var3, v24];
               v38.st_dev = 138412290;
-              *&v38.st_mode = v18;
+              *&v38.st_mode = 1414089027;
               goto LABEL_35;
             }
           }
@@ -1046,9 +1046,9 @@ LABEL_13:
           v17 = TIImageCacheOSLogFacility();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
           {
-            v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s Mapping '%s' failed: wrong version %d (expected %d)", "read_img_header", v8, v15[1], 1];
+            1414089027 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s Mapping '%s' failed: wrong version %d (expected %d)", "read_img_header", fileSystemRepresentation, v15[1], 1];
             v38.st_dev = 138412290;
-            *&v38.st_mode = v18;
+            *&v38.st_mode = 1414089027;
             goto LABEL_35;
           }
         }
@@ -1059,9 +1059,9 @@ LABEL_13:
         v17 = TIImageCacheOSLogFacility();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s Mapping '%s' failed: wrong magic number %#08x (expected %#08x)", "read_img_header", v8, *v15, 1414089027];
+          1414089027 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s Mapping '%s' failed: wrong magic number %#08x (expected %#08x)", "read_img_header", fileSystemRepresentation, *v15, 1414089027];
           v38.st_dev = 138412290;
-          *&v38.st_mode = v18;
+          *&v38.st_mode = 1414089027;
           goto LABEL_35;
         }
       }
@@ -1072,9 +1072,9 @@ LABEL_13:
       v17 = TIImageCacheOSLogFacility();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
-        v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s Mapping '%s' failed: file too short", "open_and_mmap_img", v8];
+        1414089027 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s Mapping '%s' failed: file too short", "open_and_mmap_img", fileSystemRepresentation];
         v38.st_dev = 138412290;
-        *&v38.st_mode = v18;
+        *&v38.st_mode = 1414089027;
 LABEL_35:
         _os_log_debug_impl(&dword_1863F7000, v17, OS_LOG_TYPE_DEBUG, "%@", &v38, 0xCu);
       }
@@ -1086,7 +1086,7 @@ LABEL_37:
     munmap(v15, st_size);
     if (hasLocalAccess)
     {
-      unlink(v8);
+      unlink(fileSystemRepresentation);
     }
   }
 
@@ -1102,9 +1102,9 @@ LABEL_37:
   [(TIImageCacheClient *)&v3 dealloc];
 }
 
-- (TIImageCacheClient)initWithLocalAccess:(BOOL)a3
+- (TIImageCacheClient)initWithLocalAccess:(BOOL)access
 {
-  v3 = a3;
+  accessCopy = access;
   v16.receiver = self;
   v16.super_class = TIImageCacheClient;
   v4 = [(TIImageCacheClient *)&v16 init];
@@ -1118,7 +1118,7 @@ LABEL_37:
     imagePath = v4->_imagePath;
     v4->_imagePath = v7;
 
-    v4->_hasLocalAccess = v3;
+    v4->_hasLocalAccess = accessCopy;
     v4->_remoteQueryCount = 0;
     v4->_shouldIdleWhenDone = 0;
     v9 = objc_alloc_init(MEMORY[0x1E695DEE0]);
@@ -1129,8 +1129,8 @@ LABEL_37:
     [(NSCache *)v4->_cache setCountLimit:40];
     if (v4->_hasLocalAccess)
     {
-      v11 = [(NSString *)v4->_path stringByDeletingLastPathComponent];
-      v12 = CheckSandboxAccess(v11);
+      stringByDeletingLastPathComponent = [(NSString *)v4->_path stringByDeletingLastPathComponent];
+      v12 = CheckSandboxAccess(stringByDeletingLastPathComponent);
 
       if (v12)
       {
@@ -1147,15 +1147,15 @@ LABEL_37:
 
         if (access([(NSString *)v4->_path fileSystemRepresentation], 4))
         {
-          v14 = [(TIImageCacheClient *)v4 imagePath];
-          mkpath_np([v14 fileSystemRepresentation], 0x1EDu);
+          imagePath = [(TIImageCacheClient *)v4 imagePath];
+          mkpath_np([imagePath fileSystemRepresentation], 0x1EDu);
 
           [(TIImageCacheClient *)v4 _setCacheVersion:v13];
         }
       }
     }
 
-    if (v3)
+    if (accessCopy)
     {
       v4->_hasLocalAccess = CheckSandboxAccess(v4->_imagePath);
     }

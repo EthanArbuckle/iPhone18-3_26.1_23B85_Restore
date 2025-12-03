@@ -1,13 +1,13 @@
 @interface VCPSceneProcessingImageManager
 + (id)imageManager;
 - (VCPSceneProcessingImageManager)init;
-- (int)_createPixelBuffer:(__CVBuffer *)a3 withColorSpace:(CGColorSpace *)a4 fromPixelBuffer:(__CVBuffer *)a5;
-- (int)_createPixelBuffer:(__CVBuffer *)a3 withMinorDimension:(unint64_t)a4 fromFullPixelBuffer:(__CVBuffer *)a5;
-- (int)_createPixelBuffer:(__CVBuffer *)a3 withWidth:(unint64_t)a4 andHeight:(unint64_t)a5;
-- (int)_pooledPixelBuffer:(__CVBuffer *)a3 withDimension:(unint64_t)a4;
-- (int)fullPixelBuffer:(__CVBuffer *)a3 toScaledBuffer:(__CVBuffer *)a4;
-- (int)loadFullPixelBuffer:(__CVBuffer *)a3 scaledPixelBuffer299:(__CVBuffer *)a4 scaledPixelBuffer360:(__CVBuffer *)a5 fromImageURL:(id)a6 abnormalDimension:(unint64_t)a7;
-- (int)scalePixelBuffer:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4 width:(unint64_t)a5 height:(unint64_t)a6;
+- (int)_createPixelBuffer:(__CVBuffer *)buffer withColorSpace:(CGColorSpace *)space fromPixelBuffer:(__CVBuffer *)pixelBuffer;
+- (int)_createPixelBuffer:(__CVBuffer *)buffer withMinorDimension:(unint64_t)dimension fromFullPixelBuffer:(__CVBuffer *)pixelBuffer;
+- (int)_createPixelBuffer:(__CVBuffer *)buffer withWidth:(unint64_t)width andHeight:(unint64_t)height;
+- (int)_pooledPixelBuffer:(__CVBuffer *)buffer withDimension:(unint64_t)dimension;
+- (int)fullPixelBuffer:(__CVBuffer *)buffer toScaledBuffer:(__CVBuffer *)scaledBuffer;
+- (int)loadFullPixelBuffer:(__CVBuffer *)buffer scaledPixelBuffer299:(__CVBuffer *)buffer299 scaledPixelBuffer360:(__CVBuffer *)buffer360 fromImageURL:(id)l abnormalDimension:(unint64_t)dimension;
+- (int)scalePixelBuffer:(__CVBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer width:(unint64_t)width height:(unint64_t)height;
 - (void)dealloc;
 @end
 
@@ -20,9 +20,9 @@
   v2 = [(VCPSceneProcessingImageManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     pixelBufferPools = v2->_pixelBufferPools;
-    v2->_pixelBufferPools = v3;
+    v2->_pixelBufferPools = dictionary;
   }
 
   return v2;
@@ -45,21 +45,21 @@
   [(VCPSceneProcessingImageManager *)&v4 dealloc];
 }
 
-- (int)_createPixelBuffer:(__CVBuffer *)a3 withWidth:(unint64_t)a4 andHeight:(unint64_t)a5
+- (int)_createPixelBuffer:(__CVBuffer *)buffer withWidth:(unint64_t)width andHeight:(unint64_t)height
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v10 = *MEMORY[0x1E69660D8];
   v11[0] = MEMORY[0x1E695E0F8];
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  LODWORD(a3) = CVPixelBufferCreate(0, a4, a5, 0x42475241u, v8, a3);
+  LODWORD(buffer) = CVPixelBufferCreate(0, width, height, 0x42475241u, v8, buffer);
 
-  return a3;
+  return buffer;
 }
 
-- (int)_createPixelBuffer:(__CVBuffer *)a3 withMinorDimension:(unint64_t)a4 fromFullPixelBuffer:(__CVBuffer *)a5
+- (int)_createPixelBuffer:(__CVBuffer *)buffer withMinorDimension:(unint64_t)dimension fromFullPixelBuffer:(__CVBuffer *)pixelBuffer
 {
-  Height = CVPixelBufferGetHeight(a5);
-  Width = CVPixelBufferGetWidth(a5);
+  Height = CVPixelBufferGetHeight(pixelBuffer);
+  Width = CVPixelBufferGetWidth(pixelBuffer);
   if (!Width || !Height)
   {
     return -18;
@@ -71,45 +71,45 @@
     v11 = Width / Height;
   }
 
-  v12 = v11 * a4;
+  v12 = v11 * dimension;
   if (Width <= Height)
   {
-    v13 = a4;
+    dimensionCopy = dimension;
   }
 
   else
   {
-    v13 = v12;
+    dimensionCopy = v12;
   }
 
   if (Width <= Height)
   {
-    v14 = v12;
+    dimensionCopy2 = v12;
   }
 
   else
   {
-    v14 = a4;
+    dimensionCopy2 = dimension;
   }
 
-  return [(VCPSceneProcessingImageManager *)self _createPixelBuffer:a3 withWidth:v13 andHeight:v14];
+  return [(VCPSceneProcessingImageManager *)self _createPixelBuffer:buffer withWidth:dimensionCopy andHeight:dimensionCopy2];
 }
 
-- (int)_pooledPixelBuffer:(__CVBuffer *)a3 withDimension:(unint64_t)a4
+- (int)_pooledPixelBuffer:(__CVBuffer *)buffer withDimension:(unint64_t)dimension
 {
   v22[4] = *MEMORY[0x1E69E9840];
   pixelBufferPools = self->_pixelBufferPools;
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:dimension];
   v9 = [(NSMutableDictionary *)pixelBufferPools objectForKeyedSubscript:v8];
 
   v20 = v9;
   if (!v9)
   {
     v21[0] = *MEMORY[0x1E6966208];
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:dimension];
     v22[0] = v11;
     v21[1] = *MEMORY[0x1E69660B8];
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:dimension];
     v13 = *MEMORY[0x1E6966130];
     v22[1] = v12;
     v22[2] = &unk_1F49BE608;
@@ -128,47 +128,47 @@
 
     v17 = v20;
     v18 = self->_pixelBufferPools;
-    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:dimension];
     [(NSMutableDictionary *)v18 setObject:v17 forKeyedSubscript:v19];
 
     v9 = v20;
   }
 
-  return CVPixelBufferPoolCreatePixelBuffer(0, v9, a3);
+  return CVPixelBufferPoolCreatePixelBuffer(0, v9, buffer);
 }
 
-- (int)fullPixelBuffer:(__CVBuffer *)a3 toScaledBuffer:(__CVBuffer *)a4
+- (int)fullPixelBuffer:(__CVBuffer *)buffer toScaledBuffer:(__CVBuffer *)scaledBuffer
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0;
-  v13 = a3;
+  bufferCopy = buffer;
   v14 = 1;
-  if (a3)
+  if (buffer)
   {
-    v6 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+    v6 = CVPixelBufferLockBaseAddress(buffer, 1uLL);
     v12 = v6;
-    if (!v6 || (v7 = v6, os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR)) && (LODWORD(buf.data) = 134218240, *(&buf.data + 4) = a3, WORD2(buf.height) = 1024, *(&buf.height + 6) = v7, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", &buf, 0x12u), (v7 = v12) == 0))
+    if (!v6 || (v7 = v6, os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR)) && (LODWORD(buf.data) = 134218240, *(&buf.data + 4) = buffer, WORD2(buf.height) = 1024, *(&buf.height + 6) = v7, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", &buf, 0x12u), (v7 = v12) == 0))
     {
-      buf.data = CVPixelBufferGetBaseAddress(a3);
-      buf.height = CVPixelBufferGetHeight(a3);
-      buf.width = CVPixelBufferGetWidth(a3);
-      buf.rowBytes = CVPixelBufferGetBytesPerRow(a3);
-      pixelBuffer = a4;
+      buf.data = CVPixelBufferGetBaseAddress(buffer);
+      buf.height = CVPixelBufferGetHeight(buffer);
+      buf.width = CVPixelBufferGetWidth(buffer);
+      buf.rowBytes = CVPixelBufferGetBytesPerRow(buffer);
+      pixelBuffer = scaledBuffer;
       unlockFlags = 0;
-      if (a4)
+      if (scaledBuffer)
       {
-        v7 = CVPixelBufferLockBaseAddress(a4, 0);
+        v7 = CVPixelBufferLockBaseAddress(scaledBuffer, 0);
         v9 = v7;
         if (!v7 || os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR) && (LODWORD(v15.data) = 134218240, *(&v15.data + 4) = pixelBuffer, WORD2(v15.height) = 1024, *(&v15.height + 6) = v7, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", &v15, 0x12u), (v7 = v9) == 0))
         {
-          v15.data = CVPixelBufferGetBaseAddress(a4);
-          v15.height = CVPixelBufferGetHeight(a4);
-          v15.width = CVPixelBufferGetWidth(a4);
-          v15.rowBytes = CVPixelBufferGetBytesPerRow(a4);
+          v15.data = CVPixelBufferGetBaseAddress(scaledBuffer);
+          v15.height = CVPixelBufferGetHeight(scaledBuffer);
+          v15.width = CVPixelBufferGetWidth(scaledBuffer);
+          v15.rowBytes = CVPixelBufferGetBytesPerRow(scaledBuffer);
           v7 = vImageScale_ARGB8888(&buf, &v15, 0, 0x20u);
           if (!v7)
           {
-            CVBufferPropagateAttachments(a3, a4);
+            CVBufferPropagateAttachments(buffer, scaledBuffer);
             v7 = CVPixelBufferLock::Unlock(&v9);
             if (!v7)
             {
@@ -193,7 +193,7 @@
         v7 = -50;
       }
 
-      if (v13 && !v12 && CVPixelBufferUnlockBaseAddress(v13, v14) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+      if (bufferCopy && !v12 && CVPixelBufferUnlockBaseAddress(bufferCopy, v14) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         [VCPVideoCNNAnalyzer copyImage:withChannels:settling:];
       }
@@ -213,24 +213,24 @@
   return v7;
 }
 
-- (int)_createPixelBuffer:(__CVBuffer *)a3 withColorSpace:(CGColorSpace *)a4 fromPixelBuffer:(__CVBuffer *)a5
+- (int)_createPixelBuffer:(__CVBuffer *)buffer withColorSpace:(CGColorSpace *)space fromPixelBuffer:(__CVBuffer *)pixelBuffer
 {
-  Height = CVPixelBufferGetHeight(a5);
-  Width = CVPixelBufferGetWidth(a5);
+  Height = CVPixelBufferGetHeight(pixelBuffer);
+  Width = CVPixelBufferGetWidth(pixelBuffer);
   v11 = -18;
   if (Width)
   {
     if (Height)
     {
       v12 = Width;
-      v11 = [(VCPSceneProcessingImageManager *)self _createPixelBuffer:a3 withWidth:Width andHeight:Height];
+      v11 = [(VCPSceneProcessingImageManager *)self _createPixelBuffer:buffer withWidth:Width andHeight:Height];
       if (!v11)
       {
         imageOut = 0;
-        VTCreateCGImageFromCVPixelBuffer(a5, 0, &imageOut);
+        VTCreateCGImageFromCVPixelBuffer(pixelBuffer, 0, &imageOut);
         if (imageOut)
         {
-          v13 = *a3;
+          v13 = *buffer;
           pixelBuffer = v13;
           unlockFlags = 0;
           if (v13)
@@ -250,13 +250,13 @@
               BaseAddress = CVPixelBufferGetBaseAddress(v13);
               BytesPerRow = CVPixelBufferGetBytesPerRow(v13);
               BitmapInfo = CGImageGetBitmapInfo(imageOut);
-              v18 = CGBitmapContextCreate(BaseAddress, v12, Height, 8uLL, BytesPerRow, a4, BitmapInfo);
+              v18 = CGBitmapContextCreate(BaseAddress, v12, Height, 8uLL, BytesPerRow, space, BitmapInfo);
               v23.size.width = v12;
               v23.size.height = Height;
               v23.origin.x = 0.0;
               v23.origin.y = 0.0;
               CGContextDrawImage(v18, v23, imageOut);
-              CVBufferSetAttachment(v13, *MEMORY[0x1E6965CE8], a4, kCVAttachmentMode_ShouldPropagate);
+              CVBufferSetAttachment(v13, *MEMORY[0x1E6965CE8], space, kCVAttachmentMode_ShouldPropagate);
               v11 = CVPixelBufferLock::Unlock(&v19);
               CF<__CVBuffer *>::~CF(&v18);
               if (pixelBuffer && !v19 && CVPixelBufferUnlockBaseAddress(pixelBuffer, unlockFlags) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -290,33 +290,33 @@
   return v11;
 }
 
-- (int)loadFullPixelBuffer:(__CVBuffer *)a3 scaledPixelBuffer299:(__CVBuffer *)a4 scaledPixelBuffer360:(__CVBuffer *)a5 fromImageURL:(id)a6 abnormalDimension:(unint64_t)a7
+- (int)loadFullPixelBuffer:(__CVBuffer *)buffer scaledPixelBuffer299:(__CVBuffer *)buffer299 scaledPixelBuffer360:(__CVBuffer *)buffer360 fromImageURL:(id)l abnormalDimension:(unint64_t)dimension
 {
-  v12 = a6;
-  *a3 = 0;
-  if (a4)
+  lCopy = l;
+  *buffer = 0;
+  if (buffer299)
   {
-    *a4 = 0;
+    *buffer299 = 0;
   }
 
-  if (a5)
+  if (buffer360)
   {
-    *a5 = 0;
+    *buffer360 = 0;
   }
 
   v26 = 0;
   v24 = 0;
   v25 = 0;
-  v13 = self;
-  objc_sync_enter(v13);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v14 = +[VCPImageManager sharedImageManager];
-  cf = [v14 pixelBufferWithFormat:1111970369 fromImageURL:v12 flushCache:0];
+  cf = [v14 pixelBufferWithFormat:1111970369 fromImageURL:lCopy flushCache:0];
   v23 = 0;
   CF<__CVBuffer *>::~CF(&v23);
 
   if (!cf)
   {
-    objc_sync_exit(v13);
+    objc_sync_exit(selfCopy);
 
     v16 = -18;
     goto LABEL_26;
@@ -331,15 +331,15 @@
     v15 = v23;
   }
 
-  v16 = [(VCPSceneProcessingImageManager *)v13 _createPixelBuffer:&v26 withColorSpace:v15 fromPixelBuffer:cf];
+  v16 = [(VCPSceneProcessingImageManager *)selfCopy _createPixelBuffer:&v26 withColorSpace:v15 fromPixelBuffer:cf];
   if (v16)
   {
     goto LABEL_9;
   }
 
-  if (a7)
+  if (dimension)
   {
-    if (a4)
+    if (buffer299)
     {
       if (v25)
       {
@@ -347,14 +347,14 @@
         v25 = 0;
       }
 
-      v16 = [(VCPSceneProcessingImageManager *)v13 _createPixelBuffer:&v25 withMinorDimension:299 fromFullPixelBuffer:v26];
+      v16 = [(VCPSceneProcessingImageManager *)selfCopy _createPixelBuffer:&v25 withMinorDimension:299 fromFullPixelBuffer:v26];
       if (v16)
       {
         goto LABEL_9;
       }
     }
 
-    if (a5)
+    if (buffer360)
     {
       if (v24)
       {
@@ -362,14 +362,14 @@
         v24 = 0;
       }
 
-      v22 = [(VCPSceneProcessingImageManager *)v13 _createPixelBuffer:&v24 withMinorDimension:360 fromFullPixelBuffer:v26];
+      v22 = [(VCPSceneProcessingImageManager *)selfCopy _createPixelBuffer:&v24 withMinorDimension:360 fromFullPixelBuffer:v26];
       goto LABEL_44;
     }
   }
 
   else
   {
-    if (a4)
+    if (buffer299)
     {
       if (v25)
       {
@@ -377,14 +377,14 @@
         v25 = 0;
       }
 
-      v16 = [(VCPSceneProcessingImageManager *)v13 _pooledPixelBuffer:&v25 withDimension:299];
+      v16 = [(VCPSceneProcessingImageManager *)selfCopy _pooledPixelBuffer:&v25 withDimension:299];
       if (v16)
       {
         goto LABEL_9;
       }
     }
 
-    if (a5)
+    if (buffer360)
     {
       if (v24)
       {
@@ -392,7 +392,7 @@
         v24 = 0;
       }
 
-      v22 = [(VCPSceneProcessingImageManager *)v13 _pooledPixelBuffer:&v24 withDimension:360];
+      v22 = [(VCPSceneProcessingImageManager *)selfCopy _pooledPixelBuffer:&v24 withDimension:360];
 LABEL_44:
       v16 = v22;
       if (!v22)
@@ -411,11 +411,11 @@ LABEL_45:
   v17 = 1;
 LABEL_10:
   CF<__CVBuffer *>::~CF(&v23);
-  objc_sync_exit(v13);
+  objc_sync_exit(selfCopy);
 
   if (v17)
   {
-    if ((!a4 || (v16 = [(VCPSceneProcessingImageManager *)v13 fullPixelBuffer:v26 toScaledBuffer:v25]) == 0) && (!a5 || (v16 = [(VCPSceneProcessingImageManager *)v13 fullPixelBuffer:v26 toScaledBuffer:v24]) == 0))
+    if ((!buffer299 || (v16 = [(VCPSceneProcessingImageManager *)selfCopy fullPixelBuffer:v26 toScaledBuffer:v25]) == 0) && (!buffer360 || (v16 = [(VCPSceneProcessingImageManager *)selfCopy fullPixelBuffer:v26 toScaledBuffer:v24]) == 0))
     {
       v18 = v26;
       if (v26)
@@ -423,8 +423,8 @@ LABEL_10:
         v18 = CFRetain(v26);
       }
 
-      *a3 = v18;
-      if (a4)
+      *buffer = v18;
+      if (buffer299)
       {
         v19 = v25;
         if (v25)
@@ -432,10 +432,10 @@ LABEL_10:
           v19 = CFRetain(v25);
         }
 
-        *a4 = v19;
+        *buffer299 = v19;
       }
 
-      if (a5)
+      if (buffer360)
       {
         v20 = v24;
         if (v24)
@@ -444,7 +444,7 @@ LABEL_10:
         }
 
         v16 = 0;
-        *a5 = v20;
+        *buffer360 = v20;
       }
 
       else
@@ -463,15 +463,15 @@ LABEL_26:
   return v16;
 }
 
-- (int)scalePixelBuffer:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4 width:(unint64_t)a5 height:(unint64_t)a6
+- (int)scalePixelBuffer:(__CVBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer width:(unint64_t)width height:(unint64_t)height
 {
   cf = 0;
-  if (a5 == a6)
+  if (width == height)
   {
-    v10 = self;
-    objc_sync_enter(v10);
-    v11 = [(VCPSceneProcessingImageManager *)v10 _pooledPixelBuffer:&cf withDimension:a5];
-    objc_sync_exit(v10);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v11 = [(VCPSceneProcessingImageManager *)selfCopy _pooledPixelBuffer:&cf withDimension:width];
+    objc_sync_exit(selfCopy);
 
     if (v11)
     {
@@ -481,14 +481,14 @@ LABEL_26:
 
   else
   {
-    v11 = [(VCPSceneProcessingImageManager *)self _createPixelBuffer:&cf withWidth:a5 andHeight:a6];
+    v11 = [(VCPSceneProcessingImageManager *)self _createPixelBuffer:&cf withWidth:width andHeight:height];
     if (v11)
     {
       goto LABEL_9;
     }
   }
 
-  v11 = [(VCPSceneProcessingImageManager *)self fullPixelBuffer:a3 toScaledBuffer:cf];
+  v11 = [(VCPSceneProcessingImageManager *)self fullPixelBuffer:buffer toScaledBuffer:cf];
   if (!v11)
   {
     v12 = cf;
@@ -498,7 +498,7 @@ LABEL_26:
     }
 
     v11 = 0;
-    *a4 = v12;
+    *pixelBuffer = v12;
   }
 
 LABEL_9:

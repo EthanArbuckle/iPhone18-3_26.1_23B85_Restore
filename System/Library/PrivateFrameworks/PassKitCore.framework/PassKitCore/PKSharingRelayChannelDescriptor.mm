@@ -1,92 +1,92 @@
 @interface PKSharingRelayChannelDescriptor
-+ (id)createChannelWithRegion:(id)a3;
-+ (id)createChannelWithRegion:(id)a3 stateful:(BOOL)a4;
-+ (id)existingChannelForMailboxIdentifier:(id)a3;
-+ (id)existingChannelForURL:(id)a3;
-- (PKSharingRelayChannelDescriptor)initWithCoder:(id)a3;
-- (id)_initWithSubType:(unint64_t)a3 region:(id)a4 stateful:(BOOL)a5 existingChannelURL:(id)a6 mailboxIdentifier:(id)a7;
-- (void)encodeWithCoder:(id)a3;
++ (id)createChannelWithRegion:(id)region;
++ (id)createChannelWithRegion:(id)region stateful:(BOOL)stateful;
++ (id)existingChannelForMailboxIdentifier:(id)identifier;
++ (id)existingChannelForURL:(id)l;
+- (PKSharingRelayChannelDescriptor)initWithCoder:(id)coder;
+- (id)_initWithSubType:(unint64_t)type region:(id)region stateful:(BOOL)stateful existingChannelURL:(id)l mailboxIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKSharingRelayChannelDescriptor
 
-- (id)_initWithSubType:(unint64_t)a3 region:(id)a4 stateful:(BOOL)a5 existingChannelURL:(id)a6 mailboxIdentifier:(id)a7
+- (id)_initWithSubType:(unint64_t)type region:(id)region stateful:(BOOL)stateful existingChannelURL:(id)l mailboxIdentifier:(id)identifier
 {
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  regionCopy = region;
+  lCopy = l;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = PKSharingRelayChannelDescriptor;
   v16 = [(PKSharingChannelDescriptor *)&v19 _initWithType:3];
   v17 = v16;
   if (v16)
   {
-    v16[3] = a3;
-    objc_storeStrong(v16 + 4, a4);
-    *(v17 + 16) = a5;
-    objc_storeStrong(v17 + 5, a6);
-    objc_storeStrong(v17 + 6, a7);
+    v16[3] = type;
+    objc_storeStrong(v16 + 4, region);
+    *(v17 + 16) = stateful;
+    objc_storeStrong(v17 + 5, l);
+    objc_storeStrong(v17 + 6, identifier);
   }
 
   return v17;
 }
 
-+ (id)createChannelWithRegion:(id)a3
++ (id)createChannelWithRegion:(id)region
 {
-  v3 = a3;
-  v4 = [[PKSharingRelayChannelDescriptor alloc] _initWithSubType:1 region:v3 stateful:1 existingChannelURL:0 mailboxIdentifier:0];
+  regionCopy = region;
+  v4 = [[PKSharingRelayChannelDescriptor alloc] _initWithSubType:1 region:regionCopy stateful:1 existingChannelURL:0 mailboxIdentifier:0];
 
   return v4;
 }
 
-+ (id)createChannelWithRegion:(id)a3 stateful:(BOOL)a4
++ (id)createChannelWithRegion:(id)region stateful:(BOOL)stateful
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [[PKSharingRelayChannelDescriptor alloc] _initWithSubType:1 region:v5 stateful:v4 existingChannelURL:0 mailboxIdentifier:0];
+  statefulCopy = stateful;
+  regionCopy = region;
+  v6 = [[PKSharingRelayChannelDescriptor alloc] _initWithSubType:1 region:regionCopy stateful:statefulCopy existingChannelURL:0 mailboxIdentifier:0];
 
   return v6;
 }
 
-+ (id)existingChannelForURL:(id)a3
++ (id)existingChannelForURL:(id)l
 {
-  v3 = a3;
-  v4 = [[PKSharingRelayChannelDescriptor alloc] _initWithSubType:2 region:0 stateful:0 existingChannelURL:v3 mailboxIdentifier:0];
+  lCopy = l;
+  v4 = [[PKSharingRelayChannelDescriptor alloc] _initWithSubType:2 region:0 stateful:0 existingChannelURL:lCopy mailboxIdentifier:0];
 
   return v4;
 }
 
-+ (id)existingChannelForMailboxIdentifier:(id)a3
++ (id)existingChannelForMailboxIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[PKSharingRelayChannelDescriptor alloc] _initWithSubType:2 region:0 stateful:0 existingChannelURL:0 mailboxIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[PKSharingRelayChannelDescriptor alloc] _initWithSubType:2 region:0 stateful:0 existingChannelURL:0 mailboxIdentifier:identifierCopy];
 
   return v4;
 }
 
-- (PKSharingRelayChannelDescriptor)initWithCoder:(id)a3
+- (PKSharingRelayChannelDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKSharingRelayChannelDescriptor;
-  v5 = [(PKSharingChannelDescriptor *)&v15 initWithCoder:v4];
+  v5 = [(PKSharingChannelDescriptor *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtype"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtype"];
     v5->_subtype = [v6 unsignedIntegerValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"region"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"region"];
     region = v5->_region;
     v5->_region = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stateful"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stateful"];
     v5->_stateful = [v9 BOOLValue];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"existingChannelURL"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"existingChannelURL"];
     existingChannelURL = v5->_existingChannelURL;
     v5->_existingChannelURL = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"existingMailboxIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"existingMailboxIdentifier"];
     existingMailboxIdentifier = v5->_existingMailboxIdentifier;
     v5->_existingMailboxIdentifier = v12;
   }
@@ -94,21 +94,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = PKSharingRelayChannelDescriptor;
-  v4 = a3;
-  [(PKSharingChannelDescriptor *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(PKSharingChannelDescriptor *)&v7 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{self->_subtype, v7.receiver, v7.super_class}];
-  [v4 encodeObject:v5 forKey:@"subtype"];
+  [coderCopy encodeObject:v5 forKey:@"subtype"];
 
-  [v4 encodeObject:self->_region forKey:@"region"];
+  [coderCopy encodeObject:self->_region forKey:@"region"];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_stateful];
-  [v4 encodeObject:v6 forKey:@"stateful"];
+  [coderCopy encodeObject:v6 forKey:@"stateful"];
 
-  [v4 encodeObject:self->_existingChannelURL forKey:@"existingChannelURL"];
-  [v4 encodeObject:self->_existingMailboxIdentifier forKey:@"existingMailboxIdentifier"];
+  [coderCopy encodeObject:self->_existingChannelURL forKey:@"existingChannelURL"];
+  [coderCopy encodeObject:self->_existingMailboxIdentifier forKey:@"existingMailboxIdentifier"];
 }
 
 @end

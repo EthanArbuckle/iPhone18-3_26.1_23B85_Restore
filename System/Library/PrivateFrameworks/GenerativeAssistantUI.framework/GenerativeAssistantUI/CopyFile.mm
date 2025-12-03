@@ -1,17 +1,17 @@
 @interface CopyFile
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (NSString)activityTitle;
 - (_TtC16MarkdownDocument8CopyFile)init;
 - (id)activityImage;
 - (void)performActivity;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation CopyFile
 
 - (id)activityImage
 {
-  v1 = a1;
+  selfCopy = self;
   v2 = sub_24FEC9370();
 
   return v2;
@@ -39,16 +39,16 @@
   return v7;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v4 = sub_24FEDE324();
-  v5 = self;
+  selfCopy = self;
   LOBYTE(self) = sub_24FEC9880(v4);
 
   return self & 1;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27F3A64B8, &qword_24FEE63A0);
   v5 = *(*(v4 - 8) + 64);
@@ -58,14 +58,14 @@
   if (*(v8 + 16))
   {
     sub_24FE72CC0(v8 + 32, v14);
-    v9 = self;
+    selfCopy = self;
 
     v10 = sub_24FEDC9E4();
     v11 = swift_dynamicCast();
     (*(*(v10 - 8) + 56))(v7, v11 ^ 1u, 1, v10);
     v12 = OBJC_IVAR____TtC16MarkdownDocument8CopyFile_fileURL;
     swift_beginAccess();
-    sub_24FECD334(v7, v9 + v12);
+    sub_24FECD334(v7, selfCopy + v12);
     swift_endAccess();
   }
 
@@ -77,7 +77,7 @@
 
 - (void)performActivity
 {
-  v2 = self;
+  selfCopy = self;
   sub_24FECA030();
 }
 

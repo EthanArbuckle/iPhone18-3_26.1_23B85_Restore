@@ -1,14 +1,14 @@
 @interface CKDAuthorizationObserver
 + (CKDAuthorizationObserver)defaultObserver;
 - (CKDAuthorizationObserver)init;
-- (CKDAuthorizationObserver)initWithIdentifier:(id)a3;
+- (CKDAuthorizationObserver)initWithIdentifier:(id)identifier;
 - (NSSet)bundleIdentifiers;
 - (NSSet)services;
-- (void)_handleTCCAuthorizationEventWithType:(unint64_t)a3 record:(id)a4 block:(id)a5;
+- (void)_handleTCCAuthorizationEventWithType:(unint64_t)type record:(id)record block:(id)block;
 - (void)invalidate;
-- (void)registerWithBlock:(id)a3;
-- (void)setBundleIdentifiers:(id)a3;
-- (void)setServices:(id)a3;
+- (void)registerWithBlock:(id)block;
+- (void)setBundleIdentifiers:(id)identifiers;
+- (void)setServices:(id)services;
 @end
 
 @implementation CKDAuthorizationObserver
@@ -32,19 +32,19 @@
   objc_exception_throw(v4);
 }
 
-- (CKDAuthorizationObserver)initWithIdentifier:(id)a3
+- (CKDAuthorizationObserver)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v26.receiver = self;
   v26.super_class = CKDAuthorizationObserver;
   v7 = [(CKDAuthorizationObserver *)&v26 init];
   if (v7)
   {
-    v8 = objc_msgSend_copy(v4, v5, v6);
+    v8 = objc_msgSend_copy(identifierCopy, v5, v6);
     identifier = v7->_identifier;
     v7->_identifier = v8;
 
-    v10 = v4;
+    v10 = identifierCopy;
     v13 = objc_msgSend_UTF8String(v10, v11, v12);
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v15 = dispatch_queue_create(v13, v14);
@@ -65,22 +65,22 @@
 
 - (NSSet)services
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_services;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_services;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setServices:(id)a3
+- (void)setServices:(id)services
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v9)
+  servicesCopy = services;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (servicesCopy)
   {
-    v7 = objc_msgSend_copy(v9, v5, v6);
+    v7 = objc_msgSend_copy(servicesCopy, v5, v6);
   }
 
   else
@@ -88,30 +88,30 @@
     v7 = objc_msgSend_set(MEMORY[0x277CBEB98], v5, v6);
   }
 
-  services = v4->_services;
-  v4->_services = v7;
+  services = selfCopy->_services;
+  selfCopy->_services = v7;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSSet)bundleIdentifiers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_bundleIdentifiers;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_bundleIdentifiers;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setBundleIdentifiers:(id)a3
+- (void)setBundleIdentifiers:(id)identifiers
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v9)
+  identifiersCopy = identifiers;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (identifiersCopy)
   {
-    v7 = objc_msgSend_copy(v9, v5, v6);
+    v7 = objc_msgSend_copy(identifiersCopy, v5, v6);
   }
 
   else
@@ -119,19 +119,19 @@
     v7 = objc_msgSend_set(MEMORY[0x277CBEB98], v5, v6);
   }
 
-  bundleIdentifiers = v4->_bundleIdentifiers;
-  v4->_bundleIdentifiers = v7;
+  bundleIdentifiers = selfCopy->_bundleIdentifiers;
+  selfCopy->_bundleIdentifiers = v7;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)registerWithBlock:(id)a3
+- (void)registerWithBlock:(id)block
 {
   v77 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v8 = objc_msgSend_bundleIdentifiers(v5, v6, v7);
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = objc_msgSend_bundleIdentifiers(selfCopy, v6, v7);
   v11 = objc_msgSend_count(v8, v9, v10);
 
   if (v11)
@@ -141,7 +141,7 @@
     v70 = 0u;
     v68 = 0u;
     v67 = 0u;
-    v15 = objc_msgSend_bundleIdentifiers(v5, v13, v14);
+    v15 = objc_msgSend_bundleIdentifiers(selfCopy, v13, v14);
     v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(v15, v16, &v67, v76, 16);
     if (v17)
     {
@@ -174,10 +174,10 @@
   }
 
   v26 = xpc_dictionary_create_empty();
-  v29 = objc_msgSend_services(v5, v27, v28);
+  v29 = objc_msgSend_services(selfCopy, v27, v28);
   if (objc_msgSend_count(v29, v30, v31))
   {
-    objc_msgSend_services(v5, v32, v33);
+    objc_msgSend_services(selfCopy, v32, v33);
   }
 
   else
@@ -225,7 +225,7 @@
     while (v37);
   }
 
-  objc_initWeak(&location, v5);
+  objc_initWeak(&location, selfCopy);
   v48 = tcc_events_filter_create_with_criteria();
   if (!v48)
   {
@@ -237,7 +237,7 @@
     v49 = *MEMORY[0x277CBC830];
     if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
     {
-      v59 = objc_msgSend_bundleIdentifiers(v5, v50, v51);
+      v59 = objc_msgSend_bundleIdentifiers(selfCopy, v50, v51);
       *buf = 138412546;
       v72 = v59;
       v73 = 2112;
@@ -246,12 +246,12 @@
     }
   }
 
-  v52 = objc_msgSend_identifier(v5, v46, v47);
+  v52 = objc_msgSend_identifier(selfCopy, v46, v47);
   v53 = v52;
   objc_msgSend_UTF8String(v52, v54, v55);
-  if (v5)
+  if (selfCopy)
   {
-    queue = v5->_queue;
+    queue = selfCopy->_queue;
   }
 
   else
@@ -261,13 +261,13 @@
 
   v57 = queue;
   objc_copyWeak(&v61, &location);
-  v60 = v4;
+  v60 = blockCopy;
   tcc_events_subscribe();
 
   objc_destroyWeak(&v61);
   objc_destroyWeak(&location);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v58 = *MEMORY[0x277D85DE8];
 }
 
@@ -279,13 +279,13 @@
   tcc_events_unsubscribe();
 }
 
-- (void)_handleTCCAuthorizationEventWithType:(unint64_t)a3 record:(id)a4 block:(id)a5
+- (void)_handleTCCAuthorizationEventWithType:(unint64_t)type record:(id)record block:(id)block
 {
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3 - 1;
-  if (a3 - 1 < 3)
+  recordCopy = record;
+  blockCopy = block;
+  v10 = type - 1;
+  if (type - 1 < 3)
   {
     v11 = tcc_authorization_record_get_service();
     v12 = tcc_service_get_CF_name();
@@ -334,7 +334,7 @@
           {
             v38 = off_27854DE30[v10];
             *buf = 138413058;
-            v45 = v38;
+            typeCopy = v38;
             v46 = 2112;
             v47 = v20;
             v48 = 2112;
@@ -362,9 +362,9 @@
 
           v20 = v39;
           v12 = v41;
-          if (v9)
+          if (blockCopy)
           {
-            v9[2](v9, v41, v39, v10, v40);
+            blockCopy[2](blockCopy, v41, v39, v10, v40);
           }
         }
 
@@ -379,7 +379,7 @@
           if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v45 = v12;
+            typeCopy = v12;
             _os_log_error_impl(&dword_22506F000, v36, OS_LOG_TYPE_ERROR, "Unable to determine bundle identifier for service: %@", buf, 0xCu);
           }
         }
@@ -401,7 +401,7 @@ LABEL_36:
       }
 
       *buf = 138412290;
-      v45 = v12;
+      typeCopy = v12;
       v15 = "Invalid subject identity type for service event: %@";
     }
 
@@ -419,7 +419,7 @@ LABEL_36:
       }
 
       *buf = 138412290;
-      v45 = v12;
+      typeCopy = v12;
       v15 = "Unable to determine subject identity for service event: %@";
     }
 
@@ -436,7 +436,7 @@ LABEL_36:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
   {
     *buf = 134217984;
-    v45 = a3;
+    typeCopy = type;
     _os_log_error_impl(&dword_22506F000, v16, OS_LOG_TYPE_ERROR, "Unknown TCC event received: %lld", buf, 0xCu);
   }
 

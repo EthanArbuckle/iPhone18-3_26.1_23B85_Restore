@@ -1,42 +1,42 @@
 @interface BMProactiveHarvestingPhotosKnowledgeGraphEnrichment
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMProactiveHarvestingPhotosKnowledgeGraphEnrichment)initWithAbsoluteTimestamp:(id)a3 topics:(id)a4 entities:(id)a5 locations:(id)a6 uniqueID:(id)a7 contentProtection:(id)a8 personaId:(id)a9;
-- (BMProactiveHarvestingPhotosKnowledgeGraphEnrichment)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMProactiveHarvestingPhotosKnowledgeGraphEnrichment)initWithAbsoluteTimestamp:(id)timestamp topics:(id)topics entities:(id)entities locations:(id)locations uniqueID:(id)d contentProtection:(id)protection personaId:(id)id;
+- (BMProactiveHarvestingPhotosKnowledgeGraphEnrichment)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)absoluteTimestamp;
 - (NSString)description;
 - (id)_entitiesJSONArray;
 - (id)_locationsJSONArray;
 - (id)_topicsJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMProactiveHarvestingPhotosKnowledgeGraphEnrichment
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self absoluteTimestamp];
-    v7 = [v5 absoluteTimestamp];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    absoluteTimestamp = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self absoluteTimestamp];
+    absoluteTimestamp2 = [v5 absoluteTimestamp];
+    v8 = absoluteTimestamp2;
+    if (absoluteTimestamp == absoluteTimestamp2)
     {
     }
 
     else
     {
-      v9 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self absoluteTimestamp];
-      v10 = [v5 absoluteTimestamp];
-      v11 = [v9 isEqual:v10];
+      absoluteTimestamp3 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self absoluteTimestamp];
+      absoluteTimestamp4 = [v5 absoluteTimestamp];
+      v11 = [absoluteTimestamp3 isEqual:absoluteTimestamp4];
 
       if (!v11)
       {
@@ -44,18 +44,18 @@
       }
     }
 
-    v13 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self topics];
-    v14 = [v5 topics];
-    v15 = v14;
-    if (v13 == v14)
+    topics = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self topics];
+    topics2 = [v5 topics];
+    v15 = topics2;
+    if (topics == topics2)
     {
     }
 
     else
     {
-      v16 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self topics];
-      v17 = [v5 topics];
-      v18 = [v16 isEqual:v17];
+      topics3 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self topics];
+      topics4 = [v5 topics];
+      v18 = [topics3 isEqual:topics4];
 
       if (!v18)
       {
@@ -63,18 +63,18 @@
       }
     }
 
-    v19 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self entities];
-    v20 = [v5 entities];
-    v21 = v20;
-    if (v19 == v20)
+    entities = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self entities];
+    entities2 = [v5 entities];
+    v21 = entities2;
+    if (entities == entities2)
     {
     }
 
     else
     {
-      v22 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self entities];
-      v23 = [v5 entities];
-      v24 = [v22 isEqual:v23];
+      entities3 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self entities];
+      entities4 = [v5 entities];
+      v24 = [entities3 isEqual:entities4];
 
       if (!v24)
       {
@@ -82,18 +82,18 @@
       }
     }
 
-    v25 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self locations];
-    v26 = [v5 locations];
-    v27 = v26;
-    if (v25 == v26)
+    locations = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self locations];
+    locations2 = [v5 locations];
+    v27 = locations2;
+    if (locations == locations2)
     {
     }
 
     else
     {
-      v28 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self locations];
-      v29 = [v5 locations];
-      v30 = [v28 isEqual:v29];
+      locations3 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self locations];
+      locations4 = [v5 locations];
+      v30 = [locations3 isEqual:locations4];
 
       if (!v30)
       {
@@ -101,18 +101,18 @@
       }
     }
 
-    v31 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self uniqueID];
-    v32 = [v5 uniqueID];
-    v33 = v32;
-    if (v31 == v32)
+    uniqueID = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self uniqueID];
+    uniqueID2 = [v5 uniqueID];
+    v33 = uniqueID2;
+    if (uniqueID == uniqueID2)
     {
     }
 
     else
     {
-      v34 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self uniqueID];
-      v35 = [v5 uniqueID];
-      v36 = [v34 isEqual:v35];
+      uniqueID3 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self uniqueID];
+      uniqueID4 = [v5 uniqueID];
+      v36 = [uniqueID3 isEqual:uniqueID4];
 
       if (!v36)
       {
@@ -120,18 +120,18 @@
       }
     }
 
-    v37 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self contentProtection];
-    v38 = [v5 contentProtection];
-    v39 = v38;
-    if (v37 == v38)
+    contentProtection = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self contentProtection];
+    contentProtection2 = [v5 contentProtection];
+    v39 = contentProtection2;
+    if (contentProtection == contentProtection2)
     {
     }
 
     else
     {
-      v40 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self contentProtection];
-      v41 = [v5 contentProtection];
-      v42 = [v40 isEqual:v41];
+      contentProtection3 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self contentProtection];
+      contentProtection4 = [v5 contentProtection];
+      v42 = [contentProtection3 isEqual:contentProtection4];
 
       if (!v42)
       {
@@ -143,18 +143,18 @@ LABEL_26:
       }
     }
 
-    v44 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self personaId];
-    v45 = [v5 personaId];
-    if (v44 == v45)
+    personaId = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self personaId];
+    personaId2 = [v5 personaId];
+    if (personaId == personaId2)
     {
       v12 = 1;
     }
 
     else
     {
-      v46 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self personaId];
-      v47 = [v5 personaId];
-      v12 = [v46 isEqual:v47];
+      personaId3 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self personaId];
+      personaId4 = [v5 personaId];
+      v12 = [personaId3 isEqual:personaId4];
     }
 
     goto LABEL_26;
@@ -186,12 +186,12 @@ LABEL_27:
 - (id)jsonDictionary
 {
   v29[7] = *MEMORY[0x1E69E9840];
-  v3 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self absoluteTimestamp];
-  if (v3)
+  absoluteTimestamp = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self absoluteTimestamp];
+  if (absoluteTimestamp)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self absoluteTimestamp];
-    [v5 timeIntervalSinceReferenceDate];
+    absoluteTimestamp2 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self absoluteTimestamp];
+    [absoluteTimestamp2 timeIntervalSinceReferenceDate];
     v6 = [v4 numberWithDouble:?];
   }
 
@@ -200,84 +200,84 @@ LABEL_27:
     v6 = 0;
   }
 
-  v7 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self _topicsJSONArray];
-  v8 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self _entitiesJSONArray];
-  v9 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self _locationsJSONArray];
-  v10 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self uniqueID];
-  v11 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self contentProtection];
-  v12 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self personaId];
+  _topicsJSONArray = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self _topicsJSONArray];
+  _entitiesJSONArray = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self _entitiesJSONArray];
+  _locationsJSONArray = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self _locationsJSONArray];
+  uniqueID = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self uniqueID];
+  contentProtection = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self contentProtection];
+  personaId = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self personaId];
   v28[0] = @"absoluteTimestamp";
-  v13 = v6;
+  null = v6;
   if (!v6)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25 = v13;
-  v29[0] = v13;
+  v25 = null;
+  v29[0] = null;
   v28[1] = @"topics";
-  v14 = v7;
-  if (!v7)
+  null2 = _topicsJSONArray;
+  if (!_topicsJSONArray)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v14;
-  v29[1] = v14;
+  v24 = null2;
+  v29[1] = null2;
   v28[2] = @"entities";
-  v15 = v8;
-  if (!v8)
+  null3 = _entitiesJSONArray;
+  if (!_entitiesJSONArray)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v27 = v6;
-  v23 = v15;
-  v29[2] = v15;
+  v23 = null3;
+  v29[2] = null3;
   v28[3] = @"locations";
-  v16 = v9;
-  if (!v9)
+  null4 = _locationsJSONArray;
+  if (!_locationsJSONArray)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v7;
-  v29[3] = v16;
+  v26 = _topicsJSONArray;
+  v29[3] = null4;
   v28[4] = @"uniqueID";
-  v17 = v10;
-  if (!v10)
+  null5 = uniqueID;
+  if (!uniqueID)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[4] = v17;
+  v29[4] = null5;
   v28[5] = @"contentProtection";
-  v18 = v11;
-  if (!v11)
+  null6 = contentProtection;
+  if (!contentProtection)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[5] = v18;
+  v29[5] = null6;
   v28[6] = @"personaId";
-  v19 = v12;
-  if (!v12)
+  null7 = personaId;
+  if (!personaId)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[6] = v19;
+  v29[6] = null7;
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:7];
-  if (v12)
+  if (personaId)
   {
-    if (v11)
+    if (contentProtection)
     {
       goto LABEL_20;
     }
 
 LABEL_30:
 
-    if (v10)
+    if (uniqueID)
     {
       goto LABEL_21;
     }
@@ -285,13 +285,13 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if (!v11)
+  if (!contentProtection)
   {
     goto LABEL_30;
   }
 
 LABEL_20:
-  if (v10)
+  if (uniqueID)
   {
     goto LABEL_21;
   }
@@ -299,11 +299,11 @@ LABEL_20:
 LABEL_31:
 
 LABEL_21:
-  if (!v9)
+  if (!_locationsJSONArray)
   {
   }
 
-  if (v8)
+  if (_entitiesJSONArray)
   {
     if (v26)
     {
@@ -347,8 +347,8 @@ LABEL_26:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self locations];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  locations = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self locations];
+  v5 = [locations countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -359,14 +359,14 @@ LABEL_26:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(locations);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [locations countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -385,8 +385,8 @@ LABEL_26:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self entities];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  entities = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self entities];
+  v5 = [entities countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -397,14 +397,14 @@ LABEL_26:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(entities);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [entities countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -423,8 +423,8 @@ LABEL_26:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self topics];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  topics = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self topics];
+  v5 = [topics countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -435,14 +435,14 @@ LABEL_26:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(topics);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [topics countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -453,11 +453,11 @@ LABEL_26:
   return v3;
 }
 
-- (BMProactiveHarvestingPhotosKnowledgeGraphEnrichment)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMProactiveHarvestingPhotosKnowledgeGraphEnrichment)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v155[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"absoluteTimestamp"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"absoluteTimestamp"];
   v106 = v6;
   if (!v6 || (v7 = v6, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -487,13 +487,13 @@ LABEL_6:
     v105 = [v14 dateFromString:v7];
 
 LABEL_9:
-    v15 = [v5 objectForKeyedSubscript:@"topics"];
-    v16 = [MEMORY[0x1E695DFB0] null];
-    v17 = [v15 isEqual:v16];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"topics"];
+    null = [MEMORY[0x1E695DFB0] null];
+    v17 = [v15 isEqual:null];
 
     if (v17)
     {
-      v102 = self;
+      selfCopy2 = self;
 
       v15 = 0;
     }
@@ -505,7 +505,7 @@ LABEL_9:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v33 = 0;
             v37 = v105;
@@ -519,12 +519,12 @@ LABEL_9:
           v153 = v110;
           v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v153 forKeys:&v152 count:1];
           v33 = 0;
-          *a4 = [v49 initWithDomain:v50 code:2 userInfo:v27];
+          *error = [v49 initWithDomain:v50 code:2 userInfo:v27];
           goto LABEL_52;
         }
       }
 
-      v102 = self;
+      selfCopy2 = self;
     }
 
     v110 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v15, "count")}];
@@ -541,7 +541,7 @@ LABEL_9:
 
     v19 = v18;
     v20 = *v124;
-    v103 = v5;
+    v103 = dictionaryCopy;
 LABEL_16:
     v21 = 0;
     while (1)
@@ -561,7 +561,7 @@ LABEL_16:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v34 = objc_alloc(MEMORY[0x1E696ABC0]);
           v35 = *MEMORY[0x1E698F240];
@@ -570,7 +570,7 @@ LABEL_16:
           v148 = v23;
           v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v148 forKeys:&v147 count:1];
           v33 = 0;
-          *a4 = [v34 initWithDomain:v35 code:2 userInfo:v32];
+          *error = [v34 initWithDomain:v35 code:2 userInfo:v32];
           goto LABEL_30;
         }
 
@@ -585,12 +585,12 @@ LABEL_16:
       if (v26)
       {
         v32 = v26;
-        self = v102;
-        v5 = v103;
-        if (a4)
+        self = selfCopy2;
+        dictionaryCopy = v103;
+        if (error)
         {
           v36 = v26;
-          *a4 = v32;
+          *error = v32;
         }
 
         v33 = 0;
@@ -604,14 +604,14 @@ LABEL_16:
       if (v19 == ++v21)
       {
         v19 = [obj countByEnumeratingWithState:&v123 objects:v151 count:16];
-        v5 = v103;
+        dictionaryCopy = v103;
         if (!v19)
         {
 LABEL_24:
 
-          v27 = [v5 objectForKeyedSubscript:@"entities"];
-          v28 = [MEMORY[0x1E695DFB0] null];
-          v29 = [v27 isEqual:v28];
+          v27 = [dictionaryCopy objectForKeyedSubscript:@"entities"];
+          null2 = [MEMORY[0x1E695DFB0] null];
+          v29 = [v27 isEqual:null2];
 
           if (v29)
           {
@@ -624,8 +624,8 @@ LABEL_24:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              self = v102;
-              if (!a4)
+              self = selfCopy2;
+              if (!error)
               {
                 v33 = 0;
                 v37 = v105;
@@ -641,7 +641,7 @@ LABEL_24:
               v146 = v23;
               v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v146 forKeys:&v145 count:1];
               v33 = 0;
-              *a4 = [v69 initWithDomain:v70 code:2 userInfo:v32];
+              *error = [v69 initWithDomain:v70 code:2 userInfo:v32];
               goto LABEL_85;
             }
           }
@@ -660,7 +660,7 @@ LABEL_24:
 
           v39 = v38;
           v40 = *v119;
-          v104 = v5;
+          v104 = dictionaryCopy;
 LABEL_39:
           v41 = 0;
           while (1)
@@ -680,8 +680,8 @@ LABEL_39:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              v51 = a4;
-              if (a4)
+              errorCopy6 = error;
+              if (error)
               {
                 v52 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v53 = *MEMORY[0x1E698F240];
@@ -706,15 +706,15 @@ LABEL_39:
             {
               v57 = v46;
               v15 = obj;
-              if (a4)
+              if (error)
               {
                 v58 = v46;
-                *a4 = v57;
+                *error = v57;
               }
 
               v33 = 0;
               v32 = v108;
-              v5 = v104;
+              dictionaryCopy = v104;
               goto LABEL_119;
             }
 
@@ -723,14 +723,14 @@ LABEL_39:
             if (v39 == ++v41)
             {
               v39 = [v108 countByEnumeratingWithState:&v118 objects:v144 count:16];
-              v5 = v104;
+              dictionaryCopy = v104;
               if (!v39)
               {
 LABEL_47:
 
-                v32 = [v5 objectForKeyedSubscript:@"locations"];
-                v47 = [MEMORY[0x1E695DFB0] null];
-                v48 = [v32 isEqual:v47];
+                v32 = [dictionaryCopy objectForKeyedSubscript:@"locations"];
+                null3 = [MEMORY[0x1E695DFB0] null];
+                v48 = [v32 isEqual:null3];
 
                 if (v48)
                 {
@@ -751,7 +751,7 @@ LABEL_68:
 
                   v60 = v59;
                   v61 = *v114;
-                  v104 = v5;
+                  v104 = dictionaryCopy;
 LABEL_70:
                   v62 = 0;
                   while (1)
@@ -771,8 +771,8 @@ LABEL_70:
                     objc_opt_class();
                     if ((objc_opt_isKindOfClass() & 1) == 0)
                     {
-                      v74 = a4;
-                      if (a4)
+                      errorCopy5 = error;
+                      if (error)
                       {
                         v75 = objc_alloc(MEMORY[0x1E696ABC0]);
                         v76 = *MEMORY[0x1E698F240];
@@ -796,10 +796,10 @@ LABEL_70:
                     if (v67)
                     {
                       v80 = v67;
-                      if (a4)
+                      if (error)
                       {
                         v82 = v67;
-                        *a4 = v80;
+                        *error = v80;
                       }
 
                       v33 = 0;
@@ -811,7 +811,7 @@ LABEL_70:
                     if (v60 == ++v62)
                     {
                       v60 = [v32 countByEnumeratingWithState:&v113 objects:v137 count:16];
-                      v5 = v104;
+                      dictionaryCopy = v104;
                       if (v60)
                       {
                         goto LABEL_70;
@@ -819,16 +819,16 @@ LABEL_70:
 
 LABEL_78:
 
-                      v64 = [v5 objectForKeyedSubscript:@"uniqueID"];
+                      v64 = [dictionaryCopy objectForKeyedSubscript:@"uniqueID"];
                       if (!v64)
                       {
                         v57 = 0;
-                        v68 = a4;
+                        errorCopy4 = error;
                         goto LABEL_105;
                       }
 
                       objc_opt_class();
-                      v68 = a4;
+                      errorCopy4 = error;
                       if (objc_opt_isKindOfClass())
                       {
                         v57 = 0;
@@ -838,7 +838,7 @@ LABEL_78:
                       objc_opt_class();
                       if ((objc_opt_isKindOfClass() & 1) == 0)
                       {
-                        if (a4)
+                        if (error)
                         {
                           v90 = objc_alloc(MEMORY[0x1E696ABC0]);
                           v91 = *MEMORY[0x1E698F240];
@@ -849,7 +849,7 @@ LABEL_78:
                           v92 = [v90 initWithDomain:v91 code:2 userInfo:?];
                           v57 = 0;
                           v33 = 0;
-                          *a4 = v92;
+                          *error = v92;
                           goto LABEL_138;
                         }
 
@@ -861,7 +861,7 @@ LABEL_78:
 
                       v57 = v64;
 LABEL_105:
-                      v80 = [v5 objectForKeyedSubscript:@"contentProtection"];
+                      v80 = [dictionaryCopy objectForKeyedSubscript:@"contentProtection"];
                       v101 = v80;
                       if (v80)
                       {
@@ -879,7 +879,7 @@ LABEL_105:
                           goto LABEL_110;
                         }
 
-                        if (v68)
+                        if (errorCopy4)
                         {
                           v97 = objc_alloc(MEMORY[0x1E696ABC0]);
                           v95 = *MEMORY[0x1E698F240];
@@ -889,7 +889,7 @@ LABEL_105:
                           v93 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v130 forKeys:&v129 count:1];
                           v80 = 0;
                           v33 = 0;
-                          *v68 = [v97 initWithDomain:v95 code:2 userInfo:v93];
+                          *errorCopy4 = [v97 initWithDomain:v95 code:2 userInfo:v93];
                           v87 = v93;
                           v15 = obj;
                           goto LABEL_115;
@@ -908,7 +908,7 @@ LABEL_119:
                         v37 = v105;
 LABEL_120:
 
-                        self = v102;
+                        self = selfCopy2;
 LABEL_121:
 
                         v27 = v108;
@@ -920,7 +920,7 @@ LABEL_124:
                       }
 
 LABEL_110:
-                      v86 = [v5 objectForKeyedSubscript:@"personaId"];
+                      v86 = [dictionaryCopy objectForKeyedSubscript:@"personaId"];
                       v87 = v86;
                       if (v86)
                       {
@@ -935,7 +935,7 @@ LABEL_110:
                         v15 = obj;
                         if ((objc_opt_isKindOfClass() & 1) == 0)
                         {
-                          if (a4)
+                          if (error)
                           {
                             v100 = objc_alloc(MEMORY[0x1E696ABC0]);
                             v98 = *MEMORY[0x1E698F240];
@@ -943,7 +943,7 @@ LABEL_110:
                             v96 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"personaId"];
                             v128 = v96;
                             v94 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v128 forKeys:&v127 count:1];
-                            *a4 = [v100 initWithDomain:v98 code:2 userInfo:v94];
+                            *error = [v100 initWithDomain:v98 code:2 userInfo:v94];
                           }
 
                           v99 = 0;
@@ -963,14 +963,14 @@ LABEL_113:
                       }
 
                       v99 = v86;
-                      v33 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)v102 initWithAbsoluteTimestamp:v105 topics:v110 entities:v23 locations:v43 uniqueID:v57 contentProtection:v80 personaId:v86];
-                      v102 = v33;
+                      v33 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)selfCopy2 initWithAbsoluteTimestamp:v105 topics:v110 entities:v23 locations:v43 uniqueID:v57 contentProtection:v80 personaId:v86];
+                      selfCopy2 = v33;
                       goto LABEL_115;
                     }
                   }
 
-                  v74 = a4;
-                  if (a4)
+                  errorCopy5 = error;
+                  if (error)
                   {
                     v75 = objc_alloc(MEMORY[0x1E696ABC0]);
                     v76 = *MEMORY[0x1E698F240];
@@ -984,10 +984,10 @@ LABEL_93:
                     v80 = [v77 dictionaryWithObjects:v78 forKeys:v79 count:1];
                     v81 = [v75 initWithDomain:v76 code:2 userInfo:v80];
                     v33 = 0;
-                    *v74 = v81;
+                    *errorCopy5 = v81;
 LABEL_97:
                     v57 = v32;
-                    v5 = v104;
+                    dictionaryCopy = v104;
                     v15 = obj;
                     goto LABEL_117;
                   }
@@ -996,7 +996,7 @@ LABEL_101:
                   v33 = 0;
                   v57 = v32;
 LABEL_61:
-                  v5 = v104;
+                  dictionaryCopy = v104;
 LABEL_62:
                   v37 = v105;
                   v15 = obj;
@@ -1014,7 +1014,7 @@ LABEL_62:
                   goto LABEL_68;
                 }
 
-                if (a4)
+                if (error)
                 {
                   v83 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v84 = *MEMORY[0x1E698F240];
@@ -1024,13 +1024,13 @@ LABEL_62:
                   v57 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v139 forKeys:&v138 count:1];
                   v85 = [v83 initWithDomain:v84 code:2 userInfo:v57];
                   v33 = 0;
-                  *a4 = v85;
+                  *error = v85;
                   goto LABEL_62;
                 }
 
                 v33 = 0;
 LABEL_84:
-                self = v102;
+                self = selfCopy2;
 LABEL_85:
                 v37 = v105;
                 v15 = obj;
@@ -1041,8 +1041,8 @@ LABEL_85:
             }
           }
 
-          v51 = a4;
-          if (a4)
+          errorCopy6 = error;
+          if (error)
           {
             v52 = objc_alloc(MEMORY[0x1E696ABC0]);
             v53 = *MEMORY[0x1E698F240];
@@ -1055,7 +1055,7 @@ LABEL_85:
 LABEL_60:
             v57 = [v54 dictionaryWithObjects:v55 forKeys:v56 count:1];
             v33 = 0;
-            *v51 = [v52 initWithDomain:v53 code:2 userInfo:v57];
+            *errorCopy6 = [v52 initWithDomain:v53 code:2 userInfo:v57];
             v32 = v108;
             goto LABEL_61;
           }
@@ -1063,7 +1063,7 @@ LABEL_60:
 LABEL_83:
           v33 = 0;
           v32 = v108;
-          v5 = v104;
+          dictionaryCopy = v104;
           goto LABEL_84;
         }
 
@@ -1071,7 +1071,7 @@ LABEL_83:
       }
     }
 
-    if (a4)
+    if (error)
     {
       v30 = objc_alloc(MEMORY[0x1E696ABC0]);
       v31 = *MEMORY[0x1E698F240];
@@ -1080,12 +1080,12 @@ LABEL_83:
       v150 = v23;
       v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v150 forKeys:&v149 count:1];
       v33 = 0;
-      *a4 = [v30 initWithDomain:v31 code:2 userInfo:v32];
+      *error = [v30 initWithDomain:v31 code:2 userInfo:v32];
 LABEL_30:
       v15 = obj;
       v108 = obj;
-      self = v102;
-      v5 = v103;
+      self = selfCopy2;
+      dictionaryCopy = v103;
 LABEL_34:
       v37 = v105;
       goto LABEL_121;
@@ -1095,8 +1095,8 @@ LABEL_51:
     v33 = 0;
     v15 = obj;
     v27 = obj;
-    self = v102;
-    v5 = v103;
+    self = selfCopy2;
+    dictionaryCopy = v103;
 LABEL_52:
     v37 = v105;
     goto LABEL_122;
@@ -1109,7 +1109,7 @@ LABEL_52:
     goto LABEL_6;
   }
 
-  if (a4)
+  if (error)
   {
     v71 = objc_alloc(MEMORY[0x1E696ABC0]);
     v72 = *MEMORY[0x1E698F240];
@@ -1120,7 +1120,7 @@ LABEL_52:
     v73 = [v71 initWithDomain:v72 code:2 userInfo:?];
     v37 = 0;
     v33 = 0;
-    *a4 = v73;
+    *error = v73;
 
     goto LABEL_124;
   }
@@ -1137,15 +1137,15 @@ LABEL_125:
 {
   v3 = objc_opt_new();
   [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_hasRaw_absoluteTimestamp)
   {
     raw_absoluteTimestamp = self->_raw_absoluteTimestamp;
@@ -1175,7 +1175,7 @@ LABEL_125:
         v11 = *(*(&v34 + 1) + 8 * v10);
         v33 = 0;
         PBDataWriterPlaceMark();
-        [v11 writeTo:v4];
+        [v11 writeTo:toCopy];
         PBDataWriterRecallMark();
         ++v10;
       }
@@ -1210,7 +1210,7 @@ LABEL_125:
         v17 = *(*(&v29 + 1) + 8 * v16);
         v33 = 0;
         PBDataWriterPlaceMark();
-        [v17 writeTo:v4];
+        [v17 writeTo:toCopy];
         PBDataWriterRecallMark();
         ++v16;
       }
@@ -1245,7 +1245,7 @@ LABEL_125:
         v23 = *(*(&v25 + 1) + 8 * v22);
         v33 = 0;
         PBDataWriterPlaceMark();
-        [v23 writeTo:{v4, v25}];
+        [v23 writeTo:{toCopy, v25}];
         PBDataWriterRecallMark();
         ++v22;
       }
@@ -1275,9 +1275,9 @@ LABEL_125:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v40.receiver = self;
   v40.super_class = BMProactiveHarvestingPhotosKnowledgeGraphEnrichment;
   v5 = [(BMEventBase *)&v40 init];
@@ -1289,12 +1289,12 @@ LABEL_125:
   v6 = objc_opt_new();
   v7 = objc_opt_new();
   v8 = objc_opt_new();
-  v9 = [v4 position];
-  if (v9 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -1305,18 +1305,18 @@ LABEL_125:
       while (1)
       {
         LOBYTE(v41) = 0;
-        v13 = [v4 position] + 1;
-        if (v13 >= [v4 position] && (v14 = objc_msgSend(v4, "position") + 1, v14 <= objc_msgSend(v4, "length")))
+        v13 = [fromCopy position] + 1;
+        if (v13 >= [fromCopy position] && (v14 = objc_msgSend(fromCopy, "position") + 1, v14 <= objc_msgSend(fromCopy, "length")))
         {
-          v15 = [v4 data];
-          [v15 getBytes:&v41 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v41 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v12 |= (LOBYTE(v41) & 0x7F) << v10;
@@ -1333,9 +1333,9 @@ LABEL_125:
         }
       }
 
-      v17 = [v4 hasError] ? 0 : v12;
+      v17 = [fromCopy hasError] ? 0 : v12;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v17 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v17 & 7) == 4)
       {
         break;
       }
@@ -1348,18 +1348,18 @@ LABEL_16:
           case 1:
             v5->_hasRaw_absoluteTimestamp = 1;
             v41 = 0.0;
-            v24 = [v4 position] + 8;
-            if (v24 >= [v4 position] && (v25 = objc_msgSend(v4, "position") + 8, v25 <= objc_msgSend(v4, "length")))
+            v24 = [fromCopy position] + 8;
+            if (v24 >= [fromCopy position] && (v25 = objc_msgSend(fromCopy, "position") + 8, v25 <= objc_msgSend(fromCopy, "length")))
             {
-              v29 = [v4 data];
-              [v29 getBytes:&v41 range:{objc_msgSend(v4, "position"), 8}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v41 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v5->_raw_absoluteTimestamp = v41;
@@ -1367,7 +1367,7 @@ LABEL_16:
           case 2:
             v41 = 0.0;
             v42 = 0;
-            if (!PBReaderPlaceMark() || (v28 = [[BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentTopic alloc] initByReadFrom:v4]) == 0)
+            if (!PBReaderPlaceMark() || (v28 = [[BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentTopic alloc] initByReadFrom:fromCopy]) == 0)
             {
 LABEL_53:
 
@@ -1385,7 +1385,7 @@ LABEL_53:
               goto LABEL_53;
             }
 
-            v21 = [[BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentEntity alloc] initByReadFrom:v4];
+            v21 = [[BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentEntity alloc] initByReadFrom:fromCopy];
             if (!v21)
             {
               goto LABEL_53;
@@ -1425,7 +1425,7 @@ LABEL_53:
             goto LABEL_53;
           }
 
-          v26 = [[BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation alloc] initByReadFrom:v4];
+          v26 = [[BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation alloc] initByReadFrom:fromCopy];
           if (!v26)
           {
             goto LABEL_53;
@@ -1458,10 +1458,10 @@ LABEL_41:
       }
 
 LABEL_48:
-      v30 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v30 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v31 = [v6 copy];
@@ -1476,8 +1476,8 @@ LABEL_48:
   locations = v5->_locations;
   v5->_locations = v35;
 
-  v37 = [v4 hasError];
-  if (v37)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_50:
     v38 = 0;
@@ -1495,37 +1495,37 @@ LABEL_51:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self absoluteTimestamp];
-  v5 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self topics];
-  v6 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self entities];
-  v7 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self locations];
-  v8 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self uniqueID];
-  v9 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self contentProtection];
-  v10 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self personaId];
-  v11 = [v3 initWithFormat:@"BMProactiveHarvestingPhotosKnowledgeGraphEnrichment with absoluteTimestamp: %@, topics: %@, entities: %@, locations: %@, uniqueID: %@, contentProtection: %@, personaId: %@", v4, v5, v6, v7, v8, v9, v10];
+  absoluteTimestamp = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self absoluteTimestamp];
+  topics = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self topics];
+  entities = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self entities];
+  locations = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self locations];
+  uniqueID = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self uniqueID];
+  contentProtection = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self contentProtection];
+  personaId = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichment *)self personaId];
+  v11 = [v3 initWithFormat:@"BMProactiveHarvestingPhotosKnowledgeGraphEnrichment with absoluteTimestamp: %@, topics: %@, entities: %@, locations: %@, uniqueID: %@, contentProtection: %@, personaId: %@", absoluteTimestamp, topics, entities, locations, uniqueID, contentProtection, personaId];
 
   return v11;
 }
 
-- (BMProactiveHarvestingPhotosKnowledgeGraphEnrichment)initWithAbsoluteTimestamp:(id)a3 topics:(id)a4 entities:(id)a5 locations:(id)a6 uniqueID:(id)a7 contentProtection:(id)a8 personaId:(id)a9
+- (BMProactiveHarvestingPhotosKnowledgeGraphEnrichment)initWithAbsoluteTimestamp:(id)timestamp topics:(id)topics entities:(id)entities locations:(id)locations uniqueID:(id)d contentProtection:(id)protection personaId:(id)id
 {
-  v15 = a3;
-  v24 = a4;
-  v23 = a5;
-  v22 = a6;
-  v21 = a7;
-  v16 = a8;
-  v17 = a9;
+  timestampCopy = timestamp;
+  topicsCopy = topics;
+  entitiesCopy = entities;
+  locationsCopy = locations;
+  dCopy = d;
+  protectionCopy = protection;
+  idCopy = id;
   v25.receiver = self;
   v25.super_class = BMProactiveHarvestingPhotosKnowledgeGraphEnrichment;
   v18 = [(BMEventBase *)&v25 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v15)
+    if (timestampCopy)
     {
       v18->_hasRaw_absoluteTimestamp = 1;
-      [v15 timeIntervalSinceReferenceDate];
+      [timestampCopy timeIntervalSinceReferenceDate];
     }
 
     else
@@ -1535,12 +1535,12 @@ LABEL_51:
     }
 
     v18->_raw_absoluteTimestamp = v19;
-    objc_storeStrong(&v18->_topics, a4);
-    objc_storeStrong(&v18->_entities, a5);
-    objc_storeStrong(&v18->_locations, a6);
-    objc_storeStrong(&v18->_uniqueID, a7);
-    objc_storeStrong(&v18->_contentProtection, a8);
-    objc_storeStrong(&v18->_personaId, a9);
+    objc_storeStrong(&v18->_topics, topics);
+    objc_storeStrong(&v18->_entities, entities);
+    objc_storeStrong(&v18->_locations, locations);
+    objc_storeStrong(&v18->_uniqueID, d);
+    objc_storeStrong(&v18->_contentProtection, protection);
+    objc_storeStrong(&v18->_personaId, id);
   }
 
   return v18;
@@ -1620,13 +1620,13 @@ id __62__BMProactiveHarvestingPhotosKnowledgeGraphEnrichment_columns__block_invo
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 2)
+  if (version == 2)
   {
     v4 = MEMORY[0x1E69C65B8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithData:v5];
+    dataCopy = data;
+    v6 = [[v4 alloc] initWithData:dataCopy];
 
     v7 = [[BMProactiveHarvestingPhotosKnowledgeGraphEnrichment alloc] initByReadFrom:v6];
     v8 = v7;

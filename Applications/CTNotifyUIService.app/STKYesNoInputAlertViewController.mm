@@ -1,15 +1,15 @@
 @interface STKYesNoInputAlertViewController
-- (BOOL)validateAction:(id)a3;
+- (BOOL)validateAction:(id)action;
 - (id)newBottomBar;
-- (void)noPressed:(id)a3;
-- (void)yesPressed:(id)a3;
+- (void)noPressed:(id)pressed;
+- (void)yesPressed:(id)pressed;
 @end
 
 @implementation STKYesNoInputAlertViewController
 
-- (BOOL)validateAction:(id)a3
+- (BOOL)validateAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -22,8 +22,8 @@
   [v3 frame];
   v5 = v4;
   v7 = v6;
-  v8 = [(STKYesNoInputAlertViewController *)self view];
-  [v8 bounds];
+  view = [(STKYesNoInputAlertViewController *)self view];
+  [view bounds];
   v10 = v9;
   [v3 bounds];
   v12 = v10 - v11;
@@ -64,18 +64,18 @@
   return v3;
 }
 
-- (void)yesPressed:(id)a3
+- (void)yesPressed:(id)pressed
 {
-  v4 = [(STKBaseAlertViewController *)self sessionAction];
-  [v4 sendSuccessWithSelectedResponse:1];
+  sessionAction = [(STKBaseAlertViewController *)self sessionAction];
+  [sessionAction sendSuccessWithSelectedResponse:1];
 
   [(STKTextAlertViewController *)self dismiss];
 }
 
-- (void)noPressed:(id)a3
+- (void)noPressed:(id)pressed
 {
-  v4 = [(STKBaseAlertViewController *)self sessionAction];
-  [v4 sendSuccessWithSelectedResponse:0];
+  sessionAction = [(STKBaseAlertViewController *)self sessionAction];
+  [sessionAction sendSuccessWithSelectedResponse:0];
 
   [(STKTextAlertViewController *)self dismiss];
 }

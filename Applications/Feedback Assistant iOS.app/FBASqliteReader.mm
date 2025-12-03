@@ -1,39 +1,39 @@
 @interface FBASqliteReader
-- (FBASqliteReader)initWithFile:(id)a3;
-- (id)allRowsForTable:(id)a3;
-- (id)csvRepresentationForTable:(id)a3;
-- (id)runQuery:(id)a3;
+- (FBASqliteReader)initWithFile:(id)file;
+- (id)allRowsForTable:(id)table;
+- (id)csvRepresentationForTable:(id)table;
+- (id)runQuery:(id)query;
 - (id)tableNames;
-- (void)setDbFile:(id)a3;
+- (void)setDbFile:(id)file;
 @end
 
 @implementation FBASqliteReader
 
-- (FBASqliteReader)initWithFile:(id)a3
+- (FBASqliteReader)initWithFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v8.receiver = self;
   v8.super_class = FBASqliteReader;
   v5 = [(FBASqliteReader *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(FBASqliteReader *)v5 setDbFile:v4];
+    [(FBASqliteReader *)v5 setDbFile:fileCopy];
   }
 
   return v6;
 }
 
-- (void)setDbFile:(id)a3
+- (void)setDbFile:(id)file
 {
-  v5 = a3;
+  fileCopy = file;
   v6 = +[NSFileManager defaultManager];
-  v7 = [v5 path];
-  v8 = [v6 fileExistsAtPath:v7];
+  path = [fileCopy path];
+  v8 = [v6 fileExistsAtPath:path];
 
   if (v8)
   {
-    objc_storeStrong(&self->_dbFile, a3);
+    objc_storeStrong(&self->_dbFile, file);
   }
 
   else
@@ -57,26 +57,26 @@
   return v3;
 }
 
-- (id)allRowsForTable:(id)a3
+- (id)allRowsForTable:(id)table
 {
-  v4 = a3;
-  if (!v4)
+  tableCopy = table;
+  if (!tableCopy)
   {
     v9 = [NSException exceptionWithName:NSGenericException reason:@"passed nil tableName to rowsForTable:" userInfo:0];
     objc_exception_throw(v9);
   }
 
-  v5 = v4;
-  v6 = [NSString stringWithFormat:@"SELECT * FROM %@", v4];
-  v7 = [(FBASqliteReader *)self runQuery:v6];
+  v5 = tableCopy;
+  tableCopy = [NSString stringWithFormat:@"SELECT * FROM %@", tableCopy];
+  v7 = [(FBASqliteReader *)self runQuery:tableCopy];
 
   return v7;
 }
 
-- (id)csvRepresentationForTable:(id)a3
+- (id)csvRepresentationForTable:(id)table
 {
-  v4 = a3;
-  v5 = [(FBASqliteReader *)self allRowsForTable:v4];
+  tableCopy = table;
+  v5 = [(FBASqliteReader *)self allRowsForTable:tableCopy];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -85,7 +85,7 @@
   if (v6)
   {
     v7 = v6;
-    v27 = v4;
+    v27 = tableCopy;
     v8 = 0;
     v9 = 0;
     v10 = *v30;
@@ -107,9 +107,9 @@
         if (!v9)
         {
           v9 = objc_opt_new();
-          v16 = [v15 allKeys];
-          v17 = v16;
-          if (v16 && [v16 count])
+          allKeys = [v15 allKeys];
+          v17 = allKeys;
+          if (allKeys && [allKeys count])
           {
             [v17 componentsJoinedByString:{@", "}];
             v18 = v10;
@@ -128,8 +128,8 @@
           [v9 appendString:v11];
         }
 
-        v23 = [v15 allValues];
-        v8 = [v23 componentsJoinedByString:{@", "}];
+        allValues = [v15 allValues];
+        v8 = [allValues componentsJoinedByString:{@", "}];
 
         v24 = [v12[307] stringWithFormat:@"%@\n", v8];
         [v9 appendString:v24];
@@ -153,7 +153,7 @@
       v25 = &stru_1000E2210;
     }
 
-    v4 = v27;
+    tableCopy = v27;
   }
 
   else
@@ -166,23 +166,23 @@
   return v25;
 }
 
-- (id)runQuery:(id)a3
+- (id)runQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   if (!self->_dbFile)
   {
     v28 = [NSException exceptionWithName:NSGenericException reason:@"invalid database file" userInfo:0];
     objc_exception_throw(v28);
   }
 
-  v5 = v4;
+  v5 = queryCopy;
   ppDb = 0;
-  v6 = [(FBASqliteReader *)self dbFile];
-  v7 = [v6 path];
+  dbFile = [(FBASqliteReader *)self dbFile];
+  path = [dbFile path];
 
   v8 = 0;
   v9 = 0;
-  if (!sqlite3_open([v7 UTF8String], &ppDb))
+  if (!sqlite3_open([path UTF8String], &ppDb))
   {
     ppStmt = 0;
     if (sqlite3_prepare_v2(ppDb, [v5 UTF8String], -1, &ppStmt, 0))
@@ -222,7 +222,7 @@
       v8 = [NSMutableArray arrayWithCapacity:v12];
       if (sqlite3_step(ppStmt) == 100)
       {
-        v29 = v7;
+        v29 = path;
         v30 = v5;
         do
         {
@@ -263,7 +263,7 @@
         }
 
         while (sqlite3_step(ppStmt) == 100);
-        v7 = v29;
+        path = v29;
         v5 = v30;
       }
     }

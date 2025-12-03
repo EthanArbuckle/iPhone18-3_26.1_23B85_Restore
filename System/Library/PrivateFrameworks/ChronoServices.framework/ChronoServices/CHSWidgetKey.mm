@@ -1,31 +1,31 @@
 @interface CHSWidgetKey
-- (BOOL)isEqual:(id)a3;
-- (CHSWidgetKey)initWithCoder:(id)a3;
-- (CHSWidgetKey)initWithWidget:(id)a3 metrics:(id)a4 hostIdentifier:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CHSWidgetKey)initWithCoder:(id)coder;
+- (CHSWidgetKey)initWithWidget:(id)widget metrics:(id)metrics hostIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSWidgetKey
 
-- (CHSWidgetKey)initWithWidget:(id)a3 metrics:(id)a4 hostIdentifier:(id)a5
+- (CHSWidgetKey)initWithWidget:(id)widget metrics:(id)metrics hostIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  widgetCopy = widget;
+  metricsCopy = metrics;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = CHSWidgetKey;
   v11 = [(CHSWidgetKey *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [widgetCopy copy];
     widget = v11->_widget;
     v11->_widget = v12;
 
-    v14 = [v9 copy];
+    v14 = [metricsCopy copy];
     metrics = v11->_metrics;
     v11->_metrics = v14;
 
-    v16 = [v10 copy];
+    v16 = [identifierCopy copy];
     hostIdentifier = v11->_hostIdentifier;
     v11->_hostIdentifier = v16;
   }
@@ -33,16 +33,16 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   widget = self->_widget;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __24__CHSWidgetKey_isEqual___block_invoke;
   v20[3] = &unk_1E7453078;
-  v7 = v4;
+  v7 = equalCopy;
   v21 = v7;
   v8 = [v5 appendObject:widget counterpart:v20];
   metrics = self->_metrics;
@@ -66,32 +66,32 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_widget forKey:@"_w"];
-  [v4 encodeObject:self->_metrics forKey:@"_m"];
-  [v4 encodeObject:self->_hostIdentifier forKey:@"_hi"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_widget forKey:@"_w"];
+  [coderCopy encodeObject:self->_metrics forKey:@"_m"];
+  [coderCopy encodeObject:self->_hostIdentifier forKey:@"_hi"];
 }
 
-- (CHSWidgetKey)initWithCoder:(id)a3
+- (CHSWidgetKey)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"_w"];
+  v6 = [coderCopy decodeObjectOfClasses:v5 forKey:@"_w"];
 
   v7 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"_m"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"_m"];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_hi"];
-  v10 = 0;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_hi"];
+  selfCopy = 0;
   if (v6 && v8)
   {
     self = [(CHSWidgetKey *)self initWithWidget:v6 metrics:v8 hostIdentifier:v9];
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

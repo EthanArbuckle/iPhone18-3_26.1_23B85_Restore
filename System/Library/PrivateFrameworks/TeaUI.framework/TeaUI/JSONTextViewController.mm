@@ -1,48 +1,48 @@
 @interface JSONTextViewController
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (UIView)inputAccessoryView;
-- (_TtC5TeaUI22JSONTextViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC5TeaUI22JSONTextViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)done;
 - (void)nextToken;
 - (void)previousToken;
-- (void)scrollViewWillBeginDragging:(void *)a3;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)scrollViewWillBeginDragging:(void *)dragging;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)willPresentSearchController:(id)a3;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation JSONTextViewController
 
-- (void)scrollViewWillBeginDragging:(void *)a3
+- (void)scrollViewWillBeginDragging:(void *)dragging
 {
-  v4 = a3;
-  v5 = a1;
-  JSONTextViewController.willDismissSearchController(_:)(v5);
+  draggingCopy = dragging;
+  selfCopy = self;
+  JSONTextViewController.willDismissSearchController(_:)(selfCopy);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   JSONTextViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  JSONTextViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  JSONTextViewController.viewWillAppear(_:)(appear);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   JSONTextViewController.viewWillLayoutSubviews()();
 }
 
 - (UIView)inputAccessoryView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = JSONTextViewController.inputAccessoryView.getter();
 
   return v3;
@@ -50,54 +50,54 @@
 
 - (void)nextToken
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D8141FA0(sub_1D81568C0);
 }
 
 - (void)previousToken
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D8141FA0(sub_1D8156B2C);
 }
 
 - (void)done
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D80A7F24();
 }
 
-- (_TtC5TeaUI22JSONTextViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5TeaUI22JSONTextViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1D8190F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   JSONTextViewController.init(nibName:bundle:)();
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  JSONTextViewController.willPresentSearchController(_:)(v5);
+  controllerCopy = controller;
+  selfCopy = self;
+  JSONTextViewController.willPresentSearchController(_:)(selfCopy);
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = JSONTextViewController.textFieldShouldReturn(_:)(v5);
+  returnCopy = return;
+  selfCopy = self;
+  LOBYTE(self) = JSONTextViewController.textFieldShouldReturn(_:)(selfCopy);
 
   return self & 1;
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  JSONTextViewController.updateSearchResults(for:)(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  JSONTextViewController.updateSearchResults(for:)(controllerCopy);
 }
 
 @end

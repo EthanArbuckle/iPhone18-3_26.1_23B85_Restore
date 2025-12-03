@@ -1,26 +1,26 @@
 @interface DefaultSceneDelegate
 - (_TtC9CoreIDVUI20DefaultSceneDelegate)init;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
 @end
 
 @implementation DefaultSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_2458D2774(v10);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_2458D2774(optionsCopy);
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
   sub_2458D25D8();
   sub_2458D2624();
   v5 = sub_245910E74();
-  v6 = self;
+  selfCopy = self;
   sub_2458D18DC(v5);
 }
 

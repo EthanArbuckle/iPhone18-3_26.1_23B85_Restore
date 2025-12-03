@@ -1,10 +1,10 @@
 @interface AdditionalPlaybackContext
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation AdditionalPlaybackContext
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
 
   sub_266466830(v5);

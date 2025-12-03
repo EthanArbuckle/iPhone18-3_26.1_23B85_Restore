@@ -1,20 +1,20 @@
 @interface IMAssistantEditMessageHandler
-- (void)chatsForMessageIdentifiers:(id)a3 completion:(id)a4;
-- (void)confirmEditMessage:(id)a3 completion:(id)a4;
-- (void)handleEditMessage:(id)a3 completion:(id)a4;
-- (void)resolveEditedContentForEditMessage:(id)a3 withCompletion:(id)a4;
-- (void)sendEditedMessageItem:(id)a3 originalMessageItem:(id)a4 chat:(id)a5 backwardCompatabilityText:(id)a6;
+- (void)chatsForMessageIdentifiers:(id)identifiers completion:(id)completion;
+- (void)confirmEditMessage:(id)message completion:(id)completion;
+- (void)handleEditMessage:(id)message completion:(id)completion;
+- (void)resolveEditedContentForEditMessage:(id)message withCompletion:(id)completion;
+- (void)sendEditedMessageItem:(id)item originalMessageItem:(id)messageItem chat:(id)chat backwardCompatabilityText:(id)text;
 @end
 
 @implementation IMAssistantEditMessageHandler
 
-- (void)resolveEditedContentForEditMessage:(id)a3 withCompletion:(id)a4
+- (void)resolveEditedContentForEditMessage:(id)message withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = [a3 editedContent];
-  v7 = [v6 trimmedString];
+  completionCopy = completion;
+  editedContent = [message editedContent];
+  trimmedString = [editedContent trimmedString];
 
-  v8 = [v7 length];
+  v8 = [trimmedString length];
   v9 = IMLogHandleForCategory();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
   if (v8)
@@ -25,7 +25,7 @@
       _os_log_impl(&dword_25479E000, v9, OS_LOG_TYPE_INFO, "Trimmed message content length is nonzero, returning success", v13, 2u);
     }
 
-    v11 = [MEMORY[0x277CD4218] successWithResolvedString:v7];
+    needsValue = [MEMORY[0x277CD4218] successWithResolvedString:trimmedString];
   }
 
   else
@@ -36,31 +36,31 @@
       _os_log_impl(&dword_25479E000, v9, OS_LOG_TYPE_INFO, "Trimmed message content length is zero, returning needsValue", buf, 2u);
     }
 
-    v11 = [MEMORY[0x277CD4218] needsValue];
+    needsValue = [MEMORY[0x277CD4218] needsValue];
   }
 
-  v12 = v11;
-  v5[2](v5, v11);
+  v12 = needsValue;
+  completionCopy[2](completionCopy, needsValue);
 }
 
-- (void)confirmEditMessage:(id)a3 completion:(id)a4
+- (void)confirmEditMessage:(id)message completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   v8 = IMLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v16 = 138412290;
-    v17 = v6;
+    v17 = messageCopy;
     _os_log_impl(&dword_25479E000, v8, OS_LOG_TYPE_INFO, "Confirming INEditMessageIntent: %@", &v16, 0xCu);
   }
 
-  v9 = [(IMAssistantMessageHandler *)self messageHandlerDataSource];
-  v10 = [v9 accountDataSource];
-  v11 = [v10 hasMessagingAccount];
+  messageHandlerDataSource = [(IMAssistantMessageHandler *)self messageHandlerDataSource];
+  accountDataSource = [messageHandlerDataSource accountDataSource];
+  hasMessagingAccount = [accountDataSource hasMessagingAccount];
 
-  if (v11)
+  if (hasMessagingAccount)
   {
     v12 = 1;
   }
@@ -78,33 +78,33 @@
   }
 
   v14 = [objc_alloc(MEMORY[0x277CD3BC8]) initWithCode:v12 userActivity:0];
-  v7[2](v7, v14);
+  completionCopy[2](completionCopy, v14);
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleEditMessage:(id)a3 completion:(id)a4
+- (void)handleEditMessage:(id)message completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   v7 = IMLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v5;
+    v19 = messageCopy;
     _os_log_impl(&dword_25479E000, v7, OS_LOG_TYPE_INFO, "Handling INEditMessageIntent: %@", buf, 0xCu);
   }
 
-  v8 = [v5 messageIdentifier];
-  v9 = v8;
-  if (v8)
+  messageIdentifier = [messageCopy messageIdentifier];
+  v9 = messageIdentifier;
+  if (messageIdentifier)
   {
-    v17 = v8;
+    v17 = messageIdentifier;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
     v11 = +[IMAssistantMessageQueryHandler IMAssistantIMSPIQueue];
-    v15 = v5;
-    v16 = v6;
+    v15 = messageCopy;
+    v16 = completionCopy;
     IMSPIQueryIMMessageItemsWithGUIDsAndQOS();
 
     v12 = v15;
@@ -120,40 +120,40 @@
     }
 
     v12 = [objc_alloc(MEMORY[0x277CD3BC8]) initWithCode:4 userActivity:0];
-    (*(v6 + 2))(v6, v12);
+    (*(completionCopy + 2))(completionCopy, v12);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendEditedMessageItem:(id)a3 originalMessageItem:(id)a4 chat:(id)a5 backwardCompatabilityText:(id)a6
+- (void)sendEditedMessageItem:(id)item originalMessageItem:(id)messageItem chat:(id)chat backwardCompatabilityText:(id)text
 {
   v9 = MEMORY[0x277D18D68];
-  v20 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v22 = [v9 sharedController];
-  v13 = [v22 remoteDaemon];
-  v21 = [v11 body];
-  v14 = [v21 __im_messagePartIndexes];
-  v15 = [v14 firstIndex];
-  v16 = [v10 chatIdentifier];
-  v17 = [v10 chatStyle];
-  v18 = [v10 account];
+  textCopy = text;
+  chatCopy = chat;
+  messageItemCopy = messageItem;
+  itemCopy = item;
+  sharedController = [v9 sharedController];
+  remoteDaemon = [sharedController remoteDaemon];
+  body = [messageItemCopy body];
+  __im_messagePartIndexes = [body __im_messagePartIndexes];
+  firstIndex = [__im_messagePartIndexes firstIndex];
+  chatIdentifier = [chatCopy chatIdentifier];
+  chatStyle = [chatCopy chatStyle];
+  account = [chatCopy account];
 
-  v19 = [v18 uniqueID];
-  [v13 sendEditedMessage:v12 previousMessage:v11 partIndex:v15 editType:1 toChatIdentifier:v16 style:v17 account:v19 backwardCompatabilityText:v20];
+  uniqueID = [account uniqueID];
+  [remoteDaemon sendEditedMessage:itemCopy previousMessage:messageItemCopy partIndex:firstIndex editType:1 toChatIdentifier:chatIdentifier style:chatStyle account:uniqueID backwardCompatabilityText:textCopy];
 }
 
-- (void)chatsForMessageIdentifiers:(id)a3 completion:(id)a4
+- (void)chatsForMessageIdentifiers:(id)identifiers completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v7 = +[IMAssistantMessageQueryHandler IMAssistantIMSPIQueue];
-  v10 = v6;
-  v8 = v6;
-  v9 = v5;
+  v10 = completionCopy;
+  v8 = completionCopy;
+  v9 = identifiersCopy;
   IMSPIQueryMessagesWithGUIDsAndQOS();
 }
 

@@ -1,43 +1,43 @@
 @interface DMTCatalystSharingBackedDeviceSession
-+ (id)failureTypeForPairingError:(id)a3;
-- (DMTCatalystSharingBackedDeviceSession)initWithDevice:(id)a3 locale:(id)a4;
++ (id)failureTypeForPairingError:(id)error;
+- (DMTCatalystSharingBackedDeviceSession)initWithDevice:(id)device locale:(id)locale;
 - (void)activate;
 - (void)addPrimitiveHandlers;
-- (void)beginPairWithCompletion:(id)a3;
+- (void)beginPairWithCompletion:(id)completion;
 - (void)deactivate;
-- (void)invalidateWithError:(id)a3;
-- (void)performPairingWithCompletion:(id)a3;
-- (void)performPairingWithPreAuthWithCompletion:(id)a3;
+- (void)invalidateWithError:(id)error;
+- (void)performPairingWithCompletion:(id)completion;
+- (void)performPairingWithPreAuthWithCompletion:(id)completion;
 - (void)removePrimitiveHandlers;
-- (void)sendMessage:(id)a3;
-- (void)sendRequestID:(id)a3 unencryptedRequestData:(id)a4 withTimeout:(unint64_t)a5 completion:(id)a6;
-- (void)tryPairingPIN:(id)a3;
-- (void)verifyPairing:(id)a3;
+- (void)sendMessage:(id)message;
+- (void)sendRequestID:(id)d unencryptedRequestData:(id)data withTimeout:(unint64_t)timeout completion:(id)completion;
+- (void)tryPairingPIN:(id)n;
+- (void)verifyPairing:(id)pairing;
 @end
 
 @implementation DMTCatalystSharingBackedDeviceSession
 
-- (DMTCatalystSharingBackedDeviceSession)initWithDevice:(id)a3 locale:(id)a4
+- (DMTCatalystSharingBackedDeviceSession)initWithDevice:(id)device locale:(id)locale
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  localeCopy = locale;
   v26.receiver = self;
   v26.super_class = DMTCatalystSharingBackedDeviceSession;
   v9 = [(DMTCatalystSharingBackedDeviceSession *)&v26 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_remoteDevice, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_remoteDevice, device);
+    v11 = [localeCopy copy];
     locale = v10->_locale;
     v10->_locale = v11;
 
     v13 = MEMORY[0x277CCACA8];
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    v16 = [(CATSharingDevice *)v10->_remoteDevice identifier];
-    v17 = [v16 UUIDString];
-    v18 = [v13 stringWithFormat:@"%@.%@", v15, v17];
+    identifier = [(CATSharingDevice *)v10->_remoteDevice identifier];
+    uUIDString = [identifier UUIDString];
+    v18 = [v13 stringWithFormat:@"%@.%@", v15, uUIDString];
 
     v19 = dispatch_queue_create([v18 UTF8String], 0);
     sessionQueue = v10->_sessionQueue;
@@ -47,9 +47,9 @@
     session = v10->_session;
     v10->_session = v21;
 
-    v23 = [(DMTCatalystSharingBackedDeviceSession *)v10 device];
-    v24 = [v23 underlyingDevice];
-    [(SFSession *)v10->_session setPeerDevice:v24];
+    device = [(DMTCatalystSharingBackedDeviceSession *)v10 device];
+    underlyingDevice = [device underlyingDevice];
+    [(SFSession *)v10->_session setPeerDevice:underlyingDevice];
 
     [(SFSession *)v10->_session setServiceIdentifier:*MEMORY[0x277D54D70]];
     [(SFSession *)v10->_session setDispatchQueue:v10->_sessionQueue];
@@ -62,13 +62,13 @@
 {
   [(DMTCatalystSharingBackedDeviceSession *)self addPrimitiveHandlers];
   objc_initWeak(&location, self);
-  v3 = [(DMTCatalystSharingBackedDeviceSession *)self session];
+  session = [(DMTCatalystSharingBackedDeviceSession *)self session];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __49__DMTCatalystSharingBackedDeviceSession_activate__block_invoke;
   v4[3] = &unk_278F5E390;
   objc_copyWeak(&v5, &location);
-  [v3 activateWithCompletion:v4];
+  [session activateWithCompletion:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -114,43 +114,43 @@ LABEL_7:
 
 - (void)deactivate
 {
-  v2 = [(DMTCatalystSharingBackedDeviceSession *)self session];
-  [v2 invalidate];
+  session = [(DMTCatalystSharingBackedDeviceSession *)self session];
+  [session invalidate];
 }
 
-- (void)beginPairWithCompletion:(id)a3
+- (void)beginPairWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   if (![(DMTCatalystSharingBackedDeviceSession *)self isInvalidated]&& [(DMTCatalystSharingBackedDeviceSession *)self isReady])
   {
-    v4 = [(DMTCatalystSharingBackedDeviceSession *)self locale];
+    locale = [(DMTCatalystSharingBackedDeviceSession *)self locale];
 
-    if (v4)
+    if (locale)
     {
-      [(DMTCatalystSharingBackedDeviceSession *)self performPairingWithPreAuthWithCompletion:v5];
+      [(DMTCatalystSharingBackedDeviceSession *)self performPairingWithPreAuthWithCompletion:completionCopy];
     }
 
     else
     {
-      [(DMTCatalystSharingBackedDeviceSession *)self performPairingWithCompletion:v5];
+      [(DMTCatalystSharingBackedDeviceSession *)self performPairingWithCompletion:completionCopy];
     }
   }
 }
 
-- (void)verifyPairing:(id)a3
+- (void)verifyPairing:(id)pairing
 {
-  v4 = a3;
+  pairingCopy = pairing;
   if (![(DMTCatalystSharingBackedDeviceSession *)self isInvalidated]&& [(DMTCatalystSharingBackedDeviceSession *)self isReady])
   {
     objc_initWeak(&location, self);
-    v5 = [(DMTCatalystSharingBackedDeviceSession *)self session];
+    session = [(DMTCatalystSharingBackedDeviceSession *)self session];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __55__DMTCatalystSharingBackedDeviceSession_verifyPairing___block_invoke;
     v6[3] = &unk_278F5E3B8;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
-    [v5 pairVerifyWithFlags:8 completion:v6];
+    v7 = pairingCopy;
+    [session pairVerifyWithFlags:8 completion:v6];
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
@@ -185,24 +185,24 @@ void __55__DMTCatalystSharingBackedDeviceSession_verifyPairing___block_invoke(ui
   }
 }
 
-- (void)tryPairingPIN:(id)a3
+- (void)tryPairingPIN:(id)n
 {
-  v6 = a3;
+  nCopy = n;
   if (![(DMTCatalystSharingBackedDeviceSession *)self isInvalidated]&& [(DMTCatalystSharingBackedDeviceSession *)self isReady])
   {
-    v4 = [(DMTCatalystSharingBackedDeviceSession *)self session];
-    v5 = [v6 copy];
-    [v4 pairSetupTryPIN:v5];
+    session = [(DMTCatalystSharingBackedDeviceSession *)self session];
+    v5 = [nCopy copy];
+    [session pairSetupTryPIN:v5];
   }
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   if (![(DMTCatalystSharingBackedDeviceSession *)self isInvalidated]&& [(DMTCatalystSharingBackedDeviceSession *)self isReady])
   {
-    v4 = [(DMTCatalystSharingBackedDeviceSession *)self session];
-    [v4 sendWithFlags:1 object:v5];
+    session = [(DMTCatalystSharingBackedDeviceSession *)self session];
+    [session sendWithFlags:1 object:messageCopy];
   }
 }
 
@@ -214,48 +214,48 @@ void __55__DMTCatalystSharingBackedDeviceSession_verifyPairing___block_invoke(ui
   v19[2] = __61__DMTCatalystSharingBackedDeviceSession_addPrimitiveHandlers__block_invoke;
   v19[3] = &unk_278F5E3E0;
   objc_copyWeak(&v20, &location);
-  v3 = [(DMTCatalystSharingBackedDeviceSession *)self session];
-  [v3 setSessionStartedHandler:v19];
+  session = [(DMTCatalystSharingBackedDeviceSession *)self session];
+  [session setSessionStartedHandler:v19];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __61__DMTCatalystSharingBackedDeviceSession_addPrimitiveHandlers__block_invoke_2;
   v17[3] = &unk_278F5E3E0;
   objc_copyWeak(&v18, &location);
-  v4 = [(DMTCatalystSharingBackedDeviceSession *)self session];
-  [v4 setInvalidationHandler:v17];
+  session2 = [(DMTCatalystSharingBackedDeviceSession *)self session];
+  [session2 setInvalidationHandler:v17];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __61__DMTCatalystSharingBackedDeviceSession_addPrimitiveHandlers__block_invoke_3;
   v15[3] = &unk_278F5E3E0;
   objc_copyWeak(&v16, &location);
-  v5 = [(DMTCatalystSharingBackedDeviceSession *)self session];
-  [v5 setInterruptionHandler:v15];
+  session3 = [(DMTCatalystSharingBackedDeviceSession *)self session];
+  [session3 setInterruptionHandler:v15];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __61__DMTCatalystSharingBackedDeviceSession_addPrimitiveHandlers__block_invoke_8;
   v13[3] = &unk_278F5E678;
   objc_copyWeak(&v14, &location);
-  v6 = [(DMTCatalystSharingBackedDeviceSession *)self session];
-  [v6 setPromptForPINHandler:v13];
+  session4 = [(DMTCatalystSharingBackedDeviceSession *)self session];
+  [session4 setPromptForPINHandler:v13];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __61__DMTCatalystSharingBackedDeviceSession_addPrimitiveHandlers__block_invoke_2_10;
   v11[3] = &unk_278F5E390;
   objc_copyWeak(&v12, &location);
-  v7 = [(DMTCatalystSharingBackedDeviceSession *)self session];
-  [v7 setErrorHandler:v11];
+  session5 = [(DMTCatalystSharingBackedDeviceSession *)self session];
+  [session5 setErrorHandler:v11];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__DMTCatalystSharingBackedDeviceSession_addPrimitiveHandlers__block_invoke_3_11;
   v9[3] = &unk_278F5E6A0;
   objc_copyWeak(&v10, &location);
-  v8 = [(DMTCatalystSharingBackedDeviceSession *)self session];
-  [v8 setReceivedObjectHandler:v9];
+  session6 = [(DMTCatalystSharingBackedDeviceSession *)self session];
+  [session6 setReceivedObjectHandler:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&v12);
@@ -369,38 +369,38 @@ void __61__DMTCatalystSharingBackedDeviceSession_addPrimitiveHandlers__block_inv
   }
 }
 
-- (void)invalidateWithError:(id)a3
+- (void)invalidateWithError:(id)error
 {
-  v4 = [(DMTCatalystSharingBackedDeviceSession *)self sessionQueue];
+  sessionQueue = [(DMTCatalystSharingBackedDeviceSession *)self sessionQueue];
   MEMORY[0x24C1DD2C0]();
 
   [(DMTCatalystSharingBackedDeviceSession *)self setInvalidated:1];
   [(DMTCatalystSharingBackedDeviceSession *)self setReady:0];
   [(DMTCatalystSharingBackedDeviceSession *)self removePrimitiveHandlers];
-  v5 = [(DMTCatalystSharingBackedDeviceSession *)self deviceSessionInvalidatedHandler];
+  deviceSessionInvalidatedHandler = [(DMTCatalystSharingBackedDeviceSession *)self deviceSessionInvalidatedHandler];
 
-  if (v5)
+  if (deviceSessionInvalidatedHandler)
   {
-    v7 = [(DMTCatalystSharingBackedDeviceSession *)self deviceSessionInvalidatedHandler];
+    deviceSessionInvalidatedHandler2 = [(DMTCatalystSharingBackedDeviceSession *)self deviceSessionInvalidatedHandler];
     v6 = DMTErrorWithCodeAndUserInfo(20, 0);
-    v7[2](v7, v6);
+    deviceSessionInvalidatedHandler2[2](deviceSessionInvalidatedHandler2, v6);
   }
 }
 
-- (void)performPairingWithCompletion:(id)a3
+- (void)performPairingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (![(DMTCatalystSharingBackedDeviceSession *)self isInvalidated]&& [(DMTCatalystSharingBackedDeviceSession *)self isReady])
   {
     objc_initWeak(&location, self);
-    v5 = [(DMTCatalystSharingBackedDeviceSession *)self session];
+    session = [(DMTCatalystSharingBackedDeviceSession *)self session];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __70__DMTCatalystSharingBackedDeviceSession_performPairingWithCompletion___block_invoke;
     v6[3] = &unk_278F5E3B8;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
-    [v5 pairSetupWithFlags:8 completion:v6];
+    v7 = completionCopy;
+    [session pairSetupWithFlags:8 completion:v6];
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
@@ -434,23 +434,23 @@ void __70__DMTCatalystSharingBackedDeviceSession_performPairingWithCompletion___
   }
 }
 
-- (void)performPairingWithPreAuthWithCompletion:(id)a3
+- (void)performPairingWithPreAuthWithCompletion:(id)completion
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = +[DMTPairingConstants localeIdentifierKey];
   v15 = v5;
-  v6 = [(DMTCatalystSharingBackedDeviceSession *)self locale];
-  v7 = [v6 localeIdentifier];
-  v16[0] = v7;
+  locale = [(DMTCatalystSharingBackedDeviceSession *)self locale];
+  localeIdentifier = [locale localeIdentifier];
+  v16[0] = localeIdentifier;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __81__DMTCatalystSharingBackedDeviceSession_performPairingWithPreAuthWithCompletion___block_invoke;
   v11[3] = &unk_278F5E6C8;
   objc_copyWeak(&v13, &location);
-  v9 = v4;
+  v9 = completionCopy;
   v12 = v9;
   [(DMTCatalystSharingBackedDeviceSession *)self sendRequestID:@"_pa" unencryptedRequestData:v8 withTimeout:2000000000 completion:v11];
 
@@ -495,45 +495,45 @@ void __81__DMTCatalystSharingBackedDeviceSession_performPairingWithPreAuthWithCo
 
 - (void)removePrimitiveHandlers
 {
-  v3 = [(DMTCatalystSharingBackedDeviceSession *)self sessionQueue];
+  sessionQueue = [(DMTCatalystSharingBackedDeviceSession *)self sessionQueue];
   MEMORY[0x24C1DD2C0]();
 
-  v4 = [(DMTCatalystSharingBackedDeviceSession *)self session];
-  [v4 setSessionStartedHandler:0];
+  session = [(DMTCatalystSharingBackedDeviceSession *)self session];
+  [session setSessionStartedHandler:0];
 
-  v5 = [(DMTCatalystSharingBackedDeviceSession *)self session];
-  [v5 setInvalidationHandler:0];
+  session2 = [(DMTCatalystSharingBackedDeviceSession *)self session];
+  [session2 setInvalidationHandler:0];
 
-  v6 = [(DMTCatalystSharingBackedDeviceSession *)self session];
-  [v6 setInterruptionHandler:0];
+  session3 = [(DMTCatalystSharingBackedDeviceSession *)self session];
+  [session3 setInterruptionHandler:0];
 
-  v7 = [(DMTCatalystSharingBackedDeviceSession *)self session];
-  [v7 setPromptForPINHandler:0];
+  session4 = [(DMTCatalystSharingBackedDeviceSession *)self session];
+  [session4 setPromptForPINHandler:0];
 
-  v8 = [(DMTCatalystSharingBackedDeviceSession *)self session];
-  [v8 setErrorHandler:0];
+  session5 = [(DMTCatalystSharingBackedDeviceSession *)self session];
+  [session5 setErrorHandler:0];
 }
 
-- (void)sendRequestID:(id)a3 unencryptedRequestData:(id)a4 withTimeout:(unint64_t)a5 completion:(id)a6
+- (void)sendRequestID:(id)d unencryptedRequestData:(id)data withTimeout:(unint64_t)timeout completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dCopy = d;
+  dataCopy = data;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x2020000000;
   v31 = 0;
-  v13 = dispatch_time(0, a5);
+  v13 = dispatch_time(0, timeout);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __101__DMTCatalystSharingBackedDeviceSession_sendRequestID_unencryptedRequestData_withTimeout_completion___block_invoke;
   block[3] = &unk_278F5E6F0;
   v28 = v30;
   objc_copyWeak(&v29, &location);
-  v14 = v10;
+  v14 = dCopy;
   v26 = v14;
-  v15 = v12;
+  v15 = completionCopy;
   v27 = v15;
   dispatch_after(v13, MEMORY[0x277D85CD0], block);
   v16 = _DMTLogGeneral_4();
@@ -542,7 +542,7 @@ void __81__DMTCatalystSharingBackedDeviceSession_performPairingWithPreAuthWithCo
     [DMTCatalystSharingBackedDeviceSession sendRequestID:unencryptedRequestData:withTimeout:completion:];
   }
 
-  v17 = [(DMTCatalystSharingBackedDeviceSession *)self session];
+  session = [(DMTCatalystSharingBackedDeviceSession *)self session];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __101__DMTCatalystSharingBackedDeviceSession_sendRequestID_unencryptedRequestData_withTimeout_completion___block_invoke_27;
@@ -553,7 +553,7 @@ void __81__DMTCatalystSharingBackedDeviceSession_performPairingWithPreAuthWithCo
   v21 = v18;
   v19 = v15;
   v22 = v19;
-  [v17 sendRequestID:v18 options:&unk_285B5BFC8 request:v11 responseHandler:v20];
+  [session sendRequestID:v18 options:&unk_285B5BFC8 request:dataCopy responseHandler:v20];
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(&v29);
@@ -618,11 +618,11 @@ void __101__DMTCatalystSharingBackedDeviceSession_sendRequestID_unencryptedReque
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)failureTypeForPairingError:(id)a3
++ (id)failureTypeForPairingError:(id)error
 {
   v3 = MEMORY[0x277CF9578];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithUnderlyingError:v4];
+  errorCopy = error;
+  v5 = [[v3 alloc] initWithUnderlyingError:errorCopy];
 
   return v5;
 }

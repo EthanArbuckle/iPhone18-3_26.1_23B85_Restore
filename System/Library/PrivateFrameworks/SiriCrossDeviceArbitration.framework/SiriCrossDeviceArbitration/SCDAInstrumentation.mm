@@ -1,36 +1,36 @@
 @interface SCDAInstrumentation
 - (SCDAInstrumentation)init;
-- (id)_boostTypeAsString:(unsigned __int8)a3;
-- (id)_createSchemaClientEvent:(id)a3;
-- (void)_logRequestLinkMessageRequestId:(id)a3 cdaId:(id)a4;
-- (void)_sendAndLogClientEvent:(id)a3 stState:(int)a4 atTimestamp:(unint64_t)a5;
-- (void)logCDADeviceStateActivityEnded:(int)a3 withCdaId:(id)a4 withTimestamp:(unint64_t)a5;
-- (void)logCDADeviceStateActivityStartedOrChanged:(int)a3 withTrigger:(int)a4 withCdaId:(id)a5 withTimestamp:(unint64_t)a6;
-- (void)logCDAElectionAdvertisingEnded:(int)a3 withCdaId:(id)a4 withTimestamp:(unint64_t)a5;
-- (void)logCDAElectionAdvertisingEnding:(int)a3 withCdaId:(id)a4 withTimestamp:(unint64_t)a5;
-- (void)logCDAElectionAdvertisingStarted:(int)a3 withCdaId:(id)a4 withTimestamp:(unint64_t)a5;
-- (void)logCDAElectionAdvertisingStarting:(int)a3 withDelay:(float)a4 withInterval:(float)a5 withVoiceTriggerLatency:(float)a6 withCdaId:(id)a7 withTimestamp:(unint64_t)a8;
-- (void)logCDAElectionDecisionMade:(int)a3 withDecision:(int)a4 withPreviousDecision:(int)a5 timeSincePreviousDecision:(unint64_t)a6 withWinningDevice:(id)a7 withThisDevice:(id)a8 withParticipants:(id)a9 withRawScore:(unsigned int)a10 withBoost:(id)a11 withCdaId:(id)a12 currentRequestId:(id)a13 withTimestamp:(unint64_t)a14;
-- (void)logCDAElectionDecisionMadeDebug:(int)a3 withCrossDeviceArbitrationAllowed:(BOOL)a4 advertisementData:(id)a5 withDeviceGroup:(unsigned int)a6 withCdaId:(id)a7 withTimestamp:(unint64_t)a8;
-- (void)logCDAElectionTimerEnded:(int)a3 withCdaId:(id)a4 withTimestamp:(unint64_t)a5;
-- (void)updateBoost:(unsigned __int8)a3 value:(unsigned int)a4;
-- (void)updateIsTrump:(BOOL)a3 withReason:(int)a4;
-- (void)userFeedbackPublishArbitrationParticipationContext:(id)a3;
+- (id)_boostTypeAsString:(unsigned __int8)string;
+- (id)_createSchemaClientEvent:(id)event;
+- (void)_logRequestLinkMessageRequestId:(id)id cdaId:(id)cdaId;
+- (void)_sendAndLogClientEvent:(id)event stState:(int)state atTimestamp:(unint64_t)timestamp;
+- (void)logCDADeviceStateActivityEnded:(int)ended withCdaId:(id)id withTimestamp:(unint64_t)timestamp;
+- (void)logCDADeviceStateActivityStartedOrChanged:(int)changed withTrigger:(int)trigger withCdaId:(id)id withTimestamp:(unint64_t)timestamp;
+- (void)logCDAElectionAdvertisingEnded:(int)ended withCdaId:(id)id withTimestamp:(unint64_t)timestamp;
+- (void)logCDAElectionAdvertisingEnding:(int)ending withCdaId:(id)id withTimestamp:(unint64_t)timestamp;
+- (void)logCDAElectionAdvertisingStarted:(int)started withCdaId:(id)id withTimestamp:(unint64_t)timestamp;
+- (void)logCDAElectionAdvertisingStarting:(int)starting withDelay:(float)delay withInterval:(float)interval withVoiceTriggerLatency:(float)latency withCdaId:(id)id withTimestamp:(unint64_t)timestamp;
+- (void)logCDAElectionDecisionMade:(int)made withDecision:(int)decision withPreviousDecision:(int)previousDecision timeSincePreviousDecision:(unint64_t)sincePreviousDecision withWinningDevice:(id)device withThisDevice:(id)thisDevice withParticipants:(id)participants withRawScore:(unsigned int)self0 withBoost:(id)self1 withCdaId:(id)self2 currentRequestId:(id)self3 withTimestamp:(unint64_t)self4;
+- (void)logCDAElectionDecisionMadeDebug:(int)debug withCrossDeviceArbitrationAllowed:(BOOL)allowed advertisementData:(id)data withDeviceGroup:(unsigned int)group withCdaId:(id)id withTimestamp:(unint64_t)timestamp;
+- (void)logCDAElectionTimerEnded:(int)ended withCdaId:(id)id withTimestamp:(unint64_t)timestamp;
+- (void)updateBoost:(unsigned __int8)boost value:(unsigned int)value;
+- (void)updateIsTrump:(BOOL)trump withReason:(int)reason;
+- (void)userFeedbackPublishArbitrationParticipationContext:(id)context;
 @end
 
 @implementation SCDAInstrumentation
 
-- (void)userFeedbackPublishArbitrationParticipationContext:(id)a3
+- (void)userFeedbackPublishArbitrationParticipationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74__SCDAInstrumentation_userFeedbackPublishArbitrationParticipationContext___block_invoke;
   v7[3] = &unk_1E85D38A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = contextCopy;
+  selfCopy = self;
+  v6 = contextCopy;
   dispatch_async(queue, v7);
 }
 
@@ -43,21 +43,21 @@ uint64_t __74__SCDAInstrumentation_userFeedbackPublishArbitrationParticipationCo
   return [v3 publishArbitrationParticipationContext:v2];
 }
 
-- (void)_logRequestLinkMessageRequestId:(id)a3 cdaId:(id)a4
+- (void)_logRequestLinkMessageRequestId:(id)id cdaId:(id)cdaId
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  idCopy = id;
+  cdaIdCopy = cdaId;
+  v8 = cdaIdCopy;
+  if (idCopy && cdaIdCopy)
   {
     queue = self->_queue;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __61__SCDAInstrumentation__logRequestLinkMessageRequestId_cdaId___block_invoke;
     v12[3] = &unk_1E85D38A0;
-    v13 = v7;
-    v14 = v6;
+    v13 = cdaIdCopy;
+    v14 = idCopy;
     dispatch_async(queue, v12);
   }
 
@@ -119,12 +119,12 @@ void __61__SCDAInstrumentation__logRequestLinkMessageRequestId_cdaId___block_inv
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_createSchemaClientEvent:(id)a3
+- (id)_createSchemaClientEvent:(id)event
 {
   v3 = MEMORY[0x1E69CE8D0];
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_alloc_init(v3);
-  v6 = [objc_alloc(MEMORY[0x1E69CF640]) initWithNSUUID:v4];
+  v6 = [objc_alloc(MEMORY[0x1E69CF640]) initWithNSUUID:eventCopy];
 
   v7 = objc_alloc_init(MEMORY[0x1E69CE8D8]);
   [v7 setCdaId:v6];
@@ -133,7 +133,7 @@ void __61__SCDAInstrumentation__logRequestLinkMessageRequestId_cdaId___block_inv
   return v5;
 }
 
-- (void)updateIsTrump:(BOOL)a3 withReason:(int)a4
+- (void)updateIsTrump:(BOOL)trump withReason:(int)reason
 {
   queue = self->_queue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -141,8 +141,8 @@ void __61__SCDAInstrumentation__logRequestLinkMessageRequestId_cdaId___block_inv
   v5[2] = __48__SCDAInstrumentation_updateIsTrump_withReason___block_invoke;
   v5[3] = &unk_1E85D2A78;
   v5[4] = self;
-  v7 = a3;
-  v6 = a4;
+  trumpCopy = trump;
+  reasonCopy = reason;
   dispatch_async(queue, v5);
 }
 
@@ -190,7 +190,7 @@ void __48__SCDAInstrumentation_updateIsTrump_withReason___block_invoke(uint64_t 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateBoost:(unsigned __int8)a3 value:(unsigned int)a4
+- (void)updateBoost:(unsigned __int8)boost value:(unsigned int)value
 {
   queue = self->_queue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -198,8 +198,8 @@ void __48__SCDAInstrumentation_updateIsTrump_withReason___block_invoke(uint64_t 
   v5[2] = __41__SCDAInstrumentation_updateBoost_value___block_invoke;
   v5[3] = &unk_1E85D2A78;
   v5[4] = self;
-  v7 = a3;
-  v6 = a4;
+  boostCopy = boost;
+  valueCopy = value;
   dispatch_async(queue, v5);
 }
 
@@ -274,45 +274,45 @@ void __41__SCDAInstrumentation_updateBoost_value___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_boostTypeAsString:(unsigned __int8)a3
+- (id)_boostTypeAsString:(unsigned __int8)string
 {
-  if ((a3 - 1) > 6)
+  if ((string - 1) > 6)
   {
     return @"SCDABoostTypeUnknown";
   }
 
   else
   {
-    return off_1E85D2B68[(a3 - 1)];
+    return off_1E85D2B68[(string - 1)];
   }
 }
 
-- (void)_sendAndLogClientEvent:(id)a3 stState:(int)a4 atTimestamp:(unint64_t)a5
+- (void)_sendAndLogClientEvent:(id)event stState:(int)state atTimestamp:(unint64_t)timestamp
 {
   v6 = MEMORY[0x1E69CE1E8];
-  v7 = a3;
-  v8 = [v6 sharedStream];
-  [v8 emitMessage:v7 timestamp:a5];
+  eventCopy = event;
+  sharedStream = [v6 sharedStream];
+  [sharedStream emitMessage:eventCopy timestamp:timestamp];
 }
 
-- (void)logCDAElectionDecisionMadeDebug:(int)a3 withCrossDeviceArbitrationAllowed:(BOOL)a4 advertisementData:(id)a5 withDeviceGroup:(unsigned int)a6 withCdaId:(id)a7 withTimestamp:(unint64_t)a8
+- (void)logCDAElectionDecisionMadeDebug:(int)debug withCrossDeviceArbitrationAllowed:(BOOL)allowed advertisementData:(id)data withDeviceGroup:(unsigned int)group withCdaId:(id)id withTimestamp:(unint64_t)timestamp
 {
-  v14 = a5;
-  v15 = a7;
+  dataCopy = data;
+  idCopy = id;
   queue = self->_queue;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __147__SCDAInstrumentation_logCDAElectionDecisionMadeDebug_withCrossDeviceArbitrationAllowed_advertisementData_withDeviceGroup_withCdaId_withTimestamp___block_invoke;
   v19[3] = &unk_1E85D2A50;
   v19[4] = self;
-  v20 = v15;
-  v25 = a4;
-  v23 = a6;
-  v24 = a3;
-  v21 = v14;
-  v22 = a8;
-  v17 = v14;
-  v18 = v15;
+  v20 = idCopy;
+  allowedCopy = allowed;
+  groupCopy = group;
+  debugCopy = debug;
+  v21 = dataCopy;
+  timestampCopy = timestamp;
+  v17 = dataCopy;
+  v18 = idCopy;
   dispatch_async(queue, v19);
 }
 
@@ -363,38 +363,38 @@ void __147__SCDAInstrumentation_logCDAElectionDecisionMadeDebug_withCrossDeviceA
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logCDAElectionDecisionMade:(int)a3 withDecision:(int)a4 withPreviousDecision:(int)a5 timeSincePreviousDecision:(unint64_t)a6 withWinningDevice:(id)a7 withThisDevice:(id)a8 withParticipants:(id)a9 withRawScore:(unsigned int)a10 withBoost:(id)a11 withCdaId:(id)a12 currentRequestId:(id)a13 withTimestamp:(unint64_t)a14
+- (void)logCDAElectionDecisionMade:(int)made withDecision:(int)decision withPreviousDecision:(int)previousDecision timeSincePreviousDecision:(unint64_t)sincePreviousDecision withWinningDevice:(id)device withThisDevice:(id)thisDevice withParticipants:(id)participants withRawScore:(unsigned int)self0 withBoost:(id)self1 withCdaId:(id)self2 currentRequestId:(id)self3 withTimestamp:(unint64_t)self4
 {
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a11;
-  v22 = a12;
-  v23 = a13;
+  deviceCopy = device;
+  thisDeviceCopy = thisDevice;
+  participantsCopy = participants;
+  boostCopy = boost;
+  idCopy = id;
+  requestIdCopy = requestId;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __224__SCDAInstrumentation_logCDAElectionDecisionMade_withDecision_withPreviousDecision_timeSincePreviousDecision_withWinningDevice_withThisDevice_withParticipants_withRawScore_withBoost_withCdaId_currentRequestId_withTimestamp___block_invoke;
   block[3] = &unk_1E85D2A28;
   block[4] = self;
-  v34 = v22;
-  v42 = a4;
-  v43 = a5;
-  v35 = v18;
-  v36 = v19;
-  v37 = v21;
-  v38 = v20;
-  v44 = a10;
-  v45 = a3;
-  v40 = a6;
-  v41 = a14;
-  v39 = v23;
-  v24 = v23;
-  v25 = v20;
-  v26 = v21;
-  v27 = v19;
-  v28 = v18;
-  v29 = v22;
+  v34 = idCopy;
+  decisionCopy = decision;
+  previousDecisionCopy = previousDecision;
+  v35 = deviceCopy;
+  v36 = thisDeviceCopy;
+  v37 = boostCopy;
+  v38 = participantsCopy;
+  scoreCopy = score;
+  madeCopy = made;
+  sincePreviousDecisionCopy = sincePreviousDecision;
+  timestampCopy = timestamp;
+  v39 = requestIdCopy;
+  v24 = requestIdCopy;
+  v25 = participantsCopy;
+  v26 = boostCopy;
+  v27 = thisDeviceCopy;
+  v28 = deviceCopy;
+  v29 = idCopy;
   dispatch_async(queue, block);
 }
 
@@ -538,19 +538,19 @@ void __224__SCDAInstrumentation_logCDAElectionDecisionMade_withDecision_withPrev
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logCDAElectionTimerEnded:(int)a3 withCdaId:(id)a4 withTimestamp:(unint64_t)a5
+- (void)logCDAElectionTimerEnded:(int)ended withCdaId:(id)id withTimestamp:(unint64_t)timestamp
 {
-  v8 = a4;
+  idCopy = id;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __72__SCDAInstrumentation_logCDAElectionTimerEnded_withCdaId_withTimestamp___block_invoke;
   v11[3] = &unk_1E85D29D8;
   v11[4] = self;
-  v12 = v8;
-  v14 = a3;
-  v13 = a5;
-  v10 = v8;
+  v12 = idCopy;
+  endedCopy = ended;
+  timestampCopy = timestamp;
+  v10 = idCopy;
   dispatch_async(queue, v11);
 }
 
@@ -590,19 +590,19 @@ void __72__SCDAInstrumentation_logCDAElectionTimerEnded_withCdaId_withTimestamp_
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logCDAElectionAdvertisingEnding:(int)a3 withCdaId:(id)a4 withTimestamp:(unint64_t)a5
+- (void)logCDAElectionAdvertisingEnding:(int)ending withCdaId:(id)id withTimestamp:(unint64_t)timestamp
 {
-  v8 = a4;
+  idCopy = id;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __79__SCDAInstrumentation_logCDAElectionAdvertisingEnding_withCdaId_withTimestamp___block_invoke;
   v11[3] = &unk_1E85D29D8;
   v11[4] = self;
-  v12 = v8;
-  v14 = a3;
-  v13 = a5;
-  v10 = v8;
+  v12 = idCopy;
+  endingCopy = ending;
+  timestampCopy = timestamp;
+  v10 = idCopy;
   dispatch_async(queue, v11);
 }
 
@@ -644,19 +644,19 @@ void __79__SCDAInstrumentation_logCDAElectionAdvertisingEnding_withCdaId_withTim
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logCDAElectionAdvertisingEnded:(int)a3 withCdaId:(id)a4 withTimestamp:(unint64_t)a5
+- (void)logCDAElectionAdvertisingEnded:(int)ended withCdaId:(id)id withTimestamp:(unint64_t)timestamp
 {
-  v8 = a4;
+  idCopy = id;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __78__SCDAInstrumentation_logCDAElectionAdvertisingEnded_withCdaId_withTimestamp___block_invoke;
   v11[3] = &unk_1E85D29D8;
   v11[4] = self;
-  v12 = v8;
-  v14 = a3;
-  v13 = a5;
-  v10 = v8;
+  v12 = idCopy;
+  endedCopy = ended;
+  timestampCopy = timestamp;
+  v10 = idCopy;
   dispatch_async(queue, v11);
 }
 
@@ -698,22 +698,22 @@ void __78__SCDAInstrumentation_logCDAElectionAdvertisingEnded_withCdaId_withTime
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logCDAElectionAdvertisingStarting:(int)a3 withDelay:(float)a4 withInterval:(float)a5 withVoiceTriggerLatency:(float)a6 withCdaId:(id)a7 withTimestamp:(unint64_t)a8
+- (void)logCDAElectionAdvertisingStarting:(int)starting withDelay:(float)delay withInterval:(float)interval withVoiceTriggerLatency:(float)latency withCdaId:(id)id withTimestamp:(unint64_t)timestamp
 {
-  v14 = a7;
+  idCopy = id;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __128__SCDAInstrumentation_logCDAElectionAdvertisingStarting_withDelay_withInterval_withVoiceTriggerLatency_withCdaId_withTimestamp___block_invoke;
   block[3] = &unk_1E85D2A00;
   block[4] = self;
-  v18 = v14;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = a6;
-  v19 = a8;
-  v16 = v14;
+  v18 = idCopy;
+  startingCopy = starting;
+  delayCopy = delay;
+  intervalCopy = interval;
+  latencyCopy = latency;
+  timestampCopy = timestamp;
+  v16 = idCopy;
   dispatch_async(queue, block);
 }
 
@@ -761,19 +761,19 @@ void __128__SCDAInstrumentation_logCDAElectionAdvertisingStarting_withDelay_with
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logCDAElectionAdvertisingStarted:(int)a3 withCdaId:(id)a4 withTimestamp:(unint64_t)a5
+- (void)logCDAElectionAdvertisingStarted:(int)started withCdaId:(id)id withTimestamp:(unint64_t)timestamp
 {
-  v8 = a4;
+  idCopy = id;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __80__SCDAInstrumentation_logCDAElectionAdvertisingStarted_withCdaId_withTimestamp___block_invoke;
   v11[3] = &unk_1E85D29D8;
   v11[4] = self;
-  v12 = v8;
-  v14 = a3;
-  v13 = a5;
-  v10 = v8;
+  v12 = idCopy;
+  startedCopy = started;
+  timestampCopy = timestamp;
+  v10 = idCopy;
   dispatch_async(queue, v11);
 }
 
@@ -815,19 +815,19 @@ void __80__SCDAInstrumentation_logCDAElectionAdvertisingStarted_withCdaId_withTi
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logCDADeviceStateActivityEnded:(int)a3 withCdaId:(id)a4 withTimestamp:(unint64_t)a5
+- (void)logCDADeviceStateActivityEnded:(int)ended withCdaId:(id)id withTimestamp:(unint64_t)timestamp
 {
-  v8 = a4;
+  idCopy = id;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __78__SCDAInstrumentation_logCDADeviceStateActivityEnded_withCdaId_withTimestamp___block_invoke;
   v11[3] = &unk_1E85D29D8;
   v11[4] = self;
-  v12 = v8;
-  v14 = a3;
-  v13 = a5;
-  v10 = v8;
+  v12 = idCopy;
+  endedCopy = ended;
+  timestampCopy = timestamp;
+  v10 = idCopy;
   dispatch_async(queue, v11);
 }
 
@@ -869,20 +869,20 @@ void __78__SCDAInstrumentation_logCDADeviceStateActivityEnded_withCdaId_withTime
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logCDADeviceStateActivityStartedOrChanged:(int)a3 withTrigger:(int)a4 withCdaId:(id)a5 withTimestamp:(unint64_t)a6
+- (void)logCDADeviceStateActivityStartedOrChanged:(int)changed withTrigger:(int)trigger withCdaId:(id)id withTimestamp:(unint64_t)timestamp
 {
-  v10 = a5;
+  idCopy = id;
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __101__SCDAInstrumentation_logCDADeviceStateActivityStartedOrChanged_withTrigger_withCdaId_withTimestamp___block_invoke;
   v13[3] = &unk_1E85D29B0;
   v13[4] = self;
-  v14 = v10;
-  v16 = a3;
-  v17 = a4;
-  v15 = a6;
-  v12 = v10;
+  v14 = idCopy;
+  changedCopy = changed;
+  triggerCopy = trigger;
+  timestampCopy = timestamp;
+  v12 = idCopy;
   dispatch_async(queue, v13);
 }
 

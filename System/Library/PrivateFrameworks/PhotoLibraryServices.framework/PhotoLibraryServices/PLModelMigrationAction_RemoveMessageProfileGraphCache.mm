@@ -1,18 +1,18 @@
 @interface PLModelMigrationAction_RemoveMessageProfileGraphCache
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_RemoveMessageProfileGraphCache
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v68 = *MEMORY[0x1E69E9840];
-  v6 = [(PLModelMigrationActionCore *)self pathManager];
-  v7 = [v6 privateCacheDirectoryWithSubType:4];
+  pathManager = [(PLModelMigrationActionCore *)self pathManager];
+  v7 = [pathManager privateCacheDirectoryWithSubType:4];
   v8 = [v7 stringByAppendingPathComponent:@"PGMessageProfile.plist"];
 
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  if (![v9 fileExistsAtPath:v8])
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if (![defaultManager fileExistsAtPath:v8])
   {
     v11 = 0;
 LABEL_8:
@@ -23,7 +23,7 @@ LABEL_8:
   }
 
   v32 = 0;
-  v10 = [v9 removeItemAtPath:v8 error:&v32];
+  v10 = [defaultManager removeItemAtPath:v8 error:&v32];
   v11 = v32;
   v12 = PLMigrationGetLog();
   v13 = v12;
@@ -33,9 +33,9 @@ LABEL_8:
 
     if (v14)
     {
-      v15 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v15)
+      if (logger)
       {
         v66 = 0u;
         v67 = 0u;
@@ -103,9 +103,9 @@ LABEL_8:
 
   if (v21)
   {
-    v22 = [(PLModelMigrationActionCore *)self logger];
+    logger2 = [(PLModelMigrationActionCore *)self logger];
 
-    if (v22)
+    if (logger2)
     {
       v66 = 0u;
       v67 = 0u;
@@ -173,10 +173,10 @@ LABEL_8:
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v28 = v11;
   v19 = v28;
-  if (a4)
+  if (error)
   {
     v29 = v28;
-    *a4 = v19;
+    *error = v19;
   }
 
   v20 = 3;

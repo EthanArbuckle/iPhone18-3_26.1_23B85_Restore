@@ -1,13 +1,13 @@
 @interface cellFlowObserver
-- (BOOL)performDisposition:(unsigned int)a3 present:(BOOL)a4;
+- (BOOL)performDisposition:(unsigned int)disposition present:(BOOL)present;
 - (cellFlowObserver)init;
 - (id)infoDir;
 - (void)beginTrafficClassFlowSnapshot;
-- (void)configurePolicies:(id)a3;
-- (void)endTrafficClassFlowSnapshot:(id)a3 periodUsecs:(unint64_t)a4 reply:(id)a5;
-- (void)noteNewUsage:(unsigned int)a3;
-- (void)resetTrafficClassFlowSnapshot:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
+- (void)configurePolicies:(id)policies;
+- (void)endTrafficClassFlowSnapshot:(id)snapshot periodUsecs:(unint64_t)usecs reply:(id)reply;
+- (void)noteNewUsage:(unsigned int)usage;
+- (void)resetTrafficClassFlowSnapshot:(BOOL)snapshot;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation cellFlowObserver
@@ -48,9 +48,9 @@
   return v2;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v14 = *MEMORY[0x277D85DE8];
   v5 = scoringLogHandle;
   if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
@@ -59,20 +59,20 @@
     v11[0] = 67109376;
     v11[1] = enabled;
     v12 = 1024;
-    v13 = v3;
+    v13 = enabledCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEBUG, "Entry, _enabled = %d new value %d", v11, 0xEu);
   }
 
-  if (self->_enabled != v3)
+  if (self->_enabled != enabledCopy)
   {
-    if (v3)
+    if (enabledCopy)
     {
       [NetworkAnalyticsEngine sendTrafficInfoFlags:self->_classFlags changeFlags:0xFFFFFFFFLL foreground:self->_foreground];
       if (self->_flowSnapshotActive)
       {
-        v8 = [MEMORY[0x277CBEAA8] date];
+        date = [MEMORY[0x277CBEAA8] date];
         flowSnapshotTCEnabledStartTime = self->_flowSnapshotTCEnabledStartTime;
-        self->_flowSnapshotTCEnabledStartTime = v8;
+        self->_flowSnapshotTCEnabledStartTime = date;
       }
     }
 
@@ -83,18 +83,18 @@
     }
   }
 
-  self->_enabled = v3;
+  self->_enabled = enabledCopy;
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configurePolicies:(id)a3
+- (void)configurePolicies:(id)policies
 {
   v32 = *MEMORY[0x277D85DE8];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = a3;
+  obj = policies;
   v3 = [obj countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v3)
   {
@@ -190,10 +190,10 @@ LABEL_15:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)noteNewUsage:(unsigned int)a3
+- (void)noteNewUsage:(unsigned int)usage
 {
   v19 = *MEMORY[0x277D85DE8];
-  self->_classFlags = a3;
+  self->_classFlags = usage;
   if (self->_dampening || !self->_enabled)
   {
     v9 = flowLogHandle;
@@ -201,7 +201,7 @@ LABEL_15:
     {
       intialClassFlags = self->_intialClassFlags;
       *buf = 67109376;
-      v16 = a3;
+      usageCopy2 = usage;
       v17 = 1024;
       v18 = intialClassFlags;
       _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_INFO, "New flags 0x%x during suppression / dampening, initial value 0x%x", buf, 0xEu);
@@ -214,7 +214,7 @@ LABEL_15:
     if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_INFO))
     {
       *buf = 67109120;
-      v16 = a3;
+      usageCopy2 = usage;
       _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_INFO, "Note new usage 0x%x", buf, 8u);
     }
 
@@ -229,45 +229,45 @@ LABEL_15:
     v12[3] = &unk_27898AFE0;
     v12[4] = self;
     v13 = v6;
-    v14 = a3;
+    usageCopy3 = usage;
     dispatch_after(v7, v8, v12);
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)performDisposition:(unsigned int)a3 present:(BOOL)a4
+- (BOOL)performDisposition:(unsigned int)disposition present:(BOOL)present
 {
-  if (a3 > 0x1F)
+  if (disposition > 0x1F)
   {
     return 0;
   }
 
   classCounter = self->_classCounter;
-  v5 = self->_classCounter[a3];
-  if (!a4)
+  v5 = self->_classCounter[disposition];
+  if (!present)
   {
     v7 = v5 - 1;
-    classCounter[a3] = v7;
+    classCounter[disposition] = v7;
     if (!v7)
     {
       v6 = 1;
-      self->_classFlags &= ~(1 << a3);
+      self->_classFlags &= ~(1 << disposition);
       return v6;
     }
 
     return 0;
   }
 
-  classCounter[a3] = v5 + 1;
+  classCounter[disposition] = v5 + 1;
   if (v5)
   {
     return 0;
   }
 
   v6 = 1;
-  self->_classFlags |= 1 << a3;
-  self->_everSetClassFlags |= 1 << a3;
+  self->_classFlags |= 1 << disposition;
+  self->_everSetClassFlags |= 1 << disposition;
   return v6;
 }
 
@@ -295,9 +295,9 @@ LABEL_15:
 
   if (self->_enabled)
   {
-    v8 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     flowSnapshotTCEnabledStartTime = self->_flowSnapshotTCEnabledStartTime;
-    self->_flowSnapshotTCEnabledStartTime = v8;
+    self->_flowSnapshotTCEnabledStartTime = date;
   }
 
   v10 = noiLogHandle;
@@ -329,11 +329,11 @@ LABEL_15:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)endTrafficClassFlowSnapshot:(id)a3 periodUsecs:(unint64_t)a4 reply:(id)a5
+- (void)endTrafficClassFlowSnapshot:(id)snapshot periodUsecs:(unint64_t)usecs reply:(id)reply
 {
   v77 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  snapshotCopy = snapshot;
+  replyCopy = reply;
   v9 = &noiLogHandle;
   v10 = noiLogHandle;
   if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -355,8 +355,8 @@ LABEL_15:
   {
     v15 = self->_flowSnapshotFlags;
     v16 = MEMORY[0x277CBEA60];
-    v17 = [(NSMutableSet *)self->_flowSnapshotApps allObjects];
-    v18 = [v16 arrayWithArray:v17];
+    allObjects = [(NSMutableSet *)self->_flowSnapshotApps allObjects];
+    v18 = [v16 arrayWithArray:allObjects];
 
     if (self->_enabled)
     {
@@ -385,12 +385,12 @@ LABEL_15:
       v51 = v24;
       if (v24)
       {
-        v57 = [v24 unsignedIntegerValue];
+        unsignedIntegerValue = [v24 unsignedIntegerValue];
       }
 
       else
       {
-        v57 = 60;
+        unsignedIntegerValue = 60;
       }
 
       v66 = 0u;
@@ -403,8 +403,8 @@ LABEL_15:
       {
         v26 = v25;
         obj = v18;
-        v49 = v8;
-        v50 = v7;
+        v49 = replyCopy;
+        v50 = snapshotCopy;
         v27 = 0;
         v28 = *v65;
         while (2)
@@ -435,9 +435,9 @@ LABEL_15:
               *&v69[8] = 2112;
               *v70 = v36;
               *&v70[8] = 2112;
-              v71 = v39;
+              usecsCopy = v39;
               v72 = 2048;
-              v73 = v57;
+              v73 = unsignedIntegerValue;
               _os_log_impl(&dword_23255B000, v35, OS_LOG_TYPE_DEFAULT, "TC Metric: app: %@ has quota in plist: %@, override: %@, default: %lu", buf, 0x2Au);
 
               v9 = v33;
@@ -449,7 +449,7 @@ LABEL_15:
             }
 
             v40 = [v23 maxRRCTimePolicyForTarget:{v30, v49, v50, v51}];
-            if (v40 || ([(NSMutableDictionary *)self->_perAppMaxRRCTimeSecs objectForKeyedSubscript:v30], v40 = objc_claimAutoreleasedReturnValue(), v41 = v57, v40))
+            if (v40 || ([(NSMutableDictionary *)self->_perAppMaxRRCTimeSecs objectForKeyedSubscript:v30], v40 = objc_claimAutoreleasedReturnValue(), unsignedIntegerValue2 = unsignedIntegerValue, v40))
             {
               v42 = v40;
               if (![v40 unsignedIntegerValue])
@@ -463,10 +463,10 @@ LABEL_15:
                 goto LABEL_28;
               }
 
-              v41 = [v42 unsignedIntegerValue];
+              unsignedIntegerValue2 = [v42 unsignedIntegerValue];
             }
 
-            v27 += v41;
+            v27 += unsignedIntegerValue2;
             ++v29;
           }
 
@@ -484,11 +484,11 @@ LABEL_15:
         v18 = obj;
 
         v21 = 1000000 * v27;
-        v22 = 1000000 * v27 < a4;
+        v22 = 1000000 * v27 < usecs;
         v14 = "no";
 LABEL_28:
-        v8 = v49;
-        v7 = v50;
+        replyCopy = v49;
+        snapshotCopy = v50;
       }
 
       else
@@ -496,7 +496,7 @@ LABEL_28:
         v43 = v23;
 
         v21 = 0;
-        v22 = a4 != 0;
+        v22 = usecs != 0;
         v14 = "no";
       }
 
@@ -527,7 +527,7 @@ LABEL_28:
     *&v69[8] = 2080;
     *v70 = v14;
     *&v70[8] = 2048;
-    v71 = a4;
+    usecsCopy = usecs;
     v72 = 2048;
     v73 = v54;
     v74 = 2048;
@@ -540,19 +540,19 @@ LABEL_28:
   block[2] = __66__cellFlowObserver_endTrafficClassFlowSnapshot_periodUsecs_reply___block_invoke;
   block[3] = &unk_27898FE48;
   v62 = v15;
-  v60 = v8;
+  v60 = replyCopy;
   v61 = v54;
   v59 = v18;
   v63 = v22;
   v46 = v18;
-  v47 = v8;
-  dispatch_async(v7, block);
+  v47 = replyCopy;
+  dispatch_async(snapshotCopy, block);
   [(cellFlowObserver *)self resetTrafficClassFlowSnapshot:0];
 
   v48 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetTrafficClassFlowSnapshot:(BOOL)a3
+- (void)resetTrafficClassFlowSnapshot:(BOOL)snapshot
 {
   v5 = noiLogHandle;
   if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -561,7 +561,7 @@ LABEL_28:
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "TC Metric: reset snapshot", v7, 2u);
   }
 
-  self->_flowSnapshotActive = a3;
+  self->_flowSnapshotActive = snapshot;
   [(NSMutableSet *)self->_flowSnapshotApps removeAllObjects];
   self->_flowSnapshotFlags = 0;
   flowSnapshotTCEnabledStartTime = self->_flowSnapshotTCEnabledStartTime;
@@ -578,9 +578,9 @@ LABEL_28:
     _os_log_impl(&dword_23255B000, v2, OS_LOG_TYPE_DEFAULT, "Cell observer, return empty Info dir", v5, 2u);
   }
 
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 @end

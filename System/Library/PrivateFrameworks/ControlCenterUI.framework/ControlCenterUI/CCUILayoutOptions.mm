@@ -1,24 +1,24 @@
 @interface CCUILayoutOptions
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithLayoutOptions:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithLayoutOptions:(id)options;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation CCUILayoutOptions
 
-- (id)_initWithLayoutOptions:(id)a3
+- (id)_initWithLayoutOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v9.receiver = self;
   v9.super_class = CCUILayoutOptions;
   v5 = [(CCUILayoutOptions *)&v9 init];
   if (v5)
   {
-    [v4 itemEdgeSize];
+    [optionsCopy itemEdgeSize];
     v5->_itemEdgeSize = v6;
-    [v4 itemSpacing];
+    [optionsCopy itemSpacing];
     v5->_itemSpacing = v7;
   }
 
@@ -32,27 +32,27 @@
   v4 = [v3 appendFloat:@"Item Edge Size" withName:?];
   [(CCUILayoutOptions *)self itemSpacing];
   v5 = [v3 appendFloat:@"Item Spacing" withName:?];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
+  builder = [MEMORY[0x277CF0C40] builder];
   [(CCUILayoutOptions *)self itemEdgeSize];
-  v4 = [v3 appendCGFloat:?];
+  v4 = [builder appendCGFloat:?];
   [(CCUILayoutOptions *)self itemSpacing];
-  v5 = [v3 appendCGFloat:?];
-  v6 = [v3 hash];
+  v5 = [builder appendCGFloat:?];
+  v6 = [builder hash];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -62,7 +62,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(CCUILayoutOptions *)self itemEdgeSize];
       [(CCUILayoutOptions *)v5 itemEdgeSize];
       if (BSCompareFloats())
@@ -87,7 +87,7 @@
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CCUIMutableLayoutOptions alloc];
 

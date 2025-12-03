@@ -1,15 +1,15 @@
 @interface SBKeyboardFocusResolutionContext
-+ (id)build:(id)a3;
++ (id)build:(id)build;
 + (id)new;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SBKeyboardFocusResolutionContext)init;
 - (id)_init;
-- (id)_initWithCopyOf:(id *)a1;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithCopyOf:(id *)of;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)_init;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation SBKeyboardFocusResolutionContext
@@ -37,13 +37,13 @@
   return result;
 }
 
-+ (id)build:(id)a3
++ (id)build:(id)build
 {
-  v3 = a3;
-  v4 = [(SBKeyboardFocusResolutionContext *)[SBMutableKeyboardFocusResolutionContext alloc] _init];
-  v3[2](v3, v4);
+  buildCopy = build;
+  _init = [(SBKeyboardFocusResolutionContext *)[SBMutableKeyboardFocusResolutionContext alloc] _init];
+  buildCopy[2](buildCopy, _init);
 
-  v5 = [v4 copy];
+  v5 = [_init copy];
 
   return v5;
 }
@@ -61,7 +61,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"SBKeyboardFocusResolutionContext.m";
     v17 = 1024;
@@ -90,7 +90,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = a1;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"SBKeyboardFocusResolutionContext.m";
     v17 = 1024;
@@ -116,11 +116,11 @@
   return (0x94D049BB133111EBLL * (v6 ^ (v6 >> 27))) ^ ((0x94D049BB133111EBLL * (v6 ^ (v6 >> 27))) >> 31);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && v4[8] == self->_screenDim)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && equalCopy[8] == self->_screenDim)
   {
     v5 = BSEqualObjects();
   }
@@ -133,38 +133,38 @@
   return v5;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v6 = a3;
-  v4 = [v6 appendBool:self->_screenDim withName:@"screenDim"];
-  v5 = [v6 appendObject:self->_zStackResolver withName:@"zStackResolver"];
+  formatterCopy = formatter;
+  v4 = [formatterCopy appendBool:self->_screenDim withName:@"screenDim"];
+  v5 = [formatterCopy appendObject:self->_zStackResolver withName:@"zStackResolver"];
 }
 
-- (id)_initWithCopyOf:(id *)a1
+- (id)_initWithCopyOf:(id *)of
 {
   v3 = a2;
-  if (a1)
+  if (of)
   {
-    v4 = [(SBKeyboardFocusResolutionContext *)a1 _init];
-    a1 = v4;
-    if (v4)
+    _init = [(SBKeyboardFocusResolutionContext *)of _init];
+    of = _init;
+    if (_init)
     {
-      *(v4 + 8) = *(v3 + 8);
-      objc_storeStrong(v4 + 2, *(v3 + 2));
+      *(_init + 8) = *(v3 + 8);
+      objc_storeStrong(_init + 2, *(v3 + 2));
     }
   }
 
-  return a1;
+  return of;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SBKeyboardFocusResolutionContext alloc];
 
   return [(SBKeyboardFocusResolutionContext *)&v4->super.isa _initWithCopyOf:?];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [SBMutableKeyboardFocusResolutionContext alloc];
 
@@ -176,7 +176,7 @@
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"SBKeyboardFocusResolutionContext cannot be subclassed"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v5 = NSStringFromSelector(a1);
+    v5 = NSStringFromSelector(self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = 138544642;

@@ -1,18 +1,18 @@
 @interface MKIncidentDetailContentView
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (MKIncidentDetailContentView)initWithFrame:(CGRect)a3;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (MKIncidentDetailContentView)initWithFrame:(CGRect)frame;
 - (MKIncidentDetailDelegate)delegate;
 - (id)customBodyTextView;
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5;
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action;
 - (void)_clearChildrenStackView;
 - (void)_didTapActionButton;
 - (void)_setConstraints;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
-- (void)_updateAccessoryFooterView:(id)a3;
-- (void)configureWithAdvisories:(id)a3 artwork:(id)a4;
-- (void)configureWithAdvisoryItem:(id)a3;
-- (void)configureWithTitle:(id)a3 subtitle:(id)a4 body:(id)a5 image:(id)a6;
+- (void)_updateAccessoryFooterView:(id)view;
+- (void)configureWithAdvisories:(id)advisories artwork:(id)artwork;
+- (void)configureWithAdvisoryItem:(id)item;
+- (void)configureWithTitle:(id)title subtitle:(id)subtitle body:(id)body image:(id)image;
 - (void)reset;
 @end
 
@@ -25,12 +25,12 @@
   return WeakRetained;
 }
 
-- (void)_updateAccessoryFooterView:(id)a3
+- (void)_updateAccessoryFooterView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   accessoryFooterView = self->_accessoryFooterView;
-  v7 = v5;
-  if (accessoryFooterView != v5)
+  v7 = viewCopy;
+  if (accessoryFooterView != viewCopy)
   {
     if (accessoryFooterView)
     {
@@ -38,7 +38,7 @@
       [(UIView *)self->_accessoryFooterView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_accessoryFooterView, a3);
+    objc_storeStrong(&self->_accessoryFooterView, view);
     if (self->_accessoryFooterView)
     {
       [(UIStackView *)self->_stackView addArrangedSubview:?];
@@ -46,15 +46,15 @@
   }
 }
 
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E69DC938] currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  viewCopy = view;
+  itemCopy = item;
+  actionCopy = action;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v12 != 5)
+  if (userInterfaceIdiom != 5)
   {
     v13 = _MKLocalizedStringFromThisBundle(@"Open Link in Safari Action");
     v24[0] = 0;
@@ -62,9 +62,9 @@
     v24[2] = 0x3032000000;
     v24[3] = __Block_byref_object_copy__8831;
     v24[4] = __Block_byref_object_dispose__8832;
-    v14 = self;
-    v25 = v14;
-    if (v14->_advisoryNoticeItem)
+    selfCopy = self;
+    v25 = selfCopy;
+    if (selfCopy->_advisoryNoticeItem)
     {
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
@@ -76,8 +76,8 @@
 
     else
     {
-      v15 = v14;
-      if (!v14->_advisoryItem)
+      v15 = selfCopy;
+      if (!selfCopy->_advisoryItem)
       {
         v18 = 1;
 LABEL_7:
@@ -97,7 +97,7 @@ LABEL_7:
       v20[2] = __79__MKIncidentDetailContentView_textView_primaryActionForTextItem_defaultAction___block_invoke_2;
       v20[3] = &unk_1E76C7A80;
       v22 = v24;
-      v21 = v9;
+      v21 = itemCopy;
       self = [v16 actionWithTitle:v13 image:0 identifier:0 handler:v20];
       v17 = +[MKMapService sharedService];
       [v17 captureUserAction:249 onTarget:46 forAdvisoryItem:v15->_advisoryItem];
@@ -108,7 +108,7 @@ LABEL_7:
   }
 
 LABEL_8:
-  self = v10;
+  self = actionCopy;
 LABEL_9:
 
   return self;
@@ -167,14 +167,14 @@ void __79__MKIncidentDetailContentView_textView_primaryActionForTextItem_default
   }
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
-  v8 = a3;
-  v9 = a4;
+  viewCopy = view;
+  lCopy = l;
   if (self->_advisoryItem)
   {
-    v10 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v10 userInterfaceIdiom] != 5)
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom] != 5)
     {
 LABEL_5:
 
@@ -185,8 +185,8 @@ LABEL_5:
 
     if (advisoryItem)
     {
-      v10 = +[MKMapService sharedService];
-      [v10 captureUserAction:249 onTarget:46 forAdvisoryItem:self->_advisoryItem];
+      currentDevice = +[MKMapService sharedService];
+      [currentDevice captureUserAction:249 onTarget:46 forAdvisoryItem:self->_advisoryItem];
       goto LABEL_5;
     }
   }
@@ -199,133 +199,133 @@ LABEL_6:
 - (void)_setConstraints
 {
   v99[31] = *MEMORY[0x1E69E9840];
-  v3 = [(UITextView *)self->_attributionView heightAnchor];
-  v4 = [v3 constraintEqualToConstant:0.0];
+  heightAnchor = [(UITextView *)self->_attributionView heightAnchor];
+  v4 = [heightAnchor constraintEqualToConstant:0.0];
   attributionViewEmptyHeightConstraint = self->_attributionViewEmptyHeightConstraint;
   self->_attributionViewEmptyHeightConstraint = v4;
 
-  v6 = [(UIStackView *)self->_stackView bottomAnchor];
-  v7 = [(UIView *)self->_backgroundView bottomAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7 constant:-12.0];
+  bottomAnchor = [(UIStackView *)self->_stackView bottomAnchor];
+  bottomAnchor2 = [(UIView *)self->_backgroundView bottomAnchor];
+  v8 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-12.0];
   stackViewBottomConstraint = self->_stackViewBottomConstraint;
   self->_stackViewBottomConstraint = v8;
 
   v67 = MEMORY[0x1E696ACD8];
-  v98 = [(UIView *)self->_backgroundView topAnchor];
-  v97 = [(MKIncidentDetailContentView *)self topAnchor];
-  v96 = [v98 constraintEqualToAnchor:v97 constant:0.0];
+  topAnchor = [(UIView *)self->_backgroundView topAnchor];
+  topAnchor2 = [(MKIncidentDetailContentView *)self topAnchor];
+  v96 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
   v99[0] = v96;
-  v95 = [(UIView *)self->_backgroundView bottomAnchor];
-  v94 = [(MKIncidentDetailContentView *)self bottomAnchor];
-  v93 = [v95 constraintEqualToAnchor:v94 constant:-16.0];
+  bottomAnchor3 = [(UIView *)self->_backgroundView bottomAnchor];
+  bottomAnchor4 = [(MKIncidentDetailContentView *)self bottomAnchor];
+  v93 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-16.0];
   v99[1] = v93;
-  v92 = [(UIView *)self->_backgroundView trailingAnchor];
-  v91 = [(MKIncidentDetailContentView *)self trailingAnchor];
-  v90 = [v92 constraintEqualToAnchor:v91 constant:-16.0];
+  trailingAnchor = [(UIView *)self->_backgroundView trailingAnchor];
+  trailingAnchor2 = [(MKIncidentDetailContentView *)self trailingAnchor];
+  v90 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   v99[2] = v90;
-  v89 = [(UIView *)self->_backgroundView leadingAnchor];
-  v88 = [(MKIncidentDetailContentView *)self leadingAnchor];
-  v87 = [v89 constraintEqualToAnchor:v88 constant:16.0];
+  leadingAnchor = [(UIView *)self->_backgroundView leadingAnchor];
+  leadingAnchor2 = [(MKIncidentDetailContentView *)self leadingAnchor];
+  v87 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v99[3] = v87;
-  v86 = [(UIImageView *)self->_imageView widthAnchor];
-  v85 = [v86 constraintEqualToConstant:35.0];
+  widthAnchor = [(UIImageView *)self->_imageView widthAnchor];
+  v85 = [widthAnchor constraintEqualToConstant:35.0];
   v99[4] = v85;
-  v84 = [(UIImageView *)self->_imageView heightAnchor];
-  v83 = [v84 constraintEqualToConstant:35.0];
+  heightAnchor2 = [(UIImageView *)self->_imageView heightAnchor];
+  v83 = [heightAnchor2 constraintEqualToConstant:35.0];
   v99[5] = v83;
-  v82 = [(UIImageView *)self->_imageView leadingAnchor];
-  v81 = [(UIView *)self->_backgroundView leadingAnchor];
-  v80 = [v82 constraintEqualToAnchor:v81 constant:16.0];
+  leadingAnchor3 = [(UIImageView *)self->_imageView leadingAnchor];
+  leadingAnchor4 = [(UIView *)self->_backgroundView leadingAnchor];
+  v80 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:16.0];
   v99[6] = v80;
-  v79 = [(UIImageView *)self->_imageView centerYAnchor];
-  v78 = [(UIView *)self->_titleView centerYAnchor];
-  v77 = [v79 constraintEqualToAnchor:v78];
+  centerYAnchor = [(UIImageView *)self->_imageView centerYAnchor];
+  centerYAnchor2 = [(UIView *)self->_titleView centerYAnchor];
+  v77 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v99[7] = v77;
-  v76 = [(UIImageView *)self->_imageView topAnchor];
-  v75 = [(UIView *)self->_backgroundView topAnchor];
-  v74 = [v76 constraintGreaterThanOrEqualToAnchor:v75 constant:12.0];
+  topAnchor3 = [(UIImageView *)self->_imageView topAnchor];
+  topAnchor4 = [(UIView *)self->_backgroundView topAnchor];
+  v74 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4 constant:12.0];
   v99[8] = v74;
-  v73 = [(UIView *)self->_titleView topAnchor];
-  v72 = [(UIView *)self->_backgroundView topAnchor];
-  v71 = [v73 constraintGreaterThanOrEqualToAnchor:v72 constant:12.0];
+  topAnchor5 = [(UIView *)self->_titleView topAnchor];
+  topAnchor6 = [(UIView *)self->_backgroundView topAnchor];
+  v71 = [topAnchor5 constraintGreaterThanOrEqualToAnchor:topAnchor6 constant:12.0];
   v99[9] = v71;
-  v70 = [(UIView *)self->_titleView bottomAnchor];
-  v69 = [(UIStackView *)self->_stackView topAnchor];
-  v68 = [v70 constraintEqualToAnchor:v69 constant:-12.0];
+  bottomAnchor5 = [(UIView *)self->_titleView bottomAnchor];
+  topAnchor7 = [(UIStackView *)self->_stackView topAnchor];
+  v68 = [bottomAnchor5 constraintEqualToAnchor:topAnchor7 constant:-12.0];
   v99[10] = v68;
-  v66 = [(UIView *)self->_titleView leadingAnchor];
-  v65 = [(UIImageView *)self->_imageView trailingAnchor];
-  v64 = [v66 constraintEqualToAnchor:v65 constant:10.0];
+  leadingAnchor5 = [(UIView *)self->_titleView leadingAnchor];
+  trailingAnchor3 = [(UIImageView *)self->_imageView trailingAnchor];
+  v64 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor3 constant:10.0];
   v99[11] = v64;
-  v63 = [(UIView *)self->_titleView trailingAnchor];
-  v62 = [(UIView *)self->_backgroundView trailingAnchor];
-  v61 = [v63 constraintEqualToAnchor:v62 constant:-16.0];
+  trailingAnchor4 = [(UIView *)self->_titleView trailingAnchor];
+  trailingAnchor5 = [(UIView *)self->_backgroundView trailingAnchor];
+  v61 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-16.0];
   v99[12] = v61;
-  v60 = [(_MKUILabel *)self->_titleLabel leadingAnchor];
-  v59 = [(UIView *)self->_titleView leadingAnchor];
-  v58 = [v60 constraintEqualToAnchor:v59];
+  leadingAnchor6 = [(_MKUILabel *)self->_titleLabel leadingAnchor];
+  leadingAnchor7 = [(UIView *)self->_titleView leadingAnchor];
+  v58 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
   v99[13] = v58;
-  v57 = [(_MKUILabel *)self->_titleLabel trailingAnchor];
-  v56 = [(UIView *)self->_titleView trailingAnchor];
-  v55 = [v57 constraintEqualToAnchor:v56];
+  trailingAnchor6 = [(_MKUILabel *)self->_titleLabel trailingAnchor];
+  trailingAnchor7 = [(UIView *)self->_titleView trailingAnchor];
+  v55 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
   v99[14] = v55;
-  v54 = [(_MKUILabel *)self->_titleLabel topAnchor];
-  v53 = [(UIView *)self->_titleView topAnchor];
-  v52 = [v54 constraintEqualToAnchor:v53];
+  topAnchor8 = [(_MKUILabel *)self->_titleLabel topAnchor];
+  topAnchor9 = [(UIView *)self->_titleView topAnchor];
+  v52 = [topAnchor8 constraintEqualToAnchor:topAnchor9];
   v99[15] = v52;
-  v51 = [(_MKUILabel *)self->_titleLabel bottomAnchor];
-  v50 = [(_MKUILabel *)self->_subtitleLabel topAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50];
+  bottomAnchor6 = [(_MKUILabel *)self->_titleLabel bottomAnchor];
+  topAnchor10 = [(_MKUILabel *)self->_subtitleLabel topAnchor];
+  v49 = [bottomAnchor6 constraintEqualToAnchor:topAnchor10];
   v99[16] = v49;
-  v48 = [(_MKUILabel *)self->_subtitleLabel leadingAnchor];
-  v47 = [(_MKUILabel *)self->_titleLabel leadingAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47];
+  leadingAnchor8 = [(_MKUILabel *)self->_subtitleLabel leadingAnchor];
+  leadingAnchor9 = [(_MKUILabel *)self->_titleLabel leadingAnchor];
+  v46 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9];
   v99[17] = v46;
-  v45 = [(_MKUILabel *)self->_subtitleLabel trailingAnchor];
-  v44 = [(_MKUILabel *)self->_titleLabel trailingAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  trailingAnchor8 = [(_MKUILabel *)self->_subtitleLabel trailingAnchor];
+  trailingAnchor9 = [(_MKUILabel *)self->_titleLabel trailingAnchor];
+  v43 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9];
   v99[18] = v43;
-  v42 = [(_MKUILabel *)self->_subtitleLabel bottomAnchor];
-  v41 = [(UIView *)self->_titleView bottomAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  bottomAnchor7 = [(_MKUILabel *)self->_subtitleLabel bottomAnchor];
+  bottomAnchor8 = [(UIView *)self->_titleView bottomAnchor];
+  v40 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
   v99[19] = v40;
-  v39 = [(UIStackView *)self->_stackView leadingAnchor];
-  v38 = [(UIImageView *)self->_imageView leadingAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
+  leadingAnchor10 = [(UIStackView *)self->_stackView leadingAnchor];
+  leadingAnchor11 = [(UIImageView *)self->_imageView leadingAnchor];
+  v37 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11];
   v99[20] = v37;
-  v36 = [(UIStackView *)self->_stackView trailingAnchor];
-  v35 = [(UIView *)self->_backgroundView trailingAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35 constant:-16.0];
+  trailingAnchor10 = [(UIStackView *)self->_stackView trailingAnchor];
+  trailingAnchor11 = [(UIView *)self->_backgroundView trailingAnchor];
+  v34 = [trailingAnchor10 constraintEqualToAnchor:trailingAnchor11 constant:-16.0];
   v10 = self->_stackViewBottomConstraint;
   v99[21] = v34;
   v99[22] = v10;
-  v33 = [(MKViewWithHairline *)self->_hairlineView topAnchor];
-  v32 = [(UIStackView *)self->_stackView bottomAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32 constant:12.0];
+  topAnchor11 = [(MKViewWithHairline *)self->_hairlineView topAnchor];
+  bottomAnchor9 = [(UIStackView *)self->_stackView bottomAnchor];
+  v31 = [topAnchor11 constraintEqualToAnchor:bottomAnchor9 constant:12.0];
   v99[23] = v31;
-  v30 = [(MKViewWithHairline *)self->_hairlineView trailingAnchor];
-  v29 = [(UIView *)self->_backgroundView trailingAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  trailingAnchor12 = [(MKViewWithHairline *)self->_hairlineView trailingAnchor];
+  trailingAnchor13 = [(UIView *)self->_backgroundView trailingAnchor];
+  v28 = [trailingAnchor12 constraintEqualToAnchor:trailingAnchor13];
   v99[24] = v28;
-  v27 = [(MKViewWithHairline *)self->_hairlineView leadingAnchor];
-  v26 = [(UIStackView *)self->_stackView leadingAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  leadingAnchor12 = [(MKViewWithHairline *)self->_hairlineView leadingAnchor];
+  leadingAnchor13 = [(UIStackView *)self->_stackView leadingAnchor];
+  v25 = [leadingAnchor12 constraintEqualToAnchor:leadingAnchor13];
   v99[25] = v25;
-  v24 = [(UITextView *)self->_attributionView topAnchor];
-  v23 = [(MKViewWithHairline *)self->_hairlineView bottomAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23 constant:12.0];
+  topAnchor12 = [(UITextView *)self->_attributionView topAnchor];
+  bottomAnchor10 = [(MKViewWithHairline *)self->_hairlineView bottomAnchor];
+  v22 = [topAnchor12 constraintEqualToAnchor:bottomAnchor10 constant:12.0];
   v99[26] = v22;
-  v11 = [(UITextView *)self->_attributionView bottomAnchor];
-  v12 = [(UIView *)self->_backgroundView bottomAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12 constant:-12.0];
+  bottomAnchor11 = [(UITextView *)self->_attributionView bottomAnchor];
+  bottomAnchor12 = [(UIView *)self->_backgroundView bottomAnchor];
+  v13 = [bottomAnchor11 constraintEqualToAnchor:bottomAnchor12 constant:-12.0];
   v99[27] = v13;
-  v14 = [(UITextView *)self->_attributionView trailingAnchor];
-  v15 = [(UIView *)self->_backgroundView trailingAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15 constant:-16.0];
+  trailingAnchor14 = [(UITextView *)self->_attributionView trailingAnchor];
+  trailingAnchor15 = [(UIView *)self->_backgroundView trailingAnchor];
+  v16 = [trailingAnchor14 constraintEqualToAnchor:trailingAnchor15 constant:-16.0];
   v99[28] = v16;
-  v17 = [(UITextView *)self->_attributionView leadingAnchor];
-  v18 = [(UIImageView *)self->_imageView leadingAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  leadingAnchor14 = [(UITextView *)self->_attributionView leadingAnchor];
+  leadingAnchor15 = [(UIImageView *)self->_imageView leadingAnchor];
+  v19 = [leadingAnchor14 constraintEqualToAnchor:leadingAnchor15];
   v20 = self->_attributionViewEmptyHeightConstraint;
   v99[29] = v19;
   v99[30] = v20;
@@ -338,33 +338,33 @@ LABEL_6:
   v3 = +[MKMapService sharedService];
   [v3 captureUserAction:381 onTarget:46 forAdvisoryItem:self->_advisoryItem];
 
-  v6 = [(MKIncidentDetailContentView *)self delegate];
-  v4 = [(GEOComposedRouteAdvisoryItem *)self->_advisoryItem cardAction];
-  v5 = [v4 location];
-  [v6 cellDidTapDownloadForLocation:v5];
+  delegate = [(MKIncidentDetailContentView *)self delegate];
+  cardAction = [(GEOComposedRouteAdvisoryItem *)self->_advisoryItem cardAction];
+  location = [cardAction location];
+  [delegate cellDidTapDownloadForLocation:location];
 }
 
-- (void)configureWithTitle:(id)a3 subtitle:(id)a4 body:(id)a5 image:(id)a6
+- (void)configureWithTitle:(id)title subtitle:(id)subtitle body:(id)body image:(id)image
 {
-  v17 = a5;
+  bodyCopy = body;
   titleLabel = self->_titleLabel;
-  v11 = a6;
-  v12 = a4;
-  [(_MKUILabel *)titleLabel setText:a3];
-  [(_MKUILabel *)self->_subtitleLabel setText:v12];
+  imageCopy = image;
+  subtitleCopy = subtitle;
+  [(_MKUILabel *)titleLabel setText:title];
+  [(_MKUILabel *)self->_subtitleLabel setText:subtitleCopy];
 
-  [(UIImageView *)self->_imageView setImage:v11];
-  if ([v17 length])
+  [(UIImageView *)self->_imageView setImage:imageCopy];
+  if ([bodyCopy length])
   {
-    [(UITextView *)self->_bodyTextView setText:v17];
+    [(UITextView *)self->_bodyTextView setText:bodyCopy];
     [(UIStackView *)self->_stackView addSubview:self->_bodyTextView];
     [(UIStackView *)self->_stackView addArrangedSubview:self->_bodyTextView];
   }
 
   else
   {
-    v13 = [(UIStackView *)self->_stackView arrangedSubviews];
-    v14 = [v13 containsObject:self->_bodyTextView];
+    arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+    v14 = [arrangedSubviews containsObject:self->_bodyTextView];
 
     if (v14)
     {
@@ -373,125 +373,125 @@ LABEL_6:
     }
   }
 
-  v15 = [(MKIncidentDetailContentView *)self delegate];
-  v16 = [v15 accessoryFooterView];
+  delegate = [(MKIncidentDetailContentView *)self delegate];
+  accessoryFooterView = [delegate accessoryFooterView];
 
-  [(MKIncidentDetailContentView *)self _updateAccessoryFooterView:v16];
+  [(MKIncidentDetailContentView *)self _updateAccessoryFooterView:accessoryFooterView];
 }
 
-- (void)configureWithAdvisories:(id)a3 artwork:(id)a4
+- (void)configureWithAdvisories:(id)advisories artwork:(id)artwork
 {
   v53[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  advisoriesCopy = advisories;
   advisoryItem = self->_advisoryItem;
   self->_advisoryItem = 0;
-  v9 = a4;
+  artworkCopy = artwork;
 
-  v10 = [MEMORY[0x1E695DF70] array];
-  objc_storeStrong(&self->_advisoryNoticeItem, a3);
-  v11 = [(UIImageView *)self->_imageView traitCollection];
-  v12 = ImageForArtworkDataSource(v9, v11);
+  array = [MEMORY[0x1E695DF70] array];
+  objc_storeStrong(&self->_advisoryNoticeItem, advisories);
+  traitCollection = [(UIImageView *)self->_imageView traitCollection];
+  v12 = ImageForArtworkDataSource(artworkCopy, traitCollection);
 
   if (!v12)
   {
     v13 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:4 weight:3 scale:30.0];
     v14 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"leaf.circle.fill" withConfiguration:v13];
-    v15 = [MEMORY[0x1E69DC888] systemGreenColor];
-    v16 = [v14 _flatImageWithColor:v15];
+    systemGreenColor = [MEMORY[0x1E69DC888] systemGreenColor];
+    v16 = [v14 _flatImageWithColor:systemGreenColor];
     v12 = [v16 imageWithRenderingMode:1];
   }
 
   v47 = v12;
   [(UIImageView *)self->_imageView setImage:v12];
-  [v10 addObject:self->_imageView];
+  [array addObject:self->_imageView];
   [(MKIncidentDetailContentView *)self _clearChildrenStackView];
-  v17 = self;
-  v49 = [(MKIncidentDetailContentView *)v17 customBodyTextView];
-  v18 = [MEMORY[0x1E69DC938] currentDevice];
-  v19 = [v18 userInterfaceIdiom];
+  selfCopy = self;
+  customBodyTextView = [(MKIncidentDetailContentView *)selfCopy customBodyTextView];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v19 == 5)
+  if (userInterfaceIdiom == 5)
   {
-    [(UITextView *)v17->_attributionView setDelegate:0];
+    [(UITextView *)selfCopy->_attributionView setDelegate:0];
   }
 
-  v48 = v7;
-  v20 = [v7 advisoryCard];
+  v48 = advisoriesCopy;
+  advisoryCard = [advisoriesCopy advisoryCard];
   v21 = objc_alloc(MEMORY[0x1E69A1CA8]);
-  v22 = [v20 title];
-  v23 = [v21 initWithGeoFormattedString:v22];
+  title = [advisoryCard title];
+  v23 = [v21 initWithGeoFormattedString:title];
 
   v46 = v23;
-  v24 = [v23 stringWithDefaultOptions];
-  [(_MKUILabel *)v17->_titleLabel setText:v24];
+  stringWithDefaultOptions = [v23 stringWithDefaultOptions];
+  [(_MKUILabel *)selfCopy->_titleLabel setText:stringWithDefaultOptions];
 
-  [v10 addObject:v17->_titleLabel];
+  [array addObject:selfCopy->_titleLabel];
   v25 = objc_alloc(MEMORY[0x1E69A1CA8]);
-  v26 = [v20 details];
-  v27 = [v25 initWithGeoFormattedString:v26];
+  details = [advisoryCard details];
+  v27 = [v25 initWithGeoFormattedString:details];
 
   v45 = v27;
   v28 = [[MKServerFormattedString alloc] initWithComposedString:v27];
   v29 = *MEMORY[0x1E69DB650];
   v52[0] = *MEMORY[0x1E69DB650];
-  v30 = [MEMORY[0x1E69DC888] labelColor];
-  v53[0] = v30;
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v53[0] = labelColor;
   v31 = *MEMORY[0x1E69DB648];
   v52[1] = *MEMORY[0x1E69DB648];
-  v53[1] = v17->_bodyFont;
+  v53[1] = selfCopy->_bodyFont;
   v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:v52 count:2];
   v44 = v28;
   v33 = [(MKServerFormattedString *)v28 multiPartAttributedStringWithAttributes:v32];
-  v34 = [v33 attributedString];
+  attributedString = [v33 attributedString];
 
-  v43 = v34;
-  [v49 setAttributedText:v34];
-  [(UIStackView *)v17->_childrenStackViews addArrangedSubview:v49];
-  [(UIStackView *)v17->_stackView addArrangedSubview:v17->_childrenStackViews];
-  [v10 addObject:v17->_stackView];
+  v43 = attributedString;
+  [customBodyTextView setAttributedText:attributedString];
+  [(UIStackView *)selfCopy->_childrenStackViews addArrangedSubview:customBodyTextView];
+  [(UIStackView *)selfCopy->_stackView addArrangedSubview:selfCopy->_childrenStackViews];
+  [array addObject:selfCopy->_stackView];
   v35 = objc_alloc(MEMORY[0x1E69A1CA8]);
-  v36 = [v20 metadata];
-  v37 = [v35 initWithGeoFormattedString:v36];
+  metadata = [advisoryCard metadata];
+  v37 = [v35 initWithGeoFormattedString:metadata];
 
   if (v37)
   {
     v38 = [[MKServerFormattedString alloc] initWithComposedString:v37];
     v50[0] = v29;
-    v39 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
     v50[1] = v31;
-    v51[0] = v39;
-    v51[1] = v17->_bodyFont;
+    v51[0] = labelColor2;
+    v51[1] = selfCopy->_bodyFont;
     v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v51 forKeys:v50 count:2];
     v41 = [(MKServerFormattedString *)v38 multiPartAttributedStringWithAttributes:v40];
-    v42 = [v41 attributedString];
+    attributedString2 = [v41 attributedString];
 
-    [(UITextView *)v17->_attributionView setAttributedText:v42];
-    [(NSLayoutConstraint *)v17->_attributionViewEmptyHeightConstraint setActive:0];
-    [(NSLayoutConstraint *)v17->_stackViewBottomConstraint setActive:0];
-    [(MKViewWithHairline *)v17->_hairlineView setHidden:0];
-    [v10 addObject:v17->_attributionView];
+    [(UITextView *)selfCopy->_attributionView setAttributedText:attributedString2];
+    [(NSLayoutConstraint *)selfCopy->_attributionViewEmptyHeightConstraint setActive:0];
+    [(NSLayoutConstraint *)selfCopy->_stackViewBottomConstraint setActive:0];
+    [(MKViewWithHairline *)selfCopy->_hairlineView setHidden:0];
+    [array addObject:selfCopy->_attributionView];
   }
 
-  [(MKIncidentDetailContentView *)v17 setAccessibilityElements:v10];
+  [(MKIncidentDetailContentView *)selfCopy setAccessibilityElements:array];
 }
 
-- (void)configureWithAdvisoryItem:(id)a3
+- (void)configureWithAdvisoryItem:(id)item
 {
   v58[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_advisoryItem == v5)
+  itemCopy = item;
+  if (self->_advisoryItem == itemCopy)
   {
     goto LABEL_29;
   }
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   advisoryNoticeItem = self->_advisoryNoticeItem;
   self->_advisoryNoticeItem = 0;
 
-  objc_storeStrong(&self->_advisoryItem, a3);
-  v8 = [(GEOComposedRouteAdvisoryItem *)v5 artwork];
-  v9 = [(UIImageView *)self->_imageView traitCollection];
-  v10 = ImageForArtworkDataSource(v8, v9);
+  objc_storeStrong(&self->_advisoryItem, item);
+  artwork = [(GEOComposedRouteAdvisoryItem *)itemCopy artwork];
+  traitCollection = [(UIImageView *)self->_imageView traitCollection];
+  v10 = ImageForArtworkDataSource(artwork, traitCollection);
 
   if (v10)
   {
@@ -504,13 +504,13 @@ LABEL_6:
     [(UIImageView *)self->_imageView setImage:v11];
   }
 
-  [v6 addObject:self->_imageView];
-  v12 = [(GEOComposedRouteAdvisoryItem *)v5 titleString];
-  v13 = [v12 stringWithDefaultOptions];
-  if (v13)
+  [array addObject:self->_imageView];
+  titleString = [(GEOComposedRouteAdvisoryItem *)itemCopy titleString];
+  stringWithDefaultOptions = [titleString stringWithDefaultOptions];
+  if (stringWithDefaultOptions)
   {
     p_titleLabel = &self->_titleLabel;
-    [(_MKUILabel *)self->_titleLabel setText:v13];
+    [(_MKUILabel *)self->_titleLabel setText:stringWithDefaultOptions];
   }
 
   else
@@ -520,18 +520,18 @@ LABEL_6:
     [(_MKUILabel *)self->_titleLabel setText:v15];
   }
 
-  [v6 addObject:*p_titleLabel];
-  v16 = [(GEOComposedRouteAdvisoryItem *)v5 dateOfLastUpdateString];
-  if (v16)
+  [array addObject:*p_titleLabel];
+  dateOfLastUpdateString = [(GEOComposedRouteAdvisoryItem *)itemCopy dateOfLastUpdateString];
+  if (dateOfLastUpdateString)
   {
 
 LABEL_11:
-    v18 = [(GEOComposedRouteAdvisoryItem *)v5 dateOfLastUpdateString];
+    dateOfLastUpdateString2 = [(GEOComposedRouteAdvisoryItem *)itemCopy dateOfLastUpdateString];
 
-    if (v18)
+    if (dateOfLastUpdateString2)
     {
-      v19 = [(GEOComposedRouteAdvisoryItem *)v5 dateOfLastUpdateString];
-      v20 = [v19 stringWithDefaultOptions];
+      dateOfLastUpdateString3 = [(GEOComposedRouteAdvisoryItem *)itemCopy dateOfLastUpdateString];
+      stringWithDefaultOptions2 = [dateOfLastUpdateString3 stringWithDefaultOptions];
     }
 
     else
@@ -542,41 +542,41 @@ LABEL_11:
       }
 
       v21 = MEMORY[0x1E696AB78];
-      v22 = [configureWithAdvisoryItem__formatter locale];
-      v23 = [v21 dateFormatFromTemplate:@"YYYYMMddjma" options:0 locale:v22];
+      locale = [configureWithAdvisoryItem__formatter locale];
+      v23 = [v21 dateFormatFromTemplate:@"YYYYMMddjma" options:0 locale:locale];
       [configureWithAdvisoryItem__formatter setDateFormat:v23];
 
       v24 = MEMORY[0x1E696AEC0];
-      v19 = _MKLocalizedStringFromThisBundle(@"Placecard_TransitIncident_LastUpdated");
+      dateOfLastUpdateString3 = _MKLocalizedStringFromThisBundle(@"Placecard_TransitIncident_LastUpdated");
       v25 = configureWithAdvisoryItem__formatter;
-      v26 = [(GEOComposedRouteAdvisoryItem *)v5 dateOfLastUpdate];
-      v27 = [v25 stringFromDate:v26];
-      v20 = [v24 stringWithFormat:v19, v27];
+      dateOfLastUpdate = [(GEOComposedRouteAdvisoryItem *)itemCopy dateOfLastUpdate];
+      v27 = [v25 stringFromDate:dateOfLastUpdate];
+      stringWithDefaultOptions2 = [v24 stringWithFormat:dateOfLastUpdateString3, v27];
     }
 
-    [(_MKUILabel *)self->_subtitleLabel setText:v20];
-    [v6 addObject:self->_subtitleLabel];
+    [(_MKUILabel *)self->_subtitleLabel setText:stringWithDefaultOptions2];
+    [array addObject:self->_subtitleLabel];
 
     goto LABEL_17;
   }
 
-  v17 = [(GEOComposedRouteAdvisoryItem *)v5 dateOfLastUpdate];
+  dateOfLastUpdate2 = [(GEOComposedRouteAdvisoryItem *)itemCopy dateOfLastUpdate];
 
-  if (v17)
+  if (dateOfLastUpdate2)
   {
     goto LABEL_11;
   }
 
 LABEL_17:
-  v28 = DetailTextsForAdvisoryItem(v5);
+  v28 = DetailTextsForAdvisoryItem(itemCopy);
   if (!v28)
   {
-    v29 = [(GEOComposedRouteAdvisoryItem *)v5 subtitleString];
-    v30 = [v29 stringWithDefaultOptions];
+    subtitleString = [(GEOComposedRouteAdvisoryItem *)itemCopy subtitleString];
+    stringWithDefaultOptions3 = [subtitleString stringWithDefaultOptions];
 
-    if (v30)
+    if (stringWithDefaultOptions3)
     {
-      v58[0] = v30;
+      v58[0] = stringWithDefaultOptions3;
       v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:1];
     }
 
@@ -593,36 +593,36 @@ LABEL_17:
   v53[2] = __57__MKIncidentDetailContentView_configureWithAdvisoryItem___block_invoke_2;
   v53[3] = &unk_1E76C7A30;
   v53[4] = self;
-  v31 = v5;
+  v31 = itemCopy;
   v54 = v31;
   v32 = v28;
   v55 = v32;
   [v32 enumerateObjectsUsingBlock:v53];
-  v33 = [(UIStackView *)self->_childrenStackViews arrangedSubviews];
-  v34 = [v33 count];
+  arrangedSubviews = [(UIStackView *)self->_childrenStackViews arrangedSubviews];
+  v34 = [arrangedSubviews count];
 
   if (v34)
   {
     [(UIStackView *)self->_stackView addArrangedSubview:self->_childrenStackViews];
   }
 
-  v35 = [(GEOComposedRouteAdvisoryItem *)v31 cardAction];
-  v36 = [v35 type];
+  cardAction = [(GEOComposedRouteAdvisoryItem *)v31 cardAction];
+  type = [cardAction type];
 
-  if (v36 == 1)
+  if (type == 1)
   {
     v37 = objc_alloc(MEMORY[0x1E69DC738]);
     v38 = [v37 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     [v38 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v39 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [v38 setTitleColor:v39 forState:0];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [v38 setTitleColor:systemBlueColor forState:0];
 
     v40 = [MEMORY[0x1E69DB878] _mapkit_preferredFontForTextStyleInTableViewCell:*MEMORY[0x1E69DDD80] addingSymbolicTraits:0];
-    v41 = [v38 titleLabel];
-    [v41 setFont:v40];
+    titleLabel = [v38 titleLabel];
+    [titleLabel setFont:v40];
 
-    v42 = [v38 titleLabel];
-    [v42 setTextAlignment:4];
+    titleLabel2 = [v38 titleLabel];
+    [titleLabel2 setTextAlignment:4];
 
     v43 = _MKLocalizedStringFromThisBundle(@"Placecard_TransitIncident_actionButton");
     [v38 setTitle:v43 forState:0];
@@ -631,33 +631,33 @@ LABEL_17:
     [(UIStackView *)self->_stackView addArrangedSubview:v38];
   }
 
-  [v6 addObject:self->_stackView];
-  v44 = [(GEOComposedRouteAdvisoryItem *)v31 attributionString];
+  [array addObject:self->_stackView];
+  attributionString = [(GEOComposedRouteAdvisoryItem *)v31 attributionString];
 
-  if (v44)
+  if (attributionString)
   {
     v45 = [MKServerFormattedString alloc];
-    v46 = [(GEOComposedRouteAdvisoryItem *)v31 attributionString];
-    v47 = [(MKServerFormattedString *)v45 initWithComposedString:v46];
+    attributionString2 = [(GEOComposedRouteAdvisoryItem *)v31 attributionString];
+    v47 = [(MKServerFormattedString *)v45 initWithComposedString:attributionString2];
 
     v56[0] = *MEMORY[0x1E69DB650];
-    v48 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     v56[1] = *MEMORY[0x1E69DB648];
-    v57[0] = v48;
+    v57[0] = labelColor;
     v57[1] = self->_bodyFont;
     v49 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:v56 count:2];
     v50 = [(MKServerFormattedString *)v47 multiPartAttributedStringWithAttributes:v49];
-    v51 = [v50 attributedString];
+    attributedString = [v50 attributedString];
 
-    [(UITextView *)self->_attributionView setAttributedText:v51];
+    [(UITextView *)self->_attributionView setAttributedText:attributedString];
     [(UITextView *)self->_attributionView setDelegate:self];
     [(NSLayoutConstraint *)self->_attributionViewEmptyHeightConstraint setActive:0];
     [(NSLayoutConstraint *)self->_stackViewBottomConstraint setActive:0];
     [(MKViewWithHairline *)self->_hairlineView setHidden:0];
-    [v6 addObject:self->_attributionView];
+    [array addObject:self->_attributionView];
   }
 
-  [(MKIncidentDetailContentView *)self setAccessibilityElements:v6];
+  [(MKIncidentDetailContentView *)self setAccessibilityElements:array];
 
 LABEL_29:
 }
@@ -696,8 +696,8 @@ void __57__MKIncidentDetailContentView_configureWithAdvisoryItem___block_invoke(
 
 - (void)_clearChildrenStackView
 {
-  v2 = [(UIStackView *)self->_childrenStackViews arrangedSubviews];
-  [v2 enumerateObjectsUsingBlock:&__block_literal_global_8871];
+  arrangedSubviews = [(UIStackView *)self->_childrenStackViews arrangedSubviews];
+  [arrangedSubviews enumerateObjectsUsingBlock:&__block_literal_global_8871];
 }
 
 - (id)customBodyTextView
@@ -705,21 +705,21 @@ void __57__MKIncidentDetailContentView_configureWithAdvisoryItem___block_invoke(
   v14[2] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E69DD168]);
   [v3 setTextContainerInset:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
-  v4 = [v3 textContainer];
-  [v4 setLineFragmentPadding:0.0];
+  textContainer = [v3 textContainer];
+  [textContainer setLineFragmentPadding:0.0];
 
   [v3 setDelegate:self];
   [v3 setEditable:0];
   [v3 setDataDetectorTypes:3];
   [v3 setScrollEnabled:0];
   [v3 setTextAlignment:4];
-  v5 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v5];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v3 setBackgroundColor:clearColor];
 
   v13[0] = *MEMORY[0x1E69DB650];
-  v6 = [(UIView *)self mk_theme];
-  v7 = [v6 tintColor];
-  v14[0] = v7;
+  mk_theme = [(UIView *)self mk_theme];
+  tintColor = [mk_theme tintColor];
+  v14[0] = tintColor;
   v13[1] = *MEMORY[0x1E69DB648];
   v8 = [MEMORY[0x1E69DB878] _mapkit_preferredFontForTextStyleInTableViewCell:*MEMORY[0x1E69DDCF8]];
   v14[1] = v8;
@@ -727,9 +727,9 @@ void __57__MKIncidentDetailContentView_configureWithAdvisoryItem___block_invoke(
   [v3 setLinkTextAttributes:v9];
 
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v10 = [(UIView *)self mk_theme];
-  v11 = [v10 textColor];
-  [v3 setTextColor:v11];
+  mk_theme2 = [(UIView *)self mk_theme];
+  textColor = [mk_theme2 textColor];
+  [v3 setTextColor:textColor];
 
   [v3 setFont:self->_bodyFont];
 
@@ -755,140 +755,140 @@ void __57__MKIncidentDetailContentView_configureWithAdvisoryItem___block_invoke(
 - (void)_setupConstraints
 {
   v101[31] = *MEMORY[0x1E69E9840];
-  v3 = [(UITextView *)self->_attributionView heightAnchor];
+  heightAnchor = [(UITextView *)self->_attributionView heightAnchor];
   v4 = 0.0;
-  v5 = [v3 constraintEqualToConstant:0.0];
+  v5 = [heightAnchor constraintEqualToConstant:0.0];
   attributionViewEmptyHeightConstraint = self->_attributionViewEmptyHeightConstraint;
   self->_attributionViewEmptyHeightConstraint = v5;
 
-  v7 = [(UIStackView *)self->_stackView bottomAnchor];
-  v8 = [(UIView *)self->_backgroundView bottomAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8 constant:-12.0];
+  bottomAnchor = [(UIStackView *)self->_stackView bottomAnchor];
+  bottomAnchor2 = [(UIView *)self->_backgroundView bottomAnchor];
+  v9 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-12.0];
   stackViewBottomConstraint = self->_stackViewBottomConstraint;
   self->_stackViewBottomConstraint = v9;
 
-  v11 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v11 userInterfaceIdiom] == 5)
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 5)
   {
     v4 = 12.0;
   }
 
   v69 = MEMORY[0x1E696ACD8];
-  v100 = [(UIView *)self->_backgroundView topAnchor];
-  v99 = [(MKIncidentDetailContentView *)self topAnchor];
-  v98 = [v100 constraintEqualToAnchor:v99 constant:v4];
+  topAnchor = [(UIView *)self->_backgroundView topAnchor];
+  topAnchor2 = [(MKIncidentDetailContentView *)self topAnchor];
+  v98 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v4];
   v101[0] = v98;
-  v97 = [(UIView *)self->_backgroundView bottomAnchor];
-  v96 = [(MKIncidentDetailContentView *)self bottomAnchor];
-  v95 = [v97 constraintEqualToAnchor:v96 constant:-12.0];
+  bottomAnchor3 = [(UIView *)self->_backgroundView bottomAnchor];
+  bottomAnchor4 = [(MKIncidentDetailContentView *)self bottomAnchor];
+  v95 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-12.0];
   v101[1] = v95;
-  v94 = [(UIView *)self->_backgroundView trailingAnchor];
-  v93 = [(MKIncidentDetailContentView *)self trailingAnchor];
-  v92 = [v94 constraintEqualToAnchor:v93 constant:-16.0];
+  trailingAnchor = [(UIView *)self->_backgroundView trailingAnchor];
+  trailingAnchor2 = [(MKIncidentDetailContentView *)self trailingAnchor];
+  v92 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   v101[2] = v92;
-  v91 = [(UIView *)self->_backgroundView leadingAnchor];
-  v90 = [(MKIncidentDetailContentView *)self leadingAnchor];
-  v89 = [v91 constraintEqualToAnchor:v90 constant:16.0];
+  leadingAnchor = [(UIView *)self->_backgroundView leadingAnchor];
+  leadingAnchor2 = [(MKIncidentDetailContentView *)self leadingAnchor];
+  v89 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v101[3] = v89;
-  v88 = [(UIImageView *)self->_imageView widthAnchor];
-  v87 = [v88 constraintEqualToConstant:35.0];
+  widthAnchor = [(UIImageView *)self->_imageView widthAnchor];
+  v87 = [widthAnchor constraintEqualToConstant:35.0];
   v101[4] = v87;
-  v86 = [(UIImageView *)self->_imageView heightAnchor];
-  v85 = [v86 constraintEqualToConstant:35.0];
+  heightAnchor2 = [(UIImageView *)self->_imageView heightAnchor];
+  v85 = [heightAnchor2 constraintEqualToConstant:35.0];
   v101[5] = v85;
-  v84 = [(UIImageView *)self->_imageView leadingAnchor];
-  v83 = [(UIView *)self->_backgroundView leadingAnchor];
-  v82 = [v84 constraintEqualToAnchor:v83 constant:16.0];
+  leadingAnchor3 = [(UIImageView *)self->_imageView leadingAnchor];
+  leadingAnchor4 = [(UIView *)self->_backgroundView leadingAnchor];
+  v82 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:16.0];
   v101[6] = v82;
-  v81 = [(UIImageView *)self->_imageView centerYAnchor];
-  v80 = [(UIView *)self->_titleView centerYAnchor];
-  v79 = [v81 constraintEqualToAnchor:v80];
+  centerYAnchor = [(UIImageView *)self->_imageView centerYAnchor];
+  centerYAnchor2 = [(UIView *)self->_titleView centerYAnchor];
+  v79 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v101[7] = v79;
-  v78 = [(UIImageView *)self->_imageView topAnchor];
-  v77 = [(UIView *)self->_backgroundView topAnchor];
-  v76 = [v78 constraintGreaterThanOrEqualToAnchor:v77 constant:12.0];
+  topAnchor3 = [(UIImageView *)self->_imageView topAnchor];
+  topAnchor4 = [(UIView *)self->_backgroundView topAnchor];
+  v76 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4 constant:12.0];
   v101[8] = v76;
-  v75 = [(UIView *)self->_titleView topAnchor];
-  v74 = [(UIView *)self->_backgroundView topAnchor];
-  v73 = [v75 constraintGreaterThanOrEqualToAnchor:v74 constant:12.0];
+  topAnchor5 = [(UIView *)self->_titleView topAnchor];
+  topAnchor6 = [(UIView *)self->_backgroundView topAnchor];
+  v73 = [topAnchor5 constraintGreaterThanOrEqualToAnchor:topAnchor6 constant:12.0];
   v101[9] = v73;
-  v72 = [(UIView *)self->_titleView bottomAnchor];
-  v71 = [(UIStackView *)self->_stackView topAnchor];
-  v70 = [v72 constraintEqualToAnchor:v71 constant:-12.0];
+  bottomAnchor5 = [(UIView *)self->_titleView bottomAnchor];
+  topAnchor7 = [(UIStackView *)self->_stackView topAnchor];
+  v70 = [bottomAnchor5 constraintEqualToAnchor:topAnchor7 constant:-12.0];
   v101[10] = v70;
-  v68 = [(UIView *)self->_titleView leadingAnchor];
-  v67 = [(UIImageView *)self->_imageView trailingAnchor];
-  v66 = [v68 constraintEqualToAnchor:v67 constant:10.0];
+  leadingAnchor5 = [(UIView *)self->_titleView leadingAnchor];
+  trailingAnchor3 = [(UIImageView *)self->_imageView trailingAnchor];
+  v66 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor3 constant:10.0];
   v101[11] = v66;
-  v65 = [(UIView *)self->_titleView trailingAnchor];
-  v64 = [(UIView *)self->_backgroundView trailingAnchor];
-  v63 = [v65 constraintEqualToAnchor:v64 constant:-16.0];
+  trailingAnchor4 = [(UIView *)self->_titleView trailingAnchor];
+  trailingAnchor5 = [(UIView *)self->_backgroundView trailingAnchor];
+  v63 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-16.0];
   v101[12] = v63;
-  v62 = [(_MKUILabel *)self->_titleLabel leadingAnchor];
-  v61 = [(UIView *)self->_titleView leadingAnchor];
-  v60 = [v62 constraintEqualToAnchor:v61];
+  leadingAnchor6 = [(_MKUILabel *)self->_titleLabel leadingAnchor];
+  leadingAnchor7 = [(UIView *)self->_titleView leadingAnchor];
+  v60 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
   v101[13] = v60;
-  v59 = [(_MKUILabel *)self->_titleLabel trailingAnchor];
-  v58 = [(UIView *)self->_titleView trailingAnchor];
-  v57 = [v59 constraintEqualToAnchor:v58];
+  trailingAnchor6 = [(_MKUILabel *)self->_titleLabel trailingAnchor];
+  trailingAnchor7 = [(UIView *)self->_titleView trailingAnchor];
+  v57 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
   v101[14] = v57;
-  v56 = [(_MKUILabel *)self->_titleLabel topAnchor];
-  v55 = [(UIView *)self->_titleView topAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55];
+  topAnchor8 = [(_MKUILabel *)self->_titleLabel topAnchor];
+  topAnchor9 = [(UIView *)self->_titleView topAnchor];
+  v54 = [topAnchor8 constraintEqualToAnchor:topAnchor9];
   v101[15] = v54;
-  v53 = [(_MKUILabel *)self->_titleLabel bottomAnchor];
-  v52 = [(_MKUILabel *)self->_subtitleLabel topAnchor];
-  v51 = [v53 constraintEqualToAnchor:v52];
+  bottomAnchor6 = [(_MKUILabel *)self->_titleLabel bottomAnchor];
+  topAnchor10 = [(_MKUILabel *)self->_subtitleLabel topAnchor];
+  v51 = [bottomAnchor6 constraintEqualToAnchor:topAnchor10];
   v101[16] = v51;
-  v50 = [(_MKUILabel *)self->_subtitleLabel leadingAnchor];
-  v49 = [(_MKUILabel *)self->_titleLabel leadingAnchor];
-  v48 = [v50 constraintEqualToAnchor:v49];
+  leadingAnchor8 = [(_MKUILabel *)self->_subtitleLabel leadingAnchor];
+  leadingAnchor9 = [(_MKUILabel *)self->_titleLabel leadingAnchor];
+  v48 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9];
   v101[17] = v48;
-  v47 = [(_MKUILabel *)self->_subtitleLabel trailingAnchor];
-  v46 = [(_MKUILabel *)self->_titleLabel trailingAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  trailingAnchor8 = [(_MKUILabel *)self->_subtitleLabel trailingAnchor];
+  trailingAnchor9 = [(_MKUILabel *)self->_titleLabel trailingAnchor];
+  v45 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9];
   v101[18] = v45;
-  v44 = [(_MKUILabel *)self->_subtitleLabel bottomAnchor];
-  v43 = [(UIView *)self->_titleView bottomAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43];
+  bottomAnchor7 = [(_MKUILabel *)self->_subtitleLabel bottomAnchor];
+  bottomAnchor8 = [(UIView *)self->_titleView bottomAnchor];
+  v42 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
   v101[19] = v42;
-  v41 = [(UIStackView *)self->_stackView leadingAnchor];
-  v40 = [(UIImageView *)self->_imageView leadingAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  leadingAnchor10 = [(UIStackView *)self->_stackView leadingAnchor];
+  leadingAnchor11 = [(UIImageView *)self->_imageView leadingAnchor];
+  v39 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11];
   v101[20] = v39;
-  v38 = [(UIStackView *)self->_stackView trailingAnchor];
-  v37 = [(UIView *)self->_backgroundView trailingAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37 constant:-16.0];
+  trailingAnchor10 = [(UIStackView *)self->_stackView trailingAnchor];
+  trailingAnchor11 = [(UIView *)self->_backgroundView trailingAnchor];
+  v36 = [trailingAnchor10 constraintEqualToAnchor:trailingAnchor11 constant:-16.0];
   v12 = self->_stackViewBottomConstraint;
   v101[21] = v36;
   v101[22] = v12;
-  v35 = [(MKViewWithHairline *)self->_hairlineView topAnchor];
-  v34 = [(UIStackView *)self->_stackView bottomAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34 constant:12.0];
+  topAnchor11 = [(MKViewWithHairline *)self->_hairlineView topAnchor];
+  bottomAnchor9 = [(UIStackView *)self->_stackView bottomAnchor];
+  v33 = [topAnchor11 constraintEqualToAnchor:bottomAnchor9 constant:12.0];
   v101[23] = v33;
-  v32 = [(MKViewWithHairline *)self->_hairlineView trailingAnchor];
-  v31 = [(UIView *)self->_backgroundView trailingAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  trailingAnchor12 = [(MKViewWithHairline *)self->_hairlineView trailingAnchor];
+  trailingAnchor13 = [(UIView *)self->_backgroundView trailingAnchor];
+  v30 = [trailingAnchor12 constraintEqualToAnchor:trailingAnchor13];
   v101[24] = v30;
-  v29 = [(MKViewWithHairline *)self->_hairlineView leadingAnchor];
-  v28 = [(UIStackView *)self->_stackView leadingAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  leadingAnchor12 = [(MKViewWithHairline *)self->_hairlineView leadingAnchor];
+  leadingAnchor13 = [(UIStackView *)self->_stackView leadingAnchor];
+  v27 = [leadingAnchor12 constraintEqualToAnchor:leadingAnchor13];
   v101[25] = v27;
-  v26 = [(UITextView *)self->_attributionView topAnchor];
-  v25 = [(MKViewWithHairline *)self->_hairlineView bottomAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25 constant:12.0];
+  topAnchor12 = [(UITextView *)self->_attributionView topAnchor];
+  bottomAnchor10 = [(MKViewWithHairline *)self->_hairlineView bottomAnchor];
+  v24 = [topAnchor12 constraintEqualToAnchor:bottomAnchor10 constant:12.0];
   v101[26] = v24;
-  v13 = [(UITextView *)self->_attributionView bottomAnchor];
-  v14 = [(UIView *)self->_backgroundView bottomAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14 constant:-12.0];
+  bottomAnchor11 = [(UITextView *)self->_attributionView bottomAnchor];
+  bottomAnchor12 = [(UIView *)self->_backgroundView bottomAnchor];
+  v15 = [bottomAnchor11 constraintEqualToAnchor:bottomAnchor12 constant:-12.0];
   v101[27] = v15;
-  v16 = [(UITextView *)self->_attributionView trailingAnchor];
-  v17 = [(UIView *)self->_backgroundView trailingAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17 constant:-16.0];
+  trailingAnchor14 = [(UITextView *)self->_attributionView trailingAnchor];
+  trailingAnchor15 = [(UIView *)self->_backgroundView trailingAnchor];
+  v18 = [trailingAnchor14 constraintEqualToAnchor:trailingAnchor15 constant:-16.0];
   v101[28] = v18;
-  v19 = [(UITextView *)self->_attributionView leadingAnchor];
-  v20 = [(UIImageView *)self->_imageView leadingAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  leadingAnchor14 = [(UITextView *)self->_attributionView leadingAnchor];
+  leadingAnchor15 = [(UIImageView *)self->_imageView leadingAnchor];
+  v21 = [leadingAnchor14 constraintEqualToAnchor:leadingAnchor15];
   v22 = self->_attributionViewEmptyHeightConstraint;
   v101[29] = v21;
   v101[30] = v22;
@@ -922,14 +922,14 @@ void __57__MKIncidentDetailContentView_configureWithAdvisoryItem___block_invoke(
 
   [(UIView *)self->_backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_backgroundView setAccessibilityIdentifier:@"BackgroundView"];
-  v17 = [(UIView *)self->_backgroundView layer];
-  [v17 setCornerRadius:10.0];
+  layer = [(UIView *)self->_backgroundView layer];
+  [layer setCornerRadius:10.0];
 
-  v18 = [(UIView *)self->_backgroundView layer];
-  [v18 setMasksToBounds:1];
+  layer2 = [(UIView *)self->_backgroundView layer];
+  [layer2 setMasksToBounds:1];
 
-  v19 = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
-  [(UIView *)self->_backgroundView setBackgroundColor:v19];
+  tertiarySystemBackgroundColor = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
+  [(UIView *)self->_backgroundView setBackgroundColor:tertiarySystemBackgroundColor];
 
   [(MKIncidentDetailContentView *)self addSubview:self->_backgroundView];
   v20 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithFrame:{v11, v12, v13, v14}];
@@ -965,8 +965,8 @@ void __57__MKIncidentDetailContentView_configureWithAdvisoryItem___block_invoke(
 
   [(UIView *)self->_titleView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_titleView setAccessibilityIdentifier:@"TitleView"];
-  v28 = [MEMORY[0x1E69DC888] clearColor];
-  [(UIView *)self->_titleView setBackgroundColor:v28];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UIView *)self->_titleView setBackgroundColor:clearColor];
 
   [(MKIncidentDetailContentView *)self addSubview:self->_titleView];
   v29 = objc_opt_new();
@@ -985,8 +985,8 @@ void __57__MKIncidentDetailContentView_configureWithAdvisoryItem___block_invoke(
   [(_MKUILabel *)self->_subtitleLabel setNumberOfLines:0];
   [(_MKUILabel *)self->_subtitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(_MKUILabel *)self->_subtitleLabel setFont:self->_subTitleFont];
-  v33 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(_MKUILabel *)self->_subtitleLabel setTextColor:v33];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(_MKUILabel *)self->_subtitleLabel setTextColor:secondaryLabelColor];
 
   [(_MKUILabel *)self->_subtitleLabel setAccessibilityIdentifier:@"TimeDescriptionView"];
   [(UIView *)self->_titleView addSubview:self->_subtitleLabel];
@@ -999,24 +999,24 @@ void __57__MKIncidentDetailContentView_configureWithAdvisoryItem___block_invoke(
   [(MKViewWithHairline *)self->_hairlineView setTopHairlineHidden:1];
   [(MKViewWithHairline *)self->_hairlineView setBottomHairlineHidden:0];
   [(MKIncidentDetailContentView *)self addSubview:self->_hairlineView];
-  v36 = [(MKIncidentDetailContentView *)self customBodyTextView];
+  customBodyTextView = [(MKIncidentDetailContentView *)self customBodyTextView];
   attributionView = self->_attributionView;
-  self->_attributionView = v36;
+  self->_attributionView = customBodyTextView;
 
   [(UITextView *)self->_attributionView setFont:self->_bodyFont];
   [(UITextView *)self->_attributionView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UITextView *)self->_attributionView setAccessibilityIdentifier:@"AttributionView"];
   [(MKIncidentDetailContentView *)self addSubview:self->_attributionView];
-  v38 = [(MKIncidentDetailContentView *)self customBodyTextView];
+  customBodyTextView2 = [(MKIncidentDetailContentView *)self customBodyTextView];
   bodyTextView = self->_bodyTextView;
-  self->_bodyTextView = v38;
+  self->_bodyTextView = customBodyTextView2;
 }
 
-- (MKIncidentDetailContentView)initWithFrame:(CGRect)a3
+- (MKIncidentDetailContentView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MKIncidentDetailContentView;
-  v3 = [(MKIncidentDetailContentView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKIncidentDetailContentView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

@@ -1,10 +1,10 @@
 @interface AutocompleteContext
 - (AutocompleteContext)init;
-- (AutocompleteContext)initWithQueryString:(id)a3;
+- (AutocompleteContext)initWithQueryString:(id)string;
 - (AutocompleteContextDelegate)delegate;
-- (id)matchInfoForObject:(id)a3;
-- (void)autocompleteMatchInfoDidUpdate:(id)a3;
-- (void)setMatchInfo:(id)a3 forObject:(id)a4;
+- (id)matchInfoForObject:(id)object;
+- (void)autocompleteMatchInfoDidUpdate:(id)update;
+- (void)setMatchInfo:(id)info forObject:(id)object;
 @end
 
 @implementation AutocompleteContext
@@ -16,19 +16,19 @@
   return WeakRetained;
 }
 
-- (void)autocompleteMatchInfoDidUpdate:(id)a3
+- (void)autocompleteMatchInfoDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(AutocompleteContext *)self delegate];
-  [v5 autocompleteContext:self didUpdateMatchInfo:v4];
+  updateCopy = update;
+  delegate = [(AutocompleteContext *)self delegate];
+  [delegate autocompleteContext:self didUpdateMatchInfo:updateCopy];
 }
 
-- (void)setMatchInfo:(id)a3 forObject:(id)a4
+- (void)setMatchInfo:(id)info forObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  infoCopy = info;
+  objectCopy = object;
+  v8 = objectCopy;
+  if (infoCopy && objectCopy)
   {
     lock = self->_lock;
     block[0] = _NSConcreteStackBlock;
@@ -36,23 +36,23 @@
     block[2] = sub_1009F9BEC;
     block[3] = &unk_101661A40;
     block[4] = self;
-    v11 = v7;
-    v12 = v6;
+    v11 = objectCopy;
+    v12 = infoCopy;
     dispatch_sync(lock, block);
   }
 }
 
-- (id)matchInfoForObject:(id)a3
+- (id)matchInfoForObject:(id)object
 {
-  v4 = a3;
-  v5 = v4;
+  objectCopy = object;
+  v5 = objectCopy;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = sub_1009F9D90;
   v17 = sub_1009F9DA0;
   v18 = 0;
-  if (v4)
+  if (objectCopy)
   {
     lock = self->_lock;
     block[0] = _NSConcreteStackBlock;
@@ -61,7 +61,7 @@
     block[3] = &unk_101660778;
     v12 = &v13;
     block[4] = self;
-    v11 = v4;
+    v11 = objectCopy;
     dispatch_sync(lock, block);
 
     v7 = v14[5];
@@ -78,18 +78,18 @@
   return v8;
 }
 
-- (AutocompleteContext)initWithQueryString:(id)a3
+- (AutocompleteContext)initWithQueryString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v17.receiver = self;
   v17.super_class = AutocompleteContext;
   v6 = [(AutocompleteContext *)&v17 init];
   if (v6)
   {
     v7 = [NSString stringWithFormat:@"%@ %p", objc_opt_class(), v6];
-    v8 = [v7 UTF8String];
+    uTF8String = [v7 UTF8String];
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v10 = dispatch_queue_create(v8, v9);
+    v10 = dispatch_queue_create(uTF8String, v9);
     lock = v6->_lock;
     v6->_lock = v10;
 
@@ -97,12 +97,12 @@
     matchInfos = v6->_matchInfos;
     v6->_matchInfos = v12;
 
-    objc_storeStrong(&v6->_queryString, a3);
-    v14 = [[AutocompleteQueryString alloc] initWithQuery:v5];
+    objc_storeStrong(&v6->_queryString, string);
+    v14 = [[AutocompleteQueryString alloc] initWithQuery:stringCopy];
     query = v6->_query;
     v6->_query = v14;
 
-    v6->_isCJK = [v5 _navigation_isCJK];
+    v6->_isCJK = [stringCopy _navigation_isCJK];
   }
 
   return v6;

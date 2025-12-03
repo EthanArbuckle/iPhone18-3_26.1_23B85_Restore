@@ -1,20 +1,20 @@
 @interface MKArtworkImageView
-- (MKArtworkImageView)initWithFrame:(CGRect)a3;
+- (MKArtworkImageView)initWithFrame:(CGRect)frame;
 - (UIImageView)badgeView;
 - (void)_updateImageView;
-- (void)setImageSource:(id)a3;
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
+- (void)setImageSource:(id)source;
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
 @end
 
 @implementation MKArtworkImageView
 
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
-  v5 = [a4 userInterfaceStyle];
-  v6 = [(MKArtworkImageView *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  userInterfaceStyle = [collection userInterfaceStyle];
+  traitCollection = [(MKArtworkImageView *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
 
     [(MKArtworkImageView *)self _updateImageView];
@@ -23,8 +23,8 @@
 
 - (UIImageView)badgeView
 {
-  v3 = [(UIImageView *)self->_cachedBadgeView superview];
-  if (v3)
+  superview = [(UIImageView *)self->_cachedBadgeView superview];
+  if (superview)
   {
     cachedBadgeView = self->_cachedBadgeView;
   }
@@ -41,28 +41,28 @@
 
 - (void)_updateImageView
 {
-  v3 = [(MKArtworkImageView *)self window];
-  v4 = [v3 screen];
-  v5 = v4;
-  if (v4)
+  window = [(MKArtworkImageView *)self window];
+  screen = [window screen];
+  v5 = screen;
+  if (screen)
   {
-    [v4 scale];
+    [screen scale];
     v7 = v6;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v8 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v7 = v9;
   }
 
-  v10 = [(UIView *)self _mapkit_isDarkModeEnabled];
-  v11 = [(MKArtworkImageSource *)self->_imageSource imageToDisplayWithScreenScale:v10 nightMode:v7];
+  _mapkit_isDarkModeEnabled = [(UIView *)self _mapkit_isDarkModeEnabled];
+  v11 = [(MKArtworkImageSource *)self->_imageSource imageToDisplayWithScreenScale:_mapkit_isDarkModeEnabled nightMode:v7];
   v24.receiver = self;
   v24.super_class = MKArtworkImageView;
   [(MKArtworkImageView *)&v24 setImage:v11];
-  v12 = [(MKArtworkImageSource *)self->_imageSource badgeImageToDisplayWithScreenScale:v10 nightMode:v7];
+  v12 = [(MKArtworkImageSource *)self->_imageSource badgeImageToDisplayWithScreenScale:_mapkit_isDarkModeEnabled nightMode:v7];
   cachedBadgeView = self->_cachedBadgeView;
   if (v12)
   {
@@ -80,18 +80,18 @@
     [(MKArtworkImageView *)self addSubview:cachedBadgeView];
     [(UIImageView *)self->_cachedBadgeView setImage:v12];
     [(MKArtworkImageView *)self setClipsToBounds:0];
-    v17 = [MEMORY[0x1E695DF70] array];
-    v18 = [(UIImageView *)self->_cachedBadgeView bottomAnchor];
-    v19 = [(MKArtworkImageView *)self bottomAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19 constant:2.0];
-    [v17 addObject:v20];
+    array = [MEMORY[0x1E695DF70] array];
+    bottomAnchor = [(UIImageView *)self->_cachedBadgeView bottomAnchor];
+    bottomAnchor2 = [(MKArtworkImageView *)self bottomAnchor];
+    v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:2.0];
+    [array addObject:v20];
 
-    v21 = [(UIImageView *)self->_cachedBadgeView trailingAnchor];
-    v22 = [(MKArtworkImageView *)self trailingAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22 constant:6.0];
-    [v17 addObject:v23];
+    trailingAnchor = [(UIImageView *)self->_cachedBadgeView trailingAnchor];
+    trailingAnchor2 = [(MKArtworkImageView *)self trailingAnchor];
+    v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:6.0];
+    [array addObject:v23];
 
-    [MEMORY[0x1E696ACD8] activateConstraints:v17];
+    [MEMORY[0x1E696ACD8] activateConstraints:array];
   }
 
   else
@@ -101,28 +101,28 @@
   }
 }
 
-- (void)setImageSource:(id)a3
+- (void)setImageSource:(id)source
 {
-  v5 = a3;
-  if (self->_imageSource != v5)
+  sourceCopy = source;
+  if (self->_imageSource != sourceCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_imageSource, a3);
+    v6 = sourceCopy;
+    objc_storeStrong(&self->_imageSource, source);
     [(MKArtworkImageView *)self _updateImageView];
-    v5 = v6;
+    sourceCopy = v6;
   }
 }
 
-- (MKArtworkImageView)initWithFrame:(CGRect)a3
+- (MKArtworkImageView)initWithFrame:(CGRect)frame
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = MKArtworkImageView;
-  v3 = [(MKArtworkImageView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKArtworkImageView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] labelColor];
-    [(MKArtworkImageView *)v3 setTintColor:v4];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(MKArtworkImageView *)v3 setTintColor:labelColor];
 
     v9[0] = objc_opt_class();
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];

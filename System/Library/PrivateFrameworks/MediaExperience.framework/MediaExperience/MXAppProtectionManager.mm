@@ -1,12 +1,12 @@
 @interface MXAppProtectionManager
 + (id)sharedInstance;
 - (MXAppProtectionManager)init;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
-- (void)cancelLockedAppRemovalFromNowPlayingAppStack:(id)a3;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
+- (void)cancelLockedAppRemovalFromNowPlayingAppStack:(id)stack;
 - (void)dealloc;
 - (void)dumpDebugInfo;
-- (void)handlePlayingStateChangedForNowPlayingApp:(id)a3 isCurrentlyPlaying:(BOOL)a4;
-- (void)scheduleLockedAppRemovalFromNowPlayingAppStack:(id)a3;
+- (void)handlePlayingStateChangedForNowPlayingApp:(id)app isCurrentlyPlaying:(BOOL)playing;
+- (void)scheduleLockedAppRemovalFromNowPlayingAppStack:(id)stack;
 @end
 
 @implementation MXAppProtectionManager
@@ -168,14 +168,14 @@ uint64_t __30__MXAppProtectionManager_init__block_invoke(uint64_t a1)
   [(MXAppProtectionManager *)&v4 dealloc];
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
   mSerialQueue = self->mSerialQueue;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __71__MXAppProtectionManager_appProtectionSubjectsChanged_forSubscription___block_invoke;
   v5[3] = &unk_1E7AEA340;
-  v5[4] = a3;
+  v5[4] = changed;
   v5[5] = self;
   MXDispatchSync("[MXAppProtectionManager appProtectionSubjectsChanged:forSubscription:]", "MX_AppProtectionManager.m", 132, 0, 0, mSerialQueue, v5);
 }
@@ -255,17 +255,17 @@ uint64_t __71__MXAppProtectionManager_appProtectionSubjectsChanged_forSubscripti
   return result;
 }
 
-- (void)handlePlayingStateChangedForNowPlayingApp:(id)a3 isCurrentlyPlaying:(BOOL)a4
+- (void)handlePlayingStateChangedForNowPlayingApp:(id)app isCurrentlyPlaying:(BOOL)playing
 {
-  v7 = a3;
+  appCopy = app;
   mSerialQueue = self->mSerialQueue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __87__MXAppProtectionManager_handlePlayingStateChangedForNowPlayingApp_isCurrentlyPlaying___block_invoke;
   v9[3] = &unk_1E7AEB958;
   v9[4] = self;
-  v9[5] = a3;
-  v10 = a4;
+  v9[5] = app;
+  playingCopy = playing;
   MXDispatchAsync("[MXAppProtectionManager handlePlayingStateChangedForNowPlayingApp:isCurrentlyPlaying:]", "MX_AppProtectionManager.m", 176, 0, 0, mSerialQueue, v9);
 }
 
@@ -289,15 +289,15 @@ void __87__MXAppProtectionManager_handlePlayingStateChangedForNowPlayingApp_isCu
   v4 = *(a1 + 40);
 }
 
-- (void)scheduleLockedAppRemovalFromNowPlayingAppStack:(id)a3
+- (void)scheduleLockedAppRemovalFromNowPlayingAppStack:(id)stack
 {
   v14[1] = *MEMORY[0x1E69E9840];
   if ([+[MXNowPlayingAppManager doesNowPlayingAppStackContain:"doesNowPlayingAppStackContain:"]
   {
     mLockedAppsToBeRemovedFromNowPlayingAppStack = self->mLockedAppsToBeRemovedFromNowPlayingAppStack;
-    v13 = a3;
+    stackCopy = stack;
     v14[0] = [MEMORY[0x1E695DF00] now];
-    -[NSMutableArray addObject:](mLockedAppsToBeRemovedFromNowPlayingAppStack, "addObject:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1]);
+    -[NSMutableArray addObject:](mLockedAppsToBeRemovedFromNowPlayingAppStack, "addObject:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&stackCopy count:1]);
     if (dword_1EB75DE40)
     {
       v12 = 0;
@@ -374,7 +374,7 @@ void __73__MXAppProtectionManager_scheduleLockedAppRemovalFromNowPlayingAppStack
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cancelLockedAppRemovalFromNowPlayingAppStack:(id)a3
+- (void)cancelLockedAppRemovalFromNowPlayingAppStack:(id)stack
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = [(NSMutableArray *)self->mLockedAppsToBeRemovedFromNowPlayingAppStack copy];

@@ -1,83 +1,83 @@
 @interface CRKHostResourcesOperation
 - (BOOL)allDownloadsFinished;
-- (BOOL)downloadAllowedForFileURL:(id)a3;
-- (CRKHostResourcesOperation)initWithConfiguration:(id)a3;
-- (CRKHostResourcesOperation)initWithResourceURLs:(id)a3 serverIdentity:(id)a4 trustedAnchorCertificates:(id)a5;
-- (CRKHostResourcesOperation)initWithResourceURLs:(id)a3 serverIdentity:(id)a4 trustedAnchorCertificates:(id)a5 maximumAllowedDownloads:(unint64_t)a6;
-- (CRKHostResourcesOperation)initWithResourceURLs:(id)a3 serverIdentity:(id)a4 trustedAnchorCertificates:(id)a5 maximumAllowedDownloads:(unint64_t)a6 port:(unsigned __int16)a7;
+- (BOOL)downloadAllowedForFileURL:(id)l;
+- (CRKHostResourcesOperation)initWithConfiguration:(id)configuration;
+- (CRKHostResourcesOperation)initWithResourceURLs:(id)ls serverIdentity:(id)identity trustedAnchorCertificates:(id)certificates;
+- (CRKHostResourcesOperation)initWithResourceURLs:(id)ls serverIdentity:(id)identity trustedAnchorCertificates:(id)certificates maximumAllowedDownloads:(unint64_t)downloads;
+- (CRKHostResourcesOperation)initWithResourceURLs:(id)ls serverIdentity:(id)identity trustedAnchorCertificates:(id)certificates maximumAllowedDownloads:(unint64_t)downloads port:(unsigned __int16)port;
 - (CRKHostResourcesOperationDelegate)delegate;
 - (id)hostingSocketOptions;
 - (void)IPAddressDidChange;
 - (void)cancel;
-- (void)connection:(id)a3 didFailToSendDataWithStream:(id)a4 userInfo:(id)a5 error:(id)a6;
-- (void)connection:(id)a3 didInterruptWithError:(id)a4;
-- (void)connection:(id)a3 didReceiveDataRequestWithURL:(id)a4;
-- (void)connection:(id)a3 didSendDataWithStream:(id)a4 userInfo:(id)a5;
-- (void)connectionCloseDidTimeout:(id)a3;
-- (void)connectionDidClose:(id)a3;
-- (void)delegateDownloadFinished:(id)a3 fileURL:(id)a4 error:(id)a5;
-- (void)delegateDownloadStarted:(id)a3 fileURL:(id)a4;
+- (void)connection:(id)connection didFailToSendDataWithStream:(id)stream userInfo:(id)info error:(id)error;
+- (void)connection:(id)connection didInterruptWithError:(id)error;
+- (void)connection:(id)connection didReceiveDataRequestWithURL:(id)l;
+- (void)connection:(id)connection didSendDataWithStream:(id)stream userInfo:(id)info;
+- (void)connectionCloseDidTimeout:(id)timeout;
+- (void)connectionDidClose:(id)close;
+- (void)delegateDownloadFinished:(id)finished fileURL:(id)l error:(id)error;
+- (void)delegateDownloadStarted:(id)started fileURL:(id)l;
 - (void)delegateResourcesDidPublish;
-- (void)incrementFinishedDownloadCountForFileURL:(id)a3;
-- (void)incrementStartedDownloadCountForFileURL:(id)a3;
-- (void)netService:(id)a3 didAcceptConnectionWithInputStream:(id)a4 outputStream:(id)a5;
-- (void)netService:(id)a3 didNotPublish:(id)a4;
-- (void)netServiceDidPublish:(id)a3;
-- (void)netServiceDidStop:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)incrementFinishedDownloadCountForFileURL:(id)l;
+- (void)incrementStartedDownloadCountForFileURL:(id)l;
+- (void)netService:(id)service didAcceptConnectionWithInputStream:(id)stream outputStream:(id)outputStream;
+- (void)netService:(id)service didNotPublish:(id)publish;
+- (void)netServiceDidPublish:(id)publish;
+- (void)netServiceDidStop:(id)stop;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)operationDidFinish;
 - (void)run;
-- (void)serveItemAtURL:(id)a3 toConnection:(id)a4 forRequestURL:(id)a5 originalItemURL:(id)a6;
-- (void)zipDirectoryAtURL:(id)a3 completion:(id)a4;
-- (void)zipOperationDidFail:(id)a3 directoryURL:(id)a4;
+- (void)serveItemAtURL:(id)l toConnection:(id)connection forRequestURL:(id)rL originalItemURL:(id)uRL;
+- (void)zipDirectoryAtURL:(id)l completion:(id)completion;
+- (void)zipOperationDidFail:(id)fail directoryURL:(id)l;
 @end
 
 @implementation CRKHostResourcesOperation
 
-- (CRKHostResourcesOperation)initWithResourceURLs:(id)a3 serverIdentity:(id)a4 trustedAnchorCertificates:(id)a5
+- (CRKHostResourcesOperation)initWithResourceURLs:(id)ls serverIdentity:(id)identity trustedAnchorCertificates:(id)certificates
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[CRKHostResourcesConfiguration alloc] initWithResourceURLs:v10 serverIdentity:v9 trustedAnchorCertificates:v8];
+  certificatesCopy = certificates;
+  identityCopy = identity;
+  lsCopy = ls;
+  v11 = [[CRKHostResourcesConfiguration alloc] initWithResourceURLs:lsCopy serverIdentity:identityCopy trustedAnchorCertificates:certificatesCopy];
 
   v12 = [(CRKHostResourcesOperation *)self initWithConfiguration:v11];
   return v12;
 }
 
-- (CRKHostResourcesOperation)initWithResourceURLs:(id)a3 serverIdentity:(id)a4 trustedAnchorCertificates:(id)a5 maximumAllowedDownloads:(unint64_t)a6
+- (CRKHostResourcesOperation)initWithResourceURLs:(id)ls serverIdentity:(id)identity trustedAnchorCertificates:(id)certificates maximumAllowedDownloads:(unint64_t)downloads
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[CRKHostResourcesConfiguration alloc] initWithResourceURLs:v12 serverIdentity:v11 trustedAnchorCertificates:v10];
+  certificatesCopy = certificates;
+  identityCopy = identity;
+  lsCopy = ls;
+  v13 = [[CRKHostResourcesConfiguration alloc] initWithResourceURLs:lsCopy serverIdentity:identityCopy trustedAnchorCertificates:certificatesCopy];
 
-  [(CRKHostResourcesConfiguration *)v13 setMaximumAllowedDownloads:a6];
+  [(CRKHostResourcesConfiguration *)v13 setMaximumAllowedDownloads:downloads];
   v14 = [(CRKHostResourcesOperation *)self initWithConfiguration:v13];
 
   return v14;
 }
 
-- (CRKHostResourcesOperation)initWithResourceURLs:(id)a3 serverIdentity:(id)a4 trustedAnchorCertificates:(id)a5 maximumAllowedDownloads:(unint64_t)a6 port:(unsigned __int16)a7
+- (CRKHostResourcesOperation)initWithResourceURLs:(id)ls serverIdentity:(id)identity trustedAnchorCertificates:(id)certificates maximumAllowedDownloads:(unint64_t)downloads port:(unsigned __int16)port
 {
-  v7 = a7;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[CRKHostResourcesConfiguration alloc] initWithResourceURLs:v14 serverIdentity:v13 trustedAnchorCertificates:v12];
+  portCopy = port;
+  certificatesCopy = certificates;
+  identityCopy = identity;
+  lsCopy = ls;
+  v15 = [[CRKHostResourcesConfiguration alloc] initWithResourceURLs:lsCopy serverIdentity:identityCopy trustedAnchorCertificates:certificatesCopy];
 
-  [(CRKHostResourcesConfiguration *)v15 setMaximumAllowedDownloads:a6];
-  [(CRKHostResourcesConfiguration *)v15 setPort:v7];
+  [(CRKHostResourcesConfiguration *)v15 setMaximumAllowedDownloads:downloads];
+  [(CRKHostResourcesConfiguration *)v15 setPort:portCopy];
   v16 = [(CRKHostResourcesOperation *)self initWithConfiguration:v15];
 
   return v16;
 }
 
-- (CRKHostResourcesOperation)initWithConfiguration:(id)a3
+- (CRKHostResourcesOperation)initWithConfiguration:(id)configuration
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     [(CRKHostResourcesOperation *)a2 initWithConfiguration:?];
   }
@@ -87,7 +87,7 @@
   v6 = [(CRKHostResourcesOperation *)&v42 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [configurationCopy copy];
     mConfiguration = v6->mConfiguration;
     v6->mConfiguration = v7;
 
@@ -109,8 +109,8 @@
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v35 = v5;
-    obj = [v5 resourceURLs];
+    v35 = configurationCopy;
+    obj = [configurationCopy resourceURLs];
     v15 = [obj countByEnumeratingWithState:&v38 objects:v44 count:16];
     if (v15)
     {
@@ -128,16 +128,16 @@
           v19 = *(*(&v38 + 1) + 8 * i);
           v20 = MEMORY[0x277CBEBC0];
           v43[0] = @"/";
-          v21 = [MEMORY[0x277CCAD78] UUID];
-          v22 = [v21 UUIDString];
-          v43[1] = v22;
-          v23 = [v19 lastPathComponent];
-          v43[2] = v23;
+          uUID = [MEMORY[0x277CCAD78] UUID];
+          uUIDString = [uUID UUIDString];
+          v43[1] = uUIDString;
+          lastPathComponent = [v19 lastPathComponent];
+          v43[2] = lastPathComponent;
           v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:3];
           v25 = [v20 fileURLWithPathComponents:v24];
-          v26 = [v25 crk_escapedPath];
+          crk_escapedPath = [v25 crk_escapedPath];
 
-          [(NSDictionary *)v37 setObject:v19 forKeyedSubscript:v26];
+          [(NSDictionary *)v37 setObject:v19 forKeyedSubscript:crk_escapedPath];
         }
 
         v16 = [obj countByEnumeratingWithState:&v38 objects:v44 count:16];
@@ -159,7 +159,7 @@
     mZipOperationsByDirectoryURL = v34->mZipOperationsByDirectoryURL;
     v34->mZipOperationsByDirectoryURL = v31;
 
-    v5 = v35;
+    configurationCopy = v35;
   }
 
   return v6;
@@ -177,8 +177,8 @@
 
     else if ([(NSDictionary *)self->mFileURLsByFilePath count])
     {
-      v3 = [(CRKHostResourcesConfiguration *)self->mConfiguration IPAddressProvider];
-      [v3 addObserver:self forKeyPath:@"IPAddress" options:0 context:@"CRKHostResourcesOperationObservationContext"];
+      iPAddressProvider = [(CRKHostResourcesConfiguration *)self->mConfiguration IPAddressProvider];
+      [iPAddressProvider addObserver:self forKeyPath:@"IPAddress" options:0 context:@"CRKHostResourcesOperationObservationContext"];
 
       [(CRKHostResourcesOperation *)self setObservingIPAddress:1];
       v4 = [objc_alloc(MEMORY[0x277CBAB60]) initWithDomain:&stru_285643BE8 type:@"_classroomshare._tcp." name:&stru_285643BE8 port:{-[CRKHostResourcesConfiguration port](self->mConfiguration, "port")}];
@@ -220,8 +220,8 @@
   [(CRKHostResourcesOperation *)&v22 operationDidFinish];
   if ([(CRKHostResourcesOperation *)self isObservingIPAddress])
   {
-    v3 = [(CRKHostResourcesConfiguration *)self->mConfiguration IPAddressProvider];
-    [v3 removeObserver:self forKeyPath:@"IPAddress" context:@"CRKHostResourcesOperationObservationContext"];
+    iPAddressProvider = [(CRKHostResourcesConfiguration *)self->mConfiguration IPAddressProvider];
+    [iPAddressProvider removeObserver:self forKeyPath:@"IPAddress" context:@"CRKHostResourcesOperationObservationContext"];
 
     [(CRKHostResourcesOperation *)self setObservingIPAddress:0];
   }
@@ -303,16 +303,16 @@
   return v2;
 }
 
-- (BOOL)downloadAllowedForFileURL:(id)a3
+- (BOOL)downloadAllowedForFileURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
     if ([(CRKHostResourcesConfiguration *)self->mConfiguration maximumAllowedDownloads])
     {
-      v5 = [(NSMutableDictionary *)self->mStartedDownloadCountByFileURL objectForKeyedSubscript:v4];
-      v6 = [v5 integerValue];
-      v7 = v6 < [(CRKHostResourcesConfiguration *)self->mConfiguration maximumAllowedDownloads];
+      v5 = [(NSMutableDictionary *)self->mStartedDownloadCountByFileURL objectForKeyedSubscript:lCopy];
+      integerValue = [v5 integerValue];
+      v7 = integerValue < [(CRKHostResourcesConfiguration *)self->mConfiguration maximumAllowedDownloads];
     }
 
     else
@@ -329,11 +329,11 @@
   return v7;
 }
 
-- (void)incrementStartedDownloadCountForFileURL:(id)a3
+- (void)incrementStartedDownloadCountForFileURL:(id)l
 {
   mStartedDownloadCountByFileURL = self->mStartedDownloadCountByFileURL;
-  v5 = a3;
-  v6 = [(NSMutableDictionary *)mStartedDownloadCountByFileURL objectForKeyedSubscript:v5];
+  lCopy = l;
+  v6 = [(NSMutableDictionary *)mStartedDownloadCountByFileURL objectForKeyedSubscript:lCopy];
   v7 = v6;
   v8 = &unk_285672868;
   if (v6)
@@ -344,17 +344,17 @@
   v9 = v8;
 
   v10 = MEMORY[0x277CCABB0];
-  v11 = [v9 unsignedIntegerValue];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-  v12 = [v10 numberWithUnsignedInteger:v11 + 1];
-  [(NSMutableDictionary *)self->mStartedDownloadCountByFileURL setObject:v12 forKeyedSubscript:v5];
+  v12 = [v10 numberWithUnsignedInteger:unsignedIntegerValue + 1];
+  [(NSMutableDictionary *)self->mStartedDownloadCountByFileURL setObject:v12 forKeyedSubscript:lCopy];
 }
 
-- (void)incrementFinishedDownloadCountForFileURL:(id)a3
+- (void)incrementFinishedDownloadCountForFileURL:(id)l
 {
   mFinishedDownloadCountByFileURL = self->mFinishedDownloadCountByFileURL;
-  v5 = a3;
-  v6 = [(NSMutableDictionary *)mFinishedDownloadCountByFileURL objectForKeyedSubscript:v5];
+  lCopy = l;
+  v6 = [(NSMutableDictionary *)mFinishedDownloadCountByFileURL objectForKeyedSubscript:lCopy];
   v7 = v6;
   v8 = &unk_285672868;
   if (v6)
@@ -365,10 +365,10 @@
   v9 = v8;
 
   v10 = MEMORY[0x277CCABB0];
-  v11 = [v9 unsignedIntegerValue];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-  v12 = [v10 numberWithUnsignedInteger:v11 + 1];
-  [(NSMutableDictionary *)self->mFinishedDownloadCountByFileURL setObject:v12 forKeyedSubscript:v5];
+  v12 = [v10 numberWithUnsignedInteger:unsignedIntegerValue + 1];
+  [(NSMutableDictionary *)self->mFinishedDownloadCountByFileURL setObject:v12 forKeyedSubscript:lCopy];
 }
 
 - (BOOL)allDownloadsFinished
@@ -394,8 +394,8 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSMutableDictionary *)self->mFinishedDownloadCountByFileURL allValues];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->mFinishedDownloadCountByFileURL allValues];
+  v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -406,18 +406,18 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) unsignedIntegerValue];
-        if (v10 < [(CRKHostResourcesConfiguration *)self->mConfiguration maximumAllowedDownloads])
+        unsignedIntegerValue = [*(*(&v12 + 1) + 8 * i) unsignedIntegerValue];
+        if (unsignedIntegerValue < [(CRKHostResourcesConfiguration *)self->mConfiguration maximumAllowedDownloads])
         {
           v2 = 0;
           goto LABEL_16;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         continue;
@@ -437,9 +437,9 @@ LABEL_16:
 {
   v3 = MEMORY[0x277CBEBC0];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(CRKHostResourcesConfiguration *)self->mConfiguration IPAddressProvider];
-  v6 = [v5 IPAddress];
-  v7 = [v4 stringWithFormat:@"https://%@:%ld", v6, -[NSNetService port](self->mNetService, "port")];
+  iPAddressProvider = [(CRKHostResourcesConfiguration *)self->mConfiguration IPAddressProvider];
+  iPAddress = [iPAddressProvider IPAddress];
+  v7 = [v4 stringWithFormat:@"https://%@:%ld", iPAddress, -[NSNetService port](self->mNetService, "port")];
   v8 = [v3 URLWithString:v7];
 
   mFileURLsByFilePath = self->mFileURLsByFilePath;
@@ -450,13 +450,13 @@ LABEL_16:
   v10 = v8;
   v15 = v10;
   v11 = [(NSDictionary *)mFileURLsByFilePath crk_mapUsingBlock:v14];
-  v12 = [(CRKHostResourcesOperation *)self delegate];
-  LOBYTE(v6) = objc_opt_respondsToSelector();
+  delegate = [(CRKHostResourcesOperation *)self delegate];
+  LOBYTE(iPAddress) = objc_opt_respondsToSelector();
 
-  if (v6)
+  if (iPAddress)
   {
-    v13 = [(CRKHostResourcesOperation *)self delegate];
-    [v13 hostResourcesOperation:self didPublishResources:v11];
+    delegate2 = [(CRKHostResourcesOperation *)self delegate];
+    [delegate2 hostResourcesOperation:self didPublishResources:v11];
   }
 }
 
@@ -473,44 +473,44 @@ CRKResource *__56__CRKHostResourcesOperation_delegateResourcesDidPublish__block_
   return v10;
 }
 
-- (void)delegateDownloadStarted:(id)a3 fileURL:(id)a4
+- (void)delegateDownloadStarted:(id)started fileURL:(id)l
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(CRKHostResourcesOperation *)self delegate];
+  startedCopy = started;
+  lCopy = l;
+  delegate = [(CRKHostResourcesOperation *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CRKHostResourcesOperation *)self delegate];
-    [v9 hostResourcesOperation:self downloadDidStart:v10 fileURL:v6];
+    delegate2 = [(CRKHostResourcesOperation *)self delegate];
+    [delegate2 hostResourcesOperation:self downloadDidStart:startedCopy fileURL:lCopy];
   }
 }
 
-- (void)delegateDownloadFinished:(id)a3 fileURL:(id)a4 error:(id)a5
+- (void)delegateDownloadFinished:(id)finished fileURL:(id)l error:(id)error
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(CRKHostResourcesOperation *)self delegate];
+  finishedCopy = finished;
+  lCopy = l;
+  errorCopy = error;
+  delegate = [(CRKHostResourcesOperation *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(CRKHostResourcesOperation *)self delegate];
-    [v12 hostResourcesOperation:self downloadDidFinish:v13 fileURL:v8 error:v9];
+    delegate2 = [(CRKHostResourcesOperation *)self delegate];
+    [delegate2 hostResourcesOperation:self downloadDidFinish:finishedCopy fileURL:lCopy error:errorCopy];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == @"CRKHostResourcesOperationObservationContext")
+  if (context == @"CRKHostResourcesOperationObservationContext")
   {
     mConfiguration = self->mConfiguration;
-    v12 = a4;
-    v13 = [(CRKHostResourcesConfiguration *)mConfiguration IPAddressProvider];
+    objectCopy = object;
+    iPAddressProvider = [(CRKHostResourcesConfiguration *)mConfiguration IPAddressProvider];
 
-    if (v13 == v12)
+    if (iPAddressProvider == objectCopy)
     {
 
       [(CRKHostResourcesOperation *)self IPAddressDidChange];
@@ -521,8 +521,8 @@ CRKResource *__56__CRKHostResourcesOperation_delegateResourcesDidPublish__block_
   {
     v14.receiver = self;
     v14.super_class = CRKHostResourcesOperation;
-    v10 = a4;
-    [(CRKHostResourcesOperation *)&v14 observeValueForKeyPath:a3 ofObject:v10 change:a5 context:a6];
+    objectCopy2 = object;
+    [(CRKHostResourcesOperation *)&v14 observeValueForKeyPath:path ofObject:objectCopy2 change:change context:context];
   }
 }
 
@@ -532,12 +532,12 @@ CRKResource *__56__CRKHostResourcesOperation_delegateResourcesDidPublish__block_
   v3 = _CRKLogOperation_1();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CRKHostResourcesConfiguration *)self->mConfiguration IPAddressProvider];
-    v5 = [v4 IPAddress];
+    iPAddressProvider = [(CRKHostResourcesConfiguration *)self->mConfiguration IPAddressProvider];
+    iPAddress = [iPAddressProvider IPAddress];
     v6 = 138543618;
-    v7 = self;
+    selfCopy = self;
     v8 = 2114;
-    v9 = v5;
+    v9 = iPAddress;
     _os_log_impl(&dword_243550000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: IP address did change to %{public}@", &v6, 0x16u);
   }
 
@@ -547,20 +547,20 @@ CRKResource *__56__CRKHostResourcesOperation_delegateResourcesDidPublish__block_
   }
 }
 
-- (void)netService:(id)a3 didAcceptConnectionWithInputStream:(id)a4 outputStream:(id)a5
+- (void)netService:(id)service didAcceptConnectionWithInputStream:(id)stream outputStream:(id)outputStream
 {
-  v7 = a4;
-  v8 = a5;
+  streamCopy = stream;
+  outputStreamCopy = outputStream;
   v9 = MEMORY[0x277CBEB88];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __88__CRKHostResourcesOperation_netService_didAcceptConnectionWithInputStream_outputStream___block_invoke;
   v12[3] = &unk_278DC1DF0;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = streamCopy;
+  v14 = outputStreamCopy;
+  v10 = outputStreamCopy;
+  v11 = streamCopy;
   [v9 cat_performBlockOnMainRunLoop:v12];
 }
 
@@ -602,7 +602,7 @@ uint64_t __88__CRKHostResourcesOperation_netService_didAcceptConnectionWithInput
   return [v2 underlyingCertificate];
 }
 
-- (void)netServiceDidPublish:(id)a3
+- (void)netServiceDidPublish:(id)publish
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -634,17 +634,17 @@ uint64_t __50__CRKHostResourcesOperation_netServiceDidPublish___block_invoke(uin
   return result;
 }
 
-- (void)netService:(id)a3 didNotPublish:(id)a4
+- (void)netService:(id)service didNotPublish:(id)publish
 {
-  v5 = a4;
+  publishCopy = publish;
   v6 = MEMORY[0x277CBEB88];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__CRKHostResourcesOperation_netService_didNotPublish___block_invoke;
   v8[3] = &unk_278DC1320;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = publishCopy;
+  v7 = publishCopy;
   [v6 cat_performBlockOnMainRunLoop:v8];
 }
 
@@ -668,7 +668,7 @@ void __54__CRKHostResourcesOperation_netService_didNotPublish___block_invoke(uin
   }
 }
 
-- (void)netServiceDidStop:(id)a3
+- (void)netServiceDidStop:(id)stop
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -708,33 +708,33 @@ uint64_t __47__CRKHostResourcesOperation_netServiceDidStop___block_invoke(uint64
   return result;
 }
 
-- (void)connection:(id)a3 didReceiveDataRequestWithURL:(id)a4
+- (void)connection:(id)connection didReceiveDataRequestWithURL:(id)l
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  lCopy = l;
   if ([(CRKHostResourcesOperation *)self isExecuting])
   {
     v8 = _CRKLogOperation_1();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v7 absoluteString];
+      absoluteString = [lCopy absoluteString];
       *buf = 138543874;
-      v21 = self;
+      selfCopy = self;
       v22 = 2114;
-      v23 = v6;
+      v23 = connectionCopy;
       v24 = 2114;
-      v25 = v9;
+      v25 = absoluteString;
       _os_log_impl(&dword_243550000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ did receive request for URL %{public}@", buf, 0x20u);
     }
 
     mFileURLsByFilePath = self->mFileURLsByFilePath;
-    v11 = [v7 crk_escapedPath];
-    v12 = [(NSDictionary *)mFileURLsByFilePath objectForKeyedSubscript:v11];
+    crk_escapedPath = [lCopy crk_escapedPath];
+    v12 = [(NSDictionary *)mFileURLsByFilePath objectForKeyedSubscript:crk_escapedPath];
 
     if ([(CRKHostResourcesOperation *)self downloadAllowedForFileURL:v12])
     {
-      v13 = [v6 description];
+      v13 = [connectionCopy description];
       [(CRKHostResourcesOperation *)self delegateDownloadStarted:v13 fileURL:v12];
 
       [(CRKHostResourcesOperation *)self incrementStartedDownloadCountForFileURL:v12];
@@ -744,16 +744,16 @@ uint64_t __47__CRKHostResourcesOperation_netServiceDidStop___block_invoke(uint64
         v15[1] = 3221225472;
         v15[2] = __69__CRKHostResourcesOperation_connection_didReceiveDataRequestWithURL___block_invoke;
         v15[3] = &unk_278DC2998;
-        v16 = v6;
-        v17 = v7;
-        v18 = self;
+        v16 = connectionCopy;
+        v17 = lCopy;
+        selfCopy2 = self;
         v19 = v12;
         [(CRKHostResourcesOperation *)self zipDirectoryAtURL:v19 completion:v15];
       }
 
       else
       {
-        [(CRKHostResourcesOperation *)self serveItemAtURL:v12 toConnection:v6 forRequestURL:v7 originalItemURL:v12];
+        [(CRKHostResourcesOperation *)self serveItemAtURL:v12 toConnection:connectionCopy forRequestURL:lCopy originalItemURL:v12];
       }
     }
 
@@ -765,7 +765,7 @@ uint64_t __47__CRKHostResourcesOperation_netServiceDidStop___block_invoke(uint64
         [CRKHostResourcesOperation connection:? didReceiveDataRequestWithURL:?];
       }
 
-      [v6 close];
+      [connectionCopy close];
     }
   }
 }
@@ -802,15 +802,15 @@ void __69__CRKHostResourcesOperation_connection_didReceiveDataRequestWithURL___b
   }
 }
 
-- (void)zipDirectoryAtURL:(id)a3 completion:(id)a4
+- (void)zipDirectoryAtURL:(id)l completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  lCopy = l;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (lCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -827,24 +827,24 @@ void __69__CRKHostResourcesOperation_connection_didReceiveDataRequestWithURL___b
 
   [CRKHostResourcesOperation zipDirectoryAtURL:a2 completion:self];
 LABEL_3:
-  v10 = [(NSMutableDictionary *)self->mZipOperationsByDirectoryURL objectForKeyedSubscript:v7];
+  v10 = [(NSMutableDictionary *)self->mZipOperationsByDirectoryURL objectForKeyedSubscript:lCopy];
   if (!v10)
   {
     v11 = _CRKLogGeneral_9();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v7 path];
+      path = [lCopy path];
       *buf = 138543362;
-      v26 = v12;
+      v26 = path;
       _os_log_impl(&dword_243550000, v11, OS_LOG_TYPE_DEFAULT, "Enqueueing zip operation for %{public}@", buf, 0xCu);
     }
 
-    v10 = [[CRKZipOperation alloc] initWithDirectoryURL:v7];
-    [(CRKZipOperation *)v10 addTarget:self selector:sel_zipOperationDidFail_directoryURL_ forOperationEvents:4 userInfo:v7];
-    v13 = [MEMORY[0x277CF9540] crk_backgroundQueue];
-    [v13 addOperation:v10];
+    v10 = [[CRKZipOperation alloc] initWithDirectoryURL:lCopy];
+    [(CRKZipOperation *)v10 addTarget:self selector:sel_zipOperationDidFail_directoryURL_ forOperationEvents:4 userInfo:lCopy];
+    crk_backgroundQueue = [MEMORY[0x277CF9540] crk_backgroundQueue];
+    [crk_backgroundQueue addOperation:v10];
 
-    [(NSMutableDictionary *)self->mZipOperationsByDirectoryURL setObject:v10 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->mZipOperationsByDirectoryURL setObject:v10 forKeyedSubscript:lCopy];
   }
 
   v14 = MEMORY[0x277CCA8C8];
@@ -858,8 +858,8 @@ LABEL_3:
   v16 = v9;
   v17 = [v14 blockOperationWithBlock:&v19];
   [v17 addDependency:{v15, v19, v20, v21, v22}];
-  v18 = [MEMORY[0x277CCABD8] mainQueue];
-  [v18 addOperation:v17];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
+  [mainQueue addOperation:v17];
 }
 
 void __58__CRKHostResourcesOperation_zipDirectoryAtURL_completion___block_invoke(uint64_t a1)
@@ -870,32 +870,32 @@ void __58__CRKHostResourcesOperation_zipDirectoryAtURL_completion___block_invoke
   (*(v2 + 16))(v2, v4, v3);
 }
 
-- (void)zipOperationDidFail:(id)a3 directoryURL:(id)a4
+- (void)zipOperationDidFail:(id)fail directoryURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->mZipOperationsByDirectoryURL objectForKeyedSubscript:v7];
+  failCopy = fail;
+  lCopy = l;
+  v8 = [(NSMutableDictionary *)self->mZipOperationsByDirectoryURL objectForKeyedSubscript:lCopy];
 
-  if (v8 == v6)
+  if (v8 == failCopy)
   {
     v9 = _CRKLogGeneral_9();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [CRKHostResourcesOperation zipOperationDidFail:v7 directoryURL:v6];
+      [CRKHostResourcesOperation zipOperationDidFail:lCopy directoryURL:failCopy];
     }
 
-    [(NSMutableDictionary *)self->mZipOperationsByDirectoryURL removeObjectForKey:v7];
+    [(NSMutableDictionary *)self->mZipOperationsByDirectoryURL removeObjectForKey:lCopy];
   }
 }
 
-- (void)serveItemAtURL:(id)a3 toConnection:(id)a4 forRequestURL:(id)a5 originalItemURL:(id)a6
+- (void)serveItemAtURL:(id)l toConnection:(id)connection forRequestURL:(id)rL originalItemURL:(id)uRL
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  connectionCopy = connection;
+  rLCopy = rL;
+  uRLCopy = uRL;
   v13 = MEMORY[0x277CCA9E8];
-  v14 = a3;
+  lCopy = l;
   v15 = [[v13 alloc] initWithFilePresenter:0];
   v26 = 0;
   v22[0] = MEMORY[0x277D85DD0];
@@ -903,13 +903,13 @@ void __58__CRKHostResourcesOperation_zipDirectoryAtURL_completion___block_invoke
   v22[2] = __87__CRKHostResourcesOperation_serveItemAtURL_toConnection_forRequestURL_originalItemURL___block_invoke;
   v22[3] = &unk_278DC29C0;
   v22[4] = self;
-  v16 = v10;
+  v16 = connectionCopy;
   v23 = v16;
-  v17 = v11;
+  v17 = rLCopy;
   v24 = v17;
-  v18 = v12;
+  v18 = uRLCopy;
   v25 = v18;
-  [v15 coordinateReadingItemAtURL:v14 options:8 error:&v26 byAccessor:v22];
+  [v15 coordinateReadingItemAtURL:lCopy options:8 error:&v26 byAccessor:v22];
 
   v19 = v26;
   if (v19)
@@ -918,7 +918,7 @@ void __58__CRKHostResourcesOperation_zipDirectoryAtURL_completion___block_invoke
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       *buf = 138544130;
-      v28 = self;
+      selfCopy = self;
       v29 = 2114;
       v30 = v16;
       v31 = 2114;
@@ -1008,138 +1008,138 @@ void __87__CRKHostResourcesOperation_serveItemAtURL_toConnection_forRequestURL_o
   }
 }
 
-- (void)connection:(id)a3 didSendDataWithStream:(id)a4 userInfo:(id)a5
+- (void)connection:(id)connection didSendDataWithStream:(id)stream userInfo:(id)info
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  connectionCopy = connection;
+  infoCopy = info;
   if ([(CRKHostResourcesOperation *)self isExecuting])
   {
     v9 = _CRKLogOperation_1();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543874;
-      v13 = self;
+      selfCopy = self;
       v14 = 2114;
-      v15 = v7;
+      v15 = connectionCopy;
       v16 = 2114;
-      v17 = v8;
+      v17 = infoCopy;
       _os_log_impl(&dword_243550000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ did send data with stream. File URL: %{public}@", &v12, 0x20u);
     }
 
-    v10 = [v7 description];
-    [(CRKHostResourcesOperation *)self delegateDownloadFinished:v10 fileURL:v8 error:0];
+    v10 = [connectionCopy description];
+    [(CRKHostResourcesOperation *)self delegateDownloadFinished:v10 fileURL:infoCopy error:0];
 
-    [(CRKHostResourcesOperation *)self incrementFinishedDownloadCountForFileURL:v8];
-    v11 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel_connectionCloseDidTimeout_ selector:v7 userInfo:0 repeats:30.0];
+    [(CRKHostResourcesOperation *)self incrementFinishedDownloadCountForFileURL:infoCopy];
+    v11 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel_connectionCloseDidTimeout_ selector:connectionCopy userInfo:0 repeats:30.0];
     [(NSMutableSet *)self->mConnectionCloseTimers addObject:v11];
   }
 }
 
-- (void)connectionCloseDidTimeout:(id)a3
+- (void)connectionCloseDidTimeout:(id)timeout
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  timeoutCopy = timeout;
   if ([(CRKHostResourcesOperation *)self isExecuting])
   {
-    [(NSMutableSet *)self->mConnectionCloseTimers removeObject:v4];
-    v5 = [v4 userInfo];
-    if ([(NSMutableSet *)self->mConnections containsObject:v5])
+    [(NSMutableSet *)self->mConnectionCloseTimers removeObject:timeoutCopy];
+    userInfo = [timeoutCopy userInfo];
+    if ([(NSMutableSet *)self->mConnections containsObject:userInfo])
     {
       v6 = _CRKLogOperation_1();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v7 = 138543618;
-        v8 = self;
+        selfCopy = self;
         v9 = 2114;
-        v10 = v5;
+        v10 = userInfo;
         _os_log_impl(&dword_243550000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Connection close timer fired. Closing %{public}@", &v7, 0x16u);
       }
 
-      [v5 close];
+      [userInfo close];
     }
   }
 }
 
-- (void)connection:(id)a3 didFailToSendDataWithStream:(id)a4 userInfo:(id)a5 error:(id)a6
+- (void)connection:(id)connection didFailToSendDataWithStream:(id)stream userInfo:(id)info error:(id)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  connectionCopy = connection;
+  infoCopy = info;
+  errorCopy = error;
   if ([(CRKHostResourcesOperation *)self isExecuting])
   {
     v12 = _CRKLogOperation_1();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v11 verboseDescription];
+      verboseDescription = [errorCopy verboseDescription];
       v15 = 138544130;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
-      v18 = v9;
+      v18 = connectionCopy;
       v19 = 2114;
-      v20 = v10;
+      v20 = infoCopy;
       v21 = 2114;
-      v22 = v14;
+      v22 = verboseDescription;
       _os_log_error_impl(&dword_243550000, v12, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@ failed to send data with stream. File URL: %{public}@. Error: %{public}@", &v15, 0x2Au);
     }
 
-    v13 = [v9 description];
-    [(CRKHostResourcesOperation *)self delegateDownloadFinished:v13 fileURL:v10 error:v11];
+    v13 = [connectionCopy description];
+    [(CRKHostResourcesOperation *)self delegateDownloadFinished:v13 fileURL:infoCopy error:errorCopy];
 
-    [(CRKHostResourcesOperation *)self incrementFinishedDownloadCountForFileURL:v10];
-    [v9 close];
+    [(CRKHostResourcesOperation *)self incrementFinishedDownloadCountForFileURL:infoCopy];
+    [connectionCopy close];
   }
 }
 
-- (void)connection:(id)a3 didInterruptWithError:(id)a4
+- (void)connection:(id)connection didInterruptWithError:(id)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  errorCopy = error;
   if ([(CRKHostResourcesOperation *)self isExecuting])
   {
     v8 = _CRKLogOperation_1();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v7 verboseDescription];
+      verboseDescription = [errorCopy verboseDescription];
       v10 = 138543874;
-      v11 = self;
+      selfCopy = self;
       v12 = 2114;
-      v13 = v6;
+      v13 = connectionCopy;
       v14 = 2114;
-      v15 = v9;
+      v15 = verboseDescription;
       _os_log_error_impl(&dword_243550000, v8, OS_LOG_TYPE_ERROR, "%{public}@: Connection %{public}@ did interrupt with error: %{public}@", &v10, 0x20u);
     }
 
-    [v6 close];
+    [connectionCopy close];
   }
 }
 
-- (void)connectionDidClose:(id)a3
+- (void)connectionDidClose:(id)close
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  closeCopy = close;
   if ([(CRKHostResourcesOperation *)self isExecuting])
   {
     v5 = _CRKLogOperation_1();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543618;
-      v8 = self;
+      selfCopy2 = self;
       v9 = 2114;
-      v10 = v4;
+      v10 = closeCopy;
       _os_log_impl(&dword_243550000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Connection %{public}@ did close", &v7, 0x16u);
     }
 
-    [(NSMutableSet *)self->mConnections removeObject:v4];
+    [(NSMutableSet *)self->mConnections removeObject:closeCopy];
     if (![(NSMutableSet *)self->mConnections count]&& [(CRKHostResourcesOperation *)self allDownloadsFinished])
     {
       v6 = _CRKLogOperation_1();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v7 = 138543362;
-        v8 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_243550000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: All downloads finished and all connections closed. Stopping net service.", &v7, 0xCu);
       }
 

@@ -1,16 +1,16 @@
 @interface CNPhotoPickerEmojiProviderItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (NSString)_axColorVariantName;
 - (NSString)_axStringRepresentation;
 @end
 
 @implementation CNPhotoPickerEmojiProviderItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNPhotoPickerEmojiProviderItem" hasProperty:@"stringRepresentation" withType:"@"];
-  [v3 validateClass:@"CNPhotoPickerEmojiProviderItem" hasProperty:@"backgroundColorVariant" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNPhotoPickerEmojiProviderItem" hasProperty:@"stringRepresentation" withType:"@"];
+  [validationsCopy validateClass:@"CNPhotoPickerEmojiProviderItem" hasProperty:@"backgroundColorVariant" withType:"@"];
 }
 
 - (NSString)_axStringRepresentation

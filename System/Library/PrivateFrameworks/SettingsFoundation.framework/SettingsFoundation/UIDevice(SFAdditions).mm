@@ -26,8 +26,8 @@
 
 - (BOOL)sf_isiPad
 {
-  v0 = [MEMORY[0x277D75418] currentDevice];
-  v1 = [v0 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v1 = [currentDevice userInterfaceIdiom] == 1;
 
   return v1;
 }
@@ -54,8 +54,8 @@
 
 - (BOOL)sf_isiPhone
 {
-  v0 = [MEMORY[0x277D75418] currentDevice];
-  v1 = [v0 userInterfaceIdiom] == 0;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v1 = [currentDevice userInterfaceIdiom] == 0;
 
   return v1;
 }
@@ -74,25 +74,25 @@
 - (id)sf_serialNumber
 {
   v0 = +[SFDeviceRegulatoryAttributes currentDeviceAttributes];
-  v1 = [v0 serialNumber];
+  serialNumber = [v0 serialNumber];
 
-  return v1;
+  return serialNumber;
 }
 
 - (uint64_t)sf_yearOfManufacture
 {
   v0 = +[SFDeviceRegulatoryAttributes currentDeviceAttributes];
-  v1 = [v0 yearForWeekOfManufacture];
+  yearForWeekOfManufacture = [v0 yearForWeekOfManufacture];
 
-  return v1;
+  return yearForWeekOfManufacture;
 }
 
 - (uint64_t)sf_weekOfManufacture
 {
   v0 = +[SFDeviceRegulatoryAttributes currentDeviceAttributes];
-  v1 = [v0 weekOfManufacture];
+  weekOfManufacture = [v0 weekOfManufacture];
 
-  return v1;
+  return weekOfManufacture;
 }
 
 - (id)sf_monthAndYearOfManufacture
@@ -130,36 +130,36 @@
 - (id)sf_colorCodedSerialNumber
 {
   v2 = objc_alloc(MEMORY[0x277CCA898]);
-  v3 = [a1 sf_serialNumber];
-  v4 = [v2 initWithString:v3];
+  sf_serialNumber = [self sf_serialNumber];
+  v4 = [v2 initWithString:sf_serialNumber];
 
   if (v4)
   {
     if ([v4 length] == 12)
     {
       v5 = MEMORY[0x277CCAB68];
-      v6 = [v4 string];
-      v7 = [v5 stringWithString:v6];
+      string = [v4 string];
+      v7 = [v5 stringWithString:string];
 
       [v7 insertString:@" " atIndex:3];
       [v7 insertString:@" " atIndex:6];
       [v7 insertString:@" " atIndex:10];
       v8 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v7];
       v9 = *MEMORY[0x277D740C0];
-      v10 = [MEMORY[0x277D75348] orangeColor];
-      [v8 addAttribute:v9 value:v10 range:{0, 3}];
+      orangeColor = [MEMORY[0x277D75348] orangeColor];
+      [v8 addAttribute:v9 value:orangeColor range:{0, 3}];
 
-      v11 = [MEMORY[0x277D75348] purpleColor];
-      [v8 addAttribute:v9 value:v11 range:{4, 1}];
+      purpleColor = [MEMORY[0x277D75348] purpleColor];
+      [v8 addAttribute:v9 value:purpleColor range:{4, 1}];
 
       v12 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.5 blue:0.0 alpha:1.0];
       [v8 addAttribute:v9 value:v12 range:{5, 1}];
 
-      v13 = [MEMORY[0x277D75348] brownColor];
-      [v8 addAttribute:v9 value:v13 range:{7, 3}];
+      brownColor = [MEMORY[0x277D75348] brownColor];
+      [v8 addAttribute:v9 value:brownColor range:{7, 3}];
 
-      v14 = [MEMORY[0x277D75348] blueColor];
-      [v8 addAttribute:v9 value:v14 range:{11, 4}];
+      blueColor = [MEMORY[0x277D75348] blueColor];
+      [v8 addAttribute:v9 value:blueColor range:{11, 4}];
 
       v15 = [objc_alloc(MEMORY[0x277CCA898]) initWithAttributedString:v8];
     }
@@ -230,9 +230,9 @@
 - (id)sf_plantCode
 {
   v0 = +[SFDeviceRegulatoryAttributes currentDeviceAttributes];
-  v1 = [v0 plantCode];
+  plantCode = [v0 plantCode];
 
-  return v1;
+  return plantCode;
 }
 
 - (id)sf_udidString
@@ -279,7 +279,7 @@
   block[1] = 3221225472;
   block[2] = __47__UIDevice_SFAdditions__sf_serialNumberQRImage__block_invoke;
   block[3] = &unk_279BB09C0;
-  block[4] = a1;
+  block[4] = self;
   if (sf_serialNumberQRImage_onceToken != -1)
   {
     dispatch_once(&sf_serialNumberQRImage_onceToken, block);

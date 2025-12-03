@@ -1,5 +1,5 @@
 @interface CSReusableBufferPoolConfiguration
-- (CSReusableBufferPoolConfiguration)initWithBackingStoreCapacity:(unint64_t)a3 minimalNumberOfBackingStores:(unint64_t)a4 maximumNumberOfBackingStores:(unint64_t)a5 backingStoreIdleTimeout:(double)a6;
+- (CSReusableBufferPoolConfiguration)initWithBackingStoreCapacity:(unint64_t)capacity minimalNumberOfBackingStores:(unint64_t)stores maximumNumberOfBackingStores:(unint64_t)backingStores backingStoreIdleTimeout:(double)timeout;
 - (id)description;
 @end
 
@@ -16,17 +16,17 @@
   return v5;
 }
 
-- (CSReusableBufferPoolConfiguration)initWithBackingStoreCapacity:(unint64_t)a3 minimalNumberOfBackingStores:(unint64_t)a4 maximumNumberOfBackingStores:(unint64_t)a5 backingStoreIdleTimeout:(double)a6
+- (CSReusableBufferPoolConfiguration)initWithBackingStoreCapacity:(unint64_t)capacity minimalNumberOfBackingStores:(unint64_t)stores maximumNumberOfBackingStores:(unint64_t)backingStores backingStoreIdleTimeout:(double)timeout
 {
   v11.receiver = self;
   v11.super_class = CSReusableBufferPoolConfiguration;
   result = [(CSReusableBufferPoolConfiguration *)&v11 init];
   if (result)
   {
-    result->_backingStoreCapacity = a3;
-    result->_minimalNumberOfBackingStores = a4;
-    result->_maximumNumberOfBackingStores = a5;
-    result->_backingStoreIdleTimeout = a6;
+    result->_backingStoreCapacity = capacity;
+    result->_minimalNumberOfBackingStores = stores;
+    result->_maximumNumberOfBackingStores = backingStores;
+    result->_backingStoreIdleTimeout = timeout;
   }
 
   return result;

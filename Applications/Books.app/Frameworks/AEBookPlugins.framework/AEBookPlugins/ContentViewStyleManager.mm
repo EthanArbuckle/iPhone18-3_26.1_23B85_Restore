@@ -1,7 +1,7 @@
 @interface ContentViewStyleManager
-+ (id)_templateCompatibleThemesForTraitCollection:(id)a3;
-+ (id)getInlineStyleSheetForConfiguration:(id)a3 bookInfo:(id)a4 contentLayoutSize:(CGSize)a5 webkit2:(BOOL)a6;
-+ (id)getPictureBookUserStyleSheetWithLegacyBook:(BOOL)a3;
++ (id)_templateCompatibleThemesForTraitCollection:(id)collection;
++ (id)getInlineStyleSheetForConfiguration:(id)configuration bookInfo:(id)info contentLayoutSize:(CGSize)size webkit2:(BOOL)webkit2;
++ (id)getPictureBookUserStyleSheetWithLegacyBook:(BOOL)book;
 + (id)templateSet;
 + (void)initialize;
 @end
@@ -10,7 +10,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_alloc_init(NSMutableSet);
     v3 = qword_22D0A0;
@@ -32,16 +32,16 @@
   return v3;
 }
 
-+ (id)getPictureBookUserStyleSheetWithLegacyBook:(BOOL)a3
++ (id)getPictureBookUserStyleSheetWithLegacyBook:(BOOL)book
 {
-  v3 = a3;
-  v4 = [a1 templateSet];
+  bookCopy = book;
+  templateSet = [self templateSet];
   v19 = @"legacyBook";
-  v5 = [NSNumber numberWithBool:v3];
+  v5 = [NSNumber numberWithBool:bookCopy];
   v20 = v5;
   v6 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
   v12 = 0;
-  v7 = [v4 evaluateTemplateWithName:@"picturebook" withData:v6 error:&v12];
+  v7 = [templateSet evaluateTemplateWithName:@"picturebook" withData:v6 error:&v12];
   v8 = v12;
 
   if (!v7)
@@ -72,9 +72,9 @@
   return v7;
 }
 
-+ (id)_templateCompatibleThemesForTraitCollection:(id)a3
++ (id)_templateCompatibleThemesForTraitCollection:(id)collection
 {
-  v3 = a3;
+  collectionCopy = collection;
   v4 = [NSMutableArray alloc];
   v5 = [v4 initWithCapacity:{objc_msgSend(qword_22D0A0, "count")}];
   v24 = 0u;
@@ -99,34 +99,34 @@
         objc_opt_class();
         v10 = BUDynamicCast();
         v11 = objc_alloc_init(NSMutableDictionary);
-        v12 = [v10 stableIdentifier];
-        [v11 setObject:v12 forKeyedSubscript:@"identifier"];
+        stableIdentifier = [v10 stableIdentifier];
+        [v11 setObject:stableIdentifier forKeyedSubscript:@"identifier"];
 
-        v13 = [v10 gaijiImageFilter];
-        [v11 setObject:v13 forKeyedSubscript:@"gaijiImageFilter"];
+        gaijiImageFilter = [v10 gaijiImageFilter];
+        [v11 setObject:gaijiImageFilter forKeyedSubscript:@"gaijiImageFilter"];
 
         v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v10 shouldInvertContent]);
         [v11 setObject:v14 forKeyedSubscript:@"shouldInvertContent"];
 
-        v15 = [v10 backgroundsByLevel];
-        [v11 setObject:v15 forKeyedSubscript:@"backgroundsByLevel"];
+        backgroundsByLevel = [v10 backgroundsByLevel];
+        [v11 setObject:backgroundsByLevel forKeyedSubscript:@"backgroundsByLevel"];
 
-        v16 = [v10 contentTextColor];
-        [v11 setObject:v16 forKeyedSubscript:@"contentTextColor"];
+        contentTextColor = [v10 contentTextColor];
+        [v11 setObject:contentTextColor forKeyedSubscript:@"contentTextColor"];
 
-        v17 = [v10 linkActiveColor];
-        [v11 setObject:v17 forKeyedSubscript:@"linkActiveColor"];
+        linkActiveColor = [v10 linkActiveColor];
+        [v11 setObject:linkActiveColor forKeyedSubscript:@"linkActiveColor"];
 
-        v18 = [v10 linkColor];
-        [v11 setObject:v18 forKeyedSubscript:@"linkColor"];
+        linkColor = [v10 linkColor];
+        [v11 setObject:linkColor forKeyedSubscript:@"linkColor"];
 
-        v19 = [v10 linkVisitedColor];
-        [v11 setObject:v19 forKeyedSubscript:@"linkVisitedColor"];
+        linkVisitedColor = [v10 linkVisitedColor];
+        [v11 setObject:linkVisitedColor forKeyedSubscript:@"linkVisitedColor"];
 
         v20 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v10 overlayContentBackgroundColor]);
         [v11 setObject:v20 forKeyedSubscript:@"overlayContentBackgroundColor"];
 
-        v21 = [v10 backgroundColorForTraitCollection:v3];
+        v21 = [v10 backgroundColorForTraitCollection:collectionCopy];
         [v11 setObject:v21 forKeyedSubscript:@"contentBackgroundColor"];
 
         [v5 addObject:v11];
@@ -141,27 +141,27 @@
   return v5;
 }
 
-+ (id)getInlineStyleSheetForConfiguration:(id)a3 bookInfo:(id)a4 contentLayoutSize:(CGSize)a5 webkit2:(BOOL)a6
++ (id)getInlineStyleSheetForConfiguration:(id)configuration bookInfo:(id)info contentLayoutSize:(CGSize)size webkit2:(BOOL)webkit2
 {
-  v6 = a6;
-  height = a5.height;
-  width = a5.width;
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (!v10)
+  webkit2Copy = webkit2;
+  height = size.height;
+  width = size.width;
+  configurationCopy = configuration;
+  infoCopy = info;
+  v12 = infoCopy;
+  if (!configurationCopy)
   {
     v25 = 0;
     goto LABEL_40;
   }
 
-  v75 = v6;
-  v13 = [v11 language];
-  v14 = v13;
+  v75 = webkit2Copy;
+  language = [infoCopy language];
+  v14 = language;
   v15 = BEiBooksDefaultLanguage;
-  if (v13)
+  if (language)
   {
-    v15 = v13;
+    v15 = language;
   }
 
   v16 = v15;
@@ -180,18 +180,18 @@
     }
   }
 
-  v70 = [v10 isScroll];
-  v18 = [v10 layout];
-  v19 = [v12 respectImageSizeClass];
-  v20 = [v19 length];
+  isScroll = [configurationCopy isScroll];
+  layout = [configurationCopy layout];
+  respectImageSizeClass = [v12 respectImageSizeClass];
+  v20 = [respectImageSizeClass length];
 
   v77 = v12;
   if (v20)
   {
-    v21 = [v12 respectImageSizeClassIsPrefix];
-    v22 = [v12 respectImageSizeClass];
-    v23 = v22;
-    if (v21)
+    respectImageSizeClassIsPrefix = [v12 respectImageSizeClassIsPrefix];
+    respectImageSizeClass2 = [v12 respectImageSizeClass];
+    v23 = respectImageSizeClass2;
+    if (respectImageSizeClassIsPrefix)
     {
       v24 = @"[class|=%@]";
     }
@@ -201,7 +201,7 @@
       v24 = @"[class~=%@]";
     }
 
-    v83 = [NSString stringWithFormat:v24, v22];
+    v83 = [NSString stringWithFormat:v24, respectImageSizeClass2];
   }
 
   else
@@ -209,13 +209,13 @@
     v83 = &stru_1E7188;
   }
 
-  v26 = [v10 style];
-  v78 = v10;
-  v27 = [v10 environment];
-  v28 = [v27 traitCollection];
-  v82 = [ContentViewStyleManager _templateCompatibleThemesForTraitCollection:v28];
+  style = [configurationCopy style];
+  v78 = configurationCopy;
+  environment = [configurationCopy environment];
+  traitCollection = [environment traitCollection];
+  v82 = [ContentViewStyleManager _templateCompatibleThemesForTraitCollection:traitCollection];
 
-  [v26 lineHeight];
+  [style lineHeight];
   if (v29 == 1.0)
   {
     v30 = +[NSUserDefaults standardUserDefaults];
@@ -232,29 +232,29 @@
   v34 = [BKStyleManager styleManagerWithLanguage:v32];
   v81 = v32;
 
-  v35 = [v34 fontFaceMappings];
+  fontFaceMappings = [v34 fontFaceMappings];
   *buf = _NSConcreteStackBlock;
   *&buf[8] = 3221225472;
   *&buf[16] = sub_AD158;
   v86 = &unk_1E5180;
   v74 = v33;
   v87 = v74;
-  [v35 enumerateKeysAndObjectsUsingBlock:buf];
+  [fontFaceMappings enumerateKeysAndObjectsUsingBlock:buf];
 
   v73 = [NSNumber numberWithBool:v31];
   v72 = [NSNumber numberWithDouble:width];
   v71 = [NSNumber numberWithDouble:height];
-  v36 = v26;
-  v37 = [v36 fontFamily];
-  if (![v37 length])
+  v36 = style;
+  fontFamily = [v36 fontFamily];
+  if (![fontFamily length])
   {
 
     goto LABEL_22;
   }
 
-  v38 = [v36 justification];
+  justification = [v36 justification];
 
-  if ((v38 & 1) == 0)
+  if ((justification & 1) == 0)
   {
 LABEL_22:
     v39 = @"-webkit-auto";
@@ -266,38 +266,38 @@ LABEL_23:
   v69 = v39;
 
   v65 = [NSNumber numberWithBool:v20 != 0];
-  v40 = [v36 autoHyphenate];
+  autoHyphenate = [v36 autoHyphenate];
   v41 = @"manual";
-  if (v40)
+  if (autoHyphenate)
   {
     v41 = @"auto";
   }
 
   v64 = v41;
-  v42 = [v36 optimizeLegibility];
+  optimizeLegibility = [v36 optimizeLegibility];
   v43 = @"optimizeLegibility";
-  if (!v42)
+  if (!optimizeLegibility)
   {
     v43 = @"auto";
   }
 
   v63 = v43;
   v80 = [NSNumber numberWithDouble:v17];
-  v68 = [v36 fontFamily];
-  v44 = [v68 imSanitizedFontFamilyName];
-  v67 = v44;
+  fontFamily2 = [v36 fontFamily];
+  imSanitizedFontFamilyName = [fontFamily2 imSanitizedFontFamilyName];
+  v67 = imSanitizedFontFamilyName;
   v45 = &stru_1E7188;
-  if (v44)
+  if (imSanitizedFontFamilyName)
   {
-    v45 = v44;
+    v45 = imSanitizedFontFamilyName;
   }
 
   v62 = v45;
-  v66 = [v36 fontFamily];
-  v79 = sub_AC428(v66, v32);
+  fontFamily3 = [v36 fontFamily];
+  v79 = sub_AC428(fontFamily3, v32);
   v46 = [NSNumber numberWithBool:isPhone()];
-  v47 = [NSNumber numberWithBool:v70];
-  v48 = [NSNumber numberWithBool:v18 == &dword_0 + 3];
+  v47 = [NSNumber numberWithBool:isScroll];
+  v48 = [NSNumber numberWithBool:layout == &dword_0 + 3];
   v49 = [NSNumber numberWithBool:sub_AD084(v32, @"ja")];
   v50 = [NSNumber numberWithBool:sub_AD084(v32, @"zh")];
   if ([BKStyleManager languageIsSimplifiedChinese:v32])
@@ -354,7 +354,7 @@ LABEL_23:
     v25 = &stru_1E7188;
   }
 
-  v10 = v78;
+  configurationCopy = v78;
 LABEL_40:
 
   return v25;

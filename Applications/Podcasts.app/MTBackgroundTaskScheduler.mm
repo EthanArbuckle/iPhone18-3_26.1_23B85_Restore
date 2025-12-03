@@ -1,13 +1,13 @@
 @interface MTBackgroundTaskScheduler
-+ (void)registerBackgroundTaskClass:(Class)a3;
++ (void)registerBackgroundTaskClass:(Class)class;
 - (MTBackgroundTaskScheduler)init;
 - (void)_takeAssertionAndSchedule;
-- (void)applicationDidEnterBackground:(id)a3;
-- (void)applicationWillEnterForeground:(id)a3;
-- (void)applicationWillTerminate:(id)a3;
+- (void)applicationDidEnterBackground:(id)background;
+- (void)applicationWillEnterForeground:(id)foreground;
+- (void)applicationWillTerminate:(id)terminate;
 - (void)registerLaunchHandlers;
-- (void)rescheduleTasksIfNotScheduledWithIdentifier:(id)a3 completion:(id)a4;
-- (void)rescheduleTasksWithIdentifier:(id)a3 completion:(id)a4;
+- (void)rescheduleTasksIfNotScheduledWithIdentifier:(id)identifier completion:(id)completion;
+- (void)rescheduleTasksWithIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation MTBackgroundTaskScheduler
@@ -91,7 +91,7 @@
   }
 }
 
-+ (void)registerBackgroundTaskClass:(Class)a3
++ (void)registerBackgroundTaskClass:(Class)class
 {
   v4 = qword_100583B38;
   objc_sync_enter(v4);
@@ -102,10 +102,10 @@
     qword_100583B38 = v5;
   }
 
-  if (([(objc_class *)a3 conformsToProtocol:&OBJC_PROTOCOL___MTBackgroundTask]& 1) != 0)
+  if (([(objc_class *)class conformsToProtocol:&OBJC_PROTOCOL___MTBackgroundTask]& 1) != 0)
   {
-    v7 = [(objc_class *)a3 identifier];
-    [qword_100583B38 setObject:a3 forKey:v7];
+    identifier = [(objc_class *)class identifier];
+    [qword_100583B38 setObject:class forKey:identifier];
   }
 
   else
@@ -121,7 +121,7 @@
   objc_sync_exit(v4);
 }
 
-- (void)applicationWillEnterForeground:(id)a3
+- (void)applicationWillEnterForeground:(id)foreground
 {
   v4 = _MTLogCategoryBackgroundFetching();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -133,7 +133,7 @@
   dispatch_async(self->_bgSchedulerQueue, &stru_1004DAB78);
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
   v4 = _MTLogCategoryBackgroundFetching();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -145,7 +145,7 @@
   [(MTBackgroundTaskScheduler *)self _takeAssertionAndSchedule];
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
   v4 = _MTLogCategoryBackgroundFetching();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -236,38 +236,38 @@
   objc_destroyWeak(buf);
 }
 
-- (void)rescheduleTasksIfNotScheduledWithIdentifier:(id)a3 completion:(id)a4
+- (void)rescheduleTasksIfNotScheduledWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   bgSchedulerQueue = self->_bgSchedulerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000A7440;
   block[3] = &unk_1004DABC8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(bgSchedulerQueue, block);
 }
 
-- (void)rescheduleTasksWithIdentifier:(id)a3 completion:(id)a4
+- (void)rescheduleTasksWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [qword_100583B38 objectForKey:v6];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v8 = [qword_100583B38 objectForKey:identifierCopy];
   bgSchedulerQueue = self->_bgSchedulerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000A7714;
   block[3] = &unk_1004DABF0;
-  v14 = v7;
+  v14 = completionCopy;
   v15 = v8;
-  v13 = v6;
-  v10 = v7;
-  v11 = v6;
+  v13 = identifierCopy;
+  v10 = completionCopy;
+  v11 = identifierCopy;
   dispatch_async(bgSchedulerQueue, block);
 }
 

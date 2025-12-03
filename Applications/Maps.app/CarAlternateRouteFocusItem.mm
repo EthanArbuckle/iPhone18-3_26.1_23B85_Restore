@@ -1,10 +1,10 @@
 @interface CarAlternateRouteFocusItem
 - (CGRect)frame;
-- (CarAlternateRouteFocusItem)initWithRoute:(id)a3 containingView:(id)a4 frame:(CGRect)a5 delegate:(id)a6;
+- (CarAlternateRouteFocusItem)initWithRoute:(id)route containingView:(id)view frame:(CGRect)frame delegate:(id)delegate;
 - (GEOComposedRoute)route;
 - (NSString)description;
 - (UIFocusEnvironment)parentFocusEnvironment;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)setNeedsFocusUpdate;
 - (void)updateFocusIfNeeded;
 @end
@@ -31,10 +31,10 @@
   return result;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v5 = [a3 nextFocusedItem];
-  [(CarAlternateRouteFocusItem *)self setFocused:v5 == self];
+  nextFocusedItem = [context nextFocusedItem];
+  [(CarAlternateRouteFocusItem *)self setFocused:nextFocusedItem == self];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained routeItemDidUpdateFocus:self];
@@ -66,34 +66,34 @@
   v3 = [(CarAlternateRouteFocusItem *)&v9 description];
   v4 = NSStringFromCGRect(self->_frame);
   WeakRetained = objc_loadWeakRetained(&self->_route);
-  v6 = [WeakRetained name];
-  v7 = [NSString stringWithFormat:@"%@ (%@, %@)", v3, v4, v6];
+  name = [WeakRetained name];
+  v7 = [NSString stringWithFormat:@"%@ (%@, %@)", v3, v4, name];
 
   return v7;
 }
 
-- (CarAlternateRouteFocusItem)initWithRoute:(id)a3 containingView:(id)a4 frame:(CGRect)a5 delegate:(id)a6
+- (CarAlternateRouteFocusItem)initWithRoute:(id)route containingView:(id)view frame:(CGRect)frame delegate:(id)delegate
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  routeCopy = route;
+  viewCopy = view;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = CarAlternateRouteFocusItem;
   v16 = [(CarAlternateRouteFocusItem *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeWeak(&v16->_route, v13);
-    objc_storeWeak(&v17->_containingView, v14);
+    objc_storeWeak(&v16->_route, routeCopy);
+    objc_storeWeak(&v17->_containingView, viewCopy);
     v17->_frame.origin.x = x;
     v17->_frame.origin.y = y;
     v17->_frame.size.width = width;
     v17->_frame.size.height = height;
-    objc_storeWeak(&v17->_delegate, v15);
+    objc_storeWeak(&v17->_delegate, delegateCopy);
   }
 
   return v17;

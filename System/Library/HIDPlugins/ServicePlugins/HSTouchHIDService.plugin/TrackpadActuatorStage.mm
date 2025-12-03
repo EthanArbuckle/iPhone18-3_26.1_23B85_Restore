@@ -1,49 +1,49 @@
 @interface TrackpadActuatorStage
 - (BOOL)supportsActuationLimits;
-- (TrackpadActuatorStage)initWithDevice:(__MTDevice *)a3;
+- (TrackpadActuatorStage)initWithDevice:(__MTDevice *)device;
 - (id)fetchActuatorLimits;
 - (int)_openActuatorDevice;
-- (unsigned)getActuationOptions:(int)a3 quietClick:(BOOL)a4;
-- (void)_handleActuationEvent:(id)a3;
-- (void)_handleCancelEvent:(id)a3;
-- (void)_handleGetDebugEvent:(id)a3;
-- (void)_handleHSTNotificationEvent:(id)a3;
-- (void)_handleHostStateEvent:(id)a3;
-- (void)_handleSetPropertyEvent:(id)a3;
+- (unsigned)getActuationOptions:(int)options quietClick:(BOOL)click;
+- (void)_handleActuationEvent:(id)event;
+- (void)_handleCancelEvent:(id)event;
+- (void)_handleGetDebugEvent:(id)event;
+- (void)_handleHSTNotificationEvent:(id)event;
+- (void)_handleHostStateEvent:(id)event;
+- (void)_handleSetPropertyEvent:(id)event;
 - (void)_openActuatorDevice;
 - (void)_updateHostClickControl;
 - (void)dealloc;
-- (void)handleActMatching:(unsigned int)a3;
-- (void)handleConsume:(id)a3;
-- (void)handleGetPropertyEvent:(id)a3;
-- (void)handlePointerSettings:(id)a3;
-- (void)setActuationOptions:(unsigned int)a3;
-- (void)setQueue:(id)a3;
+- (void)handleActMatching:(unsigned int)matching;
+- (void)handleConsume:(id)consume;
+- (void)handleGetPropertyEvent:(id)event;
+- (void)handlePointerSettings:(id)settings;
+- (void)setActuationOptions:(unsigned int)options;
+- (void)setQueue:(id)queue;
 @end
 
 @implementation TrackpadActuatorStage
 
-- (void)setActuationOptions:(unsigned int)a3
+- (void)setActuationOptions:(unsigned int)options
 {
-  if ([(TrackpadActuatorStage *)self actuationOptions]!= a3)
+  if ([(TrackpadActuatorStage *)self actuationOptions]!= options)
   {
-    self->_actuationOptions = a3;
+    self->_actuationOptions = options;
     actDevice = self->_actDevice;
-    v6 = [(TrackpadActuatorStage *)self actuationOptions];
+    actuationOptions = [(TrackpadActuatorStage *)self actuationOptions];
 
-    _MTActuatorSetFirmwareClicks(actDevice, v6);
+    _MTActuatorSetFirmwareClicks(actDevice, actuationOptions);
   }
 }
 
-- (TrackpadActuatorStage)initWithDevice:(__MTDevice *)a3
+- (TrackpadActuatorStage)initWithDevice:(__MTDevice *)device
 {
   v17.receiver = self;
   v17.super_class = TrackpadActuatorStage;
-  v7 = [(HSStage *)&v17 init:a3];
+  v7 = [(HSStage *)&v17 init:device];
   v8 = v7;
   if (v7)
   {
-    v7->_mtDevice = a3;
+    v7->_mtDevice = device;
     v7->_actDevice = 0;
     v7->_actuatorEntryID = 0;
     v7->_actuationsEnabled = 0;
@@ -55,9 +55,9 @@
     actuationRequestHistory = v8->_actuationRequestHistory;
     v8->_actuationRequestHistory = v9;
 
-    v11 = [(TrackpadActuatorStage *)v8 fetchActuatorLimits];
+    fetchActuatorLimits = [(TrackpadActuatorStage *)v8 fetchActuatorLimits];
     actuatorLimits = v8->_actuatorLimits;
-    v8->_actuatorLimits = v11;
+    v8->_actuatorLimits = fetchActuatorLimits;
 
     v13 = [[ActuationManager alloc] initWithService:MTActuatorGetService()];
     actuationManager = v8->_actuationManager;
@@ -73,15 +73,15 @@
 - (void)dealloc
 {
   *buf = 138412290;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_debug_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEBUG, "~%@", buf, 0xCu);
 }
 
-- (void)handleConsume:(id)a3
+- (void)handleConsume:(id)consume
 {
-  v4 = a3;
+  consumeCopy = consume;
   v5 = mach_continuous_time();
-  v6 = v4;
+  v6 = consumeCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -224,9 +224,9 @@
   }
 }
 
-- (void)_handleCancelEvent:(id)a3
+- (void)_handleCancelEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   actuatorMatchedIterator = self->_actuatorMatchedIterator;
   if (actuatorMatchedIterator)
   {
@@ -245,12 +245,12 @@
   self->_actDevice = 0;
   v7.receiver = self;
   v7.super_class = TrackpadActuatorStage;
-  [(HSStage *)&v7 handleConsume:v4];
+  [(HSStage *)&v7 handleConsume:eventCopy];
 }
 
-- (void)_handleActuationEvent:(id)a3
+- (void)_handleActuationEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (!self->_actuationsEnabled)
   {
     MTDeviceGetDeviceID();
@@ -269,7 +269,7 @@
   v5 = MTLoggingPlugin();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = v4[2];
+    v6 = eventCopy[2];
     *buf = 67109376;
     *v24 = v6;
     *&v24[4] = 2048;
@@ -279,25 +279,25 @@
 
   actuationRequestHistory = self->_actuationRequestHistory;
   v25[0] = @"WaveformId";
-  v8 = [NSNumber numberWithInt:v4[2]];
+  v8 = [NSNumber numberWithInt:eventCopy[2]];
   v25[1] = @"Strength";
   v26[0] = v8;
-  v9 = [NSNumber numberWithInt:v4[3]];
+  v9 = [NSNumber numberWithInt:eventCopy[3]];
   v26[1] = v9;
   v10 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:2];
   [(HSTCircularBuffer *)actuationRequestHistory appendItem:v10];
 
   kdebug_trace();
-  v11 = [(TrackpadActuatorStage *)self actuationManager];
-  v12 = v4[2];
-  v13 = v4[4];
-  v14 = v4[5];
+  actuationManager = [(TrackpadActuatorStage *)self actuationManager];
+  v12 = eventCopy[2];
+  v13 = eventCopy[4];
+  v14 = eventCopy[5];
   actDevice = self->_actDevice;
-  v16 = [(TrackpadActuatorStage *)self actuatorLimits];
-  v17 = [(TrackpadActuatorStage *)self actuationOptions];
+  actuatorLimits = [(TrackpadActuatorStage *)self actuatorLimits];
+  actuationOptions = [(TrackpadActuatorStage *)self actuationOptions];
   LODWORD(v18) = v13;
   LODWORD(v19) = v14;
-  v20 = [v11 actuateForID:v12 strength:actDevice timeDilation:v16 device:v17 actuatorLimits:v18 options:v19];
+  v20 = [actuationManager actuateForID:v12 strength:actDevice timeDilation:actuatorLimits device:actuationOptions actuatorLimits:v18 options:v19];
 
   if (v20)
   {
@@ -305,7 +305,7 @@
     v21 = MTLoggingPlugin();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v22 = v4[2];
+      v22 = eventCopy[2];
       *buf = 67109632;
       *v24 = v22;
       *&v24[4] = 1024;
@@ -319,24 +319,24 @@ LABEL_10:
   }
 }
 
-- (void)handlePointerSettings:(id)a3
+- (void)handlePointerSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v5[1];
+    v4 = settingsCopy[1];
     -[TrackpadActuatorStage setActuationOptions:](self, "setActuationOptions:", -[TrackpadActuatorStage getActuationOptions:quietClick:](self, "getActuationOptions:quietClick:", [v4 clickStrength], objc_msgSend(v4, "quietClick")));
   }
 }
 
-- (void)_handleHSTNotificationEvent:(id)a3
+- (void)_handleHSTNotificationEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 notification];
-  if (v5 <= 10)
+  eventCopy = event;
+  notification = [eventCopy notification];
+  if (notification <= 10)
   {
-    if (v5 != 1 && v5 != 8)
+    if (notification != 1 && notification != 8)
     {
       goto LABEL_9;
     }
@@ -346,12 +346,12 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (v5 == 11)
+  if (notification == 11)
   {
     goto LABEL_8;
   }
 
-  if (v5 == 13)
+  if (notification == 13)
   {
     self->_actuationsEnabled = MTActuatorGetSystemActuationsEnabled();
   }
@@ -359,15 +359,15 @@ LABEL_8:
 LABEL_9:
   v6.receiver = self;
   v6.super_class = TrackpadActuatorStage;
-  [(HSStage *)&v6 handleConsume:v4];
+  [(HSStage *)&v6 handleConsume:eventCopy];
 }
 
-- (void)handleGetPropertyEvent:(id)a3
+- (void)handleGetPropertyEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = (v4 + 2);
-  v7 = *(v4 + 39);
+  eventCopy = event;
+  v5 = eventCopy;
+  v6 = (eventCopy + 2);
+  v7 = *(eventCopy + 39);
   if ((v7 & 0x80000000) == 0)
   {
     if (v7 != 14)
@@ -375,7 +375,7 @@ LABEL_9:
       goto LABEL_43;
     }
 
-    if (*v6 != 0x726F746175746341 || *(v4 + 22) != 0x7374696D694C726FLL)
+    if (*v6 != 0x726F746175746341 || *(eventCopy + 22) != 0x7374696D694C726FLL)
     {
       goto LABEL_43;
     }
@@ -383,18 +383,18 @@ LABEL_9:
     goto LABEL_28;
   }
 
-  if (v4[3] == 14 && **v6 == 0x726F746175746341 && *(*v6 + 6) == 0x7374696D694C726FLL)
+  if (eventCopy[3] == 14 && **v6 == 0x726F746175746341 && *(*v6 + 6) == 0x7374696D694C726FLL)
   {
 LABEL_28:
-    v21 = [(TrackpadActuatorStage *)self actuatorLimits];
-    v19 = v5[5];
-    v5[5] = v21;
+    actuatorLimits = [(TrackpadActuatorStage *)self actuatorLimits];
+    actuationManager = v5[5];
+    v5[5] = actuatorLimits;
 LABEL_42:
 
     goto LABEL_43;
   }
 
-  v10 = v4[3];
+  v10 = eventCopy[3];
   if (v10 != 25)
   {
     if (v10 != 27)
@@ -414,11 +414,11 @@ LABEL_42:
       goto LABEL_43;
     }
 
-    v19 = [(TrackpadActuatorStage *)self actuationManager];
-    v20 = [v19 productionPlaylistPlist];
+    actuationManager = [(TrackpadActuatorStage *)self actuationManager];
+    productionPlaylistPlist = [actuationManager productionPlaylistPlist];
 LABEL_41:
     v30 = v5[5];
-    v5[5] = v20;
+    v5[5] = productionPlaylistPlist;
 
     goto LABEL_42;
   }
@@ -430,8 +430,8 @@ LABEL_41:
   v26 = *(v22 + 24);
   if (v23 == 0x656469727265764FLL && v24 == 0x6F69746175746341 && v25 == 0x73696C79616C506ELL && v26 == 116)
   {
-    v19 = [(TrackpadActuatorStage *)self actuationManager];
-    v20 = [v19 overridePlaylistPlist];
+    actuationManager = [(TrackpadActuatorStage *)self actuationManager];
+    productionPlaylistPlist = [actuationManager overridePlaylistPlist];
     goto LABEL_41;
   }
 
@@ -441,11 +441,11 @@ LABEL_43:
   [(HSStage *)&v31 handleConsume:v5];
 }
 
-- (void)_handleSetPropertyEvent:(id)a3
+- (void)_handleSetPropertyEvent:(id)event
 {
-  v26 = a3;
+  eventCopy = event;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  v5 = *(v26 + 5);
+  v5 = *(eventCopy + 5);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -464,8 +464,8 @@ LABEL_43:
       goto LABEL_11;
     }
 
-    v7 = (v26 + 16);
-    v8 = v26[39];
+    v7 = (eventCopy + 16);
+    v8 = eventCopy[39];
     if ((v8 & 0x80000000) == 0)
     {
       if (v8 != 15)
@@ -476,7 +476,7 @@ LABEL_43:
       goto LABEL_29;
     }
 
-    v10 = *(v26 + 3);
+    v10 = *(eventCopy + 3);
     if (v10 == 15)
     {
       v7 = *v7;
@@ -488,12 +488,12 @@ LABEL_29:
         goto LABEL_11;
       }
 
-      v9 = [(TrackpadActuatorStage *)self actuationManager];
+      actuationManager = [(TrackpadActuatorStage *)self actuationManager];
       actDevice = self->_actDevice;
-      v23 = [(TrackpadActuatorStage *)self actuatorLimits];
+      actuatorLimits = [(TrackpadActuatorStage *)self actuatorLimits];
       LODWORD(v24) = 1.0;
       LODWORD(v25) = 1.0;
-      [v9 actuateForDictionary:v5 strength:actDevice timeDilation:v23 device:0 actuatorLimits:v24 options:v25];
+      [actuationManager actuateForDictionary:v5 strength:actDevice timeDilation:actuatorLimits device:0 actuatorLimits:v24 options:v25];
 
       goto LABEL_10;
     }
@@ -515,13 +515,13 @@ LABEL_29:
       goto LABEL_11;
     }
 
-    v9 = [(TrackpadActuatorStage *)self actuationManager];
-    [v9 setOverridePlaylistPlist:v5];
+    actuationManager = [(TrackpadActuatorStage *)self actuationManager];
+    [actuationManager setOverridePlaylistPlist:v5];
   }
 
   else
   {
-    v9 = v5;
+    actuationManager = v5;
     v5 = 0;
   }
 
@@ -530,10 +530,10 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)_handleGetDebugEvent:(id)a3
+- (void)_handleGetDebugEvent:(id)event
 {
-  v4 = a3;
-  if (!v4)
+  eventCopy = event;
+  if (!eventCopy)
   {
     v15 = +[NSAssertionHandler currentHandler];
     v16 = [NSString stringWithUTF8String:"[TrackpadActuatorStage _handleGetDebugEvent:]"];
@@ -546,9 +546,9 @@ LABEL_11:
   v21[0] = NSStringFromClass(v6);
   v20[1] = @"ActuatorLimits";
   v17 = v21[0];
-  v18 = [(TrackpadActuatorStage *)self actuatorLimits];
-  v7 = [v18 dictionary];
-  v21[1] = v7;
+  actuatorLimits = [(TrackpadActuatorStage *)self actuatorLimits];
+  dictionary = [actuatorLimits dictionary];
+  v21[1] = dictionary;
   v20[2] = @"ActuationOptions";
   v8 = [NSNumber numberWithUnsignedInt:[(TrackpadActuatorStage *)self actuationOptions]];
   v21[2] = v8;
@@ -559,28 +559,28 @@ LABEL_11:
   v10 = [NSNumber numberWithUnsignedChar:self->_displayState];
   v21[4] = v10;
   v20[5] = @"ActuationRequests";
-  v11 = [(HSTCircularBuffer *)self->_actuationRequestHistory items];
-  v21[5] = v11;
+  items = [(HSTCircularBuffer *)self->_actuationRequestHistory items];
+  v21[5] = items;
   v20[6] = @"ActuationManager";
-  v12 = [(TrackpadActuatorStage *)self actuationManager];
-  v13 = [v12 debug];
-  v21[6] = v13;
+  actuationManager = [(TrackpadActuatorStage *)self actuationManager];
+  debug = [actuationManager debug];
+  v21[6] = debug;
   v14 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:7];
 
-  *(v4 + 16) = 1;
-  [*(v4 + 3) addObject:v14];
+  *(eventCopy + 16) = 1;
+  [*(eventCopy + 3) addObject:v14];
   v19.receiver = self;
   v19.super_class = TrackpadActuatorStage;
-  [(HSStage *)&v19 handleConsume:v4];
+  [(HSStage *)&v19 handleConsume:eventCopy];
 }
 
-- (void)_handleHostStateEvent:(id)a3
+- (void)_handleHostStateEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy)
   {
-    if ([v4 displayOff])
+    if ([eventCopy displayOff])
     {
       v6 = 1;
     }
@@ -622,15 +622,15 @@ LABEL_11:
   v4 = CFProperty;
   if (CFProperty)
   {
-    v5 = [CFProperty BOOLValue];
+    bOOLValue = [CFProperty BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (void)_updateHostClickControl
@@ -706,19 +706,19 @@ LABEL_9:
   return v4;
 }
 
-- (unsigned)getActuationOptions:(int)a3 quietClick:(BOOL)a4
+- (unsigned)getActuationOptions:(int)options quietClick:(BOOL)click
 {
-  if (a3 > 2)
+  if (options > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = dword_D5170[a3];
+    v4 = dword_D5170[options];
   }
 
-  if (a4)
+  if (click)
   {
     return v4 | 8;
   }
@@ -750,9 +750,9 @@ LABEL_9:
   return v3;
 }
 
-- (void)handleActMatching:(unsigned int)a3
+- (void)handleActMatching:(unsigned int)matching
 {
-  v5 = IOIteratorNext(a3);
+  v5 = IOIteratorNext(matching);
   if (v5)
   {
     v6 = v5;
@@ -766,7 +766,7 @@ LABEL_9:
       }
 
       IOObjectRelease(v6);
-      v6 = IOIteratorNext(a3);
+      v6 = IOIteratorNext(matching);
     }
 
     while (v6);
@@ -820,10 +820,10 @@ LABEL_15:
   }
 }
 
-- (void)setQueue:(id)a3
+- (void)setQueue:(id)queue
 {
-  v4 = a3;
-  if (v4)
+  queueCopy = queue;
+  if (queueCopy)
   {
     if (MTDeviceSupportsActuation())
     {
@@ -857,7 +857,7 @@ LABEL_15:
           }
         }
 
-        IONotificationPortSetDispatchQueue(self->_actuatorMatchedNotifierPortRef, v4);
+        IONotificationPortSetDispatchQueue(self->_actuatorMatchedNotifierPortRef, queueCopy);
         if (v6)
         {
           CFRelease(v6);
@@ -888,13 +888,13 @@ LABEL_15:
   }
 
   queue = self->_queue;
-  self->_queue = v4;
+  self->_queue = queueCopy;
 }
 
 - (void)_openActuatorDevice
 {
   v2[0] = 67109120;
-  v2[1] = a1;
+  v2[1] = self;
   _os_log_error_impl(&dword_0, a2, OS_LOG_TYPE_ERROR, "Failed to open actuator - 0x%08x", v2, 8u);
 }
 

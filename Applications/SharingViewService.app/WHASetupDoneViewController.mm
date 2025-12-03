@@ -1,16 +1,16 @@
 @interface WHASetupDoneViewController
-- (void)handleActionButton:(id)a3;
-- (void)handleDismissButton:(id)a3;
-- (void)handleReportBugButton:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)handleActionButton:(id)button;
+- (void)handleDismissButton:(id)button;
+- (void)handleReportBugButton:(id)button;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WHASetupDoneViewController
 
-- (void)handleReportBugButton:(id)a3
+- (void)handleReportBugButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   v25[0] = @"Classification";
   v25[1] = @"ComponentID";
   v26[0] = @"Serious Bug";
@@ -82,9 +82,9 @@
   }
 }
 
-- (void)handleDismissButton:(id)a3
+- (void)handleDismissButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BF408 <= 30 && (dword_1001BF408 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -93,9 +93,9 @@
   [self->super._mainController dismiss:5];
 }
 
-- (void)handleActionButton:(id)a3
+- (void)handleActionButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BF408 <= 30 && (dword_1001BF408 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -123,9 +123,9 @@
   [mainController dismiss:v6 completion:v9];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BF408 <= 30 && (dword_1001BF408 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -133,12 +133,12 @@
 
   v5.receiver = self;
   v5.super_class = WHASetupDoneViewController;
-  [(WHASetupDoneViewController *)&v5 viewDidDisappear:v3];
+  [(WHASetupDoneViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BF408 <= 30 && (dword_1001BF408 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -146,7 +146,7 @@
 
   v30.receiver = self;
   v30.super_class = WHASetupDoneViewController;
-  [(SVSBaseViewController *)&v30 viewWillAppear:v3];
+  [(SVSBaseViewController *)&v30 viewWillAppear:appearCopy];
   v12 = *(&self->_infoLabel + 1);
   if (v12 <= 301004)
   {
@@ -236,8 +236,8 @@ LABEL_22:
   }
 
 LABEL_21:
-  v25 = [(SVSBaseViewController *)self containerView];
-  [v25 setSwipeDismissible:1];
+  containerView = [(SVSBaseViewController *)self containerView];
+  [containerView setSwipeDismissible:1];
 }
 
 @end

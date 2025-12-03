@@ -1,30 +1,30 @@
 @interface SBPulseTransitionSwitcherModifier
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3;
-- (SBPulseTransitionSwitcherModifier)initWithTransitionID:(id)a3 appLayout:(id)a4;
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3;
-- (double)scaleForIndex:(unint64_t)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleTimerEvent:(id)a3;
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space;
+- (SBPulseTransitionSwitcherModifier)initWithTransitionID:(id)d appLayout:(id)layout;
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout;
+- (double)scaleForIndex:(unint64_t)index;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleTimerEvent:(id)event;
 - (id)topMostLayoutElements;
 - (id)transitionWillUpdate;
 @end
 
 @implementation SBPulseTransitionSwitcherModifier
 
-- (SBPulseTransitionSwitcherModifier)initWithTransitionID:(id)a3 appLayout:(id)a4
+- (SBPulseTransitionSwitcherModifier)initWithTransitionID:(id)d appLayout:(id)layout
 {
-  v8 = a4;
+  layoutCopy = layout;
   v11.receiver = self;
   v11.super_class = SBPulseTransitionSwitcherModifier;
-  v9 = [(SBTransitionSwitcherModifier *)&v11 initWithTransitionID:a3];
+  v9 = [(SBTransitionSwitcherModifier *)&v11 initWithTransitionID:d];
   if (v9)
   {
-    if (!v8)
+    if (!layoutCopy)
     {
       [SBPulseTransitionSwitcherModifier initWithTransitionID:a2 appLayout:v9];
     }
 
-    objc_storeStrong(&v9->_appLayout, a4);
+    objc_storeStrong(&v9->_appLayout, layout);
   }
 
   return v9;
@@ -34,29 +34,29 @@
 {
   v11.receiver = self;
   v11.super_class = SBPulseTransitionSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v11 transitionWillUpdate];
+  transitionWillUpdate = [(SBTransitionSwitcherModifier *)&v11 transitionWillUpdate];
   self->_shouldScaleIn = 1;
-  v4 = [(SBPulseTransitionSwitcherModifier *)self switcherSettings];
-  v5 = [v4 animationSettings];
-  [v5 pulseSecondStageDelay];
+  switcherSettings = [(SBPulseTransitionSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  [animationSettings pulseSecondStageDelay];
   v7 = v6;
 
   v8 = [[SBTimerEventSwitcherEventResponse alloc] initWithDelay:0 validator:@"Pulse" reason:v7];
-  v9 = SBAppendSwitcherModifierResponse(v8, v3);
+  v9 = SBAppendSwitcherModifierResponse(v8, transitionWillUpdate);
 
   return v9;
 }
 
-- (id)handleTimerEvent:(id)a3
+- (id)handleTimerEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBPulseTransitionSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBTransitionSwitcherModifier *)&v10 handleTimerEvent:v4];
-  v6 = [v4 reason];
+  eventCopy = event;
+  v5 = [(SBTransitionSwitcherModifier *)&v10 handleTimerEvent:eventCopy];
+  reason = [eventCopy reason];
 
-  LODWORD(v4) = [v6 isEqualToString:@"Pulse"];
-  if (v4)
+  LODWORD(eventCopy) = [reason isEqualToString:@"Pulse"];
+  if (eventCopy)
   {
     self->_shouldScaleIn = 0;
     v7 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:4 updateMode:3];
@@ -68,7 +68,7 @@
   return v5;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
   v15.receiver = self;
   v15.super_class = SBPulseTransitionSwitcherModifier;
@@ -76,15 +76,15 @@
   v6 = v5;
   if (self->_shouldScaleIn)
   {
-    v7 = [(SBPulseTransitionSwitcherModifier *)self appLayouts];
-    v8 = [v7 objectAtIndex:a3];
+    appLayouts = [(SBPulseTransitionSwitcherModifier *)self appLayouts];
+    v8 = [appLayouts objectAtIndex:index];
     v9 = [v8 isEqual:self->_appLayout];
 
     if (v9)
     {
-      v10 = [(SBPulseTransitionSwitcherModifier *)self switcherSettings];
-      v11 = [v10 animationSettings];
-      [v11 pulseScale];
+      switcherSettings = [(SBPulseTransitionSwitcherModifier *)self switcherSettings];
+      animationSettings = [switcherSettings animationSettings];
+      [animationSettings pulseScale];
       v13 = v12;
 
       return v6 * v13;
@@ -94,24 +94,24 @@
   return v6;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v10.receiver = self;
   v10.super_class = SBPulseTransitionSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v10 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v10 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBPulseTransitionSwitcherModifier *)self switcherSettings];
-  v7 = [v6 animationSettings];
-  v8 = [v7 pulseScaleSettings];
-  [v5 setLayoutSettings:v8];
+  switcherSettings = [(SBPulseTransitionSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  pulseScaleSettings = [animationSettings pulseScaleSettings];
+  [v5 setLayoutSettings:pulseScaleSettings];
 
   return v5;
 }
 
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout
 {
-  if (self->_appLayout == a3)
+  if (self->_appLayout == layout)
   {
 
     return SBSwitcherAsyncRenderingAttributesMake(0, 0);
@@ -127,10 +127,10 @@
   }
 }
 
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space
 {
-  v5 = [(SBPulseTransitionSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBPulseTransitionSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:space];
 
   if ([v6 isEqual:self->_appLayout])
   {
@@ -141,7 +141,7 @@
   {
     v9.receiver = self;
     v9.super_class = SBPulseTransitionSwitcherModifier;
-    v7 = [(SBPulseTransitionSwitcherModifier *)&v9 shouldUseAnchorPointToPinLayoutRolesToSpace:a3];
+    v7 = [(SBPulseTransitionSwitcherModifier *)&v9 shouldUseAnchorPointToPinLayoutRolesToSpace:space];
   }
 
   return v7;
@@ -151,8 +151,8 @@
 {
   v6.receiver = self;
   v6.super_class = SBPulseTransitionSwitcherModifier;
-  v3 = [(SBPulseTransitionSwitcherModifier *)&v6 topMostLayoutElements];
-  v4 = [v3 sb_arrayByInsertingOrMovingObject:self->_appLayout toIndex:0];
+  topMostLayoutElements = [(SBPulseTransitionSwitcherModifier *)&v6 topMostLayoutElements];
+  v4 = [topMostLayoutElements sb_arrayByInsertingOrMovingObject:self->_appLayout toIndex:0];
 
   return v4;
 }

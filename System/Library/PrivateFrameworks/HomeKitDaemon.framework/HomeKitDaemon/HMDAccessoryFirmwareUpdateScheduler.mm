@@ -7,7 +7,7 @@
 - (BOOL)needsToScheduleStaging;
 - (BOOL)needsToStop;
 - (HMDAccessoryFirmwareUpdateProfile)updateProfile;
-- (HMDAccessoryFirmwareUpdateScheduler)initWithAccessory:(id)a3 firmwareUpdateSession:(id)a4 wingman:(id)a5 workQueue:(id)a6;
+- (HMDAccessoryFirmwareUpdateScheduler)initWithAccessory:(id)accessory firmwareUpdateSession:(id)session wingman:(id)wingman workQueue:(id)queue;
 - (HMDAccessoryFirmwareUpdateSession)updateSession;
 - (HMDHAPAccessory)accessory;
 - (NSString)description;
@@ -17,7 +17,7 @@
 - (void)_defer;
 - (void)_handleSchedulingConditionChanged;
 - (void)_invalidateExistingScheduling;
-- (void)_logDebugStates:(const char *)a3;
+- (void)_logDebugStates:(const char *)states;
 - (void)_registerForNotifications;
 - (void)_removeUpdatePolicy;
 - (void)_scheduleCurrentTask;
@@ -27,17 +27,17 @@
 - (void)_stop;
 - (void)_stopDeferCheckTimer;
 - (void)_stopInitialDelayTimer;
-- (void)_taskCanRunInCurrentDevice:(id)a3;
+- (void)_taskCanRunInCurrentDevice:(id)device;
 - (void)dealloc;
-- (void)handleAccessoryReachabilityChanged:(id)a3;
-- (void)handleApplyNotReadyReasonsChanged:(id)a3;
-- (void)handleBridgeUpdate:(id)a3;
-- (void)handlePolicyStatusChange:(id)a3;
-- (void)handlePrimaryResidentChanged:(id)a3;
-- (void)handleStagingNotReadyReasonsChanged:(id)a3;
-- (void)handleUpdateStateChanged:(id)a3;
+- (void)handleAccessoryReachabilityChanged:(id)changed;
+- (void)handleApplyNotReadyReasonsChanged:(id)changed;
+- (void)handleBridgeUpdate:(id)update;
+- (void)handlePolicyStatusChange:(id)change;
+- (void)handlePrimaryResidentChanged:(id)changed;
+- (void)handleStagingNotReadyReasonsChanged:(id)changed;
+- (void)handleUpdateStateChanged:(id)changed;
 - (void)removeUpdatePolicy;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDAccessoryFirmwareUpdateScheduler
@@ -56,15 +56,15 @@
   return WeakRetained;
 }
 
-- (void)handleBridgeUpdate:(id)a3
+- (void)handleBridgeUpdate:(id)update
 {
-  v4 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__HMDAccessoryFirmwareUpdateScheduler_handleBridgeUpdate___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __58__HMDAccessoryFirmwareUpdateScheduler_handleBridgeUpdate___block_invoke(uint64_t a1)
@@ -96,13 +96,13 @@ void __58__HMDAccessoryFirmwareUpdateScheduler_handleBridgeUpdate___block_invoke
 
 - (void)_removeUpdatePolicy
 {
-  v3 = [(HMDAccessoryFirmwareUpdateScheduler *)self updatePolicy];
+  updatePolicy = [(HMDAccessoryFirmwareUpdateScheduler *)self updatePolicy];
 
-  if (v3)
+  if (updatePolicy)
   {
-    v4 = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
-    v5 = [v4 notificationCenter];
-    [v5 removeObserver:self name:@"HMDAccessoryFirmwareUpdatePolicyStatusChangedNotification" object:0];
+    wingman = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
+    notificationCenter = [wingman notificationCenter];
+    [notificationCenter removeObserver:self name:@"HMDAccessoryFirmwareUpdatePolicyStatusChangedNotification" object:0];
 
     [(HMDAccessoryFirmwareUpdateScheduler *)self setUpdatePolicy:0];
   }
@@ -111,37 +111,37 @@ void __58__HMDAccessoryFirmwareUpdateScheduler_handleBridgeUpdate___block_invoke
 - (void)_createUpdatePolicy
 {
   [(HMDAccessoryFirmwareUpdateScheduler *)self _removeUpdatePolicy];
-  v3 = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
-  v4 = [(HMDAccessoryFirmwareUpdateScheduler *)self accessory];
-  v5 = [(HMDAccessoryFirmwareUpdateScheduler *)self updateSession];
-  v6 = [v5 sessionState];
-  v7 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
-  v8 = [v3 policyForAccessory:v4 sessionState:v6 workQueue:v7];
+  wingman = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
+  accessory = [(HMDAccessoryFirmwareUpdateScheduler *)self accessory];
+  updateSession = [(HMDAccessoryFirmwareUpdateScheduler *)self updateSession];
+  sessionState = [updateSession sessionState];
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  v8 = [wingman policyForAccessory:accessory sessionState:sessionState workQueue:workQueue];
   [(HMDAccessoryFirmwareUpdateScheduler *)self setUpdatePolicy:v8];
 
-  v9 = [(HMDAccessoryFirmwareUpdateScheduler *)self updatePolicy];
+  updatePolicy = [(HMDAccessoryFirmwareUpdateScheduler *)self updatePolicy];
 
-  if (v9)
+  if (updatePolicy)
   {
-    v12 = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
-    v10 = [v12 notificationCenter];
-    v11 = [(HMDAccessoryFirmwareUpdateScheduler *)self updatePolicy];
-    [v10 addObserver:self selector:sel_handlePolicyStatusChange_ name:@"HMDAccessoryFirmwareUpdatePolicyStatusChangedNotification" object:v11];
+    wingman2 = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
+    notificationCenter = [wingman2 notificationCenter];
+    updatePolicy2 = [(HMDAccessoryFirmwareUpdateScheduler *)self updatePolicy];
+    [notificationCenter addObserver:self selector:sel_handlePolicyStatusChange_ name:@"HMDAccessoryFirmwareUpdatePolicyStatusChangedNotification" object:updatePolicy2];
   }
 }
 
-- (void)handlePolicyStatusChange:(id)a3
+- (void)handlePolicyStatusChange:(id)change
 {
-  v4 = a3;
-  v5 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  changeCopy = change;
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__HMDAccessoryFirmwareUpdateScheduler_handlePolicyStatusChange___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changeCopy;
+  selfCopy = self;
+  v6 = changeCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __64__HMDAccessoryFirmwareUpdateScheduler_handlePolicyStatusChange___block_invoke(uint64_t a1)
@@ -200,42 +200,42 @@ void __64__HMDAccessoryFirmwareUpdateScheduler_handlePolicyStatusChange___block_
 
 - (void)removeUpdatePolicy
 {
-  v3 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__HMDAccessoryFirmwareUpdateScheduler_removeUpdatePolicy__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  fireCopy = fire;
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDAccessoryFirmwareUpdateScheduler *)self initialDelayTimer];
+  initialDelayTimer = [(HMDAccessoryFirmwareUpdateScheduler *)self initialDelayTimer];
 
-  if (v6 == v4)
+  if (initialDelayTimer == fireCopy)
   {
     [(HMDAccessoryFirmwareUpdateScheduler *)self _scheduleCurrentTaskBackgroundRun];
   }
 
   else
   {
-    v7 = [(HMDAccessoryFirmwareUpdateScheduler *)self deferCheckTimer];
-    v8 = v7;
-    if (v7 == v4)
+    deferCheckTimer = [(HMDAccessoryFirmwareUpdateScheduler *)self deferCheckTimer];
+    v8 = deferCheckTimer;
+    if (deferCheckTimer == fireCopy)
     {
-      v9 = [(HMDAccessoryFirmwareUpdateScheduler *)self backgroundScheduler];
-      v10 = [v9 shouldDefer];
+      backgroundScheduler = [(HMDAccessoryFirmwareUpdateScheduler *)self backgroundScheduler];
+      shouldDefer = [backgroundScheduler shouldDefer];
 
-      if (v10)
+      if (shouldDefer)
       {
         v11 = objc_autoreleasePoolPush();
-        v12 = self;
+        selfCopy = self;
         v13 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
@@ -246,7 +246,7 @@ void __64__HMDAccessoryFirmwareUpdateScheduler_handlePolicyStatusChange___block_
         }
 
         objc_autoreleasePoolPop(v11);
-        [(HMDAccessoryFirmwareUpdateScheduler *)v12 _defer];
+        [(HMDAccessoryFirmwareUpdateScheduler *)selfCopy _defer];
       }
     }
 
@@ -260,11 +260,11 @@ void __64__HMDAccessoryFirmwareUpdateScheduler_handlePolicyStatusChange___block_
 
 - (void)_stopInitialDelayTimer
 {
-  v3 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDAccessoryFirmwareUpdateScheduler *)self initialDelayTimer];
-  [v4 cancel];
+  initialDelayTimer = [(HMDAccessoryFirmwareUpdateScheduler *)self initialDelayTimer];
+  [initialDelayTimer cancel];
 
   [(HMDAccessoryFirmwareUpdateScheduler *)self setInitialDelayTimer:0];
 }
@@ -272,117 +272,117 @@ void __64__HMDAccessoryFirmwareUpdateScheduler_handlePolicyStatusChange___block_
 - (void)_startTaskInitialDelayTimer
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = HMFGetLogIdentifier();
-    v8 = [(HMDAccessoryFirmwareUpdateScheduler *)v5 currentTask];
+    currentTask = [(HMDAccessoryFirmwareUpdateScheduler *)selfCopy currentTask];
     v17 = 138543618;
     v18 = v7;
     v19 = 2112;
-    v20 = v8;
+    v20 = currentTask;
     _os_log_impl(&dword_229538000, v6, OS_LOG_TYPE_INFO, "%{public}@Starting initial delay timer for task %@", &v17, 0x16u);
   }
 
   objc_autoreleasePoolPop(v4);
-  v9 = [(HMDAccessoryFirmwareUpdateScheduler *)v5 wingman];
-  v10 = [(HMDAccessoryFirmwareUpdateScheduler *)v5 currentTask];
-  [v10 initialDelay];
-  v11 = [v9 newInitialDelayTimerWithDelay:1 options:?];
-  [(HMDAccessoryFirmwareUpdateScheduler *)v5 setInitialDelayTimer:v11];
+  wingman = [(HMDAccessoryFirmwareUpdateScheduler *)selfCopy wingman];
+  currentTask2 = [(HMDAccessoryFirmwareUpdateScheduler *)selfCopy currentTask];
+  [currentTask2 initialDelay];
+  v11 = [wingman newInitialDelayTimerWithDelay:1 options:?];
+  [(HMDAccessoryFirmwareUpdateScheduler *)selfCopy setInitialDelayTimer:v11];
 
-  v12 = [(HMDAccessoryFirmwareUpdateScheduler *)v5 initialDelayTimer];
-  [v12 setDelegate:v5];
+  initialDelayTimer = [(HMDAccessoryFirmwareUpdateScheduler *)selfCopy initialDelayTimer];
+  [initialDelayTimer setDelegate:selfCopy];
 
-  v13 = [(HMDAccessoryFirmwareUpdateScheduler *)v5 workQueue];
-  v14 = [(HMDAccessoryFirmwareUpdateScheduler *)v5 initialDelayTimer];
-  [v14 setDelegateQueue:v13];
+  workQueue2 = [(HMDAccessoryFirmwareUpdateScheduler *)selfCopy workQueue];
+  initialDelayTimer2 = [(HMDAccessoryFirmwareUpdateScheduler *)selfCopy initialDelayTimer];
+  [initialDelayTimer2 setDelegateQueue:workQueue2];
 
-  v15 = [(HMDAccessoryFirmwareUpdateScheduler *)v5 initialDelayTimer];
-  [v15 resume];
+  initialDelayTimer3 = [(HMDAccessoryFirmwareUpdateScheduler *)selfCopy initialDelayTimer];
+  [initialDelayTimer3 resume];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_stopDeferCheckTimer
 {
-  v3 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDAccessoryFirmwareUpdateScheduler *)self deferCheckTimer];
-  [v4 cancel];
+  deferCheckTimer = [(HMDAccessoryFirmwareUpdateScheduler *)self deferCheckTimer];
+  [deferCheckTimer cancel];
 
   [(HMDAccessoryFirmwareUpdateScheduler *)self setDeferCheckTimer:0];
 }
 
 - (void)_startDeferCheckTimer
 {
-  v3 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:5 options:10000.0];
   [(HMDAccessoryFirmwareUpdateScheduler *)self setDeferCheckTimer:v4];
 
-  v5 = [(HMDAccessoryFirmwareUpdateScheduler *)self deferCheckTimer];
-  [v5 setDelegate:self];
+  deferCheckTimer = [(HMDAccessoryFirmwareUpdateScheduler *)self deferCheckTimer];
+  [deferCheckTimer setDelegate:self];
 
-  v6 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
-  v7 = [(HMDAccessoryFirmwareUpdateScheduler *)self deferCheckTimer];
-  [v7 setDelegateQueue:v6];
+  workQueue2 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  deferCheckTimer2 = [(HMDAccessoryFirmwareUpdateScheduler *)self deferCheckTimer];
+  [deferCheckTimer2 setDelegateQueue:workQueue2];
 
-  v8 = [(HMDAccessoryFirmwareUpdateScheduler *)self deferCheckTimer];
-  [v8 resume];
+  deferCheckTimer3 = [(HMDAccessoryFirmwareUpdateScheduler *)self deferCheckTimer];
+  [deferCheckTimer3 resume];
 }
 
-- (void)_logDebugStates:(const char *)a3
+- (void)_logDebugStates:(const char *)states
 {
   v50 = *MEMORY[0x277D85DE8];
-  v5 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDAccessoryFirmwareUpdateScheduler *)self updateProfile];
+  updateProfile = [(HMDAccessoryFirmwareUpdateScheduler *)self updateProfile];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
-  v35 = v6;
+  v35 = updateProfile;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v32 = HMFGetLogIdentifier();
-    v33 = a3;
-    v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:a3];
-    [v6 stagingNotReadyReasons];
+    statesCopy = states;
+    v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:states];
+    [updateProfile stagingNotReadyReasons];
     v11 = HAPStagingNotReadyReasonsAsString();
-    [v6 updateNotReadyReasons];
+    [updateProfile updateNotReadyReasons];
     v12 = HAPUpdateNotReadyReasonsAsString();
-    [v6 updateState];
+    [updateProfile updateState];
     v13 = HAPFirmwareUpdateStateAsString();
-    v14 = [(HMDAccessoryFirmwareUpdateScheduler *)v8 updateSession];
-    v15 = [v14 sessionState];
-    if ((v15 - 1) > 2)
+    updateSession = [(HMDAccessoryFirmwareUpdateScheduler *)selfCopy updateSession];
+    sessionState = [updateSession sessionState];
+    if ((sessionState - 1) > 2)
     {
       v16 = @"Up-To-Date";
     }
 
     else
     {
-      v16 = off_27867DF68[v15 - 1];
+      v16 = off_27867DF68[sessionState - 1];
     }
 
     v17 = v16;
-    v18 = [(HMDAccessoryFirmwareUpdateScheduler *)v8 currentState];
-    if ((v18 - 1) > 2)
+    currentState = [(HMDAccessoryFirmwareUpdateScheduler *)selfCopy currentState];
+    if ((currentState - 1) > 2)
     {
       v19 = @"Idle";
     }
 
     else
     {
-      v19 = off_278677F30[v18 - 1];
+      v19 = off_278677F30[currentState - 1];
     }
 
     *buf = 138544898;
@@ -401,27 +401,27 @@ void __64__HMDAccessoryFirmwareUpdateScheduler_handlePolicyStatusChange___block_
     v49 = v19;
     _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_DEBUG, "%{public}@%@: Staging Not Ready Reasons = %{public}@, Apply Not Ready Reasons = %{public}@, Accessory State = %@, Session State = %@, Scheduler State = %@", buf, 0x48u);
 
-    a3 = v33;
-    v6 = v35;
+    states = statesCopy;
+    updateProfile = v35;
   }
 
   objc_autoreleasePoolPop(v7);
   v20 = objc_autoreleasePoolPush();
-  v21 = v8;
+  v21 = selfCopy;
   v22 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
   {
     v23 = HMFGetLogIdentifier();
-    [MEMORY[0x277CCACA8] stringWithUTF8String:a3];
+    [MEMORY[0x277CCACA8] stringWithUTF8String:states];
     v24 = v34 = v20;
-    v25 = [(HMDAccessoryFirmwareUpdateScheduler *)v21 accessory];
-    [v25 isReachable];
+    accessory = [(HMDAccessoryFirmwareUpdateScheduler *)v21 accessory];
+    [accessory isReachable];
     v26 = HMFBooleanToString();
-    v27 = [(HMDAccessoryFirmwareUpdateScheduler *)v21 updateSession];
-    [v27 isUserInitiatedInstall];
+    updateSession2 = [(HMDAccessoryFirmwareUpdateScheduler *)v21 updateSession];
+    [updateSession2 isUserInitiatedInstall];
     v28 = HMFBooleanToString();
-    v29 = [(HMDAccessoryFirmwareUpdateScheduler *)v21 accessory];
-    [v29 isAutomaticThirdPartyAccessorySoftwareUpdateEnabled];
+    accessory2 = [(HMDAccessoryFirmwareUpdateScheduler *)v21 accessory];
+    [accessory2 isAutomaticThirdPartyAccessorySoftwareUpdateEnabled];
     v30 = HMFBooleanToString();
     *buf = 138544386;
     v37 = v23;
@@ -436,42 +436,42 @@ void __64__HMDAccessoryFirmwareUpdateScheduler_handlePolicyStatusChange___block_
     _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_DEBUG, "%{public}@%@: Accessory Locally Reachable = %@, User Initiated Install = %@, Automatic Update = %@", buf, 0x34u);
 
     v20 = v34;
-    v6 = v35;
+    updateProfile = v35;
   }
 
   objc_autoreleasePoolPop(v20);
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_taskCanRunInCurrentDevice:(id)a3
+- (void)_taskCanRunInCurrentDevice:(id)device
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  deviceCopy = device;
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDAccessoryFirmwareUpdateScheduler *)self currentTask];
-  v7 = [v6 shouldRun];
+  currentTask = [(HMDAccessoryFirmwareUpdateScheduler *)self currentTask];
+  shouldRun = [currentTask shouldRun];
 
-  if (v7)
+  if (shouldRun)
   {
-    v8 = [(HMDAccessoryFirmwareUpdateScheduler *)self accessory];
-    v9 = [v8 home];
-    v27 = [v9 primaryResident];
-    v10 = [v27 capabilities];
-    v11 = [v10 supportsResidentFirmwareUpdate];
+    accessory = [(HMDAccessoryFirmwareUpdateScheduler *)self accessory];
+    home = [accessory home];
+    primaryResident = [home primaryResident];
+    capabilities = [primaryResident capabilities];
+    supportsResidentFirmwareUpdate = [capabilities supportsResidentFirmwareUpdate];
 
-    v12 = [v9 isResidentSupported] & v11;
-    v13 = [v9 isCurrentDeviceConfirmedPrimaryResident];
+    v12 = [home isResidentSupported] & supportsResidentFirmwareUpdate;
+    isCurrentDeviceConfirmedPrimaryResident = [home isCurrentDeviceConfirmedPrimaryResident];
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       HMFGetLogIdentifier();
-      v17 = v26 = v8;
+      v17 = v26 = accessory;
       v18 = HMFBooleanToString();
-      [v9 isResidentSupported];
+      [home isResidentSupported];
       HMFBooleanToString();
       v19 = v25 = v14;
       v20 = HMFBooleanToString();
@@ -486,32 +486,32 @@ void __64__HMDAccessoryFirmwareUpdateScheduler_handlePolicyStatusChange___block_
       _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_DEBUG, "%{public}@Resident parameters: supports AFU=%@, enabled=%@, current device is resident=%@", buf, 0x2Au);
 
       v14 = v25;
-      v8 = v26;
+      accessory = v26;
     }
 
     objc_autoreleasePoolPop(v14);
-    if (v13 & 1 | ((v12 & 1) == 0) || (-[HMDAccessoryFirmwareUpdateScheduler updateSession](v15, "updateSession"), v21 = objc_claimAutoreleasedReturnValue(), v22 = [v21 isUserInitiatedInstall], v21, (v22 & 1) != 0))
+    if (isCurrentDeviceConfirmedPrimaryResident & 1 | ((v12 & 1) == 0) || (-[HMDAccessoryFirmwareUpdateScheduler updateSession](selfCopy, "updateSession"), v21 = objc_claimAutoreleasedReturnValue(), v22 = [v21 isUserInitiatedInstall], v21, (v22 & 1) != 0))
     {
-      v4[2](v4, 1);
+      deviceCopy[2](deviceCopy, 1);
     }
 
     else
     {
-      v30 = v8;
+      v30 = accessory;
       v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __66__HMDAccessoryFirmwareUpdateScheduler__taskCanRunInCurrentDevice___block_invoke;
       v28[3] = &unk_278689FC0;
-      v28[4] = v15;
-      v29 = v4;
-      [v9 queryPrimaryResidentReachabilityForAccessories:v23 completion:v28];
+      v28[4] = selfCopy;
+      v29 = deviceCopy;
+      [home queryPrimaryResidentReachabilityForAccessories:v23 completion:v28];
     }
   }
 
   else
   {
-    v4[2](v4, 0);
+    deviceCopy[2](deviceCopy, 0);
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -580,16 +580,16 @@ void __66__HMDAccessoryFirmwareUpdateScheduler__taskCanRunInCurrentDevice___bloc
 - (void)_defer
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v7 = HMFGetLogIdentifier();
-    v8 = [(HMDAccessoryFirmwareUpdateScheduler *)v5 activityCompletion];
+    activityCompletion = [(HMDAccessoryFirmwareUpdateScheduler *)selfCopy activityCompletion];
     v9 = HMFBooleanToString();
     v14 = 138543618;
     v15 = v7;
@@ -599,16 +599,16 @@ void __66__HMDAccessoryFirmwareUpdateScheduler__taskCanRunInCurrentDevice___bloc
   }
 
   objc_autoreleasePoolPop(v4);
-  [(HMDAccessoryFirmwareUpdateScheduler *)v5 _logDebugStates:"[HMDAccessoryFirmwareUpdateScheduler _defer]"];
-  v10 = [(HMDAccessoryFirmwareUpdateScheduler *)v5 updateSession];
-  [v10 pause];
+  [(HMDAccessoryFirmwareUpdateScheduler *)selfCopy _logDebugStates:"[HMDAccessoryFirmwareUpdateScheduler _defer]"];
+  updateSession = [(HMDAccessoryFirmwareUpdateScheduler *)selfCopy updateSession];
+  [updateSession pause];
 
-  v11 = [(HMDAccessoryFirmwareUpdateScheduler *)v5 activityCompletion];
+  activityCompletion2 = [(HMDAccessoryFirmwareUpdateScheduler *)selfCopy activityCompletion];
 
-  if (v11)
+  if (activityCompletion2)
   {
-    v12 = [(HMDAccessoryFirmwareUpdateScheduler *)v5 activityCompletion];
-    v12[2](v12, 2);
+    activityCompletion3 = [(HMDAccessoryFirmwareUpdateScheduler *)selfCopy activityCompletion];
+    activityCompletion3[2](activityCompletion3, 2);
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -617,11 +617,11 @@ void __66__HMDAccessoryFirmwareUpdateScheduler__taskCanRunInCurrentDevice___bloc
 - (void)_stop
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -632,11 +632,11 @@ void __66__HMDAccessoryFirmwareUpdateScheduler__taskCanRunInCurrentDevice___bloc
   }
 
   objc_autoreleasePoolPop(v4);
-  [(HMDAccessoryFirmwareUpdateScheduler *)v5 _logDebugStates:"[HMDAccessoryFirmwareUpdateScheduler _stop]"];
-  if ([(HMDAccessoryFirmwareUpdateScheduler *)v5 currentState])
+  [(HMDAccessoryFirmwareUpdateScheduler *)selfCopy _logDebugStates:"[HMDAccessoryFirmwareUpdateScheduler _stop]"];
+  if ([(HMDAccessoryFirmwareUpdateScheduler *)selfCopy currentState])
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = v5;
+    v9 = selfCopy;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
@@ -647,18 +647,18 @@ void __66__HMDAccessoryFirmwareUpdateScheduler__taskCanRunInCurrentDevice___bloc
     }
 
     objc_autoreleasePoolPop(v8);
-    v12 = [(HMDAccessoryFirmwareUpdateScheduler *)v9 activityCompletion];
+    activityCompletion = [(HMDAccessoryFirmwareUpdateScheduler *)v9 activityCompletion];
 
-    if (v12)
+    if (activityCompletion)
     {
-      v13 = [(HMDAccessoryFirmwareUpdateScheduler *)v9 activityCompletion];
-      v13[2](v13, 1);
+      activityCompletion2 = [(HMDAccessoryFirmwareUpdateScheduler *)v9 activityCompletion];
+      activityCompletion2[2](activityCompletion2, 1);
     }
 
     [(HMDAccessoryFirmwareUpdateScheduler *)v9 _invalidateExistingScheduling];
     [(HMDAccessoryFirmwareUpdateScheduler *)v9 setCurrentState:0];
-    v14 = [(HMDAccessoryFirmwareUpdateScheduler *)v9 updateSession];
-    [v14 pause];
+    updateSession = [(HMDAccessoryFirmwareUpdateScheduler *)v9 updateSession];
+    [updateSession pause];
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -667,49 +667,49 @@ void __66__HMDAccessoryFirmwareUpdateScheduler__taskCanRunInCurrentDevice___bloc
 - (void)_scheduleCurrentTaskBackgroundRun
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDAccessoryFirmwareUpdateScheduler *)self currentTask];
-  v5 = [v4 shouldRun];
+  currentTask = [(HMDAccessoryFirmwareUpdateScheduler *)self currentTask];
+  shouldRun = [currentTask shouldRun];
 
-  if (v5)
+  if (shouldRun)
   {
-    v6 = [(HMDAccessoryFirmwareUpdateScheduler *)self currentTask];
+    currentTask2 = [(HMDAccessoryFirmwareUpdateScheduler *)self currentTask];
     [(HMDAccessoryFirmwareUpdateScheduler *)self _invalidateExistingScheduling];
-    [(HMDAccessoryFirmwareUpdateScheduler *)self setCurrentTask:v6];
-    v7 = [(HMDAccessoryFirmwareUpdateScheduler *)self accessory];
-    v8 = [v7 uniqueIdentifier];
-    v9 = [@"com.apple.homed.firmwareUpdate.scheduler." stringByAppendingString:v8];
+    [(HMDAccessoryFirmwareUpdateScheduler *)self setCurrentTask:currentTask2];
+    accessory = [(HMDAccessoryFirmwareUpdateScheduler *)self accessory];
+    uniqueIdentifier = [accessory uniqueIdentifier];
+    v9 = [@"com.apple.homed.firmwareUpdate.scheduler." stringByAppendingString:uniqueIdentifier];
 
-    v10 = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
-    v11 = [v10 newBackgroundSchedulerWithIdentifier:v9];
+    wingman = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
+    v11 = [wingman newBackgroundSchedulerWithIdentifier:v9];
     [(HMDAccessoryFirmwareUpdateScheduler *)self setBackgroundScheduler:v11];
 
-    v12 = [(HMDAccessoryFirmwareUpdateScheduler *)self backgroundScheduler];
-    v13 = [(HMDAccessoryFirmwareUpdateScheduler *)self currentTask];
-    v14 = [v13 criteria];
-    [v12 _setAdditionalXPCActivityProperties:v14];
+    backgroundScheduler = [(HMDAccessoryFirmwareUpdateScheduler *)self backgroundScheduler];
+    currentTask3 = [(HMDAccessoryFirmwareUpdateScheduler *)self currentTask];
+    criteria = [currentTask3 criteria];
+    [backgroundScheduler _setAdditionalXPCActivityProperties:criteria];
 
     objc_initWeak(&location, self);
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v18 = HMFGetLogIdentifier();
-      v19 = [(HMDAccessoryFirmwareUpdateScheduler *)v16 currentTask];
+      currentTask4 = [(HMDAccessoryFirmwareUpdateScheduler *)selfCopy currentTask];
       *buf = 138543874;
       v33 = v18;
       v34 = 2112;
       v35 = v9;
       v36 = 2112;
-      v37 = v19;
+      v37 = currentTask4;
       _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_INFO, "%{public}@Scheduling background task %@ %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v15);
-    v20 = [(HMDAccessoryFirmwareUpdateScheduler *)v16 backgroundScheduler];
+    backgroundScheduler2 = [(HMDAccessoryFirmwareUpdateScheduler *)selfCopy backgroundScheduler];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __72__HMDAccessoryFirmwareUpdateScheduler__scheduleCurrentTaskBackgroundRun__block_invoke;
@@ -717,7 +717,7 @@ void __66__HMDAccessoryFirmwareUpdateScheduler__taskCanRunInCurrentDevice___bloc
     objc_copyWeak(&v30, &location);
     v21 = v9;
     v29 = v21;
-    [v20 scheduleWithBlock:v28];
+    [backgroundScheduler2 scheduleWithBlock:v28];
 
     objc_destroyWeak(&v30);
     objc_destroyWeak(&location);
@@ -726,21 +726,21 @@ void __66__HMDAccessoryFirmwareUpdateScheduler__taskCanRunInCurrentDevice___bloc
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy2 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
       v25 = HMFGetLogIdentifier();
-      v26 = [(HMDAccessoryFirmwareUpdateScheduler *)v23 currentTask];
+      currentTask5 = [(HMDAccessoryFirmwareUpdateScheduler *)selfCopy2 currentTask];
       *buf = 138543618;
       v33 = v25;
       v34 = 2112;
-      v35 = v26;
+      v35 = currentTask5;
       _os_log_impl(&dword_229538000, v24, OS_LOG_TYPE_INFO, "%{public}@Aborting task %@ after initial delay because required conditions are no longer satisfied", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v22);
-    [(HMDAccessoryFirmwareUpdateScheduler *)v23 _stop];
+    [(HMDAccessoryFirmwareUpdateScheduler *)selfCopy2 _stop];
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -853,27 +853,27 @@ uint64_t __72__HMDAccessoryFirmwareUpdateScheduler__scheduleCurrentTaskBackgroun
 
 - (void)_scheduleCurrentTask
 {
-  v3 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDAccessoryFirmwareUpdateScheduler *)self currentTask];
-  if ([v4 isUserInitiated])
+  currentTask = [(HMDAccessoryFirmwareUpdateScheduler *)self currentTask];
+  if ([currentTask isUserInitiated])
   {
 
 LABEL_4:
-    v8 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+    workQueue2 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __59__HMDAccessoryFirmwareUpdateScheduler__scheduleCurrentTask__block_invoke;
     block[3] = &unk_27868A728;
     block[4] = self;
-    dispatch_async(v8, block);
+    dispatch_async(workQueue2, block);
 
     return;
   }
 
-  v5 = [(HMDAccessoryFirmwareUpdateScheduler *)self currentTask];
-  [v5 initialDelay];
+  currentTask2 = [(HMDAccessoryFirmwareUpdateScheduler *)self currentTask];
+  [currentTask2 initialDelay];
   v7 = v6;
 
   if (v7 == 0.0)
@@ -963,11 +963,11 @@ void __59__HMDAccessoryFirmwareUpdateScheduler__scheduleCurrentTask__block_invok
 
 - (void)_invalidateExistingScheduling
 {
-  v3 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDAccessoryFirmwareUpdateScheduler *)self backgroundScheduler];
-  [v4 invalidate];
+  backgroundScheduler = [(HMDAccessoryFirmwareUpdateScheduler *)self backgroundScheduler];
+  [backgroundScheduler invalidate];
 
   [(HMDAccessoryFirmwareUpdateScheduler *)self setBackgroundScheduler:0];
   [(HMDAccessoryFirmwareUpdateScheduler *)self setActivityCompletion:0];
@@ -979,66 +979,66 @@ void __59__HMDAccessoryFirmwareUpdateScheduler__scheduleCurrentTask__block_invok
 
 - (BOOL)isStagingInProgress
 {
-  v3 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   return [(HMDAccessoryFirmwareUpdateScheduler *)self currentState]== 1;
 }
 
 - (BOOL)isIdle
 {
-  v3 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   return [(HMDAccessoryFirmwareUpdateScheduler *)self currentState]== 0;
 }
 
 - (BOOL)needsToScheduleApply
 {
-  v3 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDAccessoryFirmwareUpdateScheduler *)self updateSession];
-  if ([v4 sessionState] == 2 && !-[HMDAccessoryFirmwareUpdateScheduler currentState](self, "currentState"))
+  updateSession = [(HMDAccessoryFirmwareUpdateScheduler *)self updateSession];
+  if ([updateSession sessionState] == 2 && !-[HMDAccessoryFirmwareUpdateScheduler currentState](self, "currentState"))
   {
-    if ([v4 isUserInitiatedInstall])
+    if ([updateSession isUserInitiatedInstall])
     {
-      v5 = 1;
+      isAutomaticThirdPartyAccessorySoftwareUpdateEnabled = 1;
     }
 
     else
     {
-      v7 = [(HMDAccessoryFirmwareUpdateScheduler *)self accessory];
-      v5 = [v7 isAutomaticThirdPartyAccessorySoftwareUpdateEnabled];
+      accessory = [(HMDAccessoryFirmwareUpdateScheduler *)self accessory];
+      isAutomaticThirdPartyAccessorySoftwareUpdateEnabled = [accessory isAutomaticThirdPartyAccessorySoftwareUpdateEnabled];
     }
   }
 
   else
   {
-    v5 = 0;
+    isAutomaticThirdPartyAccessorySoftwareUpdateEnabled = 0;
   }
 
-  return v5;
+  return isAutomaticThirdPartyAccessorySoftwareUpdateEnabled;
 }
 
 - (BOOL)needsToScheduleStaging
 {
-  v3 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDAccessoryFirmwareUpdateScheduler *)self updateSession];
-  v5 = [v4 sessionState] == 1 && -[HMDAccessoryFirmwareUpdateScheduler currentState](self, "currentState") == 0;
+  updateSession = [(HMDAccessoryFirmwareUpdateScheduler *)self updateSession];
+  v5 = [updateSession sessionState] == 1 && -[HMDAccessoryFirmwareUpdateScheduler currentState](self, "currentState") == 0;
 
   return v5;
 }
 
 - (BOOL)needsToScheduleRegister
 {
-  v3 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDAccessoryFirmwareUpdateScheduler *)self updateSession];
-  v5 = [v4 sessionState] == 3 && -[HMDAccessoryFirmwareUpdateScheduler currentState](self, "currentState") == 0;
+  updateSession = [(HMDAccessoryFirmwareUpdateScheduler *)self updateSession];
+  v5 = [updateSession sessionState] == 3 && -[HMDAccessoryFirmwareUpdateScheduler currentState](self, "currentState") == 0;
 
   return v5;
 }
@@ -1046,8 +1046,8 @@ void __59__HMDAccessoryFirmwareUpdateScheduler__scheduleCurrentTask__block_invok
 - (BOOL)needsToStop
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryFirmwareUpdateScheduler *)self accessory];
-  if ([v3 isReachable])
+  accessory = [(HMDAccessoryFirmwareUpdateScheduler *)self accessory];
+  if ([accessory isReachable])
   {
     LOBYTE(v4) = 0;
   }
@@ -1057,22 +1057,22 @@ void __59__HMDAccessoryFirmwareUpdateScheduler__scheduleCurrentTask__block_invok
     v4 = ![(HMDAccessoryFirmwareUpdateScheduler *)self isIdle];
   }
 
-  v5 = [(HMDAccessoryFirmwareUpdateScheduler *)self updateProfile];
-  if ([v5 stagingNotReadyReasons])
+  updateProfile = [(HMDAccessoryFirmwareUpdateScheduler *)self updateProfile];
+  if ([updateProfile stagingNotReadyReasons])
   {
-    v6 = [(HMDAccessoryFirmwareUpdateScheduler *)self isStagingInProgress];
+    isStagingInProgress = [(HMDAccessoryFirmwareUpdateScheduler *)self isStagingInProgress];
   }
 
   else
   {
-    v6 = 0;
+    isStagingInProgress = 0;
   }
 
-  v7 = [(HMDAccessoryFirmwareUpdateScheduler *)self currentTask];
-  if (v7)
+  currentTask = [(HMDAccessoryFirmwareUpdateScheduler *)self currentTask];
+  if (currentTask)
   {
-    v8 = [(HMDAccessoryFirmwareUpdateScheduler *)self currentTask];
-    v9 = [v8 shouldRun] ^ 1;
+    currentTask2 = [(HMDAccessoryFirmwareUpdateScheduler *)self currentTask];
+    v9 = [currentTask2 shouldRun] ^ 1;
   }
 
   else
@@ -1080,27 +1080,27 @@ void __59__HMDAccessoryFirmwareUpdateScheduler__scheduleCurrentTask__block_invok
     LOBYTE(v9) = 0;
   }
 
-  v10 = v4 | v6 | v9;
+  v10 = v4 | isStagingInProgress | v9;
   if (v10)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       HMFGetLogIdentifier();
       v14 = v23 = v11;
-      v15 = [(HMDAccessoryFirmwareUpdateScheduler *)v12 currentTask];
+      currentTask3 = [(HMDAccessoryFirmwareUpdateScheduler *)selfCopy currentTask];
       v16 = HMFBooleanToString();
       v17 = HMFBooleanToString();
-      v18 = [(HMDAccessoryFirmwareUpdateScheduler *)v12 updateProfile];
-      [v18 stagingNotReadyReasons];
+      updateProfile2 = [(HMDAccessoryFirmwareUpdateScheduler *)selfCopy updateProfile];
+      [updateProfile2 stagingNotReadyReasons];
       v19 = HAPStagingNotReadyReasonsAsString();
       v20 = HMFBooleanToString();
       *buf = 138544642;
       v25 = v14;
       v26 = 2112;
-      v27 = v15;
+      v27 = currentTask3;
       v28 = 2112;
       v29 = v16;
       v30 = 2114;
@@ -1123,8 +1123,8 @@ void __59__HMDAccessoryFirmwareUpdateScheduler__scheduleCurrentTask__block_invok
 
 - (void)_handleSchedulingConditionChanged
 {
-  v3 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   [(HMDAccessoryFirmwareUpdateScheduler *)self _logDebugStates:"[HMDAccessoryFirmwareUpdateScheduler _handleSchedulingConditionChanged]"];
   if ([(HMDAccessoryFirmwareUpdateScheduler *)self needsToStop])
@@ -1140,18 +1140,18 @@ void __59__HMDAccessoryFirmwareUpdateScheduler__scheduleCurrentTask__block_invok
   }
 }
 
-- (void)handlePrimaryResidentChanged:(id)a3
+- (void)handlePrimaryResidentChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  changedCopy = changed;
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__HMDAccessoryFirmwareUpdateScheduler_handlePrimaryResidentChanged___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __68__HMDAccessoryFirmwareUpdateScheduler_handlePrimaryResidentChanged___block_invoke(uint64_t a1)
@@ -1179,15 +1179,15 @@ void __68__HMDAccessoryFirmwareUpdateScheduler_handlePrimaryResidentChanged___bl
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleApplyNotReadyReasonsChanged:(id)a3
+- (void)handleApplyNotReadyReasonsChanged:(id)changed
 {
-  v4 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__HMDAccessoryFirmwareUpdateScheduler_handleApplyNotReadyReasonsChanged___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __73__HMDAccessoryFirmwareUpdateScheduler_handleApplyNotReadyReasonsChanged___block_invoke(uint64_t a1)
@@ -1215,15 +1215,15 @@ uint64_t __73__HMDAccessoryFirmwareUpdateScheduler_handleApplyNotReadyReasonsCha
   return result;
 }
 
-- (void)handleStagingNotReadyReasonsChanged:(id)a3
+- (void)handleStagingNotReadyReasonsChanged:(id)changed
 {
-  v4 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__HMDAccessoryFirmwareUpdateScheduler_handleStagingNotReadyReasonsChanged___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __75__HMDAccessoryFirmwareUpdateScheduler_handleStagingNotReadyReasonsChanged___block_invoke(uint64_t a1)
@@ -1251,18 +1251,18 @@ uint64_t __75__HMDAccessoryFirmwareUpdateScheduler_handleStagingNotReadyReasonsC
   return result;
 }
 
-- (void)handleUpdateStateChanged:(id)a3
+- (void)handleUpdateStateChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  changedCopy = changed;
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__HMDAccessoryFirmwareUpdateScheduler_handleUpdateStateChanged___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __64__HMDAccessoryFirmwareUpdateScheduler_handleUpdateStateChanged___block_invoke(uint64_t a1)
@@ -1292,15 +1292,15 @@ void __64__HMDAccessoryFirmwareUpdateScheduler_handleUpdateStateChanged___block_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAccessoryReachabilityChanged:(id)a3
+- (void)handleAccessoryReachabilityChanged:(id)changed
 {
-  v4 = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
+  workQueue = [(HMDAccessoryFirmwareUpdateScheduler *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__HMDAccessoryFirmwareUpdateScheduler_handleAccessoryReachabilityChanged___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __74__HMDAccessoryFirmwareUpdateScheduler_handleAccessoryReachabilityChanged___block_invoke(uint64_t a1)
@@ -1330,84 +1330,84 @@ uint64_t __74__HMDAccessoryFirmwareUpdateScheduler_handleAccessoryReachabilityCh
 
 - (void)_registerForNotifications
 {
-  v24 = [(HMDAccessoryFirmwareUpdateScheduler *)self accessory];
-  v3 = [v24 firmwareUpdateProfile];
-  if (v3)
+  accessory = [(HMDAccessoryFirmwareUpdateScheduler *)self accessory];
+  firmwareUpdateProfile = [accessory firmwareUpdateProfile];
+  if (firmwareUpdateProfile)
   {
-    v4 = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
-    v5 = [v4 notificationCenter];
-    [v5 addObserver:self selector:sel_handleUpdateStateChanged_ name:@"HMDAccessoryFirmwareUpdateStateChangedNotification" object:v3];
+    wingman = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
+    notificationCenter = [wingman notificationCenter];
+    [notificationCenter addObserver:self selector:sel_handleUpdateStateChanged_ name:@"HMDAccessoryFirmwareUpdateStateChangedNotification" object:firmwareUpdateProfile];
 
-    v6 = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
-    v7 = [v6 notificationCenter];
-    [v7 addObserver:self selector:sel_handleStagingNotReadyReasonsChanged_ name:@"HMDAccessoryFirmwareUpdateStagingNotReadyReasonsChangedNotification" object:v3];
+    wingman2 = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
+    notificationCenter2 = [wingman2 notificationCenter];
+    [notificationCenter2 addObserver:self selector:sel_handleStagingNotReadyReasonsChanged_ name:@"HMDAccessoryFirmwareUpdateStagingNotReadyReasonsChangedNotification" object:firmwareUpdateProfile];
 
-    v8 = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
-    v9 = [v8 notificationCenter];
-    [v9 addObserver:self selector:sel_handleApplyNotReadyReasonsChanged_ name:@"HMDAccessoryFirmwareUpdateApplyNotReadyReasonsChangedNotification" object:v3];
+    wingman3 = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
+    notificationCenter3 = [wingman3 notificationCenter];
+    [notificationCenter3 addObserver:self selector:sel_handleApplyNotReadyReasonsChanged_ name:@"HMDAccessoryFirmwareUpdateApplyNotReadyReasonsChangedNotification" object:firmwareUpdateProfile];
 
-    v10 = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
-    v11 = [v10 notificationCenter];
-    [v11 addObserver:self selector:sel_handleAccessoryReachabilityChanged_ name:@"HMDAccessoryIsReachableNotification" object:v24];
+    wingman4 = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
+    notificationCenter4 = [wingman4 notificationCenter];
+    [notificationCenter4 addObserver:self selector:sel_handleAccessoryReachabilityChanged_ name:@"HMDAccessoryIsReachableNotification" object:accessory];
 
-    v12 = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
-    v13 = [v12 notificationCenter];
-    [v13 addObserver:self selector:sel_handleAccessoryReachabilityChanged_ name:@"HMDAccessoryIsNotReachableNotification" object:v24];
+    wingman5 = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
+    notificationCenter5 = [wingman5 notificationCenter];
+    [notificationCenter5 addObserver:self selector:sel_handleAccessoryReachabilityChanged_ name:@"HMDAccessoryIsNotReachableNotification" object:accessory];
   }
 
-  v14 = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
-  v15 = [v14 notificationCenter];
-  v16 = [v24 home];
-  v17 = [v16 residentDeviceManager];
-  [v15 addObserver:self selector:sel_handlePrimaryResidentChanged_ name:@"HMDResidentDeviceManagerUpdatePrimaryResidentNotification" object:v17];
+  wingman6 = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
+  notificationCenter6 = [wingman6 notificationCenter];
+  home = [accessory home];
+  residentDeviceManager = [home residentDeviceManager];
+  [notificationCenter6 addObserver:self selector:sel_handlePrimaryResidentChanged_ name:@"HMDResidentDeviceManagerUpdatePrimaryResidentNotification" object:residentDeviceManager];
 
-  v18 = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
-  v19 = [v18 notificationCenter];
-  [v19 addObserver:self selector:sel_handlePrimaryResidentChanged_ name:@"HMDResidentDeviceConfirmedStateChangedNotification" object:0];
+  wingman7 = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
+  notificationCenter7 = [wingman7 notificationCenter];
+  [notificationCenter7 addObserver:self selector:sel_handlePrimaryResidentChanged_ name:@"HMDResidentDeviceConfirmedStateChangedNotification" object:0];
 
-  v20 = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
-  v21 = [v20 notificationCenter];
-  [v21 addObserver:self selector:sel_handleBridgeUpdate_ name:@"HMDAccessoryBridgedAccessoryAddedNotification" object:v24];
+  wingman8 = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
+  notificationCenter8 = [wingman8 notificationCenter];
+  [notificationCenter8 addObserver:self selector:sel_handleBridgeUpdate_ name:@"HMDAccessoryBridgedAccessoryAddedNotification" object:accessory];
 
-  v22 = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
-  v23 = [v22 notificationCenter];
-  [v23 addObserver:self selector:sel_handleBridgeUpdate_ name:@"HMDAccessoryBridgedAccessoryRemovedNotification" object:v24];
+  wingman9 = [(HMDAccessoryFirmwareUpdateScheduler *)self wingman];
+  notificationCenter9 = [wingman9 notificationCenter];
+  [notificationCenter9 addObserver:self selector:sel_handleBridgeUpdate_ name:@"HMDAccessoryBridgedAccessoryRemovedNotification" object:accessory];
 }
 
 - (HMDAccessoryFirmwareUpdateProfile)updateProfile
 {
-  v2 = [(HMDAccessoryFirmwareUpdateScheduler *)self accessory];
-  v3 = [v2 firmwareUpdateProfile];
+  accessory = [(HMDAccessoryFirmwareUpdateScheduler *)self accessory];
+  firmwareUpdateProfile = [accessory firmwareUpdateProfile];
 
-  return v3;
+  return firmwareUpdateProfile;
 }
 
-- (HMDAccessoryFirmwareUpdateScheduler)initWithAccessory:(id)a3 firmwareUpdateSession:(id)a4 wingman:(id)a5 workQueue:(id)a6
+- (HMDAccessoryFirmwareUpdateScheduler)initWithAccessory:(id)accessory firmwareUpdateSession:(id)session wingman:(id)wingman workQueue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  accessoryCopy = accessory;
+  sessionCopy = session;
+  wingmanCopy = wingman;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = HMDAccessoryFirmwareUpdateScheduler;
   v14 = [(HMDAccessoryFirmwareUpdateScheduler *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_accessory, v10);
-    objc_storeWeak(&v15->_updateSession, v11);
-    v16 = v12;
-    if (!v12)
+    objc_storeWeak(&v14->_accessory, accessoryCopy);
+    objc_storeWeak(&v15->_updateSession, sessionCopy);
+    v16 = wingmanCopy;
+    if (!wingmanCopy)
     {
       v16 = objc_alloc_init(HMDAccessoryFirmwareUpdateSchedulerWingman);
     }
 
     objc_storeStrong(&v15->_wingman, v16);
-    if (!v12)
+    if (!wingmanCopy)
     {
     }
 
-    objc_storeStrong(&v15->_workQueue, a6);
+    objc_storeStrong(&v15->_workQueue, queue);
     v15->_currentState = 0;
   }
 
@@ -1417,8 +1417,8 @@ uint64_t __74__HMDAccessoryFirmwareUpdateScheduler_handleAccessoryReachabilityCh
 - (void)dealloc
 {
   [(NSBackgroundActivityScheduler *)self->_backgroundScheduler invalidate];
-  v3 = [(HMDAccessoryFirmwareUpdateSchedulerWingman *)self->_wingman notificationCenter];
-  [v3 removeObserver:self];
+  notificationCenter = [(HMDAccessoryFirmwareUpdateSchedulerWingman *)self->_wingman notificationCenter];
+  [notificationCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = HMDAccessoryFirmwareUpdateScheduler;
@@ -1427,31 +1427,31 @@ uint64_t __74__HMDAccessoryFirmwareUpdateScheduler_handleAccessoryReachabilityCh
 
 - (id)logIdentifier
 {
-  v2 = [(HMDAccessoryFirmwareUpdateScheduler *)self accessory];
-  v3 = [v2 logIdentifier];
+  accessory = [(HMDAccessoryFirmwareUpdateScheduler *)self accessory];
+  logIdentifier = [accessory logIdentifier];
 
-  return v3;
+  return logIdentifier;
 }
 
 - (id)privateDescription
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HMDAccessoryFirmwareUpdateScheduler *)self accessory];
-  v6 = [v5 uuid];
-  v7 = [v6 UUIDString];
-  v8 = [v3 stringWithFormat:@"<%@ %@>", v4, v7];
+  accessory = [(HMDAccessoryFirmwareUpdateScheduler *)self accessory];
+  uuid = [accessory uuid];
+  uUIDString = [uuid UUIDString];
+  v8 = [v3 stringWithFormat:@"<%@ %@>", v4, uUIDString];
 
   return v8;
 }
 
 - (NSString)description
 {
-  v2 = [(HMDAccessoryFirmwareUpdateScheduler *)self accessory];
+  accessory = [(HMDAccessoryFirmwareUpdateScheduler *)self accessory];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [v2 name];
-  v5 = [v2 uniqueIdentifier];
-  v6 = [v3 stringWithFormat:@"Accessory Firmware Update Scheduler %@, %@", v4, v5];
+  name = [accessory name];
+  uniqueIdentifier = [accessory uniqueIdentifier];
+  v6 = [v3 stringWithFormat:@"Accessory Firmware Update Scheduler %@, %@", name, uniqueIdentifier];
 
   return v6;
 }

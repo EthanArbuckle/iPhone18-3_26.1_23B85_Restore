@@ -1,17 +1,17 @@
 @interface HMIVideoCommandBuffer
-- (HMIVideoCommandBuffer)initWithMaxCapacity:(unint64_t)a3;
+- (HMIVideoCommandBuffer)initWithMaxCapacity:(unint64_t)capacity;
 - (HMIVideoCommandBufferDelegate)delegate;
 - (double)delay;
 - (void)flush;
 - (void)flushAsync;
-- (void)handleBlock:(id)a3;
-- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)setDelegate:(id)a3 queue:(id)a4;
+- (void)handleBlock:(id)block;
+- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)setDelegate:(id)delegate queue:(id)queue;
 @end
 
 @implementation HMIVideoCommandBuffer
 
-- (HMIVideoCommandBuffer)initWithMaxCapacity:(unint64_t)a3
+- (HMIVideoCommandBuffer)initWithMaxCapacity:(unint64_t)capacity
 {
   v11.receiver = self;
   v11.super_class = HMIVideoCommandBuffer;
@@ -25,7 +25,7 @@
     v7 = MEMORY[0x277CC08F0];
     *(v4 + 24) = *MEMORY[0x277CC08F0];
     *(v4 + 5) = *(v7 + 16);
-    *(v4 + 7) = a3;
+    *(v4 + 7) = capacity;
     v8 = objc_alloc_init(MEMORY[0x277CCA928]);
     v9 = *(v4 + 8);
     *(v4 + 8) = v8;
@@ -34,45 +34,45 @@
   return v4;
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a4;
-  objc_storeWeak(&self->_delegate, a3);
+  queueCopy = queue;
+  objc_storeWeak(&self->_delegate, delegate);
   delegateQueue = self->_delegateQueue;
-  self->_delegateQueue = v6;
+  self->_delegateQueue = queueCopy;
 }
 
-- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  TotalSampleSize = CMSampleBufferGetTotalSampleSize(a3);
-  v6 = [(HMIVideoCommandBuffer *)self condition];
-  [v6 lock];
+  TotalSampleSize = CMSampleBufferGetTotalSampleSize(buffer);
+  condition = [(HMIVideoCommandBuffer *)self condition];
+  [condition lock];
 
   if ([(HMIVideoCommandBuffer *)self isFull])
   {
     do
     {
-      v7 = [(HMIVideoCommandBuffer *)self condition];
-      [v7 wait];
+      condition2 = [(HMIVideoCommandBuffer *)self condition];
+      [condition2 wait];
     }
 
     while ([(HMIVideoCommandBuffer *)self isFull]);
   }
 
   [(HMIVideoCommandBuffer *)self setSize:[(HMIVideoCommandBuffer *)self size]+ TotalSampleSize];
-  CFRetain(a3);
-  v8 = [MEMORY[0x277CBEAA8] date];
-  v9 = [(HMIVideoCommandBuffer *)self delegateQueue];
+  CFRetain(buffer);
+  date = [MEMORY[0x277CBEAA8] date];
+  delegateQueue = [(HMIVideoCommandBuffer *)self delegateQueue];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __44__HMIVideoCommandBuffer_handleSampleBuffer___block_invoke;
   v15 = &unk_278755A00;
-  v16 = self;
-  v17 = v8;
-  v18 = a3;
+  selfCopy = self;
+  v17 = date;
+  bufferCopy = buffer;
   v19 = TotalSampleSize;
-  v10 = v8;
-  dispatch_async(v9, &v12);
+  v10 = date;
+  dispatch_async(delegateQueue, &v12);
 
   v11 = [(HMIVideoCommandBuffer *)self condition:v12];
   [v11 unlock];
@@ -105,13 +105,13 @@ void __44__HMIVideoCommandBuffer_handleSampleBuffer___block_invoke(uint64_t a1)
 
 - (void)flushAsync
 {
-  v3 = [(HMIVideoCommandBuffer *)self delegateQueue];
+  delegateQueue = [(HMIVideoCommandBuffer *)self delegateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__HMIVideoCommandBuffer_flushAsync__block_invoke;
   block[3] = &unk_278752868;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(delegateQueue, block);
 }
 
 void __35__HMIVideoCommandBuffer_flushAsync__block_invoke(uint64_t a1)
@@ -122,13 +122,13 @@ void __35__HMIVideoCommandBuffer_flushAsync__block_invoke(uint64_t a1)
 
 - (void)flush
 {
-  v3 = [(HMIVideoCommandBuffer *)self delegateQueue];
+  delegateQueue = [(HMIVideoCommandBuffer *)self delegateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __30__HMIVideoCommandBuffer_flush__block_invoke;
   block[3] = &unk_278752868;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(delegateQueue, block);
 }
 
 void __30__HMIVideoCommandBuffer_flush__block_invoke(uint64_t a1)
@@ -137,23 +137,23 @@ void __30__HMIVideoCommandBuffer_flush__block_invoke(uint64_t a1)
   [v2 bufferWillFlush:*(a1 + 32)];
 }
 
-- (void)handleBlock:(id)a3
+- (void)handleBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HMIVideoCommandBuffer *)self delegateQueue];
+  blockCopy = block;
+  delegateQueue = [(HMIVideoCommandBuffer *)self delegateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__HMIVideoCommandBuffer_handleBlock___block_invoke;
   block[3] = &unk_278754068;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(delegateQueue, block);
 }
 
 - (double)delay
 {
-  v2 = [(HMIVideoCommandBuffer *)self sampleBufferDelay];
-  [v2 value];
+  sampleBufferDelay = [(HMIVideoCommandBuffer *)self sampleBufferDelay];
+  [sampleBufferDelay value];
   v4 = v3;
 
   return v4;

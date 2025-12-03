@@ -1,13 +1,13 @@
 @interface PopOverManager
-- (BOOL)popoverPresentationControllerShouldDismissPopover:(id)a3;
+- (BOOL)popoverPresentationControllerShouldDismissPopover:(id)popover;
 @end
 
 @implementation PopOverManager
 
-- (BOOL)popoverPresentationControllerShouldDismissPopover:(id)a3
+- (BOOL)popoverPresentationControllerShouldDismissPopover:(id)popover
 {
-  v4 = a3;
-  v5 = self;
+  popoverCopy = popover;
+  selfCopy = self;
   sub_26A4F4FE4();
 
   return 1;

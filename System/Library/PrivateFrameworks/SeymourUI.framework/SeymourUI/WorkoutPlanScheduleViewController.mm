@@ -1,19 +1,19 @@
 @interface WorkoutPlanScheduleViewController
-- (_TtC9SeymourUI33WorkoutPlanScheduleViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9SeymourUI33WorkoutPlanScheduleViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)backButtonPressed;
 - (void)renamePlanTapped;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation WorkoutPlanScheduleViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   WorkoutPlanScheduleViewController.viewDidLoad()();
 }
 
@@ -33,50 +33,50 @@
   swift_unknownObjectRelease();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(WorkoutPlanScheduleViewController *)&v5 viewWillAppear:v3];
+  [(WorkoutPlanScheduleViewController *)&v5 viewWillAppear:appearCopy];
   sub_20BC64D0C();
   sub_20B9AD530();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  WorkoutPlanScheduleViewController.viewWillDisappear(_:)(a3);
+  selfCopy = self;
+  WorkoutPlanScheduleViewController.viewWillDisappear(_:)(disappear);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  WorkoutPlanScheduleViewController.viewWillTransition(to:with:)(a4, width, height);
+  selfCopy = self;
+  WorkoutPlanScheduleViewController.viewWillTransition(to:with:)(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
 - (void)backButtonPressed
 {
-  v4 = self;
-  v2 = [(WorkoutPlanScheduleViewController *)v4 navigationController];
-  if (v2)
+  selfCopy = self;
+  navigationController = [(WorkoutPlanScheduleViewController *)selfCopy navigationController];
+  if (navigationController)
   {
-    v3 = v2;
+    v3 = navigationController;
   }
 }
 
 - (void)renamePlanTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BCCFA60();
 }
 
-- (_TtC9SeymourUI33WorkoutPlanScheduleViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI33WorkoutPlanScheduleViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

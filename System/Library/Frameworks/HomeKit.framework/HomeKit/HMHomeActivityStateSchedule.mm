@@ -1,14 +1,14 @@
 @interface HMHomeActivityStateSchedule
 + (id)logCategory;
-- (BOOL)setScheduleEntries:(id)a3;
+- (BOOL)setScheduleEntries:(id)entries;
 - (HMHome)home;
-- (HMHomeActivityStateSchedule)initWithCoder:(id)a3;
-- (HMHomeActivityStateSchedule)initWithUUID:(id)a3 home:(id)a4 scheduleEntries:(id)a5 state:(unint64_t)a6 homeActivityStateEnabled:(BOOL)a7;
+- (HMHomeActivityStateSchedule)initWithCoder:(id)coder;
+- (HMHomeActivityStateSchedule)initWithUUID:(id)d home:(id)home scheduleEntries:(id)entries state:(unint64_t)state homeActivityStateEnabled:(BOOL)enabled;
 - (NSArray)scheduleEntries;
-- (id)_messagePayloadFromScheduleEntries:(id)a3;
-- (void)_handleUpdateSchedules:(id)a3 withReason:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setScheduleEntries:(id)a3 completion:(id)a4;
+- (id)_messagePayloadFromScheduleEntries:(id)entries;
+- (void)_handleUpdateSchedules:(id)schedules withReason:(id)reason;
+- (void)encodeWithCoder:(id)coder;
+- (void)setScheduleEntries:(id)entries completion:(id)completion;
 @end
 
 @implementation HMHomeActivityStateSchedule
@@ -20,9 +20,9 @@
   return WeakRetained;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = MEMORY[0x1E696AEC0];
@@ -34,38 +34,38 @@
   objc_exception_throw(v10);
 }
 
-- (HMHomeActivityStateSchedule)initWithCoder:(id)a3
+- (HMHomeActivityStateSchedule)initWithCoder:(id)coder
 {
   v35[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMHomeActivityStateScheduleUUIDCodingKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMHomeActivityStateScheduleUUIDCodingKey"];
   v7 = [v5 initWithUUIDString:v6];
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMHomeActivityStateScheduleActivityStateCodingKey"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMHomeActivityStateScheduleActivityStateCodingKey"];
   v9 = MEMORY[0x1E695DFD8];
   v35[0] = objc_opt_class();
   v35[1] = objc_opt_class();
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:2];
   v11 = [v9 setWithArray:v10];
-  v12 = [v4 decodeObjectOfClasses:v11 forKey:@"HMHomeActivityStateScheduleScheduleEntriesCodingKey"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"HMHomeActivityStateScheduleScheduleEntriesCodingKey"];
 
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"home"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"home"];
   v14 = _os_feature_enabled_impl();
   if (v7 && v8 && v12 && v13)
   {
     v15 = v14;
-    v16 = [v8 unsignedIntValue];
+    unsignedIntValue = [v8 unsignedIntValue];
     v17 = [HMHomeActivityStateScheduleUtilities sortedScheduleEntries:v12];
-    v18 = [(HMHomeActivityStateSchedule *)self initWithUUID:v7 home:v13 scheduleEntries:v17 state:v16 homeActivityStateEnabled:v15];
+    selfCopy = [(HMHomeActivityStateSchedule *)self initWithUUID:v7 home:v13 scheduleEntries:v17 state:unsignedIntValue homeActivityStateEnabled:v15];
 
-    v19 = v18;
+    v19 = selfCopy;
   }
 
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -100,14 +100,14 @@
   return v3;
 }
 
-- (BOOL)setScheduleEntries:(id)a3
+- (BOOL)setScheduleEntries:(id)entries
 {
-  v5 = a3;
+  entriesCopy = entries;
   os_unfair_lock_lock_with_options();
-  v6 = [v5 isEqual:self->_scheduleEntries];
+  v6 = [entriesCopy isEqual:self->_scheduleEntries];
   if ((v6 & 1) == 0)
   {
-    objc_storeStrong(&self->_scheduleEntries, a3);
+    objc_storeStrong(&self->_scheduleEntries, entries);
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -115,38 +115,38 @@
   return v6 ^ 1;
 }
 
-- (void)_handleUpdateSchedules:(id)a3 withReason:(id)a4
+- (void)_handleUpdateSchedules:(id)schedules withReason:(id)reason
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([(HMHomeActivityStateSchedule *)self setScheduleEntries:v6])
+  schedulesCopy = schedules;
+  reasonCopy = reason;
+  if ([(HMHomeActivityStateSchedule *)self setScheduleEntries:schedulesCopy])
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [(HMHomeActivityStateSchedule *)v9 scheduleEntries];
+      scheduleEntries = [(HMHomeActivityStateSchedule *)selfCopy scheduleEntries];
       *buf = 138544130;
       v24 = v11;
       v25 = 2112;
-      v26 = v7;
+      v26 = reasonCopy;
       v27 = 2112;
-      v28 = v12;
+      v28 = scheduleEntries;
       v29 = 2112;
-      v30 = v6;
+      v30 = schedulesCopy;
       _os_log_impl(&dword_19BB39000, v10, OS_LOG_TYPE_INFO, "%{public}@Updating schedules with reason: %@ (%@:%@)", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v8);
-    v13 = [(HMHomeActivityStateSchedule *)v9 home];
-    v14 = [v13 delegate];
+    home = [(HMHomeActivityStateSchedule *)selfCopy home];
+    delegate = [home delegate];
 
-    if ([v14 conformsToProtocol:&unk_1F0F63B38])
+    if ([delegate conformsToProtocol:&unk_1F0F63B38])
     {
-      v15 = v14;
+      v15 = delegate;
     }
 
     else
@@ -158,15 +158,15 @@
 
     if (objc_opt_respondsToSelector())
     {
-      v17 = [(HMHomeActivityStateSchedule *)v9 context];
-      v18 = [v17 delegateCaller];
+      context = [(HMHomeActivityStateSchedule *)selfCopy context];
+      delegateCaller = [context delegateCaller];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __65__HMHomeActivityStateSchedule__handleUpdateSchedules_withReason___block_invoke;
       v20[3] = &unk_1E754E5C0;
       v21 = v16;
-      v22 = v9;
-      [v18 invokeBlock:v20];
+      v22 = selfCopy;
+      [delegateCaller invokeBlock:v20];
     }
   }
 
@@ -180,17 +180,17 @@ void __65__HMHomeActivityStateSchedule__handleUpdateSchedules_withReason___block
   [v2 home:v3 didUpdateHomeActivityStateSchedule:*(a1 + 40)];
 }
 
-- (id)_messagePayloadFromScheduleEntries:(id)a3
+- (id)_messagePayloadFromScheduleEntries:(id)entries
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  entriesCopy = entries;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(entriesCopy, "count")}];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = v4;
+  v7 = entriesCopy;
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v8)
   {
@@ -205,11 +205,11 @@ void __65__HMHomeActivityStateSchedule__handleUpdateSchedules_withReason___block
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v22 + 1) + 8 * i) serializeForAdd];
-        if (!v12)
+        serializeForAdd = [*(*(&v22 + 1) + 8 * i) serializeForAdd];
+        if (!serializeForAdd)
         {
           v16 = objc_autoreleasePoolPush();
-          v17 = self;
+          selfCopy = self;
           v18 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
@@ -226,8 +226,8 @@ void __65__HMHomeActivityStateSchedule__handleUpdateSchedules_withReason___block
           goto LABEL_13;
         }
 
-        v13 = v12;
-        [v6 addObject:v12];
+        v13 = serializeForAdd;
+        [v6 addObject:serializeForAdd];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -241,9 +241,9 @@ void __65__HMHomeActivityStateSchedule__handleUpdateSchedules_withReason___block
   }
 
   v14 = [v6 copy];
-  [v5 setObject:v14 forKeyedSubscript:@"HMHomeActivityStateScheduleScheduleEntriesKey"];
+  [dictionary setObject:v14 forKeyedSubscript:@"HMHomeActivityStateScheduleScheduleEntriesKey"];
 
-  v15 = [v5 copy];
+  v15 = [dictionary copy];
 LABEL_13:
 
   v20 = *MEMORY[0x1E69E9840];
@@ -251,41 +251,41 @@ LABEL_13:
   return v15;
 }
 
-- (void)setScheduleEntries:(id)a3 completion:(id)a4
+- (void)setScheduleEntries:(id)entries completion:(id)completion
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMHomeActivityStateSchedule *)self context];
+  entriesCopy = entries;
+  completionCopy = completion;
+  context = [(HMHomeActivityStateSchedule *)self context];
   if ([(HMHomeActivityStateSchedule *)self homeActivityStateEnabled])
   {
-    v9 = [(HMHomeActivityStateSchedule *)self home];
-    v10 = [v9 areValidScheduleEntries:v6 forState:{-[HMHomeActivityStateSchedule state](self, "state")}];
+    home = [(HMHomeActivityStateSchedule *)self home];
+    v10 = [home areValidScheduleEntries:entriesCopy forState:{-[HMHomeActivityStateSchedule state](self, "state")}];
 
     if (v10)
     {
-      v11 = [(HMHomeActivityStateSchedule *)self _messagePayloadFromScheduleEntries:v6];
-      if (v11)
+      delegateCaller2 = [(HMHomeActivityStateSchedule *)self _messagePayloadFromScheduleEntries:entriesCopy];
+      if (delegateCaller2)
       {
         v12 = objc_alloc(MEMORY[0x1E69A2A00]);
-        v13 = [(HMHomeActivityStateSchedule *)self uuid];
-        v14 = [v12 initWithTarget:v13];
+        uuid = [(HMHomeActivityStateSchedule *)self uuid];
+        v14 = [v12 initWithTarget:uuid];
 
-        v15 = [MEMORY[0x1E69A2A10] messageWithName:@"HMHomeActivityStateScheduleUpdateScheduleEntriesMessage" destination:v14 payload:v11];
+        v15 = [MEMORY[0x1E69A2A10] messageWithName:@"HMHomeActivityStateScheduleUpdateScheduleEntriesMessage" destination:v14 payload:delegateCaller2];
         objc_initWeak(location, self);
         v28 = MEMORY[0x1E69E9820];
         v29 = 3221225472;
         v30 = __61__HMHomeActivityStateSchedule_setScheduleEntries_completion___block_invoke;
         v31 = &unk_1E754D820;
         objc_copyWeak(&v35, location);
-        v32 = v8;
-        v34 = v7;
-        v33 = v6;
+        v32 = context;
+        v34 = completionCopy;
+        v33 = entriesCopy;
         [v15 setResponseHandler:&v28];
         v16 = [(HMHomeActivityStateSchedule *)self context:v28];
-        v17 = [v16 messageDispatcher];
+        messageDispatcher = [v16 messageDispatcher];
         v18 = [v15 copy];
-        [v17 sendMessage:v18];
+        [messageDispatcher sendMessage:v18];
 
         objc_destroyWeak(&v35);
         objc_destroyWeak(location);
@@ -293,18 +293,18 @@ LABEL_13:
 
       else
       {
-        v25 = [v8 delegateCaller];
+        delegateCaller = [context delegateCaller];
         v26 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-        [v25 callCompletion:v7 error:v26];
+        [delegateCaller callCompletion:completionCopy error:v26];
 
-        v11 = 0;
+        delegateCaller2 = 0;
       }
     }
 
     else
     {
       v21 = objc_autoreleasePoolPush();
-      v22 = self;
+      selfCopy = self;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
@@ -315,14 +315,14 @@ LABEL_13:
       }
 
       objc_autoreleasePoolPop(v21);
-      v11 = [v8 delegateCaller];
-      [v11 callCompletion:v7 error:0];
+      delegateCaller2 = [context delegateCaller];
+      [delegateCaller2 callCompletion:completionCopy error:0];
     }
   }
 
   else
   {
-    v19 = _Block_copy(v7);
+    v19 = _Block_copy(completionCopy);
     if (v19)
     {
       v20 = [MEMORY[0x1E696ABC0] hmErrorWithCode:48];
@@ -376,22 +376,22 @@ void __61__HMHomeActivityStateSchedule_setScheduleEntries_completion___block_inv
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (HMHomeActivityStateSchedule)initWithUUID:(id)a3 home:(id)a4 scheduleEntries:(id)a5 state:(unint64_t)a6 homeActivityStateEnabled:(BOOL)a7
+- (HMHomeActivityStateSchedule)initWithUUID:(id)d home:(id)home scheduleEntries:(id)entries state:(unint64_t)state homeActivityStateEnabled:(BOOL)enabled
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  dCopy = d;
+  homeCopy = home;
+  entriesCopy = entries;
   v19.receiver = self;
   v19.super_class = HMHomeActivityStateSchedule;
   v16 = [(HMHomeActivityStateSchedule *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_uuid, a3);
-    objc_storeWeak(&v17->_home, v14);
-    objc_storeStrong(&v17->_scheduleEntries, a5);
-    v17->_state = a6;
-    v17->_homeActivityStateEnabled = a7;
+    objc_storeStrong(&v16->_uuid, d);
+    objc_storeWeak(&v17->_home, homeCopy);
+    objc_storeStrong(&v17->_scheduleEntries, entries);
+    v17->_state = state;
+    v17->_homeActivityStateEnabled = enabled;
   }
 
   return v17;

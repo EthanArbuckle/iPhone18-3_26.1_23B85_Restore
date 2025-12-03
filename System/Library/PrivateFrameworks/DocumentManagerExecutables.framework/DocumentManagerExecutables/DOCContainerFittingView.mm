@@ -1,11 +1,11 @@
 @interface DOCContainerFittingView
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
-- (_TtC26DocumentManagerExecutables23DOCContainerFittingView)initWithCoder:(id)a3;
-- (_TtC26DocumentManagerExecutables23DOCContainerFittingView)initWithFrame:(CGRect)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
+- (_TtC26DocumentManagerExecutables23DOCContainerFittingView)initWithCoder:(id)coder;
+- (_TtC26DocumentManagerExecutables23DOCContainerFittingView)initWithFrame:(CGRect)frame;
 - (double)contentOffsetFromTop;
 - (void)layoutSubviews;
-- (void)setContentOffsetFromTop:(double)a3;
+- (void)setContentOffsetFromTop:(double)top;
 @end
 
 @implementation DOCContainerFittingView
@@ -17,20 +17,20 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setContentOffsetFromTop:(double)a3
+- (void)setContentOffsetFromTop:(double)top
 {
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables23DOCContainerFittingView_contentOffsetFromTop;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = top;
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   DOCContainerFittingView.layoutSubviews()();
 }
 
-- (_TtC26DocumentManagerExecutables23DOCContainerFittingView)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutables23DOCContainerFittingView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables23DOCContainerFittingView_fittingSize);
   *v3 = 0;
@@ -46,7 +46,7 @@
 - (CGSize)intrinsicContentSize
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.super.super.isa) + 0x78);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   v6 = v5;
 
@@ -57,10 +57,10 @@
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
   v3 = *((*MEMORY[0x277D85000] & self->super.super.super.isa) + 0x78);
-  v4 = self;
+  selfCopy = self;
   v5 = v3();
   v7 = v6;
 
@@ -71,7 +71,7 @@
   return result;
 }
 
-- (_TtC26DocumentManagerExecutables23DOCContainerFittingView)initWithFrame:(CGRect)a3
+- (_TtC26DocumentManagerExecutables23DOCContainerFittingView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

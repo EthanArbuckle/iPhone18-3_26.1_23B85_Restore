@@ -7,26 +7,26 @@
 - (NSString)impressionParentName;
 - (NSString)name;
 - (NSString)type;
-- (VUIDebugMetricsImpressionTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (VUIDebugMetricsImpressionTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setIdStr:(id)a3;
-- (void)setIdType:(id)a3;
-- (void)setImpressionId:(id)a3;
-- (void)setImpressionIndex:(id)a3;
-- (void)setImpressionParentId:(id)a3;
-- (void)setImpressionParentName:(id)a3;
-- (void)setName:(id)a3;
-- (void)setType:(id)a3;
+- (void)setIdStr:(id)str;
+- (void)setIdType:(id)type;
+- (void)setImpressionId:(id)id;
+- (void)setImpressionIndex:(id)index;
+- (void)setImpressionParentId:(id)id;
+- (void)setImpressionParentName:(id)name;
+- (void)setName:(id)name;
+- (void)setType:(id)type;
 @end
 
 @implementation VUIDebugMetricsImpressionTableViewCell
 
-- (VUIDebugMetricsImpressionTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (VUIDebugMetricsImpressionTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v48.receiver = self;
   v48.super_class = VUIDebugMetricsImpressionTableViewCell;
-  v4 = [(VUIDebugMetricsImpressionTableViewCell *)&v48 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(VUIDebugMetricsImpressionTableViewCell *)&v48 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(VUITextLayout);
@@ -35,108 +35,108 @@
     [(VUITextLayout *)v5 setNumberOfLinesAXLarge:1];
     [(VUITextLayout *)v5 setFontSize:20.0];
     [(VUITextLayout *)v5 setFontWeight:6];
-    v6 = [MEMORY[0x1E69DC888] blackColor];
-    [(VUITextLayout *)v5 setColor:v6];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(VUITextLayout *)v5 setColor:blackColor];
 
     v7 = [VUILabel labelWithString:&stru_1F5DB25C0 textLayout:v5 existingLabel:0];
     nameLabel = v4->_nameLabel;
     v4->_nameLabel = v7;
 
-    v9 = [(VUIDebugMetricsImpressionTableViewCell *)v4 contentView];
-    [v9 addSubview:v4->_nameLabel];
+    contentView = [(VUIDebugMetricsImpressionTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_nameLabel];
 
     v10 = objc_alloc_init(VUITextLayout);
     [(VUITextLayout *)v10 setNumberOfLines:1];
     [(VUITextLayout *)v10 setNumberOfLinesAXSmall:1];
     [(VUITextLayout *)v10 setNumberOfLinesAXLarge:1];
     [(VUITextLayout *)v10 setFontSize:18.0];
-    v11 = [MEMORY[0x1E69DC888] blackColor];
-    [(VUITextLayout *)v10 setColor:v11];
+    blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+    [(VUITextLayout *)v10 setColor:blackColor2];
 
     v12 = [VUILabel labelWithString:&stru_1F5DB25C0 textLayout:v10 existingLabel:0];
     typeLabel = v4->_typeLabel;
     v4->_typeLabel = v12;
 
-    v14 = [(VUIDebugMetricsImpressionTableViewCell *)v4 contentView];
-    [v14 addSubview:v4->_typeLabel];
+    contentView2 = [(VUIDebugMetricsImpressionTableViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_typeLabel];
 
     v15 = objc_alloc_init(VUITextLayout);
     [(VUITextLayout *)v15 setNumberOfLines:1];
     [(VUITextLayout *)v15 setNumberOfLinesAXSmall:1];
     [(VUITextLayout *)v15 setNumberOfLinesAXLarge:1];
     [(VUITextLayout *)v10 setFontSize:15.0];
-    v16 = [MEMORY[0x1E69DC888] blackColor];
-    [(VUITextLayout *)v15 setColor:v16];
+    blackColor3 = [MEMORY[0x1E69DC888] blackColor];
+    [(VUITextLayout *)v15 setColor:blackColor3];
 
     v17 = [VUILabel labelWithString:@"id: " textLayout:v15 existingLabel:0];
     staticIDLabel = v4->_staticIDLabel;
     v4->_staticIDLabel = v17;
 
-    v19 = [(VUIDebugMetricsImpressionTableViewCell *)v4 contentView];
-    [v19 addSubview:v4->_staticIDLabel];
+    contentView3 = [(VUIDebugMetricsImpressionTableViewCell *)v4 contentView];
+    [contentView3 addSubview:v4->_staticIDLabel];
 
     v20 = [VUILabel labelWithString:&stru_1F5DB25C0 textLayout:v15 existingLabel:0];
     idLabel = v4->_idLabel;
     v4->_idLabel = v20;
 
-    v22 = [(VUIDebugMetricsImpressionTableViewCell *)v4 contentView];
-    [v22 addSubview:v4->_idLabel];
+    contentView4 = [(VUIDebugMetricsImpressionTableViewCell *)v4 contentView];
+    [contentView4 addSubview:v4->_idLabel];
 
     v23 = [VUILabel labelWithString:&stru_1F5DB25C0 textLayout:v15 existingLabel:0];
     idTypeLabel = v4->_idTypeLabel;
     v4->_idTypeLabel = v23;
 
-    v25 = [(VUIDebugMetricsImpressionTableViewCell *)v4 contentView];
-    [v25 addSubview:v4->_idTypeLabel];
+    contentView5 = [(VUIDebugMetricsImpressionTableViewCell *)v4 contentView];
+    [contentView5 addSubview:v4->_idTypeLabel];
 
     v26 = [VUILabel labelWithString:@"Impression Id: " textLayout:v15 existingLabel:0];
     staticImpressionIdLabel = v4->_staticImpressionIdLabel;
     v4->_staticImpressionIdLabel = v26;
 
-    v28 = [(VUIDebugMetricsImpressionTableViewCell *)v4 contentView];
-    [v28 addSubview:v4->_staticImpressionIdLabel];
+    contentView6 = [(VUIDebugMetricsImpressionTableViewCell *)v4 contentView];
+    [contentView6 addSubview:v4->_staticImpressionIdLabel];
 
     v29 = [VUILabel labelWithString:&stru_1F5DB25C0 textLayout:v15 existingLabel:0];
     impressionIdLabel = v4->_impressionIdLabel;
     v4->_impressionIdLabel = v29;
 
-    v31 = [(VUIDebugMetricsImpressionTableViewCell *)v4 contentView];
-    [v31 addSubview:v4->_impressionIdLabel];
+    contentView7 = [(VUIDebugMetricsImpressionTableViewCell *)v4 contentView];
+    [contentView7 addSubview:v4->_impressionIdLabel];
 
     v32 = [VUILabel labelWithString:@"Index: " textLayout:v15 existingLabel:0];
     staticImpressionIndexLabel = v4->_staticImpressionIndexLabel;
     v4->_staticImpressionIndexLabel = v32;
 
-    v34 = [(VUIDebugMetricsImpressionTableViewCell *)v4 contentView];
-    [v34 addSubview:v4->_staticImpressionIndexLabel];
+    contentView8 = [(VUIDebugMetricsImpressionTableViewCell *)v4 contentView];
+    [contentView8 addSubview:v4->_staticImpressionIndexLabel];
 
     v35 = [VUILabel labelWithString:&stru_1F5DB25C0 textLayout:v15 existingLabel:0];
     impressionIndexLabel = v4->_impressionIndexLabel;
     v4->_impressionIndexLabel = v35;
 
-    v37 = [(VUIDebugMetricsImpressionTableViewCell *)v4 contentView];
-    [v37 addSubview:v4->_impressionIndexLabel];
+    contentView9 = [(VUIDebugMetricsImpressionTableViewCell *)v4 contentView];
+    [contentView9 addSubview:v4->_impressionIndexLabel];
 
     v38 = [VUILabel labelWithString:@"Parent: " textLayout:v15 existingLabel:0];
     staticImpressionParentLabel = v4->_staticImpressionParentLabel;
     v4->_staticImpressionParentLabel = v38;
 
-    v40 = [(VUIDebugMetricsImpressionTableViewCell *)v4 contentView];
-    [v40 addSubview:v4->_staticImpressionParentLabel];
+    contentView10 = [(VUIDebugMetricsImpressionTableViewCell *)v4 contentView];
+    [contentView10 addSubview:v4->_staticImpressionParentLabel];
 
     v41 = [VUILabel labelWithString:&stru_1F5DB25C0 textLayout:v15 existingLabel:0];
     impressionParentIdLabel = v4->_impressionParentIdLabel;
     v4->_impressionParentIdLabel = v41;
 
-    v43 = [(VUIDebugMetricsImpressionTableViewCell *)v4 contentView];
-    [v43 addSubview:v4->_impressionParentIdLabel];
+    contentView11 = [(VUIDebugMetricsImpressionTableViewCell *)v4 contentView];
+    [contentView11 addSubview:v4->_impressionParentIdLabel];
 
     v44 = [VUILabel labelWithString:&stru_1F5DB25C0 textLayout:v15 existingLabel:0];
     impressionParentNameLabel = v4->_impressionParentNameLabel;
     v4->_impressionParentNameLabel = v44;
 
-    v46 = [(VUIDebugMetricsImpressionTableViewCell *)v4 contentView];
-    [v46 addSubview:v4->_impressionParentNameLabel];
+    contentView12 = [(VUIDebugMetricsImpressionTableViewCell *)v4 contentView];
+    [contentView12 addSubview:v4->_impressionParentNameLabel];
   }
 
   return v4;
@@ -144,126 +144,126 @@
 
 - (NSString)name
 {
-  v2 = [(VUIDebugMetricsImpressionTableViewCell *)self nameLabel];
-  v3 = [v2 text];
+  nameLabel = [(VUIDebugMetricsImpressionTableViewCell *)self nameLabel];
+  text = [nameLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  v5 = [(VUIDebugMetricsImpressionTableViewCell *)self nameLabel];
-  [v5 setText:v4];
+  nameCopy = name;
+  nameLabel = [(VUIDebugMetricsImpressionTableViewCell *)self nameLabel];
+  [nameLabel setText:nameCopy];
 }
 
 - (NSString)type
 {
-  v2 = [(VUIDebugMetricsImpressionTableViewCell *)self typeLabel];
-  v3 = [v2 text];
+  typeLabel = [(VUIDebugMetricsImpressionTableViewCell *)self typeLabel];
+  text = [typeLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setType:(id)a3
+- (void)setType:(id)type
 {
-  v4 = a3;
-  v5 = [(VUIDebugMetricsImpressionTableViewCell *)self typeLabel];
-  [v5 setText:v4];
+  typeCopy = type;
+  typeLabel = [(VUIDebugMetricsImpressionTableViewCell *)self typeLabel];
+  [typeLabel setText:typeCopy];
 }
 
 - (NSString)idStr
 {
-  v2 = [(VUIDebugMetricsImpressionTableViewCell *)self idLabel];
-  v3 = [v2 text];
+  idLabel = [(VUIDebugMetricsImpressionTableViewCell *)self idLabel];
+  text = [idLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setIdStr:(id)a3
+- (void)setIdStr:(id)str
 {
-  v4 = a3;
-  v5 = [(VUIDebugMetricsImpressionTableViewCell *)self idLabel];
-  [v5 setText:v4];
+  strCopy = str;
+  idLabel = [(VUIDebugMetricsImpressionTableViewCell *)self idLabel];
+  [idLabel setText:strCopy];
 }
 
 - (NSString)idType
 {
-  v2 = [(VUIDebugMetricsImpressionTableViewCell *)self idTypeLabel];
-  v3 = [v2 text];
+  idTypeLabel = [(VUIDebugMetricsImpressionTableViewCell *)self idTypeLabel];
+  text = [idTypeLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setIdType:(id)a3
+- (void)setIdType:(id)type
 {
-  v4 = a3;
-  v6 = [(VUIDebugMetricsImpressionTableViewCell *)self idTypeLabel];
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(%@)", v4];
+  typeCopy = type;
+  idTypeLabel = [(VUIDebugMetricsImpressionTableViewCell *)self idTypeLabel];
+  typeCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"(%@)", typeCopy];
 
-  [v6 setText:v5];
+  [idTypeLabel setText:typeCopy];
 }
 
 - (NSString)impressionId
 {
-  v2 = [(VUIDebugMetricsImpressionTableViewCell *)self impressionIdLabel];
-  v3 = [v2 text];
+  impressionIdLabel = [(VUIDebugMetricsImpressionTableViewCell *)self impressionIdLabel];
+  text = [impressionIdLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setImpressionId:(id)a3
+- (void)setImpressionId:(id)id
 {
-  v4 = a3;
-  v5 = [(VUIDebugMetricsImpressionTableViewCell *)self impressionIdLabel];
-  [v5 setText:v4];
+  idCopy = id;
+  impressionIdLabel = [(VUIDebugMetricsImpressionTableViewCell *)self impressionIdLabel];
+  [impressionIdLabel setText:idCopy];
 }
 
 - (NSString)impressionIndex
 {
-  v2 = [(VUIDebugMetricsImpressionTableViewCell *)self impressionIndexLabel];
-  v3 = [v2 text];
+  impressionIndexLabel = [(VUIDebugMetricsImpressionTableViewCell *)self impressionIndexLabel];
+  text = [impressionIndexLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setImpressionIndex:(id)a3
+- (void)setImpressionIndex:(id)index
 {
-  v4 = a3;
-  v5 = [(VUIDebugMetricsImpressionTableViewCell *)self impressionIndexLabel];
-  [v5 setText:v4];
+  indexCopy = index;
+  impressionIndexLabel = [(VUIDebugMetricsImpressionTableViewCell *)self impressionIndexLabel];
+  [impressionIndexLabel setText:indexCopy];
 }
 
 - (NSString)impressionParentId
 {
-  v2 = [(VUIDebugMetricsImpressionTableViewCell *)self impressionParentIdLabel];
-  v3 = [v2 text];
+  impressionParentIdLabel = [(VUIDebugMetricsImpressionTableViewCell *)self impressionParentIdLabel];
+  text = [impressionParentIdLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setImpressionParentId:(id)a3
+- (void)setImpressionParentId:(id)id
 {
-  v4 = a3;
-  v5 = [(VUIDebugMetricsImpressionTableViewCell *)self impressionParentIdLabel];
-  [v5 setText:v4];
+  idCopy = id;
+  impressionParentIdLabel = [(VUIDebugMetricsImpressionTableViewCell *)self impressionParentIdLabel];
+  [impressionParentIdLabel setText:idCopy];
 }
 
 - (NSString)impressionParentName
 {
-  v2 = [(VUIDebugMetricsImpressionTableViewCell *)self impressionParentNameLabel];
-  v3 = [v2 text];
+  impressionParentNameLabel = [(VUIDebugMetricsImpressionTableViewCell *)self impressionParentNameLabel];
+  text = [impressionParentNameLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setImpressionParentName:(id)a3
+- (void)setImpressionParentName:(id)name
 {
-  v4 = a3;
-  v6 = [(VUIDebugMetricsImpressionTableViewCell *)self impressionParentNameLabel];
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(%@)", v4];
+  nameCopy = name;
+  impressionParentNameLabel = [(VUIDebugMetricsImpressionTableViewCell *)self impressionParentNameLabel];
+  nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"(%@)", nameCopy];
 
-  [v6 setText:v5];
+  [impressionParentNameLabel setText:nameCopy];
 }
 
 - (void)layoutSubviews
@@ -446,29 +446,29 @@
   v11.receiver = self;
   v11.super_class = VUIDebugMetricsImpressionTableViewCell;
   [(VUIDebugMetricsImpressionTableViewCell *)&v11 prepareForReuse];
-  v3 = [(VUIDebugMetricsImpressionTableViewCell *)self nameLabel];
-  [v3 setText:&stru_1F5DB25C0];
+  nameLabel = [(VUIDebugMetricsImpressionTableViewCell *)self nameLabel];
+  [nameLabel setText:&stru_1F5DB25C0];
 
-  v4 = [(VUIDebugMetricsImpressionTableViewCell *)self typeLabel];
-  [v4 setText:&stru_1F5DB25C0];
+  typeLabel = [(VUIDebugMetricsImpressionTableViewCell *)self typeLabel];
+  [typeLabel setText:&stru_1F5DB25C0];
 
-  v5 = [(VUIDebugMetricsImpressionTableViewCell *)self idLabel];
-  [v5 setText:&stru_1F5DB25C0];
+  idLabel = [(VUIDebugMetricsImpressionTableViewCell *)self idLabel];
+  [idLabel setText:&stru_1F5DB25C0];
 
-  v6 = [(VUIDebugMetricsImpressionTableViewCell *)self idTypeLabel];
-  [v6 setText:&stru_1F5DB25C0];
+  idTypeLabel = [(VUIDebugMetricsImpressionTableViewCell *)self idTypeLabel];
+  [idTypeLabel setText:&stru_1F5DB25C0];
 
-  v7 = [(VUIDebugMetricsImpressionTableViewCell *)self impressionIdLabel];
-  [v7 setText:&stru_1F5DB25C0];
+  impressionIdLabel = [(VUIDebugMetricsImpressionTableViewCell *)self impressionIdLabel];
+  [impressionIdLabel setText:&stru_1F5DB25C0];
 
-  v8 = [(VUIDebugMetricsImpressionTableViewCell *)self impressionIndexLabel];
-  [v8 setText:&stru_1F5DB25C0];
+  impressionIndexLabel = [(VUIDebugMetricsImpressionTableViewCell *)self impressionIndexLabel];
+  [impressionIndexLabel setText:&stru_1F5DB25C0];
 
-  v9 = [(VUIDebugMetricsImpressionTableViewCell *)self impressionParentIdLabel];
-  [v9 setText:&stru_1F5DB25C0];
+  impressionParentIdLabel = [(VUIDebugMetricsImpressionTableViewCell *)self impressionParentIdLabel];
+  [impressionParentIdLabel setText:&stru_1F5DB25C0];
 
-  v10 = [(VUIDebugMetricsImpressionTableViewCell *)self impressionParentNameLabel];
-  [v10 setText:&stru_1F5DB25C0];
+  impressionParentNameLabel = [(VUIDebugMetricsImpressionTableViewCell *)self impressionParentNameLabel];
+  [impressionParentNameLabel setText:&stru_1F5DB25C0];
 }
 
 @end

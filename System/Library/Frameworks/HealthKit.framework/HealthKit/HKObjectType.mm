@@ -1,5 +1,5 @@
 @interface HKObjectType
-+ (BOOL)_allowAuthorizationForSharing:(BOOL)a3 types:(id)a4 entitlements:(id)a5 disallowedTypes:(id)a6;
++ (BOOL)_allowAuthorizationForSharing:(BOOL)sharing types:(id)types entitlements:(id)entitlements disallowedTypes:(id)disallowedTypes;
 + (HKCategoryType)categoryTypeForIdentifier:(HKCategoryTypeIdentifier)identifier;
 + (HKCharacteristicType)characteristicTypeForIdentifier:(HKCharacteristicTypeIdentifier)identifier;
 + (HKClinicalType)clinicalTypeForIdentifier:(HKClinicalTypeIdentifier)identifier;
@@ -12,61 +12,61 @@
 + (id)_allBinarySampleTypes;
 + (id)_allDataTypeIdentifiers;
 + (id)_allScoredAssessmentTypes;
-+ (id)_allTypesOfClass:(Class)a3;
-+ (id)_dataTypeWithCode:(int64_t)a3 expectedClass:(Class)a4;
-+ (id)_lock_dataTypeWithCode:(int64_t)a3 expectedClass:(Class)a4;
-+ (id)_objectTypesFromIdentifierArray:(id)a3 error:(id *)a4;
-+ (id)_typeWithIdentifier:(id)a3 expectedClass:(Class)a4;
-+ (id)_typesIncludingParentTypes:(id)a3;
-+ (id)accountOwnerTypeForIdentifier:(id)a3;
-+ (id)allergyRecordTypeForIdentifier:(id)a3;
-+ (id)clinicalNoteRecordTypeForIdentifier:(id)a3;
-+ (id)conditionRecordTypeForIdentifier:(id)a3;
-+ (id)coverageRecordTypeForIdentifier:(id)a3;
-+ (id)dataTypeWithNumber:(id)a3;
-+ (id)diagnosticTestReportTypeForIdentifier:(id)a3;
-+ (id)diagnosticTestResultTypeForIdentifier:(id)a3;
-+ (id)medicalTypeForIdentifier:(id)a3;
-+ (id)medicationDispenseRecordTypeForIdentifier:(id)a3;
-+ (id)medicationOrderTypeForIdentifier:(id)a3;
-+ (id)medicationRecordTypeForIdentifier:(id)a3;
-+ (id)objectTypeForWorkoutMetric:(unint64_t)a3 fitnessMachineType:(unint64_t)a4;
-+ (id)procedureRecordTypeForIdentifier:(id)a3;
-+ (id)scoredAssessmentTypeForIdentifier:(id)a3;
-+ (id)signedClinicalDataRecordTypeForIdentifier:(id)a3;
-+ (id)unknownRecordTypeForIdentifier:(id)a3;
-+ (id)userTrackedConceptTypeForIdentifier:(id)a3;
-+ (id)vaccinationRecordTypeForIdentifier:(id)a3;
-+ (id)verifiableClinicalRecordTypeForIdentifier:(id)a3;
-+ (id)workoutZonesTypeForIdentifier:(id)a3;
-+ (int64_t)_typeCodeForIdentifier:(id)a3;
-+ (void)_enumerateDataTypeCodesWithHandler:(id)a3;
-+ (void)_enumerateObjectTypesWithHandler:(id)a3;
++ (id)_allTypesOfClass:(Class)class;
++ (id)_dataTypeWithCode:(int64_t)code expectedClass:(Class)class;
++ (id)_lock_dataTypeWithCode:(int64_t)code expectedClass:(Class)class;
++ (id)_objectTypesFromIdentifierArray:(id)array error:(id *)error;
++ (id)_typeWithIdentifier:(id)identifier expectedClass:(Class)class;
++ (id)_typesIncludingParentTypes:(id)types;
++ (id)accountOwnerTypeForIdentifier:(id)identifier;
++ (id)allergyRecordTypeForIdentifier:(id)identifier;
++ (id)clinicalNoteRecordTypeForIdentifier:(id)identifier;
++ (id)conditionRecordTypeForIdentifier:(id)identifier;
++ (id)coverageRecordTypeForIdentifier:(id)identifier;
++ (id)dataTypeWithNumber:(id)number;
++ (id)diagnosticTestReportTypeForIdentifier:(id)identifier;
++ (id)diagnosticTestResultTypeForIdentifier:(id)identifier;
++ (id)medicalTypeForIdentifier:(id)identifier;
++ (id)medicationDispenseRecordTypeForIdentifier:(id)identifier;
++ (id)medicationOrderTypeForIdentifier:(id)identifier;
++ (id)medicationRecordTypeForIdentifier:(id)identifier;
++ (id)objectTypeForWorkoutMetric:(unint64_t)metric fitnessMachineType:(unint64_t)type;
++ (id)procedureRecordTypeForIdentifier:(id)identifier;
++ (id)scoredAssessmentTypeForIdentifier:(id)identifier;
++ (id)signedClinicalDataRecordTypeForIdentifier:(id)identifier;
++ (id)unknownRecordTypeForIdentifier:(id)identifier;
++ (id)userTrackedConceptTypeForIdentifier:(id)identifier;
++ (id)vaccinationRecordTypeForIdentifier:(id)identifier;
++ (id)verifiableClinicalRecordTypeForIdentifier:(id)identifier;
++ (id)workoutZonesTypeForIdentifier:(id)identifier;
++ (int64_t)_typeCodeForIdentifier:(id)identifier;
++ (void)_enumerateDataTypeCodesWithHandler:(id)handler;
++ (void)_enumerateObjectTypesWithHandler:(id)handler;
 - ($E8A27014057A1F053A0599C3679047E8)_definition;
 - (BOOL)isAbleToWriteHealthSensitiveLogs;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isHealthRecordsType;
 - (BOOL)requiresSensitiveHealthLogs;
 - (Class)dataObjectClass;
 - (HKObjectType)init;
-- (HKObjectType)initWithCoder:(id)a3;
+- (HKObjectType)initWithCoder:(id)coder;
 - (NSString)identifier;
-- (id)_initWithCode:(int64_t)a3;
+- (id)_initWithCode:(int64_t)code;
 - (id)attachmentSchemaIdentifier;
 - (id)hk_localizedName;
 - (id)hk_localizedNameForAuthSheet;
 - (id)sensitiveLoggingIdentifier;
 - (int64_t)logPrivacyLevel;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKObjectType
 
 - (unint64_t)hash
 {
-  v2 = [(HKObjectType *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(HKObjectType *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -93,34 +93,34 @@
   return NSClassFromString(v2);
 }
 
-+ (id)unknownRecordTypeForIdentifier:(id)a3
++ (id)unknownRecordTypeForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  identifierCopy = identifier;
+  v5 = [self _typeWithIdentifier:identifierCopy expectedClass:objc_opt_class()];
 
   return v5;
 }
 
-+ (id)medicationOrderTypeForIdentifier:(id)a3
++ (id)medicationOrderTypeForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  identifierCopy = identifier;
+  v5 = [self _typeWithIdentifier:identifierCopy expectedClass:objc_opt_class()];
 
   return v5;
 }
 
-+ (id)allergyRecordTypeForIdentifier:(id)a3
++ (id)allergyRecordTypeForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  identifierCopy = identifier;
+  v5 = [self _typeWithIdentifier:identifierCopy expectedClass:objc_opt_class()];
 
   return v5;
 }
 
-+ (id)accountOwnerTypeForIdentifier:(id)a3
++ (id)accountOwnerTypeForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  identifierCopy = identifier;
+  v5 = [self _typeWithIdentifier:identifierCopy expectedClass:objc_opt_class()];
 
   return v5;
 }
@@ -1438,9 +1438,9 @@ LABEL_223:
 - (id)hk_localizedNameForAuthSheet
 {
   v2 = 0;
-  v3 = [(HKObjectType *)self code];
+  code = [(HKObjectType *)self code];
   v4 = @"SYMPTOM_ABDOMINAL_CRAMPS";
-  switch(v3)
+  switch(code)
   {
     case 0:
       v4 = @"BODY_MASS_INDEX";
@@ -2101,21 +2101,21 @@ LABEL_217:
   return v2;
 }
 
-+ (id)objectTypeForWorkoutMetric:(unint64_t)a3 fitnessMachineType:(unint64_t)a4
++ (id)objectTypeForWorkoutMetric:(unint64_t)metric fitnessMachineType:(unint64_t)type
 {
   v6 = 0;
-  if (a3 <= 6)
+  if (metric <= 6)
   {
-    if (a3 <= 2)
+    if (metric <= 2)
     {
-      if (a3 == 1)
+      if (metric == 1)
       {
         v7 = &HKQuantityTypeIdentifierAppleExerciseTime;
       }
 
       else
       {
-        if (a3 != 2)
+        if (metric != 2)
         {
           goto LABEL_28;
         }
@@ -2126,7 +2126,7 @@ LABEL_217:
 
     else
     {
-      switch(a3)
+      switch(metric)
       {
         case 3uLL:
           v7 = &HKQuantityTypeIdentifierDistanceWalkingRunning;
@@ -2145,21 +2145,21 @@ LABEL_217:
     goto LABEL_27;
   }
 
-  if (a3 <= 15)
+  if (metric <= 15)
   {
-    if (a3 == 7)
+    if (metric == 7)
     {
       v7 = &HKQuantityTypeIdentifierStepCount;
     }
 
     else
     {
-      if (a3 != 9)
+      if (metric != 9)
       {
         goto LABEL_28;
       }
 
-      if (a4 != 6)
+      if (type != 6)
       {
         goto LABEL_31;
       }
@@ -2168,15 +2168,15 @@ LABEL_217:
     }
 
 LABEL_27:
-    v6 = [(HKObjectType *)HKSampleType quantityTypeForIdentifier:*v7, a4, v4];
+    v6 = [(HKObjectType *)HKSampleType quantityTypeForIdentifier:*v7, type, v4];
 LABEL_28:
 
     return v6;
   }
 
-  if (a3 == 16)
+  if (metric == 16)
   {
-    if (a4 != 6)
+    if (type != 6)
     {
       goto LABEL_31;
     }
@@ -2185,9 +2185,9 @@ LABEL_28:
     goto LABEL_27;
   }
 
-  if (a3 != 18)
+  if (metric != 18)
   {
-    if (a3 != 20)
+    if (metric != 20)
     {
       goto LABEL_28;
     }
@@ -2196,7 +2196,7 @@ LABEL_28:
     goto LABEL_27;
   }
 
-  if (a4 == 6)
+  if (type == 6)
   {
     v7 = &HKQuantityTypeIdentifierCyclingCadence;
     goto LABEL_27;
@@ -2208,58 +2208,58 @@ LABEL_31:
   return v6;
 }
 
-+ (id)signedClinicalDataRecordTypeForIdentifier:(id)a3
++ (id)signedClinicalDataRecordTypeForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  identifierCopy = identifier;
+  v5 = [self _typeWithIdentifier:identifierCopy expectedClass:objc_opt_class()];
 
   return v5;
 }
 
-+ (id)procedureRecordTypeForIdentifier:(id)a3
++ (id)procedureRecordTypeForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  identifierCopy = identifier;
+  v5 = [self _typeWithIdentifier:identifierCopy expectedClass:objc_opt_class()];
 
   return v5;
 }
 
-+ (id)diagnosticTestResultTypeForIdentifier:(id)a3
++ (id)diagnosticTestResultTypeForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  identifierCopy = identifier;
+  v5 = [self _typeWithIdentifier:identifierCopy expectedClass:objc_opt_class()];
 
   return v5;
 }
 
-+ (id)conditionRecordTypeForIdentifier:(id)a3
++ (id)conditionRecordTypeForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  identifierCopy = identifier;
+  v5 = [self _typeWithIdentifier:identifierCopy expectedClass:objc_opt_class()];
 
   return v5;
 }
 
-+ (id)medicationDispenseRecordTypeForIdentifier:(id)a3
++ (id)medicationDispenseRecordTypeForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  identifierCopy = identifier;
+  v5 = [self _typeWithIdentifier:identifierCopy expectedClass:objc_opt_class()];
 
   return v5;
 }
 
-+ (id)diagnosticTestReportTypeForIdentifier:(id)a3
++ (id)diagnosticTestReportTypeForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  identifierCopy = identifier;
+  v5 = [self _typeWithIdentifier:identifierCopy expectedClass:objc_opt_class()];
 
   return v5;
 }
 
-+ (id)coverageRecordTypeForIdentifier:(id)a3
++ (id)coverageRecordTypeForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  identifierCopy = identifier;
+  v5 = [self _typeWithIdentifier:identifierCopy expectedClass:objc_opt_class()];
 
   return v5;
 }
@@ -2274,9 +2274,9 @@ LABEL_31:
   return 0;
 }
 
-+ (void)_enumerateDataTypeCodesWithHandler:(id)a3
++ (void)_enumerateDataTypeCodesWithHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = 0;
   v5 = HKDataTypeDefinitions;
   do
@@ -2287,7 +2287,7 @@ LABEL_31:
     __destructor_8_s0_s8_s16_s24_s32(v7);
     if (v6)
     {
-      v3[2](v3, v4);
+      handlerCopy[2](handlerCopy, v4);
     }
 
     ++v4;
@@ -2297,16 +2297,16 @@ LABEL_31:
   while (v4 != 342);
 }
 
-+ (void)_enumerateObjectTypesWithHandler:(id)a3
++ (void)_enumerateObjectTypesWithHandler:(id)handler
 {
   v4 = 0;
-  v6 = a3;
+  handlerCopy = handler;
   do
   {
-    v5 = [a1 dataTypeWithCode:v4];
+    v5 = [self dataTypeWithCode:v4];
     if (v5)
     {
-      v6[2](v6, v5);
+      handlerCopy[2](handlerCopy, v5);
     }
 
     ++v4;
@@ -2324,7 +2324,7 @@ LABEL_31:
   v7[3] = &unk_1E7380460;
   v8 = v3;
   v4 = v3;
-  [a1 _enumerateDataTypeCodesWithHandler:v7];
+  [self _enumerateDataTypeCodesWithHandler:v7];
   v5 = [v4 copy];
 
   return v5;
@@ -2343,18 +2343,18 @@ void __39__HKObjectType__allDataTypeIdentifiers__block_invoke(uint64_t a1, uint6
   __destructor_8_s0_s8_s16_s24_s32(v4);
 }
 
-+ (id)_allTypesOfClass:(Class)a3
++ (id)_allTypesOfClass:(Class)class
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __33__HKObjectType__allTypesOfClass___block_invoke;
   v9[3] = &unk_1E7380488;
-  v11 = a1;
-  v12 = a3;
+  selfCopy = self;
+  classCopy = class;
   v10 = v5;
   v6 = v5;
-  [a1 _enumerateDataTypeCodesWithHandler:v9];
+  [self _enumerateDataTypeCodesWithHandler:v9];
   v7 = [v6 copy];
 
   return v7;
@@ -2383,7 +2383,7 @@ uint64_t __33__HKObjectType__allTypesOfClass___block_invoke(uint64_t a1, uint64_
   v14 = v3;
   v5 = v3;
   v6 = v4;
-  [a1 _enumerateObjectTypesWithHandler:&v9];
+  [self _enumerateObjectTypesWithHandler:&v9];
   v7 = [v5 copy];
 
   return v7;
@@ -2410,7 +2410,7 @@ void __37__HKObjectType__allBinarySampleTypes__block_invoke(uint64_t a1, void *a
   v14 = v3;
   v5 = v3;
   v6 = v4;
-  [a1 _enumerateObjectTypesWithHandler:&v9];
+  [self _enumerateObjectTypesWithHandler:&v9];
   v7 = [v5 copy];
 
   return v7;
@@ -2425,16 +2425,16 @@ void __41__HKObjectType__allScoredAssessmentTypes__block_invoke(uint64_t a1, voi
   }
 }
 
-+ (id)_typesIncludingParentTypes:(id)a3
++ (id)_typesIncludingParentTypes:(id)types
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DFA8] setWithSet:v3];
+  typesCopy = types;
+  v4 = [MEMORY[0x1E695DFA8] setWithSet:typesCopy];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = typesCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -2450,12 +2450,12 @@ void __41__HKObjectType__allScoredAssessmentTypes__block_invoke(uint64_t a1, voi
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 parentType];
+        parentType = [v10 parentType];
 
-        if (v11)
+        if (parentType)
         {
-          v12 = [v10 parentType];
-          [v4 addObject:v12];
+          parentType2 = [v10 parentType];
+          [v4 addObject:parentType2];
         }
       }
 
@@ -2470,14 +2470,14 @@ void __41__HKObjectType__allScoredAssessmentTypes__block_invoke(uint64_t a1, voi
   return v4;
 }
 
-+ (id)_lock_dataTypeWithCode:(int64_t)a3 expectedClass:(Class)a4
++ (id)_lock_dataTypeWithCode:(int64_t)code expectedClass:(Class)class
 {
-  v8 = (&_lock_dataTypeWithCode_expectedClass__uniquedDataTypes + 8 * a3);
+  v8 = (&_lock_dataTypeWithCode_expectedClass__uniquedDataTypes + 8 * code);
   v9 = *v8;
   if (v9)
   {
     v10 = v9;
-    if (a4 && ([objc_opt_class() isSubclassOfClass:a4] & 1) == 0)
+    if (class && ([objc_opt_class() isSubclassOfClass:class] & 1) == 0)
     {
 
       v10 = 0;
@@ -2489,16 +2489,16 @@ void __41__HKObjectType__allScoredAssessmentTypes__block_invoke(uint64_t a1, voi
     v18 = 0u;
     v19 = 0u;
     *aClassName = 0u;
-    __copy_constructor_8_8_s0_s8_s16_s24_s32_t40w4(aClassName, &HKDataTypeDefinitions[6 * a3]);
-    if (SWORD4(v19) != a3)
+    __copy_constructor_8_8_s0_s8_s16_s24_s32_t40w4(aClassName, &HKDataTypeDefinitions[6 * code]);
+    if (SWORD4(v19) != code)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v16 handleFailureInMethod:a2 object:a1 file:@"HKObjectType.m" lineNumber:177 description:{@"definition for wrong code (%d) at index %d", SWORD4(v19), a3}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HKObjectType.m" lineNumber:177 description:{@"definition for wrong code (%d) at index %d", SWORD4(v19), code}];
     }
 
     v11 = NSClassFromString(aClassName[1]);
     v12 = v11;
-    if (a4 && ![(objc_class *)v11 isSubclassOfClass:a4])
+    if (class && ![(objc_class *)v11 isSubclassOfClass:class])
     {
       v10 = 0;
     }
@@ -2509,7 +2509,7 @@ void __41__HKObjectType__allScoredAssessmentTypes__block_invoke(uint64_t a1, voi
       v10 = [v13 _initWithCode:SWORD4(v19)];
       if (v19)
       {
-        v14 = [a1 _lock_dataTypeWithCode:objc_msgSend(v19 expectedClass:{"longLongValue"), 0}];
+        v14 = [self _lock_dataTypeWithCode:objc_msgSend(v19 expectedClass:{"longLongValue"), 0}];
         [v10 setParentType:v14];
       }
 
@@ -2522,31 +2522,31 @@ void __41__HKObjectType__allScoredAssessmentTypes__block_invoke(uint64_t a1, voi
   return v10;
 }
 
-+ (id)_dataTypeWithCode:(int64_t)a3 expectedClass:(Class)a4
++ (id)_dataTypeWithCode:(int64_t)code expectedClass:(Class)class
 {
-  if (a3 >= 0x156)
+  if (code >= 0x156)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"invalid data type code (%ld)", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"invalid data type code (%ld)", code}];
   }
 
   os_unfair_lock_lock(&_dataTypeWithCode_expectedClass__lock);
-  v7 = [a1 _lock_dataTypeWithCode:a3 expectedClass:a4];
+  v7 = [self _lock_dataTypeWithCode:code expectedClass:class];
   os_unfair_lock_unlock(&_dataTypeWithCode_expectedClass__lock);
 
   return v7;
 }
 
-+ (id)dataTypeWithNumber:(id)a3
++ (id)dataTypeWithNumber:(id)number
 {
-  v4 = [a3 integerValue];
+  integerValue = [number integerValue];
 
-  return [a1 dataTypeWithCode:v4];
+  return [self dataTypeWithCode:integerValue];
 }
 
 + (HKQuantityType)quantityTypeForIdentifier:(HKQuantityTypeIdentifier)identifier
 {
   v4 = identifier;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  v5 = [self _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }
@@ -2554,7 +2554,7 @@ void __41__HKObjectType__allScoredAssessmentTypes__block_invoke(uint64_t a1, voi
 + (HKCategoryType)categoryTypeForIdentifier:(HKCategoryTypeIdentifier)identifier
 {
   v4 = identifier;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  v5 = [self _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }
@@ -2562,7 +2562,7 @@ void __41__HKObjectType__allScoredAssessmentTypes__block_invoke(uint64_t a1, voi
 + (HKCharacteristicType)characteristicTypeForIdentifier:(HKCharacteristicTypeIdentifier)identifier
 {
   v4 = identifier;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  v5 = [self _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }
@@ -2570,7 +2570,7 @@ void __41__HKObjectType__allScoredAssessmentTypes__block_invoke(uint64_t a1, voi
 + (HKCorrelationType)correlationTypeForIdentifier:(HKCorrelationTypeIdentifier)identifier
 {
   v4 = identifier;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  v5 = [self _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }
@@ -2578,15 +2578,15 @@ void __41__HKObjectType__allScoredAssessmentTypes__block_invoke(uint64_t a1, voi
 + (HKDocumentType)documentTypeForIdentifier:(HKDocumentTypeIdentifier)identifier
 {
   v4 = identifier;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  v5 = [self _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }
 
-+ (id)scoredAssessmentTypeForIdentifier:(id)a3
++ (id)scoredAssessmentTypeForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  identifierCopy = identifier;
+  v5 = [self _typeWithIdentifier:identifierCopy expectedClass:objc_opt_class()];
 
   return v5;
 }
@@ -2594,23 +2594,23 @@ void __41__HKObjectType__allScoredAssessmentTypes__block_invoke(uint64_t a1, voi
 + (HKSeriesType)seriesTypeForIdentifier:(NSString *)identifier
 {
   v4 = identifier;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  v5 = [self _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }
 
-+ (id)userTrackedConceptTypeForIdentifier:(id)a3
++ (id)userTrackedConceptTypeForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  identifierCopy = identifier;
+  v5 = [self _typeWithIdentifier:identifierCopy expectedClass:objc_opt_class()];
 
   return v5;
 }
 
-+ (id)workoutZonesTypeForIdentifier:(id)a3
++ (id)workoutZonesTypeForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  identifierCopy = identifier;
+  v5 = [self _typeWithIdentifier:identifierCopy expectedClass:objc_opt_class()];
 
   return v5;
 }
@@ -2629,15 +2629,15 @@ void __41__HKObjectType__allScoredAssessmentTypes__block_invoke(uint64_t a1, voi
   return v2;
 }
 
-+ (int64_t)_typeCodeForIdentifier:(id)a3
++ (int64_t)_typeCodeForIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = HKDataTypeCodeFromTypeIdentifier(v3);
-  if (v4 || ([&unk_1F0686308 objectForKeyedSubscript:v3], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  identifierCopy = identifier;
+  v4 = HKDataTypeCodeFromTypeIdentifier(identifierCopy);
+  if (v4 || ([&unk_1F0686308 objectForKeyedSubscript:identifierCopy], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
-    v6 = [v4 unsignedIntValue];
+    unsignedIntValue = [v4 unsignedIntValue];
   }
 
   else
@@ -2647,20 +2647,20 @@ void __41__HKObjectType__allScoredAssessmentTypes__block_invoke(uint64_t a1, voi
     if (os_log_type_enabled(HKLogDefault, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v3;
+      v11 = identifierCopy;
       _os_log_impl(&dword_19197B000, v9, OS_LOG_TYPE_DEFAULT, "Failed to resolve data type code for identifier %@", &v10, 0xCu);
     }
 
-    v6 = -1;
+    unsignedIntValue = -1;
   }
 
   v7 = *MEMORY[0x1E69E9840];
-  return v6;
+  return unsignedIntValue;
 }
 
-+ (id)_typeWithIdentifier:(id)a3 expectedClass:(Class)a4
++ (id)_typeWithIdentifier:(id)identifier expectedClass:(Class)class
 {
-  v6 = [a1 _typeCodeForIdentifier:a3];
+  v6 = [self _typeCodeForIdentifier:identifier];
   if (v6 > 0x155)
   {
     v7 = 0;
@@ -2668,21 +2668,21 @@ void __41__HKObjectType__allScoredAssessmentTypes__block_invoke(uint64_t a1, voi
 
   else
   {
-    v7 = [a1 _dataTypeWithCode:v6 expectedClass:a4];
+    v7 = [self _dataTypeWithCode:v6 expectedClass:class];
   }
 
   return v7;
 }
 
-+ (id)_objectTypesFromIdentifierArray:(id)a3 error:(id *)a4
++ (id)_objectTypesFromIdentifierArray:(id)array error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  arrayCopy = array;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v24 = a4;
-    v6 = v5;
+    errorCopy = error;
+    v6 = arrayCopy;
     v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v25 = 0u;
     v26 = 0u;
@@ -2714,7 +2714,7 @@ LABEL_4:
         v15 = [HKObjectType _typeWithIdentifier:v14];
         if (!v15)
         {
-          [MEMORY[0x1E696ABC0] hk_assignError:v24 code:3 format:{@"Invalid type identifier %@", v14}];
+          [MEMORY[0x1E696ABC0] hk_assignError:errorCopy code:3 format:{@"Invalid type identifier %@", v14}];
 
           goto LABEL_15;
         }
@@ -2736,7 +2736,7 @@ LABEL_4:
 
       v20 = MEMORY[0x1E696ABC0];
       v21 = objc_opt_class();
-      [v20 hk_assignError:v24 code:3 format:{@"Type identifier %@ has invalid class (expected %@, found %@)", v13, v21, objc_opt_class()}];
+      [v20 hk_assignError:errorCopy code:3 format:{@"Type identifier %@ has invalid class (expected %@, found %@)", v13, v21, objc_opt_class()}];
 LABEL_15:
 
       v17 = 0;
@@ -2753,7 +2753,7 @@ LABEL_16:
   {
     v18 = MEMORY[0x1E696ABC0];
     v19 = objc_opt_class();
-    [v18 hk_assignError:a4 code:3 format:{@"Invalid type identifier array (expected %@, found %@)", v19, objc_opt_class()}];
+    [v18 hk_assignError:error code:3 format:{@"Invalid type identifier array (expected %@, found %@)", v19, objc_opt_class()}];
     v17 = 0;
   }
 
@@ -2781,9 +2781,9 @@ LABEL_16:
 
 - (id)attachmentSchemaIdentifier
 {
-  v2 = [(HKObjectType *)self isHealthRecordsType];
+  isHealthRecordsType = [(HKObjectType *)self isHealthRecordsType];
   v3 = &HKAttachmentClinicalRecordSchemaIdentifier;
-  if (!v2)
+  if (!isHealthRecordsType)
   {
     v3 = HKAttachmentObjectSchemaIdentifier;
   }
@@ -2793,25 +2793,25 @@ LABEL_16:
   return v4;
 }
 
-- (id)_initWithCode:(int64_t)a3
+- (id)_initWithCode:(int64_t)code
 {
-  v3 = a3;
+  codeCopy = code;
   v5.receiver = self;
   v5.super_class = HKObjectType;
   result = [(HKObjectType *)&v5 init];
   if (result)
   {
-    *(result + 4) = v3;
+    *(result + 4) = codeCopy;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_code == v4[4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_code == equalCopy[4];
 
   return v5;
 }
@@ -2829,15 +2829,15 @@ LABEL_16:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[HKObjectType code](self forKey:{"code"), @"Code"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[HKObjectType code](self forKey:{"code"), @"Code"}];
 }
 
-- (HKObjectType)initWithCoder:(id)a3
+- (HKObjectType)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntegerForKey:@"Code"];
+  v4 = [coder decodeIntegerForKey:@"Code"];
   if (v4 >= 0x156)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"invalid data type code (%ld)", v4}];
@@ -2848,26 +2848,26 @@ LABEL_16:
   return v5;
 }
 
-+ (id)medicalTypeForIdentifier:(id)a3
++ (id)medicalTypeForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  identifierCopy = identifier;
+  v5 = [self _typeWithIdentifier:identifierCopy expectedClass:objc_opt_class()];
 
   return v5;
 }
 
-+ (BOOL)_allowAuthorizationForSharing:(BOOL)a3 types:(id)a4 entitlements:(id)a5 disallowedTypes:(id)a6
++ (BOOL)_allowAuthorizationForSharing:(BOOL)sharing types:(id)types entitlements:(id)entitlements disallowedTypes:(id)disallowedTypes
 {
-  v8 = a3;
+  sharingCopy = sharing;
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  typesCopy = types;
+  entitlementsCopy = entitlements;
+  disallowedTypesCopy = disallowedTypes;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v12 = [typesCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v12)
   {
     v13 = v12;
@@ -2879,32 +2879,32 @@ LABEL_16:
       {
         if (*v22 != v14)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(typesCopy);
         }
 
         v17 = *(*(&v21 + 1) + 8 * i);
-        if (v8)
+        if (sharingCopy)
         {
-          if ([v17 sharingAuthorizationAllowed] && (HKAllowShareAuthorizationForTypeWithEntitlements(objc_msgSend(v17, "code"), v10) & 1) != 0)
+          if ([v17 sharingAuthorizationAllowed] && (HKAllowShareAuthorizationForTypeWithEntitlements(objc_msgSend(v17, "code"), entitlementsCopy) & 1) != 0)
           {
             goto LABEL_12;
           }
         }
 
-        else if ([v17 readingAuthorizationAllowed] && (HKAllowReadAuthorizationForTypeWithEntitlements(objc_msgSend(v17, "code"), v10) & 1) != 0)
+        else if ([v17 readingAuthorizationAllowed] && (HKAllowReadAuthorizationForTypeWithEntitlements(objc_msgSend(v17, "code"), entitlementsCopy) & 1) != 0)
         {
 LABEL_12:
           v18 = 1;
           goto LABEL_14;
         }
 
-        [v11 addObject:v17];
+        [disallowedTypesCopy addObject:v17];
         v18 = 0;
 LABEL_14:
         v15 &= v18;
       }
 
-      v13 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v13 = [typesCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (!v13)
       {
         goto LABEL_18;
@@ -2922,49 +2922,49 @@ LABEL_18:
 + (HKClinicalType)clinicalTypeForIdentifier:(HKClinicalTypeIdentifier)identifier
 {
   v4 = identifier;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  v5 = [self _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }
 
-+ (id)vaccinationRecordTypeForIdentifier:(id)a3
++ (id)vaccinationRecordTypeForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  identifierCopy = identifier;
+  v5 = [self _typeWithIdentifier:identifierCopy expectedClass:objc_opt_class()];
 
   return v5;
 }
 
-+ (id)verifiableClinicalRecordTypeForIdentifier:(id)a3
++ (id)verifiableClinicalRecordTypeForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  identifierCopy = identifier;
+  v5 = [self _typeWithIdentifier:identifierCopy expectedClass:objc_opt_class()];
 
   return v5;
 }
 
-+ (id)medicationRecordTypeForIdentifier:(id)a3
++ (id)medicationRecordTypeForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  identifierCopy = identifier;
+  v5 = [self _typeWithIdentifier:identifierCopy expectedClass:objc_opt_class()];
 
   return v5;
 }
 
-+ (id)clinicalNoteRecordTypeForIdentifier:(id)a3
++ (id)clinicalNoteRecordTypeForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _typeWithIdentifier:v4 expectedClass:objc_opt_class()];
+  identifierCopy = identifier;
+  v5 = [self _typeWithIdentifier:identifierCopy expectedClass:objc_opt_class()];
 
   return v5;
 }
 
 - (int64_t)logPrivacyLevel
 {
-  v2 = [(HKObjectType *)self code];
+  code = [(HKObjectType *)self code];
   result = 3;
-  v4 = (v2 - 262) > 0x34 || ((1 << (v2 - 6)) & 0x1800000000000FLL) == 0;
-  if (v4 && ((v2 - 191) > 0x3F || ((1 << (v2 + 65)) & 0x8010000000000003) == 0) && (v2 - 95) >= 2)
+  v4 = (code - 262) > 0x34 || ((1 << (code - 6)) & 0x1800000000000FLL) == 0;
+  if (v4 && ((code - 191) > 0x3F || ((1 << (code + 65)) & 0x8010000000000003) == 0) && (code - 95) >= 2)
   {
     return 0;
   }
@@ -2974,12 +2974,12 @@ LABEL_18:
 
 - (BOOL)requiresSensitiveHealthLogs
 {
-  v2 = [(HKObjectType *)self code];
+  code = [(HKObjectType *)self code];
   result = 1;
-  v4 = (v2 - 262) > 0x34 || ((1 << (v2 - 6)) & 0x1800000000000FLL) == 0;
-  if (v4 && ((v2 - 191) > 0x3F || ((1 << (v2 + 65)) & 0x8010000000000003) == 0))
+  v4 = (code - 262) > 0x34 || ((1 << (code - 6)) & 0x1800000000000FLL) == 0;
+  if (v4 && ((code - 191) > 0x3F || ((1 << (code + 65)) & 0x8010000000000003) == 0))
   {
-    return (v2 - 95) < 2;
+    return (code - 95) < 2;
   }
 
   return result;
@@ -2991,15 +2991,15 @@ LABEL_18:
   {
     v3 = MEMORY[0x1E696AEC0];
     v4 = HKSensitiveLogItem(self);
-    v5 = [v3 stringWithFormat:@"%@", v4];
+    identifier = [v3 stringWithFormat:@"%@", v4];
   }
 
   else
   {
-    v5 = [(HKObjectType *)self identifier];
+    identifier = [(HKObjectType *)self identifier];
   }
 
-  return v5;
+  return identifier;
 }
 
 - (BOOL)isAbleToWriteHealthSensitiveLogs

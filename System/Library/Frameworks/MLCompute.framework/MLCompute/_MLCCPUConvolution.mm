@@ -1,26 +1,26 @@
 @interface _MLCCPUConvolution
-+ (BOOL)compileWithDevice:(id)a3 deviceOps:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6 convolutionTranspose:(BOOL)a7;
-+ (id)createBNNSNDArrayDescriptorForDescriptor:(id)a3 biasDelta:(id)a4 dataType:(int)a5;
-+ (id)createBNNSNDArrayDescriptorForDescriptor:(id)a3 weightsDelta:(id)a4 fullyConnected:(BOOL)a5 dataType:(int)a6;
-+ (id)layerWithDevice:(id)a3 weights:(id)a4 biasTerms:(id)a5 convolutionDescriptor:(id)a6 neuronDescriptor:(id)a7;
-- (_MLCCPUConvolution)initWithDevice:(id)a3 weights:(id)a4 biasTerms:(id)a5 convolutionDescriptor:(id)a6 neuronDescriptor:(id)a7;
++ (BOOL)compileWithDevice:(id)device deviceOps:(id)ops sourceTensors:(id)tensors resultTensor:(id)tensor convolutionTranspose:(BOOL)transpose;
++ (id)createBNNSNDArrayDescriptorForDescriptor:(id)descriptor biasDelta:(id)delta dataType:(int)type;
++ (id)createBNNSNDArrayDescriptorForDescriptor:(id)descriptor weightsDelta:(id)delta fullyConnected:(BOOL)connected dataType:(int)type;
++ (id)layerWithDevice:(id)device weights:(id)weights biasTerms:(id)terms convolutionDescriptor:(id)descriptor neuronDescriptor:(id)neuronDescriptor;
+- (_MLCCPUConvolution)initWithDevice:(id)device weights:(id)weights biasTerms:(id)terms convolutionDescriptor:(id)descriptor neuronDescriptor:(id)neuronDescriptor;
 @end
 
 @implementation _MLCCPUConvolution
 
-- (_MLCCPUConvolution)initWithDevice:(id)a3 weights:(id)a4 biasTerms:(id)a5 convolutionDescriptor:(id)a6 neuronDescriptor:(id)a7
+- (_MLCCPUConvolution)initWithDevice:(id)device weights:(id)weights biasTerms:(id)terms convolutionDescriptor:(id)descriptor neuronDescriptor:(id)neuronDescriptor
 {
   v64[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  deviceCopy = device;
+  weightsCopy = weights;
+  termsCopy = terms;
+  descriptorCopy = descriptor;
+  neuronDescriptorCopy = neuronDescriptor;
   v51 = [MEMORY[0x277CBEBF8] mutableCopy];
   bzero(v61, 0x348uLL);
-  CPU_BuildBNNSConvolutionWeightAndBiasParams(v61, v15, v13, v14);
-  v17 = [v15 isConvolutionTranspose];
-  if (v17)
+  CPU_BuildBNNSConvolutionWeightAndBiasParams(v61, descriptorCopy, weightsCopy, termsCopy);
+  isConvolutionTranspose = [descriptorCopy isConvolutionTranspose];
+  if (isConvolutionTranspose)
   {
     v18 = 25;
   }
@@ -30,19 +30,19 @@
     v18 = 4;
   }
 
-  v57 = v14;
-  if (v16)
+  v57 = termsCopy;
+  if (neuronDescriptorCopy)
   {
-    v19 = v17;
-    if (!setBNNSActivation(&v62, v16))
+    v19 = isConvolutionTranspose;
+    if (!setBNNSActivation(&v62, neuronDescriptorCopy))
     {
-      v37 = 0;
+      selfCopy = 0;
       v38 = v51;
       goto LABEL_24;
     }
 
-    v48 = v16;
-    v49 = v12;
+    v48 = neuronDescriptorCopy;
+    v49 = deviceCopy;
     if (v19)
     {
       v20 = 26;
@@ -60,7 +60,7 @@
   {
     v47 = v18;
     v48 = 0;
-    v49 = v12;
+    v49 = deviceCopy;
   }
 
   v21 = [MEMORY[0x277CBEA90] dataWithBytes:v61 length:840];
@@ -69,15 +69,15 @@
   v54 = [MEMORY[0x277CBEA90] dataWithBytes:v60 length:176];
   v53 = [MEMORY[0x277CBEA90] dataWithBytes:v59 length:176];
   v22 = objc_opt_class();
-  v23 = [v13 descriptor];
-  v52 = [v22 createBNNSNDArrayDescriptorForDescriptor:v15 weightsDelta:0 fullyConnected:0 dataType:{objc_msgSend(v23, "dataType")}];
+  descriptor = [weightsCopy descriptor];
+  v52 = [v22 createBNNSNDArrayDescriptorForDescriptor:descriptorCopy weightsDelta:0 fullyConnected:0 dataType:{objc_msgSend(descriptor, "dataType")}];
 
   v24 = [MEMORY[0x277CBEBF8] mutableCopy];
   for (i = 0; i != 3; ++i)
   {
     v26 = objc_opt_class();
-    v27 = [v13 descriptor];
-    v28 = [v26 createBNNSNDArrayDescriptorForDescriptor:v15 weightsDelta:0 fullyConnected:0 dataType:{objc_msgSend(v27, "dataType")}];
+    descriptor2 = [weightsCopy descriptor];
+    v28 = [v26 createBNNSNDArrayDescriptorForDescriptor:descriptorCopy weightsDelta:0 fullyConnected:0 dataType:{objc_msgSend(descriptor2, "dataType")}];
     [v24 setObject:v28 atIndexedSubscript:i];
   }
 
@@ -85,15 +85,15 @@
   if (v57)
   {
     v29 = objc_opt_class();
-    v30 = [v57 descriptor];
-    v55 = [v29 createBNNSNDArrayDescriptorForDescriptor:v15 biasDelta:0 dataType:{objc_msgSend(v30, "dataType")}];
+    descriptor3 = [v57 descriptor];
+    v55 = [v29 createBNNSNDArrayDescriptorForDescriptor:descriptorCopy biasDelta:0 dataType:{objc_msgSend(descriptor3, "dataType")}];
 
     v31 = [MEMORY[0x277CBEBF8] mutableCopy];
     for (j = 0; j != 3; ++j)
     {
       v33 = objc_opt_class();
-      v34 = [v57 descriptor];
-      v35 = [v33 createBNNSNDArrayDescriptorForDescriptor:v15 biasDelta:0 dataType:{objc_msgSend(v34, "dataType")}];
+      descriptor4 = [v57 descriptor];
+      v35 = [v33 createBNNSNDArrayDescriptorForDescriptor:descriptorCopy biasDelta:0 dataType:{objc_msgSend(descriptor4, "dataType")}];
       [v31 setObject:v35 atIndexedSubscript:j];
     }
 
@@ -114,8 +114,8 @@
   v56 = v36;
   v41 = [MLCCPUDeviceOps deviceOpsWithType:v47 params:v21 inDeltaData:v39 outDeltaData:v40 weightsDeltaData:v52 biasDeltaData:v36 weightsMomentumData:v24 biasMomentumData:v31];
 
-  v12 = v49;
-  v14 = v57;
+  deviceCopy = v49;
+  termsCopy = v57;
   v38 = v51;
   if (v41)
   {
@@ -129,7 +129,7 @@
       [v41 setBiasMomentumDataBytes:v43];
     }
 
-    [v41 setPaddingPolicy:{objc_msgSend(v15, "paddingPolicy")}];
+    [v41 setPaddingPolicy:{objc_msgSend(descriptorCopy, "paddingPolicy")}];
   }
 
   v44 = [v51 copy];
@@ -137,55 +137,55 @@
   v58.super_class = _MLCCPUConvolution;
   self = [(_MLCCPULayer *)&v58 initWithDevice:v49 deviceOps:v44];
 
-  v37 = self;
-  v16 = v48;
+  selfCopy = self;
+  neuronDescriptorCopy = v48;
 LABEL_24:
 
   v45 = *MEMORY[0x277D85DE8];
-  return v37;
+  return selfCopy;
 }
 
-+ (id)layerWithDevice:(id)a3 weights:(id)a4 biasTerms:(id)a5 convolutionDescriptor:(id)a6 neuronDescriptor:(id)a7
++ (id)layerWithDevice:(id)device weights:(id)weights biasTerms:(id)terms convolutionDescriptor:(id)descriptor neuronDescriptor:(id)neuronDescriptor
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[a1 alloc] initWithDevice:v16 weights:v15 biasTerms:v14 convolutionDescriptor:v13 neuronDescriptor:v12];
+  neuronDescriptorCopy = neuronDescriptor;
+  descriptorCopy = descriptor;
+  termsCopy = terms;
+  weightsCopy = weights;
+  deviceCopy = device;
+  v17 = [[self alloc] initWithDevice:deviceCopy weights:weightsCopy biasTerms:termsCopy convolutionDescriptor:descriptorCopy neuronDescriptor:neuronDescriptorCopy];
 
   return v17;
 }
 
-+ (BOOL)compileWithDevice:(id)a3 deviceOps:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6 convolutionTranspose:(BOOL)a7
++ (BOOL)compileWithDevice:(id)device deviceOps:(id)ops sourceTensors:(id)tensors resultTensor:(id)tensor convolutionTranspose:(BOOL)transpose
 {
-  v7 = a7;
-  v11 = a5;
-  v12 = a6;
-  v13 = [a4 objectAtIndexedSubscript:0];
-  v14 = [v13 params];
-  v15 = [v14 bytes];
-  CPU_BuildBNNSConvolutionInputOutputParams(v15, v11, v12, v7, [v13 paddingPolicy]);
+  transposeCopy = transpose;
+  tensorsCopy = tensors;
+  tensorCopy = tensor;
+  v13 = [ops objectAtIndexedSubscript:0];
+  params = [v13 params];
+  bytes = [params bytes];
+  CPU_BuildBNNSConvolutionInputOutputParams(bytes, tensorsCopy, tensorCopy, transposeCopy, [v13 paddingPolicy]);
   memset(&v23, 0, sizeof(v23));
   v23.flags = 1;
-  if (v7)
+  if (transposeCopy)
   {
-    v16 = BNNSFilterCreateLayerTransposedConvolution(v15, &v23);
+    v16 = BNNSFilterCreateLayerTransposedConvolution(bytes, &v23);
   }
 
   else
   {
-    v16 = MEMORY[0x23EE75C50](v15, &v23);
+    v16 = MEMORY[0x23EE75C50](bytes, &v23);
   }
 
   v17 = v16;
   if (v16)
   {
     [v13 setBNNSFilter:{v16, *&v23.flags, *&v23.alloc_memory}];
-    v18 = [v11 objectAtIndexedSubscript:0];
+    v18 = [tensorsCopy objectAtIndexedSubscript:0];
     [v13 setSourceStride:CPU_SetBatchStride(v18)];
 
-    [v13 setResultStride:CPU_SetBatchStride(v12)];
+    [v13 setResultStride:CPU_SetBatchStride(tensorCopy)];
   }
 
   else
@@ -201,34 +201,34 @@ LABEL_24:
   v20 = objc_opt_new();
   [v13 setLayer:v20];
 
-  v21 = [v13 layer];
-  [v21 setFilter:v17];
+  layer = [v13 layer];
+  [layer setFilter:v17];
 
   return 1;
 }
 
-+ (id)createBNNSNDArrayDescriptorForDescriptor:(id)a3 biasDelta:(id)a4 dataType:(int)a5
++ (id)createBNNSNDArrayDescriptorForDescriptor:(id)descriptor biasDelta:(id)delta dataType:(int)type
 {
-  v7 = a4;
-  *(&v10 + 1) = [a3 outputFeatureChannelCount];
+  deltaCopy = delta;
+  *(&v10 + 1) = [descriptor outputFeatureChannelCount];
   *(&v11 + 1) = 1;
-  if (v7)
+  if (deltaCopy)
   {
-    *(&v12 + 1) = [v7 bytes];
+    *(&v12 + 1) = [deltaCopy bytes];
   }
 
-  LODWORD(v13) = CPU_BNNSDataType(a5);
+  LODWORD(v13) = CPU_BNNSDataType(type);
   *(&v14 + 4) = 1065353216;
   v8 = [MEMORY[0x277CBEA90] dataWithBytes:&v10 length:176];
 
   return v8;
 }
 
-+ (id)createBNNSNDArrayDescriptorForDescriptor:(id)a3 weightsDelta:(id)a4 fullyConnected:(BOOL)a5 dataType:(int)a6
++ (id)createBNNSNDArrayDescriptorForDescriptor:(id)descriptor weightsDelta:(id)delta fullyConnected:(BOOL)connected dataType:(int)type
 {
-  v7 = a5;
-  v9 = a3;
-  v10 = a4;
+  connectedCopy = connected;
+  descriptorCopy = descriptor;
+  deltaCopy = delta;
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
@@ -240,61 +240,61 @@ LABEL_24:
   v22 = 0u;
   v23 = 0u;
   v21 = 0u;
-  if (v7)
+  if (connectedCopy)
   {
     v11 = &v26;
     DWORD1(v21) = 0x20000;
-    *(&v21 + 1) = [v9 inputFeatureChannelCount];
-    *&v22 = [v9 outputFeatureChannelCount];
+    *(&v21 + 1) = [descriptorCopy inputFeatureChannelCount];
+    *&v22 = [descriptorCopy outputFeatureChannelCount];
     *(&v25 + 1) = 1;
-    v12 = [v9 inputFeatureChannelCount];
+    inputFeatureChannelCount = [descriptorCopy inputFeatureChannelCount];
   }
 
   else
   {
     v11 = &v27;
-    if ([v9 usesDepthwiseConvolution])
+    if ([descriptorCopy usesDepthwiseConvolution])
     {
-      v13 = [v9 inputFeatureChannelCount];
+      inputFeatureChannelCount2 = [descriptorCopy inputFeatureChannelCount];
     }
 
     else
     {
-      v13 = [v9 groupCount];
+      inputFeatureChannelCount2 = [descriptorCopy groupCount];
     }
 
-    v14 = v13;
+    v14 = inputFeatureChannelCount2;
     DWORD1(v21) = 0x40000;
-    v15 = [v9 kernelWidth];
-    *(&v21 + 1) = v15;
-    v16 = [v9 kernelHeight];
-    *&v22 = v16;
-    v17 = [v9 inputFeatureChannelCount];
+    kernelWidth = [descriptorCopy kernelWidth];
+    *(&v21 + 1) = kernelWidth;
+    kernelHeight = [descriptorCopy kernelHeight];
+    *&v22 = kernelHeight;
+    inputFeatureChannelCount3 = [descriptorCopy inputFeatureChannelCount];
     if (v14 == 1)
     {
-      v18 = v17;
+      v18 = inputFeatureChannelCount3;
     }
 
     else
     {
-      v18 = v17 / v14;
+      v18 = inputFeatureChannelCount3 / v14;
     }
 
     *(&v22 + 1) = v18;
-    *&v23 = [v9 outputFeatureChannelCount];
+    *&v23 = [descriptorCopy outputFeatureChannelCount];
     *(&v25 + 1) = 1;
-    *&v26 = v15;
-    *(&v26 + 1) = v16 * v15;
-    v12 = v18 * v16 * v15;
+    *&v26 = kernelWidth;
+    *(&v26 + 1) = kernelHeight * kernelWidth;
+    inputFeatureChannelCount = v18 * kernelHeight * kernelWidth;
   }
 
-  *v11 = v12;
-  if (v10)
+  *v11 = inputFeatureChannelCount;
+  if (deltaCopy)
   {
-    *(&v29 + 1) = [v10 bytes];
+    *(&v29 + 1) = [deltaCopy bytes];
   }
 
-  LODWORD(v30) = CPU_BNNSDataType(a6);
+  LODWORD(v30) = CPU_BNNSDataType(type);
   *(&v31 + 4) = 1065353216;
   v19 = [MEMORY[0x277CBEA90] dataWithBytes:&v21 length:176];
 

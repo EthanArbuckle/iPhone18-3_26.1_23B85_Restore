@@ -1,7 +1,7 @@
 @interface NTSectionFeedFilterTransformation
 - (NTSectionFeedFilterTransformation)init;
-- (NTSectionFeedFilterTransformation)initWithTodayData:(id)a3 configurationManager:(id)a4 readArticlesFilterMethod:(int)a5 seenArticlesFilterMethod:(int)a6 minimumTimeSinceFirstSeenToFilter:(double)a7 supplementalFeedFilterOptions:(unint64_t)a8 otherArticleIDs:(id)a9 otherClusterIDs:(id)a10 filterDate:(id)a11 paywalledArticlesMaxCount:(unint64_t)a12;
-- (id)transformFeedItems:(id)a3;
+- (NTSectionFeedFilterTransformation)initWithTodayData:(id)data configurationManager:(id)manager readArticlesFilterMethod:(int)method seenArticlesFilterMethod:(int)filterMethod minimumTimeSinceFirstSeenToFilter:(double)filter supplementalFeedFilterOptions:(unint64_t)options otherArticleIDs:(id)ds otherClusterIDs:(id)self0 filterDate:(id)self1 paywalledArticlesMaxCount:(unint64_t)self2;
+- (id)transformFeedItems:(id)items;
 @end
 
 @implementation NTSectionFeedFilterTransformation
@@ -32,24 +32,24 @@
   objc_exception_throw(v6);
 }
 
-- (NTSectionFeedFilterTransformation)initWithTodayData:(id)a3 configurationManager:(id)a4 readArticlesFilterMethod:(int)a5 seenArticlesFilterMethod:(int)a6 minimumTimeSinceFirstSeenToFilter:(double)a7 supplementalFeedFilterOptions:(unint64_t)a8 otherArticleIDs:(id)a9 otherClusterIDs:(id)a10 filterDate:(id)a11 paywalledArticlesMaxCount:(unint64_t)a12
+- (NTSectionFeedFilterTransformation)initWithTodayData:(id)data configurationManager:(id)manager readArticlesFilterMethod:(int)method seenArticlesFilterMethod:(int)filterMethod minimumTimeSinceFirstSeenToFilter:(double)filter supplementalFeedFilterOptions:(unint64_t)options otherArticleIDs:(id)ds otherClusterIDs:(id)self0 filterDate:(id)self1 paywalledArticlesMaxCount:(unint64_t)self2
 {
   v87 = *MEMORY[0x277D85DE8];
-  v19 = a3;
-  v20 = a4;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  if (!v20 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  dataCopy = data;
+  managerCopy = manager;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  dateCopy = date;
+  if (!managerCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTSectionFeedFilterTransformation initWithTodayData:configurationManager:readArticlesFilterMethod:seenArticlesFilterMethod:minimumTimeSinceFirstSeenToFilter:supplementalFeedFilterOptions:otherArticleIDs:otherClusterIDs:filterDate:paywalledArticlesMaxCount:];
-    if (v21)
+    if (dsCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v21)
+  else if (dsCopy)
   {
     goto LABEL_6;
   }
@@ -60,16 +60,16 @@
   }
 
 LABEL_6:
-  if (!v22 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!iDsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTSectionFeedFilterTransformation initWithTodayData:configurationManager:readArticlesFilterMethod:seenArticlesFilterMethod:minimumTimeSinceFirstSeenToFilter:supplementalFeedFilterOptions:otherArticleIDs:otherClusterIDs:filterDate:paywalledArticlesMaxCount:];
-    if (v23)
+    if (dateCopy)
     {
       goto LABEL_11;
     }
   }
 
-  else if (v23)
+  else if (dateCopy)
   {
     goto LABEL_11;
   }
@@ -87,18 +87,18 @@ LABEL_11:
   if (v24)
   {
     v62 = v24;
-    v63 = v21;
-    v64 = v20;
+    v63 = dsCopy;
+    v64 = managerCopy;
     v26 = MEMORY[0x277CBEB98];
-    v27 = [v19 rankedAllSubscribedTagIDs];
-    v60 = [v26 setWithArray:v27];
+    rankedAllSubscribedTagIDs = [dataCopy rankedAllSubscribedTagIDs];
+    v60 = [v26 setWithArray:rankedAllSubscribedTagIDs];
 
-    v28 = [v19 mutedTagIDs];
-    v29 = v28;
-    v56 = a5;
-    if (v28)
+    mutedTagIDs = [dataCopy mutedTagIDs];
+    v29 = mutedTagIDs;
+    methodCopy = method;
+    if (mutedTagIDs)
     {
-      v30 = v28;
+      v30 = mutedTagIDs;
     }
 
     else
@@ -108,13 +108,13 @@ LABEL_11:
 
     v58 = v30;
 
-    v31 = [v19 recentlyReadHistoryItems];
-    v32 = [v31 allValues];
-    v33 = v32;
+    recentlyReadHistoryItems = [dataCopy recentlyReadHistoryItems];
+    allValues = [recentlyReadHistoryItems allValues];
+    v33 = allValues;
     v34 = MEMORY[0x277CBEBF8];
-    if (v32)
+    if (allValues)
     {
-      v35 = v32;
+      v35 = allValues;
     }
 
     else
@@ -124,11 +124,11 @@ LABEL_11:
 
     v36 = v35;
 
-    v37 = [v19 recentlySeenHistoryItems];
-    v38 = v37;
-    if (v37)
+    recentlySeenHistoryItems = [dataCopy recentlySeenHistoryItems];
+    v38 = recentlySeenHistoryItems;
+    if (recentlySeenHistoryItems)
     {
-      v39 = v37;
+      v39 = recentlySeenHistoryItems;
     }
 
     else
@@ -176,20 +176,20 @@ LABEL_11:
     v65[1] = 3221225472;
     v65[2] = __259__NTSectionFeedFilterTransformation_initWithTodayData_configurationManager_readArticlesFilterMethod_seenArticlesFilterMethod_minimumTimeSinceFirstSeenToFilter_supplementalFeedFilterOptions_otherArticleIDs_otherClusterIDs_filterDate_paywalledArticlesMaxCount___block_invoke_3;
     v65[3] = &unk_279982E00;
-    v78 = v56;
+    v78 = methodCopy;
     v66 = v36;
-    v79 = a6;
-    v67 = v23;
+    filterMethodCopy = filterMethod;
+    v67 = dateCopy;
     v68 = v40;
-    v75 = a7;
-    v76 = a8;
-    v69 = v19;
+    filterCopy = filter;
+    optionsCopy = options;
+    v69 = dataCopy;
     v70 = v64;
     v71 = v63;
-    v72 = v22;
+    v72 = iDsCopy;
     v73 = v60;
     v74 = v58;
-    v77 = a12;
+    countCopy = count;
     v59 = v58;
     v61 = v60;
     v48 = v40;
@@ -202,8 +202,8 @@ LABEL_11:
     underlyingTransformation = v62->_underlyingTransformation;
     v62->_underlyingTransformation = v52;
 
-    v20 = v64;
-    v21 = v63;
+    managerCopy = v64;
+    dsCopy = v63;
   }
 
   v54 = *MEMORY[0x277D85DE8];
@@ -270,17 +270,17 @@ void __259__NTSectionFeedFilterTransformation_initWithTodayData_configurationMan
   [v4 addObject:v19];
 }
 
-- (id)transformFeedItems:(id)a3
+- (id)transformFeedItems:(id)items
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  itemsCopy = items;
+  if (!itemsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTSectionFeedFilterTransformation transformFeedItems:];
   }
 
-  v5 = [v4 fc_arrayOfObjectsPassingTest:&__block_literal_global_46];
-  v6 = [(NTSectionFeedFilterTransformation *)self underlyingTransformation];
-  v7 = [v6 transformFeedItems:v5];
+  v5 = [itemsCopy fc_arrayOfObjectsPassingTest:&__block_literal_global_46];
+  underlyingTransformation = [(NTSectionFeedFilterTransformation *)self underlyingTransformation];
+  v7 = [underlyingTransformation transformFeedItems:v5];
 
   v8 = objc_opt_new();
   v18[0] = 0;
@@ -296,7 +296,7 @@ void __259__NTSectionFeedFilterTransformation_initWithTodayData_configurationMan
   v15 = v9;
   v10 = v8;
   v16 = v10;
-  [v4 enumerateObjectsUsingBlock:v14];
+  [itemsCopy enumerateObjectsUsingBlock:v14];
   v11 = v16;
   v12 = v10;
 

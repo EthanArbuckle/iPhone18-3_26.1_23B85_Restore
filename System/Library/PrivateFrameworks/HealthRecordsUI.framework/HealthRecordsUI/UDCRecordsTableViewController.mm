@@ -1,11 +1,11 @@
 @interface UDCRecordsTableViewController
-- (_TtC15HealthRecordsUI29UDCRecordsTableViewController)initWithCoder:(id)a3;
-- (void)modePickerDidChange:(id)a3;
+- (_TtC15HealthRecordsUI29UDCRecordsTableViewController)initWithCoder:(id)coder;
+- (void)modePickerDidChange:(id)change;
 @end
 
 @implementation UDCRecordsTableViewController
 
-- (_TtC15HealthRecordsUI29UDCRecordsTableViewController)initWithCoder:(id)a3
+- (_TtC15HealthRecordsUI29UDCRecordsTableViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI29UDCRecordsTableViewController_preferredSegment) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI29UDCRecordsTableViewController_additionalPredicate) = 0;
@@ -15,11 +15,11 @@
   return result;
 }
 
-- (void)modePickerDidChange:(id)a3
+- (void)modePickerDidChange:(id)change
 {
-  if (a3)
+  if (change)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1D139101C();
     swift_unknownObjectRelease();
@@ -28,7 +28,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_1D112633C();

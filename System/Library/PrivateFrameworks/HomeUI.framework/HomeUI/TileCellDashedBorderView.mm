@@ -1,7 +1,7 @@
 @interface TileCellDashedBorderView
 + (Class)layerClass;
-- (_TtC6HomeUI24TileCellDashedBorderView)initWithCoder:(id)a3;
-- (_TtC6HomeUI24TileCellDashedBorderView)initWithFrame:(CGRect)a3;
+- (_TtC6HomeUI24TileCellDashedBorderView)initWithCoder:(id)coder;
+- (_TtC6HomeUI24TileCellDashedBorderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -14,7 +14,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC6HomeUI24TileCellDashedBorderView)initWithCoder:(id)a3
+- (_TtC6HomeUI24TileCellDashedBorderView)initWithCoder:(id)coder
 {
   result = sub_20D568A58();
   __break(1u);
@@ -23,11 +23,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20CFFFB00();
 }
 
-- (_TtC6HomeUI24TileCellDashedBorderView)initWithFrame:(CGRect)a3
+- (_TtC6HomeUI24TileCellDashedBorderView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

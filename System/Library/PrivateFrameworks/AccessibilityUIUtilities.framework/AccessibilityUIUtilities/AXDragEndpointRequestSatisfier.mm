@@ -1,21 +1,21 @@
 @interface AXDragEndpointRequestSatisfier
-- (AXDragEndpointRequestSatisfier)initWithConnection:(id)a3;
+- (AXDragEndpointRequestSatisfier)initWithConnection:(id)connection;
 - (AXDragEndpointRequestSatisfierDelegate)delegate;
-- (void)requestDragEndpoint:(id)a3;
+- (void)requestDragEndpoint:(id)endpoint;
 @end
 
 @implementation AXDragEndpointRequestSatisfier
 
-- (AXDragEndpointRequestSatisfier)initWithConnection:(id)a3
+- (AXDragEndpointRequestSatisfier)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v16.receiver = self;
   v16.super_class = AXDragEndpointRequestSatisfier;
   v6 = [(AXDragEndpointRequestSatisfier *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v8 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F408F010];
     [(NSXPCConnection *)v7->_connection setExportedInterface:v8];
 
@@ -42,15 +42,15 @@ void __53__AXDragEndpointRequestSatisfier_initWithConnection___block_invoke(uint
   [v1 endpointRequestSatisfierDidDisconnect:WeakRetained];
 }
 
-- (void)requestDragEndpoint:(id)a3
+- (void)requestDragEndpoint:(id)endpoint
 {
-  if (a3)
+  if (endpoint)
   {
-    v4 = a3;
-    v5 = [(AXDragEndpointRequestSatisfier *)self delegate];
-    v6 = [v5 endpointForConnection:self->_connection forEndpointRequestSatisfier:self];
+    endpointCopy = endpoint;
+    delegate = [(AXDragEndpointRequestSatisfier *)self delegate];
+    v6 = [delegate endpointForConnection:self->_connection forEndpointRequestSatisfier:self];
 
-    v4[2](v4, v6);
+    endpointCopy[2](endpointCopy, v6);
   }
 
   connection = self->_connection;

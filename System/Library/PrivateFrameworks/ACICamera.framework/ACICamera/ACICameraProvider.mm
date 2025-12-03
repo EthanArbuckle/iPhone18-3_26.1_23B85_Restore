@@ -1,26 +1,26 @@
 @interface ACICameraProvider
-- (ACICameraProvider)initWithStream:(void *)a3;
+- (ACICameraProvider)initWithStream:(void *)stream;
 - (id).cxx_construct;
-- (id)propertyForKey:(id)a3;
-- (int)registerListener:(id)a3;
+- (id)propertyForKey:(id)key;
+- (int)registerListener:(id)listener;
 - (int)start;
 - (int)stop;
-- (int)unregisterListener:(id)a3;
-- (void)handleNewData:(void *)a3 from:(id)a4;
+- (int)unregisterListener:(id)listener;
+- (void)handleNewData:(void *)data from:(id)from;
 @end
 
 @implementation ACICameraProvider
 
-- (ACICameraProvider)initWithStream:(void *)a3
+- (ACICameraProvider)initWithStream:(void *)stream
 {
   v4 = [(ACICameraProvider *)self init];
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     listeners = v4->_listeners;
-    v4->_listeners = v5;
+    v4->_listeners = array;
 
-    aci::SP<aci::SourceManager,&(void ACISPRetain<aci::SourceManager>(aci::SourceManager &)),&(void ACISPRelease<aci::SourceManager>(aci::SourceManager &))>::setPtr(&v4->_stream, a3);
+    aci::SP<aci::SourceManager,&(void ACISPRetain<aci::SourceManager>(aci::SourceManager &)),&(void ACISPRelease<aci::SourceManager>(aci::SourceManager &))>::setPtr(&v4->_stream, stream);
     v4->_state = 0;
     aci::ACIObjectSP<aci::camera::ProviderListener,ACICameraProvider * {__strong}>(v4);
   }
@@ -28,10 +28,10 @@
   return 0;
 }
 
-- (void)handleNewData:(void *)a3 from:(id)a4
+- (void)handleNewData:(void *)data from:(id)from
 {
   v25 = *MEMORY[0x277D85DE8];
-  if (((*(*a3 + 64))(a3, a2) & 1) == 0)
+  if (((*(*data + 64))(data, a2) & 1) == 0)
   {
     v8 = _aciLogGeneral();
     if (!os_log_type_enabled(&v8->super.super, OS_LOG_TYPE_ERROR))
@@ -44,7 +44,7 @@
     goto LABEL_22;
   }
 
-  v6 = *(a3 + 6);
+  v6 = *(data + 6);
   if (!v6)
   {
     v8 = _aciLogGeneral();
@@ -61,7 +61,7 @@ LABEL_22:
     goto LABEL_16;
   }
 
-  v7 = CFGetTypeID(*(a3 + 6));
+  v7 = CFGetTypeID(*(data + 6));
   if (v7 != CVPixelBufferGetTypeID())
   {
     v8 = _aciLogGeneral();
@@ -121,17 +121,17 @@ LABEL_17:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   Source = aci::ComponentGraph::getSource(*(self->_stream._ptr + 14));
   if (Source && (v6 = *(Source + 200)) != 0)
   {
     v7 = *(v6 + 16);
     if (v7)
     {
-      v8 = [v4 UTF8String];
-      v10 = aci::String::stringWithCString(v8, v9);
+      uTF8String = [keyCopy UTF8String];
+      v10 = aci::String::stringWithCString(uTF8String, v9);
       v11 = v10;
       v13 = v10;
       if (v10)
@@ -153,26 +153,26 @@ LABEL_17:
   return v7;
 }
 
-- (int)registerListener:(id)a3
+- (int)registerListener:(id)listener
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  listenerCopy = listener;
   v5 = self->_listeners;
   objc_sync_enter(v5);
-  if ([(NSMutableArray *)self->_listeners containsObject:v4])
+  if ([(NSMutableArray *)self->_listeners containsObject:listenerCopy])
   {
     v6 = _aciLogGeneral();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = listenerCopy;
       _os_log_impl(&dword_23C3F5000, v6, OS_LOG_TYPE_DEFAULT, "%@ listener already registered!", &v9, 0xCu);
     }
   }
 
   else
   {
-    [(NSMutableArray *)self->_listeners addObject:v4];
+    [(NSMutableArray *)self->_listeners addObject:listenerCopy];
   }
 
   objc_sync_exit(v5);
@@ -181,15 +181,15 @@ LABEL_17:
   return 0;
 }
 
-- (int)unregisterListener:(id)a3
+- (int)unregisterListener:(id)listener
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  listenerCopy = listener;
   v5 = self->_listeners;
   objc_sync_enter(v5);
-  if (([(NSMutableArray *)self->_listeners containsObject:v4]& 1) != 0)
+  if (([(NSMutableArray *)self->_listeners containsObject:listenerCopy]& 1) != 0)
   {
-    [(NSMutableArray *)self->_listeners removeObject:v4];
+    [(NSMutableArray *)self->_listeners removeObject:listenerCopy];
   }
 
   else
@@ -198,7 +198,7 @@ LABEL_17:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = listenerCopy;
       _os_log_impl(&dword_23C3F5000, v6, OS_LOG_TYPE_DEFAULT, "%@ listener not registered!", &v9, 0xCu);
     }
   }
@@ -221,29 +221,29 @@ LABEL_17:
     _os_log_impl(&dword_23C3F5000, v3, OS_LOG_TYPE_DEFAULT, "ACICameraProvider::start key: %s", &v11, 0xCu);
   }
 
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_state == 1)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_state == 1)
   {
     v6 = 0;
   }
 
   else
   {
-    v5->_state = 1;
-    v6 = (*(*v5->_stream._ptr + 88))(v5->_stream._ptr);
+    selfCopy->_state = 1;
+    v6 = (*(*selfCopy->_stream._ptr + 88))(selfCopy->_stream._ptr);
     if (v6)
     {
-      v5->_state = 0;
+      selfCopy->_state = 0;
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v7 = _aciLogGeneral();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = aci::String::getCString(*(v5->_stream._ptr + 15));
+    v8 = aci::String::getCString(*(selfCopy->_stream._ptr + 15));
     v11 = 67109378;
     v12[0] = v6;
     LOWORD(v12[1]) = 2080;
@@ -267,15 +267,15 @@ LABEL_17:
     _os_log_impl(&dword_23C3F5000, v3, OS_LOG_TYPE_DEFAULT, "ACICameraProvider::stop key: %s", &v11, 0xCu);
   }
 
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_state)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_state)
   {
-    v5->_state = 0;
-    v6 = (*(*v5->_stream._ptr + 64))(v5->_stream._ptr);
+    selfCopy->_state = 0;
+    v6 = (*(*selfCopy->_stream._ptr + 64))(selfCopy->_stream._ptr);
     if (v6)
     {
-      v5->_state = 1;
+      selfCopy->_state = 1;
     }
   }
 
@@ -284,12 +284,12 @@ LABEL_17:
     v6 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v7 = _aciLogGeneral();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = aci::String::getCString(*(v5->_stream._ptr + 15));
+    v8 = aci::String::getCString(*(selfCopy->_stream._ptr + 15));
     v11 = 67109378;
     v12[0] = v6;
     LOWORD(v12[1]) = 2080;

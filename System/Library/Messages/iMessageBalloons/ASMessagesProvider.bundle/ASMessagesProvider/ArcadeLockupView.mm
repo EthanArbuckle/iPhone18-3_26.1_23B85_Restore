@@ -1,16 +1,16 @@
 @interface ArcadeLockupView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)accessibilityIdentifier;
-- (_TtC18ASMessagesProvider16ArcadeLockupView)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProvider16ArcadeLockupView)initWithFrame:(CGRect)a3;
+- (_TtC18ASMessagesProvider16ArcadeLockupView)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProvider16ArcadeLockupView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)offerButtonWasTapped;
-- (void)setAccessibilityIdentifier:(id)a3;
+- (void)setAccessibilityIdentifier:(id)identifier;
 @end
 
 @implementation ArcadeLockupView
 
-- (_TtC18ASMessagesProvider16ArcadeLockupView)initWithFrame:(CGRect)a3
+- (_TtC18ASMessagesProvider16ArcadeLockupView)initWithFrame:(CGRect)frame
 {
   v3 = (self + OBJC_IVAR____TtC18ASMessagesProvider16ArcadeLockupView_offerLabelPresenter);
   *v3 = 0u;
@@ -23,7 +23,7 @@
   return result;
 }
 
-- (_TtC18ASMessagesProvider16ArcadeLockupView)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider16ArcadeLockupView)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC18ASMessagesProvider16ArcadeLockupView_offerLabelPresenter);
   *v3 = 0u;
@@ -36,9 +36,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_5C184();
   v5 = v4;
   v7 = v6;
@@ -52,7 +52,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_5C460();
 }
 
@@ -62,7 +62,7 @@
   if (v2)
   {
     v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider16ArcadeLockupView_offerButton);
-    v4 = self;
+    selfCopy = self;
     sub_F714(v2);
     v2(v3);
     sub_F704(v2);
@@ -73,7 +73,7 @@
 {
   swift_getObjectType();
   ObjCClassFromMetadata = swift_getObjCClassFromMetadata();
-  v4 = self;
+  selfCopy = self;
   v5 = NSStringFromClass(ObjCClassFromMetadata);
   v6 = sub_769240();
   v8 = v7;
@@ -85,18 +85,18 @@
   return v9;
 }
 
-- (void)setAccessibilityIdentifier:(id)a3
+- (void)setAccessibilityIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     sub_769240();
-    v4 = self;
+    selfCopy = self;
     v5 = sub_769210();
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
     v5 = 0;
   }
 

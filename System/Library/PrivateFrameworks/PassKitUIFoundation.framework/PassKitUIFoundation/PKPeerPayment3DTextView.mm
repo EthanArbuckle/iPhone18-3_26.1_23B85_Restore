@@ -1,34 +1,34 @@
 @interface PKPeerPayment3DTextView
-- (BOOL)setText:(id)a3;
-- (PKPeerPayment3DTextView)initWithFrame:(CGRect)a3 renderStyle:(unint64_t)a4 usedForSnapshotting:(BOOL)a5;
-- (float32x2_t)_fakeAnimationRollPitchWithElapsedTime:(uint64_t)a1;
+- (BOOL)setText:(id)text;
+- (PKPeerPayment3DTextView)initWithFrame:(CGRect)frame renderStyle:(unint64_t)style usedForSnapshotting:(BOOL)snapshotting;
+- (float32x2_t)_fakeAnimationRollPitchWithElapsedTime:(uint64_t)time;
 - (id)generatedSnapshot;
 - (void)dealloc;
 - (void)didBecomeActive;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
 - (void)loadCharactersAndLayout;
-- (void)performPostRender:(id)a3;
-- (void)renderer:(id)a3 didRenderScene:(id)a4 atTime:(double)a5;
-- (void)renderer:(id)a3 updateAtTime:(double)a4;
-- (void)setMotionEffectEnabled:(BOOL)a3 animated:(BOOL)a4;
+- (void)performPostRender:(id)render;
+- (void)renderer:(id)renderer didRenderScene:(id)scene atTime:(double)time;
+- (void)renderer:(id)renderer updateAtTime:(double)time;
+- (void)setMotionEffectEnabled:(BOOL)enabled animated:(BOOL)animated;
 - (void)updateSceneUnits;
 - (void)willResignActive;
 @end
 
 @implementation PKPeerPayment3DTextView
 
-- (PKPeerPayment3DTextView)initWithFrame:(CGRect)a3 renderStyle:(unint64_t)a4 usedForSnapshotting:(BOOL)a5
+- (PKPeerPayment3DTextView)initWithFrame:(CGRect)frame renderStyle:(unint64_t)style usedForSnapshotting:(BOOL)snapshotting
 {
   v29[1] = *MEMORY[0x277D85DE8];
   v27.receiver = self;
   v27.super_class = PKPeerPayment3DTextView;
-  v7 = [(PKPeerPayment3DTextView *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(PKPeerPayment3DTextView *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v8 = v7;
   if (v7)
   {
     v7->_dynamicRollPitchMix = 0.0;
-    v7->_usedForSnapshotting = a5;
+    v7->_usedForSnapshotting = snapshotting;
     v28 = *MEMORY[0x277CDBBE0];
     v29[0] = &unk_286FD0F50;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:&v28 count:1];
@@ -40,27 +40,27 @@
 
     [(SCNView *)v8->_sceneView setAntialiasingMode:2];
     v13 = v8->_sceneView;
-    v14 = [MEMORY[0x277D75348] clearColor];
-    [(SCNView *)v13 setBackgroundColor:v14];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SCNView *)v13 setBackgroundColor:clearColor];
 
     [(SCNView *)v8->_sceneView setDelegate:v8];
-    v8->_renderStyle = a4;
+    v8->_renderStyle = style;
     v15 = +[PKPeerPayment3DStore sharedInstance];
     _3DStore = v8->_3DStore;
     v8->_3DStore = v15;
 
     [(SCNView *)v8->_sceneView setOpaque:0];
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v8 selector:sel_willResignActive name:*MEMORY[0x277D76768] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel_willResignActive name:*MEMORY[0x277D76768] object:0];
 
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:v8 selector:sel_didBecomeActive name:*MEMORY[0x277D76648] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v8 selector:sel_didBecomeActive name:*MEMORY[0x277D76648] object:0];
 
-    v19 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v19 addObserver:v8 selector:sel_willResignActive name:*MEMORY[0x277CCA0D8] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v8 selector:sel_willResignActive name:*MEMORY[0x277CCA0D8] object:0];
 
-    v20 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v20 addObserver:v8 selector:sel_didBecomeActive name:*MEMORY[0x277CCA0C0] object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:v8 selector:sel_didBecomeActive name:*MEMORY[0x277CCA0C0] object:0];
 
     objc_initWeak(&location, v8);
     v21 = v8->_3DStore;
@@ -175,19 +175,19 @@ void __73__PKPeerPayment3DTextView_initWithFrame_renderStyle_usedForSnapshotting
   [(PKPeerPayment3DTextView *)self updateSceneUnits];
 }
 
-- (BOOL)setText:(id)a3
+- (BOOL)setText:(id)text
 {
-  v4 = a3;
-  v5 = [objc_opt_class() supportedCharacterSet];
-  v6 = [v5 invertedSet];
-  v7 = [v4 rangeOfCharacterFromSet:v6];
+  textCopy = text;
+  supportedCharacterSet = [objc_opt_class() supportedCharacterSet];
+  invertedSet = [supportedCharacterSet invertedSet];
+  v7 = [textCopy rangeOfCharacterFromSet:invertedSet];
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     text = self->_text;
-    if (!text || ![(NSString *)text isEqualToString:v4])
+    if (!text || ![(NSString *)text isEqualToString:textCopy])
     {
-      v9 = [v4 copy];
+      v9 = [textCopy copy];
       v10 = self->_text;
       self->_text = v9;
 
@@ -265,16 +265,16 @@ void __50__PKPeerPayment3DTextView_loadCharactersAndLayout__block_invoke_2(uint6
   }
 }
 
-- (void)renderer:(id)a3 updateAtTime:(double)a4
+- (void)renderer:(id)renderer updateAtTime:(double)time
 {
-  v4 = self;
+  selfCopy = self;
   v94 = *MEMORY[0x277D85DE8];
   scene = self->_scene;
   if (scene)
   {
-    v6 = [(PKPeerPayment3DScene *)scene textContainerNode:a3];
+    v6 = [(PKPeerPayment3DScene *)scene textContainerNode:renderer];
     v7 = [MEMORY[0x277D74300] pk_peerPaymentChiseledCashFontOfSize:8.92];
-    if ([(NSMutableArray *)v4->_charactersToDraw count])
+    if ([(NSMutableArray *)selfCopy->_charactersToDraw count])
     {
       v8 = v7 == 0;
     }
@@ -297,8 +297,8 @@ void __50__PKPeerPayment3DTextView_loadCharactersAndLayout__block_invoke_2(uint6
       v89 = 0u;
       v90 = 0u;
       v91 = 0u;
-      v80 = v4;
-      v11 = [(NSMutableArray *)v4->_charactersToDraw copy];
+      v80 = selfCopy;
+      v11 = [(NSMutableArray *)selfCopy->_charactersToDraw copy];
       v12 = [v11 countByEnumeratingWithState:&v88 objects:v93 count:16];
       if (v12)
       {
@@ -315,13 +315,13 @@ void __50__PKPeerPayment3DTextView_loadCharactersAndLayout__block_invoke_2(uint6
             }
 
             v17 = *(*(&v88 + 1) + 8 * i);
-            v18 = [v17 character];
-            v19 = [v18 isEqualToString:@" "];
+            character = [v17 character];
+            v19 = [character isEqualToString:@" "];
 
             if ((v19 & 1) == 0)
             {
-              v20 = [v17 character];
-              v21 = [v20 characterAtIndex:0];
+              character2 = [v17 character];
+              v21 = [character2 characterAtIndex:0];
 
               characters = v21;
               glyphs = 0;
@@ -335,15 +335,15 @@ void __50__PKPeerPayment3DTextView_loadCharactersAndLayout__block_invoke_2(uint6
               *&v83[0] = 0;
               v85 = 0;
               v84 = 0;
-              v26 = [v17 node];
-              [v81 addChildNode:v26];
-              v27 = [v26 geometry];
-              v28 = [(PKPeerPayment3DScene *)v80->_scene textMaterial];
-              v92 = v28;
+              node = [v17 node];
+              [v81 addChildNode:node];
+              geometry = [node geometry];
+              textMaterial = [(PKPeerPayment3DScene *)v80->_scene textMaterial];
+              v92 = textMaterial;
               v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v92 count:1];
-              [v27 setMaterials:v29];
+              [geometry setMaterials:v29];
 
-              [v26 getBoundingBoxMin:v83 max:&v84];
+              [node getBoundingBoxMin:v83 max:&v84];
               v30 = (*&v84 + *v83) * -0.5;
               v96.origin.x = x;
               v96.origin.y = y;
@@ -351,7 +351,7 @@ void __50__PKPeerPayment3DTextView_loadCharactersAndLayout__block_invoke_2(uint6
               v96.size.height = height;
               v31 = v15 + CGRectGetMidX(v96) + v30;
               *&v31 = v31;
-              [v26 setPosition:{v31, 0.0, 0.0}];
+              [node setPosition:{v31, 0.0, 0.0}];
               v15 = v15 + CTFontGetAdvancesForGlyphs(v10, kCTFontOrientationDefault, &glyphs, 0, 1);
             }
           }
@@ -363,7 +363,7 @@ void __50__PKPeerPayment3DTextView_loadCharactersAndLayout__block_invoke_2(uint6
       }
 
       CFRelease(v10);
-      v4 = v80;
+      selfCopy = v80;
       [(NSMutableArray *)v80->_charactersToDraw removeAllObjects];
       if (v80->_framesFullyRendered)
       {
@@ -391,14 +391,14 @@ void __50__PKPeerPayment3DTextView_loadCharactersAndLayout__block_invoke_2(uint6
       }
     }
 
-    if (v4->_layoutRequested)
+    if (selfCopy->_layoutRequested)
     {
-      v32 = [v6 childNodes];
-      v33 = [v32 count];
+      childNodes = [v6 childNodes];
+      v33 = [childNodes count];
 
       if (v33)
       {
-        [(SCNView *)v4->_sceneView bounds];
+        [(SCNView *)selfCopy->_sceneView bounds];
         v35 = v34;
         v37 = v36;
         DWORD2(v83[0]) = 0;
@@ -408,10 +408,10 @@ void __50__PKPeerPayment3DTextView_loadCharactersAndLayout__block_invoke_2(uint6
         [v6 getBoundingBoxMin:v83 max:&v84];
         v38 = (*&v84 - *v83);
         v39 = *(&v84 + 1) + -6.87682009;
-        sceneHeightUnits = v4->_sceneHeightUnits;
+        sceneHeightUnits = selfCopy->_sceneHeightUnits;
         v41 = 49.0 / v37 * sceneHeightUnits;
         v42 = 0.0 / v37 * sceneHeightUnits;
-        v43 = (v35 + -28.0) / v35 * v4->_sceneWidthUnits / v38;
+        v43 = (v35 + -28.0) / v35 * selfCopy->_sceneWidthUnits / v38;
         v44 = v41 / v39;
         if (v43 >= v44)
         {
@@ -428,11 +428,11 @@ void __50__PKPeerPayment3DTextView_loadCharactersAndLayout__block_invoke_2(uint6
         *&v49 = v47;
         *&v50 = v47;
         [v6 setScale:{v48, v49, v50}];
-        v4->_layoutRequested = 0;
-        if (!v4->_framesFullyRendered)
+        selfCopy->_layoutRequested = 0;
+        if (!selfCopy->_framesFullyRendered)
         {
 LABEL_33:
-          if (!v4->_snapshotRequested && !v4->_usedForSnapshotting)
+          if (!selfCopy->_snapshotRequested && !selfCopy->_usedForSnapshotting)
           {
             goto LABEL_52;
           }
@@ -450,15 +450,15 @@ LABEL_33:
       goto LABEL_33;
     }
 
-    if (v4->_scene)
+    if (selfCopy->_scene)
     {
-      v51 = [v6 childNodes];
-      v52 = [v51 count];
+      childNodes2 = [v6 childNodes];
+      v52 = [childNodes2 count];
 
       if (v52)
       {
         v53 = v7;
-        if (!v4->_liveMotionEnabled && v4->_animationDuration == 0.0 || v4->_snapshotRequested || v4->_usedForSnapshotting || v4->_liveMotionEnabled && v4->_willAnimate)
+        if (!selfCopy->_liveMotionEnabled && selfCopy->_animationDuration == 0.0 || selfCopy->_snapshotRequested || selfCopy->_usedForSnapshotting || selfCopy->_liveMotionEnabled && selfCopy->_willAnimate)
         {
           +[PKPeerPayment3DScene staticRollPitch];
           v55 = v54;
@@ -470,14 +470,14 @@ LABEL_33:
 
         else
         {
-          animationDuration = v4->_animationDuration;
+          animationDuration = selfCopy->_animationDuration;
           +[PKPeerPayment3DScene staticRollPitch];
           v55 = v75;
           if (animationDuration > 0.0)
           {
-            v76 = fmin(fmax(v4->_dynamicRollPitchMix, 0.0), 1.0);
+            v76 = fmin(fmax(selfCopy->_dynamicRollPitchMix, 0.0), 1.0);
             v77 = v76 * v76 * (v76 * -2.0 + 3.0);
-            [(PKPeerPayment3DScene *)v4->_scene currentRollPitch];
+            [(PKPeerPayment3DScene *)selfCopy->_scene currentRollPitch];
             v78 = v77;
             v62 = COERCE_DOUBLE(vmla_n_f32(v55, vsub_f32(v79, v55), v78));
             [PKPeerPayment3DScene rotationMatrixForRollPitch:v62];
@@ -489,15 +489,15 @@ LABEL_43:
             v83[2] = v58;
             v83[3] = v59;
             v82 = vaddq_f32(v59, vmlaq_f32(vmlaq_f32(vmulq_f32(v56, 0), 0, v57), vdupq_n_s32(0x428C0000u), v58));
-            v63 = [(PKPeerPayment3DScene *)v4->_scene lightNode];
+            lightNode = [(PKPeerPayment3DScene *)selfCopy->_scene lightNode];
             *&v64 = vneg_f32(*v82.f32);
             LODWORD(v65) = v82.i32[2];
-            [v63 setPosition:{v64, COERCE_DOUBLE(__PAIR64__(v82.u32[1], HIDWORD(v64))), v65}];
+            [lightNode setPosition:{v64, COERCE_DOUBLE(__PAIR64__(v82.u32[1], HIDWORD(v64))), v65}];
 
             v66 = [MEMORY[0x277CBEA90] dataWithBytes:v83 length:64];
-            v67 = v4;
-            v68 = [(PKPeerPayment3DScene *)v4->_scene textMaterial];
-            [v68 setValue:v66 forKey:@"rotationMatrix"];
+            v67 = selfCopy;
+            textMaterial2 = [(PKPeerPayment3DScene *)selfCopy->_scene textMaterial];
+            [textMaterial2 setValue:v66 forKey:@"rotationMatrix"];
             if (v61)
             {
               v69 = *&v55;
@@ -518,7 +518,7 @@ LABEL_43:
 LABEL_49:
             v84 = v70;
             v71 = [MEMORY[0x277CBEA90] dataWithBytes:&v84 length:8];
-            [v68 setValue:v71 forKey:@"skew"];
+            [textMaterial2 setValue:v71 forKey:@"skew"];
             framesFullyRendered = v67->_framesFullyRendered;
             if (framesFullyRendered <= 2)
             {
@@ -529,7 +529,7 @@ LABEL_49:
             goto LABEL_52;
           }
 
-          [(PKPeerPayment3DScene *)v4->_scene currentRotationMatrix];
+          [(PKPeerPayment3DScene *)selfCopy->_scene currentRotationMatrix];
           v61 = 0;
           v60 = 0;
           v83[0] = v56;
@@ -554,12 +554,12 @@ LABEL_52:
   return result;
 }
 
-- (void)setMotionEffectEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)setMotionEffectEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  if (self->_liveMotionEnabled != a3)
+  if (self->_liveMotionEnabled != enabled)
   {
-    self->_liveMotionEnabled = a3;
-    if (a4)
+    self->_liveMotionEnabled = enabled;
+    if (animated)
     {
       self->_willAnimate = 1;
       objc_initWeak(&location, self);
@@ -641,9 +641,9 @@ void __42__PKPeerPayment3DTextView_didBecomeActive__block_invoke(uint64_t a1)
   v4.receiver = self;
   v4.super_class = PKPeerPayment3DTextView;
   [(PKPeerPayment3DTextView *)&v4 didMoveToWindow];
-  v3 = [(PKPeerPayment3DTextView *)self window];
+  window = [(PKPeerPayment3DTextView *)self window];
 
-  if (v3)
+  if (window)
   {
     if (self->_scene)
     {
@@ -665,10 +665,10 @@ void __42__PKPeerPayment3DTextView_didBecomeActive__block_invoke(uint64_t a1)
   }
 }
 
-- (float32x2_t)_fakeAnimationRollPitchWithElapsedTime:(uint64_t)a1
+- (float32x2_t)_fakeAnimationRollPitchWithElapsedTime:(uint64_t)time
 {
   v2 = a2;
-  v3 = *(a1 + 464);
+  v3 = *(time + 464);
   v4.f32[0] = v2;
   v20 = v2;
   v4.f32[1] = (v2 - (v3 + -1.0)) / (v3 - (v3 + -1.0));
@@ -691,10 +691,10 @@ void __42__PKPeerPayment3DTextView_didBecomeActive__block_invoke(uint64_t a1)
   return vmla_n_f32(v17, vsub_f32(v18, v17), v16);
 }
 
-- (void)performPostRender:(id)a3
+- (void)performPostRender:(id)render
 {
-  v4 = a3;
-  if (v4)
+  renderCopy = render;
+  if (renderCopy)
   {
     objc_initWeak(&location, self);
     block[0] = MEMORY[0x277D85DD0];
@@ -702,7 +702,7 @@ void __42__PKPeerPayment3DTextView_didBecomeActive__block_invoke(uint64_t a1)
     block[2] = __45__PKPeerPayment3DTextView_performPostRender___block_invoke;
     block[3] = &unk_2799FFBC0;
     objc_copyWeak(&v7, &location);
-    v6 = v4;
+    v6 = renderCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
 
     objc_destroyWeak(&v7);
@@ -733,15 +733,15 @@ void __45__PKPeerPayment3DTextView_performPostRender___block_invoke(uint64_t a1)
   }
 }
 
-- (void)renderer:(id)a3 didRenderScene:(id)a4 atTime:(double)a5
+- (void)renderer:(id)renderer didRenderScene:(id)scene atTime:(double)time
 {
-  v8 = a3;
-  v9 = a4;
-  self->_lastRenderTime = a5;
+  rendererCopy = renderer;
+  sceneCopy = scene;
+  self->_lastRenderTime = time;
   animationDuration = self->_animationDuration;
   if (animationDuration > 0.0)
   {
-    v11 = (a5 - self->_startAnimationTime) / animationDuration;
+    v11 = (time - self->_startAnimationTime) / animationDuration;
     v12 = fmax(1.0 - v11, 0.0);
     v13 = fmin(v11, 1.0);
     if (!self->_liveMotionEnabled)

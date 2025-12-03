@@ -1,14 +1,14 @@
 @interface APJSONArchiver
-+ (id)JSONObjectWithObject:(id)a3;
++ (id)JSONObjectWithObject:(id)object;
 - (APJSONArchiver)initWithArray;
 - (APJSONArchiver)initWithDictionary;
 - (BOOL)_containerIsArray;
-- (id)_JSONObjectWithObject:(id)a3;
-- (void)_addClassToContainer:(Class)a3;
-- (void)_addValueToContainer:(id)a3 forKey:(id)a4;
-- (void)encodeDouble:(double)a3 forKey:(id)a4;
-- (void)encodeInt64:(int64_t)a3 forKey:(id)a4;
-- (void)encodeObject:(id)a3 forKey:(id)a4;
+- (id)_JSONObjectWithObject:(id)object;
+- (void)_addClassToContainer:(Class)container;
+- (void)_addValueToContainer:(id)container forKey:(id)key;
+- (void)encodeDouble:(double)double forKey:(id)key;
+- (void)encodeInt64:(int64_t)int64 forKey:(id)key;
+- (void)encodeObject:(id)object forKey:(id)key;
 @end
 
 @implementation APJSONArchiver
@@ -50,36 +50,36 @@
   return objc_opt_isKindOfClass() & 1;
 }
 
-- (void)_addClassToContainer:(Class)a3
+- (void)_addClassToContainer:(Class)container
 {
-  v5 = NSStringFromClass(a3);
+  v5 = NSStringFromClass(container);
   objc_msgSend__addValueToContainer_forKey_(self, v4, v5, @"$");
 }
 
-- (void)_addValueToContainer:(id)a3 forKey:(id)a4
+- (void)_addValueToContainer:(id)container forKey:(id)key
 {
-  v14 = a3;
-  v9 = a4;
-  if (v14)
+  containerCopy = container;
+  keyCopy = key;
+  if (containerCopy)
   {
     IsArray = objc_msgSend__containerIsArray(self, v6, v7, v8);
     container = self->_container;
     if (IsArray)
     {
-      objc_msgSend_addObject_(container, v10, v14, v11);
+      objc_msgSend_addObject_(container, v10, containerCopy, v11);
     }
 
     else
     {
-      objc_msgSend_setValue_forKey_(container, v10, v14, v9);
+      objc_msgSend_setValue_forKey_(container, v10, containerCopy, keyCopy);
     }
   }
 }
 
-- (id)_JSONObjectWithObject:(id)a3
+- (id)_JSONObjectWithObject:(id)object
 {
-  v7 = a3;
-  if (!v7)
+  objectCopy = object;
+  if (!objectCopy)
   {
     v13 = 0;
     goto LABEL_9;
@@ -87,7 +87,7 @@
 
   v8 = objc_msgSend_null(MEMORY[0x1E695DFB0], v4, v5, v6);
 
-  if (v8 == v7)
+  if (v8 == objectCopy)
   {
     v12 = objc_msgSend_null(MEMORY[0x1E695DFB0], v9, v10, v11);
     goto LABEL_8;
@@ -96,7 +96,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v12 = v7;
+    v12 = objectCopy;
 LABEL_8:
     v13 = v12;
     goto LABEL_9;
@@ -105,7 +105,7 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = objc_msgSend__valueForNumber_(self, v15, v7, v16);
+    v12 = objc_msgSend__valueForNumber_(self, v15, objectCopy, v16);
     goto LABEL_8;
   }
 
@@ -113,7 +113,7 @@ LABEL_8:
   if (objc_opt_isKindOfClass())
   {
     v20 = objc_msgSend_apDefaultSharedFormatter(MEMORY[0x1E696AC80], v17, v18, v19);
-    v23 = objc_msgSend_stringFromDate_(v20, v21, v7, v22);
+    v23 = objc_msgSend_stringFromDate_(v20, v21, objectCopy, v22);
 LABEL_18:
     v13 = v23;
 LABEL_19:
@@ -124,7 +124,7 @@ LABEL_19:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v20 = objc_msgSend_base64EncodedStringWithOptions_(v7, v24, 0, v25);
+    v20 = objc_msgSend_base64EncodedStringWithOptions_(objectCopy, v24, 0, v25);
     v23 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v26, @"data:base64,%@", v27, v20);;
     goto LABEL_18;
   }
@@ -132,7 +132,7 @@ LABEL_19:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = objc_msgSend_UUIDString(v7, v28, v29, v30);
+    v12 = objc_msgSend_UUIDString(objectCopy, v28, v29, v30);
     goto LABEL_8;
   }
 
@@ -140,7 +140,7 @@ LABEL_19:
   if (objc_opt_isKindOfClass())
   {
     v31 = MEMORY[0x1E695DF70];
-    v32 = v7;
+    v32 = objectCopy;
     v36 = objc_msgSend_count(v32, v33, v34, v35);
     v39 = objc_msgSend_arrayWithCapacity_(v31, v37, v36, v38);
     v101[0] = MEMORY[0x1E69E9820];
@@ -163,7 +163,7 @@ LABEL_26:
   if (objc_opt_isKindOfClass())
   {
     v44 = MEMORY[0x1E695DF90];
-    v45 = v7;
+    v45 = objectCopy;
     v49 = objc_msgSend_count(v45, v46, v47, v48);
     v52 = objc_msgSend_dictionaryWithCapacity_(v44, v50, v49, v51);
     v99[0] = MEMORY[0x1E69E9820];
@@ -182,7 +182,7 @@ LABEL_26:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v20 = objc_msgSend_allObjects(v7, v55, v56, v57);
+    v20 = objc_msgSend_allObjects(objectCopy, v55, v56, v57);
     v58 = MEMORY[0x1E695DF70];
     v62 = objc_msgSend_count(v20, v59, v60, v61);
     v65 = objc_msgSend_arrayWithCapacity_(v58, v63, v62, v64);
@@ -204,7 +204,7 @@ LABEL_26:
   if (objc_opt_isKindOfClass())
   {
     v70 = MEMORY[0x1E695DF70];
-    v71 = v7;
+    v71 = objectCopy;
     v75 = objc_msgSend_count(v71, v72, v73, v74);
     v78 = objc_msgSend_arrayWithCapacity_(v70, v76, v75, v77);
     v95[0] = MEMORY[0x1E69E9820];
@@ -225,7 +225,7 @@ LABEL_26:
   v86 = objc_msgSend_initWithDictionary(v82, v83, v84, v85);
   v87 = objc_opt_class();
   objc_msgSend__addClassToContainer_(v86, v88, v87, v89);
-  objc_msgSend_encodeWithCoder_(v7, v90, v86, v91);
+  objc_msgSend_encodeWithCoder_(objectCopy, v90, v86, v91);
   v13 = objc_msgSend_object(v86, v92, v93, v94);
 
   objc_autoreleasePoolPop(v81);
@@ -234,35 +234,35 @@ LABEL_9:
   return v13;
 }
 
-- (void)encodeInt64:(int64_t)a3 forKey:(id)a4
+- (void)encodeInt64:(int64_t)int64 forKey:(id)key
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v11 = objc_msgSend_numberWithLongLong_(v6, v8, a3, v9);
-  objc_msgSend__addValueToContainer_forKey_(self, v10, v11, v7);
+  keyCopy = key;
+  v11 = objc_msgSend_numberWithLongLong_(v6, v8, int64, v9);
+  objc_msgSend__addValueToContainer_forKey_(self, v10, v11, keyCopy);
 }
 
-- (void)encodeDouble:(double)a3 forKey:(id)a4
+- (void)encodeDouble:(double)double forKey:(id)key
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v15 = objc_msgSend_numberWithDouble_(v6, v8, v9, v10, a3);
+  keyCopy = key;
+  v15 = objc_msgSend_numberWithDouble_(v6, v8, v9, v10, double);
   v13 = objc_msgSend__valueForNumber_(self, v11, v15, v12);
-  objc_msgSend__addValueToContainer_forKey_(self, v14, v13, v7);
+  objc_msgSend__addValueToContainer_forKey_(self, v14, v13, keyCopy);
 }
 
-- (void)encodeObject:(id)a3 forKey:(id)a4
+- (void)encodeObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v10 = objc_msgSend__JSONObjectWithObject_(self, v7, a3, v8);
-  objc_msgSend__addValueToContainer_forKey_(self, v9, v10, v6);
+  keyCopy = key;
+  v10 = objc_msgSend__JSONObjectWithObject_(self, v7, object, v8);
+  objc_msgSend__addValueToContainer_forKey_(self, v9, v10, keyCopy);
 }
 
-+ (id)JSONObjectWithObject:(id)a3
++ (id)JSONObjectWithObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = objc_alloc_init(APJSONArchiver);
-  v7 = objc_msgSend__JSONObjectWithObject_(v4, v5, v3, v6);
+  v7 = objc_msgSend__JSONObjectWithObject_(v4, v5, objectCopy, v6);
 
   return v7;
 }

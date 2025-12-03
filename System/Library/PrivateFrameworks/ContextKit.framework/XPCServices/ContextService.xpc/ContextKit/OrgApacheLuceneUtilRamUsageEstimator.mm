@@ -1,34 +1,34 @@
 @interface OrgApacheLuceneUtilRamUsageEstimator
-+ (int64_t)adjustForFieldWithLong:(int64_t)a3 withJavaLangReflectField:(id)a4;
-+ (int64_t)alignObjectSizeWithLong:(int64_t)a3;
++ (int64_t)adjustForFieldWithLong:(int64_t)long withJavaLangReflectField:(id)field;
++ (int64_t)alignObjectSizeWithLong:(int64_t)long;
 + (void)initialize;
 @end
 
 @implementation OrgApacheLuceneUtilRamUsageEstimator
 
-+ (int64_t)alignObjectSizeWithLong:(int64_t)a3
++ (int64_t)alignObjectSizeWithLong:(int64_t)long
 {
   if ((atomic_load_explicit(&OrgApacheLuceneUtilRamUsageEstimator__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1000120A8();
   }
 
-  return (a3 + OrgApacheLuceneUtilRamUsageEstimator_NUM_BYTES_OBJECT_ALIGNMENT_ - 1) / OrgApacheLuceneUtilRamUsageEstimator_NUM_BYTES_OBJECT_ALIGNMENT_ * OrgApacheLuceneUtilRamUsageEstimator_NUM_BYTES_OBJECT_ALIGNMENT_;
+  return (long + OrgApacheLuceneUtilRamUsageEstimator_NUM_BYTES_OBJECT_ALIGNMENT_ - 1) / OrgApacheLuceneUtilRamUsageEstimator_NUM_BYTES_OBJECT_ALIGNMENT_ * OrgApacheLuceneUtilRamUsageEstimator_NUM_BYTES_OBJECT_ALIGNMENT_;
 }
 
-+ (int64_t)adjustForFieldWithLong:(int64_t)a3 withJavaLangReflectField:(id)a4
++ (int64_t)adjustForFieldWithLong:(int64_t)long withJavaLangReflectField:(id)field
 {
   if ((atomic_load_explicit(&OrgApacheLuceneUtilRamUsageEstimator__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1000120A8();
   }
 
-  return OrgApacheLuceneUtilRamUsageEstimator_NUM_BYTES_OBJECT_REF_ + a3;
+  return OrgApacheLuceneUtilRamUsageEstimator_NUM_BYTES_OBJECT_REF_ + long;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = new_JavaUtilIdentityHashMap_init();
     JreStrongAssignAndConsume(&qword_1005541B0, v2);

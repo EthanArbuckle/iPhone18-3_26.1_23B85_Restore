@@ -4,11 +4,11 @@
 - (STExceptionClientProtocol)client;
 - (id)appsAboveAgeRating;
 - (id)exceptionsListChangedHandler;
-- (void)deleteAppException:(id)a3 completion:(id)a4;
-- (void)fetchAppExceptionsWithCompletion:(id)a3;
-- (void)setClient:(id)a3;
-- (void)setConnectionError:(id)a3;
-- (void)setExceptionsListChangedHandler:(id)a3;
+- (void)deleteAppException:(id)exception completion:(id)completion;
+- (void)fetchAppExceptionsWithCompletion:(id)completion;
+- (void)setClient:(id)client;
+- (void)setConnectionError:(id)error;
+- (void)setExceptionsListChangedHandler:(id)handler;
 @end
 
 @implementation STAppExceptionsController
@@ -35,9 +35,9 @@
   return v3;
 }
 
-- (void)setExceptionsListChangedHandler:(id)a3
+- (void)setExceptionsListChangedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -55,7 +55,7 @@
   v8 = *(self + OBJC_IVAR___STAppExceptionsController_exceptionsListChangedHandler);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_264C88B98(v8);
 }
 
@@ -76,12 +76,12 @@
   return v4;
 }
 
-- (void)setConnectionError:(id)a3
+- (void)setConnectionError:(id)error
 {
   v4 = *(self + OBJC_IVAR___STAppExceptionsController_connectionError);
-  *(self + OBJC_IVAR___STAppExceptionsController_connectionError) = a3;
-  v6 = self;
-  v5 = a3;
+  *(self + OBJC_IVAR___STAppExceptionsController_connectionError) = error;
+  selfCopy = self;
+  errorCopy = error;
 }
 
 - (STExceptionClientProtocol)client
@@ -91,31 +91,31 @@
   return v2;
 }
 
-- (void)setClient:(id)a3
+- (void)setClient:(id)client
 {
-  *(self + OBJC_IVAR___STAppExceptionsController_client) = a3;
+  *(self + OBJC_IVAR___STAppExceptionsController_client) = client;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
 }
 
-- (void)fetchAppExceptionsWithCompletion:(id)a3
+- (void)fetchAppExceptionsWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
-  sub_264CADB70(v5, v4);
+  selfCopy = self;
+  sub_264CADB70(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (void)deleteAppException:(id)a3 completion:(id)a4
+- (void)deleteAppException:(id)exception completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_264CADD78(a3, v8, v6);
+  exceptionCopy = exception;
+  selfCopy = self;
+  sub_264CADD78(exception, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }

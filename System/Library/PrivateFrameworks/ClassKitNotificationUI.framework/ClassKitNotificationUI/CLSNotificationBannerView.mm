@@ -2,13 +2,13 @@
 + (id)bannerMessageAttributes;
 + (id)bannerTitleAttributes;
 + (id)bundle;
-- (CLSNotificationBannerView)initWithTitle:(id)a3 image:(id)a4 message:(id)a5;
-- (CLSNotificationBannerView)initWithTitle:(id)a3 imageView:(id)a4 message:(id)a5;
-- (CLSNotificationBannerView)initWithTitle:(id)a3 message:(id)a4;
+- (CLSNotificationBannerView)initWithTitle:(id)title image:(id)image message:(id)message;
+- (CLSNotificationBannerView)initWithTitle:(id)title imageView:(id)view message:(id)message;
+- (CLSNotificationBannerView)initWithTitle:(id)title message:(id)message;
 - (void)applyConstraints;
 - (void)callCompletionHandler;
 - (void)hideBanner;
-- (void)showWithCompletionHandler:(id)a3;
+- (void)showWithCompletionHandler:(id)handler;
 @end
 
 @implementation CLSNotificationBannerView
@@ -49,11 +49,11 @@
   return v3;
 }
 
-- (CLSNotificationBannerView)initWithTitle:(id)a3 imageView:(id)a4 message:(id)a5
+- (CLSNotificationBannerView)initWithTitle:(id)title imageView:(id)view message:(id)message
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  viewCopy = view;
+  messageCopy = message;
   v113.receiver = self;
   v113.super_class = CLSNotificationBannerView;
   v11 = *MEMORY[0x277CBF3A0];
@@ -81,7 +81,7 @@
     v26 = objc_alloc(MEMORY[0x277D75DE8]);
     v112 = objc_msgSend_initWithPrivateStyle_(v26, v27, v25);
     objc_msgSend_addSubview_(v18, v28, v112);
-    objc_storeStrong(&v18->_imageView, a4);
+    objc_storeStrong(&v18->_imageView, view);
     objc_msgSend_addSubview_(v18, v29, v18->_imageView);
     v30 = objc_alloc_init(MEMORY[0x277D75A68]);
     labelsStackView = v18->_labelsStackView;
@@ -92,7 +92,7 @@
     objc_msgSend_setDistribution_(v18->_labelsStackView, v34, 2);
     objc_msgSend_addSubview_(v18, v35, v18->_labelsStackView);
     v38 = 0x277D75000uLL;
-    if (v8)
+    if (titleCopy)
     {
       v39 = objc_alloc(MEMORY[0x277D756B8]);
       v42 = objc_msgSend_initWithFrame_(v39, v40, v41, v11, v12, v13, v14);
@@ -108,7 +108,7 @@
       v52 = objc_alloc(MEMORY[0x277CCA898]);
       v53 = objc_opt_class();
       v56 = objc_msgSend_bannerTitleAttributes(v53, v54, v55);
-      v58 = objc_msgSend_initWithString_attributes_(v52, v57, v8, v56);
+      v58 = objc_msgSend_initWithString_attributes_(v52, v57, titleCopy, v56);
       objc_msgSend_setAttributedText_(v18->_titleLabel, v59, v58);
 
       v38 = 0x277D75000uLL;
@@ -116,7 +116,7 @@
       objc_msgSend_addArrangedSubview_(v18->_labelsStackView, v61, v18->_titleLabel);
     }
 
-    if (v10)
+    if (messageCopy)
     {
       v62 = objc_alloc(MEMORY[0x277D756B8]);
       v65 = objc_msgSend_initWithFrame_(v62, v63, v64, v11, v12, v13, v14);
@@ -132,7 +132,7 @@
       v75 = objc_alloc(MEMORY[0x277CCA898]);
       v76 = objc_opt_class();
       v79 = objc_msgSend_bannerMessageAttributes(v76, v77, v78);
-      v81 = objc_msgSend_initWithString_attributes_(v75, v80, v10, v79);
+      v81 = objc_msgSend_initWithString_attributes_(v75, v80, messageCopy, v79);
       objc_msgSend_setAttributedText_(v18->_messageLabel, v82, v81);
 
       v38 = 0x277D75000;
@@ -231,32 +231,32 @@
   return v18;
 }
 
-- (CLSNotificationBannerView)initWithTitle:(id)a3 image:(id)a4 message:(id)a5
+- (CLSNotificationBannerView)initWithTitle:(id)title image:(id)image message:(id)message
 {
   v8 = MEMORY[0x277D755E8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  messageCopy = message;
+  imageCopy = image;
+  titleCopy = title;
   v12 = [v8 alloc];
-  v14 = objc_msgSend_initWithImage_(v12, v13, v10);
+  v14 = objc_msgSend_initWithImage_(v12, v13, imageCopy);
 
   v17 = objc_msgSend_clearColor(MEMORY[0x277D75348], v15, v16);
   objc_msgSend_setBackgroundColor_(v14, v18, v17);
 
   objc_msgSend_setContentMode_(v14, v19, 1);
   objc_msgSend_setClipsToBounds_(v14, v20, 1);
-  v22 = objc_msgSend_initWithTitle_imageView_message_(self, v21, v11, v14, v9);
+  v22 = objc_msgSend_initWithTitle_imageView_message_(self, v21, titleCopy, v14, messageCopy);
 
   return v22;
 }
 
-- (CLSNotificationBannerView)initWithTitle:(id)a3 message:(id)a4
+- (CLSNotificationBannerView)initWithTitle:(id)title message:(id)message
 {
-  v6 = a4;
-  v7 = a3;
+  messageCopy = message;
+  titleCopy = title;
   v10 = objc_msgSend_bundle(CLSNotificationBannerView, v8, v9);
   v12 = objc_msgSend_imageNamed_inBundle_(MEMORY[0x277D755B8], v11, @"BannerIcon", v10);
-  v14 = objc_msgSend_initWithTitle_image_message_(self, v13, v7, v12, v6);
+  v14 = objc_msgSend_initWithTitle_image_message_(self, v13, titleCopy, v12, messageCopy);
 
   return v14;
 }
@@ -404,9 +404,9 @@
   v91 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showWithCompletionHandler:(id)a3
+- (void)showWithCompletionHandler:(id)handler
 {
-  objc_msgSend_setCompletionHandler_(self, a2, a3);
+  objc_msgSend_setCompletionHandler_(self, a2, handler);
 
   MEMORY[0x2821F9670](CLSNotificationBannerWindow, sel_enqueBanner_, self);
 }

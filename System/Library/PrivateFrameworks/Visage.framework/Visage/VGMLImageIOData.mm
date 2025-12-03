@@ -1,13 +1,13 @@
 @interface VGMLImageIOData
-- (BOOL)isEqual:(id)a3;
-- (VGMLImageIOData)initWithCVPixelBufferRef:(__CVBuffer *)a3;
-- (VGMLImageIOData)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (VGMLImageIOData)initWithCVPixelBufferRef:(__CVBuffer *)ref;
+- (VGMLImageIOData)initWithCoder:(id)coder;
 - (void)dealloc;
 @end
 
 @implementation VGMLImageIOData
 
-- (VGMLImageIOData)initWithCVPixelBufferRef:(__CVBuffer *)a3
+- (VGMLImageIOData)initWithCVPixelBufferRef:(__CVBuffer *)ref
 {
   v8.receiver = self;
   v8.super_class = VGMLImageIOData;
@@ -15,8 +15,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_pixelBuffer = a3;
-    CVPixelBufferRetain(a3);
+    v4->_pixelBuffer = ref;
+    CVPixelBufferRetain(ref);
     v6 = v5;
   }
 
@@ -31,22 +31,22 @@
   [(VGMLImageIOData *)&v3 dealloc];
 }
 
-- (VGMLImageIOData)initWithCoder:(id)a3
+- (VGMLImageIOData)initWithCoder:(id)coder
 {
-  v4 = [VGCoderUtilities decodePixelBufferForKey:@"pixelBuffer" decoder:a3];
+  v4 = [VGCoderUtilities decodePixelBufferForKey:@"pixelBuffer" decoder:coder];
   v5 = [(VGMLImageIOData *)self initWithCVPixelBufferRef:v4];
   CVPixelBufferRelease(v4);
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = checkEqualPixelBuffers(-[VGMLImageIOData cvPixelBufferRef](self, "cvPixelBufferRef"), [v5 cvPixelBufferRef]);
   }
 

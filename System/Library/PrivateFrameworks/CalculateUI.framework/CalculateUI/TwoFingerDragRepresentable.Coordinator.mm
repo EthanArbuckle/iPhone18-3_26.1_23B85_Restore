@@ -1,16 +1,16 @@
 @interface TwoFingerDragRepresentable.Coordinator
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (_TtCV11CalculateUI26TwoFingerDragRepresentable11Coordinator)init;
 @end
 
 @implementation TwoFingerDragRepresentable.Coordinator
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1C1DF6F18(v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = sub_1C1DF6F18(gestureRecognizerCopy);
 
   return v9 & 1;
 }

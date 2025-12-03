@@ -1,48 +1,48 @@
 @interface WFRichTextContentItem
-+ (BOOL)isMissingHTMLHeaderInString:(id)a3;
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3;
-+ (id)attributesDictionaryForType:(id)a3;
++ (BOOL)isMissingHTMLHeaderInString:(id)string;
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance;
++ (id)attributesDictionaryForType:(id)type;
 + (id)contentCategories;
-+ (id)documentTypeForType:(id)a3;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
-+ (id)normalizedHTMLDocumentFromHTML:(id)a3;
-+ (id)normalizedHTMLDocumentFromHTMLData:(id)a3;
++ (id)documentTypeForType:(id)type;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
++ (id)normalizedHTMLDocumentFromHTML:(id)l;
++ (id)normalizedHTMLDocumentFromHTMLData:(id)data;
 + (id)outputTypes;
 + (id)ownedTypes;
 + (id)stringConversionBehavior;
-+ (void)loadAttributedStringInWebViewFromHTMLFile:(id)a3 handler:(id)a4 attributedStringOptions:(id)a5 documentAttributes:(id *)a6 name:(id)a7 coercionOptions:(id)a8;
-- (BOOL)canGenerateRepresentationForType:(id)a3;
++ (void)loadAttributedStringInWebViewFromHTMLFile:(id)file handler:(id)handler attributedStringOptions:(id)options documentAttributes:(id *)attributes name:(id)name coercionOptions:(id)coercionOptions;
+- (BOOL)canGenerateRepresentationForType:(id)type;
 - (WFFileType)preferredFileType;
 - (id)attributedString;
-- (id)generateFileRepresentationForType:(id)a3 options:(id)a4 error:(id *)a5;
-- (void)generateAttributedString:(id)a3 fromFile:(id)a4 forClass:(Class)a5 coercionOptions:(id)a6;
-- (void)generateDataRepresentation:(id)a3 fromAttributedString:(id)a4 forType:(id)a5;
-- (void)generateFileRepresentations:(id)a3 options:(id)a4 forType:(id)a5;
-- (void)generateObjectRepresentations:(id)a3 options:(id)a4 forClass:(Class)a5;
-- (void)generateRTFDRepresentation:(id)a3 fromAttributedString:(id)a4 forType:(id)a5;
-- (void)getFileRepresentationsForSerialization:(id)a3;
-- (void)getPDFFromResource:(id)a3 includeMargin:(BOOL)a4 options:(id)a5 handler:(id)a6;
+- (id)generateFileRepresentationForType:(id)type options:(id)options error:(id *)error;
+- (void)generateAttributedString:(id)string fromFile:(id)file forClass:(Class)class coercionOptions:(id)options;
+- (void)generateDataRepresentation:(id)representation fromAttributedString:(id)string forType:(id)type;
+- (void)generateFileRepresentations:(id)representations options:(id)options forType:(id)type;
+- (void)generateObjectRepresentations:(id)representations options:(id)options forClass:(Class)class;
+- (void)generateRTFDRepresentation:(id)representation fromAttributedString:(id)string forType:(id)type;
+- (void)getFileRepresentationsForSerialization:(id)serialization;
+- (void)getPDFFromResource:(id)resource includeMargin:(BOOL)margin options:(id)options handler:(id)handler;
 @end
 
 @implementation WFRichTextContentItem
 
-- (void)getPDFFromResource:(id)a3 includeMargin:(BOOL)a4 options:(id)a5 handler:(id)a6
+- (void)getPDFFromResource:(id)resource includeMargin:(BOOL)margin options:(id)options handler:(id)handler
 {
-  v7 = a4;
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
+  marginCopy = margin;
+  handlerCopy = handler;
+  optionsCopy = options;
+  resourceCopy = resource;
   v12 = objc_alloc_init(WFWebResourceCapturer);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __74__WFRichTextContentItem_getPDFFromResource_includeMargin_options_handler___block_invoke;
   v15[3] = &unk_278348570;
   v16 = v12;
-  v17 = v9;
+  v17 = handlerCopy;
   v13 = v12;
-  v14 = v9;
-  [(WFWebResourceCapturer *)v13 generatePDFForWebResource:v11 includeMargin:v7 coercionOptions:v10 completionHandler:v15];
+  v14 = handlerCopy;
+  [(WFWebResourceCapturer *)v13 generatePDFForWebResource:resourceCopy includeMargin:marginCopy coercionOptions:optionsCopy completionHandler:v15];
 }
 
 void __74__WFRichTextContentItem_getPDFFromResource_includeMargin_options_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -66,34 +66,34 @@ void __74__WFRichTextContentItem_getPDFFromResource_includeMargin_options_handle
 
 - (WFFileType)preferredFileType
 {
-  v3 = [(WFContentItem *)self internalRepresentationType];
-  v4 = [v3 conformsToClass:objc_opt_class()];
+  internalRepresentationType = [(WFContentItem *)self internalRepresentationType];
+  v4 = [internalRepresentationType conformsToClass:objc_opt_class()];
 
   if (v4)
   {
-    v5 = [MEMORY[0x277D79F68] typeWithUTType:*MEMORY[0x277CE1E50]];
+    preferredFileType = [MEMORY[0x277D79F68] typeWithUTType:*MEMORY[0x277CE1E50]];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = WFRichTextContentItem;
-    v5 = [(WFContentItem *)&v7 preferredFileType];
+    preferredFileType = [(WFContentItem *)&v7 preferredFileType];
   }
 
-  return v5;
+  return preferredFileType;
 }
 
-- (BOOL)canGenerateRepresentationForType:(id)a3
+- (BOOL)canGenerateRepresentationForType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = [(WFContentItem *)self objectForClass:objc_opt_class()];
   if (!v5)
   {
     goto LABEL_10;
   }
 
-  if ([v4 conformsToClass:objc_opt_class()])
+  if ([typeCopy conformsToClass:objc_opt_class()])
   {
     v25 = 0;
     v26 = &v25;
@@ -117,12 +117,12 @@ LABEL_11:
     return v8 & 1;
   }
 
-  if (![v4 conformsToClass:objc_opt_class()])
+  if (![typeCopy conformsToClass:objc_opt_class()])
   {
 LABEL_10:
     v18.receiver = self;
     v18.super_class = WFRichTextContentItem;
-    v8 = [(WFGenericFileContentItem *)&v18 canGenerateRepresentationForType:v4];
+    v8 = [(WFGenericFileContentItem *)&v18 canGenerateRepresentationForType:typeCopy];
     goto LABEL_11;
   }
 
@@ -166,9 +166,9 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  v16 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSAttributedStringKey getNSAttachmentAttributeName(void)"];
-  [v16 handleFailureInFunction:v17 file:@"WFRichTextContentItem.m" lineNumber:47 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v17 file:@"WFRichTextContentItem.m" lineNumber:47 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;
@@ -198,71 +198,71 @@ void __58__WFRichTextContentItem_canGenerateRepresentationForType___block_invoke
   }
 }
 
-- (void)generateObjectRepresentations:(id)a3 options:(id)a4 forClass:(Class)a5
+- (void)generateObjectRepresentations:(id)representations options:(id)options forClass:(Class)class
 {
   v54[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (objc_opt_class() != a5)
+  representationsCopy = representations;
+  optionsCopy = options;
+  if (objc_opt_class() != class)
   {
-    if (objc_opt_class() == a5)
+    if (objc_opt_class() == class)
     {
       v50[0] = MEMORY[0x277D85DD0];
       v50[1] = 3221225472;
       v50[2] = __72__WFRichTextContentItem_generateObjectRepresentations_options_forClass___block_invoke_2;
       v50[3] = &unk_2783462C8;
-      v51 = v8;
-      [(WFContentItem *)self getObjectRepresentation:v50 forClass:objc_opt_class() options:v9];
+      v51 = representationsCopy;
+      [(WFContentItem *)self getObjectRepresentation:v50 forClass:objc_opt_class() options:optionsCopy];
       v20 = v51;
     }
 
     else
     {
-      v10 = NSStringFromClass(a5);
+      v10 = NSStringFromClass(class);
       v11 = [@"UIPrintFormatter" isEqualToString:v10];
 
       if (v11)
       {
-        v12 = [(WFContentItem *)self internalRepresentationType];
-        v13 = [v12 isEqualToUTType:*MEMORY[0x277CE1ED8]];
+        internalRepresentationType = [(WFContentItem *)self internalRepresentationType];
+        v13 = [internalRepresentationType isEqualToUTType:*MEMORY[0x277CE1ED8]];
 
-        v14 = [(WFContentItem *)self internalRepresentationType];
-        v15 = v14;
+        internalRepresentationType2 = [(WFContentItem *)self internalRepresentationType];
+        v15 = internalRepresentationType2;
         if (v13)
         {
-          v16 = [(WFContentItem *)self fileRepresentationForType:v14];
+          v16 = [(WFContentItem *)self fileRepresentationForType:internalRepresentationType2];
 
           v17 = [WFWebResource webResourceWithFile:v16];
           v48[0] = MEMORY[0x277D85DD0];
           v48[1] = 3221225472;
           v48[2] = __72__WFRichTextContentItem_generateObjectRepresentations_options_forClass___block_invoke_4;
           v48[3] = &unk_2783476C0;
-          v49 = v8;
-          [WFWebResourceCapturer getPrintFormatterForWebResource:v17 coercionOptions:v9 completionHandler:v48];
+          v49 = representationsCopy;
+          [WFWebResourceCapturer getPrintFormatterForWebResource:v17 coercionOptions:optionsCopy completionHandler:v48];
 
 LABEL_21:
           goto LABEL_22;
         }
 
-        v21 = [v14 isEqualToUTType:*MEMORY[0x277CE1DA0]];
+        v21 = [internalRepresentationType2 isEqualToUTType:*MEMORY[0x277CE1DA0]];
 
         if (v21)
         {
-          v22 = [(WFContentItem *)self internalRepresentationType];
-          v23 = [(WFContentItem *)self fileRepresentationForType:v22];
+          internalRepresentationType3 = [(WFContentItem *)self internalRepresentationType];
+          v23 = [(WFContentItem *)self fileRepresentationForType:internalRepresentationType3];
           v24 = MEMORY[0x277CCACA8];
-          v25 = [v23 data];
-          v26 = [v24 wf_stringWithData:v25];
+          data = [v23 data];
+          v26 = [v24 wf_stringWithData:data];
 
-          v27 = [v23 originalURL];
-          v28 = [WFWebResource webResourceWithHTMLString:v26 baseURL:v27];
+          originalURL = [v23 originalURL];
+          v28 = [WFWebResource webResourceWithHTMLString:v26 baseURL:originalURL];
 
           v46[0] = MEMORY[0x277D85DD0];
           v46[1] = 3221225472;
           v46[2] = __72__WFRichTextContentItem_generateObjectRepresentations_options_forClass___block_invoke_5;
           v46[3] = &unk_2783476C0;
-          v47 = v8;
-          [WFWebResourceCapturer getPrintFormatterForWebResource:v28 coercionOptions:v9 completionHandler:v46];
+          v47 = representationsCopy;
+          [WFWebResourceCapturer getPrintFormatterForWebResource:v28 coercionOptions:optionsCopy completionHandler:v46];
 
           goto LABEL_22;
         }
@@ -272,38 +272,38 @@ LABEL_21:
         v44[2] = __72__WFRichTextContentItem_generateObjectRepresentations_options_forClass___block_invoke_6;
         v44[3] = &unk_278349FA0;
         v44[4] = self;
-        v45 = v8;
-        [(WFContentItem *)self getObjectRepresentation:v44 forClass:objc_opt_class() options:v9];
+        v45 = representationsCopy;
+        [(WFContentItem *)self getObjectRepresentation:v44 forClass:objc_opt_class() options:optionsCopy];
         v20 = v45;
         goto LABEL_8;
       }
 
-      if (objc_opt_class() != a5)
+      if (objc_opt_class() != class)
       {
-        v16 = [objc_opt_class() badCoercionErrorForObjectClass:a5];
-        (*(v8 + 2))(v8, 0, v16);
+        v16 = [objc_opt_class() badCoercionErrorForObjectClass:class];
+        (*(representationsCopy + 2))(representationsCopy, 0, v16);
         goto LABEL_21;
       }
 
-      v29 = [(WFContentItem *)self internalRepresentationType];
-      v30 = [v29 isEqualToUTType:*MEMORY[0x277CE1DA0]];
+      internalRepresentationType4 = [(WFContentItem *)self internalRepresentationType];
+      v30 = [internalRepresentationType4 isEqualToUTType:*MEMORY[0x277CE1DA0]];
 
-      v31 = [(WFContentItem *)self internalRepresentationType];
-      if ([v31 isEqualToUTType:*MEMORY[0x277CE1ED8]])
+      internalRepresentationType5 = [(WFContentItem *)self internalRepresentationType];
+      if ([internalRepresentationType5 isEqualToUTType:*MEMORY[0x277CE1ED8]])
       {
 
 LABEL_17:
-        v34 = [(WFContentItem *)self internalRepresentationType];
-        v16 = [(WFContentItem *)self fileRepresentationForType:v34];
+        internalRepresentationType6 = [(WFContentItem *)self internalRepresentationType];
+        v16 = [(WFContentItem *)self fileRepresentationForType:internalRepresentationType6];
 
         if (v30)
         {
           v35 = MEMORY[0x277CCACA8];
-          v36 = [v16 data];
-          v37 = [v35 wf_stringWithData:v36];
+          data2 = [v16 data];
+          v37 = [v35 wf_stringWithData:data2];
 
-          v38 = [v16 originalURL];
-          v39 = [WFWebResource webResourceWithHTMLString:v37 baseURL:v38];
+          originalURL2 = [v16 originalURL];
+          v39 = [WFWebResource webResourceWithHTMLString:v37 baseURL:originalURL2];
         }
 
         else
@@ -314,13 +314,13 @@ LABEL_17:
         v40 = [WFObjectRepresentation object:v39];
         v54[0] = v40;
         v41 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:1];
-        (*(v8 + 2))(v8, v41, 0);
+        (*(representationsCopy + 2))(representationsCopy, v41, 0);
 
         goto LABEL_21;
       }
 
-      v32 = [(WFContentItem *)self internalRepresentationType];
-      v33 = [v32 isEqualToUTType:*MEMORY[0x277CE1E50]] | v30;
+      internalRepresentationType7 = [(WFContentItem *)self internalRepresentationType];
+      v33 = [internalRepresentationType7 isEqualToUTType:*MEMORY[0x277CE1E50]] | v30;
 
       if (v33)
       {
@@ -331,8 +331,8 @@ LABEL_17:
       v42[1] = 3221225472;
       v42[2] = __72__WFRichTextContentItem_generateObjectRepresentations_options_forClass___block_invoke_8;
       v42[3] = &unk_2783462C8;
-      v43 = v8;
-      [(WFContentItem *)self getObjectRepresentation:v42 forClass:objc_opt_class() options:v9];
+      v43 = representationsCopy;
+      [(WFContentItem *)self getObjectRepresentation:v42 forClass:objc_opt_class() options:optionsCopy];
       v20 = v43;
     }
 
@@ -341,15 +341,15 @@ LABEL_8:
     goto LABEL_22;
   }
 
-  v18 = [(WFContentItem *)self internalRepresentationType];
-  v19 = [(WFContentItem *)self fileRepresentationForType:v18];
+  internalRepresentationType8 = [(WFContentItem *)self internalRepresentationType];
+  v19 = [(WFContentItem *)self fileRepresentationForType:internalRepresentationType8];
 
   v52[0] = MEMORY[0x277D85DD0];
   v52[1] = 3221225472;
   v52[2] = __72__WFRichTextContentItem_generateObjectRepresentations_options_forClass___block_invoke;
   v52[3] = &unk_2783462C8;
-  v53 = v8;
-  [(WFRichTextContentItem *)self generateAttributedString:v52 fromFile:v19 forClass:a5 coercionOptions:v9];
+  v53 = representationsCopy;
+  [(WFRichTextContentItem *)self generateAttributedString:v52 fromFile:v19 forClass:class coercionOptions:optionsCopy];
 
 LABEL_22:
 }
@@ -523,13 +523,13 @@ void __72__WFRichTextContentItem_generateObjectRepresentations_options_forClass_
   }
 }
 
-- (void)generateAttributedString:(id)a3 fromFile:(id)a4 forClass:(Class)a5 coercionOptions:(id)a6
+- (void)generateAttributedString:(id)string fromFile:(id)file forClass:(Class)class coercionOptions:(id)options
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [v10 wfType];
-  v13 = [v12 conformsToUTType:*MEMORY[0x277CE1D78]];
+  stringCopy = string;
+  fileCopy = file;
+  optionsCopy = options;
+  wfType = [fileCopy wfType];
+  v13 = [wfType conformsToUTType:*MEMORY[0x277CE1D78]];
 
   if (!v13)
   {
@@ -537,12 +537,12 @@ void __72__WFRichTextContentItem_generateObjectRepresentations_options_forClass_
   }
 
   v14 = objc_alloc(MEMORY[0x277CCAA20]);
-  v15 = [v10 mappedData];
-  v16 = [v14 initWithSerializedRepresentation:v15];
+  mappedData = [fileCopy mappedData];
+  v16 = [v14 initWithSerializedRepresentation:mappedData];
 
-  v17 = [v10 filename];
+  filename = [fileCopy filename];
   v18 = [MEMORY[0x277D79F68] typeWithUTType:*MEMORY[0x277CE1E58]];
-  v19 = [WFFileRepresentation proposedFilenameForFile:v17 ofType:v18];
+  v19 = [WFFileRepresentation proposedFilenameForFile:filename ofType:v18];
 
   v20 = [WFTemporaryFileManager proposedTemporaryFileURLForFilename:v19];
   v46 = 0;
@@ -552,61 +552,61 @@ void __72__WFRichTextContentItem_generateObjectRepresentations_options_forClass_
   {
     v23 = [WFFileRepresentation fileWithURL:v20 options:1];
 
-    v10 = v23;
+    fileCopy = v23;
   }
 
   else
   {
-    (*(v9 + 2))(v9, 0, 0, v22);
+    (*(stringCopy + 2))(stringCopy, 0, 0, v22);
   }
 
   if (v21)
   {
 LABEL_6:
     v24 = objc_opt_class();
-    v25 = [v10 wfType];
-    v26 = [v24 attributesDictionaryForType:v25];
+    wfType2 = [fileCopy wfType];
+    v26 = [v24 attributesDictionaryForType:wfType2];
 
-    v27 = [v10 wfType];
-    if ([v27 conformsToUTType:*MEMORY[0x277CE1DA0]])
+    wfType3 = [fileCopy wfType];
+    if ([wfType3 conformsToUTType:*MEMORY[0x277CE1DA0]])
     {
     }
 
     else
     {
-      v28 = [v10 wfType];
-      v29 = [v28 conformsToUTType:*MEMORY[0x277CE1ED8]];
+      wfType4 = [fileCopy wfType];
+      v29 = [wfType4 conformsToUTType:*MEMORY[0x277CE1ED8]];
 
       if (!v29)
       {
-        v34 = [v10 representationType];
+        representationType = [fileCopy representationType];
         v35 = objc_alloc(MEMORY[0x277CCA898]);
-        if (v34)
+        if (representationType)
         {
-          v36 = [v10 fileURL];
+          fileURL = [fileCopy fileURL];
           v41 = 0;
           v42 = 0;
           v37 = &v42;
           v38 = &v41;
-          v39 = [v35 initWithURL:v36 options:v26 documentAttributes:&v42 error:&v41];
+          v39 = [v35 initWithURL:fileURL options:v26 documentAttributes:&v42 error:&v41];
         }
 
         else
         {
-          v36 = [v10 mappedData];
+          fileURL = [fileCopy mappedData];
           v43 = 0;
           v44 = 0;
           v37 = &v44;
           v38 = &v43;
-          v39 = [v35 initWithData:v36 options:v26 documentAttributes:&v44 error:&v43];
+          v39 = [v35 initWithData:fileURL options:v26 documentAttributes:&v44 error:&v43];
         }
 
-        v31 = v39;
+        name2 = v39;
         v32 = *v37;
         v33 = *v38;
 
-        v40 = [(WFContentItem *)self name];
-        (*(v9 + 2))(v9, v31, v40, 0);
+        name = [(WFContentItem *)self name];
+        (*(stringCopy + 2))(stringCopy, name2, name, 0);
 
         goto LABEL_14;
       }
@@ -614,25 +614,25 @@ LABEL_6:
 
     v30 = objc_opt_class();
     v45 = 0;
-    v31 = [(WFContentItem *)self name];
-    [v30 loadAttributedStringInWebViewFromHTMLFile:v10 handler:v9 attributedStringOptions:v26 documentAttributes:&v45 name:v31 coercionOptions:v11];
+    name2 = [(WFContentItem *)self name];
+    [v30 loadAttributedStringInWebViewFromHTMLFile:fileCopy handler:stringCopy attributedStringOptions:v26 documentAttributes:&v45 name:name2 coercionOptions:optionsCopy];
     v32 = v45;
     v33 = 0;
 LABEL_14:
   }
 }
 
-- (void)getFileRepresentationsForSerialization:(id)a3
+- (void)getFileRepresentationsForSerialization:(id)serialization
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serializationCopy = serialization;
   v16 = @"ContinueLoadingWebContentIfExternalResourcesAreDenied";
   v17[0] = MEMORY[0x277CBEC38];
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
   v6 = [WFCoercionOptions optionsWithDictionary:v5];
 
-  v7 = [(WFContentItem *)self internalRepresentationType];
-  if ([v7 conformsToUTType:*MEMORY[0x277CE1DA0]])
+  internalRepresentationType = [(WFContentItem *)self internalRepresentationType];
+  if ([internalRepresentationType conformsToUTType:*MEMORY[0x277CE1DA0]])
   {
     v8 = [MEMORY[0x277D79F68] typeFromPasteboardType:*MEMORY[0x277D7A7E8]];
   }
@@ -649,10 +649,10 @@ LABEL_14:
   v12[4] = self;
   v13 = v8;
   v14 = v6;
-  v15 = v4;
+  v15 = serializationCopy;
   v9 = v6;
   v10 = v8;
-  v11 = v4;
+  v11 = serializationCopy;
   [(WFContentItem *)self getFileRepresentation:v12 forType:v10 options:v9];
 }
 
@@ -728,25 +728,25 @@ void __64__WFRichTextContentItem_getFileRepresentationsForSerialization___block_
   (*(v3 + 16))(v3, v4, a1[6]);
 }
 
-- (void)generateFileRepresentations:(id)a3 options:(id)a4 forType:(id)a5
+- (void)generateFileRepresentations:(id)representations options:(id)options forType:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 isEqualToUTType:*MEMORY[0x277CE1E08]])
+  representationsCopy = representations;
+  optionsCopy = options;
+  typeCopy = type;
+  if ([typeCopy isEqualToUTType:*MEMORY[0x277CE1E08]])
   {
-    v11 = [v9 dictionary];
-    v12 = [v11 objectForKey:@"WFCoercionOptionPDFIncludeMargin"];
-    v13 = [v12 BOOLValue];
+    dictionary = [optionsCopy dictionary];
+    v12 = [dictionary objectForKey:@"WFCoercionOptionPDFIncludeMargin"];
+    bOOLValue = [v12 BOOLValue];
 
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __69__WFRichTextContentItem_generateFileRepresentations_options_forType___block_invoke;
     v29[3] = &unk_2783462A0;
-    v31 = v8;
+    v31 = representationsCopy;
     v29[4] = self;
-    v32 = v13;
-    v30 = v9;
+    v32 = bOOLValue;
+    v30 = optionsCopy;
     [(WFContentItem *)self getObjectRepresentation:v29 forClass:objc_opt_class() options:v30];
 
     v14 = v31;
@@ -755,23 +755,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (![v10 conformsToUTType:*MEMORY[0x277CE1DB0]])
+  if (![typeCopy conformsToUTType:*MEMORY[0x277CE1DB0]])
   {
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __69__WFRichTextContentItem_generateFileRepresentations_options_forType___block_invoke_15;
     v23[3] = &unk_2783462F0;
-    v26 = v8;
-    v24 = v10;
-    v25 = self;
-    [(WFContentItem *)self getObjectRepresentation:v23 forClass:objc_opt_class() options:v9];
+    v26 = representationsCopy;
+    v24 = typeCopy;
+    selfCopy = self;
+    [(WFContentItem *)self getObjectRepresentation:v23 forClass:objc_opt_class() options:optionsCopy];
 
     v14 = v26;
     goto LABEL_8;
   }
 
-  v15 = [(WFContentItem *)self internalRepresentationType];
-  v16 = [v15 isEqualToUTType:*MEMORY[0x277CE1ED8]];
+  internalRepresentationType = [(WFContentItem *)self internalRepresentationType];
+  v16 = [internalRepresentationType isEqualToUTType:*MEMORY[0x277CE1ED8]];
 
   if (!v16)
   {
@@ -779,21 +779,21 @@ LABEL_8:
     v27[1] = 3221225472;
     v27[2] = __69__WFRichTextContentItem_generateFileRepresentations_options_forType___block_invoke_2;
     v27[3] = &unk_2783462C8;
-    v28 = v8;
-    [(WFContentItem *)self getObjectRepresentation:v27 forClass:objc_opt_class() options:v9];
+    v28 = representationsCopy;
+    [(WFContentItem *)self getObjectRepresentation:v27 forClass:objc_opt_class() options:optionsCopy];
     v14 = v28;
     goto LABEL_8;
   }
 
-  v17 = [(WFContentItem *)self internalRepresentationType];
-  v18 = [(WFContentItem *)self fileRepresentationForType:v17];
+  internalRepresentationType2 = [(WFContentItem *)self internalRepresentationType];
+  v18 = [(WFContentItem *)self fileRepresentationForType:internalRepresentationType2];
 
   v19 = [WFWebArchive alloc];
-  v20 = [v18 mappedData];
-  v21 = [(WFWebArchive *)v19 initWithData:v20];
+  mappedData = [v18 mappedData];
+  v21 = [(WFWebArchive *)v19 initWithData:mappedData];
 
-  v22 = [(WFWebArchive *)v21 containedImageFiles];
-  (*(v8 + 2))(v8, v22, 0);
+  containedImageFiles = [(WFWebArchive *)v21 containedImageFiles];
+  (*(representationsCopy + 2))(representationsCopy, containedImageFiles, 0);
 
 LABEL_9:
 }
@@ -862,29 +862,29 @@ void __69__WFRichTextContentItem_generateFileRepresentations_options_forType___b
   }
 }
 
-- (id)generateFileRepresentationForType:(id)a3 options:(id)a4 error:(id *)a5
+- (id)generateFileRepresentationForType:(id)type options:(id)options error:(id *)error
 {
   v6 = MEMORY[0x277D79F68];
   v7 = *MEMORY[0x277D7A7E8];
-  v8 = a3;
+  typeCopy = type;
   v9 = [v6 typeFromPasteboardType:v7];
-  LODWORD(v7) = [v8 conformsToType:v9];
+  LODWORD(v7) = [typeCopy conformsToType:v9];
 
   if (v7 && (-[WFContentItem internalRepresentationType](self, "internalRepresentationType"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 conformsToUTType:*MEMORY[0x277CE1DA0]], v10, v11))
   {
-    v12 = [(WFContentItem *)self internalRepresentationType];
-    v13 = [(WFContentItem *)self fileRepresentationForType:v12];
+    internalRepresentationType = [(WFContentItem *)self internalRepresentationType];
+    v13 = [(WFContentItem *)self fileRepresentationForType:internalRepresentationType];
     v14 = [WFWebResource alloc];
-    v15 = [v13 mappedData];
-    v16 = [v13 originalURL];
-    v17 = [v12 MIMEType];
-    v18 = [v13 wfName];
-    v19 = [(WFWebResource *)v14 initWithData:v15 URL:v16 MIMEType:v17 textEncodingName:@"UTF-8" frameName:v18];
+    mappedData = [v13 mappedData];
+    originalURL = [v13 originalURL];
+    mIMEType = [internalRepresentationType MIMEType];
+    wfName = [v13 wfName];
+    v19 = [(WFWebResource *)v14 initWithData:mappedData URL:originalURL MIMEType:mIMEType textEncodingName:@"UTF-8" frameName:wfName];
 
     v20 = [[WFWebArchive alloc] initWithMainResource:v19 subresources:0 subframeArchives:0];
-    v21 = [(WFWebArchive *)v20 data];
-    v22 = [v13 wfName];
-    v23 = [WFFileRepresentation fileWithData:v21 ofType:v9 proposedFilename:v22];
+    data = [(WFWebArchive *)v20 data];
+    wfName2 = [v13 wfName];
+    v23 = [WFFileRepresentation fileWithData:data ofType:v9 proposedFilename:wfName2];
   }
 
   else
@@ -895,87 +895,87 @@ void __69__WFRichTextContentItem_generateFileRepresentations_options_forType___b
   return v23;
 }
 
-- (void)generateDataRepresentation:(id)a3 fromAttributedString:(id)a4 forType:(id)a5
+- (void)generateDataRepresentation:(id)representation fromAttributedString:(id)string forType:(id)type
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [objc_opt_class() attributesDictionaryForType:v9];
+  representationCopy = representation;
+  typeCopy = type;
+  stringCopy = string;
+  v11 = [objc_opt_class() attributesDictionaryForType:typeCopy];
   v17 = 0;
-  v12 = [v10 dataFromRange:0 documentAttributes:objc_msgSend(v10 error:{"length"), v11, &v17}];
+  v12 = [stringCopy dataFromRange:0 documentAttributes:objc_msgSend(stringCopy error:{"length"), v11, &v17}];
 
   v13 = v17;
-  v14 = [(WFContentItem *)self name];
-  v15 = [WFFileRepresentation fileWithData:v12 ofType:v9 proposedFilename:v14];
+  name = [(WFContentItem *)self name];
+  v15 = [WFFileRepresentation fileWithData:v12 ofType:typeCopy proposedFilename:name];
 
   if (v15)
   {
     v18[0] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
-    v8[2](v8, v16, 0);
+    representationCopy[2](representationCopy, v16, 0);
   }
 
   else
   {
-    (v8)[2](v8, 0, v13);
+    (representationCopy)[2](representationCopy, 0, v13);
   }
 }
 
-- (void)generateRTFDRepresentation:(id)a3 fromAttributedString:(id)a4 forType:(id)a5
+- (void)generateRTFDRepresentation:(id)representation fromAttributedString:(id)string forType:(id)type
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [objc_opt_class() attributesDictionaryForType:v9];
+  representationCopy = representation;
+  typeCopy = type;
+  stringCopy = string;
+  v11 = [objc_opt_class() attributesDictionaryForType:typeCopy];
   v26 = 0;
-  v12 = [v10 fileWrapperFromRange:0 documentAttributes:objc_msgSend(v10 error:{"length"), v11, &v26}];
+  v12 = [stringCopy fileWrapperFromRange:0 documentAttributes:objc_msgSend(stringCopy error:{"length"), v11, &v26}];
 
   v13 = v26;
   if (v12)
   {
-    if ([v9 conformsToUTType:*MEMORY[0x277CE1D78]])
+    if ([typeCopy conformsToUTType:*MEMORY[0x277CE1D78]])
     {
-      v14 = [v12 serializedRepresentation];
-      v15 = [(WFContentItem *)self name];
-      v16 = [WFFileRepresentation fileWithData:v14 ofType:v9 proposedFilename:v15];
+      serializedRepresentation = [v12 serializedRepresentation];
+      name = [(WFContentItem *)self name];
+      v16 = [WFFileRepresentation fileWithData:serializedRepresentation ofType:typeCopy proposedFilename:name];
 
       if (v16)
       {
         v28[0] = v16;
         v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
-        v8[2](v8, v17, 0);
+        representationCopy[2](representationCopy, v17, 0);
       }
 
       else
       {
-        v8[2](v8, 0, 0);
+        representationCopy[2](representationCopy, 0, 0);
       }
     }
 
     else
     {
-      v18 = [(WFContentItem *)self name];
-      v19 = [WFFileRepresentation proposedFilenameForFile:v18 ofType:v9];
+      name2 = [(WFContentItem *)self name];
+      v19 = [WFFileRepresentation proposedFilenameForFile:name2 ofType:typeCopy];
       v20 = [WFTemporaryFileManager proposedTemporaryFileURLForFilename:v19];
 
       v25 = v13;
-      LOBYTE(v18) = [v12 writeToURL:v20 options:0 originalContentsURL:0 error:&v25];
+      LOBYTE(name2) = [v12 writeToURL:v20 options:0 originalContentsURL:0 error:&v25];
       v21 = v25;
 
-      if (v18)
+      if (name2)
       {
-        v22 = [(WFContentItem *)self name];
-        v23 = [WFFileRepresentation fileWithURL:v20 options:1 ofType:v9 proposedFilename:v22];
+        name3 = [(WFContentItem *)self name];
+        v23 = [WFFileRepresentation fileWithURL:v20 options:1 ofType:typeCopy proposedFilename:name3];
         v27 = v23;
         v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:1];
-        v8[2](v8, v24, 0);
+        representationCopy[2](representationCopy, v24, 0);
       }
 
       else
       {
-        (v8)[2](v8, 0, v21);
+        (representationCopy)[2](representationCopy, 0, v21);
       }
 
       v13 = v21;
@@ -984,7 +984,7 @@ void __69__WFRichTextContentItem_generateFileRepresentations_options_forType___b
 
   else
   {
-    (v8)[2](v8, 0, v13);
+    (representationCopy)[2](representationCopy, 0, v13);
   }
 }
 
@@ -995,10 +995,10 @@ void __69__WFRichTextContentItem_generateFileRepresentations_options_forType___b
   v11 = 0;
   v4 = [(WFContentItem *)self getRepresentationsForType:v3 error:&v11];
   v5 = v11;
-  v6 = [v4 firstObject];
-  v7 = [v6 object];
+  firstObject = [v4 firstObject];
+  object = [firstObject object];
 
-  if (v7)
+  if (object)
   {
     v8 = 1;
   }
@@ -1021,23 +1021,23 @@ void __69__WFRichTextContentItem_generateFileRepresentations_options_forType___b
     }
   }
 
-  return v7;
+  return object;
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Rich text (plural)", @"Rich Text");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Rich text (singular)", @"Rich Text");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -1087,56 +1087,56 @@ void __69__WFRichTextContentItem_generateFileRepresentations_options_forType___b
   return v3;
 }
 
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance
 {
-  v4 = a3;
-  if ([v4 conformsToClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v4, "conformsToClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(v4, "conformsToUTType:", *MEMORY[0x277CE1E20]))
+  instanceCopy = instance;
+  if ([instanceCopy conformsToClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(instanceCopy, "conformsToClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(instanceCopy, "conformsToUTType:", *MEMORY[0x277CE1E20]))
   {
     v5 = 1;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___WFRichTextContentItem;
-    v5 = objc_msgSendSuper2(&v7, sel_supportedTypeMustBeDeterminedByInstance_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_supportedTypeMustBeDeterminedByInstance_, instanceCopy);
   }
 
   return v5;
 }
 
-+ (id)normalizedHTMLDocumentFromHTMLData:(id)a3
++ (id)normalizedHTMLDocumentFromHTMLData:(id)data
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCACA8] if_stringWithData:v4];
-  if ([a1 isMissingHTMLHeaderInString:v5])
+  dataCopy = data;
+  v5 = [MEMORY[0x277CCACA8] if_stringWithData:dataCopy];
+  if ([self isMissingHTMLHeaderInString:v5])
   {
-    v6 = [MEMORY[0x277CCACA8] stringEncodingForData:v4 encodingOptions:0 convertedString:0 usedLossyConversion:0];
+    v6 = [MEMORY[0x277CCACA8] stringEncodingForData:dataCopy encodingOptions:0 convertedString:0 usedLossyConversion:0];
     v7 = objc_opt_new();
-    v8 = [a1 htmlHeader];
-    v9 = [v8 dataUsingEncoding:v6];
+    htmlHeader = [self htmlHeader];
+    v9 = [htmlHeader dataUsingEncoding:v6];
     [v7 appendData:v9];
 
-    [v7 appendData:v4];
-    v10 = [a1 htmlFooter];
-    v11 = [v10 dataUsingEncoding:v6];
+    [v7 appendData:dataCopy];
+    htmlFooter = [self htmlFooter];
+    v11 = [htmlFooter dataUsingEncoding:v6];
     [v7 appendData:v11];
   }
 
   else
   {
-    v7 = v4;
+    v7 = dataCopy;
   }
 
   return v7;
 }
 
-+ (BOOL)isMissingHTMLHeaderInString:(id)a3
++ (BOOL)isMissingHTMLHeaderInString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v3 = [a3 lowercaseString];
-    v4 = [v3 containsString:@"<html"] ^ 1;
+    lowercaseString = [string lowercaseString];
+    v4 = [lowercaseString containsString:@"<html"] ^ 1;
   }
 
   else
@@ -1147,39 +1147,39 @@ void __69__WFRichTextContentItem_generateFileRepresentations_options_forType___b
   return v4;
 }
 
-+ (id)normalizedHTMLDocumentFromHTML:(id)a3
++ (id)normalizedHTMLDocumentFromHTML:(id)l
 {
-  v4 = a3;
-  if ([a1 isMissingHTMLHeaderInString:v4])
+  lCopy = l;
+  if ([self isMissingHTMLHeaderInString:lCopy])
   {
-    v5 = [a1 htmlHeader];
-    v6 = [v5 stringByAppendingString:v4];
-    v7 = [a1 htmlFooter];
-    v8 = [v6 stringByAppendingString:v7];
+    htmlHeader = [self htmlHeader];
+    v6 = [htmlHeader stringByAppendingString:lCopy];
+    htmlFooter = [self htmlFooter];
+    v8 = [v6 stringByAppendingString:htmlFooter];
   }
 
   else
   {
-    v8 = v4;
+    v8 = lCopy;
   }
 
   return v8;
 }
 
-+ (void)loadAttributedStringInWebViewFromHTMLFile:(id)a3 handler:(id)a4 attributedStringOptions:(id)a5 documentAttributes:(id *)a6 name:(id)a7 coercionOptions:(id)a8
++ (void)loadAttributedStringInWebViewFromHTMLFile:(id)file handler:(id)handler attributedStringOptions:(id)options documentAttributes:(id *)attributes name:(id)name coercionOptions:(id)coercionOptions
 {
   v29 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
-  v14 = a8;
+  fileCopy = file;
+  handlerCopy = handler;
+  nameCopy = name;
+  coercionOptionsCopy = coercionOptions;
   v15 = getWFWorkflowExecutionLogObject();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v26 = "+[WFRichTextContentItem loadAttributedStringInWebViewFromHTMLFile:handler:attributedStringOptions:documentAttributes:name:coercionOptions:]";
     v27 = 2112;
-    v28 = v11;
+    v28 = fileCopy;
     _os_log_impl(&dword_21E1BD000, v15, OS_LOG_TYPE_DEBUG, "%s Transforming HTML file %@ to NSAttributedString via WKWebView.", buf, 0x16u);
   }
 
@@ -1187,14 +1187,14 @@ void __69__WFRichTextContentItem_generateFileRepresentations_options_forType___b
   v20[1] = 3221225472;
   v20[2] = __139__WFRichTextContentItem_loadAttributedStringInWebViewFromHTMLFile_handler_attributedStringOptions_documentAttributes_name_coercionOptions___block_invoke;
   v20[3] = &unk_2783474E0;
-  v21 = v11;
-  v22 = v14;
-  v23 = v13;
-  v24 = v12;
-  v16 = v13;
-  v17 = v12;
-  v18 = v14;
-  v19 = v11;
+  v21 = fileCopy;
+  v22 = coercionOptionsCopy;
+  v23 = nameCopy;
+  v24 = handlerCopy;
+  v16 = nameCopy;
+  v17 = handlerCopy;
+  v18 = coercionOptionsCopy;
+  v19 = fileCopy;
   dispatch_async(MEMORY[0x277D85CD0], v20);
 }
 
@@ -1252,10 +1252,10 @@ void __139__WFRichTextContentItem_loadAttributedStringInWebViewFromHTMLFile_hand
   }
 }
 
-+ (id)attributesDictionaryForType:(id)a3
++ (id)attributesDictionaryForType:(id)type
 {
-  v4 = a3;
-  v5 = [a1 documentTypeForType:v4];
+  typeCopy = type;
+  v5 = [self documentTypeForType:typeCopy];
   v6 = getNSPlainTextDocumentType();
   if ([v5 isEqualToString:v6])
   {
@@ -1292,9 +1292,9 @@ void __139__WFRichTextContentItem_loadAttributedStringInWebViewFromHTMLFile_hand
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSAttributedStringDocumentAttributeKey getNSCharacterEncodingDocumentAttribute(void)"];
-    [v14 handleFailureInFunction:v15 file:@"WFRichTextContentItem.m" lineNumber:48 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v15 file:@"WFRichTextContentItem.m" lineNumber:48 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -1302,10 +1302,10 @@ void __139__WFRichTextContentItem_loadAttributedStringInWebViewFromHTMLFile_hand
   return result;
 }
 
-+ (id)documentTypeForType:(id)a3
++ (id)documentTypeForType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToUTType:*MEMORY[0x277CE1E50]])
+  typeCopy = type;
+  if ([typeCopy isEqualToUTType:*MEMORY[0x277CE1E50]])
   {
     v16 = 0;
     v17 = &v16;
@@ -1327,9 +1327,9 @@ void __139__WFRichTextContentItem_loadAttributedStringInWebViewFromHTMLFile_hand
     _Block_object_dispose(&v16, 8);
     if (!v4)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSAttributedStringDocumentType getNSRTFTextDocumentType(void)"];
-      [v6 handleFailureInFunction:v7 file:@"WFRichTextContentItem.m" lineNumber:53 description:{@"%s", dlerror(), v12, v13, v14, v15}];
+      [currentHandler handleFailureInFunction:v7 file:@"WFRichTextContentItem.m" lineNumber:53 description:{@"%s", dlerror(), v12, v13, v14, v15}];
 LABEL_24:
 
       __break(1u);
@@ -1343,7 +1343,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (([v3 isEqualToUTType:*MEMORY[0x277CE1E58]] & 1) != 0 || objc_msgSend(v3, "isEqualToUTType:", *MEMORY[0x277CE1D78]))
+  if (([typeCopy isEqualToUTType:*MEMORY[0x277CE1E58]] & 1) != 0 || objc_msgSend(typeCopy, "isEqualToUTType:", *MEMORY[0x277CE1D78]))
   {
     v16 = 0;
     v17 = &v16;
@@ -1365,28 +1365,28 @@ LABEL_12:
     _Block_object_dispose(&v16, 8);
     if (!v4)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSAttributedStringDocumentType getNSRTFDTextDocumentType(void)"];
-      [v6 handleFailureInFunction:v7 file:@"WFRichTextContentItem.m" lineNumber:52 description:{@"%s", dlerror(), v12, v13, v14, v15}];
+      [currentHandler handleFailureInFunction:v7 file:@"WFRichTextContentItem.m" lineNumber:52 description:{@"%s", dlerror(), v12, v13, v14, v15}];
       goto LABEL_24;
     }
 
     goto LABEL_11;
   }
 
-  if ([v3 isEqualToUTType:*MEMORY[0x277CE1DA0]])
+  if ([typeCopy isEqualToUTType:*MEMORY[0x277CE1DA0]])
   {
     v9 = getNSHTMLTextDocumentType();
     goto LABEL_12;
   }
 
-  if ([v3 conformsToUTType:*MEMORY[0x277CE1E20]])
+  if ([typeCopy conformsToUTType:*MEMORY[0x277CE1E20]])
   {
     v9 = getNSPlainTextDocumentType();
     goto LABEL_12;
   }
 
-  if ([v3 isEqualToUTType:*MEMORY[0x277CE1ED8]])
+  if ([typeCopy isEqualToUTType:*MEMORY[0x277CE1ED8]])
   {
     v10 = @"NSWebArchive";
   }

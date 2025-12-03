@@ -1,13 +1,13 @@
 @interface MDLSkeleton
 - (MDLSkeleton)initWithName:(NSString *)name jointPaths:(NSArray *)jointPaths;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MDLSkeleton
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(MDLSkeleton, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(MDLSkeleton, a2, zone);
   v7 = objc_msgSend_name(self, v5, v6);
   v9 = objc_msgSend_initWithName_jointPaths_(v4, v8, v7, self->_jointPaths);
 

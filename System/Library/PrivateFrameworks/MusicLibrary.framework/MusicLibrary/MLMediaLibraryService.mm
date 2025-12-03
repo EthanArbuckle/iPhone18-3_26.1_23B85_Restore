@@ -1,38 +1,38 @@
 @interface MLMediaLibraryService
 + (id)sharedMediaLibraryService;
-- (BOOL)endTransaction:(id)a3 shouldCommit:(BOOL)a4 error:(id *)a5;
-- (BOOL)executeUpdate:(id)a3 withParameters:(id)a4 onTransaction:(id)a5 error:(id *)a6;
-- (BOOL)performDatabaseOperation:(unint64_t)a3 withAttributes:(id)a4 options:(id)a5 error:(id *)a6;
-- (BOOL)validateDatabaseAtPath:(id)a3 error:(id *)a4;
+- (BOOL)endTransaction:(id)transaction shouldCommit:(BOOL)commit error:(id *)error;
+- (BOOL)executeUpdate:(id)update withParameters:(id)parameters onTransaction:(id)transaction error:(id *)error;
+- (BOOL)performDatabaseOperation:(unint64_t)operation withAttributes:(id)attributes options:(id)options error:(id *)error;
+- (BOOL)validateDatabaseAtPath:(id)path error:(id *)error;
 - (MLMediaLibraryService)init;
 - (id)_serviceConnection;
-- (id)beginTransactionForDatabaseWithContext:(id)a3 error:(id *)a4;
-- (id)clientImportServiceListenerEndpointWithError:(id *)a3;
-- (id)mediaLibraryResourcesServiceListenerEndpointWithError:(id *)a3;
-- (id)securityScopedURLForItemPID:(unint64_t)a3 withDatabasePath:(id)a4;
-- (void)attemptDatabaseFileRecoveryAtPath:(id)a3 withCompletionHandler:(id)a4;
-- (void)beginTransactionForDatabaseWithContext:(id)a3 completionHandler:(id)a4;
-- (void)cancelImportOperation:(unint64_t)a3 completionHandler:(id)a4;
-- (void)checkIntegrityOfDatabaseAtPath:(id)a3 repairFaults:(BOOL)a4 withCompletionHandler:(id)a5;
+- (id)beginTransactionForDatabaseWithContext:(id)context error:(id *)error;
+- (id)clientImportServiceListenerEndpointWithError:(id *)error;
+- (id)mediaLibraryResourcesServiceListenerEndpointWithError:(id *)error;
+- (id)securityScopedURLForItemPID:(unint64_t)d withDatabasePath:(id)path;
+- (void)attemptDatabaseFileRecoveryAtPath:(id)path withCompletionHandler:(id)handler;
+- (void)beginTransactionForDatabaseWithContext:(id)context completionHandler:(id)handler;
+- (void)cancelImportOperation:(unint64_t)operation completionHandler:(id)handler;
+- (void)checkIntegrityOfDatabaseAtPath:(id)path repairFaults:(BOOL)faults withCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)endTransaction:(id)a3 shouldCommit:(BOOL)a4 withCompletionHandler:(id)a5;
-- (void)executeQuery:(id)a3 withParameters:(id)a4 options:(id)a5 onTransaction:(id)a6 withCompletionHandler:(id)a7;
-- (void)executeUpdate:(id)a3 withParameters:(id)a4 onTransaction:(id)a5 withCompletionHandler:(id)a6;
-- (void)getLanguageResourcesWithCompletion:(id)a3;
-- (void)importOperationWithIdentifier:(id)a3 didUpdateWithProgress:(float)a4;
-- (void)lockDatabaseForReason:(int64_t)a3 withCompletion:(id)a4;
-- (void)performDatabaseOperation:(unint64_t)a3 withAttributes:(id)a4 options:(id)a5 completionHandler:(id)a6;
-- (void)performDiagnosticWithCompletionHandler:(id)a3;
-- (void)performImport:(id)a3 fromSource:(unint64_t)a4 withProgressBlock:(id)a5 completionHandler:(id)a6;
-- (void)performMaintenanceTasksForDatabaseAtPath:(id)a3;
-- (void)performMaintenanceTasksForDatabaseAtPath:(id)a3 withCompletionHandler:(id)a4;
-- (void)recreateDatabaseAtPath:(id)a3 withCompletionHandler:(id)a4;
-- (void)serviceTerminatedTransactionWithIdentifier:(id)a3 error:(id)a4;
-- (void)setOptions:(id)a3 withCompletionHandler:(id)a4;
-- (void)unlockDatabaseWithCompletion:(id)a3;
-- (void)updateSiriIndexMetadataForAllLibrariesWithCompletion:(id)a3;
-- (void)updateSpotlightIndexForBundleID:(id)a3 withCompletion:(id)a4;
-- (void)updateSpotlightIndexMetadataForItemsWithIdentifiers:(id)a3 bundleID:(id)a4 withCompletion:(id)a5;
+- (void)endTransaction:(id)transaction shouldCommit:(BOOL)commit withCompletionHandler:(id)handler;
+- (void)executeQuery:(id)query withParameters:(id)parameters options:(id)options onTransaction:(id)transaction withCompletionHandler:(id)handler;
+- (void)executeUpdate:(id)update withParameters:(id)parameters onTransaction:(id)transaction withCompletionHandler:(id)handler;
+- (void)getLanguageResourcesWithCompletion:(id)completion;
+- (void)importOperationWithIdentifier:(id)identifier didUpdateWithProgress:(float)progress;
+- (void)lockDatabaseForReason:(int64_t)reason withCompletion:(id)completion;
+- (void)performDatabaseOperation:(unint64_t)operation withAttributes:(id)attributes options:(id)options completionHandler:(id)handler;
+- (void)performDiagnosticWithCompletionHandler:(id)handler;
+- (void)performImport:(id)import fromSource:(unint64_t)source withProgressBlock:(id)block completionHandler:(id)handler;
+- (void)performMaintenanceTasksForDatabaseAtPath:(id)path;
+- (void)performMaintenanceTasksForDatabaseAtPath:(id)path withCompletionHandler:(id)handler;
+- (void)recreateDatabaseAtPath:(id)path withCompletionHandler:(id)handler;
+- (void)serviceTerminatedTransactionWithIdentifier:(id)identifier error:(id)error;
+- (void)setOptions:(id)options withCompletionHandler:(id)handler;
+- (void)unlockDatabaseWithCompletion:(id)completion;
+- (void)updateSiriIndexMetadataForAllLibrariesWithCompletion:(id)completion;
+- (void)updateSpotlightIndexForBundleID:(id)d withCompletion:(id)completion;
+- (void)updateSpotlightIndexMetadataForItemsWithIdentifiers:(id)identifiers bundleID:(id)d withCompletion:(id)completion;
 @end
 
 @implementation MLMediaLibraryService
@@ -165,9 +165,9 @@ void __43__MLMediaLibraryService__serviceConnection__block_invoke_277(uint64_t a
   v4[4] = 0;
 }
 
-- (void)importOperationWithIdentifier:(id)a3 didUpdateWithProgress:(float)a4
+- (void)importOperationWithIdentifier:(id)identifier didUpdateWithProgress:(float)progress
 {
-  v6 = [(NSMutableDictionary *)self->_progressBlocksByUUID objectForKey:a3];
+  v6 = [(NSMutableDictionary *)self->_progressBlocksByUUID objectForKey:identifier];
   v7 = v6;
   if (v6)
   {
@@ -177,24 +177,24 @@ void __43__MLMediaLibraryService__serviceConnection__block_invoke_277(uint64_t a
     v9[2] = __77__MLMediaLibraryService_importOperationWithIdentifier_didUpdateWithProgress___block_invoke;
     v9[3] = &unk_278764CC0;
     v10 = v6;
-    v11 = a4;
+    progressCopy = progress;
     dispatch_async(replyQueue, v9);
   }
 }
 
-- (void)serviceTerminatedTransactionWithIdentifier:(id)a3 error:(id)a4
+- (void)serviceTerminatedTransactionWithIdentifier:(id)identifier error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  errorCopy = error;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__MLMediaLibraryService_serviceTerminatedTransactionWithIdentifier_error___block_invoke;
   block[3] = &unk_278765C40;
-  v11 = v7;
-  v12 = v6;
-  v13 = self;
-  v8 = v6;
-  v9 = v7;
+  v11 = errorCopy;
+  v12 = identifierCopy;
+  selfCopy = self;
+  v8 = identifierCopy;
+  v9 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -211,22 +211,22 @@ void __74__MLMediaLibraryService_serviceTerminatedTransactionWithIdentifier_erro
   [v4 postNotificationName:@"MLMediaLibraryServiceDidTerminateTransactionNotification" object:a1[6] userInfo:v3];
 }
 
-- (id)securityScopedURLForItemPID:(unint64_t)a3 withDatabasePath:(id)a4
+- (id)securityScopedURLForItemPID:(unint64_t)d withDatabasePath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__20876;
   v17 = __Block_byref_object_dispose__20877;
   v18 = 0;
-  v7 = [(MLMediaLibraryService *)self _serviceConnection];
+  _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __70__MLMediaLibraryService_securityScopedURLForItemPID_withDatabasePath___block_invoke;
   v12[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v12[4] = a3;
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v12];
+  v12[4] = d;
+  v8 = [_serviceConnection synchronousRemoteObjectProxyWithErrorHandler:v12];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -234,8 +234,8 @@ void __74__MLMediaLibraryService_serviceTerminatedTransactionWithIdentifier_erro
   v11[3] = &unk_278764C98;
   v11[4] = self;
   v11[5] = &v13;
-  v11[6] = a3;
-  [v8 securityScopedURLWrapperForItemPid:a3 withDatabasePath:v6 completionHandler:v11];
+  v11[6] = d;
+  [v8 securityScopedURLWrapperForItemPid:d withDatabasePath:pathCopy completionHandler:v11];
   v9 = v14[5];
 
   _Block_object_dispose(&v13, 8);
@@ -293,7 +293,7 @@ LABEL_6:
   }
 }
 
-- (id)clientImportServiceListenerEndpointWithError:(id *)a3
+- (id)clientImportServiceListenerEndpointWithError:(id *)error
 {
   v24 = 0;
   v25 = &v24;
@@ -313,7 +313,7 @@ LABEL_6:
   v17 = 0;
   while (1)
   {
-    v3 = [(MLMediaLibraryService *)self _serviceConnection];
+    _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __70__MLMediaLibraryService_clientImportServiceListenerEndpointWithError___block_invoke;
@@ -321,7 +321,7 @@ LABEL_6:
     v13[5] = &v18;
     v13[6] = 10;
     v13[4] = &v14;
-    v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v13];
+    v4 = [_serviceConnection synchronousRemoteObjectProxyWithErrorHandler:v13];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __70__MLMediaLibraryService_clientImportServiceListenerEndpointWithError___block_invoke_2;
@@ -343,16 +343,16 @@ LABEL_6:
     }
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = v19[5];
+    *error = v19[5];
     v5 = v25[5];
   }
 
   if (!v5)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MLMediaLibraryService.m" lineNumber:663 description:{@"Unable to retrieve XPC listener endpoint for MediaLibraryResourcesService [fatal error after %ld retries] - error=%@", v15[3], v19[5]}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MLMediaLibraryService.m" lineNumber:663 description:{@"Unable to retrieve XPC listener endpoint for MediaLibraryResourcesService [fatal error after %ld retries] - error=%@", v15[3], v19[5]}];
 
     v5 = v25[5];
   }
@@ -389,7 +389,7 @@ void __70__MLMediaLibraryService_clientImportServiceListenerEndpointWithError___
   *(v9 + 40) = v6;
 }
 
-- (id)mediaLibraryResourcesServiceListenerEndpointWithError:(id *)a3
+- (id)mediaLibraryResourcesServiceListenerEndpointWithError:(id *)error
 {
   v36 = 0;
   v37 = &v36;
@@ -409,7 +409,7 @@ void __70__MLMediaLibraryService_clientImportServiceListenerEndpointWithError___
   v29 = 0;
   while (1)
   {
-    v3 = [(MLMediaLibraryService *)self _serviceConnection];
+    _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __79__MLMediaLibraryService_mediaLibraryResourcesServiceListenerEndpointWithError___block_invoke;
@@ -417,7 +417,7 @@ void __70__MLMediaLibraryService_clientImportServiceListenerEndpointWithError___
     v25[5] = &v30;
     v25[6] = 10;
     v25[4] = &v26;
-    v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v25];
+    v4 = [_serviceConnection synchronousRemoteObjectProxyWithErrorHandler:v25];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __79__MLMediaLibraryService_mediaLibraryResourcesServiceListenerEndpointWithError___block_invoke_2;
@@ -439,9 +439,9 @@ void __70__MLMediaLibraryService_clientImportServiceListenerEndpointWithError___
     }
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = v31[5];
+    *error = v31[5];
     v5 = v37[5];
   }
 
@@ -450,10 +450,10 @@ void __70__MLMediaLibraryService_clientImportServiceListenerEndpointWithError___
     v6 = dispatch_semaphore_create(0);
     v7 = MEMORY[0x277D27EF0];
     v8 = MEMORY[0x277CCACA8];
-    v9 = [MEMORY[0x277CCACC8] currentThread];
-    v10 = [v9 description];
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    v10 = [currentThread description];
     v11 = v10;
-    v12 = a3 ? *a3 : 0;
+    v12 = error ? *error : 0;
     v13 = [v8 stringWithFormat:@"currentThread=%@ last connection error=%@", v10, v12];
     v14 = *MEMORY[0x277D27EB8];
     v22[0] = MEMORY[0x277D85DD0];
@@ -468,8 +468,8 @@ void __70__MLMediaLibraryService_clientImportServiceListenerEndpointWithError___
     v5 = v37[5];
     if (!v5)
     {
-      v18 = [MEMORY[0x277CCA890] currentHandler];
-      [v18 handleFailureInMethod:a2 object:self file:@"MLMediaLibraryService.m" lineNumber:634 description:{@"Unable to retrieve XPC listener endpoint for MediaLibraryResourcesService [fatal error after %ld retries] - error=%@", v27[3], v31[5]}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MLMediaLibraryService.m" lineNumber:634 description:{@"Unable to retrieve XPC listener endpoint for MediaLibraryResourcesService [fatal error after %ld retries] - error=%@", v27[3], v31[5]}];
 
       v5 = v37[5];
     }
@@ -507,35 +507,35 @@ void __79__MLMediaLibraryService_mediaLibraryResourcesServiceListenerEndpointWit
   *(v9 + 40) = v6;
 }
 
-- (void)performMaintenanceTasksForDatabaseAtPath:(id)a3
+- (void)performMaintenanceTasksForDatabaseAtPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MLMediaLibraryService *)self _serviceConnection];
+  pathCopy = path;
+  _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __66__MLMediaLibraryService_performMaintenanceTasksForDatabaseAtPath___block_invoke;
   v8[3] = &unk_278765828;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v8];
+  v9 = pathCopy;
+  v6 = pathCopy;
+  v7 = [_serviceConnection synchronousRemoteObjectProxyWithErrorHandler:v8];
   [v7 performMaintenanceTasksForDatabaseAtPath:v6];
 }
 
-- (void)performMaintenanceTasksForDatabaseAtPath:(id)a3 withCompletionHandler:(id)a4
+- (void)performMaintenanceTasksForDatabaseAtPath:(id)path withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MLMediaLibraryService *)self _serviceConnection];
+  pathCopy = path;
+  handlerCopy = handler;
+  _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __88__MLMediaLibraryService_performMaintenanceTasksForDatabaseAtPath_withCompletionHandler___block_invoke;
   v15[3] = &unk_278765990;
-  v16 = v6;
-  v9 = v7;
-  v17 = self;
+  v16 = pathCopy;
+  v9 = handlerCopy;
+  selfCopy = self;
   v18 = v9;
-  v10 = v6;
-  v11 = [v8 remoteObjectProxyWithErrorHandler:v15];
+  v10 = pathCopy;
+  v11 = [_serviceConnection remoteObjectProxyWithErrorHandler:v15];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -583,18 +583,18 @@ void __88__MLMediaLibraryService_performMaintenanceTasksForDatabaseAtPath_withCo
   }
 }
 
-- (void)updateSiriIndexMetadataForAllLibrariesWithCompletion:(id)a3
+- (void)updateSiriIndexMetadataForAllLibrariesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MLMediaLibraryService *)self _serviceConnection];
+  completionCopy = completion;
+  _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __78__MLMediaLibraryService_updateSiriIndexMetadataForAllLibrariesWithCompletion___block_invoke;
   v11[3] = &unk_2787658A0;
-  v6 = v4;
+  v6 = completionCopy;
   v11[4] = self;
   v12 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v11];
+  v7 = [_serviceConnection remoteObjectProxyWithErrorHandler:v11];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -642,22 +642,22 @@ void __78__MLMediaLibraryService_updateSiriIndexMetadataForAllLibrariesWithCompl
   }
 }
 
-- (void)updateSpotlightIndexMetadataForItemsWithIdentifiers:(id)a3 bundleID:(id)a4 withCompletion:(id)a5
+- (void)updateSpotlightIndexMetadataForItemsWithIdentifiers:(id)identifiers bundleID:(id)d withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(MLMediaLibraryService *)self _serviceConnection];
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  dCopy = d;
+  _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __101__MLMediaLibraryService_updateSpotlightIndexMetadataForItemsWithIdentifiers_bundleID_withCompletion___block_invoke;
   v18[3] = &unk_278765990;
-  v19 = v8;
-  v12 = v9;
-  v20 = self;
+  v19 = identifiersCopy;
+  v12 = completionCopy;
+  selfCopy = self;
   v21 = v12;
-  v13 = v8;
-  v14 = [v11 remoteObjectProxyWithErrorHandler:v18];
+  v13 = identifiersCopy;
+  v14 = [_serviceConnection remoteObjectProxyWithErrorHandler:v18];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -666,7 +666,7 @@ void __78__MLMediaLibraryService_updateSiriIndexMetadataForAllLibrariesWithCompl
   v16[4] = self;
   v17 = v12;
   v15 = v12;
-  [v14 updateSpotlightIndexMetadataForItemsWithIdentifiers:v13 bundleID:v10 withCompletion:v16];
+  [v14 updateSpotlightIndexMetadataForItemsWithIdentifiers:v13 bundleID:dCopy withCompletion:v16];
 }
 
 void __101__MLMediaLibraryService_updateSpotlightIndexMetadataForItemsWithIdentifiers_bundleID_withCompletion___block_invoke(uint64_t *a1, void *a2)
@@ -705,19 +705,19 @@ void __101__MLMediaLibraryService_updateSpotlightIndexMetadataForItemsWithIdenti
   }
 }
 
-- (void)updateSpotlightIndexForBundleID:(id)a3 withCompletion:(id)a4
+- (void)updateSpotlightIndexForBundleID:(id)d withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MLMediaLibraryService *)self _serviceConnection];
+  completionCopy = completion;
+  dCopy = d;
+  _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __72__MLMediaLibraryService_updateSpotlightIndexForBundleID_withCompletion___block_invoke;
   v14[3] = &unk_2787658A0;
-  v9 = v6;
+  v9 = completionCopy;
   v14[4] = self;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [_serviceConnection remoteObjectProxyWithErrorHandler:v14];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -726,7 +726,7 @@ void __101__MLMediaLibraryService_updateSpotlightIndexMetadataForItemsWithIdenti
   v12[4] = self;
   v13 = v9;
   v11 = v9;
-  [v10 updateSpotlightIndexForBundleID:v7 withCompletion:v12];
+  [v10 updateSpotlightIndexForBundleID:dCopy withCompletion:v12];
 }
 
 void __72__MLMediaLibraryService_updateSpotlightIndexForBundleID_withCompletion___block_invoke(uint64_t a1, void *a2)
@@ -765,10 +765,10 @@ void __72__MLMediaLibraryService_updateSpotlightIndexForBundleID_withCompletion_
   }
 }
 
-- (void)getLanguageResourcesWithCompletion:(id)a3
+- (void)getLanguageResourcesWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v15 = 0;
     v16 = &v15;
@@ -782,13 +782,13 @@ void __72__MLMediaLibraryService_updateSpotlightIndexForBundleID_withCompletion_
     v12 = __Block_byref_object_copy__20876;
     v13 = __Block_byref_object_dispose__20877;
     v14 = 0;
-    v5 = [(MLMediaLibraryService *)self _serviceConnection];
+    _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __60__MLMediaLibraryService_getLanguageResourcesWithCompletion___block_invoke;
     v8[3] = &unk_278764BD8;
     v8[4] = &v9;
-    v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v8];
+    v6 = [_serviceConnection synchronousRemoteObjectProxyWithErrorHandler:v8];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __60__MLMediaLibraryService_getLanguageResourcesWithCompletion___block_invoke_2;
@@ -797,7 +797,7 @@ void __72__MLMediaLibraryService_updateSpotlightIndexForBundleID_withCompletion_
     v7[5] = &v9;
     [v6 getLanguageResourcesWithCompletion:v7];
 
-    v4[2](v4, v16[5], v10[5]);
+    completionCopy[2](completionCopy, v16[5], v10[5]);
     _Block_object_dispose(&v9, 8);
 
     _Block_object_dispose(&v15, 8);
@@ -818,18 +818,18 @@ void __60__MLMediaLibraryService_getLanguageResourcesWithCompletion___block_invo
   *(v9 + 40) = v6;
 }
 
-- (void)unlockDatabaseWithCompletion:(id)a3
+- (void)unlockDatabaseWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MLMediaLibraryService *)self _serviceConnection];
+  completionCopy = completion;
+  _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __54__MLMediaLibraryService_unlockDatabaseWithCompletion___block_invoke;
   v11[3] = &unk_2787658A0;
-  v6 = v4;
+  v6 = completionCopy;
   v11[4] = self;
   v12 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v11];
+  v7 = [_serviceConnection remoteObjectProxyWithErrorHandler:v11];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -877,18 +877,18 @@ void __54__MLMediaLibraryService_unlockDatabaseWithCompletion___block_invoke_3(u
   }
 }
 
-- (void)lockDatabaseForReason:(int64_t)a3 withCompletion:(id)a4
+- (void)lockDatabaseForReason:(int64_t)reason withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(MLMediaLibraryService *)self _serviceConnection];
+  completionCopy = completion;
+  _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __62__MLMediaLibraryService_lockDatabaseForReason_withCompletion___block_invoke;
   v13[3] = &unk_2787658A0;
-  v8 = v6;
+  v8 = completionCopy;
   v13[4] = self;
   v14 = v8;
-  v9 = [v7 remoteObjectProxyWithErrorHandler:v13];
+  v9 = [_serviceConnection remoteObjectProxyWithErrorHandler:v13];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -897,7 +897,7 @@ void __54__MLMediaLibraryService_unlockDatabaseWithCompletion___block_invoke_3(u
   v11[4] = self;
   v12 = v8;
   v10 = v8;
-  [v9 lockDatabaseForReason:a3 withCompletion:v11];
+  [v9 lockDatabaseForReason:reason withCompletion:v11];
 }
 
 void __62__MLMediaLibraryService_lockDatabaseForReason_withCompletion___block_invoke(uint64_t a1, void *a2)
@@ -936,18 +936,18 @@ void __62__MLMediaLibraryService_lockDatabaseForReason_withCompletion___block_in
   }
 }
 
-- (void)cancelImportOperation:(unint64_t)a3 completionHandler:(id)a4
+- (void)cancelImportOperation:(unint64_t)operation completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(MLMediaLibraryService *)self _serviceConnection];
+  handlerCopy = handler;
+  _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __65__MLMediaLibraryService_cancelImportOperation_completionHandler___block_invoke;
   v13[3] = &unk_2787658A0;
-  v8 = v6;
+  v8 = handlerCopy;
   v13[4] = self;
   v14 = v8;
-  v9 = [v7 remoteObjectProxyWithErrorHandler:v13];
+  v9 = [_serviceConnection remoteObjectProxyWithErrorHandler:v13];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -956,7 +956,7 @@ void __62__MLMediaLibraryService_lockDatabaseForReason_withCompletion___block_in
   v11[4] = self;
   v12 = v8;
   v10 = v8;
-  [v9 cancelImportOperation:a3 completionHandler:v11];
+  [v9 cancelImportOperation:operation completionHandler:v11];
 }
 
 void __65__MLMediaLibraryService_cancelImportOperation_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -995,29 +995,29 @@ void __65__MLMediaLibraryService_cancelImportOperation_completionHandler___block
   }
 }
 
-- (void)performImport:(id)a3 fromSource:(unint64_t)a4 withProgressBlock:(id)a5 completionHandler:(id)a6
+- (void)performImport:(id)import fromSource:(unint64_t)source withProgressBlock:(id)block completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(MLMediaLibraryService *)self _serviceConnection];
+  importCopy = import;
+  blockCopy = block;
+  handlerCopy = handler;
+  _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __86__MLMediaLibraryService_performImport_fromSource_withProgressBlock_completionHandler___block_invoke;
   v25[3] = &unk_278765990;
-  v14 = v10;
+  v14 = importCopy;
   v26 = v14;
-  v15 = v12;
-  v27 = self;
+  v15 = handlerCopy;
+  selfCopy = self;
   v28 = v15;
-  v16 = [v13 remoteObjectProxyWithErrorHandler:v25];
+  v16 = [_serviceConnection remoteObjectProxyWithErrorHandler:v25];
 
-  v17 = [MEMORY[0x277CCAD78] UUID];
-  if (v11)
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  if (blockCopy)
   {
     progressBlocksByUUID = self->_progressBlocksByUUID;
-    v19 = [v11 copy];
-    [(NSMutableDictionary *)progressBlocksByUUID setObject:v19 forKey:v17];
+    v19 = [blockCopy copy];
+    [(NSMutableDictionary *)progressBlocksByUUID setObject:v19 forKey:uUID];
   }
 
   v22[0] = MEMORY[0x277D85DD0];
@@ -1025,11 +1025,11 @@ void __65__MLMediaLibraryService_cancelImportOperation_completionHandler___block
   v22[2] = __86__MLMediaLibraryService_performImport_fromSource_withProgressBlock_completionHandler___block_invoke_3;
   v22[3] = &unk_278764BB0;
   v22[4] = self;
-  v23 = v17;
+  v23 = uUID;
   v24 = v15;
   v20 = v15;
-  v21 = v17;
-  [v16 performImport:v14 fromSource:a4 withUUID:v21 completionHandler:v22];
+  v21 = uUID;
+  [v16 performImport:v14 fromSource:source withUUID:v21 completionHandler:v22];
 }
 
 void __86__MLMediaLibraryService_performImport_fromSource_withProgressBlock_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1073,19 +1073,19 @@ void __86__MLMediaLibraryService_performImport_fromSource_withProgressBlock_comp
   }
 }
 
-- (void)setOptions:(id)a3 withCompletionHandler:(id)a4
+- (void)setOptions:(id)options withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MLMediaLibraryService *)self _serviceConnection];
+  handlerCopy = handler;
+  optionsCopy = options;
+  _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __58__MLMediaLibraryService_setOptions_withCompletionHandler___block_invoke;
   v14[3] = &unk_2787658A0;
-  v9 = v6;
+  v9 = handlerCopy;
   v14[4] = self;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [_serviceConnection remoteObjectProxyWithErrorHandler:v14];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -1094,7 +1094,7 @@ void __86__MLMediaLibraryService_performImport_fromSource_withProgressBlock_comp
   v12[4] = self;
   v13 = v9;
   v11 = v9;
-  [v10 setOptions:v7 withCompletionHandler:v12];
+  [v10 setOptions:optionsCopy withCompletionHandler:v12];
 }
 
 void __58__MLMediaLibraryService_setOptions_withCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1133,10 +1133,10 @@ void __58__MLMediaLibraryService_setOptions_withCompletionHandler___block_invoke
   }
 }
 
-- (BOOL)performDatabaseOperation:(unint64_t)a3 withAttributes:(id)a4 options:(id)a5 error:(id *)a6
+- (BOOL)performDatabaseOperation:(unint64_t)operation withAttributes:(id)attributes options:(id)options error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  attributesCopy = attributes;
+  optionsCopy = options;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -1147,14 +1147,14 @@ void __58__MLMediaLibraryService_setOptions_withCompletionHandler___block_invoke
   v21 = __Block_byref_object_copy__20876;
   v22 = __Block_byref_object_dispose__20877;
   v23 = 0;
-  v12 = [(MLMediaLibraryService *)self _serviceConnection];
+  _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __79__MLMediaLibraryService_performDatabaseOperation_withAttributes_options_error___block_invoke;
   v17[3] = &unk_278764B60;
   v17[4] = &v24;
   v17[5] = &v18;
-  v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:v17];
+  v13 = [_serviceConnection synchronousRemoteObjectProxyWithErrorHandler:v17];
 
   if (*(v25 + 24) == 1)
   {
@@ -1164,12 +1164,12 @@ void __58__MLMediaLibraryService_setOptions_withCompletionHandler___block_invoke
     v16[3] = &unk_278764A20;
     v16[4] = &v24;
     v16[5] = &v18;
-    [v13 performDatabaseOperation:a3 withAttributes:v10 options:v11 completionHandler:v16];
+    [v13 performDatabaseOperation:operation withAttributes:attributesCopy options:optionsCopy completionHandler:v16];
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = v19[5];
+    *error = v19[5];
   }
 
   v14 = *(v25 + 24);
@@ -1180,22 +1180,22 @@ void __58__MLMediaLibraryService_setOptions_withCompletionHandler___block_invoke
   return v14;
 }
 
-- (void)performDatabaseOperation:(unint64_t)a3 withAttributes:(id)a4 options:(id)a5 completionHandler:(id)a6
+- (void)performDatabaseOperation:(unint64_t)operation withAttributes:(id)attributes options:(id)options completionHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = [(MLMediaLibraryService *)self _serviceConnection];
+  optionsCopy = options;
+  handlerCopy = handler;
+  attributesCopy = attributes;
+  _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __91__MLMediaLibraryService_performDatabaseOperation_withAttributes_options_completionHandler___block_invoke;
   v20[3] = &unk_278765990;
-  v21 = v10;
-  v14 = v11;
-  v22 = self;
+  v21 = optionsCopy;
+  v14 = handlerCopy;
+  selfCopy = self;
   v23 = v14;
-  v15 = v10;
-  v16 = [v13 remoteObjectProxyWithErrorHandler:v20];
+  v15 = optionsCopy;
+  v16 = [_serviceConnection remoteObjectProxyWithErrorHandler:v20];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -1204,7 +1204,7 @@ void __58__MLMediaLibraryService_setOptions_withCompletionHandler___block_invoke
   v18[4] = self;
   v19 = v14;
   v17 = v14;
-  [v16 performDatabaseOperation:a3 withAttributes:v12 options:v15 completionHandler:v18];
+  [v16 performDatabaseOperation:operation withAttributes:attributesCopy options:v15 completionHandler:v18];
 }
 
 void __91__MLMediaLibraryService_performDatabaseOperation_withAttributes_options_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1244,10 +1244,10 @@ void __91__MLMediaLibraryService_performDatabaseOperation_withAttributes_options
   }
 }
 
-- (BOOL)endTransaction:(id)a3 shouldCommit:(BOOL)a4 error:(id *)a5
+- (BOOL)endTransaction:(id)transaction shouldCommit:(BOOL)commit error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
+  commitCopy = commit;
+  transactionCopy = transaction;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -1258,24 +1258,24 @@ void __91__MLMediaLibraryService_performDatabaseOperation_withAttributes_options
   v23 = __Block_byref_object_copy__20876;
   v24 = __Block_byref_object_dispose__20877;
   v25 = 0;
-  v9 = [(MLMediaLibraryService *)self _serviceConnection];
+  _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __59__MLMediaLibraryService_endTransaction_shouldCommit_error___block_invoke;
   v16[3] = &unk_278764B10;
-  v10 = v8;
+  v10 = transactionCopy;
   v17 = v10;
   v18 = &v20;
   v19 = &v26;
-  v11 = [v9 synchronousRemoteObjectProxyWithErrorHandler:v16];
+  v11 = [_serviceConnection synchronousRemoteObjectProxyWithErrorHandler:v16];
 
   v12 = v21[5];
   if (v12)
   {
     v13 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = v12;
+      *error = v12;
     }
   }
 
@@ -1287,10 +1287,10 @@ void __91__MLMediaLibraryService_performDatabaseOperation_withAttributes_options
     v15[3] = &unk_278764A20;
     v15[4] = &v26;
     v15[5] = &v20;
-    [v11 endTransaction:v10 shouldCommit:v6 withCompletionHandler:v15];
-    if (a5)
+    [v11 endTransaction:v10 shouldCommit:commitCopy withCompletionHandler:v15];
+    if (error)
     {
-      *a5 = v21[5];
+      *error = v21[5];
     }
 
     v13 = *(v27 + 24);
@@ -1316,22 +1316,22 @@ void __59__MLMediaLibraryService_endTransaction_shouldCommit_error___block_invok
   *(*(*(a1 + 48) + 8) + 24) = 0;
 }
 
-- (void)endTransaction:(id)a3 shouldCommit:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)endTransaction:(id)transaction shouldCommit:(BOOL)commit withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(MLMediaLibraryService *)self _serviceConnection];
+  commitCopy = commit;
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __75__MLMediaLibraryService_endTransaction_shouldCommit_withCompletionHandler___block_invoke;
   v17[3] = &unk_278765990;
-  v18 = v8;
-  v11 = v9;
-  v19 = self;
+  v18 = transactionCopy;
+  v11 = handlerCopy;
+  selfCopy = self;
   v20 = v11;
-  v12 = v8;
-  v13 = [v10 remoteObjectProxyWithErrorHandler:v17];
+  v12 = transactionCopy;
+  v13 = [_serviceConnection remoteObjectProxyWithErrorHandler:v17];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -1340,7 +1340,7 @@ void __59__MLMediaLibraryService_endTransaction_shouldCommit_error___block_invok
   v15[4] = self;
   v16 = v11;
   v14 = v11;
-  [v13 endTransaction:v12 shouldCommit:v6 withCompletionHandler:v15];
+  [v13 endTransaction:v12 shouldCommit:commitCopy withCompletionHandler:v15];
 }
 
 void __75__MLMediaLibraryService_endTransaction_shouldCommit_withCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1381,24 +1381,24 @@ void __75__MLMediaLibraryService_endTransaction_shouldCommit_withCompletionHandl
   }
 }
 
-- (void)executeQuery:(id)a3 withParameters:(id)a4 options:(id)a5 onTransaction:(id)a6 withCompletionHandler:(id)a7
+- (void)executeQuery:(id)query withParameters:(id)parameters options:(id)options onTransaction:(id)transaction withCompletionHandler:(id)handler
 {
-  v12 = a6;
-  v13 = a7;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(MLMediaLibraryService *)self _serviceConnection];
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  optionsCopy = options;
+  parametersCopy = parameters;
+  queryCopy = query;
+  _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __97__MLMediaLibraryService_executeQuery_withParameters_options_onTransaction_withCompletionHandler___block_invoke;
   v24[3] = &unk_278765990;
-  v25 = v12;
-  v18 = v13;
-  v26 = self;
+  v25 = transactionCopy;
+  v18 = handlerCopy;
+  selfCopy = self;
   v27 = v18;
-  v19 = v12;
-  v20 = [v17 remoteObjectProxyWithErrorHandler:v24];
+  v19 = transactionCopy;
+  v20 = [_serviceConnection remoteObjectProxyWithErrorHandler:v24];
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
@@ -1407,7 +1407,7 @@ void __75__MLMediaLibraryService_endTransaction_shouldCommit_withCompletionHandl
   v22[4] = self;
   v23 = v18;
   v21 = v18;
-  [v20 executeQuery:v16 withParameters:v15 options:v14 onTransaction:v19 withCompletionHandler:v22];
+  [v20 executeQuery:queryCopy withParameters:parametersCopy options:optionsCopy onTransaction:v19 withCompletionHandler:v22];
 }
 
 void __97__MLMediaLibraryService_executeQuery_withParameters_options_onTransaction_withCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1449,11 +1449,11 @@ void __97__MLMediaLibraryService_executeQuery_withParameters_options_onTransacti
   }
 }
 
-- (BOOL)executeUpdate:(id)a3 withParameters:(id)a4 onTransaction:(id)a5 error:(id *)a6
+- (BOOL)executeUpdate:(id)update withParameters:(id)parameters onTransaction:(id)transaction error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  updateCopy = update;
+  parametersCopy = parameters;
+  transactionCopy = transaction;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -1464,24 +1464,24 @@ void __97__MLMediaLibraryService_executeQuery_withParameters_options_onTransacti
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 1;
-  v13 = [(MLMediaLibraryService *)self _serviceConnection];
+  _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __74__MLMediaLibraryService_executeUpdate_withParameters_onTransaction_error___block_invoke;
   v20[3] = &unk_278764B10;
-  v14 = v12;
+  v14 = transactionCopy;
   v21 = v14;
   v22 = &v28;
   v23 = &v24;
-  v15 = [v13 synchronousRemoteObjectProxyWithErrorHandler:v20];
+  v15 = [_serviceConnection synchronousRemoteObjectProxyWithErrorHandler:v20];
 
   v16 = v29[5];
   if (v16)
   {
     v17 = 0;
-    if (a6)
+    if (error)
     {
-      *a6 = v16;
+      *error = v16;
     }
   }
 
@@ -1493,10 +1493,10 @@ void __97__MLMediaLibraryService_executeQuery_withParameters_options_onTransacti
     v19[3] = &unk_278764A20;
     v19[4] = &v24;
     v19[5] = &v28;
-    [v15 executeUpdate:v10 withParameters:v11 onTransaction:v14 withCompletionHandler:v19];
-    if (a6)
+    [v15 executeUpdate:updateCopy withParameters:parametersCopy onTransaction:v14 withCompletionHandler:v19];
+    if (error)
     {
-      *a6 = v29[5];
+      *error = v29[5];
     }
 
     v17 = *(v25 + 24);
@@ -1522,23 +1522,23 @@ void __74__MLMediaLibraryService_executeUpdate_withParameters_onTransaction_erro
   *(*(*(a1 + 48) + 8) + 24) = 0;
 }
 
-- (void)executeUpdate:(id)a3 withParameters:(id)a4 onTransaction:(id)a5 withCompletionHandler:(id)a6
+- (void)executeUpdate:(id)update withParameters:(id)parameters onTransaction:(id)transaction withCompletionHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(MLMediaLibraryService *)self _serviceConnection];
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  parametersCopy = parameters;
+  updateCopy = update;
+  _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __90__MLMediaLibraryService_executeUpdate_withParameters_onTransaction_withCompletionHandler___block_invoke;
   v21[3] = &unk_278765990;
-  v22 = v10;
-  v15 = v11;
-  v23 = self;
+  v22 = transactionCopy;
+  v15 = handlerCopy;
+  selfCopy = self;
   v24 = v15;
-  v16 = v10;
-  v17 = [v14 remoteObjectProxyWithErrorHandler:v21];
+  v16 = transactionCopy;
+  v17 = [_serviceConnection remoteObjectProxyWithErrorHandler:v21];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -1547,7 +1547,7 @@ void __74__MLMediaLibraryService_executeUpdate_withParameters_onTransaction_erro
   v19[4] = self;
   v20 = v15;
   v18 = v15;
-  [v17 executeUpdate:v13 withParameters:v12 onTransaction:v16 withCompletionHandler:v19];
+  [v17 executeUpdate:updateCopy withParameters:parametersCopy onTransaction:v16 withCompletionHandler:v19];
 }
 
 void __90__MLMediaLibraryService_executeUpdate_withParameters_onTransaction_withCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1588,32 +1588,32 @@ void __90__MLMediaLibraryService_executeUpdate_withParameters_onTransaction_with
   }
 }
 
-- (id)beginTransactionForDatabaseWithContext:(id)a3 error:(id *)a4
+- (id)beginTransactionForDatabaseWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__20876;
   v27 = __Block_byref_object_dispose__20877;
   v28 = 0;
-  v7 = [(MLMediaLibraryService *)self _serviceConnection];
+  _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __70__MLMediaLibraryService_beginTransactionForDatabaseWithContext_error___block_invoke;
   v20[3] = &unk_2787649F8;
-  v8 = v6;
+  v8 = contextCopy;
   v21 = v8;
   v22 = &v23;
-  v9 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v20];
+  v9 = [_serviceConnection synchronousRemoteObjectProxyWithErrorHandler:v20];
 
   v10 = v24[5];
   if (v10)
   {
     v11 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = v10;
+      *error = v10;
     }
   }
 
@@ -1632,9 +1632,9 @@ void __90__MLMediaLibraryService_executeUpdate_withParameters_onTransaction_with
     v13[4] = &v14;
     v13[5] = &v23;
     [v9 beginTransactionForDatabaseWithContext:v8 completionHandler:v13];
-    if (a4)
+    if (error)
     {
-      *a4 = v24[5];
+      *error = v24[5];
     }
 
     v11 = v15[5];
@@ -1671,21 +1671,21 @@ void __70__MLMediaLibraryService_beginTransactionForDatabaseWithContext_error___
   *(v9 + 40) = v6;
 }
 
-- (void)beginTransactionForDatabaseWithContext:(id)a3 completionHandler:(id)a4
+- (void)beginTransactionForDatabaseWithContext:(id)context completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MLMediaLibraryService *)self _serviceConnection];
+  contextCopy = context;
+  handlerCopy = handler;
+  _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __82__MLMediaLibraryService_beginTransactionForDatabaseWithContext_completionHandler___block_invoke;
   v15[3] = &unk_278765990;
-  v16 = v6;
-  v9 = v7;
-  v17 = self;
+  v16 = contextCopy;
+  v9 = handlerCopy;
+  selfCopy = self;
   v18 = v9;
-  v10 = v6;
-  v11 = [v8 remoteObjectProxyWithErrorHandler:v15];
+  v10 = contextCopy;
+  v11 = [_serviceConnection remoteObjectProxyWithErrorHandler:v15];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -1744,21 +1744,21 @@ void __82__MLMediaLibraryService_beginTransactionForDatabaseWithContext_completi
   (*(v2 + 16))(v2, v1, v3);
 }
 
-- (void)recreateDatabaseAtPath:(id)a3 withCompletionHandler:(id)a4
+- (void)recreateDatabaseAtPath:(id)path withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MLMediaLibraryService *)self _serviceConnection];
+  pathCopy = path;
+  handlerCopy = handler;
+  _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __70__MLMediaLibraryService_recreateDatabaseAtPath_withCompletionHandler___block_invoke;
   v15[3] = &unk_278765990;
-  v16 = v6;
-  v9 = v7;
-  v17 = self;
+  v16 = pathCopy;
+  v9 = handlerCopy;
+  selfCopy = self;
   v18 = v9;
-  v10 = v6;
-  v11 = [v8 remoteObjectProxyWithErrorHandler:v15];
+  v10 = pathCopy;
+  v11 = [_serviceConnection remoteObjectProxyWithErrorHandler:v15];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -1806,18 +1806,18 @@ void __70__MLMediaLibraryService_recreateDatabaseAtPath_withCompletionHandler___
   }
 }
 
-- (void)performDiagnosticWithCompletionHandler:(id)a3
+- (void)performDiagnosticWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MLMediaLibraryService *)self _serviceConnection];
+  handlerCopy = handler;
+  _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __64__MLMediaLibraryService_performDiagnosticWithCompletionHandler___block_invoke;
   v11[3] = &unk_2787658A0;
-  v6 = v4;
+  v6 = handlerCopy;
   v11[4] = self;
   v12 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v11];
+  v7 = [_serviceConnection remoteObjectProxyWithErrorHandler:v11];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -1866,20 +1866,20 @@ void __64__MLMediaLibraryService_performDiagnosticWithCompletionHandler___block_
   }
 }
 
-- (void)checkIntegrityOfDatabaseAtPath:(id)a3 repairFaults:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)checkIntegrityOfDatabaseAtPath:(id)path repairFaults:(BOOL)faults withCompletionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(MLMediaLibraryService *)self _serviceConnection];
+  faultsCopy = faults;
+  handlerCopy = handler;
+  pathCopy = path;
+  _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __91__MLMediaLibraryService_checkIntegrityOfDatabaseAtPath_repairFaults_withCompletionHandler___block_invoke;
   v16[3] = &unk_2787658A0;
-  v11 = v8;
+  v11 = handlerCopy;
   v16[4] = self;
   v17 = v11;
-  v12 = [v10 remoteObjectProxyWithErrorHandler:v16];
+  v12 = [_serviceConnection remoteObjectProxyWithErrorHandler:v16];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -1888,7 +1888,7 @@ void __64__MLMediaLibraryService_performDiagnosticWithCompletionHandler___block_
   v14[4] = self;
   v15 = v11;
   v13 = v11;
-  [v12 checkIntegrityOfDatabaseAtPath:v9 repairFaults:v5 withCompletionHandler:v14];
+  [v12 checkIntegrityOfDatabaseAtPath:pathCopy repairFaults:faultsCopy withCompletionHandler:v14];
 }
 
 void __91__MLMediaLibraryService_checkIntegrityOfDatabaseAtPath_repairFaults_withCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1927,21 +1927,21 @@ void __91__MLMediaLibraryService_checkIntegrityOfDatabaseAtPath_repairFaults_wit
   }
 }
 
-- (void)attemptDatabaseFileRecoveryAtPath:(id)a3 withCompletionHandler:(id)a4
+- (void)attemptDatabaseFileRecoveryAtPath:(id)path withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MLMediaLibraryService *)self _serviceConnection];
+  pathCopy = path;
+  handlerCopy = handler;
+  _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __81__MLMediaLibraryService_attemptDatabaseFileRecoveryAtPath_withCompletionHandler___block_invoke;
   v15[3] = &unk_278765990;
-  v16 = v6;
-  v9 = v7;
-  v17 = self;
+  v16 = pathCopy;
+  v9 = handlerCopy;
+  selfCopy = self;
   v18 = v9;
-  v10 = v6;
-  v11 = [v8 remoteObjectProxyWithErrorHandler:v15];
+  v10 = pathCopy;
+  v11 = [_serviceConnection remoteObjectProxyWithErrorHandler:v15];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -1989,9 +1989,9 @@ void __81__MLMediaLibraryService_attemptDatabaseFileRecoveryAtPath_withCompletio
   }
 }
 
-- (BOOL)validateDatabaseAtPath:(id)a3 error:(id *)a4
+- (BOOL)validateDatabaseAtPath:(id)path error:(id *)error
 {
-  v6 = a3;
+  pathCopy = path;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -2002,15 +2002,15 @@ void __81__MLMediaLibraryService_attemptDatabaseFileRecoveryAtPath_withCompletio
   v19 = __Block_byref_object_copy__20876;
   v20 = __Block_byref_object_dispose__20877;
   v21 = 0;
-  v7 = [(MLMediaLibraryService *)self _serviceConnection];
+  _serviceConnection = [(MLMediaLibraryService *)self _serviceConnection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __54__MLMediaLibraryService_validateDatabaseAtPath_error___block_invoke;
   v13[3] = &unk_2787649F8;
-  v8 = v6;
+  v8 = pathCopy;
   v14 = v8;
   v15 = &v16;
-  v9 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v9 = [_serviceConnection synchronousRemoteObjectProxyWithErrorHandler:v13];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __54__MLMediaLibraryService_validateDatabaseAtPath_error___block_invoke_2;
@@ -2019,9 +2019,9 @@ void __81__MLMediaLibraryService_attemptDatabaseFileRecoveryAtPath_withCompletio
   v12[5] = &v16;
   [v9 validateDatabaseAtPath:v8 withCompletionHandler:v12];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v17[5];
+    *error = v17[5];
   }
 
   v10 = *(v23 + 24);

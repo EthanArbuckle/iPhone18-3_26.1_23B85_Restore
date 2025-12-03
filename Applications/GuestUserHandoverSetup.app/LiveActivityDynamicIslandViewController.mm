@@ -1,11 +1,11 @@
 @interface LiveActivityDynamicIslandViewController
 - (NSString)associatedAppBundleIdentifier;
 - (NSURL)launchURL;
-- (_TtC22GuestUserHandoverSetup39LiveActivityDynamicIslandViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC22GuestUserHandoverSetup39LiveActivityDynamicIslandViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)endGuestUserModeButtonTapped;
-- (void)launchAppGestureDetectedWithSender:(id)a3;
+- (void)launchAppGestureDetectedWithSender:(id)sender;
 - (void)viewDidLoad;
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3;
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation LiveActivityDynamicIslandViewController
@@ -52,32 +52,32 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100015B78();
 }
 
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_100015F64(a3);
+  selfCopy = self;
+  sub_100015F64(coordinator);
   swift_unknownObjectRelease();
 }
 
 - (void)endGuestUserModeButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000178D4();
 }
 
-- (void)launchAppGestureDetectedWithSender:(id)a3
+- (void)launchAppGestureDetectedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_100018030("[%{public}s] Tap leading accessory gesture detected.", sub_100004464);
 }
 
-- (_TtC22GuestUserHandoverSetup39LiveActivityDynamicIslandViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22GuestUserHandoverSetup39LiveActivityDynamicIslandViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

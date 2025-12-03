@@ -1,51 +1,51 @@
 @interface TSCESpillSizes
-- ($85CD2974BE96D4886BB301820D1C36C2)spillSizeForCell:(const TSUCellCoord *)a3;
-- (BOOL)hasSpillingCellsIntersectingRange:(const TSUCellRect *)a3;
-- (BOOL)hasSpillsOverlappingRange:(const TSUCellRect *)a3 outSpillRects:(void *)a4;
+- ($85CD2974BE96D4886BB301820D1C36C2)spillSizeForCell:(const TSUCellCoord *)cell;
+- (BOOL)hasSpillingCellsIntersectingRange:(const TSUCellRect *)range;
+- (BOOL)hasSpillsOverlappingRange:(const TSUCellRect *)range outSpillRects:(void *)rects;
 - (TSCECellCoordSet)cellCoordsWithSpillSizes;
-- (TSCECellCoordSet)cellCoordsWithSpillsInRange:(SEL)a3;
-- (TSCESpillSizes)initWithDependTracker:(id)a3 ownerID:(unsigned __int16)a4;
+- (TSCECellCoordSet)cellCoordsWithSpillsInRange:(SEL)range;
+- (TSCESpillSizes)initWithDependTracker:(id)tracker ownerID:(unsigned __int16)d;
 - (TSKUIDStruct)ownerUID;
 - (id).cxx_construct;
 - (id)description;
-- (void)clearSpillSizeForCell:(const TSUCellCoord *)a3;
-- (void)encodeToArchive:(void *)a3;
-- (void)readFromArchive:(const void *)a3;
-- (void)replaceSpillSizeForCell:(const TSUCellCoord *)a3 spillSize:(id)a4;
+- (void)clearSpillSizeForCell:(const TSUCellCoord *)cell;
+- (void)encodeToArchive:(void *)archive;
+- (void)readFromArchive:(const void *)archive;
+- (void)replaceSpillSizeForCell:(const TSUCellCoord *)cell spillSize:(id)size;
 @end
 
 @implementation TSCESpillSizes
 
-- (TSCESpillSizes)initWithDependTracker:(id)a3 ownerID:(unsigned __int16)a4
+- (TSCESpillSizes)initWithDependTracker:(id)tracker ownerID:(unsigned __int16)d
 {
   v7.receiver = self;
   v7.super_class = TSCESpillSizes;
   result = [(TSCESpillSizes *)&v7 init];
   if (result)
   {
-    result->_dependencyTracker = a3;
-    result->_internalOwnerID = a4;
+    result->_dependencyTracker = tracker;
+    result->_internalOwnerID = d;
   }
 
   return result;
 }
 
-- (void)replaceSpillSizeForCell:(const TSUCellCoord *)a3 spillSize:(id)a4
+- (void)replaceSpillSizeForCell:(const TSUCellCoord *)cell spillSize:(id)size
 {
-  if (a4 == 0x100000001)
+  if (size == 0x100000001)
   {
 
-    objc_msgSend_clearSpillSizeForCell_(self, a2, a3, 0x100000001, v4);
+    objc_msgSend_clearSpillSizeForCell_(self, a2, cell, 0x100000001, v4);
   }
 
   else
   {
-    v22.row = a3->row;
-    v22.column = a3->column;
-    v8 = objc_msgSend_spillSizeForCell_(self, a2, &v22, *&a4, v4);
+    v22.row = cell->row;
+    v22.column = cell->column;
+    v8 = objc_msgSend_spillSizeForCell_(self, a2, &v22, *&size, v4);
     if (v8 != 0x100000001)
     {
-      v21.origin = *a3;
+      v21.origin = *cell;
       v21.size = v8;
       v9 = TSUCellRect::columns(&v21);
       v11 = v10;
@@ -54,15 +54,15 @@
     }
 
     v21.origin = &v22;
-    sub_221486FA4(&self->_spillSizeForCell.__table_.__bucket_list_.__ptr_, &v22)[3] = a4;
-    v21.origin = *a3;
-    v21.size = a4;
+    sub_221486FA4(&self->_spillSizeForCell.__table_.__bucket_list_.__ptr_, &v22)[3] = size;
+    v21.origin = *cell;
+    v21.size = size;
     v14 = TSUCellRect::columns(&v21);
     v16 = v15;
     v17 = TSUCellRect::rows(&v21);
     sub_2215C32FC(&self->_spilledToCoords, v14, v16, v17, v18);
     p_verticalSpills = &self->_verticalSpills;
-    if (*&a4 >> 33)
+    if (*&size >> 33)
     {
       TSCECellCoordSet::addCellCoord(p_verticalSpills, &v22);
     }
@@ -73,7 +73,7 @@
     }
 
     p_horizontalSpills = &self->_horizontalSpills;
-    if ((a4.var0 & 0xFFFFFFFE) != 0)
+    if ((size.var0 & 0xFFFFFFFE) != 0)
     {
       TSCECellCoordSet::addCellCoord(p_horizontalSpills, &v22);
     }
@@ -85,14 +85,14 @@
   }
 }
 
-- (void)clearSpillSizeForCell:(const TSUCellCoord *)a3
+- (void)clearSpillSizeForCell:(const TSUCellCoord *)cell
 {
-  v14.row = a3->row;
-  v14.column = a3->column;
+  v14.row = cell->row;
+  v14.column = cell->column;
   v7 = objc_msgSend_spillSizeForCell_(self, a2, &v14, v3, v4);
   if (v7 != 0x100000001)
   {
-    v13.origin = *a3;
+    v13.origin = *cell;
     v13.size = v7;
     v8 = TSUCellRect::columns(&v13);
     v10 = v9;
@@ -105,9 +105,9 @@
   TSCECellCoordSet::removeCellCoord(&self->_horizontalSpills, &v14);
 }
 
-- ($85CD2974BE96D4886BB301820D1C36C2)spillSizeForCell:(const TSUCellCoord *)a3
+- ($85CD2974BE96D4886BB301820D1C36C2)spillSizeForCell:(const TSUCellCoord *)cell
 {
-  v5 = a3->row | (a3->column << 32);
+  v5 = cell->row | (cell->column << 32);
   v3 = sub_221087F14(&self->_spillSizeForCell.__table_.__bucket_list_.__ptr_, &v5);
   if (v3)
   {
@@ -120,15 +120,15 @@
   }
 }
 
-- (BOOL)hasSpillsOverlappingRange:(const TSUCellRect *)a3 outSpillRects:(void *)a4
+- (BOOL)hasSpillsOverlappingRange:(const TSUCellRect *)range outSpillRects:(void *)rects
 {
-  if (!TSUCellRect::isValid(a3))
+  if (!TSUCellRect::isValid(range))
   {
     return 0;
   }
 
-  origin = a3->origin;
-  if (!sub_2215C3704(&self->_spilledToCoords, WORD2(*&a3->origin), *&a3->origin, a3->size.numberOfColumns + WORD2(*&a3->origin) - 1, *&a3->origin + a3->size.numberOfRows - 1, 0))
+  origin = range->origin;
+  if (!sub_2215C3704(&self->_spilledToCoords, WORD2(*&range->origin), *&range->origin, range->size.numberOfColumns + WORD2(*&range->origin) - 1, *&range->origin + range->size.numberOfRows - 1, 0))
   {
     return 0;
   }
@@ -148,20 +148,20 @@
       v12 = *(next + 3);
       v25.origin = *(next + 2);
       v25.size = v12;
-      if (TSUCellRect::intersects(a3, &v25))
+      if (TSUCellRect::intersects(range, &v25))
       {
-        v14 = *(a4 + 1);
-        v13 = *(a4 + 2);
+        v14 = *(rects + 1);
+        v13 = *(rects + 2);
         if (v14 >= v13)
         {
-          v16 = (v14 - *a4) >> 4;
+          v16 = (v14 - *rects) >> 4;
           v17 = v16 + 1;
           if ((v16 + 1) >> 60)
           {
             sub_22107C148();
           }
 
-          v18 = v13 - *a4;
+          v18 = v13 - *rects;
           if (v18 >> 3 > v17)
           {
             v17 = v18 >> 3;
@@ -179,19 +179,19 @@
 
           if (v19)
           {
-            sub_221086F74(a4, v19);
+            sub_221086F74(rects, v19);
           }
 
           v20 = (16 * v16);
           *v20 = v25;
           v15 = 16 * v16 + 16;
-          v21 = *(a4 + 1) - *a4;
+          v21 = *(rects + 1) - *rects;
           v22 = 16 * v16 - v21;
-          memcpy(v20 - v21, *a4, v21);
-          v23 = *a4;
-          *a4 = v22;
-          *(a4 + 1) = v15;
-          *(a4 + 2) = 0;
+          memcpy(v20 - v21, *rects, v21);
+          v23 = *rects;
+          *rects = v22;
+          *(rects + 1) = v15;
+          *(rects + 2) = 0;
           if (v23)
           {
             operator delete(v23);
@@ -204,7 +204,7 @@
           v15 = &v14[1];
         }
 
-        *(a4 + 1) = v15;
+        *(rects + 1) = v15;
         v9 = 1;
       }
     }
@@ -216,12 +216,12 @@
   return v9;
 }
 
-- (BOOL)hasSpillingCellsIntersectingRange:(const TSUCellRect *)a3
+- (BOOL)hasSpillingCellsIntersectingRange:(const TSUCellRect *)range
 {
-  LODWORD(v5) = TSUCellRect::isValid(a3);
+  LODWORD(v5) = TSUCellRect::isValid(range);
   if (v5)
   {
-    v5 = sub_2215C3704(&self->_spilledToCoords, a3->origin.column, a3->origin.row, a3->origin.column + a3->size.numberOfColumns - 1, a3->origin.row + a3->size.numberOfRows - 1, 0);
+    v5 = sub_2215C3704(&self->_spilledToCoords, range->origin.column, range->origin.row, range->origin.column + range->size.numberOfColumns - 1, range->origin.row + range->size.numberOfRows - 1, 0);
     if (v5)
     {
       next = self->_spillSizeForCell.__table_.__first_node_.__next_;
@@ -231,7 +231,7 @@
         while (1)
         {
           v29 = next[1];
-          if (!TSUCellRect::intersects(&v29, a3))
+          if (!TSUCellRect::intersects(&v29, range))
           {
             goto LABEL_52;
           }
@@ -258,9 +258,9 @@
             if (v29.size.numberOfColumns)
             {
               v8 = 0;
-              origin = a3->origin;
+              origin = range->origin;
               v9 = 0x7FFFLL;
-              if (*&a3->origin == 0x7FFFFFFF)
+              if (*&range->origin == 0x7FFFFFFF)
               {
                 break;
               }
@@ -269,7 +269,7 @@
               if ((*&origin & 0xFFFF00000000) != 0x7FFF00000000)
               {
                 v8 = 0;
-                size = a3->size;
+                size = range->size;
                 v9 = 0x7FFFLL;
                 if (!HIDWORD(*&size))
                 {
@@ -301,7 +301,7 @@
 
                   else
                   {
-                    v17 = a3->origin;
+                    v17 = range->origin;
                   }
 
                   if (origin.row != 0x7FFFFFFF)
@@ -416,7 +416,7 @@ LABEL_55:
   return self;
 }
 
-- (TSCECellCoordSet)cellCoordsWithSpillsInRange:(SEL)a3
+- (TSCECellCoordSet)cellCoordsWithSpillsInRange:(SEL)range
 {
   retstr->_rowsPerColumn.__tree_.__end_node_.__left_ = 0;
   retstr->_rowsPerColumn.__tree_.__begin_node_ = &retstr->_rowsPerColumn.__tree_.__end_node_;
@@ -457,15 +457,15 @@ LABEL_55:
   return result;
 }
 
-- (void)readFromArchive:(const void *)a3
+- (void)readFromArchive:(const void *)archive
 {
-  v3 = *(a3 + 6);
+  v3 = *(archive + 6);
   if (v3 >= 1)
   {
     v6 = 8;
     do
     {
-      v7 = *(*(a3 + 4) + v6);
+      v7 = *(*(archive + 4) + v6);
       v13 = 0;
       if (*(v7 + 24))
       {
@@ -498,7 +498,7 @@ LABEL_55:
   }
 }
 
-- (void)encodeToArchive:(void *)a3
+- (void)encodeToArchive:(void *)archive
 {
   next = self->_spillSizeForCell.__table_.__first_node_.__next_;
   if (next)
@@ -506,20 +506,20 @@ LABEL_55:
     while (1)
     {
       v15 = *(next + 3);
-      v5 = *(a3 + 4);
+      v5 = *(archive + 4);
       if (!v5)
       {
         goto LABEL_7;
       }
 
-      v6 = *(a3 + 6);
+      v6 = *(archive + 6);
       v7 = *v5;
       if (v6 >= *v5)
       {
         break;
       }
 
-      *(a3 + 6) = v6 + 1;
+      *(archive + 6) = v6 + 1;
       v8 = *&v5[2 * v6 + 2];
 LABEL_9:
       *(v8 + 16) |= 1u;
@@ -559,19 +559,19 @@ LABEL_9:
       }
     }
 
-    if (v7 == *(a3 + 7))
+    if (v7 == *(archive + 7))
     {
 LABEL_7:
-      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 16));
-      v5 = *(a3 + 4);
+      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 16));
+      v5 = *(archive + 4);
       v7 = *v5;
     }
 
     *v5 = v7 + 1;
-    v8 = google::protobuf::Arena::CreateMaybeMessage<TSCE::CellSpillSizesArchive_SpillForCell>(*(a3 + 2));
-    v9 = *(a3 + 6);
-    v10 = *(a3 + 4) + 8 * v9;
-    *(a3 + 6) = v9 + 1;
+    v8 = google::protobuf::Arena::CreateMaybeMessage<TSCE::CellSpillSizesArchive_SpillForCell>(*(archive + 2));
+    v9 = *(archive + 6);
+    v10 = *(archive + 4) + 8 * v9;
+    *(archive + 6) = v9 + 1;
     *(v10 + 8) = v8;
     goto LABEL_9;
   }

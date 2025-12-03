@@ -1,10 +1,10 @@
 @interface AMSSandboxAccountMigrator
-+ (void)migrateSandboxAccountsWithOptions:(id)a3;
++ (void)migrateSandboxAccountsWithOptions:(id)options;
 @end
 
 @implementation AMSSandboxAccountMigrator
 
-+ (void)migrateSandboxAccountsWithOptions:(id)a3
++ (void)migrateSandboxAccountsWithOptions:(id)options
 {
   v35 = *MEMORY[0x1E69E9840];
   CFPreferencesAppSynchronize(@"com.apple.AppleMediaServices");
@@ -37,14 +37,14 @@
           }
 
           v11 = *(*(&v24 + 1) + 8 * v10);
-          v12 = [*(v8 + 3552) sharedAccountsDaemonConfig];
-          if (!v12)
+          sharedAccountsDaemonConfig = [*(v8 + 3552) sharedAccountsDaemonConfig];
+          if (!sharedAccountsDaemonConfig)
           {
-            v12 = [*(v8 + 3552) sharedConfig];
+            sharedAccountsDaemonConfig = [*(v8 + 3552) sharedConfig];
           }
 
-          v13 = [v12 OSLogObject];
-          if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+          oSLogObject = [sharedAccountsDaemonConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
           {
             v14 = v6;
             v15 = v8;
@@ -62,7 +62,7 @@
             v31 = v18;
             v32 = 2114;
             v33 = v19;
-            _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Forcing an account sync. account = %{public}@", buf, 0x20u);
+            _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Forcing an account sync. account = %{public}@", buf, 0x20u);
 
             v3 = v22;
           }

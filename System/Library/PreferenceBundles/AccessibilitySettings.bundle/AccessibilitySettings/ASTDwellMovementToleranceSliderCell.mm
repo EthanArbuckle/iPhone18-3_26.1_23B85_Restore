@@ -1,56 +1,56 @@
 @interface ASTDwellMovementToleranceSliderCell
-- (ASTDwellMovementToleranceSliderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (ASTDwellMovementToleranceSliderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (double)initialValue;
 - (double)maximumValue;
 - (double)minimumValue;
 - (id)accessibilityValue;
-- (void)handleSliderBeingDragged:(id)a3;
+- (void)handleSliderBeingDragged:(id)dragged;
 @end
 
 @implementation ASTDwellMovementToleranceSliderCell
 
-- (ASTDwellMovementToleranceSliderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (ASTDwellMovementToleranceSliderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  specifierCopy = specifier;
   v30.receiver = self;
   v30.super_class = ASTDwellMovementToleranceSliderCell;
-  v10 = [(ASTDwellMovementToleranceSliderCell *)&v30 initWithStyle:a3 reuseIdentifier:v8 specifier:v9];
+  v10 = [(ASTDwellMovementToleranceSliderCell *)&v30 initWithStyle:style reuseIdentifier:identifierCopy specifier:specifierCopy];
   if (v10)
   {
-    v11 = [v9 propertyForKey:@"DwellMovementToleranceClientType"];
+    v11 = [specifierCopy propertyForKey:@"DwellMovementToleranceClientType"];
 
     if (v11)
     {
-      v12 = [v9 propertyForKey:@"DwellMovementToleranceClientType"];
+      v12 = [specifierCopy propertyForKey:@"DwellMovementToleranceClientType"];
       v10->_clientType = [v12 unsignedIntegerValue];
 
       [(ASTDwellMovementToleranceSliderCell *)v10 minimumValue];
       v14 = v13;
-      v15 = [(ASTDwellMovementToleranceSliderCell *)v10 slider];
+      slider = [(ASTDwellMovementToleranceSliderCell *)v10 slider];
       *&v16 = v14;
-      [v15 setMinimumValue:v16];
+      [slider setMinimumValue:v16];
 
       [(ASTDwellMovementToleranceSliderCell *)v10 maximumValue];
       v18 = v17;
-      v19 = [(ASTDwellMovementToleranceSliderCell *)v10 slider];
+      slider2 = [(ASTDwellMovementToleranceSliderCell *)v10 slider];
       *&v20 = v18;
-      [v19 setMaximumValue:v20];
+      [slider2 setMaximumValue:v20];
 
       [(ASTDwellMovementToleranceSliderCell *)v10 initialValue];
       v22 = v21;
-      v23 = [(ASTDwellMovementToleranceSliderCell *)v10 slider];
+      slider3 = [(ASTDwellMovementToleranceSliderCell *)v10 slider];
       *&v24 = v22;
-      [v23 setValue:v24];
+      [slider3 setValue:v24];
 
       objc_initWeak(&location, v10);
-      v25 = [(ASTDwellMovementToleranceSliderCell *)v10 slider];
+      slider4 = [(ASTDwellMovementToleranceSliderCell *)v10 slider];
       v27[0] = _NSConcreteStackBlock;
       v27[1] = 3221225472;
       v27[2] = __79__ASTDwellMovementToleranceSliderCell_initWithStyle_reuseIdentifier_specifier___block_invoke;
       v27[3] = &unk_255F00;
       objc_copyWeak(&v28, &location);
-      [v25 setAccessibilityValueBlock:v27];
+      [slider4 setAccessibilityValueBlock:v27];
 
       objc_destroyWeak(&v28);
       objc_destroyWeak(&location);
@@ -68,19 +68,19 @@ id __79__ASTDwellMovementToleranceSliderCell_initWithStyle_reuseIdentifier_speci
   return v2;
 }
 
-- (void)handleSliderBeingDragged:(id)a3
+- (void)handleSliderBeingDragged:(id)dragged
 {
-  v4 = a3;
-  [v4 value];
-  [v4 setValue:0 animated:?];
-  [v4 value];
+  draggedCopy = dragged;
+  [draggedCopy value];
+  [draggedCopy setValue:0 animated:?];
+  [draggedCopy value];
   v6 = v5;
 
   v7 = roundf(v6);
-  v8 = [(ASTDwellMovementToleranceSliderCell *)self clientType];
-  if (v8)
+  clientType = [(ASTDwellMovementToleranceSliderCell *)self clientType];
+  if (clientType)
   {
-    if (v8 != 1)
+    if (clientType != 1)
     {
       return;
     }
@@ -98,10 +98,10 @@ id __79__ASTDwellMovementToleranceSliderCell_initWithStyle_reuseIdentifier_speci
 
 - (double)maximumValue
 {
-  v2 = [(ASTDwellMovementToleranceSliderCell *)self clientType];
-  if (v2)
+  clientType = [(ASTDwellMovementToleranceSliderCell *)self clientType];
+  if (clientType)
   {
-    if (v2 != 1)
+    if (clientType != 1)
     {
       return result;
     }
@@ -119,10 +119,10 @@ id __79__ASTDwellMovementToleranceSliderCell_initWithStyle_reuseIdentifier_speci
 
 - (double)minimumValue
 {
-  v2 = [(ASTDwellMovementToleranceSliderCell *)self clientType];
-  if (v2)
+  clientType = [(ASTDwellMovementToleranceSliderCell *)self clientType];
+  if (clientType)
   {
-    if (v2 != 1)
+    if (clientType != 1)
     {
       return result;
     }
@@ -140,15 +140,15 @@ id __79__ASTDwellMovementToleranceSliderCell_initWithStyle_reuseIdentifier_speci
 
 - (double)initialValue
 {
-  v3 = [(ASTDwellMovementToleranceSliderCell *)self clientType];
-  if (!v3)
+  clientType = [(ASTDwellMovementToleranceSliderCell *)self clientType];
+  if (!clientType)
   {
     v4 = +[AXSettings sharedInstance];
     [v4 assistiveTouchMouseDwellControlMovementToleranceRadius];
     goto LABEL_5;
   }
 
-  if (v3 == 1)
+  if (clientType == 1)
   {
     v4 = +[AXSettings sharedInstance];
     [v4 switchControlCameraPointPickerDwellMovementToleranceRadius];

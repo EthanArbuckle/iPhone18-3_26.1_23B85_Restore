@@ -1,51 +1,51 @@
 @interface RFSelfDiagController
-- (void)abortTesting:(int64_t)a3;
-- (void)handleAWDMetricEvent:(id)a3;
-- (void)handleChamberOpenEvent:(int)a3;
+- (void)abortTesting:(int64_t)testing;
+- (void)handleAWDMetricEvent:(id)event;
+- (void)handleChamberOpenEvent:(int)event;
 - (void)runRFSelfDiag;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
-- (void)startAlertsTestComplete:(BOOL)a3;
+- (void)startAlertsTestComplete:(BOOL)complete;
 - (void)stopAlertsTestComplete;
 - (void)teardown;
 @end
 
 @implementation RFSelfDiagController
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
-  [(RFSelfDiagController *)self setInputs:a3, a4];
+  [(RFSelfDiagController *)self setInputs:inputs, responder];
   v5 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(RFSelfDiagController *)self inputs];
-    v7 = [v6 command];
-    v8 = [(RFSelfDiagController *)self inputs];
-    v9 = [v8 measureType];
-    v10 = [(RFSelfDiagController *)self inputs];
-    v11 = [v10 detectChamberReadyWaitTime];
-    v12 = [(RFSelfDiagController *)self inputs];
+    inputs = [(RFSelfDiagController *)self inputs];
+    command = [inputs command];
+    inputs2 = [(RFSelfDiagController *)self inputs];
+    measureType = [inputs2 measureType];
+    inputs3 = [(RFSelfDiagController *)self inputs];
+    detectChamberReadyWaitTime = [inputs3 detectChamberReadyWaitTime];
+    inputs4 = [(RFSelfDiagController *)self inputs];
     v13[0] = 67109888;
-    v13[1] = v7;
+    v13[1] = command;
     v14 = 1024;
-    v15 = v9;
+    v15 = measureType;
     v16 = 1024;
-    v17 = v11;
+    v17 = detectChamberReadyWaitTime;
     v18 = 1024;
-    v19 = [v12 detectChamberSensor];
+    detectChamberSensor = [inputs4 detectChamberSensor];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Setup parameters: command(%d), measureType(%d), detectChamberReadyWaitTime(%dsec), detectChamberSensor(%x)", v13, 0x1Au);
   }
 
   [(RFSelfDiagController *)self setFinished:0];
 }
 
-- (void)abortTesting:(int64_t)a3
+- (void)abortTesting:(int64_t)testing
 {
-  if (a3 <= 6)
+  if (testing <= 6)
   {
-    if (a3 > 2)
+    if (testing > 2)
     {
-      switch(a3)
+      switch(testing)
       {
         case 3:
           v4 = @"Failed to add AWD configuration";
@@ -64,14 +64,14 @@
 
     else
     {
-      if (a3 < 2)
+      if (testing < 2)
       {
         v4 = @"Failed to Start";
         v5 = &off_100010AD0;
         goto LABEL_25;
       }
 
-      if (a3 == 2)
+      if (testing == 2)
       {
         v4 = @"Chamber is opened";
         v5 = &off_100010AE8;
@@ -85,9 +85,9 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (a3 > 8)
+  if (testing > 8)
   {
-    switch(a3)
+    switch(testing)
     {
       case 9:
         v4 = @"Failed to get test result from Baseband in time";
@@ -106,10 +106,10 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if (a3 != 7)
+  if (testing != 7)
   {
-    v6 = [(RFSelfDiagController *)self result];
-    [v6 setStatusCode:&off_100010AB8];
+    result = [(RFSelfDiagController *)self result];
+    [result setStatusCode:&off_100010AB8];
 
     v7 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -117,10 +117,10 @@ LABEL_24:
       return;
     }
 
-    v8 = [(RFSelfDiagController *)self result];
-    v9 = [v8 statusCode];
+    result2 = [(RFSelfDiagController *)self result];
+    statusCode = [result2 statusCode];
     v15 = 67109120;
-    LODWORD(v16) = [v9 intValue];
+    LODWORD(v16) = [statusCode intValue];
     v10 = "[RFSelfTest] Received RF Self test result from baseband, statusCode=%d";
     v11 = v7;
     v12 = 8;
@@ -130,8 +130,8 @@ LABEL_24:
   v4 = @"Failed to start Baseband RF self test";
   v5 = &off_100010B00;
 LABEL_25:
-  v13 = [(RFSelfDiagController *)self result];
-  [v13 setStatusCode:v5];
+  result3 = [(RFSelfDiagController *)self result];
+  [result3 setStatusCode:v5];
 
   v14 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
   if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -139,12 +139,12 @@ LABEL_25:
     return;
   }
 
-  v8 = [(RFSelfDiagController *)self result];
-  v9 = [v8 statusCode];
+  result2 = [(RFSelfDiagController *)self result];
+  statusCode = [result2 statusCode];
   v15 = 138412546;
   v16 = v4;
   v17 = 1024;
-  v18 = [v9 intValue];
+  intValue = [statusCode intValue];
   v10 = "[RFSelfTest] Abort test with error: %@, statusCode=%d";
   v11 = v14;
   v12 = 18;
@@ -170,8 +170,8 @@ LABEL_27:
       v76 = 0u;
     }
 
-    v5 = [(RFSelfDiagController *)self inputs];
-    [v5 setDetectChamberSensor:v4];
+    inputs = [(RFSelfDiagController *)self inputs];
+    [inputs setDetectChamberSensor:v4];
 
     v6 = self->fDiagHelper;
     if (v6)
@@ -187,8 +187,8 @@ LABEL_27:
       v74 = 0u;
     }
 
-    v8 = [(RFSelfDiagController *)self inputs];
-    [v8 setDetectChamberReadyWaitTime:v7];
+    inputs2 = [(RFSelfDiagController *)self inputs];
+    [inputs2 setDetectChamberReadyWaitTime:v7];
 
     v9 = self->fDiagHelper;
     if (v9)
@@ -204,8 +204,8 @@ LABEL_27:
       v72 = 0u;
     }
 
-    v11 = [(RFSelfDiagController *)self inputs];
-    [v11 setDetectChamberReadyALSThreshold:v10];
+    inputs3 = [(RFSelfDiagController *)self inputs];
+    [inputs3 setDetectChamberReadyALSThreshold:v10];
 
     v12 = self->fDiagHelper;
     if (v12)
@@ -221,8 +221,8 @@ LABEL_27:
       v70 = 0u;
     }
 
-    v14 = [(RFSelfDiagController *)self inputs];
-    [v14 setTestCompleteAlertTime:v13];
+    inputs4 = [(RFSelfDiagController *)self inputs];
+    [inputs4 setTestCompleteAlertTime:v13];
 
     v15 = self->fDiagHelper;
     if (v15)
@@ -238,8 +238,8 @@ LABEL_27:
       v68 = 0u;
     }
 
-    v17 = [(RFSelfDiagController *)self inputs];
-    [v17 setTestCompleteVibrationAlertEnabled:v16 & 1];
+    inputs5 = [(RFSelfDiagController *)self inputs];
+    [inputs5 setTestCompleteVibrationAlertEnabled:v16 & 1];
 
     v18 = self->fDiagHelper;
     if (v18)
@@ -266,34 +266,34 @@ LABEL_27:
     }
   }
 
-  v22 = [(RFSelfDiagController *)self inputs];
-  -[RFSelfDiagController setTestCompleteAlertTime:](self, "setTestCompleteAlertTime:", [v22 testCompleteAlertTime]);
+  inputs6 = [(RFSelfDiagController *)self inputs];
+  -[RFSelfDiagController setTestCompleteAlertTime:](self, "setTestCompleteAlertTime:", [inputs6 testCompleteAlertTime]);
 
   v23 = self->fDiagHelper;
-  v24 = [(RFSelfDiagController *)self inputs];
-  LOBYTE(v23) = -[RFSelfDiagExtensionHelper isTestSupported:](v23, "isTestSupported:", [v24 command]);
+  inputs7 = [(RFSelfDiagController *)self inputs];
+  LOBYTE(v23) = -[RFSelfDiagExtensionHelper isTestSupported:](v23, "isTestSupported:", [inputs7 command]);
 
-  v25 = self;
+  selfCopy3 = self;
   if ((v23 & 1) == 0)
   {
     v27 = 12;
 LABEL_39:
-    [(RFSelfDiagController *)v25 abortTesting:v27];
+    [(RFSelfDiagController *)selfCopy3 abortTesting:v27];
     v37 = 0;
     goto LABEL_40;
   }
 
-  v26 = [(RFSelfDiagController *)self inputs];
-  if ([v26 command] == 1)
+  inputs8 = [(RFSelfDiagController *)self inputs];
+  if ([inputs8 command] == 1)
   {
   }
 
   else
   {
-    v28 = [(RFSelfDiagController *)self inputs];
-    v29 = [v28 command];
+    inputs9 = [(RFSelfDiagController *)self inputs];
+    command = [inputs9 command];
 
-    if (v29 != 3)
+    if (command != 3)
     {
       goto LABEL_28;
     }
@@ -301,8 +301,8 @@ LABEL_39:
 
   [(RFSelfDiagExtensionHelper *)self->fDiagHelper setFactoryTest];
 LABEL_28:
-  v30 = [(RFSelfDiagController *)self inputs];
-  if (![v30 detectChamberSensor])
+  inputs10 = [(RFSelfDiagController *)self inputs];
+  if (![inputs10 detectChamberSensor])
   {
 
     if ([(RFSelfDiagExtensionHelper *)self->fDiagHelper prepareSetupForTest])
@@ -311,16 +311,16 @@ LABEL_28:
     }
 
 LABEL_38:
-    v25 = self;
+    selfCopy3 = self;
     v27 = 1;
     goto LABEL_39;
   }
 
   v31 = self->fDiagHelper;
-  v32 = [(RFSelfDiagController *)self inputs];
-  v33 = [v32 detectChamberSensor];
-  v34 = [(RFSelfDiagController *)self inputs];
-  LOBYTE(v31) = -[RFSelfDiagExtensionHelper initMonitorChamber:ALSThreshold:](v31, "initMonitorChamber:ALSThreshold:", v33, [v34 detectChamberReadyALSThreshold]);
+  inputs11 = [(RFSelfDiagController *)self inputs];
+  detectChamberSensor = [inputs11 detectChamberSensor];
+  inputs12 = [(RFSelfDiagController *)self inputs];
+  LOBYTE(v31) = -[RFSelfDiagExtensionHelper initMonitorChamber:ALSThreshold:](v31, "initMonitorChamber:ALSThreshold:", detectChamberSensor, [inputs12 detectChamberReadyALSThreshold]);
 
   if ((v31 & 1) == 0 || ![(RFSelfDiagExtensionHelper *)self->fDiagHelper prepareSetupForTest])
   {
@@ -328,13 +328,13 @@ LABEL_38:
   }
 
 LABEL_31:
-  v35 = [(RFSelfDiagController *)self inputs];
-  v36 = [v35 detectChamberSensor];
-  v37 = v36 != 0;
+  inputs13 = [(RFSelfDiagController *)self inputs];
+  detectChamberSensor2 = [inputs13 detectChamberSensor];
+  v37 = detectChamberSensor2 != 0;
 
   v38 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
   v39 = os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT);
-  if (!v36)
+  if (!detectChamberSensor2)
   {
     if (!v39)
     {
@@ -352,16 +352,16 @@ LABEL_31:
     _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "[RFSelfTest] Wait and confirm if Chamber is closed", buf, 2u);
   }
 
-  v40 = [(RFSelfDiagController *)self inputs];
-  if ([v40 detectChamberSensor])
+  inputs14 = [(RFSelfDiagController *)self inputs];
+  if ([inputs14 detectChamberSensor])
   {
     v41 = self->fDiagHelper;
-    v42 = [(RFSelfDiagController *)self inputs];
-    LOBYTE(v41) = -[RFSelfDiagExtensionHelper waitForChamberClosed:](v41, "waitForChamberClosed:", [v42 detectChamberReadyWaitTime]);
+    inputs15 = [(RFSelfDiagController *)self inputs];
+    LOBYTE(v41) = -[RFSelfDiagExtensionHelper waitForChamberClosed:](v41, "waitForChamberClosed:", [inputs15 detectChamberReadyWaitTime]);
 
     if ((v41 & 1) == 0)
     {
-      v25 = self;
+      selfCopy3 = self;
       v27 = 2;
       goto LABEL_39;
     }
@@ -382,8 +382,8 @@ LABEL_52:
 
 LABEL_53:
   v47 = self->fDiagHelper;
-  v48 = [(RFSelfDiagController *)self inputs];
-  LOBYTE(v47) = -[RFSelfDiagExtensionHelper addAWDConfiguration:](v47, "addAWDConfiguration:", [v48 command]);
+  inputs16 = [(RFSelfDiagController *)self inputs];
+  LOBYTE(v47) = -[RFSelfDiagExtensionHelper addAWDConfiguration:](v47, "addAWDConfiguration:", [inputs16 command]);
 
   if (v47)
   {
@@ -395,34 +395,34 @@ LABEL_53:
     }
 
     v50 = self->fDiagHelper;
-    v51 = [(RFSelfDiagController *)self inputs];
-    v52 = [v51 measureType];
-    v53 = [(RFSelfDiagController *)self inputs];
-    LOBYTE(v50) = -[RFSelfDiagExtensionHelper startBasebandRFSelfTest:TestCommand:](v50, "startBasebandRFSelfTest:TestCommand:", v52, [v53 command]);
+    inputs17 = [(RFSelfDiagController *)self inputs];
+    measureType = [inputs17 measureType];
+    inputs18 = [(RFSelfDiagController *)self inputs];
+    LOBYTE(v50) = -[RFSelfDiagExtensionHelper startBasebandRFSelfTest:TestCommand:](v50, "startBasebandRFSelfTest:TestCommand:", measureType, [inputs18 command]);
 
     if (v50)
     {
-      v54 = [(RFSelfDiagExtensionHelper *)self->fDiagHelper getBasebandResultWaitTime];
+      getBasebandResultWaitTime = [(RFSelfDiagExtensionHelper *)self->fDiagHelper getBasebandResultWaitTime];
       v55 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
       if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        LODWORD(v78) = v54;
+        LODWORD(v78) = getBasebandResultWaitTime;
         _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "[RFSelfTest] Baseband starts RF Self test. Waiting (%dsec) for the result..", buf, 8u);
       }
 
       self->diagState = 6;
-      v56 = [(RFSelfDiagController *)self inputs];
-      v57 = [v56 detectChamberSensor];
+      inputs19 = [(RFSelfDiagController *)self inputs];
+      detectChamberSensor3 = [inputs19 detectChamberSensor];
 
-      if (v57)
+      if (detectChamberSensor3)
       {
         [(RFSelfDiagExtensionHelper *)self->fDiagHelper startMonitorChamberOpen];
       }
 
       v58 = dispatch_semaphore_create(0);
       self->fWaitForEvent = v58;
-      v59 = dispatch_time(0, 1000000000 * v54);
+      v59 = dispatch_time(0, 1000000000 * getBasebandResultWaitTime);
       if (dispatch_semaphore_wait(v58, v59))
       {
         diagState = 9;
@@ -506,21 +506,21 @@ LABEL_40:
   v3 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(RFSelfDiagController *)self inputs];
-    v5 = [v4 commandDescription];
+    inputs = [(RFSelfDiagController *)self inputs];
+    commandDescription = [inputs commandDescription];
     v12 = 138412290;
-    v13 = v5;
+    v13 = commandDescription;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "== RF Self Test [Diag] started : %@ ==", &v12, 0xCu);
   }
 
   [(RFSelfDiagController *)self setFinished:0];
-  v6 = [(RFSelfDiagController *)self inputs];
-  v7 = [v6 command];
+  inputs2 = [(RFSelfDiagController *)self inputs];
+  command = [inputs2 command];
 
-  if (v7 > 3)
+  if (command > 3)
   {
-    v10 = [(RFSelfDiagController *)self result];
-    [v10 setStatusCode:&off_100010B48];
+    result = [(RFSelfDiagController *)self result];
+    [result setStatusCode:&off_100010B48];
   }
 
   else
@@ -581,13 +581,13 @@ LABEL_40:
   }
 }
 
-- (void)handleChamberOpenEvent:(int)a3
+- (void)handleChamberOpenEvent:(int)event
 {
   v5 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = a3;
+    v7[1] = event;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[RFSelfTest] Chamber open detected with sensor(%d)", v7, 8u);
   }
 
@@ -614,50 +614,50 @@ LABEL_40:
   }
 }
 
-- (void)handleAWDMetricEvent:(id)a3
+- (void)handleAWDMetricEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (self->fWaitForEvent)
   {
     v5 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v15 = [v4 length];
+      v15 = [eventCopy length];
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[RFSelfTest] AWD Metric received! size=%lu ", buf, 0xCu);
     }
 
-    v6 = [v4 base64EncodedStringWithOptions:0];
+    v6 = [eventCopy base64EncodedStringWithOptions:0];
     v12 = @"RFSelfDiagBasebandTestData";
     v13 = v6;
     v7 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
-    v8 = [(RFSelfDiagController *)self result];
-    [v8 setData:v7];
+    result = [(RFSelfDiagController *)self result];
+    [result setData:v7];
 
     self->diagState = 8;
     dispatch_semaphore_signal(self->fWaitForEvent);
     v9 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(RFSelfDiagController *)self result];
-      v11 = [v10 data];
+      result2 = [(RFSelfDiagController *)self result];
+      data = [result2 data];
       *buf = 138412290;
-      v15 = v11;
+      v15 = data;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@ ", buf, 0xCu);
     }
   }
 }
 
-- (void)startAlertsTestComplete:(BOOL)a3
+- (void)startAlertsTestComplete:(BOOL)complete
 {
-  v3 = a3;
-  v5 = [(RFSelfDiagController *)self inputs];
-  if ([v5 testCompleteVibrationAlertEnabled])
+  completeCopy = complete;
+  inputs = [(RFSelfDiagController *)self inputs];
+  if ([inputs testCompleteVibrationAlertEnabled])
   {
 
 LABEL_4:
     [(RFSelfDiagExtensionHelper *)self->fDiagHelper stopMonitorChamber];
-    if (!v3 || ![(RFSelfDiagExtensionHelper *)self->fDiagHelper startMonitorChamberOpen])
+    if (!completeCopy || ![(RFSelfDiagExtensionHelper *)self->fDiagHelper startMonitorChamberOpen])
     {
       [(RFSelfDiagController *)self setTestCompleteAlertTime:5];
       v8 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
@@ -672,10 +672,10 @@ LABEL_4:
     v9 = +[NSNotificationCenter defaultCenter];
     [v9 postNotificationName:@"RFSelfTestCompleteAlertsNotification" object:0];
 
-    v10 = [(RFSelfDiagController *)self inputs];
-    v11 = [v10 testCompleteVibrationAlertEnabled];
+    inputs2 = [(RFSelfDiagController *)self inputs];
+    testCompleteVibrationAlertEnabled = [inputs2 testCompleteVibrationAlertEnabled];
 
-    if (v11)
+    if (testCompleteVibrationAlertEnabled)
     {
       v12 = [NSNumber numberWithBool:1];
       v13 = [NSDictionary dictionaryWithObject:v12 forKey:kAudioServicesPlaySystemSoundOptionLoopKey];
@@ -690,10 +690,10 @@ LABEL_4:
       }
     }
 
-    v15 = [(RFSelfDiagController *)self inputs];
-    v16 = [v15 testCompleteChimeAlertEnabled];
+    inputs3 = [(RFSelfDiagController *)self inputs];
+    testCompleteChimeAlertEnabled = [inputs3 testCompleteChimeAlertEnabled];
 
-    if (v16)
+    if (testCompleteChimeAlertEnabled)
     {
       v17 = [NSNumber numberWithBool:1];
       v18 = [NSDictionary dictionaryWithObject:v17 forKey:kAudioServicesPlaySystemSoundOptionLoopKey];
@@ -711,10 +711,10 @@ LABEL_4:
     return;
   }
 
-  v6 = [(RFSelfDiagController *)self inputs];
-  v7 = [v6 testCompleteChimeAlertEnabled];
+  inputs4 = [(RFSelfDiagController *)self inputs];
+  testCompleteChimeAlertEnabled2 = [inputs4 testCompleteChimeAlertEnabled];
 
-  if (v7)
+  if (testCompleteChimeAlertEnabled2)
   {
     goto LABEL_4;
   }
@@ -736,18 +736,18 @@ LABEL_4:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[RFSelfTest] Stop alert", v8, 2u);
   }
 
-  v4 = [(RFSelfDiagController *)self inputs];
-  v5 = [v4 testCompleteVibrationAlertEnabled];
+  inputs = [(RFSelfDiagController *)self inputs];
+  testCompleteVibrationAlertEnabled = [inputs testCompleteVibrationAlertEnabled];
 
-  if (v5)
+  if (testCompleteVibrationAlertEnabled)
   {
     AudioServicesStopSystemSound();
   }
 
-  v6 = [(RFSelfDiagController *)self inputs];
-  v7 = [v6 testCompleteChimeAlertEnabled];
+  inputs2 = [(RFSelfDiagController *)self inputs];
+  testCompleteChimeAlertEnabled = [inputs2 testCompleteChimeAlertEnabled];
 
-  if (v7)
+  if (testCompleteChimeAlertEnabled)
   {
     AudioServicesStopSystemSound();
   }

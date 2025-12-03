@@ -1,21 +1,21 @@
 @interface PurplePageLoadTestRunner
-- (PurplePageLoadTestRunner)initWithTestName:(id)a3 browserController:(id)a4;
-- (id)initRenderTestWithName:(id)a3 browserController:(id)a4 showRenderTime:(BOOL)a5 showFPS:(BOOL)a6;
+- (PurplePageLoadTestRunner)initWithTestName:(id)name browserController:(id)controller;
+- (id)initRenderTestWithName:(id)name browserController:(id)controller showRenderTime:(BOOL)time showFPS:(BOOL)s;
 - (void)collectPPTResults;
 - (void)finishedTestRunner;
 - (void)finishedTestRunnerIteration;
-- (void)pptResultFor:(id)a3 measure:(id)a4 value:(double)a5 units:(id)a6;
+- (void)pptResultFor:(id)for measure:(id)measure value:(double)value units:(id)units;
 - (void)startingTestRunner;
 - (void)writeOutputData;
 @end
 
 @implementation PurplePageLoadTestRunner
 
-- (PurplePageLoadTestRunner)initWithTestName:(id)a3 browserController:(id)a4
+- (PurplePageLoadTestRunner)initWithTestName:(id)name browserController:(id)controller
 {
   v10.receiver = self;
   v10.super_class = PurplePageLoadTestRunner;
-  v4 = [(PageLoadTestRunner *)&v10 initWithTestName:a3 browserController:a4];
+  v4 = [(PageLoadTestRunner *)&v10 initWithTestName:name browserController:controller];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:50];
@@ -35,15 +35,15 @@
   return v4;
 }
 
-- (id)initRenderTestWithName:(id)a3 browserController:(id)a4 showRenderTime:(BOOL)a5 showFPS:(BOOL)a6
+- (id)initRenderTestWithName:(id)name browserController:(id)controller showRenderTime:(BOOL)time showFPS:(BOOL)s
 {
-  v8 = [(PurplePageLoadTestRunner *)self initWithTestName:a3 browserController:a4];
+  v8 = [(PurplePageLoadTestRunner *)self initWithTestName:name browserController:controller];
   v9 = v8;
   if (v8)
   {
     v8->_showLoadTime = 0;
-    v8->_showRenderTime = a5;
-    v8->_showRenderFps = a6;
+    v8->_showRenderTime = time;
+    v8->_showRenderFps = s;
     [(PageLoadTestRunner *)v8 setPageActionInterval:0.0166666667];
   }
 
@@ -56,8 +56,8 @@
   v5.super_class = PurplePageLoadTestRunner;
   [(PageLoadTestRunner *)&v5 startingTestRunner];
   v3 = *MEMORY[0x277D76620];
-  v4 = [(PageLoadTestRunner *)self testName];
-  [v3 startedTest:v4];
+  testName = [(PageLoadTestRunner *)self testName];
+  [v3 startedTest:testName];
 }
 
 - (void)finishedTestRunnerIteration
@@ -72,36 +72,36 @@
 {
   [(PurplePageLoadTestRunner *)self writeOutputData];
   v3 = *MEMORY[0x277D76620];
-  v4 = [(PageLoadTestRunner *)self testName];
-  [v3 finishedTest:v4 extraResults:self->_pptResults];
+  testName = [(PageLoadTestRunner *)self testName];
+  [v3 finishedTest:testName extraResults:self->_pptResults];
 
   v5.receiver = self;
   v5.super_class = PurplePageLoadTestRunner;
   [(PageLoadTestRunner *)&v5 finishedTestRunner];
 }
 
-- (void)pptResultFor:(id)a3 measure:(id)a4 value:(double)a5 units:(id)a6
+- (void)pptResultFor:(id)for measure:(id)measure value:(double)value units:(id)units
 {
-  v18 = a4;
-  v10 = a6;
-  v11 = [a3 description];
+  measureCopy = measure;
+  unitsCopy = units;
+  v11 = [for description];
   v12 = v11;
-  if (v18)
+  if (measureCopy)
   {
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v11, v18];
+    measureCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v11, measureCopy];
 
-    v12 = v13;
+    v12 = measureCopy;
   }
 
   pptResults = self->_pptResults;
-  v15 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  v15 = [MEMORY[0x277CCABB0] numberWithDouble:value];
   [(NSMutableDictionary *)pptResults setValue:v15 forKey:v12];
 
-  if (v10)
+  if (unitsCopy)
   {
     v16 = self->_pptResults;
     v17 = [v12 stringByAppendingString:@"Units"];
-    [(NSMutableDictionary *)v16 setValue:v10 forKey:v17];
+    [(NSMutableDictionary *)v16 setValue:unitsCopy forKey:v17];
   }
 }
 
@@ -145,23 +145,23 @@
 
         if (self->_showLoadTime)
         {
-          v14 = [v13 endLoadDate];
-          if (!v14)
+          endLoadDate = [v13 endLoadDate];
+          if (!endLoadDate)
           {
             goto LABEL_26;
           }
 
-          v15 = v14;
-          v16 = [v13 webContentProcessStartLoadDate];
+          v15 = endLoadDate;
+          webContentProcessStartLoadDate = [v13 webContentProcessStartLoadDate];
 
-          if (!v16)
+          if (!webContentProcessStartLoadDate)
           {
             goto LABEL_26;
           }
 
-          v17 = [v13 endLoadDate];
-          v18 = [v13 webContentProcessStartLoadDate];
-          [v17 timeIntervalSinceDate:v18];
+          endLoadDate2 = [v13 endLoadDate];
+          webContentProcessStartLoadDate2 = [v13 webContentProcessStartLoadDate];
+          [endLoadDate2 timeIntervalSinceDate:webContentProcessStartLoadDate2];
           v20 = v19;
 
           ++v6;
@@ -174,23 +174,23 @@
 
         if (self->super._measureTime)
         {
-          v22 = [v13 endLoadDate];
-          if (!v22)
+          endLoadDate3 = [v13 endLoadDate];
+          if (!endLoadDate3)
           {
             goto LABEL_26;
           }
 
-          v23 = v22;
-          v24 = [v13 uiProcessStartDate];
+          v23 = endLoadDate3;
+          uiProcessStartDate = [v13 uiProcessStartDate];
 
-          if (!v24)
+          if (!uiProcessStartDate)
           {
             goto LABEL_26;
           }
 
-          v25 = [v13 endLoadDate];
-          v26 = [v13 uiProcessStartDate];
-          [v25 timeIntervalSinceDate:v26];
+          endLoadDate4 = [v13 endLoadDate];
+          uiProcessStartDate2 = [v13 uiProcessStartDate];
+          [endLoadDate4 timeIntervalSinceDate:uiProcessStartDate2];
           v28 = v27;
 
           v29 = [v13 URL];
@@ -198,19 +198,19 @@
 
           if (self->super._version >= 5)
           {
-            v30 = [v13 domContentLoadedDate];
-            v31 = [v13 uiProcessStartDate];
-            [v30 timeIntervalSinceDate:v31];
+            domContentLoadedDate = [v13 domContentLoadedDate];
+            uiProcessStartDate3 = [v13 uiProcessStartDate];
+            [domContentLoadedDate timeIntervalSinceDate:uiProcessStartDate3];
             v33 = v32;
 
-            v34 = [v13 firstMeaningfulPaintDate];
-            v35 = [v13 uiProcessStartDate];
-            [v34 timeIntervalSinceDate:v35];
+            firstMeaningfulPaintDate = [v13 firstMeaningfulPaintDate];
+            uiProcessStartDate4 = [v13 uiProcessStartDate];
+            [firstMeaningfulPaintDate timeIntervalSinceDate:uiProcessStartDate4];
             v37 = v36;
 
-            v38 = [v13 allSubresourcesLoadedDate];
-            v39 = [v13 uiProcessStartDate];
-            [v38 timeIntervalSinceDate:v39];
+            allSubresourcesLoadedDate = [v13 allSubresourcesLoadedDate];
+            uiProcessStartDate5 = [v13 uiProcessStartDate];
+            [allSubresourcesLoadedDate timeIntervalSinceDate:uiProcessStartDate5];
             v41 = v40;
 
             v42 = [v13 URL];
@@ -226,28 +226,28 @@
 
         if (self->_showFirstVisualLayoutTime)
         {
-          v45 = [v13 firstVisualLayoutDate];
-          if (!v45)
+          firstVisualLayoutDate = [v13 firstVisualLayoutDate];
+          if (!firstVisualLayoutDate)
           {
             goto LABEL_26;
           }
 
-          v46 = v45;
-          v47 = [v13 webContentProcessStartLoadDate];
+          v46 = firstVisualLayoutDate;
+          webContentProcessStartLoadDate3 = [v13 webContentProcessStartLoadDate];
 
-          if (!v47)
+          if (!webContentProcessStartLoadDate3)
           {
             goto LABEL_26;
           }
 
           v48 = [v13 URL];
-          v49 = [v13 firstVisualLayoutDate];
+          firstVisualLayoutDate2 = [v13 firstVisualLayoutDate];
           [v13 webContentProcessStartLoadDate];
           v72 = v6;
           v50 = v3;
           v51 = v4;
           v53 = v52 = v5;
-          [v49 timeIntervalSinceDate:v53];
+          [firstVisualLayoutDate2 timeIntervalSinceDate:v53];
           [(PurplePageLoadTestRunner *)self pptResultFor:v48 measure:@"firstVisualLayout" time:?];
 
           v5 = v52;
@@ -363,9 +363,9 @@ LABEL_31:
 
 - (void)writeOutputData
 {
-  v3 = [(PageLoadTestRunner *)self outputFilename];
+  outputFilename = [(PageLoadTestRunner *)self outputFilename];
 
-  if (v3)
+  if (outputFilename)
   {
     iterationResults = self->_iterationResults;
     v11 = 0;
@@ -373,22 +373,22 @@ LABEL_31:
     v6 = v11;
     if (v6)
     {
-      v7 = v6;
+      outputFilename4 = v6;
       NSLog(@"safari-plt-test Error while serializing Page Load Performance Test results: %@", v6);
 LABEL_8:
 
       goto LABEL_9;
     }
 
-    v8 = [(PageLoadTestRunner *)self outputFilename];
+    outputFilename2 = [(PageLoadTestRunner *)self outputFilename];
     v10 = 0;
-    [v5 writeToFile:v8 options:0 error:&v10];
-    v7 = v10;
+    [v5 writeToFile:outputFilename2 options:0 error:&v10];
+    outputFilename4 = v10;
 
-    if (v7)
+    if (outputFilename4)
     {
-      v9 = [(PageLoadTestRunner *)self outputFilename];
-      NSLog(@"safari-plt-test Error writing output to file %@: %@", v9, v7);
+      outputFilename3 = [(PageLoadTestRunner *)self outputFilename];
+      NSLog(@"safari-plt-test Error writing output to file %@: %@", outputFilename3, outputFilename4);
 
       goto LABEL_8;
     }
@@ -399,8 +399,8 @@ LABEL_8:
     NSLog(@"safari-plt-test %@", self->_iterationResults);
   }
 
-  v7 = [(PageLoadTestRunner *)self outputFilename];
-  [(PageLoadTestRunner *)self log:@"PageLoadTest Complete. Wrote data to %@", v7];
+  outputFilename4 = [(PageLoadTestRunner *)self outputFilename];
+  [(PageLoadTestRunner *)self log:@"PageLoadTest Complete. Wrote data to %@", outputFilename4];
 LABEL_9:
 }
 

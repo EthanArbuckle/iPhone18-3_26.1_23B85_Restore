@@ -1,16 +1,16 @@
 @interface CoreDAVFolderContentsMultiGetTask
-- (CoreDAVFolderContentsMultiGetTask)initWithURLs:(id)a3 atContainerURL:(id)a4 appSpecificDataItemClass:(Class)a5;
+- (CoreDAVFolderContentsMultiGetTask)initWithURLs:(id)ls atContainerURL:(id)l appSpecificDataItemClass:(Class)class;
 - (id)copyAdditionalPropElements;
-- (void)setAdditionalProperties:(id)a3 onDataItem:(id)a4;
+- (void)setAdditionalProperties:(id)properties onDataItem:(id)item;
 @end
 
 @implementation CoreDAVFolderContentsMultiGetTask
 
-- (CoreDAVFolderContentsMultiGetTask)initWithURLs:(id)a3 atContainerURL:(id)a4 appSpecificDataItemClass:(Class)a5
+- (CoreDAVFolderContentsMultiGetTask)initWithURLs:(id)ls atContainerURL:(id)l appSpecificDataItemClass:(Class)class
 {
   v8.receiver = self;
   v8.super_class = CoreDAVFolderContentsMultiGetTask;
-  v5 = [(CoreDAVContainerMultiGetTask *)&v8 initWithURLs:a3 atContainerURL:a4 appSpecificDataItemClass:a5];
+  v5 = [(CoreDAVContainerMultiGetTask *)&v8 initWithURLs:ls atContainerURL:l appSpecificDataItemClass:class];
   v6 = v5;
   if (v5)
   {
@@ -35,19 +35,19 @@
   return [(objc_class *)v4 copyPropertyMappingsForParser];
 }
 
-- (void)setAdditionalProperties:(id)a3 onDataItem:(id)a4
+- (void)setAdditionalProperties:(id)properties onDataItem:(id)item
 {
-  v8 = a3;
-  v6 = a4;
+  propertiesCopy = properties;
+  itemCopy = item;
   if (objc_opt_respondsToSelector())
   {
-    [v6 applyParsedProperties:v8];
+    [itemCopy applyParsedProperties:propertiesCopy];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(CoreDAVTask *)self responseHeaders];
-    [v6 postProcessWithResponseHeaders:v7];
+    responseHeaders = [(CoreDAVTask *)self responseHeaders];
+    [itemCopy postProcessWithResponseHeaders:responseHeaders];
   }
 }
 

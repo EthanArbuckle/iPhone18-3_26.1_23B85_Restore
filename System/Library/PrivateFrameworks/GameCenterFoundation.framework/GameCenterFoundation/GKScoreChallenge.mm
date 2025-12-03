@@ -1,14 +1,14 @@
 @interface GKScoreChallenge
-+ (BOOL)instancesRespondToSelector:(SEL)a3;
++ (BOOL)instancesRespondToSelector:(SEL)selector;
 - (BOOL)detailsLoaded;
 - (GKLeaderboard)leaderboard;
 - (GKLeaderboardEntry)leaderboardEntry;
-- (GKScoreChallenge)initWithInternalRepresentation:(id)a3;
+- (GKScoreChallenge)initWithInternalRepresentation:(id)representation;
 - (id)description;
-- (id)detailGoalTextForPlayer:(id)a3 withLeaderboard:(id)a4;
+- (id)detailGoalTextForPlayer:(id)player withLeaderboard:(id)leaderboard;
 - (id)titleText;
-- (void)loadDetailsWithCompletionHandler:(id)a3;
-- (void)setInternal:(id)a3;
+- (void)loadDetailsWithCompletionHandler:(id)handler;
+- (void)setInternal:(id)internal;
 @end
 
 @implementation GKScoreChallenge
@@ -16,26 +16,26 @@
 - (id)description
 {
   v15 = MEMORY[0x277CCACA8];
-  v14 = [(GKScoreChallenge *)self challengeID];
-  v17 = [(GKScoreChallenge *)self score];
-  v13 = [v17 formattedValue];
-  v3 = [(GKScoreChallenge *)self issueDate];
-  v16 = [(GKChallenge *)self issuingPlayer];
-  v4 = [v16 internal];
-  v5 = [v4 conciseDescription];
-  v6 = [(GKChallenge *)self receivingPlayer];
-  v7 = [v6 internal];
-  v8 = [v7 conciseDescription];
+  challengeID = [(GKScoreChallenge *)self challengeID];
+  score = [(GKScoreChallenge *)self score];
+  formattedValue = [score formattedValue];
+  issueDate = [(GKScoreChallenge *)self issueDate];
+  issuingPlayer = [(GKChallenge *)self issuingPlayer];
+  internal = [issuingPlayer internal];
+  conciseDescription = [internal conciseDescription];
+  receivingPlayer = [(GKChallenge *)self receivingPlayer];
+  internal2 = [receivingPlayer internal];
+  conciseDescription2 = [internal2 conciseDescription];
   v9 = [GKChallenge stringForState:[(GKScoreChallenge *)self state]];
-  v10 = [(GKScoreChallenge *)self completionDate];
-  v11 = [v15 stringWithFormat:@"%p GKScoreChallenge %@ score:%@ issueDate: %@ issuingPlayer: %@ receivingPlayer: %@ state: %@ completedDate: %@", self, v14, v13, v3, v5, v8, v9, v10];
+  completionDate = [(GKScoreChallenge *)self completionDate];
+  v11 = [v15 stringWithFormat:@"%p GKScoreChallenge %@ score:%@ issueDate: %@ issuingPlayer: %@ receivingPlayer: %@ state: %@ completedDate: %@", self, challengeID, formattedValue, issueDate, conciseDescription, conciseDescription2, v9, completionDate];
 
   return v11;
 }
 
-- (GKScoreChallenge)initWithInternalRepresentation:(id)a3
+- (GKScoreChallenge)initWithInternalRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v8.receiver = self;
   v8.super_class = GKScoreChallenge;
   v5 = [(GKScoreChallenge *)&v8 init];
@@ -48,12 +48,12 @@
       goto LABEL_8;
     }
 
-    if (!v4)
+    if (!representationCopy)
     {
-      v4 = +[GKScoreChallengeInternal internalRepresentation];
+      representationCopy = +[GKScoreChallengeInternal internalRepresentation];
     }
 
-    [(GKScoreChallenge *)v5 setInternal:v4];
+    [(GKScoreChallenge *)v5 setInternal:representationCopy];
   }
 
   v6 = v5;
@@ -62,50 +62,50 @@ LABEL_8:
   return v6;
 }
 
-- (void)setInternal:(id)a3
+- (void)setInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(GKChallenge *)self internal];
+  internalCopy = internal;
+  internal = [(GKChallenge *)self internal];
   v12.receiver = self;
   v12.super_class = GKScoreChallenge;
-  [(GKChallenge *)&v12 setInternal:v4];
-  if (v5 != v4)
+  [(GKChallenge *)&v12 setInternal:internalCopy];
+  if (internal != internalCopy)
   {
-    v6 = [v4 score];
+    score = [internalCopy score];
 
-    if (v6)
+    if (score)
     {
       v7 = [GKScore alloc];
-      v8 = [v4 score];
-      v6 = [(GKScore *)v7 initWithInternalRepresentation:v8];
+      score2 = [internalCopy score];
+      score = [(GKScore *)v7 initWithInternalRepresentation:score2];
 
       v9 = [GKGame alloc];
-      v10 = [v4 game];
-      v11 = [(GKGame *)v9 initWithInternalRepresentation:v10];
-      [(GKScore *)v6 setGame:v11];
+      game = [internalCopy game];
+      v11 = [(GKGame *)v9 initWithInternalRepresentation:game];
+      [(GKScore *)score setGame:v11];
     }
 
-    [(GKScoreChallenge *)self setScore:v6];
+    [(GKScoreChallenge *)self setScore:score];
   }
 }
 
 - (GKLeaderboard)leaderboard
 {
   v3 = [GKLeaderboard alloc];
-  v4 = [(GKChallenge *)self internal];
-  v5 = [v4 leaderboard];
-  v6 = [(GKLeaderboard *)v3 initWithInternalRepresentation:v5];
+  internal = [(GKChallenge *)self internal];
+  leaderboard = [internal leaderboard];
+  v6 = [(GKLeaderboard *)v3 initWithInternalRepresentation:leaderboard];
 
   return v6;
 }
 
 - (GKLeaderboardEntry)leaderboardEntry
 {
-  v3 = [(GKScoreChallenge *)self score];
-  if (v3)
+  score = [(GKScoreChallenge *)self score];
+  if (score)
   {
-    v4 = [(GKScoreChallenge *)self score];
-    v5 = [GKLeaderboardEntry fromGKScore:v4];
+    score2 = [(GKScoreChallenge *)self score];
+    v5 = [GKLeaderboardEntry fromGKScore:score2];
   }
 
   else
@@ -116,11 +116,11 @@ LABEL_8:
   return v5;
 }
 
-+ (BOOL)instancesRespondToSelector:(SEL)a3
++ (BOOL)instancesRespondToSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    if (class_respondsToSelector(a1, a3))
+    if (class_respondsToSelector(self, selector))
     {
       LOBYTE(v4) = 1;
     }
@@ -131,7 +131,7 @@ LABEL_8:
       if (v4)
       {
 
-        LOBYTE(v4) = [GKScoreChallengeInternal instancesRespondToSelector:a3];
+        LOBYTE(v4) = [GKScoreChallengeInternal instancesRespondToSelector:selector];
       }
     }
   }
@@ -146,25 +146,25 @@ LABEL_8:
 
 - (id)titleText
 {
-  v2 = [(GKChallenge *)self internal];
-  v3 = [v2 leaderboard];
-  v4 = [v3 title];
+  internal = [(GKChallenge *)self internal];
+  leaderboard = [internal leaderboard];
+  title = [leaderboard title];
 
-  return v4;
+  return title;
 }
 
 - (BOOL)detailsLoaded
 {
-  v2 = [(GKChallenge *)self internal];
-  v3 = [v2 leaderboard];
-  v4 = v3 != 0;
+  internal = [(GKChallenge *)self internal];
+  leaderboard = [internal leaderboard];
+  v4 = leaderboard != 0;
 
   return v4;
 }
 
-- (void)loadDetailsWithCompletionHandler:(id)a3
+- (void)loadDetailsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [GKDispatchGroup dispatchGroupWithName:@"ScoreChallengeDetails"];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -176,8 +176,8 @@ LABEL_8:
   v7[1] = 3221225472;
   v7[2] = __53__GKScoreChallenge_loadDetailsWithCompletionHandler___block_invoke_4;
   v7[3] = &unk_2785DD710;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [v5 notifyOnMainQueueWithBlock:v7];
 }
 
@@ -263,19 +263,19 @@ uint64_t __53__GKScoreChallenge_loadDetailsWithCompletionHandler___block_invoke_
   return result;
 }
 
-- (id)detailGoalTextForPlayer:(id)a3 withLeaderboard:(id)a4
+- (id)detailGoalTextForPlayer:(id)player withLeaderboard:(id)leaderboard
 {
   v6 = MEMORY[0x277CCACA8];
-  v7 = a4;
-  v8 = a3;
+  leaderboardCopy = leaderboard;
+  playerCopy = player;
   v9 = +[_TtC20GameCenterFoundation19GCFLocalizedStrings CHALLENGE_DETAIL_SCORE_GOAL_FORMAT];
-  v10 = [v8 displayNameWithOptions:0];
+  v10 = [playerCopy displayNameWithOptions:0];
 
-  v11 = [(GKScoreChallenge *)self score];
-  v12 = [v11 formattedValue];
-  v13 = [v7 localizedTitle];
+  score = [(GKScoreChallenge *)self score];
+  formattedValue = [score formattedValue];
+  localizedTitle = [leaderboardCopy localizedTitle];
 
-  v14 = [v6 stringWithFormat:v9, v10, v12, v13];
+  v14 = [v6 stringWithFormat:v9, v10, formattedValue, localizedTitle];
 
   return v14;
 }

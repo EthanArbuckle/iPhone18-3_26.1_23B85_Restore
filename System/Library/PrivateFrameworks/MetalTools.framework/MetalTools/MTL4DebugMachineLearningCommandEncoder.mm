@@ -1,23 +1,23 @@
 @interface MTL4DebugMachineLearningCommandEncoder
-- (MTL4DebugMachineLearningCommandEncoder)initWithMLCommandEncoder:(id)a3 commandBuffer:(id)a4;
+- (MTL4DebugMachineLearningCommandEncoder)initWithMLCommandEncoder:(id)encoder commandBuffer:(id)buffer;
 - (id)commandBuffer;
 - (void)dealloc;
-- (void)dispatchNetworkWithIntermediatesHeap:(id)a3;
+- (void)dispatchNetworkWithIntermediatesHeap:(id)heap;
 - (void)endEncoding;
-- (void)setArgumentTable:(id)a3;
-- (void)setPipelineState:(id)a3;
+- (void)setArgumentTable:(id)table;
+- (void)setPipelineState:(id)state;
 @end
 
 @implementation MTL4DebugMachineLearningCommandEncoder
 
-- (MTL4DebugMachineLearningCommandEncoder)initWithMLCommandEncoder:(id)a3 commandBuffer:(id)a4
+- (MTL4DebugMachineLearningCommandEncoder)initWithMLCommandEncoder:(id)encoder commandBuffer:(id)buffer
 {
   v8.receiver = self;
   v8.super_class = MTL4DebugMachineLearningCommandEncoder;
   v6 = [MTL4ToolsCommandEncoder initWithCommandEncoder:sel_initWithCommandEncoder_commandBuffer_ commandBuffer:?];
   if (v6)
   {
-    v6->_debugCommandEncoder = [[MTL4DebugCommandEncoder alloc] initWithBaseObject:a3 device:v6->super.super.super._device commandBuffer:a4 encoderStageMask:0x40000000];
+    v6->_debugCommandEncoder = [[MTL4DebugCommandEncoder alloc] initWithBaseObject:encoder device:v6->super.super.super._device commandBuffer:buffer encoderStageMask:0x40000000];
   }
 
   return v6;
@@ -47,9 +47,9 @@
   return [(objc_super *)v5 commandBuffer];
 }
 
-- (void)setArgumentTable:(id)a3
+- (void)setArgumentTable:(id)table
 {
-  if (!a3)
+  if (!table)
   {
     [MTL4DebugMachineLearningCommandEncoder setArgumentTable:];
   }
@@ -60,15 +60,15 @@
     [MTL4DebugMachineLearningCommandEncoder setArgumentTable:];
   }
 
-  self->_currentArgumentTable = a3;
+  self->_currentArgumentTable = table;
   v5.receiver = self;
   v5.super_class = MTL4DebugMachineLearningCommandEncoder;
-  [(MTL4ToolsMachineLearningCommandEncoder *)&v5 setArgumentTable:a3];
+  [(MTL4ToolsMachineLearningCommandEncoder *)&v5 setArgumentTable:table];
 }
 
-- (void)setPipelineState:(id)a3
+- (void)setPipelineState:(id)state
 {
-  if (!a3)
+  if (!state)
   {
     [MTL4DebugMachineLearningCommandEncoder setPipelineState:];
   }
@@ -79,13 +79,13 @@
     [MTL4DebugMachineLearningCommandEncoder setPipelineState:];
   }
 
-  self->_currentPipelineState = a3;
+  self->_currentPipelineState = state;
   v5.receiver = self;
   v5.super_class = MTL4DebugMachineLearningCommandEncoder;
-  [(MTL4ToolsMachineLearningCommandEncoder *)&v5 setPipelineState:a3];
+  [(MTL4ToolsMachineLearningCommandEncoder *)&v5 setPipelineState:state];
 }
 
-- (void)dispatchNetworkWithIntermediatesHeap:(id)a3
+- (void)dispatchNetworkWithIntermediatesHeap:(id)heap
 {
   if ([(MTL4DebugCommandEncoder *)self->_debugCommandEncoder hasEndEncoding])
   {
@@ -102,52 +102,52 @@
     [MTL4DebugMachineLearningCommandEncoder dispatchNetworkWithIntermediatesHeap:];
   }
 
-  v5 = [(MTL4ToolsMachineLearningPipelineState *)self->_currentPipelineState intermediatesHeapSize];
-  if (!a3 && v5)
+  intermediatesHeapSize = [(MTL4ToolsMachineLearningPipelineState *)self->_currentPipelineState intermediatesHeapSize];
+  if (!heap && intermediatesHeapSize)
   {
     [MTL4DebugMachineLearningCommandEncoder dispatchNetworkWithIntermediatesHeap:];
   }
 
-  v6 = [a3 size];
-  v7 = v6 - [a3 usedSize];
+  v6 = [heap size];
+  v7 = v6 - [heap usedSize];
   if (v7 < [(MTL4ToolsMachineLearningPipelineState *)self->_currentPipelineState intermediatesHeapSize])
   {
-    [(MTL4DebugMachineLearningCommandEncoder *)a3 dispatchNetworkWithIntermediatesHeap:?];
+    [(MTL4DebugMachineLearningCommandEncoder *)heap dispatchNetworkWithIntermediatesHeap:?];
   }
 
-  if ([a3 type] != 1)
+  if ([heap type] != 1)
   {
     [MTL4DebugMachineLearningCommandEncoder dispatchNetworkWithIntermediatesHeap:];
   }
 
-  v8 = [(MTLToolsObject *)self->_currentArgumentTable originalObject];
-  v9 = [v8 bufferBindingCount];
-  std::vector<MTLResourceID>::vector[abi:ne200100](__p, v9);
-  [v8 getBufferBindings:__p[0] bindingCount:v9];
-  v10 = [(MTL4ToolsMachineLearningPipelineState *)self->_currentPipelineState reflection];
-  v11 = [-[MTL4MachineLearningPipelineReflection bindings](v10 "bindings")];
-  if (v9 < v11)
+  originalObject = [(MTLToolsObject *)self->_currentArgumentTable originalObject];
+  bufferBindingCount = [originalObject bufferBindingCount];
+  std::vector<MTLResourceID>::vector[abi:ne200100](__p, bufferBindingCount);
+  [originalObject getBufferBindings:__p[0] bindingCount:bufferBindingCount];
+  reflection = [(MTL4ToolsMachineLearningPipelineState *)self->_currentPipelineState reflection];
+  v11 = [-[MTL4MachineLearningPipelineReflection bindings](reflection "bindings")];
+  if (bufferBindingCount < v11)
   {
     MTLReportFailure();
   }
 
-  if (v9 >= v11)
+  if (bufferBindingCount >= v11)
   {
     v12 = v11;
   }
 
   else
   {
-    v12 = v9;
+    v12 = bufferBindingCount;
   }
 
   if (v12)
   {
     for (i = 0; i != v12; ++i)
     {
-      v14 = [-[MTL4MachineLearningPipelineReflection bindings](v10 bindings];
+      bindings = [-[MTL4MachineLearningPipelineReflection bindings](reflection bindings];
       v15 = *(__p[0] + i);
-      [v14 dimensions];
+      [bindings dimensions];
       if (_MTLTensorElementCount())
       {
         if (!v15)
@@ -156,7 +156,7 @@
           MTLReportFailure();
         }
 
-        [objc_msgSend(objc_msgSend(v8 device];
+        [objc_msgSend(objc_msgSend(originalObject device];
         if ((_MTLTensorExtentsAreEqual() & 1) == 0)
         {
           v16 = i;
@@ -168,7 +168,7 @@
 
   v17.receiver = self;
   v17.super_class = MTL4DebugMachineLearningCommandEncoder;
-  [(MTL4ToolsMachineLearningCommandEncoder *)&v17 dispatchNetworkWithIntermediatesHeap:a3, v16];
+  [(MTL4ToolsMachineLearningCommandEncoder *)&v17 dispatchNetworkWithIntermediatesHeap:heap, v16];
   if (__p[0])
   {
     __p[1] = __p[0];

@@ -1,6 +1,6 @@
 @interface IMConfigurationPredicate
-+ (IMConfigurationPredicate)predicateWithBlock:(id)a3;
-+ (IMConfigurationPredicate)predicateWithTraitCollection:(id)a3;
++ (IMConfigurationPredicate)predicateWithBlock:(id)block;
++ (IMConfigurationPredicate)predicateWithTraitCollection:(id)collection;
 + (id)OSXPredicate;
 + (id)compactHeightPredicate;
 + (id)compactWidthPredicate;
@@ -33,7 +33,7 @@
 + (id)superPhonePortraitExactSizePredicate;
 + (id)tallPhoneSizeClassPredicate;
 + (id)truePredicate;
-- (BOOL)evaluateWithContext:(id)a3;
+- (BOOL)evaluateWithContext:(id)context;
 - (IMConfigurationPredicate)init;
 - (id)description;
 @end
@@ -200,17 +200,17 @@
   return v2;
 }
 
-+ (IMConfigurationPredicate)predicateWithBlock:(id)a3
++ (IMConfigurationPredicate)predicateWithBlock:(id)block
 {
-  v3 = [IMBlockConfigurationPredicate predicateWithBlock:a3];
+  v3 = [IMBlockConfigurationPredicate predicateWithBlock:block];
   [v3 setDebugIdentifier:@"block"];
 
   return v3;
 }
 
-+ (IMConfigurationPredicate)predicateWithTraitCollection:(id)a3
++ (IMConfigurationPredicate)predicateWithTraitCollection:(id)collection
 {
-  v3 = [IMTraitCollectionConfigurationPredicate predicateWithTraitCollection:a3];
+  v3 = [IMTraitCollectionConfigurationPredicate predicateWithTraitCollection:collection];
   [v3 setDebugIdentifier:@"traitCollection"];
 
   return v3;
@@ -311,13 +311,13 @@
 
 - (id)description
 {
-  v2 = [(IMConfigurationPredicate *)self debugIdentifier];
-  v3 = [NSString stringWithFormat:@"%@", v2];
+  debugIdentifier = [(IMConfigurationPredicate *)self debugIdentifier];
+  v3 = [NSString stringWithFormat:@"%@", debugIdentifier];
 
   return v3;
 }
 
-- (BOOL)evaluateWithContext:(id)a3
+- (BOOL)evaluateWithContext:(id)context
 {
   v3 = BCIMLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))

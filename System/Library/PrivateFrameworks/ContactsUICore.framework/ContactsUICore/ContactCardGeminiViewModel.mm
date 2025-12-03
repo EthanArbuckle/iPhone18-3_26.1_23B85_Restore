@@ -1,14 +1,14 @@
 @interface ContactCardGeminiViewModel
-- (void)geminiDataSourceDidUpdate:(id)a3;
+- (void)geminiDataSourceDidUpdate:(id)update;
 @end
 
 @implementation ContactCardGeminiViewModel
 
-- (void)geminiDataSourceDidUpdate:(id)a3
+- (void)geminiDataSourceDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A34289F8(v4);
+  updateCopy = update;
+  selfCopy = self;
+  sub_1A34289F8(updateCopy);
 }
 
 @end

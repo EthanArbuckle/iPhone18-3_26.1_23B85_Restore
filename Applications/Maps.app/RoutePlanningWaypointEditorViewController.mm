@@ -1,14 +1,14 @@
 @interface RoutePlanningWaypointEditorViewController
 - (BOOL)canDeleteCurrentFieldIndex;
 - (BOOL)containsCurrentLocationItem;
-- (BOOL)containsWaypointForItem:(id)a3;
+- (BOOL)containsWaypointForItem:(id)item;
 - (BOOL)hasInput;
 - (BOOL)isEditingAnySearchField;
 - (BOOL)mprEnabled;
 - (NSArray)items;
 - (NSArray)itemsForRouteRequest;
 - (NSString)focusGroupIdentifierForCurrentlyEditingField;
-- (RoutePlanningWaypointEditorViewController)initWithWaypointInfoProvider:(id)a3;
+- (RoutePlanningWaypointEditorViewController)initWithWaypointInfoProvider:(id)provider;
 - (RouteWaypointSearchFieldsDelegate)delegate;
 - (UILayoutGuide)layoutGuideForCurrentlyEditingField;
 - (double)contentHeight;
@@ -17,23 +17,23 @@
 - (void)beginEditingNextSearchField;
 - (void)deleteCurrentFieldIndex;
 - (void)endEditingFields;
-- (void)invokeSearchWithText:(id)a3;
-- (void)selectFieldAtIndex:(unint64_t)a3;
+- (void)invokeSearchWithText:(id)text;
+- (void)selectFieldAtIndex:(unint64_t)index;
 - (void)selectFromField;
 - (void)selectToField;
-- (void)setItems:(id)a3;
-- (void)setMprEnabled:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateAutoCompleteWithText:(id)a3;
-- (void)updateSearchFieldsFromIndex:(unint64_t)a3 withItem:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setItems:(id)items;
+- (void)setMprEnabled:(BOOL)enabled;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateAutoCompleteWithText:(id)text;
+- (void)updateSearchFieldsFromIndex:(unint64_t)index withItem:(id)item;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)waypointListView:(id)a3 didClearInputTextForWaypointAtIndex:(unint64_t)a4;
-- (void)waypointListView:(id)a3 didDeleteWaypointAtIndex:(unint64_t)a4;
-- (void)waypointListView:(id)a3 didMoveWaypoint:(id)a4 fromIndex:(unint64_t)a5 toIndex:(unint64_t)a6;
-- (void)waypointListView:(id)a3 didSelectCollapsedWaypoints:(id)a4;
-- (void)waypointListView:(id)a3 didStartEditingWaypointAtIndex:(unint64_t)a4;
-- (void)waypointListViewDidSelectAddStop:(id)a3;
+- (void)waypointListView:(id)view didClearInputTextForWaypointAtIndex:(unint64_t)index;
+- (void)waypointListView:(id)view didDeleteWaypointAtIndex:(unint64_t)index;
+- (void)waypointListView:(id)view didMoveWaypoint:(id)waypoint fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (void)waypointListView:(id)view didSelectCollapsedWaypoints:(id)waypoints;
+- (void)waypointListView:(id)view didStartEditingWaypointAtIndex:(unint64_t)index;
+- (void)waypointListViewDidSelectAddStop:(id)stop;
 @end
 
 @implementation RoutePlanningWaypointEditorViewController
@@ -45,9 +45,9 @@
   return WeakRetained;
 }
 
-- (void)invokeSearchWithText:(id)a3
+- (void)invokeSearchWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   if (sub_10000FA08(self) == 5)
   {
     v5 = sub_100EFD6B0();
@@ -57,22 +57,22 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Invoking search by triggering route request", &v19, 2u);
     }
 
-    v6 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-    [v6 deselectAllRows];
+    waypointListView = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+    [waypointListView deselectAllRows];
 
-    v7 = [(RoutePlanningWaypointEditorViewController *)self delegate];
-    [(SearchFieldItem *)v7 routeSearchFieldsDidUpdateItemsForRouteRequest:self];
+    delegate = [(RoutePlanningWaypointEditorViewController *)self delegate];
+    [(SearchFieldItem *)delegate routeSearchFieldsDidUpdateItemsForRouteRequest:self];
 LABEL_20:
 
     goto LABEL_21;
   }
 
-  v8 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  v9 = [v8 selectedIndex];
+  waypointListView2 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  selectedIndex = [waypointListView2 selectedIndex];
 
-  if (v9)
+  if (selectedIndex)
   {
-    v10 = (v9 - 1);
+    v10 = (selectedIndex - 1);
   }
 
   else
@@ -80,21 +80,21 @@ LABEL_20:
     v10 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v11 = [(RoutePlanningWaypointEditorViewController *)self items];
-  v12 = [v11 count];
+  items = [(RoutePlanningWaypointEditorViewController *)self items];
+  v12 = [items count];
 
-  if (v9 < v12)
+  if (selectedIndex < v12)
   {
     v13 = sub_100EFD6B0();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v19 = 134217984;
-      v20 = v9;
+      v20 = selectedIndex;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Invoking search for index %lu", &v19, 0xCu);
     }
 
-    v7 = objc_alloc_init(SearchFieldItem);
-    [(SearchFieldItem *)v7 setSearchString:v4];
+    delegate = objc_alloc_init(SearchFieldItem);
+    [(SearchFieldItem *)delegate setSearchString:textCopy];
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v14 = 0;
@@ -102,12 +102,12 @@ LABEL_20:
 
     else
     {
-      v17 = [(RoutePlanningWaypointEditorViewController *)self items];
-      v14 = [v17 objectAtIndex:v10];
+      items2 = [(RoutePlanningWaypointEditorViewController *)self items];
+      v14 = [items2 objectAtIndex:v10];
     }
 
-    v18 = [(RoutePlanningWaypointEditorViewController *)self delegate];
-    [v18 routeSearch:self didSearchForItem:v7 previousSearchItem:v14];
+    delegate2 = [(RoutePlanningWaypointEditorViewController *)self delegate];
+    [delegate2 routeSearch:self didSearchForItem:delegate previousSearchItem:v14];
 
     goto LABEL_20;
   }
@@ -126,13 +126,13 @@ LABEL_20:
 
   if (sub_100E03634())
   {
-    v7 = sub_10006D178();
-    if (os_log_type_enabled(&v7->super, OS_LOG_TYPE_ERROR))
+    delegate = sub_10006D178();
+    if (os_log_type_enabled(&delegate->super, OS_LOG_TYPE_ERROR))
     {
       v16 = +[NSThread callStackSymbols];
       v19 = 138412290;
       v20 = v16;
-      _os_log_impl(&_mh_execute_header, &v7->super, OS_LOG_TYPE_ERROR, "%@", &v19, 0xCu);
+      _os_log_impl(&_mh_execute_header, &delegate->super, OS_LOG_TYPE_ERROR, "%@", &v19, 0xCu);
     }
 
     goto LABEL_20;
@@ -141,18 +141,18 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)updateAutoCompleteWithText:(id)a3
+- (void)updateAutoCompleteWithText:(id)text
 {
-  v4 = a3;
-  v6 = [(RoutePlanningWaypointEditorViewController *)self delegate];
-  v5 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  [v6 routeSearch:self didUpdateInputText:v4 atIndex:{objc_msgSend(v5, "selectedIndex")}];
+  textCopy = text;
+  delegate = [(RoutePlanningWaypointEditorViewController *)self delegate];
+  waypointListView = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  [delegate routeSearch:self didUpdateInputText:textCopy atIndex:{objc_msgSend(waypointListView, "selectedIndex")}];
 }
 
-- (void)waypointListView:(id)a3 didSelectCollapsedWaypoints:(id)a4
+- (void)waypointListView:(id)view didSelectCollapsedWaypoints:(id)waypoints
 {
-  v6 = a4;
-  v7 = a3;
+  waypointsCopy = waypoints;
+  viewCopy = view;
   v8 = sub_100EFD6B0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -161,94 +161,94 @@ LABEL_21:
   }
 
   v9 = +[MKMapService sharedService];
-  v10 = [v6 count];
+  v10 = [waypointsCopy count];
 
   v11 = [NSNumber numberWithUnsignedInteger:v10];
-  v12 = [v11 stringValue];
-  [v9 captureUserAction:31 onTarget:607 eventValue:v12];
+  stringValue = [v11 stringValue];
+  [v9 captureUserAction:31 onTarget:607 eventValue:stringValue];
 
-  [v7 expandStopsIfNeeded];
+  [viewCopy expandStopsIfNeeded];
   [(RoutePlanningWaypointEditorViewController *)self _invalidateIntrinsicContentSize];
 }
 
-- (void)waypointListView:(id)a3 didClearInputTextForWaypointAtIndex:(unint64_t)a4
+- (void)waypointListView:(id)view didClearInputTextForWaypointAtIndex:(unint64_t)index
 {
   v6 = sub_100EFD6B0();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v10 = 134217984;
-    v11 = a4;
+    indexCopy = index;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Did clear input text for field at index %lu", &v10, 0xCu);
   }
 
-  v7 = [(RoutePlanningWaypointEditorViewController *)self delegate];
+  delegate = [(RoutePlanningWaypointEditorViewController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(RoutePlanningWaypointEditorViewController *)self delegate];
-    [v9 routeSearchFields:self didClearInputTextForWaypointAtIndex:a4];
+    delegate2 = [(RoutePlanningWaypointEditorViewController *)self delegate];
+    [delegate2 routeSearchFields:self didClearInputTextForWaypointAtIndex:index];
   }
 }
 
-- (void)waypointListView:(id)a3 didDeleteWaypointAtIndex:(unint64_t)a4
+- (void)waypointListView:(id)view didDeleteWaypointAtIndex:(unint64_t)index
 {
   v6 = sub_100EFD6B0();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v11 = 134217984;
-    v12 = a4;
+    indexCopy = index;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Did delete waypoint at index %lu", &v11, 0xCu);
   }
 
   v7 = +[MKMapService sharedService];
-  v8 = [NSNumber numberWithUnsignedInteger:a4];
-  v9 = [v8 stringValue];
-  [v7 captureUserAction:280 onTarget:607 eventValue:v9];
+  v8 = [NSNumber numberWithUnsignedInteger:index];
+  stringValue = [v8 stringValue];
+  [v7 captureUserAction:280 onTarget:607 eventValue:stringValue];
 
   [(RoutePlanningWaypointEditorViewController *)self _invalidateIntrinsicContentSize];
-  v10 = [(RoutePlanningWaypointEditorViewController *)self delegate];
-  [v10 routeSearchFieldsDidUpdateItemsForRouteRequest:self];
+  delegate = [(RoutePlanningWaypointEditorViewController *)self delegate];
+  [delegate routeSearchFieldsDidUpdateItemsForRouteRequest:self];
 }
 
-- (void)waypointListView:(id)a3 didMoveWaypoint:(id)a4 fromIndex:(unint64_t)a5 toIndex:(unint64_t)a6
+- (void)waypointListView:(id)view didMoveWaypoint:(id)waypoint fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
   v9 = sub_100EFD6B0();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v14 = 134218240;
-    v15 = a5;
+    indexCopy = index;
     v16 = 2048;
-    v17 = a6;
+    toIndexCopy = toIndex;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Did move waypoint from index %lu at %lu", &v14, 0x16u);
   }
 
   v10 = +[MKMapService sharedService];
-  v11 = [NSNumber numberWithUnsignedInteger:a5];
-  v12 = [v11 stringValue];
-  [v10 captureUserAction:279 onTarget:607 eventValue:v12];
+  v11 = [NSNumber numberWithUnsignedInteger:index];
+  stringValue = [v11 stringValue];
+  [v10 captureUserAction:279 onTarget:607 eventValue:stringValue];
 
-  v13 = [(RoutePlanningWaypointEditorViewController *)self delegate];
-  [v13 routeSearchFieldsDidUpdateItemsForRouteRequest:self];
+  delegate = [(RoutePlanningWaypointEditorViewController *)self delegate];
+  [delegate routeSearchFieldsDidUpdateItemsForRouteRequest:self];
 }
 
-- (void)waypointListView:(id)a3 didStartEditingWaypointAtIndex:(unint64_t)a4
+- (void)waypointListView:(id)view didStartEditingWaypointAtIndex:(unint64_t)index
 {
   v5 = sub_100EFD6B0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v9 = 134217984;
-    v10 = a4;
+    indexCopy = index;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Did start editing waypoint at index %lu", &v9, 0xCu);
   }
 
   v6 = +[MKMapService sharedService];
-  v7 = [NSNumber numberWithUnsignedInteger:a4];
-  v8 = [v7 stringValue];
-  [v6 captureUserAction:277 onTarget:607 eventValue:v8];
+  v7 = [NSNumber numberWithUnsignedInteger:index];
+  stringValue = [v7 stringValue];
+  [v6 captureUserAction:277 onTarget:607 eventValue:stringValue];
 }
 
-- (void)waypointListViewDidSelectAddStop:(id)a3
+- (void)waypointListViewDidSelectAddStop:(id)stop
 {
   v4 = sub_100EFD6B0();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -257,8 +257,8 @@ LABEL_21:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Did select Add Stop", buf, 2u);
   }
 
-  v5 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  [v5 addStop];
+  waypointListView = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  [waypointListView addStop];
 
   [(RoutePlanningWaypointEditorViewController *)self _invalidateIntrinsicContentSize];
   v6 = +[MKMapService sharedService];
@@ -274,16 +274,16 @@ LABEL_21:
 
 - (unint64_t)_currentlySelectedIndexForAddStop
 {
-  v2 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  v3 = [v2 selectedIndex];
+  waypointListView = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  selectedIndex = [waypointListView selectedIndex];
 
-  return v3;
+  return selectedIndex;
 }
 
 - (double)contentHeight
 {
-  v2 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  [v2 intrinsicContentSize];
+  waypointListView = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  [waypointListView intrinsicContentSize];
   v4 = v3;
 
   return v4;
@@ -291,15 +291,15 @@ LABEL_21:
 
 - (BOOL)hasInput
 {
-  v3 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  v4 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  v5 = [v3 cellForIndex:{objc_msgSend(v4, "selectedIndex")}];
+  waypointListView = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  waypointListView2 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  v5 = [waypointListView cellForIndex:{objc_msgSend(waypointListView2, "selectedIndex")}];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 currentText];
-    v7 = [v6 length] != 0;
+    currentText = [v5 currentText];
+    v7 = [currentText length] != 0;
   }
 
   else
@@ -317,32 +317,32 @@ LABEL_21:
     return 0;
   }
 
-  v4 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  v3 = [v4 selectedIndex] != 0x7FFFFFFFFFFFFFFFLL;
+  waypointListView = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  v3 = [waypointListView selectedIndex] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v3;
 }
 
-- (BOOL)containsWaypointForItem:(id)a3
+- (BOOL)containsWaypointForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = v4, +[MKLocationManager sharedLocationManager](MKLocationManager, "sharedLocationManager"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isLocationServicesApproved], v8 = objc_msgSend(v6, "isAuthorizedForPreciseLocation"), v9 = objc_msgSend(v5, "isDynamicCurrentLocation"), v5, v6, v9) && (v7 & v8) == 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = itemCopy, +[MKLocationManager sharedLocationManager](MKLocationManager, "sharedLocationManager"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isLocationServicesApproved], v8 = objc_msgSend(v6, "isAuthorizedForPreciseLocation"), v9 = objc_msgSend(v5, "isDynamicCurrentLocation"), v5, v6, v9) && (v7 & v8) == 0)
   {
     LOBYTE(v10) = 0;
   }
 
   else
   {
-    v11 = [SearchFieldItem searchFieldItemWithObject:v4 expandRecentsItem:1 preserveContact:1];
+    v11 = [SearchFieldItem searchFieldItemWithObject:itemCopy expandRecentsItem:1 preserveContact:1];
     if (v11)
     {
       v18 = 0u;
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v12 = [(RoutePlanningWaypointEditorViewController *)self items];
-      v10 = [v12 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      items = [(RoutePlanningWaypointEditorViewController *)self items];
+      v10 = [items countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v10)
       {
         v13 = *v17;
@@ -352,7 +352,7 @@ LABEL_21:
           {
             if (*v17 != v13)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(items);
             }
 
             if ([v11 isEquivalentAsWaypointToSearchFieldItem:*(*(&v16 + 1) + 8 * i)])
@@ -362,7 +362,7 @@ LABEL_21:
             }
           }
 
-          v10 = [v12 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v10 = [items countByEnumeratingWithState:&v16 objects:v20 count:16];
           if (v10)
           {
             continue;
@@ -384,26 +384,26 @@ LABEL_16:
   return v10;
 }
 
-- (void)updateSearchFieldsFromIndex:(unint64_t)a3 withItem:(id)a4
+- (void)updateSearchFieldsFromIndex:(unint64_t)index withItem:(id)item
 {
-  v6 = a4;
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  itemCopy = item;
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_15;
   }
 
-  v7 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  a3 = [v7 selectedIndex];
+  waypointListView = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  index = [waypointListView selectedIndex];
 
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_15;
   }
 
-  v8 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  v9 = [v8 addStop];
+  waypointListView2 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  addStop = [waypointListView2 addStop];
 
-  if (!v9)
+  if (!addStop)
   {
     goto LABEL_7;
   }
@@ -415,11 +415,11 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Adding waypoint cell to accommodate new item", &v18, 2u);
   }
 
-  v11 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  v12 = [v11 waypoints];
-  a3 = [v12 count] - 1;
+  waypointListView3 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  waypoints = [waypointListView3 waypoints];
+  index = [waypoints count] - 1;
 
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_7:
     v13 = sub_10006D178();
@@ -446,23 +446,23 @@ LABEL_7:
       }
     }
 
-    v16 = sub_100EFD6B0();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    delegate = sub_100EFD6B0();
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
     {
       v18 = 138412290;
-      v19 = v6;
-      _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Didn't have a selected cell when applying item %@", &v18, 0xCu);
+      v19 = itemCopy;
+      _os_log_impl(&_mh_execute_header, delegate, OS_LOG_TYPE_ERROR, "Didn't have a selected cell when applying item %@", &v18, 0xCu);
     }
   }
 
   else
   {
 LABEL_15:
-    v17 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-    [v17 replaceWaypointAtIndex:a3 withWaypoint:v6];
+    waypointListView4 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+    [waypointListView4 replaceWaypointAtIndex:index withWaypoint:itemCopy];
 
-    v16 = [(RoutePlanningWaypointEditorViewController *)self delegate];
-    [v16 routeSearchFieldsDidUpdateItemsForRouteRequest:self];
+    delegate = [(RoutePlanningWaypointEditorViewController *)self delegate];
+    [delegate routeSearchFieldsDidUpdateItemsForRouteRequest:self];
   }
 }
 
@@ -475,21 +475,21 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "End all editing", v5, 2u);
   }
 
-  v4 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  [v4 deselectAllRows];
+  waypointListView = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  [waypointListView deselectAllRows];
 }
 
 - (void)beginEditingNextSearchField
 {
-  v3 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  v4 = [v3 selectedIndex];
+  waypointListView = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  selectedIndex = [waypointListView selectedIndex];
 
-  if (v4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (selectedIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-    v6 = [v5 waypoints];
+    waypointListView2 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+    waypoints = [waypointListView2 waypoints];
 
-    v7 = [v6 count];
+    v7 = [waypoints count];
     if (v7)
     {
       v8 = v7;
@@ -497,9 +497,9 @@ LABEL_15:
       v10 = v7 - 1;
       while (1)
       {
-        v11 = [v6 objectAtIndexedSubscript:v9];
-        v12 = [v11 waypointName];
-        v13 = [v12 length];
+        v11 = [waypoints objectAtIndexedSubscript:v9];
+        waypointName = [v11 waypointName];
+        v13 = [waypointName length];
 
         if (!v13)
         {
@@ -527,8 +527,8 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Begin editing at index %lu", &v17, 0xCu);
     }
 
-    v16 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-    [v16 selectRowIndex:v9];
+    waypointListView3 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+    [waypointListView3 selectRowIndex:v9];
   }
 
   else
@@ -540,95 +540,95 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Begin editing next field", &v17, 2u);
     }
 
-    v6 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-    [v6 selectNextSearchField];
+    waypoints = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+    [waypoints selectNextSearchField];
   }
 }
 
 - (BOOL)mprEnabled
 {
-  v2 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  v3 = [v2 mprEnabled];
+  waypointListView = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  mprEnabled = [waypointListView mprEnabled];
 
-  return v3;
+  return mprEnabled;
 }
 
-- (void)setMprEnabled:(BOOL)a3
+- (void)setMprEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  [v4 setMprEnabled:v3];
+  enabledCopy = enabled;
+  waypointListView = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  [waypointListView setMprEnabled:enabledCopy];
 }
 
 - (NSArray)itemsForRouteRequest
 {
-  v2 = [(RoutePlanningWaypointEditorViewController *)self items];
-  v3 = sub_100021DB0(v2, &stru_10165CA80);
+  items = [(RoutePlanningWaypointEditorViewController *)self items];
+  v3 = sub_100021DB0(items, &stru_10165CA80);
 
   return v3;
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  v4 = a3;
-  v5 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  [v5 setWaypoints:v4];
+  itemsCopy = items;
+  waypointListView = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  [waypointListView setWaypoints:itemsCopy];
 }
 
 - (NSArray)items
 {
-  v2 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  v3 = [v2 waypoints];
+  waypointListView = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  waypoints = [waypointListView waypoints];
 
-  return v3;
+  return waypoints;
 }
 
 - (void)deleteCurrentFieldIndex
 {
-  v3 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  v4 = [v3 selectedIndex];
+  waypointListView = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  selectedIndex = [waypointListView selectedIndex];
 
-  if (v4 != 0x7FFFFFFFFFFFFFFFLL)
+  if (selectedIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-    [v5 performDeleteAtIndex:v4];
+    waypointListView2 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+    [waypointListView2 performDeleteAtIndex:selectedIndex];
   }
 }
 
 - (BOOL)canDeleteCurrentFieldIndex
 {
-  v3 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  v4 = [v3 selectedIndex];
+  waypointListView = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  selectedIndex = [waypointListView selectedIndex];
 
-  if (v4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (selectedIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  v6 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  v7 = [v6 canDeleteWaypointForCellAtIndex:v4];
+  waypointListView2 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  v7 = [waypointListView2 canDeleteWaypointForCellAtIndex:selectedIndex];
 
   return v7;
 }
 
-- (void)selectFieldAtIndex:(unint64_t)a3
+- (void)selectFieldAtIndex:(unint64_t)index
 {
-  v4 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  [v4 selectRowIndex:a3];
+  waypointListView = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  [waypointListView selectRowIndex:index];
 }
 
 - (void)selectToField
 {
-  v5 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  v3 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  v4 = [v3 waypoints];
-  [v5 selectRowIndex:{objc_msgSend(v4, "count") - 1}];
+  waypointListView = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  waypointListView2 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  waypoints = [waypointListView2 waypoints];
+  [waypointListView selectRowIndex:{objc_msgSend(waypoints, "count") - 1}];
 }
 
 - (void)selectFromField
 {
-  v2 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  [v2 selectRowIndex:0];
+  waypointListView = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  [waypointListView selectRowIndex:0];
 }
 
 - (BOOL)containsCurrentLocationItem
@@ -637,8 +637,8 @@ LABEL_15:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(RoutePlanningWaypointEditorViewController *)self items];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  items = [(RoutePlanningWaypointEditorViewController *)self items];
+  v3 = [items countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -648,20 +648,20 @@ LABEL_15:
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(items);
         }
 
-        v6 = [*(*(&v9 + 1) + 8 * i) searchResult];
-        v7 = [v6 isDynamicCurrentLocation];
+        searchResult = [*(*(&v9 + 1) + 8 * i) searchResult];
+        isDynamicCurrentLocation = [searchResult isDynamicCurrentLocation];
 
-        if (v7)
+        if (isDynamicCurrentLocation)
         {
           LOBYTE(v3) = 1;
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [items countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -678,53 +678,53 @@ LABEL_11:
 
 - (NSString)focusGroupIdentifierForCurrentlyEditingField
 {
-  v2 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  v3 = [v2 focusGroupIdentifierForCurrentlyEditingField];
+  waypointListView = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  focusGroupIdentifierForCurrentlyEditingField = [waypointListView focusGroupIdentifierForCurrentlyEditingField];
 
-  return v3;
+  return focusGroupIdentifierForCurrentlyEditingField;
 }
 
 - (UILayoutGuide)layoutGuideForCurrentlyEditingField
 {
-  v2 = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
-  v3 = [v2 layoutGuideForCurrentlyEditingField];
+  waypointListView = [(RoutePlanningWaypointEditorViewController *)self waypointListView];
+  layoutGuideForCurrentlyEditingField = [waypointListView layoutGuideForCurrentlyEditingField];
 
-  return v3;
+  return layoutGuideForCurrentlyEditingField;
 }
 
 - (void)_invalidateIntrinsicContentSize
 {
-  v3 = [(RoutePlanningWaypointEditorViewController *)self intrinsicContentSizeInvalidationHandler];
+  intrinsicContentSizeInvalidationHandler = [(RoutePlanningWaypointEditorViewController *)self intrinsicContentSizeInvalidationHandler];
 
-  if (v3)
+  if (intrinsicContentSizeInvalidationHandler)
   {
-    v4 = [(RoutePlanningWaypointEditorViewController *)self intrinsicContentSizeInvalidationHandler];
-    v4[2]();
+    intrinsicContentSizeInvalidationHandler2 = [(RoutePlanningWaypointEditorViewController *)self intrinsicContentSizeInvalidationHandler];
+    intrinsicContentSizeInvalidationHandler2[2]();
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = RoutePlanningWaypointEditorViewController;
-  v4 = a3;
-  [(RoutePlanningWaypointEditorViewController *)&v8 traitCollectionDidChange:v4];
-  v5 = [v4 verticalSizeClass];
+  changeCopy = change;
+  [(RoutePlanningWaypointEditorViewController *)&v8 traitCollectionDidChange:changeCopy];
+  verticalSizeClass = [changeCopy verticalSizeClass];
 
-  v6 = [(RoutePlanningWaypointEditorViewController *)self traitCollection];
-  v7 = [v6 verticalSizeClass];
+  traitCollection = [(RoutePlanningWaypointEditorViewController *)self traitCollection];
+  verticalSizeClass2 = [traitCollection verticalSizeClass];
 
-  if (v5 != v7)
+  if (verticalSizeClass != verticalSizeClass2)
   {
     [(RoutePlanningWaypointEditorViewController *)self _invalidateIntrinsicContentSize];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = RoutePlanningWaypointEditorViewController;
-  [(RoutePlanningWaypointEditorViewController *)&v4 viewDidDisappear:a3];
+  [(RoutePlanningWaypointEditorViewController *)&v4 viewDidDisappear:disappear];
   [(RoutePlanningWaypointListView *)self->_waypointListView collapseStopsIfNeeded];
 }
 
@@ -748,43 +748,43 @@ LABEL_11:
     [(RoutePlanningWaypointListView *)self->_waypointListView setContentHuggingPriority:1 forAxis:v8];
   }
 
-  v9 = [(RoutePlanningWaypointEditorViewController *)self view];
-  [v9 addSubview:self->_waypointListView];
+  view = [(RoutePlanningWaypointEditorViewController *)self view];
+  [view addSubview:self->_waypointListView];
 
-  v25 = [(RoutePlanningWaypointListView *)self->_waypointListView leadingAnchor];
-  v26 = [(RoutePlanningWaypointEditorViewController *)self view];
-  v24 = [v26 leadingAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  leadingAnchor = [(RoutePlanningWaypointListView *)self->_waypointListView leadingAnchor];
+  view2 = [(RoutePlanningWaypointEditorViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v28[0] = v23;
-  v21 = [(RoutePlanningWaypointListView *)self->_waypointListView trailingAnchor];
-  v22 = [(RoutePlanningWaypointEditorViewController *)self view];
-  v20 = [v22 trailingAnchor];
-  v10 = [v21 constraintEqualToAnchor:v20];
+  trailingAnchor = [(RoutePlanningWaypointListView *)self->_waypointListView trailingAnchor];
+  view3 = [(RoutePlanningWaypointEditorViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v28[1] = v10;
-  v11 = [(RoutePlanningWaypointListView *)self->_waypointListView topAnchor];
-  v12 = [(RoutePlanningWaypointEditorViewController *)self view];
-  v13 = [v12 topAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  topAnchor = [(RoutePlanningWaypointListView *)self->_waypointListView topAnchor];
+  view4 = [(RoutePlanningWaypointEditorViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v28[2] = v14;
-  v15 = [(RoutePlanningWaypointListView *)self->_waypointListView bottomAnchor];
-  v16 = [(RoutePlanningWaypointEditorViewController *)self view];
-  v17 = [v16 bottomAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17 constant:-4.0];
+  bottomAnchor = [(RoutePlanningWaypointListView *)self->_waypointListView bottomAnchor];
+  view5 = [(RoutePlanningWaypointEditorViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-4.0];
   v28[3] = v18;
   v19 = [NSArray arrayWithObjects:v28 count:4];
   [NSLayoutConstraint activateConstraints:v19];
 }
 
-- (RoutePlanningWaypointEditorViewController)initWithWaypointInfoProvider:(id)a3
+- (RoutePlanningWaypointEditorViewController)initWithWaypointInfoProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v8.receiver = self;
   v8.super_class = RoutePlanningWaypointEditorViewController;
   v5 = [(RoutePlanningWaypointEditorViewController *)&v8 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_waypointInfoProvider, v4);
+    objc_storeWeak(&v5->_waypointInfoProvider, providerCopy);
   }
 
   return v6;

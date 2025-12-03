@@ -1,6 +1,6 @@
 @interface AMDCoreDataPersistentContainer
 + (id)sharedContainer;
-- (void)save:(id *)a3;
+- (void)save:(id *)save;
 @end
 
 @implementation AMDCoreDataPersistentContainer
@@ -169,21 +169,21 @@ void __49__AMDCoreDataPersistentContainer_sharedContainer__block_invoke_2(void *
   *MEMORY[0x277D85DE8];
 }
 
-- (void)save:(id *)a3
+- (void)save:(id *)save
 {
   v12 = *MEMORY[0x277D85DE8];
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
-  v5 = [(AMDCoreDataPersistentContainer *)self _moc];
-  [(NSManagedObjectContext *)v5 save:v8];
-  MEMORY[0x277D82BD8](v5);
-  if (*v8)
+  saveCopy = save;
+  _moc = [(AMDCoreDataPersistentContainer *)self _moc];
+  [(NSManagedObjectContext *)_moc save:saveCopy];
+  MEMORY[0x277D82BD8](_moc);
+  if (*saveCopy)
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = [*v8 localizedDescription];
-    v7 = [v3 stringWithFormat:@"Error saving local MOC: %@", v4];
-    MEMORY[0x277D82BD8](v4);
+    localizedDescription = [*saveCopy localizedDescription];
+    v7 = [v3 stringWithFormat:@"Error saving local MOC: %@", localizedDescription];
+    MEMORY[0x277D82BD8](localizedDescription);
     location = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
     if (os_log_type_enabled(location, OS_LOG_TYPE_ERROR))
     {

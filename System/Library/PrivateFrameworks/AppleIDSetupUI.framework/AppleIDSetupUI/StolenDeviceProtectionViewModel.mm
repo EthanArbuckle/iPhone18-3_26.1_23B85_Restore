@@ -1,7 +1,7 @@
 @interface StolenDeviceProtectionViewModel
 - (_TtC14AppleIDSetupUI31StolenDeviceProtectionViewModel)init;
-- (void)remoteUIDidEndFlow:(id)a3;
-- (void)remoteUIRequestComplete:(id)a3 error:(id)a4;
+- (void)remoteUIDidEndFlow:(id)flow;
+- (void)remoteUIRequestComplete:(id)complete error:(id)error;
 @end
 
 @implementation StolenDeviceProtectionViewModel
@@ -13,13 +13,13 @@
   return result;
 }
 
-- (void)remoteUIDidEndFlow:(id)a3
+- (void)remoteUIDidEndFlow:(id)flow
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC14AppleIDSetupUI31StolenDeviceProtectionViewModel_completionHandler);
   if (v3)
   {
     v4 = *&self->remoteUIPresenter[OBJC_IVAR____TtC14AppleIDSetupUI31StolenDeviceProtectionViewModel_completionHandler];
-    v5 = self;
+    selfCopy = self;
     sub_24090C23C(v3);
     v3(1, 0);
 
@@ -27,7 +27,7 @@
   }
 }
 
-- (void)remoteUIRequestComplete:(id)a3 error:(id)a4
+- (void)remoteUIRequestComplete:(id)complete error:(id)error
 {
   v4 = sub_240A2946C();
   v5 = *(v4 - 8);

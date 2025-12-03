@@ -1,8 +1,8 @@
 @interface CAProcessMonitor
-- (CAProcessMonitor)initWithCallback:(id)a3;
-- (void)addMonitoringProcess:(int)a3;
+- (CAProcessMonitor)initWithCallback:(id)callback;
+- (void)addMonitoringProcess:(int)process;
 - (void)dealloc;
-- (void)removeMonitoringProcess:(int)a3;
+- (void)removeMonitoringProcess:(int)process;
 - (void)updateConfiguration;
 @end
 
@@ -11,7 +11,7 @@
 - (void)updateConfiguration
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   processIdentifiers = self->_processIdentifiers;
   objc_sync_enter(processIdentifiers);
   v14 = 0u;
@@ -32,7 +32,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [v3 addObject:{objc_msgSend(MEMORY[0x1E69C7610], "predicateMatchingIdentifier:", *(*(&v14 + 1) + 8 * i))}];
+        [array addObject:{objc_msgSend(MEMORY[0x1E69C7610], "predicateMatchingIdentifier:", *(*(&v14 + 1) + 8 * i))}];
       }
 
       v6 = [(NSMutableSet *)v5 countByEnumeratingWithState:&v14 objects:v13 count:16];
@@ -48,7 +48,7 @@
   v10[1] = 3221225472;
   v10[2] = __39__CAProcessMonitor_updateConfiguration__block_invoke;
   v10[3] = &unk_1E6DF8020;
-  v10[4] = v3;
+  v10[4] = array;
   objc_copyWeak(&v11, &location);
   [(RBSProcessMonitor *)processMonitor updateConfiguration:v10];
   objc_destroyWeak(&v11);
@@ -110,10 +110,10 @@ void __39__CAProcessMonitor_updateConfiguration__block_invoke_2(uint64_t a1, uin
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)removeMonitoringProcess:(int)a3
+- (void)removeMonitoringProcess:(int)process
 {
   v8[5] = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E69C75E0] identifierWithPid:*&a3];
+  v4 = [MEMORY[0x1E69C75E0] identifierWithPid:*&process];
   if (v4)
   {
     v5 = v4;
@@ -140,10 +140,10 @@ void __39__CAProcessMonitor_updateConfiguration__block_invoke_2(uint64_t a1, uin
   }
 }
 
-- (void)addMonitoringProcess:(int)a3
+- (void)addMonitoringProcess:(int)process
 {
   block[6] = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E69C75E0] identifierWithPid:*&a3];
+  v4 = [MEMORY[0x1E69C75E0] identifierWithPid:*&process];
   if (v4)
   {
     v5 = v4;
@@ -234,7 +234,7 @@ LABEL_8:
   [(CAProcessMonitor *)&v3 dealloc];
 }
 
-- (CAProcessMonitor)initWithCallback:(id)a3
+- (CAProcessMonitor)initWithCallback:(id)callback
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -244,7 +244,7 @@ LABEL_8:
   {
     v5 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
     v4->_queue = dispatch_queue_create("CAProcessMonitor Queue", v5);
-    v4->_callback = _Block_copy(a3);
+    v4->_callback = _Block_copy(callback);
     v4->_processMonitor = objc_alloc_init(MEMORY[0x1E69C75F8]);
     v4->_processIdentifiers = objc_alloc_init(MEMORY[0x1E696AB50]);
   }

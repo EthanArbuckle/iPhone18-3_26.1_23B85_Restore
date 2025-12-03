@@ -1,5 +1,5 @@
 @interface HRMetadataEducationTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_setUpUI;
@@ -7,12 +7,12 @@
 
 @implementation HRMetadataEducationTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HRMetadataEducationTableViewCell" isKindOfClass:@"UITableViewCell"];
-  [v3 validateClass:@"HRMetadataEducationTableViewCell" hasInstanceMethod:@"_setUpUI" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"HRMetadataEducationTableViewCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HRMetadataEducationTableViewCell" isKindOfClass:@"UITableViewCell"];
+  [validationsCopy validateClass:@"HRMetadataEducationTableViewCell" hasInstanceMethod:@"_setUpUI" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"HRMetadataEducationTableViewCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -21,8 +21,8 @@
   v5.super_class = HRMetadataEducationTableViewCellAccessibility;
   [(HRMetadataEducationTableViewCellAccessibility *)&v5 _accessibilityLoadAccessibilityInformation];
   v3 = [(HRMetadataEducationTableViewCellAccessibility *)self safeValueForKey:@"titleLabel"];
-  v4 = [v3 accessibilityTraits];
-  [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F80] | v4];
+  accessibilityTraits = [v3 accessibilityTraits];
+  [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F80] | accessibilityTraits];
 }
 
 - (id)accessibilityElements
@@ -30,22 +30,22 @@
   v9 = 0;
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 contentView];
+  contentView = [v3 contentView];
 
-  if (v4)
+  if (contentView)
   {
-    v5 = [v3 contentView];
-    v6 = [v5 _accessibleSubviews];
+    contentView2 = [v3 contentView];
+    _accessibleSubviews = [contentView2 _accessibleSubviews];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = HRMetadataEducationTableViewCellAccessibility;
-    v6 = [(HRMetadataEducationTableViewCellAccessibility *)&v8 accessibilityElements];
+    _accessibleSubviews = [(HRMetadataEducationTableViewCellAccessibility *)&v8 accessibilityElements];
   }
 
-  return v6;
+  return _accessibleSubviews;
 }
 
 - (void)_setUpUI

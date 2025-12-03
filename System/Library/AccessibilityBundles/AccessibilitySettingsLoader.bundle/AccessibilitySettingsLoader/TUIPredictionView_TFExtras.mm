@@ -1,18 +1,18 @@
 @interface TUIPredictionView_TFExtras
-- (TUIPredictionView_TFExtras)initWithFrame:(CGRect)a3;
-- (void)_handleAXLongPress:(id)a3;
-- (void)_speakLabelAtCell:(id)a3 forCurrentInputMode:(id)a4;
+- (TUIPredictionView_TFExtras)initWithFrame:(CGRect)frame;
+- (void)_handleAXLongPress:(id)press;
+- (void)_speakLabelAtCell:(id)cell forCurrentInputMode:(id)mode;
 - (void)layoutSubviews;
 - (void)speakTypingLoadAccessibilityInformation;
 @end
 
 @implementation TUIPredictionView_TFExtras
 
-- (TUIPredictionView_TFExtras)initWithFrame:(CGRect)a3
+- (TUIPredictionView_TFExtras)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = TUIPredictionView_TFExtras;
-  v3 = [(TUIPredictionView_TFExtras *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUIPredictionView_TFExtras *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3 && _AXSQuickTypePredictionFeedbackEnabled())
   {
     [(TUIPredictionView_TFExtras *)v3 speakTypingLoadAccessibilityInformation];
@@ -36,8 +36,8 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(TUIPredictionView_TFExtras *)self gestureRecognizers];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  gestureRecognizers = [(TUIPredictionView_TFExtras *)self gestureRecognizers];
+  v4 = [gestureRecognizers countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -48,7 +48,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(gestureRecognizers);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -59,7 +59,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v5 = [gestureRecognizers countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v5);
@@ -81,18 +81,18 @@
   }
 }
 
-- (void)_handleAXLongPress:(id)a3
+- (void)_handleAXLongPress:(id)press
 {
-  v4 = a3;
+  pressCopy = press;
   v5 = [(TUIPredictionView_TFExtras *)self safeArrayForKey:@"allVisibleCells"];
-  v6 = [MEMORY[0x29EDC7B18] sharedInputModeController];
-  v7 = [v6 currentInputMode];
-  v8 = [v7 primaryLanguage];
+  mEMORY[0x29EDC7B18] = [MEMORY[0x29EDC7B18] sharedInputModeController];
+  currentInputMode = [mEMORY[0x29EDC7B18] currentInputMode];
+  primaryLanguage = [currentInputMode primaryLanguage];
 
-  [v4 locationInView:self];
+  [pressCopy locationInView:self];
   v10 = v9;
   v12 = v11;
-  if ([v4 state] == 1)
+  if ([pressCopy state] == 1)
   {
     v13 = [(TUIPredictionView_TFExtras *)self _predictionCellIndexAtLocation:v10, v12];
 LABEL_3:
@@ -100,13 +100,13 @@ LABEL_3:
     if (v13 < [v5 count])
     {
       v14 = [v5 objectAtIndexedSubscript:v13];
-      [(TUIPredictionView_TFExtras *)self _speakLabelAtCell:v14 forCurrentInputMode:v8];
+      [(TUIPredictionView_TFExtras *)self _speakLabelAtCell:v14 forCurrentInputMode:primaryLanguage];
     }
 
     goto LABEL_13;
   }
 
-  if ([v4 state] == 2)
+  if ([pressCopy state] == 2)
   {
     v13 = [(TUIPredictionView_TFExtras *)self _predictionCellIndexAtLocation:v10, v12];
     if (v13 == [(TUIPredictionView_TFExtras *)self _accessibilityIntegerValueForKey:@"accessibilityCurrentIndex"])
@@ -124,7 +124,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  if ([v4 state] == 3)
+  if ([pressCopy state] == 3)
   {
     v15 = [(TUIPredictionView_TFExtras *)self safeIntegerForKey:@"selectedIndex"];
     v16 = [v5 count];
@@ -134,7 +134,7 @@ LABEL_3:
       v18[1] = 3221225472;
       v18[2] = __49__TUIPredictionView_TFExtras__handleAXLongPress___block_invoke_2;
       v18[3] = &unk_29F29A918;
-      v20 = self;
+      selfCopy = self;
       v21 = v15;
       v19 = v5;
       soft_AXPerformSafeBlock_0(v18);
@@ -154,17 +154,17 @@ LABEL_3:
 LABEL_13:
 }
 
-- (void)_speakLabelAtCell:(id)a3 forCurrentInputMode:(id)a4
+- (void)_speakLabelAtCell:(id)cell forCurrentInputMode:(id)mode
 {
-  v9 = a3;
-  v5 = a4;
+  cellCopy = cell;
+  modeCopy = mode;
   if (_AXSQuickTypePredictionFeedbackEnabled())
   {
-    v6 = [v9 safeValueForKey:@"morphingLabel"];
+    v6 = [cellCopy safeValueForKey:@"morphingLabel"];
     v7 = [v6 safeStringForKey:@"text"];
 
-    v8 = [getSpeakTypingServicesClass_0() sharedInstance];
-    [v8 notifySpeakServicesToFeedbackQuickTypePrediction:v7 forCurrentInputMode:v5];
+    sharedInstance = [getSpeakTypingServicesClass_0() sharedInstance];
+    [sharedInstance notifySpeakServicesToFeedbackQuickTypePrediction:v7 forCurrentInputMode:modeCopy];
   }
 }
 

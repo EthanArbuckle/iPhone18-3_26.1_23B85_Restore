@@ -1,11 +1,11 @@
 @interface APSWakeMetricTracker
-- (APSWakeMetricTracker)initWithOnConnectedInterval:(double)a3 onDisconnectedInterval:(double)a4 metricSubmissionBlock:(id)a5;
+- (APSWakeMetricTracker)initWithOnConnectedInterval:(double)interval onDisconnectedInterval:(double)disconnectedInterval metricSubmissionBlock:(id)block;
 - (void)_clearState;
 - (void)_fireMetricIfNeeded;
-- (void)_timerFired:(id)a3;
+- (void)_timerFired:(id)fired;
 - (void)noteDidConnect;
 - (void)noteReceivedStoredMessage;
-- (void)noteSystemDidFullWakeWhileConnected:(BOOL)a3;
+- (void)noteSystemDidFullWakeWhileConnected:(BOOL)connected;
 @end
 
 @implementation APSWakeMetricTracker
@@ -17,7 +17,7 @@
     return;
   }
 
-  v4 = [(APSWakeMetricTracker *)self metricSubmissionBlock];
+  metricSubmissionBlock = [(APSWakeMetricTracker *)self metricSubmissionBlock];
   startedConnected = self->_startedConnected;
   didConnect = self->_didConnect;
   if (didConnect)
@@ -26,7 +26,7 @@
     if (self->_didConnect)
     {
       v8 = [NSNumber numberWithDouble:self->_lastSignificantTime - self->_startTime];
-      (v4)[2](v4, 0, startedConnected, didConnect, v7, v8);
+      (metricSubmissionBlock)[2](metricSubmissionBlock, 0, startedConnected, didConnect, v7, v8);
 
 LABEL_8:
       goto LABEL_9;
@@ -38,7 +38,7 @@ LABEL_8:
     v7 = 0;
   }
 
-  (v4)[2](v4, 0, startedConnected, didConnect, v7, 0);
+  (metricSubmissionBlock)[2](metricSubmissionBlock, 0, startedConnected, didConnect, v7, 0);
   if (didConnect)
   {
     goto LABEL_8;
@@ -49,10 +49,10 @@ LABEL_9:
   [(APSWakeMetricTracker *)self _clearState];
 }
 
-- (APSWakeMetricTracker)initWithOnConnectedInterval:(double)a3 onDisconnectedInterval:(double)a4 metricSubmissionBlock:(id)a5
+- (APSWakeMetricTracker)initWithOnConnectedInterval:(double)interval onDisconnectedInterval:(double)disconnectedInterval metricSubmissionBlock:(id)block
 {
-  v9 = a5;
-  if (!v9)
+  blockCopy = block;
+  if (!blockCopy)
   {
     sub_100109BD0(a2, self);
   }
@@ -63,9 +63,9 @@ LABEL_9:
   v11 = v10;
   if (v10)
   {
-    v10->_onConnectedInterval = a3;
-    v10->_onDisconnectedInterval = a4;
-    v12 = objc_retainBlock(v9);
+    v10->_onConnectedInterval = interval;
+    v10->_onDisconnectedInterval = disconnectedInterval;
+    v12 = objc_retainBlock(blockCopy);
     metricSubmissionBlock = v11->_metricSubmissionBlock;
     v11->_metricSubmissionBlock = v12;
   }
@@ -73,9 +73,9 @@ LABEL_9:
   return v11;
 }
 
-- (void)noteSystemDidFullWakeWhileConnected:(BOOL)a3
+- (void)noteSystemDidFullWakeWhileConnected:(BOOL)connected
 {
-  v3 = a3;
+  connectedCopy = connected;
   if (self->_state)
   {
     [(APSWakeMetricTracker *)self _clearState];
@@ -85,7 +85,7 @@ LABEL_9:
   +[NSDate timeIntervalSinceReferenceDate];
   self->_startTime = v5;
   self->_lastSignificantTime = v5;
-  if (v3)
+  if (connectedCopy)
   {
     v6 = v5;
     onConnectedInterval = self->_onConnectedInterval;
@@ -145,7 +145,7 @@ LABEL_9:
   }
 }
 
-- (void)_timerFired:(id)a3
+- (void)_timerFired:(id)fired
 {
   metricSubmitTimer = self->_metricSubmitTimer;
   self->_metricSubmitTimer = 0;

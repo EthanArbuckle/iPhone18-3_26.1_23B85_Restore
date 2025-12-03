@@ -1,37 +1,37 @@
 @interface HMDMediaDestinationControllerDestinationLogEvent
-- (HMDMediaDestinationControllerDestinationLogEvent)initWithExistingDestinationType:(id)a3 destinationType:(id)a4 isTriggeredOnControllerDevice:(id)a5 userPrivilege:(id)a6;
+- (HMDMediaDestinationControllerDestinationLogEvent)initWithExistingDestinationType:(id)type destinationType:(id)destinationType isTriggeredOnControllerDevice:(id)device userPrivilege:(id)privilege;
 @end
 
 @implementation HMDMediaDestinationControllerDestinationLogEvent
 
-- (HMDMediaDestinationControllerDestinationLogEvent)initWithExistingDestinationType:(id)a3 destinationType:(id)a4 isTriggeredOnControllerDevice:(id)a5 userPrivilege:(id)a6
+- (HMDMediaDestinationControllerDestinationLogEvent)initWithExistingDestinationType:(id)type destinationType:(id)destinationType isTriggeredOnControllerDevice:(id)device userPrivilege:(id)privilege
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  typeCopy = type;
+  destinationTypeCopy = destinationType;
+  deviceCopy = device;
+  privilegeCopy = privilege;
+  if (!typeCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v12)
+  if (!destinationTypeCopy)
   {
 LABEL_9:
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (!v13)
+  if (!deviceCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  v15 = v14;
-  if (!v14)
+  v15 = privilegeCopy;
+  if (!privilegeCopy)
   {
 LABEL_11:
     v19 = _HMFPreconditionFailure();
@@ -40,12 +40,12 @@ LABEL_11:
 
   v21.receiver = self;
   v21.super_class = HMDMediaDestinationControllerDestinationLogEvent;
-  v16 = [(HMDMediaDestinationControllerLogEvent *)&v21 initWithIsTriggeredOnControllerDevice:v13 userPrivilege:v14];
+  v16 = [(HMDMediaDestinationControllerLogEvent *)&v21 initWithIsTriggeredOnControllerDevice:deviceCopy userPrivilege:privilegeCopy];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_existingDestinationType, a3);
-    objc_storeStrong(&v17->_destinationType, a4);
+    objc_storeStrong(&v16->_existingDestinationType, type);
+    objc_storeStrong(&v17->_destinationType, destinationType);
   }
 
   return v17;

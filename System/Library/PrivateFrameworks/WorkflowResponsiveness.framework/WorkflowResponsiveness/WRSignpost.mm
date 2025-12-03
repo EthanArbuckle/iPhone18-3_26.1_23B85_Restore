@@ -1,64 +1,64 @@
 @interface WRSignpost
 - (BOOL)hasDiagnosticThresholdCount;
-- (BOOL)isEqual:(id)a3;
-- (WRSignpost)initWithSubsystem:(id)a3 category:(id)a4 name:(id)a5 eventIdentifierFieldName:(id)a6 individuationFieldName:(id)a7 environmentFieldNames:(id)a8 networkBound:(BOOL)a9 customEnvironmentCoreAnalyticsEventName:(id)a10 diagnostics:(id)a11;
+- (BOOL)isEqual:(id)equal;
+- (WRSignpost)initWithSubsystem:(id)subsystem category:(id)category name:(id)name eventIdentifierFieldName:(id)fieldName individuationFieldName:(id)individuationFieldName environmentFieldNames:(id)names networkBound:(BOOL)bound customEnvironmentCoreAnalyticsEventName:(id)self0 diagnostics:(id)self1;
 - (double)diagnosticThresholdIntervalSeconds;
 - (id)debugDescription;
 - (int)diagnosticThresholdCount;
-- (int64_t)compare:(id)a3;
-- (uint64_t)hasChangesRelativeTo:(id)a1;
-- (uint64_t)matchesSignpost:(void *)a1;
+- (int64_t)compare:(id)compare;
+- (uint64_t)hasChangesRelativeTo:(id)to;
+- (uint64_t)matchesSignpost:(void *)signpost;
 - (uint64_t)setEventIdentifierIsSignpostID:(uint64_t)result;
 - (unint64_t)hash;
 @end
 
 @implementation WRSignpost
 
-- (WRSignpost)initWithSubsystem:(id)a3 category:(id)a4 name:(id)a5 eventIdentifierFieldName:(id)a6 individuationFieldName:(id)a7 environmentFieldNames:(id)a8 networkBound:(BOOL)a9 customEnvironmentCoreAnalyticsEventName:(id)a10 diagnostics:(id)a11
+- (WRSignpost)initWithSubsystem:(id)subsystem category:(id)category name:(id)name eventIdentifierFieldName:(id)fieldName individuationFieldName:(id)individuationFieldName environmentFieldNames:(id)names networkBound:(BOOL)bound customEnvironmentCoreAnalyticsEventName:(id)self0 diagnostics:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a10;
-  v24 = a11;
+  subsystemCopy = subsystem;
+  categoryCopy = category;
+  nameCopy = name;
+  fieldNameCopy = fieldName;
+  individuationFieldNameCopy = individuationFieldName;
+  namesCopy = names;
+  eventNameCopy = eventName;
+  diagnosticsCopy = diagnostics;
   v43.receiver = self;
   v43.super_class = WRSignpost;
   v25 = [(WRSignpost *)&v43 init];
   if (v25)
   {
-    v26 = [v17 copy];
+    v26 = [subsystemCopy copy];
     subsystem = v25->_subsystem;
     v25->_subsystem = v26;
 
-    v28 = [v18 copy];
+    v28 = [categoryCopy copy];
     category = v25->_category;
     v25->_category = v28;
 
-    v30 = [v19 copy];
+    v30 = [nameCopy copy];
     name = v25->_name;
     v25->_name = v30;
 
-    v32 = [v20 copy];
+    v32 = [fieldNameCopy copy];
     eventIdentifierFieldName = v25->_eventIdentifierFieldName;
     v25->_eventIdentifierFieldName = v32;
 
-    v34 = [v21 copy];
+    v34 = [individuationFieldNameCopy copy];
     individuationFieldName = v25->_individuationFieldName;
     v25->_individuationFieldName = v34;
 
-    v36 = [v22 copy];
+    v36 = [namesCopy copy];
     environmentFieldNames = v25->_environmentFieldNames;
     v25->_environmentFieldNames = v36;
 
-    v25->_networkBound = a9;
-    v38 = [v23 copy];
+    v25->_networkBound = bound;
+    v38 = [eventNameCopy copy];
     customEnvironmentCoreAnalyticsEventName = v25->_customEnvironmentCoreAnalyticsEventName;
     v25->_customEnvironmentCoreAnalyticsEventName = v38;
 
-    v40 = [v24 copy];
+    v40 = [diagnosticsCopy copy];
     diagnostics = v25->_diagnostics;
     v25->_diagnostics = v40;
   }
@@ -66,33 +66,33 @@
   return v25;
 }
 
-- (uint64_t)hasChangesRelativeTo:(id)a1
+- (uint64_t)hasChangesRelativeTo:(id)to
 {
   v3 = a2;
   v4 = v3;
   v5 = 0;
-  if (a1 && a1 != v3)
+  if (to && to != v3)
   {
-    v6 = [a1 diagnostics];
-    v7 = [v6 count];
-    v8 = [v4 diagnostics];
-    v9 = [v8 count];
+    diagnostics = [to diagnostics];
+    v7 = [diagnostics count];
+    diagnostics2 = [v4 diagnostics];
+    v9 = [diagnostics2 count];
 
     if (v7 == v9)
     {
-      v10 = [a1 diagnostics];
-      v11 = [v10 count];
+      diagnostics3 = [to diagnostics];
+      v11 = [diagnostics3 count];
 
       if (v11)
       {
         v12 = 0;
         do
         {
-          v13 = [a1 diagnostics];
-          v14 = [v13 objectAtIndexedSubscript:v12];
+          diagnostics4 = [to diagnostics];
+          v14 = [diagnostics4 objectAtIndexedSubscript:v12];
 
-          v15 = [v4 diagnostics];
-          v16 = [v15 objectAtIndexedSubscript:v12];
+          diagnostics5 = [v4 diagnostics];
+          v16 = [diagnostics5 objectAtIndexedSubscript:v12];
 
           v17 = [v14 isEqual:v16];
           if (!v17)
@@ -101,8 +101,8 @@
           }
 
           ++v12;
-          v18 = [a1 diagnostics];
-          v19 = [v18 count];
+          diagnostics6 = [to diagnostics];
+          v19 = [diagnostics6 count];
         }
 
         while (v12 < v19);
@@ -124,10 +124,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -135,30 +135,30 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WRSignpost *)self compare:v4]== 0;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WRSignpost *)self compare:equalCopy]== 0;
   }
 
   return v5;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(WRSignpost *)self subsystem];
-  v6 = [v4 subsystem];
-  v7 = [v5 compare:v6];
+  compareCopy = compare;
+  subsystem = [(WRSignpost *)self subsystem];
+  subsystem2 = [compareCopy subsystem];
+  v7 = [subsystem compare:subsystem2];
 
   if (!v7)
   {
-    v8 = [(WRSignpost *)self category];
-    v9 = [v4 category];
-    v7 = [v8 compare:v9];
+    category = [(WRSignpost *)self category];
+    category2 = [compareCopy category];
+    v7 = [category compare:category2];
 
     if (!v7)
     {
-      v10 = [(WRSignpost *)self name];
-      v11 = [v4 name];
-      v7 = [v10 compare:v11];
+      name = [(WRSignpost *)self name];
+      name2 = [compareCopy name];
+      v7 = [name compare:name2];
     }
   }
 
@@ -167,8 +167,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(WRSignpost *)self name];
-  v3 = [v2 hash];
+  name = [(WRSignpost *)self name];
+  v3 = [name hash];
 
   return v3;
 }
@@ -214,8 +214,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(WRSignpost *)self diagnostics];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  diagnostics = [(WRSignpost *)self diagnostics];
+  v3 = [diagnostics countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -225,7 +225,7 @@
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(diagnostics);
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
@@ -236,7 +236,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [diagnostics countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -259,8 +259,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(WRSignpost *)self diagnostics];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  diagnostics = [(WRSignpost *)self diagnostics];
+  v3 = [diagnostics countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -270,7 +270,7 @@ LABEL_11:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(diagnostics);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) hasTriggerThresholdCount])
@@ -280,7 +280,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [diagnostics countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -303,8 +303,8 @@ LABEL_11:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(WRSignpost *)self diagnostics];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  diagnostics = [(WRSignpost *)self diagnostics];
+  v3 = [diagnostics countByEnumeratingWithState:&v12 objects:v16 count:16];
   v4 = 0.0;
   if (v3)
   {
@@ -316,7 +316,7 @@ LABEL_11:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(diagnostics);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -328,7 +328,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [diagnostics countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -344,34 +344,34 @@ LABEL_11:
   return v4;
 }
 
-- (uint64_t)matchesSignpost:(void *)a1
+- (uint64_t)matchesSignpost:(void *)signpost
 {
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!signpost)
   {
     goto LABEL_8;
   }
 
-  v5 = [v3 subsystem];
-  v6 = [a1 subsystem];
-  if (![v5 isEqualToString:v6])
+  subsystem = [v3 subsystem];
+  subsystem2 = [signpost subsystem];
+  if (![subsystem isEqualToString:subsystem2])
   {
     goto LABEL_7;
   }
 
-  v7 = [v4 category];
-  v8 = [a1 category];
-  if (![v7 isEqualToString:v8])
+  category = [v4 category];
+  category2 = [signpost category];
+  if (![category isEqualToString:category2])
   {
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  v9 = [v4 name];
-  v10 = [a1 name];
-  v11 = [v9 isEqualToString:v10];
+  name = [v4 name];
+  name2 = [signpost name];
+  v11 = [name isEqualToString:name2];
 
   if ((v11 & 1) == 0)
   {

@@ -6,7 +6,7 @@
 
 - (id)shieldColorString
 {
-  [a1 color];
+  [self color];
   v2 = v1;
   v4 = v3;
   v6 = v5;

@@ -8,14 +8,14 @@
 
 + (void)runSizeTest
 {
-  [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:a1 selector:sel_runSizeTest object:0];
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 windows];
-  v20 = [v4 firstObject];
+  [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel_runSizeTest object:0];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  windows = [mEMORY[0x1E69DC668] windows];
+  firstObject = [windows firstObject];
 
   v5 = _isShrinking;
-  v6 = [a1 sharedInstance];
-  [v6 _testIncrement];
+  sharedInstance = [self sharedInstance];
+  [sharedInstance _testIncrement];
   if (v5)
   {
     v8 = -v7;
@@ -26,9 +26,9 @@
     v8 = v7;
   }
 
-  [v20 bounds];
+  [firstObject bounds];
   v10 = v8 + v9;
-  [v20 bounds];
+  [firstObject bounds];
   height = v22.size.height;
   v22.origin.x = 0.0;
   v22.origin.y = 0.0;
@@ -40,18 +40,18 @@
     v23.size.width = v10;
     v23.size.height = height;
     Width = CGRectGetWidth(v23);
-    v13 = [MEMORY[0x1E69DCEB0] px_mainScreen];
-    [v13 bounds];
+    px_mainScreen = [MEMORY[0x1E69DCEB0] px_mainScreen];
+    [px_mainScreen bounds];
     v15 = v14;
 
     if (Width > v15)
     {
-      v16 = [MEMORY[0x1E69DCEB0] px_mainScreen];
-      [v16 bounds];
+      px_mainScreen2 = [MEMORY[0x1E69DCEB0] px_mainScreen];
+      [px_mainScreen2 bounds];
       v18 = v17;
 
       _isShrinking = 1;
-      [v20 _adjustSizeClassesAndResizeWindowToFrame:{0.0, 0.0, v18, height}];
+      [firstObject _adjustSizeClassesAndResizeWindowToFrame:{0.0, 0.0, v18, height}];
       goto LABEL_9;
     }
   }
@@ -62,10 +62,10 @@
     v10 = 320.0;
   }
 
-  [v20 _adjustSizeClassesAndResizeWindowToFrame:{0.0, 0.0, v10, height}];
-  v19 = [a1 sharedInstance];
-  [v19 _testInterval];
-  [a1 performSelector:sel_runSizeTest withObject:0 afterDelay:?];
+  [firstObject _adjustSizeClassesAndResizeWindowToFrame:{0.0, 0.0, v10, height}];
+  sharedInstance2 = [self sharedInstance];
+  [sharedInstance2 _testInterval];
+  [self performSelector:sel_runSizeTest withObject:0 afterDelay:?];
 
 LABEL_9:
 }
@@ -77,7 +77,7 @@ LABEL_9:
   v41[1] = 3221225472;
   v41[2] = __44__PUMedusaSettings_settingsControllerModule__block_invoke;
   v41[3] = &__block_descriptor_40_e40_B24__0__PTRow_8__PTUIModuleController_16l;
-  v41[4] = a1;
+  v41[4] = self;
   v38 = [MEMORY[0x1E69C6658] actionWithHandler:v41];
   v3 = MEMORY[0x1E69C6638];
   v4 = [MEMORY[0x1E69C65E8] rowWithTitle:@"Cancel Test" action:v38];
@@ -102,7 +102,7 @@ LABEL_9:
   v40[1] = 3221225472;
   v40[2] = __44__PUMedusaSettings_settingsControllerModule__block_invoke_53;
   v40[3] = &__block_descriptor_40_e40_B24__0__PTRow_8__PTUIModuleController_16l;
-  v40[4] = a1;
+  v40[4] = self;
   v34 = [MEMORY[0x1E69C6658] actionWithHandler:v40];
   v11 = MEMORY[0x1E69C6638];
   v44[0] = v7;
@@ -114,15 +114,15 @@ LABEL_9:
   v33 = [v11 sectionWithRows:v13 title:@"Dynamic"];
 
   v14 = [MEMORY[0x1E69C6618] rowWithTitle:@"Enter Width" valueKeyPath:@"_desiredWidth"];
-  v15 = [MEMORY[0x1E69DCEB0] px_mainScreen];
-  [v15 bounds];
+  px_mainScreen = [MEMORY[0x1E69DCEB0] px_mainScreen];
+  [px_mainScreen bounds];
   v17 = [v14 between:320.0 and:v16];
 
   [v17 setPrecision:1];
   [v17 setValueValidatator:&__block_literal_global_71];
   v18 = [MEMORY[0x1E69C66A0] rowWithTitle:@"Slide Width" valueKeyPath:@"_desiredWidth"];
-  v19 = [MEMORY[0x1E69DCEB0] px_mainScreen];
-  [v19 bounds];
+  px_mainScreen2 = [MEMORY[0x1E69DCEB0] px_mainScreen];
+  [px_mainScreen2 bounds];
   v21 = [v18 minValue:320.0 maxValue:v20];
 
   [v21 setValueValidatator:&__block_literal_global_77_41124];
@@ -133,7 +133,7 @@ LABEL_9:
   v39[1] = 3221225472;
   v39[2] = __44__PUMedusaSettings_settingsControllerModule__block_invoke_5;
   v39[3] = &__block_descriptor_40_e40_B24__0__PTRow_8__PTUIModuleController_16l;
-  v39[4] = a1;
+  v39[4] = self;
   v24 = [MEMORY[0x1E69C6658] actionWithHandler:v39];
   v25 = MEMORY[0x1E69C6638];
   v43[0] = v21;

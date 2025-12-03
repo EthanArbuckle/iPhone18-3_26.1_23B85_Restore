@@ -1,26 +1,26 @@
 @interface NPTOSyncRequest
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)npto_assetsRequiringExternalPowerSourceConnected;
 - (id)npto_libraryCollectionTargetMap;
-- (int)requiringExternalPowerSourceConnectedAssetIndexAtIndex:(unint64_t)a3;
+- (int)requiringExternalPowerSourceConnectedAssetIndexAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPTOSyncRequest
 
 - (id)npto_libraryCollectionTargetMap
 {
-  v3 = [(NPTOSyncRequest *)self collectionTargetList];
-  v4 = [(NPTOSyncRequest *)self library];
-  v5 = [v3 collectionTargetMapWithLibrary:v4];
+  collectionTargetList = [(NPTOSyncRequest *)self collectionTargetList];
+  library = [(NPTOSyncRequest *)self library];
+  v5 = [collectionTargetList collectionTargetMapWithLibrary:library];
 
   return v5;
 }
@@ -34,8 +34,8 @@
     do
     {
       v5 = [(NPTOSyncRequest *)self requiringExternalPowerSourceConnectedAssetIndexAtIndex:v4];
-      v6 = [(NPTOSyncRequest *)self library];
-      v7 = [v6 assetAtIndex:v5];
+      library = [(NPTOSyncRequest *)self library];
+      v7 = [library assetAtIndex:v5];
       [v3 addObject:v7];
 
       ++v4;
@@ -57,18 +57,18 @@
   [(NPTOSyncRequest *)&v3 dealloc];
 }
 
-- (int)requiringExternalPowerSourceConnectedAssetIndexAtIndex:(unint64_t)a3
+- (int)requiringExternalPowerSourceConnectedAssetIndexAtIndex:(unint64_t)index
 {
   p_requiringExternalPowerSourceConnectedAssetIndexs = &self->_requiringExternalPowerSourceConnectedAssetIndexs;
   count = self->_requiringExternalPowerSourceConnectedAssetIndexs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_requiringExternalPowerSourceConnectedAssetIndexs->list[a3];
+  return p_requiringExternalPowerSourceConnectedAssetIndexs->list[index];
 }
 
 - (id)description
@@ -76,8 +76,8 @@
   v7.receiver = self;
   v7.super_class = NPTOSyncRequest;
   v3 = [(NPTOSyncRequest *)&v7 description];
-  v4 = [(NPTOSyncRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NPTOSyncRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -88,15 +88,15 @@
   library = self->_library;
   if (library)
   {
-    v5 = [(NPTOLibrary *)library dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"library"];
+    dictionaryRepresentation = [(NPTOLibrary *)library dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"library"];
   }
 
   collectionTargetList = self->_collectionTargetList;
   if (collectionTargetList)
   {
-    v7 = [(NPTOCollectionTargetList *)collectionTargetList dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"collectionTargetList"];
+    dictionaryRepresentation2 = [(NPTOCollectionTargetList *)collectionTargetList dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"collectionTargetList"];
   }
 
   v8 = PBRepeatedInt32NSArray();
@@ -105,17 +105,17 @@
   return v3;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     p_vtable = &OBJC_METACLASS___NMSIncomingResponse.vtable;
     v7 = &selRef_setHasDate_;
     v8 = &off_100097000;
     while (1)
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         goto LABEL_57;
       }
@@ -126,18 +126,18 @@
       while (1)
       {
         LOBYTE(v37) = 0;
-        v12 = [a3 position] + 1;
-        if (v12 >= [a3 position] && (v13 = objc_msgSend(a3, "position") + 1, v13 <= objc_msgSend(a3, "length")))
+        v12 = [from position] + 1;
+        if (v12 >= [from position] && (v13 = objc_msgSend(from, "position") + 1, v13 <= objc_msgSend(from, "length")))
         {
-          v14 = [a3 data];
-          [v14 getBytes:&v37 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v37 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v11 |= (v37 & 0x7F) << v9;
@@ -155,9 +155,9 @@
         }
       }
 
-      v16 = [a3 hasError] ? 0 : v11;
+      v16 = [from hasError] ? 0 : v11;
 LABEL_16:
-      if (([a3 hasError] & 1) != 0 || (v16 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v16 & 7) == 4)
       {
         goto LABEL_57;
       }
@@ -177,8 +177,8 @@ LABEL_16:
 
           while (1)
           {
-            v20 = [a3 position];
-            if (v20 >= [a3 length] || (objc_msgSend(a3, "hasError") & 1) != 0)
+            position2 = [from position];
+            if (position2 >= [from length] || (objc_msgSend(from, "hasError") & 1) != 0)
             {
               break;
             }
@@ -189,18 +189,18 @@ LABEL_16:
             while (1)
             {
               v39 = 0;
-              v24 = [a3 position] + 1;
-              if (v24 >= [a3 position] && (v25 = objc_msgSend(a3, "position") + 1, v25 <= objc_msgSend(a3, "length")))
+              v24 = [from position] + 1;
+              if (v24 >= [from position] && (v25 = objc_msgSend(from, "position") + 1, v25 <= objc_msgSend(from, "length")))
               {
-                v26 = [a3 data];
-                [v26 getBytes:&v39 range:{objc_msgSend(a3, "position"), 1}];
+                data2 = [from data];
+                [data2 getBytes:&v39 range:{objc_msgSend(from, "position"), 1}];
 
-                [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+                [from setPosition:{objc_msgSend(from, "position") + 1}];
               }
 
               else
               {
-                [a3 _setError];
+                [from _setError];
               }
 
               v23 |= (v39 & 0x7F) << v21;
@@ -217,7 +217,7 @@ LABEL_16:
               }
             }
 
-            [a3 hasError];
+            [from hasError];
 LABEL_41:
             PBRepeatedInt32Add();
           }
@@ -235,18 +235,18 @@ LABEL_41:
           while (1)
           {
             LOBYTE(v37) = 0;
-            v32 = [a3 position] + 1;
-            if (v32 >= [a3 position] && (v33 = objc_msgSend(a3, "position") + 1, v33 <= objc_msgSend(a3, "length")))
+            v32 = [from position] + 1;
+            if (v32 >= [from position] && (v33 = objc_msgSend(from, "position") + 1, v33 <= objc_msgSend(from, "length")))
             {
-              v34 = [a3 data];
-              [v34 getBytes:&v37 range:{objc_msgSend(a3, "position"), 1}];
+              data3 = [from data];
+              [data3 getBytes:&v37 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v31 |= (v37 & 0x7F) << v29;
@@ -263,7 +263,7 @@ LABEL_41:
             }
           }
 
-          [a3 hasError];
+          [from hasError];
 LABEL_55:
           p_vtable = v28;
           PBRepeatedInt32Add();
@@ -285,7 +285,7 @@ LABEL_55:
         objc_storeStrong(&self->_library, v18);
         v37 = 0;
         v38 = 0;
-        if (!PBReaderPlaceMark() || !NPTOLibraryReadFrom(v18, a3))
+        if (!PBReaderPlaceMark() || !NPTOLibraryReadFrom(v18, from))
         {
           goto LABEL_59;
         }
@@ -302,8 +302,8 @@ LABEL_26:
       }
 
 LABEL_56:
-      v35 = [a3 position];
-      if (v35 >= [a3 length])
+      position3 = [from position];
+      if (position3 >= [from length])
       {
         goto LABEL_57;
       }
@@ -313,7 +313,7 @@ LABEL_56:
     objc_storeStrong(&self->PBRequest_opaque[*(v7 + 571)], v18);
     v37 = 0;
     v38 = 0;
-    if (!PBReaderPlaceMark() || !NPTOCollectionTargetListReadFrom(v18, a3))
+    if (!PBReaderPlaceMark() || !NPTOCollectionTargetListReadFrom(v18, from))
     {
 LABEL_59:
 
@@ -326,24 +326,24 @@ LABEL_60:
   }
 
 LABEL_57:
-  LOBYTE(v19) = [a3 hasError] ^ 1;
+  LOBYTE(v19) = [from hasError] ^ 1;
   return v19;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_library)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_collectionTargetList)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   p_requiringExternalPowerSourceConnectedAssetIndexs = &self->_requiringExternalPowerSourceConnectedAssetIndexs;
@@ -353,7 +353,7 @@ LABEL_57:
     do
     {
       PBDataWriterWriteInt32Field();
-      v4 = v7;
+      toCopy = v7;
       ++v6;
     }
 
@@ -361,42 +361,42 @@ LABEL_57:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (self->_library)
   {
-    [v7 setLibrary:?];
+    [toCopy setLibrary:?];
   }
 
   if (self->_collectionTargetList)
   {
-    [v7 setCollectionTargetList:?];
+    [toCopy setCollectionTargetList:?];
   }
 
   if ([(NPTOSyncRequest *)self requiringExternalPowerSourceConnectedAssetIndexsCount])
   {
-    [v7 clearRequiringExternalPowerSourceConnectedAssetIndexs];
-    v4 = [(NPTOSyncRequest *)self requiringExternalPowerSourceConnectedAssetIndexsCount];
-    if (v4)
+    [toCopy clearRequiringExternalPowerSourceConnectedAssetIndexs];
+    requiringExternalPowerSourceConnectedAssetIndexsCount = [(NPTOSyncRequest *)self requiringExternalPowerSourceConnectedAssetIndexsCount];
+    if (requiringExternalPowerSourceConnectedAssetIndexsCount)
     {
-      v5 = v4;
+      v5 = requiringExternalPowerSourceConnectedAssetIndexsCount;
       for (i = 0; i != v5; ++i)
       {
-        [v7 addRequiringExternalPowerSourceConnectedAssetIndex:{-[NPTOSyncRequest requiringExternalPowerSourceConnectedAssetIndexAtIndex:](self, "requiringExternalPowerSourceConnectedAssetIndexAtIndex:", i)}];
+        [toCopy addRequiringExternalPowerSourceConnectedAssetIndex:{-[NPTOSyncRequest requiringExternalPowerSourceConnectedAssetIndexAtIndex:](self, "requiringExternalPowerSourceConnectedAssetIndexAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NPTOLibrary *)self->_library copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NPTOLibrary *)self->_library copyWithZone:zone];
   v7 = v5[5];
   v5[5] = v6;
 
-  v8 = [(NPTOCollectionTargetList *)self->_collectionTargetList copyWithZone:a3];
+  v8 = [(NPTOCollectionTargetList *)self->_collectionTargetList copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
@@ -404,10 +404,10 @@ LABEL_57:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((library = self->_library, !(library | v4[5])) || -[NPTOLibrary isEqual:](library, "isEqual:")) && ((collectionTargetList = self->_collectionTargetList, !(collectionTargetList | v4[4])) || -[NPTOCollectionTargetList isEqual:](collectionTargetList, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((library = self->_library, !(library | equalCopy[5])) || -[NPTOLibrary isEqual:](library, "isEqual:")) && ((collectionTargetList = self->_collectionTargetList, !(collectionTargetList | equalCopy[4])) || -[NPTOCollectionTargetList isEqual:](collectionTargetList, "isEqual:")))
   {
     IsEqual = PBRepeatedInt32IsEqual();
   }
@@ -427,12 +427,12 @@ LABEL_57:
   return v4 ^ PBRepeatedInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   library = self->_library;
-  v6 = v4[5];
-  v12 = v4;
+  v6 = fromCopy[5];
+  v12 = fromCopy;
   if (library)
   {
     if (!v6)
@@ -453,10 +453,10 @@ LABEL_57:
     [(NPTOSyncRequest *)self setLibrary:?];
   }
 
-  v4 = v12;
+  fromCopy = v12;
 LABEL_7:
   collectionTargetList = self->_collectionTargetList;
-  v8 = v4[4];
+  v8 = fromCopy[4];
   if (collectionTargetList)
   {
     if (!v8)
@@ -477,12 +477,12 @@ LABEL_7:
     [(NPTOSyncRequest *)self setCollectionTargetList:?];
   }
 
-  v4 = v12;
+  fromCopy = v12;
 LABEL_13:
-  v9 = [v4 requiringExternalPowerSourceConnectedAssetIndexsCount];
-  if (v9)
+  requiringExternalPowerSourceConnectedAssetIndexsCount = [fromCopy requiringExternalPowerSourceConnectedAssetIndexsCount];
+  if (requiringExternalPowerSourceConnectedAssetIndexsCount)
   {
-    v10 = v9;
+    v10 = requiringExternalPowerSourceConnectedAssetIndexsCount;
     for (i = 0; i != v10; ++i)
     {
       -[NPTOSyncRequest addRequiringExternalPowerSourceConnectedAssetIndex:](self, "addRequiringExternalPowerSourceConnectedAssetIndex:", [v12 requiringExternalPowerSourceConnectedAssetIndexAtIndex:i]);

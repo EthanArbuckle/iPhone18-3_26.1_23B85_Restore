@@ -1,6 +1,6 @@
 @interface SUScriptApplication
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (NSString)identifier;
 - (NSString)version;
@@ -13,19 +13,19 @@
 - (id)statusBarHidden;
 - (id)wasLaunchedFromLibrary;
 - (int64_t)statusBarStyle;
-- (void)exitStoreWithReason:(id)a3;
-- (void)scrollIconToVisible:(id)a3 shouldSuspend:(BOOL)a4;
-- (void)setIconBadgeNumber:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setStatusBarHidden:(BOOL)a3 withAnimation:(int64_t)a4;
-- (void)setStatusBarHidden:(id)a3;
-- (void)setStatusBarStyle:(int64_t)a3 animated:(BOOL)a4;
-- (void)setVersion:(id)a3;
+- (void)exitStoreWithReason:(id)reason;
+- (void)scrollIconToVisible:(id)visible shouldSuspend:(BOOL)suspend;
+- (void)setIconBadgeNumber:(id)number;
+- (void)setIdentifier:(id)identifier;
+- (void)setStatusBarHidden:(BOOL)hidden withAnimation:(int64_t)animation;
+- (void)setStatusBarHidden:(id)hidden;
+- (void)setStatusBarStyle:(int64_t)style animated:(BOOL)animated;
+- (void)setVersion:(id)version;
 @end
 
 @implementation SUScriptApplication
 
-- (void)exitStoreWithReason:(id)a3
+- (void)exitStoreWithReason:(id)reason
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -61,7 +61,7 @@ uint64_t __38__SUScriptApplication_returnToLibrary__block_invoke(uint64_t a1)
   return [v1 _returnToLibrary];
 }
 
-- (void)scrollIconToVisible:(id)a3 shouldSuspend:(BOOL)a4
+- (void)scrollIconToVisible:(id)visible shouldSuspend:(BOOL)suspend
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -91,15 +91,15 @@ uint64_t __57__SUScriptApplication_scrollIconToVisible_shouldSuspend___block_inv
   return result;
 }
 
-- (void)setStatusBarHidden:(BOOL)a3 withAnimation:(int64_t)a4
+- (void)setStatusBarHidden:(BOOL)hidden withAnimation:(int64_t)animation
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__SUScriptApplication_setStatusBarHidden_withAnimation___block_invoke;
   block[3] = &unk_1E81660A0;
-  v5 = a3;
+  hiddenCopy = hidden;
   block[4] = self;
-  block[5] = a4;
+  block[5] = animation;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -112,15 +112,15 @@ uint64_t __56__SUScriptApplication_setStatusBarHidden_withAnimation___block_invo
   return [v2 _setStatusBarHidden:v3 withAnimation:v4];
 }
 
-- (void)setStatusBarStyle:(int64_t)a3 animated:(BOOL)a4
+- (void)setStatusBarStyle:(int64_t)style animated:(BOOL)animated
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__SUScriptApplication_setStatusBarStyle_animated___block_invoke;
   block[3] = &unk_1E81660A0;
   block[4] = self;
-  block[5] = a3;
-  v5 = a4;
+  block[5] = style;
+  animatedCopy = animated;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -192,9 +192,9 @@ uint64_t __38__SUScriptApplication_iconBadgeNumber__block_invoke(uint64_t a1)
 
 - (id)isRunningInStoreDemoMode
 {
-  v2 = [MEMORY[0x1E69DC668] isRunningInStoreDemoMode];
+  isRunningInStoreDemoMode = [MEMORY[0x1E69DC668] isRunningInStoreDemoMode];
   v3 = MEMORY[0x1E695E4D0];
-  if (!v2)
+  if (!isRunningInStoreDemoMode)
   {
     v3 = MEMORY[0x1E695E4C0];
   }
@@ -250,26 +250,26 @@ uint64_t __34__SUScriptApplication_screenWidth__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setIconBadgeNumber:(id)a3
+- (void)setIconBadgeNumber:(id)number
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = 0;
+    numberCopy = 0;
 LABEL_3:
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __42__SUScriptApplication_setIconBadgeNumber___block_invoke;
     block[3] = &unk_1E8164348;
-    block[4] = v4;
+    block[4] = numberCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     return;
   }
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v4 = 0;
-  if (!a3)
+  numberCopy = 0;
+  if (!number)
   {
     goto LABEL_3;
   }
@@ -280,7 +280,7 @@ LABEL_3:
   }
 
   v6 = objc_opt_respondsToSelector();
-  v4 = a3;
+  numberCopy = number;
   if (v6)
   {
     goto LABEL_3;
@@ -299,7 +299,7 @@ uint64_t __42__SUScriptApplication_setIconBadgeNumber___block_invoke(uint64_t a1
   return [v2 setApplicationIconBadgeNumber:v3];
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"identifier"];
@@ -307,13 +307,13 @@ uint64_t __42__SUScriptApplication_setIconBadgeNumber___block_invoke(uint64_t a1
   [v3 throwException:v4];
 }
 
-- (void)setStatusBarHidden:(id)a3
+- (void)setStatusBarHidden:(id)hidden
 {
   if (objc_opt_respondsToSelector())
   {
-    v5 = [a3 BOOLValue];
+    bOOLValue = [hidden BOOLValue];
 
-    [(SUScriptApplication *)self setStatusBarHidden:v5 withAnimation:0];
+    [(SUScriptApplication *)self setStatusBarHidden:bOOLValue withAnimation:0];
   }
 
   else
@@ -324,7 +324,7 @@ uint64_t __42__SUScriptApplication_setIconBadgeNumber___block_invoke(uint64_t a1
   }
 }
 
-- (void)setVersion:(id)a3
+- (void)setVersion:(id)version
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"version"];
@@ -421,27 +421,27 @@ uint64_t __45__SUScriptApplication_wasLaunchedFromLibrary__block_invoke(uint64_t
   return result;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_44 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptApplication;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_35, 8);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_35, 8);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptApplication;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -451,14 +451,14 @@ uint64_t __45__SUScriptApplication_wasLaunchedFromLibrary__block_invoke(uint64_t
 {
   v4.receiver = self;
   v4.super_class = SUScriptApplication;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_44 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_44 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_35 = sel_beginDelayingTerminate;
     *algn_1EBF3B1F8 = @"beginDelayingTerminate";

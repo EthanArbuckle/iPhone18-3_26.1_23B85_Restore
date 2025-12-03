@@ -1,14 +1,14 @@
 @interface TRIXPCNamespaceManagementServiceListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (TRIXPCNamespaceManagementServiceListener)initWithServerContextPromise:(id)a3 forSystem:(BOOL)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (TRIXPCNamespaceManagementServiceListener)initWithServerContextPromise:(id)promise forSystem:(BOOL)system;
 @end
 
 @implementation TRIXPCNamespaceManagementServiceListener
 
-- (TRIXPCNamespaceManagementServiceListener)initWithServerContextPromise:(id)a3 forSystem:(BOOL)a4
+- (TRIXPCNamespaceManagementServiceListener)initWithServerContextPromise:(id)promise forSystem:(BOOL)system
 {
-  v4 = a4;
-  v7 = a3;
+  systemCopy = system;
+  promiseCopy = promise;
   v39.receiver = self;
   v39.super_class = TRIXPCNamespaceManagementServiceListener;
   v8 = [(TRIXPCNamespaceManagementServiceListener *)&v39 init];
@@ -59,8 +59,8 @@
     objc_autoreleasePoolPop(v33);
     [(NSXPCInterface *)v32 setClasses:v36 forSelector:sel_statusOfDownloadForFactors_withNamespace_factorsState_completion_ argumentIndex:0 ofReply:0];
 
-    objc_storeStrong(&v8->_promise, a3);
-    if (v4)
+    objc_storeStrong(&v8->_promise, promise);
+    if (systemCopy)
     {
       v37 = @"com.apple.triald.system.namespace-management";
     }
@@ -76,10 +76,10 @@
   return v8;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__TRIXPCNamespaceManagementServiceListener_listener_shouldAcceptNewConnection___block_invoke;
@@ -91,12 +91,12 @@
   }
 
   v8 = qword_281597708;
-  [v7 _setQueue:v8];
+  [connectionCopy _setQueue:v8];
   v9 = [TRIXPCNamespaceManagementRequestHandler alloc];
   promise = self->_promise;
-  if (v7)
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -111,7 +111,7 @@
   serviceName = self->_serviceName;
   interface = self->_interface;
   v16 = TRILogCategory_Server();
-  LOBYTE(interface) = [v13 shouldAcceptConnection:v7 serviceName:serviceName whitelistedServerInterface:interface whitelistedClientInterface:0 requestHandler:v12 validateConnection:&__block_literal_global_514 setupClientProxy:0 interruptionHandler:&__block_literal_global_516_0 invalidationHandler:&__block_literal_global_518 logHandle:v16];
+  LOBYTE(interface) = [v13 shouldAcceptConnection:connectionCopy serviceName:serviceName whitelistedServerInterface:interface whitelistedClientInterface:0 requestHandler:v12 validateConnection:&__block_literal_global_514 setupClientProxy:0 interruptionHandler:&__block_literal_global_516_0 invalidationHandler:&__block_literal_global_518 logHandle:v16];
 
   return interface;
 }

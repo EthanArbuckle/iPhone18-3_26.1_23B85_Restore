@@ -1,24 +1,24 @@
 @interface DAEASOAuthTokenRefreshResponse
-- (DAEASOAuthTokenRefreshResponse)initWithData:(id)a3 urlResponse:(id)a4 error:(id)a5;
+- (DAEASOAuthTokenRefreshResponse)initWithData:(id)data urlResponse:(id)response error:(id)error;
 @end
 
 @implementation DAEASOAuthTokenRefreshResponse
 
-- (DAEASOAuthTokenRefreshResponse)initWithData:(id)a3 urlResponse:(id)a4 error:(id)a5
+- (DAEASOAuthTokenRefreshResponse)initWithData:(id)data urlResponse:(id)response error:(id)error
 {
   v54 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  responseCopy = response;
+  errorCopy = error;
   v11 = DALoggingwithCategory();
   v12 = MEMORY[0x277D03988];
   v13 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v11, v13))
   {
     *buf = 134218242;
-    v51 = [v8 length];
+    v51 = [dataCopy length];
     v52 = 2112;
-    v53 = v10;
+    v53 = errorCopy;
     _os_log_impl(&dword_247E05000, v11, v13, "DAEASOAuthTokenRefreshResponse initWithData: (length: %lu, responseError: %@)", buf, 0x16u);
   }
 
@@ -28,7 +28,7 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_error, a5);
+    objc_storeStrong(&v14->_error, error);
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -43,7 +43,7 @@
       goto LABEL_21;
     }
 
-    v16 = v9;
+    v16 = responseCopy;
     v15->_statusCode = [v16 statusCode];
     v17 = DALoggingwithCategory();
     if (os_log_type_enabled(v17, v13))
@@ -62,7 +62,7 @@ LABEL_21:
     }
 
     v48 = 0;
-    v19 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v8 options:0 error:&v48];
+    v19 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v48];
     v20 = v48;
     v21 = v48;
     if (v21)

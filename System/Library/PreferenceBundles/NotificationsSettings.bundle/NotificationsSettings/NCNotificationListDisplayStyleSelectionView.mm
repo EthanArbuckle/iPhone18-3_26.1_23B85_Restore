@@ -1,46 +1,46 @@
 @interface NCNotificationListDisplayStyleSelectionView
-+ (id)notificationListDisplayStyleSelectionImageForType:(unint64_t)a3;
-+ (id)notificationListDisplayStyleSelectionImageNameForType:(unint64_t)a3;
-+ (id)notificationListDisplayStyleSelectionLabelTitleForType:(unint64_t)a3;
-+ (id)notificationListDisplayStyleSelectionViewOfType:(unint64_t)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (CGRect)_selectionLabelLayoutRectForRect:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NCNotificationListDisplayStyleSelectionView)initWithFrame:(CGRect)a3;
++ (id)notificationListDisplayStyleSelectionImageForType:(unint64_t)type;
++ (id)notificationListDisplayStyleSelectionImageNameForType:(unint64_t)type;
++ (id)notificationListDisplayStyleSelectionLabelTitleForType:(unint64_t)type;
++ (id)notificationListDisplayStyleSelectionViewOfType:(unint64_t)type;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (CGRect)_selectionLabelLayoutRectForRect:(CGRect)rect;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NCNotificationListDisplayStyleSelectionView)initWithFrame:(CGRect)frame;
 - (NCNotificationListDisplayStyleSelectionViewDelegate)delegate;
-- (id)_newSelectionLabelIsEncapsulated:(BOOL)a3;
-- (id)_selectionImageViewTintColorSelected:(BOOL)a3;
+- (id)_newSelectionLabelIsEncapsulated:(BOOL)encapsulated;
+- (id)_selectionImageViewTintColorSelected:(BOOL)selected;
 - (void)_configureSelectionImageViewIfNecessary;
 - (void)_configureSelectionLabelIfNecessary;
-- (void)_handleLocationViewPress:(id)a3;
+- (void)_handleLocationViewPress:(id)press;
 - (void)_layoutSelectionImageView;
 - (void)_layoutSelectionLabel;
-- (void)_swapSelectionLabelsOnToggledSelected:(BOOL)a3;
+- (void)_swapSelectionLabelsOnToggledSelected:(BOOL)selected;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation NCNotificationListDisplayStyleSelectionView
 
-+ (id)notificationListDisplayStyleSelectionViewOfType:(unint64_t)a3
++ (id)notificationListDisplayStyleSelectionViewOfType:(unint64_t)type
 {
   v4 = [[NCNotificationListDisplayStyleSelectionView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-  [(NCNotificationListDisplayStyleSelectionView *)v4 setSelectionType:a3];
+  [(NCNotificationListDisplayStyleSelectionView *)v4 setSelectionType:type];
 
   return v4;
 }
 
-+ (id)notificationListDisplayStyleSelectionLabelTitleForType:(unint64_t)a3
++ (id)notificationListDisplayStyleSelectionLabelTitleForType:(unint64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     v5 = @"<unknown>";
   }
 
   else
   {
-    v3 = *(&off_4D4B8 + a3);
+    v3 = *(&off_4D4B8 + type);
     v4 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
     v5 = [v4 localizedStringForKey:v3 value:&stru_4E3F0 table:@"NotificationsSettings"];
   }
@@ -48,17 +48,17 @@
   return v5;
 }
 
-+ (id)notificationListDisplayStyleSelectionImageNameForType:(unint64_t)a3
++ (id)notificationListDisplayStyleSelectionImageNameForType:(unint64_t)type
 {
   v4 = NCDeviceTypePrefix();
-  if (a3 > 2)
+  if (type > 2)
   {
     v5 = &stru_4E3F0;
   }
 
   else
   {
-    v5 = *(&off_4D4D0 + a3);
+    v5 = *(&off_4D4D0 + type);
   }
 
   v6 = [NSString stringWithFormat:@"%@-%@", v4, v5];
@@ -66,24 +66,24 @@
   return v6;
 }
 
-+ (id)notificationListDisplayStyleSelectionImageForType:(unint64_t)a3
++ (id)notificationListDisplayStyleSelectionImageForType:(unint64_t)type
 {
   v4 = +[UIScreen mainScreen];
-  v5 = [v4 traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  traitCollection = [v4 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v6 > 1)
+  if (userInterfaceIdiom > 1)
   {
     v15 = 0;
   }
 
   else
   {
-    v7 = [objc_opt_class() notificationListDisplayStyleSelectionImageNameForType:a3];
+    v7 = [objc_opt_class() notificationListDisplayStyleSelectionImageNameForType:type];
     v8 = +[BSPlatform sharedInstance];
-    v9 = [v8 homeButtonType];
+    homeButtonType = [v8 homeButtonType];
 
-    if (v6 == &dword_0 + 1 && v9 != &dword_0 + 2)
+    if (userInterfaceIdiom == &dword_0 + 1 && homeButtonType != &dword_0 + 2)
     {
       v11 = [v7 stringByAppendingString:@"-legacy"];
 
@@ -100,11 +100,11 @@
   return v15;
 }
 
-- (NCNotificationListDisplayStyleSelectionView)initWithFrame:(CGRect)a3
+- (NCNotificationListDisplayStyleSelectionView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = NCNotificationListDisplayStyleSelectionView;
-  v3 = [(NCNotificationListDisplayStyleSelectionView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NCNotificationListDisplayStyleSelectionView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[UILongPressGestureRecognizer alloc] initWithTarget:v3 action:"_handleLocationViewPress:"];
@@ -115,32 +115,32 @@
     [(UILongPressGestureRecognizer *)v3->_longPressGestureRecognizer setMinimumPressDuration:0.0];
     [(UILongPressGestureRecognizer *)v3->_longPressGestureRecognizer setCancelPastAllowableMovement:1];
     [(NCNotificationListDisplayStyleSelectionView *)v3 addGestureRecognizer:v3->_longPressGestureRecognizer];
-    v6 = [(NCNotificationListDisplayStyleSelectionView *)v3 layer];
-    [v6 setAllowsGroupOpacity:1];
+    layer = [(NCNotificationListDisplayStyleSelectionView *)v3 layer];
+    [layer setAllowsGroupOpacity:1];
   }
 
   return v3;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    v4 = a3;
-    self->_selected = a3;
+    selectedCopy = selected;
+    self->_selected = selected;
     [(NCNotificationListDisplayStyleSelectionView *)self _swapSelectionLabelsOnToggledSelected:?];
-    v6 = [(NCNotificationListDisplayStyleSelectionView *)self selectionImageView];
-    v7 = [(NCNotificationListDisplayStyleSelectionView *)self _selectionImageViewTintColorSelected:v4];
-    [v6 setTintColor:v7];
+    selectionImageView = [(NCNotificationListDisplayStyleSelectionView *)self selectionImageView];
+    v7 = [(NCNotificationListDisplayStyleSelectionView *)self _selectionImageViewTintColorSelected:selectedCopy];
+    [selectionImageView setTintColor:v7];
 
     [(NCNotificationListDisplayStyleSelectionView *)self setNeedsLayout];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(NCNotificationListDisplayStyleSelectionView *)self _configureSelectionImageViewIfNecessary];
   [(NCNotificationListDisplayStyleSelectionView *)self _configureSelectionLabelIfNecessary];
   selectionImageView = self->_selectionImageView;
@@ -199,9 +199,9 @@
   }
 }
 
-- (id)_selectionImageViewTintColorSelected:(BOOL)a3
+- (id)_selectionImageViewTintColorSelected:(BOOL)selected
 {
-  if (a3)
+  if (selected)
   {
     +[UIColor systemBlueColor];
   }
@@ -239,15 +239,15 @@
   _objc_release_x1();
 }
 
-- (id)_newSelectionLabelIsEncapsulated:(BOOL)a3
+- (id)_newSelectionLabelIsEncapsulated:(BOOL)encapsulated
 {
-  v3 = a3;
+  encapsulatedCopy = encapsulated;
   v5 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   v6 = [objc_opt_class() notificationListDisplayStyleSelectionLabelTitleForType:{-[NCNotificationListDisplayStyleSelectionView selectionType](self, "selectionType")}];
   [v5 setText:v6];
 
   v7 = &UIFontTextStyleCallout;
-  if (!v3)
+  if (!encapsulatedCopy)
   {
     v7 = &UIFontTextStyleFootnote;
   }
@@ -259,7 +259,7 @@
   [v5 setAdjustsFontSizeToFitWidth:1];
   [v5 setTextAlignment:1];
   [(NCNotificationListDisplayStyleSelectionView *)self addSubview:v5];
-  if (v3)
+  if (encapsulatedCopy)
   {
     v9 = +[UIColor systemBlueColor];
     v10 = objc_alloc_init(NSTextEncapsulation);
@@ -285,8 +285,8 @@
     [(UIImageView *)selectionImageView frame];
     [(NCNotificationListDisplayStyleSelectionView *)self bounds];
     UIRectCenteredXInRect();
-    v4 = [(UIImageView *)self->_selectionImageView image];
-    [v4 size];
+    image = [(UIImageView *)self->_selectionImageView image];
+    [image size];
 
     UIRectRoundToScale();
     v5 = self->_selectionImageView;
@@ -345,18 +345,18 @@
   [(UILabel *)v21 setFrame:?];
 }
 
-- (void)_handleLocationViewPress:(id)a3
+- (void)_handleLocationViewPress:(id)press
 {
-  v4 = [a3 state];
-  if ((v4 - 4) >= 2)
+  state = [press state];
+  if ((state - 4) >= 2)
   {
-    if (v4 == &dword_0 + 1)
+    if (state == &dword_0 + 1)
     {
       v6 = 1;
       goto LABEL_8;
     }
 
-    if (v4 != &dword_0 + 3)
+    if (state != &dword_0 + 3)
     {
       return;
     }
@@ -364,8 +364,8 @@
     if (![(NCNotificationListDisplayStyleSelectionView *)self isSelected])
     {
       [(NCNotificationListDisplayStyleSelectionView *)self setSelected:1];
-      v5 = [(NCNotificationListDisplayStyleSelectionView *)self delegate];
-      [v5 notificationListDisplayStyleSelectionViewDidGetSelected:self];
+      delegate = [(NCNotificationListDisplayStyleSelectionView *)self delegate];
+      [delegate notificationListDisplayStyleSelectionViewDidGetSelected:self];
     }
   }
 
@@ -375,11 +375,11 @@ LABEL_8:
   [(NCNotificationListDisplayStyleSelectionView *)self setHighlighted:v6];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  if (self->_longPressGestureRecognizer == a3)
+  if (self->_longPressGestureRecognizer == recognizer)
   {
-    v5 = a4;
+    gestureRecognizerCopy = gestureRecognizer;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -392,9 +392,9 @@ LABEL_8:
   return isKindOfClass & 1;
 }
 
-- (CGRect)_selectionLabelLayoutRectForRect:(CGRect)a3
+- (CGRect)_selectionLabelLayoutRectForRect:(CGRect)rect
 {
-  _UIRectInset(self, a2, a3.origin, *&a3.origin.y, a3.size, *&a3.size.height, 0.0, 5.0, 0.0, 5.0);
+  _UIRectInset(self, a2, rect.origin, *&rect.origin.y, rect.size, *&rect.size.height, 0.0, 5.0, 0.0, 5.0);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -402,11 +402,11 @@ LABEL_8:
   return result;
 }
 
-- (void)_swapSelectionLabelsOnToggledSelected:(BOOL)a3
+- (void)_swapSelectionLabelsOnToggledSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   [(NCNotificationListDisplayStyleSelectionView *)self _configureSelectionLabelIfNecessary];
-  if (!v3)
+  if (!selectedCopy)
   {
     p_encapsulatedSelectionLabel = &self->_encapsulatedSelectionLabel;
     encapsulatedSelectionLabel = self->_encapsulatedSelectionLabel;
@@ -455,9 +455,9 @@ LABEL_8:
   [UIView animateWithDuration:0 delay:v15 options:v13 animations:0.15 completion:0.0];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (a3)
+  if (highlighted)
   {
 
     [(NCNotificationListDisplayStyleSelectionView *)self setAlpha:0.5];

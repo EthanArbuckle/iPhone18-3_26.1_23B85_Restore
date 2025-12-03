@@ -3,13 +3,13 @@
 - (MPSNNPad)initWithDevice:(id)device;
 - (MPSNNPad)initWithDevice:(id)device paddingSizeBefore:(MPSImageCoordinate *)paddingSizeBefore paddingSizeAfter:(MPSImageCoordinate *)paddingSizeAfter;
 - (MPSNNPad)initWithDevice:(id)device paddingSizeBefore:(MPSImageCoordinate *)paddingSizeBefore paddingSizeAfter:(MPSImageCoordinate *)paddingSizeAfter fillValueArray:(NSData *)fillValueArray;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4;
-- (id)resultStateForSourceImage:(id)a3 sourceStates:(id)a4 destinationImage:(id)a5;
-- (id)temporaryResultStateForCommandBuffer:(id)a3 sourceImage:(id)a4 sourceStates:(id)a5 destinationImage:(id)a6;
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states;
+- (id)resultStateForSourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage;
+- (id)temporaryResultStateForCommandBuffer:(id)buffer sourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setPaddingSizeAfter:(MPSImageCoordinate *)paddingSizeAfter;
 - (void)setPaddingSizeBefore:(MPSImageCoordinate *)paddingSizeBefore;
 @end
@@ -68,11 +68,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v56.receiver = self;
   v56.super_class = MPSNNPad;
-  v6 = [(MPSCNNKernel *)&v56 copyWithZone:a3 device:?];
+  v6 = [(MPSCNNKernel *)&v56 copyWithZone:zone device:?];
   v7 = *&self->_paddingSizeAfter.x;
   *(v6 + 49) = self->_paddingSizeAfter.channel;
   *(v6 + 376) = v7;
@@ -84,16 +84,16 @@
   aBuf = self->_aBuf;
   v10 = *(&self->super.super.super.isa + *MEMORY[0x277CD7350]);
   v11 = *(v10 + 16);
-  if (!a4)
+  if (!device)
   {
-    a4 = *(v10 + 16);
+    device = *(v10 + 16);
   }
 
   MPSDevice = MPSDevice::GetMPSDevice();
   v20 = 0;
-  if (MPSDevice && aBuf && a4)
+  if (MPSDevice && aBuf && device)
   {
-    if (a4 == v11)
+    if (device == v11)
     {
       v20 = aBuf;
     }
@@ -104,7 +104,7 @@
       v22 = objc_msgSend_length(aBuf, v13, v14, v15, v16, v17, v18, v19);
       v23 = (*(*v21 + 40))(v21);
       v24 = (*(*v21 + 24))(v21);
-      v30 = objc_msgSend_newBufferWithLength_options_(a4, v25, v22, v23 | (16 * v24), v26, v27, v28, v29);
+      v30 = objc_msgSend_newBufferWithLength_options_(device, v25, v22, v23 | (16 * v24), v26, v27, v28, v29);
       if (v30)
       {
         v20 = v30;
@@ -233,45 +233,45 @@
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v93.receiver = self;
   v93.super_class = MPSNNPad;
   [(MPSCNNKernel *)&v93 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, self->_paddingSizeBefore.x, @"MPSNNPad_paddingSizeBefore.x", v6, v7, v8, v9);
-  objc_msgSend_encodeInt64_forKey_(a3, v10, self->_paddingSizeBefore.y, @"MPSNNPad_paddingSizeBefore.y", v11, v12, v13, v14);
-  objc_msgSend_encodeInt64_forKey_(a3, v15, self->_paddingSizeBefore.channel, @"MPSNNPad_paddingSizeBefore.channel", v16, v17, v18, v19);
-  objc_msgSend_encodeInt64_forKey_(a3, v20, self->_paddingSizeAfter.x, @"MPSNNPad_paddingSizeAfter.x", v21, v22, v23, v24);
-  objc_msgSend_encodeInt64_forKey_(a3, v25, self->_paddingSizeAfter.y, @"MPSNNPad_paddingSizeAfter.y", v26, v27, v28, v29);
-  objc_msgSend_encodeInt64_forKey_(a3, v30, self->_paddingSizeAfter.channel, @"MPSNNPad_paddingSizeAfter.channel", v31, v32, v33, v34);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, self->_paddingSizeBefore.x, @"MPSNNPad_paddingSizeBefore.x", v6, v7, v8, v9);
+  objc_msgSend_encodeInt64_forKey_(coder, v10, self->_paddingSizeBefore.y, @"MPSNNPad_paddingSizeBefore.y", v11, v12, v13, v14);
+  objc_msgSend_encodeInt64_forKey_(coder, v15, self->_paddingSizeBefore.channel, @"MPSNNPad_paddingSizeBefore.channel", v16, v17, v18, v19);
+  objc_msgSend_encodeInt64_forKey_(coder, v20, self->_paddingSizeAfter.x, @"MPSNNPad_paddingSizeAfter.x", v21, v22, v23, v24);
+  objc_msgSend_encodeInt64_forKey_(coder, v25, self->_paddingSizeAfter.y, @"MPSNNPad_paddingSizeAfter.y", v26, v27, v28, v29);
+  objc_msgSend_encodeInt64_forKey_(coder, v30, self->_paddingSizeAfter.channel, @"MPSNNPad_paddingSizeAfter.channel", v31, v32, v33, v34);
   *&v35 = self->_fillValue;
-  objc_msgSend_encodeFloat_forKey_(a3, v36, @"MPSNNPad_fillValue", v37, v38, v39, v40, v41, v35);
+  objc_msgSend_encodeFloat_forKey_(coder, v36, @"MPSNNPad_fillValue", v37, v38, v39, v40, v41, v35);
   aBuf = self->_aBuf;
   if (aBuf && (v50 = objc_msgSend_length(aBuf, v42, v43, v44, v45, v46, v47, v48), aBufFP32Len = self->_aBufFP32Len, v50 >= 4 * aBufFP32Len))
   {
-    objc_msgSend_encodeInt64_forKey_(a3, v42, self->_aBufFP32Len, @"MPSNNPad_aBufLenFP32", v45, v46, v47, v48);
+    objc_msgSend_encodeInt64_forKey_(coder, v42, self->_aBufFP32Len, @"MPSNNPad_aBufLenFP32", v45, v46, v47, v48);
     if (aBufFP32Len)
     {
       v59 = self->_aBuf;
       if (v59)
       {
         v60 = objc_msgSend_contents(v59, v52, v53, v54, v55, v56, v57, v58);
-        objc_msgSend_encodeBool_forKey_(a3, v61, v60 != 0, @"MPSNNPad_aBuf", v62, v63, v64, v65);
+        objc_msgSend_encodeBool_forKey_(coder, v61, v60 != 0, @"MPSNNPad_aBuf", v62, v63, v64, v65);
         if (v60)
         {
           v66 = objc_alloc(MEMORY[0x277CCACA8]);
           v73 = objc_msgSend_initWithFormat_(v66, v67, @"%@%@", v68, v69, v70, v71, v72, @"MPSNNPad_aBuf", @".length");
           v74 = objc_alloc(MEMORY[0x277CCACA8]);
           v81 = objc_msgSend_initWithFormat_(v74, v75, @"%@%@", v76, v77, v78, v79, v80, @"MPSNNPad_aBuf", @".data");
-          objc_msgSend_encodeInt64_forKey_(a3, v82, aBufFP32Len, v73, v83, v84, v85, v86);
+          objc_msgSend_encodeInt64_forKey_(coder, v82, aBufFP32Len, v73, v83, v84, v85, v86);
 
           v87 = malloc_type_malloc(4 * aBufFP32Len, 0x100004052888210uLL);
           if (v87)
           {
             v88 = v87;
             MPSCopyToFromNetworkByteOrder32();
-            objc_msgSend_encodeBytes_length_forKey_(a3, v89, v88, 4 * aBufFP32Len, v81, v90, v91, v92);
+            objc_msgSend_encodeBytes_length_forKey_(coder, v89, v88, 4 * aBufFP32Len, v81, v90, v91, v92);
             free(v88);
           }
         }
@@ -279,14 +279,14 @@
 
       else
       {
-        objc_msgSend_encodeBool_forKey_(a3, v52, 0, @"MPSNNPad_aBuf", v55, v56, v57, v58);
+        objc_msgSend_encodeBool_forKey_(coder, v52, 0, @"MPSNNPad_aBuf", v55, v56, v57, v58);
       }
     }
   }
 
   else
   {
-    objc_msgSend_encodeInt64_forKey_(a3, v42, 0, @"MPSNNPad_aBufLenFP32", v45, v46, v47, v48);
+    objc_msgSend_encodeInt64_forKey_(coder, v42, 0, @"MPSNNPad_aBufLenFP32", v45, v46, v47, v48);
   }
 }
 
@@ -312,11 +312,11 @@
   }
 }
 
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states
 {
   v72.receiver = self;
   v72.super_class = MPSNNPad;
-  v5 = [(MPSCNNKernel *)&v72 destinationImageDescriptorForSourceImages:a3 sourceStates:a4];
+  v5 = [(MPSCNNKernel *)&v72 destinationImageDescriptorForSourceImages:images sourceStates:states];
   v13 = objc_msgSend_width(v5, v6, v7, v8, v9, v10, v11, v12);
   v21 = objc_msgSend_height(v5, v14, v15, v16, v17, v18, v19, v20);
   v29 = objc_msgSend_featureChannels(v5, v22, v23, v24, v25, v26, v27, v28);
@@ -339,7 +339,7 @@
   return v5;
 }
 
-- (id)resultStateForSourceImage:(id)a3 sourceStates:(id)a4 destinationImage:(id)a5
+- (id)resultStateForSourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage
 {
   v9 = [MPSNNPadGradientState alloc];
   v16 = objc_msgSend_initWithResource_(v9, v10, 0, v11, v12, v13, v14, v15);
@@ -364,7 +364,7 @@
   *(v24 + 328) = v53;
   *(v24 + 312) = v52;
   *(v24 + 336) = objc_msgSend_sourceFeatureChannelMaxCount(self, v17, v18, v19, v20, v21, v22, v23);
-  objc_msgSend_copyToGradientState_sourceImage_sourceStates_destinationImage_(self, v32, v24, a3, a4, a5, v33, v34);
+  objc_msgSend_copyToGradientState_sourceImage_sourceStates_destinationImage_(self, v32, v24, image, states, destinationImage, v33, v34);
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 0x10) != 0)
   {
     v35 = MEMORY[0x277CCACA8];
@@ -377,11 +377,11 @@
   return v24;
 }
 
-- (id)temporaryResultStateForCommandBuffer:(id)a3 sourceImage:(id)a4 sourceStates:(id)a5 destinationImage:(id)a6
+- (id)temporaryResultStateForCommandBuffer:(id)buffer sourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage
 {
-  if (a3)
+  if (buffer)
   {
-    v19 = objc_msgSend_temporaryStateWithCommandBuffer_(MPSNNPadGradientState, a2, a3, a4, a5, a6, v6, v7);
+    v19 = objc_msgSend_temporaryStateWithCommandBuffer_(MPSNNPadGradientState, a2, buffer, image, states, destinationImage, v6, v7);
     if (self)
     {
 LABEL_3:
@@ -412,7 +412,7 @@ LABEL_6:
   *(v19 + 41) = v55;
   *(v19 + 312) = v54;
   *(v19 + 42) = objc_msgSend_sourceFeatureChannelMaxCount(self, v12, v13, v14, v15, v16, v17, v18);
-  objc_msgSend_copyToGradientState_sourceImage_sourceStates_destinationImage_(self, v34, v19, a4, a5, a6, v35, v36);
+  objc_msgSend_copyToGradientState_sourceImage_sourceStates_destinationImage_(self, v34, v19, image, states, destinationImage, v35, v36);
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 0x10) != 0)
   {
     v37 = MEMORY[0x277CCACA8];

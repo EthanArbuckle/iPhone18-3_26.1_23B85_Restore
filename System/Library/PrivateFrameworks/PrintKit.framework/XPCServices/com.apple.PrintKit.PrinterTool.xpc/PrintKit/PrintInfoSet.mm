@@ -1,9 +1,9 @@
 @interface PrintInfoSet
 - (PrintInfoSet)init;
 - (id)uniquedBrowseInfos;
-- (int)addInfo:(id)a3;
-- (int)removeInfo:(id)a3;
-- (int)updateInfo:(id)a3;
+- (int)addInfo:(id)info;
+- (int)removeInfo:(id)info;
+- (int)updateInfo:(id)info;
 @end
 
 @implementation PrintInfoSet
@@ -23,27 +23,27 @@
   return v2;
 }
 
-- (int)addInfo:(id)a3
+- (int)addInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 uuid];
+  infoCopy = info;
+  uuid = [infoCopy uuid];
   v6 = 65537;
-  if (v5)
+  if (uuid)
   {
-    v7 = [(NSMutableDictionary *)self->_uuidToPrinters objectForKeyedSubscript:v5];
+    v7 = [(NSMutableDictionary *)self->_uuidToPrinters objectForKeyedSubscript:uuid];
     if (!v7)
     {
       v7 = +[NSArray array];
     }
 
-    if (([v7 containsObject:v4] & 1) == 0)
+    if (([v7 containsObject:infoCopy] & 1) == 0)
     {
       v8 = [v7 mutableCopy];
-      [v8 addObject:v4];
+      [v8 addObject:infoCopy];
       v9 = [v8 sortedArrayUsingSelector:"compare:"];
-      [(NSMutableDictionary *)self->_uuidToPrinters setObject:v8 forKeyedSubscript:v5];
+      [(NSMutableDictionary *)self->_uuidToPrinters setObject:v8 forKeyedSubscript:uuid];
       v10 = [v8 objectAtIndexedSubscript:0];
-      if ([v10 compare:v4])
+      if ([v10 compare:infoCopy])
       {
         v6 = 65540;
       }
@@ -58,18 +58,18 @@
   return v6;
 }
 
-- (int)removeInfo:(id)a3
+- (int)removeInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 uuid];
-  v6 = [(NSMutableDictionary *)self->_uuidToPrinters objectForKeyedSubscript:v5];
-  v7 = [v6 indexOfObject:v4];
+  infoCopy = info;
+  uuid = [infoCopy uuid];
+  v6 = [(NSMutableDictionary *)self->_uuidToPrinters objectForKeyedSubscript:uuid];
+  v7 = [v6 indexOfObject:infoCopy];
   v8 = 262145;
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = [v6 mutableCopy];
     [v9 removeObjectAtIndex:v7];
-    [(NSMutableDictionary *)self->_uuidToPrinters setObject:v9 forKeyedSubscript:v5];
+    [(NSMutableDictionary *)self->_uuidToPrinters setObject:v9 forKeyedSubscript:uuid];
     if (v7)
     {
       v8 = 262148;
@@ -84,18 +84,18 @@
   return v8;
 }
 
-- (int)updateInfo:(id)a3
+- (int)updateInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 uuid];
-  v6 = [(NSMutableDictionary *)self->_uuidToPrinters objectForKeyedSubscript:v5];
-  v7 = [v6 indexOfObject:v4];
+  infoCopy = info;
+  uuid = [infoCopy uuid];
+  v6 = [(NSMutableDictionary *)self->_uuidToPrinters objectForKeyedSubscript:uuid];
+  v7 = [v6 indexOfObject:infoCopy];
   v8 = 524289;
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = [v6 mutableCopy];
-    [v9 setObject:v4 atIndexedSubscript:v7];
-    [(NSMutableDictionary *)self->_uuidToPrinters setObject:v9 forKeyedSubscript:v5];
+    [v9 setObject:infoCopy atIndexedSubscript:v7];
+    [(NSMutableDictionary *)self->_uuidToPrinters setObject:v9 forKeyedSubscript:uuid];
     if (v7)
     {
       v8 = 524289;
@@ -112,13 +112,13 @@
 
 - (id)uniquedBrowseInfos
 {
-  v3 = [(NSMutableDictionary *)self->_uuidToPrinters allKeys];
+  allKeys = [(NSMutableDictionary *)self->_uuidToPrinters allKeys];
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v3;
+  v5 = allKeys;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -135,8 +135,8 @@
         v9 = [(NSMutableDictionary *)self->_uuidToPrinters objectForKeyedSubscript:*(*(&v13 + 1) + 8 * i), v13];
         if ([v9 count])
         {
-          v10 = [v9 firstObject];
-          [v4 addObject:v10];
+          firstObject = [v9 firstObject];
+          [v4 addObject:firstObject];
         }
       }
 

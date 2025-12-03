@@ -1,12 +1,12 @@
 @interface ASPickerDisplaySettings
 + (ASPickerDisplaySettings)defaultSettings;
-- (ASPickerDisplaySettings)initWithCoder:(id)a3;
-- (ASPickerDisplaySettings)initWithXPCObject:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (ASPickerDisplaySettings)initWithCoder:(id)coder;
+- (ASPickerDisplaySettings)initWithXPCObject:(id)object error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithLevel:(int)level;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation ASPickerDisplaySettings
@@ -19,16 +19,16 @@
   return v2;
 }
 
-- (ASPickerDisplaySettings)initWithCoder:(id)a3
+- (ASPickerDisplaySettings)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"dTm"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"dTm"])
   {
-    [v4 decodeDoubleForKey:@"dTm"];
+    [coderCopy decodeDoubleForKey:@"dTm"];
     self->_discoveryTimeout = v5;
   }
 
-  v6 = v4;
+  v6 = coderCopy;
   if ([v6 containsValueForKey:@"pSOp"])
   {
     self->_options = [v6 decodeIntegerForKey:@"pSOp"];
@@ -37,72 +37,72 @@
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = v4;
+  coderCopy = coder;
+  v6 = coderCopy;
   if (self->_discoveryTimeout != 0.0)
   {
-    [v4 encodeDouble:@"dTm" forKey:?];
-    v4 = v6;
+    [coderCopy encodeDouble:@"dTm" forKey:?];
+    coderCopy = v6;
   }
 
   options = self->_options;
   if (options)
   {
     [v6 encodeInteger:options forKey:@"pSOp"];
-    v4 = v6;
+    coderCopy = v6;
   }
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   discoveryTimeout = self->_discoveryTimeout;
-  xdict = v4;
+  xdict = objectCopy;
   if (discoveryTimeout != 0.0)
   {
-    xpc_dictionary_set_double(v4, "dTm", discoveryTimeout);
-    v4 = xdict;
+    xpc_dictionary_set_double(objectCopy, "dTm", discoveryTimeout);
+    objectCopy = xdict;
   }
 
   options = self->_options;
   if (options)
   {
     xpc_dictionary_set_uint64(xdict, "pSOp", options);
-    v4 = xdict;
+    objectCopy = xdict;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 1) = *&self->_discoveryTimeout;
   *(result + 2) = self->_options;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     v8 = [(ASPickerDisplaySettings *)v6 isMemberOfClass:objc_opt_class()]&& ([(ASPickerDisplaySettings *)v6 discoveryTimeout], v7 == self->_discoveryTimeout) && [(ASPickerDisplaySettings *)v6 options]== self->_options;
   }
 
   return v8;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -143,27 +143,27 @@
   return v9;
 }
 
-- (ASPickerDisplaySettings)initWithXPCObject:(id)a3 error:(id *)a4
+- (ASPickerDisplaySettings)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = [(ASPickerDisplaySettings *)self init];
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       v17 = [objc_opt_class() description];
-      *a4 = ASErrorF(-6756, "%@ init failed", v18, v19, v20, v21, v22, v23, v17);
+      *error = ASErrorF(-6756, "%@ init failed", v18, v19, v20, v21, v22, v23, v17);
     }
 
     goto LABEL_13;
   }
 
-  if (MEMORY[0x2383B4C90](v6) != MEMORY[0x277D86468])
+  if (MEMORY[0x2383B4C90](objectCopy) != MEMORY[0x277D86468])
   {
-    if (a4)
+    if (error)
     {
       ASErrorF(-6756, "XPC non-dict", v8, v9, v10, v11, v12, v13, v24);
-      *a4 = v15 = 0;
+      *error = v15 = 0;
       goto LABEL_8;
     }
 

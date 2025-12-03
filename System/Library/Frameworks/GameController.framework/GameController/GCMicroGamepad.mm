@@ -1,15 +1,15 @@
 @interface GCMicroGamepad
 + (id)_current;
 - (BOOL)supportsDpadTaps;
-- (GCMicroGamepad)initWithCoder:(id)a3;
-- (GCMicroGamepad)initWithIdentifier:(id)a3;
+- (GCMicroGamepad)initWithCoder:(id)coder;
+- (GCMicroGamepad)initWithIdentifier:(id)identifier;
 - (GCMicroGamepadSnapshot)saveSnapshot;
 - (id)productCategory;
-- (void)_legacy_handleEvent:(__IOHIDEvent *)a3;
-- (void)_triggerValueChangedHandlerForElement:(id)a3 queue:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)microControllerWithDigitizerX:(float)a3 digitizerY:(float)a4 timestamp:(unint64_t)a5 touchDown:(BOOL)a6;
-- (void)setLastEventTimestamp:(double)a3;
+- (void)_legacy_handleEvent:(__IOHIDEvent *)event;
+- (void)_triggerValueChangedHandlerForElement:(id)element queue:(id)queue;
+- (void)encodeWithCoder:(id)coder;
+- (void)microControllerWithDigitizerX:(float)x digitizerY:(float)y timestamp:(unint64_t)timestamp touchDown:(BOOL)down;
+- (void)setLastEventTimestamp:(double)timestamp;
 - (void)setStateFromMicroGamepad:(GCMicroGamepad *)microGamepad;
 @end
 
@@ -17,25 +17,25 @@
 
 - (BOOL)supportsDpadTaps
 {
-  v2 = [(GCPhysicalInputProfile *)self controller];
-  v3 = [v2 isForwarded];
+  controller = [(GCPhysicalInputProfile *)self controller];
+  isForwarded = [controller isForwarded];
 
-  return v3;
+  return isForwarded;
 }
 
 - (id)productCategory
 {
   if (GCCurrentProcessLinkedOnAfter(0x7E50901FFFFFFFFuLL) && [(GCMicroGamepad *)self conformsToProtocol:&unk_1F4E9C418])
   {
-    v3 = [(GCMicroGamepad *)self deviceType];
-    if ((v3 - 1) > 2)
+    deviceType = [(GCMicroGamepad *)self deviceType];
+    if ((deviceType - 1) > 2)
     {
       v4 = @"Generic Remote";
     }
 
     else
     {
-      v4 = *off_1E841B650[v3 - 1];
+      v4 = *off_1E841B650[deviceType - 1];
     }
   }
 
@@ -47,39 +47,39 @@
   return v4;
 }
 
-- (void)microControllerWithDigitizerX:(float)a3 digitizerY:(float)a4 timestamp:(unint64_t)a5 touchDown:(BOOL)a6
+- (void)microControllerWithDigitizerX:(float)x digitizerY:(float)y timestamp:(unint64_t)timestamp touchDown:(BOOL)down
 {
-  v6 = a6;
-  v11 = [(GCPhysicalInputProfile *)self controller];
-  v12 = [v11 profile];
+  downCopy = down;
+  controller = [(GCPhysicalInputProfile *)self controller];
+  profile = [controller profile];
 
-  v13 = [(GCPhysicalInputProfile *)self controller];
-  v14 = [v13 profile];
-  v15 = [v12 dpad];
-  if (v6)
+  controller2 = [(GCPhysicalInputProfile *)self controller];
+  profile2 = [controller2 profile];
+  dpad = [profile dpad];
+  if (downCopy)
   {
-    [v12 digitizerTouchEvent:v15 x:a5 y:0 timestamp:a3 forceSkipDpadRotation:a4];
+    [profile digitizerTouchEvent:dpad x:timestamp y:0 timestamp:x forceSkipDpadRotation:y];
   }
 
   else
   {
-    [v12 digitizerTouchUp:v15 timestamp:a5 forceSkipDpadRotation:0];
+    [profile digitizerTouchUp:dpad timestamp:timestamp forceSkipDpadRotation:0];
   }
 
-  v16 = [(GCPhysicalInputProfile *)self controller];
-  v17 = [v16 handlerQueue];
+  controller3 = [(GCPhysicalInputProfile *)self controller];
+  handlerQueue = [controller3 handlerQueue];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __87__GCMicroGamepad_Legacy__microControllerWithDigitizerX_digitizerY_timestamp_touchDown___block_invoke;
   v21[3] = &unk_1E841B630;
-  v22 = v13;
-  v23 = v12;
-  v24 = v14;
-  v25 = self;
-  v18 = v14;
-  v19 = v12;
-  v20 = v13;
-  dispatch_async(v17, v21);
+  v22 = controller2;
+  v23 = profile;
+  v24 = profile2;
+  selfCopy = self;
+  v18 = profile2;
+  v19 = profile;
+  v20 = controller2;
+  dispatch_async(handlerQueue, v21);
 }
 
 void __87__GCMicroGamepad_Legacy__microControllerWithDigitizerX_digitizerY_timestamp_touchDown___block_invoke(uint64_t a1)
@@ -106,10 +106,10 @@ void __87__GCMicroGamepad_Legacy__microControllerWithDigitizerX_digitizerY_times
   }
 }
 
-- (void)_legacy_handleEvent:(__IOHIDEvent *)a3
+- (void)_legacy_handleEvent:(__IOHIDEvent *)event
 {
-  v4 = [MEMORY[0x1E695DF00] date];
-  [v4 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   [(GCMicroGamepad *)self setLastEventTimestamp:?];
 
   Type = IOHIDEventGetType();
@@ -120,18 +120,18 @@ void __87__GCMicroGamepad_Legacy__microControllerWithDigitizerX_digitizerY_times
       return;
     }
 
-    v6 = self;
+    selfCopy = self;
     IntegerValue = IOHIDEventGetIntegerValue();
     v8 = IOHIDEventGetIntegerValue();
     v9 = v8;
     v10 = IntegerValue == 12 && v8 == 547 || IntegerValue == 1 && v8 == 134;
     v22 = IOHIDEventGetIntegerValue();
-    v23 = [(GCPhysicalInputProfile *)v6 controller];
-    v24 = [v23 handlerQueue];
-    v25 = v24;
-    if (v24)
+    controller = [(GCPhysicalInputProfile *)selfCopy controller];
+    handlerQueue = [controller handlerQueue];
+    v25 = handlerQueue;
+    if (handlerQueue)
     {
-      v26 = v24;
+      v26 = handlerQueue;
     }
 
     else
@@ -146,13 +146,13 @@ void __87__GCMicroGamepad_Legacy__microControllerWithDigitizerX_digitizerY_times
       block[1] = 3221225472;
       block[2] = __46__GCMicroGamepad_Legacy___legacy_handleEvent___block_invoke;
       block[3] = &unk_1E8418C28;
-      v54 = v23;
+      v54 = controller;
       dispatch_async(v26, block);
     }
 
-    if ([(GCMicroGamepad *)v6 conformsToProtocol:&unk_1F4EA4010])
+    if ([(GCMicroGamepad *)selfCopy conformsToProtocol:&unk_1F4EA4010])
     {
-      v29 = v6;
+      v29 = selfCopy;
     }
 
     else
@@ -170,15 +170,15 @@ void __87__GCMicroGamepad_Legacy__microControllerWithDigitizerX_digitizerY_times
           {
             if (v9 == 66)
             {
-              v30 = [(GCMicroGamepad *)v6 dpad];
+              dpad = [(GCMicroGamepad *)selfCopy dpad];
               if (v29)
               {
                 v31 = v22 != 0;
                 v32 = v29;
-                v33 = v30;
+                v33 = dpad;
                 v34 = 1;
 LABEL_56:
-                v36 = [(GCMicroGamepad *)v32 dpadDirectionEvent:v33 direction:v34 pressed:v31];
+                buttonA2 = [(GCMicroGamepad *)v32 dpadDirectionEvent:v33 direction:v34 pressed:v31];
                 goto LABEL_57;
               }
 
@@ -196,49 +196,49 @@ LABEL_75:
 
         if (v9 == 67)
         {
-          v30 = [(GCMicroGamepad *)v6 dpad];
+          dpad = [(GCMicroGamepad *)selfCopy dpad];
           if (v29)
           {
             v31 = v22 != 0;
             v32 = v29;
-            v33 = v30;
+            v33 = dpad;
             v34 = 8;
             goto LABEL_56;
           }
 
           v41 = -v22;
 LABEL_66:
-          v42 = [(GCPhysicalInputProfile *)v6 controller];
-          v43 = [v42 handlerQueue];
-          v30 = v30;
-          v44 = [v30 yAxis];
+          controller2 = [(GCPhysicalInputProfile *)selfCopy controller];
+          handlerQueue2 = [controller2 handlerQueue];
+          dpad = dpad;
+          yAxis = [dpad yAxis];
 LABEL_69:
-          v46 = v44;
+          v46 = yAxis;
           *&v45 = v41;
-          v47 = [v44 _setValue:v43 queue:v45];
+          v47 = [yAxis _setValue:handlerQueue2 queue:v45];
 
           if (v47)
           {
-            [0 addObject:v30];
+            [0 addObject:dpad];
 
-            v39 = [(GCMicroGamepad *)v6 dpad];
+            dpad2 = [(GCMicroGamepad *)selfCopy dpad];
           }
 
           else
           {
 
-            v39 = 0;
+            dpad2 = 0;
           }
 
           goto LABEL_73;
         }
 
-        v30 = [(GCMicroGamepad *)v6 dpad];
+        dpad = [(GCMicroGamepad *)selfCopy dpad];
         if (v29)
         {
           v31 = v22 != 0;
           v32 = v29;
-          v33 = v30;
+          v33 = dpad;
           v34 = 4;
           goto LABEL_56;
         }
@@ -257,50 +257,50 @@ LABEL_69:
           }
 
 LABEL_44:
-          v37 = [(GCMicroGamepad *)v6 buttonA];
-          v30 = v37;
+          buttonA = [(GCMicroGamepad *)selfCopy buttonA];
+          dpad = buttonA;
           if (v29)
           {
-            v36 = [(GCMicroGamepad *)v29 centerButtonEvent:v37 pressed:v22 != 0];
+            buttonA2 = [(GCMicroGamepad *)v29 centerButtonEvent:buttonA pressed:v22 != 0];
             goto LABEL_57;
           }
 
           *&v38 = v22;
-          if ([v37 _setValue:v26 queue:v38])
+          if ([buttonA _setValue:v26 queue:v38])
           {
-            v36 = [(GCMicroGamepad *)v6 buttonA];
+            buttonA2 = [(GCMicroGamepad *)selfCopy buttonA];
             goto LABEL_57;
           }
 
           goto LABEL_62;
         }
 
-        v30 = [(GCMicroGamepad *)v6 dpad];
+        dpad = [(GCMicroGamepad *)selfCopy dpad];
         if (v29)
         {
           v31 = v22 != 0;
           v32 = v29;
-          v33 = v30;
+          v33 = dpad;
           v34 = 2;
           goto LABEL_56;
         }
 
         v41 = v22;
 LABEL_68:
-        v42 = [(GCPhysicalInputProfile *)v6 controller];
-        v43 = [v42 handlerQueue];
-        v30 = v30;
-        v44 = [v30 xAxis];
+        controller2 = [(GCPhysicalInputProfile *)selfCopy controller];
+        handlerQueue2 = [controller2 handlerQueue];
+        dpad = dpad;
+        yAxis = [dpad xAxis];
         goto LABEL_69;
       }
 
       if (v9 == 205)
       {
-        v30 = [(GCMicroGamepad *)v6 buttonX];
+        dpad = [(GCMicroGamepad *)selfCopy buttonX];
         *&v40 = v22;
-        if ([v30 _setValue:v26 queue:v40])
+        if ([dpad _setValue:v26 queue:v40])
         {
-          v36 = [(GCMicroGamepad *)v6 buttonX];
+          buttonA2 = [(GCMicroGamepad *)selfCopy buttonX];
           goto LABEL_57;
         }
 
@@ -318,30 +318,30 @@ LABEL_68:
       goto LABEL_75;
     }
 
-    v30 = [(GCMicroGamepad *)v6 buttonMenu];
+    dpad = [(GCMicroGamepad *)selfCopy buttonMenu];
     *&v35 = v22;
-    if ([v30 _setValue:v26 queue:v35])
+    if ([dpad _setValue:v26 queue:v35])
     {
-      v36 = [(GCMicroGamepad *)v6 buttonMenu];
+      buttonA2 = [(GCMicroGamepad *)selfCopy buttonMenu];
 LABEL_57:
-      v39 = v36;
+      dpad2 = buttonA2;
       goto LABEL_73;
     }
 
 LABEL_62:
-    v39 = 0;
+    dpad2 = 0;
 LABEL_73:
 
-    if (v39)
+    if (dpad2)
     {
       v49[0] = MEMORY[0x1E69E9820];
       v49[1] = 3221225472;
       v49[2] = __46__GCMicroGamepad_Legacy___legacy_handleEvent___block_invoke_167;
       v49[3] = &unk_1E8419BC0;
-      v50 = v6;
-      v51 = v39;
+      v50 = selfCopy;
+      v51 = dpad2;
       v52 = v50;
-      v48 = v39;
+      v48 = dpad2;
       dispatch_async(v26, v49);
     }
 
@@ -360,7 +360,7 @@ LABEL_73:
     v17 = v14 * 2.0 + -1.0;
     *&v17 = v17;
     *&v17 = -*&v17;
-    v18 = self;
+    selfCopy3 = self;
     v19 = TimeStamp;
     v20 = 1;
   }
@@ -369,12 +369,12 @@ LABEL_73:
   {
     v16 = 0.0;
     v17 = 0.0;
-    v18 = self;
+    selfCopy3 = self;
     v19 = TimeStamp;
     v20 = 0;
   }
 
-  [(GCMicroGamepad *)v18 microControllerWithDigitizerX:v19 digitizerY:v20 timestamp:v16 touchDown:v17];
+  [(GCMicroGamepad *)selfCopy3 microControllerWithDigitizerX:v19 digitizerY:v20 timestamp:v16 touchDown:v17];
 }
 
 void __46__GCMicroGamepad_Legacy___legacy_handleEvent___block_invoke(uint64_t a1)
@@ -414,18 +414,18 @@ void __46__GCMicroGamepad_Legacy___legacy_handleEvent___block_invoke_167(uint64_
   }
 }
 
-- (void)setLastEventTimestamp:(double)a3
+- (void)setLastEventTimestamp:(double)timestamp
 {
   v3.receiver = self;
   v3.super_class = GCMicroGamepad;
-  [(GCPhysicalInputProfile *)&v3 setLastEventTimestamp:a3];
+  [(GCPhysicalInputProfile *)&v3 setLastEventTimestamp:timestamp];
 }
 
-- (GCMicroGamepad)initWithIdentifier:(id)a3
+- (GCMicroGamepad)initWithIdentifier:(id)identifier
 {
   v33.receiver = self;
   v33.super_class = GCMicroGamepad;
-  v3 = [(GCPhysicalInputProfile *)&v33 initWithIdentifier:a3];
+  v3 = [(GCPhysicalInputProfile *)&v33 initWithIdentifier:identifier];
   v4 = v3;
   if (v3)
   {
@@ -475,56 +475,56 @@ void __46__GCMicroGamepad_Legacy___legacy_handleEvent___block_invoke_167(uint64_
   return v4;
 }
 
-- (GCMicroGamepad)initWithCoder:(id)a3
+- (GCMicroGamepad)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = GCIPCObjectIdentifier_Classes();
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClasses:v5 forKey:@"identifier"];
 
   v7 = [(GCMicroGamepad *)self initWithIdentifier:v6];
   if (v7)
   {
-    -[GCControllerDirectionPad setNonAnalog:](v7->_dpad, "setNonAnalog:", [v4 decodeBoolForKey:@"digital"]);
+    -[GCControllerDirectionPad setNonAnalog:](v7->_dpad, "setNonAnalog:", [coderCopy decodeBoolForKey:@"digital"]);
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(GCPhysicalInputProfile *)self identifier];
-  [v5 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(GCPhysicalInputProfile *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  [v5 encodeBool:0 forKey:@"digital"];
+  [coderCopy encodeBool:0 forKey:@"digital"];
 }
 
 - (GCMicroGamepadSnapshot)saveSnapshot
 {
   snapshotData.version = 256;
   snapshotData.size = 20;
-  v3 = [(GCMicroGamepad *)self dpad];
-  v4 = [v3 xAxis];
-  [v4 value];
+  dpad = [(GCMicroGamepad *)self dpad];
+  xAxis = [dpad xAxis];
+  [xAxis value];
   snapshotData.dpadX = v5;
 
-  v6 = [(GCMicroGamepad *)self dpad];
-  v7 = [v6 yAxis];
-  [v7 value];
+  dpad2 = [(GCMicroGamepad *)self dpad];
+  yAxis = [dpad2 yAxis];
+  [yAxis value];
   snapshotData.dpadY = v8;
 
-  v9 = [(GCMicroGamepad *)self buttonA];
-  [v9 value];
+  buttonA = [(GCMicroGamepad *)self buttonA];
+  [buttonA value];
   snapshotData.buttonA = v10;
 
-  v11 = [(GCMicroGamepad *)self buttonX];
-  [v11 value];
+  buttonX = [(GCMicroGamepad *)self buttonX];
+  [buttonX value];
   snapshotData.buttonX = v12;
 
   v13 = NSDataFromGCMicroGamepadSnapshotData(&snapshotData);
   v14 = [GCMicroGamepadSnapshot alloc];
-  v15 = [(GCPhysicalInputProfile *)self controller];
-  v16 = [(GCMicroGamepadSnapshot *)v14 initWithController:v15 snapshotData:v13];
+  controller = [(GCPhysicalInputProfile *)self controller];
+  v16 = [(GCMicroGamepadSnapshot *)v14 initWithController:controller snapshotData:v13];
 
   return v16;
 }
@@ -533,32 +533,32 @@ void __46__GCMicroGamepad_Legacy___legacy_handleEvent___block_invoke_167(uint64_
 {
   v66 = *MEMORY[0x1E69E9840];
   v57 = microGamepad;
-  v4 = [(GCPhysicalInputProfile *)self controller];
-  if (!v4 || (v5 = v4, -[GCPhysicalInputProfile controller](self, "controller"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isSnapshot], v6, v5, v7))
+  controller = [(GCPhysicalInputProfile *)self controller];
+  if (!controller || (v5 = controller, -[GCPhysicalInputProfile controller](self, "controller"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isSnapshot], v6, v5, v7))
   {
-    v8 = [MEMORY[0x1E695DF70] array];
-    v9 = [(GCPhysicalInputProfile *)self controller];
-    v10 = [v9 handlerQueue];
+    array = [MEMORY[0x1E695DF70] array];
+    controller2 = [(GCPhysicalInputProfile *)self controller];
+    handlerQueue = [controller2 handlerQueue];
 
     dpad = self->_dpad;
-    v56 = [(GCMicroGamepad *)v57 dpad];
-    v55 = [v56 xAxis];
-    [v55 value];
+    dpad = [(GCMicroGamepad *)v57 dpad];
+    xAxis = [dpad xAxis];
+    [xAxis value];
     v13 = v12;
-    v14 = [(GCMicroGamepad *)v57 dpad];
-    v15 = [v14 yAxis];
-    [v15 value];
+    dpad2 = [(GCMicroGamepad *)v57 dpad];
+    yAxis = [dpad2 yAxis];
+    [yAxis value];
     v17 = v16;
     v18 = dpad;
-    v19 = v10;
-    v20 = v8;
-    v21 = [(GCControllerDirectionPad *)v18 xAxis];
+    v19 = handlerQueue;
+    v20 = array;
+    xAxis2 = [(GCControllerDirectionPad *)v18 xAxis];
     LODWORD(v22) = v13;
-    v23 = [v21 _setValue:v19 queue:v22];
+    v23 = [xAxis2 _setValue:v19 queue:v22];
 
-    v24 = [(GCControllerDirectionPad *)v18 yAxis];
+    yAxis2 = [(GCControllerDirectionPad *)v18 yAxis];
     LODWORD(v25) = v17;
-    v26 = [v24 _setValue:v19 queue:v25];
+    v26 = [yAxis2 _setValue:v19 queue:v25];
 
     if ((v23 & 1) != 0 || v26)
     {
@@ -566,8 +566,8 @@ void __46__GCMicroGamepad_Legacy___legacy_handleEvent___block_invoke_167(uint64_
     }
 
     buttonMenu = self->_buttonMenu;
-    v28 = [(GCMicroGamepad *)v57 buttonMenu];
-    [v28 value];
+    buttonMenu = [(GCMicroGamepad *)v57 buttonMenu];
+    [buttonMenu value];
     v30 = v29;
     v31 = buttonMenu;
     v32 = v20;
@@ -578,8 +578,8 @@ void __46__GCMicroGamepad_Legacy___legacy_handleEvent___block_invoke_167(uint64_
     }
 
     button0 = self->_button0;
-    v35 = [(GCMicroGamepad *)v57 buttonA];
-    [v35 value];
+    buttonA = [(GCMicroGamepad *)v57 buttonA];
+    [buttonA value];
     v37 = v36;
     v38 = button0;
     v39 = v32;
@@ -590,8 +590,8 @@ void __46__GCMicroGamepad_Legacy___legacy_handleEvent___block_invoke_167(uint64_
     }
 
     button1 = self->_button1;
-    v42 = [(GCMicroGamepad *)v57 buttonX];
-    [v42 value];
+    buttonX = [(GCMicroGamepad *)v57 buttonX];
+    [buttonX value];
     v44 = v43;
     v45 = button1;
     v46 = v39;
@@ -670,18 +670,18 @@ void __43__GCMicroGamepad_setStateFromMicroGamepad___block_invoke(uint64_t a1)
 + (id)_current
 {
   v2 = +[_GCLegacyDeviceSession sharedInstance];
-  v3 = [v2 currentMicroGamepad];
+  currentMicroGamepad = [v2 currentMicroGamepad];
 
-  return v3;
+  return currentMicroGamepad;
 }
 
-- (void)_triggerValueChangedHandlerForElement:(id)a3 queue:(id)a4
+- (void)_triggerValueChangedHandlerForElement:(id)element queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  queueCopy = queue;
   if (gc_isInternalBuild())
   {
-    [GCExtendedGamepad _triggerValueChangedHandlerForElement:v6 queue:?];
+    [GCExtendedGamepad _triggerValueChangedHandlerForElement:elementCopy queue:?];
   }
 
   block[0] = MEMORY[0x1E69E9820];
@@ -689,10 +689,10 @@ void __43__GCMicroGamepad_setStateFromMicroGamepad___block_invoke(uint64_t a1)
   block[2] = __62__GCMicroGamepad__triggerValueChangedHandlerForElement_queue___block_invoke;
   block[3] = &unk_1E8418C78;
   block[4] = self;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = elementCopy;
+  selfCopy = self;
+  v8 = elementCopy;
+  dispatch_async(queueCopy, block);
 }
 
 void __62__GCMicroGamepad__triggerValueChangedHandlerForElement_queue___block_invoke(uint64_t a1)

@@ -1,33 +1,33 @@
 @interface PBBProtoOfflineTerms
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAppleLanguages:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAppleLanguages:(id)languages;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PBBProtoOfflineTerms
 
-- (void)addAppleLanguages:(id)a3
+- (void)addAppleLanguages:(id)languages
 {
-  v4 = a3;
+  languagesCopy = languages;
   appleLanguages = self->_appleLanguages;
-  v8 = v4;
+  v8 = languagesCopy;
   if (!appleLanguages)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_appleLanguages;
     self->_appleLanguages = v6;
 
-    v4 = v8;
+    languagesCopy = v8;
     appleLanguages = self->_appleLanguages;
   }
 
-  [(NSMutableArray *)appleLanguages addObject:v4];
+  [(NSMutableArray *)appleLanguages addObject:languagesCopy];
 }
 
 - (id)description
@@ -36,20 +36,20 @@
   v8.receiver = self;
   v8.super_class = PBBProtoOfflineTerms;
   v4 = [(PBBProtoOfflineTerms *)&v8 description];
-  v5 = [(PBBProtoOfflineTerms *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PBBProtoOfflineTerms *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   license = self->_license;
   if (license)
   {
-    [v3 setObject:license forKey:@"license"];
+    [dictionary setObject:license forKey:@"license"];
   }
 
   multiterms = self->_multiterms;
@@ -85,10 +85,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_license)
   {
     PBDataWriterWriteDataField();
@@ -149,71 +149,71 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_license)
   {
-    [v8 setLicense:?];
+    [toCopy setLicense:?];
   }
 
   if (self->_multiterms)
   {
-    [v8 setMultiterms:?];
+    [toCopy setMultiterms:?];
   }
 
   if (self->_warranty)
   {
-    [v8 setWarranty:?];
+    [toCopy setWarranty:?];
   }
 
   if (self->_languageCode)
   {
-    [v8 setLanguageCode:?];
+    [toCopy setLanguageCode:?];
   }
 
   if (self->_countryCode)
   {
-    [v8 setCountryCode:?];
+    [toCopy setCountryCode:?];
   }
 
   if ([(PBBProtoOfflineTerms *)self appleLanguagesCount])
   {
-    [v8 clearAppleLanguages];
-    v4 = [(PBBProtoOfflineTerms *)self appleLanguagesCount];
-    if (v4)
+    [toCopy clearAppleLanguages];
+    appleLanguagesCount = [(PBBProtoOfflineTerms *)self appleLanguagesCount];
+    if (appleLanguagesCount)
     {
-      v5 = v4;
+      v5 = appleLanguagesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PBBProtoOfflineTerms *)self appleLanguagesAtIndex:i];
-        [v8 addAppleLanguages:v7];
+        [toCopy addAppleLanguages:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_license copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_license copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(NSData *)self->_multiterms copyWithZone:a3];
+  v8 = [(NSData *)self->_multiterms copyWithZone:zone];
   v9 = v5[5];
   v5[5] = v8;
 
-  v10 = [(NSData *)self->_warranty copyWithZone:a3];
+  v10 = [(NSData *)self->_warranty copyWithZone:zone];
   v11 = v5[6];
   v5[6] = v10;
 
-  v12 = [(NSString *)self->_languageCode copyWithZone:a3];
+  v12 = [(NSString *)self->_languageCode copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
-  v14 = [(NSString *)self->_countryCode copyWithZone:a3];
+  v14 = [(NSString *)self->_countryCode copyWithZone:zone];
   v15 = v5[2];
   v5[2] = v14;
 
@@ -237,7 +237,7 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v24 + 1) + 8 * v20) copyWithZone:{a3, v24}];
+        v21 = [*(*(&v24 + 1) + 8 * v20) copyWithZone:{zone, v24}];
         [v5 addAppleLanguages:v21];
 
         ++v20;
@@ -254,13 +254,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((license = self->_license, !(license | v4[4])) || -[NSData isEqual:](license, "isEqual:")) && ((multiterms = self->_multiterms, !(multiterms | v4[5])) || -[NSData isEqual:](multiterms, "isEqual:")) && ((warranty = self->_warranty, !(warranty | v4[6])) || -[NSData isEqual:](warranty, "isEqual:")) && ((languageCode = self->_languageCode, !(languageCode | v4[3])) || -[NSString isEqual:](languageCode, "isEqual:")) && ((countryCode = self->_countryCode, !(countryCode | v4[2])) || -[NSString isEqual:](countryCode, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((license = self->_license, !(license | equalCopy[4])) || -[NSData isEqual:](license, "isEqual:")) && ((multiterms = self->_multiterms, !(multiterms | equalCopy[5])) || -[NSData isEqual:](multiterms, "isEqual:")) && ((warranty = self->_warranty, !(warranty | equalCopy[6])) || -[NSData isEqual:](warranty, "isEqual:")) && ((languageCode = self->_languageCode, !(languageCode | equalCopy[3])) || -[NSString isEqual:](languageCode, "isEqual:")) && ((countryCode = self->_countryCode, !(countryCode | equalCopy[2])) || -[NSString isEqual:](countryCode, "isEqual:")))
   {
     appleLanguages = self->_appleLanguages;
-    if (appleLanguages | v4[1])
+    if (appleLanguages | equalCopy[1])
     {
       v11 = [(NSMutableArray *)appleLanguages isEqual:?];
     }
@@ -289,31 +289,31 @@
   return v6 ^ v7 ^ [(NSMutableArray *)self->_appleLanguages hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
     [(PBBProtoOfflineTerms *)self setLicense:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(PBBProtoOfflineTerms *)self setMultiterms:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(PBBProtoOfflineTerms *)self setWarranty:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PBBProtoOfflineTerms *)self setLanguageCode:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(PBBProtoOfflineTerms *)self setCountryCode:?];
   }
@@ -322,7 +322,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

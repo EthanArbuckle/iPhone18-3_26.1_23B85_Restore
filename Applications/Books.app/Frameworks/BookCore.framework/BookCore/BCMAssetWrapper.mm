@@ -1,13 +1,13 @@
 @interface BCMAssetWrapper
-+ (id)actionTextForType:(int64_t)a3 withAsset:(id)a4;
-+ (id)assetWithData:(id)a3;
-+ (id)nameForResourceType:(int64_t)a3;
++ (id)actionTextForType:(int64_t)type withAsset:(id)asset;
++ (id)assetWithData:(id)data;
++ (id)nameForResourceType:(int64_t)type;
 - (BCMAssetWrapper)init;
 @end
 
 @implementation BCMAssetWrapper
 
-+ (id)assetWithData:(id)a3
++ (id)assetWithData:(id)data
 {
   v3 = sub_1EEE54();
   v4 = _s8BookCore13MAssetWrapperC5asset4withSo8BFMAsset_pSgSDys11AnyHashableVypG_tFZ_0(v3);
@@ -15,14 +15,14 @@
   return v4;
 }
 
-+ (id)actionTextForType:(int64_t)a3 withAsset:(id)a4
++ (id)actionTextForType:(int64_t)type withAsset:(id)asset
 {
   sub_1EE9F4();
   v5 = swift_dynamicCastClass();
   if (v5)
   {
     swift_unknownObjectRetain();
-    MAsset.actionText(for:)(a3);
+    MAsset.actionText(for:)(type);
     v7 = v6;
     swift_unknownObjectRelease();
     if (v7)
@@ -41,7 +41,7 @@
   return v5;
 }
 
-+ (id)nameForResourceType:(int64_t)a3
++ (id)nameForResourceType:(int64_t)type
 {
   v3 = sub_1EE834();
   v4 = *(v3 - 8);

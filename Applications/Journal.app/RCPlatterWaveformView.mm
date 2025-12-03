@@ -1,62 +1,62 @@
 @interface RCPlatterWaveformView
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_sliceTimeRangeForIndex:(int64_t)a3 sliceDuration:(double)a4;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_sliceTimeRangeForIndex:(int64_t)index sliceDuration:(double)duration;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)currentTimeWindow;
-- ($F24F406B2B787EFB06265DBA3D28CBD5)sliceTimeRangeForIndex:(int64_t)a3;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)sliceTimeRangeForIndex:(int64_t)index;
 - (CGRect)_activeSliceFrame;
 - (CGRect)_inactiveSliceFrame;
 - (CGRect)_leadingRoundedFrame;
 - (CGRect)_trailingRoundedFrame;
-- (CGRect)frameForSlice:(id)a3 sliceType:(int64_t)a4 atIndex:(int64_t)a5;
+- (CGRect)frameForSlice:(id)slice sliceType:(int64_t)type atIndex:(int64_t)index;
 - (CGSize)intrinsicContentSize;
-- (RCPlatterWaveformView)initWithFrame:(CGRect)a3 dataProvider:(id)a4;
-- (double)_heightForAmplitude:(double)a3;
-- (double)_maxHeightForSliceAtIndex:(int64_t)a3 sliceType:(int64_t)a4;
+- (RCPlatterWaveformView)initWithFrame:(CGRect)frame dataProvider:(id)provider;
+- (double)_heightForAmplitude:(double)amplitude;
+- (double)_maxHeightForSliceAtIndex:(int64_t)index sliceType:(int64_t)type;
 - (double)_roundedSliceWidthPerSide;
-- (double)heightForSlice:(id)a3 sliceType:(int64_t)a4 atIndex:(int64_t)a5;
+- (double)heightForSlice:(id)slice sliceType:(int64_t)type atIndex:(int64_t)index;
 - (double)slicePadding;
 - (double)sliceWidth;
 - (double)timeWindow;
-- (double)xPositionForSliceAtIndex:(int64_t)a3;
+- (double)xPositionForSliceAtIndex:(int64_t)index;
 - (id)accessibilityLabel;
-- (id)sliceWithType:(int64_t)a3;
-- (int64_t)indexForSliceStartTime:(double)a3;
+- (id)sliceWithType:(int64_t)type;
+- (int64_t)indexForSliceStartTime:(double)time;
 - (unint64_t)numberOfInactiveSlices;
-- (void)_resetActiveSlicesWithIndex:(int64_t)a3;
+- (void)_resetActiveSlicesWithIndex:(int64_t)index;
 - (void)_setupViews;
 - (void)_updateAmplitudes;
 - (void)_updateSliceColors;
-- (void)appendSliceWithType:(int64_t)a3;
-- (void)enumerateAllSlices:(id)a3;
+- (void)appendSliceWithType:(int64_t)type;
+- (void)enumerateAllSlices:(id)slices;
 - (void)layoutSubviews;
-- (void)removeSliceWithType:(int64_t)a3;
-- (void)setSliceColor:(id)a3;
-- (void)updateActiveSlicesForTimeRange:(id)a3;
-- (void)updateFrameForSlice:(id)a3 sliceType:(int64_t)a4 atIndex:(int64_t)a5;
-- (void)updateInactiveSlicesForTimeRange:(id)a3 inactiveSliceCount:(unint64_t)a4;
+- (void)removeSliceWithType:(int64_t)type;
+- (void)setSliceColor:(id)color;
+- (void)updateActiveSlicesForTimeRange:(id)range;
+- (void)updateFrameForSlice:(id)slice sliceType:(int64_t)type atIndex:(int64_t)index;
+- (void)updateInactiveSlicesForTimeRange:(id)range inactiveSliceCount:(unint64_t)count;
 - (void)updateSliceFrames;
-- (void)updateSliceFramesForRecordingTime:(double)a3;
+- (void)updateSliceFramesForRecordingTime:(double)time;
 - (void)updateSlicesAndFrames;
 @end
 
 @implementation RCPlatterWaveformView
 
-- (RCPlatterWaveformView)initWithFrame:(CGRect)a3 dataProvider:(id)a4
+- (RCPlatterWaveformView)initWithFrame:(CGRect)frame dataProvider:(id)provider
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  providerCopy = provider;
   v19.receiver = self;
   v19.super_class = RCPlatterWaveformView;
-  v10 = [(RCPlatterWaveformView *)&v19 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(RCPlatterWaveformView *)&v19 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(RCPlatterWaveformView *)v10 setDataProvider:v9];
+    [(RCPlatterWaveformView *)height setDataProvider:providerCopy];
     v12 = +[RCRecorderStyleProvider sharedStyleProvider];
-    v13 = [v12 platterWaveformActiveSliceColor];
-    [(RCPlatterWaveformView *)v11 setActiveSliceColor:v13];
+    platterWaveformActiveSliceColor = [v12 platterWaveformActiveSliceColor];
+    [(RCPlatterWaveformView *)v11 setActiveSliceColor:platterWaveformActiveSliceColor];
 
     v14 = +[NSMutableArray array];
     [(RCPlatterWaveformView *)v11 setActiveSliceQueue:v14];
@@ -68,8 +68,8 @@
     [(RCPlatterWaveformView *)v11 setSliceRecyclerStack:v16];
 
     [(RCPlatterWaveformView *)v11 _setupViews];
-    v17 = [(RCPlatterWaveformView *)v11 layer];
-    [v17 setAllowsHitTesting:0];
+    layer = [(RCPlatterWaveformView *)v11 layer];
+    [layer setAllowsHitTesting:0];
   }
 
   return v11;
@@ -83,24 +83,24 @@
 
   [(RCPlatterWaveformView *)self addSubview:self->_sliceViewContainer];
   [(UIView *)self->_sliceViewContainer setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(UIView *)self->_sliceViewContainer leadingAnchor];
-  v6 = [(RCPlatterWaveformView *)self leadingAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  leadingAnchor = [(UIView *)self->_sliceViewContainer leadingAnchor];
+  leadingAnchor2 = [(RCPlatterWaveformView *)self leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v7 setActive:1];
 
-  v8 = [(UIView *)self->_sliceViewContainer trailingAnchor];
-  v9 = [(RCPlatterWaveformView *)self trailingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  trailingAnchor = [(UIView *)self->_sliceViewContainer trailingAnchor];
+  trailingAnchor2 = [(RCPlatterWaveformView *)self trailingAnchor];
+  v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v10 setActive:1];
 
-  v11 = [(UIView *)self->_sliceViewContainer topAnchor];
-  v12 = [(RCPlatterWaveformView *)self topAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  topAnchor = [(UIView *)self->_sliceViewContainer topAnchor];
+  topAnchor2 = [(RCPlatterWaveformView *)self topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v13 setActive:1];
 
-  v16 = [(UIView *)self->_sliceViewContainer bottomAnchor];
-  v14 = [(RCPlatterWaveformView *)self bottomAnchor];
-  v15 = [v16 constraintEqualToAnchor:v14];
+  bottomAnchor = [(UIView *)self->_sliceViewContainer bottomAnchor];
+  bottomAnchor2 = [(RCPlatterWaveformView *)self bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v15 setActive:1];
 }
 
@@ -112,10 +112,10 @@
   [(RCPlatterWaveformView *)self updateSlicesAndFrames];
 }
 
-- (void)updateSliceFramesForRecordingTime:(double)a3
+- (void)updateSliceFramesForRecordingTime:(double)time
 {
-  v5 = [(RCPlatterWaveformView *)self timeWindow];
-  RCTimeRangeMake(v5, v7, a3 - v6, a3);
+  timeWindow = [(RCPlatterWaveformView *)self timeWindow];
+  RCTimeRangeMake(timeWindow, v7, time - v6, time);
   [(RCPlatterWaveformView *)self setCurrentTimeWindow:?];
 
   [(RCPlatterWaveformView *)self updateSliceFrames];
@@ -147,10 +147,10 @@
   [(RCPlatterWaveformView *)self enumerateAllSlices:v5];
 }
 
-- (void)updateActiveSlicesForTimeRange:(id)a3
+- (void)updateActiveSlicesForTimeRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v6 = [(RCPlatterWaveformView *)self indexForSliceStartTime:?];
   [(RCPlatterWaveformView *)self sliceDuration];
   v8 = ((var1 - var0) / v7);
@@ -247,14 +247,14 @@
   }
 }
 
-- (void)updateInactiveSlicesForTimeRange:(id)a3 inactiveSliceCount:(unint64_t)a4
+- (void)updateInactiveSlicesForTimeRange:(id)range inactiveSliceCount:(unint64_t)count
 {
-  var1 = a3.var1;
+  var1 = range.var1;
   [(RCPlatterWaveformView *)self sliceDuration];
-  v8 = var1 + v7 * a4;
+  v8 = var1 + v7 * count;
   v9 = [(RCPlatterWaveformView *)self indexForSliceStartTime:var1];
   v10 = [(RCPlatterWaveformView *)self indexForSliceStartTime:v8];
-  if (a4)
+  if (count)
   {
     v11 = v10 - v9 + 1;
   }
@@ -275,9 +275,9 @@
   }
 }
 
-- (void)enumerateAllSlices:(id)a3
+- (void)enumerateAllSlices:(id)slices
 {
-  v4 = a3;
+  slicesCopy = slices;
   indexOfFirstActiveSlice = self->_indexOfFirstActiveSlice;
   v20 = 0u;
   v21 = 0u;
@@ -299,7 +299,7 @@
           objc_enumerationMutation(v6);
         }
 
-        (*(v4 + 2))(v4, indexOfFirstActiveSlice++, *(*(&v20 + 1) + 8 * v10), 0);
+        (*(slicesCopy + 2))(slicesCopy, indexOfFirstActiveSlice++, *(*(&v20 + 1) + 8 * v10), 0);
         v10 = v10 + 1;
       }
 
@@ -330,7 +330,7 @@
           objc_enumerationMutation(v11);
         }
 
-        (*(v4 + 2))(v4, indexOfFirstActiveSlice++, *(*(&v16 + 1) + 8 * v15), 1);
+        (*(slicesCopy + 2))(slicesCopy, indexOfFirstActiveSlice++, *(*(&v16 + 1) + 8 * v15), 1);
         v15 = v15 + 1;
       }
 
@@ -342,62 +342,62 @@
   }
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)sliceTimeRangeForIndex:(int64_t)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)sliceTimeRangeForIndex:(int64_t)index
 {
   [(RCPlatterWaveformView *)self sliceDuration];
 
-  [(RCPlatterWaveformView *)self _sliceTimeRangeForIndex:a3 sliceDuration:?];
+  [(RCPlatterWaveformView *)self _sliceTimeRangeForIndex:index sliceDuration:?];
   result.var1 = v6;
   result.var0 = v5;
   return result;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_sliceTimeRangeForIndex:(int64_t)a3 sliceDuration:(double)a4
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_sliceTimeRangeForIndex:(int64_t)index sliceDuration:(double)duration
 {
-  RCTimeRangeMake(self, a2, a3 * a4, a3 * a4 + a4);
+  RCTimeRangeMake(self, a2, index * duration, index * duration + duration);
   result.var1 = v5;
   result.var0 = v4;
   return result;
 }
 
-- (int64_t)indexForSliceStartTime:(double)a3
+- (int64_t)indexForSliceStartTime:(double)time
 {
   [(RCPlatterWaveformView *)self sliceDuration];
 
-  return [(RCPlatterWaveformView *)self _indexForSliceStartTime:a3 sliceDuration:v5];
+  return [(RCPlatterWaveformView *)self _indexForSliceStartTime:time sliceDuration:v5];
 }
 
-- (void)updateFrameForSlice:(id)a3 sliceType:(int64_t)a4 atIndex:(int64_t)a5
+- (void)updateFrameForSlice:(id)slice sliceType:(int64_t)type atIndex:(int64_t)index
 {
-  v8 = a3;
-  [(RCPlatterWaveformView *)self frameForSlice:v8 sliceType:a4 atIndex:a5];
+  sliceCopy = slice;
+  [(RCPlatterWaveformView *)self frameForSlice:sliceCopy sliceType:type atIndex:index];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [v8 view];
-  [v17 setFrame:{v10, v12, v14, v16}];
+  view = [sliceCopy view];
+  [view setFrame:{v10, v12, v14, v16}];
 
-  v22 = [v8 view];
-  [v22 bounds];
+  view2 = [sliceCopy view];
+  [view2 bounds];
   v19 = v18 * 0.5;
-  v20 = [v8 view];
+  view3 = [sliceCopy view];
 
-  v21 = [v20 layer];
-  [v21 setCornerRadius:v19];
+  layer = [view3 layer];
+  [layer setCornerRadius:v19];
 }
 
-- (CGRect)frameForSlice:(id)a3 sliceType:(int64_t)a4 atIndex:(int64_t)a5
+- (CGRect)frameForSlice:(id)slice sliceType:(int64_t)type atIndex:(int64_t)index
 {
-  v8 = a3;
+  sliceCopy = slice;
   [(RCPlatterWaveformView *)self sliceWidth];
   v10 = v9;
-  [(RCPlatterWaveformView *)self heightForSlice:v8 sliceType:a4 atIndex:a5];
+  [(RCPlatterWaveformView *)self heightForSlice:sliceCopy sliceType:type atIndex:index];
   v12 = v11;
 
   [(RCPlatterWaveformView *)self bounds];
   v13 = CGRectGetMidY(v18) + v12 * -0.5;
-  [(RCPlatterWaveformView *)self xPositionForSliceAtIndex:a5];
+  [(RCPlatterWaveformView *)self xPositionForSliceAtIndex:index];
   v15 = v13;
   v16 = v10;
   v17 = v12;
@@ -414,8 +414,8 @@
   v4 = v3;
   [(RCPlatterWaveformView *)self slicePadding];
   v6 = v5;
-  v7 = [(RCPlatterWaveformView *)self numberOfSlices];
-  v8 = v6 * v7 + v7 * v4;
+  numberOfSlices = [(RCPlatterWaveformView *)self numberOfSlices];
+  v8 = v6 * numberOfSlices + numberOfSlices * v4;
   [(RCPlatterWaveformView *)self bounds];
   v10 = v9;
   [(RCPlatterWaveformView *)self bounds];
@@ -450,7 +450,7 @@
   return result;
 }
 
-- (double)xPositionForSliceAtIndex:(int64_t)a3
+- (double)xPositionForSliceAtIndex:(int64_t)index
 {
   [(RCPlatterWaveformView *)self sliceWidth];
   v6 = v5;
@@ -460,16 +460,16 @@
   v10 = v9;
   [(RCPlatterWaveformView *)self currentTimeWindow];
 
-  [(RCPlatterWaveformView *)self _xPositionForSliceAtIndex:a3 sliceWidth:v6 slicePadding:v8 sliceDuration:v10 inTimeWindow:v11, v12];
+  [(RCPlatterWaveformView *)self _xPositionForSliceAtIndex:index sliceWidth:v6 slicePadding:v8 sliceDuration:v10 inTimeWindow:v11, v12];
   return result;
 }
 
-- (double)heightForSlice:(id)a3 sliceType:(int64_t)a4 atIndex:(int64_t)a5
+- (double)heightForSlice:(id)slice sliceType:(int64_t)type atIndex:(int64_t)index
 {
-  [a3 amplitude];
+  [slice amplitude];
   [(RCPlatterWaveformView *)self _heightForAmplitude:?];
   v9 = v8;
-  [(RCPlatterWaveformView *)self _maxHeightForSliceAtIndex:a5 sliceType:a4];
+  [(RCPlatterWaveformView *)self _maxHeightForSliceAtIndex:index sliceType:type];
   if (v9 < result)
   {
     return v9;
@@ -478,19 +478,19 @@
   return result;
 }
 
-- (double)_heightForAmplitude:(double)a3
+- (double)_heightForAmplitude:(double)amplitude
 {
   [(RCPlatterWaveformView *)self maximumSliceHeight];
   v6 = v5;
   [(RCPlatterWaveformView *)self minimumSliceHeight];
-  return v7 + a3 * (v6 - v7);
+  return v7 + amplitude * (v6 - v7);
 }
 
-- (double)_maxHeightForSliceAtIndex:(int64_t)a3 sliceType:(int64_t)a4
+- (double)_maxHeightForSliceAtIndex:(int64_t)index sliceType:(int64_t)type
 {
   [(RCPlatterWaveformView *)self maximumSliceHeight];
   v8 = v7;
-  if (a4 != 1)
+  if (type != 1)
   {
     [(RCPlatterWaveformView *)self _leadingRoundedFrame];
     v10 = v9;
@@ -503,7 +503,7 @@
     v19 = v18;
     v38 = v20;
     v22 = v21;
-    [(RCPlatterWaveformView *)self xPositionForSliceAtIndex:a3];
+    [(RCPlatterWaveformView *)self xPositionForSliceAtIndex:index];
     v24 = v23;
     [(RCPlatterWaveformView *)self sliceWidth];
     v26 = v24 + v25;
@@ -623,24 +623,24 @@
   return result;
 }
 
-- (void)appendSliceWithType:(int64_t)a3
+- (void)appendSliceWithType:(int64_t)type
 {
   v5 = &OBJC_IVAR___RCPlatterWaveformView__inactiveSliceStack;
-  if (!a3)
+  if (!type)
   {
     v5 = &OBJC_IVAR___RCPlatterWaveformView__activeSliceQueue;
   }
 
   v6 = *(&self->super.super.super.isa + *v5);
-  v9 = [(RCPlatterWaveformView *)self sliceWithType:a3];
+  v9 = [(RCPlatterWaveformView *)self sliceWithType:type];
   [v6 addObject:v9];
 
-  v7 = [(RCPlatterWaveformView *)self sliceViewContainer];
-  v8 = [v9 view];
-  [v7 addSubview:v8];
+  sliceViewContainer = [(RCPlatterWaveformView *)self sliceViewContainer];
+  view = [v9 view];
+  [sliceViewContainer addSubview:view];
 }
 
-- (void)_resetActiveSlicesWithIndex:(int64_t)a3
+- (void)_resetActiveSlicesWithIndex:(int64_t)index
 {
   v5 = [(NSMutableArray *)self->_activeSliceQueue count];
   if (v5 >= 1)
@@ -655,29 +655,29 @@
     while (v6);
   }
 
-  self->_indexOfFirstActiveSlice = a3;
+  self->_indexOfFirstActiveSlice = index;
 }
 
-- (void)removeSliceWithType:(int64_t)a3
+- (void)removeSliceWithType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
-    v7 = [(NSMutableArray *)self->_inactiveSliceStack lastObject];
-    if (!v7)
+    lastObject = [(NSMutableArray *)self->_inactiveSliceStack lastObject];
+    if (!lastObject)
     {
       return;
     }
 
-    v5 = v7;
-    v8 = [v7 view];
-    [v8 removeFromSuperview];
+    v5 = lastObject;
+    view = [lastObject view];
+    [view removeFromSuperview];
 
     [(NSMutableArray *)self->_inactiveSliceStack removeLastObject];
   }
 
   else
   {
-    if (a3)
+    if (type)
     {
       v5 = OSLogForCategory(@"Default");
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -688,15 +688,15 @@
       goto LABEL_10;
     }
 
-    v4 = [(NSMutableArray *)self->_activeSliceQueue firstObject];
-    if (!v4)
+    firstObject = [(NSMutableArray *)self->_activeSliceQueue firstObject];
+    if (!firstObject)
     {
       return;
     }
 
-    v5 = v4;
-    v6 = [v4 view];
-    [v6 removeFromSuperview];
+    v5 = firstObject;
+    view2 = [firstObject view];
+    [view2 removeFromSuperview];
 
     [(NSMutableArray *)self->_activeSliceQueue removeObjectAtIndex:0];
   }
@@ -705,12 +705,12 @@
 LABEL_10:
 }
 
-- (id)sliceWithType:(int64_t)a3
+- (id)sliceWithType:(int64_t)type
 {
-  v5 = [(NSMutableArray *)self->_sliceRecyclerStack lastObject];
-  if (v5)
+  lastObject = [(NSMutableArray *)self->_sliceRecyclerStack lastObject];
+  if (lastObject)
   {
-    v6 = v5;
+    v6 = lastObject;
     [(NSMutableArray *)self->_sliceRecyclerStack removeLastObject];
   }
 
@@ -721,7 +721,7 @@ LABEL_10:
 
   v7 = +[RCRecorderStyleProvider sharedStyleProvider];
   v8 = v7;
-  if (a3)
+  if (type)
   {
     [v7 platterWaveformInactiveSliceColor];
   }
@@ -731,10 +731,10 @@ LABEL_10:
     [(RCPlatterWaveformView *)self activeSliceColor];
   }
   v9 = ;
-  v10 = [(RCPlatterWaveformSlice *)v6 view];
-  [v10 setBackgroundColor:v9];
+  view = [(RCPlatterWaveformSlice *)v6 view];
+  [view setBackgroundColor:v9];
 
-  [(RCPlatterWaveformSlice *)v6 setAmplitudeNeedsUpdate:a3 == 0];
+  [(RCPlatterWaveformSlice *)v6 setAmplitudeNeedsUpdate:type == 0];
   [(RCPlatterWaveformSlice *)v6 setAmplitude:0.0];
 
   return v6;
@@ -750,9 +750,9 @@ LABEL_10:
   return (v4 / (v6 + v7));
 }
 
-- (void)setSliceColor:(id)a3
+- (void)setSliceColor:(id)color
 {
-  [(RCPlatterWaveformView *)self setActiveSliceColor:a3];
+  [(RCPlatterWaveformView *)self setActiveSliceColor:color];
 
   [(RCPlatterWaveformView *)self _updateSliceColors];
 }
@@ -780,9 +780,9 @@ LABEL_10:
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
-        v9 = [(RCPlatterWaveformView *)self activeSliceColor];
-        v10 = [v8 view];
-        [v10 setBackgroundColor:v9];
+        activeSliceColor = [(RCPlatterWaveformView *)self activeSliceColor];
+        view = [v8 view];
+        [view setBackgroundColor:activeSliceColor];
 
         v7 = v7 + 1;
       }
@@ -824,11 +824,11 @@ LABEL_10:
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(RCPlatterWaveformView *)self numberOfSlices];
+  numberOfSlices = [(RCPlatterWaveformView *)self numberOfSlices];
   [(RCPlatterWaveformView *)self sliceWidth];
   v5 = v4;
   [(RCPlatterWaveformView *)self slicePadding];
-  v7 = (v3 + -1.0) * v6 + v3 * v5;
+  v7 = (numberOfSlices + -1.0) * v6 + numberOfSlices * v5;
   v8 = UIViewNoIntrinsicMetric;
   result.height = v8;
   result.width = v7;

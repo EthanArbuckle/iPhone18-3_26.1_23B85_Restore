@@ -1,12 +1,12 @@
 @interface DOCNodeCollection
 - (BOOL)isGathering;
 - (_TtC26DocumentManagerExecutables17DOCNodeCollection)init;
-- (void)collection:(id)a3 didEncounterError:(id)a4;
-- (void)collection:(id)a3 didUpdateItems:(id)a4 replaceItemsByFormerID:(id)a5 deleteItemsWithIDs:(id)a6;
-- (void)collection:(id)a3 didUpdateObservedItem:(id)a4;
-- (void)collectionDidFinishGathering:(id)a3;
-- (void)dataForCollectionShouldBeReloaded:(id)a3;
-- (void)setIsGathering:(BOOL)a3;
+- (void)collection:(id)collection didEncounterError:(id)error;
+- (void)collection:(id)collection didUpdateItems:(id)items replaceItemsByFormerID:(id)d deleteItemsWithIDs:(id)ds;
+- (void)collection:(id)collection didUpdateObservedItem:(id)item;
+- (void)collectionDidFinishGathering:(id)gathering;
+- (void)dataForCollectionShouldBeReloaded:(id)reloaded;
+- (void)setIsGathering:(BOOL)gathering;
 @end
 
 @implementation DOCNodeCollection
@@ -18,11 +18,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsGathering:(BOOL)a3
+- (void)setIsGathering:(BOOL)gathering
 {
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables17DOCNodeCollection_isGathering;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = gathering;
 }
 
 - (_TtC26DocumentManagerExecutables17DOCNodeCollection)init
@@ -32,37 +32,37 @@
   return result;
 }
 
-- (void)dataForCollectionShouldBeReloaded:(id)a3
+- (void)dataForCollectionShouldBeReloaded:(id)reloaded
 {
-  v4 = a3;
-  v5 = self;
-  DOCNodeCollection.data(forCollectionShouldBeReloaded:)(v4);
+  reloadedCopy = reloaded;
+  selfCopy = self;
+  DOCNodeCollection.data(forCollectionShouldBeReloaded:)(reloadedCopy);
 }
 
-- (void)collection:(id)a3 didEncounterError:(id)a4
+- (void)collection:(id)collection didEncounterError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  specialized DOCNodeCollection.collection(_:didEncounterError:)(v8);
+  collectionCopy = collection;
+  errorCopy = error;
+  selfCopy = self;
+  specialized DOCNodeCollection.collection(_:didEncounterError:)(errorCopy);
 }
 
-- (void)collection:(id)a3 didUpdateObservedItem:(id)a4
+- (void)collection:(id)collection didUpdateObservedItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  DOCNodeCollection.collection(_:didUpdateObservedItem:)(v6, v7);
+  collectionCopy = collection;
+  itemCopy = item;
+  selfCopy = self;
+  DOCNodeCollection.collection(_:didUpdateObservedItem:)(collectionCopy, itemCopy);
 }
 
-- (void)collectionDidFinishGathering:(id)a3
+- (void)collectionDidFinishGathering:(id)gathering
 {
-  v4 = a3;
-  v5 = self;
+  gatheringCopy = gathering;
+  selfCopy = self;
   specialized DOCNodeCollection.collectionDidFinishGathering(_:)();
 }
 
-- (void)collection:(id)a3 didUpdateItems:(id)a4 replaceItemsByFormerID:(id)a5 deleteItemsWithIDs:(id)a6
+- (void)collection:(id)collection didUpdateItems:(id)items replaceItemsByFormerID:(id)d deleteItemsWithIDs:(id)ds
 {
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for FPItem);
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -70,8 +70,8 @@
   lazy protocol witness table accessor for type FPItemID and conformance NSObject();
   v9 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
+  collectionCopy = collection;
+  selfCopy = self;
   specialized DOCNodeCollection.collection(_:didUpdate:replaceItemsByFormerID:deleteItemsWith:)(v8, v9, v10);
 }
 

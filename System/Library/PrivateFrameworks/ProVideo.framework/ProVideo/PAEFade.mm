@@ -1,14 +1,14 @@
 @interface PAEFade
-- (PAEFade)initWithAPIManager:(id)a3;
+- (PAEFade)initWithAPIManager:(id)manager;
 @end
 
 @implementation PAEFade
 
-- (PAEFade)initWithAPIManager:(id)a3
+- (PAEFade)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEFade;
-  result = [(PAEPhotosFilters *)&v4 initWithAPIManager:a3];
+  result = [(PAEPhotosFilters *)&v4 initWithAPIManager:manager];
   if (result)
   {
     result->super.whichFilter = 3;

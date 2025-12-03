@@ -1,11 +1,11 @@
 @interface UIImageViewAccessibility__PhotosUI__UIKit
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsPHAssetLocallyAvailable;
-- (BOOL)_accessibilitySavePhotoLabel:(id)a3;
+- (BOOL)_accessibilitySavePhotoLabel:(id)label;
 - (BOOL)_accessibilitySkipImageTraitDescription;
-- (BOOL)_accessibilityZoomAtPoint:(CGPoint)a3 zoomIn:(BOOL)a4;
-- (BOOL)accessibilityZoomInAtPoint:(CGPoint)a3;
-- (BOOL)accessibilityZoomOutAtPoint:(CGPoint)a3;
+- (BOOL)_accessibilityZoomAtPoint:(CGPoint)point zoomIn:(BOOL)in;
+- (BOOL)accessibilityZoomInAtPoint:(CGPoint)point;
+- (BOOL)accessibilityZoomOutAtPoint:(CGPoint)point;
 - (id)_accessibilityElementStoredUserLabel;
 - (id)_accessibilityPHAssetLocalIdentifier;
 - (id)_accessibilityPhotoDescription;
@@ -22,49 +22,49 @@
 
 @implementation UIImageViewAccessibility__PhotosUI__UIKit
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUUserTransformView" hasInstanceMethod:@"_setEnabledInteractions:" withFullSignature:{"v", "Q", 0}];
-  [v3 validateClass:@"PUUserTransformView" hasInstanceMethod:@"setDesiredZoomScale:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"PUUserTransformView" hasInstanceMethod:@"_performZoomAndScrollChanges:" withFullSignature:{"v", "@?", 0}];
-  [v3 validateClass:@"PUUserTransformView" hasInstanceMethod:@"_scrollView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHAsset" hasInstanceMethod:@"mainFileURL" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUTilingView"];
-  [v3 validateClass:@"VKCImageSubjectHighlightView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUUserTransformView" hasInstanceMethod:@"_setEnabledInteractions:" withFullSignature:{"v", "Q", 0}];
+  [validationsCopy validateClass:@"PUUserTransformView" hasInstanceMethod:@"setDesiredZoomScale:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"PUUserTransformView" hasInstanceMethod:@"_performZoomAndScrollChanges:" withFullSignature:{"v", "@?", 0}];
+  [validationsCopy validateClass:@"PUUserTransformView" hasInstanceMethod:@"_scrollView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHAsset" hasInstanceMethod:@"mainFileURL" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUTilingView"];
+  [validationsCopy validateClass:@"VKCImageSubjectHighlightView"];
 }
 
 - (BOOL)_accessibilitySkipImageTraitDescription
 {
-  v3 = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
-  if (v3)
+  _axPHAsset = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
+  if (_axPHAsset)
   {
-    v4 = 1;
+    _accessibilitySkipImageTraitDescription = 1;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = UIImageViewAccessibility__PhotosUI__UIKit;
-    v4 = [(UIImageViewAccessibility__PhotosUI__UIKit *)&v6 _accessibilitySkipImageTraitDescription];
+    _accessibilitySkipImageTraitDescription = [(UIImageViewAccessibility__PhotosUI__UIKit *)&v6 _accessibilitySkipImageTraitDescription];
   }
 
-  return v4;
+  return _accessibilitySkipImageTraitDescription;
 }
 
-- (BOOL)_accessibilitySavePhotoLabel:(id)a3
+- (BOOL)_accessibilitySavePhotoLabel:(id)label
 {
-  v4 = a3;
-  v5 = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
-  v6 = [v5 _accessibilitySavePhotoLabel:v4];
+  labelCopy = label;
+  _axPHAsset = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
+  v6 = [_axPHAsset _accessibilitySavePhotoLabel:labelCopy];
 
   return v6;
 }
 
 - (id)_accessibilityElementStoredUserLabel
 {
-  v3 = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
-  v4 = [v3 safeValueForKey:@"_accessibilityiCloudPhotoLabel"];
+  _axPHAsset = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
+  v4 = [_axPHAsset safeValueForKey:@"_accessibilityiCloudPhotoLabel"];
 
   if ([v4 length])
   {
@@ -72,19 +72,19 @@
     goto LABEL_11;
   }
 
-  v6 = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
-  v7 = [v6 safeBoolForKey:@"isPhoto"];
+  _axPHAsset2 = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
+  v7 = [_axPHAsset2 safeBoolForKey:@"isPhoto"];
 
   if (v7)
   {
-    v8 = [(UIImageViewAccessibility__PhotosUI__UIKit *)self accessibilityURL];
+    accessibilityURL = [(UIImageViewAccessibility__PhotosUI__UIKit *)self accessibilityURL];
     v9 = UIAccessibilityMetadataDescriptionForImage();
   }
 
   else
   {
-    v10 = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
-    v11 = [v10 safeBoolForKey:@"isVideo"];
+    _axPHAsset3 = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
+    v11 = [_axPHAsset3 safeBoolForKey:@"isVideo"];
 
     if (!v11)
     {
@@ -92,7 +92,7 @@
       goto LABEL_11;
     }
 
-    v8 = [(UIImageViewAccessibility__PhotosUI__UIKit *)self accessibilityURL];
+    accessibilityURL = [(UIImageViewAccessibility__PhotosUI__UIKit *)self accessibilityURL];
     v9 = UIAccessibilityMetadataDescriptionForVideo();
   }
 
@@ -115,29 +115,29 @@ LABEL_11:
 
 - (id)accessibilityCustomContent
 {
-  v2 = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
-  v3 = [v2 accessibilityCustomContent];
+  _axPHAsset = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
+  accessibilityCustomContent = [_axPHAsset accessibilityCustomContent];
 
-  return v3;
+  return accessibilityCustomContent;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
-  v4 = v3;
-  if (v3)
+  _axPHAsset = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
+  v4 = _axPHAsset;
+  if (_axPHAsset)
   {
-    v5 = [v3 accessibilityLabel];
+    accessibilityLabel = [_axPHAsset accessibilityLabel];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = UIImageViewAccessibility__PhotosUI__UIKit;
-    v5 = [(UIImageViewAccessibility__PhotosUI__UIKit *)&v8 accessibilityLabel];
+    accessibilityLabel = [(UIImageViewAccessibility__PhotosUI__UIKit *)&v8 accessibilityLabel];
   }
 
-  v6 = v5;
+  v6 = accessibilityLabel;
 
   return v6;
 }
@@ -146,9 +146,9 @@ LABEL_11:
 {
   v7.receiver = self;
   v7.super_class = UIImageViewAccessibility__PhotosUI__UIKit;
-  v3 = [(UIImageViewAccessibility__PhotosUI__UIKit *)&v7 accessibilityTraits];
-  v4 = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
-  if (v4)
+  accessibilityTraits = [(UIImageViewAccessibility__PhotosUI__UIKit *)&v7 accessibilityTraits];
+  _axPHAsset = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
+  if (_axPHAsset)
   {
     v5 = *MEMORY[0x29EDBDBF8];
   }
@@ -158,12 +158,12 @@ LABEL_11:
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
-- (BOOL)_accessibilityZoomAtPoint:(CGPoint)a3 zoomIn:(BOOL)a4
+- (BOOL)_accessibilityZoomAtPoint:(CGPoint)point zoomIn:(BOOL)in
 {
-  v5 = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset:a3.x];
+  v5 = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset:point.x];
   if (v5)
   {
     v6 = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Putilingview.isa)];
@@ -176,10 +176,10 @@ LABEL_11:
   return v5 != 0;
 }
 
-- (BOOL)accessibilityZoomInAtPoint:(CGPoint)a3
+- (BOOL)accessibilityZoomInAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = 1;
   if (![(UIImageViewAccessibility__PhotosUI__UIKit *)self _accessibilityZoomAtPoint:1 zoomIn:?])
   {
@@ -191,10 +191,10 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)accessibilityZoomOutAtPoint:(CGPoint)a3
+- (BOOL)accessibilityZoomOutAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(UIImageViewAccessibility__PhotosUI__UIKit *)self _accessibilityZoomAtPoint:0 zoomIn:?])
   {
     return 1;
@@ -207,51 +207,51 @@ LABEL_11:
 
 - (id)accessibilityValue
 {
-  v3 = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
-  v4 = v3;
-  if (v3)
+  _axPHAsset = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
+  v4 = _axPHAsset;
+  if (_axPHAsset)
   {
-    v5 = [v3 accessibilityValue];
-    v6 = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _liftableSubjectView];
-    v9 = [v6 accessibilityLabel];
-    v7 = __AXStringForVariables();
+    accessibilityValue = [_axPHAsset accessibilityValue];
+    _liftableSubjectView = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _liftableSubjectView];
+    accessibilityLabel = [_liftableSubjectView accessibilityLabel];
+    accessibilityValue2 = __AXStringForVariables();
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = UIImageViewAccessibility__PhotosUI__UIKit;
-    v7 = [(UIImageViewAccessibility__PhotosUI__UIKit *)&v10 accessibilityValue];
+    accessibilityValue2 = [(UIImageViewAccessibility__PhotosUI__UIKit *)&v10 accessibilityValue];
   }
 
-  return v7;
+  return accessibilityValue2;
 }
 
 - (id)accessibilityDragSourceDescriptors
 {
-  v3 = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _liftableSubjectView];
-  v4 = v3;
-  if (v3)
+  _liftableSubjectView = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _liftableSubjectView];
+  v4 = _liftableSubjectView;
+  if (_liftableSubjectView)
   {
-    v5 = [v3 accessibilityDragSourceDescriptors];
+    accessibilityDragSourceDescriptors = [_liftableSubjectView accessibilityDragSourceDescriptors];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = UIImageViewAccessibility__PhotosUI__UIKit;
-    v5 = [(UIImageViewAccessibility__PhotosUI__UIKit *)&v8 accessibilityDragSourceDescriptors];
+    accessibilityDragSourceDescriptors = [(UIImageViewAccessibility__PhotosUI__UIKit *)&v8 accessibilityDragSourceDescriptors];
   }
 
-  v6 = v5;
+  v6 = accessibilityDragSourceDescriptors;
 
   return v6;
 }
 
 - (id)_liftableSubjectView
 {
-  v3 = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
-  if (v3 && ([(UIImageViewAccessibility__PhotosUI__UIKit *)self _accessibilityViewAncestorIsKindOf:NSClassFromString(&cfstr_Putilingview.isa)], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  _axPHAsset = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
+  if (_axPHAsset && ([(UIImageViewAccessibility__PhotosUI__UIKit *)self _accessibilityViewAncestorIsKindOf:NSClassFromString(&cfstr_Putilingview.isa)], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
     v6 = [v4 _accessibilityFindSubviewDescendant:&__block_literal_global_546];
@@ -267,32 +267,32 @@ LABEL_11:
 
 - (id)_accessibilityPhotoDescription
 {
-  v3 = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
-  v4 = v3;
-  if (v3)
+  _axPHAsset = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
+  v4 = _axPHAsset;
+  if (_axPHAsset)
   {
-    v5 = [v3 _accessibilityPhotoDescription];
+    _accessibilityPhotoDescription = [_axPHAsset _accessibilityPhotoDescription];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = UIImageViewAccessibility__PhotosUI__UIKit;
-    v5 = [(UIImageViewAccessibility__PhotosUI__UIKit *)&v8 _accessibilityPhotoDescription];
+    _accessibilityPhotoDescription = [(UIImageViewAccessibility__PhotosUI__UIKit *)&v8 _accessibilityPhotoDescription];
   }
 
-  v6 = v5;
+  v6 = _accessibilityPhotoDescription;
 
   return v6;
 }
 
 - (id)accessibilityURL
 {
-  v3 = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
+  _axPHAsset = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 accessibilityURL];
+    accessibilityURL = [_axPHAsset accessibilityURL];
   }
 
   else
@@ -300,7 +300,7 @@ LABEL_11:
     if (objc_opt_respondsToSelector())
     {
       v9 = 0;
-      v5 = [v3 safeValueForKey:@"mainFileURL"];
+      v5 = [_axPHAsset safeValueForKey:@"mainFileURL"];
       v6 = __UIAccessibilitySafeClass();
 
       goto LABEL_7;
@@ -308,10 +308,10 @@ LABEL_11:
 
     v8.receiver = self;
     v8.super_class = UIImageViewAccessibility__PhotosUI__UIKit;
-    v4 = [(UIImageViewAccessibility__PhotosUI__UIKit *)&v8 accessibilityURL];
+    accessibilityURL = [(UIImageViewAccessibility__PhotosUI__UIKit *)&v8 accessibilityURL];
   }
 
-  v6 = v4;
+  v6 = accessibilityURL;
 LABEL_7:
 
   return v6;
@@ -319,26 +319,26 @@ LABEL_7:
 
 - (id)_accessibilityPHAssetLocalIdentifier
 {
-  v2 = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
-  v3 = [v2 _accessibilityPHAssetLocalIdentifier];
+  _axPHAsset = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
+  _accessibilityPHAssetLocalIdentifier = [_axPHAsset _accessibilityPHAssetLocalIdentifier];
 
-  return v3;
+  return _accessibilityPHAssetLocalIdentifier;
 }
 
 - (id)_accessibilityPhotoLibraryURL
 {
-  v2 = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
-  v3 = [v2 _accessibilityPhotoLibraryURL];
+  _axPHAsset = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
+  _accessibilityPhotoLibraryURL = [_axPHAsset _accessibilityPhotoLibraryURL];
 
-  return v3;
+  return _accessibilityPhotoLibraryURL;
 }
 
 - (BOOL)_accessibilityIsPHAssetLocallyAvailable
 {
-  v2 = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
-  v3 = [v2 _accessibilityIsPHAssetLocallyAvailable];
+  _axPHAsset = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _axPHAsset];
+  _accessibilityIsPHAssetLocallyAvailable = [_axPHAsset _accessibilityIsPHAssetLocallyAvailable];
 
-  return v3;
+  return _accessibilityIsPHAssetLocallyAvailable;
 }
 
 - (int64_t)_accessibilitySortPriority
@@ -346,17 +346,17 @@ LABEL_7:
   v3 = [(UIImageViewAccessibility__PhotosUI__UIKit *)self _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Putilingview.isa)];
   if (v3)
   {
-    v4 = 0x8000000000000000;
+    _accessibilitySortPriority = 0x8000000000000000;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = UIImageViewAccessibility__PhotosUI__UIKit;
-    v4 = [(UIImageViewAccessibility__PhotosUI__UIKit *)&v6 _accessibilitySortPriority];
+    _accessibilitySortPriority = [(UIImageViewAccessibility__PhotosUI__UIKit *)&v6 _accessibilitySortPriority];
   }
 
-  return v4;
+  return _accessibilitySortPriority;
 }
 
 @end

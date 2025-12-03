@@ -1,13 +1,13 @@
 @interface HMDRemoteMessageNotifications
-+ (BOOL)messageExpectsNotificationResponse:(id)a3;
++ (BOOL)messageExpectsNotificationResponse:(id)response;
 + (void)initialize;
 - (HMDRemoteMessageNotifications)init;
-- (id)_notificationPayloadsForDevice:(id)a3;
+- (id)_notificationPayloadsForDevice:(id)device;
 - (id)description;
-- (id)notificationPayloadWithIdentifier:(id)a3 device:(id)a4;
-- (void)addNotificationPayload:(id)a3 identifier:(id)a4 device:(id)a5;
-- (void)clearNotificationsForDevice:(id)a3;
-- (void)removeNotificationPayloadWithIdentifier:(id)a3 device:(id)a4;
+- (id)notificationPayloadWithIdentifier:(id)identifier device:(id)device;
+- (void)addNotificationPayload:(id)payload identifier:(id)identifier device:(id)device;
+- (void)clearNotificationsForDevice:(id)device;
+- (void)removeNotificationPayloadWithIdentifier:(id)identifier device:(id)device;
 @end
 
 @implementation HMDRemoteMessageNotifications
@@ -15,72 +15,72 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDRemoteMessageNotifications *)self sessionNotificationPayloads];
-  v4 = [v2 stringWithFormat:@"Session notifications: %@", v3];
+  sessionNotificationPayloads = [(HMDRemoteMessageNotifications *)self sessionNotificationPayloads];
+  v4 = [v2 stringWithFormat:@"Session notifications: %@", sessionNotificationPayloads];
 
   return v4;
 }
 
-- (void)clearNotificationsForDevice:(id)a3
+- (void)clearNotificationsForDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   os_unfair_lock_lock_with_options();
-  v4 = [(HMDRemoteMessageNotifications *)self sessionNotificationPayloads];
-  [v4 removeObjectForKey:v5];
+  sessionNotificationPayloads = [(HMDRemoteMessageNotifications *)self sessionNotificationPayloads];
+  [sessionNotificationPayloads removeObjectForKey:deviceCopy];
 
   os_unfair_lock_unlock(&self->_lock.lock);
 }
 
-- (id)notificationPayloadWithIdentifier:(id)a3 device:(id)a4
+- (id)notificationPayloadWithIdentifier:(id)identifier device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  deviceCopy = device;
   os_unfair_lock_lock_with_options();
-  v8 = [(HMDRemoteMessageNotifications *)self _notificationPayloadsForDevice:v7];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  v8 = [(HMDRemoteMessageNotifications *)self _notificationPayloadsForDevice:deviceCopy];
+  v9 = [v8 objectForKeyedSubscript:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock.lock);
 
   return v9;
 }
 
-- (void)removeNotificationPayloadWithIdentifier:(id)a3 device:(id)a4
+- (void)removeNotificationPayloadWithIdentifier:(id)identifier device:(id)device
 {
-  v8 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  deviceCopy = device;
   os_unfair_lock_lock_with_options();
-  v7 = [(HMDRemoteMessageNotifications *)self _notificationPayloadsForDevice:v6];
-  [v7 removeObjectForKey:v8];
+  v7 = [(HMDRemoteMessageNotifications *)self _notificationPayloadsForDevice:deviceCopy];
+  [v7 removeObjectForKey:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock.lock);
 }
 
-- (void)addNotificationPayload:(id)a3 identifier:(id)a4 device:(id)a5
+- (void)addNotificationPayload:(id)payload identifier:(id)identifier device:(id)device
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  payloadCopy = payload;
+  identifierCopy = identifier;
+  deviceCopy = device;
   os_unfair_lock_lock_with_options();
-  v10 = [(HMDRemoteMessageNotifications *)self _notificationPayloadsForDevice:v9];
-  [v10 setObject:v11 forKeyedSubscript:v8];
+  v10 = [(HMDRemoteMessageNotifications *)self _notificationPayloadsForDevice:deviceCopy];
+  [v10 setObject:payloadCopy forKeyedSubscript:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock.lock);
 }
 
-- (id)_notificationPayloadsForDevice:(id)a3
+- (id)_notificationPayloadsForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(HMDRemoteMessageNotifications *)self sessionNotificationPayloads];
-  v6 = [v5 objectForKey:v4];
+  deviceCopy = device;
+  sessionNotificationPayloads = [(HMDRemoteMessageNotifications *)self sessionNotificationPayloads];
+  dictionary = [sessionNotificationPayloads objectForKey:deviceCopy];
 
-  if (!v6)
+  if (!dictionary)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
-    v7 = [(HMDRemoteMessageNotifications *)self sessionNotificationPayloads];
-    [v7 setObject:v6 forKey:v4];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    sessionNotificationPayloads2 = [(HMDRemoteMessageNotifications *)self sessionNotificationPayloads];
+    [sessionNotificationPayloads2 setObject:dictionary forKey:deviceCopy];
   }
 
-  return v6;
+  return dictionary;
 }
 
 - (HMDRemoteMessageNotifications)init
@@ -92,22 +92,22 @@
   if (v2)
   {
     v2->_lock.lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     sessionNotificationPayloads = v3->_sessionNotificationPayloads;
-    v3->_sessionNotificationPayloads = v4;
+    v3->_sessionNotificationPayloads = strongToStrongObjectsMapTable;
   }
 
   return v3;
 }
 
-+ (BOOL)messageExpectsNotificationResponse:(id)a3
++ (BOOL)messageExpectsNotificationResponse:(id)response
 {
-  v4 = a3;
-  v5 = [a1 messagesWithNotificationResponses];
-  v6 = [v4 name];
+  responseCopy = response;
+  messagesWithNotificationResponses = [self messagesWithNotificationResponses];
+  name = [responseCopy name];
 
-  LOBYTE(v4) = [v5 containsObject:v6];
-  return v4;
+  LOBYTE(responseCopy) = [messagesWithNotificationResponses containsObject:name];
+  return responseCopy;
 }
 
 + (void)initialize

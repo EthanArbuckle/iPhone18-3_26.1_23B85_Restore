@@ -1,32 +1,32 @@
 @interface _PXPhotosCurationLengthLens
-- (BOOL)allowsActionType:(id)a3;
-- (_PXPhotosCurationLengthLens)initWithCurationLength:(int64_t)a3 isDefault:(BOOL)a4;
+- (BOOL)allowsActionType:(id)type;
+- (_PXPhotosCurationLengthLens)initWithCurationLength:(int64_t)length isDefault:(BOOL)default;
 @end
 
 @implementation _PXPhotosCurationLengthLens
 
-- (BOOL)allowsActionType:(id)a3
+- (BOOL)allowsActionType:(id)type
 {
   v3 = _PXPhotosViewLensAllowedActionsForCuratedLens_onceToken;
-  v4 = a3;
+  typeCopy = type;
   if (v3 != -1)
   {
     dispatch_once(&_PXPhotosViewLensAllowedActionsForCuratedLens_onceToken, &__block_literal_global_141);
   }
 
-  v5 = [_PXPhotosViewLensAllowedActionsForCuratedLens_allowedActions containsObject:v4];
+  v5 = [_PXPhotosViewLensAllowedActionsForCuratedLens_allowedActions containsObject:typeCopy];
 
   return v5;
 }
 
-- (_PXPhotosCurationLengthLens)initWithCurationLength:(int64_t)a3 isDefault:(BOOL)a4
+- (_PXPhotosCurationLengthLens)initWithCurationLength:(int64_t)length isDefault:(BOOL)default
 {
-  if ((a3 - 1) >= 5)
+  if ((length - 1) >= 5)
   {
-    if (!a3)
+    if (!length)
     {
-      v11 = [MEMORY[0x277CCA890] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"PXPhotosViewLens.m" lineNumber:200 description:@"Creating a lens with undefined curation length is not supported."];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosViewLens.m" lineNumber:200 description:@"Creating a lens with undefined curation length is not supported."];
 
       abort();
     }
@@ -39,8 +39,8 @@
     self = [(PXPhotosViewLens *)self initWithTitle:v8 symbolName:0 defaultSectionBodyStyle:3];
   }
 
-  self->_curationLength = a3;
-  self->_isDefaultCurationLength = a4;
+  self->_curationLength = length;
+  self->_isDefaultCurationLength = default;
   return self;
 }
 

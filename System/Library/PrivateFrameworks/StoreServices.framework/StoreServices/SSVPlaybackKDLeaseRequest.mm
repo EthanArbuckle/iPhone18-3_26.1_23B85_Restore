@@ -1,20 +1,20 @@
 @interface SSVPlaybackKDLeaseRequest
 - (id)_actionParameterValue;
-- (id)_copyBodyDictionaryWithFairPlaySession:(void *)a3;
+- (id)_copyBodyDictionaryWithFairPlaySession:(void *)session;
 @end
 
 @implementation SSVPlaybackKDLeaseRequest
 
 - (id)_actionParameterValue
 {
-  v2 = [(SSVPlaybackLeaseRequest *)self _actionType];
+  _actionType = [(SSVPlaybackLeaseRequest *)self _actionType];
   v3 = @"init";
-  if (v2 == 1)
+  if (_actionType == 1)
   {
     v3 = @"lease";
   }
 
-  if (v2 == 2)
+  if (_actionType == 2)
   {
     return @"init+lease";
   }
@@ -25,19 +25,19 @@
   }
 }
 
-- (id)_copyBodyDictionaryWithFairPlaySession:(void *)a3
+- (id)_copyBodyDictionaryWithFairPlaySession:(void *)session
 {
   v52 = *MEMORY[0x1E69E9840];
   v44.receiver = self;
   v44.super_class = SSVPlaybackKDLeaseRequest;
   v5 = [(SSVPlaybackLeaseRequest *)&v44 _copyBodyDictionaryWithFairPlaySession:?];
-  v6 = [(SSVPlaybackLeaseRequest *)self _certificateData];
-  v7 = [(SSVPlaybackLeaseRequest *)self _KDMovieIdentifier];
-  v43 = v7;
-  if (!v7 && v6)
+  _certificateData = [(SSVPlaybackLeaseRequest *)self _certificateData];
+  _KDMovieIdentifier = [(SSVPlaybackLeaseRequest *)self _KDMovieIdentifier];
+  v43 = _KDMovieIdentifier;
+  if (!_KDMovieIdentifier && _certificateData)
   {
     LODWORD(v42[0]) = 1;
-    v8 = Qhl17oSYJtCJIxM([v6 bytes], objc_msgSend(v6, "length"), v42, 1, &v43);
+    v8 = Qhl17oSYJtCJIxM([_certificateData bytes], objc_msgSend(_certificateData, "length"), v42, 1, &v43);
     if (!v8)
     {
       [(SSVPlaybackLeaseRequest *)self _setKDMovieIdentifier:v43];
@@ -51,19 +51,19 @@
       v10 = +[SSLogConfig sharedConfig];
     }
 
-    v11 = [v10 shouldLog];
+    shouldLog = [v10 shouldLog];
     if ([v10 shouldLogToDisk])
     {
-      v12 = v11 | 2;
+      v12 = shouldLog | 2;
     }
 
     else
     {
-      v12 = v11;
+      v12 = shouldLog;
     }
 
-    v13 = [v10 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v14 = v12;
     }
@@ -86,13 +86,13 @@
 LABEL_16:
 
 LABEL_18:
-        v7 = v43;
+        _KDMovieIdentifier = v43;
         goto LABEL_19;
       }
 
-      v13 = [MEMORY[0x1E696AEC0] stringWithCString:v15 encoding:{4, &v47, v38}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v15 encoding:{4, &v47, v38}];
       free(v15);
-      SSFileLog(v10, @"%@", v16, v17, v18, v19, v20, v21, v13);
+      SSFileLog(v10, @"%@", v16, v17, v18, v19, v20, v21, oSLogObject);
     }
 
     goto LABEL_16;
@@ -102,13 +102,13 @@ LABEL_19:
   v48 = 0u;
   v49 = 0u;
   *&v47 = 1;
-  *(&v47 + 1) = v7;
-  *&v48 = [v6 bytes];
-  DWORD2(v48) = [v6 length];
+  *(&v47 + 1) = _KDMovieIdentifier;
+  *&v48 = [_certificateData bytes];
+  DWORD2(v48) = [_certificateData length];
   *&v49 = 0;
   DWORD2(v49) = 0;
   v50 = 0;
-  v51 = [(SSVPlaybackLeaseRequest *)self KDChannelIdentifier];
+  kDChannelIdentifier = [(SSVPlaybackLeaseRequest *)self KDChannelIdentifier];
   v41 = 0;
   v42[0] = 1;
   v42[1] = &v47;
@@ -125,19 +125,19 @@ LABEL_19:
       v24 = +[SSLogConfig sharedConfig];
     }
 
-    v25 = [v24 shouldLog];
+    shouldLog2 = [v24 shouldLog];
     if ([v24 shouldLogToDisk])
     {
-      v26 = v25 | 2;
+      v26 = shouldLog2 | 2;
     }
 
     else
     {
-      v26 = v25;
+      v26 = shouldLog2;
     }
 
-    v27 = [v24 OSLogObject];
-    if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v24 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v28 = v26;
     }
@@ -161,9 +161,9 @@ LABEL_36:
         goto LABEL_37;
       }
 
-      v27 = [MEMORY[0x1E696AEC0] stringWithCString:v29 encoding:{4, &v45, v38}];
+      oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v29 encoding:{4, &v45, v38}];
       free(v29);
-      SSFileLog(v24, @"%@", v30, v31, v32, v33, v34, v35, v27);
+      SSFileLog(v24, @"%@", v30, v31, v32, v33, v34, v35, oSLogObject2);
     }
 
     v29 = 0;
@@ -175,7 +175,7 @@ LABEL_35:
   if (!v41)
   {
     v29 = 0;
-    if (!a3)
+    if (!session)
     {
       goto LABEL_39;
     }
@@ -187,16 +187,16 @@ LABEL_35:
   if (*v40)
   {
     v24 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:*v40 length:*(v40 + 8) freeWhenDone:0];
-    v27 = [v24 base64EncodedStringWithOptions:0];
-    [v5 setObject:v27 forKey:@"spc"];
+    oSLogObject2 = [v24 base64EncodedStringWithOptions:0];
+    [v5 setObject:oSLogObject2 forKey:@"spc"];
     goto LABEL_35;
   }
 
 LABEL_37:
-  if (a3)
+  if (session)
   {
 LABEL_38:
-    *a3 = v29;
+    *session = v29;
   }
 
 LABEL_39:

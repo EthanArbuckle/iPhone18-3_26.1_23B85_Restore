@@ -1,24 +1,24 @@
 @interface AirPodsCrashReportObjc
-+ (id)generateReportWithBinary:(id)a3 testMode:(BOOL)a4 productId:(unsigned int)a5 applicationInfo:(id)a6 description:(id)a7;
++ (id)generateReportWithBinary:(id)binary testMode:(BOOL)mode productId:(unsigned int)id applicationInfo:(id)info description:(id)description;
 - (AirPodsCrashReportObjc)init;
 @end
 
 @implementation AirPodsCrashReportObjc
 
-+ (id)generateReportWithBinary:(id)a3 testMode:(BOOL)a4 productId:(unsigned int)a5 applicationInfo:(id)a6 description:(id)a7
++ (id)generateReportWithBinary:(id)binary testMode:(BOOL)mode productId:(unsigned int)id applicationInfo:(id)info description:(id)description
 {
   v11 = sub_1D9849DB4();
-  if (a6)
+  if (info)
   {
-    a6 = sub_1D9849DB4();
+    info = sub_1D9849DB4();
   }
 
-  if (a7)
+  if (description)
   {
     sub_1D9849DF4();
   }
 
-  v12 = _sSo22AirPodsCrashReportObjcC15CoreDiagnosticsE08generateD010withBinary8testMode9productId15applicationInfo11description10Foundation4DataVSgSDySSALG_Sbs6UInt32VSDyS2SGSgSSSgtFZ_0(v11, a4, a5, a6);
+  v12 = _sSo22AirPodsCrashReportObjcC15CoreDiagnosticsE08generateD010withBinary8testMode9productId15applicationInfo11description10Foundation4DataVSgSDySSALG_Sbs6UInt32VSDyS2SGSgSSSgtFZ_0(v11, mode, id, info);
   v14 = v13;
 
   if (v14 >> 60 == 15)

@@ -1,40 +1,40 @@
 @interface FCCGoalProgressContent
-- (FCCGoalProgressContent)initWithEventIdentifier:(id)a3 goalTypesToDisplay:(id)a4 goalTypeToHighlight:(int64_t)a5 expectedGoalValue:(double)a6;
-- (FCCGoalProgressContent)initWithTransportData:(id)a3;
+- (FCCGoalProgressContent)initWithEventIdentifier:(id)identifier goalTypesToDisplay:(id)display goalTypeToHighlight:(int64_t)highlight expectedGoalValue:(double)value;
+- (FCCGoalProgressContent)initWithTransportData:(id)data;
 - (id)transportData;
 @end
 
 @implementation FCCGoalProgressContent
 
-- (FCCGoalProgressContent)initWithEventIdentifier:(id)a3 goalTypesToDisplay:(id)a4 goalTypeToHighlight:(int64_t)a5 expectedGoalValue:(double)a6
+- (FCCGoalProgressContent)initWithEventIdentifier:(id)identifier goalTypesToDisplay:(id)display goalTypeToHighlight:(int64_t)highlight expectedGoalValue:(double)value
 {
-  v10 = a3;
-  v11 = a4;
+  identifierCopy = identifier;
+  displayCopy = display;
   v18.receiver = self;
   v18.super_class = FCCGoalProgressContent;
   v12 = [(FCCGoalProgressContent *)&v18 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [identifierCopy copy];
     eventIdentifier = v12->_eventIdentifier;
     v12->_eventIdentifier = v13;
 
-    v15 = [v11 copy];
+    v15 = [displayCopy copy];
     goalTypesToDisplay = v12->_goalTypesToDisplay;
     v12->_goalTypesToDisplay = v15;
 
-    v12->_goalTypeToHighlight = a5;
-    v12->_expectedGoalValue = a6;
+    v12->_goalTypeToHighlight = highlight;
+    v12->_expectedGoalValue = value;
   }
 
   return v12;
 }
 
-- (FCCGoalProgressContent)initWithTransportData:(id)a3
+- (FCCGoalProgressContent)initWithTransportData:(id)data
 {
-  v4 = a3;
-  v5 = [[FCCGoalProgressContentProtobuf alloc] initWithData:v4];
-  v6 = [(FCCGoalProgressContentProtobuf *)v5 eventIdentifier];
+  dataCopy = data;
+  v5 = [[FCCGoalProgressContentProtobuf alloc] initWithData:dataCopy];
+  eventIdentifier = [(FCCGoalProgressContentProtobuf *)v5 eventIdentifier];
   if ([(FCCGoalProgressContentProtobuf *)v5 goalTypesToDisplaysCount])
   {
     v7 = 0;
@@ -56,9 +56,9 @@
     v10 = MEMORY[0x277CBEBF8];
   }
 
-  v11 = [(FCCGoalProgressContentProtobuf *)v5 goalTypeToHighlight];
+  goalTypeToHighlight = [(FCCGoalProgressContentProtobuf *)v5 goalTypeToHighlight];
   [(FCCGoalProgressContentProtobuf *)v5 expectedGoalValue];
-  v12 = [(FCCGoalProgressContent *)self initWithEventIdentifier:v6 goalTypesToDisplay:v10 goalTypeToHighlight:v11 expectedGoalValue:?];
+  v12 = [(FCCGoalProgressContent *)self initWithEventIdentifier:eventIdentifier goalTypesToDisplay:v10 goalTypeToHighlight:goalTypeToHighlight expectedGoalValue:?];
 
   return v12;
 }
@@ -98,11 +98,11 @@
 
   [(FCCGoalProgressContentProtobuf *)v3 setGoalTypeToHighlight:LODWORD(self->_goalTypeToHighlight)];
   [(FCCGoalProgressContentProtobuf *)v3 setExpectedGoalValue:self->_expectedGoalValue];
-  v9 = [(FCCGoalProgressContentProtobuf *)v3 data];
+  data = [(FCCGoalProgressContentProtobuf *)v3 data];
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return data;
 }
 
 @end

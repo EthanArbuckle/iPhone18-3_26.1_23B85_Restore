@@ -1,20 +1,20 @@
 @interface PXPhotosDetailsConfiguration
 - (PXPhotosDetailsConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PXPhotosDetailsConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setOptions:{-[PXPhotosDetailsConfiguration options](self, "options")}];
   [v4 setBarsControllerClass:{-[PXPhotosDetailsConfiguration barsControllerClass](self, "barsControllerClass")}];
-  v5 = [(PXPhotosDetailsConfiguration *)self unlockDeviceHandlerWithActionType];
-  [v4 setUnlockDeviceHandlerWithActionType:v5];
+  unlockDeviceHandlerWithActionType = [(PXPhotosDetailsConfiguration *)self unlockDeviceHandlerWithActionType];
+  [v4 setUnlockDeviceHandlerWithActionType:unlockDeviceHandlerWithActionType];
 
-  v6 = [(PXPhotosDetailsConfiguration *)self unlockDeviceStatus];
-  [v4 setUnlockDeviceStatus:v6];
+  unlockDeviceStatus = [(PXPhotosDetailsConfiguration *)self unlockDeviceStatus];
+  [v4 setUnlockDeviceStatus:unlockDeviceStatus];
 
   [v4 setScrollPocketsEnabled:{-[PXPhotosDetailsConfiguration scrollPocketsEnabled](self, "scrollPocketsEnabled")}];
   return v4;

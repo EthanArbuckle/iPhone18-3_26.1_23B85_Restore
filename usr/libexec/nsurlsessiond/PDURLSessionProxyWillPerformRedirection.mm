@@ -1,23 +1,23 @@
 @interface PDURLSessionProxyWillPerformRedirection
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDURLSessionProxyWillPerformRedirection
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   task = self->_task;
-  v6 = v4[3];
-  v11 = v4;
+  v6 = fromCopy[3];
+  v11 = fromCopy;
   if (task)
   {
     if (!v6)
@@ -38,10 +38,10 @@
     [(PDURLSessionProxyWillPerformRedirection *)self setTask:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_7:
   request = self->_request;
-  v8 = v4[1];
+  v8 = fromCopy[1];
   if (request)
   {
     if (!v8)
@@ -62,10 +62,10 @@ LABEL_7:
     [(PDURLSessionProxyWillPerformRedirection *)self setRequest:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_13:
   response = self->_response;
-  v10 = v4[2];
+  v10 = fromCopy[2];
   if (response)
   {
     if (!v10)
@@ -86,7 +86,7 @@ LABEL_13:
     [(PDURLSessionProxyWillPerformRedirection *)self setResponse:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_19:
 }
 
@@ -97,13 +97,13 @@ LABEL_19:
   return v4 ^ [(PDURLSessionProxyResponse *)self->_response hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((task = self->_task, !(task | v4[3])) || -[PDURLSessionProxyTaskMessage isEqual:](task, "isEqual:")) && ((request = self->_request, !(request | v4[1])) || -[PDURLSessionProxyRequest isEqual:](request, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((task = self->_task, !(task | equalCopy[3])) || -[PDURLSessionProxyTaskMessage isEqual:](task, "isEqual:")) && ((request = self->_request, !(request | equalCopy[1])) || -[PDURLSessionProxyRequest isEqual:](request, "isEqual:")))
   {
     response = self->_response;
-    if (response | v4[2])
+    if (response | equalCopy[2])
     {
       v8 = [(PDURLSessionProxyResponse *)response isEqual:?];
     }
@@ -122,80 +122,80 @@ LABEL_19:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PDURLSessionProxyTaskMessage *)self->_task copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PDURLSessionProxyTaskMessage *)self->_task copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(PDURLSessionProxyRequest *)self->_request copyWithZone:a3];
+  v8 = [(PDURLSessionProxyRequest *)self->_request copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(PDURLSessionProxyResponse *)self->_response copyWithZone:a3];
+  v10 = [(PDURLSessionProxyResponse *)self->_response copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_task)
   {
-    [v4 setTask:?];
-    v4 = v5;
+    [toCopy setTask:?];
+    toCopy = v5;
   }
 
   if (self->_request)
   {
     [v5 setRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_response)
   {
     [v5 setResponse:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_task)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_request)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_response)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     while (1)
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -204,18 +204,18 @@ LABEL_19:
       while (1)
       {
         LOBYTE(v18) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v18 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v18 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v18 & 0x7F) << v6;
@@ -232,11 +232,11 @@ LABEL_19:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -246,7 +246,7 @@ LABEL_15:
         objc_storeStrong(&self->_response, v15);
         v18 = 0;
         v19 = 0;
-        if (!PBReaderPlaceMark() || !sub_100057BC0(v15, a3))
+        if (!PBReaderPlaceMark() || !sub_100057BC0(v15, from))
         {
 LABEL_32:
 
@@ -267,7 +267,7 @@ LABEL_32:
         objc_storeStrong(&self->_task, v15);
         v18 = 0;
         v19 = 0;
-        if (!PBReaderPlaceMark() || !sub_10006CE20(v15, a3))
+        if (!PBReaderPlaceMark() || !sub_10006CE20(v15, from))
         {
           goto LABEL_32;
         }
@@ -284,10 +284,10 @@ LABEL_28:
       }
 
 LABEL_30:
-      v16 = [a3 position];
-      if (v16 >= [a3 length])
+      position2 = [from position];
+      if (position2 >= [from length])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
     }
 
@@ -295,7 +295,7 @@ LABEL_30:
     objc_storeStrong(&self->_request, v15);
     v18 = 0;
     v19 = 0;
-    if (!PBReaderPlaceMark() || !sub_10005DE74(v15, a3))
+    if (!PBReaderPlaceMark() || !sub_10005DE74(v15, from))
     {
       goto LABEL_32;
     }
@@ -303,7 +303,7 @@ LABEL_30:
     goto LABEL_28;
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
@@ -312,22 +312,22 @@ LABEL_30:
   task = self->_task;
   if (task)
   {
-    v5 = [(PDURLSessionProxyTaskMessage *)task dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"task"];
+    dictionaryRepresentation = [(PDURLSessionProxyTaskMessage *)task dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"task"];
   }
 
   request = self->_request;
   if (request)
   {
-    v7 = [(PDURLSessionProxyRequest *)request dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"request"];
+    dictionaryRepresentation2 = [(PDURLSessionProxyRequest *)request dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"request"];
   }
 
   response = self->_response;
   if (response)
   {
-    v9 = [(PDURLSessionProxyResponse *)response dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"response"];
+    dictionaryRepresentation3 = [(PDURLSessionProxyResponse *)response dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"response"];
   }
 
   return v3;
@@ -338,8 +338,8 @@ LABEL_30:
   v7.receiver = self;
   v7.super_class = PDURLSessionProxyWillPerformRedirection;
   v3 = [(PDURLSessionProxyWillPerformRedirection *)&v7 description];
-  v4 = [(PDURLSessionProxyWillPerformRedirection *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDURLSessionProxyWillPerformRedirection *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }

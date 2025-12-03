@@ -1,20 +1,20 @@
 @interface CKDPStreamingAssetSaveAssetRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasUploadedSize:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasUploadedSize:(BOOL)size;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPStreamingAssetSaveAssetRequest
 
-- (void)setHasUploadedSize:(BOOL)a3
+- (void)setHasUploadedSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 2;
   }
@@ -66,16 +66,16 @@
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if (has)
   {
     requestedSize = self->_requestedSize;
     PBDataWriterWriteInt64Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -83,46 +83,46 @@
   {
     uploadedSize = self->_uploadedSize;
     PBDataWriterWriteInt64Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uploadReceipt)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_requestedSize;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = self->_requestedSize;
+    *(toCopy + 32) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[2] = self->_uploadedSize;
-    *(v4 + 32) |= 2u;
+    toCopy[2] = self->_uploadedSize;
+    *(toCopy + 32) |= 2u;
   }
 
   uploadReceipt = self->_uploadReceipt;
   if (uploadReceipt)
   {
-    v8 = v4;
-    objc_msgSend_setUploadReceipt_(v4, v5, uploadReceipt);
-    v4 = v8;
+    v8 = toCopy;
+    objc_msgSend_setUploadReceipt_(toCopy, v5, uploadReceipt);
+    toCopy = v8;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v12 = v10;
   has = self->_has;
@@ -139,32 +139,32 @@
     *(v10 + 32) |= 2u;
   }
 
-  v14 = objc_msgSend_copyWithZone_(self->_uploadReceipt, v11, a3);
+  v14 = objc_msgSend_copyWithZone_(self->_uploadReceipt, v11, zone);
   v15 = v12[3];
   v12[3] = v14;
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_14;
   }
 
-  v8 = *(v4 + 32);
+  v8 = *(equalCopy + 32);
   if (*&self->_has)
   {
-    if ((v4[4] & 1) == 0 || self->_requestedSize != v4[1])
+    if ((equalCopy[4] & 1) == 0 || self->_requestedSize != equalCopy[1])
     {
       goto LABEL_14;
     }
   }
 
-  else if (v4[4])
+  else if (equalCopy[4])
   {
 LABEL_14:
     isEqual = 0;
@@ -173,19 +173,19 @@ LABEL_14:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[4] & 2) == 0 || self->_uploadedSize != v4[2])
+    if ((equalCopy[4] & 2) == 0 || self->_uploadedSize != equalCopy[2])
     {
       goto LABEL_14;
     }
   }
 
-  else if ((v4[4] & 2) != 0)
+  else if ((equalCopy[4] & 2) != 0)
   {
     goto LABEL_14;
   }
 
   uploadReceipt = self->_uploadReceipt;
-  v10 = v4[3];
+  v10 = equalCopy[3];
   if (uploadReceipt | v10)
   {
     isEqual = objc_msgSend_isEqual_(uploadReceipt, v7, v10);
@@ -227,29 +227,29 @@ LABEL_3:
   return v4 ^ v3 ^ objc_msgSend_hash(self->_uploadReceipt, a2, v2);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = *(v4 + 32);
+  fromCopy = from;
+  v6 = *(fromCopy + 32);
   if (v6)
   {
-    self->_requestedSize = *(v4 + 1);
+    self->_requestedSize = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 32);
+    v6 = *(fromCopy + 32);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_uploadedSize = *(v4 + 2);
+    self->_uploadedSize = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
-  v7 = *(v4 + 3);
+  v7 = *(fromCopy + 3);
   if (v7)
   {
-    v8 = v4;
+    v8 = fromCopy;
     objc_msgSend_setUploadReceipt_(self, v5, v7);
-    v4 = v8;
+    fromCopy = v8;
   }
 }
 

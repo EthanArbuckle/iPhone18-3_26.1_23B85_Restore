@@ -1,42 +1,42 @@
 @interface VisitCollector
 + (void)initialize;
-- (VisitCollector)initWithLaunchEvents:(id)a3 sensorWriter:(id)a4 routineManager:(id)a5 defaults:(id)a6 q:(id)a7;
+- (VisitCollector)initWithLaunchEvents:(id)events sensorWriter:(id)writer routineManager:(id)manager defaults:(id)defaults q:(id)q;
 - (void)dealloc;
-- (void)launchEventRunActivity:(id)a3;
-- (void)sensorWriterDidStopMonitoring:(id)a3;
-- (void)sensorWriterWillStartMonitoring:(id)a3;
-- (void)writeVisitsWithCompletionHandler:(id)a3;
+- (void)launchEventRunActivity:(id)activity;
+- (void)sensorWriterDidStopMonitoring:(id)monitoring;
+- (void)sensorWriterWillStartMonitoring:(id)monitoring;
+- (void)writeVisitsWithCompletionHandler:(id)handler;
 @end
 
 @implementation VisitCollector
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_10002B238 = os_log_create("com.apple.SensorKit", "SensorKitVisitCollector");
   }
 }
 
-- (VisitCollector)initWithLaunchEvents:(id)a3 sensorWriter:(id)a4 routineManager:(id)a5 defaults:(id)a6 q:(id)a7
+- (VisitCollector)initWithLaunchEvents:(id)events sensorWriter:(id)writer routineManager:(id)manager defaults:(id)defaults q:(id)q
 {
   v15.receiver = self;
   v15.super_class = VisitCollector;
   v12 = [(VisitCollector *)&v15 init];
   if (v12)
   {
-    v12->_sensorWriter = a4;
-    v12->_queue = a7;
-    v12->_rtManager = a5;
-    v13 = a3;
-    v12->_launchEvents = v13;
-    if (v13)
+    v12->_sensorWriter = writer;
+    v12->_queue = q;
+    v12->_rtManager = manager;
+    eventsCopy = events;
+    v12->_launchEvents = eventsCopy;
+    if (eventsCopy)
     {
-      objc_storeWeak(&v13->_delegate, v12);
+      objc_storeWeak(&eventsCopy->_delegate, v12);
     }
 
     [(SRSensorWriter *)v12->_sensorWriter setDelegate:v12];
-    [(VisitCollector *)v12 setDefaults:a6];
+    [(VisitCollector *)v12 setDefaults:defaults];
   }
 
   return v12;
@@ -56,7 +56,7 @@
   [(VisitCollector *)&v3 dealloc];
 }
 
-- (void)writeVisitsWithCompletionHandler:(id)a3
+- (void)writeVisitsWithCompletionHandler:(id)handler
 {
   if (([(SRSensorWriter *)self->_sensorWriter isMonitoring]& 1) != 0)
   {
@@ -67,7 +67,7 @@
     v7[2] = sub_100002C24;
     v7[3] = &unk_1000249E8;
     objc_copyWeak(&v8, location);
-    v7[4] = a3;
+    v7[4] = handler;
     [(RTRoutineManager *)rtManager fetchLocationsOfInterestOfType:0 withHandler:v7];
     objc_destroyWeak(&v8);
     objc_destroyWeak(location);
@@ -82,11 +82,11 @@
       _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "VisitCollection running but writer is not monitoring", location, 2u);
     }
 
-    (*(a3 + 2))(a3);
+    (*(handler + 2))(handler);
   }
 }
 
-- (void)sensorWriterWillStartMonitoring:(id)a3
+- (void)sensorWriterWillStartMonitoring:(id)monitoring
 {
   v4 = qword_10002B238;
   if (os_log_type_enabled(qword_10002B238, OS_LOG_TYPE_DEBUG))
@@ -100,7 +100,7 @@
   [(RDLaunchEvents *)launchEvents registerForXPCActivities:[NSArray arrayWithObjects:&v7 count:1]];
 }
 
-- (void)sensorWriterDidStopMonitoring:(id)a3
+- (void)sensorWriterDidStopMonitoring:(id)monitoring
 {
   v4 = qword_10002B238;
   if (os_log_type_enabled(qword_10002B238, OS_LOG_TYPE_DEBUG))
@@ -115,9 +115,9 @@
   [(SRDataCollectorsDefaults *)[(VisitCollector *)self defaults] setLastVisitsQueryDate:0];
 }
 
-- (void)launchEventRunActivity:(id)a3
+- (void)launchEventRunActivity:(id)activity
 {
-  v4 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_queue;
@@ -128,8 +128,8 @@
   v5[1] = 3221225472;
   v5[2] = sub_1000031D4;
   v5[3] = &unk_100024A10;
-  v5[4] = a3;
-  [(VisitCollector *)v4 writeVisitsWithCompletionHandler:v5];
+  v5[4] = activity;
+  [(VisitCollector *)selfCopy writeVisitsWithCompletionHandler:v5];
 }
 
 @end

@@ -1,106 +1,106 @@
 @interface HUHomeUIServiceLaunchUserInfo
-+ (id)launchReasonDescription:(int64_t)a3;
-+ (id)userInfoForLockAccessFirmwareUpgradeSetupInHome:(id)a3;
-+ (id)userInfoForLockAccessPinCodeSetupInHome:(id)a3;
-+ (id)userInfoForLockAccessWalletKeySetupInHome:(id)a3;
-+ (id)userInfoForResumeAccessorySetupInHome:(id)a3 accessoryUUIDs:(id)a4;
-+ (id)userInfoForSafetyAndSecurityInHome:(id)a3;
-+ (id)userInfoForSiriEndpointInHome:(id)a3;
-+ (id)userInfoForThermostatAutoClimateControlSetupInHome:(id)a3;
-+ (id)userInfoForUpgradeOfferResults:(id)a3;
-+ (int64_t)launchReasonFromUserInfo:(id)a3;
++ (id)launchReasonDescription:(int64_t)description;
++ (id)userInfoForLockAccessFirmwareUpgradeSetupInHome:(id)home;
++ (id)userInfoForLockAccessPinCodeSetupInHome:(id)home;
++ (id)userInfoForLockAccessWalletKeySetupInHome:(id)home;
++ (id)userInfoForResumeAccessorySetupInHome:(id)home accessoryUUIDs:(id)ds;
++ (id)userInfoForSafetyAndSecurityInHome:(id)home;
++ (id)userInfoForSiriEndpointInHome:(id)home;
++ (id)userInfoForThermostatAutoClimateControlSetupInHome:(id)home;
++ (id)userInfoForUpgradeOfferResults:(id)results;
++ (int64_t)launchReasonFromUserInfo:(id)info;
 @end
 
 @implementation HUHomeUIServiceLaunchUserInfo
 
-+ (id)userInfoForResumeAccessorySetupInHome:(id)a3 accessoryUUIDs:(id)a4
++ (id)userInfoForResumeAccessorySetupInHome:(id)home accessoryUUIDs:(id)ds
 {
   v11[3] = *MEMORY[0x277D85DE8];
   v11[0] = HUHomeUIServiceLaunchReasonValueResumeSetup;
   v10[0] = HUHomeUIServiceLaunchReasonKey;
   v10[1] = HUHomeUIServiceLaunchHomeUUIDString;
-  v5 = a4;
-  v6 = [a3 uniqueIdentifier];
-  v7 = [v6 UUIDString];
+  dsCopy = ds;
+  uniqueIdentifier = [home uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   v10[2] = HUHomeUIServiceLaunchAccessoryUUIDsArray;
-  v11[1] = v7;
-  v11[2] = v5;
+  v11[1] = uUIDString;
+  v11[2] = dsCopy;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:3];
 
   return v8;
 }
 
-+ (id)userInfoForSafetyAndSecurityInHome:(id)a3
++ (id)userInfoForSafetyAndSecurityInHome:(id)home
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = HUHomeUIServiceLaunchReasonKey;
   v7[1] = HUHomeUIServiceLaunchHomeUUIDString;
   v8[0] = HUHomeUIServiceLaunchReasonValueSafetyAndSecurity;
-  v3 = [a3 uniqueIdentifier];
-  v4 = [v3 UUIDString];
-  v8[1] = v4;
+  uniqueIdentifier = [home uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  v8[1] = uUIDString;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   return v5;
 }
 
-+ (id)userInfoForSiriEndpointInHome:(id)a3
++ (id)userInfoForSiriEndpointInHome:(id)home
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = HUHomeUIServiceLaunchReasonKey;
   v7[1] = HUHomeUIServiceLaunchHomeUUIDString;
   v8[0] = HUHomeUIServiceLaunchReasonValueSiriEndpoint;
-  v3 = [a3 uniqueIdentifier];
-  v4 = [v3 UUIDString];
-  v8[1] = v4;
+  uniqueIdentifier = [home uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  v8[1] = uUIDString;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   return v5;
 }
 
-+ (id)userInfoForLockAccessFirmwareUpgradeSetupInHome:(id)a3
++ (id)userInfoForLockAccessFirmwareUpgradeSetupInHome:(id)home
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = HUHomeUIServiceLaunchReasonKey;
   v7[1] = HUHomeUIServiceLaunchHomeUUIDString;
   v8[0] = HUHomeUIServiceLaunchReasonValueLockAccessFirmwareUpdate;
-  v3 = [a3 uniqueIdentifier];
-  v4 = [v3 UUIDString];
-  v8[1] = v4;
+  uniqueIdentifier = [home uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  v8[1] = uUIDString;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   return v5;
 }
 
-+ (id)userInfoForLockAccessWalletKeySetupInHome:(id)a3
++ (id)userInfoForLockAccessWalletKeySetupInHome:(id)home
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = HUHomeUIServiceLaunchReasonKey;
   v7[1] = HUHomeUIServiceLaunchHomeUUIDString;
   v8[0] = HUHomeUIServiceLaunchReasonValueLockAccessUserOnboardingAll;
-  v3 = [a3 uniqueIdentifier];
-  v4 = [v3 UUIDString];
-  v8[1] = v4;
+  uniqueIdentifier = [home uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  v8[1] = uUIDString;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   return v5;
 }
 
-+ (id)userInfoForLockAccessPinCodeSetupInHome:(id)a3
++ (id)userInfoForLockAccessPinCodeSetupInHome:(id)home
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = HUHomeUIServiceLaunchReasonKey;
   v7[1] = HUHomeUIServiceLaunchHomeUUIDString;
   v8[0] = HUHomeUIServiceLaunchReasonValueLockAccessUserOnboardingPinCodeOnly;
-  v3 = [a3 uniqueIdentifier];
-  v4 = [v3 UUIDString];
-  v8[1] = v4;
+  uniqueIdentifier = [home uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  v8[1] = uUIDString;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   return v5;
 }
 
-+ (id)userInfoForUpgradeOfferResults:(id)a3
++ (id)userInfoForUpgradeOfferResults:(id)results
 {
   v6[1] = *MEMORY[0x277D85DE8];
   v5 = HUHomeUIServiceLaunchReasonKey;
@@ -110,23 +110,23 @@
   return v3;
 }
 
-+ (id)userInfoForThermostatAutoClimateControlSetupInHome:(id)a3
++ (id)userInfoForThermostatAutoClimateControlSetupInHome:(id)home
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = HUHomeUIServiceLaunchReasonKey;
   v7[1] = HUHomeUIServiceLaunchHomeUUIDString;
   v8[0] = HUHomeUIServiceLaunchReasonValueThermostatAutoClimateControlOnboarding;
-  v3 = [a3 uniqueIdentifier];
-  v4 = [v3 UUIDString];
-  v8[1] = v4;
+  uniqueIdentifier = [home uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  v8[1] = uUIDString;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   return v5;
 }
 
-+ (int64_t)launchReasonFromUserInfo:(id)a3
++ (int64_t)launchReasonFromUserInfo:(id)info
 {
-  v3 = [a3 objectForKeyedSubscript:HUHomeUIServiceLaunchReasonKey];
+  v3 = [info objectForKeyedSubscript:HUHomeUIServiceLaunchReasonKey];
   if ([v3 isEqualToString:HUHomeUIServiceLaunchReasonValueResumeSetup])
   {
     v4 = 1;
@@ -175,16 +175,16 @@
   return v4;
 }
 
-+ (id)launchReasonDescription:(int64_t)a3
++ (id)launchReasonDescription:(int64_t)description
 {
   v3 = 0;
-  if (a3 <= 4)
+  if (description <= 4)
   {
-    if (a3 <= 1)
+    if (description <= 1)
     {
-      if (a3)
+      if (description)
       {
-        if (a3 != 1)
+        if (description != 1)
         {
           goto LABEL_24;
         }
@@ -198,12 +198,12 @@
       }
     }
 
-    else if (a3 == 2)
+    else if (description == 2)
     {
       v4 = HUHomeUIServiceLaunchReasonValueSafetyAndSecurity;
     }
 
-    else if (a3 == 3)
+    else if (description == 3)
     {
       v4 = HUHomeUIServiceLaunchReasonValueSiriEndpoint;
     }
@@ -216,9 +216,9 @@
     goto LABEL_23;
   }
 
-  if (a3 <= 6)
+  if (description <= 6)
   {
-    if (a3 == 5)
+    if (description == 5)
     {
       v4 = HUHomeUIServiceLaunchReasonValueLockAccessUserOnboardingAll;
     }
@@ -231,7 +231,7 @@
     goto LABEL_23;
   }
 
-  switch(a3)
+  switch(description)
   {
     case 7:
       v4 = HUHomeUIServiceLaunchReasonValueThermostatAutoClimateControlOnboarding;

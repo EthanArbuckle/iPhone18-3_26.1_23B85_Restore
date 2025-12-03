@@ -1,20 +1,20 @@
 @interface VUIStillWatchingAlertPresenter
-+ (void)presentWithTitle:(id)a3 presentingController:(id)a4 timeout:(double)a5 responseHandler:(id)a6;
++ (void)presentWithTitle:(id)title presentingController:(id)controller timeout:(double)timeout responseHandler:(id)handler;
 @end
 
 @implementation VUIStillWatchingAlertPresenter
 
-+ (void)presentWithTitle:(id)a3 presentingController:(id)a4 timeout:(double)a5 responseHandler:(id)a6
++ (void)presentWithTitle:(id)title presentingController:(id)controller timeout:(double)timeout responseHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  titleCopy = title;
+  controllerCopy = controller;
+  handlerCopy = handler;
   v12 = MEMORY[0x1E696AEC0];
   v13 = +[VUILocalizationManager sharedInstance];
   v14 = [v13 localizedStringForKey:@"NOW_PLAYING_STILL_WATCHING_MESSAGE"];
-  v15 = [v12 stringWithValidatedFormat:v14 validFormatSpecifiers:@"%@" error:0, v9];
+  titleCopy = [v12 stringWithValidatedFormat:v14 validFormatSpecifiers:@"%@" error:0, titleCopy];
 
-  v16 = [VUIAlertController vui_alertControllerWithTitle:v15 message:0 preferredStyle:1];
+  v16 = [VUIAlertController vui_alertControllerWithTitle:titleCopy message:0 preferredStyle:1];
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -27,9 +27,9 @@
   v35[3] = &unk_1E87366A8;
   v18 = v16;
   v36 = v18;
-  v19 = v11;
+  v19 = handlerCopy;
   v37 = v19;
-  v43 = [v17 timerWithTimeInterval:0 repeats:v35 block:a5];
+  v43 = [v17 timerWithTimeInterval:0 repeats:v35 block:timeout];
   v20 = +[VUILocalizationManager sharedInstance];
   v21 = [v20 localizedStringForKey:@"CONTINUE_WATCHING"];
   v32[0] = MEMORY[0x1E69E9820];
@@ -55,9 +55,9 @@
   v27 = [VUIAlertAction vui_actionWithTitle:v25 style:0 handler:v29];
   [v18 vui_addAction:v27];
 
-  [v18 vui_presentAlertFromPresentingController:v10 animated:1 completion:0];
-  v28 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [v28 addTimer:v39[5] forMode:*MEMORY[0x1E695D918]];
+  [v18 vui_presentAlertFromPresentingController:controllerCopy animated:1 completion:0];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [mainRunLoop addTimer:v39[5] forMode:*MEMORY[0x1E695D918]];
 
   _Block_object_dispose(&v38, 8);
 }

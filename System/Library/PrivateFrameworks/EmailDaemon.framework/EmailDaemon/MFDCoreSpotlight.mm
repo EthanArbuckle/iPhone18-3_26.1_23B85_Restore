@@ -1,8 +1,8 @@
 @interface MFDCoreSpotlight
 + (id)exportedInterface;
-- (void)generatedSummariesDidUpdate:(id)a3;
-- (void)reindexAllSearchableItemsWithAcknowledgementHandler:(id)a3;
-- (void)reindexSearchableItemsWithIdentifiers:(id)a3 acknowledgementHandler:(id)a4;
+- (void)generatedSummariesDidUpdate:(id)update;
+- (void)reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler;
+- (void)reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler;
 @end
 
 @implementation MFDCoreSpotlight
@@ -17,28 +17,28 @@
   return v2;
 }
 
-- (void)reindexAllSearchableItemsWithAcknowledgementHandler:(id)a3
+- (void)reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v3 = +[MFMailMessageLibrary defaultInstance];
-  [v3 reindexAllSearchableItemsWithAcknowledgementHandler:v4];
+  [v3 reindexAllSearchableItemsWithAcknowledgementHandler:handlerCopy];
 }
 
-- (void)reindexSearchableItemsWithIdentifiers:(id)a3 acknowledgementHandler:(id)a4
+- (void)reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler
 {
-  v7 = a3;
-  v5 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v6 = +[MFMailMessageLibrary defaultInstance];
-  [v6 reindexSearchableItemsWithIdentifiers:v7 acknowledgementHandler:v5];
+  [v6 reindexSearchableItemsWithIdentifiers:identifiersCopy acknowledgementHandler:handlerCopy];
 }
 
-- (void)generatedSummariesDidUpdate:(id)a3
+- (void)generatedSummariesDidUpdate:(id)update
 {
-  v6 = a3;
+  updateCopy = update;
   v3 = +[MFMailMessageLibrary defaultInstance];
-  v4 = [v3 persistence];
-  v5 = [v4 messagePersistence];
-  [v5 setGeneratedSummaries:v6];
+  persistence = [v3 persistence];
+  messagePersistence = [persistence messagePersistence];
+  [messagePersistence setGeneratedSummaries:updateCopy];
 }
 
 @end

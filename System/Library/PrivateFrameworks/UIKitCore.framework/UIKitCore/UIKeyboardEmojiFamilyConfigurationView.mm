@@ -1,34 +1,34 @@
 @interface UIKeyboardEmojiFamilyConfigurationView
-+ (CGSize)preferredContentViewSizeForKey:(id)a3 withTraits:(id)a4;
-+ (id)_selectionAndSeparatorColorForDarkMode:(BOOL)a3;
++ (CGSize)preferredContentViewSizeForKey:(id)key withTraits:(id)traits;
++ (id)_selectionAndSeparatorColorForDarkMode:(BOOL)mode;
 - (BOOL)_hasCompletelyConfiguredSkinToneConfiguration;
-- (BOOL)retestSelectedVariantIndexForKey:(id)a3 atPoint:(CGPoint)a4 phase:(int64_t)a5;
-- (UIKeyboardEmojiFamilyConfigurationView)initWithFrame:(CGRect)a3;
+- (BOOL)retestSelectedVariantIndexForKey:(id)key atPoint:(CGPoint)point phase:(int64_t)phase;
+- (UIKeyboardEmojiFamilyConfigurationView)initWithFrame:(CGRect)frame;
 - (id)_currentlySelectedSkinToneConfiguration;
-- (id)_wellViewForSection:(int64_t)a3 item:(int64_t)a4;
+- (id)_wellViewForSection:(int64_t)section item:(int64_t)item;
 - (id)nextResponder;
 - (unint64_t)_silhouetteFromCurrentSelections;
 - (void)_beginFamilyMetachronalRhythmAnimation;
 - (void)_colorConfigurationDidChange;
 - (void)_configureFamilyMemberWellStackViews;
-- (void)_configureSkinToneVariantSpecifiersForBaseString:(id)a3;
-- (void)_setCurrentlySelectedSkinToneConfiguration:(id)a3;
-- (void)_updateBottomRowForSelections:(id)a3;
+- (void)_configureSkinToneVariantSpecifiersForBaseString:(id)string;
+- (void)_setCurrentlySelectedSkinToneConfiguration:(id)configuration;
+- (void)_updateBottomRowForSelections:(id)selections;
 - (void)_updatePreviewWellForCurrentSelection;
 - (void)_updateReferencedKeySelectedVariantIndexBasedOnCurrentConfiguration;
 - (void)layoutSubviews;
-- (void)retestForTouchUpSelectedVariantIndexForKey:(id)a3 atPoint:(CGPoint)a4;
-- (void)retestSelectedVariantIndexForKey:(id)a3 atPoint:(CGPoint)a4;
-- (void)setSelectedVariantIndices:(id)a3;
-- (void)updateForKeyplane:(id)a3 key:(id)a4;
-- (void)updateRenderConfig:(id)a3;
+- (void)retestForTouchUpSelectedVariantIndexForKey:(id)key atPoint:(CGPoint)point;
+- (void)retestSelectedVariantIndexForKey:(id)key atPoint:(CGPoint)point;
+- (void)setSelectedVariantIndices:(id)indices;
+- (void)updateForKeyplane:(id)keyplane key:(id)key;
+- (void)updateRenderConfig:(id)config;
 @end
 
 @implementation UIKeyboardEmojiFamilyConfigurationView
 
-+ (id)_selectionAndSeparatorColorForDarkMode:(BOOL)a3
++ (id)_selectionAndSeparatorColorForDarkMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     [UIColor colorWithWhite:1.0 alpha:0.18];
   }
@@ -42,19 +42,19 @@
   return v3;
 }
 
-- (UIKeyboardEmojiFamilyConfigurationView)initWithFrame:(CGRect)a3
+- (UIKeyboardEmojiFamilyConfigurationView)initWithFrame:(CGRect)frame
 {
   v39[2] = *MEMORY[0x1E69E9840];
   v38.receiver = self;
   v38.super_class = UIKeyboardEmojiFamilyConfigurationView;
-  v3 = [(UIView *)&v38 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v38 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
     [(UIView *)v3 setBackgroundColor:v4];
 
-    v5 = [MEMORY[0x1E695DF70] array];
-    [(UIKeyboardEmojiFamilyConfigurationView *)v3 setFamilyMemberStackViews:v5];
+    array = [MEMORY[0x1E695DF70] array];
+    [(UIKeyboardEmojiFamilyConfigurationView *)v3 setFamilyMemberStackViews:array];
 
     v6 = [UIView alloc];
     v7 = *MEMORY[0x1E695F058];
@@ -65,59 +65,59 @@
     [(UIKeyboardEmojiFamilyConfigurationView *)v3 setSeparatorView:v11];
 
     v12 = [objc_opt_class() _selectionAndSeparatorColorForDarkMode:{-[UIKeyboardEmojiFamilyConfigurationView usesDarkStyle](v3, "usesDarkStyle")}];
-    v13 = [(UIKeyboardEmojiFamilyConfigurationView *)v3 separatorView];
-    [v13 setBackgroundColor:v12];
+    separatorView = [(UIKeyboardEmojiFamilyConfigurationView *)v3 separatorView];
+    [separatorView setBackgroundColor:v12];
 
-    v14 = [(UIKeyboardEmojiFamilyConfigurationView *)v3 separatorView];
-    [(UIView *)v3 addSubview:v14];
+    separatorView2 = [(UIKeyboardEmojiFamilyConfigurationView *)v3 separatorView];
+    [(UIView *)v3 addSubview:separatorView2];
 
     v15 = [[UIKeyboardEmojiWellView alloc] initWithFrame:v7, v8, v9, v10];
     [(UIKeyboardEmojiFamilyConfigurationView *)v3 setNeutralWellView:v15];
 
     v16 = [off_1E70ECC18 systemFontOfSize:48.0];
-    v17 = [(UIKeyboardEmojiFamilyConfigurationView *)v3 neutralWellView];
-    [v17 setLabelFont:v16];
+    neutralWellView = [(UIKeyboardEmojiFamilyConfigurationView *)v3 neutralWellView];
+    [neutralWellView setLabelFont:v16];
 
-    v18 = [(UIKeyboardEmojiFamilyConfigurationView *)v3 _backgroundColorForSelection];
-    v19 = [(UIKeyboardEmojiFamilyConfigurationView *)v3 neutralWellView];
-    [v19 setSelectionBackgroundColor:v18];
+    _backgroundColorForSelection = [(UIKeyboardEmojiFamilyConfigurationView *)v3 _backgroundColorForSelection];
+    neutralWellView2 = [(UIKeyboardEmojiFamilyConfigurationView *)v3 neutralWellView];
+    [neutralWellView2 setSelectionBackgroundColor:_backgroundColorForSelection];
 
     v20 = [[UIKeyboardEmojiWellView alloc] initWithFrame:v7, v8, v9, v10];
     [(UIKeyboardEmojiFamilyConfigurationView *)v3 setConfiguredWellView:v20];
 
     v21 = [off_1E70ECC18 systemFontOfSize:48.0];
-    v22 = [(UIKeyboardEmojiFamilyConfigurationView *)v3 configuredWellView];
-    [v22 setLabelFont:v21];
+    configuredWellView = [(UIKeyboardEmojiFamilyConfigurationView *)v3 configuredWellView];
+    [configuredWellView setLabelFont:v21];
 
-    v23 = [(UIKeyboardEmojiFamilyConfigurationView *)v3 configuredWellView];
-    [v23 setCompositeImageSize:{48.0, 48.0}];
+    configuredWellView2 = [(UIKeyboardEmojiFamilyConfigurationView *)v3 configuredWellView];
+    [configuredWellView2 setCompositeImageSize:{48.0, 48.0}];
 
-    v24 = [(UIKeyboardEmojiFamilyConfigurationView *)v3 _backgroundColorForSelection];
-    v25 = [(UIKeyboardEmojiFamilyConfigurationView *)v3 configuredWellView];
-    [v25 setSelectionBackgroundColor:v24];
+    _backgroundColorForSelection2 = [(UIKeyboardEmojiFamilyConfigurationView *)v3 _backgroundColorForSelection];
+    configuredWellView3 = [(UIKeyboardEmojiFamilyConfigurationView *)v3 configuredWellView];
+    [configuredWellView3 setSelectionBackgroundColor:_backgroundColorForSelection2];
 
     v26 = [UIStackView alloc];
-    v27 = [(UIKeyboardEmojiFamilyConfigurationView *)v3 neutralWellView];
-    v39[0] = v27;
-    v28 = [(UIKeyboardEmojiFamilyConfigurationView *)v3 configuredWellView];
-    v39[1] = v28;
+    neutralWellView3 = [(UIKeyboardEmojiFamilyConfigurationView *)v3 neutralWellView];
+    v39[0] = neutralWellView3;
+    configuredWellView4 = [(UIKeyboardEmojiFamilyConfigurationView *)v3 configuredWellView];
+    v39[1] = configuredWellView4;
     v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:2];
     v30 = [(UIStackView *)v26 initWithArrangedSubviews:v29];
     [(UIKeyboardEmojiFamilyConfigurationView *)v3 setPreviewWellStackView:v30];
 
-    v31 = [(UIKeyboardEmojiFamilyConfigurationView *)v3 previewWellStackView];
-    [v31 setAxis:0];
+    previewWellStackView = [(UIKeyboardEmojiFamilyConfigurationView *)v3 previewWellStackView];
+    [previewWellStackView setAxis:0];
 
-    v32 = [(UIKeyboardEmojiFamilyConfigurationView *)v3 previewWellStackView];
-    [v32 setDistribution:1];
+    previewWellStackView2 = [(UIKeyboardEmojiFamilyConfigurationView *)v3 previewWellStackView];
+    [previewWellStackView2 setDistribution:1];
 
-    v33 = [(UIKeyboardEmojiFamilyConfigurationView *)v3 previewWellStackView];
-    v34 = [v33 heightAnchor];
-    v35 = [v34 constraintEqualToConstant:70.0];
+    previewWellStackView3 = [(UIKeyboardEmojiFamilyConfigurationView *)v3 previewWellStackView];
+    heightAnchor = [previewWellStackView3 heightAnchor];
+    v35 = [heightAnchor constraintEqualToConstant:70.0];
     [v35 setActive:1];
 
-    v36 = [(UIKeyboardEmojiFamilyConfigurationView *)v3 previewWellStackView];
-    [(UIView *)v3 addSubview:v36];
+    previewWellStackView4 = [(UIKeyboardEmojiFamilyConfigurationView *)v3 previewWellStackView];
+    [(UIView *)v3 addSubview:previewWellStackView4];
 
     getEMFStringUtilitiesClass_1();
     [(UIKeyboardEmojiFamilyConfigurationView *)v3 setHasSplitFontSupport:objc_opt_respondsToSelector() & 1];
@@ -130,15 +130,15 @@
 {
   v26 = *MEMORY[0x1E69E9840];
   v3 = [objc_opt_class() _selectionAndSeparatorColorForDarkMode:{-[UIKeyboardEmojiFamilyConfigurationView usesDarkStyle](self, "usesDarkStyle")}];
-  v4 = [(UIKeyboardEmojiFamilyConfigurationView *)self separatorView];
-  [v4 setBackgroundColor:v3];
+  separatorView = [(UIKeyboardEmojiFamilyConfigurationView *)self separatorView];
+  [separatorView setBackgroundColor:v3];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(UIKeyboardEmojiFamilyConfigurationView *)self familyMemberStackViews];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  familyMemberStackViews = [(UIKeyboardEmojiFamilyConfigurationView *)self familyMemberStackViews];
+  v6 = [familyMemberStackViews countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -150,7 +150,7 @@
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(familyMemberStackViews);
         }
 
         v10 = *(*(&v20 + 1) + 8 * v9);
@@ -158,8 +158,8 @@
         v17 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v11 = [v10 arrangedSubviews];
-        v12 = [v11 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        arrangedSubviews = [v10 arrangedSubviews];
+        v12 = [arrangedSubviews countByEnumeratingWithState:&v16 objects:v24 count:16];
         if (v12)
         {
           v13 = v12;
@@ -171,14 +171,14 @@
             {
               if (*v17 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(arrangedSubviews);
               }
 
               [*(*(&v16 + 1) + 8 * v15++) setSelectionBackgroundColor:v3];
             }
 
             while (v13 != v15);
-            v13 = [v11 countByEnumeratingWithState:&v16 objects:v24 count:16];
+            v13 = [arrangedSubviews countByEnumeratingWithState:&v16 objects:v24 count:16];
           }
 
           while (v13);
@@ -188,30 +188,30 @@
       }
 
       while (v9 != v7);
-      v7 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v7 = [familyMemberStackViews countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_configureSkinToneVariantSpecifiersForBaseString:(id)a3
+- (void)_configureSkinToneVariantSpecifiersForBaseString:(id)string
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  stringCopy = string;
+  array = [MEMORY[0x1E695DF70] array];
   v27 = getEMFSkinToneSpecifierTypeFitzpatrickSilhouette_0();
-  v24 = v3;
-  v5 = [getEMFStringUtilitiesClass_1() _skinToneChooserVariantsForString:v3];
+  v24 = stringCopy;
+  v5 = [getEMFStringUtilitiesClass_1() _skinToneChooserVariantsForString:stringCopy];
   if ([v5 count])
   {
     v6 = 0;
     v7 = 0;
     v25 = v5;
-    v26 = v4;
+    v26 = array;
     do
     {
-      v8 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
@@ -238,35 +238,35 @@
           v14 = [getEMFStringUtilitiesClass_1() _skinToneSpecifiersForString:*(*(&v29 + 1) + 8 * v13)];
           if ([(UIKeyboardEmojiFamilyConfigurationView *)self hasSplitFontSupport])
           {
-            v15 = [v14 firstObject];
+            firstObject = [v14 firstObject];
             goto LABEL_14;
           }
 
           if (v7 == 1)
           {
-            v15 = v27;
+            firstObject = v27;
 LABEL_14:
-            v16 = v15;
-            v17 = [v14 firstObject];
+            firstObject3 = firstObject;
+            firstObject2 = [v14 firstObject];
 LABEL_15:
-            v18 = v17;
+            v18 = firstObject2;
             goto LABEL_16;
           }
 
           if (!v7)
           {
-            v16 = [v14 firstObject];
-            v17 = v27;
+            firstObject3 = [v14 firstObject];
+            firstObject2 = v27;
             goto LABEL_15;
           }
 
-          v16 = 0;
+          firstObject3 = 0;
           v18 = 0;
 LABEL_16:
-          v33[0] = v16;
+          v33[0] = firstObject3;
           v33[1] = v18;
           v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:2];
-          [v8 addObject:v19];
+          [array2 addObject:v19];
 
           ++v13;
         }
@@ -279,8 +279,8 @@ LABEL_16:
       while (v20);
 LABEL_20:
 
-      v4 = v26;
-      [v26 addObject:v8];
+      array = v26;
+      [v26 addObject:array2];
 
       v5 = v25;
       v6 = ++v7;
@@ -290,56 +290,56 @@ LABEL_20:
   }
 
   [(UIKeyboardEmojiFamilyConfigurationView *)self setBaseEmojiString:v24];
-  [(UIKeyboardEmojiFamilyConfigurationView *)self setSkinToneVariantRows:v4];
+  [(UIKeyboardEmojiFamilyConfigurationView *)self setSkinToneVariantRows:array];
   if ([(UIKeyboardEmojiFamilyConfigurationView *)self hasSplitFontSupport])
   {
     -[UIKeyboardEmojiFamilyConfigurationView setVariantDisplayRows:](self, "setVariantDisplayRows:", [getEMFStringUtilitiesClass_1() performSelector:sel__coupleSkinToneChooserVariantsForString_ withObject:v24]);
   }
 
-  v21 = [MEMORY[0x1E695DF70] array];
-  if ([v4 count])
+  array3 = [MEMORY[0x1E695DF70] array];
+  if ([array count])
   {
     v22 = 0;
     do
     {
-      [(NSMutableArray *)v21 addObject:&unk_1EFE33F58];
+      [(NSMutableArray *)array3 addObject:&unk_1EFE33F58];
       ++v22;
     }
 
-    while (v22 < [v4 count]);
+    while (v22 < [array count]);
   }
 
   selectedVariantIndices = self->_selectedVariantIndices;
-  self->_selectedVariantIndices = v21;
+  self->_selectedVariantIndices = array3;
 
   [(UIKeyboardEmojiFamilyConfigurationView *)self _configureFamilyMemberWellStackViews];
 }
 
 - (void)_configureFamilyMemberWellStackViews
 {
-  v3 = [(UIKeyboardEmojiFamilyConfigurationView *)self baseEmojiString];
+  baseEmojiString = [(UIKeyboardEmojiFamilyConfigurationView *)self baseEmojiString];
 
-  if (v3)
+  if (baseEmojiString)
   {
     if ([(UIKeyboardEmojiFamilyConfigurationView *)self hasSplitFontSupport])
     {
-      v4 = [(UIKeyboardEmojiFamilyConfigurationView *)self variantDisplayRows];
-      v5 = [v4 count];
+      variantDisplayRows = [(UIKeyboardEmojiFamilyConfigurationView *)self variantDisplayRows];
+      v5 = [variantDisplayRows count];
 
       if (v5)
       {
         v6 = 0;
         do
         {
-          v7 = [(UIKeyboardEmojiFamilyConfigurationView *)self variantDisplayRows];
-          v8 = [v7 objectAtIndex:v6];
+          variantDisplayRows2 = [(UIKeyboardEmojiFamilyConfigurationView *)self variantDisplayRows];
+          v8 = [variantDisplayRows2 objectAtIndex:v6];
 
           v24 = 0;
           v25 = &v24;
           v26 = 0x3032000000;
           v27 = __Block_byref_object_copy__246;
           v28 = __Block_byref_object_dispose__246;
-          v29 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
           v23[0] = MEMORY[0x1E69E9820];
           v23[1] = 3221225472;
           v23[2] = __78__UIKeyboardEmojiFamilyConfigurationView__configureFamilyMemberWellStackViews__block_invoke;
@@ -350,23 +350,23 @@ LABEL_20:
           [v8 enumerateObjectsUsingBlock:v23];
           v9 = [UIStackView alloc];
           v10 = [(UIStackView *)v9 initWithArrangedSubviews:v25[5]];
-          v11 = [(UIView *)v10 heightAnchor];
-          v12 = [v11 constraintEqualToConstant:50.0];
+          heightAnchor = [(UIView *)v10 heightAnchor];
+          v12 = [heightAnchor constraintEqualToConstant:50.0];
           [v12 setActive:1];
 
           LODWORD(v13) = 1148829696;
           [(UIView *)v10 setContentCompressionResistancePriority:1 forAxis:v13];
           [(UIStackView *)v10 setAxis:0];
           [(UIStackView *)v10 setDistribution:1];
-          v14 = [(UIKeyboardEmojiFamilyConfigurationView *)self familyMemberStackViews];
-          [v14 addObject:v10];
+          familyMemberStackViews = [(UIKeyboardEmojiFamilyConfigurationView *)self familyMemberStackViews];
+          [familyMemberStackViews addObject:v10];
 
           [(UIView *)self addSubview:v10];
           _Block_object_dispose(&v24, 8);
 
           ++v6;
-          v15 = [(UIKeyboardEmojiFamilyConfigurationView *)self variantDisplayRows];
-          v16 = [v15 count];
+          variantDisplayRows3 = [(UIKeyboardEmojiFamilyConfigurationView *)self variantDisplayRows];
+          v16 = [variantDisplayRows3 count];
         }
 
         while (v6 < v16);
@@ -375,26 +375,26 @@ LABEL_20:
 
     else
     {
-      v17 = [(UIKeyboardEmojiFamilyConfigurationView *)self skinToneVariantRows];
+      skinToneVariantRows = [(UIKeyboardEmojiFamilyConfigurationView *)self skinToneVariantRows];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __78__UIKeyboardEmojiFamilyConfigurationView__configureFamilyMemberWellStackViews__block_invoke_2;
       v22[3] = &unk_1E712B850;
       v22[4] = self;
-      [v17 enumerateObjectsUsingBlock:v22];
+      [skinToneVariantRows enumerateObjectsUsingBlock:v22];
     }
 
-    v18 = [(UIKeyboardEmojiFamilyConfigurationView *)self baseEmojiString];
-    v19 = [(UIKeyboardEmojiFamilyConfigurationView *)self neutralWellView];
-    [v19 setStringRepresentation:v18];
+    baseEmojiString2 = [(UIKeyboardEmojiFamilyConfigurationView *)self baseEmojiString];
+    neutralWellView = [(UIKeyboardEmojiFamilyConfigurationView *)self neutralWellView];
+    [neutralWellView setStringRepresentation:baseEmojiString2];
 
-    v20 = [(UIKeyboardEmojiFamilyConfigurationView *)self baseEmojiString];
-    LODWORD(v18) = [UIKeyboardEmoji shouldHighlightEmoji:v20];
+    baseEmojiString3 = [(UIKeyboardEmojiFamilyConfigurationView *)self baseEmojiString];
+    LODWORD(baseEmojiString2) = [UIKeyboardEmoji shouldHighlightEmoji:baseEmojiString3];
 
-    if (v18)
+    if (baseEmojiString2)
     {
-      v21 = [(UIKeyboardEmojiFamilyConfigurationView *)self neutralWellView];
-      [v21 setUnreleasedHighlight:1];
+      neutralWellView2 = [(UIKeyboardEmojiFamilyConfigurationView *)self neutralWellView];
+      [neutralWellView2 setUnreleasedHighlight:1];
     }
 
     [(UIKeyboardEmojiFamilyConfigurationView *)self _updatePreviewWellForCurrentSelection];
@@ -483,17 +483,17 @@ void __78__UIKeyboardEmojiFamilyConfigurationView__configureFamilyMemberWellStac
   [(UIKeyboardEmojiWellView *)v11 setAssociatedIndexPath:v14];
 }
 
-- (id)_wellViewForSection:(int64_t)a3 item:(int64_t)a4
+- (id)_wellViewForSection:(int64_t)section item:(int64_t)item
 {
-  v7 = [(UIKeyboardEmojiFamilyConfigurationView *)self familyMemberStackViews];
-  v8 = [v7 count];
+  familyMemberStackViews = [(UIKeyboardEmojiFamilyConfigurationView *)self familyMemberStackViews];
+  v8 = [familyMemberStackViews count];
 
-  if (v8 >= a3 && (-[UIKeyboardEmojiFamilyConfigurationView familyMemberStackViews](self, "familyMemberStackViews"), v9 = objc_claimAutoreleasedReturnValue(), [v9 objectAtIndexedSubscript:a3], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "arrangedSubviews"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, v10, v9, v12 >= a4))
+  if (v8 >= section && (-[UIKeyboardEmojiFamilyConfigurationView familyMemberStackViews](self, "familyMemberStackViews"), v9 = objc_claimAutoreleasedReturnValue(), [v9 objectAtIndexedSubscript:section], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "arrangedSubviews"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, v10, v9, v12 >= item))
   {
-    v14 = [(UIKeyboardEmojiFamilyConfigurationView *)self familyMemberStackViews];
-    v15 = [v14 objectAtIndexedSubscript:a3];
-    v16 = [v15 arrangedSubviews];
-    v13 = [v16 objectAtIndexedSubscript:a4];
+    familyMemberStackViews2 = [(UIKeyboardEmojiFamilyConfigurationView *)self familyMemberStackViews];
+    v15 = [familyMemberStackViews2 objectAtIndexedSubscript:section];
+    arrangedSubviews = [v15 arrangedSubviews];
+    v13 = [arrangedSubviews objectAtIndexedSubscript:item];
   }
 
   else
@@ -506,28 +506,28 @@ void __78__UIKeyboardEmojiFamilyConfigurationView__configureFamilyMemberWellStac
 
 - (unint64_t)_silhouetteFromCurrentSelections
 {
-  v3 = [(UIKeyboardEmojiFamilyConfigurationView *)self selectedVariantIndices];
-  v4 = [v3 firstObject];
-  v5 = [v4 integerValue];
+  selectedVariantIndices = [(UIKeyboardEmojiFamilyConfigurationView *)self selectedVariantIndices];
+  firstObject = [selectedVariantIndices firstObject];
+  integerValue = [firstObject integerValue];
 
-  v6 = [(UIKeyboardEmojiFamilyConfigurationView *)self selectedVariantIndices];
-  v7 = [v6 lastObject];
-  v8 = [v7 integerValue];
+  selectedVariantIndices2 = [(UIKeyboardEmojiFamilyConfigurationView *)self selectedVariantIndices];
+  lastObject = [selectedVariantIndices2 lastObject];
+  integerValue2 = [lastObject integerValue];
 
   v9 = 2;
-  if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+  if (integerValue == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 3;
   }
 
-  if (v8 == 0x7FFFFFFFFFFFFFFFLL)
+  if (integerValue2 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return v9;
   }
 
   else
   {
-    return v5 == 0x7FFFFFFFFFFFFFFFLL;
+    return integerValue == 0x7FFFFFFFFFFFFFFFLL;
   }
 }
 
@@ -539,8 +539,8 @@ void __78__UIKeyboardEmojiFamilyConfigurationView__configureFamilyMemberWellStac
   v10 = 0x3032000000;
   v11 = __Block_byref_object_copy__246;
   v12 = __Block_byref_object_dispose__246;
-  v13 = [MEMORY[0x1E695DF70] array];
-  v4 = [(UIKeyboardEmojiFamilyConfigurationView *)self selectedVariantIndices];
+  array = [MEMORY[0x1E695DF70] array];
+  selectedVariantIndices = [(UIKeyboardEmojiFamilyConfigurationView *)self selectedVariantIndices];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __81__UIKeyboardEmojiFamilyConfigurationView__currentlySelectedSkinToneConfiguration__block_invoke;
@@ -548,7 +548,7 @@ void __78__UIKeyboardEmojiFamilyConfigurationView__configureFamilyMemberWellStac
   v7[5] = v3;
   v7[6] = &v8;
   v7[4] = self;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [selectedVariantIndices enumerateObjectsUsingBlock:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -579,22 +579,22 @@ void __81__UIKeyboardEmojiFamilyConfigurationView__currentlySelectedSkinToneConf
   }
 }
 
-- (void)_setCurrentlySelectedSkinToneConfiguration:(id)a3
+- (void)_setCurrentlySelectedSkinToneConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(UIKeyboardEmojiFamilyConfigurationView *)self selectedVariantIndices];
-  v6 = [v5 mutableCopy];
+  configurationCopy = configuration;
+  selectedVariantIndices = [(UIKeyboardEmojiFamilyConfigurationView *)self selectedVariantIndices];
+  v6 = [selectedVariantIndices mutableCopy];
 
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __85__UIKeyboardEmojiFamilyConfigurationView__setCurrentlySelectedSkinToneConfiguration___block_invoke;
   v11 = &unk_1E70FF4D0;
-  v12 = self;
+  selfCopy = self;
   v13 = v6;
   v7 = v6;
-  [v4 enumerateObjectsUsingBlock:&v8];
+  [configurationCopy enumerateObjectsUsingBlock:&v8];
 
-  [(UIKeyboardEmojiFamilyConfigurationView *)self setSelectedVariantIndices:v7, v8, v9, v10, v11, v12];
+  [(UIKeyboardEmojiFamilyConfigurationView *)self setSelectedVariantIndices:v7, v8, v9, v10, v11, selfCopy];
 }
 
 void __85__UIKeyboardEmojiFamilyConfigurationView__setCurrentlySelectedSkinToneConfiguration___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -628,18 +628,18 @@ void __85__UIKeyboardEmojiFamilyConfigurationView__setCurrentlySelectedSkinToneC
   }
 }
 
-- (void)setSelectedVariantIndices:(id)a3
+- (void)setSelectedVariantIndices:(id)indices
 {
-  v4 = a3;
+  indicesCopy = indices;
   v5 = self->_selectedVariantIndices;
-  v6 = [v4 count];
+  v6 = [indicesCopy count];
   v7 = [(NSMutableArray *)v5 count];
   v20 = MEMORY[0x1E69E9820];
   v21 = 3221225472;
   v22 = __68__UIKeyboardEmojiFamilyConfigurationView_setSelectedVariantIndices___block_invoke;
   v23 = &unk_1E712B8F0;
-  v24 = self;
-  v8 = v4;
+  selfCopy = self;
+  v8 = indicesCopy;
   v25 = v8;
   v9 = _Block_copy(&v20);
   v9[2](v9, v5, 0);
@@ -674,14 +674,14 @@ void __85__UIKeyboardEmojiFamilyConfigurationView__setCurrentlySelectedSkinToneC
   }
 
   [(UIKeyboardEmojiFamilyConfigurationView *)self _updatePreviewWellForCurrentSelection];
-  v16 = [(UIKeyboardEmojiFamilyConfigurationView *)self representedKey];
-  v17 = [v16 selectedVariantIndices];
-  v18 = [v17 count];
+  representedKey = [(UIKeyboardEmojiFamilyConfigurationView *)self representedKey];
+  selectedVariantIndices = [representedKey selectedVariantIndices];
+  v18 = [selectedVariantIndices count];
 
   if (v18)
   {
-    v19 = [(UIKeyboardEmojiFamilyConfigurationView *)self representedKey];
-    [v19 setSelectedVariantIndices:v8];
+    representedKey2 = [(UIKeyboardEmojiFamilyConfigurationView *)self representedKey];
+    [representedKey2 setSelectedVariantIndices:v8];
   }
 }
 
@@ -722,40 +722,40 @@ void __68__UIKeyboardEmojiFamilyConfigurationView_setSelectedVariantIndices___bl
   }
 }
 
-- (void)_updateBottomRowForSelections:(id)a3
+- (void)_updateBottomRowForSelections:(id)selections
 {
-  v31 = a3;
-  v4 = [v31 lastObject];
-  v5 = [v4 integerValue];
+  selectionsCopy = selections;
+  lastObject = [selectionsCopy lastObject];
+  integerValue = [lastObject integerValue];
 
-  v6 = [(UIKeyboardEmojiFamilyConfigurationView *)self lastSelectedIndexPath];
-  v7 = [v6 section];
-  v8 = [v31 count] - 1;
+  lastSelectedIndexPath = [(UIKeyboardEmojiFamilyConfigurationView *)self lastSelectedIndexPath];
+  section = [lastSelectedIndexPath section];
+  v8 = [selectionsCopy count] - 1;
 
-  if (v7 == v8)
+  if (section == v8)
   {
-    v9 = [(UIKeyboardEmojiFamilyConfigurationView *)self lastSelectedIndexPath];
-    v10 = [v9 item];
+    lastSelectedIndexPath2 = [(UIKeyboardEmojiFamilyConfigurationView *)self lastSelectedIndexPath];
+    item = [lastSelectedIndexPath2 item];
 
-    if (v5 == v10)
+    if (integerValue == item)
     {
-      v11 = [v31 subarrayWithRange:{0, objc_msgSend(v31, "count") - 1}];
+      v11 = [selectionsCopy subarrayWithRange:{0, objc_msgSend(selectionsCopy, "count") - 1}];
       v12 = MEMORY[0x1E696AC88];
-      v13 = [v11 lastObject];
-      v14 = [v12 indexPathForRow:objc_msgSend(v13 inSection:{"integerValue"), objc_msgSend(v11, "count") - 1}];
+      lastObject2 = [v11 lastObject];
+      v14 = [v12 indexPathForRow:objc_msgSend(lastObject2 inSection:{"integerValue"), objc_msgSend(v11, "count") - 1}];
       [(UIKeyboardEmojiFamilyConfigurationView *)self setLastSelectedIndexPath:v14];
 
-      v15 = [(UIKeyboardEmojiFamilyConfigurationView *)self neutralWellView];
-      [v15 setActiveSelection:0];
+      neutralWellView = [(UIKeyboardEmojiFamilyConfigurationView *)self neutralWellView];
+      [neutralWellView setActiveSelection:0];
 
-      v16 = [(UIKeyboardEmojiFamilyConfigurationView *)self configuredWellView];
-      [v16 setActiveSelection:0];
+      configuredWellView = [(UIKeyboardEmojiFamilyConfigurationView *)self configuredWellView];
+      [configuredWellView setActiveSelection:0];
 
       goto LABEL_18;
     }
 
-    v25 = v5 & 1;
-    if (v5 < 0)
+    v25 = integerValue & 1;
+    if (integerValue < 0)
     {
       v25 = -v25;
     }
@@ -767,7 +767,7 @@ void __68__UIKeyboardEmojiFamilyConfigurationView_setSelectedVariantIndices___bl
 
     else
     {
-      v26 = v5;
+      v26 = integerValue;
     }
 
     if (v25)
@@ -780,39 +780,39 @@ void __68__UIKeyboardEmojiFamilyConfigurationView_setSelectedVariantIndices___bl
       v27 = 0;
     }
 
-    v28 = [(UIKeyboardEmojiFamilyConfigurationView *)self neutralWellView];
-    [v28 setActiveSelection:v27 == 0];
+    neutralWellView2 = [(UIKeyboardEmojiFamilyConfigurationView *)self neutralWellView];
+    [neutralWellView2 setActiveSelection:v27 == 0];
 
-    v29 = [(UIKeyboardEmojiFamilyConfigurationView *)self configuredWellView];
-    [v29 setActiveSelection:v27 == 1];
+    configuredWellView2 = [(UIKeyboardEmojiFamilyConfigurationView *)self configuredWellView];
+    [configuredWellView2 setActiveSelection:v27 == 1];
 
     v30 = MEMORY[0x1E696AC88];
-    v22 = [v31 count] - 1;
+    v22 = [selectionsCopy count] - 1;
     v23 = v30;
     v24 = v27;
   }
 
   else
   {
-    v17 = [(UIKeyboardEmojiFamilyConfigurationView *)self neutralWellView];
-    v18 = v17;
-    if (v5 >= 0)
+    neutralWellView3 = [(UIKeyboardEmojiFamilyConfigurationView *)self neutralWellView];
+    v18 = neutralWellView3;
+    if (integerValue >= 0)
     {
-      v19 = v5 & 1;
+      v19 = integerValue & 1;
     }
 
     else
     {
-      v19 = -(v5 & 1);
+      v19 = -(integerValue & 1);
     }
 
-    [v17 setActiveSelection:v5 == 0];
+    [neutralWellView3 setActiveSelection:integerValue == 0];
 
-    v20 = [(UIKeyboardEmojiFamilyConfigurationView *)self configuredWellView];
-    [v20 setActiveSelection:v5 == 1];
+    configuredWellView3 = [(UIKeyboardEmojiFamilyConfigurationView *)self configuredWellView];
+    [configuredWellView3 setActiveSelection:integerValue == 1];
 
     v21 = MEMORY[0x1E696AC88];
-    v22 = [v31 count] - 1;
+    v22 = [selectionsCopy count] - 1;
     v23 = v21;
     v24 = v19;
   }
@@ -824,33 +824,33 @@ LABEL_18:
 
 - (void)_updatePreviewWellForCurrentSelection
 {
-  v13 = [(UIKeyboardEmojiFamilyConfigurationView *)self _currentlySelectedSkinToneConfiguration];
+  _currentlySelectedSkinToneConfiguration = [(UIKeyboardEmojiFamilyConfigurationView *)self _currentlySelectedSkinToneConfiguration];
   if (![(UIKeyboardEmojiFamilyConfigurationView *)self hasSplitFontSupport])
   {
-    v9 = [(UIKeyboardEmojiFamilyConfigurationView *)self baseEmojiString];
-    v10 = [v13 objectAtIndexedSubscript:0];
-    v11 = [v13 objectAtIndexedSubscript:1];
-    v6 = UIKBImageSetForCoupleCharacter(v9, v10, v11);
+    baseEmojiString = [(UIKeyboardEmojiFamilyConfigurationView *)self baseEmojiString];
+    v10 = [_currentlySelectedSkinToneConfiguration objectAtIndexedSubscript:0];
+    v11 = [_currentlySelectedSkinToneConfiguration objectAtIndexedSubscript:1];
+    v6 = UIKBImageSetForCoupleCharacter(baseEmojiString, v10, v11);
 
-    v8 = [(UIKeyboardEmojiFamilyConfigurationView *)self configuredWellView];
-    v12 = [v6 array];
-    [v8 setCompositeImageRepresentation:v12];
+    configuredWellView = [(UIKeyboardEmojiFamilyConfigurationView *)self configuredWellView];
+    array = [v6 array];
+    [configuredWellView setCompositeImageRepresentation:array];
 
     goto LABEL_6;
   }
 
-  v3 = [(UIKeyboardEmojiFamilyConfigurationView *)self _silhouetteFromCurrentSelections];
+  _silhouetteFromCurrentSelections = [(UIKeyboardEmojiFamilyConfigurationView *)self _silhouetteFromCurrentSelections];
   EMFStringUtilitiesClass_1 = getEMFStringUtilitiesClass_1();
-  v5 = [(UIKeyboardEmojiFamilyConfigurationView *)self baseEmojiString];
-  v6 = [EMFStringUtilitiesClass_1 _multiPersonStringForString:v5 skinToneVariantSpecifier:v13];
+  baseEmojiString2 = [(UIKeyboardEmojiFamilyConfigurationView *)self baseEmojiString];
+  v6 = [EMFStringUtilitiesClass_1 _multiPersonStringForString:baseEmojiString2 skinToneVariantSpecifier:_currentlySelectedSkinToneConfiguration];
 
-  v7 = [(UIKeyboardEmojiFamilyConfigurationView *)self configuredWellView];
-  [v7 setStringRepresentation:v6 silhouette:v3];
+  configuredWellView2 = [(UIKeyboardEmojiFamilyConfigurationView *)self configuredWellView];
+  [configuredWellView2 setStringRepresentation:v6 silhouette:_silhouetteFromCurrentSelections];
 
-  if (!v3 && [UIKeyboardEmoji shouldHighlightEmoji:v6])
+  if (!_silhouetteFromCurrentSelections && [UIKeyboardEmoji shouldHighlightEmoji:v6])
   {
-    v8 = [(UIKeyboardEmojiFamilyConfigurationView *)self configuredWellView];
-    [v8 setUnreleasedHighlight:1];
+    configuredWellView = [(UIKeyboardEmojiFamilyConfigurationView *)self configuredWellView];
+    [configuredWellView setUnreleasedHighlight:1];
 LABEL_6:
   }
 }
@@ -858,8 +858,8 @@ LABEL_6:
 - (BOOL)_hasCompletelyConfiguredSkinToneConfiguration
 {
   v3 = getEMFSkinToneSpecifierTypeFitzpatrickSilhouette_0();
-  v4 = [(UIKeyboardEmojiFamilyConfigurationView *)self _currentlySelectedSkinToneConfiguration];
-  v5 = [v4 containsObject:v3];
+  _currentlySelectedSkinToneConfiguration = [(UIKeyboardEmojiFamilyConfigurationView *)self _currentlySelectedSkinToneConfiguration];
+  v5 = [_currentlySelectedSkinToneConfiguration containsObject:v3];
 
   return v5 ^ 1;
 }
@@ -868,17 +868,17 @@ LABEL_6:
 {
   if ([(UIKeyboardEmojiFamilyConfigurationView *)self _hasCompletelyConfiguredSkinToneConfiguration])
   {
-    v3 = [(UIKeyboardEmojiFamilyConfigurationView *)self _currentlySelectedSkinToneConfiguration];
+    _currentlySelectedSkinToneConfiguration = [(UIKeyboardEmojiFamilyConfigurationView *)self _currentlySelectedSkinToneConfiguration];
     EMFStringUtilitiesClass_1 = getEMFStringUtilitiesClass_1();
-    v5 = [(UIKeyboardEmojiFamilyConfigurationView *)self baseEmojiString];
-    v6 = [EMFStringUtilitiesClass_1 _multiPersonStringForString:v5 skinToneVariantSpecifier:v3];
+    baseEmojiString = [(UIKeyboardEmojiFamilyConfigurationView *)self baseEmojiString];
+    v6 = [EMFStringUtilitiesClass_1 _multiPersonStringForString:baseEmojiString skinToneVariantSpecifier:_currentlySelectedSkinToneConfiguration];
 
     v18 = 0;
     v19 = &v18;
     v20 = 0x2020000000;
     v21 = 0x7FFFFFFFFFFFFFFFLL;
-    v7 = [(UIKeyboardEmojiFamilyConfigurationView *)self representedKey];
-    v8 = [v7 subtrees];
+    representedKey = [(UIKeyboardEmojiFamilyConfigurationView *)self representedKey];
+    subtrees = [representedKey subtrees];
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __109__UIKeyboardEmojiFamilyConfigurationView__updateReferencedKeySelectedVariantIndexBasedOnCurrentConfiguration__block_invoke;
@@ -886,7 +886,7 @@ LABEL_6:
     v9 = v6;
     v16 = v9;
     v17 = &v18;
-    [v8 enumerateObjectsUsingBlock:&v12];
+    [subtrees enumerateObjectsUsingBlock:&v12];
 
     v10 = v19[3];
     v11 = [(UIKeyboardEmojiFamilyConfigurationView *)self representedKey:v12];
@@ -916,37 +916,37 @@ void __109__UIKeyboardEmojiFamilyConfigurationView__updateReferencedKeySelectedV
   v5 = v4;
   if (v4 - self->_metachronalRhythmAnimationStartTime >= 0.25)
   {
-    v6 = [(UIKeyboardEmojiFamilyConfigurationView *)self _currentlySelectedSkinToneConfiguration];
-    v7 = [v6 count];
-    v8 = [(UIKeyboardEmojiFamilyConfigurationView *)self familyMemberStackViews];
-    v9 = [v8 count];
+    _currentlySelectedSkinToneConfiguration = [(UIKeyboardEmojiFamilyConfigurationView *)self _currentlySelectedSkinToneConfiguration];
+    v7 = [_currentlySelectedSkinToneConfiguration count];
+    familyMemberStackViews = [(UIKeyboardEmojiFamilyConfigurationView *)self familyMemberStackViews];
+    v9 = [familyMemberStackViews count];
 
     if (v7 == v9)
     {
-      if ([v6 count])
+      if ([_currentlySelectedSkinToneConfiguration count])
       {
         v10 = 0;
         v11 = 0.0;
-        v25 = self;
+        selfCopy = self;
         v26 = v3;
-        v24 = v6;
+        v24 = _currentlySelectedSkinToneConfiguration;
         do
         {
-          v12 = [v6 objectAtIndexedSubscript:v10];
+          v12 = [_currentlySelectedSkinToneConfiguration objectAtIndexedSubscript:v10];
           if ([v12 isEqualToString:v3])
           {
             v28 = v12;
-            v13 = [(UIKeyboardEmojiFamilyConfigurationView *)self familyMemberStackViews];
+            familyMemberStackViews2 = [(UIKeyboardEmojiFamilyConfigurationView *)self familyMemberStackViews];
             v29 = v10;
-            v14 = [v13 objectAtIndexedSubscript:v10];
+            v14 = [familyMemberStackViews2 objectAtIndexedSubscript:v10];
 
             v34 = 0u;
             v35 = 0u;
             v32 = 0u;
             v33 = 0u;
             v27 = v14;
-            v15 = [v14 arrangedSubviews];
-            v16 = [v15 countByEnumeratingWithState:&v32 objects:v36 count:16];
+            arrangedSubviews = [v14 arrangedSubviews];
+            v16 = [arrangedSubviews countByEnumeratingWithState:&v32 objects:v36 count:16];
             if (v16)
             {
               v17 = v16;
@@ -958,7 +958,7 @@ void __109__UIKeyboardEmojiFamilyConfigurationView__updateReferencedKeySelectedV
                 {
                   if (*v33 != v18)
                   {
-                    objc_enumerationMutation(v15);
+                    objc_enumerationMutation(arrangedSubviews);
                   }
 
                   v21 = *(*(&v32 + 1) + 8 * i);
@@ -979,16 +979,16 @@ void __109__UIKeyboardEmojiFamilyConfigurationView__updateReferencedKeySelectedV
                   v19 = v19 + 0.05;
                 }
 
-                v17 = [v15 countByEnumeratingWithState:&v32 objects:v36 count:16];
+                v17 = [arrangedSubviews countByEnumeratingWithState:&v32 objects:v36 count:16];
               }
 
               while (v17);
             }
 
             v11 = v11 + 0.0825;
-            self = v25;
+            self = selfCopy;
             v3 = v26;
-            v6 = v24;
+            _currentlySelectedSkinToneConfiguration = v24;
             v12 = v28;
             v10 = v29;
           }
@@ -996,7 +996,7 @@ void __109__UIKeyboardEmojiFamilyConfigurationView__updateReferencedKeySelectedV
           ++v10;
         }
 
-        while (v10 < [v6 count]);
+        while (v10 < [_currentlySelectedSkinToneConfiguration count]);
       }
 
       self->_metachronalRhythmAnimationStartTime = v5;
@@ -1037,8 +1037,8 @@ uint64_t __80__UIKeyboardEmojiFamilyConfigurationView__beginFamilyMetachronalRhy
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(UIKeyboardEmojiFamilyConfigurationView *)self familyMemberStackViews];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  familyMemberStackViews = [(UIKeyboardEmojiFamilyConfigurationView *)self familyMemberStackViews];
+  v7 = [familyMemberStackViews countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1050,7 +1050,7 @@ uint64_t __80__UIKeyboardEmojiFamilyConfigurationView__beginFamilyMetachronalRhy
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(familyMemberStackViews);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
@@ -1059,7 +1059,7 @@ uint64_t __80__UIKeyboardEmojiFamilyConfigurationView__beginFamilyMetachronalRhy
         MaxY = CGRectGetMaxY(v25);
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      v8 = [familyMemberStackViews countByEnumeratingWithState:&v16 objects:v21 count:16];
     }
 
     while (v8);
@@ -1071,14 +1071,14 @@ uint64_t __80__UIKeyboardEmojiFamilyConfigurationView__beginFamilyMetachronalRhy
     v13 = 14.0;
   }
 
-  v14 = [(UIKeyboardEmojiFamilyConfigurationView *)self separatorView];
-  [v14 setFrame:{x, v13, width, 1.0}];
+  separatorView = [(UIKeyboardEmojiFamilyConfigurationView *)self separatorView];
+  [separatorView setFrame:{x, v13, width, 1.0}];
 
-  v15 = [(UIKeyboardEmojiFamilyConfigurationView *)self previewWellStackView];
-  [v15 setFrame:{x, v13 + 9.0, width, height - (v13 + 9.0) + -6.0}];
+  previewWellStackView = [(UIKeyboardEmojiFamilyConfigurationView *)self previewWellStackView];
+  [previewWellStackView setFrame:{x, v13 + 9.0, width, height - (v13 + 9.0) + -6.0}];
 }
 
-+ (CGSize)preferredContentViewSizeForKey:(id)a3 withTraits:(id)a4
++ (CGSize)preferredContentViewSizeForKey:(id)key withTraits:(id)traits
 {
   v4 = 262.0;
   v5 = 199.0;
@@ -1087,27 +1087,27 @@ uint64_t __80__UIKeyboardEmojiFamilyConfigurationView__beginFamilyMetachronalRhy
   return result;
 }
 
-- (BOOL)retestSelectedVariantIndexForKey:(id)a3 atPoint:(CGPoint)a4 phase:(int64_t)a5
+- (BOOL)retestSelectedVariantIndexForKey:(id)key atPoint:(CGPoint)point phase:(int64_t)phase
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  if (a5 == 3)
+  y = point.y;
+  x = point.x;
+  keyCopy = key;
+  if (phase == 3)
   {
-    [(UIKeyboardEmojiFamilyConfigurationView *)self retestForTouchUpSelectedVariantIndexForKey:v9 atPoint:x, y];
+    [(UIKeyboardEmojiFamilyConfigurationView *)self retestForTouchUpSelectedVariantIndexForKey:keyCopy atPoint:x, y];
   }
 
-  else if (!a5)
+  else if (!phase)
   {
-    [(UIKeyboardEmojiFamilyConfigurationView *)self retestSelectedVariantIndexForKey:v9 atPoint:x, y];
+    [(UIKeyboardEmojiFamilyConfigurationView *)self retestSelectedVariantIndexForKey:keyCopy atPoint:x, y];
   }
 
   return 0;
 }
 
-- (void)retestSelectedVariantIndexForKey:(id)a3 atPoint:(CGPoint)a4
+- (void)retestSelectedVariantIndexForKey:(id)key atPoint:(CGPoint)point
 {
-  v5 = [(UIView *)self hitTest:0 withEvent:a4.x, a4.y];
+  v5 = [(UIView *)self hitTest:0 withEvent:point.x, point.y];
   if (!v5)
   {
     return;
@@ -1122,19 +1122,19 @@ uint64_t __80__UIKeyboardEmojiFamilyConfigurationView__beginFamilyMetachronalRhy
       break;
     }
 
-    v7 = [v6 superview];
+    superview = [v6 superview];
 
-    v6 = v7;
-    if (!v7)
+    v6 = superview;
+    if (!superview)
     {
       return;
     }
   }
 
   v19 = v6;
-  v8 = [(UIKeyboardEmojiFamilyConfigurationView *)self configuredWellView];
+  configuredWellView = [(UIKeyboardEmojiFamilyConfigurationView *)self configuredWellView];
 
-  if (v19 == v8)
+  if (v19 == configuredWellView)
   {
     [(UIKeyboardEmojiFamilyConfigurationView *)self _updateReferencedKeySelectedVariantIndexBasedOnCurrentConfiguration];
     if (![(UIKeyboardEmojiFamilyConfigurationView *)self _hasCompletelyConfiguredSkinToneConfiguration])
@@ -1145,21 +1145,21 @@ uint64_t __80__UIKeyboardEmojiFamilyConfigurationView__beginFamilyMetachronalRhy
     goto LABEL_13;
   }
 
-  v9 = [(UIKeyboardEmojiFamilyConfigurationView *)self neutralWellView];
+  neutralWellView = [(UIKeyboardEmojiFamilyConfigurationView *)self neutralWellView];
 
-  if (v19 == v9)
+  if (v19 == neutralWellView)
   {
-    v14 = [(UIKeyboardEmojiFamilyConfigurationView *)self representedKey];
-    [v14 setSelectedVariantIndex:0];
+    representedKey = [(UIKeyboardEmojiFamilyConfigurationView *)self representedKey];
+    [representedKey setSelectedVariantIndex:0];
 
-    v15 = [(UIKeyboardEmojiFamilyConfigurationView *)self representedKey];
-    v16 = [v15 selectedVariantIndices];
-    v17 = [v16 count];
+    representedKey2 = [(UIKeyboardEmojiFamilyConfigurationView *)self representedKey];
+    selectedVariantIndices = [representedKey2 selectedVariantIndices];
+    v17 = [selectedVariantIndices count];
 
     if (v17)
     {
-      v18 = [(UIKeyboardEmojiFamilyConfigurationView *)self representedKey];
-      [v18 setSelectedVariantIndices:&unk_1EFE2DFA8];
+      representedKey3 = [(UIKeyboardEmojiFamilyConfigurationView *)self representedKey];
+      [representedKey3 setSelectedVariantIndices:&unk_1EFE2DFA8];
     }
 
 LABEL_13:
@@ -1168,29 +1168,29 @@ LABEL_13:
   }
 
   [v19 setSelected:1];
-  v10 = [v19 associatedIndexPath];
-  v11 = [(UIKeyboardEmojiFamilyConfigurationView *)self selectedVariantIndices];
-  v12 = [v11 mutableCopy];
+  associatedIndexPath = [v19 associatedIndexPath];
+  selectedVariantIndices2 = [(UIKeyboardEmojiFamilyConfigurationView *)self selectedVariantIndices];
+  v12 = [selectedVariantIndices2 mutableCopy];
 
-  v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v10, "item")}];
-  [v12 setObject:v13 atIndexedSubscript:{objc_msgSend(v10, "section")}];
+  v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(associatedIndexPath, "item")}];
+  [v12 setObject:v13 atIndexedSubscript:{objc_msgSend(associatedIndexPath, "section")}];
 
   [(UIKeyboardEmojiFamilyConfigurationView *)self setSelectedVariantIndices:v12];
 LABEL_14:
 }
 
-- (void)retestForTouchUpSelectedVariantIndexForKey:(id)a3 atPoint:(CGPoint)a4
+- (void)retestForTouchUpSelectedVariantIndexForKey:(id)key atPoint:(CGPoint)point
 {
-  v9 = [(UIView *)self hitTest:0 withEvent:a4.x, a4.y];
+  v9 = [(UIView *)self hitTest:0 withEvent:point.x, point.y];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v6 = v9;
   if (isKindOfClass)
   {
     v7 = v9;
-    v8 = [(UIKeyboardEmojiFamilyConfigurationView *)self configuredWellView];
+    configuredWellView = [(UIKeyboardEmojiFamilyConfigurationView *)self configuredWellView];
 
-    if (v7 == v8 && !-[UIKeyboardEmojiFamilyConfigurationView _hasCompletelyConfiguredSkinToneConfiguration](self, "_hasCompletelyConfiguredSkinToneConfiguration") && ([v7 isSelected] & 1) == 0)
+    if (v7 == configuredWellView && !-[UIKeyboardEmojiFamilyConfigurationView _hasCompletelyConfiguredSkinToneConfiguration](self, "_hasCompletelyConfiguredSkinToneConfiguration") && ([v7 isSelected] & 1) == 0)
     {
       [(UIKeyboardEmojiFamilyConfigurationView *)self _beginFamilyMetachronalRhythmAnimation];
     }
@@ -1199,22 +1199,22 @@ LABEL_14:
   }
 }
 
-- (void)updateForKeyplane:(id)a3 key:(id)a4
+- (void)updateForKeyplane:(id)keyplane key:(id)key
 {
-  v17 = a4;
-  [v17 setSelectedVariantIndex:0x7FFFFFFFFFFFFFFFLL];
-  [(UIKeyboardEmojiFamilyConfigurationView *)self setRepresentedKey:v17];
-  v5 = [v17 selectedVariantIndices];
-  if ([v5 count])
+  keyCopy = key;
+  [keyCopy setSelectedVariantIndex:0x7FFFFFFFFFFFFFFFLL];
+  [(UIKeyboardEmojiFamilyConfigurationView *)self setRepresentedKey:keyCopy];
+  selectedVariantIndices = [keyCopy selectedVariantIndices];
+  if ([selectedVariantIndices count])
   {
-    v6 = [v17 selectedVariantIndices];
-    v7 = [v6 firstObject];
-    v8 = [v7 integerValue];
+    selectedVariantIndices2 = [keyCopy selectedVariantIndices];
+    firstObject = [selectedVariantIndices2 firstObject];
+    integerValue = [firstObject integerValue];
 
-    if (v8 != 0x7FFFFFFFFFFFFFFFLL)
+    if (integerValue != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = [v17 selectedVariantIndices];
-      v10 = [v9 mutableCopy];
+      selectedVariantIndices3 = [keyCopy selectedVariantIndices];
+      v10 = [selectedVariantIndices3 mutableCopy];
       [(UIKeyboardEmojiFamilyConfigurationView *)self setSelectedVariantIndices:v10];
 
       [(UIKeyboardEmojiFamilyConfigurationView *)self _updateReferencedKeySelectedVariantIndexBasedOnCurrentConfiguration];
@@ -1227,26 +1227,26 @@ LABEL_14:
   }
 
   EMFStringUtilitiesClass_1 = getEMFStringUtilitiesClass_1();
-  v12 = [v17 representedString];
-  v13 = [EMFStringUtilitiesClass_1 _baseStringForEmojiString:v12];
+  representedString = [keyCopy representedString];
+  v13 = [EMFStringUtilitiesClass_1 _baseStringForEmojiString:representedString];
 
   [(UIKeyboardEmojiFamilyConfigurationView *)self _configureSkinToneVariantSpecifiersForBaseString:v13];
   v14 = getEMFStringUtilitiesClass_1();
-  v15 = [v17 representedString];
-  v16 = [v14 _skinToneSpecifiersForString:v15];
+  representedString2 = [keyCopy representedString];
+  v16 = [v14 _skinToneSpecifiersForString:representedString2];
 
   [(UIKeyboardEmojiFamilyConfigurationView *)self _setCurrentlySelectedSkinToneConfiguration:v16];
 LABEL_6:
 }
 
-- (void)updateRenderConfig:(id)a3
+- (void)updateRenderConfig:(id)config
 {
-  v4 = a3;
-  v5 = [(UIKeyboardEmojiFamilyConfigurationView *)self usesDarkStyle];
-  v6 = [v4 lightKeyboard];
+  configCopy = config;
+  usesDarkStyle = [(UIKeyboardEmojiFamilyConfigurationView *)self usesDarkStyle];
+  lightKeyboard = [configCopy lightKeyboard];
 
-  [(UIKeyboardEmojiFamilyConfigurationView *)self setUsesDarkStyle:v6 ^ 1u];
-  if (v5 != [(UIKeyboardEmojiFamilyConfigurationView *)self usesDarkStyle])
+  [(UIKeyboardEmojiFamilyConfigurationView *)self setUsesDarkStyle:lightKeyboard ^ 1u];
+  if (usesDarkStyle != [(UIKeyboardEmojiFamilyConfigurationView *)self usesDarkStyle])
   {
 
     [(UIKeyboardEmojiFamilyConfigurationView *)self _colorConfigurationDidChange];
@@ -1255,21 +1255,21 @@ LABEL_6:
 
 - (id)nextResponder
 {
-  v3 = [(UIKeyboardEmojiFamilyConfigurationView *)self touchForwardingView];
-  v4 = v3;
-  if (v3)
+  touchForwardingView = [(UIKeyboardEmojiFamilyConfigurationView *)self touchForwardingView];
+  v4 = touchForwardingView;
+  if (touchForwardingView)
   {
-    v5 = v3;
+    nextResponder = touchForwardingView;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = UIKeyboardEmojiFamilyConfigurationView;
-    v5 = [(UIView *)&v8 nextResponder];
+    nextResponder = [(UIView *)&v8 nextResponder];
   }
 
-  v6 = v5;
+  v6 = nextResponder;
 
   return v6;
 }

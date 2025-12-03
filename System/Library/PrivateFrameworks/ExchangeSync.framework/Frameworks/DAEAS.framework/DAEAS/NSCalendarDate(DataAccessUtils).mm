@@ -13,11 +13,11 @@
 - (id)tzDateToDateInGMT:()DataAccessUtils
 {
   v4 = a3;
-  v5 = [a1 dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:{objc_msgSend(v4, "secondsFromGMTForDate:", a1)}];
+  v5 = [self dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:{objc_msgSend(v4, "secondsFromGMTForDate:", self)}];
   v6 = [MEMORY[0x277CBEBB0] gmt];
   [v5 setTimeZone:v6];
 
-  [v4 daylightSavingTimeOffsetForDate:a1];
+  [v4 daylightSavingTimeOffsetForDate:self];
   v8 = v7;
   [v4 daylightSavingTimeOffsetForDate:v5];
   v10 = v9;
@@ -35,9 +35,9 @@
 - (id)gmtDateToDateInTimeZone:()DataAccessUtils
 {
   v4 = a3;
-  v5 = [a1 dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:{-objc_msgSend(v4, "secondsFromGMTForDate:", a1)}];
+  v5 = [self dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:{-objc_msgSend(v4, "secondsFromGMTForDate:", self)}];
   [v5 setTimeZone:v4];
-  [v4 daylightSavingTimeOffsetForDate:a1];
+  [v4 daylightSavingTimeOffsetForDate:self];
   v7 = v6;
   [v4 daylightSavingTimeOffsetForDate:v5];
   v9 = v8;
@@ -54,18 +54,18 @@
 
 - (id)nearestMidnight
 {
-  v1 = [a1 copy];
+  v1 = [self copy];
   v2 = [MEMORY[0x277CBEBB0] gmt];
   [v1 setTimeZone:v2];
-  v3 = [v1 hourOfDay];
-  if (v3 >= 11 && [v1 hourOfDay] <= 11 && !objc_msgSend(v1, "minuteOfHour"))
+  hourOfDay = [v1 hourOfDay];
+  if (hourOfDay >= 11 && [v1 hourOfDay] <= 11 && !objc_msgSend(v1, "minuteOfHour"))
   {
     [v1 secondOfMinute];
   }
 
   v4 = [MEMORY[0x277CCA8F8] dateWithYear:objc_msgSend(v1 month:"yearOfCommonEra") day:objc_msgSend(v1 hour:"monthOfYear") minute:objc_msgSend(v1 second:"dayOfMonth") timeZone:{0, 0, 0, v2}];
   v5 = v4;
-  if (v3 >= 11)
+  if (hourOfDay >= 11)
   {
     v6 = [v4 dateByAddingYears:0 months:0 days:1 hours:0 minutes:0 seconds:0];
 
@@ -77,7 +77,7 @@
 
 - (BOOL)isGMTMidnight
 {
-  v1 = [a1 copy];
+  v1 = [self copy];
   v2 = [MEMORY[0x277CBEBB0] gmt];
   [v1 setTimeZone:v2];
   v3 = ![v1 hourOfDay] && !objc_msgSend(v1, "minuteOfHour") && objc_msgSend(v1, "secondOfMinute") == 0;
@@ -87,7 +87,7 @@
 
 - (id)gmtMidnight
 {
-  v1 = [a1 copy];
+  v1 = [self copy];
   v2 = [MEMORY[0x277CBEBB0] gmt];
   [v1 setTimeZone:v2];
   v3 = [MEMORY[0x277CCA8F8] dateWithYear:objc_msgSend(v1 month:"yearOfCommonEra") day:objc_msgSend(v1 hour:"monthOfYear") minute:objc_msgSend(v1 second:"dayOfMonth") timeZone:{0, 0, 0, v2}];
@@ -123,12 +123,12 @@
 
 - (double)getGregorianDate:()DataAccessUtils
 {
-  *a3 = [a1 yearOfCommonEra];
-  *(a3 + 4) = [a1 monthOfYear];
-  *(a3 + 5) = [a1 dayOfMonth];
-  *(a3 + 6) = [a1 hourOfDay];
-  *(a3 + 7) = [a1 minuteOfHour];
-  result = [a1 secondOfMinute];
+  *a3 = [self yearOfCommonEra];
+  *(a3 + 4) = [self monthOfYear];
+  *(a3 + 5) = [self dayOfMonth];
+  *(a3 + 6) = [self hourOfDay];
+  *(a3 + 7) = [self minuteOfHour];
+  result = [self secondOfMinute];
   *(a3 + 8) = result;
   return result;
 }

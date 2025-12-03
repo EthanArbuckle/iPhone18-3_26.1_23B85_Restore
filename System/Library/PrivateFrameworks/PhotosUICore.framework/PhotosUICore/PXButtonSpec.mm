@@ -1,38 +1,38 @@
 @interface PXButtonSpec
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PXButtonSpec)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation PXButtonSpec
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PXButtonSpec;
-  v4 = [(PXLabelSpec *)&v6 copyWithZone:a3];
+  v4 = [(PXLabelSpec *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 28, self->_highlightedTextColor);
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = PXButtonSpec;
-  if ([(PXLabelSpec *)&v9 isEqual:v4])
+  if ([(PXLabelSpec *)&v9 isEqual:equalCopy])
   {
-    v5 = [v4 highlightedTextColor];
-    v6 = [(PXButtonSpec *)self highlightedTextColor];
-    if (v5 == v6)
+    highlightedTextColor = [equalCopy highlightedTextColor];
+    highlightedTextColor2 = [(PXButtonSpec *)self highlightedTextColor];
+    if (highlightedTextColor == highlightedTextColor2)
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = [v5 isEqual:v6];
+      v7 = [highlightedTextColor isEqual:highlightedTextColor2];
     }
   }
 
@@ -49,8 +49,8 @@
   v7.receiver = self;
   v7.super_class = PXButtonSpec;
   v3 = [(PXLabelSpec *)&v7 hash];
-  v4 = [(PXButtonSpec *)self highlightedTextColor];
-  v5 = [v4 hash];
+  highlightedTextColor = [(PXButtonSpec *)self highlightedTextColor];
+  v5 = [highlightedTextColor hash];
 
   return v5 ^ v3;
 }

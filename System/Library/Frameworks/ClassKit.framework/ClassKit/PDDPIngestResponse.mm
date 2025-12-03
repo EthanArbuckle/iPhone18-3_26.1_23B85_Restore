@@ -1,33 +1,33 @@
 @interface PDDPIngestResponse
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addItems:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addItems:(id)items;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPIngestResponse
 
-- (void)addItems:(id)a3
+- (void)addItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   items = self->_items;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!items)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_items;
     self->_items = v6;
 
-    v4 = v8;
+    itemsCopy = v8;
     items = self->_items;
   }
 
-  [(NSMutableArray *)items addObject:v4];
+  [(NSMutableArray *)items addObject:itemsCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v7.receiver = self;
   v7.super_class = PDDPIngestResponse;
   v3 = [(PDDPIngestResponse *)&v7 description];
-  v4 = [(PDDPIngestResponse *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPIngestResponse *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -47,8 +47,8 @@
   status = self->_status;
   if (status)
   {
-    v5 = [(PDDPStatus *)status dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"status"];
+    dictionaryRepresentation = [(PDDPStatus *)status dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"status"];
   }
 
   if ([(NSMutableArray *)self->_items count])
@@ -73,8 +73,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -89,16 +89,16 @@
   return v3;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     while (1)
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -107,18 +107,18 @@
       while (1)
       {
         LOBYTE(v17) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v17 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v17 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v17 & 0x7F) << v6;
@@ -135,11 +135,11 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       if ((v13 >> 3) == 2)
@@ -153,7 +153,7 @@ LABEL_15:
         objc_storeStrong(&self->_status, v14);
         v17 = 0;
         v18 = 0;
-        if (!PBReaderPlaceMark() || !sub_1000E2FD8(v14, a3))
+        if (!PBReaderPlaceMark() || !sub_1000E2FD8(v14, from))
         {
           goto LABEL_28;
         }
@@ -170,10 +170,10 @@ LABEL_24:
       }
 
 LABEL_26:
-      v15 = [a3 position];
-      if (v15 >= [a3 length])
+      position2 = [from position];
+      if (position2 >= [from length])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
     }
 
@@ -181,7 +181,7 @@ LABEL_26:
     [(PDDPIngestResponse *)self addItems:v14];
     v17 = 0;
     v18 = 0;
-    if (!PBReaderPlaceMark() || !sub_10003A044(v14, a3))
+    if (!PBReaderPlaceMark() || !sub_10003A044(v14, from))
     {
 LABEL_28:
 
@@ -191,12 +191,12 @@ LABEL_28:
     goto LABEL_24;
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_status)
   {
     PBDataWriterWriteSubmessage();
@@ -235,34 +235,34 @@ LABEL_28:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_status)
   {
-    [v8 setStatus:?];
+    [toCopy setStatus:?];
   }
 
   if ([(PDDPIngestResponse *)self itemsCount])
   {
-    [v8 clearItems];
-    v4 = [(PDDPIngestResponse *)self itemsCount];
-    if (v4)
+    [toCopy clearItems];
+    itemsCount = [(PDDPIngestResponse *)self itemsCount];
+    if (itemsCount)
     {
-      v5 = v4;
+      v5 = itemsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PDDPIngestResponse *)self itemsAtIndex:i];
-        [v8 addItems:v7];
+        [toCopy addItems:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PDDPStatus *)self->_status copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PDDPStatus *)self->_status copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -286,7 +286,7 @@ LABEL_28:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{zone, v15}];
         [v5 addItems:v13];
 
         v12 = v12 + 1;
@@ -302,13 +302,13 @@ LABEL_28:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((status = self->_status, !(status | v4[2])) || -[PDDPStatus isEqual:](status, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((status = self->_status, !(status | equalCopy[2])) || -[PDDPStatus isEqual:](status, "isEqual:")))
   {
     items = self->_items;
-    if (items | v4[1])
+    if (items | equalCopy[1])
     {
       v7 = [(NSMutableArray *)items isEqual:?];
     }
@@ -327,11 +327,11 @@ LABEL_28:
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   status = self->_status;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (status)
   {
     if (v6)
@@ -349,7 +349,7 @@ LABEL_28:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {

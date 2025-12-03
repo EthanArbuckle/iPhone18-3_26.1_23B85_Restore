@@ -1,8 +1,8 @@
 @interface RTLocationSmootherKF
 - (RTLocationSmootherKF)init;
-- (double)getRefAlt:(id)a3;
-- (id)buildLocationWithEstimationState:(id)a3 originalLocation:(id)a4;
-- (id)smoothLocations:(id)a3;
+- (double)getRefAlt:(id)alt;
+- (id)buildLocationWithEstimationState:(id)state originalLocation:(id)location;
+- (id)smoothLocations:(id)locations;
 @end
 
 @implementation RTLocationSmootherKF
@@ -22,12 +22,12 @@
   return v2;
 }
 
-- (id)smoothLocations:(id)a3
+- (id)smoothLocations:(id)locations
 {
   v81 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  locationsCopy = locations;
   v5 = objc_opt_new();
-  if ([v4 count])
+  if ([locationsCopy count])
   {
     v64 = v5;
     if ([(RTFixedSizeQueue *)self->states count])
@@ -37,67 +37,67 @@
 
     else
     {
-      v7 = [v4 firstObject];
-      [v7 coordinate];
+      firstObject = [locationsCopy firstObject];
+      [firstObject coordinate];
       self->refLat = v8;
 
-      v9 = [v4 firstObject];
-      [v9 coordinate];
+      firstObject2 = [locationsCopy firstObject];
+      [firstObject2 coordinate];
       self->refLon = v10;
 
-      v11 = [v4 firstObject];
-      [(RTLocationSmootherKF *)self getRefAlt:v11];
+      firstObject3 = [locationsCopy firstObject];
+      [(RTLocationSmootherKF *)self getRefAlt:firstObject3];
       self->refAlt = v12;
 
       states = self->states;
       v14 = objc_opt_new();
       v15 = [(RTFixedSizeQueue *)states enqueueObject:v14];
 
-      v16 = [v4 firstObject];
-      v17 = [v16 copy];
+      firstObject4 = [locationsCopy firstObject];
+      v17 = [firstObject4 copy];
       [v5 addObject:v17];
 
       v6 = 1;
     }
 
-    if (v6 < [v4 count])
+    if (v6 < [locationsCopy count])
     {
       v19 = MEMORY[0x277D86220];
       *&v18 = 134219777;
       v63 = v18;
       do
       {
-        v20 = [(RTFixedSizeQueue *)self->states lastObject];
+        lastObject = [(RTFixedSizeQueue *)self->states lastObject];
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
           v21 = _rt_log_facility_get_os_log(RTLogFacilityLocation);
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138740227;
-            v66 = v20;
+            v66 = lastObject;
             v67 = 2048;
             v68 = v6;
             _os_log_debug_impl(&dword_2304B3000, v21, OS_LOG_TYPE_DEBUG, "RTLocationSmootherKF, state, %{sensitive}@, i, %lu", buf, 0x16u);
           }
         }
 
-        [v20 estimateWithIndex:0];
+        [lastObject estimateWithIndex:0];
         v23 = v22;
-        [v20 estimateWithIndex:1];
+        [lastObject estimateWithIndex:1];
         v25 = v24;
-        v26 = [v4 objectAtIndexedSubscript:v6];
+        v26 = [locationsCopy objectAtIndexedSubscript:v6];
         [v26 coordinate];
         [v26 coordinate];
         RTCommonConvertGeodeticToLocalFrame();
-        v27 = [v26 timestamp];
-        [v27 timeIntervalSinceReferenceDate];
+        timestamp = [v26 timestamp];
+        [timestamp timeIntervalSinceReferenceDate];
         v29 = v28;
-        [v20 timestamp];
+        [lastObject timestamp];
         v31 = v29 - v30;
 
-        v32 = [v26 timestamp];
-        [v32 timeIntervalSinceReferenceDate];
-        [v20 setTimestamp:?];
+        timestamp2 = [v26 timestamp];
+        [timestamp2 timeIntervalSinceReferenceDate];
+        [lastObject setTimestamp:?];
 
         if (v31 * 0.565685425 * (v31 * 0.565685425) >= 10.0)
         {
@@ -139,15 +139,15 @@
           }
         }
 
-        [v20 updateMotionX:0.0 motionY:0.0 dt:v31 error:v33];
-        [v20 errorProWithIndex:0];
+        [lastObject updateMotionX:0.0 motionY:0.0 dt:v31 error:v33];
+        [lastObject errorProWithIndex:0];
         v36 = v35;
-        [v20 errorProWithIndex:1];
+        [lastObject errorProWithIndex:1];
         v38 = v37;
         [v26 horizontalAccuracy];
         v40 = v39;
         [v26 horizontalAccuracy];
-        [v20 updateObservationX:0.0 observationY:0.0 sigmaX:v40 sigmaY:v41];
+        [lastObject updateObservationX:0.0 observationY:0.0 sigmaX:v40 sigmaY:v41];
         v42 = [(RTFixedSizeQueue *)self->states count];
         if ((v42 - 2) >= 0)
         {
@@ -167,13 +167,13 @@
           while (v43 > 0);
         }
 
-        v48 = [v20 copy];
+        v48 = [lastObject copy];
         [v48 increaseIndex];
         v49 = [(RTFixedSizeQueue *)self->states enqueueObject:v48];
         v50 = v49;
         if (v49)
         {
-          v51 = [v4 objectAtIndex:{objc_msgSend(v49, "i")}];
+          v51 = [locationsCopy objectAtIndex:{objc_msgSend(v49, "i")}];
           v52 = [(RTLocationSmootherKF *)self buildLocationWithEstimationState:v50 originalLocation:v51];
           [v64 addObject:v52];
         }
@@ -181,7 +181,7 @@
         ++v6;
       }
 
-      while (v6 < [v4 count]);
+      while (v6 < [locationsCopy count]);
     }
 
     v5 = v64;
@@ -189,46 +189,46 @@
     {
       do
       {
-        v58 = [(RTFixedSizeQueue *)self->states dequeueObject];
-        v59 = [v4 objectAtIndex:{objc_msgSend(v58, "i")}];
-        v60 = [(RTLocationSmootherKF *)self buildLocationWithEstimationState:v58 originalLocation:v59];
+        dequeueObject = [(RTFixedSizeQueue *)self->states dequeueObject];
+        v59 = [locationsCopy objectAtIndex:{objc_msgSend(dequeueObject, "i")}];
+        v60 = [(RTLocationSmootherKF *)self buildLocationWithEstimationState:dequeueObject originalLocation:v59];
         [v64 addObject:v60];
       }
 
       while ([(RTFixedSizeQueue *)self->states count]> 1);
     }
 
-    v61 = [(RTFixedSizeQueue *)self->states lastObject];
-    [v61 resetIndex];
+    lastObject2 = [(RTFixedSizeQueue *)self->states lastObject];
+    [lastObject2 resetIndex];
   }
 
   return v5;
 }
 
-- (double)getRefAlt:(id)a3
+- (double)getRefAlt:(id)alt
 {
-  v3 = a3;
-  [v3 verticalAccuracy];
+  altCopy = alt;
+  [altCopy verticalAccuracy];
   v4 = 0.0;
   if (v5 > 0.0)
   {
-    [v3 altitude];
+    [altCopy altitude];
     v4 = v6;
   }
 
   return v4;
 }
 
-- (id)buildLocationWithEstimationState:(id)a3 originalLocation:(id)a4
+- (id)buildLocationWithEstimationState:(id)state originalLocation:(id)location
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  [v5 estimateWithIndex:0];
+  stateCopy = state;
+  locationCopy = location;
+  [stateCopy estimateWithIndex:0];
   v8 = v7;
-  [v5 estimateWithIndex:1];
+  [stateCopy estimateWithIndex:1];
   v10 = v9;
-  [v5 estimatedAccuracy];
+  [stateCopy estimatedAccuracy];
   v12 = v11;
   RTCommonConvertLocalFrameToGeodetic();
   v28 = 0u;
@@ -256,27 +256,27 @@
     *v24 = 0;
   }
 
-  v15 = [v6 timestamp];
-  [v15 timeIntervalSinceReferenceDate];
+  timestamp = [locationCopy timestamp];
+  [timestamp timeIntervalSinceReferenceDate];
   *(v26 + 12) = v16;
 
-  LODWORD(v27) = [v6 type];
+  LODWORD(v27) = [locationCopy type];
   *&v24[20] = v12;
   *&v24[4] = 0;
   *&v24[12] = 0;
-  [v6 altitude];
+  [locationCopy altitude];
   *&v24[28] = v17;
-  if (__ROR8__(0x8F5C28F5C28F5C29 * [v5 i] + 0x51EB851EB851EB8, 2) <= 0x28F5C28F5C28F5CuLL && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
+  if (__ROR8__(0x8F5C28F5C28F5C29 * [stateCopy i] + 0x51EB851EB851EB8, 2) <= 0x28F5C28F5C28F5CuLL && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityLocation);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
-      v22 = [v5 i];
-      [v6 altitude];
+      v22 = [stateCopy i];
+      [locationCopy altitude];
       *buf = 134219779;
       *&buf[4] = v22;
       *&buf[12] = 2117;
-      *&buf[14] = v5;
+      *&buf[14] = stateCopy;
       *&buf[22] = 2053;
       *&buf[24] = v8;
       *v31 = 2053;

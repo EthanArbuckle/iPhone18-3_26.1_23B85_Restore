@@ -1,37 +1,37 @@
 @interface _LSClaimBindingURLBindable
-- (BOOL)isEqual:(id)a3;
-- (_LSClaimBindingURLBindable)initWithCoder:(id)a3;
-- (id)initWithURL:(id *)a1;
-- (id)typeRecordWithError:(id *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_LSClaimBindingURLBindable)initWithCoder:(id)coder;
+- (id)initWithURL:(id *)l;
+- (id)typeRecordWithError:(id *)error;
 @end
 
 @implementation _LSClaimBindingURLBindable
 
-- (id)initWithURL:(id *)a1
+- (id)initWithURL:(id *)l
 {
   v4 = a2;
-  if (a1)
+  if (l)
   {
-    v7.receiver = a1;
+    v7.receiver = l;
     v7.super_class = _LSClaimBindingURLBindable;
     v5 = objc_msgSendSuper2(&v7, sel__initProtected);
-    a1 = v5;
+    l = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
     }
   }
 
-  return a1;
+  return l;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NSURL *)self->_url isEqual:v4[1]];
+    v5 = [(NSURL *)self->_url isEqual:equalCopy[1]];
   }
 
   else
@@ -42,10 +42,10 @@
   return v5;
 }
 
-- (_LSClaimBindingURLBindable)initWithCoder:(id)a3
+- (_LSClaimBindingURLBindable)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+  coderCopy = coder;
+  v5 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"url"];
   if (v5)
   {
     v6 = [(_LSClaimBindingURLBindable *)&self->super.super.isa initWithURL:v5];
@@ -60,7 +60,7 @@
   return v6;
 }
 
-- (id)typeRecordWithError:(id *)a3
+- (id)typeRecordWithError:(id *)error
 {
   v25 = 0;
   v22 = 0;
@@ -103,7 +103,7 @@
     }
 
     v8 = v12;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -112,7 +112,7 @@
   else
   {
     v11 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -121,7 +121,7 @@
   if (!v11)
   {
     v15 = v8;
-    *a3 = v8;
+    *error = v8;
   }
 
 LABEL_13:

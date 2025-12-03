@@ -1,12 +1,12 @@
 @interface TSWPStoragePasteRules
-- (void)addActionFlag:(int)a3;
-- (void)applyParagraph:(int)a3 toCharIndex:(unint64_t)a4 ioTransaction:(void *)a5;
+- (void)addActionFlag:(int)flag;
+- (void)applyParagraph:(int)paragraph toCharIndex:(unint64_t)index ioTransaction:(void *)transaction;
 - (void)dealloc;
-- (void)didPasteWithIOTransaction:(void *)a3 atDestRange:(_NSRange)a4;
-- (void)mapCharacterStyleProperties:(id)a3 toRange:(_NSRange)a4 ioTransaction:(void *)a5;
-- (void)mapCharacterStyles:(int)a3 toRange:(_NSRange)a4 ioTransaction:(void *)a5;
-- (void)setupFlagsForPastingSrcStorage:(id)a3 intoDestStorage:(id)a4 atDestRange:(_NSRange)a5;
-- (void)willPasteStorage:(id)a3 intoDestStorage:(id)a4 atDestRange:(_NSRange)a5;
+- (void)didPasteWithIOTransaction:(void *)transaction atDestRange:(_NSRange)range;
+- (void)mapCharacterStyleProperties:(id)properties toRange:(_NSRange)range ioTransaction:(void *)transaction;
+- (void)mapCharacterStyles:(int)styles toRange:(_NSRange)range ioTransaction:(void *)transaction;
+- (void)setupFlagsForPastingSrcStorage:(id)storage intoDestStorage:(id)destStorage atDestRange:(_NSRange)range;
+- (void)willPasteStorage:(id)storage intoDestStorage:(id)destStorage atDestRange:(_NSRange)range;
 @end
 
 @implementation TSWPStoragePasteRules
@@ -22,40 +22,40 @@
   [(TSWPStoragePasteRules *)&v4 dealloc];
 }
 
-- (void)addActionFlag:(int)a3
+- (void)addActionFlag:(int)flag
 {
   lastFlag = self->_lastFlag;
   if (lastFlag < 4 || (v6 = [MEMORY[0x277D6C290] currentHandler], v7 = objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", "-[TSWPStoragePasteRules addActionFlag:]"), objc_msgSend(v6, "handleFailureInFunction:file:lineNumber:description:", v7, objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", "/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStoragePasteRules.mm"), 45, @"addActionFlag: bad action flag count."), lastFlag = self->_lastFlag, lastFlag <= 3))
   {
-    self->_actionFlags[lastFlag] = a3;
+    self->_actionFlags[lastFlag] = flag;
     self->_lastFlag = lastFlag + 1;
   }
 }
 
-- (void)applyParagraph:(int)a3 toCharIndex:(unint64_t)a4 ioTransaction:(void *)a5
+- (void)applyParagraph:(int)paragraph toCharIndex:(unint64_t)index ioTransaction:(void *)transaction
 {
-  v8 = self + 48 * a3;
+  v8 = self + 48 * paragraph;
   v10 = *(v8 + 12);
   v9 = v8 + 96;
-  [(TSWPStorage *)self->_destStorage setParagraphStyle:v10 forCharRange:a4 undoTransaction:1, a5];
-  [(TSWPStorage *)self->_destStorage setListStyle:*(v9 + 3) forCharRange:a4 undoTransaction:1, a5];
-  [(TSWPStorage *)self->_destStorage setParagraphFlags:*(v9 + 17) level:*(v9 + 16) forCharRange:a4 undoTransaction:1, a5];
-  [(TSWPStorage *)self->_destStorage setListStart:*(v9 + 9) forCharRange:a4 undoTransaction:0, a5];
-  [(TSWPStorage *)self->_destStorage setParagraphWritingDirection:*(v9 + 10) forCharRange:a4 undoTransaction:0, a5];
+  [(TSWPStorage *)self->_destStorage setParagraphStyle:v10 forCharRange:index undoTransaction:1, transaction];
+  [(TSWPStorage *)self->_destStorage setListStyle:*(v9 + 3) forCharRange:index undoTransaction:1, transaction];
+  [(TSWPStorage *)self->_destStorage setParagraphFlags:*(v9 + 17) level:*(v9 + 16) forCharRange:index undoTransaction:1, transaction];
+  [(TSWPStorage *)self->_destStorage setListStart:*(v9 + 9) forCharRange:index undoTransaction:0, transaction];
+  [(TSWPStorage *)self->_destStorage setParagraphWritingDirection:*(v9 + 10) forCharRange:index undoTransaction:0, transaction];
   if ([(TSWPStorage *)self->_destStorage supportsColumnStyles]&& self->_sourceColumnStyleCount >= 2)
   {
     destStorage = self->_destStorage;
     v12 = *(v9 + 2);
 
-    [(TSWPStorage *)destStorage setColumnStyle:v12 forCharRange:a4 undoTransaction:1, a5];
+    [(TSWPStorage *)destStorage setColumnStyle:v12 forCharRange:index undoTransaction:1, transaction];
   }
 }
 
-- (void)mapCharacterStyleProperties:(id)a3 toRange:(_NSRange)a4 ioTransaction:(void *)a5
+- (void)mapCharacterStyleProperties:(id)properties toRange:(_NSRange)range ioTransaction:(void *)transaction
 {
-  length = a4.length;
-  location = a4.location;
-  v15 = [(TSWPStorage *)self->_destStorage stylesheet];
+  length = range.length;
+  location = range.location;
+  stylesheet = [(TSWPStorage *)self->_destStorage stylesheet];
   v9 = [(TSWPStorage *)self->_destStorage length];
   if (location + length >= v9)
   {
@@ -72,14 +72,14 @@
     v11 = location;
     do
     {
-      v12 = [TSSPropertyMap propertyMapWithPropertyMap:a3];
+      v12 = [TSSPropertyMap propertyMapWithPropertyMap:properties];
       v13 = [(TSWPStorage *)self->_destStorage characterStyleAtCharIndex:v11 effectiveRange:&v17];
       v18.location = location;
       v18.length = length;
       v14 = NSIntersectionRange(v18, v17);
       if (v14.length)
       {
-        -[TSWPStorage setCharacterStyle:range:undoTransaction:](self->_destStorage, "setCharacterStyle:range:undoTransaction:", [v15 variationOfCharacterStyle:v13 paragraphStyle:-[TSWPStorage paragraphStyleAtCharIndex:effectiveRange:](self->_destStorage propertyMap:{"paragraphStyleAtCharIndex:effectiveRange:", v11, 0), v12}], v14.location, v14.length, a5);
+        -[TSWPStorage setCharacterStyle:range:undoTransaction:](self->_destStorage, "setCharacterStyle:range:undoTransaction:", [stylesheet variationOfCharacterStyle:v13 paragraphStyle:-[TSWPStorage paragraphStyleAtCharIndex:effectiveRange:](self->_destStorage propertyMap:{"paragraphStyleAtCharIndex:effectiveRange:", v11, 0), v12}], v14.location, v14.length, transaction);
       }
 
       v11 = v17.length + v17.location;
@@ -89,37 +89,37 @@
   }
 }
 
-- (void)mapCharacterStyles:(int)a3 toRange:(_NSRange)a4 ioTransaction:(void *)a5
+- (void)mapCharacterStyles:(int)styles toRange:(_NSRange)range ioTransaction:(void *)transaction
 {
-  if (self->_paragraphs[a3].parStyle)
+  if (self->_paragraphs[styles].parStyle)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     v9 = +[TSSPropertyMap propertyMap];
     [v9 filterWithProperties:{+[TSWPCharacterStyle properties](TSWPCharacterStyle, "properties")}];
 
-    [(TSWPStoragePasteRules *)self mapCharacterStyleProperties:v9 toRange:location ioTransaction:length, a5];
+    [(TSWPStoragePasteRules *)self mapCharacterStyleProperties:v9 toRange:location ioTransaction:length, transaction];
   }
 }
 
-- (void)setupFlagsForPastingSrcStorage:(id)a3 intoDestStorage:(id)a4 atDestRange:(_NSRange)a5
+- (void)setupFlagsForPastingSrcStorage:(id)storage intoDestStorage:(id)destStorage atDestRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   self->_flags = 0;
-  self->_destStorage = a4;
-  v10 = [a3 length];
-  self->_srcLeadRange.location = [a3 textRangeForParagraphAtCharIndex:0];
+  self->_destStorage = destStorage;
+  v10 = [storage length];
+  self->_srcLeadRange.location = [storage textRangeForParagraphAtCharIndex:0];
   self->_srcLeadRange.length = v11;
-  self->_srcTrailRange.location = [a3 textRangeForParagraphAtCharIndex:v10];
+  self->_srcTrailRange.location = [storage textRangeForParagraphAtCharIndex:v10];
   self->_srcTrailRange.length = v12;
-  v13 = [a4 textRangeForParagraphAtCharIndex:location];
+  v13 = [destStorage textRangeForParagraphAtCharIndex:location];
   v15 = v14;
   v43 = location + length;
-  v42 = [a4 textRangeForParagraphAtCharIndex:?];
+  v42 = [destStorage textRangeForParagraphAtCharIndex:?];
   v17 = v16;
-  self->_sourceColumnStyleCount = [a3 columnStyleCount];
-  self->_sourceSectionCount = [a3 sectionCount];
+  self->_sourceColumnStyleCount = [storage columnStyleCount];
+  self->_sourceSectionCount = [storage sectionCount];
   if (location == v13 && length == v15)
   {
     v18 = 8;
@@ -127,7 +127,7 @@
 
   else if (v15 == 1)
   {
-    if (IsParagraphBreakingCharacter([a4 characterAtIndex:v13]))
+    if (IsParagraphBreakingCharacter([destStorage characterAtIndex:v13]))
     {
       v18 = 8;
     }
@@ -147,7 +147,7 @@
   self->_flags = flags;
   if (v10 == 1)
   {
-    v20 = 16 * ([a3 attachmentOrFootnoteAtCharIndex:0] != 0);
+    v20 = 16 * ([storage attachmentOrFootnoteAtCharIndex:0] != 0);
     flags = self->_flags;
   }
 
@@ -186,7 +186,7 @@
   self->_flags = v26;
   if (v10)
   {
-    if (IsParagraphBreakingCharacter([a3 characterAtIndex:v10 - 1]))
+    if (IsParagraphBreakingCharacter([storage characterAtIndex:v10 - 1]))
     {
       v27 = 32;
     }
@@ -209,7 +209,7 @@
   if (length)
   {
     v29 = location + length;
-    if (IsParagraphBreakingCharacter([a4 characterAtIndex:v43 - 1]))
+    if (IsParagraphBreakingCharacter([destStorage characterAtIndex:v43 - 1]))
     {
       v30 = 2;
     }
@@ -235,7 +235,7 @@
     v32 = location;
     while (v32 > v13)
     {
-      if (([objc_msgSend(a4 attachmentOrFootnoteAtCharIndex:{--v32), "isAnchored"}] & 1) == 0)
+      if (([objc_msgSend(destStorage attachmentOrFootnoteAtCharIndex:{--v32), "isAnchored"}] & 1) == 0)
       {
         v31 = self->_flags;
         goto LABEL_44;
@@ -249,11 +249,11 @@
 LABEL_44:
   v33 = (~v31 & 0x22) != 0 && (v31 & 0x44) != 0;
   self->_mapDestTrailCS = v33;
-  self->_paragraphs[0].parStyle = [a3 paragraphStyleAtCharIndex:0 effectiveRange:0];
-  self->_paragraphs[0].columnStyle = [a3 columnStyleAtCharIndex:0 effectiveRange:0];
-  self->_paragraphs[0].section = [a3 sectionAtCharIndex:0 effectiveRange:0];
-  self->_paragraphs[0].listStyle = [a3 listStyleAtCharIndex:0 effectiveRange:0];
-  v34 = [a3 paragraphLevelAtCharIndex:0];
+  self->_paragraphs[0].parStyle = [storage paragraphStyleAtCharIndex:0 effectiveRange:0];
+  self->_paragraphs[0].columnStyle = [storage columnStyleAtCharIndex:0 effectiveRange:0];
+  self->_paragraphs[0].section = [storage sectionAtCharIndex:0 effectiveRange:0];
+  self->_paragraphs[0].listStyle = [storage listStyleAtCharIndex:0 effectiveRange:0];
+  v34 = [storage paragraphLevelAtCharIndex:0];
   if (v34 >= 0x10000)
   {
     [TSWPStoragePasteRules setupFlagsForPastingSrcStorage:intoDestStorage:atDestRange:];
@@ -261,8 +261,8 @@ LABEL_44:
   }
 
   self->_paragraphs[0].parData.var0.var1.level = v34;
-  self->_paragraphs[0].parData.var0.var1.flags = [a3 paragraphFlagsAtCharIndex:0];
-  v35 = [a3 listStartAtCharIndex:0];
+  self->_paragraphs[0].parData.var0.var1.flags = [storage paragraphFlagsAtCharIndex:0];
+  v35 = [storage listStartAtCharIndex:0];
   if (HIDWORD(v35))
   {
     [TSWPStoragePasteRules setupFlagsForPastingSrcStorage:intoDestStorage:atDestRange:];
@@ -270,12 +270,12 @@ LABEL_44:
   }
 
   self->_paragraphs[0].parStartData.var0.var0.listStart = v35;
-  self->_paragraphs[0].parBidiData.var0.var0.listStart = [a3 writingDirectionForParagraphAtCharIndex:0];
-  self->_paragraphs[1].parStyle = [a3 paragraphStyleAtCharIndex:v10 effectiveRange:0];
-  self->_paragraphs[1].columnStyle = [a3 columnStyleAtCharIndex:v10 effectiveRange:0];
-  self->_paragraphs[1].section = [a3 sectionAtCharIndex:v10 effectiveRange:0];
-  self->_paragraphs[1].listStyle = [a3 listStyleAtCharIndex:v10 effectiveRange:0];
-  v36 = [a3 paragraphLevelAtCharIndex:v10];
+  self->_paragraphs[0].parBidiData.var0.var0.listStart = [storage writingDirectionForParagraphAtCharIndex:0];
+  self->_paragraphs[1].parStyle = [storage paragraphStyleAtCharIndex:v10 effectiveRange:0];
+  self->_paragraphs[1].columnStyle = [storage columnStyleAtCharIndex:v10 effectiveRange:0];
+  self->_paragraphs[1].section = [storage sectionAtCharIndex:v10 effectiveRange:0];
+  self->_paragraphs[1].listStyle = [storage listStyleAtCharIndex:v10 effectiveRange:0];
+  v36 = [storage paragraphLevelAtCharIndex:v10];
   if (v36 >= 0x10000)
   {
     [TSWPStoragePasteRules setupFlagsForPastingSrcStorage:intoDestStorage:atDestRange:];
@@ -283,8 +283,8 @@ LABEL_44:
   }
 
   self->_paragraphs[1].parData.var0.var1.level = v36;
-  self->_paragraphs[1].parData.var0.var1.flags = [a3 paragraphFlagsAtCharIndex:v10];
-  v37 = [a3 listStartAtCharIndex:v10];
+  self->_paragraphs[1].parData.var0.var1.flags = [storage paragraphFlagsAtCharIndex:v10];
+  v37 = [storage listStartAtCharIndex:v10];
   if (HIDWORD(v37))
   {
     [TSWPStoragePasteRules setupFlagsForPastingSrcStorage:intoDestStorage:atDestRange:];
@@ -292,12 +292,12 @@ LABEL_44:
   }
 
   self->_paragraphs[1].parStartData.var0.var0.listStart = v37;
-  self->_paragraphs[1].parBidiData.var0.var0.listStart = [a3 writingDirectionForParagraphAtCharIndex:v10];
-  self->_paragraphs[2].parStyle = [a4 paragraphStyleAtCharIndex:location effectiveRange:0];
-  self->_paragraphs[2].columnStyle = [a4 columnStyleAtCharIndex:location effectiveRange:0];
-  self->_paragraphs[2].section = [a4 sectionAtCharIndex:location effectiveRange:0];
-  self->_paragraphs[2].listStyle = [a4 listStyleAtCharIndex:location effectiveRange:0];
-  v38 = [a4 paragraphLevelAtCharIndex:location];
+  self->_paragraphs[1].parBidiData.var0.var0.listStart = [storage writingDirectionForParagraphAtCharIndex:v10];
+  self->_paragraphs[2].parStyle = [destStorage paragraphStyleAtCharIndex:location effectiveRange:0];
+  self->_paragraphs[2].columnStyle = [destStorage columnStyleAtCharIndex:location effectiveRange:0];
+  self->_paragraphs[2].section = [destStorage sectionAtCharIndex:location effectiveRange:0];
+  self->_paragraphs[2].listStyle = [destStorage listStyleAtCharIndex:location effectiveRange:0];
+  v38 = [destStorage paragraphLevelAtCharIndex:location];
   if (v38 >= 0x10000)
   {
     [TSWPStoragePasteRules setupFlagsForPastingSrcStorage:intoDestStorage:atDestRange:];
@@ -305,8 +305,8 @@ LABEL_44:
   }
 
   self->_paragraphs[2].parData.var0.var1.level = v38;
-  self->_paragraphs[2].parData.var0.var1.flags = [a4 paragraphFlagsAtCharIndex:location];
-  v39 = [a4 listStartAtCharIndex:location];
+  self->_paragraphs[2].parData.var0.var1.flags = [destStorage paragraphFlagsAtCharIndex:location];
+  v39 = [destStorage listStartAtCharIndex:location];
   if (HIDWORD(v39))
   {
     [TSWPStoragePasteRules setupFlagsForPastingSrcStorage:intoDestStorage:atDestRange:];
@@ -314,12 +314,12 @@ LABEL_44:
   }
 
   self->_paragraphs[2].parStartData.var0.var0.listStart = v39;
-  self->_paragraphs[2].parBidiData.var0.var0.listStart = [a4 writingDirectionForParagraphAtCharIndex:location];
-  self->_paragraphs[3].parStyle = [a4 paragraphStyleAtCharIndex:v29 effectiveRange:0];
-  self->_paragraphs[3].columnStyle = [a4 columnStyleAtCharIndex:v29 effectiveRange:0];
-  self->_paragraphs[3].section = [a4 sectionAtCharIndex:v29 effectiveRange:0];
-  self->_paragraphs[3].listStyle = [a4 listStyleAtCharIndex:v29 effectiveRange:0];
-  v40 = [a4 paragraphLevelAtCharIndex:v29];
+  self->_paragraphs[2].parBidiData.var0.var0.listStart = [destStorage writingDirectionForParagraphAtCharIndex:location];
+  self->_paragraphs[3].parStyle = [destStorage paragraphStyleAtCharIndex:v29 effectiveRange:0];
+  self->_paragraphs[3].columnStyle = [destStorage columnStyleAtCharIndex:v29 effectiveRange:0];
+  self->_paragraphs[3].section = [destStorage sectionAtCharIndex:v29 effectiveRange:0];
+  self->_paragraphs[3].listStyle = [destStorage listStyleAtCharIndex:v29 effectiveRange:0];
+  v40 = [destStorage paragraphLevelAtCharIndex:v29];
   if (v40 >= 0x10000)
   {
     [TSWPStoragePasteRules setupFlagsForPastingSrcStorage:intoDestStorage:atDestRange:];
@@ -327,8 +327,8 @@ LABEL_44:
   }
 
   self->_paragraphs[3].parData.var0.var1.level = v40;
-  self->_paragraphs[3].parData.var0.var1.flags = [a4 paragraphFlagsAtCharIndex:v29];
-  v41 = [a4 listStartAtCharIndex:v29];
+  self->_paragraphs[3].parData.var0.var1.flags = [destStorage paragraphFlagsAtCharIndex:v29];
+  v41 = [destStorage listStartAtCharIndex:v29];
   if (HIDWORD(v41))
   {
     [TSWPStoragePasteRules setupFlagsForPastingSrcStorage:intoDestStorage:atDestRange:];
@@ -336,12 +336,12 @@ LABEL_44:
   }
 
   self->_paragraphs[3].parStartData.var0.var0.listStart = v41;
-  self->_paragraphs[3].parBidiData.var0.var0.listStart = [a4 writingDirectionForParagraphAtCharIndex:v29];
+  self->_paragraphs[3].parBidiData.var0.var0.listStart = [destStorage writingDirectionForParagraphAtCharIndex:v29];
 }
 
-- (void)willPasteStorage:(id)a3 intoDestStorage:(id)a4 atDestRange:(_NSRange)a5
+- (void)willPasteStorage:(id)storage intoDestStorage:(id)destStorage atDestRange:(_NSRange)range
 {
-  [(TSWPStoragePasteRules *)self setupFlagsForPastingSrcStorage:a3 intoDestStorage:a4 atDestRange:a5.location, a5.length];
+  [(TSWPStoragePasteRules *)self setupFlagsForPastingSrcStorage:storage intoDestStorage:destStorage atDestRange:range.location, range.length];
   flags = self->_flags;
   if ((flags & 8) != 0)
   {
@@ -406,10 +406,10 @@ LABEL_8:
   }
 }
 
-- (void)didPasteWithIOTransaction:(void *)a3 atDestRange:(_NSRange)a4
+- (void)didPasteWithIOTransaction:(void *)transaction atDestRange:(_NSRange)range
 {
-  self->_srcLeadRange.location += a4.location;
-  self->_srcTrailRange.location += a4.location;
+  self->_srcLeadRange.location += range.location;
+  self->_srcTrailRange.location += range.location;
   v6 = 12;
   while (1)
   {
@@ -423,7 +423,7 @@ LABEL_8:
     {
       case 4:
         location = self->_srcTrailRange.location;
-        v9 = self;
+        selfCopy6 = self;
         v10 = 1;
         goto LABEL_14;
       case 5:
@@ -432,7 +432,7 @@ LABEL_8:
         length = v15 + v16 - v11;
         if (v15 + v16 != v11)
         {
-          v13 = self;
+          selfCopy3 = self;
           v14 = 3;
           goto LABEL_17;
         }
@@ -441,10 +441,10 @@ LABEL_8:
       case 6:
         v11 = self->_srcLeadRange.location;
         length = self->_srcLeadRange.length;
-        v13 = self;
+        selfCopy3 = self;
         v14 = 0;
 LABEL_17:
-        [(TSWPStoragePasteRules *)v13 mapCharacterStyles:v14 toRange:v11 ioTransaction:length, a3];
+        [(TSWPStoragePasteRules *)selfCopy3 mapCharacterStyles:v14 toRange:v11 ioTransaction:length, transaction];
         break;
     }
 
@@ -461,14 +461,14 @@ LABEL_18:
     if (v7 == 2)
     {
       location = self->_srcTrailRange.length + self->_srcTrailRange.location;
-      v9 = self;
+      selfCopy6 = self;
       v10 = 3;
     }
 
     else
     {
       location = self->_srcLeadRange.location;
-      v9 = self;
+      selfCopy6 = self;
       v10 = 0;
     }
 
@@ -478,10 +478,10 @@ LABEL_18:
   if (v7 == 1)
   {
     location = self->_srcLeadRange.location;
-    v9 = self;
+    selfCopy6 = self;
     v10 = 2;
 LABEL_14:
-    [(TSWPStoragePasteRules *)v9 applyParagraph:v10 toCharIndex:location ioTransaction:a3];
+    [(TSWPStoragePasteRules *)selfCopy6 applyParagraph:v10 toCharIndex:location ioTransaction:transaction];
     goto LABEL_18;
   }
 

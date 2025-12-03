@@ -1,38 +1,38 @@
 @interface OFForwarp
 - (BOOL)setupMetal;
-- (OFForwarp)initWithDevice:(id)a3 commmandQueue:(id)a4 mode:(unint64_t)a5;
-- (id)createBestBufferWidth:(unint64_t)a3 height:(unint64_t)a4;
-- (id)createOutputBufferWidth:(unint64_t)a3 height:(unint64_t)a4 channels:(unint64_t)a5;
-- (void)allocateBuffersWidth:(unint64_t)a3 height:(unint64_t)a4 channels:(unint64_t)a5 bestBuffer:(id *)a6 outputBuffer:(id *)a7;
+- (OFForwarp)initWithDevice:(id)device commmandQueue:(id)queue mode:(unint64_t)mode;
+- (id)createBestBufferWidth:(unint64_t)width height:(unint64_t)height;
+- (id)createOutputBufferWidth:(unint64_t)width height:(unint64_t)height channels:(unint64_t)channels;
+- (void)allocateBuffersWidth:(unint64_t)width height:(unint64_t)height channels:(unint64_t)channels bestBuffer:(id *)buffer outputBuffer:(id *)outputBuffer;
 - (void)dealloc;
-- (void)encodeBlendTexturesToCommandBuffer:(id)a3 firstWarpedTexture:(id)a4 secondWarpedTexture:(id)a5 forwardErrorMap:(id)a6 backwardErrorMap:(id)a7 synthesizedTexture:(id)a8 timeScale:(float)a9 synthesizedImageWeight:(float)a10 destination:(id)a11;
-- (void)encodeBlendWarpedFeaturesWithErrorMaskToCommandBuffer:(id)a3 first:(id)a4 second:(id)a5 forwardErrorMap:(id)a6 backwardErrorMap:(id)a7 forwarpConsistency:(id)a8 backwardConsistency:(id)a9 timeScale:(float)a10 destination:(id)a11;
-- (void)encodeBlendWarpedFeaturesWithErrorMaskToCommandBuffer:(id)a3 first:(id)a4 second:(id)a5 timeScale:(float)a6 destination:(id)a7;
-- (void)encodeErrorDownsampleToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5;
-- (void)encodeErrorMapDilationToCommandBuffer:(id)a3 forwardSource:(id)a4 backwardSource:(id)a5 forwardDestination:(id)a6 backwardDestination:(id)a7 minimumAdjacentHoleCount:(unsigned int)a8 maximumHoleValue:(float)a9;
-- (void)encodeErrorMapFilteringToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5;
-- (void)encodeErrorMapFilteringWithGaussianToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5;
-- (void)encodeInitialieBestToCommandBuffer:(id)a3 bestError:(id)a4;
-- (void)encodeLinearSplattingToCommandBuffer:(id)a3 input:(id)a4 flow:(id)a5 error:(id)a6 splatBuffer:(id)a7 outputTexture:(id)a8 timeScale:(float)a9;
-- (void)encodeNormalizationToCommandBuffer:(id)a3 fromBuffer:(id)a4 toTexture:(id)a5 inputSize:(id *)a6;
-- (void)encodeSplattingNormalizationToCommandBuffer:(id)a3 splattingBuffer:(id)a4 outputTexture:(id)a5;
-- (void)encodeSplattingToCommandBuffer:(id)a3 input:(id)a4 flow:(id)a5 error:(id)a6 outputBuffer:(id)a7 timeScale:(float)a8;
-- (void)encodeToCommandBuffer:(id)a3 input:(id)a4 flow:(id)a5 error:(id)a6 timeScale:(float)a7 fullWarp:(BOOL)a8 bestError:(id)a9 output:(id)a10 destination:(id)a11;
-- (void)encodeToCommandBuffer:(id)a3 input:(id)a4 flow:(id)a5 error:(id)a6 timeScale:(float)a7 fullWarp:(BOOL)a8 bestError:(id)a9 outputBuffer:(id)a10;
-- (void)encodeUpdateBestToCommandBuffer:(id)a3 flow:(id)a4 error:(id)a5 timeScale:(float)a6 bestError:(id)a7;
-- (void)encodeUpdateOutputToCommandBuffer:(id)a3 input:(id)a4 flow:(id)a5 error:(id)a6 timeScale:(float)a7 fullWarp:(BOOL)a8 bestError:(id)a9 output:(id)a10;
-- (void)encodeWarpAndBlendFeaturesWithErrorMaskToCommandBuffer:(id)a3 first:(id)a4 second:(id)a5 forwardFlow:(id)a6 backwardFlow:(id)a7 forwardErrorMap:(id)a8 backwardErrorMap:(id)a9 forwarpConsistency:(id)a10 backwardConsistency:(id)a11 timeScale:(float)a12 destination:(id)a13;
-- (void)updateBest:(id)a3 error:(id)a4 timeScale:(float)a5 best:(id)a6;
-- (void)updateOutput:(id)a3 flow:(id)a4 error:(id)a5 timeScale:(float)a6 fullWarp:(BOOL)a7 bestError:(id)a8 output:(id)a9;
+- (void)encodeBlendTexturesToCommandBuffer:(id)buffer firstWarpedTexture:(id)texture secondWarpedTexture:(id)warpedTexture forwardErrorMap:(id)map backwardErrorMap:(id)errorMap synthesizedTexture:(id)synthesizedTexture timeScale:(float)scale synthesizedImageWeight:(float)self0 destination:(id)self1;
+- (void)encodeBlendWarpedFeaturesWithErrorMaskToCommandBuffer:(id)buffer first:(id)first second:(id)second forwardErrorMap:(id)map backwardErrorMap:(id)errorMap forwarpConsistency:(id)consistency backwardConsistency:(id)backwardConsistency timeScale:(float)self0 destination:(id)self1;
+- (void)encodeBlendWarpedFeaturesWithErrorMaskToCommandBuffer:(id)buffer first:(id)first second:(id)second timeScale:(float)scale destination:(id)destination;
+- (void)encodeErrorDownsampleToCommandBuffer:(id)buffer source:(id)source destination:(id)destination;
+- (void)encodeErrorMapDilationToCommandBuffer:(id)buffer forwardSource:(id)source backwardSource:(id)backwardSource forwardDestination:(id)destination backwardDestination:(id)backwardDestination minimumAdjacentHoleCount:(unsigned int)count maximumHoleValue:(float)value;
+- (void)encodeErrorMapFilteringToCommandBuffer:(id)buffer source:(id)source destination:(id)destination;
+- (void)encodeErrorMapFilteringWithGaussianToCommandBuffer:(id)buffer source:(id)source destination:(id)destination;
+- (void)encodeInitialieBestToCommandBuffer:(id)buffer bestError:(id)error;
+- (void)encodeLinearSplattingToCommandBuffer:(id)buffer input:(id)input flow:(id)flow error:(id)error splatBuffer:(id)splatBuffer outputTexture:(id)texture timeScale:(float)scale;
+- (void)encodeNormalizationToCommandBuffer:(id)buffer fromBuffer:(id)fromBuffer toTexture:(id)texture inputSize:(id *)size;
+- (void)encodeSplattingNormalizationToCommandBuffer:(id)buffer splattingBuffer:(id)splattingBuffer outputTexture:(id)texture;
+- (void)encodeSplattingToCommandBuffer:(id)buffer input:(id)input flow:(id)flow error:(id)error outputBuffer:(id)outputBuffer timeScale:(float)scale;
+- (void)encodeToCommandBuffer:(id)buffer input:(id)input flow:(id)flow error:(id)error timeScale:(float)scale fullWarp:(BOOL)warp bestError:(id)bestError output:(id)self0 destination:(id)self1;
+- (void)encodeToCommandBuffer:(id)buffer input:(id)input flow:(id)flow error:(id)error timeScale:(float)scale fullWarp:(BOOL)warp bestError:(id)bestError outputBuffer:(id)self0;
+- (void)encodeUpdateBestToCommandBuffer:(id)buffer flow:(id)flow error:(id)error timeScale:(float)scale bestError:(id)bestError;
+- (void)encodeUpdateOutputToCommandBuffer:(id)buffer input:(id)input flow:(id)flow error:(id)error timeScale:(float)scale fullWarp:(BOOL)warp bestError:(id)bestError output:(id)self0;
+- (void)encodeWarpAndBlendFeaturesWithErrorMaskToCommandBuffer:(id)buffer first:(id)first second:(id)second forwardFlow:(id)flow backwardFlow:(id)backwardFlow forwardErrorMap:(id)map backwardErrorMap:(id)errorMap forwarpConsistency:(id)self0 backwardConsistency:(id)self1 timeScale:(float)self2 destination:(id)self3;
+- (void)updateBest:(id)best error:(id)error timeScale:(float)scale best:(id)a6;
+- (void)updateOutput:(id)output flow:(id)flow error:(id)error timeScale:(float)scale fullWarp:(BOOL)warp bestError:(id)bestError output:(id)a9;
 @end
 
 @implementation OFForwarp
 
-- (OFForwarp)initWithDevice:(id)a3 commmandQueue:(id)a4 mode:(unint64_t)a5
+- (OFForwarp)initWithDevice:(id)device commmandQueue:(id)queue mode:(unint64_t)mode
 {
   v13.receiver = self;
   v13.super_class = OFForwarp;
-  v6 = [(VEMetalBase *)&v13 initWithDevice:a3 commmandQueue:a4];
+  v6 = [(VEMetalBase *)&v13 initWithDevice:device commmandQueue:queue];
   if (v6)
   {
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -42,7 +42,7 @@
     mtlLibrary = v6->super._mtlLibrary;
     v6->super._mtlLibrary = v10;
 
-    v6->_synthesisMode = a5;
+    v6->_synthesisMode = mode;
     v6->_errorTolerance = 0.1;
     v6->_filterErrorMapByGaussian = 1;
     [(OFForwarp *)v6 setupMetal];
@@ -220,131 +220,131 @@
   return 1;
 }
 
-- (id)createBestBufferWidth:(unint64_t)a3 height:(unint64_t)a4
+- (id)createBestBufferWidth:(unint64_t)width height:(unint64_t)height
 {
-  v4 = [(MTLDevice *)self->super._device newBufferWithLength:(4 * a3 * a4 + 4095) & 0xFFFFFFFFFFFFF000 options:0];
+  v4 = [(MTLDevice *)self->super._device newBufferWithLength:(4 * width * height + 4095) & 0xFFFFFFFFFFFFF000 options:0];
 
   return v4;
 }
 
-- (id)createOutputBufferWidth:(unint64_t)a3 height:(unint64_t)a4 channels:(unint64_t)a5
+- (id)createOutputBufferWidth:(unint64_t)width height:(unint64_t)height channels:(unint64_t)channels
 {
-  v5 = [(MTLDevice *)self->super._device newBufferWithLength:(4 * (a3 * ((a4 + 15) & 0x3FFFFFFFFFFFFFF0) + a3 * ((a4 + 15) & 0x3FFFFFFFFFFFFFF0) * a5) + 4095) & 0xFFFFFFFFFFFFF000 options:0];
+  v5 = [(MTLDevice *)self->super._device newBufferWithLength:(4 * (width * ((height + 15) & 0x3FFFFFFFFFFFFFF0) + width * ((height + 15) & 0x3FFFFFFFFFFFFFF0) * channels) + 4095) & 0xFFFFFFFFFFFFF000 options:0];
 
   return v5;
 }
 
-- (void)allocateBuffersWidth:(unint64_t)a3 height:(unint64_t)a4 channels:(unint64_t)a5 bestBuffer:(id *)a6 outputBuffer:(id *)a7
+- (void)allocateBuffersWidth:(unint64_t)width height:(unint64_t)height channels:(unint64_t)channels bestBuffer:(id *)buffer outputBuffer:(id *)outputBuffer
 {
-  *a6 = [OFForwarp createBestBufferWidth:"createBestBufferWidth:height:" height:?];
-  *a7 = [(OFForwarp *)self createOutputBufferWidth:a3 height:a4 channels:a5];
+  *buffer = [OFForwarp createBestBufferWidth:"createBestBufferWidth:height:" height:?];
+  *outputBuffer = [(OFForwarp *)self createOutputBufferWidth:width height:height channels:channels];
 }
 
-- (void)updateBest:(id)a3 error:(id)a4 timeScale:(float)a5 best:(id)a6
+- (void)updateBest:(id)best error:(id)error timeScale:(float)scale best:(id)a6
 {
   commandQueue = self->super._commandQueue;
   v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v15 = [(MTLCommandQueue *)commandQueue commandBuffer];
-  *&v14 = a5;
-  [(OFForwarp *)self encodeUpdateBestToCommandBuffer:v15 flow:v13 error:v12 timeScale:v11 bestError:v14];
+  errorCopy = error;
+  bestCopy = best;
+  commandBuffer = [(MTLCommandQueue *)commandQueue commandBuffer];
+  *&v14 = scale;
+  [(OFForwarp *)self encodeUpdateBestToCommandBuffer:commandBuffer flow:bestCopy error:errorCopy timeScale:v11 bestError:v14];
 
-  [v15 commit];
-  [v15 waitUntilCompleted];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
 }
 
-- (void)encodeInitialieBestToCommandBuffer:(id)a3 bestError:(id)a4
+- (void)encodeInitialieBestToCommandBuffer:(id)buffer bestError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 length];
-  v9 = [v7 computeCommandEncoder];
+  errorCopy = error;
+  bufferCopy = buffer;
+  v8 = [errorCopy length];
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
-  [v9 setComputePipelineState:self->_initializeBest];
-  [v9 setBuffer:v6 offset:0 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_initializeBest];
+  [computeCommandEncoder setBuffer:errorCopy offset:0 atIndex:0];
 
   v13 = vdupq_n_s64(1uLL);
   v10 = xmmword_2487C37B0;
   v11 = 1;
   v12 = v8 >> 12;
-  [v9 dispatchThreadgroups:&v12 threadsPerThreadgroup:&v10];
-  [v9 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:&v12 threadsPerThreadgroup:&v10];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeUpdateBestToCommandBuffer:(id)a3 flow:(id)a4 error:(id)a5 timeScale:(float)a6 bestError:(id)a7
+- (void)encodeUpdateBestToCommandBuffer:(id)buffer flow:(id)flow error:(id)error timeScale:(float)scale bestError:(id)bestError
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  if (v12 && v13)
+  flowCopy = flow;
+  errorCopy = error;
+  bestErrorCopy = bestError;
+  if (flowCopy && errorCopy)
   {
-    v15 = a3;
-    [(OFForwarp *)self encodeInitialieBestToCommandBuffer:v15 bestError:v14];
-    v16 = [v15 computeCommandEncoder];
+    bufferCopy = buffer;
+    [(OFForwarp *)self encodeInitialieBestToCommandBuffer:bufferCopy bestError:bestErrorCopy];
+    computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
-    if (v16)
+    if (computeCommandEncoder)
     {
       v17 = [(MTLDevice *)self->super._device newBufferWithLength:8 options:0];
-      v18 = [v17 contents];
-      *v18 = a6;
-      *(v18 + 4) = 0;
-      [v16 setComputePipelineState:self->_updateBest];
-      [v16 setTexture:v12 atIndex:0];
-      [v16 setTexture:v13 atIndex:1];
-      [v16 setBuffer:v17 offset:0 atIndex:0];
-      [v16 setBuffer:v14 offset:0 atIndex:1];
-      v21[0] = ([v13 width] + 15) >> 4;
-      v21[1] = ([v13 height] + 15) >> 4;
+      contents = [v17 contents];
+      *contents = scale;
+      *(contents + 4) = 0;
+      [computeCommandEncoder setComputePipelineState:self->_updateBest];
+      [computeCommandEncoder setTexture:flowCopy atIndex:0];
+      [computeCommandEncoder setTexture:errorCopy atIndex:1];
+      [computeCommandEncoder setBuffer:v17 offset:0 atIndex:0];
+      [computeCommandEncoder setBuffer:bestErrorCopy offset:0 atIndex:1];
+      v21[0] = ([errorCopy width] + 15) >> 4;
+      v21[1] = ([errorCopy height] + 15) >> 4;
       v21[2] = 1;
       v19 = vdupq_n_s64(0x10uLL);
       v20 = 1;
-      [v16 dispatchThreadgroups:v21 threadsPerThreadgroup:&v19];
-      [v16 endEncoding];
+      [computeCommandEncoder dispatchThreadgroups:v21 threadsPerThreadgroup:&v19];
+      [computeCommandEncoder endEncoding];
     }
   }
 }
 
-- (void)updateOutput:(id)a3 flow:(id)a4 error:(id)a5 timeScale:(float)a6 fullWarp:(BOOL)a7 bestError:(id)a8 output:(id)a9
+- (void)updateOutput:(id)output flow:(id)flow error:(id)error timeScale:(float)scale fullWarp:(BOOL)warp bestError:(id)bestError output:(id)a9
 {
-  v10 = a7;
+  warpCopy = warp;
   commandQueue = self->super._commandQueue;
   v17 = a9;
-  v18 = a8;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
-  v23 = [(MTLCommandQueue *)commandQueue commandBuffer];
-  *&v22 = a6;
-  [(OFForwarp *)self encodeUpdateOutputToCommandBuffer:v23 input:v21 flow:v20 error:v19 timeScale:v10 fullWarp:v18 bestError:v22 output:v17];
+  bestErrorCopy = bestError;
+  errorCopy = error;
+  flowCopy = flow;
+  outputCopy = output;
+  commandBuffer = [(MTLCommandQueue *)commandQueue commandBuffer];
+  *&v22 = scale;
+  [(OFForwarp *)self encodeUpdateOutputToCommandBuffer:commandBuffer input:outputCopy flow:flowCopy error:errorCopy timeScale:warpCopy fullWarp:bestErrorCopy bestError:v22 output:v17];
 
-  [v23 commit];
-  [v23 waitUntilCompleted];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
 }
 
-- (void)encodeUpdateOutputToCommandBuffer:(id)a3 input:(id)a4 flow:(id)a5 error:(id)a6 timeScale:(float)a7 fullWarp:(BOOL)a8 bestError:(id)a9 output:(id)a10
+- (void)encodeUpdateOutputToCommandBuffer:(id)buffer input:(id)input flow:(id)flow error:(id)error timeScale:(float)scale fullWarp:(BOOL)warp bestError:(id)bestError output:(id)self0
 {
-  v11 = a8;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a9;
-  v21 = a10;
-  if (v17 && v18 && v19)
+  warpCopy = warp;
+  inputCopy = input;
+  flowCopy = flow;
+  errorCopy = error;
+  bestErrorCopy = bestError;
+  outputCopy = output;
+  if (inputCopy && flowCopy && errorCopy)
   {
-    v22 = a3;
-    v23 = [v22 blitCommandEncoder];
-    [v23 fillBuffer:v21 range:0 value:{objc_msgSend(v21, "length"), 0}];
-    [v23 endEncoding];
-    v24 = [v22 computeCommandEncoder];
+    bufferCopy = buffer;
+    blitCommandEncoder = [bufferCopy blitCommandEncoder];
+    [blitCommandEncoder fillBuffer:outputCopy range:0 value:{objc_msgSend(outputCopy, "length"), 0}];
+    [blitCommandEncoder endEncoding];
+    computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
-    if (v24)
+    if (computeCommandEncoder)
     {
       v25 = [(MTLDevice *)self->super._device newBufferWithLength:20 options:0];
-      v26 = [v25 contents];
-      *v26 = a7;
-      *(v26 + 4) = v11;
-      *(v26 + 8) = 0;
+      contents = [v25 contents];
+      *contents = scale;
+      *(contents + 4) = warpCopy;
+      *(contents + 8) = 0;
       v27 = !self->_limitBilinearInterpolation;
       v28 = 0.0001;
       if (!self->_limitBilinearInterpolation)
@@ -352,51 +352,51 @@
         v28 = 0.0;
       }
 
-      *(v26 + 12) = self->_errorTolerance;
-      *(v26 + 16) = v28;
+      *(contents + 12) = self->_errorTolerance;
+      *(contents + 16) = v28;
       v29 = &OBJC_IVAR___OFForwarp__updateOutputFullWarpMinErrorOffset;
       if (v27)
       {
         v29 = &OBJC_IVAR___OFForwarp__updateOutputFullWarp;
       }
 
-      if (!v11)
+      if (!warpCopy)
       {
         v29 = &OBJC_IVAR___OFForwarp__updateOutputLiteWarp;
       }
 
-      [v24 setComputePipelineState:*(&self->super.super.isa + *v29)];
-      [v24 setTexture:v17 atIndex:0];
-      [v24 setTexture:v18 atIndex:1];
-      [v24 setTexture:v19 atIndex:2];
-      [v24 setBuffer:v25 offset:0 atIndex:0];
-      [v24 setBuffer:v20 offset:0 atIndex:1];
-      [v24 setBuffer:v21 offset:0 atIndex:2];
-      v32[0] = ([v19 width] + 15) >> 4;
-      v32[1] = ([v19 height] + 15) >> 4;
+      [computeCommandEncoder setComputePipelineState:*(&self->super.super.isa + *v29)];
+      [computeCommandEncoder setTexture:inputCopy atIndex:0];
+      [computeCommandEncoder setTexture:flowCopy atIndex:1];
+      [computeCommandEncoder setTexture:errorCopy atIndex:2];
+      [computeCommandEncoder setBuffer:v25 offset:0 atIndex:0];
+      [computeCommandEncoder setBuffer:bestErrorCopy offset:0 atIndex:1];
+      [computeCommandEncoder setBuffer:outputCopy offset:0 atIndex:2];
+      v32[0] = ([errorCopy width] + 15) >> 4;
+      v32[1] = ([errorCopy height] + 15) >> 4;
       v32[2] = 1;
       v30 = vdupq_n_s64(0x10uLL);
       v31 = 1;
-      [v24 dispatchThreadgroups:v32 threadsPerThreadgroup:&v30];
-      [v24 endEncoding];
+      [computeCommandEncoder dispatchThreadgroups:v32 threadsPerThreadgroup:&v30];
+      [computeCommandEncoder endEncoding];
     }
   }
 }
 
-- (void)encodeNormalizationToCommandBuffer:(id)a3 fromBuffer:(id)a4 toTexture:(id)a5 inputSize:(id *)a6
+- (void)encodeNormalizationToCommandBuffer:(id)buffer fromBuffer:(id)fromBuffer toTexture:(id)texture inputSize:(id *)size
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = [a3 computeCommandEncoder];
-  if (v12)
+  fromBufferCopy = fromBuffer;
+  textureCopy = texture;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  if (computeCommandEncoder)
   {
     v13 = [(MTLDevice *)self->super._device newBufferWithLength:8 options:0];
-    v14 = [v13 contents];
-    var0 = a6->var0;
-    *v14 = a6->var0;
+    contents = [v13 contents];
+    var0 = size->var0;
+    *contents = size->var0;
     LODWORD(v16) = var0;
-    HIDWORD(v16) = a6->var1;
-    *v14 = v16;
+    HIDWORD(v16) = size->var1;
+    *contents = v16;
     if (self->_createOcclusionMask)
     {
       v17 = &OBJC_IVAR___OFForwarp__convert2TextureWithMask;
@@ -407,65 +407,65 @@
       v17 = &OBJC_IVAR___OFForwarp__convert2Texture;
     }
 
-    [v12 setComputePipelineState:*(&self->super.super.isa + *v17)];
-    [v12 setBuffer:v10 offset:0 atIndex:0];
-    [v12 setTexture:v11 atIndex:0];
-    [v12 setBuffer:v13 offset:0 atIndex:1];
-    v20[0] = ([v11 width] + 15) >> 4;
-    v20[1] = ([v11 height] + 15) >> 4;
+    [computeCommandEncoder setComputePipelineState:*(&self->super.super.isa + *v17)];
+    [computeCommandEncoder setBuffer:fromBufferCopy offset:0 atIndex:0];
+    [computeCommandEncoder setTexture:textureCopy atIndex:0];
+    [computeCommandEncoder setBuffer:v13 offset:0 atIndex:1];
+    v20[0] = ([textureCopy width] + 15) >> 4;
+    v20[1] = ([textureCopy height] + 15) >> 4;
     v20[2] = 1;
     v18 = vdupq_n_s64(0x10uLL);
     v19 = 1;
-    [v12 dispatchThreadgroups:v20 threadsPerThreadgroup:&v18];
-    [v12 endEncoding];
+    [computeCommandEncoder dispatchThreadgroups:v20 threadsPerThreadgroup:&v18];
+    [computeCommandEncoder endEncoding];
   }
 }
 
-- (void)encodeToCommandBuffer:(id)a3 input:(id)a4 flow:(id)a5 error:(id)a6 timeScale:(float)a7 fullWarp:(BOOL)a8 bestError:(id)a9 outputBuffer:(id)a10
+- (void)encodeToCommandBuffer:(id)buffer input:(id)input flow:(id)flow error:(id)error timeScale:(float)scale fullWarp:(BOOL)warp bestError:(id)bestError outputBuffer:(id)self0
 {
-  v11 = a8;
-  v23 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a9;
-  v21 = a10;
-  if (v11)
+  warpCopy = warp;
+  bufferCopy = buffer;
+  inputCopy = input;
+  flowCopy = flow;
+  errorCopy = error;
+  bestErrorCopy = bestError;
+  outputBufferCopy = outputBuffer;
+  if (warpCopy)
   {
-    *&v22 = a7;
-    [(OFForwarp *)self encodeUpdateBestToCommandBuffer:v23 flow:v18 error:v19 timeScale:v20 bestError:v22];
+    *&v22 = scale;
+    [(OFForwarp *)self encodeUpdateBestToCommandBuffer:bufferCopy flow:flowCopy error:errorCopy timeScale:bestErrorCopy bestError:v22];
   }
 
-  *&v22 = a7;
-  [(OFForwarp *)self encodeUpdateOutputToCommandBuffer:v23 input:v17 flow:v18 error:v19 timeScale:v11 fullWarp:v20 bestError:v22 output:v21];
+  *&v22 = scale;
+  [(OFForwarp *)self encodeUpdateOutputToCommandBuffer:bufferCopy input:inputCopy flow:flowCopy error:errorCopy timeScale:warpCopy fullWarp:bestErrorCopy bestError:v22 output:outputBufferCopy];
 }
 
-- (void)encodeToCommandBuffer:(id)a3 input:(id)a4 flow:(id)a5 error:(id)a6 timeScale:(float)a7 fullWarp:(BOOL)a8 bestError:(id)a9 output:(id)a10 destination:(id)a11
+- (void)encodeToCommandBuffer:(id)buffer input:(id)input flow:(id)flow error:(id)error timeScale:(float)scale fullWarp:(BOOL)warp bestError:(id)bestError output:(id)self0 destination:(id)self1
 {
-  v12 = a8;
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v26 = v24;
-  if (v19 && v20 && v21 && v24)
+  warpCopy = warp;
+  bufferCopy = buffer;
+  inputCopy = input;
+  flowCopy = flow;
+  errorCopy = error;
+  bestErrorCopy = bestError;
+  outputCopy = output;
+  destinationCopy = destination;
+  v26 = destinationCopy;
+  if (inputCopy && flowCopy && errorCopy && destinationCopy)
   {
-    *&v25 = a7;
+    *&v25 = scale;
     if (self->_linearSplatting)
     {
-      [(OFForwarp *)self encodeLinearSplattingToCommandBuffer:v18 input:v19 flow:v20 error:v21 splatBuffer:v23 outputTexture:v24 timeScale:v25];
+      [(OFForwarp *)self encodeLinearSplattingToCommandBuffer:bufferCopy input:inputCopy flow:flowCopy error:errorCopy splatBuffer:outputCopy outputTexture:destinationCopy timeScale:v25];
     }
 
     else
     {
-      [(OFForwarp *)self encodeToCommandBuffer:v18 input:v19 flow:v20 error:v21 timeScale:v12 fullWarp:v22 bestError:v25 outputBuffer:v23];
-      v28[0] = [v19 width];
-      v28[1] = [v19 height];
-      v28[2] = [v19 depth];
-      [(OFForwarp *)self encodeNormalizationToCommandBuffer:v18 fromBuffer:v23 toTexture:v26 inputSize:v28];
+      [(OFForwarp *)self encodeToCommandBuffer:bufferCopy input:inputCopy flow:flowCopy error:errorCopy timeScale:warpCopy fullWarp:bestErrorCopy bestError:v25 outputBuffer:outputCopy];
+      v28[0] = [inputCopy width];
+      v28[1] = [inputCopy height];
+      v28[2] = [inputCopy depth];
+      [(OFForwarp *)self encodeNormalizationToCommandBuffer:bufferCopy fromBuffer:outputCopy toTexture:v26 inputSize:v28];
     }
   }
 
@@ -479,23 +479,23 @@
   }
 }
 
-- (void)encodeBlendWarpedFeaturesWithErrorMaskToCommandBuffer:(id)a3 first:(id)a4 second:(id)a5 timeScale:(float)a6 destination:(id)a7
+- (void)encodeBlendWarpedFeaturesWithErrorMaskToCommandBuffer:(id)buffer first:(id)first second:(id)second timeScale:(float)scale destination:(id)destination
 {
-  v12 = a4;
-  v13 = a5;
-  v20 = a6;
-  v14 = a7;
-  v15 = [a3 computeCommandEncoder];
-  v16 = v15;
-  if (v15)
+  firstCopy = first;
+  secondCopy = second;
+  scaleCopy = scale;
+  destinationCopy = destination;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  v16 = computeCommandEncoder;
+  if (computeCommandEncoder)
   {
-    [v15 setComputePipelineState:self->_blendWarpedImages];
-    [v16 setTexture:v12 atIndex:0];
-    [v16 setTexture:v13 atIndex:1];
-    [v16 setTexture:v14 atIndex:2];
-    [v16 setBytes:&v20 length:4 atIndex:0];
-    v19[0] = ([v14 width] + 15) >> 4;
-    v19[1] = ([v14 height] + 15) >> 4;
+    [computeCommandEncoder setComputePipelineState:self->_blendWarpedImages];
+    [v16 setTexture:firstCopy atIndex:0];
+    [v16 setTexture:secondCopy atIndex:1];
+    [v16 setTexture:destinationCopy atIndex:2];
+    [v16 setBytes:&scaleCopy length:4 atIndex:0];
+    v19[0] = ([destinationCopy width] + 15) >> 4;
+    v19[1] = ([destinationCopy height] + 15) >> 4;
     v19[2] = 1;
     v17 = vdupq_n_s64(0x10uLL);
     v18 = 1;
@@ -504,71 +504,71 @@
   }
 }
 
-- (void)encodeBlendWarpedFeaturesWithErrorMaskToCommandBuffer:(id)a3 first:(id)a4 second:(id)a5 forwardErrorMap:(id)a6 backwardErrorMap:(id)a7 forwarpConsistency:(id)a8 backwardConsistency:(id)a9 timeScale:(float)a10 destination:(id)a11
+- (void)encodeBlendWarpedFeaturesWithErrorMaskToCommandBuffer:(id)buffer first:(id)first second:(id)second forwardErrorMap:(id)map backwardErrorMap:(id)errorMap forwarpConsistency:(id)consistency backwardConsistency:(id)backwardConsistency timeScale:(float)self0 destination:(id)self1
 {
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a11;
-  v25 = [a3 computeCommandEncoder];
-  if (v25)
+  firstCopy = first;
+  secondCopy = second;
+  mapCopy = map;
+  errorMapCopy = errorMap;
+  consistencyCopy = consistency;
+  backwardConsistencyCopy = backwardConsistency;
+  destinationCopy = destination;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  if (computeCommandEncoder)
   {
-    *v33 = a10;
-    v26 = [v20 width];
-    *&v33[2] = v26 / [v18 width];
-    v27 = [v18 width];
-    *&v33[1] = v27 / [v20 width];
-    [v25 setBytes:v33 length:12 atIndex:0];
-    [v25 setTexture:v18 atIndex:0];
-    [v25 setTexture:v19 atIndex:1];
-    [v25 setTexture:v20 atIndex:2];
-    [v25 setTexture:v21 atIndex:3];
+    *v33 = scale;
+    width = [mapCopy width];
+    *&v33[2] = width / [firstCopy width];
+    width2 = [firstCopy width];
+    *&v33[1] = width2 / [mapCopy width];
+    [computeCommandEncoder setBytes:v33 length:12 atIndex:0];
+    [computeCommandEncoder setTexture:firstCopy atIndex:0];
+    [computeCommandEncoder setTexture:secondCopy atIndex:1];
+    [computeCommandEncoder setTexture:mapCopy atIndex:2];
+    [computeCommandEncoder setTexture:errorMapCopy atIndex:3];
     v28 = &OBJC_IVAR___OFForwarp__blendWarpedImagesWithMaskTextures;
     v29 = 4;
-    if (v22 && v23)
+    if (consistencyCopy && backwardConsistencyCopy)
     {
-      [v25 setTexture:v22 atIndex:4];
-      [v25 setTexture:v23 atIndex:5];
+      [computeCommandEncoder setTexture:consistencyCopy atIndex:4];
+      [computeCommandEncoder setTexture:backwardConsistencyCopy atIndex:5];
       v28 = &OBJC_IVAR___OFForwarp__blendWarpedImagesWithMaskAndFlowConsistency;
       v29 = 6;
     }
 
-    [v25 setComputePipelineState:*(&self->super.super.isa + *v28)];
-    [v25 setTexture:v24 atIndex:v29];
-    v32[0] = ([v24 width] + 15) >> 4;
-    v32[1] = ([v24 height] + 15) >> 4;
+    [computeCommandEncoder setComputePipelineState:*(&self->super.super.isa + *v28)];
+    [computeCommandEncoder setTexture:destinationCopy atIndex:v29];
+    v32[0] = ([destinationCopy width] + 15) >> 4;
+    v32[1] = ([destinationCopy height] + 15) >> 4;
     v32[2] = 1;
     v30 = vdupq_n_s64(0x10uLL);
     v31 = 1;
-    [v25 dispatchThreadgroups:v32 threadsPerThreadgroup:&v30];
-    [v25 endEncoding];
+    [computeCommandEncoder dispatchThreadgroups:v32 threadsPerThreadgroup:&v30];
+    [computeCommandEncoder endEncoding];
   }
 }
 
-- (void)encodeErrorMapDilationToCommandBuffer:(id)a3 forwardSource:(id)a4 backwardSource:(id)a5 forwardDestination:(id)a6 backwardDestination:(id)a7 minimumAdjacentHoleCount:(unsigned int)a8 maximumHoleValue:(float)a9
+- (void)encodeErrorMapDilationToCommandBuffer:(id)buffer forwardSource:(id)source backwardSource:(id)backwardSource forwardDestination:(id)destination backwardDestination:(id)backwardDestination minimumAdjacentHoleCount:(unsigned int)count maximumHoleValue:(float)value
 {
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = [a3 computeCommandEncoder];
-  if (v20)
+  sourceCopy = source;
+  backwardSourceCopy = backwardSource;
+  destinationCopy = destination;
+  backwardDestinationCopy = backwardDestination;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  if (computeCommandEncoder)
   {
     v21 = [(MTLDevice *)self->super._device newBufferWithLength:8 options:0];
-    v22 = [v21 contents];
-    *(v22 + 4) = a9;
-    *v22 = a8;
-    [v20 setComputePipelineState:self->_errorMapDilation];
-    [v20 setTexture:v16 atIndex:0];
-    [v20 setTexture:v17 atIndex:1];
-    [v20 setTexture:v18 atIndex:2];
-    [v20 setTexture:v19 atIndex:3];
-    [v20 setBuffer:v21 offset:0 atIndex:0];
+    contents = [v21 contents];
+    *(contents + 4) = value;
+    *contents = count;
+    [computeCommandEncoder setComputePipelineState:self->_errorMapDilation];
+    [computeCommandEncoder setTexture:sourceCopy atIndex:0];
+    [computeCommandEncoder setTexture:backwardSourceCopy atIndex:1];
+    [computeCommandEncoder setTexture:destinationCopy atIndex:2];
+    [computeCommandEncoder setTexture:backwardDestinationCopy atIndex:3];
+    [computeCommandEncoder setBuffer:v21 offset:0 atIndex:0];
     supportsSIMDShuffle = self->_supportsSIMDShuffle;
-    v24 = [v16 width];
+    width = [sourceCopy width];
     v25 = !supportsSIMDShuffle;
     if (supportsSIMDShuffle)
     {
@@ -610,41 +610,41 @@
       v29 = 5;
     }
 
-    v31[0] = (v24 + v26 - 1) >> v28;
-    v31[1] = (v27 + [v16 height] - 1) >> v29;
+    v31[0] = (width + v26 - 1) >> v28;
+    v31[1] = (v27 + [sourceCopy height] - 1) >> v29;
     v31[2] = 1;
     v30[0] = v26;
     v30[1] = v27;
     v30[2] = 1;
-    [v20 dispatchThreadgroups:v31 threadsPerThreadgroup:v30];
-    [v20 endEncoding];
+    [computeCommandEncoder dispatchThreadgroups:v31 threadsPerThreadgroup:v30];
+    [computeCommandEncoder endEncoding];
   }
 }
 
-- (void)encodeBlendTexturesToCommandBuffer:(id)a3 firstWarpedTexture:(id)a4 secondWarpedTexture:(id)a5 forwardErrorMap:(id)a6 backwardErrorMap:(id)a7 synthesizedTexture:(id)a8 timeScale:(float)a9 synthesizedImageWeight:(float)a10 destination:(id)a11
+- (void)encodeBlendTexturesToCommandBuffer:(id)buffer firstWarpedTexture:(id)texture secondWarpedTexture:(id)warpedTexture forwardErrorMap:(id)map backwardErrorMap:(id)errorMap synthesizedTexture:(id)synthesizedTexture timeScale:(float)scale synthesizedImageWeight:(float)self0 destination:(id)self1
 {
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v24 = a11;
-  v25 = [a3 computeCommandEncoder];
-  v26 = v25;
-  if (v25)
+  textureCopy = texture;
+  warpedTextureCopy = warpedTexture;
+  mapCopy = map;
+  errorMapCopy = errorMap;
+  synthesizedTextureCopy = synthesizedTexture;
+  destinationCopy = destination;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  v26 = computeCommandEncoder;
+  if (computeCommandEncoder)
   {
-    [v25 setComputePipelineState:self->_blendDCTexturesWithMasks];
-    [v26 setTexture:v19 atIndex:0];
-    [v26 setTexture:v20 atIndex:1];
-    [v26 setTexture:v21 atIndex:2];
-    [v26 setTexture:v22 atIndex:3];
-    [v26 setTexture:v23 atIndex:4];
-    [v26 setTexture:v24 atIndex:5];
-    *v30 = a9;
-    *&v30[1] = a10;
+    [computeCommandEncoder setComputePipelineState:self->_blendDCTexturesWithMasks];
+    [v26 setTexture:textureCopy atIndex:0];
+    [v26 setTexture:warpedTextureCopy atIndex:1];
+    [v26 setTexture:mapCopy atIndex:2];
+    [v26 setTexture:errorMapCopy atIndex:3];
+    [v26 setTexture:synthesizedTextureCopy atIndex:4];
+    [v26 setTexture:destinationCopy atIndex:5];
+    *v30 = scale;
+    *&v30[1] = weight;
     [v26 setBytes:v30 length:8 atIndex:0];
-    v29[0] = ([v24 width] + 15) >> 4;
-    v29[1] = ([v24 height] + 15) >> 4;
+    v29[0] = ([destinationCopy width] + 15) >> 4;
+    v29[1] = ([destinationCopy height] + 15) >> 4;
     v29[2] = 1;
     v27 = vdupq_n_s64(0x10uLL);
     v28 = 1;
@@ -653,37 +653,37 @@
   }
 }
 
-- (void)encodeErrorMapFilteringToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5
+- (void)encodeErrorMapFilteringToCommandBuffer:(id)buffer source:(id)source destination:(id)destination
 {
   if (self->_filterErrorMapByGaussian)
   {
-    [(OFForwarp *)self encodeErrorMapFilteringWithGaussianToCommandBuffer:a3 source:a4 destination:a5];
+    [(OFForwarp *)self encodeErrorMapFilteringWithGaussianToCommandBuffer:buffer source:source destination:destination];
   }
 
   else
   {
-    [(OFForwarp *)self encodeErrorDownsampleToCommandBuffer:a3 source:a4 destination:a5];
+    [(OFForwarp *)self encodeErrorDownsampleToCommandBuffer:buffer source:source destination:destination];
   }
 }
 
-- (void)encodeErrorMapFilteringWithGaussianToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5
+- (void)encodeErrorMapFilteringWithGaussianToCommandBuffer:(id)buffer source:(id)source destination:(id)destination
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  bufferCopy = buffer;
+  sourceCopy = source;
+  destinationCopy = destination;
   if (!self->_gaussian3x3CoefficientBuffer)
   {
     v11 = [(MTLDevice *)self->super._device newBufferWithLength:18 options:0];
     gaussian3x3CoefficientBuffer = self->_gaussian3x3CoefficientBuffer;
     self->_gaussian3x3CoefficientBuffer = v11;
 
-    v13 = [(MTLBuffer *)self->_gaussian3x3CoefficientBuffer contents];
-    *(v13 + 16) = 11087;
-    *v13 = Gaussian3x3FilterCoeffients;
+    contents = [(MTLBuffer *)self->_gaussian3x3CoefficientBuffer contents];
+    *(contents + 16) = 11087;
+    *contents = Gaussian3x3FilterCoeffients;
   }
 
-  v14 = [v8 computeCommandEncoder];
-  v15 = v14;
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  v15 = computeCommandEncoder;
   if (self->_supportsSIMDShuffle)
   {
     v16 = &OBJC_IVAR___OFForwarp__gaussian3x3FilterSIMDKernel;
@@ -694,12 +694,12 @@
     v16 = &OBJC_IVAR___OFForwarp__gaussian3x3FilterKernel;
   }
 
-  [v14 setComputePipelineState:*(&self->super.super.isa + *v16)];
-  [v15 setTexture:v9 atIndex:0];
-  [v15 setTexture:v10 atIndex:1];
+  [computeCommandEncoder setComputePipelineState:*(&self->super.super.isa + *v16)];
+  [v15 setTexture:sourceCopy atIndex:0];
+  [v15 setTexture:destinationCopy atIndex:1];
   [v15 setBuffer:self->_gaussian3x3CoefficientBuffer offset:0 atIndex:0];
-  v19[0] = ([v10 width] + 3) >> 2;
-  v19[1] = ([v10 height] + 31) >> 5;
+  v19[0] = ([destinationCopy width] + 3) >> 2;
+  v19[1] = ([destinationCopy height] + 31) >> 5;
   v19[2] = 1;
   v17 = xmmword_2487C37A0;
   v18 = 1;
@@ -707,141 +707,141 @@
   [v15 endEncoding];
 }
 
-- (void)encodeErrorDownsampleToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5
+- (void)encodeErrorDownsampleToCommandBuffer:(id)buffer source:(id)source destination:(id)destination
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 computeCommandEncoder];
-  [v10 setComputePipelineState:self->_errorMapDownsampleKernel];
-  [v10 setTexture:v9 atIndex:0];
+  destinationCopy = destination;
+  sourceCopy = source;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_errorMapDownsampleKernel];
+  [computeCommandEncoder setTexture:sourceCopy atIndex:0];
 
-  [v10 setTexture:v8 atIndex:1];
-  v11 = ([v8 width] + 15) >> 4;
-  v12 = [v8 height];
+  [computeCommandEncoder setTexture:destinationCopy atIndex:1];
+  v11 = ([destinationCopy width] + 15) >> 4;
+  height = [destinationCopy height];
 
   v15[0] = v11;
-  v15[1] = (v12 + 15) >> 4;
+  v15[1] = (height + 15) >> 4;
   v15[2] = 1;
   v13 = vdupq_n_s64(0x10uLL);
   v14 = 1;
-  [v10 dispatchThreadgroups:v15 threadsPerThreadgroup:&v13];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v15 threadsPerThreadgroup:&v13];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeLinearSplattingToCommandBuffer:(id)a3 input:(id)a4 flow:(id)a5 error:(id)a6 splatBuffer:(id)a7 outputTexture:(id)a8 timeScale:(float)a9
+- (void)encodeLinearSplattingToCommandBuffer:(id)buffer input:(id)input flow:(id)flow error:(id)error splatBuffer:(id)splatBuffer outputTexture:(id)texture timeScale:(float)scale
 {
-  v16 = a8;
-  v17 = a7;
-  v19 = a3;
-  *&v18 = a9;
-  [(OFForwarp *)self encodeSplattingToCommandBuffer:v19 input:a4 flow:a5 error:a6 outputBuffer:v17 timeScale:v18];
-  [(OFForwarp *)self encodeSplattingNormalizationToCommandBuffer:v19 splattingBuffer:v17 outputTexture:v16];
+  textureCopy = texture;
+  splatBufferCopy = splatBuffer;
+  bufferCopy = buffer;
+  *&v18 = scale;
+  [(OFForwarp *)self encodeSplattingToCommandBuffer:bufferCopy input:input flow:flow error:error outputBuffer:splatBufferCopy timeScale:v18];
+  [(OFForwarp *)self encodeSplattingNormalizationToCommandBuffer:bufferCopy splattingBuffer:splatBufferCopy outputTexture:textureCopy];
 }
 
-- (void)encodeSplattingToCommandBuffer:(id)a3 input:(id)a4 flow:(id)a5 error:(id)a6 outputBuffer:(id)a7 timeScale:(float)a8
+- (void)encodeSplattingToCommandBuffer:(id)buffer input:(id)input flow:(id)flow error:(id)error outputBuffer:(id)outputBuffer timeScale:(float)scale
 {
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  v19 = [v18 blitCommandEncoder];
-  [v19 fillBuffer:v14 range:0 value:{objc_msgSend(v14, "length"), 0}];
-  [v19 endEncoding];
-  v20 = [v18 computeCommandEncoder];
+  outputBufferCopy = outputBuffer;
+  errorCopy = error;
+  flowCopy = flow;
+  inputCopy = input;
+  bufferCopy = buffer;
+  blitCommandEncoder = [bufferCopy blitCommandEncoder];
+  [blitCommandEncoder fillBuffer:outputBufferCopy range:0 value:{objc_msgSend(outputBufferCopy, "length"), 0}];
+  [blitCommandEncoder endEncoding];
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
   v21 = [(MTLDevice *)self->super._device newBufferWithLength:20 options:0];
-  v22 = [v21 contents];
-  *v22 = a8;
-  v22[3] = self->_errorTolerance;
-  [v20 setComputePipelineState:self->_splattingKernel];
-  [v20 setTexture:v17 atIndex:0];
-  [v20 setTexture:v16 atIndex:1];
+  contents = [v21 contents];
+  *contents = scale;
+  contents[3] = self->_errorTolerance;
+  [computeCommandEncoder setComputePipelineState:self->_splattingKernel];
+  [computeCommandEncoder setTexture:inputCopy atIndex:0];
+  [computeCommandEncoder setTexture:flowCopy atIndex:1];
 
-  [v20 setTexture:v15 atIndex:2];
-  [v20 setBuffer:v21 offset:0 atIndex:0];
-  [v20 setBuffer:v14 offset:0 atIndex:1];
+  [computeCommandEncoder setTexture:errorCopy atIndex:2];
+  [computeCommandEncoder setBuffer:v21 offset:0 atIndex:0];
+  [computeCommandEncoder setBuffer:outputBufferCopy offset:0 atIndex:1];
 
-  v23 = ([v17 width] + 15) >> 4;
-  v24 = [v17 height];
+  v23 = ([inputCopy width] + 15) >> 4;
+  height = [inputCopy height];
 
   v27[0] = v23;
-  v27[1] = (v24 + 15) >> 4;
+  v27[1] = (height + 15) >> 4;
   v27[2] = 1;
   v25 = vdupq_n_s64(0x10uLL);
   v26 = 1;
-  [v20 dispatchThreadgroups:v27 threadsPerThreadgroup:&v25];
-  [v20 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v27 threadsPerThreadgroup:&v25];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeSplattingNormalizationToCommandBuffer:(id)a3 splattingBuffer:(id)a4 outputTexture:(id)a5
+- (void)encodeSplattingNormalizationToCommandBuffer:(id)buffer splattingBuffer:(id)splattingBuffer outputTexture:(id)texture
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 computeCommandEncoder];
-  [v10 setComputePipelineState:self->_splattingNormalizationKernel];
-  [v10 setBuffer:v9 offset:0 atIndex:0];
+  textureCopy = texture;
+  splattingBufferCopy = splattingBuffer;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_splattingNormalizationKernel];
+  [computeCommandEncoder setBuffer:splattingBufferCopy offset:0 atIndex:0];
 
-  [v10 setTexture:v8 atIndex:0];
-  v11 = ([v8 width] + 15) >> 4;
-  v12 = [v8 height];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
+  v11 = ([textureCopy width] + 15) >> 4;
+  height = [textureCopy height];
 
   v15[0] = v11;
-  v15[1] = (v12 + 15) >> 4;
+  v15[1] = (height + 15) >> 4;
   v15[2] = 1;
   v13 = vdupq_n_s64(0x10uLL);
   v14 = 1;
-  [v10 dispatchThreadgroups:v15 threadsPerThreadgroup:&v13];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v15 threadsPerThreadgroup:&v13];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeWarpAndBlendFeaturesWithErrorMaskToCommandBuffer:(id)a3 first:(id)a4 second:(id)a5 forwardFlow:(id)a6 backwardFlow:(id)a7 forwardErrorMap:(id)a8 backwardErrorMap:(id)a9 forwarpConsistency:(id)a10 backwardConsistency:(id)a11 timeScale:(float)a12 destination:(id)a13
+- (void)encodeWarpAndBlendFeaturesWithErrorMaskToCommandBuffer:(id)buffer first:(id)first second:(id)second forwardFlow:(id)flow backwardFlow:(id)backwardFlow forwardErrorMap:(id)map backwardErrorMap:(id)errorMap forwarpConsistency:(id)self0 backwardConsistency:(id)self1 timeScale:(float)self2 destination:(id)self3
 {
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v24 = a9;
-  v25 = a10;
-  v26 = a11;
-  v27 = a13;
-  v28 = [a3 computeCommandEncoder];
-  if (v28)
+  firstCopy = first;
+  secondCopy = second;
+  flowCopy = flow;
+  backwardFlowCopy = backwardFlow;
+  mapCopy = map;
+  errorMapCopy = errorMap;
+  consistencyCopy = consistency;
+  backwardConsistencyCopy = backwardConsistency;
+  destinationCopy = destination;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  if (computeCommandEncoder)
   {
-    *v38 = a12;
-    v29 = [v23 width];
-    *&v38[2] = v29 / [v19 width];
-    v30 = [v19 width];
-    *&v38[1] = v30 / [v23 width];
-    [v28 setBytes:v38 length:12 atIndex:0];
-    [v28 setTexture:v19 atIndex:0];
-    v33 = v20;
-    [v28 setTexture:v20 atIndex:1];
-    [v28 setTexture:v21 atIndex:2];
-    [v28 setTexture:v22 atIndex:3];
-    [v28 setTexture:v23 atIndex:4];
-    [v28 setTexture:v24 atIndex:5];
+    *v38 = scale;
+    width = [mapCopy width];
+    *&v38[2] = width / [firstCopy width];
+    width2 = [firstCopy width];
+    *&v38[1] = width2 / [mapCopy width];
+    [computeCommandEncoder setBytes:v38 length:12 atIndex:0];
+    [computeCommandEncoder setTexture:firstCopy atIndex:0];
+    v33 = secondCopy;
+    [computeCommandEncoder setTexture:secondCopy atIndex:1];
+    [computeCommandEncoder setTexture:flowCopy atIndex:2];
+    [computeCommandEncoder setTexture:backwardFlowCopy atIndex:3];
+    [computeCommandEncoder setTexture:mapCopy atIndex:4];
+    [computeCommandEncoder setTexture:errorMapCopy atIndex:5];
     v31 = &OBJC_IVAR___OFForwarp__warpAndBlendTextures;
     v32 = 6;
-    if (v25 && v26)
+    if (consistencyCopy && backwardConsistencyCopy)
     {
-      [v28 setTexture:v25 atIndex:6];
-      [v28 setTexture:v26 atIndex:7];
+      [computeCommandEncoder setTexture:consistencyCopy atIndex:6];
+      [computeCommandEncoder setTexture:backwardConsistencyCopy atIndex:7];
       v31 = &OBJC_IVAR___OFForwarp__warpAndBlendTexturesWithConsistency;
       v32 = 8;
     }
 
-    [v28 setTexture:v27 atIndex:v32];
-    [v28 setComputePipelineState:*(&self->super.super.isa + *v31)];
-    v37[0] = ([v27 width] + 15) >> 4;
-    v37[1] = ([v27 height] + 15) >> 4;
+    [computeCommandEncoder setTexture:destinationCopy atIndex:v32];
+    [computeCommandEncoder setComputePipelineState:*(&self->super.super.isa + *v31)];
+    v37[0] = ([destinationCopy width] + 15) >> 4;
+    v37[1] = ([destinationCopy height] + 15) >> 4;
     v37[2] = 1;
     v35 = vdupq_n_s64(0x10uLL);
     v36 = 1;
-    [v28 dispatchThreadgroups:v37 threadsPerThreadgroup:&v35];
-    [v28 endEncoding];
-    v20 = v33;
+    [computeCommandEncoder dispatchThreadgroups:v37 threadsPerThreadgroup:&v35];
+    [computeCommandEncoder endEncoding];
+    secondCopy = v33;
   }
 }
 

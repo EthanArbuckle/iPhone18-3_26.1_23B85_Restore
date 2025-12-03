@@ -1,24 +1,24 @@
 @interface IdentityDocScanConfig
 - (_TtC13CoreIDVShared21IdentityDocScanConfig)init;
-- (_TtC13CoreIDVShared21IdentityDocScanConfig)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC13CoreIDVShared21IdentityDocScanConfig)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IdentityDocScanConfig
 
-- (_TtC13CoreIDVShared21IdentityDocScanConfig)initWithCoder:(id)a3
+- (_TtC13CoreIDVShared21IdentityDocScanConfig)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_225B5630C(v3);
+  coderCopy = coder;
+  v4 = sub_225B5630C(coderCopy);
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  IdentityDocScanConfig.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  IdentityDocScanConfig.encode(with:)(coderCopy);
 }
 
 - (_TtC13CoreIDVShared21IdentityDocScanConfig)init

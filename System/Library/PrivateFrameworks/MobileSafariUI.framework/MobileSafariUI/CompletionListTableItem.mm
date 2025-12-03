@@ -1,24 +1,24 @@
 @interface CompletionListTableItem
-- (BOOL)isEqual:(id)a3;
-- (CompletionListTableItem)initWithCompletionItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CompletionListTableItem)initWithCompletionItem:(id)item;
 - (id)description;
 @end
 
 @implementation CompletionListTableItem
 
-- (CompletionListTableItem)initWithCompletionItem:(id)a3
+- (CompletionListTableItem)initWithCompletionItem:(id)item
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  itemCopy = item;
   v22.receiver = self;
   v22.super_class = CompletionListTableItem;
   v6 = [(CompletionListTableItem *)&v22 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_completionItem, a3);
-    v8 = [v5 tableItemEqualityInfo];
-    v9 = [v8 copy];
+    objc_storeStrong(&v6->_completionItem, item);
+    tableItemEqualityInfo = [itemCopy tableItemEqualityInfo];
+    v9 = [tableItemEqualityInfo copy];
     tableItemEqualityInfo = v7->_tableItemEqualityInfo;
     v7->_tableItemEqualityInfo = v9;
 
@@ -58,10 +58,10 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -71,7 +71,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(CompletionItem *)self->_completionItem isMemberOfClass:objc_opt_class()])
       {
         v6 = [(NSArray *)self->_tableItemEqualityInfo isEqual:v5->_tableItemEqualityInfo];

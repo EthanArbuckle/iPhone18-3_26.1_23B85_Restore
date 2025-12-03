@@ -1,6 +1,6 @@
 @interface VideosUI_MultiViewPlayerHUDTemplateControllerAccessibility
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)updateVisibleCellsWithPlaybackIdentifiers:(id)a3;
+- (void)updateVisibleCellsWithPlaybackIdentifiers:(id)identifiers;
 @end
 
 @implementation VideosUI_MultiViewPlayerHUDTemplateControllerAccessibility
@@ -14,9 +14,9 @@
   v15 = 0;
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 view];
+  view = [v2 view];
 
-  v4 = [v3 _accessibilityFindSubviewDescendantsPassingTest:&__block_literal_global_15];
+  v4 = [view _accessibilityFindSubviewDescendantsPassingTest:&__block_literal_global_15];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -48,11 +48,11 @@
   v10 = *MEMORY[0x29EDCA608];
 }
 
-- (void)updateVisibleCellsWithPlaybackIdentifiers:(id)a3
+- (void)updateVisibleCellsWithPlaybackIdentifiers:(id)identifiers
 {
   v4.receiver = self;
   v4.super_class = VideosUI_MultiViewPlayerHUDTemplateControllerAccessibility;
-  [(VideosUI_MultiViewPlayerHUDTemplateControllerAccessibility *)&v4 updateVisibleCellsWithPlaybackIdentifiers:a3];
+  [(VideosUI_MultiViewPlayerHUDTemplateControllerAccessibility *)&v4 updateVisibleCellsWithPlaybackIdentifiers:identifiers];
   [(VideosUI_MultiViewPlayerHUDTemplateControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

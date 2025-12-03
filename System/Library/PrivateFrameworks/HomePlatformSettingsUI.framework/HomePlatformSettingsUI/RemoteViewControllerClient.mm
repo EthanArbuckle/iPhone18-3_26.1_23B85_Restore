@@ -1,9 +1,9 @@
 @interface RemoteViewControllerClient
 - (_TtC22HomePlatformSettingsUI26RemoteViewControllerClient)init;
-- (void)hostViewController:(id)a3 didBeginHosting:(id)a4;
-- (void)hostViewController:(id)a3 didEndHosting:(id)a4 error:(id)a5;
-- (void)hostViewController:(id)a3 didFailToHost:(id)a4 error:(id)a5;
-- (void)hostViewController:(id)a3 didPrepareToHost:(id)a4;
+- (void)hostViewController:(id)controller didBeginHosting:(id)hosting;
+- (void)hostViewController:(id)controller didEndHosting:(id)hosting error:(id)error;
+- (void)hostViewController:(id)controller didFailToHost:(id)host error:(id)error;
+- (void)hostViewController:(id)controller didPrepareToHost:(id)host;
 @end
 
 @implementation RemoteViewControllerClient
@@ -15,37 +15,37 @@
   return result;
 }
 
-- (void)hostViewController:(id)a3 didBeginHosting:(id)a4
+- (void)hostViewController:(id)controller didBeginHosting:(id)hosting
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  hostingCopy = hosting;
+  selfCopy = self;
   sub_25429DED4();
 }
 
-- (void)hostViewController:(id)a3 didEndHosting:(id)a4 error:(id)a5
+- (void)hostViewController:(id)controller didEndHosting:(id)hosting error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_25429E080(a5);
+  controllerCopy = controller;
+  hostingCopy = hosting;
+  selfCopy = self;
+  errorCopy = error;
+  sub_25429E080(error);
 }
 
-- (void)hostViewController:(id)a3 didFailToHost:(id)a4 error:(id)a5
+- (void)hostViewController:(id)controller didFailToHost:(id)host error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_25429E118(a5);
+  controllerCopy = controller;
+  hostCopy = host;
+  selfCopy = self;
+  errorCopy = error;
+  sub_25429E118(error);
 }
 
-- (void)hostViewController:(id)a3 didPrepareToHost:(id)a4
+- (void)hostViewController:(id)controller didPrepareToHost:(id)host
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  hostCopy = host;
+  selfCopy = self;
   sub_25429E5C8();
 }
 

@@ -7,26 +7,26 @@
 - (HDCodableHealthObject)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableHealthObject);
-  v3 = [a1 UUID];
-  v4 = [v3 hk_dataForUUIDBytes];
-  [(HDCodableHealthObject *)v2 setUuid:v4];
+  uUID = [self UUID];
+  hk_dataForUUIDBytes = [uUID hk_dataForUUIDBytes];
+  [(HDCodableHealthObject *)v2 setUuid:hk_dataForUUIDBytes];
 
-  v5 = [a1 metadata];
-  v6 = [v5 hk_codableMetadata];
-  [(HDCodableHealthObject *)v2 setMetadataDictionary:v6];
+  metadata = [self metadata];
+  hk_codableMetadata = [metadata hk_codableMetadata];
+  [(HDCodableHealthObject *)v2 setMetadataDictionary:hk_codableMetadata];
 
-  v7 = [a1 _sourceBundleIdentifier];
-  [(HDCodableHealthObject *)v2 setSourceBundleIdentifier:v7];
+  _sourceBundleIdentifier = [self _sourceBundleIdentifier];
+  [(HDCodableHealthObject *)v2 setSourceBundleIdentifier:_sourceBundleIdentifier];
 
-  v8 = [a1 metadata];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277CCC520]];
+  metadata2 = [self metadata];
+  v9 = [metadata2 objectForKeyedSubscript:*MEMORY[0x277CCC520]];
 
   if (v9)
   {
-    -[HDCodableHealthObject setExternalSyncObjectCode:](v2, "setExternalSyncObjectCode:", [a1 _externalSyncObjectCode]);
+    -[HDCodableHealthObject setExternalSyncObjectCode:](v2, "setExternalSyncObjectCode:", [self _externalSyncObjectCode]);
   }
 
-  [a1 _creationTimestamp];
+  [self _creationTimestamp];
   if (v10 != 2.22507386e-308)
   {
     [(HDCodableHealthObject *)v2 setCreationDate:?];

@@ -2,14 +2,14 @@
 - (MKLocationManager)locationManager;
 - (MNNavigationService)navigationService;
 - (NSString)debugDescription;
-- (PedestrianARSessionRouteDistanceMonitor)initWithObserver:(id)a3 platformController:(id)a4 navigationService:(id)a5 locationManager:(id)a6;
+- (PedestrianARSessionRouteDistanceMonitor)initWithObserver:(id)observer platformController:(id)controller navigationService:(id)service locationManager:(id)manager;
 - (PlatformController)platformController;
 - (void)dealloc;
-- (void)locationManagerUpdatedLocation:(id)a3;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
-- (void)routePlanningSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4 userInitiated:(BOOL)a5;
-- (void)routePlanningSession:(id)a3 didUpdateRouteCollectionResult:(id)a4 forTransportType:(int64_t)a5;
-- (void)setRoutePlanningSession:(id)a3;
+- (void)locationManagerUpdatedLocation:(id)location;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
+- (void)routePlanningSession:(id)session didChangeCurrentTransportType:(int64_t)type userInitiated:(BOOL)initiated;
+- (void)routePlanningSession:(id)session didUpdateRouteCollectionResult:(id)result forTransportType:(int64_t)type;
+- (void)setRoutePlanningSession:(id)session;
 - (void)updateState;
 @end
 
@@ -36,23 +36,23 @@
   return WeakRetained;
 }
 
-- (void)routePlanningSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4 userInitiated:(BOOL)a5
+- (void)routePlanningSession:(id)session didChangeCurrentTransportType:(int64_t)type userInitiated:(BOOL)initiated
 {
   v7 = sub_100E6D704();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    if ((a4 - 1) > 4)
+    if ((type - 1) > 4)
     {
       v8 = @"Undefined";
     }
 
     else
     {
-      v8 = off_1016567F8[a4 - 1];
+      v8 = off_1016567F8[type - 1];
     }
 
     v9 = 134349314;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[%{public}p] Route planning updated the current transport type: %@", &v9, 0x16u);
@@ -61,18 +61,18 @@
   [(PedestrianARSessionRouteDistanceMonitor *)self updateState];
 }
 
-- (void)routePlanningSession:(id)a3 didUpdateRouteCollectionResult:(id)a4 forTransportType:(int64_t)a5
+- (void)routePlanningSession:(id)session didUpdateRouteCollectionResult:(id)result forTransportType:(int64_t)type
 {
-  v7 = [(PedestrianARSessionRouteDistanceMonitor *)self routePlanningSession:a3];
-  v8 = [v7 currentTransportType];
+  v7 = [(PedestrianARSessionRouteDistanceMonitor *)self routePlanningSession:session];
+  currentTransportType = [v7 currentTransportType];
 
-  if (v8 == a5)
+  if (currentTransportType == type)
   {
     v9 = sub_100E6D704();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v10 = 134349056;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "[%{public}p] Route planning updated the route collection for the current transport type", &v10, 0xCu);
     }
 
@@ -80,20 +80,20 @@
   }
 }
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v6 = a5;
+  toSessionCopy = toSession;
   v7 = sub_100E6D704();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v11 = 134349314;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v6;
+    v14 = toSessionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[%{public}p] Got a new session: %@", &v11, 0x16u);
   }
 
-  v8 = v6;
+  v8 = toSessionCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -111,17 +111,17 @@
   [(PedestrianARSessionRouteDistanceMonitor *)self updateState];
 }
 
-- (void)locationManagerUpdatedLocation:(id)a3
+- (void)locationManagerUpdatedLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = sub_100E6D704();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 lastLocation];
+    lastLocation = [locationCopy lastLocation];
     v7 = 134349314;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v6;
+    v10 = lastLocation;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Got a new location update: %@", &v7, 0x16u);
   }
 
@@ -130,45 +130,45 @@
 
 - (NSString)debugDescription
 {
-  v2 = [objc_opt_class() friendlyName];
+  friendlyName = [objc_opt_class() friendlyName];
   GEOConfigGetDouble();
-  v4 = [NSString stringWithFormat:@"%@\nmax distance threshold: %f\n", v2, v3];
+  v4 = [NSString stringWithFormat:@"%@\nmax distance threshold: %f\n", friendlyName, v3];
 
   return v4;
 }
 
-- (void)setRoutePlanningSession:(id)a3
+- (void)setRoutePlanningSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   [(RoutePlanningSession *)self->_routePlanningSession unregisterObserver:self];
   routePlanningSession = self->_routePlanningSession;
-  self->_routePlanningSession = v4;
-  v6 = v4;
+  self->_routePlanningSession = sessionCopy;
+  v6 = sessionCopy;
 
   [(RoutePlanningSession *)self->_routePlanningSession registerObserver:self];
   v7 = self->_routePlanningSession;
-  v8 = [(PedestrianARSessionRouteDistanceMonitor *)self locationManager];
-  v9 = v8;
+  locationManager = [(PedestrianARSessionRouteDistanceMonitor *)self locationManager];
+  v9 = locationManager;
   if (v7)
   {
-    [v8 listenForLocationUpdates:self];
+    [locationManager listenForLocationUpdates:self];
   }
 
   else
   {
-    [v8 stopListeningForLocationUpdates:self];
+    [locationManager stopListeningForLocationUpdates:self];
   }
 }
 
 - (void)updateState
 {
-  v3 = [(PedestrianARSessionRouteDistanceMonitor *)self routePlanningSession];
+  routePlanningSession = [(PedestrianARSessionRouteDistanceMonitor *)self routePlanningSession];
 
-  if (!v3)
+  if (!routePlanningSession)
   {
-    v18 = [(PedestrianARSessionRouteDistanceMonitor *)self navigationService];
-    v19 = [v18 state];
-    if (v19 <= 6 && ((1 << v19) & 0x47) != 0)
+    navigationService = [(PedestrianARSessionRouteDistanceMonitor *)self navigationService];
+    state = [navigationService state];
+    if (state <= 6 && ((1 << state) & 0x47) != 0)
     {
 
       v20 = sub_100E6D704();
@@ -177,11 +177,11 @@
         goto LABEL_24;
       }
 
-      v21 = [(PedestrianARSessionRouteDistanceMonitor *)self navigationService];
-      [v21 state];
+      navigationService2 = [(PedestrianARSessionRouteDistanceMonitor *)self navigationService];
+      [navigationService2 state];
       v22 = MNNavigationServiceStateAsString();
       *buf = 134349314;
-      v45 = self;
+      selfCopy16 = self;
       v46 = 2112;
       v47 = *&v22;
       v23 = "[%{public}p] We are not in route planning nor in a pedestrian AR navigation state (%@); will not interfere with feature availability";
@@ -194,21 +194,21 @@
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
         *buf = 134349056;
-        v45 = self;
+        selfCopy16 = self;
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "[%{public}p] Checking whether to allow feature during active guidance", buf, 0xCu);
       }
 
-      v31 = [(PedestrianARSessionRouteDistanceMonitor *)self navigationService];
-      v32 = [v31 navigationTransportType];
+      navigationService3 = [(PedestrianARSessionRouteDistanceMonitor *)self navigationService];
+      navigationTransportType = [navigationService3 navigationTransportType];
 
-      if (v32 == 2)
+      if (navigationTransportType == 2)
       {
-        v33 = [(PedestrianARSessionRouteDistanceMonitor *)self navigationService];
-        v8 = [v33 lastLocation];
+        navigationService4 = [(PedestrianARSessionRouteDistanceMonitor *)self navigationService];
+        lastLocation = [navigationService4 lastLocation];
 
-        if (v8)
+        if (lastLocation)
         {
-          v14 = [v8 routeMatch];
+          routeMatch = [lastLocation routeMatch];
           goto LABEL_8;
         }
 
@@ -216,14 +216,14 @@
         if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
         {
           *buf = 134349056;
-          v45 = self;
+          selfCopy16 = self;
           v27 = "[%{public}p] We are navigating but do not have a last location estimate; will not interfere with feature availability";
           goto LABEL_21;
         }
 
 LABEL_24:
 
-        v28 = self;
+        selfCopy15 = self;
         v29 = 1;
         goto LABEL_25;
       }
@@ -234,20 +234,20 @@ LABEL_24:
         goto LABEL_24;
       }
 
-      v21 = [(PedestrianARSessionRouteDistanceMonitor *)self navigationService];
-      v42 = [v21 navigationTransportType];
-      if (v42 >= 7)
+      navigationService2 = [(PedestrianARSessionRouteDistanceMonitor *)self navigationService];
+      navigationTransportType2 = [navigationService2 navigationTransportType];
+      if (navigationTransportType2 >= 7)
       {
-        v22 = [NSString stringWithFormat:@"(unknown: %i)", v42];
+        v22 = [NSString stringWithFormat:@"(unknown: %i)", navigationTransportType2];
       }
 
       else
       {
-        v22 = off_1016567C0[v42];
+        v22 = off_1016567C0[navigationTransportType2];
       }
 
       *buf = 134349314;
-      v45 = self;
+      selfCopy16 = self;
       v46 = 2112;
       v47 = *&v22;
       v23 = "[%{public}p] We are navigating with a non-walking transport type (%@); will not interfere with feature availability";
@@ -262,32 +262,32 @@ LABEL_24:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v45 = self;
+    selfCopy16 = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Checking whether to allow feature during route planning", buf, 0xCu);
   }
 
-  v5 = [(PedestrianARSessionRouteDistanceMonitor *)self routePlanningSession];
-  v6 = [v5 currentTransportType];
+  routePlanningSession2 = [(PedestrianARSessionRouteDistanceMonitor *)self routePlanningSession];
+  currentTransportType = [routePlanningSession2 currentTransportType];
 
-  if (v6 != 2)
+  if (currentTransportType != 2)
   {
     v20 = sub_100E6D704();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
-      v24 = [(PedestrianARSessionRouteDistanceMonitor *)self routePlanningSession];
-      v25 = [v24 currentTransportType];
-      if ((v25 - 1) > 4)
+      routePlanningSession3 = [(PedestrianARSessionRouteDistanceMonitor *)self routePlanningSession];
+      currentTransportType2 = [routePlanningSession3 currentTransportType];
+      if ((currentTransportType2 - 1) > 4)
       {
         v26 = @"Undefined";
       }
 
       else
       {
-        v26 = off_1016567F8[(v25 - 1)];
+        v26 = off_1016567F8[(currentTransportType2 - 1)];
       }
 
       *buf = 134349314;
-      v45 = self;
+      selfCopy16 = self;
       v46 = 2112;
       v47 = *&v26;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "[%{public}p] We are route planning with a non-walking transport type (%@); will not interfere with feature availability", buf, 0x16u);
@@ -296,16 +296,16 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v7 = [(PedestrianARSessionRouteDistanceMonitor *)self locationManager];
-  v8 = [v7 lastLocation];
+  locationManager = [(PedestrianARSessionRouteDistanceMonitor *)self locationManager];
+  lastLocation = [locationManager lastLocation];
 
-  if (!v8)
+  if (!lastLocation)
   {
     v20 = sub_100E6D704();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v45 = self;
+      selfCopy16 = self;
       v27 = "[%{public}p] We are in route planning but do not have a last location estimate; will not interfere with feature availability";
 LABEL_21:
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, v27, buf, 0xCu);
@@ -315,15 +315,15 @@ LABEL_21:
     goto LABEL_24;
   }
 
-  v9 = [(PedestrianARSessionRouteDistanceMonitor *)self routePlanningSession];
-  v10 = [v9 currentRouteCollection];
-  v11 = [v10 currentRoute];
+  routePlanningSession4 = [(PedestrianARSessionRouteDistanceMonitor *)self routePlanningSession];
+  currentRouteCollection = [routePlanningSession4 currentRouteCollection];
+  currentRoute = [currentRouteCollection currentRoute];
 
-  if (v11)
+  if (currentRoute)
   {
-    v12 = [[GEOLocation alloc] initWithCLLocation:v8];
-    v13 = [[GEORouteMatcher alloc] initWithRoute:v11 auditToken:0];
-    v14 = [v13 matchToRouteWithLocation:v12];
+    v12 = [[GEOLocation alloc] initWithCLLocation:lastLocation];
+    v13 = [[GEORouteMatcher alloc] initWithRoute:currentRoute auditToken:0];
+    routeMatch = [v13 matchToRouteWithLocation:v12];
 
 LABEL_8:
     GEOConfigGetDouble();
@@ -334,7 +334,7 @@ LABEL_8:
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349312;
-        v45 = self;
+        selfCopy16 = self;
         v46 = 2048;
         v47 = v17;
         _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "[%{public}p] Using debug overridden distance value: %f", buf, 0x16u);
@@ -343,9 +343,9 @@ LABEL_8:
       goto LABEL_37;
     }
 
-    if (v14)
+    if (routeMatch)
     {
-      [v14 distanceFromRoute];
+      [routeMatch distanceFromRoute];
       v17 = v16;
 LABEL_37:
       GEOConfigGetDouble();
@@ -357,7 +357,7 @@ LABEL_37:
         if (v39)
         {
           *buf = 134349568;
-          v45 = self;
+          selfCopy16 = self;
           v46 = 2048;
           v47 = v17;
           v48 = 2048;
@@ -365,7 +365,7 @@ LABEL_37:
           _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "[%{public}p] The user is too far from the route (%f >= %f); will not allow the feature to be visible", buf, 0x20u);
         }
 
-        v40 = self;
+        selfCopy13 = self;
         v41 = 0;
       }
 
@@ -374,7 +374,7 @@ LABEL_37:
         if (v39)
         {
           *buf = 134349568;
-          v45 = self;
+          selfCopy16 = self;
           v46 = 2048;
           v47 = v17;
           v48 = 2048;
@@ -382,11 +382,11 @@ LABEL_37:
           _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "[%{public}p] The user is sufficiently close to the route (%f < %f); will allow the feature to be visible", buf, 0x20u);
         }
 
-        v40 = self;
+        selfCopy13 = self;
         v41 = 1;
       }
 
-      [(PedestrianARSessionMonitor *)v40 setShouldShowPedestrianAR:v41];
+      [(PedestrianARSessionMonitor *)selfCopy13 setShouldShowPedestrianAR:v41];
 
       return;
     }
@@ -395,14 +395,14 @@ LABEL_37:
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134349056;
-      v45 = self;
+      selfCopy16 = self;
       _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "[%{public}p] We don't have a route match; will not allow the feature to be visible", buf, 0xCu);
     }
 
-    v28 = self;
+    selfCopy15 = self;
     v29 = 0;
 LABEL_25:
-    [(PedestrianARSessionMonitor *)v28 setShouldShowPedestrianAR:v29];
+    [(PedestrianARSessionMonitor *)selfCopy15 setShouldShowPedestrianAR:v29];
     return;
   }
 
@@ -410,7 +410,7 @@ LABEL_25:
   if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v45 = self;
+    selfCopy16 = self;
     _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_INFO, "[%{public}p] We are in route planning but do not have a route; will not interfere with feature availability", buf, 0xCu);
   }
 
@@ -423,7 +423,7 @@ LABEL_25:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -441,13 +441,13 @@ LABEL_25:
   [(PedestrianARSessionMonitor *)&v7 dealloc];
 }
 
-- (PedestrianARSessionRouteDistanceMonitor)initWithObserver:(id)a3 platformController:(id)a4 navigationService:(id)a5 locationManager:(id)a6
+- (PedestrianARSessionRouteDistanceMonitor)initWithObserver:(id)observer platformController:(id)controller navigationService:(id)service locationManager:(id)manager
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  observerCopy = observer;
+  controllerCopy = controller;
+  serviceCopy = service;
+  managerCopy = manager;
+  if (!controllerCopy)
   {
     v23 = sub_10006D178();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -476,7 +476,7 @@ LABEL_25:
     }
   }
 
-  if (!v12)
+  if (!serviceCopy)
   {
     v26 = sub_10006D178();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -505,7 +505,7 @@ LABEL_25:
     }
   }
 
-  if (!v13)
+  if (!managerCopy)
   {
     v29 = sub_10006D178();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -536,7 +536,7 @@ LABEL_25:
 
   v32.receiver = self;
   v32.super_class = PedestrianARSessionRouteDistanceMonitor;
-  v14 = [(PedestrianARSessionMonitor *)&v32 initWithObserver:v10];
+  v14 = [(PedestrianARSessionMonitor *)&v32 initWithObserver:observerCopy];
   if (v14)
   {
     v15 = sub_100E6D704();
@@ -547,20 +547,20 @@ LABEL_25:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "[%{public}p] Initializing", buf, 0xCu);
     }
 
-    v16 = objc_storeWeak(&v14->_platformController, v11);
-    [v11 registerObserver:v14];
+    v16 = objc_storeWeak(&v14->_platformController, controllerCopy);
+    [controllerCopy registerObserver:v14];
 
-    objc_storeWeak(&v14->_locationManager, v13);
-    v17 = objc_storeWeak(&v14->_navigationService, v12);
-    [v12 registerObserver:v14];
+    objc_storeWeak(&v14->_locationManager, managerCopy);
+    v17 = objc_storeWeak(&v14->_navigationService, serviceCopy);
+    [serviceCopy registerObserver:v14];
 
     WeakRetained = objc_loadWeakRetained(&v14->_platformController);
-    v19 = [WeakRetained currentSession];
+    currentSession = [WeakRetained currentSession];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = v19;
+      v20 = currentSession;
     }
 
     else

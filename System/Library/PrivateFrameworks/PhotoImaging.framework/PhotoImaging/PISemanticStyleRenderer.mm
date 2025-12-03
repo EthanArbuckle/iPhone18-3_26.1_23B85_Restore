@@ -1,22 +1,22 @@
 @interface PISemanticStyleRenderer
-+ (BOOL)usingSharedSemanticStyleRendererWithMetalCommandQueue:(id)a3 processingType:(int)a4 useStyleEngine:(BOOL)a5 perform:(id)a6;
-- (BOOL)matchesMetalCommandQueue:(id)a3 processingType:(int)a4 useStyleEngine:(BOOL)a5;
++ (BOOL)usingSharedSemanticStyleRendererWithMetalCommandQueue:(id)queue processingType:(int)type useStyleEngine:(BOOL)engine perform:(id)perform;
+- (BOOL)matchesMetalCommandQueue:(id)queue processingType:(int)type useStyleEngine:(BOOL)engine;
 - (BOOL)prepareProcessor;
 - (PISemanticStyleRenderer)init;
-- (PISemanticStyleRenderer)initWithMetalCommandQueue:(id)a3 processingType:(int)a4 useStyleEngine:(BOOL)a5;
+- (PISemanticStyleRenderer)initWithMetalCommandQueue:(id)queue processingType:(int)type useStyleEngine:(BOOL)engine;
 - (void)dealloc;
 @end
 
 @implementation PISemanticStyleRenderer
 
-- (BOOL)matchesMetalCommandQueue:(id)a3 processingType:(int)a4 useStyleEngine:(BOOL)a5
+- (BOOL)matchesMetalCommandQueue:(id)queue processingType:(int)type useStyleEngine:(BOOL)engine
 {
-  v8 = a3;
-  v9 = [(PISemanticStyleRenderer *)self metalCommandQueue];
+  queueCopy = queue;
+  metalCommandQueue = [(PISemanticStyleRenderer *)self metalCommandQueue];
 
-  if (v9 == v8 && [(PISemanticStyleRenderer *)self processingType]== a4)
+  if (metalCommandQueue == queueCopy && [(PISemanticStyleRenderer *)self processingType]== type)
   {
-    return [(PISemanticStyleRenderer *)self useStyleEngine]^ a5 ^ 1;
+    return [(PISemanticStyleRenderer *)self useStyleEngine]^ engine ^ 1;
   }
 
   else
@@ -50,8 +50,8 @@
         specific = dispatch_get_specific(*v29);
         v33 = MEMORY[0x1E696AF00];
         v34 = specific;
-        v35 = [v33 callStackSymbols];
-        v36 = [v35 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v33 callStackSymbols];
+        v36 = [callStackSymbols componentsJoinedByString:@"\n"];
         v38 = 138543618;
         v39 = specific;
         v40 = 2114;
@@ -75,8 +75,8 @@
 
   v3 = objc_alloc(MEMORY[0x1E6991778]);
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v5 = [(PISemanticStyleRenderer *)self metalCommandQueue];
-  v6 = [v3 initWithbundle:v4 andOptionalCommandQueue:v5];
+  metalCommandQueue = [(PISemanticStyleRenderer *)self metalCommandQueue];
+  v6 = [v3 initWithbundle:v4 andOptionalCommandQueue:metalCommandQueue];
   ctx = self->_ctx;
   self->_ctx = v6;
 
@@ -89,12 +89,12 @@
     [v8 setLabel:v9];
 
     v10 = objc_alloc(MEMORY[0x1E6991750]);
-    v11 = [(FigMetalContext *)self->_ctx device];
-    v12 = [v10 initWithDevice:v11 allocatorType:2];
+    device = [(FigMetalContext *)self->_ctx device];
+    v12 = [v10 initWithDevice:device allocatorType:2];
     [(FigMetalContext *)self->_ctx setAllocator:v12];
 
-    v13 = [(FigMetalContext *)self->_ctx allocator];
-    v14 = [v13 setupWithDescriptor:v8];
+    allocator = [(FigMetalContext *)self->_ctx allocator];
+    v14 = [allocator setupWithDescriptor:v8];
 
     if (v14)
     {
@@ -119,10 +119,10 @@
   processor = self->_processor;
   self->_processor = v17;
 
-  v19 = [(CMISmartStyleMetalRendererV1 *)self->_processor setup];
-  if (v19)
+  setup = [(CMISmartStyleMetalRendererV1 *)self->_processor setup];
+  if (setup)
   {
-    LODWORD(specific) = v19;
+    LODWORD(specific) = setup;
     if (*MEMORY[0x1E69B3D78] == -1)
     {
 LABEL_13:
@@ -190,15 +190,15 @@ LABEL_9:
   {
     metalCommandQueue = self->_metalCommandQueue;
     ctx = self->_ctx;
-    v8 = [(FigMetalContext *)ctx allocator];
+    allocator = [(FigMetalContext *)ctx allocator];
     *buf = 134218752;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
     v13 = metalCommandQueue;
     v14 = 2048;
     v15 = ctx;
     v16 = 2048;
-    v17 = [v8 memSize];
+    memSize = [allocator memSize];
     _os_signpost_emit_with_name_impl(&dword_1C7694000, v4, OS_SIGNPOST_INTERVAL_END, sid, "PISemanticStyleRenderer", "%p q=%p ctx=%p mem=%zu", buf, 0x2Au);
   }
 
@@ -207,11 +207,11 @@ LABEL_9:
   [(PISemanticStyleRenderer *)&v9 dealloc];
 }
 
-- (PISemanticStyleRenderer)initWithMetalCommandQueue:(id)a3 processingType:(int)a4 useStyleEngine:(BOOL)a5
+- (PISemanticStyleRenderer)initWithMetalCommandQueue:(id)queue processingType:(int)type useStyleEngine:(BOOL)engine
 {
   v38 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if (!v9)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     v20 = NUAssertLogger_22529();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -233,8 +233,8 @@ LABEL_9:
         v28 = dispatch_get_specific(*v22);
         v29 = MEMORY[0x1E696AF00];
         v30 = v28;
-        v31 = [v29 callStackSymbols];
-        v32 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v29 callStackSymbols];
+        v32 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v35 = v28;
         v36 = 2114;
@@ -245,8 +245,8 @@ LABEL_9:
 
     else if (v25)
     {
-      v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v27;
       _os_log_error_impl(&dword_1C7694000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -255,13 +255,13 @@ LABEL_9:
     _NUAssertFailHandler();
   }
 
-  v10 = v9;
+  v10 = queueCopy;
   v33.receiver = self;
   v33.super_class = PISemanticStyleRenderer;
   v11 = [(PISemanticStyleRenderer *)&v33 init];
-  objc_storeStrong(&v11->_metalCommandQueue, a3);
-  v11->_processingType = a4;
-  v11->_useStyleEngine = a5;
+  objc_storeStrong(&v11->_metalCommandQueue, queue);
+  v11->_processingType = type;
+  v11->_useStyleEngine = engine;
   v12 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -334,8 +334,8 @@ LABEL_11:
           v20 = MEMORY[0x1E696AF00];
           v21 = specific;
           v22 = v18;
-          v23 = [v20 callStackSymbols];
-          v24 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v20 callStackSymbols];
+          v24 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v27 = specific;
           v28 = 2114;
@@ -362,8 +362,8 @@ LABEL_11:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v14 callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v17;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -381,34 +381,34 @@ LABEL_14:
   }
 }
 
-+ (BOOL)usingSharedSemanticStyleRendererWithMetalCommandQueue:(id)a3 processingType:(int)a4 useStyleEngine:(BOOL)a5 perform:(id)a6
++ (BOOL)usingSharedSemanticStyleRendererWithMetalCommandQueue:(id)queue processingType:(int)type useStyleEngine:(BOOL)engine perform:(id)perform
 {
-  v7 = a5;
-  v8 = *&a4;
-  v10 = a3;
-  v11 = a6;
-  v12 = NSStringFromClass(a1);
-  v13 = [MEMORY[0x1E69B3C58] shared];
+  engineCopy = engine;
+  v8 = *&type;
+  queueCopy = queue;
+  performCopy = perform;
+  v12 = NSStringFromClass(self);
+  mEMORY[0x1E69B3C58] = [MEMORY[0x1E69B3C58] shared];
   v22 = MEMORY[0x1E69E9820];
   v23 = 3221225472;
   v24 = __119__PISemanticStyleRenderer_usingSharedSemanticStyleRendererWithMetalCommandQueue_processingType_useStyleEngine_perform___block_invoke;
   v25 = &unk_1E82ABD18;
-  v14 = v10;
+  v14 = queueCopy;
   v26 = v14;
   v27 = v8;
-  v28 = v7;
-  v15 = [v13 checkOutResourceForKey:v12 matching:&v22];
+  v28 = engineCopy;
+  v15 = [mEMORY[0x1E69B3C58] checkOutResourceForKey:v12 matching:&v22];
 
-  if (v15 || (v16 = [PISemanticStyleRenderer alloc], v15 = [(PISemanticStyleRenderer *)v16 initWithMetalCommandQueue:v14 processingType:v8 useStyleEngine:v7, v22, v23, v24, v25], [(PISemanticStyleRenderer *)v15 prepareProcessor]))
+  if (v15 || (v16 = [PISemanticStyleRenderer alloc], v15 = [(PISemanticStyleRenderer *)v16 initWithMetalCommandQueue:v14 processingType:v8 useStyleEngine:engineCopy, v22, v23, v24, v25], [(PISemanticStyleRenderer *)v15 prepareProcessor]))
   {
     v17 = [(PISemanticStyleRenderer *)v15 processor:v22];
-    v18 = v11[2](v11, v17);
+    v18 = performCopy[2](performCopy, v17);
 
-    v19 = [(PISemanticStyleRenderer *)v15 processor];
-    [v19 resetState];
+    processor = [(PISemanticStyleRenderer *)v15 processor];
+    [processor resetState];
 
-    v20 = [MEMORY[0x1E69B3C58] shared];
-    [v20 checkInResource:v15 forKey:v12];
+    mEMORY[0x1E69B3C58]2 = [MEMORY[0x1E69B3C58] shared];
+    [mEMORY[0x1E69B3C58]2 checkInResource:v15 forKey:v12];
   }
 
   else

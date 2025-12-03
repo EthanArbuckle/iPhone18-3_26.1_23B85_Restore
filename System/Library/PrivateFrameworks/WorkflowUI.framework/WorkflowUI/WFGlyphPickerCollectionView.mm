@@ -1,15 +1,15 @@
 @interface WFGlyphPickerCollectionView
-- (id)_accessibilityViewChildrenWithOptions:(id)a3;
+- (id)_accessibilityViewChildrenWithOptions:(id)options;
 @end
 
 @implementation WFGlyphPickerCollectionView
 
-- (id)_accessibilityViewChildrenWithOptions:(id)a3
+- (id)_accessibilityViewChildrenWithOptions:(id)options
 {
   v20 = *MEMORY[0x277D85DE8];
   v18.receiver = self;
   v18.super_class = WFGlyphPickerCollectionView;
-  v4 = [(WFGlyphPickerCollectionView *)&v18 _accessibilityViewChildrenWithOptions:a3];
+  v4 = [(WFGlyphPickerCollectionView *)&v18 _accessibilityViewChildrenWithOptions:options];
   v5 = [v4 mutableCopy];
   v14 = 0u;
   v15 = 0u;
@@ -31,9 +31,9 @@
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [(WFGlyphPickerCollectionView *)self visibleCells];
+        visibleCells = [(WFGlyphPickerCollectionView *)self visibleCells];
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 && ([v12 containsObject:v11] & 1) == 0)
+        if ((objc_opt_isKindOfClass() & 1) != 0 && ([visibleCells containsObject:v11] & 1) == 0)
         {
           [v5 removeObject:v11];
         }

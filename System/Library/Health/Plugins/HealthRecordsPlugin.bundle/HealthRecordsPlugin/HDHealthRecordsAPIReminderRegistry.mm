@@ -1,49 +1,49 @@
 @interface HDHealthRecordsAPIReminderRegistry
 + (void)initialize;
-- (BOOL)_queue_deregisterAppWithBundleIdentifier:(id)a3 error:(id *)a4;
+- (BOOL)_queue_deregisterAppWithBundleIdentifier:(id)identifier error:(id *)error;
 - (BOOL)_queue_isAnyReminderInFlight;
-- (BOOL)_queue_shouldDropUnlimitedAuthorizationModeReminder:(id)a3;
-- (BOOL)_readAuthorizationAllowedForAnyTypeInRecordsByType:(id)a3;
+- (BOOL)_queue_shouldDropUnlimitedAuthorizationModeReminder:(id)reminder;
+- (BOOL)_readAuthorizationAllowedForAnyTypeInRecordsByType:(id)type;
 - (HDHealthRecordsAPIReminderRegistry)init;
-- (HDHealthRecordsAPIReminderRegistry)initWithProfileExtension:(id)a3;
+- (HDHealthRecordsAPIReminderRegistry)initWithProfileExtension:(id)extension;
 - (HDHealthRecordsProfileExtension)profileExtension;
 - (HDProfile)profile;
-- (double)_timeIntervalForDefaultsKey:(id)a3 fallbackInterval:(double)a4;
+- (double)_timeIntervalForDefaultsKey:(id)key fallbackInterval:(double)interval;
 - (double)deferralPeriod;
 - (double)schedulerGracePeriod;
 - (double)throttlingInterval;
 - (id)_criteriaForFirstUnlockActivity;
 - (id)_criteriaForFirstUnlockActivityCompleted;
-- (id)_eligibilityStartDateAfterPostedReminder:(id)a3;
-- (id)_eligibilityStartDateForUnpostedReminder:(id)a3;
-- (id)_queue_firstEligibleReminderAfterDate:(id)a3;
+- (id)_eligibilityStartDateAfterPostedReminder:(id)reminder;
+- (id)_eligibilityStartDateForUnpostedReminder:(id)reminder;
+- (id)_queue_firstEligibleReminderAfterDate:(id)date;
 - (id)_queue_nextEligibleFireDate;
-- (int64_t)_authorizationModeForRecordsByType:(id)a3;
-- (void)_applicationsUninstalledNotification:(id)a3;
+- (int64_t)_authorizationModeForRecordsByType:(id)type;
+- (void)_applicationsUninstalledNotification:(id)notification;
 - (void)_checkInForFirstUnlockActivity;
-- (void)_didProcessPendingReminderID:(id)a3 transaction:(id)a4;
-- (void)_displayStopAlertForPendingReminderID:(id)a3 transaction:(id)a4 title:(id)a5 body:(id)a6 defaultButtonTitle:(id)a7 alternateButtonTitle:(id)a8;
-- (void)_displayUnlimitedAuthorizationModeConfirmationForPendingReminderID:(id)a3 transaction:(id)a4 reminder:(id)a5;
+- (void)_didProcessPendingReminderID:(id)d transaction:(id)transaction;
+- (void)_displayStopAlertForPendingReminderID:(id)d transaction:(id)transaction title:(id)title body:(id)body defaultButtonTitle:(id)buttonTitle alternateButtonTitle:(id)alternateButtonTitle;
+- (void)_displayUnlimitedAuthorizationModeConfirmationForPendingReminderID:(id)d transaction:(id)transaction reminder:(id)reminder;
 - (void)_firePendingReminderIfEligible;
-- (void)_handleHomescreenUnlockedNotification:(id)a3;
-- (void)_handleUserNotificationResponse:(int64_t)a3 pendingReminderID:(id)a4 transaction:(id)a5;
-- (void)_queue_dropReminder:(id)a3;
-- (void)_queue_firePendingReminderIfEligibleUsingPendingReminderID:(id)a3 transaction:(id)a4;
-- (void)_queue_handleUserNotificationResponse:(int64_t)a3 pendingReminderID:(id)a4 transaction:(id)a5;
-- (void)_queue_performUserActionForReminder:(id)a3 userResponse:(int64_t)a4;
-- (void)_queue_scheduleFireOnHomescreenUnlockIfEligibleWithNow:(id)a3;
-- (void)_queue_scheduleNextTriggerWithNow:(id)a3;
+- (void)_handleHomescreenUnlockedNotification:(id)notification;
+- (void)_handleUserNotificationResponse:(int64_t)response pendingReminderID:(id)d transaction:(id)transaction;
+- (void)_queue_dropReminder:(id)reminder;
+- (void)_queue_firePendingReminderIfEligibleUsingPendingReminderID:(id)d transaction:(id)transaction;
+- (void)_queue_handleUserNotificationResponse:(int64_t)response pendingReminderID:(id)d transaction:(id)transaction;
+- (void)_queue_performUserActionForReminder:(id)reminder userResponse:(int64_t)response;
+- (void)_queue_scheduleFireOnHomescreenUnlockIfEligibleWithNow:(id)now;
+- (void)_queue_scheduleNextTriggerWithNow:(id)now;
 - (void)_queue_scheduleTriggers;
 - (void)_queue_startListeningForHomescreenUnlockNotifications;
 - (void)_queue_stopListeningForHomescreenUnlockNotifications;
 - (void)_scheduleTriggers;
-- (void)_showClinicalAPISettingsForAppSource:(id)a3;
+- (void)_showClinicalAPISettingsForAppSource:(id)source;
 - (void)_startObservingApplicationsUninstalledNotification;
-- (void)_unitTesting_setDeferralPeriodOverride:(double)a3;
-- (void)_unitTesting_setSchedulerGracePeriodOverride:(double)a3;
-- (void)_unitTesting_setThrottlingIntervalOverride:(double)a3;
-- (void)deregisterAppSourceFromUnlimitedAuthorizationModeConfirmation:(id)a3 completion:(id)a4;
-- (void)registerAppSourceForUnlimitedAuthorizationModeConfirmation:(id)a3 completion:(id)a4;
+- (void)_unitTesting_setDeferralPeriodOverride:(double)override;
+- (void)_unitTesting_setSchedulerGracePeriodOverride:(double)override;
+- (void)_unitTesting_setThrottlingIntervalOverride:(double)override;
+- (void)deregisterAppSourceFromUnlimitedAuthorizationModeConfirmation:(id)confirmation completion:(id)completion;
+- (void)registerAppSourceForUnlimitedAuthorizationModeConfirmation:(id)confirmation completion:(id)completion;
 @end
 
 @implementation HDHealthRecordsAPIReminderRegistry
@@ -52,7 +52,7 @@
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
     v4 = +[NSUserDefaults standardUserDefaults];
     v6[0] = @"HealthRecordsAPIReminderDeferralPeriod";
@@ -72,22 +72,22 @@
   return 0;
 }
 
-- (HDHealthRecordsAPIReminderRegistry)initWithProfileExtension:(id)a3
+- (HDHealthRecordsAPIReminderRegistry)initWithProfileExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v21.receiver = self;
   v21.super_class = HDHealthRecordsAPIReminderRegistry;
   v5 = [(HDHealthRecordsAPIReminderRegistry *)&v21 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profileExtension, v4);
-    v7 = [v4 profile];
-    objc_storeWeak(&v6->_profile, v7);
+    objc_storeWeak(&v5->_profileExtension, extensionCopy);
+    profile = [extensionCopy profile];
+    objc_storeWeak(&v6->_profile, profile);
 
-    v8 = [(HDHealthRecordsAPIReminderRegistry *)v6 _newQueue];
+    _newQueue = [(HDHealthRecordsAPIReminderRegistry *)v6 _newQueue];
     queue = v6->_queue;
-    v6->_queue = v8;
+    v6->_queue = _newQueue;
 
     v10 = objc_alloc_init(NSMutableDictionary);
     pendingReminderIDsToReminders = v6->_pendingReminderIDsToReminders;
@@ -114,11 +114,11 @@
 
 - (void)_scheduleTriggers
 {
-  v3 = [(HDHealthRecordsAPIReminderRegistry *)self queue];
-  dispatch_assert_queue_not_V2(v3);
+  queue = [(HDHealthRecordsAPIReminderRegistry *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v4 = [HDDaemonTransaction transactionWithOwner:self activityName:@"ScheduleTriggers"];
-  v5 = [(HDHealthRecordsAPIReminderRegistry *)self queue];
+  queue2 = [(HDHealthRecordsAPIReminderRegistry *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_8AD54;
@@ -126,45 +126,45 @@
   v7[4] = self;
   v8 = v4;
   v6 = v4;
-  dispatch_async_and_wait(v5, v7);
+  dispatch_async_and_wait(queue2, v7);
 }
 
-- (id)_eligibilityStartDateAfterPostedReminder:(id)a3
+- (id)_eligibilityStartDateAfterPostedReminder:(id)reminder
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 wasPosted] & 1) == 0)
+  reminderCopy = reminder;
+  v5 = reminderCopy;
+  if (reminderCopy && ([reminderCopy wasPosted] & 1) == 0)
   {
     sub_A821C();
   }
 
-  v6 = [v5 postDate];
+  postDate = [v5 postDate];
   [(HDHealthRecordsAPIReminderRegistry *)self throttlingInterval];
-  v7 = [v6 dateByAddingTimeInterval:?];
+  v7 = [postDate dateByAddingTimeInterval:?];
 
   return v7;
 }
 
-- (id)_eligibilityStartDateForUnpostedReminder:(id)a3
+- (id)_eligibilityStartDateForUnpostedReminder:(id)reminder
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 wasPosted])
+  reminderCopy = reminder;
+  v5 = reminderCopy;
+  if (reminderCopy && [reminderCopy wasPosted])
   {
     sub_A8290();
   }
 
-  v6 = [v5 creationDate];
+  creationDate = [v5 creationDate];
   [(HDHealthRecordsAPIReminderRegistry *)self deferralPeriod];
-  v7 = [v6 dateByAddingTimeInterval:?];
+  v7 = [creationDate dateByAddingTimeInterval:?];
 
   return v7;
 }
 
 - (void)_queue_scheduleTriggers
 {
-  v3 = [(HDHealthRecordsAPIReminderRegistry *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HDHealthRecordsAPIReminderRegistry *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = objc_alloc_init(NSDate);
   _HKInitializeLogging();
@@ -177,33 +177,33 @@
   [(HDHealthRecordsAPIReminderRegistry *)self _queue_scheduleFireOnHomescreenUnlockIfEligibleWithNow:v4];
 }
 
-- (void)_queue_scheduleNextTriggerWithNow:(id)a3
+- (void)_queue_scheduleNextTriggerWithNow:(id)now
 {
-  v11 = a3;
-  v4 = [(HDHealthRecordsAPIReminderRegistry *)self queue];
-  dispatch_assert_queue_V2(v4);
+  nowCopy = now;
+  queue = [(HDHealthRecordsAPIReminderRegistry *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(HDHealthRecordsAPIReminderRegistry *)self triggerScheduler];
-  [v5 unschedule];
-  v6 = [(HDHealthRecordsAPIReminderRegistry *)self _queue_nextEligibleFireDate];
-  v7 = v6;
-  if (v6 && ([v6 hk_isBeforeOrEqualToDate:v11] & 1) == 0)
+  triggerScheduler = [(HDHealthRecordsAPIReminderRegistry *)self triggerScheduler];
+  [triggerScheduler unschedule];
+  _queue_nextEligibleFireDate = [(HDHealthRecordsAPIReminderRegistry *)self _queue_nextEligibleFireDate];
+  v7 = _queue_nextEligibleFireDate;
+  if (_queue_nextEligibleFireDate && ([_queue_nextEligibleFireDate hk_isBeforeOrEqualToDate:nowCopy] & 1) == 0)
   {
-    [v7 timeIntervalSinceDate:v11];
+    [v7 timeIntervalSinceDate:nowCopy];
     v9 = v8;
     [(HDHealthRecordsAPIReminderRegistry *)self schedulerGracePeriod];
-    [v5 scheduleWithInterval:v9 gracePeriod:v10];
+    [triggerScheduler scheduleWithInterval:v9 gracePeriod:v10];
   }
 }
 
-- (void)_queue_scheduleFireOnHomescreenUnlockIfEligibleWithNow:(id)a3
+- (void)_queue_scheduleFireOnHomescreenUnlockIfEligibleWithNow:(id)now
 {
-  v4 = a3;
-  v5 = [(HDHealthRecordsAPIReminderRegistry *)self queue];
-  dispatch_assert_queue_V2(v5);
+  nowCopy = now;
+  queue = [(HDHealthRecordsAPIReminderRegistry *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(HDHealthRecordsAPIReminderRegistry *)self _queue_stopListeningForHomescreenUnlockNotifications];
-  v6 = [(HDHealthRecordsAPIReminderRegistry *)self _queue_firstEligibleReminderAfterDate:v4];
+  v6 = [(HDHealthRecordsAPIReminderRegistry *)self _queue_firstEligibleReminderAfterDate:nowCopy];
 
   if (v6)
   {
@@ -214,12 +214,12 @@
 
 - (id)_queue_nextEligibleFireDate
 {
-  v3 = [(HDHealthRecordsAPIReminderRegistry *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HDHealthRecordsAPIReminderRegistry *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(HDHealthRecordsAPIReminderRegistry *)self profile];
+  profile = [(HDHealthRecordsAPIReminderRegistry *)self profile];
   v17 = 0;
-  v5 = [HDClinicalAPIReminderEntity lastPostedReminderWithProfile:v4 error:&v17];
+  v5 = [HDClinicalAPIReminderEntity lastPostedReminderWithProfile:profile error:&v17];
   v6 = v17;
   v7 = v6;
   if (v5)
@@ -236,7 +236,7 @@
   {
 
     v16 = 0;
-    v9 = [HDClinicalAPIReminderEntity nextScheduledReminderWithProfile:v4 error:&v16];
+    v9 = [HDClinicalAPIReminderEntity nextScheduledReminderWithProfile:profile error:&v16];
     v10 = v16;
     v7 = v10;
     if (v9 || !v10)
@@ -277,25 +277,25 @@ LABEL_17:
   return v12;
 }
 
-- (id)_queue_firstEligibleReminderAfterDate:(id)a3
+- (id)_queue_firstEligibleReminderAfterDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HDHealthRecordsAPIReminderRegistry *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dateCopy = date;
+  queue = [(HDHealthRecordsAPIReminderRegistry *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(HDHealthRecordsAPIReminderRegistry *)self profile];
-  v7 = [(HDHealthRecordsAPIReminderRegistry *)self _queue_nextEligibleFireDate];
+  profile = [(HDHealthRecordsAPIReminderRegistry *)self profile];
+  _queue_nextEligibleFireDate = [(HDHealthRecordsAPIReminderRegistry *)self _queue_nextEligibleFireDate];
   _HKInitializeLogging();
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEBUG))
   {
     sub_A8444();
-    if (!v7)
+    if (!_queue_nextEligibleFireDate)
     {
       goto LABEL_4;
     }
   }
 
-  else if (!v7)
+  else if (!_queue_nextEligibleFireDate)
   {
 LABEL_4:
     _HKInitializeLogging();
@@ -310,13 +310,13 @@ LABEL_4:
     goto LABEL_14;
   }
 
-  if ([v7 hk_isAfterDate:v4])
+  if ([_queue_nextEligibleFireDate hk_isAfterDate:dateCopy])
   {
     goto LABEL_4;
   }
 
   v14 = 0;
-  v10 = [HDClinicalAPIReminderEntity nextScheduledReminderWithProfile:v6 error:&v14];
+  v10 = [HDClinicalAPIReminderEntity nextScheduledReminderWithProfile:profile error:&v14];
   v11 = v14;
   v12 = v11;
   if (v10 || !v11)
@@ -340,15 +340,15 @@ LABEL_14:
   return v9;
 }
 
-- (void)_queue_dropReminder:(id)a3
+- (void)_queue_dropReminder:(id)reminder
 {
-  v4 = a3;
-  v5 = [(HDHealthRecordsAPIReminderRegistry *)self queue];
-  dispatch_assert_queue_V2(v5);
+  reminderCopy = reminder;
+  queue = [(HDHealthRecordsAPIReminderRegistry *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(HDHealthRecordsAPIReminderRegistry *)self profile];
+  profile = [(HDHealthRecordsAPIReminderRegistry *)self profile];
   v10 = 0;
-  v7 = [HDClinicalAPIReminderEntity deleteReminder:v4 profile:v6 error:&v10];
+  v7 = [HDClinicalAPIReminderEntity deleteReminder:reminderCopy profile:profile error:&v10];
   v8 = v10;
 
   if ((v7 & 1) == 0)
@@ -360,19 +360,19 @@ LABEL_14:
     }
   }
 
-  v9 = [(HDHealthRecordsAPIReminderRegistry *)self _unitTesting_testingEventListener];
-  [v9 droppedReminder:v4];
+  _unitTesting_testingEventListener = [(HDHealthRecordsAPIReminderRegistry *)self _unitTesting_testingEventListener];
+  [_unitTesting_testingEventListener droppedReminder:reminderCopy];
 }
 
 - (BOOL)_queue_isAnyReminderInFlight
 {
-  v3 = [(HDHealthRecordsAPIReminderRegistry *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HDHealthRecordsAPIReminderRegistry *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(HDHealthRecordsAPIReminderRegistry *)self pendingReminderIDsToReminders];
-  LOBYTE(v3) = [v4 count] != 0;
+  pendingReminderIDsToReminders = [(HDHealthRecordsAPIReminderRegistry *)self pendingReminderIDsToReminders];
+  LOBYTE(queue) = [pendingReminderIDsToReminders count] != 0;
 
-  return v3;
+  return queue;
 }
 
 - (void)_firePendingReminderIfEligible
@@ -384,8 +384,8 @@ LABEL_14:
   }
 
   v3 = objc_alloc_init(NSUUID);
-  v4 = [v3 UUIDString];
-  v5 = [HDDaemonTransaction transactionWithOwner:self activityName:v4];
+  uUIDString = [v3 UUIDString];
+  v5 = [HDDaemonTransaction transactionWithOwner:self activityName:uUIDString];
 
   _HKInitializeLogging();
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEBUG))
@@ -393,7 +393,7 @@ LABEL_14:
     sub_A855C();
   }
 
-  v6 = [(HDHealthRecordsAPIReminderRegistry *)self queue];
+  queue = [(HDHealthRecordsAPIReminderRegistry *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_8B6D8;
@@ -403,15 +403,15 @@ LABEL_14:
   v11 = v5;
   v7 = v5;
   v8 = v3;
-  dispatch_async(v6, block);
+  dispatch_async(queue, block);
 }
 
-- (void)_queue_firePendingReminderIfEligibleUsingPendingReminderID:(id)a3 transaction:(id)a4
+- (void)_queue_firePendingReminderIfEligibleUsingPendingReminderID:(id)d transaction:(id)transaction
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HDHealthRecordsAPIReminderRegistry *)self queue];
-  dispatch_assert_queue_V2(v8);
+  dCopy = d;
+  transactionCopy = transaction;
+  queue = [(HDHealthRecordsAPIReminderRegistry *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(HDHealthRecordsAPIReminderRegistry *)self _queue_isAnyReminderInFlight])
   {
@@ -421,7 +421,7 @@ LABEL_14:
       sub_A863C();
     }
 
-    [(HDHealthRecordsAPIReminderRegistry *)self _didProcessPendingReminderID:v6 transaction:v7];
+    [(HDHealthRecordsAPIReminderRegistry *)self _didProcessPendingReminderID:dCopy transaction:transactionCopy];
   }
 
   else
@@ -433,15 +433,15 @@ LABEL_14:
       if ([(HDHealthRecordsAPIReminderRegistry *)self _queue_shouldDropUnlimitedAuthorizationModeReminder:v10])
       {
         [(HDHealthRecordsAPIReminderRegistry *)self _queue_dropReminder:v10];
-        [(HDHealthRecordsAPIReminderRegistry *)self _queue_firePendingReminderIfEligibleUsingPendingReminderID:v6 transaction:v7];
+        [(HDHealthRecordsAPIReminderRegistry *)self _queue_firePendingReminderIfEligibleUsingPendingReminderID:dCopy transaction:transactionCopy];
       }
 
       else
       {
-        v11 = [(HDHealthRecordsAPIReminderRegistry *)self pendingReminderIDsToReminders];
-        [v11 setObject:v10 forKeyedSubscript:v6];
+        pendingReminderIDsToReminders = [(HDHealthRecordsAPIReminderRegistry *)self pendingReminderIDsToReminders];
+        [pendingReminderIDsToReminders setObject:v10 forKeyedSubscript:dCopy];
 
-        [(HDHealthRecordsAPIReminderRegistry *)self _displayUnlimitedAuthorizationModeConfirmationForPendingReminderID:v6 transaction:v7 reminder:v10];
+        [(HDHealthRecordsAPIReminderRegistry *)self _displayUnlimitedAuthorizationModeConfirmationForPendingReminderID:dCopy transaction:transactionCopy reminder:v10];
       }
     }
 
@@ -453,26 +453,26 @@ LABEL_14:
         sub_A85CC();
       }
 
-      [(HDHealthRecordsAPIReminderRegistry *)self _didProcessPendingReminderID:v6 transaction:v7];
+      [(HDHealthRecordsAPIReminderRegistry *)self _didProcessPendingReminderID:dCopy transaction:transactionCopy];
     }
   }
 }
 
-- (void)_displayStopAlertForPendingReminderID:(id)a3 transaction:(id)a4 title:(id)a5 body:(id)a6 defaultButtonTitle:(id)a7 alternateButtonTitle:(id)a8
+- (void)_displayStopAlertForPendingReminderID:(id)d transaction:(id)transaction title:(id)title body:(id)body defaultButtonTitle:(id)buttonTitle alternateButtonTitle:(id)alternateButtonTitle
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
+  dCopy = d;
+  transactionCopy = transaction;
+  alternateButtonTitleCopy = alternateButtonTitle;
+  buttonTitleCopy = buttonTitle;
+  bodyCopy = body;
+  titleCopy = title;
   v20 = objc_alloc_init(HDUserNotification);
-  [v20 setTitle:v19];
+  [v20 setTitle:titleCopy];
 
-  [v20 setMessage:v18];
-  [v20 setCancelButton:v16];
+  [v20 setMessage:bodyCopy];
+  [v20 setCancelButton:alternateButtonTitleCopy];
 
-  [v20 setOtherButton:v17];
+  [v20 setOtherButton:buttonTitleCopy];
   [v20 setAlertLevel:3];
   [v20 setUserNotificationOptions:32];
   v32[0] = SBUserNotificationAllowedApplicationsKey;
@@ -486,65 +486,65 @@ LABEL_14:
   v26 = 3221225472;
   v27 = sub_8BA94;
   v28 = &unk_1088F8;
-  v29 = self;
-  v30 = v14;
-  v31 = v15;
-  v22 = v15;
-  v23 = v14;
+  selfCopy = self;
+  v30 = dCopy;
+  v31 = transactionCopy;
+  v22 = transactionCopy;
+  v23 = dCopy;
   [v20 presentWithResponseHandler:&v25];
   v24 = [(HDHealthRecordsAPIReminderRegistry *)self _unitTesting_testingEventListener:v25];
   [v24 displayedAlertForPendingReminderID:v23];
 }
 
-- (void)_handleUserNotificationResponse:(int64_t)a3 pendingReminderID:(id)a4 transaction:(id)a5
+- (void)_handleUserNotificationResponse:(int64_t)response pendingReminderID:(id)d transaction:(id)transaction
 {
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  transactionCopy = transaction;
   _HKInitializeLogging();
   v10 = HKLogHealthRecords;
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEBUG))
   {
-    sub_A86AC(v10, a3, v8);
+    sub_A86AC(v10, response, dCopy);
   }
 
-  v11 = [(HDHealthRecordsAPIReminderRegistry *)self queue];
+  queue = [(HDHealthRecordsAPIReminderRegistry *)self queue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_8BBBC;
   v14[3] = &unk_1076D8;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = a3;
-  v12 = v9;
-  v13 = v8;
-  dispatch_async(v11, v14);
+  v15 = dCopy;
+  v16 = transactionCopy;
+  responseCopy = response;
+  v12 = transactionCopy;
+  v13 = dCopy;
+  dispatch_async(queue, v14);
 }
 
-- (void)_queue_handleUserNotificationResponse:(int64_t)a3 pendingReminderID:(id)a4 transaction:(id)a5
+- (void)_queue_handleUserNotificationResponse:(int64_t)response pendingReminderID:(id)d transaction:(id)transaction
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HDHealthRecordsAPIReminderRegistry *)self queue];
-  dispatch_assert_queue_V2(v11);
+  dCopy = d;
+  transactionCopy = transaction;
+  queue = [(HDHealthRecordsAPIReminderRegistry *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v12 = [(HDHealthRecordsAPIReminderRegistry *)self pendingReminderIDsToReminders];
-  v13 = [v12 objectForKeyedSubscript:v9];
-  [v12 setObject:0 forKeyedSubscript:v9];
+  pendingReminderIDsToReminders = [(HDHealthRecordsAPIReminderRegistry *)self pendingReminderIDsToReminders];
+  v13 = [pendingReminderIDsToReminders objectForKeyedSubscript:dCopy];
+  [pendingReminderIDsToReminders setObject:0 forKeyedSubscript:dCopy];
   if (!v13)
   {
-    sub_A8760(a2, self, v9);
+    sub_A8760(a2, self, dCopy);
   }
 
   v14 = objc_alloc_init(NSDate);
-  v15 = [(HDHealthRecordsAPIReminderRegistry *)self profile];
+  profile = [(HDHealthRecordsAPIReminderRegistry *)self profile];
   v18 = 0;
-  v16 = [HDClinicalAPIReminderEntity setReminderPosted:v13 postDate:v14 profile:v15 error:&v18];
+  v16 = [HDClinicalAPIReminderEntity setReminderPosted:v13 postDate:v14 profile:profile error:&v18];
   v17 = v18;
 
   if (v16)
   {
-    [(HDHealthRecordsAPIReminderRegistry *)self _queue_performUserActionForReminder:v16 userResponse:a3];
+    [(HDHealthRecordsAPIReminderRegistry *)self _queue_performUserActionForReminder:v16 userResponse:response];
   }
 
   else
@@ -556,20 +556,20 @@ LABEL_14:
     }
   }
 
-  [(HDHealthRecordsAPIReminderRegistry *)self _didProcessPendingReminderID:v9 transaction:v10];
+  [(HDHealthRecordsAPIReminderRegistry *)self _didProcessPendingReminderID:dCopy transaction:transactionCopy];
 }
 
-- (void)_queue_performUserActionForReminder:(id)a3 userResponse:(int64_t)a4
+- (void)_queue_performUserActionForReminder:(id)reminder userResponse:(int64_t)response
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 == 1)
+  reminderCopy = reminder;
+  v7 = reminderCopy;
+  if (response == 1)
   {
-    v8 = [v6 source];
-    [(HDHealthRecordsAPIReminderRegistry *)self _showClinicalAPISettingsForAppSource:v8];
+    source = [reminderCopy source];
+    [(HDHealthRecordsAPIReminderRegistry *)self _showClinicalAPISettingsForAppSource:source];
   }
 
-  else if (!a4)
+  else if (!response)
   {
     _HKInitializeLogging();
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_FAULT))
@@ -579,43 +579,43 @@ LABEL_14:
   }
 }
 
-- (void)_showClinicalAPISettingsForAppSource:(id)a3
+- (void)_showClinicalAPISettingsForAppSource:(id)source
 {
-  v3 = a3;
-  if (([v3 _isApplication] & 1) == 0)
+  sourceCopy = source;
+  if (([sourceCopy _isApplication] & 1) == 0)
   {
     sub_A88B0();
   }
 
-  v4 = v3;
+  v4 = sourceCopy;
   HKDispatchAsyncOnGlobalConcurrentQueue();
 }
 
-- (void)_didProcessPendingReminderID:(id)a3 transaction:(id)a4
+- (void)_didProcessPendingReminderID:(id)d transaction:(id)transaction
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HDHealthRecordsAPIReminderRegistry *)self queue];
+  dCopy = d;
+  transactionCopy = transaction;
+  queue = [(HDHealthRecordsAPIReminderRegistry *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_8C1E0;
   block[3] = &unk_1088D0;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v13 = dCopy;
+  v14 = transactionCopy;
+  v9 = transactionCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 
-  v11 = [(HDHealthRecordsAPIReminderRegistry *)self _unitTesting_testingEventListener];
-  [v11 didFinishProcessingPendingReminderID:v10];
+  _unitTesting_testingEventListener = [(HDHealthRecordsAPIReminderRegistry *)self _unitTesting_testingEventListener];
+  [_unitTesting_testingEventListener didFinishProcessingPendingReminderID:v10];
 }
 
-- (void)registerAppSourceForUnlimitedAuthorizationModeConfirmation:(id)a3 completion:(id)a4
+- (void)registerAppSourceForUnlimitedAuthorizationModeConfirmation:(id)confirmation completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 _isApplication] & 1) == 0)
+  confirmationCopy = confirmation;
+  completionCopy = completion;
+  if (([confirmationCopy _isApplication] & 1) == 0)
   {
     sub_A8AE8();
   }
@@ -631,24 +631,24 @@ LABEL_14:
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Attempting to register app source %@ for unlimited authorization mode confirmation alert", buf, 0xCu);
   }
 
-  v11 = [(HDHealthRecordsAPIReminderRegistry *)self queue];
+  queue = [(HDHealthRecordsAPIReminderRegistry *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_8C3E0;
   block[3] = &unk_107190;
-  v15 = v6;
-  v16 = self;
-  v17 = v7;
-  v12 = v7;
-  v13 = v6;
-  dispatch_async(v11, block);
+  v15 = confirmationCopy;
+  selfCopy = self;
+  v17 = completionCopy;
+  v12 = completionCopy;
+  v13 = confirmationCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)deregisterAppSourceFromUnlimitedAuthorizationModeConfirmation:(id)a3 completion:(id)a4
+- (void)deregisterAppSourceFromUnlimitedAuthorizationModeConfirmation:(id)confirmation completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 _isApplication] & 1) == 0)
+  confirmationCopy = confirmation;
+  completionCopy = completion;
+  if (([confirmationCopy _isApplication] & 1) == 0)
   {
     sub_A8B5C();
   }
@@ -664,29 +664,29 @@ LABEL_14:
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Deregistering app source %@ for unlimited authorization mode confirmation alert", buf, 0xCu);
   }
 
-  v11 = [(HDHealthRecordsAPIReminderRegistry *)self queue];
+  queue = [(HDHealthRecordsAPIReminderRegistry *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_8C628;
   block[3] = &unk_107190;
   block[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v12 = v7;
-  v13 = v6;
-  dispatch_async(v11, block);
+  v15 = confirmationCopy;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = confirmationCopy;
+  dispatch_async(queue, block);
 }
 
-- (BOOL)_queue_shouldDropUnlimitedAuthorizationModeReminder:(id)a3
+- (BOOL)_queue_shouldDropUnlimitedAuthorizationModeReminder:(id)reminder
 {
-  v4 = [a3 source];
-  v5 = [v4 bundleIdentifier];
+  source = [reminder source];
+  bundleIdentifier = [source bundleIdentifier];
   v6 = [NSSet alloc];
   v7 = +[HKClinicalType allTypes];
   v8 = [v6 initWithArray:v7];
-  v9 = [(HDHealthRecordsAPIReminderRegistry *)self profile];
+  profile = [(HDHealthRecordsAPIReminderRegistry *)self profile];
   v19 = 0;
-  v10 = [HDAuthorizationEntity authorizationRecordsByTypeForBundleIdentifier:v5 types:v8 profile:v9 error:&v19];
+  v10 = [HDAuthorizationEntity authorizationRecordsByTypeForBundleIdentifier:bundleIdentifier types:v8 profile:profile error:&v19];
   v11 = v19;
 
   if (!v10)
@@ -695,7 +695,7 @@ LABEL_14:
     v13 = HKLogHealthRecords;
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
     {
-      sub_A8D80(v13, v4, v11);
+      sub_A8D80(v13, source, v11);
     }
 
     goto LABEL_10;
@@ -744,57 +744,57 @@ LABEL_11:
   return v15;
 }
 
-- (void)_displayUnlimitedAuthorizationModeConfirmationForPendingReminderID:(id)a3 transaction:(id)a4 reminder:(id)a5
+- (void)_displayUnlimitedAuthorizationModeConfirmationForPendingReminderID:(id)d transaction:(id)transaction reminder:(id)reminder
 {
-  v7 = a4;
-  v8 = a3;
-  v23 = [a5 source];
-  v9 = [v23 name];
+  transactionCopy = transaction;
+  dCopy = d;
+  source = [reminder source];
+  name = [source name];
   v10 = [NSString alloc];
   v11 = HDHealthRecordsPluginBundle();
   v12 = [v11 localizedStringForKey:@"UNLIMITED_AUTHORIZATION_REMINDER_TITLE_APP_%@" value:&stru_1090E8 table:@"HealthRecordsPlugin-Localizable"];
-  v13 = [v10 initWithFormat:v12, v9];
+  v13 = [v10 initWithFormat:v12, name];
 
   v14 = [NSString alloc];
   v15 = HDHealthRecordsPluginBundle();
   v16 = [v15 localizedStringForKey:@"UNLIMITED_AUTHORIZATION_REMINDER_BODY_APP_%@" value:&stru_1090E8 table:@"HealthRecordsPlugin-Localizable"];
-  v17 = [v14 initWithFormat:v16, v9];
+  v17 = [v14 initWithFormat:v16, name];
 
   v18 = HDHealthRecordsPluginBundle();
   v19 = [v18 localizedStringForKey:@"UNLIMITED_AUTHORIZATION_REMINDER_BUTTON_KEEP" value:&stru_1090E8 table:@"HealthRecordsPlugin-Localizable"];
   v20 = HDHealthRecordsPluginBundle();
   v21 = [v20 localizedStringForKey:@"UNLIMITED_AUTHORIZATION_REMINDER_BUTTON_MANAGE_ACCESS" value:&stru_1090E8 table:@"HealthRecordsPlugin-Localizable"];
-  [(HDHealthRecordsAPIReminderRegistry *)self _displayStopAlertForPendingReminderID:v8 transaction:v7 title:v13 body:v17 defaultButtonTitle:v19 alternateButtonTitle:v21];
+  [(HDHealthRecordsAPIReminderRegistry *)self _displayStopAlertForPendingReminderID:dCopy transaction:transactionCopy title:v13 body:v17 defaultButtonTitle:v19 alternateButtonTitle:v21];
 }
 
-- (int64_t)_authorizationModeForRecordsByType:(id)a3
+- (int64_t)_authorizationModeForRecordsByType:(id)type
 {
-  v3 = a3;
-  if (![v3 count])
+  typeCopy = type;
+  if (![typeCopy count])
   {
     sub_A8E34();
   }
 
   memset(v8, 0, sizeof(v8));
-  v4 = v3;
+  v4 = typeCopy;
   if ([v4 countByEnumeratingWithState:v8 objects:v9 count:16])
   {
     v5 = [v4 objectForKeyedSubscript:{**(&v8[0] + 1), *&v8[0]}];
-    v6 = [v5 mode];
+    mode = [v5 mode];
   }
 
   else
   {
-    v6 = 0;
+    mode = 0;
   }
 
-  return v6;
+  return mode;
 }
 
-- (BOOL)_readAuthorizationAllowedForAnyTypeInRecordsByType:(id)a3
+- (BOOL)_readAuthorizationAllowedForAnyTypeInRecordsByType:(id)type
 {
-  v3 = a3;
-  if (![v3 count])
+  typeCopy = type;
+  if (![typeCopy count])
   {
     sub_A8EA8();
   }
@@ -803,7 +803,7 @@ LABEL_11:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = v3;
+  v4 = typeCopy;
   v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
@@ -847,15 +847,15 @@ LABEL_13:
 {
   v6 = +[NSNotificationCenter defaultCenter];
   v3 = HDHealthDaemonApplicationsUninstalledNotification;
-  v4 = [(HDHealthRecordsAPIReminderRegistry *)self profile];
-  v5 = [v4 daemon];
-  [v6 addObserver:self selector:"_applicationsUninstalledNotification:" name:v3 object:v5];
+  profile = [(HDHealthRecordsAPIReminderRegistry *)self profile];
+  daemon = [profile daemon];
+  [v6 addObserver:self selector:"_applicationsUninstalledNotification:" name:v3 object:daemon];
 }
 
-- (void)_applicationsUninstalledNotification:(id)a3
+- (void)_applicationsUninstalledNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:HDHealthDaemonApplicationsUninstalledBundleIdentifiersKey];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:HDHealthDaemonApplicationsUninstalledBundleIdentifiersKey];
 
   if (!v5)
   {
@@ -863,24 +863,24 @@ LABEL_13:
   }
 
   v6 = [HDDaemonTransaction transactionWithOwner:self activityName:@"ApplicationsUninstalled"];
-  v7 = [(HDHealthRecordsAPIReminderRegistry *)self queue];
+  queue = [(HDHealthRecordsAPIReminderRegistry *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_8CE88;
   block[3] = &unk_1088D0;
   v11 = v5;
-  v12 = self;
+  selfCopy = self;
   v13 = v6;
   v8 = v6;
   v9 = v5;
-  dispatch_async(v7, block);
+  dispatch_async(queue, block);
 }
 
-- (BOOL)_queue_deregisterAppWithBundleIdentifier:(id)a3 error:(id *)a4
+- (BOOL)_queue_deregisterAppWithBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDHealthRecordsAPIReminderRegistry *)self queue];
-  dispatch_assert_queue_V2(v7);
+  identifierCopy = identifier;
+  queue = [(HDHealthRecordsAPIReminderRegistry *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   _HKInitializeLogging();
   v8 = HKLogHealthRecords;
@@ -889,16 +889,16 @@ LABEL_13:
     sub_A8F90(v8);
   }
 
-  v9 = [(HDHealthRecordsAPIReminderRegistry *)self profile];
-  v10 = [HDClinicalAPIReminderEntity deleteRemindersForSourceWithBundleIdentifier:v6 profile:v9 error:a4];
+  profile = [(HDHealthRecordsAPIReminderRegistry *)self profile];
+  v10 = [HDClinicalAPIReminderEntity deleteRemindersForSourceWithBundleIdentifier:identifierCopy profile:profile error:error];
 
   return v10;
 }
 
 - (void)_queue_startListeningForHomescreenUnlockNotifications
 {
-  v3 = [(HDHealthRecordsAPIReminderRegistry *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HDHealthRecordsAPIReminderRegistry *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   _HKInitializeLogging();
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEBUG))
@@ -906,21 +906,21 @@ LABEL_13:
     sub_A9030();
   }
 
-  v4 = [(HDHealthRecordsAPIReminderRegistry *)self profile];
-  v5 = [v4 daemon];
+  profile = [(HDHealthRecordsAPIReminderRegistry *)self profile];
+  daemon = [profile daemon];
 
   v6 = +[NSNotificationCenter defaultCenter];
-  [v6 addObserver:self selector:"_handleHomescreenUnlockedNotification:" name:HDDaemonHomescreenUnlockedNotification object:v5];
+  [v6 addObserver:self selector:"_handleHomescreenUnlockedNotification:" name:HDDaemonHomescreenUnlockedNotification object:daemon];
 
-  [v5 registerForLaunchNotification:"com.apple.springboard.homescreenunlocked"];
-  v7 = [(HDHealthRecordsAPIReminderRegistry *)self _unitTesting_testingEventListener];
-  [v7 startedListeningForHomescreenUnlockedNotifications];
+  [daemon registerForLaunchNotification:"com.apple.springboard.homescreenunlocked"];
+  _unitTesting_testingEventListener = [(HDHealthRecordsAPIReminderRegistry *)self _unitTesting_testingEventListener];
+  [_unitTesting_testingEventListener startedListeningForHomescreenUnlockedNotifications];
 }
 
 - (void)_queue_stopListeningForHomescreenUnlockNotifications
 {
-  v3 = [(HDHealthRecordsAPIReminderRegistry *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HDHealthRecordsAPIReminderRegistry *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   _HKInitializeLogging();
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEBUG))
@@ -928,24 +928,24 @@ LABEL_13:
     sub_A906C();
   }
 
-  v4 = [(HDHealthRecordsAPIReminderRegistry *)self profile];
-  v5 = [v4 daemon];
+  profile = [(HDHealthRecordsAPIReminderRegistry *)self profile];
+  daemon = [profile daemon];
 
   v6 = +[NSNotificationCenter defaultCenter];
-  [v6 removeObserver:self name:HDDaemonHomescreenUnlockedNotification object:v5];
+  [v6 removeObserver:self name:HDDaemonHomescreenUnlockedNotification object:daemon];
 
-  [v5 unregisterForLaunchNotification:"com.apple.springboard.homescreenunlocked"];
-  v7 = [(HDHealthRecordsAPIReminderRegistry *)self _unitTesting_testingEventListener];
-  [v7 stoppedListeningForHomescreenUnlockedNotifications];
+  [daemon unregisterForLaunchNotification:"com.apple.springboard.homescreenunlocked"];
+  _unitTesting_testingEventListener = [(HDHealthRecordsAPIReminderRegistry *)self _unitTesting_testingEventListener];
+  [_unitTesting_testingEventListener stoppedListeningForHomescreenUnlockedNotifications];
 }
 
-- (void)_handleHomescreenUnlockedNotification:(id)a3
+- (void)_handleHomescreenUnlockedNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:HDDaemonHomescreenUnlockedAtHomescreenKey];
-  v6 = [v5 BOOLValue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:HDDaemonHomescreenUnlockedAtHomescreenKey];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     _HKInitializeLogging();
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEBUG))
@@ -953,16 +953,16 @@ LABEL_13:
       sub_A90A8();
     }
 
-    v7 = [(HDHealthRecordsAPIReminderRegistry *)self _unitTesting_testingEventListener];
-    [v7 receivedHomescreenUnlockedAtHomescreenNotification];
+    _unitTesting_testingEventListener = [(HDHealthRecordsAPIReminderRegistry *)self _unitTesting_testingEventListener];
+    [_unitTesting_testingEventListener receivedHomescreenUnlockedAtHomescreenNotification];
 
-    v8 = [(HDHealthRecordsAPIReminderRegistry *)self queue];
+    queue = [(HDHealthRecordsAPIReminderRegistry *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_8D408;
     block[3] = &unk_107A88;
     block[4] = self;
-    dispatch_async(v8, block);
+    dispatch_async(queue, block);
 
     [(HDHealthRecordsAPIReminderRegistry *)self _firePendingReminderIfEligible];
   }
@@ -970,21 +970,21 @@ LABEL_13:
 
 - (void)_checkInForFirstUnlockActivity
 {
-  v3 = [(HDHealthRecordsAPIReminderRegistry *)self _criteriaForFirstUnlockActivity];
-  v4 = [(HDHealthRecordsAPIReminderRegistry *)self _criteriaForFirstUnlockActivityCompleted];
+  _criteriaForFirstUnlockActivity = [(HDHealthRecordsAPIReminderRegistry *)self _criteriaForFirstUnlockActivity];
+  _criteriaForFirstUnlockActivityCompleted = [(HDHealthRecordsAPIReminderRegistry *)self _criteriaForFirstUnlockActivityCompleted];
   objc_initWeak(&location, self);
-  v5 = [@"com.apple.healthd.healthrecords.HDHealthRecordsAPIReminderRegistry-FirstUnlock" UTF8String];
+  uTF8String = [@"com.apple.healthd.healthrecords.HDHealthRecordsAPIReminderRegistry-FirstUnlock" UTF8String];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_8D560;
   handler[3] = &unk_108920;
   v9 = @"com.apple.healthd.healthrecords.HDHealthRecordsAPIReminderRegistry-FirstUnlock";
-  v6 = v3;
+  v6 = _criteriaForFirstUnlockActivity;
   v10 = v6;
   objc_copyWeak(&v12, &location);
-  v7 = v4;
+  v7 = _criteriaForFirstUnlockActivityCompleted;
   v11 = v7;
-  xpc_activity_register(v5, XPC_ACTIVITY_CHECK_IN, handler);
+  xpc_activity_register(uTF8String, XPC_ACTIVITY_CHECK_IN, handler);
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -1009,11 +1009,11 @@ LABEL_13:
 
 - (double)deferralPeriod
 {
-  v3 = [(HDHealthRecordsAPIReminderRegistry *)self _unitTesting_deferralPeriodOverride];
-  v4 = v3;
-  if (v3)
+  _unitTesting_deferralPeriodOverride = [(HDHealthRecordsAPIReminderRegistry *)self _unitTesting_deferralPeriodOverride];
+  v4 = _unitTesting_deferralPeriodOverride;
+  if (_unitTesting_deferralPeriodOverride)
   {
-    [v3 doubleValue];
+    [_unitTesting_deferralPeriodOverride doubleValue];
   }
 
   else
@@ -1028,11 +1028,11 @@ LABEL_13:
 
 - (double)schedulerGracePeriod
 {
-  v3 = [(HDHealthRecordsAPIReminderRegistry *)self _unitTesting_schedulerGracePeriodOverride];
-  v4 = v3;
-  if (v3)
+  _unitTesting_schedulerGracePeriodOverride = [(HDHealthRecordsAPIReminderRegistry *)self _unitTesting_schedulerGracePeriodOverride];
+  v4 = _unitTesting_schedulerGracePeriodOverride;
+  if (_unitTesting_schedulerGracePeriodOverride)
   {
-    [v3 doubleValue];
+    [_unitTesting_schedulerGracePeriodOverride doubleValue];
   }
 
   else
@@ -1047,11 +1047,11 @@ LABEL_13:
 
 - (double)throttlingInterval
 {
-  v3 = [(HDHealthRecordsAPIReminderRegistry *)self _unitTesting_throttlingIntervalOverride];
-  v4 = v3;
-  if (v3)
+  _unitTesting_throttlingIntervalOverride = [(HDHealthRecordsAPIReminderRegistry *)self _unitTesting_throttlingIntervalOverride];
+  v4 = _unitTesting_throttlingIntervalOverride;
+  if (_unitTesting_throttlingIntervalOverride)
   {
-    [v3 doubleValue];
+    [_unitTesting_throttlingIntervalOverride doubleValue];
   }
 
   else
@@ -1064,11 +1064,11 @@ LABEL_13:
   return v6;
 }
 
-- (double)_timeIntervalForDefaultsKey:(id)a3 fallbackInterval:(double)a4
+- (double)_timeIntervalForDefaultsKey:(id)key fallbackInterval:(double)interval
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = +[NSUserDefaults standardUserDefaults];
-  v7 = [v6 objectForKey:v5];
+  v7 = [v6 objectForKey:keyCopy];
 
   if (v7)
   {
@@ -1082,7 +1082,7 @@ LABEL_13:
       v11 = v10;
       if (v10 > 0.0)
       {
-        a4 = v10;
+        interval = v10;
       }
 
       else
@@ -1091,7 +1091,7 @@ LABEL_13:
         v12 = HKLogHealthRecords;
         if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
         {
-          sub_A9154(v5, v12, v11);
+          sub_A9154(keyCopy, v12, v11);
         }
       }
     }
@@ -1106,39 +1106,39 @@ LABEL_13:
     }
   }
 
-  return a4;
+  return interval;
 }
 
-- (void)_unitTesting_setDeferralPeriodOverride:(double)a3
+- (void)_unitTesting_setDeferralPeriodOverride:(double)override
 {
-  if (a3 <= 0.0)
+  if (override <= 0.0)
   {
     sub_A9244();
   }
 
-  v5 = [NSNumber numberWithDouble:a3];
+  v5 = [NSNumber numberWithDouble:override];
   [(HDHealthRecordsAPIReminderRegistry *)self set_unitTesting_deferralPeriodOverride:v5];
 }
 
-- (void)_unitTesting_setSchedulerGracePeriodOverride:(double)a3
+- (void)_unitTesting_setSchedulerGracePeriodOverride:(double)override
 {
-  if (a3 <= 0.0)
+  if (override <= 0.0)
   {
     sub_A92B8();
   }
 
-  v5 = [NSNumber numberWithDouble:a3];
+  v5 = [NSNumber numberWithDouble:override];
   [(HDHealthRecordsAPIReminderRegistry *)self set_unitTesting_schedulerGracePeriodOverride:v5];
 }
 
-- (void)_unitTesting_setThrottlingIntervalOverride:(double)a3
+- (void)_unitTesting_setThrottlingIntervalOverride:(double)override
 {
-  if (a3 <= 0.0)
+  if (override <= 0.0)
   {
     sub_A932C();
   }
 
-  v5 = [NSNumber numberWithDouble:a3];
+  v5 = [NSNumber numberWithDouble:override];
   [(HDHealthRecordsAPIReminderRegistry *)self set_unitTesting_throttlingIntervalOverride:v5];
 }
 

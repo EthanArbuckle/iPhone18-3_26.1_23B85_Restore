@@ -1,14 +1,14 @@
 @interface DSNavigationManager
-- (BOOL)shouldIngestURL:(id)a3;
-- (Class)startingClassForURL:(id)a3;
-- (Class)topViewControllerForUnorderedClass:(Class)a3;
+- (BOOL)shouldIngestURL:(id)l;
+- (Class)startingClassForURL:(id)l;
+- (Class)topViewControllerForUnorderedClass:(Class)class;
 - (DSNavigationManager)init;
-- (id)deepLinkToPane:(Class)a3 inFlow:(int64_t)a4;
-- (id)navigationChaptersForFlowType:(int64_t)a3;
-- (id)navigationForURL:(id)a3;
-- (id)navigationOrderForFlowType:(int64_t)a3;
-- (id)restoredDTONavigationOrder:(int64_t)a3 withPath:(id)a4;
-- (id)restoredDeviceAccessNavigationOrder:(int64_t)a3;
+- (id)deepLinkToPane:(Class)pane inFlow:(int64_t)flow;
+- (id)navigationChaptersForFlowType:(int64_t)type;
+- (id)navigationForURL:(id)l;
+- (id)navigationOrderForFlowType:(int64_t)type;
+- (id)restoredDTONavigationOrder:(int64_t)order withPath:(id)path;
+- (id)restoredDeviceAccessNavigationOrder:(int64_t)order;
 @end
 
 @implementation DSNavigationManager
@@ -276,26 +276,26 @@
   return v2;
 }
 
-- (id)navigationOrderForFlowType:(int64_t)a3
+- (id)navigationOrderForFlowType:(int64_t)type
 {
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
-      v4 = [(DSNavigationManager *)self reviewDeviceAccessNavigationOrder];
+      reviewDeviceAccessNavigationOrder = [(DSNavigationManager *)self reviewDeviceAccessNavigationOrder];
       goto LABEL_18;
     }
 
-    if (a3 == 3)
+    if (type == 3)
     {
-      v4 = [(DSNavigationManager *)self reviewBlockingNavigationOrder];
+      reviewDeviceAccessNavigationOrder = [(DSNavigationManager *)self reviewBlockingNavigationOrder];
       goto LABEL_18;
     }
   }
 
   else
   {
-    if (!a3)
+    if (!type)
     {
       if ([(DSNavigationManager *)self isDTOActive])
       {
@@ -310,7 +310,7 @@
       goto LABEL_6;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       if ([(DSNavigationManager *)self isDTOActive])
       {
@@ -322,7 +322,7 @@
         [(DSNavigationManager *)self sharingActivityNavigationOrder];
       }
 
-      v4 = LABEL_6:;
+      reviewDeviceAccessNavigationOrder = LABEL_6:;
       goto LABEL_18;
     }
   }
@@ -332,32 +332,32 @@
     [DSNavigationManager navigationOrderForFlowType:];
   }
 
-  v4 = MEMORY[0x277CBEBF8];
+  reviewDeviceAccessNavigationOrder = MEMORY[0x277CBEBF8];
 LABEL_18:
 
-  return v4;
+  return reviewDeviceAccessNavigationOrder;
 }
 
-- (id)navigationChaptersForFlowType:(int64_t)a3
+- (id)navigationChaptersForFlowType:(int64_t)type
 {
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
-      v4 = [(DSNavigationManager *)self reviewDeviceAccessChapters];
+      reviewDeviceAccessChapters = [(DSNavigationManager *)self reviewDeviceAccessChapters];
       goto LABEL_18;
     }
 
-    if (a3 == 3)
+    if (type == 3)
     {
-      v4 = [(DSNavigationManager *)self reviewBlockingChapters];
+      reviewDeviceAccessChapters = [(DSNavigationManager *)self reviewBlockingChapters];
       goto LABEL_18;
     }
   }
 
   else
   {
-    if (!a3)
+    if (!type)
     {
       if ([(DSNavigationManager *)self isDTOActive])
       {
@@ -372,7 +372,7 @@ LABEL_18:
       goto LABEL_6;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       if ([(DSNavigationManager *)self isDTOActive])
       {
@@ -384,7 +384,7 @@ LABEL_18:
         [(DSNavigationManager *)self sharingActivityChapters];
       }
 
-      v4 = LABEL_6:;
+      reviewDeviceAccessChapters = LABEL_6:;
       goto LABEL_18;
     }
   }
@@ -394,25 +394,25 @@ LABEL_18:
     [DSNavigationManager navigationChaptersForFlowType:];
   }
 
-  v4 = MEMORY[0x277CBEC10];
+  reviewDeviceAccessChapters = MEMORY[0x277CBEC10];
 LABEL_18:
 
-  return v4;
+  return reviewDeviceAccessChapters;
 }
 
-- (BOOL)shouldIngestURL:(id)a3
+- (BOOL)shouldIngestURL:(id)l
 {
-  v4 = [a3 objectForKey:@"path"];
+  v4 = [l objectForKey:@"path"];
   v5 = [v4 length] && (objc_msgSend(v4, "isEqualToString:", @"/") & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"SAFETY_CHECK") & 1) == 0 && -[DSNavigationManager startingClassForURL:](self, "startingClassForURL:", v4) != 0;
 
   return v5;
 }
 
-- (id)deepLinkToPane:(Class)a3 inFlow:(int64_t)a4
+- (id)deepLinkToPane:(Class)pane inFlow:(int64_t)flow
 {
   v6 = [MEMORY[0x277CCAB68] stringWithString:@"settings-navigation://com.apple.Settings.PrivacyAndSecurity/SAFETY_CHECK/"];
   v7 = v6;
-  if (a4)
+  if (flow)
   {
     v8 = @"MANAGE_SHARING";
   }
@@ -423,7 +423,7 @@ LABEL_18:
   }
 
   [v6 appendString:v8];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == pane)
   {
     v9 = @"PASSCODE";
 LABEL_12:
@@ -431,13 +431,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == pane)
   {
     v9 = @"FACEID";
     goto LABEL_12;
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == pane)
   {
     v9 = @"TOUCHID";
     goto LABEL_12;
@@ -453,17 +453,17 @@ LABEL_13:
   return v7;
 }
 
-- (id)navigationForURL:(id)a3
+- (id)navigationForURL:(id)l
 {
-  v4 = [a3 objectForKey:@"path"];
+  v4 = [l objectForKey:@"path"];
   v5 = [v4 containsString:@"EMERGENCY_RESET"];
   v6 = v5;
   v7 = v5 ^ 1u;
   v8 = [(DSNavigationManager *)self startingClassForURL:v4];
   if (v8 == objc_opt_class())
   {
-    v9 = [(DSNavigationManager *)self safetyCheckNavigationOrderWifiSync];
-    v10 = [(DSNavigationManager *)self safetyCheckChaptersWifiSync];
+    safetyCheckNavigationOrderWifiSync = [(DSNavigationManager *)self safetyCheckNavigationOrderWifiSync];
+    safetyCheckChaptersWifiSync = [(DSNavigationManager *)self safetyCheckChaptersWifiSync];
     v11 = 1;
     v12 = 3;
     v13 = @"Sharing Reminder";
@@ -471,8 +471,8 @@ LABEL_13:
 
   else if ([v4 containsString:@"DEVICE_ACCESS"])
   {
-    v9 = [(DSNavigationManager *)self restoredDeviceAccessNavigationOrder:v7];
-    v10 = [(DSNavigationManager *)self navigationChaptersForFlowType:v7];
+    safetyCheckNavigationOrderWifiSync = [(DSNavigationManager *)self restoredDeviceAccessNavigationOrder:v7];
+    safetyCheckChaptersWifiSync = [(DSNavigationManager *)self navigationChaptersForFlowType:v7];
     v11 = 0;
     v12 = 1;
     v13 = @"Passcode Change";
@@ -480,8 +480,8 @@ LABEL_13:
 
   else if (v8 == objc_opt_class() || v8 == objc_opt_class())
   {
-    v9 = [(DSNavigationManager *)self navigationOrderForFlowType:v7];
-    v10 = [(DSNavigationManager *)self navigationChaptersForFlowType:v7];
+    safetyCheckNavigationOrderWifiSync = [(DSNavigationManager *)self navigationOrderForFlowType:v7];
+    safetyCheckChaptersWifiSync = [(DSNavigationManager *)self navigationChaptersForFlowType:v7];
     v12 = 0;
     v11 = 1;
     v13 = @"Apple Intelligence";
@@ -489,7 +489,7 @@ LABEL_13:
 
   else
   {
-    v9 = [(DSNavigationManager *)self restoredDTONavigationOrder:v7 withPath:v4];
+    safetyCheckNavigationOrderWifiSync = [(DSNavigationManager *)self restoredDTONavigationOrder:v7 withPath:v4];
     if (v6)
     {
       [(DSNavigationManager *)self safetyResetChaptersDTO];
@@ -499,25 +499,25 @@ LABEL_13:
     {
       [(DSNavigationManager *)self sharingActivityChaptersDTO];
     }
-    v10 = ;
+    safetyCheckChaptersWifiSync = ;
     v11 = 0;
     v12 = 2;
     v13 = @"SDP Delay";
   }
 
-  v14 = [[DSDeepLinkRepresentation alloc] initWithOrder:v9 orderType:v12 chapters:v10 requiresAuth:v11 flowType:v7 entrypointAnalytic:v13 path:v4];
+  v14 = [[DSDeepLinkRepresentation alloc] initWithOrder:safetyCheckNavigationOrderWifiSync orderType:v12 chapters:safetyCheckChaptersWifiSync requiresAuth:v11 flowType:v7 entrypointAnalytic:v13 path:v4];
 
   return v14;
 }
 
-- (id)restoredDTONavigationOrder:(int64_t)a3 withPath:(id)a4
+- (id)restoredDTONavigationOrder:(int64_t)order withPath:(id)path
 {
-  v6 = a4;
-  v7 = [(DSNavigationManager *)self startingClassForURL:v6];
+  pathCopy = path;
+  v7 = [(DSNavigationManager *)self startingClassForURL:pathCopy];
   if (v7)
   {
     v8 = v7;
-    if (a3)
+    if (order)
     {
       [(DSNavigationManager *)self sharingActivityNavigationOrderDTO];
     }
@@ -545,7 +545,7 @@ LABEL_13:
       if (v8 == objc_opt_class())
       {
         v13 = off_278F74848;
-        if (a3)
+        if (order)
         {
           v13 = off_278F74950;
         }
@@ -572,10 +572,10 @@ LABEL_13:
   return v9;
 }
 
-- (id)restoredDeviceAccessNavigationOrder:(int64_t)a3
+- (id)restoredDeviceAccessNavigationOrder:(int64_t)order
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(DSNavigationManager *)self navigationOrderForFlowType:a3];
+  v4 = [(DSNavigationManager *)self navigationOrderForFlowType:order];
   v5 = [v3 arrayWithArray:v4];
 
   [v5 removeObject:objc_opt_class()];
@@ -583,11 +583,11 @@ LABEL_13:
   return v5;
 }
 
-- (Class)startingClassForURL:(id)a3
+- (Class)startingClassForURL:(id)l
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 containsString:@"PASSCODE"] || objc_msgSend(v3, "containsString:", @"FACEID") || objc_msgSend(v3, "containsString:", @"TOUCHID") || objc_msgSend(v3, "containsString:", @"apple.com") || objc_msgSend(v3, "containsString:", @"reminders/wifisync") || objc_msgSend(v3, "containsString:", @"EMERGENCY_RESET") || objc_msgSend(v3, "containsString:", @"MANAGE_SHARING"))
+  lCopy = l;
+  if ([lCopy containsString:@"PASSCODE"] || objc_msgSend(lCopy, "containsString:", @"FACEID") || objc_msgSend(lCopy, "containsString:", @"TOUCHID") || objc_msgSend(lCopy, "containsString:", @"apple.com") || objc_msgSend(lCopy, "containsString:", @"reminders/wifisync") || objc_msgSend(lCopy, "containsString:", @"EMERGENCY_RESET") || objc_msgSend(lCopy, "containsString:", @"MANAGE_SHARING"))
   {
     v4 = objc_opt_class();
   }
@@ -598,7 +598,7 @@ LABEL_13:
     if (os_log_type_enabled(DSLog_10, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = lCopy;
       _os_log_impl(&dword_248C7E000, v7, OS_LOG_TYPE_DEFAULT, "Couldn't parse an entry configuration from URL path: %@", &v8, 0xCu);
     }
 
@@ -610,24 +610,24 @@ LABEL_13:
   return v4;
 }
 
-- (Class)topViewControllerForUnorderedClass:(Class)a3
+- (Class)topViewControllerForUnorderedClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     v5 = off_278F74938;
   }
 
-  else if (objc_opt_class() == a3 || objc_opt_class() == a3)
+  else if (objc_opt_class() == class || objc_opt_class() == class)
   {
     v5 = off_278F748D8;
   }
 
-  else if (objc_opt_class() == a3)
+  else if (objc_opt_class() == class)
   {
     v5 = off_278F74970;
   }
 
-  else if (objc_opt_class() == a3)
+  else if (objc_opt_class() == class)
   {
     v5 = off_278F74818;
   }
@@ -636,7 +636,7 @@ LABEL_13:
   {
     v4 = objc_opt_class();
     v5 = off_278F74900;
-    if (v4 == a3)
+    if (v4 == class)
     {
       v5 = off_278F74800;
     }

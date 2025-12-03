@@ -1,15 +1,15 @@
 @interface VCSessionSwitches
-+ (float)generateRandomNumberWithConversationID:(id)a3 featureString:(id)a4;
-+ (id)featureFlagAndDefaultNameForFeature:(unint64_t)a3;
-- (BOOL)trialEnablementWithClient:(id)a3 Context:(id *)a4 normalizedRandom:(double)a5;
-- (VCSessionSwitches)initWithConversationID:(id)a3;
++ (float)generateRandomNumberWithConversationID:(id)d featureString:(id)string;
++ (id)featureFlagAndDefaultNameForFeature:(unint64_t)feature;
+- (BOOL)trialEnablementWithClient:(id)client Context:(id *)context normalizedRandom:(double)random;
+- (VCSessionSwitches)initWithConversationID:(id)d;
 - (void)dealloc;
-- (void)setFeature:(unint64_t)a3 isEnabled:(BOOL)a4;
+- (void)setFeature:(unint64_t)feature isEnabled:(BOOL)enabled;
 @end
 
 @implementation VCSessionSwitches
 
-- (VCSessionSwitches)initWithConversationID:(id)a3
+- (VCSessionSwitches)initWithConversationID:(id)d
 {
   v53 = *MEMORY[0x1E69E9840];
   v36.receiver = self;
@@ -20,7 +20,7 @@
     return v4;
   }
 
-  v4->_conversationID = [objc_msgSend(a3 "UUIDString")];
+  v4->_conversationID = [objc_msgSend(d "UUIDString")];
   v5 = [MEMORY[0x1E69DB518] clientWithIdentifier:310];
   v6 = contextConfigurations;
   v7 = 6;
@@ -197,12 +197,12 @@ LABEL_32:
   return v4;
 }
 
-+ (float)generateRandomNumberWithConversationID:(id)a3 featureString:(id)a4
++ (float)generateRandomNumberWithConversationID:(id)d featureString:(id)string
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", a3, a4];
-  v6 = [(__CFString *)v5 cStringUsingEncoding:4];
-  v7 = [(__CFString *)v5 lengthOfBytesUsingEncoding:4];
+  string = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", d, string];
+  v6 = [(__CFString *)string cStringUsingEncoding:4];
+  v7 = [(__CFString *)string lengthOfBytesUsingEncoding:4];
   *&v8 = 0xAAAAAAAAAAAAAAAALL;
   *(&v8 + 1) = 0xAAAAAAAAAAAAAAAALL;
   *md = v8;
@@ -218,7 +218,7 @@ LABEL_32:
   CC_SHA256_Update(&c, v6, v7);
   CC_SHA256_Final(md, &c);
   v9 = *md * 5.42101086e-20;
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -233,7 +233,7 @@ LABEL_32:
         v23 = 1024;
         v24 = 115;
         v25 = 2112;
-        v26 = v5;
+        v26 = string;
         v27 = 2048;
         v28 = v9;
         v13 = " [%s] %s:%d concatenatedString=%@, randomByUUIDAndFeature=%f";
@@ -249,7 +249,7 @@ LABEL_11:
   {
     if (objc_opt_respondsToSelector())
     {
-      v10 = [a1 performSelector:sel_logPrefix];
+      v10 = [self performSelector:sel_logPrefix];
     }
 
     else
@@ -272,9 +272,9 @@ LABEL_11:
         v25 = 2112;
         v26 = v10;
         v27 = 2048;
-        v28 = *&a1;
+        v28 = *&self;
         v29 = 2112;
-        v30 = v5;
+        v30 = string;
         v31 = 2048;
         v32 = v9;
         v13 = " [%s] %s:%d %@(%p) concatenatedString=%@, randomByUUIDAndFeature=%f";
@@ -288,11 +288,11 @@ LABEL_11:
   return v9;
 }
 
-+ (id)featureFlagAndDefaultNameForFeature:(unint64_t)a3
++ (id)featureFlagAndDefaultNameForFeature:(unint64_t)feature
 {
   v3 = &qword_1ECC6F428;
   v4 = 6;
-  while ((*v3 & a3) == 0)
+  while ((*v3 & feature) == 0)
   {
     v3 += 5;
     if (!--v4)
@@ -304,28 +304,28 @@ LABEL_11:
   return *(v3 - 3);
 }
 
-- (void)setFeature:(unint64_t)a3 isEnabled:(BOOL)a4
+- (void)setFeature:(unint64_t)feature isEnabled:(BOOL)enabled
 {
-  if (a4)
+  if (enabled)
   {
-    v4 = self->_switches | a3;
+    v4 = self->_switches | feature;
   }
 
   else
   {
-    v4 = self->_switches & ~a3;
+    v4 = self->_switches & ~feature;
   }
 
   self->_switches = v4;
 }
 
-- (BOOL)trialEnablementWithClient:(id)a3 Context:(id *)a4 normalizedRandom:(double)a5
+- (BOOL)trialEnablementWithClient:(id)client Context:(id *)context normalizedRandom:(double)random
 {
-  [a4->var1 UTF8String];
+  [context->var1 UTF8String];
   v8 = _os_feature_enabled_impl();
-  [objc_msgSend(a3 levelForFactor:@"samplingRate" withNamespaceName:{a4->var3), "doubleValue"}];
-  var1 = a4->var1;
-  if (v10 > a5)
+  [objc_msgSend(client levelForFactor:@"samplingRate" withNamespaceName:{context->var3), "doubleValue"}];
+  var1 = context->var1;
+  if (v10 > random)
   {
     v11 = v8;
   }

@@ -1,11 +1,11 @@
 @interface PXFeatureSpecManager
 - (PXFeatureSpec)spec;
-- (PXFeatureSpecManager)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4;
+- (PXFeatureSpecManager)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options;
 - (id)createSpec;
-- (void)_setSpec:(id)a3;
+- (void)_setSpec:(id)spec;
 - (void)_updateSpec;
 - (void)invalidateSpec;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 @end
 
 @implementation PXFeatureSpecManager
@@ -15,9 +15,9 @@
   spec = self->_spec;
   if (!spec)
   {
-    v4 = [(PXFeatureSpecManager *)self createSpec];
+    createSpec = [(PXFeatureSpecManager *)self createSpec];
     v5 = self->_spec;
-    self->_spec = v4;
+    self->_spec = createSpec;
 
     spec = self->_spec;
   }
@@ -51,19 +51,19 @@ void __35__PXFeatureSpecManager__updateSpec__block_invoke(uint64_t a1)
   [*(a1 + 32) _setSpec:v2];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v12 = a3;
-  if (PXExtendedTraitCollectionObservationContext != a5)
+  observableCopy = observable;
+  if (PXExtendedTraitCollectionObservationContext != context)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXFeatureSpecManager.m" lineNumber:101 description:@"unexpectd context"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeatureSpecManager.m" lineNumber:101 description:@"unexpectd context"];
 
     abort();
   }
 
-  v9 = [(PXFeatureSpecManager *)self extendedTraitCollection];
-  v10 = [(PXFeatureSpecManager *)self shouldUpdateSpecForExtendedTraitCollection:v9 change:a4];
+  extendedTraitCollection = [(PXFeatureSpecManager *)self extendedTraitCollection];
+  v10 = [(PXFeatureSpecManager *)self shouldUpdateSpecForExtendedTraitCollection:extendedTraitCollection change:change];
 
   if (v10)
   {
@@ -71,45 +71,45 @@ void __35__PXFeatureSpecManager__updateSpec__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setSpec:(id)a3
+- (void)_setSpec:(id)spec
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_spec != v5)
+  specCopy = spec;
+  v6 = specCopy;
+  if (self->_spec != specCopy)
   {
-    v7 = v5;
-    v5 = [v5 isEqual:?];
+    v7 = specCopy;
+    specCopy = [specCopy isEqual:?];
     v6 = v7;
-    if ((v5 & 1) == 0)
+    if ((specCopy & 1) == 0)
     {
-      objc_storeStrong(&self->_spec, a3);
-      v5 = [(PXObservable *)self signalChange:1];
+      objc_storeStrong(&self->_spec, spec);
+      specCopy = [(PXObservable *)self signalChange:1];
       v6 = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](specCopy, v6);
 }
 
 - (id)createSpec
 {
-  v3 = [(PXFeatureSpecManager *)self extendedTraitCollection];
+  extendedTraitCollection = [(PXFeatureSpecManager *)self extendedTraitCollection];
   v4 = [objc_alloc(-[PXFeatureSpecManager specClass](self "specClass"))];
 
   return v4;
 }
 
-- (PXFeatureSpecManager)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4
+- (PXFeatureSpecManager)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options
 {
-  v7 = a3;
+  collectionCopy = collection;
   v11.receiver = self;
   v11.super_class = PXFeatureSpecManager;
   v8 = [(PXObservable *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_options = a4;
-    objc_storeStrong(&v8->_extendedTraitCollection, a3);
+    v8->_options = options;
+    objc_storeStrong(&v8->_extendedTraitCollection, collection);
     [(PXObservable *)v9->_extendedTraitCollection registerChangeObserver:v9 context:PXExtendedTraitCollectionObservationContext];
   }
 

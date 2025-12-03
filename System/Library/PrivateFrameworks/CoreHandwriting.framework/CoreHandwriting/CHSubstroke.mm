@@ -1,50 +1,50 @@
 @interface CHSubstroke
-+ (id)substrokesForStroke:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSubstroke:(id)a3;
++ (id)substrokesForStroke:(id)stroke;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSubstroke:(id)substroke;
 - (CGRect)bounds;
-- (CHSubstroke)initWithCoder:(id)a3;
-- (CHSubstroke)initWithStrokeIdentifier:(id)a3 bounds:(CGRect)a4 startTimestamp:(double)a5 endTimestamp:(double)a6 convexHull:(const void *)a7 curvature:(double)a8;
+- (CHSubstroke)initWithCoder:(id)coder;
+- (CHSubstroke)initWithStrokeIdentifier:(id)identifier bounds:(CGRect)bounds startTimestamp:(double)timestamp endTimestamp:(double)endTimestamp convexHull:(const void *)hull curvature:(double)curvature;
 - (id).cxx_construct;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSubstroke
 
-- (CHSubstroke)initWithStrokeIdentifier:(id)a3 bounds:(CGRect)a4 startTimestamp:(double)a5 endTimestamp:(double)a6 convexHull:(const void *)a7 curvature:(double)a8
+- (CHSubstroke)initWithStrokeIdentifier:(id)identifier bounds:(CGRect)bounds startTimestamp:(double)timestamp endTimestamp:(double)endTimestamp convexHull:(const void *)hull curvature:(double)curvature
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v18 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  identifierCopy = identifier;
   v22.receiver = self;
   v22.super_class = CHSubstroke;
   v19 = [(CHSubstroke *)&v22 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_strokeIdentifier, a3);
+    objc_storeStrong(&v19->_strokeIdentifier, identifier);
     v20->_bounds.origin.x = x;
     v20->_bounds.origin.y = y;
     v20->_bounds.size.width = width;
     v20->_bounds.size.height = height;
-    v20->_startTimestamp = a5;
-    v20->_endTimestamp = a6;
-    if (&v20->_convexHull != a7)
+    v20->_startTimestamp = timestamp;
+    v20->_endTimestamp = endTimestamp;
+    if (&v20->_convexHull != hull)
     {
-      sub_18374AA38(&v20->_convexHull, *a7, *(a7 + 1), (*(a7 + 1) - *a7) >> 4);
+      sub_18374AA38(&v20->_convexHull, *hull, *(hull + 1), (*(hull + 1) - *hull) >> 4);
     }
 
-    v20->_curvature = a8;
+    v20->_curvature = curvature;
   }
 
   return v20;
 }
 
-+ (id)substrokesForStroke:(id)a3
++ (id)substrokesForStroke:(id)stroke
 {
-  v3 = a3;
+  strokeCopy = stroke;
   v9 = objc_msgSend_array(MEMORY[0x1E695DF70], v4, v5, v6, v7, v8);
   v167 = 0;
   v168 = &v167;
@@ -92,7 +92,7 @@
   v147 = 0;
   v148 = 0;
   v146 = 0;
-  v16 = objc_msgSend_encodedStrokeIdentifier(v3, v11, v12, v13, v14, v15);
+  v16 = objc_msgSend_encodedStrokeIdentifier(strokeCopy, v11, v12, v13, v14, v15);
   v17 = objc_opt_class();
   v130[0] = MEMORY[0x1E69E9820];
   v130[1] = 3221225472;
@@ -109,7 +109,7 @@
   v131 = v18;
   v19 = v9;
   v132 = v19;
-  objc_msgSend_enumeratePointsForStroke_interpolationType_resolution_usingBlock_(v17, v20, v3, 0, 1, v130);
+  objc_msgSend_enumeratePointsForStroke_interpolationType_resolution_usingBlock_(v17, v20, strokeCopy, 0, 1, v130);
   v27 = v141[6];
   v26 = v141[7];
   v28 = (v26 - v27) >> 4;
@@ -285,44 +285,44 @@ LABEL_25:
   return v121;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v67 = a3;
+  coderCopy = coder;
   v9 = objc_msgSend_strokeIdentifier(self, v4, v5, v6, v7, v8);
-  objc_msgSend_encodeObject_forKey_(v67, v10, v9, @"strokeIdentifier", v11, v12);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v10, v9, @"strokeIdentifier", v11, v12);
 
   v16 = objc_msgSend_valueWithBytes_objCType_(MEMORY[0x1E696B098], v13, &self->_bounds, "{CGRect={CGPoint=dd}{CGSize=dd}}", v14, v15);
-  objc_msgSend_encodeObject_forKey_(v67, v17, v16, @"bounds", v18, v19);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v17, v16, @"bounds", v18, v19);
   objc_msgSend_startTimestamp(self, v20, v21, v22, v23, v24);
-  objc_msgSend_encodeDouble_forKey_(v67, v25, @"startTimestamp", v26, v27, v28);
+  objc_msgSend_encodeDouble_forKey_(coderCopy, v25, @"startTimestamp", v26, v27, v28);
   objc_msgSend_endTimestamp(self, v29, v30, v31, v32, v33);
-  objc_msgSend_encodeDouble_forKey_(v67, v34, @"endTimestamp", v35, v36, v37);
+  objc_msgSend_encodeDouble_forKey_(coderCopy, v34, @"endTimestamp", v35, v36, v37);
   v38 = MEMORY[0x1E695DEF0];
   v44 = *objc_msgSend_convexHull(self, v39, v40, v41, v42, v43);
   v50 = objc_msgSend_convexHull(self, v45, v46, v47, v48, v49);
   v54 = objc_msgSend_dataWithBytes_length_(v38, v51, v44, v50[1] - *v50, v52, v53);
-  objc_msgSend_encodeObject_forKey_(v67, v55, v54, @"convexHull", v56, v57);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v55, v54, @"convexHull", v56, v57);
   objc_msgSend_curvature(self, v58, v59, v60, v61, v62);
-  objc_msgSend_encodeDouble_forKey_(v67, v63, @"curvature", v64, v65, v66);
+  objc_msgSend_encodeDouble_forKey_(coderCopy, v63, @"curvature", v64, v65, v66);
 }
 
-- (CHSubstroke)initWithCoder:(id)a3
+- (CHSubstroke)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v6, v5, @"strokeIdentifier", v7, v8);
+  v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v6, v5, @"strokeIdentifier", v7, v8);
   v10 = objc_opt_class();
-  v14 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v10, @"bounds", v12, v13);
+  v14 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v10, @"bounds", v12, v13);
   v15 = *(MEMORY[0x1E695F050] + 16);
   v62 = *MEMORY[0x1E695F050];
   v63 = v15;
   objc_msgSend_getValue_size_(v14, v16, &v62, 32, v17, v18);
-  objc_msgSend_decodeDoubleForKey_(v4, v19, @"startTimestamp", v20, v21, v22);
+  objc_msgSend_decodeDoubleForKey_(coderCopy, v19, @"startTimestamp", v20, v21, v22);
   v24 = v23;
-  objc_msgSend_decodeDoubleForKey_(v4, v25, @"endTimestamp", v26, v27, v28);
+  objc_msgSend_decodeDoubleForKey_(coderCopy, v25, @"endTimestamp", v26, v27, v28);
   v30 = v29;
   v31 = objc_opt_class();
-  v35 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v32, v31, @"convexHull", v33, v34);
+  v35 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v32, v31, @"convexHull", v33, v34);
   v41 = objc_msgSend_length(v35, v36, v37, v38, v39, v40);
   v42 = v35;
   v48 = objc_msgSend_bytes(v42, v43, v44, v45, v46, v47);
@@ -330,7 +330,7 @@ LABEL_25:
   v60 = 0;
   v61 = 0;
   sub_18374AA38(&__p, v48, &v48[v41 & 0xFFFFFFFFFFFFFFF0], v41 >> 4);
-  objc_msgSend_decodeDoubleForKey_(v4, v49, @"curvature", v50, v51, v52);
+  objc_msgSend_decodeDoubleForKey_(coderCopy, v49, @"curvature", v50, v51, v52);
   started = objc_msgSend_initWithStrokeIdentifier_bounds_startTimestamp_endTimestamp_convexHull_curvature_(self, v53, v9, &__p, v54, v55, v62, v63, v24, v30, v56);
   if (__p)
   {
@@ -341,18 +341,18 @@ LABEL_25:
   return started;
 }
 
-- (BOOL)isEqualToSubstroke:(id)a3
+- (BOOL)isEqualToSubstroke:(id)substroke
 {
-  v4 = a3;
-  v10 = v4;
-  if (self == v4)
+  substrokeCopy = substroke;
+  v10 = substrokeCopy;
+  if (self == substrokeCopy)
   {
     LOBYTE(v30) = 1;
     goto LABEL_28;
   }
 
   strokeIdentifier = self->_strokeIdentifier;
-  v12 = objc_msgSend_strokeIdentifier(v4, v5, v6, v7, v8, v9);
+  v12 = objc_msgSend_strokeIdentifier(substrokeCopy, v5, v6, v7, v8, v9);
   v18 = v12;
   if (strokeIdentifier == v12)
   {
@@ -465,13 +465,13 @@ LABEL_28:
   return v30;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    isEqualToSubstroke = objc_msgSend_isEqualToSubstroke_(self, v5, v4, v6, v7, v8);
+    isEqualToSubstroke = objc_msgSend_isEqualToSubstroke_(self, v5, equalCopy, v6, v7, v8);
 
     return isEqualToSubstroke;
   }

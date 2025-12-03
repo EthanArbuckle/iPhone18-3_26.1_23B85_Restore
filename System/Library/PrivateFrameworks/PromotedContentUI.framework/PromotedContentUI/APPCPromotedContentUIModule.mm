@@ -1,6 +1,6 @@
 @interface APPCPromotedContentUIModule
 + (void)start;
-+ (void)startWithStartupType:(int64_t)a3;
++ (void)startWithStartupType:(int64_t)type;
 - (APPCPromotedContentUIModule)init;
 @end
 
@@ -14,9 +14,9 @@
   }
 }
 
-+ (void)startWithStartupType:(int64_t)a3
++ (void)startWithStartupType:(int64_t)type
 {
-  qword_1EDE63E80 = a3;
+  qword_1EDE63E80 = type;
   if (qword_1EDE63FF8 != -1)
   {
     swift_once();

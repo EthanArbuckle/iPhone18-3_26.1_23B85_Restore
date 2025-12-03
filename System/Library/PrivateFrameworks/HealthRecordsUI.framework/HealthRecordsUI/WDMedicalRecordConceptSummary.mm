@@ -1,31 +1,31 @@
 @interface WDMedicalRecordConceptSummary
 - (NSArray)displayItems;
-- (WDMedicalRecordConceptSummary)initWithProfile:(id)a3 delegate:(id)a4;
+- (WDMedicalRecordConceptSummary)initWithProfile:(id)profile delegate:(id)delegate;
 - (WDMedicalRecordSummaryDelegate)delegate;
-- (void)_displayItemsForGenericMedicalRecord:(id)a3 completion:(id)a4;
-- (void)_displayItemsForObservation:(id)a3 completion:(id)a4;
-- (void)_displayItemsForRecord:(id)a3 completion:(id)a4;
+- (void)_displayItemsForGenericMedicalRecord:(id)record completion:(id)completion;
+- (void)_displayItemsForObservation:(id)observation completion:(id)completion;
+- (void)_displayItemsForRecord:(id)record completion:(id)completion;
 - (void)_rqueue_recomputeIfNeeded;
 - (void)_rqueue_setNeedsCompute;
-- (void)_updatePlacementForDisplayItems:(id)a3 ofRecord:(id)a4;
-- (void)addMedicalRecord:(id)a3;
+- (void)_updatePlacementForDisplayItems:(id)items ofRecord:(id)record;
+- (void)addMedicalRecord:(id)record;
 - (void)recomputeIfNeeded;
 - (void)setNeedsRecompute;
 @end
 
 @implementation WDMedicalRecordConceptSummary
 
-- (WDMedicalRecordConceptSummary)initWithProfile:(id)a3 delegate:(id)a4
+- (WDMedicalRecordConceptSummary)initWithProfile:(id)profile delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  profileCopy = profile;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = WDMedicalRecordConceptSummary;
   v9 = [(WDMedicalRecordConceptSummary *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_profile, a3);
+    objc_storeStrong(&v9->_profile, profile);
     v10->_dirty = 0;
     v11 = HKCreateSerialDispatchQueue();
     summaryQueue = v10->_summaryQueue;
@@ -35,7 +35,7 @@
     resourceQueue = v10->_resourceQueue;
     v10->_resourceQueue = v13;
 
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v15 = objc_alloc_init(MEMORY[0x1E695DFA0]);
     allRecords = v10->_allRecords;
     v10->_allRecords = v15;
@@ -44,18 +44,18 @@
   return v10;
 }
 
-- (void)addMedicalRecord:(id)a3
+- (void)addMedicalRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(WDMedicalRecordConceptSummary *)self resourceQueue];
+  recordCopy = record;
+  resourceQueue = [(WDMedicalRecordConceptSummary *)self resourceQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__WDMedicalRecordConceptSummary_addMedicalRecord___block_invoke;
   v7[3] = &unk_1E83DD1A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = recordCopy;
+  v6 = recordCopy;
+  dispatch_async(resourceQueue, v7);
 }
 
 uint64_t __50__WDMedicalRecordConceptSummary_addMedicalRecord___block_invoke(uint64_t a1)
@@ -70,24 +70,24 @@ uint64_t __50__WDMedicalRecordConceptSummary_addMedicalRecord___block_invoke(uin
 
 - (void)setNeedsRecompute
 {
-  v3 = [(WDMedicalRecordConceptSummary *)self resourceQueue];
+  resourceQueue = [(WDMedicalRecordConceptSummary *)self resourceQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__WDMedicalRecordConceptSummary_setNeedsRecompute__block_invoke;
   block[3] = &unk_1E83DCA20;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(resourceQueue, block);
 }
 
 - (void)recomputeIfNeeded
 {
-  v3 = [(WDMedicalRecordConceptSummary *)self resourceQueue];
+  resourceQueue = [(WDMedicalRecordConceptSummary *)self resourceQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__WDMedicalRecordConceptSummary_recomputeIfNeeded__block_invoke;
   block[3] = &unk_1E83DCA20;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(resourceQueue, block);
 }
 
 - (NSArray)displayItems
@@ -98,14 +98,14 @@ uint64_t __50__WDMedicalRecordConceptSummary_addMedicalRecord___block_invoke(uin
   v10 = __Block_byref_object_copy__3;
   v11 = __Block_byref_object_dispose__3;
   v12 = 0;
-  v3 = [(WDMedicalRecordConceptSummary *)self resourceQueue];
+  resourceQueue = [(WDMedicalRecordConceptSummary *)self resourceQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__WDMedicalRecordConceptSummary_displayItems__block_invoke;
   v6[3] = &unk_1E83DD1D0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(resourceQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -124,37 +124,37 @@ void __45__WDMedicalRecordConceptSummary_displayItems__block_invoke(uint64_t a1)
 
 - (void)_rqueue_setNeedsCompute
 {
-  v3 = [(WDMedicalRecordConceptSummary *)self resourceQueue];
-  dispatch_assert_queue_V2(v3);
+  resourceQueue = [(WDMedicalRecordConceptSummary *)self resourceQueue];
+  dispatch_assert_queue_V2(resourceQueue);
 
   [(WDMedicalRecordConceptSummary *)self setDirty:1];
 }
 
 - (void)_rqueue_recomputeIfNeeded
 {
-  v3 = [(WDMedicalRecordConceptSummary *)self resourceQueue];
-  dispatch_assert_queue_V2(v3);
+  resourceQueue = [(WDMedicalRecordConceptSummary *)self resourceQueue];
+  dispatch_assert_queue_V2(resourceQueue);
 
   if ([(WDMedicalRecordConceptSummary *)self dirty])
   {
-    v4 = [(WDMedicalRecordConceptSummary *)self allRecords];
-    v5 = [v4 count];
+    allRecords = [(WDMedicalRecordConceptSummary *)self allRecords];
+    v5 = [allRecords count];
 
     if (v5)
     {
       [(WDMedicalRecordConceptSummary *)self setDirty:0];
-      v6 = [(WDMedicalRecordConceptSummary *)self allRecords];
-      v7 = [v6 copy];
+      allRecords2 = [(WDMedicalRecordConceptSummary *)self allRecords];
+      v7 = [allRecords2 copy];
 
-      v8 = [(WDMedicalRecordConceptSummary *)self summaryQueue];
+      summaryQueue = [(WDMedicalRecordConceptSummary *)self summaryQueue];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __58__WDMedicalRecordConceptSummary__rqueue_recomputeIfNeeded__block_invoke;
       v10[3] = &unk_1E83DD1A8;
       v11 = v7;
-      v12 = self;
+      selfCopy = self;
       v9 = v7;
-      dispatch_async(v8, v10);
+      dispatch_async(summaryQueue, v10);
     }
   }
 }
@@ -249,40 +249,40 @@ void __58__WDMedicalRecordConceptSummary__rqueue_recomputeIfNeeded__block_invoke
   [v2 summaryDidFinishRecompute:*(a1 + 32)];
 }
 
-- (void)_displayItemsForRecord:(id)a3 completion:(id)a4
+- (void)_displayItemsForRecord:(id)record completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  recordCopy = record;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(WDMedicalRecordConceptSummary *)self _displayItemsForObservation:v7 completion:v6];
+    [(WDMedicalRecordConceptSummary *)self _displayItemsForObservation:recordCopy completion:completionCopy];
   }
 
   else
   {
-    [(WDMedicalRecordConceptSummary *)self _displayItemsForGenericMedicalRecord:v7 completion:v6];
+    [(WDMedicalRecordConceptSummary *)self _displayItemsForGenericMedicalRecord:recordCopy completion:completionCopy];
   }
 }
 
-- (void)_displayItemsForObservation:(id)a3 completion:(id)a4
+- (void)_displayItemsForObservation:(id)observation completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  observationCopy = observation;
+  completionCopy = completion;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = [(HRProfile *)self->_profile healthRecordsStore];
+  healthRecordsStore = [(HRProfile *)self->_profile healthRecordsStore];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __72__WDMedicalRecordConceptSummary__displayItemsForObservation_completion___block_invoke;
   v13[3] = &unk_1E83DD6A8;
   v13[4] = self;
-  v14 = v6;
+  v14 = observationCopy;
   v15 = v8;
-  v16 = v7;
-  v10 = v7;
+  v16 = completionCopy;
+  v10 = completionCopy;
   v11 = v8;
-  v12 = v6;
-  [v12 fetchObservationDetailItemsWithHealthRecordsStore:v9 style:2 completion:v13];
+  v12 = observationCopy;
+  [v12 fetchObservationDetailItemsWithHealthRecordsStore:healthRecordsStore style:2 completion:v13];
 }
 
 void __72__WDMedicalRecordConceptSummary__displayItemsForObservation_completion___block_invoke(id *a1, void *a2)
@@ -330,11 +330,11 @@ void __72__WDMedicalRecordConceptSummary__displayItemsForObservation_completion_
   (*(*(a1 + 64) + 16))();
 }
 
-- (void)_displayItemsForGenericMedicalRecord:(id)a3 completion:(id)a4
+- (void)_displayItemsForGenericMedicalRecord:(id)record completion:(id)completion
 {
   v46[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  completionCopy = completion;
   v40 = 0;
   v41 = &v40;
   v42 = 0x3032000000;
@@ -355,13 +355,13 @@ void __72__WDMedicalRecordConceptSummary__displayItemsForObservation_completion_
   v37 = 0;
   v8 = dispatch_group_create();
   v9 = +[WDMedicalRecordDisplayItem timelineSummaryContentWithSubtitleItem];
-  v10 = [v6 preferredDisplayName];
-  [v9 setTitle:v10];
+  preferredDisplayName = [recordCopy preferredDisplayName];
+  [v9 setTitle:preferredDisplayName];
 
-  v11 = [v6 meaningfulDateTitle];
-  [v9 setSubtitle:v11];
+  meaningfulDateTitle = [recordCopy meaningfulDateTitle];
+  [v9 setSubtitle:meaningfulDateTitle];
 
-  [v9 setMedicalRecord:v6];
+  [v9 setMedicalRecord:recordCopy];
   [v9 setPlacement:3];
   [v9 setSeparatorStyle:0];
   [v9 setSeparatorHidden:0];
@@ -373,26 +373,26 @@ void __72__WDMedicalRecordConceptSummary__displayItemsForObservation_completion_
   v13 = v41[5];
   v41[5] = v12;
 
-  v14 = [v6 originIdentifier];
-  v15 = [v14 signedClinicalDataRecordIdentifier];
+  originIdentifier = [recordCopy originIdentifier];
+  signedClinicalDataRecordIdentifier = [originIdentifier signedClinicalDataRecordIdentifier];
 
-  if (v15)
+  if (signedClinicalDataRecordIdentifier)
   {
     dispatch_group_enter(v8);
-    v16 = [(HRProfile *)self->_profile clinicalSourcesDataProvider];
+    clinicalSourcesDataProvider = [(HRProfile *)self->_profile clinicalSourcesDataProvider];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __81__WDMedicalRecordConceptSummary__displayItemsForGenericMedicalRecord_completion___block_invoke;
     v32[3] = &unk_1E83DD960;
     v33 = v9;
-    v34 = v6;
+    v34 = recordCopy;
     v35 = v8;
-    [v16 fetchSignedClinicalDataRecordWithIdentifier:v15 completion:v32];
+    [clinicalSourcesDataProvider fetchSignedClinicalDataRecordWithIdentifier:signedClinicalDataRecordIdentifier completion:v32];
   }
 
   dispatch_group_enter(v8);
-  v17 = [(HRProfile *)self->_profile healthRecordsStore];
-  v18 = [(HRProfile *)self->_profile conceptStore];
+  healthRecordsStore = [(HRProfile *)self->_profile healthRecordsStore];
+  conceptStore = [(HRProfile *)self->_profile conceptStore];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __81__WDMedicalRecordConceptSummary__displayItemsForGenericMedicalRecord_completion___block_invoke_2;
@@ -401,9 +401,9 @@ void __72__WDMedicalRecordConceptSummary__displayItemsForObservation_completion_
   v31 = v36;
   v19 = v8;
   v30 = v19;
-  [v6 fetchConceptRoomItemsWithHealthRecordsStore:v17 conceptStore:v18 completion:v29];
+  [recordCopy fetchConceptRoomItemsWithHealthRecordsStore:healthRecordsStore conceptStore:conceptStore completion:v29];
 
-  v20 = [(WDMedicalRecordConceptSummary *)self summaryQueue];
+  summaryQueue = [(WDMedicalRecordConceptSummary *)self summaryQueue];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __81__WDMedicalRecordConceptSummary__displayItemsForGenericMedicalRecord_completion___block_invoke_4;
@@ -411,12 +411,12 @@ void __72__WDMedicalRecordConceptSummary__displayItemsForObservation_completion_
   v27 = v38;
   v28 = v36;
   v23[4] = self;
-  v24 = v6;
-  v25 = v7;
+  v24 = recordCopy;
+  v25 = completionCopy;
   v26 = &v40;
-  v21 = v7;
-  v22 = v6;
-  dispatch_group_notify(v19, v20, v23);
+  v21 = completionCopy;
+  v22 = recordCopy;
+  dispatch_group_notify(v19, summaryQueue, v23);
 
   _Block_object_dispose(v36, 8);
   _Block_object_dispose(v38, 8);
@@ -501,10 +501,10 @@ void __81__WDMedicalRecordConceptSummary__displayItemsForGenericMedicalRecord_co
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_updatePlacementForDisplayItems:(id)a3 ofRecord:(id)a4
+- (void)_updatePlacementForDisplayItems:(id)items ofRecord:(id)record
 {
-  v5 = a3;
-  v6 = a4;
+  itemsCopy = items;
+  recordCopy = record;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -522,10 +522,10 @@ void __81__WDMedicalRecordConceptSummary__displayItemsForGenericMedicalRecord_co
   v13 = __74__WDMedicalRecordConceptSummary__updatePlacementForDisplayItems_ofRecord___block_invoke;
   v14 = &unk_1E83DDA00;
   v17 = &v25;
-  v7 = v5;
+  v7 = itemsCopy;
   v15 = v7;
   v18 = &v19;
-  v8 = v6;
+  v8 = recordCopy;
   v16 = v8;
   [v7 enumerateObjectsUsingBlock:&v11];
   v9 = v26[5];

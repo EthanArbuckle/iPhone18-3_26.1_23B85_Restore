@@ -1,61 +1,61 @@
 @interface PKPaymentOfferRewardsCriteria
-- (BOOL)eligibleWithConfiguration:(id)a3 ineligibleReason:(unint64_t *)a4;
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentOfferRewardsCriteria)initWithCoder:(id)a3;
-- (PKPaymentOfferRewardsCriteria)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)eligibleWithConfiguration:(id)configuration ineligibleReason:(unint64_t *)reason;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentOfferRewardsCriteria)initWithCoder:(id)coder;
+- (PKPaymentOfferRewardsCriteria)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentOfferRewardsCriteria
 
-- (PKPaymentOfferRewardsCriteria)initWithDictionary:(id)a3
+- (PKPaymentOfferRewardsCriteria)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = PKPaymentOfferRewardsCriteria;
-  v5 = [(PKPaymentOfferCriteria *)&v25 initWithDictionary:v4];
+  v5 = [(PKPaymentOfferCriteria *)&v25 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 PKURLForKey:@"redemptionTermsURL"];
+    v6 = [dictionaryCopy PKURLForKey:@"redemptionTermsURL"];
     redemptionTermsURL = v5->_redemptionTermsURL;
     v5->_redemptionTermsURL = v6;
 
-    v8 = [v4 PKSetContaining:objc_opt_class() forKey:@"supportedCurrencyCodes"];
+    v8 = [dictionaryCopy PKSetContaining:objc_opt_class() forKey:@"supportedCurrencyCodes"];
     supportedCurrencyCodes = v5->_supportedCurrencyCodes;
     v5->_supportedCurrencyCodes = v8;
 
-    v10 = [v4 PKSetContaining:objc_opt_class() forKey:@"supportedMerchantCountryCodes"];
+    v10 = [dictionaryCopy PKSetContaining:objc_opt_class() forKey:@"supportedMerchantCountryCodes"];
     supportedMerchantCountryCodes = v5->_supportedMerchantCountryCodes;
     v5->_supportedMerchantCountryCodes = v10;
 
-    v5->_supportedDeferredPayments = [v4 PKBoolForKey:@"supportedDeferredPayments"];
-    v5->_supportedRecurringPayments = [v4 PKBoolForKey:@"supportedRecurringPayments"];
-    v12 = [v4 PKSetContaining:objc_opt_class() forKey:@"minimumAmounts"];
+    v5->_supportedDeferredPayments = [dictionaryCopy PKBoolForKey:@"supportedDeferredPayments"];
+    v5->_supportedRecurringPayments = [dictionaryCopy PKBoolForKey:@"supportedRecurringPayments"];
+    v12 = [dictionaryCopy PKSetContaining:objc_opt_class() forKey:@"minimumAmounts"];
     v13 = [v12 pk_setBySafelyApplyingBlock:&__block_literal_global_128];
     minimumAmounts = v5->_minimumAmounts;
     v5->_minimumAmounts = v13;
 
-    v15 = [v4 PKSetContaining:objc_opt_class() forKey:@"maximumAmounts"];
+    v15 = [dictionaryCopy PKSetContaining:objc_opt_class() forKey:@"maximumAmounts"];
     v16 = [v15 pk_setBySafelyApplyingBlock:&__block_literal_global_50_1];
     maximumAmounts = v5->_maximumAmounts;
     v5->_maximumAmounts = v16;
 
-    v18 = [v4 PKSetContaining:objc_opt_class() forKey:@"userEnteredMinimumAmounts"];
+    v18 = [dictionaryCopy PKSetContaining:objc_opt_class() forKey:@"userEnteredMinimumAmounts"];
     v19 = [v18 pk_setBySafelyApplyingBlock:&__block_literal_global_52_1];
     userEnteredMinimumAmounts = v5->_userEnteredMinimumAmounts;
     v5->_userEnteredMinimumAmounts = v19;
 
-    v21 = [v4 PKSetContaining:objc_opt_class() forKey:@"userEnteredMaximumAmounts"];
+    v21 = [dictionaryCopy PKSetContaining:objc_opt_class() forKey:@"userEnteredMaximumAmounts"];
     v22 = [v21 pk_setBySafelyApplyingBlock:&__block_literal_global_54_0];
     userEnteredMaximumAmounts = v5->_userEnteredMaximumAmounts;
     v5->_userEnteredMaximumAmounts = v22;
 
-    v5->_selectedOfferStickyDuration = [v4 PKIntegerForKey:@"selectedOfferStickyDuration"];
-    v5->_selectedOfferActiveDuration = [v4 PKIntegerForKey:@"selectedOfferActiveDuration"];
+    v5->_selectedOfferStickyDuration = [dictionaryCopy PKIntegerForKey:@"selectedOfferStickyDuration"];
+    v5->_selectedOfferActiveDuration = [dictionaryCopy PKIntegerForKey:@"selectedOfferActiveDuration"];
   }
 
   return v5;
@@ -93,12 +93,12 @@ PKCurrencyAmount *__52__PKPaymentOfferRewardsCriteria_initWithDictionary___block
   return v3;
 }
 
-- (BOOL)eligibleWithConfiguration:(id)a3 ineligibleReason:(unint64_t *)a4
+- (BOOL)eligibleWithConfiguration:(id)configuration ineligibleReason:(unint64_t *)reason
 {
-  v6 = a3;
+  configurationCopy = configuration;
   v29.receiver = self;
   v29.super_class = PKPaymentOfferRewardsCriteria;
-  if (![(PKPaymentOfferCriteria *)&v29 eligibleWithConfiguration:v6 ineligibleReason:a4])
+  if (![(PKPaymentOfferCriteria *)&v29 eligibleWithConfiguration:configurationCopy ineligibleReason:reason])
   {
     LOBYTE(v12) = 0;
     goto LABEL_51;
@@ -107,17 +107,17 @@ PKCurrencyAmount *__52__PKPaymentOfferRewardsCriteria_initWithDictionary___block
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
-    v8 = [v7 amount];
-    v24 = [v7 currencyCode];
-    v9 = [v7 context];
-    v10 = [v7 options];
-    v11 = [v7 merchantCountryCode];
+    v7 = configurationCopy;
+    amount = [v7 amount];
+    currencyCode = [v7 currencyCode];
+    context = [v7 context];
+    options = [v7 options];
+    merchantCountryCode = [v7 merchantCountryCode];
     if ([(NSSet *)self->_supportedMerchantCountryCodes count])
     {
       if ([(NSSet *)self->_supportedMerchantCountryCodes count])
       {
-        LODWORD(v12) = [(NSSet *)self->_supportedMerchantCountryCodes containsObject:v11];
+        LODWORD(v12) = [(NSSet *)self->_supportedMerchantCountryCodes containsObject:merchantCountryCode];
       }
 
       else
@@ -131,21 +131,21 @@ PKCurrencyAmount *__52__PKPaymentOfferRewardsCriteria_initWithDictionary___block
       LODWORD(v12) = 1;
     }
 
-    if (v9 == 1)
+    if (context == 1)
     {
       v13 = 0;
       LOBYTE(v12) = 1;
       goto LABEL_47;
     }
 
-    if (!v8)
+    if (!amount)
     {
       LOBYTE(v12) = 0;
       v13 = 3;
       goto LABEL_47;
     }
 
-    if (!v24)
+    if (!currencyCode)
     {
       LOBYTE(v12) = 0;
       v13 = 4;
@@ -154,7 +154,7 @@ PKCurrencyAmount *__52__PKPaymentOfferRewardsCriteria_initWithDictionary___block
 
     if ([(NSSet *)self->_supportedCurrencyCodes count])
     {
-      v14 = [(NSSet *)self->_supportedCurrencyCodes containsObject:v24];
+      v14 = [(NSSet *)self->_supportedCurrencyCodes containsObject:currencyCode];
       if (v14)
       {
         v13 = 8;
@@ -178,9 +178,9 @@ PKCurrencyAmount *__52__PKPaymentOfferRewardsCriteria_initWithDictionary___block
       goto LABEL_47;
     }
 
-    v15 = [(NSDecimalNumber *)v8 pk_isPositiveNumber];
+    pk_isPositiveNumber = [(NSDecimalNumber *)amount pk_isPositiveNumber];
     LOBYTE(v12) = 0;
-    if (v15)
+    if (pk_isPositiveNumber)
     {
       v13 = 15;
     }
@@ -190,16 +190,16 @@ PKCurrencyAmount *__52__PKPaymentOfferRewardsCriteria_initWithDictionary___block
       v13 = 13;
     }
 
-    if (v15 && (v10 & 1) == 0)
+    if (pk_isPositiveNumber && (options & 1) == 0)
     {
-      if ((v10 & 4) != 0 && !self->_supportedRecurringPayments)
+      if ((options & 4) != 0 && !self->_supportedRecurringPayments)
       {
         LOBYTE(v12) = 0;
         v13 = 17;
         goto LABEL_47;
       }
 
-      if ((v10 & 8) != 0)
+      if ((options & 8) != 0)
       {
         if (!self->_supportedDeferredPayments)
         {
@@ -209,20 +209,20 @@ PKCurrencyAmount *__52__PKPaymentOfferRewardsCriteria_initWithDictionary___block
         }
       }
 
-      else if ((v10 & 6) == 2)
+      else if ((options & 6) == 2)
       {
         LOBYTE(v12) = 0;
         v13 = 16;
         goto LABEL_47;
       }
 
-      v23 = PKCurrencyAmountCreate(v8, v24, 0);
+      v23 = PKCurrencyAmountCreate(amount, currencyCode, 0);
       maximumAmounts = self->_maximumAmounts;
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __76__PKPaymentOfferRewardsCriteria_eligibleWithConfiguration_ineligibleReason___block_invoke;
       v27[3] = &unk_1E79D8908;
-      v17 = v24;
+      v17 = currencyCode;
       v28 = v17;
       v12 = [(NSSet *)maximumAmounts pk_anyObjectPassingTest:v27];
       minimumAmounts = self->_minimumAmounts;
@@ -266,7 +266,7 @@ PKCurrencyAmount *__52__PKPaymentOfferRewardsCriteria_initWithDictionary___block
 
 LABEL_47:
 
-    if (v9 == 1)
+    if (context == 1)
     {
       LOBYTE(v12) = 1;
       goto LABEL_51;
@@ -278,9 +278,9 @@ LABEL_47:
   v13 = 0;
   LOBYTE(v12) = 1;
 LABEL_49:
-  if (a4)
+  if (reason)
   {
-    *a4 = v13;
+    *reason = v13;
   }
 
 LABEL_51:
@@ -328,32 +328,32 @@ uint64_t __76__PKPaymentOfferRewardsCriteria_eligibleWithConfiguration_ineligibl
 {
   v22.receiver = self;
   v22.super_class = PKPaymentOfferRewardsCriteria;
-  v3 = [(PKPaymentOfferCriteria *)&v22 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(PKPaymentOfferCriteria *)&v22 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
-  v5 = [(NSURL *)self->_redemptionTermsURL absoluteString];
-  [v4 setObject:v5 forKeyedSubscript:@"redemptionTermsURL"];
+  absoluteString = [(NSURL *)self->_redemptionTermsURL absoluteString];
+  [v4 setObject:absoluteString forKeyedSubscript:@"redemptionTermsURL"];
 
-  v6 = [(NSSet *)self->_supportedCurrencyCodes allObjects];
-  [v4 setObject:v6 forKeyedSubscript:@"supportedCurrencyCodes"];
+  allObjects = [(NSSet *)self->_supportedCurrencyCodes allObjects];
+  [v4 setObject:allObjects forKeyedSubscript:@"supportedCurrencyCodes"];
 
-  v7 = [(NSSet *)self->_supportedMerchantCountryCodes allObjects];
-  [v4 setObject:v7 forKeyedSubscript:@"supportedMerchantCountryCodes"];
+  allObjects2 = [(NSSet *)self->_supportedMerchantCountryCodes allObjects];
+  [v4 setObject:allObjects2 forKeyedSubscript:@"supportedMerchantCountryCodes"];
 
-  v8 = [(NSSet *)self->_minimumAmounts allObjects];
-  v9 = [v8 pk_createArrayBySafelyApplyingBlock:&__block_literal_global_63];
+  allObjects3 = [(NSSet *)self->_minimumAmounts allObjects];
+  v9 = [allObjects3 pk_createArrayBySafelyApplyingBlock:&__block_literal_global_63];
   [v4 setObject:v9 forKeyedSubscript:@"minimumAmounts"];
 
-  v10 = [(NSSet *)self->_maximumAmounts allObjects];
-  v11 = [v10 pk_createArrayBySafelyApplyingBlock:&__block_literal_global_65_0];
+  allObjects4 = [(NSSet *)self->_maximumAmounts allObjects];
+  v11 = [allObjects4 pk_createArrayBySafelyApplyingBlock:&__block_literal_global_65_0];
   [v4 setObject:v11 forKeyedSubscript:@"maximumAmounts"];
 
-  v12 = [(NSSet *)self->_userEnteredMinimumAmounts allObjects];
-  v13 = [v12 pk_createArrayBySafelyApplyingBlock:&__block_literal_global_67];
+  allObjects5 = [(NSSet *)self->_userEnteredMinimumAmounts allObjects];
+  v13 = [allObjects5 pk_createArrayBySafelyApplyingBlock:&__block_literal_global_67];
   [v4 setObject:v13 forKeyedSubscript:@"userEnteredMinimumAmounts"];
 
-  v14 = [(NSSet *)self->_userEnteredMaximumAmounts allObjects];
-  v15 = [v14 pk_createArrayBySafelyApplyingBlock:&__block_literal_global_69];
+  allObjects6 = [(NSSet *)self->_userEnteredMaximumAmounts allObjects];
+  v15 = [allObjects6 pk_createArrayBySafelyApplyingBlock:&__block_literal_global_69];
   [v4 setObject:v15 forKeyedSubscript:@"userEnteredMaximumAmounts"];
 
   v16 = [MEMORY[0x1E696AD98] numberWithBool:self->_supportedDeferredPayments];
@@ -373,18 +373,18 @@ uint64_t __76__PKPaymentOfferRewardsCriteria_eligibleWithConfiguration_ineligibl
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -542,8 +542,8 @@ LABEL_45:
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v3 appendFormat:@"<%@: %p; ", objc_opt_class(), self];
-  v4 = [(PKPaymentOfferCriteria *)self identifier];
-  [v3 appendFormat:@"identifier: '%@'; ", v4];
+  identifier = [(PKPaymentOfferCriteria *)self identifier];
+  [v3 appendFormat:@"identifier: '%@'; ", identifier];
 
   v5 = PKPaymentOfferCriteriaTypeToString([(PKPaymentOfferCriteria *)self type]);
   [v3 appendFormat:@"type: '%@'; ", v5];
@@ -551,20 +551,20 @@ LABEL_45:
   v6 = PKPaymentOfferCriteriaEligibilityToString([(PKPaymentOfferCriteria *)self eligibility]);
   [v3 appendFormat:@"eligibility: '%@'; ", v6];
 
-  v7 = [(PKPaymentOfferCriteria *)self passSerialNumber];
-  [v3 appendFormat:@"passSerialNumber: '%@'; ", v7];
+  passSerialNumber = [(PKPaymentOfferCriteria *)self passSerialNumber];
+  [v3 appendFormat:@"passSerialNumber: '%@'; ", passSerialNumber];
 
-  v8 = [(PKPaymentOfferCriteria *)self passTypeIdentifier];
-  [v3 appendFormat:@"passTypeIdentifier: '%@'; ", v8];
+  passTypeIdentifier = [(PKPaymentOfferCriteria *)self passTypeIdentifier];
+  [v3 appendFormat:@"passTypeIdentifier: '%@'; ", passTypeIdentifier];
 
-  v9 = [(PKPaymentOfferCriteria *)self fpanIdentifier];
-  [v3 appendFormat:@"fpanIdentifier: '%@'; ", v9];
+  fpanIdentifier = [(PKPaymentOfferCriteria *)self fpanIdentifier];
+  [v3 appendFormat:@"fpanIdentifier: '%@'; ", fpanIdentifier];
 
-  v10 = [(PKPaymentOfferCriteria *)self instoreCapabilitiesString];
-  [v3 appendFormat:@"instoreCapabilities: '%@'; ", v10];
+  instoreCapabilitiesString = [(PKPaymentOfferCriteria *)self instoreCapabilitiesString];
+  [v3 appendFormat:@"instoreCapabilities: '%@'; ", instoreCapabilitiesString];
 
-  v11 = [(NSURL *)self->_redemptionTermsURL absoluteString];
-  [v3 appendFormat:@"redemptionTermsURL: '%@'; ", v11];
+  absoluteString = [(NSURL *)self->_redemptionTermsURL absoluteString];
+  [v3 appendFormat:@"redemptionTermsURL: '%@'; ", absoluteString];
 
   [v3 appendFormat:@"supportedCurrencyCodes: '%@'; ", self->_supportedCurrencyCodes];
   [v3 appendFormat:@"supportedMerchantCountryCodes: '%@'; ", self->_supportedMerchantCountryCodes];
@@ -589,118 +589,118 @@ LABEL_45:
   return v3;
 }
 
-- (PKPaymentOfferRewardsCriteria)initWithCoder:(id)a3
+- (PKPaymentOfferRewardsCriteria)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v39.receiver = self;
   v39.super_class = PKPaymentOfferRewardsCriteria;
-  v5 = [(PKPaymentOfferCriteria *)&v39 initWithCoder:v4];
+  v5 = [(PKPaymentOfferCriteria *)&v39 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"redemptionTermsURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"redemptionTermsURL"];
     redemptionTermsURL = v5->_redemptionTermsURL;
     v5->_redemptionTermsURL = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"supportedCurrencyCodes"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"supportedCurrencyCodes"];
     supportedCurrencyCodes = v5->_supportedCurrencyCodes;
     v5->_supportedCurrencyCodes = v11;
 
     v13 = MEMORY[0x1E695DFD8];
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"supportedMerchantCountryCodes"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"supportedMerchantCountryCodes"];
     supportedMerchantCountryCodes = v5->_supportedMerchantCountryCodes;
     v5->_supportedMerchantCountryCodes = v16;
 
     v18 = MEMORY[0x1E695DFD8];
     v19 = objc_opt_class();
     v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"minimumAmounts"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"minimumAmounts"];
     minimumAmounts = v5->_minimumAmounts;
     v5->_minimumAmounts = v21;
 
     v23 = MEMORY[0x1E695DFD8];
     v24 = objc_opt_class();
     v25 = [v23 setWithObjects:{v24, objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"maximumAmounts"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"maximumAmounts"];
     maximumAmounts = v5->_maximumAmounts;
     v5->_maximumAmounts = v26;
 
     v28 = MEMORY[0x1E695DFD8];
     v29 = objc_opt_class();
     v30 = [v28 setWithObjects:{v29, objc_opt_class(), 0}];
-    v31 = [v4 decodeObjectOfClasses:v30 forKey:@"userEnteredMinimumAmounts"];
+    v31 = [coderCopy decodeObjectOfClasses:v30 forKey:@"userEnteredMinimumAmounts"];
     userEnteredMinimumAmounts = v5->_userEnteredMinimumAmounts;
     v5->_userEnteredMinimumAmounts = v31;
 
     v33 = MEMORY[0x1E695DFD8];
     v34 = objc_opt_class();
     v35 = [v33 setWithObjects:{v34, objc_opt_class(), 0}];
-    v36 = [v4 decodeObjectOfClasses:v35 forKey:@"userEnteredMaximumAmounts"];
+    v36 = [coderCopy decodeObjectOfClasses:v35 forKey:@"userEnteredMaximumAmounts"];
     userEnteredMaximumAmounts = v5->_userEnteredMaximumAmounts;
     v5->_userEnteredMaximumAmounts = v36;
 
-    v5->_supportedDeferredPayments = [v4 decodeBoolForKey:@"supportedDeferredPayments"];
-    v5->_supportedRecurringPayments = [v4 decodeBoolForKey:@"supportedRecurringPayments"];
-    v5->_selectedOfferStickyDuration = [v4 decodeIntegerForKey:@"selectedOfferStickyDuration"];
-    v5->_selectedOfferActiveDuration = [v4 decodeIntegerForKey:@"selectedOfferActiveDuration"];
+    v5->_supportedDeferredPayments = [coderCopy decodeBoolForKey:@"supportedDeferredPayments"];
+    v5->_supportedRecurringPayments = [coderCopy decodeBoolForKey:@"supportedRecurringPayments"];
+    v5->_selectedOfferStickyDuration = [coderCopy decodeIntegerForKey:@"selectedOfferStickyDuration"];
+    v5->_selectedOfferActiveDuration = [coderCopy decodeIntegerForKey:@"selectedOfferActiveDuration"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPaymentOfferRewardsCriteria;
-  v4 = a3;
-  [(PKPaymentOfferCriteria *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_redemptionTermsURL forKey:{@"redemptionTermsURL", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_supportedMerchantCountryCodes forKey:@"supportedMerchantCountryCodes"];
-  [v4 encodeObject:self->_supportedCurrencyCodes forKey:@"supportedCurrencyCodes"];
-  [v4 encodeObject:self->_minimumAmounts forKey:@"minimumAmounts"];
-  [v4 encodeObject:self->_maximumAmounts forKey:@"maximumAmounts"];
-  [v4 encodeObject:self->_userEnteredMinimumAmounts forKey:@"userEnteredMinimumAmounts"];
-  [v4 encodeObject:self->_userEnteredMaximumAmounts forKey:@"userEnteredMaximumAmounts"];
-  [v4 encodeBool:self->_supportedDeferredPayments forKey:@"supportedDeferredPayments"];
-  [v4 encodeBool:self->_supportedRecurringPayments forKey:@"supportedRecurringPayments"];
-  [v4 encodeInteger:self->_selectedOfferStickyDuration forKey:@"selectedOfferStickyDuration"];
-  [v4 encodeInteger:self->_selectedOfferActiveDuration forKey:@"selectedOfferActiveDuration"];
+  coderCopy = coder;
+  [(PKPaymentOfferCriteria *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_redemptionTermsURL forKey:{@"redemptionTermsURL", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_supportedMerchantCountryCodes forKey:@"supportedMerchantCountryCodes"];
+  [coderCopy encodeObject:self->_supportedCurrencyCodes forKey:@"supportedCurrencyCodes"];
+  [coderCopy encodeObject:self->_minimumAmounts forKey:@"minimumAmounts"];
+  [coderCopy encodeObject:self->_maximumAmounts forKey:@"maximumAmounts"];
+  [coderCopy encodeObject:self->_userEnteredMinimumAmounts forKey:@"userEnteredMinimumAmounts"];
+  [coderCopy encodeObject:self->_userEnteredMaximumAmounts forKey:@"userEnteredMaximumAmounts"];
+  [coderCopy encodeBool:self->_supportedDeferredPayments forKey:@"supportedDeferredPayments"];
+  [coderCopy encodeBool:self->_supportedRecurringPayments forKey:@"supportedRecurringPayments"];
+  [coderCopy encodeInteger:self->_selectedOfferStickyDuration forKey:@"selectedOfferStickyDuration"];
+  [coderCopy encodeInteger:self->_selectedOfferActiveDuration forKey:@"selectedOfferActiveDuration"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21.receiver = self;
   v21.super_class = PKPaymentOfferRewardsCriteria;
   v5 = [(PKPaymentOfferCriteria *)&v21 copyWithZone:?];
-  v6 = [(NSURL *)self->_redemptionTermsURL copyWithZone:a3];
+  v6 = [(NSURL *)self->_redemptionTermsURL copyWithZone:zone];
   v7 = v5[10];
   v5[10] = v6;
 
-  v8 = [(NSSet *)self->_supportedMerchantCountryCodes copyWithZone:a3];
+  v8 = [(NSSet *)self->_supportedMerchantCountryCodes copyWithZone:zone];
   v9 = v5[12];
   v5[12] = v8;
 
-  v10 = [(NSSet *)self->_supportedCurrencyCodes copyWithZone:a3];
+  v10 = [(NSSet *)self->_supportedCurrencyCodes copyWithZone:zone];
   v11 = v5[11];
   v5[11] = v10;
 
-  v12 = [(NSSet *)self->_minimumAmounts copyWithZone:a3];
+  v12 = [(NSSet *)self->_minimumAmounts copyWithZone:zone];
   v13 = v5[13];
   v5[13] = v12;
 
-  v14 = [(NSSet *)self->_maximumAmounts copyWithZone:a3];
+  v14 = [(NSSet *)self->_maximumAmounts copyWithZone:zone];
   v15 = v5[14];
   v5[14] = v14;
 
-  v16 = [(NSSet *)self->_userEnteredMinimumAmounts copyWithZone:a3];
+  v16 = [(NSSet *)self->_userEnteredMinimumAmounts copyWithZone:zone];
   v17 = v5[15];
   v5[15] = v16;
 
-  v18 = [(NSSet *)self->_userEnteredMaximumAmounts copyWithZone:a3];
+  v18 = [(NSSet *)self->_userEnteredMaximumAmounts copyWithZone:zone];
   v19 = v5[16];
   v5[16] = v18;
 

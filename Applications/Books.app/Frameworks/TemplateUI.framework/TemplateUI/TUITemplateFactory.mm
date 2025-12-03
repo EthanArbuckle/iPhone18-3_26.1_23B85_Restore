@@ -1,26 +1,26 @@
 @interface TUITemplateFactory
-- (TUITemplateFactory)initWithRegistry:(id)a3;
-- (id)_prebuiltTemplateForURL:(id)a3 looseMatch:(BOOL)a4;
-- (id)templateFromURL:(id)a3;
-- (id)templateFromURL:(id)a3 looseMatch:(BOOL)a4;
+- (TUITemplateFactory)initWithRegistry:(id)registry;
+- (id)_prebuiltTemplateForURL:(id)l looseMatch:(BOOL)match;
+- (id)templateFromURL:(id)l;
+- (id)templateFromURL:(id)l looseMatch:(BOOL)match;
 - (void)debugPackages;
-- (void)registerPackage:(id)a3;
+- (void)registerPackage:(id)package;
 - (void)unregisterAllPackages;
-- (void)unregisterPackage:(id)a3;
+- (void)unregisterPackage:(id)package;
 @end
 
 @implementation TUITemplateFactory
 
-- (TUITemplateFactory)initWithRegistry:(id)a3
+- (TUITemplateFactory)initWithRegistry:(id)registry
 {
-  v5 = a3;
+  registryCopy = registry;
   v16.receiver = self;
   v16.super_class = TUITemplateFactory;
   v6 = [(TUITemplateFactory *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_registry, a3);
+    objc_storeStrong(&v6->_registry, registry);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(&_dispatch_queue_attr_concurrent, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("TUITemplateFactory.cache", v8);
     cacheQueue = v7->_cacheQueue;
@@ -38,9 +38,9 @@
   return v7;
 }
 
-- (void)registerPackage:(id)a3
+- (void)registerPackage:(id)package
 {
-  v4 = a3;
+  packageCopy = package;
   if (objc_opt_respondsToSelector())
   {
     cacheQueue = self->_cacheQueue;
@@ -49,14 +49,14 @@
     v6[2] = sub_1649DC;
     v6[3] = &unk_25F7C8;
     v6[4] = self;
-    v7 = v4;
+    v7 = packageCopy;
     dispatch_sync(cacheQueue, v6);
   }
 }
 
-- (void)unregisterPackage:(id)a3
+- (void)unregisterPackage:(id)package
 {
-  v4 = a3;
+  packageCopy = package;
   if (objc_opt_respondsToSelector())
   {
     cacheQueue = self->_cacheQueue;
@@ -65,7 +65,7 @@
     v6[2] = sub_164C60;
     v6[3] = &unk_25F7C8;
     v6[4] = self;
-    v7 = v4;
+    v7 = packageCopy;
     dispatch_sync(cacheQueue, v6);
   }
 }
@@ -92,21 +92,21 @@
   dispatch_sync(cacheQueue, block);
 }
 
-- (id)_prebuiltTemplateForURL:(id)a3 looseMatch:(BOOL)a4
+- (id)_prebuiltTemplateForURL:(id)l looseMatch:(BOOL)match
 {
-  v6 = a3;
+  lCopy = l;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = sub_1652DC;
   v25 = sub_1652EC;
   v26 = 0;
-  if (v6)
+  if (lCopy)
   {
-    v7 = [NSURLComponents componentsWithURL:v6 resolvingAgainstBaseURL:1];
-    v8 = [v7 path];
-    v9 = [v8 stringByStandardizingPath];
-    [v7 setPath:v9];
+    v7 = [NSURLComponents componentsWithURL:lCopy resolvingAgainstBaseURL:1];
+    path = [v7 path];
+    stringByStandardizingPath = [path stringByStandardizingPath];
+    [v7 setPath:stringByStandardizingPath];
 
     v10 = [v7 URL];
     cacheQueue = self->_cacheQueue;
@@ -117,8 +117,8 @@
     v19 = &v21;
     block[4] = self;
     v17 = v10;
-    v20 = a4;
-    v18 = v6;
+    matchCopy = match;
+    v18 = lCopy;
     v12 = v10;
     dispatch_sync(cacheQueue, block);
 
@@ -136,16 +136,16 @@
   return v14;
 }
 
-- (id)templateFromURL:(id)a3
+- (id)templateFromURL:(id)l
 {
-  v3 = [(TUITemplateFactory *)self templateFromURL:a3 looseMatch:0];
+  v3 = [(TUITemplateFactory *)self templateFromURL:l looseMatch:0];
 
   return v3;
 }
 
-- (id)templateFromURL:(id)a3 looseMatch:(BOOL)a4
+- (id)templateFromURL:(id)l looseMatch:(BOOL)match
 {
-  v4 = [(TUITemplateFactory *)self _prebuiltTemplateForURL:a3 looseMatch:a4];
+  v4 = [(TUITemplateFactory *)self _prebuiltTemplateForURL:l looseMatch:match];
 
   return v4;
 }

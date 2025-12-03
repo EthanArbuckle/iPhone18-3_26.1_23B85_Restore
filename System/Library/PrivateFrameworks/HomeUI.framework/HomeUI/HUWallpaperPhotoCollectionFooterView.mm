@@ -1,14 +1,14 @@
 @interface HUWallpaperPhotoCollectionFooterView
-- (HUWallpaperPhotoCollectionFooterView)initWithFrame:(CGRect)a3;
+- (HUWallpaperPhotoCollectionFooterView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation HUWallpaperPhotoCollectionFooterView
 
-- (HUWallpaperPhotoCollectionFooterView)initWithFrame:(CGRect)a3
+- (HUWallpaperPhotoCollectionFooterView)initWithFrame:(CGRect)frame
 {
   v24.receiver = self;
   v24.super_class = HUWallpaperPhotoCollectionFooterView;
-  v3 = [(HUWallpaperPhotoCollectionFooterView *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUWallpaperPhotoCollectionFooterView *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D756B8]);
@@ -21,29 +21,29 @@
     [(UILabel *)v3->_label setFont:v7];
 
     [(HUWallpaperPhotoCollectionFooterView *)v3 addSubview:v3->_label];
-    v8 = [(UILabel *)v3->_label topAnchor];
-    v9 = [(HUWallpaperPhotoCollectionFooterView *)v3 topAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9 constant:8.0];
+    topAnchor = [(UILabel *)v3->_label topAnchor];
+    topAnchor2 = [(HUWallpaperPhotoCollectionFooterView *)v3 topAnchor];
+    v10 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:8.0];
     [v10 setActive:1];
 
-    v11 = [(UILabel *)v3->_label bottomAnchor];
-    v12 = [(HUWallpaperPhotoCollectionFooterView *)v3 bottomAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12 constant:-8.0];
+    bottomAnchor = [(UILabel *)v3->_label bottomAnchor];
+    bottomAnchor2 = [(HUWallpaperPhotoCollectionFooterView *)v3 bottomAnchor];
+    v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-8.0];
     [v13 setActive:1];
 
-    v14 = [(UILabel *)v3->_label centerXAnchor];
-    v15 = [(HUWallpaperPhotoCollectionFooterView *)v3 centerXAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    centerXAnchor = [(UILabel *)v3->_label centerXAnchor];
+    centerXAnchor2 = [(HUWallpaperPhotoCollectionFooterView *)v3 centerXAnchor];
+    v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v16 setActive:1];
 
-    v17 = [(UILabel *)v3->_label leadingAnchor];
-    v18 = [(HUWallpaperPhotoCollectionFooterView *)v3 leadingAnchor];
-    v19 = [v17 constraintGreaterThanOrEqualToAnchor:v18];
+    leadingAnchor = [(UILabel *)v3->_label leadingAnchor];
+    leadingAnchor2 = [(HUWallpaperPhotoCollectionFooterView *)v3 leadingAnchor];
+    v19 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
     [v19 setActive:1];
 
-    v20 = [(UILabel *)v3->_label trailingAnchor];
-    v21 = [(HUWallpaperPhotoCollectionFooterView *)v3 trailingAnchor];
-    v22 = [v20 constraintLessThanOrEqualToAnchor:v21];
+    trailingAnchor = [(UILabel *)v3->_label trailingAnchor];
+    trailingAnchor2 = [(HUWallpaperPhotoCollectionFooterView *)v3 trailingAnchor];
+    v22 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
     [v22 setActive:1];
   }
 

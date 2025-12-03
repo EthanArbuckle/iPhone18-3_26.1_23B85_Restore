@@ -1,13 +1,13 @@
 @interface HMDRapportOverBLEDeviceWrapperDefaultFactory
-- (id)makeWrapperWithClient:(id)a3;
+- (id)makeWrapperWithClient:(id)client;
 @end
 
 @implementation HMDRapportOverBLEDeviceWrapperDefaultFactory
 
-- (id)makeWrapperWithClient:(id)a3
+- (id)makeWrapperWithClient:(id)client
 {
-  v3 = a3;
-  v4 = [[HMDRapportDeviceClientWrapper alloc] initWithClient:v3];
+  clientCopy = client;
+  v4 = [[HMDRapportDeviceClientWrapper alloc] initWithClient:clientCopy];
 
   return v4;
 }

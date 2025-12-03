@@ -1,8 +1,8 @@
 @interface RMModelNetworkEAPDeclaration_PrivateAccessToken
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithIssuerName:(id)a3 tokenKey:(id)a4;
-+ (id)buildWithType:(id)a3 issuerName:(id)a4 redemptionContext:(id)a5 tokenKey:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)buildRequiredOnlyWithIssuerName:(id)name tokenKey:(id)key;
++ (id)buildWithType:(id)type issuerName:(id)name redemptionContext:(id)context tokenKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation RMModelNetworkEAPDeclaration_PrivateAccessToken
@@ -23,17 +23,17 @@
   return v4;
 }
 
-+ (id)buildWithType:(id)a3 issuerName:(id)a4 redemptionContext:(id)a5 tokenKey:(id)a6
++ (id)buildWithType:(id)type issuerName:(id)name redemptionContext:(id)context tokenKey:(id)key
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  keyCopy = key;
+  contextCopy = context;
+  nameCopy = name;
+  typeCopy = type;
   v13 = objc_opt_new();
   v14 = v13;
-  if (v12)
+  if (typeCopy)
   {
-    v15 = v12;
+    v15 = typeCopy;
   }
 
   else
@@ -43,31 +43,31 @@
 
   [v13 setPayloadType:v15];
 
-  [v14 setPayloadIssuerName:v11];
-  [v14 setPayloadRedemptionContext:v10];
+  [v14 setPayloadIssuerName:nameCopy];
+  [v14 setPayloadRedemptionContext:contextCopy];
 
-  [v14 setPayloadTokenKey:v9];
+  [v14 setPayloadTokenKey:keyCopy];
 
   return v14;
 }
 
-+ (id)buildRequiredOnlyWithIssuerName:(id)a3 tokenKey:(id)a4
++ (id)buildRequiredOnlyWithIssuerName:(id)name tokenKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
+  keyCopy = key;
+  nameCopy = name;
   v7 = objc_opt_new();
-  [v7 setPayloadIssuerName:v6];
+  [v7 setPayloadIssuerName:nameCopy];
 
-  [v7 setPayloadTokenKey:v5];
+  [v7 setPayloadTokenKey:keyCopy];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = RMModelNetworkEAPDeclaration_PrivateAccessToken;
-  v4 = [(RMModelPayloadBase *)&v14 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v14 copyWithZone:zone];
   v5 = [(NSNumber *)self->_payloadType copy];
   v6 = v4[2];
   v4[2] = v5;

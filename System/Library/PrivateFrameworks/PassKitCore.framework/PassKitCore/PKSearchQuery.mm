@@ -1,8 +1,8 @@
 @interface PKSearchQuery
-- (BOOL)isEqual:(id)a3;
-- (PKSearchQuery)initWithCoder:(id)a3;
-- (PKSearchQuery)initWithIdentifier:(id)a3 keyboardLanguage:(id)a4;
-- (id)_groupTokenOfType:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKSearchQuery)initWithCoder:(id)coder;
+- (PKSearchQuery)initWithIdentifier:(id)identifier keyboardLanguage:(id)language;
+- (id)_groupTokenOfType:(unint64_t)type;
 - (id)accountUserToken;
 - (id)categoryToken;
 - (id)dateToken;
@@ -17,49 +17,49 @@
 - (id)transactionStatuses;
 - (id)transactionTypes;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKSearchQuery
 
-- (PKSearchQuery)initWithIdentifier:(id)a3 keyboardLanguage:(id)a4
+- (PKSearchQuery)initWithIdentifier:(id)identifier keyboardLanguage:(id)language
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  languageCopy = language;
   v12.receiver = self;
   v12.super_class = PKSearchQuery;
   v9 = [(PKSearchQuery *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_keyboardLanguage, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_keyboardLanguage, language);
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_tokens forKey:@"tokens"];
-  [v5 encodeObject:self->_text forKey:@"text"];
-  [v5 encodeObject:self->_keyboardLanguage forKey:@"keyboardLanguage"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
-  [v5 encodeInteger:self->_domain forKey:@"domain"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_tokens forKey:@"tokens"];
+  [coderCopy encodeObject:self->_text forKey:@"text"];
+  [coderCopy encodeObject:self->_keyboardLanguage forKey:@"keyboardLanguage"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeInteger:self->_domain forKey:@"domain"];
 }
 
-- (PKSearchQuery)initWithCoder:(id)a3
+- (PKSearchQuery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = PKSearchQuery;
   v5 = [(PKSearchQuery *)&v29 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
@@ -77,20 +77,20 @@
     v14 = objc_opt_class();
     v15 = objc_opt_class();
     v16 = [v28 setWithObjects:{v27, v26, v25, v24, v8, v9, v10, v11, v12, v13, v14, v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"tokens"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"tokens"];
     tokens = v5->_tokens;
     v5->_tokens = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
     text = v5->_text;
     v5->_text = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyboardLanguage"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyboardLanguage"];
     keyboardLanguage = v5->_keyboardLanguage;
     v5->_keyboardLanguage = v21;
 
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v5->_domain = [v4 decodeIntegerForKey:@"domain"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_domain = [coderCopy decodeIntegerForKey:@"domain"];
   }
 
   return v5;
@@ -108,9 +108,9 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -118,7 +118,7 @@
   }
 
   tokens = self->_tokens;
-  v6 = v4[6];
+  v6 = equalCopy[6];
   if (tokens && v6)
   {
     if (([(NSArray *)tokens isEqual:?]& 1) == 0)
@@ -133,7 +133,7 @@
   }
 
   text = self->_text;
-  v8 = v4[5];
+  v8 = equalCopy[5];
   if (!text || !v8)
   {
     if (text == v8)
@@ -152,7 +152,7 @@ LABEL_12:
   }
 
 LABEL_10:
-  v9 = self->_type == v4[4];
+  v9 = self->_type == equalCopy[4];
 LABEL_13:
 
   return v9;
@@ -169,7 +169,7 @@ LABEL_13:
   return v5;
 }
 
-- (id)_groupTokenOfType:(unint64_t)a3
+- (id)_groupTokenOfType:(unint64_t)type
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
@@ -195,10 +195,10 @@ LABEL_13:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v9 group];
-          v11 = [v10 type];
+          group = [v9 group];
+          type = [group type];
 
-          if (v11 == a3)
+          if (type == type)
           {
             v12 = v9;
             goto LABEL_12;
@@ -225,49 +225,49 @@ LABEL_12:
 - (id)categoryToken
 {
   v2 = PKSearchTokensOfGroupTypeFromTokens(0, self->_tokens);
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)peerPaymentToken
 {
   v2 = PKSearchTokensOfGroupTypeFromTokens(12, self->_tokens);
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)accountUserToken
 {
   v2 = PKSearchTokensOfGroupTypeFromTokens(16, self->_tokens);
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)dateToken
 {
   v2 = PKSearchTokensOfTypeFromTokens(2, self->_tokens);
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)displayNameToken
 {
   v2 = PKSearchTokensOfTypeFromTokens(9, self->_tokens);
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)objectTypeToken
 {
   v2 = PKSearchTokensOfTypeFromTokens(10, self->_tokens);
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)transactionTypes
@@ -331,11 +331,11 @@ LABEL_12:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) transactionStatus];
-        v10 = [MEMORY[0x1E696AD98] numberWithInteger:v9];
+        transactionStatus = [*(*(&v13 + 1) + 8 * i) transactionStatus];
+        v10 = [MEMORY[0x1E696AD98] numberWithInteger:transactionStatus];
         [v3 addObject:v10];
 
-        if (!v9)
+        if (!transactionStatus)
         {
           [v3 addObject:&unk_1F23B4C28];
         }
@@ -393,17 +393,17 @@ LABEL_12:
 - (id)peerPaymentSubTypeToken
 {
   v2 = PKSearchTokensOfTypeFromTokens(6, self->_tokens);
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)rewardsToken
 {
   v2 = PKSearchTokensOfTypeFromTokens(7, self->_tokens);
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)tags

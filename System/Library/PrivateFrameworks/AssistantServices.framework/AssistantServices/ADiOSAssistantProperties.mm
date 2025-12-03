@@ -1,5 +1,5 @@
 @interface ADiOSAssistantProperties
-- (ADiOSAssistantProperties)initWithQueue:(id)a3;
+- (ADiOSAssistantProperties)initWithQueue:(id)queue;
 - (BOOL)_getIsAllowSiriWhenLockedEnabled;
 - (BOOL)_getIsAlwaysListenForHeySiriEnabled;
 - (BOOL)_getIsAlwaysShowSiriCaptionsEnabled;
@@ -20,17 +20,17 @@
 - (id)_getODDiOSResponseProperties;
 - (int)_getAnnounceCarPlayStatus;
 - (int)_getSiriPauseTimeState;
-- (int)_headGestureMappingFromGestureType:(int64_t)a3;
-- (void)_getIsSpokenNotificationsControlCenterModuleEnabledWithCompletion:(id)a3;
-- (void)_getODDAnnouncePropertiesWithCompletion:(id)a3;
-- (void)getODDiOSAssistantPropertiesWithCompletion:(id)a3;
+- (int)_headGestureMappingFromGestureType:(int64_t)type;
+- (void)_getIsSpokenNotificationsControlCenterModuleEnabledWithCompletion:(id)completion;
+- (void)_getODDAnnouncePropertiesWithCompletion:(id)completion;
+- (void)getODDiOSAssistantPropertiesWithCompletion:(id)completion;
 @end
 
 @implementation ADiOSAssistantProperties
 
-- (void)_getIsSpokenNotificationsControlCenterModuleEnabledWithCompletion:(id)a3
+- (void)_getIsSpokenNotificationsControlCenterModuleEnabledWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -52,7 +52,7 @@
   v24[3] = &unk_100512B30;
   v24[4] = self;
   p_buf = &buf;
-  v7 = v4;
+  v7 = completionCopy;
   v25 = v7;
   v8 = [v6 initWithBlock:v24];
   v9 = [AFWatchdogTimer alloc];
@@ -85,14 +85,14 @@
 
   v15 = v14;
   _Block_object_dispose(&v28, 8);
-  v16 = [v14 sharedInstance];
+  sharedInstance = [v14 sharedInstance];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10013A128;
   v20[3] = &unk_10051C2E0;
   v17 = v11;
   v21 = v17;
-  [v16 getEnabledStateOfModuleWithIdentifier:@"com.apple.siri.SpokenNotificationsModule" completionHandler:v20];
+  [sharedInstance getEnabledStateOfModuleWithIdentifier:@"com.apple.siri.SpokenNotificationsModule" completionHandler:v20];
   v18 = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -106,18 +106,18 @@
 
 - (BOOL)_getIsEnabledForHeadphones
 {
-  v2 = [sub_10013A384() currentNotificationSettingsCenter];
-  v3 = [v2 notificationSystemSettings];
-  v4 = [v3 announcementHeadphonesSetting] == 2;
+  currentNotificationSettingsCenter = [sub_10013A384() currentNotificationSettingsCenter];
+  notificationSystemSettings = [currentNotificationSettingsCenter notificationSystemSettings];
+  v4 = [notificationSystemSettings announcementHeadphonesSetting] == 2;
 
   return v4;
 }
 
 - (BOOL)_getIsAnnounceNotificationsEnabled
 {
-  v2 = [sub_10013A384() currentNotificationSettingsCenter];
-  v3 = [v2 notificationSystemSettings];
-  v4 = [v3 announcementSetting] == 2;
+  currentNotificationSettingsCenter = [sub_10013A384() currentNotificationSettingsCenter];
+  notificationSystemSettings = [currentNotificationSettingsCenter notificationSystemSettings];
+  v4 = [notificationSystemSettings announcementSetting] == 2;
 
   return v4;
 }
@@ -184,32 +184,32 @@ LABEL_11:
 - (int)_getSiriPauseTimeState
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 accessibleEndpointerThreshold];
+  accessibleEndpointerThreshold = [v2 accessibleEndpointerThreshold];
 
-  return [ADiOSAssistantPropertiesUtilities getSiriPauseTimeStateFrom:v3];
+  return [ADiOSAssistantPropertiesUtilities getSiriPauseTimeStateFrom:accessibleEndpointerThreshold];
 }
 
 - (BOOL)_getIsAlwaysListenForHeySiriEnabled
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 alwaysAllowVoiceActivation];
+  alwaysAllowVoiceActivation = [v2 alwaysAllowVoiceActivation];
 
-  return v3;
+  return alwaysAllowVoiceActivation;
 }
 
 - (BOOL)_getIsAtypicalSpeechEnabled
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 useAtypicalSpeechModel];
+  useAtypicalSpeechModel = [v2 useAtypicalSpeechModel];
 
-  return v3;
+  return useAtypicalSpeechModel;
 }
 
 - (double)_getSiriSpeechRate
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 siriSpeechRate];
-  [v3 doubleValue];
+  siriSpeechRate = [v2 siriSpeechRate];
+  [siriSpeechRate doubleValue];
   v5 = v4;
 
   return v5;
@@ -218,41 +218,41 @@ LABEL_11:
 - (BOOL)_getIsShowAppsBehindSiriEnabled
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 alwaysObscureBackgroundContentWhenActive];
+  alwaysObscureBackgroundContentWhenActive = [v2 alwaysObscureBackgroundContentWhenActive];
 
-  return v3 ^ 1;
+  return alwaysObscureBackgroundContentWhenActive ^ 1;
 }
 
 - (BOOL)_getIsAlwaysShowSpeechEnabled
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 alwaysShowRecognizedSpeech];
+  alwaysShowRecognizedSpeech = [v2 alwaysShowRecognizedSpeech];
 
-  return v3;
+  return alwaysShowRecognizedSpeech;
 }
 
 - (BOOL)_getIsAlwaysShowSiriCaptionsEnabled
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 siriResponseShouldAlwaysPrintWithoutOverride];
+  siriResponseShouldAlwaysPrintWithoutOverride = [v2 siriResponseShouldAlwaysPrintWithoutOverride];
 
-  return v3;
+  return siriResponseShouldAlwaysPrintWithoutOverride;
 }
 
 - (BOOL)_getIsAllowSiriWhenLockedEnabled
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 disableAssistantWhilePasscodeLocked];
+  disableAssistantWhilePasscodeLocked = [v2 disableAssistantWhilePasscodeLocked];
 
-  return v3 ^ 1;
+  return disableAssistantWhilePasscodeLocked ^ 1;
 }
 
 - (BOOL)_getIsPressSideButtonForSiriEnabled
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 assistantIsEnabled];
+  assistantIsEnabled = [v2 assistantIsEnabled];
 
-  return v3;
+  return assistantIsEnabled;
 }
 
 - (id)_getODDHeadGestureProperties
@@ -267,26 +267,26 @@ LABEL_11:
 
   v4 = objc_alloc_init(ODDSiriSchemaODDHeadGestureProperties);
   v5 = +[AFPreferences sharedPreferences];
-  v6 = [v5 storedHeadGestureConfigurationForDevice];
+  storedHeadGestureConfigurationForDevice = [v5 storedHeadGestureConfigurationForDevice];
 
-  [v4 setHeadGesturesSupported:{objc_msgSend(v6, "isSupported")}];
-  [v4 setHeadGesturesEnabled:{objc_msgSend(v6, "isEnabled")}];
-  [v4 setAcceptProceedGesture:{-[ADiOSAssistantProperties _headGestureMappingFromGestureType:](self, "_headGestureMappingFromGestureType:", objc_msgSend(v6, "acceptGesture"))}];
-  [v4 setDeclineDismissGesture:{-[ADiOSAssistantProperties _headGestureMappingFromGestureType:](self, "_headGestureMappingFromGestureType:", objc_msgSend(v6, "rejectGesture"))}];
+  [v4 setHeadGesturesSupported:{objc_msgSend(storedHeadGestureConfigurationForDevice, "isSupported")}];
+  [v4 setHeadGesturesEnabled:{objc_msgSend(storedHeadGestureConfigurationForDevice, "isEnabled")}];
+  [v4 setAcceptProceedGesture:{-[ADiOSAssistantProperties _headGestureMappingFromGestureType:](self, "_headGestureMappingFromGestureType:", objc_msgSend(storedHeadGestureConfigurationForDevice, "acceptGesture"))}];
+  [v4 setDeclineDismissGesture:{-[ADiOSAssistantProperties _headGestureMappingFromGestureType:](self, "_headGestureMappingFromGestureType:", objc_msgSend(storedHeadGestureConfigurationForDevice, "rejectGesture"))}];
 
   return v4;
 }
 
-- (int)_headGestureMappingFromGestureType:(int64_t)a3
+- (int)_headGestureMappingFromGestureType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 == 1);
+    return 2 * (type == 1);
   }
 }
 
@@ -308,9 +308,9 @@ LABEL_11:
   return v4;
 }
 
-- (void)_getODDAnnouncePropertiesWithCompletion:(id)a3
+- (void)_getODDAnnouncePropertiesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -332,8 +332,8 @@ LABEL_11:
   v9[2] = sub_10013AF34;
   v9[3] = &unk_10051C718;
   v10 = v6;
-  v11 = v4;
-  v7 = v4;
+  v11 = completionCopy;
+  v7 = completionCopy;
   v8 = v6;
   [(ADiOSAssistantProperties *)self _getIsSpokenNotificationsControlCenterModuleEnabledWithCompletion:v9];
 }
@@ -413,9 +413,9 @@ LABEL_11:
   return v4;
 }
 
-- (void)getODDiOSAssistantPropertiesWithCompletion:(id)a3
+- (void)getODDiOSAssistantPropertiesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -428,23 +428,23 @@ LABEL_11:
   v7 = objc_alloc_init(ODDSiriSchemaODDiOSAssistantProperties);
   [v7 setIsPressSideButtonForSiriEnabled:{-[ADiOSAssistantProperties _getIsPressSideButtonForSiriEnabled](self, "_getIsPressSideButtonForSiriEnabled")}];
   [v7 setIsAllowSiriWhenLockedEnabled:{-[ADiOSAssistantProperties _getIsAllowSiriWhenLockedEnabled](self, "_getIsAllowSiriWhenLockedEnabled")}];
-  v8 = [(ADiOSAssistantProperties *)self _getODDiOSResponseProperties];
-  [v7 setResponse:v8];
+  _getODDiOSResponseProperties = [(ADiOSAssistantProperties *)self _getODDiOSResponseProperties];
+  [v7 setResponse:_getODDiOSResponseProperties];
 
-  v9 = [(ADiOSAssistantProperties *)self _getODDiOSAccessibilityProperties];
-  [v7 setAccessibility:v9];
+  _getODDiOSAccessibilityProperties = [(ADiOSAssistantProperties *)self _getODDiOSAccessibilityProperties];
+  [v7 setAccessibility:_getODDiOSAccessibilityProperties];
 
-  v10 = [(ADiOSAssistantProperties *)self _getODDCarPlayProperties];
-  [v7 setCarPlay:v10];
+  _getODDCarPlayProperties = [(ADiOSAssistantProperties *)self _getODDCarPlayProperties];
+  [v7 setCarPlay:_getODDCarPlayProperties];
 
-  v11 = [(ADiOSAssistantProperties *)self _getODDSiriInCallProperties];
-  [v7 setSiriInCall:v11];
+  _getODDSiriInCallProperties = [(ADiOSAssistantProperties *)self _getODDSiriInCallProperties];
+  [v7 setSiriInCall:_getODDSiriInCallProperties];
 
-  v12 = [(ADiOSAssistantProperties *)self _getODDAutoSendMessageProperties];
-  [v7 setAutoSendMessage:v12];
+  _getODDAutoSendMessageProperties = [(ADiOSAssistantProperties *)self _getODDAutoSendMessageProperties];
+  [v7 setAutoSendMessage:_getODDAutoSendMessageProperties];
 
-  v13 = [(ADiOSAssistantProperties *)self _getODDHeadGestureProperties];
-  [v7 setHeadGestures:v13];
+  _getODDHeadGestureProperties = [(ADiOSAssistantProperties *)self _getODDHeadGestureProperties];
+  [v7 setHeadGestures:_getODDHeadGestureProperties];
 
   dispatch_group_enter(v6);
   v28[0] = _NSConcreteStackBlock;
@@ -473,22 +473,22 @@ LABEL_11:
   v22[2] = sub_10013B7D0;
   v22[3] = &unk_10051E038;
   v23 = v17;
-  v24 = v4;
+  v24 = completionCopy;
   v20 = v17;
-  v21 = v4;
+  v21 = completionCopy;
   dispatch_group_notify(v18, v19, v22);
 }
 
-- (ADiOSAssistantProperties)initWithQueue:(id)a3
+- (ADiOSAssistantProperties)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = ADiOSAssistantProperties;
   v6 = [(ADiOSAssistantProperties *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;

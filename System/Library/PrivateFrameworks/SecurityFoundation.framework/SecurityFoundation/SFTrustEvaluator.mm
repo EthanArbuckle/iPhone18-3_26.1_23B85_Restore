@@ -1,9 +1,9 @@
 @interface SFTrustEvaluator
 - (SFTrustEvaluator)init;
-- (SFTrustEvaluator)initWithCoder:(id)a3;
-- (SFTrustEvaluator)initWithTrustPolicy:(id)a3;
-- (SFTrustEvaluator)initWithTrustPolicy:(id)a3 revocationPolicy:(id)a4 applicationAnchorCertificates:(id)a5 allowCertificateFetching:(BOOL)a6 trustSystemAnchorCertificates:(BOOL)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFTrustEvaluator)initWithCoder:(id)coder;
+- (SFTrustEvaluator)initWithTrustPolicy:(id)policy;
+- (SFTrustEvaluator)initWithTrustPolicy:(id)policy revocationPolicy:(id)revocationPolicy applicationAnchorCertificates:(id)certificates allowCertificateFetching:(BOOL)fetching trustSystemAnchorCertificates:(BOOL)anchorCertificates;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SFTrustEvaluator
@@ -16,32 +16,32 @@
   return v4;
 }
 
-- (SFTrustEvaluator)initWithTrustPolicy:(id)a3
+- (SFTrustEvaluator)initWithTrustPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v5 = objc_alloc_init(SFRevocationPolicy);
-  v6 = [(SFTrustEvaluator *)self initWithTrustPolicy:v4 revocationPolicy:v5];
+  v6 = [(SFTrustEvaluator *)self initWithTrustPolicy:policyCopy revocationPolicy:v5];
 
   return v6;
 }
 
-- (SFTrustEvaluator)initWithTrustPolicy:(id)a3 revocationPolicy:(id)a4 applicationAnchorCertificates:(id)a5 allowCertificateFetching:(BOOL)a6 trustSystemAnchorCertificates:(BOOL)a7
+- (SFTrustEvaluator)initWithTrustPolicy:(id)policy revocationPolicy:(id)revocationPolicy applicationAnchorCertificates:(id)certificates allowCertificateFetching:(BOOL)fetching trustSystemAnchorCertificates:(BOOL)anchorCertificates
 {
-  v7 = a7;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  anchorCertificatesCopy = anchorCertificates;
+  policyCopy = policy;
+  revocationPolicyCopy = revocationPolicy;
+  certificatesCopy = certificates;
   v20.receiver = self;
   v20.super_class = SFTrustEvaluator;
   v16 = [(SFTrustEvaluator *)&v20 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(v16->_trustEvaluatorInternal + 1, a3);
-    objc_storeStrong(v17->_trustEvaluatorInternal + 2, a4);
-    objc_storeStrong(v17->_trustEvaluatorInternal + 3, a5);
-    *(v17->_trustEvaluatorInternal + 32) = *(v17->_trustEvaluatorInternal + 32) & 0xFE | a6;
-    if (v7)
+    objc_storeStrong(v16->_trustEvaluatorInternal + 1, policy);
+    objc_storeStrong(v17->_trustEvaluatorInternal + 2, revocationPolicy);
+    objc_storeStrong(v17->_trustEvaluatorInternal + 3, certificates);
+    *(v17->_trustEvaluatorInternal + 32) = *(v17->_trustEvaluatorInternal + 32) & 0xFE | fetching;
+    if (anchorCertificatesCopy)
     {
       v18 = 2;
     }
@@ -57,16 +57,16 @@
   return v17;
 }
 
-- (SFTrustEvaluator)initWithCoder:(id)a3
+- (SFTrustEvaluator)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SFTrustEvaluator;
   return [(SFTrustEvaluator *)&v4 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   trustEvaluatorInternal = self->_trustEvaluatorInternal;
   v6 = trustEvaluatorInternal[1];
   v7 = trustEvaluatorInternal[2];

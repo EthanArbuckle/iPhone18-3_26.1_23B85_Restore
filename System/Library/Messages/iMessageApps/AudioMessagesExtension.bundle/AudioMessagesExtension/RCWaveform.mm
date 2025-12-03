@@ -1,25 +1,25 @@
 @interface RCWaveform
-+ (RCWaveform)waveformWithContentsOfURL:(id)a3 minimumRequiredVersion:(unint64_t)a4;
-+ (_NSRange)rangeOfSegmentsIntersectingTimeRange:(id)a3 withSegments:(id)a4;
-+ (id)_mutableSegmentsByClippingToTimeRange:(id)a3 withSegments:(id)a4;
-+ (id)_mutableSegmentsIntersectingTimeRange:(id)a3 intersectionRange:(_NSRange *)a4 withSegments:(id)a5;
-+ (id)waveformURLForAVURL:(id)a3;
-+ (void)_mergeBoundarySegmentsInArray:(id)a3;
++ (RCWaveform)waveformWithContentsOfURL:(id)l minimumRequiredVersion:(unint64_t)version;
++ (_NSRange)rangeOfSegmentsIntersectingTimeRange:(id)range withSegments:(id)segments;
++ (id)_mutableSegmentsByClippingToTimeRange:(id)range withSegments:(id)segments;
++ (id)_mutableSegmentsIntersectingTimeRange:(id)range intersectionRange:(_NSRange *)intersectionRange withSegments:(id)segments;
++ (id)waveformURLForAVURL:(id)l;
++ (void)_mergeBoundarySegmentsInArray:(id)array;
 + (void)initialize;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)timeRange;
-- (BOOL)_isWaveformDataEqualToDataInWaveform:(id)a3 useAlmostEqual:(BOOL)a4;
-- (BOOL)hasUniformPowerLevel:(float)a3;
-- (BOOL)saveContentsToURL:(id)a3;
+- (BOOL)_isWaveformDataEqualToDataInWaveform:(id)waveform useAlmostEqual:(BOOL)equal;
+- (BOOL)hasUniformPowerLevel:(float)level;
+- (BOOL)saveContentsToURL:(id)l;
 - (NSArray)segmentsCopy;
 - (RCWaveform)init;
-- (RCWaveform)initWithCoder:(id)a3;
-- (RCWaveform)initWithSegments:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)segmentsByClippingToTimeRange:(id)a3;
-- (id)segmentsIntersectingTimeRange:(id)a3;
+- (RCWaveform)initWithCoder:(id)coder;
+- (RCWaveform)initWithSegments:(id)segments;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)segmentsByClippingToTimeRange:(id)range;
+- (id)segmentsIntersectingTimeRange:(id)range;
 - (unint64_t)averagePowerLevelsRate;
 - (unint64_t)segmentCount;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RCWaveform
@@ -39,15 +39,15 @@
   return v2;
 }
 
-- (RCWaveform)initWithSegments:(id)a3
+- (RCWaveform)initWithSegments:(id)segments
 {
-  v4 = a3;
+  segmentsCopy = segments;
   v9.receiver = self;
   v9.super_class = RCWaveform;
   v5 = [(RCWaveform *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [segmentsCopy mutableCopy];
     segments = v5->_segments;
     v5->_segments = v6;
   }
@@ -57,19 +57,19 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     [RCWaveform setVersion:2];
   }
 }
 
-- (BOOL)hasUniformPowerLevel:(float)a3
+- (BOOL)hasUniformPowerLevel:(float)level
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(RCWaveform *)v4 segments];
-  v6 = [v5 count];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  segments = [(RCWaveform *)selfCopy segments];
+  v6 = [segments count];
 
   if (v6)
   {
@@ -77,8 +77,8 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = [(RCWaveform *)v4 segments];
-    v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    segments2 = [(RCWaveform *)selfCopy segments];
+    v8 = [segments2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v8)
     {
       v10 = *v14;
@@ -88,10 +88,10 @@
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(segments2);
           }
 
-          *&v9 = a3;
+          *&v9 = level;
           if (([*(*(&v13 + 1) + 8 * i) hasUniformPowerLevel:v9] & 1) == 0)
           {
             LOBYTE(v6) = 0;
@@ -99,7 +99,7 @@
           }
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [segments2 countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v8)
         {
           continue;
@@ -113,35 +113,35 @@
 LABEL_12:
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (BOOL)_isWaveformDataEqualToDataInWaveform:(id)a3 useAlmostEqual:(BOOL)a4
+- (BOOL)_isWaveformDataEqualToDataInWaveform:(id)waveform useAlmostEqual:(BOOL)equal
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6 == self)
+  equalCopy = equal;
+  waveformCopy = waveform;
+  if (waveformCopy == self)
   {
     v15 = 1;
   }
 
   else
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    v8 = [(RCWaveform *)v6 segments];
-    v9 = [v8 count];
-    v10 = [(RCWaveform *)v7 segments];
-    v11 = [v10 count];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    segments = [(RCWaveform *)waveformCopy segments];
+    v9 = [segments count];
+    segments2 = [(RCWaveform *)selfCopy segments];
+    v11 = [segments2 count];
 
     if (v9 == v11)
     {
       for (i = 0; ; ++i)
       {
-        v13 = [(RCWaveform *)v7 segments];
-        v14 = [v13 count];
+        segments3 = [(RCWaveform *)selfCopy segments];
+        v14 = [segments3 count];
 
         v15 = i >= v14;
         if (i >= v14)
@@ -149,12 +149,12 @@ LABEL_12:
           break;
         }
 
-        if (v4)
+        if (equalCopy)
         {
-          v16 = [(RCWaveform *)v6 segments];
-          v17 = [v16 objectAtIndexedSubscript:i];
-          v18 = [(RCWaveform *)v7 segments];
-          v19 = [v18 objectAtIndexedSubscript:i];
+          segments4 = [(RCWaveform *)waveformCopy segments];
+          v17 = [segments4 objectAtIndexedSubscript:i];
+          segments5 = [(RCWaveform *)selfCopy segments];
+          v19 = [segments5 objectAtIndexedSubscript:i];
           v20 = [v17 isWaveformDataAlmostEqualToDataInSegment:v19];
 
           if ((v20 & 1) == 0)
@@ -165,10 +165,10 @@ LABEL_12:
 
         else
         {
-          v21 = [(RCWaveform *)v6 segments];
-          v22 = [v21 objectAtIndexedSubscript:i];
-          v23 = [(RCWaveform *)v7 segments];
-          v24 = [v23 objectAtIndexedSubscript:i];
+          segments6 = [(RCWaveform *)waveformCopy segments];
+          v22 = [segments6 objectAtIndexedSubscript:i];
+          segments7 = [(RCWaveform *)selfCopy segments];
+          v24 = [segments7 objectAtIndexedSubscript:i];
           v25 = [v22 isWaveformDataEqualToDataInSegment:v24];
 
           if (!v25)
@@ -184,7 +184,7 @@ LABEL_12:
       v15 = 0;
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 
   return v15;
@@ -192,37 +192,37 @@ LABEL_12:
 
 - (NSArray)segmentsCopy
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(RCWaveform *)v2 segments];
-  v4 = [v3 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  segments = [(RCWaveform *)selfCopy segments];
+  v4 = [segments copy];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (unint64_t)segmentCount
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(RCWaveform *)v2 segments];
-  v4 = [v3 count];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  segments = [(RCWaveform *)selfCopy segments];
+  v4 = [segments count];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v4;
 }
 
 - (unint64_t)averagePowerLevelsRate
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(RCWaveform *)v2 segments];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  segments = [(RCWaveform *)selfCopy segments];
+  v4 = [segments countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = 0;
@@ -234,17 +234,17 @@ LABEL_12:
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(segments);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 averagePowerLevelsCount];
+        averagePowerLevelsCount = [v9 averagePowerLevelsCount];
         [v9 timeRange];
-        v5 += v10;
+        v5 += averagePowerLevelsCount;
         v7 = v7 + RCTimeRangeDeltaWithExactPrecision(v11, v12);
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v4 = [segments countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v4);
@@ -257,7 +257,7 @@ LABEL_12:
     v13 = 0.0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   if (v7 >= 0.00000011920929)
   {
     return fmax(v13 / v7, 1.0);
@@ -269,22 +269,22 @@ LABEL_12:
   }
 }
 
-+ (id)waveformURLForAVURL:(id)a3
++ (id)waveformURLForAVURL:(id)l
 {
-  v3 = [a3 rc_URLByReplacingPathExtensionWithExtension:@"waveform"];
+  v3 = [l rc_URLByReplacingPathExtensionWithExtension:@"waveform"];
 
   return v3;
 }
 
-+ (RCWaveform)waveformWithContentsOfURL:(id)a3 minimumRequiredVersion:(unint64_t)a4
++ (RCWaveform)waveformWithContentsOfURL:(id)l minimumRequiredVersion:(unint64_t)version
 {
-  v5 = [NSData dataWithContentsOfURL:a3];
+  v5 = [NSData dataWithContentsOfURL:l];
   v13 = 0;
   v6 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:&v13];
   v7 = v13;
   if (v6)
   {
-    if (v6[1] >= a4)
+    if (v6[1] >= version)
     {
       v9 = objc_opt_class();
       if (v9 == objc_opt_class())
@@ -293,10 +293,10 @@ LABEL_12:
       }
 
       v10 = objc_alloc(objc_opt_class());
-      v11 = [v6 segments];
-      v8 = [v10 initWithSegments:v11];
+      segments = [v6 segments];
+      v8 = [v10 initWithSegments:segments];
 
-      v6 = v11;
+      v6 = segments;
     }
 
     else
@@ -312,19 +312,19 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)saveContentsToURL:(id)a3
+- (BOOL)saveContentsToURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = +[NSFileManager defaultManager];
-  v6 = [v4 URLByDeletingLastPathComponent];
-  [v5 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:0];
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  [v5 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
 
   v12 = 0;
   v7 = [NSKeyedArchiver archivedDataWithRootObject:self requiringSecureCoding:1 error:&v12];
   v8 = v12;
   if (v7)
   {
-    v9 = [v7 writeToURL:v4 atomically:1];
+    v9 = [v7 writeToURL:lCopy atomically:1];
   }
 
   else
@@ -341,65 +341,65 @@ LABEL_7:
   return v9;
 }
 
-- (id)segmentsByClippingToTimeRange:(id)a3
+- (id)segmentsByClippingToTimeRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v5 = self;
-  objc_sync_enter(v5);
+  var1 = range.var1;
+  var0 = range.var0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = objc_opt_class();
-  v7 = [(RCWaveform *)v5 segments];
-  v8 = [v6 _mutableSegmentsByClippingToTimeRange:v7 withSegments:{var0, var1}];
+  segments = [(RCWaveform *)selfCopy segments];
+  v8 = [v6 _mutableSegmentsByClippingToTimeRange:segments withSegments:{var0, var1}];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (id)segmentsIntersectingTimeRange:(id)a3
+- (id)segmentsIntersectingTimeRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v5 = self;
-  objc_sync_enter(v5);
+  var1 = range.var1;
+  var0 = range.var0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = objc_opt_class();
-  v7 = [(RCWaveform *)v5 segments];
-  v8 = [v6 _mutableSegmentsIntersectingTimeRange:0 intersectionRange:v7 withSegments:{var0, var1}];
+  segments = [(RCWaveform *)selfCopy segments];
+  v8 = [v6 _mutableSegmentsIntersectingTimeRange:0 intersectionRange:segments withSegments:{var0, var1}];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-+ (_NSRange)rangeOfSegmentsIntersectingTimeRange:(id)a3 withSegments:(id)a4
++ (_NSRange)rangeOfSegmentsIntersectingTimeRange:(id)range withSegments:(id)segments
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v6 = a4;
-  if ([v6 count])
+  var1 = range.var1;
+  var0 = range.var0;
+  segmentsCopy = segments;
+  if ([segmentsCopy count])
   {
     v7 = [RCWaveformSegment alloc];
     v8 = +[NSData data];
-    v9 = [(RCWaveformSegment *)v7 initWithTimeRange:v8 averagePowerLevelData:var0, var1];
+    var1 = [(RCWaveformSegment *)v7 initWithTimeRange:v8 averagePowerLevelData:var0, var1];
 
-    v10 = [v6 indexOfObject:v9 inSortedRange:0 options:objc_msgSend(v6 usingComparator:{"count"), 256, &stru_6D750}];
+    v10 = [segmentsCopy indexOfObject:var1 inSortedRange:0 options:objc_msgSend(segmentsCopy usingComparator:{"count"), 256, &stru_6D750}];
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v11 = 0;
       v10 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    else if (v10 == [v6 count] - 1)
+    else if (v10 == [segmentsCopy count] - 1)
     {
       v11 = 1;
     }
 
     else
     {
-      v12 = [v6 indexOfObject:v9 inSortedRange:v10 options:objc_msgSend(v6 usingComparator:{"count") - v10, 512, &stru_6D750}];
+      v12 = [segmentsCopy indexOfObject:var1 inSortedRange:v10 options:objc_msgSend(segmentsCopy usingComparator:{"count") - v10, 512, &stru_6D750}];
       if (v12 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v12 = [v6 count] - 1;
+        v12 = [segmentsCopy count] - 1;
       }
 
       v11 = &v12[-v10 + 1];
@@ -421,19 +421,19 @@ LABEL_7:
 
 - ($F24F406B2B787EFB06265DBA3D28CBD5)timeRange
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(RCWaveform *)v2 segments];
-  v4 = [v3 firstObject];
-  [v4 timeRange];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  segments = [(RCWaveform *)selfCopy segments];
+  firstObject = [segments firstObject];
+  [firstObject timeRange];
   v6 = v5;
-  v7 = [(RCWaveform *)v2 segments];
-  v8 = [v7 lastObject];
-  [v8 timeRange];
+  segments2 = [(RCWaveform *)selfCopy segments];
+  lastObject = [segments2 lastObject];
+  [lastObject timeRange];
   v10 = RCTimeRangeMake(v6, v9);
   v12 = v11;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v13 = v10;
   v14 = v12;
   result.var1 = v14;
@@ -441,46 +441,46 @@ LABEL_7:
   return result;
 }
 
-- (RCWaveform)initWithCoder:(id)a3
+- (RCWaveform)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = [NSSet setWithObjects:v5, objc_opt_class(), 0];
-  v7 = [v4 decodeObjectOfClasses:v6 forKey:@"RCSegments"];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"RCSegments"];
   v8 = [v7 mutableCopy];
   segments = self->_segments;
   self->_segments = v8;
 
-  self->_decodedVersion = [v4 decodeIntegerForKey:@"RCWaveformEncodingVersion"];
+  self->_decodedVersion = [coderCopy decodeIntegerForKey:@"RCWaveformEncodingVersion"];
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = [RCWaveformSegment segmentsByReparingDiscontinuitiesInSegments:self->_segments];
-  [v5 encodeObject:v4 forKey:@"RCSegments"];
-  [v5 encodeInteger:+[RCWaveform version](RCWaveform forKey:{"version"), @"RCWaveformEncodingVersion"}];
+  [coderCopy encodeObject:v4 forKey:@"RCSegments"];
+  [coderCopy encodeInteger:+[RCWaveform version](RCWaveform forKey:{"version"), @"RCWaveformEncodingVersion"}];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v4 = [RCMutableWaveform alloc];
-  v5 = [(RCWaveform *)v3 segments];
-  v6 = [(RCWaveform *)v4 initWithSegments:v5];
+  segments = [(RCWaveform *)selfCopy segments];
+  v6 = [(RCWaveform *)v4 initWithSegments:segments];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
   return v6;
 }
 
-+ (id)_mutableSegmentsByClippingToTimeRange:(id)a3 withSegments:(id)a4
++ (id)_mutableSegmentsByClippingToTimeRange:(id)range withSegments:(id)segments
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v7 = a4;
-  v8 = [a1 _mutableSegmentsIntersectingTimeRange:0 intersectionRange:v7 withSegments:{var0, var1}];
+  var1 = range.var1;
+  var0 = range.var0;
+  segmentsCopy = segments;
+  v8 = [self _mutableSegmentsIntersectingTimeRange:0 intersectionRange:segmentsCopy withSegments:{var0, var1}];
   if ([v8 count])
   {
     v13[0] = _NSConcreteStackBlock;
@@ -502,7 +502,7 @@ LABEL_7:
       (v10[2])(v10, [v9 count] - 1);
     }
 
-    [a1 _mergeBoundarySegmentsInArray:v9];
+    [self _mergeBoundarySegmentsInArray:v9];
     v11 = v9;
   }
 
@@ -514,30 +514,30 @@ LABEL_7:
   return v11;
 }
 
-+ (id)_mutableSegmentsIntersectingTimeRange:(id)a3 intersectionRange:(_NSRange *)a4 withSegments:(id)a5
++ (id)_mutableSegmentsIntersectingTimeRange:(id)range intersectionRange:(_NSRange *)intersectionRange withSegments:(id)segments
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v9 = a5;
-  v10 = [a1 rangeOfSegmentsIntersectingTimeRange:v9 withSegments:{var0, var1}];
+  var1 = range.var1;
+  var0 = range.var0;
+  segmentsCopy = segments;
+  v10 = [self rangeOfSegmentsIntersectingTimeRange:segmentsCopy withSegments:{var0, var1}];
   v12 = v10;
   v13 = v11;
-  if (a4)
+  if (intersectionRange)
   {
-    a4->location = v10;
-    a4->length = v11;
+    intersectionRange->location = v10;
+    intersectionRange->length = v11;
   }
 
-  if (v11 && [v9 count])
+  if (v11 && [segmentsCopy count])
   {
-    v14 = [v9 count];
+    v14 = [segmentsCopy count];
     if (v12 >= (v14 - 1))
     {
       v12 = (v14 - 1);
     }
 
-    v15 = [v9 count];
-    v16 = [v9 count] - v12;
+    v15 = [segmentsCopy count];
+    v16 = [segmentsCopy count] - v12;
     if (v13 < v16)
     {
       v16 = v13;
@@ -553,7 +553,7 @@ LABEL_7:
       v17 = v16;
     }
 
-    v18 = [v9 subarrayWithRange:{v12, v17}];
+    v18 = [segmentsCopy subarrayWithRange:{v12, v17}];
     v19 = [v18 mutableCopy];
   }
 
@@ -565,16 +565,16 @@ LABEL_7:
   return v19;
 }
 
-+ (void)_mergeBoundarySegmentsInArray:(id)a3
++ (void)_mergeBoundarySegmentsInArray:(id)array
 {
-  v9 = a3;
-  if ([v9 count] >= 2)
+  arrayCopy = array;
+  if ([arrayCopy count] >= 2)
   {
-    v3 = [v9 objectAtIndex:0];
-    v4 = [v9 objectAtIndex:1];
+    v3 = [arrayCopy objectAtIndex:0];
+    v4 = [arrayCopy objectAtIndex:1];
     v5 = [v3 segmentsByJoiningIfSmallSegment:v4];
-    [v9 replaceObjectsInRange:0 withObjectsFromArray:{2, v5}];
-    if ([v9 count] < 2)
+    [arrayCopy replaceObjectsInRange:0 withObjectsFromArray:{2, v5}];
+    if ([arrayCopy count] < 2)
     {
       v7 = v4;
       v6 = v3;
@@ -582,12 +582,12 @@ LABEL_7:
 
     else
     {
-      v6 = [v9 objectAtIndex:{objc_msgSend(v9, "count") - 2}];
+      v6 = [arrayCopy objectAtIndex:{objc_msgSend(arrayCopy, "count") - 2}];
 
-      v7 = [v9 objectAtIndex:{objc_msgSend(v9, "count") - 1}];
+      v7 = [arrayCopy objectAtIndex:{objc_msgSend(arrayCopy, "count") - 1}];
 
       v8 = [v6 segmentsByJoiningIfSmallSegment:v7];
-      [v9 replaceObjectsInRange:objc_msgSend(v9 withObjectsFromArray:{"count") - 2, 2, v8}];
+      [arrayCopy replaceObjectsInRange:objc_msgSend(arrayCopy withObjectsFromArray:{"count") - 2, 2, v8}];
     }
   }
 }

@@ -1,9 +1,9 @@
 @interface DAHIDEventMonitor
 + (DAHIDEventMonitor)sharedInstance;
-- (BOOL)findServiceClientForHIDEvent:(id)a3;
-- (BOOL)serviceClientSetPropertyValue:(void *)a3 forKey:(__CFString *)a4 forHIDEvent:(unint64_t)a5;
-- (BOOL)startMonitoringWithHIDEvents:(id)a3;
-- (BOOL)systemClientSetupWithHIDEvents:(id)a3;
+- (BOOL)findServiceClientForHIDEvent:(id)event;
+- (BOOL)serviceClientSetPropertyValue:(void *)value forKey:(__CFString *)key forHIDEvent:(unint64_t)event;
+- (BOOL)startMonitoringWithHIDEvents:(id)events;
+- (BOOL)systemClientSetupWithHIDEvents:(id)events;
 - (DAHIDEventMonitor)init;
 - (DAHIDEventMonitorDelegate)delegate;
 - (void)cleanUpSystemClient;
@@ -121,9 +121,9 @@
   return v3;
 }
 
-- (BOOL)systemClientSetupWithHIDEvents:(id)a3
+- (BOOL)systemClientSetupWithHIDEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   if ([(DAHIDEventMonitor *)self HIDSystemClient])
   {
     v5 = +[NSMutableArray array];
@@ -131,12 +131,12 @@
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v6 = v4;
+    v6 = eventsCopy;
     v7 = [v6 countByEnumeratingWithState:&v24 objects:v30 count:16];
     if (v7)
     {
       v8 = v7;
-      v23 = v4;
+      v23 = eventsCopy;
       v9 = *v25;
       while (2)
       {
@@ -148,11 +148,11 @@
           }
 
           v11 = *(*(&v24 + 1) + 8 * i);
-          v12 = [v11 unsignedIntegerValue];
-          v13 = [(DAHIDEventMonitor *)self HIDEvents];
-          v14 = [v13 count];
+          unsignedIntegerValue = [v11 unsignedIntegerValue];
+          hIDEvents = [(DAHIDEventMonitor *)self HIDEvents];
+          v14 = [hIDEvents count];
 
-          if (v12 >= v14)
+          if (unsignedIntegerValue >= v14)
           {
             v21 = DiagnosticLogHandleForCategory();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -160,12 +160,12 @@
               sub_100006470();
             }
 
-            v4 = v23;
+            eventsCopy = v23;
             goto LABEL_14;
           }
 
-          v15 = [(DAHIDEventMonitor *)self HIDEvents];
-          v16 = [v15 objectAtIndexedSubscript:{objc_msgSend(v11, "unsignedIntegerValue")}];
+          hIDEvents2 = [(DAHIDEventMonitor *)self HIDEvents];
+          v16 = [hIDEvents2 objectAtIndexedSubscript:{objc_msgSend(v11, "unsignedIntegerValue")}];
 
           v28[0] = @"PrimaryUsagePage";
           v17 = [v16 objectForKeyedSubscript:@"usagePage"];
@@ -189,7 +189,7 @@
       [(DAHIDEventMonitor *)self HIDSystemClient];
       IOHIDEventSystemClientSetMatchingMultiple();
       v20 = 1;
-      v4 = v23;
+      eventsCopy = v23;
     }
 
     else
@@ -208,9 +208,9 @@ LABEL_14:
   return v20;
 }
 
-- (BOOL)findServiceClientForHIDEvent:(id)a3
+- (BOOL)findServiceClientForHIDEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = IOHIDEventSystemClientCopyServices([(DAHIDEventMonitor *)self HIDSystemClient]);
   if (v5)
   {
@@ -228,13 +228,13 @@ LABEL_14:
       {
         ValueAtIndex = CFArrayGetValueAtIndex(v6, v7);
         v9 = IOHIDServiceClientCopyProperty(ValueAtIndex, @"PrimaryUsage");
-        v10 = [(DAHIDEventMonitor *)self HIDEvents];
-        v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v4, "unsignedIntegerValue")}];
+        hIDEvents = [(DAHIDEventMonitor *)self HIDEvents];
+        v11 = [hIDEvents objectAtIndexedSubscript:{objc_msgSend(eventCopy, "unsignedIntegerValue")}];
 
         v12 = [v11 objectForKeyedSubscript:@"usage"];
-        v13 = [v12 unsignedIntegerValue];
+        unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-        if (v9 && [v9 unsignedIntegerValue] == v13)
+        if (v9 && [v9 unsignedIntegerValue] == unsignedIntegerValue)
         {
           v14 = [NSValue valueWithPointer:ValueAtIndex];
           [v11 setObject:v14 forKeyedSubscript:@"HIDServiceClient"];
@@ -267,27 +267,27 @@ LABEL_14:
   return v15;
 }
 
-- (BOOL)serviceClientSetPropertyValue:(void *)a3 forKey:(__CFString *)a4 forHIDEvent:(unint64_t)a5
+- (BOOL)serviceClientSetPropertyValue:(void *)value forKey:(__CFString *)key forHIDEvent:(unint64_t)event
 {
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v9 = [(DAHIDEventMonitor *)self mHIDEventQueue];
+  mHIDEventQueue = [(DAHIDEventMonitor *)self mHIDEventQueue];
 
-  if (v9)
+  if (mHIDEventQueue)
   {
-    v10 = [(DAHIDEventMonitor *)self mHIDEventQueue];
+    mHIDEventQueue2 = [(DAHIDEventMonitor *)self mHIDEventQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100005928;
     block[3] = &unk_10000C590;
     block[4] = self;
     block[5] = &v14;
-    block[6] = a5;
-    block[7] = a4;
-    block[8] = a3;
-    dispatch_sync(v10, block);
+    block[6] = event;
+    block[7] = key;
+    block[8] = value;
+    dispatch_sync(mHIDEventQueue2, block);
   }
 
   v11 = *(v15 + 24);
@@ -295,9 +295,9 @@ LABEL_14:
   return v11;
 }
 
-- (BOOL)startMonitoringWithHIDEvents:(id)a3
+- (BOOL)startMonitoringWithHIDEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   [(DAHIDEventMonitor *)self setHIDSystemClient:IOHIDEventSystemClientCreateWithType()];
   if (![(DAHIDEventMonitor *)self HIDSystemClient])
   {
@@ -311,20 +311,20 @@ LABEL_14:
     goto LABEL_25;
   }
 
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(DAHIDEventMonitor *)v5 currentlyMonitoring];
-  objc_sync_exit(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  currentlyMonitoring = [(DAHIDEventMonitor *)selfCopy currentlyMonitoring];
+  objc_sync_exit(selfCopy);
 
-  if (v6)
+  if (currentlyMonitoring)
   {
 LABEL_25:
     v18 = 0;
     goto LABEL_35;
   }
 
-  v25 = v4;
-  if (![(DAHIDEventMonitor *)v5 systemClientSetupWithHIDEvents:v4])
+  v25 = eventsCopy;
+  if (![(DAHIDEventMonitor *)selfCopy systemClientSetupWithHIDEvents:eventsCopy])
   {
     v19 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -339,7 +339,7 @@ LABEL_25:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = v4;
+  v7 = eventsCopy;
   v8 = [v7 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (!v8)
   {
@@ -359,8 +359,8 @@ LABEL_25:
       }
 
       v11 = *(*(&v29 + 1) + 8 * i);
-      v12 = [(DAHIDEventMonitor *)v5 HIDEvents];
-      v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(v11, "unsignedIntegerValue")}];
+      hIDEvents = [(DAHIDEventMonitor *)selfCopy HIDEvents];
+      v13 = [hIDEvents objectAtIndexedSubscript:{objc_msgSend(v11, "unsignedIntegerValue")}];
 
       v14 = [v13 objectForKeyedSubscript:@"needServiceClient"];
       if ([v14 BOOLValue])
@@ -373,7 +373,7 @@ LABEL_25:
           goto LABEL_18;
         }
 
-        if ((v26 & 1) != 0 && [(DAHIDEventMonitor *)v5 findServiceClientForHIDEvent:v11])
+        if ((v26 & 1) != 0 && [(DAHIDEventMonitor *)selfCopy findServiceClientForHIDEvent:v11])
         {
           v26 = 1;
           goto LABEL_18;
@@ -400,15 +400,15 @@ LABEL_18:
   {
 LABEL_33:
     v21 = dispatch_queue_create("com.apple.Diagnostics.hideventmonitor", 0);
-    [(DAHIDEventMonitor *)v5 setMHIDEventQueue:v21];
+    [(DAHIDEventMonitor *)selfCopy setMHIDEventQueue:v21];
 
-    [(DAHIDEventMonitor *)v5 HIDSystemClient];
-    v22 = [(DAHIDEventMonitor *)v5 mHIDEventQueue];
+    [(DAHIDEventMonitor *)selfCopy HIDSystemClient];
+    mHIDEventQueue = [(DAHIDEventMonitor *)selfCopy mHIDEventQueue];
     IOHIDEventSystemClientScheduleWithDispatchQueue();
 
-    [(DAHIDEventMonitor *)v5 HIDSystemClient];
+    [(DAHIDEventMonitor *)selfCopy HIDSystemClient];
     IOHIDEventSystemClientRegisterEventFilterCallback();
-    v23 = v5;
+    v23 = selfCopy;
     objc_sync_enter(v23);
     [(DAHIDEventMonitor *)v23 setCurrentlyMonitoring:1];
     objc_sync_exit(v23);
@@ -424,10 +424,10 @@ LABEL_29:
     sub_100006580();
   }
 
-  [(DAHIDEventMonitor *)v5 cleanUpSystemClient];
+  [(DAHIDEventMonitor *)selfCopy cleanUpSystemClient];
   v18 = 0;
 LABEL_34:
-  v4 = v25;
+  eventsCopy = v25;
 LABEL_35:
 
   return v18;
@@ -435,30 +435,30 @@ LABEL_35:
 
 - (void)stopMonitoring
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(DAHIDEventMonitor *)v2 setCurrentlyMonitoring:0];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(DAHIDEventMonitor *)selfCopy setCurrentlyMonitoring:0];
+  objc_sync_exit(selfCopy);
 
-  v3 = [(DAHIDEventMonitor *)v2 mHIDEventQueue];
+  mHIDEventQueue = [(DAHIDEventMonitor *)selfCopy mHIDEventQueue];
 
-  if (v3)
+  if (mHIDEventQueue)
   {
-    v4 = [(DAHIDEventMonitor *)v2 mHIDEventQueue];
+    mHIDEventQueue2 = [(DAHIDEventMonitor *)selfCopy mHIDEventQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100005FB8;
     block[3] = &unk_10000C470;
-    block[4] = v2;
-    dispatch_sync(v4, block);
+    block[4] = selfCopy;
+    dispatch_sync(mHIDEventQueue2, block);
   }
 
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v5 = [(DAHIDEventMonitor *)v2 HIDEvents];
-  v6 = [v5 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  hIDEvents = [(DAHIDEventMonitor *)selfCopy HIDEvents];
+  v6 = [hIDEvents countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v6)
   {
     v7 = *v10;
@@ -469,7 +469,7 @@ LABEL_35:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(hIDEvents);
         }
 
         [*(*(&v9 + 1) + 8 * v8) removeObjectForKey:@"HIDServiceClient"];
@@ -477,7 +477,7 @@ LABEL_35:
       }
 
       while (v6 != v8);
-      v6 = [v5 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v6 = [hIDEvents countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v6);
@@ -486,15 +486,15 @@ LABEL_35:
 
 - (void)cleanUpSystemClient
 {
-  v3 = [(DAHIDEventMonitor *)self HIDSystemClient];
-  if (v3)
+  hIDSystemClient = [(DAHIDEventMonitor *)self HIDSystemClient];
+  if (hIDSystemClient)
   {
-    v4 = v3;
-    v5 = [(DAHIDEventMonitor *)self mHIDEventQueue];
+    v4 = hIDSystemClient;
+    mHIDEventQueue = [(DAHIDEventMonitor *)self mHIDEventQueue];
 
-    if (v5)
+    if (mHIDEventQueue)
     {
-      v6 = [(DAHIDEventMonitor *)self mHIDEventQueue];
+      mHIDEventQueue2 = [(DAHIDEventMonitor *)self mHIDEventQueue];
       IOHIDEventSystemClientUnscheduleFromDispatchQueue();
     }
 

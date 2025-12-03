@@ -2,21 +2,21 @@
 - (ACCTicketManagerProtocol)ticketManager;
 - (ACFKeychainManagerProtocol)keychainManager;
 - (ACFLocalAuthenticationContextProtocol)localAuthenticationContext;
-- (BOOL)isCriticalError:(id)a3;
-- (BOOL)isValidToken:(id)a3 duration:(double)a4;
-- (id)convertLAError:(id)a3;
+- (BOOL)isCriticalError:(id)error;
+- (BOOL)isValidToken:(id)token duration:(double)duration;
+- (id)convertLAError:(id)error;
 - (id)tgtStoragePolicy;
-- (id)tokenWithRequest:(id)a3;
-- (void)authenticate2SVWithSSOTokenIfRequired:(id)a3 request:(id)a4 completion:(id)a5;
-- (void)authenticateWithRequest:(id)a3 password:(id)a4 completion:(id)a5;
+- (id)tokenWithRequest:(id)request;
+- (void)authenticate2SVWithSSOTokenIfRequired:(id)required request:(id)request completion:(id)completion;
+- (void)authenticateWithRequest:(id)request password:(id)password completion:(id)completion;
 - (void)dealloc;
-- (void)evaluateSSOWithRequest:(id)a3 completion:(id)a4;
-- (void)evaluateTouchIDIfNeededWithSSOToken:(id)a3 request:(id)a4 completion:(id)a5;
-- (void)evaluateTouchIDWithToken:(id)a3 request:(id)a4 completion:(id)a5;
-- (void)saveSSOIfNeeded:(id)a3 withRequest:(id)a4;
-- (void)updateAuthContext:(id)a3;
-- (void)verifyServiceTicketWithRequest:(id)a3 completion:(id)a4;
-- (void)verifyToken:(id)a3 withRequest:(id)a4 completion:(id)a5;
+- (void)evaluateSSOWithRequest:(id)request completion:(id)completion;
+- (void)evaluateTouchIDIfNeededWithSSOToken:(id)token request:(id)request completion:(id)completion;
+- (void)evaluateTouchIDWithToken:(id)token request:(id)request completion:(id)completion;
+- (void)saveSSOIfNeeded:(id)needed withRequest:(id)request;
+- (void)updateAuthContext:(id)context;
+- (void)verifyServiceTicketWithRequest:(id)request completion:(id)completion;
+- (void)verifyToken:(id)token withRequest:(id)request completion:(id)completion;
 @end
 
 @implementation ACMExternalAuthenticationController
@@ -31,16 +31,16 @@
 
 - (ACFKeychainManagerProtocol)keychainManager
 {
-  v2 = [(ACMExternalAuthenticationController *)self components];
+  components = [(ACMExternalAuthenticationController *)self components];
 
-  return [(ACFComponents *)v2 keychainManager];
+  return [(ACFComponents *)components keychainManager];
 }
 
 - (ACCTicketManagerProtocol)ticketManager
 {
-  v2 = [(ACMExternalAuthenticationController *)self components];
+  components = [(ACMExternalAuthenticationController *)self components];
 
-  return [(ACCComponents *)v2 ticketManager];
+  return [(ACCComponents *)components ticketManager];
 }
 
 - (ACFLocalAuthenticationContextProtocol)localAuthenticationContext
@@ -57,25 +57,25 @@
 
 - (id)tgtStoragePolicy
 {
-  v2 = [(ACMExternalAuthenticationController *)self components];
+  components = [(ACMExternalAuthenticationController *)self components];
 
-  return [(ACCComponents *)v2 tgtStoragePolicy];
+  return [(ACCComponents *)components tgtStoragePolicy];
 }
 
-- (void)evaluateTouchIDWithToken:(id)a3 request:(id)a4 completion:(id)a5
+- (void)evaluateTouchIDWithToken:(id)token request:(id)request completion:(id)completion
 {
-  v9 = [(ACMExternalAuthenticationController *)self localAuthenticationContext];
-  -[ACFLocalAuthenticationContextProtocol setLocalizedReason:](v9, "setLocalizedReason:", -[ACMExternalAuthenticationController localizedReasonForUsername:](self, "localizedReasonForUsername:", [objc_msgSend(a3 "principal")]));
+  localAuthenticationContext = [(ACMExternalAuthenticationController *)self localAuthenticationContext];
+  -[ACFLocalAuthenticationContextProtocol setLocalizedReason:](localAuthenticationContext, "setLocalizedReason:", -[ACMExternalAuthenticationController localizedReasonForUsername:](self, "localizedReasonForUsername:", [objc_msgSend(token "principal")]));
   v10[0] = MEMORY[0x29EDCA5F8];
   v10[1] = 3221225472;
   v10[2] = __83__ACMExternalAuthenticationController_evaluateTouchIDWithToken_request_completion___block_invoke;
   v10[3] = &unk_29EE91E30;
   v10[4] = self;
-  v10[5] = v9;
-  v10[7] = a3;
-  v10[8] = a5;
-  v10[6] = a4;
-  [(ACFLocalAuthenticationContextProtocol *)v9 evaluatePolicy:1 completion:v10];
+  v10[5] = localAuthenticationContext;
+  v10[7] = token;
+  v10[8] = completion;
+  v10[6] = request;
+  [(ACFLocalAuthenticationContextProtocol *)localAuthenticationContext evaluatePolicy:1 completion:v10];
 }
 
 uint64_t __83__ACMExternalAuthenticationController_evaluateTouchIDWithToken_request_completion___block_invoke(uint64_t a1, char a2)
@@ -101,20 +101,20 @@ uint64_t __83__ACMExternalAuthenticationController_evaluateTouchIDWithToken_requ
   return v4();
 }
 
-- (void)evaluateTouchIDIfNeededWithSSOToken:(id)a3 request:(id)a4 completion:(id)a5
+- (void)evaluateTouchIDIfNeededWithSSOToken:(id)token request:(id)request completion:(id)completion
 {
-  v8 = [a5 copy];
-  v9 = [a4 copy];
-  [v9 setPrincipal:{objc_msgSend(a3, "principal")}];
+  v8 = [completion copy];
+  v9 = [request copy];
+  [v9 setPrincipal:{objc_msgSend(token, "principal")}];
   v10[0] = MEMORY[0x29EDCA5F8];
   v10[1] = 3221225472;
   v10[2] = __94__ACMExternalAuthenticationController_evaluateTouchIDIfNeededWithSSOToken_request_completion___block_invoke;
   v10[3] = &unk_29EE91E80;
   v10[4] = self;
-  v10[5] = a3;
+  v10[5] = token;
   v10[6] = v9;
   v10[7] = v8;
-  [(ACMExternalAuthenticationController *)self verifyToken:a3 withRequest:v9 completion:v10];
+  [(ACMExternalAuthenticationController *)self verifyToken:token withRequest:v9 completion:v10];
 }
 
 uint64_t __94__ACMExternalAuthenticationController_evaluateTouchIDIfNeededWithSSOToken_request_completion___block_invoke(uint64_t a1, void *a2)
@@ -162,21 +162,21 @@ uint64_t __94__ACMExternalAuthenticationController_evaluateTouchIDIfNeededWithSS
   return v12();
 }
 
-- (void)authenticate2SVWithSSOTokenIfRequired:(id)a3 request:(id)a4 completion:(id)a5
+- (void)authenticate2SVWithSSOTokenIfRequired:(id)required request:(id)request completion:(id)completion
 {
-  if ([objc_msgSend(a3 "isTwoStepVerificationRequired")])
+  if ([objc_msgSend(required "isTwoStepVerificationRequired")])
   {
-    [a4 setPersonID:{objc_msgSend(a3, "personID")}];
-    [a4 setSessionToken:{objc_msgSend(a3, "sessionToken")}];
-    v9 = [a3 longLiveSession];
-    v10 = [(ACMExternalAuthenticationController *)self delegate];
+    [request setPersonID:{objc_msgSend(required, "personID")}];
+    [request setSessionToken:{objc_msgSend(required, "sessionToken")}];
+    longLiveSession = [required longLiveSession];
+    delegate = [(ACMExternalAuthenticationController *)self delegate];
     v12[0] = MEMORY[0x29EDCA5F8];
     v12[1] = 3221225472;
     v12[2] = __96__ACMExternalAuthenticationController_authenticate2SVWithSSOTokenIfRequired_request_completion___block_invoke;
     v12[3] = &unk_29EE91EA8;
-    v13 = v9;
-    v12[4] = a5;
-    [(ACMExternalAuthenticationControllerDelegate *)v10 authenticationController:self perform2StepVerificationWithRequest:a4 completion:v12];
+    v13 = longLiveSession;
+    v12[4] = completion;
+    [(ACMExternalAuthenticationControllerDelegate *)delegate authenticationController:self perform2StepVerificationWithRequest:request completion:v12];
   }
 
   else
@@ -186,9 +186,9 @@ uint64_t __94__ACMExternalAuthenticationController_evaluateTouchIDIfNeededWithSS
       ACFLog(6, "[ACMExternalAuthenticationController authenticate2SVWithSSOTokenIfRequired:request:completion:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/External/Sources/ACMExternalAuthenticationController.m", 166, 0, "Two-step verification is not required");
     }
 
-    v11 = *(a5 + 2);
+    v11 = *(completion + 2);
 
-    v11(a5, 0, a3);
+    v11(completion, 0, required);
   }
 }
 
@@ -200,26 +200,26 @@ uint64_t __96__ACMExternalAuthenticationController_authenticate2SVWithSSOTokenIf
   return v4();
 }
 
-- (void)verifyToken:(id)a3 withRequest:(id)a4 completion:(id)a5
+- (void)verifyToken:(id)token withRequest:(id)request completion:(id)completion
 {
-  if (!a5)
+  if (!completion)
   {
     [ACMExternalAuthenticationController verifyToken:withRequest:completion:];
   }
 
   v9 = +[(ACFMessage *)ACMMessage];
-  [v9 setUserName:{objc_msgSend(objc_msgSend(a3, "principal"), "userName")}];
-  [v9 setRealm:{objc_msgSend(a4, "realm")}];
-  [v9 setAppID:{objc_msgSend(a4, "appID")}];
-  [v9 setAppIDKey:{objc_msgSend(a4, "appIDKey")}];
-  [v9 setToken:{-[ACCTicketManagerProtocol serviceTicketStringWithRequest:ssoToken:](-[ACCComponents ticketManager](-[ACMExternalAuthenticationController components](self, "components"), "ticketManager"), "serviceTicketStringWithRequest:ssoToken:", a4, a3)}];
+  [v9 setUserName:{objc_msgSend(objc_msgSend(token, "principal"), "userName")}];
+  [v9 setRealm:{objc_msgSend(request, "realm")}];
+  [v9 setAppID:{objc_msgSend(request, "appID")}];
+  [v9 setAppIDKey:{objc_msgSend(request, "appIDKey")}];
+  [v9 setToken:{-[ACCTicketManagerProtocol serviceTicketStringWithRequest:ssoToken:](-[ACCComponents ticketManager](-[ACMExternalAuthenticationController components](self, "components"), "ticketManager"), "serviceTicketStringWithRequest:ssoToken:", request, token)}];
   v10[0] = MEMORY[0x29EDCA5F8];
   v10[1] = 3221225472;
   v10[2] = __74__ACMExternalAuthenticationController_verifyToken_withRequest_completion___block_invoke;
   v10[3] = &unk_29EE91ED0;
   v10[4] = self;
-  v10[5] = a4;
-  v10[6] = a5;
+  v10[5] = request;
+  v10[6] = completion;
   [(ACMExternalAuthenticationController *)self verifyServiceTicketWithRequest:v9 completion:v10];
 }
 
@@ -243,34 +243,34 @@ uint64_t __74__ACMExternalAuthenticationController_verifyToken_withRequest_compl
   return v4();
 }
 
-- (void)evaluateSSOWithRequest:(id)a3 completion:(id)a4
+- (void)evaluateSSOWithRequest:(id)request completion:(id)completion
 {
-  if (!a4)
+  if (!completion)
   {
     [ACMExternalAuthenticationController evaluateSSOWithRequest:completion:];
   }
 
-  if ([a3 canUseTouchID])
+  if ([request canUseTouchID])
   {
     v10 = 0;
     if ([(ACFLocalAuthenticationContextProtocol *)[(ACMExternalAuthenticationController *)self localAuthenticationContext] canEvaluatePolicy:1 error:&v10])
     {
-      v7 = [(ACMExternalAuthenticationController *)self tokenWithRequest:a3];
+      v7 = [(ACMExternalAuthenticationController *)self tokenWithRequest:request];
       if ([(ACMExternalAuthenticationController *)self isValidToken:v7 duration:60.0])
       {
         v9[0] = MEMORY[0x29EDCA5F8];
         v9[1] = 3221225472;
         v9[2] = __73__ACMExternalAuthenticationController_evaluateSSOWithRequest_completion___block_invoke;
         v9[3] = &unk_29EE918F8;
-        v9[4] = a3;
-        v9[5] = a4;
-        [(ACMExternalAuthenticationController *)self evaluateTouchIDIfNeededWithSSOToken:v7 request:a3 completion:v9];
+        v9[4] = request;
+        v9[5] = completion;
+        [(ACMExternalAuthenticationController *)self evaluateTouchIDIfNeededWithSSOToken:v7 request:request completion:v9];
         return;
       }
 
       if (v7)
       {
-        [(ACMExternalAuthenticationController *)self cleanSSOStorageWithRequest:a3];
+        [(ACMExternalAuthenticationController *)self cleanSSOStorageWithRequest:request];
       }
     }
 
@@ -279,14 +279,14 @@ uint64_t __74__ACMExternalAuthenticationController_verifyToken_withRequest_compl
       ACFLog(4, "[ACMExternalAuthenticationController evaluateSSOWithRequest:completion:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/External/Sources/ACMExternalAuthenticationController.m", 229, 0, "Local Authentication error: %@", v10);
     }
 
-    (*(a4 + 2))(a4, 0, 0);
+    (*(completion + 2))(completion, 0, 0);
   }
 
   else
   {
-    v8 = *(a4 + 2);
+    v8 = *(completion + 2);
 
-    v8(a4, 0, 0);
+    v8(completion, 0, 0);
   }
 }
 
@@ -302,36 +302,36 @@ uint64_t __73__ACMExternalAuthenticationController_evaluateSSOWithRequest_comple
   return v4();
 }
 
-- (void)authenticateWithRequest:(id)a3 password:(id)a4 completion:(id)a5
+- (void)authenticateWithRequest:(id)request password:(id)password completion:(id)completion
 {
-  if (!a5)
+  if (!completion)
   {
     [ACMExternalAuthenticationController authenticateWithRequest:password:completion:];
   }
 
-  v9 = [(ACCTicketManagerProtocol *)[(ACCComponents *)[(ACMExternalAuthenticationController *)self components] ticketManager] authContextWithRequest:a3 keyCode:a4 authenticationType:0];
+  v9 = [(ACCTicketManagerProtocol *)[(ACCComponents *)[(ACMExternalAuthenticationController *)self components] ticketManager] authContextWithRequest:request keyCode:password authenticationType:0];
   [(ACMExternalAuthenticationController *)self updateAuthContext:v9];
   [(ACCTicketManagerProtocol *)[(ACCComponents *)[(ACMExternalAuthenticationController *)self components] ticketManager] updateContextWithClientSecretIfAny:v9];
   v10 = [(ACCComponents *)[(ACMExternalAuthenticationController *)self components] createHandlerWithClass:objc_opt_class() context:v9];
-  if ([a3 serverResponseTimeout])
+  if ([request serverResponseTimeout])
   {
-    [objc_msgSend(a3 "serverResponseTimeout")];
+    [objc_msgSend(request "serverResponseTimeout")];
     [objc_msgSend(v10 "transport")];
   }
 
-  v12 = [(ACCComponents *)[(ACMExternalAuthenticationController *)self components] ticketManager];
-  v13 = [a5 copy];
-  v14 = [(ACMExternalAuthenticationController *)self delegate];
+  ticketManager = [(ACCComponents *)[(ACMExternalAuthenticationController *)self components] ticketManager];
+  v13 = [completion copy];
+  delegate = [(ACMExternalAuthenticationController *)self delegate];
   v15[0] = MEMORY[0x29EDCA5F8];
   v15[1] = 3221225472;
   v15[2] = __83__ACMExternalAuthenticationController_authenticateWithRequest_password_completion___block_invoke;
   v15[3] = &unk_29EE91F20;
-  v15[4] = v12;
+  v15[4] = ticketManager;
   v15[5] = v9;
   v15[6] = self;
-  v15[7] = a3;
+  v15[7] = request;
   v15[8] = v13;
-  [(ACMExternalAuthenticationControllerDelegate *)v14 authenticationController:self scheduleHandler:v10 withCompletion:v15];
+  [(ACMExternalAuthenticationControllerDelegate *)delegate authenticationController:self scheduleHandler:v10 withCompletion:v15];
 }
 
 uint64_t __83__ACMExternalAuthenticationController_authenticateWithRequest_password_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -388,26 +388,26 @@ uint64_t __83__ACMExternalAuthenticationController_authenticateWithRequest_passw
   return v4();
 }
 
-- (void)updateAuthContext:(id)a3
+- (void)updateAuthContext:(id)context
 {
   if ([(ACFLocalAuthenticationContextProtocol *)[(ACMExternalAuthenticationController *)self localAuthenticationContext] canEvaluatePolicy:1 error:0])
   {
     v4 = MEMORY[0x29EDB8EB0];
 
-    [a3 setTouchIDSupport:v4];
+    [context setTouchIDSupport:v4];
   }
 }
 
-- (void)verifyServiceTicketWithRequest:(id)a3 completion:(id)a4
+- (void)verifyServiceTicketWithRequest:(id)request completion:(id)completion
 {
-  if (!a4)
+  if (!completion)
   {
     [ACMExternalAuthenticationController verifyServiceTicketWithRequest:completion:];
   }
 
-  if ([a3 appID] && objc_msgSend(objc_msgSend(a3, "appIDKey"), "length"))
+  if ([request appID] && objc_msgSend(objc_msgSend(request, "appIDKey"), "length"))
   {
-    if ([objc_msgSend(a3 "token")])
+    if ([objc_msgSend(request "token")])
     {
       goto LABEL_15;
     }
@@ -432,29 +432,29 @@ uint64_t __83__ACMExternalAuthenticationController_authenticateWithRequest_passw
       ACFLog(7, "[ACMExternalAuthenticationController verifyServiceTicketWithRequest:completion:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/External/Sources/ACMExternalAuthenticationController.m", 312, 0, "Reporting delegate about error %@", v12);
     }
 
-    v13 = *(a4 + 2);
+    v13 = *(completion + 2);
 
-    v13(a4, v12, 0);
+    v13(completion, v12, 0);
     return;
   }
 
 LABEL_15:
-  v14 = [(ACCTicketManagerProtocol *)[(ACCComponents *)[(ACMExternalAuthenticationController *)self components] ticketManager] authContextWithRequest:a3];
+  v14 = [(ACCTicketManagerProtocol *)[(ACCComponents *)[(ACMExternalAuthenticationController *)self components] ticketManager] authContextWithRequest:request];
   [(ACMExternalAuthenticationController *)self updateAuthContext:v14];
   v15 = [(ACCComponents *)[(ACMExternalAuthenticationController *)self components] createHandlerWithClass:objc_opt_class() context:v14];
-  if ([a3 serverResponseTimeout])
+  if ([request serverResponseTimeout])
   {
-    [objc_msgSend(a3 "serverResponseTimeout")];
+    [objc_msgSend(request "serverResponseTimeout")];
     [objc_msgSend(v15 "transport")];
   }
 
-  v17 = [(ACMExternalAuthenticationController *)self delegate];
+  delegate = [(ACMExternalAuthenticationController *)self delegate];
   v18[0] = MEMORY[0x29EDCA5F8];
   v18[1] = 3221225472;
   v18[2] = __81__ACMExternalAuthenticationController_verifyServiceTicketWithRequest_completion___block_invoke;
   v18[3] = &unk_29EE91888;
-  v18[4] = a4;
-  [(ACMExternalAuthenticationControllerDelegate *)v17 authenticationController:self scheduleHandler:v15 withCompletion:v18];
+  v18[4] = completion;
+  [(ACMExternalAuthenticationControllerDelegate *)delegate authenticationController:self scheduleHandler:v15 withCompletion:v18];
 }
 
 uint64_t __81__ACMExternalAuthenticationController_verifyServiceTicketWithRequest_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -488,22 +488,22 @@ uint64_t __81__ACMExternalAuthenticationController_verifyServiceTicketWithReques
   return v11();
 }
 
-- (BOOL)isValidToken:(id)a3 duration:(double)a4
+- (BOOL)isValidToken:(id)token duration:(double)duration
 {
-  if (!a3)
+  if (!token)
   {
     return 0;
   }
 
-  [objc_msgSend(a3 "expirationDate")];
-  return v5 > a4;
+  [objc_msgSend(token "expirationDate")];
+  return v5 > duration;
 }
 
-- (id)convertLAError:(id)a3
+- (id)convertLAError:(id)error
 {
-  v4 = [a3 code];
+  code = [error code];
   v5 = MEMORY[0x29EDB9FA0];
-  switch(v4)
+  switch(code)
   {
     case -4:
       v6 = MEMORY[0x29EDB8DC0];
@@ -528,7 +528,7 @@ LABEL_7:
   v12 = MEMORY[0x29EDB8DC0];
   v13 = *MEMORY[0x29EDB9F18];
   v14 = [ACMBaseLocale localizedString:@"Oops, an error occurred. Thanks for your patience, please try again later."];
-  v10 = [v12 dictionaryWithObjectsAndKeys:{a3, v13, v14, *MEMORY[0x29EDB9ED8], 0}];
+  v10 = [v12 dictionaryWithObjectsAndKeys:{error, v13, v14, *MEMORY[0x29EDB9ED8], 0}];
   v9 = -200200;
   v8 = v5;
 LABEL_9:
@@ -536,18 +536,18 @@ LABEL_9:
   return [v8 errorWithDomain:@"ACCAppleConnectErrorDomain" code:v9 userInfo:v10];
 }
 
-- (BOOL)isCriticalError:(id)a3
+- (BOOL)isCriticalError:(id)error
 {
-  if (!a3)
+  if (!error)
   {
     return 0;
   }
 
-  v3 = [a3 code];
+  code = [error code];
   result = 1;
-  if (v3 > -100402)
+  if (code > -100402)
   {
-    if ((v3 + 100401) >= 2 && v3)
+    if ((code + 100401) >= 2 && code)
     {
       return result;
     }
@@ -555,7 +555,7 @@ LABEL_9:
     return 0;
   }
 
-  if (v3 == -600182 || v3 == -200050)
+  if (code == -600182 || code == -200050)
   {
     return 0;
   }
@@ -563,16 +563,16 @@ LABEL_9:
   return result;
 }
 
-- (id)tokenWithRequest:(id)a3
+- (id)tokenWithRequest:(id)request
 {
-  v3 = -[ACCTicketManagerProtocol fetchSSOTokenForPrincipal:](-[ACMExternalAuthenticationController ticketManager](self, "ticketManager"), "fetchSSOTokenForPrincipal:", [a3 principal]);
+  v3 = -[ACCTicketManagerProtocol fetchSSOTokenForPrincipal:](-[ACMExternalAuthenticationController ticketManager](self, "ticketManager"), "fetchSSOTokenForPrincipal:", [request principal]);
   [v3 setLongLiveSession:1];
   return v3;
 }
 
-- (void)saveSSOIfNeeded:(id)a3 withRequest:(id)a4
+- (void)saveSSOIfNeeded:(id)needed withRequest:(id)request
 {
-  if (a3 && [a3 longLiveSession])
+  if (needed && [needed longLiveSession])
   {
     if (![(ACMExternalAuthenticationController *)self localAuthenticationContext])
     {
@@ -582,9 +582,9 @@ LABEL_9:
     v7 = 0;
     if ([(ACFLocalAuthenticationContextProtocol *)[(ACMExternalAuthenticationController *)self localAuthenticationContext] canEvaluatePolicy:1 error:&v7])
     {
-      if ([objc_msgSend(objc_msgSend(a3 "principal")])
+      if ([objc_msgSend(objc_msgSend(needed "principal")])
       {
-        [(ACCTicketManagerProtocol *)[(ACMExternalAuthenticationController *)self ticketManager] storeSSOToken:a3];
+        [(ACCTicketManagerProtocol *)[(ACMExternalAuthenticationController *)self ticketManager] storeSSOToken:needed];
       }
     }
 
@@ -595,7 +595,7 @@ LABEL_9:
         ACFLog(4, "[ACMExternalAuthenticationController saveSSOIfNeeded:withRequest:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/External/Sources/ACMExternalAuthenticationController.m", 439, 0, "Local Authentication error: %@", v7);
       }
 
-      [(ACMExternalAuthenticationController *)self cleanSSOStorageWithRequest:a4];
+      [(ACMExternalAuthenticationController *)self cleanSSOStorageWithRequest:request];
     }
   }
 }

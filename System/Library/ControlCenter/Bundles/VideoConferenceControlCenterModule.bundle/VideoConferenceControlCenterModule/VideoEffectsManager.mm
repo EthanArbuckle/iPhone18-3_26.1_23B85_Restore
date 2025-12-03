@@ -1,13 +1,13 @@
 @interface VideoEffectsManager
-- (BOOL)setIntensity:(float)a3 forEffect:(int)a4;
+- (BOOL)setIntensity:(float)intensity forEffect:(int)effect;
 - (VideoEffectsManager)init;
 - (id)getUnavailableString;
-- (id)unavailableStringForReason:(unint64_t)a3 appName:(id)a4 forVideoEffect:(unint64_t)a5;
+- (id)unavailableStringForReason:(unint64_t)reason appName:(id)name forVideoEffect:(unint64_t)effect;
 - (void)dealloc;
-- (void)handleAVControlCenterNotification:(id)a3;
+- (void)handleAVControlCenterNotification:(id)notification;
 - (void)setupVideoEffectsModeNotifications;
 - (void)setupWithoutSensorData;
-- (void)updateCurrentApplicationWithContext:(id)a3;
+- (void)updateCurrentApplicationWithContext:(id)context;
 - (void)updateVideoEffectsStates;
 - (void)updateVisuals;
 - (void)verifyCenterStageAvailability;
@@ -82,7 +82,7 @@
     v8 = 1024;
     v9 = 54;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
@@ -97,18 +97,18 @@
   [(VideoEffectsManager *)&v5 dealloc];
 }
 
-- (void)updateCurrentApplicationWithContext:(id)a3
+- (void)updateCurrentApplicationWithContext:(id)context
 {
-  v4 = [a3 sensorActivityDataForActiveSensorType:0];
+  v4 = [context sensorActivityDataForActiveSensorType:0];
   if (v4)
   {
     v13 = v4;
-    v5 = [v4 displayName];
+    displayName = [v4 displayName];
     displayName = self->_displayName;
-    self->_displayName = v5;
+    self->_displayName = displayName;
 
-    v7 = [v13 bundleIdentifier];
-    if ([v7 isEqualToString:@"com.apple.TelephonyUtilities"])
+    bundleIdentifier = [v13 bundleIdentifier];
+    if ([bundleIdentifier isEqualToString:@"com.apple.TelephonyUtilities"])
     {
       bundleIdentifier = self->_bundleIdentifier;
       self->_bundleIdentifier = @"com.apple.facetime";
@@ -119,34 +119,34 @@
       bundleIdentifier = [v13 bundleIdentifier];
       if ([bundleIdentifier isEqualToString:@"com.apple.facetime"])
       {
-        v9 = self->_bundleIdentifier;
+        bundleIdentifier2 = self->_bundleIdentifier;
         self->_bundleIdentifier = @"com.apple.facetime";
       }
 
       else
       {
-        v9 = [v13 bundleIdentifier];
-        if ([v9 isEqualToString:@"com.apple.mediaserverd"])
+        bundleIdentifier2 = [v13 bundleIdentifier];
+        if ([bundleIdentifier2 isEqualToString:@"com.apple.mediaserverd"])
         {
-          v10 = self->_bundleIdentifier;
+          bundleIdentifier3 = self->_bundleIdentifier;
           self->_bundleIdentifier = @"com.apple.facetime";
         }
 
         else
         {
-          v10 = [v13 bundleIdentifier];
-          if ([v10 isEqualToString:@"com.apple.avconferenced"])
+          bundleIdentifier3 = [v13 bundleIdentifier];
+          if ([bundleIdentifier3 isEqualToString:@"com.apple.avconferenced"])
           {
-            v11 = @"com.apple.facetime";
+            bundleIdentifier4 = @"com.apple.facetime";
           }
 
           else
           {
-            v11 = [v13 bundleIdentifier];
+            bundleIdentifier4 = [v13 bundleIdentifier];
           }
 
           v12 = self->_bundleIdentifier;
-          self->_bundleIdentifier = &v11->isa;
+          self->_bundleIdentifier = &bundleIdentifier4->isa;
         }
       }
     }
@@ -214,11 +214,11 @@
   [v6 addObserver:self selector:"handleAVControlCenterNotification:" name:AVControlCenterVideoEffectsUnavailableReasonsDidChangeNotification object:0];
 }
 
-- (void)handleAVControlCenterNotification:(id)a3
+- (void)handleAVControlCenterNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:AVControlCenterModulesNotificationBundleIdentifierKey];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKey:AVControlCenterModulesNotificationBundleIdentifierKey];
 
   if (![v6 isEqualToString:self->_bundleIdentifier])
   {
@@ -227,18 +227,18 @@
 
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 name];
+    name = [notificationCopy name];
     *v32 = 136446722;
     *&v32[4] = "[VideoEffectsManager handleAVControlCenterNotification:]";
     *&v32[12] = 1024;
     *&v32[14] = 123;
     *&v32[18] = 2112;
-    *&v32[20] = v7;
+    *&v32[20] = name;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d notificationName=%@", v32, 0x1Cu);
   }
 
-  v8 = [v4 name];
-  v9 = [v8 isEqualToString:AVControlCenterVideoEffectsModuleEffectSupportedDidChangeNotification];
+  name2 = [notificationCopy name];
+  v9 = [name2 isEqualToString:AVControlCenterVideoEffectsModuleEffectSupportedDidChangeNotification];
 
   if (v9)
   {
@@ -252,25 +252,25 @@
       goto LABEL_18;
     }
 
-    v10 = [(VideoEffects *)self->_backgroundBlur isAvailable];
-    v11 = [(VideoEffects *)self->_centerStage isAvailable];
-    v12 = [(VideoEffects *)self->_studioLighting isAvailable];
-    v13 = [(VideoEffects *)self->_reactions isAvailable];
-    v14 = [(VideoEffects *)self->_gestures isAvailable];
+    isAvailable = [(VideoEffects *)self->_backgroundBlur isAvailable];
+    isAvailable2 = [(VideoEffects *)self->_centerStage isAvailable];
+    isAvailable3 = [(VideoEffects *)self->_studioLighting isAvailable];
+    isAvailable4 = [(VideoEffects *)self->_reactions isAvailable];
+    isAvailable5 = [(VideoEffects *)self->_gestures isAvailable];
     *v32 = 136447746;
     *&v32[4] = "[VideoEffectsManager handleAVControlCenterNotification:]";
     *&v32[12] = 1024;
     *&v32[14] = 132;
     *&v32[18] = 1024;
-    *&v32[20] = v10;
+    *&v32[20] = isAvailable;
     *&v32[24] = 1024;
-    *&v32[26] = v11;
+    *&v32[26] = isAvailable2;
     *&v32[30] = 1024;
-    *&v32[32] = v12;
+    *&v32[32] = isAvailable3;
     *&v32[36] = 1024;
-    *&v32[38] = v13;
+    *&v32[38] = isAvailable4;
     *&v32[42] = 1024;
-    *&v32[44] = v14;
+    *&v32[44] = isAvailable5;
     v15 = " [INFO] %{public}s:%d backgroundBlurSupported=%d centerStageSupported=%d StudioLightingSupported=%d reactionsSupported=%d gesturesSupported=%d";
 LABEL_9:
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, v15, v32, 0x30u);
@@ -279,8 +279,8 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v16 = [v4 name];
-  v17 = [v16 isEqualToString:AVControlCenterVideoEffectsModuleEffectControlModeDidChangeNotification];
+  name3 = [notificationCopy name];
+  v17 = [name3 isEqualToString:AVControlCenterVideoEffectsModuleEffectControlModeDidChangeNotification];
 
   if (v17)
   {
@@ -291,33 +291,33 @@ LABEL_18:
     [(VideoEffects *)self->_gestures updateControlModeWithBundleID:self->_bundleIdentifier];
     if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(VideoEffects *)self->_backgroundBlur controlMode];
-      v19 = [(VideoEffects *)self->_centerStage controlMode];
-      v20 = [(VideoEffects *)self->_studioLighting controlMode];
-      v21 = [(VideoEffects *)self->_reactions controlMode];
-      v22 = [(VideoEffects *)self->_gestures controlMode];
+      controlMode = [(VideoEffects *)self->_backgroundBlur controlMode];
+      controlMode2 = [(VideoEffects *)self->_centerStage controlMode];
+      controlMode3 = [(VideoEffects *)self->_studioLighting controlMode];
+      controlMode4 = [(VideoEffects *)self->_reactions controlMode];
+      controlMode5 = [(VideoEffects *)self->_gestures controlMode];
       *v32 = 136447746;
       *&v32[4] = "[VideoEffectsManager handleAVControlCenterNotification:]";
       *&v32[12] = 1024;
       *&v32[14] = 148;
       *&v32[18] = 2048;
-      *&v32[20] = v18;
+      *&v32[20] = controlMode;
       *&v32[28] = 2048;
-      *&v32[30] = v19;
+      *&v32[30] = controlMode2;
       *&v32[38] = 2048;
-      *&v32[40] = v20;
+      *&v32[40] = controlMode3;
       v33 = 2048;
-      v34 = v21;
+      v34 = controlMode4;
       v35 = 2048;
-      v36 = v22;
+      v36 = controlMode5;
       _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d backgroundBlurControlMode=%ld centerStageControlMode=%ld StudioLightingControlMode=%ld reactionsControlMode=%ld gesturesControlMode=%ld", v32, 0x44u);
     }
 
     goto LABEL_19;
   }
 
-  v23 = [v4 name];
-  v24 = [v23 isEqualToString:AVControlCenterVideoEffectsModuleEffectEnabledDidChangeNotification];
+  name4 = [notificationCopy name];
+  v24 = [name4 isEqualToString:AVControlCenterVideoEffectsModuleEffectEnabledDidChangeNotification];
 
   if (v24)
   {
@@ -331,32 +331,32 @@ LABEL_18:
       goto LABEL_18;
     }
 
-    v25 = [(VideoEffects *)self->_backgroundBlur enabled];
-    v26 = [(VideoEffects *)self->_centerStage enabled];
-    v27 = [(VideoEffects *)self->_studioLighting enabled];
-    v28 = [(VideoEffects *)self->_reactions enabled];
-    v29 = [(VideoEffects *)self->_gestures enabled];
+    enabled = [(VideoEffects *)self->_backgroundBlur enabled];
+    enabled2 = [(VideoEffects *)self->_centerStage enabled];
+    enabled3 = [(VideoEffects *)self->_studioLighting enabled];
+    enabled4 = [(VideoEffects *)self->_reactions enabled];
+    enabled5 = [(VideoEffects *)self->_gestures enabled];
     *v32 = 136447746;
     *&v32[4] = "[VideoEffectsManager handleAVControlCenterNotification:]";
     *&v32[12] = 1024;
     *&v32[14] = 156;
     *&v32[18] = 1024;
-    *&v32[20] = v25;
+    *&v32[20] = enabled;
     *&v32[24] = 1024;
-    *&v32[26] = v26;
+    *&v32[26] = enabled2;
     *&v32[30] = 1024;
-    *&v32[32] = v27;
+    *&v32[32] = enabled3;
     *&v32[36] = 1024;
-    *&v32[38] = v28;
+    *&v32[38] = enabled4;
     *&v32[42] = 1024;
-    *&v32[44] = v29;
+    *&v32[44] = enabled5;
     v15 = " [INFO] %{public}s:%d backgroundBlurEnabled=%d centerStageEnabled=%d StudioLightingEnabled=%d reactionsEnabled=%d gesturesEnabled=%d";
     goto LABEL_9;
   }
 
 LABEL_19:
-  v30 = [v4 name];
-  v31 = [v30 isEqualToString:AVControlCenterVideoEffectsUnavailableReasonsDidChangeNotification];
+  name5 = [notificationCopy name];
+  v31 = [name5 isEqualToString:AVControlCenterVideoEffectsUnavailableReasonsDidChangeNotification];
 
   if (v31)
   {
@@ -367,17 +367,17 @@ LABEL_19:
 LABEL_21:
 }
 
-- (BOOL)setIntensity:(float)a3 forEffect:(int)a4
+- (BOOL)setIntensity:(float)intensity forEffect:(int)effect
 {
   if (self->_bundleIdentifier)
   {
-    if (a4 == 2)
+    if (effect == 2)
     {
       studioLighting = self->_studioLighting;
       goto LABEL_9;
     }
 
-    if (a4 == 1)
+    if (effect == 1)
     {
       studioLighting = self->_backgroundBlur;
 LABEL_9:
@@ -394,7 +394,7 @@ LABEL_9:
         return v6;
       }
 
-      sub_1EC3C(a4);
+      sub_1EC3C(effect);
     }
 
 LABEL_13:
@@ -471,7 +471,7 @@ LABEL_13:
     if ([(VideoEffects *)self->_centerStage isAvailable]&& [(VideoEffects *)self->_centerStage enabled]&& !self->_currentCameraSupportsCenterStage)
     {
       displayName = self->_displayName;
-      v9 = self;
+      selfCopy4 = self;
       v10 = 1;
       goto LABEL_35;
     }
@@ -500,7 +500,7 @@ LABEL_13:
           goto LABEL_37;
         }
 
-        v9 = self;
+        selfCopy4 = self;
         v10 = UnavailableReasons;
         v11 = 2;
         goto LABEL_36;
@@ -527,7 +527,7 @@ LABEL_29:
           v13 = self->_bundleIdentifier;
           v10 = AVControlCenterVideoEffectsModuleGetUnavailableReasons();
           displayName = self->_displayName;
-          v9 = self;
+          selfCopy4 = self;
 LABEL_35:
           v11 = 0;
           goto LABEL_36;
@@ -559,10 +559,10 @@ LABEL_37:
     v14 = self->_bundleIdentifier;
     v10 = AVControlCenterVideoEffectsModuleGetUnavailableReasons();
     displayName = self->_displayName;
-    v9 = self;
+    selfCopy4 = self;
     v11 = 1;
 LABEL_36:
-    v12 = [(VideoEffectsManager *)v9 unavailableStringForReason:v10 appName:displayName forVideoEffect:v11];
+    v12 = [(VideoEffectsManager *)selfCopy4 unavailableStringForReason:v10 appName:displayName forVideoEffect:v11];
     goto LABEL_37;
   }
 
@@ -577,18 +577,18 @@ LABEL_40:
   return v12;
 }
 
-- (id)unavailableStringForReason:(unint64_t)a3 appName:(id)a4 forVideoEffect:(unint64_t)a5
+- (id)unavailableStringForReason:(unint64_t)reason appName:(id)name forVideoEffect:(unint64_t)effect
 {
-  v7 = a4;
-  switch(a3)
+  nameCopy = name;
+  switch(reason)
   {
     case 0x10uLL:
-      if (a5 == 1)
+      if (effect == 1)
       {
         v9 = @"CONTROL_CENTER_CAMERA_UNAVAILABLE_PORTRAIT_UNSUPPORTED_BACKEND";
       }
 
-      else if (a5 == 2)
+      else if (effect == 2)
       {
         v9 = @"CONTROL_CENTER_CAMERA_UNAVAILABLE_PLURAL_UNSUPPORTED_BACKEND";
       }
@@ -600,12 +600,12 @@ LABEL_40:
 
       goto LABEL_22;
     case 4uLL:
-      if (a5 == 1)
+      if (effect == 1)
       {
         v9 = @"CONTROL_CENTER_CAMERA_UNAVAILABLE_PORTRAIT_UNSUPPORTED_OPTOUT";
       }
 
-      else if (a5 == 2)
+      else if (effect == 2)
       {
         v9 = @"CONTROL_CENTER_CAMERA_UNAVAILABLE_PLURAL_UNSUPPORTED_OPTOUT";
       }
@@ -617,16 +617,16 @@ LABEL_40:
 
 LABEL_22:
       v12 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:v9];
-      v11 = [NSString stringWithFormat:v12, v7];
+      nameCopy = [NSString stringWithFormat:v12, nameCopy];
 
       break;
     case 1uLL:
-      if (a5 == 1)
+      if (effect == 1)
       {
         v8 = @"CONTROL_CENTER_CAMERA_UNAVAILABLE_PORTRAIT_UNSUPPORTED_CAMERA";
       }
 
-      else if (a5 == 2)
+      else if (effect == 2)
       {
         v8 = @"CONTROL_CENTER_CAMERA_UNAVAILABLE_PLURAL_UNSUPPORTED_CAMERA";
       }
@@ -636,12 +636,12 @@ LABEL_22:
         v8 = @"CONTROL_CENTER_CAMERA_UNAVAILABLE_CENTER_STAGE_UNSUPPORTED_CAMERA";
       }
 
-      v11 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:v8];
+      nameCopy = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:v8];
       break;
     default:
       if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [NSNumber numberWithUnsignedInteger:a3];
+        v10 = [NSNumber numberWithUnsignedInteger:reason];
         *buf = 136446722;
         v15 = "[VideoEffectsManager unavailableStringForReason:appName:forVideoEffect:]";
         v16 = 1024;
@@ -651,11 +651,11 @@ LABEL_22:
         _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d No unavailable string for supplied reason=%@", buf, 0x1Cu);
       }
 
-      v11 = 0;
+      nameCopy = 0;
       break;
   }
 
-  return v11;
+  return nameCopy;
 }
 
 @end

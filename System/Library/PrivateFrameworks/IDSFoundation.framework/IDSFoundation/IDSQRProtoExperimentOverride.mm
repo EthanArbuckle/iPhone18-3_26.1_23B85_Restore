@@ -1,15 +1,15 @@
 @interface IDSQRProtoExperimentOverride
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)experimentIdAsString:(int)a3;
+- (id)experimentIdAsString:(int)string;
 - (int)experimentId;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasValue:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasValue:(BOOL)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoExperimentOverride
@@ -27,11 +27,11 @@
   }
 }
 
-- (id)experimentIdAsString:(int)a3
+- (id)experimentIdAsString:(int)string
 {
-  if (a3)
+  if (string)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
@@ -42,9 +42,9 @@
   return v4;
 }
 
-- (void)setHasValue:(BOOL)a3
+- (void)setHasValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }
@@ -63,15 +63,15 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoExperimentOverride;
   v4 = [(IDSQRProtoExperimentOverride *)&v8 description];
-  v5 = [(IDSQRProtoExperimentOverride *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoExperimentOverride *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     if (self->_experimentId)
@@ -84,77 +84,77 @@
       v4 = @"TRANSPORT_LEVEL_ENCRYPTION_DISABLED";
     }
 
-    [v3 setObject:v4 forKey:@"experiment_id"];
+    [dictionary setObject:v4 forKey:@"experiment_id"];
   }
 
   experimentName = self->_experimentName;
   if (experimentName)
   {
-    [v3 setObject:experimentName forKey:@"experiment_name"];
+    [dictionary setObject:experimentName forKey:@"experiment_name"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_value];
-    [v3 setObject:v6 forKey:@"value"];
+    [dictionary setObject:v6 forKey:@"value"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_experimentName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_experimentId;
-    *(v4 + 28) |= 1u;
+    toCopy[2] = self->_experimentId;
+    *(toCopy + 28) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 24) = self->_value;
-    *(v4 + 28) |= 2u;
+    *(toCopy + 24) = self->_value;
+    *(toCopy + 28) |= 2u;
   }
 
   if (self->_experimentName)
   {
-    v6 = v4;
-    [v4 setExperimentName:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setExperimentName:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -170,37 +170,37 @@
     *(v5 + 28) |= 2u;
   }
 
-  v8 = [(NSString *)self->_experimentName copyWithZone:a3];
+  v8 = [(NSString *)self->_experimentName copyWithZone:zone];
   v9 = v6[2];
   v6[2] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_experimentId != *(v4 + 2))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_experimentId != *(equalCopy + 2))
     {
       goto LABEL_12;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_12;
   }
 
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 28) & 2) == 0)
+    if ((*(equalCopy + 28) & 2) == 0)
     {
       goto LABEL_9;
     }
@@ -210,27 +210,27 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ((*(v4 + 28) & 2) == 0)
+  if ((*(equalCopy + 28) & 2) == 0)
   {
     goto LABEL_12;
   }
 
   if (self->_value)
   {
-    if ((*(v4 + 24) & 1) == 0)
+    if ((*(equalCopy + 24) & 1) == 0)
     {
       goto LABEL_12;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
     goto LABEL_12;
   }
 
 LABEL_9:
   experimentName = self->_experimentName;
-  if (experimentName | *(v4 + 2))
+  if (experimentName | *(equalCopy + 2))
   {
     v6 = [(NSString *)experimentName isEqual:?];
   }
@@ -271,28 +271,28 @@ LABEL_3:
   return v7 ^ v6 ^ [(NSString *)self->_experimentName hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  v5 = *(fromCopy + 28);
   if (v5)
   {
-    self->_experimentId = *(v4 + 2);
+    self->_experimentId = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_value = *(v4 + 24);
+    self->_value = *(fromCopy + 24);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(IDSQRProtoExperimentOverride *)self setExperimentName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

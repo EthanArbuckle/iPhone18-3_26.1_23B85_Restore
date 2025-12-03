@@ -1,7 +1,7 @@
 @interface IMDChatRepairController
-- (BOOL)repairChatIfNecessary:(id)a3;
+- (BOOL)repairChatIfNecessary:(id)necessary;
 - (IMDChatRepairController)init;
-- (IMDChatRepairController)initWithDelegate:(id)a3;
+- (IMDChatRepairController)initWithDelegate:(id)delegate;
 - (IMDChatRepairControllerDelegate)delegate;
 @end
 
@@ -14,7 +14,7 @@
   return Strong;
 }
 
-- (IMDChatRepairController)initWithDelegate:(id)a3
+- (IMDChatRepairController)initWithDelegate:(id)delegate
 {
   swift_unknownObjectWeakInit();
   v6.receiver = self;
@@ -26,19 +26,19 @@
   return v4;
 }
 
-- (BOOL)repairChatIfNecessary:(id)a3
+- (BOOL)repairChatIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v5 = self;
-  sub_22B76F074(v4);
-  if (v6 & 1) != 0 || (sub_22B76FDA0(v4), (v7))
+  necessaryCopy = necessary;
+  selfCopy = self;
+  sub_22B76F074(necessaryCopy);
+  if (v6 & 1) != 0 || (sub_22B76FDA0(necessaryCopy), (v7))
   {
     v8 = 1;
   }
 
   else
   {
-    sub_22B770878(v4);
+    sub_22B770878(necessaryCopy);
     v8 = v9;
   }
 

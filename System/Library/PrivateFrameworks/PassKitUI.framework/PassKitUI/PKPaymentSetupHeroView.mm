@@ -1,36 +1,36 @@
 @interface PKPaymentSetupHeroView
-- (CGSize)_watchCardCarouselSizeForSize:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPaymentSetupHeroView)initWithContext:(int64_t)a3 heroImageController:(id)a4 heroImages:(id)a5 product:(id)a6;
-- (double)_instructionFontSizeForContext:(int64_t)a3;
+- (CGSize)_watchCardCarouselSizeForSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPaymentSetupHeroView)initWithContext:(int64_t)context heroImageController:(id)controller heroImages:(id)images product:(id)product;
+- (double)_instructionFontSizeForContext:(int64_t)context;
 - (double)_phoneCardHeightInset;
 - (double)_phoneTopPadding;
 - (id)_heroImages;
-- (void)_configureHeroCardsFromHeroImages:(id)a3;
+- (void)_configureHeroCardsFromHeroImages:(id)images;
 - (void)_createSubviews;
-- (void)_layoutBottomDividerViewForBounds:(CGRect)a3;
-- (void)_layoutCardCarouselWithAlignment:(id)a3;
-- (void)heroImageController:(id)a3 didFinishDownloadingImageData:(id)a4 forImage:(id)a5 error:(id)a6;
+- (void)_layoutBottomDividerViewForBounds:(CGRect)bounds;
+- (void)_layoutCardCarouselWithAlignment:(id)alignment;
+- (void)heroImageController:(id)controller didFinishDownloadingImageData:(id)data forImage:(id)image error:(id)error;
 - (void)layoutSubviews;
 @end
 
 @implementation PKPaymentSetupHeroView
 
-- (PKPaymentSetupHeroView)initWithContext:(int64_t)a3 heroImageController:(id)a4 heroImages:(id)a5 product:(id)a6
+- (PKPaymentSetupHeroView)initWithContext:(int64_t)context heroImageController:(id)controller heroImages:(id)images product:(id)product
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  controllerCopy = controller;
+  imagesCopy = images;
+  productCopy = product;
   v31.receiver = self;
   v31.super_class = PKPaymentSetupHeroView;
   v14 = [(PKPaymentSetupHeroView *)&v31 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v15 = v14;
   if (v14)
   {
-    v14->_context = a3;
-    objc_storeStrong(&v14->_heroImageController, a4);
+    v14->_context = context;
+    objc_storeStrong(&v14->_heroImageController, controller);
     [MEMORY[0x1E69B8C10] cardAspectRatio];
-    if (v13)
+    if (productCopy)
     {
       v17 = 300.0 / v16;
       v18 = [[PKImageSequenceView alloc] initWitImages:0];
@@ -42,21 +42,21 @@
       v26[2] = __81__PKPaymentSetupHeroView_initWithContext_heroImageController_heroImages_product___block_invoke;
       v26[3] = &unk_1E80129F8;
       v27 = v15;
-      v28 = v13;
+      v28 = productCopy;
       v29 = 0x4072C00000000000;
       v30 = v17;
       v20 = [v28 digitalCardCachedImage:v26];
 
-      v21 = v27;
+      _heroImages = v27;
     }
 
     else
     {
       [(PKPaymentHeroImageController *)v15->_heroImageController setDelegate:v15];
-      [(PKPaymentSetupHeroView *)v15 _configureHeroCardsFromHeroImages:v12];
+      [(PKPaymentSetupHeroView *)v15 _configureHeroCardsFromHeroImages:imagesCopy];
       v22 = [PKImageSequenceView alloc];
-      v21 = [(PKPaymentSetupHeroView *)v15 _heroImages];
-      v23 = [(PKImageSequenceView *)v22 initWitImages:v21];
+      _heroImages = [(PKPaymentSetupHeroView *)v15 _heroImages];
+      v23 = [(PKImageSequenceView *)v22 initWitImages:_heroImages];
       v24 = v15->_cardCarouselView;
       v15->_cardCarouselView = v23;
     }
@@ -117,10 +117,10 @@ void __81__PKPaymentSetupHeroView_initWithContext_heroImageController_heroImages
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if (!PKPaymentSetupContextIsBridge())
   {
     if (!PKIsPad())
@@ -183,7 +183,7 @@ LABEL_14:
     [(UIView *)heroDeviceView setFrame:?];
     [(UIView *)self->_heroDeviceView cardFrame];
     [(PKImageSequenceView *)self->_cardCarouselView setFrame:?];
-    v14 = [(PKImageSequenceView *)self->_cardCarouselView layer];
+    layer = [(PKImageSequenceView *)self->_cardCarouselView layer];
     PKPaymentStyleApplyCorners();
   }
 
@@ -201,13 +201,13 @@ LABEL_14:
     v18 = self->_heroDeviceView;
     PKSizeAlignedInRect();
     [(UIView *)v18 setFrame:?];
-    v14 = objc_alloc_init(MEMORY[0x1E6979398]);
-    v19 = [MEMORY[0x1E69DC888] blackColor];
-    [v14 setBackgroundColor:{objc_msgSend(v19, "CGColor")}];
+    layer = objc_alloc_init(MEMORY[0x1E6979398]);
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [layer setBackgroundColor:{objc_msgSend(blackColor, "CGColor")}];
 
-    [v14 setFrame:{-50.0, -50.0, v12 + 100.0, v17 + 50.0}];
-    v20 = [(UIView *)self->_heroDeviceView layer];
-    [v20 setMask:v14];
+    [layer setFrame:{-50.0, -50.0, v12 + 100.0, v17 + 50.0}];
+    layer2 = [(UIView *)self->_heroDeviceView layer];
+    [layer2 setMask:layer];
 
     [(PKPaymentSetupHeroView *)self _layoutCardCarouselWithAlignment:v15];
     if (self->_faceIDGlyphView)
@@ -235,7 +235,7 @@ LABEL_9:
   }
 }
 
-- (void)_layoutCardCarouselWithAlignment:(id)a3
+- (void)_layoutCardCarouselWithAlignment:(id)alignment
 {
   [(UIView *)self->_heroDeviceView frame];
   v5 = v4;
@@ -253,38 +253,38 @@ LABEL_9:
   cardCarouselView = self->_cardCarouselView;
   PKSizeAlignedInRect();
   [(PKImageSequenceView *)cardCarouselView setFrame:?];
-  v16 = [(PKImageSequenceView *)self->_cardCarouselView layer];
+  layer = [(PKImageSequenceView *)self->_cardCarouselView layer];
   v15 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.1];
   [v15 CGColor];
   PKPaymentStyleApplyCorners();
 }
 
-- (void)_layoutBottomDividerViewForBounds:(CGRect)a3
+- (void)_layoutBottomDividerViewForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = bounds.size.height;
+  width = bounds.size.width;
   v6 = PKUIPixelLength();
   bottomDividerView = self->_bottomDividerView;
 
   [(UIView *)bottomDividerView setFrame:0.0, height - v6, width, v6];
 }
 
-- (void)heroImageController:(id)a3 didFinishDownloadingImageData:(id)a4 forImage:(id)a5 error:(id)a6
+- (void)heroImageController:(id)controller didFinishDownloadingImageData:(id)data forImage:(id)image error:(id)error
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  dataCopy = data;
+  imageCopy = image;
+  errorCopy = error;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __91__PKPaymentSetupHeroView_heroImageController_didFinishDownloadingImageData_forImage_error___block_invoke;
   v15[3] = &unk_1E8011C98;
-  v16 = v11;
-  v17 = v9;
-  v18 = v10;
-  v19 = self;
-  v12 = v10;
-  v13 = v9;
-  v14 = v11;
+  v16 = errorCopy;
+  v17 = dataCopy;
+  v18 = imageCopy;
+  selfCopy = self;
+  v12 = imageCopy;
+  v13 = dataCopy;
+  v14 = errorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v15);
 }
 
@@ -352,14 +352,14 @@ void __91__PKPaymentSetupHeroView_heroImageController_didFinishDownloadingImageD
   return v3;
 }
 
-- (void)_configureHeroCardsFromHeroImages:(id)a3
+- (void)_configureHeroCardsFromHeroImages:(id)images
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  imagesCopy = images;
   v5 = 0x1E69B8000uLL;
-  if ([v4 count])
+  if ([imagesCopy count])
   {
-    [(PKPaymentHeroImageController *)self->_heroImageController downloadImages:v4];
+    [(PKPaymentHeroImageController *)self->_heroImageController downloadImages:imagesCopy];
   }
 
   else
@@ -371,10 +371,10 @@ void __91__PKPaymentSetupHeroView_heroImageController_didFinishDownloadingImageD
       _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "No hero card images provided, using defaults.", buf, 2u);
     }
 
-    v7 = [MEMORY[0x1E69B8C10] defaultImages];
-    v8 = [v7 mutableCopy];
+    defaultImages = [MEMORY[0x1E69B8C10] defaultImages];
+    v8 = [defaultImages mutableCopy];
 
-    v4 = v8;
+    imagesCopy = v8;
   }
 
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -389,7 +389,7 @@ void __91__PKPaymentSetupHeroView_heroImageController_didFinishDownloadingImageD
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v12 = v4;
+  v12 = imagesCopy;
   v13 = [v12 countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (!v13)
   {
@@ -406,8 +406,8 @@ LABEL_16:
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v19 = [*(v5 + 3088) defaultImages];
-    v20 = [v19 countByEnumeratingWithState:&v29 objects:v40 count:16];
+    defaultImages2 = [*(v5 + 3088) defaultImages];
+    v20 = [defaultImages2 countByEnumeratingWithState:&v29 objects:v40 count:16];
     if (v20)
     {
       v21 = v20;
@@ -418,13 +418,13 @@ LABEL_16:
         {
           if (*v30 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(defaultImages2);
           }
 
           v11[2](v11, *(*(&v29 + 1) + 8 * i));
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v29 objects:v40 count:16];
+        v21 = [defaultImages2 countByEnumeratingWithState:&v29 objects:v40 count:16];
       }
 
       while (v21);
@@ -461,17 +461,17 @@ LABEL_16:
 
 LABEL_26:
   objc_storeStrong(&self->_heroImagesDictionary, v9);
-  v24 = [v10 allKeys];
-  v25 = [v24 pk_shuffledArray];
-  v26 = [v25 mutableCopy];
+  allKeys = [v10 allKeys];
+  pk_shuffledArray = [allKeys pk_shuffledArray];
+  v26 = [pk_shuffledArray mutableCopy];
   heroImageIdentifiers = self->_heroImageIdentifiers;
   self->_heroImageIdentifiers = v26;
 
-  v28 = [(PKPaymentHeroImageController *)self->_heroImageController primaryImageIdentifier];
-  if (v28)
+  primaryImageIdentifier = [(PKPaymentHeroImageController *)self->_heroImageController primaryImageIdentifier];
+  if (primaryImageIdentifier)
   {
-    [(NSMutableArray *)self->_heroImageIdentifiers removeObject:v28];
-    [(NSMutableArray *)self->_heroImageIdentifiers insertObject:v28 atIndex:0];
+    [(NSMutableArray *)self->_heroImageIdentifiers removeObject:primaryImageIdentifier];
+    [(NSMutableArray *)self->_heroImageIdentifiers insertObject:primaryImageIdentifier atIndex:0];
   }
 }
 
@@ -518,14 +518,14 @@ uint64_t __60__PKPaymentSetupHeroView__configureHeroCardsFromHeroImages___block_
     if (v7)
     {
       v8 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"HeroPad"];
-      v9 = v8;
+      assetBackgroundColor = v8;
       if (IsAvailable)
       {
         [v8 appendString:@"-FaceID"];
       }
 
-      v10 = [v9 stringByAppendingString:@"-Dark"];
-      v11 = PKUIDynamicImageNamed(v9, v10);
+      v10 = [assetBackgroundColor stringByAppendingString:@"-Dark"];
+      v11 = PKUIDynamicImageNamed(assetBackgroundColor, v10);
 
       v12 = [[PKPhoneHeroImageView alloc] initWithImage:v11];
       v13 = self->_heroDeviceView;
@@ -542,8 +542,8 @@ uint64_t __60__PKPaymentSetupHeroView__configureHeroCardsFromHeroImages___block_
       self->_heroDeviceView = v15;
 
       v17 = self->_heroDeviceView;
-      v18 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-      [(UIView *)v17 setBackgroundColor:v18];
+      systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+      [(UIView *)v17 setBackgroundColor:systemBackgroundColor];
 
       if (![(PKPaymentSetupHeroView *)self _isSmallPhone])
       {
@@ -570,8 +570,8 @@ uint64_t __60__PKPaymentSetupHeroView__configureHeroCardsFromHeroImages___block_
       self->_bottomDividerView = v28;
 
       v30 = self->_bottomDividerView;
-      v9 = [objc_opt_class() assetBackgroundColor];
-      [(UIView *)v30 setBackgroundColor:v9];
+      assetBackgroundColor = [objc_opt_class() assetBackgroundColor];
+      [(UIView *)v30 setBackgroundColor:assetBackgroundColor];
     }
 
     v6 = v7 ^ 1;
@@ -580,8 +580,8 @@ uint64_t __60__PKPaymentSetupHeroView__configureHeroCardsFromHeroImages___block_
     self->_backgroundView = v31;
 
     v33 = self->_backgroundView;
-    v34 = [objc_opt_class() assetBackgroundColor];
-    [(UIView *)v33 setBackgroundColor:v34];
+    assetBackgroundColor2 = [objc_opt_class() assetBackgroundColor];
+    [(UIView *)v33 setBackgroundColor:assetBackgroundColor2];
 
     [(PKPaymentSetupHeroView *)self addSubview:self->_backgroundView];
   }
@@ -605,10 +605,10 @@ uint64_t __60__PKPaymentSetupHeroView__configureHeroCardsFromHeroImages___block_
   }
 }
 
-- (CGSize)_watchCardCarouselSizeForSize:(CGSize)a3
+- (CGSize)_watchCardCarouselSizeForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (PKPaymentSetupContextIsBridge())
   {
     [(UIView *)self->_heroDeviceView sizeThatFits:width, height];
@@ -656,7 +656,7 @@ uint64_t __60__PKPaymentSetupHeroView__configureHeroCardsFromHeroImages___block_
   return result;
 }
 
-- (double)_instructionFontSizeForContext:(int64_t)a3
+- (double)_instructionFontSizeForContext:(int64_t)context
 {
   IsAvailable = PKPearlIsAvailable();
   result = 5.0;
@@ -670,9 +670,9 @@ uint64_t __60__PKPaymentSetupHeroView__configureHeroCardsFromHeroImages___block_
 
 - (double)_phoneTopPadding
 {
-  v2 = [(PKPaymentSetupHeroView *)self _isSmallPhone];
+  _isSmallPhone = [(PKPaymentSetupHeroView *)self _isSmallPhone];
   result = 20.0;
-  if (v2)
+  if (_isSmallPhone)
   {
     return 0.0;
   }

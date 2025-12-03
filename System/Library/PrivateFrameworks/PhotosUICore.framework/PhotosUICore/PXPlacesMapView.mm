@@ -1,37 +1,37 @@
 @interface PXPlacesMapView
-+ ($3BFE36E7F21C9C4470F2C816F6078BCC)MKMapRectForCoordinateRegion:(id *)a3;
++ ($3BFE36E7F21C9C4470F2C816F6078BCC)MKMapRectForCoordinateRegion:(id *)region;
 + ($3BFE36E7F21C9C4470F2C816F6078BCC)canonicalMapRect:(id)result;
-+ ($3BFE36E7F21C9C4470F2C816F6078BCC)mapRectForNearbyQueriesFromRect:(id)a3 atScale:(double)a4 targetViewSize:(CGSize)a5;
-+ (PXPlacesMapView)mapViewWithMarkedLocation:(id)a3 regionRadius:(double)a4 frame:(CGRect)a5;
++ ($3BFE36E7F21C9C4470F2C816F6078BCC)mapRectForNearbyQueriesFromRect:(id)rect atScale:(double)scale targetViewSize:(CGSize)size;
++ (PXPlacesMapView)mapViewWithMarkedLocation:(id)location regionRadius:(double)radius frame:(CGRect)frame;
 - ($3BFE36E7F21C9C4470F2C816F6078BCC)ppt_cityMapRect;
-- (PXPlacesMapView)initWithCoder:(id)a3;
-- (PXPlacesMapView)initWithFrame:(CGRect)a3;
+- (PXPlacesMapView)initWithCoder:(id)coder;
+- (PXPlacesMapView)initWithFrame:(CGRect)frame;
 - (PXPlacesMapViewDelegate)mapViewDelegate;
 - (double)_px_zoomLevel;
-- (double)_sampleMapDistanceFromViewPoint:(CGPoint)a3 toViewPoint:(CGPoint)a4;
+- (double)_sampleMapDistanceFromViewPoint:(CGPoint)point toViewPoint:(CGPoint)viewPoint;
 - (double)pitch;
 - (id)currentViewPort;
 - (id)currentViewPortWithThumbnailOverscan;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
-- (id)ppt_visibleMapRectBlockForQueue:(id)a3 delay:(double)a4;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
+- (id)ppt_visibleMapRectBlockForQueue:(id)queue delay:(double)delay;
 - (int64_t)panningGestureMinimumNumberOfTouches;
 - (void)_commonInit;
 - (void)awakeFromNib;
-- (void)deselectAllAnnotationsAnimated:(BOOL)a3;
-- (void)mapView:(id)a3 canEnter3DModeDidChange:(BOOL)a4;
-- (void)mapView:(id)a3 didAddAnnotationViews:(id)a4;
-- (void)mapView:(id)a3 didBecomePitched:(BOOL)a4;
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4;
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4;
-- (void)mapViewDidFinishLoadingMap:(id)a3;
-- (void)mapViewDidFinishRenderingMap:(id)a3 fullyRendered:(BOOL)a4;
-- (void)mapViewWillStartLocatingUser:(id)a3;
-- (void)ppt_performPlacesScrollTest:(id)a3 iterations:(int64_t)a4 screenDelta:(int64_t)a5 delay:(double)a6 completion:(id)a7;
-- (void)ppt_performPlacesZoomTest:(id)a3 iterations:(int64_t)a4 delay:(double)a5 completion:(id)a6;
-- (void)setDelegate:(id)a3;
-- (void)setPanningGestureMinimumNumberOfTouches:(int64_t)a3;
-- (void)setPitch:(double)a3;
-- (void)setPreferredConfiguration:(id)a3;
+- (void)deselectAllAnnotationsAnimated:(BOOL)animated;
+- (void)mapView:(id)view canEnter3DModeDidChange:(BOOL)change;
+- (void)mapView:(id)view didAddAnnotationViews:(id)views;
+- (void)mapView:(id)view didBecomePitched:(BOOL)pitched;
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView;
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated;
+- (void)mapViewDidFinishLoadingMap:(id)map;
+- (void)mapViewDidFinishRenderingMap:(id)map fullyRendered:(BOOL)rendered;
+- (void)mapViewWillStartLocatingUser:(id)user;
+- (void)ppt_performPlacesScrollTest:(id)test iterations:(int64_t)iterations screenDelta:(int64_t)delta delay:(double)delay completion:(id)completion;
+- (void)ppt_performPlacesZoomTest:(id)test iterations:(int64_t)iterations delay:(double)delay completion:(id)completion;
+- (void)setDelegate:(id)delegate;
+- (void)setPanningGestureMinimumNumberOfTouches:(int64_t)touches;
+- (void)setPitch:(double)pitch;
+- (void)setPreferredConfiguration:(id)configuration;
 @end
 
 @implementation PXPlacesMapView
@@ -43,16 +43,16 @@
   return WeakRetained;
 }
 
-- (void)ppt_performPlacesZoomTest:(id)a3 iterations:(int64_t)a4 delay:(double)a5 completion:(id)a6
+- (void)ppt_performPlacesZoomTest:(id)test iterations:(int64_t)iterations delay:(double)delay completion:(id)completion
 {
-  v9 = a6;
+  completionCopy = completion;
   [(PXPlacesMapView *)self ppt_cityMapRect];
   [(PXPlacesMapView *)self setVisibleMapRect:0 animated:?];
   v10 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
   v11 = dispatch_queue_create("scrollQueue", v10);
 
-  v12 = [(PXPlacesMapView *)self ppt_visibleMapRectBlockForQueue:v11 delay:a5];
-  if (a4 >= 1)
+  v12 = [(PXPlacesMapView *)self ppt_visibleMapRectBlockForQueue:v11 delay:delay];
+  if (iterations >= 1)
   {
     do
     {
@@ -92,19 +92,19 @@
       v12[2](v12, x, y, width, height);
       v12[2](v12, v17, v18, v19, v20);
       v12[2](v12, x, y, width, height);
-      --a4;
+      --iterations;
     }
 
-    while (a4);
+    while (iterations);
   }
 
-  if (v9)
+  if (completionCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __73__PXPlacesMapView_ppt_performPlacesZoomTest_iterations_delay_completion___block_invoke;
     block[3] = &unk_1E774C250;
-    v30 = v9;
+    v30 = completionCopy;
     dispatch_async(v11, block);
   }
 }
@@ -119,19 +119,19 @@ void __73__PXPlacesMapView_ppt_performPlacesZoomTest_iterations_delay_completion
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)ppt_performPlacesScrollTest:(id)a3 iterations:(int64_t)a4 screenDelta:(int64_t)a5 delay:(double)a6 completion:(id)a7
+- (void)ppt_performPlacesScrollTest:(id)test iterations:(int64_t)iterations screenDelta:(int64_t)delta delay:(double)delay completion:(id)completion
 {
-  v11 = a7;
+  completionCopy = completion;
   [(PXPlacesMapView *)self ppt_cityMapRect];
   [(PXPlacesMapView *)self setVisibleMapRect:0 animated:?];
   v12 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
   v13 = dispatch_queue_create("scrollQueue", v12);
 
-  v14 = [(PXPlacesMapView *)self ppt_visibleMapRectBlockForQueue:v13 delay:a6];
-  if (a4 >= 1)
+  v14 = [(PXPlacesMapView *)self ppt_visibleMapRectBlockForQueue:v13 delay:delay];
+  if (iterations >= 1)
   {
-    v23 = a5;
-    v24 = -a5;
+    deltaCopy = delta;
+    v24 = -delta;
     do
     {
       [(PXPlacesMapView *)self visibleMapRect];
@@ -148,7 +148,7 @@ void __73__PXPlacesMapView_ppt_performPlacesZoomTest_iterations_delay_completion
       v40.origin.y = y;
       v40.size.width = width;
       v40.size.height = height;
-      v41 = MKMapRectOffset(v40, 0.0, height * v23);
+      v41 = MKMapRectOffset(v40, 0.0, height * deltaCopy);
       v31 = v41.origin.y;
       v32 = v41.origin.x;
       v29 = v41.size.height;
@@ -166,7 +166,7 @@ void __73__PXPlacesMapView_ppt_performPlacesZoomTest_iterations_delay_completion
       v42.origin.y = y;
       v42.size.width = width;
       v42.size.height = height;
-      v43 = MKMapRectOffset(v42, width * v23, 0.0);
+      v43 = MKMapRectOffset(v42, width * deltaCopy, 0.0);
       v19 = v43.origin.x;
       v20 = v43.origin.y;
       v21 = v43.size.width;
@@ -177,19 +177,19 @@ void __73__PXPlacesMapView_ppt_performPlacesZoomTest_iterations_delay_completion
       v14[2](v14, v28, v27, v26, v25);
       v14[2](v14, v19, v20, v21, v22);
       v14[2](v14, x, y, width, height);
-      --a4;
+      --iterations;
     }
 
-    while (a4);
+    while (iterations);
   }
 
-  if (v11)
+  if (completionCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __87__PXPlacesMapView_ppt_performPlacesScrollTest_iterations_screenDelta_delay_completion___block_invoke;
     block[3] = &unk_1E774C250;
-    v38 = v11;
+    v38 = completionCopy;
     dispatch_async(v13, block);
   }
 }
@@ -204,17 +204,17 @@ void __87__PXPlacesMapView_ppt_performPlacesScrollTest_iterations_screenDelta_de
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (id)ppt_visibleMapRectBlockForQueue:(id)a3 delay:(double)a4
+- (id)ppt_visibleMapRectBlockForQueue:(id)queue delay:(double)delay
 {
-  v6 = a3;
+  queueCopy = queue;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __57__PXPlacesMapView_ppt_visibleMapRectBlockForQueue_delay___block_invoke;
   aBlock[3] = &unk_1E7739F08;
-  v11 = v6;
-  v12 = self;
-  v13 = a4;
-  v7 = v6;
+  v11 = queueCopy;
+  selfCopy = self;
+  delayCopy = delay;
+  v7 = queueCopy;
   v8 = _Block_copy(aBlock);
 
   return v8;
@@ -263,9 +263,9 @@ uint64_t __57__PXPlacesMapView_ppt_visibleMapRectBlockForQueue_delay___block_inv
   return result;
 }
 
-- (void)mapView:(id)a3 canEnter3DModeDidChange:(BOOL)a4
+- (void)mapView:(id)view canEnter3DModeDidChange:(BOOL)change
 {
-  v5 = [(PXPlacesMapView *)self observable:a3];
+  v5 = [(PXPlacesMapView *)self observable:view];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__PXPlacesMapView_mapView_canEnter3DModeDidChange___block_invoke;
@@ -280,9 +280,9 @@ void __51__PXPlacesMapView_mapView_canEnter3DModeDidChange___block_invoke(uint64
   [v1 signalChange:8];
 }
 
-- (void)mapView:(id)a3 didBecomePitched:(BOOL)a4
+- (void)mapView:(id)view didBecomePitched:(BOOL)pitched
 {
-  v5 = [(PXPlacesMapView *)self observable:a3];
+  v5 = [(PXPlacesMapView *)self observable:view];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44__PXPlacesMapView_mapView_didBecomePitched___block_invoke;
@@ -297,25 +297,25 @@ void __44__PXPlacesMapView_mapView_didBecomePitched___block_invoke(uint64_t a1)
   [v1 signalChange:4];
 }
 
-- (void)mapViewWillStartLocatingUser:(id)a3
+- (void)mapViewWillStartLocatingUser:(id)user
 {
-  v4 = a3;
-  v5 = [(PXPlacesMapView *)self mapViewDelegate];
+  userCopy = user;
+  mapViewDelegate = [(PXPlacesMapView *)self mapViewDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(PXPlacesMapView *)self mapViewDelegate];
-    [v7 mapViewWillStartLocatingUser:v4];
+    mapViewDelegate2 = [(PXPlacesMapView *)self mapViewDelegate];
+    [mapViewDelegate2 mapViewWillStartLocatingUser:userCopy];
   }
 
-  v8 = [(PXPlacesMapView *)self observable];
+  observable = [(PXPlacesMapView *)self observable];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __48__PXPlacesMapView_mapViewWillStartLocatingUser___block_invoke;
   v9[3] = &unk_1E774C5F8;
   v9[4] = self;
-  [v8 performChanges:v9];
+  [observable performChanges:v9];
 }
 
 void __48__PXPlacesMapView_mapViewWillStartLocatingUser___block_invoke(uint64_t a1)
@@ -324,65 +324,65 @@ void __48__PXPlacesMapView_mapViewWillStartLocatingUser___block_invoke(uint64_t 
   [v1 signalChange:32];
 }
 
-- (void)mapViewDidFinishRenderingMap:(id)a3 fullyRendered:(BOOL)a4
+- (void)mapViewDidFinishRenderingMap:(id)map fullyRendered:(BOOL)rendered
 {
-  v4 = a4;
-  v6 = [(PXPlacesMapView *)self mapViewDelegate];
+  renderedCopy = rendered;
+  mapViewDelegate = [(PXPlacesMapView *)self mapViewDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(PXPlacesMapView *)self mapViewDelegate];
-    [v8 mapViewDidFinishRenderingMap:self fullyRendered:v4];
+    mapViewDelegate2 = [(PXPlacesMapView *)self mapViewDelegate];
+    [mapViewDelegate2 mapViewDidFinishRenderingMap:self fullyRendered:renderedCopy];
   }
 }
 
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(PXPlacesMapView *)self mapViewDelegate];
+  viewCopy = view;
+  annotationViewCopy = annotationView;
+  mapViewDelegate = [(PXPlacesMapView *)self mapViewDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(PXPlacesMapView *)self mapViewDelegate];
-    [v9 mapView:v10 didSelectAnnotationView:v6];
+    mapViewDelegate2 = [(PXPlacesMapView *)self mapViewDelegate];
+    [mapViewDelegate2 mapView:viewCopy didSelectAnnotationView:annotationViewCopy];
   }
 }
 
-- (void)mapView:(id)a3 didAddAnnotationViews:(id)a4
+- (void)mapView:(id)view didAddAnnotationViews:(id)views
 {
-  v8 = a4;
-  v5 = [(PXPlacesMapView *)self mapViewDelegate];
+  viewsCopy = views;
+  mapViewDelegate = [(PXPlacesMapView *)self mapViewDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(PXPlacesMapView *)self mapViewDelegate];
-    [v7 mapView:self didAddAnnotationViews:v8];
+    mapViewDelegate2 = [(PXPlacesMapView *)self mapViewDelegate];
+    [mapViewDelegate2 mapView:self didAddAnnotationViews:viewsCopy];
   }
 }
 
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(PXPlacesMapView *)self mapViewDelegate];
+  animatedCopy = animated;
+  mapViewDelegate = [(PXPlacesMapView *)self mapViewDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(PXPlacesMapView *)self mapViewDelegate];
-    [v8 mapView:self regionDidChangeAnimated:v4];
+    mapViewDelegate2 = [(PXPlacesMapView *)self mapViewDelegate];
+    [mapViewDelegate2 mapView:self regionDidChangeAnimated:animatedCopy];
   }
 
-  v9 = [(PXPlacesMapView *)self observable];
+  observable = [(PXPlacesMapView *)self observable];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __51__PXPlacesMapView_mapView_regionDidChangeAnimated___block_invoke;
   v10[3] = &unk_1E774C5F8;
   v10[4] = self;
-  [v9 performChanges:v10];
+  [observable performChanges:v10];
 }
 
 void __51__PXPlacesMapView_mapView_regionDidChangeAnimated___block_invoke(uint64_t a1)
@@ -391,16 +391,16 @@ void __51__PXPlacesMapView_mapView_regionDidChangeAnimated___block_invoke(uint64
   [v1 signalChange:1];
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v5 = a4;
-  v6 = [(PXPlacesMapView *)self mapViewDelegate];
+  annotationCopy = annotation;
+  mapViewDelegate = [(PXPlacesMapView *)self mapViewDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(PXPlacesMapView *)self mapViewDelegate];
-    v9 = [v8 mapView:self viewForAnnotation:v5];
+    mapViewDelegate2 = [(PXPlacesMapView *)self mapViewDelegate];
+    v9 = [mapViewDelegate2 mapView:self viewForAnnotation:annotationCopy];
   }
 
   else
@@ -411,15 +411,15 @@ void __51__PXPlacesMapView_mapView_regionDidChangeAnimated___block_invoke(uint64
   return v9;
 }
 
-- (void)mapViewDidFinishLoadingMap:(id)a3
+- (void)mapViewDidFinishLoadingMap:(id)map
 {
-  v4 = [(PXPlacesMapView *)self observable];
+  observable = [(PXPlacesMapView *)self observable];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __46__PXPlacesMapView_mapViewDidFinishLoadingMap___block_invoke;
   v5[3] = &unk_1E774C5F8;
   v5[4] = self;
-  [v4 performChanges:v5];
+  [observable performChanges:v5];
 }
 
 void __46__PXPlacesMapView_mapViewDidFinishLoadingMap___block_invoke(uint64_t a1)
@@ -442,27 +442,27 @@ void __46__PXPlacesMapView_mapViewDidFinishLoadingMap___block_invoke(uint64_t a1
   return result;
 }
 
-- (double)_sampleMapDistanceFromViewPoint:(CGPoint)a3 toViewPoint:(CGPoint)a4
+- (double)_sampleMapDistanceFromViewPoint:(CGPoint)point toViewPoint:(CGPoint)viewPoint
 {
-  y = a4.y;
-  x = a4.x;
-  [(PXPlacesMapView *)self convertPoint:self toCoordinateFromView:a3.x, a3.y];
+  y = viewPoint.y;
+  x = viewPoint.x;
+  [(PXPlacesMapView *)self convertPoint:self toCoordinateFromView:point.x, point.y];
   v7 = MKMapPointForCoordinate(v10);
   [(PXPlacesMapView *)self convertPoint:self toCoordinateFromView:x, y];
   v8 = MKMapPointForCoordinate(v11);
   return sqrt((v7.x - v8.x) * (v7.x - v8.x) + (v7.y - v8.y) * (v7.y - v8.y));
 }
 
-- (void)deselectAllAnnotationsAnimated:(BOOL)a3
+- (void)deselectAllAnnotationsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v17 = *MEMORY[0x1E69E9840];
-  v5 = [(PXPlacesMapView *)self selectedAnnotations];
+  selectedAnnotations = [(PXPlacesMapView *)self selectedAnnotations];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [selectedAnnotations countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -473,17 +473,17 @@ void __46__PXPlacesMapView_mapViewDidFinishLoadingMap___block_invoke(uint64_t a1
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selectedAnnotations);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
         v11 = [(PXPlacesMapView *)self viewForAnnotation:v10];
         [v11 setSelected:0 animated:0];
 
-        [(PXPlacesMapView *)self deselectAnnotation:v10 animated:v3];
+        [(PXPlacesMapView *)self deselectAnnotation:v10 animated:animatedCopy];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [selectedAnnotations countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -492,8 +492,8 @@ void __46__PXPlacesMapView_mapViewDidFinishLoadingMap___block_invoke(uint64_t a1
 
 - (id)currentViewPortWithThumbnailOverscan
 {
-  v3 = [(PXPlacesMapView *)self currentViewPort];
-  [v3 mapRect];
+  currentViewPort = [(PXPlacesMapView *)self currentViewPort];
+  [currentViewPort mapRect];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -502,12 +502,12 @@ void __46__PXPlacesMapView_mapViewDidFinishLoadingMap___block_invoke(uint64_t a1
   v13 = v12 * 0.5;
   [(PXPlacesMapView *)self frame];
   v15 = v14 * 0.5;
-  [v3 scale];
+  [currentViewPort scale];
   v17 = v16 * v13;
-  [v3 scale];
-  [v3 setMapRect:{v5 - v17, v7 - v18 * v15, v9 + v17 * 2.0, v11 + v18 * v15 * 2.0}];
+  [currentViewPort scale];
+  [currentViewPort setMapRect:{v5 - v17, v7 - v18 * v15, v9 + v17 * 2.0, v11 + v18 * v15 * 2.0}];
 
-  return v3;
+  return currentViewPort;
 }
 
 - (id)currentViewPort
@@ -515,12 +515,12 @@ void __46__PXPlacesMapView_mapViewDidFinishLoadingMap___block_invoke(uint64_t a1
   [(PXPlacesMapView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(PXPlacesMapView *)self camera];
-  [v7 heading];
+  camera = [(PXPlacesMapView *)self camera];
+  [camera heading];
   v9 = v8;
 
-  v10 = [(PXPlacesMapView *)self camera];
-  [v10 pitch];
+  camera2 = [(PXPlacesMapView *)self camera];
+  [camera2 pitch];
   v12 = v11;
 
   v13 = [PXPlacesMapViewPort alloc];
@@ -592,62 +592,62 @@ void __46__PXPlacesMapView_mapViewDidFinishLoadingMap___block_invoke(uint64_t a1
   return v23;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PXPlacesMapView.m" lineNumber:110 description:@"Do not set this delegate. Use mapViewDelegate instead."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPlacesMapView.m" lineNumber:110 description:@"Do not set this delegate. Use mapViewDelegate instead."];
 }
 
 - (int64_t)panningGestureMinimumNumberOfTouches
 {
-  v2 = [(PXPlacesMapView *)self _panningGestureRecognizer];
-  v3 = [v2 minimumNumberOfTouches];
+  _panningGestureRecognizer = [(PXPlacesMapView *)self _panningGestureRecognizer];
+  minimumNumberOfTouches = [_panningGestureRecognizer minimumNumberOfTouches];
 
-  return v3;
+  return minimumNumberOfTouches;
 }
 
-- (void)setPanningGestureMinimumNumberOfTouches:(int64_t)a3
+- (void)setPanningGestureMinimumNumberOfTouches:(int64_t)touches
 {
-  v4 = [(PXPlacesMapView *)self _panningGestureRecognizer];
-  [v4 setMinimumNumberOfTouches:a3];
+  _panningGestureRecognizer = [(PXPlacesMapView *)self _panningGestureRecognizer];
+  [_panningGestureRecognizer setMinimumNumberOfTouches:touches];
 }
 
-- (void)setPitch:(double)a3
+- (void)setPitch:(double)pitch
 {
-  v5 = [(PXPlacesMapView *)self camera];
-  v6 = [v5 copy];
+  camera = [(PXPlacesMapView *)self camera];
+  v6 = [camera copy];
 
-  [v6 setPitch:a3];
+  [v6 setPitch:pitch];
   [(PXPlacesMapView *)self setCamera:v6 animated:1];
 }
 
 - (double)pitch
 {
-  v2 = [(PXPlacesMapView *)self camera];
-  [v2 pitch];
+  camera = [(PXPlacesMapView *)self camera];
+  [camera pitch];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setPreferredConfiguration:(id)a3
+- (void)setPreferredConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(PXPlacesMapView *)self preferredConfiguration];
+  configurationCopy = configuration;
+  preferredConfiguration = [(PXPlacesMapView *)self preferredConfiguration];
 
   v8.receiver = self;
   v8.super_class = PXPlacesMapView;
-  [(PXPlacesMapView *)&v8 setPreferredConfiguration:v4];
+  [(PXPlacesMapView *)&v8 setPreferredConfiguration:configurationCopy];
 
-  if (v5 != v4)
+  if (preferredConfiguration != configurationCopy)
   {
-    v6 = [(PXPlacesMapView *)self observable];
+    observable = [(PXPlacesMapView *)self observable];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __45__PXPlacesMapView_setPreferredConfiguration___block_invoke;
     v7[3] = &unk_1E774C5F8;
     v7[4] = self;
-    [v6 performChanges:v7];
+    [observable performChanges:v7];
   }
 }
 
@@ -679,11 +679,11 @@ void __45__PXPlacesMapView_setPreferredConfiguration___block_invoke(uint64_t a1)
   [(PXPlacesMapView *)self _commonInit];
 }
 
-- (PXPlacesMapView)initWithCoder:(id)a3
+- (PXPlacesMapView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PXPlacesMapView;
-  v3 = [(PXPlacesMapView *)&v6 initWithCoder:a3];
+  v3 = [(PXPlacesMapView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -693,11 +693,11 @@ void __45__PXPlacesMapView_setPreferredConfiguration___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (PXPlacesMapView)initWithFrame:(CGRect)a3
+- (PXPlacesMapView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PXPlacesMapView;
-  v3 = [(PXPlacesMapView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXPlacesMapView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -707,25 +707,25 @@ void __45__PXPlacesMapView_setPreferredConfiguration___block_invoke(uint64_t a1)
   return v4;
 }
 
-+ (PXPlacesMapView)mapViewWithMarkedLocation:(id)a3 regionRadius:(double)a4 frame:(CGRect)a5
++ (PXPlacesMapView)mapViewWithMarkedLocation:(id)location regionRadius:(double)radius frame:(CGRect)frame
 {
-  if (a3)
+  if (location)
   {
-    height = a5.size.height;
-    width = a5.size.width;
-    y = a5.origin.y;
-    x = a5.origin.x;
+    height = frame.size.height;
+    width = frame.size.width;
+    y = frame.origin.y;
+    x = frame.origin.x;
     v10 = MEMORY[0x1E696F348];
-    v11 = a3;
+    locationCopy = location;
     v12 = objc_alloc_init(v10);
-    [v11 coordinate];
+    [locationCopy coordinate];
     [v12 setCoordinate:?];
     v13 = [objc_alloc(MEMORY[0x1E696F2C0]) initWithFrame:{x, y, width, height}];
-    [v11 coordinate];
+    [locationCopy coordinate];
     v15 = v14;
     v17 = v16;
 
-    MEMORY[0x1A590B350](v15, v17, a4 + a4, a4 + a4);
+    MEMORY[0x1A590B350](v15, v17, radius + radius, radius + radius);
     [v13 setRegion:?];
     [v13 setMapType:0];
     [v13 addAnnotation:v12];
@@ -795,9 +795,9 @@ void __45__PXPlacesMapView_setPreferredConfiguration___block_invoke(uint64_t a1)
   return result;
 }
 
-+ ($3BFE36E7F21C9C4470F2C816F6078BCC)mapRectForNearbyQueriesFromRect:(id)a3 atScale:(double)a4 targetViewSize:(CGSize)a5
++ ($3BFE36E7F21C9C4470F2C816F6078BCC)mapRectForNearbyQueriesFromRect:(id)rect atScale:(double)scale targetViewSize:(CGSize)size
 {
-  [a1 canonicalMapRect:{a3.var0.var0 + a3.var1.var0 * 0.5 - a5.width * a4 * 0.5, a3.var0.var1 + a3.var1.var1 * 0.5 - a5.height * a4 * 0.5, a5.width * a4, a5.height * a4}];
+  [self canonicalMapRect:{rect.var0.var0 + rect.var1.var0 * 0.5 - size.width * scale * 0.5, rect.var0.var1 + rect.var1.var1 * 0.5 - size.height * scale * 0.5, size.width * scale, size.height * scale}];
   result.var1.var1 = v8;
   result.var1.var0 = v7;
   result.var0.var1 = v6;
@@ -805,7 +805,7 @@ void __45__PXPlacesMapView_setPreferredConfiguration___block_invoke(uint64_t a1)
   return result;
 }
 
-+ ($3BFE36E7F21C9C4470F2C816F6078BCC)MKMapRectForCoordinateRegion:(id *)a3
++ ($3BFE36E7F21C9C4470F2C816F6078BCC)MKMapRectForCoordinateRegion:(id *)region
 {
   v7 = v4;
   v8 = v3;

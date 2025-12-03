@@ -1,24 +1,24 @@
 @interface ATXHomeScreenWidgetDescriptor
-- (ATXHomeScreenWidgetDescriptor)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ATXHomeScreenWidgetDescriptor)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)compactDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (id)extensionBundleIdForMetrics;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXHomeScreenWidgetDescriptor
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_appBundleId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_appBundleId copyWithZone:zone];
   [v5 setAppBundleId:v6];
 
-  v7 = [(CHSWidgetDescriptor *)self->_avocadoDescriptor copyWithZone:a3];
+  v7 = [(CHSWidgetDescriptor *)self->_avocadoDescriptor copyWithZone:zone];
   [v5 setAvocadoDescriptor:v7];
 
   [v5 setSuggestedSize:self->_suggestedSize];
@@ -30,17 +30,17 @@
 {
   v3 = objc_opt_new();
   [v3 setObject:self->_appBundleId forKeyedSubscript:@"appBundleId"];
-  v4 = [(CHSWidgetDescriptor *)self->_avocadoDescriptor extensionBundleIdentifier];
-  [v3 setObject:v4 forKeyedSubscript:@"extensionBundleId"];
+  extensionBundleIdentifier = [(CHSWidgetDescriptor *)self->_avocadoDescriptor extensionBundleIdentifier];
+  [v3 setObject:extensionBundleIdentifier forKeyedSubscript:@"extensionBundleId"];
 
-  v5 = [(CHSWidgetDescriptor *)self->_avocadoDescriptor displayName];
-  [v3 setObject:v5 forKeyedSubscript:@"widgetDisplayName"];
+  displayName = [(CHSWidgetDescriptor *)self->_avocadoDescriptor displayName];
+  [v3 setObject:displayName forKeyedSubscript:@"widgetDisplayName"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_suggestedSize];
   [v3 setObject:v6 forKeyedSubscript:@"widgetSuggestedSize"];
 
-  v7 = [(CHSWidgetDescriptor *)self->_avocadoDescriptor kind];
-  [v3 setObject:v7 forKeyedSubscript:@"widgetKind"];
+  kind = [(CHSWidgetDescriptor *)self->_avocadoDescriptor kind];
+  [v3 setObject:kind forKeyedSubscript:@"widgetKind"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:self->_rankType];
   [v3 setObject:v8 forKeyedSubscript:@"rankType"];
@@ -50,73 +50,73 @@
 
 - (id)extensionBundleIdForMetrics
 {
-  v3 = [(CHSWidgetDescriptor *)self->_avocadoDescriptor extensionBundleIdentifier];
-  v4 = [v3 isEqualToString:&stru_1F3E050C8];
+  extensionBundleIdentifier = [(CHSWidgetDescriptor *)self->_avocadoDescriptor extensionBundleIdentifier];
+  v4 = [extensionBundleIdentifier isEqualToString:&stru_1F3E050C8];
 
   if (!v4)
   {
     goto LABEL_12;
   }
 
-  v5 = [(CHSWidgetDescriptor *)self->_avocadoDescriptor kind];
-  v6 = [v5 isEqualToString:@"SBHSpecialAvocadoDescriptorKindSiri"];
+  kind = [(CHSWidgetDescriptor *)self->_avocadoDescriptor kind];
+  v6 = [kind isEqualToString:@"SBHSpecialAvocadoDescriptorKindSiri"];
 
   if (v6)
   {
-    v7 = @"suggestions";
+    extensionBundleIdentifier2 = @"suggestions";
     goto LABEL_13;
   }
 
-  v8 = [(CHSWidgetDescriptor *)self->_avocadoDescriptor kind];
-  if ([v8 isEqualToString:@"SBHSpecialAvocadoDescriptorKindShortcutsFolder"])
+  kind2 = [(CHSWidgetDescriptor *)self->_avocadoDescriptor kind];
+  if ([kind2 isEqualToString:@"SBHSpecialAvocadoDescriptorKindShortcutsFolder"])
   {
 
 LABEL_7:
-    v7 = @"shortcuts";
+    extensionBundleIdentifier2 = @"shortcuts";
     goto LABEL_13;
   }
 
-  v9 = [(CHSWidgetDescriptor *)self->_avocadoDescriptor kind];
-  v10 = [v9 isEqualToString:@"SBHSpecialAvocadoDescriptorKindShortcutsSingle"];
+  kind3 = [(CHSWidgetDescriptor *)self->_avocadoDescriptor kind];
+  v10 = [kind3 isEqualToString:@"SBHSpecialAvocadoDescriptorKindShortcutsSingle"];
 
   if (v10)
   {
     goto LABEL_7;
   }
 
-  v11 = [(CHSWidgetDescriptor *)self->_avocadoDescriptor kind];
-  v12 = [v11 isEqualToString:@"SBHSpecialAvocadoDescriptorKindFiles"];
+  kind4 = [(CHSWidgetDescriptor *)self->_avocadoDescriptor kind];
+  v12 = [kind4 isEqualToString:@"SBHSpecialAvocadoDescriptorKindFiles"];
 
   if (v12)
   {
-    v7 = @"files";
+    extensionBundleIdentifier2 = @"files";
     goto LABEL_13;
   }
 
-  v13 = [(CHSWidgetDescriptor *)self->_avocadoDescriptor kind];
-  v14 = [v13 isEqualToString:@"SBHSpecialAvocadoDescriptorKindAppPredictions"];
+  kind5 = [(CHSWidgetDescriptor *)self->_avocadoDescriptor kind];
+  v14 = [kind5 isEqualToString:@"SBHSpecialAvocadoDescriptorKindAppPredictions"];
 
   if (v14)
   {
-    v7 = @"apppredpanel";
+    extensionBundleIdentifier2 = @"apppredpanel";
   }
 
   else
   {
 LABEL_12:
-    v7 = [(CHSWidgetDescriptor *)self->_avocadoDescriptor extensionBundleIdentifier];
+    extensionBundleIdentifier2 = [(CHSWidgetDescriptor *)self->_avocadoDescriptor extensionBundleIdentifier];
   }
 
 LABEL_13:
 
-  return v7;
+  return extensionBundleIdentifier2;
 }
 
 - (NSString)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(ATXHomeScreenWidgetDescriptor *)self dictionaryRepresentation];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  dictionaryRepresentation = [(ATXHomeScreenWidgetDescriptor *)self dictionaryRepresentation];
+  v4 = [v2 stringWithFormat:@"%@", dictionaryRepresentation];
 
   return v4;
 }
@@ -124,24 +124,24 @@ LABEL_13:
 - (id)compactDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(ATXHomeScreenWidgetDescriptor *)self avocadoDescriptor];
-  v5 = [v4 extensionBundleIdentifier];
-  v6 = [(ATXHomeScreenWidgetDescriptor *)self avocadoDescriptor];
-  v7 = [v6 kind];
-  v8 = [v3 stringWithFormat:@"%@:%@", v5, v7];
+  avocadoDescriptor = [(ATXHomeScreenWidgetDescriptor *)self avocadoDescriptor];
+  extensionBundleIdentifier = [avocadoDescriptor extensionBundleIdentifier];
+  avocadoDescriptor2 = [(ATXHomeScreenWidgetDescriptor *)self avocadoDescriptor];
+  kind = [avocadoDescriptor2 kind];
+  v8 = [v3 stringWithFormat:@"%@:%@", extensionBundleIdentifier, kind];
 
   return v8;
 }
 
-- (ATXHomeScreenWidgetDescriptor)initWithCoder:(id)a3
+- (ATXHomeScreenWidgetDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = ATXHomeScreenWidgetDescriptor;
   v5 = [(ATXHomeScreenWidgetDescriptor *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appBundleId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appBundleId"];
     appBundleId = v5->_appBundleId;
     v5->_appBundleId = v6;
 
@@ -150,25 +150,25 @@ LABEL_13:
     v10 = objc_opt_class();
     v11 = [v9 initWithObjects:{v10, objc_opt_class(), 0}];
     objc_autoreleasePoolPop(v8);
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"avocadoDescriptor"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"avocadoDescriptor"];
     avocadoDescriptor = v5->_avocadoDescriptor;
     v5->_avocadoDescriptor = v12;
 
-    v5->_suggestedSize = [v4 decodeIntegerForKey:@"widgetSuggestedSize"];
-    v5->_rankType = [v4 decodeIntegerForKey:@"rankType"];
+    v5->_suggestedSize = [coderCopy decodeIntegerForKey:@"widgetSuggestedSize"];
+    v5->_rankType = [coderCopy decodeIntegerForKey:@"rankType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   appBundleId = self->_appBundleId;
-  v5 = a3;
-  [v5 encodeObject:appBundleId forKey:@"appBundleId"];
-  [v5 encodeObject:self->_avocadoDescriptor forKey:@"avocadoDescriptor"];
-  [v5 encodeInteger:self->_suggestedSize forKey:@"widgetSuggestedSize"];
-  [v5 encodeInteger:self->_rankType forKey:@"rankType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:appBundleId forKey:@"appBundleId"];
+  [coderCopy encodeObject:self->_avocadoDescriptor forKey:@"avocadoDescriptor"];
+  [coderCopy encodeInteger:self->_suggestedSize forKey:@"widgetSuggestedSize"];
+  [coderCopy encodeInteger:self->_rankType forKey:@"rankType"];
 }
 
 - (unint64_t)hash
@@ -179,10 +179,10 @@ LABEL_13:
   return self->_rankType - v5 + 32 * v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -192,7 +192,7 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_appBundleId;
       v7 = v6;
       if (v6 == v5->_appBundleId)

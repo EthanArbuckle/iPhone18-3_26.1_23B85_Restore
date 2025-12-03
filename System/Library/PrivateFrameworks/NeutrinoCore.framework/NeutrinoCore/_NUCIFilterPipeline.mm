@@ -1,21 +1,21 @@
 @interface _NUCIFilterPipeline
-+ (id)channelFormatForFilterAttributes:(id)a3;
-+ (id)pipelineWithFilterName:(id)a3 error:(id *)a4;
-- (BOOL)build:(id *)a3;
-- (_NUCIFilterPipeline)initWithFilterName:(id)a3;
-- (_NUCIFilterPipeline)initWithIdentifier:(id)a3;
-- (id)_evaluateOutputPort:(id)a3 context:(id)a4 error:(id *)a5;
-- (id)_genericInputPortsMatchingOutputPort:(id)a3;
-- (id)_genericOutputPortsMatchingInputPort:(id)a3;
++ (id)channelFormatForFilterAttributes:(id)attributes;
++ (id)pipelineWithFilterName:(id)name error:(id *)error;
+- (BOOL)build:(id *)build;
+- (_NUCIFilterPipeline)initWithFilterName:(id)name;
+- (_NUCIFilterPipeline)initWithIdentifier:(id)identifier;
+- (id)_evaluateOutputPort:(id)port context:(id)context error:(id *)error;
+- (id)_genericInputPortsMatchingOutputPort:(id)port;
+- (id)_genericOutputPortsMatchingInputPort:(id)port;
 @end
 
 @implementation _NUCIFilterPipeline
 
-- (id)_genericInputPortsMatchingOutputPort:(id)a3
+- (id)_genericInputPortsMatchingOutputPort:(id)port
 {
   v9[4] = *MEMORY[0x1E69E9840];
-  v3 = [a3 fullName];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E695FB50]];
+  fullName = [port fullName];
+  v4 = [fullName isEqualToString:*MEMORY[0x1E695FB50]];
 
   if (v4)
   {
@@ -36,11 +36,11 @@
   return v7;
 }
 
-- (id)_genericOutputPortsMatchingInputPort:(id)a3
+- (id)_genericOutputPortsMatchingInputPort:(id)port
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 fullName];
-  v5 = [v4 isEqualToString:*MEMORY[0x1E695FAB0]];
+  fullName = [port fullName];
+  v5 = [fullName isEqualToString:*MEMORY[0x1E695FAB0]];
 
   if (v5)
   {
@@ -57,19 +57,19 @@
   return v7;
 }
 
-- (id)_evaluateOutputPort:(id)a3 context:(id)a4 error:(id *)a5
+- (id)_evaluateOutputPort:(id)port context:(id)context error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  contextCopy = context;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v31 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v29 = self;
-  v8 = [(_NUPipeline *)self inputChannels];
-  v9 = [(NUFilterNode *)v8 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  selfCopy = self;
+  inputChannels = [(_NUPipeline *)self inputChannels];
+  v9 = [(NUFilterNode *)inputChannels countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v9)
   {
     v10 = v9;
@@ -80,17 +80,17 @@ LABEL_3:
     {
       if (*v33 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(inputChannels);
       }
 
       v13 = *(*(&v32 + 1) + 8 * v12);
-      v14 = [v13 name];
-      v15 = [v6 dataForChannel:v14];
+      name = [v13 name];
+      v15 = [contextCopy dataForChannel:name];
 
       if (-[__CFString isNull](v15, "isNull") && [v13 type] == 1)
       {
         [NUError missingError:@"Missing media input" object:v13];
-        *a5 = v27 = 0;
+        *error = v27 = 0;
         goto LABEL_22;
       }
 
@@ -101,9 +101,9 @@ LABEL_3:
 
       if (([(__CFString *)v15 isNull]& 1) == 0)
       {
-        v16 = [(__CFString *)v15 value];
-        v17 = [v13 name];
-        [v31 setObject:v16 forKeyedSubscript:v17];
+        value = [(__CFString *)v15 value];
+        name2 = [v13 name];
+        [v31 setObject:value forKeyedSubscript:name2];
         goto LABEL_12;
       }
 
@@ -111,7 +111,7 @@ LABEL_13:
 
       if (v10 == ++v12)
       {
-        v10 = [(NUFilterNode *)v8 countByEnumeratingWithState:&v32 objects:v36 count:16];
+        v10 = [(NUFilterNode *)inputChannels countByEnumeratingWithState:&v32 objects:v36 count:16];
         if (v10)
         {
           goto LABEL_3;
@@ -121,10 +121,10 @@ LABEL_13:
       }
     }
 
-    v16 = [(__CFString *)v15 value];
-    v17 = [v16 renderNode];
-    v18 = [v13 name];
-    [v7 setObject:v17 forKeyedSubscript:v18];
+    value = [(__CFString *)v15 value];
+    name2 = [value renderNode];
+    name3 = [v13 name];
+    [v7 setObject:name2 forKeyedSubscript:name3];
 
 LABEL_12:
     goto LABEL_13;
@@ -132,26 +132,26 @@ LABEL_12:
 
 LABEL_15:
 
-  v8 = [[NUFilterNode alloc] initWithFilterName:v29->_filterName settings:v31 inputs:v7];
+  inputChannels = [[NUFilterNode alloc] initWithFilterName:selfCopy->_filterName settings:v31 inputs:v7];
   v19 = *MEMORY[0x1E695FAB0];
   v15 = v19;
-  if ([(NSString *)v29->_filterName isEqualToString:@"CILocalLightMapPrepare"])
+  if ([(NSString *)selfCopy->_filterName isEqualToString:@"CILocalLightMapPrepare"])
   {
 
     v15 = @"inputGuideImage";
   }
 
   v20 = [NUChannelMatching name:v15];
-  v21 = [(_NUPipeline *)v29 inputChannelMatching:v20];
+  v21 = [(_NUPipeline *)selfCopy inputChannelMatching:v20];
 
   if (v21)
   {
-    v22 = [v21 name];
-    v23 = [v6 dataForChannel:v22];
+    name4 = [v21 name];
+    v23 = [contextCopy dataForChannel:name4];
 
-    v24 = [v23 value];
-    v25 = [v24 geometry];
-    v26 = [v24 filteredMediaWithRenderNode:v8 geometry:v25];
+    value2 = [v23 value];
+    geometry = [value2 geometry];
+    v26 = [value2 filteredMediaWithRenderNode:inputChannels geometry:geometry];
 
     v27 = [[NUChannelMediaData alloc] initWithMedia:v26];
   }
@@ -159,7 +159,7 @@ LABEL_15:
   else
   {
     [NUError missingError:@"missing input channel for name" object:v19];
-    *a5 = v27 = 0;
+    *error = v27 = 0;
   }
 
 LABEL_22:
@@ -167,21 +167,21 @@ LABEL_22:
   return v27;
 }
 
-- (BOOL)build:(id *)a3
+- (BOOL)build:(id *)build
 {
   v46 = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E695F648] filterWithName:self->_filterName];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 attributes];
+    attributes = [v5 attributes];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v30 = v6;
-    v8 = [v6 inputKeys];
-    v9 = [v8 countByEnumeratingWithState:&v38 objects:v45 count:16];
+    inputKeys = [v6 inputKeys];
+    v9 = [inputKeys countByEnumeratingWithState:&v38 objects:v45 count:16];
     if (v9)
     {
       v10 = v9;
@@ -192,17 +192,17 @@ LABEL_22:
         {
           if (*v39 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(inputKeys);
           }
 
           v13 = *(*(&v38 + 1) + 8 * i);
-          v14 = [v7 objectForKeyedSubscript:v13];
+          v14 = [attributes objectForKeyedSubscript:v13];
           v15 = [objc_opt_class() channelFormatForFilterAttributes:v14];
           v16 = [[NUChannel alloc] initWithName:v13 format:v15 index:0];
           v17 = [(_NUPipeline *)self _addInputChannel:v16];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v38 objects:v45 count:16];
+        v10 = [inputKeys countByEnumeratingWithState:&v38 objects:v45 count:16];
       }
 
       while (v10);
@@ -235,7 +235,7 @@ LABEL_22:
           if (([v23 isEqualToString:v20] & 1) == 0)
           {
             [NUError unsupportedError:@"Unsupported output filter key" object:v23];
-            *a3 = v28 = 0;
+            *build = v28 = 0;
             goto LABEL_19;
           }
 
@@ -270,17 +270,17 @@ LABEL_19:
   else
   {
     [NUError invalidError:@"Filter not found" object:self->_filterName];
-    *a3 = v28 = 0;
+    *build = v28 = 0;
   }
 
   return v28;
 }
 
-- (_NUCIFilterPipeline)initWithFilterName:(id)a3
+- (_NUCIFilterPipeline)initWithFilterName:(id)name
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v13 = NUAssertLogger_5769();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -301,8 +301,8 @@ LABEL_19:
         v20 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v21 = MEMORY[0x1E696AF00];
         v22 = v20;
-        v23 = [v21 callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v21 callStackSymbols];
+        v24 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v31 = v20;
         v32 = 2114;
@@ -313,8 +313,8 @@ LABEL_19:
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -323,7 +323,7 @@ LABEL_19:
     _NUAssertFailHandler("[_NUCIFilterPipeline initWithFilterName:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 3377, @"Invalid parameter not satisfying: %s", v25, v26, v27, v28, "filterName != nil");
   }
 
-  v5 = v4;
+  v5 = nameCopy;
   v6 = [NUIdentifier alloc];
   v7 = +[NUVersion versionZero];
   v8 = [(NUIdentifier *)v6 initWithNamespace:@"com.apple.coreimage" name:v5 version:v7];
@@ -338,10 +338,10 @@ LABEL_19:
   return v9;
 }
 
-- (_NUCIFilterPipeline)initWithIdentifier:(id)a3
+- (_NUCIFilterPipeline)initWithIdentifier:(id)identifier
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_1383);
@@ -385,8 +385,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -402,8 +402,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;
@@ -419,12 +419,12 @@ LABEL_14:
   _NUAssertFailHandler("[_NUCIFilterPipeline initWithIdentifier:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 3373, @"Initializer not available: [%@ %@], use designated initializer instead.", v27, v28, v29, v30, v26);
 }
 
-+ (id)channelFormatForFilterAttributes:(id)a3
++ (id)channelFormatForFilterAttributes:(id)attributes
 {
   v50[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E695F6F0]];
-  v5 = [v3 objectForKeyedSubscript:*MEMORY[0x1E695F698]];
+  attributesCopy = attributes;
+  v4 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E695F6F0]];
+  v5 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E695F698]];
   if (([v4 isEqualToString:*MEMORY[0x1E695F720]] & 1) != 0 || !v4 && objc_msgSend(v5, "isEqualToString:", @"CIImage"))
   {
     v6 = +[NUChannelImageMediaFormat genericImageFormat];
@@ -433,14 +433,14 @@ LABEL_14:
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v8 = *MEMORY[0x1E695F6A0];
-  v9 = [v3 objectForKeyedSubscript:*MEMORY[0x1E695F6A0]];
+  v9 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E695F6A0]];
   [v7 setObject:v9 forKeyedSubscript:@"default"];
 
-  v10 = [v3 objectForKeyedSubscript:*MEMORY[0x1E695F6C8]];
+  v10 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E695F6C8]];
   [v7 setObject:v10 forKeyedSubscript:@"identity"];
 
   v11 = MEMORY[0x1E696AD98];
-  v12 = [v3 objectForKeyedSubscript:v8];
+  v12 = [attributesCopy objectForKeyedSubscript:v8];
   v13 = [v11 numberWithInt:v12 == 0];
   [v7 setObject:v13 forKeyedSubscript:@"required"];
 
@@ -448,7 +448,7 @@ LABEL_14:
   {
     if (([v4 isEqualToString:*MEMORY[0x1E695F760]] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E695F758]) & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E695F718]) & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E695F6F8]) & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E695F728]) & 1) != 0 || objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E695F710]))
     {
-      v18 = [v3 objectForKeyedSubscript:*MEMORY[0x1E695F6D8]];
+      v18 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E695F6D8]];
       v19 = v18;
       v20 = &unk_1F3F82DD8;
       if (v18)
@@ -458,7 +458,7 @@ LABEL_14:
 
       v21 = v20;
 
-      v22 = [v3 objectForKeyedSubscript:*MEMORY[0x1E695F6D0]];
+      v22 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E695F6D0]];
       v23 = v22;
       v24 = &unk_1F3F82DE8;
       if (v22)
@@ -586,7 +586,7 @@ LABEL_33:
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
       {
         v39 = 138543362;
-        v40 = v3;
+        v40 = attributesCopy;
         _os_log_error_impl(&dword_1C0184000, v37, OS_LOG_TYPE_ERROR, "Unsupported filter attributes: %{public}@", &v39, 0xCu);
       }
     }
@@ -609,11 +609,11 @@ LABEL_22:
   return v6;
 }
 
-+ (id)pipelineWithFilterName:(id)a3 error:(id *)a4
++ (id)pipelineWithFilterName:(id)name error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v13 = NUAssertLogger_5769();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -634,8 +634,8 @@ LABEL_22:
         v20 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v21 = MEMORY[0x1E696AF00];
         v22 = v20;
-        v23 = [v21 callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v21 callStackSymbols];
+        v24 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v31 = v20;
         v32 = 2114;
@@ -646,8 +646,8 @@ LABEL_22:
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -656,8 +656,8 @@ LABEL_22:
     _NUAssertFailHandler("+[_NUCIFilterPipeline pipelineWithFilterName:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 3361, @"Invalid parameter not satisfying: %s", v25, v26, v27, v28, "filterName != nil");
   }
 
-  v6 = v5;
-  v7 = [[_NUCIFilterPipeline alloc] initWithFilterName:v5];
+  v6 = nameCopy;
+  v7 = [[_NUCIFilterPipeline alloc] initWithFilterName:nameCopy];
   v29 = 0;
   if ([(_NUCIFilterPipeline *)v7 build:&v29])
   {
@@ -671,7 +671,7 @@ LABEL_22:
     v11 = v10;
 
     v8 = 0;
-    *a4 = v10;
+    *error = v10;
   }
 
   return v8;

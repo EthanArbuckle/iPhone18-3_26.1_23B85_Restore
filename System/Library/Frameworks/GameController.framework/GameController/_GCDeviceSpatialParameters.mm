@@ -1,71 +1,71 @@
 @interface _GCDeviceSpatialParameters
-- (BOOL)isEqual:(id)a3;
-- (_GCDeviceSpatialParameters)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_GCDeviceSpatialParameters)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (uint64_t)inherentChirality;
 - (uint64_t)setInherentChirality:(uint64_t)result;
 - (uint64_t)trackingSourceIOServiceRegistryID;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTrackingSourceIOServiceRegistryID:(void *)a1;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTrackingSourceIOServiceRegistryID:(void *)d;
 @end
 
 @implementation _GCDeviceSpatialParameters
 
-- (_GCDeviceSpatialParameters)initWithCoder:(id)a3
+- (_GCDeviceSpatialParameters)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_GCDeviceSpatialParameters *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trackingSourceIOServiceRegistryID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trackingSourceIOServiceRegistryID"];
   v8 = v6;
   if (v5)
   {
     objc_setProperty_nonatomic_copy(v5, v7, v6, 8);
 
-    v5->_inherentChirality = [v4 decodeIntegerForKey:@"inherentChirality"];
+    v5->_inherentChirality = [coderCopy decodeIntegerForKey:@"inherentChirality"];
   }
 
   else
   {
 
-    [v4 decodeIntegerForKey:@"inherentChirality"];
+    [coderCopy decodeIntegerForKey:@"inherentChirality"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self)
   {
-    [a3 encodeObject:self->_trackingSourceIOServiceRegistryID forKey:@"trackingSourceIOServiceRegistryID"];
+    [coder encodeObject:self->_trackingSourceIOServiceRegistryID forKey:@"trackingSourceIOServiceRegistryID"];
     inherentChirality = self->_inherentChirality;
   }
 
   else
   {
-    [_GCDeviceSpatialParameters encodeWithCoder:a3];
+    [_GCDeviceSpatialParameters encodeWithCoder:coder];
     inherentChirality = 0;
   }
 
-  [a3 encodeInteger:inherentChirality forKey:@"inherentChirality"];
+  [coder encodeInteger:inherentChirality forKey:@"inherentChirality"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = _GCDeviceSpatialParameters;
-  v4 = [(GCDeviceObjectParameters *)&v6 copyWithZone:a3];
+  v4 = [(GCDeviceObjectParameters *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 1, self->_trackingSourceIOServiceRegistryID);
   v4[2] = self->_inherentChirality;
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = _GCDeviceSpatialParameters;
-  v6 = [(GCDeviceObjectParameters *)&v8 isEqual:v4]&& ((trackingSourceIOServiceRegistryID = self->_trackingSourceIOServiceRegistryID, trackingSourceIOServiceRegistryID == v4[1]) || [(NSNumber *)trackingSourceIOServiceRegistryID isEqual:?]) && self->_inherentChirality == v4[2];
+  v6 = [(GCDeviceObjectParameters *)&v8 isEqual:equalCopy]&& ((trackingSourceIOServiceRegistryID = self->_trackingSourceIOServiceRegistryID, trackingSourceIOServiceRegistryID == equalCopy[1]) || [(NSNumber *)trackingSourceIOServiceRegistryID isEqual:?]) && self->_inherentChirality == equalCopy[2];
 
   return v6;
 }
@@ -90,11 +90,11 @@
   return result;
 }
 
-- (void)setTrackingSourceIOServiceRegistryID:(void *)a1
+- (void)setTrackingSourceIOServiceRegistryID:(void *)d
 {
-  if (a1)
+  if (d)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 8);
+    objc_setProperty_nonatomic_copy(d, newValue, newValue, 8);
   }
 }
 

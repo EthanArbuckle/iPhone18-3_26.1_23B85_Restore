@@ -1,5 +1,5 @@
 @interface ISLivePhotoVitalityBehavior
-- (ISLivePhotoVitalityBehavior)initWithInitialLayoutInfo:(id)a3 playbackEndTime:(id *)a4 playDuration:(id *)a5 playRate:(float)a6 photoTransitionDuration:(double)a7 pauseDuringTransition:(BOOL)a8 assetOptions:(unint64_t)a9;
+- (ISLivePhotoVitalityBehavior)initWithInitialLayoutInfo:(id)info playbackEndTime:(id *)time playDuration:(id *)duration playRate:(float)rate photoTransitionDuration:(double)transitionDuration pauseDuringTransition:(BOOL)transition assetOptions:(unint64_t)options;
 - (void)_didReachTransitionTime;
 - (void)_didReachTransitionToPhotoTime;
 - (void)_handleDidFinishPreroll;
@@ -28,8 +28,8 @@
 
 - (void)_didReachTransitionToPhotoTime
 {
-  v3 = [(ISBehavior *)self delegate];
-  v4 = [v3 vitalityBehaviorShouldEndPlayingAtPhoto:self];
+  delegate = [(ISBehavior *)self delegate];
+  v4 = [delegate vitalityBehaviorShouldEndPlayingAtPhoto:self];
 
   if (v4)
   {
@@ -37,8 +37,8 @@
     v6 = objc_alloc_init(ISPlayerOutputTransitionOptions);
     [(ISLivePhotoVitalityBehavior *)self photoTransitionDuration];
     v8 = v7;
-    v9 = [(ISBehavior *)self delegate];
-    [v9 videoPlayRate];
+    delegate2 = [(ISBehavior *)self delegate];
+    [delegate2 videoPlayRate];
     v11 = v10;
 
     if (v11 > 0.0)
@@ -55,13 +55,13 @@
 
     [(ISPlayerOutputTransitionOptions *)v6 setTransitionDuration:v13];
     self->_playing = 0;
-    v14 = [(ISBehavior *)self delegate];
+    delegate3 = [(ISBehavior *)self delegate];
     objc_initWeak(&location, self);
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __61__ISLivePhotoVitalityBehavior__didReachTransitionToPhotoTime__block_invoke;
     v16[3] = &unk_279A2A3E8;
-    v15 = v14;
+    v15 = delegate3;
     v17 = v15;
     objc_copyWeak(&v18, &location);
     [(ISBehavior *)self setOutputInfo:v5 withTransitionOptions:v6 completion:v16];
@@ -83,10 +83,10 @@ void __61__ISLivePhotoVitalityBehavior__didReachTransitionToPhotoTime__block_inv
   v3 = +[ISPlayerSettings sharedInstance];
   if ([v3 easingEnabled] && (-[ISBehavior delegate](self, "delegate"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "vitalityBehaviorShouldEndPlayingAtPhoto:", self), v4, v5))
   {
-    v6 = [(ISBehavior *)self delegate];
+    delegate = [(ISBehavior *)self delegate];
     [(ISLivePhotoVitalityBehavior *)self playbackEndTime];
     LODWORD(v7) = 1.0;
-    [v6 behavior:self playVideoToTime:v8 initialRate:0 overDuration:v7 progressHandler:0.0];
+    [delegate behavior:self playVideoToTime:v8 initialRate:0 overDuration:v7 progressHandler:0.0];
   }
 
   else
@@ -109,8 +109,8 @@ void __61__ISLivePhotoVitalityBehavior__didReachTransitionToPhotoTime__block_inv
   LODWORD(v6) = v5;
   [(ISBehavior *)self setVideoPlayRate:v6];
   self->_playing = 1;
-  v7 = [(ISBehavior *)self delegate];
-  [v7 vitalityBehaviorDidBeginPlaying:self];
+  delegate = [(ISBehavior *)self delegate];
+  [delegate vitalityBehaviorDidBeginPlaying:self];
 }
 
 - (void)videoReadyForDisplayDidChange
@@ -139,9 +139,9 @@ void __61__ISLivePhotoVitalityBehavior__didReachTransitionToPhotoTime__block_inv
 
     else
     {
-      v3 = [(ISLivePhotoVitalityBehavior *)self _isPreparing];
+      _isPreparing = [(ISLivePhotoVitalityBehavior *)self _isPreparing];
       [(ISLivePhotoVitalityBehavior *)self _setShouldPlayAfterPreparation:1];
-      if (!v3)
+      if (!_isPreparing)
       {
 
         [(ISLivePhotoVitalityBehavior *)self prepareForVitality];
@@ -171,9 +171,9 @@ void __61__ISLivePhotoVitalityBehavior__didReachTransitionToPhotoTime__block_inv
   v8 = v7;
   [(ISBehavior *)self setVideoForwardPlaybackEndTime:&v7];
   v3 = +[ISVitalitySettings sharedInstance];
-  v4 = [v3 shouldPreroll];
+  shouldPreroll = [v3 shouldPreroll];
 
-  if (v4)
+  if (shouldPreroll)
   {
     [(ISLivePhotoVitalityBehavior *)self playRate];
     [(ISBehavior *)self prerollVideoAtRate:&__block_literal_global_1357 completionHandler:?];
@@ -184,11 +184,11 @@ void __61__ISLivePhotoVitalityBehavior__didReachTransitionToPhotoTime__block_inv
 
 - (void)_stopObservingVideo
 {
-  v3 = [(ISBehavior *)self delegate];
-  [v3 behavior:self removeTimeObserver:self->_easeOutObserver];
+  delegate = [(ISBehavior *)self delegate];
+  [delegate behavior:self removeTimeObserver:self->_easeOutObserver];
 
-  v4 = [(ISBehavior *)self delegate];
-  [v4 behavior:self removeTimeObserver:self->_transitionToPhotoObserver];
+  delegate2 = [(ISBehavior *)self delegate];
+  [delegate2 behavior:self removeTimeObserver:self->_transitionToPhotoObserver];
 }
 
 - (void)_startObservingVideo
@@ -211,7 +211,7 @@ void __61__ISLivePhotoVitalityBehavior__didReachTransitionToPhotoTime__block_inv
   CMTimeMaximum(&rhs, &time1, &time2);
   lhs = rhs;
   objc_initWeak(&time1, self);
-  v6 = [(ISBehavior *)self delegate];
+  delegate = [(ISBehavior *)self delegate];
   rhs = v26;
   v7 = [MEMORY[0x277CCAE60] valueWithCMTime:&rhs];
   v28[0] = v7;
@@ -222,11 +222,11 @@ void __61__ISLivePhotoVitalityBehavior__didReachTransitionToPhotoTime__block_inv
   v20[2] = __51__ISLivePhotoVitalityBehavior__startObservingVideo__block_invoke;
   v20[3] = &unk_279A2A3C0;
   objc_copyWeak(&v21, &time1);
-  v10 = [v6 behavior:self addBoundaryTimeObserverForTimes:v8 queue:MEMORY[0x277D85CD0] usingBlock:v20];
+  v10 = [delegate behavior:self addBoundaryTimeObserverForTimes:v8 queue:MEMORY[0x277D85CD0] usingBlock:v20];
   easeOutObserver = self->_easeOutObserver;
   self->_easeOutObserver = v10;
 
-  v12 = [(ISBehavior *)self delegate];
+  delegate2 = [(ISBehavior *)self delegate];
   rhs = lhs;
   v13 = [MEMORY[0x277CCAE60] valueWithCMTime:&rhs];
   v27 = v13;
@@ -236,7 +236,7 @@ void __61__ISLivePhotoVitalityBehavior__didReachTransitionToPhotoTime__block_inv
   v18[2] = __51__ISLivePhotoVitalityBehavior__startObservingVideo__block_invoke_2;
   v18[3] = &unk_279A2A3C0;
   objc_copyWeak(&v19, &time1);
-  v15 = [v12 behavior:self addBoundaryTimeObserverForTimes:v14 queue:MEMORY[0x277D85CD0] usingBlock:v18];
+  v15 = [delegate2 behavior:self addBoundaryTimeObserverForTimes:v14 queue:MEMORY[0x277D85CD0] usingBlock:v18];
   transitionToPhotoObserver = self->_transitionToPhotoObserver;
   self->_transitionToPhotoObserver = v15;
 
@@ -277,8 +277,8 @@ void __51__ISLivePhotoVitalityBehavior__startObservingVideo__block_invoke_2(uint
     v16 = lhs;
     objc_initWeak(&location, self);
     v3 = +[ISVitalitySettings sharedInstance];
-    v4 = [v3 oneUpSettings];
-    [v4 startSeekTolerance];
+    oneUpSettings = [v3 oneUpSettings];
+    [oneUpSettings startSeekTolerance];
     v6 = v5;
 
     memset(&lhs, 0, sizeof(lhs));
@@ -343,23 +343,23 @@ void __49__ISLivePhotoVitalityBehavior_prepareForVitality__block_invoke_2(uint64
   }
 }
 
-- (ISLivePhotoVitalityBehavior)initWithInitialLayoutInfo:(id)a3 playbackEndTime:(id *)a4 playDuration:(id *)a5 playRate:(float)a6 photoTransitionDuration:(double)a7 pauseDuringTransition:(BOOL)a8 assetOptions:(unint64_t)a9
+- (ISLivePhotoVitalityBehavior)initWithInitialLayoutInfo:(id)info playbackEndTime:(id *)time playDuration:(id *)duration playRate:(float)rate photoTransitionDuration:(double)transitionDuration pauseDuringTransition:(BOOL)transition assetOptions:(unint64_t)options
 {
   v18.receiver = self;
   v18.super_class = ISLivePhotoVitalityBehavior;
-  result = [(ISBehavior *)&v18 initWithInitialLayoutInfo:a3];
+  result = [(ISBehavior *)&v18 initWithInitialLayoutInfo:info];
   if (result)
   {
-    var3 = a4->var3;
-    *&result->_playbackEndTime.value = *&a4->var0;
+    var3 = time->var3;
+    *&result->_playbackEndTime.value = *&time->var0;
     result->_playbackEndTime.epoch = var3;
-    v17 = a5->var3;
-    *&result->_playDuration.value = *&a5->var0;
+    v17 = duration->var3;
+    *&result->_playDuration.value = *&duration->var0;
     result->_playDuration.epoch = v17;
-    result->_playRate = a6;
-    result->_photoTransitionDuration = a7;
-    result->_pauseDuringTransition = a8;
-    result->_assetOptions = a9;
+    result->_playRate = rate;
+    result->_photoTransitionDuration = transitionDuration;
+    result->_pauseDuringTransition = transition;
+    result->_assetOptions = options;
   }
 
   return result;
@@ -367,11 +367,11 @@ void __49__ISLivePhotoVitalityBehavior_prepareForVitality__block_invoke_2(uint64
 
 - (void)dealloc
 {
-  v3 = [(ISBehavior *)self delegate];
-  [v3 behavior:self removeTimeObserver:self->_easeOutObserver];
+  delegate = [(ISBehavior *)self delegate];
+  [delegate behavior:self removeTimeObserver:self->_easeOutObserver];
 
-  v4 = [(ISBehavior *)self delegate];
-  [v4 behavior:self removeTimeObserver:self->_transitionToPhotoObserver];
+  delegate2 = [(ISBehavior *)self delegate];
+  [delegate2 behavior:self removeTimeObserver:self->_transitionToPhotoObserver];
 
   v5.receiver = self;
   v5.super_class = ISLivePhotoVitalityBehavior;

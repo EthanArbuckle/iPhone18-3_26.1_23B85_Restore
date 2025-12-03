@@ -1,9 +1,9 @@
 @interface CBWindow
-- (CBWindow)initWithBackgroundTunnel:(BOOL)a3;
+- (CBWindow)initWithBackgroundTunnel:(BOOL)tunnel;
 - (CBWindowDelegate)windowManager;
 - (NSString)description;
-- (void)dismissViewControllerAnimated:(BOOL)a3;
-- (void)setBackgroundTunnel:(BOOL)a3;
+- (void)dismissViewControllerAnimated:(BOOL)animated;
+- (void)setBackgroundTunnel:(BOOL)tunnel;
 - (void)viewControllerDidDismiss;
 @end
 
@@ -11,7 +11,7 @@
 
 - (NSString)description
 {
-  v3 = [(CBWindow *)self presentedView];
+  presentedView = [(CBWindow *)self presentedView];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
 
@@ -20,7 +20,7 @@
   return v6;
 }
 
-- (CBWindow)initWithBackgroundTunnel:(BOOL)a3
+- (CBWindow)initWithBackgroundTunnel:(BOOL)tunnel
 {
   v5 = +[UIScreen mainScreen];
   [v5 _referenceBounds];
@@ -30,41 +30,41 @@
 
   if (v6)
   {
-    v6->_backgroundTunnel = a3;
+    v6->_backgroundTunnel = tunnel;
     v6->_dismissed = 0;
   }
 
   return v6;
 }
 
-- (void)setBackgroundTunnel:(BOOL)a3
+- (void)setBackgroundTunnel:(BOOL)tunnel
 {
-  if (self->_backgroundTunnel != a3)
+  if (self->_backgroundTunnel != tunnel)
   {
-    v4 = a3;
-    self->_backgroundTunnel = a3;
-    v6 = [(CBWindow *)self windowManager];
-    [v6 window:self changedBackgroundTunnel:v4];
+    tunnelCopy = tunnel;
+    self->_backgroundTunnel = tunnel;
+    windowManager = [(CBWindow *)self windowManager];
+    [windowManager window:self changedBackgroundTunnel:tunnelCopy];
   }
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3
+- (void)dismissViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (![(CBWindow *)self dismissed])
   {
     [(CBWindow *)self setDismissed:1];
     objc_initWeak(&location, self);
-    v5 = [(CBWindow *)self windowManager];
-    [v5 windowWillDismiss:self];
+    windowManager = [(CBWindow *)self windowManager];
+    [windowManager windowWillDismiss:self];
 
-    v6 = [(CBWindow *)self presentedView];
+    presentedView = [(CBWindow *)self presentedView];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100023D58;
     v7[3] = &unk_10007D668;
     objc_copyWeak(&v8, &location);
-    [v6 dismissViewControllerAnimated:v3 completion:v7];
+    [presentedView dismissViewControllerAnimated:animatedCopy completion:v7];
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
@@ -76,11 +76,11 @@
   if (![(CBWindow *)self dismissed])
   {
     [(CBWindow *)self setDismissed:1];
-    v3 = [(CBWindow *)self windowManager];
-    [v3 windowWillDismiss:self];
+    windowManager = [(CBWindow *)self windowManager];
+    [windowManager windowWillDismiss:self];
 
-    v4 = [(CBWindow *)self windowManager];
-    [v4 windowDidDismiss:self];
+    windowManager2 = [(CBWindow *)self windowManager];
+    [windowManager2 windowDidDismiss:self];
   }
 }
 

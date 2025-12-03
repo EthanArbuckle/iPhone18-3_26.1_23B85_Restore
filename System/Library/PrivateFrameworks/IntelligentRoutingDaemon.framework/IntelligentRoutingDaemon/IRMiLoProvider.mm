@@ -1,22 +1,22 @@
 @interface IRMiLoProvider
-+ (BOOL)deleteServiceWithToken:(id)a3;
++ (BOOL)deleteServiceWithToken:(id)token;
 - (BOOL)startLowLatencyMiLo;
-- (IRMiLoProvider)initWithQueue:(id)a3;
+- (IRMiLoProvider)initWithQueue:(id)queue;
 - (IRMiLoProviderObserverProtocol)observer;
-- (id)_miloServiceStatusLogStringFromMap:(id)a3;
-- (id)getMiloServiceStatusStringQEWithPrediction:(id)a3;
+- (id)_miloServiceStatusLogStringFromMap:(id)map;
+- (id)getMiloServiceStatusStringQEWithPrediction:(id)prediction;
 - (id)requestSinglePrediction;
-- (int)_locationOfInterestToIRLocationSemantic:(id)a3;
-- (int64_t)_bitmapFromServiceSuspendedReasonArray:(id)a3;
+- (int)_locationOfInterestToIRLocationSemantic:(id)semantic;
+- (int64_t)_bitmapFromServiceSuspendedReasonArray:(id)array;
 - (void)_connectToLslService;
 - (void)_serviceReset;
 - (void)_serviceResetAndIncreaseFailCount;
-- (void)addLabelWithName:(id)a3;
-- (void)connection:(id)a3 didCompleteRequest:(id)a4 withError:(id)a5;
-- (void)connection:(id)a3 didEnableMicrolocationAtCurrentLocationWithError:(id)a4;
-- (void)connection:(id)a3 didFailWithError:(id)a4;
-- (void)connectionDidUpdateMap:(id)a3;
-- (void)connectionDidUpdatePredictionContext:(id)a3;
+- (void)addLabelWithName:(id)name;
+- (void)connection:(id)connection didCompleteRequest:(id)request withError:(id)error;
+- (void)connection:(id)connection didEnableMicrolocationAtCurrentLocationWithError:(id)error;
+- (void)connection:(id)connection didFailWithError:(id)error;
+- (void)connectionDidUpdateMap:(id)map;
+- (void)connectionDidUpdatePredictionContext:(id)context;
 - (void)removeObserver;
 - (void)resetSpotOnLocationRequest;
 - (void)setSpotOnLocation;
@@ -24,10 +24,10 @@
 
 @implementation IRMiLoProvider
 
-+ (BOOL)deleteServiceWithToken:(id)a3
++ (BOOL)deleteServiceWithToken:(id)token
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D28780] createServiceIdentifierForToken:v3];
+  tokenCopy = token;
+  v4 = [MEMORY[0x277D28780] createServiceIdentifierForToken:tokenCopy];
   if (v4)
   {
     v14 = 0;
@@ -59,16 +59,16 @@
   return v9 & 1;
 }
 
-- (IRMiLoProvider)initWithQueue:(id)a3
+- (IRMiLoProvider)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v8.receiver = self;
   v8.super_class = IRMiLoProvider;
   v5 = [(IRMiLoProvider *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(IRMiLoProvider *)v5 setQueue:v4];
+    [(IRMiLoProvider *)v5 setQueue:queueCopy];
     [(IRMiLoProvider *)v6 setMiloServiceStatusStringQE:@"MiLo State:nil"];
   }
 
@@ -89,9 +89,9 @@
     _os_log_impl(&dword_25543D000, v4, OS_LOG_TYPE_INFO, "%s[%@], Removing MiLo observer", &v7, 0x16u);
   }
 
-  v5 = [(IRMiLoProvider *)self observer];
+  observer = [(IRMiLoProvider *)self observer];
 
-  if (v5)
+  if (observer)
   {
     [(IRMiLoProvider *)self setObserver:0];
     [(IRMiLoProvider *)self setServiceUUID:0];
@@ -103,10 +103,10 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addLabelWithName:(id)a3
+- (void)addLabelWithName:(id)name
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = dispatch_get_specific(*MEMORY[0x277D21308]);
   v6 = *MEMORY[0x277D21260];
   if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_INFO))
@@ -116,13 +116,13 @@
     v12 = 2112;
     v13 = v5;
     v14 = 2112;
-    v15 = v4;
+    v15 = nameCopy;
     _os_log_impl(&dword_25543D000, v6, OS_LOG_TYPE_INFO, "%s[%@], addLabelWithName: name: %@", &v10, 0x20u);
   }
 
-  v7 = [objc_alloc(MEMORY[0x277D287A0]) initWithName:v4];
-  v8 = [(IRMiLoProvider *)self connection];
-  [v8 addLabel:v7];
+  v7 = [objc_alloc(MEMORY[0x277D287A0]) initWithName:nameCopy];
+  connection = [(IRMiLoProvider *)self connection];
+  [connection addLabel:v7];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -132,9 +132,9 @@
   v25 = *MEMORY[0x277D85DE8];
   if ([(IRMiLoProvider *)self isMiLoServiceStateRunning]&& ([(IRMiLoProvider *)self observer], (v3 = objc_claimAutoreleasedReturnValue()) != 0) && (v4 = v3, [(IRMiLoProvider *)self requestSinglePredictionIdentifier], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, !v5))
   {
-    v15 = [(IRMiLoProvider *)self connection];
-    v16 = [v15 requestPrediction];
-    [(IRMiLoProvider *)self setRequestSinglePredictionIdentifier:v16];
+    connection = [(IRMiLoProvider *)self connection];
+    requestPrediction = [connection requestPrediction];
+    [(IRMiLoProvider *)self setRequestSinglePredictionIdentifier:requestPrediction];
 
     v6 = @"YES";
   }
@@ -149,7 +149,7 @@
   if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_INFO))
   {
     v9 = v8;
-    v10 = [(IRMiLoProvider *)self requestSinglePredictionIdentifier];
+    requestSinglePredictionIdentifier = [(IRMiLoProvider *)self requestSinglePredictionIdentifier];
     v17 = 136315906;
     v18 = "#milo-provider, ";
     v19 = 2112;
@@ -157,16 +157,16 @@
     v21 = 2112;
     v22 = v6;
     v23 = 2112;
-    v24 = v10;
+    v24 = requestSinglePredictionIdentifier;
     _os_log_impl(&dword_25543D000, v9, OS_LOG_TYPE_INFO, "%s[%@], Single prediction requested, complied = %@, request-id (updated if complied): %@", &v17, 0x2Au);
   }
 
-  v11 = [(IRMiLoProvider *)self requestSinglePredictionIdentifier];
-  v12 = [v11 UUIDString];
+  requestSinglePredictionIdentifier2 = [(IRMiLoProvider *)self requestSinglePredictionIdentifier];
+  uUIDString = [requestSinglePredictionIdentifier2 UUIDString];
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return uUIDString;
 }
 
 - (BOOL)startLowLatencyMiLo
@@ -213,9 +213,9 @@ LABEL_7:
 
   v9 = 1;
   [(IRMiLoProvider *)self setIsLowLatency:1];
-  v12 = [(IRMiLoProvider *)self connection];
+  connection = [(IRMiLoProvider *)self connection];
   v13 = [objc_alloc(MEMORY[0x277D28818]) initWithIsLowLatency:{-[IRMiLoProvider isLowLatency](self, "isLowLatency")}];
-  v14 = [v12 startUpdatingWithConfiguration:v13];
+  v14 = [connection startUpdatingWithConfiguration:v13];
 
   v3 = dispatch_get_specific(*MEMORY[0x277D21308]);
   v15 = *MEMORY[0x277D21260];
@@ -237,13 +237,13 @@ LABEL_8:
 - (void)setSpotOnLocation
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(IRMiLoProvider *)self spotOnLocationRequested];
+  spotOnLocationRequested = [(IRMiLoProvider *)self spotOnLocationRequested];
   v4 = MEMORY[0x277D21308];
   v5 = dispatch_get_specific(*MEMORY[0x277D21308]);
   v6 = MEMORY[0x277D21260];
   v7 = *MEMORY[0x277D21260];
   v8 = *MEMORY[0x277D21260];
-  if (v3)
+  if (spotOnLocationRequested)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -268,8 +268,8 @@ LABEL_8:
 
     if ([(IRMiLoProvider *)self miLoConnectionProgressStatus]== 2)
     {
-      v9 = [(IRMiLoProvider *)self connection];
-      [v9 enableMicrolocationAtCurrentLocation];
+      connection = [(IRMiLoProvider *)self connection];
+      [connection enableMicrolocationAtCurrentLocation];
 
       [(IRMiLoProvider *)self setSpotOnLocationRequested:1];
     }
@@ -287,14 +287,14 @@ LABEL_8:
         _os_log_impl(&dword_25543D000, v11, OS_LOG_TYPE_INFO, "%s[%@], MiLo not connected, responding to setSpotOnLocation with error", buf, 0x16u);
       }
 
-      v12 = [(IRMiLoProvider *)self observer];
+      observer = [(IRMiLoProvider *)self observer];
       v13 = MEMORY[0x277CCA9B8];
       v14 = *MEMORY[0x277D21258];
       v18 = *MEMORY[0x277CCA470];
       v19 = @"MiLo Unavailable";
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
       v16 = [v13 errorWithDomain:v14 code:-12899 userInfo:v15];
-      [v12 didSpotOnLocationCompleteWithError:v16];
+      [observer didSpotOnLocationCompleteWithError:v16];
     }
   }
 
@@ -319,11 +319,11 @@ LABEL_8:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getMiloServiceStatusStringQEWithPrediction:(id)a3
+- (id)getMiloServiceStatusStringQEWithPrediction:(id)prediction
 {
-  v4 = a3;
-  v15 = [(IRMiLoProvider *)self miloServiceStatusStringQE];
-  v5 = [v4 predictionId];
+  predictionCopy = prediction;
+  miloServiceStatusStringQE = [(IRMiLoProvider *)self miloServiceStatusStringQE];
+  predictionId = [predictionCopy predictionId];
   if ([(IRMiLoProvider *)self isLowLatency])
   {
     v6 = @"YES";
@@ -334,7 +334,7 @@ LABEL_8:
     v6 = @"NO";
   }
 
-  if ([v4 isPredictionValid])
+  if ([predictionCopy isPredictionValid])
   {
     v7 = @"YES";
   }
@@ -344,12 +344,12 @@ LABEL_8:
     v7 = @"NO";
   }
 
-  v8 = [v4 predictionTime];
-  v9 = [MEMORY[0x277CBEBB0] localTimeZone];
-  v10 = [v8 dateByAddingTimeInterval:{objc_msgSend(v9, "secondsFromGMT")}];
-  v11 = [v4 isMotionDetected];
+  predictionTime = [predictionCopy predictionTime];
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  v10 = [predictionTime dateByAddingTimeInterval:{objc_msgSend(localTimeZone, "secondsFromGMT")}];
+  isMotionDetected = [predictionCopy isMotionDetected];
 
-  if (v11)
+  if (isMotionDetected)
   {
     v12 = @"YES";
   }
@@ -359,7 +359,7 @@ LABEL_8:
     v12 = @"NO";
   }
 
-  v13 = [v15 stringByAppendingFormat:@" predictionId: %@\n isLowLatency: %@\n isPredictionValid: %@\n predictionTime: %@ \n isMotionDetected: %@", v5, v6, v7, v10, v12];
+  v13 = [miloServiceStatusStringQE stringByAppendingFormat:@" predictionId: %@\n isLowLatency: %@\n isPredictionValid: %@\n predictionTime: %@ \n isMotionDetected: %@", predictionId, v6, v7, v10, v12];
 
   return v13;
 }
@@ -372,43 +372,43 @@ LABEL_8:
   if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_INFO))
   {
     v5 = v4;
-    v6 = [(IRMiLoProvider *)self serviceUUID];
+    serviceUUID = [(IRMiLoProvider *)self serviceUUID];
     v14 = 136315650;
     v15 = "#milo-provider, ";
     v16 = 2112;
     v17 = v3;
     v18 = 2112;
-    v19 = v6;
+    v19 = serviceUUID;
     _os_log_impl(&dword_25543D000, v5, OS_LOG_TYPE_INFO, "%s[%@], Connecting to LSL service for identifier: %@", &v14, 0x20u);
   }
 
-  v7 = [(IRMiLoProvider *)self connection];
+  connection = [(IRMiLoProvider *)self connection];
 
-  if (!v7)
+  if (!connection)
   {
     v8 = objc_alloc(MEMORY[0x277D28780]);
-    v9 = [(IRMiLoProvider *)self serviceUUID];
-    v10 = [v8 initWithDelegate:self serviceIdentifier:v9];
+    serviceUUID2 = [(IRMiLoProvider *)self serviceUUID];
+    v10 = [v8 initWithDelegate:self serviceIdentifier:serviceUUID2];
     [(IRMiLoProvider *)self setConnection:v10];
   }
 
-  v11 = [(IRMiLoProvider *)self connection];
-  v12 = [v11 connect];
+  connection2 = [(IRMiLoProvider *)self connection];
+  connect = [connection2 connect];
 
   [(IRMiLoProvider *)self setMiLoConnectionProgressStatus:1];
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_miloServiceStatusLogStringFromMap:(id)a3
+- (id)_miloServiceStatusLogStringFromMap:(id)map
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  mapCopy = map;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [v3 serviceSuspendReasons];
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  serviceSuspendReasons = [mapCopy serviceSuspendReasons];
+  v5 = [serviceSuspendReasons countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -422,7 +422,7 @@ LABEL_8:
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(serviceSuspendReasons);
         }
 
         [*(*(&v20 + 1) + 8 * v9) suspendReasonEnum];
@@ -434,7 +434,7 @@ LABEL_8:
       }
 
       while (v6 != v9);
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v6 = [serviceSuspendReasons countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v6);
@@ -448,9 +448,9 @@ LABEL_8:
   v12 = [(__CFString *)v8 stringByAppendingString:@">"];
 
   v13 = MEMORY[0x277CCACA8];
-  [v3 serviceState];
+  [mapCopy serviceState];
   v14 = ULServiceStateToString();
-  if ([v3 isMapValid])
+  if ([mapCopy isMapValid])
   {
     v15 = @"YES";
   }
@@ -460,8 +460,8 @@ LABEL_8:
     v15 = @"NO";
   }
 
-  v16 = [v3 locationOfInterest];
-  v17 = [v13 stringWithFormat:@"MiLo State:\n State: %@\n Suspend reasons: %@\n isMapValid: %@\n locationOfInterest: %@\n", v14, v12, v15, v16];
+  locationOfInterest = [mapCopy locationOfInterest];
+  v17 = [v13 stringWithFormat:@"MiLo State:\n State: %@\n Suspend reasons: %@\n isMapValid: %@\n locationOfInterest: %@\n", v14, v12, v15, locationOfInterest];
 
   v18 = *MEMORY[0x277D85DE8];
 
@@ -473,16 +473,16 @@ LABEL_8:
   [(IRMiLoProvider *)self setIsMiLoServiceStateRunning:0];
   [(IRMiLoProvider *)self setConnection:0];
   [(IRMiLoProvider *)self setMiLoConnectionProgressStatus:0];
-  v3 = [(IRMiLoProvider *)self observer];
-  if (v3)
+  observer = [(IRMiLoProvider *)self observer];
+  if (observer)
   {
-    v4 = v3;
-    v5 = [(IRMiLoProvider *)self numberOfConsecutiveMiLoFailAttempts];
+    v4 = observer;
+    numberOfConsecutiveMiLoFailAttempts = [(IRMiLoProvider *)self numberOfConsecutiveMiLoFailAttempts];
     v6 = +[IRPreferences shared];
-    v7 = [v6 miLoProviderMaxNumberOfConsecutiveMiLoFailAttempts];
-    v8 = [v7 integerValue];
+    miLoProviderMaxNumberOfConsecutiveMiLoFailAttempts = [v6 miLoProviderMaxNumberOfConsecutiveMiLoFailAttempts];
+    integerValue = [miLoProviderMaxNumberOfConsecutiveMiLoFailAttempts integerValue];
 
-    if (v8 >= v5)
+    if (integerValue >= numberOfConsecutiveMiLoFailAttempts)
     {
 
       [(IRMiLoProvider *)self _connectToLslService];
@@ -497,15 +497,15 @@ LABEL_8:
   [(IRMiLoProvider *)self _serviceReset];
 }
 
-- (int64_t)_bitmapFromServiceSuspendedReasonArray:(id)a3
+- (int64_t)_bitmapFromServiceSuspendedReasonArray:(id)array
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  arrayCopy = array;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [arrayCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -517,13 +517,13 @@ LABEL_8:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v6 |= 1 << [*(*(&v11 + 1) + 8 * i) suspendReasonEnum];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [arrayCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -538,22 +538,22 @@ LABEL_8:
   return v6;
 }
 
-- (int)_locationOfInterestToIRLocationSemantic:(id)a3
+- (int)_locationOfInterestToIRLocationSemantic:(id)semantic
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  semanticCopy = semantic;
+  v4 = semanticCopy;
+  if (!semanticCopy)
   {
     goto LABEL_15;
   }
 
-  v5 = [v3 locationOfInterestType];
-  if (v5 <= 1)
+  locationOfInterestType = [semanticCopy locationOfInterestType];
+  if (locationOfInterestType <= 1)
   {
-    if (v5)
+    if (locationOfInterestType)
     {
-      if (v5 != 1)
+      if (locationOfInterestType != 1)
       {
 LABEL_12:
         v7 = dispatch_get_specific(*MEMORY[0x277D21308]);
@@ -586,9 +586,9 @@ LABEL_12:
 
   else
   {
-    if (v5 != 2)
+    if (locationOfInterestType != 2)
     {
-      if (v5 != 3 && v5 != 30)
+      if (locationOfInterestType != 3 && locationOfInterestType != 30)
       {
         goto LABEL_12;
       }
@@ -607,15 +607,15 @@ LABEL_16:
   return v6;
 }
 
-- (void)connectionDidUpdateMap:(id)a3
+- (void)connectionDidUpdateMap:(id)map
 {
-  v4 = [(IRMiLoProvider *)self queue];
+  queue = [(IRMiLoProvider *)self queue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __41__IRMiLoProvider_connectionDidUpdateMap___block_invoke;
   v5[3] = &unk_2797E0F28;
   v5[4] = self;
-  IRDispatchAsyncWithStrongSelf(v4, self, v5);
+  IRDispatchAsyncWithStrongSelf(queue, self, v5);
 }
 
 void __41__IRMiLoProvider_connectionDidUpdateMap___block_invoke(uint64_t a1, void *a2)
@@ -732,10 +732,10 @@ LABEL_18:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectionDidUpdatePredictionContext:(id)a3
+- (void)connectionDidUpdatePredictionContext:(id)context
 {
-  v4 = [(IRMiLoProvider *)self queue];
-  IRDispatchAsyncWithStrongSelf(v4, self, &__block_literal_global_5);
+  queue = [(IRMiLoProvider *)self queue];
+  IRDispatchAsyncWithStrongSelf(queue, self, &__block_literal_global_5);
 }
 
 void __55__IRMiLoProvider_connectionDidUpdatePredictionContext___block_invoke(uint64_t a1, void *a2)
@@ -836,20 +836,20 @@ id __55__IRMiLoProvider_connectionDidUpdatePredictionContext___block_invoke_52(u
   return v8;
 }
 
-- (void)connection:(id)a3 didCompleteRequest:(id)a4 withError:(id)a5
+- (void)connection:(id)connection didCompleteRequest:(id)request withError:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(IRMiLoProvider *)self queue];
+  requestCopy = request;
+  errorCopy = error;
+  queue = [(IRMiLoProvider *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __58__IRMiLoProvider_connection_didCompleteRequest_withError___block_invoke;
   v12[3] = &unk_2797E0F98;
-  v13 = v8;
-  v14 = v7;
-  v10 = v7;
-  v11 = v8;
-  IRDispatchAsyncWithStrongSelf(v9, self, v12);
+  v13 = errorCopy;
+  v14 = requestCopy;
+  v10 = requestCopy;
+  v11 = errorCopy;
+  IRDispatchAsyncWithStrongSelf(queue, self, v12);
 }
 
 void __58__IRMiLoProvider_connection_didCompleteRequest_withError___block_invoke(uint64_t a1, void *a2)
@@ -896,17 +896,17 @@ void __58__IRMiLoProvider_connection_didCompleteRequest_withError___block_invoke
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connection:(id)a3 didFailWithError:(id)a4
+- (void)connection:(id)connection didFailWithError:(id)error
 {
-  v5 = a4;
-  v6 = [(IRMiLoProvider *)self queue];
+  errorCopy = error;
+  queue = [(IRMiLoProvider *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__IRMiLoProvider_connection_didFailWithError___block_invoke;
   v8[3] = &unk_2797E0F28;
-  v9 = v5;
-  v7 = v5;
-  IRDispatchAsyncWithStrongSelf(v6, self, v8);
+  v9 = errorCopy;
+  v7 = errorCopy;
+  IRDispatchAsyncWithStrongSelf(queue, self, v8);
 }
 
 void __46__IRMiLoProvider_connection_didFailWithError___block_invoke(uint64_t a1, void *a2)
@@ -952,17 +952,17 @@ void __46__IRMiLoProvider_connection_didFailWithError___block_invoke(uint64_t a1
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connection:(id)a3 didEnableMicrolocationAtCurrentLocationWithError:(id)a4
+- (void)connection:(id)connection didEnableMicrolocationAtCurrentLocationWithError:(id)error
 {
-  v5 = a4;
-  v6 = [(IRMiLoProvider *)self queue];
+  errorCopy = error;
+  queue = [(IRMiLoProvider *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __78__IRMiLoProvider_connection_didEnableMicrolocationAtCurrentLocationWithError___block_invoke;
   v8[3] = &unk_2797E0F28;
-  v9 = v5;
-  v7 = v5;
-  IRDispatchAsyncWithStrongSelf(v6, self, v8);
+  v9 = errorCopy;
+  v7 = errorCopy;
+  IRDispatchAsyncWithStrongSelf(queue, self, v8);
 }
 
 void __78__IRMiLoProvider_connection_didEnableMicrolocationAtCurrentLocationWithError___block_invoke(uint64_t a1, void *a2)

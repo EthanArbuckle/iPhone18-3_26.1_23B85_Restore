@@ -1,29 +1,29 @@
 @interface MTRPluginPBMDeviceNodeReadMultipleAttributesMessage
-+ (id)_convertArray:(id)a3;
-+ (id)deviceNodeReadMultipleAttributesMessageFromMessage:(id)a3;
-+ (id)deviceNodeReadMultipleAttributesMessageWithNodeID:(id)a3 readAttributePaths:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)_convertArray:(id)array;
++ (id)deviceNodeReadMultipleAttributesMessageFromMessage:(id)message;
++ (id)deviceNodeReadMultipleAttributesMessageWithNodeID:(id)d readAttributePaths:(id)paths;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
 - (NSArray)attributeRequestPaths;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAttributePaths:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAttributePaths:(id)paths;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MTRPluginPBMDeviceNodeReadMultipleAttributesMessage
 
-+ (id)deviceNodeReadMultipleAttributesMessageFromMessage:(id)a3
++ (id)deviceNodeReadMultipleAttributesMessageFromMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [MTRPluginPBMDeviceNodeReadMultipleAttributesMessage alloc];
-  v5 = [v3 messageData];
+  messageData = [messageCopy messageData];
 
-  v6 = [(MTRPluginPBMDeviceNodeReadMultipleAttributesMessage *)v4 initWithData:v5];
+  v6 = [(MTRPluginPBMDeviceNodeReadMultipleAttributesMessage *)v4 initWithData:messageData];
   if ([(MTRPluginPBMDeviceNodeReadMultipleAttributesMessage *)v6 isValid])
   {
     v7 = v6;
@@ -37,15 +37,15 @@
   return v7;
 }
 
-+ (id)deviceNodeReadMultipleAttributesMessageWithNodeID:(id)a3 readAttributePaths:(id)a4
++ (id)deviceNodeReadMultipleAttributesMessageWithNodeID:(id)d readAttributePaths:(id)paths
 {
-  v5 = a4;
-  v6 = a3;
+  pathsCopy = paths;
+  dCopy = d;
   v7 = objc_alloc_init(MTRPluginPBMDeviceNodeReadMultipleAttributesMessage);
-  v8 = [MTRPluginPBMDeviceNode deviceNodeWithNodeID:v6];
+  v8 = [MTRPluginPBMDeviceNode deviceNodeWithNodeID:dCopy];
 
   [(MTRPluginPBMDeviceNodeReadMultipleAttributesMessage *)v7 setNode:v8];
-  v9 = [MTRPluginPBMDeviceNodeReadMultipleAttributesMessage _convertArray:v5];
+  v9 = [MTRPluginPBMDeviceNodeReadMultipleAttributesMessage _convertArray:pathsCopy];
 
   if (v9)
   {
@@ -61,16 +61,16 @@
   return v10;
 }
 
-+ (id)_convertArray:(id)a3
++ (id)_convertArray:(id)array
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  arrayCopy = array;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(arrayCopy, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = v3;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
@@ -87,10 +87,10 @@
 
         v10 = *(*(&v21 + 1) + 8 * i);
         v11 = MEMORY[0x277CD51C0];
-        v12 = [v10 endpoint];
-        v13 = [v10 cluster];
-        v14 = [v10 attribute];
-        v15 = [v11 attributePathWithEndpointID:v12 clusterID:v13 attributeID:v14];
+        endpoint = [v10 endpoint];
+        cluster = [v10 cluster];
+        attribute = [v10 attribute];
+        v15 = [v11 attributePathWithEndpointID:endpoint clusterID:cluster attributeID:attribute];
 
         v16 = [[MTRPluginPBMAttributePath alloc] initWithAttributePath:v15];
         if (!v16)
@@ -126,8 +126,8 @@ LABEL_11:
 {
   v29 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(MTRPluginPBMDeviceNodeReadMultipleAttributesMessage *)self attributePaths];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  attributePaths = [(MTRPluginPBMDeviceNodeReadMultipleAttributesMessage *)self attributePaths];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(attributePaths, "count")}];
 
   v26 = 0u;
   v27 = 0u;
@@ -151,11 +151,11 @@ LABEL_11:
         v8 = *(*(&v24 + 1) + 8 * i);
         v9 = MEMORY[0x277CD51D0];
         v10 = MEMORY[0x277CCABB0];
-        v11 = [v8 clusterPath];
-        v12 = [v10 numberWithUnsignedInt:{objc_msgSend(v11, "endpointID")}];
+        clusterPath = [v8 clusterPath];
+        v12 = [v10 numberWithUnsignedInt:{objc_msgSend(clusterPath, "endpointID")}];
         v13 = MEMORY[0x277CCABB0];
-        v14 = [v8 clusterPath];
-        v15 = [v13 numberWithUnsignedInt:{objc_msgSend(v14, "clusterID")}];
+        clusterPath2 = [v8 clusterPath];
+        v15 = [v13 numberWithUnsignedInt:{objc_msgSend(clusterPath2, "clusterID")}];
         v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v8, "attributeID")}];
         v17 = [v9 requestPathWithEndpointID:v12 clusterID:v15 attributeID:v16];
 
@@ -196,17 +196,17 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(MTRPluginPBMDeviceNodeReadMultipleAttributesMessage *)self header];
-  if ([v3 isValid] && -[MTRPluginPBMDeviceNodeReadMultipleAttributesMessage hasNode](self, "hasNode"))
+  header = [(MTRPluginPBMDeviceNodeReadMultipleAttributesMessage *)self header];
+  if ([header isValid] && -[MTRPluginPBMDeviceNodeReadMultipleAttributesMessage hasNode](self, "hasNode"))
   {
-    v4 = [(MTRPluginPBMDeviceNodeReadMultipleAttributesMessage *)self node];
-    if ([v4 isValid])
+    node = [(MTRPluginPBMDeviceNodeReadMultipleAttributesMessage *)self node];
+    if ([node isValid])
     {
-      v5 = [(MTRPluginPBMDeviceNodeReadMultipleAttributesMessage *)self attributePaths];
-      if (v5)
+      attributePaths = [(MTRPluginPBMDeviceNodeReadMultipleAttributesMessage *)self attributePaths];
+      if (attributePaths)
       {
-        v6 = [(MTRPluginPBMDeviceNodeReadMultipleAttributesMessage *)self attributePaths];
-        v7 = [v6 count] != 0;
+        attributePaths2 = [(MTRPluginPBMDeviceNodeReadMultipleAttributesMessage *)self attributePaths];
+        v7 = [attributePaths2 count] != 0;
       }
 
       else
@@ -229,22 +229,22 @@ LABEL_11:
   return v7;
 }
 
-- (void)addAttributePaths:(id)a3
+- (void)addAttributePaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   attributePaths = self->_attributePaths;
-  v8 = v4;
+  v8 = pathsCopy;
   if (!attributePaths)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_attributePaths;
     self->_attributePaths = v6;
 
-    v4 = v8;
+    pathsCopy = v8;
     attributePaths = self->_attributePaths;
   }
 
-  [(NSMutableArray *)attributePaths addObject:v4];
+  [(NSMutableArray *)attributePaths addObject:pathsCopy];
 }
 
 - (id)description
@@ -253,8 +253,8 @@ LABEL_11:
   v8.receiver = self;
   v8.super_class = MTRPluginPBMDeviceNodeReadMultipleAttributesMessage;
   v4 = [(MTRPluginPBMDeviceNodeReadMultipleAttributesMessage *)&v8 description];
-  v5 = [(MTRPluginPBMDeviceNodeReadMultipleAttributesMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MTRPluginPBMDeviceNodeReadMultipleAttributesMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -262,19 +262,19 @@ LABEL_11:
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   header = self->_header;
   if (header)
   {
-    v5 = [(MTRPluginPBMHeader *)header dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"header"];
+    dictionaryRepresentation = [(MTRPluginPBMHeader *)header dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"header"];
   }
 
   node = self->_node;
   if (node)
   {
-    v7 = [(MTRPluginPBMDeviceNode *)node dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"node"];
+    dictionaryRepresentation2 = [(MTRPluginPBMDeviceNode *)node dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"node"];
   }
 
   if ([(NSMutableArray *)self->_attributePaths count])
@@ -299,8 +299,8 @@ LABEL_11:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation3 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation3];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -309,18 +309,18 @@ LABEL_11:
       while (v11);
     }
 
-    [v3 setObject:v8 forKey:@"attributePaths"];
+    [dictionary setObject:v8 forKey:@"attributePaths"];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_header)
   {
     PBDataWriterWriteSubmessage();
@@ -366,44 +366,44 @@ LABEL_11:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_header)
   {
-    [v8 setHeader:?];
+    [toCopy setHeader:?];
   }
 
   if (self->_node)
   {
-    [v8 setNode:?];
+    [toCopy setNode:?];
   }
 
   if ([(MTRPluginPBMDeviceNodeReadMultipleAttributesMessage *)self attributePathsCount])
   {
-    [v8 clearAttributePaths];
-    v4 = [(MTRPluginPBMDeviceNodeReadMultipleAttributesMessage *)self attributePathsCount];
-    if (v4)
+    [toCopy clearAttributePaths];
+    attributePathsCount = [(MTRPluginPBMDeviceNodeReadMultipleAttributesMessage *)self attributePathsCount];
+    if (attributePathsCount)
     {
-      v5 = v4;
+      v5 = attributePathsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(MTRPluginPBMDeviceNodeReadMultipleAttributesMessage *)self attributePathsAtIndex:i];
-        [v8 addAttributePaths:v7];
+        [toCopy addAttributePaths:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(MTRPluginPBMHeader *)self->_header copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(MTRPluginPBMHeader *)self->_header copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(MTRPluginPBMDeviceNode *)self->_node copyWithZone:a3];
+  v8 = [(MTRPluginPBMDeviceNode *)self->_node copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
@@ -427,7 +427,7 @@ LABEL_11:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{zone, v18}];
         [v5 addAttributePaths:v15];
 
         ++v14;
@@ -444,13 +444,13 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((header = self->_header, !(header | v4[2])) || -[MTRPluginPBMHeader isEqual:](header, "isEqual:")) && ((node = self->_node, !(node | v4[3])) || -[MTRPluginPBMDeviceNode isEqual:](node, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((header = self->_header, !(header | equalCopy[2])) || -[MTRPluginPBMHeader isEqual:](header, "isEqual:")) && ((node = self->_node, !(node | equalCopy[3])) || -[MTRPluginPBMDeviceNode isEqual:](node, "isEqual:")))
   {
     attributePaths = self->_attributePaths;
-    if (attributePaths | v4[1])
+    if (attributePaths | equalCopy[1])
     {
       v8 = [(NSMutableArray *)attributePaths isEqual:?];
     }
@@ -476,12 +476,12 @@ LABEL_11:
   return v4 ^ [(NSMutableArray *)self->_attributePaths hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   header = self->_header;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (header)
   {
     if (v6)
@@ -496,7 +496,7 @@ LABEL_11:
   }
 
   node = self->_node;
-  v8 = *(v4 + 3);
+  v8 = *(fromCopy + 3);
   if (node)
   {
     if (v8)
@@ -514,7 +514,7 @@ LABEL_11:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = *(v4 + 1);
+  v9 = *(fromCopy + 1);
   v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {

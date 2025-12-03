@@ -1,28 +1,28 @@
 @interface AMSEngagementOfflineBag
-- (AMSEngagementOfflineBag)initWithUnderlyingBag:(id)a3;
+- (AMSEngagementOfflineBag)initWithUnderlyingBag:(id)bag;
 - (AMSSnapshotBag)underlyingOfflineBag;
 - (BOOL)isExpired;
 - (NSString)profile;
 - (NSString)profileVersion;
-- (id)BOOLForKey:(id)a3;
-- (id)URLForKey:(id)a3;
-- (id)URLForKey:(id)a3 account:(id)a4;
+- (id)BOOLForKey:(id)key;
+- (id)URLForKey:(id)key;
+- (id)URLForKey:(id)key account:(id)account;
 - (id)_attemptBagLoad;
 - (id)_getOfflineBagData;
 - (id)_getSnapshotResult;
-- (id)arrayForKey:(id)a3;
-- (id)dictionaryForKey:(id)a3;
-- (id)doubleForKey:(id)a3;
-- (id)integerForKey:(id)a3;
-- (id)stringForKey:(id)a3;
-- (void)createSnapshotWithCompletion:(id)a3;
+- (id)arrayForKey:(id)key;
+- (id)dictionaryForKey:(id)key;
+- (id)doubleForKey:(id)key;
+- (id)integerForKey:(id)key;
+- (id)stringForKey:(id)key;
+- (void)createSnapshotWithCompletion:(id)completion;
 @end
 
 @implementation AMSEngagementOfflineBag
 
-- (AMSEngagementOfflineBag)initWithUnderlyingBag:(id)a3
+- (AMSEngagementOfflineBag)initWithUnderlyingBag:(id)bag
 {
-  v5 = a3;
+  bagCopy = bag;
   v11.receiver = self;
   v11.super_class = AMSEngagementOfflineBag;
   v6 = [(AMSEngagementOfflineBag *)&v11 init];
@@ -35,7 +35,7 @@
     underlyingOfflineBag = v7->_underlyingOfflineBag;
     v7->_underlyingOfflineBag = 0;
 
-    objc_storeStrong(&v7->_underlyingBag, a3);
+    objc_storeStrong(&v7->_underlyingBag, bag);
   }
 
   return v7;
@@ -43,25 +43,25 @@
 
 - (id)_attemptBagLoad
 {
-  v3 = [(AMSEngagementOfflineBag *)self snapshotPromise];
+  snapshotPromise = [(AMSEngagementOfflineBag *)self snapshotPromise];
 
-  if (!v3)
+  if (!snapshotPromise)
   {
     v4 = objc_alloc_init(MEMORY[0x1E698CAD0]);
     [(AMSEngagementOfflineBag *)self setSnapshotPromise:v4];
 
-    v5 = [(AMSEngagementOfflineBag *)self underlyingBag];
+    underlyingBag = [(AMSEngagementOfflineBag *)self underlyingBag];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __42__AMSEngagementOfflineBag__attemptBagLoad__block_invoke;
     v8[3] = &unk_1E7F24260;
     v8[4] = self;
-    [v5 createSnapshotWithCompletion:v8];
+    [underlyingBag createSnapshotWithCompletion:v8];
   }
 
-  v6 = [(AMSEngagementOfflineBag *)self snapshotPromise];
+  snapshotPromise2 = [(AMSEngagementOfflineBag *)self snapshotPromise];
 
-  return v6;
+  return snapshotPromise2;
 }
 
 void __42__AMSEngagementOfflineBag__attemptBagLoad__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -161,23 +161,23 @@ void __42__AMSEngagementOfflineBag__attemptBagLoad__block_invoke(uint64_t a1, vo
 - (id)_getOfflineBagData
 {
   v27 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DFF8] ams_dynamicUIDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"offline-bag" isDirectory:0];
+  ams_dynamicUIDirectory = [MEMORY[0x1E695DFF8] ams_dynamicUIDirectory];
+  v3 = [ams_dynamicUIDirectory URLByAppendingPathComponent:@"offline-bag" isDirectory:0];
 
   v20 = 0;
   v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v3 options:0 error:&v20];
   v5 = v20;
-  v6 = [MEMORY[0x1E698C968] sharedBagConfig];
-  v7 = v6;
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedBagConfig];
+  mEMORY[0x1E698C968]2 = mEMORY[0x1E698C968];
   if (v5)
   {
-    if (!v6)
+    if (!mEMORY[0x1E698C968])
     {
-      v7 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v9 = objc_opt_class();
       v10 = v9;
@@ -189,7 +189,7 @@ void __42__AMSEngagementOfflineBag__attemptBagLoad__block_invoke(uint64_t a1, vo
       v24 = v11;
       v25 = 2114;
       v26 = v12;
-      _os_log_impl(&dword_1BB036000, v8, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to read offline bag data. error = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to read offline bag data. error = %{public}@", buf, 0x20u);
     }
 
     v13 = 0;
@@ -197,13 +197,13 @@ void __42__AMSEngagementOfflineBag__attemptBagLoad__block_invoke(uint64_t a1, vo
 
   else
   {
-    if (!v6)
+    if (!mEMORY[0x1E698C968])
     {
-      v7 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v14 = [v7 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v15 = objc_opt_class();
       v16 = v15;
@@ -212,7 +212,7 @@ void __42__AMSEngagementOfflineBag__attemptBagLoad__block_invoke(uint64_t a1, vo
       v22 = v15;
       v23 = 2114;
       v24 = v17;
-      _os_log_impl(&dword_1BB036000, v14, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Successfully read offline bag data.", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Successfully read offline bag data.", buf, 0x16u);
     }
 
     v13 = v4;
@@ -226,21 +226,21 @@ void __42__AMSEngagementOfflineBag__attemptBagLoad__block_invoke(uint64_t a1, vo
 - (id)_getSnapshotResult
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = [(AMSEngagementOfflineBag *)self snapshotPromise];
+  snapshotPromise = [(AMSEngagementOfflineBag *)self snapshotPromise];
   v13 = 0;
-  v3 = [v2 resultWithError:&v13];
+  v3 = [snapshotPromise resultWithError:&v13];
   v4 = v13;
 
   if (v4)
   {
-    v5 = [MEMORY[0x1E698C968] sharedBagConfig];
-    if (!v5)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedBagConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v5 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v6 = [v5 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v7 = objc_opt_class();
       v8 = AMSLogKey();
@@ -251,7 +251,7 @@ void __42__AMSEngagementOfflineBag__attemptBagLoad__block_invoke(uint64_t a1, vo
       v17 = v8;
       v18 = 2114;
       v19 = v9;
-      _os_log_impl(&dword_1BB036000, v6, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to get snapshot result for key. error = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to get snapshot result for key. error = %{public}@", buf, 0x20u);
     }
 
     v10 = 0;
@@ -282,9 +282,9 @@ void __42__AMSEngagementOfflineBag__attemptBagLoad__block_invoke(uint64_t a1, vo
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = [v6 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
-  v11 = [(AMSEngagementOfflineBag *)self _getOfflineBagData];
+  _getOfflineBagData = [(AMSEngagementOfflineBag *)self _getOfflineBagData];
   v35 = 0;
-  v12 = [v5 unarchivedObjectOfClasses:v10 fromData:v11 error:&v35];
+  v12 = [v5 unarchivedObjectOfClasses:v10 fromData:_getOfflineBagData error:&v35];
   v13 = v35;
 
   if (v13)
@@ -295,29 +295,29 @@ void __42__AMSEngagementOfflineBag__attemptBagLoad__block_invoke(uint64_t a1, vo
   {
     v14 = objc_alloc_init(MEMORY[0x1E698CB38]);
     [v14 setData:v12];
-    v15 = [(AMSEngagementOfflineBag *)self expirationDate];
-    [v14 setExpirationDate:v15];
+    expirationDate = [(AMSEngagementOfflineBag *)self expirationDate];
+    [v14 setExpirationDate:expirationDate];
 
-    v16 = [(AMSEngagementOfflineBag *)self profile];
-    [v14 setProfile:v16];
+    profile = [(AMSEngagementOfflineBag *)self profile];
+    [v14 setProfile:profile];
 
-    v17 = [(AMSEngagementOfflineBag *)self profileVersion];
-    [v14 setProfileVersion:v17];
+    profileVersion = [(AMSEngagementOfflineBag *)self profileVersion];
+    [v14 setProfileVersion:profileVersion];
 
     v34 = 0;
     v18 = [v14 buildWithError:&v34];
     v19 = v34;
-    v20 = [MEMORY[0x1E698C968] sharedBagConfig];
-    v21 = v20;
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedBagConfig];
+    mEMORY[0x1E698C968]2 = mEMORY[0x1E698C968];
     if (v19)
     {
-      if (!v20)
+      if (!mEMORY[0x1E698C968])
       {
-        v21 = [MEMORY[0x1E698C968] sharedConfig];
+        mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
       }
 
-      v22 = [v21 OSLogObject];
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+      oSLogObject = [mEMORY[0x1E698C968]2 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v23 = objc_opt_class();
         v33 = v23;
@@ -329,19 +329,19 @@ void __42__AMSEngagementOfflineBag__attemptBagLoad__block_invoke(uint64_t a1, vo
         v39 = v24;
         v40 = 2114;
         v41 = v25;
-        _os_log_impl(&dword_1BB036000, v22, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to create the offline snapshot. error = %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to create the offline snapshot. error = %{public}@", buf, 0x20u);
       }
     }
 
     else
     {
-      if (!v20)
+      if (!mEMORY[0x1E698C968])
       {
-        v21 = [MEMORY[0x1E698C968] sharedConfig];
+        mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
       }
 
-      v26 = [v21 OSLogObject];
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v27 = objc_opt_class();
         v28 = v27;
@@ -350,11 +350,11 @@ void __42__AMSEngagementOfflineBag__attemptBagLoad__block_invoke(uint64_t a1, vo
         v37 = v27;
         v38 = 2114;
         v39 = v29;
-        _os_log_impl(&dword_1BB036000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Successfully created the offline snapshot.", buf, 0x16u);
+        _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Successfully created the offline snapshot.", buf, 0x16u);
       }
 
       v30 = v18;
-      v21 = self->_underlyingOfflineBag;
+      mEMORY[0x1E698C968]2 = self->_underlyingOfflineBag;
       self->_underlyingOfflineBag = v30;
     }
 
@@ -376,11 +376,11 @@ LABEL_18:
 
 - (BOOL)isExpired
 {
-  v2 = [(AMSEngagementOfflineBag *)self expirationDate];
-  if (v2)
+  expirationDate = [(AMSEngagementOfflineBag *)self expirationDate];
+  if (expirationDate)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
-    v4 = [v3 compare:v2] == 1;
+    date = [MEMORY[0x1E695DF00] date];
+    v4 = [date compare:expirationDate] == 1;
   }
 
   else
@@ -393,208 +393,208 @@ LABEL_18:
 
 - (NSString)profile
 {
-  v2 = [(AMSEngagementOfflineBag *)self underlyingBag];
-  v3 = [v2 profile];
+  underlyingBag = [(AMSEngagementOfflineBag *)self underlyingBag];
+  profile = [underlyingBag profile];
 
-  return v3;
+  return profile;
 }
 
 - (NSString)profileVersion
 {
-  v2 = [(AMSEngagementOfflineBag *)self underlyingBag];
-  v3 = [v2 profileVersion];
+  underlyingBag = [(AMSEngagementOfflineBag *)self underlyingBag];
+  profileVersion = [underlyingBag profileVersion];
 
-  return v3;
+  return profileVersion;
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(AMSEngagementOfflineBag *)self snapshotPromise];
-  v6 = [v5 isFinished];
+  keyCopy = key;
+  snapshotPromise = [(AMSEngagementOfflineBag *)self snapshotPromise];
+  isFinished = [snapshotPromise isFinished];
 
-  if (v6)
+  if (isFinished)
   {
     [(AMSEngagementOfflineBag *)self _getSnapshotResult];
   }
 
   else
   {
-    v7 = [(AMSEngagementOfflineBag *)self _attemptBagLoad];
+    _attemptBagLoad = [(AMSEngagementOfflineBag *)self _attemptBagLoad];
     [(AMSEngagementOfflineBag *)self underlyingOfflineBag];
   }
   v8 = ;
-  v9 = [v8 arrayForKey:v4];
+  v9 = [v8 arrayForKey:keyCopy];
 
   return v9;
 }
 
-- (id)BOOLForKey:(id)a3
+- (id)BOOLForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(AMSEngagementOfflineBag *)self snapshotPromise];
-  v6 = [v5 isFinished];
+  keyCopy = key;
+  snapshotPromise = [(AMSEngagementOfflineBag *)self snapshotPromise];
+  isFinished = [snapshotPromise isFinished];
 
-  if (v6)
+  if (isFinished)
   {
     [(AMSEngagementOfflineBag *)self _getSnapshotResult];
   }
 
   else
   {
-    v7 = [(AMSEngagementOfflineBag *)self _attemptBagLoad];
+    _attemptBagLoad = [(AMSEngagementOfflineBag *)self _attemptBagLoad];
     [(AMSEngagementOfflineBag *)self underlyingOfflineBag];
   }
   v8 = ;
-  v9 = [v8 BOOLForKey:v4];
+  v9 = [v8 BOOLForKey:keyCopy];
 
   return v9;
 }
 
-- (id)doubleForKey:(id)a3
+- (id)doubleForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(AMSEngagementOfflineBag *)self snapshotPromise];
-  v6 = [v5 isFinished];
+  keyCopy = key;
+  snapshotPromise = [(AMSEngagementOfflineBag *)self snapshotPromise];
+  isFinished = [snapshotPromise isFinished];
 
-  if (v6)
+  if (isFinished)
   {
     [(AMSEngagementOfflineBag *)self _getSnapshotResult];
   }
 
   else
   {
-    v7 = [(AMSEngagementOfflineBag *)self _attemptBagLoad];
+    _attemptBagLoad = [(AMSEngagementOfflineBag *)self _attemptBagLoad];
     [(AMSEngagementOfflineBag *)self underlyingOfflineBag];
   }
   v8 = ;
-  v9 = [v8 doubleForKey:v4];
+  v9 = [v8 doubleForKey:keyCopy];
 
   return v9;
 }
 
-- (id)integerForKey:(id)a3
+- (id)integerForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(AMSEngagementOfflineBag *)self snapshotPromise];
-  v6 = [v5 isFinished];
+  keyCopy = key;
+  snapshotPromise = [(AMSEngagementOfflineBag *)self snapshotPromise];
+  isFinished = [snapshotPromise isFinished];
 
-  if (v6)
+  if (isFinished)
   {
     [(AMSEngagementOfflineBag *)self _getSnapshotResult];
   }
 
   else
   {
-    v7 = [(AMSEngagementOfflineBag *)self _attemptBagLoad];
+    _attemptBagLoad = [(AMSEngagementOfflineBag *)self _attemptBagLoad];
     [(AMSEngagementOfflineBag *)self underlyingOfflineBag];
   }
   v8 = ;
-  v9 = [v8 integerForKey:v4];
+  v9 = [v8 integerForKey:keyCopy];
 
   return v9;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(AMSEngagementOfflineBag *)self snapshotPromise];
-  v6 = [v5 isFinished];
+  keyCopy = key;
+  snapshotPromise = [(AMSEngagementOfflineBag *)self snapshotPromise];
+  isFinished = [snapshotPromise isFinished];
 
-  if (v6)
+  if (isFinished)
   {
     [(AMSEngagementOfflineBag *)self _getSnapshotResult];
   }
 
   else
   {
-    v7 = [(AMSEngagementOfflineBag *)self _attemptBagLoad];
+    _attemptBagLoad = [(AMSEngagementOfflineBag *)self _attemptBagLoad];
     [(AMSEngagementOfflineBag *)self underlyingOfflineBag];
   }
   v8 = ;
-  v9 = [v8 stringForKey:v4];
+  v9 = [v8 stringForKey:keyCopy];
 
   return v9;
 }
 
-- (id)URLForKey:(id)a3
+- (id)URLForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(AMSEngagementOfflineBag *)self snapshotPromise];
-  v6 = [v5 isFinished];
+  keyCopy = key;
+  snapshotPromise = [(AMSEngagementOfflineBag *)self snapshotPromise];
+  isFinished = [snapshotPromise isFinished];
 
-  if (v6)
+  if (isFinished)
   {
     [(AMSEngagementOfflineBag *)self _getSnapshotResult];
   }
 
   else
   {
-    v7 = [(AMSEngagementOfflineBag *)self _attemptBagLoad];
+    _attemptBagLoad = [(AMSEngagementOfflineBag *)self _attemptBagLoad];
     [(AMSEngagementOfflineBag *)self underlyingOfflineBag];
   }
   v8 = ;
-  v9 = [v8 URLForKey:v4];
+  v9 = [v8 URLForKey:keyCopy];
 
   return v9;
 }
 
-- (id)URLForKey:(id)a3 account:(id)a4
+- (id)URLForKey:(id)key account:(id)account
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AMSEngagementOfflineBag *)self snapshotPromise];
-  v9 = [v8 isFinished];
+  accountCopy = account;
+  keyCopy = key;
+  snapshotPromise = [(AMSEngagementOfflineBag *)self snapshotPromise];
+  isFinished = [snapshotPromise isFinished];
 
-  if (v9)
+  if (isFinished)
   {
     [(AMSEngagementOfflineBag *)self _getSnapshotResult];
   }
 
   else
   {
-    v10 = [(AMSEngagementOfflineBag *)self _attemptBagLoad];
+    _attemptBagLoad = [(AMSEngagementOfflineBag *)self _attemptBagLoad];
     [(AMSEngagementOfflineBag *)self underlyingOfflineBag];
   }
   v11 = ;
-  v12 = [v11 URLForKey:v7 account:v6];
+  v12 = [v11 URLForKey:keyCopy account:accountCopy];
 
   return v12;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(AMSEngagementOfflineBag *)self snapshotPromise];
-  v6 = [v5 isFinished];
+  keyCopy = key;
+  snapshotPromise = [(AMSEngagementOfflineBag *)self snapshotPromise];
+  isFinished = [snapshotPromise isFinished];
 
-  if (v6)
+  if (isFinished)
   {
     [(AMSEngagementOfflineBag *)self _getSnapshotResult];
   }
 
   else
   {
-    v7 = [(AMSEngagementOfflineBag *)self _attemptBagLoad];
+    _attemptBagLoad = [(AMSEngagementOfflineBag *)self _attemptBagLoad];
     [(AMSEngagementOfflineBag *)self underlyingOfflineBag];
   }
   v8 = ;
-  v9 = [v8 dictionaryForKey:v4];
+  v9 = [v8 dictionaryForKey:keyCopy];
 
   return v9;
 }
 
-- (void)createSnapshotWithCompletion:(id)a3
+- (void)createSnapshotWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(AMSEngagementOfflineBag *)self _attemptBagLoad];
+  completionCopy = completion;
+  _attemptBagLoad = [(AMSEngagementOfflineBag *)self _attemptBagLoad];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__AMSEngagementOfflineBag_createSnapshotWithCompletion___block_invoke;
   v7[3] = &unk_1E7F24288;
-  v8 = v4;
-  v6 = v4;
-  [v5 addFinishBlock:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [_attemptBagLoad addFinishBlock:v7];
 }
 
 @end

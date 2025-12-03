@@ -1,7 +1,7 @@
 @interface CSDevicePasscodeRecoveryService
 - (BOOL)canStartRecovery;
 - (CSDevicePasscodeRecoveryService)init;
-- (CSDevicePasscodeRecoveryService)initWithService:(id)a3;
+- (CSDevicePasscodeRecoveryService)initWithService:(id)service;
 - (void)canStartRecovery;
 @end
 
@@ -15,16 +15,16 @@
   return v4;
 }
 
-- (CSDevicePasscodeRecoveryService)initWithService:(id)a3
+- (CSDevicePasscodeRecoveryService)initWithService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v9.receiver = self;
   v9.super_class = CSDevicePasscodeRecoveryService;
   v6 = [(CSDevicePasscodeRecoveryService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_service, a3);
+    objc_storeStrong(&v6->_service, service);
   }
 
   return v7;
@@ -52,7 +52,7 @@
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_21EB05000, a2, OS_LOG_TYPE_ERROR, "Cannot start passcode recovery (error: %@)", &v2, 0xCu);
 }
 

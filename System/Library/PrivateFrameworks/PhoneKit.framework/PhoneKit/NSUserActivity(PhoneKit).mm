@@ -8,11 +8,11 @@
 
 - (id)callProviderIdentifier
 {
-  v1 = [a1 userInfo];
-  v2 = v1;
-  if (v1)
+  userInfo = [self userInfo];
+  v2 = userInfo;
+  if (userInfo)
   {
-    v3 = [v1 objectForKeyedSubscript:*MEMORY[0x277D6F128]];
+    v3 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D6F128]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,42 +35,42 @@
 
 - (uint64_t)callService
 {
-  v1 = [a1 userInfo];
-  v2 = v1;
-  if (v1)
+  userInfo = [self userInfo];
+  v2 = userInfo;
+  if (userInfo)
   {
-    v3 = [v1 objectForKeyedSubscript:@"TUCallUserActivityServiceKey"];
+    v3 = [userInfo objectForKeyedSubscript:@"TUCallUserActivityServiceKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 intValue];
+      intValue = [v3 intValue];
     }
 
     else
     {
-      v4 = 0;
+      intValue = 0;
     }
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (id)handle
 {
-  v1 = [a1 userInfo];
-  v2 = v1;
-  if (!v1)
+  userInfo = [self userInfo];
+  v2 = userInfo;
+  if (!userInfo)
   {
     v4 = 0;
     goto LABEL_16;
   }
 
-  v3 = [v1 objectForKeyedSubscript:*MEMORY[0x277D6F120]];
+  v3 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D6F120]];
   if (!v3)
   {
     v5 = PHDefaultLog();

@@ -1,15 +1,15 @@
 @interface TPThumbnailImager
 - (CGImage)newImage;
-- (void)canvasDidValidateLayouts:(id)a3;
-- (void)canvasWillValidateLayouts:(id)a3;
+- (void)canvasDidValidateLayouts:(id)layouts;
+- (void)canvasWillValidateLayouts:(id)layouts;
 @end
 
 @implementation TPThumbnailImager
 
-- (void)canvasWillValidateLayouts:(id)a3
+- (void)canvasWillValidateLayouts:(id)layouts
 {
   v179[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  layoutsCopy = layouts;
   v10 = objc_msgSend_documentRoot(self, v5, v6, v7, v8, v9);
   v16 = objc_msgSend_paginatedPageControllerForDelegate_(TPPaginatedPageController, v11, v12, v13, v14, v15, v10);
 
@@ -60,7 +60,7 @@
         v88 = objc_msgSend_pageIndex(v105, v111, v112, v113, v114, v115);
       }
 
-      v134 = objc_msgSend_layoutController(v4, v87, v89, v90, v91, v92);
+      v134 = objc_msgSend_layoutController(layoutsCopy, v87, v89, v90, v91, v92);
       objc_msgSend_paginateThroughPageIndex_forLayoutController_(v16, v135, v136, v137, v138, v139, v88, v134);
 
       if (v88 > objc_msgSend_pageCount(v16, v140, v141, v142, v143, v144))
@@ -83,14 +83,14 @@
   }
 }
 
-- (void)canvasDidValidateLayouts:(id)a3
+- (void)canvasDidValidateLayouts:(id)layouts
 {
   v52 = *MEMORY[0x277D85DE8];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = objc_msgSend_infos(self, a2, 0, v3, v4, v5, a3);
+  obj = objc_msgSend_infos(self, a2, 0, v3, v4, v5, layouts);
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v7, v8, v9, v10, v11, &v47, v51, 16);
   if (v12)
   {

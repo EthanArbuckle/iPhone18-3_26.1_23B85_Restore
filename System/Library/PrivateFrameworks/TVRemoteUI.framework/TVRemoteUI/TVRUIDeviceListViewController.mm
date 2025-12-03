@@ -4,7 +4,7 @@
 - (id)_effectiveItems;
 - (unint64_t)_effectiveItemCountForDisplay;
 - (void)_configureHierarchy;
-- (void)_updateDataSourceFromCurrentStateAnimated:(BOOL)a3;
+- (void)_updateDataSourceFromCurrentStateAnimated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
@@ -35,17 +35,17 @@
 - (void)_configureHierarchy
 {
   v33[4] = *MEMORY[0x277D85DE8];
-  v27 = [(TVRUIDeviceListViewController *)self view];
-  [v27 tvrui_setGlassBackground];
+  view = [(TVRUIDeviceListViewController *)self view];
+  [view tvrui_setGlassBackground];
   v2 = objc_alloc(MEMORY[0x277D752A0]);
-  v3 = [(TVRUIDeviceListViewController *)self _collectionViewLayout];
-  v4 = [v2 initWithFrame:v3 collectionViewLayout:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+  _collectionViewLayout = [(TVRUIDeviceListViewController *)self _collectionViewLayout];
+  v4 = [v2 initWithFrame:_collectionViewLayout collectionViewLayout:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
 
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [MEMORY[0x277D75348] clearColor];
-  [v4 setBackgroundColor:v5];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v4 setBackgroundColor:clearColor];
 
-  [v27 addSubview:v4];
+  [view addSubview:v4];
   objc_initWeak(&location, self);
   v6 = MEMORY[0x277D752B0];
   v7 = objc_opt_class();
@@ -64,21 +64,21 @@
   v29 = v19;
   v21 = [v9 initWithCollectionView:v4 cellProvider:v28];
   v20 = MEMORY[0x277CCAAD0];
-  v25 = [v4 leadingAnchor];
-  v24 = [v27 leadingAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  leadingAnchor = [v4 leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v33[0] = v23;
-  v22 = [v4 trailingAnchor];
-  v10 = [v27 leadingAnchor];
-  v11 = [v22 constraintEqualToAnchor:v10];
+  trailingAnchor = [v4 trailingAnchor];
+  leadingAnchor3 = [view leadingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3];
   v33[1] = v11;
-  v12 = [v4 topAnchor];
-  v13 = [v27 topAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  topAnchor = [v4 topAnchor];
+  topAnchor2 = [view topAnchor];
+  v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v33[2] = v14;
-  v15 = [v4 bottomAnchor];
-  v16 = [v27 bottomAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  bottomAnchor = [v4 bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v33[3] = v17;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:4];
   [v20 activateConstraints:v18];
@@ -129,25 +129,25 @@ void __52__TVRUIDeviceListViewController__configureHierarchy__block_invoke(uint6
   return v15;
 }
 
-- (void)_updateDataSourceFromCurrentStateAnimated:(BOOL)a3
+- (void)_updateDataSourceFromCurrentStateAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v7 = [(TVRUIDeviceListViewController *)self _effectiveItems];
+  animatedCopy = animated;
+  _effectiveItems = [(TVRUIDeviceListViewController *)self _effectiveItems];
   v5 = objc_alloc_init(MEMORY[0x277CFB890]);
   [v5 appendSectionsWithIdentifiers:&unk_287E84CD8];
-  [v5 appendItemsWithIdentifiers:v7];
-  v6 = [(TVRUIDeviceListViewController *)self dataSource];
-  [v6 applySnapshot:v5 animatingDifferences:v3];
+  [v5 appendItemsWithIdentifiers:_effectiveItems];
+  dataSource = [(TVRUIDeviceListViewController *)self dataSource];
+  [dataSource applySnapshot:v5 animatingDifferences:animatedCopy];
 }
 
 - (unint64_t)_effectiveItemCountForDisplay
 {
-  v3 = [(TVRUIDeviceListViewController *)self devices];
-  v4 = [v3 count];
+  devices = [(TVRUIDeviceListViewController *)self devices];
+  v4 = [devices count];
 
-  v5 = [(TVRUIDeviceListViewController *)self devices];
-  v6 = [(TVRUIDeviceListViewController *)self currentDevice];
-  v7 = [v5 containsObject:v6];
+  devices2 = [(TVRUIDeviceListViewController *)self devices];
+  currentDevice = [(TVRUIDeviceListViewController *)self currentDevice];
+  v7 = [devices2 containsObject:currentDevice];
 
   v8 = v4 - v7;
   if (v8 <= 3)
@@ -169,11 +169,11 @@ void __52__TVRUIDeviceListViewController__configureHierarchy__block_invoke(uint6
 - (id)_effectiveItems
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(TVRUIDeviceListViewController *)self devices];
-  v4 = [v3 mutableCopy];
+  devices = [(TVRUIDeviceListViewController *)self devices];
+  v4 = [devices mutableCopy];
 
-  v5 = [(TVRUIDeviceListViewController *)self currentDevice];
-  [v4 removeObject:v5];
+  currentDevice = [(TVRUIDeviceListViewController *)self currentDevice];
+  [v4 removeObject:currentDevice];
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = 0u;

@@ -1,31 +1,31 @@
 @interface PKSharingMessageExtensionRelayServerPresenter
-+ (id)propertiesForMessage:(id)a3;
-- (PKSharingMessageExtensionRelayServerPresenter)initWithTargetDevice:(id)a3 passLibrary:(id)a4;
++ (id)propertiesForMessage:(id)message;
+- (PKSharingMessageExtensionRelayServerPresenter)initWithTargetDevice:(id)device passLibrary:(id)library;
 - (PKSharingMessageExtensionRenderer)renderer;
 - (id)_mailboxURL;
-- (void)_createShareFromInvite:(void *)a3 externalizedAuth:(void *)a4 completion:;
-- (void)_reportAuthenticationEventWithSuccess:(uint64_t)a1;
-- (void)_setMessageStatusTo:(void *)a3 pass:;
+- (void)_createShareFromInvite:(void *)invite externalizedAuth:(void *)auth completion:;
+- (void)_reportAuthenticationEventWithSuccess:(uint64_t)success;
+- (void)_setMessageStatusTo:(void *)to pass:;
 - (void)didTapMessage;
 - (void)extensionWillAppear;
-- (void)setMessage:(id)a3;
-- (void)validateForRecipients:(id)a3 senderAddress:(id)a4 completion:(id)a5;
+- (void)setMessage:(id)message;
+- (void)validateForRecipients:(id)recipients senderAddress:(id)address completion:(id)completion;
 @end
 
 @implementation PKSharingMessageExtensionRelayServerPresenter
 
-- (PKSharingMessageExtensionRelayServerPresenter)initWithTargetDevice:(id)a3 passLibrary:(id)a4
+- (PKSharingMessageExtensionRelayServerPresenter)initWithTargetDevice:(id)device passLibrary:(id)library
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  libraryCopy = library;
   v15.receiver = self;
   v15.super_class = PKSharingMessageExtensionRelayServerPresenter;
   v9 = [(PKSharingMessageExtensionRelayServerPresenter *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_targetDevice, a3);
-    objc_storeStrong(&v10->_passLibrary, a4);
+    objc_storeStrong(&v9->_targetDevice, device);
+    objc_storeStrong(&v10->_passLibrary, library);
     v11 = objc_alloc(MEMORY[0x1E69B8918]);
     v12 = [v11 initWithQueue:MEMORY[0x1E69E96A0]];
     idsManager = v10->_idsManager;
@@ -35,13 +35,13 @@
   return v10;
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_storeStrong(&self->_message, a3);
+    objc_storeStrong(&self->_message, message);
   }
 }
 
@@ -50,40 +50,40 @@
   v31 = *MEMORY[0x1E69E9840];
   if (![(PKSharingMessageExtensionCommonMessage *)self->_message isPending]&& ![(PKSharingMessageExtensionCommonMessage *)self->_message isFromMe])
   {
-    v3 = [(PKSharingMessageExtensionRelayServerMessage *)self->_message phoneMailboxURL];
-    v4 = [v3 absoluteString];
+    phoneMailboxURL = [(PKSharingMessageExtensionRelayServerMessage *)self->_message phoneMailboxURL];
+    absoluteString = [phoneMailboxURL absoluteString];
 
-    v17 = [(PKSharingMessageExtensionRelayServerMessage *)self->_message provisioningCredentialHash];
-    v5 = [(PKSharingMessageExtensionRelayServerMessage *)self->_message carKeyReaderIdentifier];
+    provisioningCredentialHash = [(PKSharingMessageExtensionRelayServerMessage *)self->_message provisioningCredentialHash];
+    carKeyReaderIdentifier = [(PKSharingMessageExtensionRelayServerMessage *)self->_message carKeyReaderIdentifier];
     v6 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138543875;
-      v26 = v4;
+      v26 = absoluteString;
       v27 = 2114;
-      v28 = v17;
+      v28 = provisioningCredentialHash;
       v29 = 2113;
-      v30 = v5;
+      v30 = carKeyReaderIdentifier;
       _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_INFO, "iMessage Extension: checking status for message with mailbox: %{public}@, provisioningCredentialHash:%{public}@, readerIdentifier: %{private}@", buf, 0x20u);
     }
 
-    if (v4)
+    if (absoluteString)
     {
-      if (v17 && (-[PKPassLibraryDataProvider passForProvisioningCredentialHash:](self->_passLibrary, "passForProvisioningCredentialHash:", v17), v7 = objc_claimAutoreleasedReturnValue(), [v7 secureElementPass], v8 = objc_claimAutoreleasedReturnValue(), v7, v8))
+      if (provisioningCredentialHash && (-[PKPassLibraryDataProvider passForProvisioningCredentialHash:](self->_passLibrary, "passForProvisioningCredentialHash:", provisioningCredentialHash), v7 = objc_claimAutoreleasedReturnValue(), [v7 secureElementPass], v8 = objc_claimAutoreleasedReturnValue(), v7, v8))
       {
         [(PKSharingMessageExtensionRelayServerPresenter *)self _setMessageStatusTo:v8 pass:?];
       }
 
       else
       {
-        if (v5)
+        if (carKeyReaderIdentifier)
         {
           v22 = 0u;
           v23 = 0u;
           v20 = 0u;
           v21 = 0u;
-          v9 = [(PKPassLibraryDataProvider *)self->_passLibrary paymentPasses];
-          v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          paymentPasses = [(PKPassLibraryDataProvider *)self->_passLibrary paymentPasses];
+          v10 = [paymentPasses countByEnumeratingWithState:&v20 objects:v24 count:16];
           if (v10)
           {
             v11 = *v21;
@@ -93,12 +93,12 @@
               {
                 if (*v21 != v11)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(paymentPasses);
                 }
 
                 v13 = *(*(&v20 + 1) + 8 * i);
-                v14 = [v13 pairedTerminalIdentifier];
-                v15 = [v14 isEqualToString:v5];
+                pairedTerminalIdentifier = [v13 pairedTerminalIdentifier];
+                v15 = [pairedTerminalIdentifier isEqualToString:carKeyReaderIdentifier];
 
                 if (v15)
                 {
@@ -112,7 +112,7 @@
                 }
               }
 
-              v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+              v10 = [paymentPasses countByEnumeratingWithState:&v20 objects:v24 count:16];
               if (v10)
               {
                 continue;
@@ -131,7 +131,7 @@
         v18[2] = __68__PKSharingMessageExtensionRelayServerPresenter_extensionWillAppear__block_invoke;
         v18[3] = &unk_1E80148F0;
         objc_copyWeak(&v19, buf);
-        [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice checkInvitationStatusForMailboxAddress:v4 completion:v18];
+        [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice checkInvitationStatusForMailboxAddress:absoluteString completion:v18];
         objc_destroyWeak(&v19);
         objc_destroyWeak(buf);
       }
@@ -148,28 +148,28 @@ LABEL_23:
 
 - (id)_mailboxURL
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[3] phoneMailboxURL];
+    self = [self[3] phoneMailboxURL];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_setMessageStatusTo:(void *)a3 pass:
+- (void)_setMessageStatusTo:(void *)to pass:
 {
-  v5 = a3;
-  v6 = v5;
-  if (a1)
+  toCopy = to;
+  v6 = toCopy;
+  if (self)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __74__PKSharingMessageExtensionRelayServerPresenter__setMessageStatusTo_pass___block_invoke;
     block[3] = &unk_1E8012C50;
     v10 = a2;
-    v8 = v5;
-    v9 = a1;
+    v8 = toCopy;
+    selfCopy = self;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -191,19 +191,19 @@ void __68__PKSharingMessageExtensionRelayServerPresenter_extensionWillAppear__bl
   [(PKSharingMessageExtensionRelayServerPresenter *)WeakRetained _setMessageStatusTo:v4 pass:0];
 }
 
-- (void)validateForRecipients:(id)a3 senderAddress:(id)a4 completion:(id)a5
+- (void)validateForRecipients:(id)recipients senderAddress:(id)address completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count] < 2)
+  recipientsCopy = recipients;
+  addressCopy = address;
+  completionCopy = completion;
+  if ([recipientsCopy count] < 2)
   {
-    v15 = [(PKSharingMessageExtensionRelayServerMessage *)self->_message localProperties];
-    v16 = [v15 partialInvite];
-    if (v16)
+    localProperties = [(PKSharingMessageExtensionRelayServerMessage *)self->_message localProperties];
+    partialInvite = [localProperties partialInvite];
+    if (partialInvite)
     {
-      v17 = [v8 firstObject];
-      v50 = v17;
+      firstObject = [recipientsCopy firstObject];
+      v50 = firstObject;
       if (PKIDSServiceContainsHandle())
       {
         v18 = PKLogFacilityTypeGetObject();
@@ -213,11 +213,11 @@ void __68__PKSharingMessageExtensionRelayServerPresenter_extensionWillAppear__bl
           _os_log_impl(&dword_1BD026000, v18, OS_LOG_TYPE_DEFAULT, "iMessage Extension: Sender address is the same as recipient!", buf, 2u);
         }
 
-        v19 = [v16 pass];
-        v20 = [v19 isCarKeyPass];
+        pass = [partialInvite pass];
+        isCarKeyPass = [pass isCarKeyPass];
 
         WeakRetained = objc_loadWeakRetained(&self->_renderer);
-        if (v20)
+        if (isCarKeyPass)
         {
           v22 = PKLocalizedCredentialString(&cfstr_SubcredentialM.isa);
           v23 = PKLocalizedCredentialString(&cfstr_SubcredentialM_0.isa);
@@ -233,36 +233,36 @@ void __68__PKSharingMessageExtensionRelayServerPresenter_extensionWillAppear__bl
         v42 = ;
         [WeakRetained showAlertWithTitle:v22 message:v23 button:v42];
 
-        (*(v10 + 2))(v10, 0, 0);
+        (*(completionCopy + 2))(completionCopy, 0, 0);
       }
 
       else
       {
-        v45 = v9;
-        v46 = v15;
+        v45 = addressCopy;
+        v46 = localProperties;
         v25 = MEMORY[0x1E695CE18];
-        v26 = v17;
+        v26 = firstObject;
         v27 = objc_alloc_init(v25);
-        v28 = [MEMORY[0x1E69B8F30] requiredContactKeys];
-        v29 = [objc_alloc(MEMORY[0x1E69B8740]) initWithContactStore:v27 keysToFetch:v28];
+        requiredContactKeys = [MEMORY[0x1E69B8F30] requiredContactKeys];
+        v29 = [objc_alloc(MEMORY[0x1E69B8740]) initWithContactStore:v27 keysToFetch:requiredContactKeys];
         v30 = [v29 contactForHandle:v26];
         v31 = v30;
         v32 = [MEMORY[0x1E69B8F30] redactedDisplayNameForCounterpartHandle:v26 contact:v30];
 
         v47 = v30;
-        [v16 setRecipientNickname:v32];
+        [partialInvite setRecipientNickname:v32];
 
-        [v16 setRecipientHandle:v26];
+        [partialInvite setRecipientHandle:v26];
         v33 = objc_alloc_init(MEMORY[0x1E69B8658]);
-        v49 = PKShareAuthorizationPaymentRequest(v16);
+        v49 = PKShareAuthorizationPaymentRequest(partialInvite);
         v34 = objc_loadWeakRetained(&self->_renderer);
-        v48 = [v34 presentationSceneIdentifier];
+        presentationSceneIdentifier = [v34 presentationSceneIdentifier];
 
         objc_initWeak(location, self);
-        v35 = [v16 pass];
-        LOBYTE(v27) = [v35 isCarKeyPass];
+        pass2 = [partialInvite pass];
+        LOBYTE(v27) = [pass2 isCarKeyPass];
 
-        v36 = [v16 isHomeShare];
+        isHomeShare = [partialInvite isHomeShare];
         v86[0] = 0;
         v86[1] = v86;
         v86[2] = 0x2020000000;
@@ -280,7 +280,7 @@ void __68__PKSharingMessageExtensionRelayServerPresenter_extensionWillAppear__bl
         v76[4] = self;
         v37 = v26;
         v77 = v37;
-        v38 = v16;
+        v38 = partialInvite;
         v78 = v38;
         v79 = v86;
         [v33 addOperation:v76];
@@ -300,9 +300,9 @@ void __68__PKSharingMessageExtensionRelayServerPresenter_extensionWillAppear__bl
         v69[1] = v69;
         v69[2] = 0x2020000000;
         v70 = 0;
-        if (v36 & 1 | ((v27 & 1) == 0))
+        if (isHomeShare & 1 | ((v27 & 1) == 0))
         {
-          if (v36)
+          if (isHomeShare)
           {
             v56[0] = MEMORY[0x1E69E9820];
             v56[1] = 3221225472;
@@ -339,7 +339,7 @@ void __68__PKSharingMessageExtensionRelayServerPresenter_extensionWillAppear__bl
           v63[2] = __96__PKSharingMessageExtensionRelayServerPresenter_validateForRecipients_senderAddress_completion___block_invoke_5;
           v63[3] = &unk_1E8015FF0;
           v64 = v49;
-          v65 = v48;
+          v65 = presentationSceneIdentifier;
           v67 = v69;
           objc_copyWeak(&v68, location);
           v66 = v40;
@@ -348,8 +348,8 @@ void __68__PKSharingMessageExtensionRelayServerPresenter_extensionWillAppear__bl
           objc_destroyWeak(&v68);
         }
 
-        v15 = v46;
-        v43 = [MEMORY[0x1E695DFB0] null];
+        localProperties = v46;
+        null = [MEMORY[0x1E695DFB0] null];
         v51[0] = MEMORY[0x1E69E9820];
         v51[1] = 3221225472;
         v51[2] = __96__PKSharingMessageExtensionRelayServerPresenter_validateForRecipients_senderAddress_completion___block_invoke_13;
@@ -357,8 +357,8 @@ void __68__PKSharingMessageExtensionRelayServerPresenter_extensionWillAppear__bl
         objc_copyWeak(&v55, location);
         v53 = v86;
         v54 = buf;
-        v52 = v10;
-        v44 = [v33 evaluateWithInput:v43 completion:v51];
+        v52 = completionCopy;
+        v44 = [v33 evaluateWithInput:null completion:v51];
 
         objc_destroyWeak(&v55);
         _Block_object_dispose(v69, 8);
@@ -367,7 +367,7 @@ void __68__PKSharingMessageExtensionRelayServerPresenter_extensionWillAppear__bl
         _Block_object_dispose(v86, 8);
         objc_destroyWeak(location);
 
-        v9 = v45;
+        addressCopy = v45;
       }
     }
 
@@ -380,7 +380,7 @@ void __68__PKSharingMessageExtensionRelayServerPresenter_extensionWillAppear__bl
         _os_log_impl(&dword_1BD026000, v24, OS_LOG_TYPE_DEFAULT, "iMessage Extension: ERROR missing invite!", buf, 2u);
       }
 
-      (*(v10 + 2))(v10, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 
@@ -392,7 +392,7 @@ void __68__PKSharingMessageExtensionRelayServerPresenter_extensionWillAppear__bl
     v14 = PKLocalizedShareableCredentialString(&cfstr_ShareableMessa.isa);
     [v11 showAlertWithTitle:v12 message:v13 button:v14];
 
-    (*(v10 + 2))(v10, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -725,22 +725,22 @@ void __96__PKSharingMessageExtensionRelayServerPresenter_validateForRecipients_s
   [(PKSharingMessageExtensionRelayServerPresenter *)WeakRetained _createShareFromInvite:v6 externalizedAuth:v5 completion:?];
 }
 
-- (void)_createShareFromInvite:(void *)a3 externalizedAuth:(void *)a4 completion:
+- (void)_createShareFromInvite:(void *)invite externalizedAuth:(void *)auth completion:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  inviteCopy = invite;
+  authCopy = auth;
+  if (self)
   {
-    objc_initWeak(&location, a1);
-    v10 = a1[1];
+    objc_initWeak(&location, self);
+    v10 = self[1];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __100__PKSharingMessageExtensionRelayServerPresenter__createShareFromInvite_externalizedAuth_completion___block_invoke;
     v11[3] = &unk_1E8019A50;
     objc_copyWeak(&v13, &location);
-    v12 = v9;
-    [v10 createShareForPartialShareInvitation:v7 authorization:v8 completion:v11];
+    v12 = authCopy;
+    [v10 createShareForPartialShareInvitation:v7 authorization:inviteCopy completion:v11];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -757,18 +757,18 @@ uint64_t __96__PKSharingMessageExtensionRelayServerPresenter_validateForRecipien
   return v3();
 }
 
-- (void)_reportAuthenticationEventWithSuccess:(uint64_t)a1
+- (void)_reportAuthenticationEventWithSuccess:(uint64_t)success
 {
-  if (a1)
+  if (success)
   {
-    v3 = [*(a1 + 24) localProperties];
-    v4 = [v3 partialInvite];
-    v5 = [v3 analyticsSessionToken];
-    if (v5)
+    localProperties = [*(success + 24) localProperties];
+    partialInvite = [localProperties partialInvite];
+    analyticsSessionToken = [localProperties analyticsSessionToken];
+    if (analyticsSessionToken)
     {
       v6 = [PKShareInitiationAnalyticsReporter alloc];
-      v7 = [v4 pass];
-      v8 = [(PKShareInitiationAnalyticsReporter *)v6 initWithPass:v7 sessionToken:v5];
+      pass = [partialInvite pass];
+      v8 = [(PKShareInitiationAnalyticsReporter *)v6 initWithPass:pass sessionToken:analyticsSessionToken];
     }
 
     else
@@ -1020,15 +1020,15 @@ void __100__PKSharingMessageExtensionRelayServerPresenter__createShareFromInvite
   v36 = *MEMORY[0x1E69E9840];
   if (![(PKSharingMessageExtensionCommonMessage *)self->_message isPending]&& ![(PKSharingMessageExtensionCommonMessage *)self->_message isFromMe])
   {
-    v3 = [(PKSharingMessageExtensionRelayServerMessage *)self->_message status];
-    v4 = [(PKSharingMessageExtensionRelayServerMessage *)self->_message localProperties];
-    v5 = [v4 passUniqueIdentifier];
+    status = [(PKSharingMessageExtensionRelayServerMessage *)self->_message status];
+    localProperties = [(PKSharingMessageExtensionRelayServerMessage *)self->_message localProperties];
+    passUniqueIdentifier = [localProperties passUniqueIdentifier];
 
     if (PKShareStatusIsPending())
     {
-      v6 = [(PKSharingMessageExtensionRelayServerMessage *)self->_message phoneMailboxURL];
-      v7 = v6;
-      if (!v6)
+      phoneMailboxURL = [(PKSharingMessageExtensionRelayServerMessage *)self->_message phoneMailboxURL];
+      v7 = phoneMailboxURL;
+      if (!phoneMailboxURL)
       {
 LABEL_21:
 
@@ -1037,17 +1037,17 @@ LABEL_22:
       }
 
       v8 = MEMORY[0x1E696AF20];
-      v9 = v6;
+      v9 = phoneMailboxURL;
       v10 = [[v8 alloc] initWithURL:v9 resolvingAgainstBaseURL:0];
 
-      v11 = [v10 queryItems];
-      v12 = [v11 pk_containsObjectPassingTest:&__block_literal_global_113];
+      queryItems = [v10 queryItems];
+      v12 = [queryItems pk_containsObjectPassingTest:&__block_literal_global_113];
 
       if (!v12)
       {
         v22 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:v9 resolvingAgainstBaseURL:0];
-        v23 = [v22 queryItems];
-        v24 = [v23 mutableCopy];
+        queryItems2 = [v22 queryItems];
+        v24 = [queryItems2 mutableCopy];
         v25 = v24;
         if (v24)
         {
@@ -1077,8 +1077,8 @@ LABEL_22:
       {
         v13 = objc_alloc(MEMORY[0x1E695DFF8]);
         v14 = MEMORY[0x1E696AEC0];
-        v15 = [v9 absoluteString];
-        v16 = [v14 stringWithFormat:@"com.apple.Home-private://sharing/%@", v15];
+        absoluteString = [v9 absoluteString];
+        v16 = [v14 stringWithFormat:@"com.apple.Home-private://sharing/%@", absoluteString];
         v17 = [v13 initWithString:v16];
 
         v18 = objc_loadWeakRetained(&self->_renderer);
@@ -1090,7 +1090,7 @@ LABEL_22:
       v21 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [v9 absoluteString];
+        absoluteString2 = [v9 absoluteString];
         v28 = PKSharingLoggableMailboxAddress();
         *buf = 138412290;
         v35 = v28;
@@ -1100,7 +1100,7 @@ LABEL_22:
 
     else
     {
-      if (v3 != 1 || !v5)
+      if (status != 1 || !passUniqueIdentifier)
       {
         goto LABEL_22;
       }
@@ -1111,7 +1111,7 @@ LABEL_22:
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v35 = v5;
+          v35 = passUniqueIdentifier;
           _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "iMessage Extension: Silently failing to present Wallet URL for %@ as passbook is not available.", buf, 0xCu);
         }
 
@@ -1119,7 +1119,7 @@ LABEL_22:
       }
 
       v19 = objc_alloc(MEMORY[0x1E695DFF8]);
-      v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"wallet://%@/%@", *MEMORY[0x1E69BC698], v5];
+      v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"wallet://%@/%@", *MEMORY[0x1E69BC698], passUniqueIdentifier];
       v7 = [v19 initWithString:v20];
 
       v21 = objc_loadWeakRetained(&self->_renderer);
@@ -1188,25 +1188,25 @@ uint64_t __161__PKSharingMessageExtensionRelayServerPresenter__checkIfMessageReq
   return (*(*(a1 + 48) + 16))();
 }
 
-+ (id)propertiesForMessage:(id)a3
++ (id)propertiesForMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = objc_alloc_init(PKCredentialSharingMessageExtensionViewProperties);
-  v5 = [v3 title];
-  [(PKCredentialSharingMessageExtensionViewProperties *)v4 setTitle:v5];
+  title = [messageCopy title];
+  [(PKCredentialSharingMessageExtensionViewProperties *)v4 setTitle:title];
 
-  v6 = [v3 subtitle];
-  [(PKCredentialSharingMessageExtensionViewProperties *)v4 setSubtitle:v6];
+  subtitle = [messageCopy subtitle];
+  [(PKCredentialSharingMessageExtensionViewProperties *)v4 setSubtitle:subtitle];
 
-  v7 = [v3 thumbnail];
-  [(PKCredentialSharingMessageExtensionViewProperties *)v4 setCardImage:v7];
+  thumbnail = [messageCopy thumbnail];
+  [(PKCredentialSharingMessageExtensionViewProperties *)v4 setCardImage:thumbnail];
 
-  v8 = [v3 isFromMe];
-  v9 = [v3 status];
+  isFromMe = [messageCopy isFromMe];
+  status = [messageCopy status];
 
-  if ((v9 - 2) >= 2)
+  if ((status - 2) >= 2)
   {
-    if (v9 != 1)
+    if (status != 1)
     {
       goto LABEL_7;
     }
@@ -1216,7 +1216,7 @@ uint64_t __161__PKSharingMessageExtensionRelayServerPresenter__checkIfMessageReq
 
   else
   {
-    if (v8)
+    if (isFromMe)
     {
       goto LABEL_7;
     }

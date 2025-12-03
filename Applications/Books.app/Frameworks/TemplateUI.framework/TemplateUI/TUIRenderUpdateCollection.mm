@@ -1,61 +1,61 @@
 @interface TUIRenderUpdateCollection
-- (TUIRenderUpdateCollection)initWithFrom:(id)a3 to:(id)a4 viewState:(id)a5 updates:(id)a6 changes:(id)a7 layoutQueue:(id)a8 flags:(unint64_t)a9;
+- (TUIRenderUpdateCollection)initWithFrom:(id)from to:(id)to viewState:(id)state updates:(id)updates changes:(id)changes layoutQueue:(id)queue flags:(unint64_t)flags;
 - (id).cxx_construct;
-- (id)_computeFromPlusInsertsWithFrom:(id)a3 to:(id)a4;
-- (id)_computeUpdatedWithFrom:(id)a3 to:(id)a4;
-- (void)_applyUpdates:(const void *)a3 toFeedView:(id)a4;
-- (void)_computeSectionUpdates:(void *)a3 from:(id)a4 to:(id)a5;
-- (void)_computeWithUpdates:(id)a3 layoutQueue:(id)a4;
-- (void)applyToFeedView:(id)a3 completion:(id)a4;
+- (id)_computeFromPlusInsertsWithFrom:(id)from to:(id)to;
+- (id)_computeUpdatedWithFrom:(id)from to:(id)to;
+- (void)_applyUpdates:(const void *)updates toFeedView:(id)view;
+- (void)_computeSectionUpdates:(void *)updates from:(id)from to:(id)to;
+- (void)_computeWithUpdates:(id)updates layoutQueue:(id)queue;
+- (void)applyToFeedView:(id)view completion:(id)completion;
 @end
 
 @implementation TUIRenderUpdateCollection
 
-- (TUIRenderUpdateCollection)initWithFrom:(id)a3 to:(id)a4 viewState:(id)a5 updates:(id)a6 changes:(id)a7 layoutQueue:(id)a8 flags:(unint64_t)a9
+- (TUIRenderUpdateCollection)initWithFrom:(id)from to:(id)to viewState:(id)state updates:(id)updates changes:(id)changes layoutQueue:(id)queue flags:(unint64_t)flags
 {
-  v26 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  fromCopy = from;
+  toCopy = to;
+  stateCopy = state;
+  updatesCopy = updates;
+  changesCopy = changes;
+  queueCopy = queue;
   v27.receiver = self;
   v27.super_class = TUIRenderUpdateCollection;
   v21 = [(TUIRenderUpdateCollection *)&v27 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_from, a3);
-    objc_storeStrong(&v22->_to, a4);
-    v23 = [v17 copy];
+    objc_storeStrong(&v21->_from, from);
+    objc_storeStrong(&v22->_to, to);
+    v23 = [stateCopy copy];
     viewState = v22->_viewState;
     v22->_viewState = v23;
 
-    objc_storeStrong(&v22->_changes, a7);
-    v22->_flags = a9;
+    objc_storeStrong(&v22->_changes, changes);
+    v22->_flags = flags;
     if (v22->_from != v22->_to)
     {
-      [(TUIRenderUpdateCollection *)v22 _computeWithUpdates:v18 layoutQueue:v20];
+      [(TUIRenderUpdateCollection *)v22 _computeWithUpdates:updatesCopy layoutQueue:queueCopy];
     }
   }
 
   return v22;
 }
 
-- (id)_computeFromPlusInsertsWithFrom:(id)a3 to:(id)a4
+- (id)_computeFromPlusInsertsWithFrom:(id)from to:(id)to
 {
-  v5 = a3;
-  v20 = a4;
-  v6 = [[NSMutableSet alloc] initWithArray:v20];
-  v7 = [NSSet setWithArray:v5];
+  fromCopy = from;
+  toCopy = to;
+  v6 = [[NSMutableSet alloc] initWithArray:toCopy];
+  v7 = [NSSet setWithArray:fromCopy];
   [v6 minusSet:v7];
 
-  v8 = [v5 mutableCopy];
+  v8 = [fromCopy mutableCopy];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v20;
+  v9 = toCopy;
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
@@ -101,12 +101,12 @@
   return v18;
 }
 
-- (id)_computeUpdatedWithFrom:(id)a3 to:(id)a4
+- (id)_computeUpdatedWithFrom:(id)from to:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[NSMutableSet alloc] initWithArray:v6];
-  v8 = [NSSet setWithArray:v5];
+  fromCopy = from;
+  toCopy = to;
+  v7 = [[NSMutableSet alloc] initWithArray:toCopy];
+  v8 = [NSSet setWithArray:fromCopy];
   [v7 intersectSet:v8];
 
   v9 = [v7 copy];
@@ -114,22 +114,22 @@
   return v9;
 }
 
-- (void)_computeSectionUpdates:(void *)a3 from:(id)a4 to:(id)a5
+- (void)_computeSectionUpdates:(void *)updates from:(id)from to:(id)to
 {
-  v7 = a4;
-  v26 = a5;
-  v28 = v7;
-  v25 = [[NSMutableSet alloc] initWithArray:v7];
-  v27 = [[NSMutableSet alloc] initWithArray:v26];
-  v8 = [NSSet setWithArray:v26];
+  fromCopy = from;
+  toCopy = to;
+  v28 = fromCopy;
+  v25 = [[NSMutableSet alloc] initWithArray:fromCopy];
+  v27 = [[NSMutableSet alloc] initWithArray:toCopy];
+  v8 = [NSSet setWithArray:toCopy];
   [v25 minusSet:v8];
 
-  v9 = [NSSet setWithArray:v7];
+  v9 = [NSSet setWithArray:fromCopy];
   [v27 minusSet:v9];
 
-  v24 = [[NSMutableSet alloc] initWithArray:v26];
+  v24 = [[NSMutableSet alloc] initWithArray:toCopy];
   [v24 minusSet:v27];
-  v10 = [v7 mutableCopy];
+  v10 = [fromCopy mutableCopy];
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
@@ -155,7 +155,7 @@
         *&v33 = 1;
         *(&v33 + 1) = v17;
         v34 = 0x7FFFFFFFFFFFFFFFLL;
-        sub_6E3AC(a3, &v33);
+        sub_6E3AC(updates, &v33);
         v11 = v13;
       }
 
@@ -169,7 +169,7 @@
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v18 = v26;
+  v18 = toCopy;
   v19 = [v18 countByEnumeratingWithState:&v29 objects:v39 count:16];
   if (v19)
   {
@@ -189,7 +189,7 @@
         {
           v33 = xmmword_24CD50;
           v34 = v20;
-          sub_6E3AC(a3, &v33);
+          sub_6E3AC(updates, &v33);
           [v10 insertObject:v23 atIndex:v20];
         }
 
@@ -203,12 +203,12 @@
   }
 }
 
-- (void)_computeWithUpdates:(id)a3 layoutQueue:(id)a4
+- (void)_computeWithUpdates:(id)updates layoutQueue:(id)queue
 {
-  v109 = a3;
-  v105 = a4;
-  v6 = [(TUIRenderModelCollection *)self->_from sections];
-  v7 = [v6 valueForKey:@"UUID"];
+  updatesCopy = updates;
+  queueCopy = queue;
+  sections = [(TUIRenderModelCollection *)self->_from sections];
+  v7 = [sections valueForKey:@"UUID"];
   v8 = v7;
   if (v7)
   {
@@ -222,8 +222,8 @@
 
   v117 = v9;
 
-  v10 = [(TUIRenderModelCollection *)self->_to sections];
-  v11 = [v10 valueForKey:@"UUID"];
+  sections2 = [(TUIRenderModelCollection *)self->_to sections];
+  v11 = [sections2 valueForKey:@"UUID"];
   v12 = v11;
   if (v11)
   {
@@ -268,23 +268,23 @@
         if (v19 == 0x7FFFFFFFFFFFFFFFLL)
         {
           v20 = [v115 indexOfObject:v18];
-          v21 = [(TUIRenderModelCollection *)self->_to sections];
-          v22 = [v21 objectAtIndexedSubscript:v20];
+          sections3 = [(TUIRenderModelCollection *)self->_to sections];
+          v22 = [sections3 objectAtIndexedSubscript:v20];
           v23 = [v22 copyForInitialAppearanceWithFlags:0];
         }
 
         else
         {
-          v21 = [(TUIRenderModelCollection *)self->_from sections];
-          v23 = [v21 objectAtIndexedSubscript:v19];
+          sections3 = [(TUIRenderModelCollection *)self->_from sections];
+          v23 = [sections3 objectAtIndexedSubscript:v19];
         }
 
         v24 = [v118 count];
         [v23 offset];
         v26 = v25;
         v28 = v27;
-        v29 = [v23 UUID];
-        v30 = [v23 copyWithSection:v24 offset:v29 uuid:{v26, v28}];
+        uUID = [v23 UUID];
+        v30 = [v23 copyWithSection:v24 offset:uUID uuid:{v26, v28}];
 
         [v118 addObject:v30];
       }
@@ -295,8 +295,8 @@
     while (v15);
   }
 
-  v31 = [(TUIRenderModelCollection *)self->_to sections];
-  v106 = [v31 mutableCopy];
+  sections4 = [(TUIRenderModelCollection *)self->_to sections];
+  v106 = [sections4 mutableCopy];
 
   [(TUIRenderUpdateCollection *)self _computeUpdatedWithFrom:obj to:v115];
   v121 = 0u;
@@ -331,8 +331,8 @@
 
         else
         {
-          v39 = [(TUIRenderModelCollection *)self->_from sections];
-          v38 = [v39 objectAtIndexedSubscript:v35];
+          sections5 = [(TUIRenderModelCollection *)self->_from sections];
+          v38 = [sections5 objectAtIndexedSubscript:v35];
         }
 
         if (v37 == 0x7FFFFFFFFFFFFFFFLL)
@@ -345,8 +345,8 @@
           v40 = [v118 objectAtIndexedSubscript:v37];
         }
 
-        v41 = [(TUIRenderModelCollection *)self->_to sections];
-        v42 = [v41 objectAtIndexedSubscript:v36];
+        sections6 = [(TUIRenderModelCollection *)self->_to sections];
+        v42 = [sections6 objectAtIndexedSubscript:v36];
 
         if (v38 != v42)
         {
@@ -363,35 +363,35 @@
             [v44 addObject:v43];
             if (self->_hasChangesToApply)
             {
-              v45 = 1;
+              hasChangesToApply = 1;
             }
 
             else
             {
-              v45 = [(TUIRenderUpdateSection *)v43 hasChangesToApply];
+              hasChangesToApply = [(TUIRenderUpdateSection *)v43 hasChangesToApply];
             }
 
-            self->_hasChangesToApply = v45;
+            self->_hasChangesToApply = hasChangesToApply;
             if (self->_hasInvalidationsToApply)
             {
-              v46 = 1;
+              hasInvalidationsToApply = 1;
             }
 
             else
             {
-              v46 = [(TUIRenderUpdateSection *)v43 hasInvalidationsToApply];
+              hasInvalidationsToApply = [(TUIRenderUpdateSection *)v43 hasInvalidationsToApply];
             }
 
-            self->_hasInvalidationsToApply = v46;
+            self->_hasInvalidationsToApply = hasInvalidationsToApply;
           }
 
-          v47 = [v42 UUID];
-          v48 = [v109 objectForKeyedSubscript:v47];
-          v49 = [v48 newCurrentContainerPlusInserted];
-          v50 = v49;
-          if (v49)
+          uUID2 = [v42 UUID];
+          v48 = [updatesCopy objectForKeyedSubscript:uUID2];
+          newCurrentContainerPlusInserted = [v48 newCurrentContainerPlusInserted];
+          v50 = newCurrentContainerPlusInserted;
+          if (newCurrentContainerPlusInserted)
           {
-            v51 = v49;
+            v51 = newCurrentContainerPlusInserted;
           }
 
           else
@@ -451,7 +451,7 @@
   if ([v112 count] || self->_sectionUpdatesFrom2FromPlusInserts.__end_ != self->_sectionUpdatesFrom2FromPlusInserts.__begin_)
   {
     v57 = [TUIRenderModelCollection alloc];
-    v58 = [(TUIRenderModelCollection *)self->_from content];
+    content = [(TUIRenderModelCollection *)self->_from content];
     [(TUIRenderModelCollection *)self->_from size];
     v60 = v59;
     v62 = v61;
@@ -460,13 +460,13 @@
     v66 = v65;
     v68 = v67;
     v70 = v69;
-    v114 = [(TUIRenderModelCollection *)self->_from visibleBoundsObservers];
-    v71 = [(TUIRenderModelCollection *)self->_from info];
-    v72 = [(TUIRenderModelCollection *)self->_from anchorSet];
-    v73 = [(TUIRenderModelCollection *)self->_to layoutDirection];
-    v74 = [(TUIRenderModelCollection *)self->_to matchingSectionUUID];
-    v75 = [(TUIRenderModelCollection *)self->_to matchingSectionUID];
-    v76 = [(TUIRenderModelCollection *)v57 initWithContent:v58 sections:v118 size:v114 insets:v71 visibleBoundsObservers:v72 info:v73 anchorSet:v60 layoutDirection:v62 matchingUUID:v64 matchingUID:v66, v68, v70, v74, v75];
+    visibleBoundsObservers = [(TUIRenderModelCollection *)self->_from visibleBoundsObservers];
+    info = [(TUIRenderModelCollection *)self->_from info];
+    anchorSet = [(TUIRenderModelCollection *)self->_from anchorSet];
+    layoutDirection = [(TUIRenderModelCollection *)self->_to layoutDirection];
+    matchingSectionUUID = [(TUIRenderModelCollection *)self->_to matchingSectionUUID];
+    matchingSectionUID = [(TUIRenderModelCollection *)self->_to matchingSectionUID];
+    v76 = [(TUIRenderModelCollection *)v57 initWithContent:content sections:v118 size:visibleBoundsObservers insets:info visibleBoundsObservers:anchorSet info:layoutDirection anchorSet:v60 layoutDirection:v62 matchingUUID:v64 matchingUID:v66, v68, v70, matchingSectionUUID, matchingSectionUID];
 
     v77 = [[_TUIRenderUpdateCollectionSectionChanges alloc] initWithSectionUpdates:v112 model:v76];
     sectionChangesFrom2FromPlusInserts = self->_sectionChangesFrom2FromPlusInserts;
@@ -474,7 +474,7 @@
   }
 
   v79 = [TUIRenderModelCollection alloc];
-  v80 = [(TUIRenderModelCollection *)self->_to content];
+  content2 = [(TUIRenderModelCollection *)self->_to content];
   [(TUIRenderModelCollection *)self->_to size];
   v82 = v81;
   v84 = v83;
@@ -483,13 +483,13 @@
   v88 = v87;
   v90 = v89;
   v92 = v91;
-  v93 = [(TUIRenderModelCollection *)self->_to visibleBoundsObservers];
-  v94 = [(TUIRenderModelCollection *)self->_to info];
-  v95 = [(TUIRenderModelCollection *)self->_to anchorSet];
-  v96 = [(TUIRenderModelCollection *)self->_to layoutDirection];
-  v97 = [(TUIRenderModelCollection *)self->_to matchingSectionUUID];
-  v98 = [(TUIRenderModelCollection *)self->_to matchingSectionUID];
-  v99 = [(TUIRenderModelCollection *)v79 initWithContent:v80 sections:v106 size:v93 insets:v94 visibleBoundsObservers:v95 info:v96 anchorSet:v82 layoutDirection:v84 matchingUUID:v86 matchingUID:v88, v90, v92, v97, v98];
+  visibleBoundsObservers2 = [(TUIRenderModelCollection *)self->_to visibleBoundsObservers];
+  info2 = [(TUIRenderModelCollection *)self->_to info];
+  anchorSet2 = [(TUIRenderModelCollection *)self->_to anchorSet];
+  layoutDirection2 = [(TUIRenderModelCollection *)self->_to layoutDirection];
+  matchingSectionUUID2 = [(TUIRenderModelCollection *)self->_to matchingSectionUUID];
+  matchingSectionUID2 = [(TUIRenderModelCollection *)self->_to matchingSectionUID];
+  v99 = [(TUIRenderModelCollection *)v79 initWithContent:content2 sections:v106 size:visibleBoundsObservers2 insets:info2 visibleBoundsObservers:anchorSet2 info:layoutDirection2 anchorSet:v82 layoutDirection:v84 matchingUUID:v86 matchingUID:v88, v90, v92, matchingSectionUUID2, matchingSectionUID2];
 
   v100 = [[_TUIRenderUpdateCollectionSectionChanges alloc] initWithSectionUpdates:v111 model:v99];
   sectionChangesFromPlusInserts2To = self->_sectionChangesFromPlusInserts2To;
@@ -500,18 +500,18 @@
   self->_sectionChangesFrom2To = v102;
 }
 
-- (void)_applyUpdates:(const void *)a3 toFeedView:(id)a4
+- (void)_applyUpdates:(const void *)updates toFeedView:(id)view
 {
-  v8 = a4;
-  v5 = *a3;
-  if (*a3 != *(a3 + 1))
+  viewCopy = view;
+  v5 = *updates;
+  if (*updates != *(updates + 1))
   {
     while (1)
     {
       v6 = *v5;
       if (*v5 == 2)
       {
-        [v8 moveSection:v5[1] toSection:v5[2]];
+        [viewCopy moveSection:v5[1] toSection:v5[2]];
         goto LABEL_9;
       }
 
@@ -523,37 +523,37 @@
       if (!v6)
       {
         v7 = [NSIndexSet indexSetWithIndex:v5[2]];
-        [v8 insertSections:v7];
+        [viewCopy insertSections:v7];
 LABEL_7:
       }
 
 LABEL_9:
       v5 += 3;
-      if (v5 == *(a3 + 1))
+      if (v5 == *(updates + 1))
       {
         goto LABEL_10;
       }
     }
 
     v7 = [NSIndexSet indexSetWithIndex:v5[1]];
-    [v8 deleteSections:v7];
+    [viewCopy deleteSections:v7];
     goto LABEL_7;
   }
 
 LABEL_10:
 }
 
-- (void)applyToFeedView:(id)a3 completion:(id)a4
+- (void)applyToFeedView:(id)view completion:(id)completion
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_6F288;
   v8[3] = &unk_25F868;
-  v9 = a3;
-  v10 = self;
-  v11 = a4;
-  v6 = v11;
-  v7 = v9;
+  viewCopy = view;
+  selfCopy = self;
+  completionCopy = completion;
+  v6 = completionCopy;
+  v7 = viewCopy;
   [v7 applyUpdateCollection:self updates:v8];
 }
 

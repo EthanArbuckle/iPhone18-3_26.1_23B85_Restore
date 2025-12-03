@@ -1,6 +1,6 @@
 @interface CNUICoreScreentimePasscodeInspector
 - (unint64_t)screentimePasscodeStatus;
-- (unint64_t)screentimePasscodeStatusOfDelegateWithInfo:(id)a3;
+- (unint64_t)screentimePasscodeStatusOfDelegateWithInfo:(id)info;
 @end
 
 @implementation CNUICoreScreentimePasscodeInspector
@@ -36,9 +36,9 @@
   }
 }
 
-- (unint64_t)screentimePasscodeStatusOfDelegateWithInfo:(id)a3
+- (unint64_t)screentimePasscodeStatusOfDelegateWithInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
     return 0;
   }

@@ -1,6 +1,6 @@
 @interface NWSClientConnection
 + (id)shared;
-- (void)activateConnectionOn:(id)a3;
+- (void)activateConnectionOn:(id)on;
 @end
 
 @implementation NWSClientConnection
@@ -24,18 +24,18 @@ uint64_t __29__NWSClientConnection_shared__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)activateConnectionOn:(id)a3
+- (void)activateConnectionOn:(id)on
 {
-  v4 = a3;
+  onCopy = on;
   v5 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.networkscored" options:4096];
   [(NWSClientConnection *)self setConnection:v5];
 
   v6 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_286D32020];
-  v7 = [(NWSClientConnection *)self connection];
-  [v7 setRemoteObjectInterface:v6];
+  connection = [(NWSClientConnection *)self connection];
+  [connection setRemoteObjectInterface:v6];
 
-  v8 = [(NWSClientConnection *)self connection];
-  [v8 setInterruptionHandler:&__block_literal_global_96];
+  connection2 = [(NWSClientConnection *)self connection];
+  [connection2 setInterruptionHandler:&__block_literal_global_96];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -43,17 +43,17 @@ uint64_t __29__NWSClientConnection_shared__block_invoke()
   v13[3] = &unk_27996D048;
   v13[4] = self;
   v9 = MEMORY[0x25F874C90](v13);
-  v10 = [(NWSClientConnection *)self connection];
-  [v10 setInvalidationHandler:v9];
+  connection3 = [(NWSClientConnection *)self connection];
+  [connection3 setInvalidationHandler:v9];
 
-  if (v4)
+  if (onCopy)
   {
-    v11 = [(NWSClientConnection *)self connection];
-    [v11 _setQueue:v4];
+    connection4 = [(NWSClientConnection *)self connection];
+    [connection4 _setQueue:onCopy];
   }
 
-  v12 = [(NWSClientConnection *)self connection];
-  [v12 activate];
+  connection5 = [(NWSClientConnection *)self connection];
+  [connection5 activate];
 }
 
 void __44__NWSClientConnection_activateConnectionOn___block_invoke()

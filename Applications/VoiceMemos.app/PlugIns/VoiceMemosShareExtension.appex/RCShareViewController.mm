@@ -1,6 +1,6 @@
 @interface RCShareViewController
-- (void)_didLoadFileInPlaceWithFileInfo:(id)a3;
-- (void)_loadFirstConformingAttachment:(id)a3;
+- (void)_didLoadFileInPlaceWithFileInfo:(id)info;
+- (void)_loadFirstConformingAttachment:(id)attachment;
 - (void)_removeTemporaryAudioFileIfNeeded;
 - (void)cancel;
 - (void)loadFileRepresentation;
@@ -20,30 +20,30 @@
   [(RCShareViewController *)self loadFileRepresentation];
 }
 
-- (void)_loadFirstConformingAttachment:(id)a3
+- (void)_loadFirstConformingAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = [(RCShareViewController *)self extensionContext];
-  v6 = [v5 inputItems];
+  extensionContext = [(RCShareViewController *)self extensionContext];
+  inputItems = [extensionContext inputItems];
 
-  v7 = [v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  v7 = [inputItems countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = *v28;
     v21 = *v28;
-    v22 = v4;
+    v22 = attachmentCopy;
     do
     {
       for (i = 0; i != v8; i = i + 1)
       {
         if (*v28 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(inputItems);
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
@@ -51,8 +51,8 @@
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v12 = [v11 attachments];
-        v13 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        attachments = [v11 attachments];
+        v13 = [attachments countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (v13)
         {
           v14 = v13;
@@ -63,23 +63,23 @@
             {
               if (*v24 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(attachments);
               }
 
               v17 = *(*(&v23 + 1) + 8 * j);
-              v18 = [v17 rc_supportedFileTypesRepresented];
-              v19 = [v18 firstObject];
+              rc_supportedFileTypesRepresented = [v17 rc_supportedFileTypesRepresented];
+              firstObject = [rc_supportedFileTypesRepresented firstObject];
 
-              if (v19)
+              if (firstObject)
               {
-                v4 = v22;
-                v20 = [v17 loadFileRepresentationForTypeIdentifier:v19 completionHandler:v22];
+                attachmentCopy = v22;
+                v20 = [v17 loadFileRepresentationForTypeIdentifier:firstObject completionHandler:v22];
 
                 goto LABEL_18;
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
+            v14 = [attachments countByEnumeratingWithState:&v23 objects:v31 count:16];
             if (v14)
             {
               continue;
@@ -92,8 +92,8 @@
         v9 = v21;
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
-      v4 = v22;
+      v8 = [inputItems countByEnumeratingWithState:&v27 objects:v32 count:16];
+      attachmentCopy = v22;
     }
 
     while (v8);
@@ -136,70 +136,70 @@ LABEL_18:
 
   [(UIBarButtonItem *)self->_doneButtonItem setEnabled:0];
   v15 = self->_cancelButtonItem;
-  v16 = [(RCShareTableViewController *)self->_tableViewController navigationItem];
-  [v16 setLeftBarButtonItem:v15];
+  navigationItem = [(RCShareTableViewController *)self->_tableViewController navigationItem];
+  [navigationItem setLeftBarButtonItem:v15];
 
   v17 = self->_doneButtonItem;
-  v18 = [(RCShareTableViewController *)self->_tableViewController navigationItem];
-  [v18 setRightBarButtonItem:v17];
+  navigationItem2 = [(RCShareTableViewController *)self->_tableViewController navigationItem];
+  [navigationItem2 setRightBarButtonItem:v17];
 
   [(RCShareViewController *)self addChildViewController:self->_navigationController];
-  v19 = [(RCShareViewController *)self view];
-  v20 = [(UINavigationController *)self->_navigationController view];
-  [v19 addSubview:v20];
+  view = [(RCShareViewController *)self view];
+  view2 = [(UINavigationController *)self->_navigationController view];
+  [view addSubview:view2];
 
   [(UINavigationController *)self->_navigationController didMoveToParentViewController:self];
-  v21 = [(UINavigationController *)self->_navigationController view];
-  [v21 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [(UINavigationController *)self->_navigationController view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v42 = [(RCShareViewController *)self view];
-  v40 = [v42 topAnchor];
-  v41 = [(UINavigationController *)self->_navigationController view];
-  v39 = [v41 topAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39];
+  view4 = [(RCShareViewController *)self view];
+  topAnchor = [view4 topAnchor];
+  view5 = [(UINavigationController *)self->_navigationController view];
+  topAnchor2 = [view5 topAnchor];
+  v38 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v43[0] = v38;
-  v37 = [(RCShareViewController *)self view];
-  v35 = [v37 bottomAnchor];
-  v36 = [(UINavigationController *)self->_navigationController view];
-  v34 = [v36 bottomAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  view6 = [(RCShareViewController *)self view];
+  bottomAnchor = [view6 bottomAnchor];
+  view7 = [(UINavigationController *)self->_navigationController view];
+  bottomAnchor2 = [view7 bottomAnchor];
+  v33 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v43[1] = v33;
-  v32 = [(RCShareViewController *)self view];
-  v22 = [v32 leftAnchor];
-  v23 = [(UINavigationController *)self->_navigationController view];
-  v24 = [v23 leftAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24];
+  view8 = [(RCShareViewController *)self view];
+  leftAnchor = [view8 leftAnchor];
+  view9 = [(UINavigationController *)self->_navigationController view];
+  leftAnchor2 = [view9 leftAnchor];
+  v25 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v43[2] = v25;
-  v26 = [(RCShareViewController *)self view];
-  v27 = [v26 rightAnchor];
-  v28 = [(UINavigationController *)self->_navigationController view];
-  v29 = [v28 rightAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29];
+  view10 = [(RCShareViewController *)self view];
+  rightAnchor = [view10 rightAnchor];
+  view11 = [(UINavigationController *)self->_navigationController view];
+  rightAnchor2 = [view11 rightAnchor];
+  v30 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v43[3] = v30;
   v31 = [NSArray arrayWithObjects:v43 count:4];
   [NSLayoutConstraint activateConstraints:v31];
 }
 
-- (void)_didLoadFileInPlaceWithFileInfo:(id)a3
+- (void)_didLoadFileInPlaceWithFileInfo:(id)info
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100001BF0;
   v4[3] = &unk_1000041E8;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  infoCopy = info;
+  v3 = infoCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
 - (void)_removeTemporaryAudioFileIfNeeded
 {
-  v3 = [(RCShareViewController *)self temporaryDirectoryURL];
-  if (v3)
+  temporaryDirectoryURL = [(RCShareViewController *)self temporaryDirectoryURL];
+  if (temporaryDirectoryURL)
   {
     v4 = +[NSFileManager defaultManager];
     v8 = 0;
-    v5 = [v4 removeItemAtURL:v3 error:&v8];
+    v5 = [v4 removeItemAtURL:temporaryDirectoryURL error:&v8];
     v6 = v8;
     if (v5)
     {
@@ -221,36 +221,36 @@ LABEL_18:
 {
   [(RCShareViewController *)self _removeTemporaryAudioFileIfNeeded];
   v4 = [NSError errorWithDomain:NSCocoaErrorDomain code:3072 userInfo:0];
-  v3 = [(RCShareViewController *)self extensionContext];
-  [v3 cancelRequestWithError:v4];
+  extensionContext = [(RCShareViewController *)self extensionContext];
+  [extensionContext cancelRequestWithError:v4];
 }
 
 - (void)save
 {
-  v3 = [(RCShareViewController *)self sharedAudioFileInfo];
-  v4 = v3;
-  if (v3)
+  sharedAudioFileInfo = [(RCShareViewController *)self sharedAudioFileInfo];
+  v4 = sharedAudioFileInfo;
+  if (sharedAudioFileInfo)
   {
-    v5 = [v3 fileName];
-    v6 = [(RCShareViewController *)self tableViewController];
-    v7 = [v6 voiceMemoTitleText];
-    v8 = [v7 text];
+    fileName = [sharedAudioFileInfo fileName];
+    tableViewController = [(RCShareViewController *)self tableViewController];
+    voiceMemoTitleText = [tableViewController voiceMemoTitleText];
+    text = [voiceMemoTitleText text];
 
-    if (v8 && ([v8 isEqualToString:&stru_1000042C8] & 1) == 0)
+    if (text && ([text isEqualToString:&stru_1000042C8] & 1) == 0)
     {
-      v9 = v8;
+      v9 = text;
 
-      v5 = v9;
+      fileName = v9;
     }
 
     v10 = [v4 url];
-    v11 = [v4 creationDate];
+    creationDate = [v4 creationDate];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100001F2C;
     v12[3] = &unk_1000041C0;
     v12[4] = self;
-    [RCSavedRecordingsModel importRecordingWithSourceAudioURL:v10 name:v5 date:v11 completionHandler:v12];
+    [RCSavedRecordingsModel importRecordingWithSourceAudioURL:v10 name:fileName date:creationDate completionHandler:v12];
   }
 }
 

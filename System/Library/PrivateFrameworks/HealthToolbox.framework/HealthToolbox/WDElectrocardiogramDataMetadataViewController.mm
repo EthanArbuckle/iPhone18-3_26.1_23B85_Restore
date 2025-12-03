@@ -1,30 +1,30 @@
 @interface WDElectrocardiogramDataMetadataViewController
-- (BOOL)_addSectionIfNonNull:(id)a3;
+- (BOOL)_addSectionIfNonNull:(id)null;
 - (HKDataMetadataViewControllerDelegate)delegate;
-- (WDElectrocardiogramDataMetadataViewController)initWithSample:(id)a3 delegate:(id)a4 mode:(int64_t)a5 activeAlgorithmVersion:(id)a6;
+- (WDElectrocardiogramDataMetadataViewController)initWithSample:(id)sample delegate:(id)delegate mode:(int64_t)mode activeAlgorithmVersion:(id)version;
 - (id)_electrocardiogramMetadataContainerView;
 - (id)accessibilityIdentifier;
-- (id)electrocardiogramMetadataView:(id)a3 regulatedBodyTextForSample:(id)a4;
-- (id)featureVersionFromUpdateVersion:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)_fetchActiveAlgorithmVersionWithHealthStore:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
+- (id)electrocardiogramMetadataView:(id)view regulatedBodyTextForSample:(id)sample;
+- (id)featureVersionFromUpdateVersion:(id)version;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)_fetchActiveAlgorithmVersionWithHealthStore:(id)store;
+- (int64_t)numberOfSectionsInTableView:(id)view;
 - (int64_t)sampleAlgorithmVersion;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_loadSections;
-- (void)_localeOrDisplayTypeChange:(id)a3;
+- (void)_localeOrDisplayTypeChange:(id)change;
 - (void)_reloadElectrocardiogramMetadataTableHeaderView;
 - (void)dealloc;
-- (void)deleteSampleTriggeredBySection:(id)a3;
-- (void)deletionSectionDidSelectRow:(id)a3 sourceItem:(id)a4;
-- (void)electrocardiogramMetadataViewDidTapDetailButton:(id)a3;
+- (void)deleteSampleTriggeredBySection:(id)section;
+- (void)deletionSectionDidSelectRow:(id)row sourceItem:(id)item;
+- (void)electrocardiogramMetadataViewDidTapDetailButton:(id)button;
 - (void)presentPDFViewController;
-- (void)shareButtonTapped:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)shareButtonTapped:(id)tapped;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewControllerDidLeaveAdaptiveModal;
 - (void)viewControllerWillEnterAdaptiveModal;
 - (void)viewDidLayoutSubviews;
@@ -33,11 +33,11 @@
 
 @implementation WDElectrocardiogramDataMetadataViewController
 
-- (WDElectrocardiogramDataMetadataViewController)initWithSample:(id)a3 delegate:(id)a4 mode:(int64_t)a5 activeAlgorithmVersion:(id)a6
+- (WDElectrocardiogramDataMetadataViewController)initWithSample:(id)sample delegate:(id)delegate mode:(int64_t)mode activeAlgorithmVersion:(id)version
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  sampleCopy = sample;
+  delegateCopy = delegate;
+  versionCopy = version;
   v30.receiver = self;
   v30.super_class = WDElectrocardiogramDataMetadataViewController;
   v14 = [(HKTableViewController *)&v30 initWithUsingInsetStyling:1];
@@ -45,30 +45,30 @@
   if (v14)
   {
     v14->_firstViewDidLayoutSubviews = 1;
-    objc_storeStrong(&v14->_sample, a3);
-    objc_storeWeak(&v15->_delegate, v12);
+    objc_storeStrong(&v14->_sample, sample);
+    objc_storeWeak(&v15->_delegate, delegateCopy);
     v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
     sections = v15->_sections;
     v15->_sections = v16;
 
     v15->_actionsEnabled = 1;
-    v15->_mode = a5;
-    if (v13)
+    v15->_mode = mode;
+    if (versionCopy)
     {
-      v15->_activeAlgorithmVersion = [v13 integerValue];
+      v15->_activeAlgorithmVersion = [versionCopy integerValue];
     }
 
     else
     {
-      v18 = [(WDElectrocardiogramDataMetadataViewController *)v15 delegate];
-      v19 = [v18 healthStore];
-      v15->_activeAlgorithmVersion = [(WDElectrocardiogramDataMetadataViewController *)v15 _fetchActiveAlgorithmVersionWithHealthStore:v19];
+      delegate = [(WDElectrocardiogramDataMetadataViewController *)v15 delegate];
+      healthStore = [delegate healthStore];
+      v15->_activeAlgorithmVersion = [(WDElectrocardiogramDataMetadataViewController *)v15 _fetchActiveAlgorithmVersionWithHealthStore:healthStore];
     }
 
     v20 = [WDElectrocardiogramReportDataSource alloc];
-    v21 = [(WDElectrocardiogramDataMetadataViewController *)v15 delegate];
-    v22 = [v21 healthStore];
-    v23 = [(WDElectrocardiogramReportDataSource *)v20 initWithSample:v11 healthStore:v22 activeAlgorithmVersion:v15->_activeAlgorithmVersion];
+    delegate2 = [(WDElectrocardiogramDataMetadataViewController *)v15 delegate];
+    healthStore2 = [delegate2 healthStore];
+    v23 = [(WDElectrocardiogramReportDataSource *)v20 initWithSample:sampleCopy healthStore:healthStore2 activeAlgorithmVersion:v15->_activeAlgorithmVersion];
     reportDataSource = v15->_reportDataSource;
     v15->_reportDataSource = v23;
 
@@ -76,11 +76,11 @@
     reportGenerator = v15->_reportGenerator;
     v15->_reportGenerator = v25;
 
-    v27 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v27 addObserver:v15 selector:sel__localeOrDisplayTypeChange_ name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v15 selector:sel__localeOrDisplayTypeChange_ name:*MEMORY[0x277CBE620] object:0];
 
-    v28 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v28 addObserver:v15 selector:sel__localeOrDisplayTypeChange_ name:*MEMORY[0x277D12730] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v15 selector:sel__localeOrDisplayTypeChange_ name:*MEMORY[0x277D12730] object:0];
   }
 
   return v15;
@@ -88,21 +88,21 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CBE620] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBE620] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D12730] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D12730] object:0];
 
   v5.receiver = self;
   v5.super_class = WDElectrocardiogramDataMetadataViewController;
   [(WDElectrocardiogramDataMetadataViewController *)&v5 dealloc];
 }
 
-- (int64_t)_fetchActiveAlgorithmVersionWithHealthStore:(id)a3
+- (int64_t)_fetchActiveAlgorithmVersionWithHealthStore:(id)store
 {
   v10 = 0;
-  v3 = [MEMORY[0x277CCD380] versionWithHealthStore:a3 error:&v10];
+  v3 = [MEMORY[0x277CCD380] versionWithHealthStore:store error:&v10];
   v4 = v10;
   v5 = v4;
   if (v3)
@@ -117,7 +117,7 @@
 
   if (v6)
   {
-    v8 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
@@ -132,17 +132,17 @@
       }
     }
 
-    v8 = *MEMORY[0x277CCDEA8];
+    integerValue = *MEMORY[0x277CCDEA8];
   }
 
-  return v8;
+  return integerValue;
 }
 
-- (void)_localeOrDisplayTypeChange:(id)a3
+- (void)_localeOrDisplayTypeChange:(id)change
 {
   [(WDElectrocardiogramDataMetadataViewController *)self _loadSections];
-  v4 = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
-  [v4 reloadData];
+  tableView = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)viewDidLoad
@@ -158,31 +158,31 @@
   if ([(WDElectrocardiogramDataMetadataViewController *)self mode]!= 2)
   {
     v6 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:9 target:self action:sel_shareButtonTapped_];
-    v7 = [(WDElectrocardiogramDataMetadataViewController *)self identifierBundle];
-    v8 = [v7 stringByAppendingString:@".shareButton"];
+    identifierBundle = [(WDElectrocardiogramDataMetadataViewController *)self identifierBundle];
+    v8 = [identifierBundle stringByAppendingString:@".shareButton"];
     [v6 setAccessibilityIdentifier:v8];
 
-    v9 = [(WDElectrocardiogramDataMetadataViewController *)self navigationItem];
-    [v9 setRightBarButtonItem:v6];
+    navigationItem = [(WDElectrocardiogramDataMetadataViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v6];
   }
 
   v10 = *MEMORY[0x277D76F30];
-  v11 = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
-  [v11 setRowHeight:v10];
+  tableView = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
+  [tableView setRowHeight:v10];
 
-  v12 = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
-  [v12 setEstimatedRowHeight:64.0];
+  tableView2 = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
+  [tableView2 setEstimatedRowHeight:64.0];
 
-  v13 = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
-  [v13 _setSectionContentInsetFollowsLayoutMargins:1];
+  tableView3 = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
+  [tableView3 _setSectionContentInsetFollowsLayoutMargins:1];
 
   v14 = *MEMORY[0x277D12798];
-  v15 = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
-  [v15 _setSectionCornerRadius:v14];
+  tableView4 = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
+  [tableView4 _setSectionCornerRadius:v14];
 
   [(WDElectrocardiogramDataMetadataViewController *)self _loadSections];
-  v16 = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
-  [v16 reloadData];
+  tableView5 = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
+  [tableView5 reloadData];
 
   [(WDElectrocardiogramDataMetadataViewController *)self _reloadElectrocardiogramMetadataTableHeaderView];
 }
@@ -195,97 +195,97 @@
   if ([(WDElectrocardiogramDataMetadataViewController *)self firstViewDidLayoutSubviews])
   {
     [(WDElectrocardiogramDataMetadataViewController *)self setFirstViewDidLayoutSubviews:0];
-    v3 = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
-    v4 = [v3 tableHeaderView];
-    v5 = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
-    [v5 setTableHeaderView:v4];
+    tableView = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
+    tableHeaderView = [tableView tableHeaderView];
+    tableView2 = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
+    [tableView2 setTableHeaderView:tableHeaderView];
   }
 }
 
-- (BOOL)_addSectionIfNonNull:(id)a3
+- (BOOL)_addSectionIfNonNull:(id)null
 {
-  if (a3)
+  if (null)
   {
-    v5 = a3;
-    v6 = [(WDElectrocardiogramDataMetadataViewController *)self sections];
-    [v6 addObject:v5];
+    nullCopy = null;
+    sections = [(WDElectrocardiogramDataMetadataViewController *)self sections];
+    [sections addObject:nullCopy];
   }
 
-  return a3 != 0;
+  return null != 0;
 }
 
 - (void)_loadSections
 {
   v54[2] = *MEMORY[0x277D85DE8];
-  v3 = [(WDElectrocardiogramDataMetadataViewController *)self sections];
-  [v3 removeAllObjects];
+  sections = [(WDElectrocardiogramDataMetadataViewController *)self sections];
+  [sections removeAllObjects];
 
-  v4 = [(WDElectrocardiogramDataMetadataViewController *)self delegate];
+  delegate = [(WDElectrocardiogramDataMetadataViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(WDElectrocardiogramDataMetadataViewController *)self delegate];
-    v6 = [v5 displayTypeController];
+    delegate2 = [(WDElectrocardiogramDataMetadataViewController *)self delegate];
+    displayTypeController = [delegate2 displayTypeController];
   }
 
   else
   {
-    v6 = 0;
+    displayTypeController = 0;
   }
 
-  v7 = [(WDElectrocardiogramDataMetadataViewController *)self delegate];
+  delegate3 = [(WDElectrocardiogramDataMetadataViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(WDElectrocardiogramDataMetadataViewController *)self delegate];
-    v9 = [v8 unitController];
+    delegate4 = [(WDElectrocardiogramDataMetadataViewController *)self delegate];
+    unitController = [delegate4 unitController];
   }
 
   else
   {
-    v9 = 0;
+    unitController = 0;
   }
 
-  v10 = [(WDElectrocardiogramDataMetadataViewController *)self sections];
+  sections2 = [(WDElectrocardiogramDataMetadataViewController *)self sections];
   v11 = objc_alloc(MEMORY[0x277D12800]);
-  v12 = [(WDElectrocardiogramDataMetadataViewController *)self sample];
-  v13 = [v11 initWithSample:v12 displayTypeController:v6 unitController:v9];
-  [v10 addObject:v13];
+  sample = [(WDElectrocardiogramDataMetadataViewController *)self sample];
+  v13 = [v11 initWithSample:sample displayTypeController:displayTypeController unitController:unitController];
+  [sections2 addObject:v13];
 
-  v14 = [MEMORY[0x277CBEBD0] hk_heartRhythmDefaults];
-  v15 = ([v14 hk_hfeModeEnabled] & 1) == 0 && -[WDElectrocardiogramDataMetadataViewController mode](self, "mode") != 2;
+  hk_heartRhythmDefaults = [MEMORY[0x277CBEBD0] hk_heartRhythmDefaults];
+  v15 = ([hk_heartRhythmDefaults hk_hfeModeEnabled] & 1) == 0 && -[WDElectrocardiogramDataMetadataViewController mode](self, "mode") != 2;
 
-  v16 = [(WDElectrocardiogramDataMetadataViewController *)self mode];
+  mode = [(WDElectrocardiogramDataMetadataViewController *)self mode];
   if (v15)
   {
     v17 = objc_alloc(MEMORY[0x277D12808]);
-    v18 = [(WDElectrocardiogramDataMetadataViewController *)self sample];
-    v19 = [v17 initWithSample:v18];
+    sample2 = [(WDElectrocardiogramDataMetadataViewController *)self sample];
+    v19 = [v17 initWithSample:sample2];
 
-    v20 = [(WDElectrocardiogramDataMetadataViewController *)self sample];
-    v21 = [v20 sourceRevision];
-    v22 = [v21 version];
+    sample3 = [(WDElectrocardiogramDataMetadataViewController *)self sample];
+    sourceRevision = [sample3 sourceRevision];
+    version = [sourceRevision version];
 
-    v23 = [(WDElectrocardiogramDataMetadataViewController *)self sampleAlgorithmVersion];
-    v24 = [objc_alloc(MEMORY[0x277D12880]) initWithSourceVersion:v22 algorithmVersion:v23];
+    sampleAlgorithmVersion = [(WDElectrocardiogramDataMetadataViewController *)self sampleAlgorithmVersion];
+    v24 = [objc_alloc(MEMORY[0x277D12880]) initWithSourceVersion:version algorithmVersion:sampleAlgorithmVersion];
     if (v24)
     {
-      v47 = v16;
-      v52 = v6;
-      v25 = [(WDElectrocardiogramDataMetadataViewController *)self sample];
-      v26 = [v25 metadata];
-      v27 = [v26 objectForKey:*MEMORY[0x277CCE0D0]];
+      v47 = mode;
+      v52 = displayTypeController;
+      sample4 = [(WDElectrocardiogramDataMetadataViewController *)self sample];
+      metadata = [sample4 metadata];
+      v27 = [metadata objectForKey:*MEMORY[0x277CCE0D0]];
 
-      v50 = v22;
-      v51 = v9;
+      v50 = version;
+      v51 = unitController;
       v48 = v27;
       if (v27)
       {
-        v49 = v27;
+        updateVersion = v27;
         [(WDElectrocardiogramDataMetadataViewController *)self featureVersionFromUpdateVersion:?];
       }
 
       else
       {
-        v49 = [v24 updateVersion];
+        updateVersion = [v24 updateVersion];
         [v24 featureVersion];
       }
       v28 = ;
@@ -306,18 +306,18 @@
       v53[1] = @"UpdateVersion";
       v38 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:2];
       v39 = HKUIJoinStringsForAutomationIdentifier();
-      [v19 addText:v49 detail:v37 baseIdentifier:v39];
+      [v19 addText:updateVersion detail:v37 baseIdentifier:v39];
 
-      v9 = v51;
-      v6 = v52;
-      v22 = v50;
-      v16 = v47;
+      unitController = v51;
+      displayTypeController = v52;
+      version = v50;
+      mode = v47;
     }
 
     [(WDElectrocardiogramDataMetadataViewController *)self _addSectionIfNonNull:v19];
   }
 
-  if (!v16)
+  if (!mode)
   {
     v40 = objc_alloc(MEMORY[0x277D127F8]);
     v41 = WDBundle();
@@ -326,8 +326,8 @@
     v44 = [v40 initWithTitle:v43];
 
     [v44 setDelegate:self];
-    v45 = [(WDElectrocardiogramDataMetadataViewController *)self sections];
-    [v45 addObject:v44];
+    sections3 = [(WDElectrocardiogramDataMetadataViewController *)self sections];
+    [sections3 addObject:v44];
   }
 
   v46 = *MEMORY[0x277D85DE8];
@@ -335,31 +335,31 @@
 
 - (void)_reloadElectrocardiogramMetadataTableHeaderView
 {
-  v18 = [(WDElectrocardiogramDataMetadataViewController *)self _electrocardiogramMetadataContainerView];
-  v3 = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
-  [v3 setTableHeaderView:v18];
+  _electrocardiogramMetadataContainerView = [(WDElectrocardiogramDataMetadataViewController *)self _electrocardiogramMetadataContainerView];
+  tableView = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
+  [tableView setTableHeaderView:_electrocardiogramMetadataContainerView];
 
-  v4 = [v18 widthAnchor];
-  v5 = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
-  v6 = [v5 widthAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  widthAnchor = [_electrocardiogramMetadataContainerView widthAnchor];
+  tableView2 = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
+  widthAnchor2 = [tableView2 widthAnchor];
+  v7 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [v7 setActive:1];
 
-  v8 = [v18 centerXAnchor];
-  v9 = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
-  v10 = [v9 centerXAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  centerXAnchor = [_electrocardiogramMetadataContainerView centerXAnchor];
+  tableView3 = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
+  centerXAnchor2 = [tableView3 centerXAnchor];
+  v11 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v11 setActive:1];
 
-  v12 = [v18 topAnchor];
-  v13 = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
-  v14 = [v13 topAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  topAnchor = [_electrocardiogramMetadataContainerView topAnchor];
+  tableView4 = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
+  topAnchor2 = [tableView4 topAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v15 setActive:1];
 
-  v16 = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
-  v17 = [v16 tableHeaderView];
-  [v17 layoutIfNeeded];
+  tableView5 = [(WDElectrocardiogramDataMetadataViewController *)self tableView];
+  tableHeaderView = [tableView5 tableHeaderView];
+  [tableHeaderView layoutIfNeeded];
 }
 
 - (id)_electrocardiogramMetadataContainerView
@@ -367,8 +367,8 @@
   v3 = objc_alloc(MEMORY[0x277D75D18]);
   v4 = [v3 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(WDElectrocardiogramDataMetadataViewController *)self activeAlgorithmVersion];
-  if (v5 == *MEMORY[0x277CCDEA8] || (v6 = [(WDElectrocardiogramDataMetadataViewController *)self activeAlgorithmVersion], v6 == *MEMORY[0x277CCDEA0]))
+  activeAlgorithmVersion = [(WDElectrocardiogramDataMetadataViewController *)self activeAlgorithmVersion];
+  if (activeAlgorithmVersion == *MEMORY[0x277CCDEA8] || (v6 = [(WDElectrocardiogramDataMetadataViewController *)self activeAlgorithmVersion], v6 == *MEMORY[0x277CCDEA0]))
   {
     v7 = 0;
   }
@@ -379,8 +379,8 @@
     v9 = [(WDElectrocardiogramDataMetadataViewController *)self mode]!= 2;
     v10 = [(WDElectrocardiogramDataMetadataViewController *)self mode]!= 0;
     v11 = objc_alloc(MEMORY[0x277D12868]);
-    v12 = [(WDElectrocardiogramDataMetadataViewController *)self sample];
-    v7 = [v11 initWithSample:v12 activeAlgorithmVersion:-[WDElectrocardiogramDataMetadataViewController activeAlgorithmVersion](self displayGraph:"activeAlgorithmVersion") allowExportToPDF:v8 isSharedData:v9 delegate:{v10, self}];
+    sample = [(WDElectrocardiogramDataMetadataViewController *)self sample];
+    v7 = [v11 initWithSample:sample activeAlgorithmVersion:-[WDElectrocardiogramDataMetadataViewController activeAlgorithmVersion](self displayGraph:"activeAlgorithmVersion") allowExportToPDF:v8 isSharedData:v9 delegate:{v10, self}];
   }
 
   [v4 addSubview:v7];
@@ -389,84 +389,84 @@
   return v4;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WDElectrocardiogramDataMetadataViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(WDElectrocardiogramDataMetadataViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(WDElectrocardiogramDataMetadataViewController *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  sections = [(WDElectrocardiogramDataMetadataViewController *)self sections];
+  v6 = [sections objectAtIndexedSubscript:section];
 
-  v7 = [v6 sectionTitle];
+  sectionTitle = [v6 sectionTitle];
 
-  return v7;
+  return sectionTitle;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v5 = [(WDElectrocardiogramDataMetadataViewController *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  sections = [(WDElectrocardiogramDataMetadataViewController *)self sections];
+  v6 = [sections objectAtIndexedSubscript:section];
 
-  v7 = [v6 sectionFooter];
+  sectionFooter = [v6 sectionFooter];
 
-  return v7;
+  return sectionFooter;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(WDElectrocardiogramDataMetadataViewController *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  sections = [(WDElectrocardiogramDataMetadataViewController *)self sections];
+  v6 = [sections objectAtIndexedSubscript:section];
 
-  v7 = [v6 numberOfRowsInSection];
-  return v7;
+  numberOfRowsInSection = [v6 numberOfRowsInSection];
+  return numberOfRowsInSection;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WDElectrocardiogramDataMetadataViewController *)self sections];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
+  pathCopy = path;
+  viewCopy = view;
+  sections = [(WDElectrocardiogramDataMetadataViewController *)self sections];
+  v9 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v10 = [v6 row];
-  v11 = [v9 cellForIndex:v10 tableView:v7];
+  v10 = [pathCopy row];
+  v11 = [v9 cellForIndex:v10 tableView:viewCopy];
 
   return v11;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = [(WDElectrocardiogramDataMetadataViewController *)self sections];
-  v10 = [v7 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  sections = [(WDElectrocardiogramDataMetadataViewController *)self sections];
+  v10 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v8 = [v6 row];
-  v9 = [(WDElectrocardiogramDataMetadataViewController *)self navigationController];
-  [v10 selectCellForIndex:v8 navigationController:v9 animated:1];
+  v8 = [pathCopy row];
+  navigationController = [(WDElectrocardiogramDataMetadataViewController *)self navigationController];
+  [v10 selectCellForIndex:v8 navigationController:navigationController animated:1];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(WDElectrocardiogramDataMetadataViewController *)self sections];
-  v13 = [v11 objectAtIndexedSubscript:{objc_msgSend(v8, "section")}];
+  pathCopy = path;
+  cellCopy = cell;
+  viewCopy = view;
+  sections = [(WDElectrocardiogramDataMetadataViewController *)self sections];
+  v13 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v12 = [v8 row];
-  [v13 willDisplayCell:v9 forIndex:v12 tableView:v10];
+  v12 = [pathCopy row];
+  [v13 willDisplayCell:cellCopy forIndex:v12 tableView:viewCopy];
 }
 
-- (void)deletionSectionDidSelectRow:(id)a3 sourceItem:(id)a4
+- (void)deletionSectionDidSelectRow:(id)row sourceItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  rowCopy = row;
+  itemCopy = item;
   if ([(WDElectrocardiogramDataMetadataViewController *)self actionsEnabled])
   {
     v8 = MEMORY[0x277D75110];
@@ -489,13 +489,13 @@
     v24 = 3221225472;
     v25 = __88__WDElectrocardiogramDataMetadataViewController_deletionSectionDidSelectRow_sourceItem___block_invoke;
     v26 = &unk_2796E6F78;
-    v27 = self;
-    v28 = v6;
+    selfCopy = self;
+    v28 = rowCopy;
     v21 = [v17 actionWithTitle:v20 style:2 handler:&v23];
-    [v12 addAction:{v21, v23, v24, v25, v26, v27}];
+    [v12 addAction:{v21, v23, v24, v25, v26, selfCopy}];
 
-    v22 = [v12 popoverPresentationController];
-    [v22 setSourceItem:v7];
+    popoverPresentationController = [v12 popoverPresentationController];
+    [popoverPresentationController setSourceItem:itemCopy];
 
     [(WDElectrocardiogramDataMetadataViewController *)self presentViewController:v12 animated:1 completion:0];
   }
@@ -503,50 +503,50 @@
 
 - (id)accessibilityIdentifier
 {
-  v2 = [(WDElectrocardiogramDataMetadataViewController *)self identifierBundle];
-  v3 = [v2 stringByAppendingString:@".DeleteRecordingButton"];
+  identifierBundle = [(WDElectrocardiogramDataMetadataViewController *)self identifierBundle];
+  v3 = [identifierBundle stringByAppendingString:@".DeleteRecordingButton"];
 
   return v3;
 }
 
-- (void)electrocardiogramMetadataViewDidTapDetailButton:(id)a3
+- (void)electrocardiogramMetadataViewDidTapDetailButton:(id)button
 {
   v4 = MEMORY[0x277D130A0];
-  v5 = [(WDElectrocardiogramDataMetadataViewController *)self sample];
-  v6 = [(WDElectrocardiogramDataMetadataViewController *)self reportDataSource];
-  v9 = [v4 electrocardiogramPossibleResultsViewControllerForSample:v5 forAlgorithmVersion:{objc_msgSend(v6, "activeAlgorithmVersion")}];
+  sample = [(WDElectrocardiogramDataMetadataViewController *)self sample];
+  reportDataSource = [(WDElectrocardiogramDataMetadataViewController *)self reportDataSource];
+  v9 = [v4 electrocardiogramPossibleResultsViewControllerForSample:sample forAlgorithmVersion:{objc_msgSend(reportDataSource, "activeAlgorithmVersion")}];
 
   [v9 setLeftButtonType:3];
   v7 = [objc_alloc(MEMORY[0x277D12978]) initWithRootViewController:v9];
-  v8 = [(WDElectrocardiogramDataMetadataViewController *)self navigationController];
-  [v8 presentViewController:v7 animated:1 completion:0];
+  navigationController = [(WDElectrocardiogramDataMetadataViewController *)self navigationController];
+  [navigationController presentViewController:v7 animated:1 completion:0];
 }
 
-- (id)electrocardiogramMetadataView:(id)a3 regulatedBodyTextForSample:(id)a4
+- (id)electrocardiogramMetadataView:(id)view regulatedBodyTextForSample:(id)sample
 {
-  v5 = a4;
+  sampleCopy = sample;
   v6 = [(WDElectrocardiogramDataMetadataViewController *)self mode]!= 0;
-  v7 = [(WDElectrocardiogramDataMetadataViewController *)self reportDataSource];
-  v8 = [v5 hrui_classificationShortBodyTextWithActiveAlgorithmVersion:objc_msgSend(v7 isSharedData:{"activeAlgorithmVersion"), v6}];
+  reportDataSource = [(WDElectrocardiogramDataMetadataViewController *)self reportDataSource];
+  v8 = [sampleCopy hrui_classificationShortBodyTextWithActiveAlgorithmVersion:objc_msgSend(reportDataSource isSharedData:{"activeAlgorithmVersion"), v6}];
 
   return v8;
 }
 
-- (void)shareButtonTapped:(id)a3
+- (void)shareButtonTapped:(id)tapped
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WDElectrocardiogramDataMetadataViewController *)self reportGenerator];
-  v6 = [v5 generatePDF];
+  tappedCopy = tapped;
+  reportGenerator = [(WDElectrocardiogramDataMetadataViewController *)self reportGenerator];
+  generatePDF = [reportGenerator generatePDF];
 
   v7 = [WDElectrocardiogramActivityItemSource alloc];
-  v8 = [(WDElectrocardiogramDataMetadataViewController *)self sample];
-  v9 = [v8 startDate];
-  v10 = [(WDElectrocardiogramDataMetadataViewController *)self reportDataSource];
-  v11 = [v10 firstName];
-  v12 = [(WDElectrocardiogramDataMetadataViewController *)self reportDataSource];
-  v13 = [v12 lastName];
-  v14 = [(WDElectrocardiogramActivityItemSource *)v7 initWithPDFData:v6 sampleDate:v9 firstName:v11 lastName:v13 provenance:0];
+  sample = [(WDElectrocardiogramDataMetadataViewController *)self sample];
+  startDate = [sample startDate];
+  reportDataSource = [(WDElectrocardiogramDataMetadataViewController *)self reportDataSource];
+  firstName = [reportDataSource firstName];
+  reportDataSource2 = [(WDElectrocardiogramDataMetadataViewController *)self reportDataSource];
+  lastName = [reportDataSource2 lastName];
+  v14 = [(WDElectrocardiogramActivityItemSource *)v7 initWithPDFData:generatePDF sampleDate:startDate firstName:firstName lastName:lastName provenance:0];
 
   if (v14)
   {
@@ -555,8 +555,8 @@
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
     v17 = [v15 initWithActivityItems:v16 applicationActivities:0];
 
-    v18 = [v17 popoverPresentationController];
-    [v18 setSourceItem:v4];
+    popoverPresentationController = [v17 popoverPresentationController];
+    [popoverPresentationController setSourceItem:tappedCopy];
 
     v21 = *MEMORY[0x277D54730];
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v21 count:1];
@@ -572,38 +572,38 @@
 {
   if ([(WDElectrocardiogramDataMetadataViewController *)self actionsEnabled])
   {
-    v3 = [(WDElectrocardiogramDataMetadataViewController *)self reportGenerator];
-    v14 = [v3 generatePDF];
+    reportGenerator = [(WDElectrocardiogramDataMetadataViewController *)self reportGenerator];
+    generatePDF = [reportGenerator generatePDF];
 
     v4 = [WDElectrocardiogramPDFViewController alloc];
-    v5 = [(WDElectrocardiogramDataMetadataViewController *)self sample];
-    v6 = [v5 startDate];
-    v7 = [(WDElectrocardiogramDataMetadataViewController *)self reportDataSource];
-    v8 = [v7 firstName];
-    v9 = [(WDElectrocardiogramDataMetadataViewController *)self reportDataSource];
-    v10 = [v9 lastName];
-    v11 = [(WDElectrocardiogramPDFViewController *)v4 initWithPDFData:v14 sampleDate:v6 firstName:v8 lastName:v10];
+    sample = [(WDElectrocardiogramDataMetadataViewController *)self sample];
+    startDate = [sample startDate];
+    reportDataSource = [(WDElectrocardiogramDataMetadataViewController *)self reportDataSource];
+    firstName = [reportDataSource firstName];
+    reportDataSource2 = [(WDElectrocardiogramDataMetadataViewController *)self reportDataSource];
+    lastName = [reportDataSource2 lastName];
+    v11 = [(WDElectrocardiogramPDFViewController *)v4 initWithPDFData:generatePDF sampleDate:startDate firstName:firstName lastName:lastName];
 
     v12 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v11];
     [(WDElectrocardiogramDataMetadataViewController *)self presentViewController:v12 animated:1 completion:0];
-    v13 = [MEMORY[0x277D130C0] sharedManager];
-    [v13 trackElectrocardiogramPDFViewed];
+    mEMORY[0x277D130C0] = [MEMORY[0x277D130C0] sharedManager];
+    [mEMORY[0x277D130C0] trackElectrocardiogramPDFViewed];
   }
 }
 
-- (void)deleteSampleTriggeredBySection:(id)a3
+- (void)deleteSampleTriggeredBySection:(id)section
 {
-  [a3 setEnabled:0];
+  [section setEnabled:0];
   [(WDElectrocardiogramDataMetadataViewController *)self setActionsEnabled:0];
-  v4 = [(WDElectrocardiogramDataMetadataViewController *)self delegate];
-  v5 = [v4 healthStore];
-  v6 = [(WDElectrocardiogramDataMetadataViewController *)self sample];
+  delegate = [(WDElectrocardiogramDataMetadataViewController *)self delegate];
+  healthStore = [delegate healthStore];
+  sample = [(WDElectrocardiogramDataMetadataViewController *)self sample];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __80__WDElectrocardiogramDataMetadataViewController_deleteSampleTriggeredBySection___block_invoke;
   v7[3] = &unk_2796E6CC8;
   v7[4] = self;
-  [v5 deleteObject:v6 options:3 withCompletion:v7];
+  [healthStore deleteObject:sample options:3 withCompletion:v7];
 }
 
 void __80__WDElectrocardiogramDataMetadataViewController_deleteSampleTriggeredBySection___block_invoke(uint64_t a1)
@@ -635,18 +635,18 @@ void __80__WDElectrocardiogramDataMetadataViewController_deleteSampleTriggeredBy
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v8 = a3;
-  if (!v8)
+  changeCopy = change;
+  if (!changeCopy)
   {
     goto LABEL_3;
   }
 
-  v4 = [(WDElectrocardiogramDataMetadataViewController *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
-  v6 = [v8 preferredContentSizeCategory];
-  v7 = [v5 isEqualToString:v6];
+  traitCollection = [(WDElectrocardiogramDataMetadataViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+  v7 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
   if ((v7 & 1) == 0)
   {
@@ -657,25 +657,25 @@ LABEL_3:
 
 - (int64_t)sampleAlgorithmVersion
 {
-  v2 = [(WDElectrocardiogramDataMetadataViewController *)self sample];
-  v3 = [v2 _algorithmVersion];
+  sample = [(WDElectrocardiogramDataMetadataViewController *)self sample];
+  _algorithmVersion = [sample _algorithmVersion];
 
-  if (v3)
+  if (_algorithmVersion)
   {
-    v4 = [v3 integerValue];
+    integerValue = [_algorithmVersion integerValue];
   }
 
   else
   {
-    v4 = 1;
+    integerValue = 1;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (id)featureVersionFromUpdateVersion:(id)a3
+- (id)featureVersionFromUpdateVersion:(id)version
 {
-  v3 = [a3 componentsSeparatedByString:@"."];
+  v3 = [version componentsSeparatedByString:@"."];
   v4 = [v3 mutableCopy];
 
   if ([v4 count] >= 2)
@@ -701,12 +701,12 @@ LABEL_3:
   v5 = [v4 actionWithHandler:&v10];
   v6 = [v3 initWithBarButtonSystemItem:0 primaryAction:{v5, v10, v11, v12, v13}];
 
-  v7 = [(WDElectrocardiogramDataMetadataViewController *)self identifierBundle];
-  v8 = [v7 stringByAppendingString:@".doneButton"];
+  identifierBundle = [(WDElectrocardiogramDataMetadataViewController *)self identifierBundle];
+  v8 = [identifierBundle stringByAppendingString:@".doneButton"];
   [v6 setAccessibilityIdentifier:v8];
 
-  v9 = [(WDElectrocardiogramDataMetadataViewController *)self navigationItem];
-  [v9 setLeftBarButtonItem:v6];
+  navigationItem = [(WDElectrocardiogramDataMetadataViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v6];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -720,8 +720,8 @@ void __85__WDElectrocardiogramDataMetadataViewController_viewControllerWillEnter
 
 - (void)viewControllerDidLeaveAdaptiveModal
 {
-  v2 = [(WDElectrocardiogramDataMetadataViewController *)self navigationItem];
-  [v2 setLeftBarButtonItem:0];
+  navigationItem = [(WDElectrocardiogramDataMetadataViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:0];
 }
 
 - (HKDataMetadataViewControllerDelegate)delegate

@@ -1,24 +1,24 @@
 @interface AWDCoreRoutineLearnedLocationReconciliationVisit
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAlternativeVisits:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addAlternativeVisits:(id)visits;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDatapointCount:(BOOL)a3;
-- (void)setHasDeviceClass:(BOOL)a3;
-- (void)setHasDidUnlock:(BOOL)a3;
-- (void)setHasNewPlace:(BOOL)a3;
-- (void)setHasPercentageTransitions:(BOOL)a3;
-- (void)setHasPercentageVisits:(BOOL)a3;
-- (void)setHasPlaceAOIPOI:(BOOL)a3;
-- (void)setHasPlaceLabelType:(BOOL)a3;
-- (void)setHasPlaceType:(BOOL)a3;
-- (void)setHasWatchPresent:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDatapointCount:(BOOL)count;
+- (void)setHasDeviceClass:(BOOL)class;
+- (void)setHasDidUnlock:(BOOL)unlock;
+- (void)setHasNewPlace:(BOOL)place;
+- (void)setHasPercentageTransitions:(BOOL)transitions;
+- (void)setHasPercentageVisits:(BOOL)visits;
+- (void)setHasPlaceAOIPOI:(BOOL)i;
+- (void)setHasPlaceLabelType:(BOOL)type;
+- (void)setHasPlaceType:(BOOL)type;
+- (void)setHasWatchPresent:(BOOL)present;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineLearnedLocationReconciliationVisit
@@ -31,9 +31,9 @@
   [(AWDCoreRoutineLearnedLocationReconciliationVisit *)&v3 dealloc];
 }
 
-- (void)setHasDatapointCount:(BOOL)a3
+- (void)setHasDatapointCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -46,9 +46,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasDeviceClass:(BOOL)a3
+- (void)setHasDeviceClass:(BOOL)class
 {
-  if (a3)
+  if (class)
   {
     v3 = 4;
   }
@@ -61,9 +61,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasWatchPresent:(BOOL)a3
+- (void)setHasWatchPresent:(BOOL)present
 {
-  if (a3)
+  if (present)
   {
     v3 = 1024;
   }
@@ -76,9 +76,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasDidUnlock:(BOOL)a3
+- (void)setHasDidUnlock:(BOOL)unlock
 {
-  if (a3)
+  if (unlock)
   {
     v3 = 128;
   }
@@ -91,9 +91,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasNewPlace:(BOOL)a3
+- (void)setHasNewPlace:(BOOL)place
 {
-  if (a3)
+  if (place)
   {
     v3 = 256;
   }
@@ -106,9 +106,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasPlaceType:(BOOL)a3
+- (void)setHasPlaceType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 64;
   }
@@ -121,9 +121,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasPlaceLabelType:(BOOL)a3
+- (void)setHasPlaceLabelType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 32;
   }
@@ -136,9 +136,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasPlaceAOIPOI:(BOOL)a3
+- (void)setHasPlaceAOIPOI:(BOOL)i
 {
-  if (a3)
+  if (i)
   {
     v3 = 512;
   }
@@ -151,9 +151,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasPercentageVisits:(BOOL)a3
+- (void)setHasPercentageVisits:(BOOL)visits
 {
-  if (a3)
+  if (visits)
   {
     v3 = 16;
   }
@@ -166,9 +166,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasPercentageTransitions:(BOOL)a3
+- (void)setHasPercentageTransitions:(BOOL)transitions
 {
-  if (a3)
+  if (transitions)
   {
     v3 = 8;
   }
@@ -181,7 +181,7 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)addAlternativeVisits:(id)a3
+- (void)addAlternativeVisits:(id)visits
 {
   alternativeVisits = self->_alternativeVisits;
   if (!alternativeVisits)
@@ -190,7 +190,7 @@
     self->_alternativeVisits = alternativeVisits;
   }
 
-  [(NSMutableArray *)alternativeVisits addObject:a3];
+  [(NSMutableArray *)alternativeVisits addObject:visits];
 }
 
 - (id)description
@@ -203,11 +203,11 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -226,7 +226,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_datapointCount), @"datapointCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_datapointCount), @"datapointCount"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -240,7 +240,7 @@ LABEL_4:
   }
 
 LABEL_25:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_deviceClass), @"deviceClass"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_deviceClass), @"deviceClass"}];
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -254,7 +254,7 @@ LABEL_5:
   }
 
 LABEL_26:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_watchPresent), @"watchPresent"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_watchPresent), @"watchPresent"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -268,7 +268,7 @@ LABEL_6:
   }
 
 LABEL_27:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_didUnlock), @"didUnlock"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_didUnlock), @"didUnlock"}];
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -282,7 +282,7 @@ LABEL_7:
   }
 
 LABEL_28:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_newPlace), @"newPlace"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_newPlace), @"newPlace"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -296,7 +296,7 @@ LABEL_8:
   }
 
 LABEL_29:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_placeType), @"placeType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_placeType), @"placeType"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -310,7 +310,7 @@ LABEL_9:
   }
 
 LABEL_30:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_placeLabelType), @"placeLabelType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_placeLabelType), @"placeLabelType"}];
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -324,7 +324,7 @@ LABEL_10:
   }
 
 LABEL_31:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_placeAOIPOI), @"placeAOIPOI"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_placeAOIPOI), @"placeAOIPOI"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -338,11 +338,11 @@ LABEL_11:
   }
 
 LABEL_32:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_percentageVisits), @"percentageVisits"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_percentageVisits), @"percentageVisits"}];
   if ((*&self->_has & 8) != 0)
   {
 LABEL_12:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_percentageTransitions), @"percentageTransitions"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_percentageTransitions), @"percentageTransitions"}];
   }
 
 LABEL_13:
@@ -377,14 +377,14 @@ LABEL_13:
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"alternativeVisits"];
+    [dictionary setObject:v5 forKey:@"alternativeVisits"];
   }
 
   v11 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x29EDCA608];
   has = self->_has;
@@ -572,13 +572,13 @@ LABEL_13:
   v12 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 26) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 26) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -597,8 +597,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 6) = self->_datapointCount;
-  *(a3 + 26) |= 2u;
+  *(to + 6) = self->_datapointCount;
+  *(to + 26) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -612,8 +612,8 @@ LABEL_4:
   }
 
 LABEL_20:
-  *(a3 + 7) = self->_deviceClass;
-  *(a3 + 26) |= 4u;
+  *(to + 7) = self->_deviceClass;
+  *(to + 26) |= 4u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -627,8 +627,8 @@ LABEL_5:
   }
 
 LABEL_21:
-  *(a3 + 51) = self->_watchPresent;
-  *(a3 + 26) |= 0x400u;
+  *(to + 51) = self->_watchPresent;
+  *(to + 26) |= 0x400u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -642,8 +642,8 @@ LABEL_6:
   }
 
 LABEL_22:
-  *(a3 + 48) = self->_didUnlock;
-  *(a3 + 26) |= 0x80u;
+  *(to + 48) = self->_didUnlock;
+  *(to + 26) |= 0x80u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -657,8 +657,8 @@ LABEL_7:
   }
 
 LABEL_23:
-  *(a3 + 49) = self->_newPlace;
-  *(a3 + 26) |= 0x100u;
+  *(to + 49) = self->_newPlace;
+  *(to + 26) |= 0x100u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -672,8 +672,8 @@ LABEL_8:
   }
 
 LABEL_24:
-  *(a3 + 11) = self->_placeType;
-  *(a3 + 26) |= 0x40u;
+  *(to + 11) = self->_placeType;
+  *(to + 26) |= 0x40u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -687,8 +687,8 @@ LABEL_9:
   }
 
 LABEL_25:
-  *(a3 + 10) = self->_placeLabelType;
-  *(a3 + 26) |= 0x20u;
+  *(to + 10) = self->_placeLabelType;
+  *(to + 26) |= 0x20u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -699,8 +699,8 @@ LABEL_10:
     }
 
 LABEL_27:
-    *(a3 + 9) = self->_percentageVisits;
-    *(a3 + 26) |= 0x10u;
+    *(to + 9) = self->_percentageVisits;
+    *(to + 26) |= 0x10u;
     if ((*&self->_has & 8) == 0)
     {
       goto LABEL_13;
@@ -710,8 +710,8 @@ LABEL_27:
   }
 
 LABEL_26:
-  *(a3 + 50) = self->_placeAOIPOI;
-  *(a3 + 26) |= 0x200u;
+  *(to + 50) = self->_placeAOIPOI;
+  *(to + 26) |= 0x200u;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -722,30 +722,30 @@ LABEL_11:
   if ((has & 8) != 0)
   {
 LABEL_12:
-    *(a3 + 8) = self->_percentageTransitions;
-    *(a3 + 26) |= 8u;
+    *(to + 8) = self->_percentageTransitions;
+    *(to + 26) |= 8u;
   }
 
 LABEL_13:
   if ([(AWDCoreRoutineLearnedLocationReconciliationVisit *)self alternativeVisitsCount])
   {
-    [a3 clearAlternativeVisits];
-    v6 = [(AWDCoreRoutineLearnedLocationReconciliationVisit *)self alternativeVisitsCount];
-    if (v6)
+    [to clearAlternativeVisits];
+    alternativeVisitsCount = [(AWDCoreRoutineLearnedLocationReconciliationVisit *)self alternativeVisitsCount];
+    if (alternativeVisitsCount)
     {
-      v7 = v6;
+      v7 = alternativeVisitsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addAlternativeVisits:{-[AWDCoreRoutineLearnedLocationReconciliationVisit alternativeVisitsAtIndex:](self, "alternativeVisitsAtIndex:", i)}];
+        [to addAlternativeVisits:{-[AWDCoreRoutineLearnedLocationReconciliationVisit alternativeVisitsAtIndex:](self, "alternativeVisitsAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -919,7 +919,7 @@ LABEL_13:
           objc_enumerationMutation(alternativeVisits);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:zone];
         [v6 addAlternativeVisits:v13];
       }
 
@@ -933,19 +933,19 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
   has = self->_has;
-  v7 = *(a3 + 26);
+  v7 = *(equal + 26);
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_timestamp != *(a3 + 1))
+    if ((v7 & 1) == 0 || self->_timestamp != *(equal + 1))
     {
       goto LABEL_71;
     }
@@ -958,7 +958,7 @@ LABEL_13:
 
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_datapointCount != *(a3 + 6))
+    if ((v7 & 2) == 0 || self->_datapointCount != *(equal + 6))
     {
       goto LABEL_71;
     }
@@ -971,7 +971,7 @@ LABEL_13:
 
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_deviceClass != *(a3 + 7))
+    if ((v7 & 4) == 0 || self->_deviceClass != *(equal + 7))
     {
       goto LABEL_71;
     }
@@ -984,27 +984,27 @@ LABEL_13:
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(a3 + 26) & 0x400) == 0)
+    if ((*(equal + 26) & 0x400) == 0)
     {
       goto LABEL_71;
     }
 
-    v8 = *(a3 + 51);
+    v8 = *(equal + 51);
     if (self->_watchPresent)
     {
-      if ((*(a3 + 51) & 1) == 0)
+      if ((*(equal + 51) & 1) == 0)
       {
         goto LABEL_71;
       }
     }
 
-    else if (*(a3 + 51))
+    else if (*(equal + 51))
     {
       goto LABEL_71;
     }
   }
 
-  else if ((*(a3 + 26) & 0x400) != 0)
+  else if ((*(equal + 26) & 0x400) != 0)
   {
     goto LABEL_71;
   }
@@ -1016,16 +1016,16 @@ LABEL_13:
       goto LABEL_71;
     }
 
-    v9 = *(a3 + 48);
+    v9 = *(equal + 48);
     if (self->_didUnlock)
     {
-      if ((*(a3 + 48) & 1) == 0)
+      if ((*(equal + 48) & 1) == 0)
       {
         goto LABEL_71;
       }
     }
 
-    else if (*(a3 + 48))
+    else if (*(equal + 48))
     {
       goto LABEL_71;
     }
@@ -1038,34 +1038,34 @@ LABEL_13:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(a3 + 26) & 0x100) == 0)
+    if ((*(equal + 26) & 0x100) == 0)
     {
       goto LABEL_71;
     }
 
-    v10 = *(a3 + 49);
+    v10 = *(equal + 49);
     if (self->_newPlace)
     {
-      if ((*(a3 + 49) & 1) == 0)
+      if ((*(equal + 49) & 1) == 0)
       {
         goto LABEL_71;
       }
     }
 
-    else if (*(a3 + 49))
+    else if (*(equal + 49))
     {
       goto LABEL_71;
     }
   }
 
-  else if ((*(a3 + 26) & 0x100) != 0)
+  else if ((*(equal + 26) & 0x100) != 0)
   {
     goto LABEL_71;
   }
 
   if ((has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_placeType != *(a3 + 11))
+    if ((v7 & 0x40) == 0 || self->_placeType != *(equal + 11))
     {
       goto LABEL_71;
     }
@@ -1078,7 +1078,7 @@ LABEL_13:
 
   if ((has & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_placeLabelType != *(a3 + 10))
+    if ((v7 & 0x20) == 0 || self->_placeLabelType != *(equal + 10))
     {
       goto LABEL_71;
     }
@@ -1091,18 +1091,18 @@ LABEL_13:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(a3 + 26) & 0x200) != 0)
+    if ((*(equal + 26) & 0x200) != 0)
     {
-      v11 = *(a3 + 50);
+      v11 = *(equal + 50);
       if (self->_placeAOIPOI)
       {
-        if ((*(a3 + 50) & 1) == 0)
+        if ((*(equal + 50) & 1) == 0)
         {
           goto LABEL_71;
         }
       }
 
-      else if (*(a3 + 50))
+      else if (*(equal + 50))
       {
         goto LABEL_71;
       }
@@ -1115,7 +1115,7 @@ LABEL_71:
     return v5;
   }
 
-  if ((*(a3 + 26) & 0x200) != 0)
+  if ((*(equal + 26) & 0x200) != 0)
   {
     goto LABEL_71;
   }
@@ -1123,7 +1123,7 @@ LABEL_71:
 LABEL_53:
   if ((has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_percentageVisits != *(a3 + 9))
+    if ((v7 & 0x10) == 0 || self->_percentageVisits != *(equal + 9))
     {
       goto LABEL_71;
     }
@@ -1136,7 +1136,7 @@ LABEL_53:
 
   if ((has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_percentageTransitions != *(a3 + 8))
+    if ((v7 & 8) == 0 || self->_percentageTransitions != *(equal + 8))
     {
       goto LABEL_71;
     }
@@ -1148,7 +1148,7 @@ LABEL_53:
   }
 
   alternativeVisits = self->_alternativeVisits;
-  if (alternativeVisits | *(a3 + 2))
+  if (alternativeVisits | *(equal + 2))
   {
 
     LOBYTE(v5) = [(NSMutableArray *)alternativeVisits isEqual:?];
@@ -1315,15 +1315,15 @@ LABEL_12:
   return v8 ^ v7 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ [(NSMutableArray *)self->_alternativeVisits hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x29EDCA608];
-  v4 = *(a3 + 26);
+  v4 = *(from + 26);
   if (v4)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v4 = *(a3 + 26);
+    v4 = *(from + 26);
     if ((v4 & 2) == 0)
     {
 LABEL_3:
@@ -1341,9 +1341,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_datapointCount = *(a3 + 6);
+  self->_datapointCount = *(from + 6);
   *&self->_has |= 2u;
-  v4 = *(a3 + 26);
+  v4 = *(from + 26);
   if ((v4 & 4) == 0)
   {
 LABEL_4:
@@ -1356,9 +1356,9 @@ LABEL_4:
   }
 
 LABEL_23:
-  self->_deviceClass = *(a3 + 7);
+  self->_deviceClass = *(from + 7);
   *&self->_has |= 4u;
-  v4 = *(a3 + 26);
+  v4 = *(from + 26);
   if ((v4 & 0x400) == 0)
   {
 LABEL_5:
@@ -1371,9 +1371,9 @@ LABEL_5:
   }
 
 LABEL_24:
-  self->_watchPresent = *(a3 + 51);
+  self->_watchPresent = *(from + 51);
   *&self->_has |= 0x400u;
-  v4 = *(a3 + 26);
+  v4 = *(from + 26);
   if ((v4 & 0x80) == 0)
   {
 LABEL_6:
@@ -1386,9 +1386,9 @@ LABEL_6:
   }
 
 LABEL_25:
-  self->_didUnlock = *(a3 + 48);
+  self->_didUnlock = *(from + 48);
   *&self->_has |= 0x80u;
-  v4 = *(a3 + 26);
+  v4 = *(from + 26);
   if ((v4 & 0x100) == 0)
   {
 LABEL_7:
@@ -1401,9 +1401,9 @@ LABEL_7:
   }
 
 LABEL_26:
-  self->_newPlace = *(a3 + 49);
+  self->_newPlace = *(from + 49);
   *&self->_has |= 0x100u;
-  v4 = *(a3 + 26);
+  v4 = *(from + 26);
   if ((v4 & 0x40) == 0)
   {
 LABEL_8:
@@ -1416,9 +1416,9 @@ LABEL_8:
   }
 
 LABEL_27:
-  self->_placeType = *(a3 + 11);
+  self->_placeType = *(from + 11);
   *&self->_has |= 0x40u;
-  v4 = *(a3 + 26);
+  v4 = *(from + 26);
   if ((v4 & 0x20) == 0)
   {
 LABEL_9:
@@ -1431,9 +1431,9 @@ LABEL_9:
   }
 
 LABEL_28:
-  self->_placeLabelType = *(a3 + 10);
+  self->_placeLabelType = *(from + 10);
   *&self->_has |= 0x20u;
-  v4 = *(a3 + 26);
+  v4 = *(from + 26);
   if ((v4 & 0x200) == 0)
   {
 LABEL_10:
@@ -1446,9 +1446,9 @@ LABEL_10:
   }
 
 LABEL_29:
-  self->_placeAOIPOI = *(a3 + 50);
+  self->_placeAOIPOI = *(from + 50);
   *&self->_has |= 0x200u;
-  v4 = *(a3 + 26);
+  v4 = *(from + 26);
   if ((v4 & 0x10) == 0)
   {
 LABEL_11:
@@ -1461,12 +1461,12 @@ LABEL_11:
   }
 
 LABEL_30:
-  self->_percentageVisits = *(a3 + 9);
+  self->_percentageVisits = *(from + 9);
   *&self->_has |= 0x10u;
-  if ((*(a3 + 26) & 8) != 0)
+  if ((*(from + 26) & 8) != 0)
   {
 LABEL_12:
-    self->_percentageTransitions = *(a3 + 8);
+    self->_percentageTransitions = *(from + 8);
     *&self->_has |= 8u;
   }
 
@@ -1475,7 +1475,7 @@ LABEL_13:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(a3 + 2);
+  v5 = *(from + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

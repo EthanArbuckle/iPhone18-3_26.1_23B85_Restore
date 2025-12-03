@@ -1,9 +1,9 @@
 @interface CIHomographyResampler
 - (CGRect)hightlightRect;
 - (CIHomographyResampler)init;
-- (__CVBuffer)ResampleCVPixels:(__CVBuffer *)a3 clipToRect:(CGRect)a4 outputSize:(CGSize)a5 pixelBufferPool:(__CVPixelBufferPool *)a6;
-- (signed)ResampleCVPixels:(__CVBuffer *)a3 clipToRect:(CGRect)a4 outputSize:(CGSize)a5 toPixelBuffer:(__CVBuffer *)a6;
-- (void)updateBackgroundFill:(CGRect)a3;
+- (__CVBuffer)ResampleCVPixels:(__CVBuffer *)pixels clipToRect:(CGRect)rect outputSize:(CGSize)size pixelBufferPool:(__CVPixelBufferPool *)pool;
+- (signed)ResampleCVPixels:(__CVBuffer *)pixels clipToRect:(CGRect)rect outputSize:(CGSize)size toPixelBuffer:(__CVBuffer *)buffer;
+- (void)updateBackgroundFill:(CGRect)fill;
 @end
 
 @implementation CIHomographyResampler
@@ -17,9 +17,9 @@
   if (v2)
   {
     v9[0] = *MEMORY[0x277CBF948];
-    v3 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
     v9[1] = *MEMORY[0x277CBF918];
-    v10[0] = v3;
+    v10[0] = null;
     v10[1] = MEMORY[0x277CBEC38];
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2];
 
@@ -31,63 +31,63 @@
   return v2;
 }
 
-- (__CVBuffer)ResampleCVPixels:(__CVBuffer *)a3 clipToRect:(CGRect)a4 outputSize:(CGSize)a5 pixelBufferPool:(__CVPixelBufferPool *)a6
+- (__CVBuffer)ResampleCVPixels:(__CVBuffer *)pixels clipToRect:(CGRect)rect outputSize:(CGSize)size pixelBufferPool:(__CVPixelBufferPool *)pool
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a4.size.height;
-  v10 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = size.height;
+  width = size.width;
+  v9 = rect.size.height;
+  v10 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v27[1] = *MEMORY[0x277D85DE8];
   v25 = 0;
   v26 = *MEMORY[0x277CC4DE8];
   v27[0] = MEMORY[0x277CBEC10];
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:&v26 count:1];
-  if (a6)
+  if (pool)
   {
-    PixelBufferAttributes = CVPixelBufferPoolGetPixelBufferAttributes(a6);
+    PixelBufferAttributes = CVPixelBufferPoolGetPixelBufferAttributes(pool);
     v17 = [(__CFDictionary *)PixelBufferAttributes objectForKeyedSubscript:@"Height"];
-    v18 = [v17 unsignedIntValue];
+    unsignedIntValue = [v17 unsignedIntValue];
 
     v19 = [(__CFDictionary *)PixelBufferAttributes objectForKeyedSubscript:@"Width"];
-    v20 = [v19 unsignedIntValue];
+    unsignedIntValue2 = [v19 unsignedIntValue];
 
-    if (v18 != height || v20 != width)
+    if (unsignedIntValue != height || unsignedIntValue2 != width)
     {
       return v25;
     }
 
-    v21 = CVPixelBufferPoolCreatePixelBuffer(*MEMORY[0x277CBECE8], a6, &v25);
+    v21 = CVPixelBufferPoolCreatePixelBuffer(*MEMORY[0x277CBECE8], pool, &v25);
   }
 
   else
   {
     v22 = v15;
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(pixels);
     v21 = CVPixelBufferCreate(*MEMORY[0x277CBECE8], width, height, PixelFormatType, v22, &v25);
   }
 
   if (!v21)
   {
-    [(CIHomographyResampler *)self ResampleCVPixels:a3 clipToRect:v25 outputSize:x toPixelBuffer:y, v10, v9, width, height];
+    [(CIHomographyResampler *)self ResampleCVPixels:pixels clipToRect:v25 outputSize:x toPixelBuffer:y, v10, v9, width, height];
   }
 
   return v25;
 }
 
-- (void)updateBackgroundFill:(CGRect)a3
+- (void)updateBackgroundFill:(CGRect)fill
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = fill.size.height;
+  width = fill.size.width;
+  y = fill.origin.y;
+  x = fill.origin.x;
   p_lastFillRect = &self->_lastFillRect;
-  if (!CGRectEqualToRect(a3, self->_lastFillRect))
+  if (!CGRectEqualToRect(fill, self->_lastFillRect))
   {
     v9 = objc_alloc(MEMORY[0x277CBF758]);
-    v10 = [MEMORY[0x277CBF730] grayColor];
-    v11 = [v9 initWithColor:v10];
+    grayColor = [MEMORY[0x277CBF730] grayColor];
+    v11 = [v9 initWithColor:grayColor];
     v12 = [v11 imageByCroppingToRect:{x, y, width, height}];
     fillImage = self->_fillImage;
     self->_fillImage = v12;
@@ -99,14 +99,14 @@
   }
 }
 
-- (signed)ResampleCVPixels:(__CVBuffer *)a3 clipToRect:(CGRect)a4 outputSize:(CGSize)a5 toPixelBuffer:(__CVBuffer *)a6
+- (signed)ResampleCVPixels:(__CVBuffer *)pixels clipToRect:(CGRect)rect outputSize:(CGSize)size toPixelBuffer:(__CVBuffer *)buffer
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v95 = *MEMORY[0x277D85DE8];
-  CleanRect = CVImageBufferGetCleanRect(a3);
+  CleanRect = CVImageBufferGetCleanRect(pixels);
   v11 = CleanRect.origin.x;
   v12 = CleanRect.origin.y;
   v78 = CleanRect.size.width;
@@ -120,7 +120,7 @@
   }
 
   while (v14 != 9);
-  v76 = [MEMORY[0x277CBF758] imageWithCVPixelBuffer:a3];
+  v76 = [MEMORY[0x277CBF758] imageWithCVPixelBuffer:pixels];
   v17 = [v76 imageByCroppingToRect:{v11, v12, v78, v13}];
   v18 = *(MEMORY[0x277CBF2C0] + 16);
   *&v84.a = *MEMORY[0x277CBF2C0];
@@ -162,17 +162,17 @@
   [v31 setValue:v74 forKey:@"inputBottomRight"];
   [v31 setValue:v83 forKey:@"inputBottomLeft"];
   [v31 setValue:v72 forKey:@"inputImage"];
-  v81 = [v31 outputImage];
+  outputImage = [v31 outputImage];
   [(CIHomographyResampler *)self updateBackgroundFill:v65, v66, v67, v68];
-  v71 = [v81 imageByCompositingOverImage:self->_fillImage];
+  v71 = [outputImage imageByCompositingOverImage:self->_fillImage];
   v33 = [MEMORY[0x277CBF788] vectorWithCGRect:{v65, v66, ((v67 + v65) - v65), ((v68 + v66) - v66)}];
   [v32 setValue:v33 forKey:@"inputRectangle"];
 
   [v32 setValue:v71 forKey:@"inputImage"];
-  v34 = [v32 outputImage];
+  outputImage2 = [v32 outputImage];
   if (!CGRectIsEmpty(self->hightlightRect))
   {
-    [v34 extent];
+    [outputImage2 extent];
     v36 = v35;
     v38 = v37;
     v40 = v39;
@@ -181,26 +181,26 @@
     v44 = [MEMORY[0x277CBF788] vectorWithCGRect:{self->hightlightRect.origin.x, self->hightlightRect.origin.y, self->hightlightRect.size.width, self->hightlightRect.size.height}];
     [v43 setValue:v44 forKey:@"inputRectangle"];
 
-    [v43 setValue:v34 forKey:@"inputImage"];
-    v45 = [v43 outputImage];
+    [v43 setValue:outputImage2 forKey:@"inputImage"];
+    outputImage3 = [v43 outputImage];
     v46 = [MEMORY[0x277CBF750] filterWithName:@"CIColorControls"];
     LODWORD(v47) = 1050253722;
     v48 = [MEMORY[0x277CCABB0] numberWithFloat:v47];
     [v46 setValue:v48 forKey:@"inputContrast"];
 
-    [v46 setValue:v34 forKey:@"inputImage"];
-    v49 = [v46 outputImage];
-    v50 = [v45 imageByCompositingOverImage:v49];
+    [v46 setValue:outputImage2 forKey:@"inputImage"];
+    outputImage4 = [v46 outputImage];
+    v50 = [outputImage3 imageByCompositingOverImage:outputImage4];
 
     v51 = [v50 imageByCroppingToRect:{v36, v38, v40, v42}];
 
-    v34 = v51;
+    outputImage2 = v51;
   }
 
   v52 = v65;
   v53 = v66;
   CGAffineTransformMakeTranslation(&v85, -v52, -v53);
-  v54 = [v34 imageByApplyingTransform:&v85];
+  v54 = [outputImage2 imageByApplyingTransform:&v85];
   v55 = v54;
   memset(&v85, 0, sizeof(v85));
   if (v54)
@@ -216,13 +216,13 @@
   CGAffineTransformInvert(&v85, &v84);
   v84 = v85;
   v56 = [v55 imageByApplyingTransform:&v84];
-  v57 = a5.width / v67;
-  v58 = a5.height / v68;
+  v57 = size.width / v67;
+  v58 = size.height / v68;
   CGAffineTransformMakeScale(&v84, v57, v58);
   v59 = [v56 imageByApplyingTransform:&v84];
-  CVBufferPropagateAttachments(a3, a6);
-  CVBufferRemoveAttachment(a6, *MEMORY[0x277CC4BE8]);
-  [(CIContext *)self->_ctx render:v59 toCVPixelBuffer:a6];
+  CVBufferPropagateAttachments(pixels, buffer);
+  CVBufferRemoveAttachment(buffer, *MEMORY[0x277CC4BE8]);
+  [(CIContext *)self->_ctx render:v59 toCVPixelBuffer:buffer];
 
   return 0;
 }

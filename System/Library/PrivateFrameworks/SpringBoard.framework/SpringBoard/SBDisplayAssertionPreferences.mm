@@ -1,7 +1,7 @@
 @interface SBDisplayAssertionPreferences
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SBDisplayAssertionPreferences)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -27,7 +27,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SBDisplayAssertionPreferences);
   [(SBDisplayAssertionPreferences *)v4 setWantsControlOfDisplay:self->_wantsControlOfDisplay];
@@ -40,10 +40,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -53,7 +53,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_wantsControlOfDisplay == v5->_wantsControlOfDisplay && [(SBDisplayArrangementItem *)self->_displayArrangement isEqual:v5->_displayArrangement]&& [(NSString *)self->_disableSystemIdleSleepReason isEqualToString:v5->_disableSystemIdleSleepReason]&& [(SBDisplayPowerLogEntry *)self->_powerLogEntry isEqual:v5->_powerLogEntry]&& self->_cloneMirroringMode == v5->_cloneMirroringMode && self->_displayState == v5->_displayState && self->_displayContentMirroringState == v5->_displayContentMirroringState;
     }
 
@@ -68,15 +68,15 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendBool:self->_wantsControlOfDisplay];
-  v5 = [v3 appendObject:self->_displayArrangement];
-  v6 = [v3 appendString:self->_disableSystemIdleSleepReason];
-  v7 = [v3 appendObject:self->_powerLogEntry];
-  v8 = [v3 appendUnsignedInteger:self->_cloneMirroringMode];
-  v9 = [v3 appendUnsignedInteger:self->_displayState];
-  v10 = [v3 appendUnsignedInteger:self->_displayContentMirroringState];
-  v11 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendBool:self->_wantsControlOfDisplay];
+  v5 = [builder appendObject:self->_displayArrangement];
+  v6 = [builder appendString:self->_disableSystemIdleSleepReason];
+  v7 = [builder appendObject:self->_powerLogEntry];
+  v8 = [builder appendUnsignedInteger:self->_cloneMirroringMode];
+  v9 = [builder appendUnsignedInteger:self->_displayState];
+  v10 = [builder appendUnsignedInteger:self->_displayContentMirroringState];
+  v11 = [builder hash];
 
   return v11;
 }
@@ -128,9 +128,9 @@
   }
 
   [v3 appendString:v11 withName:@"displayContentMirroringState"];
-  v12 = [v3 build];
+  build = [v3 build];
 
-  return v12;
+  return build;
 }
 
 @end

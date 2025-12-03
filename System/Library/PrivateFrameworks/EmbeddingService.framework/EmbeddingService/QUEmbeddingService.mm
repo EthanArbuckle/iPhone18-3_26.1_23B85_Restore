@@ -2,12 +2,12 @@
 + (BOOL)isUnitTested;
 + (id)log;
 + (id)signpostLog;
-- (QUEmbeddingService)initWithLocale:(id)a3 version:(id)a4;
-- (_NSRange)icuRangeOfString:(id)a3 range:(_NSRange)a4 query:(id)a5;
-- (_NSRange)rangeOfSubtoken:(id)a3 range:(_NSRange)a4 query:(id)a5;
+- (QUEmbeddingService)initWithLocale:(id)locale version:(id)version;
+- (_NSRange)icuRangeOfString:(id)string range:(_NSRange)range query:(id)query;
+- (_NSRange)rangeOfSubtoken:(id)subtoken range:(_NSRange)range query:(id)query;
 - (void)dealloc;
-- (void)getEmbeddingForQuery:(id)a3 completionHandler:(id)a4;
-- (void)loadWithCompletionHandler:(id)a3;
+- (void)getEmbeddingForQuery:(id)query completionHandler:(id)handler;
+- (void)loadWithCompletionHandler:(id)handler;
 @end
 
 @implementation QUEmbeddingService
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __25__QUEmbeddingService_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken != -1)
   {
     dispatch_once(&log_onceToken, block);
@@ -44,7 +44,7 @@ void __25__QUEmbeddingService_log__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __33__QUEmbeddingService_signpostLog__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (signpostLog_onceToken != -1)
   {
     dispatch_once(&signpostLog_onceToken, block);
@@ -89,18 +89,18 @@ void __34__QUEmbeddingService_isUnitTested__block_invoke()
   }
 }
 
-- (QUEmbeddingService)initWithLocale:(id)a3 version:(id)a4
+- (QUEmbeddingService)initWithLocale:(id)locale version:(id)version
 {
-  v7 = a3;
-  v8 = a4;
+  localeCopy = locale;
+  versionCopy = version;
   v24.receiver = self;
   v24.super_class = QUEmbeddingService;
   v9 = [(QUEmbeddingService *)&v24 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_locale, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_locale, locale);
+    v11 = [versionCopy copy];
     version = v10->_version;
     v10->_version = v11;
 
@@ -110,13 +110,13 @@ void __34__QUEmbeddingService_isUnitTested__block_invoke()
     v10->_cdmClient = v15;
 
     v10->_icuCollator = 0;
-    v17 = [v7 languageCode];
-    v18 = [v17 isEqualToString:@"tr"];
+    languageCode = [localeCopy languageCode];
+    v18 = [languageCode isEqualToString:@"tr"];
 
     if (v18)
     {
-      v19 = [v7 localeIdentifier];
-      [v19 UTF8String];
+      localeIdentifier = [localeCopy localeIdentifier];
+      [localeIdentifier UTF8String];
       v10->_icuCollator = ucol_open();
 
       icuCollator = v10->_icuCollator;
@@ -152,16 +152,16 @@ void __34__QUEmbeddingService_isUnitTested__block_invoke()
   [(QUEmbeddingService *)&v4 dealloc];
 }
 
-- (_NSRange)icuRangeOfString:(id)a3 range:(_NSRange)a4 query:(id)a5
+- (_NSRange)icuRangeOfString:(id)string range:(_NSRange)range query:(id)query
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  if (v9 && [v9 length] && self->_icuCollator)
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  queryCopy = query;
+  if (stringCopy && [stringCopy length] && self->_icuCollator)
   {
-    self->_icuQueryBuffer = malloc_type_realloc(self->_icuQueryBuffer, 2 * [v10 length], 0x1000040BDFB0063uLL);
-    v11 = malloc_type_realloc(self->_icuPatternBuffer, 2 * [v9 length], 0x1000040BDFB0063uLL);
+    self->_icuQueryBuffer = malloc_type_realloc(self->_icuQueryBuffer, 2 * [queryCopy length], 0x1000040BDFB0063uLL);
+    v11 = malloc_type_realloc(self->_icuPatternBuffer, 2 * [stringCopy length], 0x1000040BDFB0063uLL);
     v12 = 0;
     self->_icuPatternBuffer = v11;
     icuQueryBuffer = self->_icuQueryBuffer;
@@ -170,12 +170,12 @@ void __34__QUEmbeddingService_isUnitTested__block_invoke()
     {
       if (v11)
       {
-        [v10 getCharacters:icuQueryBuffer range:{0, objc_msgSend(v10, "length")}];
-        [v9 getCharacters:self->_icuPatternBuffer range:{0, objc_msgSend(v9, "length")}];
+        [queryCopy getCharacters:icuQueryBuffer range:{0, objc_msgSend(queryCopy, "length")}];
+        [stringCopy getCharacters:self->_icuPatternBuffer range:{0, objc_msgSend(stringCopy, "length")}];
         icuPatternBuffer = self->_icuPatternBuffer;
-        [v9 length];
+        [stringCopy length];
         v16 = self->_icuQueryBuffer;
-        [v10 length];
+        [queryCopy length];
         icuCollator = self->_icuCollator;
         v18 = usearch_openFromCollator();
         usearch_setAttribute();
@@ -220,31 +220,31 @@ void __34__QUEmbeddingService_isUnitTested__block_invoke()
   return result;
 }
 
-- (_NSRange)rangeOfSubtoken:(id)a3 range:(_NSRange)a4 query:(id)a5
+- (_NSRange)rangeOfSubtoken:(id)subtoken range:(_NSRange)range query:(id)query
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  v11 = [v10 rangeOfString:v9 options:129 range:location locale:{length, self->_locale}];
+  length = range.length;
+  location = range.location;
+  subtokenCopy = subtoken;
+  queryCopy = query;
+  v11 = [queryCopy rangeOfString:subtokenCopy options:129 range:location locale:{length, self->_locale}];
   v13 = v12;
-  v14 = [(NSLocale *)self->_locale languageCode];
-  v15 = [v14 isEqualToString:@"tr"];
+  languageCode = [(NSLocale *)self->_locale languageCode];
+  v15 = [languageCode isEqualToString:@"tr"];
 
   if (v15)
   {
-    v16 = [v10 rangeOfString:v9 options:129 range:{location, length}];
+    v16 = [queryCopy rangeOfString:subtokenCopy options:129 range:{location, length}];
     if (v16 < v11)
     {
       v13 = v17;
       v11 = v16;
     }
 
-    v18 = [(QUEmbeddingService *)self icuRangeOfString:v9 range:location query:length, v10];
-    if (v18 < v11)
+    queryCopy = [(QUEmbeddingService *)self icuRangeOfString:subtokenCopy range:location query:length, queryCopy];
+    if (queryCopy < v11)
     {
       v13 = v19;
-      v11 = v18;
+      v11 = queryCopy;
     }
   }
 
@@ -255,14 +255,14 @@ void __34__QUEmbeddingService_isUnitTested__block_invoke()
   return result;
 }
 
-- (void)loadWithCompletionHandler:(id)a3
+- (void)loadWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = gTestEmbeddings;
   if (gTestEmbeddings)
   {
-    v6 = [(NSLocale *)self->_locale localeIdentifier];
-    v7 = [v5 objectForKeyedSubscript:v6];
+    localeIdentifier = [(NSLocale *)self->_locale localeIdentifier];
+    v7 = [v5 objectForKeyedSubscript:localeIdentifier];
 
     v8 = dispatch_get_global_queue(0, 0);
     if (v7)
@@ -271,7 +271,7 @@ void __34__QUEmbeddingService_isUnitTested__block_invoke()
       block[1] = 3221225472;
       block[2] = __48__QUEmbeddingService_loadWithCompletionHandler___block_invoke;
       block[3] = &unk_278FC0CA0;
-      v23 = v4;
+      v23 = handlerCopy;
       dispatch_async(v8, block);
 
       v9 = v23;
@@ -283,7 +283,7 @@ void __34__QUEmbeddingService_isUnitTested__block_invoke()
       v20[1] = 3221225472;
       v20[2] = __48__QUEmbeddingService_loadWithCompletionHandler___block_invoke_2;
       v20[3] = &unk_278FC0CA0;
-      v21 = v4;
+      v21 = handlerCopy;
       dispatch_async(v8, v20);
 
       v9 = v21;
@@ -299,14 +299,14 @@ void __34__QUEmbeddingService_isUnitTested__block_invoke()
       _os_log_impl(&dword_249FBC000, v10, OS_LOG_TYPE_INFO, "[QPNLU] Setting up CDMClient", buf, 2u);
     }
 
-    v11 = [objc_opt_class() signpostLog];
-    v12 = [objc_opt_class() signpostLog];
-    v13 = os_signpost_id_make_with_pointer(v12, self);
+    signpostLog = [objc_opt_class() signpostLog];
+    signpostLog2 = [objc_opt_class() signpostLog];
+    v13 = os_signpost_id_make_with_pointer(signpostLog2, self);
 
-    if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
+    if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(signpostLog))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&dword_249FBC000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v13, "CDMClient setup", &unk_249FBF3B3, buf, 2u);
+      _os_signpost_emit_with_name_impl(&dword_249FBC000, signpostLog, OS_SIGNPOST_INTERVAL_BEGIN, v13, "CDMClient setup", &unk_249FBF3B3, buf, 2u);
     }
 
     version = self->_version;
@@ -317,7 +317,7 @@ void __34__QUEmbeddingService_isUnitTested__block_invoke()
     v17[2] = __48__QUEmbeddingService_loadWithCompletionHandler___block_invoke_99;
     v17[3] = &unk_278FC0CC8;
     v17[4] = self;
-    v18 = v4;
+    v18 = handlerCopy;
     [(CDMClient *)cdmClient setupWithLocale:locale embeddingVersion:version completionHandler:v17];
     v9 = v18;
   }
@@ -348,11 +348,11 @@ void __48__QUEmbeddingService_loadWithCompletionHandler___block_invoke_99(uint64
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getEmbeddingForQuery:(id)a3 completionHandler:(id)a4
+- (void)getEmbeddingForQuery:(id)query completionHandler:(id)handler
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  handlerCopy = handler;
   if (gTestEmbeddings)
   {
     v8 = [objc_opt_class() log];
@@ -362,7 +362,7 @@ void __48__QUEmbeddingService_loadWithCompletionHandler___block_invoke_99(uint64
       _os_log_impl(&dword_249FBC000, v8, OS_LOG_TYPE_DEBUG, "Use embedding from test data", buf, 2u);
     }
 
-    v9 = [gTestEmbeddings objectForKeyedSubscript:v6];
+    v9 = [gTestEmbeddings objectForKeyedSubscript:queryCopy];
     v10 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -371,24 +371,24 @@ void __48__QUEmbeddingService_loadWithCompletionHandler___block_invoke_99(uint64
     v11 = &v27;
     v12 = &v26;
     v26 = v9;
-    v27 = v7;
+    v27 = handlerCopy;
     v13 = v9;
-    v14 = v7;
+    v14 = handlerCopy;
     dispatch_async(v10, block);
   }
 
   else
   {
     v13 = self->_locale;
-    v15 = [objc_opt_class() signpostLog];
-    v16 = [objc_opt_class() signpostLog];
-    v17 = os_signpost_id_make_with_pointer(v16, self);
+    signpostLog = [objc_opt_class() signpostLog];
+    signpostLog2 = [objc_opt_class() signpostLog];
+    v17 = os_signpost_id_make_with_pointer(signpostLog2, self);
 
-    if (v17 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
+    if (v17 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(signpostLog))
     {
       *buf = 138412290;
-      v29 = v6;
-      _os_signpost_emit_with_name_impl(&dword_249FBC000, v15, OS_SIGNPOST_INTERVAL_BEGIN, v17, "CDMClient getEmbeddingForQuery", "Query = %@", buf, 0xCu);
+      v29 = queryCopy;
+      _os_signpost_emit_with_name_impl(&dword_249FBC000, signpostLog, OS_SIGNPOST_INTERVAL_BEGIN, v17, "CDMClient getEmbeddingForQuery", "Query = %@", buf, 0xCu);
     }
 
     cdmClient = self->_cdmClient;
@@ -397,12 +397,12 @@ void __48__QUEmbeddingService_loadWithCompletionHandler___block_invoke_99(uint64
     v22[2] = __61__QUEmbeddingService_getEmbeddingForQuery_completionHandler___block_invoke_101;
     v22[3] = &unk_278FC0D18;
     v11 = &v24;
-    v24 = v7;
+    v24 = handlerCopy;
     v12 = v23;
-    v19 = v6;
+    v19 = queryCopy;
     v23[0] = v19;
     v23[1] = self;
-    v20 = v7;
+    v20 = handlerCopy;
     [(CDMClient *)cdmClient processEmbeddingRequest:v19 completionHandler:v22];
   }
 

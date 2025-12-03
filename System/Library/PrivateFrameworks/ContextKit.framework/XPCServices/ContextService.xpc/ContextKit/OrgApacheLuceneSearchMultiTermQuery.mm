@@ -1,22 +1,22 @@
 @interface OrgApacheLuceneSearchMultiTermQuery
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (id)getTermsEnumWithOrgApacheLuceneIndexTerms:(id)a3;
-- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)getTermsEnumWithOrgApacheLuceneIndexTerms:(id)terms;
+- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)reader;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchMultiTermQuery
 
-- (id)getTermsEnumWithOrgApacheLuceneIndexTerms:(id)a3
+- (id)getTermsEnumWithOrgApacheLuceneIndexTerms:(id)terms
 {
   v5 = new_OrgApacheLuceneUtilAttributeSource_init();
 
-  return [(OrgApacheLuceneSearchMultiTermQuery *)self getTermsEnumWithOrgApacheLuceneIndexTerms:a3 withOrgApacheLuceneUtilAttributeSource:v5];
+  return [(OrgApacheLuceneSearchMultiTermQuery *)self getTermsEnumWithOrgApacheLuceneIndexTerms:terms withOrgApacheLuceneUtilAttributeSource:v5];
 }
 
-- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)a3
+- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)reader
 {
   v5 = *(&self->field_ + 4);
   if (!v5)
@@ -24,7 +24,7 @@
     JreThrowNullPointerException();
   }
 
-  return [v5 rewriteWithOrgApacheLuceneIndexIndexReader:a3 withOrgApacheLuceneSearchMultiTermQuery:self];
+  return [v5 rewriteWithOrgApacheLuceneIndexIndexReader:reader withOrgApacheLuceneSearchMultiTermQuery:self];
 }
 
 - (unint64_t)hash
@@ -47,14 +47,14 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v6) = 1;
   }
 
-  else if (a3 && (v5 = -[OrgApacheLuceneSearchMultiTermQuery getClass](self, "getClass"), v5 == [a3 getClass]))
+  else if (equal && (v5 = -[OrgApacheLuceneSearchMultiTermQuery getClass](self, "getClass"), v5 == [equal getClass]))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -64,7 +64,7 @@
 
     v11.receiver = self;
     v11.super_class = OrgApacheLuceneSearchMultiTermQuery;
-    v6 = [(OrgApacheLuceneSearchQuery *)&v11 isEqual:a3];
+    v6 = [(OrgApacheLuceneSearchQuery *)&v11 isEqual:equal];
     if (v6)
     {
       v7 = *(&self->field_ + 4);
@@ -73,10 +73,10 @@
         JreThrowNullPointerException();
       }
 
-      v6 = [v7 isEqual:*(a3 + 20)];
+      v6 = [v7 isEqual:*(equal + 20)];
       if (v6)
       {
-        v8 = *(a3 + 12);
+        v8 = *(equal + 12);
         v9 = *(&self->super.boost_ + 1);
         if (v8)
         {
@@ -108,7 +108,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&OrgApacheLuceneSearchMultiTermQuery_CONSTANT_SCORE_REWRITE_, [OrgApacheLuceneSearchMultiTermQuery__1 alloc]);
     JreStrongAssign(&OrgApacheLuceneSearchMultiTermQuery_CONSTANT_SCORE_FILTER_REWRITE_, OrgApacheLuceneSearchMultiTermQuery_CONSTANT_SCORE_REWRITE_);

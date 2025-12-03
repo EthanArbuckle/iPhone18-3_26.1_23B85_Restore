@@ -1,11 +1,11 @@
 @interface CSEventMonitor
 - (CSEventMonitor)init;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)enumerateObservers:(id)a3;
-- (void)enumerateObserversInQueue:(id)a3;
-- (void)notifyObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)enumerateObservers:(id)observers;
+- (void)enumerateObserversInQueue:(id)queue;
+- (void)notifyObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation CSEventMonitor
@@ -17,9 +17,9 @@
   v2 = [(CSEventMonitor *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
     v5 = dispatch_queue_create("Serial CSEventMonitor queue", 0);
     queue = v2->_queue;
@@ -29,19 +29,19 @@
   return v2;
 }
 
-- (void)notifyObserver:(id)a3
+- (void)notifyObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (objc_opt_respondsToSelector())
   {
-    [v4 CSEventMonitorDidReceiveEvent:self];
+    [observerCopy CSEventMonitorDidReceiveEvent:self];
   }
 }
 
-- (void)enumerateObservers:(id)a3
+- (void)enumerateObservers:(id)observers
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observersCopy = observers;
   dispatch_assert_queue_V2(self->_queue);
   v13 = 0u;
   v14 = 0u;
@@ -63,9 +63,9 @@
           objc_enumerationMutation(v5);
         }
 
-        if (v4)
+        if (observersCopy)
         {
-          v4[2](v4, *(*(&v11 + 1) + 8 * v9));
+          observersCopy[2](observersCopy, *(*(&v11 + 1) + 8 * v9));
         }
 
         ++v9;
@@ -81,31 +81,31 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateObserversInQueue:(id)a3
+- (void)enumerateObserversInQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__CSEventMonitor_enumerateObserversInQueue___block_invoke;
   v7[3] = &unk_1E865CB90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = queueCopy;
+  v6 = queueCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__CSEventMonitor_removeObserver___block_invoke;
   v7[3] = &unk_1E865C970;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -127,17 +127,17 @@ uint64_t __33__CSEventMonitor_removeObserver___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __30__CSEventMonitor_addObserver___block_invoke;
   v7[3] = &unk_1E865C970;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 

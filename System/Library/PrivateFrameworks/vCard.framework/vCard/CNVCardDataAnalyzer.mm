@@ -1,29 +1,29 @@
 @interface CNVCardDataAnalyzer
-+ (BOOL)data:(id)a3 containsParam:(id)a4 value:(id)a5 encoding:(unint64_t)a6;
-+ (BOOL)data:(id)a3 containsString:(id)a4 encoding:(unint64_t)a5;
-+ (BOOL)data:(id)a3 containsSubdata:(id)a4;
-+ (BOOL)data:(id)a3 hasPrefix:(id)a4;
-+ (BOOL)data:(id)a3 isVersion30WithPrefix:(id)a4 encoding:(unint64_t)a5;
-+ (BOOL)tryUTF16BEBOMVCard:(id)a3 analysis:(CNVCardDataAnalysis *)a4;
-+ (BOOL)tryUTF16ByInferrence:(id)a3 analysis:(CNVCardDataAnalysis *)a4;
-+ (BOOL)tryUTF16LEBOMVCard:(id)a3 analysis:(CNVCardDataAnalysis *)a4;
-+ (BOOL)tryUTF16WithByteOrderMarker:(id)a3 analysis:(CNVCardDataAnalysis *)a4;
-+ (BOOL)tryVCardEncoding:(unint64_t)a3 data:(id)a4 analysis:(CNVCardDataAnalysis *)a5;
-+ (CNVCardDataAnalysis)analyzeData:(id)a3;
-+ (id)data:(id)a3 byPrependingData:(id)a4;
-+ (unsigned)data:(id)a3 byteAtIndex:(unint64_t)a4;
++ (BOOL)data:(id)data containsParam:(id)param value:(id)value encoding:(unint64_t)encoding;
++ (BOOL)data:(id)data containsString:(id)string encoding:(unint64_t)encoding;
++ (BOOL)data:(id)data containsSubdata:(id)subdata;
++ (BOOL)data:(id)data hasPrefix:(id)prefix;
++ (BOOL)data:(id)data isVersion30WithPrefix:(id)prefix encoding:(unint64_t)encoding;
++ (BOOL)tryUTF16BEBOMVCard:(id)card analysis:(CNVCardDataAnalysis *)analysis;
++ (BOOL)tryUTF16ByInferrence:(id)inferrence analysis:(CNVCardDataAnalysis *)analysis;
++ (BOOL)tryUTF16LEBOMVCard:(id)card analysis:(CNVCardDataAnalysis *)analysis;
++ (BOOL)tryUTF16WithByteOrderMarker:(id)marker analysis:(CNVCardDataAnalysis *)analysis;
++ (BOOL)tryVCardEncoding:(unint64_t)encoding data:(id)data analysis:(CNVCardDataAnalysis *)analysis;
++ (CNVCardDataAnalysis)analyzeData:(id)data;
++ (id)data:(id)data byPrependingData:(id)prependingData;
++ (unsigned)data:(id)data byteAtIndex:(unint64_t)index;
 @end
 
 @implementation CNVCardDataAnalyzer
 
-+ (CNVCardDataAnalysis)analyzeData:(id)a3
++ (CNVCardDataAnalysis)analyzeData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v7 = 0;
   v8 = 0;
-  if ([v4 length] && (objc_msgSend(a1, "tryUTF8VCard:analysis:", v4, &v7) & 1) == 0 && (objc_msgSend(a1, "tryUTF16LEVCard:analysis:", v4, &v7) & 1) == 0 && (objc_msgSend(a1, "tryUTF16BEVCard:analysis:", v4, &v7) & 1) == 0 && (objc_msgSend(a1, "tryUTF16LEBOMVCard:analysis:", v4, &v7) & 1) == 0 && (objc_msgSend(a1, "tryUTF16BEBOMVCard:analysis:", v4, &v7) & 1) == 0 && (objc_msgSend(a1, "tryUTF16WithByteOrderMarker:analysis:", v4, &v7) & 1) == 0)
+  if ([dataCopy length] && (objc_msgSend(self, "tryUTF8VCard:analysis:", dataCopy, &v7) & 1) == 0 && (objc_msgSend(self, "tryUTF16LEVCard:analysis:", dataCopy, &v7) & 1) == 0 && (objc_msgSend(self, "tryUTF16BEVCard:analysis:", dataCopy, &v7) & 1) == 0 && (objc_msgSend(self, "tryUTF16LEBOMVCard:analysis:", dataCopy, &v7) & 1) == 0 && (objc_msgSend(self, "tryUTF16BEBOMVCard:analysis:", dataCopy, &v7) & 1) == 0 && (objc_msgSend(self, "tryUTF16WithByteOrderMarker:analysis:", dataCopy, &v7) & 1) == 0)
   {
-    [a1 tryUTF16ByInferrence:v4 analysis:&v7];
+    [self tryUTF16ByInferrence:dataCopy analysis:&v7];
   }
 
   v5 = v7;
@@ -33,67 +33,67 @@
   return result;
 }
 
-+ (BOOL)tryUTF16LEBOMVCard:(id)a3 analysis:(CNVCardDataAnalysis *)a4
++ (BOOL)tryUTF16LEBOMVCard:(id)card analysis:(CNVCardDataAnalysis *)analysis
 {
-  v6 = a3;
+  cardCopy = card;
   v7 = [@"BEGIN:VCARD" dataUsingEncoding:2483028224];
   v8 = [MEMORY[0x277CBEA90] dataWithBytes:"\xFF\xFE" length:2];
-  v9 = [a1 data:v7 byPrependingData:v8];
+  v9 = [self data:v7 byPrependingData:v8];
 
-  v10 = [a1 data:v6 isVersion30WithPrefix:v9 encoding:2483028224];
+  v10 = [self data:cardCopy isVersion30WithPrefix:v9 encoding:2483028224];
   if (v10)
   {
-    a4->var0 = 2483028224;
-    a4->var1 = 1;
+    analysis->var0 = 2483028224;
+    analysis->var1 = 1;
   }
 
   return v10;
 }
 
-+ (BOOL)tryUTF16BEBOMVCard:(id)a3 analysis:(CNVCardDataAnalysis *)a4
++ (BOOL)tryUTF16BEBOMVCard:(id)card analysis:(CNVCardDataAnalysis *)analysis
 {
-  v6 = a3;
+  cardCopy = card;
   v7 = [@"BEGIN:VCARD" dataUsingEncoding:2415919360];
   v8 = [MEMORY[0x277CBEA90] dataWithBytes:"\xFE\xFF" length:2];
-  v9 = [a1 data:v7 byPrependingData:v8];
+  v9 = [self data:v7 byPrependingData:v8];
 
-  v10 = [a1 data:v6 isVersion30WithPrefix:v9 encoding:2415919360];
+  v10 = [self data:cardCopy isVersion30WithPrefix:v9 encoding:2415919360];
   if (v10)
   {
-    a4->var0 = 2415919360;
-    a4->var1 = 1;
+    analysis->var0 = 2415919360;
+    analysis->var1 = 1;
   }
 
   return v10;
 }
 
-+ (BOOL)tryVCardEncoding:(unint64_t)a3 data:(id)a4 analysis:(CNVCardDataAnalysis *)a5
++ (BOOL)tryVCardEncoding:(unint64_t)encoding data:(id)data analysis:(CNVCardDataAnalysis *)analysis
 {
-  v8 = a4;
-  v9 = [@"BEGIN:VCARD" dataUsingEncoding:a3];
-  v10 = [a1 data:v8 isVersion30WithPrefix:v9 encoding:a3];
+  dataCopy = data;
+  v9 = [@"BEGIN:VCARD" dataUsingEncoding:encoding];
+  v10 = [self data:dataCopy isVersion30WithPrefix:v9 encoding:encoding];
 
   if (v10)
   {
-    a5->var0 = a3;
+    analysis->var0 = encoding;
   }
 
   return v10;
 }
 
-+ (BOOL)data:(id)a3 isVersion30WithPrefix:(id)a4 encoding:(unint64_t)a5
++ (BOOL)data:(id)data isVersion30WithPrefix:(id)prefix encoding:(unint64_t)encoding
 {
-  v8 = a3;
-  if ([a1 data:v8 hasPrefix:a4])
+  dataCopy = data;
+  if ([self data:dataCopy hasPrefix:prefix])
   {
-    if ([a1 data:v8 containsString:@"VERSION:3.0" encoding:a5])
+    if ([self data:dataCopy containsString:@"VERSION:3.0" encoding:encoding])
     {
       v9 = 1;
     }
 
     else
     {
-      v9 = [a1 data:v8 containsParam:@"VERSION" value:@"3.0" encoding:a5];
+      v9 = [self data:dataCopy containsParam:@"VERSION" value:@"3.0" encoding:encoding];
     }
   }
 
@@ -105,22 +105,22 @@
   return v9;
 }
 
-+ (BOOL)data:(id)a3 containsString:(id)a4 encoding:(unint64_t)a5
++ (BOOL)data:(id)data containsString:(id)string encoding:(unint64_t)encoding
 {
-  v8 = a3;
-  v9 = [a4 dataUsingEncoding:a5];
-  LOBYTE(a4) = [a1 data:v8 containsSubdata:v9];
+  dataCopy = data;
+  v9 = [string dataUsingEncoding:encoding];
+  LOBYTE(string) = [self data:dataCopy containsSubdata:v9];
 
-  return a4;
+  return string;
 }
 
-+ (BOOL)data:(id)a3 containsParam:(id)a4 value:(id)a5 encoding:(unint64_t)a6
++ (BOOL)data:(id)data containsParam:(id)param value:(id)value encoding:(unint64_t)encoding
 {
   v35 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = [a4 dataUsingEncoding:a6];
-  v12 = [v9 rangeOfData:v11 options:0 range:{0, objc_msgSend(v9, "length")}];
+  dataCopy = data;
+  valueCopy = value;
+  v11 = [param dataUsingEncoding:encoding];
+  v12 = [dataCopy rangeOfData:v11 options:0 range:{0, objc_msgSend(dataCopy, "length")}];
   if (v12 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v14 = 0;
@@ -129,10 +129,10 @@
   else
   {
     v15 = v12 + v13;
-    [v9 length];
-    v29 = v10;
-    v28 = [v10 dataUsingEncoding:a6];
-    v16 = [v9 rangeOfData:? options:? range:?];
+    [dataCopy length];
+    v29 = valueCopy;
+    v28 = [valueCopy dataUsingEncoding:encoding];
+    v16 = [dataCopy rangeOfData:? options:? range:?];
     if (v16 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v14 = 0;
@@ -161,8 +161,8 @@
               objc_enumerationMutation(&unk_28865B668);
             }
 
-            v23 = [*(*(&v30 + 1) + 8 * i) dataUsingEncoding:a6];
-            v24 = [v9 rangeOfData:v23 options:0 range:{v15, v20}];
+            v23 = [*(*(&v30 + 1) + 8 * i) dataUsingEncoding:encoding];
+            v24 = [dataCopy rangeOfData:v23 options:0 range:{v15, v20}];
 
             if (v24 != 0x7FFFFFFFFFFFFFFFLL)
             {
@@ -192,26 +192,26 @@
 
 LABEL_16:
 
-    v10 = v29;
+    valueCopy = v29;
   }
 
   v25 = *MEMORY[0x277D85DE8];
   return v14;
 }
 
-+ (BOOL)tryUTF16WithByteOrderMarker:(id)a3 analysis:(CNVCardDataAnalysis *)a4
++ (BOOL)tryUTF16WithByteOrderMarker:(id)marker analysis:(CNVCardDataAnalysis *)analysis
 {
-  v6 = a3;
-  v7 = [a1 data:v6 byteAtIndex:0];
-  v8 = [a1 data:v6 byteAtIndex:1];
+  markerCopy = marker;
+  v7 = [self data:markerCopy byteAtIndex:0];
+  v8 = [self data:markerCopy byteAtIndex:1];
 
   if (v7 == 254 && v8 == 255)
   {
     v9 = 2415919360;
 LABEL_7:
-    a4->var0 = v9;
+    analysis->var0 = v9;
     result = 1;
-    a4->var1 = 1;
+    analysis->var1 = 1;
     return result;
   }
 
@@ -225,10 +225,10 @@ LABEL_7:
   return result;
 }
 
-+ (BOOL)tryUTF16ByInferrence:(id)a3 analysis:(CNVCardDataAnalysis *)a4
++ (BOOL)tryUTF16ByInferrence:(id)inferrence analysis:(CNVCardDataAnalysis *)analysis
 {
-  v6 = a3;
-  v7 = [v6 length];
+  inferrenceCopy = inferrence;
+  v7 = [inferrenceCopy length];
   if (v7 >= 0x16)
   {
     v8 = 22;
@@ -249,12 +249,12 @@ LABEL_7:
   v12 = 0;
   do
   {
-    if (![a1 data:v6 byteAtIndex:v10])
+    if (![self data:inferrenceCopy byteAtIndex:v10])
     {
       ++v12;
     }
 
-    if (![a1 data:v6 byteAtIndex:v10 + 1])
+    if (![self data:inferrenceCopy byteAtIndex:v10 + 1])
     {
       ++v11;
     }
@@ -268,7 +268,7 @@ LABEL_7:
   {
     v14 = 2415919360;
 LABEL_16:
-    a4->var0 = v14;
+    analysis->var0 = v14;
     v9 = 1;
     goto LABEL_17;
   }
@@ -286,42 +286,42 @@ LABEL_17:
   return v9;
 }
 
-+ (unsigned)data:(id)a3 byteAtIndex:(unint64_t)a4
++ (unsigned)data:(id)data byteAtIndex:(unint64_t)index
 {
   v5 = 0;
-  [a3 getBytes:&v5 range:{a4, 1}];
+  [data getBytes:&v5 range:{index, 1}];
   return v5;
 }
 
-+ (BOOL)data:(id)a3 hasPrefix:(id)a4
++ (BOOL)data:(id)data hasPrefix:(id)prefix
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 rangeOfData:v5 options:0 range:{0, objc_msgSend(v6, "length")}];
+  prefixCopy = prefix;
+  dataCopy = data;
+  v7 = [dataCopy rangeOfData:prefixCopy options:0 range:{0, objc_msgSend(dataCopy, "length")}];
 
   return v7 == 0;
 }
 
-+ (BOOL)data:(id)a3 containsSubdata:(id)a4
++ (BOOL)data:(id)data containsSubdata:(id)subdata
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 rangeOfData:v5 options:0 range:{0, objc_msgSend(v6, "length")}];
+  subdataCopy = subdata;
+  dataCopy = data;
+  v7 = [dataCopy rangeOfData:subdataCopy options:0 range:{0, objc_msgSend(dataCopy, "length")}];
 
   return v7 != 0x7FFFFFFFFFFFFFFFLL;
 }
 
-+ (id)data:(id)a3 byPrependingData:(id)a4
++ (id)data:(id)data byPrependingData:(id)prependingData
 {
   v5 = MEMORY[0x277CBEB28];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 data];
-  [v8 appendData:v6];
+  prependingDataCopy = prependingData;
+  dataCopy = data;
+  data = [v5 data];
+  [data appendData:prependingDataCopy];
 
-  [v8 appendData:v7];
+  [data appendData:dataCopy];
 
-  return v8;
+  return data;
 }
 
 @end

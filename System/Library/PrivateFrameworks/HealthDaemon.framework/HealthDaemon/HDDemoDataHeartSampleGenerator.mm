@@ -1,12 +1,12 @@
 @interface HDDemoDataHeartSampleGenerator
 - (HDDemoDataHeartSampleGenerator)init;
-- (HDDemoDataHeartSampleGenerator)initWithCoder:(id)a3;
-- (void)_computeRestingHeartRateForDemoPerson:(void *)a1 atTime:(void *)a2;
-- (void)encodeWithCoder:(id)a3;
-- (void)generateFirstRunObjectsForDemoPerson:(id)a3 firstDate:(id)a4 objectCollection:(id)a5;
-- (void)generateObjectsForDemoPerson:(id)a3 fromTime:(double)a4 toTime:(double)a5 currentDate:(id)a6 objectCollection:(id)a7;
-- (void)setProfile:(id)a3 provenance:(id)a4;
-- (void)setupWithDemoDataGenerator:(id)a3;
+- (HDDemoDataHeartSampleGenerator)initWithCoder:(id)coder;
+- (void)_computeRestingHeartRateForDemoPerson:(void *)person atTime:(void *)time;
+- (void)encodeWithCoder:(id)coder;
+- (void)generateFirstRunObjectsForDemoPerson:(id)person firstDate:(id)date objectCollection:(id)collection;
+- (void)generateObjectsForDemoPerson:(id)person fromTime:(double)time toTime:(double)toTime currentDate:(id)date objectCollection:(id)collection;
+- (void)setProfile:(id)profile provenance:(id)provenance;
+- (void)setupWithDemoDataGenerator:(id)generator;
 @end
 
 @implementation HDDemoDataHeartSampleGenerator
@@ -35,83 +35,83 @@
   return result;
 }
 
-- (HDDemoDataHeartSampleGenerator)initWithCoder:(id)a3
+- (HDDemoDataHeartSampleGenerator)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = HDDemoDataHeartSampleGenerator;
-  v5 = [(HDDemoDataBaseSampleGenerator *)&v15 initWithCoder:v4];
+  v5 = [(HDDemoDataBaseSampleGenerator *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"HDDemoDataHeartSampleGeneratorNextRestingHeartRateSampleTimeKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataHeartSampleGeneratorNextRestingHeartRateSampleTimeKey"];
     v5->_nextRestingHeartRateSampleTime = v6;
-    [v4 decodeDoubleForKey:@"HDDemoDataHeartSampleGeneratorNextWalkingHeartRateAverageSampleTimeKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataHeartSampleGeneratorNextWalkingHeartRateAverageSampleTimeKey"];
     v5->_nextWalkingHeartRateAverageSampleTime = v7;
-    [v4 decodeDoubleForKey:@"HDDemoDataHeartSampleGeneratorNextElectrocardiogramSampleTimeKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataHeartSampleGeneratorNextElectrocardiogramSampleTimeKey"];
     v5->_nextElectrocardiogramSampleTime = v8;
-    v5->_nextElectrocardiogramClassification = [v4 decodeIntegerForKey:@"HDDemoDataHeartSampleGeneratorNextElectrocardiogramClassificationKey"];
-    [v4 decodeDoubleForKey:@"HDDemoDataHeartSampleGeneratorLastRestingHeartRateSampleKey"];
+    v5->_nextElectrocardiogramClassification = [coderCopy decodeIntegerForKey:@"HDDemoDataHeartSampleGeneratorNextElectrocardiogramClassificationKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataHeartSampleGeneratorLastRestingHeartRateSampleKey"];
     v5->_lastRestingHeartRate = v9;
-    [v4 decodeDoubleForKey:@"HDDemoDataHeartSampleGeneratorLastWalkingHeartRateAverageSampleKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataHeartSampleGeneratorLastWalkingHeartRateAverageSampleKey"];
     v5->_lastWalkingHeartRateAverage = v10;
-    [v4 decodeDoubleForKey:@"HDDemoDataHeartSampleGeneratorNextVO2MaxSampleTimeKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataHeartSampleGeneratorNextVO2MaxSampleTimeKey"];
     v5->_nextVO2MaxSampleTime = v11;
-    [v4 decodeDoubleForKey:@"HDDemoDataHeartSampleGeneratorLastVO2MaxSampleKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataHeartSampleGeneratorLastVO2MaxSampleKey"];
     v5->_lastVO2MaxValue = v12;
-    v5->_lastVO2MaxWorkoutWasActive = [v4 decodeBoolForKey:@"HDDemoDataHeartSampleGeneratorLastVO2MaxWorkoutWasActiveKey"];
-    [v4 decodeDoubleForKey:@"HDDemoDataHeartSampleGeneratorLastHeartRateRecoverySampleKey"];
+    v5->_lastVO2MaxWorkoutWasActive = [coderCopy decodeBoolForKey:@"HDDemoDataHeartSampleGeneratorLastVO2MaxWorkoutWasActiveKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataHeartSampleGeneratorLastHeartRateRecoverySampleKey"];
     v5->_lastHeartRateRecoveryValue = v13;
-    v5->_lastHeartRateRecoveryWorkoutWasActive = [v4 decodeBoolForKey:@"HDDemoDataHeartSampleGeneratorLastHeartRateRecoveryWorkoutWasActiveKey"];
+    v5->_lastHeartRateRecoveryWorkoutWasActive = [coderCopy decodeBoolForKey:@"HDDemoDataHeartSampleGeneratorLastHeartRateRecoveryWorkoutWasActiveKey"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HDDemoDataHeartSampleGenerator;
-  v4 = a3;
-  [(HDDemoDataBaseSampleGenerator *)&v5 encodeWithCoder:v4];
-  [v4 encodeDouble:@"HDDemoDataHeartSampleGeneratorNextRestingHeartRateSampleTimeKey" forKey:{self->_nextRestingHeartRateSampleTime, v5.receiver, v5.super_class}];
-  [v4 encodeDouble:@"HDDemoDataHeartSampleGeneratorNextWalkingHeartRateAverageSampleTimeKey" forKey:self->_nextWalkingHeartRateAverageSampleTime];
-  [v4 encodeDouble:@"HDDemoDataHeartSampleGeneratorNextElectrocardiogramSampleTimeKey" forKey:self->_nextElectrocardiogramSampleTime];
-  [v4 encodeInteger:self->_nextElectrocardiogramClassification forKey:@"HDDemoDataHeartSampleGeneratorNextElectrocardiogramClassificationKey"];
-  [v4 encodeDouble:@"HDDemoDataHeartSampleGeneratorLastRestingHeartRateSampleKey" forKey:self->_lastRestingHeartRate];
-  [v4 encodeDouble:@"HDDemoDataHeartSampleGeneratorLastWalkingHeartRateAverageSampleKey" forKey:self->_lastWalkingHeartRateAverage];
-  [v4 encodeDouble:@"HDDemoDataHeartSampleGeneratorNextVO2MaxSampleTimeKey" forKey:self->_nextVO2MaxSampleTime];
-  [v4 encodeDouble:@"HDDemoDataHeartSampleGeneratorLastVO2MaxSampleKey" forKey:self->_lastVO2MaxValue];
-  [v4 encodeBool:self->_lastVO2MaxWorkoutWasActive forKey:@"HDDemoDataHeartSampleGeneratorLastVO2MaxWorkoutWasActiveKey"];
-  [v4 encodeDouble:@"HDDemoDataHeartSampleGeneratorLastHeartRateRecoverySampleKey" forKey:self->_lastHeartRateRecoveryValue];
-  [v4 encodeBool:self->_lastHeartRateRecoveryWorkoutWasActive forKey:@"HDDemoDataHeartSampleGeneratorLastHeartRateRecoveryWorkoutWasActiveKey"];
+  coderCopy = coder;
+  [(HDDemoDataBaseSampleGenerator *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeDouble:@"HDDemoDataHeartSampleGeneratorNextRestingHeartRateSampleTimeKey" forKey:{self->_nextRestingHeartRateSampleTime, v5.receiver, v5.super_class}];
+  [coderCopy encodeDouble:@"HDDemoDataHeartSampleGeneratorNextWalkingHeartRateAverageSampleTimeKey" forKey:self->_nextWalkingHeartRateAverageSampleTime];
+  [coderCopy encodeDouble:@"HDDemoDataHeartSampleGeneratorNextElectrocardiogramSampleTimeKey" forKey:self->_nextElectrocardiogramSampleTime];
+  [coderCopy encodeInteger:self->_nextElectrocardiogramClassification forKey:@"HDDemoDataHeartSampleGeneratorNextElectrocardiogramClassificationKey"];
+  [coderCopy encodeDouble:@"HDDemoDataHeartSampleGeneratorLastRestingHeartRateSampleKey" forKey:self->_lastRestingHeartRate];
+  [coderCopy encodeDouble:@"HDDemoDataHeartSampleGeneratorLastWalkingHeartRateAverageSampleKey" forKey:self->_lastWalkingHeartRateAverage];
+  [coderCopy encodeDouble:@"HDDemoDataHeartSampleGeneratorNextVO2MaxSampleTimeKey" forKey:self->_nextVO2MaxSampleTime];
+  [coderCopy encodeDouble:@"HDDemoDataHeartSampleGeneratorLastVO2MaxSampleKey" forKey:self->_lastVO2MaxValue];
+  [coderCopy encodeBool:self->_lastVO2MaxWorkoutWasActive forKey:@"HDDemoDataHeartSampleGeneratorLastVO2MaxWorkoutWasActiveKey"];
+  [coderCopy encodeDouble:@"HDDemoDataHeartSampleGeneratorLastHeartRateRecoverySampleKey" forKey:self->_lastHeartRateRecoveryValue];
+  [coderCopy encodeBool:self->_lastHeartRateRecoveryWorkoutWasActive forKey:@"HDDemoDataHeartSampleGeneratorLastHeartRateRecoveryWorkoutWasActiveKey"];
 }
 
-- (void)setProfile:(id)a3 provenance:(id)a4
+- (void)setProfile:(id)profile provenance:(id)provenance
 {
   v4.receiver = self;
   v4.super_class = HDDemoDataHeartSampleGenerator;
-  [(HDDemoDataBaseSampleGenerator *)&v4 setProfile:a3, a4];
+  [(HDDemoDataBaseSampleGenerator *)&v4 setProfile:profile, provenance];
 }
 
-- (void)setupWithDemoDataGenerator:(id)a3
+- (void)setupWithDemoDataGenerator:(id)generator
 {
   v18.receiver = self;
   v18.super_class = HDDemoDataHeartSampleGenerator;
-  v4 = a3;
-  [(HDDemoDataBaseSampleGenerator *)&v18 setupWithDemoDataGenerator:v4];
-  v5 = [v4 demoPerson];
-  v6 = [v4 generatorState];
+  generatorCopy = generator;
+  [(HDDemoDataBaseSampleGenerator *)&v18 setupWithDemoDataGenerator:generatorCopy];
+  demoPerson = [generatorCopy demoPerson];
+  generatorState = [generatorCopy generatorState];
 
-  v7 = [v6 currentDate];
-  v8 = v5;
-  v9 = v7;
+  currentDate = [generatorState currentDate];
+  v8 = demoPerson;
+  v9 = currentDate;
   if (self)
   {
-    v10 = [v8 birthDateComponents];
-    v11 = HDDemoData_ageBetweenNSDateComponentsAndDate(v10, v9);
+    birthDateComponents = [v8 birthDateComponents];
+    v11 = HDDemoData_ageBetweenNSDateComponentsAndDate(birthDateComponents, v9);
 
-    v12 = [v8 biologicalSex];
-    if (v12 == 2)
+    biologicalSex = [v8 biologicalSex];
+    if (biologicalSex == 2)
     {
       v13 = 20.0;
       if (v11 > 86)
@@ -126,7 +126,7 @@
 
     else
     {
-      if (v12 == 1)
+      if (biologicalSex == 1)
       {
         v13 = 18.0;
         if (v11 > 73)
@@ -174,20 +174,20 @@ LABEL_12:
   }
 }
 
-- (void)generateFirstRunObjectsForDemoPerson:(id)a3 firstDate:(id)a4 objectCollection:(id)a5
+- (void)generateFirstRunObjectsForDemoPerson:(id)person firstDate:(id)date objectCollection:(id)collection
 {
   v56 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  personCopy = person;
+  dateCopy = date;
   if (self)
   {
-    v9 = [v7 birthDateComponents];
-    v10 = HDDemoData_ageBetweenNSDateComponentsAndDate(v9, v8);
+    birthDateComponents = [personCopy birthDateComponents];
+    v10 = HDDemoData_ageBetweenNSDateComponentsAndDate(birthDateComponents, dateCopy);
 
     if (v10 >= *MEMORY[0x277CCE298])
     {
-      v11 = [(HDDemoDataBaseSampleGenerator *)self profile];
-      v12 = [v11 profileExtensionsConformingToProtocol:&unk_283D71258];
+      profile = [(HDDemoDataBaseSampleGenerator *)self profile];
+      v12 = [profile profileExtensionsConformingToProtocol:&unk_283D71258];
 
       v49 = 0u;
       v50 = 0u;
@@ -229,16 +229,16 @@ LABEL_5:
 
         v21 = v19;
 
-        v22 = [MEMORY[0x277CBEAF8] currentLocale];
-        v23 = [v22 countryCode];
+        currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+        countryCode = [currentLocale countryCode];
 
         v46 = 0;
-        v24 = [v21 onboardingEligibilityForCountryCode:v23 error:&v46];
+        v24 = [v21 onboardingEligibilityForCountryCode:countryCode error:&v46];
         v25 = v46;
         if (v25 && (_HKInitializeLogging(), v26 = *MEMORY[0x277CCC2B8], os_log_type_enabled(*MEMORY[0x277CCC2B8], OS_LOG_TYPE_ERROR)))
         {
           *buf = 138543618;
-          v52 = self;
+          selfCopy = self;
           v53 = 2114;
           v54 = v25;
           _os_log_error_impl(&dword_228986000, v26, OS_LOG_TYPE_ERROR, "[%{public}@] Error while determining onboarding eligibility for Cardio Fitness %{public}@", buf, 0x16u);
@@ -256,17 +256,17 @@ LABEL_5:
         if (([v24 ineligibilityReasons] & 8) == 0)
         {
           v27 = objc_alloc(MEMORY[0x277CCD740]);
-          v28 = [MEMORY[0x277CBEAA8] date];
-          v29 = v23;
-          v30 = v28;
+          date = [MEMORY[0x277CBEAA8] date];
+          v29 = countryCode;
+          v30 = date;
           v44 = v29;
-          v31 = [v27 initWithFeatureIdentifier:v17 version:1 completionDate:v28 countryCode:? countryCodeProvenance:?];
+          v31 = [v27 initWithFeatureIdentifier:v17 version:1 completionDate:date countryCode:? countryCodeProvenance:?];
 
-          v32 = [(HDDemoDataBaseSampleGenerator *)self profile];
-          v33 = [v32 onboardingCompletionManager];
+          profile2 = [(HDDemoDataBaseSampleGenerator *)self profile];
+          onboardingCompletionManager = [profile2 onboardingCompletionManager];
           v45 = 0;
           v43 = v31;
-          v34 = [v33 insertOnboardingCompletion:v31 error:&v45];
+          v34 = [onboardingCompletionManager insertOnboardingCompletion:v31 error:&v45];
           v35 = v45;
 
           _HKInitializeLogging();
@@ -289,7 +289,7 @@ LABEL_22:
           else if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v52 = v35;
+            selfCopy = v35;
             v38 = "Failed to insert Cardio Fitness onboarding completion: %{public}@";
             v39 = v36;
             v40 = OS_LOG_TYPE_DEFAULT;
@@ -297,7 +297,7 @@ LABEL_22:
             goto LABEL_22;
           }
 
-          v23 = v44;
+          countryCode = v44;
         }
 
 LABEL_24:
@@ -322,21 +322,21 @@ LABEL_25:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateObjectsForDemoPerson:(id)a3 fromTime:(double)a4 toTime:(double)a5 currentDate:(id)a6 objectCollection:(id)a7
+- (void)generateObjectsForDemoPerson:(id)person fromTime:(double)time toTime:(double)toTime currentDate:(id)date objectCollection:(id)collection
 {
   v201 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
+  personCopy = person;
+  dateCopy = date;
+  collectionCopy = collection;
   v195.receiver = self;
   v195.super_class = HDDemoDataHeartSampleGenerator;
-  [(HDDemoDataBaseSampleGenerator *)&v195 generateObjectsForDemoPerson:v11 fromTime:v12 toTime:v13 currentDate:a5 objectCollection:a5];
+  [(HDDemoDataBaseSampleGenerator *)&v195 generateObjectsForDemoPerson:personCopy fromTime:dateCopy toTime:collectionCopy currentDate:toTime objectCollection:toTime];
   if (qword_27D86C190 != -1)
   {
     dispatch_once(&qword_27D86C190, &__block_literal_global_139);
   }
 
-  v14 = v11;
+  v14 = personCopy;
   v15 = v14;
   if (!self)
   {
@@ -346,7 +346,7 @@ LABEL_25:
 LABEL_10:
 
     v26 = v15;
-    v27 = v12;
+    v27 = dateCopy;
     v28 = 0;
     v29 = 0;
     if (!self)
@@ -357,13 +357,13 @@ LABEL_10:
     goto LABEL_23;
   }
 
-  if (self->_nextRestingHeartRateSampleTime <= a5)
+  if (self->_nextRestingHeartRateSampleTime <= toTime)
   {
-    v17 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-    v18 = [v17 statisticsSampleGenerator];
+    demoDataGenerator = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+    statisticsSampleGenerator = [demoDataGenerator statisticsSampleGenerator];
     [v15 genericSampleTimeNoiseStdDev];
-    [v18 computeNoiseFromTime:a5 stdDev:v19];
-    self->_nextRestingHeartRateSampleTime = v20 + a5 + 1.0;
+    [statisticsSampleGenerator computeNoiseFromTime:toTime stdDev:v19];
+    self->_nextRestingHeartRateSampleTime = v20 + toTime + 1.0;
 
     v21 = MEMORY[0x277CCABB0];
     [HDDemoDataHeartSampleGenerator _computeRestingHeartRateForDemoPerson:v15 atTime:?];
@@ -378,8 +378,8 @@ LABEL_10:
     [v22 doubleValue];
     self->_lastRestingHeartRate = v23;
     v16 = [MEMORY[0x277CCD7E8] quantityWithUnit:_MergedGlobals_4 doubleValue:?];
-    v24 = [MEMORY[0x277CCD800] quantitySampleWithType:qword_27D86C168 quantity:v16 startDate:v12 endDate:v12];
-    [v13 addObjectFromPhone:v24];
+    v24 = [MEMORY[0x277CCD800] quantitySampleWithType:qword_27D86C168 quantity:v16 startDate:dateCopy endDate:dateCopy];
+    [collectionCopy addObjectFromPhone:v24];
   }
 
   else
@@ -390,43 +390,43 @@ LABEL_10:
 
 LABEL_9:
   v25 = v15;
-  if (self->_nextWalkingHeartRateAverageSampleTime > a5)
+  if (self->_nextWalkingHeartRateAverageSampleTime > toTime)
   {
     goto LABEL_10;
   }
 
   v30 = v25;
-  v31 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-  v32 = [v31 statisticsSampleGenerator];
+  demoDataGenerator2 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+  statisticsSampleGenerator2 = [demoDataGenerator2 statisticsSampleGenerator];
   [v30 genericSampleTimeNoiseStdDev];
-  [v32 computeNoiseFromTime:a5 stdDev:v33];
-  self->_nextWalkingHeartRateAverageSampleTime = v34 + a5 + 1.0;
+  [statisticsSampleGenerator2 computeNoiseFromTime:toTime stdDev:v33];
+  self->_nextWalkingHeartRateAverageSampleTime = v34 + toTime + 1.0;
 
   v35 = MEMORY[0x277CCABB0];
   lastWalkingHeartRateAverage = self->_lastWalkingHeartRateAverage;
   v37 = v30;
-  v38 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-  v39 = [v38 statisticsSampleGenerator];
-  [v39 randomDoubleFromGenerator];
+  demoDataGenerator3 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+  statisticsSampleGenerator3 = [demoDataGenerator3 statisticsSampleGenerator];
+  [statisticsSampleGenerator3 randomDoubleFromGenerator];
   v41 = v40;
   [v37 heartRateSampleNoiseStdDev];
   v43 = v42;
 
   v44 = self->_lastWalkingHeartRateAverage;
-  v45 = [v37 walkingHeartRateAverage];
-  v46 = [v37 walkingHeartRateAverageMaxDailyDifference];
-  v47 = [v37 walkingHeartRateAverageMaxTotalDifference];
+  walkingHeartRateAverage = [v37 walkingHeartRateAverage];
+  walkingHeartRateAverageMaxDailyDifference = [v37 walkingHeartRateAverageMaxDailyDifference];
+  walkingHeartRateAverageMaxTotalDifference = [v37 walkingHeartRateAverageMaxTotalDifference];
 
-  v48 = v45 + v47;
-  v49 = v44 + v46;
+  v48 = walkingHeartRateAverage + walkingHeartRateAverageMaxTotalDifference;
+  v49 = v44 + walkingHeartRateAverageMaxDailyDifference;
   if (v49 >= lastWalkingHeartRateAverage + (v41 + -0.5) * v43)
   {
     v49 = lastWalkingHeartRateAverage + (v41 + -0.5) * v43;
   }
 
-  if (v44 - v46 >= v49)
+  if (v44 - walkingHeartRateAverageMaxDailyDifference >= v49)
   {
-    v49 = v44 - v46;
+    v49 = v44 - walkingHeartRateAverageMaxDailyDifference;
   }
 
   if (v48 >= v49)
@@ -434,9 +434,9 @@ LABEL_9:
     v48 = v49;
   }
 
-  if (v45 - v47 >= v48)
+  if (walkingHeartRateAverage - walkingHeartRateAverageMaxTotalDifference >= v48)
   {
-    v48 = v45 - v47;
+    v48 = walkingHeartRateAverage - walkingHeartRateAverageMaxTotalDifference;
   }
 
   v28 = [v35 numberWithDouble:v48];
@@ -447,33 +447,33 @@ LABEL_9:
     self->_lastWalkingHeartRateAverage = v50;
     [MEMORY[0x277CCD7E8] quantityWithUnit:_MergedGlobals_4 doubleValue:?];
     v51 = v188 = v28;
-    v52 = [MEMORY[0x277CCD800] quantitySampleWithType:qword_27D86C170 quantity:v51 startDate:v12 endDate:v12];
-    [v13 addObjectFromPhone:v52];
+    v52 = [MEMORY[0x277CCD800] quantitySampleWithType:qword_27D86C170 quantity:v51 startDate:dateCopy endDate:dateCopy];
+    [collectionCopy addObjectFromPhone:v52];
     v197 = *MEMORY[0x277CCE030];
     v198 = &unk_283CB3B70;
     v53 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v198 forKeys:&v197 count:1];
-    v54 = [MEMORY[0x277CCD800] quantitySampleWithType:qword_27D86C160 quantity:v51 startDate:v12 endDate:v12 metadata:v53];
-    [v13 addObjectFromPhone:v54];
+    v54 = [MEMORY[0x277CCD800] quantitySampleWithType:qword_27D86C160 quantity:v51 startDate:dateCopy endDate:dateCopy metadata:v53];
+    [collectionCopy addObjectFromPhone:v54];
 
     v28 = v188;
   }
 
   v55 = v37;
-  v56 = v12;
+  v56 = dateCopy;
 LABEL_23:
-  if (self->_nextElectrocardiogramSampleTime <= a5)
+  if (self->_nextElectrocardiogramSampleTime <= toTime)
   {
     v189 = v28;
-    v57 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-    v58 = [v57 statisticsSampleGenerator];
+    demoDataGenerator4 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+    statisticsSampleGenerator4 = [demoDataGenerator4 statisticsSampleGenerator];
     [v15 genericSampleTimeNoiseStdDev];
-    [v58 computeNoiseFromTime:a5 stdDev:v59];
-    self->_nextElectrocardiogramSampleTime = v60 + a5 + 60.0;
+    [statisticsSampleGenerator4 computeNoiseFromTime:toTime stdDev:v59];
+    self->_nextElectrocardiogramSampleTime = v60 + toTime + 60.0;
 
     nextElectrocardiogramClassification = self->_nextElectrocardiogramClassification;
     v62 = v15;
-    v63 = v12;
-    v183 = v12;
+    v63 = dateCopy;
+    v183 = dateCopy;
     if (nextElectrocardiogramClassification > 0xA)
     {
       v65 = @"ECGNSR-Cinnamon";
@@ -551,7 +551,7 @@ LABEL_23:
     self->_nextElectrocardiogramClassification = 4 - ((self->_nextElectrocardiogramClassification & 1) == 0);
     v28 = v189;
     v15 = v182;
-    v12 = v183;
+    dateCopy = v183;
   }
 
   else
@@ -565,14 +565,14 @@ LABEL_38:
   v187 = v29;
   if (v29)
   {
-    [v13 addObjectFromWatch:v29];
-    v77 = [v29 metadata];
-    v78 = [v77 objectForKey:*MEMORY[0x277CCDFE8]];
-    v79 = [v78 integerValue];
+    [collectionCopy addObjectFromWatch:v29];
+    metadata = [v29 metadata];
+    v78 = [metadata objectForKey:*MEMORY[0x277CCDFE8]];
+    integerValue = [v78 integerValue];
 
-    if (v79 != 1)
+    if (integerValue != 1)
     {
-      v184 = v12;
+      v184 = dateCopy;
       if (self)
       {
         v80 = MEMORY[0x277CCD0B0];
@@ -580,20 +580,20 @@ LABEL_38:
         v82 = *MEMORY[0x277CCBA88];
         v83 = v29;
         v84 = [v81 categoryTypeForIdentifier:v82];
-        v85 = [v83 startDate];
-        v86 = [v83 endDate];
-        v87 = [v83 device];
-        v88 = [v83 metadata];
-        v181 = [v80 categorySampleWithType:v84 value:0 startDate:v85 endDate:v86 device:v87 metadata:v88];
+        startDate = [v83 startDate];
+        endDate = [v83 endDate];
+        device = [v83 device];
+        metadata2 = [v83 metadata];
+        v181 = [v80 categorySampleWithType:v84 value:0 startDate:startDate endDate:endDate device:device metadata:metadata2];
 
         v89 = MEMORY[0x277CCD0B0];
         v90 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:*MEMORY[0x277CCB970]];
-        v91 = [v83 startDate];
-        v92 = [v83 endDate];
-        v93 = [v83 device];
-        v94 = [v83 metadata];
+        startDate2 = [v83 startDate];
+        endDate2 = [v83 endDate];
+        device2 = [v83 device];
+        metadata3 = [v83 metadata];
 
-        v95 = [v89 categorySampleWithType:v90 value:0 startDate:v91 endDate:v92 device:v93 metadata:v94];
+        v95 = [v89 categorySampleWithType:v90 value:0 startDate:startDate2 endDate:endDate2 device:device2 metadata:metadata3];
 
         *buf = v181;
         *&buf[8] = v95;
@@ -612,7 +612,7 @@ LABEL_38:
       v194 = 0u;
       v98 = v96;
       v99 = [v98 countByEnumeratingWithState:&v191 objects:v196 count:16];
-      v12 = v184;
+      dateCopy = v184;
       if (v99)
       {
         v100 = v99;
@@ -627,9 +627,9 @@ LABEL_38:
             }
 
             v103 = *(*(&v191 + 1) + 8 * i);
-            [v13 addObjectFromWatch:{v103, v181}];
-            v104 = [v103 UUID];
-            [v97 hk_appendBytesWithUUID:v104];
+            [collectionCopy addObjectFromWatch:{v103, v181}];
+            uUID = [v103 UUID];
+            [v97 hk_appendBytesWithUUID:uUID];
           }
 
           v100 = [v98 countByEnumeratingWithState:&v191 objects:v196 count:16];
@@ -639,53 +639,53 @@ LABEL_38:
       }
 
       v29 = v187;
-      v105 = [v187 UUID];
-      [v13 setAssociatedObjectUUIDs:v97 forObjectUUID:v105];
+      uUID2 = [v187 UUID];
+      [collectionCopy setAssociatedObjectUUIDs:v97 forObjectUUID:uUID2];
     }
   }
 
   v106 = v15;
-  v107 = v12;
+  v107 = dateCopy;
   if (!self)
   {
     goto LABEL_52;
   }
 
-  v108 = [v106 birthDateComponents];
-  v109 = HDDemoData_ageBetweenNSDateComponentsAndDate(v108, v107);
+  birthDateComponents = [v106 birthDateComponents];
+  v109 = HDDemoData_ageBetweenNSDateComponentsAndDate(birthDateComponents, v107);
 
   if (v109 < *MEMORY[0x277CCE298])
   {
     goto LABEL_52;
   }
 
-  v111 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-  v112 = [v111 generatorState];
+  demoDataGenerator5 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+  generatorState = [demoDataGenerator5 generatorState];
 
-  if ([v112 isRunning] & 1) != 0 || (objc_msgSend(v112, "isWalking"))
+  if ([generatorState isRunning] & 1) != 0 || (objc_msgSend(generatorState, "isWalking"))
   {
-    v113 = 1;
+    isHiking = 1;
   }
 
   else
   {
-    v113 = [v112 isHiking];
+    isHiking = [generatorState isHiking];
   }
 
-  if ((v112, lastVO2MaxWorkoutWasActive = self->_lastVO2MaxWorkoutWasActive, self->_lastVO2MaxWorkoutWasActive = v113, lastVO2MaxWorkoutWasActive) && !v113 || self->_nextVO2MaxSampleTime <= a5)
+  if ((generatorState, lastVO2MaxWorkoutWasActive = self->_lastVO2MaxWorkoutWasActive, self->_lastVO2MaxWorkoutWasActive = isHiking, lastVO2MaxWorkoutWasActive) && !isHiking || self->_nextVO2MaxSampleTime <= toTime)
   {
-    v115 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-    v116 = [v115 statisticsSampleGenerator];
+    demoDataGenerator6 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+    statisticsSampleGenerator5 = [demoDataGenerator6 statisticsSampleGenerator];
     [v106 vo2MaxSampleTimeNoiseStdDev];
-    [v116 computeNoiseFromTime:a5 stdDev:v117];
-    self->_nextVO2MaxSampleTime = v118 + a5 + 7.0;
+    [statisticsSampleGenerator5 computeNoiseFromTime:toTime stdDev:v117];
+    self->_nextVO2MaxSampleTime = v118 + toTime + 7.0;
 
     v119 = MEMORY[0x277CCABB0];
     lastVO2MaxValue = self->_lastVO2MaxValue;
     v121 = v106;
-    v122 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-    v123 = [v122 statisticsSampleGenerator];
-    [v123 randomDoubleFromGenerator];
+    demoDataGenerator7 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+    statisticsSampleGenerator6 = [demoDataGenerator7 statisticsSampleGenerator];
+    [statisticsSampleGenerator6 randomDoubleFromGenerator];
     v125 = v124;
     [v121 vo2MaxValueStdDev];
     v127 = v126;
@@ -737,7 +737,7 @@ LABEL_52:
     self->_lastVO2MaxValue = v138;
     v139 = [MEMORY[0x277CCD7E8] quantityWithUnit:qword_27D86C178 doubleValue:?];
     v140 = [MEMORY[0x277CCD800] quantitySampleWithType:qword_27D86C180 quantity:v139 startDate:v107 endDate:v107];
-    [v13 addObjectFromWatch:v140];
+    [collectionCopy addObjectFromWatch:v140];
 
     v141 = v106;
     v142 = v107;
@@ -749,32 +749,32 @@ LABEL_52:
     v144 = v107;
     if (!self)
     {
-      v145 = 0;
+      birthDateComponents2 = 0;
       goto LABEL_89;
     }
   }
 
-  v145 = [v106 birthDateComponents];
+  birthDateComponents2 = [v106 birthDateComponents];
 
-  if (v145)
+  if (birthDateComponents2)
   {
-    v146 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-    v147 = [v146 generatorState];
+    demoDataGenerator8 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+    generatorState2 = [demoDataGenerator8 generatorState];
 
-    v148 = [v147 workoutConfiguration];
-    v149 = [v148 indoor];
+    workoutConfiguration = [generatorState2 workoutConfiguration];
+    indoor = [workoutConfiguration indoor];
 
-    if (v149)
+    if (indoor)
     {
       v150 = 0;
     }
 
     else
     {
-      v150 = ([v147 isRunning] & 1) != 0 ? 1 : objc_msgSend(v147, "isWalking");
+      v150 = ([generatorState2 isRunning] & 1) != 0 ? 1 : objc_msgSend(generatorState2, "isWalking");
     }
 
-    v145 = 0;
+    birthDateComponents2 = 0;
     lastHeartRateRecoveryWorkoutWasActive = self->_lastHeartRateRecoveryWorkoutWasActive;
     self->_lastHeartRateRecoveryWorkoutWasActive = v150;
     if (lastHeartRateRecoveryWorkoutWasActive && (v150 & 1) == 0)
@@ -782,9 +782,9 @@ LABEL_52:
       v152 = MEMORY[0x277CCABB0];
       lastHeartRateRecoveryValue = self->_lastHeartRateRecoveryValue;
       v154 = v106;
-      v155 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-      v156 = [v155 statisticsSampleGenerator];
-      [v156 randomDoubleFromGenerator];
+      demoDataGenerator9 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+      statisticsSampleGenerator7 = [demoDataGenerator9 statisticsSampleGenerator];
+      [statisticsSampleGenerator7 randomDoubleFromGenerator];
       v158 = v157;
       [v154 heartRateRecoveryValueStdDev];
       v160 = v159;
@@ -823,22 +823,22 @@ LABEL_52:
         v168 = v169;
       }
 
-      v145 = [v152 numberWithDouble:v168];
+      birthDateComponents2 = [v152 numberWithDouble:v168];
     }
   }
 
 LABEL_89:
 
-  if (v145)
+  if (birthDateComponents2)
   {
-    [v145 doubleValue];
+    [birthDateComponents2 doubleValue];
     self->_lastHeartRateRecoveryValue = v173;
     v174 = v107;
     v175 = [v174 dateByAddingTimeInterval:60.0];
     v176 = [MEMORY[0x277CCD7E8] quantityWithUnit:_MergedGlobals_4 doubleValue:self->_lastHeartRateRecoveryValue];
     v177 = [MEMORY[0x277CCD800] quantitySampleWithType:qword_27D86C188 quantity:v176 startDate:v174 endDate:v175 metadata:0];
 
-    [v13 addObjectFromWatch:v177];
+    [collectionCopy addObjectFromWatch:v177];
     v29 = v187;
   }
 
@@ -878,19 +878,19 @@ uint64_t __108__HDDemoDataHeartSampleGenerator_generateObjectsForDemoPerson_from
   return MEMORY[0x2821F96F8](v12, v13);
 }
 
-- (void)_computeRestingHeartRateForDemoPerson:(void *)a1 atTime:(void *)a2
+- (void)_computeRestingHeartRateForDemoPerson:(void *)person atTime:(void *)time
 {
-  v3 = a1[9];
-  v4 = a2;
-  v5 = [a1 demoDataGenerator];
-  v6 = [v5 statisticsSampleGenerator];
-  [v6 randomDoubleFromGenerator];
-  [v4 heartRateSampleNoiseStdDev];
+  v3 = person[9];
+  timeCopy = time;
+  demoDataGenerator = [person demoDataGenerator];
+  statisticsSampleGenerator = [demoDataGenerator statisticsSampleGenerator];
+  [statisticsSampleGenerator randomDoubleFromGenerator];
+  [timeCopy heartRateSampleNoiseStdDev];
 
-  v7 = a1[9];
-  [v4 restingHeartRate];
-  [v4 restingHeartRateMaxDailyDifference];
-  [v4 restingHeartRateMaxTotalDifference];
+  v7 = person[9];
+  [timeCopy restingHeartRate];
+  [timeCopy restingHeartRateMaxDailyDifference];
+  [timeCopy restingHeartRateMaxTotalDifference];
 }
 
 @end

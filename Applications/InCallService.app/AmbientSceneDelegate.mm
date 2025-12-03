@@ -1,12 +1,12 @@
 @interface AmbientSceneDelegate
 - (UIWindow)window;
 - (id)sceneDidDisconnectBlock;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
-- (void)setSceneDidDisconnectBlock:(id)a3;
-- (void)setWindow:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneWillResignActive:(id)active;
+- (void)setSceneDidDisconnectBlock:(id)block;
+- (void)setWindow:(id)window;
 @end
 
 @implementation AmbientSceneDelegate
@@ -18,11 +18,11 @@
   return v2;
 }
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
-  v5 = a3;
-  v6 = self;
-  sub_1001D60AC(a3);
+  windowCopy = window;
+  selfCopy = self;
+  sub_1001D60AC(window);
 }
 
 - (id)sceneDidDisconnectBlock
@@ -47,9 +47,9 @@
   return v4;
 }
 
-- (void)setSceneDidDisconnectBlock:(id)a3
+- (void)setSceneDidDisconnectBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -62,38 +62,38 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_1001D6250(v4, v5);
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1001D6270(v8);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_1001D6270(sceneCopy);
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
+  disconnectCopy = disconnect;
+  selfCopy = self;
   sub_1001D697C();
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001D6B48(v5, 1);
+  activeCopy = active;
+  selfCopy = self;
+  sub_1001D6B48(selfCopy, 1);
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001D6B48(v5, 0);
+  activeCopy = active;
+  selfCopy = self;
+  sub_1001D6B48(selfCopy, 0);
 }
 
 @end

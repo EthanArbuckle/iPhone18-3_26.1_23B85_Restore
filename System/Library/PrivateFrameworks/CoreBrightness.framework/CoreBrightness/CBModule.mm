@@ -1,57 +1,57 @@
 @interface CBModule
-- (CBModule)initWithQueue:(id)a3;
+- (CBModule)initWithQueue:(id)queue;
 - (void)dealloc;
-- (void)registerNotificationBlock:(id)a3;
-- (void)sendNotificationForKey:(id)a3 withValue:(id)a4;
+- (void)registerNotificationBlock:(id)block;
+- (void)sendNotificationForKey:(id)key withValue:(id)value;
 - (void)unregisterNotificationBlock;
 @end
 
 @implementation CBModule
 
-- (CBModule)initWithQueue:(id)a3
+- (CBModule)initWithQueue:(id)queue
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
-  if (!a3)
+  queueCopy = queue;
+  if (!queue)
   {
     return 0;
   }
 
-  v4.receiver = v7;
+  v4.receiver = selfCopy;
   v4.super_class = CBModule;
-  v7 = [(CBModule *)&v4 init];
-  if (v7)
+  selfCopy = [(CBModule *)&v4 init];
+  if (selfCopy)
   {
-    *(v7 + 3) = v5;
-    dispatch_retain(*(v7 + 3));
+    *(selfCopy + 3) = queueCopy;
+    dispatch_retain(*(selfCopy + 3));
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   if (self->_logHandle)
   {
-    MEMORY[0x1E69E5920](v4->_logHandle);
-    v4->_logHandle = 0;
+    MEMORY[0x1E69E5920](selfCopy->_logHandle);
+    selfCopy->_logHandle = 0;
   }
 
-  if (v4->_queue)
+  if (selfCopy->_queue)
   {
-    dispatch_release(v4->_queue);
-    v4->_queue = 0;
+    dispatch_release(selfCopy->_queue);
+    selfCopy->_queue = 0;
   }
 
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = CBModule;
   [(CBModule *)&v2 dealloc];
 }
 
-- (void)sendNotificationForKey:(id)a3 withValue:(id)a4
+- (void)sendNotificationForKey:(id)key withValue:(id)value
 {
   if (self->_notificationBlock)
   {
@@ -59,13 +59,13 @@
   }
 }
 
-- (void)registerNotificationBlock:(id)a3
+- (void)registerNotificationBlock:(id)block
 {
   v8 = *MEMORY[0x1E69E9840];
   [(CBModule *)self unregisterNotificationBlock];
-  if (a3)
+  if (block)
   {
-    self->_notificationBlock = _Block_copy(a3);
+    self->_notificationBlock = _Block_copy(block);
   }
 
   if (self->_logHandle)
@@ -99,13 +99,13 @@
 
 - (void)unregisterNotificationBlock
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   if (self->_notificationBlock)
   {
-    if (v10->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v10->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else
@@ -133,8 +133,8 @@
       _os_log_debug_impl(&dword_1DE8E5000, log, type, &unk_1DEAD656F, v6, 2u);
     }
 
-    _Block_release(v10->_notificationBlock);
-    v10->_notificationBlock = 0;
+    _Block_release(selfCopy->_notificationBlock);
+    selfCopy->_notificationBlock = 0;
   }
 }
 

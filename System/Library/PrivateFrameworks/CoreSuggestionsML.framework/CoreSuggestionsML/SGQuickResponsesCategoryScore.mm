@@ -1,27 +1,27 @@
 @interface SGQuickResponsesCategoryScore
 - (SGQuickResponsesCategoryScore)init;
-- (void)addScore:(double)a3;
+- (void)addScore:(double)score;
 @end
 
 @implementation SGQuickResponsesCategoryScore
 
-- (void)addScore:(double)a3
+- (void)addScore:(double)score
 {
-  if (a3 < 0.0)
+  if (score < 0.0)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"SGQuickResponsesRanking.m" lineNumber:335 description:{@"Invalid parameter not satisfying: %@", @"score >= 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesRanking.m" lineNumber:335 description:{@"Invalid parameter not satisfying: %@", @"score >= 0"}];
   }
 
   v5 = self->_modelCount + 1;
   self->_modelCount = v5;
   maximum = self->_maximum;
-  if (maximum <= a3)
+  if (maximum <= score)
   {
-    maximum = a3;
+    maximum = score;
   }
 
-  self->_average = self->_average + (a3 - self->_average) / v5;
+  self->_average = self->_average + (score - self->_average) / v5;
   self->_maximum = maximum;
 }
 

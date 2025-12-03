@@ -22,18 +22,18 @@
 
 - (id)onlyImageInput
 {
-  v3 = [(FTNetworkDescriptor *)self inputImages];
-  v4 = [v3 count];
+  inputImages = [(FTNetworkDescriptor *)self inputImages];
+  v4 = [inputImages count];
 
   if (v4 != 1)
   {
     NSLog(&cfstr_ExpectedExactl.isa, v4);
   }
 
-  v5 = [(FTNetworkDescriptor *)self inputImages];
-  v6 = [v5 firstObject];
+  inputImages2 = [(FTNetworkDescriptor *)self inputImages];
+  firstObject = [inputImages2 firstObject];
 
-  return v6;
+  return firstObject;
 }
 
 @end

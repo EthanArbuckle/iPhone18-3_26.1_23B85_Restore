@@ -1,17 +1,17 @@
 @interface CAMSmartStyleStatusIndicatorAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (int64_t)_accessibilityExpandedStatus;
 @end
 
 @implementation CAMSmartStyleStatusIndicatorAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMSmartStyleStatusIndicator" hasInstanceMethod:@"isActive" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CAMSmartStyleStatusIndicator" hasInstanceMethod:@"smartStyle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CEKSmartStyle" hasInstanceMethod:@"presetType" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMSmartStyleStatusIndicator" hasInstanceMethod:@"isActive" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CAMSmartStyleStatusIndicator" hasInstanceMethod:@"smartStyle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CEKSmartStyle" hasInstanceMethod:@"presetType" withFullSignature:{"q", 0}];
 }
 
 - (int64_t)_accessibilityExpandedStatus

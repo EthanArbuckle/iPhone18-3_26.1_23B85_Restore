@@ -1,11 +1,11 @@
 @interface WKPreferenceObserver
 + (id)sharedInstance;
 - (WKPreferenceObserver)init;
-- (WTF::StringImpl)preferenceDidChange:(void *)a1 key:encodedValue:;
+- (WTF::StringImpl)preferenceDidChange:(void *)change key:encodedValue:;
 - (id).cxx_construct;
-- (uint64_t)preferenceDidChange:(WTF *)this key:(void *)a2 encodedValue:;
-- (void)preferenceDidChange:(id)a3 key:(id)a4 encodedValue:(id)a5;
-- (void)preferenceDidChange:(void *)a1 key:encodedValue:;
+- (uint64_t)preferenceDidChange:(WTF *)this key:(void *)key encodedValue:;
+- (void)preferenceDidChange:(id)change key:(id)key encodedValue:(id)value;
+- (void)preferenceDidChange:(void *)change key:encodedValue:;
 @end
 
 @implementation WKPreferenceObserver
@@ -121,29 +121,29 @@ LABEL_18:
   return v2;
 }
 
-- (void)preferenceDidChange:(id)a3 key:(id)a4 encodedValue:(id)a5
+- (void)preferenceDidChange:(id)change key:(id)key encodedValue:(id)value
 {
   WTF::RunLoop::mainSingleton(self);
-  if (a3)
+  if (change)
   {
-    v8 = a3;
+    changeCopy = change;
   }
 
-  if (a4)
+  if (key)
   {
-    v9 = a4;
+    keyCopy = key;
   }
 
-  if (a5)
+  if (value)
   {
-    v10 = a5;
+    valueCopy = value;
   }
 
   v11 = WTF::fastMalloc(0x20);
   *v11 = &unk_1F10EA550;
-  v11[1] = a3;
-  v11[2] = a4;
-  v11[3] = a5;
+  v11[1] = change;
+  v11[2] = key;
+  v11[3] = value;
   v12 = v11;
   WTF::RunLoop::dispatch();
   if (v12)
@@ -152,31 +152,31 @@ LABEL_18:
   }
 }
 
-- (void)preferenceDidChange:(void *)a1 key:encodedValue:
+- (void)preferenceDidChange:(void *)change key:encodedValue:
 {
-  *a1 = &unk_1F10EA550;
-  v2 = a1[3];
-  a1[3] = 0;
+  *change = &unk_1F10EA550;
+  v2 = change[3];
+  change[3] = 0;
   if (v2)
   {
   }
 
-  v3 = a1[2];
-  a1[2] = 0;
+  v3 = change[2];
+  change[2] = 0;
   if (v3)
   {
   }
 
-  v4 = a1[1];
-  a1[1] = 0;
+  v4 = change[1];
+  change[1] = 0;
   if (v4)
   {
   }
 
-  return a1;
+  return change;
 }
 
-- (uint64_t)preferenceDidChange:(WTF *)this key:(void *)a2 encodedValue:
+- (uint64_t)preferenceDidChange:(WTF *)this key:(void *)key encodedValue:
 {
   *this = &unk_1F10EA550;
   v3 = *(this + 3);
@@ -197,14 +197,14 @@ LABEL_18:
   {
   }
 
-  return WTF::fastFree(this, a2);
+  return WTF::fastFree(this, key);
 }
 
-- (WTF::StringImpl)preferenceDidChange:(void *)a1 key:encodedValue:
+- (WTF::StringImpl)preferenceDidChange:(void *)change key:encodedValue:
 {
   LOBYTE(v18) = 0;
   v19 = 0;
-  if (a1[3])
+  if (change[3])
   {
     MEMORY[0x19EB02040](&v20);
     v3 = v20;
@@ -236,8 +236,8 @@ LABEL_18:
     }
   }
 
-  MEMORY[0x19EB02040](&v17, a1[1]);
-  MEMORY[0x19EB02040](&v16, a1[2]);
+  MEMORY[0x19EB02040](&v17, change[1]);
+  MEMORY[0x19EB02040](&v16, change[2]);
   {
     if (WebKit::singleton(void)::singleton)
     {

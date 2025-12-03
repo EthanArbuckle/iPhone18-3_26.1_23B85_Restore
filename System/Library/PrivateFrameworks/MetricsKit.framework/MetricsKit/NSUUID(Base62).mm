@@ -7,7 +7,7 @@
 - (id)mt_base62String
 {
   v10 = *MEMORY[0x277D85DE8];
-  [a1 getUUIDBytes:v9];
+  [self getUUIDBytes:v9];
   v1 = 0;
   v2 = v8;
   do

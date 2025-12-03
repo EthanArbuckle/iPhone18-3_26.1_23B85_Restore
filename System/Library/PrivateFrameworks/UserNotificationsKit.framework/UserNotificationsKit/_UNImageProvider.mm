@@ -1,12 +1,12 @@
 @interface _UNImageProvider
-+ (id)generateEphemeralContactsForImageRenderingWithContext:(id)a3 bundleIdentifier:(id)a4 descriptorForRequiredKeys:(id)a5;
-+ (id)generateEphemeralContactsForImageRenderingWithContext:(id)a3 descriptorForRequiredKeys:(id)a4;
-+ (id)imageDataForContentURL:(id)a3;
++ (id)generateEphemeralContactsForImageRenderingWithContext:(id)context bundleIdentifier:(id)identifier descriptorForRequiredKeys:(id)keys;
++ (id)generateEphemeralContactsForImageRenderingWithContext:(id)context descriptorForRequiredKeys:(id)keys;
++ (id)imageDataForContentURL:(id)l;
 @end
 
 @implementation _UNImageProvider
 
-+ (id)imageDataForContentURL:(id)a3
++ (id)imageDataForContentURL:(id)l
 {
   NCRegisterUserNotificationsUILogging();
   v3 = NCUILogCommunicationNotifications;
@@ -18,7 +18,7 @@
   return 0;
 }
 
-+ (id)generateEphemeralContactsForImageRenderingWithContext:(id)a3 bundleIdentifier:(id)a4 descriptorForRequiredKeys:(id)a5
++ (id)generateEphemeralContactsForImageRenderingWithContext:(id)context bundleIdentifier:(id)identifier descriptorForRequiredKeys:(id)keys
 {
   NCRegisterUserNotificationsUILogging();
   v5 = NCUILogCommunicationNotifications;
@@ -30,7 +30,7 @@
   return MEMORY[0x277CBEBF8];
 }
 
-+ (id)generateEphemeralContactsForImageRenderingWithContext:(id)a3 descriptorForRequiredKeys:(id)a4
++ (id)generateEphemeralContactsForImageRenderingWithContext:(id)context descriptorForRequiredKeys:(id)keys
 {
   NCRegisterUserNotificationsUILogging();
   v4 = NCUILogCommunicationNotifications;

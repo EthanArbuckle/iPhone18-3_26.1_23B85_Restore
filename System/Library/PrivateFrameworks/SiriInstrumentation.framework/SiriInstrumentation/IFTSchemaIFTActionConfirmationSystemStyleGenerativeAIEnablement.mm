@@ -1,27 +1,27 @@
 @interface IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement)initWithDictionary:(id)a3;
-- (IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsExplicit:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsExplicit:(BOOL)explicit;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement
 
-- (IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement)initWithDictionary:(id)a3
+- (IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement;
   v5 = [(IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"bundleId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"bundleId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,14 +29,14 @@
       [(IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement *)v5 setBundleId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"source"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"source"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement setSource:](v5, "setSource:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isExplicit"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isExplicit"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement)initWithJSON:(id)a3
+- (IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,19 +85,19 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_bundleId)
   {
-    v4 = [(IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement *)self bundleId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"bundleId"];
+    bundleId = [(IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement *)self bundleId];
+    v5 = [bundleId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"bundleId"];
   }
 
   v6 = *(&self->_isExplicit + 1);
   if ((v6 & 2) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement isExplicit](self, "isExplicit")}];
-    [v3 setObject:v7 forKeyedSubscript:@"isExplicit"];
+    [dictionary setObject:v7 forKeyedSubscript:@"isExplicit"];
 
     v6 = *(&self->_isExplicit + 1);
   }
@@ -115,12 +115,12 @@
       v9 = off_1E78D81A0[v8];
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"source"];
+    [dictionary setObject:v9 forKeyedSubscript:@"source"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -150,30 +150,30 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement *)self bundleId];
-  v6 = [v4 bundleId];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  bundleId = [(IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement *)self bundleId];
+  bundleId2 = [equalCopy bundleId];
+  v7 = bundleId2;
+  if ((bundleId != 0) == (bundleId2 == 0))
   {
 
     goto LABEL_16;
   }
 
-  v8 = [(IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement *)self bundleId];
-  if (v8)
+  bundleId3 = [(IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement *)self bundleId];
+  if (bundleId3)
   {
-    v9 = v8;
-    v10 = [(IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement *)self bundleId];
-    v11 = [v4 bundleId];
-    v12 = [v10 isEqual:v11];
+    v9 = bundleId3;
+    bundleId4 = [(IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement *)self bundleId];
+    bundleId5 = [equalCopy bundleId];
+    v12 = [bundleId4 isEqual:bundleId5];
 
     if (!v12)
     {
@@ -186,7 +186,7 @@ LABEL_3:
   }
 
   v13 = *(&self->_isExplicit + 1);
-  v14 = v4[21];
+  v14 = equalCopy[21];
   if ((v13 & 1) != (v14 & 1))
   {
 LABEL_16:
@@ -197,10 +197,10 @@ LABEL_16:
   if (v13)
   {
     source = self->_source;
-    if (source == [v4 source])
+    if (source == [equalCopy source])
     {
       v13 = *(&self->_isExplicit + 1);
-      v14 = v4[21];
+      v14 = equalCopy[21];
       goto LABEL_12;
     }
 
@@ -217,7 +217,7 @@ LABEL_12:
   if (v16)
   {
     isExplicit = self->_isExplicit;
-    if (isExplicit != [v4 isExplicit])
+    if (isExplicit != [equalCopy isExplicit])
     {
       goto LABEL_16;
     }
@@ -229,12 +229,12 @@ LABEL_17:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement *)self bundleId];
+  toCopy = to;
+  bundleId = [(IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement *)self bundleId];
 
-  if (v4)
+  if (bundleId)
   {
     PBDataWriterWriteStringField();
   }
@@ -246,17 +246,17 @@ LABEL_17:
     v5 = *(&self->_isExplicit + 1);
   }
 
-  v6 = v7;
+  v6 = toCopy;
   if ((v5 & 2) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasIsExplicit:(BOOL)a3
+- (void)setHasIsExplicit:(BOOL)explicit
 {
-  if (a3)
+  if (explicit)
   {
     v3 = 2;
   }
@@ -269,13 +269,13 @@ LABEL_17:
   *(&self->_isExplicit + 1) = *(&self->_isExplicit + 1) & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v8.receiver = self;
   v8.super_class = IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:v4];
-  v6 = [v4 isConditionSet:{4, v8.receiver, v8.super_class}];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:policyCopy];
+  v6 = [policyCopy isConditionSet:{4, v8.receiver, v8.super_class}];
 
   if (v6)
   {

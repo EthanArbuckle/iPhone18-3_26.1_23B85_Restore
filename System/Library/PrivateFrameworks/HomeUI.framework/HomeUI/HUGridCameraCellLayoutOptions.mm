@@ -1,14 +1,14 @@
 @interface HUGridCameraCellLayoutOptions
-+ (id)defaultOptionsForCellSizeSubclass:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)defaultOptionsForCellSizeSubclass:(int64_t)subclass;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HUGridCameraCellLayoutOptions
 
-+ (id)defaultOptionsForCellSizeSubclass:(int64_t)a3
++ (id)defaultOptionsForCellSizeSubclass:(int64_t)subclass
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___HUGridCameraCellLayoutOptions;
   v4 = objc_msgSendSuper2(&v9, sel_defaultOptionsForCellSizeSubclass_);
   v10[0] = &unk_282492288;
@@ -16,7 +16,7 @@
   v11[0] = &unk_282493660;
   v11[1] = &unk_282493680;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  v6 = HUConstantForCellSizeSubclass(a3, v5);
+  v6 = HUConstantForCellSizeSubclass(subclass, v5);
 
   v7 = [MEMORY[0x277D74300] systemFontOfSize:v6 weight:*MEMORY[0x277D743F8]];
   [v4 setFont:v7];
@@ -28,11 +28,11 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = HUGridCameraCellLayoutOptions;
-  v4 = [(HUGridCellLayoutOptions *)&v6 copyWithZone:a3];
+  v4 = [(HUGridCellLayoutOptions *)&v6 copyWithZone:zone];
   [(HUGridCameraCellLayoutOptions *)self headerViewHeight];
   [v4 setHeaderViewHeight:?];
   [(HUGridCameraCellLayoutOptions *)self cameraViewAspectRatio];

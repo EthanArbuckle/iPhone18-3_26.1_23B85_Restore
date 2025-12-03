@@ -1,29 +1,29 @@
 @interface REScriptProcessor
 + (id)_sharedSystemTable;
-+ (id)processorWithPath:(id)a3;
-+ (id)processorWithSource:(id)a3;
-- (REScriptProcessor)initWithScriptBuffer:(id)a3 path:(id)a4;
-- (id)featuresWithNames:(id)a3;
-- (void)_encounteredError:(id)a3;
++ (id)processorWithPath:(id)path;
++ (id)processorWithSource:(id)source;
+- (REScriptProcessor)initWithScriptBuffer:(id)buffer path:(id)path;
+- (id)featuresWithNames:(id)names;
+- (void)_encounteredError:(id)error;
 - (void)_process;
 @end
 
 @implementation REScriptProcessor
 
-+ (id)processorWithSource:(id)a3
++ (id)processorWithSource:(id)source
 {
-  v4 = a3;
-  v5 = [[REStringScriptBuffer alloc] initWithString:v4];
+  sourceCopy = source;
+  v5 = [[REStringScriptBuffer alloc] initWithString:sourceCopy];
 
-  v6 = [[a1 alloc] initWithScriptBuffer:v5 path:0];
+  v6 = [[self alloc] initWithScriptBuffer:v5 path:0];
 
   return v6;
 }
 
-+ (id)processorWithPath:(id)a3
++ (id)processorWithPath:(id)path
 {
-  v4 = [a3 stringByExpandingTildeInPath];
-  v5 = [v4 stringByStandardizingPath];
+  stringByExpandingTildeInPath = [path stringByExpandingTildeInPath];
+  stringByStandardizingPath = [stringByExpandingTildeInPath stringByStandardizingPath];
 
   os_unfair_lock_lock(&REScriptProcessorLock);
   if (REScriptProcessorCache_onceToken != -1)
@@ -31,7 +31,7 @@
     +[REScriptProcessor processorWithPath:];
   }
 
-  v6 = [REScriptProcessorCache_Cache objectForKeyedSubscript:v5];
+  v6 = [REScriptProcessorCache_Cache objectForKeyedSubscript:stringByStandardizingPath];
   os_unfair_lock_unlock(&REScriptProcessorLock);
   if (v6)
   {
@@ -41,26 +41,26 @@
   else
   {
     v19 = 0;
-    v8 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:v5 encoding:4 error:&v19];
+    v8 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:stringByStandardizingPath encoding:4 error:&v19];
     v15 = v19;
     if (v8)
     {
       v16 = [[REStringScriptBuffer alloc] initWithString:v8];
-      v17 = [[a1 alloc] initWithScriptBuffer:v16 path:v5];
+      v17 = [[self alloc] initWithScriptBuffer:v16 path:stringByStandardizingPath];
       os_unfair_lock_lock(&REScriptProcessorLock);
       if (REScriptProcessorCache_onceToken != -1)
       {
         +[REScriptProcessor processorWithPath:];
       }
 
-      [REScriptProcessorCache_Cache setObject:v17 forKeyedSubscript:v5];
+      [REScriptProcessorCache_Cache setObject:v17 forKeyedSubscript:stringByStandardizingPath];
       os_unfair_lock_unlock(&REScriptProcessorLock);
       v7 = v17;
     }
 
     else
     {
-      RERaiseInternalException(*MEMORY[0x277CBE660], @"Unable to load script at path: %@ Error: %@", v9, v10, v11, v12, v13, v14, v5);
+      RERaiseInternalException(*MEMORY[0x277CBE660], @"Unable to load script at path: %@ Error: %@", v9, v10, v11, v12, v13, v14, stringByStandardizingPath);
       v7 = 0;
     }
   }
@@ -68,19 +68,19 @@
   return v7;
 }
 
-- (REScriptProcessor)initWithScriptBuffer:(id)a3 path:(id)a4
+- (REScriptProcessor)initWithScriptBuffer:(id)buffer path:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  bufferCopy = buffer;
+  pathCopy = path;
   v19.receiver = self;
   v19.super_class = REScriptProcessor;
   v9 = [(REScriptProcessor *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_path, a4);
-    objc_storeStrong(&v10->_buffer, a3);
-    v11 = [[REScriptTokenizer alloc] initWithScriptBuffer:v7];
+    objc_storeStrong(&v9->_path, path);
+    objc_storeStrong(&v10->_buffer, buffer);
+    v11 = [[REScriptTokenizer alloc] initWithScriptBuffer:bufferCopy];
     tokenizer = v10->_tokenizer;
     v10->_tokenizer = v11;
 
@@ -101,20 +101,20 @@
   return v10;
 }
 
-- (id)featuresWithNames:(id)a3
+- (id)featuresWithNames:(id)names
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  namesCopy = names;
+  array = [MEMORY[0x277CBEB18] array];
   table = self->_table;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __39__REScriptProcessor_featuresWithNames___block_invoke;
   v11[3] = &unk_2785FD208;
-  v12 = v4;
-  v13 = self;
-  v14 = v5;
-  v7 = v5;
-  v8 = v4;
+  v12 = namesCopy;
+  selfCopy = self;
+  v14 = array;
+  v7 = array;
+  v8 = namesCopy;
   [(REScriptSymbolTable *)table enumerateFeatures:v11];
   v9 = [v7 copy];
 
@@ -280,13 +280,13 @@ void __39__REScriptProcessor__sharedSystemTable__block_invoke()
 - (void)_process
 {
   v3 = [REScriptSymbolTable alloc];
-  v4 = [objc_opt_class() _sharedSystemTable];
-  v5 = [(REScriptSymbolTable *)v3 initWithParentScope:v4];
+  _sharedSystemTable = [objc_opt_class() _sharedSystemTable];
+  v5 = [(REScriptSymbolTable *)v3 initWithParentScope:_sharedSystemTable];
   table = self->_table;
   self->_table = v5;
 
-  v7 = [(REScriptParser *)self->_parser parse];
-  v8 = [[REScriptASTNodeEnumerator alloc] initWithRootNodes:v7 symbolTable:self->_table];
+  parse = [(REScriptParser *)self->_parser parse];
+  v8 = [[REScriptASTNodeEnumerator alloc] initWithRootNodes:parse symbolTable:self->_table];
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -305,7 +305,7 @@ void __39__REScriptProcessor__sharedSystemTable__block_invoke()
     v13[2] = __29__REScriptProcessor__process__block_invoke;
     v13[3] = &unk_2785FD230;
     v12 = v10;
-    v15 = self;
+    selfCopy = self;
     v16 = &v18;
     v14 = v12;
     [(REScriptSymbolTable *)v11 enumerateFeatures:v13];
@@ -373,43 +373,43 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_encounteredError:(id)a3
+- (void)_encounteredError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKeyedSubscript:@"REErrorTokenKey"];
+    userInfo = [errorCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:@"REErrorTokenKey"];
 
     if (v7)
     {
-      v8 = [MEMORY[0x277CCAB68] string];
-      [v8 appendString:@"Encountered error while parsing source\n"];
+      string = [MEMORY[0x277CCAB68] string];
+      [string appendString:@"Encountered error while parsing source\n"];
       if (self->_path)
       {
-        [v8 appendString:?];
-        [v8 appendString:@"\n"];
+        [string appendString:?];
+        [string appendString:@"\n"];
       }
 
-      [v8 appendString:@"\n"];
-      v9 = [v7 line];
+      [string appendString:@"\n"];
+      line = [v7 line];
       v10 = 2;
-      if (v9 > 2)
+      if (line > 2)
       {
-        v10 = v9;
+        v10 = line;
       }
 
       v11 = v10 - 2;
-      v12 = [v7 line];
-      if (v11 > v12)
+      line2 = [v7 line];
+      if (v11 > line2)
       {
         goto LABEL_25;
       }
 
       v34 = v5;
       v13 = 0;
-      v14 = v12 + 1;
+      v14 = line2 + 1;
       do
       {
         v15 = [(REScriptBuffer *)self->_buffer contentForLine:v11];
@@ -417,7 +417,7 @@ LABEL_9:
         {
           v16 = v11 + 1;
           v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu: ", v11 + 1];
-          [v8 appendFormat:@"%@%@\n", v17, v15];
+          [string appendFormat:@"%@%@\n", v17, v15];
           if (v11 == [v7 line])
           {
             v18 = [v17 length];
@@ -426,7 +426,7 @@ LABEL_9:
               v19 = 0;
               do
               {
-                [v8 appendString:@" "];
+                [string appendString:@" "];
                 ++v19;
                 v20 = [v17 length];
               }
@@ -449,18 +449,18 @@ LABEL_9:
               v22 = 0;
               do
               {
-                [v8 appendString:v21];
+                [string appendString:v21];
                 ++v22;
               }
 
               while (v22 < [v7 length]);
             }
 
-            [v8 appendString:@"\n"];
-            v23 = [v34 localizedDescription];
-            [v8 appendString:v23];
+            [string appendString:@"\n"];
+            localizedDescription = [v34 localizedDescription];
+            [string appendString:localizedDescription];
 
-            [v8 appendString:@"\n\n"];
+            [string appendString:@"\n\n"];
             v13 = 1;
           }
 
@@ -478,11 +478,11 @@ LABEL_9:
       if ((v13 & 1) == 0)
       {
 LABEL_25:
-        [v8 appendString:@"\n"];
-        v24 = [v5 localizedDescription];
-        [v8 appendString:v24];
+        [string appendString:@"\n"];
+        localizedDescription2 = [v5 localizedDescription];
+        [string appendString:localizedDescription2];
 
-        [v8 appendString:@"\n"];
+        [string appendString:@"\n"];
       }
 
       if (_fetchedInternalBuildOnceToken_7 != -1)
@@ -495,16 +495,16 @@ LABEL_25:
         v25 = RELogForDomain(0);
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
-          [(REScriptProcessor *)v8 _encounteredError:v25];
+          [(REScriptProcessor *)string _encounteredError:v25];
         }
 
-        REStoreLogFileForTask(v8, @"Script");
+        REStoreLogFileForTask(string, @"Script");
       }
     }
 
     v26 = *MEMORY[0x277CBE658];
-    v27 = [v5 localizedDescription];
-    RERaiseInternalException(v26, @"%@", v28, v29, v30, v31, v32, v33, v27);
+    localizedDescription3 = [v5 localizedDescription];
+    RERaiseInternalException(v26, @"%@", v28, v29, v30, v31, v32, v33, localizedDescription3);
   }
 }
 

@@ -1,28 +1,28 @@
 @interface EQKitAttributionBox
-- (BOOL)isEqual:(id)a3;
-- (BOOL)p_getTransform:(CGAffineTransform *)a3 fromDescendant:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)p_getTransform:(CGAffineTransform *)transform fromDescendant:(id)descendant;
 - (CGRect)erasableBounds;
-- (EQKitAttributionBox)initWithBox:(id)a3 attribution:(id)a4;
+- (EQKitAttributionBox)initWithBox:(id)box attribution:(id)attribution;
 - (id)containedBoxes;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)renderIntoContext:(id)a3 offset:(CGPoint)a4;
+- (void)renderIntoContext:(id)context offset:(CGPoint)offset;
 @end
 
 @implementation EQKitAttributionBox
 
-- (EQKitAttributionBox)initWithBox:(id)a3 attribution:(id)a4
+- (EQKitAttributionBox)initWithBox:(id)box attribution:(id)attribution
 {
-  v7 = a3;
-  v8 = a4;
+  boxCopy = box;
+  attributionCopy = attribution;
   v12.receiver = self;
   v12.super_class = EQKitAttributionBox;
   v9 = [(EQKitAttributionBox *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_box, a3);
-    objc_storeStrong(&v10->_attribution, a4);
+    objc_storeStrong(&v9->_box, box);
+    objc_storeStrong(&v10->_attribution, attribution);
   }
 
   return v10;
@@ -48,53 +48,53 @@
   return result;
 }
 
-- (void)renderIntoContext:(id)a3 offset:(CGPoint)a4
+- (void)renderIntoContext:(id)context offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = offset.y;
+  x = offset.x;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = EQKitAttributionBox;
-  [(EQKitBox *)&v8 renderIntoContext:v7 offset:x, y];
-  [(EQKitBox *)self->_box renderIntoContext:v7 offset:x, y];
+  [(EQKitBox *)&v8 renderIntoContext:contextCopy offset:x, y];
+  [(EQKitBox *)self->_box renderIntoContext:contextCopy offset:x, y];
 }
 
-- (BOOL)p_getTransform:(CGAffineTransform *)a3 fromDescendant:(id)a4
+- (BOOL)p_getTransform:(CGAffineTransform *)transform fromDescendant:(id)descendant
 {
-  v6 = a4;
-  v7 = v6 == self || [(EQKitBox *)self->_box p_getTransform:a3 fromDescendant:v6];
+  descendantCopy = descendant;
+  v7 = descendantCopy == self || [(EQKitBox *)self->_box p_getTransform:transform fromDescendant:descendantCopy];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = [(EQKitAttributionBox *)self box];
-  v6 = [(EQKitAttributionBox *)self attribution];
-  v7 = [v4 initWithBox:v5 attribution:v6];
+  attribution = [(EQKitAttributionBox *)self attribution];
+  v7 = [v4 initWithBox:v5 attribution:attribution];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
-  else if ([(EQKitAttributionBox *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(EQKitAttributionBox *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(EQKitAttributionBox *)self box];
     v7 = [(EQKitAttributionBox *)v5 box];
     if ([v6 isEqual:v7])
     {
-      v8 = [(EQKitAttributionBox *)self attribution];
-      v9 = [(EQKitAttributionBox *)v5 attribution];
-      v10 = [v8 isEqual:v9];
+      attribution = [(EQKitAttributionBox *)self attribution];
+      attribution2 = [(EQKitAttributionBox *)v5 attribution];
+      v10 = [attribution isEqual:attribution2];
     }
 
     else
@@ -116,12 +116,12 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = [(EQKitAttributionBox *)self box];
-  v6 = [(EQKitAttributionBox *)self attribution];
-  v7 = [v6 source];
-  v8 = [(EQKitAttributionBox *)self attribution];
-  v13.location = [v8 range];
+  attribution = [(EQKitAttributionBox *)self attribution];
+  source = [attribution source];
+  attribution2 = [(EQKitAttributionBox *)self attribution];
+  v13.location = [attribution2 range];
   v9 = NSStringFromRange(v13);
-  v10 = [v3 stringWithFormat:@"<%@ %p>: box=%@ source='%@' range=%@", v4, self, v5, v7, v9];
+  v10 = [v3 stringWithFormat:@"<%@ %p>: box=%@ source='%@' range=%@", v4, self, v5, source, v9];
 
   return v10;
 }

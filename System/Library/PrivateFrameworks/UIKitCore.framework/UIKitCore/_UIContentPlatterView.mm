@@ -8,11 +8,11 @@
 - (_UIAssertion)collapsedPreviewBackgroundSuppression;
 - (double)collapsedShadowIntensity;
 - (double)expandedShadowIntensity;
-- (id)_morphPreviewFromCurrentState:(BOOL)a3 fallbackBackgroundColor:(id)a4 contentScale:(double)a5;
+- (id)_morphPreviewFromCurrentState:(BOOL)state fallbackBackgroundColor:(id)color contentScale:(double)scale;
 - (int64_t)collapsedShadowStyle;
 - (int64_t)expandedShadowStyle;
 - (unint64_t)preferredMorphingAxis;
-- (void)_updateBackgroundCaptureFor:(id)a3;
+- (void)_updateBackgroundCaptureFor:(id)for;
 - (void)_updateCollapsedPortalView;
 - (void)_updateCornerRadii;
 - (void)_updateGlassAppearanceIfNeeded;
@@ -21,60 +21,60 @@
 - (void)didTearOffForDrag;
 - (void)freezeExpandedPreview;
 - (void)layoutSubviews;
-- (void)setCollapsedPortalView:(id)a3;
-- (void)setCollapsedPreviewBackgroundSuppression:(id)a3;
-- (void)setCollapsedShadowIntensity:(double)a3;
-- (void)setCollapsedShadowStyle:(int64_t)a3;
-- (void)setExpanded:(BOOL)a3;
-- (void)setExpandedShadowIntensity:(double)a3;
-- (void)setExpandedShadowStyle:(int64_t)a3;
-- (void)setHidesCollapsedSourceView:(BOOL)a3;
-- (void)setPreferredMorphingAxis:(unint64_t)a3;
-- (void)setWantsEdgeAntialiasing:(BOOL)a3;
-- (void)set_shadowProperties:(id)a3;
+- (void)setCollapsedPortalView:(id)view;
+- (void)setCollapsedPreviewBackgroundSuppression:(id)suppression;
+- (void)setCollapsedShadowIntensity:(double)intensity;
+- (void)setCollapsedShadowStyle:(int64_t)style;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setExpandedShadowIntensity:(double)intensity;
+- (void)setExpandedShadowStyle:(int64_t)style;
+- (void)setHidesCollapsedSourceView:(BOOL)view;
+- (void)setPreferredMorphingAxis:(unint64_t)axis;
+- (void)setWantsEdgeAntialiasing:(BOOL)antialiasing;
+- (void)set_shadowProperties:(id)properties;
 - (void)updateContentSize;
 @end
 
 @implementation _UIContentPlatterView
 
-- (void)setPreferredMorphingAxis:(unint64_t)a3
+- (void)setPreferredMorphingAxis:(unint64_t)axis
 {
-  v4 = [(_UIContentPlatterView *)self morphView];
-  *(&v4->super.super.super.isa + OBJC_IVAR____UIMagicMorphView_preferredMorphingAxis) = a3;
-  *(&v4->super.super.super.isa + OBJC_IVAR____UIMagicMorphView_currentMorphingAxis) = a3;
+  morphView = [(_UIContentPlatterView *)self morphView];
+  *(&morphView->super.super.super.isa + OBJC_IVAR____UIMagicMorphView_preferredMorphingAxis) = axis;
+  *(&morphView->super.super.super.isa + OBJC_IVAR____UIMagicMorphView_currentMorphingAxis) = axis;
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_188D60F6C();
 }
 
 - (unint64_t)preferredMorphingAxis
 {
-  v2 = [(_UIContentPlatterView *)self morphView];
-  v3 = *(&v2->super.super.super.isa + OBJC_IVAR____UIMagicMorphView_preferredMorphingAxis);
+  morphView = [(_UIContentPlatterView *)self morphView];
+  v3 = *(&morphView->super.super.super.isa + OBJC_IVAR____UIMagicMorphView_preferredMorphingAxis);
 
   return v3;
 }
 
 - (void)_updateCornerRadii
 {
-  v2 = self;
+  selfCopy = self;
   sub_188D61574();
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  v3 = a3;
+  expandedCopy = expanded;
   v7.receiver = self;
   v7.super_class = _UIContentPlatterView;
-  v4 = self;
-  v5 = [(_UIMorphPlatterViewBase *)&v7 expanded];
-  v6.receiver = v4;
+  selfCopy = self;
+  expanded = [(_UIMorphPlatterViewBase *)&v7 expanded];
+  v6.receiver = selfCopy;
   v6.super_class = _UIContentPlatterView;
-  [(_UIMorphPlatterViewBase *)&v6 setExpanded:v3];
-  if (v5 != [(_UIContentPlatterView *)v4 expanded])
+  [(_UIMorphPlatterViewBase *)&v6 setExpanded:expandedCopy];
+  if (expanded != [(_UIContentPlatterView *)selfCopy expanded])
   {
     sub_188D62314();
   }
@@ -82,8 +82,8 @@
 
 - (UITargetedPreview)_destinationPreview
 {
-  v2 = self;
-  if ([(_UIContentPlatterView *)v2 expanded]&& ![(_UIMorphPlatterViewBase *)v2 alwaysCompact])
+  selfCopy = self;
+  if ([(_UIContentPlatterView *)selfCopy expanded]&& ![(_UIMorphPlatterViewBase *)selfCopy alwaysCompact])
   {
     v3 = &selRef_expandedPreview;
   }
@@ -93,7 +93,7 @@
     v3 = &selRef_collapsedPreview;
   }
 
-  v4 = [v2 *v3];
+  v4 = [selfCopy *v3];
 
   return v4;
 }
@@ -102,9 +102,9 @@
 {
   v4.receiver = self;
   v4.super_class = _UIContentPlatterView;
-  v2 = [(_UIMorphPlatterViewBase *)&v4 collapsedPreview];
+  collapsedPreview = [(_UIMorphPlatterViewBase *)&v4 collapsedPreview];
 
-  return v2;
+  return collapsedPreview;
 }
 
 - (double)expandedShadowIntensity
@@ -115,20 +115,20 @@
   return result;
 }
 
-- (void)setWantsEdgeAntialiasing:(BOOL)a3
+- (void)setWantsEdgeAntialiasing:(BOOL)antialiasing
 {
-  v4 = self;
-  sub_188D78198(a3);
+  selfCopy = self;
+  sub_188D78198(antialiasing);
 }
 
 - (void)_updateGlassAppearanceIfNeeded
 {
-  v2 = self;
-  v3 = [(_UIContentPlatterView *)v2 _destinationPreview];
-  if (v3)
+  selfCopy = self;
+  _destinationPreview = [(_UIContentPlatterView *)selfCopy _destinationPreview];
+  if (_destinationPreview)
   {
-    v4 = v3;
-    v5 = [(UITargetedPreview *)v3 view];
+    v4 = _destinationPreview;
+    view = [(UITargetedPreview *)_destinationPreview view];
     UIView._background.getter(v6);
 
     UIView._background.setter(v6);
@@ -144,25 +144,25 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_188D696DC();
 }
 
-- (void)set_shadowProperties:(id)a3
+- (void)set_shadowProperties:(id)properties
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____UIContentPlatterView__shadowProperties);
-  *(&self->super.super.super.super.isa + OBJC_IVAR____UIContentPlatterView__shadowProperties) = a3;
-  v5 = a3;
-  v6 = self;
+  *(&self->super.super.super.super.isa + OBJC_IVAR____UIContentPlatterView__shadowProperties) = properties;
+  propertiesCopy = properties;
+  selfCopy = self;
 
   sub_188D81DB4();
 }
 
-- (id)_morphPreviewFromCurrentState:(BOOL)a3 fallbackBackgroundColor:(id)a4 contentScale:(double)a5
+- (id)_morphPreviewFromCurrentState:(BOOL)state fallbackBackgroundColor:(id)color contentScale:(double)scale
 {
-  v8 = a4;
-  v9 = self;
-  v10 = sub_188D743E4(a3, a4);
+  colorCopy = color;
+  selfCopy = self;
+  v10 = sub_188D743E4(state, color);
 
   return v10;
 }
@@ -171,9 +171,9 @@
 {
   v4.receiver = self;
   v4.super_class = _UIContentPlatterView;
-  v2 = [(_UIMorphPlatterViewBase *)&v4 expandedPreview];
+  expandedPreview = [(_UIMorphPlatterViewBase *)&v4 expandedPreview];
 
-  return v2;
+  return expandedPreview;
 }
 
 - (BOOL)expanded
@@ -183,17 +183,17 @@
   return [(_UIMorphPlatterViewBase *)&v3 expanded];
 }
 
-- (void)_updateBackgroundCaptureFor:(id)a3
+- (void)_updateBackgroundCaptureFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  sub_188D70A44(v4);
+  forCopy = for;
+  selfCopy = self;
+  sub_188D70A44(forCopy);
 }
 
 - (BOOL)wantsEdgeAntialiasing
 {
-  v2 = [(_UIContentPlatterView *)self morphView];
-  v3 = *(&v2->super.super.super.isa + OBJC_IVAR____UIMagicMorphView_wantsEdgeAntialiasing);
+  morphView = [(_UIContentPlatterView *)self morphView];
+  v3 = *(&morphView->super.super.super.isa + OBJC_IVAR____UIMagicMorphView_wantsEdgeAntialiasing);
 
   return v3;
 }
@@ -205,10 +205,10 @@
   return [(_UIMorphPlatterViewBase *)&v3 collapsedShadowStyle];
 }
 
-- (void)setCollapsedShadowStyle:(int64_t)a3
+- (void)setCollapsedShadowStyle:(int64_t)style
 {
-  v4 = self;
-  sub_188F12FDC(a3);
+  selfCopy = self;
+  sub_188F12FDC(style);
 }
 
 - (int64_t)expandedShadowStyle
@@ -218,19 +218,19 @@
   return [(_UIMorphPlatterViewBase *)&v3 expandedShadowStyle];
 }
 
-- (void)setExpandedShadowStyle:(int64_t)a3
+- (void)setExpandedShadowStyle:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = _UIContentPlatterView;
-  v4 = self;
-  v5 = [(_UIMorphPlatterViewBase *)&v7 expandedShadowStyle];
-  v6.receiver = v4;
+  selfCopy = self;
+  expandedShadowStyle = [(_UIMorphPlatterViewBase *)&v7 expandedShadowStyle];
+  v6.receiver = selfCopy;
   v6.super_class = _UIContentPlatterView;
-  [(_UIMorphPlatterViewBase *)&v6 setExpandedShadowStyle:a3];
-  if ([(_UIContentPlatterView *)v4 expandedShadowStyle]!= v5)
+  [(_UIMorphPlatterViewBase *)&v6 setExpandedShadowStyle:style];
+  if ([(_UIContentPlatterView *)selfCopy expandedShadowStyle]!= expandedShadowStyle)
   {
     sub_188D81DB4();
-    [(_UIContentPlatterView *)v4 _updateShadowPath];
+    [(_UIContentPlatterView *)selfCopy _updateShadowPath];
   }
 }
 
@@ -242,19 +242,19 @@
   return result;
 }
 
-- (void)setCollapsedShadowIntensity:(double)a3
+- (void)setCollapsedShadowIntensity:(double)intensity
 {
   v9.receiver = self;
   v9.super_class = _UIContentPlatterView;
-  v4 = self;
+  selfCopy = self;
   [(_UIMorphPlatterViewBase *)&v9 collapsedShadowIntensity];
   v6 = v5;
-  v8.receiver = v4;
+  v8.receiver = selfCopy;
   v8.super_class = _UIContentPlatterView;
-  [(_UIMorphPlatterViewBase *)&v8 setCollapsedShadowIntensity:a3];
-  if (![(_UIContentPlatterView *)v4 expanded])
+  [(_UIMorphPlatterViewBase *)&v8 setCollapsedShadowIntensity:intensity];
+  if (![(_UIContentPlatterView *)selfCopy expanded])
   {
-    [(_UIContentPlatterView *)v4 collapsedShadowIntensity];
+    [(_UIContentPlatterView *)selfCopy collapsedShadowIntensity];
     if (v7 != v6)
     {
       sub_188D81DB4();
@@ -262,19 +262,19 @@
   }
 }
 
-- (void)setExpandedShadowIntensity:(double)a3
+- (void)setExpandedShadowIntensity:(double)intensity
 {
   v9.receiver = self;
   v9.super_class = _UIContentPlatterView;
-  v4 = self;
+  selfCopy = self;
   [(_UIMorphPlatterViewBase *)&v9 expandedShadowIntensity];
   v6 = v5;
-  v8.receiver = v4;
+  v8.receiver = selfCopy;
   v8.super_class = _UIContentPlatterView;
-  [(_UIMorphPlatterViewBase *)&v8 setExpandedShadowIntensity:a3];
-  if ([(_UIContentPlatterView *)v4 expanded])
+  [(_UIMorphPlatterViewBase *)&v8 setExpandedShadowIntensity:intensity];
+  if ([(_UIContentPlatterView *)selfCopy expanded])
   {
-    [(_UIContentPlatterView *)v4 expandedShadowIntensity];
+    [(_UIContentPlatterView *)selfCopy expandedShadowIntensity];
     if (v7 != v6)
     {
       sub_188D81DB4();
@@ -289,35 +289,35 @@
   return [(_UIMorphPlatterViewBase *)&v3 hidesCollapsedSourceView];
 }
 
-- (void)setHidesCollapsedSourceView:(BOOL)a3
+- (void)setHidesCollapsedSourceView:(BOOL)view
 {
-  v4 = self;
-  sub_188F133B4(a3);
+  selfCopy = self;
+  sub_188F133B4(view);
 }
 
 - (void)didTearOffForDrag
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F13650();
 }
 
 - (void)freezeExpandedPreview
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F13760();
 }
 
 - (void)updateContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F13960();
 }
 
-- (void)setCollapsedPortalView:(id)a3
+- (void)setCollapsedPortalView:(id)view
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____UIContentPlatterView_collapsedPortalView);
-  *(&self->super.super.super.super.isa + OBJC_IVAR____UIContentPlatterView_collapsedPortalView) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.isa + OBJC_IVAR____UIContentPlatterView_collapsedPortalView) = view;
+  viewCopy = view;
 }
 
 - (_UIAssertion)collapsedPreviewBackgroundSuppression
@@ -327,9 +327,9 @@
   return v2;
 }
 
-- (void)setCollapsedPreviewBackgroundSuppression:(id)a3
+- (void)setCollapsedPreviewBackgroundSuppression:(id)suppression
 {
-  *(&self->super.super.super.super.isa + OBJC_IVAR____UIContentPlatterView_collapsedPreviewBackgroundSuppression) = a3;
+  *(&self->super.super.super.super.isa + OBJC_IVAR____UIContentPlatterView_collapsedPreviewBackgroundSuppression) = suppression;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
@@ -337,13 +337,13 @@
 
 - (void)_updateShadowPath
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F13C20();
 }
 
 - (void)_updateCollapsedPortalView
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F13DD0();
 }
 

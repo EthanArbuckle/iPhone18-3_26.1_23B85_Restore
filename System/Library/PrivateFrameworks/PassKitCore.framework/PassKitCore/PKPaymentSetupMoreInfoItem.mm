@@ -1,48 +1,48 @@
 @interface PKPaymentSetupMoreInfoItem
-- (PKPaymentSetupMoreInfoItem)initWithCoder:(id)a3;
-- (PKPaymentSetupMoreInfoItem)initWithMoreInfoDictionary:(id)a3 imageData:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKPaymentSetupMoreInfoItem)initWithCoder:(id)coder;
+- (PKPaymentSetupMoreInfoItem)initWithMoreInfoDictionary:(id)dictionary imageData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_updateActionStrings;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentSetupMoreInfoItem
 
-- (PKPaymentSetupMoreInfoItem)initWithMoreInfoDictionary:(id)a3 imageData:(id)a4
+- (PKPaymentSetupMoreInfoItem)initWithMoreInfoDictionary:(id)dictionary imageData:(id)data
 {
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  dataCopy = data;
   v49.receiver = self;
   v49.super_class = PKPaymentSetupMoreInfoItem;
   v8 = [(PKPaymentSetupMoreInfoItem *)&v49 init];
   if (v8)
   {
-    v9 = [v6 PKStringForKey:@"title"];
+    v9 = [dictionaryCopy PKStringForKey:@"title"];
     v10 = [v9 copy];
     title = v8->_title;
     v8->_title = v10;
 
-    v12 = [v6 PKStringForKey:@"body"];
+    v12 = [dictionaryCopy PKStringForKey:@"body"];
     v13 = [v12 copy];
     body = v8->_body;
     v8->_body = v13;
 
-    v15 = [v6 PKURLForKey:@"imageURL"];
+    v15 = [dictionaryCopy PKURLForKey:@"imageURL"];
     v16 = [v15 copy];
     imageURL = v8->_imageURL;
     v8->_imageURL = v16;
 
-    v18 = [v7 copy];
+    v18 = [dataCopy copy];
     imageData = v8->_imageData;
     v8->_imageData = v18;
 
-    v20 = [v6 PKURLForKey:@"linkURL"];
+    v20 = [dictionaryCopy PKURLForKey:@"linkURL"];
     v21 = [v20 copy];
     linkURL = v8->_linkURL;
     v8->_linkURL = v21;
 
-    v23 = [v6 PKStringForKey:@"linkText"];
+    v23 = [dictionaryCopy PKStringForKey:@"linkText"];
     v24 = [v23 copy];
     linkText = v8->_linkText;
     v8->_linkText = v24;
@@ -71,7 +71,7 @@
       v8->_linkURL = 0;
     }
 
-    v31 = [v6 PKStringForKey:@"type"];
+    v31 = [dictionaryCopy PKStringForKey:@"type"];
     v32 = v31;
     if (v31)
     {
@@ -84,35 +84,35 @@
     }
 
     v8->_type = v33;
-    v34 = [v6 PKStringForKey:@"nextAction"];
+    v34 = [dictionaryCopy PKStringForKey:@"nextAction"];
     v35 = [v34 copy];
     nextActionOverride = v8->_nextActionOverride;
     v8->_nextActionOverride = v35;
 
-    v37 = [v6 PKStringForKey:@"doneAction"];
+    v37 = [dictionaryCopy PKStringForKey:@"doneAction"];
     v38 = [v37 copy];
     doneActionOverride = v8->_doneActionOverride;
     v8->_doneActionOverride = v38;
 
-    v40 = [v6 PKStringForKey:@"altAction"];
+    v40 = [dictionaryCopy PKStringForKey:@"altAction"];
     v41 = [v40 copy];
     alternativeActionOverride = v8->_alternativeActionOverride;
     v8->_alternativeActionOverride = v41;
 
-    v43 = [v6 PKNumberForKey:@"hideAltAction"];
+    v43 = [dictionaryCopy PKNumberForKey:@"hideAltAction"];
     v44 = v43;
     if (v43)
     {
-      v45 = [v43 BOOLValue];
+      bOOLValue = [v43 BOOLValue];
     }
 
     else
     {
-      v45 = 1;
+      bOOLValue = 1;
     }
 
-    v8->_hideAlternativeAction = v45;
-    v46 = [v6 PKDictionaryForKey:@"reportingMetadata"];
+    v8->_hideAlternativeAction = bOOLValue;
+    v46 = [dictionaryCopy PKDictionaryForKey:@"reportingMetadata"];
     reportingMetadata = v8->_reportingMetadata;
     v8->_reportingMetadata = v46;
 
@@ -166,36 +166,36 @@
   }
 }
 
-- (PKPaymentSetupMoreInfoItem)initWithCoder:(id)a3
+- (PKPaymentSetupMoreInfoItem)initWithCoder:(id)coder
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v34.receiver = self;
   v34.super_class = PKPaymentSetupMoreInfoItem;
   v5 = [(PKPaymentSetupMoreInfoItem *)&v34 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"body"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"body"];
     body = v5->_body;
     v5->_body = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageURL"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageURL"];
     imageURL = v5->_imageURL;
     v5->_imageURL = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageDataKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageDataKey"];
     imageData = v5->_imageData;
     v5->_imageData = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"linkURL"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"linkURL"];
     linkURL = v5->_linkURL;
     v5->_linkURL = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"linkText"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"linkText"];
     linkText = v5->_linkText;
     v5->_linkText = v16;
 
@@ -223,24 +223,24 @@
       v5->_linkURL = 0;
     }
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v5->_type = PKPaymentSetupMoreInfoItemTypeFromDescription(v23);
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nextAction"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nextAction"];
     nextActionOverride = v5->_nextActionOverride;
     v5->_nextActionOverride = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"doneAction"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"doneAction"];
     doneActionOverride = v5->_doneActionOverride;
     v5->_doneActionOverride = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altAction"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altAction"];
     alternativeActionOverride = v5->_alternativeActionOverride;
     v5->_alternativeActionOverride = v28;
 
-    v5->_hideAlternativeAction = [v4 decodeBoolForKey:@"hideAltAction"];
+    v5->_hideAlternativeAction = [coderCopy decodeBoolForKey:@"hideAltAction"];
     v30 = objc_opt_class();
-    v31 = [v4 decodeDictionaryWithKeysOfClass:v30 objectsOfClass:objc_opt_class() forKey:@"reportingMetadata"];
+    v31 = [coderCopy decodeDictionaryWithKeysOfClass:v30 objectsOfClass:objc_opt_class() forKey:@"reportingMetadata"];
     reportingMetadata = v5->_reportingMetadata;
     v5->_reportingMetadata = v31;
 
@@ -250,15 +250,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeObject:self->_title forKey:@"title"];
-  [v6 encodeObject:self->_body forKey:@"body"];
-  [v6 encodeObject:self->_imageURL forKey:@"imageURL"];
-  [v6 encodeObject:self->_imageData forKey:@"imageDataKey"];
-  [v6 encodeObject:self->_linkURL forKey:@"linkURL"];
-  [v6 encodeObject:self->_linkText forKey:@"linkText"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeObject:self->_body forKey:@"body"];
+  [coderCopy encodeObject:self->_imageURL forKey:@"imageURL"];
+  [coderCopy encodeObject:self->_imageData forKey:@"imageDataKey"];
+  [coderCopy encodeObject:self->_linkURL forKey:@"linkURL"];
+  [coderCopy encodeObject:self->_linkText forKey:@"linkText"];
   type = self->_type;
   if (type > 2)
   {
@@ -270,56 +270,56 @@
     v5 = off_1E79C4FD8[type];
   }
 
-  [v6 encodeObject:v5 forKey:@"type"];
-  [v6 encodeObject:self->_nextActionOverride forKey:@"nextAction"];
-  [v6 encodeObject:self->_doneActionOverride forKey:@"doneAction"];
-  [v6 encodeObject:self->_alternativeActionOverride forKey:@"altAction"];
-  [v6 encodeBool:self->_hideAlternativeAction forKey:@"hideAltAction"];
-  [v6 encodeObject:self->_reportingMetadata forKey:@"reportingMetadata"];
+  [coderCopy encodeObject:v5 forKey:@"type"];
+  [coderCopy encodeObject:self->_nextActionOverride forKey:@"nextAction"];
+  [coderCopy encodeObject:self->_doneActionOverride forKey:@"doneAction"];
+  [coderCopy encodeObject:self->_alternativeActionOverride forKey:@"altAction"];
+  [coderCopy encodeBool:self->_hideAlternativeAction forKey:@"hideAltAction"];
+  [coderCopy encodeObject:self->_reportingMetadata forKey:@"reportingMetadata"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSString *)self->_title copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSString *)self->_title copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
-  v8 = [(NSString *)self->_body copyWithZone:a3];
+  v8 = [(NSString *)self->_body copyWithZone:zone];
   v9 = *(v5 + 56);
   *(v5 + 56) = v8;
 
-  v10 = [(NSURL *)self->_imageURL copyWithZone:a3];
+  v10 = [(NSURL *)self->_imageURL copyWithZone:zone];
   v11 = *(v5 + 120);
   *(v5 + 120) = v10;
 
-  v12 = [(NSData *)self->_imageData copyWithZone:a3];
+  v12 = [(NSData *)self->_imageData copyWithZone:zone];
   v13 = *(v5 + 128);
   *(v5 + 128) = v12;
 
-  v14 = [(NSURL *)self->_linkURL copyWithZone:a3];
+  v14 = [(NSURL *)self->_linkURL copyWithZone:zone];
   v15 = *(v5 + 72);
   *(v5 + 72) = v14;
 
-  v16 = [(NSString *)self->_linkText copyWithZone:a3];
+  v16 = [(NSString *)self->_linkText copyWithZone:zone];
   v17 = *(v5 + 64);
   *(v5 + 64) = v16;
 
   *(v5 + 80) = self->_type;
-  v18 = [(NSString *)self->_nextActionOverride copyWithZone:a3];
+  v18 = [(NSString *)self->_nextActionOverride copyWithZone:zone];
   v19 = *(v5 + 16);
   *(v5 + 16) = v18;
 
-  v20 = [(NSString *)self->_doneActionOverride copyWithZone:a3];
+  v20 = [(NSString *)self->_doneActionOverride copyWithZone:zone];
   v21 = *(v5 + 24);
   *(v5 + 24) = v20;
 
-  v22 = [(NSString *)self->_alternativeActionOverride copyWithZone:a3];
+  v22 = [(NSString *)self->_alternativeActionOverride copyWithZone:zone];
   v23 = *(v5 + 32);
   *(v5 + 32) = v22;
 
   *(v5 + 8) = self->_hideAlternativeAction;
-  v24 = [(NSDictionary *)self->_reportingMetadata copyWithZone:a3];
+  v24 = [(NSDictionary *)self->_reportingMetadata copyWithZone:zone];
   v25 = *(v5 + 112);
   *(v5 + 112) = v24;
 

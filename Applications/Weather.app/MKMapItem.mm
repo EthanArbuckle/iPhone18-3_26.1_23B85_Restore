@@ -7,67 +7,67 @@
 
 - (NSString)wc_localityName
 {
-  v3 = [(MKMapItem *)self placemark];
-  v4 = [(MKMapItem *)v3 locality];
-  v5 = [v4 length];
+  placemark = [(MKMapItem *)self placemark];
+  locality = [(MKMapItem *)placemark locality];
+  v5 = [locality length];
 
   if (v5)
   {
-    v6 = [(MKMapItem *)v3 locality];
+    locality2 = [(MKMapItem *)placemark locality];
   }
 
   else
   {
-    v7 = [(MKMapItem *)v3 name];
-    v8 = [v7 length];
+    name = [(MKMapItem *)placemark name];
+    v8 = [name length];
 
     if (v8)
     {
-      v9 = v3;
+      selfCopy = placemark;
     }
 
     else
     {
-      v9 = self;
+      selfCopy = self;
     }
 
-    v6 = [(MKMapItem *)v9 name];
+    locality2 = [(MKMapItem *)selfCopy name];
   }
 
-  v10 = v6;
+  v10 = locality2;
 
   return v10;
 }
 
 - (NSString)wc_weatherDisplayName
 {
-  v3 = [(MKMapItem *)self _weatherDisplayName];
-  v4 = [v3 length];
+  _weatherDisplayName = [(MKMapItem *)self _weatherDisplayName];
+  v4 = [_weatherDisplayName length];
 
   if (v4)
   {
-    v5 = [(MKMapItem *)self _weatherDisplayName];
+    _weatherDisplayName2 = [(MKMapItem *)self _weatherDisplayName];
 LABEL_3:
-    v6 = v5;
+    name2 = _weatherDisplayName2;
     goto LABEL_6;
   }
 
-  v7 = [(MKMapItem *)self placemark];
-  v8 = [v7 name];
-  v9 = [v8 length];
+  placemark = [(MKMapItem *)self placemark];
+  name = [placemark name];
+  v9 = [name length];
 
   if (!v9)
   {
-    v5 = [(MKMapItem *)self name];
+    _weatherDisplayName2 = [(MKMapItem *)self name];
     goto LABEL_3;
   }
 
-  v10 = [(MKMapItem *)self placemark];
-  v6 = [v10 name];
+  placemark2 = [(MKMapItem *)self placemark];
+  name2 = [placemark2 name];
 
 LABEL_6:
 
-  return v6;
+  return name2;
 }
 
 @end

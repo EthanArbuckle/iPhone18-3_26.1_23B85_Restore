@@ -1,8 +1,8 @@
 @interface CKDLongLivedOperationPersistedCallback
-- (CKDLongLivedOperationPersistedCallback)initWithCoder:(id)a3;
-- (CKDLongLivedOperationPersistedCallback)initWithProtocol:(id)a3 invocation:(id)a4 isCompletionCallback:(BOOL)a5;
+- (CKDLongLivedOperationPersistedCallback)initWithCoder:(id)coder;
+- (CKDLongLivedOperationPersistedCallback)initWithProtocol:(id)protocol invocation:(id)invocation isCompletionCallback:(BOOL)callback;
 - (void)_validateInvocation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKDLongLivedOperationPersistedCallback
@@ -57,29 +57,29 @@
   objc_msgSend_CKIterateArgumentsForIndexRange_primitiveTypeBlock_objectBlock_blockBlock_(v37, v41, 2, v40 - 2, 0, v34, v31);
 }
 
-- (CKDLongLivedOperationPersistedCallback)initWithProtocol:(id)a3 invocation:(id)a4 isCompletionCallback:(BOOL)a5
+- (CKDLongLivedOperationPersistedCallback)initWithProtocol:(id)protocol invocation:(id)invocation isCompletionCallback:(BOOL)callback
 {
-  v9 = a3;
-  v10 = a4;
+  protocolCopy = protocol;
+  invocationCopy = invocation;
   v16.receiver = self;
   v16.super_class = CKDLongLivedOperationPersistedCallback;
   v11 = [(CKDLongLivedOperationPersistedCallback *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_protocol, a3);
-    objc_storeStrong(&v12->_invocation, a4);
-    v12->_isCompletionCallback = a5;
+    objc_storeStrong(&v11->_protocol, protocol);
+    objc_storeStrong(&v12->_invocation, invocation);
+    v12->_isCompletionCallback = callback;
     objc_msgSend__validateInvocation(v12, v13, v14);
   }
 
   return v12;
 }
 
-- (CKDLongLivedOperationPersistedCallback)initWithCoder:(id)a3
+- (CKDLongLivedOperationPersistedCallback)initWithCoder:(id)coder
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v56.receiver = self;
   v56.super_class = CKDLongLivedOperationPersistedCallback;
   v5 = [(CKDLongLivedOperationPersistedCallback *)&v56 init];
@@ -90,7 +90,7 @@
 
   context = objc_autoreleasePoolPush();
   v6 = objc_opt_class();
-  v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"ProtocolNamme");
+  v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"ProtocolNamme");
   v9 = NSProtocolFromString(v8);
   if (!v9)
   {
@@ -113,7 +113,7 @@
 
   objc_storeStrong(&v5->_protocol, v9);
   v10 = objc_opt_class();
-  v12 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v10, @"SelectorName");
+  v12 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v10, @"SelectorName");
   v13 = NSSelectorFromString(v12);
   MethodDescription = protocol_getMethodDescription(v9, v13, 1, 1);
   if (!MethodDescription.name)
@@ -137,9 +137,9 @@
     goto LABEL_22;
   }
 
-  v5->_isCompletionCallback = objc_msgSend_decodeBoolForKey_(v4, MethodDescription.types, @"isCompletionCallback");
+  v5->_isCompletionCallback = objc_msgSend_decodeBoolForKey_(coderCopy, MethodDescription.types, @"isCompletionCallback");
   v15 = objc_opt_class();
-  v45 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v16, v15, @"ArgumentTypes");
+  v45 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v16, v15, @"ArgumentTypes");
   v44 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, MethodDescription.types);
   if ((objc_msgSend_isEqualToString_(v44, v18, v45) & 1) == 0)
   {
@@ -176,7 +176,7 @@ LABEL_22:
   aBlock[1] = 3221225472;
   aBlock[2] = sub_22526457C;
   aBlock[3] = &unk_27854B4B8;
-  v25 = v4;
+  v25 = coderCopy;
   v54 = v25;
   v26 = v21;
   v55 = v26;
@@ -211,35 +211,35 @@ LABEL_23:
   return v36;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v8 = objc_msgSend_protocol(self, v6, v7);
   Name = protocol_getName(v8);
 
   v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, Name);
-  objc_msgSend_encodeObject_forKey_(v4, v12, v11, @"ProtocolNamme");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, v11, @"ProtocolNamme");
 
   v15 = objc_msgSend_invocation(self, v13, v14);
   v18 = objc_msgSend_selector(v15, v16, v17);
 
   v19 = sel_getName(v18);
   v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v20, v19);
-  objc_msgSend_encodeObject_forKey_(v4, v22, v21, @"SelectorName");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v22, v21, @"SelectorName");
 
-  objc_msgSend_encodeBool_forKey_(v4, v23, self->_isCompletionCallback, @"isCompletionCallback");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v23, self->_isCompletionCallback, @"isCompletionCallback");
   v26 = objc_msgSend_protocol(self, v24, v25);
   types = protocol_getMethodDescription(v26, v18, 1, 1).types;
 
   v29 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v28, types);
-  objc_msgSend_encodeObject_forKey_(v4, v30, v29, @"ArgumentTypes");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v30, v29, @"ArgumentTypes");
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_225264A74;
   aBlock[3] = &unk_27854B4B8;
   aBlock[4] = self;
-  v31 = v4;
+  v31 = coderCopy;
   v59 = v31;
   v32 = _Block_copy(aBlock);
   v56[0] = MEMORY[0x277D85DD0];
@@ -254,11 +254,11 @@ LABEL_23:
   v51 = 3221225472;
   v52 = sub_225264C14;
   v53 = &unk_27854B4E0;
-  v54 = self;
+  selfCopy = self;
   v35 = v33;
   v55 = v35;
   v36 = _Block_copy(&v50);
-  v39 = objc_msgSend_invocation(self, v37, v38, v50, v51, v52, v53, v54);
+  v39 = objc_msgSend_invocation(self, v37, v38, v50, v51, v52, v53, selfCopy);
   v42 = objc_msgSend_invocation(self, v40, v41);
   v45 = objc_msgSend_methodSignature(v42, v43, v44);
   v48 = objc_msgSend_numberOfArguments(v45, v46, v47);

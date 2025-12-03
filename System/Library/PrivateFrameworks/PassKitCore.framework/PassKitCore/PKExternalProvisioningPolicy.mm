@@ -1,63 +1,63 @@
 @interface PKExternalProvisioningPolicy
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToExternalProvisioningPolicy:(id)a3;
-- (PKExternalProvisioningPolicy)initWithCoder:(id)a3;
-- (PKExternalProvisioningPolicy)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToExternalProvisioningPolicy:(id)policy;
+- (PKExternalProvisioningPolicy)initWithCoder:(id)coder;
+- (PKExternalProvisioningPolicy)initWithDictionary:(id)dictionary;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKExternalProvisioningPolicy
 
-- (PKExternalProvisioningPolicy)initWithDictionary:(id)a3
+- (PKExternalProvisioningPolicy)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v13.receiver = self;
     v13.super_class = PKExternalProvisioningPolicy;
     v5 = [(PKExternalProvisioningPolicy *)&v13 init];
     if (v5)
     {
-      v6 = [v4 PKStringForKey:@"type"];
+      v6 = [dictionaryCopy PKStringForKey:@"type"];
       type = v5->_type;
       v5->_type = v6;
 
       v8 = objc_opt_class();
-      v9 = [v4 PKDictionaryOfKeyClass:v8 valueClass:objc_opt_class() ForKey:@"deviceLimits"];
+      v9 = [dictionaryCopy PKDictionaryOfKeyClass:v8 valueClass:objc_opt_class() ForKey:@"deviceLimits"];
       deviceLimits = v5->_deviceLimits;
       v5->_deviceLimits = v9;
     }
 
     self = v5;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (PKExternalProvisioningPolicy)initWithCoder:(id)a3
+- (PKExternalProvisioningPolicy)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PKExternalProvisioningPolicy;
   v5 = [(PKExternalProvisioningPolicy *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     type = v5->_type;
     v5->_type = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"deviceLimits"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"deviceLimits"];
     deviceLimits = v5->_deviceLimits;
     v5->_deviceLimits = v11;
   }
@@ -65,12 +65,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeObject:type forKey:@"type"];
-  [v5 encodeObject:self->_deviceLimits forKey:@"deviceLimits"];
+  coderCopy = coder;
+  [coderCopy encodeObject:type forKey:@"type"];
+  [coderCopy encodeObject:self->_deviceLimits forKey:@"deviceLimits"];
 }
 
 - (id)description
@@ -98,33 +98,33 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKExternalProvisioningPolicy *)self isEqualToExternalProvisioningPolicy:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKExternalProvisioningPolicy *)self isEqualToExternalProvisioningPolicy:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToExternalProvisioningPolicy:(id)a3
+- (BOOL)isEqualToExternalProvisioningPolicy:(id)policy
 {
-  v4 = a3;
-  if (!v4)
+  policyCopy = policy;
+  if (!policyCopy)
   {
     goto LABEL_8;
   }
 
   type = self->_type;
-  v6 = v4[1];
+  v6 = policyCopy[1];
   if (type)
   {
     v7 = v6 == 0;
@@ -154,7 +154,7 @@ LABEL_8:
 
 LABEL_11:
   deviceLimits = self->_deviceLimits;
-  v11 = v4[2];
+  v11 = policyCopy[2];
   if (deviceLimits && v11)
   {
     v8 = [(NSDictionary *)deviceLimits isEqual:?];

@@ -1,55 +1,55 @@
 @interface WFDateContentItem
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 + (id)propertyBuilders;
-- (BOOL)getListAltText:(id)a3;
+- (BOOL)getListAltText:(id)text;
 - (NSDate)date;
 - (NSDateComponents)dateComponents;
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5;
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error;
 - (id)richListTitle;
 - (id)timeDateComponents;
 @end
 
 @implementation WFDateContentItem
 
-- (BOOL)getListAltText:(id)a3
+- (BOOL)getListAltText:(id)text
 {
-  v4 = a3;
-  v5 = [(WFContentItem *)self internalRepresentation];
-  v6 = [v5 specifiedName];
+  textCopy = text;
+  internalRepresentation = [(WFContentItem *)self internalRepresentation];
+  specifiedName = [internalRepresentation specifiedName];
 
-  if (v4 && v6)
+  if (textCopy && specifiedName)
   {
-    v4[2](v4, v6);
+    textCopy[2](textCopy, specifiedName);
   }
 
-  return v6 != 0;
+  return specifiedName != 0;
 }
 
 - (id)richListTitle
 {
-  v2 = [(WFDateContentItem *)self date];
-  v3 = [v2 wfName];
+  date = [(WFDateContentItem *)self date];
+  wfName = [date wfName];
 
-  return v3;
+  return wfName;
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Dates", @"Dates");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Date", @"Date");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -97,34 +97,34 @@ void __37__WFDateContentItem_propertyBuilders__block_invoke(uint64_t a1, void *a
 
 - (id)timeDateComponents
 {
-  v2 = [(WFDateContentItem *)self dateComponents];
+  dateComponents = [(WFDateContentItem *)self dateComponents];
   v3 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-  v4 = [v2 calendar];
-  [v3 setCalendar:v4];
+  calendar = [dateComponents calendar];
+  [v3 setCalendar:calendar];
 
-  v5 = [v2 timeZone];
-  [v3 setTimeZone:v5];
+  timeZone = [dateComponents timeZone];
+  [v3 setTimeZone:timeZone];
 
-  [v3 setHour:{objc_msgSend(v2, "hour")}];
-  [v3 setMinute:{objc_msgSend(v2, "minute")}];
-  [v3 setSecond:{objc_msgSend(v2, "second")}];
-  [v3 setNanosecond:{objc_msgSend(v2, "nanosecond")}];
+  [v3 setHour:{objc_msgSend(dateComponents, "hour")}];
+  [v3 setMinute:{objc_msgSend(dateComponents, "minute")}];
+  [v3 setSecond:{objc_msgSend(dateComponents, "second")}];
+  [v3 setNanosecond:{objc_msgSend(dateComponents, "nanosecond")}];
 
   return v3;
 }
 
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     v10 = MEMORY[0x277CCABB0];
-    v11 = [(WFDateContentItem *)self date];
-    [v11 timeIntervalSince1970];
+    date = [(WFDateContentItem *)self date];
+    [date timeIntervalSince1970];
     v12 = [v10 numberWithDouble:?];
     v13 = MEMORY[0x277CCACA8];
     v14 = WFLocalizedString(@"%.0f seconds since 1970");
-    v15 = [(WFDateContentItem *)self date];
-    [v15 timeIntervalSince1970];
+    date2 = [(WFDateContentItem *)self date];
+    [date2 timeIntervalSince1970];
     v17 = [v13 localizedStringWithFormat:v14, v16];
     v9 = [WFObjectRepresentation object:v12 named:v17];
   }
@@ -133,57 +133,57 @@ void __37__WFDateContentItem_propertyBuilders__block_invoke(uint64_t a1, void *a
   {
     v7 = objc_opt_class();
     v8 = objc_opt_class();
-    if (v7 == a3)
+    if (v7 == class)
     {
-      v11 = [(WFContentItem *)self objectForClass:v8];
-      v18 = [MEMORY[0x277CBEA80] currentCalendar];
-      v19 = [(WFDetectedDate *)v18 dateFromComponents:v11];
+      date = [(WFContentItem *)self objectForClass:v8];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      v19 = [(WFDetectedDate *)currentCalendar dateFromComponents:date];
       v9 = [WFObjectRepresentation object:v19];
 
       goto LABEL_15;
     }
 
-    if (v8 != a3)
+    if (v8 != class)
     {
-      if (objc_opt_class() == a3)
+      if (objc_opt_class() == class)
       {
         v22 = [(WFContentItem *)self objectForClass:objc_opt_class()];
-        v11 = v22;
+        date = v22;
         if (!v22)
         {
-          v18 = [(WFDateContentItem *)self date];
-          v23 = [v18 wfName];
-          v9 = [WFObjectRepresentation object:v23];
+          currentCalendar = [(WFDateContentItem *)self date];
+          wfName = [currentCalendar wfName];
+          v9 = [WFObjectRepresentation object:wfName];
 
           goto LABEL_15;
         }
 
-        v18 = [v22 wfName];
+        currentCalendar = [v22 wfName];
       }
 
       else
       {
-        if (objc_opt_class() != a3)
+        if (objc_opt_class() != class)
         {
           v9 = 0;
           goto LABEL_17;
         }
 
-        v11 = [(WFContentItem *)self objectForClass:objc_opt_class()];
-        v18 = [[WFDetectedDate alloc] initWithDate:v11 timeIsSignificant:1];
+        date = [(WFContentItem *)self objectForClass:objc_opt_class()];
+        currentCalendar = [[WFDetectedDate alloc] initWithDate:date timeIsSignificant:1];
       }
 
-      v9 = [WFObjectRepresentation object:v18];
+      v9 = [WFObjectRepresentation object:currentCalendar];
 LABEL_15:
 
       goto LABEL_16;
     }
 
-    v20 = [MEMORY[0x277CBEA80] currentCalendar];
-    v21 = [(WFDateContentItem *)self date];
-    v11 = [v20 components:-1 fromDate:v21];
+    currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+    date3 = [(WFDateContentItem *)self date];
+    date = [currentCalendar2 components:-1 fromDate:date3];
 
-    v9 = [WFObjectRepresentation object:v11];
+    v9 = [WFObjectRepresentation object:date];
   }
 
 LABEL_16:
@@ -197,20 +197,20 @@ LABEL_17:
 {
   v3 = [WFObjectType typeWithClass:objc_opt_class()];
   v4 = [(WFContentItem *)self getRepresentationsForType:v3 error:0];
-  v5 = [v4 firstObject];
-  v6 = [v5 object];
+  firstObject = [v4 firstObject];
+  object = [firstObject object];
 
-  return v6;
+  return object;
 }
 
 - (NSDate)date
 {
   v3 = [WFObjectType typeWithClass:objc_opt_class()];
   v4 = [(WFContentItem *)self getRepresentationsForType:v3 error:0];
-  v5 = [v4 firstObject];
-  v6 = [v5 object];
+  firstObject = [v4 firstObject];
+  object = [firstObject object];
 
-  return v6;
+  return object;
 }
 
 @end

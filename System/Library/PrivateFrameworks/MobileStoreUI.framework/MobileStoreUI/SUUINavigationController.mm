@@ -4,18 +4,18 @@
 - (id)childViewControllerForStatusBarHidden;
 - (id)childViewControllerForStatusBarStyle;
 - (id)description;
-- (id)popToRootViewControllerAnimated:(BOOL)a3;
-- (id)popToViewController:(id)a3 animated:(BOOL)a4;
-- (id)popViewControllerAnimated:(BOOL)a3;
-- (void)_configureNavigationBar:(id)a3 withTintColor:(id)a4 tintAdjustmentMode:(int64_t)a5 titleTextTintColor:(id)a6 shouldTintTitleText:(BOOL)a7 accessibilityButtonBackgroundTintColor:(id)a8;
-- (void)_configureNavigationBarForViewController:(id)a3 shouldIgnoreTransitionCoordinator:(BOOL)a4;
+- (id)popToRootViewControllerAnimated:(BOOL)animated;
+- (id)popToViewController:(id)controller animated:(BOOL)animated;
+- (id)popViewControllerAnimated:(BOOL)animated;
+- (void)_configureNavigationBar:(id)bar withTintColor:(id)color tintAdjustmentMode:(int64_t)mode titleTextTintColor:(id)tintColor shouldTintTitleText:(BOOL)text accessibilityButtonBackgroundTintColor:(id)backgroundTintColor;
+- (void)_configureNavigationBarForViewController:(id)controller shouldIgnoreTransitionCoordinator:(BOOL)coordinator;
 - (void)_scheduleConfigurationOfNavigationBar;
-- (void)_setNavigationPalette:(id)a3 hidesPaletteShadow:(BOOL)a4;
-- (void)_viewControllerNeedsNavigationBarAppearanceUpdate:(id)a3;
-- (void)attachPalette:(id)a3 isPinned:(BOOL)a4;
-- (void)didShowViewController:(id)a3 animated:(BOOL)a4;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4;
+- (void)_setNavigationPalette:(id)palette hidesPaletteShadow:(BOOL)shadow;
+- (void)_viewControllerNeedsNavigationBarAppearanceUpdate:(id)update;
+- (void)attachPalette:(id)palette isPinned:(BOOL)pinned;
+- (void)didShowViewController:(id)controller animated:(BOOL)animated;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated;
 @end
 
 @implementation SUUINavigationController
@@ -27,12 +27,12 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 initWithFormat:@"<%@: %p", v5, self];
 
-  v7 = [(SUUINavigationController *)self tabBarItem];
-  v8 = [v7 title];
+  tabBarItem = [(SUUINavigationController *)self tabBarItem];
+  title = [tabBarItem title];
 
-  if (v8)
+  if (title)
   {
-    [v6 appendFormat:@"; title = %@", v8];
+    [v6 appendFormat:@"; title = %@", title];
   }
 
   [v6 appendString:@">"];
@@ -44,120 +44,120 @@
 {
   if ([(SUUINavigationController *)self _topViewControllerPrefersNavigationBarBackgroundViewHidden])
   {
-    v3 = [(SUUINavigationController *)self topViewController];
+    topViewController = [(SUUINavigationController *)self topViewController];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SUUINavigationController;
-    v3 = [(SUUINavigationController *)&v5 childViewControllerForStatusBarHidden];
+    topViewController = [(SUUINavigationController *)&v5 childViewControllerForStatusBarHidden];
   }
 
-  return v3;
+  return topViewController;
 }
 
 - (id)childViewControllerForStatusBarStyle
 {
   if ([(SUUINavigationController *)self _topViewControllerPrefersNavigationBarBackgroundViewHidden])
   {
-    v3 = [(SUUINavigationController *)self topViewController];
+    topViewController = [(SUUINavigationController *)self topViewController];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SUUINavigationController;
-    v3 = [(SUUINavigationController *)&v5 childViewControllerForStatusBarStyle];
+    topViewController = [(SUUINavigationController *)&v5 childViewControllerForStatusBarStyle];
   }
 
-  return v3;
+  return topViewController;
 }
 
-- (id)popToRootViewControllerAnimated:(BOOL)a3
+- (id)popToRootViewControllerAnimated:(BOOL)animated
 {
   v6.receiver = self;
   v6.super_class = SUUINavigationController;
-  v4 = [(SUUINavigationController *)&v6 popToRootViewControllerAnimated:a3];
+  v4 = [(SUUINavigationController *)&v6 popToRootViewControllerAnimated:animated];
   [(SUUINavigationController *)self _scheduleConfigurationOfNavigationBar];
 
   return v4;
 }
 
-- (id)popToViewController:(id)a3 animated:(BOOL)a4
+- (id)popToViewController:(id)controller animated:(BOOL)animated
 {
   v7.receiver = self;
   v7.super_class = SUUINavigationController;
-  v5 = [(SUUINavigationController *)&v7 popToViewController:a3 animated:a4];
+  v5 = [(SUUINavigationController *)&v7 popToViewController:controller animated:animated];
   [(SUUINavigationController *)self _scheduleConfigurationOfNavigationBar];
 
   return v5;
 }
 
-- (id)popViewControllerAnimated:(BOOL)a3
+- (id)popViewControllerAnimated:(BOOL)animated
 {
   v6.receiver = self;
   v6.super_class = SUUINavigationController;
-  v4 = [(SUUINavigationController *)&v6 popViewControllerAnimated:a3];
+  v4 = [(SUUINavigationController *)&v6 popViewControllerAnimated:animated];
   [(SUUINavigationController *)self _scheduleConfigurationOfNavigationBar];
 
   return v4;
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = SUUINavigationController;
-  [(SUUINavigationController *)&v5 pushViewController:a3 animated:a4];
+  [(SUUINavigationController *)&v5 pushViewController:controller animated:animated];
   [(SUUINavigationController *)self _scheduleConfigurationOfNavigationBar];
 }
 
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = SUUINavigationController;
-  [(SUUINavigationController *)&v5 setViewControllers:a3 animated:a4];
+  [(SUUINavigationController *)&v5 setViewControllers:controllers animated:animated];
   [(SUUINavigationController *)self _scheduleConfigurationOfNavigationBar];
 }
 
-- (void)attachPalette:(id)a3 isPinned:(BOOL)a4
+- (void)attachPalette:(id)palette isPinned:(BOOL)pinned
 {
   v6.receiver = self;
   v6.super_class = SUUINavigationController;
-  [(SUUINavigationController *)&v6 attachPalette:a3 isPinned:a4];
-  v5 = [(SUUINavigationController *)self topViewController];
-  [(SUUINavigationController *)self _configureNavigationBarForViewController:v5 shouldIgnoreTransitionCoordinator:0];
+  [(SUUINavigationController *)&v6 attachPalette:palette isPinned:pinned];
+  topViewController = [(SUUINavigationController *)self topViewController];
+  [(SUUINavigationController *)self _configureNavigationBarForViewController:topViewController shouldIgnoreTransitionCoordinator:0];
 }
 
-- (void)didShowViewController:(id)a3 animated:(BOOL)a4
+- (void)didShowViewController:(id)controller animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = SUUINavigationController;
-  [(SUUINavigationController *)&v5 didShowViewController:a3 animated:a4];
+  [(SUUINavigationController *)&v5 didShowViewController:controller animated:animated];
   [(SUUINavigationController *)self setNeedsStatusBarAppearanceUpdate];
 }
 
-- (void)_configureNavigationBar:(id)a3 withTintColor:(id)a4 tintAdjustmentMode:(int64_t)a5 titleTextTintColor:(id)a6 shouldTintTitleText:(BOOL)a7 accessibilityButtonBackgroundTintColor:(id)a8
+- (void)_configureNavigationBar:(id)bar withTintColor:(id)color tintAdjustmentMode:(int64_t)mode titleTextTintColor:(id)tintColor shouldTintTitleText:(BOOL)text accessibilityButtonBackgroundTintColor:(id)backgroundTintColor
 {
-  v9 = a7;
-  v18 = a3;
-  v13 = a6;
-  v14 = a8;
-  [v18 setTintColor:a4];
-  [v18 setTintAdjustmentMode:a5];
-  if (v9)
+  textCopy = text;
+  barCopy = bar;
+  tintColorCopy = tintColor;
+  backgroundTintColorCopy = backgroundTintColor;
+  [barCopy setTintColor:color];
+  [barCopy setTintAdjustmentMode:mode];
+  if (textCopy)
   {
-    v15 = [v18 titleTextAttributes];
-    v16 = [v15 mutableCopy];
+    titleTextAttributes = [barCopy titleTextAttributes];
+    v16 = [titleTextAttributes mutableCopy];
     v17 = v16;
-    if (v13)
+    if (tintColorCopy)
     {
       if (!v16)
       {
         v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
       }
 
-      [v17 setObject:v13 forKey:*MEMORY[0x277D740C0]];
+      [v17 setObject:tintColorCopy forKey:*MEMORY[0x277D740C0]];
     }
 
     else
@@ -165,105 +165,105 @@
       [v16 removeObjectForKey:*MEMORY[0x277D740C0]];
     }
 
-    if (v15 != v17 && ([v15 isEqualToDictionary:v17] & 1) == 0)
+    if (titleTextAttributes != v17 && ([titleTextAttributes isEqualToDictionary:v17] & 1) == 0)
     {
-      [v18 setTitleTextAttributes:v17];
+      [barCopy setTitleTextAttributes:v17];
     }
   }
 
-  [v18 _setAccessibilityButtonBackgroundTintColor:v14];
+  [barCopy _setAccessibilityButtonBackgroundTintColor:backgroundTintColorCopy];
 }
 
-- (void)_configureNavigationBarForViewController:(id)a3 shouldIgnoreTransitionCoordinator:(BOOL)a4
+- (void)_configureNavigationBarForViewController:(id)controller shouldIgnoreTransitionCoordinator:(BOOL)coordinator
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SUUINavigationController *)self navigationBar];
-  v8 = [(SUUINavigationController *)self view];
-  v9 = [v8 window];
+  coordinatorCopy = coordinator;
+  controllerCopy = controller;
+  navigationBar = [(SUUINavigationController *)self navigationBar];
+  view = [(SUUINavigationController *)self view];
+  window = [view window];
 
-  if (v9)
+  if (window)
   {
-    v10 = [v8 tintColor];
+    tintColor = [view tintColor];
   }
 
   else
   {
-    v10 = 0;
+    tintColor = 0;
   }
 
-  v11 = [(SUUINavigationController *)self transitionCoordinator];
-  v12 = v11;
-  if (v11 && !v4)
+  transitionCoordinator = [(SUUINavigationController *)self transitionCoordinator];
+  v12 = transitionCoordinator;
+  if (transitionCoordinator && !coordinatorCopy)
   {
-    v13 = [v11 viewControllerForKey:*MEMORY[0x277D77230]];
+    v13 = [transitionCoordinator viewControllerForKey:*MEMORY[0x277D77230]];
     v14 = [v12 viewControllerForKey:*MEMORY[0x277D77240]];
-    if (v13 != v6 && v14 != v6)
+    if (v13 != controllerCopy && v14 != controllerCopy)
     {
-      v31 = 0;
-      v32 = 0;
+      _accessibilityButtonBackgroundDefaultTintColor2 = 0;
+      navigationBarTitleTextTintColor2 = 0;
 LABEL_61:
 
       goto LABEL_62;
     }
 
     v89 = v14;
-    v16 = [v7 _backgroundView];
-    [v16 alpha];
+    _backgroundView = [navigationBar _backgroundView];
+    [_backgroundView alpha];
     v18 = v17;
 
-    [v7 _shadowAlpha];
+    [navigationBar _shadowAlpha];
     v20 = v19;
     v81 = [(SUUINavigationController *)self existingPaletteForEdge:2];
     v21 = objc_getAssociatedObject(v81, kHasBeginHidingPaletteShadow);
-    v88 = [v21 BOOLValue];
+    bOOLValue = [v21 BOOLValue];
 
-    v79 = [v7 tintColor];
-    v76 = [v7 tintAdjustmentMode];
-    v22 = [v7 titleTextAttributes];
-    v23 = [v22 objectForKey:*MEMORY[0x277D740C0]];
+    tintColor2 = [navigationBar tintColor];
+    tintAdjustmentMode = [navigationBar tintAdjustmentMode];
+    titleTextAttributes = [navigationBar titleTextAttributes];
+    v23 = [titleTextAttributes objectForKey:*MEMORY[0x277D740C0]];
 
     v77 = v23;
     v85 = v23 != 0;
-    v75 = [v7 _accessibilityButtonBackgroundTintColor];
+    _accessibilityButtonBackgroundTintColor = [navigationBar _accessibilityButtonBackgroundTintColor];
     if ([v13 conformsToProtocol:&unk_286C33488])
     {
-      v24 = [v13 prefersNavigationBarBackgroundViewHidden];
+      prefersNavigationBarBackgroundViewHidden = [v13 prefersNavigationBarBackgroundViewHidden];
     }
 
     else
     {
-      v24 = 0;
+      prefersNavigationBarBackgroundViewHidden = 0;
     }
 
     v83 = v13;
-    v84 = v6;
+    v84 = controllerCopy;
     if (![v89 conformsToProtocol:&unk_286C33488])
     {
-      v87 = 0;
-      v72 = 0;
+      _accessibilityButtonBackgroundDefaultTintColor = 0;
+      navigationBarTintAdjustmentMode = 0;
       v74 = 0;
       v39 = 0;
       v38 = 1.0;
       v73 = v85;
       v40 = v81;
 LABEL_47:
-      v46 = objc_getAssociatedObject(v7, "com.apple.iTunesStoreUI.SUUINavigationController.originalBackgroundView");
-      if (!v46)
+      _backgroundView2 = objc_getAssociatedObject(navigationBar, "com.apple.iTunesStoreUI.SUUINavigationController.originalBackgroundView");
+      if (!_backgroundView2)
       {
-        v46 = [v7 _backgroundView];
-        objc_setAssociatedObject(v7, "com.apple.iTunesStoreUI.SUUINavigationController.originalBackgroundView", v46, 1);
+        _backgroundView2 = [navigationBar _backgroundView];
+        objc_setAssociatedObject(navigationBar, "com.apple.iTunesStoreUI.SUUINavigationController.originalBackgroundView", _backgroundView2, 1);
       }
 
-      v82 = v24 ^ v39;
-      v93 = v46;
-      v95 = v8;
-      if ((v24 ^ v39) == 1)
+      v82 = prefersNavigationBarBackgroundViewHidden ^ v39;
+      v93 = _backgroundView2;
+      v95 = view;
+      if ((prefersNavigationBarBackgroundViewHidden ^ v39) == 1)
       {
-        if ((v24 | v39) == 1)
+        if ((prefersNavigationBarBackgroundViewHidden | v39) == 1)
         {
           v47 = MEMORY[0x277D77248];
-          if (!v24)
+          if (!prefersNavigationBarBackgroundViewHidden)
           {
             v47 = MEMORY[0x277D77238];
           }
@@ -276,17 +276,17 @@ LABEL_47:
           v48 = 0;
         }
 
-        [v7 frame];
+        [navigationBar frame];
         v50 = v49;
         v52 = v51;
         v54 = v53;
         v56 = v55;
-        v57 = [v7 superview];
-        v58 = v57;
-        if (v46 && v57)
+        superview = [navigationBar superview];
+        v58 = superview;
+        if (_backgroundView2 && superview)
         {
-          [v46 frame];
-          [v7 convertRect:v58 toView:?];
+          [_backgroundView2 frame];
+          [navigationBar convertRect:v58 toView:?];
           v50 = v59;
           v52 = v60;
           v54 = v61;
@@ -294,17 +294,17 @@ LABEL_47:
         }
 
         v63 = [objc_alloc(-[SUUINavigationController navigationBarClass](self "navigationBarClass"))];
-        [v63 setBarStyle:{objc_msgSend(v7, "barStyle")}];
-        v64 = [v7 barTintColor];
-        [v63 setBarTintColor:v64];
+        [v63 setBarStyle:{objc_msgSend(navigationBar, "barStyle")}];
+        barTintColor = [navigationBar barTintColor];
+        [v63 setBarTintColor:barTintColor];
 
-        [v7 _setBackgroundView:0];
-        v65 = [v63 layer];
-        [v65 setZPosition:100.0];
+        [navigationBar _setBackgroundView:0];
+        layer = [v63 layer];
+        [layer setZPosition:100.0];
 
         v71 = v63;
         [v48 addSubview:v63];
-        [v7 _setShadowAlpha:0.0];
+        [navigationBar _setShadowAlpha:0.0];
         [v40 SUUI_beginHidingPaletteShadow];
         [(SUUINavigationController *)self _setNavigationPalette:v40 hidesPaletteShadow:v39];
       }
@@ -318,22 +318,22 @@ LABEL_47:
       v114[1] = 3221225472;
       v114[2] = __103__SUUINavigationController__configureNavigationBarForViewController_shouldIgnoreTransitionCoordinator___block_invoke;
       v114[3] = &unk_2798F5A10;
-      v66 = v7;
+      v66 = navigationBar;
       v121 = v18;
       v122 = v20;
       v115 = v66;
-      v116 = self;
-      v123 = v76;
-      v117 = v79;
+      selfCopy = self;
+      v123 = tintAdjustmentMode;
+      v117 = tintColor2;
       v118 = v77;
       v124 = v85;
-      v119 = v75;
+      v119 = _accessibilityButtonBackgroundTintColor;
       v67 = v40;
       v120 = v67;
-      v125 = v88;
-      v86 = v79;
+      v125 = bOOLValue;
+      v86 = tintColor2;
       v80 = v77;
-      v78 = v75;
+      v78 = _accessibilityButtonBackgroundTintColor;
       [v12 notifyWhenInteractionEndsUsingBlock:v114];
       v107[0] = MEMORY[0x277D85DD0];
       v107[1] = 3221225472;
@@ -341,14 +341,14 @@ LABEL_47:
       v107[3] = &unk_2798F5A38;
       v107[4] = self;
       v108 = v66;
-      v10 = v10;
-      v109 = v10;
-      v112 = v72;
-      v32 = v74;
-      v110 = v32;
+      tintColor = tintColor;
+      v109 = tintColor;
+      v112 = navigationBarTintAdjustmentMode;
+      navigationBarTitleTextTintColor2 = v74;
+      v110 = navigationBarTitleTextTintColor2;
       v113 = v73;
-      v31 = v87;
-      v111 = v31;
+      _accessibilityButtonBackgroundDefaultTintColor2 = _accessibilityButtonBackgroundDefaultTintColor;
+      v111 = _accessibilityButtonBackgroundDefaultTintColor2;
       v96[0] = MEMORY[0x277D85DD0];
       v96[1] = 3221225472;
       v96[2] = __103__SUUINavigationController__configureNavigationBarForViewController_shouldIgnoreTransitionCoordinator___block_invoke_3;
@@ -359,9 +359,9 @@ LABEL_47:
       v102 = v38;
       v103 = v38;
       v104 = v39;
-      v100 = self;
+      selfCopy2 = self;
       v101 = v67;
-      v105 = v88;
+      v105 = bOOLValue;
       v106 = v82;
       v68 = v71;
       v69 = v93;
@@ -369,35 +369,35 @@ LABEL_47:
       [v12 animateAlongsideTransition:v107 completion:v96];
 
       v13 = v83;
-      v6 = v84;
+      controllerCopy = v84;
       v14 = v89;
-      v8 = v95;
+      view = v95;
       goto LABEL_61;
     }
 
     v92 = v12;
     v36 = v89;
-    v37 = [v36 prefersNavigationBarBackgroundViewHidden];
-    if (v37)
+    prefersNavigationBarBackgroundViewHidden2 = [v36 prefersNavigationBarBackgroundViewHidden];
+    if (prefersNavigationBarBackgroundViewHidden2)
     {
-      v87 = [(SUUINavigationController *)self _accessibilityButtonBackgroundDefaultTintColor];
+      _accessibilityButtonBackgroundDefaultTintColor = [(SUUINavigationController *)self _accessibilityButtonBackgroundDefaultTintColor];
       v38 = 0.0;
     }
 
     else
     {
-      v87 = 0;
+      _accessibilityButtonBackgroundDefaultTintColor = 0;
       v38 = 1.0;
     }
 
-    v41 = [v36 navigationBarTintColor];
+    navigationBarTintColor = [v36 navigationBarTintColor];
 
     if (objc_opt_respondsToSelector())
     {
-      v42 = [v36 navigationBarTitleTextTintColor];
-      if (v42)
+      navigationBarTitleTextTintColor = [v36 navigationBarTitleTextTintColor];
+      if (navigationBarTitleTextTintColor)
       {
-        v43 = v37;
+        v43 = prefersNavigationBarBackgroundViewHidden2;
       }
 
       else
@@ -405,14 +405,14 @@ LABEL_47:
         v43 = 0;
       }
 
-      v74 = v42;
+      v74 = navigationBarTitleTextTintColor;
       if (v43 != 1)
       {
         v73 = 1;
         goto LABEL_43;
       }
 
-      v44 = [v42 colorWithAlphaComponent:0.2];
+      v44 = [navigationBarTitleTextTintColor colorWithAlphaComponent:0.2];
       v45 = 1;
     }
 
@@ -425,98 +425,98 @@ LABEL_47:
 
     v73 = v45;
 
-    v87 = v44;
+    _accessibilityButtonBackgroundDefaultTintColor = v44;
 LABEL_43:
     if (objc_opt_respondsToSelector())
     {
-      v72 = [v36 navigationBarTintAdjustmentMode];
+      navigationBarTintAdjustmentMode = [v36 navigationBarTintAdjustmentMode];
     }
 
     else
     {
-      v72 = 0;
+      navigationBarTintAdjustmentMode = 0;
     }
 
-    v10 = v41;
+    tintColor = navigationBarTintColor;
     v12 = v92;
     v40 = v81;
-    v39 = v37;
+    v39 = prefersNavigationBarBackgroundViewHidden2;
     goto LABEL_47;
   }
 
-  v91 = v11;
-  v94 = v8;
-  if ([v6 conformsToProtocol:&unk_286C33488])
+  v91 = transitionCoordinator;
+  v94 = view;
+  if ([controllerCopy conformsToProtocol:&unk_286C33488])
   {
-    v25 = v6;
-    v26 = [v25 prefersNavigationBarBackgroundViewHidden];
-    v27 = v6;
-    if (v26)
+    v25 = controllerCopy;
+    prefersNavigationBarBackgroundViewHidden3 = [v25 prefersNavigationBarBackgroundViewHidden];
+    v27 = controllerCopy;
+    if (prefersNavigationBarBackgroundViewHidden3)
     {
-      v31 = [(SUUINavigationController *)self _accessibilityButtonBackgroundDefaultTintColor];
+      _accessibilityButtonBackgroundDefaultTintColor2 = [(SUUINavigationController *)self _accessibilityButtonBackgroundDefaultTintColor];
       v28 = 0.0;
     }
 
     else
     {
-      v31 = 0;
+      _accessibilityButtonBackgroundDefaultTintColor2 = 0;
       v28 = 1.0;
     }
 
-    v90 = [v25 navigationBarTintColor];
+    navigationBarTintColor2 = [v25 navigationBarTintColor];
 
     v29 = objc_opt_respondsToSelector();
     if (v29)
     {
-      v32 = [v25 navigationBarTitleTextTintColor];
-      if ([v25 prefersNavigationBarBackgroundViewHidden] && v32)
+      navigationBarTitleTextTintColor2 = [v25 navigationBarTitleTextTintColor];
+      if ([v25 prefersNavigationBarBackgroundViewHidden] && navigationBarTitleTextTintColor2)
       {
-        v33 = [v32 colorWithAlphaComponent:0.2];
+        v33 = [navigationBarTitleTextTintColor2 colorWithAlphaComponent:0.2];
 
-        v31 = v33;
+        _accessibilityButtonBackgroundDefaultTintColor2 = v33;
       }
     }
 
     else
     {
-      v32 = 0;
+      navigationBarTitleTextTintColor2 = 0;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v30 = [v25 navigationBarTintAdjustmentMode];
+      navigationBarTintAdjustmentMode2 = [v25 navigationBarTintAdjustmentMode];
     }
 
     else
     {
-      v30 = 0;
+      navigationBarTintAdjustmentMode2 = 0;
     }
 
-    v10 = v90;
+    tintColor = navigationBarTintColor2;
   }
 
   else
   {
-    v27 = v6;
-    v31 = 0;
+    v27 = controllerCopy;
+    _accessibilityButtonBackgroundDefaultTintColor2 = 0;
     v29 = 0;
-    v30 = 0;
-    v32 = 0;
-    v26 = 0;
+    navigationBarTintAdjustmentMode2 = 0;
+    navigationBarTitleTextTintColor2 = 0;
+    prefersNavigationBarBackgroundViewHidden3 = 0;
     v28 = 1.0;
   }
 
-  v34 = [v7 _backgroundView];
-  [v34 setAlpha:v28];
+  _backgroundView3 = [navigationBar _backgroundView];
+  [_backgroundView3 setAlpha:v28];
 
-  [v7 _setShadowAlpha:v28];
-  [(SUUINavigationController *)self _configureNavigationBar:v7 withTintColor:v10 tintAdjustmentMode:v30 titleTextTintColor:v32 shouldTintTitleText:v29 & 1 accessibilityButtonBackgroundTintColor:v31];
+  [navigationBar _setShadowAlpha:v28];
+  [(SUUINavigationController *)self _configureNavigationBar:navigationBar withTintColor:tintColor tintAdjustmentMode:navigationBarTintAdjustmentMode2 titleTextTintColor:navigationBarTitleTextTintColor2 shouldTintTitleText:v29 & 1 accessibilityButtonBackgroundTintColor:_accessibilityButtonBackgroundDefaultTintColor2];
   v35 = [(SUUINavigationController *)self existingPaletteForEdge:2];
-  [(SUUINavigationController *)self _setNavigationPalette:v35 hidesPaletteShadow:v26];
+  [(SUUINavigationController *)self _setNavigationPalette:v35 hidesPaletteShadow:prefersNavigationBarBackgroundViewHidden3];
 
-  v6 = v27;
+  controllerCopy = v27;
   v12 = v91;
-  v8 = v94;
+  view = v94;
 LABEL_62:
 }
 
@@ -574,35 +574,35 @@ void __103__SUUINavigationController__configureNavigationBarForViewController_sh
 
 - (void)_scheduleConfigurationOfNavigationBar
 {
-  v3 = [(SUUINavigationController *)self transitionCoordinator];
-  v4 = [(SUUINavigationController *)self topViewController];
-  [(SUUINavigationController *)self _configureNavigationBarForViewController:v4 shouldIgnoreTransitionCoordinator:0];
+  transitionCoordinator = [(SUUINavigationController *)self transitionCoordinator];
+  topViewController = [(SUUINavigationController *)self topViewController];
+  [(SUUINavigationController *)self _configureNavigationBarForViewController:topViewController shouldIgnoreTransitionCoordinator:0];
 
-  if (v3)
+  if (transitionCoordinator)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __65__SUUINavigationController__scheduleConfigurationOfNavigationBar__block_invoke;
     v5[3] = &unk_2798F5A88;
     v5[4] = self;
-    [v3 animateAlongsideTransition:0 completion:v5];
+    [transitionCoordinator animateAlongsideTransition:0 completion:v5];
   }
 }
 
-- (void)_setNavigationPalette:(id)a3 hidesPaletteShadow:(BOOL)a4
+- (void)_setNavigationPalette:(id)palette hidesPaletteShadow:(BOOL)shadow
 {
-  v4 = a4;
-  v5 = a3;
-  if (v5)
+  shadowCopy = shadow;
+  paletteCopy = palette;
+  if (paletteCopy)
   {
-    object = v5;
-    v6 = objc_getAssociatedObject(v5, kHasBeginHidingPaletteShadow);
-    v7 = [v6 BOOLValue];
+    object = paletteCopy;
+    v6 = objc_getAssociatedObject(paletteCopy, kHasBeginHidingPaletteShadow);
+    bOOLValue = [v6 BOOLValue];
 
-    if (v4)
+    if (shadowCopy)
     {
-      v5 = object;
-      if (v7)
+      paletteCopy = object;
+      if (bOOLValue)
       {
         goto LABEL_8;
       }
@@ -613,8 +613,8 @@ void __103__SUUINavigationController__configureNavigationBarForViewController_sh
 
     else
     {
-      v5 = object;
-      if (!v7)
+      paletteCopy = object;
+      if (!bOOLValue)
       {
         goto LABEL_8;
       }
@@ -623,7 +623,7 @@ void __103__SUUINavigationController__configureNavigationBarForViewController_sh
       [object SUUI_endHidingPaletteShadow];
     }
 
-    v5 = object;
+    paletteCopy = object;
   }
 
 LABEL_8:
@@ -631,33 +631,33 @@ LABEL_8:
 
 - (BOOL)_topViewControllerPrefersNavigationBarBackgroundViewHidden
 {
-  v2 = [(SUUINavigationController *)self topViewController];
-  if ([v2 conformsToProtocol:&unk_286C33488])
+  topViewController = [(SUUINavigationController *)self topViewController];
+  if ([topViewController conformsToProtocol:&unk_286C33488])
   {
-    v3 = [v2 prefersNavigationBarBackgroundViewHidden];
+    prefersNavigationBarBackgroundViewHidden = [topViewController prefersNavigationBarBackgroundViewHidden];
   }
 
   else
   {
-    v3 = 0;
+    prefersNavigationBarBackgroundViewHidden = 0;
   }
 
-  return v3;
+  return prefersNavigationBarBackgroundViewHidden;
 }
 
-- (void)_viewControllerNeedsNavigationBarAppearanceUpdate:(id)a3
+- (void)_viewControllerNeedsNavigationBarAppearanceUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(SUUINavigationController *)self topViewController];
+  updateCopy = update;
+  topViewController = [(SUUINavigationController *)self topViewController];
 
-  if (v5 == v4)
+  if (topViewController == updateCopy)
   {
-    v6 = [(SUUINavigationController *)self transitionCoordinator];
+    transitionCoordinator = [(SUUINavigationController *)self transitionCoordinator];
 
-    if (v6)
+    if (transitionCoordinator)
     {
-      v7 = [(SUUINavigationController *)self topViewController];
-      [(SUUINavigationController *)self _configureNavigationBarForViewController:v7 shouldIgnoreTransitionCoordinator:1];
+      topViewController2 = [(SUUINavigationController *)self topViewController];
+      [(SUUINavigationController *)self _configureNavigationBarForViewController:topViewController2 shouldIgnoreTransitionCoordinator:1];
     }
 
     [(SUUINavigationController *)self _scheduleConfigurationOfNavigationBar];

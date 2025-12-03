@@ -1,15 +1,15 @@
 @interface PHAContactUpdateTask
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5;
-- (BOOL)shouldRunWithGraphManager:(id)a3;
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error;
+- (BOOL)shouldRunWithGraphManager:(id)manager;
 - (id)taskClassDependencies;
-- (void)timeoutFatal:(BOOL)a3;
+- (void)timeoutFatal:(BOOL)fatal;
 @end
 
 @implementation PHAContactUpdateTask
 
-- (void)timeoutFatal:(BOOL)a3
+- (void)timeoutFatal:(BOOL)fatal
 {
-  if (a3)
+  if (fatal)
   {
     __assert_rtn("[PHAContactUpdateTask timeoutFatal:]", "PHAContactUpdateTask.m", 113, "NO");
   }
@@ -21,31 +21,31 @@
   }
 }
 
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 workingContext];
-  v10 = [v9 loggingConnection];
+  managerCopy = manager;
+  reporterCopy = reporter;
+  workingContext = [managerCopy workingContext];
+  loggingConnection = [workingContext loggingConnection];
 
-  v11 = [v7 graphUpdateForContactsChangesWithProgressReporter:v8];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  v11 = [managerCopy graphUpdateForContactsChangesWithProgressReporter:reporterCopy];
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
     *(&buf + 4) = v11;
-    _os_log_impl(&dword_22FA28000, v10, OS_LOG_TYPE_DEFAULT, "PHAContactUpdateTask: Graph update %@", &buf, 0xCu);
+    _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_DEFAULT, "PHAContactUpdateTask: Graph update %@", &buf, 0xCu);
   }
 
   if ([v11 hasAnythingToDo])
   {
-    v12 = [v11 numberOfConsolidatedChanges];
-    v13 = [objc_alloc(MEMORY[0x277D3B9D0]) initWithGraphManager:v7];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    numberOfConsolidatedChanges = [v11 numberOfConsolidatedChanges];
+    v13 = [objc_alloc(MEMORY[0x277D3B9D0]) initWithGraphManager:managerCopy];
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 138412290;
       *(&buf + 4) = v11;
-      _os_log_impl(&dword_22FA28000, v10, OS_LOG_TYPE_INFO, "PHAContactUpdateTask: Run with graphUpdate= %@", &buf, 0xCu);
+      _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_INFO, "PHAContactUpdateTask: Run with graphUpdate= %@", &buf, 0xCu);
     }
 
     v14 = dispatch_group_create();
@@ -68,20 +68,20 @@
     p_buf = &buf;
     v15 = v14;
     v22 = v15;
-    [v13 applyChangesFromGraphUpdate:v11 progressReporter:v8 completionHandler:v21];
+    [v13 applyChangesFromGraphUpdate:v11 progressReporter:reporterCopy completionHandler:v21];
     dispatch_group_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
-    v16 = [v8 throughputReportBlock];
-    v17 = v16 == 0;
+    throughputReportBlock = [reporterCopy throughputReportBlock];
+    v17 = throughputReportBlock == 0;
 
     if (!v17)
     {
-      v18 = [v8 throughputReportBlock];
-      v18[2](v18, v12, 0);
+      throughputReportBlock2 = [reporterCopy throughputReportBlock];
+      throughputReportBlock2[2](throughputReportBlock2, numberOfConsolidatedChanges, 0);
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = *(*(&buf + 1) + 40);
+      *error = *(*(&buf + 1) + 40);
     }
 
     v19 = *(v26 + 24);
@@ -93,10 +93,10 @@
   else
   {
     v19 = 1;
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
       LOWORD(buf) = 0;
-      _os_log_impl(&dword_22FA28000, v10, OS_LOG_TYPE_INFO, "PHAContactUpdateTask: There is nothing to apply from Contacts update", &buf, 2u);
+      _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_INFO, "PHAContactUpdateTask: There is nothing to apply from Contacts update", &buf, 2u);
     }
   }
 
@@ -115,23 +115,23 @@ void __67__PHAContactUpdateTask_runWithGraphManager_progressReporter_error___blo
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (BOOL)shouldRunWithGraphManager:(id)a3
+- (BOOL)shouldRunWithGraphManager:(id)manager
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  managerCopy = manager;
   v9 = 0;
-  v4 = [v3 isReadyWithError:&v9];
+  v4 = [managerCopy isReadyWithError:&v9];
   v5 = v9;
   if ((v4 & 1) == 0)
   {
-    v6 = [v3 workingContext];
-    v7 = [v6 loggingConnection];
+    workingContext = [managerCopy workingContext];
+    loggingConnection = [workingContext loggingConnection];
 
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v11 = v5;
-      _os_log_error_impl(&dword_22FA28000, v7, OS_LOG_TYPE_ERROR, "Returning NO for shouldRunWithGraphManager: Graph is not ready and need a full rebuild: %@", buf, 0xCu);
+      _os_log_error_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_ERROR, "Returning NO for shouldRunWithGraphManager: Graph is not ready and need a full rebuild: %@", buf, 0xCu);
     }
   }
 

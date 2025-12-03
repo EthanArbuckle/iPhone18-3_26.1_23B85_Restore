@@ -1,27 +1,27 @@
 @interface SBHPageManagementCheckbox
 - (CALayer)deselectedMask;
 - (CGSize)intrinsicContentSize;
-- (SBHPageManagementCheckbox)initWithFrame:(CGRect)a3 checkboxDiameter:(double)a4;
+- (SBHPageManagementCheckbox)initWithFrame:(CGRect)frame checkboxDiameter:(double)diameter;
 - (double)effectiveHighlightAlpha;
 - (double)effectiveImageAlpha;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 - (void)updateDeselectedMaskState;
 @end
 
 @implementation SBHPageManagementCheckbox
 
-- (SBHPageManagementCheckbox)initWithFrame:(CGRect)a3 checkboxDiameter:(double)a4
+- (SBHPageManagementCheckbox)initWithFrame:(CGRect)frame checkboxDiameter:(double)diameter
 {
   v20.receiver = self;
   v20.super_class = SBHPageManagementCheckbox;
-  v5 = [(SBHPageManagementCheckbox *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(SBHPageManagementCheckbox *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_checkboxDiameter = a4;
+    v5->_checkboxDiameter = diameter;
     v7 = objc_alloc_init(MEMORY[0x1E69DD250]);
     highlightView = v6->_highlightView;
     v6->_highlightView = v7;
@@ -31,18 +31,18 @@
     [(UIView *)v9 setBackgroundColor:v10];
 
     [(UIView *)v6->_highlightView setAlpha:0.0];
-    [(UIView *)v6->_highlightView _setCornerRadius:a4 * 0.5];
-    v11 = [(UIView *)v6->_highlightView layer];
-    [v11 setCompositingFilter:*MEMORY[0x1E6979860]];
+    [(UIView *)v6->_highlightView _setCornerRadius:diameter * 0.5];
+    layer = [(UIView *)v6->_highlightView layer];
+    [layer setCompositingFilter:*MEMORY[0x1E6979860]];
 
     [(UIView *)v6->_highlightView bs_setHitTestingDisabled:1];
     [(SBHPageManagementCheckbox *)v6 insertSubview:v6->_highlightView atIndex:1];
-    [(SBHPageManagementCheckbox *)v6 _setCornerRadius:a4 * 0.5];
+    [(SBHPageManagementCheckbox *)v6 _setCornerRadius:diameter * 0.5];
     [(UIView *)v6 sbh_applyClearGlass];
     v12 = [MEMORY[0x1E69DCAD8] configurationWithWeight:6];
     v13 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"checkmark" withConfiguration:v12];
-    v14 = [MEMORY[0x1E69DC888] whiteColor];
-    v15 = [v13 imageWithTintColor:v14 renderingMode:1];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v15 = [v13 imageWithTintColor:whiteColor renderingMode:1];
 
     v16 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v15];
     customImageView = v6->_customImageView;
@@ -50,8 +50,8 @@
 
     [(UIImageView *)v6->_customImageView setAlpha:0.0];
     [(SBHPageManagementCheckbox *)v6 addSubview:v6->_customImageView];
-    v18 = [(SBHPageManagementCheckbox *)v6 layer];
-    [v18 setAllowsGroupBlending:0];
+    layer2 = [(SBHPageManagementCheckbox *)v6 layer];
+    [layer2 setAllowsGroupBlending:0];
 
     [(SBHPageManagementCheckbox *)v6 setAccessibilityIdentifier:@"toggle page hidden checkbox"];
   }
@@ -70,8 +70,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SBHPageManagementCheckbox *)self configuration];
-  [v11 contentInsets];
+  configuration = [(SBHPageManagementCheckbox *)self configuration];
+  [configuration contentInsets];
   v16 = SBHDirectionalEdgeInsetsInsetRect([(SBHPageManagementCheckbox *)self effectiveUserInterfaceLayoutDirection], v4, v6, v8, v10, v12, v13, v14, v15);
   v18 = v17;
   v20 = v19;
@@ -81,29 +81,29 @@
   [(SBHPageManagementCheckbox *)self effectiveHighlightAlpha];
   [(UIView *)self->_highlightView setAlpha:?];
   [(SBHPageManagementCheckbox *)self updateDeselectedMaskState];
-  v23 = [(SBHPageManagementCheckbox *)self customImageView];
+  customImageView = [(SBHPageManagementCheckbox *)self customImageView];
   [(SBHPageManagementCheckbox *)self effectiveImageAlpha];
   v25 = v24;
   UIRectGetCenter();
-  [v23 setCenter:?];
-  [v23 alpha];
+  [customImageView setCenter:?];
+  [customImageView alpha];
   if (v25 != v26)
   {
-    [v23 setAlpha:v25];
+    [customImageView setAlpha:v25];
   }
 }
 
 - (double)effectiveImageAlpha
 {
-  v3 = [(SBHPageManagementCheckbox *)self isEnabled];
-  v4 = [(SBHPageManagementCheckbox *)self isSelected];
+  isEnabled = [(SBHPageManagementCheckbox *)self isEnabled];
+  isSelected = [(SBHPageManagementCheckbox *)self isSelected];
   result = 0.5;
-  if (v3 & 1 | ((v4 & 1) == 0))
+  if (isEnabled & 1 | ((isSelected & 1) == 0))
   {
     result = 0.0;
   }
 
-  if ((v3 & v4) != 0)
+  if ((isEnabled & isSelected) != 0)
   {
     return 1.0;
   }
@@ -113,14 +113,14 @@
 
 - (double)effectiveHighlightAlpha
 {
-  v3 = [(SBHPageManagementCheckbox *)self isSelected];
-  v4 = [(SBHPageManagementCheckbox *)self isHighlighted];
-  v5 = [(SBHPageManagementCheckbox *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  isSelected = [(SBHPageManagementCheckbox *)self isSelected];
+  isHighlighted = [(SBHPageManagementCheckbox *)self isHighlighted];
+  traitCollection = [(SBHPageManagementCheckbox *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v6 == 2)
+  if (userInterfaceStyle == 2)
   {
-    v7 = v3;
+    v7 = isSelected;
   }
 
   else
@@ -129,7 +129,7 @@
   }
 
   result = 0.85;
-  if ((v4 & (v6 == 2)) == 0)
+  if ((isHighlighted & (userInterfaceStyle == 2)) == 0)
   {
     result = 0.5;
   }
@@ -140,7 +140,7 @@
     v9 = 0.0;
   }
 
-  if (!v4)
+  if (!isHighlighted)
   {
     return v9;
   }
@@ -186,25 +186,25 @@
 {
   if (([(SBHPageManagementCheckbox *)self isSelected]& 1) != 0)
   {
-    v4 = 0;
+    deselectedMask = 0;
   }
 
   else
   {
-    v4 = [(SBHPageManagementCheckbox *)self deselectedMask];
+    deselectedMask = [(SBHPageManagementCheckbox *)self deselectedMask];
   }
 
-  v3 = [(SBHPageManagementCheckbox *)self layer];
-  [v3 setMask:v4];
+  layer = [(SBHPageManagementCheckbox *)self layer];
+  [layer setMask:deselectedMask];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = SBHPageManagementCheckbox;
   [(SBHPageManagementCheckbox *)&v6 setHighlighted:?];
-  if (v3)
+  if (highlightedCopy)
   {
     [(UIView *)self->_highlightView setAlpha:0.5];
   }
@@ -220,26 +220,26 @@
   }
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v20.receiver = self;
   v20.super_class = SBHPageManagementCheckbox;
-  [(SBHPageManagementCheckbox *)&v20 setSelected:a3];
-  v6 = [(SBHPageManagementCheckbox *)self customImageView];
+  [(SBHPageManagementCheckbox *)&v20 setSelected:selected];
+  customImageView = [(SBHPageManagementCheckbox *)self customImageView];
   [(SBHPageManagementCheckbox *)self effectiveImageAlpha];
   v8 = v7;
   [(SBHPageManagementCheckbox *)self effectiveHighlightAlpha];
   v10 = v9;
-  if (v4)
+  if (animatedCopy)
   {
     v11 = MEMORY[0x1E69DD250];
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __50__SBHPageManagementCheckbox_setSelected_animated___block_invoke;
     v15 = &unk_1E808A370;
-    v16 = v6;
-    v17 = self;
+    v16 = customImageView;
+    selfCopy = self;
     v18 = v8;
     v19 = v10;
     [v11 animateWithDuration:2 delay:&v12 options:0 animations:0.2 completion:0.0];
@@ -248,7 +248,7 @@
 
   else
   {
-    [v6 setAlpha:v8];
+    [customImageView setAlpha:v8];
     [(UIView *)self->_highlightView setAlpha:v10];
     [(SBHPageManagementCheckbox *)self updateDeselectedMaskState];
   }

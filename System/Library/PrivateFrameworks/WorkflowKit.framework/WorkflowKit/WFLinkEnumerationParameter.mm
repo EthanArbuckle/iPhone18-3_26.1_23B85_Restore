@@ -1,34 +1,34 @@
 @interface WFLinkEnumerationParameter
-- (WFLinkEnumerationParameter)initWithDefinition:(id)a3;
-- (id)accessoryImageForPossibleState:(id)a3;
+- (WFLinkEnumerationParameter)initWithDefinition:(id)definition;
+- (id)accessoryImageForPossibleState:(id)state;
 @end
 
 @implementation WFLinkEnumerationParameter
 
-- (id)accessoryImageForPossibleState:(id)a3
+- (id)accessoryImageForPossibleState:(id)state
 {
-  v4 = a3;
-  v5 = [(WFEnumerationParameter *)self possibleStates];
-  if (v5)
+  stateCopy = state;
+  possibleStates = [(WFEnumerationParameter *)self possibleStates];
+  if (possibleStates)
   {
-    v6 = v5;
-    v7 = [(WFLinkEnumerationParameter *)self displayImages];
-    v8 = [v7 count];
-    v9 = [(WFEnumerationParameter *)self possibleStates];
-    v10 = [v9 count];
+    v6 = possibleStates;
+    displayImages = [(WFLinkEnumerationParameter *)self displayImages];
+    v8 = [displayImages count];
+    possibleStates2 = [(WFEnumerationParameter *)self possibleStates];
+    v10 = [possibleStates2 count];
 
     if (v8 == v10)
     {
-      v11 = [(WFEnumerationParameter *)self possibleStates];
-      v12 = [v11 indexOfObject:v4];
+      possibleStates3 = [(WFEnumerationParameter *)self possibleStates];
+      v12 = [possibleStates3 indexOfObject:stateCopy];
 
-      v13 = [(WFLinkEnumerationParameter *)self displayImages];
-      v14 = [v13 count];
+      displayImages2 = [(WFLinkEnumerationParameter *)self displayImages];
+      v14 = [displayImages2 count];
 
       if (v12 < v14)
       {
-        v15 = [(WFLinkEnumerationParameter *)self displayImages];
-        v16 = [v15 objectAtIndexedSubscript:v12];
+        displayImages3 = [(WFLinkEnumerationParameter *)self displayImages];
+        v16 = [displayImages3 objectAtIndexedSubscript:v12];
 
         if (v16)
         {
@@ -46,22 +46,22 @@
 
   v19.receiver = self;
   v19.super_class = WFLinkEnumerationParameter;
-  v17 = [(WFEnumerationParameter *)&v19 accessoryImageForPossibleState:v4];
+  v17 = [(WFEnumerationParameter *)&v19 accessoryImageForPossibleState:stateCopy];
 LABEL_9:
 
   return v17;
 }
 
-- (WFLinkEnumerationParameter)initWithDefinition:(id)a3
+- (WFLinkEnumerationParameter)initWithDefinition:(id)definition
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  definitionCopy = definition;
   v17.receiver = self;
   v17.super_class = WFLinkEnumerationParameter;
-  v5 = [(WFEnumerationParameter *)&v17 initWithDefinition:v4];
+  v5 = [(WFEnumerationParameter *)&v17 initWithDefinition:definitionCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"ItemImages"];
+    v6 = [definitionCopy objectForKey:@"ItemImages"];
     v7 = objc_opt_class();
     v8 = v6;
     if (v8 && (objc_opt_isKindOfClass() & 1) == 0)

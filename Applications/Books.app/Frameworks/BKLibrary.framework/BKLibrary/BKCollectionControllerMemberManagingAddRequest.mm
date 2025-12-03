@@ -1,11 +1,11 @@
 @interface BKCollectionControllerMemberManagingAddRequest
 - (BKCollectionControllerMemberManagingAddRequest)init;
-- (BKCollectionControllerMemberManagingAddRequest)initWithStoreID:(id)a3 collectionID:(id)a4 forceToTop:(BOOL)a5;
+- (BKCollectionControllerMemberManagingAddRequest)initWithStoreID:(id)d collectionID:(id)iD forceToTop:(BOOL)top;
 @end
 
 @implementation BKCollectionControllerMemberManagingAddRequest
 
-- (BKCollectionControllerMemberManagingAddRequest)initWithStoreID:(id)a3 collectionID:(id)a4 forceToTop:(BOOL)a5
+- (BKCollectionControllerMemberManagingAddRequest)initWithStoreID:(id)d collectionID:(id)iD forceToTop:(BOOL)top
 {
   ObjectType = swift_getObjectType();
   v8 = sub_9202C();
@@ -17,7 +17,7 @@
   v13 = (self + OBJC_IVAR___BKCollectionControllerMemberManagingAddRequest_collectionID);
   *v13 = v11;
   v13[1] = v14;
-  *(self + OBJC_IVAR___BKCollectionControllerMemberManagingAddRequest_forceToTop) = a5;
+  *(self + OBJC_IVAR___BKCollectionControllerMemberManagingAddRequest_forceToTop) = top;
   v16.receiver = self;
   v16.super_class = ObjectType;
   return [(BKCollectionControllerMemberManagingAddRequest *)&v16 init];

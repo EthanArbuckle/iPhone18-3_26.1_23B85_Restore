@@ -1,31 +1,31 @@
 @interface NEIKEv2IKESPI
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NEIKEv2IKESPI)init;
-- (NEIKEv2IKESPI)initWithValue:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NEIKEv2IKESPI)initWithValue:(unint64_t)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation NEIKEv2IKESPI
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NEIKEv2IKESPI allocWithZone:a3];
-  v5 = [(NEIKEv2IKESPI *)self value];
+  v4 = [NEIKEv2IKESPI allocWithZone:zone];
+  value = [(NEIKEv2IKESPI *)self value];
 
-  return [(NEIKEv2IKESPI *)v4 initWithValue:v5];
+  return [(NEIKEv2IKESPI *)v4 initWithValue:value];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && [v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (equalCopy && [equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(NEIKEv2IKESPI *)self value];
-    v7 = [v5 value];
+    v5 = equalCopy;
+    value = [(NEIKEv2IKESPI *)self value];
+    value2 = [v5 value];
 
-    v8 = v6 == v7;
+    v8 = value == value2;
   }
 
   else
@@ -55,7 +55,7 @@
   return [(NEIKEv2IKESPI *)self initWithValue:?];
 }
 
-- (NEIKEv2IKESPI)initWithValue:(unint64_t)a3
+- (NEIKEv2IKESPI)initWithValue:(unint64_t)value
 {
   v10.receiver = self;
   v10.super_class = NEIKEv2IKESPI;
@@ -63,7 +63,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_value = a3;
+    v4->_value = value;
     v6 = v4;
   }
 

@@ -1,46 +1,46 @@
 @interface CNUIUserActionExtensionURLOpener
-- (CNUIUserActionExtensionURLOpener)initWithExtensionContext:(id)a3;
-- (id)openURL:(id)a3 isSensitive:(BOOL)a4 connectionEndpoint:(id)a5 bundleIdentifier:(id)a6 withScheduler:(id)a7;
+- (CNUIUserActionExtensionURLOpener)initWithExtensionContext:(id)context;
+- (id)openURL:(id)l isSensitive:(BOOL)sensitive connectionEndpoint:(id)endpoint bundleIdentifier:(id)identifier withScheduler:(id)scheduler;
 @end
 
 @implementation CNUIUserActionExtensionURLOpener
 
-- (CNUIUserActionExtensionURLOpener)initWithExtensionContext:(id)a3
+- (CNUIUserActionExtensionURLOpener)initWithExtensionContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = CNUIUserActionExtensionURLOpener;
   v6 = [(CNUIUserActionExtensionURLOpener *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_extensionContext, a3);
+    objc_storeStrong(&v6->_extensionContext, context);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)openURL:(id)a3 isSensitive:(BOOL)a4 connectionEndpoint:(id)a5 bundleIdentifier:(id)a6 withScheduler:(id)a7
+- (id)openURL:(id)l isSensitive:(BOOL)sensitive connectionEndpoint:(id)endpoint bundleIdentifier:(id)identifier withScheduler:(id)scheduler
 {
-  v9 = a3;
+  lCopy = l;
   v10 = MEMORY[0x1E69967D0];
-  v11 = a7;
+  schedulerCopy = scheduler;
   v12 = objc_alloc_init(v10);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __106__CNUIUserActionExtensionURLOpener_openURL_isSensitive_connectionEndpoint_bundleIdentifier_withScheduler___block_invoke;
   v17[3] = &unk_1E76E7B50;
-  v18 = v9;
+  v18 = lCopy;
   v19 = v12;
-  v20 = self;
+  selfCopy = self;
   v13 = v12;
-  v14 = v9;
-  [v11 performBlock:v17];
+  v14 = lCopy;
+  [schedulerCopy performBlock:v17];
 
-  v15 = [v13 future];
+  future = [v13 future];
 
-  return v15;
+  return future;
 }
 
 void __106__CNUIUserActionExtensionURLOpener_openURL_isSensitive_connectionEndpoint_bundleIdentifier_withScheduler___block_invoke(id *a1)

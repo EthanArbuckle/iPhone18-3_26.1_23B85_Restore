@@ -1,20 +1,20 @@
 @interface OspreyMutableRequest
-- (OspreyMutableRequest)initWithMethodName:(id)a3;
+- (OspreyMutableRequest)initWithMethodName:(id)name;
 - (id)buildInternalRequest;
-- (void)setValue:(id)a3 forHTTPHeaderField:(id)a4;
+- (void)setValue:(id)value forHTTPHeaderField:(id)field;
 @end
 
 @implementation OspreyMutableRequest
 
-- (OspreyMutableRequest)initWithMethodName:(id)a3
+- (OspreyMutableRequest)initWithMethodName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = OspreyMutableRequest;
   v5 = [(OspreyMutableRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     methodName = v5->_methodName;
     v5->_methodName = v6;
 
@@ -24,10 +24,10 @@
   return v5;
 }
 
-- (void)setValue:(id)a3 forHTTPHeaderField:(id)a4
+- (void)setValue:(id)value forHTTPHeaderField:(id)field
 {
-  v10 = a3;
-  v6 = a4;
+  valueCopy = value;
+  fieldCopy = field;
   additionalHeaders = self->_additionalHeaders;
   if (!additionalHeaders)
   {
@@ -38,14 +38,14 @@
     additionalHeaders = self->_additionalHeaders;
   }
 
-  [(NSMutableDictionary *)additionalHeaders setObject:v10 forKey:v6];
+  [(NSMutableDictionary *)additionalHeaders setObject:valueCopy forKey:fieldCopy];
 }
 
 - (id)buildInternalRequest
 {
   v3 = [OspreyRequest alloc];
-  v4 = [(OspreyMutableRequest *)self methodName];
-  v5 = [(OspreyRequest *)v3 initWithMethodName:v4];
+  methodName = [(OspreyMutableRequest *)self methodName];
+  v5 = [(OspreyRequest *)v3 initWithMethodName:methodName];
 
   if (self->_clientTraceIdentifier)
   {
@@ -54,9 +54,9 @@
 
   else
   {
-    v6 = [MEMORY[0x277CCAD78] UUID];
-    v7 = [v6 UUIDString];
-    [(OspreyRequest *)v5 setClientTraceId:v7];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [(OspreyRequest *)v5 setClientTraceId:uUIDString];
   }
 
   [(OspreyRequest *)v5 setEnableDeviceAuthentication:self->_enableDeviceAuthentication];

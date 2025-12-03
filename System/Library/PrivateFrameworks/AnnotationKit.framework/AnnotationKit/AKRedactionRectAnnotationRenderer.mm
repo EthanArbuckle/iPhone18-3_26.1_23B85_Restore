@@ -1,26 +1,26 @@
 @interface AKRedactionRectAnnotationRenderer
-+ (BOOL)_concretePointIsOnBorder:(CGPoint)a3 ofAnnotation:(id)a4 minimumBorderThickness:(double)a5;
-+ (BOOL)_concretePointIsOnInside:(CGPoint)a3 ofAnnotation:(id)a4;
-+ (CGPath)_newConcreteTextExclusionPathForAnnotation:(id)a3 withOptionalAnnotationRect:(CGRect)a4;
-+ (CGPath)_newPathForAnnotation:(id)a3 axisAlignedForStroke:(BOOL)a4 alignToScreenUsingPageController:(id)a5 orAlignToContext:(CGContext *)a6;
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3;
-+ (CGRect)_concreteRectangleForAnnotation:(id)a3 withTextBounds:(CGRect)a4;
-+ (CGRect)_concreteTextBoundsOfAnnotation:(id)a3 withOptionalAnnotationRect:(CGRect)a4 optionalText:(id)a5;
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3;
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6;
++ (BOOL)_concretePointIsOnBorder:(CGPoint)border ofAnnotation:(id)annotation minimumBorderThickness:(double)thickness;
++ (BOOL)_concretePointIsOnInside:(CGPoint)inside ofAnnotation:(id)annotation;
++ (CGPath)_newConcreteTextExclusionPathForAnnotation:(id)annotation withOptionalAnnotationRect:(CGRect)rect;
++ (CGPath)_newPathForAnnotation:(id)annotation axisAlignedForStroke:(BOOL)stroke alignToScreenUsingPageController:(id)controller orAlignToContext:(CGContext *)context;
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation;
++ (CGRect)_concreteRectangleForAnnotation:(id)annotation withTextBounds:(CGRect)bounds;
++ (CGRect)_concreteTextBoundsOfAnnotation:(id)annotation withOptionalAnnotationRect:(CGRect)rect optionalText:(id)text;
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation;
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil;
 @end
 
 @implementation AKRedactionRectAnnotationRenderer
 
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation
 {
-  v3 = a3;
-  [v3 rectangle];
+  annotationCopy = annotation;
+  [annotationCopy rectangle];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 rotationAngle];
+  [annotationCopy rotationAngle];
   v13 = v12;
 
   [AKGeometryHelper boundsOfRotatedRectangle:v5 angle:v7, v9, v11, v13];
@@ -28,7 +28,7 @@
   return CGRectInset(*&v14, -1.0, -1.0);
 }
 
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
@@ -37,16 +37,16 @@
   return result;
 }
 
-+ (CGRect)_concreteTextBoundsOfAnnotation:(id)a3 withOptionalAnnotationRect:(CGRect)a4 optionalText:(id)a5
++ (CGRect)_concreteTextBoundsOfAnnotation:(id)annotation withOptionalAnnotationRect:(CGRect)rect optionalText:(id)text
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  [v9 strokeWidth];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  annotationCopy = annotation;
+  [annotationCopy strokeWidth];
   v11 = v10;
-  [v9 originalModelBaseScaleFactor];
+  [annotationCopy originalModelBaseScaleFactor];
   v13 = v12;
   v26.origin.x = x;
   v26.origin.y = y;
@@ -54,7 +54,7 @@
   v26.size.height = height;
   if (CGRectIsEmpty(v26))
   {
-    [v9 rectangle];
+    [annotationCopy rectangle];
     x = v14;
     y = v15;
     width = v16;
@@ -82,16 +82,16 @@
   return result;
 }
 
-+ (CGRect)_concreteRectangleForAnnotation:(id)a3 withTextBounds:(CGRect)a4
++ (CGRect)_concreteRectangleForAnnotation:(id)annotation withTextBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
-  [v8 strokeWidth];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  annotationCopy = annotation;
+  [annotationCopy strokeWidth];
   v10 = v9 * 0.5;
-  [v8 originalModelBaseScaleFactor];
+  [annotationCopy originalModelBaseScaleFactor];
   v12 = v11;
 
   v13 = x;
@@ -102,16 +102,16 @@
   return CGRectInset(*&v13, -(v10 + v12 * 2.0), -(v10 + v12 * 2.0));
 }
 
-+ (CGPath)_newConcreteTextExclusionPathForAnnotation:(id)a3 withOptionalAnnotationRect:(CGRect)a4
++ (CGPath)_newConcreteTextExclusionPathForAnnotation:(id)annotation withOptionalAnnotationRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  [v9 strokeWidth];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  annotationCopy = annotation;
+  [annotationCopy strokeWidth];
   v11 = v10 * 0.5;
-  [v9 originalModelBaseScaleFactor];
+  [annotationCopy originalModelBaseScaleFactor];
   v13 = v11 + v12 * 2.0;
   v23.origin.x = x;
   v23.origin.y = y;
@@ -125,9 +125,9 @@
   Mutable = CGPathCreateMutable();
   if (![AKGeometryHelper isUnpresentableRect:v14, v15, v16, v17])
   {
-    v19 = [v9 copy];
+    v19 = [annotationCopy copy];
     [v19 setRectangle:{v14, v15, v16, v17}];
-    v20 = [a1 _newPathForAnnotation:v19 axisAlignedForStroke:0 alignToScreenUsingPageController:0 orAlignToContext:0];
+    v20 = [self _newPathForAnnotation:v19 axisAlignedForStroke:0 alignToScreenUsingPageController:0 orAlignToContext:0];
     CGPathAddPath(Mutable, 0, v20);
     CGPathRelease(v20);
   }
@@ -138,40 +138,40 @@
   return MutableCopy;
 }
 
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil
 {
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  CGContextSaveGState(a4);
-  v13 = [v12 forDisplay];
+  annotationCopy = annotation;
+  nilCopy = nil;
+  optionsCopy = options;
+  CGContextSaveGState(context);
+  forDisplay = [optionsCopy forDisplay];
 
-  [a1 _transformContextToModelCoordinates:a4 forAnnotation:v10 forDisplay:v13 pageControllerOrNil:v11];
-  [AKGeometryHelper rotationTransformForRectangularAnnotation:v10 hasRotation:0];
+  [self _transformContextToModelCoordinates:context forAnnotation:annotationCopy forDisplay:forDisplay pageControllerOrNil:nilCopy];
+  [AKGeometryHelper rotationTransformForRectangularAnnotation:annotationCopy hasRotation:0];
   memset(&transform, 0, sizeof(transform));
-  CGContextConcatCTM(a4, &transform);
-  v14 = [a1 _newPathForAnnotation:v10 axisAlignedForStroke:0 alignToScreenUsingPageController:v11 orAlignToContext:a4];
+  CGContextConcatCTM(context, &transform);
+  v14 = [self _newPathForAnnotation:annotationCopy axisAlignedForStroke:0 alignToScreenUsingPageController:nilCopy orAlignToContext:context];
 
   BoundingBox = CGPathGetBoundingBox(v14);
   x = BoundingBox.origin.x;
   y = BoundingBox.origin.y;
   width = BoundingBox.size.width;
   height = BoundingBox.size.height;
-  if ([v10 isHighlighted])
+  if ([annotationCopy isHighlighted])
   {
-    CGContextSetRGBStrokeColor(a4, 0.0, 0.0, 0.0, 1.0);
-    CGContextSetLineWidth(a4, 1.0);
+    CGContextSetRGBStrokeColor(context, 0.0, 0.0, 0.0, 1.0);
+    CGContextSetLineWidth(context, 1.0);
     v38.origin.x = x;
     v38.origin.y = y;
     v38.size.width = width;
     v38.size.height = height;
-    CGContextStrokeRect(a4, v38);
+    CGContextStrokeRect(context, v38);
   }
 
   else
   {
-    if ([v10 isOpaque])
+    if ([annotationCopy isOpaque])
     {
       v19 = 1.0;
     }
@@ -181,25 +181,25 @@
       v19 = 0.65;
     }
 
-    v20 = [MEMORY[0x277D75348] blackColor];
-    v21 = [v20 colorWithAlphaComponent:v19];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v21 = [blackColor colorWithAlphaComponent:v19];
 
-    CGContextSetFillColorWithColor(a4, [v21 CGColor]);
-    CGContextAddPath(a4, v14);
-    CGContextFillPath(a4);
+    CGContextSetFillColorWithColor(context, [v21 CGColor]);
+    CGContextAddPath(context, v14);
+    CGContextFillPath(context);
     v39.origin.x = x;
     v39.origin.y = y;
     v39.size.width = width;
     v39.size.height = height;
-    CGContextClipToRect(a4, v39);
-    v22 = [MEMORY[0x277D75348] darkGrayColor];
-    v23 = [v22 colorWithAlphaComponent:v19];
+    CGContextClipToRect(context, v39);
+    darkGrayColor = [MEMORY[0x277D75348] darkGrayColor];
+    v23 = [darkGrayColor colorWithAlphaComponent:v19];
 
     ColorSpace = CGColorGetColorSpace([v23 CGColor]);
     if (ColorSpace)
     {
-      CGContextSetStrokeColorSpace(a4, ColorSpace);
-      CGContextSetStrokeColorWithColor(a4, [v23 CGColor]);
+      CGContextSetStrokeColorSpace(context, ColorSpace);
+      CGContextSetStrokeColorWithColor(context, [v23 CGColor]);
       v40.origin.x = x;
       v40.origin.y = y;
       v40.size.width = width;
@@ -248,30 +248,30 @@
       v32 = CGRectGetMinY(v47);
       v34 = v31;
       v35 = v32;
-      CGContextSetLineWidth(a4, 1.0);
-      CGContextStrokeLineSegments(a4, &transform, 4uLL);
+      CGContextSetLineWidth(context, 1.0);
+      CGContextStrokeLineSegments(context, &transform, 4uLL);
     }
   }
 
   CGPathRelease(v14);
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-+ (BOOL)_concretePointIsOnBorder:(CGPoint)a3 ofAnnotation:(id)a4 minimumBorderThickness:(double)a5
++ (BOOL)_concretePointIsOnBorder:(CGPoint)border ofAnnotation:(id)annotation minimumBorderThickness:(double)thickness
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = [a1 _newPathForAnnotation:v9 axisAlignedForStroke:0 alignToScreenUsingPageController:0 orAlignToContext:0];
-  v11 = 0.0;
-  if (a5 >= 0.0)
+  y = border.y;
+  x = border.x;
+  annotationCopy = annotation;
+  v10 = [self _newPathForAnnotation:annotationCopy axisAlignedForStroke:0 alignToScreenUsingPageController:0 orAlignToContext:0];
+  thicknessCopy = 0.0;
+  if (thickness >= 0.0)
   {
-    v11 = a5;
+    thicknessCopy = thickness;
   }
 
-  v12 = [AKAnnotationRendererUtilities newStandardStrokedBorderPathWithPath:v10 withStrokeWidth:v11];
+  v12 = [AKAnnotationRendererUtilities newStandardStrokedBorderPathWithPath:v10 withStrokeWidth:thicknessCopy];
   memset(&m, 0, sizeof(m));
-  [AKGeometryHelper rotationTransformForRectangularAnnotation:v9 hasRotation:0];
+  [AKGeometryHelper rotationTransformForRectangularAnnotation:annotationCopy hasRotation:0];
 
   v15 = m;
   CGAffineTransformInvert(&v16, &v15);
@@ -284,37 +284,37 @@
   return v13;
 }
 
-+ (BOOL)_concretePointIsOnInside:(CGPoint)a3 ofAnnotation:(id)a4
++ (BOOL)_concretePointIsOnInside:(CGPoint)inside ofAnnotation:(id)annotation
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [a1 _newPathForAnnotation:v7 axisAlignedForStroke:0 alignToScreenUsingPageController:0 orAlignToContext:0];
+  y = inside.y;
+  x = inside.x;
+  annotationCopy = annotation;
+  v8 = [self _newPathForAnnotation:annotationCopy axisAlignedForStroke:0 alignToScreenUsingPageController:0 orAlignToContext:0];
   memset(&m, 0, sizeof(m));
-  [AKGeometryHelper rotationTransformForRectangularAnnotation:v7 hasRotation:0];
+  [AKGeometryHelper rotationTransformForRectangularAnnotation:annotationCopy hasRotation:0];
 
   v10 = m;
   CGAffineTransformInvert(&v11, &v10);
   m = v11;
   v13.x = x;
   v13.y = y;
-  LOBYTE(v7) = CGPathContainsPoint(v8, &m, v13, 0);
+  LOBYTE(annotationCopy) = CGPathContainsPoint(v8, &m, v13, 0);
   CGPathRelease(v8);
-  return v7;
+  return annotationCopy;
 }
 
-+ (CGPath)_newPathForAnnotation:(id)a3 axisAlignedForStroke:(BOOL)a4 alignToScreenUsingPageController:(id)a5 orAlignToContext:(CGContext *)a6
++ (CGPath)_newPathForAnnotation:(id)annotation axisAlignedForStroke:(BOOL)stroke alignToScreenUsingPageController:(id)controller orAlignToContext:(CGContext *)context
 {
-  v8 = a3;
-  v9 = a5;
-  [v8 rectangle];
+  annotationCopy = annotation;
+  controllerCopy = controller;
+  [annotationCopy rectangle];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  if (![AKGeometryHelper annotationHasRotation:v8 outAngle:0])
+  if (![AKGeometryHelper annotationHasRotation:annotationCopy outAngle:0])
   {
-    [AKGeometryHelper renderingStrokeAlignedRectForRect:v9 withStrokeWidth:a6 alignToScreenUsingPageController:v8 orAlignToContext:v11 usingAnnotation:v13, v15, v17, 0.0];
+    [AKGeometryHelper renderingStrokeAlignedRectForRect:controllerCopy withStrokeWidth:context alignToScreenUsingPageController:annotationCopy orAlignToContext:v11 usingAnnotation:v13, v15, v17, 0.0];
     v11 = v18;
     v13 = v19;
     v15 = v20;

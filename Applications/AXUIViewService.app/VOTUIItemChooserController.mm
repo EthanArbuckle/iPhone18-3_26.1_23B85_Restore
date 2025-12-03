@@ -1,24 +1,24 @@
 @interface VOTUIItemChooserController
 - (BOOL)accessibilityPerformEscape;
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (VOTUIItemChooserDelegate)delegate;
-- (double)_positionAccountingForKeyboard:(CGRect)a3;
-- (id)_constraintsToPositionItem:(id)a3 identicallyToItem:(id)a4;
-- (id)sectionIndexTitlesForTableView:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_displayWithList:(id)a3 fromRotorSwitch:(BOOL)a4;
+- (double)_positionAccountingForKeyboard:(CGRect)keyboard;
+- (id)_constraintsToPositionItem:(id)item identicallyToItem:(id)toItem;
+- (id)sectionIndexTitlesForTableView:(id)view;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_displayWithList:(id)list fromRotorSwitch:(BOOL)switch;
 - (void)_guidedAccessItemChooserDidShow;
-- (void)_handleSearchFieldTextChange:(id)a3;
-- (void)_keyboardWillHide:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
+- (void)_handleSearchFieldTextChange:(id)change;
+- (void)_keyboardWillHide:(id)hide;
+- (void)_keyboardWillShow:(id)show;
 - (void)_loadGuidedAccessBundle;
-- (void)_updatePositionForKeyboard:(CGRect)a3;
-- (void)_updateSelectedRow:(id)a3;
-- (void)showItemChooser:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)_updatePositionForKeyboard:(CGRect)keyboard;
+- (void)_updateSelectedRow:(id)row;
+- (void)showItemChooser:(id)chooser;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -36,15 +36,15 @@
   v7 = [v3 initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [v7 setAutoresizingMask:18];
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [(VOTUIItemChooserController *)self view];
-  [v8 addSubview:v7];
+  view = [(VOTUIItemChooserController *)self view];
+  [view addSubview:v7];
 
   v9 = [[_UIBackdropView alloc] initWithPrivateStyle:2030];
   backdropView = self->_backdropView;
   self->_backdropView = v9;
 
-  v11 = [(_UIBackdropView *)self->_backdropView layer];
-  [v11 setCornerRadius:10.0];
+  layer = [(_UIBackdropView *)self->_backdropView layer];
+  [layer setCornerRadius:10.0];
 
   [v7 addSubview:self->_backdropView];
   v12 = +[NSNotificationCenter defaultCenter];
@@ -121,16 +121,16 @@
   self->_items = v31;
 
   v33 = +[NSMutableArray array];
-  v34 = [(VOTUIItemChooserController *)self view];
-  v35 = [(VOTUIItemChooserController *)self _constraintsToPositionItem:v7 identicallyToItem:v34];
+  view2 = [(VOTUIItemChooserController *)self view];
+  v35 = [(VOTUIItemChooserController *)self _constraintsToPositionItem:v7 identicallyToItem:view2];
   v50 = v33;
   [v33 addObjectsFromArray:v35];
 
   [NSLayoutConstraint activateConstraints:v33];
-  v36 = [(UILabel *)self->_headingLabel topAnchor];
-  v37 = [v7 safeAreaLayoutGuide];
-  v38 = [v37 topAnchor];
-  v39 = [v36 constraintEqualToSystemSpacingBelowAnchor:v38 multiplier:1.0];
+  topAnchor = [(UILabel *)self->_headingLabel topAnchor];
+  safeAreaLayoutGuide = [v7 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v39 = [topAnchor constraintEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:1.0];
   [v39 setActive:1];
 
   v40 = [NSLayoutConstraint constraintWithItem:self->_headingLabel attribute:7 relatedBy:0 toItem:v7 attribute:7 multiplier:0.9 constant:0.0];
@@ -164,10 +164,10 @@
   [v49 setActive:1];
 }
 
-- (id)_constraintsToPositionItem:(id)a3 identicallyToItem:(id)a4
+- (id)_constraintsToPositionItem:(id)item identicallyToItem:(id)toItem
 {
-  v5 = a3;
-  v6 = a4;
+  itemCopy = item;
+  toItemCopy = toItem;
   v7 = +[NSMutableArray array];
   v15 = 0u;
   v16 = 0u;
@@ -187,8 +187,8 @@
           objc_enumerationMutation(&off_10002A058);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * i) integerValue];
-        v13 = [NSLayoutConstraint constraintWithItem:v5 attribute:v12 relatedBy:0 toItem:v6 attribute:v12 multiplier:1.0 constant:0.0];
+        integerValue = [*(*(&v15 + 1) + 8 * i) integerValue];
+        v13 = [NSLayoutConstraint constraintWithItem:itemCopy attribute:integerValue relatedBy:0 toItem:toItemCopy attribute:integerValue multiplier:1.0 constant:0.0];
         [v7 addObject:v13];
       }
 
@@ -201,16 +201,16 @@
   return v7;
 }
 
-- (void)showItemChooser:(id)a3
+- (void)showItemChooser:(id)chooser
 {
-  v4 = a3;
+  chooserCopy = chooser;
   [(VOTUIItemChooserController *)self setAccessibilityViewIsModal:1];
   self->_category = 0x7FFFFFFFFFFFFFFFLL;
-  v5 = [v4 objectForKey:@"items"];
-  v6 = [v4 objectForKey:@"categories"];
-  v7 = [v4 objectForKey:@"mappings"];
-  v8 = [v4 objectForKey:@"regionDescriptions"];
-  v9 = [v4 objectForKey:@"searchTerm"];
+  v5 = [chooserCopy objectForKey:@"items"];
+  v6 = [chooserCopy objectForKey:@"categories"];
+  v7 = [chooserCopy objectForKey:@"mappings"];
+  v8 = [chooserCopy objectForKey:@"regionDescriptions"];
+  v9 = [chooserCopy objectForKey:@"searchTerm"];
 
   objc_storeStrong(&self->_itemCategoryMappings, v7);
   objc_storeStrong(&self->_originalList, v5);
@@ -231,9 +231,9 @@
 - (void)_guidedAccessItemChooserDidShow
 {
   [(VOTUIItemChooserController *)self _loadGuidedAccessBundle];
-  v4 = [(VOTUIItemChooserController *)self view];
-  v3 = [v4 window];
-  -[VOTUIItemChooserController _updateGuidedAccessWindowId:](self, "_updateGuidedAccessWindowId:", [v3 _contextId]);
+  view = [(VOTUIItemChooserController *)self view];
+  window = [view window];
+  -[VOTUIItemChooserController _updateGuidedAccessWindowId:](self, "_updateGuidedAccessWindowId:", [window _contextId]);
 }
 
 - (void)_loadGuidedAccessBundle
@@ -247,10 +247,10 @@
   }
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   category = self->_category;
-  if (a3 == 1)
+  if (scroll == 1)
   {
     if (category == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -265,7 +265,7 @@
 
   else
   {
-    if (a3 != 2)
+    if (scroll != 2)
     {
 LABEL_20:
       LOBYTE(v6) = 0;
@@ -310,10 +310,10 @@ LABEL_20:
     if (v5 != 0x7FFFFFFFFFFFFFFFLL && v5 < v9)
     {
       v15 = [(NSArray *)self->_categories objectAtIndex:v5];
-      v16 = [v15 intValue];
+      intValue = [v15 intValue];
 
-      v17 = v16 - 1;
-      if (v16 - 1 < 0x18 && ((0xFFF601u >> v17) & 1) != 0)
+      v17 = intValue - 1;
+      if (intValue - 1 < 0x18 && ((0xFFF601u >> v17) & 1) != 0)
       {
         v18 = [qword_1000318E8 localizedStringForKey:*(&off_100028D98 + v17) value:0 table:@"VOTLocalizedStrings"];
         [(UILabel *)self->_headingLabel setText:v18];
@@ -336,24 +336,24 @@ LABEL_20:
       v32 = 3221225472;
       v33 = sub_10000F8E8;
       v34 = &unk_100028C80;
-      v35 = self;
+      selfCopy = self;
       v36 = v19;
       v23 = v19;
       v24 = [(NSMutableArray *)v22 indexesOfObjectsPassingTest:&v31];
-      [(NSMutableArray *)v22 removeObjectsAtIndexes:v24, v31, v32, v33, v34, v35];
+      [(NSMutableArray *)v22 removeObjectsAtIndexes:v24, v31, v32, v33, v34, selfCopy];
 
       v13 = self->_filteredList;
 LABEL_27:
       [(VOTUIItemChooserController *)self _displayWithList:v13 fromRotorSwitch:1];
-      v25 = [(UILabel *)self->_headingLabel text];
+      text = [(UILabel *)self->_headingLabel text];
       if (self->_category == 0x7FFFFFFFFFFFFFFFLL)
       {
         v26 = [qword_1000318E8 localizedStringForKey:@"search.rotor.allitems" value:0 table:@"VOTLocalizedStrings"];
 
-        v25 = v26;
+        text = v26;
       }
 
-      UIAccessibilityPostNotification(UIAccessibilityPageScrolledNotification, v25);
+      UIAccessibilityPostNotification(UIAccessibilityPageScrolledNotification, text);
       v27 = UIAccessibilityLayoutChangedNotification;
       v28 = [(UITableView *)self->_table accessibilityElementAtIndex:0];
       v29 = [v28 _accessibilityFindDescendant:&stru_100028CC0];
@@ -384,23 +384,23 @@ LABEL_19:
   return v6;
 }
 
-- (void)_handleSearchFieldTextChange:(id)a3
+- (void)_handleSearchFieldTextChange:(id)change
 {
-  v4 = [(VOTUIItemChooserController *)self view];
-  v5 = [v4 isHidden];
+  view = [(VOTUIItemChooserController *)self view];
+  isHidden = [view isHidden];
 
-  if ((v5 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
-    v6 = [(UISearchField *)self->_searchField text];
-    v7 = [v6 lowercaseString];
+    text = [(UISearchField *)self->_searchField text];
+    lowercaseString = [text lowercaseString];
 
-    if (([v7 isEqualToString:self->_filter] & 1) == 0)
+    if (([lowercaseString isEqualToString:self->_filter] & 1) == 0)
     {
-      v8 = [(UISearchField *)self->_searchField text];
+      text2 = [(UISearchField *)self->_searchField text];
       lastSearchTerm = self->_lastSearchTerm;
-      self->_lastSearchTerm = v8;
+      self->_lastSearchTerm = text2;
 
-      v10 = [v7 copyWithZone:0];
+      v10 = [lowercaseString copyWithZone:0];
       filter = self->_filter;
       self->_filter = v10;
 
@@ -425,10 +425,10 @@ LABEL_19:
   }
 }
 
-- (void)_displayWithList:(id)a3 fromRotorSwitch:(BOOL)a4
+- (void)_displayWithList:(id)list fromRotorSwitch:(BOOL)switch
 {
-  v6 = a3;
-  self->_totalItemCount = [v6 count];
+  listCopy = list;
+  self->_totalItemCount = [listCopy count];
   if (self->_category == 0x7FFFFFFFFFFFFFFFLL)
   {
     if ([(NSMutableArray *)self->_filteredList count])
@@ -453,8 +453,8 @@ LABEL_19:
     totalItemCount = 0;
   }
 
-  v12 = [(VOTUIItemChooserController *)self view];
-  [v12 layoutIfNeeded];
+  view = [(VOTUIItemChooserController *)self view];
+  [view layoutIfNeeded];
 
   self->_selectedRow = 0x7FFFFFFFFFFFFFFFLL;
   self->_activateItem = 0;
@@ -464,33 +464,33 @@ LABEL_19:
   v26[2] = sub_1000100DC;
   v26[3] = &unk_100028D10;
   v26[4] = self;
-  [v6 enumerateObjectsUsingBlock:v26];
+  [listCopy enumerateObjectsUsingBlock:v26];
 
-  v13 = [(NSMutableDictionary *)self->_items allKeys];
-  v14 = [v13 sortedArrayUsingComparator:&stru_100028D50];
+  allKeys = [(NSMutableDictionary *)self->_items allKeys];
+  v14 = [allKeys sortedArrayUsingComparator:&stru_100028D50];
   sectionHeaders = self->_sectionHeaders;
   self->_sectionHeaders = v14;
 
   [(UITableView *)self->_table setBackgroundView:0];
   [(UITableView *)self->_table reloadData];
-  if (!a4)
+  if (!switch)
   {
     v16 = [NSBundle bundleForClass:objc_opt_class()];
     v17 = [v16 localizedStringForKey:@"item.count" value:&stru_100028F48 table:@"AXUIViewService"];
-    v18 = [NSString localizedStringWithFormat:v17, totalItemCount];
+    totalItemCount = [NSString localizedStringWithFormat:v17, totalItemCount];
 
-    v19 = [(NSMutableArray *)self->_filteredList firstObject];
+    firstObject = [(NSMutableArray *)self->_filteredList firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v19;
+      v23 = firstObject;
       v24 = @"__AXStringForVariablesSentinel";
       v20 = __UIAXStringForVariables();
 
-      v18 = v20;
+      totalItemCount = v20;
     }
 
-    UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, v18);
+    UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, totalItemCount);
   }
 
   v25 = [(UITableView *)self->_table safeValueForKey:@"_index", v23, v24];
@@ -498,23 +498,23 @@ LABEL_19:
   AXPerformSafeBlock();
   [v21 bounds];
   [v21 setBounds:{0.0, 0.0}];
-  v22 = [v21 layer];
-  [v22 setCornerRadius:5.0];
+  layer = [v21 layer];
+  [layer setCornerRadius:5.0];
 }
 
-- (double)_positionAccountingForKeyboard:(CGRect)a3
+- (double)_positionAccountingForKeyboard:(CGRect)keyboard
 {
-  y = a3.origin.y;
+  y = keyboard.origin.y;
   v10.origin.x = CGRectZero.origin.x;
   v10.origin.y = CGRectZero.origin.y;
   v10.size.width = CGRectZero.size.width;
   v10.size.height = CGRectZero.size.height;
-  v5 = CGRectEqualToRect(a3, v10);
+  v5 = CGRectEqualToRect(keyboard, v10);
   result = -1.0;
   if (!v5)
   {
-    v7 = [(VOTUIItemChooserController *)self view];
-    [v7 frame];
+    view = [(VOTUIItemChooserController *)self view];
+    [view frame];
     v9 = v8;
 
     result = (y - v9) * 0.5;
@@ -527,14 +527,14 @@ LABEL_19:
   return result;
 }
 
-- (void)_updatePositionForKeyboard:(CGRect)a3
+- (void)_updatePositionForKeyboard:(CGRect)keyboard
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(VOTUIItemChooserController *)self view];
-  [v8 frame];
+  height = keyboard.size.height;
+  width = keyboard.size.width;
+  y = keyboard.origin.y;
+  x = keyboard.origin.x;
+  view = [(VOTUIItemChooserController *)self view];
+  [view frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -556,16 +556,16 @@ LABEL_19:
   }
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
-  v13 = a3;
-  v4 = [(VOTUIItemChooserController *)self view];
-  v5 = [v4 isHidden];
+  showCopy = show;
+  view = [(VOTUIItemChooserController *)self view];
+  isHidden = [view isHidden];
 
-  if ((v5 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
-    v6 = [v13 userInfo];
-    v7 = [v6 objectForKey:UIKeyboardFrameEndUserInfoKey];
+    userInfo = [showCopy userInfo];
+    v7 = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
     [v7 CGRectValue];
     self->_keyboardFrame.origin.x = v8;
     self->_keyboardFrame.origin.y = v9;
@@ -574,20 +574,20 @@ LABEL_19:
 
     if ([(UISearchField *)self->_searchField isFirstResponder])
     {
-      v12 = [(UISearchField *)self->_searchField window];
-      [v12 becomeKeyWindow];
+      window = [(UISearchField *)self->_searchField window];
+      [window becomeKeyWindow];
 
       [(VOTUIItemChooserController *)self _updatePositionForKeyboard:self->_keyboardFrame.origin.x, self->_keyboardFrame.origin.y, self->_keyboardFrame.size.width, self->_keyboardFrame.size.height];
     }
   }
 }
 
-- (void)_keyboardWillHide:(id)a3
+- (void)_keyboardWillHide:(id)hide
 {
-  v4 = [(VOTUIItemChooserController *)self view];
-  v5 = [v4 isHidden];
+  view = [(VOTUIItemChooserController *)self view];
+  isHidden = [view isHidden];
 
-  if ((v5 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
     [(UISearchField *)self->_searchField resignFirstResponder];
     size = CGRectZero.size;
@@ -604,7 +604,7 @@ LABEL_19:
   return 1;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if ([(NSMutableArray *)self->_filteredList count])
   {
@@ -616,7 +616,7 @@ LABEL_19:
   return [(NSArray *)sectionHeaders count];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if ([(NSMutableArray *)self->_filteredList count])
   {
@@ -627,7 +627,7 @@ LABEL_19:
 
   else
   {
-    v8 = [(NSArray *)self->_sectionHeaders objectAtIndex:a4];
+    v8 = [(NSArray *)self->_sectionHeaders objectAtIndex:section];
     v9 = [(NSMutableDictionary *)self->_items objectForKey:v8];
     v10 = [v9 count];
 
@@ -635,7 +635,7 @@ LABEL_19:
   }
 }
 
-- (id)sectionIndexTitlesForTableView:(id)a3
+- (id)sectionIndexTitlesForTableView:(id)view
 {
   if ([(NSString *)self->_filter length])
   {
@@ -650,114 +650,114 @@ LABEL_19:
   return v4;
 }
 
-- (void)_updateSelectedRow:(id)a3
+- (void)_updateSelectedRow:(id)row
 {
-  v9 = a3;
+  rowCopy = row;
   if ([(NSMutableArray *)self->_filteredList count])
   {
     originalList = self->_originalList;
-    v5 = [(UITableView *)self->_table cellForRowAtIndexPath:v9];
-    v6 = [v5 textLabel];
-    v7 = [v6 text];
-    self->_selectedRow = [(NSArray *)originalList indexOfObject:v7];
+    v5 = [(UITableView *)self->_table cellForRowAtIndexPath:rowCopy];
+    textLabel = [v5 textLabel];
+    text = [textLabel text];
+    self->_selectedRow = [(NSArray *)originalList indexOfObject:text];
   }
 
   else
   {
-    v5 = -[NSArray objectAtIndex:](self->_sectionHeaders, "objectAtIndex:", [v9 section]);
-    v6 = [(NSMutableDictionary *)self->_items objectForKey:v5];
-    [(UITableView *)self->_table deselectRowAtIndexPath:v9 animated:1];
-    v7 = [v6 objectAtIndex:{objc_msgSend(v9, "row")}];
-    v8 = [v7 objectAtIndex:1];
+    v5 = -[NSArray objectAtIndex:](self->_sectionHeaders, "objectAtIndex:", [rowCopy section]);
+    textLabel = [(NSMutableDictionary *)self->_items objectForKey:v5];
+    [(UITableView *)self->_table deselectRowAtIndexPath:rowCopy animated:1];
+    text = [textLabel objectAtIndex:{objc_msgSend(rowCopy, "row")}];
+    v8 = [text objectAtIndex:1];
     self->_selectedRow = [v8 integerValue];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  [(VOTUIItemChooserController *)self _updateSelectedRow:a4];
+  [(VOTUIItemChooserController *)self _updateSelectedRow:path];
 
   [(VOTUIItemChooserController *)self hideItemChooser:1];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v9 = a4;
-  v5 = [v9 contentView];
+  cellCopy = cell;
+  contentView = [cellCopy contentView];
   v6 = +[UIColor clearColor];
-  [v5 setBackgroundColor:v6];
+  [contentView setBackgroundColor:v6];
 
-  if (v5)
+  if (contentView)
   {
     do
     {
-      v7 = v5;
-      v5 = [v5 superview];
+      v7 = contentView;
+      contentView = [contentView superview];
 
       v8 = +[UIColor clearColor];
-      [v5 setBackgroundColor:v8];
+      [contentView setBackgroundColor:v8];
     }
 
-    while (v5 != v9 && v5);
+    while (contentView != cellCopy && contentView);
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if ([(NSMutableArray *)self->_filteredList count])
   {
-    v8 = -[NSMutableArray objectAtIndex:](self->_filteredList, "objectAtIndex:", [v7 row]);
-    v9 = [(NSArray *)self->_originalList indexOfObject:v8];
+    v8 = -[NSMutableArray objectAtIndex:](self->_filteredList, "objectAtIndex:", [pathCopy row]);
+    integerValue = [(NSArray *)self->_originalList indexOfObject:v8];
   }
 
   else
   {
-    v10 = -[NSArray objectAtIndex:](self->_sectionHeaders, "objectAtIndex:", [v7 section]);
+    v10 = -[NSArray objectAtIndex:](self->_sectionHeaders, "objectAtIndex:", [pathCopy section]);
     v11 = [(NSMutableDictionary *)self->_items objectForKey:v10];
-    v12 = [v11 objectAtIndex:{objc_msgSend(v7, "row")}];
+    v12 = [v11 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
     v8 = [v12 objectAtIndex:0];
 
-    v13 = [v11 objectAtIndex:{objc_msgSend(v7, "row")}];
+    v13 = [v11 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
     v14 = [v13 objectAtIndex:1];
-    v9 = [v14 integerValue];
+    integerValue = [v14 integerValue];
   }
 
-  if (v9 >= [(NSArray *)self->_regionDescriptions count])
+  if (integerValue >= [(NSArray *)self->_regionDescriptions count])
   {
     v15 = 0;
   }
 
   else
   {
-    v15 = [(NSArray *)self->_regionDescriptions objectAtIndex:v9];
+    v15 = [(NSArray *)self->_regionDescriptions objectAtIndex:integerValue];
   }
 
-  v16 = [v6 dequeueReusableCellWithIdentifier:@"TableViewCell"];
+  v16 = [viewCopy dequeueReusableCellWithIdentifier:@"TableViewCell"];
   [v16 setAccessibilityTraits:kAXIgnoreItemChooserTrait];
   [v16 setAccessibilityHint:v15];
-  v17 = [v16 textLabel];
-  [v17 setText:v8];
+  textLabel = [v16 textLabel];
+  [textLabel setText:v8];
 
-  v18 = [v16 textLabel];
-  [v18 setNumberOfLines:0];
+  textLabel2 = [v16 textLabel];
+  [textLabel2 setNumberOfLines:0];
 
   v19 = +[UIColor whiteColor];
-  v20 = [v16 textLabel];
-  [v20 setTextColor:v19];
+  textLabel3 = [v16 textLabel];
+  [textLabel3 setTextColor:v19];
 
   v21 = +[UIColor clearColor];
-  v22 = [v16 textLabel];
-  [v22 setBackgroundColor:v21];
+  textLabel4 = [v16 textLabel];
+  [textLabel4 setBackgroundColor:v21];
 
   v23 = +[UIColor clearColor];
   [v16 setBackgroundColor:v23];
 
-  v24 = [v16 contentView];
-  v25 = [v24 superview];
+  contentView = [v16 contentView];
+  superview = [contentView superview];
   v26 = +[UIColor clearColor];
-  [v25 setBackgroundColor:v26];
+  [superview setBackgroundColor:v26];
 
   return v16;
 }

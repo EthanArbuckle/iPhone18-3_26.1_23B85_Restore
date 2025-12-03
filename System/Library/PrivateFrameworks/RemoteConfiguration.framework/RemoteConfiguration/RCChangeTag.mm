@@ -1,52 +1,52 @@
 @interface RCChangeTag
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (RCChangeTag)initWithCoder:(id)a3;
-- (RCChangeTag)initWithIdentifier:(id)a3 contentHash:(id)a4 lastModifiedString:(id)a5;
+- (RCChangeTag)initWithCoder:(id)coder;
+- (RCChangeTag)initWithIdentifier:(id)identifier contentHash:(id)hash lastModifiedString:(id)string;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RCChangeTag
 
-- (RCChangeTag)initWithIdentifier:(id)a3 contentHash:(id)a4 lastModifiedString:(id)a5
+- (RCChangeTag)initWithIdentifier:(id)identifier contentHash:(id)hash lastModifiedString:(id)string
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  hashCopy = hash;
+  stringCopy = string;
   v15.receiver = self;
   v15.super_class = RCChangeTag;
   v12 = [(RCChangeTag *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identifier, a3);
-    objc_storeStrong(&v13->_contentHash, a4);
-    objc_storeStrong(&v13->_lastModifiedString, a5);
+    objc_storeStrong(&v12->_identifier, identifier);
+    objc_storeStrong(&v13->_contentHash, hash);
+    objc_storeStrong(&v13->_lastModifiedString, string);
   }
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(RCChangeTag *)self identifier];
-    v7 = [v5 identifier];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    identifier = [(RCChangeTag *)self identifier];
+    identifier2 = [v5 identifier];
+    if ([identifier isEqualToString:identifier2])
     {
-      v8 = [(RCChangeTag *)self contentHash];
-      v9 = [v5 contentHash];
-      if ([v8 isEqualToString:v9])
+      contentHash = [(RCChangeTag *)self contentHash];
+      contentHash2 = [v5 contentHash];
+      if ([contentHash isEqualToString:contentHash2])
       {
-        v10 = [(RCChangeTag *)self lastModifiedString];
-        v11 = [v5 lastModifiedString];
-        v12 = [v10 isEqualToString:v11];
+        lastModifiedString = [(RCChangeTag *)self lastModifiedString];
+        lastModifiedString2 = [v5 lastModifiedString];
+        v12 = [lastModifiedString isEqualToString:lastModifiedString2];
       }
 
       else
@@ -71,12 +71,12 @@
 
 - (unint64_t)hash
 {
-  v3 = [(RCChangeTag *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(RCChangeTag *)self contentHash];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(RCChangeTag *)self lastModifiedString];
-  v8 = [v7 hash];
+  identifier = [(RCChangeTag *)self identifier];
+  v4 = [identifier hash];
+  contentHash = [(RCChangeTag *)self contentHash];
+  v6 = [contentHash hash] ^ v4;
+  lastModifiedString = [(RCChangeTag *)self lastModifiedString];
+  v8 = [lastModifiedString hash];
 
   return v6 ^ v8;
 }
@@ -85,50 +85,50 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(RCChangeTag *)self identifier];
-  v6 = [(RCChangeTag *)self contentHash];
-  v7 = [(RCChangeTag *)self lastModifiedString];
-  v8 = [v3 stringWithFormat:@"<%@: %p identifier: %@\n contentHash: %@\n lastModified: %@", v4, self, v5, v6, v7];;
+  identifier = [(RCChangeTag *)self identifier];
+  contentHash = [(RCChangeTag *)self contentHash];
+  lastModifiedString = [(RCChangeTag *)self lastModifiedString];
+  v8 = [v3 stringWithFormat:@"<%@: %p identifier: %@\n contentHash: %@\n lastModified: %@", v4, self, identifier, contentHash, lastModifiedString];;
 
   return v8;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(RCChangeTag *)self identifier];
-  [v3 setObject:v4 forKey:@"id"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  identifier = [(RCChangeTag *)self identifier];
+  [dictionary setObject:identifier forKey:@"id"];
 
-  v5 = [(RCChangeTag *)self contentHash];
-  [v3 setObject:v5 forKey:@"changeTag"];
+  contentHash = [(RCChangeTag *)self contentHash];
+  [dictionary setObject:contentHash forKey:@"changeTag"];
 
-  v6 = [(RCChangeTag *)self lastModifiedString];
-  [v3 setObject:v6 forKey:@"lastModified"];
+  lastModifiedString = [(RCChangeTag *)self lastModifiedString];
+  [dictionary setObject:lastModifiedString forKey:@"lastModified"];
 
-  v7 = [v3 copy];
+  v7 = [dictionary copy];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(RCChangeTag *)self identifier];
-  [v4 encodeObject:v5 forKey:@"id"];
+  coderCopy = coder;
+  identifier = [(RCChangeTag *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"id"];
 
-  v6 = [(RCChangeTag *)self contentHash];
-  [v4 encodeObject:v6 forKey:@"changeTag"];
+  contentHash = [(RCChangeTag *)self contentHash];
+  [coderCopy encodeObject:contentHash forKey:@"changeTag"];
 
-  v7 = [(RCChangeTag *)self lastModifiedString];
-  [v4 encodeObject:v7 forKey:@"lastModified"];
+  lastModifiedString = [(RCChangeTag *)self lastModifiedString];
+  [coderCopy encodeObject:lastModifiedString forKey:@"lastModified"];
 }
 
-- (RCChangeTag)initWithCoder:(id)a3
+- (RCChangeTag)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"id"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"changeTag"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastModified"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"id"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"changeTag"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastModified"];
 
   v8 = [(RCChangeTag *)self initWithIdentifier:v5 contentHash:v6 lastModifiedString:v7];
   return v8;

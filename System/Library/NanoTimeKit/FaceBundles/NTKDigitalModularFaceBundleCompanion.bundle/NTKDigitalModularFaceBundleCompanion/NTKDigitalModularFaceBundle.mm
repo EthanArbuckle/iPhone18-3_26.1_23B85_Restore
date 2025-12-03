@@ -1,25 +1,25 @@
 @interface NTKDigitalModularFaceBundle
 + (id)complicationTypesBySlot;
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryTitleForDevice:(id)a3;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryTitleForDevice:(id)device;
 @end
 
 @implementation NTKDigitalModularFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [objc_opt_class() identifier];
-  v5 = [objc_opt_class() analyticsIdentifier];
-  v6 = [NTKDigitalModularFace bundledFaceWithIdentifier:v4 analyticsIdentifier:v5 forDevice:v3 initCustomization:0];
+  deviceCopy = device;
+  identifier = [objc_opt_class() identifier];
+  analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+  v6 = [NTKDigitalModularFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
   return v6;
 }
 
-- (id)galleryTitleForDevice:(id)a3
+- (id)galleryTitleForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = _os_feature_enabled_impl();
   v5 = NTKShowBlueRidgeUI();
 
@@ -48,25 +48,25 @@
   return v6;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v18 = objc_opt_new();
   v5 = objc_opt_class();
-  v17 = [(NTKDigitalModularFaceBundle *)self defaultFaceForDevice:v4];
+  v17 = [(NTKDigitalModularFaceBundle *)self defaultFaceForDevice:deviceCopy];
   if ([v17 deviceSupportsPigmentEditOption])
   {
-    [(NTKDigitalModularFaceBundle *)self galleryDefaultPigmentOptionsForDevice:v4];
+    [(NTKDigitalModularFaceBundle *)self galleryDefaultPigmentOptionsForDevice:deviceCopy];
   }
 
   else
   {
-    [NTKFaceColorEditOption standardColorsWithColorClass:v5 forDevice:v4];
+    [NTKFaceColorEditOption standardColorsWithColorClass:v5 forDevice:deviceCopy];
   }
   v6 = ;
   v7 = [v6 mutableCopy];
 
-  v8 = [v5 optionsRestrictedByDevice:v4];
+  v8 = [v5 optionsRestrictedByDevice:deviceCopy];
   v9 = [v8 mutableCopy];
 
   v10 = 0;
@@ -82,7 +82,7 @@
 
   do
   {
-    v12 = [NTKFace defaultFaceOfStyle:4 forDevice:v4];
+    v12 = [NTKFace defaultFaceOfStyle:4 forDevice:deviceCopy];
     if (!v12)
     {
       goto LABEL_13;
@@ -93,7 +93,7 @@
 
     if (!v10)
     {
-      v14 = [NTKFaceColorModularEditOption optionWithFaceColor:200 forDevice:v4];
+      v14 = [NTKFaceColorModularEditOption optionWithFaceColor:200 forDevice:deviceCopy];
       [v12 selectOption:v14 forCustomEditMode:10 slot:0];
 
 LABEL_12:

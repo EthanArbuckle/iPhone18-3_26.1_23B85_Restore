@@ -1,15 +1,15 @@
 @interface LTMCurvesComputeV2
-- (LTMCurvesComputeV2)initWith:(sRefDriverInputs_SOFTISP *)a3 HITH:(sCLRProcHITHStat_SOFTISP *)a4 geometryData:(id)a5 statsObj:(id)a6 optimized:(BOOL)a7 digitalFlash:(BOOL)a8 computeHDRCurves:(BOOL)a9 computeCurvesWoFaceBoost:(BOOL)a10 computeHDRCurvesWoFaceBoost:(BOOL)a11 enhancedLocalHistogram:(BOOL)a12 enableCB:(BOOL)a13 enableFATE:(BOOL)a14;
+- (LTMCurvesComputeV2)initWith:(sRefDriverInputs_SOFTISP *)with HITH:(sCLRProcHITHStat_SOFTISP *)h geometryData:(id)data statsObj:(id)obj optimized:(BOOL)optimized digitalFlash:(BOOL)flash computeHDRCurves:(BOOL)curves computeCurvesWoFaceBoost:(BOOL)self0 computeHDRCurvesWoFaceBoost:(BOOL)self1 enhancedLocalHistogram:(BOOL)self2 enableCB:(BOOL)self3 enableFATE:(BOOL)self4;
 - (id)compute;
 - (void)compute;
 @end
 
 @implementation LTMCurvesComputeV2
 
-- (LTMCurvesComputeV2)initWith:(sRefDriverInputs_SOFTISP *)a3 HITH:(sCLRProcHITHStat_SOFTISP *)a4 geometryData:(id)a5 statsObj:(id)a6 optimized:(BOOL)a7 digitalFlash:(BOOL)a8 computeHDRCurves:(BOOL)a9 computeCurvesWoFaceBoost:(BOOL)a10 computeHDRCurvesWoFaceBoost:(BOOL)a11 enhancedLocalHistogram:(BOOL)a12 enableCB:(BOOL)a13 enableFATE:(BOOL)a14
+- (LTMCurvesComputeV2)initWith:(sRefDriverInputs_SOFTISP *)with HITH:(sCLRProcHITHStat_SOFTISP *)h geometryData:(id)data statsObj:(id)obj optimized:(BOOL)optimized digitalFlash:(BOOL)flash computeHDRCurves:(BOOL)curves computeCurvesWoFaceBoost:(BOOL)self0 computeHDRCurvesWoFaceBoost:(BOOL)self1 enhancedLocalHistogram:(BOOL)self2 enableCB:(BOOL)self3 enableFATE:(BOOL)self4
 {
-  v20 = a5;
-  v21 = a6;
+  dataCopy = data;
+  objCopy = obj;
   v38.receiver = self;
   v38.super_class = LTMCurvesComputeV2;
   v22 = [(LTMCurvesComputeV2 *)&v38 init];
@@ -41,30 +41,30 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  memcpy(&v22->_driverInputMetadata, a3, 0x8F0uLL);
-  v22->_isDigitalFlash = a8;
-  v22->_computeHDRCurves = a9;
-  v22->_computeCurvesWoFaceBoost = a10;
-  v22->_computeHDRCurvesWoFaceBoost = a11;
-  v22->_enableHiResLocalHistogram = a12;
-  v22->_enableCB = a13;
-  v22->_enableFATE = a14;
-  v27 = [v20 copy];
+  memcpy(&v22->_driverInputMetadata, with, 0x8F0uLL);
+  v22->_isDigitalFlash = flash;
+  v22->_computeHDRCurves = curves;
+  v22->_computeCurvesWoFaceBoost = boost;
+  v22->_computeHDRCurvesWoFaceBoost = faceBoost;
+  v22->_enableHiResLocalHistogram = histogram;
+  v22->_enableCB = b;
+  v22->_enableFATE = e;
+  v27 = [dataCopy copy];
   geometryData = v22->_geometryData;
   v22->_geometryData = v27;
 
-  v29 = *&a4->localHistBlockSizeX;
-  v30 = *&a4->globalHistWindow;
-  v31 = *&a4->localHistStat;
-  *&v22->_procHITHStat.thumbnailStat = *&a4->thumbnailStat;
+  v29 = *&h->localHistBlockSizeX;
+  v30 = *&h->globalHistWindow;
+  v31 = *&h->localHistStat;
+  *&v22->_procHITHStat.thumbnailStat = *&h->thumbnailStat;
   *&v22->_procHITHStat.localHistStat = v31;
-  v33 = *&a4->globalFaceHistStat;
-  v32 = *&a4->calculatedOnPortraitOrientation;
-  v34 = *&a4->localHistLowThreshold;
-  *&v22->_procHITHStat.globalHistStat = *&a4->globalHistStat;
+  v33 = *&h->globalFaceHistStat;
+  v32 = *&h->calculatedOnPortraitOrientation;
+  v34 = *&h->localHistLowThreshold;
+  *&v22->_procHITHStat.globalHistStat = *&h->globalHistStat;
   *&v22->_procHITHStat.globalFaceHistStat = v33;
-  v35 = *&a4->thumbnailWindow;
-  *&v22->_procHITHStat.thumbnailDownsampleX = *&a4->thumbnailDownsampleX;
+  v35 = *&h->thumbnailWindow;
+  *&v22->_procHITHStat.thumbnailDownsampleX = *&h->thumbnailDownsampleX;
   *&v22->_procHITHStat.thumbnailWindow = v35;
   *&v22->_procHITHStat.globalHistWindow = v30;
   *&v22->_procHITHStat.localHistBlockSizeX = v29;
@@ -74,8 +74,8 @@ LABEL_9:
   v22->_procHITHStat.localHistStat = v22->_localHistStat;
   v22->_procHITHStat.globalHistStat = v22->_globalHistStat;
   v22->_procHITHStat.globalFaceHistStat = v22->_globalFaceHistStat;
-  objc_storeStrong(&v22->_ltmStats, a6);
-  LOBYTE(v22[1].super.isa) = a7;
+  objc_storeStrong(&v22->_ltmStats, obj);
+  LOBYTE(v22[1].super.isa) = optimized;
   v36 = v22;
 LABEL_5:
 

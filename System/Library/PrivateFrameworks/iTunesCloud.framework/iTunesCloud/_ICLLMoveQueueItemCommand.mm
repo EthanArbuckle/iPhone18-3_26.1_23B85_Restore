@@ -1,12 +1,12 @@
 @interface _ICLLMoveQueueItemCommand
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setItemId:(uint64_t)a1;
-- (void)setQueueContext:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)setItemId:(uint64_t)id;
+- (void)setQueueContext:(uint64_t)context;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _ICLLMoveQueueItemCommand
@@ -37,31 +37,31 @@
   return v4 ^ v3 ^ v5 ^ [(NSString *)self->_queueContext hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   has = self->_has;
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_revision != *(v4 + 8))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_revision != *(equalCopy + 8))
     {
       goto LABEL_17;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_17;
   }
 
   itemId = self->_itemId;
-  if (itemId | *(v4 + 1))
+  if (itemId | *(equalCopy + 1))
   {
     if (![(NSString *)itemId isEqual:?])
     {
@@ -71,12 +71,12 @@ LABEL_17:
     }
 
     has = self->_has;
-    v6 = *(v4 + 36);
+    v6 = *(equalCopy + 36);
   }
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_position != *(v4 + 4))
+    if ((v6 & 1) == 0 || self->_position != *(equalCopy + 4))
     {
       goto LABEL_17;
     }
@@ -88,7 +88,7 @@ LABEL_17:
   }
 
   queueContext = self->_queueContext;
-  if (queueContext | *(v4 + 3))
+  if (queueContext | *(equalCopy + 3))
   {
     v9 = [(NSString *)queueContext isEqual:?];
   }
@@ -103,9 +103,9 @@ LABEL_18:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -113,7 +113,7 @@ LABEL_18:
     *(v5 + 36) |= 2u;
   }
 
-  v7 = [(NSString *)self->_itemId copyWithZone:a3];
+  v7 = [(NSString *)self->_itemId copyWithZone:zone];
   v8 = *(v6 + 8);
   *(v6 + 8) = v7;
 
@@ -123,70 +123,70 @@ LABEL_18:
     *(v6 + 36) |= 1u;
   }
 
-  v9 = [(NSString *)self->_queueContext copyWithZone:a3];
+  v9 = [(NSString *)self->_queueContext copyWithZone:zone];
   v10 = *(v6 + 24);
   *(v6 + 24) = v9;
 
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_itemId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_queueContext)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:self->_revision];
-    [v3 setObject:v4 forKey:@"revision"];
+    [dictionary setObject:v4 forKey:@"revision"];
   }
 
   itemId = self->_itemId;
   if (itemId)
   {
-    [v3 setObject:itemId forKey:@"itemId"];
+    [dictionary setObject:itemId forKey:@"itemId"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithInt:self->_position];
-    [v3 setObject:v6 forKey:@"position"];
+    [dictionary setObject:v6 forKey:@"position"];
   }
 
   queueContext = self->_queueContext;
   if (queueContext)
   {
-    [v3 setObject:queueContext forKey:@"queueContext"];
+    [dictionary setObject:queueContext forKey:@"queueContext"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -195,25 +195,25 @@ LABEL_18:
   v8.receiver = self;
   v8.super_class = _ICLLMoveQueueItemCommand;
   v4 = [(_ICLLMoveQueueItemCommand *)&v8 description];
-  v5 = [(_ICLLMoveQueueItemCommand *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_ICLLMoveQueueItemCommand *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setItemId:(uint64_t)a1
+- (void)setItemId:(uint64_t)id
 {
-  if (a1)
+  if (id)
   {
-    objc_storeStrong((a1 + 8), a2);
+    objc_storeStrong((id + 8), a2);
   }
 }
 
-- (void)setQueueContext:(uint64_t)a1
+- (void)setQueueContext:(uint64_t)context
 {
-  if (a1)
+  if (context)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((context + 24), a2);
   }
 }
 

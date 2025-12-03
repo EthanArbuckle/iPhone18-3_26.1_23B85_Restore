@@ -1,5 +1,5 @@
 @interface LPLinkView
-- (BOOL)_backgroundColorSupportsVibrancy:(id)a3;
+- (BOOL)_backgroundColorSupportsVibrancy:(id)vibrancy;
 - (BOOL)_disableHighlightGesture;
 - (BOOL)_disablePreviewGesture;
 - (BOOL)_hasMedia;
@@ -10,26 +10,26 @@
 - (BOOL)_shouldUseAnimations;
 - (BOOL)_shouldUseInferredAppearance;
 - (BOOL)_useProgressSpinner;
-- (BOOL)allowsBadgingIconEdgeForComponentView:(id)a3;
-- (BOOL)allowsVibrancyForComponentView:(id)a3;
+- (BOOL)allowsBadgingIconEdgeForComponentView:(id)view;
+- (BOOL)allowsVibrancyForComponentView:(id)view;
 - (BOOL)captionTextIsTruncated;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
 - (CGRect)_primaryCaptionBarFrame;
-- (CGRect)_rectForCaptionButtonType:(int64_t)a3;
+- (CGRect)_rectForCaptionButtonType:(int64_t)type;
 - (CGRect)frameForHighlightedTextRange;
-- (CGSize)_layoutLinkViewForSize:(CGSize)a3 applyingLayout:(BOOL)a4;
+- (CGSize)_layoutLinkViewForSize:(CGSize)size applyingLayout:(BOOL)layout;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (LPLinkMetadata)_flattenedMetadata;
 - (LPLinkMetadata)metadata;
 - (LPLinkView)init;
-- (LPLinkView)initWithFrame:(CGRect)a3;
+- (LPLinkView)initWithFrame:(CGRect)frame;
 - (LPLinkView)initWithMetadata:(LPLinkMetadata *)metadata;
-- (LPLinkView)initWithMetadataLoadedFromRequest:(id)a3;
-- (LPLinkView)initWithMetadataLoadedFromURL:(id)a3;
-- (LPLinkView)initWithPresentationProperties:(id)a3;
-- (LPLinkView)initWithPresentationProperties:(id)a3 URL:(id)a4;
+- (LPLinkView)initWithMetadataLoadedFromRequest:(id)request;
+- (LPLinkView)initWithMetadataLoadedFromURL:(id)l;
+- (LPLinkView)initWithPresentationProperties:(id)properties;
+- (LPLinkView)initWithPresentationProperties:(id)properties URL:(id)l;
 - (LPLinkViewDelegate)delegate;
 - (UIColor)_dominantBackgroundColor;
 - (UIColor)_resolvedBackgroundColor;
@@ -38,9 +38,9 @@
 - (UIEdgeInsets)contentInset;
 - (UITextRange)selectedTextRange;
 - (double)_effectiveCornerRadius;
-- (double)minimumCornerRadiusForComponentView:(id)a3;
+- (double)minimumCornerRadiusForComponentView:(id)view;
 - (id)_URLToOpen;
-- (id)_computeCollapsedButtonPropertiesForAttributedString:(id)a3;
+- (id)_computeCollapsedButtonPropertiesForAttributedString:(id)string;
 - (id)_createBackgroundImageView;
 - (id)_createCaptionBar;
 - (id)_createComponents;
@@ -48,46 +48,46 @@
 - (id)_createDomainNameIndicator;
 - (id)_createMediaBottomCaptionBarView;
 - (id)_createMediaTopCaptionBarView;
-- (id)_createMediaViewForProperties:(id)a3;
+- (id)_createMediaViewForProperties:(id)properties;
 - (id)_createProgressSpinner;
 - (id)_createQuotedTextView;
 - (id)_createTapToLoadView;
 - (id)_createTextHighlightView;
 - (id)_createTextSearchingDimmingView;
-- (id)_fetchMetadataForRequest:(id)a3 withSubresources:(BOOL)a4 completionHandler:(id)a5;
-- (id)_initWithMetadataLoadedFromRequests:(id)a3;
-- (id)_initWithMetadataLoadedFromURLs:(id)a3;
-- (id)_initWithMultipleMetadata:(id)a3;
-- (id)_initWithNullableURL:(id)a3;
-- (id)_initWithSynapseContentItem:(id)a3;
+- (id)_fetchMetadataForRequest:(id)request withSubresources:(BOOL)subresources completionHandler:(id)handler;
+- (id)_initWithMetadataLoadedFromRequests:(id)requests;
+- (id)_initWithMetadataLoadedFromURLs:(id)ls;
+- (id)_initWithMultipleMetadata:(id)metadata;
+- (id)_initWithNullableURL:(id)l;
+- (id)_initWithSynapseContentItem:(id)item;
 - (id)_mediaBackgroundColor;
 - (id)_playable;
 - (id)_primaryMediaView;
 - (id)_videoViewConfiguration;
-- (id)appearanceForComponentView:(id)a3;
-- (id)componentView:(id)a3 playerForAudio:(id)a4;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)downloadProgressForComponentView:(id)a3;
-- (id)findInteraction:(id)a3 sessionForView:(id)a4;
-- (id)layoutExclusionsForView:(id)a3;
+- (id)appearanceForComponentView:(id)view;
+- (id)componentView:(id)view playerForAudio:(id)audio;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)downloadProgressForComponentView:(id)view;
+- (id)findInteraction:(id)interaction sessionForView:(id)view;
+- (id)layoutExclusionsForView:(id)view;
 - (id)targetedPreviewForHighlightedTextRange;
 - (int64_t)_style;
-- (int64_t)compareFoundRange:(id)a3 toRange:(id)a4 inDocument:(id)a5;
-- (int64_t)componentView:(id)a3 allowedImageFilterForFilter:(int64_t)a4;
+- (int64_t)compareFoundRange:(id)range toRange:(id)toRange inDocument:(id)document;
+- (int64_t)componentView:(id)view allowedImageFilterForFilter:(int64_t)filter;
 - (unint64_t)_axesForDerivingIntrinsicContentSizeFromLayoutSize;
-- (void)_addCaptionButton:(id)a3;
-- (void)_addHighlightRecognizerToView:(id)a3 forMedia:(BOOL)a4;
-- (void)_addTapRecognizerToView:(id)a3 forMedia:(BOOL)a4;
+- (void)_addCaptionButton:(id)button;
+- (void)_addHighlightRecognizerToView:(id)view forMedia:(BOOL)media;
+- (void)_addTapRecognizerToView:(id)view forMedia:(BOOL)media;
 - (void)_cancelActiveHighlight;
-- (void)_captionBarButtonPressed:(id)a3;
-- (void)_captionHighlightRecognized:(id)a3;
-- (void)_captionTapRecognized:(id)a3;
-- (void)_commonInitWithURL:(id)a3;
+- (void)_captionBarButtonPressed:(id)pressed;
+- (void)_captionHighlightRecognized:(id)recognized;
+- (void)_captionTapRecognized:(id)recognized;
+- (void)_commonInitWithURL:(id)l;
 - (void)_computePresentationPropertiesFromMetadataIfNeeded;
-- (void)_configureWithoutLoadingMetadataFromURLs:(id)a3;
+- (void)_configureWithoutLoadingMetadataFromURLs:(id)ls;
 - (void)_disableBlur;
 - (void)_enableBlur;
-- (void)_fetchMetadataForRequest:(id)a3;
+- (void)_fetchMetadataForRequest:(id)request;
 - (void)_installHighlightGestureRecognizers;
 - (void)_installPreviewGestureRecognizer;
 - (void)_installTapGestureRecognizers;
@@ -95,60 +95,60 @@
 - (void)_invalidatePresentationProperties;
 - (void)_invalidatePresentationPropertiesAndLayout;
 - (void)_layoutLinkView;
-- (void)_mediaHighlightRecognized:(id)a3;
-- (void)_mediaTapRecognized:(id)a3;
-- (void)_openURLAllowingSensitiveSchemes:(BOOL)a3 allowingAssociatedApplications:(BOOL)a4;
+- (void)_mediaHighlightRecognized:(id)recognized;
+- (void)_mediaTapRecognized:(id)recognized;
+- (void)_openURLAllowingSensitiveSchemes:(BOOL)schemes allowingAssociatedApplications:(BOOL)applications;
 - (void)_pauseMedia;
 - (void)_playMedia;
 - (void)_rebuildEntireView;
 - (void)_rebuildGestureRecognizersIfNeeded;
-- (void)_rebuildSubviewsWithAnimation:(BOOL)a3;
-- (void)_removeCaptionButtonWithType:(int64_t)a3;
+- (void)_rebuildSubviewsWithAnimation:(BOOL)animation;
+- (void)_removeCaptionButtonWithType:(int64_t)type;
 - (void)_resetMediaPlayback;
-- (void)_secondaryCaptionBarButtonPressed:(id)a3;
-- (void)_setAction:(id)a3 withAttributedText:(id)a4 buttonType:(int64_t)a5;
-- (void)_setAction:(id)a3 withText:(id)a4 buttonType:(int64_t)a5;
-- (void)_setButtonActions:(id)a3;
-- (void)_setBytesLoaded:(unint64_t)a3;
-- (void)_setCollaborationFooterViewModel:(id)a3 action:(id)a4;
-- (void)_setCollaborative:(BOOL)a3;
-- (void)_setContactsForAttribution:(id)a3;
-- (void)_setDisableHighlightGesture:(BOOL)a3;
-- (void)_setDisablePreviewGesture:(BOOL)a3;
-- (void)_setDisableTapGesture:(BOOL)a3;
-- (void)_setEffectiveAppearanceTraits:(id)a3;
-- (void)_setEffectiveCornerRadius:(double)a3;
-- (void)_setEmphasizedTextExpression:(id)a3;
-- (void)_setFindInteractionEnabled:(BOOL)a3;
-- (void)_setHighlightCaption:(BOOL)a3;
-- (void)_setHighlightMedia:(BOOL)a3;
-- (void)_setHighlightedForAttribution:(BOOL)a3;
-- (void)_setInComposeContext:(BOOL)a3;
-- (void)_setInSenderContext:(BOOL)a3;
-- (void)_setLastResortIcon:(id)a3;
-- (void)_setMaskImage:(id)a3;
-- (void)_setMediaOverlayIcon:(id)a3;
-- (void)_setMetadata:(id)a3 isFinal:(BOOL)a4;
-- (void)_setMetadataInternal:(id)a3;
-- (void)_setMultipleMetadata:(id)a3;
-- (void)_setOverrideActionButtonColor:(id)a3;
-- (void)_setOverrideBackgroundColor:(id)a3;
-- (void)_setOverrideMediaBackgroundColor:(id)a3;
-- (void)_setOverrideSubtitle:(id)a3;
-- (void)_setOverrideSubtitleButtonColor:(id)a3;
-- (void)_setOverrideURL:(id)a3;
-- (void)_setPreferredSizeClass:(unint64_t)a3;
-- (void)_setPresentationPropertiesInternal:(id)a3;
-- (void)_setSecondaryButtonAction:(id)a3;
-- (void)_setSelectedVariantIndex:(id)a3;
-- (void)_setShowingDisclosureView:(BOOL)a3;
-- (void)_setSizeClassParameters:(id)a3;
-- (void)_setSourceBundleIdentifier:(id)a3;
-- (void)_setSuppressChatKitMask:(BOOL)a3;
-- (void)_setTextSafeAreaInset:(UIEdgeInsets)a3;
-- (void)_setUnderlyingBackgroundColor:(id)a3;
-- (void)_setUseCPURenderingForMaterials:(BOOL)a3;
-- (void)_setUsesInferredAppearanceWithOverriddenBackgroundColor:(BOOL)a3;
+- (void)_secondaryCaptionBarButtonPressed:(id)pressed;
+- (void)_setAction:(id)action withAttributedText:(id)text buttonType:(int64_t)type;
+- (void)_setAction:(id)action withText:(id)text buttonType:(int64_t)type;
+- (void)_setButtonActions:(id)actions;
+- (void)_setBytesLoaded:(unint64_t)loaded;
+- (void)_setCollaborationFooterViewModel:(id)model action:(id)action;
+- (void)_setCollaborative:(BOOL)collaborative;
+- (void)_setContactsForAttribution:(id)attribution;
+- (void)_setDisableHighlightGesture:(BOOL)gesture;
+- (void)_setDisablePreviewGesture:(BOOL)gesture;
+- (void)_setDisableTapGesture:(BOOL)gesture;
+- (void)_setEffectiveAppearanceTraits:(id)traits;
+- (void)_setEffectiveCornerRadius:(double)radius;
+- (void)_setEmphasizedTextExpression:(id)expression;
+- (void)_setFindInteractionEnabled:(BOOL)enabled;
+- (void)_setHighlightCaption:(BOOL)caption;
+- (void)_setHighlightMedia:(BOOL)media;
+- (void)_setHighlightedForAttribution:(BOOL)attribution;
+- (void)_setInComposeContext:(BOOL)context;
+- (void)_setInSenderContext:(BOOL)context;
+- (void)_setLastResortIcon:(id)icon;
+- (void)_setMaskImage:(id)image;
+- (void)_setMediaOverlayIcon:(id)icon;
+- (void)_setMetadata:(id)metadata isFinal:(BOOL)final;
+- (void)_setMetadataInternal:(id)internal;
+- (void)_setMultipleMetadata:(id)metadata;
+- (void)_setOverrideActionButtonColor:(id)color;
+- (void)_setOverrideBackgroundColor:(id)color;
+- (void)_setOverrideMediaBackgroundColor:(id)color;
+- (void)_setOverrideSubtitle:(id)subtitle;
+- (void)_setOverrideSubtitleButtonColor:(id)color;
+- (void)_setOverrideURL:(id)l;
+- (void)_setPreferredSizeClass:(unint64_t)class;
+- (void)_setPresentationPropertiesInternal:(id)internal;
+- (void)_setSecondaryButtonAction:(id)action;
+- (void)_setSelectedVariantIndex:(id)index;
+- (void)_setShowingDisclosureView:(BOOL)view;
+- (void)_setSizeClassParameters:(id)parameters;
+- (void)_setSourceBundleIdentifier:(id)identifier;
+- (void)_setSuppressChatKitMask:(BOOL)mask;
+- (void)_setTextSafeAreaInset:(UIEdgeInsets)inset;
+- (void)_setUnderlyingBackgroundColor:(id)color;
+- (void)_setUseCPURenderingForMaterials:(BOOL)materials;
+- (void)_setUsesInferredAppearanceWithOverriddenBackgroundColor:(BOOL)color;
 - (void)_setupView;
 - (void)_uninstallHighlightGestureRecognizers;
 - (void)_uninstallPreviewGestureRecognizer;
@@ -160,21 +160,21 @@
 - (void)_updateMasking;
 - (void)_updateMetadataIsComplete;
 - (void)animateBackgroundColor;
-- (void)animateFromOldFrame:(CGRect)a3 oldMediaBackgroundFrame:(CGRect)a4 oldCaptionBarView:(id)a5;
+- (void)animateFromOldFrame:(CGRect)frame oldMediaBackgroundFrame:(CGRect)backgroundFrame oldCaptionBarView:(id)view;
 - (void)animateInViews;
 - (void)animateOutAndRemoveViews;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)clearAllDecoratedFoundText;
-- (void)componentViewDidChangeMediaState:(id)a3;
-- (void)componentViewDidTapCaptionButton:(id)a3 buttonType:(int64_t)a4;
+- (void)componentViewDidChangeMediaState:(id)state;
+- (void)componentViewDidTapCaptionButton:(id)button buttonType:(int64_t)type;
 - (void)dealloc;
-- (void)decorateFoundTextRange:(id)a3 inDocument:(id)a4 usingStyle:(int64_t)a5;
+- (void)decorateFoundTextRange:(id)range inDocument:(id)document usingStyle:(int64_t)style;
 - (void)layoutSubviews;
-- (void)performTextSearchWithQueryString:(id)a3 usingOptions:(id)a4 resultAggregator:(id)a5;
+- (void)performTextSearchWithQueryString:(id)string usingOptions:(id)options resultAggregator:(id)aggregator;
 - (void)resetDownloadState;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setURL:(id)a3;
-- (void)tapToLoadViewWasTapped:(id)a3;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setURL:(id)l;
+- (void)tapToLoadViewWasTapped:(id)tapped;
 - (void)themeParametersDidChange;
 @end
 
@@ -188,11 +188,11 @@
   return v4;
 }
 
-- (LPLinkView)initWithFrame:(CGRect)a3
+- (LPLinkView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = LPLinkView;
-  v3 = [(LPLinkView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(LPLinkView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -205,40 +205,40 @@
   return v4;
 }
 
-- (LPLinkView)initWithMetadataLoadedFromURL:(id)a3
+- (LPLinkView)initWithMetadataLoadedFromURL:(id)l
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695AC68]) initWithURL:v4];
+  lCopy = l;
+  v5 = [objc_alloc(MEMORY[0x1E695AC68]) initWithURL:lCopy];
   v6 = [(LPLinkView *)self initWithMetadataLoadedFromRequest:v5];
 
   return v6;
 }
 
-- (LPLinkView)initWithMetadataLoadedFromRequest:(id)a3
+- (LPLinkView)initWithMetadataLoadedFromRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 URL];
+  requestCopy = request;
+  v5 = [requestCopy URL];
   v6 = [(LPLinkView *)self _initWithNullableURL:v5];
   v7 = v6;
   if (v6)
   {
-    [(LPLinkView *)v6 _fetchMetadataForRequest:v4];
+    [(LPLinkView *)v6 _fetchMetadataForRequest:requestCopy];
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)_initWithMetadataLoadedFromURLs:(id)a3
+- (id)_initWithMetadataLoadedFromURLs:(id)ls
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  lsCopy = ls;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(lsCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v4;
+  v6 = lsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -270,10 +270,10 @@
   return v11;
 }
 
-- (id)_initWithMetadataLoadedFromRequests:(id)a3
+- (id)_initWithMetadataLoadedFromRequests:(id)requests
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestsCopy = requests;
   v29.receiver = self;
   v29.super_class = LPLinkView;
   v5 = [(LPLinkView *)&v29 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -282,12 +282,12 @@
   {
     [(LPLinkView *)v5 _commonInitWithURL:0];
     v6->_usesComputedPresentationProperties = 1;
-    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(requestsCopy, "count")}];
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v8 = v4;
+    v8 = requestsCopy;
     v9 = [v8 countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v9)
     {
@@ -367,16 +367,16 @@ void __50__LPLinkView__initWithMetadataLoadedFromRequests___block_invoke_2(uint6
   }
 }
 
-- (id)_initWithNullableURL:(id)a3
+- (id)_initWithNullableURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = LPLinkView;
   v5 = [(LPLinkView *)&v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v6 = v5;
   if (v5)
   {
-    [(LPLinkView *)v5 _commonInitWithURL:v4];
+    [(LPLinkView *)v5 _commonInitWithURL:lCopy];
     v6->_usesComputedPresentationProperties = 1;
     v6->_metadataIsComplete = 1;
     v7 = v6;
@@ -388,8 +388,8 @@ void __50__LPLinkView__initWithMetadataLoadedFromRequests___block_invoke_2(uint6
 - (LPLinkView)initWithMetadata:(LPLinkMetadata *)metadata
 {
   v4 = metadata;
-  v5 = [(LPLinkMetadata *)v4 originalURL];
-  v6 = [(LPLinkView *)self _initWithNullableURL:v5];
+  originalURL = [(LPLinkMetadata *)v4 originalURL];
+  v6 = [(LPLinkView *)self _initWithNullableURL:originalURL];
 
   if (v6)
   {
@@ -400,9 +400,9 @@ void __50__LPLinkView__initWithMetadataLoadedFromRequests___block_invoke_2(uint6
   return v6;
 }
 
-- (id)_initWithMultipleMetadata:(id)a3
+- (id)_initWithMultipleMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v9.receiver = self;
   v9.super_class = LPLinkView;
   v5 = [(LPLinkView *)&v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -412,16 +412,16 @@ void __50__LPLinkView__initWithMetadataLoadedFromRequests___block_invoke_2(uint6
     [(LPLinkView *)v5 _commonInitWithURL:0];
     v6->_usesComputedPresentationProperties = 1;
     v6->_metadataIsComplete = 1;
-    [(LPLinkView *)v6 _setMultipleMetadata:v4];
+    [(LPLinkView *)v6 _setMultipleMetadata:metadataCopy];
     v7 = v6;
   }
 
   return v6;
 }
 
-- (LPLinkView)initWithPresentationProperties:(id)a3
+- (LPLinkView)initWithPresentationProperties:(id)properties
 {
-  v3 = [(LPLinkView *)self initWithPresentationProperties:a3 URL:0];
+  v3 = [(LPLinkView *)self initWithPresentationProperties:properties URL:0];
   v4 = v3;
   if (v3)
   {
@@ -431,28 +431,28 @@ void __50__LPLinkView__initWithMetadataLoadedFromRequests___block_invoke_2(uint6
   return v4;
 }
 
-- (LPLinkView)initWithPresentationProperties:(id)a3 URL:(id)a4
+- (LPLinkView)initWithPresentationProperties:(id)properties URL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  propertiesCopy = properties;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = LPLinkView;
   v8 = [(LPLinkView *)&v12 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v9 = v8;
   if (v8)
   {
-    [(LPLinkView *)v8 _commonInitWithURL:v7];
-    [(LPLinkView *)v9 _setPresentationProperties:v6];
+    [(LPLinkView *)v8 _commonInitWithURL:lCopy];
+    [(LPLinkView *)v9 _setPresentationProperties:propertiesCopy];
     v10 = v9;
   }
 
   return v9;
 }
 
-- (id)_initWithSynapseContentItem:(id)a3
+- (id)_initWithSynapseContentItem:(id)item
 {
-  v4 = a3;
-  v5 = [[LPLinkMetadata alloc] _initWithSynapseContentItem:v4];
+  itemCopy = item;
+  v5 = [[LPLinkMetadata alloc] _initWithSynapseContentItem:itemCopy];
   v6 = [(LPLinkView *)self initWithMetadata:v5];
 
   if (v6)
@@ -463,21 +463,21 @@ void __50__LPLinkView__initWithMetadataLoadedFromRequests___block_invoke_2(uint6
   return v6;
 }
 
-- (void)_commonInitWithURL:(id)a3
+- (void)_commonInitWithURL:(id)l
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+  lCopy = l;
+  weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
   pendingMetadataProviders = self->_pendingMetadataProviders;
-  self->_pendingMetadataProviders = v6;
+  self->_pendingMetadataProviders = weakObjectsHashTable;
 
-  v8 = [MEMORY[0x1E696AAE8] mainBundle];
-  v9 = [v8 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
   sourceBundleIdentifier = self->_sourceBundleIdentifier;
-  self->_sourceBundleIdentifier = v9;
+  self->_sourceBundleIdentifier = bundleIdentifier;
 
   self->_loggingID = ++generateLoggingID_nextLoggingID;
-  objc_storeStrong(&self->_URL, a3);
+  objc_storeStrong(&self->_URL, l);
   self->_applyCornerRadius = 1;
   self->_allowsSkinnyWidth = +[LPApplicationCompatibilityQuirks allowsSkinnyWidthByDefault];
   self->_allowsVibrancy = 1;
@@ -524,10 +524,10 @@ void __33__LPLinkView__commonInitWithURL___block_invoke_3(uint64_t a1, void *a2)
   [(LPLinkView *)&v3 dealloc];
 }
 
-- (void)_setEffectiveCornerRadius:(double)a3
+- (void)_setEffectiveCornerRadius:(double)radius
 {
   self->_hasOverrideCornerRadius = 1;
-  self->_overrideCornerRadius = a3;
+  self->_overrideCornerRadius = radius;
   [(LPLinkView *)self _updateCornerRadius];
 }
 
@@ -541,8 +541,8 @@ void __33__LPLinkView__commonInitWithURL___block_invoke_3(uint64_t a1, void *a2)
 
   else
   {
-    v4 = [(LPTheme *)self->_theme cornerRadius];
-    [v4 value];
+    cornerRadius = [(LPTheme *)self->_theme cornerRadius];
+    [cornerRadius value];
     overrideCornerRadius = v5;
   }
 
@@ -555,9 +555,9 @@ void __33__LPLinkView__commonInitWithURL___block_invoke_3(uint64_t a1, void *a2)
 - (void)_updateCornerRadius
 {
   animationView = self->_animationView;
-  v4 = [(LPLinkView *)self _shouldApplyCornerRadius];
+  _shouldApplyCornerRadius = [(LPLinkView *)self _shouldApplyCornerRadius];
   v5 = 0.0;
-  if (v4)
+  if (_shouldApplyCornerRadius)
   {
     [(LPLinkView *)self _effectiveCornerRadius];
   }
@@ -565,13 +565,13 @@ void __33__LPLinkView__commonInitWithURL___block_invoke_3(uint64_t a1, void *a2)
   [(UIView *)animationView _lp_setCornerRadius:v5];
 }
 
-- (void)_configureWithoutLoadingMetadataFromURLs:(id)a3
+- (void)_configureWithoutLoadingMetadataFromURLs:(id)ls
 {
-  v9 = a3;
+  lsCopy = ls;
   v4 = objc_alloc_init(LPLinkMetadata);
   v5 = MEMORY[0x1E696AEC0];
   v6 = LPLocalizedString(@"%ld Document(s)");
-  v7 = [v5 localizedStringWithFormat:v6, objc_msgSend(v9, "count")];
+  v7 = [v5 localizedStringWithFormat:v6, objc_msgSend(lsCopy, "count")];
   [(LPLinkMetadata *)v4 setTitle:v7];
 
   v8 = objc_alloc_init(LPSummarizedLinkMetadata);
@@ -580,15 +580,15 @@ void __33__LPLinkView__commonInitWithURL___block_invoke_3(uint64_t a1, void *a2)
   [(LPLinkView *)self _setMetadata:v4 isFinal:1];
 }
 
-- (id)_fetchMetadataForRequest:(id)a3 withSubresources:(BOOL)a4 completionHandler:(id)a5
+- (id)_fetchMetadataForRequest:(id)request withSubresources:(BOOL)subresources completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  subresourcesCopy = subresources;
+  requestCopy = request;
+  handlerCopy = handler;
   [(LPLinkView *)self _updateMetadataIsComplete];
   v10 = objc_alloc_init(LPMetadataProvider);
   [(NSHashTable *)self->_pendingMetadataProviders addObject:v10];
-  [(LPMetadataProvider *)v10 setShouldFetchSubresources:v6];
+  [(LPMetadataProvider *)v10 setShouldFetchSubresources:subresourcesCopy];
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -602,10 +602,10 @@ void __33__LPLinkView__commonInitWithURL___block_invoke_3(uint64_t a1, void *a2)
   v17[4] = self;
   v11 = v10;
   v18 = v11;
-  v12 = v9;
+  v12 = handlerCopy;
   v19 = v12;
   v20 = &v21;
-  v13 = [(LPMetadataProvider *)v11 _startFetchingMetadataForRequest:v8 completionHandler:v17];
+  v13 = [(LPMetadataProvider *)v11 _startFetchingMetadataForRequest:requestCopy completionHandler:v17];
   v14 = v22[5];
   v22[5] = v13;
 
@@ -645,16 +645,16 @@ uint64_t __74__LPLinkView__fetchMetadataForRequest_withSubresources_completionHa
   return result;
 }
 
-- (void)_fetchMetadataForRequest:(id)a3
+- (void)_fetchMetadataForRequest:(id)request
 {
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__LPLinkView__fetchMetadataForRequest___block_invoke;
   v7[3] = &unk_1E7A36F38;
   v7[4] = self;
-  v4 = [(LPLinkView *)self _fetchMetadataForRequest:a3 withSubresources:1 completionHandler:v7];
+  v4 = [(LPLinkView *)self _fetchMetadataForRequest:request withSubresources:1 completionHandler:v7];
   self->_allowsTapToLoad = 0;
-  v5 = [(LPLinkViewComponents *)self->_components media];
+  media = [(LPLinkViewComponents *)self->_components media];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -708,17 +708,17 @@ void __39__LPLinkView__fetchMetadataForRequest___block_invoke_2(uint64_t a1)
 - (void)_setupView
 {
   [LPTheme addClient:self];
-  v3 = [MEMORY[0x1E69DD250] _lp_createFlippedView];
+  _lp_createFlippedView = [MEMORY[0x1E69DD250] _lp_createFlippedView];
   animationView = self->_animationView;
-  self->_animationView = v3;
+  self->_animationView = _lp_createFlippedView;
 
-  v5 = [(UIView *)self->_animationView layer];
-  [v5 setMasksToBounds:1];
+  layer = [(UIView *)self->_animationView layer];
+  [layer setMasksToBounds:1];
 
   [(LPLinkView *)self addSubview:self->_animationView];
-  v6 = [MEMORY[0x1E69DD250] _lp_createFlippedView];
+  _lp_createFlippedView2 = [MEMORY[0x1E69DD250] _lp_createFlippedView];
   contentView = self->_contentView;
-  self->_contentView = v6;
+  self->_contentView = _lp_createFlippedView2;
 
   [(LPLinkView *)self _updateEffectiveAppearanceTraitsIfNeeded];
   [(UIView *)self->_animationView addSubview:self->_contentView];
@@ -750,21 +750,21 @@ void __39__LPLinkView__fetchMetadataForRequest___block_invoke_2(uint64_t a1)
   [(UIView *)self->_animationView _lp_setHoverEffectEnabled:!self->_disableTapGesture];
   if (+[LPSettings showDebugIndicators])
   {
-    v17 = [MEMORY[0x1E69DC888] redColor];
-    v18 = [v17 CGColor];
-    v19 = [(LPLinkView *)self layer];
-    [v19 setBorderColor:v18];
+    redColor = [MEMORY[0x1E69DC888] redColor];
+    cGColor = [redColor CGColor];
+    layer2 = [(LPLinkView *)self layer];
+    [layer2 setBorderColor:cGColor];
 
-    v20 = [(LPLinkView *)self layer];
-    [v20 setBorderWidth:0.5];
+    layer3 = [(LPLinkView *)self layer];
+    [layer3 setBorderWidth:0.5];
 
-    v21 = [MEMORY[0x1E69DC888] greenColor];
-    v22 = [v21 CGColor];
-    v23 = [(UIView *)self->_animationView layer];
-    [v23 setBorderColor:v22];
+    greenColor = [MEMORY[0x1E69DC888] greenColor];
+    cGColor2 = [greenColor CGColor];
+    layer4 = [(UIView *)self->_animationView layer];
+    [layer4 setBorderColor:cGColor2];
 
-    v24 = [(UIView *)self->_animationView layer];
-    [v24 setBorderWidth:0.5];
+    layer5 = [(UIView *)self->_animationView layer];
+    [layer5 setBorderWidth:0.5];
   }
 }
 
@@ -808,8 +808,8 @@ LPBackgroundColorView *__24__LPLinkView__setupView__block_invoke(uint64_t a1)
     self->_blurView = v4;
 
     [(UIView *)self->_animationView insertSubview:self->_blurView belowSubview:self->_contentView];
-    v7 = [(UIVisualEffectView *)self->_blurView contentView];
-    [v7 addSubview:self->_contentView];
+    contentView = [(UIVisualEffectView *)self->_blurView contentView];
+    [contentView addSubview:self->_contentView];
   }
 }
 
@@ -824,17 +824,17 @@ LPBackgroundColorView *__24__LPLinkView__setupView__block_invoke(uint64_t a1)
   }
 }
 
-- (double)minimumCornerRadiusForComponentView:(id)a3
+- (double)minimumCornerRadiusForComponentView:(id)view
 {
-  v4 = a3;
-  v5 = [(LPLinkViewComponents *)self->_components captionBar];
-  if (([v5 hasIconViewEqualToComponentView:v4] & 1) == 0)
+  viewCopy = view;
+  captionBar = [(LPLinkViewComponents *)self->_components captionBar];
+  if (([captionBar hasIconViewEqualToComponentView:viewCopy] & 1) == 0)
   {
-    v6 = [(LPLinkViewComponents *)self->_components mediaTopCaptionBar];
-    if (![v6 hasIconViewEqualToComponentView:v4])
+    mediaTopCaptionBar = [(LPLinkViewComponents *)self->_components mediaTopCaptionBar];
+    if (![mediaTopCaptionBar hasIconViewEqualToComponentView:viewCopy])
     {
-      v10 = [(LPLinkViewComponents *)self->_components mediaBottomCaptionBar];
-      v11 = [v10 hasIconViewEqualToComponentView:v4];
+      mediaBottomCaptionBar = [(LPLinkViewComponents *)self->_components mediaBottomCaptionBar];
+      v11 = [mediaBottomCaptionBar hasIconViewEqualToComponentView:viewCopy];
 
       v8 = 0.0;
       if ((v11 & 1) == 0)
@@ -854,26 +854,26 @@ LABEL_6:
   return v8;
 }
 
-- (id)appearanceForComponentView:(id)a3
+- (id)appearanceForComponentView:(id)view
 {
-  v3 = [(UIView *)self _lp_appearance];
+  _lp_appearance = [(UIView *)self _lp_appearance];
 
-  return v3;
+  return _lp_appearance;
 }
 
 - (UIColor)_resolvedBackgroundColor
 {
-  v3 = [(LPTheme *)self->_theme backgroundColor];
+  backgroundColor = [(LPTheme *)self->_theme backgroundColor];
   if ([(LPLinkView *)self _themePlatform]== 5)
   {
-    v4 = [(LPLinkView *)self traitCollection];
-    v5 = [v4 userInterfaceStyle];
+    traitCollection = [(LPLinkView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v5 != 2)
+    if (userInterfaceStyle != 2)
     {
       v6 = [LPTheme defaultBackgroundColorForPlatform:0];
 
-      v3 = v6;
+      backgroundColor = v6;
     }
   }
 
@@ -885,16 +885,16 @@ LABEL_6:
 
   else
   {
-    v9 = [(LPLinkView *)self _specializedBackgroundColor];
-    v10 = v9;
-    if (v9)
+    _specializedBackgroundColor = [(LPLinkView *)self _specializedBackgroundColor];
+    v10 = _specializedBackgroundColor;
+    if (_specializedBackgroundColor)
     {
-      v11 = v9;
+      v11 = _specializedBackgroundColor;
     }
 
     else
     {
-      v11 = v3;
+      v11 = backgroundColor;
     }
 
     v8 = v11;
@@ -924,48 +924,48 @@ LABEL_6:
   return [(LPWebLinkPresentationProperties *)properties dominantImageBackgroundColor];
 }
 
-- (BOOL)_backgroundColorSupportsVibrancy:(id)a3
+- (BOOL)_backgroundColorSupportsVibrancy:(id)vibrancy
 {
-  v4 = a3;
-  v5 = [(LPLinkView *)self traitCollection];
-  v6 = [v4 resolvedColorWithTraitCollection:v5];
+  vibrancyCopy = vibrancy;
+  traitCollection = [(LPLinkView *)self traitCollection];
+  v6 = [vibrancyCopy resolvedColorWithTraitCollection:traitCollection];
 
-  v7 = [MEMORY[0x1E69DC888] clearColor];
-  LOBYTE(v5) = [v6 isEqual:v7];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  LOBYTE(traitCollection) = [v6 isEqual:clearColor];
 
-  return v5;
+  return traitCollection;
 }
 
 - (void)_updateBackgroundColor
 {
-  v3 = [(LPLinkView *)self _resolvedBackgroundColor];
+  _resolvedBackgroundColor = [(LPLinkView *)self _resolvedBackgroundColor];
   backgroundColor = self->_backgroundColor;
-  self->_backgroundColor = v3;
+  self->_backgroundColor = _resolvedBackgroundColor;
 
   self->_backgroundColorSupportsVibrancy = [(LPLinkView *)self _backgroundColorSupportsVibrancy:self->_backgroundColor];
 
   [(LPLinkView *)self _updateEffectiveAppearanceTraitsIfNeeded];
 }
 
-- (void)_setEffectiveAppearanceTraits:(id)a3
+- (void)_setEffectiveAppearanceTraits:(id)traits
 {
-  v7 = a3;
-  v5 = [(LPLinkView *)self _effectiveAppearanceTraits];
-  v6 = [v5 isEqual:v7];
+  traitsCopy = traits;
+  _effectiveAppearanceTraits = [(LPLinkView *)self _effectiveAppearanceTraits];
+  v6 = [_effectiveAppearanceTraits isEqual:traitsCopy];
 
   if ((v6 & 1) == 0)
   {
     [(LPLinkView *)self willChangeValueForKey:@"_effectiveTraitCollection"];
-    objc_storeStrong(&self->_effectiveTraitCollection, a3);
+    objc_storeStrong(&self->_effectiveTraitCollection, traits);
     [(LPLinkView *)self didChangeValueForKey:@"_effectiveTraitCollection"];
   }
 }
 
-- (void)_setUsesInferredAppearanceWithOverriddenBackgroundColor:(BOOL)a3
+- (void)_setUsesInferredAppearanceWithOverriddenBackgroundColor:(BOOL)color
 {
-  if (self->_usesInferredAppearanceWithOverriddenBackgroundColor != a3)
+  if (self->_usesInferredAppearanceWithOverriddenBackgroundColor != color)
   {
-    self->_usesInferredAppearanceWithOverriddenBackgroundColor = a3;
+    self->_usesInferredAppearanceWithOverriddenBackgroundColor = color;
     [(LPLinkView *)self _updateEffectiveAppearanceTraitsIfNeeded];
 
     [(LPLinkView *)self _invalidatePresentationPropertiesAndLayout];
@@ -974,49 +974,49 @@ LABEL_6:
 
 - (BOOL)_shouldUseInferredAppearance
 {
-  v3 = [(LPWebLinkPresentationProperties *)self->_properties dominantImageBackgroundColor];
-  if (v3)
+  dominantImageBackgroundColor = [(LPWebLinkPresentationProperties *)self->_properties dominantImageBackgroundColor];
+  if (dominantImageBackgroundColor)
   {
-    v4 = v3;
-    v5 = [(LPWebLinkPresentationProperties *)self->_properties allowsDominantImageBackgroundColorAsCaptionBackground];
+    v4 = dominantImageBackgroundColor;
+    allowsDominantImageBackgroundColorAsCaptionBackground = [(LPWebLinkPresentationProperties *)self->_properties allowsDominantImageBackgroundColorAsCaptionBackground];
 
-    if (!v5 || self->_overrideBackgroundColor && !self->_usesInferredAppearanceWithOverriddenBackgroundColor)
+    if (!allowsDominantImageBackgroundColorAsCaptionBackground || self->_overrideBackgroundColor && !self->_usesInferredAppearanceWithOverriddenBackgroundColor)
     {
       goto LABEL_8;
     }
 
-    v6 = [(LPWebLinkPresentationProperties *)self->_properties image];
-    v7 = [v6 _darkInterfaceAlternativeImage];
-    if (v7)
+    image = [(LPWebLinkPresentationProperties *)self->_properties image];
+    _darkInterfaceAlternativeImage = [image _darkInterfaceAlternativeImage];
+    if (_darkInterfaceAlternativeImage)
     {
 
 LABEL_8:
-      LOBYTE(v3) = 0;
-      return v3;
+      LOBYTE(dominantImageBackgroundColor) = 0;
+      return dominantImageBackgroundColor;
     }
 
-    v8 = [(LPWebLinkPresentationProperties *)self->_properties backgroundImage];
-    v9 = [v8 _darkInterfaceAlternativeImage];
+    backgroundImage = [(LPWebLinkPresentationProperties *)self->_properties backgroundImage];
+    _darkInterfaceAlternativeImage2 = [backgroundImage _darkInterfaceAlternativeImage];
 
-    if (v9)
+    if (_darkInterfaceAlternativeImage2)
     {
       goto LABEL_8;
     }
 
-    LOBYTE(v3) = 1;
+    LOBYTE(dominantImageBackgroundColor) = 1;
   }
 
-  return v3;
+  return dominantImageBackgroundColor;
 }
 
 - (void)_updateEffectiveAppearanceTraitsIfNeeded
 {
   if ([(LPLinkView *)self _shouldUseInferredAppearance])
   {
-    v3 = [(LPWebLinkPresentationProperties *)self->_properties dominantImageBackgroundColor];
-    v4 = [v3 _lp_luminosityLevelForUserInterfaceStyle];
+    dominantImageBackgroundColor = [(LPWebLinkPresentationProperties *)self->_properties dominantImageBackgroundColor];
+    _lp_luminosityLevelForUserInterfaceStyle = [dominantImageBackgroundColor _lp_luminosityLevelForUserInterfaceStyle];
 
-    if (v4 == 1)
+    if (_lp_luminosityLevelForUserInterfaceStyle == 1)
     {
       v5 = 2;
     }
@@ -1026,65 +1026,65 @@ LABEL_8:
       v5 = 1;
     }
 
-    v6 = [(LPLinkView *)self traitCollection];
+    traitCollection = [(LPLinkView *)self traitCollection];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __54__LPLinkView__updateEffectiveAppearanceTraitsIfNeeded__block_invoke;
     v17[3] = &__block_descriptor_40_e27_v16__0___UIMutableTraits__8l;
     v17[4] = v5;
-    v7 = [v6 traitCollectionByModifyingTraits:v17];
+    v7 = [traitCollection traitCollectionByModifyingTraits:v17];
     [(LPLinkView *)self _setEffectiveAppearanceTraits:v7];
 
-    v8 = [(LPLinkView *)self _effectiveAppearanceTraits];
-    v9 = [v8 userInterfaceStyle];
-    v10 = [(UIView *)self->_contentView traitOverrides];
-    [v10 setUserInterfaceStyle:v9];
+    _effectiveAppearanceTraits = [(LPLinkView *)self _effectiveAppearanceTraits];
+    userInterfaceStyle = [_effectiveAppearanceTraits userInterfaceStyle];
+    traitOverrides = [(UIView *)self->_contentView traitOverrides];
+    [traitOverrides setUserInterfaceStyle:userInterfaceStyle];
   }
 
   else
   {
-    v11 = [(UIView *)self _lp_appearance];
-    [(LPLinkView *)self _setEffectiveAppearanceTraits:v11];
+    _lp_appearance = [(UIView *)self _lp_appearance];
+    [(LPLinkView *)self _setEffectiveAppearanceTraits:_lp_appearance];
 
-    v12 = [(UIView *)self->_contentView traitOverrides];
+    traitOverrides2 = [(UIView *)self->_contentView traitOverrides];
     v13 = objc_opt_self();
-    v14 = [v12 containsTrait:v13];
+    v14 = [traitOverrides2 containsTrait:v13];
 
     if (v14)
     {
-      v16 = [(UIView *)self->_contentView traitOverrides];
+      traitOverrides3 = [(UIView *)self->_contentView traitOverrides];
       v15 = objc_opt_self();
-      [v16 removeTrait:v15];
+      [traitOverrides3 removeTrait:v15];
     }
   }
 }
 
 - (void)themeParametersDidChange
 {
-  v3 = [(LPLinkView *)self _themePlatform];
-  v4 = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
-  v5 = [v4 button];
+  _themePlatform = [(LPLinkView *)self _themePlatform];
+  captionBar = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
+  button = [captionBar button];
 
-  v6 = [(LPWebLinkPresentationProperties *)self->_properties style];
-  v16 = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
-  v7 = [v16 trailingIcon];
-  v17 = v7;
-  if (!v7)
+  style = [(LPWebLinkPresentationProperties *)self->_properties style];
+  captionBar2 = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
+  trailingIcon = [captionBar2 trailingIcon];
+  leadingIcon = trailingIcon;
+  if (!trailingIcon)
   {
-    v15 = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
-    v17 = [v15 leadingIcon];
+    captionBar3 = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
+    leadingIcon = [captionBar3 leadingIcon];
   }
 
-  v8 = v6;
+  v8 = style;
   effectiveSizeClass = self->_effectiveSizeClass;
   sizeClassParameters = self->_sizeClassParameters;
-  v11 = [(LPLinkView *)self traitCollection];
-  v12 = [v11 preferredContentSizeCategory];
-  v13 = [LPTheme themeWithStyle:v8 icon:v17 platform:v3 sizeClass:effectiveSizeClass sizeClassParameters:sizeClassParameters hasButton:v5 != 0 preferredContentSizeCategory:v12];
+  traitCollection = [(LPLinkView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v13 = [LPTheme themeWithStyle:v8 icon:leadingIcon platform:_themePlatform sizeClass:effectiveSizeClass sizeClassParameters:sizeClassParameters hasButton:button != 0 preferredContentSizeCategory:preferredContentSizeCategory];
   theme = self->_theme;
   self->_theme = v13;
 
-  if (!v7)
+  if (!trailingIcon)
   {
   }
 
@@ -1094,110 +1094,110 @@ LABEL_8:
   [(LPLinkView *)self _rebuildEntireView];
 }
 
-- (void)_setOverrideURL:(id)a3
+- (void)_setOverrideURL:(id)l
 {
-  v5 = a3;
-  objc_storeStrong(&self->_URL, a3);
+  lCopy = l;
+  objc_storeStrong(&self->_URL, l);
   overrideURL = self->_overrideURL;
-  self->_overrideURL = v5;
+  self->_overrideURL = lCopy;
 
   [(LPLinkView *)self _invalidatePresentationPropertiesAndLayout];
 }
 
-- (void)_setUnderlyingBackgroundColor:(id)a3
+- (void)_setUnderlyingBackgroundColor:(id)color
 {
-  objc_storeStrong(&self->_underlyingBackgroundColor, a3);
+  objc_storeStrong(&self->_underlyingBackgroundColor, color);
 
   [(LPLinkView *)self themeParametersDidChange];
 }
 
-- (void)_setOverrideBackgroundColor:(id)a3
+- (void)_setOverrideBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (v5 | self->_overrideBackgroundColor && ([v5 isEqual:?] & 1) == 0)
+  colorCopy = color;
+  if (colorCopy | self->_overrideBackgroundColor && ([colorCopy isEqual:?] & 1) == 0)
   {
-    objc_storeStrong(&self->_overrideBackgroundColor, a3);
+    objc_storeStrong(&self->_overrideBackgroundColor, color);
     [(LPLinkView *)self _updateBackgroundColor];
     [(LPLinkView *)self _invalidatePresentationPropertiesAndLayout];
   }
 }
 
-- (void)_setOverrideMediaBackgroundColor:(id)a3
+- (void)_setOverrideMediaBackgroundColor:(id)color
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 | self->_overrideMediaBackgroundColor)
+  colorCopy = color;
+  v6 = colorCopy;
+  if (colorCopy | self->_overrideMediaBackgroundColor)
   {
-    v10 = v5;
-    v7 = [v5 isEqual:?];
+    v10 = colorCopy;
+    v7 = [colorCopy isEqual:?];
     v6 = v10;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_overrideMediaBackgroundColor, a3);
-      v8 = [(LPLinkView *)self _mediaBackgroundColor];
-      v9 = [(LPLinkViewComponents *)self->_components mediaBackground];
-      [v9 setColor:v8];
+      objc_storeStrong(&self->_overrideMediaBackgroundColor, color);
+      _mediaBackgroundColor = [(LPLinkView *)self _mediaBackgroundColor];
+      mediaBackground = [(LPLinkViewComponents *)self->_components mediaBackground];
+      [mediaBackground setColor:_mediaBackgroundColor];
 
       v6 = v10;
     }
   }
 }
 
-- (void)_setOverrideActionButtonColor:(id)a3
+- (void)_setOverrideActionButtonColor:(id)color
 {
-  objc_storeStrong(&self->_overrideActionButtonColor, a3);
+  objc_storeStrong(&self->_overrideActionButtonColor, color);
 
   [(LPLinkView *)self _invalidatePresentationPropertiesAndLayout];
 }
 
-- (void)_setOverrideSubtitleButtonColor:(id)a3
+- (void)_setOverrideSubtitleButtonColor:(id)color
 {
-  objc_storeStrong(&self->_overrideSubtitleButtonColor, a3);
+  objc_storeStrong(&self->_overrideSubtitleButtonColor, color);
 
   [(LPLinkView *)self _invalidatePresentationPropertiesAndLayout];
 }
 
-- (void)_setContactsForAttribution:(id)a3
+- (void)_setContactsForAttribution:(id)attribution
 {
-  v5 = a3;
+  attributionCopy = attribution;
   if (([(NSArray *)self->_contactsForAttribution isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_contactsForAttribution, a3);
+    objc_storeStrong(&self->_contactsForAttribution, attribution);
     [(LPLinkView *)self _invalidatePresentationPropertiesAndLayout];
   }
 }
 
-- (void)_setHighlightedForAttribution:(BOOL)a3
+- (void)_setHighlightedForAttribution:(BOOL)attribution
 {
-  if (self->_highlightedForAttribution != a3)
+  if (self->_highlightedForAttribution != attribution)
   {
-    self->_highlightedForAttribution = a3;
+    self->_highlightedForAttribution = attribution;
     [(LPLinkView *)self _invalidatePresentationPropertiesAndLayout];
   }
 }
 
-- (void)_setCollaborationFooterViewModel:(id)a3 action:(id)a4
+- (void)_setCollaborationFooterViewModel:(id)model action:(id)action
 {
-  v14 = a3;
-  v6 = a4;
-  if (v14)
+  modelCopy = model;
+  actionCopy = action;
+  if (modelCopy)
   {
     v7 = objc_alloc_init(LPCollaborationFooterPresentationProperties);
-    v8 = [v14 optionsSummary];
-    [(LPCollaborationFooterPresentationProperties *)v7 setTitle:v8];
+    optionsSummary = [modelCopy optionsSummary];
+    [(LPCollaborationFooterPresentationProperties *)v7 setTitle:optionsSummary];
 
-    v9 = [v14 metadata];
-    v10 = v9;
-    if (v9)
+    metadata = [modelCopy metadata];
+    v10 = metadata;
+    if (metadata)
     {
-      v11 = [(LPCollaborationFooterPresentationProperties *)v9 initiatorHandle];
-      [(LPCollaborationFooterPresentationProperties *)v7 setInitiatorName:v11];
+      initiatorHandle = [(LPCollaborationFooterPresentationProperties *)metadata initiatorHandle];
+      [(LPCollaborationFooterPresentationProperties *)v7 setInitiatorName:initiatorHandle];
 
-      v12 = [(LPCollaborationFooterPresentationProperties *)v10 initiatorNameComponents];
-      [(LPCollaborationFooterPresentationProperties *)v7 setInitiatorNameComponents:v12];
+      initiatorNameComponents = [(LPCollaborationFooterPresentationProperties *)v10 initiatorNameComponents];
+      [(LPCollaborationFooterPresentationProperties *)v7 setInitiatorNameComponents:initiatorNameComponents];
     }
 
-    [(LPCollaborationFooterPresentationProperties *)v7 setAction:v6];
+    [(LPCollaborationFooterPresentationProperties *)v7 setAction:actionCopy];
     collaborationFooter = self->_collaborationFooter;
     self->_collaborationFooter = v7;
   }
@@ -1211,75 +1211,75 @@ LABEL_8:
   [(LPLinkView *)self _invalidatePresentationPropertiesAndLayout];
 }
 
-- (void)_setShowingDisclosureView:(BOOL)a3
+- (void)_setShowingDisclosureView:(BOOL)view
 {
-  if (self->_showingDisclosureView != a3)
+  if (self->_showingDisclosureView != view)
   {
-    self->_showingDisclosureView = a3;
-    v3 = [(LPLinkViewComponents *)self->_components captionBar];
-    [v3 updateDisclosureIndicators];
+    self->_showingDisclosureView = view;
+    captionBar = [(LPLinkViewComponents *)self->_components captionBar];
+    [captionBar updateDisclosureIndicators];
   }
 }
 
-- (void)_setLastResortIcon:(id)a3
+- (void)_setLastResortIcon:(id)icon
 {
-  v5 = a3;
-  if (self->_lastResortIcon != v5)
+  iconCopy = icon;
+  if (self->_lastResortIcon != iconCopy)
   {
-    objc_storeStrong(&self->_lastResortIcon, a3);
+    objc_storeStrong(&self->_lastResortIcon, icon);
     [(LPLinkView *)self _invalidatePresentationPropertiesAndLayout];
   }
 }
 
-- (void)_setMediaOverlayIcon:(id)a3
+- (void)_setMediaOverlayIcon:(id)icon
 {
-  v5 = a3;
-  if (self->_mediaOverlayIcon != v5)
+  iconCopy = icon;
+  if (self->_mediaOverlayIcon != iconCopy)
   {
-    objc_storeStrong(&self->_mediaOverlayIcon, a3);
+    objc_storeStrong(&self->_mediaOverlayIcon, icon);
     [(LPLinkView *)self _invalidatePresentationPropertiesAndLayout];
   }
 }
 
-- (void)_setInComposeContext:(BOOL)a3
+- (void)_setInComposeContext:(BOOL)context
 {
-  if (self->_inComposeContext != a3)
+  if (self->_inComposeContext != context)
   {
-    self->_inComposeContext = a3;
+    self->_inComposeContext = context;
     [(LPLinkView *)self _invalidatePresentationPropertiesAndLayout];
   }
 }
 
-- (void)_setInSenderContext:(BOOL)a3
+- (void)_setInSenderContext:(BOOL)context
 {
-  if (self->_inSenderContext != a3)
+  if (self->_inSenderContext != context)
   {
-    self->_inSenderContext = a3;
+    self->_inSenderContext = context;
     [(LPLinkView *)self _invalidatePresentationPropertiesAndLayout];
   }
 }
 
-- (void)_setCollaborative:(BOOL)a3
+- (void)_setCollaborative:(BOOL)collaborative
 {
-  if (self->_collaborative != a3)
+  if (self->_collaborative != collaborative)
   {
-    self->_collaborative = a3;
+    self->_collaborative = collaborative;
     [(LPLinkView *)self _invalidatePresentationPropertiesAndLayout];
   }
 }
 
-- (void)_setUseCPURenderingForMaterials:(BOOL)a3
+- (void)_setUseCPURenderingForMaterials:(BOOL)materials
 {
-  if (self->_useCPURenderingForMaterials != a3)
+  if (self->_useCPURenderingForMaterials != materials)
   {
-    self->_useCPURenderingForMaterials = a3;
+    self->_useCPURenderingForMaterials = materials;
     [(LPLinkView *)self _invalidatePresentationPropertiesAndLayout];
   }
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
-  objc_storeStrong(&self->_URL, a3);
+  objc_storeStrong(&self->_URL, l);
 
   [(LPLinkView *)self _invalidatePresentationPropertiesAndLayout];
 }
@@ -1302,22 +1302,22 @@ LABEL_8:
   return v4;
 }
 
-- (void)_setBytesLoaded:(unint64_t)a3
+- (void)_setBytesLoaded:(unint64_t)loaded
 {
-  self->_bytesLoaded = a3;
+  self->_bytesLoaded = loaded;
   if (!self->_metadata)
   {
     return;
   }
 
-  v9 = [[LPLinkMetadataDownloadProgressTransformer alloc] initWithBytesLoaded:a3 downloadState:self->_sharedObjectDownloadState metadata:self->_metadata];
+  v9 = [[LPLinkMetadataDownloadProgressTransformer alloc] initWithBytesLoaded:loaded downloadState:self->_sharedObjectDownloadState metadata:self->_metadata];
   v4 = [(LPLinkMetadataDownloadProgressTransformer *)v9 downloadProgressForTransformer:v9];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 isFinished];
+    isFinished = [v4 isFinished];
     v7 = 1;
-    if (v6)
+    if (isFinished)
     {
       v7 = 2;
     }
@@ -1342,11 +1342,11 @@ LABEL_8:
   [(LPLinkView *)self _invalidatePresentationPropertiesAndLayout];
 }
 
-- (void)_setMetadataInternal:(id)a3
+- (void)_setMetadataInternal:(id)internal
 {
-  v5 = a3;
+  internalCopy = internal;
   self->_usesComputedPresentationProperties = 1;
-  v6 = [v5 copy];
+  v6 = [internalCopy copy];
   metadata = self->_metadata;
   self->_metadata = v6;
 
@@ -1359,17 +1359,17 @@ LABEL_8:
 
   else
   {
-    v11 = [v5 originalURL];
-    v3 = v11;
-    if (v11)
+    originalURL = [internalCopy originalURL];
+    v3 = originalURL;
+    if (originalURL)
     {
       v9 = 0;
-      v10 = v11;
+      v10 = originalURL;
     }
 
     else
     {
-      v10 = [v5 URL];
+      v10 = [internalCopy URL];
       v3 = 0;
       v9 = 1;
     }
@@ -1388,11 +1388,11 @@ LABEL_8:
   {
     self->_asynchronouslyLoadingMetadataFields = 1;
     v12 = ++_setMetadataInternal__currentAsyncLoadRequestID;
-    v13 = [v5 copy];
-    if ([v5 _isDeferringAsynchronousLoads])
+    v13 = [internalCopy copy];
+    if ([internalCopy _isDeferringAsynchronousLoads])
     {
-      v14 = [v13 _createAsynchronousLoadDeferralToken];
-      [v5 _addFinishedDeferringAsynchronousLoadHandler:v14];
+      _createAsynchronousLoadDeferralToken = [v13 _createAsynchronousLoadDeferralToken];
+      [internalCopy _addFinishedDeferringAsynchronousLoadHandler:_createAsynchronousLoadDeferralToken];
     }
 
     v16 = MEMORY[0x1E69E9820];
@@ -1400,8 +1400,8 @@ LABEL_8:
     v18 = __35__LPLinkView__setMetadataInternal___block_invoke;
     v19 = &unk_1E7A36FC8;
     v23 = v12;
-    v20 = self;
-    v21 = v5;
+    selfCopy = self;
+    v21 = internalCopy;
     v15 = v13;
     v22 = v15;
     [v15 _loadAsynchronousFieldsWithUpdateHandler:&v16];
@@ -1449,48 +1449,48 @@ void __35__LPLinkView__setMetadataInternal___block_invoke(uint64_t a1, int a2)
 
 - (LPLinkMetadata)_flattenedMetadata
 {
-  v3 = [(LPLinkMetadata *)self->_metadata variants];
-  v4 = [(NSNumber *)self->_selectedVariantIndex unsignedIntegerValue];
-  if (v4 >= [v3 count])
+  variants = [(LPLinkMetadata *)self->_metadata variants];
+  unsignedIntegerValue = [(NSNumber *)self->_selectedVariantIndex unsignedIntegerValue];
+  if (unsignedIntegerValue >= [variants count])
   {
     [(LPLinkView *)self metadata];
   }
 
   else
   {
-    [v3 objectAtIndexedSubscript:{-[NSNumber unsignedIntegerValue](self->_selectedVariantIndex, "unsignedIntegerValue")}];
+    [variants objectAtIndexedSubscript:{-[NSNumber unsignedIntegerValue](self->_selectedVariantIndex, "unsignedIntegerValue")}];
   }
   v5 = ;
 
   return v5;
 }
 
-- (void)_setMetadata:(id)a3 isFinal:(BOOL)a4
+- (void)_setMetadata:(id)metadata isFinal:(BOOL)final
 {
-  self->_mayReceiveAdditionalMetadata = !a4;
+  self->_mayReceiveAdditionalMetadata = !final;
   selectedVariantIndex = self->_selectedVariantIndex;
   self->_selectedVariantIndex = 0;
-  v6 = a3;
+  metadataCopy = metadata;
 
-  [(LPLinkView *)self _setMetadataInternal:v6];
+  [(LPLinkView *)self _setMetadataInternal:metadataCopy];
 }
 
-- (void)_setSelectedVariantIndex:(id)a3
+- (void)_setSelectedVariantIndex:(id)index
 {
-  v5 = a3;
+  indexCopy = index;
   if (([(NSNumber *)self->_selectedVariantIndex isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_selectedVariantIndex, a3);
+    objc_storeStrong(&self->_selectedVariantIndex, index);
     [(LPLinkView *)self _invalidatePresentationPropertiesAndLayout];
   }
 }
 
-- (void)_setFindInteractionEnabled:(BOOL)a3
+- (void)_setFindInteractionEnabled:(BOOL)enabled
 {
-  if (self->_findInteractionEnabled != a3)
+  if (self->_findInteractionEnabled != enabled)
   {
-    self->_findInteractionEnabled = a3;
-    if (a3)
+    self->_findInteractionEnabled = enabled;
+    if (enabled)
     {
       v5 = [objc_alloc(MEMORY[0x1E69DCA08]) initWithSessionDelegate:self];
       findInteraction = self->_findInteraction;
@@ -1510,43 +1510,43 @@ void __35__LPLinkView__setMetadataInternal___block_invoke(uint64_t a1, int a2)
   }
 }
 
-- (void)_setMultipleMetadata:(id)a3
+- (void)_setMultipleMetadata:(id)metadata
 {
-  v6 = a3;
-  if ([v6 count] > 1)
+  metadataCopy = metadata;
+  if ([metadataCopy count] > 1)
   {
-    v4 = [[LPMultipleMetadataPresentationTransformer alloc] initWithMetadata:v6];
-    [(LPMultipleMetadataPresentationTransformer *)v4 setPreferredSizeClass:self->_preferredSizeClass];
+    firstObject = [[LPMultipleMetadataPresentationTransformer alloc] initWithMetadata:metadataCopy];
+    [(LPMultipleMetadataPresentationTransformer *)firstObject setPreferredSizeClass:self->_preferredSizeClass];
     self->_mayReceiveAdditionalMetadata = 0;
-    v5 = [(LPMultipleMetadataPresentationTransformer *)v4 summaryMetadata];
-    [(LPLinkView *)self _setMetadataInternal:v5];
+    summaryMetadata = [(LPMultipleMetadataPresentationTransformer *)firstObject summaryMetadata];
+    [(LPLinkView *)self _setMetadataInternal:summaryMetadata];
   }
 
   else
   {
-    v4 = [v6 firstObject];
-    [(LPLinkView *)self _setMetadataInternal:v4];
+    firstObject = [metadataCopy firstObject];
+    [(LPLinkView *)self _setMetadataInternal:firstObject];
   }
 }
 
-- (void)_setPreferredSizeClass:(unint64_t)a3
+- (void)_setPreferredSizeClass:(unint64_t)class
 {
-  if (self->_preferredSizeClass != a3)
+  if (self->_preferredSizeClass != class)
   {
-    self->_preferredSizeClass = a3;
-    self->_effectiveSizeClass = a3;
+    self->_preferredSizeClass = class;
+    self->_effectiveSizeClass = class;
     [(LPLinkView *)self _invalidatePresentationPropertiesAndLayout];
 
     [(LPLinkView *)self themeParametersDidChange];
   }
 }
 
-- (void)_setSizeClassParameters:(id)a3
+- (void)_setSizeClassParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   sizeClassParameters = self->_sizeClassParameters;
-  v8 = v4;
-  if (v4 | sizeClassParameters && ![(LPLinkRendererSizeClassParameters *)sizeClassParameters isEqual:v4])
+  v8 = parametersCopy;
+  if (parametersCopy | sizeClassParameters && ![(LPLinkRendererSizeClassParameters *)sizeClassParameters isEqual:parametersCopy])
   {
     v6 = [v8 copy];
     v7 = self->_sizeClassParameters;
@@ -1557,42 +1557,42 @@ void __35__LPLinkView__setMetadataInternal___block_invoke(uint64_t a1, int a2)
   }
 }
 
-- (void)_setSourceBundleIdentifier:(id)a3
+- (void)_setSourceBundleIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (self->_sourceBundleIdentifier != v5)
+  identifierCopy = identifier;
+  if (self->_sourceBundleIdentifier != identifierCopy)
   {
-    objc_storeStrong(&self->_sourceBundleIdentifier, a3);
+    objc_storeStrong(&self->_sourceBundleIdentifier, identifier);
     [(LPLinkView *)self _invalidatePresentationPropertiesAndLayout];
   }
 }
 
-- (void)_addCaptionButton:(id)a3
+- (void)_addCaptionButton:(id)button
 {
-  v5 = a3;
-  if ([v5 type] == 1)
+  buttonCopy = button;
+  if ([buttonCopy type] == 1)
   {
-    objc_storeStrong(&self->_captionButton, a3);
-    [(LPConcretePresentationProperties *)self->_properties setCaptionButton:v5];
+    objc_storeStrong(&self->_captionButton, button);
+    [(LPConcretePresentationProperties *)self->_properties setCaptionButton:buttonCopy];
   }
 
   else
   {
-    objc_storeStrong(&self->_captionTextButton, a3);
-    [(LPConcretePresentationProperties *)self->_properties setCaptionTextButton:v5];
+    objc_storeStrong(&self->_captionTextButton, button);
+    [(LPConcretePresentationProperties *)self->_properties setCaptionTextButton:buttonCopy];
   }
 }
 
-- (void)_removeCaptionButtonWithType:(int64_t)a3
+- (void)_removeCaptionButtonWithType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     captionButton = self->_captionButton;
     self->_captionButton = 0;
 
     [(LPConcretePresentationProperties *)self->_properties setCaptionButton:0];
-    v5 = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
-    [v5 setButton:0];
+    captionBar = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
+    [captionBar setButton:0];
   }
 
   else
@@ -1606,37 +1606,37 @@ void __35__LPLinkView__setMetadataInternal___block_invoke(uint64_t a1, int a2)
   [(LPLinkView *)self _invalidatePresentationPropertiesAndLayout];
 }
 
-- (void)_setAction:(id)a3 withText:(id)a4 buttonType:(int64_t)a5
+- (void)_setAction:(id)action withText:(id)text buttonType:(int64_t)type
 {
-  v10 = a3;
-  v8 = a4;
-  if (v10 && v8)
+  actionCopy = action;
+  textCopy = text;
+  if (actionCopy && textCopy)
   {
     v9 = objc_alloc_init(LPCaptionButtonPresentationProperties);
-    [(LPCaptionButtonPresentationProperties *)v9 setText:v8];
-    [(LPCaptionButtonPresentationProperties *)v9 setCallback:v10];
-    [(LPCaptionButtonPresentationProperties *)v9 setType:a5];
+    [(LPCaptionButtonPresentationProperties *)v9 setText:textCopy];
+    [(LPCaptionButtonPresentationProperties *)v9 setCallback:actionCopy];
+    [(LPCaptionButtonPresentationProperties *)v9 setType:type];
     [(LPLinkView *)self _addCaptionButton:v9];
     [(LPLinkView *)self _invalidatePresentationPropertiesAndLayout];
   }
 
   else
   {
-    [(LPLinkView *)self _removeCaptionButtonWithType:a5];
+    [(LPLinkView *)self _removeCaptionButtonWithType:type];
   }
 }
 
-- (void)_setAction:(id)a3 withAttributedText:(id)a4 buttonType:(int64_t)a5
+- (void)_setAction:(id)action withAttributedText:(id)text buttonType:(int64_t)type
 {
-  v11 = a3;
-  v8 = a4;
-  if (v11 && v8)
+  actionCopy = action;
+  textCopy = text;
+  if (actionCopy && textCopy)
   {
     v9 = objc_alloc_init(LPCaptionButtonPresentationProperties);
-    [(LPCaptionButtonPresentationProperties *)v9 setAttributedText:v8];
-    [(LPCaptionButtonPresentationProperties *)v9 setCallback:v11];
-    [(LPCaptionButtonPresentationProperties *)v9 setType:a5];
-    v10 = [(LPLinkView *)self _computeCollapsedButtonPropertiesForAttributedString:v8];
+    [(LPCaptionButtonPresentationProperties *)v9 setAttributedText:textCopy];
+    [(LPCaptionButtonPresentationProperties *)v9 setCallback:actionCopy];
+    [(LPCaptionButtonPresentationProperties *)v9 setType:type];
+    v10 = [(LPLinkView *)self _computeCollapsedButtonPropertiesForAttributedString:textCopy];
     [(LPCaptionButtonPresentationProperties *)v9 setCollapsedButton:v10];
 
     [(LPLinkView *)self _addCaptionButton:v9];
@@ -1645,16 +1645,16 @@ void __35__LPLinkView__setMetadataInternal___block_invoke(uint64_t a1, int a2)
 
   else
   {
-    [(LPLinkView *)self _removeCaptionButtonWithType:a5];
+    [(LPLinkView *)self _removeCaptionButtonWithType:type];
   }
 }
 
-- (void)_setButtonActions:(id)a3
+- (void)_setButtonActions:(id)actions
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  actionsCopy = actions;
+  v5 = actionsCopy;
+  if (actionsCopy && [actionsCopy count])
   {
     v6 = objc_alloc_init(LPCaptionButtonPresentationProperties);
     [(LPCaptionButtonPresentationProperties *)v6 setActions:v5];
@@ -1662,10 +1662,10 @@ void __35__LPLinkView__setMetadataInternal___block_invoke(uint64_t a1, int a2)
     [(LPCaptionButtonPresentationProperties *)v6 setCallback:&__block_literal_global_99];
     if ([v5 count] < 2)
     {
-      v15 = [(LPCaptionButtonPresentationProperties *)v6 actions];
-      v16 = [v15 firstObject];
-      v17 = [v16 handler];
-      [(LPCaptionButtonPresentationProperties *)v6 setCallback:v17];
+      actions = [(LPCaptionButtonPresentationProperties *)v6 actions];
+      firstObject = [actions firstObject];
+      handler = [firstObject handler];
+      [(LPCaptionButtonPresentationProperties *)v6 setCallback:handler];
 
 LABEL_27:
       [(LPLinkView *)self _addCaptionButton:v6];
@@ -1678,8 +1678,8 @@ LABEL_27:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = [(LPCaptionButtonPresentationProperties *)v6 actions];
-    v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    actions2 = [(LPCaptionButtonPresentationProperties *)v6 actions];
+    v8 = [actions2 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
       v9 = 0;
@@ -1692,7 +1692,7 @@ LABEL_27:
         {
           if (*v19 != v11)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(actions2);
           }
 
           v13 = *(*(&v18 + 1) + 8 * v12);
@@ -1720,7 +1720,7 @@ LABEL_27:
         }
 
         while (v8 != v12);
-        v14 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v14 = [actions2 countByEnumeratingWithState:&v18 objects:v22 count:16];
         v8 = v14;
       }
 
@@ -1748,20 +1748,20 @@ LABEL_26:
 LABEL_28:
 }
 
-- (void)_setSecondaryButtonAction:(id)a3
+- (void)_setSecondaryButtonAction:(id)action
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  actionCopy = action;
+  if (actionCopy)
   {
     v5 = objc_alloc_init(LPCaptionButtonPresentationProperties);
-    v10[0] = v4;
+    v10[0] = actionCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
     [(LPCaptionButtonPresentationProperties *)v5 setActions:v6];
 
     [(LPCaptionButtonPresentationProperties *)v5 setType:1];
-    v7 = [v4 handler];
-    [(LPCaptionButtonPresentationProperties *)v5 setCallback:v7];
+    handler = [actionCopy handler];
+    [(LPCaptionButtonPresentationProperties *)v5 setCallback:handler];
 
     objc_storeStrong(&self->_secondaryCaptionButton, v5);
     [(LPConcretePresentationProperties *)self->_properties setSecondaryCaptionButton:v5];
@@ -1774,14 +1774,14 @@ LABEL_28:
     self->_secondaryCaptionButton = 0;
 
     [(LPConcretePresentationProperties *)self->_properties setSecondaryCaptionButton:0];
-    v9 = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
-    [v9 setSecondaryButton:0];
+    captionBar = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
+    [captionBar setSecondaryButton:0];
   }
 }
 
-- (id)_computeCollapsedButtonPropertiesForAttributedString:(id)a3
+- (id)_computeCollapsedButtonPropertiesForAttributedString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -1794,7 +1794,7 @@ LABEL_28:
   v14 = 0;
   v15 = 0;
   v13 = &unk_1AE9D67E1;
-  v4 = [v3 length];
+  v4 = [stringCopy length];
   v5 = *MEMORY[0x1E69DB5F8];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -1802,11 +1802,11 @@ LABEL_28:
   v9[3] = &unk_1E7A36FF0;
   v9[4] = &v16;
   v9[5] = &v10;
-  [v3 enumerateAttribute:v5 inRange:0 options:v4 usingBlock:{0, v9}];
+  [stringCopy enumerateAttribute:v5 inRange:0 options:v4 usingBlock:{0, v9}];
   if (v17[5])
   {
     v6 = objc_alloc_init(LPCaptionButtonCollapsedPresentationProperties);
-    v7 = [v3 attributedSubstringFromRange:{v11[4], v11[5]}];
+    v7 = [stringCopy attributedSubstringFromRange:{v11[4], v11[5]}];
     [(LPCaptionButtonCollapsedPresentationProperties *)v6 setAttributedText:v7];
 
     [(LPCaptionButtonCollapsedPresentationProperties *)v6 setLayoutRatioThreshold:1.0];
@@ -1859,43 +1859,43 @@ void __67__LPLinkView__computeCollapsedButtonPropertiesForAttributedString___blo
   }
 }
 
-- (void)_setOverrideSubtitle:(id)a3
+- (void)_setOverrideSubtitle:(id)subtitle
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  subtitleCopy = subtitle;
+  v4 = [subtitleCopy copy];
   overrideSubtitle = self->_overrideSubtitle;
   self->_overrideSubtitle = v4;
 
   [(LPLinkView *)self _invalidatePresentationPropertiesAndLayout];
 }
 
-- (CGRect)_rectForCaptionButtonType:(int64_t)a3
+- (CGRect)_rectForCaptionButtonType:(int64_t)type
 {
-  v5 = [(LPConcretePresentationProperties *)self->_properties captionButton];
-  v6 = [v5 type];
+  captionButton = [(LPConcretePresentationProperties *)self->_properties captionButton];
+  type = [captionButton type];
 
-  if (v6 == a3)
+  if (type == type)
   {
-    v7 = [(LPLinkViewComponents *)self->_components captionBar];
-    v8 = [v7 button];
+    captionBar = [(LPLinkViewComponents *)self->_components captionBar];
+    button = [captionBar button];
   }
 
   else
   {
-    v9 = [(LPConcretePresentationProperties *)self->_properties captionTextButton];
-    v10 = [v9 type];
+    captionTextButton = [(LPConcretePresentationProperties *)self->_properties captionTextButton];
+    type2 = [captionTextButton type];
 
-    if (v10 != a3)
+    if (type2 != type)
     {
       v11 = 0;
       goto LABEL_7;
     }
 
-    v7 = [(LPLinkViewComponents *)self->_components captionBar];
-    v8 = [v7 subtitleButton];
+    captionBar = [(LPLinkViewComponents *)self->_components captionBar];
+    button = [captionBar subtitleButton];
   }
 
-  v11 = v8;
+  v11 = button;
 
 LABEL_7:
   [v11 bounds];
@@ -1940,9 +1940,9 @@ LABEL_7:
   else
   {
     metadataIsComplete = self->_metadataIsComplete;
-    v4 = [(LPLinkMetadata *)self->_metadata _isDeferringAsynchronousLoads];
-    self->_metadataIsComplete = !v4;
-    if (!metadataIsComplete && !v4)
+    _isDeferringAsynchronousLoads = [(LPLinkMetadata *)self->_metadata _isDeferringAsynchronousLoads];
+    self->_metadataIsComplete = !_isDeferringAsynchronousLoads;
+    if (!metadataIsComplete && !_isDeferringAsynchronousLoads)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       if (objc_opt_respondsToSelector())
@@ -1961,15 +1961,15 @@ LABEL_7:
     metadata = self->_metadata;
     if (metadata)
     {
-      v4 = [(LPLinkView *)self _flattenedMetadata];
+      _flattenedMetadata = [(LPLinkView *)self _flattenedMetadata];
     }
 
     else
     {
-      v4 = 0;
+      _flattenedMetadata = 0;
     }
 
-    [(LPLinkMetadataPresentationTransformer *)v11 setMetadata:v4];
+    [(LPLinkMetadataPresentationTransformer *)v11 setMetadata:_flattenedMetadata];
     if (metadata)
     {
     }
@@ -1996,47 +1996,47 @@ LABEL_7:
     [(LPLinkMetadataPresentationTransformer *)v11 setBytesLoaded:self->_bytesLoaded];
     [(LPLinkMetadataPresentationTransformer *)v11 setSharedObjectDownloadState:self->_sharedObjectDownloadState];
     [(LPLinkMetadataPresentationTransformer *)v11 setTransferIndicatorDirection:self->_transferIndicatorDirection];
-    v6 = [(LPCaptionButtonPresentationProperties *)self->_captionButton actions];
-    -[LPLinkMetadataPresentationTransformer setHasButtonActions:](v11, "setHasButtonActions:", [v6 count] != 0);
+    actions = [(LPCaptionButtonPresentationProperties *)self->_captionButton actions];
+    -[LPLinkMetadataPresentationTransformer setHasButtonActions:](v11, "setHasButtonActions:", [actions count] != 0);
 
     [(LPLinkMetadataPresentationTransformer *)v11 setHasButton:self->_captionButton != 0];
     [(LPLinkMetadataPresentationTransformer *)v11 setMediaOverlayIcon:self->_mediaOverlayIcon];
-    v7 = [(UIView *)self _lp_appearance];
-    [(LPLinkMetadataPresentationTransformer *)v11 setEffectiveAppearance:v7];
+    _lp_appearance = [(UIView *)self _lp_appearance];
+    [(LPLinkMetadataPresentationTransformer *)v11 setEffectiveAppearance:_lp_appearance];
 
     [(LPLinkMetadataPresentationTransformer *)v11 setIsSolariumEnabled:[LPSettings solariumIsEnabledForView:self]];
-    v8 = [(LPLinkView *)self traitCollection];
-    v9 = [v8 preferredContentSizeCategory];
-    [(LPLinkMetadataPresentationTransformer *)v11 setPreferredContentSizeCategory:v9];
+    traitCollection = [(LPLinkView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    [(LPLinkMetadataPresentationTransformer *)v11 setPreferredContentSizeCategory:preferredContentSizeCategory];
 
     self->_effectiveSizeClass = [(LPLinkMetadataPresentationTransformer *)v11 effectiveSizeClass];
-    v10 = [(LPLinkMetadataPresentationTransformer *)v11 presentationProperties];
-    [(LPLinkView *)self _setPresentationPropertiesInternal:v10];
+    presentationProperties = [(LPLinkMetadataPresentationTransformer *)v11 presentationProperties];
+    [(LPLinkView *)self _setPresentationPropertiesInternal:presentationProperties];
   }
 }
 
 - (BOOL)_useProgressSpinner
 {
-  v4 = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
-  v5 = [v4 leadingIcon];
-  if (!v5)
+  captionBar = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
+  leadingIcon = [captionBar leadingIcon];
+  if (!leadingIcon)
   {
     goto LABEL_4;
   }
 
-  v6 = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
-  v2 = [v6 leadingIcon];
-  if ([v2 _isFallbackIcon])
+  captionBar2 = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
+  leadingIcon2 = [captionBar2 leadingIcon];
+  if ([leadingIcon2 _isFallbackIcon])
   {
-    v14 = v6;
+    v14 = captionBar2;
 LABEL_4:
-    v7 = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
-    v8 = [v7 trailingIcon];
-    if (v8)
+    captionBar3 = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
+    trailingIcon = [captionBar3 trailingIcon];
+    if (trailingIcon)
     {
-      v9 = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
-      v10 = [v9 trailingIcon];
-      v11 = [v10 _isFallbackIcon] ^ 1;
+      captionBar4 = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
+      trailingIcon2 = [captionBar4 trailingIcon];
+      v11 = [trailingIcon2 _isFallbackIcon] ^ 1;
     }
 
     else
@@ -2044,8 +2044,8 @@ LABEL_4:
       v11 = 0;
     }
 
-    v6 = v14;
-    if (!v5)
+    captionBar2 = v14;
+    if (!leadingIcon)
     {
       goto LABEL_10;
     }
@@ -2067,21 +2067,21 @@ LABEL_10:
   return sizeClassAllowsProgressSpinner(effectiveSizeClass);
 }
 
-- (void)_setPresentationPropertiesInternal:(id)a3
+- (void)_setPresentationPropertiesInternal:(id)internal
 {
-  v10 = a3;
+  internalCopy = internal;
   presentationPropertyState = self->_presentationPropertyState;
   self->_presentationPropertyState = 0;
   v5 = [[LPConcretePresentationPropertiesParameters alloc] initWithUsesComputedPresentationProperties:self->_usesComputedPresentationProperties inComposeContext:self->_inComposeContext inSenderContext:self->_inSenderContext allowsTapping:!self->_disableTapGesture effectiveSizeClass:self->_effectiveSizeClass overrideSubtitleButtonColor:self->_overrideSubtitleButtonColor overrideActionButtonColor:self->_overrideActionButtonColor overrideSubtitle:self->_overrideSubtitle captionButton:self->_captionButton captionTextButton:self->_captionTextButton secondaryCaptionButton:self->_secondaryCaptionButton];
-  v6 = [[LPConcretePresentationProperties alloc] initWithParameters:v5 properties:v10];
+  v6 = [[LPConcretePresentationProperties alloc] initWithParameters:v5 properties:internalCopy];
   objc_storeStrong(&self->_properties, v6);
-  v7 = [(LPWebLinkPresentationProperties *)self->_properties overrideURL];
+  overrideURL = [(LPWebLinkPresentationProperties *)self->_properties overrideURL];
 
-  if (v7)
+  if (overrideURL)
   {
-    v8 = [(LPWebLinkPresentationProperties *)self->_properties overrideURL];
+    overrideURL2 = [(LPWebLinkPresentationProperties *)self->_properties overrideURL];
     overrideURLFromProperties = self->_overrideURLFromProperties;
-    self->_overrideURLFromProperties = v8;
+    self->_overrideURLFromProperties = overrideURL2;
   }
 
   if (presentationPropertyState == 1)
@@ -2111,8 +2111,8 @@ LABEL_10:
 {
   [(LPLinkView *)self _computePresentationPropertiesFromMetadataIfNeeded];
   properties = self->_properties;
-  v4 = [(LPTheme *)self->_theme mediaImage];
-  [v4 darkeningAmount];
+  mediaImage = [(LPTheme *)self->_theme mediaImage];
+  [mediaImage darkeningAmount];
   v5 = presentationOverrideBackgroundColorForProperties(properties);
 
   return v5;
@@ -2139,28 +2139,28 @@ LABEL_10:
   [MEMORY[0x1E69DD250] performWithoutAnimation:v3];
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_contentInset.top), vceqq_f64(v4, *&self->_contentInset.bottom)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(LPLinkView *)self _invalidateLayout];
   }
 }
 
-- (void)_setTextSafeAreaInset:(UIEdgeInsets)a3
+- (void)_setTextSafeAreaInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_textSafeAreaInset.top), vceqq_f64(v4, *&self->_textSafeAreaInset.bottom)))) & 1) == 0)
   {
-    self->_textSafeAreaInset = a3;
+    self->_textSafeAreaInset = inset;
     [(LPLinkView *)self _invalidateLayout];
   }
 }
@@ -2181,8 +2181,8 @@ LABEL_10:
 
   else
   {
-    v7 = [(LPTheme *)self->_theme maximumWidth];
-    [v7 value];
+    maximumWidth = [(LPTheme *)self->_theme maximumWidth];
+    [maximumWidth value];
     [(LPLinkView *)self sizeThatFits:?];
     v4 = v8;
     v6 = v9;
@@ -2195,15 +2195,15 @@ LABEL_10:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v27 = *MEMORY[0x1E69E9840];
   ++self->_suppressNeedsResizeCount;
   [(LPLinkView *)self _computePresentationPropertiesFromMetadataIfNeeded];
-  v6 = [(LPTheme *)self->_theme maximumWidth];
-  [v6 value];
+  maximumWidth = [(LPTheme *)self->_theme maximumWidth];
+  [maximumWidth value];
   v8 = fmin(width, v7);
 
   v9 = floor(v8);
@@ -2244,67 +2244,67 @@ LABEL_10:
 
 - (void)animateOutAndRemoveViews
 {
-  v3 = [(LPLinkViewComponents *)self->_components captionBar];
-  [v3 animateOut];
+  captionBar = [(LPLinkViewComponents *)self->_components captionBar];
+  [captionBar animateOut];
 
-  v4 = [(LPLinkViewComponents *)self->_components media];
-  [v4 removeFromSuperview];
+  media = [(LPLinkViewComponents *)self->_components media];
+  [media removeFromSuperview];
 
-  v5 = [(LPLinkViewComponents *)self->_components quote];
-  [v5 removeFromSuperview];
+  quote = [(LPLinkViewComponents *)self->_components quote];
+  [quote removeFromSuperview];
 
-  v6 = [(LPLinkViewComponents *)self->_components domainNameIndicator];
-  [v6 removeFromSuperview];
+  domainNameIndicator = [(LPLinkViewComponents *)self->_components domainNameIndicator];
+  [domainNameIndicator removeFromSuperview];
 
-  v7 = [(LPLinkViewComponents *)self->_components mediaTopCaptionBar];
-  [v7 removeFromSuperview];
+  mediaTopCaptionBar = [(LPLinkViewComponents *)self->_components mediaTopCaptionBar];
+  [mediaTopCaptionBar removeFromSuperview];
 
-  v8 = [(LPLinkViewComponents *)self->_components mediaBottomCaptionBar];
-  [v8 removeFromSuperview];
+  mediaBottomCaptionBar = [(LPLinkViewComponents *)self->_components mediaBottomCaptionBar];
+  [mediaBottomCaptionBar removeFromSuperview];
 
-  v9 = [(LPLinkViewComponents *)self->_components backgroundImage];
-  [v9 removeFromSuperview];
+  backgroundImage = [(LPLinkViewComponents *)self->_components backgroundImage];
+  [backgroundImage removeFromSuperview];
 
-  v10 = [(LPLinkViewComponents *)self->_components contactsBadge];
-  [v10 removeFromSuperview];
+  contactsBadge = [(LPLinkViewComponents *)self->_components contactsBadge];
+  [contactsBadge removeFromSuperview];
 
-  v11 = [(LPLinkViewComponents *)self->_components progressSpinner];
-  [v11 removeFromSuperview];
+  progressSpinner = [(LPLinkViewComponents *)self->_components progressSpinner];
+  [progressSpinner removeFromSuperview];
 
-  v12 = [(LPLinkViewComponents *)self->_components textSearchingDimmingView];
-  [v12 removeFromSuperview];
+  textSearchingDimmingView = [(LPLinkViewComponents *)self->_components textSearchingDimmingView];
+  [textSearchingDimmingView removeFromSuperview];
 
-  v13 = [(LPLinkViewComponents *)self->_components textHighlightView];
-  [v13 removeFromSuperview];
+  textHighlightView = [(LPLinkViewComponents *)self->_components textHighlightView];
+  [textHighlightView removeFromSuperview];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v12 = a3;
-  v5 = [v12 valueForKey:@"associatedView"];
-  [v12 setValue:0 forKey:@"associatedView"];
-  v6 = [v5 layer];
-  v7 = [v6 animationForKey:@"widthSpring"];
-  if (v7 == v12)
+  stopCopy = stop;
+  v5 = [stopCopy valueForKey:@"associatedView"];
+  [stopCopy setValue:0 forKey:@"associatedView"];
+  layer = [v5 layer];
+  v7 = [layer animationForKey:@"widthSpring"];
+  if (v7 == stopCopy)
   {
   }
 
   else
   {
-    v8 = [v5 layer];
-    v9 = [v8 animationForKey:@"heightSpring"];
+    layer2 = [v5 layer];
+    v9 = [layer2 animationForKey:@"heightSpring"];
 
-    if (v9 != v12)
+    if (v9 != stopCopy)
     {
       goto LABEL_6;
     }
   }
 
-  v10 = [(UIView *)self->_animationView layer];
-  [v10 removeAnimationForKey:@"widthSpring"];
+  layer3 = [(UIView *)self->_animationView layer];
+  [layer3 removeAnimationForKey:@"widthSpring"];
 
-  v11 = [(UIView *)self->_animationView layer];
-  [v11 removeAnimationForKey:@"heightSpring"];
+  layer4 = [(UIView *)self->_animationView layer];
+  [layer4 removeAnimationForKey:@"heightSpring"];
 
   [(LPLinkView *)self _setMaskEnabledForAnimation:0];
 LABEL_6:
@@ -2312,74 +2312,74 @@ LABEL_6:
 
 - (void)animateInViews
 {
-  v35 = [(LPLinkView *)self layer];
-  [v35 convertTime:0 fromLayer:CACurrentMediaTime()];
+  layer = [(LPLinkView *)self layer];
+  [layer convertTime:0 fromLayer:CACurrentMediaTime()];
   v4 = v3;
 
   v36 = [MEMORY[0x1E69794A8] _lp_springWithMass:2.0 stiffness:100.0 damping:50.0];
   [v36 setKeyPath:@"opacity"];
   [v36 setFromValue:&unk_1F24835F0];
   [v36 setToValue:&unk_1F2483608];
-  v5 = [(LPLinkViewComponents *)self->_components captionBar];
-  [v5 animateInWithBaseAnimation:v36 currentTime:v4];
+  captionBar = [(LPLinkViewComponents *)self->_components captionBar];
+  [captionBar animateInWithBaseAnimation:v36 currentTime:v4];
 
-  v6 = [(LPLinkViewComponents *)self->_components mediaTopCaptionBar];
-  [v6 animateInWithBaseAnimation:v36 currentTime:v4];
+  mediaTopCaptionBar = [(LPLinkViewComponents *)self->_components mediaTopCaptionBar];
+  [mediaTopCaptionBar animateInWithBaseAnimation:v36 currentTime:v4];
 
-  v7 = [(LPLinkViewComponents *)self->_components mediaBottomCaptionBar];
-  [v7 animateInWithBaseAnimation:v36 currentTime:v4];
+  mediaBottomCaptionBar = [(LPLinkViewComponents *)self->_components mediaBottomCaptionBar];
+  [mediaBottomCaptionBar animateInWithBaseAnimation:v36 currentTime:v4];
 
-  v8 = [(LPLinkViewComponents *)self->_components media];
-  v9 = [v8 layer];
+  media = [(LPLinkViewComponents *)self->_components media];
+  layer2 = [media layer];
   v10 = v4 + 0.05;
   v11 = [v36 _lp_copyWithBeginTime:v4 + 0.05];
-  [v9 addAnimation:v11 forKey:@"fadeIn"];
+  [layer2 addAnimation:v11 forKey:@"fadeIn"];
 
-  v12 = [(LPLinkViewComponents *)self->_components quote];
-  v13 = [v12 layer];
+  quote = [(LPLinkViewComponents *)self->_components quote];
+  layer3 = [quote layer];
   v14 = v4 + 0.285;
   v15 = [v36 _lp_copyWithBeginTime:v14];
-  [v13 addAnimation:v15 forKey:@"fadeIn"];
+  [layer3 addAnimation:v15 forKey:@"fadeIn"];
 
-  v16 = [(LPLinkViewComponents *)self->_components domainNameIndicator];
-  v17 = [v16 layer];
+  domainNameIndicator = [(LPLinkViewComponents *)self->_components domainNameIndicator];
+  layer4 = [domainNameIndicator layer];
   v18 = [v36 _lp_copyWithBeginTime:v14];
-  [v17 addAnimation:v18 forKey:@"fadeIn"];
+  [layer4 addAnimation:v18 forKey:@"fadeIn"];
 
-  v19 = [(LPLinkViewComponents *)self->_components backgroundImage];
-  v20 = [v19 layer];
+  backgroundImage = [(LPLinkViewComponents *)self->_components backgroundImage];
+  layer5 = [backgroundImage layer];
   v21 = [v36 _lp_copyWithBeginTime:v14];
-  [v20 addAnimation:v21 forKey:@"fadeIn"];
+  [layer5 addAnimation:v21 forKey:@"fadeIn"];
 
-  v22 = [(LPLinkViewComponents *)self->_components mediaBackground];
-  v23 = [v22 layer];
-  [v23 opacity];
+  mediaBackground = [(LPLinkViewComponents *)self->_components mediaBackground];
+  layer6 = [mediaBackground layer];
+  [layer6 opacity];
   v25 = v24;
 
   if (v25 == 0.0)
   {
-    v26 = [(LPLinkViewComponents *)self->_components mediaBackground];
-    v27 = [v26 layer];
+    mediaBackground2 = [(LPLinkViewComponents *)self->_components mediaBackground];
+    layer7 = [mediaBackground2 layer];
     LODWORD(v28) = 1.0;
-    [v27 setOpacity:v28];
+    [layer7 setOpacity:v28];
 
-    v29 = [(LPLinkViewComponents *)self->_components mediaBackground];
-    v30 = [v29 layer];
+    mediaBackground3 = [(LPLinkViewComponents *)self->_components mediaBackground];
+    layer8 = [mediaBackground3 layer];
     v31 = [v36 _lp_copyWithBeginTime:v10];
-    [v30 addAnimation:v31 forKey:@"fadeIn"];
+    [layer8 addAnimation:v31 forKey:@"fadeIn"];
   }
 
-  v32 = [(LPLinkViewComponents *)self->_components contactsBadge];
-  v33 = [v32 layer];
+  contactsBadge = [(LPLinkViewComponents *)self->_components contactsBadge];
+  layer9 = [contactsBadge layer];
   v34 = [v36 _lp_copyWithBeginTime:v14];
-  [v33 addAnimation:v34 forKey:@"fadeIn"];
+  [layer9 addAnimation:v34 forKey:@"fadeIn"];
 }
 
-- (void)_setMaskImage:(id)a3
+- (void)_setMaskImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   animationMaskView = self->_animationMaskView;
-  v9 = v4;
+  v9 = imageCopy;
   if (!animationMaskView)
   {
     v6 = [LPAnimationMaskView alloc];
@@ -2388,22 +2388,22 @@ LABEL_6:
     self->_animationMaskView = v7;
 
     animationMaskView = self->_animationMaskView;
-    v4 = v9;
+    imageCopy = v9;
   }
 
-  [(LPAnimationMaskView *)animationMaskView setImage:v4];
+  [(LPAnimationMaskView *)animationMaskView setImage:imageCopy];
   [(LPAnimationMaskView *)self->_animationMaskView setAnimationOrigin:self->_animationOrigin];
 }
 
-- (void)animateFromOldFrame:(CGRect)a3 oldMediaBackgroundFrame:(CGRect)a4 oldCaptionBarView:(id)a5
+- (void)animateFromOldFrame:(CGRect)frame oldMediaBackgroundFrame:(CGRect)backgroundFrame oldCaptionBarView:(id)view
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3.size.height;
-  v10 = a3.size.width;
-  v130 = a5;
+  height = backgroundFrame.size.height;
+  width = backgroundFrame.size.width;
+  y = backgroundFrame.origin.y;
+  x = backgroundFrame.origin.x;
+  v9 = frame.size.height;
+  v10 = frame.size.width;
+  viewCopy = view;
   [(LPLinkView *)self frame];
   v13 = v10 == v12;
   if (v9 != v14)
@@ -2426,9 +2426,9 @@ LABEL_6:
     v21 = [v19 numberWithDouble:v20];
     [v17 setToValue:v21];
 
-    v22 = [(LPAnimationMaskView *)self->_animationMaskView imageView];
-    v23 = [v22 layer];
-    [v23 addAnimation:v17 forKey:@"maskWidthSpring"];
+    imageView = [(LPAnimationMaskView *)self->_animationMaskView imageView];
+    layer = [imageView layer];
+    [layer addAnimation:v17 forKey:@"maskWidthSpring"];
 
     v24 = [v15 copy];
     [v24 setDelegate:self];
@@ -2443,33 +2443,33 @@ LABEL_6:
     v28 = [v26 numberWithDouble:v27];
     [v24 setToValue:v28];
 
-    v29 = [(UIView *)self->_animationView layer];
-    [v29 addAnimation:v24 forKey:@"widthSpring"];
+    layer2 = [(UIView *)self->_animationView layer];
+    [layer2 addAnimation:v24 forKey:@"widthSpring"];
 
     if ([(LPLinkView *)self _animationOrigin]== 1 && self->_needsMessagesTranscriptPushCounterAnimation)
     {
       v30 = [v17 copy];
-      v31 = [(LPAnimationMaskView *)self->_animationMaskView imageView];
-      v32 = [v31 layer];
-      [v32 addAnimation:v30 forKey:@"imageViewAnimation"];
+      imageView2 = [(LPAnimationMaskView *)self->_animationMaskView imageView];
+      layer3 = [imageView2 layer];
+      [layer3 addAnimation:v30 forKey:@"imageViewAnimation"];
 
-      v33 = [MEMORY[0x1E6979318] animation];
-      [v33 setDuration:0.3];
+      animation = [MEMORY[0x1E6979318] animation];
+      [animation setDuration:0.3];
       v34 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
-      [v33 setTimingFunction:v34];
+      [animation setTimingFunction:v34];
 
-      [v33 setKeyPath:@"transform.translation.x"];
+      [animation setKeyPath:@"transform.translation.x"];
       v35 = MEMORY[0x1E696AD98];
       [(LPLinkView *)self frame];
       v37 = [v35 numberWithDouble:v10 - v36];
-      [v33 setFromValue:v37];
+      [animation setFromValue:v37];
 
-      [v33 setToValue:&unk_1F24835F0];
-      v38 = [(UIView *)self->_animationView layer];
-      [v38 addAnimation:v33 forKey:@"horizontalSlide"];
+      [animation setToValue:&unk_1F24835F0];
+      layer4 = [(UIView *)self->_animationView layer];
+      [layer4 addAnimation:animation forKey:@"horizontalSlide"];
 
-      v39 = [(LPAnimationMaskView *)self->_animationMaskView layer];
-      [v39 addAnimation:v33 forKey:@"horizontalSlide"];
+      layer5 = [(LPAnimationMaskView *)self->_animationMaskView layer];
+      [layer5 addAnimation:animation forKey:@"horizontalSlide"];
     }
 
     if (![(LPLinkView *)self _animationOrigin])
@@ -2482,36 +2482,36 @@ LABEL_6:
       [v40 setFromValue:v43];
 
       [v40 setToValue:&unk_1F24835F0];
-      v44 = [(LPAnimationMaskView *)self->_animationMaskView imageView];
-      v45 = [v44 layer];
-      [v45 addAnimation:v40 forKey:@"maskViewSpring"];
+      imageView3 = [(LPAnimationMaskView *)self->_animationMaskView imageView];
+      layer6 = [imageView3 layer];
+      [layer6 addAnimation:v40 forKey:@"maskViewSpring"];
     }
   }
 
-  v46 = [(LPLinkViewComponents *)self->_components mediaBackground];
-  if (v46 && (v132.origin.x = x, v132.origin.y = y, v132.size.width = width, v132.size.height = height, IsNull = CGRectIsNull(v132), v46, !IsNull))
+  mediaBackground = [(LPLinkViewComponents *)self->_components mediaBackground];
+  if (mediaBackground && (v132.origin.x = x, v132.origin.y = y, v132.size.width = width, v132.size.height = height, IsNull = CGRectIsNull(v132), mediaBackground, !IsNull))
   {
     [(LPLinkView *)self frame];
     v55 = v54;
-    v52 = [(LPLinkViewComponents *)self->_components mediaBackground];
-    [v52 frame];
+    mediaBackground2 = [(LPLinkViewComponents *)self->_components mediaBackground];
+    [mediaBackground2 frame];
     v49 = v55 - v56 - (v9 - height);
   }
 
   else
   {
-    v48 = [(LPLinkViewComponents *)self->_components mediaBackground];
+    mediaBackground3 = [(LPLinkViewComponents *)self->_components mediaBackground];
 
     v49 = v9;
-    if (!v48)
+    if (!mediaBackground3)
     {
       goto LABEL_16;
     }
 
     [(LPLinkView *)self frame];
     v51 = v50;
-    v52 = [(LPLinkViewComponents *)self->_components mediaBackground];
-    [v52 frame];
+    mediaBackground2 = [(LPLinkViewComponents *)self->_components mediaBackground];
+    [mediaBackground2 frame];
     v49 = v51 - v53;
   }
 
@@ -2529,9 +2529,9 @@ LABEL_16:
     v62 = [v60 numberWithDouble:v61];
     [v58 setToValue:v62];
 
-    v63 = [(LPAnimationMaskView *)self->_animationMaskView imageView];
-    v64 = [v63 layer];
-    [v64 addAnimation:v58 forKey:@"maskHeightSpring"];
+    imageView4 = [(LPAnimationMaskView *)self->_animationMaskView imageView];
+    layer7 = [imageView4 layer];
+    [layer7 addAnimation:v58 forKey:@"maskHeightSpring"];
 
     v65 = [v15 copy];
     [v65 setDelegate:self];
@@ -2546,8 +2546,8 @@ LABEL_16:
     v69 = [v67 numberWithDouble:v68];
     [v65 setToValue:v69];
 
-    v70 = [(UIView *)self->_animationView layer];
-    [v70 addAnimation:v65 forKey:@"heightSpring"];
+    layer8 = [(UIView *)self->_animationView layer];
+    [layer8 addAnimation:v65 forKey:@"heightSpring"];
 
     v71 = [v15 copy];
     [v71 setKeyPath:@"transform.translation"];
@@ -2565,11 +2565,11 @@ LABEL_16:
       [v72 setFromValue:v76];
 
       [v72 setToValue:&unk_1F24835F0];
-      v77 = [(UIView *)self->_animationView layer];
-      [v77 addAnimation:v72 forKey:@"verticalSlide"];
+      layer9 = [(UIView *)self->_animationView layer];
+      [layer9 addAnimation:v72 forKey:@"verticalSlide"];
 
-      v78 = [(LPAnimationMaskView *)self->_animationMaskView layer];
-      [v78 addAnimation:v72 forKey:@"verticalSlide"];
+      layer10 = [(LPAnimationMaskView *)self->_animationMaskView layer];
+      [layer10 addAnimation:v72 forKey:@"verticalSlide"];
     }
 
     animationOrigin = self->_animationOrigin;
@@ -2599,13 +2599,13 @@ LABEL_16:
     v88 = [MEMORY[0x1E696B098] _lp_valueWithCGSize:{*MEMORY[0x1E695F060], v87}];
     [v71 setToValue:v88];
 
-    v89 = [(LPLinkViewComponents *)self->_components captionBar];
-    v90 = [v89 layer];
-    [v90 addAnimation:v71 forKey:@"transformSpring"];
+    captionBar = [(LPLinkViewComponents *)self->_components captionBar];
+    layer11 = [captionBar layer];
+    [layer11 addAnimation:v71 forKey:@"transformSpring"];
 
-    v91 = [(LPLinkViewComponents *)self->_components domainNameIndicator];
-    v92 = [v91 layer];
-    [v92 addAnimation:v71 forKey:@"transformSpring"];
+    domainNameIndicator = [(LPLinkViewComponents *)self->_components domainNameIndicator];
+    layer12 = [domainNameIndicator layer];
+    [layer12 addAnimation:v71 forKey:@"transformSpring"];
 
     v93 = [v71 copy];
     v94 = self->_animationOrigin;
@@ -2633,8 +2633,8 @@ LABEL_16:
     v101 = [MEMORY[0x1E696B098] _lp_valueWithCGSize:{v86, v87}];
     [v93 setFromValue:v101];
 
-    v102 = [v130 layer];
-    [v102 addAnimation:v93 forKey:@"previousCaptionBarPositionMaintaining"];
+    layer13 = [viewCopy layer];
+    [layer13 addAnimation:v93 forKey:@"previousCaptionBarPositionMaintaining"];
 
     v103 = [v71 copy];
     v104 = MEMORY[0x1E696B098];
@@ -2642,9 +2642,9 @@ LABEL_16:
     v106 = [v104 _lp_valueWithCGSize:{v80, v49 + v9 - v105}];
     [v103 setFromValue:v106];
 
-    v107 = [(LPLinkViewComponents *)self->_components mediaBackground];
-    v108 = [v107 layer];
-    [v108 addAnimation:v103 forKey:@"captionBarAdjustedTransformSpring"];
+    mediaBackground4 = [(LPLinkViewComponents *)self->_components mediaBackground];
+    layer14 = [mediaBackground4 layer];
+    [layer14 addAnimation:v103 forKey:@"captionBarAdjustedTransformSpring"];
   }
 
   if (![(LPLinkView *)self _animationOrigin])
@@ -2653,42 +2653,42 @@ LABEL_16:
     [v109 setKeyPath:@"transform.translation.y"];
     v110 = MEMORY[0x1E696AD98];
     [(LPLinkView *)self frame];
-    v112 = [v110 numberWithDouble:v9 - v111];
-    [v109 setFromValue:v112];
+    v111 = [v110 numberWithDouble:v9 - v111];
+    [v109 setFromValue:v111];
 
     [v109 setToValue:&unk_1F24835F0];
-    v113 = [(LPAnimationMaskView *)self->_animationMaskView imageView];
-    v114 = [v113 layer];
-    [v114 addAnimation:v109 forKey:@"maskViewYSpring"];
+    imageView5 = [(LPAnimationMaskView *)self->_animationMaskView imageView];
+    layer15 = [imageView5 layer];
+    [layer15 addAnimation:v109 forKey:@"maskViewYSpring"];
 
-    v115 = [(UIView *)self->_animationView layer];
-    [v115 addAnimation:v109 forKey:@"maskViewYSpring"];
+    layer16 = [(UIView *)self->_animationView layer];
+    [layer16 addAnimation:v109 forKey:@"maskViewYSpring"];
   }
 
   v116 = [v15 copy];
   [v116 setKeyPath:@"transform.scale.x"];
   v117 = MEMORY[0x1E696AD98];
-  v118 = [(LPLinkViewComponents *)self->_components mediaBackground];
-  [v118 frame];
-  v120 = [v117 numberWithDouble:v10 / v119];
-  [v116 setFromValue:v120];
+  mediaBackground5 = [(LPLinkViewComponents *)self->_components mediaBackground];
+  [mediaBackground5 frame];
+  v119 = [v117 numberWithDouble:v10 / v119];
+  [v116 setFromValue:v119];
 
   [v116 setToValue:&unk_1F2483608];
-  v121 = [(LPLinkViewComponents *)self->_components mediaBackground];
-  v122 = [v121 layer];
-  [v122 addAnimation:v116 forKey:@"mediaScaleSpring"];
+  mediaBackground6 = [(LPLinkViewComponents *)self->_components mediaBackground];
+  layer17 = [mediaBackground6 layer];
+  [layer17 addAnimation:v116 forKey:@"mediaScaleSpring"];
 
   v123 = [v15 copy];
   [v123 setKeyPath:@"transform.scale.y"];
   v124 = MEMORY[0x1E696AD98];
   [(LPLinkView *)self frame];
-  v126 = [v124 numberWithDouble:v9 / v125];
-  [v123 setFromValue:v126];
+  v125 = [v124 numberWithDouble:v9 / v125];
+  [v123 setFromValue:v125];
 
   [v123 setToValue:&unk_1F2483608];
-  v127 = [(LPLinkViewComponents *)self->_components mediaBackground];
-  v128 = [v127 layer];
-  [v128 addAnimation:v123 forKey:@"mediaScaleYSpring"];
+  mediaBackground7 = [(LPLinkViewComponents *)self->_components mediaBackground];
+  layer18 = [mediaBackground7 layer];
+  [layer18 addAnimation:v123 forKey:@"mediaScaleYSpring"];
 
   if (!v129)
   {
@@ -2696,33 +2696,33 @@ LABEL_16:
   }
 }
 
-- (void)_setSuppressChatKitMask:(BOOL)a3
+- (void)_setSuppressChatKitMask:(BOOL)mask
 {
-  v3 = a3;
-  v7 = [(LPLinkView *)self superview];
+  maskCopy = mask;
+  superview = [(LPLinkView *)self superview];
   NSClassFromString(&cfstr_Ckballoonview.isa);
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [(LPLinkView *)self superview];
+    superview2 = [(LPLinkView *)self superview];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v9 = [(LPLinkView *)self superview];
-      [v9 setSuppressMask:v3];
+      superview3 = [(LPLinkView *)self superview];
+      [superview3 setSuppressMask:maskCopy];
     }
   }
 }
 
 - (void)_updateMasking
 {
-  v3 = [(LPLinkView *)self maskView];
+  maskView = [(LPLinkView *)self maskView];
 
   if (self->_maskEnabled)
   {
-    if (v3)
+    if (maskView)
     {
       return;
     }
@@ -2733,7 +2733,7 @@ LABEL_16:
   else
   {
     maskEnabledForAnimation = self->_maskEnabledForAnimation;
-    if (((v3 == 0) ^ maskEnabledForAnimation))
+    if (((maskView == 0) ^ maskEnabledForAnimation))
     {
       return;
     }
@@ -2758,8 +2758,8 @@ LABEL_9:
   [v4 setDuration:0.65];
   [v4 setKeyPath:@"backgroundColor"];
   [v4 setToValue:{-[UIColor CGColor](self->_backgroundColor, "CGColor")}];
-  v3 = [(UIView *)self->_animationView layer];
-  [v3 addAnimation:v4 forKey:@"backgroundColorTransition"];
+  layer = [(UIView *)self->_animationView layer];
+  [layer addAnimation:v4 forKey:@"backgroundColorTransition"];
 }
 
 - (BOOL)_layoutHeightDependsOnWidth
@@ -2792,8 +2792,8 @@ LABEL_9:
   if ([(LPLinkView *)self _useProgressSpinner]&& (sizeClassAllowsLargeProgressSpinner(self->_preferredSizeClass) & 1) != 0)
   {
     findInteractionEnabled = self->_findInteractionEnabled;
-    v5 = [(LPLinkView *)self _createProgressSpinner];
-    [(LPLinkViewComponents *)v3 setProgressSpinner:v5];
+    _createProgressSpinner = [(LPLinkView *)self _createProgressSpinner];
+    [(LPLinkViewComponents *)v3 setProgressSpinner:_createProgressSpinner];
 
     if (!findInteractionEnabled)
     {
@@ -2803,59 +2803,59 @@ LABEL_9:
     goto LABEL_35;
   }
 
-  v6 = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
-  v7 = [v6 hasAnyContent];
+  captionBar = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
+  hasAnyContent = [captionBar hasAnyContent];
 
-  v8 = [(LPConcretePresentationProperties *)self->_properties hasMedia];
-  v9 = [(LPWebLinkPresentationProperties *)self->_properties quotedText];
+  hasMedia = [(LPConcretePresentationProperties *)self->_properties hasMedia];
+  quotedText = [(LPWebLinkPresentationProperties *)self->_properties quotedText];
 
-  if (v9)
+  if (quotedText)
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = v8;
+    v10 = hasMedia;
   }
 
   if (v10 == 1)
   {
-    v11 = [(LPWebLinkPresentationProperties *)self->_properties mediaTopCaptionBar];
-    v12 = [v11 hasAnyContent];
+    mediaTopCaptionBar = [(LPWebLinkPresentationProperties *)self->_properties mediaTopCaptionBar];
+    hasAnyContent2 = [mediaTopCaptionBar hasAnyContent];
 
-    v13 = [(LPWebLinkPresentationProperties *)self->_properties mediaBottomCaptionBar];
-    v14 = [v13 hasAnyContent];
+    mediaBottomCaptionBar = [(LPWebLinkPresentationProperties *)self->_properties mediaBottomCaptionBar];
+    hasAnyContent3 = [mediaBottomCaptionBar hasAnyContent];
   }
 
   else
   {
-    v12 = 0;
-    v14 = 0;
+    hasAnyContent2 = 0;
+    hasAnyContent3 = 0;
   }
 
-  v15 = [(LPWebLinkPresentationProperties *)self->_properties domainNameForIndicator];
+  domainNameForIndicator = [(LPWebLinkPresentationProperties *)self->_properties domainNameForIndicator];
 
-  v16 = [(LPWebLinkPresentationProperties *)self->_properties backgroundImage];
+  backgroundImage = [(LPWebLinkPresentationProperties *)self->_properties backgroundImage];
 
   v17 = [(NSArray *)self->_contactsForAttribution count];
   v32 = self->_findInteractionEnabled;
-  if (v7)
+  if (hasAnyContent)
   {
-    v18 = [(LPLinkView *)self _createCaptionBar];
-    [(LPLinkViewComponents *)v3 setCaptionBar:v18];
+    _createCaptionBar = [(LPLinkView *)self _createCaptionBar];
+    [(LPLinkViewComponents *)v3 setCaptionBar:_createCaptionBar];
 
-    if (!v8)
+    if (!hasMedia)
     {
       goto LABEL_13;
     }
   }
 
-  else if (!v8)
+  else if (!hasMedia)
   {
 LABEL_13:
     v19 = 0;
-    if (v12)
+    if (hasAnyContent2)
     {
       goto LABEL_14;
     }
@@ -2863,26 +2863,26 @@ LABEL_13:
     goto LABEL_19;
   }
 
-  v22 = [(LPLinkView *)self _createMediaView];
-  [(LPLinkViewComponents *)v3 setMedia:v22];
+  _createMediaView = [(LPLinkView *)self _createMediaView];
+  [(LPLinkViewComponents *)v3 setMedia:_createMediaView];
 
   v19 = 1;
-  if (v12)
+  if (hasAnyContent2)
   {
 LABEL_14:
-    v20 = [(LPLinkView *)self _createMediaTopCaptionBarView];
-    [(LPLinkViewComponents *)v3 setMediaTopCaptionBar:v20];
+    _createMediaTopCaptionBarView = [(LPLinkView *)self _createMediaTopCaptionBarView];
+    [(LPLinkViewComponents *)v3 setMediaTopCaptionBar:_createMediaTopCaptionBarView];
 
-    if ((v14 & 1) == 0)
+    if ((hasAnyContent3 & 1) == 0)
     {
       goto LABEL_15;
     }
 
 LABEL_20:
-    v23 = [(LPLinkView *)self _createMediaBottomCaptionBarView];
-    [(LPLinkViewComponents *)v3 setMediaBottomCaptionBar:v23];
+    _createMediaBottomCaptionBarView = [(LPLinkView *)self _createMediaBottomCaptionBarView];
+    [(LPLinkViewComponents *)v3 setMediaBottomCaptionBar:_createMediaBottomCaptionBarView];
 
-    if (v9)
+    if (quotedText)
     {
       goto LABEL_16;
     }
@@ -2897,45 +2897,45 @@ LABEL_21:
   }
 
 LABEL_19:
-  if (v14)
+  if (hasAnyContent3)
   {
     goto LABEL_20;
   }
 
 LABEL_15:
-  if (!v9)
+  if (!quotedText)
   {
     goto LABEL_21;
   }
 
 LABEL_16:
-  v21 = [(LPLinkView *)self _createQuotedTextView];
-  [(LPLinkViewComponents *)v3 setQuote:v21];
+  _createQuotedTextView = [(LPLinkView *)self _createQuotedTextView];
+  [(LPLinkViewComponents *)v3 setQuote:_createQuotedTextView];
 
 LABEL_22:
-  v24 = [(LPLinkViewComponents *)self->_components mediaBackground];
-  v25 = v24;
-  if (!v24)
+  mediaBackground = [(LPLinkViewComponents *)self->_components mediaBackground];
+  v25 = mediaBackground;
+  if (!mediaBackground)
   {
     v25 = objc_alloc_init(LPBackgroundColorView);
   }
 
   [(LPLinkViewComponents *)v3 setMediaBackground:v25];
-  if (!v24)
+  if (!mediaBackground)
   {
   }
 
 LABEL_27:
-  if (v15)
+  if (domainNameForIndicator)
   {
-    v26 = [(LPLinkView *)self _createDomainNameIndicator];
-    [(LPLinkViewComponents *)v3 setDomainNameIndicator:v26];
+    _createDomainNameIndicator = [(LPLinkView *)self _createDomainNameIndicator];
+    [(LPLinkViewComponents *)v3 setDomainNameIndicator:_createDomainNameIndicator];
   }
 
-  if (v16)
+  if (backgroundImage)
   {
-    v27 = [(LPLinkView *)self _createBackgroundImageView];
-    [(LPLinkViewComponents *)v3 setBackgroundImage:v27];
+    _createBackgroundImageView = [(LPLinkView *)self _createBackgroundImageView];
+    [(LPLinkViewComponents *)v3 setBackgroundImage:_createBackgroundImageView];
   }
 
   if (!v17)
@@ -2948,17 +2948,17 @@ LABEL_27:
     goto LABEL_35;
   }
 
-  v28 = [(LPLinkView *)self _createContactsBadgeView];
-  [(LPLinkViewComponents *)v3 setContactsBadge:v28];
+  _createContactsBadgeView = [(LPLinkView *)self _createContactsBadgeView];
+  [(LPLinkViewComponents *)v3 setContactsBadge:_createContactsBadgeView];
 
   if (v32)
   {
 LABEL_35:
-    v29 = [(LPLinkView *)self _createTextSearchingDimmingView];
-    [(LPLinkViewComponents *)v3 setTextSearchingDimmingView:v29];
+    _createTextSearchingDimmingView = [(LPLinkView *)self _createTextSearchingDimmingView];
+    [(LPLinkViewComponents *)v3 setTextSearchingDimmingView:_createTextSearchingDimmingView];
 
-    v30 = [(LPLinkView *)self _createTextHighlightView];
-    [(LPLinkViewComponents *)v3 setTextHighlightView:v30];
+    _createTextHighlightView = [(LPLinkView *)self _createTextHighlightView];
+    [(LPLinkViewComponents *)v3 setTextHighlightView:_createTextHighlightView];
   }
 
 LABEL_36:
@@ -2968,13 +2968,13 @@ LABEL_36:
 
 - (id)_mediaBackgroundColor
 {
-  v3 = [(LPWebLinkPresentationProperties *)self->_properties imageProperties];
-  v4 = [v3 backgroundColor];
+  imageProperties = [(LPWebLinkPresentationProperties *)self->_properties imageProperties];
+  backgroundColor = [imageProperties backgroundColor];
 
-  if (v4)
+  if (backgroundColor)
   {
-    v5 = [(LPWebLinkPresentationProperties *)self->_properties imageProperties];
-    v6 = [v5 backgroundColor];
+    imageProperties2 = [(LPWebLinkPresentationProperties *)self->_properties imageProperties];
+    backgroundColor2 = [imageProperties2 backgroundColor];
   }
 
   else
@@ -2982,25 +2982,25 @@ LABEL_36:
     overrideMediaBackgroundColor = self->_overrideMediaBackgroundColor;
     if (overrideMediaBackgroundColor || (overrideMediaBackgroundColor = self->_overrideBackgroundColor) != 0)
     {
-      v8 = overrideMediaBackgroundColor;
+      clearColor = overrideMediaBackgroundColor;
     }
 
     else
     {
-      v8 = [MEMORY[0x1E69DC888] clearColor];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
     }
 
-    v6 = v8;
+    backgroundColor2 = clearColor;
   }
 
-  return v6;
+  return backgroundColor2;
 }
 
-- (void)_rebuildSubviewsWithAnimation:(BOOL)a3
+- (void)_rebuildSubviewsWithAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   self->_needsRebuild = 0;
-  if (a3)
+  if (animation)
   {
     [(LPLinkView *)self animateOutAndRemoveViews];
   }
@@ -3009,115 +3009,115 @@ LABEL_36:
   {
     while (1)
     {
-      v73 = [(UIView *)self->_contentView subviews];
-      v8 = [v73 count];
+      subviews = [(UIView *)self->_contentView subviews];
+      v8 = [subviews count];
 
       if (!v8)
       {
         break;
       }
 
-      v74 = [(UIView *)self->_contentView subviews];
-      v9 = [v74 lastObject];
-      [v9 removeFromSuperview];
+      subviews2 = [(UIView *)self->_contentView subviews];
+      lastObject = [subviews2 lastObject];
+      [lastObject removeFromSuperview];
     }
 
     while (1)
     {
-      v75 = [(LPLinkViewComponents *)self->_components mediaBackground];
-      v10 = [v75 subviews];
-      v11 = [v10 count];
+      mediaBackground = [(LPLinkViewComponents *)self->_components mediaBackground];
+      subviews3 = [mediaBackground subviews];
+      v11 = [subviews3 count];
 
       if (!v11)
       {
         break;
       }
 
-      v76 = [(LPLinkViewComponents *)self->_components mediaBackground];
-      v12 = [v76 subviews];
-      v13 = [v12 lastObject];
-      [v13 removeFromSuperview];
+      mediaBackground2 = [(LPLinkViewComponents *)self->_components mediaBackground];
+      subviews4 = [mediaBackground2 subviews];
+      lastObject2 = [subviews4 lastObject];
+      [lastObject2 removeFromSuperview];
     }
   }
 
   [(LPLinkView *)self _uninstallTapGestureRecognizers];
   [(LPLinkView *)self _uninstallHighlightGestureRecognizers];
   [(LPLinkView *)self _updateCornerRadius];
-  v5 = [(LPLinkView *)self _shouldClipAnimationView];
-  v71 = [(UIView *)self->_animationView layer];
-  [v71 setMasksToBounds:v5];
+  _shouldClipAnimationView = [(LPLinkView *)self _shouldClipAnimationView];
+  layer = [(UIView *)self->_animationView layer];
+  [layer setMasksToBounds:_shouldClipAnimationView];
 
   v72 = self->_components;
   componentsForSizing = self->_componentsForSizing;
   if (componentsForSizing)
   {
-    v7 = componentsForSizing;
+    _createComponents = componentsForSizing;
   }
 
   else
   {
-    v7 = [(LPLinkView *)self _createComponents];
+    _createComponents = [(LPLinkView *)self _createComponents];
   }
 
   components = self->_components;
-  self->_components = v7;
+  self->_components = _createComponents;
 
   [(LPLinkView *)self _setEmphasizedTextExpression:self->_emphasizedTextExpression];
-  v15 = [(LPLinkViewComponents *)self->_components backgroundImage];
+  backgroundImage = [(LPLinkViewComponents *)self->_components backgroundImage];
 
-  if (v15)
+  if (backgroundImage)
   {
     contentView = self->_contentView;
-    v17 = [(LPLinkViewComponents *)self->_components backgroundImage];
-    [(UIView *)contentView addSubview:v17];
+    backgroundImage2 = [(LPLinkViewComponents *)self->_components backgroundImage];
+    [(UIView *)contentView addSubview:backgroundImage2];
   }
 
-  v18 = [(LPLinkViewComponents *)self->_components mediaBackground];
+  mediaBackground3 = [(LPLinkViewComponents *)self->_components mediaBackground];
 
-  if (v18)
+  if (mediaBackground3)
   {
-    if ([(LPWebLinkPresentationProperties *)self->_properties style]!= 15 && v3)
+    if ([(LPWebLinkPresentationProperties *)self->_properties style]!= 15 && animationCopy)
     {
-      v19 = [(LPLinkViewComponents *)v72 mediaBackground];
+      mediaBackground4 = [(LPLinkViewComponents *)v72 mediaBackground];
 
-      if (!v19)
+      if (!mediaBackground4)
       {
-        v20 = [(LPLinkViewComponents *)self->_components mediaBackground];
-        v21 = [v20 layer];
-        [v21 setOpacity:0.0];
+        mediaBackground5 = [(LPLinkViewComponents *)self->_components mediaBackground];
+        layer2 = [mediaBackground5 layer];
+        [layer2 setOpacity:0.0];
       }
     }
 
     v22 = self->_contentView;
-    v23 = [(LPLinkViewComponents *)self->_components mediaBackground];
-    [(UIView *)v22 addSubview:v23];
+    mediaBackground6 = [(LPLinkViewComponents *)self->_components mediaBackground];
+    [(UIView *)v22 addSubview:mediaBackground6];
   }
 
   else
   {
-    v23 = [(LPLinkViewComponents *)v72 mediaBackground];
-    [v23 removeFromSuperview];
+    mediaBackground6 = [(LPLinkViewComponents *)v72 mediaBackground];
+    [mediaBackground6 removeFromSuperview];
   }
 
-  v24 = [(LPLinkViewComponents *)self->_components captionBar];
+  captionBar = [(LPLinkViewComponents *)self->_components captionBar];
 
-  if (v24)
+  if (captionBar)
   {
     v25 = self->_contentView;
-    v26 = [(LPLinkViewComponents *)self->_components captionBar];
-    [(UIView *)v25 addSubview:v26];
+    captionBar2 = [(LPLinkViewComponents *)self->_components captionBar];
+    [(UIView *)v25 addSubview:captionBar2];
 
-    v27 = [(LPLinkViewComponents *)self->_components captionBar];
-    v28 = [v27 button];
-    [v28 addTarget:self action:sel__captionBarButtonPressed_];
+    captionBar3 = [(LPLinkViewComponents *)self->_components captionBar];
+    button = [captionBar3 button];
+    [button addTarget:self action:sel__captionBarButtonPressed_];
 
-    v29 = [(LPLinkViewComponents *)self->_components captionBar];
-    v30 = [v29 secondaryButton];
-    [v30 addTarget:self action:sel__secondaryCaptionBarButtonPressed_];
+    captionBar4 = [(LPLinkViewComponents *)self->_components captionBar];
+    secondaryButton = [captionBar4 secondaryButton];
+    [secondaryButton addTarget:self action:sel__secondaryCaptionBarButtonPressed_];
   }
 
-  v31 = [(LPLinkView *)self _sizeClassParameters];
-  [v31 minimumMediaCornerRadius];
+  _sizeClassParameters = [(LPLinkView *)self _sizeClassParameters];
+  [_sizeClassParameters minimumMediaCornerRadius];
   if (v32 == 0.0)
   {
     v37 = 0.0;
@@ -3127,112 +3127,112 @@ LABEL_36:
   {
     [(LPLinkView *)self _effectiveCornerRadius];
     v34 = v33;
-    v35 = [(LPLinkView *)self _sizeClassParameters];
-    [v35 minimumMediaCornerRadius];
+    _sizeClassParameters2 = [(LPLinkView *)self _sizeClassParameters];
+    [_sizeClassParameters2 minimumMediaCornerRadius];
     v37 = fmax(v34, v36);
   }
 
-  v38 = [(LPLinkViewComponents *)self->_components mediaBackground];
+  mediaBackground7 = [(LPLinkViewComponents *)self->_components mediaBackground];
 
-  if (v38)
+  if (mediaBackground7)
   {
-    v39 = [(LPLinkView *)self _mediaBackgroundColor];
-    v40 = [(LPLinkViewComponents *)self->_components mediaBackground];
-    [v40 setColor:v39];
+    _mediaBackgroundColor = [(LPLinkView *)self _mediaBackgroundColor];
+    mediaBackground8 = [(LPLinkViewComponents *)self->_components mediaBackground];
+    [mediaBackground8 setColor:_mediaBackgroundColor];
 
     if (v37 != 0.0)
     {
-      v41 = [(LPLinkViewComponents *)self->_components mediaBackground];
-      [v41 _lp_setCornerRadius:v37];
+      mediaBackground9 = [(LPLinkViewComponents *)self->_components mediaBackground];
+      [mediaBackground9 _lp_setCornerRadius:v37];
     }
 
     v42 = self->_contentView;
-    v43 = [(LPLinkViewComponents *)self->_components mediaBackground];
-    [(UIView *)v42 _lp_bringSubviewToFront:v43];
+    mediaBackground10 = [(LPLinkViewComponents *)self->_components mediaBackground];
+    [(UIView *)v42 _lp_bringSubviewToFront:mediaBackground10];
   }
 
-  v44 = [(LPLinkViewComponents *)self->_components media];
+  media = [(LPLinkViewComponents *)self->_components media];
 
-  if (v44)
+  if (media)
   {
-    v45 = [(LPLinkViewComponents *)self->_components mediaBackground];
-    v46 = [(LPLinkViewComponents *)self->_components media];
-    [v45 addSubview:v46];
+    mediaBackground11 = [(LPLinkViewComponents *)self->_components mediaBackground];
+    media2 = [(LPLinkViewComponents *)self->_components media];
+    [mediaBackground11 addSubview:media2];
   }
 
-  v47 = [(LPLinkViewComponents *)self->_components mediaTopCaptionBar];
+  mediaTopCaptionBar = [(LPLinkViewComponents *)self->_components mediaTopCaptionBar];
 
-  if (v47)
+  if (mediaTopCaptionBar)
   {
     v48 = self->_contentView;
-    v49 = [(LPLinkViewComponents *)self->_components mediaTopCaptionBar];
-    [(UIView *)v48 addSubview:v49];
+    mediaTopCaptionBar2 = [(LPLinkViewComponents *)self->_components mediaTopCaptionBar];
+    [(UIView *)v48 addSubview:mediaTopCaptionBar2];
   }
 
-  v50 = [(LPLinkViewComponents *)self->_components mediaBottomCaptionBar];
+  mediaBottomCaptionBar = [(LPLinkViewComponents *)self->_components mediaBottomCaptionBar];
 
-  if (v50)
+  if (mediaBottomCaptionBar)
   {
     v51 = self->_contentView;
-    v52 = [(LPLinkViewComponents *)self->_components mediaBottomCaptionBar];
-    [(UIView *)v51 addSubview:v52];
+    mediaBottomCaptionBar2 = [(LPLinkViewComponents *)self->_components mediaBottomCaptionBar];
+    [(UIView *)v51 addSubview:mediaBottomCaptionBar2];
   }
 
-  v53 = [(LPLinkViewComponents *)self->_components quote];
+  quote = [(LPLinkViewComponents *)self->_components quote];
 
-  if (v53)
+  if (quote)
   {
-    v54 = [(LPLinkViewComponents *)self->_components mediaBackground];
-    v55 = [(LPLinkViewComponents *)self->_components quote];
-    [v54 addSubview:v55];
+    mediaBackground12 = [(LPLinkViewComponents *)self->_components mediaBackground];
+    quote2 = [(LPLinkViewComponents *)self->_components quote];
+    [mediaBackground12 addSubview:quote2];
   }
 
-  v56 = [(LPLinkViewComponents *)self->_components domainNameIndicator];
+  domainNameIndicator = [(LPLinkViewComponents *)self->_components domainNameIndicator];
 
-  if (v56)
+  if (domainNameIndicator)
   {
     v57 = self->_contentView;
-    v58 = [(LPLinkViewComponents *)self->_components domainNameIndicator];
-    [(UIView *)v57 addSubview:v58];
+    domainNameIndicator2 = [(LPLinkViewComponents *)self->_components domainNameIndicator];
+    [(UIView *)v57 addSubview:domainNameIndicator2];
   }
 
-  v59 = [(LPLinkViewComponents *)self->_components contactsBadge];
+  contactsBadge = [(LPLinkViewComponents *)self->_components contactsBadge];
 
-  if (v59)
+  if (contactsBadge)
   {
     v60 = self->_contentView;
-    v61 = [(LPLinkViewComponents *)self->_components contactsBadge];
-    [(UIView *)v60 addSubview:v61];
+    contactsBadge2 = [(LPLinkViewComponents *)self->_components contactsBadge];
+    [(UIView *)v60 addSubview:contactsBadge2];
   }
 
-  v62 = [(LPLinkViewComponents *)self->_components progressSpinner];
+  progressSpinner = [(LPLinkViewComponents *)self->_components progressSpinner];
 
-  if (v62)
+  if (progressSpinner)
   {
     v63 = self->_contentView;
-    v64 = [(LPLinkViewComponents *)self->_components progressSpinner];
-    [(UIView *)v63 addSubview:v64];
+    progressSpinner2 = [(LPLinkViewComponents *)self->_components progressSpinner];
+    [(UIView *)v63 addSubview:progressSpinner2];
   }
 
-  v65 = [(LPLinkViewComponents *)self->_components textSearchingDimmingView];
+  textSearchingDimmingView = [(LPLinkViewComponents *)self->_components textSearchingDimmingView];
 
-  if (v65)
+  if (textSearchingDimmingView)
   {
     v66 = self->_contentView;
-    v67 = [(LPLinkViewComponents *)self->_components textSearchingDimmingView];
-    [(UIView *)v66 addSubview:v67];
+    textSearchingDimmingView2 = [(LPLinkViewComponents *)self->_components textSearchingDimmingView];
+    [(UIView *)v66 addSubview:textSearchingDimmingView2];
   }
 
-  v68 = [(LPLinkViewComponents *)self->_components textHighlightView];
+  textHighlightView = [(LPLinkViewComponents *)self->_components textHighlightView];
 
-  if (v68)
+  if (textHighlightView)
   {
     v69 = self->_contentView;
-    v70 = [(LPLinkViewComponents *)self->_components textHighlightView];
-    [(UIView *)v69 addSubview:v70];
+    textHighlightView2 = [(LPLinkViewComponents *)self->_components textHighlightView];
+    [(UIView *)v69 addSubview:textHighlightView2];
   }
 
-  if (v3)
+  if (animationCopy)
   {
     [(LPLinkView *)self animateInViews];
     [(LPLinkView *)self animateBackgroundColor];
@@ -3266,18 +3266,18 @@ LABEL_36:
 
   [(LPLinkView *)self _updateCornerRadius];
   v15 = self->_hasEverBuilt && [(LPLinkView *)self _shouldUseAnimations]&& ([(UIView *)self->_animationView frame], v4 = v3, v6 = v5, v8 = v7, v10 = v9, [(LPLinkView *)self bounds], v53.origin.x = v11, v53.origin.y = v12, v53.size.width = v13, v53.size.height = v14, v52.origin.x = v4, v52.origin.y = v6, v52.size.width = v8, v52.size.height = v10, !CGRectEqualToRect(v52, v53)) && self->_shouldAnimateDuringNextBuild;
-  v16 = [(LPLinkViewComponents *)self->_components mediaBackground];
-  if (v16)
+  mediaBackground = [(LPLinkViewComponents *)self->_components mediaBackground];
+  if (mediaBackground)
   {
-    v49 = v16;
-    v17 = [(LPLinkViewComponents *)self->_components mediaBackground];
-    [v17 frame];
+    v49 = mediaBackground;
+    mediaBackground2 = [(LPLinkViewComponents *)self->_components mediaBackground];
+    [mediaBackground2 frame];
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v25 = v24;
 
-    v16 = v49;
+    mediaBackground = v49;
   }
 
   else
@@ -3290,11 +3290,11 @@ LABEL_36:
 
   if (v15)
   {
-    v26 = [(LPLinkViewComponents *)self->_components captionBar];
+    captionBar = [(LPLinkViewComponents *)self->_components captionBar];
     componentsForSizing = self->_componentsForSizing;
     self->_componentsForSizing = 0;
 
-    v50 = v26;
+    v50 = captionBar;
   }
 
   else if (self->_needsRebuild)
@@ -3360,11 +3360,11 @@ LABEL_18:
 
     [(UIView *)self->_animationView setAnchorPoint:v31, v32, v30];
     [(LPAnimationMaskView *)self->_animationMaskView setAnchorPoint:v31, v32];
-    v33 = [(LPLinkViewComponents *)self->_components media];
-    [v33 setAnchorPoint:{v31, v32}];
+    media = [(LPLinkViewComponents *)self->_components media];
+    [media setAnchorPoint:{v31, v32}];
 
-    v34 = [(LPLinkViewComponents *)self->_components mediaBackground];
-    [v34 setAnchorPoint:{v31, v32}];
+    mediaBackground3 = [(LPLinkViewComponents *)self->_components mediaBackground];
+    [mediaBackground3 setAnchorPoint:{v31, v32}];
   }
 
   [(LPLinkView *)self bounds];
@@ -3414,29 +3414,29 @@ LABEL_18:
   }
 }
 
-- (void)_setEmphasizedTextExpression:(id)a3
+- (void)_setEmphasizedTextExpression:(id)expression
 {
-  v9 = a3;
-  objc_storeStrong(&self->_emphasizedTextExpression, a3);
-  v5 = [(LPLinkViewComponents *)self->_components captionBar];
-  [v5 setEmphasizedTextExpression:v9];
+  expressionCopy = expression;
+  objc_storeStrong(&self->_emphasizedTextExpression, expression);
+  captionBar = [(LPLinkViewComponents *)self->_components captionBar];
+  [captionBar setEmphasizedTextExpression:expressionCopy];
 
-  v6 = [(LPLinkViewComponents *)self->_components mediaTopCaptionBar];
-  [v6 setEmphasizedTextExpression:v9];
+  mediaTopCaptionBar = [(LPLinkViewComponents *)self->_components mediaTopCaptionBar];
+  [mediaTopCaptionBar setEmphasizedTextExpression:expressionCopy];
 
-  v7 = [(LPLinkViewComponents *)self->_components mediaBottomCaptionBar];
-  [v7 setEmphasizedTextExpression:v9];
+  mediaBottomCaptionBar = [(LPLinkViewComponents *)self->_components mediaBottomCaptionBar];
+  [mediaBottomCaptionBar setEmphasizedTextExpression:expressionCopy];
 
-  v8 = [(LPLinkViewComponents *)self->_components quote];
-  [v8 setEmphasizedTextExpression:v9];
+  quote = [(LPLinkViewComponents *)self->_components quote];
+  [quote setEmphasizedTextExpression:expressionCopy];
 }
 
 - (id)_createProgressSpinner
 {
   v3 = [LPIndeterminateProgressSpinnerView alloc];
-  v4 = [(LPTheme *)self->_theme progressSpinner];
-  v5 = [(LPWebLinkPresentationProperties *)self->_properties progressSpinner];
-  v6 = [(LPIndeterminateProgressSpinnerView *)v3 initWithHost:self style:v4 properties:v5];
+  progressSpinner = [(LPTheme *)self->_theme progressSpinner];
+  progressSpinner2 = [(LPWebLinkPresentationProperties *)self->_properties progressSpinner];
+  v6 = [(LPIndeterminateProgressSpinnerView *)v3 initWithHost:self style:progressSpinner properties:progressSpinner2];
 
   return v6;
 }
@@ -3444,31 +3444,31 @@ LABEL_18:
 - (id)_createCaptionBar
 {
   v3 = [LPCaptionBarView alloc];
-  v4 = [(LPTheme *)self->_theme captionBar];
-  v5 = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
-  v6 = [(LPCaptionBarView *)v3 initWithHost:self style:v4 presentationProperties:v5 captionType:@"CaptionBar"];
+  captionBar = [(LPTheme *)self->_theme captionBar];
+  captionBar2 = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
+  v6 = [(LPCaptionBarView *)v3 initWithHost:self style:captionBar presentationProperties:captionBar2 captionType:@"CaptionBar"];
 
   [(LPCaptionBarView *)v6 setEmphasizedTextExpression:self->_emphasizedTextExpression];
   [(LPCaptionBarView *)v6 setUseProgressSpinner:[(LPLinkView *)self _useProgressSpinner]];
   if (+[LPSettings showDebugIndicators])
   {
-    v7 = [MEMORY[0x1E69DC888] blueColor];
-    v8 = [v7 CGColor];
-    v9 = [(LPCaptionBarView *)v6 layer];
-    [v9 setBorderColor:v8];
+    blueColor = [MEMORY[0x1E69DC888] blueColor];
+    cGColor = [blueColor CGColor];
+    layer = [(LPCaptionBarView *)v6 layer];
+    [layer setBorderColor:cGColor];
 
-    v10 = [(LPCaptionBarView *)v6 layer];
-    [v10 setBorderWidth:0.5];
+    layer2 = [(LPCaptionBarView *)v6 layer];
+    [layer2 setBorderWidth:0.5];
   }
 
   if (!self->_disablePlayback && !self->_disablePlaybackControls)
   {
-    v11 = [(LPWebLinkPresentationProperties *)self->_properties inlinePlaybackInformation];
+    inlinePlaybackInformation = [(LPWebLinkPresentationProperties *)self->_properties inlinePlaybackInformation];
 
-    if (v11)
+    if (inlinePlaybackInformation)
     {
-      v12 = [(LPWebLinkPresentationProperties *)self->_properties inlinePlaybackInformation];
-      [(LPCaptionBarView *)v6 setPlaybackInformation:v12];
+      inlinePlaybackInformation2 = [(LPWebLinkPresentationProperties *)self->_properties inlinePlaybackInformation];
+      [(LPCaptionBarView *)v6 setPlaybackInformation:inlinePlaybackInformation2];
     }
   }
 
@@ -3476,9 +3476,9 @@ LABEL_18:
   {
     v13 = [LPCollaborationFooterView alloc];
     collaborationFooter = self->_collaborationFooter;
-    v15 = [(LPTheme *)self->_theme captionBar];
-    v16 = [v15 collaborationFooter];
-    v17 = [(LPCollaborationFooterView *)v13 initWithHost:self properties:collaborationFooter style:v16];
+    captionBar3 = [(LPTheme *)self->_theme captionBar];
+    collaborationFooter = [captionBar3 collaborationFooter];
+    v17 = [(LPCollaborationFooterView *)v13 initWithHost:self properties:collaborationFooter style:collaborationFooter];
     [(LPCaptionBarView *)v6 setCollaborationFooterView:v17];
   }
 
@@ -3488,17 +3488,17 @@ LABEL_18:
 - (id)_createMediaTopCaptionBarView
 {
   v3 = [LPCaptionBarView alloc];
-  v4 = [(LPTheme *)self->_theme mediaTopCaptionBar];
-  v5 = [(LPWebLinkPresentationProperties *)self->_properties mediaTopCaptionBar];
-  v6 = [(LPCaptionBarView *)v3 initWithHost:self style:v4 presentationProperties:v5 captionType:@"MediaTopCaptionBar"];
+  mediaTopCaptionBar = [(LPTheme *)self->_theme mediaTopCaptionBar];
+  mediaTopCaptionBar2 = [(LPWebLinkPresentationProperties *)self->_properties mediaTopCaptionBar];
+  v6 = [(LPCaptionBarView *)v3 initWithHost:self style:mediaTopCaptionBar presentationProperties:mediaTopCaptionBar2 captionType:@"MediaTopCaptionBar"];
 
   [(LPCaptionBarView *)v6 setEmphasizedTextExpression:self->_emphasizedTextExpression];
-  v7 = [(LPWebLinkPresentationProperties *)self->_properties quotedText];
+  quotedText = [(LPWebLinkPresentationProperties *)self->_properties quotedText];
 
-  if (v7)
+  if (quotedText)
   {
-    v8 = [(LPWebLinkPresentationProperties *)self->_properties quotedText];
-    -[UIView _lp_setForceLTR:](v6, "_lp_setForceLTR:", [v8 _lp_isLTRText]);
+    quotedText2 = [(LPWebLinkPresentationProperties *)self->_properties quotedText];
+    -[UIView _lp_setForceLTR:](v6, "_lp_setForceLTR:", [quotedText2 _lp_isLTRText]);
   }
 
   [(LPCaptionBarView *)v6 setUserInteractionEnabled:0];
@@ -3509,17 +3509,17 @@ LABEL_18:
 - (id)_createMediaBottomCaptionBarView
 {
   v3 = [LPCaptionBarView alloc];
-  v4 = [(LPTheme *)self->_theme mediaBottomCaptionBar];
-  v5 = [(LPWebLinkPresentationProperties *)self->_properties mediaBottomCaptionBar];
-  v6 = [(LPCaptionBarView *)v3 initWithHost:self style:v4 presentationProperties:v5 captionType:@"MediaBottomCaptionBar"];
+  mediaBottomCaptionBar = [(LPTheme *)self->_theme mediaBottomCaptionBar];
+  mediaBottomCaptionBar2 = [(LPWebLinkPresentationProperties *)self->_properties mediaBottomCaptionBar];
+  v6 = [(LPCaptionBarView *)v3 initWithHost:self style:mediaBottomCaptionBar presentationProperties:mediaBottomCaptionBar2 captionType:@"MediaBottomCaptionBar"];
 
   [(LPCaptionBarView *)v6 setEmphasizedTextExpression:self->_emphasizedTextExpression];
-  v7 = [(LPWebLinkPresentationProperties *)self->_properties quotedText];
+  quotedText = [(LPWebLinkPresentationProperties *)self->_properties quotedText];
 
-  if (v7)
+  if (quotedText)
   {
-    v8 = [(LPWebLinkPresentationProperties *)self->_properties quotedText];
-    -[UIView _lp_setForceLTR:](v6, "_lp_setForceLTR:", [v8 _lp_isLTRText]);
+    quotedText2 = [(LPWebLinkPresentationProperties *)self->_properties quotedText];
+    -[UIView _lp_setForceLTR:](v6, "_lp_setForceLTR:", [quotedText2 _lp_isLTRText]);
   }
 
   [(LPCaptionBarView *)v6 setUserInteractionEnabled:0];
@@ -3530,8 +3530,8 @@ LABEL_18:
 - (id)_createTapToLoadView
 {
   v3 = [LPTapToLoadView alloc];
-  v4 = [(LPTheme *)self->_theme tapToLoad];
-  v5 = [(LPTapToLoadView *)v3 initWithHost:self style:v4];
+  tapToLoad = [(LPTheme *)self->_theme tapToLoad];
+  v5 = [(LPTapToLoadView *)v3 initWithHost:self style:tapToLoad];
 
   [(LPTapToLoadView *)v5 setTapToLoadViewDelegate:self];
 
@@ -3545,9 +3545,9 @@ LABEL_18:
   [(LPVisualMediaViewConfiguration *)v3 setDisablePlaybackControls:self->_disablePlaybackControls];
   [(LPVisualMediaViewConfiguration *)v3 setDisableAutoPlay:self->_disableAutoPlay];
   [(LPVisualMediaViewConfiguration *)v3 setAllowsLoadingMediaWithAutoPlayDisabled:self->_allowsLoadingMediaWithAutoPlayDisabled];
-  v4 = [(LPLinkView *)self _shouldApplyCornerRadius];
+  _shouldApplyCornerRadius = [(LPLinkView *)self _shouldApplyCornerRadius];
   v5 = 28.0;
-  if (v4)
+  if (_shouldApplyCornerRadius)
   {
     [(LPLinkView *)self _effectiveCornerRadius];
   }
@@ -3557,29 +3557,29 @@ LABEL_18:
   return v3;
 }
 
-- (id)_createMediaViewForProperties:(id)a3
+- (id)_createMediaViewForProperties:(id)properties
 {
-  v4 = a3;
-  if ([v4 style] == 15)
+  propertiesCopy = properties;
+  if ([propertiesCopy style] == 15)
   {
-    v5 = [(LPLinkView *)self _createTapToLoadView];
+    _createTapToLoadView = [(LPLinkView *)self _createTapToLoadView];
     goto LABEL_12;
   }
 
-  v6 = [v4 video];
-  v7 = [v6 youTubeURL];
+  video = [propertiesCopy video];
+  youTubeURL = [video youTubeURL];
 
-  if (v7)
+  if (youTubeURL)
   {
     v8 = [LPYouTubeVideoView alloc];
-    v9 = [v4 video];
-    v10 = [(LPTheme *)self->_theme mediaVideo];
-    v11 = [v4 image];
-    v12 = [(LPTheme *)self->_theme mediaImage];
-    v13 = [(LPLinkView *)self _videoViewConfiguration];
-    v14 = [(LPYouTubeVideoView *)v8 initWithHost:self video:v9 style:v10 posterFrame:v11 posterFrameStyle:v12 configuration:v13];
+    video2 = [propertiesCopy video];
+    mediaVideo = [(LPTheme *)self->_theme mediaVideo];
+    image = [propertiesCopy image];
+    mediaImage = [(LPTheme *)self->_theme mediaImage];
+    _videoViewConfiguration = [(LPLinkView *)self _videoViewConfiguration];
+    v14 = [(LPYouTubeVideoView *)v8 initWithHost:self video:video2 style:mediaVideo posterFrame:image posterFrameStyle:mediaImage configuration:_videoViewConfiguration];
 LABEL_9:
-    v5 = v14;
+    _createTapToLoadView = v14;
 
 LABEL_10:
 LABEL_11:
@@ -3587,90 +3587,90 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v15 = [v4 video];
-  v16 = [v15 streamingURL];
-  if (v16)
+  video3 = [propertiesCopy video];
+  streamingURL = [video3 streamingURL];
+  if (streamingURL)
   {
 
 LABEL_8:
     v19 = [LPStreamingVideoView alloc];
-    v9 = [v4 video];
-    v10 = [(LPTheme *)self->_theme mediaVideo];
-    v11 = [v4 image];
-    v12 = [(LPTheme *)self->_theme mediaImage];
-    v13 = [(LPLinkView *)self _videoViewConfiguration];
-    v14 = [(LPStreamingVideoView *)v19 initWithHost:self video:v9 style:v10 posterFrame:v11 posterFrameStyle:v12 configuration:v13];
+    video2 = [propertiesCopy video];
+    mediaVideo = [(LPTheme *)self->_theme mediaVideo];
+    image = [propertiesCopy image];
+    mediaImage = [(LPTheme *)self->_theme mediaImage];
+    _videoViewConfiguration = [(LPLinkView *)self _videoViewConfiguration];
+    v14 = [(LPStreamingVideoView *)v19 initWithHost:self video:video2 style:mediaVideo posterFrame:image posterFrameStyle:mediaImage configuration:_videoViewConfiguration];
     goto LABEL_9;
   }
 
-  v17 = [v4 video];
-  v18 = [v17 data];
+  video4 = [propertiesCopy video];
+  data = [video4 data];
 
-  if (v18)
+  if (data)
   {
     goto LABEL_8;
   }
 
-  v21 = [v4 image];
-  v22 = [v21 _isFallbackIcon];
+  image2 = [propertiesCopy image];
+  _isFallbackIcon = [image2 _isFallbackIcon];
 
-  if (v22)
+  if (_isFallbackIcon)
   {
     v23 = [LPImageView alloc];
-    v9 = [v4 image];
-    v10 = [(LPTheme *)self->_theme placeholderImage];
-    v24 = [(LPImageView *)v23 initWithHost:self image:v9 properties:0 style:v10];
+    video2 = [propertiesCopy image];
+    mediaVideo = [(LPTheme *)self->_theme placeholderImage];
+    v24 = [(LPImageView *)v23 initWithHost:self image:video2 properties:0 style:mediaVideo];
     goto LABEL_20;
   }
 
-  v25 = [v4 image];
+  image3 = [propertiesCopy image];
 
-  if (v25)
+  if (image3)
   {
-    v26 = [v4 alternateImages];
+    alternateImages = [propertiesCopy alternateImages];
 
-    if (!v26)
+    if (!alternateImages)
     {
       v30 = [LPImageView alloc];
-      v9 = [v4 image];
-      v10 = [v4 imageProperties];
-      v11 = [(LPTheme *)self->_theme mediaImage];
-      v5 = [(LPImageView *)v30 initWithHost:self image:v9 properties:v10 style:v11];
+      video2 = [propertiesCopy image];
+      mediaVideo = [propertiesCopy imageProperties];
+      image = [(LPTheme *)self->_theme mediaImage];
+      _createTapToLoadView = [(LPImageView *)v30 initWithHost:self image:video2 properties:mediaVideo style:image];
       goto LABEL_10;
     }
 
-    v27 = [v4 alternateImages];
-    v9 = [v27 mutableCopy];
+    alternateImages2 = [propertiesCopy alternateImages];
+    video2 = [alternateImages2 mutableCopy];
 
-    v28 = [v4 image];
-    [v9 insertObject:v28 atIndex:0];
+    image4 = [propertiesCopy image];
+    [video2 insertObject:image4 atIndex:0];
 
     v29 = [LPMultipleImageView alloc];
-    v10 = [(LPTheme *)self->_theme mediaImage];
-    v24 = [(LPMultipleImageView *)v29 initWithHost:self images:v9 style:v10];
+    mediaVideo = [(LPTheme *)self->_theme mediaImage];
+    v24 = [(LPMultipleImageView *)v29 initWithHost:self images:video2 style:mediaVideo];
 LABEL_20:
-    v5 = v24;
+    _createTapToLoadView = v24;
     goto LABEL_11;
   }
 
-  v5 = 0;
+  _createTapToLoadView = 0;
 LABEL_12:
 
-  return v5;
+  return _createTapToLoadView;
 }
 
 - (id)_createQuotedTextView
 {
   v3 = [LPQuoteView alloc];
   v4 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v5 = [(LPWebLinkPresentationProperties *)self->_properties quotedText];
-  v6 = [v4 initWithString:v5];
-  v7 = [(LPTheme *)self->_theme quotedText];
-  v8 = [(LPQuoteView *)v3 initWithHost:self text:v6 style:v7];
+  quotedText = [(LPWebLinkPresentationProperties *)self->_properties quotedText];
+  v6 = [v4 initWithString:quotedText];
+  quotedText2 = [(LPTheme *)self->_theme quotedText];
+  v8 = [(LPQuoteView *)v3 initWithHost:self text:v6 style:quotedText2];
 
   [(LPQuoteView *)v8 setEmphasizedTextExpression:self->_emphasizedTextExpression];
-  v9 = [(LPWebLinkPresentationProperties *)self->_properties quotedText];
-  -[UIView _lp_setForceLTR:](v8, "_lp_setForceLTR:", [v9 _lp_isLTRText]);
+  quotedText3 = [(LPWebLinkPresentationProperties *)self->_properties quotedText];
+  -[UIView _lp_setForceLTR:](v8, "_lp_setForceLTR:", [quotedText3 _lp_isLTRText]);
 
   return v8;
 }
@@ -3678,8 +3678,8 @@ LABEL_12:
 - (id)_createDomainNameIndicator
 {
   v3 = [LPDomainNameIndicator alloc];
-  v4 = [(LPWebLinkPresentationProperties *)self->_properties domainNameForIndicator];
-  v5 = [(LPDomainNameIndicator *)v3 initWithHost:self domainName:v4 theme:self->_theme];
+  domainNameForIndicator = [(LPWebLinkPresentationProperties *)self->_properties domainNameForIndicator];
+  v5 = [(LPDomainNameIndicator *)v3 initWithHost:self domainName:domainNameForIndicator theme:self->_theme];
 
   return v5;
 }
@@ -3700,9 +3700,9 @@ LABEL_12:
     v11[4] = self;
     v6 = __40__LPLinkView__createBackgroundImageView__block_invoke(v11);
     v7 = [LPImageView alloc];
-    v8 = [(LPWebLinkPresentationProperties *)self->_properties backgroundImageProperties];
-    v9 = [(LPTheme *)self->_theme backgroundImage];
-    v5 = [(LPImageView *)v7 initWithHost:self image:v6 properties:v8 style:v9];
+    backgroundImageProperties = [(LPWebLinkPresentationProperties *)self->_properties backgroundImageProperties];
+    backgroundImage = [(LPTheme *)self->_theme backgroundImage];
+    v5 = [(LPImageView *)v7 initWithHost:self image:v6 properties:backgroundImageProperties style:backgroundImage];
   }
 
   return v5;
@@ -3774,8 +3774,8 @@ LABEL_9:
   v3 = [LPContactsBadgeView alloc];
   contactsForAttribution = self->_contactsForAttribution;
   highlightedForAttribution = self->_highlightedForAttribution;
-  v6 = [(LPTheme *)self->_theme contactsBadgeStyle];
-  v7 = [(LPContactsBadgeView *)v3 initWithHost:self contacts:contactsForAttribution highlighted:highlightedForAttribution style:v6];
+  contactsBadgeStyle = [(LPTheme *)self->_theme contactsBadgeStyle];
+  v7 = [(LPContactsBadgeView *)v3 initWithHost:self contacts:contactsForAttribution highlighted:highlightedForAttribution style:contactsBadgeStyle];
 
   return v7;
 }
@@ -3813,56 +3813,56 @@ id __38__LPLinkView__createTextHighlightView__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (int64_t)componentView:(id)a3 allowedImageFilterForFilter:(int64_t)a4
+- (int64_t)componentView:(id)view allowedImageFilterForFilter:(int64_t)filter
 {
-  v6 = a3;
-  if (a4 == 8 && ![(LPLinkView *)self _isUsingAppClipPresentation])
+  viewCopy = view;
+  if (filter == 8 && ![(LPLinkView *)self _isUsingAppClipPresentation])
   {
     goto LABEL_5;
   }
 
   if ([(LPLinkView *)self _useLowMemoryImageFilters])
   {
-    if ((a4 & 0xFFFFFFFFFFFFFFFDLL) == 5)
+    if ((filter & 0xFFFFFFFFFFFFFFFDLL) == 5)
     {
 LABEL_5:
-      a4 = 3;
+      filter = 3;
       goto LABEL_6;
     }
 
-    if ((a4 - 9) < 3)
+    if ((filter - 9) < 3)
     {
-      a4 = 1;
+      filter = 1;
     }
   }
 
 LABEL_6:
 
-  return a4;
+  return filter;
 }
 
-- (void)componentViewDidTapCaptionButton:(id)a3 buttonType:(int64_t)a4
+- (void)componentViewDidTapCaptionButton:(id)button buttonType:(int64_t)type
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained _linkView:self didTapCaptionButtonWithType:a4];
+    [WeakRetained _linkView:self didTapCaptionButtonWithType:type];
   }
 }
 
-- (id)componentView:(id)a3 playerForAudio:(id)a4
+- (id)componentView:(id)view playerForAudio:(id)audio
 {
-  v5 = a4;
+  audioCopy = audio;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([WeakRetained _linkView:self playerForAudio:v5], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([WeakRetained _linkView:self playerForAudio:audioCopy], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v7 = [LPStreamingAudioPlayer playerWithAudio:v5];
+    v7 = [LPStreamingAudioPlayer playerWithAudio:audioCopy];
   }
 
   return v7;
 }
 
-- (id)downloadProgressForComponentView:(id)a3
+- (id)downloadProgressForComponentView:(id)view
 {
   v3 = [[LPLinkMetadataDownloadProgressTransformer alloc] initWithBytesLoaded:self->_bytesLoaded downloadState:self->_sharedObjectDownloadState metadata:self->_metadata];
   v4 = [(LPLinkMetadataDownloadProgressTransformer *)v3 downloadProgressForTransformer:v3];
@@ -3870,40 +3870,40 @@ LABEL_6:
   return v4;
 }
 
-- (CGSize)_layoutLinkViewForSize:(CGSize)a3 applyingLayout:(BOOL)a4
+- (CGSize)_layoutLinkViewForSize:(CGSize)size applyingLayout:(BOOL)layout
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  layoutCopy = layout;
+  height = size.height;
+  width = size.width;
   v7 = &OBJC_IVAR___LPLinkView__componentsForSizing;
-  if (a4)
+  if (layout)
   {
     v7 = &OBJC_IVAR___LPLinkView__components;
   }
 
-  v8 = *(&self->super.super.super.isa + *v7);
-  if (!v8)
+  _createComponents = *(&self->super.super.super.isa + *v7);
+  if (!_createComponents)
   {
-    v8 = [(LPLinkView *)self _createComponents];
-    objc_storeStrong(&self->_componentsForSizing, v8);
+    _createComponents = [(LPLinkView *)self _createComponents];
+    objc_storeStrong(&self->_componentsForSizing, _createComponents);
   }
 
   v289 = width;
-  if (!v4)
+  if (!layoutCopy)
   {
     if ([(LPWebLinkPresentationProperties *)self->_properties style]== 15)
     {
-      v9 = [(LPTheme *)self->_theme tapToLoad];
-      v10 = [v9 width];
-      [v10 value];
+      tapToLoad = [(LPTheme *)self->_theme tapToLoad];
+      width = [tapToLoad width];
+      [width value];
       width = fmin(v11, width);
     }
 
     else if (self->_allowsSkinnyWidth)
     {
-      v12 = [v8 media];
+      media = [_createComponents media];
 
-      if (v12)
+      if (media)
       {
         v324[0] = MEMORY[0x1E69E9820];
         v324[1] = 3221225472;
@@ -3919,7 +3919,7 @@ LABEL_6:
     }
   }
 
-  v14 = [v8 captionBar];
+  captionBar = [_createComponents captionBar];
   v15 = *MEMORY[0x1E695F050];
   v16 = *(MEMORY[0x1E695F050] + 8);
   v17 = *(MEMORY[0x1E695F050] + 16);
@@ -3929,32 +3929,32 @@ LABEL_6:
   r2_24 = v17;
   v322 = v16;
   v323 = v15;
-  if (v14)
+  if (captionBar)
   {
     top = self->_textSafeAreaInset.top;
     left = self->_textSafeAreaInset.left;
     bottom = self->_textSafeAreaInset.bottom;
     right = self->_textSafeAreaInset.right;
-    v23 = [v8 captionBar];
-    [v23 setTextSafeAreaInset:{top, left, bottom, right}];
+    captionBar2 = [_createComponents captionBar];
+    [captionBar2 setTextSafeAreaInset:{top, left, bottom, right}];
 
-    v24 = [v8 captionBar];
-    [v24 sizeThatFits:{width, height}];
+    captionBar3 = [_createComponents captionBar];
+    [captionBar3 sizeThatFits:{width, height}];
     r1 = v25;
     v27 = v26;
 
     if (self->_forceFlexibleWidth)
     {
-      v28 = !v4;
+      v28 = !layoutCopy;
     }
 
     else
     {
-      v30 = [(LPWebLinkPresentationProperties *)self->_properties style];
+      style = [(LPWebLinkPresentationProperties *)self->_properties style];
       effectiveSizeClass = self->_effectiveSizeClass;
-      v32 = [v8 quote];
-      v33 = [v8 media];
-      v28 = shouldUseFlexibleWidth(v30, effectiveSizeClass, v32 != 0, v33 != 0) & !v4;
+      quote = [_createComponents quote];
+      media2 = [_createComponents media];
+      v28 = shouldUseFlexibleWidth(style, effectiveSizeClass, quote != 0, media2 != 0) & !layoutCopy;
     }
 
     if (v28)
@@ -3982,19 +3982,19 @@ LABEL_6:
     v29 = height;
   }
 
-  v35 = [v8 quote];
+  quote2 = [_createComponents quote];
 
-  if (v35)
+  if (quote2)
   {
     v36 = self->_textSafeAreaInset.top;
     v37 = self->_textSafeAreaInset.left;
     v38 = self->_textSafeAreaInset.bottom;
     v39 = self->_textSafeAreaInset.right;
-    v40 = [v8 quote];
-    [v40 setContentInset:{v36, v37, v38, v39}];
+    quote3 = [_createComponents quote];
+    [quote3 setContentInset:{v36, v37, v38, v39}];
 
-    v41 = [v8 quote];
-    [v41 sizeThatFits:{width, v29}];
+    quote4 = [_createComponents quote];
+    [quote4 sizeThatFits:{width, v29}];
     v294 = v42;
     v44 = v43;
 
@@ -4006,11 +4006,11 @@ LABEL_6:
     }
 
     v47 = fmin(v44, v29);
-    if (v4)
+    if (layoutCopy)
     {
-      v48 = [v8 media];
+      media3 = [_createComponents media];
 
-      if (!v48)
+      if (!media3)
       {
         v47 = v29;
       }
@@ -4032,19 +4032,19 @@ LABEL_6:
   }
 
   r2 = v49;
-  v50 = [v8 media];
+  media4 = [_createComponents media];
 
-  if (v50)
+  if (media4)
   {
-    v51 = [v8 media];
-    [v51 sizeThatFits:{width, v29}];
+    media5 = [_createComponents media];
+    [media5 sizeThatFits:{width, v29}];
     v297 = v52;
     v54 = v53;
 
     [(LPLinkRendererSizeClassParameters *)self->_sizeClassParameters mediaFixedAspectRatio];
     if (v55 == 0.0)
     {
-      if (v4)
+      if (layoutCopy)
       {
         v57 = v29;
       }
@@ -4061,23 +4061,23 @@ LABEL_6:
       v57 = width / v56;
     }
 
-    v81 = [v8 mediaTopCaptionBar];
+    mediaTopCaptionBar = [_createComponents mediaTopCaptionBar];
 
     v299 = r2_24;
     v300 = r2_16;
     MinY = v322;
     v301 = v323;
-    if (v81)
+    if (mediaTopCaptionBar)
     {
       v82 = self->_textSafeAreaInset.top;
       v83 = self->_textSafeAreaInset.left;
       v84 = self->_textSafeAreaInset.bottom;
       v85 = self->_textSafeAreaInset.right;
-      v86 = [v8 mediaTopCaptionBar];
-      [v86 setTextSafeAreaInset:{v82, v83, v84, v85}];
+      mediaTopCaptionBar2 = [_createComponents mediaTopCaptionBar];
+      [mediaTopCaptionBar2 setTextSafeAreaInset:{v82, v83, v84, v85}];
 
-      v87 = [v8 mediaTopCaptionBar];
-      [v87 sizeThatFits:{width, v57}];
+      mediaTopCaptionBar3 = [_createComponents mediaTopCaptionBar];
+      [mediaTopCaptionBar3 sizeThatFits:{width, v57}];
       v89 = v88;
 
       v328.origin.x = 0.0;
@@ -4090,16 +4090,16 @@ LABEL_6:
       v300 = fmin(v89, v57);
     }
 
-    v90 = [v8 domainNameIndicator];
+    domainNameIndicator = [_createComponents domainNameIndicator];
 
     v314 = r2_16;
     v316 = r2_24;
     v59 = v322;
     v312 = v323;
-    if (v90)
+    if (domainNameIndicator)
     {
-      v91 = [v8 domainNameIndicator];
-      [v91 sizeThatFits:{width, v57}];
+      domainNameIndicator2 = [_createComponents domainNameIndicator];
+      [domainNameIndicator2 sizeThatFits:{width, v57}];
       v93 = v92;
       v95 = v94;
 
@@ -4108,11 +4108,11 @@ LABEL_6:
       v329.size.width = width;
       v329.size.height = v57;
       v59 = CGRectGetMinY(v329);
-      v96 = [(UIView *)self _lp_isLTR];
+      _lp_isLTR = [(UIView *)self _lp_isLTR];
       v314 = fmin(v95, v57);
       v316 = fmin(v93, width);
       v97 = width - v316;
-      if (v96)
+      if (_lp_isLTR)
       {
         v97 = 0.0;
       }
@@ -4120,19 +4120,19 @@ LABEL_6:
       v312 = v97;
     }
 
-    v98 = [v8 mediaBottomCaptionBar];
+    mediaBottomCaptionBar = [_createComponents mediaBottomCaptionBar];
 
-    if (v98)
+    if (mediaBottomCaptionBar)
     {
       v99 = self->_textSafeAreaInset.top;
       v100 = self->_textSafeAreaInset.left;
       v101 = self->_textSafeAreaInset.bottom;
       v102 = self->_textSafeAreaInset.right;
-      v103 = [v8 mediaBottomCaptionBar];
-      [v103 setTextSafeAreaInset:{v99, v100, v101, v102}];
+      mediaBottomCaptionBar2 = [_createComponents mediaBottomCaptionBar];
+      [mediaBottomCaptionBar2 setTextSafeAreaInset:{v99, v100, v101, v102}];
 
-      v104 = [v8 mediaBottomCaptionBar];
-      [v104 sizeThatFits:{width, v57}];
+      mediaBottomCaptionBar3 = [_createComponents mediaBottomCaptionBar];
+      [mediaBottomCaptionBar3 sizeThatFits:{width, v57}];
       v106 = v105;
 
       v330.origin.x = 0.0;
@@ -4162,7 +4162,7 @@ LABEL_6:
 
   else
   {
-    v58 = [v8 quote];
+    quote5 = [_createComponents quote];
 
     v57 = r2_16;
     v291 = r2_24;
@@ -4181,25 +4181,25 @@ LABEL_6:
     v297 = r2_24;
     v321 = v322;
     r2_8 = v323;
-    if (v58)
+    if (quote5)
     {
-      v60 = [v8 mediaTopCaptionBar];
+      mediaTopCaptionBar4 = [_createComponents mediaTopCaptionBar];
 
       v299 = r2_24;
       v300 = r2_16;
       MinY = v322;
       v301 = v323;
-      if (v60)
+      if (mediaTopCaptionBar4)
       {
         v61 = self->_textSafeAreaInset.top;
         v62 = self->_textSafeAreaInset.left;
         v63 = self->_textSafeAreaInset.bottom;
         v64 = self->_textSafeAreaInset.right;
-        v65 = [v8 mediaTopCaptionBar];
-        [v65 setTextSafeAreaInset:{v61, v62, v63, v64}];
+        mediaTopCaptionBar5 = [_createComponents mediaTopCaptionBar];
+        [mediaTopCaptionBar5 setTextSafeAreaInset:{v61, v62, v63, v64}];
 
-        v66 = [v8 mediaTopCaptionBar];
-        [v66 sizeThatFits:{v311, v47}];
+        mediaTopCaptionBar6 = [_createComponents mediaTopCaptionBar];
+        [mediaTopCaptionBar6 sizeThatFits:{v311, v47}];
         v68 = v67;
 
         v326.origin.x = r2;
@@ -4212,19 +4212,19 @@ LABEL_6:
         v301 = r2;
       }
 
-      v69 = [v8 mediaBottomCaptionBar];
+      mediaBottomCaptionBar4 = [_createComponents mediaBottomCaptionBar];
 
-      if (v69)
+      if (mediaBottomCaptionBar4)
       {
         v70 = self->_textSafeAreaInset.top;
         v71 = self->_textSafeAreaInset.left;
         v72 = self->_textSafeAreaInset.bottom;
         v73 = self->_textSafeAreaInset.right;
-        v74 = [v8 mediaBottomCaptionBar];
-        [v74 setTextSafeAreaInset:{v70, v71, v72, v73}];
+        mediaBottomCaptionBar5 = [_createComponents mediaBottomCaptionBar];
+        [mediaBottomCaptionBar5 setTextSafeAreaInset:{v70, v71, v72, v73}];
 
-        v75 = [v8 mediaBottomCaptionBar];
-        [v75 sizeThatFits:{v311, v47}];
+        mediaBottomCaptionBar6 = [_createComponents mediaBottomCaptionBar];
+        [mediaBottomCaptionBar6 sizeThatFits:{v311, v47}];
         v77 = v76;
 
         v327.origin.x = r2;
@@ -4266,14 +4266,14 @@ LABEL_6:
     }
   }
 
-  v107 = [v8 progressSpinner];
+  progressSpinner = [_createComponents progressSpinner];
 
   v307 = r2_24;
   v308 = r2_16;
-  if (v107)
+  if (progressSpinner)
   {
-    v108 = [v8 progressSpinner];
-    [v108 sizeThatFits:{v290, height}];
+    progressSpinner2 = [_createComponents progressSpinner];
+    [progressSpinner2 sizeThatFits:{v290, height}];
     v110 = v109;
     v112 = v111;
 
@@ -4283,8 +4283,8 @@ LABEL_6:
     v322 = (height - v112) * 0.5;
   }
 
-  v113 = [v8 media];
-  if (v113)
+  media6 = [_createComponents media];
+  if (media6)
   {
     v114 = v47;
 
@@ -4293,21 +4293,21 @@ LABEL_6:
 
   else
   {
-    v116 = [v8 domainNameIndicator];
+    domainNameIndicator3 = [_createComponents domainNameIndicator];
 
     v115 = rect;
-    if (v116)
+    if (domainNameIndicator3)
     {
       v114 = v47;
-      v117 = [v8 domainNameIndicator];
-      [v117 sizeThatFits:{v316, v314}];
+      domainNameIndicator4 = [_createComponents domainNameIndicator];
+      [domainNameIndicator4 sizeThatFits:{v316, v314}];
       v316 = v118;
       v314 = v119;
 
-      v120 = [(UIView *)self _lp_isLTR];
+      _lp_isLTR2 = [(UIView *)self _lp_isLTR];
       v121 = width - v316;
       v59 = 0.0;
-      if (v120)
+      if (_lp_isLTR2)
       {
         v121 = 0.0;
       }
@@ -4321,9 +4321,9 @@ LABEL_6:
     }
   }
 
-  v122 = [v8 media];
+  media7 = [_createComponents media];
 
-  if (v122)
+  if (media7)
   {
     v331.origin.x = r2_8;
     v331.origin.y = v321;
@@ -4337,16 +4337,16 @@ LABEL_6:
     MaxY = 0.0;
   }
 
-  v124 = [v8 media];
-  if (v124)
+  media8 = [_createComponents media];
+  if (media8)
   {
   }
 
   else
   {
-    v125 = [v8 domainNameIndicator];
+    domainNameIndicator5 = [_createComponents domainNameIndicator];
 
-    if (v125)
+    if (domainNameIndicator5)
     {
       v332.origin.x = v312;
       v332.origin.y = v59;
@@ -4356,9 +4356,9 @@ LABEL_6:
     }
   }
 
-  v126 = [v8 quote];
+  quote6 = [_createComponents quote];
 
-  if (v126)
+  if (quote6)
   {
     v333.origin.x = r2;
     v333.origin.y = MaxY;
@@ -4373,10 +4373,10 @@ LABEL_6:
     MaxY = v115;
   }
 
-  v128 = [v8 captionBar];
+  captionBar4 = [_createComponents captionBar];
 
   v129 = v297;
-  if (v128)
+  if (captionBar4)
   {
     v130 = v127;
   }
@@ -4414,16 +4414,16 @@ LABEL_6:
   v138 = [(LPWebLinkPresentationProperties *)self->_properties minimumHeight:v337.origin.x];
   if (v138)
   {
-    v139 = [(LPWebLinkPresentationProperties *)self->_properties minimumHeight];
-    [v139 doubleValue];
+    minimumHeight = [(LPWebLinkPresentationProperties *)self->_properties minimumHeight];
+    [minimumHeight doubleValue];
     v141 = v140;
 
     v142 = v137 < v141;
     v143 = v137;
     if (v142)
     {
-      v144 = [(LPWebLinkPresentationProperties *)self->_properties minimumHeight];
-      [v144 doubleValue];
+      minimumHeight2 = [(LPWebLinkPresentationProperties *)self->_properties minimumHeight];
+      [minimumHeight2 doubleValue];
       v143 = v145;
     }
   }
@@ -4433,13 +4433,13 @@ LABEL_6:
     v143 = v137;
   }
 
-  v146 = [v8 quote];
+  quote7 = [_createComponents quote];
 
   v296 = v143;
-  if (v4 && v137 < height)
+  if (layoutCopy && v137 < height)
   {
     v147 = height - v137;
-    if (!v146)
+    if (!quote7)
     {
       v147 = v147 * 0.5;
     }
@@ -4452,7 +4452,7 @@ LABEL_6:
     MaxY = MaxY + v147;
   }
 
-  if (v4)
+  if (layoutCopy)
   {
     v338.origin.x = r2_8;
     v338.origin.y = v321;
@@ -4470,21 +4470,21 @@ LABEL_6:
       {
         if (v149)
         {
-          v150 = [v8 mediaBackground];
-          [v150 setFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+          mediaBackground = [_createComponents mediaBackground];
+          [mediaBackground setFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
         }
 
         else
         {
-          v150 = [v8 mediaBackground];
-          [v150 setFrame:{r2, MaxY, v311, v114}];
+          mediaBackground = [_createComponents mediaBackground];
+          [mediaBackground setFrame:{r2, MaxY, v311, v114}];
         }
       }
 
       else
       {
-        v150 = [v8 mediaBackground];
-        [v150 setFrame:{r2_8, v321, v313, v57}];
+        mediaBackground = [_createComponents mediaBackground];
+        [mediaBackground setFrame:{r2_8, v321, v313, v57}];
       }
     }
 
@@ -4503,36 +4503,36 @@ LABEL_6:
       y = v341.origin.y;
       v153 = v341.size.width;
       v154 = v341.size.height;
-      v150 = [v8 mediaBackground];
-      [v150 setFrame:{x, y, v153, v154}];
+      mediaBackground = [_createComponents mediaBackground];
+      [mediaBackground setFrame:{x, y, v153, v154}];
     }
 
-    v155 = [v8 mediaBackground];
-    [v155 convertRect:self->_contentView fromView:{r2_8, v321, v313, v57}];
+    mediaBackground2 = [_createComponents mediaBackground];
+    [mediaBackground2 convertRect:self->_contentView fromView:{r2_8, v321, v313, v57}];
     v157 = v156;
     v159 = v158;
     v161 = v160;
     v163 = v162;
-    v164 = [v8 media];
-    [v164 setFrame:{v157, v159, v161, v163}];
+    media9 = [_createComponents media];
+    [media9 setFrame:{v157, v159, v161, v163}];
 
-    v165 = [v8 domainNameIndicator];
-    [v165 setFrame:{v312, v59, v316, v314}];
+    domainNameIndicator6 = [_createComponents domainNameIndicator];
+    [domainNameIndicator6 setFrame:{v312, v59, v316, v314}];
 
-    v166 = [v8 mediaTopCaptionBar];
-    [v166 setFrame:{v301, MinY, v299, v300}];
+    mediaTopCaptionBar7 = [_createComponents mediaTopCaptionBar];
+    [mediaTopCaptionBar7 setFrame:{v301, MinY, v299, v300}];
 
-    v167 = [v8 mediaBottomCaptionBar];
-    [v167 setFrame:{v293, v306, v291, v292}];
+    mediaBottomCaptionBar7 = [_createComponents mediaBottomCaptionBar];
+    [mediaBottomCaptionBar7 setFrame:{v293, v306, v291, v292}];
 
-    v168 = [v8 mediaBackground];
-    [v168 convertRect:self->_contentView fromView:{r2, MaxY, v311, v114}];
+    mediaBackground3 = [_createComponents mediaBackground];
+    [mediaBackground3 convertRect:self->_contentView fromView:{r2, MaxY, v311, v114}];
     v170 = v169;
     v172 = v171;
     v174 = v173;
     v176 = v175;
-    v177 = [v8 quote];
-    [v177 setFrame:{v170, v172, v174, v176}];
+    quote8 = [_createComponents quote];
+    [quote8 setFrame:{v170, v172, v174, v176}];
 
     [(LPLinkView *)self bounds];
     [(LPLinkView *)self convertRect:self->_contentView toView:?];
@@ -4540,26 +4540,26 @@ LABEL_6:
     v181 = v180;
     v183 = v182;
     v185 = v184;
-    v186 = [v8 backgroundImage];
-    [v186 setFrame:{v179, v181, v183, v185}];
+    backgroundImage = [_createComponents backgroundImage];
+    [backgroundImage setFrame:{v179, v181, v183, v185}];
 
-    v187 = [v8 progressSpinner];
-    [v187 setFrame:{v323, v322, v307, v308}];
+    progressSpinner3 = [_createComponents progressSpinner];
+    [progressSpinner3 setFrame:{v323, v322, v307, v308}];
 
-    v188 = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
-    LODWORD(v177) = [v188 usesBlurredBackground];
+    captionBar5 = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
+    LODWORD(quote8) = [captionBar5 usesBlurredBackground];
 
-    if (v177)
+    if (quote8)
     {
-      v189 = [v8 backgroundImage];
-      [v189 frame];
+      backgroundImage2 = [_createComponents backgroundImage];
+      [backgroundImage2 frame];
       v191 = v190;
       v193 = v192;
       v195 = v194;
       v197 = v196;
 
-      v198 = [v8 backgroundImage];
-      [v198 setFrame:{v191, v57 + v193, v195, v197}];
+      backgroundImage3 = [_createComponents backgroundImage];
+      [backgroundImage3 setFrame:{v191, v57 + v193, v195, v197}];
     }
 
     v200 = self->_contentInset.top;
@@ -4584,45 +4584,45 @@ LABEL_6:
     v205 = self->_textSafeAreaInset.left;
     v206 = self->_textSafeAreaInset.bottom;
     v207 = self->_textSafeAreaInset.right;
-    v208 = [v8 captionBar];
-    [v208 setTextSafeAreaInset:{v204, v205, v206, v207}];
+    captionBar6 = [_createComponents captionBar];
+    [captionBar6 setTextSafeAreaInset:{v204, v205, v206, v207}];
 
-    v209 = [v8 captionBar];
-    [v209 setBackgroundOutset:{v203, v199, v201, v202}];
+    captionBar7 = [_createComponents captionBar];
+    [captionBar7 setBackgroundOutset:{v203, v199, v201, v202}];
 
-    v210 = [v8 captionBar];
-    [v210 setFrame:{v304, recta, v305, r1}];
+    captionBar8 = [_createComponents captionBar];
+    [captionBar8 setFrame:{v304, recta, v305, r1}];
 
     animationView = self->_animationView;
-    v212 = [v8 captionBar];
-    [v212 frame];
+    captionBar9 = [_createComponents captionBar];
+    [captionBar9 frame];
     [(UIView *)animationView convertRect:self->_contentView fromView:v213 - v199, v214 - v203, v215 - (-v202 - v199), v216 - (-v201 - v203)];
     v218 = v217;
 
-    v219 = [v8 textSearchingDimmingView];
+    textSearchingDimmingView = [_createComponents textSearchingDimmingView];
 
-    if (v219)
+    if (textSearchingDimmingView)
     {
       [(UIView *)self->_contentView bounds];
       v221 = v220;
       v223 = v222;
       v225 = v224;
       v227 = v226;
-      v228 = [v8 textSearchingDimmingView];
-      [v228 setFrame:{v221, v223, v225, v227}];
+      textSearchingDimmingView2 = [_createComponents textSearchingDimmingView];
+      [textSearchingDimmingView2 setFrame:{v221, v223, v225, v227}];
     }
 
-    v229 = [v8 textHighlightView];
+    textHighlightView = [_createComponents textHighlightView];
 
-    if (v229)
+    if (textHighlightView)
     {
       [(LPLinkView *)self frameForHighlightedTextRange];
       v231 = v230;
       v233 = v232;
       v235 = v234;
       v237 = v236;
-      v238 = [v8 textHighlightView];
-      [v238 setFrame:{v231, v233, v235, v237}];
+      textHighlightView2 = [_createComponents textHighlightView];
+      [textHighlightView2 setFrame:{v231, v233, v235, v237}];
     }
 
     [(UIView *)self->_animationView bounds];
@@ -4651,29 +4651,29 @@ LABEL_6:
     }
 
     [(UIView *)self->_captionHighlightView setFrame:0.0, v218, v244, v242 - v218];
-    v245 = [v8 contactsBadge];
+    contactsBadge = [_createComponents contactsBadge];
 
-    if (v245)
+    if (contactsBadge)
     {
-      v246 = [v8 contactsBadge];
-      [v246 sizeThatFits:{r2_24, r2_16}];
+      contactsBadge2 = [_createComponents contactsBadge];
+      [contactsBadge2 sizeThatFits:{r2_24, r2_16}];
       v248 = v247;
       v250 = v249;
 
-      v251 = [(LPTheme *)self->_theme contactsBadgeStyle];
-      v252 = [v251 location];
+      contactsBadgeStyle = [(LPTheme *)self->_theme contactsBadgeStyle];
+      location = [contactsBadgeStyle location];
 
-      if (v252 == 1)
+      if (location == 1)
       {
-        v253 = [v8 captionBar];
-        [v253 _lp_layoutIfNeeded];
+        captionBar10 = [_createComponents captionBar];
+        [captionBar10 _lp_layoutIfNeeded];
 
-        v254 = [v8 captionBar];
-        v255 = [v254 primaryIconView];
-        v256 = [v8 captionBar];
-        v257 = [v256 primaryIconView];
-        [v257 bounds];
-        [v255 convertRect:self->_contentView toView:?];
+        captionBar11 = [_createComponents captionBar];
+        primaryIconView = [captionBar11 primaryIconView];
+        captionBar12 = [_createComponents captionBar];
+        primaryIconView2 = [captionBar12 primaryIconView];
+        [primaryIconView2 bounds];
+        [primaryIconView convertRect:self->_contentView toView:?];
         v259 = v258;
         v261 = v260;
         v263 = v262;
@@ -4689,12 +4689,12 @@ LABEL_6:
         v344.size.width = v263;
         v344.size.height = v265;
         v267 = CGRectGetMaxY(v344);
-        v268 = [(LPTheme *)self->_theme contactsBadgeStyle];
-        [v268 iconOffset];
+        contactsBadgeStyle2 = [(LPTheme *)self->_theme contactsBadgeStyle];
+        [contactsBadgeStyle2 iconOffset];
         v270 = v269;
 
-        v271 = [(LPTheme *)self->_theme contactsBadgeStyle];
-        [v271 iconOffset];
+        contactsBadgeStyle3 = [(LPTheme *)self->_theme contactsBadgeStyle];
+        [contactsBadgeStyle3 iconOffset];
         v272 = v267 - v250 * 0.5;
         MinX = MaxX - v248 * 0.5 + v270;
         v275 = v272 + v274;
@@ -4702,16 +4702,16 @@ LABEL_6:
 
       else
       {
-        v276 = [v8 mediaBackground];
-        [v276 frame];
+        mediaBackground4 = [_createComponents mediaBackground];
+        [mediaBackground4 frame];
         v278 = v277;
         v280 = v279;
         v282 = v281;
         v284 = v283;
 
-        v285 = [(UIView *)self _lp_isLTR];
+        _lp_isLTR3 = [(UIView *)self _lp_isLTR];
         v275 = *(MEMORY[0x1E695EFF8] + 8);
-        if (v285)
+        if (_lp_isLTR3)
         {
           MinX = v282 - v248;
         }
@@ -4726,14 +4726,14 @@ LABEL_6:
         }
       }
 
-      v286 = [v8 contactsBadge];
-      [v286 setFrame:{MinX, v275, v248, v250}];
+      contactsBadge3 = [_createComponents contactsBadge];
+      [contactsBadge3 setFrame:{MinX, v275, v248, v250}];
     }
 
     if (self->_componentsNeedLayout)
     {
       self->_componentsNeedLayout = 0;
-      [v8 applyToAllViews:&__block_literal_global_254];
+      [_createComponents applyToAllViews:&__block_literal_global_254];
     }
   }
 
@@ -4788,18 +4788,18 @@ BOOL __52__LPLinkView__layoutLinkViewForSize_applyingLayout___block_invoke(uint6
 
 - (CGRect)_primaryCaptionBarFrame
 {
-  v3 = [(LPLinkViewComponents *)self->_components captionBar];
+  captionBar = [(LPLinkViewComponents *)self->_components captionBar];
 
-  if (v3)
+  if (captionBar)
   {
-    v4 = [(LPLinkViewComponents *)self->_components captionBar];
-    [v4 bounds];
+    captionBar2 = [(LPLinkViewComponents *)self->_components captionBar];
+    [captionBar2 bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(LPLinkViewComponents *)self->_components captionBar];
-    [(LPLinkView *)self convertRect:v13 fromView:v6, v8, v10, v12];
+    captionBar3 = [(LPLinkViewComponents *)self->_components captionBar];
+    [(LPLinkView *)self convertRect:captionBar3 fromView:v6, v8, v10, v12];
     v15 = v14;
     v17 = v16;
     v19 = v18;
@@ -4827,8 +4827,8 @@ BOOL __52__LPLinkView__layoutLinkViewForSize_applyingLayout___block_invoke(uint6
 
 - (id)_playable
 {
-  v3 = [(LPLinkViewComponents *)self->_components media];
-  v4 = [v3 conformsToProtocol:&unk_1F2492198];
+  media = [(LPLinkViewComponents *)self->_components media];
+  v4 = [media conformsToProtocol:&unk_1F2492198];
 
   components = self->_components;
   if (v4)
@@ -4841,43 +4841,43 @@ BOOL __52__LPLinkView__layoutLinkViewForSize_applyingLayout___block_invoke(uint6
     [(LPLinkViewComponents *)components captionBar];
   }
   v6 = ;
-  v7 = [v6 playable];
+  playable = [v6 playable];
 
-  return v7;
+  return playable;
 }
 
 - (void)_playMedia
 {
-  v2 = [(LPLinkView *)self _playable];
-  [v2 setPlaying:1];
+  _playable = [(LPLinkView *)self _playable];
+  [_playable setPlaying:1];
 }
 
 - (void)_pauseMedia
 {
-  v2 = [(LPLinkView *)self _playable];
-  [v2 setPlaying:0];
+  _playable = [(LPLinkView *)self _playable];
+  [_playable setPlaying:0];
 }
 
 - (BOOL)_isPlayingMedia
 {
-  v2 = [(LPLinkView *)self _playable];
-  v3 = [v2 isPlaying];
+  _playable = [(LPLinkView *)self _playable];
+  isPlaying = [_playable isPlaying];
 
-  return v3;
+  return isPlaying;
 }
 
 - (BOOL)_hasMediaToPlay
 {
-  v2 = [(LPLinkView *)self _playable];
-  v3 = v2 != 0;
+  _playable = [(LPLinkView *)self _playable];
+  v3 = _playable != 0;
 
   return v3;
 }
 
 - (void)_resetMediaPlayback
 {
-  v2 = [(LPLinkView *)self _playable];
-  [v2 resetPlaybackState];
+  _playable = [(LPLinkView *)self _playable];
+  [_playable resetPlaybackState];
 }
 
 - (BOOL)_hasMedia
@@ -4890,23 +4890,23 @@ BOOL __52__LPLinkView__layoutLinkViewForSize_applyingLayout___block_invoke(uint6
 
 - (id)_primaryMediaView
 {
-  v3 = [(LPLinkViewComponents *)self->_components media];
-  v4 = v3;
-  if (v3)
+  media = [(LPLinkViewComponents *)self->_components media];
+  v4 = media;
+  if (media)
   {
-    v5 = v3;
+    primaryIconView = media;
   }
 
   else
   {
-    v6 = [(LPLinkViewComponents *)self->_components captionBar];
-    v5 = [v6 primaryIconView];
+    captionBar = [(LPLinkViewComponents *)self->_components captionBar];
+    primaryIconView = [captionBar primaryIconView];
   }
 
-  return v5;
+  return primaryIconView;
 }
 
-- (void)componentViewDidChangeMediaState:(id)a3
+- (void)componentViewDidChangeMediaState:(id)state
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -4943,38 +4943,38 @@ void __47__LPLinkView_componentViewDidChangeMediaState___block_invoke(uint64_t a
   }
 }
 
-- (id)layoutExclusionsForView:(id)a3
+- (id)layoutExclusionsForView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(LPLinkViewComponents *)self->_components contactsBadge];
+  contactsBadge = [(LPLinkViewComponents *)self->_components contactsBadge];
 
-  if (v6)
+  if (contactsBadge)
   {
     v7 = MEMORY[0x1E69DC728];
-    v8 = [(LPLinkViewComponents *)self->_components contactsBadge];
-    v9 = [(LPLinkViewComponents *)self->_components contactsBadge];
-    [v9 layoutExclusionRect];
-    [v8 convertRect:v4 toView:?];
+    contactsBadge2 = [(LPLinkViewComponents *)self->_components contactsBadge];
+    contactsBadge3 = [(LPLinkViewComponents *)self->_components contactsBadge];
+    [contactsBadge3 layoutExclusionRect];
+    [contactsBadge2 convertRect:viewCopy toView:?];
     v10 = [v7 bezierPathWithRect:?];
     [v5 addObject:v10];
   }
 
-  v11 = [(LPLinkViewComponents *)self->_components mediaTopCaptionBar];
+  mediaTopCaptionBar = [(LPLinkViewComponents *)self->_components mediaTopCaptionBar];
 
-  if (v11)
+  if (mediaTopCaptionBar)
   {
-    v12 = [(LPLinkViewComponents *)self->_components mediaTopCaptionBar];
-    v13 = [v12 layoutExclusionsForView:v4];
+    mediaTopCaptionBar2 = [(LPLinkViewComponents *)self->_components mediaTopCaptionBar];
+    v13 = [mediaTopCaptionBar2 layoutExclusionsForView:viewCopy];
     [v5 addObjectsFromArray:v13];
   }
 
-  v14 = [(LPLinkViewComponents *)self->_components mediaBottomCaptionBar];
+  mediaBottomCaptionBar = [(LPLinkViewComponents *)self->_components mediaBottomCaptionBar];
 
-  if (v14)
+  if (mediaBottomCaptionBar)
   {
-    v15 = [(LPLinkViewComponents *)self->_components mediaBottomCaptionBar];
-    v16 = [v15 layoutExclusionsForView:v4];
+    mediaBottomCaptionBar2 = [(LPLinkViewComponents *)self->_components mediaBottomCaptionBar];
+    v16 = [mediaBottomCaptionBar2 layoutExclusionsForView:viewCopy];
     [v5 addObjectsFromArray:v16];
   }
 
@@ -4991,79 +4991,79 @@ void __47__LPLinkView_componentViewDidChangeMediaState___block_invoke(uint64_t a
   return v17;
 }
 
-- (BOOL)allowsVibrancyForComponentView:(id)a3
+- (BOOL)allowsVibrancyForComponentView:(id)view
 {
-  v7 = !self->_useCPURenderingForMaterials && self->_allowsVibrancy && (-[LPLinkView _themePlatform](self, "_themePlatform") != 5 || (-[LPLinkView traitCollection](self, "traitCollection"), v5 = v4 = a3;
+  v7 = !self->_useCPURenderingForMaterials && self->_allowsVibrancy && (-[LPLinkView _themePlatform](self, "_themePlatform") != 5 || (-[LPLinkView traitCollection](self, "traitCollection"), v5 = v4 = view;
 
   return v7;
 }
 
-- (BOOL)allowsBadgingIconEdgeForComponentView:(id)a3
+- (BOOL)allowsBadgingIconEdgeForComponentView:(id)view
 {
-  v4 = [(LPTheme *)self->_theme contactsBadgeStyle];
-  v5 = [v4 location] != 1 || -[NSArray count](self->_contactsForAttribution, "count") == 0;
+  contactsBadgeStyle = [(LPTheme *)self->_theme contactsBadgeStyle];
+  v5 = [contactsBadgeStyle location] != 1 || -[NSArray count](self->_contactsForAttribution, "count") == 0;
 
   return v5;
 }
 
 - (void)_installHighlightGestureRecognizers
 {
-  v3 = [(LPLinkViewComponents *)self->_components captionBar];
+  captionBar = [(LPLinkViewComponents *)self->_components captionBar];
 
-  if (v3)
+  if (captionBar)
   {
-    v8 = [(LPLinkViewComponents *)self->_components captionBar];
+    captionBar2 = [(LPLinkViewComponents *)self->_components captionBar];
     [LPLinkView _addHighlightRecognizerToView:"_addHighlightRecognizerToView:forMedia:" forMedia:?];
   }
 
-  v4 = [(LPLinkViewComponents *)self->_components media];
+  media = [(LPLinkViewComponents *)self->_components media];
 
-  if (v4)
+  if (media)
   {
-    v9 = [(LPLinkViewComponents *)self->_components media];
+    media2 = [(LPLinkViewComponents *)self->_components media];
     [LPLinkView _addHighlightRecognizerToView:"_addHighlightRecognizerToView:forMedia:" forMedia:?];
   }
 
-  v5 = [(LPLinkViewComponents *)self->_components domainNameIndicator];
+  domainNameIndicator = [(LPLinkViewComponents *)self->_components domainNameIndicator];
 
-  if (v5)
+  if (domainNameIndicator)
   {
-    v10 = [(LPLinkViewComponents *)self->_components domainNameIndicator];
+    domainNameIndicator2 = [(LPLinkViewComponents *)self->_components domainNameIndicator];
     [LPLinkView _addHighlightRecognizerToView:"_addHighlightRecognizerToView:forMedia:" forMedia:?];
   }
 
-  v6 = [(LPLinkViewComponents *)self->_components quote];
+  quote = [(LPLinkViewComponents *)self->_components quote];
 
-  if (v6)
+  if (quote)
   {
-    v11 = [(LPLinkViewComponents *)self->_components quote];
+    quote2 = [(LPLinkViewComponents *)self->_components quote];
     [LPLinkView _addHighlightRecognizerToView:"_addHighlightRecognizerToView:forMedia:" forMedia:?];
   }
 
-  v7 = [(LPLinkViewComponents *)self->_components progressSpinner];
+  progressSpinner = [(LPLinkViewComponents *)self->_components progressSpinner];
 
-  if (v7)
+  if (progressSpinner)
   {
-    v12 = [(LPLinkViewComponents *)self->_components progressSpinner];
+    progressSpinner2 = [(LPLinkViewComponents *)self->_components progressSpinner];
     [LPLinkView _addHighlightRecognizerToView:"_addHighlightRecognizerToView:forMedia:" forMedia:?];
   }
 }
 
 - (void)_installTapGestureRecognizers
 {
-  v3 = [(LPLinkViewComponents *)self->_components captionBar];
+  captionBar = [(LPLinkViewComponents *)self->_components captionBar];
 
-  if (v3)
+  if (captionBar)
   {
-    v11 = [(LPLinkViewComponents *)self->_components captionBar];
+    captionBar2 = [(LPLinkViewComponents *)self->_components captionBar];
     [LPLinkView _addTapRecognizerToView:"_addTapRecognizerToView:forMedia:" forMedia:?];
   }
 
-  v4 = [(LPLinkViewComponents *)self->_components media];
-  if (v4)
+  media = [(LPLinkViewComponents *)self->_components media];
+  if (media)
   {
-    v12 = v4;
-    v5 = [(LPLinkViewComponents *)self->_components media];
+    v12 = media;
+    media2 = [(LPLinkViewComponents *)self->_components media];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -5071,7 +5071,7 @@ void __47__LPLinkView_componentViewDidChangeMediaState___block_invoke(uint64_t a
 
     else
     {
-      v6 = [(LPLinkViewComponents *)self->_components media];
+      media3 = [(LPLinkViewComponents *)self->_components media];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -5081,32 +5081,32 @@ void __47__LPLinkView_componentViewDidChangeMediaState___block_invoke(uint64_t a
       }
     }
 
-    v13 = [(LPLinkViewComponents *)self->_components media];
+    media4 = [(LPLinkViewComponents *)self->_components media];
     [LPLinkView _addTapRecognizerToView:"_addTapRecognizerToView:forMedia:" forMedia:?];
   }
 
 LABEL_8:
-  v8 = [(LPLinkViewComponents *)self->_components domainNameIndicator];
+  domainNameIndicator = [(LPLinkViewComponents *)self->_components domainNameIndicator];
 
-  if (v8)
+  if (domainNameIndicator)
   {
-    v14 = [(LPLinkViewComponents *)self->_components domainNameIndicator];
+    domainNameIndicator2 = [(LPLinkViewComponents *)self->_components domainNameIndicator];
     [LPLinkView _addTapRecognizerToView:"_addTapRecognizerToView:forMedia:" forMedia:?];
   }
 
-  v9 = [(LPLinkViewComponents *)self->_components quote];
+  quote = [(LPLinkViewComponents *)self->_components quote];
 
-  if (v9)
+  if (quote)
   {
-    v15 = [(LPLinkViewComponents *)self->_components quote];
+    quote2 = [(LPLinkViewComponents *)self->_components quote];
     [LPLinkView _addTapRecognizerToView:"_addTapRecognizerToView:forMedia:" forMedia:?];
   }
 
-  v10 = [(LPLinkViewComponents *)self->_components progressSpinner];
+  progressSpinner = [(LPLinkViewComponents *)self->_components progressSpinner];
 
-  if (v10)
+  if (progressSpinner)
   {
-    v16 = [(LPLinkViewComponents *)self->_components progressSpinner];
+    progressSpinner2 = [(LPLinkViewComponents *)self->_components progressSpinner];
     [LPLinkView _addTapRecognizerToView:"_addTapRecognizerToView:forMedia:" forMedia:?];
   }
 }
@@ -5115,9 +5115,9 @@ LABEL_8:
 {
   for (i = self->_highlightGestureRecognizers; [(NSMutableArray *)i count]; i = self->_highlightGestureRecognizers)
   {
-    v4 = [(NSMutableArray *)self->_highlightGestureRecognizers lastObject];
-    v5 = [v4 view];
-    [v5 removeGestureRecognizer:v4];
+    lastObject = [(NSMutableArray *)self->_highlightGestureRecognizers lastObject];
+    view = [lastObject view];
+    [view removeGestureRecognizer:lastObject];
 
     [(NSMutableArray *)self->_highlightGestureRecognizers removeLastObject];
   }
@@ -5127,9 +5127,9 @@ LABEL_8:
 {
   for (i = self->_tapGestureRecognizers; [(NSMutableArray *)i count]; i = self->_tapGestureRecognizers)
   {
-    v4 = [(NSMutableArray *)self->_tapGestureRecognizers lastObject];
-    v5 = [v4 view];
-    [v5 removeGestureRecognizer:v4];
+    lastObject = [(NSMutableArray *)self->_tapGestureRecognizers lastObject];
+    view = [lastObject view];
+    [view removeGestureRecognizer:lastObject];
 
     [(NSMutableArray *)self->_tapGestureRecognizers removeLastObject];
   }
@@ -5181,11 +5181,11 @@ LABEL_8:
   }
 }
 
-- (void)_setDisableTapGesture:(BOOL)a3
+- (void)_setDisableTapGesture:(BOOL)gesture
 {
-  if (self->_disableTapGesture != a3)
+  if (self->_disableTapGesture != gesture)
   {
-    self->_disableTapGesture = a3;
+    self->_disableTapGesture = gesture;
     [(LPLinkView *)self _rebuildGestureRecognizersIfNeeded];
     [(UIView *)self->_animationView _lp_setHoverEffectEnabled:!self->_disableTapGesture];
 
@@ -5193,12 +5193,12 @@ LABEL_8:
   }
 }
 
-- (void)_setDisableHighlightGesture:(BOOL)a3
+- (void)_setDisableHighlightGesture:(BOOL)gesture
 {
   self->_hasSetDisableHighlightGesture = 1;
-  if (self->_disableHighlightGesture != a3)
+  if (self->_disableHighlightGesture != gesture)
   {
-    self->_disableHighlightGesture = a3;
+    self->_disableHighlightGesture = gesture;
     [(LPLinkView *)self _rebuildGestureRecognizersIfNeeded];
   }
 }
@@ -5218,12 +5218,12 @@ LABEL_8:
   return *(&self->super.super.super.isa + *v2);
 }
 
-- (void)_setDisablePreviewGesture:(BOOL)a3
+- (void)_setDisablePreviewGesture:(BOOL)gesture
 {
   self->_hasSetDisablePreviewGesture = 1;
-  if (self->_disablePreviewGesture != a3)
+  if (self->_disablePreviewGesture != gesture)
   {
-    self->_disablePreviewGesture = a3;
+    self->_disablePreviewGesture = gesture;
     [(LPLinkView *)self _rebuildGestureRecognizersIfNeeded];
   }
 }
@@ -5248,13 +5248,13 @@ LABEL_8:
   return *(&self->super.super.super.isa + *v4);
 }
 
-- (void)_addTapRecognizerToView:(id)a3 forMedia:(BOOL)a4
+- (void)_addTapRecognizerToView:(id)view forMedia:(BOOL)media
 {
-  v4 = a4;
-  v9 = a3;
+  mediaCopy = media;
+  viewCopy = view;
   v6 = objc_alloc(MEMORY[0x1E69DD060]);
   v7 = &selRef__mediaTapRecognized_;
-  if (!v4)
+  if (!mediaCopy)
   {
     v7 = &selRef__captionTapRecognized_;
   }
@@ -5263,17 +5263,17 @@ LABEL_8:
   [v8 setDelegate:self];
   [v8 _setDelaysRecognitionForGreaterTapCounts:1];
   [v8 setName:@"LPLinkViewTap"];
-  [v9 addGestureRecognizer:v8];
+  [viewCopy addGestureRecognizer:v8];
   [(NSMutableArray *)self->_tapGestureRecognizers addObject:v8];
 }
 
-- (void)_addHighlightRecognizerToView:(id)a3 forMedia:(BOOL)a4
+- (void)_addHighlightRecognizerToView:(id)view forMedia:(BOOL)media
 {
-  v4 = a4;
-  v9 = a3;
+  mediaCopy = media;
+  viewCopy = view;
   v6 = [LPHighlightGestureRecognizer alloc];
   v7 = &selRef__mediaHighlightRecognized_;
-  if (!v4)
+  if (!mediaCopy)
   {
     v7 = &selRef__captionHighlightRecognized_;
   }
@@ -5281,37 +5281,37 @@ LABEL_8:
   v8 = [(LPHighlightGestureRecognizer *)v6 initWithTarget:self action:*v7];
   [(LPHighlightGestureRecognizer *)v8 setDelegate:self];
   [(LPHighlightGestureRecognizer *)v8 setName:@"LPLinkViewHighlight"];
-  [v9 addGestureRecognizer:v8];
+  [viewCopy addGestureRecognizer:v8];
   [(NSMutableArray *)self->_highlightGestureRecognizers addObject:v8];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v4 = [a4 view];
+  view = [touch view];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return (isKindOfClass & 1) == 0;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(NSMutableArray *)self->_highlightGestureRecognizers containsObject:v6])
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  if (![(NSMutableArray *)self->_highlightGestureRecognizers containsObject:recognizerCopy])
   {
     goto LABEL_13;
   }
 
-  v8 = [v7 view];
-  v9 = [(LPLinkViewComponents *)self->_components media];
-  if (![v8 isDescendantOfView:v9])
+  view = [gestureRecognizerCopy view];
+  media = [(LPLinkViewComponents *)self->_components media];
+  if (![view isDescendantOfView:media])
   {
     goto LABEL_6;
   }
 
-  v10 = [(LPLinkViewComponents *)self->_components media];
-  if (![v10 shouldAllowHighlightToRecognizeSimultaneouslyWithGesture:v7] || self->_disablePlayback)
+  media2 = [(LPLinkViewComponents *)self->_components media];
+  if (![media2 shouldAllowHighlightToRecognizeSimultaneouslyWithGesture:gestureRecognizerCopy] || self->_disablePlayback)
   {
 
 LABEL_6:
@@ -5334,10 +5334,10 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v11 = [v7 view];
-  if ([v11 isDescendantOfView:self])
+  view2 = [gestureRecognizerCopy view];
+  if ([view2 isDescendantOfView:self])
   {
-    v12 = [(NSMutableArray *)self->_tapGestureRecognizers containsObject:v7]^ 1;
+    v12 = [(NSMutableArray *)self->_tapGestureRecognizers containsObject:gestureRecognizerCopy]^ 1;
   }
 
   else
@@ -5382,45 +5382,45 @@ LABEL_14:
   }
 }
 
-- (void)_setHighlightMedia:(BOOL)a3
+- (void)_setHighlightMedia:(BOOL)media
 {
-  v3 = a3;
-  v6 = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
-  v5 = [v6 shouldHighlightIndependently];
+  mediaCopy = media;
+  captionBar = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
+  shouldHighlightIndependently = [captionBar shouldHighlightIndependently];
 
-  if ((v5 & 1) == 0)
+  if ((shouldHighlightIndependently & 1) == 0)
   {
-    v7 = [(UIView *)self->_captionHighlightView layer];
-    [v7 setHidden:!v3];
+    layer = [(UIView *)self->_captionHighlightView layer];
+    [layer setHidden:!mediaCopy];
   }
 
-  v8 = [(UIView *)self->_mediaHighlightView layer];
-  [v8 setHidden:!v3];
+  layer2 = [(UIView *)self->_mediaHighlightView layer];
+  [layer2 setHidden:!mediaCopy];
 }
 
-- (void)_setHighlightCaption:(BOOL)a3
+- (void)_setHighlightCaption:(BOOL)caption
 {
-  v3 = a3;
-  v6 = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
-  v5 = [v6 shouldHighlightIndependently];
+  captionCopy = caption;
+  captionBar = [(LPWebLinkPresentationProperties *)self->_properties captionBar];
+  shouldHighlightIndependently = [captionBar shouldHighlightIndependently];
 
-  if ((v5 & 1) == 0)
+  if ((shouldHighlightIndependently & 1) == 0)
   {
-    v7 = [(UIView *)self->_mediaHighlightView layer];
-    [v7 setHidden:!v3];
+    layer = [(UIView *)self->_mediaHighlightView layer];
+    [layer setHidden:!captionCopy];
   }
 
-  v8 = [(UIView *)self->_captionHighlightView layer];
-  [v8 setHidden:!v3];
+  layer2 = [(UIView *)self->_captionHighlightView layer];
+  [layer2 setHidden:!captionCopy];
 }
 
-- (void)_mediaHighlightRecognized:(id)a3
+- (void)_mediaHighlightRecognized:(id)recognized
 {
-  v6 = a3;
-  v4 = [v6 state];
-  if ((v4 - 3) >= 2)
+  recognizedCopy = recognized;
+  state = [recognizedCopy state];
+  if ((state - 3) >= 2)
   {
-    if (v4 != 1)
+    if (state != 1)
     {
       goto LABEL_6;
     }
@@ -5437,13 +5437,13 @@ LABEL_14:
 LABEL_6:
 }
 
-- (void)_captionHighlightRecognized:(id)a3
+- (void)_captionHighlightRecognized:(id)recognized
 {
-  v6 = a3;
-  v4 = [v6 state];
-  if ((v4 - 3) >= 2)
+  recognizedCopy = recognized;
+  state = [recognizedCopy state];
+  if ((state - 3) >= 2)
   {
-    if (v4 != 1)
+    if (state != 1)
     {
       goto LABEL_6;
     }
@@ -5460,7 +5460,7 @@ LABEL_6:
 LABEL_6:
 }
 
-- (void)_mediaTapRecognized:(id)a3
+- (void)_mediaTapRecognized:(id)recognized
 {
   if (!self->_disableTapGesture)
   {
@@ -5468,7 +5468,7 @@ LABEL_6:
   }
 }
 
-- (void)_captionTapRecognized:(id)a3
+- (void)_captionTapRecognized:(id)recognized
 {
   if (!self->_disableTapGesture)
   {
@@ -5476,19 +5476,19 @@ LABEL_6:
   }
 }
 
-- (void)_captionBarButtonPressed:(id)a3
+- (void)_captionBarButtonPressed:(id)pressed
 {
-  v7 = [(LPConcretePresentationProperties *)self->_properties captionButton];
-  -[LPLinkView componentViewDidTapCaptionButton:buttonType:](self, "componentViewDidTapCaptionButton:buttonType:", self, [v7 type]);
+  captionButton = [(LPConcretePresentationProperties *)self->_properties captionButton];
+  -[LPLinkView componentViewDidTapCaptionButton:buttonType:](self, "componentViewDidTapCaptionButton:buttonType:", self, [captionButton type]);
 
-  v8 = [(LPConcretePresentationProperties *)self->_properties captionButton];
-  v4 = [v8 callback];
+  captionButton2 = [(LPConcretePresentationProperties *)self->_properties captionButton];
+  callback = [captionButton2 callback];
 
-  if (v4)
+  if (callback)
   {
-    v9 = [(LPConcretePresentationProperties *)self->_properties captionButton];
-    v5 = [v9 callback];
-    v5[2]();
+    captionButton3 = [(LPConcretePresentationProperties *)self->_properties captionButton];
+    callback2 = [captionButton3 callback];
+    callback2[2]();
   }
 
   else if (!self->_disableTapGesture)
@@ -5499,23 +5499,23 @@ LABEL_6:
   }
 }
 
-- (void)_secondaryCaptionBarButtonPressed:(id)a3
+- (void)_secondaryCaptionBarButtonPressed:(id)pressed
 {
-  v6 = [(LPConcretePresentationProperties *)self->_properties secondaryCaptionButton];
-  -[LPLinkView componentViewDidTapCaptionButton:buttonType:](self, "componentViewDidTapCaptionButton:buttonType:", self, [v6 type]);
+  secondaryCaptionButton = [(LPConcretePresentationProperties *)self->_properties secondaryCaptionButton];
+  -[LPLinkView componentViewDidTapCaptionButton:buttonType:](self, "componentViewDidTapCaptionButton:buttonType:", self, [secondaryCaptionButton type]);
 
-  v7 = [(LPConcretePresentationProperties *)self->_properties secondaryCaptionButton];
-  v4 = [v7 callback];
+  secondaryCaptionButton2 = [(LPConcretePresentationProperties *)self->_properties secondaryCaptionButton];
+  callback = [secondaryCaptionButton2 callback];
 
-  if (v4)
+  if (callback)
   {
-    v8 = [(LPConcretePresentationProperties *)self->_properties secondaryCaptionButton];
-    v5 = [v8 callback];
-    v5[2]();
+    secondaryCaptionButton3 = [(LPConcretePresentationProperties *)self->_properties secondaryCaptionButton];
+    callback2 = [secondaryCaptionButton3 callback];
+    callback2[2]();
   }
 }
 
-- (void)tapToLoadViewWasTapped:(id)a3
+- (void)tapToLoadViewWasTapped:(id)tapped
 {
   if (![(NSHashTable *)self->_pendingMetadataProviders count])
   {
@@ -5554,9 +5554,9 @@ LABEL_6:
     return 0;
   }
 
-  v5 = [(LPLinkMetadata *)self->_metadata associatedApplication];
-  v6 = [v5 bundleIdentifier];
-  v7 = v6 != 0;
+  associatedApplication = [(LPLinkMetadata *)self->_metadata associatedApplication];
+  bundleIdentifier = [associatedApplication bundleIdentifier];
+  v7 = bundleIdentifier != 0;
 
   return v7;
 }
@@ -5573,48 +5573,48 @@ LABEL_6:
   return [LPPresentationSpecializations URLToOpenForURL:overrideURLFromProperties];
 }
 
-- (void)_openURLAllowingSensitiveSchemes:(BOOL)a3 allowingAssociatedApplications:(BOOL)a4
+- (void)_openURLAllowingSensitiveSchemes:(BOOL)schemes allowingAssociatedApplications:(BOOL)applications
 {
-  v4 = a4;
+  applicationsCopy = applications;
   v54 = *MEMORY[0x1E69E9840];
-  v7 = [(LPLinkView *)self _URLToOpen];
+  _URLToOpen = [(LPLinkView *)self _URLToOpen];
   if (![(LPLinkView *)self _disableLinkFollowing])
   {
     overrideAllowsOpeningSensitiveURLs = self->_overrideAllowsOpeningSensitiveURLs;
     if (overrideAllowsOpeningSensitiveURLs)
     {
-      a3 = [(NSNumber *)overrideAllowsOpeningSensitiveURLs BOOLValue];
+      schemes = [(NSNumber *)overrideAllowsOpeningSensitiveURLs BOOLValue];
     }
 
-    v9 = [(LPLinkView *)self metadata];
-    v10 = [v9 originatingSynapseContentItem];
+    metadata = [(LPLinkView *)self metadata];
+    originatingSynapseContentItem = [metadata originatingSynapseContentItem];
 
-    if (v10)
+    if (originatingSynapseContentItem)
     {
-      v11 = [MEMORY[0x1E69D5400] sharedManager];
-      v12 = [(LPLinkView *)self metadata];
-      v13 = [v12 originatingSynapseContentItem];
+      mEMORY[0x1E69D5400] = [MEMORY[0x1E69D5400] sharedManager];
+      metadata2 = [(LPLinkView *)self metadata];
+      originatingSynapseContentItem2 = [metadata2 originatingSynapseContentItem];
       v44[0] = MEMORY[0x1E69E9820];
       v44[1] = 3221225472;
       v44[2] = __78__LPLinkView__openURLAllowingSensitiveSchemes_allowingAssociatedApplications___block_invoke;
       v44[3] = &unk_1E7A37088;
       v44[4] = self;
-      [v11 navigateToContentItem:v13 completion:v44];
+      [mEMORY[0x1E69D5400] navigateToContentItem:originatingSynapseContentItem2 completion:v44];
 
       goto LABEL_32;
     }
 
-    if (v7)
+    if (_URLToOpen)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       if (objc_opt_respondsToSelector())
       {
-        v15 = [(LPLinkMetadata *)self->_metadata specialization];
-        v16 = [v15 _disallowsURLOverrideByDelegate];
+        specialization = [(LPLinkMetadata *)self->_metadata specialization];
+        _disallowsURLOverrideByDelegate = [specialization _disallowsURLOverrideByDelegate];
 
-        if ((v16 & 1) == 0)
+        if ((_disallowsURLOverrideByDelegate & 1) == 0)
         {
-          v17 = [WeakRetained _linkView:self overrideURLForOpeningURL:v7];
+          v17 = [WeakRetained _linkView:self overrideURLForOpeningURL:_URLToOpen];
           v18 = v17;
           if (!v17)
           {
@@ -5630,7 +5630,7 @@ LABEL_6:
             goto LABEL_28;
           }
 
-          if (([v17 isEqual:v7] & 1) == 0)
+          if (([v17 isEqual:_URLToOpen] & 1) == 0)
           {
             v19 = LPLogChannelUI();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -5642,24 +5642,24 @@ LABEL_6:
             }
           }
 
-          v7 = v18;
+          _URLToOpen = v18;
         }
       }
 
       if (objc_opt_respondsToSelector())
       {
-        [WeakRetained _linkView:self willOpenURL:v7];
+        [WeakRetained _linkView:self willOpenURL:_URLToOpen];
       }
 
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __78__LPLinkView__openURLAllowingSensitiveSchemes_allowingAssociatedApplications___block_invoke_283;
       aBlock[3] = &unk_1E7A370B0;
-      v43 = a3;
-      v7 = v7;
-      v42 = v7;
+      schemesCopy = schemes;
+      _URLToOpen = _URLToOpen;
+      v42 = _URLToOpen;
       v21 = _Block_copy(aBlock);
-      if (v4 && [(LPLinkView *)self _isUsingAppClipPresentation])
+      if (applicationsCopy && [(LPLinkView *)self _isUsingAppClipPresentation])
       {
         v22 = LPLogChannelUI();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -5698,19 +5698,19 @@ LABEL_6:
 
         else
         {
-          v29 = v7;
+          v29 = _URLToOpen;
         }
 
-        v30 = [(LPLinkMetadata *)self->_metadata associatedApplication];
-        v31 = [v30 bundleIdentifier];
-        v32 = [v26 initWithURL:v29 fallbackClipBundleID:v31];
+        associatedApplication = [(LPLinkMetadata *)self->_metadata associatedApplication];
+        bundleIdentifier = [associatedApplication bundleIdentifier];
+        v32 = [v26 initWithURL:v29 fallbackClipBundleID:bundleIdentifier];
 
         v37[0] = MEMORY[0x1E69E9820];
         v37[1] = 3221225472;
         v37[2] = __78__LPLinkView__openURLAllowingSensitiveSchemes_allowingAssociatedApplications___block_invoke_286;
         v37[3] = &unk_1E7A370D8;
         v38 = v32;
-        v39 = self;
+        selfCopy = self;
         v40 = v21;
         v33 = v32;
         [v33 requestClipWithCompletion:v37];
@@ -5731,7 +5731,7 @@ LABEL_28:
       [LPLinkView _openURLAllowingSensitiveSchemes:v34 allowingAssociatedApplications:?];
     }
 
-    v7 = 0;
+    _URLToOpen = 0;
   }
 
 LABEL_32:
@@ -5819,11 +5819,11 @@ void __78__LPLinkView__openURLAllowingSensitiveSchemes_allowingAssociatedApplica
   self->_contextMenuInteraction = 0;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = location.y;
+  x = location.x;
+  interactionCopy = interaction;
   v8 = [(LPLinkView *)self hitTest:0 withEvent:x, y];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -5879,9 +5879,9 @@ void __78__LPLinkView__openURLAllowingSensitiveSchemes_allowingAssociatedApplica
       _Block_object_dispose(&v40, 8);
       if (!v18)
       {
-        v33 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v34 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkDDContextMenuActionsKey(void)"];
-        [v33 handleFailureInFunction:v34 file:@"LPLinkView.m" lineNumber:107 description:{@"%s", dlerror()}];
+        [currentHandler handleFailureInFunction:v34 file:@"LPLinkView.m" lineNumber:107 description:{@"%s", dlerror()}];
         goto LABEL_24;
       }
 
@@ -5944,9 +5944,9 @@ LABEL_15:
       goto LABEL_15;
     }
 
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v34 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkDDContextMenuWantsPreviewKey(void)"];
-    [v33 handleFailureInFunction:v34 file:@"LPLinkView.m" lineNumber:109 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v34 file:@"LPLinkView.m" lineNumber:109 description:{@"%s", dlerror()}];
 LABEL_24:
 
     __break(1u);
@@ -5961,11 +5961,11 @@ LABEL_19:
 
 - (BOOL)captionTextIsTruncated
 {
-  v2 = [(LPLinkView *)self components];
-  v3 = [v2 captionBar];
-  v4 = [v3 captionTextIsTruncated];
+  components = [(LPLinkView *)self components];
+  captionBar = [components captionBar];
+  captionTextIsTruncated = [captionBar captionTextIsTruncated];
 
-  return v4;
+  return captionTextIsTruncated;
 }
 
 - (UIEdgeInsets)_textSafeAreaInset
@@ -6011,11 +6011,11 @@ LABEL_19:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
-  v4 = [(LPLinkView *)v3 highlightedTextRange];
-  if (v4)
+  selfCopy = self;
+  highlightedTextRange = [(LPLinkView *)selfCopy highlightedTextRange];
+  if (highlightedTextRange)
   {
-    v5 = v4;
+    v5 = highlightedTextRange;
     type metadata accessor for LPTextRange();
     v6 = swift_dynamicCastClass();
     if (v6)
@@ -6049,7 +6049,7 @@ LABEL_9:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1AE97B444();
   v6 = v5;
   v8 = v7;
@@ -6079,7 +6079,7 @@ LABEL_9:
   return 0;
 }
 
-- (int64_t)compareFoundRange:(id)a3 toRange:(id)a4 inDocument:(id)a5
+- (int64_t)compareFoundRange:(id)range toRange:(id)toRange inDocument:(id)document
 {
   sub_1AE988824();
   sub_1AE988814();
@@ -6093,15 +6093,15 @@ LABEL_9:
   v8 = swift_dynamicCastClassUnconditional();
   v9 = swift_dynamicCastClassUnconditional();
   v10 = sub_1AE969B54(0, &qword_1EB5E6800);
-  v11 = a3;
-  v12 = a4;
-  v13 = self;
+  rangeCopy = range;
+  toRangeCopy = toRange;
+  selfCopy = self;
   v14 = sub_1AE982EAC(v8, v9, v10, &off_1F2447470);
 
   return v14;
 }
 
-- (void)performTextSearchWithQueryString:(id)a3 usingOptions:(id)a4 resultAggregator:(id)a5
+- (void)performTextSearchWithQueryString:(id)string usingOptions:(id)options resultAggregator:(id)aggregator
 {
   sub_1AE988824();
   sub_1AE988814();
@@ -6113,15 +6113,15 @@ LABEL_9:
 
   v8 = sub_1AE9886E4();
   v10 = v9;
-  v11 = a4;
+  optionsCopy = options;
   swift_unknownObjectRetain();
-  v12 = self;
-  sub_1AE97BCB8(v8, v10, v11, a5);
+  selfCopy = self;
+  sub_1AE97BCB8(v8, v10, optionsCopy, aggregator);
 
   swift_unknownObjectRelease();
 }
 
-- (void)decorateFoundTextRange:(id)a3 inDocument:(id)a4 usingStyle:(int64_t)a5
+- (void)decorateFoundTextRange:(id)range inDocument:(id)document usingStyle:(int64_t)style
 {
   sub_1AE988824();
   sub_1AE988814();
@@ -6131,10 +6131,10 @@ LABEL_9:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v8 = a3;
+  rangeCopy = range;
   swift_unknownObjectRetain();
-  v9 = self;
-  sub_1AE97CF04(v8, a5);
+  selfCopy = self;
+  sub_1AE97CF04(rangeCopy, style);
 
   swift_unknownObjectRelease();
 }
@@ -6149,11 +6149,11 @@ LABEL_9:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_1AE97C330();
 }
 
-- (id)findInteraction:(id)a3 sessionForView:(id)a4
+- (id)findInteraction:(id)interaction sessionForView:(id)view
 {
   sub_1AE988824();
   sub_1AE988814();
@@ -6163,9 +6163,9 @@ LABEL_9:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = [objc_allocWithZone(MEMORY[0x1E69DD140]) initWithSearchableObject_];
+  initWithSearchableObject_ = [objc_allocWithZone(MEMORY[0x1E69DD140]) initWithSearchableObject_];
 
-  return v5;
+  return initWithSearchableObject_;
 }
 
 - (void)_openURLAllowingSensitiveSchemes:(uint64_t)a1 allowingAssociatedApplications:(NSObject *)a2 .cold.1(uint64_t a1, NSObject *a2)

@@ -1,5 +1,5 @@
 @interface UIKeyboardPopoverContainer
-+ (CGRect)frameAtOffset:(CGPoint)a3 keyboardSize:(CGSize)a4 screenSize:(CGSize)a5;
++ (CGRect)frameAtOffset:(CGPoint)offset keyboardSize:(CGSize)size screenSize:(CGSize)screenSize;
 + (CGSize)pillSize;
 + (CGSize)shadowOffset;
 + (UIColor)borderColor;
@@ -9,22 +9,22 @@
 + (double)cornerRadius;
 + (double)extraWidth;
 + (double)shadowRadius;
-+ (id)propertiesForSpecificKeyboardFrame:(CGRect)a3 onScreenSize:(CGSize)a4;
-+ (id)propertiesForTargetRect:(CGRect)a3 withHeight:(double)a4 onScreenSize:(CGSize)a5;
++ (id)propertiesForSpecificKeyboardFrame:(CGRect)frame onScreenSize:(CGSize)size;
++ (id)propertiesForTargetRect:(CGRect)rect withHeight:(double)height onScreenSize:(CGSize)size;
 - (CGRect)frame;
-- (UIKeyboardPopoverContainer)initWithView:(id)a3 usingBackdropStyle:(int64_t)a4;
-- (void)_updateKeyboardLayoutGuideForPopover:(CGRect)a3;
-- (void)applyProperties:(id)a3;
+- (UIKeyboardPopoverContainer)initWithView:(id)view usingBackdropStyle:(int64_t)style;
+- (void)_updateKeyboardLayoutGuideForPopover:(CGRect)popover;
+- (void)applyProperties:(id)properties;
 - (void)invalidate;
-- (void)updateBackdropStyle:(int64_t)a3;
+- (void)updateBackdropStyle:(int64_t)style;
 @end
 
 @implementation UIKeyboardPopoverContainer
 
 + (double)borderWidth
 {
-  v2 = [objc_opt_self() mainScreen];
-  [v2 nativeScale];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen nativeScale];
   v4 = 1.0 / v3;
 
   return v4;
@@ -36,10 +36,10 @@
   if ([v2 shouldShowCandidateBar])
   {
     v3 = +[UIKeyboardImpl activeInstance];
-    v4 = [v3 inputDelegateManager];
-    v5 = [v4 forwardingInputDelegate];
+    inputDelegateManager = [v3 inputDelegateManager];
+    forwardingInputDelegate = [inputDelegateManager forwardingInputDelegate];
 
-    if (!v5)
+    if (!forwardingInputDelegate)
     {
       +[UIKeyboardPopoverContainer borderWidth];
       v7 = v6;
@@ -84,19 +84,19 @@ LABEL_6:
 
 + (double)extraWidth
 {
-  [a1 contentInsets];
+  [self contentInsets];
   v4 = v3;
-  [a1 contentInsets];
+  [self contentInsets];
   return v4 + v5;
 }
 
 + (UIColor)borderColor
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 _inheritedRenderConfig];
-  v4 = [v3 lightKeyboard];
+  _inheritedRenderConfig = [v2 _inheritedRenderConfig];
+  lightKeyboard = [_inheritedRenderConfig lightKeyboard];
 
-  if (v4)
+  if (lightKeyboard)
   {
     v5 = +[UIColor blackColor];
     v6 = [v5 colorWithAlphaComponent:0.08];
@@ -116,8 +116,8 @@ LABEL_6:
   if (v4)
   {
     v2 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v3 = [v2 preferencesActions];
-    if ([v3 colorAdaptiveKeyboardEnabled])
+    preferencesActions = [v2 preferencesActions];
+    if ([preferencesActions colorAdaptiveKeyboardEnabled])
     {
       v5 = 42.0;
     }
@@ -133,8 +133,8 @@ LABEL_6:
     v5 = 20.0;
   }
 
-  v6 = [objc_opt_self() mainScreen];
-  [v6 nativeScale];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen nativeScale];
   v8 = v7;
 
   if (v4)
@@ -163,8 +163,8 @@ LABEL_6:
 
 + (double)shadowRadius
 {
-  v2 = [objc_opt_self() mainScreen];
-  [v2 nativeScale];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen nativeScale];
   v4 = 30.0 / v3;
 
   return v4;
@@ -172,8 +172,8 @@ LABEL_6:
 
 + (CGSize)shadowOffset
 {
-  v2 = [objc_opt_self() mainScreen];
-  [v2 nativeScale];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen nativeScale];
   v4 = 17.0 / v3;
 
   v5 = 0.0;
@@ -193,9 +193,9 @@ LABEL_6:
   return result;
 }
 
-- (UIKeyboardPopoverContainer)initWithView:(id)a3 usingBackdropStyle:(int64_t)a4
+- (UIKeyboardPopoverContainer)initWithView:(id)view usingBackdropStyle:(int64_t)style
 {
-  v6 = a3;
+  viewCopy = view;
   v62.receiver = self;
   v62.super_class = UIKeyboardPopoverContainer;
   v7 = [(UIKeyboardPopoverContainer *)&v62 init];
@@ -218,69 +218,69 @@ LABEL_6:
     v7->_popoverContainerView = v16;
 
     v18 = +[UIKeyboardPopoverContainer shadowColor];
-    v19 = [v18 CGColor];
-    v20 = [(UIView *)v7->_popoverContainerView layer];
-    [v20 setShadowColor:v19];
+    cGColor = [v18 CGColor];
+    layer = [(UIView *)v7->_popoverContainerView layer];
+    [layer setShadowColor:cGColor];
 
     +[UIKeyboardPopoverContainer shadowOpacity];
     v22 = v21;
-    v23 = [(UIView *)v7->_popoverContainerView layer];
+    layer2 = [(UIView *)v7->_popoverContainerView layer];
     *&v24 = v22;
-    [v23 setShadowOpacity:v24];
+    [layer2 setShadowOpacity:v24];
 
     +[UIKeyboardPopoverContainer shadowRadius];
     v26 = v25;
-    v27 = [(UIView *)v7->_popoverContainerView layer];
-    [v27 setShadowRadius:v26];
+    layer3 = [(UIView *)v7->_popoverContainerView layer];
+    [layer3 setShadowRadius:v26];
 
     +[UIKeyboardPopoverContainer shadowOffset];
     v29 = v28;
     v31 = v30;
-    v32 = [(UIView *)v7->_popoverContainerView layer];
-    [v32 setShadowOffset:{v29, v31}];
+    layer4 = [(UIView *)v7->_popoverContainerView layer];
+    [layer4 setShadowOffset:{v29, v31}];
 
-    [v6 insertSubview:v7->_popoverContainerView atIndex:0];
-    if (a4 != 3908)
+    [viewCopy insertSubview:v7->_popoverContainerView atIndex:0];
+    if (style != 3908)
     {
-      v33 = [(_UIPopoverView *)v7->_popover contentView];
-      v34 = [v33 layer];
+      contentView = [(_UIPopoverView *)v7->_popover contentView];
+      layer5 = [contentView layer];
 
-      v35 = [objc_opt_class() borderColor];
-      [v34 setBorderColor:{objc_msgSend(v35, "CGColor")}];
+      borderColor = [objc_opt_class() borderColor];
+      [layer5 setBorderColor:{objc_msgSend(borderColor, "CGColor")}];
 
       [objc_opt_class() borderWidth];
-      [v34 setBorderWidth:?];
-      [(UIKeyboardPopoverContainer *)v7 updateBackdropStyle:a4];
+      [layer5 setBorderWidth:?];
+      [(UIKeyboardPopoverContainer *)v7 updateBackdropStyle:style];
     }
 
     if (!+[UIInputWindowController keyboardDotDotDotEnabled])
     {
       v36 = [[UIView alloc] initWithFrame:v10, v11, v12, v13];
-      v37 = [(_UIPopoverView *)v7->_popover contentView];
-      [v37 addSubview:v36];
+      contentView2 = [(_UIPopoverView *)v7->_popover contentView];
+      [contentView2 addSubview:v36];
 
       v38 = objc_opt_new();
       [(UIView *)v36 addLayoutGuide:v38];
-      v39 = [v38 leftAnchor];
-      v40 = [(UIView *)v36 leftAnchor];
-      v41 = [v39 constraintEqualToAnchor:v40];
+      leftAnchor = [v38 leftAnchor];
+      leftAnchor2 = [(UIView *)v36 leftAnchor];
+      v41 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
       [v41 setActive:1];
 
-      v42 = [v38 rightAnchor];
-      v43 = [(UIView *)v36 rightAnchor];
-      v44 = [v42 constraintEqualToAnchor:v43];
+      rightAnchor = [v38 rightAnchor];
+      rightAnchor2 = [(UIView *)v36 rightAnchor];
+      v44 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
       [v44 setActive:1];
 
-      v45 = [v38 topAnchor];
-      v46 = [(UIView *)v36 bottomAnchor];
-      v47 = [v45 constraintEqualToAnchor:v46];
+      topAnchor = [v38 topAnchor];
+      bottomAnchor = [(UIView *)v36 bottomAnchor];
+      v47 = [topAnchor constraintEqualToAnchor:bottomAnchor];
       keyboardAreaHeight = v7->_keyboardAreaHeight;
       v7->_keyboardAreaHeight = v47;
 
       [(NSLayoutConstraint *)v7->_keyboardAreaHeight setActive:1];
-      v49 = [v38 bottomAnchor];
-      v50 = [(UIView *)v36 bottomAnchor];
-      v51 = [v49 constraintEqualToAnchor:v50];
+      bottomAnchor2 = [v38 bottomAnchor];
+      bottomAnchor3 = [(UIView *)v36 bottomAnchor];
+      v51 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
       [v51 setActive:1];
 
       v52 = [[_UIKeyboardPopoverAffordance alloc] initWithFrame:v10, v11, v12, v13];
@@ -309,17 +309,17 @@ LABEL_6:
   return v7;
 }
 
-- (void)updateBackdropStyle:(int64_t)a3
+- (void)updateBackdropStyle:(int64_t)style
 {
   backdrop = self->_backdrop;
-  if (a3 == 3908)
+  if (style == 3908)
   {
     [(UIView *)backdrop removeFromSuperview];
     v6 = self->_backdrop;
     self->_backdrop = 0;
   }
 
-  else if (a3 == 3904)
+  else if (style == 3904)
   {
     if (backdrop)
     {
@@ -332,47 +332,47 @@ LABEL_6:
     if (!backdrop)
     {
       v7 = [UIKBVisualEffectView alloc];
-      v8 = [(UIKBBackdropView *)v7 initWithFrame:a3 style:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+      v8 = [(UIKBBackdropView *)v7 initWithFrame:style style:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
       v9 = self->_backdrop;
       self->_backdrop = v8;
 
       [(UIView *)self->_backdrop setAutoresizingMask:18];
       [(UIView *)self->_backdrop setUserInteractionEnabled:1];
-      v10 = [(UIKeyboardPopoverContainer *)self backdropParent];
-      [v10 insertSubview:self->_backdrop atIndex:0];
+      backdropParent = [(UIKeyboardPopoverContainer *)self backdropParent];
+      [backdropParent insertSubview:self->_backdrop atIndex:0];
 
       backdrop = self->_backdrop;
     }
 
     [(UIView *)backdrop setAlpha:1.0];
-    [(UIKBBackdropView *)self->_backdrop transitionToStyle:a3];
+    [(UIKBBackdropView *)self->_backdrop transitionToStyle:style];
   }
 
   affordance = self->_affordance;
 
-  [(_UIKeyboardPopoverAffordance *)affordance updateForBackdropStyle:a3];
+  [(_UIKeyboardPopoverAffordance *)affordance updateForBackdropStyle:style];
 }
 
-+ (id)propertiesForTargetRect:(CGRect)a3 withHeight:(double)a4 onScreenSize:(CGSize)a5
++ (id)propertiesForTargetRect:(CGRect)rect withHeight:(double)height onScreenSize:(CGSize)size
 {
-  height = a5.height;
-  x = a3.origin.x;
-  width = a5.width;
-  v7 = a3.size.height;
-  v61 = a3.size.width;
-  y = a3.origin.y;
+  height = size.height;
+  x = rect.origin.x;
+  width = size.width;
+  v7 = rect.size.height;
+  v61 = rect.size.width;
+  y = rect.origin.y;
   v64[6] = *MEMORY[0x1E69E9840];
   [objc_opt_class() arrowHeight];
   v11 = v10;
   +[UIKeyboardImpl floatingWidth];
   v13 = v12;
-  [a1 contentInsets];
-  v15 = v14 + a4;
-  [a1 contentInsets];
+  [self contentInsets];
+  v15 = v14 + height;
+  [self contentInsets];
   v17 = v15 + v16;
-  [a1 contentInsets];
+  [self contentInsets];
   v19 = v18;
-  [a1 contentInsets];
+  [self contentInsets];
   v21 = y;
   v22 = v7;
   v23 = v13 + v19 + v20;
@@ -523,11 +523,11 @@ LABEL_19:
 
   v44 = v21 + v22 * 0.5 - (v42 * 0.5 + v43);
   v45 = v23;
-  [a1 contentInsets];
+  [self contentInsets];
   v47 = v29 - v46;
-  [a1 contentInsets];
+  [self contentInsets];
   v49 = v47 - v48;
-  [a1 contentInsets];
+  [self contentInsets];
   v51 = v38 + v50;
   v63[0] = @"ArrowDirection";
   v52 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v31];
@@ -551,23 +551,23 @@ LABEL_19:
   return v57;
 }
 
-+ (CGRect)frameAtOffset:(CGPoint)a3 keyboardSize:(CGSize)a4 screenSize:(CGSize)a5
++ (CGRect)frameAtOffset:(CGPoint)offset keyboardSize:(CGSize)size screenSize:(CGSize)screenSize
 {
-  height = a4.height;
-  width = a4.width;
-  x = a3.x;
-  v9 = a5.height - (a3.y + a4.height);
-  [a1 contentInsets];
+  height = size.height;
+  width = size.width;
+  x = offset.x;
+  v9 = screenSize.height - (offset.y + size.height);
+  [self contentInsets];
   v11 = v9 - v10;
-  [a1 contentInsets];
+  [self contentInsets];
   v13 = height + v12;
-  [a1 contentInsets];
+  [self contentInsets];
   v15 = v13 + v14;
-  [a1 contentInsets];
+  [self contentInsets];
   v17 = v16;
-  [a1 contentInsets];
+  [self contentInsets];
   v19 = width + v17 + v18;
-  [a1 contentInsets];
+  [self contentInsets];
   v21 = x - v20;
   v22 = v11;
   v23 = v19;
@@ -579,24 +579,24 @@ LABEL_19:
   return result;
 }
 
-+ (id)propertiesForSpecificKeyboardFrame:(CGRect)a3 onScreenSize:(CGSize)a4
++ (id)propertiesForSpecificKeyboardFrame:(CGRect)frame onScreenSize:(CGSize)size
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  x = frame.origin.x;
   v26[6] = *MEMORY[0x1E69E9840];
-  v8 = a4.height - (a3.origin.y + a3.size.height);
-  [a1 contentInsets];
+  v8 = size.height - (frame.origin.y + frame.size.height);
+  [self contentInsets];
   v10 = v8 - v9;
-  [a1 contentInsets];
+  [self contentInsets];
   v12 = height + v11;
-  [a1 contentInsets];
+  [self contentInsets];
   v14 = v12 + v13;
-  [a1 contentInsets];
+  [self contentInsets];
   v16 = v15;
-  [a1 contentInsets];
+  [self contentInsets];
   v18 = width + v16 + v17;
-  [a1 contentInsets];
+  [self contentInsets];
   v25[0] = @"ArrowDirection";
   v25[1] = @"ArrowOffset";
   v26[0] = &unk_1EFE31CF0;
@@ -617,10 +617,10 @@ LABEL_19:
   return v23;
 }
 
-- (void)applyProperties:(id)a3
+- (void)applyProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"PopoverRect"];
+  propertiesCopy = properties;
+  v5 = [propertiesCopy objectForKey:@"PopoverRect"];
   v6 = v5;
   v7 = MEMORY[0x1E695EFD0];
   if (v5)
@@ -682,7 +682,7 @@ LABEL_19:
     [(UIKeyboardPopoverContainer *)self _updateKeyboardLayoutGuideForPopover:v9, v11, v13, v15, v42, v43, v44];
   }
 
-  v22 = [v4 objectForKey:@"ArrowOffset"];
+  v22 = [propertiesCopy objectForKey:@"ArrowOffset"];
   v23 = v22;
   if (v22)
   {
@@ -690,20 +690,20 @@ LABEL_19:
     [(_UIPopoverView *)self->_popover setArrowOffset:?];
   }
 
-  v24 = [v4 objectForKey:@"ArrowDirection"];
+  v24 = [propertiesCopy objectForKey:@"ArrowDirection"];
 
   if (v24)
   {
-    v25 = [v24 integerValue];
+    integerValue = [v24 integerValue];
   }
 
   else
   {
-    v25 = 0;
+    integerValue = 0;
   }
 
-  [(_UIPopoverView *)self->_popover setArrowDirection:v25];
-  v26 = [v4 objectForKey:@"Alpha"];
+  [(_UIPopoverView *)self->_popover setArrowDirection:integerValue];
+  v26 = [propertiesCopy objectForKey:@"Alpha"];
 
   if (v26)
   {
@@ -711,7 +711,7 @@ LABEL_19:
     [(UIView *)self->_popoverContainerView setAlpha:?];
   }
 
-  v27 = [v4 objectForKey:@"TouchInsets"];
+  v27 = [propertiesCopy objectForKey:@"TouchInsets"];
 
   if (v27)
   {
@@ -739,10 +739,10 @@ LABEL_19:
   }
 
   [(_UIPopoverView *)v32 _setCornerRadius:?];
-  v33 = [(_UIPopoverView *)self->_popover contentView];
-  v34 = [v33 layer];
+  contentView = [(_UIPopoverView *)self->_popover contentView];
+  layer = [contentView layer];
 
-  v35 = [v4 objectForKey:@"KeyboardSize"];
+  v35 = [propertiesCopy objectForKey:@"KeyboardSize"];
 
   if (v35)
   {
@@ -756,7 +756,7 @@ LABEL_19:
   }
 
   [(NSLayoutConstraint *)self->_keyboardAreaHeight setConstant:-v36];
-  v38 = [v4 objectForKey:@"Transform"];
+  v38 = [propertiesCopy objectForKey:@"Transform"];
 
   if (v38)
   {
@@ -780,21 +780,21 @@ LABEL_19:
   [(UIView *)v39 setTransform:p_t2];
 }
 
-- (void)_updateKeyboardLayoutGuideForPopover:(CGRect)a3
+- (void)_updateKeyboardLayoutGuideForPopover:(CGRect)popover
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = popover.size.height;
+  width = popover.size.width;
+  y = popover.origin.y;
+  x = popover.origin.x;
   if (!+[UIInputWindowController useMetronomeTracking](UIInputWindowController, "useMetronomeTracking") && !+[UIAssistantBarButtonItemProvider _isScribbleButtonsVisible])
   {
     if (+[UIKeyboard isInputSystemUI])
     {
       v25 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
-      v8 = [(UIView *)self->_popover _rootInputWindowController];
-      v9 = [v8 isTranslating];
+      _rootInputWindowController = [(UIView *)self->_popover _rootInputWindowController];
+      isTranslating = [_rootInputWindowController isTranslating];
 
-      [v25 keyboardVisibilityDidChangeWithFrame:1 visible:v9 tracking:{x, y, width, height}];
+      [v25 keyboardVisibilityDidChangeWithFrame:1 visible:isTranslating tracking:{x, y, width, height}];
     }
 
     else
@@ -805,17 +805,17 @@ LABEL_19:
       v37.size.height = height;
       if (!CGRectEqualToRect(*MEMORY[0x1E695F058], v37))
       {
-        v10 = [(UIView *)self->_popover window];
-        v11 = [v10 screen];
-        v12 = [v11 fixedCoordinateSpace];
+        window = [(UIView *)self->_popover window];
+        screen = [window screen];
+        fixedCoordinateSpace = [screen fixedCoordinateSpace];
 
-        v13 = [(UIView *)self->_popover window];
-        v14 = [v13 windowScene];
-        v15 = [v14 _coordinateSpace];
+        window2 = [(UIView *)self->_popover window];
+        windowScene = [window2 windowScene];
+        _coordinateSpace = [windowScene _coordinateSpace];
 
-        v16 = [(UIView *)self->_popover window];
-        v17 = [v16 windowScene];
-        v18 = [UITextEffectsWindow activeTextEffectsWindowForWindowScene:v17];
+        window3 = [(UIView *)self->_popover window];
+        windowScene2 = [window3 windowScene];
+        v18 = [UITextEffectsWindow activeTextEffectsWindowForWindowScene:windowScene2];
         [v18 hostedViewReference];
         v20 = v19;
         v22 = v21;
@@ -828,14 +828,14 @@ LABEL_19:
         v30 = y;
         v31 = width;
         v32 = height;
-        v35 = v15 == 0;
+        v35 = _coordinateSpace == 0;
         v26[4] = self;
-        v27 = v12;
-        v28 = v15;
+        v27 = fixedCoordinateSpace;
+        v28 = _coordinateSpace;
         v33 = v20;
         v34 = v22;
-        v23 = v15;
-        v24 = v12;
+        v23 = _coordinateSpace;
+        v24 = fixedCoordinateSpace;
         [UIWindow _enumerateWindowsIncludingInternalWindows:1 onlyVisibleWindows:1 allowMutation:0 withBlock:v26];
       }
     }

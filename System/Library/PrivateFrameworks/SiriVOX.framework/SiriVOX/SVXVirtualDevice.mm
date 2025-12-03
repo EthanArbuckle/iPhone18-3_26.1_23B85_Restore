@@ -1,41 +1,41 @@
 @interface SVXVirtualDevice
-+ (BOOL)_instanceContextIsEndpoint:(id)a3;
-- (SVXVirtualDevice)initWithInstanceContext:(id)a3;
-- (SVXVirtualDevice)initWithInstanceContext:(id)a3 preferences:(id)a4 analytics:(id)a5 moduleFactory:(id)a6;
-- (id)_createBuiltInModules:(id)a3 preferences:(id)a4 analytics:(id)a5 moduleFactory:(id)a6;
++ (BOOL)_instanceContextIsEndpoint:(id)endpoint;
+- (SVXVirtualDevice)initWithInstanceContext:(id)context;
+- (SVXVirtualDevice)initWithInstanceContext:(id)context preferences:(id)preferences analytics:(id)analytics moduleFactory:(id)factory;
+- (id)_createBuiltInModules:(id)modules preferences:(id)preferences analytics:(id)analytics moduleFactory:(id)factory;
 - (id)description;
-- (void)_startWithModuleInstanceMap:(id)a3 platformDependencies:(id)a4;
-- (void)_stopWithModuleInstanceMap:(id)a3;
-- (void)startWithPlatformDependencies:(id)a3;
+- (void)_startWithModuleInstanceMap:(id)map platformDependencies:(id)dependencies;
+- (void)_stopWithModuleInstanceMap:(id)map;
+- (void)startWithPlatformDependencies:(id)dependencies;
 - (void)stop;
 @end
 
 @implementation SVXVirtualDevice
 
-- (id)_createBuiltInModules:(id)a3 preferences:(id)a4 analytics:(id)a5 moduleFactory:(id)a6
+- (id)_createBuiltInModules:(id)modules preferences:(id)preferences analytics:(id)analytics moduleFactory:(id)factory
 {
   v38[6] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a6;
+  modulesCopy = modules;
+  factoryCopy = factory;
   v9 = [[SVXQueuePerformer alloc] initWithIdentifier:@"com.apple.SiriVOXService.session-manager" qosClass:33 relativePriority:0 options:2];
-  v10 = [v8 createModuleWithIdentifier:@"com.apple.SiriVOXService.client-service" class:objc_opt_class() qos:33];
+  v10 = [factoryCopy createModuleWithIdentifier:@"com.apple.SiriVOXService.client-service" class:objc_opt_class() qos:33];
   v38[0] = v10;
-  v11 = [v8 createModuleWithIdentifier:@"com.apple.SiriVOXService.service-command" class:objc_opt_class() performer:v9];
+  v11 = [factoryCopy createModuleWithIdentifier:@"com.apple.SiriVOXService.service-command" class:objc_opt_class() performer:v9];
   v38[1] = v11;
   v31 = v9;
-  v12 = [v8 createModuleWithIdentifier:@"com.apple.SiriVOXService.session-manager" class:objc_opt_class() performer:v9];
+  v12 = [factoryCopy createModuleWithIdentifier:@"com.apple.SiriVOXService.session-manager" class:objc_opt_class() performer:v9];
   v38[2] = v12;
-  v13 = [v8 createModuleWithIdentifier:@"com.apple.SiriVOXService.speech-synthesis" class:objc_opt_class() qos:33];
+  v13 = [factoryCopy createModuleWithIdentifier:@"com.apple.SiriVOXService.speech-synthesis" class:objc_opt_class() qos:33];
   v38[3] = v13;
-  v14 = [v8 createModuleWithIdentifier:@"com.apple.SiriVOXService.synthesis-manager" class:objc_opt_class() qos:33];
+  v14 = [factoryCopy createModuleWithIdentifier:@"com.apple.SiriVOXService.synthesis-manager" class:objc_opt_class() qos:33];
   v38[4] = v14;
-  v15 = [v8 createModuleWithIdentifier:@"com.apple.SiriVOXService.system-observation" class:objc_opt_class() qos:17];
+  v15 = [factoryCopy createModuleWithIdentifier:@"com.apple.SiriVOXService.system-observation" class:objc_opt_class() qos:17];
   v38[5] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:6];
 
-  if ([v7 isDefault])
+  if ([modulesCopy isDefault])
   {
-    v17 = [v8 createModuleWithIdentifier:@"com.apple.SiriVOXService.device-setup" class:objc_opt_class() qos:21];
+    v17 = [factoryCopy createModuleWithIdentifier:@"com.apple.SiriVOXService.device-setup" class:objc_opt_class() qos:21];
     v37 = v17;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v37 count:1];
     v19 = [v16 arrayByAddingObjectsFromArray:v18];
@@ -64,8 +64,8 @@
         }
 
         v26 = *(*(&v32 + 1) + 8 * i);
-        v27 = [v26 identifier];
-        [v20 setObject:v26 forKey:v27];
+        identifier = [v26 identifier];
+        [v20 setObject:v26 forKey:identifier];
       }
 
       v23 = [v21 countByEnumeratingWithState:&v32 objects:v36 count:16];
@@ -80,10 +80,10 @@
   return v28;
 }
 
-- (void)_stopWithModuleInstanceMap:(id)a3
+- (void)_stopWithModuleInstanceMap:(id)map
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  mapCopy = map;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -104,19 +104,19 @@
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
-        v10 = [v4 moduleInstanceWithIdentifier:v9];
+        v10 = [mapCopy moduleInstanceWithIdentifier:v9];
         v11 = [(NSDictionary *)self->_modulesByIdentifier objectForKeyedSubscript:v9];
-        v12 = [v11 performer];
+        performer = [v11 performer];
         v17[0] = MEMORY[0x277D85DD0];
         v17[1] = 3221225472;
         v17[2] = __47__SVXVirtualDevice__stopWithModuleInstanceMap___block_invoke;
         v17[3] = &unk_279C68ED0;
         v18 = v10;
-        v19 = v4;
+        v19 = mapCopy;
         v20 = v11;
         v13 = v11;
         v14 = v10;
-        [v12 performBlock:v17];
+        [performer performBlock:v17];
       }
 
       v6 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -136,11 +136,11 @@ uint64_t __47__SVXVirtualDevice__stopWithModuleInstanceMap___block_invoke(uint64
   return [v2 setIsActive:0];
 }
 
-- (void)_startWithModuleInstanceMap:(id)a3 platformDependencies:(id)a4
+- (void)_startWithModuleInstanceMap:(id)map platformDependencies:(id)dependencies
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  mapCopy = map;
+  dependenciesCopy = dependencies;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -161,20 +161,20 @@ uint64_t __47__SVXVirtualDevice__stopWithModuleInstanceMap___block_invoke(uint64
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
-        v13 = [v6 moduleInstanceWithIdentifier:v12];
+        v13 = [mapCopy moduleInstanceWithIdentifier:v12];
         v14 = [(NSDictionary *)self->_modulesByIdentifier objectForKeyedSubscript:v12];
-        v15 = [v14 performer];
+        performer = [v14 performer];
         v20[0] = MEMORY[0x277D85DD0];
         v20[1] = 3221225472;
         v20[2] = __69__SVXVirtualDevice__startWithModuleInstanceMap_platformDependencies___block_invoke;
         v20[3] = &unk_279C68930;
         v21 = v13;
-        v22 = v6;
-        v23 = v7;
+        v22 = mapCopy;
+        v23 = dependenciesCopy;
         v24 = v14;
         v16 = v14;
         v17 = v13;
-        [v15 performBlock:v20];
+        [performer performBlock:v20];
       }
 
       v9 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -201,10 +201,10 @@ uint64_t __69__SVXVirtualDevice__startWithModuleInstanceMap_platformDependencies
   self->_moduleInstanceMap = 0;
 }
 
-- (void)startWithPlatformDependencies:(id)a3
+- (void)startWithPlatformDependencies:(id)dependencies
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
+  dependenciesCopy = dependencies;
   v6 = [[v4 alloc] initWithCapacity:{-[NSDictionary count](self->_modulesByIdentifier, "count")}];
   modulesByIdentifier = self->_modulesByIdentifier;
   v11[0] = MEMORY[0x277D85DD0];
@@ -218,7 +218,7 @@ uint64_t __69__SVXVirtualDevice__startWithModuleInstanceMap_platformDependencies
   moduleInstanceMap = self->_moduleInstanceMap;
   self->_moduleInstanceMap = v9;
 
-  [(SVXVirtualDevice *)self _startWithModuleInstanceMap:self->_moduleInstanceMap platformDependencies:v5];
+  [(SVXVirtualDevice *)self _startWithModuleInstanceMap:self->_moduleInstanceMap platformDependencies:dependenciesCopy];
 }
 
 void __50__SVXVirtualDevice_startWithPlatformDependencies___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -233,22 +233,22 @@ void __50__SVXVirtualDevice_startWithPlatformDependencies___block_invoke(uint64_
   }
 }
 
-- (SVXVirtualDevice)initWithInstanceContext:(id)a3 preferences:(id)a4 analytics:(id)a5 moduleFactory:(id)a6
+- (SVXVirtualDevice)initWithInstanceContext:(id)context preferences:(id)preferences analytics:(id)analytics moduleFactory:(id)factory
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  contextCopy = context;
+  preferencesCopy = preferences;
+  analyticsCopy = analytics;
+  factoryCopy = factory;
   v20.receiver = self;
   v20.super_class = SVXVirtualDevice;
   v15 = [(SVXVirtualDevice *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_instanceContext, a3);
-    objc_storeStrong(&v16->_analytics, a5);
-    objc_storeStrong(&v16->_preferences, a4);
-    v17 = [(SVXVirtualDevice *)v16 _createBuiltInModules:v16->_instanceContext preferences:v16->_preferences analytics:v16->_analytics moduleFactory:v14];
+    objc_storeStrong(&v15->_instanceContext, context);
+    objc_storeStrong(&v16->_analytics, analytics);
+    objc_storeStrong(&v16->_preferences, preferences);
+    v17 = [(SVXVirtualDevice *)v16 _createBuiltInModules:v16->_instanceContext preferences:v16->_preferences analytics:v16->_analytics moduleFactory:factoryCopy];
     modulesByIdentifier = v16->_modulesByIdentifier;
     v16->_modulesByIdentifier = v17;
   }
@@ -256,36 +256,36 @@ void __50__SVXVirtualDevice_startWithPlatformDependencies___block_invoke(uint64_
   return v16;
 }
 
-- (SVXVirtualDevice)initWithInstanceContext:(id)a3
+- (SVXVirtualDevice)initWithInstanceContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  contextCopy = context;
+  v5 = contextCopy;
+  if (contextCopy)
   {
-    v6 = v4;
+    defaultContext = contextCopy;
   }
 
   else
   {
-    v6 = [MEMORY[0x277CEF2C8] defaultContext];
+    defaultContext = [MEMORY[0x277CEF2C8] defaultContext];
   }
 
-  v7 = v6;
-  if ([objc_opt_class() _instanceContextIsEndpoint:v6])
+  v7 = defaultContext;
+  if ([objc_opt_class() _instanceContextIsEndpoint:defaultContext])
   {
-    v8 = [objc_alloc(MEMORY[0x277CEF368]) initWithInstanceContext:v7];
-    v9 = [objc_alloc(MEMORY[0x277CEF158]) initWithInstanceContext:v7];
+    mEMORY[0x277CEF368] = [objc_alloc(MEMORY[0x277CEF368]) initWithInstanceContext:v7];
+    mEMORY[0x277CEF158] = [objc_alloc(MEMORY[0x277CEF158]) initWithInstanceContext:v7];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CEF368] sharedPreferences];
-    v9 = [MEMORY[0x277CEF158] sharedAnalytics];
+    mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+    mEMORY[0x277CEF158] = [MEMORY[0x277CEF158] sharedAnalytics];
   }
 
-  v10 = v9;
-  v11 = [[SVXModuleFactory alloc] initWithInstanceContext:v7 preferences:v8 analytics:v9];
-  v12 = [(SVXVirtualDevice *)self initWithInstanceContext:v7 preferences:v8 analytics:v10 moduleFactory:v11];
+  v10 = mEMORY[0x277CEF158];
+  v11 = [[SVXModuleFactory alloc] initWithInstanceContext:v7 preferences:mEMORY[0x277CEF368] analytics:mEMORY[0x277CEF158]];
+  v12 = [(SVXVirtualDevice *)self initWithInstanceContext:v7 preferences:mEMORY[0x277CEF368] analytics:v10 moduleFactory:v11];
 
   return v12;
 }
@@ -301,13 +301,13 @@ void __50__SVXVirtualDevice_startWithPlatformDependencies___block_invoke(uint64_
   return v5;
 }
 
-+ (BOOL)_instanceContextIsEndpoint:(id)a3
++ (BOOL)_instanceContextIsEndpoint:(id)endpoint
 {
-  if (!a3)
+  if (!endpoint)
   {
-    v4 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[SVXVirtualDevice _instanceContextIsEndpoint:]"];
-    [v4 handleFailureInFunction:v5 file:@"SVXVirtualDevice.m" lineNumber:195 description:{@"Invalid parameter not satisfying: %@", @"instanceContext != nil"}];
+    [currentHandler handleFailureInFunction:v5 file:@"SVXVirtualDevice.m" lineNumber:195 description:{@"Invalid parameter not satisfying: %@", @"instanceContext != nil"}];
   }
 
   return 0;

@@ -1,50 +1,50 @@
 @interface HMDStreamingStatus
 - (BOOL)_parseFromTLVData;
-- (HMDStreamingStatus)initWithCoder:(id)a3;
+- (HMDStreamingStatus)initWithCoder:(id)coder;
 - (NSData)tlvData;
-- (void)description:(id)a3 indent:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)description:(id)description indent:(id)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDStreamingStatus
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:-[HMDStreamingStatus streamingStatus](self forKey:{"streamingStatus"), @"kStreamingStatus_Status"}];
+  coderCopy = coder;
+  [coderCopy encodeInt32:-[HMDStreamingStatus streamingStatus](self forKey:{"streamingStatus"), @"kStreamingStatus_Status"}];
 }
 
-- (HMDStreamingStatus)initWithCoder:(id)a3
+- (HMDStreamingStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = HMDStreamingStatus;
   v5 = [(HMDStreamingStatus *)&v7 init];
   if (v5)
   {
-    v5->_streamingStatus = [v4 decodeInt32ForKey:@"kStreamingStatus_Status"];
+    v5->_streamingStatus = [coderCopy decodeInt32ForKey:@"kStreamingStatus_Status"];
   }
 
   return v5;
 }
 
-- (void)description:(id)a3 indent:(id)a4
+- (void)description:(id)description indent:(id)indent
 {
-  v6 = a4;
-  v7 = a3;
+  indentCopy = indent;
+  descriptionCopy = description;
   v8 = HMDStreamingStatusTypeAsString([(HMDStreamingStatus *)self streamingStatus]);
-  [v7 appendFormat:@"\n %@ responseStatus = %@ ", v6, v8];
+  [descriptionCopy appendFormat:@"\n %@ responseStatus = %@ ", indentCopy, v8];
 }
 
 - (NSData)tlvData
 {
-  v3 = [MEMORY[0x277CFEC80] creator];
+  creator = [MEMORY[0x277CFEC80] creator];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDStreamingStatus streamingStatus](self, "streamingStatus")}];
-  [v3 addTLV:1 number:v4];
+  [creator addTLV:1 number:v4];
 
-  v5 = [v3 serialize];
+  serialize = [creator serialize];
 
-  return v5;
+  return serialize;
 }
 
 - (BOOL)_parseFromTLVData
@@ -56,8 +56,8 @@
   v5 = [(HAPTLVBase *)self _parse:v4];
   if (v5)
   {
-    v6 = [v3 field];
-    self->_streamingStatus = [v6 unsignedIntegerValue];
+    field = [v3 field];
+    self->_streamingStatus = [field unsignedIntegerValue];
   }
 
   v7 = *MEMORY[0x277D85DE8];

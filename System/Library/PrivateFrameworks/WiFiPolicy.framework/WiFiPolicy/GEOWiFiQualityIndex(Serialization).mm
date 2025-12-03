@@ -6,9 +6,9 @@
 
 - (uint64_t)typeDescription
 {
-  v2 = [a1 type];
+  type = [self type];
 
-  return [a1 typeAsString:v2];
+  return [self typeAsString:type];
 }
 
 @end

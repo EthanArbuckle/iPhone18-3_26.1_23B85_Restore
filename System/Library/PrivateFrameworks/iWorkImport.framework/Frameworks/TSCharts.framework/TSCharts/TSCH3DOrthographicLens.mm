@@ -1,6 +1,6 @@
 @interface TSCH3DOrthographicLens
 - (tmat4x4<float>)matrix;
-- (void)calculateCullingPlanes:(void *)a3;
+- (void)calculateCullingPlanes:(void *)planes;
 @end
 
 @implementation TSCH3DOrthographicLens
@@ -28,7 +28,7 @@
   return self;
 }
 
-- (void)calculateCullingPlanes:(void *)a3
+- (void)calculateCullingPlanes:(void *)planes
 {
   v28.receiver = self;
   v28.super_class = TSCH3DOrthographicLens;
@@ -37,22 +37,22 @@
   v25 = 1065353216;
   v26 = 0;
   v27 = v9;
-  sub_2761B3F30(a3, &v25);
+  sub_2761B3F30(planes, &v25);
   objc_msgSend_right(self, v10, v11, v12, v13);
   v25 = 3212836864;
   v26 = 0;
   v27 = -v14;
-  sub_2761B3F30(a3, &v25);
+  sub_2761B3F30(planes, &v25);
   objc_msgSend_bottom(self, v15, v16, v17, v18);
   v25 = 0x3F80000000000000;
   v26 = 0;
   v27 = v19;
-  sub_2761B3F30(a3, &v25);
+  sub_2761B3F30(planes, &v25);
   objc_msgSend_top(self, v20, v21, v22, v23);
   v25 = 0xBF80000000000000;
   v26 = 0;
   v27 = -v24;
-  sub_2761B3F30(a3, &v25);
+  sub_2761B3F30(planes, &v25);
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface HKLegendView
-+ (UIEdgeInsets)modifiedInsetsForOpaqueLegend:(BOOL)a3 originalInsets:(UIEdgeInsets)a4;
-- (HKLegendView)initWithEdgeInsets:(UIEdgeInsets)a3 opaqueBackground:(BOOL)a4;
++ (UIEdgeInsets)modifiedInsetsForOpaqueLegend:(BOOL)legend originalInsets:(UIEdgeInsets)insets;
+- (HKLegendView)initWithEdgeInsets:(UIEdgeInsets)insets opaqueBackground:(BOOL)background;
 - (UIEdgeInsets)edgeInsets;
-- (void)_rebuildExtensionsWithStickLocations:(id)a3;
+- (void)_rebuildExtensionsWithStickLocations:(id)locations;
 - (void)_rebuildStackStructure;
-- (void)_updateLegendLeftEntries:(id)a3 rightEntries:(id)a4;
+- (void)_updateLegendLeftEntries:(id)entries rightEntries:(id)rightEntries;
 - (void)hideLollipops;
-- (void)setEdgeInsets:(UIEdgeInsets)a3;
-- (void)setLeftEntries:(id)a3 rightEntries:(id)a4;
-- (void)setTopBorderColor:(id)a3;
+- (void)setEdgeInsets:(UIEdgeInsets)insets;
+- (void)setLeftEntries:(id)entries rightEntries:(id)rightEntries;
+- (void)setTopBorderColor:(id)color;
 @end
 
 @implementation HKLegendView
 
-- (HKLegendView)initWithEdgeInsets:(UIEdgeInsets)a3 opaqueBackground:(BOOL)a4
+- (HKLegendView)initWithEdgeInsets:(UIEdgeInsets)insets opaqueBackground:(BOOL)background
 {
-  v4 = a4;
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v10 bounds];
+  backgroundCopy = background;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v54.receiver = self;
   v54.super_class = HKLegendView;
   v11 = [(HKBorderLineView *)&v54 initWithFrame:?];
@@ -39,8 +39,8 @@
     [(UIStackView *)v11->_mainStack setDistribution:0];
     [(UIStackView *)v11->_mainStack setSpacing:10.0];
     [(UIStackView *)v11->_mainStack setAxis:0];
-    v15 = [(UIStackView *)v11->_mainStack layer];
-    [v15 setZPosition:2.0];
+    layer = [(UIStackView *)v11->_mainStack layer];
+    [layer setZPosition:2.0];
 
     v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
     leftEntryViews = v11->_leftEntryViews;
@@ -51,30 +51,30 @@
     v11->_rightEntryViews = v18;
 
     [(HKLegendView *)v11 _rebuildStackStructure];
-    v20 = [(UIStackView *)v11->_mainStack leadingAnchor];
-    v21 = [(HKLegendView *)v11 leadingAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21 constant:0.0];
+    leadingAnchor = [(UIStackView *)v11->_mainStack leadingAnchor];
+    leadingAnchor2 = [(HKLegendView *)v11 leadingAnchor];
+    v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
     leadingConstraint = v11->_leadingConstraint;
     v11->_leadingConstraint = v22;
 
     [(NSLayoutConstraint *)v11->_leadingConstraint setActive:1];
-    v24 = [(UIStackView *)v11->_mainStack trailingAnchor];
-    v25 = [(HKLegendView *)v11 trailingAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25 constant:0.0];
+    trailingAnchor = [(UIStackView *)v11->_mainStack trailingAnchor];
+    trailingAnchor2 = [(HKLegendView *)v11 trailingAnchor];
+    v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
     trailingConstraint = v11->_trailingConstraint;
     v11->_trailingConstraint = v26;
 
     [(NSLayoutConstraint *)v11->_trailingConstraint setActive:1];
-    v28 = [(UIStackView *)v11->_mainStack topAnchor];
-    v29 = [(HKLegendView *)v11 topAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29 constant:0.0];
+    topAnchor = [(UIStackView *)v11->_mainStack topAnchor];
+    topAnchor2 = [(HKLegendView *)v11 topAnchor];
+    v30 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
     topConstraint = v11->_topConstraint;
     v11->_topConstraint = v30;
 
     [(NSLayoutConstraint *)v11->_topConstraint setActive:1];
-    v32 = [(UIStackView *)v11->_mainStack bottomAnchor];
-    v33 = [(HKLegendView *)v11 bottomAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33 constant:0.0];
+    bottomAnchor = [(UIStackView *)v11->_mainStack bottomAnchor];
+    bottomAnchor2 = [(HKLegendView *)v11 bottomAnchor];
+    v34 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
     bottomConstraint = v11->_bottomConstraint;
     v11->_bottomConstraint = v34;
 
@@ -88,12 +88,12 @@
     lollipopColor = v11->_lollipopColor;
     v11->_lollipopColor = 0;
 
-    v11->_opaqueBackground = v4;
-    if (v4)
+    v11->_opaqueBackground = backgroundCopy;
+    if (backgroundCopy)
     {
       [(HKLegendView *)v11 setOpaque:1];
-      v39 = [MEMORY[0x1E69DC888] hk_chartBackgroundColor];
-      [(HKLegendView *)v11 setBackgroundColor:v39];
+      hk_chartBackgroundColor = [MEMORY[0x1E69DC888] hk_chartBackgroundColor];
+      [(HKLegendView *)v11 setBackgroundColor:hk_chartBackgroundColor];
     }
 
     else
@@ -107,23 +107,23 @@
 
     [(UIView *)v11->_topDividerView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(HKLegendView *)v11 addSubview:v11->_topDividerView];
-    v42 = [(UIView *)v11->_topDividerView topAnchor];
-    v43 = [(HKLegendView *)v11 topAnchor];
-    v44 = [v42 constraintEqualToAnchor:v43];
+    topAnchor3 = [(UIView *)v11->_topDividerView topAnchor];
+    topAnchor4 = [(HKLegendView *)v11 topAnchor];
+    v44 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     [v44 setActive:1];
 
-    v45 = [(UIView *)v11->_topDividerView heightAnchor];
-    v46 = [v45 constraintEqualToConstant:HKUIOnePixel()];
+    heightAnchor = [(UIView *)v11->_topDividerView heightAnchor];
+    v46 = [heightAnchor constraintEqualToConstant:HKUIOnePixel()];
     [v46 setActive:1];
 
-    v47 = [(UIView *)v11->_topDividerView leftAnchor];
-    v48 = [(HKLegendView *)v11 leftAnchor];
-    v49 = [v47 constraintEqualToAnchor:v48];
+    leftAnchor = [(UIView *)v11->_topDividerView leftAnchor];
+    leftAnchor2 = [(HKLegendView *)v11 leftAnchor];
+    v49 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     [v49 setActive:1];
 
-    v50 = [(UIView *)v11->_topDividerView rightAnchor];
-    v51 = [(HKLegendView *)v11 rightAnchor];
-    v52 = [v50 constraintEqualToAnchor:v51];
+    rightAnchor = [(UIView *)v11->_topDividerView rightAnchor];
+    rightAnchor2 = [(HKLegendView *)v11 rightAnchor];
+    v52 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     [v52 setActive:1];
 
     [(UIView *)v11->_topDividerView setHidden:1];
@@ -132,20 +132,20 @@
   return v11;
 }
 
-- (void)setLeftEntries:(id)a3 rightEntries:(id)a4
+- (void)setLeftEntries:(id)entries rightEntries:(id)rightEntries
 {
-  v10 = a3;
-  v7 = a4;
-  v8 = [v10 count];
-  if (v8 == -[NSArray count](self->_leftEntries, "count") && (v9 = [v7 count], v9 == -[NSArray count](self->_rightEntries, "count")))
+  entriesCopy = entries;
+  rightEntriesCopy = rightEntries;
+  v8 = [entriesCopy count];
+  if (v8 == -[NSArray count](self->_leftEntries, "count") && (v9 = [rightEntriesCopy count], v9 == -[NSArray count](self->_rightEntries, "count")))
   {
-    [(HKLegendView *)self _updateLegendLeftEntries:v10 rightEntries:v7];
+    [(HKLegendView *)self _updateLegendLeftEntries:entriesCopy rightEntries:rightEntriesCopy];
   }
 
   else
   {
-    objc_storeStrong(&self->_leftEntries, a3);
-    objc_storeStrong(&self->_rightEntries, a4);
+    objc_storeStrong(&self->_leftEntries, entries);
+    objc_storeStrong(&self->_rightEntries, rightEntries);
     [(HKLegendView *)self _rebuildStackStructure];
   }
 }
@@ -157,8 +157,8 @@
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v3 = [(UIStackView *)self->_mainStack arrangedSubviews];
-  v4 = [v3 countByEnumeratingWithState:&v33 objects:v39 count:16];
+  arrangedSubviews = [(UIStackView *)self->_mainStack arrangedSubviews];
+  v4 = [arrangedSubviews countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v4)
   {
     v5 = v4;
@@ -169,7 +169,7 @@
       {
         if (*v34 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v8 = *(*(&v33 + 1) + 8 * i);
@@ -177,7 +177,7 @@
         [v8 removeFromSuperview];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v33 objects:v39 count:16];
+      v5 = [arrangedSubviews countByEnumeratingWithState:&v33 objects:v39 count:16];
     }
 
     while (v5);
@@ -252,65 +252,65 @@
   }
 }
 
-- (void)_updateLegendLeftEntries:(id)a3 rightEntries:(id)a4
+- (void)_updateLegendLeftEntries:(id)entries rightEntries:(id)rightEntries
 {
-  v13 = a3;
-  v6 = a4;
-  if ([v13 count])
+  entriesCopy = entries;
+  rightEntriesCopy = rightEntries;
+  if ([entriesCopy count])
   {
     v7 = 0;
     do
     {
-      v8 = [v13 objectAtIndexedSubscript:v7];
+      v8 = [entriesCopy objectAtIndexedSubscript:v7];
       v9 = [(NSMutableArray *)self->_leftEntryViews objectAtIndexedSubscript:v7];
       [v9 setLegendEntry:v8];
 
       ++v7;
     }
 
-    while (v7 < [v13 count]);
+    while (v7 < [entriesCopy count]);
   }
 
-  if ([v6 count])
+  if ([rightEntriesCopy count])
   {
     v10 = 0;
     do
     {
-      v11 = [v6 objectAtIndexedSubscript:v10];
+      v11 = [rightEntriesCopy objectAtIndexedSubscript:v10];
       v12 = [(NSMutableArray *)self->_rightEntryViews objectAtIndexedSubscript:v10];
       [v12 setLegendEntry:v11];
 
       ++v10;
     }
 
-    while (v10 < [v6 count]);
+    while (v10 < [rightEntriesCopy count]);
   }
 }
 
-- (void)setTopBorderColor:(id)a3
+- (void)setTopBorderColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_topBorderColor isEqual:?]& 1) == 0)
   {
-    [(UIView *)self->_topDividerView setBackgroundColor:v5];
-    objc_storeStrong(&self->_topBorderColor, a3);
-    [(UIView *)self->_topDividerView setHidden:v5 == 0];
+    [(UIView *)self->_topDividerView setBackgroundColor:colorCopy];
+    objc_storeStrong(&self->_topBorderColor, color);
+    [(UIView *)self->_topDividerView setHidden:colorCopy == 0];
   }
 }
 
-- (void)setEdgeInsets:(UIEdgeInsets)a3
+- (void)setEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_edgeInsets.top), vceqq_f64(v4, *&self->_edgeInsets.bottom)))) & 1) == 0)
   {
-    self->_edgeInsets = a3;
-    top = a3.top;
-    bottom = a3.bottom;
-    right = a3.right;
-    [(NSLayoutConstraint *)self->_leadingConstraint setConstant:a3.left];
+    self->_edgeInsets = insets;
+    top = insets.top;
+    bottom = insets.bottom;
+    right = insets.right;
+    [(NSLayoutConstraint *)self->_leadingConstraint setConstant:insets.left];
     [(NSLayoutConstraint *)self->_trailingConstraint setConstant:-right];
     [(NSLayoutConstraint *)self->_topConstraint setConstant:top];
     bottomConstraint = self->_bottomConstraint;
@@ -319,24 +319,24 @@
   }
 }
 
-+ (UIEdgeInsets)modifiedInsetsForOpaqueLegend:(BOOL)a3 originalInsets:(UIEdgeInsets)a4
++ (UIEdgeInsets)modifiedInsetsForOpaqueLegend:(BOOL)legend originalInsets:(UIEdgeInsets)insets
 {
   v4 = 0.0;
-  if (!a3)
+  if (!legend)
   {
     v4 = 4.0;
   }
 
-  v5 = v4 + a4.left;
-  v6 = a4.right + 4.0;
+  v5 = v4 + insets.left;
+  v6 = insets.right + 4.0;
   v7 = 8.0;
-  if (!a3)
+  if (!legend)
   {
     v7 = 4.0;
   }
 
-  v8 = v7 + a4.top;
-  v9 = v4 + a4.bottom;
+  v8 = v7 + insets.top;
+  v9 = v4 + insets.bottom;
   [HKLegendView horizontalOffsetWithOpaque:?];
   v11 = v5 - v10;
   v12 = v8;
@@ -356,8 +356,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(HKLegendView *)self extensionViews];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  extensionViews = [(HKLegendView *)self extensionViews];
+  v3 = [extensionViews countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -369,27 +369,27 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(extensionViews);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) setHidden:1];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [extensionViews countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)_rebuildExtensionsWithStickLocations:(id)a3
+- (void)_rebuildExtensionsWithStickLocations:(id)locations
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 count];
-  v6 = [(HKLegendView *)self extensionViews];
-  v7 = [v6 count];
+  locationsCopy = locations;
+  v5 = [locationsCopy count];
+  extensionViews = [(HKLegendView *)self extensionViews];
+  v7 = [extensionViews count];
 
   if (v5 != v7)
   {
@@ -397,8 +397,8 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v8 = [(HKLegendView *)self extensionViews];
-    v9 = [v8 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    extensionViews2 = [(HKLegendView *)self extensionViews];
+    v9 = [extensionViews2 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v9)
     {
       v10 = v9;
@@ -409,22 +409,22 @@
         {
           if (*v32 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(extensionViews2);
           }
 
           [*(*(&v31 + 1) + 8 * i) removeFromSuperview];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v10 = [extensionViews2 countByEnumeratingWithState:&v31 objects:v35 count:16];
       }
 
       while (v10);
     }
 
-    v13 = [(HKLegendView *)self extensionViews];
-    [v13 removeAllObjects];
+    extensionViews3 = [(HKLegendView *)self extensionViews];
+    [extensionViews3 removeAllObjects];
 
-    if ([v4 count])
+    if ([locationsCopy count])
     {
       v14 = 0;
       v15 = *MEMORY[0x1E695F058];
@@ -434,45 +434,45 @@
       do
       {
         v19 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v15, v16, v17, v18}];
-        v20 = [(HKLegendView *)self lollipopColor];
-        if (v20)
+        lollipopColor = [(HKLegendView *)self lollipopColor];
+        if (lollipopColor)
         {
-          [v19 setBackgroundColor:v20];
+          [v19 setBackgroundColor:lollipopColor];
         }
 
         else
         {
-          v21 = [MEMORY[0x1E69DC888] hk_chartLollipopStickColor];
-          [v19 setBackgroundColor:v21];
+          hk_chartLollipopStickColor = [MEMORY[0x1E69DC888] hk_chartLollipopStickColor];
+          [v19 setBackgroundColor:hk_chartLollipopStickColor];
         }
 
-        v22 = [v19 layer];
-        [v22 setZPosition:1.0];
+        layer = [v19 layer];
+        [layer setZPosition:1.0];
 
         [(HKLegendView *)self addSubview:v19];
-        v23 = [(HKLegendView *)self extensionViews];
-        [v23 addObject:v19];
+        extensionViews4 = [(HKLegendView *)self extensionViews];
+        [extensionViews4 addObject:v19];
 
         ++v14;
       }
 
-      while (v14 < [v4 count]);
+      while (v14 < [locationsCopy count]);
     }
   }
 
-  if ([v4 count])
+  if ([locationsCopy count])
   {
     v24 = 0;
     do
     {
-      v25 = [v4 objectAtIndexedSubscript:v24];
+      v25 = [locationsCopy objectAtIndexedSubscript:v24];
       [v25 doubleValue];
       v27 = HKUIFloorToScreenScale(v26);
 
       [(HKLegendView *)self frame];
       Height = CGRectGetHeight(v37);
-      v29 = [(HKLegendView *)self extensionViews];
-      v30 = [v29 objectAtIndexedSubscript:v24];
+      extensionViews5 = [(HKLegendView *)self extensionViews];
+      v30 = [extensionViews5 objectAtIndexedSubscript:v24];
 
       [v30 setFrame:{v27 + -1.0, 0.0, 2.0, Height}];
       [v30 setHidden:0];
@@ -480,7 +480,7 @@
       ++v24;
     }
 
-    while (v24 < [v4 count]);
+    while (v24 < [locationsCopy count]);
   }
 }
 

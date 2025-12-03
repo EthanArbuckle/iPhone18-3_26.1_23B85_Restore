@@ -1,29 +1,29 @@
 @interface SBMainDisplayLayoutState
-+ (id)_elementIdentifiersToLayoutAttributesForElements:(id)a3 spaceConfiguration:(int64_t)a4;
++ (id)_elementIdentifiersToLayoutAttributesForElements:(id)elements spaceConfiguration:(int64_t)configuration;
 - (BOOL)effectivelyRepresentsHomeScreen;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFullScreen;
 - (BOOL)isSplitView;
 - (NSDictionary)displayItemLayoutAttributesMap;
-- (id)_initWithLayoutElements:(id)a3 interfaceOrientation:(int64_t)a4 interfaceOrientationByLayoutElement:(id)a5;
-- (id)_initWithLayoutElements:(id)a3 interfaceOrientation:(int64_t)a4 interfaceOrientationByLayoutElement:(id)a5 spaceConfiguration:(int64_t)a6 elementIdentifiersToLayoutAttributes:(id)a7 floatingConfiguration:(int64_t)a8 unlockedEnvironmentMode:(int64_t)a9 floatingSwitcherVisible:(BOOL)a10 centerConfiguration:(int64_t)a11 centerEntityModal:(BOOL)a12 peekConfiguration:(int64_t)a13 bundleIDShowingAppExpose:(id)a14 windowPickerRole:(int64_t)a15 displayOrdinal:(int64_t)a16 isDisplayExternal:(BOOL)a17;
-- (id)_initWithLayoutElements:(id)a3 interfaceOrientation:(int64_t)a4 interfaceOrientationByLayoutElement:(id)a5 spaceConfiguration:(int64_t)a6 floatingConfiguration:(int64_t)a7 unlockedEnvironmentMode:(int64_t)a8 floatingSwitcherVisible:(BOOL)a9 centerConfiguration:(int64_t)a10 centerEntityModal:(BOOL)a11 peekConfiguration:(int64_t)a12 bundleIDShowingAppExpose:(id)a13 windowPickerRole:(int64_t)a14 displayOrdinal:(int64_t)a15 isDisplayExternal:(BOOL)a16;
-- (id)_initWithLayoutElements:(id)a3 spaceConfiguration:(int64_t)a4 elementIdentifiersToLayoutAttributes:(id)a5 floatingConfiguration:(int64_t)a6 unlockedEnvironmentMode:(int64_t)a7 floatingSwitcherVisible:(BOOL)a8 centerConfiguration:(int64_t)a9 centerEntityModal:(BOOL)a10 peekConfiguration:(int64_t)a11 bundleIDShowingAppExpose:(id)a12 windowPickerRole:(int64_t)a13 displayOrdinal:(int64_t)a14 isDisplayExternal:(BOOL)a15;
-- (id)_initWithLayoutElements:(id)a3 spaceConfiguration:(int64_t)a4 floatingConfiguration:(int64_t)a5 unlockedEnvironmentMode:(int64_t)a6 floatingSwitcherVisible:(BOOL)a7 centerConfiguration:(int64_t)a8 centerEntityModal:(BOOL)a9 peekConfiguration:(int64_t)a10 bundleIDShowingAppExpose:(id)a11 windowPickerRole:(int64_t)a12 displayOrdinal:(int64_t)a13 isDisplayExternal:(BOOL)a14;
-- (id)_initWithLayoutState:(id)a3;
-- (id)_layoutAttributesForElementWithIdentifier:(id)a3;
+- (id)_initWithLayoutElements:(id)elements interfaceOrientation:(int64_t)orientation interfaceOrientationByLayoutElement:(id)element;
+- (id)_initWithLayoutElements:(id)elements interfaceOrientation:(int64_t)orientation interfaceOrientationByLayoutElement:(id)element spaceConfiguration:(int64_t)configuration elementIdentifiersToLayoutAttributes:(id)attributes floatingConfiguration:(int64_t)floatingConfiguration unlockedEnvironmentMode:(int64_t)mode floatingSwitcherVisible:(BOOL)self0 centerConfiguration:(int64_t)self1 centerEntityModal:(BOOL)self2 peekConfiguration:(int64_t)self3 bundleIDShowingAppExpose:(id)self4 windowPickerRole:(int64_t)self5 displayOrdinal:(int64_t)self6 isDisplayExternal:(BOOL)self7;
+- (id)_initWithLayoutElements:(id)elements interfaceOrientation:(int64_t)orientation interfaceOrientationByLayoutElement:(id)element spaceConfiguration:(int64_t)configuration floatingConfiguration:(int64_t)floatingConfiguration unlockedEnvironmentMode:(int64_t)mode floatingSwitcherVisible:(BOOL)visible centerConfiguration:(int64_t)self0 centerEntityModal:(BOOL)self1 peekConfiguration:(int64_t)self2 bundleIDShowingAppExpose:(id)self3 windowPickerRole:(int64_t)self4 displayOrdinal:(int64_t)self5 isDisplayExternal:(BOOL)self6;
+- (id)_initWithLayoutElements:(id)elements spaceConfiguration:(int64_t)configuration elementIdentifiersToLayoutAttributes:(id)attributes floatingConfiguration:(int64_t)floatingConfiguration unlockedEnvironmentMode:(int64_t)mode floatingSwitcherVisible:(BOOL)visible centerConfiguration:(int64_t)centerConfiguration centerEntityModal:(BOOL)self0 peekConfiguration:(int64_t)self1 bundleIDShowingAppExpose:(id)self2 windowPickerRole:(int64_t)self3 displayOrdinal:(int64_t)self4 isDisplayExternal:(BOOL)self5;
+- (id)_initWithLayoutElements:(id)elements spaceConfiguration:(int64_t)configuration floatingConfiguration:(int64_t)floatingConfiguration unlockedEnvironmentMode:(int64_t)mode floatingSwitcherVisible:(BOOL)visible centerConfiguration:(int64_t)centerConfiguration centerEntityModal:(BOOL)modal peekConfiguration:(int64_t)self0 bundleIDShowingAppExpose:(id)self1 windowPickerRole:(int64_t)self2 displayOrdinal:(int64_t)self3 isDisplayExternal:(BOOL)self4;
+- (id)_initWithLayoutState:(id)state;
+- (id)_layoutAttributesForElementWithIdentifier:(id)identifier;
 - (id)appLayout;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 - (id)floatingAppLayout;
-- (id)layoutAttributesForElement:(id)a3;
+- (id)layoutAttributesForElement:(id)element;
 - (int64_t)_defaultInterfaceOrientation;
 - (unint64_t)hash;
 - (void)_applyElementInterfaceOrientationsToLayoutAttributes;
-- (void)_setLayoutAttributes:(id)a3 forLayoutElement:(id)a4;
-- (void)_updateSizingPoliciesForLayoutElements:(id)a3;
+- (void)_setLayoutAttributes:(id)attributes forLayoutElement:(id)element;
+- (void)_updateSizingPoliciesForLayoutElements:(id)elements;
 - (void)invalidateAppLayout;
 - (void)invalidateFloatingAppLayout;
-- (void)setInterfaceOrientationByLayoutElementIdentifier:(id)a3;
+- (void)setInterfaceOrientationByLayoutElementIdentifier:(id)identifier;
 @end
 
 @implementation SBMainDisplayLayoutState
@@ -35,13 +35,13 @@
   if (!cachedAppLayoutIfAny)
   {
     v39 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v40 = self;
+    selfCopy = self;
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v4 = [(SBLayoutState *)self elements];
-    v5 = [v4 countByEnumeratingWithState:&v45 objects:v50 count:16];
+    elements = [(SBLayoutState *)self elements];
+    v5 = [elements countByEnumeratingWithState:&v45 objects:v50 count:16];
     if (v5)
     {
       v6 = v5;
@@ -53,18 +53,18 @@
         {
           if (*v46 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(elements);
           }
 
           v9 = *(*(&v45 + 1) + 8 * i);
-          v10 = [v9 layoutRole];
-          if (SBLayoutRoleIsValid(v10) && v10 != 3)
+          layoutRole = [v9 layoutRole];
+          if (SBLayoutRoleIsValid(layoutRole) && layoutRole != 3)
           {
             v12 = [SBDisplayItem displayItemForLayoutElement:v9];
-            v13 = [MEMORY[0x277CCABB0] numberWithInteger:v10];
+            v13 = [MEMORY[0x277CCABB0] numberWithInteger:layoutRole];
             [v39 setObject:v12 forKeyedSubscript:v13];
 
-            if (v10 == 4)
+            if (layoutRole == 4)
             {
               v14 = v9;
 
@@ -73,7 +73,7 @@
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v45 objects:v50 count:16];
+        v6 = [elements countByEnumeratingWithState:&v45 objects:v50 count:16];
       }
 
       while (v6);
@@ -86,7 +86,7 @@
 
     if (![v39 count])
     {
-      v19 = v40;
+      v19 = selfCopy;
 LABEL_37:
 
       cachedAppLayoutIfAny = v19->_cachedAppLayoutIfAny;
@@ -95,13 +95,13 @@ LABEL_37:
 
     if (v38)
     {
-      v15 = SBAppLayoutCenterConfigurationFromMainDisplayLayoutStateCenterConfiguration([(SBMainDisplayLayoutState *)v40 centerConfiguration]);
+      v15 = SBAppLayoutCenterConfigurationFromMainDisplayLayoutStateCenterConfiguration([(SBMainDisplayLayoutState *)selfCopy centerConfiguration]);
       if (v15)
       {
         v16 = v15;
-        v17 = [(SBMainDisplayLayoutState *)v40 isCenterEntityModal];
+        isCenterEntityModal = [(SBMainDisplayLayoutState *)selfCopy isCenterEntityModal];
         v18 = 3;
-        if (!v17)
+        if (!isCenterEntityModal)
         {
           v18 = 1;
         }
@@ -118,7 +118,7 @@ LABEL_37:
     v18 = 1;
 LABEL_26:
     v37 = v18;
-    v21 = SBAppLayoutConfigurationFromMainDisplayLayoutStateSpaceConfiguration([(SBMainDisplayLayoutState *)v40 spaceConfiguration]);
+    v21 = SBAppLayoutConfigurationFromMainDisplayLayoutStateSpaceConfiguration([(SBMainDisplayLayoutState *)selfCopy spaceConfiguration]);
     if (v21 >= 2 && [v39 count] == 1)
     {
       v21 = 1;
@@ -145,9 +145,9 @@ LABEL_26:
           }
 
           v28 = *(*(&v41 + 1) + 8 * j);
-          v29 = -[SBLayoutState elementWithRole:](v40, "elementWithRole:", [v28 integerValue]);
+          v29 = -[SBLayoutState elementWithRole:](selfCopy, "elementWithRole:", [v28 integerValue]);
           v30 = [v23 objectForKey:v28];
-          v31 = [(SBMainDisplayLayoutState *)v40 layoutAttributesForElement:v29];
+          v31 = [(SBMainDisplayLayoutState *)selfCopy layoutAttributesForElement:v29];
           [v22 setObject:v31 forKey:v30];
         }
 
@@ -158,13 +158,13 @@ LABEL_26:
     }
 
     v32 = [v22 copy];
-    v19 = v40;
-    cachedLayoutAttributesIfAny = v40->_cachedLayoutAttributesIfAny;
-    v40->_cachedLayoutAttributesIfAny = v32;
+    v19 = selfCopy;
+    cachedLayoutAttributesIfAny = selfCopy->_cachedLayoutAttributesIfAny;
+    selfCopy->_cachedLayoutAttributesIfAny = v32;
 
-    v34 = [[SBAppLayout alloc] initWithItemsForLayoutRoles:v23 configuration:v21 centerConfiguration:v16 environment:v37 hidden:0 preferredDisplayOrdinal:v40->_displayOrdinal];
-    v35 = v40->_cachedAppLayoutIfAny;
-    v40->_cachedAppLayoutIfAny = v34;
+    v34 = [[SBAppLayout alloc] initWithItemsForLayoutRoles:v23 configuration:v21 centerConfiguration:v16 environment:v37 hidden:0 preferredDisplayOrdinal:selfCopy->_displayOrdinal];
+    v35 = selfCopy->_cachedAppLayoutIfAny;
+    selfCopy->_cachedAppLayoutIfAny = v34;
 
     goto LABEL_37;
   }
@@ -218,15 +218,15 @@ LABEL_38:
   if (self->_elementIdentifiersToLayoutAttributes)
   {
     v3 = MEMORY[0x277CBEB38];
-    v4 = [(SBLayoutState *)self elements];
-    v5 = [v3 dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+    elements = [(SBLayoutState *)self elements];
+    v5 = [v3 dictionaryWithCapacity:{objc_msgSend(elements, "count")}];
 
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [(SBLayoutState *)self elements];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    elements2 = [(SBLayoutState *)self elements];
+    v7 = [elements2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -238,20 +238,20 @@ LABEL_38:
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(elements2);
           }
 
-          v11 = [*(*(&v16 + 1) + 8 * v10) uniqueIdentifier];
-          v12 = [(SBMainDisplayLayoutState *)self _layoutAttributesForElementWithIdentifier:v11];
-          [(SBLayoutState *)self interfaceOrientationForElementIdentifier:v11];
+          uniqueIdentifier = [*(*(&v16 + 1) + 8 * v10) uniqueIdentifier];
+          v12 = [(SBMainDisplayLayoutState *)self _layoutAttributesForElementWithIdentifier:uniqueIdentifier];
+          [(SBLayoutState *)self interfaceOrientationForElementIdentifier:uniqueIdentifier];
           v13 = [SBDisplayItemLayoutAttributes attributesByModifyingContentOrientation:v12];
 
-          [v5 setValue:v13 forKey:v11];
+          [v5 setValue:v13 forKey:uniqueIdentifier];
           ++v10;
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [elements2 countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v8);
@@ -304,8 +304,8 @@ LABEL_38:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(SBLayoutState *)self elements];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  elements = [(SBLayoutState *)self elements];
+  v4 = [elements countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -316,19 +316,19 @@ LABEL_38:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(elements);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        v9 = [v8 layoutRole];
-        if ([v8 layoutRole] != 4 && SBLayoutRoleIsValid(v9))
+        layoutRole = [v8 layoutRole];
+        if ([v8 layoutRole] != 4 && SBLayoutRoleIsValid(layoutRole))
         {
 
           return 0;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [elements countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -341,80 +341,80 @@ LABEL_38:
   return [(SBMainDisplayLayoutState *)self unlockedEnvironmentMode]!= 2;
 }
 
-- (id)_initWithLayoutElements:(id)a3 interfaceOrientation:(int64_t)a4 interfaceOrientationByLayoutElement:(id)a5 spaceConfiguration:(int64_t)a6 elementIdentifiersToLayoutAttributes:(id)a7 floatingConfiguration:(int64_t)a8 unlockedEnvironmentMode:(int64_t)a9 floatingSwitcherVisible:(BOOL)a10 centerConfiguration:(int64_t)a11 centerEntityModal:(BOOL)a12 peekConfiguration:(int64_t)a13 bundleIDShowingAppExpose:(id)a14 windowPickerRole:(int64_t)a15 displayOrdinal:(int64_t)a16 isDisplayExternal:(BOOL)a17
+- (id)_initWithLayoutElements:(id)elements interfaceOrientation:(int64_t)orientation interfaceOrientationByLayoutElement:(id)element spaceConfiguration:(int64_t)configuration elementIdentifiersToLayoutAttributes:(id)attributes floatingConfiguration:(int64_t)floatingConfiguration unlockedEnvironmentMode:(int64_t)mode floatingSwitcherVisible:(BOOL)self0 centerConfiguration:(int64_t)self1 centerEntityModal:(BOOL)self2 peekConfiguration:(int64_t)self3 bundleIDShowingAppExpose:(id)self4 windowPickerRole:(int64_t)self5 displayOrdinal:(int64_t)self6 isDisplayExternal:(BOOL)self7
 {
-  v23 = a7;
-  v24 = a14;
+  attributesCopy = attributes;
+  exposeCopy = expose;
   v32.receiver = self;
   v32.super_class = SBMainDisplayLayoutState;
-  v25 = [(SBLayoutState *)&v32 _initWithLayoutElements:a3 interfaceOrientation:a4 interfaceOrientationByLayoutElement:a5];
+  v25 = [(SBLayoutState *)&v32 _initWithLayoutElements:elements interfaceOrientation:orientation interfaceOrientationByLayoutElement:element];
   v26 = v25;
   if (v25)
   {
-    v25[10] = a6;
-    v27 = [v23 copy];
+    v25[10] = configuration;
+    v27 = [attributesCopy copy];
     v28 = v26[8];
     v26[8] = v27;
 
-    v26[11] = a8;
-    v26[14] = a9;
-    *(v26 + 72) = a10;
-    v26[12] = a11;
-    *(v26 + 73) = a12;
-    v26[13] = a13;
-    v29 = [v24 copy];
+    v26[11] = floatingConfiguration;
+    v26[14] = mode;
+    *(v26 + 72) = visible;
+    v26[12] = centerConfiguration;
+    *(v26 + 73) = modal;
+    v26[13] = peekConfiguration;
+    v29 = [exposeCopy copy];
     v30 = v26[15];
     v26[15] = v29;
 
-    v26[16] = a15;
-    v26[17] = a16;
-    *(v26 + 74) = a17;
+    v26[16] = role;
+    v26[17] = ordinal;
+    *(v26 + 74) = external;
   }
 
   return v26;
 }
 
-- (id)_initWithLayoutElements:(id)a3 spaceConfiguration:(int64_t)a4 elementIdentifiersToLayoutAttributes:(id)a5 floatingConfiguration:(int64_t)a6 unlockedEnvironmentMode:(int64_t)a7 floatingSwitcherVisible:(BOOL)a8 centerConfiguration:(int64_t)a9 centerEntityModal:(BOOL)a10 peekConfiguration:(int64_t)a11 bundleIDShowingAppExpose:(id)a12 windowPickerRole:(int64_t)a13 displayOrdinal:(int64_t)a14 isDisplayExternal:(BOOL)a15
+- (id)_initWithLayoutElements:(id)elements spaceConfiguration:(int64_t)configuration elementIdentifiersToLayoutAttributes:(id)attributes floatingConfiguration:(int64_t)floatingConfiguration unlockedEnvironmentMode:(int64_t)mode floatingSwitcherVisible:(BOOL)visible centerConfiguration:(int64_t)centerConfiguration centerEntityModal:(BOOL)self0 peekConfiguration:(int64_t)self1 bundleIDShowingAppExpose:(id)self2 windowPickerRole:(int64_t)self3 displayOrdinal:(int64_t)self4 isDisplayExternal:(BOOL)self5
 {
-  LOBYTE(v18) = a15;
-  LOBYTE(v17) = a10;
-  LOBYTE(v16) = a8;
-  return [(SBMainDisplayLayoutState *)self _initWithLayoutElements:a3 interfaceOrientation:0 interfaceOrientationByLayoutElement:0 spaceConfiguration:a4 elementIdentifiersToLayoutAttributes:a5 floatingConfiguration:a6 unlockedEnvironmentMode:a7 floatingSwitcherVisible:v16 centerConfiguration:a9 centerEntityModal:v17 peekConfiguration:a11 bundleIDShowingAppExpose:a12 windowPickerRole:a13 displayOrdinal:a14 isDisplayExternal:v18];
+  LOBYTE(v18) = external;
+  LOBYTE(v17) = modal;
+  LOBYTE(v16) = visible;
+  return [(SBMainDisplayLayoutState *)self _initWithLayoutElements:elements interfaceOrientation:0 interfaceOrientationByLayoutElement:0 spaceConfiguration:configuration elementIdentifiersToLayoutAttributes:attributes floatingConfiguration:floatingConfiguration unlockedEnvironmentMode:mode floatingSwitcherVisible:v16 centerConfiguration:centerConfiguration centerEntityModal:v17 peekConfiguration:peekConfiguration bundleIDShowingAppExpose:expose windowPickerRole:role displayOrdinal:ordinal isDisplayExternal:v18];
 }
 
-- (id)_initWithLayoutElements:(id)a3 spaceConfiguration:(int64_t)a4 floatingConfiguration:(int64_t)a5 unlockedEnvironmentMode:(int64_t)a6 floatingSwitcherVisible:(BOOL)a7 centerConfiguration:(int64_t)a8 centerEntityModal:(BOOL)a9 peekConfiguration:(int64_t)a10 bundleIDShowingAppExpose:(id)a11 windowPickerRole:(int64_t)a12 displayOrdinal:(int64_t)a13 isDisplayExternal:(BOOL)a14
+- (id)_initWithLayoutElements:(id)elements spaceConfiguration:(int64_t)configuration floatingConfiguration:(int64_t)floatingConfiguration unlockedEnvironmentMode:(int64_t)mode floatingSwitcherVisible:(BOOL)visible centerConfiguration:(int64_t)centerConfiguration centerEntityModal:(BOOL)modal peekConfiguration:(int64_t)self0 bundleIDShowingAppExpose:(id)self1 windowPickerRole:(int64_t)self2 displayOrdinal:(int64_t)self3 isDisplayExternal:(BOOL)self4
 {
-  v17 = a11;
-  v18 = a3;
-  v19 = [objc_opt_class() _elementIdentifiersToLayoutAttributesForElements:v18 spaceConfiguration:a4];
-  LOBYTE(v24) = a14;
-  LOBYTE(v23) = a9;
-  LOBYTE(v22) = a7;
-  v20 = [(SBMainDisplayLayoutState *)self _initWithLayoutElements:v18 interfaceOrientation:0 interfaceOrientationByLayoutElement:0 spaceConfiguration:a4 elementIdentifiersToLayoutAttributes:v19 floatingConfiguration:a5 unlockedEnvironmentMode:a6 floatingSwitcherVisible:v22 centerConfiguration:a8 centerEntityModal:v23 peekConfiguration:a10 bundleIDShowingAppExpose:v17 windowPickerRole:a12 displayOrdinal:a13 isDisplayExternal:v24];
+  exposeCopy = expose;
+  elementsCopy = elements;
+  v19 = [objc_opt_class() _elementIdentifiersToLayoutAttributesForElements:elementsCopy spaceConfiguration:configuration];
+  LOBYTE(v24) = external;
+  LOBYTE(v23) = modal;
+  LOBYTE(v22) = visible;
+  v20 = [(SBMainDisplayLayoutState *)self _initWithLayoutElements:elementsCopy interfaceOrientation:0 interfaceOrientationByLayoutElement:0 spaceConfiguration:configuration elementIdentifiersToLayoutAttributes:v19 floatingConfiguration:floatingConfiguration unlockedEnvironmentMode:mode floatingSwitcherVisible:v22 centerConfiguration:centerConfiguration centerEntityModal:v23 peekConfiguration:peekConfiguration bundleIDShowingAppExpose:exposeCopy windowPickerRole:role displayOrdinal:ordinal isDisplayExternal:v24];
 
   return v20;
 }
 
-- (id)_initWithLayoutElements:(id)a3 interfaceOrientation:(int64_t)a4 interfaceOrientationByLayoutElement:(id)a5 spaceConfiguration:(int64_t)a6 floatingConfiguration:(int64_t)a7 unlockedEnvironmentMode:(int64_t)a8 floatingSwitcherVisible:(BOOL)a9 centerConfiguration:(int64_t)a10 centerEntityModal:(BOOL)a11 peekConfiguration:(int64_t)a12 bundleIDShowingAppExpose:(id)a13 windowPickerRole:(int64_t)a14 displayOrdinal:(int64_t)a15 isDisplayExternal:(BOOL)a16
+- (id)_initWithLayoutElements:(id)elements interfaceOrientation:(int64_t)orientation interfaceOrientationByLayoutElement:(id)element spaceConfiguration:(int64_t)configuration floatingConfiguration:(int64_t)floatingConfiguration unlockedEnvironmentMode:(int64_t)mode floatingSwitcherVisible:(BOOL)visible centerConfiguration:(int64_t)self0 centerEntityModal:(BOOL)self1 peekConfiguration:(int64_t)self2 bundleIDShowingAppExpose:(id)self3 windowPickerRole:(int64_t)self4 displayOrdinal:(int64_t)self5 isDisplayExternal:(BOOL)self6
 {
-  v20 = a13;
-  v21 = a5;
-  v22 = a3;
-  v23 = [objc_opt_class() _elementIdentifiersToLayoutAttributesForElements:v22 spaceConfiguration:a6];
-  LOBYTE(v28) = a16;
-  LOBYTE(v27) = a11;
-  LOBYTE(v26) = a9;
-  v24 = [(SBMainDisplayLayoutState *)self _initWithLayoutElements:v22 interfaceOrientation:a4 interfaceOrientationByLayoutElement:v21 spaceConfiguration:a6 elementIdentifiersToLayoutAttributes:v23 floatingConfiguration:a7 unlockedEnvironmentMode:a8 floatingSwitcherVisible:v26 centerConfiguration:a10 centerEntityModal:v27 peekConfiguration:a12 bundleIDShowingAppExpose:v20 windowPickerRole:a14 displayOrdinal:a15 isDisplayExternal:v28];
+  exposeCopy = expose;
+  elementCopy = element;
+  elementsCopy = elements;
+  v23 = [objc_opt_class() _elementIdentifiersToLayoutAttributesForElements:elementsCopy spaceConfiguration:configuration];
+  LOBYTE(v28) = external;
+  LOBYTE(v27) = modal;
+  LOBYTE(v26) = visible;
+  v24 = [(SBMainDisplayLayoutState *)self _initWithLayoutElements:elementsCopy interfaceOrientation:orientation interfaceOrientationByLayoutElement:elementCopy spaceConfiguration:configuration elementIdentifiersToLayoutAttributes:v23 floatingConfiguration:floatingConfiguration unlockedEnvironmentMode:mode floatingSwitcherVisible:v26 centerConfiguration:centerConfiguration centerEntityModal:v27 peekConfiguration:peekConfiguration bundleIDShowingAppExpose:exposeCopy windowPickerRole:role displayOrdinal:ordinal isDisplayExternal:v28];
 
   return v24;
 }
 
-- (id)_initWithLayoutElements:(id)a3 interfaceOrientation:(int64_t)a4 interfaceOrientationByLayoutElement:(id)a5
+- (id)_initWithLayoutElements:(id)elements interfaceOrientation:(int64_t)orientation interfaceOrientationByLayoutElement:(id)element
 {
   LOBYTE(v10) = 0;
   LOBYTE(v9) = 0;
   LOBYTE(v8) = 0;
-  v5 = [(SBMainDisplayLayoutState *)self _initWithLayoutElements:a3 interfaceOrientation:a4 interfaceOrientationByLayoutElement:a5 spaceConfiguration:0 elementIdentifiersToLayoutAttributes:MEMORY[0x277CBEC10] floatingConfiguration:0 unlockedEnvironmentMode:1 floatingSwitcherVisible:v8 centerConfiguration:0 centerEntityModal:v9 peekConfiguration:0 bundleIDShowingAppExpose:0 windowPickerRole:0 displayOrdinal:0 isDisplayExternal:v10];
+  v5 = [(SBMainDisplayLayoutState *)self _initWithLayoutElements:elements interfaceOrientation:orientation interfaceOrientationByLayoutElement:element spaceConfiguration:0 elementIdentifiersToLayoutAttributes:MEMORY[0x277CBEC10] floatingConfiguration:0 unlockedEnvironmentMode:1 floatingSwitcherVisible:v8 centerConfiguration:0 centerEntityModal:v9 peekConfiguration:0 bundleIDShowingAppExpose:0 windowPickerRole:0 displayOrdinal:0 isDisplayExternal:v10];
   v6 = v5;
   if (v5)
   {
@@ -424,30 +424,30 @@ LABEL_38:
   return v6;
 }
 
-- (id)_initWithLayoutState:(id)a3
+- (id)_initWithLayoutState:(id)state
 {
-  v3 = a3;
-  v23 = [v3 elements];
-  v22 = [v3 interfaceOrientation];
-  v25 = [v3 interfaceOrientationByLayoutElementIdentifier];
-  v21 = [v25 copy];
-  v20 = [v3 spaceConfiguration];
-  v4 = [v3 elementIdentifiersToLayoutAttributes];
-  v19 = [v3 floatingConfiguration];
-  v18 = [v3 unlockedEnvironmentMode];
-  v5 = [v3 isFloatingSwitcherVisible];
-  v6 = [v3 centerConfiguration];
-  v7 = [v3 isCenterEntityModal];
-  v8 = [v3 peekConfiguration];
-  v9 = [v3 bundleIDShowingAppExpose];
-  v10 = [v3 windowPickerRole];
-  v11 = [v3 displayOrdinal];
-  v12 = [v3 isDisplayExternal];
+  stateCopy = state;
+  elements = [stateCopy elements];
+  interfaceOrientation = [stateCopy interfaceOrientation];
+  interfaceOrientationByLayoutElementIdentifier = [stateCopy interfaceOrientationByLayoutElementIdentifier];
+  v21 = [interfaceOrientationByLayoutElementIdentifier copy];
+  spaceConfiguration = [stateCopy spaceConfiguration];
+  elementIdentifiersToLayoutAttributes = [stateCopy elementIdentifiersToLayoutAttributes];
+  floatingConfiguration = [stateCopy floatingConfiguration];
+  unlockedEnvironmentMode = [stateCopy unlockedEnvironmentMode];
+  isFloatingSwitcherVisible = [stateCopy isFloatingSwitcherVisible];
+  centerConfiguration = [stateCopy centerConfiguration];
+  isCenterEntityModal = [stateCopy isCenterEntityModal];
+  peekConfiguration = [stateCopy peekConfiguration];
+  bundleIDShowingAppExpose = [stateCopy bundleIDShowingAppExpose];
+  windowPickerRole = [stateCopy windowPickerRole];
+  displayOrdinal = [stateCopy displayOrdinal];
+  isDisplayExternal = [stateCopy isDisplayExternal];
 
-  LOBYTE(v17) = v12;
-  LOBYTE(v16) = v7;
-  LOBYTE(v15) = v5;
-  v13 = [(SBMainDisplayLayoutState *)self _initWithLayoutElements:v23 interfaceOrientation:v22 interfaceOrientationByLayoutElement:v21 spaceConfiguration:v20 elementIdentifiersToLayoutAttributes:v4 floatingConfiguration:v19 unlockedEnvironmentMode:v18 floatingSwitcherVisible:v15 centerConfiguration:v6 centerEntityModal:v16 peekConfiguration:v8 bundleIDShowingAppExpose:v9 windowPickerRole:v10 displayOrdinal:v11 isDisplayExternal:v17];
+  LOBYTE(v17) = isDisplayExternal;
+  LOBYTE(v16) = isCenterEntityModal;
+  LOBYTE(v15) = isFloatingSwitcherVisible;
+  v13 = [(SBMainDisplayLayoutState *)self _initWithLayoutElements:elements interfaceOrientation:interfaceOrientation interfaceOrientationByLayoutElement:v21 spaceConfiguration:spaceConfiguration elementIdentifiersToLayoutAttributes:elementIdentifiersToLayoutAttributes floatingConfiguration:floatingConfiguration unlockedEnvironmentMode:unlockedEnvironmentMode floatingSwitcherVisible:v15 centerConfiguration:centerConfiguration centerEntityModal:v16 peekConfiguration:peekConfiguration bundleIDShowingAppExpose:bundleIDShowingAppExpose windowPickerRole:windowPickerRole displayOrdinal:displayOrdinal isDisplayExternal:v17];
 
   if (v13)
   {
@@ -457,16 +457,16 @@ LABEL_38:
   return v13;
 }
 
-+ (id)_elementIdentifiersToLayoutAttributesForElements:(id)a3 spaceConfiguration:(int64_t)a4
++ (id)_elementIdentifiersToLayoutAttributesForElements:(id)elements spaceConfiguration:(int64_t)configuration
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  elementsCopy = elements;
   v5 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = elementsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -483,8 +483,8 @@ LABEL_38:
 
         v11 = *(*(&v15 + 1) + 8 * i);
         v12 = objc_alloc_init(SBDisplayItemLayoutAttributes);
-        v13 = [v11 uniqueIdentifier];
-        [v5 setObject:v12 forKey:v13];
+        uniqueIdentifier = [v11 uniqueIdentifier];
+        [v5 setObject:v12 forKey:uniqueIdentifier];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -496,30 +496,30 @@ LABEL_38:
   return v5;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBLayoutState *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBLayoutState *)self succinctDescriptionBuilder];
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [(SBLayoutState *)self interfaceOrientationByLayoutElementIdentifier];
+  interfaceOrientationByLayoutElementIdentifier = [(SBLayoutState *)self interfaceOrientationByLayoutElementIdentifier];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __66__SBMainDisplayLayoutState_descriptionBuilderWithMultilinePrefix___block_invoke;
   v18[3] = &unk_2783B7F10;
   v8 = v6;
   v19 = v8;
-  [v7 bs_each:v18];
+  [interfaceOrientationByLayoutElementIdentifier bs_each:v18];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __66__SBMainDisplayLayoutState_descriptionBuilderWithMultilinePrefix___block_invoke_2;
   v14[3] = &unk_2783A8ED8;
-  v9 = v5;
+  v9 = succinctDescriptionBuilder;
   v15 = v9;
-  v16 = self;
+  selfCopy = self;
   v17 = v8;
   v10 = v8;
-  [v9 appendBodySectionWithName:0 multilinePrefix:v4 block:v14];
+  [v9 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v14];
 
   v11 = v17;
   v12 = v9;
@@ -687,23 +687,23 @@ void __66__SBMainDisplayLayoutState_descriptionBuilderWithMultilinePrefix___bloc
   [v43 appendString:v44 withName:@"continuousExposeIdentifier" skipIfEmpty:1];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v20.receiver = self;
     v20.super_class = SBMainDisplayLayoutState;
     if (-[SBLayoutState isEqual:](&v20, sel_isEqual_, v5) && (v6 = -[SBMainDisplayLayoutState spaceConfiguration](self, "spaceConfiguration"), v6 == [v5 spaceConfiguration]) && (v7 = -[SBMainDisplayLayoutState floatingConfiguration](self, "floatingConfiguration"), v7 == objc_msgSend(v5, "floatingConfiguration")) && (v8 = -[SBMainDisplayLayoutState unlockedEnvironmentMode](self, "unlockedEnvironmentMode"), v8 == objc_msgSend(v5, "unlockedEnvironmentMode")) && (v9 = -[SBMainDisplayLayoutState centerConfiguration](self, "centerConfiguration"), v9 == objc_msgSend(v5, "centerConfiguration")) && (v10 = -[SBMainDisplayLayoutState isCenterEntityModal](self, "isCenterEntityModal"), v10 == objc_msgSend(v5, "isCenterEntityModal")) && (v11 = -[SBMainDisplayLayoutState peekConfiguration](self, "peekConfiguration"), v11 == objc_msgSend(v5, "peekConfiguration")))
     {
-      v12 = [(SBMainDisplayLayoutState *)self bundleIDShowingAppExpose];
-      v13 = [v5 bundleIDShowingAppExpose];
+      bundleIDShowingAppExpose = [(SBMainDisplayLayoutState *)self bundleIDShowingAppExpose];
+      bundleIDShowingAppExpose2 = [v5 bundleIDShowingAppExpose];
       if (BSEqualObjects() && (v14 = -[SBMainDisplayLayoutState windowPickerRole](self, "windowPickerRole"), v14 == [v5 windowPickerRole]) && (v15 = -[SBMainDisplayLayoutState displayOrdinal](self, "displayOrdinal"), v15 == objc_msgSend(v5, "displayOrdinal")) && self->_isDisplayExternal == v5[74])
       {
-        v16 = [(SBLayoutState *)self interfaceOrientationByLayoutElementIdentifier];
-        v17 = [v5 interfaceOrientationByLayoutElementIdentifier];
+        interfaceOrientationByLayoutElementIdentifier = [(SBLayoutState *)self interfaceOrientationByLayoutElementIdentifier];
+        interfaceOrientationByLayoutElementIdentifier2 = [v5 interfaceOrientationByLayoutElementIdentifier];
         v18 = BSEqualObjects();
       }
 
@@ -739,18 +739,18 @@ void __66__SBMainDisplayLayoutState_descriptionBuilderWithMultilinePrefix___bloc
   v7 = [v3 appendInteger:{-[SBMainDisplayLayoutState centerConfiguration](self, "centerConfiguration")}];
   v8 = [v3 appendInteger:{-[SBMainDisplayLayoutState peekConfiguration](self, "peekConfiguration")}];
   v9 = [v3 appendInteger:{-[SBMainDisplayLayoutState unlockedEnvironmentMode](self, "unlockedEnvironmentMode")}];
-  v10 = [(SBMainDisplayLayoutState *)self bundleIDShowingAppExpose];
-  v11 = [v3 appendString:v10];
+  bundleIDShowingAppExpose = [(SBMainDisplayLayoutState *)self bundleIDShowingAppExpose];
+  v11 = [v3 appendString:bundleIDShowingAppExpose];
 
   v12 = [v3 appendInteger:{-[SBMainDisplayLayoutState windowPickerRole](self, "windowPickerRole")}];
   v13 = [v3 appendInteger:{-[SBMainDisplayLayoutState displayOrdinal](self, "displayOrdinal")}];
   v14 = [v3 appendBool:{-[SBMainDisplayLayoutState isDisplayExternal](self, "isDisplayExternal")}];
-  v15 = [(SBLayoutState *)self interfaceOrientationByLayoutElementIdentifier];
+  interfaceOrientationByLayoutElementIdentifier = [(SBLayoutState *)self interfaceOrientationByLayoutElementIdentifier];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v16 = [v15 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  v16 = [interfaceOrientationByLayoutElementIdentifier countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v16)
   {
     v17 = v16;
@@ -761,16 +761,16 @@ void __66__SBMainDisplayLayoutState_descriptionBuilderWithMultilinePrefix___bloc
       {
         if (*v27 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(interfaceOrientationByLayoutElementIdentifier);
         }
 
         v20 = *(*(&v26 + 1) + 8 * i);
         v21 = [v3 appendString:v20];
-        v22 = [v15 objectForKey:v20];
+        v22 = [interfaceOrientationByLayoutElementIdentifier objectForKey:v20];
         v23 = [v3 appendUnsignedInteger:{objc_msgSend(v22, "unsignedIntegerValue")}];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v17 = [interfaceOrientationByLayoutElementIdentifier countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v17);
@@ -781,10 +781,10 @@ void __66__SBMainDisplayLayoutState_descriptionBuilderWithMultilinePrefix___bloc
   return v24;
 }
 
-- (id)layoutAttributesForElement:(id)a3
+- (id)layoutAttributesForElement:(id)element
 {
-  v4 = [a3 uniqueIdentifier];
-  v5 = [(SBMainDisplayLayoutState *)self _layoutAttributesForElementWithIdentifier:v4];
+  uniqueIdentifier = [element uniqueIdentifier];
+  v5 = [(SBMainDisplayLayoutState *)self _layoutAttributesForElementWithIdentifier:uniqueIdentifier];
 
   return v5;
 }
@@ -806,19 +806,19 @@ void __66__SBMainDisplayLayoutState_descriptionBuilderWithMultilinePrefix___bloc
   return v5;
 }
 
-- (void)setInterfaceOrientationByLayoutElementIdentifier:(id)a3
+- (void)setInterfaceOrientationByLayoutElementIdentifier:(id)identifier
 {
   v4.receiver = self;
   v4.super_class = SBMainDisplayLayoutState;
-  [(SBLayoutState *)&v4 setInterfaceOrientationByLayoutElementIdentifier:a3];
+  [(SBLayoutState *)&v4 setInterfaceOrientationByLayoutElementIdentifier:identifier];
   [(SBMainDisplayLayoutState *)self _applyElementInterfaceOrientationsToLayoutAttributes];
   [(SBMainDisplayLayoutState *)self invalidateAppLayout];
   [(SBMainDisplayLayoutState *)self invalidateFloatingAppLayout];
 }
 
-- (id)_layoutAttributesForElementWithIdentifier:(id)a3
+- (id)_layoutAttributesForElementWithIdentifier:(id)identifier
 {
-  v3 = [(NSDictionary *)self->_elementIdentifiersToLayoutAttributes objectForKey:a3];
+  v3 = [(NSDictionary *)self->_elementIdentifiersToLayoutAttributes objectForKey:identifier];
   if (!v3)
   {
     v3 = objc_alloc_init(SBDisplayItemLayoutAttributes);
@@ -827,23 +827,23 @@ void __66__SBMainDisplayLayoutState_descriptionBuilderWithMultilinePrefix___bloc
   return v3;
 }
 
-- (void)_updateSizingPoliciesForLayoutElements:(id)a3
+- (void)_updateSizingPoliciesForLayoutElements:(id)elements
 {
-  if (a3)
+  if (elements)
   {
     v4 = MEMORY[0x277CBEB38];
-    v5 = a3;
-    v6 = [(SBLayoutState *)self elements];
-    v7 = [v4 dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+    elementsCopy = elements;
+    elements = [(SBLayoutState *)self elements];
+    v7 = [v4 dictionaryWithCapacity:{objc_msgSend(elements, "count")}];
 
     v11 = MEMORY[0x277D85DD0];
     v12 = 3221225472;
     v13 = __67__SBMainDisplayLayoutState__updateSizingPoliciesForLayoutElements___block_invoke;
     v14 = &unk_2783BA790;
-    v15 = self;
+    selfCopy = self;
     v16 = v7;
     v8 = v7;
-    [v5 enumerateKeysAndObjectsUsingBlock:&v11];
+    [elementsCopy enumerateKeysAndObjectsUsingBlock:&v11];
 
     v9 = [v8 copy];
     elementIdentifiersToLayoutAttributes = self->_elementIdentifiersToLayoutAttributes;
@@ -864,28 +864,28 @@ void __67__SBMainDisplayLayoutState__updateSizingPoliciesForLayoutElements___blo
   [*(a1 + 40) setValue:v7 forKey:v5];
 }
 
-- (void)_setLayoutAttributes:(id)a3 forLayoutElement:(id)a4
+- (void)_setLayoutAttributes:(id)attributes forLayoutElement:(id)element
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  attributesCopy = attributes;
   if (self->_elementIdentifiersToLayoutAttributes)
   {
-    v7 = [a4 uniqueIdentifier];
-    if (v7)
+    uniqueIdentifier = [element uniqueIdentifier];
+    if (uniqueIdentifier)
     {
       v8 = [(NSDictionary *)self->_elementIdentifiersToLayoutAttributes mutableCopy];
       v9 = v8;
-      if (v6)
+      if (attributesCopy)
       {
-        v12 = v7;
-        v13[0] = v6;
+        v12 = uniqueIdentifier;
+        v13[0] = attributesCopy;
         v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
         [(NSDictionary *)v9 addEntriesFromDictionary:v10];
       }
 
       else
       {
-        [(NSDictionary *)v8 removeObjectForKey:v7];
+        [(NSDictionary *)v8 removeObjectForKey:uniqueIdentifier];
       }
 
       elementIdentifiersToLayoutAttributes = self->_elementIdentifiersToLayoutAttributes;
@@ -905,8 +905,8 @@ void __67__SBMainDisplayLayoutState__updateSizingPoliciesForLayoutElements___blo
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(SBLayoutState *)self elements];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  elements = [(SBLayoutState *)self elements];
+  v5 = [elements countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -917,12 +917,12 @@ void __67__SBMainDisplayLayoutState__updateSizingPoliciesForLayoutElements___blo
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(elements);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 layoutRole];
-        if (SBLayoutRoleIsValid(v10) && v10 != 3)
+        layoutRole = [v9 layoutRole];
+        if (SBLayoutRoleIsValid(layoutRole) && layoutRole != 3)
         {
           v12 = [SBDisplayItem displayItemForLayoutElement:v9];
           v13 = [(SBMainDisplayLayoutState *)self layoutAttributesForElement:v9];
@@ -930,7 +930,7 @@ void __67__SBMainDisplayLayoutState__updateSizingPoliciesForLayoutElements___blo
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [elements countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);

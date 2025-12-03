@@ -1,7 +1,7 @@
 @interface _UIWindowSceneStatusBarSettingsDiffAction
 - (UIApplicationSceneSettingsDiffInspector)sceneSettingsStatusBarDiffInspector;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
-- (void)_updateForcedStatusBarForegroundTransparentWithSceneSettings:(id)a3 transitionContext:(id)a4;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
+- (void)_updateForcedStatusBarForegroundTransparentWithSceneSettings:(id)settings transitionContext:(id)context;
 @end
 
 @implementation _UIWindowSceneStatusBarSettingsDiffAction
@@ -27,24 +27,24 @@
   return sceneSettingsStatusBarDiffInspector;
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
+  sceneCopy = scene;
+  diffCopy = diff;
+  contextCopy = context;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"_UIWindowSceneStatusBarSettingsDiffAction.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"[uiScene isKindOfClass:[UIWindowScene class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIWindowSceneStatusBarSettingsDiffAction.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"[uiScene isKindOfClass:[UIWindowScene class]]"}];
   }
 
-  v15 = v12;
+  v15 = sceneCopy;
   v28 = 0;
-  if (v13)
+  if (diffCopy)
   {
-    v16 = [(_UIWindowSceneStatusBarSettingsDiffAction *)self sceneSettingsStatusBarDiffInspector];
-    [v16 inspectDiff:v13 withContext:&v28];
+    sceneSettingsStatusBarDiffInspector = [(_UIWindowSceneStatusBarSettingsDiffAction *)self sceneSettingsStatusBarDiffInspector];
+    [sceneSettingsStatusBarDiffInspector inspectDiff:diffCopy withContext:&v28];
   }
 
   else
@@ -52,74 +52,74 @@
     v28 = 56;
   }
 
-  v17 = [v15 _effectiveUISettings];
+  _effectiveUISettings = [v15 _effectiveUISettings];
   v18 = v28;
   if ((v28 & 4) != 0)
   {
-    v19 = [v15 statusBarManager];
-    [v19 updateStatusBarAppearance];
+    statusBarManager = [v15 statusBarManager];
+    [statusBarManager updateStatusBarAppearance];
 
     v18 = v28;
   }
 
   if ((v18 & 0x20) != 0)
   {
-    [v17 safeAreaInsetsPortrait];
+    [_effectiveUISettings safeAreaInsetsPortrait];
     v21 = v20;
-    [v17 defaultStatusBarHeightForOrientation:1];
+    [_effectiveUISettings defaultStatusBarHeightForOrientation:1];
     if (v21 < v22)
     {
-      v23 = [v15 _allWindows];
+      _allWindows = [v15 _allWindows];
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __155___UIWindowSceneStatusBarSettingsDiffAction__performActionsForUIScene_withUpdatedFBSScene_settingsDiff_fromSettings_transitionContext_lifecycleActionType___block_invoke;
       v26[3] = &unk_1E70F5AC0;
-      v27 = v23;
-      v24 = v23;
-      _UISceneSettingsDiffActionPerformChangesWithTransitionContextAndCompletion(v14, v26, 0);
+      v27 = _allWindows;
+      v24 = _allWindows;
+      _UISceneSettingsDiffActionPerformChangesWithTransitionContextAndCompletion(contextCopy, v26, 0);
     }
   }
 }
 
-- (void)_updateForcedStatusBarForegroundTransparentWithSceneSettings:(id)a3 transitionContext:(id)a4
+- (void)_updateForcedStatusBarForegroundTransparentWithSceneSettings:(id)settings transitionContext:(id)context
 {
-  v5 = a4;
-  v6 = [a3 forcedStatusBarForegroundTransparent];
-  v7 = [UIApp statusBarWindow];
-  v8 = [v7 _scene];
+  contextCopy = context;
+  forcedStatusBarForegroundTransparent = [settings forcedStatusBarForegroundTransparent];
+  statusBarWindow = [UIApp statusBarWindow];
+  _scene = [statusBarWindow _scene];
 
-  v9 = [v8 uiClientSettings];
-  v10 = [v9 isStatusBarForegroundTransparent];
+  uiClientSettings = [_scene uiClientSettings];
+  isStatusBarForegroundTransparent = [uiClientSettings isStatusBarForegroundTransparent];
 
-  if (v6 != v10)
+  if (forcedStatusBarForegroundTransparent != isStatusBarForegroundTransparent)
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __124___UIWindowSceneStatusBarSettingsDiffAction__updateForcedStatusBarForegroundTransparentWithSceneSettings_transitionContext___block_invoke;
     v18[3] = &__block_descriptor_33_e49_v16__0__UIMutableApplicationSceneClientSettings_8l;
-    v19 = v6;
-    [v8 updateUIClientSettingsWithBlock:v18];
-    v11 = [[UIStatusBarStyleAnimationParameters alloc] initWithDefaultParameters];
-    v12 = [v5 animationSettings];
-    [v12 duration];
-    [(UIStatusBarAnimationParameters *)v11 setDuration:?];
+    v19 = forcedStatusBarForegroundTransparent;
+    [_scene updateUIClientSettingsWithBlock:v18];
+    initWithDefaultParameters = [[UIStatusBarStyleAnimationParameters alloc] initWithDefaultParameters];
+    animationSettings = [contextCopy animationSettings];
+    [animationSettings duration];
+    [(UIStatusBarAnimationParameters *)initWithDefaultParameters setDuration:?];
 
-    v13 = [v5 animationSettings];
-    [v13 delay];
-    [(UIStatusBarAnimationParameters *)v11 setDelay:?];
+    animationSettings2 = [contextCopy animationSettings];
+    [animationSettings2 delay];
+    [(UIStatusBarAnimationParameters *)initWithDefaultParameters setDelay:?];
 
-    v14 = [v5 animationFence];
-    [UIWindow _synchronizeDrawingWithFence:v14];
+    animationFence = [contextCopy animationFence];
+    [UIWindow _synchronizeDrawingWithFence:animationFence];
 
-    v15 = [UIApp statusBar];
-    v16 = v15;
+    statusBar = [UIApp statusBar];
+    v16 = statusBar;
     v17 = 1.0;
-    if (v6)
+    if (forcedStatusBarForegroundTransparent)
     {
       v17 = 0.0;
     }
 
-    [v15 setForegroundAlpha:v11 animationParameters:v17];
+    [statusBar setForegroundAlpha:initWithDefaultParameters animationParameters:v17];
   }
 }
 

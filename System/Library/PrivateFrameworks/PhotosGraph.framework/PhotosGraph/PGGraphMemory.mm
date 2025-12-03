@@ -1,7 +1,7 @@
 @interface PGGraphMemory
 - (NSString)description;
 - (NSString)uniqueMemoryIdentifier;
-- (PGGraphMemory)initWithMemoryCategory:(unint64_t)a3 memoryCategorySubcategory:(unint64_t)a4 momentNodes:(id)a5 featureNodes:(id)a6 generatedWithFallbackRequirements:(BOOL)a7;
+- (PGGraphMemory)initWithMemoryCategory:(unint64_t)category memoryCategorySubcategory:(unint64_t)subcategory momentNodes:(id)nodes featureNodes:(id)featureNodes generatedWithFallbackRequirements:(BOOL)requirements;
 @end
 
 @implementation PGGraphMemory
@@ -26,21 +26,21 @@
   return v4;
 }
 
-- (PGGraphMemory)initWithMemoryCategory:(unint64_t)a3 memoryCategorySubcategory:(unint64_t)a4 momentNodes:(id)a5 featureNodes:(id)a6 generatedWithFallbackRequirements:(BOOL)a7
+- (PGGraphMemory)initWithMemoryCategory:(unint64_t)category memoryCategorySubcategory:(unint64_t)subcategory momentNodes:(id)nodes featureNodes:(id)featureNodes generatedWithFallbackRequirements:(BOOL)requirements
 {
-  v13 = a5;
-  v14 = a6;
+  nodesCopy = nodes;
+  featureNodesCopy = featureNodes;
   v18.receiver = self;
   v18.super_class = PGGraphMemory;
   v15 = [(PGGraphMemory *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    v15->_memoryCategory = a3;
-    v15->_memoryCategorySubcategory = a4;
-    objc_storeStrong(&v15->_memoryMomentNodes, a5);
-    objc_storeStrong(&v16->_memoryFeatureNodes, a6);
-    v16->_generatedWithFallbackRequirements = a7;
+    v15->_memoryCategory = category;
+    v15->_memoryCategorySubcategory = subcategory;
+    objc_storeStrong(&v15->_memoryMomentNodes, nodes);
+    objc_storeStrong(&v16->_memoryFeatureNodes, featureNodes);
+    v16->_generatedWithFallbackRequirements = requirements;
   }
 
   return v16;

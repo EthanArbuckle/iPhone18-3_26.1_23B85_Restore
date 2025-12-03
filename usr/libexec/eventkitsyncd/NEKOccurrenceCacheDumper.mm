@@ -1,36 +1,36 @@
 @interface NEKOccurrenceCacheDumper
-- (NEKOccurrenceCacheDumper)initWithDatabaseFile:(id)a3;
+- (NEKOccurrenceCacheDumper)initWithDatabaseFile:(id)file;
 - (id)runForNow;
-- (id)runFrom:(id)a3 to:(id)a4;
+- (id)runFrom:(id)from to:(id)to;
 @end
 
 @implementation NEKOccurrenceCacheDumper
 
-- (NEKOccurrenceCacheDumper)initWithDatabaseFile:(id)a3
+- (NEKOccurrenceCacheDumper)initWithDatabaseFile:(id)file
 {
-  v5 = a3;
+  fileCopy = file;
   v9.receiver = self;
   v9.super_class = NEKOccurrenceCacheDumper;
   v6 = [(NEKOccurrenceCacheDumper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dbFile, a3);
+    objc_storeStrong(&v6->_dbFile, file);
   }
 
   return v7;
 }
 
-- (id)runFrom:(id)a3 to:(id)a4
+- (id)runFrom:(id)from to:(id)to
 {
-  v6 = a4;
-  v7 = a3;
+  toCopy = to;
+  fromCopy = from;
   v8 = objc_alloc_init(NEKPBOccurrenceCache);
-  [v7 timeIntervalSinceReferenceDate];
+  [fromCopy timeIntervalSinceReferenceDate];
   v10 = v9;
 
   [(NEKPBOccurrenceCache *)v8 setStart:v10];
-  [v6 timeIntervalSinceReferenceDate];
+  [toCopy timeIntervalSinceReferenceDate];
   v12 = v11;
 
   [(NEKPBOccurrenceCache *)v8 setEnd:v12];

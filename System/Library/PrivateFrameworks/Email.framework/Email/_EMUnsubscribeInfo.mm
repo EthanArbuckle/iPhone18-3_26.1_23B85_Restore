@@ -1,26 +1,26 @@
 @interface _EMUnsubscribeInfo
-- (_EMUnsubscribeInfo)initWithHeaders:(id)a3;
-- (void)setMailtoURL:(uint64_t)a1;
-- (void)setPostContent:(uint64_t)a1;
-- (void)setPostURL:(uint64_t)a1;
+- (_EMUnsubscribeInfo)initWithHeaders:(id)headers;
+- (void)setMailtoURL:(uint64_t)l;
+- (void)setPostContent:(uint64_t)content;
+- (void)setPostURL:(uint64_t)l;
 @end
 
 @implementation _EMUnsubscribeInfo
 
-- (_EMUnsubscribeInfo)initWithHeaders:(id)a3
+- (_EMUnsubscribeInfo)initWithHeaders:(id)headers
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  headersCopy = headers;
   v4 = objc_opt_new();
-  v5 = [v3 listUnsubscribePostContent];
-  [(_EMUnsubscribeInfo *)v4 setPostContent:v5];
+  listUnsubscribePostContent = [headersCopy listUnsubscribePostContent];
+  [(_EMUnsubscribeInfo *)v4 setPostContent:listUnsubscribePostContent];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v3 listUnsubscribeCommands];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  listUnsubscribeCommands = [headersCopy listUnsubscribeCommands];
+  v7 = [listUnsubscribeCommands countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -31,7 +31,7 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(listUnsubscribeCommands);
         }
 
         v10 = [MEMORY[0x1E695DFF8] URLWithString:*(*(&v15 + 1) + 8 * v9)];
@@ -49,7 +49,7 @@
       }
 
       while (v7 != v9);
-      v11 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v11 = [listUnsubscribeCommands countByEnumeratingWithState:&v15 objects:v19 count:16];
       v7 = v11;
     }
 
@@ -60,27 +60,27 @@
   return v4;
 }
 
-- (void)setPostContent:(uint64_t)a1
+- (void)setPostContent:(uint64_t)content
 {
-  if (a1)
+  if (content)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((content + 24), a2);
   }
 }
 
-- (void)setMailtoURL:(uint64_t)a1
+- (void)setMailtoURL:(uint64_t)l
 {
-  if (a1)
+  if (l)
   {
-    objc_storeStrong((a1 + 8), a2);
+    objc_storeStrong((l + 8), a2);
   }
 }
 
-- (void)setPostURL:(uint64_t)a1
+- (void)setPostURL:(uint64_t)l
 {
-  if (a1)
+  if (l)
   {
-    objc_storeStrong((a1 + 16), a2);
+    objc_storeStrong((l + 16), a2);
   }
 }
 

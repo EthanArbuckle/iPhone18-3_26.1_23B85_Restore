@@ -1,19 +1,19 @@
 @interface PDHandoutPastDueSummaryNotificationTrigger
 - (id)defaultRecurringTriggerDateComponents;
-- (id)fetchActiveHandoutsPastDueFromDate:(id)a3;
-- (id)nextTriggerDateFromReferenceDate:(id)a3;
-- (id)pastDueUserNotificationDataFromHandouts:(id)a3;
-- (void)checkForTriggerAtDate:(id)a3;
+- (id)fetchActiveHandoutsPastDueFromDate:(id)date;
+- (id)nextTriggerDateFromReferenceDate:(id)date;
+- (id)pastDueUserNotificationDataFromHandouts:(id)handouts;
+- (void)checkForTriggerAtDate:(id)date;
 @end
 
 @implementation PDHandoutPastDueSummaryNotificationTrigger
 
-- (id)nextTriggerDateFromReferenceDate:(id)a3
+- (id)nextTriggerDateFromReferenceDate:(id)date
 {
-  v4 = a3;
-  v5 = [(PDUserNotificationTimeBasedTrigger *)self calendar];
-  v6 = [(PDUserNotificationTimeBasedTrigger *)self recurringTriggerDateComponents];
-  v7 = [v5 nextDateAfterDate:v4 matchingComponents:v6 options:1024];
+  dateCopy = date;
+  calendar = [(PDUserNotificationTimeBasedTrigger *)self calendar];
+  recurringTriggerDateComponents = [(PDUserNotificationTimeBasedTrigger *)self recurringTriggerDateComponents];
+  v7 = [calendar nextDateAfterDate:dateCopy matchingComponents:recurringTriggerDateComponents options:1024];
 
   return v7;
 }
@@ -30,52 +30,52 @@
   return v3;
 }
 
-- (void)checkForTriggerAtDate:(id)a3
+- (void)checkForTriggerAtDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   CLSInitLog();
   v5 = CLSLogNotifications;
   if (os_log_type_enabled(CLSLogNotifications, OS_LOG_TYPE_INFO))
   {
     v23 = 138412290;
-    v24 = v4;
+    v24 = dateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "PDHandoutPastDueSummaryNotificationTrigger.checkForTriggerAtDate %@", &v23, 0xCu);
   }
 
-  v6 = [(PDUserNotificationTimeBasedTrigger *)self calendar];
-  v7 = [v6 components:544 fromDate:v4];
+  calendar = [(PDUserNotificationTimeBasedTrigger *)self calendar];
+  v7 = [calendar components:544 fromDate:dateCopy];
 
-  v8 = [v7 hour];
-  v9 = [v7 weekday];
-  v10 = [(PDUserNotificationTimeBasedTrigger *)self recurringTriggerDateComponents];
-  if (v9 != [v10 weekday])
+  hour = [v7 hour];
+  weekday = [v7 weekday];
+  recurringTriggerDateComponents = [(PDUserNotificationTimeBasedTrigger *)self recurringTriggerDateComponents];
+  if (weekday != [recurringTriggerDateComponents weekday])
   {
     goto LABEL_12;
   }
 
-  v11 = [(PDUserNotificationTimeBasedTrigger *)self recurringTriggerDateComponents];
-  v12 = [v11 hour];
+  recurringTriggerDateComponents2 = [(PDUserNotificationTimeBasedTrigger *)self recurringTriggerDateComponents];
+  hour2 = [recurringTriggerDateComponents2 hour];
 
-  if (v8 >= v12)
+  if (hour >= hour2)
   {
-    v13 = [(PDUserNotificationTrigger *)self database];
-    v10 = sub_10016A65C(v13, @"handoutPastDueSummaryLastTriggerDate");
+    database = [(PDUserNotificationTrigger *)self database];
+    recurringTriggerDateComponents = sub_10016A65C(database, @"handoutPastDueSummaryLastTriggerDate");
 
     CLSInitLog();
     v14 = CLSLogNotifications;
     if (os_log_type_enabled(CLSLogNotifications, OS_LOG_TYPE_INFO))
     {
       v23 = 138543362;
-      v24 = v10;
+      v24 = recurringTriggerDateComponents;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "PDHandoutPastDueSummaryNotificationTrigger.checkForTriggerAtDate. Last trigger time: %{public}@", &v23, 0xCu);
     }
 
-    if (!v10 || (-[PDUserNotificationTimeBasedTrigger calendar](self, "calendar"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 compareDate:v10 toDate:v4 toUnitGranularity:16], v15, v16))
+    if (!recurringTriggerDateComponents || (-[PDUserNotificationTimeBasedTrigger calendar](self, "calendar"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 compareDate:recurringTriggerDateComponents toDate:dateCopy toUnitGranularity:16], v15, v16))
     {
-      v17 = [(PDUserNotificationTrigger *)self database];
-      sub_10016A5AC(v17, v4, @"handoutPastDueSummaryLastTriggerDate");
+      database2 = [(PDUserNotificationTrigger *)self database];
+      sub_10016A5AC(database2, dateCopy, @"handoutPastDueSummaryLastTriggerDate");
 
-      v18 = [(PDHandoutPastDueSummaryNotificationTrigger *)self fetchActiveHandoutsPastDueFromDate:v4];
+      v18 = [(PDHandoutPastDueSummaryNotificationTrigger *)self fetchActiveHandoutsPastDueFromDate:dateCopy];
       CLSInitLog();
       v19 = CLSLogNotifications;
       if (os_log_type_enabled(CLSLogNotifications, OS_LOG_TYPE_INFO))
@@ -95,40 +95,40 @@ LABEL_12:
   }
 }
 
-- (id)fetchActiveHandoutsPastDueFromDate:(id)a3
+- (id)fetchActiveHandoutsPastDueFromDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   CLSInitLog();
   v5 = CLSLogNotifications;
   if (os_log_type_enabled(CLSLogNotifications, OS_LOG_TYPE_INFO))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = dateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "PDHandoutPastDueSummaryNotificationTrigger.fetchActiveHandoutsPastDueFromDate. Query handouts due before %@", &v11, 0xCu);
   }
 
-  v6 = [(PDUserNotificationTrigger *)self database];
-  v7 = sub_100175F4C(v6, v4);
+  database = [(PDUserNotificationTrigger *)self database];
+  v7 = sub_100175F4C(database, dateCopy);
 
-  v8 = [(PDUserNotificationTrigger *)self database];
-  v9 = sub_10016091C(v8, v7);
+  database2 = [(PDUserNotificationTrigger *)self database];
+  v9 = sub_10016091C(database2, v7);
 
   return v9;
 }
 
-- (id)pastDueUserNotificationDataFromHandouts:(id)a3
+- (id)pastDueUserNotificationDataFromHandouts:(id)handouts
 {
-  v4 = a3;
-  v5 = [v4 count];
-  v6 = [(PDUserNotificationTrigger *)self database];
+  handoutsCopy = handouts;
+  v5 = [handoutsCopy count];
+  database = [(PDUserNotificationTrigger *)self database];
   if (v5)
   {
-    v41 = v4;
+    v41 = handoutsCopy;
     if (v5 == 1)
     {
-      v7 = [v4 firstObject];
-      v8 = [v7 objectID];
-      v9 = sub_100176270(v6, v8);
+      firstObject = [handoutsCopy firstObject];
+      objectID = [firstObject objectID];
+      v9 = sub_100176270(database, objectID);
 
       v10 = [NSBundle bundleForClass:objc_opt_class()];
       v11 = v10;
@@ -156,17 +156,17 @@ LABEL_12:
 
       v15 = [NSBundle bundleForClass:objc_opt_class()];
       v16 = [v15 localizedStringForKey:v13 value:&stru_100206880 table:@"ClassKit"];
-      v17 = [v7 title];
-      v18 = [NSString stringWithFormat:v16, v17];
+      title = [firstObject title];
+      v18 = [NSString stringWithFormat:v16, title];
 
       v19 = sub_10012F04C([PDUserNotificationData alloc], 2, v14, v18);
-      v21 = [v7 objectID];
+      objectID2 = [firstObject objectID];
       if (v19)
       {
-        objc_setProperty_nonatomic_copy(v19, v20, v21, 24);
+        objc_setProperty_nonatomic_copy(v19, v20, objectID2, 24);
       }
 
-      v23 = [(PDUserNotificationTrigger *)self classIDFromHandout:v7];
+      v23 = [(PDUserNotificationTrigger *)self classIDFromHandout:firstObject];
       if (v19)
       {
         objc_setProperty_nonatomic_copy(v19, v22, v23, 32);
@@ -179,7 +179,7 @@ LABEL_12:
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v24 = v4;
+      v24 = handoutsCopy;
       v25 = [v24 countByEnumeratingWithState:&v42 objects:v46 count:16];
       if (v25)
       {
@@ -196,8 +196,8 @@ LABEL_12:
               objc_enumerationMutation(v24);
             }
 
-            v31 = [*(*(&v42 + 1) + 8 * i) objectID];
-            v32 = sub_100176270(v6, v31);
+            objectID3 = [*(*(&v42 + 1) + 8 * i) objectID];
+            v32 = sub_100176270(database, objectID3);
 
             v27 |= v32;
             v28 |= !v32;
@@ -244,7 +244,7 @@ LABEL_29:
       v19 = sub_10012F04C([PDUserNotificationData alloc], 2, v36, v39);
     }
 
-    v4 = v41;
+    handoutsCopy = v41;
   }
 
   else

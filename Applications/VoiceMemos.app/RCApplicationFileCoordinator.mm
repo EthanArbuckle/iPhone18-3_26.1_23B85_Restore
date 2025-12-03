@@ -1,11 +1,11 @@
 @interface RCApplicationFileCoordinator
-+ (id)createCaptureDirectoryAndReturnError:(id *)a3;
++ (id)createCaptureDirectoryAndReturnError:(id *)error;
 - (RCApplicationFileCoordinator)init;
 @end
 
 @implementation RCApplicationFileCoordinator
 
-+ (id)createCaptureDirectoryAndReturnError:(id *)a3
++ (id)createCaptureDirectoryAndReturnError:(id *)error
 {
   v3 = sub_100177A20();
 

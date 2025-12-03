@@ -1,6 +1,6 @@
 @interface HMDAppleMediaAccessoryDeleteSiriHistoryOperation
 + (id)logCategory;
-- (HMDAppleMediaAccessoryDeleteSiriHistoryOperation)initWithSettingsConnection:(id)a3;
+- (HMDAppleMediaAccessoryDeleteSiriHistoryOperation)initWithSettingsConnection:(id)connection;
 - (void)main;
 @end
 
@@ -10,7 +10,7 @@
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -21,13 +21,13 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDAppleMediaAccessoryDeleteSiriHistoryOperation *)v4 settingsConnection];
+  settingsConnection = [(HMDAppleMediaAccessoryDeleteSiriHistoryOperation *)selfCopy settingsConnection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__HMDAppleMediaAccessoryDeleteSiriHistoryOperation_main__block_invoke;
   v9[3] = &unk_2797359D8;
-  v9[4] = v4;
-  [v7 deleteSiriHistoryWithCompletion:v9];
+  v9[4] = selfCopy;
+  [settingsConnection deleteSiriHistoryWithCompletion:v9];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -73,16 +73,16 @@ void __56__HMDAppleMediaAccessoryDeleteSiriHistoryOperation_main__block_invoke(u
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDAppleMediaAccessoryDeleteSiriHistoryOperation)initWithSettingsConnection:(id)a3
+- (HMDAppleMediaAccessoryDeleteSiriHistoryOperation)initWithSettingsConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = HMDAppleMediaAccessoryDeleteSiriHistoryOperation;
   v6 = [(HMFOperation *)&v9 initWithTimeout:60.0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_settingsConnection, a3);
+    objc_storeStrong(&v6->_settingsConnection, connection);
   }
 
   return v7;

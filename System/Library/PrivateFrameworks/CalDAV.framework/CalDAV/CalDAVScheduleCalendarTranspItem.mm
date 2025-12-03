@@ -17,8 +17,8 @@
 
 - (BOOL)isScheduleTransparent
 {
-  v2 = [(CalDAVScheduleCalendarTranspItem *)self transparent];
-  v3 = v2 != 0;
+  transparent = [(CalDAVScheduleCalendarTranspItem *)self transparent];
+  v3 = transparent != 0;
 
   return v3;
 }

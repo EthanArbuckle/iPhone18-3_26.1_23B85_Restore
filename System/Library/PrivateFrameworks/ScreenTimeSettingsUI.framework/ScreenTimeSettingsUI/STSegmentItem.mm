@@ -1,34 +1,34 @@
 @interface STSegmentItem
-- (BOOL)isEqual:(id)a3;
-- (STSegmentItem)initWithTitleText:(id)a3 detailText:(id)a4 titleColor:(id)a5 detailImage:(id)a6 detailImageTintColor:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (STSegmentItem)initWithTitleText:(id)text detailText:(id)detailText titleColor:(id)color detailImage:(id)image detailImageTintColor:(id)tintColor;
 - (unint64_t)hash;
 @end
 
 @implementation STSegmentItem
 
-- (STSegmentItem)initWithTitleText:(id)a3 detailText:(id)a4 titleColor:(id)a5 detailImage:(id)a6 detailImageTintColor:(id)a7
+- (STSegmentItem)initWithTitleText:(id)text detailText:(id)detailText titleColor:(id)color detailImage:(id)image detailImageTintColor:(id)tintColor
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  textCopy = text;
+  detailTextCopy = detailText;
+  colorCopy = color;
+  imageCopy = image;
+  tintColorCopy = tintColor;
   v25.receiver = self;
   v25.super_class = STSegmentItem;
   v17 = [(STSegmentItem *)&v25 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [textCopy copy];
     titleText = v17->_titleText;
     v17->_titleText = v18;
 
-    v20 = [v13 copy];
+    v20 = [detailTextCopy copy];
     detailText = v17->_detailText;
     v17->_detailText = v20;
 
-    objc_storeStrong(&v17->_titleColor, a5);
-    objc_storeStrong(&v17->_detailImage, a6);
-    v22 = [v16 copy];
+    objc_storeStrong(&v17->_titleColor, color);
+    objc_storeStrong(&v17->_detailImage, image);
+    v22 = [tintColorCopy copy];
     detailImageTintColor = v17->_detailImageTintColor;
     v17->_detailImageTintColor = v22;
   }
@@ -36,16 +36,16 @@
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(STSegmentItem *)self titleText];
-    v7 = [v5 titleText];
-    if (![v6 isEqualToString:v7])
+    v5 = equalCopy;
+    titleText = [(STSegmentItem *)self titleText];
+    titleText2 = [v5 titleText];
+    if (![titleText isEqualToString:titleText2])
     {
       v14 = 0;
 LABEL_22:
@@ -53,9 +53,9 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v8 = [(STSegmentItem *)self detailText];
-    v9 = [v5 detailText];
-    if (![v8 isEqualToString:v9])
+    detailText = [(STSegmentItem *)self detailText];
+    detailText2 = [v5 detailText];
+    if (![detailText isEqualToString:detailText2])
     {
       v14 = 0;
 LABEL_21:
@@ -63,9 +63,9 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v10 = [(STSegmentItem *)self titleColor];
-    v11 = [v5 titleColor];
-    if (![v10 isEqual:v11])
+    titleColor = [(STSegmentItem *)self titleColor];
+    titleColor2 = [v5 titleColor];
+    if (![titleColor isEqual:titleColor2])
     {
       v14 = 0;
 LABEL_20:
@@ -73,37 +73,37 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v12 = [(STSegmentItem *)self detailImage];
-    v26 = [v5 detailImage];
-    if (v12 == v26)
+    detailImage = [(STSegmentItem *)self detailImage];
+    detailImage2 = [v5 detailImage];
+    if (detailImage == detailImage2)
     {
-      v25 = v12;
+      v25 = detailImage;
     }
 
     else
     {
-      v23 = v11;
-      v13 = [(STSegmentItem *)self detailImage];
-      v20 = [v5 detailImage];
-      v21 = v13;
-      if (![v13 isEqual:?])
+      v23 = titleColor2;
+      detailImage3 = [(STSegmentItem *)self detailImage];
+      detailImage4 = [v5 detailImage];
+      v21 = detailImage3;
+      if (![detailImage3 isEqual:?])
       {
         v14 = 0;
-        v11 = v23;
+        titleColor2 = v23;
 LABEL_18:
 
 LABEL_19:
         goto LABEL_20;
       }
 
-      v25 = v12;
-      v11 = v23;
+      v25 = detailImage;
+      titleColor2 = v23;
     }
 
-    v15 = [(STSegmentItem *)self detailImageTintColor];
-    v22 = [v5 detailImageTintColor];
-    v24 = v15;
-    if (v15 == v22)
+    detailImageTintColor = [(STSegmentItem *)self detailImageTintColor];
+    detailImageTintColor2 = [v5 detailImageTintColor];
+    v24 = detailImageTintColor;
+    if (detailImageTintColor == detailImageTintColor2)
     {
 
       v14 = 1;
@@ -111,16 +111,16 @@ LABEL_19:
 
     else
     {
-      v16 = [(STSegmentItem *)self detailImageTintColor];
+      detailImageTintColor3 = [(STSegmentItem *)self detailImageTintColor];
       [v5 detailImageTintColor];
-      v17 = v19 = v10;
-      v14 = [v16 isEqual:v17];
+      v17 = v19 = titleColor;
+      v14 = [detailImageTintColor3 isEqual:v17];
 
-      v10 = v19;
+      titleColor = v19;
     }
 
-    v12 = v25;
-    if (v25 == v26)
+    detailImage = v25;
+    if (v25 == detailImage2)
     {
       goto LABEL_19;
     }
@@ -136,16 +136,16 @@ LABEL_23:
 
 - (unint64_t)hash
 {
-  v3 = [(STSegmentItem *)self titleText];
-  v4 = [v3 hash];
-  v5 = [(STSegmentItem *)self detailText];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(STSegmentItem *)self titleColor];
-  v8 = [v7 hash];
-  v9 = [(STSegmentItem *)self detailImage];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(STSegmentItem *)self detailImageTintColor];
-  v12 = [v11 hash];
+  titleText = [(STSegmentItem *)self titleText];
+  v4 = [titleText hash];
+  detailText = [(STSegmentItem *)self detailText];
+  v6 = [detailText hash] ^ v4;
+  titleColor = [(STSegmentItem *)self titleColor];
+  v8 = [titleColor hash];
+  detailImage = [(STSegmentItem *)self detailImage];
+  v10 = v6 ^ v8 ^ [detailImage hash];
+  detailImageTintColor = [(STSegmentItem *)self detailImageTintColor];
+  v12 = [detailImageTintColor hash];
 
   return v10 ^ v12;
 }

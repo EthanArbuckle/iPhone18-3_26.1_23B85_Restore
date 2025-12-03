@@ -1,33 +1,33 @@
 @interface NPKAssertionController
-- (NPKAssertionController)initWithAssertionFactory:(id)a3 invalidator:(id)a4;
-- (void)_inQueue_releaseAssertionWithOwner:(id)a3;
-- (void)_releaseAssertionFromOwnerObject:(id)a3 withDelay:(double)a4 completion:(id)a5;
-- (void)createAssertionForOwnerObject:(id)a3 withReason:(id)a4;
-- (void)releaseAssertionFromOwnerObject:(id)a3;
+- (NPKAssertionController)initWithAssertionFactory:(id)factory invalidator:(id)invalidator;
+- (void)_inQueue_releaseAssertionWithOwner:(id)owner;
+- (void)_releaseAssertionFromOwnerObject:(id)object withDelay:(double)delay completion:(id)completion;
+- (void)createAssertionForOwnerObject:(id)object withReason:(id)reason;
+- (void)releaseAssertionFromOwnerObject:(id)object;
 @end
 
 @implementation NPKAssertionController
 
-- (NPKAssertionController)initWithAssertionFactory:(id)a3 invalidator:(id)a4
+- (NPKAssertionController)initWithAssertionFactory:(id)factory invalidator:(id)invalidator
 {
-  v6 = a3;
-  v7 = a4;
+  factoryCopy = factory;
+  invalidatorCopy = invalidator;
   v20.receiver = self;
   v20.super_class = NPKAssertionController;
   v8 = [(NPKAssertionController *)&v20 init];
   if (v8)
   {
-    v9 = _Block_copy(v6);
+    v9 = _Block_copy(factoryCopy);
     assertionFactory = v8->_assertionFactory;
     v8->_assertionFactory = v9;
 
-    v11 = _Block_copy(v7);
+    v11 = _Block_copy(invalidatorCopy);
     assertionInvalidator = v8->_assertionInvalidator;
     v8->_assertionInvalidator = v11;
 
-    v13 = [MEMORY[0x277CCAB00] pk_weakPointerPersonalityToStrongObjectsMapTable];
+    pk_weakPointerPersonalityToStrongObjectsMapTable = [MEMORY[0x277CCAB00] pk_weakPointerPersonalityToStrongObjectsMapTable];
     assertionMaps = v8->_assertionMaps;
-    v8->_assertionMaps = v13;
+    v8->_assertionMaps = pk_weakPointerPersonalityToStrongObjectsMapTable;
 
     v15 = dispatch_queue_create("com.apple.NanoPassbook.alert.assertionManager", 0);
     internalQueue = v8->_internalQueue;
@@ -41,20 +41,20 @@
   return v8;
 }
 
-- (void)createAssertionForOwnerObject:(id)a3 withReason:(id)a4
+- (void)createAssertionForOwnerObject:(id)object withReason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  reasonCopy = reason;
   semaphoreQueue = self->_semaphoreQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __67__NPKAssertionController_createAssertionForOwnerObject_withReason___block_invoke;
   v11[3] = &unk_279945880;
   v11[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = reasonCopy;
+  v13 = objectCopy;
+  v9 = objectCopy;
+  v10 = reasonCopy;
   [(NPKSemaphoreQueue *)semaphoreQueue dispatchSync:v11];
 }
 
@@ -114,25 +114,25 @@ LABEL_8:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)releaseAssertionFromOwnerObject:(id)a3
+- (void)releaseAssertionFromOwnerObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   semaphoreQueue = self->_semaphoreQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__NPKAssertionController_releaseAssertionFromOwnerObject___block_invoke;
   v7[3] = &unk_2799454E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = objectCopy;
+  v6 = objectCopy;
   [(NPKSemaphoreQueue *)semaphoreQueue dispatchSync:v7];
 }
 
-- (void)_releaseAssertionFromOwnerObject:(id)a3 withDelay:(double)a4 completion:(id)a5
+- (void)_releaseAssertionFromOwnerObject:(id)object withDelay:(double)delay completion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  objectCopy = object;
+  completionCopy = completion;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -146,7 +146,7 @@ LABEL_8:
   v24[3] = &unk_279946940;
   v26 = &v27;
   v24[4] = self;
-  v11 = v8;
+  v11 = objectCopy;
   v25 = v11;
   [(NPKSemaphoreQueue *)semaphoreQueue dispatchSync:v24];
   if (v28[5])
@@ -165,13 +165,13 @@ LABEL_8:
         v35 = 2112;
         v36 = v11;
         v37 = 2048;
-        v38 = a4;
+        delayCopy = delay;
         _os_log_impl(&dword_25B300000, v14, OS_LOG_TYPE_DEFAULT, "Notice: Scheduled to invalidate assertion:%@ for owner:%@ with delay:%f", buf, 0x20u);
       }
     }
 
     objc_initWeak(buf, self);
-    v16 = dispatch_time(0, (a4 * 1000000000.0));
+    v16 = dispatch_time(0, (delay * 1000000000.0));
     internalQueue = self->_internalQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -180,7 +180,7 @@ LABEL_8:
     objc_copyWeak(&v23, buf);
     v20 = v11;
     v22 = &v27;
-    v21 = v9;
+    v21 = completionCopy;
     dispatch_after(v16, internalQueue, block);
 
     objc_destroyWeak(&v23);
@@ -251,11 +251,11 @@ void __80__NPKAssertionController__releaseAssertionFromOwnerObject_withDelay_com
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_inQueue_releaseAssertionWithOwner:(id)a3
+- (void)_inQueue_releaseAssertionWithOwner:(id)owner
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_assertionMaps objectForKey:v4];
+  ownerCopy = owner;
+  v5 = [(NSMapTable *)self->_assertionMaps objectForKey:ownerCopy];
   v6 = v5;
   if (v5)
   {
@@ -273,7 +273,7 @@ void __80__NPKAssertionController__releaseAssertionFromOwnerObject_withDelay_com
           v13 = 138412546;
           v14 = v6;
           v15 = 2112;
-          v16 = v4;
+          v16 = ownerCopy;
           v11 = "Notice: Invalidated assertion:%@ for owner:%@";
 LABEL_9:
           _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, v11, &v13, 0x16u);
@@ -292,7 +292,7 @@ LABEL_9:
         v13 = 138412546;
         v14 = v6;
         v15 = 2112;
-        v16 = v4;
+        v16 = ownerCopy;
         v11 = "Notice: Fail scheduled invalidation assertion:%@ for owner:%@";
         goto LABEL_9;
       }

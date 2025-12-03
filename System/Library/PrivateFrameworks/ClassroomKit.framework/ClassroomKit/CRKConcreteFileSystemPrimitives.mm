@@ -1,23 +1,23 @@
 @interface CRKConcreteFileSystemPrimitives
-+ (BOOL)isNoSuchFileError:(id)a3;
-- (BOOL)copyItemAtURL:(id)a3 toURL:(id)a4 error:(id *)a5;
-- (BOOL)fileExistsAtURL:(id)a3;
-- (BOOL)makeDirectoryAtURL:(id)a3 error:(id *)a4;
-- (BOOL)moveItemAtURL:(id)a3 toURL:(id)a4 error:(id *)a5;
-- (BOOL)removeItemAtURL:(id)a3 error:(id *)a4;
-- (BOOL)setResources:(id)a3 onURL:(id)a4 error:(id *)a5;
++ (BOOL)isNoSuchFileError:(id)error;
+- (BOOL)copyItemAtURL:(id)l toURL:(id)rL error:(id *)error;
+- (BOOL)fileExistsAtURL:(id)l;
+- (BOOL)makeDirectoryAtURL:(id)l error:(id *)error;
+- (BOOL)moveItemAtURL:(id)l toURL:(id)rL error:(id *)error;
+- (BOOL)removeItemAtURL:(id)l error:(id *)error;
+- (BOOL)setResources:(id)resources onURL:(id)l error:(id *)error;
 - (CRKConcreteFileSystemPrimitives)init;
 - (NSURL)temporaryDirectoryURL;
-- (id)contentsOfDirectoryAtURL:(id)a3 error:(id *)a4;
-- (id)dispatchSourceForFileDescriptor:(id)a3 options:(unint64_t)a4;
+- (id)contentsOfDirectoryAtURL:(id)l error:(id *)error;
+- (id)dispatchSourceForFileDescriptor:(id)descriptor options:(unint64_t)options;
 - (id)emptyDirectoryNode;
-- (id)nodeForURL:(id)a3 error:(id *)a4;
-- (id)openURL:(id)a3 options:(int)a4 error:(id *)a5;
-- (id)promisedResourceValuesForKeys:(id)a3 fromURL:(id)a4 error:(id *)a5;
-- (id)resourceValuesForKeys:(id)a3 fromURL:(id)a4 error:(id *)a5;
-- (void)coordinateCopyWithActionPairs:(id)a3 completion:(id)a4;
-- (void)coordinateMoveWithActionPairs:(id)a3 completion:(id)a4;
-- (void)removeCoordinatedItemsAtURLs:(id)a3 completion:(id)a4;
+- (id)nodeForURL:(id)l error:(id *)error;
+- (id)openURL:(id)l options:(int)options error:(id *)error;
+- (id)promisedResourceValuesForKeys:(id)keys fromURL:(id)l error:(id *)error;
+- (id)resourceValuesForKeys:(id)keys fromURL:(id)l error:(id *)error;
+- (void)coordinateCopyWithActionPairs:(id)pairs completion:(id)completion;
+- (void)coordinateMoveWithActionPairs:(id)pairs completion:(id)completion;
+- (void)removeCoordinatedItemsAtURLs:(id)ls completion:(id)completion;
 @end
 
 @implementation CRKConcreteFileSystemPrimitives
@@ -29,9 +29,9 @@
   v2 = [(CRKConcreteFileSystemPrimitives *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     fileManager = v2->_fileManager;
-    v2->_fileManager = v3;
+    v2->_fileManager = defaultManager;
 
     v5 = objc_opt_new();
     accessQueue = v2->_accessQueue;
@@ -50,29 +50,29 @@
   return v4;
 }
 
-- (BOOL)fileExistsAtURL:(id)a3
+- (BOOL)fileExistsAtURL:(id)l
 {
-  v4 = a3;
-  v5 = [(CRKConcreteFileSystemPrimitives *)self fileManager];
-  v6 = [v4 path];
+  lCopy = l;
+  fileManager = [(CRKConcreteFileSystemPrimitives *)self fileManager];
+  path = [lCopy path];
 
-  LOBYTE(v4) = [v5 fileExistsAtPath:v6];
-  return v4;
+  LOBYTE(lCopy) = [fileManager fileExistsAtPath:path];
+  return lCopy;
 }
 
-- (id)contentsOfDirectoryAtURL:(id)a3 error:(id *)a4
+- (id)contentsOfDirectoryAtURL:(id)l error:(id *)error
 {
   v5 = MEMORY[0x277CCAA00];
-  v6 = a3;
-  v7 = [v5 defaultManager];
-  v8 = [v7 contentsOfDirectoryAtURL:v6 includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:2 error:a4];
+  lCopy = l;
+  defaultManager = [v5 defaultManager];
+  v8 = [defaultManager contentsOfDirectoryAtURL:lCopy includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:2 error:error];
 
   return v8;
 }
 
-- (id)resourceValuesForKeys:(id)a3 fromURL:(id)a4 error:(id *)a5
+- (id)resourceValuesForKeys:(id)keys fromURL:(id)l error:(id *)error
 {
-  v5 = [a4 resourceValuesForKeys:a3 error:a5];
+  v5 = [l resourceValuesForKeys:keys error:error];
   if (v5)
   {
     v6 = [[CRKURLResources alloc] initWithResources:v5];
@@ -86,9 +86,9 @@
   return v6;
 }
 
-- (id)promisedResourceValuesForKeys:(id)a3 fromURL:(id)a4 error:(id *)a5
+- (id)promisedResourceValuesForKeys:(id)keys fromURL:(id)l error:(id *)error
 {
-  v5 = [a4 promisedItemResourceValuesForKeys:a3 error:a5];
+  v5 = [l promisedItemResourceValuesForKeys:keys error:error];
   if (v5)
   {
     v6 = [[CRKURLResources alloc] initWithResources:v5];
@@ -102,19 +102,19 @@
   return v6;
 }
 
-- (id)openURL:(id)a3 options:(int)a4 error:(id *)a5
+- (id)openURL:(id)l options:(int)options error:(id *)error
 {
-  v7 = [a3 path];
-  v8 = open([v7 fileSystemRepresentation], a4);
+  path = [l path];
+  v8 = open([path fileSystemRepresentation], options);
 
   if ((v8 & 0x80000000) != 0)
   {
-    if (a5)
+    if (error)
     {
       v10 = [MEMORY[0x277CCA9B8] crk_errorWithPOSIXCode:*__error()];
       v11 = v10;
       v9 = 0;
-      *a5 = v10;
+      *error = v10;
     }
 
     else
@@ -131,39 +131,39 @@
   return v9;
 }
 
-- (id)dispatchSourceForFileDescriptor:(id)a3 options:(unint64_t)a4
+- (id)dispatchSourceForFileDescriptor:(id)descriptor options:(unint64_t)options
 {
-  v5 = [a3 rawValue];
-  v6 = dispatch_source_create(MEMORY[0x277D85D48], v5, a4, MEMORY[0x277D85CD0]);
+  rawValue = [descriptor rawValue];
+  v6 = dispatch_source_create(MEMORY[0x277D85D48], rawValue, options, MEMORY[0x277D85CD0]);
 
   return v6;
 }
 
-- (BOOL)makeDirectoryAtURL:(id)a3 error:(id *)a4
+- (BOOL)makeDirectoryAtURL:(id)l error:(id *)error
 {
   v5 = MEMORY[0x277CCAA00];
-  v6 = a3;
-  v7 = [v5 defaultManager];
-  LOBYTE(a4) = [v7 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:a4];
+  lCopy = l;
+  defaultManager = [v5 defaultManager];
+  LOBYTE(error) = [defaultManager createDirectoryAtURL:lCopy withIntermediateDirectories:1 attributes:0 error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)removeItemAtURL:(id)a3 error:(id *)a4
+- (BOOL)removeItemAtURL:(id)l error:(id *)error
 {
   v5 = MEMORY[0x277CCAA00];
-  v6 = a3;
-  v7 = [v5 defaultManager];
+  lCopy = l;
+  defaultManager = [v5 defaultManager];
   v12 = 0;
-  v8 = [v7 removeItemAtURL:v6 error:&v12];
+  v8 = [defaultManager removeItemAtURL:lCopy error:&v12];
 
   v9 = v12;
   if ((v8 & 1) != 0 || ([objc_opt_class() isNoSuchFileError:v9] & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v10 = v9;
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -175,67 +175,67 @@
   return v8;
 }
 
-- (BOOL)moveItemAtURL:(id)a3 toURL:(id)a4 error:(id *)a5
+- (BOOL)moveItemAtURL:(id)l toURL:(id)rL error:(id *)error
 {
   v7 = MEMORY[0x277CCAA00];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 defaultManager];
-  LOBYTE(a5) = [v10 moveItemAtURL:v9 toURL:v8 error:a5];
+  rLCopy = rL;
+  lCopy = l;
+  defaultManager = [v7 defaultManager];
+  LOBYTE(error) = [defaultManager moveItemAtURL:lCopy toURL:rLCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)copyItemAtURL:(id)a3 toURL:(id)a4 error:(id *)a5
+- (BOOL)copyItemAtURL:(id)l toURL:(id)rL error:(id *)error
 {
   v7 = MEMORY[0x277CCAA00];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 defaultManager];
-  LOBYTE(a5) = [v10 copyItemAtURL:v9 toURL:v8 error:a5];
+  rLCopy = rL;
+  lCopy = l;
+  defaultManager = [v7 defaultManager];
+  LOBYTE(error) = [defaultManager copyItemAtURL:lCopy toURL:rLCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)setResources:(id)a3 onURL:(id)a4 error:(id *)a5
+- (BOOL)setResources:(id)resources onURL:(id)l error:(id *)error
 {
-  v7 = a4;
-  v8 = [a3 underlyingResources];
-  LOBYTE(a5) = [v7 setResourceValues:v8 error:a5];
+  lCopy = l;
+  underlyingResources = [resources underlyingResources];
+  LOBYTE(error) = [lCopy setResourceValues:underlyingResources error:error];
 
-  return a5;
+  return error;
 }
 
-- (void)coordinateMoveWithActionPairs:(id)a3 completion:(id)a4
+- (void)coordinateMoveWithActionPairs:(id)pairs completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  pairsCopy = pairs;
+  completionCopy = completion;
   v8 = [objc_alloc(MEMORY[0x277CCA9E8]) initWithFilePresenter:0];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __76__CRKConcreteFileSystemPrimitives_coordinateMoveWithActionPairs_completion___block_invoke;
   v25[3] = &unk_278DC0FE0;
-  v26 = v7;
-  v9 = v7;
+  v26 = completionCopy;
+  v9 = completionCopy;
   v10 = MEMORY[0x245D3AAD0](v25);
-  v11 = [v6 crk_mapUsingBlock:&__block_literal_global_64];
-  v12 = [v6 crk_mapUsingBlock:&__block_literal_global_12_2];
+  v11 = [pairsCopy crk_mapUsingBlock:&__block_literal_global_64];
+  v12 = [pairsCopy crk_mapUsingBlock:&__block_literal_global_12_2];
   v13 = [v11 arrayByAddingObjectsFromArray:v12];
-  v14 = [(CRKConcreteFileSystemPrimitives *)self accessQueue];
+  accessQueue = [(CRKConcreteFileSystemPrimitives *)self accessQueue];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __76__CRKConcreteFileSystemPrimitives_coordinateMoveWithActionPairs_completion___block_invoke_5;
   v19[3] = &unk_278DC2780;
-  v23 = v6;
+  v23 = pairsCopy;
   v24 = v10;
   v20 = v11;
   v21 = v12;
-  v22 = self;
-  v15 = v6;
+  selfCopy = self;
+  v15 = pairsCopy;
   v16 = v12;
   v17 = v11;
   v18 = v10;
-  [v8 coordinateAccessWithIntents:v13 queue:v14 byAccessor:v19];
+  [v8 coordinateAccessWithIntents:v13 queue:accessQueue byAccessor:v19];
 }
 
 void __76__CRKConcreteFileSystemPrimitives_coordinateMoveWithActionPairs_completion___block_invoke(uint64_t a1, void *a2)
@@ -330,36 +330,36 @@ void __76__CRKConcreteFileSystemPrimitives_coordinateMoveWithActionPairs_complet
   }
 }
 
-- (void)coordinateCopyWithActionPairs:(id)a3 completion:(id)a4
+- (void)coordinateCopyWithActionPairs:(id)pairs completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  pairsCopy = pairs;
+  completionCopy = completion;
   v8 = [objc_alloc(MEMORY[0x277CCA9E8]) initWithFilePresenter:0];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __76__CRKConcreteFileSystemPrimitives_coordinateCopyWithActionPairs_completion___block_invoke;
   v25[3] = &unk_278DC0FE0;
-  v26 = v7;
-  v9 = v7;
+  v26 = completionCopy;
+  v9 = completionCopy;
   v10 = MEMORY[0x245D3AAD0](v25);
-  v11 = [v6 crk_mapUsingBlock:&__block_literal_global_17];
-  v12 = [v6 crk_mapUsingBlock:&__block_literal_global_19];
+  v11 = [pairsCopy crk_mapUsingBlock:&__block_literal_global_17];
+  v12 = [pairsCopy crk_mapUsingBlock:&__block_literal_global_19];
   v13 = [v11 arrayByAddingObjectsFromArray:v12];
-  v14 = [(CRKConcreteFileSystemPrimitives *)self accessQueue];
+  accessQueue = [(CRKConcreteFileSystemPrimitives *)self accessQueue];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __76__CRKConcreteFileSystemPrimitives_coordinateCopyWithActionPairs_completion___block_invoke_5;
   v19[3] = &unk_278DC2780;
-  v23 = v6;
+  v23 = pairsCopy;
   v24 = v10;
   v20 = v11;
   v21 = v12;
-  v22 = self;
-  v15 = v6;
+  selfCopy = self;
+  v15 = pairsCopy;
   v16 = v12;
   v17 = v11;
   v18 = v10;
-  [v8 coordinateAccessWithIntents:v13 queue:v14 byAccessor:v19];
+  [v8 coordinateAccessWithIntents:v13 queue:accessQueue byAccessor:v19];
 }
 
 void __76__CRKConcreteFileSystemPrimitives_coordinateCopyWithActionPairs_completion___block_invoke(uint64_t a1, void *a2)
@@ -454,32 +454,32 @@ void __76__CRKConcreteFileSystemPrimitives_coordinateCopyWithActionPairs_complet
   }
 }
 
-- (void)removeCoordinatedItemsAtURLs:(id)a3 completion:(id)a4
+- (void)removeCoordinatedItemsAtURLs:(id)ls completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x277CCA9E8];
-  v8 = a3;
+  lsCopy = ls;
   v9 = [[v7 alloc] initWithFilePresenter:0];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __75__CRKConcreteFileSystemPrimitives_removeCoordinatedItemsAtURLs_completion___block_invoke;
   v20[3] = &unk_278DC0FE0;
-  v21 = v6;
-  v10 = v6;
+  v21 = completionCopy;
+  v10 = completionCopy;
   v11 = MEMORY[0x245D3AAD0](v20);
-  v12 = [v8 crk_mapUsingBlock:&__block_literal_global_22_0];
+  v12 = [lsCopy crk_mapUsingBlock:&__block_literal_global_22_0];
 
-  v13 = [(CRKConcreteFileSystemPrimitives *)self accessQueue];
+  accessQueue = [(CRKConcreteFileSystemPrimitives *)self accessQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __75__CRKConcreteFileSystemPrimitives_removeCoordinatedItemsAtURLs_completion___block_invoke_4;
   v16[3] = &unk_278DC1A40;
-  v18 = self;
+  selfCopy = self;
   v19 = v11;
   v17 = v12;
   v14 = v12;
   v15 = v11;
-  [v9 coordinateAccessWithIntents:v14 queue:v13 byAccessor:v16];
+  [v9 coordinateAccessWithIntents:v14 queue:accessQueue byAccessor:v16];
 }
 
 void __75__CRKConcreteFileSystemPrimitives_removeCoordinatedItemsAtURLs_completion___block_invoke(uint64_t a1, void *a2)
@@ -563,11 +563,11 @@ void __75__CRKConcreteFileSystemPrimitives_removeCoordinatedItemsAtURLs_completi
   }
 }
 
-- (id)nodeForURL:(id)a3 error:(id *)a4
+- (id)nodeForURL:(id)l error:(id *)error
 {
   v5 = MEMORY[0x277CCAA20];
-  v6 = a3;
-  v7 = [[v5 alloc] initWithURL:v6 options:0 error:a4];
+  lCopy = l;
+  v7 = [[v5 alloc] initWithURL:lCopy options:0 error:error];
 
   if (v7)
   {
@@ -591,13 +591,13 @@ void __75__CRKConcreteFileSystemPrimitives_removeCoordinatedItemsAtURLs_completi
   return v4;
 }
 
-+ (BOOL)isNoSuchFileError:(id)a3
++ (BOOL)isNoSuchFileError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x277CCA050]])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CCA050]])
   {
-    v5 = [v3 code] == 4;
+    v5 = [errorCopy code] == 4;
   }
 
   else

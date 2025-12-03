@@ -1,43 +1,43 @@
 @interface PKCreditInstallmentPlanProduct
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToInstallmentPlanProduct:(id)a3;
-- (PKCreditInstallmentPlanProduct)initWithCoder:(id)a3;
-- (PKCreditInstallmentPlanProduct)initWithDictionary:(id)a3;
-- (id)_imageURLFromImageURLs:(id)a3 forScale:(double)a4 suffix:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToInstallmentPlanProduct:(id)product;
+- (PKCreditInstallmentPlanProduct)initWithCoder:(id)coder;
+- (PKCreditInstallmentPlanProduct)initWithDictionary:(id)dictionary;
+- (id)_imageURLFromImageURLs:(id)ls forScale:(double)scale suffix:(id)suffix;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCreditInstallmentPlanProduct
 
-- (PKCreditInstallmentPlanProduct)initWithDictionary:(id)a3
+- (PKCreditInstallmentPlanProduct)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = PKCreditInstallmentPlanProduct;
   v5 = [(PKCreditInstallmentPlanProduct *)&v24 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"identifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 PKStringForKey:@"model"];
+    v8 = [dictionaryCopy PKStringForKey:@"model"];
     model = v5->_model;
     v5->_model = v8;
 
-    v10 = [v4 PKStringForKey:@"capacity"];
+    v10 = [dictionaryCopy PKStringForKey:@"capacity"];
     capacity = v5->_capacity;
     v5->_capacity = v10;
 
-    v12 = [v4 PKStringForKey:@"color"];
+    v12 = [dictionaryCopy PKStringForKey:@"color"];
     color = v5->_color;
     v5->_color = v12;
 
-    v5->_upgradeEligible = [v4 PKBoolForKey:@"upgradeEligible"];
-    v5->_warrantyYears = [v4 PKIntegerForKey:@"warranty"];
-    v14 = [v4 PKArrayContaining:objc_opt_class() forKey:@"features"];
+    v5->_upgradeEligible = [dictionaryCopy PKBoolForKey:@"upgradeEligible"];
+    v5->_warrantyYears = [dictionaryCopy PKIntegerForKey:@"warranty"];
+    v14 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"features"];
     if (v14)
     {
       v15 = [MEMORY[0x1E695DFD8] setWithArray:v14];
@@ -45,15 +45,15 @@
       v5->_features = v15;
     }
 
-    v17 = [v4 PKStringForKey:@"serialNumber"];
+    v17 = [dictionaryCopy PKStringForKey:@"serialNumber"];
     serialNumber = v5->_serialNumber;
     v5->_serialNumber = v17;
 
-    v19 = [v4 PKDictionaryForKey:@"icon"];
+    v19 = [dictionaryCopy PKDictionaryForKey:@"icon"];
     iconURLs = v5->_iconURLs;
     v5->_iconURLs = v19;
 
-    v21 = [v4 PKDictionaryForKey:@"splashImage"];
+    v21 = [dictionaryCopy PKDictionaryForKey:@"splashImage"];
     splashImageURLs = v5->_splashImageURLs;
     v5->_splashImageURLs = v21;
   }
@@ -61,11 +61,11 @@
   return v5;
 }
 
-- (id)_imageURLFromImageURLs:(id)a3 forScale:(double)a4 suffix:(id)a5
+- (id)_imageURLFromImageURLs:(id)ls forScale:(double)scale suffix:(id)suffix
 {
-  v7 = a3;
-  v8 = a5;
-  if (a4 <= 2.0)
+  lsCopy = ls;
+  suffixCopy = suffix;
+  if (scale <= 2.0)
   {
     v9 = @"2x";
   }
@@ -76,14 +76,14 @@
   }
 
   v10 = v9;
-  if (v8)
+  if (suffixCopy)
   {
-    v11 = [v8 stringByAppendingString:v10];
+    v11 = [suffixCopy stringByAppendingString:v10];
 
     v10 = v11;
   }
 
-  v12 = [v7 PKURLForKey:v10];
+  v12 = [lsCopy PKURLForKey:v10];
   if (v12)
   {
     v13 = v12;
@@ -91,7 +91,7 @@
 
   else
   {
-    if (a4 >= 3.0)
+    if (scale >= 3.0)
     {
       v14 = @"2x";
     }
@@ -103,47 +103,47 @@
 
     v15 = v14;
 
-    if (v8)
+    if (suffixCopy)
     {
-      v16 = [v8 stringByAppendingString:v15];
+      v16 = [suffixCopy stringByAppendingString:v15];
 
       v15 = v16;
     }
 
-    v13 = [v7 PKURLForKey:v15];
+    v13 = [lsCopy PKURLForKey:v15];
     v10 = v15;
   }
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKCreditInstallmentPlanProduct *)self isEqualToInstallmentPlanProduct:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKCreditInstallmentPlanProduct *)self isEqualToInstallmentPlanProduct:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToInstallmentPlanProduct:(id)a3
+- (BOOL)isEqualToInstallmentPlanProduct:(id)product
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  productCopy = product;
+  v5 = productCopy;
+  if (!productCopy)
   {
     goto LABEL_39;
   }
 
-  v6 = *(v4 + 2);
+  v6 = *(productCopy + 2);
   v7 = self->_identifier;
   v8 = v6;
   v9 = v8;
@@ -335,54 +335,54 @@ LABEL_40:
   return v6;
 }
 
-- (PKCreditInstallmentPlanProduct)initWithCoder:(id)a3
+- (PKCreditInstallmentPlanProduct)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = PKCreditInstallmentPlanProduct;
   v5 = [(PKCreditInstallmentPlanProduct *)&v32 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"model"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"model"];
     model = v5->_model;
     v5->_model = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"capacity"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"capacity"];
     capacity = v5->_capacity;
     v5->_capacity = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"color"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"color"];
     color = v5->_color;
     v5->_color = v12;
 
-    v5->_upgradeEligible = [v4 decodeBoolForKey:@"upgradeEligible"];
-    v5->_warrantyYears = [v4 decodeIntegerForKey:@"warranty"];
+    v5->_upgradeEligible = [coderCopy decodeBoolForKey:@"upgradeEligible"];
+    v5->_warrantyYears = [coderCopy decodeIntegerForKey:@"warranty"];
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"features"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"features"];
     features = v5->_features;
     v5->_features = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
     serialNumber = v5->_serialNumber;
     v5->_serialNumber = v19;
 
     v21 = MEMORY[0x1E695DFD8];
     v22 = objc_opt_class();
     v23 = [v21 setWithObjects:{v22, objc_opt_class(), 0}];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"iconURLs"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"iconURLs"];
     iconURLs = v5->_iconURLs;
     v5->_iconURLs = v24;
 
     v26 = MEMORY[0x1E695DFD8];
     v27 = objc_opt_class();
     v28 = [v26 setWithObjects:{v27, objc_opt_class(), 0}];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"splashImageURLs"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"splashImageURLs"];
     splashImageURLs = v5->_splashImageURLs;
     v5->_splashImageURLs = v29;
   }
@@ -390,56 +390,56 @@ LABEL_40:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_model forKey:@"model"];
-  [v5 encodeObject:self->_capacity forKey:@"capacity"];
-  [v5 encodeObject:self->_color forKey:@"color"];
-  [v5 encodeBool:self->_upgradeEligible forKey:@"upgradeEligible"];
-  [v5 encodeInteger:self->_warrantyYears forKey:@"warranty"];
-  [v5 encodeObject:self->_features forKey:@"features"];
-  [v5 encodeObject:self->_serialNumber forKey:@"serialNumber"];
-  [v5 encodeObject:self->_iconURLs forKey:@"iconURLs"];
-  [v5 encodeObject:self->_splashImageURLs forKey:@"splashImageURLs"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_model forKey:@"model"];
+  [coderCopy encodeObject:self->_capacity forKey:@"capacity"];
+  [coderCopy encodeObject:self->_color forKey:@"color"];
+  [coderCopy encodeBool:self->_upgradeEligible forKey:@"upgradeEligible"];
+  [coderCopy encodeInteger:self->_warrantyYears forKey:@"warranty"];
+  [coderCopy encodeObject:self->_features forKey:@"features"];
+  [coderCopy encodeObject:self->_serialNumber forKey:@"serialNumber"];
+  [coderCopy encodeObject:self->_iconURLs forKey:@"iconURLs"];
+  [coderCopy encodeObject:self->_splashImageURLs forKey:@"splashImageURLs"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_model copyWithZone:a3];
+  v8 = [(NSString *)self->_model copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_capacity copyWithZone:a3];
+  v10 = [(NSString *)self->_capacity copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
-  v12 = [(NSString *)self->_color copyWithZone:a3];
+  v12 = [(NSString *)self->_color copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 
   *(v5 + 8) = self->_upgradeEligible;
   *(v5 + 48) = self->_warrantyYears;
-  v14 = [(NSSet *)self->_features copyWithZone:a3];
+  v14 = [(NSSet *)self->_features copyWithZone:zone];
   v15 = *(v5 + 56);
   *(v5 + 56) = v14;
 
-  v16 = [(NSString *)self->_serialNumber copyWithZone:a3];
+  v16 = [(NSString *)self->_serialNumber copyWithZone:zone];
   v17 = *(v5 + 64);
   *(v5 + 64) = v16;
 
-  v18 = [(NSDictionary *)self->_iconURLs copyWithZone:a3];
+  v18 = [(NSDictionary *)self->_iconURLs copyWithZone:zone];
   v19 = *(v5 + 72);
   *(v5 + 72) = v18;
 
-  v20 = [(NSDictionary *)self->_splashImageURLs copyWithZone:a3];
+  v20 = [(NSDictionary *)self->_splashImageURLs copyWithZone:zone];
   v21 = *(v5 + 80);
   *(v5 + 80) = v20;
 

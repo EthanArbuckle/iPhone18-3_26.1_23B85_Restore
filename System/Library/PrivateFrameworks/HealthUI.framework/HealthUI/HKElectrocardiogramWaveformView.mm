@@ -2,21 +2,21 @@
 - (CGRect)lastPathBounds;
 - (CGRect)pathBounds;
 - (CGSize)intrinsicContentSize;
-- (HKElectrocardiogramWaveformView)initWithFrame:(CGRect)a3;
-- (id)createShapeLayerWithPath:(id)a3;
-- (void)setLineColor:(id)a3;
-- (void)setLineWidth:(double)a3;
-- (void)setPaths:(id)a3;
+- (HKElectrocardiogramWaveformView)initWithFrame:(CGRect)frame;
+- (id)createShapeLayerWithPath:(id)path;
+- (void)setLineColor:(id)color;
+- (void)setLineWidth:(double)width;
+- (void)setPaths:(id)paths;
 - (void)tintColorDidChange;
 @end
 
 @implementation HKElectrocardiogramWaveformView
 
-- (HKElectrocardiogramWaveformView)initWithFrame:(CGRect)a3
+- (HKElectrocardiogramWaveformView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = HKElectrocardiogramWaveformView;
-  result = [(HKElectrocardiogramWaveformView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(HKElectrocardiogramWaveformView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_lineWidth = 1.5;
@@ -31,47 +31,47 @@
   return result;
 }
 
-- (id)createShapeLayerWithPath:(id)a3
+- (id)createShapeLayerWithPath:(id)path
 {
   v4 = MEMORY[0x1E69794A0];
-  v5 = a3;
+  pathCopy = path;
   v6 = objc_alloc_init(v4);
   [v6 setFillColor:0];
   [(HKElectrocardiogramWaveformView *)self lineWidth];
   [v6 setLineWidth:?];
-  v7 = [(HKElectrocardiogramWaveformView *)self lineColor];
-  v8 = [v7 CGColor];
-  if (v8)
+  lineColor = [(HKElectrocardiogramWaveformView *)self lineColor];
+  cGColor = [lineColor CGColor];
+  if (cGColor)
   {
-    [v6 setStrokeColor:v8];
+    [v6 setStrokeColor:cGColor];
   }
 
   else
   {
-    v9 = [(HKElectrocardiogramWaveformView *)self tintColor];
-    [v6 setStrokeColor:{objc_msgSend(v9, "CGColor")}];
+    tintColor = [(HKElectrocardiogramWaveformView *)self tintColor];
+    [v6 setStrokeColor:{objc_msgSend(tintColor, "CGColor")}];
   }
 
   [v6 setLineJoin:*MEMORY[0x1E6979E98]];
-  v10 = [v5 CGPath];
+  cGPath = [pathCopy CGPath];
 
-  [v6 setPath:v10];
-  v11 = [(HKElectrocardiogramWaveformView *)self layer];
-  [v11 addSublayer:v6];
+  [v6 setPath:cGPath];
+  layer = [(HKElectrocardiogramWaveformView *)self layer];
+  [layer addSublayer:v6];
 
   return v6;
 }
 
-- (void)setPaths:(id)a3
+- (void)setPaths:(id)paths
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathsCopy = paths;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v5 = [(HKElectrocardiogramWaveformView *)self shapeLayers];
-  v6 = [v5 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  shapeLayers = [(HKElectrocardiogramWaveformView *)self shapeLayers];
+  v6 = [shapeLayers countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v6)
   {
     v7 = v6;
@@ -82,13 +82,13 @@
       {
         if (*v31 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(shapeLayers);
         }
 
         [*(*(&v30 + 1) + 8 * i) removeFromSuperlayer];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v7 = [shapeLayers countByEnumeratingWithState:&v30 objects:v35 count:16];
     }
 
     while (v7);
@@ -103,7 +103,7 @@
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v15 = v4;
+  v15 = pathsCopy;
   v16 = [v15 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v16)
   {
@@ -151,16 +151,16 @@
   [(HKElectrocardiogramWaveformView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setLineWidth:(double)a3
+- (void)setLineWidth:(double)width
 {
   v14 = *MEMORY[0x1E69E9840];
-  self->_lineWidth = a3;
+  self->_lineWidth = width;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(HKElectrocardiogramWaveformView *)self shapeLayers];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  shapeLayers = [(HKElectrocardiogramWaveformView *)self shapeLayers];
+  v5 = [shapeLayers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -172,31 +172,31 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(shapeLayers);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) setLineWidth:a3];
+        [*(*(&v9 + 1) + 8 * v8++) setLineWidth:width];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [shapeLayers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)setLineColor:(id)a3
+- (void)setLineColor:(id)color
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_lineColor, a3);
+  colorCopy = color;
+  objc_storeStrong(&self->_lineColor, color);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(HKElectrocardiogramWaveformView *)self shapeLayers];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  shapeLayers = [(HKElectrocardiogramWaveformView *)self shapeLayers];
+  v7 = [shapeLayers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -208,27 +208,27 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(shapeLayers);
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
-        v12 = [v5 CGColor];
-        if (v12)
+        cGColor = [colorCopy CGColor];
+        if (cGColor)
         {
-          [v11 setStrokeColor:v12];
+          [v11 setStrokeColor:cGColor];
         }
 
         else
         {
-          v13 = [(HKElectrocardiogramWaveformView *)self tintColor];
-          [v11 setStrokeColor:{objc_msgSend(v13, "CGColor")}];
+          tintColor = [(HKElectrocardiogramWaveformView *)self tintColor];
+          [v11 setStrokeColor:{objc_msgSend(tintColor, "CGColor")}];
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [shapeLayers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -251,16 +251,16 @@
   v15.receiver = self;
   v15.super_class = HKElectrocardiogramWaveformView;
   [(HKElectrocardiogramWaveformView *)&v15 tintColorDidChange];
-  v3 = [(HKElectrocardiogramWaveformView *)self lineColor];
+  lineColor = [(HKElectrocardiogramWaveformView *)self lineColor];
 
-  if (!v3)
+  if (!lineColor)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(HKElectrocardiogramWaveformView *)self shapeLayers];
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+    shapeLayers = [(HKElectrocardiogramWaveformView *)self shapeLayers];
+    v5 = [shapeLayers countByEnumeratingWithState:&v11 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -272,18 +272,18 @@
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(shapeLayers);
           }
 
           v9 = *(*(&v11 + 1) + 8 * v8);
-          v10 = [(HKElectrocardiogramWaveformView *)self tintColor];
-          [v9 setStrokeColor:{objc_msgSend(v10, "CGColor")}];
+          tintColor = [(HKElectrocardiogramWaveformView *)self tintColor];
+          [v9 setStrokeColor:{objc_msgSend(tintColor, "CGColor")}];
 
           ++v8;
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+        v6 = [shapeLayers countByEnumeratingWithState:&v11 objects:v16 count:16];
       }
 
       while (v6);

@@ -1,18 +1,18 @@
 @interface CBFloatArray2D
-- (CBFloatArray2D)initWithValues:(float *)a3 andCountCols:(unint64_t)a4 andRows:(unint64_t)a5;
+- (CBFloatArray2D)initWithValues:(float *)values andCountCols:(unint64_t)cols andRows:(unint64_t)rows;
 @end
 
 @implementation CBFloatArray2D
 
-- (CBFloatArray2D)initWithValues:(float *)a3 andCountCols:(unint64_t)a4 andRows:(unint64_t)a5
+- (CBFloatArray2D)initWithValues:(float *)values andCountCols:(unint64_t)cols andRows:(unint64_t)rows
 {
   v8.receiver = self;
   v8.super_class = CBFloatArray2D;
-  result = [(CBFloatArray *)&v8 initWithValues:a3 andCount:a5 * a4];
+  result = [(CBFloatArray *)&v8 initWithValues:values andCount:rows * cols];
   if (result)
   {
-    result->_cols = a4;
-    result->_rows = a5;
+    result->_cols = cols;
+    result->_rows = rows;
   }
 
   return result;

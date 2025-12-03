@@ -2,17 +2,17 @@
 + (id)sharedInstance;
 - (BRKUserNotificationManager)init;
 - (NSXPCConnection)applicationConnection;
-- (id)postNotification:(id)a3 trigger:(id)a4 responseHandler:(id)a5 destinations:(unint64_t)a6;
-- (void)_deliveredNotificationIdentifiersWithCategoryIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)_pendingNotificationIdentifiersWithCategoryIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)addCategories:(id)a3;
+- (id)postNotification:(id)notification trigger:(id)trigger responseHandler:(id)handler destinations:(unint64_t)destinations;
+- (void)_deliveredNotificationIdentifiersWithCategoryIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)_pendingNotificationIdentifiersWithCategoryIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)addCategories:(id)categories;
 - (void)debugPendingNotificationRequests;
-- (void)handleNotificationResponse:(id)a3;
-- (void)hasPendingLocationNotification:(id)a3;
-- (void)isNotificationPendingOrDeliveredWithCategoryIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)promptNotificationAuthorizationRequest:(id)a3;
-- (void)removeNotification:(id)a3;
-- (void)removeNotificationsWithCategoryIdentifier:(id)a3;
+- (void)handleNotificationResponse:(id)response;
+- (void)hasPendingLocationNotification:(id)notification;
+- (void)isNotificationPendingOrDeliveredWithCategoryIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)promptNotificationAuthorizationRequest:(id)request;
+- (void)removeNotification:(id)notification;
+- (void)removeNotificationsWithCategoryIdentifier:(id)identifier;
 @end
 
 @implementation BRKUserNotificationManager
@@ -43,13 +43,13 @@ uint64_t __44__BRKUserNotificationManager_sharedInstance__block_invoke()
   v2 = [(BRKUserNotificationManager *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     responseHandlers = v2->_responseHandlers;
-    v2->_responseHandlers = v3;
+    v2->_responseHandlers = dictionary;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     categories = v2->_categories;
-    v2->_categories = v5;
+    v2->_categories = dictionary2;
 
     v7 = [objc_alloc(MEMORY[0x277CE2028]) initWithBundleIdentifier:@"com.apple.brook.BrookUI"];
     notificationCenter = v2->_notificationCenter;
@@ -59,15 +59,15 @@ uint64_t __44__BRKUserNotificationManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)addCategories:(id)a3
+- (void)addCategories:(id)categories
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  categoriesCopy = categories;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v5 = [categoriesCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -78,16 +78,16 @@ uint64_t __44__BRKUserNotificationManager_sharedInstance__block_invoke()
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(categoriesCopy);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
         categories = self->_categories;
-        v11 = [v9 identifier];
-        [(NSMutableDictionary *)categories setObject:v9 forKeyedSubscript:v11];
+        identifier = [v9 identifier];
+        [(NSMutableDictionary *)categories setObject:v9 forKeyedSubscript:identifier];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [categoriesCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -107,9 +107,9 @@ uint64_t __44__BRKUserNotificationManager_sharedInstance__block_invoke()
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)promptNotificationAuthorizationRequest:(id)a3
+- (void)promptNotificationAuthorizationRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   notificationCenter = self->_notificationCenter;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -117,7 +117,7 @@ uint64_t __44__BRKUserNotificationManager_sharedInstance__block_invoke()
   v9[3] = &unk_278D28860;
   v9[4] = self;
   [(UNUserNotificationCenter *)notificationCenter getNotificationSettingsWithCompletionHandler:v9];
-  if (v4)
+  if (requestCopy)
   {
     v6 = dispatch_time(0, 30000000000);
     block[0] = MEMORY[0x277D85DD0];
@@ -125,7 +125,7 @@ uint64_t __44__BRKUserNotificationManager_sharedInstance__block_invoke()
     block[2] = __69__BRKUserNotificationManager_promptNotificationAuthorizationRequest___block_invoke_83;
     block[3] = &unk_278D288B0;
     block[4] = self;
-    v8 = v4;
+    v8 = requestCopy;
     dispatch_after(v6, MEMORY[0x277D85CD0], block);
   }
 }
@@ -248,11 +248,11 @@ void __69__BRKUserNotificationManager_promptNotificationAuthorizationRequest___b
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)postNotification:(id)a3 trigger:(id)a4 responseHandler:(id)a5 destinations:(unint64_t)a6
+- (id)postNotification:(id)notification trigger:(id)trigger responseHandler:(id)handler destinations:(unint64_t)destinations
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = [a3 mutableCopy];
+  triggerCopy = trigger;
+  handlerCopy = handler;
+  v12 = [notification mutableCopy];
   v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v14 = BRKLocalizedUserNotificationString(@"NOTIFICATION_TITLE", MEMORY[0x277CBEBF8], v13);
   [v12 setHeader:v14];
@@ -260,22 +260,22 @@ void __69__BRKUserNotificationManager_promptNotificationAuthorizationRequest___b
   v15 = [MEMORY[0x277CE1FE0] soundWithAlertType:16];
   [v12 setSound:v15];
 
-  if (v10)
+  if (triggerCopy)
   {
-    v16 = @"722C7B89-67AA-432A-93BC-290F8B20A125";
+    uUIDString = @"722C7B89-67AA-432A-93BC-290F8B20A125";
   }
 
   else
   {
-    v17 = [MEMORY[0x277CCAD78] UUID];
-    v16 = [v17 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
   }
 
-  v18 = [MEMORY[0x277CE1FC0] requestWithIdentifier:v16 content:v12 trigger:v10 destinations:a6];
-  if (v11)
+  v18 = [MEMORY[0x277CE1FC0] requestWithIdentifier:uUIDString content:v12 trigger:triggerCopy destinations:destinations];
+  if (handlerCopy)
   {
-    v19 = MEMORY[0x245D05110](v11);
-    [(NSMutableDictionary *)self->_responseHandlers setObject:v19 forKeyedSubscript:v16];
+    v19 = MEMORY[0x245D05110](handlerCopy);
+    [(NSMutableDictionary *)self->_responseHandlers setObject:v19 forKeyedSubscript:uUIDString];
   }
 
   notificationCenter = self->_notificationCenter;
@@ -288,7 +288,7 @@ void __69__BRKUserNotificationManager_promptNotificationAuthorizationRequest___b
   v21 = v18;
   [(UNUserNotificationCenter *)notificationCenter getNotificationSettingsWithCompletionHandler:v23];
 
-  return v16;
+  return uUIDString;
 }
 
 void __84__BRKUserNotificationManager_postNotification_trigger_responseHandler_destinations___block_invoke(uint64_t a1, void *a2)
@@ -333,19 +333,19 @@ void __84__BRKUserNotificationManager_postNotification_trigger_responseHandler_d
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)isNotificationPendingOrDeliveredWithCategoryIdentifier:(id)a3 completionHandler:(id)a4
+- (void)isNotificationPendingOrDeliveredWithCategoryIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __103__BRKUserNotificationManager_isNotificationPendingOrDeliveredWithCategoryIdentifier_completionHandler___block_invoke;
   v10[3] = &unk_278D28928;
-  v11 = v6;
-  v12 = v7;
+  v11 = identifierCopy;
+  v12 = handlerCopy;
   v10[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = identifierCopy;
+  v9 = handlerCopy;
   [(BRKUserNotificationManager *)self _pendingNotificationIdentifiersWithCategoryIdentifier:v8 completionHandler:v10];
 }
 
@@ -387,37 +387,37 @@ uint64_t __103__BRKUserNotificationManager_isNotificationPendingOrDeliveredWithC
   return result;
 }
 
-- (void)removeNotificationsWithCategoryIdentifier:(id)a3
+- (void)removeNotificationsWithCategoryIdentifier:(id)identifier
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __72__BRKUserNotificationManager_removeNotificationsWithCategoryIdentifier___block_invoke;
   v6[3] = &unk_278D28950;
   v6[4] = self;
-  v4 = a3;
-  [(BRKUserNotificationManager *)self _pendingNotificationIdentifiersWithCategoryIdentifier:v4 completionHandler:v6];
+  identifierCopy = identifier;
+  [(BRKUserNotificationManager *)self _pendingNotificationIdentifiersWithCategoryIdentifier:identifierCopy completionHandler:v6];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __72__BRKUserNotificationManager_removeNotificationsWithCategoryIdentifier___block_invoke_2;
   v5[3] = &unk_278D28950;
   v5[4] = self;
-  [(BRKUserNotificationManager *)self _deliveredNotificationIdentifiersWithCategoryIdentifier:v4 completionHandler:v5];
+  [(BRKUserNotificationManager *)self _deliveredNotificationIdentifiersWithCategoryIdentifier:identifierCopy completionHandler:v5];
 }
 
-- (void)removeNotification:(id)a3
+- (void)removeNotification:(id)notification
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     notificationCenter = self->_notificationCenter;
-    v11[0] = v4;
+    v11[0] = notificationCopy;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
     [(UNUserNotificationCenter *)notificationCenter removePendingNotificationRequestsWithIdentifiers:v6];
 
     v7 = self->_notificationCenter;
-    v10 = v4;
+    v10 = notificationCopy;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v10 count:1];
     [(UNUserNotificationCenter *)v7 removeDeliveredNotificationsWithIdentifiers:v8];
   }
@@ -425,10 +425,10 @@ uint64_t __103__BRKUserNotificationManager_isNotificationPendingOrDeliveredWithC
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hasPendingLocationNotification:(id)a3
+- (void)hasPendingLocationNotification:(id)notification
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = BRKLoggingObjectForDomain(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -447,7 +447,7 @@ uint64_t __103__BRKUserNotificationManager_isNotificationPendingOrDeliveredWithC
   v9[2] = __61__BRKUserNotificationManager_hasPendingLocationNotification___block_invoke;
   v9[3] = &unk_278D28978;
   p_buf = &buf;
-  v7 = v4;
+  v7 = notificationCopy;
   v10 = v7;
   [(UNUserNotificationCenter *)notificationCenter getPendingNotificationRequestsWithCompletionHandler:v9];
 
@@ -559,13 +559,13 @@ void __62__BRKUserNotificationManager_debugPendingNotificationRequests__block_in
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleNotificationResponse:(id)a3
+- (void)handleNotificationResponse:(id)response
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 notification];
-  v6 = [v5 request];
-  v7 = [v6 identifier];
+  responseCopy = response;
+  notification = [responseCopy notification];
+  request = [notification request];
+  identifier = [request identifier];
 
   v8 = BRKLoggingObjectForDomain(4);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -573,11 +573,11 @@ void __62__BRKUserNotificationManager_debugPendingNotificationRequests__block_in
     *buf = 136315394;
     v18 = "[BRKUserNotificationManager handleNotificationResponse:]";
     v19 = 2112;
-    v20 = v7;
+    v20 = identifier;
     _os_log_impl(&dword_241EE4000, v8, OS_LOG_TYPE_DEFAULT, "%s retrieving completion handler for notification response identifier: %@", buf, 0x16u);
   }
 
-  v9 = [(NSMutableDictionary *)self->_responseHandlers objectForKeyedSubscript:v7];
+  v9 = [(NSMutableDictionary *)self->_responseHandlers objectForKeyedSubscript:identifier];
   if (v9)
   {
     v10 = BRKLoggingObjectForDomain(4);
@@ -593,9 +593,9 @@ void __62__BRKUserNotificationManager_debugPendingNotificationRequests__block_in
     v12[2] = __57__BRKUserNotificationManager_handleNotificationResponse___block_invoke;
     v12[3] = &unk_278D289C0;
     v16 = v9;
-    v13 = v4;
-    v14 = self;
-    v15 = v7;
+    v13 = responseCopy;
+    selfCopy = self;
+    v15 = identifier;
     dispatch_async(MEMORY[0x277D85CD0], v12);
   }
 
@@ -612,22 +612,22 @@ uint64_t __57__BRKUserNotificationManager_handleNotificationResponse___block_inv
   return [v4 setObject:0 forKeyedSubscript:v3];
 }
 
-- (void)_pendingNotificationIdentifiersWithCategoryIdentifier:(id)a3 completionHandler:(id)a4
+- (void)_pendingNotificationIdentifiersWithCategoryIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  array = [MEMORY[0x277CBEB18] array];
   notificationCenter = self->_notificationCenter;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __102__BRKUserNotificationManager__pendingNotificationIdentifiersWithCategoryIdentifier_completionHandler___block_invoke;
   v13[3] = &unk_278D289E8;
-  v14 = v6;
-  v15 = v8;
-  v16 = v7;
-  v10 = v7;
-  v11 = v8;
-  v12 = v6;
+  v14 = identifierCopy;
+  v15 = array;
+  v16 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = array;
+  v12 = identifierCopy;
   [(UNUserNotificationCenter *)notificationCenter getPendingNotificationRequestsWithCompletionHandler:v13];
 }
 
@@ -707,22 +707,22 @@ LABEL_11:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deliveredNotificationIdentifiersWithCategoryIdentifier:(id)a3 completionHandler:(id)a4
+- (void)_deliveredNotificationIdentifiersWithCategoryIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  array = [MEMORY[0x277CBEB18] array];
   notificationCenter = self->_notificationCenter;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __104__BRKUserNotificationManager__deliveredNotificationIdentifiersWithCategoryIdentifier_completionHandler___block_invoke;
   v13[3] = &unk_278D289E8;
-  v14 = v6;
-  v15 = v8;
-  v16 = v7;
-  v10 = v7;
-  v11 = v8;
-  v12 = v6;
+  v14 = identifierCopy;
+  v15 = array;
+  v16 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = array;
+  v12 = identifierCopy;
   [(UNUserNotificationCenter *)notificationCenter getDeliveredNotificationsWithCompletionHandler:v13];
 }
 

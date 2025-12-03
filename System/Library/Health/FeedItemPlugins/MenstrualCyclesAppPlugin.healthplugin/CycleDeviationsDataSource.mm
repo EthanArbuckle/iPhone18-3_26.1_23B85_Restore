@@ -1,10 +1,10 @@
 @interface CycleDeviationsDataSource
-- (void)analysisProvider:(id)a3 didUpdateAnalysis:(id)a4;
+- (void)analysisProvider:(id)provider didUpdateAnalysis:(id)analysis;
 @end
 
 @implementation CycleDeviationsDataSource
 
-- (void)analysisProvider:(id)a3 didUpdateAnalysis:(id)a4
+- (void)analysisProvider:(id)provider didUpdateAnalysis:(id)analysis
 {
 
   sub_29DFB6A38();

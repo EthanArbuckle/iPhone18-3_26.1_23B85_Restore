@@ -1,21 +1,21 @@
 @interface PLPositionalBGRAImageTable
-- (CGImage)createImageWithIdentifier:(id)a3 orIndex:(unint64_t)a4;
-- (void)getImageDataOffset:(int64_t *)a3 size:(CGSize *)a4 bytesPerRow:(unint64_t *)a5 fromEntryFooter:(PLImageTableEntryFooter_s *)a6;
+- (CGImage)createImageWithIdentifier:(id)identifier orIndex:(unint64_t)index;
+- (void)getImageDataOffset:(int64_t *)offset size:(CGSize *)size bytesPerRow:(unint64_t *)row fromEntryFooter:(PLImageTableEntryFooter_s *)footer;
 @end
 
 @implementation PLPositionalBGRAImageTable
 
-- (CGImage)createImageWithIdentifier:(id)a3 orIndex:(unint64_t)a4
+- (CGImage)createImageWithIdentifier:(id)identifier orIndex:(unint64_t)index
 {
   if (self->super.super._readOnly)
   {
-    if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+    if (index == 0x7FFFFFFFFFFFFFFFLL)
     {
       return 0;
     }
   }
 
-  else if (self->super.super._entryCapacity <= a4)
+  else if (self->super.super._entryCapacity <= index)
   {
     return 0;
   }
@@ -31,18 +31,18 @@
     return v6;
   }
 
-  if (![(PLPositionalImageTable *)self readImageDataAtIndex:a4 intoBuffer:v6 bytesRead:&v18 imageWidth:&v22 + 4 imageHeight:&v22 imageDataWidth:&v21 + 4 imageDataHeight:&v21 startingOffset:&v19 bytesPerRow:&v20 uuidBytes:0])
+  if (![(PLPositionalImageTable *)self readImageDataAtIndex:index intoBuffer:v6 bytesRead:&v18 imageWidth:&v22 + 4 imageHeight:&v22 imageDataWidth:&v21 + 4 imageDataHeight:&v21 startingOffset:&v19 bytesPerRow:&v20 uuidBytes:0])
   {
     free(v6);
     return 0;
   }
 
-  v7 = [(PLPositionalTable *)self entryLength];
+  entryLength = [(PLPositionalTable *)self entryLength];
   v9 = v22;
   v8 = SHIDWORD(v22);
-  v10 = [(PLPositionalImageTable *)self formatMaxBytesPerRow];
+  formatMaxBytesPerRow = [(PLPositionalImageTable *)self formatMaxBytesPerRow];
   v11 = v19;
-  v12 = self;
+  selfCopy = self;
   if (_create5551BGRACGImageFromImageData_s_onceToken != -1)
   {
     dispatch_once(&_create5551BGRACGImageFromImageData_s_onceToken, &__block_literal_global_11482);
@@ -51,19 +51,19 @@
   v13 = malloc_type_malloc(0x10uLL, 0x80040803F642BuLL);
   v14 = v13[1];
   *v13 = v6;
-  v13[1] = v12;
-  v15 = v12;
+  v13[1] = selfCopy;
+  v15 = selfCopy;
 
-  v16 = CGDataProviderCreateWithData(v13, v6 + v11, v7 - v11 - 28, _freeCGImageDataProviderBuffer);
-  v6 = CGImageCreate(v8, v9, 5uLL, 0x10uLL, v10, _create5551BGRACGImageFromImageData_s_colorSpace, 0x1006u, v16, 0, 0, kCGRenderingIntentDefault);
+  v16 = CGDataProviderCreateWithData(v13, v6 + v11, entryLength - v11 - 28, _freeCGImageDataProviderBuffer);
+  v6 = CGImageCreate(v8, v9, 5uLL, 0x10uLL, formatMaxBytesPerRow, _create5551BGRACGImageFromImageData_s_colorSpace, 0x1006u, v16, 0, 0, kCGRenderingIntentDefault);
 
   CGDataProviderRelease(v16);
   return v6;
 }
 
-- (void)getImageDataOffset:(int64_t *)a3 size:(CGSize *)a4 bytesPerRow:(unint64_t *)a5 fromEntryFooter:(PLImageTableEntryFooter_s *)a6
+- (void)getImageDataOffset:(int64_t *)offset size:(CGSize *)size bytesPerRow:(unint64_t *)row fromEntryFooter:(PLImageTableEntryFooter_s *)footer
 {
-  v11 = [(PLPositionalImageTable *)self formatSideLen];
+  formatSideLen = [(PLPositionalImageTable *)self formatSideLen];
   if ([(PLPositionalImageTable *)self formatIsCropped])
   {
     v12 = 0;
@@ -71,9 +71,9 @@
 
   else
   {
-    var1 = a6->var1;
-    v14 = v11 >= var1;
-    v15 = v11 - var1;
+    var1 = footer->var1;
+    v14 = formatSideLen >= var1;
+    v15 = formatSideLen - var1;
     if (v15 != 0 && v14)
     {
       v12 = [(PLPositionalImageTable *)self formatBytesPerPixel]* (v15 >> 1);
@@ -84,20 +84,20 @@
       v12 = 0;
     }
 
-    if (a6->var2 < v11)
+    if (footer->var2 < formatSideLen)
     {
-      v16 = [(PLPositionalImageTable *)self format];
-      v17 = [v16 tableFormatBytesPerRowForWidth:v11];
+      format = [(PLPositionalImageTable *)self format];
+      v17 = [format tableFormatBytesPerRowForWidth:formatSideLen];
 
-      v12 += v17 * ((v11 - a6->var2 + 1) >> 1);
+      v12 += v17 * ((formatSideLen - footer->var2 + 1) >> 1);
     }
   }
 
-  v18 = [(PLPositionalImageTable *)self formatSideLen];
-  *a3 = v12;
-  *a5 = [(PLPositionalImageTable *)self formatMaxBytesPerRow];
-  a4->width = v18;
-  a4->height = v18;
+  formatSideLen2 = [(PLPositionalImageTable *)self formatSideLen];
+  *offset = v12;
+  *row = [(PLPositionalImageTable *)self formatMaxBytesPerRow];
+  size->width = formatSideLen2;
+  size->height = formatSideLen2;
 }
 
 @end

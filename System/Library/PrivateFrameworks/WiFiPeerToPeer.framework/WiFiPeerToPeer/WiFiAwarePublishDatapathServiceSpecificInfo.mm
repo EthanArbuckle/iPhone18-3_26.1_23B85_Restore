@@ -1,78 +1,78 @@
 @interface WiFiAwarePublishDatapathServiceSpecificInfo
-- (BOOL)hostnameEquals:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (WiFiAwarePublishDatapathServiceSpecificInfo)initWithCoder:(id)a3;
-- (WiFiAwarePublishDatapathServiceSpecificInfo)initWithProtocolType:(int64_t)a3 servicePort:(unsigned __int16)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)hostnameEquals:(id)equals;
+- (BOOL)isEqual:(id)equal;
+- (WiFiAwarePublishDatapathServiceSpecificInfo)initWithCoder:(id)coder;
+- (WiFiAwarePublishDatapathServiceSpecificInfo)initWithProtocolType:(int64_t)type servicePort:(unsigned __int16)port;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WiFiAwarePublishDatapathServiceSpecificInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[WiFiAwarePublishDatapathServiceSpecificInfo protocolType](self forKey:{"protocolType"), @"WiFiAwarePublishDatapathServiceSpecificInfo.protocolType"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[WiFiAwarePublishDatapathServiceSpecificInfo protocolType](self forKey:{"protocolType"), @"WiFiAwarePublishDatapathServiceSpecificInfo.protocolType"}];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{-[WiFiAwarePublishDatapathServiceSpecificInfo servicePort](self, "servicePort")}];
-  [v4 encodeObject:v5 forKey:@"WiFiAwarePublishDatapathServiceSpecificInfo.port"];
+  [coderCopy encodeObject:v5 forKey:@"WiFiAwarePublishDatapathServiceSpecificInfo.port"];
 
-  v6 = [(WiFiAwarePublishDatapathServiceSpecificInfo *)self hostname];
-  [v4 encodeObject:v6 forKey:@"WiFiAwarePublishDatapathServiceSpecificInfo.hostname"];
+  hostname = [(WiFiAwarePublishDatapathServiceSpecificInfo *)self hostname];
+  [coderCopy encodeObject:hostname forKey:@"WiFiAwarePublishDatapathServiceSpecificInfo.hostname"];
 }
 
-- (WiFiAwarePublishDatapathServiceSpecificInfo)initWithCoder:(id)a3
+- (WiFiAwarePublishDatapathServiceSpecificInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"WiFiAwarePublishDatapathServiceSpecificInfo.protocolType"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishDatapathServiceSpecificInfo.port"];
-  v7 = [v6 unsignedShortValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"WiFiAwarePublishDatapathServiceSpecificInfo.protocolType"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishDatapathServiceSpecificInfo.port"];
+  unsignedShortValue = [v6 unsignedShortValue];
 
-  v8 = [(WiFiAwarePublishDatapathServiceSpecificInfo *)self initWithProtocolType:v5 servicePort:v7];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishDatapathServiceSpecificInfo.hostname"];
+  v8 = [(WiFiAwarePublishDatapathServiceSpecificInfo *)self initWithProtocolType:v5 servicePort:unsignedShortValue];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishDatapathServiceSpecificInfo.hostname"];
 
   [(WiFiAwarePublishDatapathServiceSpecificInfo *)v8 setHostname:v9];
   return v8;
 }
 
-- (WiFiAwarePublishDatapathServiceSpecificInfo)initWithProtocolType:(int64_t)a3 servicePort:(unsigned __int16)a4
+- (WiFiAwarePublishDatapathServiceSpecificInfo)initWithProtocolType:(int64_t)type servicePort:(unsigned __int16)port
 {
   v7.receiver = self;
   v7.super_class = WiFiAwarePublishDatapathServiceSpecificInfo;
   result = [(WiFiAwarePublishDatapathServiceSpecificInfo *)&v7 init];
   if (result)
   {
-    result->_protocolType = a3;
-    result->_servicePort = a4;
+    result->_protocolType = type;
+    result->_servicePort = port;
   }
 
   return result;
 }
 
-- (BOOL)hostnameEquals:(id)a3
+- (BOOL)hostnameEquals:(id)equals
 {
-  v4 = a3;
-  v5 = [(WiFiAwarePublishDatapathServiceSpecificInfo *)self hostname];
-  v6 = [v4 hostname];
-  if (v5 == v6)
+  equalsCopy = equals;
+  hostname = [(WiFiAwarePublishDatapathServiceSpecificInfo *)self hostname];
+  hostname2 = [equalsCopy hostname];
+  if (hostname == hostname2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(WiFiAwarePublishDatapathServiceSpecificInfo *)self hostname];
-    v8 = [v4 hostname];
-    v9 = [v7 isEqual:v8];
+    hostname3 = [(WiFiAwarePublishDatapathServiceSpecificInfo *)self hostname];
+    hostname4 = [equalsCopy hostname];
+    v9 = [hostname3 isEqual:hostname4];
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 0;
 LABEL_8:
@@ -88,12 +88,12 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v5 = v4;
-  v6 = [(WiFiAwarePublishDatapathServiceSpecificInfo *)self protocolType];
-  if (v6 == [(WiFiAwarePublishDatapathServiceSpecificInfo *)v5 protocolType])
+  v5 = equalCopy;
+  protocolType = [(WiFiAwarePublishDatapathServiceSpecificInfo *)self protocolType];
+  if (protocolType == [(WiFiAwarePublishDatapathServiceSpecificInfo *)v5 protocolType])
   {
-    v7 = [(WiFiAwarePublishDatapathServiceSpecificInfo *)self servicePort];
-    if (v7 == [(WiFiAwarePublishDatapathServiceSpecificInfo *)v5 servicePort])
+    servicePort = [(WiFiAwarePublishDatapathServiceSpecificInfo *)self servicePort];
+    if (servicePort == [(WiFiAwarePublishDatapathServiceSpecificInfo *)v5 servicePort])
     {
       if ([(WiFiAwarePublishDatapathServiceSpecificInfo *)self hostnameEquals:v5])
       {
@@ -110,14 +110,14 @@ LABEL_10:
 
 - (id)description
 {
-  v3 = [(WiFiAwarePublishDatapathServiceSpecificInfo *)self protocolType];
+  protocolType = [(WiFiAwarePublishDatapathServiceSpecificInfo *)self protocolType];
   v4 = "unrecognized";
-  if (v3 == 1)
+  if (protocolType == 1)
   {
     v4 = "UDP";
   }
 
-  if (v3)
+  if (protocolType)
   {
     v5 = v4;
   }
@@ -128,18 +128,18 @@ LABEL_10:
   }
 
   v6 = MEMORY[0x277CCACA8];
-  v7 = [(WiFiAwarePublishDatapathServiceSpecificInfo *)self servicePort];
-  v8 = [(WiFiAwarePublishDatapathServiceSpecificInfo *)self hostname];
-  v9 = [v6 stringWithFormat:@"<WiFiAwarePublishDatapathServiceSpecificInfo: protocolType=%s, servicePort=%hu, hostname=%@>", v5, v7, v8];
+  servicePort = [(WiFiAwarePublishDatapathServiceSpecificInfo *)self servicePort];
+  hostname = [(WiFiAwarePublishDatapathServiceSpecificInfo *)self hostname];
+  v9 = [v6 stringWithFormat:@"<WiFiAwarePublishDatapathServiceSpecificInfo: protocolType=%s, servicePort=%hu, hostname=%@>", v5, servicePort, hostname];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[WiFiAwarePublishDatapathServiceSpecificInfo alloc] initWithProtocolType:[(WiFiAwarePublishDatapathServiceSpecificInfo *)self protocolType] servicePort:[(WiFiAwarePublishDatapathServiceSpecificInfo *)self servicePort]];
-  v5 = [(WiFiAwarePublishDatapathServiceSpecificInfo *)self hostname];
-  [(WiFiAwarePublishDatapathServiceSpecificInfo *)v4 setHostname:v5];
+  hostname = [(WiFiAwarePublishDatapathServiceSpecificInfo *)self hostname];
+  [(WiFiAwarePublishDatapathServiceSpecificInfo *)v4 setHostname:hostname];
 
   return v4;
 }

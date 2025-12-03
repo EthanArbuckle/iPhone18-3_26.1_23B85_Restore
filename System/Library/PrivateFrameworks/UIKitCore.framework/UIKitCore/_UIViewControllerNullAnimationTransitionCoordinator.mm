@@ -1,9 +1,9 @@
 @interface _UIViewControllerNullAnimationTransitionCoordinator
-- (BOOL)_animateAlongsideTransitionInView:(id)a3 systemAnimation:(BOOL)a4 systemCompletion:(BOOL)a5 animation:(id)a6 completion:(id)a7;
+- (BOOL)_animateAlongsideTransitionInView:(id)view systemAnimation:(BOOL)animation systemCompletion:(BOOL)completion animation:(id)a6 completion:(id)a7;
 - (CGAffineTransform)targetTransform;
-- (id)_alongsideAnimations:(BOOL)a3;
-- (id)_alongsideCompletions:(BOOL)a3;
-- (void)_applyBlocks:(id)a3 releaseBlocks:(id)a4;
+- (id)_alongsideAnimations:(BOOL)animations;
+- (id)_alongsideCompletions:(BOOL)completions;
+- (void)_applyBlocks:(id)blocks releaseBlocks:(id)releaseBlocks;
 - (void)_runAlongsideAnimations;
 - (void)_runAlongsideCompletions;
 - (void)_runAlongsideCompletionsAfterCommit;
@@ -73,9 +73,9 @@
   return self;
 }
 
-- (BOOL)_animateAlongsideTransitionInView:(id)a3 systemAnimation:(BOOL)a4 systemCompletion:(BOOL)a5 animation:(id)a6 completion:(id)a7
+- (BOOL)_animateAlongsideTransitionInView:(id)view systemAnimation:(BOOL)animation systemCompletion:(BOOL)completion animation:(id)a6 completion:(id)a7
 {
-  v10 = a3;
+  viewCopy = view;
   v11 = a6;
   v12 = a7;
   transitionIsInFlight = self->_transitionIsInFlight;
@@ -96,7 +96,7 @@
   return v11 == 0 || !transitionIsInFlight;
 }
 
-- (id)_alongsideAnimations:(BOOL)a3
+- (id)_alongsideAnimations:(BOOL)animations
 {
   alongsideAnimations = self->_alongsideAnimations;
   if (alongsideAnimations)
@@ -106,7 +106,7 @@
 
   else
   {
-    v5 = !a3;
+    v5 = !animations;
   }
 
   if (!v5)
@@ -121,7 +121,7 @@
   return alongsideAnimations;
 }
 
-- (id)_alongsideCompletions:(BOOL)a3
+- (id)_alongsideCompletions:(BOOL)completions
 {
   alongsideCompletions = self->_alongsideCompletions;
   if (alongsideCompletions)
@@ -131,7 +131,7 @@
 
   else
   {
-    v5 = !a3;
+    v5 = !completions;
   }
 
   if (!v5)
@@ -154,19 +154,19 @@
   [(_UIViewControllerNullAnimationTransitionCoordinator *)self _runAlongsideCompletions];
 }
 
-- (void)_applyBlocks:(id)a3 releaseBlocks:(id)a4
+- (void)_applyBlocks:(id)blocks releaseBlocks:(id)releaseBlocks
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  blocksCopy = blocks;
+  releaseBlocksCopy = releaseBlocks;
+  if ([blocksCopy count])
   {
-    v7[2](v7);
+    releaseBlocksCopy[2](releaseBlocksCopy);
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = v6;
+    v8 = blocksCopy;
     v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {

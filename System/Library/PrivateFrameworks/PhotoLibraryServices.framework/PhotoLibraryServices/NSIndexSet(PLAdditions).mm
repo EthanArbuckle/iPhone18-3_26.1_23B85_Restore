@@ -8,10 +8,10 @@
 
 - (uint64_t)pl_rangeCoveringIndexSet
 {
-  v2 = [a1 firstIndex];
-  if (((v2 != 0x7FFFFFFFFFFFFFFFLL) & ([a1 lastIndex] != 0x7FFFFFFFFFFFFFFFLL)) != 0)
+  firstIndex = [self firstIndex];
+  if (((firstIndex != 0x7FFFFFFFFFFFFFFFLL) & ([self lastIndex] != 0x7FFFFFFFFFFFFFFFLL)) != 0)
   {
-    return v2;
+    return firstIndex;
   }
 
   else
@@ -25,7 +25,7 @@
   v6 = a3;
   if ([v6 rangeCount])
   {
-    v7 = [a1 mutableCopy];
+    v7 = [self mutableCopy];
     if (a4)
     {
       v14[0] = MEMORY[0x1E69E9820];
@@ -58,7 +58,7 @@
 
   else
   {
-    v8 = [a1 copy];
+    v8 = [self copy];
   }
 
   return v8;
@@ -67,14 +67,14 @@
 - (id)pl_shortDescription
 {
   v2 = objc_autoreleasePoolPush();
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__NSIndexSet_PLAdditions__pl_shortDescription__block_invoke;
   v7[3] = &unk_1E756D280;
-  v8 = v3;
-  v4 = v3;
-  [a1 enumerateRangesUsingBlock:v7];
+  v8 = array;
+  v4 = array;
+  [self enumerateRangesUsingBlock:v7];
   v5 = [v4 componentsJoinedByString:{@", "}];
 
   objc_autoreleasePoolPop(v2);

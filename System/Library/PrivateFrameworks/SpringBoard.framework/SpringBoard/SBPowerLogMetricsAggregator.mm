@@ -2,8 +2,8 @@
 - (SBPowerLogMetricsAggregator)init;
 - (void)_flushEvents;
 - (void)_startTimerIfNecessary;
-- (void)emitEventOfType:(unint64_t)a3;
-- (void)emitEventOfType:(unint64_t)a3 withDuration:(double)a4;
+- (void)emitEventOfType:(unint64_t)type;
+- (void)emitEventOfType:(unint64_t)type withDuration:(double)duration;
 - (void)flushEventsDueToIminentPowerdown;
 @end
 
@@ -24,22 +24,22 @@
     gregorian = v2->_gregorian;
     v2->_gregorian = v5;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     eventsWithDuration = v2->_eventsWithDuration;
-    v2->_eventsWithDuration = v7;
+    v2->_eventsWithDuration = dictionary;
   }
 
   return v2;
 }
 
-- (void)emitEventOfType:(unint64_t)a3
+- (void)emitEventOfType:(unint64_t)type
 {
   backgroundPowerLogQueue = self->_backgroundPowerLogQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__SBPowerLogMetricsAggregator_emitEventOfType___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a3;
+  block[4] = type;
   dispatch_async(backgroundPowerLogQueue, block);
 }
 
@@ -65,15 +65,15 @@ void __47__SBPowerLogMetricsAggregator_emitEventOfType___block_invoke(uint64_t a
   }
 }
 
-- (void)emitEventOfType:(unint64_t)a3 withDuration:(double)a4
+- (void)emitEventOfType:(unint64_t)type withDuration:(double)duration
 {
   backgroundPowerLogQueue = self->_backgroundPowerLogQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__SBPowerLogMetricsAggregator_emitEventOfType_withDuration___block_invoke;
   block[3] = &unk_2783A8C40;
-  *&block[5] = a4;
-  block[6] = a3;
+  *&block[5] = duration;
+  block[6] = type;
   block[4] = self;
   dispatch_async(backgroundPowerLogQueue, block);
 }
@@ -132,9 +132,9 @@ void __60__SBPowerLogMetricsAggregator_emitEventOfType_withDuration___block_invo
     v3 = objc_alloc_init(MEMORY[0x277CBEAB8]);
     [v3 setMinute:3];
     [v3 setSecond:0];
-    v4 = [MEMORY[0x277CBEAA8] date];
-    v5 = [(NSCalendar *)self->_gregorian nextDateAfterDate:v4 matchingComponents:v3 options:2];
-    [v5 timeIntervalSinceDate:v4];
+    date = [MEMORY[0x277CBEAA8] date];
+    v5 = [(NSCalendar *)self->_gregorian nextDateAfterDate:date matchingComponents:v3 options:2];
+    [v5 timeIntervalSinceDate:date];
     v7 = v6;
     v8 = SBLogAnalytics();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -164,8 +164,8 @@ void __60__SBPowerLogMetricsAggregator_emitEventOfType_withDuration___block_invo
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v19 count:16];
+  allKeys = [v3 allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v13 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -176,7 +176,7 @@ void __60__SBPowerLogMetricsAggregator_emitEventOfType_withDuration___block_invo
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -188,7 +188,7 @@ void __60__SBPowerLogMetricsAggregator_emitEventOfType_withDuration___block_invo
         PLLogRegisteredEvent();
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v19 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v13 objects:v19 count:16];
     }
 
     while (v6);

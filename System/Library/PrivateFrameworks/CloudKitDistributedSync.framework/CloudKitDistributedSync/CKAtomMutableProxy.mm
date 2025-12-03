@@ -2,23 +2,23 @@
 - (id)location;
 - (id)references;
 - (id)timestamp;
-- (void)assignTimestampFromProxy:(id)a3;
-- (void)copyFromReadProxy:(id)a3;
-- (void)setAtomType:(unint64_t)a3;
-- (void)setValue:(id)a3;
-- (void)setValueBytes:(void *)a3 length:(unint64_t)a4;
-- (void)setVersion:(unint64_t)a3;
+- (void)assignTimestampFromProxy:(id)proxy;
+- (void)copyFromReadProxy:(id)proxy;
+- (void)setAtomType:(unint64_t)type;
+- (void)setValue:(id)value;
+- (void)setValueBytes:(void *)bytes length:(unint64_t)length;
+- (void)setVersion:(unint64_t)version;
 @end
 
 @implementation CKAtomMutableProxy
 
-- (void)copyFromReadProxy:(id)a3
+- (void)copyFromReadProxy:(id)proxy
 {
-  v5 = a3;
+  proxyCopy = proxy;
   v12 = objc_msgSend_backingStore(self, v6, v7, v8, v9, v10, v11);
   if (v12)
   {
-    v19 = v5;
+    v19 = proxyCopy;
     if (v19)
     {
       v20 = objc_msgSend_binding(v12, v13, v14, v15, v16, v17, v18);
@@ -72,18 +72,18 @@
   }
 }
 
-- (void)setVersion:(unint64_t)a3
+- (void)setVersion:(unint64_t)version
 {
-  v9 = objc_msgSend_backingStore(self, a2, a3, v3, v4, v5, v6);
+  v9 = objc_msgSend_backingStore(self, a2, version, v3, v4, v5, v6);
   v15 = v9;
   if (v9)
   {
-    v34 = a3;
+    versionCopy = version;
     v16 = objc_msgSend_writerForProxy_(v9, v10, self, v11, v12, v13, v14);
     v23 = objc_msgSend_binding(v15, v17, v18, v19, v20, v21, v22);
     v24 = v23[10];
     objc_msgSend_structInstance(self, v25, v26, v27, v28, v29, v30);
-    objc_msgSend_setData_withEncoding_forField_inStruct_(v16, v31, &v34, "Q", v24, &v33, v32);
+    objc_msgSend_setData_withEncoding_forField_inStruct_(v16, v31, &versionCopy, "Q", v24, &v33, v32);
   }
 }
 
@@ -123,17 +123,17 @@
   return v27;
 }
 
-- (void)assignTimestampFromProxy:(id)a3
+- (void)assignTimestampFromProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   v11 = objc_msgSend_backingStore(self, v5, v6, v7, v8, v9, v10);
   v17 = v11;
   if (v11)
   {
     v24 = objc_msgSend_writerForProxy_(v11, v12, self, v13, v14, v15, v16);
-    if (v4)
+    if (proxyCopy)
     {
-      objc_msgSend_structInstance(v4, v18, v19, v20, v21, v22, v23);
+      objc_msgSend_structInstance(proxyCopy, v18, v19, v20, v21, v22, v23);
     }
 
     else
@@ -166,31 +166,31 @@
   return v27;
 }
 
-- (void)setAtomType:(unint64_t)a3
+- (void)setAtomType:(unint64_t)type
 {
-  v9 = objc_msgSend_backingStore(self, a2, a3, v3, v4, v5, v6);
+  v9 = objc_msgSend_backingStore(self, a2, type, v3, v4, v5, v6);
   v15 = v9;
   if (v9)
   {
-    v34 = a3;
+    typeCopy = type;
     v16 = objc_msgSend_writerForProxy_(v9, v10, self, v11, v12, v13, v14);
     v23 = objc_msgSend_binding(v15, v17, v18, v19, v20, v21, v22);
     v24 = v23[13];
     objc_msgSend_structInstance(self, v25, v26, v27, v28, v29, v30);
-    objc_msgSend_setData_withEncoding_forField_inStruct_(v16, v31, &v34, "Q", v24, &v33, v32);
+    objc_msgSend_setData_withEncoding_forField_inStruct_(v16, v31, &typeCopy, "Q", v24, &v33, v32);
   }
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v28 = 0;
-  v6 = v5;
+  v6 = valueCopy;
   v13 = objc_msgSend_bytes(v6, v7, v8, v9, v10, v11, v12);
   v20 = v13;
-  if (v5 && !v13)
+  if (valueCopy && !v13)
   {
-    if (objc_msgSend_length(v5, v14, v15, v16, v17, v18, v19))
+    if (objc_msgSend_length(valueCopy, v14, v15, v16, v17, v18, v19))
     {
       v26 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v14, v15, v16, v17, v18, v19);
       objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v26, v27, a2, self, @"CKAtomSerialization.mm", 1099, @"Non-zero-length NSData has empty bytes");
@@ -199,13 +199,13 @@
     v20 = &v28;
   }
 
-  v21 = objc_msgSend_length(v5, v14, v15, v16, v17, v18, v19);
+  v21 = objc_msgSend_length(valueCopy, v14, v15, v16, v17, v18, v19);
   objc_msgSend_setValueBytes_length_(self, v22, v20, v21, v23, v24, v25);
 }
 
-- (void)setValueBytes:(void *)a3 length:(unint64_t)a4
+- (void)setValueBytes:(void *)bytes length:(unint64_t)length
 {
-  v10 = objc_msgSend_backingStore(self, a2, a3, a4, v4, v5, v6);
+  v10 = objc_msgSend_backingStore(self, a2, bytes, length, v4, v5, v6);
   v17 = v10;
   if (v10)
   {
@@ -217,7 +217,7 @@
     v29 = objc_msgSend_writerForProxy_(v17, v24, self, v25, v26, v27, v28);
     v33[0] = v34;
     v33[1] = v35;
-    objc_msgSend_setData_withLength_forList_(v29, v30, a3, a4, v33, v31, v32);
+    objc_msgSend_setData_withLength_forList_(v29, v30, bytes, length, v33, v31, v32);
   }
 }
 

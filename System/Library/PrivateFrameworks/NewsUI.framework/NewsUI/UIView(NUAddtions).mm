@@ -16,7 +16,7 @@
     a6 |= 0x60000uLL;
   }
 
-  [MEMORY[0x277D75D18] _animateWithDuration:a6 delay:a5 options:v15 factory:v13 animations:a1 completion:a2];
+  [MEMORY[0x277D75D18] _animateWithDuration:a6 delay:a5 options:v15 factory:v13 animations:self completion:a2];
 }
 
 @end

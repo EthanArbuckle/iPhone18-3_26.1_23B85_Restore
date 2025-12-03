@@ -1,26 +1,26 @@
 @interface MANAutoAssetSetLock
-- (MANAutoAssetSetLock)initWithCoder:(id)a3;
-- (id)initForSelector:(id)a3 withLocalContentURL:(id)a4 withAssetAttributes:(id)a5;
+- (MANAutoAssetSetLock)initWithCoder:(id)coder;
+- (id)initForSelector:(id)selector withLocalContentURL:(id)l withAssetAttributes:(id)attributes;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MANAutoAssetSetLock
 
-- (id)initForSelector:(id)a3 withLocalContentURL:(id)a4 withAssetAttributes:(id)a5
+- (id)initForSelector:(id)selector withLocalContentURL:(id)l withAssetAttributes:(id)attributes
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  selectorCopy = selector;
+  lCopy = l;
+  attributesCopy = attributes;
   v17.receiver = self;
   v17.super_class = MANAutoAssetSetLock;
   v12 = [(MANAutoAssetSetLock *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_fullAssetSelector, a3);
-    objc_storeStrong(&v13->_localContentURL, a4);
-    objc_storeStrong(&v13->_assetAttributes, a5);
+    objc_storeStrong(&v12->_fullAssetSelector, selector);
+    objc_storeStrong(&v13->_localContentURL, l);
+    objc_storeStrong(&v13->_assetAttributes, attributes);
     v13->_inhibitedFromEmergencyRemoval = 0;
     v14 = objc_alloc_init(NSMutableDictionary);
     lockReasons = v13->_lockReasons;
@@ -30,9 +30,9 @@
   return v13;
 }
 
-- (MANAutoAssetSetLock)initWithCoder:(id)a3
+- (MANAutoAssetSetLock)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MANAutoAssetSetLock;
   v5 = [(MANAutoAssetSetLock *)&v15 init];
@@ -49,16 +49,16 @@
     v6 = [NSArray arrayWithObjects:v16 count:8];
     v7 = [NSSet setWithArray:v6];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fullAssetSelector"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fullAssetSelector"];
     fullAssetSelector = v5->_fullAssetSelector;
     v5->_fullAssetSelector = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localContentURL"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localContentURL"];
     localContentURL = v5->_localContentURL;
     v5->_localContentURL = v10;
 
-    v5->_inhibitedFromEmergencyRemoval = [v4 decodeBoolForKey:@"inhibitedFromEmergencyRemoval"];
-    v12 = [v4 decodeObjectOfClasses:v7 forKey:@"lockReasons"];
+    v5->_inhibitedFromEmergencyRemoval = [coderCopy decodeBoolForKey:@"inhibitedFromEmergencyRemoval"];
+    v12 = [coderCopy decodeObjectOfClasses:v7 forKey:@"lockReasons"];
     lockReasons = v5->_lockReasons;
     v5->_lockReasons = v12;
   }
@@ -66,28 +66,28 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MANAutoAssetSetLock *)self fullAssetSelector];
-  [v4 encodeObject:v5 forKey:@"fullAssetSelector"];
+  coderCopy = coder;
+  fullAssetSelector = [(MANAutoAssetSetLock *)self fullAssetSelector];
+  [coderCopy encodeObject:fullAssetSelector forKey:@"fullAssetSelector"];
 
-  v6 = [(MANAutoAssetSetLock *)self localContentURL];
-  [v4 encodeObject:v6 forKey:@"localContentURL"];
+  localContentURL = [(MANAutoAssetSetLock *)self localContentURL];
+  [coderCopy encodeObject:localContentURL forKey:@"localContentURL"];
 
-  [v4 encodeBool:-[MANAutoAssetSetLock inhibitedFromEmergencyRemoval](self forKey:{"inhibitedFromEmergencyRemoval"), @"inhibitedFromEmergencyRemoval"}];
-  v7 = [(MANAutoAssetSetLock *)self lockReasons];
-  [v4 encodeObject:v7 forKey:@"lockReasons"];
+  [coderCopy encodeBool:-[MANAutoAssetSetLock inhibitedFromEmergencyRemoval](self forKey:{"inhibitedFromEmergencyRemoval"), @"inhibitedFromEmergencyRemoval"}];
+  lockReasons = [(MANAutoAssetSetLock *)self lockReasons];
+  [coderCopy encodeObject:lockReasons forKey:@"lockReasons"];
 }
 
 - (id)summary
 {
-  v3 = [(MANAutoAssetSetLock *)self fullAssetSelector];
-  v4 = [v3 summary];
-  v5 = [(MANAutoAssetSetLock *)self localContentURL];
-  v6 = [v5 path];
-  v7 = [(MANAutoAssetSetLock *)self assetAttributes];
-  v8 = [v7 safeSummary];
+  fullAssetSelector = [(MANAutoAssetSetLock *)self fullAssetSelector];
+  summary = [fullAssetSelector summary];
+  localContentURL = [(MANAutoAssetSetLock *)self localContentURL];
+  path = [localContentURL path];
+  assetAttributes = [(MANAutoAssetSetLock *)self assetAttributes];
+  safeSummary = [assetAttributes safeSummary];
   if ([(MANAutoAssetSetLock *)self inhibitedFromEmergencyRemoval])
   {
     v9 = @"Y";
@@ -98,9 +98,9 @@
     v9 = @"N";
   }
 
-  v10 = [(MANAutoAssetSetLock *)self lockReasons];
-  v11 = [v10 safeSummary];
-  v12 = [NSString stringWithFormat:@"selector:%@|localURL:%@|attributes:%@|inhibitedRemoval:%@|reasons:%@", v4, v6, v8, v9, v11];
+  lockReasons = [(MANAutoAssetSetLock *)self lockReasons];
+  safeSummary2 = [lockReasons safeSummary];
+  v12 = [NSString stringWithFormat:@"selector:%@|localURL:%@|attributes:%@|inhibitedRemoval:%@|reasons:%@", summary, path, safeSummary, v9, safeSummary2];
 
   return v12;
 }

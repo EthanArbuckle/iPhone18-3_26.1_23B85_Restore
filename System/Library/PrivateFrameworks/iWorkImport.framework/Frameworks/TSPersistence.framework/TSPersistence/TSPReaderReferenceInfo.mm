@@ -1,16 +1,16 @@
 @interface TSPReaderReferenceInfo
-+ (id)newReferenceInfoWithObjectIdentifier:(int64_t)a3 componentIdentifier:(int64_t)a4;
++ (id)newReferenceInfoWithObjectIdentifier:(int64_t)identifier componentIdentifier:(int64_t)componentIdentifier;
 - (TSPReaderReferenceInfo)init;
-- (TSPReaderReferenceInfo)initWithObjectIdentifier:(int64_t)a3 componentIdentifier:(int64_t)a4;
+- (TSPReaderReferenceInfo)initWithObjectIdentifier:(int64_t)identifier componentIdentifier:(int64_t)componentIdentifier;
 @end
 
 @implementation TSPReaderReferenceInfo
 
-+ (id)newReferenceInfoWithObjectIdentifier:(int64_t)a3 componentIdentifier:(int64_t)a4
++ (id)newReferenceInfoWithObjectIdentifier:(int64_t)identifier componentIdentifier:(int64_t)componentIdentifier
 {
-  v5 = [a1 alloc];
+  v5 = [self alloc];
 
-  return MEMORY[0x2821F9670](v5, sel_initWithObjectIdentifier_componentIdentifier_, a3);
+  return MEMORY[0x2821F9670](v5, sel_initWithObjectIdentifier_componentIdentifier_, identifier);
 }
 
 - (TSPReaderReferenceInfo)init
@@ -29,15 +29,15 @@
   objc_exception_throw(v13);
 }
 
-- (TSPReaderReferenceInfo)initWithObjectIdentifier:(int64_t)a3 componentIdentifier:(int64_t)a4
+- (TSPReaderReferenceInfo)initWithObjectIdentifier:(int64_t)identifier componentIdentifier:(int64_t)componentIdentifier
 {
   v7.receiver = self;
   v7.super_class = TSPReaderReferenceInfo;
   result = [(TSPReaderReferenceInfo *)&v7 init];
   if (result)
   {
-    result->_objectIdentifier = a3;
-    result->_componentIdentifier = a4;
+    result->_objectIdentifier = identifier;
+    result->_componentIdentifier = componentIdentifier;
   }
 
   return result;

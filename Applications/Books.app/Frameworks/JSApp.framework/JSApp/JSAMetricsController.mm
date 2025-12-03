@@ -1,10 +1,10 @@
 @interface JSAMetricsController
 - (id)newSuspensionAssertion;
-- (void)countingAssertProviderTransitionToNonZero:(id)a3;
-- (void)countingAssertProviderTransitionToZero:(id)a3;
+- (void)countingAssertProviderTransitionToNonZero:(id)zero;
+- (void)countingAssertProviderTransitionToZero:(id)zero;
 - (void)flushUnreportedEvents;
-- (void)recordEvent:(id)a3 :(id)a4;
-- (void)recordPersonalizedEvent:(id)a3 :(id)a4;
+- (void)recordEvent:(id)event :(id)a4;
+- (void)recordPersonalizedEvent:(id)event :(id)a4;
 - (void)startSubmissionIfAllowed;
 @end
 
@@ -12,7 +12,7 @@
 
 - (void)startSubmissionIfAllowed
 {
-  v2 = self;
+  selfCopy = self;
   sub_67208();
 }
 
@@ -28,7 +28,7 @@
   return result;
 }
 
-- (void)recordEvent:(id)a3 :(id)a4
+- (void)recordEvent:(id)event :(id)a4
 {
   v5 = sub_843AC();
   v7 = v6;
@@ -43,16 +43,16 @@
     v9 = sub_84BEC();
   }
 
-  v10 = self;
+  selfCopy = self;
   sub_6747C(v8, v5, v7, v9 & 1);
 }
 
-- (void)recordPersonalizedEvent:(id)a3 :(id)a4
+- (void)recordPersonalizedEvent:(id)event :(id)a4
 {
   v5 = sub_843AC();
   v7 = v6;
   v8 = sub_8434C();
-  v9 = self;
+  selfCopy = self;
   sub_6747C(v8, v5, v7, 1);
 }
 
@@ -70,23 +70,23 @@
   v9[2] = 0;
   v9[3] = 0;
   v9[4] = v8;
-  v10 = self;
+  selfCopy = self;
   sub_3BBC8(0, 0, v6, &unk_A1DE0, v9);
 
   sub_692E0(v6);
 }
 
-- (void)countingAssertProviderTransitionToNonZero:(id)a3
+- (void)countingAssertProviderTransitionToNonZero:(id)zero
 {
-  v4 = a3;
-  v5 = self;
+  zeroCopy = zero;
+  selfCopy = self;
   _s5JSApp17MetricsControllerC32countingAssertProviderTransition9toNonZeroySo019BUCountingAssertionF0C_tF_0();
 }
 
-- (void)countingAssertProviderTransitionToZero:(id)a3
+- (void)countingAssertProviderTransitionToZero:(id)zero
 {
-  v4 = a3;
-  v5 = self;
+  zeroCopy = zero;
+  selfCopy = self;
   _s5JSApp17MetricsControllerC32countingAssertProviderTransition6toZeroySo019BUCountingAssertionF0C_tF_0();
 }
 

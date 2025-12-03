@@ -1,6 +1,6 @@
 @interface PKInputPointRollNoiseFilter
 - (void)_recalculateOffset;
-- (void)addInputPoint:(id *)a3;
+- (void)addInputPoint:(id *)point;
 - (void)resetFilter;
 @end
 
@@ -32,7 +32,7 @@
   self->currentRollOffsetValue = std::normal_distribution<double>::operator()<std::linear_congruential_engine<unsigned int,48271u,0u,2147483647u>>(v3, &self->generator.__x_, v3) * 0.0174532925;
 }
 
-- (void)addInputPoint:(id *)a3
+- (void)addInputPoint:(id *)point
 {
   if (!self)
   {
@@ -57,7 +57,7 @@ LABEL_4:
   v9[0] = 0.0;
   v9[1] = rollJitterNoise;
   v10 = 0;
-  v6 = a3->var13 + std::normal_distribution<double>::operator()<std::linear_congruential_engine<unsigned int,48271u,0u,2147483647u>>(v9, &self->generator.__x_, v9) * 0.0174532925 + self->currentRollOffsetValue;
+  v6 = point->var13 + std::normal_distribution<double>::operator()<std::linear_congruential_engine<unsigned int,48271u,0u,2147483647u>>(v9, &self->generator.__x_, v9) * 0.0174532925 + self->currentRollOffsetValue;
   v7 = fmod(v6, 6.28318531);
   if (v6 <= 6.28318531 && v6 >= 0.0)
   {
@@ -74,10 +74,10 @@ LABEL_4:
     v7 = 0.0;
   }
 
-  a3->var13 = v7;
+  point->var13 = v7;
 LABEL_14:
 
-  memmove(&self->super._filteredPoint, a3, 0x88uLL);
+  memmove(&self->super._filteredPoint, point, 0x88uLL);
 }
 
 @end

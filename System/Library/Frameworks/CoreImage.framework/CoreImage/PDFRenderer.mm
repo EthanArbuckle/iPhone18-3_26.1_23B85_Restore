@@ -1,9 +1,9 @@
 @interface PDFRenderer
-- (BOOL)setCanvasWidth:(unsigned int)a3 height:(unsigned int)a4;
+- (BOOL)setCanvasWidth:(unsigned int)width height:(unsigned int)height;
 - (PDFRenderer)init;
 - (void)dealloc;
 - (void)flushRender;
-- (void)setFileURL:(id)a3;
+- (void)setFileURL:(id)l;
 @end
 
 @implementation PDFRenderer
@@ -43,7 +43,7 @@
   [(CGRenderer *)&v5 dealloc];
 }
 
-- (void)setFileURL:(id)a3
+- (void)setFileURL:(id)l
 {
   dataConsumer = self->dataConsumer;
   if (dataConsumer)
@@ -58,9 +58,9 @@
     self->super.context = 0;
   }
 
-  if (a3)
+  if (l)
   {
-    v7 = CGDataConsumerCreateWithURL([a3 URLByAppendingPathExtension:@"pdf"]);
+    v7 = CGDataConsumerCreateWithURL([l URLByAppendingPathExtension:@"pdf"]);
   }
 
   else
@@ -79,14 +79,14 @@
   self->dataConsumer = v7;
 }
 
-- (BOOL)setCanvasWidth:(unsigned int)a3 height:(unsigned int)a4
+- (BOOL)setCanvasWidth:(unsigned int)width height:(unsigned int)height
 {
   v17[1] = *MEMORY[0x1E69E9840];
   __asm { FMOV            V2.2D, #-20.0 }
 
   v13.origin = _Q2;
-  v13.size.width = a3 + 40.0;
-  v13.size.height = a4 + 40.0;
+  v13.size.width = width + 40.0;
+  v13.size.height = height + 40.0;
   context = self->super.context;
   if (context)
   {

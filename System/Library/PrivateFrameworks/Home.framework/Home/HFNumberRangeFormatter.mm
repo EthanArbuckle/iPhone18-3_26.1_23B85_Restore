@@ -1,34 +1,34 @@
 @interface HFNumberRangeFormatter
 + (id)_nonNumericCharacterSet;
 - (BOOL)_isRTL;
-- (BOOL)_shouldRemoveUnitFromMaximumFormattedValue:(id)a3;
-- (BOOL)_shouldRemoveUnitFromMinimumFormattedValue:(id)a3;
-- (HFNumberRangeFormatter)initWithNumberFormatter:(id)a3;
-- (id)stringForNumberRange:(id)a3;
-- (id)stringForObjectValue:(id)a3;
+- (BOOL)_shouldRemoveUnitFromMaximumFormattedValue:(id)value;
+- (BOOL)_shouldRemoveUnitFromMinimumFormattedValue:(id)value;
+- (HFNumberRangeFormatter)initWithNumberFormatter:(id)formatter;
+- (id)stringForNumberRange:(id)range;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation HFNumberRangeFormatter
 
 + (id)_nonNumericCharacterSet
 {
-  v2 = [MEMORY[0x277CCAB50] decimalDigitCharacterSet];
-  [v2 addCharactersInString:@"-–"];
-  v3 = [v2 invertedSet];
+  decimalDigitCharacterSet = [MEMORY[0x277CCAB50] decimalDigitCharacterSet];
+  [decimalDigitCharacterSet addCharactersInString:@"-–"];
+  invertedSet = [decimalDigitCharacterSet invertedSet];
 
-  return v3;
+  return invertedSet;
 }
 
-- (HFNumberRangeFormatter)initWithNumberFormatter:(id)a3
+- (HFNumberRangeFormatter)initWithNumberFormatter:(id)formatter
 {
-  v5 = a3;
+  formatterCopy = formatter;
   v9.receiver = self;
   v9.super_class = HFNumberRangeFormatter;
   v6 = [(HFNumberRangeFormatter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_numberFormatter, a3);
+    objc_storeStrong(&v6->_numberFormatter, formatter);
     v7->_consolidatesUnit = 0;
     v7->_simplifiesEqualValues = 0;
   }
@@ -36,11 +36,11 @@
   return v7;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
-  v5 = v4;
+  v5 = valueCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -66,64 +66,64 @@
   return v8;
 }
 
-- (id)stringForNumberRange:(id)a3
+- (id)stringForNumberRange:(id)range
 {
-  v5 = a3;
-  v6 = [v5 type];
-  if (v6 == 1)
+  rangeCopy = range;
+  type = [rangeCopy type];
+  if (type == 1)
   {
-    v10 = [(HFNumberRangeFormatter *)self numberFormatter];
-    v11 = [v5 minValue];
-    v7 = [v10 stringForObjectValue:v11];
+    numberFormatter = [(HFNumberRangeFormatter *)self numberFormatter];
+    minValue = [rangeCopy minValue];
+    numberFormatter3 = [numberFormatter stringForObjectValue:minValue];
 
-    v12 = [(HFNumberRangeFormatter *)self numberFormatter];
-    v13 = [v5 maxValue];
-    v8 = [v12 stringForObjectValue:v13];
+    numberFormatter2 = [(HFNumberRangeFormatter *)self numberFormatter];
+    maxValue = [rangeCopy maxValue];
+    midValue = [numberFormatter2 stringForObjectValue:maxValue];
 
-    if (-[HFNumberRangeFormatter simplifiesEqualValues](self, "simplifiesEqualValues") && [v7 isEqualToString:v8])
+    if (-[HFNumberRangeFormatter simplifiesEqualValues](self, "simplifiesEqualValues") && [numberFormatter3 isEqualToString:midValue])
     {
-      v9 = v7;
-      v7 = v9;
+      v9 = numberFormatter3;
+      numberFormatter3 = v9;
     }
 
     else
     {
-      if ([(HFNumberRangeFormatter *)self _shouldRemoveUnitFromMinimumFormattedValue:v7])
+      if ([(HFNumberRangeFormatter *)self _shouldRemoveUnitFromMinimumFormattedValue:numberFormatter3])
       {
-        v14 = [objc_opt_class() _nonNumericCharacterSet];
-        v15 = [v7 stringByTrimmingCharactersInSet:v14];
+        _nonNumericCharacterSet = [objc_opt_class() _nonNumericCharacterSet];
+        v15 = [numberFormatter3 stringByTrimmingCharactersInSet:_nonNumericCharacterSet];
 
-        v7 = v15;
+        numberFormatter3 = v15;
       }
 
-      if ([(HFNumberRangeFormatter *)self _shouldRemoveUnitFromMaximumFormattedValue:v8])
+      if ([(HFNumberRangeFormatter *)self _shouldRemoveUnitFromMaximumFormattedValue:midValue])
       {
-        v22 = [objc_opt_class() _nonNumericCharacterSet];
-        v23 = [v8 stringByTrimmingCharactersInSet:v22];
+        _nonNumericCharacterSet2 = [objc_opt_class() _nonNumericCharacterSet];
+        v23 = [midValue stringByTrimmingCharactersInSet:_nonNumericCharacterSet2];
 
-        v8 = v23;
+        midValue = v23;
       }
 
       v3 = 0;
-      if (!v7 || !v8)
+      if (!numberFormatter3 || !midValue)
       {
         goto LABEL_15;
       }
 
-      v9 = HFLocalizedStringWithFormat(@"HFNumberRangeFormatterRange", @"%1$@ %2$@", v16, v17, v18, v19, v20, v21, v7);
+      v9 = HFLocalizedStringWithFormat(@"HFNumberRangeFormatterRange", @"%1$@ %2$@", v16, v17, v18, v19, v20, v21, numberFormatter3);
     }
   }
 
   else
   {
-    if (v6)
+    if (type)
     {
       goto LABEL_16;
     }
 
-    v7 = [(HFNumberRangeFormatter *)self numberFormatter];
-    v8 = [v5 midValue];
-    v9 = [v7 stringForObjectValue:v8];
+    numberFormatter3 = [(HFNumberRangeFormatter *)self numberFormatter];
+    midValue = [rangeCopy midValue];
+    v9 = [numberFormatter3 stringForObjectValue:midValue];
   }
 
   v3 = v9;
@@ -137,13 +137,13 @@ LABEL_16:
 - (BOOL)_isRTL
 {
   v2 = HFHomeBundle();
-  v3 = [v2 preferredLocalizations];
-  v4 = [v3 firstObject];
+  preferredLocalizations = [v2 preferredLocalizations];
+  firstObject = [preferredLocalizations firstObject];
 
-  if (v4)
+  if (firstObject)
   {
     v5 = MEMORY[0x277CBEAF8];
-    v6 = [MEMORY[0x277CBEAF8] canonicalLanguageIdentifierFromString:v4];
+    v6 = [MEMORY[0x277CBEAF8] canonicalLanguageIdentifierFromString:firstObject];
     v7 = [v5 characterDirectionForLanguage:v6] == 2;
   }
 
@@ -155,21 +155,21 @@ LABEL_16:
   return v7;
 }
 
-- (BOOL)_shouldRemoveUnitFromMinimumFormattedValue:(id)a3
+- (BOOL)_shouldRemoveUnitFromMinimumFormattedValue:(id)value
 {
-  v4 = a3;
-  if (!-[HFNumberRangeFormatter consolidatesUnit](self, "consolidatesUnit") || ![v4 length])
+  valueCopy = value;
+  if (!-[HFNumberRangeFormatter consolidatesUnit](self, "consolidatesUnit") || ![valueCopy length])
   {
     goto LABEL_5;
   }
 
-  v5 = [MEMORY[0x277CBEAF8] currentLocale];
-  v6 = [v5 languageCode];
-  if ([v6 isEqualToString:@"ar"])
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  languageCode = [currentLocale languageCode];
+  if ([languageCode isEqualToString:@"ar"])
   {
-    v7 = [MEMORY[0x277CBEAF8] currentLocale];
-    v8 = [v7 numberingSystem];
-    v9 = [v8 isEqualToString:@"latn"];
+    currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+    numberingSystem = [currentLocale2 numberingSystem];
+    v9 = [numberingSystem isEqualToString:@"latn"];
 
     if (v9)
     {
@@ -190,8 +190,8 @@ LABEL_5:
 
   else
   {
-    v12 = [objc_opt_class() _nonNumericCharacterSet];
-    v10 = [v12 characterIsMember:{objc_msgSend(v4, "characterAtIndex:", objc_msgSend(v4, "length") - 1)}];
+    _nonNumericCharacterSet = [objc_opt_class() _nonNumericCharacterSet];
+    v10 = [_nonNumericCharacterSet characterIsMember:{objc_msgSend(valueCopy, "characterAtIndex:", objc_msgSend(valueCopy, "length") - 1)}];
   }
 
 LABEL_6:
@@ -199,13 +199,13 @@ LABEL_6:
   return v10;
 }
 
-- (BOOL)_shouldRemoveUnitFromMaximumFormattedValue:(id)a3
+- (BOOL)_shouldRemoveUnitFromMaximumFormattedValue:(id)value
 {
-  v4 = a3;
-  if (-[HFNumberRangeFormatter consolidatesUnit](self, "consolidatesUnit") && [v4 length] && !-[HFNumberRangeFormatter _isRTL](self, "_isRTL"))
+  valueCopy = value;
+  if (-[HFNumberRangeFormatter consolidatesUnit](self, "consolidatesUnit") && [valueCopy length] && !-[HFNumberRangeFormatter _isRTL](self, "_isRTL"))
   {
-    v7 = [objc_opt_class() _nonNumericCharacterSet];
-    v5 = [v7 characterIsMember:{objc_msgSend(v4, "characterAtIndex:", 0)}];
+    _nonNumericCharacterSet = [objc_opt_class() _nonNumericCharacterSet];
+    v5 = [_nonNumericCharacterSet characterIsMember:{objc_msgSend(valueCopy, "characterAtIndex:", 0)}];
   }
 
   else

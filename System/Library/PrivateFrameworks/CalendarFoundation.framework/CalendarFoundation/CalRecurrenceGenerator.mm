@@ -1,13 +1,13 @@
 @interface CalRecurrenceGenerator
 - (CalRecurrenceGenerator)init;
-- (double)convertAbsoluteTime:(double)a3 fromTimeZone:(id)a4 toTimeZone:(id)a5;
+- (double)convertAbsoluteTime:(double)time fromTimeZone:(id)zone toTimeZone:(id)timeZone;
 - (double)duration;
-- (id)_copyDailyOccurrencesWithInitialDate:(id)a3 startDate:(id)a4 endDate:(id)a5 count:(unint64_t)a6 countPastEndDate:(unint64_t)a7;
-- (id)_copyMonthlyOccurrencesWithInitialDate:(id)a3 startDate:(id)a4 endDate:(id)a5 count:(unint64_t)a6 countPastEndDate:(unint64_t)a7;
-- (id)_copyWeeklyOccurrencesWithInitialDate:(id)a3 startDate:(id)a4 endDate:(id)a5 count:(unint64_t)a6 countPastEndDate:(unint64_t)a7;
-- (id)_copyYearlyOccurrencesWithInitialDate:(id)a3 startDate:(id)a4 endDate:(id)a5 count:(unint64_t)a6 countPastEndDate:(unint64_t)a7;
-- (id)computeRecurrenceEndDate:(unint64_t)a3;
-- (id)copyOccurrenceDatesBetweenStartDate:(id)a3 endDate:(id)a4 timeZone:(id)a5 limit:(int64_t)a6 plusExtraOccurrencePastEnd:(BOOL)a7;
+- (id)_copyDailyOccurrencesWithInitialDate:(id)date startDate:(id)startDate endDate:(id)endDate count:(unint64_t)count countPastEndDate:(unint64_t)pastEndDate;
+- (id)_copyMonthlyOccurrencesWithInitialDate:(id)date startDate:(id)startDate endDate:(id)endDate count:(unint64_t)count countPastEndDate:(unint64_t)pastEndDate;
+- (id)_copyWeeklyOccurrencesWithInitialDate:(id)date startDate:(id)startDate endDate:(id)endDate count:(unint64_t)count countPastEndDate:(unint64_t)pastEndDate;
+- (id)_copyYearlyOccurrencesWithInitialDate:(id)date startDate:(id)startDate endDate:(id)endDate count:(unint64_t)count countPastEndDate:(unint64_t)pastEndDate;
+- (id)computeRecurrenceEndDate:(unint64_t)date;
+- (id)copyOccurrenceDatesBetweenStartDate:(id)date endDate:(id)endDate timeZone:(id)zone limit:(int64_t)limit plusExtraOccurrencePastEnd:(BOOL)end;
 @end
 
 @implementation CalRecurrenceGenerator
@@ -19,8 +19,8 @@
   v2 = [(CalRecurrenceGenerator *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DEE8] CalGregorianGMTCalendar];
-    v4 = [v3 copy];
+    calGregorianGMTCalendar = [MEMORY[0x1E695DEE8] CalGregorianGMTCalendar];
+    v4 = [calGregorianGMTCalendar copy];
     calendar = v2->_calendar;
     v2->_calendar = v4;
   }
@@ -28,51 +28,51 @@
   return v2;
 }
 
-- (id)computeRecurrenceEndDate:(unint64_t)a3
+- (id)computeRecurrenceEndDate:(unint64_t)date
 {
   eventStartDate = self->_eventStartDate;
   v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:1577840000.0];
-  v7 = [(CalRecurrenceGenerator *)self copyOccurrenceDatesBetweenStartDate:eventStartDate endDate:v6 timeZone:self->_eventTimeZone limit:a3];
+  v7 = [(CalRecurrenceGenerator *)self copyOccurrenceDatesBetweenStartDate:eventStartDate endDate:v6 timeZone:self->_eventTimeZone limit:date];
 
-  v8 = [v7 lastObject];
+  lastObject = [v7 lastObject];
 
-  return v8;
+  return lastObject;
 }
 
 - (double)duration
 {
-  v3 = [(CalRecurrenceGenerator *)self eventEndDate];
-  [v3 timeIntervalSinceReferenceDate];
+  eventEndDate = [(CalRecurrenceGenerator *)self eventEndDate];
+  [eventEndDate timeIntervalSinceReferenceDate];
   v5 = v4;
-  v6 = [(CalRecurrenceGenerator *)self eventStartDate];
-  [v6 timeIntervalSinceReferenceDate];
+  eventStartDate = [(CalRecurrenceGenerator *)self eventStartDate];
+  [eventStartDate timeIntervalSinceReferenceDate];
   v8 = v5 - v7;
 
   return v8;
 }
 
-- (double)convertAbsoluteTime:(double)a3 fromTimeZone:(id)a4 toTimeZone:(id)a5
+- (double)convertAbsoluteTime:(double)time fromTimeZone:(id)zone toTimeZone:(id)timeZone
 {
-  v7 = a5;
-  *&v10.year = CalAbsoluteTimeGetGregorianDateWithFallbackToDefaultTimeZone(a4, a3);
-  AbsoluteTimeWithFallbackToDefaultTimeZone = CalGregorianDateGetAbsoluteTimeWithFallbackToDefaultTimeZone(v10, v7);
+  timeZoneCopy = timeZone;
+  *&v10.year = CalAbsoluteTimeGetGregorianDateWithFallbackToDefaultTimeZone(zone, time);
+  AbsoluteTimeWithFallbackToDefaultTimeZone = CalGregorianDateGetAbsoluteTimeWithFallbackToDefaultTimeZone(v10, timeZoneCopy);
 
   return AbsoluteTimeWithFallbackToDefaultTimeZone;
 }
 
-- (id)copyOccurrenceDatesBetweenStartDate:(id)a3 endDate:(id)a4 timeZone:(id)a5 limit:(int64_t)a6 plusExtraOccurrencePastEnd:(BOOL)a7
+- (id)copyOccurrenceDatesBetweenStartDate:(id)date endDate:(id)endDate timeZone:(id)zone limit:(int64_t)limit plusExtraOccurrencePastEnd:(BOOL)end
 {
-  v7 = a7;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(CalRecurrenceGenerator *)self eventStartDate];
-  if (!v14 || (v15 = v14, [(CalRecurrenceGenerator *)self eventEndDate], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, !v16))
+  endCopy = end;
+  zoneCopy = zone;
+  endDateCopy = endDate;
+  dateCopy = date;
+  eventStartDate = [(CalRecurrenceGenerator *)self eventStartDate];
+  if (!eventStartDate || (v15 = eventStartDate, [(CalRecurrenceGenerator *)self eventEndDate], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, !v16))
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"CalRecurrenceGenerator must have start date and end date set before calling -copyOccurrenceDatesBetweenStartDate:endDate:timeZone:limit:."];
   }
 
-  v17 = v11;
+  v17 = zoneCopy;
   v18 = v17;
   v19 = v17;
   if (self->_eventTimeZone)
@@ -95,9 +95,9 @@
     [(NSCalendar *)self->_calendar setTimeZone:v20];
   }
 
-  v21 = [EKCalendarDate calendarDateWithDate:v13 timeZone:v19];
+  v21 = [EKCalendarDate calendarDateWithDate:dateCopy timeZone:v19];
 
-  v22 = [EKCalendarDate calendarDateWithDate:v12 timeZone:v19];
+  v22 = [EKCalendarDate calendarDateWithDate:endDateCopy timeZone:v19];
 
   v23 = [EKCalendarDate calendarDateWithDate:self->_eventStartDate timeZone:self->_eventTimeZone];
   v24 = [v23 calendarDateInTimeZone:v19];
@@ -136,22 +136,22 @@
   [v21 absoluteTime];
   if (v42 <= v43 || ([v24 absoluteTime], v45 = v44, objc_msgSend(v21, "absoluteTime"), v45 >= v46))
   {
-    v93 = v7;
-    v48 = [v21 dayTimeComponents];
-    v49 = [v24 allComponents];
-    [v48 setHour:{objc_msgSend(v49, "hour")}];
-    [v48 setMinute:{objc_msgSend(v49, "minute")}];
-    [v48 setSecond:{objc_msgSend(v49, "second")}];
-    [v48 setNanosecond:{objc_msgSend(v49, "nanosecond")}];
-    v47 = [EKCalendarDate calendarDateWithDateComponents:v48 timeZone:v19];
+    v93 = endCopy;
+    dayTimeComponents = [v21 dayTimeComponents];
+    allComponents = [v24 allComponents];
+    [dayTimeComponents setHour:{objc_msgSend(allComponents, "hour")}];
+    [dayTimeComponents setMinute:{objc_msgSend(allComponents, "minute")}];
+    [dayTimeComponents setSecond:{objc_msgSend(allComponents, "second")}];
+    [dayTimeComponents setNanosecond:{objc_msgSend(allComponents, "nanosecond")}];
+    v47 = [EKCalendarDate calendarDateWithDateComponents:dayTimeComponents timeZone:v19];
     [v21 absoluteTime];
     v51 = v50;
     [v47 absoluteTime];
     v53 = v51 - v52;
     if (v53 <= 0.0)
     {
-      v89 = v48;
-      v92 = v49;
+      v89 = dayTimeComponents;
+      v92 = allComponents;
       v56 = objc_opt_new();
       [(CalRecurrenceGenerator *)self duration];
       [v56 setSecond:v57];
@@ -164,12 +164,12 @@
 
       v91 = v56;
       v59 = [v47 calendarDateByComponentwiseAddingComponents:v56];
-      v60 = [v59 dayTimeComponents];
-      [v60 setMonth:{objc_msgSend(v21, "month")}];
-      [v60 setDay:{objc_msgSend(v21, "day")}];
-      [v60 setYear:{objc_msgSend(v21, "year")}];
-      v90 = v60;
-      v61 = [EKCalendarDate calendarDateWithDateComponents:v60 timeZone:v19];
+      dayTimeComponents2 = [v59 dayTimeComponents];
+      [dayTimeComponents2 setMonth:{objc_msgSend(v21, "month")}];
+      [dayTimeComponents2 setDay:{objc_msgSend(v21, "day")}];
+      [dayTimeComponents2 setYear:{objc_msgSend(v21, "year")}];
+      v90 = dayTimeComponents2;
+      v61 = [EKCalendarDate calendarDateWithDateComponents:dayTimeComponents2 timeZone:v19];
 
       [v61 absoluteTime];
       v63 = v62;
@@ -201,7 +201,7 @@
         }
 
         v75 = v67;
-        v48 = v89;
+        dayTimeComponents = v89;
         v87 = v75;
         [v75 setSecond:{v74, v85}];
         v65 = v86;
@@ -214,12 +214,12 @@
       {
         v88 = v47;
         v65 = v61;
-        v48 = v89;
+        dayTimeComponents = v89;
       }
 
       v21 = v88;
       v66 = v91;
-      v49 = v92;
+      allComponents = v92;
     }
 
     else
@@ -239,7 +239,7 @@
       v21 = v55;
     }
 
-    v7 = v93;
+    endCopy = v93;
   }
 
   else
@@ -253,14 +253,14 @@ LABEL_20:
   {
     v77 = [EKCalendarDate calendarDateWithAbsoluteTime:v19 timeZone:v26 + 1.0];
 
-    LOBYTE(v7) = 0;
+    LOBYTE(endCopy) = 0;
     v78 = 0;
     v22 = v77;
   }
 
   else
   {
-    v78 = v7;
+    v78 = endCopy;
   }
 
   v35 = 0;
@@ -269,13 +269,13 @@ LABEL_20:
   {
     if (frequency == 3)
     {
-      v80 = [(CalRecurrenceGenerator *)self _copyMonthlyOccurrencesWithInitialDate:v24 startDate:v21 endDate:v22 count:a6 countPastEndDate:v78];
+      v80 = [(CalRecurrenceGenerator *)self _copyMonthlyOccurrencesWithInitialDate:v24 startDate:v21 endDate:v22 count:limit countPastEndDate:v78];
       goto LABEL_51;
     }
 
     if (frequency == 4)
     {
-      v80 = [(CalRecurrenceGenerator *)self _copyYearlyOccurrencesWithInitialDate:v24 startDate:v21 endDate:v22 count:a6 countPastEndDate:v78];
+      v80 = [(CalRecurrenceGenerator *)self _copyYearlyOccurrencesWithInitialDate:v24 startDate:v21 endDate:v22 count:limit countPastEndDate:v78];
       goto LABEL_51;
     }
   }
@@ -284,19 +284,19 @@ LABEL_20:
   {
     if (frequency == 1)
     {
-      v80 = [(CalRecurrenceGenerator *)self _copyDailyOccurrencesWithInitialDate:v24 startDate:v21 endDate:v22 count:a6 countPastEndDate:v78];
+      v80 = [(CalRecurrenceGenerator *)self _copyDailyOccurrencesWithInitialDate:v24 startDate:v21 endDate:v22 count:limit countPastEndDate:v78];
       goto LABEL_51;
     }
 
     if (frequency == 2)
     {
-      v80 = [(CalRecurrenceGenerator *)self _copyWeeklyOccurrencesWithInitialDate:v24 startDate:v21 endDate:v22 count:a6 countPastEndDate:v78];
+      v80 = [(CalRecurrenceGenerator *)self _copyWeeklyOccurrencesWithInitialDate:v24 startDate:v21 endDate:v22 count:limit countPastEndDate:v78];
 LABEL_51:
       v35 = v80;
     }
   }
 
-  v81 = !v7;
+  v81 = !endCopy;
   if (!self->_endDate)
   {
     v81 = 1;
@@ -320,25 +320,25 @@ LABEL_56:
   return v35;
 }
 
-- (id)_copyDailyOccurrencesWithInitialDate:(id)a3 startDate:(id)a4 endDate:(id)a5 count:(unint64_t)a6 countPastEndDate:(unint64_t)a7
+- (id)_copyDailyOccurrencesWithInitialDate:(id)date startDate:(id)startDate endDate:(id)endDate count:(unint64_t)count countPastEndDate:(unint64_t)pastEndDate
 {
   v60[2] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  dateCopy = date;
+  startDateCopy = startDate;
+  endDateCopy = endDate;
   interval = self->_interval;
   if (interval)
   {
     v56 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
-    v15 = [v11 calendarDateForDay];
-    v51 = [v12 calendarDateForDay];
-    v52 = v15;
-    v16 = [v51 differenceInDays:v15] % interval;
+    calendarDateForDay = [dateCopy calendarDateForDay];
+    calendarDateForDay2 = [startDateCopy calendarDateForDay];
+    v52 = calendarDateForDay;
+    v16 = [calendarDateForDay2 differenceInDays:calendarDateForDay] % interval;
     if (v16)
     {
-      v17 = [v12 calendarDateByAddingDays:interval - v16];
+      v17 = [startDateCopy calendarDateByAddingDays:interval - v16];
 
-      v12 = v17;
+      startDateCopy = v17;
     }
 
     v18 = self->_daysOfTheWeek;
@@ -384,17 +384,17 @@ LABEL_56:
       v21[1] = _EKRecurrenceByDayMaskFromArrayByDayItems(v18);
     }
 
-    v24 = [v12 allComponents];
-    [v24 setHour:{objc_msgSend(v11, "hour")}];
-    [v24 setMinute:{objc_msgSend(v11, "minute")}];
-    [v24 setSecond:{objc_msgSend(v11, "second")}];
-    v25 = [(NSCalendar *)self->_calendar dateFromComponents:v24];
+    allComponents = [startDateCopy allComponents];
+    [allComponents setHour:{objc_msgSend(dateCopy, "hour")}];
+    [allComponents setMinute:{objc_msgSend(dateCopy, "minute")}];
+    [allComponents setSecond:{objc_msgSend(dateCopy, "second")}];
+    v25 = [(NSCalendar *)self->_calendar dateFromComponents:allComponents];
     v26 = objc_alloc_init(MEMORY[0x1E695DF10]);
     [v26 setDay:interval];
-    [v13 absoluteTime];
+    [endDateCopy absoluteTime];
     v28 = v27;
-    v54 = v12;
-    if (a6)
+    v54 = startDateCopy;
+    if (count)
     {
       v29 = fabs(v27);
       if (v28 > 1577840000.0 || v29 < 2.22044605e-16)
@@ -403,26 +403,26 @@ LABEL_56:
       }
     }
 
-    v53 = v13;
-    v55 = v11;
+    v53 = endDateCopy;
+    v55 = dateCopy;
     [v25 timeIntervalSinceReferenceDate];
-    v31 = a7 != 0;
-    if (v32 < v28 || a7)
+    v31 = pastEndDate != 0;
+    if (v32 < v28 || pastEndDate)
     {
-      v34 = a6;
+      countCopy = count;
       do
       {
-        if (!v19 || ([v54 timeZone], v35 = objc_claimAutoreleasedReturnValue(), +[EKCalendarDate calendarDateWithDateComponents:timeZone:](EKCalendarDate, "calendarDateWithDateComponents:timeZone:", v24, v35), v36 = objc_claimAutoreleasedReturnValue(), v35, LODWORD(v35) = _EKRecurrenceApplyFiltersToSingleDate(v36, v58, v19, v55, -[CalRecurrenceGenerator onlyIncludeInitialDateIfItMatchesRecurrence](self, "onlyIncludeInitialDateIfItMatchesRecurrence")), v36, v35))
+        if (!v19 || ([v54 timeZone], v35 = objc_claimAutoreleasedReturnValue(), +[EKCalendarDate calendarDateWithDateComponents:timeZone:](EKCalendarDate, "calendarDateWithDateComponents:timeZone:", allComponents, v35), v36 = objc_claimAutoreleasedReturnValue(), v35, LODWORD(v35) = _EKRecurrenceApplyFiltersToSingleDate(v36, v58, v19, v55, -[CalRecurrenceGenerator onlyIncludeInitialDateIfItMatchesRecurrence](self, "onlyIncludeInitialDateIfItMatchesRecurrence")), v36, v35))
         {
           [v56 addObject:v25];
-          if (v34)
+          if (countCopy)
           {
-            --v34;
+            --countCopy;
           }
 
           else
           {
-            v34 = 0;
+            countCopy = 0;
           }
 
           if (v31)
@@ -430,36 +430,36 @@ LABEL_56:
             [v25 timeIntervalSinceReferenceDate];
             if (v37 >= v28)
             {
-              --a7;
+              --pastEndDate;
             }
           }
 
           else
           {
-            a7 = 0;
+            pastEndDate = 0;
           }
         }
 
         v38 = [(NSCalendar *)self->_calendar dateByAddingComponents:v26 toDate:v25 options:0];
 
         v33 = [(NSCalendar *)self->_calendar components:254 fromDate:v38];
-        v39 = [v33 hour];
-        if (v39 == [v24 hour] && (v40 = objc_msgSend(v33, "minute"), v40 == objc_msgSend(v24, "minute")) && (v41 = objc_msgSend(v33, "second"), v41 == objc_msgSend(v24, "second")))
+        hour = [v33 hour];
+        if (hour == [allComponents hour] && (v40 = objc_msgSend(v33, "minute"), v40 == objc_msgSend(allComponents, "minute")) && (v41 = objc_msgSend(v33, "second"), v41 == objc_msgSend(allComponents, "second")))
         {
           v25 = v38;
         }
 
         else
         {
-          [v33 setHour:{objc_msgSend(v24, "hour")}];
-          [v33 setMinute:{objc_msgSend(v24, "minute")}];
-          [v33 setSecond:{objc_msgSend(v24, "second")}];
+          [v33 setHour:{objc_msgSend(allComponents, "hour")}];
+          [v33 setMinute:{objc_msgSend(allComponents, "minute")}];
+          [v33 setSecond:{objc_msgSend(allComponents, "second")}];
           v25 = [(NSCalendar *)self->_calendar dateFromComponents:v33];
         }
 
         [v25 timeIntervalSinceReferenceDate];
-        v31 = a7 != 0;
-        if (a7)
+        v31 = pastEndDate != 0;
+        if (pastEndDate)
         {
           v43 = 1;
         }
@@ -469,9 +469,9 @@ LABEL_56:
           v43 = v42 < v28;
         }
 
-        if (a6)
+        if (count)
         {
-          v44 = v34 == 0;
+          v44 = countCopy == 0;
         }
 
         else
@@ -485,7 +485,7 @@ LABEL_56:
           break;
         }
 
-        v24 = v33;
+        allComponents = v33;
       }
 
       while ((v45 & 1) != 0);
@@ -493,14 +493,14 @@ LABEL_56:
 
     else
     {
-      v33 = v24;
+      v33 = allComponents;
     }
 
     v23 = [v56 copy];
 
-    v12 = v54;
-    v11 = v55;
-    v13 = v53;
+    startDateCopy = v54;
+    dateCopy = v55;
+    endDateCopy = v53;
   }
 
   else
@@ -512,18 +512,18 @@ LABEL_56:
   return v23;
 }
 
-- (id)_copyWeeklyOccurrencesWithInitialDate:(id)a3 startDate:(id)a4 endDate:(id)a5 count:(unint64_t)a6 countPastEndDate:(unint64_t)a7
+- (id)_copyWeeklyOccurrencesWithInitialDate:(id)date startDate:(id)startDate endDate:(id)endDate count:(unint64_t)count countPastEndDate:(unint64_t)pastEndDate
 {
   v97[2] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v85 = a5;
+  dateCopy = date;
+  startDateCopy = startDate;
+  endDateCopy = endDate;
   v83 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
   interval = self->_interval;
   v95 = 0;
   weekStart = self->_weekStart;
-  v15 = [v11 calendarDateForWeekWithWeekStart:weekStart];
-  v74 = [v12 calendarDateForWeekWithWeekStart:weekStart daysSinceWeekStart:&v95];
+  v15 = [dateCopy calendarDateForWeekWithWeekStart:weekStart];
+  v74 = [startDateCopy calendarDateForWeekWithWeekStart:weekStart daysSinceWeekStart:&v95];
   v75 = v15;
   v16 = [v74 differenceInDays:v15] / 7 % interval;
   v17 = objc_alloc_init(MEMORY[0x1E695DF10]);
@@ -536,23 +536,23 @@ LABEL_56:
 
   [v17 setDay:v19 - v95];
   calendar = self->_calendar;
-  v76 = v12;
-  v21 = [v12 date];
+  v76 = startDateCopy;
+  date = [startDateCopy date];
   v73 = v18;
-  v22 = [(NSCalendar *)calendar dateByAddingComponents:v18 toDate:v21 options:0];
+  v22 = [(NSCalendar *)calendar dateByAddingComponents:v18 toDate:date options:0];
 
   v72 = v22;
   v23 = [(NSCalendar *)self->_calendar components:254 fromDate:v22];
-  [v23 setHour:{objc_msgSend(v11, "hour")}];
-  [v23 setMinute:{objc_msgSend(v11, "minute")}];
-  v82 = v11;
-  [v23 setSecond:{objc_msgSend(v11, "second")}];
+  [v23 setHour:{objc_msgSend(dateCopy, "hour")}];
+  [v23 setMinute:{objc_msgSend(dateCopy, "minute")}];
+  v82 = dateCopy;
+  [v23 setSecond:{objc_msgSend(dateCopy, "second")}];
   v77 = objc_alloc_init(MEMORY[0x1E695DF10]);
   [v77 setDay:7 * interval];
   v24 = self->_daysOfTheWeek;
   v86 = self->_setPositions;
   v25 = self->_monthsOfTheYear;
-  v94 = a7;
+  pastEndDateCopy = pastEndDate;
   v26 = v96;
   v90 = 0;
   v91 = 0;
@@ -574,7 +574,7 @@ LABEL_56:
   if (![(NSArray *)v86 count])
   {
     v92 = v76;
-    v93 = v85;
+    v93 = endDateCopy;
     ++v84;
     *v26 = _EKRecurrenceRangeFilter;
     v26[1] = &v92;
@@ -587,7 +587,7 @@ LABEL_56:
 
   else
   {
-    v78 = 1 << ([v11 dayOfWeek] - 1);
+    v78 = 1 << ([dateCopy dayOfWeek] - 1);
   }
 
   v71 = v24;
@@ -596,20 +596,20 @@ LABEL_56:
     v78 = ((v78 >> (weekStart - 1)) | (v78 << (8 - weekStart)));
   }
 
-  v27 = a6;
+  countCopy2 = count;
   if (!self->_onlyIncludeInitialDateIfItMatchesRecurrence)
   {
-    [v11 absoluteTime];
+    [dateCopy absoluteTime];
     v29 = v28;
     [v76 absoluteTime];
-    v27 = a6;
+    countCopy2 = count;
     if (v29 >= v30)
     {
-      if (!v85 || ([v11 absoluteTime], v32 = v31, objc_msgSend(v85, "absoluteTime"), v27 = a6, v32 < v33))
+      if (!endDateCopy || ([dateCopy absoluteTime], v32 = v31, objc_msgSend(endDateCopy, "absoluteTime"), countCopy2 = count, v32 < v33))
       {
-        [v11 absoluteTime];
+        [dateCopy absoluteTime];
         _InsertAbsoluteTimeIntoArrayAtIndex(v83, v34);
-        v27 = a6 ? a6 - 1 : 0;
+        countCopy2 = count ? count - 1 : 0;
         if (v86)
         {
           v90 = 1;
@@ -618,18 +618,18 @@ LABEL_56:
     }
   }
 
-  v88 = self;
+  selfCopy = self;
   v35 = [(NSCalendar *)self->_calendar dateFromComponents:v23];
   v87 = objc_alloc_init(MEMORY[0x1E695DF10]);
   v36 = 0.0;
-  v37 = v85;
-  if (v85)
+  v37 = endDateCopy;
+  if (endDateCopy)
   {
-    [v85 absoluteTime];
+    [endDateCopy absoluteTime];
   }
 
   v38 = 0;
-  if (v36 <= 1577840000.0 && v36 != 0.0 || a6 == 0)
+  if (v36 <= 1577840000.0 && v36 != 0.0 || count == 0)
   {
     v41 = v36;
   }
@@ -639,7 +639,7 @@ LABEL_56:
     v41 = 1577840000.0;
   }
 
-  v42 = v11;
+  v42 = dateCopy;
   if (v86)
   {
     v42 = 0;
@@ -651,10 +651,10 @@ LABEL_56:
     [v35 timeIntervalSinceReferenceDate];
     if (v43 >= v41)
     {
-      v44 = v88;
-      if (a6)
+      v44 = selfCopy;
+      if (count)
       {
-        v45 = v27 == 0;
+        v45 = countCopy2 == 0;
       }
 
       else
@@ -663,7 +663,7 @@ LABEL_56:
       }
 
       v46 = v45;
-      if (!v94 || v38 > 0x36 || (v46 & 1) != 0)
+      if (!pastEndDateCopy || v38 > 0x36 || (v46 & 1) != 0)
       {
         goto LABEL_98;
       }
@@ -671,8 +671,8 @@ LABEL_56:
 
     else
     {
-      v44 = v88;
-      if (a6 && !v27)
+      v44 = selfCopy;
+      if (count && !countCopy2)
       {
         goto LABEL_98;
       }
@@ -699,21 +699,21 @@ LABEL_56:
       [v87 setDay:v47 - weekStart + v50];
       v51 = v35;
       v52 = [(NSCalendar *)v44->_calendar dateByAddingComponents:v87 toDate:v35 options:0];
-      if (v44->_onlyIncludeInitialDateIfItMatchesRecurrence || ([v82 date], v55 = objc_claimAutoreleasedReturnValue(), v56 = objc_msgSend(v52, "isEqualToDate:", v55), v55, v44 = v88, !v56) || v86)
+      if (v44->_onlyIncludeInitialDateIfItMatchesRecurrence || ([v82 date], v55 = objc_claimAutoreleasedReturnValue(), v56 = objc_msgSend(v52, "isEqualToDate:", v55), v55, v44 = selfCopy, !v56) || v86)
       {
-        v53 = [(NSCalendar *)v44->_calendar timeZone];
-        v54 = [EKCalendarDate calendarDateWithDate:v52 timeZone:v53];
+        timeZone = [(NSCalendar *)v44->_calendar timeZone];
+        v54 = [EKCalendarDate calendarDateWithDate:v52 timeZone:timeZone];
 
         if (v84 && !_EKRecurrenceApplyFiltersToSingleDate(v54, v96, v84, v81, [(CalRecurrenceGenerator *)v44 onlyIncludeInitialDateIfItMatchesRecurrence]))
         {
-          v37 = v85;
+          v37 = endDateCopy;
           v35 = v51;
           weekStart = v49;
           goto LABEL_64;
         }
 
         [v83 addObject:v52];
-        v37 = v85;
+        v37 = endDateCopy;
         if (v86)
         {
           v35 = v51;
@@ -721,24 +721,24 @@ LABEL_56:
 
         else
         {
-          if (v27)
+          if (countCopy2)
           {
-            --v27;
+            --countCopy2;
           }
 
           else
           {
-            v27 = 0;
+            countCopy2 = 0;
           }
 
           v35 = v51;
-          if (v94)
+          if (pastEndDateCopy)
           {
             [v52 timeIntervalSinceReferenceDate];
             weekStart = v49;
             if (v58 >= v41)
             {
-              --v94;
+              --pastEndDateCopy;
             }
 
             goto LABEL_59;
@@ -750,7 +750,7 @@ LABEL_59:
         ++v91;
 LABEL_64:
 
-        v44 = v88;
+        v44 = selfCopy;
         goto LABEL_65;
       }
 
@@ -770,9 +770,9 @@ LABEL_66:
         v47 = 1;
       }
 
-      if (a6)
+      if (count)
       {
-        v57 = v27 != 0;
+        v57 = countCopy2 != 0;
       }
 
       if (v48 < 2)
@@ -803,26 +803,26 @@ LABEL_66:
       goto LABEL_90;
     }
 
-    _EKRecurrenceApplyBySetPosToRange(v83, v86, &v90, v76, v37, v82, v27, &v94);
-    if (v27)
+    _EKRecurrenceApplyBySetPosToRange(v83, v86, &v90, v76, v37, v82, countCopy2, &pastEndDateCopy);
+    if (countCopy2)
     {
-      v27 -= v91;
+      countCopy2 -= v91;
       goto LABEL_90;
     }
 
-    if (v91 || !v94)
+    if (v91 || !pastEndDateCopy)
     {
 LABEL_90:
       v61 = [(NSCalendar *)v44->_calendar dateByAddingComponents:v77 toDate:v35 options:0];
 
       v62 = [(NSCalendar *)v44->_calendar components:254 fromDate:v61];
-      v63 = [v62 hour];
-      if (v63 != [v23 hour] || (v64 = objc_msgSend(v62, "minute"), v64 != objc_msgSend(v23, "minute")) || (v65 = objc_msgSend(v62, "second"), v65 != objc_msgSend(v23, "second")))
+      hour = [v62 hour];
+      if (hour != [v23 hour] || (v64 = objc_msgSend(v62, "minute"), v64 != objc_msgSend(v23, "minute")) || (v65 = objc_msgSend(v62, "second"), v65 != objc_msgSend(v23, "second")))
       {
         [v62 setHour:{objc_msgSend(v23, "hour")}];
         [v62 setMinute:{objc_msgSend(v23, "minute")}];
         [v62 setSecond:{objc_msgSend(v23, "second")}];
-        v66 = [(NSCalendar *)v88->_calendar dateFromComponents:v62];
+        v66 = [(NSCalendar *)selfCopy->_calendar dateFromComponents:v62];
 
         v61 = v66;
       }
@@ -850,7 +850,7 @@ LABEL_90:
   [v35 timeIntervalSinceReferenceDate];
   if (v60 < v41)
   {
-    v27 = 0;
+    countCopy2 = 0;
     goto LABEL_90;
   }
 
@@ -861,22 +861,22 @@ LABEL_98:
   return v67;
 }
 
-- (id)_copyMonthlyOccurrencesWithInitialDate:(id)a3 startDate:(id)a4 endDate:(id)a5 count:(unint64_t)a6 countPastEndDate:(unint64_t)a7
+- (id)_copyMonthlyOccurrencesWithInitialDate:(id)date startDate:(id)startDate endDate:(id)endDate count:(unint64_t)count countPastEndDate:(unint64_t)pastEndDate
 {
   v91[4] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v78 = a5;
-  v81 = a6;
-  v89 = a6;
+  dateCopy = date;
+  startDateCopy = startDate;
+  endDateCopy = endDate;
+  countCopy = count;
+  countCopy2 = count;
   v80 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
   interval = self->_interval;
-  v15 = [v12 calendarDateForMonth];
-  v66 = [v13 calendarDateForMonth];
-  v67 = v15;
-  v16 = [v66 differenceInMonths:v15] % interval;
-  v77 = v13;
-  v17 = [v13 calendarDateByAddingDays:{1 - objc_msgSend(v13, "day")}];
+  calendarDateForMonth = [dateCopy calendarDateForMonth];
+  calendarDateForMonth2 = [startDateCopy calendarDateForMonth];
+  v67 = calendarDateForMonth;
+  v16 = [calendarDateForMonth2 differenceInMonths:calendarDateForMonth] % interval;
+  v77 = startDateCopy;
+  v17 = [startDateCopy calendarDateByAddingDays:{1 - objc_msgSend(startDateCopy, "day")}];
   v18 = [v17 mutableCopy];
 
   if (v16 >= 1)
@@ -888,7 +888,7 @@ LABEL_98:
   v20 = self->_monthsOfTheYear;
   v86 = 0;
   v87 = 0;
-  v88 = a7;
+  pastEndDateCopy = pastEndDate;
   v84 = 0;
   v85 = 0;
   v21 = [(NSArray *)v20 count];
@@ -907,7 +907,7 @@ LABEL_98:
     v74 = v90;
   }
 
-  v22 = v13;
+  v22 = startDateCopy;
   v23 = self->_daysOfTheMonth;
   v24 = self->_daysOfTheWeek;
   v82 = 0;
@@ -920,7 +920,7 @@ LABEL_98:
     {
       v75 = 0;
       v79 = 1;
-      v28 = v81;
+      v28 = countCopy;
       goto LABEL_20;
     }
 
@@ -950,49 +950,49 @@ LABEL_98:
     v75 = 1;
     v26 = v74;
 LABEL_15:
-    v28 = v81;
+    v28 = countCopy;
     v26[1] = v68;
     goto LABEL_17;
   }
 
   v75 = 0;
-  v28 = v81;
+  v28 = countCopy;
 LABEL_17:
   v79 = 0;
   if (![(NSArray *)v19 count])
   {
     v86 = v77;
-    v87 = v78;
+    v87 = endDateCopy;
     v29 = &v90[2 * v75++ + 2 * v76];
     *v29 = _EKRecurrenceRangeFilter;
     v29[1] = &v86;
   }
 
 LABEL_20:
-  v30 = v78;
+  v30 = endDateCopy;
   if (!self->_onlyIncludeInitialDateIfItMatchesRecurrence)
   {
-    [v12 absoluteTime];
+    [dateCopy absoluteTime];
     v32 = v31;
     [v77 absoluteTime];
     if (v32 >= v33)
     {
-      if (v78)
+      if (endDateCopy)
       {
-        [v12 absoluteTime];
+        [dateCopy absoluteTime];
         v35 = v34;
-        [v78 absoluteTime];
+        [endDateCopy absoluteTime];
         if (v35 >= v36)
         {
           goto LABEL_29;
         }
       }
 
-      [v12 absoluteTime];
+      [dateCopy absoluteTime];
       _InsertAbsoluteTimeIntoArrayAtIndex(v80, v37);
       if (v28)
       {
-        v89 = v28 - 1;
+        countCopy2 = v28 - 1;
       }
 
       if (v19)
@@ -1002,7 +1002,7 @@ LABEL_20:
     }
   }
 
-  if (!v78)
+  if (!endDateCopy)
   {
     v38 = 0.0;
     v69 = 1;
@@ -1010,7 +1010,7 @@ LABEL_20:
   }
 
 LABEL_29:
-  [v78 absoluteTime];
+  [endDateCopy absoluteTime];
   v69 = 0;
 LABEL_31:
   v39 = 1577840000.0;
@@ -1029,7 +1029,7 @@ LABEL_31:
     v41 = v38;
   }
 
-  v42 = [v18 timeComponents];
+  timeComponents = [v18 timeComponents];
   v43 = 0;
   if (v19)
   {
@@ -1038,10 +1038,10 @@ LABEL_31:
 
   else
   {
-    v44 = v12;
+    v44 = dateCopy;
   }
 
-  v45 = &v89;
+  v45 = &countCopy2;
   if (v19)
   {
     v45 = 0;
@@ -1049,73 +1049,73 @@ LABEL_31:
 
   v72 = v45;
   v73 = v44;
-  v46 = &v88;
+  v46 = &pastEndDateCopy;
   if (v19)
   {
     v46 = 0;
   }
 
-  v70 = v42;
+  v70 = timeComponents;
   v71 = v46;
   while (1)
   {
     [v18 absoluteTime];
-    if (v47 >= v41 && (!v88 || v43 > 0x63))
+    if (v47 >= v41 && (!pastEndDateCopy || v43 > 0x63))
     {
       break;
     }
 
-    if (v81 && !v89)
+    if (countCopy && !countCopy2)
     {
       break;
     }
 
-    if (v21 && !_EKRecurrenceApplyFiltersToSingleDate(v18, v90, 1uLL, v12, [(CalRecurrenceGenerator *)self onlyIncludeInitialDateIfItMatchesRecurrence]))
+    if (v21 && !_EKRecurrenceApplyFiltersToSingleDate(v18, v90, 1uLL, dateCopy, [(CalRecurrenceGenerator *)self onlyIncludeInitialDateIfItMatchesRecurrence]))
     {
       goto LABEL_84;
     }
 
     if (v79)
     {
-      v48 = [v18 dayComponents];
-      [v48 setDay:{objc_msgSend(v12, "day")}];
+      dayComponents = [v18 dayComponents];
+      [dayComponents setDay:{objc_msgSend(dateCopy, "day")}];
       if (self->_shouldPinMonthDays)
       {
-        v49 = [v18 daysInMonth];
-        if ([v48 day] > v49)
+        daysInMonth = [v18 daysInMonth];
+        if ([dayComponents day] > daysInMonth)
         {
-          [v48 setDay:v49];
+          [dayComponents setDay:daysInMonth];
         }
       }
 
-      v50 = [v18 calendar];
-      v51 = [v48 isValidDateInCalendar:v50];
+      calendar = [v18 calendar];
+      v51 = [dayComponents isValidDateInCalendar:calendar];
 
       if (v51)
       {
-        [v48 setHour:{objc_msgSend(v70, "hour")}];
-        [v48 setMinute:{objc_msgSend(v70, "minute")}];
-        [v48 setSecond:{objc_msgSend(v70, "second")}];
-        v52 = [v18 calendar];
-        v53 = [v52 dateFromComponents:v48];
+        [dayComponents setHour:{objc_msgSend(v70, "hour")}];
+        [dayComponents setMinute:{objc_msgSend(v70, "minute")}];
+        [dayComponents setSecond:{objc_msgSend(v70, "second")}];
+        calendar2 = [v18 calendar];
+        v53 = [calendar2 dateFromComponents:dayComponents];
         [v53 timeIntervalSinceReferenceDate];
         v55 = v54;
 
         v22 = v77;
         [v77 absoluteTime];
-        if (v55 >= v56 && ((v69 & 1) != 0 || ([v78 absoluteTime], v55 < v60) || v88) && (self->_onlyIncludeInitialDateIfItMatchesRecurrence || (objc_msgSend(v12, "absoluteTime"), vabdd_f64(v55, v58) >= 2.22044605e-16)))
+        if (v55 >= v56 && ((v69 & 1) != 0 || ([endDateCopy absoluteTime], v55 < v60) || pastEndDateCopy) && (self->_onlyIncludeInitialDateIfItMatchesRecurrence || (objc_msgSend(dateCopy, "absoluteTime"), vabdd_f64(v55, v58) >= 2.22044605e-16)))
         {
           _AppendAbsoluteTimeToArray(v80, v55);
           if (!v19)
           {
-            if (v89)
+            if (countCopy2)
             {
-              --v89;
+              --countCopy2;
             }
 
-            if (v88 && v55 >= v41)
+            if (pastEndDateCopy && v55 >= v41)
             {
-              --v88;
+              --pastEndDateCopy;
             }
           }
 
@@ -1135,7 +1135,7 @@ LABEL_31:
         v22 = v77;
       }
 
-      v30 = v78;
+      v30 = endDateCopy;
       if (!v19)
       {
         goto LABEL_78;
@@ -1154,14 +1154,14 @@ LABEL_31:
 
     if (v57 >= 1)
     {
-      _EKRecurrenceApplyBySetPosToRange(v80, v19, &v84, v22, v30, v12, v89, &v88);
+      _EKRecurrenceApplyBySetPosToRange(v80, v19, &v84, v22, v30, dateCopy, countCopy2, &pastEndDateCopy);
       v57 = v85;
-      if (v89)
+      if (countCopy2)
       {
-        v89 -= v85;
+        countCopy2 -= v85;
       }
 
-      else if (!v85 && v88)
+      else if (!v85 && pastEndDateCopy)
       {
         [v18 absoluteTime];
         if (v59 >= v41)
@@ -1200,23 +1200,23 @@ LABEL_85:
   return v61;
 }
 
-- (id)_copyYearlyOccurrencesWithInitialDate:(id)a3 startDate:(id)a4 endDate:(id)a5 count:(unint64_t)a6 countPastEndDate:(unint64_t)a7
+- (id)_copyYearlyOccurrencesWithInitialDate:(id)date startDate:(id)startDate endDate:(id)endDate count:(unint64_t)count countPastEndDate:(unint64_t)pastEndDate
 {
   v120[6] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = v13;
-  v107 = v14;
-  v118 = a6;
+  dateCopy = date;
+  startDateCopy = startDate;
+  endDateCopy = endDate;
+  v15 = startDateCopy;
+  v107 = endDateCopy;
+  countCopy = count;
   v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
-  v106 = self;
+  selfCopy = self;
   interval = self->_interval;
-  v108 = v12;
-  v18 = [v12 calendarDateForYear];
-  v95 = [v15 calendarDateForYear];
-  v96 = v18;
-  v19 = [v95 differenceInYears:v18] % interval;
+  v108 = dateCopy;
+  calendarDateForYear = [dateCopy calendarDateForYear];
+  calendarDateForYear2 = [v15 calendarDateForYear];
+  v96 = calendarDateForYear;
+  v19 = [calendarDateForYear2 differenceInYears:calendarDateForYear] % interval;
   v20 = [v15 calendarDateByAddingDays:{(1 - objc_msgSend(v15, "dayOfYear"))}];
   v21 = [v20 mutableCopy];
 
@@ -1232,13 +1232,13 @@ LABEL_85:
   v115 = 0;
   v111 = 0;
   v112 = 0;
-  v113 = a7;
-  v22 = v106->_daysOfTheYear;
-  v97 = v106->_daysOfTheWeek;
-  v23 = v106->_daysOfTheMonth;
-  v98 = v106->_weeksOfTheYear;
-  v24 = v106->_setPositions;
-  v25 = v106->_monthsOfTheYear;
+  pastEndDateCopy = pastEndDate;
+  v22 = selfCopy->_daysOfTheYear;
+  v97 = selfCopy->_daysOfTheWeek;
+  v23 = selfCopy->_daysOfTheMonth;
+  v98 = selfCopy->_weeksOfTheYear;
+  v24 = selfCopy->_setPositions;
+  v25 = selfCopy->_monthsOfTheYear;
   v99 = v16;
   v93 = v23;
   v94 = v22;
@@ -1264,7 +1264,7 @@ LABEL_85:
 
     if ([(NSArray *)v25 count])
     {
-      if (v106->_shouldPinMonthDays)
+      if (selfCopy->_shouldPinMonthDays)
       {
         v27 = _EKRecurrenceByMonthDayGeneratorPinned;
       }
@@ -1314,7 +1314,7 @@ LABEL_6:
   }
 
   v31 = v23;
-  if (v106->_shouldPinMonthDays)
+  if (selfCopy->_shouldPinMonthDays)
   {
     v27 = _EKRecurrenceByMonthDayGeneratorPinned;
   }
@@ -1372,7 +1372,7 @@ LABEL_7:
 LABEL_20:
   if ([(NSArray *)v98 count])
   {
-    weekStart = v106->_weekStart;
+    weekStart = selfCopy->_weekStart;
     v115 = v98;
     v34 = &v119[2 * v26];
     v35 = v26 + 1;
@@ -1397,7 +1397,7 @@ LABEL_20:
 
   v109 = 0;
   v110 = 0;
-  if (!v106->_onlyIncludeInitialDateIfItMatchesRecurrence)
+  if (!selfCopy->_onlyIncludeInitialDateIfItMatchesRecurrence)
   {
     [v108 absoluteTime];
     v39 = v38;
@@ -1408,9 +1408,9 @@ LABEL_20:
       {
         [v108 absoluteTime];
         _InsertAbsoluteTimeIntoArrayAtIndex(v16, v44);
-        if (v118)
+        if (countCopy)
         {
-          --v118;
+          --countCopy;
         }
 
         if (v24)
@@ -1423,7 +1423,7 @@ LABEL_20:
 
   [v107 absoluteTime];
   v46 = v45;
-  if (a6)
+  if (count)
   {
     v47 = fabs(v45);
     if (v46 > 1577840000.0 || v47 < 2.22044605e-16)
@@ -1443,7 +1443,7 @@ LABEL_20:
     v50 = v108;
   }
 
-  v51 = &v118;
+  v51 = &countCopy;
   if (v24)
   {
     v51 = 0;
@@ -1451,7 +1451,7 @@ LABEL_20:
 
   v101 = v51;
   v102 = v50;
-  v52 = &v113;
+  v52 = &pastEndDateCopy;
   if (v24)
   {
     v52 = 0;
@@ -1462,19 +1462,19 @@ LABEL_20:
   while (1)
   {
     [v30 absoluteTime];
-    if (v53 >= v46 && (!v113 || v49 > 9))
+    if (v53 >= v46 && (!pastEndDateCopy || v49 > 9))
     {
       break;
     }
 
-    if (a6 && !v118)
+    if (count && !countCopy)
     {
       break;
     }
 
     if (v36)
     {
-      v55 = _EKRecurrenceApplyGenerator(v16, &v116, v119, v35, v102, v15, v107, v30, 4u, v101, v100, v106->_onlyIncludeInitialDateIfItMatchesRecurrence);
+      v55 = _EKRecurrenceApplyGenerator(v16, &v116, v119, v35, v102, v15, v107, v30, 4u, v101, v100, selfCopy->_onlyIncludeInitialDateIfItMatchesRecurrence);
       v110 = v55;
       if (!v24)
       {
@@ -1487,46 +1487,46 @@ LABEL_20:
     v56 = v35;
     v57 = v24;
     v58 = v16;
-    v59 = a6;
-    v60 = [v30 dayTimeComponents];
+    countCopy2 = count;
+    dayTimeComponents = [v30 dayTimeComponents];
     v61 = v108;
-    [v60 setMonth:{objc_msgSend(v108, "month")}];
-    if (v106->_shouldPinMonthDays)
+    [dayTimeComponents setMonth:{objc_msgSend(v108, "month")}];
+    if (selfCopy->_shouldPinMonthDays)
     {
       v62 = [EKCalendarDate alloc];
-      v63 = [v108 timeZone];
-      v64 = [(EKCalendarDate *)v62 initWithDateComponents:v60 timeZone:v63];
+      timeZone = [v108 timeZone];
+      v64 = [(EKCalendarDate *)v62 initWithDateComponents:dayTimeComponents timeZone:timeZone];
 
-      v65 = [(EKCalendarDate *)v64 daysInMonth];
-      if ([v108 day] <= v65)
+      daysInMonth = [(EKCalendarDate *)v64 daysInMonth];
+      if ([v108 day] <= daysInMonth)
       {
-        v65 = [v108 day];
+        daysInMonth = [v108 day];
       }
 
-      [v60 setDay:v65];
+      [dayTimeComponents setDay:daysInMonth];
 
       v61 = v108;
     }
 
     else
     {
-      [v60 setDay:{objc_msgSend(v108, "day")}];
+      [dayTimeComponents setDay:{objc_msgSend(v108, "day")}];
     }
 
-    v66 = [v61 calendar];
-    v67 = [v60 isValidDateInCalendar:v66];
+    calendar = [v61 calendar];
+    v67 = [dayTimeComponents isValidDateInCalendar:calendar];
 
     if (v67)
     {
       [v61 timeZone];
       v69 = v68 = v15;
-      v70 = [EKCalendarDate calendarDateWithDateComponents:v60 timeZone:v69];
+      v70 = [EKCalendarDate calendarDateWithDateComponents:dayTimeComponents timeZone:v69];
 
       v15 = v68;
       [v70 absoluteTime];
       v72 = v71;
       [v68 absoluteTime];
-      if (v72 < v73 || v107 && ([v70 absoluteTime], v75 = v74, objc_msgSend(v107, "absoluteTime"), v75 >= v76) && !v113)
+      if (v72 < v73 || v107 && ([v70 absoluteTime], v75 = v74, objc_msgSend(v107, "absoluteTime"), v75 >= v76) && !pastEndDateCopy)
       {
         v55 = 0;
         v16 = v99;
@@ -1536,10 +1536,10 @@ LABEL_20:
 
       v16 = v99;
       v24 = v57;
-      if (v106->_onlyIncludeInitialDateIfItMatchesRecurrence || ([v70 absoluteTime], v79 = v78, objc_msgSend(v108, "absoluteTime"), vabdd_f64(v79, v80) >= 2.22044605e-16))
+      if (selfCopy->_onlyIncludeInitialDateIfItMatchesRecurrence || ([v70 absoluteTime], v79 = v78, objc_msgSend(v108, "absoluteTime"), vabdd_f64(v79, v80) >= 2.22044605e-16))
       {
         v35 = v56;
-        if (v56 && !_EKRecurrenceApplyFiltersToSingleDate(v70, v119, v56, v108, [(CalRecurrenceGenerator *)v106 onlyIncludeInitialDateIfItMatchesRecurrence]))
+        if (v56 && !_EKRecurrenceApplyFiltersToSingleDate(v70, v119, v56, v108, [(CalRecurrenceGenerator *)selfCopy onlyIncludeInitialDateIfItMatchesRecurrence]))
         {
           v55 = 0;
           goto LABEL_70;
@@ -1550,17 +1550,17 @@ LABEL_20:
         v36 = v104;
         if (!v24)
         {
-          if (v118)
+          if (countCopy)
           {
-            --v118;
+            --countCopy;
           }
 
-          if (v113)
+          if (pastEndDateCopy)
           {
             [v70 absoluteTime];
             if (v82 >= v46)
             {
-              --v113;
+              --pastEndDateCopy;
             }
           }
         }
@@ -1578,12 +1578,12 @@ LABEL_70:
         v36 = v104;
       }
 
-      a6 = v59;
+      count = countCopy2;
       goto LABEL_73;
     }
 
     v55 = 0;
-    a6 = v59;
+    count = countCopy2;
     v16 = v58;
     v24 = v57;
     v35 = v56;
@@ -1603,11 +1603,11 @@ LABEL_74:
       goto LABEL_77;
     }
 
-    _EKRecurrenceApplyBySetPosToRange(v16, v24, &v109, v15, v107, v108, v118, &v113);
+    _EKRecurrenceApplyBySetPosToRange(v16, v24, &v109, v15, v107, v108, countCopy, &pastEndDateCopy);
     v55 = v110;
-    if (v118)
+    if (countCopy)
     {
-      v118 -= v110;
+      countCopy -= v110;
 LABEL_77:
       [v30 addYears:interval];
       if (v55 <= 0)
@@ -1623,7 +1623,7 @@ LABEL_77:
       goto LABEL_80;
     }
 
-    if (v110 || !v113)
+    if (v110 || !pastEndDateCopy)
     {
       goto LABEL_77;
     }

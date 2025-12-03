@@ -1,14 +1,14 @@
 @interface SUUISettingsEditTransaction
 - (BOOL)isCommiting;
 - (BOOL)isValid;
-- (SUUISettingsEditTransaction)initWithSettingDescriptions:(id)a3;
+- (SUUISettingsEditTransaction)initWithSettingDescriptions:(id)descriptions;
 - (SUUISettingsEditTransactionDelegate)delegate;
 - (void)_delegateDidCompleteTransaction;
 - (void)_delegateDidFailTransaction;
 - (void)_delegateWillBeginTransaction;
 - (void)_delegateWillCommitTransaction;
 - (void)_finalizeCommit;
-- (void)_settingDescription:(id)a3 completedWithSuccess:(BOOL)a4;
+- (void)_settingDescription:(id)description completedWithSuccess:(BOOL)success;
 - (void)beginTransaction;
 - (void)cancelTransaction;
 - (void)commitTransaction;
@@ -17,15 +17,15 @@
 
 @implementation SUUISettingsEditTransaction
 
-- (SUUISettingsEditTransaction)initWithSettingDescriptions:(id)a3
+- (SUUISettingsEditTransaction)initWithSettingDescriptions:(id)descriptions
 {
-  v4 = a3;
+  descriptionsCopy = descriptions;
   v11.receiver = self;
   v11.super_class = SUUISettingsEditTransaction;
   v5 = [(SUUISettingsEditTransaction *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [descriptionsCopy copy];
     all = v5->_all;
     v5->_all = v6;
 
@@ -375,13 +375,13 @@ uint64_t __46__SUUISettingsEditTransaction__finalizeCommit__block_invoke(uint64_
   }
 }
 
-- (void)_settingDescription:(id)a3 completedWithSuccess:(BOOL)a4
+- (void)_settingDescription:(id)description completedWithSuccess:(BOOL)success
 {
   lock = self->_lock;
-  v7 = a3;
+  descriptionCopy = description;
   [(NSLock *)lock lock];
-  self->_success &= a4;
-  [(NSMutableSet *)self->_pending removeObject:v7];
+  self->_success &= success;
+  [(NSMutableSet *)self->_pending removeObject:descriptionCopy];
 
   v8 = [(NSMutableSet *)self->_pending count];
   [(NSLock *)self->_lock unlock];

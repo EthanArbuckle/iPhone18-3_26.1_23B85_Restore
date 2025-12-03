@@ -1,31 +1,31 @@
 @interface _INPBWellnessMetadataValue
-- (BOOL)isEqual:(id)a3;
-- (_INPBWellnessMetadataValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBWellnessMetadataValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBWellnessMetadataValue
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBWellnessMetadataValue *)self pbDoubleValue];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"doubleValue"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  pbDoubleValue = [(_INPBWellnessMetadataValue *)self pbDoubleValue];
+  dictionaryRepresentation = [pbDoubleValue dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"doubleValue"];
 
-  v6 = [(_INPBWellnessMetadataValue *)self ordinalValue];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"ordinalValue"];
+  ordinalValue = [(_INPBWellnessMetadataValue *)self ordinalValue];
+  dictionaryRepresentation2 = [ordinalValue dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"ordinalValue"];
 
-  v8 = [(_INPBWellnessMetadataValue *)self pbStringValue];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"stringValue"];
+  pbStringValue = [(_INPBWellnessMetadataValue *)self pbStringValue];
+  dictionaryRepresentation3 = [pbStringValue dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"stringValue"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -35,28 +35,28 @@
   return v4 ^ [(_INPBString *)self->_pbStringValue hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_INPBWellnessMetadataValue *)self pbDoubleValue];
-  v6 = [v4 pbDoubleValue];
-  if ((v5 != 0) == (v6 == 0))
+  pbDoubleValue = [(_INPBWellnessMetadataValue *)self pbDoubleValue];
+  pbDoubleValue2 = [equalCopy pbDoubleValue];
+  if ((pbDoubleValue != 0) == (pbDoubleValue2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_INPBWellnessMetadataValue *)self pbDoubleValue];
-  if (v7)
+  pbDoubleValue3 = [(_INPBWellnessMetadataValue *)self pbDoubleValue];
+  if (pbDoubleValue3)
   {
-    v8 = v7;
-    v9 = [(_INPBWellnessMetadataValue *)self pbDoubleValue];
-    v10 = [v4 pbDoubleValue];
-    v11 = [v9 isEqual:v10];
+    v8 = pbDoubleValue3;
+    pbDoubleValue4 = [(_INPBWellnessMetadataValue *)self pbDoubleValue];
+    pbDoubleValue5 = [equalCopy pbDoubleValue];
+    v11 = [pbDoubleValue4 isEqual:pbDoubleValue5];
 
     if (!v11)
     {
@@ -68,20 +68,20 @@
   {
   }
 
-  v5 = [(_INPBWellnessMetadataValue *)self ordinalValue];
-  v6 = [v4 ordinalValue];
-  if ((v5 != 0) == (v6 == 0))
+  pbDoubleValue = [(_INPBWellnessMetadataValue *)self ordinalValue];
+  pbDoubleValue2 = [equalCopy ordinalValue];
+  if ((pbDoubleValue != 0) == (pbDoubleValue2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_INPBWellnessMetadataValue *)self ordinalValue];
-  if (v12)
+  ordinalValue = [(_INPBWellnessMetadataValue *)self ordinalValue];
+  if (ordinalValue)
   {
-    v13 = v12;
-    v14 = [(_INPBWellnessMetadataValue *)self ordinalValue];
-    v15 = [v4 ordinalValue];
-    v16 = [v14 isEqual:v15];
+    v13 = ordinalValue;
+    ordinalValue2 = [(_INPBWellnessMetadataValue *)self ordinalValue];
+    ordinalValue3 = [equalCopy ordinalValue];
+    v16 = [ordinalValue2 isEqual:ordinalValue3];
 
     if (!v16)
     {
@@ -93,12 +93,12 @@
   {
   }
 
-  v5 = [(_INPBWellnessMetadataValue *)self pbStringValue];
-  v6 = [v4 pbStringValue];
-  if ((v5 != 0) != (v6 == 0))
+  pbDoubleValue = [(_INPBWellnessMetadataValue *)self pbStringValue];
+  pbDoubleValue2 = [equalCopy pbStringValue];
+  if ((pbDoubleValue != 0) != (pbDoubleValue2 == 0))
   {
-    v17 = [(_INPBWellnessMetadataValue *)self pbStringValue];
-    if (!v17)
+    pbStringValue = [(_INPBWellnessMetadataValue *)self pbStringValue];
+    if (!pbStringValue)
     {
 
 LABEL_20:
@@ -106,10 +106,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_INPBWellnessMetadataValue *)self pbStringValue];
-    v20 = [v4 pbStringValue];
-    v21 = [v19 isEqual:v20];
+    v18 = pbStringValue;
+    pbStringValue2 = [(_INPBWellnessMetadataValue *)self pbStringValue];
+    pbStringValue3 = [equalCopy pbStringValue];
+    v21 = [pbStringValue2 isEqual:pbStringValue3];
 
     if (v21)
     {
@@ -129,73 +129,73 @@ LABEL_18:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBWellnessMetadataValue allocWithZone:](_INPBWellnessMetadataValue init];
-  v6 = [(_INPBDouble *)self->_pbDoubleValue copyWithZone:a3];
+  v6 = [(_INPBDouble *)self->_pbDoubleValue copyWithZone:zone];
   [(_INPBWellnessMetadataValue *)v5 setPbDoubleValue:v6];
 
-  v7 = [(_INPBInteger *)self->_ordinalValue copyWithZone:a3];
+  v7 = [(_INPBInteger *)self->_ordinalValue copyWithZone:zone];
   [(_INPBWellnessMetadataValue *)v5 setOrdinalValue:v7];
 
-  v8 = [(_INPBString *)self->_pbStringValue copyWithZone:a3];
+  v8 = [(_INPBString *)self->_pbStringValue copyWithZone:zone];
   [(_INPBWellnessMetadataValue *)v5 setPbStringValue:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBWellnessMetadataValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBWellnessMetadataValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBWellnessMetadataValue)initWithCoder:(id)a3
+- (_INPBWellnessMetadataValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBWellnessMetadataValue *)self initWithData:v6];
+    self = [(_INPBWellnessMetadataValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(_INPBWellnessMetadataValue *)self pbDoubleValue];
+  toCopy = to;
+  pbDoubleValue = [(_INPBWellnessMetadataValue *)self pbDoubleValue];
 
-  if (v4)
+  if (pbDoubleValue)
   {
-    v5 = [(_INPBWellnessMetadataValue *)self pbDoubleValue];
+    pbDoubleValue2 = [(_INPBWellnessMetadataValue *)self pbDoubleValue];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBWellnessMetadataValue *)self ordinalValue];
+  ordinalValue = [(_INPBWellnessMetadataValue *)self ordinalValue];
 
-  if (v6)
+  if (ordinalValue)
   {
-    v7 = [(_INPBWellnessMetadataValue *)self ordinalValue];
+    ordinalValue2 = [(_INPBWellnessMetadataValue *)self ordinalValue];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBWellnessMetadataValue *)self pbStringValue];
+  pbStringValue = [(_INPBWellnessMetadataValue *)self pbStringValue];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (pbStringValue)
   {
-    v10 = [(_INPBWellnessMetadataValue *)self pbStringValue];
+    pbStringValue2 = [(_INPBWellnessMetadataValue *)self pbStringValue];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 

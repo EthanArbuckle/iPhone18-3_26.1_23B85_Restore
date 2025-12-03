@@ -1,32 +1,32 @@
 @interface RWIProtocolPageDomainEventDispatcher
-- (RWIProtocolPageDomainEventDispatcher)initWithController:(AugmentableInspectorController *)a3;
-- (void)defaultUserPreferencesDidChangeWithPreferences:(id)a3;
-- (void)domContentEventFiredWithTimestamp:(double)a3;
-- (void)frameClearedScheduledNavigationWithFrameId:(id)a3;
-- (void)frameDetachedWithFrameId:(id)a3;
-- (void)frameNavigatedWithFrame:(id)a3;
-- (void)frameScheduledNavigationWithFrameId:(id)a3 delay:(double)a4;
-- (void)frameStartedLoadingWithFrameId:(id)a3;
-- (void)frameStoppedLoadingWithFrameId:(id)a3;
-- (void)loadEventFiredWithTimestamp:(double)a3;
+- (RWIProtocolPageDomainEventDispatcher)initWithController:(AugmentableInspectorController *)controller;
+- (void)defaultUserPreferencesDidChangeWithPreferences:(id)preferences;
+- (void)domContentEventFiredWithTimestamp:(double)timestamp;
+- (void)frameClearedScheduledNavigationWithFrameId:(id)id;
+- (void)frameDetachedWithFrameId:(id)id;
+- (void)frameNavigatedWithFrame:(id)frame;
+- (void)frameScheduledNavigationWithFrameId:(id)id delay:(double)delay;
+- (void)frameStartedLoadingWithFrameId:(id)id;
+- (void)frameStoppedLoadingWithFrameId:(id)id;
+- (void)loadEventFiredWithTimestamp:(double)timestamp;
 @end
 
 @implementation RWIProtocolPageDomainEventDispatcher
 
-- (RWIProtocolPageDomainEventDispatcher)initWithController:(AugmentableInspectorController *)a3
+- (RWIProtocolPageDomainEventDispatcher)initWithController:(AugmentableInspectorController *)controller
 {
   v5.receiver = self;
   v5.super_class = RWIProtocolPageDomainEventDispatcher;
   result = [(RWIProtocolPageDomainEventDispatcher *)&v5 init];
   if (result)
   {
-    result->_controller = a3;
+    result->_controller = controller;
   }
 
   return result;
 }
 
-- (void)domContentEventFiredWithTimestamp:(double)a3
+- (void)domContentEventFiredWithTimestamp:(double)timestamp
 {
   v4 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   WTF::JSONImpl::Object::create(&v21, v4);
@@ -41,7 +41,7 @@
   v7 = v20;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v18 = v22[0];
-  WTF::JSONImpl::ObjectBase::setDouble(v7, &v18, a3);
+  WTF::JSONImpl::ObjectBase::setDouble(v7, &v18, timestamp);
   Inspector::ObjCInspectorCSSBackendDispatcher::setLayoutContextTypeChangedMode(&v18);
   v8 = v21;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
@@ -92,7 +92,7 @@
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v22];
 }
 
-- (void)loadEventFiredWithTimestamp:(double)a3
+- (void)loadEventFiredWithTimestamp:(double)timestamp
 {
   v4 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   WTF::JSONImpl::Object::create(&v21, v4);
@@ -107,7 +107,7 @@
   v7 = v20;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v18 = v22[0];
-  WTF::JSONImpl::ObjectBase::setDouble(v7, &v18, a3);
+  WTF::JSONImpl::ObjectBase::setDouble(v7, &v18, timestamp);
   Inspector::ObjCInspectorCSSBackendDispatcher::setLayoutContextTypeChangedMode(&v18);
   v8 = v21;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
@@ -158,11 +158,11 @@
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v22];
 }
 
-- (void)frameNavigatedWithFrame:(id)a3
+- (void)frameNavigatedWithFrame:(id)frame
 {
   v4 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v5 = v4;
-  if (!a3)
+  if (!frame)
   {
     v4 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"frame"}];
   }
@@ -179,9 +179,9 @@
   v8 = v30;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v28 = v32[0];
-  if (a3)
+  if (frame)
   {
-    [a3 toJSONObject];
+    [frame toJSONObject];
     v9 = v26;
   }
 
@@ -278,11 +278,11 @@
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v32];
 }
 
-- (void)frameDetachedWithFrameId:(id)a3
+- (void)frameDetachedWithFrameId:(id)id
 {
   v4 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v5 = v4;
-  if (!a3)
+  if (!id)
   {
     v4 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"frameId"}];
   }
@@ -299,7 +299,7 @@
   v8 = v22;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v20 = v24[0];
-  MEMORY[0x2743DB520](&v19, a3);
+  MEMORY[0x2743DB520](&v19, id);
   WTF::JSONImpl::ObjectBase::setString(v8, &v20, &v19);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v19);
   v9 = v23;
@@ -351,11 +351,11 @@
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v24];
 }
 
-- (void)frameStartedLoadingWithFrameId:(id)a3
+- (void)frameStartedLoadingWithFrameId:(id)id
 {
   v4 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v5 = v4;
-  if (!a3)
+  if (!id)
   {
     v4 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"frameId"}];
   }
@@ -372,7 +372,7 @@
   v8 = v22;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v20 = v24[0];
-  MEMORY[0x2743DB520](&v19, a3);
+  MEMORY[0x2743DB520](&v19, id);
   WTF::JSONImpl::ObjectBase::setString(v8, &v20, &v19);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v19);
   v9 = v23;
@@ -424,11 +424,11 @@
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v24];
 }
 
-- (void)frameStoppedLoadingWithFrameId:(id)a3
+- (void)frameStoppedLoadingWithFrameId:(id)id
 {
   v4 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v5 = v4;
-  if (!a3)
+  if (!id)
   {
     v4 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"frameId"}];
   }
@@ -445,7 +445,7 @@
   v8 = v22;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v20 = v24[0];
-  MEMORY[0x2743DB520](&v19, a3);
+  MEMORY[0x2743DB520](&v19, id);
   WTF::JSONImpl::ObjectBase::setString(v8, &v20, &v19);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v19);
   v9 = v23;
@@ -497,11 +497,11 @@
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v24];
 }
 
-- (void)frameScheduledNavigationWithFrameId:(id)a3 delay:(double)a4
+- (void)frameScheduledNavigationWithFrameId:(id)id delay:(double)delay
 {
   v6 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v7 = v6;
-  if (!a3)
+  if (!id)
   {
     v6 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"frameId"}];
   }
@@ -518,13 +518,13 @@
   v10 = v25;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v23 = v27[0];
-  MEMORY[0x2743DB520](&v22, a3);
+  MEMORY[0x2743DB520](&v22, id);
   WTF::JSONImpl::ObjectBase::setString(v10, &v23, &v22);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v22);
   v11 = v25;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v23 = v27[0];
-  WTF::JSONImpl::ObjectBase::setDouble(v11, &v23, a4);
+  WTF::JSONImpl::ObjectBase::setDouble(v11, &v23, delay);
   Inspector::ObjCInspectorCSSBackendDispatcher::setLayoutContextTypeChangedMode(&v23);
   v12 = v26;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
@@ -575,11 +575,11 @@
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v27];
 }
 
-- (void)frameClearedScheduledNavigationWithFrameId:(id)a3
+- (void)frameClearedScheduledNavigationWithFrameId:(id)id
 {
   v4 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v5 = v4;
-  if (!a3)
+  if (!id)
   {
     v4 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"frameId"}];
   }
@@ -596,7 +596,7 @@
   v8 = v22;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v20 = v24[0];
-  MEMORY[0x2743DB520](&v19, a3);
+  MEMORY[0x2743DB520](&v19, id);
   WTF::JSONImpl::ObjectBase::setString(v8, &v20, &v19);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v19);
   v9 = v23;
@@ -648,11 +648,11 @@
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v24];
 }
 
-- (void)defaultUserPreferencesDidChangeWithPreferences:(id)a3
+- (void)defaultUserPreferencesDidChangeWithPreferences:(id)preferences
 {
   v48 = *MEMORY[0x277D85DE8];
   v34 = (*(self->_controller->var0 + 4))(self->_controller, a2);
-  if (!a3)
+  if (!preferences)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"preferences"}];
   }
@@ -661,7 +661,7 @@
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v41 objects:v47 count:16];
+  v4 = [preferences countByEnumeratingWithState:&v41 objects:v47 count:16];
   v5 = v4;
   if (v4)
   {
@@ -674,7 +674,7 @@
       {
         if (*v42 != v6)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(preferences);
         }
 
         v9 = *(*(&v41 + 1) + 8 * v8);
@@ -690,7 +690,7 @@
       }
 
       while (v5 != v8);
-      v4 = [a3 countByEnumeratingWithState:&v41 objects:v47 count:16];
+      v4 = [preferences countByEnumeratingWithState:&v41 objects:v47 count:16];
       v5 = v4;
     }
 
@@ -709,7 +709,7 @@
   v14 = v39;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v37 = v45[0];
-  Inspector::toJSONObjectArray(a3, &v35);
+  Inspector::toJSONObjectArray(preferences, &v35);
   v15 = v35;
   v35 = 0;
   v36 = v15;

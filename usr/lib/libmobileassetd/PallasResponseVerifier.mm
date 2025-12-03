@@ -1,10 +1,10 @@
 @interface PallasResponseVerifier
-+ (id)CopyDataFromEncodedBase64:(id)a3 range:(_NSRange)a4;
-+ (int64_t)verifyReceipt:(id)a3 withSignature:(id)a4;
-+ (void)base64DecodeString:(const char *)a3 toBuffer:(char *)a4 length:(unint64_t *)a5;
-- (BOOL)determineAlg:(id)a3;
-- (BOOL)verifyCerts:(id)a3 error:(id *)a4;
-- (BOOL)verifyResponse:(id)a3 signature:(id)a4 error:(id *)a5;
++ (id)CopyDataFromEncodedBase64:(id)base64 range:(_NSRange)range;
++ (int64_t)verifyReceipt:(id)receipt withSignature:(id)signature;
++ (void)base64DecodeString:(const char *)string toBuffer:(char *)buffer length:(unint64_t *)length;
+- (BOOL)determineAlg:(id)alg;
+- (BOOL)verifyCerts:(id)certs error:(id *)error;
+- (BOOL)verifyResponse:(id)response signature:(id)signature error:(id *)error;
 - (PallasResponseVerifier)init;
 @end
 
@@ -24,17 +24,17 @@
   return result;
 }
 
-- (BOOL)determineAlg:(id)a3
+- (BOOL)determineAlg:(id)alg
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"ES256"])
+  algCopy = alg;
+  if ([algCopy isEqualToString:@"ES256"])
   {
     v5 = &kSecKeyAlgorithmECDSASignatureMessageX962SHA256;
   }
 
   else
   {
-    if (![v4 isEqualToString:@"ES384"])
+    if (![algCopy isEqualToString:@"ES384"])
     {
       v6 = 0;
       goto LABEL_7;
@@ -50,9 +50,9 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)verifyCerts:(id)a3 error:(id *)a4
+- (BOOL)verifyCerts:(id)certs error:(id *)error
 {
-  v5 = a3;
+  certsCopy = certs;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -71,7 +71,7 @@ LABEL_7:
     v14[3] = &unk_4B37A0;
     v14[4] = self;
     v14[5] = &v18;
-    [v5 enumerateObjectsUsingBlock:v14];
+    [certsCopy enumerateObjectsUsingBlock:v14];
     if (SecTrustCreateWithCertificates(v19[5], ApplePinned, &trust))
     {
       v7 = _MADLog(@"V2");
@@ -90,7 +90,7 @@ LABEL_7:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v25 = error;
+          errorCopy = error;
           _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "Trust result is failure. Unable to verify certificates are trusted. Error: %{public}@", buf, 0xCu);
         }
 
@@ -128,7 +128,7 @@ LABEL_6:
         if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
         {
           *buf = 134217984;
-          v25 = TrustResult;
+          errorCopy = TrustResult;
           _os_log_impl(&dword_0, v7, OS_LOG_TYPE_ERROR, "Trust result is failure. Unable to get trust result: %ld", buf, 0xCu);
         }
       }
@@ -153,7 +153,7 @@ LABEL_6:
         if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
         {
           *buf = 134217984;
-          v25 = result;
+          errorCopy = result;
           _os_log_impl(&dword_0, v7, OS_LOG_TYPE_ERROR, "Trust result is failure. Trust result value: %ld", buf, 0xCu);
         }
       }
@@ -205,50 +205,50 @@ void __44__PallasResponseVerifier_verifyCerts_error___block_invoke(uint64_t a1, 
   }
 }
 
-- (BOOL)verifyResponse:(id)a3 signature:(id)a4 error:(id *)a5
+- (BOOL)verifyResponse:(id)response signature:(id)signature error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  responseCopy = response;
+  signatureCopy = signature;
   leafPublicKey = self->_leafPublicKey;
-  v10 = leafPublicKey && !SecKeyVerifySignature(leafPublicKey, self->_keyAlg, v7, v8, 0);
+  v10 = leafPublicKey && !SecKeyVerifySignature(leafPublicKey, self->_keyAlg, responseCopy, signatureCopy, 0);
 
   return v10;
 }
 
-+ (void)base64DecodeString:(const char *)a3 toBuffer:(char *)a4 length:(unint64_t *)a5
++ (void)base64DecodeString:(const char *)string toBuffer:(char *)buffer length:(unint64_t *)length
 {
-  *a5 = 0;
-  v5 = index_table[*a3];
+  *length = 0;
+  v5 = index_table[*string];
   if ((v5 & 0x80000000) == 0)
   {
-    *a5 = 1;
+    *length = 1;
     v6 = 4 * v5;
-    *a4 = v6;
-    v7 = a3[1];
+    *buffer = v6;
+    v7 = string[1];
     if (v7 != 61)
     {
       v8 = index_table[v7];
       if ((v8 & 0x80000000) == 0)
       {
-        *a4 = (v8 >> 4) & 3 | v6;
-        a4[1] = 16 * v8;
-        v9 = a3[2];
+        *buffer = (v8 >> 4) & 3 | v6;
+        buffer[1] = 16 * v8;
+        v9 = string[2];
         if (v9 != 61)
         {
           v10 = index_table[v9];
           if ((v10 & 0x80000000) == 0)
           {
-            *a5 = 2;
-            a4[1] |= (v10 >> 2) & 0xF;
-            a4[2] = v10 << 6;
-            v11 = a3[3];
+            *length = 2;
+            buffer[1] |= (v10 >> 2) & 0xF;
+            buffer[2] = v10 << 6;
+            v11 = string[3];
             if (v11 != 61)
             {
               v12 = index_table[v11];
               if ((v12 & 0x80000000) == 0)
               {
-                *a5 = 3;
-                a4[2] |= v12 & 0x3F;
+                *length = 3;
+                buffer[2] |= v12 & 0x3F;
               }
             }
           }
@@ -258,12 +258,12 @@ void __44__PallasResponseVerifier_verifyCerts_error___block_invoke(uint64_t a1, 
   }
 }
 
-+ (id)CopyDataFromEncodedBase64:(id)a3 range:(_NSRange)a4
++ (id)CopyDataFromEncodedBase64:(id)base64 range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
-  v7 = v6;
+  length = range.length;
+  location = range.location;
+  base64Copy = base64;
+  v7 = base64Copy;
   if (location == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = _MADLog(@"V2");
@@ -281,7 +281,7 @@ LABEL_8:
 
   if (length)
   {
-    if (location + length > [v6 length])
+    if (location + length > [base64Copy length])
     {
       v8 = _MADLog(@"V2");
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -311,12 +311,12 @@ LABEL_9:
     }
 
     v10 = [[NSMutableData alloc] initWithLength:v13 + v14];
-    v15 = [v10 mutableBytes];
-    v16 = v15;
+    mutableBytes = [v10 mutableBytes];
+    v16 = mutableBytes;
     if (length >= 4)
     {
       v17 = v23;
-      v18 = v15;
+      v18 = mutableBytes;
       while (1)
       {
         *buf = 0;
@@ -392,17 +392,17 @@ LABEL_28:
   return v10;
 }
 
-+ (int64_t)verifyReceipt:(id)a3 withSignature:(id)a4
++ (int64_t)verifyReceipt:(id)receipt withSignature:(id)signature
 {
-  v5 = a3;
-  v6 = a4;
+  receiptCopy = receipt;
+  signatureCopy = signature;
   AppleAssetReceipt = SecPolicyCreateAppleAssetReceipt();
   if (AppleAssetReceipt)
   {
-    v8 = [[NSData alloc] initWithBase64EncodedString:v6 options:0];
+    v8 = [[NSData alloc] initWithBase64EncodedString:signatureCopy options:0];
     if (v8)
     {
-      v9 = [v5 dataUsingEncoding:10];
+      v9 = [receiptCopy dataUsingEncoding:10];
       if (v9)
       {
         v10 = SecCMSVerifyCopyDataAndAttributes();

@@ -1,7 +1,7 @@
 @interface SPIiBootUpdater
 + (id)IOMatchingPropertyTable;
-- (BOOL)updateBootFirmwareWithError:(id *)a3;
-- (SPIiBootUpdater)initWithIOService:(unsigned int)a3;
+- (BOOL)updateBootFirmwareWithError:(id *)error;
+- (SPIiBootUpdater)initWithIOService:(unsigned int)service;
 - (id)_stitchFirmwareImage;
 - (void)dealloc;
 @end
@@ -15,17 +15,17 @@
   return [NSDictionary dictionaryWithObjects:&v4 forKeys:&v3 count:1];
 }
 
-- (SPIiBootUpdater)initWithIOService:(unsigned int)a3
+- (SPIiBootUpdater)initWithIOService:(unsigned int)service
 {
-  v3 = *&a3;
+  v3 = *&service;
   v17.receiver = self;
   v17.super_class = SPIiBootUpdater;
   v4 = [(MSUBootFirmwareUpdater *)&v17 initWithIOService:?];
   if (v4)
   {
-    v5 = [objc_opt_class() supportsDualiBoot];
-    v12 = v5 == 0;
-    if (v5)
+    supportsDualiBoot = [objc_opt_class() supportsDualiBoot];
+    v12 = supportsDualiBoot == 0;
+    if (supportsDualiBoot)
     {
       v13 = @"Device supports dual SPI boot.";
     }
@@ -58,33 +58,33 @@
   return v4;
 }
 
-- (BOOL)updateBootFirmwareWithError:(id *)a3
+- (BOOL)updateBootFirmwareWithError:(id *)error
 {
   v57 = 0;
   if (![(IOServiceWriter *)[(SPIiBootUpdater *)self writer] isAvailable])
   {
-    v34 = [(SPIiBootUpdater *)self writer];
-    iBU_LOG_real(@"SPIWriter %@ was unavailable at write-time", "[SPIiBootUpdater updateBootFirmwareWithError:]", v35, v36, v37, v38, v39, v40, v34);
-    if (a3)
+    writer = [(SPIiBootUpdater *)self writer];
+    iBU_LOG_real(@"SPIWriter %@ was unavailable at write-time", "[SPIiBootUpdater updateBootFirmwareWithError:]", v35, v36, v37, v38, v39, v40, writer);
+    if (error)
     {
-      v55 = [(SPIiBootUpdater *)self writer];
-      v46 = MSUBootFirmwareError(6, 0, @"SPIWriter %@ was unavailable at write-time", v41, v42, v43, v44, v45, v55);
+      writer2 = [(SPIiBootUpdater *)self writer];
+      v46 = MSUBootFirmwareError(6, 0, @"SPIWriter %@ was unavailable at write-time", v41, v42, v43, v44, v45, writer2);
 LABEL_15:
       v13 = 0;
-      *a3 = v46;
+      *error = v46;
       return v13;
     }
 
     return 0;
   }
 
-  v5 = [(SPIiBootUpdater *)self _stitchFirmwareImage];
+  _stitchFirmwareImage = [(SPIiBootUpdater *)self _stitchFirmwareImage];
   [(IOServiceWriter *)[(SPIiBootUpdater *)self writer] setIsErase:[(MSUBootFirmwareUpdater *)self isErase]];
   [(IOServiceWriter *)[(SPIiBootUpdater *)self writer] setShouldCommit:[(MSUBootFirmwareUpdater *)self shouldCommit]];
-  if (!v5)
+  if (!_stitchFirmwareImage)
   {
     iBU_LOG_real(@"SPI writer firmware data was nil!", "[SPIiBootUpdater updateBootFirmwareWithError:]", v6, v7, v8, v9, v10, v11, v53);
-    if (a3)
+    if (error)
     {
       v46 = MSUBootFirmwareError(6, 0, @"SPI writer firmware data was nil!", v47, v48, v49, v50, v51, v56);
       goto LABEL_15;
@@ -94,17 +94,17 @@ LABEL_15:
   }
 
   iBU_LOG_real(@"Beginning write of iBoot data block to writer.", "[SPIiBootUpdater updateBootFirmwareWithError:]", v6, v7, v8, v9, v10, v11, v53);
-  v12 = [(IOServiceWriter *)[(SPIiBootUpdater *)self writer] writeData:v5 withError:&v57];
+  v12 = [(IOServiceWriter *)[(SPIiBootUpdater *)self writer] writeData:_stitchFirmwareImage withError:&v57];
   v13 = v12 == 0;
   if (v12)
   {
-    v14 = [(SPIiBootUpdater *)self writer];
-    iBU_LOG_real(@"Updater %@ failed to write to SPI", "[SPIiBootUpdater updateBootFirmwareWithError:]", v15, v16, v17, v18, v19, v20, v14);
-    if (a3)
+    writer3 = [(SPIiBootUpdater *)self writer];
+    iBU_LOG_real(@"Updater %@ failed to write to SPI", "[SPIiBootUpdater updateBootFirmwareWithError:]", v15, v16, v17, v18, v19, v20, writer3);
+    if (error)
     {
       v21 = v57;
-      v22 = [(SPIiBootUpdater *)self writer];
-      *a3 = MSUBootFirmwareError(3, v21, @"Updater %@ failed to write to SPI", v23, v24, v25, v26, v27, v22);
+      writer4 = [(SPIiBootUpdater *)self writer];
+      *error = MSUBootFirmwareError(3, v21, @"Updater %@ failed to write to SPI", v23, v24, v25, v26, v27, writer4);
     }
   }
 
@@ -123,26 +123,26 @@ LABEL_15:
 
 - (id)_stitchFirmwareImage
 {
-  v3 = [(MSUBootFirmwareUpdater *)self llbData];
-  v4 = [(MSUBootFirmwareUpdater *)self ibootData];
-  v5 = [(MSUBootFirmwareUpdater *)self ans2Data];
-  v6 = [(MSUBootFirmwareUpdater *)self logoData];
-  v7 = [(MSUBootFirmwareUpdater *)self _restoreInfoDictionary];
-  v8 = [(MSUBootFirmwareUpdater *)self _encodeFirmware:v3 withRestoreInfo:v7];
+  llbData = [(MSUBootFirmwareUpdater *)self llbData];
+  ibootData = [(MSUBootFirmwareUpdater *)self ibootData];
+  ans2Data = [(MSUBootFirmwareUpdater *)self ans2Data];
+  logoData = [(MSUBootFirmwareUpdater *)self logoData];
+  _restoreInfoDictionary = [(MSUBootFirmwareUpdater *)self _restoreInfoDictionary];
+  v8 = [(MSUBootFirmwareUpdater *)self _encodeFirmware:llbData withRestoreInfo:_restoreInfoDictionary];
   if (!v8)
   {
     return 0;
   }
 
   v9 = v8;
-  v10 = [[NSMutableData alloc] initWithCapacity:{-[NSData length](v4, "length") + -[NSData length](v3, "length") + 100}];
+  v10 = [[NSMutableData alloc] initWithCapacity:{-[NSData length](ibootData, "length") + -[NSData length](llbData, "length") + 100}];
   [v10 appendData:v9];
 
-  if (v4)
+  if (ibootData)
   {
     if (v10)
     {
-      v11 = [(MSUBootFirmwareUpdater *)self _encodeFirmware:v4 withRestoreInfo:v7];
+      v11 = [(MSUBootFirmwareUpdater *)self _encodeFirmware:ibootData withRestoreInfo:_restoreInfoDictionary];
       if (v11)
       {
         v12 = v11;
@@ -151,11 +151,11 @@ LABEL_15:
     }
   }
 
-  if (v5)
+  if (ans2Data)
   {
     if (v10)
     {
-      v13 = [(MSUBootFirmwareUpdater *)self _encodeFirmware:v5 withRestoreInfo:v7];
+      v13 = [(MSUBootFirmwareUpdater *)self _encodeFirmware:ans2Data withRestoreInfo:_restoreInfoDictionary];
       if (v13)
       {
         v14 = v13;
@@ -164,11 +164,11 @@ LABEL_15:
     }
   }
 
-  if (v6)
+  if (logoData)
   {
     if (v10)
     {
-      v15 = [(MSUBootFirmwareUpdater *)self _encodeFirmware:v6 withRestoreInfo:v7];
+      v15 = [(MSUBootFirmwareUpdater *)self _encodeFirmware:logoData withRestoreInfo:_restoreInfoDictionary];
       if (v15)
       {
         v16 = v15;

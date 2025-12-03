@@ -1,25 +1,25 @@
 @interface NSRubyAnnotation
-- (NSRubyAnnotation)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (NSRubyAnnotation)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSRubyAnnotation
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
     if (self)
     {
 LABEL_3:
-      [a3 encodeInt:*self[5].super.isa forKey:@"Alignment"];
-      [a3 encodeInt:*(self[5].super.isa + 1) forKey:@"Overhang"];
+      [coder encodeInt:*self[5].super.isa forKey:@"Alignment"];
+      [coder encodeInt:*(self[5].super.isa + 1) forKey:@"Overhang"];
       v6 = *(self[5].super.isa + 1);
       *&v6 = v6;
-      [a3 encodeFloat:@"SizeFactor" forKey:v6];
-      [a3 encodeObject:*(self[5].super.isa + 2) forKey:@"TextBefore"];
-      [a3 encodeObject:*(self[5].super.isa + 3) forKey:@"TextAfter"];
-      [a3 encodeObject:*(self[5].super.isa + 4) forKey:@"TextInterCharacter"];
+      [coder encodeFloat:@"SizeFactor" forKey:v6];
+      [coder encodeObject:*(self[5].super.isa + 2) forKey:@"TextBefore"];
+      [coder encodeObject:*(self[5].super.isa + 3) forKey:@"TextAfter"];
+      [coder encodeObject:*(self[5].super.isa + 4) forKey:@"TextInterCharacter"];
       v7 = *(self[5].super.isa + 5);
       goto LABEL_4;
     }
@@ -34,22 +34,22 @@ LABEL_3:
     }
   }
 
-  [a3 encodeInt:255 forKey:@"Alignment"];
-  [a3 encodeInt:255 forKey:@"Overhang"];
-  [a3 encodeFloat:@"SizeFactor" forKey:0.0];
-  [a3 encodeObject:0 forKey:@"TextBefore"];
-  [a3 encodeObject:0 forKey:@"TextAfter"];
-  [a3 encodeObject:0 forKey:@"TextInterCharacter"];
+  [coder encodeInt:255 forKey:@"Alignment"];
+  [coder encodeInt:255 forKey:@"Overhang"];
+  [coder encodeFloat:@"SizeFactor" forKey:0.0];
+  [coder encodeObject:0 forKey:@"TextBefore"];
+  [coder encodeObject:0 forKey:@"TextAfter"];
+  [coder encodeObject:0 forKey:@"TextInterCharacter"];
   v7 = 0;
 LABEL_4:
 
-  [a3 encodeObject:v7 forKey:@"TextInline"];
+  [coder encodeObject:v7 forKey:@"TextInline"];
 }
 
-- (NSRubyAnnotation)initWithCoder:(id)a3
+- (NSRubyAnnotation)initWithCoder:(id)coder
 {
   v19[4] = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
@@ -57,14 +57,14 @@ LABEL_4:
   v18.receiver = self;
   v18.super_class = NSRubyAnnotation;
   v6 = [(NSRubyAnnotation *)&v18 init];
-  v7 = [a3 decodeIntForKey:@"Alignment"];
-  v8 = [a3 decodeIntForKey:@"Overhang"];
-  [a3 decodeFloatForKey:@"SizeFactor"];
+  v7 = [coder decodeIntForKey:@"Alignment"];
+  v8 = [coder decodeIntForKey:@"Overhang"];
+  [coder decodeFloatForKey:@"SizeFactor"];
   v10 = v9;
-  v19[0] = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"TextBefore"];
-  v19[1] = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"TextAfter"];
-  v19[2] = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"TextInterCharacter"];
-  v19[3] = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"TextInline"];
+  v19[0] = [coder decodeObjectOfClass:objc_opt_class() forKey:@"TextBefore"];
+  v19[1] = [coder decodeObjectOfClass:objc_opt_class() forKey:@"TextAfter"];
+  v19[2] = [coder decodeObjectOfClass:objc_opt_class() forKey:@"TextInterCharacter"];
+  v19[3] = [coder decodeObjectOfClass:objc_opt_class() forKey:@"TextInline"];
   v17 = 0xAAAAAAAAAAAAAAAALL;
   v11 = TCFBase<TRubyAnnotation>::Allocate();
   v12 = v11;

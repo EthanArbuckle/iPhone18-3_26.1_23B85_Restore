@@ -1,24 +1,24 @@
 @interface CCToolKitToolRestrictionContextInInclusiveRange
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolRestrictionContextInInclusiveRange)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolRestrictionContextInInclusiveRange)initWithLowerBound:(id)a3 upperBound:(id)a4 error:(id *)a5;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolRestrictionContextInInclusiveRange)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolRestrictionContextInInclusiveRange)initWithLowerBound:(id)bound upperBound:(id)upperBound error:(id *)error;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolRestrictionContextInInclusiveRange
 
-- (CCToolKitToolRestrictionContextInInclusiveRange)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolRestrictionContextInInclusiveRange)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"lowerBound"];
-    v10 = [v6 objectForKeyedSubscript:@"upperBound"];
-    v11 = [[CCToolKitToolRestrictionContextInInclusiveRange alloc] initWithLowerBound:v9 upperBound:v10 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"lowerBound"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"upperBound"];
+    v11 = [[CCToolKitToolRestrictionContextInInclusiveRange alloc] initWithLowerBound:v9 upperBound:v10 error:error];
   }
 
   else
@@ -54,27 +54,27 @@
   return v8;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v8 = a3;
+  blockCopy = block;
   v5 = MEMORY[0x1E69939A8];
   if (self->_hasLowerBound)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] doubleValue:self->_lowerBound];
-    v8[2](v8, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_hasUpperBound)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 doubleValue:self->_upperBound];
-    v8[2](v8, v7);
+    blockCopy[2](blockCopy, v7);
   }
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -188,11 +188,11 @@ LABEL_21:
           {
             v30 = objc_opt_class();
             NSStringFromClass(v30);
-            v32 = v31 = v5;
+            v32 = v31 = dataCopy;
             v33 = *&v6[*v9];
             v10 = CCSkipFieldErrorForMessage();
 
-            v5 = v31;
+            dataCopy = v31;
           }
 
 LABEL_38:
@@ -257,15 +257,15 @@ LABEL_45:
   return v38;
 }
 
-- (CCToolKitToolRestrictionContextInInclusiveRange)initWithLowerBound:(id)a3 upperBound:(id)a4 error:(id *)a5
+- (CCToolKitToolRestrictionContextInInclusiveRange)initWithLowerBound:(id)bound upperBound:(id)upperBound error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  boundCopy = bound;
+  upperBoundCopy = upperBound;
   v10 = objc_opt_new();
-  if (!v8)
+  if (!boundCopy)
   {
     v12 = 0;
-    if (!v9)
+    if (!upperBoundCopy)
     {
       goto LABEL_8;
     }
@@ -279,12 +279,12 @@ LABEL_6:
     if (!IsInstanceOfExpectedClass)
     {
       CCSetError();
-      v16 = 0;
+      selfCopy = 0;
       v12 = v14;
       goto LABEL_11;
     }
 
-    [v9 doubleValue];
+    [upperBoundCopy doubleValue];
     CCPBDataWriterWriteDoubleField();
     v12 = v14;
     goto LABEL_8;
@@ -296,25 +296,25 @@ LABEL_6:
   if (!v11)
   {
     CCSetError();
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
-  [v8 doubleValue];
+  [boundCopy doubleValue];
   CCPBDataWriterWriteDoubleField();
-  if (v9)
+  if (upperBoundCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_8:
-  v15 = [v10 immutableData];
-  self = [(CCItemMessage *)self initWithData:v15 error:a5];
+  immutableData = [v10 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v16 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v16;
+  return selfCopy;
 }
 
 @end

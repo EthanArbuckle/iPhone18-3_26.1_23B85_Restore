@@ -1,40 +1,40 @@
 @interface HFIncrementalStateControlItem
 + (id)na_identity;
-+ (id)optionsForPrimaryStateControlItem:(id)a3 incrementalCharacteristicType:(id)a4;
-- (BOOL)canCopyWithCharacteristicOptions:(id)a3;
-- (HFIncrementalStateControlItem)initWithValueSource:(id)a3 characteristicOptions:(id)a4 displayResults:(id)a5;
-- (HFIncrementalStateControlItem)initWithValueSource:(id)a3 incrementalAndPrimaryCharacteristicType:(id)a4 displayResults:(id)a5;
-- (HFIncrementalStateControlItem)initWithValueSource:(id)a3 primaryStateControlItem:(id)a4 incrementalCharacteristicType:(id)a5 displayResults:(id)a6;
++ (id)optionsForPrimaryStateControlItem:(id)item incrementalCharacteristicType:(id)type;
+- (BOOL)canCopyWithCharacteristicOptions:(id)options;
+- (HFIncrementalStateControlItem)initWithValueSource:(id)source characteristicOptions:(id)options displayResults:(id)results;
+- (HFIncrementalStateControlItem)initWithValueSource:(id)source incrementalAndPrimaryCharacteristicType:(id)type displayResults:(id)results;
+- (HFIncrementalStateControlItem)initWithValueSource:(id)source primaryStateControlItem:(id)item incrementalCharacteristicType:(id)type displayResults:(id)results;
 - (NSNumber)stepValue;
-- (id)characteristicValuesForValue:(id)a3;
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4;
+- (id)characteristicValuesForValue:(id)value;
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source;
 - (id)toggleValue;
-- (id)updateWithOptions:(id)a3;
-- (id)valueForCharacteristicType:(id)a3 inBatchReadResponse:(id)a4;
-- (id)valueForCharacteristicValues:(id)a3;
-- (id)writeValue:(id)a3;
+- (id)updateWithOptions:(id)options;
+- (id)valueForCharacteristicType:(id)type inBatchReadResponse:(id)response;
+- (id)valueForCharacteristicValues:(id)values;
+- (id)writeValue:(id)value;
 @end
 
 @implementation HFIncrementalStateControlItem
 
-- (HFIncrementalStateControlItem)initWithValueSource:(id)a3 primaryStateControlItem:(id)a4 incrementalCharacteristicType:(id)a5 displayResults:(id)a6
+- (HFIncrementalStateControlItem)initWithValueSource:(id)source primaryStateControlItem:(id)item incrementalCharacteristicType:(id)type displayResults:(id)results
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [objc_opt_class() optionsForPrimaryStateControlItem:v11 incrementalCharacteristicType:v12];
+  sourceCopy = source;
+  itemCopy = item;
+  typeCopy = type;
+  resultsCopy = results;
+  v14 = [objc_opt_class() optionsForPrimaryStateControlItem:itemCopy incrementalCharacteristicType:typeCopy];
   v21.receiver = self;
   v21.super_class = HFIncrementalStateControlItem;
-  v15 = [(HFControlItem *)&v21 initWithValueSource:v10 characteristicOptions:v14 displayResults:v13];
+  v15 = [(HFControlItem *)&v21 initWithValueSource:sourceCopy characteristicOptions:v14 displayResults:resultsCopy];
 
   if (v15)
   {
-    v16 = [v11 copyWithValueSource:v10];
+    v16 = [itemCopy copyWithValueSource:sourceCopy];
     primaryStateControlItem = v15->_primaryStateControlItem;
     v15->_primaryStateControlItem = v16;
 
-    v18 = [v12 copy];
+    v18 = [typeCopy copy];
     incrementalCharacteristicType = v15->_incrementalCharacteristicType;
     v15->_incrementalCharacteristicType = v18;
 
@@ -44,12 +44,12 @@
   return v15;
 }
 
-- (HFIncrementalStateControlItem)initWithValueSource:(id)a3 incrementalAndPrimaryCharacteristicType:(id)a4 displayResults:(id)a5
+- (HFIncrementalStateControlItem)initWithValueSource:(id)source incrementalAndPrimaryCharacteristicType:(id)type displayResults:(id)results
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 metadataForCharacteristicType:v9];
+  resultsCopy = results;
+  typeCopy = type;
+  sourceCopy = source;
+  v11 = [sourceCopy metadataForCharacteristicType:typeCopy];
   v12 = objc_opt_class();
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -58,8 +58,8 @@
   v19 = v11;
   v13 = v11;
   v14 = [HFValueTransformer transformerForValueClass:v12 transformBlock:&__block_literal_global_40 reverseTransformBlock:v18];
-  v15 = [[HFPrimaryStateControlItem alloc] initWithValueSource:v10 characteristicType:v9 valueTransformer:v14 displayResults:0];
-  v16 = [(HFIncrementalStateControlItem *)self initWithValueSource:v10 primaryStateControlItem:v15 incrementalCharacteristicType:v9 displayResults:v8];
+  v15 = [[HFPrimaryStateControlItem alloc] initWithValueSource:sourceCopy characteristicType:typeCopy valueTransformer:v14 displayResults:0];
+  v16 = [(HFIncrementalStateControlItem *)self initWithValueSource:sourceCopy primaryStateControlItem:v15 incrementalCharacteristicType:typeCopy displayResults:resultsCopy];
 
   return v16;
 }
@@ -123,24 +123,24 @@ void *__108__HFIncrementalStateControlItem_initWithValueSource_incrementalAndPri
   return v8;
 }
 
-- (HFIncrementalStateControlItem)initWithValueSource:(id)a3 characteristicOptions:(id)a4 displayResults:(id)a5
+- (HFIncrementalStateControlItem)initWithValueSource:(id)source characteristicOptions:(id)options displayResults:(id)results
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v8 = NSStringFromSelector(sel_initWithValueSource_primaryStateControlItem_incrementalCharacteristicType_displayResults_);
-  [v7 handleFailureInMethod:a2 object:self file:@"HFIncrementalStateControlItem.m" lineNumber:80 description:{@"%s is unavailable; use %@ instead", "-[HFIncrementalStateControlItem initWithValueSource:characteristicOptions:displayResults:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFIncrementalStateControlItem.m" lineNumber:80 description:{@"%s is unavailable; use %@ instead", "-[HFIncrementalStateControlItem initWithValueSource:characteristicOptions:displayResults:]", v8}];
 
   return 0;
 }
 
-- (BOOL)canCopyWithCharacteristicOptions:(id)a3
+- (BOOL)canCopyWithCharacteristicOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(HFIncrementalStateControlItem *)self primaryStateControlItem];
+  optionsCopy = options;
+  primaryStateControlItem = [(HFIncrementalStateControlItem *)self primaryStateControlItem];
 
-  if (v5)
+  if (primaryStateControlItem)
   {
-    v6 = [(HFIncrementalStateControlItem *)self primaryStateControlItem];
-    v7 = [v6 canCopyWithCharacteristicOptions:v4];
+    primaryStateControlItem2 = [(HFIncrementalStateControlItem *)self primaryStateControlItem];
+    v7 = [primaryStateControlItem2 canCopyWithCharacteristicOptions:optionsCopy];
   }
 
   else
@@ -148,27 +148,27 @@ void *__108__HFIncrementalStateControlItem_initWithValueSource_incrementalAndPri
     v7 = 1;
   }
 
-  v8 = [v4 objectForKeyedSubscript:&unk_282523748];
-  v9 = [(HFIncrementalStateControlItem *)self incrementalCharacteristicType];
-  v10 = [v8 containsObject:v9];
+  v8 = [optionsCopy objectForKeyedSubscript:&unk_282523748];
+  incrementalCharacteristicType = [(HFIncrementalStateControlItem *)self incrementalCharacteristicType];
+  v10 = [v8 containsObject:incrementalCharacteristicType];
 
   return v7 & v10;
 }
 
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source
 {
-  v6 = a4;
-  if ([(HFIncrementalStateControlItem *)self canCopyWithCharacteristicOptions:a3])
+  sourceCopy = source;
+  if ([(HFIncrementalStateControlItem *)self canCopyWithCharacteristicOptions:options])
   {
-    v7 = [(HFIncrementalStateControlItem *)self primaryStateControlItem];
-    v8 = [(HFIncrementalStateControlItem *)self primaryStateControlItem];
-    v9 = [v8 characteristicOptions];
-    v10 = [v7 copyWithCharacteristicOptions:v9 valueSource:v6];
+    primaryStateControlItem = [(HFIncrementalStateControlItem *)self primaryStateControlItem];
+    primaryStateControlItem2 = [(HFIncrementalStateControlItem *)self primaryStateControlItem];
+    characteristicOptions = [primaryStateControlItem2 characteristicOptions];
+    v10 = [primaryStateControlItem copyWithCharacteristicOptions:characteristicOptions valueSource:sourceCopy];
 
     v11 = objc_alloc(objc_opt_class());
-    v12 = [(HFIncrementalStateControlItem *)self incrementalCharacteristicType];
-    v13 = [(HFControlItem *)self displayResults];
-    v14 = [v11 initWithValueSource:v6 primaryStateControlItem:v10 incrementalCharacteristicType:v12 displayResults:v13];
+    incrementalCharacteristicType = [(HFIncrementalStateControlItem *)self incrementalCharacteristicType];
+    displayResults = [(HFControlItem *)self displayResults];
+    v14 = [v11 initWithValueSource:sourceCopy primaryStateControlItem:v10 incrementalCharacteristicType:incrementalCharacteristicType displayResults:displayResults];
 
     [v14 copyLatestResultsFromItem:self];
   }
@@ -185,10 +185,10 @@ void *__108__HFIncrementalStateControlItem_initWithValueSource_incrementalAndPri
 {
   v24[2] = *MEMORY[0x277D85DE8];
   v3 = +[HFHomeKitDispatcher sharedDispatcher];
-  v4 = [v3 homeManager];
-  v5 = [v4 hasOptedToHH2];
+  homeManager = [v3 homeManager];
+  hasOptedToHH2 = [homeManager hasOptedToHH2];
   v6 = off_277DF0150;
-  if (!v5)
+  if (!hasOptedToHH2)
   {
     v6 = off_277DF0158;
   }
@@ -196,18 +196,18 @@ void *__108__HFIncrementalStateControlItem_initWithValueSource_incrementalAndPri
   v7 = *v6;
   v8 = objc_opt_new();
 
-  v9 = [(HFControlItem *)self valueSource];
-  [v9 beginTransactionWithReason:@"HFIncrementalStateControlItem-Toggle" readPolicy:v8 logger:0];
+  valueSource = [(HFControlItem *)self valueSource];
+  [valueSource beginTransactionWithReason:@"HFIncrementalStateControlItem-Toggle" readPolicy:v8 logger:0];
 
-  v10 = [(HFControlItem *)self valueSource];
+  valueSource2 = [(HFControlItem *)self valueSource];
   v11 = MEMORY[0x277CBEB98];
-  v12 = [(HFIncrementalStateControlItem *)self incrementalCharacteristicType];
-  v13 = [v11 setWithObject:v12];
-  v14 = [v10 readValuesForCharacteristicTypes:v13];
+  incrementalCharacteristicType = [(HFIncrementalStateControlItem *)self incrementalCharacteristicType];
+  v13 = [v11 setWithObject:incrementalCharacteristicType];
+  v14 = [valueSource2 readValuesForCharacteristicTypes:v13];
   v24[0] = v14;
-  v15 = [(HFIncrementalStateControlItem *)self primaryStateControlItem];
-  v16 = [v15 readValueAndPopulateStandardResults];
-  v24[1] = v16;
+  primaryStateControlItem = [(HFIncrementalStateControlItem *)self primaryStateControlItem];
+  readValueAndPopulateStandardResults = [primaryStateControlItem readValueAndPopulateStandardResults];
+  v24[1] = readValueAndPopulateStandardResults;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
 
   v18 = [MEMORY[0x277D2C900] combineAllFutures:v17];
@@ -218,8 +218,8 @@ void *__108__HFIncrementalStateControlItem_initWithValueSource_incrementalAndPri
   v23[4] = self;
   v19 = [v18 flatMap:v23];
 
-  v20 = [(HFControlItem *)self valueSource];
-  [v20 commitTransactionWithReason:@"HFIncrementalStateControlItem-Toggle"];
+  valueSource3 = [(HFControlItem *)self valueSource];
+  [valueSource3 commitTransactionWithReason:@"HFIncrementalStateControlItem-Toggle"];
 
   v21 = *MEMORY[0x277D85DE8];
 
@@ -280,26 +280,26 @@ LABEL_9:
   return v18;
 }
 
-- (id)writeValue:(id)a3
+- (id)writeValue:(id)value
 {
   v5.receiver = self;
   v5.super_class = HFIncrementalStateControlItem;
-  v3 = [(HFControlItem *)&v5 writeValue:a3];
+  v3 = [(HFControlItem *)&v5 writeValue:value];
 
   return v3;
 }
 
-- (id)updateWithOptions:(id)a3
+- (id)updateWithOptions:(id)options
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFIncrementalStateControlItem *)self primaryStateControlItem];
-  v6 = [v5 updateWithOptions:v4];
+  optionsCopy = options;
+  primaryStateControlItem = [(HFIncrementalStateControlItem *)self primaryStateControlItem];
+  v6 = [primaryStateControlItem updateWithOptions:optionsCopy];
 
   v7 = MEMORY[0x277D2C900];
   v14.receiver = self;
   v14.super_class = HFIncrementalStateControlItem;
-  v8 = [(HFItem *)&v14 updateWithOptions:v4];
+  v8 = [(HFItem *)&v14 updateWithOptions:optionsCopy];
 
   v15[0] = v8;
   v15[1] = v6;
@@ -321,18 +321,18 @@ id __51__HFIncrementalStateControlItem_updateWithOptions___block_invoke(uint64_t
   return v4;
 }
 
-- (id)valueForCharacteristicType:(id)a3 inBatchReadResponse:(id)a4
+- (id)valueForCharacteristicType:(id)type inBatchReadResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HFIncrementalStateControlItem *)self incrementalCharacteristicType];
-  if (([v6 isEqualToString:v8] & 1) == 0)
+  typeCopy = type;
+  responseCopy = response;
+  incrementalCharacteristicType = [(HFIncrementalStateControlItem *)self incrementalCharacteristicType];
+  if (([typeCopy isEqualToString:incrementalCharacteristicType] & 1) == 0)
   {
 
     goto LABEL_6;
   }
 
-  v9 = [v7 allResponsesForCharacteristicType:v6];
+  v9 = [responseCopy allResponsesForCharacteristicType:typeCopy];
   v10 = [v9 count];
 
   if (!v10)
@@ -340,14 +340,14 @@ id __51__HFIncrementalStateControlItem_updateWithOptions___block_invoke(uint64_t
 LABEL_6:
     v26.receiver = self;
     v26.super_class = HFIncrementalStateControlItem;
-    v21 = [(HFControlItem *)&v26 valueForCharacteristicType:v6 inBatchReadResponse:v7];
+    value = [(HFControlItem *)&v26 valueForCharacteristicType:typeCopy inBatchReadResponse:responseCopy];
     goto LABEL_11;
   }
 
-  v11 = [(HFIncrementalStateControlItem *)self primaryStateControlItem];
-  v12 = [v11 characteristicOptions];
-  v13 = [v12 allCharacteristicTypes];
-  v14 = [v7 allResponsesForCharacteristicTypes:v13];
+  primaryStateControlItem = [(HFIncrementalStateControlItem *)self primaryStateControlItem];
+  characteristicOptions = [primaryStateControlItem characteristicOptions];
+  allCharacteristicTypes = [characteristicOptions allCharacteristicTypes];
+  v14 = [responseCopy allResponsesForCharacteristicTypes:allCharacteristicTypes];
 
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
@@ -356,7 +356,7 @@ LABEL_6:
   v29[4] = self;
   v15 = [v14 na_filter:v29];
   v16 = [v15 na_map:&__block_literal_global_38];
-  v17 = [v7 allResponsesForCharacteristicType:v6];
+  v17 = [responseCopy allResponsesForCharacteristicType:typeCopy];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __80__HFIncrementalStateControlItem_valueForCharacteristicType_inBatchReadResponse___block_invoke_3;
@@ -367,26 +367,26 @@ LABEL_6:
   if ([v19 count])
   {
     v20 = [HFCharacteristicBatchReadResponse aggregatedReadResponseFromResponses:v19 withAggregationPolicy:0];
-    v21 = [v20 value];
+    value = [v20 value];
   }
 
   else
   {
-    v20 = [(HFControlItem *)self metadataForCharacteristicType:v6];
-    v22 = [v20 minimumValue];
-    v23 = v22;
+    v20 = [(HFControlItem *)self metadataForCharacteristicType:typeCopy];
+    minimumValue = [v20 minimumValue];
+    v23 = minimumValue;
     v24 = &unk_282523760;
-    if (v22)
+    if (minimumValue)
     {
-      v24 = v22;
+      v24 = minimumValue;
     }
 
-    v21 = v24;
+    value = v24;
   }
 
 LABEL_11:
 
-  return v21;
+  return value;
 }
 
 BOOL __80__HFIncrementalStateControlItem_valueForCharacteristicType_inBatchReadResponse___block_invoke(uint64_t a1, void *a2)
@@ -439,21 +439,21 @@ uint64_t __80__HFIncrementalStateControlItem_valueForCharacteristicType_inBatchR
   return v6;
 }
 
-- (id)valueForCharacteristicValues:(id)a3
+- (id)valueForCharacteristicValues:(id)values
 {
-  v4 = a3;
-  v5 = [(HFIncrementalStateControlItem *)self primaryStateControlItem];
-  v6 = [v5 valueForCharacteristicValues:v4];
-  v7 = [v6 integerValue];
+  valuesCopy = values;
+  primaryStateControlItem = [(HFIncrementalStateControlItem *)self primaryStateControlItem];
+  v6 = [primaryStateControlItem valueForCharacteristicValues:valuesCopy];
+  integerValue = [v6 integerValue];
 
-  if (v7 == 2)
+  if (integerValue == 2)
   {
-    v8 = [(HFIncrementalStateControlItem *)self incrementalCharacteristicType];
-    v9 = [v4 objectForKeyedSubscript:v8];
+    incrementalCharacteristicType = [(HFIncrementalStateControlItem *)self incrementalCharacteristicType];
+    v9 = [valuesCopy objectForKeyedSubscript:incrementalCharacteristicType];
 
-    v10 = [(HFControlItem *)self valueSource];
-    v11 = [(HFIncrementalStateControlItem *)self incrementalCharacteristicType];
-    v12 = [v10 metadataForCharacteristicType:v11];
+    valueSource = [(HFControlItem *)self valueSource];
+    incrementalCharacteristicType2 = [(HFIncrementalStateControlItem *)self incrementalCharacteristicType];
+    v12 = [valueSource metadataForCharacteristicType:incrementalCharacteristicType2];
 
     if (v9)
     {
@@ -474,35 +474,35 @@ uint64_t __80__HFIncrementalStateControlItem_valueForCharacteristicType_inBatchR
   return v13;
 }
 
-- (id)characteristicValuesForValue:(id)a3
+- (id)characteristicValuesForValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    NSLog(&cfstr_UnexpectedDisp.isa, v4);
+    NSLog(&cfstr_UnexpectedDisp.isa, valueCopy);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(HFControlItem *)self valueSource];
-    v6 = [(HFIncrementalStateControlItem *)self incrementalCharacteristicType];
-    v7 = [v5 metadataForCharacteristicType:v6];
+    valueSource = [(HFControlItem *)self valueSource];
+    incrementalCharacteristicType = [(HFIncrementalStateControlItem *)self incrementalCharacteristicType];
+    v7 = [valueSource metadataForCharacteristicType:incrementalCharacteristicType];
 
-    [v4 floatValue];
+    [valueCopy floatValue];
     v9 = [v7 hf_characteristicValueForPercentage:v8];
     if (v9)
     {
       v24 = v7;
-      [v4 floatValue];
+      [valueCopy floatValue];
       v11 = v10;
-      v12 = [MEMORY[0x277CBEB38] dictionary];
-      v13 = [(HFIncrementalStateControlItem *)self primaryStateControlItem];
-      v14 = [v13 characteristicOptions];
-      v15 = [v14 objectForKeyedSubscript:&unk_282523748];
-      v16 = [(HFIncrementalStateControlItem *)self incrementalCharacteristicType];
-      v17 = [v15 containsObject:v16];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      primaryStateControlItem = [(HFIncrementalStateControlItem *)self primaryStateControlItem];
+      characteristicOptions = [primaryStateControlItem characteristicOptions];
+      v15 = [characteristicOptions objectForKeyedSubscript:&unk_282523748];
+      incrementalCharacteristicType2 = [(HFIncrementalStateControlItem *)self incrementalCharacteristicType];
+      v17 = [v15 containsObject:incrementalCharacteristicType2];
 
       if ((v17 & 1) == 0)
       {
@@ -516,53 +516,53 @@ uint64_t __80__HFIncrementalStateControlItem_valueForCharacteristicType_inBatchR
           v18 = 2;
         }
 
-        v19 = [(HFIncrementalStateControlItem *)self primaryStateControlItem];
+        primaryStateControlItem2 = [(HFIncrementalStateControlItem *)self primaryStateControlItem];
         v20 = [MEMORY[0x277CCABB0] numberWithInteger:v18];
-        v21 = [v19 characteristicValuesForValue:v20];
-        [v12 addEntriesFromDictionary:v21];
+        v21 = [primaryStateControlItem2 characteristicValuesForValue:v20];
+        [dictionary addEntriesFromDictionary:v21];
       }
 
-      v22 = [(HFIncrementalStateControlItem *)self incrementalCharacteristicType];
-      [v12 setObject:v9 forKeyedSubscript:v22];
+      incrementalCharacteristicType3 = [(HFIncrementalStateControlItem *)self incrementalCharacteristicType];
+      [dictionary setObject:v9 forKeyedSubscript:incrementalCharacteristicType3];
 
       v7 = v24;
     }
 
     else
     {
-      NSLog(&cfstr_CouldNotConver.isa, v4, v7);
-      v12 = MEMORY[0x277CBEC10];
+      NSLog(&cfstr_CouldNotConver.isa, valueCopy, v7);
+      dictionary = MEMORY[0x277CBEC10];
     }
   }
 
   else
   {
-    v12 = MEMORY[0x277CBEC10];
+    dictionary = MEMORY[0x277CBEC10];
   }
 
-  return v12;
+  return dictionary;
 }
 
 - (NSNumber)stepValue
 {
-  v3 = [(HFControlItem *)self valueSource];
-  v4 = [(HFIncrementalStateControlItem *)self incrementalCharacteristicType];
-  v5 = [v3 metadataForCharacteristicType:v4];
+  valueSource = [(HFControlItem *)self valueSource];
+  incrementalCharacteristicType = [(HFIncrementalStateControlItem *)self incrementalCharacteristicType];
+  v5 = [valueSource metadataForCharacteristicType:incrementalCharacteristicType];
 
-  v6 = [v5 stepValue];
-  v7 = [v5 hf_percentageForCharacteristicValue:v6];
+  stepValue = [v5 stepValue];
+  v7 = [v5 hf_percentageForCharacteristicValue:stepValue];
 
   return v7;
 }
 
-+ (id)optionsForPrimaryStateControlItem:(id)a3 incrementalCharacteristicType:(id)a4
++ (id)optionsForPrimaryStateControlItem:(id)item incrementalCharacteristicType:(id)type
 {
   v5 = MEMORY[0x277CBEB98];
-  v6 = a3;
-  v7 = [v5 setWithObject:a4];
-  v8 = [v6 characteristicOptions];
+  itemCopy = item;
+  v7 = [v5 setWithObject:type];
+  characteristicOptions = [itemCopy characteristicOptions];
 
-  v9 = [v8 optionsByAddingCharacteristicTypes:v7 forUsage:0];
+  v9 = [characteristicOptions optionsByAddingCharacteristicTypes:v7 forUsage:0];
 
   return v9;
 }
@@ -573,7 +573,7 @@ uint64_t __80__HFIncrementalStateControlItem_valueForCharacteristicType_inBatchR
   v4[1] = 3221225472;
   v4[2] = __44__HFIncrementalStateControlItem_na_identity__block_invoke;
   v4[3] = &__block_descriptor_40_e5__8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = __44__HFIncrementalStateControlItem_na_identity__block_invoke(v4);
 
   return v2;

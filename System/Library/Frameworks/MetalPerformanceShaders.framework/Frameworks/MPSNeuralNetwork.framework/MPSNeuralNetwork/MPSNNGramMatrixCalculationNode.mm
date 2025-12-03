@@ -9,7 +9,7 @@
 
 + (MPSNNGramMatrixCalculationNode)nodeWithSource:(MPSNNImageNode *)sourceNode
 {
-  v4 = [a1 alloc];
+  v4 = [self alloc];
   LODWORD(v5) = 1.0;
   v12 = objc_msgSend_initWithSource_alpha_(v4, v6, sourceNode, v7, v8, v9, v10, v11, v5);
 
@@ -18,7 +18,7 @@
 
 + (MPSNNGramMatrixCalculationNode)nodeWithSource:(MPSNNImageNode *)sourceNode alpha:(float)alpha
 {
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   *&v7 = alpha;
   v14 = objc_msgSend_initWithSource_alpha_(v6, v8, sourceNode, v9, v10, v11, v12, v13, v7);
 

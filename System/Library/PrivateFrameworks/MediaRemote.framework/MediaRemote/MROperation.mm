@@ -1,5 +1,5 @@
 @interface MROperation
-- (MROperation)initWithBlock:(id)a3 completionHandler:(id)a4;
+- (MROperation)initWithBlock:(id)block completionHandler:(id)handler;
 - (NSDate)cancellationDate;
 - (NSDate)endDate;
 - (NSDate)startDate;
@@ -12,16 +12,16 @@
 
 @implementation MROperation
 
-- (MROperation)initWithBlock:(id)a3 completionHandler:(id)a4
+- (MROperation)initWithBlock:(id)block completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = MROperation;
   v8 = [(MROperation *)&v18 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [blockCopy copy];
     operationBlock = v8->_operationBlock;
     v8->_operationBlock = v9;
 
@@ -34,7 +34,7 @@
     v16[1] = 3221225472;
     v16[2] = __47__MROperation_initWithBlock_completionHandler___block_invoke;
     v16[3] = &unk_1E769A4F0;
-    v17 = v7;
+    v17 = handlerCopy;
     v13 = MEMORY[0x1A58E3570](v16);
     completionHandler = v8->_completionHandler;
     v8->_completionHandler = v13;
@@ -75,16 +75,16 @@ void __47__MROperation_initWithBlock_completionHandler___block_invoke(uint64_t a
     self->_startDate = v3;
 
     os_unfair_lock_unlock(&self->_lock);
-    v5 = [(MROperation *)self operationBlock];
+    operationBlock = [(MROperation *)self operationBlock];
 
-    if (v5)
+    if (operationBlock)
     {
-      v6 = [(MROperation *)self operationBlock];
-      (v6)[2](v6, self);
+      operationBlock2 = [(MROperation *)self operationBlock];
+      (operationBlock2)[2](operationBlock2, self);
     }
 
-    v7 = [(MROperation *)self completionHandler];
-    v7[2](v7, self);
+    completionHandler = [(MROperation *)self completionHandler];
+    completionHandler[2](completionHandler, self);
   }
 }
 
@@ -102,8 +102,8 @@ void __47__MROperation_initWithBlock_completionHandler___block_invoke(uint64_t a
   os_unfair_lock_unlock(&self->_lock);
   if (!startDate)
   {
-    v6 = [(MROperation *)self completionHandler];
-    (v6)[2](v6, self);
+    completionHandler = [(MROperation *)self completionHandler];
+    (completionHandler)[2](completionHandler, self);
   }
 }
 

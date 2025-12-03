@@ -1,18 +1,18 @@
 @interface STSiriContext
-- (STSiriContext)initWithCoder:(id)a3;
-- (STSiriContext)initWithModelObjects:(id)a3;
+- (STSiriContext)initWithCoder:(id)coder;
+- (STSiriContext)initWithModelObjects:(id)objects;
 - (id)_aceValue;
 @end
 
 @implementation STSiriContext
 
-- (STSiriContext)initWithCoder:(id)a3
+- (STSiriContext)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"ModelObjects"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"ModelObjects"];
 
   v9 = [(STSiriContext *)self initWithModelObjects:v8];
   return v9;
@@ -23,43 +23,43 @@
   v59 = *MEMORY[0x1E69E9840];
   v3 = 0x1E695D000uLL;
   v4 = objc_alloc(MEMORY[0x1E695DF70]);
-  v5 = [(STSiriContext *)self modelObjects];
-  v6 = [v4 initWithCapacity:{objc_msgSend(v5, "count")}];
+  modelObjects = [(STSiriContext *)self modelObjects];
+  v6 = [v4 initWithCapacity:{objc_msgSend(modelObjects, "count")}];
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v8 = [(STSiriContext *)self modelObjects];
-  v39 = [v8 countByEnumeratingWithState:&v48 objects:v58 count:16];
+  modelObjects2 = [(STSiriContext *)self modelObjects];
+  v39 = [modelObjects2 countByEnumeratingWithState:&v48 objects:v58 count:16];
   if (v39)
   {
     v10 = 0;
     v38 = *v49;
     *&v9 = 136315394;
     v35 = v9;
-    v36 = v8;
+    v36 = modelObjects2;
     do
     {
       for (i = 0; i != v39; ++i)
       {
         if (*v49 != v38)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(modelObjects2);
         }
 
         v12 = *(*(&v48 + 1) + 8 * i);
-        v13 = [v12 _aceCollectionClass];
-        if (v13 != v10)
+        _aceCollectionClass = [v12 _aceCollectionClass];
+        if (_aceCollectionClass != v10)
         {
-          v14 = v13;
+          v14 = _aceCollectionClass;
           if (v10 && [(objc_class *)v10 isSubclassOfClass:objc_opt_class()])
           {
             v15 = objc_alloc_init(v10);
             [v15 setDomainObjects:v7];
-            v16 = [v15 dictionary];
-            [v6 addObject:v16];
+            dictionary = [v15 dictionary];
+            [v6 addObject:dictionary];
           }
 
           else
@@ -85,8 +85,8 @@
                     objc_enumerationMutation(v15);
                   }
 
-                  v22 = [*(*(&v44 + 1) + 8 * j) dictionary];
-                  [v6 addObject:v22];
+                  dictionary2 = [*(*(&v44 + 1) + 8 * j) dictionary];
+                  [v6 addObject:dictionary2];
                 }
 
                 v18 = [v15 countByEnumeratingWithState:&v44 objects:v57 count:16];
@@ -94,7 +94,7 @@
 
               while (v18);
               v3 = v19;
-              v8 = v36;
+              modelObjects2 = v36;
               v7 = v37;
             }
           }
@@ -104,10 +104,10 @@
           v10 = v14;
         }
 
-        v24 = [v12 _aceContextObjectValue];
-        if (v24)
+        _aceContextObjectValue = [v12 _aceContextObjectValue];
+        if (_aceContextObjectValue)
         {
-          [v7 addObject:v24];
+          [v7 addObject:_aceContextObjectValue];
         }
 
         else
@@ -124,7 +124,7 @@
         }
       }
 
-      v39 = [v8 countByEnumeratingWithState:&v48 objects:v58 count:16];
+      v39 = [modelObjects2 countByEnumeratingWithState:&v48 objects:v58 count:16];
     }
 
     while (v39);
@@ -133,8 +133,8 @@
     {
       v26 = objc_alloc_init(v10);
       [v26 setDomainObjects:v7];
-      v27 = [v26 dictionary];
-      [v6 addObject:v27];
+      dictionary3 = [v26 dictionary];
+      [v6 addObject:dictionary3];
 
       goto LABEL_37;
     }
@@ -163,8 +163,8 @@
           objc_enumerationMutation(v26);
         }
 
-        v32 = [*(*(&v40 + 1) + 8 * k) dictionary];
-        [v6 addObject:v32];
+        dictionary4 = [*(*(&v40 + 1) + 8 * k) dictionary];
+        [v6 addObject:dictionary4];
       }
 
       v29 = [v26 countByEnumeratingWithState:&v40 objects:v52 count:16];
@@ -181,17 +181,17 @@ LABEL_37:
   return v6;
 }
 
-- (STSiriContext)initWithModelObjects:(id)a3
+- (STSiriContext)initWithModelObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   v9.receiver = self;
   v9.super_class = STSiriContext;
   v5 = [(STSiriContext *)&v9 init];
   if (v5)
   {
-    if (v4)
+    if (objectsCopy)
     {
-      v6 = [v4 copy];
+      v6 = [objectsCopy copy];
     }
 
     else

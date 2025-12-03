@@ -1,36 +1,36 @@
 @interface DBSColorTemperatureController
-- (DBSColorTemperatureController)initWithNibName:(id)a3 bundle:(id)a4;
+- (DBSColorTemperatureController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)blueLightReductionFooter;
-- (id)fromDetailForCell:(id)a3;
-- (id)getBlueLightReductionManualEnabled:(id)a3;
-- (id)getBlueLightReductionScheduleEnabled:(id)a3;
-- (id)localizedTimeForTime:(id)a3;
+- (id)fromDetailForCell:(id)cell;
+- (id)getBlueLightReductionManualEnabled:(id)enabled;
+- (id)getBlueLightReductionScheduleEnabled:(id)enabled;
+- (id)localizedTimeForTime:(id)time;
 - (id)specifiers;
-- (id)temperatureStrength:(id)a3;
-- (id)toDetailForCell:(id)a3;
-- (void)_printBlueLightStatus:(id *)a3;
-- (void)_setBlueLightReductionEnabled:(id)a3 forSpecifier:(id)a4;
+- (id)temperatureStrength:(id)strength;
+- (id)toDetailForCell:(id)cell;
+- (void)_printBlueLightStatus:(id *)status;
+- (void)_setBlueLightReductionEnabled:(id)enabled forSpecifier:(id)specifier;
 - (void)colorTemperatureSliderDidChange;
 - (void)dealloc;
-- (void)handleBlueLightStatusChanged:(id *)a3;
-- (void)setBlueLightReductionManualEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setBlueLightReductionSchedule:(id)a3 forSpecifier:(id)a4;
-- (void)setTemperatureStrength:(id)a3 specifier:(id)a4;
-- (void)showAlertToDisableAccessibilityFiltersForBlueLightReduction:(id)a3 cancel:(id)a4;
-- (void)showScheduleRange:(BOOL)a3 animated:(BOOL)a4;
+- (void)handleBlueLightStatusChanged:(id *)changed;
+- (void)setBlueLightReductionManualEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setBlueLightReductionSchedule:(id)schedule forSpecifier:(id)specifier;
+- (void)setTemperatureStrength:(id)strength specifier:(id)specifier;
+- (void)showAlertToDisableAccessibilityFiltersForBlueLightReduction:(id)reduction cancel:(id)cancel;
+- (void)showScheduleRange:(BOOL)range animated:(BOOL)animated;
 - (void)specifiers;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation DBSColorTemperatureController
 
-- (DBSColorTemperatureController)initWithNibName:(id)a3 bundle:(id)a4
+- (DBSColorTemperatureController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v24.receiver = self;
   v24.super_class = DBSColorTemperatureController;
-  v8 = [(DBSColorTemperatureController *)&v24 initWithNibName:v6 bundle:v7];
+  v8 = [(DBSColorTemperatureController *)&v24 initWithNibName:nameCopy bundle:bundleCopy];
   if (v8)
   {
     v9 = objc_alloc_init(MEMORY[0x277CFD3A8]);
@@ -38,14 +38,14 @@
     v8->__brightnessClient = v9;
 
     objc_initWeak(&location, v8);
-    v11 = [(DBSColorTemperatureController *)v8 _brightnessClient];
-    v12 = [v11 blueLightClient];
+    _brightnessClient = [(DBSColorTemperatureController *)v8 _brightnessClient];
+    blueLightClient = [_brightnessClient blueLightClient];
     v18 = MEMORY[0x277D85DD0];
     v19 = 3221225472;
     v20 = __56__DBSColorTemperatureController_initWithNibName_bundle___block_invoke;
     v21 = &unk_278459440;
     objc_copyWeak(&v22, &location);
-    [v12 setStatusNotificationBlock:&v18];
+    [blueLightClient setStatusNotificationBlock:&v18];
 
     v13 = objc_alloc_init(MEMORY[0x277CCA968]);
     timeFormatter = v8->_timeFormatter;
@@ -53,8 +53,8 @@
 
     [(NSDateFormatter *)v8->_timeFormatter setTimeStyle:1, v18, v19, v20, v21];
     [(NSDateFormatter *)v8->_timeFormatter setDateStyle:0];
-    v15 = [MEMORY[0x277D75418] currentDevice];
-    if ([v15 sf_isInternalInstall])
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice sf_isInternalInstall])
     {
       v16 = CFPreferencesGetAppBooleanValue(@"kShowColorTemperature", @"com.apple.Preferences", 0) != 0;
     }
@@ -81,9 +81,9 @@ void __56__DBSColorTemperatureController_initWithNibName_bundle___block_invoke(u
 
 - (void)dealloc
 {
-  v3 = [(DBSColorTemperatureController *)self _brightnessClient];
-  v4 = [v3 blueLightClient];
-  [v4 setStatusNotificationBlock:0];
+  _brightnessClient = [(DBSColorTemperatureController *)self _brightnessClient];
+  blueLightClient = [_brightnessClient blueLightClient];
+  [blueLightClient setStatusNotificationBlock:0];
 
   [(NSTimer *)self->_blueLightReductionLabelRefreshTimer invalidate];
   v5.receiver = self;
@@ -91,26 +91,26 @@ void __56__DBSColorTemperatureController_initWithNibName_bundle___block_invoke(u
   [(DBSColorTemperatureController *)&v5 dealloc];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = DBSColorTemperatureController;
-  [(DBSColorTemperatureController *)&v16 viewDidAppear:a3];
+  [(DBSColorTemperatureController *)&v16 viewDidAppear:appear];
   v4 = [MEMORY[0x277CBEBC0] URLWithString:@"settings-navigation://com.apple.Settings.Display/BLUE_LIGHT_REDUCTION"];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-    v6 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
     v7 = DBS_BundleForDisplayAndBrightnessSettingsFramework();
-    v8 = [v7 bundleURL];
-    v9 = [v5 initWithKey:@"DISPLAY_AND_BRIGHTNESS" defaultValue:0 table:@"Display" locale:v6 bundleURL:v8];
+    bundleURL = [v7 bundleURL];
+    v9 = [v5 initWithKey:@"DISPLAY_AND_BRIGHTNESS" defaultValue:0 table:@"Display" locale:currentLocale bundleURL:bundleURL];
 
     v10 = objc_alloc(MEMORY[0x277CCAEB8]);
-    v11 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
     v12 = DBS_BundleForDisplayAndBrightnessSettingsFramework();
-    v13 = [v12 bundleURL];
-    v14 = [v10 initWithKey:@"BLUE_LIGHT_REDUCTION" defaultValue:0 table:@"Display" locale:v11 bundleURL:v13];
+    bundleURL2 = [v12 bundleURL];
+    v14 = [v10 initWithKey:@"BLUE_LIGHT_REDUCTION" defaultValue:0 table:@"Display" locale:currentLocale2 bundleURL:bundleURL2];
 
     v17[0] = v9;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
@@ -129,8 +129,8 @@ void __56__DBSColorTemperatureController_initWithNibName_bundle___block_invoke(u
     v6 = [v5 specifierForID:@"BLUE_LIGHT_REDUCTION_COLOR_TEMP"];
     [(DBSColorTemperatureController *)self set_temperatureSlider:v6];
 
-    v7 = [(DBSColorTemperatureController *)self _temperatureSlider];
-    if (!v7)
+    _temperatureSlider = [(DBSColorTemperatureController *)self _temperatureSlider];
+    if (!_temperatureSlider)
     {
       [DBSColorTemperatureController specifiers];
     }
@@ -138,8 +138,8 @@ void __56__DBSColorTemperatureController_initWithNibName_bundle___block_invoke(u
     v8 = [v5 specifierForID:@"SCHEDULED"];
     [(DBSColorTemperatureController *)self set_scheduleSwitchSpecifier:v8];
 
-    v9 = [(DBSColorTemperatureController *)self _scheduleSwitchSpecifier];
-    if (!v9)
+    _scheduleSwitchSpecifier = [(DBSColorTemperatureController *)self _scheduleSwitchSpecifier];
+    if (!_scheduleSwitchSpecifier)
     {
       [DBSColorTemperatureController specifiers];
     }
@@ -147,8 +147,8 @@ void __56__DBSColorTemperatureController_initWithNibName_bundle___block_invoke(u
     v10 = [v5 specifierForID:@"MANUAL"];
     [(DBSColorTemperatureController *)self set_manualSwitchSpecifier:v10];
 
-    v11 = [(DBSColorTemperatureController *)self _manualSwitchSpecifier];
-    if (!v11)
+    _manualSwitchSpecifier = [(DBSColorTemperatureController *)self _manualSwitchSpecifier];
+    if (!_manualSwitchSpecifier)
     {
       [DBSColorTemperatureController specifiers];
     }
@@ -156,11 +156,11 @@ void __56__DBSColorTemperatureController_initWithNibName_bundle___block_invoke(u
     v12 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:&stru_2834977A0 target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
     [(DBSColorTemperatureController *)self set_scheduleRangeSpecifier:v12];
 
-    v13 = [(DBSColorTemperatureController *)self _scheduleRangeSpecifier];
-    [v13 setIdentifier:@"SCHEDULE_RANGE"];
+    _scheduleRangeSpecifier = [(DBSColorTemperatureController *)self _scheduleRangeSpecifier];
+    [_scheduleRangeSpecifier setIdentifier:@"SCHEDULE_RANGE"];
 
-    v14 = [(DBSColorTemperatureController *)self _scheduleRangeSpecifier];
-    [v14 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
+    _scheduleRangeSpecifier2 = [(DBSColorTemperatureController *)self _scheduleRangeSpecifier];
+    [_scheduleRangeSpecifier2 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
 
     v15 = [v5 specifierForID:@"COLOR_TEMPERATURE"];
     if (!v15)
@@ -169,14 +169,14 @@ void __56__DBSColorTemperatureController_initWithNibName_bundle___block_invoke(u
     }
 
     v16 = v15;
-    v17 = [(DBSColorTemperatureController *)self blueLightReductionFooter];
-    [v16 setProperty:v17 forKey:*MEMORY[0x277D3FF88]];
+    blueLightReductionFooter = [(DBSColorTemperatureController *)self blueLightReductionFooter];
+    [v16 setProperty:blueLightReductionFooter forKey:*MEMORY[0x277D3FF88]];
 
     v27 = 0;
     memset(v26, 0, sizeof(v26));
-    v18 = [(DBSColorTemperatureController *)self _brightnessClient];
-    v19 = [v18 blueLightClient];
-    v20 = [v19 getBlueLightStatus:v26];
+    _brightnessClient = [(DBSColorTemperatureController *)self _brightnessClient];
+    blueLightClient = [_brightnessClient blueLightClient];
+    v20 = [blueLightClient getBlueLightStatus:v26];
 
     if ((v20 & 1) == 0)
     {
@@ -185,16 +185,16 @@ void __56__DBSColorTemperatureController_initWithNibName_bundle___block_invoke(u
 
     v21 = DWORD1(v26[0]);
     self->_showingScheduleRange = DWORD1(v26[0]) != 0;
-    v22 = [(DBSColorTemperatureController *)self _scheduleRangeSpecifier];
+    _scheduleRangeSpecifier3 = [(DBSColorTemperatureController *)self _scheduleRangeSpecifier];
     if (v21)
     {
-      v23 = [(DBSColorTemperatureController *)self _scheduleSwitchSpecifier];
-      [v5 ps_insertObject:v22 afterObject:v23];
+      _scheduleSwitchSpecifier2 = [(DBSColorTemperatureController *)self _scheduleSwitchSpecifier];
+      [v5 ps_insertObject:_scheduleRangeSpecifier3 afterObject:_scheduleSwitchSpecifier2];
     }
 
     else
     {
-      [v5 removeObject:v22];
+      [v5 removeObject:_scheduleRangeSpecifier3];
     }
 
     v24 = *(&self->super.super.super.super.super.isa + v3);
@@ -206,10 +206,10 @@ void __56__DBSColorTemperatureController_initWithNibName_bundle___block_invoke(u
   return v4;
 }
 
-- (void)_printBlueLightStatus:(id *)a3
+- (void)_printBlueLightStatus:(id *)status
 {
   v26 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (status)
   {
     v4 = DBSLogForCategory(0);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -221,7 +221,7 @@ void __56__DBSColorTemperatureController_initWithNibName_bundle___block_invoke(u
     v5 = DBSLogForCategory(0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      var0 = a3->var0;
+      var0 = status->var0;
       v18 = 67109120;
       v19 = var0;
       _os_log_impl(&dword_22102E000, v5, OS_LOG_TYPE_DEFAULT, "Active: %d\n", &v18, 8u);
@@ -230,7 +230,7 @@ void __56__DBSColorTemperatureController_initWithNibName_bundle___block_invoke(u
     v7 = DBSLogForCategory(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      var1 = a3->var1;
+      var1 = status->var1;
       v18 = 67109120;
       v19 = var1;
       _os_log_impl(&dword_22102E000, v7, OS_LOG_TYPE_DEFAULT, "Enabled: %d\n", &v18, 8u);
@@ -239,7 +239,7 @@ void __56__DBSColorTemperatureController_initWithNibName_bundle___block_invoke(u
     v9 = DBSLogForCategory(0);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      var3 = a3->var3;
+      var3 = status->var3;
       v18 = 67109120;
       v19 = var3;
       _os_log_impl(&dword_22102E000, v9, OS_LOG_TYPE_DEFAULT, "Mode: %d\n", &v18, 8u);
@@ -248,10 +248,10 @@ void __56__DBSColorTemperatureController_initWithNibName_bundle___block_invoke(u
     v11 = DBSLogForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = a3->var4.var0.var0;
-      v13 = a3->var4.var0.var1;
-      v14 = a3->var4.var1.var0;
-      v15 = a3->var4.var1.var1;
+      v12 = status->var4.var0.var0;
+      v13 = status->var4.var0.var1;
+      v14 = status->var4.var1.var0;
+      v15 = status->var4.var1.var1;
       v18 = 67109888;
       v19 = v12;
       v20 = 1024;
@@ -266,7 +266,7 @@ void __56__DBSColorTemperatureController_initWithNibName_bundle___block_invoke(u
     v16 = DBSLogForCategory(0);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      var2 = a3->var2;
+      var2 = status->var2;
       v18 = 67109120;
       v19 = var2;
       _os_log_impl(&dword_22102E000, v16, OS_LOG_TYPE_DEFAULT, "Sunrise/sunset allowed: %d\n\n", &v18, 8u);
@@ -274,28 +274,28 @@ void __56__DBSColorTemperatureController_initWithNibName_bundle___block_invoke(u
   }
 }
 
-- (void)showScheduleRange:(BOOL)a3 animated:(BOOL)a4
+- (void)showScheduleRange:(BOOL)range animated:(BOOL)animated
 {
-  if (self->_showingScheduleRange != a3)
+  if (self->_showingScheduleRange != range)
   {
-    v5 = a4;
-    v6 = a3;
-    self->_showingScheduleRange = a3;
-    v9 = [(DBSColorTemperatureController *)self _scheduleRangeSpecifier];
-    if (v6)
+    animatedCopy = animated;
+    rangeCopy = range;
+    self->_showingScheduleRange = range;
+    _scheduleRangeSpecifier = [(DBSColorTemperatureController *)self _scheduleRangeSpecifier];
+    if (rangeCopy)
     {
-      v8 = [(DBSColorTemperatureController *)self _scheduleSwitchSpecifier];
-      [(DBSColorTemperatureController *)self insertSpecifier:v9 afterSpecifier:v8 animated:v5];
+      _scheduleSwitchSpecifier = [(DBSColorTemperatureController *)self _scheduleSwitchSpecifier];
+      [(DBSColorTemperatureController *)self insertSpecifier:_scheduleRangeSpecifier afterSpecifier:_scheduleSwitchSpecifier animated:animatedCopy];
     }
 
     else
     {
-      [(DBSColorTemperatureController *)self removeSpecifier:v9 animated:v5];
+      [(DBSColorTemperatureController *)self removeSpecifier:_scheduleRangeSpecifier animated:animatedCopy];
     }
   }
 }
 
-- (void)handleBlueLightStatusChanged:(id *)a3
+- (void)handleBlueLightStatusChanged:(id *)changed
 {
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
@@ -303,7 +303,7 @@ void __56__DBSColorTemperatureController_initWithNibName_bundle___block_invoke(u
   block[2] = __62__DBSColorTemperatureController_handleBlueLightStatusChanged___block_invoke;
   block[3] = &unk_278459468;
   objc_copyWeak(v5, &location);
-  v5[1] = a3;
+  v5[1] = changed;
   dispatch_async(MEMORY[0x277D85CD0], block);
   objc_destroyWeak(v5);
   objc_destroyWeak(&location);
@@ -334,12 +334,12 @@ void __62__DBSColorTemperatureController_handleBlueLightStatusChanged___block_in
   [WeakRetained showScheduleRange:*(*(a1 + 40) + 4) != 0 animated:1];
 }
 
-- (id)getBlueLightReductionManualEnabled:(id)a3
+- (id)getBlueLightReductionManualEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = [(DBSColorTemperatureController *)self _brightnessClient:0];
-  v6 = [v5 blueLightClient];
-  v7 = [v6 getBlueLightStatus:v11];
+  blueLightClient = [v5 blueLightClient];
+  v7 = [blueLightClient getBlueLightStatus:v11];
 
   [(DBSColorTemperatureController *)self _printBlueLightStatus:v11];
   if (!v7)
@@ -362,15 +362,15 @@ void __62__DBSColorTemperatureController_handleBlueLightStatusChanged___block_in
   return v9;
 }
 
-- (void)setBlueLightReductionManualEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setBlueLightReductionManualEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [v12 BOOLValue];
-  v8 = [(DBSColorTemperatureController *)self _brightnessClient];
-  v9 = [v8 blueLightClient];
-  v10 = v9;
-  if (v7)
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  bOOLValue = [enabledCopy BOOLValue];
+  _brightnessClient = [(DBSColorTemperatureController *)self _brightnessClient];
+  blueLightClient = [_brightnessClient blueLightClient];
+  v10 = blueLightClient;
+  if (bOOLValue)
   {
     v11 = 0;
   }
@@ -380,35 +380,35 @@ void __62__DBSColorTemperatureController_handleBlueLightStatusChanged___block_in
     v11 = 2;
   }
 
-  [v9 setMode:v11];
+  [blueLightClient setMode:v11];
 
-  if (v7)
+  if (bOOLValue)
   {
-    [(DBSColorTemperatureController *)self _setBlueLightReductionEnabled:v12 forSpecifier:v6];
+    [(DBSColorTemperatureController *)self _setBlueLightReductionEnabled:enabledCopy forSpecifier:specifierCopy];
   }
 }
 
-- (void)_setBlueLightReductionEnabled:(id)a3 forSpecifier:(id)a4
+- (void)_setBlueLightReductionEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 BOOLValue];
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  bOOLValue = [enabledCopy BOOLValue];
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __76__DBSColorTemperatureController__setBlueLightReductionEnabled_forSpecifier___block_invoke;
   v12[3] = &unk_278459490;
   objc_copyWeak(&v13, &location);
-  v14 = v8;
+  v14 = bOOLValue;
   v9 = MEMORY[0x223D9E740](v12);
-  if (v8 && _AXSScreenFilterApplied())
+  if (bOOLValue && _AXSScreenFilterApplied())
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __76__DBSColorTemperatureController__setBlueLightReductionEnabled_forSpecifier___block_invoke_2;
     v10[3] = &unk_2784594B8;
     v10[4] = self;
-    v11 = v7;
+    v11 = specifierCopy;
     [(DBSColorTemperatureController *)self showAlertToDisableAccessibilityFiltersForBlueLightReduction:v9 cancel:v10];
   }
 
@@ -429,12 +429,12 @@ void __76__DBSColorTemperatureController__setBlueLightReductionEnabled_forSpecif
   [v3 setEnabled:*(a1 + 40)];
 }
 
-- (id)getBlueLightReductionScheduleEnabled:(id)a3
+- (id)getBlueLightReductionScheduleEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = [(DBSColorTemperatureController *)self _brightnessClient:0];
-  v6 = [v5 blueLightClient];
-  v7 = [v6 getBlueLightStatus:&v10];
+  blueLightClient = [v5 blueLightClient];
+  v7 = [blueLightClient getBlueLightStatus:&v10];
 
   if ((v7 & 1) == 0)
   {
@@ -446,27 +446,27 @@ void __76__DBSColorTemperatureController__setBlueLightReductionEnabled_forSpecif
   return v8;
 }
 
-- (void)setBlueLightReductionSchedule:(id)a3 forSpecifier:(id)a4
+- (void)setBlueLightReductionSchedule:(id)schedule forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 BOOLValue];
+  scheduleCopy = schedule;
+  specifierCopy = specifier;
+  bOOLValue = [scheduleCopy BOOLValue];
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __76__DBSColorTemperatureController_setBlueLightReductionSchedule_forSpecifier___block_invoke;
   v12[3] = &unk_278459490;
   objc_copyWeak(&v13, &location);
-  v14 = v8;
+  v14 = bOOLValue;
   v9 = MEMORY[0x223D9E740](v12);
-  if (v8 && _AXSScreenFilterApplied())
+  if (bOOLValue && _AXSScreenFilterApplied())
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __76__DBSColorTemperatureController_setBlueLightReductionSchedule_forSpecifier___block_invoke_2;
     v10[3] = &unk_2784594B8;
     v10[4] = self;
-    v11 = v7;
+    v11 = specifierCopy;
     [(DBSColorTemperatureController *)self showAlertToDisableAccessibilityFiltersForBlueLightReduction:v9 cancel:v10];
   }
 
@@ -502,10 +502,10 @@ void __76__DBSColorTemperatureController_setBlueLightReductionSchedule_forSpecif
   [WeakRetained reloadSpecifier:v6 animated:1];
 }
 
-- (void)showAlertToDisableAccessibilityFiltersForBlueLightReduction:(id)a3 cancel:(id)a4
+- (void)showAlertToDisableAccessibilityFiltersForBlueLightReduction:(id)reduction cancel:(id)cancel
 {
-  v6 = a3;
-  v7 = a4;
+  reductionCopy = reduction;
+  cancelCopy = cancel;
   v8 = MEMORY[0x277D75110];
   v9 = DBS_LocalizedStringForColorTemperature(@"DISABLE_AX_FILTERS_TITLE");
   v10 = DBS_LocalizedStringForColorTemperature(@"DISABLE_AX_FILTERS_MESSAGE");
@@ -517,8 +517,8 @@ void __76__DBSColorTemperatureController_setBlueLightReductionSchedule_forSpecif
   v25[1] = 3221225472;
   v25[2] = __100__DBSColorTemperatureController_showAlertToDisableAccessibilityFiltersForBlueLightReduction_cancel___block_invoke;
   v25[3] = &unk_2784594E0;
-  v26 = v6;
-  v14 = v6;
+  v26 = reductionCopy;
+  v14 = reductionCopy;
   v15 = [v12 actionWithTitle:v13 style:0 handler:v25];
   [v11 addAction:v15];
 
@@ -528,8 +528,8 @@ void __76__DBSColorTemperatureController_setBlueLightReductionSchedule_forSpecif
   v21 = 3221225472;
   v22 = __100__DBSColorTemperatureController_showAlertToDisableAccessibilityFiltersForBlueLightReduction_cancel___block_invoke_2;
   v23 = &unk_2784594E0;
-  v24 = v7;
-  v18 = v7;
+  v24 = cancelCopy;
+  v18 = cancelCopy;
   v19 = [v16 actionWithTitle:v17 style:1 handler:&v20];
   [v11 addAction:{v19, v20, v21, v22, v23}];
 
@@ -544,13 +544,13 @@ uint64_t __100__DBSColorTemperatureController_showAlertToDisableAccessibilityFil
   return v2();
 }
 
-- (id)temperatureStrength:(id)a3
+- (id)temperatureStrength:(id)strength
 {
-  v4 = a3;
+  strengthCopy = strength;
   v11 = 0;
-  v5 = [(DBSColorTemperatureController *)self _brightnessClient];
-  v6 = [v5 blueLightClient];
-  v7 = [v6 getStrength:&v11];
+  _brightnessClient = [(DBSColorTemperatureController *)self _brightnessClient];
+  blueLightClient = [_brightnessClient blueLightClient];
+  v7 = [blueLightClient getStrength:&v11];
 
   if ((v7 & 1) == 0)
   {
@@ -563,35 +563,35 @@ uint64_t __100__DBSColorTemperatureController_showAlertToDisableAccessibilityFil
   return v9;
 }
 
-- (void)setTemperatureStrength:(id)a3 specifier:(id)a4
+- (void)setTemperatureStrength:(id)strength specifier:(id)specifier
 {
-  v26 = a3;
-  v6 = a4;
-  v7 = [v6 propertyForKey:*MEMORY[0x277D3FEB0]];
-  [v26 floatValue];
+  strengthCopy = strength;
+  specifierCopy = specifier;
+  v7 = [specifierCopy propertyForKey:*MEMORY[0x277D3FEB0]];
+  [strengthCopy floatValue];
   v9 = v8;
-  v10 = [v7 isTracking];
-  v11 = [(DBSColorTemperatureController *)self _brightnessClient];
-  v12 = [v11 blueLightClient];
-  v13 = v12;
-  if (v10)
+  isTracking = [v7 isTracking];
+  _brightnessClient = [(DBSColorTemperatureController *)self _brightnessClient];
+  blueLightClient = [_brightnessClient blueLightClient];
+  v13 = blueLightClient;
+  if (isTracking)
   {
-    [v12 suspendNotifications:1];
+    [blueLightClient suspendNotifications:1];
 
-    v14 = [(DBSColorTemperatureController *)self _brightnessClient];
-    v15 = [v14 blueLightClient];
+    _brightnessClient2 = [(DBSColorTemperatureController *)self _brightnessClient];
+    blueLightClient2 = [_brightnessClient2 blueLightClient];
     LODWORD(v16) = v9;
-    v17 = [v15 setStrength:0 commit:v16];
+    v17 = [blueLightClient2 setStrength:0 commit:v16];
   }
 
   else
   {
-    [v12 suspendNotifications:0];
+    [blueLightClient suspendNotifications:0];
 
     temperatureSliderWasTracking = self->_temperatureSliderWasTracking;
-    v14 = [(DBSColorTemperatureController *)self _brightnessClient];
-    v19 = [v14 blueLightClient];
-    v15 = v19;
+    _brightnessClient2 = [(DBSColorTemperatureController *)self _brightnessClient];
+    blueLightClient3 = [_brightnessClient2 blueLightClient];
+    blueLightClient2 = blueLightClient3;
     if (temperatureSliderWasTracking)
     {
       LODWORD(v21) = 1.0;
@@ -606,7 +606,7 @@ uint64_t __100__DBSColorTemperatureController_showAlertToDisableAccessibilityFil
       v22 = 0;
     }
 
-    v17 = [v19 setStrength:v22 withPeriod:v20 commit:v21];
+    v17 = [blueLightClient3 setStrength:v22 withPeriod:v20 commit:v21];
   }
 
   v23 = v17;
@@ -621,49 +621,49 @@ uint64_t __100__DBSColorTemperatureController_showAlertToDisableAccessibilityFil
     [DBSColorTemperatureController setTemperatureStrength:specifier:];
   }
 
-  self->_temperatureSliderWasTracking = v10;
+  self->_temperatureSliderWasTracking = isTracking;
 }
 
 - (void)colorTemperatureSliderDidChange
 {
-  v3 = [(DBSColorTemperatureController *)self _temperatureSlider];
-  v4 = [v3 propertyForKey:*MEMORY[0x277D3FEB0]];
+  _temperatureSlider = [(DBSColorTemperatureController *)self _temperatureSlider];
+  v4 = [_temperatureSlider propertyForKey:*MEMORY[0x277D3FEB0]];
 
   [v4 value];
   v6 = v5;
-  v7 = [(DBSColorTemperatureController *)self _brightnessClient];
-  v8 = [v7 blueLightClient];
+  _brightnessClient = [(DBSColorTemperatureController *)self _brightnessClient];
+  blueLightClient = [_brightnessClient blueLightClient];
   LODWORD(v9) = 1.0;
   LODWORD(v10) = v6;
-  [v8 setStrength:1 withPeriod:v10 commit:v9];
+  [blueLightClient setStrength:1 withPeriod:v10 commit:v9];
 
   v11 = [(DBSColorTemperatureController *)self specifierForID:@"COLOR_TEMPERATURE"];
   v12 = *MEMORY[0x277D3FF88];
   v13 = [v11 propertyForKey:*MEMORY[0x277D3FF88]];
-  v14 = [(DBSColorTemperatureController *)self blueLightReductionFooter];
-  if (([v13 isEqualToString:v14] & 1) == 0)
+  blueLightReductionFooter = [(DBSColorTemperatureController *)self blueLightReductionFooter];
+  if (([v13 isEqualToString:blueLightReductionFooter] & 1) == 0)
   {
-    [v11 setProperty:v14 forKey:v12];
+    [v11 setProperty:blueLightReductionFooter forKey:v12];
     v17 = 0;
     v18 = 0;
     [(DBSColorTemperatureController *)self getGroup:&v18 row:&v17 ofSpecifier:v11];
-    v15 = [(DBSColorTemperatureController *)self table];
+    table = [(DBSColorTemperatureController *)self table];
     v16 = [MEMORY[0x277CCAA78] indexSetWithIndex:v18];
-    [v15 _reloadSectionHeaderFooters:v16 withRowAnimation:0];
+    [table _reloadSectionHeaderFooters:v16 withRowAnimation:0];
   }
 }
 
 - (id)blueLightReductionFooter
 {
   v18 = 0.0;
-  v3 = [(DBSColorTemperatureController *)self _brightnessClient];
-  v4 = [v3 blueLightClient];
-  [v4 getStrength:&v18];
+  _brightnessClient = [(DBSColorTemperatureController *)self _brightnessClient];
+  blueLightClient = [_brightnessClient blueLightClient];
+  [blueLightClient getStrength:&v18];
 
   v17 = 1056964608;
-  v5 = [(DBSColorTemperatureController *)self _brightnessClient];
-  v6 = [v5 blueLightClient];
-  v7 = [v6 getWarningStrength:&v17];
+  _brightnessClient2 = [(DBSColorTemperatureController *)self _brightnessClient];
+  blueLightClient2 = [_brightnessClient2 blueLightClient];
+  v7 = [blueLightClient2 getWarningStrength:&v17];
 
   if (v7)
   {
@@ -689,9 +689,9 @@ uint64_t __100__DBSColorTemperatureController_showAlertToDisableAccessibilityFil
   if (self->_showColorTemperature)
   {
     v16 = 0.0;
-    v10 = [(DBSColorTemperatureController *)self _brightnessClient];
-    v11 = [v10 blueLightClient];
-    [v11 getCCT:&v16];
+    _brightnessClient3 = [(DBSColorTemperatureController *)self _brightnessClient];
+    blueLightClient3 = [_brightnessClient3 blueLightClient];
+    [blueLightClient3 getCCT:&v16];
 
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"INTERNAL ONLY:\nWhen Night Shift is enabled, your display's white point is %.0fK.", v16];
     if ([(__CFString *)v9 length])
@@ -712,11 +712,11 @@ uint64_t __100__DBSColorTemperatureController_showAlertToDisableAccessibilityFil
   return v9;
 }
 
-- (id)localizedTimeForTime:(id)a3
+- (id)localizedTimeForTime:(id)time
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-  [v5 setHour:a3.var0];
-  [v5 setMinute:*&a3 >> 32];
+  [v5 setHour:time.var0];
+  [v5 setMinute:*&time >> 32];
   v6 = objc_alloc(MEMORY[0x277CBEA80]);
   v7 = [v6 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
   v8 = [v7 dateFromComponents:v5];
@@ -725,14 +725,14 @@ uint64_t __100__DBSColorTemperatureController_showAlertToDisableAccessibilityFil
   return v9;
 }
 
-- (id)fromDetailForCell:(id)a3
+- (id)fromDetailForCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v12 = 0;
   memset(v11, 0, sizeof(v11));
-  v5 = [(DBSColorTemperatureController *)self _brightnessClient];
-  v6 = [v5 blueLightClient];
-  v7 = [v6 getBlueLightStatus:v11];
+  _brightnessClient = [(DBSColorTemperatureController *)self _brightnessClient];
+  blueLightClient = [_brightnessClient blueLightClient];
+  v7 = [blueLightClient getBlueLightStatus:v11];
 
   if ((v7 & 1) == 0)
   {
@@ -759,14 +759,14 @@ LABEL_9:
   return v9;
 }
 
-- (id)toDetailForCell:(id)a3
+- (id)toDetailForCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v13 = 0;
   v12 = 0u;
   v5 = [(DBSColorTemperatureController *)self _brightnessClient:0];
-  v6 = [v5 blueLightClient];
-  v7 = [v6 getBlueLightStatus:&v11];
+  blueLightClient = [v5 blueLightClient];
+  v7 = [blueLightClient getBlueLightStatus:&v11];
 
   if ((v7 & 1) == 0)
   {

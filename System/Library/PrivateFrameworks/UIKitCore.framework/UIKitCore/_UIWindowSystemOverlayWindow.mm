@@ -1,23 +1,23 @@
 @interface _UIWindowSystemOverlayWindow
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation _UIWindowSystemOverlayWindow
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  v5 = a4;
-  if (![v5 _isInteractionBehaviorInactive] || objc_msgSend(v5, "type") == 9 || +[_UIPassthroughScrollInteraction _shouldEventBePassedThrough:](_UIPassthroughScrollInteraction, "_shouldEventBePassedThrough:", v5))
+  eventCopy = event;
+  if (![eventCopy _isInteractionBehaviorInactive] || objc_msgSend(eventCopy, "type") == 9 || +[_UIPassthroughScrollInteraction _shouldEventBePassedThrough:](_UIPassthroughScrollInteraction, "_shouldEventBePassedThrough:", eventCopy))
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

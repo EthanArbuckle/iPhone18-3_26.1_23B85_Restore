@@ -1,27 +1,27 @@
 @interface PISpatioTemporalGuidedFilterProcessor
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
 @end
 
 @implementation PISpatioTemporalGuidedFilterProcessor
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
   v91 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v71 = [v10 metalCommandBuffer];
-  v11 = [v71 device];
-  v12 = [v8 objectAtIndexedSubscript:0];
-  v74 = v8;
-  v77 = [v8 objectAtIndexedSubscript:1];
+  inputsCopy = inputs;
+  argumentsCopy = arguments;
+  outputCopy = output;
+  metalCommandBuffer = [outputCopy metalCommandBuffer];
+  device = [metalCommandBuffer device];
+  v12 = [inputsCopy objectAtIndexedSubscript:0];
+  v74 = inputsCopy;
+  v77 = [inputsCopy objectAtIndexedSubscript:1];
   v69 = v12;
-  v13 = [v12 metalTexture];
-  v72 = v10;
-  v81 = [v10 metalTexture];
-  v14 = [v13 width];
-  v15 = [v13 height];
-  v16 = [v9 objectForKeyedSubscript:@"epsilon"];
+  metalTexture = [v12 metalTexture];
+  v72 = outputCopy;
+  metalTexture2 = [outputCopy metalTexture];
+  width = [metalTexture width];
+  height = [metalTexture height];
+  v16 = [argumentsCopy objectForKeyedSubscript:@"epsilon"];
   v17 = v16;
   v18 = &unk_1F471F4E0;
   if (v16)
@@ -31,7 +31,7 @@
 
   v19 = v18;
 
-  v20 = [v9 objectForKeyedSubscript:@"radius"];
+  v20 = [argumentsCopy objectForKeyedSubscript:@"radius"];
   v21 = v20;
   v22 = &unk_1F471EAC0;
   if (v20)
@@ -41,7 +41,7 @@
 
   v23 = v22;
 
-  v24 = [v9 objectForKeyedSubscript:@"channels"];
+  v24 = [argumentsCopy objectForKeyedSubscript:@"channels"];
   v25 = v24;
   if (v24)
   {
@@ -57,7 +57,7 @@
 
   v76 = v27;
   v28 = [(__CFString *)v27 isEqualToString:@"RGB"];
-  v29 = [v9 objectForKeyedSubscript:@"iterations"];
+  v29 = [argumentsCopy objectForKeyedSubscript:@"iterations"];
   v30 = v29;
   v31 = &unk_1F471EAD8;
   if (v29)
@@ -67,9 +67,9 @@
 
   v79 = v31;
 
-  v73 = v9;
-  v32 = [v9 objectForKeyedSubscript:@"constrainToAlpha"];
-  v33 = [v32 BOOLValue];
+  v73 = argumentsCopy;
+  v32 = [argumentsCopy objectForKeyedSubscript:@"constrainToAlpha"];
+  bOOLValue = [v32 BOOLValue];
 
   v34 = MEMORY[0x1E6974620];
   v67 = v23;
@@ -86,24 +86,24 @@
     v36 = 1;
   }
 
-  v37 = [v34 filterDescriptorWithWidth:v14 height:v15 arrayLength:1 kernelSpatialDiameter:v35 kernelTemporalDiameter:1 epsilon:v36 sourceChannels:3 guideChannels:?];
-  v70 = v11;
-  v78 = [objc_alloc(MEMORY[0x1E6974618]) initWithDevice:v11 filterDescriptor:v37];
+  v37 = [v34 filterDescriptorWithWidth:width height:height arrayLength:1 kernelSpatialDiameter:v35 kernelTemporalDiameter:1 epsilon:v36 sourceChannels:3 guideChannels:?];
+  v70 = device;
+  v78 = [objc_alloc(MEMORY[0x1E6974618]) initWithDevice:device filterDescriptor:v37];
   v82 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v38 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v39 = 0;
-  v65 = v33;
-  if (v33)
+  17106181 = 0;
+  v65 = bOOLValue;
+  if (bOOLValue)
   {
-    v39 = [v13 newTextureViewWithPixelFormat:objc_msgSend(v13 textureType:"pixelFormat") levels:objc_msgSend(v13 slices:"textureType") swizzle:0, 1, 0, 1, 17106181];
+    17106181 = [metalTexture newTextureViewWithPixelFormat:objc_msgSend(metalTexture textureType:"pixelFormat") levels:objc_msgSend(metalTexture slices:"textureType") swizzle:0, 1, 0, 1, 17106181];
   }
 
-  v40 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:25 width:objc_msgSend(v81 height:"width") mipmapped:objc_msgSend(v81, "height"), 0];
+  v40 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:25 width:objc_msgSend(metalTexture2 height:"width") mipmapped:objc_msgSend(metalTexture2, "height"), 0];
   [v40 setStorageMode:2];
   v80 = v40;
   [v40 setUsage:3];
   v66 = v37;
-  v75 = v39;
+  v75 = 17106181;
   if (v28)
   {
     v64 = v28;
@@ -126,10 +126,10 @@
           }
 
           v28 = (65793 * [*(*(&v83 + 1) + 8 * i) unsignedCharValue]) | v28 & 0xFFFFFFFF00000000 | 0x1000000;
-          v45 = [v13 newTextureViewWithPixelFormat:objc_msgSend(v13 textureType:"pixelFormat") levels:objc_msgSend(v13 slices:"textureType") swizzle:0, 1, 0, 1, v28];
+          v45 = [metalTexture newTextureViewWithPixelFormat:objc_msgSend(metalTexture textureType:"pixelFormat") levels:objc_msgSend(metalTexture slices:"textureType") swizzle:0, 1, 0, 1, v28];
           [v82 addObject:v45];
-          v46 = [v81 device];
-          v47 = [v46 newTextureWithDescriptor:v80];
+          device2 = [metalTexture2 device];
+          v47 = [device2 newTextureWithDescriptor:v80];
 
           [v38 addObject:v47];
         }
@@ -153,7 +153,7 @@
       v48 = 0;
     }
 
-    v50 = v71;
+    v50 = metalCommandBuffer;
     v52 = v77;
     v49 = v64;
   }
@@ -163,7 +163,7 @@
     if (([(__CFString *)v76 isEqualToString:@"Red"]& 1) != 0)
     {
       v49 = 0;
-      v50 = v71;
+      v50 = metalCommandBuffer;
       v51 = 16908802;
       v52 = v77;
     }
@@ -174,13 +174,13 @@
       v49 = 0;
       if (([(__CFString *)v76 isEqualToString:@"Green"]& 1) != 0)
       {
-        v50 = v71;
+        v50 = metalCommandBuffer;
         v51 = 16974595;
       }
 
       else
       {
-        v50 = v71;
+        v50 = metalCommandBuffer;
         if ([(__CFString *)v76 isEqualToString:@"Blue"])
         {
           v51 = 17040388;
@@ -193,28 +193,28 @@
       }
     }
 
-    v53 = [v13 newTextureViewWithPixelFormat:objc_msgSend(v13 textureType:"pixelFormat") levels:objc_msgSend(v13 slices:"textureType") swizzle:0, 1, 0, 1, v51];
+    v53 = [metalTexture newTextureViewWithPixelFormat:objc_msgSend(metalTexture textureType:"pixelFormat") levels:objc_msgSend(metalTexture slices:"textureType") swizzle:0, 1, 0, 1, v51];
     [v82 addObject:v53];
     v48 = 0;
-    if (v33)
+    if (bOOLValue)
     {
       v88 = v75;
       v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v88 count:1];
     }
 
-    v54 = [v81 device];
-    v55 = [v54 newTextureWithDescriptor:v80];
+    device3 = [metalTexture2 device];
+    v55 = [device3 newTextureWithDescriptor:v80];
 
     [v38 addObject:v55];
   }
 
-  v56 = [v52 metalTexture];
-  [v78 encodeToCommandBuffer:v50 sourceTextureArray:v82 guidanceTexture:v56 constraintsTextureArray:v48 numberOfIterations:objc_msgSend(v79 destinationTextureArray:{"unsignedIntegerValue"), v38}];
+  metalTexture3 = [v52 metalTexture];
+  [v78 encodeToCommandBuffer:v50 sourceTextureArray:v82 guidanceTexture:metalTexture3 constraintsTextureArray:v48 numberOfIterations:objc_msgSend(v79 destinationTextureArray:{"unsignedIntegerValue"), v38}];
 
   if (v49)
   {
-    v57 = v81;
-    [PICombineRGBKernel combineRGBTextures:v38 intoDestinationTexture:v81 withCommandBuffer:v50];
+    v57 = metalTexture2;
+    [PICombineRGBKernel combineRGBTextures:v38 intoDestinationTexture:metalTexture2 withCommandBuffer:v50];
   }
 
   else
@@ -227,8 +227,8 @@
     v61 = v60 = v50;
     v87[2] = v61;
     v62 = [MEMORY[0x1E695DEC8] arrayWithObjects:v87 count:3];
-    v57 = v81;
-    [PICombineRGBKernel combineRGBTextures:v62 intoDestinationTexture:v81 withCommandBuffer:v60];
+    v57 = metalTexture2;
+    [PICombineRGBKernel combineRGBTextures:v62 intoDestinationTexture:metalTexture2 withCommandBuffer:v60];
 
     v50 = v60;
     v52 = v77;

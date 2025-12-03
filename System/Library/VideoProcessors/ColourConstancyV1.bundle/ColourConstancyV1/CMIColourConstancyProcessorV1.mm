@@ -1,15 +1,15 @@
 @interface CMIColourConstancyProcessorV1
 - (CMIColourConstancyProcessorDelegate)delegate;
-- (id)externalMemoryDescriptorForConfiguration:(id)a3;
-- (int)addFrame:(__CVBuffer *)a3 metadata:(id)a4 frameType:(unsigned int)a5 frameParams:(id)a6;
-- (int)prepareToProcess:(unsigned int)a3;
+- (id)externalMemoryDescriptorForConfiguration:(id)configuration;
+- (int)addFrame:(__CVBuffer *)frame metadata:(id)metadata frameType:(unsigned int)type frameParams:(id)params;
+- (int)prepareToProcess:(unsigned int)process;
 - (int)prewarm;
 - (int)process;
 - (int)purgeResources;
 - (int)resetState;
 - (int)setup;
 - (void)dealloc;
-- (void)setExternalMemoryResource:(id)a3;
+- (void)setExternalMemoryResource:(id)resource;
 @end
 
 @implementation CMIColourConstancyProcessorV1
@@ -40,13 +40,13 @@
   if (self->_metalContext)
   {
     v6 = [FigMetalAllocator alloc];
-    v7 = [(FigMetalContext *)self->_metalContext device];
-    v8 = [v6 initWithDevice:v7 allocatorType:2];
+    device = [(FigMetalContext *)self->_metalContext device];
+    v8 = [v6 initWithDevice:device allocatorType:2];
     [(FigMetalContext *)self->_metalContext setAllocator:v8];
 
-    v9 = [(FigMetalContext *)self->_metalContext allocator];
+    allocator = [(FigMetalContext *)self->_metalContext allocator];
 
-    if (v9)
+    if (allocator)
     {
       v10 = sub_14A0C(self);
       if (v10)
@@ -76,14 +76,14 @@
   return v10;
 }
 
-- (void)setExternalMemoryResource:(id)a3
+- (void)setExternalMemoryResource:(id)resource
 {
-  objc_storeStrong(&self->_externalMemoryResource, a3);
-  v5 = a3;
-  [(CMIColourConstancyCoreV1 *)self->_colourConstancyCoreProcessor setExternalMemoryResource:v5];
+  objc_storeStrong(&self->_externalMemoryResource, resource);
+  resourceCopy = resource;
+  [(CMIColourConstancyCoreV1 *)self->_colourConstancyCoreProcessor setExternalMemoryResource:resourceCopy];
 }
 
-- (id)externalMemoryDescriptorForConfiguration:(id)a3
+- (id)externalMemoryDescriptorForConfiguration:(id)configuration
 {
   v4 = objc_opt_new();
   if (v4)
@@ -99,7 +99,7 @@
   return v4;
 }
 
-- (int)prepareToProcess:(unsigned int)a3
+- (int)prepareToProcess:(unsigned int)process
 {
   if (gGMFigKTraceEnabled == 1)
   {
@@ -112,9 +112,9 @@
     goto LABEL_19;
   }
 
-  v5 = [(FigMetalContext *)self->_metalContext allocator];
+  allocator = [(FigMetalContext *)self->_metalContext allocator];
 
-  if (v5)
+  if (allocator)
   {
     v6 = objc_opt_new();
     v7 = v6;
@@ -142,8 +142,8 @@
       }
 
       [v7 setMemSize:v11];
-      v12 = [(FigMetalContext *)self->_metalContext allocator];
-      v4 = [v12 setupWithDescriptor:v7];
+      allocator2 = [(FigMetalContext *)self->_metalContext allocator];
+      v4 = [allocator2 setupWithDescriptor:v7];
 
       if (v4)
       {
@@ -154,9 +154,9 @@
       goto LABEL_17;
     }
 
-    v8 = [(CMIExternalMemoryResource *)self->_externalMemoryResource allocatorBackend];
-    v9 = v8;
-    if (v8)
+    allocatorBackend = [(CMIExternalMemoryResource *)self->_externalMemoryResource allocatorBackend];
+    v9 = allocatorBackend;
+    if (allocatorBackend)
     {
       if (self->_allocatorSetupComplete)
       {
@@ -166,11 +166,11 @@
       else
       {
         self->_enableDebuggingOutput = 0;
-        if ([v8 memSize] >> 23 >= 0xB)
+        if ([allocatorBackend memSize] >> 23 >= 0xB)
         {
           [v7 setMemSize:{objc_msgSend(v9, "memSize")}];
-          v10 = [(FigMetalContext *)self->_metalContext allocator];
-          v4 = [v10 setupWithDescriptor:v7 allocatorBackend:v9];
+          allocator3 = [(FigMetalContext *)self->_metalContext allocator];
+          v4 = [allocator3 setupWithDescriptor:v7 allocatorBackend:v9];
 
           if (!v4)
           {
@@ -395,8 +395,8 @@ LABEL_97:
       goto LABEL_101;
     }
 
-    v18 = rect.size.width;
-    v20 = rect.size.height;
+    width = rect.size.width;
+    height = rect.size.height;
     x = rect.origin.x;
     y = rect.origin.y;
     goto LABEL_37;
@@ -404,9 +404,9 @@ LABEL_97:
 
   if (!v16)
   {
-    v18 = [(MTLTexture *)self->_processorData.brackets[1].lumaTexture width];
+    width = [(MTLTexture *)self->_processorData.brackets[1].lumaTexture width];
     v19 = 0;
-    v20 = [(MTLTexture *)self->_processorData.brackets[1].lumaTexture height];
+    height = [(MTLTexture *)self->_processorData.brackets[1].lumaTexture height];
     goto LABEL_38;
   }
 
@@ -436,8 +436,8 @@ LABEL_100:
     goto LABEL_100;
   }
 
-  v18 = v27;
-  v20 = v28;
+  width = v27;
+  height = v28;
   x = v25;
   y = v26;
 LABEL_37:
@@ -451,7 +451,7 @@ LABEL_38:
 
   v30 = CVPixelBufferGetWidth(outputLinearRGBPixelBuffer);
   v31 = CVPixelBufferGetHeight(self->_outputLinearRGBPixelBuffer);
-  if ((v30 != v18 || v31 != v20) && (v30 != v18 / 2 || v31 != v20 / 2))
+  if ((v30 != width || v31 != height) && (v30 != width / 2 || v31 != height / 2))
   {
     sub_18E60(v17, v15);
 LABEL_64:
@@ -567,12 +567,12 @@ LABEL_92:
     v53 = __PAIR64__(v46, v44);
   }
 
-  *&rect.origin.x = __PAIR64__(v20, v18);
+  *&rect.origin.x = __PAIR64__(height, width);
   *&rect.origin.y = __PAIR64__(v51, v50);
   LOBYTE(rect.size.width) = v52;
   *(&rect.size.width + 1) = 0;
   BYTE3(rect.size.width) = 0;
-  v54 = sub_14B9C(self, v18 | (v20 << 32), v19, &rect, *&v53);
+  v54 = sub_14B9C(self, width | (height << 32), v19, &rect, *&v53);
   if (!v54)
   {
     [(NSMutableDictionary *)self->_outputImageMetadata setObject:&__kCFBooleanTrue forKeyedSubscript:kFigCaptureSampleBufferMetadata_ConstantColorApplied];
@@ -613,21 +613,21 @@ LABEL_60:
 
 - (int)purgeResources
 {
-  v3 = [(FigMetalContext *)self->_metalContext allocator];
-  v4 = [v3 usedSizeAll];
+  allocator = [(FigMetalContext *)self->_metalContext allocator];
+  usedSizeAll = [allocator usedSizeAll];
 
-  if (v4)
+  if (usedSizeAll)
   {
     FigDebugAssert3();
   }
 
   else
   {
-    v5 = [(FigMetalContext *)self->_metalContext allocator];
-    [v5 reset];
+    allocator2 = [(FigMetalContext *)self->_metalContext allocator];
+    [allocator2 reset];
 
-    v6 = [(FigMetalContext *)self->_metalContext allocator];
-    [v6 purgeResources];
+    allocator3 = [(FigMetalContext *)self->_metalContext allocator];
+    [allocator3 purgeResources];
   }
 
   return 0;
@@ -696,14 +696,14 @@ LABEL_60:
   return 0;
 }
 
-- (int)addFrame:(__CVBuffer *)a3 metadata:(id)a4 frameType:(unsigned int)a5 frameParams:(id)a6
+- (int)addFrame:(__CVBuffer *)frame metadata:(id)metadata frameType:(unsigned int)type frameParams:(id)params
 {
-  v11 = a4;
-  v12 = a6;
+  metadataCopy = metadata;
+  paramsCopy = params;
   if (!self->_allocatorSetupComplete)
   {
     sub_19858();
-    v14 = 0;
+    newTextureDescriptor = 0;
     v29 = 6;
     goto LABEL_35;
   }
@@ -718,40 +718,40 @@ LABEL_60:
   {
     sub_198B8();
 LABEL_28:
-    v14 = 0;
+    newTextureDescriptor = 0;
     goto LABEL_34;
   }
 
-  if (!v12)
+  if (!paramsCopy)
   {
     sub_19D44();
     goto LABEL_28;
   }
 
-  if (CVPixelBufferGetPixelFormatType([v12 lscGains]) != 1380411457)
+  if (CVPixelBufferGetPixelFormatType([paramsCopy lscGains]) != 1380411457)
   {
     sub_1991C();
     goto LABEL_28;
   }
 
-  v13 = [(FigMetalContext *)self->_metalContext allocator];
-  v14 = [v13 newTextureDescriptor];
+  allocator = [(FigMetalContext *)self->_metalContext allocator];
+  newTextureDescriptor = [allocator newTextureDescriptor];
 
-  if (!v14)
+  if (!newTextureDescriptor)
   {
     sub_19CE4();
     v29 = 7;
     goto LABEL_35;
   }
 
-  if (!v11)
+  if (!metadataCopy)
   {
     sub_19C84();
     v29 = 2;
     goto LABEL_35;
   }
 
-  CVPixelBufferGetPixelFormatType(a3);
+  CVPixelBufferGetPixelFormatType(frame);
   if (FigCaptureUncompressedPixelFormatForPixelFormat() != 1751527984)
   {
     sub_19980();
@@ -760,29 +760,29 @@ LABEL_28:
 
   if (!self->_isSetupTuningParametersDone)
   {
-    v30 = [v11 objectForKeyedSubscript:kFigCaptureStreamMetadata_PortType];
+    v30 = [metadataCopy objectForKeyedSubscript:kFigCaptureStreamMetadata_PortType];
     v31 = [(NSDictionary *)self->_tuningParameters objectForKeyedSubscript:v30];
     sub_15168(self, v31);
   }
 
-  if (!CVPixelBufferIsPlanar(a3))
+  if (!CVPixelBufferIsPlanar(frame))
   {
     sub_19C24();
     goto LABEL_34;
   }
 
-  if (CVPixelBufferGetPlaneCount(a3) != 2)
+  if (CVPixelBufferGetPlaneCount(frame) != 2)
   {
     sub_199E4();
     goto LABEL_34;
   }
 
-  if (a5)
+  if (type)
   {
-    if (a5 == 1)
+    if (type == 1)
     {
-      v33 = v14;
-      v15 = v11;
+      v33 = newTextureDescriptor;
+      v15 = metadataCopy;
       v16 = 120;
       v17 = 56;
       v18 = 40;
@@ -794,28 +794,28 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  v33 = v14;
-  v15 = v11;
+  v33 = newTextureDescriptor;
+  v15 = metadataCopy;
   v16 = 80;
   v17 = 48;
   v18 = 32;
 LABEL_18:
-  *(&self->super.isa + v18) = CVPixelBufferRetain(a3);
-  objc_storeStrong((&self->super.isa + v17), a6);
+  *(&self->super.isa + v18) = CVPixelBufferRetain(frame);
+  objc_storeStrong((&self->super.isa + v17), params);
   v19 = self + v16;
-  objc_storeStrong((&self->_allocatorSetupComplete + v16), a4);
-  if (![v12 lscGains])
+  objc_storeStrong((&self->_allocatorSetupComplete + v16), metadata);
+  if (![paramsCopy lscGains])
   {
     sub_19BC4();
     v29 = 1;
 LABEL_40:
-    v11 = v15;
+    metadataCopy = v15;
 LABEL_42:
-    v14 = v33;
+    newTextureDescriptor = v33;
     goto LABEL_35;
   }
 
-  v20 = -[FigMetalContext bindPixelBufferToMTL2DTexture:pixelFormat:usage:plane:](self->_metalContext, "bindPixelBufferToMTL2DTexture:pixelFormat:usage:plane:", [v12 lscGains], 115, 23, 0);
+  v20 = -[FigMetalContext bindPixelBufferToMTL2DTexture:pixelFormat:usage:plane:](self->_metalContext, "bindPixelBufferToMTL2DTexture:pixelFormat:usage:plane:", [paramsCopy lscGains], 115, 23, 0);
   v21 = *(v19 + 3);
   *(v19 + 3) = v20;
 
@@ -826,28 +826,28 @@ LABEL_42:
     goto LABEL_40;
   }
 
-  v22 = [v12 lscParams];
+  lscParams = [paramsCopy lscParams];
 
-  v11 = v15;
-  if (!v22)
+  metadataCopy = v15;
+  if (!lscParams)
   {
     sub_19B04();
     v29 = 1;
     goto LABEL_42;
   }
 
-  v23 = [v12 lscParams];
+  lscParams2 = [paramsCopy lscParams];
   v24 = *(v19 + 4);
-  *(v19 + 4) = v23;
+  *(v19 + 4) = lscParams2;
 
-  v25 = [(FigMetalContext *)self->_metalContext bindPixelBufferToMTL2DTexture:a3 pixelFormat:25 usage:7 plane:0];
+  v25 = [(FigMetalContext *)self->_metalContext bindPixelBufferToMTL2DTexture:frame pixelFormat:25 usage:7 plane:0];
   v26 = *v19;
   *v19 = v25;
 
-  v14 = v33;
+  newTextureDescriptor = v33;
   if (*v19)
   {
-    v27 = [(FigMetalContext *)self->_metalContext bindPixelBufferToMTL2DTexture:a3 pixelFormat:65 usage:7 plane:1];
+    v27 = [(FigMetalContext *)self->_metalContext bindPixelBufferToMTL2DTexture:frame pixelFormat:65 usage:7 plane:1];
     v28 = *(v19 + 1);
     *(v19 + 1) = v27;
 

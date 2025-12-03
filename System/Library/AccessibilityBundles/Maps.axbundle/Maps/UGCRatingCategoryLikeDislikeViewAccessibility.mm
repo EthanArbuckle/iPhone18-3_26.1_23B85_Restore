@@ -1,16 +1,16 @@
 @interface UGCRatingCategoryLikeDislikeViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_setupSubviews;
 @end
 
 @implementation UGCRatingCategoryLikeDislikeViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UGCRatingCategoryLikeDislikeView" hasInstanceVariable:@"_likeButton" withType:"UGCGlyphButtonView"];
-  [v3 validateClass:@"UGCRatingCategoryLikeDislikeView" hasInstanceVariable:@"_dislikeButton" withType:"UGCGlyphButtonView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UGCRatingCategoryLikeDislikeView" hasInstanceVariable:@"_likeButton" withType:"UGCGlyphButtonView"];
+  [validationsCopy validateClass:@"UGCRatingCategoryLikeDislikeView" hasInstanceVariable:@"_dislikeButton" withType:"UGCGlyphButtonView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

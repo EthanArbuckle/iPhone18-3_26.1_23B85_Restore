@@ -1,18 +1,18 @@
 @interface PXStoryConcreteTimelineSpec
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)viewportSize;
-- (PXStoryConcreteTimelineSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4;
+- (PXStoryConcreteTimelineSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options;
 - (UIEdgeInsets)safeAreaInsets;
 - (unint64_t)hash;
-- (void)setFixedSegmentDuration:(id *)a3;
+- (void)setFixedSegmentDuration:(id *)duration;
 @end
 
 @implementation PXStoryConcreteTimelineSpec
 
-- (void)setFixedSegmentDuration:(id *)a3
+- (void)setFixedSegmentDuration:(id *)duration
 {
-  var3 = a3->var3;
-  *&self->_fixedSegmentDuration.value = *&a3->var0;
+  var3 = duration->var3;
+  *&self->_fixedSegmentDuration.value = *&duration->var0;
   self->_fixedSegmentDuration.epoch = var3;
 }
 
@@ -44,17 +44,17 @@
   v5 = v3 ^ (2 * v4);
   [(PXStoryConcreteTimelineSpec *)self fixedSegmentDuration];
   v6 = v5 ^ (4 * v11);
-  v7 = [(PXStoryConcreteTimelineSpec *)self allowedTransitionKinds];
-  v8 = v6 ^ (8 * [v7 hash]);
+  allowedTransitionKinds = [(PXStoryConcreteTimelineSpec *)self allowedTransitionKinds];
+  v8 = v6 ^ (8 * [allowedTransitionKinds hash]);
 
   v9 = v8 ^ (16 * [(PXStoryConcreteTimelineSpec *)self fallbackTransitionKind]);
   return v9 ^ (32 * [(PXStoryConcreteTimelineSpec *)self storyTransitionCurveType]);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -64,7 +64,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(PXStoryConcreteTimelineSpec *)self viewportSize];
       v7 = v6;
       v9 = v8;
@@ -88,20 +88,20 @@
   return v13;
 }
 
-- (PXStoryConcreteTimelineSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4
+- (PXStoryConcreteTimelineSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options
 {
-  v6 = a3;
+  collectionCopy = collection;
   v17.receiver = self;
   v17.super_class = PXStoryConcreteTimelineSpec;
-  v7 = [(PXStoryConcreteTimelineSpec *)&v17 initWithExtendedTraitCollection:v6 options:a4];
+  v7 = [(PXStoryConcreteTimelineSpec *)&v17 initWithExtendedTraitCollection:collectionCopy options:options];
   v8 = v7;
   if (v7)
   {
     p_viewportSize = &v7->_viewportSize;
-    [v6 layoutReferenceSize];
+    [collectionCopy layoutReferenceSize];
     *&p_viewportSize->width = v10;
     v8->_viewportSize.height = v11;
-    [v6 peripheryInsets];
+    [collectionCopy peripheryInsets];
     v8->_safeAreaInsets.top = v12;
     v8->_safeAreaInsets.left = v13;
     v8->_safeAreaInsets.bottom = v14;

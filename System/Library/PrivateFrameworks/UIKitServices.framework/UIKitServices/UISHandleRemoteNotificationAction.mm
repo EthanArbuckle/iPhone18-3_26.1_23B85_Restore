@@ -1,37 +1,37 @@
 @interface UISHandleRemoteNotificationAction
-- (id)_initWithRemoteNotificationPayload:(id)a3 action:(id)a4 userResponse:(id)a5 type:(unint64_t)a6 withHandler:(id)a7;
+- (id)_initWithRemoteNotificationPayload:(id)payload action:(id)action userResponse:(id)response type:(unint64_t)type withHandler:(id)handler;
 - (id)action;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 - (id)payload;
 - (id)userResponse;
 - (unint64_t)UIActionType;
-- (void)sendResponse:(id)a3;
+- (void)sendResponse:(id)response;
 @end
 
 @implementation UISHandleRemoteNotificationAction
 
-- (id)_initWithRemoteNotificationPayload:(id)a3 action:(id)a4 userResponse:(id)a5 type:(unint64_t)a6 withHandler:(id)a7
+- (id)_initWithRemoteNotificationPayload:(id)payload action:(id)action userResponse:(id)response type:(unint64_t)type withHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  if (!v13)
+  payloadCopy = payload;
+  actionCopy = action;
+  responseCopy = response;
+  handlerCopy = handler;
+  if (!payloadCopy)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"UISHandleRemoteNotificationAction.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"payload"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISHandleRemoteNotificationAction.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"payload"}];
   }
 
   v17 = objc_alloc_init(MEMORY[0x1E698E700]);
-  [v17 setObject:v13 forSetting:1];
-  [v17 setObject:v14 forSetting:2];
-  [v17 setObject:v15 forSetting:4];
-  v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
+  [v17 setObject:payloadCopy forSetting:1];
+  [v17 setObject:actionCopy forSetting:2];
+  [v17 setObject:responseCopy forSetting:4];
+  v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
   [v17 setObject:v18 forSetting:3];
 
-  if (v16)
+  if (handlerCopy)
   {
-    v19 = [MEMORY[0x1E698E5F8] responderWithHandler:v16];
+    v19 = [MEMORY[0x1E698E5F8] responderWithHandler:handlerCopy];
   }
 
   else
@@ -48,8 +48,8 @@
 
 - (id)payload
 {
-  v2 = [(UISHandleRemoteNotificationAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(UISHandleRemoteNotificationAction *)self info];
+  v3 = [info objectForSetting:1];
 
   return v3;
 }
@@ -58,61 +58,61 @@
 {
   if ([(UISHandleRemoteNotificationAction *)self UIActionType]!= 4)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UISHandleRemoteNotificationAction.m" lineNumber:53 description:@"You're trying to get the action but this is just a simple remote notification"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISHandleRemoteNotificationAction.m" lineNumber:53 description:@"You're trying to get the action but this is just a simple remote notification"];
   }
 
-  v4 = [(UISHandleRemoteNotificationAction *)self info];
-  v5 = [v4 objectForSetting:2];
+  info = [(UISHandleRemoteNotificationAction *)self info];
+  v5 = [info objectForSetting:2];
 
   return v5;
 }
 
 - (id)userResponse
 {
-  v2 = [(UISHandleRemoteNotificationAction *)self info];
-  v3 = [v2 objectForSetting:4];
+  info = [(UISHandleRemoteNotificationAction *)self info];
+  v3 = [info objectForSetting:4];
 
   return v3;
 }
 
 - (unint64_t)UIActionType
 {
-  v2 = [(UISHandleRemoteNotificationAction *)self info];
-  v3 = [v2 objectForSetting:3];
-  v4 = [v3 integerValue];
+  info = [(UISHandleRemoteNotificationAction *)self info];
+  v3 = [info objectForSetting:3];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (void)sendResponse:(id)a3
+- (void)sendResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   if ([(UISHandleRemoteNotificationAction *)self UIActionType]== 3)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"UISHandleRemoteNotificationAction.m" lineNumber:68 description:{@"You sent back the wrong response class -> %@", v5}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UISHandleRemoteNotificationAction.m" lineNumber:68 description:{@"You sent back the wrong response class -> %@", responseCopy}];
     }
   }
 
   v7.receiver = self;
   v7.super_class = UISHandleRemoteNotificationAction;
-  [(UISHandleRemoteNotificationAction *)&v7 sendResponse:v5];
+  [(UISHandleRemoteNotificationAction *)&v7 sendResponse:responseCopy];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 - 1 > 2)
+  if (setting - 1 > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7458FB8[a3 - 1];
+    return off_1E7458FB8[setting - 1];
   }
 }
 

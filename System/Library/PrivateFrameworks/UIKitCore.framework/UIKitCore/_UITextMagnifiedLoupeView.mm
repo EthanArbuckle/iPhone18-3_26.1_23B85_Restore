@@ -3,31 +3,31 @@
 + (double)loupeZoomScale;
 - ($2BD9DB369DDD0E9E489A8699A184AD3B)_defaultOriginShadow;
 - ($59ECE587B56CBF78EA342F243490147C)_defaultOriginShape;
-- (CGPoint)constrainedModelPositionForPosition:(CGPoint)a3;
+- (CGPoint)constrainedModelPositionForPosition:(CGPoint)position;
 - (CGPoint)modelPosition;
 - (CGSize)preferredSize;
 - (UICoordinateSpace)containerCoordinateSpace;
-- (_UITextMagnifiedLoupeView)initWithSourceView:(id)a3;
+- (_UITextMagnifiedLoupeView)initWithSourceView:(id)view;
 - (_UITextSelectionWidgetAnimating)animatableSelectionWidget;
 - (id)_animatableSelectionWidget;
-- (id)_configuredGroupCompletion:(id)a3;
-- (void)_displayLinkFired:(id)a3;
+- (id)_configuredGroupCompletion:(id)completion;
+- (void)_displayLinkFired:(id)fired;
 - (void)_stopDisplayLink;
-- (void)_updateCloseLoupeAnimation:(id)a3;
-- (void)_updateOpenLoupeAnimation:(id)a3;
-- (void)_updatePortalViewTransformForPosition:(CGPoint)a3 zoomScale:(double)a4;
+- (void)_updateCloseLoupeAnimation:(id)animation;
+- (void)_updateOpenLoupeAnimation:(id)animation;
+- (void)_updatePortalViewTransformForPosition:(CGPoint)position zoomScale:(double)scale;
 - (void)layoutSubviews;
 - (void)removeFromSuperview;
-- (void)setAnimatableSelectionWidget:(id)a3;
-- (void)setModelPosition:(CGPoint)a3;
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)setAnimatableSelectionWidget:(id)widget;
+- (void)setModelPosition:(CGPoint)position;
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation _UITextMagnifiedLoupeView
 
-- (_UITextMagnifiedLoupeView)initWithSourceView:(id)a3
+- (_UITextMagnifiedLoupeView)initWithSourceView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v49.receiver = self;
   v49.super_class = _UITextMagnifiedLoupeView;
   v5 = *MEMORY[0x1E695F058];
@@ -48,12 +48,12 @@
     [(UIView *)v10->_containerView setBackgroundColor:v13];
 
     [(UIView *)v10->_containerView setClipsToBounds:1];
-    v14 = [(UIView *)v10->_containerView layer];
-    [v14 setAllowsEdgeAntialiasing:1];
+    layer = [(UIView *)v10->_containerView layer];
+    [layer setAllowsEdgeAntialiasing:1];
 
     v15 = *MEMORY[0x1E69796E8];
-    v16 = [(UIView *)v10->_containerView layer];
-    [v16 setCornerCurve:v15];
+    layer2 = [(UIView *)v10->_containerView layer];
+    [layer2 setCornerCurve:v15];
 
     [(UIView *)v10 addSubview:v10->_containerView];
     v17 = [[UIView alloc] initWithFrame:v5, v6, v7, v8];
@@ -61,17 +61,17 @@
     v10->_portalContainerView = v17;
 
     [(UIView *)v10->_containerView addSubview:v10->_portalContainerView];
-    v19 = [v4 window];
-    v20 = [[_UIPortalView alloc] initWithSourceView:v19];
+    window = [viewCopy window];
+    v20 = [[_UIPortalView alloc] initWithSourceView:window];
     portalView = v10->_portalView;
     v10->_portalView = v20;
 
     [(_UIPortalView *)v10->_portalView setMatchesAlpha:1];
     [(_UIPortalView *)v10->_portalView setMatchesTransform:1];
-    [v19 anchorPoint];
+    [window anchorPoint];
     [(UIView *)v10->_portalView setAnchorPoint:?];
-    v22 = [v19 layer];
-    [v22 frame];
+    layer3 = [window layer];
+    [layer3 frame];
     [(_UIPortalView *)v10->_portalView setFrame:?];
 
     [(UIView *)v10->_portalContainerView addSubview:v10->_portalView];
@@ -80,32 +80,32 @@
     v10->_glowView = v23;
 
     v25 = +[UIColor blackColor];
-    v26 = [v25 CGColor];
-    v27 = [(UIView *)v10->_glowView layer];
-    [v27 setShadowColor:v26];
+    cGColor = [v25 CGColor];
+    layer4 = [(UIView *)v10->_glowView layer];
+    [layer4 setShadowColor:cGColor];
 
-    v28 = [(UIView *)v10->_glowView layer];
+    layer5 = [(UIView *)v10->_glowView layer];
     LODWORD(v29) = 1041865114;
-    [v28 setShadowOpacity:v29];
+    [layer5 setShadowOpacity:v29];
 
     v30 = *MEMORY[0x1E695F060];
     v31 = *(MEMORY[0x1E695F060] + 8);
-    v32 = [(UIView *)v10->_glowView layer];
-    [v32 setShadowOffset:{v30, v31}];
+    layer6 = [(UIView *)v10->_glowView layer];
+    [layer6 setShadowOffset:{v30, v31}];
 
-    v33 = [(UIView *)v10->_glowView layer];
-    [v33 setShadowRadius:8.0];
+    layer7 = [(UIView *)v10->_glowView layer];
+    [layer7 setShadowRadius:8.0];
 
-    v34 = [(UIView *)v10->_glowView layer];
-    [v34 setCornerCurve:v15];
+    layer8 = [(UIView *)v10->_glowView layer];
+    [layer8 setCornerCurve:v15];
 
-    [v4 contentScaleFactor];
+    [viewCopy contentScaleFactor];
     v36 = v35;
-    v37 = [(UIView *)v10->_glowView layer];
-    [v37 setRasterizationScale:v36];
+    layer9 = [(UIView *)v10->_glowView layer];
+    [layer9 setRasterizationScale:v36];
 
-    v38 = [(UIView *)v10->_glowView layer];
-    [v38 setShouldRasterize:1];
+    layer10 = [(UIView *)v10->_glowView layer];
+    [layer10 setShouldRasterize:1];
 
     [(UIView *)v10->_containerView addSubview:v10->_glowView];
     v39 = [[UIView alloc] initWithFrame:v5, v6, v7, v8];
@@ -113,12 +113,12 @@
     v10->_coverView = v39;
 
     [(UIView *)v10->_containerView addSubview:v10->_coverView];
-    v41 = [v4 window];
-    v42 = [v41 screen];
+    window2 = [viewCopy window];
+    screen = [window2 screen];
 
-    if (v42)
+    if (screen)
     {
-      v43 = v42;
+      v43 = screen;
     }
 
     else
@@ -132,8 +132,8 @@
 
     [(CADisplayLink *)v10->_displayLink setPreferredFramesPerSecond:60];
     v46 = v10->_displayLink;
-    v47 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(CADisplayLink *)v46 addToRunLoop:v47 forMode:*MEMORY[0x1E695D918]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(CADisplayLink *)v46 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695D918]];
   }
 
   return v10;
@@ -164,18 +164,18 @@
 
 - (UICoordinateSpace)containerCoordinateSpace
 {
-  v2 = [(UIView *)self window];
-  v3 = [v2 coordinateSpace];
+  window = [(UIView *)self window];
+  coordinateSpace = [window coordinateSpace];
 
-  return v3;
+  return coordinateSpace;
 }
 
-- (CGPoint)constrainedModelPositionForPosition:(CGPoint)a3
+- (CGPoint)constrainedModelPositionForPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(_UITextMagnifiedLoupeView *)self containerCoordinateSpace];
-  [v6 bounds];
+  y = position.y;
+  x = position.x;
+  containerCoordinateSpace = [(_UITextMagnifiedLoupeView *)self containerCoordinateSpace];
+  [containerCoordinateSpace bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -191,11 +191,11 @@
   return result;
 }
 
-- (void)setModelPosition:(CGPoint)a3
+- (void)setModelPosition:(CGPoint)position
 {
-  if (self->_modelPosition.x != a3.x || self->_modelPosition.y != a3.y)
+  if (self->_modelPosition.x != position.x || self->_modelPosition.y != position.y)
   {
-    self->_modelPosition = a3;
+    self->_modelPosition = position;
     [(CADisplayLink *)self->_displayLink setPaused:0];
   }
 
@@ -210,32 +210,32 @@
   }
 }
 
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  if (self->_visible == v6)
+  animatedCopy = animated;
+  visibleCopy = visible;
+  completionCopy = completion;
+  if (self->_visible == visibleCopy)
   {
-    if (!v8)
+    if (!completionCopy)
     {
       goto LABEL_14;
     }
 
-    v10 = v8;
-    (*(v8 + 2))(v8, 0);
+    v10 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0);
     goto LABEL_13;
   }
 
-  v10 = v8;
-  self->_visible = v6;
+  v10 = completionCopy;
+  self->_visible = visibleCopy;
   [(UIView *)self bounds];
-  if (v6)
+  if (visibleCopy)
   {
-    v9 = [(_UITextMagnifiedLoupeView *)self containerView];
-    [v9 setHidden:0];
+    containerView = [(_UITextMagnifiedLoupeView *)self containerView];
+    [containerView setHidden:0];
 
-    if (v5)
+    if (animatedCopy)
     {
       [(_UITextMagnifiedLoupeView *)self _updateOpenLoupeAnimation:v10];
       goto LABEL_13;
@@ -246,7 +246,7 @@
 
   else
   {
-    if (v5)
+    if (animatedCopy)
     {
       [(_UITextMagnifiedLoupeView *)self constrainedModelPositionForPosition:self->_modelPosition.x, self->_modelPosition.y];
       [(UIView *)self setCenter:?];
@@ -258,7 +258,7 @@
   }
 
   [(UIView *)self setNeedsLayout];
-  v8 = v10;
+  completionCopy = v10;
   if (!v10)
   {
     goto LABEL_14;
@@ -266,13 +266,13 @@
 
   (*(v10 + 2))(v10, 1);
 LABEL_13:
-  v8 = v10;
+  completionCopy = v10;
 LABEL_14:
 }
 
-- (void)_updateOpenLoupeAnimation:(id)a3
+- (void)_updateOpenLoupeAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   [(_UITextMagnifiedLoupeView *)self _resetAnimationState];
   [objc_opt_class() loupeZoomOutScale];
   [(_UITextMagnifiedLoupeView *)self _updatePortalViewTransformForPosition:self->_modelPosition.x zoomScale:self->_modelPosition.y, v5];
@@ -298,7 +298,7 @@ LABEL_14:
   v10[1] = 3221225472;
   v10[2] = __55___UITextMagnifiedLoupeView__updateOpenLoupeAnimation___block_invoke_3;
   v10[3] = &unk_1E7103030;
-  v9 = v4;
+  v9 = animationCopy;
   v11 = v9;
   [UIView _animateUsingSpringBehavior:v8 tracking:0 animations:v12 completion:v10];
 
@@ -308,11 +308,11 @@ LABEL_14:
   objc_destroyWeak(&location);
 }
 
-- (void)_updateCloseLoupeAnimation:(id)a3
+- (void)_updateCloseLoupeAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   v5 = [UIViewSpringAnimationBehavior behaviorWithDampingRatio:1.0 response:0.23];
-  v6 = [(_UITextMagnifiedLoupeView *)self _configuredGroupCompletion:v4];
+  v6 = [(_UITextMagnifiedLoupeView *)self _configuredGroupCompletion:animationCopy];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -341,9 +341,9 @@ LABEL_14:
   objc_destroyWeak(&location);
 }
 
-- (id)_configuredGroupCompletion:(id)a3
+- (id)_configuredGroupCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   transitionGroupCompletion = self->_transitionGroupCompletion;
   if (!transitionGroupCompletion)
   {
@@ -362,7 +362,7 @@ LABEL_14:
     objc_copyWeak(&v13, &location);
     objc_copyWeak(&v14, &from);
     objc_copyWeak(&v15, &to);
-    v12 = v4;
+    v12 = completionCopy;
     [(_UIGroupCompletion *)v8 addNonIncrementingCompletion:v11];
 
     objc_destroyWeak(&v15);
@@ -435,9 +435,9 @@ LABEL_14:
 - (id)_animatableSelectionWidget
 {
   WeakRetained = objc_loadWeakRetained(&self->_animatableSelectionWidget);
-  v4 = [(UIView *)WeakRetained _isInVisibleHierarchy];
+  _isInVisibleHierarchy = [(UIView *)WeakRetained _isInVisibleHierarchy];
 
-  if (v4)
+  if (_isInVisibleHierarchy)
   {
     v5 = objc_loadWeakRetained(&self->_animatableSelectionWidget);
   }
@@ -455,17 +455,17 @@ LABEL_14:
   v83.receiver = self;
   v83.super_class = _UITextMagnifiedLoupeView;
   [(UIView *)&v83 layoutSubviews];
-  v3 = [(_UITextMagnifiedLoupeView *)self _animatableSelectionWidget];
-  v4 = v3;
+  _animatableSelectionWidget = [(_UITextMagnifiedLoupeView *)self _animatableSelectionWidget];
+  v4 = _animatableSelectionWidget;
   apertureOpen = self->_animationState.apertureOpen;
   floatingAbove = self->_animationState.floatingAbove;
   v81 = 0u;
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  if (v3)
+  if (_animatableSelectionWidget)
   {
-    [v3 originShape];
+    [_animatableSelectionWidget originShape];
     v78 = 0.0;
     v76 = 0u;
     v77 = 0u;
@@ -481,7 +481,7 @@ LABEL_14:
     [(_UITextMagnifiedLoupeView *)self _defaultOriginShadow];
   }
 
-  v7 = [(_UITextMagnifiedLoupeView *)self _isVertical];
+  _isVertical = [(_UITextMagnifiedLoupeView *)self _isVertical];
   memset(&v75, 0, sizeof(v75));
   if (!floatingAbove)
   {
@@ -507,7 +507,7 @@ LABEL_11:
 
   v8 = 65.0;
   v9 = 0.0;
-  if (!v7)
+  if (!_isVertical)
   {
     v8 = 0.0;
     v9 = -65.0;
@@ -520,8 +520,8 @@ LABEL_11:
   }
 
 LABEL_8:
-  v10 = [v4 originView];
-  [(UIView *)self convertPoint:v10 fromView:v79];
+  originView = [v4 originView];
+  [(UIView *)self convertPoint:originView fromView:v79];
   v12 = v11;
   v14 = v13;
 
@@ -536,7 +536,7 @@ LABEL_9:
     v22 = v21;
     v24 = v23;
     v26 = v25;
-    v27 = [(UIView *)self tintColor];
+    tintColor = [(UIView *)self tintColor];
     v14 = v22 + v26 * 0.5;
     v12 = v20 + v24 * 0.5;
     v28 = 0.0;
@@ -546,7 +546,7 @@ LABEL_9:
 LABEL_12:
   v18 = *(&v81 + 1);
   v16 = *&v81;
-  v27 = *(&v82 + 1);
+  tintColor = *(&v82 + 1);
   v28 = 1.0;
 LABEL_13:
   if (v16 >= v18)
@@ -580,13 +580,13 @@ LABEL_13:
     v33 = *&v82;
   }
 
-  v34 = !apertureOpen;
+  crossfadeOnDismissal = !apertureOpen;
   if (v4 && !apertureOpen)
   {
-    v34 = [v4 crossfadeOnDismissal];
+    crossfadeOnDismissal = [v4 crossfadeOnDismissal];
   }
 
-  if (v34)
+  if (crossfadeOnDismissal)
   {
     v35 = 0.0;
   }
@@ -596,18 +596,18 @@ LABEL_13:
     v35 = 1.0;
   }
 
-  v36 = [(_UITextMagnifiedLoupeView *)self containerView];
-  [v36 setBounds:{0.0, 0.0, v16, v18}];
-  [v36 setCenter:{v12, v14}];
-  v37 = [v36 layer];
-  [v37 setCornerRadius:v33];
+  containerView = [(_UITextMagnifiedLoupeView *)self containerView];
+  [containerView setBounds:{0.0, 0.0, v16, v18}];
+  [containerView setCenter:{v12, v14}];
+  layer = [containerView layer];
+  [layer setCornerRadius:v33];
 
-  v38 = [v36 layer];
-  [v38 setBorderWidth:v32];
+  layer2 = [containerView layer];
+  [layer2 setBorderWidth:v32];
 
   v74 = v75;
-  [v36 setTransform:&v74];
-  [v36 setAlpha:v35];
+  [containerView setTransform:&v74];
+  [containerView setAlpha:v35];
   if (floatingAbove)
   {
     v39 = +[UIColor blackColor];
@@ -633,32 +633,32 @@ LABEL_13:
     v43 = *&v77;
   }
 
-  v44 = [v39 CGColor];
-  v45 = [(UIView *)self layer];
-  [v45 setShadowColor:v44];
+  cGColor = [v39 CGColor];
+  layer3 = [(UIView *)self layer];
+  [layer3 setShadowColor:cGColor];
 
-  v46 = [(UIView *)self layer];
-  [v46 setShadowOffset:{v40, v41}];
+  layer4 = [(UIView *)self layer];
+  [layer4 setShadowOffset:{v40, v41}];
 
-  v47 = [(UIView *)self layer];
-  [v47 setShadowRadius:v43];
+  layer5 = [(UIView *)self layer];
+  [layer5 setShadowRadius:v43];
 
-  v48 = [(UIView *)self layer];
-  v49 = v48;
+  layer6 = [(UIView *)self layer];
+  v49 = layer6;
   *&v50 = v42;
   if (floatingAbove)
   {
     *&v50 = 0.18;
   }
 
-  [v48 setShadowOpacity:v50];
+  [layer6 setShadowOpacity:v50];
 
-  v51 = [v27 CGColor];
-  v52 = [(UIView *)self->_containerView layer];
-  [v52 setBorderColor:v51];
+  cGColor2 = [tintColor CGColor];
+  layer7 = [(UIView *)self->_containerView layer];
+  [layer7 setBorderColor:cGColor2];
 
-  [(UIView *)self->_coverView setBackgroundColor:v27];
-  [v36 bounds];
+  [(UIView *)self->_coverView setBackgroundColor:tintColor];
+  [containerView bounds];
   [(UIView *)self->_coverView setFrame:?];
   [(UIView *)self->_coverView setAlpha:v28];
   [(UIView *)self->_containerView bounds];
@@ -696,8 +696,8 @@ LABEL_13:
   v87.size.width = v63;
   v87.size.height = v64;
   v66 = [UIBezierPath bezierPathWithRoundedRect:v61 cornerRadius:v62, v63, v64, CGRectGetHeight(v87) * 0.5];
-  v67 = [v66 bezierPathByReversingPath];
-  [v65 appendPath:v67];
+  bezierPathByReversingPath = [v66 bezierPathByReversingPath];
+  [v65 appendPath:bezierPathByReversingPath];
 
   v88.origin.y = v72;
   v88.origin.x = v73;
@@ -705,32 +705,32 @@ LABEL_13:
   v88.size.width = v71;
   v89 = CGRectOffset(v88, 0.0, 5.0);
   [(UIView *)self->_glowView setFrame:v89.origin.x, v89.origin.y, v89.size.width, v89.size.height];
-  v68 = [v65 CGPath];
-  v69 = [(UIView *)self->_glowView layer];
-  [v69 setShadowPath:v68];
+  cGPath = [v65 CGPath];
+  layer8 = [(UIView *)self->_glowView layer];
+  [layer8 setShadowPath:cGPath];
 }
 
-- (void)_updatePortalViewTransformForPosition:(CGPoint)a3 zoomScale:(double)a4
+- (void)_updatePortalViewTransformForPosition:(CGPoint)position zoomScale:(double)scale
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   [(UIView *)self->_containerView bounds];
   memset(&v17, 0, sizeof(v17));
   CATransform3DMakeTranslation(&v17, v9 + v8 * 0.5 - x, v11 + v10 * 0.5 - y, 0.0);
   memset(&v16, 0, sizeof(v16));
-  CATransform3DMakeScale(&v16, a4, a4, 1.0);
+  CATransform3DMakeScale(&v16, scale, scale, 1.0);
   a = v17;
   v13 = v16;
   CATransform3DConcat(&v15, &a, &v13);
-  v12 = [(UIView *)self->_portalContainerView layer];
+  layer = [(UIView *)self->_portalContainerView layer];
   a = v15;
-  [v12 setSublayerTransform:&a];
+  [layer setSublayerTransform:&a];
 }
 
-- (void)_displayLinkFired:(id)a3
+- (void)_displayLinkFired:(id)fired
 {
   p_modelPosition = &self->_modelPosition;
-  [(_UITextMagnifiedLoupeView *)self constrainedModelPositionForPosition:a3, self->_modelPosition.x, self->_modelPosition.y];
+  [(_UITextMagnifiedLoupeView *)self constrainedModelPositionForPosition:fired, self->_modelPosition.x, self->_modelPosition.y];
   v6 = v5;
   v8 = v7;
   [(UIView *)self center];
@@ -751,9 +751,9 @@ LABEL_13:
   [(UIView *)self setCenter:v12, v14];
 }
 
-- (void)setAnimatableSelectionWidget:(id)a3
+- (void)setAnimatableSelectionWidget:(id)widget
 {
-  obj = a3;
+  obj = widget;
   WeakRetained = objc_loadWeakRetained(&self->_animatableSelectionWidget);
 
   if (WeakRetained != obj)

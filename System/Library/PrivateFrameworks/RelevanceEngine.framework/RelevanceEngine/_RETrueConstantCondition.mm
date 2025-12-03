@@ -1,6 +1,6 @@
 @interface _RETrueConstantCondition
 + (id)sharedInstance;
-- (BOOL)_acceptsFeatureMap:(id)a3 predictionSet:(id)a4 explanation:(id *)a5;
+- (BOOL)_acceptsFeatureMap:(id)map predictionSet:(id)set explanation:(id *)explanation;
 @end
 
 @implementation _RETrueConstantCondition
@@ -17,11 +17,11 @@
   return v3;
 }
 
-- (BOOL)_acceptsFeatureMap:(id)a3 predictionSet:(id)a4 explanation:(id *)a5
+- (BOOL)_acceptsFeatureMap:(id)map predictionSet:(id)set explanation:(id *)explanation
 {
-  if (a5)
+  if (explanation)
   {
-    *a5 = [REMLExplanation explanationForCondition:self, a4];
+    *explanation = [REMLExplanation explanationForCondition:self, set];
   }
 
   return 1;

@@ -1,29 +1,29 @@
 @interface AlphabeticallyOrderedDataSource
-- (AlphabeticallyOrderedDataSource)initWithAlphabeticallySortableObject:(id)a3;
-- (AlphabeticallyOrderedDataSource)initWithObjects:(id)a3;
-- (id)objectAtIndexPath:(id)a3;
-- (int64_t)numberOfRowsInSection:(int64_t)a3;
+- (AlphabeticallyOrderedDataSource)initWithAlphabeticallySortableObject:(id)object;
+- (AlphabeticallyOrderedDataSource)initWithObjects:(id)objects;
+- (id)objectAtIndexPath:(id)path;
+- (int64_t)numberOfRowsInSection:(int64_t)section;
 - (int64_t)numberOfSections;
 @end
 
 @implementation AlphabeticallyOrderedDataSource
 
-- (id)objectAtIndexPath:(id)a3
+- (id)objectAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(AlphabeticallyOrderedDataSource *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
+  pathCopy = path;
+  sections = [(AlphabeticallyOrderedDataSource *)self sections];
+  v6 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v7 = [v4 row];
+  v7 = [pathCopy row];
   v8 = [v6 objectAtIndexedSubscript:v7];
 
   return v8;
 }
 
-- (int64_t)numberOfRowsInSection:(int64_t)a3
+- (int64_t)numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(AlphabeticallyOrderedDataSource *)self sections];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  sections = [(AlphabeticallyOrderedDataSource *)self sections];
+  v5 = [sections objectAtIndexedSubscript:section];
   v6 = [v5 count];
 
   return v6;
@@ -31,32 +31,32 @@
 
 - (int64_t)numberOfSections
 {
-  v2 = [(AlphabeticallyOrderedDataSource *)self sections];
-  v3 = [v2 count];
+  sections = [(AlphabeticallyOrderedDataSource *)self sections];
+  v3 = [sections count];
 
   return v3;
 }
 
-- (AlphabeticallyOrderedDataSource)initWithAlphabeticallySortableObject:(id)a3
+- (AlphabeticallyOrderedDataSource)initWithAlphabeticallySortableObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v40.receiver = self;
   v40.super_class = AlphabeticallyOrderedDataSource;
   v5 = [(AlphabeticallyOrderedDataSource *)&v40 init];
   if (v5)
   {
     v6 = +[UILocalizedIndexedCollation currentCollation];
-    v7 = [v6 sectionIndexTitles];
-    v8 = [v7 copy];
+    sectionIndexTitles = [v6 sectionIndexTitles];
+    v8 = [sectionIndexTitles copy];
     sectionIndexTitles = v5->_sectionIndexTitles;
     v34 = v5;
     v5->_sectionIndexTitles = v8;
 
-    v10 = [v6 sectionTitles];
-    v11 = [v10 count];
+    sectionTitles = [v6 sectionTitles];
+    v11 = [sectionTitles count];
 
     v12 = [[NSMutableArray alloc] initWithCapacity:v11];
-    v32 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+    v32 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(objectCopy, "count")}];
     if (v11)
     {
       v13 = v11;
@@ -76,8 +76,8 @@
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v35 = v4;
-    v15 = v4;
+    v35 = objectCopy;
+    v15 = objectCopy;
     v16 = [v15 countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v16)
     {
@@ -145,21 +145,21 @@
     v34->_orderedObjects = v29;
 
     v34->_numberOfSectionsNotEmpty = v22;
-    v4 = v35;
+    objectCopy = v35;
   }
 
   return v5;
 }
 
-- (AlphabeticallyOrderedDataSource)initWithObjects:(id)a3
+- (AlphabeticallyOrderedDataSource)initWithObjects:(id)objects
 {
-  v4 = a3;
-  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  objectsCopy = objects;
+  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(objectsCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = objectsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {

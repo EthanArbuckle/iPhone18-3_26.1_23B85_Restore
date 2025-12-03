@@ -1,36 +1,36 @@
 @interface _CNAtomLayoutView
-+ (id)layoutViewWithDelegateView:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (CGRect)boundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6;
++ (id)layoutViewWithDelegateView:(id)view;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (CGRect)boundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index;
 - (CGRect)selectionBounds;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)atomInsets;
-- (_CNAtomLayoutView)initWithDelegateView:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (_CNAtomLayoutView)initWithDelegateView:(id)view;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)layoutSubviews;
-- (void)setMaskBounds:(CGRect)a3;
+- (void)setMaskBounds:(CGRect)bounds;
 @end
 
 @implementation _CNAtomLayoutView
 
-+ (id)layoutViewWithDelegateView:(id)a3
++ (id)layoutViewWithDelegateView:(id)view
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDelegateView:v4];
+  viewCopy = view;
+  v5 = [[self alloc] initWithDelegateView:viewCopy];
 
   return v5;
 }
 
-- (_CNAtomLayoutView)initWithDelegateView:(id)a3
+- (_CNAtomLayoutView)initWithDelegateView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = _CNAtomLayoutView;
   v6 = [(_CNAtomLayoutView *)&v10 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegateView, a3);
+    objc_storeStrong(&v6->_delegateView, view);
     [(CNAtomTextViewAtomLayout *)v7->_delegateView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(_CNAtomLayoutView *)v7 setAutoresizesSubviews:0];
     [(_CNAtomLayoutView *)v7 addSubview:v7->_delegateView];
@@ -40,7 +40,7 @@
   return v7;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v5.receiver = self;
   v5.super_class = _CNAtomLayoutView;
@@ -57,54 +57,54 @@
   return v3 & 1;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = _CNAtomLayoutView;
   v5 = [(_CNAtomLayoutView *)&v7 methodSignatureForSelector:?];
   if (!v5)
   {
-    v5 = [(CNAtomTextViewAtomLayout *)self->_delegateView methodSignatureForSelector:a3];
+    v5 = [(CNAtomTextViewAtomLayout *)self->_delegateView methodSignatureForSelector:selector];
   }
 
   return v5;
 }
 
-- (void)setMaskBounds:(CGRect)a3
+- (void)setMaskBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(_CNAtomLayoutView *)self bounds];
   v17.origin.x = x;
   v17.origin.y = y;
   v17.size.width = width;
   v17.size.height = height;
   v8 = CGRectEqualToRect(v16, v17);
-  v9 = [(_CNAtomLayoutView *)self layer];
-  v14 = v9;
+  layer = [(_CNAtomLayoutView *)self layer];
+  v14 = layer;
   if (v8)
   {
-    [v9 setMask:0];
+    [layer setMask:0];
     v10 = v14;
   }
 
   else
   {
-    v11 = [v9 mask];
+    mask = [layer mask];
 
-    if (!v11)
+    if (!mask)
     {
-      v11 = [MEMORY[0x1E69794A0] layer];
-      v12 = [(_CNAtomLayoutView *)self layer];
-      [v12 setMask:v11];
+      mask = [MEMORY[0x1E69794A0] layer];
+      layer2 = [(_CNAtomLayoutView *)self layer];
+      [layer2 setMask:mask];
     }
 
     v13 = [MEMORY[0x1E69DC728] bezierPathWithRect:{x, y, width, height}];
-    [v11 setPath:{objc_msgSend(v13, "CGPath")}];
+    [mask setPath:{objc_msgSend(v13, "CGPath")}];
 
-    v10 = v11;
+    v10 = mask;
   }
 }
 
@@ -122,9 +122,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(CNAtomTextViewAtomLayout *)self->_delegateView systemLayoutSizeFittingSize:a3.width, a3.height];
+  [(CNAtomTextViewAtomLayout *)self->_delegateView systemLayoutSizeFittingSize:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
   [(_CNAtomLayoutView *)self atomInsets];
@@ -165,23 +165,23 @@
   return result;
 }
 
-- (CGRect)boundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6
+- (CGRect)boundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index
 {
-  height = a4.size.height;
-  [(_CNAtomLayoutView *)self layoutIfNeeded:a3];
+  height = fragment.size.height;
+  [(_CNAtomLayoutView *)self layoutIfNeeded:container];
   v7 = *MEMORY[0x1E695F058];
   rect = *(MEMORY[0x1E695F058] + 8);
   [(_CNAtomLayoutView *)self sizeThatFits:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   v9 = v8;
   v11 = v10;
-  v12 = [(_CNAtomLayoutView *)self viewForLastBaselineLayout];
-  [v12 bounds];
-  [(_CNAtomLayoutView *)self convertRect:v12 fromView:?];
+  viewForLastBaselineLayout = [(_CNAtomLayoutView *)self viewForLastBaselineLayout];
+  [viewForLastBaselineLayout bounds];
+  [(_CNAtomLayoutView *)self convertRect:viewForLastBaselineLayout fromView:?];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  [v12 _baselineOffsetFromBottom];
+  [viewForLastBaselineLayout _baselineOffsetFromBottom];
   v22 = v21;
   v31.origin.x = v14;
   v31.origin.y = v16;

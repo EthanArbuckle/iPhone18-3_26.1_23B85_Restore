@@ -1,26 +1,26 @@
 @interface SearchUIResultsCollectionViewController
-+ (id)hiddenSectionsFromSections:(id)a3;
-- (BOOL)canHighlightRowAtIndexPath:(id)a3;
-- (BOOL)indexPathIsShowMoreSections:(id)a3;
-- (BOOL)sectionShouldBeExpanded:(id)a3;
++ (id)hiddenSectionsFromSections:(id)sections;
+- (BOOL)canHighlightRowAtIndexPath:(id)path;
+- (BOOL)indexPathIsShowMoreSections:(id)sections;
+- (BOOL)sectionShouldBeExpanded:(id)expanded;
 - (SearchUIResultsCollectionViewController)init;
-- (id)cellForRowModel:(id)a3 atIndexPath:(id)a4;
+- (id)cellForRowModel:(id)model atIndexPath:(id)path;
 - (id)commandEnvironment;
 - (id)preferredFocusEnvironments;
 - (id)restorationContext;
 - (id)tableModelForExpansion;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)didPresentToResumeSearch:(BOOL)a3;
-- (void)highlightResult:(id)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)didPresentToResumeSearch:(BOOL)search;
+- (void)highlightResult:(id)result;
 - (void)purgeAndResetTable;
 - (void)resignTextFieldIfNeeded;
 - (void)returnKeyPressed;
 - (void)scrollTableToTop;
-- (void)setFocusableIndexPath:(id)a3;
-- (void)showMoreSectionsWithShowMoreButtonIndexPath:(id)a3;
-- (void)toggleExpansionForSectionModel:(id)a3;
-- (void)updateWithResultSections:(id)a3 scrollToTop:(BOOL)a4 animated:(BOOL)a5;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setFocusableIndexPath:(id)path;
+- (void)showMoreSectionsWithShowMoreButtonIndexPath:(id)path;
+- (void)toggleExpansionForSectionModel:(id)model;
+- (void)updateWithResultSections:(id)sections scrollToTop:(BOOL)top animated:(BOOL)animated;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SearchUIResultsCollectionViewController
@@ -39,17 +39,17 @@
     [(SearchUIResultsCollectionViewController *)v2 setSectionsThatHaveBeenExpanded:v4];
 
     objc_initWeak(&location, v2);
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v6 = *MEMORY[0x1E69D9250];
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __47__SearchUIResultsCollectionViewController_init__block_invoke;
     v13 = &unk_1E85B2748;
     objc_copyWeak(&v14, &location);
-    v7 = [v5 addObserverForName:v6 object:0 queue:0 usingBlock:&v10];
+    v7 = [defaultCenter addObserverForName:v6 object:0 queue:0 usingBlock:&v10];
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v2 selector:sel_expandCellsIfNeeded name:*MEMORY[0x1E69DE828] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_expandCellsIfNeeded name:*MEMORY[0x1E69DE828] object:0];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -62,30 +62,30 @@
 {
   v7.receiver = self;
   v7.super_class = SearchUIResultsCollectionViewController;
-  v3 = [(SearchUICollectionViewController *)&v7 commandEnvironment];
-  v4 = [(SearchUICollectionViewController *)self queryString];
-  [v3 setSearchString:v4];
+  commandEnvironment = [(SearchUICollectionViewController *)&v7 commandEnvironment];
+  queryString = [(SearchUICollectionViewController *)self queryString];
+  [commandEnvironment setSearchString:queryString];
 
-  v5 = [(SearchUICollectionViewController *)self tableModel];
-  [v3 setQueryId:{objc_msgSend(v5, "queryId")}];
+  tableModel = [(SearchUICollectionViewController *)self tableModel];
+  [commandEnvironment setQueryId:{objc_msgSend(tableModel, "queryId")}];
 
-  return v3;
+  return commandEnvironment;
 }
 
 - (void)scrollTableToTop
 {
-  v3 = [(SearchUIResultsCollectionViewController *)self collectionView];
-  [v3 adjustedContentInset];
+  collectionView = [(SearchUIResultsCollectionViewController *)self collectionView];
+  [collectionView adjustedContentInset];
   v5 = -v4;
 
-  v6 = [(SearchUIResultsCollectionViewController *)self collectionView];
-  [v6 contentOffset];
+  collectionView2 = [(SearchUIResultsCollectionViewController *)self collectionView];
+  [collectionView2 contentOffset];
   v8 = v7;
 
   if (v8 != v5)
   {
-    v9 = [(SearchUIResultsCollectionViewController *)self collectionView];
-    [v9 setContentOffset:0 animated:{0.0, v5}];
+    collectionView3 = [(SearchUIResultsCollectionViewController *)self collectionView];
+    [collectionView3 setContentOffset:0 animated:{0.0, v5}];
   }
 }
 
@@ -98,25 +98,25 @@ void __47__SearchUIResultsCollectionViewController_init__block_invoke(uint64_t a
   [v3 purgeAndResetTable];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SearchUICollectionViewController *)self setLastVisibleFeedbackTrigger:12];
   v5.receiver = self;
   v5.super_class = SearchUIResultsCollectionViewController;
-  [(SearchUICollectionViewController *)&v5 viewWillAppear:v3];
+  [(SearchUICollectionViewController *)&v5 viewWillAppear:appearCopy];
 }
 
-+ (id)hiddenSectionsFromSections:(id)a3
++ (id)hiddenSectionsFromSections:(id)sections
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  sectionsCopy = sections;
   v4 = objc_opt_new();
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = sectionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -151,45 +151,45 @@ void __47__SearchUIResultsCollectionViewController_init__block_invoke(uint64_t a
 {
   v7.receiver = self;
   v7.super_class = SearchUIResultsCollectionViewController;
-  v3 = [(SearchUICollectionViewController *)&v7 restorationContext];
-  v4 = [(SearchUICollectionViewController *)self tableModel];
-  v5 = [v4 sections];
-  [v3 setSections:v5];
+  restorationContext = [(SearchUICollectionViewController *)&v7 restorationContext];
+  tableModel = [(SearchUICollectionViewController *)self tableModel];
+  sections = [tableModel sections];
+  [restorationContext setSections:sections];
 
-  return v3;
+  return restorationContext;
 }
 
-- (void)updateWithResultSections:(id)a3 scrollToTop:(BOOL)a4 animated:(BOOL)a5
+- (void)updateWithResultSections:(id)sections scrollToTop:(BOOL)top animated:(BOOL)animated
 {
-  v30 = a5;
-  v31 = a4;
+  animatedCopy = animated;
+  topCopy = top;
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(SearchUICollectionViewController *)self viewWillUpdateHandler];
+  sectionsCopy = sections;
+  viewWillUpdateHandler = [(SearchUICollectionViewController *)self viewWillUpdateHandler];
 
-  if (v7)
+  if (viewWillUpdateHandler)
   {
-    v8 = [(SearchUICollectionViewController *)self viewWillUpdateHandler];
-    v8[2]();
+    viewWillUpdateHandler2 = [(SearchUICollectionViewController *)self viewWillUpdateHandler];
+    viewWillUpdateHandler2[2]();
   }
 
-  v9 = [(SearchUIResultsCollectionViewController *)self expandedSections];
-  [v9 removeAllObjects];
+  expandedSections = [(SearchUIResultsCollectionViewController *)self expandedSections];
+  [expandedSections removeAllObjects];
 
-  v10 = [(SearchUIResultsCollectionViewController *)self sectionsThatHaveBeenExpanded];
-  [v10 removeAllObjects];
+  sectionsThatHaveBeenExpanded = [(SearchUIResultsCollectionViewController *)self sectionsThatHaveBeenExpanded];
+  [sectionsThatHaveBeenExpanded removeAllObjects];
 
-  v11 = [(SearchUICollectionViewController *)self expandedCollectionSections];
-  [v11 removeAllObjects];
+  expandedCollectionSections = [(SearchUICollectionViewController *)self expandedCollectionSections];
+  [expandedCollectionSections removeAllObjects];
 
-  v12 = [objc_opt_class() hiddenSectionsFromSections:v6];
+  v12 = [objc_opt_class() hiddenSectionsFromSections:sectionsCopy];
   [(SearchUIResultsCollectionViewController *)self setHiddenSections:v12];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v13 = v6;
+  v13 = sectionsCopy;
   v14 = [v13 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v14)
   {
@@ -205,19 +205,19 @@ void __47__SearchUIResultsCollectionViewController_init__block_invoke(uint64_t a
         }
 
         v18 = *(*(&v32 + 1) + 8 * i);
-        v19 = [(SearchUICollectionViewController *)self resultsViewDelegate];
+        resultsViewDelegate = [(SearchUICollectionViewController *)self resultsViewDelegate];
         if (objc_opt_respondsToSelector())
         {
-          v20 = [(SearchUICollectionViewController *)self resultsViewDelegate];
-          v21 = [v20 sectionShouldBeExpanded:v18];
+          resultsViewDelegate2 = [(SearchUICollectionViewController *)self resultsViewDelegate];
+          v21 = [resultsViewDelegate2 sectionShouldBeExpanded:v18];
 
           if (!v21)
           {
             continue;
           }
 
-          v19 = [(SearchUIResultsCollectionViewController *)self expandedSections];
-          [v19 addObject:v18];
+          resultsViewDelegate = [(SearchUIResultsCollectionViewController *)self expandedSections];
+          [resultsViewDelegate addObject:v18];
         }
       }
 
@@ -228,34 +228,34 @@ void __47__SearchUIResultsCollectionViewController_init__block_invoke(uint64_t a
   }
 
   v22 = [v13 mutableCopy];
-  v23 = [(SearchUIResultsCollectionViewController *)self hiddenSections];
-  [v22 removeObjectsInArray:v23];
+  hiddenSections = [(SearchUIResultsCollectionViewController *)self hiddenSections];
+  [v22 removeObjectsInArray:hiddenSections];
 
   v24 = v22;
-  v25 = [(SearchUIResultsCollectionViewController *)self expandedSections];
-  v26 = [(SearchUICollectionViewController *)self expandedCollectionSections];
-  v27 = [SearchUITableModel tableModelWithSections:v24 expandedSections:v25 expandedCollectionCardSections:v26];
+  expandedSections2 = [(SearchUIResultsCollectionViewController *)self expandedSections];
+  expandedCollectionSections2 = [(SearchUICollectionViewController *)self expandedCollectionSections];
+  v27 = [SearchUITableModel tableModelWithSections:v24 expandedSections:expandedSections2 expandedCollectionCardSections:expandedCollectionSections2];
 
-  [(SearchUICollectionViewController *)self setTableModel:v27 animated:v30];
-  if (v31)
+  [(SearchUICollectionViewController *)self setTableModel:v27 animated:animatedCopy];
+  if (topCopy)
   {
     [(SearchUIResultsCollectionViewController *)self scrollTableToTop];
   }
 
-  v28 = [(SearchUICollectionViewController *)self viewDidUpdateHandler];
+  viewDidUpdateHandler = [(SearchUICollectionViewController *)self viewDidUpdateHandler];
 
-  if (v28)
+  if (viewDidUpdateHandler)
   {
-    v29 = [(SearchUICollectionViewController *)self viewDidUpdateHandler];
-    v29[2]();
+    viewDidUpdateHandler2 = [(SearchUICollectionViewController *)self viewDidUpdateHandler];
+    viewDidUpdateHandler2[2]();
   }
 }
 
-- (void)highlightResult:(id)a3
+- (void)highlightResult:(id)result
 {
   v5 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:0];
   v18 = v5;
-  if (a3 && v5)
+  if (result && v5)
   {
     v6 = [MEMORY[0x1E69DCA38] focusSystemForEnvironment:self];
 
@@ -264,11 +264,11 @@ void __47__SearchUIResultsCollectionViewController_init__block_invoke(uint64_t a
       [(SearchUIResultsCollectionViewController *)self setFocusableIndexPath:0];
     }
 
-    v7 = [(SearchUIResultsCollectionViewController *)self collectionView];
-    [v7 layoutIfNeeded];
+    collectionView = [(SearchUIResultsCollectionViewController *)self collectionView];
+    [collectionView layoutIfNeeded];
 
-    v8 = [(SearchUIResultsCollectionViewController *)self collectionView];
-    v9 = [v8 cellForItemAtIndexPath:v18];
+    collectionView2 = [(SearchUIResultsCollectionViewController *)self collectionView];
+    v9 = [collectionView2 cellForItemAtIndexPath:v18];
 
     if ([v9 setupManualFocus])
     {
@@ -277,8 +277,8 @@ void __47__SearchUIResultsCollectionViewController_init__block_invoke(uint64_t a
 
     else
     {
-      v13 = [(SearchUIResultsCollectionViewController *)self collectionView];
-      v14 = [(SearchUICollectionViewController *)self collectionView:v13 shouldHighlightItemAtIndexPath:v18];
+      collectionView3 = [(SearchUIResultsCollectionViewController *)self collectionView];
+      v14 = [(SearchUICollectionViewController *)self collectionView:collectionView3 shouldHighlightItemAtIndexPath:v18];
 
       if (v14)
       {
@@ -292,8 +292,8 @@ void __47__SearchUIResultsCollectionViewController_init__block_invoke(uint64_t a
 
       v16 = v15;
 
-      v17 = [(SearchUIResultsCollectionViewController *)self collectionView];
-      [v17 selectItemAtIndexPath:v16 animated:0 scrollPosition:0];
+      collectionView4 = [(SearchUIResultsCollectionViewController *)self collectionView];
+      [collectionView4 selectItemAtIndexPath:v16 animated:0 scrollPosition:0];
 
       v10 = v16;
     }
@@ -305,55 +305,55 @@ void __47__SearchUIResultsCollectionViewController_init__block_invoke(uint64_t a
   else
   {
     [(SearchUIResultsCollectionViewController *)self setFocusableIndexPath:0];
-    v11 = [(SearchUIResultsCollectionViewController *)self collectionView];
-    v9 = [v11 cellForItemAtIndexPath:v18];
+    collectionView5 = [(SearchUIResultsCollectionViewController *)self collectionView];
+    v9 = [collectionView5 cellForItemAtIndexPath:v18];
 
     [v9 removeManualFocus];
-    v12 = [(SearchUIResultsCollectionViewController *)self collectionView];
-    [v12 selectItemAtIndexPath:0 animated:0 scrollPosition:0];
+    collectionView6 = [(SearchUIResultsCollectionViewController *)self collectionView];
+    [collectionView6 selectItemAtIndexPath:0 animated:0 scrollPosition:0];
   }
 }
 
 - (id)preferredFocusEnvironments
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SearchUIKeyboardableCollectionViewController *)self textField];
-  if (v3 && (v4 = v3, [(SearchUICollectionViewController *)self focusableIndexPath], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, !v5))
+  textField = [(SearchUIKeyboardableCollectionViewController *)self textField];
+  if (textField && (v4 = textField, [(SearchUICollectionViewController *)self focusableIndexPath], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, !v5))
   {
-    v10 = [(SearchUIKeyboardableCollectionViewController *)self textField];
-    v21[0] = v10;
-    v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
+    textField2 = [(SearchUIKeyboardableCollectionViewController *)self textField];
+    v21[0] = textField2;
+    preferredFocusEnvironments = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
   }
 
   else
   {
-    v6 = [(SearchUICollectionViewController *)self focusableIndexPath];
+    focusableIndexPath = [(SearchUICollectionViewController *)self focusableIndexPath];
 
-    if (!v6)
+    if (!focusableIndexPath)
     {
       v18.receiver = self;
       v18.super_class = SearchUIResultsCollectionViewController;
-      v16 = [(SearchUIResultsCollectionViewController *)&v18 preferredFocusEnvironments];
+      preferredFocusEnvironments = [(SearchUIResultsCollectionViewController *)&v18 preferredFocusEnvironments];
       goto LABEL_14;
     }
 
-    v7 = [(SearchUIResultsCollectionViewController *)self collectionView];
-    [v7 layoutIfNeeded];
+    collectionView = [(SearchUIResultsCollectionViewController *)self collectionView];
+    [collectionView layoutIfNeeded];
 
-    v8 = [(SearchUIResultsCollectionViewController *)self collectionView];
-    v9 = [(SearchUICollectionViewController *)self focusableIndexPath];
-    v10 = [v8 cellForItemAtIndexPath:v9];
+    collectionView2 = [(SearchUIResultsCollectionViewController *)self collectionView];
+    focusableIndexPath2 = [(SearchUICollectionViewController *)self focusableIndexPath];
+    textField2 = [collectionView2 cellForItemAtIndexPath:focusableIndexPath2];
 
-    v11 = [v10 viewForForcedFocus];
-    v12 = v11;
-    if (v11)
+    viewForForcedFocus = [textField2 viewForForcedFocus];
+    v12 = viewForForcedFocus;
+    if (viewForForcedFocus)
     {
-      v13 = v11;
+      v13 = viewForForcedFocus;
     }
 
     else
     {
-      v13 = v10;
+      v13 = textField2;
     }
 
     v14 = v13;
@@ -361,29 +361,29 @@ void __47__SearchUIResultsCollectionViewController_init__block_invoke(uint64_t a
     if (v14)
     {
       v20 = v14;
-      v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
+      preferredFocusEnvironments2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
     }
 
     else
     {
       v19.receiver = self;
       v19.super_class = SearchUIResultsCollectionViewController;
-      v15 = [(SearchUIResultsCollectionViewController *)&v19 preferredFocusEnvironments];
+      preferredFocusEnvironments2 = [(SearchUIResultsCollectionViewController *)&v19 preferredFocusEnvironments];
     }
 
-    v16 = v15;
+    preferredFocusEnvironments = preferredFocusEnvironments2;
   }
 
 LABEL_14:
 
-  return v16;
+  return preferredFocusEnvironments;
 }
 
 - (void)returnKeyPressed
 {
   v5 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:0];
-  v3 = [(SearchUIResultsCollectionViewController *)self collectionView];
-  v4 = [v3 cellForItemAtIndexPath:v5];
+  collectionView = [(SearchUIResultsCollectionViewController *)self collectionView];
+  v4 = [collectionView cellForItemAtIndexPath:v5];
 
   if ([v4 needsInternalFocus])
   {
@@ -396,10 +396,10 @@ LABEL_14:
   }
 }
 
-- (BOOL)canHighlightRowAtIndexPath:(id)a3
+- (BOOL)canHighlightRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  if ([(SearchUIResultsCollectionViewController *)self indexPathIsShowMoreSections:v4])
+  pathCopy = path;
+  if ([(SearchUIResultsCollectionViewController *)self indexPathIsShowMoreSections:pathCopy])
   {
     v5 = 1;
   }
@@ -408,43 +408,43 @@ LABEL_14:
   {
     v7.receiver = self;
     v7.super_class = SearchUIResultsCollectionViewController;
-    v5 = [(SearchUICollectionViewController *)&v7 canHighlightRowAtIndexPath:v4];
+    v5 = [(SearchUICollectionViewController *)&v7 canHighlightRowAtIndexPath:pathCopy];
   }
 
   return v5;
 }
 
-- (BOOL)indexPathIsShowMoreSections:(id)a3
+- (BOOL)indexPathIsShowMoreSections:(id)sections
 {
-  v4 = a3;
-  v5 = [(SearchUICollectionViewController *)self dataSource];
-  v6 = [v4 section];
+  sectionsCopy = sections;
+  dataSource = [(SearchUICollectionViewController *)self dataSource];
+  section = [sectionsCopy section];
 
-  v7 = [v5 sectionIdentifierForIndex:v6];
-  v8 = [v7 section];
-  v9 = [v8 resultSection];
+  v7 = [dataSource sectionIdentifierForIndex:section];
+  section2 = [v7 section];
+  resultSection = [section2 resultSection];
 
-  v10 = [v9 results];
-  v11 = [v10 firstObject];
-  v12 = [v11 identifier];
-  v13 = [v12 isEqualToString:@"com.apple.other:show_more"];
+  results = [resultSection results];
+  firstObject = [results firstObject];
+  identifier = [firstObject identifier];
+  v13 = [identifier isEqualToString:@"com.apple.other:show_more"];
 
   return v13;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(SearchUIResultsCollectionViewController *)self indexPathIsShowMoreSections:v7])
+  viewCopy = view;
+  pathCopy = path;
+  if ([(SearchUIResultsCollectionViewController *)self indexPathIsShowMoreSections:pathCopy])
   {
     v8 = [SearchUICommandHandler alloc];
-    v9 = [(SearchUICollectionViewController *)self dataSource];
-    v10 = [v9 itemIdentifierForIndexPath:v7];
-    v11 = [(SearchUIResultsCollectionViewController *)self commandEnvironment];
-    v12 = [(SearchUICommandHandler *)v8 initWithCommand:0 rowModel:v10 button:0 environment:v11];
+    dataSource = [(SearchUICollectionViewController *)self dataSource];
+    v10 = [dataSource itemIdentifierForIndexPath:pathCopy];
+    commandEnvironment = [(SearchUIResultsCollectionViewController *)self commandEnvironment];
+    v12 = [(SearchUICommandHandler *)v8 initWithCommand:0 rowModel:v10 button:0 environment:commandEnvironment];
 
-    [(SearchUIResultsCollectionViewController *)self showMoreSectionsWithShowMoreButtonIndexPath:v7];
+    [(SearchUIResultsCollectionViewController *)self showMoreSectionsWithShowMoreButtonIndexPath:pathCopy];
     [(SearchUICommandHandler *)v12 wasPerformedWithTriggerEvent:2];
   }
 
@@ -452,102 +452,102 @@ LABEL_14:
   {
     v13.receiver = self;
     v13.super_class = SearchUIResultsCollectionViewController;
-    [(SearchUICollectionViewController *)&v13 collectionView:v6 didSelectItemAtIndexPath:v7];
+    [(SearchUICollectionViewController *)&v13 collectionView:viewCopy didSelectItemAtIndexPath:pathCopy];
   }
 }
 
-- (void)setFocusableIndexPath:(id)a3
+- (void)setFocusableIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SearchUIKeyboardableCollectionViewController *)self interactionDelegate];
+  pathCopy = path;
+  interactionDelegate = [(SearchUIKeyboardableCollectionViewController *)self interactionDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SearchUICollectionViewController *)self dataSource];
-    v8 = [v7 itemIdentifierForIndexPath:v4];
+    dataSource = [(SearchUICollectionViewController *)self dataSource];
+    v8 = [dataSource itemIdentifierForIndexPath:pathCopy];
 
-    v9 = [(SearchUIKeyboardableCollectionViewController *)self interactionDelegate];
-    v10 = [v8 identifyingResult];
-    v11 = [v8 cardSection];
-    [v9 didUpdateKeyboardFocusToResult:v10 cardSection:v11];
+    interactionDelegate2 = [(SearchUIKeyboardableCollectionViewController *)self interactionDelegate];
+    identifyingResult = [v8 identifyingResult];
+    cardSection = [v8 cardSection];
+    [interactionDelegate2 didUpdateKeyboardFocusToResult:identifyingResult cardSection:cardSection];
   }
 
   v12.receiver = self;
   v12.super_class = SearchUIResultsCollectionViewController;
-  [(SearchUICollectionViewController *)&v12 setFocusableIndexPath:v4];
+  [(SearchUICollectionViewController *)&v12 setFocusableIndexPath:pathCopy];
 }
 
 - (void)purgeAndResetTable
 {
-  v4 = [(SearchUICollectionViewController *)self tableModel];
+  tableModel = [(SearchUICollectionViewController *)self tableModel];
   [(SearchUICollectionViewController *)self setTableModel:0];
-  v3 = [(SearchUIResultsCollectionViewController *)self collectionView];
-  [v3 _purgeReuseQueues];
+  collectionView = [(SearchUIResultsCollectionViewController *)self collectionView];
+  [collectionView _purgeReuseQueues];
 
-  [(SearchUICollectionViewController *)self setTableModel:v4];
+  [(SearchUICollectionViewController *)self setTableModel:tableModel];
 }
 
-- (void)didPresentToResumeSearch:(BOOL)a3
+- (void)didPresentToResumeSearch:(BOOL)search
 {
-  v3 = a3;
+  searchCopy = search;
   [(SearchUICollectionViewController *)self setIsVisibleFeedbackEnabled:1];
-  if (v3)
+  if (searchCopy)
   {
 
     [(SearchUICollectionViewController *)self setLastVisibleFeedbackTrigger:12];
   }
 }
 
-- (void)toggleExpansionForSectionModel:(id)a3
+- (void)toggleExpansionForSectionModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [v5 resultSection];
-  if (v6)
+  modelCopy = model;
+  section = [modelCopy section];
+  resultSection = [section resultSection];
+  if (resultSection)
   {
-    v7 = v6;
-    v8 = [v4 section];
-    v9 = [v8 collectionSection];
-    v10 = [v9 collectionStyle];
-    v11 = [v10 initiallyVisibleCardSectionCount];
+    v7 = resultSection;
+    section2 = [modelCopy section];
+    collectionSection = [section2 collectionSection];
+    collectionStyle = [collectionSection collectionStyle];
+    initiallyVisibleCardSectionCount = [collectionStyle initiallyVisibleCardSectionCount];
 
-    if (!v11)
+    if (!initiallyVisibleCardSectionCount)
     {
-      v12 = [v4 section];
-      v13 = [v12 resultSection];
+      section3 = [modelCopy section];
+      resultSection2 = [section3 resultSection];
 
-      v14 = [(SearchUIResultsCollectionViewController *)self sectionShouldBeExpanded:v13];
-      v15 = [(SearchUIResultsCollectionViewController *)self expandedSections];
-      v16 = v15;
+      v14 = [(SearchUIResultsCollectionViewController *)self sectionShouldBeExpanded:resultSection2];
+      expandedSections = [(SearchUIResultsCollectionViewController *)self expandedSections];
+      v16 = expandedSections;
       if (v14)
       {
-        [v15 removeObject:v13];
+        [expandedSections removeObject:resultSection2];
       }
 
       else
       {
-        [v15 addObject:v13];
+        [expandedSections addObject:resultSection2];
 
-        v17 = [(SearchUIResultsCollectionViewController *)self sectionsThatHaveBeenExpanded];
-        v18 = [v17 containsObject:v13];
+        sectionsThatHaveBeenExpanded = [(SearchUIResultsCollectionViewController *)self sectionsThatHaveBeenExpanded];
+        v18 = [sectionsThatHaveBeenExpanded containsObject:resultSection2];
 
         if ((v18 & 1) == 0)
         {
-          v19 = [v13 results];
-          v20 = [v19 firstObject];
-          v21 = [v20 moreResults];
-          v22 = v21;
-          if (v21)
+          results = [resultSection2 results];
+          firstObject = [results firstObject];
+          moreResults = [firstObject moreResults];
+          v22 = moreResults;
+          if (moreResults)
           {
-            v23 = v21;
+            moreResults2 = moreResults;
           }
 
           else
           {
-            v24 = [v13 results];
-            v25 = [v24 lastObject];
-            v23 = [v25 moreResults];
+            results2 = [resultSection2 results];
+            lastObject = [results2 lastObject];
+            moreResults2 = [lastObject moreResults];
           }
 
           v26[0] = MEMORY[0x1E69E9820];
@@ -555,19 +555,19 @@ LABEL_14:
           v26[2] = __74__SearchUIResultsCollectionViewController_toggleExpansionForSectionModel___block_invoke;
           v26[3] = &unk_1E85B2770;
           v26[4] = self;
-          v27 = v13;
-          v28 = v4;
-          [v23 loadSearchResultsWithCompletionHandler:v26];
+          v27 = resultSection2;
+          v28 = modelCopy;
+          [moreResults2 loadSearchResultsWithCompletionHandler:v26];
 
-          if (v23)
+          if (moreResults2)
           {
             goto LABEL_13;
           }
         }
       }
 
-      [(SearchUICollectionViewController *)self performExpansion:!v14 withSection:v4];
-      v23 = 0;
+      [(SearchUICollectionViewController *)self performExpansion:!v14 withSection:modelCopy];
+      moreResults2 = 0;
 LABEL_13:
 
       goto LABEL_14;
@@ -580,7 +580,7 @@ LABEL_13:
 
   v29.receiver = self;
   v29.super_class = SearchUIResultsCollectionViewController;
-  [(SearchUICollectionViewController *)&v29 toggleExpansionForSectionModel:v4];
+  [(SearchUICollectionViewController *)&v29 toggleExpansionForSectionModel:modelCopy];
 LABEL_14:
 }
 
@@ -634,23 +634,23 @@ void __74__SearchUIResultsCollectionViewController_toggleExpansionForSectionMode
   }
 }
 
-- (id)cellForRowModel:(id)a3 atIndexPath:(id)a4
+- (id)cellForRowModel:(id)model atIndexPath:(id)path
 {
   v15.receiver = self;
   v15.super_class = SearchUIResultsCollectionViewController;
-  v6 = a4;
-  v7 = [(SearchUICollectionViewController *)&v15 cellForRowModel:a3 atIndexPath:v6];
+  pathCopy = path;
+  v7 = [(SearchUICollectionViewController *)&v15 cellForRowModel:model atIndexPath:pathCopy];
   v8 = [(SearchUICollectionViewController *)self dataSource:v15.receiver];
-  v9 = [v6 section];
+  section = [pathCopy section];
 
-  v10 = [v8 sectionIdentifierForIndex:v9];
+  v10 = [v8 sectionIdentifierForIndex:section];
 
   if ([v7 isExpandable])
   {
-    v11 = [(SearchUIResultsCollectionViewController *)self expandedSections];
-    v12 = [v10 section];
-    v13 = [v12 resultSection];
-    [v7 updateExpanded:objc_msgSend(v11 animated:{"containsObject:", v13), 0}];
+    expandedSections = [(SearchUIResultsCollectionViewController *)self expandedSections];
+    section2 = [v10 section];
+    resultSection = [section2 resultSection];
+    [v7 updateExpanded:objc_msgSend(expandedSections animated:{"containsObject:", resultSection), 0}];
   }
 
   return v7;
@@ -658,10 +658,10 @@ void __74__SearchUIResultsCollectionViewController_toggleExpansionForSectionMode
 
 - (id)tableModelForExpansion
 {
-  v3 = [(SearchUICollectionViewController *)self tableModel];
-  v4 = [(SearchUIResultsCollectionViewController *)self expandedSections];
-  v5 = [(SearchUICollectionViewController *)self expandedCollectionSections];
-  v6 = [v3 updatedTableModelWithExpandedSections:v4 expandedCollectionCardSections:v5 hiddenSections:0 atSectionIndex:0];
+  tableModel = [(SearchUICollectionViewController *)self tableModel];
+  expandedSections = [(SearchUIResultsCollectionViewController *)self expandedSections];
+  expandedCollectionSections = [(SearchUICollectionViewController *)self expandedCollectionSections];
+  v6 = [tableModel updatedTableModelWithExpandedSections:expandedSections expandedCollectionCardSections:expandedCollectionSections hiddenSections:0 atSectionIndex:0];
 
   return v6;
 }
@@ -670,27 +670,27 @@ void __74__SearchUIResultsCollectionViewController_toggleExpansionForSectionMode
 {
   if (([MEMORY[0x1E69DCBB8] isInHardwareKeyboardMode] & 1) == 0)
   {
-    v3 = [(SearchUIKeyboardableCollectionViewController *)self textField];
-    [v3 resignFirstResponder];
+    textField = [(SearchUIKeyboardableCollectionViewController *)self textField];
+    [textField resignFirstResponder];
   }
 }
 
-- (BOOL)sectionShouldBeExpanded:(id)a3
+- (BOOL)sectionShouldBeExpanded:(id)expanded
 {
-  v4 = a3;
-  v5 = [(SearchUIResultsCollectionViewController *)self expandedSections];
-  if ([v5 containsObject:v4])
+  expandedCopy = expanded;
+  expandedSections = [(SearchUIResultsCollectionViewController *)self expandedSections];
+  if ([expandedSections containsObject:expandedCopy])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(SearchUICollectionViewController *)self resultsViewDelegate];
+    resultsViewDelegate = [(SearchUICollectionViewController *)self resultsViewDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v8 = [(SearchUICollectionViewController *)self resultsViewDelegate];
-      v6 = [v8 sectionShouldBeExpanded:v4];
+      resultsViewDelegate2 = [(SearchUICollectionViewController *)self resultsViewDelegate];
+      v6 = [resultsViewDelegate2 sectionShouldBeExpanded:expandedCopy];
     }
 
     else
@@ -702,15 +702,15 @@ void __74__SearchUIResultsCollectionViewController_toggleExpansionForSectionMode
   return v6;
 }
 
-- (void)showMoreSectionsWithShowMoreButtonIndexPath:(id)a3
+- (void)showMoreSectionsWithShowMoreButtonIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [(SearchUICollectionViewController *)self tableModel];
-  v7 = [(SearchUIResultsCollectionViewController *)self expandedSections];
-  v8 = [(SearchUICollectionViewController *)self expandedCollectionSections];
-  v9 = [(SearchUIResultsCollectionViewController *)self hiddenSections];
-  v10 = [v6 updatedTableModelWithExpandedSections:v7 expandedCollectionCardSections:v8 hiddenSections:v9 atSectionIndex:v5];
+  pathCopy = path;
+  section = [pathCopy section];
+  tableModel = [(SearchUICollectionViewController *)self tableModel];
+  expandedSections = [(SearchUIResultsCollectionViewController *)self expandedSections];
+  expandedCollectionSections = [(SearchUICollectionViewController *)self expandedCollectionSections];
+  hiddenSections = [(SearchUIResultsCollectionViewController *)self hiddenSections];
+  v10 = [tableModel updatedTableModelWithExpandedSections:expandedSections expandedCollectionCardSections:expandedCollectionSections hiddenSections:hiddenSections atSectionIndex:section];
 
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x1E69E9820];
@@ -718,7 +718,7 @@ void __74__SearchUIResultsCollectionViewController_toggleExpansionForSectionMode
   v11[2] = __87__SearchUIResultsCollectionViewController_showMoreSectionsWithShowMoreButtonIndexPath___block_invoke;
   v11[3] = &unk_1E85B2798;
   objc_copyWeak(v12, &location);
-  v12[1] = v5;
+  v12[1] = section;
   [(SearchUICollectionViewController *)self setTableModel:v10 animated:1 completion:v11];
   [(SearchUIResultsCollectionViewController *)self resignTextFieldIfNeeded];
   [(SearchUICollectionViewController *)self setLastVisibleFeedbackTrigger:15];

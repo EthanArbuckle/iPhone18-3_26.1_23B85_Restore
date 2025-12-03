@@ -1,54 +1,54 @@
 @interface TRAPreferencesOrientation
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToOrientationPreferences:(id)a3;
-- (TRAPreferencesOrientation)initWithOrientationPreferences:(id)a3;
-- (TRAPreferencesOrientation)initWithSupportedMask:(unint64_t)a3 preferred:(int64_t)a4 determinesActiveOrientation:(BOOL)a5;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToOrientationPreferences:(id)preferences;
+- (TRAPreferencesOrientation)initWithOrientationPreferences:(id)preferences;
+- (TRAPreferencesOrientation)initWithSupportedMask:(unint64_t)mask preferred:(int64_t)preferred determinesActiveOrientation:(BOOL)orientation;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation TRAPreferencesOrientation
 
-- (TRAPreferencesOrientation)initWithSupportedMask:(unint64_t)a3 preferred:(int64_t)a4 determinesActiveOrientation:(BOOL)a5
+- (TRAPreferencesOrientation)initWithSupportedMask:(unint64_t)mask preferred:(int64_t)preferred determinesActiveOrientation:(BOOL)orientation
 {
   v9.receiver = self;
   v9.super_class = TRAPreferencesOrientation;
   result = [(TRAPreferencesOrientation *)&v9 init];
   if (result)
   {
-    result->_supportedOrientations = a3;
-    result->_preferredOrientation = a4;
-    result->_canDetermineActiveOrientation = a5;
+    result->_supportedOrientations = mask;
+    result->_preferredOrientation = preferred;
+    result->_canDetermineActiveOrientation = orientation;
   }
 
   return result;
 }
 
-- (TRAPreferencesOrientation)initWithOrientationPreferences:(id)a3
+- (TRAPreferencesOrientation)initWithOrientationPreferences:(id)preferences
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  preferencesCopy = preferences;
+  v5 = preferencesCopy;
+  if (preferencesCopy)
   {
-    v6 = [v4 supportedOrientations];
+    supportedOrientations = [preferencesCopy supportedOrientations];
   }
 
   else
   {
-    v6 = 30;
+    supportedOrientations = 30;
   }
 
-  v7 = -[TRAPreferencesOrientation initWithSupportedMask:preferred:determinesActiveOrientation:](self, "initWithSupportedMask:preferred:determinesActiveOrientation:", v6, [v5 preferredOrientation], objc_msgSend(v5, "canDetermineActiveOrientation"));
+  v7 = -[TRAPreferencesOrientation initWithSupportedMask:preferred:determinesActiveOrientation:](self, "initWithSupportedMask:preferred:determinesActiveOrientation:", supportedOrientations, [v5 preferredOrientation], objc_msgSend(v5, "canDetermineActiveOrientation"));
 
   return v7;
 }
 
-- (BOOL)isEqualToOrientationPreferences:(id)a3
+- (BOOL)isEqualToOrientationPreferences:(id)preferences
 {
-  v5 = a3;
-  if (!v5)
+  preferencesCopy = preferences;
+  if (!preferencesCopy)
   {
     goto LABEL_8;
   }
@@ -59,17 +59,17 @@
     [(TRAPreferencesOrientation *)a2 isEqualToOrientationPreferences:?];
   }
 
-  if (self == v5)
+  if (self == preferencesCopy)
   {
     v9 = 1;
     goto LABEL_10;
   }
 
   supportedOrientations = self->_supportedOrientations;
-  if (supportedOrientations == [(TRAPreferencesOrientation *)v5 supportedOrientations]&& (preferredOrientation = self->_preferredOrientation, preferredOrientation == [(TRAPreferencesOrientation *)v5 preferredOrientation]))
+  if (supportedOrientations == [(TRAPreferencesOrientation *)preferencesCopy supportedOrientations]&& (preferredOrientation = self->_preferredOrientation, preferredOrientation == [(TRAPreferencesOrientation *)preferencesCopy preferredOrientation]))
   {
     canDetermineActiveOrientation = self->_canDetermineActiveOrientation;
-    v9 = canDetermineActiveOrientation == [(TRAPreferencesOrientation *)v5 canDetermineActiveOrientation];
+    v9 = canDetermineActiveOrientation == [(TRAPreferencesOrientation *)preferencesCopy canDetermineActiveOrientation];
   }
 
   else
@@ -83,17 +83,17 @@ LABEL_10:
   return v9;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [TRAMutablePreferencesOrientation allocWithZone:a3];
+  v4 = [TRAMutablePreferencesOrientation allocWithZone:zone];
 
   return [(TRAPreferencesOrientation *)v4 initWithOrientationPreferences:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -101,7 +101,7 @@ LABEL_10:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TRAPreferencesOrientation *)self isEqualToOrientationPreferences:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TRAPreferencesOrientation *)self isEqualToOrientationPreferences:equalCopy];
   }
 
   return v5;
@@ -109,10 +109,10 @@ LABEL_10:
 
 - (id)succinctDescription
 {
-  v2 = [(TRAPreferencesOrientation *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(TRAPreferencesOrientation *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -133,12 +133,12 @@ LABEL_10:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(TRAPreferencesOrientation *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(TRAPreferencesOrientation *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (void)isEqualToOrientationPreferences:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

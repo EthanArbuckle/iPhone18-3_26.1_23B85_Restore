@@ -1,23 +1,23 @@
 @interface SearchUIItemProviderUtilities
-+ (id)itemProviderForItem:(id)a3;
-+ (void)copy:(id)a3;
++ (id)itemProviderForItem:(id)item;
++ (void)copy:(id)copy;
 - (SearchUIItemProviderUtilities)init;
 @end
 
 @implementation SearchUIItemProviderUtilities
 
-+ (id)itemProviderForItem:(id)a3
++ (id)itemProviderForItem:(id)item
 {
-  v4 = a3;
-  v5 = sub_1DA23094C(a3);
+  itemCopy = item;
+  v5 = sub_1DA23094C(item);
 
   return v5;
 }
 
-+ (void)copy:(id)a3
++ (void)copy:(id)copy
 {
-  v4 = a3;
-  sub_1DA230A78(a3);
+  copyCopy = copy;
+  sub_1DA230A78(copy);
 }
 
 - (SearchUIItemProviderUtilities)init

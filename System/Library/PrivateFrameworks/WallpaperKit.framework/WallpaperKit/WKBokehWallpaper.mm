@@ -1,9 +1,9 @@
 @interface WKBokehWallpaper
 + (id)na_identity;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIImage)thumbnailImage;
-- (WKBokehWallpaper)initWithIdentifier:(int64_t)a3 name:(id)a4 backgroundColors:(id)a5 bubbleColors:(id)a6 bubbleCount:(unint64_t)a7 bubbleScale:(double)a8 parallaxMultiplier:(double)a9 thumbnailSeed:(unint64_t)a10;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WKBokehWallpaper)initWithIdentifier:(int64_t)identifier name:(id)name backgroundColors:(id)colors bubbleColors:(id)bubbleColors bubbleCount:(unint64_t)count bubbleScale:(double)scale parallaxMultiplier:(double)multiplier thumbnailSeed:(unint64_t)self0;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionBuilderBlock;
 - (id)propertyListRepresentation;
 - (unint64_t)hash;
@@ -11,16 +11,16 @@
 
 @implementation WKBokehWallpaper
 
-- (WKBokehWallpaper)initWithIdentifier:(int64_t)a3 name:(id)a4 backgroundColors:(id)a5 bubbleColors:(id)a6 bubbleCount:(unint64_t)a7 bubbleScale:(double)a8 parallaxMultiplier:(double)a9 thumbnailSeed:(unint64_t)a10
+- (WKBokehWallpaper)initWithIdentifier:(int64_t)identifier name:(id)name backgroundColors:(id)colors bubbleColors:(id)bubbleColors bubbleCount:(unint64_t)count bubbleScale:(double)scale parallaxMultiplier:(double)multiplier thumbnailSeed:(unint64_t)self0
 {
-  v18 = a5;
-  v19 = a6;
+  colorsCopy = colors;
+  bubbleColorsCopy = bubbleColors;
   v24.receiver = self;
   v24.super_class = WKBokehWallpaper;
-  v20 = [(WKAbstractWallpaper *)&v24 initWithIdentifier:a3 name:a4 type:6 representedType:6 backingType:1];
+  v20 = [(WKAbstractWallpaper *)&v24 initWithIdentifier:identifier name:name type:6 representedType:6 backingType:1];
   if (v20)
   {
-    v21 = [[WKBokehWallpaperInput alloc] initWithBackgroundColors:v18 bubbleColors:v19 bubbleCount:a7 bubbleScale:a10 parallaxMultiplier:a8 thumbnailSeed:a9];
+    v21 = [[WKBokehWallpaperInput alloc] initWithBackgroundColors:colorsCopy bubbleColors:bubbleColorsCopy bubbleCount:count bubbleScale:seed parallaxMultiplier:scale thumbnailSeed:multiplier];
     wallpaperValue = v20->__wallpaperValue;
     v20->__wallpaperValue = v21;
   }
@@ -28,25 +28,25 @@
   return v20;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v21 = [objc_opt_class() allocWithZone:a3];
-  v20 = [(WKAbstractWallpaper *)self identifier];
-  v4 = [(WKAbstractWallpaper *)self name];
-  v5 = [(WKBokehWallpaper *)self wallpaperValue];
-  v6 = [v5 backgroundColors];
-  v7 = [(WKBokehWallpaper *)self wallpaperValue];
-  v8 = [v7 bubbleColors];
-  v9 = [(WKBokehWallpaper *)self wallpaperValue];
-  v10 = [v9 bubbleCount];
-  v11 = [(WKBokehWallpaper *)self wallpaperValue];
-  [v11 bubbleScale];
+  v21 = [objc_opt_class() allocWithZone:zone];
+  identifier = [(WKAbstractWallpaper *)self identifier];
+  name = [(WKAbstractWallpaper *)self name];
+  wallpaperValue = [(WKBokehWallpaper *)self wallpaperValue];
+  backgroundColors = [wallpaperValue backgroundColors];
+  wallpaperValue2 = [(WKBokehWallpaper *)self wallpaperValue];
+  bubbleColors = [wallpaperValue2 bubbleColors];
+  wallpaperValue3 = [(WKBokehWallpaper *)self wallpaperValue];
+  bubbleCount = [wallpaperValue3 bubbleCount];
+  wallpaperValue4 = [(WKBokehWallpaper *)self wallpaperValue];
+  [wallpaperValue4 bubbleScale];
   v13 = v12;
-  v14 = [(WKBokehWallpaper *)self wallpaperValue];
-  [v14 parallaxMultiplier];
+  wallpaperValue5 = [(WKBokehWallpaper *)self wallpaperValue];
+  [wallpaperValue5 parallaxMultiplier];
   v16 = v15;
-  v17 = [(WKBokehWallpaper *)self wallpaperValue];
-  v18 = [v21 initWithIdentifier:v20 name:v4 backgroundColors:v6 bubbleColors:v8 bubbleCount:v10 bubbleScale:objc_msgSend(v17 parallaxMultiplier:"thumbnailSeed") thumbnailSeed:{v13, v16}];
+  wallpaperValue6 = [(WKBokehWallpaper *)self wallpaperValue];
+  v18 = [v21 initWithIdentifier:identifier name:name backgroundColors:backgroundColors bubbleColors:bubbleColors bubbleCount:bubbleCount bubbleScale:objc_msgSend(wallpaperValue6 parallaxMultiplier:"thumbnailSeed") thumbnailSeed:{v13, v16}];
 
   return v18;
 }
@@ -55,44 +55,44 @@
 {
   v25.receiver = self;
   v25.super_class = WKBokehWallpaper;
-  v3 = [(WKAbstractWallpaper *)&v25 propertyListRepresentation];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = v4;
-  if (v3)
+  propertyListRepresentation = [(WKAbstractWallpaper *)&v25 propertyListRepresentation];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v5 = dictionary;
+  if (propertyListRepresentation)
   {
-    [v4 addEntriesFromDictionary:v3];
+    [dictionary addEntriesFromDictionary:propertyListRepresentation];
   }
 
-  v6 = [(WKBokehWallpaper *)self wallpaperValue];
-  v7 = [v6 backgroundColors];
-  v8 = [v7 na_map:&__block_literal_global_3];
+  wallpaperValue = [(WKBokehWallpaper *)self wallpaperValue];
+  backgroundColors = [wallpaperValue backgroundColors];
+  v8 = [backgroundColors na_map:&__block_literal_global_3];
 
   [v5 na_safeSetObject:v8 forKey:@"backgroundColors"];
-  v9 = [(WKBokehWallpaper *)self wallpaperValue];
-  v10 = [v9 bubbleColors];
-  v11 = [v10 na_map:&__block_literal_global_5_0];
+  wallpaperValue2 = [(WKBokehWallpaper *)self wallpaperValue];
+  bubbleColors = [wallpaperValue2 bubbleColors];
+  v11 = [bubbleColors na_map:&__block_literal_global_5_0];
 
   [v5 na_safeSetObject:v11 forKey:@"bubbleColors"];
   v12 = MEMORY[0x1E696AD98];
-  v13 = [(WKBokehWallpaper *)self wallpaperValue];
-  v14 = [v12 numberWithUnsignedInteger:{objc_msgSend(v13, "bubbleCount")}];
+  wallpaperValue3 = [(WKBokehWallpaper *)self wallpaperValue];
+  v14 = [v12 numberWithUnsignedInteger:{objc_msgSend(wallpaperValue3, "bubbleCount")}];
   [v5 na_safeSetObject:v14 forKey:@"bubbleCount"];
 
   v15 = MEMORY[0x1E696AD98];
-  v16 = [(WKBokehWallpaper *)self wallpaperValue];
-  [v16 bubbleScale];
+  wallpaperValue4 = [(WKBokehWallpaper *)self wallpaperValue];
+  [wallpaperValue4 bubbleScale];
   v17 = [v15 numberWithDouble:?];
   [v5 na_safeSetObject:v17 forKey:@"bubbleScale"];
 
   v18 = MEMORY[0x1E696AD98];
-  v19 = [(WKBokehWallpaper *)self wallpaperValue];
-  [v19 parallaxMultiplier];
+  wallpaperValue5 = [(WKBokehWallpaper *)self wallpaperValue];
+  [wallpaperValue5 parallaxMultiplier];
   v20 = [v18 numberWithDouble:?];
   [v5 na_safeSetObject:v20 forKey:@"parallaxMultiplier"];
 
   v21 = MEMORY[0x1E696AD98];
-  v22 = [(WKBokehWallpaper *)self wallpaperValue];
-  v23 = [v21 numberWithUnsignedInteger:{objc_msgSend(v22, "thumbnailSeed")}];
+  wallpaperValue6 = [(WKBokehWallpaper *)self wallpaperValue];
+  v23 = [v21 numberWithUnsignedInteger:{objc_msgSend(wallpaperValue6, "thumbnailSeed")}];
   [v5 na_safeSetObject:v23 forKey:@"thumbnailSeed"];
 
   return v5;
@@ -100,9 +100,9 @@
 
 - (UIImage)thumbnailImage
 {
-  v3 = [(WKBokehWallpaper *)self _thumbnailImage];
+  _thumbnailImage = [(WKBokehWallpaper *)self _thumbnailImage];
 
-  if (!v3)
+  if (!_thumbnailImage)
   {
     v4 = [WKBokehView thumbnailImageWithBokehInput:self->__wallpaperValue];
     [(WKBokehWallpaper *)self set_thumbnailImage:v4];
@@ -117,7 +117,7 @@
   v4[1] = 3221225472;
   v4[2] = __31__WKBokehWallpaper_na_identity__block_invoke;
   v4[3] = &__block_descriptor_40_e5__8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = __31__WKBokehWallpaper_na_identity__block_invoke(v4);
 
   return v2;
@@ -166,19 +166,19 @@ id __31__WKBokehWallpaper_na_identity__block_invoke_3(uint64_t a1)
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
@@ -187,14 +187,14 @@ id __31__WKBokehWallpaper_na_identity__block_invoke_3(uint64_t a1)
 {
   v9.receiver = self;
   v9.super_class = WKBokehWallpaper;
-  v3 = [(WKAbstractWallpaper *)&v9 descriptionBuilderBlock];
+  descriptionBuilderBlock = [(WKAbstractWallpaper *)&v9 descriptionBuilderBlock];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __43__WKBokehWallpaper_descriptionBuilderBlock__block_invoke;
   aBlock[3] = &unk_1E8766BF0;
   objc_copyWeak(&v7, &location);
-  aBlock[4] = v3;
+  aBlock[4] = descriptionBuilderBlock;
   v4 = _Block_copy(aBlock);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);

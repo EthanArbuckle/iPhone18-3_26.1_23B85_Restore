@@ -24,7 +24,7 @@
 + (int)getProvisionQuotaSize;
 + (int)getUserGID;
 + (int)getUserUID;
-+ (void)applyAttributes:(id)a3 toUser:(id)a4;
++ (void)applyAttributes:(id)attributes toUser:(id)user;
 + (void)initialize;
 @end
 
@@ -33,9 +33,9 @@
 + (void)initialize
 {
   v4 = +[NSProcessInfo processInfo];
-  v2 = [v4 arguments];
+  arguments = [v4 arguments];
   v3 = qword_100024B78;
-  qword_100024B78 = v2;
+  qword_100024B78 = arguments;
 }
 
 + (id)getNextArgument
@@ -68,14 +68,14 @@
 + (id)getUserAttributes
 {
   v3 = objc_opt_new();
-  v4 = [a1 _userAttributes];
+  _userAttributes = [self _userAttributes];
   v5 = +[UMTestArguments getNextArgument];
   if (v5)
   {
     v6 = v5;
     while (1)
     {
-      if (![v4 containsObject:v6])
+      if (![_userAttributes containsObject:v6])
       {
 LABEL_6:
 
@@ -113,8 +113,8 @@ LABEL_7:
 + (int)getUserUID
 {
   v3 = objc_opt_new();
-  v4 = [a1 getUserAttributes];
-  [a1 applyAttributes:v4 toUser:v3];
+  getUserAttributes = [self getUserAttributes];
+  [self applyAttributes:getUserAttributes toUser:v3];
   if ([v3 uid] < 0x1F5)
   {
     v5 = 0;
@@ -131,23 +131,23 @@ LABEL_7:
 + (int)getUserGID
 {
   v3 = objc_opt_new();
-  v4 = [a1 getUserAttributes];
-  [a1 applyAttributes:v4 toUser:v3];
+  getUserAttributes = [self getUserAttributes];
+  [self applyAttributes:getUserAttributes toUser:v3];
   [v3 uid];
-  LODWORD(a1) = [v3 uid];
+  LODWORD(self) = [v3 uid];
 
-  return a1;
+  return self;
 }
 
-+ (void)applyAttributes:(id)a3 toUser:(id)a4
++ (void)applyAttributes:(id)attributes toUser:(id)user
 {
-  v5 = a3;
-  v6 = a4;
+  attributesCopy = attributes;
+  userCopy = user;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [attributesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -158,54 +158,54 @@ LABEL_7:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(attributesCopy);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v5 objectForKeyedSubscript:v11];
+        v12 = [attributesCopy objectForKeyedSubscript:v11];
         if ([v11 isEqualToString:@"uid"])
         {
-          [v6 setUid:{objc_msgSend(v12, "intValue")}];
+          [userCopy setUid:{objc_msgSend(v12, "intValue")}];
         }
 
         else if ([v11 isEqualToString:@"alternateDSID"])
         {
-          [v6 setAlternateDSID:v12];
+          [userCopy setAlternateDSID:v12];
         }
 
         else if ([v11 isEqualToString:@"username"])
         {
-          [v6 setUsername:v12];
+          [userCopy setUsername:v12];
         }
 
         else if ([v11 isEqualToString:@"givenName"])
         {
-          [v6 setGivenName:v12];
+          [userCopy setGivenName:v12];
         }
 
         else if ([v11 isEqualToString:@"familyName"])
         {
-          [v6 setFamilyName:v12];
+          [userCopy setFamilyName:v12];
         }
 
         else if ([v11 isEqualToString:@"displayName"])
         {
-          [v6 setDisplayName:v12];
+          [userCopy setDisplayName:v12];
         }
 
         else if ([v11 isEqualToString:@"photoURL"])
         {
           v13 = [NSURL URLWithString:v12];
-          [v6 setPhotoURL:v13];
+          [userCopy setPhotoURL:v13];
         }
 
         else if ([v11 isEqualToString:@"userAuxiliaryString"])
         {
-          [v6 setUserAuxiliaryString:v12];
+          [userCopy setUserAuxiliaryString:v12];
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [attributesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -215,23 +215,23 @@ LABEL_7:
 + (id)getUser
 {
   v3 = objc_opt_new();
-  v4 = [a1 getUserAttributes];
-  [a1 applyAttributes:v4 toUser:v3];
+  getUserAttributes = [self getUserAttributes];
+  [self applyAttributes:getUserAttributes toUser:v3];
 
   return v3;
 }
 
 + (id)getUserIfExists
 {
-  v2 = [a1 getUser];
+  getUser = [self getUser];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v3 = +[UMUserManager sharedManager];
-  v4 = [v3 allUsers];
+  allUsers = [v3 allUsers];
 
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [allUsers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -241,18 +241,18 @@ LABEL_7:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allUsers);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
-        if ([v8 isEqualToUser:v2])
+        if ([v8 isEqualToUser:getUser])
         {
           v5 = v8;
           goto LABEL_11;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allUsers countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -281,8 +281,8 @@ LABEL_11:
 
 + (id)getPasscodeData
 {
-  v2 = [a1 _passcodeIndex];
-  if (v2 == 0x7FFFFFFFFFFFFFFFLL || (v3 = v2, v2 >= [qword_100024B78 count]))
+  _passcodeIndex = [self _passcodeIndex];
+  if (_passcodeIndex == 0x7FFFFFFFFFFFFFFFLL || (v3 = _passcodeIndex, _passcodeIndex >= [qword_100024B78 count]))
   {
     v5 = 0;
   }
@@ -304,9 +304,9 @@ LABEL_11:
   v13 = sub_100001D24;
   v14 = sub_100001D34;
   v15 = 0;
-  v2 = [a1 _passcodeIndex];
+  _passcodeIndex = [self _passcodeIndex];
   v9 = 0;
-  if (v2 == 0x7FFFFFFFFFFFFFFFLL || v2 >= [qword_100024B78 count])
+  if (_passcodeIndex == 0x7FFFFFFFFFFFFFFFLL || _passcodeIndex >= [qword_100024B78 count])
   {
 LABEL_8:
     v3 = v11[5];
@@ -316,11 +316,11 @@ LABEL_8:
   v3 = 0;
   if (!ACMContextCreate(&v9) && v9)
   {
-    v4 = [qword_100024B78 objectAtIndexedSubscript:v2 + 1];
-    v5 = [v4 UTF8String];
+    v4 = [qword_100024B78 objectAtIndexedSubscript:_passcodeIndex + 1];
+    uTF8String = [v4 UTF8String];
 
-    v6 = strlen(v5);
-    if (ACMContextSetData(v9, 5, v5, v6))
+    v6 = strlen(uTF8String);
+    if (ACMContextSetData(v9, 5, uTF8String, v6))
     {
       v3 = 0;
       goto LABEL_9;
@@ -390,14 +390,14 @@ LABEL_9:
 + (id)getPersonaAttributes
 {
   v3 = objc_opt_new();
-  v4 = [a1 _personaAttributes];
+  _personaAttributes = [self _personaAttributes];
   v5 = +[UMTestArguments getNextArgument];
   if (v5)
   {
     v6 = v5;
     while (1)
     {
-      if (![v4 containsObject:v6])
+      if (![_personaAttributes containsObject:v6])
       {
 LABEL_6:
 
@@ -532,9 +532,9 @@ LABEL_7:
 
 + (id)getPersonaStringAttribute
 {
-  v2 = [a1 getPersonaAttributes];
-  v3 = v2;
-  if (v2 && ([v2 objectForKey:@"personastring"], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  getPersonaAttributes = [self getPersonaAttributes];
+  v3 = getPersonaAttributes;
+  if (getPersonaAttributes && ([getPersonaAttributes objectForKey:@"personastring"], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
     v6 = [v4 copy];
@@ -550,9 +550,9 @@ LABEL_7:
 
 + (id)getbundleIDAttribute
 {
-  v2 = [a1 getPersonaAttributes];
-  v3 = v2;
-  if (v2 && ([v2 objectForKey:@"bundleid"], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  getPersonaAttributes = [self getPersonaAttributes];
+  v3 = getPersonaAttributes;
+  if (getPersonaAttributes && ([getPersonaAttributes objectForKey:@"bundleid"], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
     v6 = [v4 copy];
@@ -568,11 +568,11 @@ LABEL_7:
 
 + (id)getPersonaTypeAttribute
 {
-  v2 = [a1 getPersonaAttributes];
-  v3 = v2;
-  if (v2)
+  getPersonaAttributes = [self getPersonaAttributes];
+  v3 = getPersonaAttributes;
+  if (getPersonaAttributes)
   {
-    v4 = [v2 objectForKey:@"personatype"];
+    v4 = [getPersonaAttributes objectForKey:@"personatype"];
     if ([v4 isEqualToString:@"personal"])
     {
       v5 = [NSNumber numberWithInt:0];
@@ -602,9 +602,9 @@ LABEL_7:
 
 + (id)getImagePathAttribute
 {
-  v2 = [a1 getPersonaAttributes];
-  v3 = v2;
-  if (v2 && ([v2 objectForKey:@"imagepath"], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  getPersonaAttributes = [self getPersonaAttributes];
+  v3 = getPersonaAttributes;
+  if (getPersonaAttributes && ([getPersonaAttributes objectForKey:@"imagepath"], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
     v6 = [v4 copy];
@@ -620,63 +620,63 @@ LABEL_7:
 
 + (int)getPersonaTestCount
 {
-  v2 = [a1 getPersonaAttributes];
-  v3 = v2;
-  if (v2 && ([v2 objectForKey:@"ptestcount"], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  getPersonaAttributes = [self getPersonaAttributes];
+  v3 = getPersonaAttributes;
+  if (getPersonaAttributes && ([getPersonaAttributes objectForKey:@"ptestcount"], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
-    v6 = [v4 intValue];
+    intValue = [v4 intValue];
   }
 
   else
   {
-    v6 = 1;
+    intValue = 1;
   }
 
-  return v6;
+  return intValue;
 }
 
 + (int)getProvisionQuotaSize
 {
-  v2 = [a1 getProvisionAttributes];
-  v3 = v2;
-  if (v2 && ([v2 objectForKey:@"quotasize"], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  getProvisionAttributes = [self getProvisionAttributes];
+  v3 = getProvisionAttributes;
+  if (getProvisionAttributes && ([getProvisionAttributes objectForKey:@"quotasize"], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
-    v6 = [v4 intValue];
+    intValue = [v4 intValue];
   }
 
   else
   {
-    v6 = 10;
+    intValue = 10;
   }
 
-  return v6;
+  return intValue;
 }
 
 + (int)getProvisionNumUsers
 {
-  v2 = [a1 getProvisionAttributes];
-  v3 = v2;
-  if (v2 && ([v2 objectForKey:@"numusers"], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  getProvisionAttributes = [self getProvisionAttributes];
+  v3 = getProvisionAttributes;
+  if (getProvisionAttributes && ([getProvisionAttributes objectForKey:@"numusers"], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
-    v6 = [v4 intValue];
+    intValue = [v4 intValue];
   }
 
   else
   {
-    v6 = 10;
+    intValue = 10;
   }
 
-  return v6;
+  return intValue;
 }
 
 + (id)getSharedDataVolumePathAttribute
 {
-  v2 = [a1 getLayoutAttributes];
-  v3 = v2;
-  if (v2 && ([v2 objectForKey:@"sdvpath"], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  getLayoutAttributes = [self getLayoutAttributes];
+  v3 = getLayoutAttributes;
+  if (getLayoutAttributes && ([getLayoutAttributes objectForKey:@"sdvpath"], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
     v6 = [v4 copy];
@@ -692,9 +692,9 @@ LABEL_7:
 
 + (id)getUserVolumePathAttribute
 {
-  v2 = [a1 getLayoutAttributes];
-  v3 = v2;
-  if (v2 && ([v2 objectForKey:@"userpath"], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  getLayoutAttributes = [self getLayoutAttributes];
+  v3 = getLayoutAttributes;
+  if (getLayoutAttributes && ([getLayoutAttributes objectForKey:@"userpath"], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
     v6 = [v4 copy];
@@ -710,9 +710,9 @@ LABEL_7:
 
 + (id)getSystemVolumePathAttribute
 {
-  v2 = [a1 getLayoutAttributes];
-  v3 = v2;
-  if (v2 && ([v2 objectForKey:@"systempath"], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  getLayoutAttributes = [self getLayoutAttributes];
+  v3 = getLayoutAttributes;
+  if (getLayoutAttributes && ([getLayoutAttributes objectForKey:@"systempath"], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
     v6 = [v4 copy];

@@ -1,19 +1,19 @@
 @interface SBHideFolderContentsAlertItem
-- (SBHideFolderContentsAlertItem)initWithIcon:(id)a3 location:(id)a4 iconManager:(id)a5;
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
+- (SBHideFolderContentsAlertItem)initWithIcon:(id)icon location:(id)location iconManager:(id)manager;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
 - (void)didActivate;
 @end
 
 @implementation SBHideFolderContentsAlertItem
 
-- (SBHideFolderContentsAlertItem)initWithIcon:(id)a3 location:(id)a4 iconManager:(id)a5
+- (SBHideFolderContentsAlertItem)initWithIcon:(id)icon location:(id)location iconManager:(id)manager
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (([v10 isFolderIcon] & 1) == 0)
+  iconCopy = icon;
+  locationCopy = location;
+  managerCopy = manager;
+  if (([iconCopy isFolderIcon] & 1) == 0)
   {
-    [SBHideFolderContentsAlertItem initWithIcon:a2 location:self iconManager:v10];
+    [SBHideFolderContentsAlertItem initWithIcon:a2 location:self iconManager:iconCopy];
   }
 
   v18.receiver = self;
@@ -22,12 +22,12 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_icon, a3);
-    v15 = [v11 copy];
+    objc_storeStrong(&v13->_icon, icon);
+    v15 = [locationCopy copy];
     iconLocation = v14->_iconLocation;
     v14->_iconLocation = v15;
 
-    objc_storeStrong(&v14->_iconManager, a5);
+    objc_storeStrong(&v14->_iconManager, manager);
   }
 
   return v14;
@@ -48,46 +48,46 @@
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
   v6 = MEMORY[0x277D65DD0];
   v7 = v5;
-  v8 = [v6 sharedInstance];
-  [v8 emitEvent:18 withPayload:v7];
+  sharedInstance = [v6 sharedInstance];
+  [sharedInstance emitEvent:18 withPayload:v7];
 }
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
-  v5 = [(SBAlertItem *)self alertController:a3];
-  v6 = [(SBHideFolderContentsAlertItem *)self icon];
+  v5 = [(SBAlertItem *)self alertController:configure];
+  icon = [(SBHideFolderContentsAlertItem *)self icon];
   v7 = MEMORY[0x277CCACA8];
-  v8 = [MEMORY[0x277CCA8D8] mainBundle];
-  v9 = [v8 localizedStringForKey:@"ADD_FOLDER_TO_LIBRARY_ALERT_TITLE" value:&stru_283094718 table:@"SpringBoard"];
-  v10 = [v6 displayName];
-  v11 = [v7 stringWithFormat:v9, v10];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v9 = [mainBundle localizedStringForKey:@"ADD_FOLDER_TO_LIBRARY_ALERT_TITLE" value:&stru_283094718 table:@"SpringBoard"];
+  displayName = [icon displayName];
+  v11 = [v7 stringWithFormat:v9, displayName];
   [v5 setTitle:v11];
 
-  v12 = [MEMORY[0x277CCA8D8] mainBundle];
-  v13 = [v12 localizedStringForKey:@"ADD_FOLDER_TO_LIBRARY_ALERT_MESSAGE" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v13 = [mainBundle2 localizedStringForKey:@"ADD_FOLDER_TO_LIBRARY_ALERT_MESSAGE" value:&stru_283094718 table:@"SpringBoard"];
   [v5 setMessage:v13];
 
   v14 = MEMORY[0x277D750F8];
-  v15 = [MEMORY[0x277CCA8D8] mainBundle];
-  v16 = [v15 localizedStringForKey:@"REMOVE_FROM_HOME_SCREEN" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+  v16 = [mainBundle3 localizedStringForKey:@"REMOVE_FROM_HOME_SCREEN" value:&stru_283094718 table:@"SpringBoard"];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __69__SBHideFolderContentsAlertItem_configure_requirePasscodeForActions___block_invoke;
   v23[3] = &unk_2783A8A18;
   v23[4] = self;
-  v24 = v6;
-  v17 = v6;
+  v24 = icon;
+  v17 = icon;
   v18 = [v14 actionWithTitle:v16 style:0 handler:v23];
 
   [v5 addAction:v18];
   v19 = MEMORY[0x277D750F8];
-  v20 = [(SBIcon *)self->_icon uninstallAlertCancelTitle];
+  uninstallAlertCancelTitle = [(SBIcon *)self->_icon uninstallAlertCancelTitle];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __69__SBHideFolderContentsAlertItem_configure_requirePasscodeForActions___block_invoke_32;
   v22[3] = &unk_2783A8A40;
   v22[4] = self;
-  v21 = [v19 actionWithTitle:v20 style:1 handler:v22];
+  v21 = [v19 actionWithTitle:uninstallAlertCancelTitle style:1 handler:v22];
   [v5 addAction:v21];
 
   [v5 setPreferredAction:v18];

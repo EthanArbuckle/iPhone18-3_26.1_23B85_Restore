@@ -1,65 +1,65 @@
 @interface SPRepairDeviceAttributes
-- (SPRepairDeviceAttributes)initWithInternalSimpleBeacon:(id)a3;
+- (SPRepairDeviceAttributes)initWithInternalSimpleBeacon:(id)beacon;
 @end
 
 @implementation SPRepairDeviceAttributes
 
-- (SPRepairDeviceAttributes)initWithInternalSimpleBeacon:(id)a3
+- (SPRepairDeviceAttributes)initWithInternalSimpleBeacon:(id)beacon
 {
-  v4 = a3;
+  beaconCopy = beacon;
   v31.receiver = self;
   v31.super_class = SPRepairDeviceAttributes;
   v5 = [(SPRepairDeviceAttributes *)&v31 init];
   if (v5)
   {
-    v6 = [v4 name];
+    name = [beaconCopy name];
     name = v5->_name;
-    v5->_name = v6;
+    v5->_name = name;
 
-    v8 = [v4 identifier];
+    identifier = [beaconCopy identifier];
     identifier = v5->_identifier;
-    v5->_identifier = v8;
+    v5->_identifier = identifier;
 
-    v10 = [v4 serialNumber];
+    serialNumber = [beaconCopy serialNumber];
     serialNumber = v5->_serialNumber;
-    v5->_serialNumber = v10;
+    v5->_serialNumber = serialNumber;
 
-    v12 = [v4 owner];
+    owner = [beaconCopy owner];
     owner = v5->_owner;
-    v5->_owner = v12;
+    v5->_owner = owner;
 
-    v14 = [v4 deviceClass];
+    deviceClass = [beaconCopy deviceClass];
     deviceClass = v5->_deviceClass;
-    v5->_deviceClass = v14;
+    v5->_deviceClass = deviceClass;
 
-    v16 = [v4 deviceModel];
+    deviceModel = [beaconCopy deviceModel];
     deviceModel = v5->_deviceModel;
-    v5->_deviceModel = v16;
+    v5->_deviceModel = deviceModel;
 
-    v18 = [v4 rawDeviceModel];
+    rawDeviceModel = [beaconCopy rawDeviceModel];
     rawDeviceModel = v5->_rawDeviceModel;
-    v5->_rawDeviceModel = v18;
+    v5->_rawDeviceModel = rawDeviceModel;
 
-    v20 = [v4 deviceColor];
+    deviceColor = [beaconCopy deviceColor];
     deviceColor = v5->_deviceColor;
-    v5->_deviceColor = v20;
+    v5->_deviceColor = deviceColor;
 
-    v22 = [v4 thisDevice];
+    thisDevice = [beaconCopy thisDevice];
     thisDevice = v5->_thisDevice;
-    v5->_thisDevice = v22;
+    v5->_thisDevice = thisDevice;
 
-    v24 = [v4 isMine];
+    isMine = [beaconCopy isMine];
     isMine = v5->_isMine;
-    v5->_isMine = v24;
+    v5->_isMine = isMine;
 
-    v5->_repairState = [v4 repairState];
-    v26 = [v4 isRepairCapable];
+    v5->_repairState = [beaconCopy repairState];
+    isRepairCapable = [beaconCopy isRepairCapable];
     isRepairCapable = v5->_isRepairCapable;
-    v5->_isRepairCapable = v26;
+    v5->_isRepairCapable = isRepairCapable;
 
-    v28 = [v4 imageBaseUrl];
+    imageBaseUrl = [beaconCopy imageBaseUrl];
     imageBaseUrl = v5->_imageBaseUrl;
-    v5->_imageBaseUrl = v28;
+    v5->_imageBaseUrl = imageBaseUrl;
   }
 
   return v5;

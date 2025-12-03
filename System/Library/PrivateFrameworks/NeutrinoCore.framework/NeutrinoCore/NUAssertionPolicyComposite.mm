@@ -1,20 +1,20 @@
 @interface NUAssertionPolicyComposite
 - (NUAssertionPolicyComposite)init;
-- (void)notifyAssertion:(id)a3;
+- (void)notifyAssertion:(id)assertion;
 @end
 
 @implementation NUAssertionPolicyComposite
 
-- (void)notifyAssertion:(id)a3
+- (void)notifyAssertion:(id)assertion
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assertionCopy = assertion;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NUAssertionPolicyComposite *)self policies];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  policies = [(NUAssertionPolicyComposite *)self policies];
+  v6 = [policies countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -26,14 +26,14 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(policies);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) notifyAssertion:v4];
+        [*(*(&v10 + 1) + 8 * v9++) notifyAssertion:assertionCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [policies countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);

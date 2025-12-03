@@ -1,31 +1,31 @@
 @interface FKBackgroundRefreshConfirmationPromptToken
-- (BOOL)isEqual:(id)a3;
-- (FKBackgroundRefreshConfirmationPromptToken)initWithFullyQualifiedAccountIdentifier:(id)a3 sequenceNumber:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (FKBackgroundRefreshConfirmationPromptToken)initWithFullyQualifiedAccountIdentifier:(id)identifier sequenceNumber:(int64_t)number;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation FKBackgroundRefreshConfirmationPromptToken
 
-- (FKBackgroundRefreshConfirmationPromptToken)initWithFullyQualifiedAccountIdentifier:(id)a3 sequenceNumber:(int64_t)a4
+- (FKBackgroundRefreshConfirmationPromptToken)initWithFullyQualifiedAccountIdentifier:(id)identifier sequenceNumber:(int64_t)number
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = FKBackgroundRefreshConfirmationPromptToken;
   v7 = [(FKBackgroundRefreshConfirmationPromptToken *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     fqaid = v7->_fqaid;
     v7->_fqaid = v8;
 
-    v7->_sequenceNumber = a4;
+    v7->_sequenceNumber = number;
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [FKBackgroundRefreshConfirmationPromptToken alloc];
   fqaid = self->_fqaid;
@@ -45,16 +45,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     if (FKEqualObjects(self->_fqaid, v6->_fqaid))

@@ -1,60 +1,60 @@
 @interface PHServerResourceRequestRunner
-- (BOOL)_resourceQualifiesForCacheMetricsCollection:(id)a3 isLivePhoto:(BOOL)a4;
+- (BOOL)_resourceQualifiesForCacheMetricsCollection:(id)collection isLivePhoto:(BOOL)photo;
 - (BOOL)currentSystemSupportsProMotionDisplay;
-- (PHServerResourceRequestRunner)initWithTaskIdentifier:(id)a3;
-- (id)_applyCorrectionsToAssetObjectIDURL:(id)a3 resourceIdentity:(id)a4 errorCodes:(id)a5 clientBundleID:(id)a6 library:(id)a7 reply:(id)a8;
-- (id)_assetAndRelatedObjectsFromAssetObjectIDURL:(id)a3 inManagedObjectContext:(id)a4 error:(id *)a5;
-- (id)_avAssetProxyForOutOfBandHintsAboutAssetForResource:(id)a3;
-- (id)_urlByAttachingOutOfBandHintsToVideoURL:(id)a3 assetProxy:(id)a4 signpostId:(unint64_t)a5 hintsBase64String:(id *)a6;
-- (id)applyAssetScopeCorrectionsWithRequest:(id)a3 errorCodes:(id)a4 clientBundleID:(id)a5 library:(id)a6 reply:(id)a7;
-- (id)applyResourceScopeCorrectionsWithRequest:(id)a3 errorCodes:(id)a4 clientBundleID:(id)a5 library:(id)a6 reply:(id)a7;
-- (id)chooseVideoWithRequest:(id)a3 library:(id)a4 clientBundleID:(id)a5 reply:(id)a6;
-- (id)makeResourceAvailableWithRequest:(id)a3 library:(id)a4 clientBundleID:(id)a5 reply:(id)a6;
-- (id)mutableStreamingHintsForAVAssetProxy:(id)a3;
-- (id)startDownloadForRequest:(id)a3 backingResource:(id)a4 clientBundleID:(id)a5 shouldReturnAdjustmentInfo:(BOOL)a6 needsDownload:(BOOL)a7 shouldApplyTimeRange:(BOOL)a8 reply:(id)a9;
-- (id)videoResourceChoiceForAsset:(id)a3 context:(id)a4 loadingMode:(int64_t *)a5 request:(id)a6 shouldReturnAdjustmentInfo:(BOOL *)a7 error:(id *)a8;
+- (PHServerResourceRequestRunner)initWithTaskIdentifier:(id)identifier;
+- (id)_applyCorrectionsToAssetObjectIDURL:(id)l resourceIdentity:(id)identity errorCodes:(id)codes clientBundleID:(id)d library:(id)library reply:(id)reply;
+- (id)_assetAndRelatedObjectsFromAssetObjectIDURL:(id)l inManagedObjectContext:(id)context error:(id *)error;
+- (id)_avAssetProxyForOutOfBandHintsAboutAssetForResource:(id)resource;
+- (id)_urlByAttachingOutOfBandHintsToVideoURL:(id)l assetProxy:(id)proxy signpostId:(unint64_t)id hintsBase64String:(id *)string;
+- (id)applyAssetScopeCorrectionsWithRequest:(id)request errorCodes:(id)codes clientBundleID:(id)d library:(id)library reply:(id)reply;
+- (id)applyResourceScopeCorrectionsWithRequest:(id)request errorCodes:(id)codes clientBundleID:(id)d library:(id)library reply:(id)reply;
+- (id)chooseVideoWithRequest:(id)request library:(id)library clientBundleID:(id)d reply:(id)reply;
+- (id)makeResourceAvailableWithRequest:(id)request library:(id)library clientBundleID:(id)d reply:(id)reply;
+- (id)mutableStreamingHintsForAVAssetProxy:(id)proxy;
+- (id)startDownloadForRequest:(id)request backingResource:(id)resource clientBundleID:(id)d shouldReturnAdjustmentInfo:(BOOL)info needsDownload:(BOOL)download shouldApplyTimeRange:(BOOL)range reply:(id)reply;
+- (id)videoResourceChoiceForAsset:(id)asset context:(id)context loadingMode:(int64_t *)mode request:(id)request shouldReturnAdjustmentInfo:(BOOL *)info error:(id *)error;
 - (int64_t)state;
-- (void)_cancelWithReply:(id)a3;
-- (void)_handleLocalAvailabilityChangeWithFileURL:(id)a3 transientData:(id)a4 isExpectingOnlyData:(BOOL)a5 resourceCPLType:(unint64_t)a6 library:(id)a7 expectedMasterThumbnailURL:(id)a8 assetObjectID:(id)a9 resourceObjectID:(id)a10 resourceVersion:(unsigned int)a11 resourceUTIString:(id)a12 resourceOrientation:(unsigned int)a13 error:(id)a14 reply:(id)a15;
-- (void)_handleProgress:(id)a3;
-- (void)_replyToVideoRequestWithURL:(id)a3 mediaItemMakerData:(id)a4 mutableInfo:(id)a5 internalInfo:(id)a6 error:(id)a7 pathForAdjustmentFileIfNeeded:(id)a8 reply:(id)a9;
-- (void)_safeReply:(id)a3;
-- (void)addClientSystemInformationToMutableStreamingHints:(id)a3;
+- (void)_cancelWithReply:(id)reply;
+- (void)_handleLocalAvailabilityChangeWithFileURL:(id)l transientData:(id)data isExpectingOnlyData:(BOOL)onlyData resourceCPLType:(unint64_t)type library:(id)library expectedMasterThumbnailURL:(id)rL assetObjectID:(id)d resourceObjectID:(id)self0 resourceVersion:(unsigned int)self1 resourceUTIString:(id)self2 resourceOrientation:(unsigned int)self3 error:(id)self4 reply:(id)self5;
+- (void)_handleProgress:(id)progress;
+- (void)_replyToVideoRequestWithURL:(id)l mediaItemMakerData:(id)data mutableInfo:(id)info internalInfo:(id)internalInfo error:(id)error pathForAdjustmentFileIfNeeded:(id)needed reply:(id)reply;
+- (void)_safeReply:(id)reply;
+- (void)addClientSystemInformationToMutableStreamingHints:(id)hints;
 - (void)dealloc;
-- (void)makeResourceUnavailableWithRequest:(id)a3 library:(id)a4;
-- (void)setState:(int64_t)a3;
-- (void)startWalrusTimeRangeDownloadForRequest:(id)a3 backingResource:(id)a4 clientBundleID:(id)a5 shouldReturnAdjustmentInfo:(BOOL)a6 partialVideoURL:(id)a7 reply:(id)a8;
+- (void)makeResourceUnavailableWithRequest:(id)request library:(id)library;
+- (void)setState:(int64_t)state;
+- (void)startWalrusTimeRangeDownloadForRequest:(id)request backingResource:(id)resource clientBundleID:(id)d shouldReturnAdjustmentInfo:(BOOL)info partialVideoURL:(id)l reply:(id)reply;
 @end
 
 @implementation PHServerResourceRequestRunner
 
-- (id)_urlByAttachingOutOfBandHintsToVideoURL:(id)a3 assetProxy:(id)a4 signpostId:(unint64_t)a5 hintsBase64String:(id *)a6
+- (id)_urlByAttachingOutOfBandHintsToVideoURL:(id)l assetProxy:(id)proxy signpostId:(unint64_t)id hintsBase64String:(id *)string
 {
-  v9 = a3;
-  v10 = a4;
+  lCopy = l;
+  proxyCopy = proxy;
   v11 = PLImageManagerGetLog();
   v12 = v11;
-  if (a5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
+  if (id - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&dword_19C86F000, v12, OS_SIGNPOST_INTERVAL_BEGIN, a5, "com.apple.photos.backend.chooseVideo.outOfBandHints", byte_19CB567AE, buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_19C86F000, v12, OS_SIGNPOST_INTERVAL_BEGIN, id, "com.apple.photos.backend.chooseVideo.outOfBandHints", byte_19CB567AE, buf, 2u);
   }
 
-  v13 = v9;
+  v13 = lCopy;
   v14 = v13;
   v15 = v13;
   if (v13)
   {
     v15 = v13;
-    if (v10)
+    if (proxyCopy)
     {
-      v16 = [objc_alloc(MEMORY[0x1E69C0718]) initWithAVAsset:v10 timeZoneLookup:0];
-      v17 = [v16 outOfBandHintsBase64String];
-      v18 = v17;
-      if (a6)
+      v16 = [objc_alloc(MEMORY[0x1E69C0718]) initWithAVAsset:proxyCopy timeZoneLookup:0];
+      outOfBandHintsBase64String = [v16 outOfBandHintsBase64String];
+      v18 = outOfBandHintsBase64String;
+      if (string)
       {
-        v19 = v17;
-        *a6 = v18;
+        v19 = outOfBandHintsBase64String;
+        *string = v18;
       }
 
       v15 = [MEMORY[0x1E69C0708] urlByAttachingOutOfBandHintsBase64String:v18 toVideoURL:v14];
@@ -63,112 +63,112 @@
 
   v20 = PLImageManagerGetLog();
   v21 = v20;
-  if (a5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v20))
+  if (id - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v20))
   {
     *v23 = 0;
-    _os_signpost_emit_with_name_impl(&dword_19C86F000, v21, OS_SIGNPOST_INTERVAL_END, a5, "com.apple.photos.backend.chooseVideo.outOfBandHints", byte_19CB567AE, v23, 2u);
+    _os_signpost_emit_with_name_impl(&dword_19C86F000, v21, OS_SIGNPOST_INTERVAL_END, id, "com.apple.photos.backend.chooseVideo.outOfBandHints", byte_19CB567AE, v23, 2u);
   }
 
   return v15;
 }
 
-- (id)_avAssetProxyForOutOfBandHintsAboutAssetForResource:(id)a3
+- (id)_avAssetProxyForOutOfBandHintsAboutAssetForResource:(id)resource
 {
-  v3 = [a3 asset];
-  if ([v3 hasAdjustments])
+  asset = [resource asset];
+  if ([asset hasAdjustments])
   {
-    [v3 avAssetProxyForFullSizeAllowReadFromFile:1];
+    [asset avAssetProxyForFullSizeAllowReadFromFile:1];
   }
 
   else
   {
-    [v3 avAssetProxyForOriginalAllowReadFromFile:1];
+    [asset avAssetProxyForOriginalAllowReadFromFile:1];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)mutableStreamingHintsForAVAssetProxy:(id)a3
+- (id)mutableStreamingHintsForAVAssetProxy:(id)proxy
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  [(PHServerResourceRequestRunner *)self addClientSystemInformationToMutableStreamingHints:v5];
-  if (v4)
+  proxyCopy = proxy;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [(PHServerResourceRequestRunner *)self addClientSystemInformationToMutableStreamingHints:dictionary];
+  if (proxyCopy)
   {
-    v6 = [objc_alloc(MEMORY[0x1E69C0718]) initWithAVAsset:v4 timeZoneLookup:0];
+    v6 = [objc_alloc(MEMORY[0x1E69C0718]) initWithAVAsset:proxyCopy timeZoneLookup:0];
     if (v6)
     {
-      v7 = [MEMORY[0x1E695DF70] array];
-      [v5 setObject:v7 forKeyedSubscript:*MEMORY[0x1E69949F8]];
+      array = [MEMORY[0x1E695DF70] array];
+      [dictionary setObject:array forKeyedSubscript:*MEMORY[0x1E69949F8]];
       if ([v6 isSpatialMedia])
       {
         v8 = [MEMORY[0x1E696AD98] numberWithInteger:*MEMORY[0x1E69949F0]];
-        [v7 addObject:v8];
+        [array addObject:v8];
       }
 
       if ([v6 isHDR])
       {
         v9 = [MEMORY[0x1E696AD98] numberWithInteger:*MEMORY[0x1E69949E8]];
-        [v7 addObject:v9];
+        [array addObject:v9];
       }
 
-      v10 = [v6 hevcProfileInfo];
-      v11 = v10;
-      if (v10)
+      hevcProfileInfo = [v6 hevcProfileInfo];
+      v11 = hevcProfileInfo;
+      if (hevcProfileInfo)
       {
-        v12 = [v10 profile];
-        [v5 setObject:v12 forKeyedSubscript:*MEMORY[0x1E6994A48]];
+        profile = [hevcProfileInfo profile];
+        [dictionary setObject:profile forKeyedSubscript:*MEMORY[0x1E6994A48]];
 
-        v13 = [v11 tier];
-        [v5 setObject:v13 forKeyedSubscript:*MEMORY[0x1E6994A50]];
+        tier = [v11 tier];
+        [dictionary setObject:tier forKeyedSubscript:*MEMORY[0x1E6994A50]];
 
-        v14 = [v11 level];
-        [v5 setObject:v14 forKeyedSubscript:*MEMORY[0x1E6994A18]];
+        level = [v11 level];
+        [dictionary setObject:level forKeyedSubscript:*MEMORY[0x1E6994A18]];
       }
 
-      v15 = [v6 cameraMake];
+      cameraMake = [v6 cameraMake];
 
-      if (v15)
+      if (cameraMake)
       {
-        v16 = [v6 cameraMake];
-        [v5 setObject:v16 forKeyedSubscript:*MEMORY[0x1E6994A20]];
+        cameraMake2 = [v6 cameraMake];
+        [dictionary setObject:cameraMake2 forKeyedSubscript:*MEMORY[0x1E6994A20]];
       }
 
-      v17 = [v6 cameraModel];
+      cameraModel = [v6 cameraModel];
 
-      if (v17)
+      if (cameraModel)
       {
-        v18 = [v6 cameraModel];
-        [v5 setObject:v18 forKeyedSubscript:*MEMORY[0x1E6994A28]];
+        cameraModel2 = [v6 cameraModel];
+        [dictionary setObject:cameraModel2 forKeyedSubscript:*MEMORY[0x1E6994A28]];
       }
     }
 
-    v19 = [v6 apacAudioTrackChannelCount];
+    apacAudioTrackChannelCount = [v6 apacAudioTrackChannelCount];
 
-    if (v19)
+    if (apacAudioTrackChannelCount)
     {
-      v20 = [v6 apacAudioTrackChannelCount];
-      [v5 setObject:v20 forKeyedSubscript:*MEMORY[0x1E69949C8]];
+      apacAudioTrackChannelCount2 = [v6 apacAudioTrackChannelCount];
+      [dictionary setObject:apacAudioTrackChannelCount2 forKeyedSubscript:*MEMORY[0x1E69949C8]];
     }
 
-    v21 = [v6 apacAudioTrackHoaChannelCount];
+    apacAudioTrackHoaChannelCount = [v6 apacAudioTrackHoaChannelCount];
 
-    if (v21)
+    if (apacAudioTrackHoaChannelCount)
     {
-      v22 = [v6 apacAudioTrackHoaChannelCount];
-      [v5 setObject:v22 forKeyedSubscript:*MEMORY[0x1E69949D8]];
+      apacAudioTrackHoaChannelCount2 = [v6 apacAudioTrackHoaChannelCount];
+      [dictionary setObject:apacAudioTrackHoaChannelCount2 forKeyedSubscript:*MEMORY[0x1E69949D8]];
 
-      v23 = [v6 apacAudioTrackBedChannelCount];
-      [v5 setObject:v23 forKeyedSubscript:*MEMORY[0x1E69949C0]];
+      apacAudioTrackBedChannelCount = [v6 apacAudioTrackBedChannelCount];
+      [dictionary setObject:apacAudioTrackBedChannelCount forKeyedSubscript:*MEMORY[0x1E69949C0]];
     }
 
-    v24 = [v6 apacAudioTrackCodecProfileLevelDescription];
+    apacAudioTrackCodecProfileLevelDescription = [v6 apacAudioTrackCodecProfileLevelDescription];
 
-    if (v24)
+    if (apacAudioTrackCodecProfileLevelDescription)
     {
-      v25 = [v6 apacAudioTrackCodecProfileLevelDescription];
-      [v5 setObject:v25 forKeyedSubscript:*MEMORY[0x1E69949D0]];
+      apacAudioTrackCodecProfileLevelDescription2 = [v6 apacAudioTrackCodecProfileLevelDescription];
+      [dictionary setObject:apacAudioTrackCodecProfileLevelDescription2 forKeyedSubscript:*MEMORY[0x1E69949D0]];
     }
 
     if (v6)
@@ -182,38 +182,38 @@
     }
 
     v26 = CMTimeCopyAsDictionary(&time, 0);
-    [v5 setObject:v26 forKeyedSubscript:*MEMORY[0x1E6994A10]];
+    [dictionary setObject:v26 forKeyedSubscript:*MEMORY[0x1E6994A10]];
 
-    v27 = [v6 nominalFrameRate];
-    [v5 setObject:v27 forKeyedSubscript:*MEMORY[0x1E6994A30]];
+    nominalFrameRate = [v6 nominalFrameRate];
+    [dictionary setObject:nominalFrameRate forKeyedSubscript:*MEMORY[0x1E6994A30]];
 
     v28 = MEMORY[0x1E696AD98];
     [v6 orientedPixelSize];
     v29 = [v28 numberWithDouble:?];
-    [v5 setObject:v29 forKeyedSubscript:*MEMORY[0x1E6994A40]];
+    [dictionary setObject:v29 forKeyedSubscript:*MEMORY[0x1E6994A40]];
 
     v30 = MEMORY[0x1E696AD98];
     [v6 orientedPixelSize];
     v32 = [v30 numberWithDouble:v31];
-    [v5 setObject:v32 forKeyedSubscript:*MEMORY[0x1E6994A38]];
+    [dictionary setObject:v32 forKeyedSubscript:*MEMORY[0x1E6994A38]];
 
     v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v6, "firstVideoTrackCodec")}];
-    [v5 setObject:v33 forKeyedSubscript:*MEMORY[0x1E6994A08]];
+    [dictionary setObject:v33 forKeyedSubscript:*MEMORY[0x1E6994A08]];
   }
 
-  return v5;
+  return dictionary;
 }
 
-- (void)startWalrusTimeRangeDownloadForRequest:(id)a3 backingResource:(id)a4 clientBundleID:(id)a5 shouldReturnAdjustmentInfo:(BOOL)a6 partialVideoURL:(id)a7 reply:(id)a8
+- (void)startWalrusTimeRangeDownloadForRequest:(id)request backingResource:(id)resource clientBundleID:(id)d shouldReturnAdjustmentInfo:(BOOL)info partialVideoURL:(id)l reply:(id)reply
 {
-  v10 = a6;
-  v13 = a3;
-  v14 = a4;
-  v46 = a5;
-  v43 = a7;
-  v15 = a8;
+  infoCopy = info;
+  requestCopy = request;
+  resourceCopy = resource;
+  dCopy = d;
+  lCopy = l;
+  replyCopy = reply;
   v16 = PLImageManagerGetLog();
-  v17 = os_signpost_id_make_with_pointer(v16, v13);
+  v17 = os_signpost_id_make_with_pointer(v16, requestCopy);
 
   v18 = PLImageManagerGetLog();
   v19 = v18;
@@ -227,32 +227,32 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __152__PHServerResourceRequestRunner_startWalrusTimeRangeDownloadForRequest_backingResource_clientBundleID_shouldReturnAdjustmentInfo_partialVideoURL_reply___block_invoke;
   aBlock[3] = &unk_1E75A4E70;
-  v64 = v15;
+  v64 = replyCopy;
   v65 = v17;
-  v45 = v15;
+  v45 = replyCopy;
   v39 = _Block_copy(aBlock);
-  v20 = [v14 asset];
-  v38 = [v20 uuid];
-  v44 = v20;
-  v21 = [v20 photoLibrary];
-  v42 = [v21 managedObjectContext];
-  v22 = [v14 uniformTypeIdentifier];
-  v23 = [v22 identifier];
+  asset = [resourceCopy asset];
+  uuid = [asset uuid];
+  v44 = asset;
+  photoLibrary = [asset photoLibrary];
+  managedObjectContext = [photoLibrary managedObjectContext];
+  uniformTypeIdentifier = [resourceCopy uniformTypeIdentifier];
+  identifier = [uniformTypeIdentifier identifier];
 
-  if (v10)
+  if (infoCopy)
   {
-    v24 = [v14 asset];
-    v25 = [v24 pathForAdjustmentFile];
+    asset2 = [resourceCopy asset];
+    pathForAdjustmentFile = [asset2 pathForAdjustmentFile];
   }
 
   else
   {
-    v25 = 0;
+    pathForAdjustmentFile = 0;
   }
 
-  v47 = v13;
-  v26 = [v13 behaviorSpec];
-  v41 = [(PHServerResourceRequestRunner *)self _avAssetProxyForOutOfBandHintsAboutAssetForResource:v14];
+  v47 = requestCopy;
+  behaviorSpec = [requestCopy behaviorSpec];
+  v41 = [(PHServerResourceRequestRunner *)self _avAssetProxyForOutOfBandHintsAboutAssetForResource:resourceCopy];
   v40 = [(PHServerResourceRequestRunner *)self mutableStreamingHintsForAVAssetProxy:?];
   [v40 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E6994A00]];
   v27 = PLImageManagerGetLog();
@@ -263,11 +263,11 @@
     _os_signpost_emit_with_name_impl(&dword_19C86F000, v28, OS_SIGNPOST_INTERVAL_BEGIN, v17, "com.apple.photos.backend.chooseVideo.adpVideoTimeRangeDownload.streamingUrl", byte_19CB567AE, buf, 2u);
   }
 
-  v29 = [v14 dataStore];
-  v36 = [v26 streamingVideoIntent];
-  if (v26)
+  dataStore = [resourceCopy dataStore];
+  streamingVideoIntent = [behaviorSpec streamingVideoIntent];
+  if (behaviorSpec)
   {
-    [v26 timeRange];
+    [behaviorSpec timeRange];
   }
 
   else
@@ -282,24 +282,24 @@
   v50[2] = __152__PHServerResourceRequestRunner_startWalrusTimeRangeDownloadForRequest_backingResource_clientBundleID_shouldReturnAdjustmentInfo_partialVideoURL_reply___block_invoke_153;
   v50[3] = &unk_1E75A4F38;
   v59 = v17;
-  v57 = v25;
+  v57 = pathForAdjustmentFile;
   v58 = v39;
   v50[4] = self;
-  v51 = v43;
-  v52 = v26;
-  v53 = v38;
-  v54 = v23;
-  v55 = v21;
-  v56 = v14;
-  v37 = v25;
-  v30 = v14;
-  v35 = v21;
-  v31 = v23;
-  v32 = v38;
-  v33 = v26;
-  v49 = v43;
+  v51 = lCopy;
+  v52 = behaviorSpec;
+  v53 = uuid;
+  v54 = identifier;
+  v55 = photoLibrary;
+  v56 = resourceCopy;
+  v37 = pathForAdjustmentFile;
+  v30 = resourceCopy;
+  v35 = photoLibrary;
+  v31 = identifier;
+  v32 = uuid;
+  v33 = behaviorSpec;
+  v49 = lCopy;
   v34 = v39;
-  [v29 requestStreamingURLForResource:v30 asset:v44 intent:v36 timeRange:buf streamingHints:v40 inContext:v42 clientBundleID:v46 completion:v50];
+  [dataStore requestStreamingURLForResource:v30 asset:v44 intent:streamingVideoIntent timeRange:buf streamingHints:v40 inContext:managedObjectContext clientBundleID:dCopy completion:v50];
 }
 
 void __152__PHServerResourceRequestRunner_startWalrusTimeRangeDownloadForRequest_backingResource_clientBundleID_shouldReturnAdjustmentInfo_partialVideoURL_reply___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4, void *a5, void *a6, void *a7)
@@ -528,72 +528,72 @@ uint64_t __152__PHServerResourceRequestRunner_startWalrusTimeRangeDownloadForReq
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)startDownloadForRequest:(id)a3 backingResource:(id)a4 clientBundleID:(id)a5 shouldReturnAdjustmentInfo:(BOOL)a6 needsDownload:(BOOL)a7 shouldApplyTimeRange:(BOOL)a8 reply:(id)a9
+- (id)startDownloadForRequest:(id)request backingResource:(id)resource clientBundleID:(id)d shouldReturnAdjustmentInfo:(BOOL)info needsDownload:(BOOL)download shouldApplyTimeRange:(BOOL)range reply:(id)reply
 {
-  v9 = a7;
-  v10 = a6;
-  v14 = a3;
-  v15 = a4;
-  v46 = a9;
-  v16 = a5;
-  v49 = [v15 asset];
-  v45 = [v49 photoLibrary];
-  v17 = [v15 uniformTypeIdentifier];
-  v44 = [v17 identifier];
+  downloadCopy = download;
+  infoCopy = info;
+  requestCopy = request;
+  resourceCopy = resource;
+  replyCopy = reply;
+  dCopy = d;
+  asset = [resourceCopy asset];
+  photoLibrary = [asset photoLibrary];
+  uniformTypeIdentifier = [resourceCopy uniformTypeIdentifier];
+  identifier = [uniformTypeIdentifier identifier];
 
   v18 = @"generation";
-  if (v9)
+  if (downloadCopy)
   {
     v18 = @"download";
   }
 
   v43 = v18;
-  v19 = [v14 behaviorSpec];
-  v42 = [v19 isNetworkAccessAllowed];
-  if (v10)
+  behaviorSpec = [requestCopy behaviorSpec];
+  isNetworkAccessAllowed = [behaviorSpec isNetworkAccessAllowed];
+  if (infoCopy)
   {
-    v20 = [v15 asset];
-    v21 = [v20 pathForAdjustmentFile];
+    asset2 = [resourceCopy asset];
+    pathForAdjustmentFile = [asset2 pathForAdjustmentFile];
   }
 
   else
   {
-    v21 = 0;
+    pathForAdjustmentFile = 0;
   }
 
-  v22 = [v15 dataStore];
-  v23 = [v22 supportsTimeRange] & !v10;
+  dataStore = [resourceCopy dataStore];
+  v23 = [dataStore supportsTimeRange] & !infoCopy;
 
   v24 = PLImageManagerGetLog();
-  v41 = os_signpost_id_make_with_pointer(v24, v14);
+  v41 = os_signpost_id_make_with_pointer(v24, requestCopy);
 
   v25 = objc_alloc_init(MEMORY[0x1E69BE748]);
   [v25 setTaskIdentifier:self->_taskIdentifier];
-  [v25 setNetworkAccessAllowed:{objc_msgSend(v19, "isNetworkAccessAllowed")}];
-  [v25 setWantsProgress:{objc_msgSend(v14, "wantsProgress")}];
-  [v25 setClientBundleID:v16];
+  [v25 setNetworkAccessAllowed:{objc_msgSend(behaviorSpec, "isNetworkAccessAllowed")}];
+  [v25 setWantsProgress:{objc_msgSend(requestCopy, "wantsProgress")}];
+  [v25 setClientBundleID:dCopy];
 
-  v26 = [v19 downloadIntent];
-  v27 = [v19 downloadPriority];
-  if ((v26 - 1) > 0xC)
+  downloadIntent = [behaviorSpec downloadIntent];
+  downloadPriority = [behaviorSpec downloadPriority];
+  if ((downloadIntent - 1) > 0xC)
   {
     v28 = 0;
   }
 
   else
   {
-    v28 = qword_19CB296D8[v26 - 1];
+    v28 = qword_19CB296D8[downloadIntent - 1];
   }
 
-  v48 = v14;
-  v29 = [objc_alloc(MEMORY[0x1E6994BA8]) initWithIntent:v28 priority:v27 == 1];
+  v48 = requestCopy;
+  v29 = [objc_alloc(MEMORY[0x1E6994BA8]) initWithIntent:v28 priority:downloadPriority == 1];
   [v25 setDownloadOptions:v29];
 
   if (v23)
   {
-    if (v19)
+    if (behaviorSpec)
     {
-      [v19 timeRange];
+      [behaviorSpec timeRange];
     }
 
     else
@@ -603,15 +603,15 @@ uint64_t __152__PHServerResourceRequestRunner_startWalrusTimeRangeDownloadForReq
       v63 = 0u;
     }
 
-    v30 = [v25 downloadOptions];
+    downloadOptions = [v25 downloadOptions];
     v62[0] = v63;
     v62[1] = v64;
     v62[2] = v65;
-    [v30 setTimeRange:v62];
+    [downloadOptions setTimeRange:v62];
   }
 
-  v31 = -[PHServerResourceRequestRunner _resourceQualifiesForCacheMetricsCollection:isLivePhoto:](self, "_resourceQualifiesForCacheMetricsCollection:isLivePhoto:", v15, [v49 isPhotoIris]);
-  v32 = [v15 dataStore];
+  v31 = -[PHServerResourceRequestRunner _resourceQualifiesForCacheMetricsCollection:isLivePhoto:](self, "_resourceQualifiesForCacheMetricsCollection:isLivePhoto:", resourceCopy, [asset isPhotoIris]);
+  dataStore2 = [resourceCopy dataStore];
   v50[0] = MEMORY[0x1E69E9820];
   v50[1] = 3221225472;
   v50[2] = __156__PHServerResourceRequestRunner_startDownloadForRequest_backingResource_clientBundleID_shouldReturnAdjustmentInfo_needsDownload_shouldApplyTimeRange_reply___block_invoke;
@@ -619,22 +619,22 @@ uint64_t __152__PHServerResourceRequestRunner_startWalrusTimeRangeDownloadForReq
   v50[4] = self;
   v51 = v43;
   v58 = v31;
-  v59 = a8;
+  rangeCopy = range;
   v60 = v23;
-  v52 = v44;
-  v53 = v45;
-  v54 = v15;
-  v55 = v21;
-  v56 = v46;
+  v52 = identifier;
+  v53 = photoLibrary;
+  v54 = resourceCopy;
+  v55 = pathForAdjustmentFile;
+  v56 = replyCopy;
   v57 = v41;
-  v61 = v42;
-  v33 = v46;
-  v34 = v21;
-  v35 = v15;
-  v36 = v45;
-  v37 = v44;
+  v61 = isNetworkAccessAllowed;
+  v33 = replyCopy;
+  v34 = pathForAdjustmentFile;
+  v35 = resourceCopy;
+  v36 = photoLibrary;
+  v37 = identifier;
   v38 = v43;
-  v39 = [v32 requestLocalAvailabilityChange:1 forResource:v35 options:v25 completion:v50];
+  v39 = [dataStore2 requestLocalAvailabilityChange:1 forResource:v35 options:v25 completion:v50];
 
   return v39;
 }
@@ -791,43 +791,43 @@ void __70__PHServerResourceRequestRunner_currentSystemSupportsProMotionDisplay__
   currentSystemSupportsProMotionDisplay_currentSystemSupportsProMotionDisplay = [v0 BOOLValue];
 }
 
-- (void)addClientSystemInformationToMutableStreamingHints:(id)a3
+- (void)addClientSystemInformationToMutableStreamingHints:(id)hints
 {
-  v7 = a3;
-  if (!v7)
+  hintsCopy = hints;
+  if (!hintsCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PHServerResourceRequestRunner.m" lineNumber:1003 description:{@"Invalid parameter not satisfying: %@", @"mutableStreamingHints"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHServerResourceRequestRunner.m" lineNumber:1003 description:{@"Invalid parameter not satisfying: %@", @"mutableStreamingHints"}];
   }
 
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[PHServerResourceRequestRunner currentSystemSupportsProMotionDisplay](self, "currentSystemSupportsProMotionDisplay")}];
-  [v7 setObject:v5 forKeyedSubscript:*MEMORY[0x1E69949E0]];
+  [hintsCopy setObject:v5 forKeyedSubscript:*MEMORY[0x1E69949E0]];
 }
 
-- (id)chooseVideoWithRequest:(id)a3 library:(id)a4 clientBundleID:(id)a5 reply:(id)a6
+- (id)chooseVideoWithRequest:(id)request library:(id)library clientBundleID:(id)d reply:(id)reply
 {
   v85 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v48 = a4;
-  v44 = a5;
-  v12 = a6;
+  requestCopy = request;
+  libraryCopy = library;
+  dCopy = d;
+  replyCopy = reply;
   if ([(PHServerResourceRequestRunner *)self state])
   {
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"PHServerResourceRequestRunner.m" lineNumber:742 description:@"Cannot run a video request twice"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHServerResourceRequestRunner.m" lineNumber:742 description:@"Cannot run a video request twice"];
   }
 
   v13 = PLImageManagerGetLog();
-  spid = os_signpost_id_make_with_pointer(v13, v11);
+  spid = os_signpost_id_make_with_pointer(v13, requestCopy);
 
   v14 = PLImageManagerGetLog();
   v15 = v14;
   if (spid - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
   {
     *buf = 138543618;
-    v68 = v11;
+    v68 = requestCopy;
     v69 = 2114;
-    v70 = v44;
+    v70 = dCopy;
     _os_signpost_emit_with_name_impl(&dword_19C86F000, v15, OS_SIGNPOST_INTERVAL_BEGIN, spid, "com.apple.photos.backend.chooseVideo", "Request %{public}@ for client %{public}@", buf, 0x16u);
   }
 
@@ -836,27 +836,27 @@ void __70__PHServerResourceRequestRunner_currentSystemSupportsProMotionDisplay__
   aBlock[2] = __85__PHServerResourceRequestRunner_chooseVideoWithRequest_library_clientBundleID_reply___block_invoke;
   aBlock[3] = &unk_1E75A4E70;
   v66 = spid;
-  v42 = v12;
+  v42 = replyCopy;
   v65 = v42;
   v43 = _Block_copy(aBlock);
-  v16 = [v11 behaviorSpec];
-  v47 = [v16 isNetworkAccessAllowed];
-  v46 = [v16 isStreamingAllowed];
-  if ([v48 isWalrusEnabled])
+  behaviorSpec = [requestCopy behaviorSpec];
+  isNetworkAccessAllowed = [behaviorSpec isNetworkAccessAllowed];
+  isStreamingAllowed = [behaviorSpec isStreamingAllowed];
+  if ([libraryCopy isWalrusEnabled])
   {
-    v45 = 1;
+    restrictToEncryptedStream = 1;
   }
 
   else
   {
-    v45 = [v16 restrictToEncryptedStream];
+    restrictToEncryptedStream = [behaviorSpec restrictToEncryptedStream];
   }
 
   v17 = PLImageManagerGetLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     taskIdentifier = self->_taskIdentifier;
-    if ([v11 wantsProgress])
+    if ([requestCopy wantsProgress])
     {
       v18 = @"Y";
     }
@@ -866,15 +866,15 @@ void __70__PHServerResourceRequestRunner_currentSystemSupportsProMotionDisplay__
       v18 = @"N";
     }
 
-    v19 = [v11 assetObjectIDURL];
+    assetObjectIDURL = [requestCopy assetObjectIDURL];
     v20 = PLShortObjectIDFromURL();
-    [v11 size];
+    [requestCopy size];
     v22 = v21;
-    [v11 size];
+    [requestCopy size];
     v24 = v23;
-    v25 = [v16 shortDescription];
-    v26 = v25;
-    if (v47)
+    shortDescription = [behaviorSpec shortDescription];
+    v26 = shortDescription;
+    if (isNetworkAccessAllowed)
     {
       v27 = @"Y";
     }
@@ -885,7 +885,7 @@ void __70__PHServerResourceRequestRunner_currentSystemSupportsProMotionDisplay__
     }
 
     *buf = 138545410;
-    if (v46)
+    if (isStreamingAllowed)
     {
       v28 = @"Y";
     }
@@ -897,7 +897,7 @@ void __70__PHServerResourceRequestRunner_currentSystemSupportsProMotionDisplay__
 
     v68 = taskIdentifier;
     v69 = 2114;
-    if (v45)
+    if (restrictToEncryptedStream)
     {
       v29 = @"Y";
     }
@@ -915,7 +915,7 @@ void __70__PHServerResourceRequestRunner_currentSystemSupportsProMotionDisplay__
     v75 = 2048;
     v76 = v24;
     v77 = 2114;
-    v78 = v25;
+    v78 = shortDescription;
     v79 = 2114;
     v80 = v27;
     v81 = 2114;
@@ -943,17 +943,17 @@ void __70__PHServerResourceRequestRunner_currentSystemSupportsProMotionDisplay__
   v50[1] = 3221225472;
   v50[2] = __85__PHServerResourceRequestRunner_chooseVideoWithRequest_library_clientBundleID_reply___block_invoke_3;
   v50[3] = &unk_1E75A4EC0;
-  v33 = v48;
+  v33 = libraryCopy;
   v51 = v33;
-  v52 = self;
-  v34 = v11;
+  selfCopy = self;
+  v34 = requestCopy;
   v53 = v34;
-  v58 = v46;
-  v59 = v45;
-  v35 = v16;
+  v58 = isStreamingAllowed;
+  v59 = restrictToEncryptedStream;
+  v35 = behaviorSpec;
   v54 = v35;
-  v60 = v47;
-  v36 = v44;
+  v60 = isNetworkAccessAllowed;
+  v36 = dCopy;
   v55 = v36;
   v57 = spid;
   v37 = v32;
@@ -1695,19 +1695,19 @@ void __85__PHServerResourceRequestRunner_chooseVideoWithRequest_library_clientBu
   (*(v1 + 16))(v1, 0, 0, 0, 0, 0, v2);
 }
 
-- (id)videoResourceChoiceForAsset:(id)a3 context:(id)a4 loadingMode:(int64_t *)a5 request:(id)a6 shouldReturnAdjustmentInfo:(BOOL *)a7 error:(id *)a8
+- (id)videoResourceChoiceForAsset:(id)asset context:(id)context loadingMode:(int64_t *)mode request:(id)request shouldReturnAdjustmentInfo:(BOOL *)info error:(id *)error
 {
   v55 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
+  assetCopy = asset;
+  contextCopy = context;
+  requestCopy = request;
   v16 = objc_alloc(MEMORY[0x1E69BE878]);
-  v17 = [v15 behaviorSpec];
-  [v15 size];
-  v18 = [v16 initWithContext:v14 assetInformation:v14 options:v17 size:?];
+  behaviorSpec = [requestCopy behaviorSpec];
+  [requestCopy size];
+  v18 = [v16 initWithContext:contextCopy assetInformation:contextCopy options:behaviorSpec size:?];
 
   v48 = 0;
-  v19 = [v18 chooseResourceWithLoadingMode:a5 needsAdjustmentData:a7 error:&v48];
+  v19 = [v18 chooseResourceWithLoadingMode:mode needsAdjustmentData:info error:&v48];
   v20 = v48;
   v21 = v20;
   if (v19)
@@ -1715,12 +1715,12 @@ void __85__PHServerResourceRequestRunner_chooseVideoWithRequest_library_clientBu
     goto LABEL_2;
   }
 
-  v45 = a8;
-  v29 = [v20 userInfo];
-  v30 = [v29 objectForKeyedSubscript:*MEMORY[0x1E69BF130]];
-  v31 = [v30 BOOLValue];
+  errorCopy = error;
+  userInfo = [v20 userInfo];
+  v30 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69BF130]];
+  bOOLValue = [v30 BOOLValue];
 
-  if (!v31)
+  if (!bOOLValue)
   {
     goto LABEL_12;
   }
@@ -1729,42 +1729,42 @@ void __85__PHServerResourceRequestRunner_chooseVideoWithRequest_library_clientBu
   if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
   {
     taskIdentifier = self->_taskIdentifier;
-    v34 = [v13 uuid];
+    uuid = [assetCopy uuid];
     *buf = 138543618;
     v50 = taskIdentifier;
     v51 = 2114;
-    v52 = v34;
+    v52 = uuid;
     _os_log_impl(&dword_19C86F000, v32, OS_LOG_TYPE_ERROR, "%{public}@ video request found zero playable videos for asset: %{public}@, retrying, returned video may not be playable", buf, 0x16u);
   }
 
-  v35 = [v15 behaviorSpec];
-  v36 = [v35 copy];
+  behaviorSpec2 = [requestCopy behaviorSpec];
+  v36 = [behaviorSpec2 copy];
 
   [v36 setRestrictToPlayableOnCurrentDevice:0];
   v37 = objc_alloc(MEMORY[0x1E69BE878]);
-  [v15 size];
-  v38 = [v37 initWithContext:v14 assetInformation:v14 options:v36 size:?];
+  [requestCopy size];
+  v38 = [v37 initWithContext:contextCopy assetInformation:contextCopy options:v36 size:?];
   v47 = v21;
-  v19 = [v38 chooseResourceWithLoadingMode:a5 needsAdjustmentData:a7 error:&v47];
+  v19 = [v38 chooseResourceWithLoadingMode:mode needsAdjustmentData:info error:&v47];
   v39 = v47;
 
   v21 = v39;
   if (v19)
   {
 LABEL_2:
-    v22 = v13;
+    v22 = assetCopy;
     v23 = PLImageManagerGetLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       v24 = self->_taskIdentifier;
       v25 = PLVideoResourceDescription();
-      v26 = [v22 uuid];
+      uuid2 = [v22 uuid];
       *buf = 138543874;
       v50 = v24;
       v51 = 2114;
       v52 = v25;
       v53 = 2114;
-      v54 = v26;
+      v54 = uuid2;
       _os_log_impl(&dword_19C86F000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ video request chose video resource: %{public}@ for asset: %{public}@", buf, 0x20u);
     }
 
@@ -1774,26 +1774,26 @@ LABEL_2:
   else
   {
 LABEL_12:
-    v22 = v13;
+    v22 = assetCopy;
     v40 = PLImageManagerGetLog();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
     {
       v41 = self->_taskIdentifier;
-      v42 = [v22 uuid];
+      uuid3 = [v22 uuid];
       *buf = 138543618;
       v50 = v41;
       v51 = 2114;
-      v52 = v42;
+      v52 = uuid3;
       _os_log_impl(&dword_19C86F000, v40, OS_LOG_TYPE_ERROR, "%{public}@ video request found zero videos for asset: %{public}@", buf, 0x16u);
     }
 
     v43 = v21;
     v27 = v43;
-    if (v45)
+    if (errorCopy)
     {
       v44 = v43;
       v19 = 0;
-      *v45 = v27;
+      *errorCopy = v27;
     }
 
     else
@@ -1805,57 +1805,57 @@ LABEL_12:
   return v19;
 }
 
-- (void)_replyToVideoRequestWithURL:(id)a3 mediaItemMakerData:(id)a4 mutableInfo:(id)a5 internalInfo:(id)a6 error:(id)a7 pathForAdjustmentFileIfNeeded:(id)a8 reply:(id)a9
+- (void)_replyToVideoRequestWithURL:(id)l mediaItemMakerData:(id)data mutableInfo:(id)info internalInfo:(id)internalInfo error:(id)error pathForAdjustmentFileIfNeeded:(id)needed reply:(id)reply
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  if (v15 | v16 && v20)
+  lCopy = l;
+  dataCopy = data;
+  infoCopy = info;
+  internalInfoCopy = internalInfo;
+  errorCopy = error;
+  neededCopy = needed;
+  replyCopy = reply;
+  if (lCopy | dataCopy && neededCopy)
   {
-    v22 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:v20];
+    v22 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:neededCopy];
     if (v22)
     {
-      v40 = self;
-      if (!v18)
+      selfCopy = self;
+      if (!internalInfoCopy)
       {
-        v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
+        internalInfoCopy = objc_alloc_init(MEMORY[0x1E695DF90]);
       }
 
       v23 = *MEMORY[0x1E69BF380];
       v24 = [v22 objectForKeyedSubscript:*MEMORY[0x1E69BF380]];
-      [v18 setObject:v24 forKeyedSubscript:v23];
+      [internalInfoCopy setObject:v24 forKeyedSubscript:v23];
 
       v25 = *MEMORY[0x1E69BF388];
       v26 = [v22 objectForKeyedSubscript:*MEMORY[0x1E69BF388]];
-      [v18 setObject:v26 forKeyedSubscript:v25];
+      [internalInfoCopy setObject:v26 forKeyedSubscript:v25];
 
       v27 = *MEMORY[0x1E69BF370];
       v28 = [v22 objectForKeyedSubscript:*MEMORY[0x1E69BF370]];
-      [v18 setObject:v28 forKeyedSubscript:v27];
+      [internalInfoCopy setObject:v28 forKeyedSubscript:v27];
 
-      self = v40;
+      self = selfCopy;
     }
   }
 
-  if (v15)
+  if (lCopy)
   {
-    v29 = [v15 scheme];
-    v30 = [v29 isEqualToString:@"file"];
+    scheme = [lCopy scheme];
+    v30 = [scheme isEqualToString:@"file"];
 
     if (v30)
     {
-      v31 = [v15 path];
+      path = [lCopy path];
       v32 = PLGetSandboxExtensionToken();
 
       if (v32)
       {
-        v33 = [objc_alloc(MEMORY[0x1E69BF2E8]) initWithURL:v15 sandboxExtensionToken:v32 consume:0];
+        v33 = [objc_alloc(MEMORY[0x1E69BF2E8]) initWithURL:lCopy sandboxExtensionToken:v32 consume:0];
 
-        v15 = v33;
+        lCopy = v33;
       }
     }
   }
@@ -1864,18 +1864,18 @@ LABEL_12:
   v41[1] = 3221225472;
   v41[2] = __147__PHServerResourceRequestRunner__replyToVideoRequestWithURL_mediaItemMakerData_mutableInfo_internalInfo_error_pathForAdjustmentFileIfNeeded_reply___block_invoke;
   v41[3] = &unk_1E75A4E48;
-  v42 = v15;
-  v43 = v16;
-  v44 = v17;
-  v45 = v18;
-  v46 = v19;
-  v47 = v21;
-  v34 = v19;
-  v35 = v18;
-  v36 = v17;
-  v37 = v16;
-  v38 = v15;
-  v39 = v21;
+  v42 = lCopy;
+  v43 = dataCopy;
+  v44 = infoCopy;
+  v45 = internalInfoCopy;
+  v46 = errorCopy;
+  v47 = replyCopy;
+  v34 = errorCopy;
+  v35 = internalInfoCopy;
+  v36 = infoCopy;
+  v37 = dataCopy;
+  v38 = lCopy;
+  v39 = replyCopy;
   [(PHServerResourceRequestRunner *)self _safeReply:v41];
 }
 
@@ -1910,58 +1910,58 @@ uint64_t __147__PHServerResourceRequestRunner__replyToVideoRequestWithURL_mediaI
   return v8(v2, v3 != 0, v3, v4, v5, v6, v7);
 }
 
-- (BOOL)_resourceQualifiesForCacheMetricsCollection:(id)a3 isLivePhoto:(BOOL)a4
+- (BOOL)_resourceQualifiesForCacheMetricsCollection:(id)collection isLivePhoto:(BOOL)photo
 {
   result = 0;
-  if (a3 && a4)
+  if (collection && photo)
   {
-    v5 = [a3 cplType];
-    return v5 == 6 || v5 == 18;
+    cplType = [collection cplType];
+    return cplType == 6 || cplType == 18;
   }
 
   return result;
 }
 
-- (id)applyAssetScopeCorrectionsWithRequest:(id)a3 errorCodes:(id)a4 clientBundleID:(id)a5 library:(id)a6 reply:(id)a7
+- (id)applyAssetScopeCorrectionsWithRequest:(id)request errorCodes:(id)codes clientBundleID:(id)d library:(id)library reply:(id)reply
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = [a3 assetObjectIDURL];
-  v17 = [(PHServerResourceRequestRunner *)self _applyCorrectionsToAssetObjectIDURL:v16 resourceIdentity:0 errorCodes:v15 clientBundleID:v14 library:v13 reply:v12];
+  replyCopy = reply;
+  libraryCopy = library;
+  dCopy = d;
+  codesCopy = codes;
+  assetObjectIDURL = [request assetObjectIDURL];
+  v17 = [(PHServerResourceRequestRunner *)self _applyCorrectionsToAssetObjectIDURL:assetObjectIDURL resourceIdentity:0 errorCodes:codesCopy clientBundleID:dCopy library:libraryCopy reply:replyCopy];
 
   return v17;
 }
 
-- (id)applyResourceScopeCorrectionsWithRequest:(id)a3 errorCodes:(id)a4 clientBundleID:(id)a5 library:(id)a6 reply:(id)a7
+- (id)applyResourceScopeCorrectionsWithRequest:(id)request errorCodes:(id)codes clientBundleID:(id)d library:(id)library reply:(id)reply
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [v16 assetObjectIDURL];
-  v18 = [v16 resourceIdentity];
+  replyCopy = reply;
+  libraryCopy = library;
+  dCopy = d;
+  codesCopy = codes;
+  requestCopy = request;
+  assetObjectIDURL = [requestCopy assetObjectIDURL];
+  resourceIdentity = [requestCopy resourceIdentity];
 
-  v19 = [(PHServerResourceRequestRunner *)self _applyCorrectionsToAssetObjectIDURL:v17 resourceIdentity:v18 errorCodes:v15 clientBundleID:v14 library:v13 reply:v12];
+  v19 = [(PHServerResourceRequestRunner *)self _applyCorrectionsToAssetObjectIDURL:assetObjectIDURL resourceIdentity:resourceIdentity errorCodes:codesCopy clientBundleID:dCopy library:libraryCopy reply:replyCopy];
 
   return v19;
 }
 
-- (id)_applyCorrectionsToAssetObjectIDURL:(id)a3 resourceIdentity:(id)a4 errorCodes:(id)a5 clientBundleID:(id)a6 library:(id)a7 reply:(id)a8
+- (id)_applyCorrectionsToAssetObjectIDURL:(id)l resourceIdentity:(id)identity errorCodes:(id)codes clientBundleID:(id)d library:(id)library reply:(id)reply
 {
   v55 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  lCopy = l;
+  identityCopy = identity;
+  codesCopy = codes;
+  dCopy = d;
+  libraryCopy = library;
+  replyCopy = reply;
   if ([(PHServerResourceRequestRunner *)self state])
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"PHServerResourceRequestRunner.m" lineNumber:576 description:@"Cannot run a repair request twice"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHServerResourceRequestRunner.m" lineNumber:576 description:@"Cannot run a repair request twice"];
   }
 
   v21 = PLImageManagerGetLog();
@@ -1972,11 +1972,11 @@ uint64_t __147__PHServerResourceRequestRunner__replyToVideoRequestWithURL_mediaI
     *buf = 138544130;
     *&buf[4] = taskIdentifier;
     *&buf[12] = 2114;
-    *&buf[14] = v15;
+    *&buf[14] = lCopy;
     *&buf[22] = 2114;
     v53 = v23;
     LOWORD(v54) = 2114;
-    *(&v54 + 2) = v17;
+    *(&v54 + 2) = codesCopy;
     _os_log_impl(&dword_19C86F000, v21, OS_LOG_TYPE_INFO, "[RM] %{public}@ Starting request to repair resource with asset: %{public}@, resource: %{public}@, error codes: %{public}@", buf, 0x2Au);
   }
 
@@ -1991,7 +1991,7 @@ uint64_t __147__PHServerResourceRequestRunner__replyToVideoRequestWithURL_mediaI
   v48[2] = __126__PHServerResourceRequestRunner__applyCorrectionsToAssetObjectIDURL_resourceIdentity_errorCodes_clientBundleID_library_reply___block_invoke;
   v48[3] = &unk_1E75A4D08;
   objc_copyWeak(&v50, &location);
-  v26 = v20;
+  v26 = replyCopy;
   v49 = v26;
   [(NSProgress *)self->_progress setCancellationHandler:v48];
   *buf = 0;
@@ -2004,17 +2004,17 @@ uint64_t __147__PHServerResourceRequestRunner__replyToVideoRequestWithURL_mediaI
   v39[1] = 3221225472;
   v39[2] = __126__PHServerResourceRequestRunner__applyCorrectionsToAssetObjectIDURL_resourceIdentity_errorCodes_clientBundleID_library_reply___block_invoke_3;
   v39[3] = &unk_1E75A4DD0;
-  v27 = v19;
+  v27 = libraryCopy;
   v40 = v27;
-  v41 = self;
-  v28 = v15;
+  selfCopy = self;
+  v28 = lCopy;
   v42 = v28;
   v47 = buf;
-  v29 = v17;
+  v29 = codesCopy;
   v43 = v29;
-  v30 = v16;
+  v30 = identityCopy;
   v44 = v30;
-  v31 = v18;
+  v31 = dCopy;
   v45 = v31;
   v46 = v26;
   v36[0] = MEMORY[0x1E69E9820];
@@ -2213,28 +2213,28 @@ void __126__PHServerResourceRequestRunner__applyCorrectionsToAssetObjectIDURL_re
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)makeResourceUnavailableWithRequest:(id)a3 library:(id)a4
+- (void)makeResourceUnavailableWithRequest:(id)request library:(id)library
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  libraryCopy = library;
   if ([(PHServerResourceRequestRunner *)self state])
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PHServerResourceRequestRunner.m" lineNumber:545 description:@"Cannot run a resource make available request twice"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHServerResourceRequestRunner.m" lineNumber:545 description:@"Cannot run a resource make available request twice"];
   }
 
   v9 = PLImageManagerGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     taskIdentifier = self->_taskIdentifier;
-    v11 = [v7 assetObjectIDURL];
-    v12 = [v7 resourceIdentity];
+    assetObjectIDURL = [requestCopy assetObjectIDURL];
+    resourceIdentity = [requestCopy resourceIdentity];
     v13 = PLResourceIdentityShortDescription();
     *buf = 138543874;
     v22 = taskIdentifier;
     v23 = 2114;
-    v24 = v11;
+    v24 = assetObjectIDURL;
     v25 = 2114;
     v26 = v13;
     _os_log_impl(&dword_19C86F000, v9, OS_LOG_TYPE_DEFAULT, "[RM] %{public}@ Starting request to make resource unavailable with asset: %{public}@, resource: %{public}@", buf, 0x20u);
@@ -2245,11 +2245,11 @@ void __126__PHServerResourceRequestRunner__applyCorrectionsToAssetObjectIDURL_re
   v17[1] = 3221225472;
   v17[2] = __76__PHServerResourceRequestRunner_makeResourceUnavailableWithRequest_library___block_invoke;
   v17[3] = &unk_1E75AB248;
-  v18 = v8;
-  v19 = self;
-  v20 = v7;
-  v14 = v7;
-  v15 = v8;
+  v18 = libraryCopy;
+  selfCopy = self;
+  v20 = requestCopy;
+  v14 = requestCopy;
+  v15 = libraryCopy;
   [v15 performTransaction:v17];
 }
 
@@ -2348,38 +2348,38 @@ void __76__PHServerResourceRequestRunner_makeResourceUnavailableWithRequest_libr
   }
 }
 
-- (id)makeResourceAvailableWithRequest:(id)a3 library:(id)a4 clientBundleID:(id)a5 reply:(id)a6
+- (id)makeResourceAvailableWithRequest:(id)request library:(id)library clientBundleID:(id)d reply:(id)reply
 {
   v63 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v35 = a4;
-  v36 = a5;
-  v37 = a6;
+  requestCopy = request;
+  libraryCopy = library;
+  dCopy = d;
+  replyCopy = reply;
   if ([(PHServerResourceRequestRunner *)self state])
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"PHServerResourceRequestRunner.m" lineNumber:368 description:@"Cannot run a resource make available request twice"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHServerResourceRequestRunner.m" lineNumber:368 description:@"Cannot run a resource make available request twice"];
   }
 
-  v12 = [v11 downloadIntent];
-  v13 = [v11 downloadPriority];
-  if ((v12 - 1) > 0xC)
+  downloadIntent = [requestCopy downloadIntent];
+  downloadPriority = [requestCopy downloadPriority];
+  if ((downloadIntent - 1) > 0xC)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = qword_19CB296D8[v12 - 1];
+    v14 = qword_19CB296D8[downloadIntent - 1];
   }
 
-  v38 = [objc_alloc(MEMORY[0x1E6994BA8]) initWithIntent:v14 priority:v13 == 1];
+  v38 = [objc_alloc(MEMORY[0x1E6994BA8]) initWithIntent:v14 priority:downloadPriority == 1];
   v15 = PLImageManagerGetLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     taskIdentifier = self->_taskIdentifier;
     v16 = @"Y";
-    if ([v11 isNetworkAccessAllowed])
+    if ([requestCopy isNetworkAccessAllowed])
     {
       v17 = @"Y";
     }
@@ -2389,7 +2389,7 @@ void __76__PHServerResourceRequestRunner_makeResourceUnavailableWithRequest_libr
       v17 = @"N";
     }
 
-    if ([v11 wantsProgress])
+    if ([requestCopy wantsProgress])
     {
       v18 = @"Y";
     }
@@ -2399,14 +2399,14 @@ void __76__PHServerResourceRequestRunner_makeResourceUnavailableWithRequest_libr
       v18 = @"N";
     }
 
-    if (![v11 isTransient])
+    if (![requestCopy isTransient])
     {
       v16 = @"N";
     }
 
-    v19 = [v11 assetObjectIDURL];
+    assetObjectIDURL = [requestCopy assetObjectIDURL];
     v20 = PLShortObjectIDFromURL();
-    v21 = [v11 resourceIdentity];
+    resourceIdentity = [requestCopy resourceIdentity];
     v22 = PLResourceIdentityShortDescription();
     *buf = 138544898;
     v50 = taskIdentifier;
@@ -2436,21 +2436,21 @@ void __76__PHServerResourceRequestRunner_makeResourceUnavailableWithRequest_libr
   v46[2] = __95__PHServerResourceRequestRunner_makeResourceAvailableWithRequest_library_clientBundleID_reply___block_invoke;
   v46[3] = &unk_1E75A4D08;
   objc_copyWeak(&v48, buf);
-  v25 = v37;
+  v25 = replyCopy;
   v47 = v25;
   [(NSProgress *)self->_progress setCancellationHandler:v46];
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __95__PHServerResourceRequestRunner_makeResourceAvailableWithRequest_library_clientBundleID_reply___block_invoke_3;
   v39[3] = &unk_1E75A4E48;
-  v26 = v35;
+  v26 = libraryCopy;
   v40 = v26;
-  v41 = self;
-  v27 = v11;
+  selfCopy = self;
+  v27 = requestCopy;
   v42 = v27;
   v28 = v25;
   v45 = v28;
-  v29 = v36;
+  v29 = dCopy;
   v43 = v29;
   v30 = v38;
   v44 = v30;
@@ -2988,37 +2988,37 @@ void __95__PHServerResourceRequestRunner_makeResourceAvailableWithRequest_librar
   (*(v1 + 16))(v1, 0, 0, 0, 0, v2);
 }
 
-- (void)_handleLocalAvailabilityChangeWithFileURL:(id)a3 transientData:(id)a4 isExpectingOnlyData:(BOOL)a5 resourceCPLType:(unint64_t)a6 library:(id)a7 expectedMasterThumbnailURL:(id)a8 assetObjectID:(id)a9 resourceObjectID:(id)a10 resourceVersion:(unsigned int)a11 resourceUTIString:(id)a12 resourceOrientation:(unsigned int)a13 error:(id)a14 reply:(id)a15
+- (void)_handleLocalAvailabilityChangeWithFileURL:(id)l transientData:(id)data isExpectingOnlyData:(BOOL)onlyData resourceCPLType:(unint64_t)type library:(id)library expectedMasterThumbnailURL:(id)rL assetObjectID:(id)d resourceObjectID:(id)self0 resourceVersion:(unsigned int)self1 resourceUTIString:(id)self2 resourceOrientation:(unsigned int)self3 error:(id)self4 reply:(id)self5
 {
   v114 = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v20 = a4;
-  v21 = a7;
-  v65 = a8;
-  v67 = a9;
-  v64 = a10;
-  v66 = a12;
-  v22 = a14;
-  v62 = a15;
+  lCopy = l;
+  dataCopy = data;
+  libraryCopy = library;
+  rLCopy = rL;
+  dCopy = d;
+  iDCopy = iD;
+  stringCopy = string;
+  errorCopy = error;
+  replyCopy = reply;
   v102 = 0;
   v103 = &v102;
   v104 = 0x2020000000;
-  if (v19)
+  if (lCopy)
   {
-    v23 = 1;
+    onlyDataCopy = 1;
   }
 
-  else if (v20)
+  else if (dataCopy)
   {
-    v23 = a5;
+    onlyDataCopy = onlyData;
   }
 
   else
   {
-    v23 = 0;
+    onlyDataCopy = 0;
   }
 
-  v105 = v23;
+  v105 = onlyDataCopy;
   v96 = 0;
   v97 = &v96;
   v98 = 0x3032000000;
@@ -3030,13 +3030,13 @@ void __95__PHServerResourceRequestRunner_makeResourceAvailableWithRequest_librar
   v92 = 0x3032000000;
   v93 = __Block_byref_object_copy__10411;
   v94 = __Block_byref_object_dispose__10412;
-  v24 = v22;
+  v24 = errorCopy;
   v95 = v24;
-  v25 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((v103[3] & 1) == 0)
   {
-    v26 = [v91[5] domain];
-    if (![v26 isEqualToString:*MEMORY[0x1E69BFF70]])
+    domain = [v91[5] domain];
+    if (![domain isEqualToString:*MEMORY[0x1E69BFF70]])
     {
 LABEL_11:
 
@@ -3050,28 +3050,28 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v28 = [v91[5] userInfo];
-    v29 = [v28 objectForKeyedSubscript:*MEMORY[0x1E69BFF78]];
+    userInfo = [v91[5] userInfo];
+    v29 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69BFF78]];
 
     if (v29)
     {
-      v30 = [v21 libraryServicesManager];
-      v31 = [v30 databaseContext];
-      v32 = [v21 name];
-      v33 = v32;
-      v34 = [v31 newShortLivedLibraryWithName:{objc_msgSend(v32, "UTF8String")}];
+      libraryServicesManager = [libraryCopy libraryServicesManager];
+      databaseContext = [libraryServicesManager databaseContext];
+      name = [libraryCopy name];
+      v33 = name;
+      v34 = [databaseContext newShortLivedLibraryWithName:{objc_msgSend(name, "UTF8String")}];
 
       v85[0] = MEMORY[0x1E69E9820];
       v85[1] = 3221225472;
       v85[2] = __257__PHServerResourceRequestRunner__handleLocalAvailabilityChangeWithFileURL_transientData_isExpectingOnlyData_resourceCPLType_library_expectedMasterThumbnailURL_assetObjectID_resourceObjectID_resourceVersion_resourceUTIString_resourceOrientation_error_reply___block_invoke;
       v85[3] = &unk_1E75A9E40;
-      v26 = v34;
-      v86 = v26;
-      v87 = v64;
-      v88 = self;
-      v19 = v29;
-      v89 = v19;
-      [v26 performTransaction:v85];
+      domain = v34;
+      v86 = domain;
+      v87 = iDCopy;
+      selfCopy = self;
+      lCopy = v29;
+      v89 = lCopy;
+      [domain performTransaction:v85];
       *(v103 + 24) = 1;
       v35 = v91[5];
       v91[5] = 0;
@@ -3079,7 +3079,7 @@ LABEL_11:
       goto LABEL_11;
     }
 
-    v19 = 0;
+    lCopy = 0;
   }
 
 LABEL_12:
@@ -3089,52 +3089,52 @@ LABEL_12:
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
     {
       taskIdentifier = self->_taskIdentifier;
-      v38 = [v20 length];
+      v38 = [dataCopy length];
       *buf = 138543874;
       v109 = taskIdentifier;
       v110 = 2114;
-      v111 = v19;
+      v111 = lCopy;
       v112 = 2048;
       v113 = v38;
       _os_log_impl(&dword_19C86F000, v36, OS_LOG_TYPE_DEBUG, "[RM]: %{public}@ Resource made available. (fileURL: %{public}@ / transientData len: %lu", buf, 0x20u);
     }
 
-    if (a6 == 27 || a6 == 10)
+    if (type == 27 || type == 10)
     {
-      v46 = [v21 libraryServicesManager];
-      v47 = [v46 databaseContext];
-      v48 = [v21 name];
-      v49 = v48;
-      v50 = [v47 newShortLivedLibraryWithName:{objc_msgSend(v48, "UTF8String")}];
+      libraryServicesManager2 = [libraryCopy libraryServicesManager];
+      databaseContext2 = [libraryServicesManager2 databaseContext];
+      name2 = [libraryCopy name];
+      v49 = name2;
+      v50 = [databaseContext2 newShortLivedLibraryWithName:{objc_msgSend(name2, "UTF8String")}];
 
       v76[0] = MEMORY[0x1E69E9820];
       v76[1] = 3221225472;
       v76[2] = __257__PHServerResourceRequestRunner__handleLocalAvailabilityChangeWithFileURL_transientData_isExpectingOnlyData_resourceCPLType_library_expectedMasterThumbnailURL_assetObjectID_resourceObjectID_resourceVersion_resourceUTIString_resourceOrientation_error_reply___block_invoke_62;
       v76[3] = &unk_1E75A4CB8;
-      v41 = v50;
-      v77 = v41;
-      v78 = v67;
+      replyCopy = v50;
+      v77 = replyCopy;
+      v78 = dCopy;
       v80 = &v90;
       v81 = &v96;
-      v84 = a11;
-      v79 = v25;
+      versionCopy = version;
+      v79 = dictionary;
       v82 = &v102;
-      v83 = a6;
-      [v41 performBlockAndWait:v76];
+      typeCopy = type;
+      [replyCopy performBlockAndWait:v76];
     }
 
-    else if (a6 == 5)
+    else if (type == 5)
     {
-      if (v65)
+      if (rLCopy)
       {
-        v39 = v65;
+        v39 = rLCopy;
 
-        v40 = [*MEMORY[0x1E6982E58] identifier];
-        [v25 setObject:v40 forKeyedSubscript:@"PHImageFileUTIKey"];
+        identifier = [*MEMORY[0x1E6982E58] identifier];
+        [dictionary setObject:identifier forKeyedSubscript:@"PHImageFileUTIKey"];
 
-        v41 = [MEMORY[0x1E696AD98] numberWithInteger:PLImageOrientationFromExifOrientation()];
-        [v25 setObject:v41 forKeyedSubscript:@"PHImageFileOrientationKey"];
-        v19 = v39;
+        replyCopy = [MEMORY[0x1E696AD98] numberWithInteger:PLImageOrientationFromExifOrientation()];
+        [dictionary setObject:replyCopy forKeyedSubscript:@"PHImageFileOrientationKey"];
+        lCopy = v39;
       }
 
       else
@@ -3142,8 +3142,8 @@ LABEL_12:
         *(v103 + 24) = 0;
         v52 = MEMORY[0x1E696ABC0];
         v106 = *MEMORY[0x1E696A578];
-        v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot determine thumbnail path for asset: %@", v67, v62];
-        v107 = v41;
+        replyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot determine thumbnail path for asset: %@", dCopy, replyCopy];
+        v107 = replyCopy;
         v53 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v107 forKeys:&v106 count:1];
         v54 = [v52 errorWithDomain:@"PHPhotosErrorDomain" code:3110 userInfo:v53];
         v55 = v91[5];
@@ -3153,16 +3153,16 @@ LABEL_12:
 
     else
     {
-      [v25 setObject:v66 forKeyedSubscript:@"PHImageFileUTIKey"];
-      v41 = [MEMORY[0x1E696AD98] numberWithInteger:PLImageOrientationFromExifOrientation()];
-      [v25 setObject:v41 forKeyedSubscript:@"PHImageFileOrientationKey"];
+      [dictionary setObject:stringCopy forKeyedSubscript:@"PHImageFileUTIKey"];
+      replyCopy = [MEMORY[0x1E696AD98] numberWithInteger:PLImageOrientationFromExifOrientation()];
+      [dictionary setObject:replyCopy forKeyedSubscript:@"PHImageFileOrientationKey"];
     }
 
     goto LABEL_35;
   }
 
-  v42 = [v91[5] domain];
-  if ([v42 isEqualToString:*MEMORY[0x1E6994990]])
+  domain2 = [v91[5] domain];
+  if ([domain2 isEqualToString:*MEMORY[0x1E6994990]])
   {
     v43 = [v91[5] code] == 80 || objc_msgSend(v91[5], "code") == 81 || objc_msgSend(v91[5], "code") == 82;
   }
@@ -3172,8 +3172,8 @@ LABEL_12:
     v43 = 0;
   }
 
-  v44 = [v91[5] domain];
-  if ([v44 isEqualToString:*MEMORY[0x1E69BFF70]])
+  domain3 = [v91[5] domain];
+  if ([domain3 isEqualToString:*MEMORY[0x1E69BFF70]])
   {
     v45 = [v91[5] code] == 6;
   }
@@ -3185,18 +3185,18 @@ LABEL_12:
 
   if (v43 || v45)
   {
-    [v25 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"PHImageResultIsInCloudKey"];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"PHImageResultIsInCloudKey"];
     if (v45)
     {
       v51 = PHNetworkAccessAllowedRequiredError();
-      v41 = v91[5];
+      replyCopy = v91[5];
       v91[5] = v51;
 LABEL_35:
     }
   }
 
-  v56 = v20;
-  if (!v20)
+  v56 = dataCopy;
+  if (!dataCopy)
   {
     v56 = v97[5];
   }
@@ -3206,12 +3206,12 @@ LABEL_35:
   v69[1] = 3221225472;
   v69[2] = __257__PHServerResourceRequestRunner__handleLocalAvailabilityChangeWithFileURL_transientData_isExpectingOnlyData_resourceCPLType_library_expectedMasterThumbnailURL_assetObjectID_resourceObjectID_resourceVersion_resourceUTIString_resourceOrientation_error_reply___block_invoke_2;
   v69[3] = &unk_1E75A4CE0;
-  v58 = v25;
+  v58 = dictionary;
   v70 = v58;
-  v59 = v62;
+  v59 = replyCopy;
   v73 = v59;
   v74 = &v102;
-  v60 = v19;
+  v60 = lCopy;
   v71 = v60;
   v61 = v57;
   v72 = v61;
@@ -3322,23 +3322,23 @@ void __257__PHServerResourceRequestRunner__handleLocalAvailabilityChangeWithFile
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_handleProgress:(id)a3
+- (void)_handleProgress:(id)progress
 {
   progress = self->_progress;
-  v5 = a3;
-  v6 = [(NSProgress *)progress totalUnitCount];
-  [v5 fractionCompleted];
+  progressCopy = progress;
+  totalUnitCount = [(NSProgress *)progress totalUnitCount];
+  [progressCopy fractionCompleted];
   v8 = v7;
 
   v9 = self->_progress;
 
-  [(NSProgress *)v9 setCompletedUnitCount:(v8 * v6)];
+  [(NSProgress *)v9 setCompletedUnitCount:(v8 * totalUnitCount)];
 }
 
-- (void)_cancelWithReply:(id)a3
+- (void)_cancelWithReply:(id)reply
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   os_unfair_lock_lock(&self->_lock);
   v5 = PLImageManagerGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -3349,13 +3349,13 @@ void __257__PHServerResourceRequestRunner__handleLocalAvailabilityChangeWithFile
     _os_log_impl(&dword_19C86F000, v5, OS_LOG_TYPE_DEBUG, "[RM]: %{public}@ Cancellation handler called", &v10, 0xCu);
   }
 
-  v7 = [(PLProgressFollower *)self->_dataStoreFollower sourceProgress];
+  sourceProgress = [(PLProgressFollower *)self->_dataStoreFollower sourceProgress];
   if (self->_state == 5)
   {
     os_unfair_lock_unlock(&self->_lock);
   }
 
-  else if (([(PLResourceDataStore *)self->_dataStore canMarkAsynchronousLocalRenderAsOptionalForProgress:v7]& 1) != 0)
+  else if (([(PLResourceDataStore *)self->_dataStore canMarkAsynchronousLocalRenderAsOptionalForProgress:sourceProgress]& 1) != 0)
   {
     os_unfair_lock_unlock(&self->_lock);
     v8 = PLImageManagerGetLog();
@@ -3365,25 +3365,25 @@ void __257__PHServerResourceRequestRunner__handleLocalAvailabilityChangeWithFile
       v10 = 138543618;
       v11 = v9;
       v12 = 2114;
-      v13 = v7;
+      v13 = sourceProgress;
       _os_log_impl(&dword_19C86F000, v8, OS_LOG_TYPE_INFO, "[RM]: %{public}@ cancellation for async local render translated into deprioritization for progress %{public}@", &v10, 0x16u);
     }
 
-    [(PLResourceDataStore *)self->_dataStore markAsynchronousLocalRenderAsOptionalForProgress:v7];
+    [(PLResourceDataStore *)self->_dataStore markAsynchronousLocalRenderAsOptionalForProgress:sourceProgress];
   }
 
   else
   {
     self->_state = 5;
     os_unfair_lock_unlock(&self->_lock);
-    [v7 cancel];
-    v4[2](v4);
+    [sourceProgress cancel];
+    replyCopy[2](replyCopy);
   }
 }
 
-- (void)_safeReply:(id)a3
+- (void)_safeReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   os_unfair_lock_lock(&self->_lock);
   if (self->_state == 5)
   {
@@ -3394,30 +3394,30 @@ void __257__PHServerResourceRequestRunner__handleLocalAvailabilityChangeWithFile
   {
     self->_state = 5;
     os_unfair_lock_unlock(&self->_lock);
-    v4[2]();
+    replyCopy[2]();
   }
 }
 
-- (id)_assetAndRelatedObjectsFromAssetObjectIDURL:(id)a3 inManagedObjectContext:(id)a4 error:(id *)a5
+- (id)_assetAndRelatedObjectsFromAssetObjectIDURL:(id)l inManagedObjectContext:(id)context error:(id *)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 persistentStoreCoordinator];
-  v10 = [v9 managedObjectIDForURIRepresentation:v7];
+  lCopy = l;
+  contextCopy = context;
+  persistentStoreCoordinator = [contextCopy persistentStoreCoordinator];
+  v10 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:lCopy];
 
   if (!v10)
   {
-    v24 = [v8 persistentStoreCoordinator];
-    v25 = [v24 persistentStores];
-    v13 = [v25 _pl_map:&__block_literal_global_10545];
+    persistentStoreCoordinator2 = [contextCopy persistentStoreCoordinator];
+    persistentStores = [persistentStoreCoordinator2 persistentStores];
+    v13 = [persistentStores _pl_map:&__block_literal_global_10545];
 
     v26 = PLImageManagerGetLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
       v27 = [v13 componentsJoinedByString:{@", "}];
       *buf = 138543618;
-      v50 = v7;
+      v50 = lCopy;
       v51 = 2114;
       v52 = v27;
       _os_log_impl(&dword_19C86F000, v26, OS_LOG_TYPE_ERROR, "Cannot cannot create asset object id from url: %{public}@, persistent store IDs: %{public}@", buf, 0x16u);
@@ -3427,7 +3427,7 @@ void __257__PHServerResourceRequestRunner__handleLocalAvailabilityChangeWithFile
     v47 = *MEMORY[0x1E696A278];
     v29 = MEMORY[0x1E696AEC0];
     v16 = [v13 componentsJoinedByString:{@", "}];
-    v19 = [v29 stringWithFormat:@"Cannot cannot create asset object id from url: %@, persistent store IDs: %@", v7, v16];
+    v19 = [v29 stringWithFormat:@"Cannot cannot create asset object id from url: %@, persistent store IDs: %@", lCopy, v16];
     v48 = v19;
     v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
     v17 = [v28 errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v30];
@@ -3437,8 +3437,8 @@ LABEL_16:
   }
 
   v11 = MEMORY[0x1E695D5E0];
-  v12 = [MEMORY[0x1E69BE540] entityName];
-  v13 = [v11 fetchRequestWithEntityName:v12];
+  entityName = [MEMORY[0x1E69BE540] entityName];
+  v13 = [v11 fetchRequestWithEntityName:entityName];
 
   v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self = %@", v10];
   [v13 setPredicate:v14];
@@ -3450,25 +3450,25 @@ LABEL_16:
 
   [v13 setReturnsObjectsAsFaults:0];
   v41 = 0;
-  v16 = [v8 executeFetchRequest:v13 error:&v41];
+  v16 = [contextCopy executeFetchRequest:v13 error:&v41];
   v17 = v41;
   if (v16)
   {
-    v18 = [v16 firstObject];
-    if (v18)
+    firstObject = [v16 firstObject];
+    if (firstObject)
     {
-      v19 = v18;
-      v40 = a5;
-      v20 = [v18 uuid];
-      if (v20)
+      v19 = firstObject;
+      errorCopy = error;
+      uuid = [firstObject uuid];
+      if (uuid)
       {
-        v21 = v20;
-        v22 = [v19 uuid];
-        v23 = [v22 length];
+        v21 = uuid;
+        uuid2 = [v19 uuid];
+        v23 = [uuid2 length];
 
         if (v23)
         {
-          a5 = v40;
+          error = errorCopy;
           goto LABEL_18;
         }
       }
@@ -3489,7 +3489,7 @@ LABEL_16:
       v34 = [v32 errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v33];
 
       v17 = v34;
-      a5 = v40;
+      error = errorCopy;
     }
 
     else
@@ -3519,21 +3519,21 @@ LABEL_17:
   v19 = 0;
 LABEL_18:
 
-  if (a5)
+  if (error)
   {
     v38 = v17;
-    *a5 = v17;
+    *error = v17;
   }
 
   return v19;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   os_unfair_lock_lock(&self->_lock);
   if (self->_state != 5)
   {
-    self->_state = a3;
+    self->_state = state;
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -3555,15 +3555,15 @@ LABEL_18:
   [(PHServerResourceRequestRunner *)&v3 dealloc];
 }
 
-- (PHServerResourceRequestRunner)initWithTaskIdentifier:(id)a3
+- (PHServerResourceRequestRunner)initWithTaskIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = PHServerResourceRequestRunner;
   v5 = [(PHServerResourceRequestRunner *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     taskIdentifier = v5->_taskIdentifier;
     v5->_taskIdentifier = v6;
   }

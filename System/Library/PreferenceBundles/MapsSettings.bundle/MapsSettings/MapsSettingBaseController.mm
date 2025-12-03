@@ -1,20 +1,20 @@
 @interface MapsSettingBaseController
-- (MapsSettingBaseController)initWithNibName:(id)a3 bundle:(id)a4;
+- (MapsSettingBaseController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)_updateSettingsFromCurrentGeoCountryConfiguration;
-- (void)contryConfigurationDidChange:(id)a3;
+- (void)contryConfigurationDidChange:(id)change;
 - (void)dealloc;
-- (void)synchronizeSettingsUpdateViews:(id)a3;
-- (void)valueChangedForGEOConfigKey:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)synchronizeSettingsUpdateViews:(id)views;
+- (void)valueChangedForGEOConfigKey:(id)key;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation MapsSettingBaseController
 
-- (MapsSettingBaseController)initWithNibName:(id)a3 bundle:(id)a4
+- (MapsSettingBaseController)initWithNibName:(id)name bundle:(id)bundle
 {
   v12.receiver = self;
   v12.super_class = MapsSettingBaseController;
-  v4 = [(MapsSettingBaseController *)&v12 initWithNibName:a3 bundle:a4];
+  v4 = [(MapsSettingBaseController *)&v12 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -66,15 +66,15 @@
   [(MapsSettingBaseController *)&v7 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MapsSettingBaseController;
-  [(MapsSettingBaseController *)&v4 viewWillAppear:a3];
+  [(MapsSettingBaseController *)&v4 viewWillAppear:appear];
   [(MapsSettingBaseController *)self reloadSpecifiers];
 }
 
-- (void)synchronizeSettingsUpdateViews:(id)a3
+- (void)synchronizeSettingsUpdateViews:(id)views
 {
   [(MapsSettingBaseController *)self _updateSettingsFromCurrentGeoCountryConfiguration];
 
@@ -88,17 +88,17 @@
   self->_supportsNavigation = [v3 currentCountrySupportsNavigation];
 }
 
-- (void)contryConfigurationDidChange:(id)a3
+- (void)contryConfigurationDidChange:(id)change
 {
   [(MapsSettingBaseController *)self _updateSettingsFromCurrentGeoCountryConfiguration];
 
   [(MapsSettingBaseController *)self reload];
 }
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = key.var1;
+  var0 = key.var0;
   if ([(MapsSettingBaseController *)self wantsUniqueEntityUpdateNotifications])
   {
     if (var0 == 736 && var1 == &unk_76AF0)

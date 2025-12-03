@@ -9,7 +9,7 @@
 - (id)cp_clientProcessName
 {
   v5 = *MEMORY[0x1E69E9840];
-  if (proc_name([a1 processIdentifier], &v4, 0x100u) < 1)
+  if (proc_name([self processIdentifier], &v4, 0x100u) < 1)
   {
     v1 = 0;
   }
@@ -27,7 +27,7 @@
 - (__CFString)cp_clientProcessBundleIdentifier
 {
   memset(&v5[1], 0, sizeof(audit_token_t));
-  [a1 auditToken];
+  [self auditToken];
   v5[0] = v5[1];
   v1 = SecTaskCreateWithAuditToken(0, v5);
   if (v1)
@@ -50,7 +50,7 @@
   v4 = a3;
   v12 = 0u;
   v13 = 0u;
-  [a1 auditToken];
+  [self auditToken];
   if ([v4 isFileURL])
   {
     v11 = 0;

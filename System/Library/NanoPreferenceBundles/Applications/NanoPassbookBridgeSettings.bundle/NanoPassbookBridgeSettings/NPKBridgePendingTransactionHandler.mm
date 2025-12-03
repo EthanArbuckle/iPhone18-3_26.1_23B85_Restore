@@ -1,17 +1,17 @@
 @interface NPKBridgePendingTransactionHandler
-- (NPKBridgePendingTransactionHandler)initWithPassUniqueID:(id)a3 companionAgentConnection:(id)a4;
+- (NPKBridgePendingTransactionHandler)initWithPassUniqueID:(id)d companionAgentConnection:(id)connection;
 - (NPKBridgePendingTransactionHandlerDelegate)delegate;
 - (void)_presentPendingTransactionAlert;
 - (void)_setupLinkedApplication;
-- (void)linkedApplicationDidChangeState:(id)a3;
+- (void)linkedApplicationDidChangeState:(id)state;
 @end
 
 @implementation NPKBridgePendingTransactionHandler
 
-- (NPKBridgePendingTransactionHandler)initWithPassUniqueID:(id)a3 companionAgentConnection:(id)a4
+- (NPKBridgePendingTransactionHandler)initWithPassUniqueID:(id)d companionAgentConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  connectionCopy = connection;
   v17.receiver = self;
   v17.super_class = NPKBridgePendingTransactionHandler;
   v8 = [(NPKBridgePendingTransactionHandler *)&v17 init];
@@ -26,12 +26,12 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v19 = v6;
+        v19 = dCopy;
         _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "Notice: [PendingTransactionHandler] Starting to handle pending transaction for pass: %@", buf, 0xCu);
       }
     }
 
-    objc_storeStrong(&v8->_companionAgentConnection, a4);
+    objc_storeStrong(&v8->_companionAgentConnection, connection);
     objc_initWeak(buf, v8);
     companionAgentConnection = v8->_companionAgentConnection;
     v14[0] = _NSConcreteStackBlock;
@@ -39,7 +39,7 @@
     v14[2] = sub_7304;
     v14[3] = &unk_2C958;
     objc_copyWeak(&v16, buf);
-    v15 = v6;
+    v15 = dCopy;
     [(NPKCompanionAgentConnection *)companionAgentConnection fetchPendingTransactionForPassWithUniqueID:v15 completion:v14];
 
     objc_destroyWeak(&v16);
@@ -59,17 +59,17 @@
     v5 = pk_Payment_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(NPKBridgePendingTransactionHandler *)self pass];
-      v7 = [v6 uniqueID];
+      pass = [(NPKBridgePendingTransactionHandler *)self pass];
+      uniqueID = [pass uniqueID];
       v11 = 138412290;
-      v12 = v7;
+      v12 = uniqueID;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Notice: [PendingTransactionHandler] Setting up linked application for pass: %@", &v11, 0xCu);
     }
   }
 
   v8 = [PKLinkedApplication alloc];
-  v9 = [(NPKBridgePendingTransactionHandler *)self pass];
-  v10 = [v8 initWithPass:v9];
+  pass2 = [(NPKBridgePendingTransactionHandler *)self pass];
+  v10 = [v8 initWithPass:pass2];
 
   [v10 addObserver:self];
   [v10 reloadApplicationStateIfNecessary];
@@ -86,30 +86,30 @@
     v5 = pk_Payment_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(NPKBridgePendingTransactionHandler *)self pass];
-      v7 = [v6 uniqueID];
+      pass = [(NPKBridgePendingTransactionHandler *)self pass];
+      uniqueID = [pass uniqueID];
       *buf = 138412290;
-      v39 = v7;
+      v39 = uniqueID;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Notice: [PendingTransactionHandler] Pesenting pending transaction alert for pass: %@", buf, 0xCu);
     }
   }
 
-  v8 = [(NPKBridgePendingTransactionHandler *)self pass];
-  v30 = [v8 organizationName];
+  pass2 = [(NPKBridgePendingTransactionHandler *)self pass];
+  organizationName = [pass2 organizationName];
 
-  v9 = [(NPKBridgePendingTransactionHandler *)self linkedApplication];
-  v10 = [v9 isInstalled];
+  linkedApplication = [(NPKBridgePendingTransactionHandler *)self linkedApplication];
+  isInstalled = [linkedApplication isInstalled];
 
-  if (v10)
+  if (isInstalled)
   {
-    v29 = PKLocalizedAquamanString(@"TRANSACTION_AUTHENTICATION_APP_REDIRECT_TITLE", @"%@", v30);
-    v11 = [(NPKBridgePendingTransactionHandler *)self transaction];
-    v12 = [v11 currencyAmount];
-    v13 = [v12 formattedStringValue];
-    v14 = [(NPKBridgePendingTransactionHandler *)self transaction];
-    v15 = [v14 merchant];
-    v16 = [v15 displayName];
-    v28 = PKLocalizedAquamanString(@"TRANSACTION_AUTHENTICATION_APP_REDIRECT_MESSAGE", @"%@%@%@", v13, v16, v30);
+    v29 = PKLocalizedAquamanString(@"TRANSACTION_AUTHENTICATION_APP_REDIRECT_TITLE", @"%@", organizationName);
+    transaction = [(NPKBridgePendingTransactionHandler *)self transaction];
+    currencyAmount = [transaction currencyAmount];
+    formattedStringValue = [currencyAmount formattedStringValue];
+    transaction2 = [(NPKBridgePendingTransactionHandler *)self transaction];
+    merchant = [transaction2 merchant];
+    displayName = [merchant displayName];
+    v28 = PKLocalizedAquamanString(@"TRANSACTION_AUTHENTICATION_APP_REDIRECT_MESSAGE", @"%@%@%@", formattedStringValue, displayName, organizationName);
 
     v17 = &PKAnalyticsReportApplicationRedirectOpenButtonTag;
     v18 = @"OPEN";
@@ -117,11 +117,11 @@
 
   else
   {
-    v29 = PKLocalizedAquamanString(@"TRANSACTION_AUTHENTICATION_APP_REQUIRED_TITLE", @"%@", v30);
-    v11 = [(NPKBridgePendingTransactionHandler *)self transaction];
-    v12 = [v11 merchant];
-    v13 = [v12 displayName];
-    v28 = PKLocalizedAquamanString(@"TRANSACTION_AUTHENTICATION_APP_REQUIRED_MESSAGE", @"%@%@", v13, v30);
+    v29 = PKLocalizedAquamanString(@"TRANSACTION_AUTHENTICATION_APP_REQUIRED_TITLE", @"%@", organizationName);
+    transaction = [(NPKBridgePendingTransactionHandler *)self transaction];
+    currencyAmount = [transaction merchant];
+    formattedStringValue = [currencyAmount displayName];
+    v28 = PKLocalizedAquamanString(@"TRANSACTION_AUTHENTICATION_APP_REQUIRED_MESSAGE", @"%@%@", formattedStringValue, organizationName);
     v17 = &PKAnalyticsReportApplicationRedirectViewInAppStoreButtonTag;
     v18 = @"VIEW_IN_APP_STORE";
   }
@@ -136,7 +136,7 @@
   objc_copyWeak(&v36, buf);
   v21 = v20;
   v35 = v21;
-  v37 = v10;
+  v37 = isInstalled;
   v22 = [UIAlertAction actionWithTitle:v19 style:0 handler:v34];
   v23 = PKLocalizedAquamanString(@"CANCEL");
   v32[0] = _NSConcreteStackBlock;
@@ -150,8 +150,8 @@
   [v25 addAction:v24];
   [v25 addAction:v22];
   [v25 setPreferredAction:v22];
-  v26 = [(NPKBridgePendingTransactionHandler *)self delegate];
-  v27 = [v26 presentingViewControllerForPendingTransactionHandler:self];
+  delegate = [(NPKBridgePendingTransactionHandler *)self delegate];
+  v27 = [delegate presentingViewControllerForPendingTransactionHandler:self];
 
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
@@ -165,9 +165,9 @@
   objc_destroyWeak(buf);
 }
 
-- (void)linkedApplicationDidChangeState:(id)a3
+- (void)linkedApplicationDidChangeState:(id)state
 {
-  if ([a3 state] == &dword_0 + 1)
+  if ([state state] == &dword_0 + 1)
   {
 
     [(NPKBridgePendingTransactionHandler *)self _presentPendingTransactionAlert];

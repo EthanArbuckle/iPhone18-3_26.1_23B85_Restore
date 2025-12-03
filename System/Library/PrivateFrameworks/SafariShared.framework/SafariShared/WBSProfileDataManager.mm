@@ -1,55 +1,55 @@
 @interface WBSProfileDataManager
-- (WBSProfileDataManager)initWithProfileProvider:(id)a3;
-- (void)didRemoveProfile:(id)a3;
-- (void)didRemoveProfileWithServerID:(id)a3 profileIdentifier:(id)a4;
-- (void)ensureProfileDirectoriesExistForProfileWithServerID:(id)a3 profileIdentifier:(id)a4;
+- (WBSProfileDataManager)initWithProfileProvider:(id)provider;
+- (void)didRemoveProfile:(id)profile;
+- (void)didRemoveProfileWithServerID:(id)d profileIdentifier:(id)identifier;
+- (void)ensureProfileDirectoriesExistForProfileWithServerID:(id)d profileIdentifier:(id)identifier;
 @end
 
 @implementation WBSProfileDataManager
 
-- (WBSProfileDataManager)initWithProfileProvider:(id)a3
+- (WBSProfileDataManager)initWithProfileProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = WBSProfileDataManager;
   v6 = [(WBSProfileDataManager *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_profileProvider, a3);
+    objc_storeStrong(&v6->_profileProvider, provider);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)ensureProfileDirectoriesExistForProfileWithServerID:(id)a3 profileIdentifier:(id)a4
+- (void)ensureProfileDirectoriesExistForProfileWithServerID:(id)d profileIdentifier:(id)identifier
 {
-  v10 = a3;
-  v5 = a4;
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v6 safari_profileDirectoryURLWithID:v5 createIfNeeded:1];
+  dCopy = d;
+  identifierCopy = identifier;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v7 = [defaultManager safari_profileDirectoryURLWithID:identifierCopy createIfNeeded:1];
 
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v9 = [v8 safari_profileDirectoryURLWithID:v10 createIfNeeded:1];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+  v9 = [defaultManager2 safari_profileDirectoryURLWithID:dCopy createIfNeeded:1];
 }
 
-- (void)didRemoveProfileWithServerID:(id)a3 profileIdentifier:(id)a4
+- (void)didRemoveProfileWithServerID:(id)d profileIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  if (v5)
+  dCopy = d;
+  identifierCopy = identifier;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if (dCopy)
   {
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    v9 = [v8 safari_profileDirectoryURLWithID:v5 createIfNeeded:0];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    v9 = [defaultManager2 safari_profileDirectoryURLWithID:dCopy createIfNeeded:0];
     v20 = 0;
-    [v7 removeItemAtURL:v9 error:&v20];
+    [defaultManager removeItemAtURL:v9 error:&v20];
     v10 = v20;
 
     if (!v10)
     {
-      if (v6)
+      if (identifierCopy)
       {
         goto LABEL_4;
       }
@@ -66,16 +66,16 @@
   v14 = WBS_LOG_CHANNEL_PREFIXProfiles();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    [(WBSProfileDataManager *)v5 didRemoveProfileWithServerID:v14 profileIdentifier:v10];
+    [(WBSProfileDataManager *)dCopy didRemoveProfileWithServerID:v14 profileIdentifier:v10];
   }
 
-  if (v6)
+  if (identifierCopy)
   {
 LABEL_4:
-    v11 = [MEMORY[0x1E696AC08] defaultManager];
-    v12 = [v11 safari_profileDirectoryURLWithID:v6 createIfNeeded:0];
+    defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+    v12 = [defaultManager3 safari_profileDirectoryURLWithID:identifierCopy createIfNeeded:0];
     v19 = 0;
-    [v7 removeItemAtURL:v12 error:&v19];
+    [defaultManager removeItemAtURL:v12 error:&v19];
     v13 = v19;
 
     if (!v13)
@@ -92,28 +92,28 @@ LABEL_11:
   v15 = WBS_LOG_CHANNEL_PREFIXProfiles();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
-    [(WBSProfileDataManager *)v6 didRemoveProfileWithServerID:v15 profileIdentifier:v13];
+    [(WBSProfileDataManager *)identifierCopy didRemoveProfileWithServerID:v15 profileIdentifier:v13];
   }
 
 LABEL_13:
   +[WBSParsecDSession clearAllParsecFeedbackAndEngagedCompletions];
   v16 = +[WBSSiriIntelligenceDonor sharedInstance];
-  [v16 removeAllCoreSpotlightHistoryDataDonatedBySafariForProfileWithIdentifier:v6];
+  [v16 removeAllCoreSpotlightHistoryDataDonatedBySafariForProfileWithIdentifier:identifierCopy];
 
   v17 = +[WBSSiriIntelligenceDonor sharedInstance];
-  [v17 removeAllCoreSpotlightTabDataDonatedBySafariForProfileWithIdentifier:v6];
+  [v17 removeAllCoreSpotlightTabDataDonatedBySafariForProfileWithIdentifier:identifierCopy];
 
   v18 = +[WBSIgnoredSiriSuggestedSitesController sharedController];
-  [v18 removeIgnoredSiriSuggestedSitesInProfile:v6];
+  [v18 removeIgnoredSiriSuggestedSitesInProfile:identifierCopy];
 }
 
-- (void)didRemoveProfile:(id)a3
+- (void)didRemoveProfile:(id)profile
 {
-  v4 = a3;
-  v6 = [v4 serverID];
-  v5 = [v4 identifier];
+  profileCopy = profile;
+  serverID = [profileCopy serverID];
+  identifier = [profileCopy identifier];
 
-  [(WBSProfileDataManager *)self didRemoveProfileWithServerID:v6 profileIdentifier:v5];
+  [(WBSProfileDataManager *)self didRemoveProfileWithServerID:serverID profileIdentifier:identifier];
 }
 
 - (void)didRemoveProfileWithServerID:(void *)a3 profileIdentifier:.cold.1(uint64_t a1, void *a2, void *a3)

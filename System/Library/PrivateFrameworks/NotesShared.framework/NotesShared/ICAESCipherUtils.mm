@@ -1,22 +1,22 @@
 @interface ICAESCipherUtils
-+ (id)_ic_decrypt:(id)a3 withCipherKey:(id)a4 standardKeyLength:(unint64_t)a5 additionalAuthenticatedData:(id)a6 inputTag:(id)a7 standardTagLength:(unint64_t)a8 inputInitializationVector:(id)a9 standardInitializationVectorLength:(unint64_t)a10 error:(id *)a11;
-+ (id)_ic_encrypt:(id)a3 withCipherKey:(id)a4 standardKeyLength:(unint64_t)a5 additionalAuthenticatedData:(id)a6 outputTag:(id *)a7 standardTagLength:(unint64_t)a8 outputInitializationVector:(id *)a9 standardInitializationVectorLength:(unint64_t)a10 error:(id *)a11;
-+ (id)_ic_unwrap:(id)a3 withWrapper:(id)a4 standardKeyLength:(unint64_t)a5 standardWrappedKeyLength:(unint64_t)a6 error:(id *)a7;
-+ (id)_ic_wrap:(id)a3 withWrapper:(id)a4 standardKeyLength:(unint64_t)a5 standardWrappedKeyLength:(unint64_t)a6 error:(id *)a7;
++ (id)_ic_decrypt:(id)_ic_decrypt withCipherKey:(id)key standardKeyLength:(unint64_t)length additionalAuthenticatedData:(id)data inputTag:(id)tag standardTagLength:(unint64_t)tagLength inputInitializationVector:(id)vector standardInitializationVectorLength:(unint64_t)self0 error:(id *)self1;
++ (id)_ic_encrypt:(id)_ic_encrypt withCipherKey:(id)key standardKeyLength:(unint64_t)length additionalAuthenticatedData:(id)data outputTag:(id *)tag standardTagLength:(unint64_t)tagLength outputInitializationVector:(id *)vector standardInitializationVectorLength:(unint64_t)self0 error:(id *)self1;
++ (id)_ic_unwrap:(id)_ic_unwrap withWrapper:(id)wrapper standardKeyLength:(unint64_t)length standardWrappedKeyLength:(unint64_t)keyLength error:(id *)error;
++ (id)_ic_wrap:(id)_ic_wrap withWrapper:(id)wrapper standardKeyLength:(unint64_t)length standardWrappedKeyLength:(unint64_t)keyLength error:(id *)error;
 @end
 
 @implementation ICAESCipherUtils
 
-+ (id)_ic_encrypt:(id)a3 withCipherKey:(id)a4 standardKeyLength:(unint64_t)a5 additionalAuthenticatedData:(id)a6 outputTag:(id *)a7 standardTagLength:(unint64_t)a8 outputInitializationVector:(id *)a9 standardInitializationVectorLength:(unint64_t)a10 error:(id *)a11
++ (id)_ic_encrypt:(id)_ic_encrypt withCipherKey:(id)key standardKeyLength:(unint64_t)length additionalAuthenticatedData:(id)data outputTag:(id *)tag standardTagLength:(unint64_t)tagLength outputInitializationVector:(id *)vector standardInitializationVectorLength:(unint64_t)self0 error:(id *)self1
 {
   v55[1] = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  if (a11)
+  _ic_encryptCopy = _ic_encrypt;
+  keyCopy = key;
+  dataCopy = data;
+  if (error)
   {
-    *a11 = 0;
-    if (!v16)
+    *error = 0;
+    if (!_ic_encryptCopy)
     {
       v29 = MEMORY[0x277CCA9B8];
       v54 = *MEMORY[0x277CCA450];
@@ -28,67 +28,67 @@
       goto LABEL_12;
     }
 
-    if ([v17 length] != a5)
+    if ([keyCopy length] != length)
     {
       v19 = MEMORY[0x277CCA9B8];
       v52 = *MEMORY[0x277CCA450];
-      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Encrypting key length is %zu, but should be %ld.", objc_msgSend(v17, "length"), a5];
+      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Encrypting key length is %zu, but should be %ld.", objc_msgSend(keyCopy, "length"), length];
       v53 = v20;
       v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
       v22 = v19;
       v23 = 1;
 LABEL_12:
       [v22 errorWithDomain:@"com.apple.notes.cipher" code:v23 userInfo:v21];
-      *a11 = v28 = 0;
+      *error = v28 = 0;
 LABEL_24:
 
       goto LABEL_25;
     }
   }
 
-  else if (!v16 || [v17 length] != a5)
+  else if (!_ic_encryptCopy || [keyCopy length] != length)
   {
     v28 = 0;
     goto LABEL_26;
   }
 
   v45 = 0;
-  v24 = [MEMORY[0x277CBEA90] ic_randomDataOfLength:a10 error:&v45];
+  v24 = [MEMORY[0x277CBEA90] ic_randomDataOfLength:vectorLength error:&v45];
   v20 = v45;
   v25 = v24;
-  *a9 = v24;
+  *vector = v24;
   if (!v20)
   {
-    v21 = [MEMORY[0x277CBEB28] dataWithLength:{objc_msgSend(v16, "length")}];
-    [MEMORY[0x277CBEB28] dataWithLength:a8];
-    v44 = v43 = v18;
-    if (v18)
+    v21 = [MEMORY[0x277CBEB28] dataWithLength:{objc_msgSend(_ic_encryptCopy, "length")}];
+    [MEMORY[0x277CBEB28] dataWithLength:tagLength];
+    v44 = v43 = dataCopy;
+    if (dataCopy)
     {
-      [v18 bytes];
-      [v18 length];
+      [dataCopy bytes];
+      [dataCopy length];
     }
 
-    [v17 bytes];
-    [v17 length];
-    [*a9 bytes];
-    [*a9 length];
-    [v16 bytes];
-    v30 = [v16 length];
-    v31 = [v21 mutableBytes];
+    [keyCopy bytes];
+    [keyCopy length];
+    [*vector bytes];
+    [*vector length];
+    [_ic_encryptCopy bytes];
+    v30 = [_ic_encryptCopy length];
+    mutableBytes = [v21 mutableBytes];
     v27 = v44;
-    v42 = [v44 mutableBytes];
-    v41 = v31;
+    mutableBytes2 = [v44 mutableBytes];
+    v41 = mutableBytes;
     v32 = CCCryptorGCMOneshotEncrypt();
     if (v32)
     {
-      if (a11)
+      if (error)
       {
         v33 = MEMORY[0x277CCA9B8];
         v48 = *MEMORY[0x277CCA450];
-        v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"CCCryptorGCM() encryption failed with status %d", v32, v41, v42, a8];
-        v49 = v34;
+        tagLength = [MEMORY[0x277CCACA8] stringWithFormat:@"CCCryptorGCM() encryption failed with status %d", v32, v41, mutableBytes2, tagLength];
+        v49 = tagLength;
         v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
-        *a11 = [v33 errorWithDomain:@"com.apple.notes.cipher" code:3 userInfo:v35];
+        *error = [v33 errorWithDomain:@"com.apple.notes.cipher" code:3 userInfo:v35];
       }
 
       v28 = 0;
@@ -97,17 +97,17 @@ LABEL_24:
 
     else
     {
-      if ([v44 length] != a8)
+      if ([v44 length] != tagLength)
       {
-        v18 = v43;
-        if (a11)
+        dataCopy = v43;
+        if (error)
         {
           v38 = MEMORY[0x277CCA9B8];
           v46 = *MEMORY[0x277CCA450];
-          v39 = [MEMORY[0x277CCACA8] stringWithFormat:@"Tag length changed to %zu during encryption, but should remain %ld", a8, a8];
-          v47 = v39;
+          tagLength2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Tag length changed to %zu during encryption, but should remain %ld", tagLength, tagLength];
+          v47 = tagLength2;
           v40 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
-          *a11 = [v38 errorWithDomain:@"com.apple.notes.cipher" code:4 userInfo:v40];
+          *error = [v38 errorWithDomain:@"com.apple.notes.cipher" code:4 userInfo:v40];
         }
 
         v28 = 0;
@@ -115,17 +115,17 @@ LABEL_24:
       }
 
       v36 = v44;
-      *a7 = v44;
+      *tag = v44;
       v28 = [v21 copy];
     }
 
-    v18 = v43;
+    dataCopy = v43;
 LABEL_23:
 
     goto LABEL_24;
   }
 
-  if (a11)
+  if (error)
   {
     v26 = MEMORY[0x277CCA9B8];
     v50[0] = *MEMORY[0x277CCA450];
@@ -135,7 +135,7 @@ LABEL_23:
     v51[1] = v20;
     v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v51 forKeys:v50 count:2];
     [v26 errorWithDomain:@"com.apple.notes.cipher" code:2 userInfo:v27];
-    *a11 = v28 = 0;
+    *error = v28 = 0;
     goto LABEL_23;
   }
 
@@ -147,108 +147,108 @@ LABEL_26:
   return v28;
 }
 
-+ (id)_ic_decrypt:(id)a3 withCipherKey:(id)a4 standardKeyLength:(unint64_t)a5 additionalAuthenticatedData:(id)a6 inputTag:(id)a7 standardTagLength:(unint64_t)a8 inputInitializationVector:(id)a9 standardInitializationVectorLength:(unint64_t)a10 error:(id *)a11
++ (id)_ic_decrypt:(id)_ic_decrypt withCipherKey:(id)key standardKeyLength:(unint64_t)length additionalAuthenticatedData:(id)data inputTag:(id)tag standardTagLength:(unint64_t)tagLength inputInitializationVector:(id)vector standardInitializationVectorLength:(unint64_t)self0 error:(id *)self1
 {
   v49[1] = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
-  if (a11)
+  _ic_decryptCopy = _ic_decrypt;
+  keyCopy = key;
+  dataCopy = data;
+  tagCopy = tag;
+  vectorCopy = vector;
+  if (error)
   {
-    *a11 = 0;
-    if (!v16)
+    *error = 0;
+    if (!_ic_decryptCopy)
     {
       v27 = MEMORY[0x277CCA9B8];
       v48 = *MEMORY[0x277CCA450];
-      v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"cipherData is nil"];
-      v49[0] = v22;
+      vectorLength = [MEMORY[0x277CCACA8] stringWithFormat:@"cipherData is nil"];
+      v49[0] = vectorLength;
       v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:&v48 count:1];
       v24 = v27;
       v25 = 16;
       goto LABEL_17;
     }
 
-    if ([v17 length] != a5)
+    if ([keyCopy length] != length)
     {
       v28 = MEMORY[0x277CCA9B8];
       v46 = *MEMORY[0x277CCA450];
-      v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"Decrypting key length is %zu, but should be %ld.", objc_msgSend(v17, "length"), a5];
-      v47 = v22;
+      vectorLength = [MEMORY[0x277CCACA8] stringWithFormat:@"Decrypting key length is %zu, but should be %ld.", objc_msgSend(keyCopy, "length"), length];
+      v47 = vectorLength;
       v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
-      *a11 = [v28 errorWithDomain:@"com.apple.notes.cipher" code:5 userInfo:v29];
+      *error = [v28 errorWithDomain:@"com.apple.notes.cipher" code:5 userInfo:v29];
 
       goto LABEL_19;
     }
 
-    if ([v20 length] != a10)
+    if ([vectorCopy length] != vectorLength)
     {
       v30 = MEMORY[0x277CCA9B8];
       v44 = *MEMORY[0x277CCA450];
-      v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"IV length is %zu, but should remain %ld", objc_msgSend(v19, "length"), a10];
-      v45 = v22;
+      vectorLength = [MEMORY[0x277CCACA8] stringWithFormat:@"IV length is %zu, but should remain %ld", objc_msgSend(tagCopy, "length"), vectorLength];
+      v45 = vectorLength;
       v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
       v24 = v30;
       v25 = 14;
       goto LABEL_17;
     }
 
-    if ([v19 length] != a8)
+    if ([tagCopy length] != tagLength)
     {
       v21 = MEMORY[0x277CCA9B8];
       v42 = *MEMORY[0x277CCA450];
-      v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"Tag length is %zu, but should remain %ld", objc_msgSend(v19, "length"), a8];
-      v43 = v22;
+      vectorLength = [MEMORY[0x277CCACA8] stringWithFormat:@"Tag length is %zu, but should remain %ld", objc_msgSend(tagCopy, "length"), tagLength];
+      v43 = vectorLength;
       v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
       v24 = v21;
       v25 = 4;
 LABEL_17:
-      *a11 = [v24 errorWithDomain:@"com.apple.notes.cipher" code:v25 userInfo:v23];
+      *error = [v24 errorWithDomain:@"com.apple.notes.cipher" code:v25 userInfo:v23];
 LABEL_18:
 
       goto LABEL_19;
     }
   }
 
-  else if (!v16 || [v17 length] != a5 || objc_msgSend(v20, "length") != a10 || objc_msgSend(v19, "length") != a8)
+  else if (!_ic_decryptCopy || [keyCopy length] != length || objc_msgSend(vectorCopy, "length") != vectorLength || objc_msgSend(tagCopy, "length") != tagLength)
   {
     v26 = 0;
     goto LABEL_21;
   }
 
-  if (v18)
+  if (dataCopy)
   {
-    [v18 bytes];
-    [v18 length];
+    [dataCopy bytes];
+    [dataCopy length];
   }
 
-  v22 = [MEMORY[0x277CBEB28] dataWithLength:{objc_msgSend(v16, "length")}];
-  [v17 bytes];
-  [v17 length];
-  [v20 bytes];
-  [v20 length];
-  [v16 bytes];
-  v32 = [v16 length];
-  v33 = [v22 mutableBytes];
-  v38 = [v19 bytes];
-  v39 = [v19 length];
-  v37 = v33;
+  vectorLength = [MEMORY[0x277CBEB28] dataWithLength:{objc_msgSend(_ic_decryptCopy, "length")}];
+  [keyCopy bytes];
+  [keyCopy length];
+  [vectorCopy bytes];
+  [vectorCopy length];
+  [_ic_decryptCopy bytes];
+  v32 = [_ic_decryptCopy length];
+  mutableBytes = [vectorLength mutableBytes];
+  bytes = [tagCopy bytes];
+  v39 = [tagCopy length];
+  v37 = mutableBytes;
   v34 = CCCryptorGCMOneshotDecrypt();
   if (!v34)
   {
-    v26 = [v22 copy];
+    v26 = [vectorLength copy];
     goto LABEL_20;
   }
 
-  if (a11)
+  if (error)
   {
     v35 = MEMORY[0x277CCA9B8];
     v40 = *MEMORY[0x277CCA450];
-    v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"CCCryptorGCM() decryption failed with status %d", v34, v37, v38, v39];
+    v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"CCCryptorGCM() decryption failed with status %d", v34, v37, bytes, v39];
     v41 = v23;
     v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-    *a11 = [v35 errorWithDomain:@"com.apple.notes.cipher" code:6 userInfo:v36];
+    *error = [v35 errorWithDomain:@"com.apple.notes.cipher" code:6 userInfo:v36];
 
     goto LABEL_18;
   }
@@ -262,20 +262,20 @@ LABEL_21:
   return v26;
 }
 
-+ (id)_ic_wrap:(id)a3 withWrapper:(id)a4 standardKeyLength:(unint64_t)a5 standardWrappedKeyLength:(unint64_t)a6 error:(id *)a7
++ (id)_ic_wrap:(id)_ic_wrap withWrapper:(id)wrapper standardKeyLength:(unint64_t)length standardWrappedKeyLength:(unint64_t)keyLength error:(id *)error
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = v12;
-  if (a7)
+  _ic_wrapCopy = _ic_wrap;
+  wrapperCopy = wrapper;
+  v13 = wrapperCopy;
+  if (error)
   {
-    *a7 = 0;
-    if ([v12 length] != a5)
+    *error = 0;
+    if ([wrapperCopy length] != length)
     {
       v22 = MEMORY[0x277CCA9B8];
       v34 = *MEMORY[0x277CCA450];
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Wrapper key length is %zu when wrapping, but should be %ld.", objc_msgSend(v13, "length"), a5];
+      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Wrapper key length is %zu when wrapping, but should be %ld.", objc_msgSend(v13, "length"), length];
       v35[0] = v15;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:&v34 count:1];
       v17 = v22;
@@ -283,48 +283,48 @@ LABEL_21:
       goto LABEL_11;
     }
 
-    if ([v11 length] != a5)
+    if ([_ic_wrapCopy length] != length)
     {
       v14 = MEMORY[0x277CCA9B8];
       v32 = *MEMORY[0x277CCA450];
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Raw key length is %zu when wrapping, but should be %ld.", objc_msgSend(v11, "length"), a5];
+      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Raw key length is %zu when wrapping, but should be %ld.", objc_msgSend(_ic_wrapCopy, "length"), length];
       v33 = v15;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
       v17 = v14;
       v18 = 10;
 LABEL_11:
-      *a7 = [v17 errorWithDomain:@"com.apple.notes.cipher" code:v18 userInfo:v16];
+      *error = [v17 errorWithDomain:@"com.apple.notes.cipher" code:v18 userInfo:v16];
       goto LABEL_12;
     }
 
 LABEL_7:
-    v15 = [MEMORY[0x277CBEB28] dataWithLength:a6];
+    v15 = [MEMORY[0x277CBEB28] dataWithLength:keyLength];
     wrappedKeyLen = [v15 length];
-    v19 = CCSymmetricKeyWrap(1u, *MEMORY[0x277D85C18], *MEMORY[0x277D85C20], [v13 bytes], objc_msgSend(v13, "length"), objc_msgSend(v11, "bytes"), objc_msgSend(v11, "length"), objc_msgSend(v15, "mutableBytes"), &wrappedKeyLen);
+    v19 = CCSymmetricKeyWrap(1u, *MEMORY[0x277D85C18], *MEMORY[0x277D85C20], [v13 bytes], objc_msgSend(v13, "length"), objc_msgSend(_ic_wrapCopy, "bytes"), objc_msgSend(_ic_wrapCopy, "length"), objc_msgSend(v15, "mutableBytes"), &wrappedKeyLen);
     if (!v19)
     {
-      if (wrappedKeyLen == a6)
+      if (wrappedKeyLen == keyLength)
       {
-        a7 = [v15 copy];
+        error = [v15 copy];
         goto LABEL_14;
       }
 
-      if (!a7)
+      if (!error)
       {
         goto LABEL_14;
       }
 
       v24 = MEMORY[0x277CCA9B8];
       v28 = *MEMORY[0x277CCA450];
-      v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"Wrapped key length is %zu, but should be %ld", wrappedKeyLen, a6];
-      v29 = v25;
+      keyLength = [MEMORY[0x277CCACA8] stringWithFormat:@"Wrapped key length is %zu, but should be %ld", wrappedKeyLen, keyLength];
+      v29 = keyLength;
       v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-      *a7 = [v24 errorWithDomain:@"com.apple.notes.cipher" code:11 userInfo:v26];
+      *error = [v24 errorWithDomain:@"com.apple.notes.cipher" code:11 userInfo:v26];
 
       goto LABEL_13;
     }
 
-    if (!a7)
+    if (!error)
     {
 LABEL_14:
 
@@ -336,67 +336,67 @@ LABEL_14:
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"CCSymmetricKeyWrap() wrapping failed with status %d", v19];
     v31 = v16;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-    *a7 = [v20 errorWithDomain:@"com.apple.notes.cipher" code:8 userInfo:v21];
+    *error = [v20 errorWithDomain:@"com.apple.notes.cipher" code:8 userInfo:v21];
 
 LABEL_12:
 LABEL_13:
-    a7 = 0;
+    error = 0;
     goto LABEL_14;
   }
 
-  if ([v12 length] == a5 && objc_msgSend(v11, "length") == a5)
+  if ([wrapperCopy length] == length && objc_msgSend(_ic_wrapCopy, "length") == length)
   {
     goto LABEL_7;
   }
 
-  a7 = 0;
+  error = 0;
 LABEL_16:
 
-  return a7;
+  return error;
 }
 
-+ (id)_ic_unwrap:(id)a3 withWrapper:(id)a4 standardKeyLength:(unint64_t)a5 standardWrappedKeyLength:(unint64_t)a6 error:(id *)a7
++ (id)_ic_unwrap:(id)_ic_unwrap withWrapper:(id)wrapper standardKeyLength:(unint64_t)length standardWrappedKeyLength:(unint64_t)keyLength error:(id *)error
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = v12;
-  if (a7)
+  _ic_unwrapCopy = _ic_unwrap;
+  wrapperCopy = wrapper;
+  v13 = wrapperCopy;
+  if (error)
   {
-    *a7 = 0;
-    if ([v12 length] != a5)
+    *error = 0;
+    if ([wrapperCopy length] != length)
     {
       v20 = MEMORY[0x277CCA9B8];
       v32 = *MEMORY[0x277CCA450];
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Wrapper key length is %zu when unwrapping, but should be %ld.", objc_msgSend(v13, "length"), a5];
-      v33[0] = v15;
+      keyLength = [MEMORY[0x277CCACA8] stringWithFormat:@"Wrapper key length is %zu when unwrapping, but should be %ld.", objc_msgSend(v13, "length"), length];
+      v33[0] = keyLength;
       v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:&v32 count:1];
-      *a7 = [v20 errorWithDomain:@"com.apple.notes.cipher" code:9 userInfo:v21];
+      *error = [v20 errorWithDomain:@"com.apple.notes.cipher" code:9 userInfo:v21];
       goto LABEL_12;
     }
 
-    if ([v11 length] != a6)
+    if ([_ic_unwrapCopy length] != keyLength)
     {
       v14 = MEMORY[0x277CCA9B8];
       v30 = *MEMORY[0x277CCA450];
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Wrapped key length is %zu when unwrapping, but should be %ld.", objc_msgSend(v11, "length"), a6];
-      v31 = v15;
+      keyLength = [MEMORY[0x277CCACA8] stringWithFormat:@"Wrapped key length is %zu when unwrapping, but should be %ld.", objc_msgSend(_ic_unwrapCopy, "length"), keyLength];
+      v31 = keyLength;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-      *a7 = [v14 errorWithDomain:@"com.apple.notes.cipher" code:11 userInfo:v16];
+      *error = [v14 errorWithDomain:@"com.apple.notes.cipher" code:11 userInfo:v16];
 LABEL_10:
 
 LABEL_13:
-      a7 = 0;
+      error = 0;
       goto LABEL_14;
     }
 
 LABEL_7:
-    v15 = [MEMORY[0x277CBEB28] dataWithLength:a5];
-    rawKeyLen = [v15 length];
-    v17 = CCSymmetricKeyUnwrap(1u, *MEMORY[0x277D85C18], *MEMORY[0x277D85C20], [v13 bytes], objc_msgSend(v13, "length"), objc_msgSend(v11, "bytes"), objc_msgSend(v11, "length"), objc_msgSend(v15, "mutableBytes"), &rawKeyLen);
+    keyLength = [MEMORY[0x277CBEB28] dataWithLength:length];
+    rawKeyLen = [keyLength length];
+    v17 = CCSymmetricKeyUnwrap(1u, *MEMORY[0x277D85C18], *MEMORY[0x277D85C20], [v13 bytes], objc_msgSend(v13, "length"), objc_msgSend(_ic_unwrapCopy, "bytes"), objc_msgSend(_ic_unwrapCopy, "length"), objc_msgSend(keyLength, "mutableBytes"), &rawKeyLen);
     if (v17)
     {
-      if (!a7)
+      if (!error)
       {
 LABEL_14:
 
@@ -408,42 +408,42 @@ LABEL_14:
       v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"CCSymmetricKeyUnwrap() unwrapping failed with status %d", v17];
       v29 = v16;
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-      *a7 = [v18 errorWithDomain:@"com.apple.notes.cipher" code:8 userInfo:v19];
+      *error = [v18 errorWithDomain:@"com.apple.notes.cipher" code:8 userInfo:v19];
 
       goto LABEL_10;
     }
 
-    if (rawKeyLen == a5)
+    if (rawKeyLen == length)
     {
-      a7 = [v15 copy];
+      error = [keyLength copy];
       goto LABEL_14;
     }
 
-    if (!a7)
+    if (!error)
     {
       goto LABEL_14;
     }
 
     v23 = MEMORY[0x277CCA9B8];
     v26 = *MEMORY[0x277CCA450];
-    v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unwrapped key length is %zu, but should be %ld", rawKeyLen, a5];
+    v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unwrapped key length is %zu, but should be %ld", rawKeyLen, length];
     v27 = v21;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-    *a7 = [v23 errorWithDomain:@"com.apple.notes.cipher" code:10 userInfo:v24];
+    *error = [v23 errorWithDomain:@"com.apple.notes.cipher" code:10 userInfo:v24];
 
 LABEL_12:
     goto LABEL_13;
   }
 
-  if ([v12 length] == a5 && objc_msgSend(v11, "length") == a6)
+  if ([wrapperCopy length] == length && objc_msgSend(_ic_unwrapCopy, "length") == keyLength)
   {
     goto LABEL_7;
   }
 
-  a7 = 0;
+  error = 0;
 LABEL_16:
 
-  return a7;
+  return error;
 }
 
 @end

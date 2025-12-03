@@ -1,22 +1,22 @@
 @interface IMSMSFallbackStatusChatItem
-- (id)_initWithItem:(id)a3 handle:(id)a4 previousServiceName:(id)a5 canSMSReply:(BOOL)a6;
+- (id)_initWithItem:(id)item handle:(id)handle previousServiceName:(id)name canSMSReply:(BOOL)reply;
 @end
 
 @implementation IMSMSFallbackStatusChatItem
 
-- (id)_initWithItem:(id)a3 handle:(id)a4 previousServiceName:(id)a5 canSMSReply:(BOOL)a6
+- (id)_initWithItem:(id)item handle:(id)handle previousServiceName:(id)name canSMSReply:(BOOL)reply
 {
-  v11 = a4;
-  v12 = a5;
+  handleCopy = handle;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = IMSMSFallbackStatusChatItem;
-  v13 = [(IMChatItem *)&v16 _initWithItem:a3];
+  v13 = [(IMChatItem *)&v16 _initWithItem:item];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(v13 + 8, a4);
-    objc_storeStrong(v14 + 9, a5);
-    *(v14 + 56) = a6;
+    objc_storeStrong(v13 + 8, handle);
+    objc_storeStrong(v14 + 9, name);
+    *(v14 + 56) = reply;
   }
 
   return v14;

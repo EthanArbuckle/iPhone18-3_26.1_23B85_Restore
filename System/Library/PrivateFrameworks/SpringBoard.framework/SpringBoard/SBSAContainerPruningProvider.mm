@@ -1,17 +1,17 @@
 @interface SBSAContainerPruningProvider
-- (id)preferencesFromContext:(id)a3;
+- (id)preferencesFromContext:(id)context;
 @end
 
 @implementation SBSAContainerPruningProvider
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
   v52 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  contextCopy = context;
+  if (contextCopy)
   {
     v6 = objc_opt_self();
-    v7 = v5;
+    v7 = contextCopy;
     if (v6)
     {
       if (objc_opt_isKindOfClass())
@@ -45,12 +45,12 @@
 
   if (v9)
   {
-    v10 = [v9 preferences];
+    preferences = [v9 preferences];
     v11 = [v9 containsAnyOfSignals:3];
     v12 = [v9 flags] & 3;
-    v13 = [v10 isCollisionImminent];
-    v14 = v13;
-    if (!v11 || v12 || (v13 & 1) != 0)
+    isCollisionImminent = [preferences isCollisionImminent];
+    v14 = isCollisionImminent;
+    if (!v11 || v12 || (isCollisionImminent & 1) != 0)
     {
       if (!v11)
       {
@@ -59,10 +59,10 @@ LABEL_44:
         goto LABEL_45;
       }
 
-      v15 = SBLogSystemAperturePreferencesStackPruning();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+      containerViewDescriptions = SBLogSystemAperturePreferencesStackPruning();
+      if (os_log_type_enabled(containerViewDescriptions, OS_LOG_TYPE_DEBUG))
       {
-        v38 = [v9 queryIteration];
+        queryIteration = [v9 queryIteration];
         v39 = &stru_283094718;
         v40 = @" Pressing or Resizing,";
         if (!v12)
@@ -71,7 +71,7 @@ LABEL_44:
         }
 
         *buf = 134349570;
-        v47 = v38;
+        v47 = queryIteration;
         v48 = 2112;
         v49 = v40;
         if (v14)
@@ -81,33 +81,33 @@ LABEL_44:
 
         v50 = 2112;
         v51 = v39;
-        _os_log_debug_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEBUG, "[%{public}lu] Deferring pruning because:%@%@", buf, 0x20u);
+        _os_log_debug_impl(&dword_21ED4E000, containerViewDescriptions, OS_LOG_TYPE_DEBUG, "[%{public}lu] Deferring pruning because:%@%@", buf, 0x20u);
       }
     }
 
     else
     {
-      v41 = v10;
-      v42 = self;
-      v15 = [v10 containerViewDescriptions];
+      v41 = preferences;
+      selfCopy = self;
+      containerViewDescriptions = [preferences containerViewDescriptions];
       v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v17 = [v9 elementContexts];
-      v18 = [v9 minimumNumberOfContainers];
-      v19 = [v17 count];
-      if (v18 <= v19)
+      elementContexts = [v9 elementContexts];
+      minimumNumberOfContainers = [v9 minimumNumberOfContainers];
+      v19 = [elementContexts count];
+      if (minimumNumberOfContainers <= v19)
       {
         v20 = v19;
       }
 
       else
       {
-        v20 = v18;
+        v20 = minimumNumberOfContainers;
       }
 
-      v21 = [v9 maximumNumberOfElements];
-      if (v20 >= v21)
+      maximumNumberOfElements = [v9 maximumNumberOfElements];
+      if (v20 >= maximumNumberOfElements)
       {
-        v22 = v21;
+        v22 = maximumNumberOfElements;
       }
 
       else
@@ -119,14 +119,14 @@ LABEL_44:
       {
         for (i = 0; v22 != i; ++i)
         {
-          if (i >= v18)
+          if (i >= minimumNumberOfContainers)
           {
-            if (i >= [v17 count])
+            if (i >= [elementContexts count])
             {
               continue;
             }
 
-            v25 = [v17 objectAtIndexedSubscript:i];
+            v25 = [elementContexts objectAtIndexedSubscript:i];
             if (!v25)
             {
               continue;
@@ -138,7 +138,7 @@ LABEL_44:
             v44[3] = &unk_2783B0210;
             v45 = v25;
             v24 = v25;
-            v26 = [v15 bs_firstObjectPassingTest:v44];
+            v26 = [containerViewDescriptions bs_firstObjectPassingTest:v44];
             if (v26)
             {
               [v16 addObject:v26];
@@ -147,14 +147,14 @@ LABEL_44:
 
           else
           {
-            if (i >= [v15 count])
+            if (i >= [containerViewDescriptions count])
             {
               v24 = 0;
             }
 
             else
             {
-              v24 = [v15 objectAtIndexedSubscript:i];
+              v24 = [containerViewDescriptions objectAtIndexedSubscript:i];
             }
 
             [v16 addObject:v24];
@@ -167,8 +167,8 @@ LABEL_44:
 
       if (v28)
       {
-        v29 = [v9 containerViewDescriptions];
-        v30 = [v29 bs_compactMap:&__block_literal_global_154];
+        containerViewDescriptions2 = [v9 containerViewDescriptions];
+        v30 = [containerViewDescriptions2 bs_compactMap:&__block_literal_global_154];
 
         v31 = [v16 bs_compactMap:&__block_literal_global_154];
         v32 = [v30 bs_differenceWithArray:v31];
@@ -185,9 +185,9 @@ LABEL_44:
       v34 = [v41 copyByUpdatingContainerViewDescriptions:v16];
 
       v35 = [v9 copyByUpdatingPreferences:v34];
-      v10 = v34;
+      preferences = v34;
       v9 = v35;
-      self = v42;
+      self = selfCopy;
     }
 
     goto LABEL_44;

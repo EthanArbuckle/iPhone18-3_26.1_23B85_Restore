@@ -1,43 +1,43 @@
 @interface ARCoachingGlyphRenderer
-- (ARCoachingGlyphRenderer)initWithLayer:(id)a3 device:(id)a4 pixelFormat:(unint64_t)a5 sampleCount:(int)a6 deviceMaskImage:(id)a7;
+- (ARCoachingGlyphRenderer)initWithLayer:(id)layer device:(id)device pixelFormat:(unint64_t)format sampleCount:(int)count deviceMaskImage:(id)image;
 - (void)bottomPlaneTranslationTargetChanged;
-- (void)computeRotation:(double)a3;
-- (void)computeTesselationFactorsForCommandBuffer:(id)a3;
-- (void)drawWithTimeDelta:(double)a3 drawable:(id)a4 commandBuffer:(id)a5;
-- (void)generateTexturesWithSize:(CGSize)a3;
-- (void)prepareWithCompletionHandler:(id)a3;
+- (void)computeRotation:(double)rotation;
+- (void)computeTesselationFactorsForCommandBuffer:(id)buffer;
+- (void)drawWithTimeDelta:(double)delta drawable:(id)drawable commandBuffer:(id)buffer;
+- (void)generateTexturesWithSize:(CGSize)size;
+- (void)prepareWithCompletionHandler:(id)handler;
 - (void)quaternionTargetChanged;
-- (void)renderPostTessellationInDrawable:(id)a3 withCommandBuffer:(id)a4;
-- (void)resetAnimationTime:(double)a3;
+- (void)renderPostTessellationInDrawable:(id)drawable withCommandBuffer:(id)buffer;
+- (void)resetAnimationTime:(double)time;
 - (void)resetData;
 - (void)resetSprings;
-- (void)resizeIfNeeded:(id)a3;
+- (void)resizeIfNeeded:(id)needed;
 - (void)restartAnimation;
 - (void)scaleTargetChanged;
 - (void)snapStateChanged;
-- (void)stepSprings:(double)a3;
+- (void)stepSprings:(double)springs;
 - (void)topPlaneTranslationTargetChanged;
 - (void)updateAngularVelocity;
 @end
 
 @implementation ARCoachingGlyphRenderer
 
-- (ARCoachingGlyphRenderer)initWithLayer:(id)a3 device:(id)a4 pixelFormat:(unint64_t)a5 sampleCount:(int)a6 deviceMaskImage:(id)a7
+- (ARCoachingGlyphRenderer)initWithLayer:(id)layer device:(id)device pixelFormat:(unint64_t)format sampleCount:(int)count deviceMaskImage:(id)image
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  layerCopy = layer;
+  deviceCopy = device;
+  imageCopy = image;
   v123.receiver = self;
   v123.super_class = ARCoachingGlyphRenderer;
   v16 = [(ARCoachingGlyphRenderer *)&v123 init];
   v17 = v16;
   if (v16)
   {
-    v106 = v13;
-    objc_storeStrong(&v16->_device, a4);
-    v17->_pixelFormat = a5;
-    v17->_sampleCount = a6;
-    objc_storeStrong(&v17->_layer, a3);
+    v106 = layerCopy;
+    objc_storeStrong(&v16->_device, device);
+    v17->_pixelFormat = format;
+    v17->_sampleCount = count;
+    objc_storeStrong(&v17->_layer, layer);
     v17->_strokeWeight = 0.035;
     __asm { FMOV            V0.2S, #16.0 }
 
@@ -59,14 +59,14 @@
 
     v17->_lastDrawableSize.width = -1.0;
     v17->_lastDrawableSize.height = -1.0;
-    v27 = [[ARCoachingDeviceController alloc] initWithDeviceMaskImage:v15 geoTrackingMode:0];
+    v27 = [[ARCoachingDeviceController alloc] initWithDeviceMaskImage:imageCopy geoTrackingMode:0];
     deviceController = v17->_deviceController;
     v17->_deviceController = v27;
 
     v29 = [ARCoachingDeviceController alloc];
-    v30 = [MEMORY[0x277D75348] whiteColor];
-    v105 = v15;
-    v31 = [(ARCoachingDeviceController *)v29 initWithDeviceMaskImage:v15 solidColor:v30 geoTrackingMode:0];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    v105 = imageCopy;
+    v31 = [(ARCoachingDeviceController *)v29 initWithDeviceMaskImage:imageCopy solidColor:whiteColor geoTrackingMode:0];
     parallaxDeviceController = v17->_parallaxDeviceController;
     v17->_parallaxDeviceController = v31;
 
@@ -77,20 +77,20 @@
     queue = v17->_queue;
     v17->_queue = v33;
 
-    v35 = v14;
-    v36 = [[ARCoachingMetalSplineData alloc] init:v14];
+    v35 = deviceCopy;
+    v36 = [[ARCoachingMetalSplineData alloc] init:deviceCopy];
     splineData = v17->_splineData;
     v17->_splineData = v36;
 
     v38 = v17->_splineData;
-    v39 = [(ARCoachingMetalSplineData *)v38 shapes];
-    v40 = [v39 controlPoints];
-    v41 = [v40 objectAtIndexedSubscript:2];
-    v42 = [v41 controlPoints];
-    v43 = [(ARCoachingMetalSplineData *)v17->_splineData shapes];
-    v44 = [v43 controlPoints];
-    v45 = [v44 objectAtIndexedSubscript:2];
-    -[ARCoachingMetalSplineData computeShapeBlendWithEnd:endCount:](v38, "computeShapeBlendWithEnd:endCount:", v42, [v45 numControlPoints]);
+    shapes = [(ARCoachingMetalSplineData *)v38 shapes];
+    controlPoints = [shapes controlPoints];
+    v41 = [controlPoints objectAtIndexedSubscript:2];
+    controlPoints2 = [v41 controlPoints];
+    shapes2 = [(ARCoachingMetalSplineData *)v17->_splineData shapes];
+    controlPoints3 = [shapes2 controlPoints];
+    v45 = [controlPoints3 objectAtIndexedSubscript:2];
+    -[ARCoachingMetalSplineData computeShapeBlendWithEnd:endCount:](v38, "computeShapeBlendWithEnd:endCount:", controlPoints2, [v45 numControlPoints]);
 
     v46 = objc_alloc_init(ARCoachingQuaternionSpring);
     rotationSpring = v17->_rotationSpring;
@@ -113,7 +113,7 @@
     v120 = v122;
     [(ARCoachingQuaternionSpring *)v49 setTarget:&v119];
     v50 = v17->_rotationSpring;
-    v14 = v35;
+    deviceCopy = v35;
     if (v50)
     {
       [(ARCoachingQuaternionSpring *)v50 target];
@@ -125,7 +125,7 @@
       v120 = 0u;
     }
 
-    v15 = v105;
+    imageCopy = v105;
     v51 = v120;
     *v17->_anon_a0 = v119;
     *&v17->_anon_a0[16] = v51;
@@ -312,15 +312,15 @@
     v17->_orientationSpring = v102;
 
     [(ARCoachingGlyphState *)v17->_state setDelegate:v17];
-    v13 = v106;
+    layerCopy = v106;
   }
 
   return v17;
 }
 
-- (void)prepareWithCompletionHandler:(id)a3
+- (void)prepareWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = self->_device;
   pixelFormat = self->_pixelFormat;
   sampleCount = self->_sampleCount;
@@ -335,8 +335,8 @@
   objc_copyWeak(v14, &location);
   v15 = sampleCount;
   v14[1] = pixelFormat;
-  v13 = v4;
-  v10 = v4;
+  v13 = handlerCopy;
+  v10 = handlerCopy;
   dispatch_async(queue, v11);
 
   objc_destroyWeak(v14);
@@ -685,13 +685,13 @@ LABEL_47:
   }
 
   [(ARFLSpring *)self->_planeResolveSpring setTarget:v4];
-  v5 = [(ARCoachingGlyphState *)self->_state isVertical];
+  isVertical = [(ARCoachingGlyphState *)self->_state isVertical];
   v6 = 1.0;
-  if (!v5)
+  if (!isVertical)
   {
-    v7 = [(ARCoachingGlyphState *)self->_state snapState];
+    snapState = [(ARCoachingGlyphState *)self->_state snapState];
     v6 = 1.0;
-    if (v7 != 3)
+    if (snapState != 3)
     {
       v6 = 0.0;
     }
@@ -712,9 +712,9 @@ LABEL_47:
   }
 
   [(ARFLSpring *)self->_cubeResolveSpring setTarget:v3];
-  v8 = [(ARCoachingGlyphState *)self->_state snapState];
+  snapState2 = [(ARCoachingGlyphState *)self->_state snapState];
   v9 = 1.0;
-  if (!v8)
+  if (!snapState2)
   {
     v9 = 0.0;
   }
@@ -927,9 +927,9 @@ LABEL_47:
   }
 }
 
-- (void)generateTexturesWithSize:(CGSize)a3
+- (void)generateTexturesWithSize:(CGSize)size
 {
-  if (a3.width != *MEMORY[0x277CBF3A8] || a3.height != *(MEMORY[0x277CBF3A8] + 8))
+  if (size.width != *MEMORY[0x277CBF3A8] || size.height != *(MEMORY[0x277CBF3A8] + 8))
   {
     if (self->_sampleCount == 1)
     {
@@ -939,7 +939,7 @@ LABEL_47:
 
     else
     {
-      v9 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:self->_pixelFormat width:a3.width height:a3.height mipmapped:0];
+      v9 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:self->_pixelFormat width:size.width height:size.height mipmapped:0];
       [v9 setUsage:4];
       [v9 setTextureType:4];
       [v9 setSampleCount:self->_sampleCount];
@@ -953,33 +953,33 @@ LABEL_47:
   }
 }
 
-- (void)computeTesselationFactorsForCommandBuffer:(id)a3
+- (void)computeTesselationFactorsForCommandBuffer:(id)buffer
 {
-  v4 = [a3 computeCommandEncoder];
-  [v4 setLabel:@"Compute Command Encoder"];
-  [v4 pushDebugGroup:@"Compute Tessellation Factors"];
-  [v4 setComputePipelineState:self->_computePipelineState];
-  [v4 setBytes:&self->_edgeFactor length:4 atIndex:0];
-  [v4 setBytes:&self->_insideFactor length:4 atIndex:1];
-  v5 = [(ARCoachingMetalSplineData *)self->_splineData tessellationFactorsBuffer];
-  [v4 setBuffer:v5 offset:0 atIndex:2];
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"Compute Command Encoder"];
+  [computeCommandEncoder pushDebugGroup:@"Compute Tessellation Factors"];
+  [computeCommandEncoder setComputePipelineState:self->_computePipelineState];
+  [computeCommandEncoder setBytes:&self->_edgeFactor length:4 atIndex:0];
+  [computeCommandEncoder setBytes:&self->_insideFactor length:4 atIndex:1];
+  tessellationFactorsBuffer = [(ARCoachingMetalSplineData *)self->_splineData tessellationFactorsBuffer];
+  [computeCommandEncoder setBuffer:tessellationFactorsBuffer offset:0 atIndex:2];
 
-  v6 = [(ARCoachingMetalSplineData *)self->_splineData patchUserDataBuffer];
-  [v4 setBuffer:v6 offset:0 atIndex:3];
+  patchUserDataBuffer = [(ARCoachingMetalSplineData *)self->_splineData patchUserDataBuffer];
+  [computeCommandEncoder setBuffer:patchUserDataBuffer offset:0 atIndex:3];
 
   v9 = vdupq_n_s64(1uLL);
   v10 = 1;
-  v7 = [(ARCoachingMetalSplineData *)self->_splineData patchCount];
+  patchCount = [(ARCoachingMetalSplineData *)self->_splineData patchCount];
   v8 = v9;
-  [v4 dispatchThreadgroups:&v9 threadsPerThreadgroup:&v7];
-  [v4 popDebugGroup];
-  [v4 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:&v9 threadsPerThreadgroup:&patchCount];
+  [computeCommandEncoder popDebugGroup];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)renderPostTessellationInDrawable:(id)a3 withCommandBuffer:(id)a4
+- (void)renderPostTessellationInDrawable:(id)drawable withCommandBuffer:(id)buffer
 {
-  v6 = a3;
-  v7 = a4;
+  drawableCopy = drawable;
+  bufferCopy = buffer;
   [(ARFLSpring *)self->_planeResolveSpring value];
   v120 = v8;
   [(ARFLSpring *)self->_cubeResolveSpring value];
@@ -999,7 +999,7 @@ LABEL_47:
   v18 = vmlaq_lane_f32(*&self->_anon_1b0[48], vsubq_f32(*&self->_anon_170[48], *&self->_anon_1b0[48]), v121, 1);
   *&self->_anon_130[32] = vmlaq_lane_f32(*&self->_anon_1b0[32], vsubq_f32(*&self->_anon_170[32], *&self->_anon_1b0[32]), v121, 1);
   *&self->_anon_130[48] = v18;
-  v19 = [MEMORY[0x277CD6F50] renderPassDescriptor];
+  renderPassDescriptor = [MEMORY[0x277CD6F50] renderPassDescriptor];
   sampleCount = self->_sampleCount;
   if (sampleCount >= 2)
   {
@@ -1008,11 +1008,11 @@ LABEL_47:
 
   else
   {
-    msaaTex = [v6 texture];
+    msaaTex = [drawableCopy texture];
   }
 
-  v22 = [v19 colorAttachments];
-  v23 = [v22 objectAtIndexedSubscript:0];
+  colorAttachments = [renderPassDescriptor colorAttachments];
+  v23 = [colorAttachments objectAtIndexedSubscript:0];
   [v23 setTexture:msaaTex];
 
   if (sampleCount <= 1)
@@ -1022,25 +1022,25 @@ LABEL_47:
   v24 = self->_sampleCount;
   if (v24 < 2)
   {
-    v25 = 0;
+    texture = 0;
   }
 
   else
   {
-    v25 = [v6 texture];
+    texture = [drawableCopy texture];
   }
 
   v26 = v121.f32[1];
-  v27 = [v19 colorAttachments];
-  v28 = [v27 objectAtIndexedSubscript:0];
-  [v28 setResolveTexture:v25];
+  colorAttachments2 = [renderPassDescriptor colorAttachments];
+  v28 = [colorAttachments2 objectAtIndexedSubscript:0];
+  [v28 setResolveTexture:texture];
 
   if (v24 >= 2)
   {
   }
 
-  v29 = [v19 colorAttachments];
-  v30 = [v29 objectAtIndexedSubscript:0];
+  colorAttachments3 = [renderPassDescriptor colorAttachments];
+  v30 = [colorAttachments3 objectAtIndexedSubscript:0];
   [v30 setClearColor:{0.0, 0.0, 0.0, 0.0}];
 
   if (self->_sampleCount <= 1)
@@ -1053,15 +1053,15 @@ LABEL_47:
     v31 = 2;
   }
 
-  v32 = [v19 colorAttachments];
-  v33 = [v32 objectAtIndexedSubscript:0];
+  colorAttachments4 = [renderPassDescriptor colorAttachments];
+  v33 = [colorAttachments4 objectAtIndexedSubscript:0];
   [v33 setStoreAction:v31];
 
-  v34 = [v19 colorAttachments];
-  v35 = [v34 objectAtIndexedSubscript:0];
+  colorAttachments5 = [renderPassDescriptor colorAttachments];
+  v35 = [colorAttachments5 objectAtIndexedSubscript:0];
   [v35 setLoadAction:2];
 
-  v36 = [v7 renderCommandEncoderWithDescriptor:v19];
+  v36 = [bufferCopy renderCommandEncoderWithDescriptor:renderPassDescriptor];
   [v36 setLabel:@"Render Command Encoder"];
   [v36 pushDebugGroup:@"Dots"];
   [(ARFLSpring *)self->_verticalResolvingSpring value];
@@ -1075,9 +1075,9 @@ LABEL_47:
   v117 = v42;
   v110 = v45;
   v111 = v44;
-  v46 = [(ARCoachingMetalSplineData *)self->_splineData instanceTransforms];
-  v47 = [v46 firstObject];
-  [v47 transform];
+  instanceTransforms = [(ARCoachingMetalSplineData *)self->_splineData instanceTransforms];
+  firstObject = [instanceTransforms firstObject];
+  [firstObject transform];
   v48 = 0;
   v49 = *self->_anon_f0;
   v50 = *&self->_anon_f0[16];
@@ -1256,24 +1256,24 @@ LABEL_47:
   v127 = v139;
   [v36 pushDebugGroup:@"Post Tessellation and Render"];
   [v36 setRenderPipelineState:self->_postTessellationPipelineState];
-  v94 = [(ARCoachingMetalSplineData *)self->_splineData controlPointsBuffer];
-  [v36 setVertexBuffer:v94 offset:0 atIndex:0];
+  controlPointsBuffer = [(ARCoachingMetalSplineData *)self->_splineData controlPointsBuffer];
+  [v36 setVertexBuffer:controlPointsBuffer offset:0 atIndex:0];
 
-  v95 = [(ARCoachingMetalSplineData *)self->_splineData instanceBuffer];
-  [v36 setVertexBuffer:v95 offset:0 atIndex:1];
+  instanceBuffer = [(ARCoachingMetalSplineData *)self->_splineData instanceBuffer];
+  [v36 setVertexBuffer:instanceBuffer offset:0 atIndex:1];
 
   [v36 setVertexBytes:&v124 length:64 atIndex:2];
   [v36 setVertexBytes:self->_anon_130 length:64 atIndex:3];
   [v36 setVertexBytes:&self->_strokeWeight length:4 atIndex:4];
   [v36 setVertexBytes:&v131 length:8 atIndex:5];
   [v36 setVertexBytes:&v130 length:4 atIndex:6];
-  v96 = [(ARCoachingMetalSplineData *)self->_splineData tessellationFactorsBuffer];
-  [v36 setTessellationFactorBuffer:v96 offset:0 instanceStride:0];
+  tessellationFactorsBuffer = [(ARCoachingMetalSplineData *)self->_splineData tessellationFactorsBuffer];
+  [v36 setTessellationFactorBuffer:tessellationFactorsBuffer offset:0 instanceStride:0];
 
-  v97 = [(ARCoachingMetalSplineData *)self->_splineData patchCount];
-  v98 = [(ARCoachingMetalSplineData *)self->_splineData controlPointIndicesBuffer];
-  v99 = [(ARCoachingMetalSplineData *)self->_splineData instanceTransforms];
-  [v36 drawIndexedPatches:4 patchStart:0 patchCount:v97 patchIndexBuffer:0 patchIndexBufferOffset:0 controlPointIndexBuffer:v98 controlPointIndexBufferOffset:0 instanceCount:objc_msgSend(v99 baseInstance:{"count"), 0}];
+  patchCount = [(ARCoachingMetalSplineData *)self->_splineData patchCount];
+  controlPointIndicesBuffer = [(ARCoachingMetalSplineData *)self->_splineData controlPointIndicesBuffer];
+  instanceTransforms2 = [(ARCoachingMetalSplineData *)self->_splineData instanceTransforms];
+  [v36 drawIndexedPatches:4 patchStart:0 patchCount:patchCount patchIndexBuffer:0 patchIndexBufferOffset:0 controlPointIndexBuffer:controlPointIndicesBuffer controlPointIndexBufferOffset:0 instanceCount:objc_msgSend(instanceTransforms2 baseInstance:{"count"), 0}];
 
   [v36 popDebugGroup];
   [v36 endEncoding];
@@ -1304,17 +1304,17 @@ LABEL_47:
   *&self->_anon_c8[24] = v6;
 }
 
-- (void)stepSprings:(double)a3
+- (void)stepSprings:(double)springs
 {
   [(ARCoachingQuaternionSpring *)self->_rotationSpring stepWithDeltaTime:?];
-  [(ARCoachingSpringDouble3 *)self->_scaleSpring stepWithDeltaTime:a3];
-  [(ARCoachingSpringDouble3 *)self->_topPlaneTranslationSpring stepWithDeltaTime:a3];
-  [(ARCoachingSpringDouble3 *)self->_bottomPlaneTranslationSpring stepWithDeltaTime:a3];
-  [(ARFLSpring *)self->_cubeResolveSpring step:a3];
-  [(ARFLSpring *)self->_planeResolveSpring step:a3];
-  [(ARFLSpring *)self->_verticalResolvingSpring step:a3];
-  [(ARFLSpring *)self->_alphaSpring step:a3];
-  [(ARCoachingBasicSpring *)self->_orientationSpring stepWithDeltaTime:a3];
+  [(ARCoachingSpringDouble3 *)self->_scaleSpring stepWithDeltaTime:springs];
+  [(ARCoachingSpringDouble3 *)self->_topPlaneTranslationSpring stepWithDeltaTime:springs];
+  [(ARCoachingSpringDouble3 *)self->_bottomPlaneTranslationSpring stepWithDeltaTime:springs];
+  [(ARFLSpring *)self->_cubeResolveSpring step:springs];
+  [(ARFLSpring *)self->_planeResolveSpring step:springs];
+  [(ARFLSpring *)self->_verticalResolvingSpring step:springs];
+  [(ARFLSpring *)self->_alphaSpring step:springs];
+  [(ARCoachingBasicSpring *)self->_orientationSpring stepWithDeltaTime:springs];
   rotationSpring = self->_rotationSpring;
   if (rotationSpring)
   {
@@ -1437,7 +1437,7 @@ LABEL_47:
   *&self->_anon_a0[16] = v17;
 }
 
-- (void)computeRotation:(double)a3
+- (void)computeRotation:(double)rotation
 {
   v5 = *self->_anon_a0;
   v6 = *&self->_anon_a0[16];
@@ -1483,24 +1483,24 @@ LABEL_47:
   *&self->_anon_f0[48] = v19;
 }
 
-- (void)drawWithTimeDelta:(double)a3 drawable:(id)a4 commandBuffer:(id)a5
+- (void)drawWithTimeDelta:(double)delta drawable:(id)drawable commandBuffer:(id)buffer
 {
-  v71 = a4;
-  v70 = a5;
-  [(ARCoachingGlyphRenderer *)self stepSprings:a3];
+  drawableCopy = drawable;
+  bufferCopy = buffer;
+  [(ARCoachingGlyphRenderer *)self stepSprings:delta];
   time = self->_time;
   if ([(ARCoachingGlyphState *)self->_state snapState]== 1)
   {
-    v9 = 0.0;
+    deltaCopy = 0.0;
   }
 
   else
   {
-    v9 = a3;
+    deltaCopy = delta;
   }
 
   [(ARCoachingAnimTime *)time absoluteTime];
-  [(ARCoachingAnimTime *)time setAbsoluteTime:v10 + v9];
+  [(ARCoachingAnimTime *)time setAbsoluteTime:v10 + deltaCopy];
   [(ARFLSpring *)self->_cubeResolveSpring value];
   v12 = fmin(fmax(v11, 0.0), 1.0);
   [(ARCoachingAnimTime *)self->_time oscillatingTime];
@@ -1529,51 +1529,51 @@ LABEL_47:
   [(ARCoachingSpringDouble3 *)self->_bottomPlaneTranslationSpring floatValue];
   [(ARCoachingMetalSplineData *)v22 computeInstanceTransformTranslate:5 index:?];
   v23 = self->_splineData;
-  v68 = [(ARCoachingMetalSplineData *)v23 shapes];
-  v65 = [v68 controlPoints];
-  v63 = [v65 objectAtIndexedSubscript:1];
-  v59 = [v63 controlPoints];
-  v62 = [(ARCoachingMetalSplineData *)self->_splineData shapes];
-  v61 = [v62 controlPoints];
-  v60 = [v61 objectAtIndexedSubscript:1];
-  v58 = [v60 numControlPoints];
-  v24 = [(ARCoachingMetalSplineData *)self->_splineData shapes];
-  v25 = [v24 controlPoints];
-  v26 = [v25 objectAtIndexedSubscript:0];
-  v27 = [v26 controlPoints];
-  v28 = [(ARCoachingMetalSplineData *)self->_splineData shapes];
-  v29 = [v28 controlPoints];
-  v30 = [v29 objectAtIndexedSubscript:0];
-  v31 = [v30 numControlPoints];
+  shapes = [(ARCoachingMetalSplineData *)v23 shapes];
+  controlPoints = [shapes controlPoints];
+  v63 = [controlPoints objectAtIndexedSubscript:1];
+  controlPoints2 = [v63 controlPoints];
+  shapes2 = [(ARCoachingMetalSplineData *)self->_splineData shapes];
+  controlPoints3 = [shapes2 controlPoints];
+  v60 = [controlPoints3 objectAtIndexedSubscript:1];
+  numControlPoints = [v60 numControlPoints];
+  shapes3 = [(ARCoachingMetalSplineData *)self->_splineData shapes];
+  controlPoints4 = [shapes3 controlPoints];
+  v26 = [controlPoints4 objectAtIndexedSubscript:0];
+  controlPoints5 = [v26 controlPoints];
+  shapes4 = [(ARCoachingMetalSplineData *)self->_splineData shapes];
+  controlPoints6 = [shapes4 controlPoints];
+  v30 = [controlPoints6 objectAtIndexedSubscript:0];
+  numControlPoints2 = [v30 numControlPoints];
   [(ARCoachingAnimTime *)self->_time oscillatingTime];
   *&v32 = v32;
-  v33 = [(ARCoachingMetalSplineData *)v23 shapeBlendWithStart:v59 startCount:v58 end:v27 endCount:v31 t:v32];
+  v33 = [(ARCoachingMetalSplineData *)v23 shapeBlendWithStart:controlPoints2 startCount:numControlPoints end:controlPoints5 endCount:numControlPoints2 t:v32];
 
   v34 = self->_splineData;
-  v66 = [(ARCoachingMetalSplineData *)v34 shapes];
-  v64 = [v66 controlPoints];
-  v35 = [v64 objectAtIndexedSubscript:2];
-  v36 = [v35 controlPoints];
-  v37 = [(ARCoachingMetalSplineData *)self->_splineData shapes];
-  v38 = [v37 controlPoints];
-  v39 = [v38 objectAtIndexedSubscript:2];
-  v40 = [v39 numControlPoints];
-  v41 = [v33 controlPoints];
+  shapes5 = [(ARCoachingMetalSplineData *)v34 shapes];
+  controlPoints7 = [shapes5 controlPoints];
+  v35 = [controlPoints7 objectAtIndexedSubscript:2];
+  controlPoints8 = [v35 controlPoints];
+  shapes6 = [(ARCoachingMetalSplineData *)self->_splineData shapes];
+  controlPoints9 = [shapes6 controlPoints];
+  v39 = [controlPoints9 objectAtIndexedSubscript:2];
+  numControlPoints3 = [v39 numControlPoints];
+  controlPoints10 = [v33 controlPoints];
   v69 = v33;
-  v42 = [v33 numControlPoints];
+  numControlPoints4 = [v33 numControlPoints];
   [(ARFLSpring *)self->_cubeResolveSpring value];
   *&v43 = v43;
-  [(ARCoachingMetalSplineData *)v34 computeShapeBlendWithStart:v36 startCount:v40 end:v41 endCount:v42 t:v43];
+  [(ARCoachingMetalSplineData *)v34 computeShapeBlendWithStart:controlPoints8 startCount:numControlPoints3 end:controlPoints10 endCount:numControlPoints4 t:v43];
 
   [(ARCoachingGlyphRenderer *)self updateAngularVelocity];
-  [(ARCoachingGlyphRenderer *)self computeRotation:a3];
+  [(ARCoachingGlyphRenderer *)self computeRotation:delta];
   if (self->_dirty_tesselation_factors)
   {
-    [(ARCoachingGlyphRenderer *)self computeTesselationFactorsForCommandBuffer:v70];
+    [(ARCoachingGlyphRenderer *)self computeTesselationFactorsForCommandBuffer:bufferCopy];
     self->_dirty_tesselation_factors = 0;
   }
 
-  [(ARCoachingGlyphRenderer *)self renderPostTessellationInDrawable:v71 withCommandBuffer:v70];
+  [(ARCoachingGlyphRenderer *)self renderPostTessellationInDrawable:drawableCopy withCommandBuffer:bufferCopy];
   [(ARFLSpring *)self->_cubeResolveSpring value];
   v45 = v44;
   [(ARFLSpring *)self->_verticalResolvingSpring value];
@@ -1605,22 +1605,22 @@ LABEL_47:
   [(ARCoachingDeviceController *)parallaxDeviceController update:v57 visibility:&v74 layer:v50 renderParams:v52];
 }
 
-- (void)resizeIfNeeded:(id)a3
+- (void)resizeIfNeeded:(id)needed
 {
-  v49 = a3;
-  v4 = [v49 texture];
-  v5 = [v4 width];
-  v6 = [v49 texture];
-  v7 = [v6 height];
+  neededCopy = needed;
+  texture = [neededCopy texture];
+  width = [texture width];
+  texture2 = [neededCopy texture];
+  height = [texture2 height];
 
-  if (self->_lastDrawableSize.width != v5 || self->_lastDrawableSize.height != v7)
+  if (self->_lastDrawableSize.width != width || self->_lastDrawableSize.height != height)
   {
-    self->_lastDrawableSize.width = v5;
-    self->_lastDrawableSize.height = v7;
+    self->_lastDrawableSize.width = width;
+    self->_lastDrawableSize.height = height;
     kdebug_trace();
-    [(ARCoachingGlyphRenderer *)self generateTexturesWithSize:v5, v7];
-    v9 = v5 / v7;
-    v10 = v5 / v7;
+    [(ARCoachingGlyphRenderer *)self generateTexturesWithSize:width, height];
+    v9 = width / height;
+    v10 = width / height;
     *&v9 = v10 * -1.5;
     *&v11 = v10 * 1.5;
     LODWORD(v12) = -1.5;
@@ -1748,7 +1748,7 @@ LABEL_47:
   [(ARCoachingGlyphRenderer *)self resetAnimationTime:0.0];
 }
 
-- (void)resetAnimationTime:(double)a3
+- (void)resetAnimationTime:(double)time
 {
   v5 = objc_alloc_init(ARCoachingAnimTime);
   time = self->_time;
@@ -1756,7 +1756,7 @@ LABEL_47:
 
   v7 = self->_time;
 
-  [(ARCoachingAnimTime *)v7 setAbsoluteTime:a3];
+  [(ARCoachingAnimTime *)v7 setAbsoluteTime:time];
 }
 
 @end

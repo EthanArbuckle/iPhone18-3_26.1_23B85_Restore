@@ -1,34 +1,34 @@
 @interface HKPHQ9Assessment
-+ (id)assessmentWithDate:(id)a3 answers:(id)a4 metadata:(id)a5;
-+ (int64_t)_riskForAnswers:(id)a3;
-+ (int64_t)_scoreForAnswers:(id)a3;
-- (BOOL)isEquivalent:(id)a3;
-- (HKPHQ9Assessment)initWithCoder:(id)a3;
-- (HKPHQ9Assessment)initWithDate:(id)a3 answers:(id)a4 metadata:(id)a5;
++ (id)assessmentWithDate:(id)date answers:(id)answers metadata:(id)metadata;
++ (int64_t)_riskForAnswers:(id)answers;
++ (int64_t)_scoreForAnswers:(id)answers;
+- (BOOL)isEquivalent:(id)equivalent;
+- (HKPHQ9Assessment)initWithCoder:(id)coder;
+- (HKPHQ9Assessment)initWithDate:(id)date answers:(id)answers metadata:(id)metadata;
 - (NSString)description;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
-- (void)_validateAnswers:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
+- (void)_validateAnswers:(id)answers;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKPHQ9Assessment
 
-+ (id)assessmentWithDate:(id)a3 answers:(id)a4 metadata:(id)a5
++ (id)assessmentWithDate:(id)date answers:(id)answers metadata:(id)metadata
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  answersCopy = answers;
+  metadataCopy = metadata;
+  dateCopy = date;
   v11 = [(HKObjectType *)HKScoredAssessmentType scoredAssessmentTypeForIdentifier:@"HKScoredAssessmentTypeIdentifierPHQ9"];
-  v12 = [HKPHQ9Assessment _scoreForAnswers:v8];
+  v12 = [HKPHQ9Assessment _scoreForAnswers:answersCopy];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __56__HKPHQ9Assessment_assessmentWithDate_answers_metadata___block_invoke;
   v17[3] = &unk_1E7376AE8;
-  v18 = v8;
-  v16.receiver = a1;
+  v18 = answersCopy;
+  v16.receiver = self;
   v16.super_class = &OBJC_METACLASS___HKPHQ9Assessment;
-  v13 = v8;
-  v14 = objc_msgSendSuper2(&v16, sel_assessmentWithDate_type_score_metadata_config_, v10, v11, v12, v9, v17);
+  v13 = answersCopy;
+  v14 = objc_msgSendSuper2(&v16, sel_assessmentWithDate_type_score_metadata_config_, dateCopy, v11, v12, metadataCopy, v17);
 
   return v14;
 }
@@ -46,22 +46,22 @@ uint64_t __56__HKPHQ9Assessment_assessmentWithDate_answers_metadata___block_invo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (HKPHQ9Assessment)initWithDate:(id)a3 answers:(id)a4 metadata:(id)a5
+- (HKPHQ9Assessment)initWithDate:(id)date answers:(id)answers metadata:(id)metadata
 {
-  v6 = [HKPHQ9Assessment assessmentWithDate:a3 answers:a4 metadata:a5];
+  v6 = [HKPHQ9Assessment assessmentWithDate:date answers:answers metadata:metadata];
 
   return v6;
 }
 
-+ (int64_t)_scoreForAnswers:(id)a3
++ (int64_t)_scoreForAnswers:(id)answers
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  answersCopy = answers;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [answersCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -73,13 +73,13 @@ uint64_t __56__HKPHQ9Assessment_assessmentWithDate_answers_metadata___block_invo
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(answersCopy);
         }
 
         v6 += [*(*(&v13 + 1) + 8 * i) integerValue];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [answersCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -90,12 +90,12 @@ uint64_t __56__HKPHQ9Assessment_assessmentWithDate_answers_metadata___block_invo
     v6 = 0;
   }
 
-  if ([v3 count] == 9)
+  if ([answersCopy count] == 9)
   {
-    v9 = [v3 objectAtIndexedSubscript:8];
-    v10 = [v9 integerValue];
+    v9 = [answersCopy objectAtIndexedSubscript:8];
+    integerValue = [v9 integerValue];
 
-    if (v10 == 4)
+    if (integerValue == 4)
     {
       v6 -= 4;
     }
@@ -105,9 +105,9 @@ uint64_t __56__HKPHQ9Assessment_assessmentWithDate_answers_metadata___block_invo
   return v6;
 }
 
-+ (int64_t)_riskForAnswers:(id)a3
++ (int64_t)_riskForAnswers:(id)answers
 {
-  v3 = [HKPHQ9Assessment _scoreForAnswers:a3];
+  v3 = [HKPHQ9Assessment _scoreForAnswers:answers];
   if (v3 < 5)
   {
     return 1;
@@ -135,11 +135,11 @@ uint64_t __56__HKPHQ9Assessment_assessmentWithDate_answers_metadata___block_invo
   }
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
   v8.receiver = self;
   v8.super_class = HKPHQ9Assessment;
-  v4 = [(HKSample *)&v8 _validateWithConfiguration:a3.var0, a3.var1];
+  v4 = [(HKSample *)&v8 _validateWithConfiguration:configuration.var0, configuration.var1];
   v5 = v4;
   if (v4)
   {
@@ -154,11 +154,11 @@ uint64_t __56__HKPHQ9Assessment_assessmentWithDate_answers_metadata___block_invo
   return v5;
 }
 
-- (void)_validateAnswers:(id)a3
+- (void)_validateAnswers:(id)answers
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count] != 9)
+  answersCopy = answers;
+  if ([answersCopy count] != 9)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ requires 9 answers.", objc_opt_class()}];
   }
@@ -167,7 +167,7 @@ uint64_t __56__HKPHQ9Assessment_assessmentWithDate_answers_metadata___block_invo
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 subarrayWithRange:{0, 8}];
+  v4 = [answersCopy subarrayWithRange:{0, 8}];
   v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
@@ -196,7 +196,7 @@ uint64_t __56__HKPHQ9Assessment_assessmentWithDate_answers_metadata___block_invo
     while (v6);
   }
 
-  v11 = [v3 objectAtIndexedSubscript:8];
+  v11 = [answersCopy objectAtIndexedSubscript:8];
   if ([v11 integerValue] >= 5)
   {
 
@@ -205,10 +205,10 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v12 = [v3 objectAtIndexedSubscript:8];
-  v13 = [v12 integerValue];
+  v12 = [answersCopy objectAtIndexedSubscript:8];
+  integerValue = [v12 integerValue];
 
-  if (v13 < 0)
+  if (integerValue < 0)
   {
     goto LABEL_17;
   }
@@ -218,14 +218,14 @@ LABEL_18:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
-  v4 = a3;
+  equivalentCopy = equivalent;
   v8.receiver = self;
   v8.super_class = HKPHQ9Assessment;
-  if ([(HKScoredAssessment *)&v8 isEquivalent:v4])
+  if ([(HKScoredAssessment *)&v8 isEquivalent:equivalentCopy])
   {
-    v5 = v4;
+    v5 = equivalentCopy;
     if ([(NSArray *)self->_answers isEqual:v5[13]])
     {
       v6 = self->_risk == v5[14];
@@ -250,38 +250,38 @@ LABEL_18:
   v9.receiver = self;
   v9.super_class = HKPHQ9Assessment;
   v3 = [(HKScoredAssessment *)&v9 description];
-  v4 = [(HKSample *)self sampleType];
-  v5 = [(HKSample *)self startDate];
-  v6 = [(HKPHQ9Assessment *)self answers];
-  v7 = [v3 stringByAppendingFormat:@"type: %@, date: %@, answers: %@, score: %ld, risk: %ld", v4, v5, v6, -[HKScoredAssessment score](self, "score"), -[HKPHQ9Assessment risk](self, "risk")];
+  sampleType = [(HKSample *)self sampleType];
+  startDate = [(HKSample *)self startDate];
+  answers = [(HKPHQ9Assessment *)self answers];
+  v7 = [v3 stringByAppendingFormat:@"type: %@, date: %@, answers: %@, score: %ld, risk: %ld", sampleType, startDate, answers, -[HKScoredAssessment score](self, "score"), -[HKPHQ9Assessment risk](self, "risk")];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKPHQ9Assessment;
-  v4 = a3;
-  [(HKScoredAssessment *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_answers forKey:{@"Answers", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_risk forKey:@"Risk"];
+  coderCopy = coder;
+  [(HKScoredAssessment *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_answers forKey:{@"Answers", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_risk forKey:@"Risk"];
 }
 
-- (HKPHQ9Assessment)initWithCoder:(id)a3
+- (HKPHQ9Assessment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = HKPHQ9Assessment;
-  v5 = [(HKScoredAssessment *)&v10 initWithCoder:v4];
+  v5 = [(HKScoredAssessment *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = [MEMORY[0x1E695DFD8] hk_typesForArrayOf:objc_opt_class()];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"Answers"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"Answers"];
     answers = v5->_answers;
     v5->_answers = v7;
 
-    v5->_risk = [v4 decodeIntegerForKey:@"Risk"];
+    v5->_risk = [coderCopy decodeIntegerForKey:@"Risk"];
   }
 
   return v5;

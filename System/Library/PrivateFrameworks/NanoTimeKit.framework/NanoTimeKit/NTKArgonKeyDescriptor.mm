@@ -1,40 +1,40 @@
 @interface NTKArgonKeyDescriptor
-+ (id)keyDescriptorFromBundle:(id)a3;
-+ (id)unfilteredKeyDescriptorFromBundle:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)keyDescriptorFromBundle:(id)bundle;
++ (id)unfilteredKeyDescriptorFromBundle:(id)bundle;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)argon_JSONRepresentation;
 - (NSString)description;
-- (NTKArgonKeyDescriptor)initWithCoder:(id)a3;
-- (NTKArgonKeyDescriptor)initWithKey:(id)a3 fileName:(id)a4;
-- (id)argon_initWithJSONRepresentation:(id)a3;
+- (NTKArgonKeyDescriptor)initWithCoder:(id)coder;
+- (NTKArgonKeyDescriptor)initWithKey:(id)key fileName:(id)name;
+- (id)argon_initWithJSONRepresentation:(id)representation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKArgonKeyDescriptor
 
-- (NTKArgonKeyDescriptor)initWithKey:(id)a3 fileName:(id)a4
+- (NTKArgonKeyDescriptor)initWithKey:(id)key fileName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length] && objc_msgSend(v7, "length"))
+  keyCopy = key;
+  nameCopy = name;
+  if ([keyCopy length] && objc_msgSend(nameCopy, "length"))
   {
     v16.receiver = self;
     v16.super_class = NTKArgonKeyDescriptor;
     v8 = [(NTKArgonKeyDescriptor *)&v16 init];
     if (v8)
     {
-      v9 = [v6 copy];
+      v9 = [keyCopy copy];
       key = v8->_key;
       v8->_key = v9;
 
-      v11 = [v7 copy];
+      v11 = [nameCopy copy];
       fileName = v8->_fileName;
       v8->_fileName = v11;
     }
 
     self = v8;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
@@ -45,19 +45,19 @@
       [NTKArgonKeyDescriptor initWithKey:fileName:];
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-+ (id)keyDescriptorFromBundle:(id)a3
++ (id)keyDescriptorFromBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 bundlePath], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "pathComponents"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "containsObject:", @"AppleInternal"), v7, v6, (v8 & 1) == 0))
+  bundleCopy = bundle;
+  v5 = bundleCopy;
+  if (bundleCopy && ([bundleCopy bundlePath], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "pathComponents"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "containsObject:", @"AppleInternal"), v7, v6, (v8 & 1) == 0))
   {
-    v9 = [a1 unfilteredKeyDescriptorFromBundle:v5];
+    v9 = [self unfilteredKeyDescriptorFromBundle:v5];
   }
 
   else
@@ -68,12 +68,12 @@
   return v9;
 }
 
-+ (id)unfilteredKeyDescriptorFromBundle:(id)a3
++ (id)unfilteredKeyDescriptorFromBundle:(id)bundle
 {
-  if (a3)
+  if (bundle)
   {
-    v3 = [a3 infoDictionary];
-    v4 = [v3 objectForKey:@"Argon"];
+    infoDictionary = [bundle infoDictionary];
+    v4 = [infoDictionary objectForKey:@"Argon"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -118,32 +118,32 @@
 {
   v3 = [(NTKArgonKeyDescriptor *)self key];
   v4 = [v3 hash];
-  v5 = [(NTKArgonKeyDescriptor *)self fileName];
-  v6 = v4 ^ (4 * [v5 hash]);
+  fileName = [(NTKArgonKeyDescriptor *)self fileName];
+  v6 = v4 ^ (4 * [fileName hash]);
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = [(NTKArgonKeyDescriptor *)self key];
-    v6 = [v4 key];
+    v6 = [equalCopy key];
     if (v5 == v6 || [v5 isEqual:v6])
     {
-      v7 = [(NTKArgonKeyDescriptor *)self fileName];
-      v8 = [v4 fileName];
-      if (v7 == v8)
+      fileName = [(NTKArgonKeyDescriptor *)self fileName];
+      fileName2 = [equalCopy fileName];
+      if (fileName == fileName2)
       {
         v9 = 1;
       }
 
       else
       {
-        v9 = [v7 isEqual:v8];
+        v9 = [fileName isEqual:fileName2];
       }
     }
 
@@ -167,27 +167,27 @@
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = [(NTKArgonKeyDescriptor *)self key];
-  v7 = [(NTKArgonKeyDescriptor *)self fileName];
-  v8 = [v3 stringWithFormat:@"<%@: %p, %@ | %@>", v5, self, v6, v7];
+  fileName = [(NTKArgonKeyDescriptor *)self fileName];
+  v8 = [v3 stringWithFormat:@"<%@: %p, %@ | %@>", v5, self, v6, fileName];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(NTKArgonKeyDescriptor *)self key];
-  [v4 encodeObject:v5 forKey:@"key"];
+  [coderCopy encodeObject:v5 forKey:@"key"];
 
-  v6 = [(NTKArgonKeyDescriptor *)self fileName];
-  [v4 encodeObject:v6 forKey:@"fileName"];
+  fileName = [(NTKArgonKeyDescriptor *)self fileName];
+  [coderCopy encodeObject:fileName forKey:@"fileName"];
 }
 
-- (NTKArgonKeyDescriptor)initWithCoder:(id)a3
+- (NTKArgonKeyDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"key"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"key"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileName"];
 
   v7 = [(NTKArgonKeyDescriptor *)self initWithKey:v5 fileName:v6];
   return v7;
@@ -195,37 +195,37 @@
 
 - (NSDictionary)argon_JSONRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [(NTKArgonKeyDescriptor *)self key];
   v5 = v4;
   if (v4)
   {
     v6 = [v4 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"k"];
+    [dictionary setObject:v6 forKeyedSubscript:@"k"];
   }
 
-  v7 = [(NTKArgonKeyDescriptor *)self fileName];
-  v8 = v7;
-  if (v7)
+  fileName = [(NTKArgonKeyDescriptor *)self fileName];
+  v8 = fileName;
+  if (fileName)
   {
-    v9 = [v7 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"n"];
+    v9 = [fileName copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"n"];
   }
 
-  v10 = [v3 copy];
+  v10 = [dictionary copy];
 
   return v10;
 }
 
-- (id)argon_initWithJSONRepresentation:(id)a3
+- (id)argon_initWithJSONRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __58__NTKArgonKeyDescriptor_argon_initWithJSONRepresentation___block_invoke;
   aBlock[3] = &unk_2787828A8;
-  v13 = v4;
-  v5 = v4;
+  v13 = representationCopy;
+  v5 = representationCopy;
   v6 = _Block_copy(aBlock);
   v7 = v6[2](v6, @"k");
   v8 = v6[2](v6, @"n");

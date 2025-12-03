@@ -1,63 +1,63 @@
 @interface HFActionSetBuilder
-- (HFActionSetBuilder)initWithExistingObject:(id)a3 inHome:(id)a4;
-- (HFActionSetBuilder)initWithHome:(id)a3;
+- (HFActionSetBuilder)initWithExistingObject:(id)object inHome:(id)home;
+- (HFActionSetBuilder)initWithHome:(id)home;
 - (NSSet)hf_accessoryLikeObjects;
 - (id)_builderCommitItem;
-- (id)_deleteActionSet:(id)a3 fromHome:(id)a4;
+- (id)_deleteActionSet:(id)set fromHome:(id)home;
 - (id)_lazilyClearApplicationData;
 - (id)_lazilyUpdateIcon;
 - (id)_lazilyUpdateIncludedContext;
 - (id)_lazy_performValidation;
-- (id)_legacyCommitItemWithOperationType:(id)a3;
-- (id)_updateIconOnBuilder:(id)a3;
-- (id)_updateValueForContextType:(unint64_t)a3;
+- (id)_legacyCommitItemWithOperationType:(id)type;
+- (id)_updateIconOnBuilder:(id)builder;
+- (id)_updateValueForContextType:(unint64_t)type;
 - (id)commitItem;
-- (id)compareToObject:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)compareToObject:(id)object;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createActionSetBuilder;
 - (id)deleteActionSet;
 - (id)getOrCreateActionSetBuilder;
 - (id)performValidation;
-- (id)transformedError:(id)a3 withOperationType:(id)a4;
-- (id)updateActionSetBuilder:(id)a3;
+- (id)transformedError:(id)error withOperationType:(id)type;
+- (id)updateActionSetBuilder:(id)builder;
 - (unint64_t)hash;
-- (void)_updateValueForContextType:(unint64_t)a3 onActionSetBuilder:(id)a4;
-- (void)notifyObserversForCreatedActionSet:(id)a3;
-- (void)notifyObserversForRenamedActionSet:(id)a3;
-- (void)updateFromActionSetBuilder:(id)a3;
+- (void)_updateValueForContextType:(unint64_t)type onActionSetBuilder:(id)builder;
+- (void)notifyObserversForCreatedActionSet:(id)set;
+- (void)notifyObserversForRenamedActionSet:(id)set;
+- (void)updateFromActionSetBuilder:(id)builder;
 @end
 
 @implementation HFActionSetBuilder
 
-- (id)compareToObject:(id)a3
+- (id)compareToObject:(id)object
 {
-  v4 = a3;
-  v5 = [[HFComparisonResult alloc] initWithObjectA:self objectB:v4];
+  objectCopy = object;
+  v5 = [[HFComparisonResult alloc] initWithObjectA:self objectB:objectCopy];
   if (![(HFComparisonResult *)v5 containsCriticalDifference])
   {
-    v6 = [(HFActionSetBuilder *)self name];
-    v7 = [v4 name];
-    v8 = [HFPropertyDifference compareObjectA:v6 toObjectB:v7 key:@"name" priority:3];
+    name = [(HFActionSetBuilder *)self name];
+    name2 = [objectCopy name];
+    v8 = [HFPropertyDifference compareObjectA:name toObjectB:name2 key:@"name" priority:3];
     [(HFComparisonResult *)v5 add:v8];
 
-    v9 = [(HFActionSetBuilder *)self iconDescriptor];
-    v10 = [v4 iconDescriptor];
-    v11 = [HFPropertyDifference compareObjectA:v9 toObjectB:v10 key:@"iconDescriptor" priority:2];
+    iconDescriptor = [(HFActionSetBuilder *)self iconDescriptor];
+    iconDescriptor2 = [objectCopy iconDescriptor];
+    v11 = [HFPropertyDifference compareObjectA:iconDescriptor toObjectB:iconDescriptor2 key:@"iconDescriptor" priority:2];
     [(HFComparisonResult *)v5 add:v11];
 
-    v12 = [(HFActionSetBuilder *)self iconTintColor];
-    v13 = [v4 iconTintColor];
-    v14 = [HFPropertyDifference compareObjectA:v12 toObjectB:v13 key:@"iconTintColor" priority:2];
+    iconTintColor = [(HFActionSetBuilder *)self iconTintColor];
+    iconTintColor2 = [objectCopy iconTintColor];
+    v14 = [HFPropertyDifference compareObjectA:iconTintColor toObjectB:iconTintColor2 key:@"iconTintColor" priority:2];
     [(HFComparisonResult *)v5 add:v14];
 
     v15 = [MEMORY[0x277CCABB0] numberWithBool:{-[HFActionSetBuilder showInHomeDashboard](self, "showInHomeDashboard")}];
-    v16 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "showInHomeDashboard")}];
+    v16 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(objectCopy, "showInHomeDashboard")}];
     v17 = [HFPropertyDifference compareObjectA:v15 toObjectB:v16 key:@"showInHomeDashboard" priority:1];
     [(HFComparisonResult *)v5 add:v17];
 
-    v18 = [(HFAbstractBaseActionSetBuilder *)self actions];
-    v19 = [v4 actions];
-    v20 = [HFContainedObjectListDifference containedObjectDifferenceWithKey:@"actions" objectsA:v18 objectsB:v19];
+    actions = [(HFAbstractBaseActionSetBuilder *)self actions];
+    actions2 = [objectCopy actions];
+    v20 = [HFContainedObjectListDifference containedObjectDifferenceWithKey:@"actions" objectsA:actions objectsB:actions2];
     [(HFComparisonResult *)v5 add:v20];
   }
 
@@ -66,8 +66,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HFActionSetBuilder *)self name];
-  v3 = [v2 hash];
+  name = [(HFActionSetBuilder *)self name];
+  v3 = [name hash];
 
   return v3;
 }
@@ -87,7 +87,7 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v9 = self;
+      selfCopy = self;
       v10 = 2112;
       v11 = v3;
       _os_log_error_impl(&dword_20D9BF000, v4, OS_LOG_TYPE_ERROR, "Error validating action set builder: %@. Error: %@", buf, 0x16u);
@@ -145,44 +145,44 @@ LABEL_9:
 
 - (id)getOrCreateActionSetBuilder
 {
-  v3 = [(HFItemBuilder *)self home];
-  v4 = [v3 areAutomationBuildersSupported];
+  home = [(HFItemBuilder *)self home];
+  areAutomationBuildersSupported = [home areAutomationBuildersSupported];
 
-  if (!v4)
+  if (!areAutomationBuildersSupported)
   {
     v7 = 0;
     goto LABEL_8;
   }
 
-  v5 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
-  if (v5)
+  actionSet = [(HFAbstractBaseActionSetBuilder *)self actionSet];
+  if (actionSet)
   {
-    v6 = v5;
+    home3 = actionSet;
   }
 
   else
   {
-    v8 = [(HFItemBuilder *)self home];
-    v9 = [v8 actionSets];
+    home2 = [(HFItemBuilder *)self home];
+    actionSets = [home2 actionSets];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __69__HFActionSetBuilder_AutomationBuilders__getOrCreateActionSetBuilder__block_invoke;
     v14[3] = &unk_277DF4280;
     v14[4] = self;
-    v6 = [v9 na_firstObjectPassingTest:v14];
+    home3 = [actionSets na_firstObjectPassingTest:v14];
 
-    if (!v6)
+    if (!home3)
     {
       v13 = [HFActionSetBuilderPair alloc];
-      v6 = [(HFItemBuilder *)self home];
-      v10 = [v6 newActionSetBuilder];
-      v11 = [(HFActionSetBuilderPair *)v13 initWithBuilder:v10];
+      home3 = [(HFItemBuilder *)self home];
+      newActionSetBuilder = [home3 newActionSetBuilder];
+      v11 = [(HFActionSetBuilderPair *)v13 initWithBuilder:newActionSetBuilder];
       goto LABEL_7;
     }
   }
 
-  v10 = [v6 copyAsBuilder];
-  v11 = [[HFActionSetBuilderPair alloc] initWithActionSet:v6 builder:v10];
+  newActionSetBuilder = [home3 copyAsBuilder];
+  v11 = [[HFActionSetBuilderPair alloc] initWithActionSet:home3 builder:newActionSetBuilder];
 LABEL_7:
   v7 = v11;
 
@@ -212,26 +212,26 @@ BOOL __69__HFActionSetBuilder_AutomationBuilders__getOrCreateActionSetBuilder__b
   return v9;
 }
 
-- (id)updateActionSetBuilder:(id)a3
+- (id)updateActionSetBuilder:(id)builder
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  builderCopy = builder;
+  if (builderCopy)
   {
-    v6 = [(HFActionSetBuilder *)self name];
-    [v5 setName:v6];
+    name = [(HFActionSetBuilder *)self name];
+    [builderCopy setName:name];
 
-    [(HFAbstractBaseActionSetBuilder *)self updateActionsInBuilder:v5];
+    [(HFAbstractBaseActionSetBuilder *)self updateActionsInBuilder:builderCopy];
     if ([(HFActionSetBuilder *)self shouldClearApplicationData])
     {
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v7 = [v5 applicationData];
-      v8 = [v7 allKeys];
+      applicationData = [builderCopy applicationData];
+      allKeys = [applicationData allKeys];
 
-      v9 = [v8 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v24 objects:v29 count:16];
       if (v9)
       {
         v10 = v9;
@@ -242,31 +242,31 @@ BOOL __69__HFActionSetBuilder_AutomationBuilders__getOrCreateActionSetBuilder__b
           {
             if (*v25 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(allKeys);
             }
 
             v13 = *(*(&v24 + 1) + 8 * i);
-            v14 = [v5 applicationData];
-            [v14 setObject:0 forKey:v13];
+            applicationData2 = [builderCopy applicationData];
+            [applicationData2 setObject:0 forKey:v13];
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v24 objects:v29 count:16];
+          v10 = [allKeys countByEnumeratingWithState:&v24 objects:v29 count:16];
         }
 
         while (v10);
       }
 
-      v15 = [MEMORY[0x277D2C900] futureWithNoResult];
+      futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     }
 
     else
     {
-      [(HFActionSetBuilder *)self _updateValueForContextType:3 onActionSetBuilder:v5];
+      [(HFActionSetBuilder *)self _updateValueForContextType:3 onActionSetBuilder:builderCopy];
       v19 = MEMORY[0x277D2C900];
-      v20 = [(HFActionSetBuilder *)self _updateIconOnBuilder:v5];
+      v20 = [(HFActionSetBuilder *)self _updateIconOnBuilder:builderCopy];
       v28 = v20;
       v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
-      v15 = [v19 combineAllFutures:v21];
+      futureWithNoResult = [v19 combineAllFutures:v21];
     }
   }
 
@@ -277,23 +277,23 @@ BOOL __69__HFActionSetBuilder_AutomationBuilders__getOrCreateActionSetBuilder__b
 
     v17 = MEMORY[0x277D2C900];
     v18 = [MEMORY[0x277CCA9B8] hf_errorWithCode:30];
-    v15 = [v17 futureWithError:v18];
+    futureWithNoResult = [v17 futureWithError:v18];
   }
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return futureWithNoResult;
 }
 
-- (void)_updateValueForContextType:(unint64_t)a3 onActionSetBuilder:(id)a4
+- (void)_updateValueForContextType:(unint64_t)type onActionSetBuilder:(id)builder
 {
-  v6 = a4;
-  v12 = v6;
-  if (a3 <= 1)
+  builderCopy = builder;
+  v12 = builderCopy;
+  if (type <= 1)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         goto LABEL_11;
       }
@@ -305,21 +305,21 @@ BOOL __69__HFActionSetBuilder_AutomationBuilders__getOrCreateActionSetBuilder__b
 LABEL_9:
     NSLog(&cfstr_ActionsetSValu.isa);
 LABEL_10:
-    v6 = v12;
+    builderCopy = v12;
     goto LABEL_11;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     goto LABEL_9;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
-    v7 = [(HFActionSetBuilder *)self showInHomeDashboard];
+    showInHomeDashboard = [(HFActionSetBuilder *)self showInHomeDashboard];
     v8 = [v12 hf_isOnForContextType:3];
-    v9 = v7;
-    if (v7 == v8)
+    v9 = showInHomeDashboard;
+    if (showInHomeDashboard == v8)
     {
       goto LABEL_12;
     }
@@ -328,14 +328,14 @@ LABEL_10:
   }
 
 LABEL_11:
-  v10 = [v6 hf_isOnForContextType:a3];
-  v7 = 0;
+  v10 = [builderCopy hf_isOnForContextType:type];
+  showInHomeDashboard = 0;
   v9 = 0;
   if ((v10 & 1) == 0)
   {
 LABEL_12:
-    v11 = [v12 hf_hasSetForContextType:a3];
-    v9 = v7;
+    v11 = [v12 hf_hasSetForContextType:type];
+    v9 = showInHomeDashboard;
     if (v11)
     {
       goto LABEL_14;
@@ -343,57 +343,57 @@ LABEL_12:
   }
 
 LABEL_13:
-  [v12 hf_setValue:v9 forContextType:a3];
+  [v12 hf_setValue:v9 forContextType:type];
 LABEL_14:
 }
 
-- (id)_updateIconOnBuilder:(id)a3
+- (id)_updateIconOnBuilder:(id)builder
 {
-  v4 = a3;
-  v5 = [v4 hf_iconDescriptor];
-  v6 = [v5 identifier];
+  builderCopy = builder;
+  hf_iconDescriptor = [builderCopy hf_iconDescriptor];
+  identifier = [hf_iconDescriptor identifier];
 
-  v7 = [v4 hf_iconTintColor];
-  v8 = [(HFActionSetBuilder *)self iconDescriptor];
-  v9 = [v8 identifier];
-  v10 = [v6 isEqualToString:v9];
+  hf_iconTintColor = [builderCopy hf_iconTintColor];
+  iconDescriptor = [(HFActionSetBuilder *)self iconDescriptor];
+  identifier2 = [iconDescriptor identifier];
+  v10 = [identifier isEqualToString:identifier2];
 
-  if (v10 && (-[HFActionSetBuilder iconTintColor](self, "iconTintColor"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v7 isEqual:v11], v11, v12))
+  if (v10 && (-[HFActionSetBuilder iconTintColor](self, "iconTintColor"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [hf_iconTintColor isEqual:v11], v11, v12))
   {
-    v13 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   else
   {
-    v14 = [(HFActionSetBuilder *)self iconDescriptor];
-    v15 = [v14 isSystemImage];
+    iconDescriptor2 = [(HFActionSetBuilder *)self iconDescriptor];
+    isSystemImage = [iconDescriptor2 isSystemImage];
 
-    if ((v15 & 1) == 0)
+    if ((isSystemImage & 1) == 0)
     {
-      v16 = [(HFActionSetBuilder *)self iconDescriptor];
-      NSLog(&cfstr_ActionSetBuild.isa, v16);
+      iconDescriptor3 = [(HFActionSetBuilder *)self iconDescriptor];
+      NSLog(&cfstr_ActionSetBuild.isa, iconDescriptor3);
     }
 
-    v17 = [(HFActionSetBuilder *)self iconDescriptor];
-    v18 = [v17 identifier];
-    v19 = [(HFActionSetBuilder *)self iconTintColor];
-    v13 = [v4 hf_setIconIdentifier:v18 andTintColor:v19];
+    iconDescriptor4 = [(HFActionSetBuilder *)self iconDescriptor];
+    identifier3 = [iconDescriptor4 identifier];
+    iconTintColor = [(HFActionSetBuilder *)self iconTintColor];
+    futureWithNoResult = [builderCopy hf_setIconIdentifier:identifier3 andTintColor:iconTintColor];
   }
 
-  return v13;
+  return futureWithNoResult;
 }
 
 - (NSSet)hf_accessoryLikeObjects
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(HFAbstractBaseActionSetBuilder *)self actions];
+  actions = [(HFAbstractBaseActionSetBuilder *)self actions];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __75__HFActionSetBuilder_AccessoryLikeObjectContainer__hf_accessoryLikeObjects__block_invoke;
   v8[3] = &unk_277DF6A20;
   v9 = v3;
   v5 = v3;
-  [v4 na_each:v8];
+  [actions na_each:v8];
 
   v6 = [v5 copy];
 
@@ -418,11 +418,11 @@ void __75__HFActionSetBuilder_AccessoryLikeObjectContainer__hf_accessoryLikeObje
   [v2 unionSet:v3];
 }
 
-- (HFActionSetBuilder)initWithHome:(id)a3
+- (HFActionSetBuilder)initWithHome:(id)home
 {
   v6.receiver = self;
   v6.super_class = HFActionSetBuilder;
-  v3 = [(HFItemBuilder *)&v6 initWithHome:a3];
+  v3 = [(HFItemBuilder *)&v6 initWithHome:home];
   if (v3)
   {
     v4 = [[HFImageIconDescriptor alloc] initWithSystemImageNamed:@"house.fill"];
@@ -435,28 +435,28 @@ void __75__HFActionSetBuilder_AccessoryLikeObjectContainer__hf_accessoryLikeObje
   return v3;
 }
 
-- (HFActionSetBuilder)initWithExistingObject:(id)a3 inHome:(id)a4
+- (HFActionSetBuilder)initWithExistingObject:(id)object inHome:(id)home
 {
   v14.receiver = self;
   v14.super_class = HFActionSetBuilder;
-  v4 = [(HFAbstractBaseActionSetBuilder *)&v14 initWithExistingObject:a3 inHome:a4];
+  v4 = [(HFAbstractBaseActionSetBuilder *)&v14 initWithExistingObject:object inHome:home];
   v5 = v4;
   if (v4)
   {
-    v6 = [(HFAbstractBaseActionSetBuilder *)v4 actionSet];
-    v7 = [v6 name];
-    [(HFActionSetBuilder *)v5 setName:v7];
+    actionSet = [(HFAbstractBaseActionSetBuilder *)v4 actionSet];
+    name = [actionSet name];
+    [(HFActionSetBuilder *)v5 setName:name];
 
-    v8 = [(HFAbstractBaseActionSetBuilder *)v5 actionSet];
-    v9 = [v8 hf_iconDescriptor];
-    [(HFActionSetBuilder *)v5 setIconDescriptor:v9];
+    actionSet2 = [(HFAbstractBaseActionSetBuilder *)v5 actionSet];
+    hf_iconDescriptor = [actionSet2 hf_iconDescriptor];
+    [(HFActionSetBuilder *)v5 setIconDescriptor:hf_iconDescriptor];
 
-    v10 = [(HFAbstractBaseActionSetBuilder *)v5 actionSet];
-    v11 = [v10 hf_iconTintColor];
-    [(HFActionSetBuilder *)v5 setIconTintColor:v11];
+    actionSet3 = [(HFAbstractBaseActionSetBuilder *)v5 actionSet];
+    hf_iconTintColor = [actionSet3 hf_iconTintColor];
+    [(HFActionSetBuilder *)v5 setIconTintColor:hf_iconTintColor];
 
-    v12 = [(HFAbstractBaseActionSetBuilder *)v5 actionSet];
-    -[HFActionSetBuilder setShowInHomeDashboard:](v5, "setShowInHomeDashboard:", [v12 hf_effectiveShowInHomeDashboard]);
+    actionSet4 = [(HFAbstractBaseActionSetBuilder *)v5 actionSet];
+    -[HFActionSetBuilder setShowInHomeDashboard:](v5, "setShowInHomeDashboard:", [actionSet4 hf_effectiveShowInHomeDashboard]);
 
     [(HFActionSetBuilder *)v5 setIsActionSetDeleted:0];
     [(HFActionSetBuilder *)v5 setShouldClearApplicationData:0];
@@ -467,26 +467,26 @@ void __75__HFActionSetBuilder_AccessoryLikeObjectContainer__hf_accessoryLikeObje
 
 - (id)deleteActionSet
 {
-  v3 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
-  v4 = [(HFItemBuilder *)self home];
-  v5 = [(HFActionSetBuilder *)self _deleteActionSet:v3 fromHome:v4];
+  actionSet = [(HFAbstractBaseActionSetBuilder *)self actionSet];
+  home = [(HFItemBuilder *)self home];
+  v5 = [(HFActionSetBuilder *)self _deleteActionSet:actionSet fromHome:home];
 
   return v5;
 }
 
-- (void)updateFromActionSetBuilder:(id)a3
+- (void)updateFromActionSetBuilder:(id)builder
 {
-  v4 = a3;
-  v5 = [v4 name];
-  [(HFActionSetBuilder *)self setName:v5];
+  builderCopy = builder;
+  name = [builderCopy name];
+  [(HFActionSetBuilder *)self setName:name];
 
-  v6 = [v4 iconDescriptor];
-  [(HFActionSetBuilder *)self setIconDescriptor:v6];
+  iconDescriptor = [builderCopy iconDescriptor];
+  [(HFActionSetBuilder *)self setIconDescriptor:iconDescriptor];
 
-  -[HFActionSetBuilder setShowInHomeDashboard:](self, "setShowInHomeDashboard:", [v4 showInHomeDashboard]);
-  v8 = [v4 actionBuilders];
+  -[HFActionSetBuilder setShowInHomeDashboard:](self, "setShowInHomeDashboard:", [builderCopy showInHomeDashboard]);
+  actionBuilders = [builderCopy actionBuilders];
 
-  v7 = [v8 mutableCopy];
+  v7 = [actionBuilders mutableCopy];
   [(HFAbstractBaseActionSetBuilder *)self setActionBuilders:v7];
 }
 
@@ -496,15 +496,15 @@ void __75__HFActionSetBuilder_AccessoryLikeObjectContainer__hf_accessoryLikeObje
   v3 = MEMORY[0x277CBEB18];
   v4 = [(HFItemBuilder *)self lazy_verifyPropertyIsSet:@"name"];
   v17[0] = v4;
-  v5 = [(HFActionSetBuilder *)self name];
-  v6 = [(HFItemBuilder *)self lazy_verifyNameIsNotEmpty:v5];
+  name = [(HFActionSetBuilder *)self name];
+  v6 = [(HFItemBuilder *)self lazy_verifyNameIsNotEmpty:name];
   v17[1] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
   v8 = [v3 arrayWithArray:v7];
 
-  v9 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
-  v10 = [v9 actionSetType];
-  LODWORD(v6) = [v10 isEqualToString:*MEMORY[0x277CCF1A8]];
+  actionSet = [(HFAbstractBaseActionSetBuilder *)self actionSet];
+  actionSetType = [actionSet actionSetType];
+  LODWORD(v6) = [actionSetType isEqualToString:*MEMORY[0x277CCF1A8]];
 
   if (v6)
   {
@@ -547,16 +547,16 @@ void __45__HFActionSetBuilder__lazy_performValidation__block_invoke_2(uint64_t a
 {
   v10.receiver = self;
   v10.super_class = HFActionSetBuilder;
-  v3 = [(HFAbstractBaseActionSetBuilder *)&v10 createActionSetBuilder];
-  if (v3)
+  createActionSetBuilder = [(HFAbstractBaseActionSetBuilder *)&v10 createActionSetBuilder];
+  if (createActionSetBuilder)
   {
-    v4 = v3;
+    v4 = createActionSetBuilder;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __44__HFActionSetBuilder_createActionSetBuilder__block_invoke;
     v9[3] = &unk_277DFFFC0;
     v9[4] = self;
-    v5 = [v3 flatMap:v9];
+    v5 = [createActionSetBuilder flatMap:v9];
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
@@ -625,13 +625,13 @@ id __44__HFActionSetBuilder_createActionSetBuilder__block_invoke_3(uint64_t a1, 
     v3 = HFLogForCategory(0x2BuLL);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(HFActionSetBuilder *)self name];
+      name = [(HFActionSetBuilder *)self name];
       *buf = 138412290;
-      v37 = v4;
+      v37 = name;
       _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "Skipping commit of action set with name: %@. Reason: Action set was previously deleted.", buf, 0xCu);
     }
 
-    v5 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   else
@@ -640,8 +640,8 @@ id __44__HFActionSetBuilder_createActionSetBuilder__block_invoke_3(uint64_t a1, 
     v7 = os_signpost_id_make_with_pointer(v6, self);
 
     v8 = MEMORY[0x277CCACA8];
-    v9 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
-    if (v9)
+    actionSet = [(HFAbstractBaseActionSetBuilder *)self actionSet];
+    if (actionSet)
     {
       v10 = @"Committing";
     }
@@ -651,20 +651,20 @@ id __44__HFActionSetBuilder_createActionSetBuilder__block_invoke_3(uint64_t a1, 
       v10 = @"Creating";
     }
 
-    v11 = [(HFActionSetBuilder *)self name];
-    v12 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
-    if (v12)
+    name2 = [(HFActionSetBuilder *)self name];
+    actionSet2 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
+    if (actionSet2)
     {
       v13 = MEMORY[0x277CCACA8];
-      v14 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
-      v15 = [v14 uniqueIdentifier];
-      v16 = [v13 stringWithFormat:@" (%@)", v15];
-      v17 = [v8 stringWithFormat:@"%@ action set: %@%@", v10, v11, v16];
+      actionSet3 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
+      uniqueIdentifier = [actionSet3 uniqueIdentifier];
+      v16 = [v13 stringWithFormat:@" (%@)", uniqueIdentifier];
+      v17 = [v8 stringWithFormat:@"%@ action set: %@%@", v10, name2, v16];
     }
 
     else
     {
-      v17 = [v8 stringWithFormat:@"%@ action set: %@%@", v10, v11, &stru_2824B1A78];
+      v17 = [v8 stringWithFormat:@"%@ action set: %@%@", v10, name2, &stru_2824B1A78];
     }
 
     v18 = HFLogForCategory(0x35uLL);
@@ -676,19 +676,19 @@ id __44__HFActionSetBuilder_createActionSetBuilder__block_invoke_3(uint64_t a1, 
       _os_signpost_emit_with_name_impl(&dword_20D9BF000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v7, "HFActionSetBuilderCommit", "%@", buf, 0xCu);
     }
 
-    v20 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
+    actionSet4 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
     v21 = HFOperationEditActionSet;
-    if (!v20)
+    if (!actionSet4)
     {
       v21 = HFOperationAddActionSet;
     }
 
     v22 = *v21;
 
-    v23 = [(HFItemBuilder *)self home];
-    v24 = [v23 areAutomationBuildersSupported];
+    home = [(HFItemBuilder *)self home];
+    areAutomationBuildersSupported = [home areAutomationBuildersSupported];
 
-    if (v24)
+    if (areAutomationBuildersSupported)
     {
       [(HFActionSetBuilder *)self _builderCommitItem];
     }
@@ -713,12 +713,12 @@ id __44__HFActionSetBuilder_createActionSetBuilder__block_invoke_3(uint64_t a1, 
     v31[4] = self;
     v32 = v22;
     v28 = v22;
-    v5 = [v25 recover:v31];
+    futureWithNoResult = [v25 recover:v31];
   }
 
   v29 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return futureWithNoResult;
 }
 
 void __32__HFActionSetBuilder_commitItem__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -763,17 +763,17 @@ id __32__HFActionSetBuilder_commitItem__block_invoke_38(uint64_t a1, uint64_t a2
   return v4;
 }
 
-- (void)notifyObserversForCreatedActionSet:(id)a3
+- (void)notifyObserversForCreatedActionSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = +[HFHomeKitDispatcher sharedDispatcher];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__HFActionSetBuilder_notifyObserversForCreatedActionSet___block_invoke;
   v7[3] = &unk_277DF3810;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = setCopy;
+  v6 = setCopy;
   [v5 dispatchHomeObserverMessage:v7 sender:0];
 }
 
@@ -787,17 +787,17 @@ void __57__HFActionSetBuilder_notifyObserversForCreatedActionSet___block_invoke(
   }
 }
 
-- (void)notifyObserversForRenamedActionSet:(id)a3
+- (void)notifyObserversForRenamedActionSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = +[HFHomeKitDispatcher sharedDispatcher];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__HFActionSetBuilder_notifyObserversForRenamedActionSet___block_invoke;
   v7[3] = &unk_277DF3810;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = setCopy;
+  v6 = setCopy;
   [v5 dispatchHomeObserverMessage:v7 sender:0];
 }
 
@@ -811,37 +811,37 @@ void __57__HFActionSetBuilder_notifyObserversForRenamedActionSet___block_invoke(
   }
 }
 
-- (id)transformedError:(id)a3 withOperationType:(id)a4
+- (id)transformedError:(id)error withOperationType:(id)type
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFActionSetBuilder *)self name];
-  v9 = [v7 hf_errorWithOperationType:v6 failedItemName:v8];
+  typeCopy = type;
+  errorCopy = error;
+  name = [(HFActionSetBuilder *)self name];
+  v9 = [errorCopy hf_errorWithOperationType:typeCopy failedItemName:name];
 
   return v9;
 }
 
 - (id)_builderCommitItem
 {
-  v3 = [(HFActionSetBuilder *)self performValidation];
-  if (v3)
+  performValidation = [(HFActionSetBuilder *)self performValidation];
+  if (performValidation)
   {
-    v4 = [MEMORY[0x277D2C900] futureWithError:v3];
+    v4 = [MEMORY[0x277D2C900] futureWithError:performValidation];
   }
 
   else
   {
-    v5 = [(HFActionSetBuilder *)self getOrCreateActionSetBuilder];
-    v6 = [v5 builder];
-    v7 = [(HFActionSetBuilder *)self updateActionSetBuilder:v6];
+    getOrCreateActionSetBuilder = [(HFActionSetBuilder *)self getOrCreateActionSetBuilder];
+    builder = [getOrCreateActionSetBuilder builder];
+    v7 = [(HFActionSetBuilder *)self updateActionSetBuilder:builder];
 
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __40__HFActionSetBuilder__builderCommitItem__block_invoke;
     v14[3] = &unk_277DFA5C0;
-    v8 = v5;
+    v8 = getOrCreateActionSetBuilder;
     v15 = v8;
-    v16 = self;
+    selfCopy = self;
     v4 = [v7 flatMap:v14];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -884,31 +884,31 @@ void __40__HFActionSetBuilder__builderCommitItem__block_invoke_2(uint64_t a1, vo
   }
 }
 
-- (id)_legacyCommitItemWithOperationType:(id)a3
+- (id)_legacyCommitItemWithOperationType:(id)type
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   objc_initWeak(&location, self);
-  v5 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
-  v6 = v5 == 0;
+  actionSet = [(HFAbstractBaseActionSetBuilder *)self actionSet];
+  v6 = actionSet == 0;
 
   if (v6)
   {
-    v7 = [(HFItemBuilder *)self home];
-    v8 = [v7 actionSets];
+    home = [(HFItemBuilder *)self home];
+    actionSets = [home actionSets];
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = __57__HFActionSetBuilder__legacyCommitItemWithOperationType___block_invoke;
     v42[3] = &unk_277DF4280;
     v42[4] = self;
-    v9 = [v8 na_firstObjectPassingTest:v42];
+    v9 = [actionSets na_firstObjectPassingTest:v42];
     [(HFAbstractBaseActionSetBuilder *)self setActionSet:v9];
   }
 
-  v10 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
-  v11 = v10 == 0;
+  actionSet2 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
+  v11 = actionSet2 == 0;
 
-  v12 = [(HFActionSetBuilder *)self _lazy_performValidation];
+  _lazy_performValidation = [(HFActionSetBuilder *)self _lazy_performValidation];
   if (v11)
   {
     v41[0] = MEMORY[0x277D85DD0];
@@ -916,7 +916,7 @@ void __40__HFActionSetBuilder__builderCommitItem__block_invoke_2(uint64_t a1, vo
     v41[2] = __57__HFActionSetBuilder__legacyCommitItemWithOperationType___block_invoke_2;
     v41[3] = &unk_277DF2CE0;
     v41[4] = self;
-    v13 = [v12 flatMap:v41];
+    v13 = [_lazy_performValidation flatMap:v41];
 
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
@@ -940,7 +940,7 @@ void __40__HFActionSetBuilder__builderCommitItem__block_invoke_2(uint64_t a1, vo
     v37[2] = __57__HFActionSetBuilder__legacyCommitItemWithOperationType___block_invoke_48;
     v37[3] = &unk_277DF2CE0;
     v37[4] = self;
-    v13 = [v12 flatMap:v37];
+    v13 = [_lazy_performValidation flatMap:v37];
 
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
@@ -961,24 +961,24 @@ void __40__HFActionSetBuilder__builderCommitItem__block_invoke_2(uint64_t a1, vo
   objc_destroyWeak(v14);
   if ([(HFActionSetBuilder *)self shouldClearApplicationData])
   {
-    v19 = [(HFActionSetBuilder *)self _lazilyClearApplicationData];
-    v46[0] = v19;
+    _lazilyClearApplicationData = [(HFActionSetBuilder *)self _lazilyClearApplicationData];
+    v46[0] = _lazilyClearApplicationData;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:1];
   }
 
   else
   {
-    v19 = [(HFActionSetBuilder *)self _lazilyUpdateIncludedContext];
-    v45[0] = v19;
-    v21 = [(HFActionSetBuilder *)self _lazilyUpdateIcon];
-    v45[1] = v21;
+    _lazilyClearApplicationData = [(HFActionSetBuilder *)self _lazilyUpdateIncludedContext];
+    v45[0] = _lazilyClearApplicationData;
+    _lazilyUpdateIcon = [(HFActionSetBuilder *)self _lazilyUpdateIcon];
+    v45[1] = _lazilyUpdateIcon;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:2];
   }
 
   v22 = MEMORY[0x277D2C900];
   v44[0] = v13;
-  v23 = [(HFAbstractBaseActionSetBuilder *)self lazilyUpdateActions];
-  v44[1] = v23;
+  lazilyUpdateActions = [(HFAbstractBaseActionSetBuilder *)self lazilyUpdateActions];
+  v44[1] = lazilyUpdateActions;
   v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:2];
   v25 = [v24 arrayByAddingObjectsFromArray:v20];
   v26 = [v22 chainFutures:v25];
@@ -987,9 +987,9 @@ void __40__HFActionSetBuilder__builderCommitItem__block_invoke_2(uint64_t a1, vo
   v31[1] = 3221225472;
   v31[2] = __57__HFActionSetBuilder__legacyCommitItemWithOperationType___block_invoke_58;
   v31[3] = &unk_277DF2D30;
-  v27 = v4;
+  v27 = typeCopy;
   v32 = v27;
-  v33 = self;
+  selfCopy = self;
   v28 = [v26 recover:v31];
 
   objc_destroyWeak(&location);
@@ -1219,14 +1219,14 @@ void __50__HFActionSetBuilder__lazilyUpdateIncludedContext__block_invoke(uint64_
   v5 = [v6 addCompletionBlock:v4];
 }
 
-- (id)_updateValueForContextType:(unint64_t)a3
+- (id)_updateValueForContextType:(unint64_t)type
 {
-  v5 = 0;
-  if (a3 <= 1)
+  showInHomeDashboard = 0;
+  if (type <= 1)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         goto LABEL_10;
       }
@@ -1238,30 +1238,30 @@ void __50__HFActionSetBuilder__lazilyUpdateIncludedContext__block_invoke(uint64_
 LABEL_8:
     NSLog(&cfstr_ActionsetSValu.isa, a2);
 LABEL_9:
-    v5 = 0;
+    showInHomeDashboard = 0;
     goto LABEL_10;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     goto LABEL_8;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
-    v5 = [(HFActionSetBuilder *)self showInHomeDashboard];
+    showInHomeDashboard = [(HFActionSetBuilder *)self showInHomeDashboard];
   }
 
 LABEL_10:
-  v6 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
-  if (v5 == [v6 hf_isOnForContextType:a3])
+  actionSet = [(HFAbstractBaseActionSetBuilder *)self actionSet];
+  if (showInHomeDashboard == [actionSet hf_isOnForContextType:type])
   {
-    v7 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
-    v8 = [v7 hf_hasSetForContextType:a3];
+    actionSet2 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
+    v8 = [actionSet2 hf_hasSetForContextType:type];
 
     if (v8)
     {
-      v9 = [MEMORY[0x277D2C900] futureWithNoResult];
+      futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
       goto LABEL_15;
     }
   }
@@ -1274,13 +1274,13 @@ LABEL_10:
   v11[1] = 3221225472;
   v11[2] = __49__HFActionSetBuilder__updateValueForContextType___block_invoke;
   v11[3] = &unk_277DF7088;
-  v12 = v5;
+  v12 = showInHomeDashboard;
   v11[4] = self;
-  v11[5] = a3;
-  v9 = [MEMORY[0x277D2C900] futureWithBlock:v11];
+  v11[5] = type;
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithBlock:v11];
 LABEL_15:
 
-  return v9;
+  return futureWithNoResult;
 }
 
 void __49__HFActionSetBuilder__updateValueForContextType___block_invoke(uint64_t a1, void *a2)
@@ -1372,20 +1372,20 @@ void __49__HFActionSetBuilder__updateValueForContextType___block_invoke_68(uint6
 
 - (id)_lazilyUpdateIcon
 {
-  v3 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
-  v4 = [v3 hf_iconDescriptor];
-  v5 = [v4 identifier];
+  actionSet = [(HFAbstractBaseActionSetBuilder *)self actionSet];
+  hf_iconDescriptor = [actionSet hf_iconDescriptor];
+  identifier = [hf_iconDescriptor identifier];
 
-  v6 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
-  v7 = [v6 hf_iconTintColor];
+  actionSet2 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
+  hf_iconTintColor = [actionSet2 hf_iconTintColor];
 
-  v8 = [(HFActionSetBuilder *)self iconDescriptor];
-  v9 = [v8 identifier];
-  v10 = [v5 isEqualToString:v9];
+  iconDescriptor = [(HFActionSetBuilder *)self iconDescriptor];
+  identifier2 = [iconDescriptor identifier];
+  v10 = [identifier isEqualToString:identifier2];
 
-  if (v10 && (-[HFActionSetBuilder iconTintColor](self, "iconTintColor"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v7 isEqual:v11], v11, v12))
+  if (v10 && (-[HFActionSetBuilder iconTintColor](self, "iconTintColor"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [hf_iconTintColor isEqual:v11], v11, v12))
   {
-    v13 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   else
@@ -1395,10 +1395,10 @@ void __49__HFActionSetBuilder__updateValueForContextType___block_invoke_68(uint6
     v16[2] = __39__HFActionSetBuilder__lazilyUpdateIcon__block_invoke;
     v16[3] = &unk_277DF29A0;
     v16[4] = self;
-    v13 = [MEMORY[0x277D2C900] lazyFutureWithBlock:v16];
+    futureWithNoResult = [MEMORY[0x277D2C900] lazyFutureWithBlock:v16];
   }
 
-  v14 = v13;
+  v14 = futureWithNoResult;
 
   return v14;
 }
@@ -1494,16 +1494,16 @@ void __39__HFActionSetBuilder__lazilyUpdateIcon__block_invoke_74(uint64_t a1, vo
   }
 }
 
-- (id)_deleteActionSet:(id)a3 fromHome:(id)a4
+- (id)_deleteActionSet:(id)set fromHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 uniqueIdentifier];
+  setCopy = set;
+  homeCopy = home;
+  uniqueIdentifier = [setCopy uniqueIdentifier];
 
-  if (v7 && v8)
+  if (homeCopy && uniqueIdentifier)
   {
-    v9 = [v6 actionSetType];
-    v10 = [v9 isEqualToString:*MEMORY[0x277CCF1A8]];
+    actionSetType = [setCopy actionSetType];
+    v10 = [actionSetType isEqualToString:*MEMORY[0x277CCF1A8]];
     v11 = MEMORY[0x277D2C900];
     if (v10)
     {
@@ -1511,9 +1511,9 @@ void __39__HFActionSetBuilder__lazilyUpdateIcon__block_invoke_74(uint64_t a1, vo
       v28[1] = 3221225472;
       v28[2] = __48__HFActionSetBuilder__deleteActionSet_fromHome___block_invoke;
       v28[3] = &unk_277DF4150;
-      v12 = v7;
+      v12 = homeCopy;
       v29 = v12;
-      v13 = v6;
+      v13 = setCopy;
       v30 = v13;
       v14 = [v11 futureWithErrorOnlyHandlerAdapterBlock:v28];
       v24[0] = MEMORY[0x277D85DD0];
@@ -1522,7 +1522,7 @@ void __39__HFActionSetBuilder__lazilyUpdateIcon__block_invoke_74(uint64_t a1, vo
       v24[3] = &unk_277DF3180;
       v25 = v12;
       v26 = v13;
-      v27 = self;
+      selfCopy = self;
       v15 = [v14 addCompletionBlock:v24];
 
       v16 = v29;
@@ -1535,7 +1535,7 @@ void __39__HFActionSetBuilder__lazilyUpdateIcon__block_invoke_74(uint64_t a1, vo
       v22[2] = __48__HFActionSetBuilder__deleteActionSet_fromHome___block_invoke_79;
       v22[3] = &unk_277DF28D8;
       v22[4] = self;
-      v23 = v6;
+      v23 = setCopy;
       v15 = [v11 futureWithBlock:v22];
       v16 = v23;
     }
@@ -1544,17 +1544,17 @@ void __39__HFActionSetBuilder__lazilyUpdateIcon__block_invoke_74(uint64_t a1, vo
     v20[1] = 3221225472;
     v20[2] = __48__HFActionSetBuilder__deleteActionSet_fromHome___block_invoke_80;
     v20[3] = &unk_277DF2CE0;
-    v21 = v9;
-    v18 = v9;
-    v17 = [v15 flatMap:v20];
+    v21 = actionSetType;
+    v18 = actionSetType;
+    futureWithNoResult = [v15 flatMap:v20];
   }
 
   else
   {
-    v17 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v17;
+  return futureWithNoResult;
 }
 
 void __48__HFActionSetBuilder__deleteActionSet_fromHome___block_invoke_2(id *a1, uint64_t a2, void *a3)
@@ -1638,21 +1638,21 @@ void __48__HFActionSetBuilder__deleteActionSet_fromHome___block_invoke_79(uint64
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = HFActionSetBuilder;
   v5 = [(HFAbstractBaseActionSetBuilder *)&v11 copyWithZone:?];
-  v6 = [(HFActionSetBuilder *)self name];
-  v7 = [v6 copyWithZone:a3];
+  name = [(HFActionSetBuilder *)self name];
+  v7 = [name copyWithZone:zone];
   [v5 setName:v7];
 
   [v5 setShowInHomeDashboard:{-[HFActionSetBuilder showInHomeDashboard](self, "showInHomeDashboard")}];
-  v8 = [(HFActionSetBuilder *)self iconDescriptor];
-  [v5 setIconDescriptor:v8];
+  iconDescriptor = [(HFActionSetBuilder *)self iconDescriptor];
+  [v5 setIconDescriptor:iconDescriptor];
 
-  v9 = [(HFActionSetBuilder *)self iconTintColor];
-  [v5 setIconTintColor:v9];
+  iconTintColor = [(HFActionSetBuilder *)self iconTintColor];
+  [v5 setIconTintColor:iconTintColor];
 
   [v5 setIsActionSetDeleted:{-[HFActionSetBuilder isActionSetDeleted](self, "isActionSetDeleted")}];
   return v5;

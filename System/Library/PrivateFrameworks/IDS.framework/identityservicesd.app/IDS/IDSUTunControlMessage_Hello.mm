@@ -2,7 +2,7 @@
 - (BOOL)_isSupportIPsecLinkFlagSet;
 - (BOOL)_isTinkerFlagSet;
 - (IDSUTunControlMessage_Hello)init;
-- (IDSUTunControlMessage_Hello)initWithBytes:(const void *)a3 length:(unint64_t)a4 loggingPrefixString:(id)a5;
+- (IDSUTunControlMessage_Hello)initWithBytes:(const void *)bytes length:(unint64_t)length loggingPrefixString:(id)string;
 - (id)data;
 - (id)description;
 @end
@@ -69,7 +69,7 @@
     productVersion = self->_productVersion;
     productBuildVersion = self->_productBuildVersion;
     model = self->_model;
-    v41 = [(NSNumber *)self->_pairingProtocolVersion unsignedIntValue];
+    unsignedIntValue = [(NSNumber *)self->_pairingProtocolVersion unsignedIntValue];
     [(NSNumber *)self->_minCompatibilityVersion unsignedIntValue];
     [(NSNumber *)self->_maxCompatibilityVersion unsignedIntValue];
     [(NSNumber *)self->_capabilityFlags unsignedLongLongValue];
@@ -175,7 +175,7 @@
       *v36 = 0;
     }
 
-    *(v36 + v40 + 2) = bswap32(v41);
+    *(v36 + v40 + 2) = bswap32(unsignedIntValue);
     IDSByteBufferInitForWriteWithAllocatedSpace();
     IDSByteBufferWriteField();
     IDSByteBufferWriteField();
@@ -196,22 +196,22 @@
   return v19;
 }
 
-- (IDSUTunControlMessage_Hello)initWithBytes:(const void *)a3 length:(unint64_t)a4 loggingPrefixString:(id)a5
+- (IDSUTunControlMessage_Hello)initWithBytes:(const void *)bytes length:(unint64_t)length loggingPrefixString:(id)string
 {
-  v8 = a5;
+  stringCopy = string;
   v50.receiver = self;
   v50.super_class = IDSUTunControlMessage_Hello;
   v9 = [(IDSUTunControlMessage_Hello *)&v50 init];
   if (v9)
   {
-    if (!a4)
+    if (!length)
     {
       goto LABEL_94;
     }
 
-    v10 = (a3 + 1);
-    v11 = a4 - 1;
-    if (a4 - 1 < 2)
+    v10 = (bytes + 1);
+    v11 = length - 1;
+    if (length - 1 < 2)
     {
       v22 = 0;
       v46 = 0;
@@ -320,13 +320,13 @@ LABEL_58:
     }
 
     obj = 0;
-    v12 = __rev16(*(a3 + 1));
+    v12 = __rev16(*(bytes + 1));
     if (v12)
     {
-      v13 = a4 - 3 - v12;
-      if (a4 - 3 >= v12)
+      v13 = length - 3 - v12;
+      if (length - 3 >= v12)
       {
-        v14 = a3 + 3;
+        v14 = bytes + 3;
         obj = [[NSString alloc] initWithBytes:v14 length:v12 encoding:4];
         if (!obj)
         {
@@ -334,7 +334,7 @@ LABEL_58:
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            *&buf[4] = v8;
+            *&buf[4] = stringCopy;
             _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%@: control message: hello cannot decode controlChannelVersion", buf, 0xCu);
           }
 
@@ -380,7 +380,7 @@ LABEL_58:
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            *&buf[4] = v8;
+            *&buf[4] = stringCopy;
             _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "%@: control message: hello cannot decode productName", buf, 0xCu);
           }
 
@@ -433,7 +433,7 @@ LABEL_58:
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          *&buf[4] = v8;
+          *&buf[4] = stringCopy;
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%@: control message: hello cannot decode productVersion", buf, 0xCu);
         }
 
@@ -472,7 +472,7 @@ LABEL_19:
               if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
-                *&buf[4] = v8;
+                *&buf[4] = stringCopy;
                 _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "%@: control message: hello cannot decode productBuildVersion", buf, 0xCu);
               }
 
@@ -534,7 +534,7 @@ LABEL_56:
         if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          *&buf[4] = v8;
+          *&buf[4] = stringCopy;
           _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "%@: control message: hello cannot decode model", buf, 0xCu);
         }
 

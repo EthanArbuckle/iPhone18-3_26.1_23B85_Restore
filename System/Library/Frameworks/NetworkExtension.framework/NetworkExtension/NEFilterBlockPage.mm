@@ -36,9 +36,9 @@
 - (id)page
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = a1[2];
+    v2 = self[2];
     if (v2)
     {
       v18 = 0;
@@ -61,14 +61,14 @@
           v8 = 0;
         }
 
-        v11 = [v3 stringByReplacingOccurrencesOfString:@"UNBLOCK_URL_NO_LOC" withString:a1[4]];
-        v12 = [v11 stringByReplacingOccurrencesOfString:@"UNBLOCK_BUTTON_TEXT_NO_LOC" withString:a1[6]];
+        v11 = [v3 stringByReplacingOccurrencesOfString:@"UNBLOCK_URL_NO_LOC" withString:self[4]];
+        v12 = [v11 stringByReplacingOccurrencesOfString:@"UNBLOCK_BUTTON_TEXT_NO_LOC" withString:self[6]];
 
-        v13 = [v12 stringByReplacingOccurrencesOfString:@"UNBLOCK_STYLE_NO_LOC" withString:a1[5]];
+        v13 = [v12 stringByReplacingOccurrencesOfString:@"UNBLOCK_STYLE_NO_LOC" withString:self[5]];
 
-        v10 = [v13 stringByReplacingOccurrencesOfString:@"PROVIDER_ORGANIZATION_NO_LOC" withString:a1[1]];
+        v10 = [v13 stringByReplacingOccurrencesOfString:@"PROVIDER_ORGANIZATION_NO_LOC" withString:self[1]];
 
-        if (a1[3])
+        if (self[3])
         {
           v14 = [v10 stringByReplacingOccurrencesOfString:@"USER_VISIBLE_RESTRICTED_URL_NO_LOC" withString:?];
 

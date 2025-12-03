@@ -9,27 +9,27 @@
 + (int64_t)defaultShortcutsVersion;
 + (int64_t)lastSyncedFlagsHash;
 + (int64_t)syncedFlagsHash;
-+ (void)fetchCloudKitSyncFlagsIfNecessaryWithCompletionHandler:(id)a3;
++ (void)fetchCloudKitSyncFlagsIfNecessaryWithCompletionHandler:(id)handler;
 + (void)initialize;
 + (void)resolveWalrusStatus;
-+ (void)setDefaultShortcutsVersion:(int64_t)a3;
-+ (void)setLastSyncedFlagsHash:(int64_t)a3;
++ (void)setDefaultShortcutsVersion:(int64_t)version;
++ (void)setLastSyncedFlagsHash:(int64_t)hash;
 @end
 
 @implementation WFCloudKitSyncSession
 
 + (BOOL)isWalrusEnabled
 {
-  v2 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
-  v3 = [v2 BOOLForKey:@"WFWalrusEnabled"];
+  systemShortcutsUserDefaults = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+  v3 = [systemShortcutsUserDefaults BOOLForKey:@"WFWalrusEnabled"];
 
   return v3;
 }
 
 + (BOOL)isSyncEnabled
 {
-  v2 = [MEMORY[0x1E695E000] workflowUserDefaults];
-  v3 = [v2 BOOLForKey:@"WFCloudKitSyncEnabled"];
+  workflowUserDefaults = [MEMORY[0x1E695E000] workflowUserDefaults];
+  v3 = [workflowUserDefaults BOOLForKey:@"WFCloudKitSyncEnabled"];
 
   return v3;
 }
@@ -56,20 +56,20 @@ void __35__WFCloudKitSyncSession_initialize__block_invoke()
 
 + (BOOL)zoneWasPurged
 {
-  v2 = [MEMORY[0x1E695E000] workflowUserDefaults];
-  v3 = [v2 BOOLForKey:@"WFCloudKitSyncZoneWasPurged"];
+  workflowUserDefaults = [MEMORY[0x1E695E000] workflowUserDefaults];
+  v3 = [workflowUserDefaults BOOLForKey:@"WFCloudKitSyncZoneWasPurged"];
 
   return v3;
 }
 
-+ (void)fetchCloudKitSyncFlagsIfNecessaryWithCompletionHandler:(id)a3
++ (void)fetchCloudKitSyncFlagsIfNecessaryWithCompletionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [a1 needsDefaultShortcutUpdate];
-  v7 = [a1 voiceShortcutMigrationDidSync];
-  v8 = v7;
-  if ((v6 & 1) != 0 || !v7)
+  handlerCopy = handler;
+  needsDefaultShortcutUpdate = [self needsDefaultShortcutUpdate];
+  voiceShortcutMigrationDidSync = [self voiceShortcutMigrationDidSync];
+  v8 = voiceShortcutMigrationDidSync;
+  if ((needsDefaultShortcutUpdate & 1) != 0 || !voiceShortcutMigrationDidSync)
   {
     v9 = getWFCloudKitSyncLogObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -77,24 +77,24 @@ void __35__WFCloudKitSyncSession_initialize__block_invoke()
       *buf = 136315650;
       v25 = "+[WFCloudKitSyncSession fetchCloudKitSyncFlagsIfNecessaryWithCompletionHandler:]";
       v26 = 1026;
-      v27 = v6;
+      v27 = needsDefaultShortcutUpdate;
       v28 = 1026;
       v29 = v8;
       _os_log_impl(&dword_1CA256000, v9, OS_LOG_TYPE_DEFAULT, "%s Fetching sync flags record from CloudKit, needsDefaultShortcutUpdate = %{public}d, voiceShortcutMigrationDidSync = %{public}d", buf, 0x18u);
     }
 
-    if (!v5)
+    if (!handlerCopy)
     {
-      v20 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v20 handleFailureInMethod:a2 object:a1 file:@"WFCloudKitSyncSession.m" lineNumber:173 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"WFCloudKitSyncSession.m" lineNumber:173 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
     }
 
     v10 = WFShortcutsCloudKitContainer();
     v11 = objc_alloc(MEMORY[0x1E695BA90]);
     v12 = [v11 initWithZoneName:@"Shortcuts" ownerName:*MEMORY[0x1E695B728]];
     v13 = [WFCloudKitItemRequest alloc];
-    v14 = [v10 privateCloudDatabase];
-    v15 = [(WFCloudKitItemRequest *)v13 initWithContainer:v10 database:v14];
+    privateCloudDatabase = [v10 privateCloudDatabase];
+    v15 = [(WFCloudKitItemRequest *)v13 initWithContainer:v10 database:privateCloudDatabase];
 
     v16 = [WFCloudKitSyncFlags recordIDWithZoneID:v12];
     v17 = objc_opt_class();
@@ -102,14 +102,14 @@ void __35__WFCloudKitSyncSession_initialize__block_invoke()
     v21[1] = 3221225472;
     v21[2] = __80__WFCloudKitSyncSession_fetchCloudKitSyncFlagsIfNecessaryWithCompletionHandler___block_invoke;
     v21[3] = &unk_1E83734F8;
-    v22 = v5;
-    v23 = a1;
+    v22 = handlerCopy;
+    selfCopy = self;
     v18 = [(WFCloudKitItemRequest *)v15 fetchItemWithID:v16 itemType:v17 groupName:@"InitialSetup" properties:0 completionHandler:v21];
   }
 
   else
   {
-    (*(v5 + 2))(v5, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -155,8 +155,8 @@ void __80__WFCloudKitSyncSession_fetchCloudKitSyncFlagsIfNecessaryWithCompletion
 
 + (BOOL)isWalrusForcedEnabled
 {
-  v2 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
-  v3 = [v2 BOOLForKey:@"WFWalrusForcedEnabled"];
+  systemShortcutsUserDefaults = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+  v3 = [systemShortcutsUserDefaults BOOLForKey:@"WFWalrusForcedEnabled"];
 
   return v3;
 }
@@ -164,15 +164,15 @@ void __80__WFCloudKitSyncSession_fetchCloudKitSyncFlagsIfNecessaryWithCompletion
 + (void)resolveWalrusStatus
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
-  v3 = [v2 BOOLForKey:@"WFWalrusGroundTruthEnabled"];
+  systemShortcutsUserDefaults = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+  v3 = [systemShortcutsUserDefaults BOOLForKey:@"WFWalrusGroundTruthEnabled"];
 
-  v4 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
-  v5 = [v4 BOOLForKey:@"WFWalrusForcedEnabled"];
+  systemShortcutsUserDefaults2 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+  v5 = [systemShortcutsUserDefaults2 BOOLForKey:@"WFWalrusForcedEnabled"];
 
-  v6 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+  systemShortcutsUserDefaults3 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
   v7 = (v3 | v5) & 1;
-  [v6 setBool:v7 forKey:@"WFWalrusEnabled"];
+  [systemShortcutsUserDefaults3 setBool:v7 forKey:@"WFWalrusEnabled"];
 
   v8 = getWFWalrusLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -189,65 +189,65 @@ void __80__WFCloudKitSyncSession_fetchCloudKitSyncFlagsIfNecessaryWithCompletion
 
 + (int64_t)syncedFlagsHash
 {
-  v3 = [a1 defaultShortcutsVersion];
-  v4 = [a1 voiceShortcutMigrationDidRun];
+  defaultShortcutsVersion = [self defaultShortcutsVersion];
+  voiceShortcutMigrationDidRun = [self voiceShortcutMigrationDidRun];
   v5 = 3735928559;
-  if (v4)
+  if (voiceShortcutMigrationDidRun)
   {
     v5 = 305419896;
   }
 
-  return v5 ^ v3;
+  return v5 ^ defaultShortcutsVersion;
 }
 
-+ (void)setLastSyncedFlagsHash:(int64_t)a3
++ (void)setLastSyncedFlagsHash:(int64_t)hash
 {
-  v4 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
-  [v4 setInteger:a3 forKey:@"WFLastSyncedFlagsHash"];
+  systemShortcutsUserDefaults = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+  [systemShortcutsUserDefaults setInteger:hash forKey:@"WFLastSyncedFlagsHash"];
 }
 
 + (int64_t)lastSyncedFlagsHash
 {
-  v2 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
-  v3 = [v2 integerForKey:@"WFLastSyncedFlagsHash"];
+  systemShortcutsUserDefaults = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+  v3 = [systemShortcutsUserDefaults integerForKey:@"WFLastSyncedFlagsHash"];
 
   return v3;
 }
 
-+ (void)setDefaultShortcutsVersion:(int64_t)a3
++ (void)setDefaultShortcutsVersion:(int64_t)version
 {
-  v4 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
-  [v4 setInteger:a3 forKey:@"WFDefaultShortcutsVersion"];
+  systemShortcutsUserDefaults = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+  [systemShortcutsUserDefaults setInteger:version forKey:@"WFDefaultShortcutsVersion"];
 }
 
 + (int64_t)defaultShortcutsVersion
 {
-  v2 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
-  v3 = [v2 integerForKey:@"WFDefaultShortcutsVersion"];
+  systemShortcutsUserDefaults = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+  v3 = [systemShortcutsUserDefaults integerForKey:@"WFDefaultShortcutsVersion"];
 
   return v3;
 }
 
 + (BOOL)voiceShortcutMigrationDidSync
 {
-  v2 = [MEMORY[0x1E695E000] workflowUserDefaults];
-  v3 = [v2 BOOLForKey:@"VCVoiceShortcutMigrationDidSync"];
+  workflowUserDefaults = [MEMORY[0x1E695E000] workflowUserDefaults];
+  v3 = [workflowUserDefaults BOOLForKey:@"VCVoiceShortcutMigrationDidSync"];
 
   return v3;
 }
 
 + (BOOL)voiceShortcutMigrationDidRun
 {
-  v2 = [MEMORY[0x1E695E000] workflowUserDefaults];
-  v3 = [v2 BOOLForKey:@"VCVoiceShortcutMigrationDidRun"];
+  workflowUserDefaults = [MEMORY[0x1E695E000] workflowUserDefaults];
+  v3 = [workflowUserDefaults BOOLForKey:@"VCVoiceShortcutMigrationDidRun"];
 
   return v3;
 }
 
 + (BOOL)ignoresUserDeletedZoneErrors
 {
-  v2 = [MEMORY[0x1E695E000] workflowUserDefaults];
-  v3 = [v2 BOOLForKey:@"WFCloudKitSyncIgnoresUserDeletedZoneErrors"];
+  workflowUserDefaults = [MEMORY[0x1E695E000] workflowUserDefaults];
+  v3 = [workflowUserDefaults BOOLForKey:@"WFCloudKitSyncIgnoresUserDeletedZoneErrors"];
 
   return v3;
 }

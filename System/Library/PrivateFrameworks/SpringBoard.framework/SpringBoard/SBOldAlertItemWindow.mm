@@ -1,82 +1,82 @@
 @interface SBOldAlertItemWindow
 - (SBAlertLayoutPresentationVerifier)alertLayoutPresentationVerifier;
-- (SBOldAlertItemWindow)initWithWindowScene:(id)a3 role:(id)a4 debugName:(id)a5 alertLayoutPresentationVerifier:(id)a6;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
-- (void)setBounds:(CGRect)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (SBOldAlertItemWindow)initWithWindowScene:(id)scene role:(id)role debugName:(id)name alertLayoutPresentationVerifier:(id)verifier;
+- (id)actionForLayer:(id)layer forKey:(id)key;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCenter:(CGPoint)center;
+- (void)setFrame:(CGRect)frame;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation SBOldAlertItemWindow
 
-- (SBOldAlertItemWindow)initWithWindowScene:(id)a3 role:(id)a4 debugName:(id)a5 alertLayoutPresentationVerifier:(id)a6
+- (SBOldAlertItemWindow)initWithWindowScene:(id)scene role:(id)role debugName:(id)name alertLayoutPresentationVerifier:(id)verifier
 {
-  v10 = a6;
+  verifierCopy = verifier;
   v14.receiver = self;
   v14.super_class = SBOldAlertItemWindow;
-  v11 = [(SBMainScreenActiveInterfaceOrientationWindow *)&v14 initWithWindowScene:a3 role:a4 debugName:a5];
+  v11 = [(SBMainScreenActiveInterfaceOrientationWindow *)&v14 initWithWindowScene:scene role:role debugName:name];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_alertLayoutPresentationVerifier, v10);
+    objc_storeWeak(&v11->_alertLayoutPresentationVerifier, verifierCopy);
   }
 
   return v12;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
   v7.receiver = self;
   v7.super_class = SBOldAlertItemWindow;
-  v4 = *&a3->c;
-  v6[0] = *&a3->a;
+  v4 = *&transform->c;
+  v6[0] = *&transform->a;
   v6[1] = v4;
-  v6[2] = *&a3->tx;
+  v6[2] = *&transform->tx;
   [(SBOldAlertItemWindow *)&v7 setTransform:v6];
   WeakRetained = objc_loadWeakRetained(&self->_alertLayoutPresentationVerifier);
   [WeakRetained scheduleDelayedAlertLayoutVerificationForReason:@"Alert window setTransform:"];
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
   v5.receiver = self;
   v5.super_class = SBOldAlertItemWindow;
-  [(SBOldAlertItemWindow *)&v5 setCenter:a3.x, a3.y];
+  [(SBOldAlertItemWindow *)&v5 setCenter:center.x, center.y];
   WeakRetained = objc_loadWeakRetained(&self->_alertLayoutPresentationVerifier);
   [WeakRetained scheduleDelayedAlertLayoutVerificationForReason:@"Alert window setCenter:"];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = SBOldAlertItemWindow;
-  [(SBOldAlertItemWindow *)&v5 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SBOldAlertItemWindow *)&v5 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   WeakRetained = objc_loadWeakRetained(&self->_alertLayoutPresentationVerifier);
   [WeakRetained scheduleDelayedAlertLayoutVerificationForReason:@"Alert window setFrame:"];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v5.receiver = self;
   v5.super_class = SBOldAlertItemWindow;
-  [(SBOldAlertItemWindow *)&v5 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SBOldAlertItemWindow *)&v5 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   WeakRetained = objc_loadWeakRetained(&self->_alertLayoutPresentationVerifier);
   [WeakRetained scheduleDelayedAlertLayoutVerificationForReason:@"Alert window setBounds:"];
 }
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
-  v6 = a3;
+  layerCopy = layer;
   v15.receiver = self;
   v15.super_class = SBOldAlertItemWindow;
-  v7 = a4;
-  v8 = [(SBOldAlertItemWindow *)&v15 actionForLayer:v6 forKey:v7];
-  v9 = [v7 isEqualToString:@"position"];
+  keyCopy = key;
+  v8 = [(SBOldAlertItemWindow *)&v15 actionForLayer:layerCopy forKey:keyCopy];
+  v9 = [keyCopy isEqualToString:@"position"];
 
   if (v9)
   {
-    [v6 position];
+    [layerCopy position];
     v10 = NSStringFromCGPoint(v17);
     v11 = SBLogAlertItems();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))

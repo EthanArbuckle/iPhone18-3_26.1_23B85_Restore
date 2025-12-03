@@ -89,7 +89,7 @@
     }
 
     v11 = [CIVector vectorWithX:v9 Y:(v8 + v8) Z:((1.0 - v8) * 0.5)];
-    v12 = [(CIStripesGenerator *)self _kernel];
+    _kernel = [(CIStripesGenerator *)self _kernel];
     v13 = *MEMORY[0x1E695F040];
     v14 = *(MEMORY[0x1E695F040] + 8);
     v15 = *(MEMORY[0x1E695F040] + 16);
@@ -98,7 +98,7 @@
     v19[1] = v5;
     v19[2] = inputColor1;
     v19[3] = v11;
-    return [v12 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v19, 4), v13, v14, v15, v16}];
+    return [_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v19, 4), v13, v14, v15, v16}];
   }
 }
 

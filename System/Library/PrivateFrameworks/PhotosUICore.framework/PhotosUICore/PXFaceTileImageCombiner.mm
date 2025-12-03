@@ -1,36 +1,36 @@
 @interface PXFaceTileImageCombiner
-+ (id)_generateCombinedImageFromImages:(id)a3 context:(id)a4;
-+ (id)placeholderImageForNumberOfItems:(unint64_t)a3 context:(id)a4;
++ (id)_generateCombinedImageFromImages:(id)images context:(id)context;
++ (id)placeholderImageForNumberOfItems:(unint64_t)items context:(id)context;
 + (void)initialize;
-- (void)_returnCombinedImage:(id)a3 generation:(unint64_t)a4 resultHandler:(id)a5;
-- (void)requestCombinedImageForItems:(id)a3 context:(id)a4 resultHandler:(id)a5;
+- (void)_returnCombinedImage:(id)image generation:(unint64_t)generation resultHandler:(id)handler;
+- (void)requestCombinedImageForItems:(id)items context:(id)context resultHandler:(id)handler;
 @end
 
 @implementation PXFaceTileImageCombiner
 
-- (void)_returnCombinedImage:(id)a3 generation:(unint64_t)a4 resultHandler:(id)a5
+- (void)_returnCombinedImage:(id)image generation:(unint64_t)generation resultHandler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  imageCopy = image;
+  handlerCopy = handler;
   currentGeneration = self->_currentGeneration;
   v11 = PLUIGetLog();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG);
-  if (currentGeneration == a4)
+  if (currentGeneration == generation)
   {
     if (v12)
     {
       v15 = 138412802;
       v16 = objc_opt_class();
       v17 = 2048;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2048;
-      v20 = a4;
+      generationCopy2 = generation;
       v13 = v16;
       _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_DEBUG, "<%@:%p> Returning a combined image for generation:%lu", &v15, 0x20u);
     }
 
-    v9[2](v9, v8);
+    handlerCopy[2](handlerCopy, imageCopy);
   }
 
   else
@@ -40,40 +40,40 @@
       v15 = 138412802;
       v16 = objc_opt_class();
       v17 = 2048;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2048;
-      v20 = a4;
+      generationCopy2 = generation;
       v14 = v16;
       _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_DEBUG, "<%@:%p> Dropping request for out of date generation:%lu", &v15, 0x20u);
     }
   }
 }
 
-- (void)requestCombinedImageForItems:(id)a3 context:(id)a4 resultHandler:(id)a5
+- (void)requestCombinedImageForItems:(id)items context:(id)context resultHandler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemsCopy = items;
+  contextCopy = context;
+  handlerCopy = handler;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PXFaceTileImageCombiner.m" lineNumber:78 description:{@"%s must be called on the main thread", "-[PXFaceTileImageCombiner requestCombinedImageForItems:context:resultHandler:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFaceTileImageCombiner.m" lineNumber:78 description:{@"%s must be called on the main thread", "-[PXFaceTileImageCombiner requestCombinedImageForItems:context:resultHandler:]"}];
   }
 
-  v12 = [v9 count];
+  v12 = [itemsCopy count];
   if (v12)
   {
-    if (v10)
+    if (contextCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_10:
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PXFaceTileImageCombiner.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXFaceTileImageCombiner.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"context"}];
 
-    if (v11)
+    if (handlerCopy)
     {
       goto LABEL_6;
     }
@@ -81,23 +81,23 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"PXFaceTileImageCombiner.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"numberOfItems > 0"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXFaceTileImageCombiner.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"numberOfItems > 0"}];
 
-  if (!v10)
+  if (!contextCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_5:
-  if (v11)
+  if (handlerCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_11:
-  v24 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"PXFaceTileImageCombiner.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"resultHandler"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"PXFaceTileImageCombiner.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"resultHandler"}];
 
 LABEL_6:
   v13 = (self->_currentGeneration + 1);
@@ -121,17 +121,17 @@ LABEL_6:
   block[1] = 3221225472;
   block[2] = __78__PXFaceTileImageCombiner_requestCombinedImageForItems_context_resultHandler___block_invoke;
   block[3] = &unk_1E773CE80;
-  v26 = v10;
-  v27 = v9;
+  v26 = contextCopy;
+  v27 = itemsCopy;
   v30[1] = v12;
   v30[2] = v13;
   v28 = v14;
   v17 = v14;
-  v18 = v9;
-  v19 = v10;
+  v18 = itemsCopy;
+  v19 = contextCopy;
   objc_copyWeak(v30, buf);
-  v29 = v11;
-  v20 = v11;
+  v29 = handlerCopy;
+  v20 = handlerCopy;
   dispatch_async(v16, block);
 
   objc_destroyWeak(v30);
@@ -320,32 +320,32 @@ void __78__PXFaceTileImageCombiner_requestCombinedImageForItems_context_resultHa
   [WeakRetained _returnCombinedImage:*(a1 + 32) generation:*(a1 + 56) resultHandler:*(a1 + 40)];
 }
 
-+ (id)_generateCombinedImageFromImages:(id)a3 context:(id)a4
++ (id)_generateCombinedImageFromImages:(id)images context:(id)context
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 count];
+  contextCopy = context;
+  imagesCopy = images;
+  v9 = [imagesCopy count];
   if (!v9)
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:a2 object:a1 file:@"PXFaceTileImageCombiner.m" lineNumber:141 description:{@"Invalid parameter not satisfying: %@", @"imagesCount > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFaceTileImageCombiner.m" lineNumber:141 description:{@"Invalid parameter not satisfying: %@", @"imagesCount > 0"}];
   }
 
-  [v7 displayScale];
+  [contextCopy displayScale];
   v11 = v10;
-  v12 = [v7 isRTL];
-  v13 = [v7 isAscending];
-  [v7 imageSize];
+  isRTL = [contextCopy isRTL];
+  isAscending = [contextCopy isAscending];
+  [contextCopy imageSize];
   v15 = v14;
-  [v7 imageOffset];
+  [contextCopy imageOffset];
   v17 = v16;
-  v18 = [v7 backgroundColor];
-  v19 = [v7 borderColor];
-  [v7 borderWidth];
+  backgroundColor = [contextCopy backgroundColor];
+  borderColor = [contextCopy borderColor];
+  [contextCopy borderWidth];
   v21 = v20;
 
-  v22 = [MEMORY[0x1E69DC888] clearColor];
-  v23 = [v19 isEqual:v22];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  v23 = [borderColor isEqual:clearColor];
 
   v24 = v11 * v15;
   v25 = v11 * v21;
@@ -353,7 +353,7 @@ void __78__PXFaceTileImageCombiner_requestCombinedImageForItems_context_resultHa
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   v28 = CGBitmapContextCreate(0, v26, v24, 8uLL, 0, DeviceRGB, 1u);
   CGColorSpaceRelease(DeviceRGB);
-  CGContextSetFillColorWithColor(v28, [v18 CGColor]);
+  CGContextSetFillColorWithColor(v28, [backgroundColor CGColor]);
   v48.origin.x = 0.0;
   v48.origin.y = 0.0;
   v48.size.width = v26;
@@ -363,10 +363,10 @@ void __78__PXFaceTileImageCombiner_requestCombinedImageForItems_context_resultHa
   v35[1] = 3221225472;
   v35[2] = __68__PXFaceTileImageCombiner__generateCombinedImageFromImages_context___block_invoke;
   v35[3] = &unk_1E773CEA8;
-  v45 = v12;
+  v45 = isRTL;
   v37 = v11 * v17;
   v38 = v26;
-  if (v13)
+  if (isAscending)
   {
     v29 = 0;
   }
@@ -380,12 +380,12 @@ void __78__PXFaceTileImageCombiner_requestCombinedImageForItems_context_resultHa
   v40 = v24;
   v46 = v23;
   v41 = v28;
-  v36 = v19;
+  v36 = borderColor;
   v42 = v25;
   v43 = v24 + v25 * -2.0;
   v44 = v43 * 0.5;
-  v30 = v19;
-  [v8 px_enumeratePointersWithOptions:v29 usingBlock:v35];
+  v30 = borderColor;
+  [imagesCopy px_enumeratePointersWithOptions:v29 usingBlock:v35];
 
   Image = CGBitmapContextCreateImage(v28);
   CGContextRelease(v28);
@@ -466,23 +466,23 @@ void __68__PXFaceTileImageCombiner__generateCombinedImageFromImages_context___bl
   }
 }
 
-+ (id)placeholderImageForNumberOfItems:(unint64_t)a3 context:(id)a4
++ (id)placeholderImageForNumberOfItems:(unint64_t)items context:(id)context
 {
   v21 = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E696AF00];
-  v8 = a4;
+  contextCopy = context;
   if ([v7 isMainThread])
   {
-    if (a3)
+    if (items)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"PXFaceTileImageCombiner.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"numberOfItems > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFaceTileImageCombiner.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"numberOfItems > 0"}];
 
-    if (v8)
+    if (contextCopy)
     {
       goto LABEL_4;
     }
@@ -490,23 +490,23 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v14 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v14 handleFailureInMethod:a2 object:a1 file:@"PXFaceTileImageCombiner.m" lineNumber:65 description:{@"%s must be called on the main thread", "+[PXFaceTileImageCombiner placeholderImageForNumberOfItems:context:]"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXFaceTileImageCombiner.m" lineNumber:65 description:{@"%s must be called on the main thread", "+[PXFaceTileImageCombiner placeholderImageForNumberOfItems:context:]"}];
 
-  if (!a3)
+  if (!items)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if (v8)
+  if (contextCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_11:
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:a1 file:@"PXFaceTileImageCombiner.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXFaceTileImageCombiner.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"context"}];
 
 LABEL_4:
   v9 = PLUIGetLog();
@@ -515,21 +515,21 @@ LABEL_4:
     *buf = 138412546;
     v18 = objc_opt_class();
     v19 = 2048;
-    v20 = a3;
+    itemsCopy = items;
     v10 = v18;
     _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEBUG, "<%@> Generating a placeholder image for:%lu", buf, 0x16u);
   }
 
-  v11 = [MEMORY[0x1E696AE08] strongObjectsPointerArray];
-  [v11 setCount:a3];
-  v12 = [a1 _generateCombinedImageFromImages:v11 context:v8];
+  strongObjectsPointerArray = [MEMORY[0x1E696AE08] strongObjectsPointerArray];
+  [strongObjectsPointerArray setCount:items];
+  v12 = [self _generateCombinedImageFromImages:strongObjectsPointerArray context:contextCopy];
 
   return v12;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v4 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_DEFAULT, 0);
     v2 = dispatch_queue_create("com.apple.mobileslideshow.PXFaceTileImageCombiner", v4);

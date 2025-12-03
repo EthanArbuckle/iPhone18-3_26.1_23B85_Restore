@@ -1,9 +1,9 @@
 @interface HDWorkoutTrainingLoadDataSource
-- (BOOL)samplesForCalculatorWithHandler:(id)a3;
+- (BOOL)samplesForCalculatorWithHandler:(id)handler;
 - (HDProfile)profile;
 - (HDWorkoutTrainingLoadDataSource)init;
-- (HDWorkoutTrainingLoadDataSource)initWithProfile:(id)a3 quantityType:(id)a4 filter:(id)a5;
-- (void)_queryEffortSampleValuesForWorkoutUUID:(uint64_t)a3 workoutPID:(void *)a4 workoutStartDate:(void *)a5 workoutEndDate:(uint64_t)a6 workoutActivityType:(uint64_t)a7 workoutDuration:(void *)a8 sourceID:(double)a9 activity:(void *)a10 sampleHandler:;
+- (HDWorkoutTrainingLoadDataSource)initWithProfile:(id)profile quantityType:(id)type filter:(id)filter;
+- (void)_queryEffortSampleValuesForWorkoutUUID:(uint64_t)d workoutPID:(void *)iD workoutStartDate:(void *)date workoutEndDate:(uint64_t)endDate workoutActivityType:(uint64_t)type workoutDuration:(void *)duration sourceID:(double)sourceID activity:(void *)self0 sampleHandler:;
 @end
 
 @implementation HDWorkoutTrainingLoadDataSource
@@ -18,48 +18,48 @@
   return 0;
 }
 
-- (HDWorkoutTrainingLoadDataSource)initWithProfile:(id)a3 quantityType:(id)a4 filter:(id)a5
+- (HDWorkoutTrainingLoadDataSource)initWithProfile:(id)profile quantityType:(id)type filter:(id)filter
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  profileCopy = profile;
+  typeCopy = type;
+  filterCopy = filter;
   v19.receiver = self;
   v19.super_class = HDWorkoutTrainingLoadDataSource;
   v11 = [(HDWorkoutTrainingLoadDataSource *)&v19 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_profile, v8);
-    v13 = [v9 copy];
+    objc_storeWeak(&v11->_profile, profileCopy);
+    v13 = [typeCopy copy];
     quantityType = v12->_quantityType;
     v12->_quantityType = v13;
 
-    v15 = [v10 copy];
+    v15 = [filterCopy copy];
     filter = v12->_filter;
     v12->_filter = v15;
 
-    v17 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v12->_verboseLogging = [v17 hk_BOOLForKey:@"HDWorkoutTrainingLoadNoisyLogging" defaultValue:0];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v12->_verboseLogging = [standardUserDefaults hk_BOOLForKey:@"HDWorkoutTrainingLoadNoisyLogging" defaultValue:0];
   }
 
   return v12;
 }
 
-- (BOOL)samplesForCalculatorWithHandler:(id)a3
+- (BOOL)samplesForCalculatorWithHandler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained database];
+  database = [WeakRetained database];
   v15 = 0;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __67__HDWorkoutTrainingLoadDataSource_samplesForCalculatorWithHandler___block_invoke;
   v13[3] = &unk_278618368;
   v13[4] = self;
-  v7 = v4;
+  v7 = handlerCopy;
   v14 = v7;
-  v8 = [(HDHealthEntity *)HDWorkoutEntity performReadTransactionWithHealthDatabase:v6 error:&v15 block:v13];
+  v8 = [(HDHealthEntity *)HDWorkoutEntity performReadTransactionWithHealthDatabase:database error:&v15 block:v13];
   v9 = v15;
 
   if (!v8)
@@ -217,34 +217,34 @@ BOOL __67__HDWorkoutTrainingLoadDataSource_samplesForCalculatorWithHandler___blo
   return v16;
 }
 
-- (void)_queryEffortSampleValuesForWorkoutUUID:(uint64_t)a3 workoutPID:(void *)a4 workoutStartDate:(void *)a5 workoutEndDate:(uint64_t)a6 workoutActivityType:(uint64_t)a7 workoutDuration:(void *)a8 sourceID:(double)a9 activity:(void *)a10 sampleHandler:
+- (void)_queryEffortSampleValuesForWorkoutUUID:(uint64_t)d workoutPID:(void *)iD workoutStartDate:(void *)date workoutEndDate:(uint64_t)endDate workoutActivityType:(uint64_t)type workoutDuration:(void *)duration sourceID:(double)sourceID activity:(void *)self0 sampleHandler:
 {
   v86 = *MEMORY[0x277D85DE8];
   v18 = a2;
-  v63 = a4;
-  v62 = a5;
-  v19 = a8;
-  v61 = a10;
-  if (a1)
+  iDCopy = iD;
+  dateCopy = date;
+  durationCopy = duration;
+  activityCopy = activity;
+  if (self)
   {
-    v51 = v19 != 0;
+    v51 = durationCopy != 0;
     v20 = @"IS NULL ";
-    if (v19)
+    if (durationCopy)
     {
       v20 = @"= (SELECT workout_activities.ROWID FROM workout_activities WHERE workout_activities.uuid = ?) ";
     }
 
-    v59 = a1;
+    selfCopy = self;
     v60 = v20;
-    v54 = a3;
-    v56 = a7;
-    v52 = v19;
-    if (v19)
+    dCopy = d;
+    typeCopy = type;
+    v52 = durationCopy;
+    if (durationCopy)
     {
       v21 = objc_alloc_init(MEMORY[0x277CBEB28]);
-      v22 = [v19 UUID];
+      uUID = [durationCopy UUID];
       v50 = v21;
-      [v21 hk_appendBytesWithUUID:v22];
+      [v21 hk_appendBytesWithUUID:uUID];
     }
 
     else
@@ -260,22 +260,22 @@ BOOL __67__HDWorkoutTrainingLoadDataSource_samplesForCalculatorWithHandler___blo
     v58 = v24;
     v28 = [v25 stringWithFormat:@"SELECT     workout_associations.sample_type, %@.%@ as sample_value FROM(    SELECT         %@.%@, %@.%@ as source_object_id, %@ as sample_type, %@.%@ as sample_creation_date, %@     FROM %@     INNER JOIN %@ AS child_id_samples ON %@.%@=%@     WHERE %@.%@ = ?         AND %@.%@ %@         AND %@.%@ = 0         AND %@ IN (?, ?)         AND %@.%@ = ?         AND %@.%@ = ?) workout_associations LEFT JOIN %@ ON workout_associations.%@ = %@.%@ ORDER BY workout_associations.sample_type DESC, workout_associations.sample_creation_date DESC LIMIT 1", v24, v26, v23, @"ROWID", v23, @"source_object_id", @"child_id_samples.data_type", v23, @"creation_date", @"child_id_samples.data_id", v23, v27, v23, @"source_object_id", @"child_id_samples.data_id", v23, @"destination_object_id", v23, @"destination_sub_object_id", v60, v23, @"deleted", @"child_id_samples.data_type", v23, @"type", v23, @"behavior", v24, @"data_id", v24, @"data_id"];;
 
-    v29 = [v52 workoutConfiguration];
-    v30 = [v29 activityType];
-    if (v30)
+    workoutConfiguration = [v52 workoutConfiguration];
+    activityType = [workoutConfiguration activityType];
+    if (activityType)
     {
-      v31 = v30;
+      endDateCopy = activityType;
     }
 
     else
     {
-      v31 = a6;
+      endDateCopy = endDate;
     }
 
     v32 = objc_alloc_init(HDMutableDatabaseTransactionContext);
     [(HDMutableDatabaseTransactionContext *)v32 setRequiresWrite:0];
-    WeakRetained = objc_loadWeakRetained((v59 + 16));
-    v34 = [WeakRetained database];
+    WeakRetained = objc_loadWeakRetained((selfCopy + 16));
+    database = [WeakRetained database];
     v79 = 0;
     v64[0] = MEMORY[0x277D85DD0];
     v64[1] = 3221225472;
@@ -283,28 +283,28 @@ BOOL __67__HDWorkoutTrainingLoadDataSource_samplesForCalculatorWithHandler___blo
     v64[3] = &unk_2786183E0;
     v35 = v52;
     v65 = v35;
-    v74 = a9;
-    v66 = v63;
-    v67 = v62;
+    sourceIDCopy = sourceID;
+    v66 = iDCopy;
+    v67 = dateCopy;
     v53 = v28;
     v68 = v53;
-    v75 = v54;
+    v75 = dCopy;
     v78 = v51;
     v55 = v50;
     v69 = v55;
-    v73 = v61;
-    v76 = v56;
-    v77 = v31;
+    v73 = activityCopy;
+    v76 = typeCopy;
+    v77 = endDateCopy;
     v36 = v18;
     v70 = v36;
-    v71 = v59;
+    v71 = selfCopy;
     v72 = 0;
     v57 = v32;
-    [v34 performTransactionWithContext:v32 error:&v79 block:v64 inaccessibilityHandler:&__block_literal_global_36];
+    [database performTransactionWithContext:v32 error:&v79 block:v64 inaccessibilityHandler:&__block_literal_global_36];
     v37 = v79;
 
     v38 = v37;
-    v19 = v52;
+    durationCopy = v52;
     if (v38)
     {
       _HKInitializeLogging();
@@ -314,7 +314,7 @@ BOOL __67__HDWorkoutTrainingLoadDataSource_samplesForCalculatorWithHandler___blo
         v40 = v39;
         v41 = _HKWorkoutActivityNameForActivityType();
         *buf = 138543874;
-        v81 = v59;
+        v81 = selfCopy;
         v82 = 2114;
         v83 = v41;
         v84 = 2114;
@@ -325,7 +325,7 @@ BOOL __67__HDWorkoutTrainingLoadDataSource_samplesForCalculatorWithHandler___blo
       goto LABEL_19;
     }
 
-    v42 = *(v59 + 8);
+    v42 = *(selfCopy + 8);
     _HKInitializeLogging();
     v43 = *MEMORY[0x277CCC330];
     v44 = *MEMORY[0x277CCC330];
@@ -334,13 +334,13 @@ BOOL __67__HDWorkoutTrainingLoadDataSource_samplesForCalculatorWithHandler___blo
       if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
       {
         v45 = v43;
-        v46 = [v35 UUID];
+        uUID2 = [v35 UUID];
         *buf = 138543874;
-        v81 = v59;
+        v81 = selfCopy;
         v82 = 2114;
         v83 = v36;
         v84 = 2114;
-        v85 = v46;
+        v85 = uUID2;
         v47 = v45;
         v48 = OS_LOG_TYPE_DEFAULT;
 LABEL_18:
@@ -351,13 +351,13 @@ LABEL_18:
     else if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
     {
       v45 = v43;
-      v46 = [v35 UUID];
+      uUID2 = [v35 UUID];
       *buf = 138543874;
-      v81 = v59;
+      v81 = selfCopy;
       v82 = 2114;
       v83 = v36;
       v84 = 2114;
-      v85 = v46;
+      v85 = uUID2;
       v47 = v45;
       v48 = OS_LOG_TYPE_INFO;
       goto LABEL_18;

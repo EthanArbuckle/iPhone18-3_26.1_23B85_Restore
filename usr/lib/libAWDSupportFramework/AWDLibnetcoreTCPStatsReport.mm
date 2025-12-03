@@ -1,26 +1,26 @@
 @interface AWDLibnetcoreTCPStatsReport
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTcpConnectionAttempts:(BOOL)a3;
-- (void)setHasTcpIPv4AvgRTT:(BOOL)a3;
-- (void)setHasTcpIPv6AvgRTT:(BOOL)a3;
-- (void)setHasTcpRecvPLR:(BOOL)a3;
-- (void)setHasTcpSendPLR:(BOOL)a3;
-- (void)setHasTcpSendReorderRate:(BOOL)a3;
-- (void)setHasTcpSendTLRTO:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasTcpConnectionAttempts:(BOOL)attempts;
+- (void)setHasTcpIPv4AvgRTT:(BOOL)t;
+- (void)setHasTcpIPv6AvgRTT:(BOOL)t;
+- (void)setHasTcpRecvPLR:(BOOL)r;
+- (void)setHasTcpSendPLR:(BOOL)r;
+- (void)setHasTcpSendReorderRate:(BOOL)rate;
+- (void)setHasTcpSendTLRTO:(BOOL)o;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDLibnetcoreTCPStatsReport
 
-- (void)setHasTcpIPv4AvgRTT:(BOOL)a3
+- (void)setHasTcpIPv4AvgRTT:(BOOL)t
 {
-  if (a3)
+  if (t)
   {
     v3 = 4;
   }
@@ -33,9 +33,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasTcpIPv6AvgRTT:(BOOL)a3
+- (void)setHasTcpIPv6AvgRTT:(BOOL)t
 {
-  if (a3)
+  if (t)
   {
     v3 = 8;
   }
@@ -48,9 +48,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasTcpSendPLR:(BOOL)a3
+- (void)setHasTcpSendPLR:(BOOL)r
 {
-  if (a3)
+  if (r)
   {
     v3 = 32;
   }
@@ -63,9 +63,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasTcpRecvPLR:(BOOL)a3
+- (void)setHasTcpRecvPLR:(BOOL)r
 {
-  if (a3)
+  if (r)
   {
     v3 = 16;
   }
@@ -78,9 +78,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasTcpSendTLRTO:(BOOL)a3
+- (void)setHasTcpSendTLRTO:(BOOL)o
 {
-  if (a3)
+  if (o)
   {
     v3 = 0x80;
   }
@@ -93,9 +93,9 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasTcpSendReorderRate:(BOOL)a3
+- (void)setHasTcpSendReorderRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 64;
   }
@@ -108,9 +108,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasTcpConnectionAttempts:(BOOL)a3
+- (void)setHasTcpConnectionAttempts:(BOOL)attempts
 {
-  if (a3)
+  if (attempts)
   {
     v3 = 2;
   }
@@ -132,11 +132,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpIPv4AvgRTT), @"tcpIPv4AvgRTT"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpIPv4AvgRTT), @"tcpIPv4AvgRTT"}];
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -155,7 +155,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpIPv6AvgRTT), @"tcpIPv6AvgRTT"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpIPv6AvgRTT), @"tcpIPv6AvgRTT"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -169,7 +169,7 @@ LABEL_4:
   }
 
 LABEL_13:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpSendPLR), @"tcpSendPLR"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpSendPLR), @"tcpSendPLR"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -183,7 +183,7 @@ LABEL_5:
   }
 
 LABEL_14:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpRecvPLR), @"tcpRecvPLR"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpRecvPLR), @"tcpRecvPLR"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -197,7 +197,7 @@ LABEL_6:
   }
 
 LABEL_15:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpSendTLRTO), @"tcpSendTLRTO"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpSendTLRTO), @"tcpSendTLRTO"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -208,17 +208,17 @@ LABEL_7:
     }
 
 LABEL_17:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpConnectionAttempts), @"tcpConnectionAttempts"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpConnectionAttempts), @"tcpConnectionAttempts"}];
     if ((*&self->_has & 1) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_9;
   }
 
 LABEL_16:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpSendReorderRate), @"tcpSendReorderRate"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpSendReorderRate), @"tcpSendReorderRate"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -229,13 +229,13 @@ LABEL_8:
   if (has)
   {
 LABEL_9:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpConnectionAccepts), @"tcpConnectionAccepts"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpConnectionAccepts), @"tcpConnectionAccepts"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
@@ -348,13 +348,13 @@ LABEL_17:
   PBDataWriterWriteUint64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 3) = self->_tcpIPv4AvgRTT;
-    *(a3 + 72) |= 4u;
+    *(to + 3) = self->_tcpIPv4AvgRTT;
+    *(to + 72) |= 4u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -373,8 +373,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 4) = self->_tcpIPv6AvgRTT;
-  *(a3 + 72) |= 8u;
+  *(to + 4) = self->_tcpIPv6AvgRTT;
+  *(to + 72) |= 8u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -388,8 +388,8 @@ LABEL_4:
   }
 
 LABEL_12:
-  *(a3 + 6) = self->_tcpSendPLR;
-  *(a3 + 72) |= 0x20u;
+  *(to + 6) = self->_tcpSendPLR;
+  *(to + 72) |= 0x20u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -403,8 +403,8 @@ LABEL_5:
   }
 
 LABEL_13:
-  *(a3 + 5) = self->_tcpRecvPLR;
-  *(a3 + 72) |= 0x10u;
+  *(to + 5) = self->_tcpRecvPLR;
+  *(to + 72) |= 0x10u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -418,8 +418,8 @@ LABEL_6:
   }
 
 LABEL_14:
-  *(a3 + 8) = self->_tcpSendTLRTO;
-  *(a3 + 72) |= 0x80u;
+  *(to + 8) = self->_tcpSendTLRTO;
+  *(to + 72) |= 0x80u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -433,8 +433,8 @@ LABEL_7:
   }
 
 LABEL_15:
-  *(a3 + 7) = self->_tcpSendReorderRate;
-  *(a3 + 72) |= 0x40u;
+  *(to + 7) = self->_tcpSendReorderRate;
+  *(to + 72) |= 0x40u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -445,23 +445,23 @@ LABEL_8:
     }
 
 LABEL_17:
-    *(a3 + 1) = self->_tcpConnectionAccepts;
-    *(a3 + 72) |= 1u;
+    *(to + 1) = self->_tcpConnectionAccepts;
+    *(to + 72) |= 1u;
     return;
   }
 
 LABEL_16:
-  *(a3 + 2) = self->_tcpConnectionAttempts;
-  *(a3 + 72) |= 2u;
+  *(to + 2) = self->_tcpConnectionAttempts;
+  *(to + 72) |= 2u;
   if (*&self->_has)
   {
     goto LABEL_17;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -573,72 +573,72 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 72) & 4) == 0 || self->_tcpIPv4AvgRTT != *(a3 + 3))
+      if ((*(equal + 72) & 4) == 0 || self->_tcpIPv4AvgRTT != *(equal + 3))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 72) & 4) != 0)
+    else if ((*(equal + 72) & 4) != 0)
     {
       goto LABEL_41;
     }
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 72) & 8) == 0 || self->_tcpIPv6AvgRTT != *(a3 + 4))
+      if ((*(equal + 72) & 8) == 0 || self->_tcpIPv6AvgRTT != *(equal + 4))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 72) & 8) != 0)
+    else if ((*(equal + 72) & 8) != 0)
     {
       goto LABEL_41;
     }
 
     if ((*&self->_has & 0x20) != 0)
     {
-      if ((*(a3 + 72) & 0x20) == 0 || self->_tcpSendPLR != *(a3 + 6))
+      if ((*(equal + 72) & 0x20) == 0 || self->_tcpSendPLR != *(equal + 6))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 72) & 0x20) != 0)
+    else if ((*(equal + 72) & 0x20) != 0)
     {
       goto LABEL_41;
     }
 
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 72) & 0x10) == 0 || self->_tcpRecvPLR != *(a3 + 5))
+      if ((*(equal + 72) & 0x10) == 0 || self->_tcpRecvPLR != *(equal + 5))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 72) & 0x10) != 0)
+    else if ((*(equal + 72) & 0x10) != 0)
     {
       goto LABEL_41;
     }
 
     if ((*&self->_has & 0x80) != 0)
     {
-      if ((*(a3 + 72) & 0x80) == 0 || self->_tcpSendTLRTO != *(a3 + 8))
+      if ((*(equal + 72) & 0x80) == 0 || self->_tcpSendTLRTO != *(equal + 8))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 72) & 0x80) != 0)
+    else if ((*(equal + 72) & 0x80) != 0)
     {
 LABEL_41:
       LOBYTE(v5) = 0;
@@ -647,34 +647,34 @@ LABEL_41:
 
     if ((*&self->_has & 0x40) != 0)
     {
-      if ((*(a3 + 72) & 0x40) == 0 || self->_tcpSendReorderRate != *(a3 + 7))
+      if ((*(equal + 72) & 0x40) == 0 || self->_tcpSendReorderRate != *(equal + 7))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 72) & 0x40) != 0)
+    else if ((*(equal + 72) & 0x40) != 0)
     {
       goto LABEL_41;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 72) & 2) == 0 || self->_tcpConnectionAttempts != *(a3 + 2))
+      if ((*(equal + 72) & 2) == 0 || self->_tcpConnectionAttempts != *(equal + 2))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 72) & 2) != 0)
+    else if ((*(equal + 72) & 2) != 0)
     {
       goto LABEL_41;
     }
 
-    LOBYTE(v5) = (*(a3 + 72) & 1) == 0;
+    LOBYTE(v5) = (*(equal + 72) & 1) == 0;
     if (*&self->_has)
     {
-      if ((*(a3 + 72) & 1) == 0 || self->_tcpConnectionAccepts != *(a3 + 1))
+      if ((*(equal + 72) & 1) == 0 || self->_tcpConnectionAccepts != *(equal + 1))
       {
         goto LABEL_41;
       }
@@ -796,14 +796,14 @@ LABEL_9:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 72);
+  v3 = *(from + 72);
   if ((v3 & 4) != 0)
   {
-    self->_tcpIPv4AvgRTT = *(a3 + 3);
+    self->_tcpIPv4AvgRTT = *(from + 3);
     *&self->_has |= 4u;
-    v3 = *(a3 + 72);
+    v3 = *(from + 72);
     if ((v3 & 8) == 0)
     {
 LABEL_3:
@@ -816,14 +816,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 72) & 8) == 0)
+  else if ((*(from + 72) & 8) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_tcpIPv6AvgRTT = *(a3 + 4);
+  self->_tcpIPv6AvgRTT = *(from + 4);
   *&self->_has |= 8u;
-  v3 = *(a3 + 72);
+  v3 = *(from + 72);
   if ((v3 & 0x20) == 0)
   {
 LABEL_4:
@@ -836,9 +836,9 @@ LABEL_4:
   }
 
 LABEL_12:
-  self->_tcpSendPLR = *(a3 + 6);
+  self->_tcpSendPLR = *(from + 6);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 72);
+  v3 = *(from + 72);
   if ((v3 & 0x10) == 0)
   {
 LABEL_5:
@@ -851,9 +851,9 @@ LABEL_5:
   }
 
 LABEL_13:
-  self->_tcpRecvPLR = *(a3 + 5);
+  self->_tcpRecvPLR = *(from + 5);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 72);
+  v3 = *(from + 72);
   if ((v3 & 0x80) == 0)
   {
 LABEL_6:
@@ -866,9 +866,9 @@ LABEL_6:
   }
 
 LABEL_14:
-  self->_tcpSendTLRTO = *(a3 + 8);
+  self->_tcpSendTLRTO = *(from + 8);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 72);
+  v3 = *(from + 72);
   if ((v3 & 0x40) == 0)
   {
 LABEL_7:
@@ -881,9 +881,9 @@ LABEL_7:
   }
 
 LABEL_15:
-  self->_tcpSendReorderRate = *(a3 + 7);
+  self->_tcpSendReorderRate = *(from + 7);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 72);
+  v3 = *(from + 72);
   if ((v3 & 2) == 0)
   {
 LABEL_8:
@@ -893,15 +893,15 @@ LABEL_8:
     }
 
 LABEL_17:
-    self->_tcpConnectionAccepts = *(a3 + 1);
+    self->_tcpConnectionAccepts = *(from + 1);
     *&self->_has |= 1u;
     return;
   }
 
 LABEL_16:
-  self->_tcpConnectionAttempts = *(a3 + 2);
+  self->_tcpConnectionAttempts = *(from + 2);
   *&self->_has |= 2u;
-  if (*(a3 + 72))
+  if (*(from + 72))
   {
     goto LABEL_17;
   }

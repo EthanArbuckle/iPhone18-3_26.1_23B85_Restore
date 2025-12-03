@@ -1,10 +1,10 @@
 @interface CDPUICodeEntryViewModel
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CDPUICodeEntryViewModel
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CDPUICodeEntryViewModel allocWithZone:?]];
   v5 = [(NSString *)self->_promptTitle copy];

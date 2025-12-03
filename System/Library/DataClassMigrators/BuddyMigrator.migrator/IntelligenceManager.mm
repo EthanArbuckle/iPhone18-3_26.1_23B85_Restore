@@ -1,28 +1,28 @@
 @interface IntelligenceManager
 - (_TtC13BuddyMigrator19IntelligenceManager)init;
-- (_TtC13BuddyMigrator19IntelligenceManager)initWithFeatureFlags:(id)a3 availabilityProvider:(id)a4 stateProvider:(id)a5 preferences:(id)a6 chronicle:(id)a7 deviceProvider:(id)a8 visualIntelligencePresentationManager:(id)a9;
-- (_TtC13BuddyMigrator19IntelligenceManager)initWithFeatureFlags:(id)a3 preferences:(id)a4 chronicle:(id)a5 deviceProvider:(id)a6;
+- (_TtC13BuddyMigrator19IntelligenceManager)initWithFeatureFlags:(id)flags availabilityProvider:(id)provider stateProvider:(id)stateProvider preferences:(id)preferences chronicle:(id)chronicle deviceProvider:(id)deviceProvider visualIntelligencePresentationManager:(id)manager;
+- (_TtC13BuddyMigrator19IntelligenceManager)initWithFeatureFlags:(id)flags preferences:(id)preferences chronicle:(id)chronicle deviceProvider:(id)provider;
 - (id)stashableNotificationOnboardingDefaults;
-- (void)applyStashedIsIntelligenceEnabled:(BOOL)a3;
-- (void)applyStashedNotificationOnboardingDefaults:(id)a3;
-- (void)isIntelligenceEnabledWithCompletionHandler:(id)a3;
+- (void)applyStashedIsIntelligenceEnabled:(BOOL)enabled;
+- (void)applyStashedNotificationOnboardingDefaults:(id)defaults;
+- (void)isIntelligenceEnabledWithCompletionHandler:(id)handler;
 - (void)setDidShowIntelligencePaneInCurrentSession;
-- (void)shouldShowIntelligenceWithServerCheck:(BOOL)a3 completionHandler:(id)a4;
-- (void)updateAppleIntelligenceUpsellPreferencesWithDidShow:(BOOL)a3 completionHandler:(id)a4;
+- (void)shouldShowIntelligenceWithServerCheck:(BOOL)check completionHandler:(id)handler;
+- (void)updateAppleIntelligenceUpsellPreferencesWithDidShow:(BOOL)show completionHandler:(id)handler;
 @end
 
 @implementation IntelligenceManager
 
-- (_TtC13BuddyMigrator19IntelligenceManager)initWithFeatureFlags:(id)a3 availabilityProvider:(id)a4 stateProvider:(id)a5 preferences:(id)a6 chronicle:(id)a7 deviceProvider:(id)a8 visualIntelligencePresentationManager:(id)a9
+- (_TtC13BuddyMigrator19IntelligenceManager)initWithFeatureFlags:(id)flags availabilityProvider:(id)provider stateProvider:(id)stateProvider preferences:(id)preferences chronicle:(id)chronicle deviceProvider:(id)deviceProvider visualIntelligencePresentationManager:(id)manager
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v14 = a6;
-  v15 = a7;
+  preferencesCopy = preferences;
+  chronicleCopy = chronicle;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v16 = sub_128DC(a3, a4, a5, v14, v15, a9);
+  v16 = sub_128DC(flags, provider, stateProvider, preferencesCopy, chronicleCopy, manager);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
@@ -31,24 +31,24 @@
   return v16;
 }
 
-- (_TtC13BuddyMigrator19IntelligenceManager)initWithFeatureFlags:(id)a3 preferences:(id)a4 chronicle:(id)a5 deviceProvider:(id)a6
+- (_TtC13BuddyMigrator19IntelligenceManager)initWithFeatureFlags:(id)flags preferences:(id)preferences chronicle:(id)chronicle deviceProvider:(id)provider
 {
   swift_unknownObjectRetain();
-  v10 = a4;
-  v11 = a5;
+  preferencesCopy = preferences;
+  chronicleCopy = chronicle;
   swift_unknownObjectRetain();
-  return IntelligenceManager.init(featureFlags:preferences:chronicle:deviceProvider:)(a3, v10, v11, a6);
+  return IntelligenceManager.init(featureFlags:preferences:chronicle:deviceProvider:)(flags, preferencesCopy, chronicleCopy, provider);
 }
 
-- (void)shouldShowIntelligenceWithServerCheck:(BOOL)a3 completionHandler:(id)a4
+- (void)shouldShowIntelligenceWithServerCheck:(BOOL)check completionHandler:(id)handler
 {
   v7 = sub_ED0C(&qword_30030, "&w");
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8, v9);
   v11 = &v18 - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  *(v13 + 16) = a3;
+  *(v13 + 16) = check;
   *(v13 + 24) = v12;
   *(v13 + 32) = self;
   v14 = sub_193D0();
@@ -63,23 +63,23 @@
   v16[3] = 0;
   v16[4] = &unk_1D200;
   v16[5] = v15;
-  v17 = self;
+  selfCopy = self;
   sub_17E1C(0, 0, v11, &unk_1D208, v16);
 }
 
 - (void)setDidShowIntelligencePaneInCurrentSession
 {
-  v2 = self;
+  selfCopy = self;
   IntelligenceManager.setDidShowIntelligencePaneInCurrentSession()();
 }
 
-- (void)isIntelligenceEnabledWithCompletionHandler:(id)a3
+- (void)isIntelligenceEnabledWithCompletionHandler:(id)handler
 {
   v5 = sub_ED0C(&qword_30030, "&w");
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8, v7);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   *(v11 + 24) = self;
@@ -95,25 +95,25 @@
   v14[3] = 0;
   v14[4] = &unk_1D1E0;
   v14[5] = v13;
-  v15 = self;
+  selfCopy = self;
   sub_17E1C(0, 0, v9, &unk_1D1E8, v14);
 }
 
-- (void)applyStashedIsIntelligenceEnabled:(BOOL)a3
+- (void)applyStashedIsIntelligenceEnabled:(BOOL)enabled
 {
-  v4 = self;
-  IntelligenceManager.applyStashedIsIntelligenceEnabled(_:)(a3);
+  selfCopy = self;
+  IntelligenceManager.applyStashedIsIntelligenceEnabled(_:)(enabled);
 }
 
-- (void)updateAppleIntelligenceUpsellPreferencesWithDidShow:(BOOL)a3 completionHandler:(id)a4
+- (void)updateAppleIntelligenceUpsellPreferencesWithDidShow:(BOOL)show completionHandler:(id)handler
 {
   v7 = sub_ED0C(&qword_30030, "&w");
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8, v9);
   v11 = &v18 - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  *(v13 + 16) = a3;
+  *(v13 + 16) = show;
   *(v13 + 24) = v12;
   *(v13 + 32) = self;
   v14 = sub_193D0();
@@ -128,13 +128,13 @@
   v16[3] = 0;
   v16[4] = &unk_1D1C0;
   v16[5] = v15;
-  v17 = self;
+  selfCopy = self;
   sub_17E1C(0, 0, v11, &unk_1D110, v16);
 }
 
 - (id)stashableNotificationOnboardingDefaults
 {
-  v2 = self;
+  selfCopy = self;
   v3 = IntelligenceManager.stashableNotificationOnboardingDefaults()();
   v5 = v4;
 
@@ -153,10 +153,10 @@
   return v6;
 }
 
-- (void)applyStashedNotificationOnboardingDefaults:(id)a3
+- (void)applyStashedNotificationOnboardingDefaults:(id)defaults
 {
-  v4 = a3;
-  v8 = self;
+  defaultsCopy = defaults;
+  selfCopy = self;
   v5 = sub_191C0();
   v7 = v6;
 

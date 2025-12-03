@@ -1,20 +1,20 @@
 @interface WFRemoteWidgetConfigurationDefaultLNOptionForParameterResponse
-- (WFRemoteWidgetConfigurationDefaultLNOptionForParameterResponse)initWithCoder:(id)a3;
-- (WFRemoteWidgetConfigurationDefaultLNOptionForParameterResponse)initWithDefaultOption:(id)a3 error:(id)a4;
+- (WFRemoteWidgetConfigurationDefaultLNOptionForParameterResponse)initWithCoder:(id)coder;
+- (WFRemoteWidgetConfigurationDefaultLNOptionForParameterResponse)initWithDefaultOption:(id)option error:(id)error;
 - (id)description;
 @end
 
 @implementation WFRemoteWidgetConfigurationDefaultLNOptionForParameterResponse
 
-- (WFRemoteWidgetConfigurationDefaultLNOptionForParameterResponse)initWithCoder:(id)a3
+- (WFRemoteWidgetConfigurationDefaultLNOptionForParameterResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFRemoteWidgetConfigurationDefaultLNOptionForParameterResponse;
-  v5 = [(WFRemoteWidgetConfigurationResponse *)&v10 initWithCoder:v4];
+  v5 = [(WFRemoteWidgetConfigurationResponse *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"defaultOption"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"defaultOption"];
     defaultOption = v5->_defaultOption;
     v5->_defaultOption = v6;
 
@@ -27,23 +27,23 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(WFRemoteWidgetConfigurationDefaultLNOptionForParameterResponse *)self defaultOption];
-  v5 = [(WFRemoteWidgetConfigurationResponse *)self error];
-  v6 = [v3 stringWithFormat:@"defaultOption: %@, error: %@", v4, v5];
+  defaultOption = [(WFRemoteWidgetConfigurationDefaultLNOptionForParameterResponse *)self defaultOption];
+  error = [(WFRemoteWidgetConfigurationResponse *)self error];
+  v6 = [v3 stringWithFormat:@"defaultOption: %@, error: %@", defaultOption, error];
 
   return v6;
 }
 
-- (WFRemoteWidgetConfigurationDefaultLNOptionForParameterResponse)initWithDefaultOption:(id)a3 error:(id)a4
+- (WFRemoteWidgetConfigurationDefaultLNOptionForParameterResponse)initWithDefaultOption:(id)option error:(id)error
 {
-  v7 = a3;
+  optionCopy = option;
   v12.receiver = self;
   v12.super_class = WFRemoteWidgetConfigurationDefaultLNOptionForParameterResponse;
-  v8 = [(WFRemoteWidgetConfigurationResponse *)&v12 initWithError:a4];
+  v8 = [(WFRemoteWidgetConfigurationResponse *)&v12 initWithError:error];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_defaultOption, a3);
+    objc_storeStrong(&v8->_defaultOption, option);
     v10 = v9;
   }
 

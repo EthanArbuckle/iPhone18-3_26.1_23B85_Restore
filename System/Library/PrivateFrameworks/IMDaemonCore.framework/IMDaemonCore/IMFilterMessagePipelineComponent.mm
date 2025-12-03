@@ -1,31 +1,31 @@
 @interface IMFilterMessagePipelineComponent
-- (IMFilterMessagePipelineComponent)initWithMessageStore:(id)a3 filteringContext:(id)a4;
-- (id)runIndividuallyWithInput:(id)a3;
+- (IMFilterMessagePipelineComponent)initWithMessageStore:(id)store filteringContext:(id)context;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation IMFilterMessagePipelineComponent
 
-- (IMFilterMessagePipelineComponent)initWithMessageStore:(id)a3 filteringContext:(id)a4
+- (IMFilterMessagePipelineComponent)initWithMessageStore:(id)store filteringContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = IMFilterMessagePipelineComponent;
   v9 = [(IMFilterMessagePipelineComponent *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_messageStore, a3);
-    objc_storeStrong(&v10->_filteringContext, a4);
+    objc_storeStrong(&v9->_messageStore, store);
+    objc_storeStrong(&v10->_filteringContext, context);
   }
 
   return v10;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inputCopy = input;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -36,10 +36,10 @@
     }
   }
 
-  v6 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v7 = [v6 isIntroductionsEnabled];
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isIntroductionsEnabled = [mEMORY[0x277D1A9B8] isIntroductionsEnabled];
 
-  if ((v7 & 1) == 0)
+  if ((isIntroductionsEnabled & 1) == 0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -79,14 +79,14 @@
     goto LABEL_32;
   }
 
-  v11 = [v4 messageItems];
-  if ([v11 count] == 1)
+  messageItems = [inputCopy messageItems];
+  if ([messageItems count] == 1)
   {
-    v12 = [v4 messageItems];
-    v13 = [v12 firstObject];
-    v14 = [v13 isTypingMessage];
+    messageItems2 = [inputCopy messageItems];
+    firstObject = [messageItems2 firstObject];
+    isTypingMessage = [firstObject isTypingMessage];
 
-    if (v14)
+    if (isTypingMessage)
     {
       if (IMOSLoggingEnabled())
       {
@@ -99,7 +99,7 @@
       }
 
 LABEL_32:
-      v20 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v4];
+      v20 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
       goto LABEL_33;
     }
   }
@@ -108,16 +108,16 @@ LABEL_32:
   {
   }
 
-  if ([v4 isFromMe])
+  if ([inputCopy isFromMe])
   {
     if (IMOSLoggingEnabled())
     {
       v18 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        v19 = [v4 fromIdentifier];
+        fromIdentifier = [inputCopy fromIdentifier];
         *buf = 138412290;
-        v55 = v19;
+        v55 = fromIdentifier;
         _os_log_impl(&dword_22B4CC000, v18, OS_LOG_TYPE_INFO, "Message is a message from me, not processing for filtering: %@", buf, 0xCu);
       }
     }
@@ -125,11 +125,11 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  v23 = [v4 chat];
-  v24 = v23;
-  if (v23)
+  chat = [inputCopy chat];
+  v24 = chat;
+  if (chat)
   {
-    if (![v23 isFiltered] || objc_msgSend(v24, "isFiltered") == 2 || objc_msgSend(v24, "isBusinessChat"))
+    if (![chat isFiltered] || objc_msgSend(v24, "isFiltered") == 2 || objc_msgSend(v24, "isBusinessChat"))
     {
       if (IMOSLoggingEnabled())
       {
@@ -163,8 +163,8 @@ LABEL_32:
 
   v26 = 0;
 LABEL_51:
-  v28 = [v4 messageItems];
-  v29 = [v28 count] == 0;
+  messageItems3 = [inputCopy messageItems];
+  v29 = [messageItems3 count] == 0;
 
   if (v29)
   {
@@ -178,13 +178,13 @@ LABEL_51:
       }
     }
 
-    v20 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v4];
+    v20 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
   }
 
   else
   {
-    v30 = [v4 messageItems];
-    v31 = [v30 firstObject];
+    messageItems4 = [inputCopy messageItems];
+    firstObject2 = [messageItems4 firstObject];
 
     v32 = objc_alloc_init(MEMORY[0x277D18E08]);
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -194,11 +194,11 @@ LABEL_51:
     aBlock[4] = self;
     v33 = v24;
     v50 = v33;
-    v34 = v31;
+    v34 = firstObject2;
     v51 = v34;
     v35 = v32;
     v52 = v35;
-    v36 = v4;
+    v36 = inputCopy;
     v53 = v36;
     v37 = _Block_copy(aBlock);
     v38 = v37;
@@ -220,7 +220,7 @@ LABEL_51:
       }
 
       v42 = +[IMDCommunicationTrustManager sharedManager];
-      v41 = [v34 sender];
+      sender = [v34 sender];
       v43[0] = MEMORY[0x277D85DD0];
       v43[1] = 3221225472;
       v43[2] = sub_22B5D9B28;
@@ -231,7 +231,7 @@ LABEL_51:
       v46 = v36;
       v47 = v34;
       v48 = v38;
-      [v42 requestDecisionForSender:v41 completion:v43];
+      [v42 requestDecisionForSender:sender completion:v43];
     }
 
     v20 = v35;

@@ -1,31 +1,31 @@
 @interface SBPosterEditingTransientOverlayViewController
-- (SBPosterEditingTransientOverlayViewController)initWithEditingRequest:(id)a3;
+- (SBPosterEditingTransientOverlayViewController)initWithEditingRequest:(id)request;
 - (SBPosterEditingTransientOverlayViewControllerDelegate)delegate;
 - (id)keyboardFocusTarget;
-- (void)_notifyDelegateOfDidDismissWithResponse:(id)a3;
-- (void)_notifyDelegateOfWillDismissWithResponse:(id)a3;
-- (void)getRotationContentSettings:(id *)a3 forWindow:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)_notifyDelegateOfDidDismissWithResponse:(id)response;
+- (void)_notifyDelegateOfWillDismissWithResponse:(id)response;
+- (void)getRotationContentSettings:(id *)settings forWindow:(id)window;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SBPosterEditingTransientOverlayViewController
 
-- (SBPosterEditingTransientOverlayViewController)initWithEditingRequest:(id)a3
+- (SBPosterEditingTransientOverlayViewController)initWithEditingRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v13.receiver = self;
   v13.super_class = SBPosterEditingTransientOverlayViewController;
   v6 = [(SBPosterEditingTransientOverlayViewController *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_editingRequest, a3);
+    objc_storeStrong(&v6->_editingRequest, request);
     v8 = objc_alloc(MEMORY[0x277D3EAF8]);
-    v9 = [v5 entryPoint];
-    v10 = [v8 initWithEntryPoint:v9];
+    entryPoint = [requestCopy entryPoint];
+    v10 = [v8 initWithEntryPoint:entryPoint];
     remoteViewController = v7->_remoteViewController;
     v7->_remoteViewController = v10;
 
@@ -41,52 +41,52 @@
   v4.receiver = self;
   v4.super_class = SBPosterEditingTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v4 viewDidLoad];
-  v3 = [(SBTransientOverlayViewController *)self contentView];
-  [(SBPosterEditingTransientOverlayViewController *)self bs_addChildViewController:self->_remoteViewController withSuperview:v3];
+  contentView = [(SBTransientOverlayViewController *)self contentView];
+  [(SBPosterEditingTransientOverlayViewController *)self bs_addChildViewController:self->_remoteViewController withSuperview:contentView];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SBPosterEditingTransientOverlayViewController;
-  [(SBPosterEditingTransientOverlayViewController *)&v5 viewWillDisappear:a3];
+  [(SBPosterEditingTransientOverlayViewController *)&v5 viewWillDisappear:disappear];
   if (self->_synthesizeDelegateCallbacksFromAppearanceTransitions)
   {
-    v4 = [MEMORY[0x277D3EAF0] cancel];
-    [(SBPosterEditingTransientOverlayViewController *)self _notifyDelegateOfWillDismissWithResponse:v4];
+    cancel = [MEMORY[0x277D3EAF0] cancel];
+    [(SBPosterEditingTransientOverlayViewController *)self _notifyDelegateOfWillDismissWithResponse:cancel];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SBPosterEditingTransientOverlayViewController;
-  [(SBTransientOverlayViewController *)&v5 viewDidDisappear:a3];
+  [(SBTransientOverlayViewController *)&v5 viewDidDisappear:disappear];
   if (self->_synthesizeDelegateCallbacksFromAppearanceTransitions)
   {
-    v4 = [MEMORY[0x277D3EAF0] cancel];
-    [(SBPosterEditingTransientOverlayViewController *)self _notifyDelegateOfDidDismissWithResponse:v4];
+    cancel = [MEMORY[0x277D3EAF0] cancel];
+    [(SBPosterEditingTransientOverlayViewController *)self _notifyDelegateOfDidDismissWithResponse:cancel];
   }
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = SBPosterEditingTransientOverlayViewController;
-  v5 = a3;
-  [(SBTransientOverlayViewController *)&v6 viewDidMoveToWindow:v5 shouldAppearOrDisappear:v4];
-  [v5 setClipsToBounds:{0, v6.receiver, v6.super_class}];
+  windowCopy = window;
+  [(SBTransientOverlayViewController *)&v6 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
+  [windowCopy setClipsToBounds:{0, v6.receiver, v6.super_class}];
 }
 
 - (id)keyboardFocusTarget
 {
   if (!self->_keyboardFocusTarget && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v3 = [(PRUISModalRemoteViewController *)self->_remoteViewController scene];
-    if (v3)
+    scene = [(PRUISModalRemoteViewController *)self->_remoteViewController scene];
+    if (scene)
     {
-      v4 = [SBKeyboardFocusTarget targetForFBScene:v3];
+      v4 = [SBKeyboardFocusTarget targetForFBScene:scene];
       keyboardFocusTarget = self->_keyboardFocusTarget;
       self->_keyboardFocusTarget = v4;
     }
@@ -97,33 +97,33 @@
   return v6;
 }
 
-- (void)getRotationContentSettings:(id *)a3 forWindow:(id)a4
+- (void)getRotationContentSettings:(id *)settings forWindow:(id)window
 {
-  if (a3)
+  if (settings)
   {
-    a3->var6 = 0;
+    settings->var6 = 0;
   }
 }
 
-- (void)_notifyDelegateOfWillDismissWithResponse:(id)a3
+- (void)_notifyDelegateOfWillDismissWithResponse:(id)response
 {
   if ((*(self + 1440) & 1) == 0)
   {
     *(self + 1440) |= 1u;
-    v5 = a3;
-    v6 = [(SBPosterEditingTransientOverlayViewController *)self delegate];
-    [v6 posterEditingTransientOverlayViewController:self willDismissWithResponse:v5];
+    responseCopy = response;
+    delegate = [(SBPosterEditingTransientOverlayViewController *)self delegate];
+    [delegate posterEditingTransientOverlayViewController:self willDismissWithResponse:responseCopy];
   }
 }
 
-- (void)_notifyDelegateOfDidDismissWithResponse:(id)a3
+- (void)_notifyDelegateOfDidDismissWithResponse:(id)response
 {
   if ((*(self + 1440) & 2) == 0)
   {
     *(self + 1440) |= 2u;
-    v4 = a3;
-    v5 = [(SBPosterEditingTransientOverlayViewController *)self delegate];
-    [v5 posterEditingTransientOverlayViewController:self didDismissWithResponse:v4];
+    responseCopy = response;
+    delegate = [(SBPosterEditingTransientOverlayViewController *)self delegate];
+    [delegate posterEditingTransientOverlayViewController:self didDismissWithResponse:responseCopy];
   }
 }
 

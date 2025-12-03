@@ -1,24 +1,24 @@
 @interface CSVoiceTriggerFirstPassJarvisAP
 - (CSVoiceTriggerDelegate)delegate;
-- (CSVoiceTriggerFirstPassJarvisAP)initWithSpeechManager:(id)a3 siriClientBehaviorMonitor:(id)a4;
-- (void)_addAudioStreamHold:(id)a3;
+- (CSVoiceTriggerFirstPassJarvisAP)initWithSpeechManager:(id)manager siriClientBehaviorMonitor:(id)monitor;
+- (void)_addAudioStreamHold:(id)hold;
 - (void)_cancelLastAudioStreamHold;
 - (void)_createSecondPass;
-- (void)_handleSecondPassResult:(id)a3 deviceId:(id)a4 error:(id)a5;
-- (void)_keywordAnalyzerNDAPI:(id)a3 hasResultAvailable:(id)a4 forChannel:(unint64_t)a5;
-- (void)_setAsset:(id)a3;
-- (void)_startListenWithCompletion:(id)a3;
+- (void)_handleSecondPassResult:(id)result deviceId:(id)id error:(id)error;
+- (void)_keywordAnalyzerNDAPI:(id)i hasResultAvailable:(id)available forChannel:(unint64_t)channel;
+- (void)_setAsset:(id)asset;
+- (void)_startListenWithCompletion:(id)completion;
 - (void)_stopListening;
 - (void)_teardownSecondPass;
-- (void)_transitJarvisAPEnable:(BOOL)a3;
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4;
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4;
+- (void)_transitJarvisAPEnable:(BOOL)enable;
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available;
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly;
 - (void)dealloc;
-- (void)setAsset:(id)a3;
-- (void)shouldProcessAudio:(id)a3;
-- (void)siriClientBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6 withEventUUID:(id)a7;
-- (void)siriClientBehaviorMonitor:(id)a3 didStopStream:(id)a4 withEventUUID:(id)a5;
-- (void)siriClientBehaviorMonitor:(id)a3 willStopStream:(id)a4 reason:(unint64_t)a5;
+- (void)setAsset:(id)asset;
+- (void)shouldProcessAudio:(id)audio;
+- (void)siriClientBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d;
+- (void)siriClientBehaviorMonitor:(id)monitor didStopStream:(id)stream withEventUUID:(id)d;
+- (void)siriClientBehaviorMonitor:(id)monitor willStopStream:(id)stream reason:(unint64_t)reason;
 - (void)start;
 @end
 
@@ -31,7 +31,7 @@
   return WeakRetained;
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 willStopStream:(id)a4 reason:(unint64_t)a5
+- (void)siriClientBehaviorMonitor:(id)monitor willStopStream:(id)stream reason:(unint64_t)reason
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -42,7 +42,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 didStopStream:(id)a4 withEventUUID:(id)a5
+- (void)siriClientBehaviorMonitor:(id)monitor didStopStream:(id)stream withEventUUID:(id)d
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -53,13 +53,13 @@
   dispatch_async(queue, block);
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6 withEventUUID:(id)a7
+- (void)siriClientBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  successfullyCopy = successfully;
+  monitorCopy = monitor;
+  contextCopy = context;
+  optionCopy = option;
+  dCopy = d;
   v16 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
@@ -68,7 +68,7 @@
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%s ", buf, 0xCu);
   }
 
-  if (v9)
+  if (successfullyCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -80,7 +80,7 @@
   }
 }
 
-- (void)_transitJarvisAPEnable:(BOOL)a3
+- (void)_transitJarvisAPEnable:(BOOL)enable
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -88,7 +88,7 @@
   v4[2] = sub_1000BBBB4;
   v4[3] = &unk_100253BF8;
   v4[4] = self;
-  v5 = a3;
+  enableCopy = enable;
   dispatch_async(queue, v4);
 }
 
@@ -117,8 +117,8 @@
 
     [(CSVoiceTriggerSecondPass *)self->_voiceTriggerSecondPass setSecondPassClient:3];
     [(CSVoiceTriggerSecondPass *)self->_voiceTriggerSecondPass setAsset:self->_currentAsset];
-    v8 = [(CSVoiceTriggerFirstPassJarvisAP *)self delegate];
-    [(CSVoiceTriggerSecondPass *)self->_voiceTriggerSecondPass setDelegate:v8];
+    delegate = [(CSVoiceTriggerFirstPassJarvisAP *)self delegate];
+    [(CSVoiceTriggerSecondPass *)self->_voiceTriggerSecondPass setDelegate:delegate];
 
     v9 = self->_voiceTriggerSecondPass;
 
@@ -130,48 +130,48 @@
 {
   if ([(NSMutableArray *)self->_audioStreamHoldings count])
   {
-    v4 = [(NSMutableArray *)self->_audioStreamHoldings lastObject];
-    v3 = [(CSVoiceTriggerFirstPassJarvisAP *)self audioProvider];
-    [v3 cancelAudioStreamHold:v4];
+    lastObject = [(NSMutableArray *)self->_audioStreamHoldings lastObject];
+    audioProvider = [(CSVoiceTriggerFirstPassJarvisAP *)self audioProvider];
+    [audioProvider cancelAudioStreamHold:lastObject];
 
     [(NSMutableArray *)self->_audioStreamHoldings removeLastObject];
   }
 }
 
-- (void)_addAudioStreamHold:(id)a3
+- (void)_addAudioStreamHold:(id)hold
 {
-  v4 = a3;
+  holdCopy = hold;
   v6 = [[CSAudioStreamHoldRequestOption alloc] initWithTimeout:2 clientIdentity:0 requireRecordModeLock:0 requireListeningMicIndicatorLock:5.0];
-  v5 = [(CSAudioProvider *)self->_audioProvider holdAudioStreamWithDescription:v4 option:v6];
+  v5 = [(CSAudioProvider *)self->_audioProvider holdAudioStreamWithDescription:holdCopy option:v6];
 
   [(NSMutableArray *)self->_audioStreamHoldings addObject:v5];
 }
 
-- (void)_handleSecondPassResult:(id)a3 deviceId:(id)a4 error:(id)a5
+- (void)_handleSecondPassResult:(id)result deviceId:(id)id error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 result];
-  v12 = [v8 voiceTriggerEventInfo];
+  resultCopy = result;
+  idCopy = id;
+  errorCopy = error;
+  result = [resultCopy result];
+  voiceTriggerEventInfo = [resultCopy voiceTriggerEventInfo];
   v13 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = [v10 localizedDescription];
+    localizedDescription = [errorCopy localizedDescription];
     v27 = 136315906;
     v28 = "[CSVoiceTriggerFirstPassJarvisAP _handleSecondPassResult:deviceId:error:]";
     v29 = 1024;
-    *v30 = v11;
+    *v30 = result;
     *&v30[4] = 2114;
-    *&v30[6] = v12;
+    *&v30[6] = voiceTriggerEventInfo;
     v31 = 2114;
-    v32 = v15;
+    v32 = localizedDescription;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s Second Pass Result, %d, %{public}@, %{public}@", &v27, 0x26u);
   }
 
   self->_isSecondPassRunning = 0;
-  if (v11 == 3)
+  if (result == 3)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v22 = objc_opt_respondsToSelector();
@@ -182,11 +182,11 @@
     }
 
     v18 = objc_loadWeakRetained(&self->_delegate);
-    [v18 voiceTriggerDidDetectNearMiss:v12 deviceId:v9];
+    [v18 voiceTriggerDidDetectNearMiss:voiceTriggerEventInfo deviceId:idCopy];
     goto LABEL_12;
   }
 
-  if (v11 == 2)
+  if (result == 2)
   {
     v19 = objc_loadWeakRetained(&self->_delegate);
     v20 = objc_opt_respondsToSelector();
@@ -197,11 +197,11 @@
     }
 
     v18 = objc_loadWeakRetained(&self->_delegate);
-    [v18 voiceTriggerDidRejected:v12 deviceId:v9];
+    [v18 voiceTriggerDidRejected:voiceTriggerEventInfo deviceId:idCopy];
     goto LABEL_12;
   }
 
-  if (v11 == 1)
+  if (result == 1)
   {
     v16 = objc_loadWeakRetained(&self->_delegate);
     v17 = objc_opt_respondsToSelector();
@@ -212,7 +212,7 @@
     }
 
     v18 = objc_loadWeakRetained(&self->_delegate);
-    [v18 voiceTriggerDidDetectKeyword:v12 deviceId:v9];
+    [v18 voiceTriggerDidDetectKeyword:voiceTriggerEventInfo deviceId:idCopy];
     goto LABEL_12;
   }
 
@@ -220,18 +220,18 @@
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_ERROR))
   {
     v18 = v23;
-    v26 = [v10 localizedDescription];
+    localizedDescription2 = [errorCopy localizedDescription];
     v27 = 136315394;
     v28 = "[CSVoiceTriggerFirstPassJarvisAP _handleSecondPassResult:deviceId:error:]";
     v29 = 2114;
-    *v30 = v26;
+    *v30 = localizedDescription2;
     _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%s VoiceTrigger Second Pass has failed : %{public}@", &v27, 0x16u);
 
 LABEL_12:
   }
 
 LABEL_14:
-  if ([v8 isSecondChanceCandidate])
+  if ([resultCopy isSecondChanceCandidate])
   {
     v24 = [[CSVoiceTriggerSecondChanceContext alloc] initWithWindowStartTime:mach_absolute_time()];
   }
@@ -244,7 +244,7 @@ LABEL_14:
   secondChanceContext = self->_secondChanceContext;
   self->_secondChanceContext = v24;
 
-  if (v11 != 1)
+  if (result != 1)
   {
     [(CSVoiceTriggerFirstPassJarvisAP *)self _cancelLastAudioStreamHold];
   }
@@ -252,14 +252,14 @@ LABEL_14:
   [(CSVoiceTriggerFirstPassJarvisAP *)self _reset];
 }
 
-- (void)_keywordAnalyzerNDAPI:(id)a3 hasResultAvailable:(id)a4 forChannel:(unint64_t)a5
+- (void)_keywordAnalyzerNDAPI:(id)i hasResultAvailable:(id)available forChannel:(unint64_t)channel
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  iCopy = i;
+  availableCopy = available;
+  v9 = availableCopy;
+  if (availableCopy)
   {
-    [v8 bestScore];
+    [availableCopy bestScore];
     v11 = v10;
     v12 = qword_10029E270;
     if (!(qword_10029E270 % self->_heartbeatFactor))
@@ -318,16 +318,16 @@ LABEL_14:
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%s Detected : %@, %@", buf, 0x20u);
       }
 
-      [v7 reset];
+      [iCopy reset];
       [(CSVoiceTriggerFirstPassJarvisAP *)self _createSecondPass];
       self->_isSecondPassRunning = 1;
       [(CSVoiceTriggerFirstPassJarvisAP *)self _addAudioStreamHold:@"Jarvis AP first pass triggered"];
       objc_initWeak(buf, self);
       v23 = [CSVoiceTriggerSecondPassRequestOption alloc];
       deviceId = self->_deviceId;
-      v25 = [(CSAudioProvider *)self->_audioProvider UUID];
+      uUID = [(CSAudioProvider *)self->_audioProvider UUID];
       v26 = +[NSUUID UUID];
-      v27 = [(CSVoiceTriggerSecondPassRequestOption *)v23 initWithFirstPassSource:4 deviceId:deviceId audioProviderUUID:v25 firstPassInfo:v21 rejectionMHUUID:v26 isSecondChanceRun:[(CSVoiceTriggerSecondChanceContext *)self->_secondChanceContext shouldRunAsSecondChance] firstpassMetrics:0 rtModelRequestOptions:0];
+      v27 = [(CSVoiceTriggerSecondPassRequestOption *)v23 initWithFirstPassSource:4 deviceId:deviceId audioProviderUUID:uUID firstPassInfo:v21 rejectionMHUUID:v26 isSecondChanceRun:[(CSVoiceTriggerSecondChanceContext *)self->_secondChanceContext shouldRunAsSecondChance] firstpassMetrics:0 rtModelRequestOptions:0];
 
       [(CSVoiceTriggerSecondPass *)self->_voiceTriggerSecondPass setSupportsMultiPhraseDetection:[(CSVoiceTriggerUserSelectedPhrase *)self->_multiPhraseSelectedStatus multiPhraseSelected]];
       voiceTriggerSecondPass = self->_voiceTriggerSecondPass;
@@ -344,35 +344,35 @@ LABEL_14:
   }
 }
 
-- (void)shouldProcessAudio:(id)a3
+- (void)shouldProcessAudio:(id)audio
 {
-  v4 = a3;
+  audioCopy = audio;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000BC7E8;
   v7[3] = &unk_100253718;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = audioCopy;
+  v6 = audioCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available
 {
-  v5 = a4;
+  availableCopy = available;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000BC8FC;
   v8[3] = &unk_100253C48;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = availableCopy;
+  v7 = availableCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -390,9 +390,9 @@ LABEL_14:
   self->_keywordAnalyzerNDAPI = 0;
 
   objc_autoreleasePoolPop(v3);
-  v5 = [(CSVoiceTriggerFirstPassJarvisAP *)self audioStream];
+  audioStream = [(CSVoiceTriggerFirstPassJarvisAP *)self audioStream];
 
-  if (v5)
+  if (audioStream)
   {
     v6 = CSLogCategoryVT;
     if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
@@ -413,9 +413,9 @@ LABEL_14:
   }
 }
 
-- (void)_startListenWithCompletion:(id)a3
+- (void)_startListenWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
@@ -428,14 +428,14 @@ LABEL_14:
   v42[1] = 3221225472;
   v42[2] = sub_1000BD3EC;
   v42[3] = &unk_100253220;
-  v6 = v4;
+  v6 = completionCopy;
   v43 = v6;
   v7 = objc_retainBlock(v42);
   v8 = [CSVoiceTriggerSecondPassConfigDecoder decodeConfigFrom:self->_currentAsset forFirstPassSource:4];
-  v9 = [v8 configPathNDAPI];
-  v10 = [(CSAsset *)self->_currentAsset resourcePath];
-  v37 = v9;
-  v11 = [[CSKeywordAnalyzerNDAPI alloc] initWithConfigPath:v9 resourcePath:v10];
+  configPathNDAPI = [v8 configPathNDAPI];
+  resourcePath = [(CSAsset *)self->_currentAsset resourcePath];
+  v37 = configPathNDAPI;
+  v11 = [[CSKeywordAnalyzerNDAPI alloc] initWithConfigPath:configPathNDAPI resourcePath:resourcePath];
   keywordAnalyzerNDAPI = self->_keywordAnalyzerNDAPI;
   self->_keywordAnalyzerNDAPI = v11;
 
@@ -446,15 +446,15 @@ LABEL_14:
   self->_deviceId = 0;
 
   v15 = +[CSSiriClientBehaviorMonitor sharedInstance];
-  v16 = [v15 recordRoute];
-  LODWORD(v9) = [CSUtils isJarvisAudioRouteWithRecordRoute:v16];
+  recordRoute = [v15 recordRoute];
+  LODWORD(configPathNDAPI) = [CSUtils isJarvisAudioRouteWithRecordRoute:recordRoute];
 
-  if (v9)
+  if (configPathNDAPI)
   {
     v17 = +[CSSiriClientBehaviorMonitor sharedInstance];
-    v18 = [v17 deviceId];
+    deviceId = [v17 deviceId];
     v19 = self->_deviceId;
-    self->_deviceId = v18;
+    self->_deviceId = deviceId;
   }
 
   if (self->_deviceId)
@@ -482,9 +482,9 @@ LABEL_14:
       {
         [(CSVoiceTriggerFirstPassJarvisAP *)self setAudioStream:v27];
         [v27 setDelegate:self];
-        v29 = [(CSVoiceTriggerFirstPassJarvisAP *)self audioStream];
+        audioStream = [(CSVoiceTriggerFirstPassJarvisAP *)self audioStream];
 
-        if (v29)
+        if (audioStream)
         {
           v30 = CSLogCategoryVT;
           if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
@@ -496,14 +496,14 @@ LABEL_14:
 
           dispatch_group_enter(self->_recordingWillStartGroup);
           v31 = +[CSAudioStartStreamOption noAlertOption];
-          v32 = [(CSVoiceTriggerFirstPassJarvisAP *)self audioStream];
+          audioStream2 = [(CSVoiceTriggerFirstPassJarvisAP *)self audioStream];
           v38[0] = _NSConcreteStackBlock;
           v38[1] = 3221225472;
           v38[2] = sub_1000BD404;
           v38[3] = &unk_100253270;
           v38[4] = self;
           v39 = v7;
-          [v32 startAudioStreamWithOption:v31 completion:v38];
+          [audioStream2 startAudioStreamWithOption:v31 completion:v38];
         }
       }
 
@@ -540,14 +540,14 @@ LABEL_14:
   }
 }
 
-- (void)_setAsset:(id)a3
+- (void)_setAsset:(id)asset
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  assetCopy = asset;
+  v6 = assetCopy;
+  if (assetCopy)
   {
-    [v5 logAssetVersionForInsight];
-    objc_storeStrong(&self->_currentAsset, a3);
+    [assetCopy logAssetVersionForInsight];
+    objc_storeStrong(&self->_currentAsset, asset);
   }
 
   else
@@ -562,17 +562,17 @@ LABEL_14:
   }
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000BD7A0;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetCopy;
+  v6 = assetCopy;
   dispatch_async(queue, v7);
 }
 
@@ -603,10 +603,10 @@ LABEL_14:
   dispatch_async(queue, block);
 }
 
-- (CSVoiceTriggerFirstPassJarvisAP)initWithSpeechManager:(id)a3 siriClientBehaviorMonitor:(id)a4
+- (CSVoiceTriggerFirstPassJarvisAP)initWithSpeechManager:(id)manager siriClientBehaviorMonitor:(id)monitor
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  monitorCopy = monitor;
   v25.receiver = self;
   v25.super_class = CSVoiceTriggerFirstPassJarvisAP;
   v8 = [(CSVoiceTriggerFirstPassJarvisAP *)&v25 init];
@@ -626,9 +626,9 @@ LABEL_14:
 
     +[CSConfig inputRecordingBufferDuration];
     v8->_heartbeatFactor = (2.0 / v15);
-    if (v6)
+    if (managerCopy)
     {
-      v16 = v6;
+      v16 = managerCopy;
     }
 
     else
@@ -639,9 +639,9 @@ LABEL_14:
     speechManager = v8->_speechManager;
     v8->_speechManager = v16;
 
-    if (v7)
+    if (monitorCopy)
     {
-      v18 = v7;
+      v18 = monitorCopy;
     }
 
     else

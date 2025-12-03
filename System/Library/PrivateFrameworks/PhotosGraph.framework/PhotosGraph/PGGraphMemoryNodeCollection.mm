@@ -1,47 +1,47 @@
 @interface PGGraphMemoryNodeCollection
-+ (id)memoryNodeAsCollectionWithUniqueIdentifier:(id)a3 inGraph:(id)a4;
-+ (id)memoryNodesOfCategories:(id)a3 inGraph:(id)a4;
-+ (id)memoryNodesOfCategory:(unint64_t)a3 inGraph:(id)a4;
-+ (id)memoryNodesWithUniqueIdentifierArray:(id)a3 inGraph:(id)a4;
-+ (id)memoryNodesWithUniqueIdentifiers:(id)a3 inGraph:(id)a4;
++ (id)memoryNodeAsCollectionWithUniqueIdentifier:(id)identifier inGraph:(id)graph;
++ (id)memoryNodesOfCategories:(id)categories inGraph:(id)graph;
++ (id)memoryNodesOfCategory:(unint64_t)category inGraph:(id)graph;
++ (id)memoryNodesWithUniqueIdentifierArray:(id)array inGraph:(id)graph;
++ (id)memoryNodesWithUniqueIdentifiers:(id)identifiers inGraph:(id)graph;
 - (NSArray)memoryCategorySubcategories;
 - (NSSet)uniqueMemoryIdentifiers;
 - (PGGraphFeatureNodeCollection)featureNodes;
 - (PGGraphMomentNodeCollection)momentNodes;
-- (id)subsetWithMemoryCategories:(id)a3;
-- (id)subsetWithMemoryCategory:(unint64_t)a3;
-- (void)enumerateMemoryUniqueIdentifierUsingBlock:(id)a3;
+- (id)subsetWithMemoryCategories:(id)categories;
+- (id)subsetWithMemoryCategory:(unint64_t)category;
+- (void)enumerateMemoryUniqueIdentifierUsingBlock:(id)block;
 @end
 
 @implementation PGGraphMemoryNodeCollection
 
-- (void)enumerateMemoryUniqueIdentifierUsingBlock:(id)a3
+- (void)enumerateMemoryUniqueIdentifierUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __73__PGGraphMemoryNodeCollection_enumerateMemoryUniqueIdentifierUsingBlock___block_invoke;
   v6[3] = &unk_278887978;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(MANodeCollection *)self enumerateStringPropertyValuesForKey:@"memid" withBlock:v6];
 }
 
-- (id)subsetWithMemoryCategories:(id)a3
+- (id)subsetWithMemoryCategories:(id)categories
 {
-  v4 = [PGGraphMemoryNode filterWithMemoryCategories:a3];
-  v5 = [v4 relation];
-  v6 = [(MANodeCollection *)PGGraphMemoryNodeCollection nodesRelatedToNodes:self withRelation:v5];
+  v4 = [PGGraphMemoryNode filterWithMemoryCategories:categories];
+  relation = [v4 relation];
+  v6 = [(MANodeCollection *)PGGraphMemoryNodeCollection nodesRelatedToNodes:self withRelation:relation];
 
   return v6;
 }
 
-- (id)subsetWithMemoryCategory:(unint64_t)a3
+- (id)subsetWithMemoryCategory:(unint64_t)category
 {
-  v4 = [PGGraphMemoryNode filterWithMemoryCategory:a3];
+  v4 = [PGGraphMemoryNode filterWithMemoryCategory:category];
   v5 = objc_opt_class();
-  v6 = [v4 relation];
-  v7 = [v5 nodesRelatedToNodes:self withRelation:v6];
+  relation = [v4 relation];
+  v7 = [v5 nodesRelatedToNodes:self withRelation:relation];
 
   return v7;
 }
@@ -97,47 +97,47 @@ void __58__PGGraphMemoryNodeCollection_memoryCategorySubcategories__block_invoke
   return v4;
 }
 
-+ (id)memoryNodesWithUniqueIdentifierArray:(id)a3 inGraph:(id)a4
++ (id)memoryNodesWithUniqueIdentifierArray:(id)array inGraph:(id)graph
 {
-  v5 = a4;
-  v6 = [PGGraphMemoryNode filterWithUniqueMemoryIdentifierArray:a3];
-  v7 = [(MANodeCollection *)PGGraphMemoryNodeCollection nodesMatchingFilter:v6 inGraph:v5];
+  graphCopy = graph;
+  v6 = [PGGraphMemoryNode filterWithUniqueMemoryIdentifierArray:array];
+  v7 = [(MANodeCollection *)PGGraphMemoryNodeCollection nodesMatchingFilter:v6 inGraph:graphCopy];
 
   return v7;
 }
 
-+ (id)memoryNodesWithUniqueIdentifiers:(id)a3 inGraph:(id)a4
++ (id)memoryNodesWithUniqueIdentifiers:(id)identifiers inGraph:(id)graph
 {
-  v5 = a4;
-  v6 = [PGGraphMemoryNode filterWithUniqueMemoryIdentifiers:a3];
-  v7 = [(MANodeCollection *)PGGraphMemoryNodeCollection nodesMatchingFilter:v6 inGraph:v5];
+  graphCopy = graph;
+  v6 = [PGGraphMemoryNode filterWithUniqueMemoryIdentifiers:identifiers];
+  v7 = [(MANodeCollection *)PGGraphMemoryNodeCollection nodesMatchingFilter:v6 inGraph:graphCopy];
 
   return v7;
 }
 
-+ (id)memoryNodeAsCollectionWithUniqueIdentifier:(id)a3 inGraph:(id)a4
++ (id)memoryNodeAsCollectionWithUniqueIdentifier:(id)identifier inGraph:(id)graph
 {
-  v5 = a4;
-  v6 = [PGGraphMemoryNode filterWithUniqueMemoryIdentifier:a3];
-  v7 = [(MANodeCollection *)PGGraphMemoryNodeCollection nodesMatchingFilter:v6 inGraph:v5];
+  graphCopy = graph;
+  v6 = [PGGraphMemoryNode filterWithUniqueMemoryIdentifier:identifier];
+  v7 = [(MANodeCollection *)PGGraphMemoryNodeCollection nodesMatchingFilter:v6 inGraph:graphCopy];
 
   return v7;
 }
 
-+ (id)memoryNodesOfCategories:(id)a3 inGraph:(id)a4
++ (id)memoryNodesOfCategories:(id)categories inGraph:(id)graph
 {
-  v5 = a4;
-  v6 = [PGGraphMemoryNode filterWithMemoryCategories:a3];
-  v7 = [(MANodeCollection *)PGGraphMemoryNodeCollection nodesMatchingFilter:v6 inGraph:v5];
+  graphCopy = graph;
+  v6 = [PGGraphMemoryNode filterWithMemoryCategories:categories];
+  v7 = [(MANodeCollection *)PGGraphMemoryNodeCollection nodesMatchingFilter:v6 inGraph:graphCopy];
 
   return v7;
 }
 
-+ (id)memoryNodesOfCategory:(unint64_t)a3 inGraph:(id)a4
++ (id)memoryNodesOfCategory:(unint64_t)category inGraph:(id)graph
 {
-  v5 = a4;
-  v6 = [PGGraphMemoryNode filterWithMemoryCategory:a3];
-  v7 = [(MANodeCollection *)PGGraphMemoryNodeCollection nodesMatchingFilter:v6 inGraph:v5];
+  graphCopy = graph;
+  v6 = [PGGraphMemoryNode filterWithMemoryCategory:category];
+  v7 = [(MANodeCollection *)PGGraphMemoryNodeCollection nodesMatchingFilter:v6 inGraph:graphCopy];
 
   return v7;
 }

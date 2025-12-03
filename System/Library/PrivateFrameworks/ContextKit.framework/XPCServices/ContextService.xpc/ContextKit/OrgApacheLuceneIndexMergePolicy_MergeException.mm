@@ -1,22 +1,22 @@
 @interface OrgApacheLuceneIndexMergePolicy_MergeException
-- (OrgApacheLuceneIndexMergePolicy_MergeException)initWithJavaLangThrowable:(id)a3 withOrgApacheLuceneStoreDirectory:(id)a4;
-- (OrgApacheLuceneIndexMergePolicy_MergeException)initWithNSString:(id)a3 withOrgApacheLuceneStoreDirectory:(id)a4;
+- (OrgApacheLuceneIndexMergePolicy_MergeException)initWithJavaLangThrowable:(id)throwable withOrgApacheLuceneStoreDirectory:(id)directory;
+- (OrgApacheLuceneIndexMergePolicy_MergeException)initWithNSString:(id)string withOrgApacheLuceneStoreDirectory:(id)directory;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneIndexMergePolicy_MergeException
 
-- (OrgApacheLuceneIndexMergePolicy_MergeException)initWithNSString:(id)a3 withOrgApacheLuceneStoreDirectory:(id)a4
+- (OrgApacheLuceneIndexMergePolicy_MergeException)initWithNSString:(id)string withOrgApacheLuceneStoreDirectory:(id)directory
 {
-  JavaLangRuntimeException_initWithNSString_(self, a3);
-  JreStrongAssign(&self->dir_, a4);
+  JavaLangRuntimeException_initWithNSString_(self, string);
+  JreStrongAssign(&self->dir_, directory);
   return self;
 }
 
-- (OrgApacheLuceneIndexMergePolicy_MergeException)initWithJavaLangThrowable:(id)a3 withOrgApacheLuceneStoreDirectory:(id)a4
+- (OrgApacheLuceneIndexMergePolicy_MergeException)initWithJavaLangThrowable:(id)throwable withOrgApacheLuceneStoreDirectory:(id)directory
 {
-  JavaLangRuntimeException_initWithJavaLangThrowable_(self, a3);
-  JreStrongAssign(&self->dir_, a4);
+  JavaLangRuntimeException_initWithJavaLangThrowable_(self, throwable);
+  JreStrongAssign(&self->dir_, directory);
   return self;
 }
 

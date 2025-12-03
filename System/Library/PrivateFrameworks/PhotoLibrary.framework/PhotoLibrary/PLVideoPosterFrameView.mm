@@ -1,11 +1,11 @@
 @interface PLVideoPosterFrameView
 - (CGRect)imageFrame;
-- (PLVideoPosterFrameView)initWithFrame:(CGRect)a3;
+- (PLVideoPosterFrameView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setFrame:(CGRect)a3;
-- (void)setImage:(id)a3;
-- (void)setScaleMode:(int64_t)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setImage:(id)image;
+- (void)setScaleMode:(int64_t)mode;
 @end
 
 @implementation PLVideoPosterFrameView
@@ -20,18 +20,18 @@
   return result;
 }
 
-- (void)setScaleMode:(int64_t)a3
+- (void)setScaleMode:(int64_t)mode
 {
-  if (self->_scaleMode != a3)
+  if (self->_scaleMode != mode)
   {
-    self->_scaleMode = a3;
+    self->_scaleMode = mode;
     [(PLVideoPosterFrameView *)self setNeedsLayout];
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  [(UIImageView *)self->_imageView setImage:a3];
+  [(UIImageView *)self->_imageView setImage:image];
 
   [(PLVideoPosterFrameView *)self setNeedsLayout];
 }
@@ -41,10 +41,10 @@
   [(PLVideoPosterFrameView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(UIImageView *)self->_imageView image];
-  if (v7)
+  image = [(UIImageView *)self->_imageView image];
+  if (image)
   {
-    [(UIImage *)v7 size];
+    [(UIImage *)image size];
     v9 = v4 / v8;
     v11 = v6 / v10;
     scaleMode = self->_scaleMode;
@@ -99,12 +99,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(PLVideoPosterFrameView *)self frame];
   v15.origin.x = v8;
   v15.origin.y = v9;
@@ -133,11 +133,11 @@
   [(PLVideoPosterFrameView *)&v3 dealloc];
 }
 
-- (PLVideoPosterFrameView)initWithFrame:(CGRect)a3
+- (PLVideoPosterFrameView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PLVideoPosterFrameView;
-  v3 = [(PLVideoPosterFrameView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PLVideoPosterFrameView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D755E8]);

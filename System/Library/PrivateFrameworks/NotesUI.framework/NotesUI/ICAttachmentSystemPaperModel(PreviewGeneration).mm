@@ -17,25 +17,25 @@
     return 0;
   }
 
-  v4 = [a1 attachment];
-  v5 = [v4 note];
-  v6 = [v5 isPasswordProtectedAndLocked];
+  attachment = [self attachment];
+  note = [attachment note];
+  isPasswordProtectedAndLocked = [note isPasswordProtectedAndLocked];
 
-  if (v6)
+  if (isPasswordProtectedAndLocked)
   {
     return 0;
   }
 
-  v8 = [a1 attachment];
-  v9 = [v8 previewImages];
-  if ([v9 count] <= 1)
+  attachment2 = [self attachment];
+  previewImages = [attachment2 previewImages];
+  if ([previewImages count] <= 1)
   {
     goto LABEL_17;
   }
 
-  v10 = [a1 attachment];
-  v11 = [v10 previewUpdateDate];
-  if (!v11)
+  attachment3 = [self attachment];
+  previewUpdateDate = [attachment3 previewUpdateDate];
+  if (!previewUpdateDate)
   {
 
 LABEL_17:
@@ -44,10 +44,10 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v12 = [a1 attachment];
-  v13 = [v12 hasFallbackImage];
+  attachment4 = [self attachment];
+  hasFallbackImage = [attachment4 hasFallbackImage];
 
-  if (!v13)
+  if (!hasFallbackImage)
   {
 LABEL_19:
     v7 = 1;
@@ -58,40 +58,40 @@ LABEL_19:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v14 = [a1 attachment];
-  v15 = [v14 previewImages];
+  attachment5 = [self attachment];
+  previewImages2 = [attachment5 previewImages];
 
-  v16 = [v15 countByEnumeratingWithState:&v41 objects:v55 count:16];
+  v16 = [previewImages2 countByEnumeratingWithState:&v41 objects:v55 count:16];
   if (!v16)
   {
 
     LOBYTE(v19) = 0;
     LOBYTE(v18) = 0;
 LABEL_25:
-    v8 = os_log_create("com.apple.notes", "PreviewGeneration");
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    attachment2 = os_log_create("com.apple.notes", "PreviewGeneration");
+    if (os_log_type_enabled(attachment2, OS_LOG_TYPE_DEBUG))
     {
       v33 = objc_opt_class();
       v34 = NSStringFromClass(v33);
       v35 = NSStringFromSelector(a2);
-      v40 = [a1 attachment];
-      v36 = [v40 identifier];
-      v37 = [a1 attachment];
-      v38 = [v37 previewImages];
-      v39 = [v38 count];
+      attachment6 = [self attachment];
+      identifier = [attachment6 identifier];
+      attachment7 = [self attachment];
+      previewImages3 = [attachment7 previewImages];
+      v39 = [previewImages3 count];
       *buf = 138413570;
       v46 = v34;
       v47 = 2112;
       v48 = v35;
       v49 = 2112;
-      v50 = v36;
+      v50 = identifier;
       v51 = 2048;
       *v52 = v39;
       *&v52[8] = 1024;
       *&v52[10] = v18 & 1;
       v53 = 1024;
       v54 = v19 & 1;
-      _os_log_debug_impl(&dword_1D4171000, v8, OS_LOG_TYPE_DEBUG, "%@ %@ %@ return 1 previewImages.count %lu hasDefault %d hasDark %d", buf, 0x36u);
+      _os_log_debug_impl(&dword_1D4171000, attachment2, OS_LOG_TYPE_DEBUG, "%@ %@ %@ return 1 previewImages.count %lu hasDefault %d hasDark %d", buf, 0x36u);
     }
 
     goto LABEL_18;
@@ -107,7 +107,7 @@ LABEL_25:
     {
       if (*v42 != v20)
       {
-        objc_enumerationMutation(v15);
+        objc_enumerationMutation(previewImages2);
       }
 
       v22 = *(*(&v41 + 1) + 8 * i);
@@ -115,7 +115,7 @@ LABEL_25:
       v19 |= [v22 appearanceType] == 1;
     }
 
-    v17 = [v15 countByEnumeratingWithState:&v41 objects:v55 count:16];
+    v17 = [previewImages2 countByEnumeratingWithState:&v41 objects:v55 count:16];
   }
 
   while (v17);
@@ -133,17 +133,17 @@ LABEL_20:
     v25 = objc_opt_class();
     v26 = NSStringFromClass(v25);
     v27 = NSStringFromSelector(a2);
-    v28 = [a1 attachment];
-    v29 = [v28 identifier];
-    v30 = [a1 attachment];
-    v31 = [v30 previewImages];
-    v32 = [v31 count];
+    attachment8 = [self attachment];
+    identifier2 = [attachment8 identifier];
+    attachment9 = [self attachment];
+    previewImages4 = [attachment9 previewImages];
+    v32 = [previewImages4 count];
     *buf = 138413314;
     v46 = v26;
     v47 = 2112;
     v48 = v27;
     v49 = 2112;
-    v50 = v29;
+    v50 = identifier2;
     v51 = 1024;
     *v52 = v7;
     *&v52[4] = 2048;
@@ -252,8 +252,8 @@ LABEL_20:
     if (([v6 isDark] & 1) == 0)
     {
       v9 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:1];
-      v10 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-      v11 = [v10 resolvedColorWithTraitCollection:v9];
+      systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+      v11 = [systemBackgroundColor resolvedColorWithTraitCollection:v9];
       CGContextSetFillColorWithColor(v8, [v11 CGColor]);
 
       v20.size.width = 384.0;
@@ -307,7 +307,7 @@ LABEL_10:
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v8 = [v6 managedObjectContext];
+  managedObjectContext = [v6 managedObjectContext];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __97__ICAttachmentSystemPaperModel_PreviewGeneration__generatePreviewsForAttachment_paperIdentifier___block_invoke;
@@ -316,9 +316,9 @@ LABEL_10:
   v14 = v9;
   v10 = v7;
   v16 = &v18;
-  v17 = a1;
+  selfCopy = self;
   v15 = v10;
-  [v8 performBlockAndWait:v13];
+  [managedObjectContext performBlockAndWait:v13];
 
   v11 = *(v19 + 24);
   _Block_object_dispose(&v18, 8);
@@ -346,26 +346,26 @@ LABEL_10:
   v16 = __Block_byref_object_copy__37;
   v17 = __Block_byref_object_dispose__37;
   v18 = 0;
-  v5 = [a1 attachment];
-  v6 = [v5 managedObjectContext];
+  attachment = [self attachment];
+  managedObjectContext = [attachment managedObjectContext];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __79__ICAttachmentSystemPaperModel_PreviewGeneration__generatePreviewsInOperation___block_invoke;
   v12[3] = &unk_1E8468FF8;
-  v12[4] = a1;
+  v12[4] = self;
   v12[5] = &v19;
   v12[6] = &v13;
-  [v6 performBlockAndWait:v12];
+  [managedObjectContext performBlockAndWait:v12];
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v14[5] path];
-  v9 = [v7 fileExistsAtPath:v8];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v14[5] path];
+  v9 = [defaultManager fileExistsAtPath:path];
 
   if (v9)
   {
-    v7 = objc_opt_class();
-    v10 = [a1 attachment];
-    LOBYTE(v7) = [v7 generatePreviewsForAttachment:v10 paperIdentifier:v20[5]];
+    defaultManager = objc_opt_class();
+    attachment2 = [self attachment];
+    LOBYTE(defaultManager) = [defaultManager generatePreviewsForAttachment:attachment2 paperIdentifier:v20[5]];
   }
 
   _Block_object_dispose(&v13, 8);
@@ -374,10 +374,10 @@ LABEL_10:
   if ((v9 & 1) == 0)
   {
 LABEL_5:
-    LOBYTE(v7) = 0;
+    LOBYTE(defaultManager) = 0;
   }
 
-  return v7 & 1;
+  return defaultManager & 1;
 }
 
 + (void)generateImageForAttachment:()PreviewGeneration fullResolution:appearanceInfo:.cold.1(void *a1, NSObject *a2)

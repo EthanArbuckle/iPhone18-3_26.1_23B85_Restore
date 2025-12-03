@@ -1,34 +1,34 @@
 @interface _HKMedicalRecordComparisonFilter
-+ (BOOL)isAllowedPredicateOperatorType:(unint64_t)a3 forKeyPath:(id)a4;
-+ (BOOL)isSupportedKeyPath:(id)a3;
-+ (id)allowedDataTypeClassesForKeyPath:(id)a3;
-+ (id)allowedValueClassesForKeyPath:(id)a3;
-+ (int64_t)enumRepresentationForKeyPath:(id)a3;
-- (BOOL)_acceptsRecordWithDate:(id)a3;
-- (BOOL)_acceptsRecordWithManuallyEnteredIdentifier:(unint64_t)a3;
-- (BOOL)_acceptsRecordWithState:(unint64_t)a3;
-- (BOOL)acceptsDataObject:(id)a3;
++ (BOOL)isAllowedPredicateOperatorType:(unint64_t)type forKeyPath:(id)path;
++ (BOOL)isSupportedKeyPath:(id)path;
++ (id)allowedDataTypeClassesForKeyPath:(id)path;
++ (id)allowedValueClassesForKeyPath:(id)path;
++ (int64_t)enumRepresentationForKeyPath:(id)path;
+- (BOOL)_acceptsRecordWithDate:(id)date;
+- (BOOL)_acceptsRecordWithManuallyEnteredIdentifier:(unint64_t)identifier;
+- (BOOL)_acceptsRecordWithState:(unint64_t)state;
+- (BOOL)acceptsDataObject:(id)object;
 @end
 
 @implementation _HKMedicalRecordComparisonFilter
 
-+ (BOOL)isSupportedKeyPath:(id)a3
++ (BOOL)isSupportedKeyPath:(id)path
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"modifiedDate"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"medicalRecordOriginType") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"sortDate") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"state") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"userDomainConcept"))
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"modifiedDate"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"medicalRecordOriginType") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"sortDate") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"state") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"userDomainConcept"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"signedClinicalDataOriginIdentifier"];
+    v4 = [pathCopy isEqualToString:@"signedClinicalDataOriginIdentifier"];
   }
 
   return v4;
 }
 
-+ (id)allowedDataTypeClassesForKeyPath:(id)a3
++ (id)allowedDataTypeClassesForKeyPath:(id)path
 {
   v3 = MEMORY[0x1E695DFD8];
   v4 = objc_opt_class();
@@ -36,10 +36,10 @@
   return [v3 setWithObject:v4];
 }
 
-+ (id)allowedValueClassesForKeyPath:(id)a3
++ (id)allowedValueClassesForKeyPath:(id)path
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"modifiedDate"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"modifiedDate"])
   {
     v6 = MEMORY[0x1E695DFD8];
 LABEL_5:
@@ -47,14 +47,14 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([v5 isEqualToString:@"medicalRecordOriginType"])
+  if ([pathCopy isEqualToString:@"medicalRecordOriginType"])
   {
 LABEL_4:
     v6 = MEMORY[0x1E695DFD8];
     goto LABEL_5;
   }
 
-  if ([v5 isEqualToString:@"sortDate"])
+  if ([pathCopy isEqualToString:@"sortDate"])
   {
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
@@ -63,25 +63,25 @@ LABEL_4:
 
   else
   {
-    if ([v5 isEqualToString:@"state"])
+    if ([pathCopy isEqualToString:@"state"])
     {
       goto LABEL_4;
     }
 
-    if ([v5 isEqualToString:@"userDomainConcept"])
+    if ([pathCopy isEqualToString:@"userDomainConcept"])
     {
       v6 = MEMORY[0x1E695DFD8];
       goto LABEL_5;
     }
 
-    if ([v5 isEqualToString:@"signedClinicalDataOriginIdentifier"])
+    if ([pathCopy isEqualToString:@"signedClinicalDataOriginIdentifier"])
     {
       v6 = MEMORY[0x1E695DFD8];
       goto LABEL_5;
     }
 
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"_HKMedicalRecordComparisonFilter.m" lineNumber:71 description:@"Unreachable code has been executed"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_HKMedicalRecordComparisonFilter.m" lineNumber:71 description:@"Unreachable code has been executed"];
 
     v7 = [MEMORY[0x1E695DFD8] set];
   }
@@ -92,28 +92,28 @@ LABEL_6:
   return v8;
 }
 
-+ (BOOL)isAllowedPredicateOperatorType:(unint64_t)a3 forKeyPath:(id)a4
++ (BOOL)isAllowedPredicateOperatorType:(unint64_t)type forKeyPath:(id)path
 {
-  v5 = a4;
-  if (([v5 isEqualToString:@"medicalRecordOriginType"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"state"))
+  pathCopy = path;
+  if (([pathCopy isEqualToString:@"medicalRecordOriginType"] & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"state"))
   {
-    v6 = (a3 & 0xFFFFFFFFFFFFFFFELL) == 4;
+    v6 = (type & 0xFFFFFFFFFFFFFFFELL) == 4;
   }
 
-  else if ([v5 isEqualToString:@"userDomainConcept"])
+  else if ([pathCopy isEqualToString:@"userDomainConcept"])
   {
-    v6 = a3 == 99;
+    v6 = type == 99;
   }
 
   else
   {
-    if (![v5 isEqualToString:@"signedClinicalDataOriginIdentifier"])
+    if (![pathCopy isEqualToString:@"signedClinicalDataOriginIdentifier"])
     {
-      v7 = [_HKComparisonFilter isAllowedPredicateOperatorType:a3 forKeyPath:v5];
+      v7 = [_HKComparisonFilter isAllowedPredicateOperatorType:type forKeyPath:pathCopy];
       goto LABEL_7;
     }
 
-    v6 = a3 == 4;
+    v6 = type == 4;
   }
 
   v7 = v6;
@@ -122,65 +122,65 @@ LABEL_7:
   return v7;
 }
 
-+ (int64_t)enumRepresentationForKeyPath:(id)a3
++ (int64_t)enumRepresentationForKeyPath:(id)path
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"modifiedDate"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"modifiedDate"])
   {
     v6 = 0;
   }
 
-  else if ([v5 isEqualToString:@"medicalRecordOriginType"])
+  else if ([pathCopy isEqualToString:@"medicalRecordOriginType"])
   {
     v6 = 1;
   }
 
-  else if ([v5 isEqualToString:@"sortDate"])
+  else if ([pathCopy isEqualToString:@"sortDate"])
   {
     v6 = 2;
   }
 
-  else if ([v5 isEqualToString:@"state"])
+  else if ([pathCopy isEqualToString:@"state"])
   {
     v6 = 3;
   }
 
-  else if ([v5 isEqualToString:@"userDomainConcept"])
+  else if ([pathCopy isEqualToString:@"userDomainConcept"])
   {
     v6 = 4;
   }
 
-  else if ([v5 isEqualToString:@"signedClinicalDataOriginIdentifier"])
+  else if ([pathCopy isEqualToString:@"signedClinicalDataOriginIdentifier"])
   {
     v6 = 5;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"_HKMedicalRecordComparisonFilter.m" lineNumber:113 description:@"Unreachable code has been executed"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_HKMedicalRecordComparisonFilter.m" lineNumber:113 description:@"Unreachable code has been executed"];
 
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = &OBJC_METACLASS____HKMedicalRecordComparisonFilter;
-    v6 = objc_msgSendSuper2(&v9, sel_enumRepresentationForKeyPath_, v5);
+    v6 = objc_msgSendSuper2(&v9, sel_enumRepresentationForKeyPath_, pathCopy);
   }
 
   return v6;
 }
 
-- (BOOL)acceptsDataObject:(id)a3
+- (BOOL)acceptsDataObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [(_HKComparisonFilter *)self keyPathIntegerValue];
-    if (v7 > 2)
+    v6 = objectCopy;
+    keyPathIntegerValue = [(_HKComparisonFilter *)self keyPathIntegerValue];
+    if (keyPathIntegerValue > 2)
     {
-      if (v7 != 3)
+      if (keyPathIntegerValue != 3)
       {
-        if (v7 == 4)
+        if (keyPathIntegerValue == 4)
         {
           v11 = MEMORY[0x1E695DF30];
           v12 = *MEMORY[0x1E695D940];
@@ -189,11 +189,11 @@ LABEL_7:
 
         else
         {
-          if (v7 != 5)
+          if (keyPathIntegerValue != 5)
           {
 LABEL_15:
-            v15 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v15 handleFailureInMethod:a2 object:self file:@"_HKMedicalRecordComparisonFilter.m" lineNumber:141 description:@"Unreachable code has been executed"];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"_HKMedicalRecordComparisonFilter.m" lineNumber:141 description:@"Unreachable code has been executed"];
 
 LABEL_20:
             v10 = 0;
@@ -214,20 +214,20 @@ LABEL_20:
 
     else
     {
-      if (!v7)
+      if (!keyPathIntegerValue)
       {
-        v8 = [v6 modifiedDate];
-        v10 = [(_HKMedicalRecordComparisonFilter *)self _acceptsRecordWithDate:v8];
+        modifiedDate = [v6 modifiedDate];
+        v10 = [(_HKMedicalRecordComparisonFilter *)self _acceptsRecordWithDate:modifiedDate];
         goto LABEL_13;
       }
 
-      if (v7 != 1)
+      if (keyPathIntegerValue != 1)
       {
-        if (v7 == 2)
+        if (keyPathIntegerValue == 2)
         {
-          v8 = [v6 sortDate];
-          v9 = [v8 date];
-          v10 = [(_HKMedicalRecordComparisonFilter *)self _acceptsRecordWithDate:v9];
+          modifiedDate = [v6 sortDate];
+          date = [modifiedDate date];
+          v10 = [(_HKMedicalRecordComparisonFilter *)self _acceptsRecordWithDate:date];
 
 LABEL_13:
 LABEL_21:
@@ -251,45 +251,45 @@ LABEL_22:
   return v10;
 }
 
-- (BOOL)_acceptsRecordWithDate:(id)a3
+- (BOOL)_acceptsRecordWithDate:(id)date
 {
-  v4 = a3;
-  v5 = [(_HKComparisonFilter *)self value];
+  dateCopy = date;
+  value = [(_HKComparisonFilter *)self value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v7 = [(_HKComparisonFilter *)self value];
-  v8 = v7;
+  value2 = [(_HKComparisonFilter *)self value];
+  v8 = value2;
   if (isKindOfClass)
   {
-    v9 = [v7 date];
+    date = [value2 date];
 
-    v8 = v9;
+    v8 = date;
   }
 
-  v10 = [v4 compare:v8];
+  v10 = [dateCopy compare:v8];
   v11 = HKComparisonResultMatchesPredicateOperator(v10, [(_HKComparisonFilter *)self operatorType]);
 
   return v11;
 }
 
-- (BOOL)_acceptsRecordWithManuallyEnteredIdentifier:(unint64_t)a3
+- (BOOL)_acceptsRecordWithManuallyEnteredIdentifier:(unint64_t)identifier
 {
-  v5 = [(_HKComparisonFilter *)self value];
-  v6 = HKCompareIntegers(a3, [v5 integerValue]);
+  value = [(_HKComparisonFilter *)self value];
+  v6 = HKCompareIntegers(identifier, [value integerValue]);
 
-  v7 = [(_HKComparisonFilter *)self operatorType];
+  operatorType = [(_HKComparisonFilter *)self operatorType];
 
-  return HKComparisonResultMatchesPredicateOperator(v6, v7);
+  return HKComparisonResultMatchesPredicateOperator(v6, operatorType);
 }
 
-- (BOOL)_acceptsRecordWithState:(unint64_t)a3
+- (BOOL)_acceptsRecordWithState:(unint64_t)state
 {
-  v5 = [(_HKComparisonFilter *)self value];
-  v6 = HKCompareIntegers(a3, [v5 integerValue]);
+  value = [(_HKComparisonFilter *)self value];
+  v6 = HKCompareIntegers(state, [value integerValue]);
 
-  v7 = [(_HKComparisonFilter *)self operatorType];
+  operatorType = [(_HKComparisonFilter *)self operatorType];
 
-  return HKComparisonResultMatchesPredicateOperator(v6, v7);
+  return HKComparisonResultMatchesPredicateOperator(v6, operatorType);
 }
 
 @end

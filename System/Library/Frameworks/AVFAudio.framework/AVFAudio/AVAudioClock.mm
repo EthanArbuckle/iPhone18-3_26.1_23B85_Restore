@@ -1,14 +1,14 @@
 @interface AVAudioClock
 - (AVAudioClock)init;
-- (AVAudioClock)initWithNode:(void *)a3;
+- (AVAudioClock)initWithNode:(void *)node;
 - (AVAudioTime)currentTime;
-- (id)awaitIOCycle:(unsigned int *)a3;
+- (id)awaitIOCycle:(unsigned int *)cycle;
 - (void)dealloc;
 @end
 
 @implementation AVAudioClock
 
-- (id)awaitIOCycle:(unsigned int *)a3
+- (id)awaitIOCycle:(unsigned int *)cycle
 {
   v14 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
@@ -38,10 +38,10 @@
     v7 = 0;
   }
 
-  if (a3)
+  if (cycle)
   {
     v8 = atomic_load(impl + 96);
-    *a3 = v8;
+    *cycle = v8;
   }
 
   if (v7)
@@ -99,7 +99,7 @@
   [(AVAudioClock *)&v7 dealloc];
 }
 
-- (AVAudioClock)initWithNode:(void *)a3
+- (AVAudioClock)initWithNode:(void *)node
 {
   v7.receiver = self;
   v7.super_class = AVAudioClock;
@@ -107,7 +107,7 @@
   if (v4)
   {
     v5 = operator new(0x1C0uLL, 0x40uLL);
-    AVAudioClockImpl::AVAudioClockImpl(v5, a3);
+    AVAudioClockImpl::AVAudioClockImpl(v5, node);
     v4->_impl = v5;
   }
 

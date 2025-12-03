@@ -31,8 +31,8 @@
 {
   if (a3)
   {
-    v3 = [a3 _cn_trimTrailingZeros];
-    v4 = [_TtC18ContactsFoundation13CNDataEncoder decodeAddressingGrammarData:v3];
+    _cn_trimTrailingZeros = [a3 _cn_trimTrailingZeros];
+    v4 = [_TtC18ContactsFoundation13CNDataEncoder decodeAddressingGrammarData:_cn_trimTrailingZeros];
   }
 
   else
@@ -51,7 +51,7 @@
     v5 = a3;
     v6 = [[v4 alloc] initWithBase64EncodedString:v5 options:0];
 
-    v7 = [a1 termOfAddressFromDataRepresentation:v6];
+    v7 = [self termOfAddressFromDataRepresentation:v6];
   }
 
   else
@@ -64,15 +64,15 @@
 
 - (uint64_t)isUnspecified
 {
-  v1 = [a1 languageIdentifier];
-  v2 = [v1 isEqualToString:@"unt"];
+  languageIdentifier = [self languageIdentifier];
+  v2 = [languageIdentifier isEqualToString:@"unt"];
 
   return v2;
 }
 
 - (id)dataRepresentation
 {
-  v1 = [_TtC18ContactsFoundation13CNDataEncoder encodeAddressingGrammar:a1];
+  v1 = [_TtC18ContactsFoundation13CNDataEncoder encodeAddressingGrammar:self];
   if (v1)
   {
     v2 = v1;
@@ -89,11 +89,11 @@
 
 - (id)stringRepresentation
 {
-  v1 = [a1 dataRepresentation];
-  v2 = v1;
-  if (v1)
+  dataRepresentation = [self dataRepresentation];
+  v2 = dataRepresentation;
+  if (dataRepresentation)
   {
-    v3 = [v1 base64EncodedStringWithOptions:0];
+    v3 = [dataRepresentation base64EncodedStringWithOptions:0];
   }
 
   else
@@ -106,20 +106,20 @@
 
 - (id)pronounDescriptions
 {
-  if ((CNIsAddressingGrammarEmpty_block_invoke(a1, a1) & 1) != 0 || ([a1 pronouns], v2 = objc_claimAutoreleasedReturnValue(), v3 = off_1EF43E9E8(&__block_literal_global_5, v2), v2, v3))
+  if ((CNIsAddressingGrammarEmpty_block_invoke(self, self) & 1) != 0 || ([self pronouns], v2 = objc_claimAutoreleasedReturnValue(), v3 = off_1EF43E9E8(&__block_literal_global_5, v2), v2, v3))
   {
-    v4 = MEMORY[0x1E695E0F0];
+    _cn_distinctObjects = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v5 = [a1 pronouns];
-    v6 = [v5 _cn_map:&__block_literal_global_17];
+    pronouns = [self pronouns];
+    v6 = [pronouns _cn_map:&__block_literal_global_17];
 
-    v4 = [v6 _cn_distinctObjects];
+    _cn_distinctObjects = [v6 _cn_distinctObjects];
   }
 
-  return v4;
+  return _cn_distinctObjects;
 }
 
 + (id)pronounDescriptionsForAddressingGrammars:()ContactsFoundation uppercased:
@@ -127,7 +127,7 @@
   v5 = a3;
   if (off_1EF43E9E8(&__block_literal_global_5, v5))
   {
-    v6 = MEMORY[0x1E695E0F0];
+    _cn_distinctObjects = MEMORY[0x1E695E0F0];
   }
 
   else
@@ -138,10 +138,10 @@
     v9[3] = &__block_descriptor_33_e35___NSString_16__0__NSTermOfAddress_8l;
     v10 = a4;
     v7 = [v5 _cn_compactMap:v9];
-    v6 = [v7 _cn_distinctObjects];
+    _cn_distinctObjects = [v7 _cn_distinctObjects];
   }
 
-  return v6;
+  return _cn_distinctObjects;
 }
 
 + (__CFString)localizedDescriptionForAddressingGrammars:()ContactsFoundation uppercased:
@@ -149,115 +149,115 @@
   v6 = a3;
   if (off_1EF43E9E8(&__block_literal_global_5, v6))
   {
-    v7 = &stru_1EF441028;
+    v8FirstObject = &stru_1EF441028;
   }
 
   else
   {
     if ([v6 count] == 1)
     {
-      v8 = [v6 firstObject];
-      v9 = [v8 localizedShortDescription];
-      v10 = v9;
+      firstObject = [v6 firstObject];
+      localizedShortDescription = [firstObject localizedShortDescription];
+      v10 = localizedShortDescription;
       if (a4)
       {
-        v11 = [v8 locale];
-        v7 = [v10 uppercaseStringWithLocale:v11];
+        locale = [firstObject locale];
+        v8FirstObject = [v10 uppercaseStringWithLocale:locale];
       }
 
       else
       {
-        v7 = v9;
+        v8FirstObject = localizedShortDescription;
       }
     }
 
     else
     {
-      v8 = [a1 pronounDescriptionsForAddressingGrammars:v6 uppercased:a4];
-      if (off_1EF43E9E8(&__block_literal_global_5, v8))
+      firstObject = [self pronounDescriptionsForAddressingGrammars:v6 uppercased:a4];
+      if (off_1EF43E9E8(&__block_literal_global_5, firstObject))
       {
-        v7 = &stru_1EF441028;
+        v8FirstObject = &stru_1EF441028;
       }
 
-      else if ([v8 count] == 1)
+      else if ([firstObject count] == 1)
       {
-        v7 = [v8 firstObject];
+        v8FirstObject = [firstObject firstObject];
       }
 
       else
       {
-        v13 = [v8 count];
+        v13 = [firstObject count];
         v14 = MEMORY[0x1E696AEC0];
         v15 = CNContactsFoundationBundle();
         v16 = v15;
         if (v13 == 2)
         {
           v17 = [v15 localizedStringForKey:@"ADDRESSING_GRAMMAR_DESCRIPTION_MULTIPLE-%@-%@" value:&stru_1EF441028 table:@"AddressingGrammar"];
-          v18 = [v8 objectAtIndexedSubscript:0];
-          v19 = [v8 objectAtIndexedSubscript:1];
-          v7 = [v14 localizedStringWithFormat:v17, v18, v19];
+          v18 = [firstObject objectAtIndexedSubscript:0];
+          v19 = [firstObject objectAtIndexedSubscript:1];
+          v8FirstObject = [v14 localizedStringWithFormat:v17, v18, v19];
         }
 
         else
         {
           v17 = [v15 localizedStringForKey:@"ADDRESSING_GRAMMAR_DESCRIPTION_MULTIPLE-%@-%@-%@" value:&stru_1EF441028 table:@"AddressingGrammar"];
-          v18 = [v8 objectAtIndexedSubscript:0];
-          v19 = [v8 objectAtIndexedSubscript:1];
-          v20 = [v8 objectAtIndexedSubscript:2];
-          v7 = [v14 localizedStringWithFormat:v17, v18, v19, v20];
+          v18 = [firstObject objectAtIndexedSubscript:0];
+          v19 = [firstObject objectAtIndexedSubscript:1];
+          v20 = [firstObject objectAtIndexedSubscript:2];
+          v8FirstObject = [v14 localizedStringWithFormat:v17, v18, v19, v20];
         }
       }
     }
   }
 
-  return v7;
+  return v8FirstObject;
 }
 
 - (__CFString)localizedShortDescription
 {
-  v1 = [a1 pronounDescriptions];
-  if (off_1EF43E9E8(&__block_literal_global_5, v1))
+  pronounDescriptions = [self pronounDescriptions];
+  if (off_1EF43E9E8(&__block_literal_global_5, pronounDescriptions))
   {
-    v2 = &stru_1EF441028;
+    firstObject = &stru_1EF441028;
   }
 
-  else if ([v1 count] == 1)
+  else if ([pronounDescriptions count] == 1)
   {
-    v2 = [v1 firstObject];
+    firstObject = [pronounDescriptions firstObject];
   }
 
   else
   {
-    v3 = [v1 count];
+    v3 = [pronounDescriptions count];
     v4 = MEMORY[0x1E696AEC0];
     v5 = CNContactsFoundationBundle();
     v6 = v5;
     if (v3 == 2)
     {
       v7 = [v5 localizedStringForKey:@"ADDRESSING_GRAMMAR_DESCRIPTION-%@-%@" value:&stru_1EF441028 table:@"AddressingGrammar"];
-      v8 = [v1 objectAtIndexedSubscript:0];
-      v9 = [v1 objectAtIndexedSubscript:1];
-      v2 = [v4 localizedStringWithFormat:v7, v8, v9];
+      v8 = [pronounDescriptions objectAtIndexedSubscript:0];
+      v9 = [pronounDescriptions objectAtIndexedSubscript:1];
+      firstObject = [v4 localizedStringWithFormat:v7, v8, v9];
     }
 
     else
     {
       v7 = [v5 localizedStringForKey:@"ADDRESSING_GRAMMAR_DESCRIPTION-%@-%@-%@" value:&stru_1EF441028 table:@"AddressingGrammar"];
-      v8 = [v1 objectAtIndexedSubscript:0];
-      v9 = [v1 objectAtIndexedSubscript:1];
-      v10 = [v1 objectAtIndexedSubscript:2];
-      v2 = [v4 localizedStringWithFormat:v7, v8, v9, v10];
+      v8 = [pronounDescriptions objectAtIndexedSubscript:0];
+      v9 = [pronounDescriptions objectAtIndexedSubscript:1];
+      v10 = [pronounDescriptions objectAtIndexedSubscript:2];
+      firstObject = [v4 localizedStringWithFormat:v7, v8, v9, v10];
     }
   }
 
-  return v2;
+  return firstObject;
 }
 
 - (id)localizedLanguageDescription
 {
-  v2 = [MEMORY[0x1E695DF58] currentLocale];
-  v3 = [a1 languageIdentifier];
-  v4 = [v2 localizedStringForLanguageCode:v3];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  languageIdentifier = [self languageIdentifier];
+  v4 = [currentLocale localizedStringForLanguageCode:languageIdentifier];
 
   return v4;
 }
@@ -265,8 +265,8 @@
 - (id)locale
 {
   v1 = MEMORY[0x1E695DF58];
-  v2 = [a1 languageIdentifier];
-  v3 = [v1 localeWithLocaleIdentifier:v2];
+  languageIdentifier = [self languageIdentifier];
+  v3 = [v1 localeWithLocaleIdentifier:languageIdentifier];
 
   return v3;
 }

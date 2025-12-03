@@ -1,26 +1,26 @@
 @interface SYTransaction
 - (BOOL)_beginTransaction;
 - (BOOL)_endTransaction;
-- (SYTransaction)initWithStore:(id)a3;
-- (void)addObject:(id)a3;
+- (SYTransaction)initWithStore:(id)store;
+- (void)addObject:(id)object;
 - (void)dealloc;
-- (void)deleteObject:(id)a3;
+- (void)deleteObject:(id)object;
 - (void)rollback;
-- (void)updateObject:(id)a3;
+- (void)updateObject:(id)object;
 @end
 
 @implementation SYTransaction
 
-- (SYTransaction)initWithStore:(id)a3
+- (SYTransaction)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = SYTransaction;
   v6 = [(SYTransaction *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     changes = v7->_changes;
     v7->_changes = v8;
@@ -101,39 +101,39 @@
   return v3;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   [(SYTransaction *)self _beginTransaction];
-  v5 = [(SYTransaction *)self store];
-  v7 = [SYChange changeWithObject:v4 updateType:0 store:v5];
+  store = [(SYTransaction *)self store];
+  v7 = [SYChange changeWithObject:objectCopy updateType:0 store:store];
 
-  v6 = [(SYTransaction *)self changes];
-  [v6 addObject:v7];
+  changes = [(SYTransaction *)self changes];
+  [changes addObject:v7];
 }
 
-- (void)updateObject:(id)a3
+- (void)updateObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   [(SYTransaction *)self _beginTransaction];
-  v5 = [(SYTransaction *)self store];
-  v7 = [SYChange changeWithObject:v4 updateType:1 store:v5];
+  store = [(SYTransaction *)self store];
+  v7 = [SYChange changeWithObject:objectCopy updateType:1 store:store];
 
-  v6 = [(SYTransaction *)self changes];
-  [v6 addObject:v7];
+  changes = [(SYTransaction *)self changes];
+  [changes addObject:v7];
 }
 
-- (void)deleteObject:(id)a3
+- (void)deleteObject:(id)object
 {
-  v7 = a3;
+  objectCopy = object;
   if ([(SYStore *)self->_store allowsDeletes])
   {
     [(SYTransaction *)self _beginTransaction];
-    v4 = [(SYTransaction *)self store];
-    v5 = [SYChange changeWithObject:v7 updateType:2 store:v4];
+    store = [(SYTransaction *)self store];
+    v5 = [SYChange changeWithObject:objectCopy updateType:2 store:store];
 
-    v6 = [(SYTransaction *)self changes];
-    [v6 addObject:v5];
+    changes = [(SYTransaction *)self changes];
+    [changes addObject:v5];
   }
 
   else
@@ -144,8 +144,8 @@
 
 - (void)rollback
 {
-  v2 = [(SYTransaction *)self changes];
-  [v2 removeAllObjects];
+  changes = [(SYTransaction *)self changes];
+  [changes removeAllObjects];
 }
 
 @end

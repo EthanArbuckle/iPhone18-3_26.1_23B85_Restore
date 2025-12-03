@@ -1,26 +1,26 @@
 @interface AMSUniversalLinksUpdateResult
 + (id)archiveClasses;
-- (AMSUniversalLinksUpdateResult)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AMSUniversalLinksUpdateResult)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSUniversalLinksUpdateResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[AMSUniversalLinksUpdateResult success](self forKey:{"success"), @"kCodingKeySuccess"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[AMSUniversalLinksUpdateResult success](self forKey:{"success"), @"kCodingKeySuccess"}];
 }
 
-- (AMSUniversalLinksUpdateResult)initWithCoder:(id)a3
+- (AMSUniversalLinksUpdateResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = AMSUniversalLinksUpdateResult;
   v5 = [(AMSUniversalLinksUpdateResult *)&v7 init];
   if (v5)
   {
-    v5->_success = [v4 decodeBoolForKey:@"kCodingKeySuccess"];
+    v5->_success = [coderCopy decodeBoolForKey:@"kCodingKeySuccess"];
   }
 
   return v5;

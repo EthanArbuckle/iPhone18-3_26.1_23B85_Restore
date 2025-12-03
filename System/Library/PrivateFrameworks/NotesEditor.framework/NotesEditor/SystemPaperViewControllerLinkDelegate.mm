@@ -1,33 +1,33 @@
 @interface SystemPaperViewControllerLinkDelegate
-- (BOOL)linkingController:(id)a3 shouldAddSynapseLinkItem:(id)a4;
-- (id)linkingControllerLinksMenuExcludedUserActivities:(id)a3;
-- (void)linkingControllerLinksMightHaveChanged:(id)a3;
+- (BOOL)linkingController:(id)controller shouldAddSynapseLinkItem:(id)item;
+- (id)linkingControllerLinksMenuExcludedUserActivities:(id)activities;
+- (void)linkingControllerLinksMightHaveChanged:(id)changed;
 @end
 
 @implementation SystemPaperViewControllerLinkDelegate
 
-- (void)linkingControllerLinksMightHaveChanged:(id)a3
+- (void)linkingControllerLinksMightHaveChanged:(id)changed
 {
-  v3 = a3;
+  changedCopy = changed;
 
-  sub_21542951C(v3);
+  sub_21542951C(changedCopy);
 }
 
-- (BOOL)linkingController:(id)a3 shouldAddSynapseLinkItem:(id)a4
+- (BOOL)linkingController:(id)controller shouldAddSynapseLinkItem:(id)item
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  itemCopy = item;
 
   v7 = sub_215429C30();
 
   return v7 & 1;
 }
 
-- (id)linkingControllerLinksMenuExcludedUserActivities:(id)a3
+- (id)linkingControllerLinksMenuExcludedUserActivities:(id)activities
 {
-  v3 = a3;
+  activitiesCopy = activities;
 
-  sub_2154297CC(v3);
+  sub_2154297CC(activitiesCopy);
 
   sub_2151A6C9C(0, &qword_27CA5DBD0);
   v4 = sub_2154A1F3C();

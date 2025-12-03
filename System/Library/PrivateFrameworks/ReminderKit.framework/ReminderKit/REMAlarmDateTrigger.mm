@@ -1,41 +1,41 @@
 @interface REMAlarmDateTrigger
-- (BOOL)isEqual:(id)a3;
-- (REMAlarmDateTrigger)initWithCoder:(id)a3;
-- (REMAlarmDateTrigger)initWithDateComponents:(id)a3;
-- (REMAlarmDateTrigger)initWithObjectID:(id)a3 dateComponents:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (REMAlarmDateTrigger)initWithCoder:(id)coder;
+- (REMAlarmDateTrigger)initWithDateComponents:(id)components;
+- (REMAlarmDateTrigger)initWithObjectID:(id)d dateComponents:(id)components;
 - (id)_deepCopy;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMAlarmDateTrigger
 
-- (REMAlarmDateTrigger)initWithDateComponents:(id)a3
+- (REMAlarmDateTrigger)initWithDateComponents:(id)components
 {
-  v4 = a3;
+  componentsCopy = components;
   v8.receiver = self;
   v8.super_class = REMAlarmDateTrigger;
   v5 = [(REMAlarmTrigger *)&v8 init];
   if (v5)
   {
-    v6 = [v4 rem_gregorianEquivalent];
-    [(REMAlarmDateTrigger *)v5 setDateComponents:v6];
+    rem_gregorianEquivalent = [componentsCopy rem_gregorianEquivalent];
+    [(REMAlarmDateTrigger *)v5 setDateComponents:rem_gregorianEquivalent];
   }
 
   return v5;
 }
 
-- (REMAlarmDateTrigger)initWithObjectID:(id)a3 dateComponents:(id)a4
+- (REMAlarmDateTrigger)initWithObjectID:(id)d dateComponents:(id)components
 {
-  v6 = a4;
+  componentsCopy = components;
   v10.receiver = self;
   v10.super_class = REMAlarmDateTrigger;
-  v7 = [(REMAlarmTrigger *)&v10 initWithObjectID:a3];
+  v7 = [(REMAlarmTrigger *)&v10 initWithObjectID:d];
   v8 = v7;
   if (v7)
   {
-    [(REMAlarmDateTrigger *)v7 setDateComponents:v6];
+    [(REMAlarmDateTrigger *)v7 setDateComponents:componentsCopy];
   }
 
   return v8;
@@ -44,23 +44,23 @@
 - (id)_deepCopy
 {
   v3 = [REMAlarmDateTrigger alloc];
-  v4 = [(REMAlarmDateTrigger *)self dateComponents];
-  v5 = [(REMAlarmDateTrigger *)v3 initWithDateComponents:v4];
+  dateComponents = [(REMAlarmDateTrigger *)self dateComponents];
+  v5 = [(REMAlarmDateTrigger *)v3 initWithDateComponents:dateComponents];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(REMAlarmDateTrigger *)self dateComponents];
-    v7 = [v5 dateComponents];
+    v5 = equalCopy;
+    dateComponents = [(REMAlarmDateTrigger *)self dateComponents];
+    dateComponents2 = [v5 dateComponents];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [dateComponents isEqual:dateComponents2];
   }
 
   else
@@ -73,8 +73,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(REMAlarmDateTrigger *)self dateComponents];
-  v3 = [v2 hash];
+  dateComponents = [(REMAlarmDateTrigger *)self dateComponents];
+  v3 = [dateComponents hash];
 
   return v3;
 }
@@ -85,35 +85,35 @@
   v8.receiver = self;
   v8.super_class = REMAlarmDateTrigger;
   v4 = [(REMAlarmDateTrigger *)&v8 description];
-  v5 = [(REMAlarmDateTrigger *)self dateComponents];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dateComponents = [(REMAlarmDateTrigger *)self dateComponents];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dateComponents];
 
   return v6;
 }
 
-- (REMAlarmDateTrigger)initWithCoder:(id)a3
+- (REMAlarmDateTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = REMAlarmDateTrigger;
-  v5 = [(REMAlarmTrigger *)&v8 initWithCoder:v4];
+  v5 = [(REMAlarmTrigger *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateComponents"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateComponents"];
     [(REMAlarmDateTrigger *)v5 setDateComponents:v6];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = REMAlarmDateTrigger;
-  v4 = a3;
-  [(REMAlarmTrigger *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(REMAlarmTrigger *)&v6 encodeWithCoder:coderCopy];
   v5 = [(REMAlarmDateTrigger *)self dateComponents:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"dateComponents"];
+  [coderCopy encodeObject:v5 forKey:@"dateComponents"];
 }
 
 @end

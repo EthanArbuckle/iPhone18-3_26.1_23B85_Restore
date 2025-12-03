@@ -1,9 +1,9 @@
 @interface MusicModelLiveRadioCaseItem
 + (id)requiredStoreLibraryPersonalizationProperties;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)backgroundArtworkCatalog;
-- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)a3;
-- (id)personalizationScopedPropertiesForProperties:(id)a3;
+- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)object;
+- (id)personalizationScopedPropertiesForProperties:(id)properties;
 - (id)relativeModelObjectForStoreLibraryPersonalization;
 - (id)videoBackgroundArtworkCatalog;
 @end
@@ -12,11 +12,11 @@
 
 - (id)backgroundArtworkCatalog
 {
-  v3 = [(MusicModelLiveRadioCaseItem *)self backgroundArtworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  backgroundArtworkCatalogBlock = [(MusicModelLiveRadioCaseItem *)self backgroundArtworkCatalogBlock];
+  v4 = backgroundArtworkCatalogBlock;
+  if (backgroundArtworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(backgroundArtworkCatalogBlock + 16))(backgroundArtworkCatalogBlock, self);
   }
 
   else
@@ -29,11 +29,11 @@
 
 - (id)videoBackgroundArtworkCatalog
 {
-  v3 = [(MusicModelLiveRadioCaseItem *)self videoBackgroundArtworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  videoBackgroundArtworkCatalogBlock = [(MusicModelLiveRadioCaseItem *)self videoBackgroundArtworkCatalogBlock];
+  v4 = videoBackgroundArtworkCatalogBlock;
+  if (videoBackgroundArtworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(videoBackgroundArtworkCatalogBlock + 16))(videoBackgroundArtworkCatalogBlock, self);
   }
 
   else
@@ -64,20 +64,20 @@
   return v5;
 }
 
-- (id)personalizationScopedPropertiesForProperties:(id)a3
+- (id)personalizationScopedPropertiesForProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(MusicModelLiveRadioCaseItem *)self contentItem];
-  v6 = [v4 relationships];
+  propertiesCopy = properties;
+  contentItem = [(MusicModelLiveRadioCaseItem *)self contentItem];
+  relationships = [propertiesCopy relationships];
 
-  v7 = [v6 objectForKey:@"MusicModelRelationshipLiveRadioCaseItemContentItem"];
+  v7 = [relationships objectForKey:@"MusicModelRelationshipLiveRadioCaseItemContentItem"];
   v8 = v7;
   if (!v7)
   {
     v8 = +[MPPropertySet emptyPropertySet];
   }
 
-  v9 = [v5 personalizationScopedPropertiesForProperties:v8];
+  v9 = [contentItem personalizationScopedPropertiesForProperties:v8];
   v10 = v9;
   if (v9)
   {
@@ -100,24 +100,24 @@
 
 - (id)relativeModelObjectForStoreLibraryPersonalization
 {
-  v2 = [(MusicModelLiveRadioCaseItem *)self contentItem];
-  v3 = [v2 relativeModelObjectForStoreLibraryPersonalization];
+  contentItem = [(MusicModelLiveRadioCaseItem *)self contentItem];
+  relativeModelObjectForStoreLibraryPersonalization = [contentItem relativeModelObjectForStoreLibraryPersonalization];
 
-  return v3;
+  return relativeModelObjectForStoreLibraryPersonalization;
 }
 
-- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)a3
+- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)object
 {
-  v4 = a3;
-  v5 = [(MusicModelLiveRadioCaseItem *)self identifiers];
+  objectCopy = object;
+  identifiers = [(MusicModelLiveRadioCaseItem *)self identifiers];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __88__MusicModelLiveRadioCaseItem_objectWithStoreLibraryPersonalizationRelativeModelObject___block_invoke;
   v9[3] = &unk_CEF158;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [(MusicModelLiveRadioCaseItem *)self copyWithIdentifiers:v5 block:v9];
+  v10 = objectCopy;
+  v6 = objectCopy;
+  v7 = [(MusicModelLiveRadioCaseItem *)self copyWithIdentifiers:identifiers block:v9];
 
   return v7;
 }
@@ -132,10 +132,10 @@ void __88__MusicModelLiveRadioCaseItem_objectWithStoreLibraryPersonalizationRela
   [v4 setContentItem:v6];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v27 = 1;
   }
@@ -145,66 +145,66 @@ void __88__MusicModelLiveRadioCaseItem_objectWithStoreLibraryPersonalizationRela
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MusicModelLiveRadioCaseItem *)self contentItem];
-      v7 = [(MusicModelLiveRadioCaseItem *)v5 contentItem];
-      if (v6 == v7 || [v6 isEqual:v7])
+      v5 = equalCopy;
+      contentItem = [(MusicModelLiveRadioCaseItem *)self contentItem];
+      contentItem2 = [(MusicModelLiveRadioCaseItem *)v5 contentItem];
+      if (contentItem == contentItem2 || [contentItem isEqual:contentItem2])
       {
-        v8 = [(MusicModelLiveRadioCaseItem *)self headerTitleText];
-        v9 = [(MusicModelLiveRadioCaseItem *)v5 headerTitleText];
-        if (v8 == v9 || [v8 isEqual:v9])
+        headerTitleText = [(MusicModelLiveRadioCaseItem *)self headerTitleText];
+        headerTitleText2 = [(MusicModelLiveRadioCaseItem *)v5 headerTitleText];
+        if (headerTitleText == headerTitleText2 || [headerTitleText isEqual:headerTitleText2])
         {
-          v10 = [(MusicModelLiveRadioCaseItem *)self headerSubtitleText];
-          v11 = [(MusicModelLiveRadioCaseItem *)v5 headerSubtitleText];
-          if (v10 == v11 || [v10 isEqual:v11])
+          headerSubtitleText = [(MusicModelLiveRadioCaseItem *)self headerSubtitleText];
+          headerSubtitleText2 = [(MusicModelLiveRadioCaseItem *)v5 headerSubtitleText];
+          if (headerSubtitleText == headerSubtitleText2 || [headerSubtitleText isEqual:headerSubtitleText2])
           {
-            v38 = v10;
-            v12 = [(MusicModelLiveRadioCaseItem *)self accessoryButtonTitleText];
-            v13 = [(MusicModelLiveRadioCaseItem *)v5 accessoryButtonTitleText];
-            if (v12 == v13 || [v12 isEqual:v13])
+            v38 = headerSubtitleText;
+            accessoryButtonTitleText = [(MusicModelLiveRadioCaseItem *)self accessoryButtonTitleText];
+            accessoryButtonTitleText2 = [(MusicModelLiveRadioCaseItem *)v5 accessoryButtonTitleText];
+            if (accessoryButtonTitleText == accessoryButtonTitleText2 || [accessoryButtonTitleText isEqual:accessoryButtonTitleText2])
             {
-              v36 = v11;
-              v37 = v13;
-              v14 = [(MusicModelLiveRadioCaseItem *)self headlineText];
-              v15 = [(MusicModelLiveRadioCaseItem *)v5 headlineText];
-              if (v14 == v15 || [v14 isEqual:v15])
+              v36 = headerSubtitleText2;
+              v37 = accessoryButtonTitleText2;
+              headlineText = [(MusicModelLiveRadioCaseItem *)self headlineText];
+              headlineText2 = [(MusicModelLiveRadioCaseItem *)v5 headlineText];
+              if (headlineText == headlineText2 || [headlineText isEqual:headlineText2])
               {
-                v34 = v8;
-                v35 = v15;
-                v16 = [(MusicModelLiveRadioCaseItem *)self subtitleText];
-                v17 = [(MusicModelLiveRadioCaseItem *)v5 subtitleText];
-                v33 = v16;
-                if (v16 == v17 || [v16 isEqual:v17])
+                v34 = headerTitleText;
+                v35 = headlineText2;
+                subtitleText = [(MusicModelLiveRadioCaseItem *)self subtitleText];
+                subtitleText2 = [(MusicModelLiveRadioCaseItem *)v5 subtitleText];
+                v33 = subtitleText;
+                if (subtitleText == subtitleText2 || [subtitleText isEqual:subtitleText2])
                 {
-                  v32 = v17;
-                  v18 = [(MusicModelLiveRadioCaseItem *)self titleText];
-                  v19 = [(MusicModelLiveRadioCaseItem *)v5 titleText];
-                  v31 = v18;
-                  if (v18 == v19 || [v18 isEqual:v19])
+                  v32 = subtitleText2;
+                  titleText = [(MusicModelLiveRadioCaseItem *)self titleText];
+                  titleText2 = [(MusicModelLiveRadioCaseItem *)v5 titleText];
+                  v31 = titleText;
+                  if (titleText == titleText2 || [titleText isEqual:titleText2])
                   {
-                    v30 = v19;
-                    v20 = [(MusicModelLiveRadioCaseItem *)self backgroundArtworkCatalog];
-                    v21 = [(MusicModelLiveRadioCaseItem *)v5 backgroundArtworkCatalog];
-                    if (v20 == v21 || [v20 isEqual:v21])
+                    v30 = titleText2;
+                    backgroundArtworkCatalog = [(MusicModelLiveRadioCaseItem *)self backgroundArtworkCatalog];
+                    backgroundArtworkCatalog2 = [(MusicModelLiveRadioCaseItem *)v5 backgroundArtworkCatalog];
+                    if (backgroundArtworkCatalog == backgroundArtworkCatalog2 || [backgroundArtworkCatalog isEqual:backgroundArtworkCatalog2])
                     {
-                      v22 = [(MusicModelLiveRadioCaseItem *)self videoBackgroundArtworkCatalog];
-                      v23 = [(MusicModelLiveRadioCaseItem *)v5 videoBackgroundArtworkCatalog];
-                      if (v22 == v23)
+                      videoBackgroundArtworkCatalog = [(MusicModelLiveRadioCaseItem *)self videoBackgroundArtworkCatalog];
+                      videoBackgroundArtworkCatalog2 = [(MusicModelLiveRadioCaseItem *)v5 videoBackgroundArtworkCatalog];
+                      if (videoBackgroundArtworkCatalog == videoBackgroundArtworkCatalog2)
                       {
-                        v26 = v22;
+                        v26 = videoBackgroundArtworkCatalog;
                         v27 = 1;
                       }
 
                       else
                       {
-                        v24 = v23;
-                        v25 = [v22 isEqual:v23];
-                        v23 = v24;
-                        v26 = v22;
+                        v24 = videoBackgroundArtworkCatalog2;
+                        v25 = [videoBackgroundArtworkCatalog isEqual:videoBackgroundArtworkCatalog2];
+                        videoBackgroundArtworkCatalog2 = v24;
+                        v26 = videoBackgroundArtworkCatalog;
                         v27 = v25;
                       }
 
-                      v21 = v29;
+                      backgroundArtworkCatalog2 = v29;
                     }
 
                     else
@@ -212,7 +212,7 @@ void __88__MusicModelLiveRadioCaseItem_objectWithStoreLibraryPersonalizationRela
                       v27 = 0;
                     }
 
-                    v19 = v30;
+                    titleText2 = v30;
                   }
 
                   else
@@ -220,7 +220,7 @@ void __88__MusicModelLiveRadioCaseItem_objectWithStoreLibraryPersonalizationRela
                     v27 = 0;
                   }
 
-                  v17 = v32;
+                  subtitleText2 = v32;
                 }
 
                 else
@@ -228,8 +228,8 @@ void __88__MusicModelLiveRadioCaseItem_objectWithStoreLibraryPersonalizationRela
                   v27 = 0;
                 }
 
-                v8 = v34;
-                v15 = v35;
+                headerTitleText = v34;
+                headlineText2 = v35;
               }
 
               else
@@ -237,8 +237,8 @@ void __88__MusicModelLiveRadioCaseItem_objectWithStoreLibraryPersonalizationRela
                 v27 = 0;
               }
 
-              v11 = v36;
-              v13 = v37;
+              headerSubtitleText2 = v36;
+              accessoryButtonTitleText2 = v37;
             }
 
             else
@@ -246,7 +246,7 @@ void __88__MusicModelLiveRadioCaseItem_objectWithStoreLibraryPersonalizationRela
               v27 = 0;
             }
 
-            v10 = v38;
+            headerSubtitleText = v38;
           }
 
           else

@@ -1,8 +1,8 @@
 @interface FRNewsReferralItemWidgetArticleListEncodableElement
 - (FRNewsReferralItemWidgetArticleListEncodableElement)init;
-- (FRNewsReferralItemWidgetArticleListEncodableElement)initWithCoder:(id)a3;
-- (FRNewsReferralItemWidgetArticleListEncodableElement)initWithJSONArray:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (FRNewsReferralItemWidgetArticleListEncodableElement)initWithCoder:(id)coder;
+- (FRNewsReferralItemWidgetArticleListEncodableElement)initWithJSONArray:(id)array;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FRNewsReferralItemWidgetArticleListEncodableElement
@@ -30,10 +30,10 @@
   objc_exception_throw(v4);
 }
 
-- (FRNewsReferralItemWidgetArticleListEncodableElement)initWithJSONArray:(id)a3
+- (FRNewsReferralItemWidgetArticleListEncodableElement)initWithJSONArray:(id)array
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  arrayCopy = array;
+  if (!arrayCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006B774();
   }
@@ -43,7 +43,7 @@
   v5 = [(FRNewsReferralItemWidgetArticleListEncodableElement *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [arrayCopy copy];
     JSONArray = v5->_JSONArray;
     v5->_JSONArray = v6;
   }
@@ -51,22 +51,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FRNewsReferralItemWidgetArticleListEncodableElement *)self JSONArray];
-  [v4 encodeObject:v5 forKey:@"b"];
+  coderCopy = coder;
+  jSONArray = [(FRNewsReferralItemWidgetArticleListEncodableElement *)self JSONArray];
+  [coderCopy encodeObject:jSONArray forKey:@"b"];
 }
 
-- (FRNewsReferralItemWidgetArticleListEncodableElement)initWithCoder:(id)a3
+- (FRNewsReferralItemWidgetArticleListEncodableElement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = [NSSet setWithObjects:v5, v6, v7, v8, objc_opt_class(), 0];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"b"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"b"];
 
   v11 = [(FRNewsReferralItemWidgetArticleListEncodableElement *)self initWithJSONArray:v10];
   return v11;

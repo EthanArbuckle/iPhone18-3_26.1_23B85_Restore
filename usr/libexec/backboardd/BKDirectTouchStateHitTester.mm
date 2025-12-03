@@ -38,7 +38,7 @@
       v12 = 2114;
       v13 = v7;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
       v17 = @"BKDirectTouchHitTesting.mm";
       v18 = 1024;

@@ -1,42 +1,42 @@
 @interface WBSSQLiteRow
-- (RawData)uncopiedRawDataAtIndex:(SEL)a3;
-- (WBSSQLiteRow)initWithCurrentRowOfEnumerator:(id)a3;
-- (WBSSQLiteRow)initWithStatement:(id)a3;
-- (id)dataAtIndex:(unint64_t)a3;
-- (id)debugDictionaryRepresentationWithStatement:(id)a3;
-- (id)objectAtIndex:(unint64_t)a3;
-- (id)stringAtIndex:(unint64_t)a3;
-- (id)uncopiedDataAtIndex:(unint64_t)a3;
+- (RawData)uncopiedRawDataAtIndex:(SEL)index;
+- (WBSSQLiteRow)initWithCurrentRowOfEnumerator:(id)enumerator;
+- (WBSSQLiteRow)initWithStatement:(id)statement;
+- (id)dataAtIndex:(unint64_t)index;
+- (id)debugDictionaryRepresentationWithStatement:(id)statement;
+- (id)objectAtIndex:(unint64_t)index;
+- (id)stringAtIndex:(unint64_t)index;
+- (id)uncopiedDataAtIndex:(unint64_t)index;
 @end
 
 @implementation WBSSQLiteRow
 
-- (WBSSQLiteRow)initWithStatement:(id)a3
+- (WBSSQLiteRow)initWithStatement:(id)statement
 {
-  v4 = a3;
+  statementCopy = statement;
   v8.receiver = self;
   v8.super_class = WBSSQLiteRow;
   v5 = [(WBSSQLiteRow *)&v8 init];
   if (v5)
   {
-    v5->_handle = [v4 handle];
+    v5->_handle = [statementCopy handle];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (WBSSQLiteRow)initWithCurrentRowOfEnumerator:(id)a3
+- (WBSSQLiteRow)initWithCurrentRowOfEnumerator:(id)enumerator
 {
-  v4 = [a3 statement];
-  v5 = [(WBSSQLiteRow *)self initWithStatement:v4];
+  statement = [enumerator statement];
+  v5 = [(WBSSQLiteRow *)self initWithStatement:statement];
 
   return v5;
 }
 
-- (id)stringAtIndex:(unint64_t)a3
+- (id)stringAtIndex:(unint64_t)index
 {
-  v3 = a3;
+  indexCopy = index;
   if ([(WBSSQLiteRow *)self _isNullAtIndex:?])
   {
     v5 = 0;
@@ -45,20 +45,20 @@
   else
   {
     handle = self->_handle;
-    v7 = sqlite3_column_text(handle, v3);
-    v8 = sqlite3_column_bytes(handle, v3);
+    v7 = sqlite3_column_text(handle, indexCopy);
+    v8 = sqlite3_column_bytes(handle, indexCopy);
     v5 = CFStringCreateWithBytes(*MEMORY[0x1E695E480], v7, v8, 0x8000100u, 0);
   }
 
   return v5;
 }
 
-- (id)dataAtIndex:(unint64_t)a3
+- (id)dataAtIndex:(unint64_t)index
 {
   v5 = 0;
   v6 = 0;
   v7 = 0;
-  [(WBSSQLiteRow *)self uncopiedRawDataAtIndex:a3];
+  [(WBSSQLiteRow *)self uncopiedRawDataAtIndex:index];
   v3 = 0;
   if ((v5 & 1) == 0)
   {
@@ -68,12 +68,12 @@
   return v3;
 }
 
-- (id)uncopiedDataAtIndex:(unint64_t)a3
+- (id)uncopiedDataAtIndex:(unint64_t)index
 {
   v5 = 0;
   v6 = 0;
   v7 = 0;
-  [(WBSSQLiteRow *)self uncopiedRawDataAtIndex:a3];
+  [(WBSSQLiteRow *)self uncopiedRawDataAtIndex:index];
   v3 = 0;
   if ((v5 & 1) == 0)
   {
@@ -83,7 +83,7 @@
   return v3;
 }
 
-- (RawData)uncopiedRawDataAtIndex:(SEL)a3
+- (RawData)uncopiedRawDataAtIndex:(SEL)index
 {
   v4 = a4;
   result = [(WBSSQLiteRow *)self _isNullAtIndex:?];
@@ -119,20 +119,20 @@
   return result;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  v5 = sqlite3_column_type(self->_handle, a3);
-  v6 = 0;
+  v5 = sqlite3_column_type(self->_handle, index);
+  null = 0;
   if (v5 <= 2)
   {
     if (v5 == 1)
     {
-      v6 = [MEMORY[0x1E696AD98] numberWithLongLong:{sqlite3_column_int64(self->_handle, a3)}];
+      null = [MEMORY[0x1E696AD98] numberWithLongLong:{sqlite3_column_int64(self->_handle, index)}];
     }
 
     else if (v5 == 2)
     {
-      v6 = [MEMORY[0x1E696AD98] numberWithDouble:{sqlite3_column_double(self->_handle, a3)}];
+      null = [MEMORY[0x1E696AD98] numberWithDouble:{sqlite3_column_double(self->_handle, index)}];
     }
   }
 
@@ -141,32 +141,32 @@
     switch(v5)
     {
       case 3:
-        v6 = [(WBSSQLiteRow *)self stringAtIndex:a3];
+        null = [(WBSSQLiteRow *)self stringAtIndex:index];
         break;
       case 4:
-        v6 = [(WBSSQLiteRow *)self dataAtIndex:a3];
+        null = [(WBSSQLiteRow *)self dataAtIndex:index];
         break;
       case 5:
-        v6 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
         break;
     }
   }
 
-  return v6;
+  return null;
 }
 
-- (id)debugDictionaryRepresentationWithStatement:(id)a3
+- (id)debugDictionaryRepresentationWithStatement:(id)statement
 {
-  v4 = [a3 columnNames];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  columnNames = [statement columnNames];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59__WBSSQLiteRow_debugDictionaryRepresentationWithStatement___block_invoke;
   v8[3] = &unk_1E7CF0D00;
   v8[4] = self;
-  v6 = v5;
+  v6 = dictionary;
   v9 = v6;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [columnNames enumerateObjectsUsingBlock:v8];
 
   return v6;
 }

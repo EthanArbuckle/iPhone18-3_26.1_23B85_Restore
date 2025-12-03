@@ -1,21 +1,21 @@
 @interface SWScheduledSystemWake
 - (BOOL)isScheduled;
 - (NSString)description;
-- (SWScheduledSystemWake)initWithIdentifier:(id)a3;
+- (SWScheduledSystemWake)initWithIdentifier:(id)identifier;
 - (double)wakeTime;
 - (int64_t)leeway;
-- (void)_cancelWakeAtDate:(void *)a3 identifier:;
+- (void)_cancelWakeAtDate:(void *)date identifier:;
 - (void)cancelWake;
 - (void)dealloc;
 - (void)invalidate;
-- (void)scheduleWake:(double)a3 leeway:(int64_t)a4;
+- (void)scheduleWake:(double)wake leeway:(int64_t)leeway;
 @end
 
 @implementation SWScheduledSystemWake
 
-- (SWScheduledSystemWake)initWithIdentifier:(id)a3
+- (SWScheduledSystemWake)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = SWScheduledSystemWake;
   v6 = [(SWScheduledSystemWake *)&v9 init];
@@ -23,7 +23,7 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
   }
 
   return v7;
@@ -46,7 +46,7 @@
       v13 = 2114;
       v14 = v8;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = @"SWScheduledSystemWake.m";
       v19 = 1024;
@@ -72,18 +72,18 @@
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x277CF0BF0] sharedInstance];
+  mEMORY[0x277CF0BF0] = [MEMORY[0x277CF0BF0] sharedInstance];
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
   [v4 appendString:self->_identifier withName:@"identifier"];
-  v5 = [v3 formatDateAsLongYMDHMSZPosixLocaleWithDate:self->_lock_wakeDate];
+  v5 = [mEMORY[0x277CF0BF0] formatDateAsLongYMDHMSZPosixLocaleWithDate:self->_lock_wakeDate];
   [v4 appendString:v5 withName:@"wakeDate"];
 
   [(NSDate *)self->_lock_wakeDate timeIntervalSinceNow];
   v6 = [v4 appendTimeInterval:@"timeRemaining" withName:1 decomposeUnits:?];
   v7 = [v4 appendTimeInterval:@"leeway" withName:0 decomposeUnits:self->_lock_leeway];
-  v8 = [v4 build];
+  build = [v4 build];
 
-  return v8;
+  return build;
 }
 
 - (BOOL)isScheduled
@@ -132,7 +132,7 @@
   return v5;
 }
 
-- (void)scheduleWake:(double)a3 leeway:(int64_t)a4
+- (void)scheduleWake:(double)wake leeway:(int64_t)leeway
 {
   v48 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
@@ -145,11 +145,11 @@
       v28 = objc_opt_class();
       v29 = NSStringFromClass(v28);
       *buf = 138544642;
-      v37 = v27;
+      selfCopy3 = v27;
       v38 = 2114;
-      v39 = v29;
+      selfCopy4 = v29;
       v40 = 2048;
-      v41 = self;
+      selfCopy = self;
       v42 = 2114;
       v43 = @"SWScheduledSystemWake.m";
       v44 = 1024;
@@ -167,17 +167,17 @@
   }
 
   v8 = self->_lock_wakeDate;
-  v9 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:a3];
+  v9 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:wake];
   lock_wakeDate = self->_lock_wakeDate;
   self->_lock_wakeDate = v9;
 
-  self->_lock_leeway = a4;
+  self->_lock_leeway = leeway;
   v11 = self->_lock_wakeIdentifier;
   v12 = MEMORY[0x277CCACA8];
   identifier = self->_identifier;
-  v14 = [MEMORY[0x277CCAD78] UUID];
-  v15 = [v14 UUIDString];
-  v16 = [v12 stringWithFormat:@"%@:%@", identifier, v15];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v16 = [v12 stringWithFormat:@"%@:%@", identifier, uUIDString];
   lock_wakeIdentifier = self->_lock_wakeIdentifier;
   self->_lock_wakeIdentifier = v16;
 
@@ -198,7 +198,7 @@
   block[3] = &unk_279D43148;
   v22 = v20;
   v32 = v22;
-  v33 = self;
+  selfCopy2 = self;
   dispatch_async(v21, block);
 
   if (v8)
@@ -214,9 +214,9 @@
   if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
   {
     *buf = 134218242;
-    v37 = self;
+    selfCopy3 = self;
     v38 = 2114;
-    v39 = self;
+    selfCopy4 = self;
     _os_log_impl(&dword_26C657000, v24, OS_LOG_TYPE_INFO, "%p scheduling system wake: %{public}@", buf, 0x16u);
   }
 
@@ -253,11 +253,11 @@ void __45__SWScheduledSystemWake_scheduleWake_leeway___block_invoke(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cancelWakeAtDate:(void *)a3 identifier:
+- (void)_cancelWakeAtDate:(void *)date identifier:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  dateCopy = date;
+  if (self)
   {
     v7 = +[SWPreventSystemSleepAssertion sharedHighPriorityQueue];
     block[0] = MEMORY[0x277D85DD0];
@@ -265,8 +265,8 @@ void __45__SWScheduledSystemWake_scheduleWake_leeway___block_invoke(uint64_t a1)
     block[2] = __54__SWScheduledSystemWake__cancelWakeAtDate_identifier___block_invoke;
     block[3] = &unk_279D433F0;
     v9 = v5;
-    v10 = v6;
-    v11 = a1;
+    v10 = dateCopy;
+    selfCopy = self;
     dispatch_async(v7, block);
   }
 }
@@ -281,9 +281,9 @@ void __45__SWScheduledSystemWake_scheduleWake_leeway___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       v8 = 134218242;
-      v9 = self;
+      selfCopy = self;
       v10 = 2114;
-      v11 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_26C657000, v3, OS_LOG_TYPE_INFO, "%p canceling system wake: %{public}@", &v8, 0x16u);
     }
 

@@ -1,18 +1,18 @@
 @interface CBSoftwareUpdatePayloadInfo
-- (CBSoftwareUpdatePayloadInfo)initWithXPCObject:(id)a3 error:(id *)a4;
+- (CBSoftwareUpdatePayloadInfo)initWithXPCObject:(id)object error:(id *)error;
 - (id)description;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation CBSoftwareUpdatePayloadInfo
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
-  xdict = v4;
+  objectCopy = object;
+  xdict = objectCopy;
   if (self->_softwareUpdateActionType)
   {
-    xpc_dictionary_set_uint64(v4, "suA", self->_softwareUpdateActionType);
+    xpc_dictionary_set_uint64(objectCopy, "suA", self->_softwareUpdateActionType);
   }
 
   softwareUpdateDataBlob = self->_softwareUpdateDataBlob;
@@ -21,10 +21,10 @@
     v6 = softwareUpdateDataBlob;
     v7 = xdict;
     v8 = softwareUpdateDataBlob;
-    v9 = [(NSData *)v8 bytes];
-    if (v9)
+    bytes = [(NSData *)v8 bytes];
+    if (bytes)
     {
-      v10 = v9;
+      v10 = bytes;
     }
 
     else
@@ -44,10 +44,10 @@
     v14 = softwareUpdateDataMask;
     v15 = xdict;
     v16 = softwareUpdateDataMask;
-    v17 = [(NSData *)v16 bytes];
-    if (v17)
+    bytes2 = [(NSData *)v16 bytes];
+    if (bytes2)
     {
-      v18 = v17;
+      v18 = bytes2;
     }
 
     else
@@ -78,9 +78,9 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"ActionType: %s, DataBlob: %@, DataMask: %@", v3, self->_softwareUpdateDataBlob, self->_softwareUpdateDataMask];
 }
 
-- (CBSoftwareUpdatePayloadInfo)initWithXPCObject:(id)a3 error:(id *)a4
+- (CBSoftwareUpdatePayloadInfo)initWithXPCObject:(id)object error:(id *)error
 {
-  OUTLINED_FUNCTION_19(self, a2, a3);
+  OUTLINED_FUNCTION_19(self, a2, object);
   v7 = OUTLINED_FUNCTION_18();
   if (!v7)
   {

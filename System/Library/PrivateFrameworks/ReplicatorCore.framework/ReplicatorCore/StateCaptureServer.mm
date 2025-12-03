@@ -1,7 +1,7 @@
 @interface StateCaptureServer
 - (_TtC14ReplicatorCore18StateCaptureServer)init;
-- (id)dataPathAndReturnError:(id *)a3;
-- (id)stateFor:(id)a3 error:(id *)a4;
+- (id)dataPathAndReturnError:(id *)error;
+- (id)stateFor:(id)for error:(id *)error;
 @end
 
 @implementation StateCaptureServer
@@ -13,9 +13,9 @@
   return result;
 }
 
-- (id)stateFor:(id)a3 error:(id *)a4
+- (id)stateFor:(id)for error:(id *)error
 {
-  if (a3)
+  if (for)
   {
     v5 = sub_2304A5D24();
     v7 = v6;
@@ -27,7 +27,7 @@
     v7 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_230494F18(v5, v7);
 
   v9 = sub_2304A5D14();
@@ -35,7 +35,7 @@
   return v9;
 }
 
-- (id)dataPathAndReturnError:(id *)a3
+- (id)dataPathAndReturnError:(id *)error
 {
   v3 = sub_2304A3FC4();
   v4 = *(v3 - 8);

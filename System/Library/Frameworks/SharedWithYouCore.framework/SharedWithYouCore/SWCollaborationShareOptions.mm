@@ -1,31 +1,31 @@
 @interface SWCollaborationShareOptions
-+ (SWCollaborationShareOptions)allocWithZone:(_NSZone *)a3;
++ (SWCollaborationShareOptions)allocWithZone:(_NSZone *)zone;
 + (SWCollaborationShareOptions)shareOptionsWithOptionsGroups:(NSArray *)optionsGroups;
 + (SWCollaborationShareOptions)shareOptionsWithOptionsGroups:(NSArray *)optionsGroups summary:(NSString *)summary;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToShareOptions:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToShareOptions:(id)options;
 - (SWCollaborationShareOptions)initWithCoder:(NSCoder *)coder;
 - (SWCollaborationShareOptions)initWithOptionsGroups:(NSArray *)optionsGroups;
 - (SWCollaborationShareOptions)initWithOptionsGroups:(NSArray *)optionsGroups summary:(NSString *)summary;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SWCollaborationShareOptions
 
-+ (SWCollaborationShareOptions)allocWithZone:(_NSZone *)a3
++ (SWCollaborationShareOptions)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [_SWCollaborationShareOptions allocWithZone:a3];
+    return [_SWCollaborationShareOptions allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SWCollaborationShareOptions;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 
@@ -62,7 +62,7 @@
 {
   v6 = summary;
   v7 = optionsGroups;
-  v8 = [[a1 alloc] initWithOptionsGroups:v7 summary:v6];
+  v8 = [[self alloc] initWithOptionsGroups:v7 summary:v6];
 
   return v8;
 }
@@ -70,55 +70,55 @@
 + (SWCollaborationShareOptions)shareOptionsWithOptionsGroups:(NSArray *)optionsGroups
 {
   v4 = optionsGroups;
-  v5 = [[a1 alloc] initWithOptionsGroups:v4];
+  v5 = [[self alloc] initWithOptionsGroups:v4];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = self;
-  v11.receiver = v4;
+  selfCopy = self;
+  v11.receiver = selfCopy;
   v11.super_class = SWCollaborationShareOptions;
   v5 = [(SWCollaborationShareOptions *)&v11 init];
   if (v5)
   {
-    v6 = [(SWCollaborationShareOptions *)v4 summary];
-    v7 = [v6 copyWithZone:a3];
+    summary = [(SWCollaborationShareOptions *)selfCopy summary];
+    v7 = [summary copyWithZone:zone];
     [(SWCollaborationShareOptions *)v5 setSummary:v7];
 
-    v8 = [(SWCollaborationShareOptions *)v4 optionsGroups];
-    v9 = [v8 copyWithZone:a3];
+    optionsGroups = [(SWCollaborationShareOptions *)selfCopy optionsGroups];
+    v9 = [optionsGroups copyWithZone:zone];
     [(SWCollaborationShareOptions *)v5 setOptionsGroups:v9];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SWCollaborationShareOptions *)self isEqualToShareOptions:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SWCollaborationShareOptions *)self isEqualToShareOptions:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToShareOptions:(id)a3
+- (BOOL)isEqualToShareOptions:(id)options
 {
-  v7 = a3;
-  if (v7 == self)
+  optionsCopy = options;
+  if (optionsCopy == self)
   {
     v10 = 1;
     goto LABEL_20;
   }
 
-  v8 = [(SWCollaborationShareOptions *)self summary];
-  if (v8 || ([(SWCollaborationShareOptions *)v7 summary], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
+  summary = [(SWCollaborationShareOptions *)self summary];
+  if (summary || ([(SWCollaborationShareOptions *)optionsCopy summary], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v3 = [(SWCollaborationShareOptions *)self summary];
-    v4 = [(SWCollaborationShareOptions *)v7 summary];
-    if (![v3 isEqual:v4])
+    summary2 = [(SWCollaborationShareOptions *)self summary];
+    summary3 = [(SWCollaborationShareOptions *)optionsCopy summary];
+    if (![summary2 isEqual:summary3])
     {
       v10 = 0;
 LABEL_16:
@@ -135,14 +135,14 @@ LABEL_16:
     v9 = 0;
   }
 
-  v11 = [(SWCollaborationShareOptions *)self optionsGroups];
-  if (v11 || ([(SWCollaborationShareOptions *)v7 optionsGroups], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  optionsGroups = [(SWCollaborationShareOptions *)self optionsGroups];
+  if (optionsGroups || ([(SWCollaborationShareOptions *)optionsCopy optionsGroups], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v12 = [(SWCollaborationShareOptions *)self optionsGroups];
-    v13 = [(SWCollaborationShareOptions *)v7 optionsGroups];
-    v10 = [v12 isEqual:v13];
+    optionsGroups2 = [(SWCollaborationShareOptions *)self optionsGroups];
+    optionsGroups3 = [(SWCollaborationShareOptions *)optionsCopy optionsGroups];
+    v10 = [optionsGroups2 isEqual:optionsGroups3];
 
-    if (v11)
+    if (optionsGroups)
     {
       goto LABEL_15;
     }
@@ -160,7 +160,7 @@ LABEL_15:
   }
 
 LABEL_17:
-  if (!v8)
+  if (!summary)
   {
   }
 
@@ -194,14 +194,14 @@ LABEL_20:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SWCollaborationShareOptions *)self summary];
-  [v4 encodeObject:v5 forKey:@"summary"];
+  coderCopy = coder;
+  summary = [(SWCollaborationShareOptions *)self summary];
+  [coderCopy encodeObject:summary forKey:@"summary"];
 
-  v6 = [(SWCollaborationShareOptions *)self optionsGroups];
-  [v4 encodeObject:v6 forKey:@"optionsGroups"];
+  optionsGroups = [(SWCollaborationShareOptions *)self optionsGroups];
+  [coderCopy encodeObject:optionsGroups forKey:@"optionsGroups"];
 }
 
 @end

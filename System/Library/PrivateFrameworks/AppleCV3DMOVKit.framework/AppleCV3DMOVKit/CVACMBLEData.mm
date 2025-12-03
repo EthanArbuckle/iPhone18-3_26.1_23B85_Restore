@@ -1,10 +1,10 @@
 @interface CVACMBLEData
 + (id)classes;
-+ (id)withData:(id)a3;
-- (CVACMBLEData)initWithCoder:(id)a3;
++ (id)withData:(id)data;
+- (CVACMBLEData)initWithCoder:(id)coder;
 - (id)debugDescription;
 - (id)dictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CVACMBLEData
@@ -25,33 +25,33 @@
   return v3;
 }
 
-- (CVACMBLEData)initWithCoder:(id)a3
+- (CVACMBLEData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = CVACMBLEData;
   v5 = [(CVACMBLEData *)&v16 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [v4 decodeObjectForKey:@"u"];
+    v7 = [coderCopy decodeObjectForKey:@"u"];
     uuid = v5->_uuid;
     v5->_uuid = v7;
 
-    v9 = [v4 decodeObjectForKey:@"i"];
+    v9 = [coderCopy decodeObjectForKey:@"i"];
     idsIdentifier = v5->_idsIdentifier;
     v5->_idsIdentifier = v9;
 
-    v11 = [v4 decodeObjectForKey:@"n"];
+    v11 = [coderCopy decodeObjectForKey:@"n"];
     productName = v5->_productName;
     v5->_productName = v11;
 
-    v5->_rssi = [v4 decodeIntForKey:@"r"];
-    v5->_channel = [v4 decodeIntForKey:@"c"];
-    v5->_model = [v4 decodeIntForKey:@"m"];
-    [v4 decodeDoubleForKey:@"at"];
+    v5->_rssi = [coderCopy decodeIntForKey:@"r"];
+    v5->_channel = [coderCopy decodeIntForKey:@"c"];
+    v5->_model = [coderCopy decodeIntForKey:@"m"];
+    [coderCopy decodeDoubleForKey:@"at"];
     v5->_advertisementTimestamp = v13;
-    [v4 decodeDoubleForKey:@"t"];
+    [coderCopy decodeDoubleForKey:@"t"];
     v5->_timestamp = v14;
     objc_autoreleasePoolPop(v6);
   }
@@ -59,11 +59,11 @@
   return v5;
 }
 
-+ (id)withData:(id)a3
++ (id)withData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[CVACMBLEData classes];
-  v5 = [CVAMetadataWrapper decodeNSCoderObject:v3 classes:v4];
+  v5 = [CVAMetadataWrapper decodeNSCoderObject:dataCopy classes:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -81,18 +81,18 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  [v5 encodeObject:self->_uuid forKey:@"u"];
-  [v5 encodeObject:self->_idsIdentifier forKey:@"i"];
-  [v5 encodeObject:self->_productName forKey:@"n"];
-  [v5 encodeInt:self->_rssi forKey:@"r"];
-  [v5 encodeInt:self->_channel forKey:@"c"];
-  [v5 encodeInt:LODWORD(self->_model) forKey:@"m"];
-  [v5 encodeDouble:@"at" forKey:self->_advertisementTimestamp];
-  [v5 encodeDouble:@"t" forKey:self->_timestamp];
+  [coderCopy encodeObject:self->_uuid forKey:@"u"];
+  [coderCopy encodeObject:self->_idsIdentifier forKey:@"i"];
+  [coderCopy encodeObject:self->_productName forKey:@"n"];
+  [coderCopy encodeInt:self->_rssi forKey:@"r"];
+  [coderCopy encodeInt:self->_channel forKey:@"c"];
+  [coderCopy encodeInt:LODWORD(self->_model) forKey:@"m"];
+  [coderCopy encodeDouble:@"at" forKey:self->_advertisementTimestamp];
+  [coderCopy encodeDouble:@"t" forKey:self->_timestamp];
   objc_autoreleasePoolPop(v4);
 }
 
@@ -103,21 +103,21 @@
   uuid = self->_uuid;
   if (uuid)
   {
-    v4 = [(NSUUID *)self->_uuid UUIDString];
-    v24[0] = v4;
+    uUIDString = [(NSUUID *)self->_uuid UUIDString];
+    v24[0] = uUIDString;
     v17 = @"idsIdentifier";
     idsIdentifier = self->_idsIdentifier;
     if (idsIdentifier)
     {
 LABEL_3:
-      v6 = [(NSUUID *)idsIdentifier UUIDString];
+      uUIDString2 = [(NSUUID *)idsIdentifier UUIDString];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v4 = @"000000-0000-0000-0000-000000000000";
+    uUIDString = @"000000-0000-0000-0000-000000000000";
     v24[0] = @"000000-0000-0000-0000-000000000000";
     v17 = @"idsIdentifier";
     idsIdentifier = self->_idsIdentifier;
@@ -127,7 +127,7 @@ LABEL_3:
     }
   }
 
-  v6 = @"000000-0000-0000-0000-000000000000";
+  uUIDString2 = @"000000-0000-0000-0000-000000000000";
 LABEL_6:
   productName = &stru_28521B010;
   if (self->_productName)
@@ -135,7 +135,7 @@ LABEL_6:
     productName = self->_productName;
   }
 
-  v24[1] = v6;
+  v24[1] = uUIDString2;
   v24[2] = productName;
   v18 = @"product";
   v19 = @"rssi";
@@ -172,8 +172,8 @@ LABEL_6:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CVACMBLEData *)self dictionary];
-  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, v5];
+  dictionary = [(CVACMBLEData *)self dictionary];
+  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, dictionary];
 
   return v6;
 }

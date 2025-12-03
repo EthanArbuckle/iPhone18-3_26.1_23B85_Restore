@@ -1,58 +1,58 @@
 @interface CLPrefetchFloorRequest
-+ (id)prefetchRequestForFloor:(id)a3 inVenue:(id)a4 lastRelevant:(id)a5 locationContext:(int64_t)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRequest:(id)a3;
-- (CLPrefetchFloorRequest)initWithCoder:(id)a3;
-- (CLPrefetchFloorRequest)initWithFloor:(id)a3 inVenue:(id)a4 lastRelevant:(id)a5 hasCompleteFloor:(BOOL)a6 allowCellularDownload:(BOOL)a7 locationContext:(int64_t)a8 ranking:(int64_t)a9;
-- (void)encodeWithCoder:(id)a3;
++ (id)prefetchRequestForFloor:(id)floor inVenue:(id)venue lastRelevant:(id)relevant locationContext:(int64_t)context;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRequest:(id)request;
+- (CLPrefetchFloorRequest)initWithCoder:(id)coder;
+- (CLPrefetchFloorRequest)initWithFloor:(id)floor inVenue:(id)venue lastRelevant:(id)relevant hasCompleteFloor:(BOOL)completeFloor allowCellularDownload:(BOOL)download locationContext:(int64_t)context ranking:(int64_t)ranking;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLPrefetchFloorRequest
 
-+ (id)prefetchRequestForFloor:(id)a3 inVenue:(id)a4 lastRelevant:(id)a5 locationContext:(int64_t)a6
++ (id)prefetchRequestForFloor:(id)floor inVenue:(id)venue lastRelevant:(id)relevant locationContext:(int64_t)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [[CLPrefetchFloorRequest alloc] initWithFloor:v9 inVenue:v10 lastRelevant:v11 locationContext:a6];
+  floorCopy = floor;
+  venueCopy = venue;
+  relevantCopy = relevant;
+  v12 = [[CLPrefetchFloorRequest alloc] initWithFloor:floorCopy inVenue:venueCopy lastRelevant:relevantCopy locationContext:context];
 
   return v12;
 }
 
-- (CLPrefetchFloorRequest)initWithFloor:(id)a3 inVenue:(id)a4 lastRelevant:(id)a5 hasCompleteFloor:(BOOL)a6 allowCellularDownload:(BOOL)a7 locationContext:(int64_t)a8 ranking:(int64_t)a9
+- (CLPrefetchFloorRequest)initWithFloor:(id)floor inVenue:(id)venue lastRelevant:(id)relevant hasCompleteFloor:(BOOL)completeFloor allowCellularDownload:(BOOL)download locationContext:(int64_t)context ranking:(int64_t)ranking
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
+  floorCopy = floor;
+  venueCopy = venue;
+  relevantCopy = relevant;
   v23.receiver = self;
   v23.super_class = CLPrefetchFloorRequest;
   v19 = [(CLPrefetchFloorRequest *)&v23 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_floorUuid, a3);
-    objc_storeStrong(&v20->_venueUuid, a4);
-    objc_storeStrong(&v20->_relevancy, a5);
-    v20->_hasCompleteFloor = a6;
-    v20->_allowCellularDownload = a7;
-    v20->_locationContext = a8;
-    v20->_priority = a9;
+    objc_storeStrong(&v19->_floorUuid, floor);
+    objc_storeStrong(&v20->_venueUuid, venue);
+    objc_storeStrong(&v20->_relevancy, relevant);
+    v20->_hasCompleteFloor = completeFloor;
+    v20->_allowCellularDownload = download;
+    v20->_locationContext = context;
+    v20->_priority = ranking;
     v21 = v20;
   }
 
   return v20;
 }
 
-- (CLPrefetchFloorRequest)initWithCoder:(id)a3
+- (CLPrefetchFloorRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"floorUuid"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"floorUuid"];
   if (!v5)
   {
-    v5 = [v4 decodeObjectForKey:@"floorUuid"];
+    v5 = [coderCopy decodeObjectForKey:@"floorUuid"];
   }
 
-  v6 = [v4 decodeObjectForKey:@"venueUuid"];
+  v6 = [coderCopy decodeObjectForKey:@"venueUuid"];
   if (v6)
   {
     v7 = v6;
@@ -63,39 +63,39 @@
     v7 = @"mismatch between pipelined/CoreIndoor.framework";
   }
 
-  [v4 decodeDoubleForKey:@"relevancy"];
+  [coderCopy decodeDoubleForKey:@"relevancy"];
   v8 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-  v9 = -[CLPrefetchFloorRequest initWithFloor:inVenue:lastRelevant:hasCompleteFloor:allowCellularDownload:locationContext:priority:](self, "initWithFloor:inVenue:lastRelevant:hasCompleteFloor:allowCellularDownload:locationContext:priority:", v5, v7, v8, [v4 decodeBoolForKey:@"hasCompleteFloor"], objc_msgSend(v4, "decodeBoolForKey:", @"allowCellularDownload"), objc_msgSend(v4, "decodeIntegerForKey:", @"locationContext"), objc_msgSend(v4, "decodeIntegerForKey:", @"priority"));
+  v9 = -[CLPrefetchFloorRequest initWithFloor:inVenue:lastRelevant:hasCompleteFloor:allowCellularDownload:locationContext:priority:](self, "initWithFloor:inVenue:lastRelevant:hasCompleteFloor:allowCellularDownload:locationContext:priority:", v5, v7, v8, [coderCopy decodeBoolForKey:@"hasCompleteFloor"], objc_msgSend(coderCopy, "decodeBoolForKey:", @"allowCellularDownload"), objc_msgSend(coderCopy, "decodeIntegerForKey:", @"locationContext"), objc_msgSend(coderCopy, "decodeIntegerForKey:", @"priority"));
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_floorUuid forKey:@"floorUuid"];
-  [v4 encodeObject:self->_floorUuid forKey:@"floorUuid"];
-  [v4 encodeObject:self->_venueUuid forKey:@"venueUuid"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_floorUuid forKey:@"floorUuid"];
+  [coderCopy encodeObject:self->_floorUuid forKey:@"floorUuid"];
+  [coderCopy encodeObject:self->_venueUuid forKey:@"venueUuid"];
   [(NSDate *)self->_relevancy timeIntervalSinceReferenceDate];
-  [v4 encodeDouble:@"relevancy" forKey:?];
-  [v4 encodeBool:self->_hasCompleteFloor forKey:@"hasCompleteFloor"];
-  [v4 encodeBool:self->_allowCellularDownload forKey:@"allowCellularDownload"];
-  [v4 encodeInteger:self->_locationContext forKey:@"locationContext"];
-  [v4 encodeInteger:self->_priority forKey:@"priority"];
+  [coderCopy encodeDouble:@"relevancy" forKey:?];
+  [coderCopy encodeBool:self->_hasCompleteFloor forKey:@"hasCompleteFloor"];
+  [coderCopy encodeBool:self->_allowCellularDownload forKey:@"allowCellularDownload"];
+  [coderCopy encodeInteger:self->_locationContext forKey:@"locationContext"];
+  [coderCopy encodeInteger:self->_priority forKey:@"priority"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NSString *)self->_floorUuid isEqualToString:v4];
+    v5 = [(NSString *)self->_floorUuid isEqualToString:equalCopy];
   }
 
   else
   {
-    v5 = [(CLPrefetchFloorRequest *)self isEqualToRequest:v4];
+    v5 = [(CLPrefetchFloorRequest *)self isEqualToRequest:equalCopy];
   }
 
   v6 = v5;
@@ -103,11 +103,11 @@
   return v6;
 }
 
-- (BOOL)isEqualToRequest:(id)a3
+- (BOOL)isEqualToRequest:(id)request
 {
   floorUuid = self->_floorUuid;
-  v4 = [a3 floorUuid];
-  LOBYTE(floorUuid) = [(NSString *)floorUuid isEqualToString:v4];
+  floorUuid = [request floorUuid];
+  LOBYTE(floorUuid) = [(NSString *)floorUuid isEqualToString:floorUuid];
 
   return floorUuid;
 }

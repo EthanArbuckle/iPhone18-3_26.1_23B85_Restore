@@ -1,29 +1,29 @@
 @interface ATXModeEvent
-- (ATXModeEvent)initWithCoder:(id)a3;
-- (ATXModeEvent)initWithStartDate:(id)a3 endDate:(id)a4 entity:(id)a5;
+- (ATXModeEvent)initWithCoder:(id)coder;
+- (ATXModeEvent)initWithStartDate:(id)date endDate:(id)endDate entity:(id)entity;
 - (NSString)description;
 - (id)json;
 - (id)jsonRawData;
 - (id)serialize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXModeEvent
 
-- (ATXModeEvent)initWithStartDate:(id)a3 endDate:(id)a4 entity:(id)a5
+- (ATXModeEvent)initWithStartDate:(id)date endDate:(id)endDate entity:(id)entity
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  entityCopy = entity;
   v15.receiver = self;
   v15.super_class = ATXModeEvent;
   v12 = [(ATXModeEvent *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_startDate, a3);
-    objc_storeStrong(&v13->_endDate, a4);
-    objc_storeStrong(&v13->_entity, a5);
+    objc_storeStrong(&v12->_startDate, date);
+    objc_storeStrong(&v13->_endDate, endDate);
+    objc_storeStrong(&v13->_entity, entity);
   }
 
   return v13;
@@ -34,8 +34,8 @@
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   startDate = self->_startDate;
   endDate = self->_endDate;
-  v6 = [(ATXModeEntityProtocol *)self->_entity identifier];
-  v7 = [v3 initWithFormat:@"startDate: %@, endDate: %@, identifier: %@", startDate, endDate, v6];
+  identifier = [(ATXModeEntityProtocol *)self->_entity identifier];
+  v7 = [v3 initWithFormat:@"startDate: %@, endDate: %@, identifier: %@", startDate, endDate, identifier];
 
   return v7;
 }
@@ -47,47 +47,47 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   startDate = self->_startDate;
-  v5 = a3;
-  [v5 encodeObject:startDate forKey:@"startDate"];
-  [v5 encodeObject:self->_endDate forKey:@"endDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"endDate"];
 }
 
-- (ATXModeEvent)initWithCoder:(id)a3
+- (ATXModeEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277D42620];
   v6 = objc_opt_class();
   v7 = __atxlog_handle_notifications();
-  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"startDate" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.ATXModeEvent" errorCode:-1 logHandle:v7];
+  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"startDate" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.proactive.ATXModeEvent" errorCode:-1 logHandle:v7];
 
-  if (v8 && ([v4 error], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
+  if (v8 && ([coderCopy error], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
   {
     v11 = MEMORY[0x277D42620];
     v12 = objc_opt_class();
     v13 = __atxlog_handle_notifications();
-    v14 = [v11 robustDecodeObjectOfClass:v12 forKey:@"endDate" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.ATXModeEvent" errorCode:-1 logHandle:v13];
+    v14 = [v11 robustDecodeObjectOfClass:v12 forKey:@"endDate" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.proactive.ATXModeEvent" errorCode:-1 logHandle:v13];
 
-    if (v14 && ([v4 error], v15 = objc_claimAutoreleasedReturnValue(), v15, !v15))
+    if (v14 && ([coderCopy error], v15 = objc_claimAutoreleasedReturnValue(), v15, !v15))
     {
       self = [(ATXModeEvent *)self initWithStartDate:v8 endDate:v14];
-      v10 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)jsonRawData
@@ -107,8 +107,8 @@
 - (id)json
 {
   v2 = MEMORY[0x277CCAAA0];
-  v3 = [(ATXModeEvent *)self jsonRawData];
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:0];
+  jsonRawData = [(ATXModeEvent *)self jsonRawData];
+  v4 = [v2 dataWithJSONObject:jsonRawData options:1 error:0];
 
   return v4;
 }

@@ -2,18 +2,18 @@
 + (OS_os_log)log;
 + (id)sharedWebViewFactory;
 + (id)sharedWebViewFactoryFuture;
-+ (void)setDaemonInterface:(id)a3 URLCacheWithMemoryCapacity:(unint64_t)a4;
++ (void)setDaemonInterface:(id)interface URLCacheWithMemoryCapacity:(unint64_t)capacity;
 - (MFWKWebViewFactory)init;
-- (MFWKWebViewFactory)initWithRemoteContentURLCache:(id)a3;
+- (MFWKWebViewFactory)initWithRemoteContentURLCache:(id)cache;
 - (WKProcessPool)processPool;
 - (id)webView;
-- (void)contentRuleListManager:(id)a3 didAddRuleList:(id)a4;
-- (void)contentRuleListManager:(id)a3 didRemoveRuleList:(id)a4;
-- (void)contentRuleListManager:(id)a3 didUpdateContentRuleList:(id)a4 oldContentRuleList:(id)a5;
+- (void)contentRuleListManager:(id)manager didAddRuleList:(id)list;
+- (void)contentRuleListManager:(id)manager didRemoveRuleList:(id)list;
+- (void)contentRuleListManager:(id)manager didUpdateContentRuleList:(id)list oldContentRuleList:(id)ruleList;
 - (void)dealloc;
 - (void)preallocateWebViewIfNeeded;
 - (void)preallocateWebViews;
-- (void)setContentRuleListManager:(id)a3;
+- (void)setContentRuleListManager:(id)manager;
 @end
 
 @implementation MFWKWebViewFactory
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = __25__MFWKWebViewFactory_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_8 != -1)
   {
     dispatch_once(&log_onceToken_8, block);
@@ -43,30 +43,30 @@ void __25__MFWKWebViewFactory_log__block_invoke(uint64_t a1)
   log_log_8 = v1;
 }
 
-+ (void)setDaemonInterface:(id)a3 URLCacheWithMemoryCapacity:(unint64_t)a4
++ (void)setDaemonInterface:(id)interface URLCacheWithMemoryCapacity:(unint64_t)capacity
 {
-  v5 = a3;
+  interfaceCopy = interface;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__MFWKWebViewFactory_setDaemonInterface_URLCacheWithMemoryCapacity___block_invoke;
   block[3] = &unk_2781816C0;
-  v6 = v5;
+  v6 = interfaceCopy;
   v9 = v6;
   if (setDaemonInterface_URLCacheWithMemoryCapacity__onceToken != -1)
   {
     dispatch_once(&setDaemonInterface_URLCacheWithMemoryCapacity__onceToken, block);
   }
 
-  v7 = [daemonInterface messageRepository];
-  [v7 setUpURLCacheWithMemoryCapacity:a4];
+  messageRepository = [daemonInterface messageRepository];
+  [messageRepository setUpURLCacheWithMemoryCapacity:capacity];
 }
 
 + (id)sharedWebViewFactoryFuture
 {
   if (!daemonInterface)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"MFWKWebViewFactory.m" lineNumber:83 description:@"daemonInterface is not set"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFWKWebViewFactory.m" lineNumber:83 description:@"daemonInterface is not set"];
   }
 
   if (sharedWebViewFactoryFuture_onceToken != -1)
@@ -100,31 +100,31 @@ id __48__MFWKWebViewFactory_sharedWebViewFactoryFuture__block_invoke_2(uint64_t 
 
 + (id)sharedWebViewFactory
 {
-  v2 = [a1 sharedWebViewFactoryFuture];
-  v3 = [v2 result];
+  sharedWebViewFactoryFuture = [self sharedWebViewFactoryFuture];
+  result = [sharedWebViewFactoryFuture result];
 
-  return v3;
+  return result;
 }
 
 - (MFWKWebViewFactory)init
 {
-  v3 = [daemonInterface messageRepository];
-  v4 = [v3 remoteContentURLCache];
-  v5 = [v4 result];
+  messageRepository = [daemonInterface messageRepository];
+  remoteContentURLCache = [messageRepository remoteContentURLCache];
+  result = [remoteContentURLCache result];
 
-  v6 = [(MFWKWebViewFactory *)self initWithRemoteContentURLCache:v5];
+  v6 = [(MFWKWebViewFactory *)self initWithRemoteContentURLCache:result];
   return v6;
 }
 
-- (MFWKWebViewFactory)initWithRemoteContentURLCache:(id)a3
+- (MFWKWebViewFactory)initWithRemoteContentURLCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v16.receiver = self;
   v16.super_class = MFWKWebViewFactory;
   v5 = [(MFWKWebViewFactory *)&v16 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277D06E98]) initWithCache:v4];
+    v6 = [objc_alloc(MEMORY[0x277D06E98]) initWithCache:cacheCopy];
     urlSession = v5->_urlSession;
     v5->_urlSession = v6;
 
@@ -136,12 +136,12 @@ id __48__MFWKWebViewFactory_sharedWebViewFactoryFuture__block_invoke_2(uint64_t 
     noProxySchemeHandler = v5->_noProxySchemeHandler;
     v5->_noProxySchemeHandler = v10;
 
-    v12 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     configurations = v5->_configurations;
-    v5->_configurations = v12;
+    v5->_configurations = weakObjectsHashTable;
 
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v5 selector:sel__didReceiveMemoryWarning_ name:*MEMORY[0x277D76670] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__didReceiveMemoryWarning_ name:*MEMORY[0x277D76670] object:0];
   }
 
   return v5;
@@ -173,15 +173,15 @@ id __48__MFWKWebViewFactory_sharedWebViewFactoryFuture__block_invoke_2(uint64_t 
 
     v9 = self->_processPool;
     v18[0] = @"remoteContentProxySchemePrefix";
-    v10 = [(EMRemoteContentURLSchemeHandler *)self->_proxySchemeHandler schemePrefix];
-    v19[0] = v10;
+    schemePrefix = [(EMRemoteContentURLSchemeHandler *)self->_proxySchemeHandler schemePrefix];
+    v19[0] = schemePrefix;
     v18[1] = @"remoteContentNoProxySchemePrefix";
-    v11 = [(EMRemoteContentURLSchemeHandler *)self->_noProxySchemeHandler schemePrefix];
-    v19[1] = v11;
+    schemePrefix2 = [(EMRemoteContentURLSchemeHandler *)self->_noProxySchemeHandler schemePrefix];
+    v19[1] = schemePrefix2;
     v18[2] = @"isMailPrivacyProtectionAllowed";
     v12 = MEMORY[0x277CCABB0];
-    v13 = [MEMORY[0x277D262A0] sharedConnection];
-    v14 = [v12 numberWithBool:{objc_msgSend(v13, "isMailPrivacyProtectionAllowed")}];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v14 = [v12 numberWithBool:{objc_msgSend(mEMORY[0x277D262A0], "isMailPrivacyProtectionAllowed")}];
     v19[2] = v14;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:3];
     [(WKProcessPool *)v9 _setObjectsForBundleParametersWithDictionary:v15];
@@ -194,10 +194,10 @@ id __48__MFWKWebViewFactory_sharedWebViewFactoryFuture__block_invoke_2(uint64_t 
   return processPool;
 }
 
-- (void)setContentRuleListManager:(id)a3
+- (void)setContentRuleListManager:(id)manager
 {
   v12 = 0;
-  v4 = [a3 addObserver:self activeRuleLists:&v12];
+  v4 = [manager addObserver:self activeRuleLists:&v12];
   v5 = v12;
   v6 = objc_alloc_init(MEMORY[0x277D07138]);
   contentRuleListManagerObserverCancelable = self->_contentRuleListManagerObserverCancelable;
@@ -211,8 +211,8 @@ id __48__MFWKWebViewFactory_sharedWebViewFactoryFuture__block_invoke_2(uint64_t 
   v10[4] = self;
   v8 = v5;
   v11 = v8;
-  v9 = [MEMORY[0x277D071B8] mainThreadScheduler];
-  [v9 performSyncBlock:v10];
+  mainThreadScheduler = [MEMORY[0x277D071B8] mainThreadScheduler];
+  [mainThreadScheduler performSyncBlock:v10];
 }
 
 void __48__MFWKWebViewFactory_setContentRuleListManager___block_invoke(uint64_t a1)
@@ -328,49 +328,49 @@ uint64_t __41__MFWKWebViewFactory_preallocateWebViews__block_invoke(uint64_t a1)
 
 - (void)preallocateWebViewIfNeeded
 {
-  v3 = [(MFWKWebViewFactory *)self preallocatedWebViews];
+  preallocatedWebViews = [(MFWKWebViewFactory *)self preallocatedWebViews];
 
-  if (v3)
+  if (preallocatedWebViews)
   {
-    v7 = [(MFWKWebViewFactory *)self preallocatedWebViews];
-    v4 = [v7 count];
+    preallocatedWebViews2 = [(MFWKWebViewFactory *)self preallocatedWebViews];
+    v4 = [preallocatedWebViews2 count];
 
     if (!v4)
     {
-      v8 = [(MFWKWebViewFactory *)self preallocatedWebViews];
+      preallocatedWebViews3 = [(MFWKWebViewFactory *)self preallocatedWebViews];
       v5 = [(MFWKWebViewFactory *)self _instantiateWebView:0];
-      [v8 enqueue:v5];
+      [preallocatedWebViews3 enqueue:v5];
     }
   }
 
   else
   {
-    v6 = [(MFWKWebViewFactory *)self preallocatedWebViews];
+    preallocatedWebViews4 = [(MFWKWebViewFactory *)self preallocatedWebViews];
   }
 }
 
 - (id)webView
 {
-  v3 = [(MFWKWebViewFactory *)self preallocatedWebViews];
-  v4 = [v3 dequeue];
+  preallocatedWebViews = [(MFWKWebViewFactory *)self preallocatedWebViews];
+  dequeue = [preallocatedWebViews dequeue];
 
-  if (!v4)
+  if (!dequeue)
   {
-    v4 = [(MFWKWebViewFactory *)self _instantiateWebView:0];
+    dequeue = [(MFWKWebViewFactory *)self _instantiateWebView:0];
   }
 
-  return v4;
+  return dequeue;
 }
 
-- (void)contentRuleListManager:(id)a3 didAddRuleList:(id)a4
+- (void)contentRuleListManager:(id)manager didAddRuleList:(id)list
 {
-  v5 = a4;
+  listCopy = list;
   v8 = MEMORY[0x277D85DD0];
-  v9 = self;
-  v6 = v5;
+  selfCopy = self;
+  v6 = listCopy;
   v10 = v6;
-  v7 = [MEMORY[0x277D071B8] mainThreadScheduler];
-  [v7 performSyncBlock:&v8];
+  mainThreadScheduler = [MEMORY[0x277D071B8] mainThreadScheduler];
+  [mainThreadScheduler performSyncBlock:&v8];
 }
 
 void __60__MFWKWebViewFactory_contentRuleListManager_didAddRuleList___block_invoke(uint64_t a1)
@@ -411,21 +411,21 @@ void __60__MFWKWebViewFactory_contentRuleListManager_didAddRuleList___block_invo
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contentRuleListManager:(id)a3 didUpdateContentRuleList:(id)a4 oldContentRuleList:(id)a5
+- (void)contentRuleListManager:(id)manager didUpdateContentRuleList:(id)list oldContentRuleList:(id)ruleList
 {
-  v7 = a4;
-  v8 = a5;
+  listCopy = list;
+  ruleListCopy = ruleList;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __89__MFWKWebViewFactory_contentRuleListManager_didUpdateContentRuleList_oldContentRuleList___block_invoke;
   v12[3] = &unk_278181670;
   v12[4] = self;
-  v9 = v8;
+  v9 = ruleListCopy;
   v13 = v9;
-  v10 = v7;
+  v10 = listCopy;
   v14 = v10;
-  v11 = [MEMORY[0x277D071B8] mainThreadScheduler];
-  [v11 performSyncBlock:v12];
+  mainThreadScheduler = [MEMORY[0x277D071B8] mainThreadScheduler];
+  [mainThreadScheduler performSyncBlock:v12];
 }
 
 void __89__MFWKWebViewFactory_contentRuleListManager_didUpdateContentRuleList_oldContentRuleList___block_invoke(uint64_t a1)
@@ -467,15 +467,15 @@ void __89__MFWKWebViewFactory_contentRuleListManager_didUpdateContentRuleList_ol
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contentRuleListManager:(id)a3 didRemoveRuleList:(id)a4
+- (void)contentRuleListManager:(id)manager didRemoveRuleList:(id)list
 {
-  v5 = a4;
+  listCopy = list;
   v8 = MEMORY[0x277D85DD0];
-  v9 = self;
-  v6 = v5;
+  selfCopy = self;
+  v6 = listCopy;
   v10 = v6;
-  v7 = [MEMORY[0x277D071B8] mainThreadScheduler];
-  [v7 performSyncBlock:&v8];
+  mainThreadScheduler = [MEMORY[0x277D071B8] mainThreadScheduler];
+  [mainThreadScheduler performSyncBlock:&v8];
 }
 
 void __63__MFWKWebViewFactory_contentRuleListManager_didRemoveRuleList___block_invoke(uint64_t a1)

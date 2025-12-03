@@ -1,7 +1,7 @@
 @interface DANvramUtil
 + (id)sharedInstance;
-- (void)_clearNVRamVariable:(id)a3;
-- (void)_writeNVRamVariable:(id)a3 value:(id)a4;
+- (void)_clearNVRamVariable:(id)variable;
+- (void)_writeNVRamVariable:(id)variable value:(id)value;
 - (void)setNextBootRecovery;
 - (void)syncASTDefaultsToNVRam;
 @end
@@ -75,21 +75,21 @@ LABEL_11:
   [(DANvramUtil *)self _writeNVRamVariable:@"auto-boot" value:@"0"];
 }
 
-- (void)_writeNVRamVariable:(id)a3 value:(id)a4
+- (void)_writeNVRamVariable:(id)variable value:(id)value
 {
-  v5 = a3;
-  v6 = a4;
+  variableCopy = variable;
+  valueCopy = value;
   v7 = IORegistryEntryFromPath(kIOMainPortDefault, "IODeviceTree:/options");
   if (v7)
   {
     v8 = v7;
-    v9 = IORegistryEntrySetCFProperty(v7, v5, v6);
+    v9 = IORegistryEntrySetCFProperty(v7, variableCopy, valueCopy);
     v10 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = "failed";
       v12 = 138412802;
-      v13 = v5;
+      v13 = variableCopy;
       if (!v9)
       {
         v11 = "succeeded.";
@@ -106,20 +106,20 @@ LABEL_11:
   }
 }
 
-- (void)_clearNVRamVariable:(id)a3
+- (void)_clearNVRamVariable:(id)variable
 {
-  v3 = a3;
+  variableCopy = variable;
   v4 = IORegistryEntryFromPath(kIOMainPortDefault, "IODeviceTree:/options");
   if (v4)
   {
     v5 = v4;
-    v6 = IORegistryEntrySetCFProperty(v4, @"IONVRAM-DELETE-PROPERTY", v3);
+    v6 = IORegistryEntrySetCFProperty(v4, @"IONVRAM-DELETE-PROPERTY", variableCopy);
     v7 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = "failed";
       v9 = 138412802;
-      v10 = v3;
+      v10 = variableCopy;
       if (!v6)
       {
         v8 = "succeeded.";

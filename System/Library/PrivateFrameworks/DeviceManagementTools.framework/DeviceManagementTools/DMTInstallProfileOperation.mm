@@ -1,5 +1,5 @@
 @interface DMTInstallProfileOperation
-- (DMTInstallProfileOperation)initWithProfileInstallationPrimitives:(id)a3 profileData:(id)a4;
+- (DMTInstallProfileOperation)initWithProfileInstallationPrimitives:(id)primitives profileData:(id)data;
 - (void)cancel;
 - (void)installProfile;
 - (void)main;
@@ -7,10 +7,10 @@
 
 @implementation DMTInstallProfileOperation
 
-- (DMTInstallProfileOperation)initWithProfileInstallationPrimitives:(id)a3 profileData:(id)a4
+- (DMTInstallProfileOperation)initWithProfileInstallationPrimitives:(id)primitives profileData:(id)data
 {
-  v7 = a3;
-  v8 = a4;
+  primitivesCopy = primitives;
+  dataCopy = data;
   v18.receiver = self;
   v18.super_class = DMTInstallProfileOperation;
   v9 = [(DMTInstallProfileOperation *)&v18 init];
@@ -24,8 +24,8 @@
     profileInstallationQueue = v9->_profileInstallationQueue;
     v9->_profileInstallationQueue = v13;
 
-    objc_storeStrong(&v9->_primitives, a3);
-    v15 = [v8 copy];
+    objc_storeStrong(&v9->_primitives, primitives);
+    v15 = [dataCopy copy];
     profileData = v9->_profileData;
     v9->_profileData = v15;
   }
@@ -38,13 +38,13 @@
   v5.receiver = self;
   v5.super_class = DMTInstallProfileOperation;
   [(DMTInstallProfileOperation *)&v5 cancel];
-  v3 = [(DMTInstallProfileOperation *)self profileInstallationQueue];
+  profileInstallationQueue = [(DMTInstallProfileOperation *)self profileInstallationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__DMTInstallProfileOperation_cancel__block_invoke;
   block[3] = &unk_278F5DEC8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(profileInstallationQueue, block);
 }
 
 void __36__DMTInstallProfileOperation_cancel__block_invoke(uint64_t a1)
@@ -59,13 +59,13 @@ void __36__DMTInstallProfileOperation_cancel__block_invoke(uint64_t a1)
 
 - (void)main
 {
-  v3 = [(DMTInstallProfileOperation *)self profileInstallationQueue];
+  profileInstallationQueue = [(DMTInstallProfileOperation *)self profileInstallationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__DMTInstallProfileOperation_main__block_invoke;
   block[3] = &unk_278F5DEC8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(profileInstallationQueue, block);
 }
 
 - (void)installProfile

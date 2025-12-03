@@ -13,7 +13,7 @@
     BSInterfaceOrientationIsPortrait();
   }
 
-  [a1 pr_defaultDateTimeRectForInterfaceOrientation:a7];
+  [self pr_defaultDateTimeRectForInterfaceOrientation:a7];
   CGRectGetMinY(v12);
   return 0.0;
 }
@@ -45,9 +45,9 @@
 
   v16 = v15;
   v37 = a8;
-  v17 = [a1 sharedLayoutController];
-  v18 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v18 bounds];
+  sharedLayoutController = [self sharedLayoutController];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -64,9 +64,9 @@
     v27 = v24;
   }
 
-  [v17 frameForElements:1 variant:0 withBoundingRect:{v20, v22, v26, v27}];
+  [sharedLayoutController frameForElements:1 variant:0 withBoundingRect:{v20, v22, v26, v27}];
   MinY = CGRectGetMinY(v38);
-  [v17 frameForElements:1 variant:1 withBoundingRect:{v20, v22, v26, v27}];
+  [sharedLayoutController frameForElements:1 variant:1 withBoundingRect:{v20, v22, v26, v27}];
   MaxY = CGRectGetMaxY(v39);
   [v16 preferredTimeMaxYForOrientation:a3];
   v31 = v30;

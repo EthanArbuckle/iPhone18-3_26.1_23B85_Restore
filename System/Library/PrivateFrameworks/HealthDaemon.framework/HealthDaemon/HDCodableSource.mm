@@ -1,16 +1,16 @@
 @interface HDCodableSource
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)decodedModificationDate;
 - (id)decodedUUID;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDeleted:(BOOL)a3;
-- (void)setHasOptions:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDeleted:(BOOL)deleted;
+- (void)setHasOptions:(BOOL)options;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableSource
@@ -30,9 +30,9 @@
   return v3;
 }
 
-- (void)setHasOptions:(BOOL)a3
+- (void)setHasOptions:(BOOL)options
 {
-  if (a3)
+  if (options)
   {
     v3 = 2;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasDeleted:(BOOL)a3
+- (void)setHasDeleted:(BOOL)deleted
 {
-  if (a3)
+  if (deleted)
   {
     v3 = 4;
   }
@@ -66,20 +66,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableSource;
   v4 = [(HDCodableSource *)&v8 description];
-  v5 = [(HDCodableSource *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableSource *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   bundleIdentifier = self->_bundleIdentifier;
@@ -130,46 +130,46 @@
   syncIdentity = self->_syncIdentity;
   if (syncIdentity)
   {
-    v15 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
-    [v4 setObject:v15 forKey:@"syncIdentity"];
+    dictionaryRepresentation = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"syncIdentity"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_name)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_bundleIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_productType)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     options = self->_options;
     PBDataWriterWriteInt64Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_uuid)
   {
     PBDataWriterWriteDataField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -177,7 +177,7 @@
   {
     modificationDate = self->_modificationDate;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
   }
 
@@ -185,95 +185,95 @@
   {
     deleted = self->_deleted;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_owningAppBundleIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_syncIdentity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_name)
   {
-    [v4 setName:?];
-    v4 = v6;
+    [toCopy setName:?];
+    toCopy = v6;
   }
 
   if (self->_bundleIdentifier)
   {
     [v6 setBundleIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_productType)
   {
     [v6 setProductType:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 2) = self->_options;
-    *(v4 + 76) |= 2u;
+    *(toCopy + 2) = self->_options;
+    *(toCopy + 76) |= 2u;
   }
 
   if (self->_uuid)
   {
     [v6 setUuid:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_modificationDate;
-    *(v4 + 76) |= 1u;
+    *(toCopy + 1) = *&self->_modificationDate;
+    *(toCopy + 76) |= 1u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(v4 + 72) = self->_deleted;
-    *(v4 + 76) |= 4u;
+    *(toCopy + 72) = self->_deleted;
+    *(toCopy + 76) |= 4u;
   }
 
   if (self->_owningAppBundleIdentifier)
   {
     [v6 setOwningAppBundleIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_syncIdentity)
   {
     [v6 setSyncIdentity:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSString *)self->_bundleIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_bundleIdentifier copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_productType copyWithZone:a3];
+  v10 = [(NSString *)self->_productType copyWithZone:zone];
   v11 = *(v5 + 48);
   *(v5 + 48) = v10;
 
@@ -283,7 +283,7 @@
     *(v5 + 76) |= 2u;
   }
 
-  v12 = [(NSData *)self->_uuid copyWithZone:a3];
+  v12 = [(NSData *)self->_uuid copyWithZone:zone];
   v13 = *(v5 + 64);
   *(v5 + 64) = v12;
 
@@ -301,27 +301,27 @@
     *(v5 + 76) |= 4u;
   }
 
-  v15 = [(NSString *)self->_owningAppBundleIdentifier copyWithZone:a3];
+  v15 = [(NSString *)self->_owningAppBundleIdentifier copyWithZone:zone];
   v16 = *(v5 + 40);
   *(v5 + 40) = v15;
 
-  v17 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:a3];
+  v17 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:zone];
   v18 = *(v5 + 56);
   *(v5 + 56) = v17;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   name = self->_name;
-  if (name | *(v4 + 4))
+  if (name | *(equalCopy + 4))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -330,7 +330,7 @@
   }
 
   bundleIdentifier = self->_bundleIdentifier;
-  if (bundleIdentifier | *(v4 + 3))
+  if (bundleIdentifier | *(equalCopy + 3))
   {
     if (![(NSString *)bundleIdentifier isEqual:?])
     {
@@ -339,7 +339,7 @@
   }
 
   productType = self->_productType;
-  if (productType | *(v4 + 6))
+  if (productType | *(equalCopy + 6))
   {
     if (![(NSString *)productType isEqual:?])
     {
@@ -348,22 +348,22 @@
   }
 
   has = self->_has;
-  v9 = *(v4 + 76);
+  v9 = *(equalCopy + 76);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 76) & 2) == 0 || self->_options != *(v4 + 2))
+    if ((*(equalCopy + 76) & 2) == 0 || self->_options != *(equalCopy + 2))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 76) & 2) != 0)
+  else if ((*(equalCopy + 76) & 2) != 0)
   {
     goto LABEL_28;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 8))
+  if (uuid | *(equalCopy + 8))
   {
     if (![(NSData *)uuid isEqual:?])
     {
@@ -371,12 +371,12 @@
     }
 
     has = self->_has;
-    v9 = *(v4 + 76);
+    v9 = *(equalCopy + 76);
   }
 
   if (has)
   {
-    if ((v9 & 1) == 0 || self->_modificationDate != *(v4 + 1))
+    if ((v9 & 1) == 0 || self->_modificationDate != *(equalCopy + 1))
     {
       goto LABEL_28;
     }
@@ -404,29 +404,29 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v15 = *(v4 + 72);
+  v15 = *(equalCopy + 72);
   if (self->_deleted)
   {
-    if ((*(v4 + 72) & 1) == 0)
+    if ((*(equalCopy + 72) & 1) == 0)
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_28;
   }
 
 LABEL_23:
   owningAppBundleIdentifier = self->_owningAppBundleIdentifier;
-  if (owningAppBundleIdentifier | *(v4 + 5) && ![(NSString *)owningAppBundleIdentifier isEqual:?])
+  if (owningAppBundleIdentifier | *(equalCopy + 5) && ![(NSString *)owningAppBundleIdentifier isEqual:?])
   {
     goto LABEL_28;
   }
 
   syncIdentity = self->_syncIdentity;
-  if (syncIdentity | *(v4 + 7))
+  if (syncIdentity | *(equalCopy + 7))
   {
     v13 = [(HDCodableSyncIdentity *)syncIdentity isEqual:?];
   }
@@ -505,62 +505,62 @@ LABEL_29:
   return v15 ^ v16 ^ [(HDCodableSyncIdentity *)self->_syncIdentity hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v8 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v8 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(HDCodableSource *)self setName:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(HDCodableSource *)self setBundleIdentifier:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(HDCodableSource *)self setProductType:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if ((*(v4 + 76) & 2) != 0)
+  if ((*(fromCopy + 76) & 2) != 0)
   {
-    self->_options = *(v4 + 2);
+    self->_options = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(HDCodableSource *)self setUuid:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v5 = *(v4 + 76);
+  v5 = *(fromCopy + 76);
   if (v5)
   {
-    self->_modificationDate = *(v4 + 1);
+    self->_modificationDate = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 76);
+    v5 = *(fromCopy + 76);
   }
 
   if ((v5 & 4) != 0)
   {
-    self->_deleted = *(v4 + 72);
+    self->_deleted = *(fromCopy + 72);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(HDCodableSource *)self setOwningAppBundleIdentifier:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
   syncIdentity = self->_syncIdentity;
-  v7 = *(v4 + 7);
+  v7 = *(fromCopy + 7);
   if (syncIdentity)
   {
     if (v7)

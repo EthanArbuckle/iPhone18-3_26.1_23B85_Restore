@@ -10,7 +10,7 @@
 
 - (uint64_t)vuiUserInterfaceStyle
 {
-  if ([a1 userInterfaceStyle] == 1)
+  if ([self userInterfaceStyle] == 1)
   {
     return 1;
   }
@@ -23,31 +23,31 @@
 
 - (unint64_t)vuiPreferredContentSizeCategory
 {
-  v1 = [a1 preferredContentSizeCategory];
-  v2 = [VUICoreUtilities vuiContentSizeCategoryFor:v1];
+  preferredContentSizeCategory = [self preferredContentSizeCategory];
+  v2 = [VUICoreUtilities vuiContentSizeCategoryFor:preferredContentSizeCategory];
 
   return v2;
 }
 
 - (BOOL)isAXEnabled
 {
-  v1 = [a1 vuiPreferredContentSizeCategory];
+  vuiPreferredContentSizeCategory = [self vuiPreferredContentSizeCategory];
 
-  return [VUIAccessibility contentSizeCategoryIsAccessibility:v1];
+  return [VUIAccessibility contentSizeCategoryIsAccessibility:vuiPreferredContentSizeCategory];
 }
 
 - (BOOL)isAXSmallEnabled
 {
-  v1 = [a1 vuiPreferredContentSizeCategory];
+  vuiPreferredContentSizeCategory = [self vuiPreferredContentSizeCategory];
 
-  return [VUIAccessibility isAXSmallEnabled:v1];
+  return [VUIAccessibility isAXSmallEnabled:vuiPreferredContentSizeCategory];
 }
 
 - (BOOL)isAXLargeEnabled
 {
-  v1 = [a1 vuiPreferredContentSizeCategory];
+  vuiPreferredContentSizeCategory = [self vuiPreferredContentSizeCategory];
 
-  return [VUIAccessibility isAXLargeEnabled:v1];
+  return [VUIAccessibility isAXLargeEnabled:vuiPreferredContentSizeCategory];
 }
 
 @end

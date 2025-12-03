@@ -1,10 +1,10 @@
 @interface BWInferenceSharedE5ANEMemoryProvider
 + (void)initialize;
 - (BWInferenceSharedE5ANEMemoryProvider)init;
-- (e5rt_ane_memory_provider)fetchANEMemoryProviderForNetwork:(id)a3;
+- (e5rt_ane_memory_provider)fetchANEMemoryProviderForNetwork:(id)network;
 - (id)description;
-- (int)registerANEMemoryProvider:(e5rt_ane_memory_provider *)a3 forNetwork:(id)a4;
-- (void)completeANEMemoryProviderCreationForNetwork:(id)a3 wasSuccessful:(BOOL)a4;
+- (int)registerANEMemoryProvider:(e5rt_ane_memory_provider *)provider forNetwork:(id)network;
+- (void)completeANEMemoryProviderCreationForNetwork:(id)network wasSuccessful:(BOOL)successful;
 - (void)dealloc;
 @end
 
@@ -12,7 +12,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     fig_note_initialize_category_with_default_work_cf();
 
@@ -63,9 +63,9 @@
   return v3;
 }
 
-- (int)registerANEMemoryProvider:(e5rt_ane_memory_provider *)a3 forNetwork:(id)a4
+- (int)registerANEMemoryProvider:(e5rt_ane_memory_provider *)provider forNetwork:(id)network
 {
-  if (!a3)
+  if (!provider)
   {
     return -31710;
   }
@@ -75,16 +75,16 @@
     return -31710;
   }
 
-  -[BWInferenceSharedResourceManager stashSharedResource:forResourceCategory:](self, "stashSharedResource:forResourceCategory:", [MEMORY[0x1E696B098] valueWithPointer:a3], +[BWInferenceSharedE5ANEMemoryProvider resourceCategory](BWInferenceSharedE5ANEMemoryProvider, "resourceCategory"));
+  -[BWInferenceSharedResourceManager stashSharedResource:forResourceCategory:](self, "stashSharedResource:forResourceCategory:", [MEMORY[0x1E696B098] valueWithPointer:provider], +[BWInferenceSharedE5ANEMemoryProvider resourceCategory](BWInferenceSharedE5ANEMemoryProvider, "resourceCategory"));
   os_unfair_lock_lock(&self->_networkListLock);
-  [(NSMutableSet *)self->_networksUsingE5ANEMemoryProvider addObject:a4];
+  [(NSMutableSet *)self->_networksUsingE5ANEMemoryProvider addObject:network];
   os_unfair_lock_unlock(&self->_networkListLock);
   return 0;
 }
 
-- (e5rt_ane_memory_provider)fetchANEMemoryProviderForNetwork:(id)a3
+- (e5rt_ane_memory_provider)fetchANEMemoryProviderForNetwork:(id)network
 {
-  if (!a3)
+  if (!network)
   {
     return 0;
   }
@@ -100,8 +100,8 @@
     return 0;
   }
 
-  v5 = [v4 pointerValue];
-  if (v5)
+  pointerValue = [v4 pointerValue];
+  if (pointerValue)
   {
     os_unfair_lock_lock(&self->_networkListLock);
     if (([OUTLINED_FUNCTION_0_76() containsObject:?] & 1) == 0)
@@ -112,14 +112,14 @@
     os_unfair_lock_unlock(&self->_networkListLock);
   }
 
-  return v5;
+  return pointerValue;
 }
 
-- (void)completeANEMemoryProviderCreationForNetwork:(id)a3 wasSuccessful:(BOOL)a4
+- (void)completeANEMemoryProviderCreationForNetwork:(id)network wasSuccessful:(BOOL)successful
 {
   if (+[BWInferenceSharedE5ANEMemoryProvider resourceCategory])
   {
-    if (!a4)
+    if (!successful)
     {
       os_unfair_lock_lock(&self->_networkListLock);
       if ([OUTLINED_FUNCTION_0_76() containsObject:?])

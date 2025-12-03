@@ -1,14 +1,14 @@
 @interface _UIPointerAssistantRegion
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIButton)targetViewAsButton;
 - (UIView)targetView;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation _UIPointerAssistantRegion
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = _UIPointerAssistantRegion;
@@ -21,16 +21,16 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v11.receiver = self, v11.super_class = _UIPointerAssistantRegion, [(UIPointerRegion *)&v11 isEqual:v5]))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v11.receiver = self, v11.super_class = _UIPointerAssistantRegion, [(UIPointerRegion *)&v11 isEqual:v5]))
   {
     v6 = v5;
     if (self->_selected == *(v6 + 72))

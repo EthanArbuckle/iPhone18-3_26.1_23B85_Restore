@@ -1,33 +1,33 @@
 @interface MSPSenderIDSStrategy
-- (BOOL)_needToSendETARefreshFor:(id)a3 state:(id)a4;
-- (BOOL)setState:(id)a3 forEvent:(unint64_t)a4;
-- (MSPSenderIDSStrategy)initWithGroupSession:(id)a3;
-- (id)_filteredParticipantsForState:(id)a3 event:(unint64_t)a4;
-- (void)_sendCompatibleInstancesOfState:(id)a3 to:(id)a4;
-- (void)_sendDestinationReachedUpdate:(id)a3 to:(id)a4;
-- (void)_sendETAUpdate:(id)a3 to:(id)a4;
-- (void)_sendETAUpdateIfNeededTo:(id)a3;
-- (void)_sendResumingToNextDestinationUpdate:(id)a3 to:(id)a4;
-- (void)_sendRouteUpdate:(id)a3 to:(id)a4;
-- (void)_sendStoppedUpdate:(id)a3 to:(id)a4;
-- (void)_sendTrafficUpdate:(id)a3 to:(id)a4;
-- (void)_sendUpdatedWaypoints:(id)a3 to:(id)a4;
-- (void)addParticipants:(id)a3;
-- (void)fetchCapabilitiesForParticipants:(id)a3 completion:(id)a4;
+- (BOOL)_needToSendETARefreshFor:(id)for state:(id)state;
+- (BOOL)setState:(id)state forEvent:(unint64_t)event;
+- (MSPSenderIDSStrategy)initWithGroupSession:(id)session;
+- (id)_filteredParticipantsForState:(id)state event:(unint64_t)event;
+- (void)_sendCompatibleInstancesOfState:(id)state to:(id)to;
+- (void)_sendDestinationReachedUpdate:(id)update to:(id)to;
+- (void)_sendETAUpdate:(id)update to:(id)to;
+- (void)_sendETAUpdateIfNeededTo:(id)to;
+- (void)_sendResumingToNextDestinationUpdate:(id)update to:(id)to;
+- (void)_sendRouteUpdate:(id)update to:(id)to;
+- (void)_sendStoppedUpdate:(id)update to:(id)to;
+- (void)_sendTrafficUpdate:(id)update to:(id)to;
+- (void)_sendUpdatedWaypoints:(id)waypoints to:(id)to;
+- (void)addParticipants:(id)participants;
+- (void)fetchCapabilitiesForParticipants:(id)participants completion:(id)completion;
 @end
 
 @implementation MSPSenderIDSStrategy
 
-- (MSPSenderIDSStrategy)initWithGroupSession:(id)a3
+- (MSPSenderIDSStrategy)initWithGroupSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v15.receiver = self;
   v15.super_class = MSPSenderIDSStrategy;
   v6 = [(MSPSenderStrategy *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_groupSession, a3);
+    objc_storeStrong(&v6->_groupSession, session);
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     lastETAUpdateDates = v7->_lastETAUpdateDates;
     v7->_lastETAUpdateDates = v8;
@@ -44,52 +44,52 @@
   return v7;
 }
 
-- (id)_filteredParticipantsForState:(id)a3 event:(unint64_t)a4
+- (id)_filteredParticipantsForState:(id)state event:(unint64_t)event
 {
-  v4 = [(NSMutableSet *)self->super._participants copy:a3];
+  v4 = [(NSMutableSet *)self->super._participants copy:state];
 
   return v4;
 }
 
-- (BOOL)setState:(id)a3 forEvent:(unint64_t)a4
+- (BOOL)setState:(id)state forEvent:(unint64_t)event
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  stateCopy = state;
   v39.receiver = self;
   v39.super_class = MSPSenderIDSStrategy;
-  if ([(MSPSenderStrategy *)&v39 setState:v6 forEvent:a4])
+  if ([(MSPSenderStrategy *)&v39 setState:stateCopy forEvent:event])
   {
-    v7 = [(MSPSenderIDSStrategy *)self _filteredParticipantsForState:v6 event:a4];
+    v7 = [(MSPSenderIDSStrategy *)self _filteredParticipantsForState:stateCopy event:event];
     if ([v7 count])
     {
       v8 = 1;
-      if (a4 > 4)
+      if (event > 4)
       {
-        if (a4 <= 6)
+        if (event <= 6)
         {
-          if (a4 == 5)
+          if (event == 5)
           {
-            [(MSPSenderIDSStrategy *)self _sendRouteUpdate:v6 to:v7];
+            [(MSPSenderIDSStrategy *)self _sendRouteUpdate:stateCopy to:v7];
           }
 
           else
           {
-            [(MSPSenderIDSStrategy *)self _sendTrafficUpdate:v6 to:v7];
+            [(MSPSenderIDSStrategy *)self _sendTrafficUpdate:stateCopy to:v7];
           }
         }
 
         else
         {
-          switch(a4)
+          switch(event)
           {
             case 7uLL:
-              [(MSPSenderIDSStrategy *)self _sendDestinationReachedUpdate:v6 to:v7];
+              [(MSPSenderIDSStrategy *)self _sendDestinationReachedUpdate:stateCopy to:v7];
               break;
             case 8uLL:
-              [(MSPSenderIDSStrategy *)self _sendResumingToNextDestinationUpdate:v6 to:v7];
+              [(MSPSenderIDSStrategy *)self _sendResumingToNextDestinationUpdate:stateCopy to:v7];
               break;
             case 9uLL:
-              [(MSPSenderIDSStrategy *)self _sendStoppedUpdate:v6 to:v7];
+              [(MSPSenderIDSStrategy *)self _sendStoppedUpdate:stateCopy to:v7];
               break;
           }
         }
@@ -97,11 +97,11 @@
         goto LABEL_48;
       }
 
-      if (a4 > 1)
+      if (event > 1)
       {
-        if (a4 == 3)
+        if (event == 3)
         {
-          [(MSPSenderIDSStrategy *)self _sendUpdatedWaypoints:v6 to:v7];
+          [(MSPSenderIDSStrategy *)self _sendUpdatedWaypoints:stateCopy to:v7];
         }
 
         else
@@ -112,9 +112,9 @@
         goto LABEL_48;
       }
 
-      if (a4)
+      if (event)
       {
-        if (a4 != 1)
+        if (event != 1)
         {
 LABEL_48:
 
@@ -127,22 +127,22 @@ LABEL_48:
           if (self)
           {
             v14 = MEMORY[0x277CCACA8];
-            v15 = self;
-            v16 = [v14 stringWithFormat:@"%@<%p>", objc_opt_class(), v15];
+            selfCopy = self;
+            selfCopy = [v14 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
           }
 
           else
           {
-            v16 = @"<nil>";
+            selfCopy = @"<nil>";
           }
 
           participants = self->super._participants;
-          v22 = v16;
+          v22 = selfCopy;
           v23 = [(NSMutableSet *)participants count];
           v24 = self->super._participants;
 
           *buf = 138543875;
-          v42 = v16;
+          v42 = selfCopy;
           v43 = 2048;
           v44 = v23;
           v45 = 2113;
@@ -150,7 +150,7 @@ LABEL_48:
           _os_log_impl(&dword_25813A000, v13, OS_LOG_TYPE_INFO, "[%{public}@] - restoring state, resetting lastETAUpdateDate for %lu participants (%{private}@)", buf, 0x20u);
         }
 
-        v25 = [MEMORY[0x277CBEAA8] date];
+        date = [MEMORY[0x277CBEAA8] date];
         v35 = 0u;
         v36 = 0u;
         v37 = 0u;
@@ -171,8 +171,8 @@ LABEL_48:
               }
 
               v31 = *(*(&v35 + 1) + 8 * i);
-              v32 = [(MSPSenderIDSStrategy *)self lastETAUpdateDates];
-              [v32 setObject:v25 forKeyedSubscript:v31];
+              lastETAUpdateDates = [(MSPSenderIDSStrategy *)self lastETAUpdateDates];
+              [lastETAUpdateDates setObject:date forKeyedSubscript:v31];
             }
 
             v28 = [v26 countByEnumeratingWithState:&v35 objects:v40 count:16];
@@ -190,28 +190,28 @@ LABEL_48:
           if (self)
           {
             v18 = MEMORY[0x277CCACA8];
-            v19 = self;
-            v20 = [v18 stringWithFormat:@"%@<%p>", objc_opt_class(), v19];
+            selfCopy2 = self;
+            selfCopy2 = [v18 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy2];
           }
 
           else
           {
-            v20 = @"<nil>";
+            selfCopy2 = @"<nil>";
           }
 
           *buf = 138543362;
-          v42 = v20;
+          v42 = selfCopy2;
           _os_log_impl(&dword_25813A000, v17, OS_LOG_TYPE_INFO, "[%{public}@] - will immediately attempt to send initial state waypoints/route", buf, 0xCu);
         }
 
         if ([objc_opt_class() _supportsEvent:3])
         {
-          [(MSPSenderIDSStrategy *)self _sendUpdatedWaypoints:v6 to:v7];
+          [(MSPSenderIDSStrategy *)self _sendUpdatedWaypoints:stateCopy to:v7];
         }
 
         if ([objc_opt_class() _supportsEvent:5])
         {
-          [(MSPSenderIDSStrategy *)self _sendRouteUpdate:v6 to:v7];
+          [(MSPSenderIDSStrategy *)self _sendRouteUpdate:stateCopy to:v7];
         }
       }
     }
@@ -222,11 +222,11 @@ LABEL_48:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v10 = MEMORY[0x277CCACA8];
-        v11 = self;
-        v12 = [v10 stringWithFormat:@"%@<%p>", objc_opt_class(), v11];
+        selfCopy3 = self;
+        selfCopy3 = [v10 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy3];
 
         *buf = 138543362;
-        v42 = v12;
+        v42 = selfCopy3;
         _os_log_impl(&dword_25813A000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] - no participants left for event after filtering", buf, 0xCu);
       }
 
@@ -245,17 +245,17 @@ LABEL_49:
   return v8;
 }
 
-- (BOOL)_needToSendETARefreshFor:(id)a3 state:(id)a4
+- (BOOL)_needToSendETARefreshFor:(id)for state:(id)state
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSPSenderIDSStrategy *)self lastETAUpdateDates];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  forCopy = for;
+  stateCopy = state;
+  lastETAUpdateDates = [(MSPSenderIDSStrategy *)self lastETAUpdateDates];
+  v9 = [lastETAUpdateDates objectForKeyedSubscript:forCopy];
 
   if (v9)
   {
-    [objc_opt_class() _etaRefreshIntervalForState:v7];
+    [objc_opt_class() _etaRefreshIntervalForState:stateCopy];
     if (v10 < 0.0)
     {
       v11 = MSPGetSharedTripLog();
@@ -264,19 +264,19 @@ LABEL_49:
         if (self)
         {
           v12 = MEMORY[0x277CCACA8];
-          v13 = self;
-          v14 = [v12 stringWithFormat:@"%@<%p>", objc_opt_class(), v13];
+          selfCopy = self;
+          selfCopy = [v12 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
         }
 
         else
         {
-          v14 = @"<nil>";
+          selfCopy = @"<nil>";
         }
 
         *buf = 138543619;
-        v38 = v14;
+        v38 = selfCopy;
         v39 = 2113;
-        v40 = v6;
+        v40 = forCopy;
         v31 = "[%{public}@] _needToSendETARefresh for %{private}@: NO, interval is < 0";
         v32 = v11;
         v33 = OS_LOG_TYPE_INFO;
@@ -303,19 +303,19 @@ LABEL_25:
         if (self)
         {
           v26 = MEMORY[0x277CCACA8];
-          v27 = self;
-          v14 = [v26 stringWithFormat:@"%@<%p>", objc_opt_class(), v27];
+          selfCopy2 = self;
+          selfCopy = [v26 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy2];
         }
 
         else
         {
-          v14 = @"<nil>";
+          selfCopy = @"<nil>";
         }
 
         *buf = 138544131;
-        v38 = v14;
+        v38 = selfCopy;
         v39 = 2113;
-        v40 = v6;
+        v40 = forCopy;
         v41 = 2048;
         v42 = v21;
         v43 = 2048;
@@ -338,19 +338,19 @@ LABEL_26:
       if (self)
       {
         v24 = MEMORY[0x277CCACA8];
-        v25 = self;
-        v18 = [v24 stringWithFormat:@"%@<%p>", objc_opt_class(), v25];
+        selfCopy3 = self;
+        selfCopy3 = [v24 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy3];
       }
 
       else
       {
-        v18 = @"<nil>";
+        selfCopy3 = @"<nil>";
       }
 
       *buf = 138543875;
-      v38 = v18;
+      v38 = selfCopy3;
       v39 = 2113;
-      v40 = v6;
+      v40 = forCopy;
       v41 = 2048;
       v42 = v21;
       v28 = "[%{public}@] _needToSendETARefresh for %{private}@: YES, last update %#.1lfs ago";
@@ -371,19 +371,19 @@ LABEL_22:
       if (self)
       {
         v16 = MEMORY[0x277CCACA8];
-        v17 = self;
-        v18 = [v16 stringWithFormat:@"%@<%p>", objc_opt_class(), v17];
+        selfCopy4 = self;
+        selfCopy3 = [v16 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy4];
       }
 
       else
       {
-        v18 = @"<nil>";
+        selfCopy3 = @"<nil>";
       }
 
       *buf = 138543619;
-      v38 = v18;
+      v38 = selfCopy3;
       v39 = 2113;
-      v40 = v6;
+      v40 = forCopy;
       v28 = "[%{public}@] _needToSendETARefresh for %{private}@: YES, no ETA updates sent at all yet";
       v15 = 1;
       v29 = v11;
@@ -398,17 +398,17 @@ LABEL_27:
   return v15;
 }
 
-- (void)_sendETAUpdateIfNeededTo:(id)a3
+- (void)_sendETAUpdateIfNeededTo:(id)to
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v5 = self->super._state;
-  v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v4, "count")}];
+  v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(toCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [v4 copy];
+  v7 = [toCopy copy];
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v8)
   {
@@ -444,18 +444,18 @@ LABEL_27:
       if (self)
       {
         v14 = MEMORY[0x277CCACA8];
-        v15 = self;
-        v16 = [v14 stringWithFormat:@"%@<%p>", objc_opt_class(), v15];
+        selfCopy = self;
+        selfCopy = [v14 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
       }
 
       else
       {
-        v16 = @"<nil>";
+        selfCopy = @"<nil>";
       }
 
       v17 = [v6 count];
       *buf = 138543618;
-      v25 = v16;
+      v25 = selfCopy;
       v26 = 2048;
       v27 = v17;
       _os_log_impl(&dword_25813A000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] %lu participants need an ETA update", buf, 0x16u);
@@ -468,15 +468,15 @@ LABEL_27:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addParticipants:(id)a3
+- (void)addParticipants:(id)participants
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:v4];
+  participantsCopy = participants;
+  v5 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:participantsCopy];
   v6 = MEMORY[0x277CBEB98];
-  v7 = [(MSPSenderIDSStrategy *)self capabilitiesByParticipant];
-  v8 = [v7 allKeys];
-  v9 = [v6 setWithArray:v8];
+  capabilitiesByParticipant = [(MSPSenderIDSStrategy *)self capabilitiesByParticipant];
+  allKeys = [capabilitiesByParticipant allKeys];
+  v9 = [v6 setWithArray:allKeys];
   [v5 minusSet:v9];
 
   if ([v5 count])
@@ -487,17 +487,17 @@ LABEL_27:
       if (self)
       {
         v11 = MEMORY[0x277CCACA8];
-        v12 = self;
-        v13 = [v11 stringWithFormat:@"%@<%p>", objc_opt_class(), v12];
+        selfCopy = self;
+        selfCopy = [v11 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
       }
 
       else
       {
-        v13 = @"<nil>";
+        selfCopy = @"<nil>";
       }
 
       *buf = 138543875;
-      v19 = v13;
+      v19 = selfCopy;
       v20 = 2048;
       v21 = [v5 count];
       v22 = 2113;
@@ -510,13 +510,13 @@ LABEL_27:
     v16[2] = __40__MSPSenderIDSStrategy_addParticipants___block_invoke;
     v16[3] = &unk_279865FE8;
     v16[4] = self;
-    v17 = v4;
+    v17 = participantsCopy;
     [(MSPSenderIDSStrategy *)self fetchCapabilitiesForParticipants:v5 completion:v16];
   }
 
   v15.receiver = self;
   v15.super_class = MSPSenderIDSStrategy;
-  [(MSPSenderStrategy *)&v15 addParticipants:v4];
+  [(MSPSenderStrategy *)&v15 addParticipants:participantsCopy];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -617,31 +617,31 @@ void __40__MSPSenderIDSStrategy_addParticipants___block_invoke_2(uint64_t a1, vo
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchCapabilitiesForParticipants:(id)a3 completion:(id)a4
+- (void)fetchCapabilitiesForParticipants:(id)participants completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  participantsCopy = participants;
+  completionCopy = completion;
+  if ([participantsCopy count])
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __68__MSPSenderIDSStrategy_fetchCapabilitiesForParticipants_completion___block_invoke;
     v7[3] = &unk_279866010;
-    v8 = v6;
-    [MSPSharedTripReceiverCapabilities fetchReceiverCapabilitiesForDestinations:v5 completion:v7];
+    v8 = completionCopy;
+    [MSPSharedTripReceiverCapabilities fetchReceiverCapabilitiesForDestinations:participantsCopy completion:v7];
   }
 }
 
-- (void)_sendCompatibleInstancesOfState:(id)a3 to:(id)a4
+- (void)_sendCompatibleInstancesOfState:(id)state to:(id)to
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && [v7 count])
+  stateCopy = state;
+  toCopy = to;
+  v8 = toCopy;
+  if (stateCopy && [toCopy count])
   {
     v30 = v8;
-    v31 = v6;
+    v31 = stateCopy;
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
@@ -662,8 +662,8 @@ void __40__MSPSenderIDSStrategy_addParticipants___block_invoke_2(uint64_t a1, vo
           }
 
           v14 = *(*(&v38 + 1) + 8 * i);
-          v15 = [(MSPSenderIDSStrategy *)self capabilitiesByParticipant];
-          v16 = [v15 objectForKeyedSubscript:v14];
+          capabilitiesByParticipant = [(MSPSenderIDSStrategy *)self capabilitiesByParticipant];
+          v16 = [capabilitiesByParticipant objectForKeyedSubscript:v14];
 
           if (!v16)
           {
@@ -673,17 +673,17 @@ void __40__MSPSenderIDSStrategy_addParticipants___block_invoke_2(uint64_t a1, vo
               if (self)
               {
                 v18 = MEMORY[0x277CCACA8];
-                v19 = self;
-                v20 = [v18 stringWithFormat:@"%@<%p>", objc_opt_class(), v19];
+                selfCopy = self;
+                selfCopy = [v18 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
               }
 
               else
               {
-                v20 = @"<nil>";
+                selfCopy = @"<nil>";
               }
 
               *buf = 138543619;
-              v43 = v20;
+              v43 = selfCopy;
               v44 = 2113;
               v45 = v14;
               _os_log_impl(&dword_25813A000, v17, OS_LOG_TYPE_FAULT, "[%{public}@] have not yet fetched capabilties for %{private}@", buf, 0x16u);
@@ -697,12 +697,12 @@ void __40__MSPSenderIDSStrategy_addParticipants___block_invoke_2(uint64_t a1, vo
       while (v11);
     }
 
-    v21 = [(MSPSenderIDSStrategy *)self participantsByCapabilities];
-    v22 = [v21 copy];
+    participantsByCapabilities = [(MSPSenderIDSStrategy *)self participantsByCapabilities];
+    v22 = [participantsByCapabilities copy];
 
     v23 = objc_alloc(MEMORY[0x277CBEB38]);
-    v24 = [(MSPSenderIDSStrategy *)self participantsByCapabilities];
-    v25 = [v23 initWithCapacity:{objc_msgSend(v24, "count")}];
+    participantsByCapabilities2 = [(MSPSenderIDSStrategy *)self participantsByCapabilities];
+    v25 = [v23 initWithCapacity:{objc_msgSend(participantsByCapabilities2, "count")}];
 
     v26 = self->_groupSession;
     v32[0] = MEMORY[0x277D85DD0];
@@ -710,9 +710,9 @@ void __40__MSPSenderIDSStrategy_addParticipants___block_invoke_2(uint64_t a1, vo
     v32[2] = __59__MSPSenderIDSStrategy__sendCompatibleInstancesOfState_to___block_invoke;
     v32[3] = &unk_279866038;
     v33 = v9;
-    v34 = self;
+    selfCopy2 = self;
     v35 = v25;
-    v6 = v31;
+    stateCopy = v31;
     v36 = v31;
     v37 = v26;
     v27 = v26;
@@ -803,12 +803,12 @@ void __59__MSPSenderIDSStrategy__sendCompatibleInstancesOfState_to___block_invok
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendUpdatedWaypoints:(id)a3 to:(id)a4
+- (void)_sendUpdatedWaypoints:(id)waypoints to:(id)to
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  waypointsCopy = waypoints;
+  toCopy = to;
+  if ([toCopy count])
   {
     v8 = MSPGetSharedTripLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -816,60 +816,60 @@ void __59__MSPSenderIDSStrategy__sendCompatibleInstancesOfState_to___block_invok
       if (self)
       {
         v9 = MEMORY[0x277CCACA8];
-        v10 = self;
-        v11 = [v9 stringWithFormat:@"%@<%p>", objc_opt_class(), v10];
+        selfCopy = self;
+        selfCopy = [v9 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
       }
 
       else
       {
-        v11 = @"<nil>";
+        selfCopy = @"<nil>";
       }
 
       *buf = 138543362;
-      v39 = v11;
+      v39 = selfCopy;
       _os_log_impl(&dword_25813A000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] _sendUpdatedWaypoints", buf, 0xCu);
     }
 
-    v12 = [v6 copy];
+    v12 = [waypointsCopy copy];
     if ([v12 hasWaypointInfos])
     {
       [v12 stripForSendingUpdatedWaypoints];
       v13 = objc_alloc_init(MEMORY[0x277D0ED28]);
       [v12 setSenderInfo:v13];
 
-      v14 = [(MSPSharedTripGroupSession *)self->_groupSession initiatorDisplayName];
-      v15 = [v12 senderInfo];
-      [v15 setFromDisplayName:v14];
+      initiatorDisplayName = [(MSPSharedTripGroupSession *)self->_groupSession initiatorDisplayName];
+      senderInfo = [v12 senderInfo];
+      [senderInfo setFromDisplayName:initiatorDisplayName];
 
       v16 = MSPGetSharedTripLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
         v17 = MEMORY[0x277CCACA8];
-        v18 = self;
-        v19 = [v17 stringWithFormat:@"%@<%p>", objc_opt_class(), v18];
+        selfCopy2 = self;
+        selfCopy2 = [v17 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy2];
 
-        v20 = [v12 mspDescription];
+        mspDescription = [v12 mspDescription];
         *buf = 138543618;
-        v39 = v19;
+        v39 = selfCopy2;
         v40 = 2112;
-        v41 = v20;
+        v41 = mspDescription;
         _os_log_impl(&dword_25813A000, v16, OS_LOG_TYPE_INFO, "[%{public}@] will send state %@", buf, 0x16u);
       }
 
-      if ([v6 hasEtaInfo])
+      if ([waypointsCopy hasEtaInfo])
       {
-        v21 = [v6 etaInfo];
-        v22 = [v21 hasEtaTimestamp];
+        etaInfo = [waypointsCopy etaInfo];
+        hasEtaTimestamp = [etaInfo hasEtaTimestamp];
 
-        if (v22)
+        if (hasEtaTimestamp)
         {
-          v32 = v6;
-          v23 = [MEMORY[0x277CBEAA8] date];
+          v32 = waypointsCopy;
+          date = [MEMORY[0x277CBEAA8] date];
           v33 = 0u;
           v34 = 0u;
           v35 = 0u;
           v36 = 0u;
-          v24 = v7;
+          v24 = toCopy;
           v25 = [v24 countByEnumeratingWithState:&v33 objects:v37 count:16];
           if (v25)
           {
@@ -886,8 +886,8 @@ void __59__MSPSenderIDSStrategy__sendCompatibleInstancesOfState_to___block_invok
                 }
 
                 v29 = *(*(&v33 + 1) + 8 * v28);
-                v30 = [(MSPSenderIDSStrategy *)self lastETAUpdateDates];
-                [v30 setObject:v23 forKeyedSubscript:v29];
+                lastETAUpdateDates = [(MSPSenderIDSStrategy *)self lastETAUpdateDates];
+                [lastETAUpdateDates setObject:date forKeyedSubscript:v29];
 
                 ++v28;
               }
@@ -899,23 +899,23 @@ void __59__MSPSenderIDSStrategy__sendCompatibleInstancesOfState_to___block_invok
             while (v26);
           }
 
-          v6 = v32;
+          waypointsCopy = v32;
         }
       }
 
-      [(MSPSenderIDSStrategy *)self _sendCompatibleInstancesOfState:v12 to:v7];
+      [(MSPSenderIDSStrategy *)self _sendCompatibleInstancesOfState:v12 to:toCopy];
     }
   }
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendDestinationReachedUpdate:(id)a3 to:(id)a4
+- (void)_sendDestinationReachedUpdate:(id)update to:(id)to
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  updateCopy = update;
+  toCopy = to;
+  if ([toCopy count])
   {
     v8 = MSPGetSharedTripLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -923,24 +923,24 @@ void __59__MSPSenderIDSStrategy__sendCompatibleInstancesOfState_to___block_invok
       if (self)
       {
         v9 = MEMORY[0x277CCACA8];
-        v10 = self;
-        v11 = [v9 stringWithFormat:@"%@<%p>", objc_opt_class(), v10];
+        selfCopy = self;
+        selfCopy = [v9 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
       }
 
       else
       {
-        v11 = @"<nil>";
+        selfCopy = @"<nil>";
       }
 
       *buf = 138543362;
-      v21 = v11;
+      v21 = selfCopy;
       _os_log_impl(&dword_25813A000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] _sendDestinationReachedUpdate", buf, 0xCu);
     }
 
-    v12 = [v6 copy];
-    v13 = [v12 destinationWaypointInfo];
+    v12 = [updateCopy copy];
+    destinationWaypointInfo = [v12 destinationWaypointInfo];
 
-    if (v13)
+    if (destinationWaypointInfo)
     {
       [v12 stripForSendingArrival];
       v14 = MSPGetSharedTripLog();
@@ -949,36 +949,36 @@ void __59__MSPSenderIDSStrategy__sendCompatibleInstancesOfState_to___block_invok
         if (self)
         {
           v15 = MEMORY[0x277CCACA8];
-          v16 = self;
-          v17 = [v15 stringWithFormat:@"%@<%p>", objc_opt_class(), v16];
+          selfCopy2 = self;
+          selfCopy2 = [v15 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy2];
         }
 
         else
         {
-          v17 = @"<nil>";
+          selfCopy2 = @"<nil>";
         }
 
-        v18 = [v12 mspDescription];
+        mspDescription = [v12 mspDescription];
         *buf = 138543618;
-        v21 = v17;
+        v21 = selfCopy2;
         v22 = 2112;
-        v23 = v18;
+        v23 = mspDescription;
         _os_log_impl(&dword_25813A000, v14, OS_LOG_TYPE_INFO, "[%{public}@] will send state %@", buf, 0x16u);
       }
 
-      [(MSPSenderIDSStrategy *)self _sendCompatibleInstancesOfState:v12 to:v7];
+      [(MSPSenderIDSStrategy *)self _sendCompatibleInstancesOfState:v12 to:toCopy];
     }
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendResumingToNextDestinationUpdate:(id)a3 to:(id)a4
+- (void)_sendResumingToNextDestinationUpdate:(id)update to:(id)to
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  updateCopy = update;
+  toCopy = to;
+  if ([toCopy count])
   {
     v8 = MSPGetSharedTripLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -986,24 +986,24 @@ void __59__MSPSenderIDSStrategy__sendCompatibleInstancesOfState_to___block_invok
       if (self)
       {
         v9 = MEMORY[0x277CCACA8];
-        v10 = self;
-        v11 = [v9 stringWithFormat:@"%@<%p>", objc_opt_class(), v10];
+        selfCopy = self;
+        selfCopy = [v9 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
       }
 
       else
       {
-        v11 = @"<nil>";
+        selfCopy = @"<nil>";
       }
 
       *buf = 138543362;
-      v21 = v11;
+      v21 = selfCopy;
       _os_log_impl(&dword_25813A000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] _sendResumingToNextDestinationUpdate", buf, 0xCu);
     }
 
-    v12 = [v6 copy];
-    v13 = [v12 destinationWaypointInfo];
+    v12 = [updateCopy copy];
+    destinationWaypointInfo = [v12 destinationWaypointInfo];
 
-    if (v13)
+    if (destinationWaypointInfo)
     {
       [v12 stripForSendingResuming];
       v14 = MSPGetSharedTripLog();
@@ -1012,36 +1012,36 @@ void __59__MSPSenderIDSStrategy__sendCompatibleInstancesOfState_to___block_invok
         if (self)
         {
           v15 = MEMORY[0x277CCACA8];
-          v16 = self;
-          v17 = [v15 stringWithFormat:@"%@<%p>", objc_opt_class(), v16];
+          selfCopy2 = self;
+          selfCopy2 = [v15 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy2];
         }
 
         else
         {
-          v17 = @"<nil>";
+          selfCopy2 = @"<nil>";
         }
 
-        v18 = [v12 mspDescription];
+        mspDescription = [v12 mspDescription];
         *buf = 138543618;
-        v21 = v17;
+        v21 = selfCopy2;
         v22 = 2112;
-        v23 = v18;
+        v23 = mspDescription;
         _os_log_impl(&dword_25813A000, v14, OS_LOG_TYPE_INFO, "[%{public}@] will send state %@", buf, 0x16u);
       }
 
-      [(MSPSenderIDSStrategy *)self _sendCompatibleInstancesOfState:v12 to:v7];
+      [(MSPSenderIDSStrategy *)self _sendCompatibleInstancesOfState:v12 to:toCopy];
     }
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendStoppedUpdate:(id)a3 to:(id)a4
+- (void)_sendStoppedUpdate:(id)update to:(id)to
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  updateCopy = update;
+  toCopy = to;
+  if ([toCopy count])
   {
     v8 = MSPGetSharedTripLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1049,59 +1049,59 @@ void __59__MSPSenderIDSStrategy__sendCompatibleInstancesOfState_to___block_invok
       if (self)
       {
         v9 = MEMORY[0x277CCACA8];
-        v10 = self;
-        v11 = [v9 stringWithFormat:@"%@<%p>", objc_opt_class(), v10];
+        selfCopy = self;
+        selfCopy = [v9 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
       }
 
       else
       {
-        v11 = @"<nil>";
+        selfCopy = @"<nil>";
       }
 
       *buf = 138543362;
-      v23 = v11;
+      v23 = selfCopy;
       _os_log_impl(&dword_25813A000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] _sendStoppedUpdate", buf, 0xCu);
     }
 
-    v12 = [v6 copy];
+    v12 = [updateCopy copy];
     if ([v12 hasGroupIdentifier] && objc_msgSend(v12, "hasClosed"))
     {
       [v12 stripForSendingStoppedSharing];
       v13 = objc_alloc_init(MEMORY[0x277D0ED28]);
       [v12 setSenderInfo:v13];
 
-      v14 = [(MSPSharedTripGroupSession *)self->_groupSession initiatorDisplayName];
-      v15 = [v12 senderInfo];
-      [v15 setFromDisplayName:v14];
+      initiatorDisplayName = [(MSPSharedTripGroupSession *)self->_groupSession initiatorDisplayName];
+      senderInfo = [v12 senderInfo];
+      [senderInfo setFromDisplayName:initiatorDisplayName];
 
       v16 = MSPGetSharedTripLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
         v17 = MEMORY[0x277CCACA8];
-        v18 = self;
-        v19 = [v17 stringWithFormat:@"%@<%p>", objc_opt_class(), v18];
+        selfCopy2 = self;
+        selfCopy2 = [v17 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy2];
 
-        v20 = [v12 mspDescription];
+        mspDescription = [v12 mspDescription];
         *buf = 138543618;
-        v23 = v19;
+        v23 = selfCopy2;
         v24 = 2112;
-        v25 = v20;
+        v25 = mspDescription;
         _os_log_impl(&dword_25813A000, v16, OS_LOG_TYPE_INFO, "[%{public}@] will send state %@", buf, 0x16u);
       }
 
-      [(MSPSenderIDSStrategy *)self _sendCompatibleInstancesOfState:v12 to:v7];
+      [(MSPSenderIDSStrategy *)self _sendCompatibleInstancesOfState:v12 to:toCopy];
     }
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendETAUpdate:(id)a3 to:(id)a4
+- (void)_sendETAUpdate:(id)update to:(id)to
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  updateCopy = update;
+  toCopy = to;
+  if ([toCopy count])
   {
     v8 = MSPGetSharedTripLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1109,21 +1109,21 @@ void __59__MSPSenderIDSStrategy__sendCompatibleInstancesOfState_to___block_invok
       if (self)
       {
         v9 = MEMORY[0x277CCACA8];
-        v10 = self;
-        v11 = [v9 stringWithFormat:@"%@<%p>", objc_opt_class(), v10];
+        selfCopy = self;
+        selfCopy = [v9 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
       }
 
       else
       {
-        v11 = @"<nil>";
+        selfCopy = @"<nil>";
       }
 
       *buf = 138543362;
-      v34 = v11;
+      v34 = selfCopy;
       _os_log_impl(&dword_25813A000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] _sendETAUpdate", buf, 0xCu);
     }
 
-    v12 = [v6 copy];
+    v12 = [updateCopy copy];
     if ([v12 etaInfosCount])
     {
       [v12 stripForSendingUpdatedETA];
@@ -1133,31 +1133,31 @@ void __59__MSPSenderIDSStrategy__sendCompatibleInstancesOfState_to___block_invok
         if (self)
         {
           v14 = MEMORY[0x277CCACA8];
-          v15 = self;
-          v16 = [v14 stringWithFormat:@"%@<%p>", objc_opt_class(), v15];
+          selfCopy2 = self;
+          selfCopy2 = [v14 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy2];
         }
 
         else
         {
-          v16 = @"<nil>";
+          selfCopy2 = @"<nil>";
         }
 
-        v17 = [v12 mspDescription];
+        mspDescription = [v12 mspDescription];
         *buf = 138543619;
-        v34 = v16;
+        v34 = selfCopy2;
         v35 = 2113;
-        v36 = v17;
+        v36 = mspDescription;
         _os_log_impl(&dword_25813A000, v13, OS_LOG_TYPE_INFO, "[%{public}@] will send state %{private}@", buf, 0x16u);
       }
 
-      v27 = v6;
+      v27 = updateCopy;
 
-      v18 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v19 = v7;
+      v19 = toCopy;
       v20 = [v19 countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v20)
       {
@@ -1174,8 +1174,8 @@ void __59__MSPSenderIDSStrategy__sendCompatibleInstancesOfState_to___block_invok
             }
 
             v24 = *(*(&v28 + 1) + 8 * v23);
-            v25 = [(MSPSenderIDSStrategy *)self lastETAUpdateDates];
-            [v25 setObject:v18 forKeyedSubscript:v24];
+            lastETAUpdateDates = [(MSPSenderIDSStrategy *)self lastETAUpdateDates];
+            [lastETAUpdateDates setObject:date forKeyedSubscript:v24];
 
             ++v23;
           }
@@ -1188,19 +1188,19 @@ void __59__MSPSenderIDSStrategy__sendCompatibleInstancesOfState_to___block_invok
       }
 
       [(MSPSenderIDSStrategy *)self _sendCompatibleInstancesOfState:v12 to:v19];
-      v6 = v27;
+      updateCopy = v27;
     }
   }
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendRouteUpdate:(id)a3 to:(id)a4
+- (void)_sendRouteUpdate:(id)update to:(id)to
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  updateCopy = update;
+  toCopy = to;
+  if ([toCopy count])
   {
     v8 = MSPGetSharedTripLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1208,24 +1208,24 @@ void __59__MSPSenderIDSStrategy__sendCompatibleInstancesOfState_to___block_invok
       if (self)
       {
         v9 = MEMORY[0x277CCACA8];
-        v10 = self;
-        v11 = [v9 stringWithFormat:@"%@<%p>", objc_opt_class(), v10];
+        selfCopy = self;
+        selfCopy = [v9 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
       }
 
       else
       {
-        v11 = @"<nil>";
+        selfCopy = @"<nil>";
       }
 
       *buf = 138543362;
-      v21 = v11;
+      v21 = selfCopy;
       _os_log_impl(&dword_25813A000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] _sendRouteUpdate", buf, 0xCu);
     }
 
-    v12 = [v6 copy];
-    v13 = [v12 routeInfo];
+    v12 = [updateCopy copy];
+    routeInfo = [v12 routeInfo];
 
-    if (v13)
+    if (routeInfo)
     {
       [v12 stripForSendingUpdatedRoute];
       v14 = MSPGetSharedTripLog();
@@ -1234,36 +1234,36 @@ void __59__MSPSenderIDSStrategy__sendCompatibleInstancesOfState_to___block_invok
         if (self)
         {
           v15 = MEMORY[0x277CCACA8];
-          v16 = self;
-          v17 = [v15 stringWithFormat:@"%@<%p>", objc_opt_class(), v16];
+          selfCopy2 = self;
+          selfCopy2 = [v15 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy2];
         }
 
         else
         {
-          v17 = @"<nil>";
+          selfCopy2 = @"<nil>";
         }
 
-        v18 = [v12 mspDescription];
+        mspDescription = [v12 mspDescription];
         *buf = 138543618;
-        v21 = v17;
+        v21 = selfCopy2;
         v22 = 2112;
-        v23 = v18;
+        v23 = mspDescription;
         _os_log_impl(&dword_25813A000, v14, OS_LOG_TYPE_INFO, "[%{public}@] will send state %@", buf, 0x16u);
       }
 
-      [(MSPSenderIDSStrategy *)self _sendCompatibleInstancesOfState:v12 to:v7];
+      [(MSPSenderIDSStrategy *)self _sendCompatibleInstancesOfState:v12 to:toCopy];
     }
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendTrafficUpdate:(id)a3 to:(id)a4
+- (void)_sendTrafficUpdate:(id)update to:(id)to
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  updateCopy = update;
+  toCopy = to;
+  if ([toCopy count])
   {
     v8 = MSPGetSharedTripLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1271,24 +1271,24 @@ void __59__MSPSenderIDSStrategy__sendCompatibleInstancesOfState_to___block_invok
       if (self)
       {
         v9 = MEMORY[0x277CCACA8];
-        v10 = self;
-        v11 = [v9 stringWithFormat:@"%@<%p>", objc_opt_class(), v10];
+        selfCopy = self;
+        selfCopy = [v9 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
       }
 
       else
       {
-        v11 = @"<nil>";
+        selfCopy = @"<nil>";
       }
 
       *buf = 138543362;
-      v21 = v11;
+      v21 = selfCopy;
       _os_log_impl(&dword_25813A000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] _sendTrafficUpdate", buf, 0xCu);
     }
 
-    v12 = [v6 copy];
-    v13 = [v12 routeInfo];
+    v12 = [updateCopy copy];
+    routeInfo = [v12 routeInfo];
 
-    if (v13)
+    if (routeInfo)
     {
       [v12 stripForSendingUpdatedTraffic];
       v14 = MSPGetSharedTripLog();
@@ -1297,24 +1297,24 @@ void __59__MSPSenderIDSStrategy__sendCompatibleInstancesOfState_to___block_invok
         if (self)
         {
           v15 = MEMORY[0x277CCACA8];
-          v16 = self;
-          v17 = [v15 stringWithFormat:@"%@<%p>", objc_opt_class(), v16];
+          selfCopy2 = self;
+          selfCopy2 = [v15 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy2];
         }
 
         else
         {
-          v17 = @"<nil>";
+          selfCopy2 = @"<nil>";
         }
 
-        v18 = [v12 mspDescription];
+        mspDescription = [v12 mspDescription];
         *buf = 138543618;
-        v21 = v17;
+        v21 = selfCopy2;
         v22 = 2112;
-        v23 = v18;
+        v23 = mspDescription;
         _os_log_impl(&dword_25813A000, v14, OS_LOG_TYPE_INFO, "[%{public}@] will send state %@", buf, 0x16u);
       }
 
-      [(MSPSenderIDSStrategy *)self _sendCompatibleInstancesOfState:v12 to:v7];
+      [(MSPSenderIDSStrategy *)self _sendCompatibleInstancesOfState:v12 to:toCopy];
     }
   }
 

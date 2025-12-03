@@ -1,28 +1,28 @@
 @interface MAAIRBEventReporter
-+ (void)emitAppleIntelligenceEndEvent:(id)a3;
-+ (void)emitAppleIntelligenceEvent:(id)a3;
-+ (void)emitAppleIntelligenceStartEvent:(id)a3;
++ (void)emitAppleIntelligenceEndEvent:(id)event;
++ (void)emitAppleIntelligenceEvent:(id)event;
++ (void)emitAppleIntelligenceStartEvent:(id)event;
 - (MAAIRBEventReporter)init;
 @end
 
 @implementation MAAIRBEventReporter
 
-+ (void)emitAppleIntelligenceEvent:(id)a3
++ (void)emitAppleIntelligenceEvent:(id)event
 {
-  v3 = a3;
-  sub_254038(v3);
+  eventCopy = event;
+  sub_254038(eventCopy);
 }
 
-+ (void)emitAppleIntelligenceStartEvent:(id)a3
++ (void)emitAppleIntelligenceStartEvent:(id)event
 {
-  v3 = a3;
-  sub_254A20(v3);
+  eventCopy = event;
+  sub_254A20(eventCopy);
 }
 
-+ (void)emitAppleIntelligenceEndEvent:(id)a3
++ (void)emitAppleIntelligenceEndEvent:(id)event
 {
-  v3 = a3;
-  sub_255658(v3);
+  eventCopy = event;
+  sub_255658(eventCopy);
 }
 
 - (MAAIRBEventReporter)init

@@ -1,45 +1,45 @@
 @interface DiscoveryArticleViewController
-- (_TtC15ProximityReader30DiscoveryArticleViewController)initWithArticleLayout:(id)a3 referrerIdentifier:(id)a4 cardSize:(int64_t)a5;
-- (_TtC15ProximityReader30DiscoveryArticleViewController)initWithItemIdentifier:(id)a3 referrerIdentifier:(id)a4;
-- (_TtC15ProximityReader30DiscoveryArticleViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)setArticleLayout:(id)a3 animated:(BOOL)a4;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (_TtC15ProximityReader30DiscoveryArticleViewController)initWithArticleLayout:(id)layout referrerIdentifier:(id)identifier cardSize:(int64_t)size;
+- (_TtC15ProximityReader30DiscoveryArticleViewController)initWithItemIdentifier:(id)identifier referrerIdentifier:(id)referrerIdentifier;
+- (_TtC15ProximityReader30DiscoveryArticleViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)setArticleLayout:(id)layout animated:(BOOL)animated;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation DiscoveryArticleViewController
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v4 = self;
-  sub_23A68E348(v3);
+  disappearCopy = disappear;
+  selfCopy = self;
+  sub_23A68E348(disappearCopy);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_23A68E834(a4, width, height);
+  selfCopy = self;
+  sub_23A68E834(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (void)setArticleLayout:(id)a3 animated:(BOOL)a4
+- (void)setArticleLayout:(id)layout animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = self;
-  sub_23A689A08(v6, a4);
+  layoutCopy = layout;
+  selfCopy = self;
+  sub_23A689A08(layoutCopy, animated);
 }
 
-- (_TtC15ProximityReader30DiscoveryArticleViewController)initWithItemIdentifier:(id)a3 referrerIdentifier:(id)a4
+- (_TtC15ProximityReader30DiscoveryArticleViewController)initWithItemIdentifier:(id)identifier referrerIdentifier:(id)referrerIdentifier
 {
-  if (!a3)
+  if (!identifier)
   {
     v5 = 0;
     v7 = 0;
-    if (a4)
+    if (referrerIdentifier)
     {
       goto LABEL_3;
     }
@@ -52,7 +52,7 @@ LABEL_5:
 
   v5 = sub_23A6DF624();
   v7 = v6;
-  if (!a4)
+  if (!referrerIdentifier)
   {
     goto LABEL_5;
   }
@@ -63,9 +63,9 @@ LABEL_3:
   return sub_23A68F87C(v5, v7, v8, v10);
 }
 
-- (_TtC15ProximityReader30DiscoveryArticleViewController)initWithArticleLayout:(id)a3 referrerIdentifier:(id)a4 cardSize:(int64_t)a5
+- (_TtC15ProximityReader30DiscoveryArticleViewController)initWithArticleLayout:(id)layout referrerIdentifier:(id)identifier cardSize:(int64_t)size
 {
-  if (a4)
+  if (identifier)
   {
     v7 = sub_23A6DF624();
     v9 = v8;
@@ -77,13 +77,13 @@ LABEL_3:
     v9 = 0;
   }
 
-  v10 = a3;
-  return sub_23A68FA60(a3, v7, v9, a5);
+  layoutCopy = layout;
+  return sub_23A68FA60(layout, v7, v9, size);
 }
 
-- (_TtC15ProximityReader30DiscoveryArticleViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ProximityReader30DiscoveryArticleViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_23A6DF624();
     v7 = v6;
@@ -95,8 +95,8 @@ LABEL_3:
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_23A68FC20(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_23A68FC20(v5, v7, bundle);
 }
 
 @end

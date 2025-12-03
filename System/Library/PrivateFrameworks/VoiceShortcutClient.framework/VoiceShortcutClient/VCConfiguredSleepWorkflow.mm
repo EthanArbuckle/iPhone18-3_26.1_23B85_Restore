@@ -1,10 +1,10 @@
 @interface VCConfiguredSleepWorkflow
 + (CGSize)glyphSize;
 - (NSString)description;
-- (VCConfiguredSleepWorkflow)initWithCoder:(id)a3;
-- (VCConfiguredSleepWorkflow)initWithWorkflowIdentifier:(id)a3 bundleIdentifierForDisplay:(id)a4 summaryString:(id)a5 name:(id)a6 actionIdentifier:(id)a7 glyphCharacter:(unsigned __int16)a8 backgroundColorValue:(int64_t)a9 isAppLaunchWorkflow:(BOOL)a10;
-- (void)encodeWithCoder:(id)a3;
-- (void)setIconImage:(CGImage *)a3 scale:(double)a4;
+- (VCConfiguredSleepWorkflow)initWithCoder:(id)coder;
+- (VCConfiguredSleepWorkflow)initWithWorkflowIdentifier:(id)identifier bundleIdentifierForDisplay:(id)display summaryString:(id)string name:(id)name actionIdentifier:(id)actionIdentifier glyphCharacter:(unsigned __int16)character backgroundColorValue:(int64_t)value isAppLaunchWorkflow:(BOOL)self0;
+- (void)encodeWithCoder:(id)coder;
+- (void)setIconImage:(CGImage *)image scale:(double)scale;
 @end
 
 @implementation VCConfiguredSleepWorkflow
@@ -13,111 +13,111 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(WFDatabaseObjectDescriptor *)self identifier];
-  v6 = [(VCConfiguredSleepWorkflow *)self summaryString];
-  v7 = [(VCConfiguredSleepWorkflow *)self bundleIdentifierForDisplay];
-  v8 = [(VCConfiguredSleepWorkflow *)self name];
-  v9 = [(VCConfiguredSleepWorkflow *)self actionIdentifier];
-  v10 = [v3 stringWithFormat:@"<%@: %p, identifier: %@, summaryString: %@, bundleIdentifierForDisplay: %@, name: %@, actionIdentifier: %@, isAppLaunchWorkflow: %d>", v4, self, v5, v6, v7, v8, v9, -[VCConfiguredSleepWorkflow isAppLaunchWorkflow](self, "isAppLaunchWorkflow")];
+  identifier = [(WFDatabaseObjectDescriptor *)self identifier];
+  summaryString = [(VCConfiguredSleepWorkflow *)self summaryString];
+  bundleIdentifierForDisplay = [(VCConfiguredSleepWorkflow *)self bundleIdentifierForDisplay];
+  name = [(VCConfiguredSleepWorkflow *)self name];
+  actionIdentifier = [(VCConfiguredSleepWorkflow *)self actionIdentifier];
+  v10 = [v3 stringWithFormat:@"<%@: %p, identifier: %@, summaryString: %@, bundleIdentifierForDisplay: %@, name: %@, actionIdentifier: %@, isAppLaunchWorkflow: %d>", v4, self, identifier, summaryString, bundleIdentifierForDisplay, name, actionIdentifier, -[VCConfiguredSleepWorkflow isAppLaunchWorkflow](self, "isAppLaunchWorkflow")];
 
   return v10;
 }
 
-- (VCConfiguredSleepWorkflow)initWithCoder:(id)a3
+- (VCConfiguredSleepWorkflow)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = VCConfiguredSleepWorkflow;
-  v5 = [(WFDatabaseObjectDescriptor *)&v16 initWithCoder:v4];
+  v5 = [(WFDatabaseObjectDescriptor *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifierForDisplay"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifierForDisplay"];
     bundleIdentifierForDisplay = v5->_bundleIdentifierForDisplay;
     v5->_bundleIdentifierForDisplay = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"summaryString"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"summaryString"];
     summaryString = v5->_summaryString;
     v5->_summaryString = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
     actionIdentifier = v5->_actionIdentifier;
     v5->_actionIdentifier = v12;
 
-    v5->_glyphCharacter = [v4 decodeInt32ForKey:@"glyphCharacter"];
-    v5->_backgroundColorValue = [v4 decodeIntegerForKey:@"backgroundColorValue"];
-    v5->_isAppLaunchWorkflow = [v4 decodeBoolForKey:@"isAppLaunchWorkflow"];
+    v5->_glyphCharacter = [coderCopy decodeInt32ForKey:@"glyphCharacter"];
+    v5->_backgroundColorValue = [coderCopy decodeIntegerForKey:@"backgroundColorValue"];
+    v5->_isAppLaunchWorkflow = [coderCopy decodeBoolForKey:@"isAppLaunchWorkflow"];
     v14 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = VCConfiguredSleepWorkflow;
-  v4 = a3;
-  [(WFDatabaseObjectDescriptor *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFDatabaseObjectDescriptor *)&v9 encodeWithCoder:coderCopy];
   v5 = [(VCConfiguredSleepWorkflow *)self bundleIdentifierForDisplay:v9.receiver];
-  [v4 encodeObject:v5 forKey:@"bundleIdentifierForDisplay"];
+  [coderCopy encodeObject:v5 forKey:@"bundleIdentifierForDisplay"];
 
-  v6 = [(VCConfiguredSleepWorkflow *)self summaryString];
-  [v4 encodeObject:v6 forKey:@"summaryString"];
+  summaryString = [(VCConfiguredSleepWorkflow *)self summaryString];
+  [coderCopy encodeObject:summaryString forKey:@"summaryString"];
 
-  v7 = [(VCConfiguredSleepWorkflow *)self name];
-  [v4 encodeObject:v7 forKey:@"name"];
+  name = [(VCConfiguredSleepWorkflow *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v8 = [(VCConfiguredSleepWorkflow *)self actionIdentifier];
-  [v4 encodeObject:v8 forKey:@"actionIdentifier"];
+  actionIdentifier = [(VCConfiguredSleepWorkflow *)self actionIdentifier];
+  [coderCopy encodeObject:actionIdentifier forKey:@"actionIdentifier"];
 
-  [v4 encodeInteger:-[VCConfiguredSleepWorkflow backgroundColorValue](self forKey:{"backgroundColorValue"), @"backgroundColorValue"}];
-  [v4 encodeInt32:-[VCConfiguredSleepWorkflow glyphCharacter](self forKey:{"glyphCharacter"), @"glyphCharacter"}];
-  [v4 encodeBool:-[VCConfiguredSleepWorkflow isAppLaunchWorkflow](self forKey:{"isAppLaunchWorkflow"), @"isAppLaunchWorkflow"}];
+  [coderCopy encodeInteger:-[VCConfiguredSleepWorkflow backgroundColorValue](self forKey:{"backgroundColorValue"), @"backgroundColorValue"}];
+  [coderCopy encodeInt32:-[VCConfiguredSleepWorkflow glyphCharacter](self forKey:{"glyphCharacter"), @"glyphCharacter"}];
+  [coderCopy encodeBool:-[VCConfiguredSleepWorkflow isAppLaunchWorkflow](self forKey:{"isAppLaunchWorkflow"), @"isAppLaunchWorkflow"}];
 }
 
-- (void)setIconImage:(CGImage *)a3 scale:(double)a4
+- (void)setIconImage:(CGImage *)image scale:(double)scale
 {
   CGImageRelease(self->_iconImage);
-  self->_iconImage = a3;
-  self->_iconScale = a4;
+  self->_iconImage = image;
+  self->_iconScale = scale;
 
-  CGImageRetain(a3);
+  CGImageRetain(image);
 }
 
-- (VCConfiguredSleepWorkflow)initWithWorkflowIdentifier:(id)a3 bundleIdentifierForDisplay:(id)a4 summaryString:(id)a5 name:(id)a6 actionIdentifier:(id)a7 glyphCharacter:(unsigned __int16)a8 backgroundColorValue:(int64_t)a9 isAppLaunchWorkflow:(BOOL)a10
+- (VCConfiguredSleepWorkflow)initWithWorkflowIdentifier:(id)identifier bundleIdentifierForDisplay:(id)display summaryString:(id)string name:(id)name actionIdentifier:(id)actionIdentifier glyphCharacter:(unsigned __int16)character backgroundColorValue:(int64_t)value isAppLaunchWorkflow:(BOOL)self0
 {
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
+  displayCopy = display;
+  stringCopy = string;
+  nameCopy = name;
+  actionIdentifierCopy = actionIdentifier;
   v31.receiver = self;
   v31.super_class = VCConfiguredSleepWorkflow;
-  v20 = [(WFDatabaseObjectDescriptor *)&v31 initWithIdentifier:a3 objectType:0];
+  v20 = [(WFDatabaseObjectDescriptor *)&v31 initWithIdentifier:identifier objectType:0];
   if (v20)
   {
-    v21 = [v16 copy];
+    v21 = [displayCopy copy];
     bundleIdentifierForDisplay = v20->_bundleIdentifierForDisplay;
     v20->_bundleIdentifierForDisplay = v21;
 
-    v23 = [v17 copy];
+    v23 = [stringCopy copy];
     summaryString = v20->_summaryString;
     v20->_summaryString = v23;
 
-    v25 = [v18 copy];
+    v25 = [nameCopy copy];
     name = v20->_name;
     v20->_name = v25;
 
-    v27 = [v19 copy];
+    v27 = [actionIdentifierCopy copy];
     actionIdentifier = v20->_actionIdentifier;
     v20->_actionIdentifier = v27;
 
-    v20->_glyphCharacter = a8;
-    v20->_backgroundColorValue = a9;
-    v20->_isAppLaunchWorkflow = a10;
+    v20->_glyphCharacter = character;
+    v20->_backgroundColorValue = value;
+    v20->_isAppLaunchWorkflow = workflow;
     v29 = v20;
   }
 
@@ -177,9 +177,9 @@
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkISImageDescriptorHomeScreen(void)"];
-    [v14 handleFailureInFunction:v15 file:@"VCConfiguredSleepWorkflow.m" lineNumber:19 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v15 file:@"VCConfiguredSleepWorkflow.m" lineNumber:19 description:{@"%s", dlerror()}];
 
     __break(1u);
   }

@@ -6,8 +6,8 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(MapsLargerHitTargetButtonAccessibility *)self accessibilityLabel];
-  v4 = [v3 length];
+  accessibilityLabel = [(MapsLargerHitTargetButtonAccessibility *)self accessibilityLabel];
+  v4 = [accessibilityLabel length];
 
   if (!v4)
   {

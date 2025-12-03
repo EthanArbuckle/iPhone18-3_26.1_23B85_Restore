@@ -1,49 +1,49 @@
 @interface _NSSwiftCalendar
-- (BOOL)date:(id)a3 matchesComponents:(id)a4;
-- (BOOL)isDate:(id)a3 equalToDate:(id)a4 toUnitGranularity:(unint64_t)a5;
-- (BOOL)isDate:(id)a3 inSameDayAsDate:(id)a4;
-- (BOOL)isDateInWeekend:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)nextWeekendStartDate:(id *)a3 interval:(double *)a4 options:(unint64_t)a5 afterDate:(id)a6;
-- (BOOL)rangeOfUnit:(unint64_t)a3 startDate:(id *)a4 interval:(double *)a5 forDate:(id)a6;
-- (BOOL)rangeOfWeekendStartDate:(id *)a3 interval:(double *)a4 containingDate:(id)a5;
+- (BOOL)date:(id)date matchesComponents:(id)components;
+- (BOOL)isDate:(id)date equalToDate:(id)toDate toUnitGranularity:(unint64_t)granularity;
+- (BOOL)isDate:(id)date inSameDayAsDate:(id)asDate;
+- (BOOL)isDateInWeekend:(id)weekend;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)nextWeekendStartDate:(id *)date interval:(double *)interval options:(unint64_t)options afterDate:(id)afterDate;
+- (BOOL)rangeOfUnit:(unint64_t)unit startDate:(id *)date interval:(double *)interval forDate:(id)forDate;
+- (BOOL)rangeOfWeekendStartDate:(id *)date interval:(double *)interval containingDate:(id)containingDate;
 - (Class)classForCoder;
 - (NSLocale)locale;
 - (NSString)calendarIdentifier;
 - (NSString)debugDescription;
 - (NSTimeZone)timeZone;
-- (_NSRange)maximumRangeOfUnit:(unint64_t)a3;
-- (_NSRange)minimumRangeOfUnit:(unint64_t)a3;
-- (_NSRange)rangeOfUnit:(unint64_t)a3 inUnit:(unint64_t)a4 forDate:(id)a5;
-- (id)_components:(unint64_t)a3 fromDate:(id)a4;
-- (id)_componentsInTimeZone:(id)a3 fromDate:(id)a4;
-- (id)_dateFromComponents:(id)a3;
-- (id)components:(unint64_t)a3 fromDate:(id)a4 toDate:(id)a5 options:(unint64_t)a6;
-- (id)components:(unint64_t)a3 fromDateComponents:(id)a4 toDateComponents:(id)a5 options:(unint64_t)a6;
-- (id)copyWithZone:(void *)a3;
-- (id)dateByAddingComponents:(id)a3 toDate:(id)a4 options:(unint64_t)a5;
-- (id)dateBySettingHour:(int64_t)a3 minute:(int64_t)a4 second:(int64_t)a5 ofDate:(id)a6 options:(unint64_t)a7;
-- (id)nextDateAfterDate:(id)a3 matchingComponents:(id)a4 options:(unint64_t)a5;
-- (id)nextDateAfterDate:(id)a3 matchingHour:(int64_t)a4 minute:(int64_t)a5 second:(int64_t)a6 options:(unint64_t)a7;
-- (id)nextDateAfterDate:(id)a3 matchingUnit:(unint64_t)a4 value:(int64_t)a5 options:(unint64_t)a6;
-- (id)startOfDayForDate:(id)a3;
-- (int64_t)compareDate:(id)a3 toDate:(id)a4 toUnitGranularity:(unint64_t)a5;
-- (int64_t)component:(unint64_t)a3 fromDate:(id)a4;
+- (_NSRange)maximumRangeOfUnit:(unint64_t)unit;
+- (_NSRange)minimumRangeOfUnit:(unint64_t)unit;
+- (_NSRange)rangeOfUnit:(unint64_t)unit inUnit:(unint64_t)inUnit forDate:(id)date;
+- (id)_components:(unint64_t)_components fromDate:(id)date;
+- (id)_componentsInTimeZone:(id)zone fromDate:(id)date;
+- (id)_dateFromComponents:(id)components;
+- (id)components:(unint64_t)components fromDate:(id)date toDate:(id)toDate options:(unint64_t)options;
+- (id)components:(unint64_t)components fromDateComponents:(id)dateComponents toDateComponents:(id)toDateComponents options:(unint64_t)options;
+- (id)copyWithZone:(void *)zone;
+- (id)dateByAddingComponents:(id)components toDate:(id)date options:(unint64_t)options;
+- (id)dateBySettingHour:(int64_t)hour minute:(int64_t)minute second:(int64_t)second ofDate:(id)date options:(unint64_t)options;
+- (id)nextDateAfterDate:(id)date matchingComponents:(id)components options:(unint64_t)options;
+- (id)nextDateAfterDate:(id)date matchingHour:(int64_t)hour minute:(int64_t)minute second:(int64_t)second options:(unint64_t)options;
+- (id)nextDateAfterDate:(id)date matchingUnit:(unint64_t)unit value:(int64_t)value options:(unint64_t)options;
+- (id)startOfDayForDate:(id)date;
+- (int64_t)compareDate:(id)date toDate:(id)toDate toUnitGranularity:(unint64_t)granularity;
+- (int64_t)component:(unint64_t)component fromDate:(id)date;
 - (int64_t)firstWeekday;
 - (int64_t)minimumDaysInFirstWeek;
-- (int64_t)ordinalityOfUnit:(unint64_t)a3 inUnit:(unint64_t)a4 forDate:(id)a5;
-- (void)_enumerateDatesStartingAfterDate:(id)a3 matchingComponents:(id)a4 options:(unint64_t)a5 usingBlock:(id)a6;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLocale:(id)a3;
-- (void)setTimeZone:(id)a3;
+- (int64_t)ordinalityOfUnit:(unint64_t)unit inUnit:(unint64_t)inUnit forDate:(id)date;
+- (void)_enumerateDatesStartingAfterDate:(id)date matchingComponents:(id)components options:(unint64_t)options usingBlock:(id)block;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLocale:(id)locale;
+- (void)setTimeZone:(id)zone;
 @end
 
 @implementation _NSSwiftCalendar
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (zone)
   {
     type metadata accessor for _NSSwiftTimeZone();
     if (swift_dynamicCastClass())
@@ -54,28 +54,28 @@
     else
     {
       type metadata accessor for _TimeZoneBridged();
-      *(swift_allocObject() + 16) = a3;
+      *(swift_allocObject() + 16) = zone;
       lazy protocol witness table accessor for type _TimeZoneBridged and conformance _TimeZoneBridged(&lazy protocol witness table cache variable for type _TimeZoneBridged and conformance _TimeZoneBridged, type metadata accessor for _TimeZoneBridged);
-      self = a3;
+      self = zone;
     }
   }
 
-  v5 = *(&v3->super.super.super.isa + OBJC_IVAR____NSSwiftCalendar__lock);
+  v5 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____NSSwiftCalendar__lock);
   MEMORY[0x1EEE9AC00](self);
-  v6 = v3;
+  v6 = selfCopy;
   os_unfair_lock_lock(v5 + 8);
   partial apply for closure #1 in _NSSwiftCalendar.timeZone.setter(&v5[4]);
   os_unfair_lock_unlock(v5 + 8);
   swift_unknownObjectRelease();
 }
 
-- (id)_components:(unint64_t)a3 fromDate:(id)a4
+- (id)_components:(unint64_t)_components fromDate:(id)date
 {
-  v5 = a3;
-  v6 = self;
-  [a4 timeIntervalSinceReferenceDate];
+  _componentsCopy = _components;
+  selfCopy = self;
+  [date timeIntervalSinceReferenceDate];
   v10[0] = v7;
-  _NSSwiftCalendar._components(_:from:)(v5, v10, __src);
+  _NSSwiftCalendar._components(_:from:)(_componentsCopy, v10, __src);
 
   memcpy(v10, __src, 0x11BuLL);
   v8.super.isa = DateComponents._bridgeToObjectiveC()().super.isa;
@@ -84,11 +84,11 @@
   return v8.super.isa;
 }
 
-- (id)_dateFromComponents:(id)a3
+- (id)_dateFromComponents:(id)components
 {
-  static DateComponents._unconditionallyBridgeFromObjectiveC(_:)(a3, __src);
+  static DateComponents._unconditionallyBridgeFromObjectiveC(_:)(components, __src);
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____NSSwiftCalendar__lock);
-  v5 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v4 + 32));
   v6 = *(v4 + 24);
   swift_unknownObjectRetain();
@@ -101,20 +101,20 @@
   outlined destroy of DateComponents(__src);
   if (v12)
   {
-    v8 = 0;
+    initWithTimeIntervalSinceReferenceDate_ = 0;
   }
 
   else
   {
-    v8 = [objc_allocWithZone(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate_];
+    initWithTimeIntervalSinceReferenceDate_ = [objc_allocWithZone(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate_];
   }
 
-  return v8;
+  return initWithTimeIntervalSinceReferenceDate_;
 }
 
 - (NSString)calendarIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = specialized _NSSwiftCalendar.calendarIdentifier.getter();
 
   return v3;
@@ -123,7 +123,7 @@
 - (NSLocale)locale
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____NSSwiftCalendar__lock);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2 + 8);
   swift_unknownObjectRetain();
   os_unfair_lock_unlock(v2 + 8);
@@ -146,15 +146,15 @@
   return v6;
 }
 
-- (id)components:(unint64_t)a3 fromDate:(id)a4 toDate:(id)a5 options:(unint64_t)a6
+- (id)components:(unint64_t)components fromDate:(id)date toDate:(id)toDate options:(unint64_t)options
 {
-  v8 = a3;
-  v9 = self;
-  [a4 timeIntervalSinceReferenceDate];
+  componentsCopy = components;
+  selfCopy = self;
+  [date timeIntervalSinceReferenceDate];
   __dst[0] = v10;
-  [a5 timeIntervalSinceReferenceDate];
+  [toDate timeIntervalSinceReferenceDate];
   v15 = v11;
-  _NSSwiftCalendar.components(_:from:to:options:)(v8, __dst, &v15, __src);
+  _NSSwiftCalendar.components(_:from:to:options:)(componentsCopy, __dst, &v15, __src);
 
   memcpy(__dst, __src, 0x11BuLL);
   v12.super.isa = DateComponents._bridgeToObjectiveC()().super.isa;
@@ -163,9 +163,9 @@
   return v12.super.isa;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   _NSSwiftCalendar.copy(with:)(v6);
 
   __swift_project_boxed_opaque_existential_1(v6, v6[3]);
@@ -177,7 +177,7 @@
 - (int64_t)firstWeekday
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____NSSwiftCalendar__lock);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + 32));
   v4 = *(v2 + 24);
   swift_unknownObjectRetain();
@@ -192,7 +192,7 @@
 - (int64_t)minimumDaysInFirstWeek
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____NSSwiftCalendar__lock);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + 32));
   v4 = *(v2 + 24);
   swift_unknownObjectRetain();
@@ -204,67 +204,67 @@
   return v6;
 }
 
-- (id)dateByAddingComponents:(id)a3 toDate:(id)a4 options:(unint64_t)a5
+- (id)dateByAddingComponents:(id)components toDate:(id)date options:(unint64_t)options
 {
-  v5 = a5;
-  static DateComponents._unconditionallyBridgeFromObjectiveC(_:)(a3, __src);
-  v8 = self;
-  [a4 timeIntervalSinceReferenceDate];
+  optionsCopy = options;
+  static DateComponents._unconditionallyBridgeFromObjectiveC(_:)(components, __src);
+  selfCopy = self;
+  [date timeIntervalSinceReferenceDate];
   v12 = v9;
-  _NSSwiftCalendar.date(byAdding:to:options:)(__src, &v12, v5);
+  _NSSwiftCalendar.date(byAdding:to:options:)(__src, &v12, optionsCopy);
 
   memcpy(__dst, __src, 0x11BuLL);
   outlined destroy of DateComponents(__dst);
   if (v15)
   {
-    v10 = 0;
+    initWithTimeIntervalSinceReferenceDate_ = 0;
   }
 
   else
   {
-    v10 = [objc_allocWithZone(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate_];
+    initWithTimeIntervalSinceReferenceDate_ = [objc_allocWithZone(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate_];
   }
 
-  return v10;
+  return initWithTimeIntervalSinceReferenceDate_;
 }
 
-- (int64_t)component:(unint64_t)a3 fromDate:(id)a4
+- (int64_t)component:(unint64_t)component fromDate:(id)date
 {
-  v6 = self;
-  [a4 timeIntervalSinceReferenceDate];
-  v8 = _NSSwiftCalendar.component(_:from:)(a3, v7);
+  selfCopy = self;
+  [date timeIntervalSinceReferenceDate];
+  v8 = _NSSwiftCalendar.component(_:from:)(component, v7);
 
   return v8;
 }
 
-- (int64_t)ordinalityOfUnit:(unint64_t)a3 inUnit:(unint64_t)a4 forDate:(id)a5
+- (int64_t)ordinalityOfUnit:(unint64_t)unit inUnit:(unint64_t)inUnit forDate:(id)date
 {
-  v8 = self;
-  [a5 timeIntervalSinceReferenceDate];
-  v10 = _NSSwiftCalendar.ordinality(of:in:for:)(a3, a4, v9);
+  selfCopy = self;
+  [date timeIntervalSinceReferenceDate];
+  v10 = _NSSwiftCalendar.ordinality(of:in:for:)(unit, inUnit, v9);
 
   return v10;
 }
 
 - (Class)classForCoder
 {
-  v2 = self;
+  selfCopy = self;
   _NSSwiftCalendar.classForCoder.getter();
 
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  _NSSwiftCalendar.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  _NSSwiftCalendar.encode(with:)(coderCopy);
 }
 
 - (NSTimeZone)timeZone
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____NSSwiftCalendar__lock);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + 32));
   v4 = *(v2 + 24);
   swift_unknownObjectRetain();
@@ -281,11 +281,11 @@
   return v8;
 }
 
-- (id)startOfDayForDate:(id)a3
+- (id)startOfDayForDate:(id)date
 {
-  v4 = self;
-  [a3 timeIntervalSinceReferenceDate];
-  v5 = *(&v4->super.super.super.isa + OBJC_IVAR____NSSwiftCalendar__lock);
+  selfCopy = self;
+  [date timeIntervalSinceReferenceDate];
+  v5 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____NSSwiftCalendar__lock);
   os_unfair_lock_lock((v5 + 32));
   *&fora[0]._time = *(v5 + 16);
   swift_unknownObjectRetain();
@@ -293,15 +293,15 @@
   Calendar.startOfDay(for:)(fora[0]);
 
   swift_unknownObjectRelease();
-  v6 = [objc_allocWithZone(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate_];
+  initWithTimeIntervalSinceReferenceDate_ = [objc_allocWithZone(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate_];
 
-  return v6;
+  return initWithTimeIntervalSinceReferenceDate_;
 }
 
-- (_NSRange)maximumRangeOfUnit:(unint64_t)a3
+- (_NSRange)maximumRangeOfUnit:(unint64_t)unit
 {
-  v4 = self;
-  v5 = _NSSwiftCalendar.maximumRange(of:)(a3);
+  selfCopy = self;
+  v5 = _NSSwiftCalendar.maximumRange(of:)(unit);
 
   location = v5.location;
   length = v5.length;
@@ -310,11 +310,11 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -323,7 +323,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = _NSSwiftCalendar.isEqual(_:)(v8);
@@ -332,7 +332,7 @@
   return v6 & 1;
 }
 
-- (id)_componentsInTimeZone:(id)a3 fromDate:(id)a4
+- (id)_componentsInTimeZone:(id)zone fromDate:(id)date
 {
   type metadata accessor for _NSSwiftTimeZone();
   v7 = swift_dynamicCastClass();
@@ -347,15 +347,15 @@
   {
     type metadata accessor for _TimeZoneBridged();
     v8 = swift_allocObject();
-    *(v8 + 16) = a3;
+    *(v8 + 16) = zone;
     v9 = lazy protocol witness table accessor for type _TimeZoneBridged and conformance _TimeZoneBridged(&lazy protocol witness table cache variable for type _TimeZoneBridged and conformance _TimeZoneBridged, type metadata accessor for _TimeZoneBridged);
-    v10 = a3;
+    zoneCopy = zone;
   }
 
   *&__dst[0] = v8;
   *(&__dst[0] + 1) = v9;
-  v11 = self;
-  [a4 timeIntervalSinceReferenceDate];
+  selfCopy = self;
+  [date timeIntervalSinceReferenceDate];
   v16 = v12;
   _NSSwiftCalendar._components(in:from:)(__dst, &v16, __src);
   swift_unknownObjectRelease();
@@ -367,10 +367,10 @@
   return v13.super.isa;
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (locale)
   {
     type metadata accessor for _NSSwiftLocale();
     if (swift_dynamicCastClass())
@@ -381,26 +381,26 @@
     else
     {
       type metadata accessor for _LocaleBridged();
-      *(swift_allocObject() + 16) = a3;
+      *(swift_allocObject() + 16) = locale;
       lazy protocol witness table accessor for type _TimeZoneBridged and conformance _TimeZoneBridged(&lazy protocol witness table cache variable for type _LocaleBridged and conformance _LocaleBridged, type metadata accessor for _LocaleBridged);
-      self = a3;
+      self = locale;
     }
   }
 
-  v5 = *(&v3->super.super.super.isa + OBJC_IVAR____NSSwiftCalendar__lock);
+  v5 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____NSSwiftCalendar__lock);
   MEMORY[0x1EEE9AC00](self);
-  v6 = v3;
+  v6 = selfCopy;
   os_unfair_lock_lock(v5 + 8);
   partial apply for closure #1 in _NSSwiftCalendar.locale.setter();
   os_unfair_lock_unlock(v5 + 8);
   swift_unknownObjectRelease();
 }
 
-- (_NSRange)rangeOfUnit:(unint64_t)a3 inUnit:(unint64_t)a4 forDate:(id)a5
+- (_NSRange)rangeOfUnit:(unint64_t)unit inUnit:(unint64_t)inUnit forDate:(id)date
 {
-  v8 = self;
-  [a5 timeIntervalSinceReferenceDate];
-  v10 = _NSSwiftCalendar.range(of:in:for:)(a3, a4, v9);
+  selfCopy = self;
+  [date timeIntervalSinceReferenceDate];
+  v10 = _NSSwiftCalendar.range(of:in:for:)(unit, inUnit, v9);
 
   location = v10.location;
   length = v10.length;
@@ -409,83 +409,83 @@
   return result;
 }
 
-- (BOOL)isDateInWeekend:(id)a3
+- (BOOL)isDateInWeekend:(id)weekend
 {
-  v4 = self;
-  [a3 timeIntervalSinceReferenceDate];
-  LOBYTE(a3) = _NSSwiftCalendar.isDateInWeekend(_:)(v5);
+  selfCopy = self;
+  [weekend timeIntervalSinceReferenceDate];
+  LOBYTE(weekend) = _NSSwiftCalendar.isDateInWeekend(_:)(v5);
 
-  return a3 & 1;
+  return weekend & 1;
 }
 
-- (BOOL)isDate:(id)a3 inSameDayAsDate:(id)a4
+- (BOOL)isDate:(id)date inSameDayAsDate:(id)asDate
 {
-  v6 = self;
-  [a3 timeIntervalSinceReferenceDate];
-  [a4 timeIntervalSinceReferenceDate];
-  LOBYTE(a4) = _NSSwiftCalendar.isDate(_:inSameDayAs:)(v7, v8);
+  selfCopy = self;
+  [date timeIntervalSinceReferenceDate];
+  [asDate timeIntervalSinceReferenceDate];
+  LOBYTE(asDate) = _NSSwiftCalendar.isDate(_:inSameDayAs:)(v7, v8);
 
-  return a4 & 1;
+  return asDate & 1;
 }
 
-- (id)nextDateAfterDate:(id)a3 matchingComponents:(id)a4 options:(unint64_t)a5
+- (id)nextDateAfterDate:(id)date matchingComponents:(id)components options:(unint64_t)options
 {
-  v5 = a5;
-  v8 = self;
-  [a3 timeIntervalSinceReferenceDate];
+  optionsCopy = options;
+  selfCopy = self;
+  [date timeIntervalSinceReferenceDate];
   v13 = v9;
-  static DateComponents._unconditionallyBridgeFromObjectiveC(_:)(a4, __src);
-  _NSSwiftCalendar.nextDate(after:matching:options:)(&v13, __src, v5, &v14);
+  static DateComponents._unconditionallyBridgeFromObjectiveC(_:)(components, __src);
+  _NSSwiftCalendar.nextDate(after:matching:options:)(&v13, __src, optionsCopy, &v14);
 
   memcpy(__dst, __src, 0x11BuLL);
   outlined destroy of DateComponents(__dst);
   if (v15)
   {
-    v10 = 0;
+    initWithTimeIntervalSinceReferenceDate_ = 0;
   }
 
   else
   {
-    v10 = [objc_allocWithZone(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate_];
+    initWithTimeIntervalSinceReferenceDate_ = [objc_allocWithZone(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate_];
   }
 
-  return v10;
+  return initWithTimeIntervalSinceReferenceDate_;
 }
 
-- (int64_t)compareDate:(id)a3 toDate:(id)a4 toUnitGranularity:(unint64_t)a5
+- (int64_t)compareDate:(id)date toDate:(id)toDate toUnitGranularity:(unint64_t)granularity
 {
-  v7 = self;
-  [a3 timeIntervalSinceReferenceDate];
+  selfCopy = self;
+  [date timeIntervalSinceReferenceDate];
   v13 = v8;
-  [a4 timeIntervalSinceReferenceDate];
+  [toDate timeIntervalSinceReferenceDate];
   v11 = _NSSwiftCalendar.compare(_:to:toUnitGranularity:)(v9, v10, &v13);
 
   return v11;
 }
 
-- (id)dateBySettingHour:(int64_t)a3 minute:(int64_t)a4 second:(int64_t)a5 ofDate:(id)a6 options:(unint64_t)a7
+- (id)dateBySettingHour:(int64_t)hour minute:(int64_t)minute second:(int64_t)second ofDate:(id)date options:(unint64_t)options
 {
-  v11 = self;
-  [a6 timeIntervalSinceReferenceDate];
+  selfCopy = self;
+  [date timeIntervalSinceReferenceDate];
   v15[0] = *&v12._time;
-  _NSSwiftCalendar.date(bySettingHour:minute:second:of:options:)(a3, a4, a5, v12, v15);
+  _NSSwiftCalendar.date(bySettingHour:minute:second:of:options:)(hour, minute, second, v12, v15);
 
   if (v16)
   {
-    v13 = 0;
+    initWithTimeIntervalSinceReferenceDate_ = 0;
   }
 
   else
   {
-    v13 = [objc_allocWithZone(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate_];
+    initWithTimeIntervalSinceReferenceDate_ = [objc_allocWithZone(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate_];
   }
 
-  return v13;
+  return initWithTimeIntervalSinceReferenceDate_;
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   _NSSwiftCalendar.debugDescription.getter();
 
   v3 = String._bridgeToObjectiveCImpl()();
@@ -493,10 +493,10 @@
   return v3;
 }
 
-- (_NSRange)minimumRangeOfUnit:(unint64_t)a3
+- (_NSRange)minimumRangeOfUnit:(unint64_t)unit
 {
-  v4 = self;
-  v5 = _NSSwiftCalendar.minimumRange(of:)(a3);
+  selfCopy = self;
+  v5 = _NSSwiftCalendar.minimumRange(of:)(unit);
 
   location = v5.location;
   length = v5.length;
@@ -505,36 +505,36 @@
   return result;
 }
 
-- (BOOL)rangeOfUnit:(unint64_t)a3 startDate:(id *)a4 interval:(double *)a5 forDate:(id)a6
+- (BOOL)rangeOfUnit:(unint64_t)unit startDate:(id *)date interval:(double *)interval forDate:(id)forDate
 {
-  v10 = self;
-  [a6 timeIntervalSinceReferenceDate];
+  selfCopy = self;
+  [forDate timeIntervalSinceReferenceDate];
   v13 = v11;
-  LOBYTE(a6) = _NSSwiftCalendar.range(of:start:interval:for:)(a3, a4, a5, &v13);
+  LOBYTE(forDate) = _NSSwiftCalendar.range(of:start:interval:for:)(unit, date, interval, &v13);
 
-  return a6 & 1;
+  return forDate & 1;
 }
 
-- (BOOL)nextWeekendStartDate:(id *)a3 interval:(double *)a4 options:(unint64_t)a5 afterDate:(id)a6
+- (BOOL)nextWeekendStartDate:(id *)date interval:(double *)interval options:(unint64_t)options afterDate:(id)afterDate
 {
-  v10 = self;
-  [a6 timeIntervalSinceReferenceDate];
+  selfCopy = self;
+  [afterDate timeIntervalSinceReferenceDate];
   v13 = v11;
-  LOBYTE(a6) = _NSSwiftCalendar.nextWeekendStart(_:interval:options:after:)(a3, a4, a5, &v13);
+  LOBYTE(afterDate) = _NSSwiftCalendar.nextWeekendStart(_:interval:options:after:)(date, interval, options, &v13);
 
-  return a6 & 1;
+  return afterDate & 1;
 }
 
-- (void)_enumerateDatesStartingAfterDate:(id)a3 matchingComponents:(id)a4 options:(unint64_t)a5 usingBlock:(id)a6
+- (void)_enumerateDatesStartingAfterDate:(id)date matchingComponents:(id)components options:(unint64_t)options usingBlock:(id)block
 {
-  v6 = a5;
-  v10 = _Block_copy(a6);
-  v11 = self;
-  [a3 timeIntervalSinceReferenceDate];
+  optionsCopy = options;
+  v10 = _Block_copy(block);
+  selfCopy = self;
+  [date timeIntervalSinceReferenceDate];
   v14 = v12;
-  static DateComponents._unconditionallyBridgeFromObjectiveC(_:)(a4, __src);
+  static DateComponents._unconditionallyBridgeFromObjectiveC(_:)(components, __src);
   _Block_copy(v10);
-  specialized _NSSwiftCalendar._enumerateDatesStarting(after:matching:options:using:)(&v14, __src, v6, v11, v10);
+  specialized _NSSwiftCalendar._enumerateDatesStarting(after:matching:options:using:)(&v14, __src, optionsCopy, selfCopy, v10);
   _Block_release(v10);
   _Block_release(v10);
 
@@ -542,26 +542,26 @@
   outlined destroy of DateComponents(__dst);
 }
 
-- (BOOL)date:(id)a3 matchesComponents:(id)a4
+- (BOOL)date:(id)date matchesComponents:(id)components
 {
-  v6 = self;
-  [a3 timeIntervalSinceReferenceDate];
+  selfCopy = self;
+  [date timeIntervalSinceReferenceDate];
   v10 = v7;
-  static DateComponents._unconditionallyBridgeFromObjectiveC(_:)(a4, __src);
-  LOBYTE(a4) = _NSSwiftCalendar.date(_:matchesComponents:)(&v10, __src);
+  static DateComponents._unconditionallyBridgeFromObjectiveC(_:)(components, __src);
+  LOBYTE(components) = _NSSwiftCalendar.date(_:matchesComponents:)(&v10, __src);
 
   memcpy(__dst, __src, 0x11BuLL);
   outlined destroy of DateComponents(__dst);
-  return a4 & 1;
+  return components & 1;
 }
 
-- (id)components:(unint64_t)a3 fromDateComponents:(id)a4 toDateComponents:(id)a5 options:(unint64_t)a6
+- (id)components:(unint64_t)components fromDateComponents:(id)dateComponents toDateComponents:(id)toDateComponents options:(unint64_t)options
 {
-  v7 = a3;
-  static DateComponents._unconditionallyBridgeFromObjectiveC(_:)(a4, __src);
-  static DateComponents._unconditionallyBridgeFromObjectiveC(_:)(a5, v12);
-  v9 = self;
-  _NSSwiftCalendar.components(_:from:to:options:)(v7, __src, v12, v13);
+  componentsCopy = components;
+  static DateComponents._unconditionallyBridgeFromObjectiveC(_:)(dateComponents, __src);
+  static DateComponents._unconditionallyBridgeFromObjectiveC(_:)(toDateComponents, v12);
+  selfCopy = self;
+  _NSSwiftCalendar.components(_:from:to:options:)(componentsCopy, __src, v12, v13);
 
   memcpy(__dst, v12, 0x11BuLL);
   outlined destroy of DateComponents(__dst);
@@ -574,62 +574,62 @@
   return v10.super.isa;
 }
 
-- (BOOL)rangeOfWeekendStartDate:(id *)a3 interval:(double *)a4 containingDate:(id)a5
+- (BOOL)rangeOfWeekendStartDate:(id *)date interval:(double *)interval containingDate:(id)containingDate
 {
-  v8 = self;
-  [a5 timeIntervalSinceReferenceDate];
+  selfCopy = self;
+  [containingDate timeIntervalSinceReferenceDate];
   v11 = v9;
-  LOBYTE(a5) = _NSSwiftCalendar.range(ofWeekendStart:interval:containing:)(a3, a4, &v11);
+  LOBYTE(containingDate) = _NSSwiftCalendar.range(ofWeekendStart:interval:containing:)(date, interval, &v11);
 
-  return a5 & 1;
+  return containingDate & 1;
 }
 
-- (id)nextDateAfterDate:(id)a3 matchingHour:(int64_t)a4 minute:(int64_t)a5 second:(int64_t)a6 options:(unint64_t)a7
+- (id)nextDateAfterDate:(id)date matchingHour:(int64_t)hour minute:(int64_t)minute second:(int64_t)second options:(unint64_t)options
 {
-  v11 = self;
-  [a3 timeIntervalSinceReferenceDate];
+  selfCopy = self;
+  [date timeIntervalSinceReferenceDate];
   v15[0] = *&v12._time;
-  _NSSwiftCalendar.nextDate(after:matchingHour:minute:second:options:)(v12, v15, a4, a5, a6);
+  _NSSwiftCalendar.nextDate(after:matchingHour:minute:second:options:)(v12, v15, hour, minute, second);
 
   if (v16)
   {
-    v13 = 0;
+    initWithTimeIntervalSinceReferenceDate_ = 0;
   }
 
   else
   {
-    v13 = [objc_allocWithZone(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate_];
+    initWithTimeIntervalSinceReferenceDate_ = [objc_allocWithZone(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate_];
   }
 
-  return v13;
+  return initWithTimeIntervalSinceReferenceDate_;
 }
 
-- (id)nextDateAfterDate:(id)a3 matchingUnit:(unint64_t)a4 value:(int64_t)a5 options:(unint64_t)a6
+- (id)nextDateAfterDate:(id)date matchingUnit:(unint64_t)unit value:(int64_t)value options:(unint64_t)options
 {
-  v9 = self;
-  [a3 timeIntervalSinceReferenceDate];
+  selfCopy = self;
+  [date timeIntervalSinceReferenceDate];
   v13[0] = *&v10._time;
-  _NSSwiftCalendar.nextDate(after:matching:value:options:)(v10, v13, a4, a5);
+  _NSSwiftCalendar.nextDate(after:matching:value:options:)(v10, v13, unit, value);
 
   if (v14)
   {
-    v11 = 0;
+    initWithTimeIntervalSinceReferenceDate_ = 0;
   }
 
   else
   {
-    v11 = [objc_allocWithZone(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate_];
+    initWithTimeIntervalSinceReferenceDate_ = [objc_allocWithZone(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate_];
   }
 
-  return v11;
+  return initWithTimeIntervalSinceReferenceDate_;
 }
 
-- (BOOL)isDate:(id)a3 equalToDate:(id)a4 toUnitGranularity:(unint64_t)a5
+- (BOOL)isDate:(id)date equalToDate:(id)toDate toUnitGranularity:(unint64_t)granularity
 {
-  v7 = self;
-  [a3 timeIntervalSinceReferenceDate];
+  selfCopy = self;
+  [date timeIntervalSinceReferenceDate];
   v13 = v8;
-  [a4 timeIntervalSinceReferenceDate];
+  [toDate timeIntervalSinceReferenceDate];
   v11 = _NSSwiftCalendar.isDate(_:equalTo:toUnitGranularity:)(v9, v10, &v13);
 
   return v11;

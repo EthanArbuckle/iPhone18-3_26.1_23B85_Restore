@@ -1,45 +1,45 @@
 @interface WBSPasswordBreachQueuedPassword
 - (NSUUID)uuid;
-- (WBSPasswordBreachQueuedPassword)initWithCredentials:(id)a3 context:(id)a4;
+- (WBSPasswordBreachQueuedPassword)initWithCredentials:(id)credentials context:(id)context;
 - (id)description;
-- (id)initFakePasswordWithContext:(id)a3;
+- (id)initFakePasswordWithContext:(id)context;
 @end
 
 @implementation WBSPasswordBreachQueuedPassword
 
-- (id)initFakePasswordWithContext:(id)a3
+- (id)initFakePasswordWithContext:(id)context
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v23.receiver = self;
   v23.super_class = WBSPasswordBreachQueuedPassword;
   v5 = [(WBSPasswordBreachQueuedPassword *)&v23 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DEF0] data];
-    v24[0] = v6;
+    data = [MEMORY[0x1E695DEF0] data];
+    v24[0] = data;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
     persistentIdentifiers = v5->_persistentIdentifiers;
     v5->_persistentIdentifiers = v7;
 
-    v9 = [v4 cryptographicOperations];
-    v10 = [v9 generateFakeEncodedPasswordForLowFrequencyBucket];
-    if (v10)
+    cryptographicOperations = [contextCopy cryptographicOperations];
+    generateFakeEncodedPasswordForLowFrequencyBucket = [cryptographicOperations generateFakeEncodedPasswordForLowFrequencyBucket];
+    if (generateFakeEncodedPasswordForLowFrequencyBucket)
     {
-      v11 = [MEMORY[0x1E695DF70] arrayWithObject:v10];
+      v11 = [MEMORY[0x1E695DF70] arrayWithObject:generateFakeEncodedPasswordForLowFrequencyBucket];
       bucketIdentifierAndHashStack = v5->_bucketIdentifierAndHashStack;
       v5->_bucketIdentifierAndHashStack = v11;
 
-      v13 = [v9 generateFakeEncodedPasswordForHighFrequencyBucket];
+      generateFakeEncodedPasswordForHighFrequencyBucket = [cryptographicOperations generateFakeEncodedPasswordForHighFrequencyBucket];
       highFrequencyEncodedPassword = v5->_highFrequencyEncodedPassword;
-      v5->_highFrequencyEncodedPassword = v13;
+      v5->_highFrequencyEncodedPassword = generateFakeEncodedPasswordForHighFrequencyBucket;
 
       if (v5->_highFrequencyEncodedPassword)
       {
-        v15 = [v4 configuration];
-        v16 = [v15 verboseSensitiveLoggingEnabled];
+        configuration = [contextCopy configuration];
+        verboseSensitiveLoggingEnabled = [configuration verboseSensitiveLoggingEnabled];
 
-        if (v16)
+        if (verboseSensitiveLoggingEnabled)
         {
           v17 = WBS_LOG_CHANNEL_PREFIXPasswordBreachAwareness();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -81,27 +81,27 @@ LABEL_15:
   return v18;
 }
 
-- (WBSPasswordBreachQueuedPassword)initWithCredentials:(id)a3 context:(id)a4
+- (WBSPasswordBreachQueuedPassword)initWithCredentials:(id)credentials context:(id)context
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  credentialsCopy = credentials;
+  contextCopy = context;
   v37.receiver = self;
   v37.super_class = WBSPasswordBreachQueuedPassword;
   v8 = [(WBSPasswordBreachQueuedPassword *)&v37 init];
   if (v8)
   {
-    v32 = [v7 cryptographicOperations];
-    v9 = [v6 count];
-    v10 = [v6 firstObject];
-    v11 = [v10 password];
+    cryptographicOperations = [contextCopy cryptographicOperations];
+    v9 = [credentialsCopy count];
+    firstObject = [credentialsCopy firstObject];
+    password = [firstObject password];
 
     v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v9];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v13 = v6;
+    v13 = credentialsCopy;
     v14 = [v13 countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v14)
     {
@@ -116,8 +116,8 @@ LABEL_15:
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v33 + 1) + 8 * i) persistentIdentifier];
-          [(NSArray *)v12 addObject:v18];
+          persistentIdentifier = [*(*(&v33 + 1) + 8 * i) persistentIdentifier];
+          [(NSArray *)v12 addObject:persistentIdentifier];
         }
 
         v15 = [v13 countByEnumeratingWithState:&v33 objects:v38 count:16];
@@ -131,24 +131,24 @@ LABEL_15:
     v20 = v12;
 
     v21 = MEMORY[0x1E695DF70];
-    v22 = [v32 encodePasswordForLowFrequencyBucket:v11];
+    v22 = [cryptographicOperations encodePasswordForLowFrequencyBucket:password];
     v23 = [v21 arrayWithObject:v22];
     bucketIdentifierAndHashStack = v8->_bucketIdentifierAndHashStack;
     v8->_bucketIdentifierAndHashStack = v23;
 
-    v25 = [v32 encodePasswordForHighFrequencyBucket:v11];
+    v25 = [cryptographicOperations encodePasswordForHighFrequencyBucket:password];
     highFrequencyEncodedPassword = v8->_highFrequencyEncodedPassword;
     v8->_highFrequencyEncodedPassword = v25;
 
-    v27 = [v7 configuration];
-    LODWORD(v21) = [v27 verboseSensitiveLoggingEnabled];
+    configuration = [contextCopy configuration];
+    LODWORD(v21) = [configuration verboseSensitiveLoggingEnabled];
 
     if (v21)
     {
       v28 = WBS_LOG_CHANNEL_PREFIXPasswordBreachAwareness();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
       {
-        [(WBSPasswordBreachQueuedPassword *)v11 initWithCredentials:v28 context:v8];
+        [(WBSPasswordBreachQueuedPassword *)password initWithCredentials:v28 context:v8];
       }
     }
 
@@ -165,8 +165,8 @@ LABEL_15:
   if (!uuid)
   {
     v4 = objc_alloc(MEMORY[0x1E696AFB0]);
-    v5 = [(WBSPasswordBreachQueuedPassword *)self highFrequencyEncodedPasswordData];
-    v6 = [v4 initWithUUIDBytes:{objc_msgSend(v5, "bytes")}];
+    highFrequencyEncodedPasswordData = [(WBSPasswordBreachQueuedPassword *)self highFrequencyEncodedPasswordData];
+    v6 = [v4 initWithUUIDBytes:{objc_msgSend(highFrequencyEncodedPasswordData, "bytes")}];
     v7 = self->_uuid;
     self->_uuid = v6;
 

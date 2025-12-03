@@ -1,28 +1,28 @@
 @interface WBSRemoteHistorySession
 - (BOOL)isCurrentSession;
-- (BOOL)isEqual:(id)a3;
-- (WBSRemoteHistorySession)initWithCoder:(id)a3;
-- (WBSRemoteHistorySession)initWithStartDate:(id)a3 endDate:(id)a4 items:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (WBSRemoteHistorySession)initWithCoder:(id)coder;
+- (WBSRemoteHistorySession)initWithStartDate:(id)date endDate:(id)endDate items:(id)items;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSRemoteHistorySession
 
-- (WBSRemoteHistorySession)initWithStartDate:(id)a3 endDate:(id)a4 items:(id)a5
+- (WBSRemoteHistorySession)initWithStartDate:(id)date endDate:(id)endDate items:(id)items
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  itemsCopy = items;
   v18.receiver = self;
   v18.super_class = WBSRemoteHistorySession;
   v12 = [(WBSRemoteHistorySession *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_startDate, a3);
-    objc_storeStrong(&v13->_endDate, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_startDate, date);
+    objc_storeStrong(&v13->_endDate, endDate);
+    v14 = [itemsCopy copy];
     items = v13->_items;
     v13->_items = v14;
 
@@ -35,9 +35,9 @@
 - (BOOL)isCurrentSession
 {
   startDate = self->_startDate;
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [v3 safari_startOfDay];
-  LOBYTE(startDate) = [(NSDate *)startDate isEqualToDate:v4];
+  date = [MEMORY[0x1E695DF00] date];
+  safari_startOfDay = [date safari_startOfDay];
+  LOBYTE(startDate) = [(NSDate *)startDate isEqualToDate:safari_startOfDay];
 
   return startDate;
 }
@@ -52,10 +52,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -66,12 +66,12 @@
     if (objc_opt_isKindOfClass())
     {
       startDate = self->_startDate;
-      v6 = [(WBSRemoteHistorySession *)v4 startDate];
-      if ([(NSDate *)startDate isEqualToDate:v6])
+      startDate = [(WBSRemoteHistorySession *)equalCopy startDate];
+      if ([(NSDate *)startDate isEqualToDate:startDate])
       {
         endDate = self->_endDate;
-        v8 = [(WBSRemoteHistorySession *)v4 endDate];
-        v9 = [(NSDate *)endDate isEqualToDate:v8];
+        endDate = [(WBSRemoteHistorySession *)equalCopy endDate];
+        v9 = [(NSDate *)endDate isEqualToDate:endDate];
       }
 
       else
@@ -89,30 +89,30 @@
   return v9;
 }
 
-- (WBSRemoteHistorySession)initWithCoder:(id)a3
+- (WBSRemoteHistorySession)initWithCoder:(id)coder
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
   v7 = MEMORY[0x1E695DFD8];
   v13[0] = objc_opt_class();
   v13[1] = objc_opt_class();
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
   v9 = [v7 setWithArray:v8];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"items"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"items"];
 
   v11 = [(WBSRemoteHistorySession *)self initWithStartDate:v5 endDate:v6 items:v10];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   startDate = self->_startDate;
-  v5 = a3;
-  [v5 encodeObject:startDate forKey:@"startDate"];
-  [v5 encodeObject:self->_endDate forKey:@"endDate"];
-  [v5 encodeObject:self->_items forKey:@"items"];
+  coderCopy = coder;
+  [coderCopy encodeObject:startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"endDate"];
+  [coderCopy encodeObject:self->_items forKey:@"items"];
 }
 
 @end

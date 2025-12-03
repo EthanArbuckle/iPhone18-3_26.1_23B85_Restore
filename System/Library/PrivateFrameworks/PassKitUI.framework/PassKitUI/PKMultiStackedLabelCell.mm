@@ -1,20 +1,20 @@
 @interface PKMultiStackedLabelCell
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setSources:(id)a3;
+- (void)setSources:(id)sources;
 @end
 
 @implementation PKMultiStackedLabelCell
 
-- (void)setSources:(id)a3
+- (void)setSources:(id)sources
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  sourcesCopy = sources;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_sources, a3);
+    objc_storeStrong(&self->_sources, sources);
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
@@ -46,15 +46,15 @@
       while (v8);
     }
 
-    v27 = self;
-    v11 = [(PKMultiStackedLabelCell *)self contentView];
+    selfCopy = self;
+    contentView = [(PKMultiStackedLabelCell *)self contentView];
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v28 = v5;
-    obj = v5;
+    v28 = sourcesCopy;
+    obj = sourcesCopy;
     v13 = [obj countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (v13)
     {
@@ -72,17 +72,17 @@
 
           v17 = *(*(&v30 + 1) + 8 * v16);
           v18 = [PKIconTextLabel alloc];
-          v19 = [v17 text];
-          v20 = [v17 icon];
-          v21 = [(PKIconTextLabel *)v18 initWithText:v19 icon:v20];
+          text = [v17 text];
+          icon = [v17 icon];
+          v21 = [(PKIconTextLabel *)v18 initWithText:text icon:icon];
 
-          v22 = [v17 textColor];
-          [(PKIconTextLabel *)v21 setTextColor:v22];
+          textColor = [v17 textColor];
+          [(PKIconTextLabel *)v21 setTextColor:textColor];
 
-          v23 = [v17 font];
-          [(PKIconTextLabel *)v21 setTextFont:v23];
+          font = [v17 font];
+          [(PKIconTextLabel *)v21 setTextFont:font];
 
-          [v11 addSubview:v21];
+          [contentView addSubview:v21];
           [v12 addObject:v21];
 
           ++v16;
@@ -96,11 +96,11 @@
     }
 
     v24 = [v12 copy];
-    v25 = *(&v27->super.super.super.super.super.super.isa + v26);
-    *(&v27->super.super.super.super.super.super.isa + v26) = v24;
+    v25 = *(&selfCopy->super.super.super.super.super.super.isa + v26);
+    *(&selfCopy->super.super.super.super.super.super.isa + v26) = v24;
 
-    [(PKMultiStackedLabelCell *)v27 setNeedsLayout];
-    v5 = v28;
+    [(PKMultiStackedLabelCell *)selfCopy setNeedsLayout];
+    sourcesCopy = v28;
   }
 }
 
@@ -109,25 +109,25 @@
   v4.receiver = self;
   v4.super_class = PKMultiStackedLabelCell;
   [(PKMultiStackedLabelCell *)&v4 layoutSubviews];
-  v3 = [(PKMultiStackedLabelCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKMultiStackedLabelCell *)self contentView];
+  [contentView bounds];
   [(PKMultiStackedLabelCell *)self _layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKMultiStackedLabelCell *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKMultiStackedLabelCell *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v10 = PKTableViewCellTextInset();
   v11 = x + v10;
   v12 = width - (v10 + PKTableViewCellTextInset());
@@ -152,7 +152,7 @@
       v24 = v23;
       CGRectDivide(v28, &slice, &v28, self->_paddingBetweenRows, CGRectMinYEdge);
       paddingBetweenRows = self->_paddingBetweenRows;
-      if (!a4)
+      if (!layout)
       {
         [v15 setFrame:{v18, v20, v22, v24}];
       }

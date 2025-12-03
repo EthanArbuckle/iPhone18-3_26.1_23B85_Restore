@@ -1,5 +1,5 @@
 @interface SBSApplicationRestrictionMonitorProxy
-- (id)initWithMonitor:(id *)a1;
+- (id)initWithMonitor:(id *)monitor;
 - (id)makeConnection;
 - (uint64_t)connection;
 - (uint64_t)monitor;
@@ -7,7 +7,7 @@
 - (void)dealloc;
 - (void)didInvalidate;
 - (void)invalidate;
-- (void)observeUpdateWithApplicationRestrictState:(id)a3;
+- (void)observeUpdateWithApplicationRestrictState:(id)state;
 @end
 
 @implementation SBSApplicationRestrictionMonitorProxy
@@ -22,18 +22,18 @@
 
 - (id)makeConnection
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x1E698F498] defaultShellMachName];
+    defaultShellMachName = [MEMORY[0x1E698F498] defaultShellMachName];
     v3 = +[SBSApplicationRestrictionMonitoringServiceInterfaceSpecification identifier];
-    v4 = [MEMORY[0x1E698F498] endpointForMachName:v2 service:v3 instance:0];
+    v4 = [MEMORY[0x1E698F498] endpointForMachName:defaultShellMachName service:v3 instance:0];
     v5 = [MEMORY[0x1E698F490] connectionWithEndpoint:v4];
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __55__SBSApplicationRestrictionMonitorProxy_makeConnection__block_invoke;
     v7[3] = &unk_1E735F0A8;
-    v7[4] = a1;
+    v7[4] = self;
     objc_copyWeak(&v8, &location);
     [v5 configureConnection:v7];
     objc_destroyWeak(&v8);
@@ -48,17 +48,17 @@
   return v5;
 }
 
-- (void)observeUpdateWithApplicationRestrictState:(id)a3
+- (void)observeUpdateWithApplicationRestrictState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(self->_queue);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __83__SBSApplicationRestrictionMonitorProxy_observeUpdateWithApplicationRestrictState___block_invoke;
   v6[3] = &unk_1E735F7F0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = stateCopy;
+  v5 = stateCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -146,34 +146,34 @@ void __55__SBSApplicationRestrictionMonitorProxy_makeConnection__block_invoke_8(
   [(SBSApplicationRestrictionMonitorProxy *)WeakRetained didInvalidate];
 }
 
-- (id)initWithMonitor:(id *)a1
+- (id)initWithMonitor:(id *)monitor
 {
   v4 = a2;
-  if (a1)
+  if (monitor)
   {
-    v14.receiver = a1;
+    v14.receiver = monitor;
     v14.super_class = SBSApplicationRestrictionMonitorProxy;
     v5 = objc_msgSendSuper2(&v14, sel_init);
-    a1 = v5;
+    monitor = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.springboard.application-restriction-monitoring-service.connectionQueue-%p", a1];
-      v7 = [v6 UTF8String];
+      monitor = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.springboard.application-restriction-monitoring-service.connectionQueue-%p", monitor];
+      uTF8String = [monitor UTF8String];
       v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v9 = dispatch_queue_create(v7, v8);
-      v10 = a1[2];
-      a1[2] = v9;
+      v9 = dispatch_queue_create(uTF8String, v8);
+      v10 = monitor[2];
+      monitor[2] = v9;
 
-      v11 = [(SBSApplicationRestrictionMonitorProxy *)a1 makeConnection];
-      v12 = a1[3];
-      a1[3] = v11;
+      makeConnection = [(SBSApplicationRestrictionMonitorProxy *)monitor makeConnection];
+      v12 = monitor[3];
+      monitor[3] = makeConnection;
 
-      [a1[3] activate];
+      [monitor[3] activate];
     }
   }
 
-  return a1;
+  return monitor;
 }
 
 - (uint64_t)queue
@@ -188,14 +188,14 @@ void __55__SBSApplicationRestrictionMonitorProxy_makeConnection__block_invoke_8(
 
 - (void)didInvalidate
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 16));
+    dispatch_assert_queue_V2(*(self + 16));
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __54__SBSApplicationRestrictionMonitorProxy_didInvalidate__block_invoke;
     block[3] = &unk_1E735F9D0;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }

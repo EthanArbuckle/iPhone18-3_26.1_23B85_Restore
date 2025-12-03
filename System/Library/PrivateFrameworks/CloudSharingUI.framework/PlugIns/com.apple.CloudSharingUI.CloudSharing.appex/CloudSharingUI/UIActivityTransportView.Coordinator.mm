@@ -1,15 +1,15 @@
 @interface UIActivityTransportView.Coordinator
 - (_TtCV37com_apple_CloudSharingUI_CloudSharing23UIActivityTransportView11Coordinator)init;
-- (id)activityViewControllerOperation:(id)a3;
+- (id)activityViewControllerOperation:(id)operation;
 @end
 
 @implementation UIActivityTransportView.Coordinator
 
-- (id)activityViewControllerOperation:(id)a3
+- (id)activityViewControllerOperation:(id)operation
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_1000B97C8(a3);
+  operationCopy = operation;
+  selfCopy = self;
+  v7 = sub_1000B97C8(operation);
 
   return v7;
 }

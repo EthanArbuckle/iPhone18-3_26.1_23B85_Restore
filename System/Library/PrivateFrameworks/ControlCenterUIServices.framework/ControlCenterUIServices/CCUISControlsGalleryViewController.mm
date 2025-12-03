@@ -1,9 +1,9 @@
 @interface CCUISControlsGalleryViewController
-- (CCUISControlsGalleryViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CCUISControlsGalleryViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (CCUISControlsGalleryViewControllerCustomItemsDelegate)customItemsDelegate;
 - (CCUISControlsGalleryViewControllerDelegate)delegate;
-- (void)setGalleryManager:(id)a3;
-- (void)setSelectedControl:(id)a3;
+- (void)setGalleryManager:(id)manager;
+- (void)setSelectedControl:(id)control;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -17,36 +17,36 @@
   return Strong;
 }
 
-- (void)setSelectedControl:(id)a3
+- (void)setSelectedControl:(id)control
 {
   v4 = *(self + OBJC_IVAR___CCUISControlsGalleryViewController_selectedControl);
-  *(self + OBJC_IVAR___CCUISControlsGalleryViewController_selectedControl) = a3;
-  v5 = a3;
-  v6 = self;
+  *(self + OBJC_IVAR___CCUISControlsGalleryViewController_selectedControl) = control;
+  controlCopy = control;
+  selfCopy = self;
 
-  [(CCUISControlsGalleryViewController *)v6 isViewLoaded];
+  [(CCUISControlsGalleryViewController *)selfCopy isViewLoaded];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   CCUISControlsGalleryViewController.viewDidLoad()();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   CCUISControlsGalleryViewController.viewWillLayoutSubviews()();
 }
 
-- (void)setGalleryManager:(id)a3
+- (void)setGalleryManager:(id)manager
 {
   v4 = *(self + OBJC_IVAR___CCUISControlsGalleryViewController_galleryManager);
-  *(self + OBJC_IVAR___CCUISControlsGalleryViewController_galleryManager) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___CCUISControlsGalleryViewController_galleryManager) = manager;
+  managerCopy = manager;
 }
 
-- (CCUISControlsGalleryViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CCUISControlsGalleryViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

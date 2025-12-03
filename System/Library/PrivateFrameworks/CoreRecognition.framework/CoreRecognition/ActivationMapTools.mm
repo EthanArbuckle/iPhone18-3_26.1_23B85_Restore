@@ -1,27 +1,27 @@
 @interface ActivationMapTools
-+ (BOOL)matchLabel:(int)a3 toModelCharacter:(unsigned __int16)a4;
-+ (id)characterCentroidsFromActivationMap:(const void *)a3 codeMap:(const int *)a4 decodedSymbolIndexes:(id *)a5;
-+ (id)characterCentroidsFromActivationMap:(void *)a3 codeMap:(const int *)a4 potentialPatterns:(id)a5 minWordLengthFractionForCorrelationPeak:(float)a6 bestModelIndex:(int64_t *)a7;
-+ (id)decodeStringWithCentroids:(id)a3 activationMap:(const void *)a4 codeMap:(const int *)a5 model:(id)a6;
-+ (id)fitSpacingModel:(id)a3 toActivationMap:(const void *)a4 codeMap:(const int *)a5 minWordLengthFractionForCorrelationPeak:(float)a6 cost:(float *)a7;
-+ (id)textFromActivationMap:(void *)a3 codeMap:(const int *)a4 invert:(BOOL)a5;
-+ (void)extractActivationSignals:(void *)a3 fromActivationMap:(const void *)a4 forModel:(id)a5 codeMap:(const int *)a6;
++ (BOOL)matchLabel:(int)label toModelCharacter:(unsigned __int16)character;
++ (id)characterCentroidsFromActivationMap:(const void *)map codeMap:(const int *)codeMap decodedSymbolIndexes:(id *)indexes;
++ (id)characterCentroidsFromActivationMap:(void *)map codeMap:(const int *)codeMap potentialPatterns:(id)patterns minWordLengthFractionForCorrelationPeak:(float)peak bestModelIndex:(int64_t *)index;
++ (id)decodeStringWithCentroids:(id)centroids activationMap:(const void *)map codeMap:(const int *)codeMap model:(id)model;
++ (id)fitSpacingModel:(id)model toActivationMap:(const void *)map codeMap:(const int *)codeMap minWordLengthFractionForCorrelationPeak:(float)peak cost:(float *)cost;
++ (id)textFromActivationMap:(void *)map codeMap:(const int *)codeMap invert:(BOOL)invert;
++ (void)extractActivationSignals:(void *)signals fromActivationMap:(const void *)map forModel:(id)model codeMap:(const int *)codeMap;
 @end
 
 @implementation ActivationMapTools
 
-+ (id)characterCentroidsFromActivationMap:(const void *)a3 codeMap:(const int *)a4 decodedSymbolIndexes:(id *)a5
++ (id)characterCentroidsFromActivationMap:(const void *)map codeMap:(const int *)codeMap decodedSymbolIndexes:(id *)indexes
 {
-  v8 = [MEMORY[0x277CBEB18] array];
-  v42 = [MEMORY[0x277CBEB18] array];
-  if (!a3)
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  if (!map)
   {
     goto LABEL_50;
   }
 
-  v10 = *a3;
-  v9 = *(a3 + 1);
-  if (v9 == *a3)
+  v10 = *map;
+  v9 = *(map + 1);
+  if (v9 == *map)
   {
     goto LABEL_50;
   }
@@ -36,7 +36,7 @@
       v13 = 1;
     }
 
-    while (a4[v12] != 103)
+    while (codeMap[v12] != 103)
     {
       if (v13 == ++v12)
       {
@@ -148,18 +148,18 @@ LABEL_8:
       }
 
       v38 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:(v16 + v14) >> 1];
-      [v8 addObject:v38];
+      [array addObject:v38];
 
-      if (a5)
+      if (indexes)
       {
         v39 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v15];
-        [v42 addObject:v39];
+        [array2 addObject:v39];
 
         ++v14;
-        v10 = *a3;
-        v9 = *(a3 + 1);
+        v10 = *map;
+        v9 = *(map + 1);
         v17 = 1;
-        if (v14 >= 0xAAAAAAAAAAAAAAABLL * ((v9 - *a3) >> 3))
+        if (v14 >= 0xAAAAAAAAAAAAAAABLL * ((v9 - *map) >> 3))
         {
           goto LABEL_49;
         }
@@ -168,10 +168,10 @@ LABEL_8:
       else
       {
         ++v14;
-        v10 = *a3;
-        v9 = *(a3 + 1);
+        v10 = *map;
+        v9 = *(map + 1);
         v17 = 1;
-        if (v14 >= 0xAAAAAAAAAAAAAAABLL * ((v9 - *a3) >> 3))
+        if (v14 >= 0xAAAAAAAAAAAAAAABLL * ((v9 - *map) >> 3))
         {
           goto LABEL_50;
         }
@@ -208,29 +208,29 @@ LABEL_47:
   }
 
   while (v14 < 0xAAAAAAAAAAAAAAABLL * ((v9 - v10) >> 3));
-  if (!a5)
+  if (!indexes)
   {
     goto LABEL_50;
   }
 
 LABEL_49:
-  *a5 = v42;
+  *indexes = array2;
 LABEL_50:
 
-  return v8;
+  return array;
 }
 
-+ (id)characterCentroidsFromActivationMap:(void *)a3 codeMap:(const int *)a4 potentialPatterns:(id)a5 minWordLengthFractionForCorrelationPeak:(float)a6 bestModelIndex:(int64_t *)a7
++ (id)characterCentroidsFromActivationMap:(void *)map codeMap:(const int *)codeMap potentialPatterns:(id)patterns minWordLengthFractionForCorrelationPeak:(float)peak bestModelIndex:(int64_t *)index
 {
   v34 = *MEMORY[0x277D85DE8];
-  v12 = a5;
-  v26 = a7;
-  *a7 = -1;
+  patternsCopy = patterns;
+  indexCopy = index;
+  *index = -1;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v12;
+  obj = patternsCopy;
   v13 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v13)
   {
@@ -249,15 +249,15 @@ LABEL_50:
 
         v20 = *(*(&v29 + 1) + 8 * i);
         v28 = 0.0;
-        *&v14 = a6;
-        v21 = [a1 fitSpacingModel:v20 toActivationMap:a3 codeMap:a4 minWordLengthFractionForCorrelationPeak:&v28 cost:v14];
+        *&v14 = peak;
+        v21 = [self fitSpacingModel:v20 toActivationMap:map codeMap:codeMap minWordLengthFractionForCorrelationPeak:&v28 cost:v14];
         v22 = v21;
         v23 = v28;
         if (v28 < v18)
         {
           v24 = v21;
 
-          *v26 = v15;
+          *indexCopy = v15;
           v16 = v24;
           v18 = v23;
         }
@@ -279,28 +279,28 @@ LABEL_50:
   return v16;
 }
 
-+ (id)decodeStringWithCentroids:(id)a3 activationMap:(const void *)a4 codeMap:(const int *)a5 model:(id)a6
++ (id)decodeStringWithCentroids:(id)centroids activationMap:(const void *)map codeMap:(const int *)codeMap model:(id)model
 {
   v61 = *MEMORY[0x277D85DE8];
-  v43 = a3;
-  v42 = a6;
-  v9 = [v42 stringByReplacingOccurrencesOfString:@" " withString:&stru_2859636D0];
+  centroidsCopy = centroids;
+  modelCopy = model;
+  v9 = [modelCopy stringByReplacingOccurrencesOfString:@" " withString:&stru_2859636D0];
   v10 = [v9 length];
-  if (v10 == [v43 count])
+  if (v10 == [centroidsCopy count])
   {
-    v11 = [MEMORY[0x277CCAB68] string];
+    string = [MEMORY[0x277CCAB68] string];
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    obj = v43;
+    obj = centroidsCopy;
     v12 = [obj countByEnumeratingWithState:&v56 objects:v60 count:16];
     if (v12)
     {
       v48 = 0;
       v49 = v9;
       v46 = *v57;
-      v50 = v11;
+      v50 = string;
       while (2)
       {
         v45 = v12;
@@ -314,23 +314,23 @@ LABEL_50:
 
           v14 = *(*(&v56 + 1) + 8 * v13);
           v15 = [v9 characterAtIndex:v48];
-          v16 = [v14 intValue];
-          if (v16 <= 2)
+          intValue = [v14 intValue];
+          if (intValue <= 2)
           {
             v17 = 2;
           }
 
           else
           {
-            v17 = v16;
+            v17 = intValue;
           }
 
-          v18 = 0xAAAAAAAAAAAAAAABLL * ((*(a4 + 1) - *a4) >> 3);
+          v18 = 0xAAAAAAAAAAAAAAABLL * ((*(map + 1) - *map) >> 3);
           v19 = v18 - 1;
           v20 = v18 - 1;
-          if (v19 >= v16 + 2)
+          if (v19 >= intValue + 2)
           {
-            v21 = (v16 + 2);
+            v21 = (intValue + 2);
           }
 
           else
@@ -338,15 +338,15 @@ LABEL_50:
             v21 = v20;
           }
 
-          v22 = (*(*a4 + 24 * v16 + 8) - *(*a4 + 24 * v16)) >> 2;
+          v22 = (*(*map + 24 * intValue + 8) - *(*map + 24 * intValue)) >> 2;
           v53 = 0;
           std::vector<double>::vector[abi:ne200100](&__p, v22);
-          v52 = [MEMORY[0x277CCAB68] string];
+          string2 = [MEMORY[0x277CCAB68] string];
           v24 = (v17 - 2);
           v47 = v13;
           if (v24 <= v21)
           {
-            v31 = (*a4 + 24 * v24);
+            v31 = (*map + 24 * v24);
             v32 = v31 + 1;
             if (v31[1] == *v31)
             {
@@ -363,7 +363,7 @@ LABEL_50:
                 v35 = 0xFFFFFFFFLL;
                 do
                 {
-                  v36 = [a1 matchLabel:a5[v33] toModelCharacter:v15];
+                  v36 = [self matchLabel:codeMap[v33] toModelCharacter:v15];
                   v37 = *v31;
                   if (v36 && *(v37 + 4 * v33) > v34)
                   {
@@ -381,11 +381,11 @@ LABEL_50:
                 }
 
                 *(__p + v35) = *(__p + v35) + v34;
-                LOWORD(v53) = a5[v35];
-                v11 = v50;
+                LOWORD(v53) = codeMap[v35];
+                string = v50;
                 v38 = [MEMORY[0x277CCACA8] stringWithCharacters:&v53 length:1];
                 v9 = v49;
-                [v52 appendString:v38];
+                [string2 appendString:v38];
 
                 v25 = v24 >= v21;
                 if (v21 + 1 == v24 + 1)
@@ -393,7 +393,7 @@ LABEL_50:
                   goto LABEL_15;
                 }
 
-                v31 = (*a4 + 24 * (v24 + 1));
+                v31 = (*map + 24 * (v24 + 1));
                 v32 = v31 + 1;
                 ++v24;
                 if (v31[1] == *v31)
@@ -406,7 +406,7 @@ LABEL_50:
             }
 
 LABEL_37:
-            v11 = v50;
+            string = v50;
           }
 
           else
@@ -444,9 +444,9 @@ LABEL_15:
               }
             }
 
-            LOWORD(v53) = *(a5 + ((v27 - __p) << 29 >> 30));
+            LOWORD(v53) = *(codeMap + ((v27 - __p) << 29 >> 30));
             v39 = [MEMORY[0x277CCACA8] stringWithCharacters:&v53 length:{1, v23}];
-            [v11 appendString:v39];
+            [string appendString:v39];
 
             ++v48;
           }
@@ -478,7 +478,7 @@ LABEL_15:
       }
     }
 
-    v40 = v11;
+    v40 = string;
 LABEL_46:
   }
 
@@ -490,14 +490,14 @@ LABEL_46:
   return v40;
 }
 
-+ (id)textFromActivationMap:(void *)a3 codeMap:(const int *)a4 invert:(BOOL)a5
++ (id)textFromActivationMap:(void *)map codeMap:(const int *)codeMap invert:(BOOL)invert
 {
   v61[3] = *MEMORY[0x277D85DE8];
-  v5 = *a3;
-  v6 = *(a3 + 1) - *a3;
+  v5 = *map;
+  v6 = *(map + 1) - *map;
   if (v6)
   {
-    v50 = a4;
+    codeMapCopy = codeMap;
     v9 = 0xAAAAAAAAAAAAAAABLL * (v6 >> 3);
     v53 = 0;
     v54 = 0;
@@ -514,7 +514,7 @@ LABEL_46:
         v28 = v12 & 0x7FFFFFFF;
         do
         {
-          v29 = **a3;
+          v29 = **map;
           if (v52 != v29)
           {
             std::vector<float>::__assign_with_size[abi:ne200100]<float *,float *>((v52 + v27), *(v29 + v27), *(v29 + v27 + 8), (*(v29 + v27 + 8) - *(v29 + v27)) >> 2);
@@ -547,7 +547,7 @@ LABEL_46:
             v21 = 0;
             do
             {
-              v22 = *a3;
+              v22 = *map;
               v23 = 0.0;
               v24 = v9 & 0x7FFFFFFF;
               do
@@ -583,10 +583,10 @@ LABEL_46:
     {
       v55 = 0;
       LODWORD(v15) = 1060320051;
-      v30 = v50;
-      v31 = [a1 characterCentroidsFromActivationMap:&v52 codeMap:v50 potentialPatterns:&unk_285976740 minWordLengthFractionForCorrelationPeak:&v55 bestModelIndex:v15];
+      v30 = codeMapCopy;
+      v31 = [self characterCentroidsFromActivationMap:&v52 codeMap:codeMapCopy potentialPatterns:&unk_285976740 minWordLengthFractionForCorrelationPeak:&v55 bestModelIndex:v15];
       v32 = MEMORY[0x277CBEBF8];
-      if (v31 && ([&unk_285976740 objectAtIndexedSubscript:v55], v33 = objc_claimAutoreleasedReturnValue(), objc_msgSend(a1, "decodeStringWithCentroids:activationMap:codeMap:model:", v31, &v52, v50, v33), v34 = objc_claimAutoreleasedReturnValue(), v33, v34))
+      if (v31 && ([&unk_285976740 objectAtIndexedSubscript:v55], v33 = objc_claimAutoreleasedReturnValue(), objc_msgSend(self, "decodeStringWithCentroids:activationMap:codeMap:model:", v31, &v52, codeMapCopy, v33), v34 = objc_claimAutoreleasedReturnValue(), v33, v34))
       {
         v35 = [MEMORY[0x277CCACA8] _newZStringWithString:v34];
         v60[0] = v35;
@@ -600,7 +600,7 @@ LABEL_46:
       {
         v61[0] = &stru_2859636D0;
         v61[1] = v32;
-        v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{0xAAAAAAAAAAAAAAABLL * ((v53 - v52) >> 3), v50}];
+        v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{0xAAAAAAAAAAAAAAABLL * ((v53 - v52) >> 3), codeMapCopy}];
         v61[2] = v35;
         v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:3];
         v34 = 0;
@@ -608,8 +608,8 @@ LABEL_46:
 
       v51 = 0;
       LODWORD(v38) = 1050253722;
-      v39 = [a1 characterCentroidsFromActivationMap:&v52 codeMap:v30 potentialPatterns:&unk_285976758 minWordLengthFractionForCorrelationPeak:&v51 bestModelIndex:v38];
-      if (v39 && ([&unk_285976758 objectAtIndexedSubscript:v51], v40 = objc_claimAutoreleasedReturnValue(), objc_msgSend(a1, "decodeStringWithCentroids:activationMap:codeMap:model:", v39, &v52, v30, v40), v41 = objc_claimAutoreleasedReturnValue(), v40, v41))
+      v39 = [self characterCentroidsFromActivationMap:&v52 codeMap:v30 potentialPatterns:&unk_285976758 minWordLengthFractionForCorrelationPeak:&v51 bestModelIndex:v38];
+      if (v39 && ([&unk_285976758 objectAtIndexedSubscript:v51], v40 = objc_claimAutoreleasedReturnValue(), objc_msgSend(self, "decodeStringWithCentroids:activationMap:codeMap:model:", v39, &v52, v30, v40), v41 = objc_claimAutoreleasedReturnValue(), v40, v41))
       {
         v42 = [v39 mutableCopy];
         for (i = 0; i < [v39 count]; ++i)
@@ -631,7 +631,7 @@ LABEL_46:
       {
         v59[0] = &stru_2859636D0;
         v59[1] = v32;
-        v42 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{0xAAAAAAAAAAAAAAABLL * ((v53 - v52) >> 3), v50}];
+        v42 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{0xAAAAAAAAAAAAAAABLL * ((v53 - v52) >> 3), codeMapCopy}];
         v59[2] = v42;
         v47 = [MEMORY[0x277CBEA60] arrayWithObjects:v59 count:3];
         v41 = 0;
@@ -656,18 +656,18 @@ LABEL_46:
   return v26;
 }
 
-+ (void)extractActivationSignals:(void *)a3 fromActivationMap:(const void *)a4 forModel:(id)a5 codeMap:(const int *)a6
++ (void)extractActivationSignals:(void *)signals fromActivationMap:(const void *)map forModel:(id)model codeMap:(const int *)codeMap
 {
-  v9 = a5;
-  if (*(a4 + 1) != *a4)
+  modelCopy = model;
+  if (*(map + 1) != *map)
   {
-    v40 = v9;
-    v10 = [v9 stringByReplacingOccurrencesOfString:@" " withString:&stru_2859636D0];
+    v40 = modelCopy;
+    v10 = [modelCopy stringByReplacingOccurrencesOfString:@" " withString:&stru_2859636D0];
     v11 = 0;
-    v41 = **a4;
-    v42 = *(*a4 + 8);
+    v41 = **map;
+    v42 = *(*map + 8);
     v12 = (v42 - v41) >> 2;
-    v13 = (a3 + 8);
+    v13 = (signals + 8);
     while (v11 < [v10 length])
     {
       v14 = [v10 characterAtIndex:v11];
@@ -678,7 +678,7 @@ LABEL_46:
         goto LABEL_11;
       }
 
-      v17 = (a3 + 8);
+      v17 = (signals + 8);
       do
       {
         if (*(v16 + 8) >= v14)
@@ -702,7 +702,7 @@ LABEL_11:
           v18 = 0;
           do
           {
-            if ([a1 matchLabel:a6[v18] toModelCharacter:v15])
+            if ([self matchLabel:codeMap[v18] toModelCharacter:v15])
             {
               std::vector<unsigned int>::push_back[abi:ne200100](&v50, &v44);
             }
@@ -713,14 +713,14 @@ LABEL_11:
           while (v12 > v18);
         }
 
-        v19 = 0xAAAAAAAAAAAAAAABLL * ((*(a4 + 1) - *a4) >> 3);
+        v19 = 0xAAAAAAAAAAAAAAABLL * ((*(map + 1) - *map) >> 3);
         v44 = 0;
         std::vector<float>::vector[abi:ne200100](&v48, v19);
-        v20 = *a4;
-        v21 = *(a4 + 1);
+        v20 = *map;
+        v21 = *(map + 1);
         v22 = v48;
-        v23 = v21 - *a4;
-        if (v21 != *a4)
+        v23 = v21 - *map;
+        if (v21 != *map)
         {
           v24 = 0;
           v25 = 0xAAAAAAAAAAAAAAABLL * (v23 >> 3);
@@ -759,7 +759,7 @@ LABEL_11:
         v47 = 0;
         __p = 0;
         std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&__p, v22, v49, (v49 - v22) >> 2);
-        std::__tree<std::__value_type<int,std::vector<float>>,std::__map_value_compare<int,std::__value_type<int,std::vector<float>>,std::less<int>,true>,std::allocator<std::__value_type<int,std::vector<float>>>>::__emplace_unique_key_args<int,std::pair<int,std::vector<float>>>(a3, v44);
+        std::__tree<std::__value_type<int,std::vector<float>>,std::__map_value_compare<int,std::__value_type<int,std::vector<float>>,std::less<int>,true>,std::allocator<std::__value_type<int,std::vector<float>>>>::__emplace_unique_key_args<int,std::pair<int,std::vector<float>>>(signals, v44);
         if (__p)
         {
           v46 = __p;
@@ -801,7 +801,7 @@ LABEL_36:
         v33 = (v42 - v41) >> 2;
       }
 
-      while (a6[v32] != 103)
+      while (codeMap[v32] != 103)
       {
         if (v33 == ++v32)
         {
@@ -810,10 +810,10 @@ LABEL_36:
       }
     }
 
-    std::vector<float>::vector[abi:ne200100](&v50, 0xAAAAAAAAAAAAAAABLL * ((*(a4 + 1) - *a4) >> 3));
-    v34 = *a4;
+    std::vector<float>::vector[abi:ne200100](&v50, 0xAAAAAAAAAAAAAAABLL * ((*(map + 1) - *map) >> 3));
+    v34 = *map;
     v35 = v50;
-    v36 = *(a4 + 1) - *a4;
+    v36 = *(map + 1) - *map;
     if (v36)
     {
       v37 = 0xAAAAAAAAAAAAAAABLL * (v36 >> 3);
@@ -839,7 +839,7 @@ LABEL_36:
     v47 = 0;
     __p = 0;
     std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&__p, v35, v51, (v51 - v35) >> 2);
-    std::__tree<std::__value_type<int,std::vector<float>>,std::__map_value_compare<int,std::__value_type<int,std::vector<float>>,std::less<int>,true>,std::allocator<std::__value_type<int,std::vector<float>>>>::__emplace_unique_key_args<int,std::pair<int,std::vector<float>>>(a3, v44);
+    std::__tree<std::__value_type<int,std::vector<float>>,std::__map_value_compare<int,std::__value_type<int,std::vector<float>>,std::less<int>,true>,std::allocator<std::__value_type<int,std::vector<float>>>>::__emplace_unique_key_args<int,std::pair<int,std::vector<float>>>(signals, v44);
     if (__p)
     {
       v46 = __p;
@@ -852,32 +852,32 @@ LABEL_36:
       operator delete(v50);
     }
 
-    v9 = v40;
+    modelCopy = v40;
   }
 }
 
-+ (BOOL)matchLabel:(int)a3 toModelCharacter:(unsigned __int16)a4
++ (BOOL)matchLabel:(int)label toModelCharacter:(unsigned __int16)character
 {
-  v4 = a4 == a3;
-  if (a4 == 64)
+  v4 = character == label;
+  if (character == 64)
   {
-    v4 = (a3 - 58) < 0xFFFFFFF6;
+    v4 = (label - 58) < 0xFFFFFFF6;
   }
 
-  v5 = a4 == 63 || v4;
-  if (a4 == 35)
+  v5 = character == 63 || v4;
+  if (character == 35)
   {
-    v5 = (a3 - 48) < 0xA;
+    v5 = (label - 48) < 0xA;
   }
 
-  return a3 != 103 && v5;
+  return label != 103 && v5;
 }
 
-+ (id)fitSpacingModel:(id)a3 toActivationMap:(const void *)a4 codeMap:(const int *)a5 minWordLengthFractionForCorrelationPeak:(float)a6 cost:(float *)a7
++ (id)fitSpacingModel:(id)model toActivationMap:(const void *)map codeMap:(const int *)codeMap minWordLengthFractionForCorrelationPeak:(float)peak cost:(float *)cost
 {
   v217 = *MEMORY[0x277D85DE8];
-  v180 = a3;
-  v11 = [a1 characterCentroidsFromActivationMap:a4 codeMap:a5 decodedSymbolIndexes:0];
+  modelCopy = model;
+  v11 = [self characterCentroidsFromActivationMap:map codeMap:codeMap decodedSymbolIndexes:0];
   if ([v11 count] < 2)
   {
     v12 = 0;
@@ -890,12 +890,12 @@ LABEL_36:
   while (v13 + 1 < [v11 count])
   {
     v14 = [v11 objectAtIndexedSubscript:v13];
-    v15 = [v14 intValue];
+    intValue = [v14 intValue];
 
     v16 = [v187 objectAtIndexedSubscript:v13 + 1];
     LODWORD(v14) = [v16 intValue];
 
-    *(v209 + v13++) = v14 - v15;
+    *(v209 + v13++) = v14 - intValue;
     v11 = v187;
   }
 
@@ -914,7 +914,7 @@ LABEL_36:
 
   else
   {
-    v184 = a5;
+    codeMapCopy = codeMap;
     v18 = 0;
     v19 = 0;
     v20 = 0;
@@ -1079,7 +1079,7 @@ LABEL_17:
 
     while (v20 < (v210 - v209) >> 2);
     v47 = v207;
-    a5 = v184;
+    codeMap = codeMapCopy;
     v11 = v187;
   }
 
@@ -1115,14 +1115,14 @@ LABEL_17:
   *(&__p + 1) = 0;
   v202 = 0;
   *&__p = &__p + 8;
-  [a1 extractActivationSignals:&__p fromActivationMap:a4 forModel:v180 codeMap:a5];
+  [self extractActivationSignals:&__p fromActivationMap:map forModel:modelCopy codeMap:codeMap];
   if (!v202)
   {
     v12 = 0;
     goto LABEL_230;
   }
 
-  v178 = [v180 componentsSeparatedByString:@" "];
+  v178 = [modelCopy componentsSeparatedByString:@" "];
   v54 = [v178 count];
   memset(v200, 0, sizeof(v200));
   __src = v200;
@@ -1274,7 +1274,7 @@ LABEL_68:
           operator delete(v212);
         }
 
-        v72 = 0xAAAAAAAAAAAAAAABLL * ((*(a4 + 1) - *a4) >> 3);
+        v72 = 0xAAAAAAAAAAAAAAABLL * ((*(map + 1) - *map) >> 3);
         LODWORD(v188) = 0;
         std::vector<float>::vector[abi:ne200100](&__src, v72);
         v73 = __p;
@@ -1432,7 +1432,7 @@ LABEL_99:
               v103 = __src;
               v104 = (__src + 4 * v188);
               v105 = *v104;
-              if (*v104 > (v101 * a6) && v105 > *(v104 - 3) && v105 > *(__src + 3))
+              if (*v104 > (v101 * peak) && v105 > *(v104 - 3) && v105 > *(__src + 3))
               {
                 v106 = 0x3FFFFFFFFFFFFFFELL;
                 while (v105 >= v104[v106])
@@ -1453,7 +1453,7 @@ LABEL_99:
             while (((v212 - v103) >> 2) - 3 > (v102 + 1));
           }
 
-          v107 = [MEMORY[0x277CBEB18] array];
+          array = [MEMORY[0x277CBEB18] array];
           v108 = *v100;
           if (*(v100 + 8) != *v100)
           {
@@ -1461,7 +1461,7 @@ LABEL_99:
             do
             {
               v110 = [MEMORY[0x277CCABB0] numberWithInt:v108[v109]];
-              [v107 addObject:v110];
+              [array addObject:v110];
 
               ++v109;
               v108 = *v100;
@@ -1470,7 +1470,7 @@ LABEL_99:
             while (v109 < (*(v100 + 8) - *v100) >> 2);
           }
 
-          v111 = v107;
+          v111 = array;
 
           ++v183;
           v99 = __src;
@@ -1514,7 +1514,7 @@ LABEL_99:
   v114 = [v56 count];
   LODWORD(v191) = -1082130432;
   std::vector<float>::vector[abi:ne200100](&v193, v114);
-  v186 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v115 = INFINITY;
   do
   {
@@ -1776,13 +1776,13 @@ LABEL_172:
       break;
     }
 
-    [v186 timeIntervalSinceNow];
+    [date timeIntervalSinceNow];
   }
 
   while (v162 > -0.1);
   if (v115 != INFINITY)
   {
-    v169 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v171 = v193;
     v170 = v194[0];
     if (v194[0] != v193)
@@ -1797,7 +1797,7 @@ LABEL_172:
           for (k = 0; [v174 length] > k; ++k)
           {
             v176 = [MEMORY[0x277CCABB0] numberWithInt:{(v173 + (v52 * (objc_msgSend(v174, "length") - 1)) * -0.5 + (v52 * k))}];
-            [v169 addObject:v176];
+            [array2 addObject:v176];
           }
 
           v171 = v193;
@@ -1810,12 +1810,12 @@ LABEL_172:
       while (v172 < (v170 - v171) >> 2);
     }
 
-    v113 = v169;
+    v113 = array2;
   }
 
-  if (a7)
+  if (cost)
   {
-    *a7 = v115 / [v180 length];
+    *cost = v115 / [modelCopy length];
   }
 
   v187 = v113;

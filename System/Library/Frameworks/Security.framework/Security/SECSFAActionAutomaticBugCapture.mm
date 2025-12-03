@@ -1,36 +1,36 @@
 @interface SECSFAActionAutomaticBugCapture
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SECSFAActionAutomaticBugCapture
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[1])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[1])
   {
     [(SECSFAActionAutomaticBugCapture *)self setDomain:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(SECSFAActionAutomaticBugCapture *)self setType:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(SECSFAActionAutomaticBugCapture *)self setSubtype:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -41,13 +41,13 @@
   return v4 ^ [(NSString *)self->_subtype hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((domain = self->_domain, !(domain | v4[1])) || -[NSString isEqual:](domain, "isEqual:")) && ((type = self->_type, !(type | v4[3])) || -[NSString isEqual:](type, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((domain = self->_domain, !(domain | equalCopy[1])) || -[NSString isEqual:](domain, "isEqual:")) && ((type = self->_type, !(type | equalCopy[3])) || -[NSString isEqual:](type, "isEqual:")))
   {
     subtype = self->_subtype;
-    if (subtype | v4[2])
+    if (subtype | equalCopy[2])
     {
       v8 = [(NSString *)subtype isEqual:?];
     }
@@ -66,78 +66,78 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_domain copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_domain copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_type copyWithZone:a3];
+  v8 = [(NSString *)self->_type copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_subtype copyWithZone:a3];
+  v10 = [(NSString *)self->_subtype copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_domain)
   {
-    [v4 setDomain:?];
-    v4 = v5;
+    [toCopy setDomain:?];
+    toCopy = v5;
   }
 
   if (self->_type)
   {
     [v5 setType:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_subtype)
   {
     [v5 setSubtype:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_domain)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_type)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_subtype)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   domain = self->_domain;
   if (domain)
   {
-    [v3 setObject:domain forKey:@"domain"];
+    [dictionary setObject:domain forKey:@"domain"];
   }
 
   type = self->_type;
@@ -161,8 +161,8 @@
   v8.receiver = self;
   v8.super_class = SECSFAActionAutomaticBugCapture;
   v4 = [(SECSFAActionAutomaticBugCapture *)&v8 description];
-  v5 = [(SECSFAActionAutomaticBugCapture *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SECSFAActionAutomaticBugCapture *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

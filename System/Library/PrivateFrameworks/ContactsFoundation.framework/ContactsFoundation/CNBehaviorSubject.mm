@@ -1,21 +1,21 @@
 @interface CNBehaviorSubject
-- (CNBehaviorSubject)initWithSeed:(id)a3 schedulerProvider:(id)a4;
-- (id)_addObserver:(id)a3;
-- (id)resultWithResourceLock:(id)a3;
-- (id)subscribe:(id)a3;
-- (void)_removeObserver:(id)a3;
+- (CNBehaviorSubject)initWithSeed:(id)seed schedulerProvider:(id)provider;
+- (id)_addObserver:(id)observer;
+- (id)resultWithResourceLock:(id)lock;
+- (id)subscribe:(id)subscribe;
+- (void)_removeObserver:(id)observer;
 - (void)observerDidComplete;
-- (void)observerDidFailWithError:(id)a3;
-- (void)observerDidReceiveResult:(id)a3;
-- (void)performWithResourceLock:(id)a3;
+- (void)observerDidFailWithError:(id)error;
+- (void)observerDidReceiveResult:(id)result;
+- (void)performWithResourceLock:(id)lock;
 @end
 
 @implementation CNBehaviorSubject
 
-- (CNBehaviorSubject)initWithSeed:(id)a3 schedulerProvider:(id)a4
+- (CNBehaviorSubject)initWithSeed:(id)seed schedulerProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  seedCopy = seed;
+  providerCopy = provider;
   v19.receiver = self;
   v19.super_class = CNBehaviorSubject;
   v8 = [(CNBehaviorSubject *)&v19 init];
@@ -25,11 +25,11 @@
     observers = v8->_observers;
     v8->_observers = v9;
 
-    v11 = [CNObservableEvent eventWithResult:v6];
+    v11 = [CNObservableEvent eventWithResult:seedCopy];
     mostRecentEvent = v8->_mostRecentEvent;
     v8->_mostRecentEvent = v11;
 
-    objc_storeStrong(&v8->_schedulerProvider, a4);
+    objc_storeStrong(&v8->_schedulerProvider, provider);
     v13 = objc_alloc_init(CNUnfairLock);
     resourceLock = v8->_resourceLock;
     v8->_resourceLock = v13;
@@ -44,9 +44,9 @@
   return v8;
 }
 
-- (id)resultWithResourceLock:(id)a3
+- (id)resultWithResourceLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -58,7 +58,7 @@
   v8[2] = __44__CNBehaviorSubject_resultWithResourceLock___block_invoke;
   v8[3] = &unk_1E6ED5140;
   v10 = &v11;
-  v5 = v4;
+  v5 = lockCopy;
   v9 = v5;
   [(CNBehaviorSubject *)self performWithResourceLock:v8];
   v6 = v12[5];
@@ -78,39 +78,39 @@ uint64_t __44__CNBehaviorSubject_resultWithResourceLock___block_invoke(uint64_t 
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)performWithResourceLock:(id)a3
+- (void)performWithResourceLock:(id)lock
 {
-  v4 = a3;
-  v5 = [(CNBehaviorSubject *)self resourceLock];
-  CNRunWithLock(v5, v4);
+  lockCopy = lock;
+  resourceLock = [(CNBehaviorSubject *)self resourceLock];
+  CNRunWithLock(resourceLock, lockCopy);
 }
 
-- (id)subscribe:(id)a3
+- (id)subscribe:(id)subscribe
 {
-  v4 = a3;
-  v5 = [(CNBehaviorSubject *)self _addObserver:v4];
+  subscribeCopy = subscribe;
+  v5 = [(CNBehaviorSubject *)self _addObserver:subscribeCopy];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __31__CNBehaviorSubject_subscribe___block_invoke;
   v9[3] = &unk_1E6ED5168;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = subscribeCopy;
+  v6 = subscribeCopy;
   v7 = [CNCancelationToken tokenWithCancelationBlock:v9];
 
   return v7;
 }
 
-- (id)_addObserver:(id)a3
+- (id)_addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __34__CNBehaviorSubject__addObserver___block_invoke;
   v8[3] = &unk_1E6ED5190;
-  v9 = v4;
-  v10 = self;
-  v5 = v4;
+  v9 = observerCopy;
+  selfCopy = self;
+  v5 = observerCopy;
   v6 = [(CNBehaviorSubject *)self resultWithResourceLock:v8];
 
   return v6;
@@ -132,16 +132,16 @@ id __34__CNBehaviorSubject__addObserver___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)_removeObserver:(id)a3
+- (void)_removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__CNBehaviorSubject__removeObserver___block_invoke;
   v6[3] = &unk_1E6ED5168;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   [(CNBehaviorSubject *)self performWithResourceLock:v6];
 }
 
@@ -151,12 +151,12 @@ void __37__CNBehaviorSubject__removeObserver___block_invoke(uint64_t a1)
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (void)observerDidReceiveResult:(id)a3
+- (void)observerDidReceiveResult:(id)result
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   v5 = +[CNObservableContractEnforcement shouldSwizzleNilResults];
-  if (!v4 && v5)
+  if (!resultCopy && v5)
   {
     v6 = +[CNObservable os_log_protocol];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -170,18 +170,18 @@ void __37__CNBehaviorSubject__removeObserver___block_invoke(uint64_t a1)
       [CNBehaviorSubject observerDidReceiveResult:v7];
     }
 
-    v4 = [MEMORY[0x1E695DFB0] null];
+    resultCopy = [MEMORY[0x1E695DFB0] null];
   }
 
-  v8 = [(CNBehaviorSubject *)self enforcement];
-  [v8 observerDidReceiveResult:v4];
+  enforcement = [(CNBehaviorSubject *)self enforcement];
+  [enforcement observerDidReceiveResult:resultCopy];
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __46__CNBehaviorSubject_observerDidReceiveResult___block_invoke;
   v20[3] = &unk_1E6ED5190;
   v20[4] = self;
-  v9 = v4;
+  v9 = resultCopy;
   v21 = v9;
   v10 = [(CNBehaviorSubject *)self resultWithResourceLock:v20];
   v16 = 0u;
@@ -230,8 +230,8 @@ id __46__CNBehaviorSubject_observerDidReceiveResult___block_invoke(uint64_t a1)
 - (void)observerDidComplete
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(CNBehaviorSubject *)self enforcement];
-  [v3 observerDidComplete];
+  enforcement = [(CNBehaviorSubject *)self enforcement];
+  [enforcement observerDidComplete];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -282,19 +282,19 @@ id __40__CNBehaviorSubject_observerDidComplete__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)observerDidFailWithError:(id)a3
+- (void)observerDidFailWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNBehaviorSubject *)self enforcement];
-  [v5 observerDidFailWithError:v4];
+  errorCopy = error;
+  enforcement = [(CNBehaviorSubject *)self enforcement];
+  [enforcement observerDidFailWithError:errorCopy];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __46__CNBehaviorSubject_observerDidFailWithError___block_invoke;
   v17[3] = &unk_1E6ED5190;
   v17[4] = self;
-  v6 = v4;
+  v6 = errorCopy;
   v18 = v6;
   v7 = [(CNBehaviorSubject *)self resultWithResourceLock:v17];
   v13 = 0u;

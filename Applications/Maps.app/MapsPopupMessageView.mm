@@ -1,32 +1,32 @@
 @interface MapsPopupMessageView
-- (MapsPopupMessageView)initWithMessage:(id)a3 timeout:(double)a4 timeoutHandler:(id)a5;
+- (MapsPopupMessageView)initWithMessage:(id)message timeout:(double)timeout timeoutHandler:(id)handler;
 - (void)_preferredContentSizeDidChange;
 - (void)_userInterfaceStyleDidChange;
-- (void)dismissAnimated:(BOOL)a3 completion:(id)a4;
+- (void)dismissAnimated:(BOOL)animated completion:(id)completion;
 - (void)layoutSubviews;
-- (void)presentFromView:(id)a3 animated:(BOOL)a4;
-- (void)resetTimerAnimated:(BOOL)a3;
+- (void)presentFromView:(id)view animated:(BOOL)animated;
+- (void)resetTimerAnimated:(BOOL)animated;
 @end
 
 @implementation MapsPopupMessageView
 
 - (void)_preferredContentSizeDidChange
 {
-  v3 = [(MapsPopupMessageView *)self traitCollection];
-  v4 = [v3 _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryExtraExtraExtraLarge];
+  traitCollection = [(MapsPopupMessageView *)self traitCollection];
+  v4 = [traitCollection _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryExtraExtraExtraLarge];
   v6 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleSubheadline weight:v4 compatibleWithTraitCollection:UIFontWeightSemibold];
 
   [(UILabel *)self->_messageLabel setFont:v6];
-  v5 = [(MapsPopupMessageView *)self superview];
-  [v5 setNeedsLayout];
+  superview = [(MapsPopupMessageView *)self superview];
+  [superview setNeedsLayout];
 }
 
 - (void)_userInterfaceStyleDidChange
 {
-  v3 = [(MapsPopupMessageView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(MapsPopupMessageView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 == 2)
+  if (userInterfaceStyle == 2)
   {
     v5 = [UIColor colorWithWhite:1.0 alpha:0.800000012];
     [(UILabel *)self->_messageLabel setTextColor:v5];
@@ -55,7 +55,7 @@
   -[CALayer setBorderColor:](*p_borderLayer, "setBorderColor:", [v11 CGColor]);
 }
 
-- (void)resetTimerAnimated:(BOOL)a3
+- (void)resetTimerAnimated:(BOOL)animated
 {
   if (self->_timeout > 0.0)
   {
@@ -76,7 +76,7 @@
     v11[2] = sub_10061AD94;
     v11[3] = &unk_1016241B0;
     objc_copyWeak(&v12, buf);
-    v13 = a3;
+    animatedCopy = animated;
     v9 = [GCDTimer scheduledTimerWithTimeInterval:&_dispatch_main_q queue:v11 block:v7];
     timer = self->_timer;
     self->_timer = v9;
@@ -86,28 +86,28 @@
   }
 }
 
-- (void)dismissAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(MapsPopupMessageView *)self superview];
-  if (v7 && !self->_isDismissing)
+  animatedCopy = animated;
+  completionCopy = completion;
+  superview = [(MapsPopupMessageView *)self superview];
+  if (superview && !self->_isDismissing)
   {
     self->_isDismissing = 1;
-    v9 = [(MapsPopupMessageView *)self bottomAnchor];
-    v10 = [v7 topAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    bottomAnchor = [(MapsPopupMessageView *)self bottomAnchor];
+    topAnchor = [superview topAnchor];
+    v11 = [bottomAnchor constraintEqualToAnchor:topAnchor];
 
     v12 = sub_10061AD40();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 67109120;
-      HIDWORD(buf) = v4;
+      HIDWORD(buf) = animatedCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Dismissing popup, animated %d", &buf, 8u);
     }
 
     objc_initWeak(&buf, self);
-    if (v4)
+    if (animatedCopy)
     {
       v13 = 0.3;
     }
@@ -124,13 +124,13 @@
     objc_copyWeak(&v21, &buf);
     v14 = v11;
     v19 = v14;
-    v20 = v7;
+    v20 = superview;
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10061B1A8;
     v15[3] = &unk_101661108;
     objc_copyWeak(&v17, &buf);
-    v16 = v6;
+    v16 = completionCopy;
     [UIView animateWithDuration:v18 animations:v15 completion:v13];
 
     objc_destroyWeak(&v17);
@@ -147,18 +147,18 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Ignoring dismiss", &buf, 2u);
     }
 
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
   }
 }
 
-- (void)presentFromView:(id)a3 animated:(BOOL)a4
+- (void)presentFromView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  [v6 addSubview:self];
+  animatedCopy = animated;
+  viewCopy = view;
+  [viewCopy addSubview:self];
   [(MapsPopupMessageView *)self setAlpha:0.0];
   [(NSLayoutConstraint *)self->_activeTopConstraint setActive:0];
   timer = self->_timer;
@@ -166,57 +166,57 @@
 
   if (sub_10000FA08(self) == 5)
   {
-    v8 = [(MapsPopupMessageView *)self leadingAnchor];
-    v9 = [v6 leadingAnchor];
+    leadingAnchor = [(MapsPopupMessageView *)self leadingAnchor];
+    leadingAnchor2 = [viewCopy leadingAnchor];
     v10 = 8.0;
-    v11 = [v8 constraintEqualToAnchor:v9 constant:8.0];
+    v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:8.0];
   }
 
   else
   {
-    v8 = [(MapsPopupMessageView *)self centerXAnchor];
-    v9 = [v6 centerXAnchor];
-    v11 = [v8 constraintEqualToAnchor:v9];
+    leadingAnchor = [(MapsPopupMessageView *)self centerXAnchor];
+    leadingAnchor2 = [viewCopy centerXAnchor];
+    v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v10 = 4.0;
   }
 
   v12 = sub_10000FA08(self) == 1;
-  v13 = [(MapsPopupMessageView *)self bottomAnchor];
+  bottomAnchor = [(MapsPopupMessageView *)self bottomAnchor];
   if (v12)
   {
-    v14 = [v6 safeAreaLayoutGuide];
-    v15 = [v14 topAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15];
+    safeAreaLayoutGuide = [viewCopy safeAreaLayoutGuide];
+    topAnchor = [safeAreaLayoutGuide topAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:topAnchor];
 
-    v17 = [(MapsPopupMessageView *)self topAnchor];
-    v18 = [v6 safeAreaLayoutGuide];
-    v19 = [v18 topAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19 constant:v10];
+    topAnchor2 = [(MapsPopupMessageView *)self topAnchor];
+    safeAreaLayoutGuide2 = [viewCopy safeAreaLayoutGuide];
+    topAnchor3 = [safeAreaLayoutGuide2 topAnchor];
+    v20 = [topAnchor2 constraintEqualToAnchor:topAnchor3 constant:v10];
   }
 
   else
   {
-    v21 = [v6 topAnchor];
-    v16 = [v13 constraintEqualToAnchor:v21];
+    topAnchor4 = [viewCopy topAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:topAnchor4];
 
-    v17 = [(MapsPopupMessageView *)self topAnchor];
-    v18 = [v6 topAnchor];
-    v20 = [v17 constraintEqualToAnchor:v18 constant:v10];
+    topAnchor2 = [(MapsPopupMessageView *)self topAnchor];
+    safeAreaLayoutGuide2 = [viewCopy topAnchor];
+    v20 = [topAnchor2 constraintEqualToAnchor:safeAreaLayoutGuide2 constant:v10];
   }
 
   [v11 setActive:1];
   [v16 setActive:1];
-  [v6 layoutIfNeeded];
+  [viewCopy layoutIfNeeded];
   objc_initWeak(&location, self);
   v22 = sub_10061AD40();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v39 = v4;
+    v39 = animatedCopy;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "Presenting popup, animated: %d", buf, 8u);
   }
 
-  if (v4)
+  if (animatedCopy)
   {
     v23 = 0.3;
   }
@@ -235,7 +235,7 @@
   v33 = v24;
   v25 = v20;
   v34 = v25;
-  v26 = v6;
+  v26 = viewCopy;
   v35 = v26;
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
@@ -244,7 +244,7 @@
   objc_copyWeak(&v30, &location);
   v27 = v25;
   v29 = v27;
-  v31 = v4;
+  v31 = animatedCopy;
   [UIView animateWithDuration:v32 animations:v28 completion:v23];
 
   objc_destroyWeak(&v30);
@@ -259,12 +259,12 @@
   [(MapsPopupMessageView *)&v11 layoutSubviews];
   [(MapsPopupMessageView *)self bounds];
   v3 = [UIBezierPath bezierPathWithRoundedRect:"bezierPathWithRoundedRect:cornerRadius:" cornerRadius:?];
-  v4 = [v3 CGPath];
-  v5 = [(MapsPopupMessageView *)self layer];
-  [v5 setShadowPath:v4];
+  cGPath = [v3 CGPath];
+  layer = [(MapsPopupMessageView *)self layer];
+  [layer setShadowPath:cGPath];
 
-  v6 = [(MapsPopupMessageView *)self layer];
-  [v6 bounds];
+  layer2 = [(MapsPopupMessageView *)self layer];
+  [layer2 bounds];
   [(CALayer *)self->_materialLayer setFrame:?];
 
   [(UIView *)self->_backgroundView bounds];
@@ -290,41 +290,41 @@
   [(CALayer *)self->_borderLayer setCornerRadius:v10];
 }
 
-- (MapsPopupMessageView)initWithMessage:(id)a3 timeout:(double)a4 timeoutHandler:(id)a5
+- (MapsPopupMessageView)initWithMessage:(id)message timeout:(double)timeout timeoutHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  messageCopy = message;
+  handlerCopy = handler;
   v75.receiver = self;
   v75.super_class = MapsPopupMessageView;
   v10 = [(MapsPopupMessageView *)&v75 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   if (v10)
   {
-    v74 = v8;
-    v11 = [v8 copy];
+    v74 = messageCopy;
+    v11 = [messageCopy copy];
     message = v10->_message;
     v10->_message = v11;
 
-    v10->_timeout = a4;
-    v73 = v9;
-    v13 = [v9 copy];
+    v10->_timeout = timeout;
+    v73 = handlerCopy;
+    v13 = [handlerCopy copy];
     timeoutHandler = v10->_timeoutHandler;
     v10->_timeoutHandler = v13;
 
     [(MapsPopupMessageView *)v10 setTranslatesAutoresizingMaskIntoConstraints:0];
     v15 = +[UIColor blackColor];
-    v16 = [v15 CGColor];
-    v17 = [(MapsPopupMessageView *)v10 layer];
-    [v17 setShadowColor:v16];
+    cGColor = [v15 CGColor];
+    layer = [(MapsPopupMessageView *)v10 layer];
+    [layer setShadowColor:cGColor];
 
-    v18 = [(MapsPopupMessageView *)v10 layer];
-    [v18 setShadowOffset:{0.0, 2.0}];
+    layer2 = [(MapsPopupMessageView *)v10 layer];
+    [layer2 setShadowOffset:{0.0, 2.0}];
 
-    v19 = [(MapsPopupMessageView *)v10 layer];
-    [v19 setShadowRadius:8.0];
+    layer3 = [(MapsPopupMessageView *)v10 layer];
+    [layer3 setShadowRadius:8.0];
 
-    v20 = [(MapsPopupMessageView *)v10 layer];
+    layer4 = [(MapsPopupMessageView *)v10 layer];
     LODWORD(v21) = *"\nף=";
-    [v20 setShadowOpacity:v21];
+    [layer4 setShadowOpacity:v21];
 
     NSClassFromString(@"MTMaterialLayer");
     v22 = objc_opt_new();
@@ -374,8 +374,8 @@
       v25 = kCACornerCurveContinuous;
     }
 
-    v31 = [(MapsPopupMessageView *)v10 layer];
-    [v31 addSublayer:v10->_materialLayer];
+    layer5 = [(MapsPopupMessageView *)v10 layer];
+    [layer5 addSublayer:v10->_materialLayer];
 
     v32 = objc_opt_new();
     backgroundView = v10->_backgroundView;
@@ -392,8 +392,8 @@
 
     [(CALayer *)v10->_borderLayer setBorderWidth:1.0];
     [(CALayer *)v10->_materialLayer setCornerCurve:v25];
-    v37 = [(UIView *)v10->_backgroundView layer];
-    [v37 addSublayer:v10->_borderLayer];
+    layer6 = [(UIView *)v10->_backgroundView layer];
+    [layer6 addSublayer:v10->_borderLayer];
 
     v38 = objc_opt_new();
     [v38 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -407,40 +407,40 @@
     objc_storeStrong(&v10->_messageLabel, v38);
     [(MapsPopupMessageView *)v10 _userInterfaceStyleDidChange];
     [(MapsPopupMessageView *)v10 _preferredContentSizeDidChange];
-    v71 = [(MapsPopupMessageView *)v10 widthAnchor];
-    v70 = [v71 constraintLessThanOrEqualToConstant:340.0];
+    widthAnchor = [(MapsPopupMessageView *)v10 widthAnchor];
+    v70 = [widthAnchor constraintLessThanOrEqualToConstant:340.0];
     v78[0] = v70;
-    v69 = [(UIView *)v10->_backgroundView leadingAnchor];
-    v68 = [(MapsPopupMessageView *)v10 leadingAnchor];
-    v67 = [v69 constraintEqualToAnchor:v68];
+    leadingAnchor = [(UIView *)v10->_backgroundView leadingAnchor];
+    leadingAnchor2 = [(MapsPopupMessageView *)v10 leadingAnchor];
+    v67 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v78[1] = v67;
-    v66 = [(UIView *)v10->_backgroundView trailingAnchor];
-    v65 = [(MapsPopupMessageView *)v10 trailingAnchor];
-    v64 = [v66 constraintEqualToAnchor:v65];
+    trailingAnchor = [(UIView *)v10->_backgroundView trailingAnchor];
+    trailingAnchor2 = [(MapsPopupMessageView *)v10 trailingAnchor];
+    v64 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v78[2] = v64;
-    v63 = [(UIView *)v10->_backgroundView topAnchor];
-    v62 = [(MapsPopupMessageView *)v10 topAnchor];
-    v61 = [v63 constraintEqualToAnchor:v62];
+    topAnchor = [(UIView *)v10->_backgroundView topAnchor];
+    topAnchor2 = [(MapsPopupMessageView *)v10 topAnchor];
+    v61 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v78[3] = v61;
-    v60 = [(UIView *)v10->_backgroundView bottomAnchor];
-    v59 = [(MapsPopupMessageView *)v10 bottomAnchor];
-    v58 = [v60 constraintEqualToAnchor:v59];
+    bottomAnchor = [(UIView *)v10->_backgroundView bottomAnchor];
+    bottomAnchor2 = [(MapsPopupMessageView *)v10 bottomAnchor];
+    v58 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v78[4] = v58;
-    v57 = [v38 leadingAnchor];
-    v56 = [(MapsPopupMessageView *)v10 leadingAnchor];
-    v55 = [v57 constraintEqualToAnchor:v56 constant:16.0];
+    leadingAnchor3 = [v38 leadingAnchor];
+    leadingAnchor4 = [(MapsPopupMessageView *)v10 leadingAnchor];
+    v55 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:16.0];
     v78[5] = v55;
-    v54 = [v38 trailingAnchor];
-    v53 = [(MapsPopupMessageView *)v10 trailingAnchor];
-    v40 = [v54 constraintEqualToAnchor:v53 constant:-16.0];
+    trailingAnchor3 = [v38 trailingAnchor];
+    trailingAnchor4 = [(MapsPopupMessageView *)v10 trailingAnchor];
+    v40 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-16.0];
     v78[6] = v40;
-    v41 = [v38 topAnchor];
-    v42 = [(MapsPopupMessageView *)v10 topAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42 constant:8.0];
+    topAnchor3 = [v38 topAnchor];
+    topAnchor4 = [(MapsPopupMessageView *)v10 topAnchor];
+    v43 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:8.0];
     v78[7] = v43;
-    v44 = [v38 bottomAnchor];
-    v45 = [(MapsPopupMessageView *)v10 bottomAnchor];
-    v46 = [v44 constraintEqualToAnchor:v45 constant:-8.0];
+    bottomAnchor3 = [v38 bottomAnchor];
+    bottomAnchor4 = [(MapsPopupMessageView *)v10 bottomAnchor];
+    v46 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-8.0];
     v78[8] = v46;
     v47 = [NSArray arrayWithObjects:v78 count:9];
     [NSLayoutConstraint activateConstraints:v47];
@@ -453,8 +453,8 @@
     v50 = [NSArray arrayWithObjects:&v76 count:1];
     v51 = [(MapsPopupMessageView *)v10 registerForTraitChanges:v50 withTarget:v10 action:"_preferredContentSizeDidChange"];
 
-    v9 = v73;
-    v8 = v74;
+    handlerCopy = v73;
+    messageCopy = v74;
   }
 
   return v10;

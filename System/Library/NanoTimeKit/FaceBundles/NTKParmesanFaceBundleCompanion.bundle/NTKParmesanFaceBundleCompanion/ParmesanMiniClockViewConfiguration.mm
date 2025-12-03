@@ -1,13 +1,13 @@
 @interface ParmesanMiniClockViewConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtC30NTKParmesanFaceBundleCompanion34ParmesanMiniClockViewConfiguration)init;
-- (_TtC30NTKParmesanFaceBundleCompanion34ParmesanMiniClockViewConfiguration)initWithCoder:(id)a3;
+- (_TtC30NTKParmesanFaceBundleCompanion34ParmesanMiniClockViewConfiguration)initWithCoder:(id)coder;
 - (int64_t)hash;
 @end
 
 @implementation ParmesanMiniClockViewConfiguration
 
-- (_TtC30NTKParmesanFaceBundleCompanion34ParmesanMiniClockViewConfiguration)initWithCoder:(id)a3
+- (_TtC30NTKParmesanFaceBundleCompanion34ParmesanMiniClockViewConfiguration)initWithCoder:(id)coder
 {
   result = sub_23BFFAB00();
   __break(1u);
@@ -16,17 +16,17 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_23BFA2010();
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_23BFFA960();
     swift_unknownObjectRelease();
@@ -35,7 +35,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_23BFA2110(v8);

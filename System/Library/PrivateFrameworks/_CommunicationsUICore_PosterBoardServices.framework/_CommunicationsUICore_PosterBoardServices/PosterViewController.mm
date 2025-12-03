@@ -1,19 +1,19 @@
 @interface PosterViewController
-- (_TtC41_CommunicationsUICore_PosterBoardServices20PosterViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didMoveToParentViewController:(id)a3;
+- (_TtC41_CommunicationsUICore_PosterBoardServices20PosterViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)revealSensitivePoster;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PosterViewController
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  PosterViewController.didMove(toParent:)(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  PosterViewController.didMove(toParent:)(controller);
 }
 
 - (void)viewDidLoad
@@ -24,14 +24,14 @@
   v6 = &v13 - v5;
   v13.receiver = self;
   v13.super_class = ObjectType;
-  v7 = self;
+  selfCopy = self;
   [(PosterViewController *)&v13 viewDidLoad];
   sub_275262DE8();
   sub_275263164();
   v8 = sub_27526D388();
   (*(*(v8 - 8) + 56))(v6, 1, 1, v8);
   sub_27526D358();
-  v9 = v7;
+  v9 = selfCopy;
   v10 = sub_27526D348();
   v11 = swift_allocObject();
   v12 = MEMORY[0x277D85700];
@@ -43,27 +43,27 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   PosterViewController.viewDidLayoutSubviews()();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  PosterViewController.viewWillTransition(to:with:)(a4, width, height);
+  selfCopy = self;
+  PosterViewController.viewWillTransition(to:with:)(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
 - (void)revealSensitivePoster
 {
-  v2 = self;
+  selfCopy = self;
   sub_275268824();
 }
 
-- (_TtC41_CommunicationsUICore_PosterBoardServices20PosterViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC41_CommunicationsUICore_PosterBoardServices20PosterViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

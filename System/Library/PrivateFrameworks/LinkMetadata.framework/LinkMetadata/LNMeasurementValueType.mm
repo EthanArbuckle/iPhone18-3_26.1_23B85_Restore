@@ -23,13 +23,13 @@
 + (LNMeasurementValueType)unsupportedMeasurementValueType;
 + (LNMeasurementValueType)volumeValueType;
 + (id)objectClassesForCoding;
-- (BOOL)isEqual:(id)a3;
-- (LNMeasurementValueType)initWithCoder:(id)a3;
-- (LNMeasurementValueType)initWithUnitType:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNMeasurementValueType)initWithCoder:(id)coder;
+- (LNMeasurementValueType)initWithUnitType:(int64_t)type;
 - (id)description;
 - (id)typeIdentifierAsString;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNMeasurementValueType
@@ -460,17 +460,17 @@ uint64_t __47__LNMeasurementValueType_accelerationValueType__block_invoke()
   return [v2 arrayWithObject:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v8 = 1;
     goto LABEL_10;
   }
 
-  v6 = v4;
+  v6 = equalCopy;
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -487,8 +487,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v7 = [(LNMeasurementValueType *)self unitType];
-  v8 = v7 == [(LNMeasurementValueType *)v6 unitType];
+  unitType = [(LNMeasurementValueType *)self unitType];
+  v8 = unitType == [(LNMeasurementValueType *)v6 unitType];
 LABEL_8:
 
 LABEL_10:
@@ -503,51 +503,51 @@ LABEL_10:
   return [(LNMeasurementValueType *)self unitType]^ v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = LNMeasurementValueType;
-  v4 = a3;
-  [(LNValueType *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:-[LNMeasurementValueType unitType](self forKey:{"unitType", v5.receiver, v5.super_class), @"unitType"}];
+  coderCopy = coder;
+  [(LNValueType *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[LNMeasurementValueType unitType](self forKey:{"unitType", v5.receiver, v5.super_class), @"unitType"}];
 }
 
-- (LNMeasurementValueType)initWithCoder:(id)a3
+- (LNMeasurementValueType)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntegerForKey:@"unitType"];
+  v4 = [coder decodeIntegerForKey:@"unitType"];
 
   return [(LNMeasurementValueType *)self initWithUnitType:v4];
 }
 
 - (id)description
 {
-  v2 = [(LNMeasurementValueType *)self unitType];
-  if ((v2 - 1) > 0x15)
+  unitType = [(LNMeasurementValueType *)self unitType];
+  if ((unitType - 1) > 0x15)
   {
     return @"Unsupported measurement type";
   }
 
   else
   {
-    return off_1E72B1358[v2 - 1];
+    return off_1E72B1358[unitType - 1];
   }
 }
 
 - (id)typeIdentifierAsString
 {
-  v2 = [(LNMeasurementValueType *)self unitType];
-  if ((v2 - 1) > 0x15)
+  unitType = [(LNMeasurementValueType *)self unitType];
+  if ((unitType - 1) > 0x15)
   {
     return @"Unsupported measurement type";
   }
 
   else
   {
-    return off_1E72B1358[v2 - 1];
+    return off_1E72B1358[unitType - 1];
   }
 }
 
-- (LNMeasurementValueType)initWithUnitType:(int64_t)a3
+- (LNMeasurementValueType)initWithUnitType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = LNMeasurementValueType;
@@ -555,7 +555,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v4->_unitType = a3;
+    v4->_unitType = type;
     v6 = v4;
   }
 

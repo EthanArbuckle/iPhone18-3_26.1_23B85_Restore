@@ -1,15 +1,15 @@
 @interface EPPairingAgentManager
-+ (id)stringFromCBManagerState:(int64_t)a3;
++ (id)stringFromCBManagerState:(int64_t)state;
 - (EPPairingAgentManager)init;
-- (id)newAgentWithDelegate:(id)a3 fromCentral:(BOOL)a4;
-- (id)newCentralManagerWithDelegate:(id)a3;
-- (id)newPeripheralManagerWithDelegate:(id)a3;
+- (id)newAgentWithDelegate:(id)delegate fromCentral:(BOOL)central;
+- (id)newCentralManagerWithDelegate:(id)delegate;
+- (id)newPeripheralManagerWithDelegate:(id)delegate;
 - (void)createResource;
 - (void)destroyResource;
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4;
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5;
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6;
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4;
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing;
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error;
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey;
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair;
 - (void)resetStashVariables;
 - (void)update;
 @end
@@ -26,10 +26,10 @@
   return v4;
 }
 
-- (id)newAgentWithDelegate:(id)a3 fromCentral:(BOOL)a4
+- (id)newAgentWithDelegate:(id)delegate fromCentral:(BOOL)central
 {
-  self->_fromCentral = a4;
-  v5 = [(EPResourceManager *)self newResourceWithDelegate:a3];
+  self->_fromCentral = central;
+  v5 = [(EPResourceManager *)self newResourceWithDelegate:delegate];
   if (!self->_fromCentral && self->_stashedPeer)
   {
     v6 = sub_1000A98C0();
@@ -56,20 +56,20 @@
   return v5;
 }
 
-- (id)newCentralManagerWithDelegate:(id)a3
+- (id)newCentralManagerWithDelegate:(id)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   v4 = +[EPFactory sharedFactory];
-  v5 = [v4 newCentralManagerWithDelegate:v3];
+  v5 = [v4 newCentralManagerWithDelegate:delegateCopy];
 
   return v5;
 }
 
-- (id)newPeripheralManagerWithDelegate:(id)a3
+- (id)newPeripheralManagerWithDelegate:(id)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   v4 = +[EPFactory sharedFactory];
-  v5 = [v4 newPeripheralManagerWithDelegate:v3];
+  v5 = [v4 newPeripheralManagerWithDelegate:delegateCopy];
 
   return v5;
 }
@@ -141,8 +141,8 @@
   {
     if ([v4 availability] == 2)
     {
-      v8 = [v4 error];
-      [(EPResourceManager *)self setAvailability:2 withError:v8];
+      error = [v4 error];
+      [(EPResourceManager *)self setAvailability:2 withError:error];
 
       if (!self->_agent)
       {
@@ -202,19 +202,19 @@ LABEL_25:
 
   if (!self->_agent)
   {
-    v5 = [(EPPeripheralManager *)self->_peripheralManagerForAgent manager];
-    v6 = v5;
-    if (v5)
+    manager = [(EPPeripheralManager *)self->_peripheralManagerForAgent manager];
+    v6 = manager;
+    if (manager)
     {
-      v7 = v5;
+      manager2 = manager;
     }
 
     else
     {
-      v7 = [(EPCentralManager *)self->_centralManagerForAgent manager];
+      manager2 = [(EPCentralManager *)self->_centralManagerForAgent manager];
     }
 
-    agent = v7;
+    agent = manager2;
 
     v16 = sub_1000A98C0();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
@@ -229,9 +229,9 @@ LABEL_25:
       }
     }
 
-    v19 = [(CBPairingAgent *)agent sharedPairingAgent];
+    sharedPairingAgent = [(CBPairingAgent *)agent sharedPairingAgent];
     v20 = self->_agent;
-    self->_agent = v19;
+    self->_agent = sharedPairingAgent;
 
     [(CBPairingAgent *)self->_agent setDelegate:self];
     [(EPResourceManager *)self setAvailability:1 withError:0];
@@ -241,22 +241,22 @@ LABEL_25:
 LABEL_26:
 }
 
-+ (id)stringFromCBManagerState:(int64_t)a3
++ (id)stringFromCBManagerState:(int64_t)state
 {
-  if ((a3 - 1) > 9)
+  if ((state - 1) > 9)
   {
     return @"CBManagerStateUnknown";
   }
 
   else
   {
-    return *(&off_100179D28 + a3 - 1);
+    return *(&off_100179D28 + state - 1);
   }
 }
 
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair
 {
-  v5 = a4;
+  unpairCopy = unpair;
   v6 = sub_1000A98C0();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -265,10 +265,10 @@ LABEL_26:
     v8 = sub_1000A98C0();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v5 identifier];
-      v10 = [v9 UUIDString];
+      identifier = [unpairCopy identifier];
+      uUIDString = [identifier UUIDString];
       *buf = 138412290;
-      v15 = v10;
+      v15 = uUIDString;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "CoreBluetooth pairingAgent:peerDidUnpair:%@ received", buf, 0xCu);
     }
   }
@@ -278,14 +278,14 @@ LABEL_26:
   v12[2] = sub_1000EF978;
   v12[3] = &unk_100175998;
   v12[4] = self;
-  v13 = v5;
-  v11 = v5;
+  v13 = unpairCopy;
+  v11 = unpairCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v12];
 }
 
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing
 {
-  v5 = a4;
+  pairingCopy = pairing;
   v6 = sub_1000A98C0();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -294,10 +294,10 @@ LABEL_26:
     v8 = sub_1000A98C0();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v5 identifier];
-      v10 = [v9 UUIDString];
+      identifier = [pairingCopy identifier];
+      uUIDString = [identifier UUIDString];
       *buf = 138412290;
-      v15 = v10;
+      v15 = uUIDString;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "CoreBluetooth pairingAgent:peerDidCompletePairing:%@ received", buf, 0xCu);
     }
   }
@@ -307,15 +307,15 @@ LABEL_26:
   v12[2] = sub_1000EFAF8;
   v12[3] = &unk_100175998;
   v12[4] = self;
-  v13 = v5;
-  v11 = v5;
+  v13 = pairingCopy;
+  v11 = pairingCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v12];
 }
 
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  pairingCopy = pairing;
+  errorCopy = error;
   v9 = sub_1000A98C0();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -324,10 +324,10 @@ LABEL_26:
     v11 = sub_1000A98C0();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v7 identifier];
-      v13 = [v12 UUIDString];
+      identifier = [pairingCopy identifier];
+      uUIDString = [identifier UUIDString];
       *buf = 138412290;
-      v20 = v13;
+      v20 = uUIDString;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "CoreBluetooth pairingAgent:peerDidFailToCompletePairing:%@ received", buf, 0xCu);
     }
   }
@@ -337,18 +337,18 @@ LABEL_26:
   v16[2] = sub_1000EFC9C;
   v16[3] = &unk_1001759C0;
   v16[4] = self;
-  v17 = v7;
-  v18 = v8;
-  v14 = v8;
-  v15 = v7;
+  v17 = pairingCopy;
+  v18 = errorCopy;
+  v14 = errorCopy;
+  v15 = pairingCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v16];
 }
 
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  agentCopy = agent;
+  pairingCopy = pairing;
+  passkeyCopy = passkey;
   v13 = sub_1000A98C0();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
 
@@ -357,10 +357,10 @@ LABEL_26:
     v15 = sub_1000A98C0();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v11 identifier];
-      v17 = [v16 UUIDString];
+      identifier = [pairingCopy identifier];
+      uUIDString = [identifier UUIDString];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v17;
+      *(&buf + 4) = uUIDString;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "CoreBluetooth pairingAgent:peerDidRequestPairing:%@ received", &buf, 0xCu);
     }
   }
@@ -375,10 +375,10 @@ LABEL_26:
   v30[3] = &unk_100179D08;
   p_buf = &buf;
   v30[4] = self;
-  v18 = v11;
+  v18 = pairingCopy;
   v31 = v18;
-  v34 = a5;
-  v19 = v12;
+  typeCopy = type;
+  v19 = passkeyCopy;
   v32 = v19;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v30];
   if ((*(*(&buf + 1) + 24) & 1) == 0)
@@ -396,9 +396,9 @@ LABEL_26:
       }
     }
 
-    objc_storeStrong(&self->_stashedPeer, a4);
-    self->_stashedType = a5;
-    objc_storeStrong(&self->_stashedPassKey, a6);
+    objc_storeStrong(&self->_stashedPeer, pairing);
+    self->_stashedType = type;
+    objc_storeStrong(&self->_stashedPassKey, passkey);
     [(AbstractTimer *)self->_timer invalidate];
     timer = self->_timer;
     self->_timer = 0;

@@ -1,12 +1,12 @@
 @interface PBUIPosterHomeViewController
-+ (int64_t)presentationModeForHomeConfiguration:(id)a3;
++ (int64_t)presentationModeForHomeConfiguration:(id)configuration;
 - (BOOL)canShowSnapshot;
 - (BOOL)isHomeScreenWallpaperDimmed;
 - (BOOL)isSettledPosition;
-- (BOOL)showsSnapshotWhenIdleForMode:(int64_t)a3;
-- (BOOL)updateGradientViewWithGradient:(id)a3;
+- (BOOL)showsSnapshotWhenIdleForMode:(int64_t)mode;
+- (BOOL)updateGradientViewWithGradient:(id)gradient;
 - (BOOL)updateHomeVariantStyleState;
-- (BOOL)updatePresentation:(BOOL)a3;
+- (BOOL)updatePresentation:(BOOL)presentation;
 - (PBUIHomeVariantStyleState)currentHomeVariantStyleState;
 - (PBUIPosterHomeViewController)init;
 - (double)averageContrast;
@@ -15,36 +15,36 @@
 - (id)_descriptorIdentity;
 - (id)_fetchPosterPreferredProminentColor;
 - (id)_fetchStyleState;
-- (id)acquireDuckHomeScreenWallpaperDimAssertionWithReason:(id)a3;
+- (id)acquireDuckHomeScreenWallpaperDimAssertionWithReason:(id)reason;
 - (id)averageColor;
 - (id)contentColorStatistics;
 - (id)homeScreenConfiguration;
 - (unint64_t)_updatedDimStyle;
-- (void)_accessibilityReduceTransparencyChanged:(id)a3;
+- (void)_accessibilityReduceTransparencyChanged:(id)changed;
 - (void)_didFinishRotating;
-- (void)_duckHomeScreenWallpaperDimAssertionDidInvalidate:(id)a3;
+- (void)_duckHomeScreenWallpaperDimAssertionDidInvalidate:(id)invalidate;
 - (void)_updateDimHomeScreenWallpaperViewAnimated;
-- (void)_updateDimHomeScreenWallpaperViewForUnlockProgress:(double)a3 animated:(BOOL)a4;
+- (void)_updateDimHomeScreenWallpaperViewForUnlockProgress:(double)progress animated:(BOOL)animated;
 - (void)_updateEnableHomeScreenWallpaperDimming;
-- (void)_updateRotationForOrientation:(int64_t)a3;
-- (void)applyFauxExternalSceneSettings:(id)a3;
+- (void)_updateRotationForOrientation:(int64_t)orientation;
+- (void)applyFauxExternalSceneSettings:(id)settings;
 - (void)configureEffectViewForMode;
 - (void)configureForZOrder;
 - (void)dealloc;
-- (void)effectTrackingReplicaViewHasValidSnapshot:(id)a3;
+- (void)effectTrackingReplicaViewHasValidSnapshot:(id)snapshot;
 - (void)homeScreenConfiguration;
 - (void)loadView;
 - (void)noteHomeVariantStyleStateMayHaveUpdated;
-- (void)noteWillRotateToInterfaceOrientation:(int64_t)a3;
-- (void)performSnapshotOnQueue:(id)a3 scene:(id)a4 completion:(id)a5;
-- (void)setActiveStyle:(int64_t)a3;
-- (void)setCounterpart:(id)a3;
-- (void)setFixedAverageColor:(id)a3;
-- (void)updateViewControllerVisibilityForUnlockProgress:(double)a3;
-- (void)validateSnapshottingPreconditionsForSettings:(id)a3 result:(id)a4;
+- (void)noteWillRotateToInterfaceOrientation:(int64_t)orientation;
+- (void)performSnapshotOnQueue:(id)queue scene:(id)scene completion:(id)completion;
+- (void)setActiveStyle:(int64_t)style;
+- (void)setCounterpart:(id)counterpart;
+- (void)setFixedAverageColor:(id)color;
+- (void)updateViewControllerVisibilityForUnlockProgress:(double)progress;
+- (void)validateSnapshottingPreconditionsForSettings:(id)settings result:(id)result;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PBUIPosterHomeViewController
@@ -54,27 +54,27 @@
   fixedColorStatistics = self->_fixedColorStatistics;
   if (fixedColorStatistics)
   {
-    v3 = fixedColorStatistics;
+    contentColorStatistics = fixedColorStatistics;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = PBUIPosterHomeViewController;
-    v3 = [(PBUIPosterVariantViewController *)&v5 contentColorStatistics];
+    contentColorStatistics = [(PBUIPosterVariantViewController *)&v5 contentColorStatistics];
   }
 
-  return v3;
+  return contentColorStatistics;
 }
 
 - (void)configureForZOrder
 {
-  v3 = [(PBUIPosterHomeViewController *)self view];
-  [v3 bringSubviewToFront:self->_dimView];
+  view = [(PBUIPosterHomeViewController *)self view];
+  [view bringSubviewToFront:self->_dimView];
 
-  v4 = [(BSUIOrientationTransformWrapperView *)self->_dynamicWrapperView superview];
+  superview = [(BSUIOrientationTransformWrapperView *)self->_dynamicWrapperView superview];
 
-  if (v4)
+  if (superview)
   {
     if ([(PBUIPosterHomeViewController *)self canShowSnapshot]&& ![(PBUIPosterHomeViewController *)self reflectsLock])
     {
@@ -116,29 +116,29 @@
 - (id)_descriptorIdentity
 {
   scene = self->super._scene;
-  v4 = scene;
+  scene = scene;
   if (!scene)
   {
     WeakRetained = objc_loadWeakRetained(&self->super._counterpart);
-    v4 = [WeakRetained scene];
+    scene = [WeakRetained scene];
   }
 
-  v5 = [v4 pui_posterPath];
-  v6 = [v5 descriptorIdentifier];
+  pui_posterPath = [scene pui_posterPath];
+  descriptorIdentifier = [pui_posterPath descriptorIdentifier];
 
   if (!scene)
   {
   }
 
-  return v6;
+  return descriptorIdentifier;
 }
 
 - (id)homeScreenConfiguration
 {
   WeakRetained = objc_loadWeakRetained(&self->super._counterpart);
-  v3 = [WeakRetained lockScreenConfiguration];
+  lockScreenConfiguration = [WeakRetained lockScreenConfiguration];
   v8 = 0;
-  v4 = [v3 pr_loadHomeScreenConfigurationWithError:&v8];
+  v4 = [lockScreenConfiguration pr_loadHomeScreenConfigurationWithError:&v8];
   v5 = v8;
 
   if (v5)
@@ -156,11 +156,11 @@
 - (BOOL)updateHomeVariantStyleState
 {
   v3 = self->_currentHomeVariantStyleState;
-  v4 = [(PBUIPosterHomeViewController *)self _fetchStyleState];
-  v5 = [(PBUIHomeVariantStyleState *)v3 isEqualToState:v4];
+  _fetchStyleState = [(PBUIPosterHomeViewController *)self _fetchStyleState];
+  v5 = [(PBUIHomeVariantStyleState *)v3 isEqualToState:_fetchStyleState];
   if (!v5)
   {
-    objc_storeStrong(&self->_currentHomeVariantStyleState, v4);
+    objc_storeStrong(&self->_currentHomeVariantStyleState, _fetchStyleState);
   }
 
   return !v5;
@@ -168,12 +168,12 @@
 
 - (id)_fetchStyleState
 {
-  v3 = [(PBUIPosterHomeViewController *)self homeScreenConfiguration];
-  v4 = PBUIHomeVariantStyleStateFromPRPosterHomeScreenConfiguration(v3);
-  v5 = [v4 suggestedTintColor];
-  if (v5)
+  homeScreenConfiguration = [(PBUIPosterHomeViewController *)self homeScreenConfiguration];
+  v4 = PBUIHomeVariantStyleStateFromPRPosterHomeScreenConfiguration(homeScreenConfiguration);
+  suggestedTintColor = [v4 suggestedTintColor];
+  if (suggestedTintColor)
   {
-    v6 = v5;
+    v6 = suggestedTintColor;
   }
 
   else
@@ -189,9 +189,9 @@
 
 - (double)weightingForEffectView
 {
-  v3 = [(PBUIPosterHomeViewController *)self isBlurred];
+  isBlurred = [(PBUIPosterHomeViewController *)self isBlurred];
   result = 1.0;
-  if (v3)
+  if (isBlurred)
   {
     [(PBUIPosterHomeViewController *)self unlockProgress];
     v6 = (v5 + -0.2) / 0.8;
@@ -215,17 +215,17 @@
 {
   if (self->_fixedColorStatistics)
   {
-    v2 = [(PUIColorStatistics *)self->_fixedColorStatistics averageColor];
+    averageColor = [(PUIColorStatistics *)self->_fixedColorStatistics averageColor];
   }
 
   else
   {
     v4.receiver = self;
     v4.super_class = PBUIPosterHomeViewController;
-    v2 = [(PBUIPosterVariantViewController *)&v4 averageColor];
+    averageColor = [(PBUIPosterVariantViewController *)&v4 averageColor];
   }
 
-  return v2;
+  return averageColor;
 }
 
 - (PBUIHomeVariantStyleState)currentHomeVariantStyleState
@@ -233,9 +233,9 @@
   currentHomeVariantStyleState = self->_currentHomeVariantStyleState;
   if (!currentHomeVariantStyleState)
   {
-    v4 = [(PBUIPosterHomeViewController *)self _fetchStyleState];
+    _fetchStyleState = [(PBUIPosterHomeViewController *)self _fetchStyleState];
     v5 = self->_currentHomeVariantStyleState;
-    self->_currentHomeVariantStyleState = v4;
+    self->_currentHomeVariantStyleState = _fetchStyleState;
 
     currentHomeVariantStyleState = self->_currentHomeVariantStyleState;
   }
@@ -258,8 +258,8 @@
     v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
     v5 = [(PBUIPosterHomeViewController *)v2 registerForTraitChanges:v4 withAction:sel__updateDimHomeScreenWallpaperViewAnimated];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v2 selector:sel__accessibilityReduceTransparencyChanged_ name:*MEMORY[0x277D764C8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__accessibilityReduceTransparencyChanged_ name:*MEMORY[0x277D764C8] object:0];
   }
 
   return v2;
@@ -378,9 +378,9 @@
     self->_wallpaperCaptureView = v8;
 
     [(MTMaterialView *)self->_wallpaperCaptureView setGroupName:@"WallpaperCaptureGroup"];
-    v10 = [(MTMaterialView *)self->_wallpaperCaptureView layer];
+    layer = [(MTMaterialView *)self->_wallpaperCaptureView layer];
     v11 = objc_opt_class();
-    v12 = v10;
+    v12 = layer;
     if (v11)
     {
       if (objc_opt_isKindOfClass())
@@ -404,21 +404,21 @@
     [v14 setGroupNamespace:*MEMORY[0x277CDA098]];
     [v12 setName:@"WallpaperCaptureLayer"];
     [(MTMaterialView *)self->_wallpaperCaptureView setAutoresizingMask:18];
-    v15 = [(PBUIPosterHomeViewController *)self view];
-    [v15 addSubview:self->_wallpaperCaptureView];
+    view = [(PBUIPosterHomeViewController *)self view];
+    [view addSubview:self->_wallpaperCaptureView];
 
-    v16 = [(PBUIPosterHomeViewController *)self view];
-    [v16 bringSubviewToFront:self->_wallpaperCaptureView];
+    view2 = [(PBUIPosterHomeViewController *)self view];
+    [view2 bringSubviewToFront:self->_wallpaperCaptureView];
   }
 
   [(PBUIPosterHomeViewController *)self configureForZOrder];
   [(PBUIPosterHomeViewController *)self unlockProgress];
   [(PBUIPosterHomeViewController *)self _updateDimHomeScreenWallpaperViewForUnlockProgress:0 animated:?];
-  v17 = [(PBUIPosterHomeViewController *)self view];
-  [v17 addSubview:self->_dimView];
+  view3 = [(PBUIPosterHomeViewController *)self view];
+  [view3 addSubview:self->_dimView];
 
-  v18 = [(PBUIPosterHomeViewController *)self view];
-  [v18 bringSubviewToFront:self->_dimView];
+  view4 = [(PBUIPosterHomeViewController *)self view];
+  [view4 bringSubviewToFront:self->_dimView];
 
   [(PBUIPosterHomeViewController *)self _updateEnableHomeScreenWallpaperDimming];
 }
@@ -434,22 +434,22 @@
   wallpaperCaptureView = self->_wallpaperCaptureView;
   if (wallpaperCaptureView)
   {
-    v5 = [(PBUIPosterHomeViewController *)self view];
-    [v5 bounds];
+    view = [(PBUIPosterHomeViewController *)self view];
+    [view bounds];
     [(MTMaterialView *)wallpaperCaptureView setFrame:?];
   }
 
   dimView = self->_dimView;
-  v7 = [(PBUIPosterHomeViewController *)self view];
-  [v7 bounds];
+  view2 = [(PBUIPosterHomeViewController *)self view];
+  [view2 bounds];
   [(_PBUIDimmingView *)dimView setFrame:?];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PBUIPosterHomeViewController;
-  [(PBUIPosterHomeViewController *)&v4 viewWillAppear:a3];
+  [(PBUIPosterHomeViewController *)&v4 viewWillAppear:appear];
   [(PBUIPosterHomeViewController *)self unlockProgress];
   [(PBUIPosterHomeViewController *)self _updateDimHomeScreenWallpaperViewForUnlockProgress:0 animated:?];
 }
@@ -475,12 +475,12 @@
   return result;
 }
 
-- (void)noteWillRotateToInterfaceOrientation:(int64_t)a3
+- (void)noteWillRotateToInterfaceOrientation:(int64_t)orientation
 {
   v7.receiver = self;
   v7.super_class = PBUIPosterHomeViewController;
   [(PBUIPosterVariantViewController *)&v7 noteWillRotateToInterfaceOrientation:?];
-  self->_mostRecentOrientation = a3;
+  self->_mostRecentOrientation = orientation;
   if ([(PBUIPosterHomeViewController *)self bs_isAppearingOrAppeared])
   {
     v6[0] = MEMORY[0x277D85DD0];
@@ -488,7 +488,7 @@
     v6[2] = __69__PBUIPosterHomeViewController_noteWillRotateToInterfaceOrientation___block_invoke;
     v6[3] = &unk_278362880;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = orientation;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __69__PBUIPosterHomeViewController_noteWillRotateToInterfaceOrientation___block_invoke_2;
@@ -513,10 +513,10 @@
   }
 }
 
-- (void)_updateRotationForOrientation:(int64_t)a3
+- (void)_updateRotationForOrientation:(int64_t)orientation
 {
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"rotating to %lu", a3];
-  [(PBUIPosterVariantViewController *)self invalidateSnapshotPreconditions:v5];
+  orientation = [MEMORY[0x277CCACA8] stringWithFormat:@"rotating to %lu", orientation];
+  [(PBUIPosterVariantViewController *)self invalidateSnapshotPreconditions:orientation];
 
   dynamicWrapperView = self->_dynamicWrapperView;
   if (self->_gradientView)
@@ -525,21 +525,21 @@
     {
       if (soft_PUIDynamicRotationIsActive())
       {
-        v7 = a3;
+        orientationCopy = orientation;
       }
 
       else
       {
-        v7 = 1;
+        orientationCopy = 1;
       }
     }
 
     else
     {
-      v7 = 1;
+      orientationCopy = 1;
     }
 
-    [(BSUIOrientationTransformWrapperView *)dynamicWrapperView setContentOrientation:v7];
+    [(BSUIOrientationTransformWrapperView *)dynamicWrapperView setContentOrientation:orientationCopy];
   }
 
   else
@@ -589,12 +589,12 @@ void __62__PBUIPosterHomeViewController__updateRotationForOrientation___block_in
   [v5 setAnimationSettings:v12];
 }
 
-- (void)performSnapshotOnQueue:(id)a3 scene:(id)a4 completion:(id)a5
+- (void)performSnapshotOnQueue:(id)queue scene:(id)scene completion:(id)completion
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  sceneCopy = scene;
+  completionCopy = completion;
   if (self->_currentMode)
   {
     objc_initWeak(&location, self);
@@ -602,7 +602,7 @@ void __62__PBUIPosterHomeViewController__updateRotationForOrientation___block_in
     v44[1] = 3221225472;
     v44[2] = __72__PBUIPosterHomeViewController_performSnapshotOnQueue_scene_completion___block_invoke;
     v44[3] = &unk_278363588;
-    v11 = v9;
+    v11 = sceneCopy;
     v45 = v11;
     v12 = MEMORY[0x223D62EE0](v44);
     v41[0] = MEMORY[0x277D85DD0];
@@ -610,7 +610,7 @@ void __62__PBUIPosterHomeViewController__updateRotationForOrientation___block_in
     v41[2] = __72__PBUIPosterHomeViewController_performSnapshotOnQueue_scene_completion___block_invoke_2;
     v41[3] = &unk_278363600;
     objc_copyWeak(&v43, &location);
-    v13 = v8;
+    v13 = queueCopy;
     v42 = v13;
     v14 = MEMORY[0x223D62EE0](v41);
     v35[0] = MEMORY[0x277D85DD0];
@@ -619,8 +619,8 @@ void __62__PBUIPosterHomeViewController__updateRotationForOrientation___block_in
     v35[3] = &unk_2783636A0;
     v15 = v11;
     v36 = v15;
-    v37 = self;
-    v39 = v10;
+    selfCopy = self;
+    v39 = completionCopy;
     v16 = v13;
     v38 = v16;
     v17 = v12;
@@ -636,7 +636,7 @@ void __62__PBUIPosterHomeViewController__updateRotationForOrientation___block_in
       v28[3] = &unk_2783636F0;
       v31 = v18;
       v29 = v16;
-      v30 = self;
+      selfCopy2 = self;
       v27.receiver = self;
       v27.super_class = PBUIPosterHomeViewController;
       [(PBUIPosterVariantViewController *)&v27 performSnapshotOnQueue:v29 scene:v15 completion:v28];
@@ -679,7 +679,7 @@ void __62__PBUIPosterHomeViewController__updateRotationForOrientation___block_in
     v48[0] = @"presentation mode is undefined; skipping snapshot";
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:&v47 count:1];
     v24 = [v22 errorWithDomain:@"com.apple.PaperBoardUI" code:-1 userInfo:v23];
-    (*(v10 + 2))(v10, 0, 0, 0, 0, 0, v24);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0, 0, v24);
   }
 }
 
@@ -1002,20 +1002,20 @@ void __72__PBUIPosterHomeViewController_performSnapshotOnQueue_scene_completion_
   }
 }
 
-+ (int64_t)presentationModeForHomeConfiguration:(id)a3
++ (int64_t)presentationModeForHomeConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [v3 selectedAppearanceType];
-  if (v4 <= 1)
+  configurationCopy = configuration;
+  selectedAppearanceType = [configurationCopy selectedAppearanceType];
+  if (selectedAppearanceType <= 1)
   {
-    if (v4)
+    if (selectedAppearanceType)
     {
-      if (v4 == 1)
+      if (selectedAppearanceType == 1)
       {
-        v5 = [v3 solidColorAppearance];
-        v6 = [v5 effectiveColor];
+        solidColorAppearance = [configurationCopy solidColorAppearance];
+        effectiveColor = [solidColorAppearance effectiveColor];
 
-        if (v6)
+        if (effectiveColor)
         {
           v7 = 3;
           goto LABEL_16;
@@ -1027,12 +1027,12 @@ LABEL_12:
       goto LABEL_16;
     }
 
-    v8 = [v3 lockPosterAppearance];
+    lockPosterAppearance = [configurationCopy lockPosterAppearance];
 LABEL_10:
-    v9 = v8;
-    v10 = [v8 isLegibilityBlurEnabled];
+    v9 = lockPosterAppearance;
+    isLegibilityBlurEnabled = [lockPosterAppearance isLegibilityBlurEnabled];
 
-    if (v10)
+    if (isLegibilityBlurEnabled)
     {
       v7 = 2;
       goto LABEL_16;
@@ -1041,20 +1041,20 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  if (v4 != 2)
+  if (selectedAppearanceType != 2)
   {
-    if (v4 != 3)
+    if (selectedAppearanceType != 3)
     {
       goto LABEL_12;
     }
 
-    v8 = [v3 homePosterAppearance];
+    lockPosterAppearance = [configurationCopy homePosterAppearance];
     goto LABEL_10;
   }
 
-  v11 = [v3 gradientAppearance];
+  gradientAppearance = [configurationCopy gradientAppearance];
 
-  if (v11)
+  if (gradientAppearance)
   {
     v7 = 4;
   }
@@ -1071,30 +1071,30 @@ LABEL_16:
 
 - (id)_fetchPosterPreferredProminentColor
 {
-  v3 = [(PBUIPosterHomeViewController *)self homeScreenConfiguration];
-  if (([PBUIPosterHomeViewController presentationModeForHomeConfiguration:v3]- 3) > 1)
+  homeScreenConfiguration = [(PBUIPosterHomeViewController *)self homeScreenConfiguration];
+  if (([PBUIPosterHomeViewController presentationModeForHomeConfiguration:homeScreenConfiguration]- 3) > 1)
   {
     v8.receiver = self;
     v8.super_class = PBUIPosterHomeViewController;
-    v6 = [(PBUIPosterVariantViewController *)&v8 _fetchPosterPreferredProminentColor];
+    _fetchPosterPreferredProminentColor = [(PBUIPosterVariantViewController *)&v8 _fetchPosterPreferredProminentColor];
   }
 
   else
   {
-    v4 = [v3 solidColorAppearance];
-    v5 = [v4 effectiveColor];
-    v6 = [v5 color];
+    solidColorAppearance = [homeScreenConfiguration solidColorAppearance];
+    effectiveColor = [solidColorAppearance effectiveColor];
+    _fetchPosterPreferredProminentColor = [effectiveColor color];
   }
 
-  return v6;
+  return _fetchPosterPreferredProminentColor;
 }
 
-- (BOOL)updatePresentation:(BOOL)a3
+- (BOOL)updatePresentation:(BOOL)presentation
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = [(PBUIPosterHomeViewController *)self homeScreenConfiguration];
-  v7 = [(PBUIEffectTrackingReplicaView *)self->_effectView showsSnapshot];
-  if (v7 != [(PBUIPosterHomeViewController *)self canShowSnapshot])
+  homeScreenConfiguration = [(PBUIPosterHomeViewController *)self homeScreenConfiguration];
+  showsSnapshot = [(PBUIEffectTrackingReplicaView *)self->_effectView showsSnapshot];
+  if (showsSnapshot != [(PBUIPosterHomeViewController *)self canShowSnapshot])
   {
     v8 = PBUILogSnapshot();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1105,7 +1105,7 @@ LABEL_16:
       _os_log_impl(&dword_21E67D000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] forcing update; we can now show a snapshot", buf, 0xCu);
     }
 
-    a3 = 1;
+    presentation = 1;
   }
 
   v38[0] = MEMORY[0x277D85DD0];
@@ -1116,7 +1116,7 @@ LABEL_16:
   v10 = MEMORY[0x223D62EE0](v38);
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_homeConfiguration, v6);
+    objc_storeStrong(&self->_homeConfiguration, homeScreenConfiguration);
     v14 = PBUILogSnapshot();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -1126,7 +1126,7 @@ LABEL_16:
       _os_log_impl(&dword_21E67D000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] forcing update; home configuration was updated", buf, 0xCu);
     }
 
-    v12 = [PBUIPosterHomeViewController presentationModeForHomeConfiguration:v6];
+    v12 = [PBUIPosterHomeViewController presentationModeForHomeConfiguration:homeScreenConfiguration];
 LABEL_12:
     self->_currentMode = v12;
     v16 = self->super._contentContainer;
@@ -1147,9 +1147,9 @@ LABEL_12:
         }
 
         [(UIScenePresenter *)presenter activate];
-        v19 = [(UIScenePresenter *)self->super._presenter presentationView];
+        presentationView = [(UIScenePresenter *)self->super._presenter presentationView];
         sceneView = self->super._sceneView;
-        self->super._sceneView = v19;
+        self->super._sceneView = presentationView;
 
         v21 = self->super._sceneView;
         [(UIView *)v16 bounds];
@@ -1219,16 +1219,16 @@ LABEL_33:
     v24 = objc_alloc_init(PBUIWallpaperGradient);
     if (v12 == 3)
     {
-      v32 = [v6 solidColorAppearance];
-      v26 = [v32 effectiveColor];
+      solidColorAppearance = [homeScreenConfiguration solidColorAppearance];
+      effectiveColor = [solidColorAppearance effectiveColor];
 
-      v27 = [v26 color];
-      v39[0] = v27;
-      v39[1] = v27;
+      color = [effectiveColor color];
+      v39[0] = color;
+      v39[1] = color;
       v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:2];
       [(PBUIWallpaperGradient *)v24 setColors:v33];
 
-      [(PBUIPosterHomeViewController *)self setFixedAverageColor:v27];
+      [(PBUIPosterHomeViewController *)self setFixedAverageColor:color];
     }
 
     else
@@ -1245,23 +1245,23 @@ LABEL_27:
         goto LABEL_33;
       }
 
-      v25 = [v6 gradientAppearance];
-      v26 = [v25 effectiveColor];
+      gradientAppearance = [homeScreenConfiguration gradientAppearance];
+      effectiveColor = [gradientAppearance effectiveColor];
 
-      v27 = [v26 color];
-      v28 = [v6 gradientAppearance];
-      v29 = [v28 gradientColors];
+      color = [effectiveColor color];
+      gradientAppearance2 = [homeScreenConfiguration gradientAppearance];
+      gradientColors = [gradientAppearance2 gradientColors];
 
-      [(PBUIWallpaperGradient *)v24 setColors:v29];
-      [(PBUIPosterHomeViewController *)self setFixedAverageColor:v27];
+      [(PBUIWallpaperGradient *)v24 setColors:gradientColors];
+      [(PBUIPosterHomeViewController *)self setFixedAverageColor:color];
     }
 
     goto LABEL_27;
   }
 
-  v11 = [PBUIPosterHomeViewController presentationModeForHomeConfiguration:v6];
+  v11 = [PBUIPosterHomeViewController presentationModeForHomeConfiguration:homeScreenConfiguration];
   v12 = v11;
-  if (a3 || self->_currentMode != v11)
+  if (presentation || self->_currentMode != v11)
   {
     goto LABEL_12;
   }
@@ -1311,16 +1311,16 @@ uint64_t __51__PBUIPosterHomeViewController_updatePresentation___block_invoke(ui
   return [*v1 configureForZOrder];
 }
 
-- (void)setFixedAverageColor:(id)a3
+- (void)setFixedAverageColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   fixedColorStatistics = self->_fixedColorStatistics;
-  v11 = v4;
-  if (v4)
+  v11 = colorCopy;
+  if (colorCopy)
   {
     if (fixedColorStatistics)
     {
-      [(PUIColorStatistics *)fixedColorStatistics resetWithColor:v4];
+      [(PUIColorStatistics *)fixedColorStatistics resetWithColor:colorCopy];
     }
 
     else
@@ -1339,15 +1339,15 @@ uint64_t __51__PBUIPosterHomeViewController_updatePresentation___block_invoke(ui
 
     if (fixedColorStatistics)
     {
-      v6 = [(PBUIPosterHomeViewController *)self contentColorStatistics];
-      [(PBUIPosterVariantViewController *)self colorStatisticsDidChange:v6];
+      contentColorStatistics = [(PBUIPosterHomeViewController *)self contentColorStatistics];
+      [(PBUIPosterVariantViewController *)self colorStatisticsDidChange:contentColorStatistics];
     }
   }
 }
 
-- (BOOL)updateGradientViewWithGradient:(id)a3
+- (BOOL)updateGradientViewWithGradient:(id)gradient
 {
-  v4 = a3;
+  gradientCopy = gradient;
   gradientView = self->_gradientView;
   if (!gradientView)
   {
@@ -1359,87 +1359,87 @@ uint64_t __51__PBUIPosterHomeViewController_updatePresentation___block_invoke(ui
 
     [(PBUIGradientView *)self->_gradientView setAutoresizingMask:18];
     [(BSUIOrientationTransformWrapperView *)self->_dynamicWrapperView addContentView:self->_gradientView];
-    v9 = [(PBUIPosterVariantViewController *)self counterpart];
-    v10 = [v9 scene];
-    v11 = [v10 settings];
-    -[PBUIPosterHomeViewController _updateRotationForOrientation:](self, "_updateRotationForOrientation:", [v11 pui_deviceOrientation]);
+    counterpart = [(PBUIPosterVariantViewController *)self counterpart];
+    scene = [counterpart scene];
+    settings = [scene settings];
+    -[PBUIPosterHomeViewController _updateRotationForOrientation:](self, "_updateRotationForOrientation:", [settings pui_deviceOrientation]);
 
     gradientView = self->_gradientView;
   }
 
-  v12 = [(PBUIGradientView *)gradientView gradient];
+  gradient = [(PBUIGradientView *)gradientView gradient];
   v13 = BSEqualObjects();
 
-  [(PBUIGradientView *)self->_gradientView setGradient:v4];
+  [(PBUIGradientView *)self->_gradientView setGradient:gradientCopy];
   return v13 ^ 1;
 }
 
-- (void)validateSnapshottingPreconditionsForSettings:(id)a3 result:(id)a4
+- (void)validateSnapshottingPreconditionsForSettings:(id)settings result:(id)result
 {
-  v24 = a3;
-  v6 = a4;
+  settingsCopy = settings;
+  resultCopy = result;
   currentMode = self->_currentMode;
   if ((currentMode - 3) <= 1)
   {
-    v8 = [(PBUIPosterHomeViewController *)self viewIfLoaded];
-    if (!v8)
+    viewIfLoaded = [(PBUIPosterHomeViewController *)self viewIfLoaded];
+    if (!viewIfLoaded)
     {
-      [v6 appendPreconditionResultFailureWithFormat:@"poster scene view has not been created"];
+      [resultCopy appendPreconditionResultFailureWithFormat:@"poster scene view has not been created"];
     }
 
-    if ([v8 isHidden])
+    if ([viewIfLoaded isHidden])
     {
-      [v6 appendPreconditionResultFailureWithFormat:@"poster scene view is hidden"];
+      [resultCopy appendPreconditionResultFailureWithFormat:@"poster scene view is hidden"];
     }
 
     gradientView = self->_gradientView;
     if (!gradientView)
     {
-      [v6 appendPreconditionResultFailureWithFormat:@"poster scene view's gradient view has not been created"];
+      [resultCopy appendPreconditionResultFailureWithFormat:@"poster scene view's gradient view has not been created"];
       gradientView = self->_gradientView;
     }
 
     if ([(PBUIGradientView *)gradientView isHidden])
     {
-      [v6 appendPreconditionResultFailureWithFormat:@"poster scene view's gradient view is hidden"];
+      [resultCopy appendPreconditionResultFailureWithFormat:@"poster scene view's gradient view is hidden"];
     }
 
-    v10 = [(PBUIGradientView *)self->_gradientView superview];
+    superview = [(PBUIGradientView *)self->_gradientView superview];
 
-    if (!v10)
+    if (!superview)
     {
-      [v6 appendPreconditionResultFailureWithFormat:@"poster scene view's gradient view has not been added to a superview"];
+      [resultCopy appendPreconditionResultFailureWithFormat:@"poster scene view's gradient view has not been added to a superview"];
     }
   }
 
-  v11 = [MEMORY[0x277CF0CA8] sharedInstance];
-  v12 = [v11 deviceClass];
+  mEMORY[0x277CF0CA8] = [MEMORY[0x277CF0CA8] sharedInstance];
+  deviceClass = [mEMORY[0x277CF0CA8] deviceClass];
 
-  if (v12 != 2 && [v24 pr_adjustedLuminance] != 2 && (objc_msgSend(v6, "isSnapshottingForExternalDisplayHostedWallpaper") & 1) == 0)
+  if (deviceClass != 2 && [settingsCopy pr_adjustedLuminance] != 2 && (objc_msgSend(resultCopy, "isSnapshottingForExternalDisplayHostedWallpaper") & 1) == 0)
   {
-    v13 = [v24 pr_adjustedLuminance];
+    pr_adjustedLuminance = [settingsCopy pr_adjustedLuminance];
     v14 = MEMORY[0x223D622C0](0);
-    [v6 appendPreconditionResultFailureWithFormat:@"screen is off; Backlight mode: %lu; isPad: %@", v13, v14];
+    [resultCopy appendPreconditionResultFailureWithFormat:@"screen is off; Backlight mode: %lu; isPad: %@", pr_adjustedLuminance, v14];
   }
 
-  v15 = [(PBUIPosterHomeViewController *)self reflectsLock];
-  v16 = [v6 externalDisplayConfiguration];
-  if (v16)
+  reflectsLock = [(PBUIPosterHomeViewController *)self reflectsLock];
+  externalDisplayConfiguration = [resultCopy externalDisplayConfiguration];
+  if (externalDisplayConfiguration)
   {
-    v17 = [v6 externalDisplayConfiguration];
-    v18 = [v17 mirrorsEmbeddedDisplay];
+    externalDisplayConfiguration2 = [resultCopy externalDisplayConfiguration];
+    mirrorsEmbeddedDisplay = [externalDisplayConfiguration2 mirrorsEmbeddedDisplay];
   }
 
   else
   {
-    v18 = 1;
+    mirrorsEmbeddedDisplay = 1;
   }
 
-  if (v15)
+  if (reflectsLock)
   {
     if ((currentMode - 5) < 0xFFFFFFFFFFFFFFFELL)
     {
-      v19 = v18;
+      v19 = mirrorsEmbeddedDisplay;
     }
 
     else
@@ -1447,10 +1447,10 @@ uint64_t __51__PBUIPosterHomeViewController_updatePresentation___block_invoke(ui
       v19 = 0;
     }
 
-    v20 = [(PBUIPosterHomeViewController *)self isSettledPosition];
-    if (v19 == 1 && !v20)
+    isSettledPosition = [(PBUIPosterHomeViewController *)self isSettledPosition];
+    if (v19 == 1 && !isSettledPosition)
     {
-      [v6 appendPreconditionResultFailure:@"poster is not in settled position"];
+      [resultCopy appendPreconditionResultFailure:@"poster is not in settled position"];
     }
   }
 
@@ -1459,63 +1459,63 @@ uint64_t __51__PBUIPosterHomeViewController_updatePresentation___block_invoke(ui
     [(PBUIPosterHomeViewController *)self isSettledPosition];
   }
 
-  v21 = [(PBUIPosterVariantViewController *)self _externalDisplayConfiguration];
-  v22 = [v6 externalDisplayConfiguration];
+  _externalDisplayConfiguration = [(PBUIPosterVariantViewController *)self _externalDisplayConfiguration];
+  externalDisplayConfiguration3 = [resultCopy externalDisplayConfiguration];
   v23 = BSEqualObjects();
 
   if (v23 && self->_isUpdatingOrientation)
   {
-    [v6 appendPreconditionResultFailure:@"poster is updating orientation"];
+    [resultCopy appendPreconditionResultFailure:@"poster is updating orientation"];
   }
 }
 
-- (void)applyFauxExternalSceneSettings:(id)a3
+- (void)applyFauxExternalSceneSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v8.receiver = self;
   v8.super_class = PBUIPosterHomeViewController;
-  [(PBUIPosterVariantViewController *)&v8 applyFauxExternalSceneSettings:v4];
-  v5 = [(PBUIPosterVariantViewController *)self _externalDisplayConfiguration];
+  [(PBUIPosterVariantViewController *)&v8 applyFauxExternalSceneSettings:settingsCopy];
+  _externalDisplayConfiguration = [(PBUIPosterVariantViewController *)self _externalDisplayConfiguration];
 
-  if (v5)
+  if (_externalDisplayConfiguration)
   {
-    v6 = [(PBUIPosterVariantViewController *)self _externalDisplayConfiguration];
-    v7 = [v6 mirrorsEmbeddedDisplay];
+    _externalDisplayConfiguration2 = [(PBUIPosterVariantViewController *)self _externalDisplayConfiguration];
+    mirrorsEmbeddedDisplay = [_externalDisplayConfiguration2 mirrorsEmbeddedDisplay];
 
-    if ((v7 & 1) == 0)
+    if ((mirrorsEmbeddedDisplay & 1) == 0)
     {
-      [v4 pr_setUnlockProgress:1.0];
+      [settingsCopy pr_setUnlockProgress:1.0];
     }
   }
 }
 
-- (void)setCounterpart:(id)a3
+- (void)setCounterpart:(id)counterpart
 {
   v4.receiver = self;
   v4.super_class = PBUIPosterHomeViewController;
-  [(PBUIPosterVariantViewController *)&v4 setCounterpart:a3];
+  [(PBUIPosterVariantViewController *)&v4 setCounterpart:counterpart];
   [(PBUIPosterHomeViewController *)self updatePresentation:0];
   [(PBUIPosterHomeViewController *)self configureForZOrder];
 }
 
-- (void)updateViewControllerVisibilityForUnlockProgress:(double)a3
+- (void)updateViewControllerVisibilityForUnlockProgress:(double)progress
 {
   if (!_os_feature_enabled_impl() || (_UISolariumEnabled() & 1) == 0)
   {
 
-    [(PBUIPosterHomeViewController *)self _updateDimHomeScreenWallpaperViewForUnlockProgress:0 animated:a3];
+    [(PBUIPosterHomeViewController *)self _updateDimHomeScreenWallpaperViewForUnlockProgress:0 animated:progress];
   }
 }
 
-- (id)acquireDuckHomeScreenWallpaperDimAssertionWithReason:(id)a3
+- (id)acquireDuckHomeScreenWallpaperDimAssertionWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   BSDispatchQueueAssertMain();
   if (!self->_duckHomeScreenWallpaperDimAssertions)
   {
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     duckHomeScreenWallpaperDimAssertions = self->_duckHomeScreenWallpaperDimAssertions;
-    self->_duckHomeScreenWallpaperDimAssertions = v5;
+    self->_duckHomeScreenWallpaperDimAssertions = weakObjectsHashTable;
   }
 
   objc_initWeak(&location, self);
@@ -1525,7 +1525,7 @@ uint64_t __51__PBUIPosterHomeViewController_updatePresentation___block_invoke(ui
   v12 = __85__PBUIPosterHomeViewController_acquireDuckHomeScreenWallpaperDimAssertionWithReason___block_invoke;
   v13 = &unk_278362E18;
   objc_copyWeak(&v14, &location);
-  v8 = [v7 initWithIdentifier:@"duck_home_screen_wallpaper_dimming" forReason:v4 invalidationBlock:&v10];
+  v8 = [v7 initWithIdentifier:@"duck_home_screen_wallpaper_dimming" forReason:reasonCopy invalidationBlock:&v10];
   [(NSHashTable *)self->_duckHomeScreenWallpaperDimAssertions addObject:v8, v10, v11, v12, v13];
   [(PBUIPosterHomeViewController *)self _updateEnableHomeScreenWallpaperDimming];
   objc_destroyWeak(&v14);
@@ -1552,55 +1552,55 @@ void __85__PBUIPosterHomeViewController_acquireDuckHomeScreenWallpaperDimAsserti
 
 - (BOOL)isHomeScreenWallpaperDimmed
 {
-  v2 = [(PBUIPosterVariantViewController *)self lockScreenConfiguration];
-  v3 = [v2 pr_loadHomeScreenConfigurationWithError:0];
-  v4 = [v3 customizationConfiguration];
-  v5 = [v4 isDimmed];
+  lockScreenConfiguration = [(PBUIPosterVariantViewController *)self lockScreenConfiguration];
+  v3 = [lockScreenConfiguration pr_loadHomeScreenConfigurationWithError:0];
+  customizationConfiguration = [v3 customizationConfiguration];
+  isDimmed = [customizationConfiguration isDimmed];
 
-  return v5;
+  return isDimmed;
 }
 
 - (void)_updateEnableHomeScreenWallpaperDimming
 {
   isHomeScreenWallpaperCurrentlyDimmed = self->_isHomeScreenWallpaperCurrentlyDimmed;
-  v4 = [(PBUIPosterHomeViewController *)self _shouldHomeScreenWallpaperBeDimmed];
+  _shouldHomeScreenWallpaperBeDimmed = [(PBUIPosterHomeViewController *)self _shouldHomeScreenWallpaperBeDimmed];
   homeScreenDimStyle = self->_homeScreenDimStyle;
-  v6 = [(PBUIPosterHomeViewController *)self _updatedDimStyle];
-  if (isHomeScreenWallpaperCurrentlyDimmed == v4)
+  _updatedDimStyle = [(PBUIPosterHomeViewController *)self _updatedDimStyle];
+  if (isHomeScreenWallpaperCurrentlyDimmed == _shouldHomeScreenWallpaperBeDimmed)
   {
-    if (homeScreenDimStyle == v6)
+    if (homeScreenDimStyle == _updatedDimStyle)
     {
       return;
     }
 
-    self->_homeScreenDimStyle = v6;
+    self->_homeScreenDimStyle = _updatedDimStyle;
   }
 
   else
   {
-    self->_isHomeScreenWallpaperCurrentlyDimmed = v4;
+    self->_isHomeScreenWallpaperCurrentlyDimmed = _shouldHomeScreenWallpaperBeDimmed;
   }
 
   [(PBUIPosterHomeViewController *)self unlockProgress];
   v8 = v7;
-  v9 = [(PBUIPosterHomeViewController *)self isSettledPosition];
+  isSettledPosition = [(PBUIPosterHomeViewController *)self isSettledPosition];
 
-  [(PBUIPosterHomeViewController *)self _updateDimHomeScreenWallpaperViewForUnlockProgress:v9 animated:v8];
+  [(PBUIPosterHomeViewController *)self _updateDimHomeScreenWallpaperViewForUnlockProgress:isSettledPosition animated:v8];
 }
 
 - (unint64_t)_updatedDimStyle
 {
-  v2 = [(PBUIPosterVariantViewController *)self lockScreenConfiguration];
-  v3 = [v2 pr_loadHomeScreenConfigurationWithError:0];
-  v4 = [v3 customizationConfiguration];
-  v5 = [v4 dimStyle];
+  lockScreenConfiguration = [(PBUIPosterVariantViewController *)self lockScreenConfiguration];
+  v3 = [lockScreenConfiguration pr_loadHomeScreenConfigurationWithError:0];
+  customizationConfiguration = [v3 customizationConfiguration];
+  dimStyle = [customizationConfiguration dimStyle];
 
-  return v5;
+  return dimStyle;
 }
 
-- (void)_duckHomeScreenWallpaperDimAssertionDidInvalidate:(id)a3
+- (void)_duckHomeScreenWallpaperDimAssertionDidInvalidate:(id)invalidate
 {
-  [(NSHashTable *)self->_duckHomeScreenWallpaperDimAssertions removeObject:a3];
+  [(NSHashTable *)self->_duckHomeScreenWallpaperDimAssertions removeObject:invalidate];
   if (![(NSHashTable *)self->_duckHomeScreenWallpaperDimAssertions count])
   {
     duckHomeScreenWallpaperDimAssertions = self->_duckHomeScreenWallpaperDimAssertions;
@@ -1617,18 +1617,18 @@ void __85__PBUIPosterHomeViewController_acquireDuckHomeScreenWallpaperDimAsserti
   [(PBUIPosterHomeViewController *)self _updateDimHomeScreenWallpaperViewForUnlockProgress:1 animated:?];
 }
 
-- (void)_updateDimHomeScreenWallpaperViewForUnlockProgress:(double)a3 animated:(BOOL)a4
+- (void)_updateDimHomeScreenWallpaperViewForUnlockProgress:(double)progress animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   homeScreenDimStyle = self->_homeScreenDimStyle;
-  v8 = [(PBUIPosterHomeViewController *)self traitCollection];
-  v9 = [v8 userInterfaceStyle];
+  traitCollection = [(PBUIPosterHomeViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
   if (self->_isHomeScreenWallpaperCurrentlyDimmed)
   {
     if (homeScreenDimStyle == 2)
     {
-      v10 = v9 == 1;
+      v10 = userInterfaceStyle == 1;
     }
 
     else
@@ -1643,7 +1643,7 @@ void __85__PBUIPosterHomeViewController_acquireDuckHomeScreenWallpaperDimAsserti
       v12 = 0.5;
     }
 
-    v13 = v12 * a3 + 0.0;
+    v13 = v12 * progress + 0.0;
   }
 
   else
@@ -1655,7 +1655,7 @@ void __85__PBUIPosterHomeViewController_acquireDuckHomeScreenWallpaperDimAsserti
   [(_PBUIDimmingView *)self->_dimView setUseDimStyle:v10];
   dimView = self->_dimView;
 
-  [(_PBUIDimmingView *)dimView setDim:v4 animated:v13];
+  [(_PBUIDimmingView *)dimView setDim:animatedCopy animated:v13];
 }
 
 - (void)noteHomeVariantStyleStateMayHaveUpdated
@@ -1666,35 +1666,35 @@ void __85__PBUIPosterHomeViewController_acquireDuckHomeScreenWallpaperDimAsserti
   [(PBUIPosterHomeViewController *)self updateHomeVariantStyleState];
 }
 
-- (void)effectTrackingReplicaViewHasValidSnapshot:(id)a3
+- (void)effectTrackingReplicaViewHasValidSnapshot:(id)snapshot
 {
   effectView = self->_effectView;
-  v4 = [(PBUIPosterHomeViewController *)self canShowSnapshot];
+  canShowSnapshot = [(PBUIPosterHomeViewController *)self canShowSnapshot];
 
-  [(PBUIEffectTrackingReplicaView *)effectView setShowsSnapshot:v4];
+  [(PBUIEffectTrackingReplicaView *)effectView setShowsSnapshot:canShowSnapshot];
 }
 
-- (BOOL)showsSnapshotWhenIdleForMode:(int64_t)a3
+- (BOOL)showsSnapshotWhenIdleForMode:(int64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->super._counterpart);
-    v6 = [WeakRetained scene];
-    v7 = [v6 settings];
-    v8 = [v7 pui_provider];
+    scene = [WeakRetained scene];
+    settings = [scene settings];
+    pui_provider = [settings pui_provider];
 
-    if ([v8 isEqualToString:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"])
+    if ([pui_provider isEqualToString:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"])
     {
 
       return 1;
     }
 
-    v9 = [v8 isEqualToString:@"com.apple.WallpaperKit.CollectionsPoster"];
-    v10 = [(PBUIPosterHomeViewController *)self _descriptorIdentity];
-    v11 = v10;
+    v9 = [pui_provider isEqualToString:@"com.apple.WallpaperKit.CollectionsPoster"];
+    _descriptorIdentity = [(PBUIPosterHomeViewController *)self _descriptorIdentity];
+    v11 = _descriptorIdentity;
     if (v9)
     {
-      v12 = v10 == 0;
+      v12 = _descriptorIdentity == 0;
     }
 
     else
@@ -1704,13 +1704,13 @@ void __85__PBUIPosterHomeViewController_acquireDuckHomeScreenWallpaperDimAsserti
 
     if (!v12)
     {
-      v13 = _PRCollectionsPosterDescriptorNeedsSnapshotReplacement(v10);
+      v13 = _PRCollectionsPosterDescriptorNeedsSnapshotReplacement(_descriptorIdentity);
 
       return v13;
     }
   }
 
-  else if (a3 == 2)
+  else if (mode == 2)
   {
     return !UIAccessibilityIsReduceTransparencyEnabled();
   }
@@ -1720,17 +1720,17 @@ void __85__PBUIPosterHomeViewController_acquireDuckHomeScreenWallpaperDimAsserti
 
 - (void)configureEffectViewForMode
 {
-  v3 = [(PBUIPosterHomeViewController *)self reflectsLock];
+  reflectsLock = [(PBUIPosterHomeViewController *)self reflectsLock];
   effectView = self->_effectView;
-  v5 = [(PBUIPosterVariantViewController *)self snapshotSourceProvider];
-  [(PBUIEffectTrackingReplicaView *)effectView setSnapshotProvider:v5];
+  snapshotSourceProvider = [(PBUIPosterVariantViewController *)self snapshotSourceProvider];
+  [(PBUIEffectTrackingReplicaView *)effectView setSnapshotProvider:snapshotSourceProvider];
 
   v6 = self->_effectView;
-  if (v3)
+  if (reflectsLock)
   {
     WeakRetained = objc_loadWeakRetained(&self->super._counterpart);
-    v8 = [WeakRetained portalSourceProvider];
-    [(PBUIEffectTrackingReplicaView *)v6 setPortalProvider:v8];
+    portalSourceProvider = [WeakRetained portalSourceProvider];
+    [(PBUIEffectTrackingReplicaView *)v6 setPortalProvider:portalSourceProvider];
   }
 
   else
@@ -1753,11 +1753,11 @@ void __85__PBUIPosterHomeViewController_acquireDuckHomeScreenWallpaperDimAsserti
   [(PBUIPosterHomeViewController *)self configureForZOrder];
 }
 
-- (void)setActiveStyle:(int64_t)a3
+- (void)setActiveStyle:(int64_t)style
 {
   v4.receiver = self;
   v4.super_class = PBUIPosterHomeViewController;
-  [(PBUIPosterVariantViewController *)&v4 setActiveStyle:a3];
+  [(PBUIPosterVariantViewController *)&v4 setActiveStyle:style];
   [(PBUIPosterHomeViewController *)self configureForZOrder];
 }
 
@@ -1786,15 +1786,15 @@ void __85__PBUIPosterHomeViewController_acquireDuckHomeScreenWallpaperDimAsserti
   }
 
   WeakRetained = objc_loadWeakRetained(&self->super._counterpart);
-  v4 = [WeakRetained scene];
-  v5 = [v4 settings];
-  [v5 pr_unlockProgress];
+  scene = [WeakRetained scene];
+  settings = [scene settings];
+  [settings pr_unlockProgress];
   v7 = v6;
 
   return v7;
 }
 
-- (void)_accessibilityReduceTransparencyChanged:(id)a3
+- (void)_accessibilityReduceTransparencyChanged:(id)changed
 {
   if (self->_currentMode == 2)
   {
@@ -1806,7 +1806,7 @@ void __85__PBUIPosterHomeViewController_acquireDuckHomeScreenWallpaperDimAsserti
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_21E67D000, a2, OS_LOG_TYPE_ERROR, "Unable to load home screen configuration: %{public}@", &v2, 0xCu);
 }
 

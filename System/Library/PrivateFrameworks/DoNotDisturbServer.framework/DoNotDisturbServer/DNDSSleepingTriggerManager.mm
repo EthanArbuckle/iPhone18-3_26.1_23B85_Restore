@@ -1,8 +1,8 @@
 @interface DNDSSleepingTriggerManager
 - (DNDSSleepingTriggerManager)init;
 - (DNDSSleepingTriggerManagerDataSource)dataSource;
-- (void)_configureSleepingTriggerWithMode:(id)a3;
-- (void)_refreshWithMode:(id)a3 event:(id)a4;
+- (void)_configureSleepingTriggerWithMode:(id)mode;
+- (void)_refreshWithMode:(id)mode event:(id)event;
 - (void)refresh;
 @end
 
@@ -21,9 +21,9 @@
 
     if ([(DNDSSleepingTriggerManager *)v2 _featureEnabled])
     {
-      v5 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       sinks = v2->_sinks;
-      v2->_sinks = v5;
+      v2->_sinks = dictionary;
     }
   }
 
@@ -62,73 +62,73 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_refreshWithMode:(id)a3 event:(id)a4
+- (void)_refreshWithMode:(id)mode event:(id)event
 {
   v126 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DNDSSleepingTriggerManager *)self dataSource];
-  v9 = [v6 modeIdentifier];
+  modeCopy = mode;
+  eventCopy = event;
+  dataSource = [(DNDSSleepingTriggerManager *)self dataSource];
+  modeIdentifier = [modeCopy modeIdentifier];
   v118 = 0;
-  v10 = [v8 triggerManager:self assertionsWithClientIdentifer:@"com.apple.donotdisturb.private.sleeping-trigger" error:&v118];
+  v10 = [dataSource triggerManager:self assertionsWithClientIdentifer:@"com.apple.donotdisturb.private.sleeping-trigger" error:&v118];
   v11 = v118;
-  v12 = [v10 firstObject];
-  if (v7)
+  firstObject = [v10 firstObject];
+  if (eventCopy)
   {
-    v99 = v8;
-    v13 = v9;
-    v14 = [v7 eventBody];
-    v15 = [v14 sleepModeChangeReason];
+    v99 = dataSource;
+    v13 = modeIdentifier;
+    eventBody = [eventCopy eventBody];
+    sleepModeChangeReason = [eventBody sleepModeChangeReason];
 
-    if (v15 <= 8 && ((1 << v15) & 0x181) != 0)
+    if (sleepModeChangeReason <= 8 && ((1 << sleepModeChangeReason) & 0x181) != 0)
     {
-      v16 = DNDSLogSleepingTrigger;
-      v9 = v13;
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      uUID = DNDSLogSleepingTrigger;
+      modeIdentifier = v13;
+      if (os_log_type_enabled(uUID, OS_LOG_TYPE_DEFAULT))
       {
         v95 = v13;
-        v97 = v12;
+        v97 = firstObject;
         v94 = v10;
-        v17 = [v7 eventBody];
-        v18 = DNDBMSleepModeChangeReasonToString([v17 sleepModeChangeReason]);
-        v19 = [v7 eventBody];
-        v20 = [v19 sleepModeState];
-        v21 = v6;
-        if (v20 > 2)
+        eventBody2 = [eventCopy eventBody];
+        v18 = DNDBMSleepModeChangeReasonToString([eventBody2 sleepModeChangeReason]);
+        eventBody3 = [eventCopy eventBody];
+        sleepModeState = [eventBody3 sleepModeState];
+        v21 = modeCopy;
+        if (sleepModeState > 2)
         {
           v22 = @"unspecified";
         }
 
         else
         {
-          v22 = off_278F8B3F0[v20];
+          v22 = off_278F8B3F0[sleepModeState];
         }
 
-        v45 = [v7 eventBody];
-        v46 = [v45 expectedEndDate];
+        eventBody4 = [eventCopy eventBody];
+        expectedEndDate = [eventBody4 expectedEndDate];
         *buf = 138543874;
         v121 = v18;
         v122 = 2114;
         v123 = v22;
         v124 = 2114;
-        v125 = v46;
-        _os_log_impl(&dword_24912E000, v16, OS_LOG_TYPE_DEFAULT, "Ignoring event: reason=%{public}@ state=%{public}@ expectedEnd=%{public}@", buf, 0x20u);
+        v125 = expectedEndDate;
+        _os_log_impl(&dword_24912E000, uUID, OS_LOG_TYPE_DEFAULT, "Ignoring event: reason=%{public}@ state=%{public}@ expectedEnd=%{public}@", buf, 0x20u);
 
-        v12 = v97;
-        v8 = v99;
+        firstObject = v97;
+        dataSource = v99;
         v10 = v94;
-        v9 = v95;
-        v6 = v21;
+        modeIdentifier = v95;
+        modeCopy = v21;
         goto LABEL_53;
       }
 
       goto LABEL_52;
     }
 
-    v9 = v13;
+    modeIdentifier = v13;
     if (v13)
     {
-      v27 = v6;
+      v27 = modeCopy;
       v115 = v11;
       v28 = [v99 triggerManager:self assertionsWithClientIdentifer:@"com.apple.focus.activity-manager" error:&v115];
       v91 = v115;
@@ -137,7 +137,7 @@
       v113[1] = 3221225472;
       v113[2] = __53__DNDSSleepingTriggerManager__refreshWithMode_event___block_invoke;
       v113[3] = &unk_278F8A0B0;
-      v29 = v12;
+      v29 = firstObject;
       v30 = v13;
       v114 = v30;
       v31 = [v28 bs_filter:v113];
@@ -163,29 +163,29 @@
 
       v33 = [v31 count];
       v90 = [v31 bs_compactMap:&__block_literal_global_19];
-      v34 = [v7 eventBody];
-      v35 = [v34 sleepModeState];
+      eventBody5 = [eventCopy eventBody];
+      sleepModeState2 = [eventBody5 sleepModeState];
 
-      if ((v35 - 1) > 1)
+      if ((sleepModeState2 - 1) > 1)
       {
         if (!v98 && !v33)
         {
-          v12 = 0;
-          v6 = v27;
+          firstObject = 0;
+          modeCopy = v27;
           v69 = v90;
           v68 = v91;
 LABEL_51:
 
-          v16 = v114;
+          uUID = v114;
           v11 = v68;
-          v9 = v13;
+          modeIdentifier = v13;
 LABEL_52:
-          v8 = v99;
+          dataSource = v99;
           goto LABEL_53;
         }
 
-        v86 = v7;
-        v89 = self;
+        v86 = eventCopy;
+        selfCopy = self;
         v96 = v13;
         v93 = v27;
         v70 = DNDSLogSleepingTrigger;
@@ -245,10 +245,10 @@ LABEL_52:
         v69 = v78;
         v102 = v69;
         v103 = v30;
-        v79 = [v99 triggerManager:v89 performModeAssertionUpdatesWithHandler:v101];
+        v79 = [v99 triggerManager:selfCopy performModeAssertionUpdatesWithHandler:v101];
 
         v80 = v102;
-        v6 = v93;
+        modeCopy = v93;
         v13 = v96;
         v68 = v91;
       }
@@ -257,18 +257,18 @@ LABEL_52:
       {
         v84 = v31;
         v36 = v10;
-        v37 = v7;
+        v37 = eventCopy;
         v38 = v33 != 0;
         v39 = objc_alloc_init(MEMORY[0x277D05A40]);
         [v39 setIdentifier:@"com.apple.donotdisturb.trigger.sleeping"];
         [v39 setModeIdentifier:v30];
-        v40 = [v37 eventBody];
-        v41 = [v40 expectedEndDate];
-        [v39 setUserVisibleEndDate:v41];
+        eventBody6 = [v37 eventBody];
+        expectedEndDate2 = [eventBody6 expectedEndDate];
+        [v39 setUserVisibleEndDate:expectedEndDate2];
 
         v86 = v37;
-        v42 = [v37 eventBody];
-        v43 = [v42 sleepModeChangeReason] - 1;
+        eventBody7 = [v37 eventBody];
+        v43 = [eventBody7 sleepModeChangeReason] - 1;
         if (v43 > 7)
         {
           v44 = 0;
@@ -291,17 +291,17 @@ LABEL_52:
         v110 = v30;
         v111 = v39;
         v80 = v39;
-        v81 = self;
+        selfCopy2 = self;
         v69 = v109;
-        v82 = [v99 triggerManager:v81 performModeAssertionUpdatesWithHandler:v108];
+        v82 = [v99 triggerManager:selfCopy2 performModeAssertionUpdatesWithHandler:v108];
 
         v10 = v36;
-        v6 = v27;
+        modeCopy = v27;
       }
 
       v31 = v85;
-      v7 = v86;
-      v12 = v98;
+      eventCopy = v86;
+      firstObject = v98;
       goto LABEL_51;
     }
 
@@ -311,23 +311,23 @@ LABEL_52:
       if (os_log_type_enabled(DNDSLogSleepingTrigger, OS_LOG_TYPE_DEFAULT))
       {
         v62 = v61;
-        v63 = [(__CFString *)v12 details];
-        [v63 modeIdentifier];
-        v88 = self;
-        v65 = v64 = v6;
+        details = [(__CFString *)firstObject details];
+        [details modeIdentifier];
+        selfCopy3 = self;
+        v65 = v64 = modeCopy;
         *buf = 138543362;
         v121 = v65;
         _os_log_impl(&dword_24912E000, v62, OS_LOG_TYPE_DEFAULT, "Invalidating active assertion no mode identifer for sleeping trigger in response to event; previousModeID=%{public}@", buf, 0xCu);
 
-        v9 = 0;
-        v6 = v64;
-        self = v88;
+        modeIdentifier = 0;
+        modeCopy = v64;
+        self = selfCopy3;
       }
 
-      v16 = [(__CFString *)v12 UUID];
+      uUID = [(__CFString *)firstObject UUID];
       v100 = v11;
-      v8 = v99;
-      v66 = [v99 triggerManager:self invalidateModeAssertionWithUUID:v16 reason:3 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.sleeping-trigger" error:&v100];
+      dataSource = v99;
+      v66 = [v99 triggerManager:self invalidateModeAssertionWithUUID:uUID reason:3 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.sleeping-trigger" error:&v100];
       v53 = v100;
 LABEL_31:
       v67 = v53;
@@ -339,79 +339,79 @@ LABEL_53:
     }
 
 LABEL_32:
-    v8 = v99;
+    dataSource = v99;
     goto LABEL_54;
   }
 
   if ([v10 count])
   {
-    if (!v9)
+    if (!modeIdentifier)
     {
       v47 = DNDSLogSleepingTrigger;
       if (os_log_type_enabled(DNDSLogSleepingTrigger, OS_LOG_TYPE_DEFAULT))
       {
         v48 = v47;
-        v49 = [(__CFString *)v12 details];
-        [v49 modeIdentifier];
-        v87 = self;
-        v51 = v50 = v6;
+        details2 = [(__CFString *)firstObject details];
+        [details2 modeIdentifier];
+        selfCopy4 = self;
+        v51 = v50 = modeCopy;
         *buf = 138543362;
         v121 = v51;
         _os_log_impl(&dword_24912E000, v48, OS_LOG_TYPE_DEFAULT, "Invalidating active assertion no mode identifer for sleeping trigger; previousModeID=%{public}@", buf, 0xCu);
 
-        v9 = 0;
-        v6 = v50;
-        self = v87;
+        modeIdentifier = 0;
+        modeCopy = v50;
+        self = selfCopy4;
       }
 
-      v16 = [(__CFString *)v12 UUID];
+      uUID = [(__CFString *)firstObject UUID];
       v117 = v11;
-      v52 = [v8 triggerManager:self invalidateModeAssertionWithUUID:v16 reason:2 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.sleeping-trigger" error:&v117];
+      v52 = [dataSource triggerManager:self invalidateModeAssertionWithUUID:uUID reason:2 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.sleeping-trigger" error:&v117];
       v53 = v117;
       goto LABEL_31;
     }
 
-    v99 = v8;
-    v92 = v6;
-    v23 = [(__CFString *)v12 details];
-    [v23 modeIdentifier];
-    v25 = v24 = v9;
+    v99 = dataSource;
+    v92 = modeCopy;
+    details3 = [(__CFString *)firstObject details];
+    [details3 modeIdentifier];
+    v25 = v24 = modeIdentifier;
     v26 = [v24 isEqualToString:v25];
 
     if ((v26 & 1) == 0)
     {
-      v54 = [(__CFString *)v12 details];
-      v16 = [v54 mutableCopy];
+      details4 = [(__CFString *)firstObject details];
+      uUID = [details4 mutableCopy];
 
-      [v16 setModeIdentifier:v24];
+      [uUID setModeIdentifier:v24];
       v55 = DNDSLogSleepingTrigger;
-      v9 = v24;
+      modeIdentifier = v24;
       if (os_log_type_enabled(DNDSLogSleepingTrigger, OS_LOG_TYPE_DEFAULT))
       {
         v56 = v55;
-        v57 = [(__CFString *)v12 details];
-        v58 = [v57 modeIdentifier];
+        details5 = [(__CFString *)firstObject details];
+        modeIdentifier2 = [details5 modeIdentifier];
         *buf = 138543618;
         v121 = v24;
         v122 = 2114;
-        v123 = v58;
+        v123 = modeIdentifier2;
         _os_log_impl(&dword_24912E000, v56, OS_LOG_TYPE_DEFAULT, "Updating active assertion to new mode identifer for sleeping trigger; modeID=%{public}@ previousModeID=%{public}@", buf, 0x16u);
 
-        v9 = v24;
+        modeIdentifier = v24;
       }
 
       v116 = v11;
-      v8 = v99;
-      v59 = [v99 triggerManager:self takeModeAssertionWithDetails:v16 clientIdentifier:@"com.apple.donotdisturb.private.sleeping-trigger" error:&v116];
+      dataSource = v99;
+      v59 = [v99 triggerManager:self takeModeAssertionWithDetails:uUID clientIdentifier:@"com.apple.donotdisturb.private.sleeping-trigger" error:&v116];
       v60 = v116;
 
       v11 = v60;
-      v6 = v92;
+      modeCopy = v92;
       goto LABEL_53;
     }
 
-    v6 = v92;
-    v9 = v24;
+    modeCopy = v92;
+    modeIdentifier = v24;
     goto LABEL_32;
   }
 
@@ -512,15 +512,15 @@ uint64_t __53__DNDSSleepingTriggerManager__refreshWithMode_event___block_invoke_
   return 1;
 }
 
-- (void)_configureSleepingTriggerWithMode:(id)a3
+- (void)_configureSleepingTriggerWithMode:(id)mode
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modeCopy = mode;
   v5 = [(NSMutableDictionary *)self->_sinks objectForKeyedSubscript:@"system"];
   v6 = v5;
-  if (!v4 || v5)
+  if (!modeCopy || v5)
   {
-    if (!v4 && v5)
+    if (!modeCopy && v5)
     {
       [v5 cancel];
       [(NSMutableDictionary *)self->_sinks removeObjectForKey:@"system"];
@@ -533,23 +533,23 @@ uint64_t __53__DNDSSleepingTriggerManager__refreshWithMode_event___block_invoke_
     if (os_log_type_enabled(DNDSLogSleepingTrigger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v20 = v4;
+      v20 = modeCopy;
       _os_log_impl(&dword_24912E000, v7, OS_LOG_TYPE_DEFAULT, "Adding biome sleeping event monitor; mode=%{public}@", buf, 0xCu);
     }
 
     v8 = [objc_alloc(MEMORY[0x277CF1918]) initWithIdentifier:@"com.apple.donotdisturb.sleepingTrigger" targetQueue:self->_biomeQueue];
-    v9 = [MEMORY[0x277CF1B58] sleepModeStream];
-    v10 = [v9 publisher];
-    v11 = [v10 subscribeOn:v8];
+    sleepModeStream = [MEMORY[0x277CF1B58] sleepModeStream];
+    publisher = [sleepModeStream publisher];
+    v11 = [publisher subscribeOn:v8];
     v13 = MEMORY[0x277D85DD0];
     v14 = 3221225472;
     v15 = __64__DNDSSleepingTriggerManager__configureSleepingTriggerWithMode___block_invoke_29;
     v16 = &unk_278F8AC30;
-    v17 = self;
-    v18 = v4;
+    selfCopy = self;
+    v18 = modeCopy;
     v6 = [v11 sinkWithCompletion:&__block_literal_global_28 receiveInput:&v13];
 
-    [(NSMutableDictionary *)self->_sinks setObject:v6 forKeyedSubscript:@"system", v13, v14, v15, v16, v17];
+    [(NSMutableDictionary *)self->_sinks setObject:v6 forKeyedSubscript:@"system", v13, v14, v15, v16, selfCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];

@@ -1,20 +1,20 @@
 @interface AFClockAlarmSnapshot
-+ (id)newWithBuilder:(id)a3;
-- (AFClockAlarmSnapshot)initWithBuilder:(id)a3;
-- (AFClockAlarmSnapshot)initWithCoder:(id)a3;
-- (AFClockAlarmSnapshot)initWithDictionaryRepresentation:(id)a3;
-- (AFClockAlarmSnapshot)initWithGeneration:(unint64_t)a3 date:(id)a4 alarmsByID:(id)a5 notifiedFiringAlarmIDs:(id)a6;
-- (AFClockAlarmSnapshot)initWithSerializedBackingStore:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFClockAlarmSnapshot)initWithBuilder:(id)builder;
+- (AFClockAlarmSnapshot)initWithCoder:(id)coder;
+- (AFClockAlarmSnapshot)initWithDictionaryRepresentation:(id)representation;
+- (AFClockAlarmSnapshot)initWithGeneration:(unint64_t)generation date:(id)date alarmsByID:(id)d notifiedFiringAlarmIDs:(id)ds;
+- (AFClockAlarmSnapshot)initWithSerializedBackingStore:(id)store;
 - (BOOL)hasFiringAlarms;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)ad_shortDescription;
 - (id)buildDictionaryRepresentation;
 - (id)firingAlarms;
 - (id)mostRecentFiringAlarm;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFClockAlarmSnapshot
@@ -23,11 +23,11 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[AFClockAlarmSnapshot generation](self, "generation")}];
-  v5 = [(AFClockAlarmSnapshot *)self date];
-  v6 = [v5 description];
-  v7 = [(AFClockAlarmSnapshot *)self notifiedFiringAlarmIDs];
+  date = [(AFClockAlarmSnapshot *)self date];
+  v6 = [date description];
+  notifiedFiringAlarmIDs = [(AFClockAlarmSnapshot *)self notifiedFiringAlarmIDs];
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[AFClockAlarmSnapshot hasFiringAlarms](self, "hasFiringAlarms")}];
-  v9 = [v3 stringWithFormat:@"(gen: %@, date: %@, notifiedFiringAlarmIDs: %@, isFiring: %@)", v4, v6, v7, v8];
+  v9 = [v3 stringWithFormat:@"(gen: %@, date: %@, notifiedFiringAlarmIDs: %@, isFiring: %@)", v4, v6, notifiedFiringAlarmIDs, v8];
 
   return v9;
 }
@@ -39,10 +39,10 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(AFClockAlarmSnapshot *)self alarmsByID];
-  v3 = [v2 allValues];
+  alarmsByID = [(AFClockAlarmSnapshot *)self alarmsByID];
+  allValues = [alarmsByID allValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -52,7 +52,7 @@
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -63,7 +63,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -82,17 +82,17 @@ LABEL_12:
 - (id)firingAlarms
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [(AFClockAlarmSnapshot *)self notifiedFiringAlarmIDs];
-  v5 = [(AFClockAlarmSnapshot *)self alarmsByID];
+  notifiedFiringAlarmIDs = [(AFClockAlarmSnapshot *)self notifiedFiringAlarmIDs];
+  alarmsByID = [(AFClockAlarmSnapshot *)self alarmsByID];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __45__AFClockAlarmSnapshot_Utility__firingAlarms__block_invoke;
   v13 = &unk_1E73446D0;
-  v14 = v4;
+  v14 = notifiedFiringAlarmIDs;
   v15 = v3;
   v6 = v3;
-  v7 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:&v10];
+  v7 = notifiedFiringAlarmIDs;
+  [alarmsByID enumerateKeysAndObjectsUsingBlock:&v10];
 
   v8 = [v6 copy];
 
@@ -157,10 +157,10 @@ LABEL_9:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v2 = [(AFClockAlarmSnapshot *)self alarmsByID];
-  v3 = [v2 allValues];
+  alarmsByID = [(AFClockAlarmSnapshot *)self alarmsByID];
+  allValues = [alarmsByID allValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -172,7 +172,7 @@ LABEL_9:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
@@ -180,9 +180,9 @@ LABEL_9:
         {
           if (v6)
           {
-            v10 = [v6 firedDate];
-            v11 = [v9 firedDate];
-            if ([v10 compare:v11] == -1)
+            firedDate = [v6 firedDate];
+            firedDate2 = [v9 firedDate];
+            if ([firedDate compare:firedDate2] == -1)
             {
               v12 = v9;
             }
@@ -204,7 +204,7 @@ LABEL_9:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
@@ -257,8 +257,8 @@ LABEL_9:
 
           v12 = *(*(&v30 + 1) + 8 * i);
           v13 = [(NSDictionary *)self->_alarmsByID objectForKey:v12];
-          v14 = [v13 buildDictionaryRepresentation];
-          [v6 setObject:v14 forKey:v12];
+          buildDictionaryRepresentation = [v13 buildDictionaryRepresentation];
+          [v6 setObject:buildDictionaryRepresentation forKey:v12];
         }
 
         v9 = [(NSDictionary *)v7 countByEnumeratingWithState:&v30 objects:v35 count:16];
@@ -313,14 +313,14 @@ LABEL_9:
   return v23;
 }
 
-- (AFClockAlarmSnapshot)initWithDictionaryRepresentation:(id)a3
+- (AFClockAlarmSnapshot)initWithDictionaryRepresentation:(id)representation
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy)
   {
-    v6 = [v4 objectForKey:@"generation"];
+    v6 = [representationCopy objectForKey:@"generation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -332,7 +332,7 @@ LABEL_9:
       v7 = 0;
     }
 
-    v9 = [v7 unsignedLongLongValue];
+    unsignedLongLongValue = [v7 unsignedLongLongValue];
     v10 = [v5 objectForKey:@"date"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -347,8 +347,8 @@ LABEL_9:
 
     v11 = [v5 objectForKey:@"alarmsByID"];
     objc_opt_class();
-    v37 = v9;
-    v38 = self;
+    v37 = unsignedLongLongValue;
+    selfCopy = self;
     if (objc_opt_isKindOfClass())
     {
       v12 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v11, "count")}];
@@ -402,8 +402,8 @@ LABEL_9:
 
       v21 = [v12 copy];
       v11 = v35;
-      v9 = v37;
-      self = v38;
+      unsignedLongLongValue = v37;
+      self = selfCopy;
     }
 
     else
@@ -463,8 +463,8 @@ LABEL_9:
 
       v32 = [objc_alloc(MEMORY[0x1E695DFB8]) initWithArray:v24];
       v5 = v23;
-      v9 = v37;
-      self = v38;
+      unsignedLongLongValue = v37;
+      self = selfCopy;
     }
 
     else
@@ -472,58 +472,58 @@ LABEL_9:
       v32 = 0;
     }
 
-    self = [(AFClockAlarmSnapshot *)self initWithGeneration:v9 date:v36 alarmsByID:v21 notifiedFiringAlarmIDs:v32];
-    v8 = self;
+    self = [(AFClockAlarmSnapshot *)self initWithGeneration:unsignedLongLongValue date:v36 alarmsByID:v21 notifiedFiringAlarmIDs:v32];
+    selfCopy2 = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy2 = 0;
   }
 
   v33 = *MEMORY[0x1E69E9840];
-  return v8;
+  return selfCopy2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   generation = self->_generation;
-  v7 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedLongLong:generation];
-  [v7 encodeObject:v6 forKey:@"AFClockAlarmSnapshot::generation"];
+  [coderCopy encodeObject:v6 forKey:@"AFClockAlarmSnapshot::generation"];
 
-  [v7 encodeObject:self->_date forKey:@"AFClockAlarmSnapshot::date"];
-  [v7 encodeObject:self->_alarmsByID forKey:@"AFClockAlarmSnapshot::alarmsByID"];
-  [v7 encodeObject:self->_notifiedFiringAlarmIDs forKey:@"AFClockAlarmSnapshot::notifiedFiringAlarmIDs"];
+  [coderCopy encodeObject:self->_date forKey:@"AFClockAlarmSnapshot::date"];
+  [coderCopy encodeObject:self->_alarmsByID forKey:@"AFClockAlarmSnapshot::alarmsByID"];
+  [coderCopy encodeObject:self->_notifiedFiringAlarmIDs forKey:@"AFClockAlarmSnapshot::notifiedFiringAlarmIDs"];
 }
 
-- (AFClockAlarmSnapshot)initWithCoder:(id)a3
+- (AFClockAlarmSnapshot)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFClockAlarmSnapshot::generation"];
-  v6 = [v5 unsignedLongLongValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFClockAlarmSnapshot::generation"];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFClockAlarmSnapshot::date"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFClockAlarmSnapshot::date"];
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v11 = [v8 setWithObjects:{v9, v10, objc_opt_class(), 0}];
-  v12 = [v4 decodeObjectOfClasses:v11 forKey:@"AFClockAlarmSnapshot::alarmsByID"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"AFClockAlarmSnapshot::alarmsByID"];
 
   v13 = MEMORY[0x1E695DFD8];
   v14 = objc_opt_class();
   v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-  v16 = [v4 decodeObjectOfClasses:v15 forKey:@"AFClockAlarmSnapshot::notifiedFiringAlarmIDs"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"AFClockAlarmSnapshot::notifiedFiringAlarmIDs"];
 
-  v17 = [(AFClockAlarmSnapshot *)self initWithGeneration:v6 date:v7 alarmsByID:v12 notifiedFiringAlarmIDs:v16];
+  v17 = [(AFClockAlarmSnapshot *)self initWithGeneration:unsignedLongLongValue date:v7 alarmsByID:v12 notifiedFiringAlarmIDs:v16];
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -533,21 +533,21 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       generation = self->_generation;
       if (generation == [(AFClockAlarmSnapshot *)v5 generation])
       {
-        v7 = [(AFClockAlarmSnapshot *)v5 date];
+        date = [(AFClockAlarmSnapshot *)v5 date];
         date = self->_date;
-        if (date == v7 || [(NSDate *)date isEqual:v7])
+        if (date == date || [(NSDate *)date isEqual:date])
         {
-          v9 = [(AFClockAlarmSnapshot *)v5 alarmsByID];
+          alarmsByID = [(AFClockAlarmSnapshot *)v5 alarmsByID];
           alarmsByID = self->_alarmsByID;
-          if (alarmsByID == v9 || [(NSDictionary *)alarmsByID isEqual:v9])
+          if (alarmsByID == alarmsByID || [(NSDictionary *)alarmsByID isEqual:alarmsByID])
           {
-            v11 = [(AFClockAlarmSnapshot *)v5 notifiedFiringAlarmIDs];
+            notifiedFiringAlarmIDs = [(AFClockAlarmSnapshot *)v5 notifiedFiringAlarmIDs];
             notifiedFiringAlarmIDs = self->_notifiedFiringAlarmIDs;
-            v13 = notifiedFiringAlarmIDs == v11 || [(NSOrderedSet *)notifiedFiringAlarmIDs isEqual:v11];
+            v13 = notifiedFiringAlarmIDs == notifiedFiringAlarmIDs || [(NSOrderedSet *)notifiedFiringAlarmIDs isEqual:notifiedFiringAlarmIDs];
           }
 
           else
@@ -588,7 +588,7 @@ LABEL_9:
   return v7 ^ v4;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8.receiver = self;
@@ -599,22 +599,22 @@ LABEL_9:
   return v6;
 }
 
-- (AFClockAlarmSnapshot)initWithGeneration:(unint64_t)a3 date:(id)a4 alarmsByID:(id)a5 notifiedFiringAlarmIDs:(id)a6
+- (AFClockAlarmSnapshot)initWithGeneration:(unint64_t)generation date:(id)date alarmsByID:(id)d notifiedFiringAlarmIDs:(id)ds
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dateCopy = date;
+  dCopy = d;
+  dsCopy = ds;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __82__AFClockAlarmSnapshot_initWithGeneration_date_alarmsByID_notifiedFiringAlarmIDs___block_invoke;
   v18[3] = &unk_1E7345C18;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v22 = a3;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  v19 = dateCopy;
+  v20 = dCopy;
+  v21 = dsCopy;
+  generationCopy = generation;
+  v13 = dsCopy;
+  v14 = dCopy;
+  v15 = dateCopy;
   v16 = [(AFClockAlarmSnapshot *)self initWithBuilder:v18];
 
   return v16;
@@ -630,32 +630,32 @@ void __82__AFClockAlarmSnapshot_initWithGeneration_date_alarmsByID_notifiedFirin
   [v4 setNotifiedFiringAlarmIDs:a1[6]];
 }
 
-- (AFClockAlarmSnapshot)initWithBuilder:(id)a3
+- (AFClockAlarmSnapshot)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v18.receiver = self;
   v18.super_class = AFClockAlarmSnapshot;
   v5 = [(AFClockAlarmSnapshot *)&v18 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFClockAlarmSnapshotMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFClockAlarmSnapshotMutation *)v7 isDirty])
     {
       v6->_generation = [(_AFClockAlarmSnapshotMutation *)v7 getGeneration];
-      v8 = [(_AFClockAlarmSnapshotMutation *)v7 getDate];
-      v9 = [v8 copy];
+      getDate = [(_AFClockAlarmSnapshotMutation *)v7 getDate];
+      v9 = [getDate copy];
       date = v6->_date;
       v6->_date = v9;
 
-      v11 = [(_AFClockAlarmSnapshotMutation *)v7 getAlarmsByID];
-      v12 = [v11 copy];
+      getAlarmsByID = [(_AFClockAlarmSnapshotMutation *)v7 getAlarmsByID];
+      v12 = [getAlarmsByID copy];
       alarmsByID = v6->_alarmsByID;
       v6->_alarmsByID = v12;
 
-      v14 = [(_AFClockAlarmSnapshotMutation *)v7 getNotifiedFiringAlarmIDs];
-      v15 = [v14 copy];
+      getNotifiedFiringAlarmIDs = [(_AFClockAlarmSnapshotMutation *)v7 getNotifiedFiringAlarmIDs];
+      v15 = [getNotifiedFiringAlarmIDs copy];
       notifiedFiringAlarmIDs = v6->_notifiedFiringAlarmIDs;
       v6->_notifiedFiringAlarmIDs = v15;
     }
@@ -664,37 +664,37 @@ void __82__AFClockAlarmSnapshot_initWithGeneration_date_alarmsByID_notifiedFirin
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFClockAlarmSnapshotMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFClockAlarmSnapshotMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFClockAlarmSnapshot);
       v6->_generation = [(_AFClockAlarmSnapshotMutation *)v5 getGeneration];
-      v7 = [(_AFClockAlarmSnapshotMutation *)v5 getDate];
-      v8 = [v7 copy];
+      getDate = [(_AFClockAlarmSnapshotMutation *)v5 getDate];
+      v8 = [getDate copy];
       date = v6->_date;
       v6->_date = v8;
 
-      v10 = [(_AFClockAlarmSnapshotMutation *)v5 getAlarmsByID];
-      v11 = [v10 copy];
+      getAlarmsByID = [(_AFClockAlarmSnapshotMutation *)v5 getAlarmsByID];
+      v11 = [getAlarmsByID copy];
       alarmsByID = v6->_alarmsByID;
       v6->_alarmsByID = v11;
 
-      v13 = [(_AFClockAlarmSnapshotMutation *)v5 getNotifiedFiringAlarmIDs];
-      v14 = [v13 copy];
+      getNotifiedFiringAlarmIDs = [(_AFClockAlarmSnapshotMutation *)v5 getNotifiedFiringAlarmIDs];
+      v14 = [getNotifiedFiringAlarmIDs copy];
       notifiedFiringAlarmIDs = v6->_notifiedFiringAlarmIDs;
       v6->_notifiedFiringAlarmIDs = v14;
     }
@@ -713,28 +713,28 @@ void __82__AFClockAlarmSnapshot_initWithGeneration_date_alarmsByID_notifiedFirin
   return v6;
 }
 
-- (AFClockAlarmSnapshot)initWithSerializedBackingStore:(id)a3
+- (AFClockAlarmSnapshot)initWithSerializedBackingStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:0];
-    v6 = [v5 generation];
-    v7 = [v5 date];
-    v8 = [v5 alarmsByID];
-    v9 = [v5 notifiedFiringAlarmIDs];
-    self = [(AFClockAlarmSnapshot *)self initWithGeneration:v6 date:v7 alarmsByID:v8 notifiedFiringAlarmIDs:v9];
+    v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:storeCopy error:0];
+    generation = [v5 generation];
+    date = [v5 date];
+    alarmsByID = [v5 alarmsByID];
+    notifiedFiringAlarmIDs = [v5 notifiedFiringAlarmIDs];
+    self = [(AFClockAlarmSnapshot *)self initWithGeneration:generation date:date alarmsByID:alarmsByID notifiedFiringAlarmIDs:notifiedFiringAlarmIDs];
 
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

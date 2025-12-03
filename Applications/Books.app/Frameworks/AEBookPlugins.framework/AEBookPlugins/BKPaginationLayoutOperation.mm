@@ -1,15 +1,15 @@
 @interface BKPaginationLayoutOperation
-- (_NSRange)pageRangeForLocation:(id)a3;
-- (id)cfiForAnnotation:(id)a3;
-- (id)layoutComplete:(unint64_t)a3;
+- (_NSRange)pageRangeForLocation:(id)location;
+- (id)cfiForAnnotation:(id)annotation;
+- (id)layoutComplete:(unint64_t)complete;
 - (id)newBookmarkPageArray;
 - (id)newHistoryEntityResultsArray;
 - (id)newLandmarkInfoAnchorArray;
 - (id)newNavigationInfoAnchorArray;
-- (id)newPageLocationArrayWithAnchorInfos:(id)a3;
+- (id)newPageLocationArrayWithAnchorInfos:(id)infos;
 - (id)newPhysicalPageAnchorArray;
-- (void)_populateTOCEntriesFromNavigationInfoAnchors:(id)a3;
-- (void)populateRecordJob:(id)a3;
+- (void)_populateTOCEntriesFromNavigationInfoAnchors:(id)anchors;
+- (void)populateRecordJob:(id)job;
 @end
 
 @implementation BKPaginationLayoutOperation
@@ -17,19 +17,19 @@
 - (id)newHistoryEntityResultsArray
 {
   v3 = [(BKPaginationOperation *)self job];
-  v4 = [v3 historyEntities];
-  if (![v4 count])
+  historyEntities = [v3 historyEntities];
+  if (![historyEntities count])
   {
     goto LABEL_15;
   }
 
-  v22 = v4;
+  v22 = historyEntities;
   v23 = objc_alloc_init(NSMutableArray);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = v4;
+  v5 = historyEntities;
   v6 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v6)
   {
@@ -50,19 +50,19 @@ LABEL_4:
         break;
       }
 
-      v11 = [v10 location];
-      v12 = [v11 ordinal];
-      v13 = [v3 documentOrdinal];
+      location = [v10 location];
+      ordinal = [location ordinal];
+      documentOrdinal = [v3 documentOrdinal];
 
-      if (v12 == v13)
+      if (ordinal == documentOrdinal)
       {
-        v14 = [v3 lookupKey];
-        v15 = [v10 pageForLookupKey:v14];
+        lookupKey = [v3 lookupKey];
+        v15 = [v10 pageForLookupKey:lookupKey];
 
         if (v15 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v16 = [v10 location];
-          v17 = [(BKPaginationLayoutOperation *)self pageRangeForLocation:v16];
+          location2 = [v10 location];
+          v17 = [(BKPaginationLayoutOperation *)self pageRangeForLocation:location2];
 
           if (v17 != 0x7FFFFFFFFFFFFFFFLL)
           {
@@ -86,7 +86,7 @@ LABEL_4:
     }
   }
 
-  v4 = v22;
+  historyEntities = v22;
   v20 = v23;
   if (!v23)
   {
@@ -100,33 +100,33 @@ LABEL_15:
 - (id)newBookmarkPageArray
 {
   v3 = [(BKPaginationOperation *)self job];
-  v4 = [v3 bookmarks];
-  v5 = [v3 physicalPageAnchors];
-  v43 = [v5 count];
+  bookmarks = [v3 bookmarks];
+  physicalPageAnchors = [v3 physicalPageAnchors];
+  v43 = [physicalPageAnchors count];
 
-  if (![v4 count])
+  if (![bookmarks count])
   {
     goto LABEL_38;
   }
 
   v39 = v3;
   v37 = +[AEAnnotationProvider sharedInstance];
-  v6 = [v37 uiManagedObjectContext];
+  uiManagedObjectContext = [v37 uiManagedObjectContext];
   context = objc_autoreleasePoolPush();
-  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(bookmarks, "count")}];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v38 = v4;
-  obj = v4;
+  v38 = bookmarks;
+  obj = bookmarks;
   v8 = [obj countByEnumeratingWithState:&v48 objects:v52 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = *v49;
     v41 = v7;
-    v42 = v6;
+    v42 = uiManagedObjectContext;
 LABEL_4:
     v11 = 0;
     while (1)
@@ -143,7 +143,7 @@ LABEL_4:
       }
 
       v13 = objc_autoreleasePoolPush();
-      v14 = [v6 existingObjectWithID:v12 error:0];
+      v14 = [uiManagedObjectContext existingObjectWithID:v12 error:0];
       v15 = v14;
       if (v14)
       {
@@ -168,8 +168,8 @@ LABEL_33:
       }
     }
 
-    v46 = [v15 annotationLocation];
-    if (![v46 length] || (+[BCCFI unknownCFIString](BCCFI, "unknownCFIString"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v46, "isEqualToString:", v16), v16, v17))
+    annotationLocation = [v15 annotationLocation];
+    if (![annotationLocation length] || (+[BCCFI unknownCFIString](BCCFI, "unknownCFIString"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(annotationLocation, "isEqualToString:", v16), v16, v17))
     {
       v18 = [(BKPaginationLayoutOperation *)self cfiForAnnotation:v15];
       if ([v18 length])
@@ -178,35 +178,35 @@ LABEL_33:
       }
     }
 
-    v19 = [v15 location];
+    location = [v15 location];
     objc_opt_class();
     v45 = BUDynamicCast();
     v44 = [(BKPaginationLayoutOperation *)self pageOffsetForCFILocation:?];
     if (v43)
     {
-      v20 = [v15 physicalPageNumber];
+      physicalPageNumber = [v15 physicalPageNumber];
 
-      if (!v20)
+      if (!physicalPageNumber)
       {
-        v21 = [(BKPaginationLayoutOperation *)self pageTitleForLocation:v19];
+        v21 = [(BKPaginationLayoutOperation *)self pageTitleForLocation:location];
         [v15 setPhysicalPageNumber:v21];
       }
     }
 
-    v22 = [v15 plUserData];
-    if (!v22)
+    plUserData = [v15 plUserData];
+    if (!plUserData)
     {
-      v23 = [v15 annotationLocation];
+      annotationLocation2 = [v15 annotationLocation];
 
-      if (!v23)
+      if (!annotationLocation2)
       {
 LABEL_23:
-        v26 = [v15 chapterTitle];
+        chapterTitle = [v15 chapterTitle];
 
-        if (!v26)
+        if (!chapterTitle)
         {
-          v40 = v19;
-          v27 = [(BKPaginationLayoutOperation *)self chapterTitleForLocation:v19];
+          v40 = location;
+          v27 = [(BKPaginationLayoutOperation *)self chapterTitleForLocation:location];
           if (v27)
           {
             v28 = v27;
@@ -217,15 +217,15 @@ LABEL_23:
             v28 = &stru_1E7188;
           }
 
-          v29 = [v15 chapterTitle];
-          v30 = [(__CFString *)v28 isEqualToString:v29];
+          chapterTitle2 = [v15 chapterTitle];
+          v30 = [(__CFString *)v28 isEqualToString:chapterTitle2];
 
           if ((v30 & 1) == 0)
           {
             [v15 setChapterTitle:v28];
           }
 
-          v19 = v40;
+          location = v40;
           v7 = v41;
         }
 
@@ -233,24 +233,24 @@ LABEL_23:
         {
           v31 = [NSValue valueWithRange:v44, 1];
           v32 = [[NSDictionary alloc] initWithObjectsAndKeys:{v12, @"objectID", v31, @"range", 0, context}];
-          v33 = v19;
+          v33 = location;
           v34 = v32;
           [v7 addObject:v32];
 
-          v19 = v33;
+          location = v33;
         }
 
-        v6 = v42;
+        uiManagedObjectContext = v42;
         goto LABEL_33;
       }
 
-      v22 = [v15 annotationLocation];
-      [(BKPaginationLayoutOperation *)self locationForCfi:v22];
-      v25 = v24 = v19;
+      plUserData = [v15 annotationLocation];
+      [(BKPaginationLayoutOperation *)self locationForCfi:plUserData];
+      v25 = v24 = location;
       [v15 setLocation:v25];
-      [v15 setAnnotationLocation:v22];
+      [v15 setAnnotationLocation:plUserData];
 
-      v19 = v24;
+      location = v24;
       v7 = v41;
     }
 
@@ -260,12 +260,12 @@ LABEL_23:
 LABEL_35:
 
   objc_autoreleasePoolPop(context);
-  if ([v6 hasChanges])
+  if ([uiManagedObjectContext hasChanges])
   {
-    [v37 saveManagedObjectContext:v6];
+    [v37 saveManagedObjectContext:uiManagedObjectContext];
   }
 
-  v4 = v38;
+  bookmarks = v38;
   v3 = v39;
   if (!v7)
   {
@@ -276,21 +276,21 @@ LABEL_38:
   return v7;
 }
 
-- (id)newPageLocationArrayWithAnchorInfos:(id)a3
+- (id)newPageLocationArrayWithAnchorInfos:(id)infos
 {
-  v4 = a3;
-  if (![v4 count])
+  infosCopy = infos;
+  if (![infosCopy count])
   {
     goto LABEL_16;
   }
 
-  v23 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  v23 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(infosCopy, "count")}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v21 = v4;
-  obj = v4;
+  v21 = infosCopy;
+  obj = infosCopy;
   v5 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v5)
   {
@@ -350,7 +350,7 @@ LABEL_4:
     }
   }
 
-  v4 = v21;
+  infosCopy = v21;
   if (!v23)
   {
 LABEL_16:
@@ -363,8 +363,8 @@ LABEL_16:
 - (id)newNavigationInfoAnchorArray
 {
   v3 = [(BKPaginationOperation *)self job];
-  v4 = [v3 navigationInfoAnchors];
-  v5 = [(BKPaginationLayoutOperation *)self newPageLocationArrayWithAnchorInfos:v4];
+  navigationInfoAnchors = [v3 navigationInfoAnchors];
+  v5 = [(BKPaginationLayoutOperation *)self newPageLocationArrayWithAnchorInfos:navigationInfoAnchors];
 
   return v5;
 }
@@ -372,8 +372,8 @@ LABEL_16:
 - (id)newLandmarkInfoAnchorArray
 {
   v3 = [(BKPaginationOperation *)self job];
-  v4 = [v3 landmarkAnchors];
-  v5 = [(BKPaginationLayoutOperation *)self newPageLocationArrayWithAnchorInfos:v4];
+  landmarkAnchors = [v3 landmarkAnchors];
+  v5 = [(BKPaginationLayoutOperation *)self newPageLocationArrayWithAnchorInfos:landmarkAnchors];
 
   return v5;
 }
@@ -381,105 +381,105 @@ LABEL_16:
 - (id)newPhysicalPageAnchorArray
 {
   v3 = [(BKPaginationOperation *)self job];
-  v4 = [v3 physicalPageAnchors];
-  v5 = [(BKPaginationLayoutOperation *)self newPageLocationArrayWithAnchorInfos:v4];
+  physicalPageAnchors = [v3 physicalPageAnchors];
+  v5 = [(BKPaginationLayoutOperation *)self newPageLocationArrayWithAnchorInfos:physicalPageAnchors];
 
   return v5;
 }
 
-- (void)_populateTOCEntriesFromNavigationInfoAnchors:(id)a3
+- (void)_populateTOCEntriesFromNavigationInfoAnchors:(id)anchors
 {
-  v4 = a3;
-  v5 = [(BKPaginationOperation *)self paginationOperationController];
-  v6 = [v5 delegate];
+  anchorsCopy = anchors;
+  paginationOperationController = [(BKPaginationOperation *)self paginationOperationController];
+  delegate = [paginationOperationController delegate];
 
   v7 = [(BKPaginationOperation *)self job];
-  v8 = [v7 documentOrdinal];
-  if ([v6 needTOCEntriesForOrdinal:v8])
+  documentOrdinal = [v7 documentOrdinal];
+  if ([delegate needTOCEntriesForOrdinal:documentOrdinal])
   {
-    v9 = [v4 bu_arrayByInvokingBlock:&stru_1E4B20];
+    v9 = [anchorsCopy bu_arrayByInvokingBlock:&stru_1E4B20];
     [(BKPaginationLayoutOperation *)self startCFIsForNavigationInfoHrefs:v9];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_84EA4;
     v13 = v12[3] = &unk_1E4B48;
     v10 = v13;
-    v11 = [v4 bu_arrayByInvokingBlock:v12];
-    [v6 addTOCEntries:v11 ordinal:v8 completion:0];
+    v11 = [anchorsCopy bu_arrayByInvokingBlock:v12];
+    [delegate addTOCEntries:v11 ordinal:documentOrdinal completion:0];
   }
 }
 
-- (void)populateRecordJob:(id)a3
+- (void)populateRecordJob:(id)job
 {
-  v4 = a3;
-  v5 = [(BKPaginationLayoutOperation *)self newNavigationInfoAnchorArray];
-  [v4 setNavigationInfoAnchors:v5];
+  jobCopy = job;
+  newNavigationInfoAnchorArray = [(BKPaginationLayoutOperation *)self newNavigationInfoAnchorArray];
+  [jobCopy setNavigationInfoAnchors:newNavigationInfoAnchorArray];
 
-  v6 = [(BKPaginationLayoutOperation *)self newLandmarkInfoAnchorArray];
-  [v4 setLandmarkAnchors:v6];
+  newLandmarkInfoAnchorArray = [(BKPaginationLayoutOperation *)self newLandmarkInfoAnchorArray];
+  [jobCopy setLandmarkAnchors:newLandmarkInfoAnchorArray];
 
-  v7 = [(BKPaginationLayoutOperation *)self newPhysicalPageAnchorArray];
-  [v4 setPhysicalPageAnchors:v7];
+  newPhysicalPageAnchorArray = [(BKPaginationLayoutOperation *)self newPhysicalPageAnchorArray];
+  [jobCopy setPhysicalPageAnchors:newPhysicalPageAnchorArray];
 
-  v8 = [(BKPaginationLayoutOperation *)self newBookmarkPageArray];
-  [v4 setBookmarks:v8];
+  newBookmarkPageArray = [(BKPaginationLayoutOperation *)self newBookmarkPageArray];
+  [jobCopy setBookmarks:newBookmarkPageArray];
 
-  v9 = [(BKPaginationLayoutOperation *)self newHistoryEntityResultsArray];
-  [v4 setHistoryEntities:v9];
+  newHistoryEntityResultsArray = [(BKPaginationLayoutOperation *)self newHistoryEntityResultsArray];
+  [jobCopy setHistoryEntities:newHistoryEntityResultsArray];
 }
 
-- (id)layoutComplete:(unint64_t)a3
+- (id)layoutComplete:(unint64_t)complete
 {
   if ([(BKPaginationOperation *)self isJobGenerationValid])
   {
-    if (a3 <= 1)
+    if (complete <= 1)
     {
-      v5 = 1;
+      completeCopy = 1;
     }
 
     else
     {
-      v5 = a3;
+      completeCopy = complete;
     }
 
     v6 = [(BKPaginationOperation *)self job];
     v7 = -[BKPaginationJob init:]([BKPaginationRecordJob alloc], "init:", [v6 jobGeneration]);
     [v7 copyState:v6];
-    [v7 setPageCount:v5];
+    [v7 setPageCount:completeCopy];
     [(BKPaginationLayoutOperation *)self populateRecordJob:v7];
-    v8 = [v6 documentOrdinal];
+    documentOrdinal = [v6 documentOrdinal];
     v9 = [v6 url];
-    v10 = [v9 baseURL];
-    v11 = [v10 absoluteString];
-    v12 = [v11 lastPathComponent];
-    v13 = [BKTextIndex bookIndexWithName:v12];
+    baseURL = [v9 baseURL];
+    absoluteString = [baseURL absoluteString];
+    lastPathComponent = [absoluteString lastPathComponent];
+    v13 = [BKTextIndex bookIndexWithName:lastPathComponent];
 
-    if (v13 && ([v13 containsTextUnitWithOrdinal:v8] & 1) == 0)
+    if (v13 && ([v13 containsTextUnitWithOrdinal:documentOrdinal] & 1) == 0)
     {
-      v14 = [(BKPaginationLayoutOperation *)self text];
-      if ([v14 length])
+      text = [(BKPaginationLayoutOperation *)self text];
+      if ([text length])
       {
-        [v13 indexTextUnit:v14 withOrdinal:v8];
+        [v13 indexTextUnit:text withOrdinal:documentOrdinal];
       }
     }
 
-    v15 = [v7 navigationInfoAnchors];
-    [(BKPaginationLayoutOperation *)self _populateTOCEntriesFromNavigationInfoAnchors:v15];
+    navigationInfoAnchors = [v7 navigationInfoAnchors];
+    [(BKPaginationLayoutOperation *)self _populateTOCEntriesFromNavigationInfoAnchors:navigationInfoAnchors];
 
-    v16 = [(BKPaginationOperation *)self paginationOperationController];
-    v17 = [v16 delegate];
+    paginationOperationController = [(BKPaginationOperation *)self paginationOperationController];
+    delegate = [paginationOperationController delegate];
 
-    if ([v17 needTextNodeCharacterCountsForOrdinal:v8])
+    if ([delegate needTextNodeCharacterCountsForOrdinal:documentOrdinal])
     {
-      v18 = [(BKPaginationLayoutOperation *)self textNodeCharacterCounts];
-      if (v18)
+      textNodeCharacterCounts = [(BKPaginationLayoutOperation *)self textNodeCharacterCounts];
+      if (textNodeCharacterCounts)
       {
-        [v17 addTextNodeCharacterCounts:v18 ordinal:v8 completion:0];
+        [delegate addTextNodeCharacterCounts:textNodeCharacterCounts ordinal:documentOrdinal completion:0];
       }
     }
 
-    v19 = [(BKPaginationOperation *)self paginationOperationController];
-    [v19 addResultJob:v7];
+    paginationOperationController2 = [(BKPaginationOperation *)self paginationOperationController];
+    [paginationOperationController2 addResultJob:v7];
   }
 
   else
@@ -490,7 +490,7 @@ LABEL_16:
   return v7;
 }
 
-- (_NSRange)pageRangeForLocation:(id)a3
+- (_NSRange)pageRangeForLocation:(id)location
 {
   v3 = 0x7FFFFFFFFFFFFFFFLL;
   v4 = 0x7FFFFFFFFFFFFFFFLL;
@@ -499,13 +499,13 @@ LABEL_16:
   return result;
 }
 
-- (id)cfiForAnnotation:(id)a3
+- (id)cfiForAnnotation:(id)annotation
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&OBJC_PROTOCOL___BKBookmark])
+  annotationCopy = annotation;
+  if ([annotationCopy conformsToProtocol:&OBJC_PROTOCOL___BKBookmark])
   {
-    v5 = [v4 location];
-    v6 = [(BKPaginationLayoutOperation *)self cfiForLocation:v5];
+    location = [annotationCopy location];
+    v6 = [(BKPaginationLayoutOperation *)self cfiForLocation:location];
   }
 
   else

@@ -1,8 +1,8 @@
 @interface WKWallpaperRepresentingCollectionsManager
 + (WKWallpaperRepresentingCollectionsManager)defaultManager;
-- (WKWallpaperRepresentingCollectionsManager)initWithDownloadManager:(id)a3;
-- (id)wallpaperCollectionAtIndex:(int64_t)a3;
-- (id)wallpaperCollectionWithIdentifier:(id)a3;
+- (WKWallpaperRepresentingCollectionsManager)initWithDownloadManager:(id)manager;
+- (id)wallpaperCollectionAtIndex:(int64_t)index;
+- (id)wallpaperCollectionWithIdentifier:(id)identifier;
 - (int64_t)numberOfWallpaperCollections;
 - (void)_loadCollections;
 - (void)_loadSystemWallpaperCollections;
@@ -10,23 +10,23 @@
 
 @implementation WKWallpaperRepresentingCollectionsManager
 
-- (WKWallpaperRepresentingCollectionsManager)initWithDownloadManager:(id)a3
+- (WKWallpaperRepresentingCollectionsManager)initWithDownloadManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = WKWallpaperRepresentingCollectionsManager;
   v6 = [(WKWallpaperRepresentingCollectionsManager *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__downloadManager, a3);
-    v8 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v6->__downloadManager, manager);
+    array = [MEMORY[0x1E695DF70] array];
     wallpaperCollections = v7->__wallpaperCollections;
-    v7->__wallpaperCollections = v8;
+    v7->__wallpaperCollections = array;
 
-    v10 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
     wallpaperCollectionLookupTable = v7->__wallpaperCollectionLookupTable;
-    v7->__wallpaperCollectionLookupTable = v10;
+    v7->__wallpaperCollectionLookupTable = weakToWeakObjectsMapTable;
 
     [(WKWallpaperRepresentingCollectionsManager *)v7 _loadCollections];
   }
@@ -108,13 +108,13 @@ void __61__WKWallpaperRepresentingCollectionsManager__loadCollections__block_inv
   v91 = [v6 URLByAppendingPathComponent:@"Collections"];
 
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [v90 lowercaseString];
-  v9 = [v7 stringWithFormat:@"Collections~%@.plist", v8];
+  lowercaseString = [v90 lowercaseString];
+  v9 = [v7 stringWithFormat:@"Collections~%@.plist", lowercaseString];
   v92 = [v91 URLByAppendingPathComponent:v9];
 
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  v11 = [v92 path];
-  LOBYTE(v9) = [v10 fileExistsAtPath:v11];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v92 path];
+  LOBYTE(v9) = [defaultManager fileExistsAtPath:path];
 
   if ((v9 & 1) == 0)
   {
@@ -128,18 +128,18 @@ void __61__WKWallpaperRepresentingCollectionsManager__loadCollections__block_inv
   {
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    v16 = [v92 path];
+    path2 = [v92 path];
     *buf = 138543618;
     v114 = v15;
     v115 = 2114;
-    v116 = v16;
+    v116 = path2;
     _os_log_impl(&dword_1E4A23000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: Resolved to default wallpaper collections file at path '%{public}@'", buf, 0x16u);
   }
 
   v87 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v92];
-  v17 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   v109 = 0;
-  v88 = [v17 contentsOfDirectoryAtURL:v91 includingPropertiesForKeys:0 options:0 error:&v109];
+  v88 = [defaultManager2 contentsOfDirectoryAtURL:v91 includingPropertiesForKeys:0 options:0 error:&v109];
   v89 = v109;
 
   if (v89)
@@ -149,11 +149,11 @@ void __61__WKWallpaperRepresentingCollectionsManager__loadCollections__block_inv
     {
       v18 = objc_opt_class();
       v19 = NSStringFromClass(v18);
-      v20 = [v91 path];
+      path3 = [v91 path];
       *buf = 138543874;
       v114 = v19;
       v115 = 2114;
-      v116 = v20;
+      v116 = path3;
       v117 = 2114;
       v118 = v89;
       _os_log_error_impl(&dword_1E4A23000, log, OS_LOG_TYPE_ERROR, "%{public}@: Unable to load contents of directory at path '%{public}@'. Error '%{public}@'.", buf, 0x20u);
@@ -182,9 +182,9 @@ void __61__WKWallpaperRepresentingCollectionsManager__loadCollections__block_inv
         }
 
         v25 = *(*(&v105 + 1) + 8 * i);
-        v26 = [v25 path];
-        v27 = [(WKWallpaperRepresentingCollection *)v26 lowercaseString];
-        if (![v27 hasSuffix:@"wallpapercollection"])
+        path4 = [v25 path];
+        lowercaseString2 = [(WKWallpaperRepresentingCollection *)path4 lowercaseString];
+        if (![lowercaseString2 hasSuffix:@"wallpapercollection"])
         {
           goto LABEL_23;
         }
@@ -197,29 +197,29 @@ void __61__WKWallpaperRepresentingCollectionsManager__loadCollections__block_inv
         }
 
         v29 = [WKWallpaperRepresentingCollection alloc];
-        v30 = [(WKWallpaperRepresentingCollectionsManager *)self _downloadManager];
-        v26 = [(WKWallpaperRepresentingCollection *)v29 initWithURL:v25 downloadManager:v30];
+        _downloadManager = [(WKWallpaperRepresentingCollectionsManager *)self _downloadManager];
+        path4 = [(WKWallpaperRepresentingCollection *)v29 initWithURL:v25 downloadManager:_downloadManager];
 
-        if (v26)
+        if (path4)
         {
           v31 = WKLogForCategory(4uLL);
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
           {
-            v32 = [(WKWallpaperRepresentingCollection *)v26 identifier];
-            v33 = [v32 UUIDString];
-            v34 = [(WKWallpaperRepresentingCollection *)v26 displayName];
+            identifier = [(WKWallpaperRepresentingCollection *)path4 identifier];
+            uUIDString = [identifier UUIDString];
+            displayName = [(WKWallpaperRepresentingCollection *)path4 displayName];
             *buf = 136315650;
             v114 = "[WKWallpaperRepresentingCollectionsManager _loadSystemWallpaperCollections]";
             v115 = 2114;
-            v116 = v33;
+            v116 = uUIDString;
             v117 = 2114;
-            v118 = v34;
+            v118 = displayName;
             _os_log_impl(&dword_1E4A23000, v31, OS_LOG_TYPE_DEFAULT, "%s: Loaded wallpaper collection (identifier: '%{public}@', displayName: '%{public}@').", buf, 0x20u);
           }
 
-          v27 = [(WKWallpaperRepresentingCollection *)v26 identifier];
-          v35 = [v27 UUIDString];
-          [log setObject:v26 forKeyedSubscript:v35];
+          lowercaseString2 = [(WKWallpaperRepresentingCollection *)path4 identifier];
+          uUIDString2 = [lowercaseString2 UUIDString];
+          [log setObject:path4 forKeyedSubscript:uUIDString2];
 
 LABEL_23:
         }
@@ -234,15 +234,15 @@ LABEL_23:
   v36 = WKAppleInternalWallpapersBaseURL();
   v86 = [v36 URLByAppendingPathComponent:@"Collections"];
 
-  v93 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v93 sf_isInternalInstall])
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice sf_isInternalInstall])
   {
     v37 = WKAppleInternalWallpapersBaseURL();
     if (v37)
     {
-      v38 = [MEMORY[0x1E696AC08] defaultManager];
-      v39 = [v86 path];
-      v40 = [v38 fileExistsAtPath:v39];
+      defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+      path5 = [v86 path];
+      v40 = [defaultManager3 fileExistsAtPath:path5];
 
       if (!v40)
       {
@@ -250,9 +250,9 @@ LABEL_23:
         goto LABEL_35;
       }
 
-      v41 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager4 = [MEMORY[0x1E696AC08] defaultManager];
       v104 = 0;
-      v93 = [v41 contentsOfDirectoryAtURL:v86 includingPropertiesForKeys:0 options:0 error:&v104];
+      currentDevice = [defaultManager4 contentsOfDirectoryAtURL:v86 includingPropertiesForKeys:0 options:0 error:&v104];
       v89 = v104;
 
       if (v89)
@@ -262,11 +262,11 @@ LABEL_23:
         {
           v43 = objc_opt_class();
           v44 = NSStringFromClass(v43);
-          v45 = [v86 path];
+          path6 = [v86 path];
           *buf = 138543874;
           v114 = v44;
           v115 = 2114;
-          v116 = v45;
+          v116 = path6;
           v117 = 2114;
           v118 = v89;
           _os_log_error_impl(&dword_1E4A23000, v42, OS_LOG_TYPE_ERROR, "%{public}@: Unable to load internal contents of directory at path '%{public}@'. Error '%{public}@'.", buf, 0x20u);
@@ -281,7 +281,7 @@ LABEL_72:
       v103 = 0u;
       v100 = 0u;
       v101 = 0u;
-      v42 = v93;
+      v42 = currentDevice;
       v72 = [v42 countByEnumeratingWithState:&v100 objects:v111 count:16];
       if (!v72)
       {
@@ -299,9 +299,9 @@ LABEL_59:
         }
 
         v75 = *(*(&v100 + 1) + 8 * v74);
-        v76 = [v75 path];
-        v77 = [(WKWallpaperRepresentingCollection *)v76 lowercaseString];
-        if (![v77 hasSuffix:@"wallpapercollection"])
+        path7 = [v75 path];
+        lowercaseString3 = [(WKWallpaperRepresentingCollection *)path7 lowercaseString];
+        if (![lowercaseString3 hasSuffix:@"wallpapercollection"])
         {
           goto LABEL_68;
         }
@@ -327,29 +327,29 @@ LABEL_70:
       }
 
       v79 = [WKWallpaperRepresentingCollection alloc];
-      v80 = [(WKWallpaperRepresentingCollectionsManager *)self _downloadManager];
-      v76 = [(WKWallpaperRepresentingCollection *)v79 initWithURL:v75 downloadManager:v80];
+      _downloadManager2 = [(WKWallpaperRepresentingCollectionsManager *)self _downloadManager];
+      path7 = [(WKWallpaperRepresentingCollection *)v79 initWithURL:v75 downloadManager:_downloadManager2];
 
-      if (v76)
+      if (path7)
       {
         v81 = WKLogForCategory(4uLL);
         if (os_log_type_enabled(v81, OS_LOG_TYPE_DEFAULT))
         {
-          v82 = [(WKWallpaperRepresentingCollection *)v76 identifier];
-          v83 = [v82 UUIDString];
-          v84 = [(WKWallpaperRepresentingCollection *)v76 displayName];
+          identifier2 = [(WKWallpaperRepresentingCollection *)path7 identifier];
+          uUIDString3 = [identifier2 UUIDString];
+          displayName2 = [(WKWallpaperRepresentingCollection *)path7 displayName];
           *buf = 136315650;
           v114 = "[WKWallpaperRepresentingCollectionsManager _loadSystemWallpaperCollections]";
           v115 = 2114;
-          v116 = v83;
+          v116 = uUIDString3;
           v117 = 2114;
-          v118 = v84;
+          v118 = displayName2;
           _os_log_impl(&dword_1E4A23000, v81, OS_LOG_TYPE_DEFAULT, "%s: Loaded internal wallpaper collection (identifier: '%{public}@', displayName: '%{public}@').", buf, 0x20u);
         }
 
-        v77 = [(WKWallpaperRepresentingCollection *)v76 identifier];
-        v85 = [v77 UUIDString];
-        [log setObject:v76 forKeyedSubscript:v85];
+        lowercaseString3 = [(WKWallpaperRepresentingCollection *)path7 identifier];
+        uUIDString4 = [lowercaseString3 UUIDString];
+        [log setObject:path7 forKeyedSubscript:uUIDString4];
 
 LABEL_68:
       }
@@ -382,7 +382,7 @@ LABEL_35:
     v50 = MEMORY[0x1E696AEC0];
     v51 = objc_opt_class();
     v52 = NSStringFromClass(v51);
-    v53 = [v92 path];
+    path8 = [v92 path];
     v54 = objc_claimAutoreleasedReturnValue();
     v55 = [v49 exceptionWithName:*MEMORY[0x1E695D940] reason:v54 userInfo:0];
 
@@ -415,39 +415,39 @@ LABEL_35:
           v63 = WKLogForCategory(4uLL);
           if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
           {
-            v64 = [v62 identifier];
-            v65 = [v64 UUIDString];
-            v66 = [v62 displayName];
+            identifier3 = [v62 identifier];
+            uUIDString5 = [identifier3 UUIDString];
+            displayName3 = [v62 displayName];
             *buf = 136315650;
             v114 = "[WKWallpaperRepresentingCollectionsManager _loadSystemWallpaperCollections]";
             v115 = 2114;
-            v116 = v65;
+            v116 = uUIDString5;
             v117 = 2114;
-            v118 = v66;
+            v118 = displayName3;
             _os_log_impl(&dword_1E4A23000, v63, OS_LOG_TYPE_DEFAULT, "%s: Adding wallpaper collection (identifier: '%{public}@', displayName: '%{public}@').", buf, 0x20u);
           }
 
-          v67 = [(WKWallpaperRepresentingCollectionsManager *)self _wallpaperCollections];
-          [v67 na_safeAddObject:v62];
+          _wallpaperCollections = [(WKWallpaperRepresentingCollectionsManager *)self _wallpaperCollections];
+          [_wallpaperCollections na_safeAddObject:v62];
 
-          v68 = [(WKWallpaperRepresentingCollectionsManager *)self _wallpaperCollectionLookupTable];
-          v69 = [v62 identifier];
-          [v68 setObject:v62 forKey:v69];
+          _wallpaperCollectionLookupTable = [(WKWallpaperRepresentingCollectionsManager *)self _wallpaperCollectionLookupTable];
+          identifier4 = [v62 identifier];
+          [_wallpaperCollectionLookupTable setObject:v62 forKey:identifier4];
         }
 
         else
         {
-          v68 = WKLogForCategory(4uLL);
-          if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
+          _wallpaperCollectionLookupTable = WKLogForCategory(4uLL);
+          if (os_log_type_enabled(_wallpaperCollectionLookupTable, OS_LOG_TYPE_DEFAULT))
           {
-            v70 = [v62 displayName];
+            displayName4 = [v62 displayName];
             *buf = 136315650;
             v114 = "[WKWallpaperRepresentingCollectionsManager _loadSystemWallpaperCollections]";
             v115 = 2114;
             v116 = v60;
             v117 = 2114;
-            v118 = v70;
-            _os_log_impl(&dword_1E4A23000, v68, OS_LOG_TYPE_DEFAULT, "%s: Skipping empty wallpaper collection (identifier: '%{public}@', displayName: '%{public}@').", buf, 0x20u);
+            v118 = displayName4;
+            _os_log_impl(&dword_1E4A23000, _wallpaperCollectionLookupTable, OS_LOG_TYPE_DEFAULT, "%s: Skipping empty wallpaper collection (identifier: '%{public}@', displayName: '%{public}@').", buf, 0x20u);
           }
         }
       }
@@ -500,25 +500,25 @@ void __59__WKWallpaperRepresentingCollectionsManager_defaultManager__block_invok
 
 - (int64_t)numberOfWallpaperCollections
 {
-  v2 = [(WKWallpaperRepresentingCollectionsManager *)self _wallpaperCollections];
-  v3 = [v2 count];
+  _wallpaperCollections = [(WKWallpaperRepresentingCollectionsManager *)self _wallpaperCollections];
+  v3 = [_wallpaperCollections count];
 
   return v3;
 }
 
-- (id)wallpaperCollectionAtIndex:(int64_t)a3
+- (id)wallpaperCollectionAtIndex:(int64_t)index
 {
-  v4 = [(WKWallpaperRepresentingCollectionsManager *)self _wallpaperCollections];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  _wallpaperCollections = [(WKWallpaperRepresentingCollectionsManager *)self _wallpaperCollections];
+  v5 = [_wallpaperCollections objectAtIndexedSubscript:index];
 
   return v5;
 }
 
-- (id)wallpaperCollectionWithIdentifier:(id)a3
+- (id)wallpaperCollectionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(WKWallpaperRepresentingCollectionsManager *)self _wallpaperCollectionLookupTable];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  _wallpaperCollectionLookupTable = [(WKWallpaperRepresentingCollectionsManager *)self _wallpaperCollectionLookupTable];
+  v6 = [_wallpaperCollectionLookupTable objectForKey:identifierCopy];
 
   return v6;
 }

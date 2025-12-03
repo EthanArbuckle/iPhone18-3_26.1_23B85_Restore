@@ -1,29 +1,29 @@
 @interface PLUSSchemaPLUSMediaSuggestionEvaluation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PLUSSchemaPLUSMediaSuggestionEvaluation)initWithDictionary:(id)a3;
-- (PLUSSchemaPLUSMediaSuggestionEvaluation)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PLUSSchemaPLUSMediaSuggestionEvaluation)initWithDictionary:(id)dictionary;
+- (PLUSSchemaPLUSMediaSuggestionEvaluation)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addEntitySummaries:(id)a3;
-- (void)addPommesAlternativeEntityIds:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addEntitySummaries:(id)summaries;
+- (void)addPommesAlternativeEntityIds:(id)ids;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLUSSchemaPLUSMediaSuggestionEvaluation
 
-- (PLUSSchemaPLUSMediaSuggestionEvaluation)initWithDictionary:(id)a3
+- (PLUSSchemaPLUSMediaSuggestionEvaluation)initWithDictionary:(id)dictionary
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v36.receiver = self;
   v36.super_class = PLUSSchemaPLUSMediaSuggestionEvaluation;
   v5 = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)&v36 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"entitySummaries"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"entitySummaries"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"pommesAlternativeEntityIds"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"pommesAlternativeEntityIds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -109,7 +109,7 @@
       }
     }
 
-    v22 = [v4 objectForKeyedSubscript:{@"pommesSelectedMediaEntityAdamId", v28}];
+    v22 = [dictionaryCopy objectForKeyedSubscript:{@"pommesSelectedMediaEntityAdamId", v28}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -117,7 +117,7 @@
       [(PLUSSchemaPLUSMediaSuggestionEvaluation *)v5 setPommesSelectedMediaEntityAdamId:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"inferredMediaEntityAdamId"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"inferredMediaEntityAdamId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -131,30 +131,30 @@
   return v5;
 }
 
-- (PLUSSchemaPLUSMediaSuggestionEvaluation)initWithJSON:(id)a3
+- (PLUSSchemaPLUSMediaSuggestionEvaluation)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -168,10 +168,10 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_entitySummaries count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -191,16 +191,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -210,33 +210,33 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"entitySummaries"];
+    [dictionary setObject:array forKeyedSubscript:@"entitySummaries"];
   }
 
   if (self->_inferredMediaEntityAdamId)
   {
-    v12 = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self inferredMediaEntityAdamId];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"inferredMediaEntityAdamId"];
+    inferredMediaEntityAdamId = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self inferredMediaEntityAdamId];
+    v13 = [inferredMediaEntityAdamId copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"inferredMediaEntityAdamId"];
   }
 
   if (self->_pommesAlternativeEntityIds)
   {
-    v14 = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self pommesAlternativeEntityIds];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"pommesAlternativeEntityIds"];
+    pommesAlternativeEntityIds = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self pommesAlternativeEntityIds];
+    v15 = [pommesAlternativeEntityIds copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"pommesAlternativeEntityIds"];
   }
 
   if (self->_pommesSelectedMediaEntityAdamId)
   {
-    v16 = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self pommesSelectedMediaEntityAdamId];
-    v17 = [v16 copy];
-    [v3 setObject:v17 forKeyedSubscript:@"pommesSelectedMediaEntityAdamId"];
+    pommesSelectedMediaEntityAdamId = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self pommesSelectedMediaEntityAdamId];
+    v17 = [pommesSelectedMediaEntityAdamId copy];
+    [dictionary setObject:v17 forKeyedSubscript:@"pommesSelectedMediaEntityAdamId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v19];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v19];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -247,28 +247,28 @@
   return v4 ^ v5 ^ [(NSString *)self->_inferredMediaEntityAdamId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self entitySummaries];
-  v6 = [v4 entitySummaries];
-  if ((v5 != 0) == (v6 == 0))
+  entitySummaries = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self entitySummaries];
+  entitySummaries2 = [equalCopy entitySummaries];
+  if ((entitySummaries != 0) == (entitySummaries2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self entitySummaries];
-  if (v7)
+  entitySummaries3 = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self entitySummaries];
+  if (entitySummaries3)
   {
-    v8 = v7;
-    v9 = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self entitySummaries];
-    v10 = [v4 entitySummaries];
-    v11 = [v9 isEqual:v10];
+    v8 = entitySummaries3;
+    entitySummaries4 = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self entitySummaries];
+    entitySummaries5 = [equalCopy entitySummaries];
+    v11 = [entitySummaries4 isEqual:entitySummaries5];
 
     if (!v11)
     {
@@ -280,20 +280,20 @@
   {
   }
 
-  v5 = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self pommesAlternativeEntityIds];
-  v6 = [v4 pommesAlternativeEntityIds];
-  if ((v5 != 0) == (v6 == 0))
+  entitySummaries = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self pommesAlternativeEntityIds];
+  entitySummaries2 = [equalCopy pommesAlternativeEntityIds];
+  if ((entitySummaries != 0) == (entitySummaries2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self pommesAlternativeEntityIds];
-  if (v12)
+  pommesAlternativeEntityIds = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self pommesAlternativeEntityIds];
+  if (pommesAlternativeEntityIds)
   {
-    v13 = v12;
-    v14 = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self pommesAlternativeEntityIds];
-    v15 = [v4 pommesAlternativeEntityIds];
-    v16 = [v14 isEqual:v15];
+    v13 = pommesAlternativeEntityIds;
+    pommesAlternativeEntityIds2 = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self pommesAlternativeEntityIds];
+    pommesAlternativeEntityIds3 = [equalCopy pommesAlternativeEntityIds];
+    v16 = [pommesAlternativeEntityIds2 isEqual:pommesAlternativeEntityIds3];
 
     if (!v16)
     {
@@ -305,20 +305,20 @@
   {
   }
 
-  v5 = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self pommesSelectedMediaEntityAdamId];
-  v6 = [v4 pommesSelectedMediaEntityAdamId];
-  if ((v5 != 0) == (v6 == 0))
+  entitySummaries = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self pommesSelectedMediaEntityAdamId];
+  entitySummaries2 = [equalCopy pommesSelectedMediaEntityAdamId];
+  if ((entitySummaries != 0) == (entitySummaries2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self pommesSelectedMediaEntityAdamId];
-  if (v17)
+  pommesSelectedMediaEntityAdamId = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self pommesSelectedMediaEntityAdamId];
+  if (pommesSelectedMediaEntityAdamId)
   {
-    v18 = v17;
-    v19 = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self pommesSelectedMediaEntityAdamId];
-    v20 = [v4 pommesSelectedMediaEntityAdamId];
-    v21 = [v19 isEqual:v20];
+    v18 = pommesSelectedMediaEntityAdamId;
+    pommesSelectedMediaEntityAdamId2 = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self pommesSelectedMediaEntityAdamId];
+    pommesSelectedMediaEntityAdamId3 = [equalCopy pommesSelectedMediaEntityAdamId];
+    v21 = [pommesSelectedMediaEntityAdamId2 isEqual:pommesSelectedMediaEntityAdamId3];
 
     if (!v21)
     {
@@ -330,12 +330,12 @@
   {
   }
 
-  v5 = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self inferredMediaEntityAdamId];
-  v6 = [v4 inferredMediaEntityAdamId];
-  if ((v5 != 0) != (v6 == 0))
+  entitySummaries = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self inferredMediaEntityAdamId];
+  entitySummaries2 = [equalCopy inferredMediaEntityAdamId];
+  if ((entitySummaries != 0) != (entitySummaries2 == 0))
   {
-    v22 = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self inferredMediaEntityAdamId];
-    if (!v22)
+    inferredMediaEntityAdamId = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self inferredMediaEntityAdamId];
+    if (!inferredMediaEntityAdamId)
     {
 
 LABEL_25:
@@ -343,10 +343,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self inferredMediaEntityAdamId];
-    v25 = [v4 inferredMediaEntityAdamId];
-    v26 = [v24 isEqual:v25];
+    v23 = inferredMediaEntityAdamId;
+    inferredMediaEntityAdamId2 = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self inferredMediaEntityAdamId];
+    inferredMediaEntityAdamId3 = [equalCopy inferredMediaEntityAdamId];
+    v26 = [inferredMediaEntityAdamId2 isEqual:inferredMediaEntityAdamId3];
 
     if (v26)
     {
@@ -366,10 +366,10 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -432,100 +432,100 @@ LABEL_23:
     while (v12);
   }
 
-  v15 = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self pommesSelectedMediaEntityAdamId];
+  pommesSelectedMediaEntityAdamId = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self pommesSelectedMediaEntityAdamId];
 
-  if (v15)
+  if (pommesSelectedMediaEntityAdamId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v16 = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self inferredMediaEntityAdamId];
+  inferredMediaEntityAdamId = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self inferredMediaEntityAdamId];
 
-  if (v16)
+  if (inferredMediaEntityAdamId)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)addPommesAlternativeEntityIds:(id)a3
+- (void)addPommesAlternativeEntityIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   pommesAlternativeEntityIds = self->_pommesAlternativeEntityIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!pommesAlternativeEntityIds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_pommesAlternativeEntityIds;
-    self->_pommesAlternativeEntityIds = v6;
+    self->_pommesAlternativeEntityIds = array;
 
-    v4 = v8;
+    idsCopy = v8;
     pommesAlternativeEntityIds = self->_pommesAlternativeEntityIds;
   }
 
-  [(NSArray *)pommesAlternativeEntityIds addObject:v4];
+  [(NSArray *)pommesAlternativeEntityIds addObject:idsCopy];
 }
 
-- (void)addEntitySummaries:(id)a3
+- (void)addEntitySummaries:(id)summaries
 {
-  v4 = a3;
+  summariesCopy = summaries;
   entitySummaries = self->_entitySummaries;
-  v8 = v4;
+  v8 = summariesCopy;
   if (!entitySummaries)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_entitySummaries;
-    self->_entitySummaries = v6;
+    self->_entitySummaries = array;
 
-    v4 = v8;
+    summariesCopy = v8;
     entitySummaries = self->_entitySummaries;
   }
 
-  [(NSArray *)entitySummaries addObject:v4];
+  [(NSArray *)entitySummaries addObject:summariesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v9.receiver = self;
   v9.super_class = PLUSSchemaPLUSMediaSuggestionEvaluation;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self deletePommesAlternativeEntityIds];
     [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self deletePommesSelectedMediaEntityAdamId];
     [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self deleteInferredMediaEntityAdamId];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self deletePommesAlternativeEntityIds];
     [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self deletePommesSelectedMediaEntityAdamId];
     [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self deleteInferredMediaEntityAdamId];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self deletePommesAlternativeEntityIds];
     [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self deletePommesSelectedMediaEntityAdamId];
     [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self deleteInferredMediaEntityAdamId];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self deletePommesAlternativeEntityIds];
     [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self deletePommesSelectedMediaEntityAdamId];
     [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self deleteInferredMediaEntityAdamId];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self deletePommesAlternativeEntityIds];
     [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self deletePommesSelectedMediaEntityAdamId];
     [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self deleteInferredMediaEntityAdamId];
   }
 
-  v6 = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self entitySummaries];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  entitySummaries = [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self entitySummaries];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:entitySummaries underConditions:policyCopy];
   [(PLUSSchemaPLUSMediaSuggestionEvaluation *)self setEntitySummaries:v7];
 
   return v5;

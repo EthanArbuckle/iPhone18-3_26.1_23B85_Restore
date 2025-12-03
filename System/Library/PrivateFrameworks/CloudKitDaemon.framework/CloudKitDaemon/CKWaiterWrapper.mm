@@ -1,29 +1,29 @@
 @interface CKWaiterWrapper
-- (CKWaiterWrapper)initWithWaiter:(id)a3 zoneIDs:(id)a4 waitCompletedHandler:(id)a5 activity:(id)a6;
+- (CKWaiterWrapper)initWithWaiter:(id)waiter zoneIDs:(id)ds waitCompletedHandler:(id)handler activity:(id)activity;
 - (id)CKPropertiesDescription;
 @end
 
 @implementation CKWaiterWrapper
 
-- (CKWaiterWrapper)initWithWaiter:(id)a3 zoneIDs:(id)a4 waitCompletedHandler:(id)a5 activity:(id)a6
+- (CKWaiterWrapper)initWithWaiter:(id)waiter zoneIDs:(id)ds waitCompletedHandler:(id)handler activity:(id)activity
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  waiterCopy = waiter;
+  dsCopy = ds;
+  handlerCopy = handler;
+  activityCopy = activity;
   v24.receiver = self;
   v24.super_class = CKWaiterWrapper;
   v15 = [(CKWaiterWrapper *)&v24 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_waiter, a3);
-    objc_storeStrong(&v16->_zoneIDs, a4);
-    v17 = _Block_copy(v13);
+    objc_storeStrong(&v15->_waiter, waiter);
+    objc_storeStrong(&v16->_zoneIDs, ds);
+    v17 = _Block_copy(handlerCopy);
     waitCompletedHandler = v16->_waitCompletedHandler;
     v16->_waitCompletedHandler = v17;
 
-    objc_storeStrong(&v16->_activity, a6);
+    objc_storeStrong(&v16->_activity, activity);
     v21 = objc_msgSend_currentPersona(MEMORY[0x277CBC558], v19, v20);
     persona = v16->_persona;
     v16->_persona = v21;

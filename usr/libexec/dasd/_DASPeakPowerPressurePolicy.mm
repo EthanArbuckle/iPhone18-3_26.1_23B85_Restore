@@ -1,11 +1,11 @@
 @interface _DASPeakPowerPressurePolicy
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
-- (BOOL)isUnderPeakPowerPressureWithContext:(id)a3;
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4;
+- (BOOL)appliesToActivity:(id)activity;
+- (BOOL)isUnderPeakPowerPressureWithContext:(id)context;
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state;
 - (_DASPeakPowerPressurePolicy)init;
 - (id)initializeTriggers;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 @end
 
 @implementation _DASPeakPowerPressurePolicy
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000940C8;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B608 != -1)
   {
     dispatch_once(&qword_10020B608, block);
@@ -42,9 +42,9 @@
     peakPowerPressureKeyPath = v3->_peakPowerPressureKeyPath;
     v3->_peakPowerPressureKeyPath = v5;
 
-    v7 = [(_DASPeakPowerPressurePolicy *)v3 initializeTriggers];
+    initializeTriggers = [(_DASPeakPowerPressurePolicy *)v3 initializeTriggers];
     triggers = v3->_triggers;
-    v3->_triggers = v7;
+    v3->_triggers = initializeTriggers;
   }
 
   return v3;
@@ -68,20 +68,20 @@
   return v4;
 }
 
-- (BOOL)isUnderPeakPowerPressureWithContext:(id)a3
+- (BOOL)isUnderPeakPowerPressureWithContext:(id)context
 {
-  v3 = [a3 objectForKeyedSubscript:self->_peakPowerPressureKeyPath];
+  v3 = [context objectForKeyedSubscript:self->_peakPowerPressureKeyPath];
   v4 = [v3 integerValue] != 0;
 
   return v4;
 }
 
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state
 {
-  v6 = a4;
-  if ([a3 isEqualToString:@"com.apple.duetactivityscheduler.peakpowerpressurepolicy.peakpowerpressurechange"])
+  stateCopy = state;
+  if ([trigger isEqualToString:@"com.apple.duetactivityscheduler.peakpowerpressurepolicy.peakpowerpressurechange"])
   {
-    v7 = [(_DASPeakPowerPressurePolicy *)self isUnderPeakPowerPressureWithContext:v6];
+    v7 = [(_DASPeakPowerPressurePolicy *)self isUnderPeakPowerPressureWithContext:stateCopy];
   }
 
   else
@@ -92,32 +92,32 @@
   return v7;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:_DASCTSBypassPeakPowerPressureKey];
-  v6 = [v5 BOOLValue];
+  activityCopy = activity;
+  userInfo = [activityCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:_DASCTSBypassPeakPowerPressureKey];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [v3 schedulingPriority];
-    v7 = v8 < _DASSchedulingPriorityUserInitiated;
+    schedulingPriority = [activityCopy schedulingPriority];
+    v7 = schedulingPriority < _DASSchedulingPriorityUserInitiated;
   }
 
   return v7;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   v6 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:@"Peak Power Pressure Policy"];
-  LODWORD(self) = [(_DASPeakPowerPressurePolicy *)self isUnderPeakPowerPressureWithContext:v5];
+  LODWORD(self) = [(_DASPeakPowerPressurePolicy *)self isUnderPeakPowerPressureWithContext:stateCopy];
 
   if (self)
   {

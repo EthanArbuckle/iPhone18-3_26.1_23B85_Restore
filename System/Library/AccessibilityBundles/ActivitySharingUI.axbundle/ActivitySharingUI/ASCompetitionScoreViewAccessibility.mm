@@ -1,25 +1,25 @@
 @interface ASCompetitionScoreViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation ASCompetitionScoreViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ASCompetitionScoreView" hasInstanceVariable:@"_opponentScoreView" withType:"ASCompetitionParticipantScoreView"];
-  [v3 validateClass:@"ASCompetitionScoreView" hasInstanceVariable:@"_myScoreView" withType:"ASCompetitionParticipantScoreView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ASCompetitionScoreView" hasInstanceVariable:@"_opponentScoreView" withType:"ASCompetitionParticipantScoreView"];
+  [validationsCopy validateClass:@"ASCompetitionScoreView" hasInstanceVariable:@"_myScoreView" withType:"ASCompetitionParticipantScoreView"];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(ASCompetitionScoreViewAccessibility *)self safeValueForKey:@"_opponentScoreView"];
   v4 = [(ASCompetitionScoreViewAccessibility *)self safeValueForKey:@"_myScoreView"];
-  v5 = [v3 accessibilityLabel];
-  v6 = [v3 accessibilityValue];
-  v7 = [v4 accessibilityLabel];
-  v10 = [v4 accessibilityValue];
+  accessibilityLabel = [v3 accessibilityLabel];
+  accessibilityValue = [v3 accessibilityValue];
+  accessibilityLabel2 = [v4 accessibilityLabel];
+  accessibilityValue2 = [v4 accessibilityValue];
   v8 = __UIAXStringForVariables();
 
   return v8;

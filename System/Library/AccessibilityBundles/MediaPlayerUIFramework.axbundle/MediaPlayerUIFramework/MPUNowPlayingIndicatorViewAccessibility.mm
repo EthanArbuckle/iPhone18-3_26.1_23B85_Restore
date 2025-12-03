@@ -1,17 +1,17 @@
 @interface MPUNowPlayingIndicatorViewAccessibility
-- (void)setPlaybackState:(int64_t)a3;
+- (void)setPlaybackState:(int64_t)state;
 @end
 
 @implementation MPUNowPlayingIndicatorViewAccessibility
 
-- (void)setPlaybackState:(int64_t)a3
+- (void)setPlaybackState:(int64_t)state
 {
   v6.receiver = self;
   v6.super_class = MPUNowPlayingIndicatorViewAccessibility;
   [(MPUNowPlayingIndicatorViewAccessibility *)&v6 setPlaybackState:?];
-  if (a3 <= 2)
+  if (state <= 2)
   {
-    v5 = accessibilityMPUILocalizedString(off_29F2D04F8[a3]);
+    v5 = accessibilityMPUILocalizedString(off_29F2D04F8[state]);
     [(MPUNowPlayingIndicatorViewAccessibility *)self setAccessibilityValue:v5];
   }
 }

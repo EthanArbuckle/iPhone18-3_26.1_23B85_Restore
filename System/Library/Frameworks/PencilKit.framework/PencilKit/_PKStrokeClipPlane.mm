@@ -1,19 +1,19 @@
 @interface _PKStrokeClipPlane
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToClipPlane:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToClipPlane:(id)plane;
 - (CGPoint)normal;
 - (CGPoint)origin;
-- (_PKStrokeClipPlane)initWithOrigin:(CGPoint)a3 normal:(CGPoint)a4;
+- (_PKStrokeClipPlane)initWithOrigin:(CGPoint)origin normal:(CGPoint)normal;
 @end
 
 @implementation _PKStrokeClipPlane
 
-- (_PKStrokeClipPlane)initWithOrigin:(CGPoint)a3 normal:(CGPoint)a4
+- (_PKStrokeClipPlane)initWithOrigin:(CGPoint)origin normal:(CGPoint)normal
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = normal.y;
+  x = normal.x;
+  v6 = origin.y;
+  v7 = origin.x;
   v9.receiver = self;
   v9.super_class = _PKStrokeClipPlane;
   result = [(_PKStrokeClipPlane *)&v9 init];
@@ -28,21 +28,21 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_PKStrokeClipPlane *)self isEqualToClipPlane:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_PKStrokeClipPlane *)self isEqualToClipPlane:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToClipPlane:(id)a3
+- (BOOL)isEqualToClipPlane:(id)plane
 {
-  v4 = a3;
-  if (v4 && (v5 = vdupq_n_s64(0x3F847AE147AE147BuLL), v6 = vmovn_s64(vcgtq_f64(v5, vabdq_f64(self->_origin, *(v4 + 8)))), (v6.i32[0] & v6.i32[1] & 1) != 0))
+  planeCopy = plane;
+  if (planeCopy && (v5 = vdupq_n_s64(0x3F847AE147AE147BuLL), v6 = vmovn_s64(vcgtq_f64(v5, vabdq_f64(self->_origin, *(planeCopy + 8)))), (v6.i32[0] & v6.i32[1] & 1) != 0))
   {
-    v7 = vmovn_s64(vcgtq_f64(v5, vabdq_f64(self->_normal, *(v4 + 24))));
+    v7 = vmovn_s64(vcgtq_f64(v5, vabdq_f64(self->_normal, *(planeCopy + 24))));
     v8 = v7.i8[0] & v7.i8[4];
   }
 

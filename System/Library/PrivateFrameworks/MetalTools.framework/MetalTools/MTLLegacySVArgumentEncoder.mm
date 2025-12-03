@@ -1,61 +1,61 @@
 @interface MTLLegacySVArgumentEncoder
-- (MTLLegacySVArgumentEncoder)initWithArgumentEncoder:(id)a3 layout:(const void *)a4 device:(id)a5;
-- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)a3;
-- (void)setArgumentBuffer:(id)a3 offset:(unint64_t)a4;
-- (void)setArgumentBuffer:(id)a3 startOffset:(unint64_t)a4 arrayElement:(unint64_t)a5;
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setComputePipelineState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setComputePipelineStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setIndirectCommandBuffer:(id)a3 atIndex:(unint64_t)a4;
-- (void)setIndirectCommandBuffers:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setRenderPipelineState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setRenderPipelineStates:(const void *)a3 withRange:(_NSRange)a4;
+- (MTLLegacySVArgumentEncoder)initWithArgumentEncoder:(id)encoder layout:(const void *)layout device:(id)device;
+- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)index;
+- (void)setArgumentBuffer:(id)buffer offset:(unint64_t)offset;
+- (void)setArgumentBuffer:(id)buffer startOffset:(unint64_t)offset arrayElement:(unint64_t)element;
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setComputePipelineState:(id)state atIndex:(unint64_t)index;
+- (void)setComputePipelineStates:(const void *)states withRange:(_NSRange)range;
+- (void)setIndirectCommandBuffer:(id)buffer atIndex:(unint64_t)index;
+- (void)setIndirectCommandBuffers:(const void *)buffers withRange:(_NSRange)range;
+- (void)setRenderPipelineState:(id)state atIndex:(unint64_t)index;
+- (void)setRenderPipelineStates:(const void *)states withRange:(_NSRange)range;
 @end
 
 @implementation MTLLegacySVArgumentEncoder
 
-- (MTLLegacySVArgumentEncoder)initWithArgumentEncoder:(id)a3 layout:(const void *)a4 device:(id)a5
+- (MTLLegacySVArgumentEncoder)initWithArgumentEncoder:(id)encoder layout:(const void *)layout device:(id)device
 {
   v7.receiver = self;
   v7.super_class = MTLLegacySVArgumentEncoder;
-  result = [(MTLToolsObject *)&v7 initWithBaseObject:a3 parent:a5];
+  result = [(MTLToolsObject *)&v7 initWithBaseObject:encoder parent:device];
   if (result)
   {
-    result->_layout = a4;
+    result->_layout = layout;
   }
 
   return result;
 }
 
-- (void)setArgumentBuffer:(id)a3 offset:(unint64_t)a4
+- (void)setArgumentBuffer:(id)buffer offset:(unint64_t)offset
 {
   baseObject = self->super.super._baseObject;
-  v7 = [a3 baseObject];
-  v8 = [a3 offset] + a4;
+  baseObject = [buffer baseObject];
+  v8 = [buffer offset] + offset;
 
-  [(MTLToolsObject *)baseObject setArgumentBuffer:v7 offset:v8];
+  [(MTLToolsObject *)baseObject setArgumentBuffer:baseObject offset:v8];
 }
 
-- (void)setArgumentBuffer:(id)a3 startOffset:(unint64_t)a4 arrayElement:(unint64_t)a5
+- (void)setArgumentBuffer:(id)buffer startOffset:(unint64_t)offset arrayElement:(unint64_t)element
 {
   baseObject = self->super.super._baseObject;
-  v9 = [a3 baseObject];
-  v10 = [a3 offset] + a4;
+  baseObject = [buffer baseObject];
+  v10 = [buffer offset] + offset;
 
-  [(MTLToolsObject *)baseObject setArgumentBuffer:v9 startOffset:v10 arrayElement:a5];
+  [(MTLToolsObject *)baseObject setArgumentBuffer:baseObject startOffset:v10 arrayElement:element];
 }
 
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  if (a5.length)
+  if (range.length)
   {
-    length = a5.length;
-    location = a5.location;
+    length = range.length;
+    location = range.location;
     v10 = 0;
     v11 = 1;
     do
     {
-      [(MTLLegacySVArgumentEncoder *)self setBuffer:a3[v10] offset:a4[v10] atIndex:v10 + location];
+      [(MTLLegacySVArgumentEncoder *)self setBuffer:buffers[v10] offset:offsets[v10] atIndex:v10 + location];
       v10 = v11;
     }
 
@@ -63,25 +63,25 @@
   }
 }
 
-- (void)setRenderPipelineState:(id)a3 atIndex:(unint64_t)a4
+- (void)setRenderPipelineState:(id)state atIndex:(unint64_t)index
 {
   baseObject = self->super.super._baseObject;
-  v6 = [objc_msgSend(a3 "indirectStateBuffer")];
+  v6 = [objc_msgSend(state "indirectStateBuffer")];
 
-  [(MTLToolsObject *)baseObject setBuffer:v6 offset:0 atIndex:a4];
+  [(MTLToolsObject *)baseObject setBuffer:v6 offset:0 atIndex:index];
 }
 
-- (void)setRenderPipelineStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setRenderPipelineStates:(const void *)states withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     v8 = 0;
     v9 = 1;
     do
     {
-      [(MTLLegacySVArgumentEncoder *)self setRenderPipelineState:a3[v8] atIndex:v8 + location];
+      [(MTLLegacySVArgumentEncoder *)self setRenderPipelineState:states[v8] atIndex:v8 + location];
       v8 = v9;
     }
 
@@ -89,25 +89,25 @@
   }
 }
 
-- (void)setComputePipelineState:(id)a3 atIndex:(unint64_t)a4
+- (void)setComputePipelineState:(id)state atIndex:(unint64_t)index
 {
   baseObject = self->super.super._baseObject;
-  v6 = [objc_msgSend(a3 "indirectStateBuffer")];
+  v6 = [objc_msgSend(state "indirectStateBuffer")];
 
-  [(MTLToolsObject *)baseObject setBuffer:v6 offset:0 atIndex:a4];
+  [(MTLToolsObject *)baseObject setBuffer:v6 offset:0 atIndex:index];
 }
 
-- (void)setComputePipelineStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setComputePipelineStates:(const void *)states withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     v8 = 0;
     v9 = 1;
     do
     {
-      [(MTLLegacySVArgumentEncoder *)self setComputePipelineState:a3[v8] atIndex:v8 + location];
+      [(MTLLegacySVArgumentEncoder *)self setComputePipelineState:states[v8] atIndex:v8 + location];
       v8 = v9;
     }
 
@@ -115,25 +115,25 @@
   }
 }
 
-- (void)setIndirectCommandBuffer:(id)a3 atIndex:(unint64_t)a4
+- (void)setIndirectCommandBuffer:(id)buffer atIndex:(unint64_t)index
 {
   baseObject = self->super.super._baseObject;
-  v6 = [a3 internalICBBuffer];
+  internalICBBuffer = [buffer internalICBBuffer];
 
-  [(MTLToolsObject *)baseObject setBuffer:v6 offset:0 atIndex:a4];
+  [(MTLToolsObject *)baseObject setBuffer:internalICBBuffer offset:0 atIndex:index];
 }
 
-- (void)setIndirectCommandBuffers:(const void *)a3 withRange:(_NSRange)a4
+- (void)setIndirectCommandBuffers:(const void *)buffers withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     v8 = 0;
     v9 = 1;
     do
     {
-      [(MTLLegacySVArgumentEncoder *)self setIndirectCommandBuffer:a3[v8] atIndex:v8 + location];
+      [(MTLLegacySVArgumentEncoder *)self setIndirectCommandBuffer:buffers[v8] atIndex:v8 + location];
       v8 = v9;
     }
 
@@ -141,7 +141,7 @@
   }
 }
 
-- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)a3
+- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)index
 {
   layout = self->_layout;
   if (!layout)
@@ -149,7 +149,7 @@
     return 0;
   }
 
-  v5 = LegacySVArgumentEncoderLayout::sublayout(layout, a3);
+  v5 = LegacySVArgumentEncoderLayout::sublayout(layout, index);
   if (!v5)
   {
     return 0;

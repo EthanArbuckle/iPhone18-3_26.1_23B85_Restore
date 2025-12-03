@@ -1,27 +1,27 @@
 @interface CNAccountsAndGroupsCell
 - (BOOL)isCellEditing;
-- (BOOL)isValidTitle:(id)a3;
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (BOOL)textViewShouldBeginEditing:(id)a3;
+- (BOOL)isValidTitle:(id)title;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (BOOL)textViewShouldBeginEditing:(id)editing;
 - (CNAccountsAndGroupsCellDelegate)delegate;
 - (CNAccountsAndGroupsCellTextView)titleTextView;
 - (double)minCellHeight;
-- (double)requiredHeightForTextView:(id)a3 fittingWidth:(double)a4;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
-- (void)applyAccessoryTintColor:(id)a3 leadingAccessoryTintColor:(id)a4;
-- (void)applyTextFont:(id)a3;
+- (double)requiredHeightForTextView:(id)view fittingWidth:(double)width;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
+- (void)applyAccessoryTintColor:(id)color leadingAccessoryTintColor:(id)tintColor;
+- (void)applyTextFont:(id)font;
 - (void)applyTextViewPlaceholderIfNeeded;
 - (void)beginEditingName;
 - (void)endEditingName;
 - (void)prepareForDisplay;
 - (void)prepareForReuse;
 - (void)resetTextFieldEnabled;
-- (void)setItem:(id)a3;
-- (void)setTextViewEnabled:(BOOL)a3;
+- (void)setItem:(id)item;
+- (void)setTextViewEnabled:(BOOL)enabled;
 - (void)setupTextViewConstraints;
-- (void)textViewDidBeginEditing:(id)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
+- (void)textViewDidBeginEditing:(id)editing;
+- (void)textViewDidChange:(id)change;
+- (void)textViewDidEndEditing:(id)editing;
 @end
 
 @implementation CNAccountsAndGroupsCell
@@ -38,20 +38,20 @@
   v4.receiver = self;
   v4.super_class = CNAccountsAndGroupsCell;
   [(CNAccountsAndGroupsCell *)&v4 prepareForReuse];
-  v3 = [(CNAccountsAndGroupsCell *)self titleTextView];
-  [v3 removeFromSuperview];
+  titleTextView = [(CNAccountsAndGroupsCell *)self titleTextView];
+  [titleTextView removeFromSuperview];
 
   [(CNAccountsAndGroupsCell *)self setTitleTextView:0];
   [(CNAccountsAndGroupsCell *)self setNeedsLayout];
 }
 
-- (BOOL)isValidTitle:(id)a3
+- (BOOL)isValidTitle:(id)title
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  titleCopy = title;
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
   if ((*(*MEMORY[0x1E6996570] + 16))())
   {
-    v5 = [v3 stringByTrimmingCharactersInSet:v4];
+    v5 = [titleCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
     v6 = [v5 length] != 0;
   }
 
@@ -63,17 +63,17 @@
   return v6;
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
-  v15 = [a3 text];
-  if ([v15 length] < 0x12D)
+  text = [editing text];
+  if ([text length] < 0x12D)
   {
-    v5 = v15;
+    v5 = text;
   }
 
   else
   {
-    v4 = [v15 substringToIndex:300];
+    v4 = [text substringToIndex:300];
 
     v5 = v4;
   }
@@ -81,64 +81,64 @@
   v16 = v5;
   if (![(CNAccountsAndGroupsCell *)self isValidTitle:v5])
   {
-    v6 = [(CNAccountsAndGroupsCell *)self item];
-    v7 = [v6 name];
+    item = [(CNAccountsAndGroupsCell *)self item];
+    name = [item name];
 
-    v8 = [(CNAccountsAndGroupsCell *)self item];
-    v9 = [v8 name];
-    v10 = [(CNAccountsAndGroupsCell *)self titleTextView];
-    [v10 setText:v9];
+    item2 = [(CNAccountsAndGroupsCell *)self item];
+    name2 = [item2 name];
+    titleTextView = [(CNAccountsAndGroupsCell *)self titleTextView];
+    [titleTextView setText:name2];
 
-    v16 = v7;
+    v16 = name;
   }
 
-  v11 = [(CNAccountsAndGroupsCell *)self delegate];
+  delegate = [(CNAccountsAndGroupsCell *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(CNAccountsAndGroupsCell *)self delegate];
-    v14 = [(CNAccountsAndGroupsCell *)self item];
-    [v13 item:v14 didEndEditingWithName:v16];
+    delegate2 = [(CNAccountsAndGroupsCell *)self delegate];
+    item3 = [(CNAccountsAndGroupsCell *)self item];
+    [delegate2 item:item3 didEndEditingWithName:v16];
   }
 
   [(CNAccountsAndGroupsCell *)self resetTextFieldEnabled];
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  [v4 frame];
-  [(CNAccountsAndGroupsCell *)self requiredHeightForTextView:v4 fittingWidth:v5];
+  changeCopy = change;
+  [changeCopy frame];
+  [(CNAccountsAndGroupsCell *)self requiredHeightForTextView:changeCopy fittingWidth:v5];
   v7 = v6;
 
   [(CNAccountsAndGroupsCell *)self titleTextViewHeight];
   if (v8 != v7)
   {
     [(CNAccountsAndGroupsCell *)self setTitleTextViewHeight:v7];
-    v9 = [(CNAccountsAndGroupsCell *)self delegate];
-    [v9 cellTextViewDidChangeHeight];
+    delegate = [(CNAccountsAndGroupsCell *)self delegate];
+    [delegate cellTextViewDidChangeHeight];
   }
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  v7 = a5;
-  v8 = a3;
-  if ([v7 isEqualToString:@"\n"])
+  length = range.length;
+  textCopy = text;
+  viewCopy = view;
+  if ([textCopy isEqualToString:@"\n"])
   {
-    [v8 resignFirstResponder];
+    [viewCopy resignFirstResponder];
 
     v9 = 0;
   }
 
   else
   {
-    v10 = [v8 text];
+    text = [viewCopy text];
 
-    v11 = [v10 length];
-    v12 = v11 - length + [v7 length];
+    v11 = [text length];
+    v12 = v11 - length + [textCopy length];
 
     v9 = v12 < 300;
   }
@@ -146,75 +146,75 @@
   return v9;
 }
 
-- (void)textViewDidBeginEditing:(id)a3
+- (void)textViewDidBeginEditing:(id)editing
 {
-  v3 = a3;
+  editingCopy = editing;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__CNAccountsAndGroupsCell_textViewDidBeginEditing___block_invoke;
   block[3] = &unk_1E74E6A88;
-  v6 = v3;
-  v4 = v3;
+  v6 = editingCopy;
+  v4 = editingCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (BOOL)textViewShouldBeginEditing:(id)a3
+- (BOOL)textViewShouldBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = [(CNAccountsAndGroupsCell *)self item];
-  v6 = [v5 canRename];
+  editingCopy = editing;
+  item = [(CNAccountsAndGroupsCell *)self item];
+  canRename = [item canRename];
 
-  if (v6)
+  if (canRename)
   {
-    [v4 frame];
-    [(CNAccountsAndGroupsCell *)self requiredHeightForTextView:v4 fittingWidth:v7];
+    [editingCopy frame];
+    [(CNAccountsAndGroupsCell *)self requiredHeightForTextView:editingCopy fittingWidth:v7];
     [(CNAccountsAndGroupsCell *)self setTitleTextViewHeight:?];
   }
 
-  return v6;
+  return canRename;
 }
 
 - (BOOL)isCellEditing
 {
-  v2 = [(CNAccountsAndGroupsCell *)self titleTextView];
-  v3 = [v2 isFirstResponder];
+  titleTextView = [(CNAccountsAndGroupsCell *)self titleTextView];
+  isFirstResponder = [titleTextView isFirstResponder];
 
-  return v3;
+  return isFirstResponder;
 }
 
 - (void)endEditingName
 {
-  v3 = [(CNAccountsAndGroupsCell *)self titleTextView];
-  v4 = [v3 isFirstResponder];
+  titleTextView = [(CNAccountsAndGroupsCell *)self titleTextView];
+  isFirstResponder = [titleTextView isFirstResponder];
 
-  if (v4)
+  if (isFirstResponder)
   {
-    v5 = [(CNAccountsAndGroupsCell *)self titleTextView];
-    [v5 resignFirstResponder];
+    titleTextView2 = [(CNAccountsAndGroupsCell *)self titleTextView];
+    [titleTextView2 resignFirstResponder];
   }
 }
 
 - (void)beginEditingName
 {
   [(CNAccountsAndGroupsCell *)self setTextViewEnabled:1];
-  v3 = [(CNAccountsAndGroupsCell *)self titleTextView];
-  [v3 becomeFirstResponder];
+  titleTextView = [(CNAccountsAndGroupsCell *)self titleTextView];
+  [titleTextView becomeFirstResponder];
 }
 
-- (void)applyAccessoryTintColor:(id)a3 leadingAccessoryTintColor:(id)a4
+- (void)applyAccessoryTintColor:(id)color leadingAccessoryTintColor:(id)tintColor
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNAccountsAndGroupsCell *)self accessories];
+  colorCopy = color;
+  tintColorCopy = tintColor;
+  accessories = [(CNAccountsAndGroupsCell *)self accessories];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __77__CNAccountsAndGroupsCell_applyAccessoryTintColor_leadingAccessoryTintColor___block_invoke;
   v15 = &unk_1E74E6398;
-  v16 = v7;
-  v17 = v6;
-  v9 = v6;
-  v10 = v7;
-  v11 = [v8 _cn_map:&v12];
+  v16 = tintColorCopy;
+  v17 = colorCopy;
+  v9 = colorCopy;
+  v10 = tintColorCopy;
+  v11 = [accessories _cn_map:&v12];
 
   [(CNAccountsAndGroupsCell *)self setAccessories:v11, v12, v13, v14, v15];
 }
@@ -271,18 +271,18 @@ id __77__CNAccountsAndGroupsCell_applyAccessoryTintColor_leadingAccessoryTintCol
   return v3;
 }
 
-- (void)applyTextFont:(id)a3
+- (void)applyTextFont:(id)font
 {
-  v4 = a3;
-  v5 = [(CNAccountsAndGroupsCell *)self titleTextView];
-  [v5 setFont:v4];
+  fontCopy = font;
+  titleTextView = [(CNAccountsAndGroupsCell *)self titleTextView];
+  [titleTextView setFont:fontCopy];
 }
 
 - (void)applyTextViewPlaceholderIfNeeded
 {
-  v3 = [(CNAccountsAndGroupsCell *)self item];
-  v4 = [v3 identifier];
-  v5 = [v4 isEqualToString:@"groupPlaceholderIdentifier"];
+  item = [(CNAccountsAndGroupsCell *)self item];
+  identifier = [item identifier];
+  v5 = [identifier isEqualToString:@"groupPlaceholderIdentifier"];
 
   if (v5)
   {
@@ -290,14 +290,14 @@ id __77__CNAccountsAndGroupsCell_applyAccessoryTintColor_leadingAccessoryTintCol
     v10 = CNContactsUIBundle();
     v7 = [v10 localizedStringForKey:@"NEW_GROUP_NAME_PLACEHOLDER" value:&stru_1F0CE7398 table:@"Localized"];
     v8 = [v6 initWithString:v7];
-    v9 = [(CNAccountsAndGroupsCell *)self titleTextView];
-    [v9 setAttributedPlaceholder:v8];
+    titleTextView = [(CNAccountsAndGroupsCell *)self titleTextView];
+    [titleTextView setAttributedPlaceholder:v8];
   }
 }
 
-- (double)requiredHeightForTextView:(id)a3 fittingWidth:(double)a4
+- (double)requiredHeightForTextView:(id)view fittingWidth:(double)width
 {
-  [a3 sizeThatFits:{a4, 1.79769313e308}];
+  [view sizeThatFits:{width, 1.79769313e308}];
   v5 = v4;
   return ceilf(v5);
 }
@@ -313,14 +313,14 @@ id __77__CNAccountsAndGroupsCell_applyAccessoryTintColor_leadingAccessoryTintCol
     self->_titleTextView = v5;
 
     [(CNAccountsAndGroupsCellTextView *)self->_titleTextView setDelegate:self];
-    v7 = [(CNAccountsAndGroupsCell *)self contentView];
-    v8 = [v7 backgroundColor];
-    [(CNAccountsAndGroupsCellTextView *)self->_titleTextView setBackgroundColor:v8];
+    contentView = [(CNAccountsAndGroupsCell *)self contentView];
+    backgroundColor = [contentView backgroundColor];
+    [(CNAccountsAndGroupsCellTextView *)self->_titleTextView setBackgroundColor:backgroundColor];
 
-    v9 = [MEMORY[0x1E69DCC28] accompaniedSidebarCellConfiguration];
-    v10 = [v9 textProperties];
-    v11 = [v10 font];
-    [(CNAccountsAndGroupsCellTextView *)self->_titleTextView setFont:v11];
+    accompaniedSidebarCellConfiguration = [MEMORY[0x1E69DCC28] accompaniedSidebarCellConfiguration];
+    textProperties = [accompaniedSidebarCellConfiguration textProperties];
+    font = [textProperties font];
+    [(CNAccountsAndGroupsCellTextView *)self->_titleTextView setFont:font];
 
     [(CNAccountsAndGroupsCellTextView *)self->_titleTextView setTextAlignment:2 * ([(CNAccountsAndGroupsCell *)self effectiveUserInterfaceLayoutDirection]== 1)];
     [(CNAccountsAndGroupsCellTextView *)self->_titleTextView setBounces:0];
@@ -328,23 +328,23 @@ id __77__CNAccountsAndGroupsCell_applyAccessoryTintColor_leadingAccessoryTintCol
     [(CNAccountsAndGroupsCellTextView *)self->_titleTextView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(CNAccountsAndGroupsCellTextView *)self->_titleTextView setScrollEnabled:0];
     [(CNAccountsAndGroupsCellTextView *)self->_titleTextView setReturnKeyType:9];
-    v12 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v13 = [v12 featureFlags];
-    LODWORD(v11) = [v13 isFeatureEnabled:29];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    featureFlags = [currentEnvironment featureFlags];
+    LODWORD(font) = [featureFlags isFeatureEnabled:29];
 
-    if (v11)
+    if (font)
     {
       [(CNAccountsAndGroupsCellTextView *)self->_titleTextView setTextContainerInset:*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)];
-      v14 = [(CNAccountsAndGroupsCellTextView *)self->_titleTextView textContainer];
-      [v14 setLineFragmentPadding:0.0];
+      textContainer = [(CNAccountsAndGroupsCellTextView *)self->_titleTextView textContainer];
+      [textContainer setLineFragmentPadding:0.0];
     }
 
     else
     {
-      v15 = [(CNAccountsAndGroupsCell *)self contentView];
-      v16 = [v15 effectiveUserInterfaceLayoutDirection];
+      contentView2 = [(CNAccountsAndGroupsCell *)self contentView];
+      effectiveUserInterfaceLayoutDirection = [contentView2 effectiveUserInterfaceLayoutDirection];
 
-      if (v16 == 1)
+      if (effectiveUserInterfaceLayoutDirection == 1)
       {
         v17 = 0.0;
       }
@@ -354,7 +354,7 @@ id __77__CNAccountsAndGroupsCell_applyAccessoryTintColor_leadingAccessoryTintCol
         v17 = 1.0;
       }
 
-      if (v16 == 1)
+      if (effectiveUserInterfaceLayoutDirection == 1)
       {
         v18 = 1.0;
       }
@@ -374,52 +374,52 @@ id __77__CNAccountsAndGroupsCell_applyAccessoryTintColor_leadingAccessoryTintCol
   return titleTextView;
 }
 
-- (void)setTextViewEnabled:(BOOL)a3
+- (void)setTextViewEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v7 = [(CNAccountsAndGroupsCell *)self item];
-  v5 = [v7 canRename];
-  v6 = [(CNAccountsAndGroupsCell *)self titleTextView];
-  [v6 setUserInteractionEnabled:v5 & v3];
+  enabledCopy = enabled;
+  item = [(CNAccountsAndGroupsCell *)self item];
+  canRename = [item canRename];
+  titleTextView = [(CNAccountsAndGroupsCell *)self titleTextView];
+  [titleTextView setUserInteractionEnabled:canRename & enabledCopy];
 }
 
 - (void)resetTextFieldEnabled
 {
-  v3 = [(CNAccountsAndGroupsCell *)self delegate];
-  -[CNAccountsAndGroupsCell setTextViewEnabled:](self, "setTextViewEnabled:", [v3 isCollectionViewEditing]);
+  delegate = [(CNAccountsAndGroupsCell *)self delegate];
+  -[CNAccountsAndGroupsCell setTextViewEnabled:](self, "setTextViewEnabled:", [delegate isCollectionViewEditing]);
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v8 = a3;
-  objc_storeStrong(&self->_item, a3);
-  if (v8)
+  itemCopy = item;
+  objc_storeStrong(&self->_item, item);
+  if (itemCopy)
   {
-    v5 = [v8 name];
+    name = [itemCopy name];
   }
 
   else
   {
-    v5 = 0;
+    name = 0;
   }
 
-  v6 = [(CNAccountsAndGroupsCell *)self titleTextView];
-  [v6 setText:v5];
+  titleTextView = [(CNAccountsAndGroupsCell *)self titleTextView];
+  [titleTextView setText:name];
 
-  v7 = v8;
-  if (v8)
+  v7 = itemCopy;
+  if (itemCopy)
   {
 
-    v7 = v8;
+    v7 = itemCopy;
   }
 }
 
 - (double)minCellHeight
 {
-  v3 = [(CNAccountsAndGroupsCell *)self traitCollection];
-  v4 = [v3 _splitViewControllerContext];
+  traitCollection = [(CNAccountsAndGroupsCell *)self traitCollection];
+  _splitViewControllerContext = [traitCollection _splitViewControllerContext];
 
-  if (v4 == 2)
+  if (_splitViewControllerContext == 2)
   {
     [MEMORY[0x1E69DCC28] accompaniedSidebarCellConfiguration];
   }
@@ -429,35 +429,35 @@ id __77__CNAccountsAndGroupsCell_applyAccessoryTintColor_leadingAccessoryTintCol
     [MEMORY[0x1E69DCC28] cellConfiguration];
   }
   v5 = ;
-  v6 = [(CNAccountsAndGroupsCell *)self traitCollection];
-  [v5 _minimumHeightForTraitCollection:v6];
+  traitCollection2 = [(CNAccountsAndGroupsCell *)self traitCollection];
+  [v5 _minimumHeightForTraitCollection:traitCollection2];
   v8 = v7;
 
   return v8;
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   [(CNAccountsAndGroupsCell *)self setNeedsLayout];
   [(CNAccountsAndGroupsCell *)self layoutIfNeeded];
   v18.receiver = self;
   v18.super_class = CNAccountsAndGroupsCell;
-  v5 = [(CNAccountsAndGroupsCell *)&v18 preferredLayoutAttributesFittingAttributes:v4];
+  v5 = [(CNAccountsAndGroupsCell *)&v18 preferredLayoutAttributesFittingAttributes:attributesCopy];
 
-  v6 = [(CNAccountsAndGroupsCell *)self contentView];
-  [v6 bounds];
+  contentView = [(CNAccountsAndGroupsCell *)self contentView];
+  [contentView bounds];
   v8 = v7;
-  v9 = [(CNAccountsAndGroupsCell *)self contentView];
-  [v9 layoutMargins];
+  contentView2 = [(CNAccountsAndGroupsCell *)self contentView];
+  [contentView2 layoutMargins];
   v11 = v8 - v10;
-  v12 = [(CNAccountsAndGroupsCell *)self contentView];
-  [v12 layoutMargins];
+  contentView3 = [(CNAccountsAndGroupsCell *)self contentView];
+  [contentView3 layoutMargins];
   v14 = v11 - v13 + -1.0;
   v15 = floorf(v14);
 
-  v16 = [(CNAccountsAndGroupsCell *)self titleTextView];
-  [(CNAccountsAndGroupsCell *)self requiredHeightForTextView:v16 fittingWidth:v15];
+  titleTextView = [(CNAccountsAndGroupsCell *)self titleTextView];
+  [(CNAccountsAndGroupsCell *)self requiredHeightForTextView:titleTextView fittingWidth:v15];
 
   [(CNAccountsAndGroupsCell *)self minCellHeight];
   [v5 size];
@@ -469,58 +469,58 @@ id __77__CNAccountsAndGroupsCell_applyAccessoryTintColor_leadingAccessoryTintCol
 - (void)setupTextViewConstraints
 {
   v46[6] = *MEMORY[0x1E69E9840];
-  v3 = [(CNAccountsAndGroupsCell *)self titleTextView];
-  v4 = [v3 superview];
+  titleTextView = [(CNAccountsAndGroupsCell *)self titleTextView];
+  superview = [titleTextView superview];
 
-  if (!v4)
+  if (!superview)
   {
-    v5 = [(CNAccountsAndGroupsCell *)self contentView];
-    v6 = [(CNAccountsAndGroupsCell *)self titleTextView];
-    [v5 addSubview:v6];
+    contentView = [(CNAccountsAndGroupsCell *)self contentView];
+    titleTextView2 = [(CNAccountsAndGroupsCell *)self titleTextView];
+    [contentView addSubview:titleTextView2];
 
-    v45 = [(CNAccountsAndGroupsCell *)self titleTextView];
-    v43 = [v45 leadingAnchor];
-    v44 = [(CNAccountsAndGroupsCell *)self contentView];
-    v42 = [v44 layoutMarginsGuide];
-    v41 = [v42 leadingAnchor];
-    v40 = [v43 constraintEqualToAnchor:v41];
+    titleTextView3 = [(CNAccountsAndGroupsCell *)self titleTextView];
+    leadingAnchor = [titleTextView3 leadingAnchor];
+    contentView2 = [(CNAccountsAndGroupsCell *)self contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v46[0] = v40;
-    v39 = [(CNAccountsAndGroupsCell *)self titleTextView];
-    v37 = [v39 trailingAnchor];
-    v38 = [(CNAccountsAndGroupsCell *)self contentView];
-    v36 = [v38 layoutMarginsGuide];
-    v35 = [v36 trailingAnchor];
-    v34 = [v37 constraintEqualToAnchor:v35];
+    titleTextView4 = [(CNAccountsAndGroupsCell *)self titleTextView];
+    trailingAnchor = [titleTextView4 trailingAnchor];
+    contentView3 = [(CNAccountsAndGroupsCell *)self contentView];
+    layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v46[1] = v34;
-    v33 = [(CNAccountsAndGroupsCell *)self titleTextView];
-    v31 = [v33 centerYAnchor];
-    v32 = [(CNAccountsAndGroupsCell *)self contentView];
-    v30 = [v32 safeAreaLayoutGuide];
-    v29 = [v30 centerYAnchor];
-    v28 = [v31 constraintEqualToAnchor:v29];
+    titleTextView5 = [(CNAccountsAndGroupsCell *)self titleTextView];
+    centerYAnchor = [titleTextView5 centerYAnchor];
+    contentView4 = [(CNAccountsAndGroupsCell *)self contentView];
+    safeAreaLayoutGuide = [contentView4 safeAreaLayoutGuide];
+    centerYAnchor2 = [safeAreaLayoutGuide centerYAnchor];
+    v28 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v46[2] = v28;
-    v27 = [(CNAccountsAndGroupsCell *)self titleTextView];
-    v25 = [v27 topAnchor];
-    v26 = [(CNAccountsAndGroupsCell *)self contentView];
-    v24 = [v26 safeAreaLayoutGuide];
-    v22 = [v24 topAnchor];
-    v21 = [v25 constraintGreaterThanOrEqualToAnchor:v22];
+    titleTextView6 = [(CNAccountsAndGroupsCell *)self titleTextView];
+    topAnchor = [titleTextView6 topAnchor];
+    contentView5 = [(CNAccountsAndGroupsCell *)self contentView];
+    safeAreaLayoutGuide2 = [contentView5 safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide2 topAnchor];
+    v21 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
     v46[3] = v21;
-    v20 = [(CNAccountsAndGroupsCell *)self titleTextView];
-    v18 = [v20 bottomAnchor];
-    v19 = [(CNAccountsAndGroupsCell *)self contentView];
-    v7 = [v19 safeAreaLayoutGuide];
-    v8 = [v7 bottomAnchor];
-    v9 = [v18 constraintLessThanOrEqualToAnchor:v8];
+    titleTextView7 = [(CNAccountsAndGroupsCell *)self titleTextView];
+    bottomAnchor = [titleTextView7 bottomAnchor];
+    contentView6 = [(CNAccountsAndGroupsCell *)self contentView];
+    safeAreaLayoutGuide3 = [contentView6 safeAreaLayoutGuide];
+    bottomAnchor2 = [safeAreaLayoutGuide3 bottomAnchor];
+    v9 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
     v46[4] = v9;
-    v10 = [(CNAccountsAndGroupsCell *)self separatorLayoutGuide];
-    v11 = [v10 leadingAnchor];
-    v12 = [(CNAccountsAndGroupsCell *)self titleTextView];
-    v13 = [v12 leadingAnchor];
-    v14 = [(CNAccountsAndGroupsCell *)self titleTextView];
-    v15 = [v14 textContainer];
-    [v15 lineFragmentPadding];
-    v17 = [v11 constraintEqualToAnchor:v13 constant:v16 + 1.0];
+    separatorLayoutGuide = [(CNAccountsAndGroupsCell *)self separatorLayoutGuide];
+    leadingAnchor3 = [separatorLayoutGuide leadingAnchor];
+    titleTextView8 = [(CNAccountsAndGroupsCell *)self titleTextView];
+    leadingAnchor4 = [titleTextView8 leadingAnchor];
+    titleTextView9 = [(CNAccountsAndGroupsCell *)self titleTextView];
+    textContainer = [titleTextView9 textContainer];
+    [textContainer lineFragmentPadding];
+    v17 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v16 + 1.0];
     v46[5] = v17;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:6];
 

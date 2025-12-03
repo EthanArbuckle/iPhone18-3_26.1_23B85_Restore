@@ -1,20 +1,20 @@
 @interface HAHypertensivePatternMeasurement
-- (HAHypertensivePatternMeasurement)initWithDate:(id)a3 value:(double)a4;
+- (HAHypertensivePatternMeasurement)initWithDate:(id)date value:(double)value;
 @end
 
 @implementation HAHypertensivePatternMeasurement
 
-- (HAHypertensivePatternMeasurement)initWithDate:(id)a3 value:(double)a4
+- (HAHypertensivePatternMeasurement)initWithDate:(id)date value:(double)value
 {
-  v7 = a3;
+  dateCopy = date;
   v12.receiver = self;
   v12.super_class = HAHypertensivePatternMeasurement;
   v8 = [(HAHypertensivePatternMeasurement *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_date, a3);
-    v9->_value = a4;
+    objc_storeStrong(&v8->_date, date);
+    v9->_value = value;
     v10 = v9;
   }
 

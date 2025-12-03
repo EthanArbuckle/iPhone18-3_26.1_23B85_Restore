@@ -1,9 +1,9 @@
 @interface MTRNetworkCommissioningClusterConnectNetworkResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRNetworkCommissioningClusterConnectNetworkResponseParams)init;
-- (MTRNetworkCommissioningClusterConnectNetworkResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTRNetworkCommissioningClusterConnectNetworkResponseParams)initWithDecodableStruct:(const void *)struct;
 - (MTRNetworkCommissioningClusterConnectNetworkResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -33,20 +33,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRNetworkCommissioningClusterConnectNetworkResponseParams);
-  v5 = [(MTRNetworkCommissioningClusterConnectNetworkResponseParams *)self networkingStatus];
-  [(MTRNetworkCommissioningClusterConnectNetworkResponseParams *)v4 setNetworkingStatus:v5];
+  networkingStatus = [(MTRNetworkCommissioningClusterConnectNetworkResponseParams *)self networkingStatus];
+  [(MTRNetworkCommissioningClusterConnectNetworkResponseParams *)v4 setNetworkingStatus:networkingStatus];
 
-  v6 = [(MTRNetworkCommissioningClusterConnectNetworkResponseParams *)self debugText];
-  [(MTRNetworkCommissioningClusterConnectNetworkResponseParams *)v4 setDebugText:v6];
+  debugText = [(MTRNetworkCommissioningClusterConnectNetworkResponseParams *)self debugText];
+  [(MTRNetworkCommissioningClusterConnectNetworkResponseParams *)v4 setDebugText:debugText];
 
-  v7 = [(MTRNetworkCommissioningClusterConnectNetworkResponseParams *)self errorValue];
-  [(MTRNetworkCommissioningClusterConnectNetworkResponseParams *)v4 setErrorValue:v7];
+  errorValue = [(MTRNetworkCommissioningClusterConnectNetworkResponseParams *)self errorValue];
+  [(MTRNetworkCommissioningClusterConnectNetworkResponseParams *)v4 setErrorValue:errorValue];
 
-  v8 = [(MTRNetworkCommissioningClusterConnectNetworkResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRNetworkCommissioningClusterConnectNetworkResponseParams *)v4 setTimedInvokeTimeoutMs:v8];
+  timedInvokeTimeoutMs = [(MTRNetworkCommissioningClusterConnectNetworkResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRNetworkCommissioningClusterConnectNetworkResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -108,7 +108,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRNetworkCommissioningClusterConnectNetworkResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRNetworkCommissioningClusterConnectNetworkResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRNetworkCommissioningClusterConnectNetworkResponseParams;
@@ -116,7 +116,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRNetworkCommissioningClusterConnectNetworkResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRNetworkCommissioningClusterConnectNetworkResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -132,20 +132,20 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*struct];
   [(MTRNetworkCommissioningClusterConnectNetworkResponseParams *)self setNetworkingStatus:v5];
 
-  if (*(a3 + 8) == 1)
+  if (*(struct + 8) == 1)
   {
-    v6 = sub_238DE36B8(a3 + 8);
+    v6 = sub_238DE36B8(struct + 8);
     v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v6 length:v6[1] encoding:4];
     [(MTRNetworkCommissioningClusterConnectNetworkResponseParams *)self setDebugText:v7];
 
-    v8 = [(MTRNetworkCommissioningClusterConnectNetworkResponseParams *)self debugText];
+    debugText = [(MTRNetworkCommissioningClusterConnectNetworkResponseParams *)self debugText];
 
-    if (!v8)
+    if (!debugText)
     {
       v9 = "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm";
       v10 = 0x189E00000000;
@@ -159,9 +159,9 @@ LABEL_6:
     [(MTRNetworkCommissioningClusterConnectNetworkResponseParams *)self setDebugText:0];
   }
 
-  if (*(a3 + 36))
+  if (*(struct + 36))
   {
-    v12 = [MEMORY[0x277CCABB0] numberWithInt:*(a3 + 8)];
+    v12 = [MEMORY[0x277CCABB0] numberWithInt:*(struct + 8)];
     [(MTRNetworkCommissioningClusterConnectNetworkResponseParams *)self setErrorValue:v12];
   }
 

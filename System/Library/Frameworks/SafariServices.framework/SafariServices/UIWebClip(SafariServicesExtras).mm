@@ -11,12 +11,12 @@
 {
   v2 = MEMORY[0x1E695DFF8];
   v3 = objc_opt_class();
-  v4 = [a1 identifier];
-  v5 = [v3 pathForWebClipStorageWithIdentifier:v4];
+  identifier = [self identifier];
+  v5 = [v3 pathForWebClipStorageWithIdentifier:identifier];
   v6 = [v2 fileURLWithPath:v5 isDirectory:1];
 
-  v7 = [v6 URLByDeletingLastPathComponent];
-  v8 = [v7 URLByAppendingPathComponent:@"ApplicationManifest" isDirectory:0];
+  uRLByDeletingLastPathComponent = [v6 URLByDeletingLastPathComponent];
+  v8 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"ApplicationManifest" isDirectory:0];
 
   return v8;
 }
@@ -25,12 +25,12 @@
 {
   v2 = MEMORY[0x1E695DFF8];
   v3 = objc_opt_class();
-  v4 = [a1 identifier];
-  v5 = [v3 pathForWebClipStorageWithIdentifier:v4];
+  identifier = [self identifier];
+  v5 = [v3 pathForWebClipStorageWithIdentifier:identifier];
   v6 = [v2 fileURLWithPath:v5 isDirectory:1];
 
-  v7 = [v6 URLByDeletingLastPathComponent];
-  v8 = [v7 URLByAppendingPathComponent:@"StagedCookies" isDirectory:1];
+  uRLByDeletingLastPathComponent = [v6 URLByDeletingLastPathComponent];
+  v8 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"StagedCookies" isDirectory:1];
 
   return v8;
 }
@@ -42,8 +42,8 @@
   {
     v4 = [MEMORY[0x1E69DD2B8] webClipWithUUID:v3];
     v5 = MEMORY[0x1E695DEF0];
-    v6 = [v4 _sf_applicationManifestPath];
-    v7 = [v5 dataWithContentsOfURL:v6];
+    _sf_applicationManifestPath = [v4 _sf_applicationManifestPath];
+    v7 = [v5 dataWithContentsOfURL:_sf_applicationManifestPath];
 
     v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v7 error:0];
     [v4 _sf_setApplicationManifest:v8];
@@ -60,20 +60,20 @@
 - (uint64_t)safari_isURLWithinNavigationScope:()SafariServicesExtras
 {
   v4 = a3;
-  v5 = [a1 _sf_applicationManifest];
-  v6 = [v5 scope];
-  v7 = v6;
-  if (v6)
+  _sf_applicationManifest = [self _sf_applicationManifest];
+  scope = [_sf_applicationManifest scope];
+  v7 = scope;
+  if (scope)
   {
-    v8 = v6;
+    pageURL = scope;
   }
 
   else
   {
-    v8 = [a1 pageURL];
+    pageURL = [self pageURL];
   }
 
-  v9 = v8;
+  v9 = pageURL;
 
   v10 = [v4 safari_isWithinWebAppNavigationScope:v9 allowingQuirks:0];
   return v10;

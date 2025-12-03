@@ -1,20 +1,20 @@
 @interface COCapabilityManagerClientInterfaceMediator
 - (COCapabilityManager)manager;
-- (COCapabilityManagerClientInterfaceMediator)initWithCapabilityManager:(id)a3;
+- (COCapabilityManagerClientInterfaceMediator)initWithCapabilityManager:(id)manager;
 @end
 
 @implementation COCapabilityManagerClientInterfaceMediator
 
-- (COCapabilityManagerClientInterfaceMediator)initWithCapabilityManager:(id)a3
+- (COCapabilityManagerClientInterfaceMediator)initWithCapabilityManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v8.receiver = self;
   v8.super_class = COCapabilityManagerClientInterfaceMediator;
   v5 = [(COCapabilityManagerClientInterfaceMediator *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_manager, v4);
+    objc_storeWeak(&v5->_manager, managerCopy);
   }
 
   return v6;

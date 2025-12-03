@@ -1,40 +1,40 @@
 @interface CSPairingDevice
-- (CSPairingDevice)initWithRPCompanionLinkDevice:(id)a3;
+- (CSPairingDevice)initWithRPCompanionLinkDevice:(id)device;
 - (NSString)remoteDisplayIdentifier;
 - (id)description;
 @end
 
 @implementation CSPairingDevice
 
-- (CSPairingDevice)initWithRPCompanionLinkDevice:(id)a3
+- (CSPairingDevice)initWithRPCompanionLinkDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v17.receiver = self;
   v17.super_class = CSPairingDevice;
   v5 = [(CSPairingDevice *)&v17 init];
   if (v5)
   {
-    v6 = [v4 name];
-    v7 = [v6 copy];
+    name = [deviceCopy name];
+    v7 = [name copy];
     [(CSPairingDevice *)v5 setName:v7];
 
-    v8 = [v4 idsDeviceIdentifier];
-    v9 = [v8 copy];
+    idsDeviceIdentifier = [deviceCopy idsDeviceIdentifier];
+    v9 = [idsDeviceIdentifier copy];
     [(CSPairingDevice *)v5 setIdsDeviceIdentifier:v9];
 
-    v10 = [v4 sessionPairingIdentifier];
-    v11 = [v10 copy];
+    sessionPairingIdentifier = [deviceCopy sessionPairingIdentifier];
+    v11 = [sessionPairingIdentifier copy];
     [(CSPairingDevice *)v5 setSessionPairingIdentifier:v11];
 
-    v12 = [v4 verifiedIdentity];
-    v13 = [v12 copy];
+    verifiedIdentity = [deviceCopy verifiedIdentity];
+    v13 = [verifiedIdentity copy];
     [(CSPairingDevice *)v5 setPeerVerifiedIdentifier:v13];
 
-    v14 = [v4 mediaRouteIdentifier];
-    v15 = [v14 copy];
+    mediaRouteIdentifier = [deviceCopy mediaRouteIdentifier];
+    v15 = [mediaRouteIdentifier copy];
     [(CSPairingDevice *)v5 setMediaRouteIdentifier:v15];
 
-    -[CSPairingDevice setStatusFlags:](v5, "setStatusFlags:", [v4 statusFlags]);
+    -[CSPairingDevice setStatusFlags:](v5, "setStatusFlags:", [deviceCopy statusFlags]);
   }
 
   return v5;
@@ -43,13 +43,13 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(CSPairingDevice *)self name];
-  v5 = [(CSPairingDevice *)self idsDeviceIdentifier];
-  v6 = [(CSPairingDevice *)self sessionPairingIdentifier];
-  v7 = [(CSPairingDevice *)self peerVerifiedIdentifier];
-  v8 = [(CSPairingDevice *)self mediaRouteIdentifier];
-  v9 = [(CSPairingDevice *)self remoteDisplayIdentifier];
-  v10 = [v3 initWithFormat:@"<CSPairingDevice [%@] idsDeviceIdentifier:%@ sessionPairingIdentifier:%@ peerVerifiedIdentifier:%@ mediaRouteIdentifier:%@ remoteDisplayIdentifier:%@ isSignedIn:%d>", v4, v5, v6, v7, v8, v9, -[CSPairingDevice isSignedIn](self, "isSignedIn")];
+  name = [(CSPairingDevice *)self name];
+  idsDeviceIdentifier = [(CSPairingDevice *)self idsDeviceIdentifier];
+  sessionPairingIdentifier = [(CSPairingDevice *)self sessionPairingIdentifier];
+  peerVerifiedIdentifier = [(CSPairingDevice *)self peerVerifiedIdentifier];
+  mediaRouteIdentifier = [(CSPairingDevice *)self mediaRouteIdentifier];
+  remoteDisplayIdentifier = [(CSPairingDevice *)self remoteDisplayIdentifier];
+  v10 = [v3 initWithFormat:@"<CSPairingDevice [%@] idsDeviceIdentifier:%@ sessionPairingIdentifier:%@ peerVerifiedIdentifier:%@ mediaRouteIdentifier:%@ remoteDisplayIdentifier:%@ isSignedIn:%d>", name, idsDeviceIdentifier, sessionPairingIdentifier, peerVerifiedIdentifier, mediaRouteIdentifier, remoteDisplayIdentifier, -[CSPairingDevice isSignedIn](self, "isSignedIn")];
 
   return v10;
 }
@@ -58,14 +58,14 @@
 {
   if ([(CSPairingDevice *)self isSignedIn])
   {
-    v3 = [(CSPairingDevice *)self idsDeviceIdentifier];
-    v4 = [v3 copy];
+    idsDeviceIdentifier = [(CSPairingDevice *)self idsDeviceIdentifier];
+    v4 = [idsDeviceIdentifier copy];
   }
 
   else
   {
-    v3 = [(CSPairingDevice *)self sessionPairingIdentifier];
-    v5 = [v3 copy];
+    idsDeviceIdentifier = [(CSPairingDevice *)self sessionPairingIdentifier];
+    v5 = [idsDeviceIdentifier copy];
     v6 = v5;
     if (v5)
     {
@@ -74,8 +74,8 @@
 
     else
     {
-      v7 = [(CSPairingDevice *)self idsDeviceIdentifier];
-      v4 = [v7 copy];
+      idsDeviceIdentifier2 = [(CSPairingDevice *)self idsDeviceIdentifier];
+      v4 = [idsDeviceIdentifier2 copy];
     }
   }
 

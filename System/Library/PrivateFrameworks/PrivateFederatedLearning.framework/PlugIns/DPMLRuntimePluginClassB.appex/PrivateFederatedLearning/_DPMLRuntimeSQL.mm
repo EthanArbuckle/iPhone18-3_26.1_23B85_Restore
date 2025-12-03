@@ -1,14 +1,14 @@
 @interface _DPMLRuntimeSQL
-- (_DPMLRuntimeSQL)initWithSQLAccessTable:(id)a3 forRecipeIdentifier:(id)a4 withError:(id *)a5;
-- (id)runQuery:(id)a3 withError:(id *)a4;
+- (_DPMLRuntimeSQL)initWithSQLAccessTable:(id)table forRecipeIdentifier:(id)identifier withError:(id *)error;
+- (id)runQuery:(id)query withError:(id *)error;
 @end
 
 @implementation _DPMLRuntimeSQL
 
-- (_DPMLRuntimeSQL)initWithSQLAccessTable:(id)a3 forRecipeIdentifier:(id)a4 withError:(id *)a5
+- (_DPMLRuntimeSQL)initWithSQLAccessTable:(id)table forRecipeIdentifier:(id)identifier withError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  tableCopy = table;
+  identifierCopy = identifier;
   v61.receiver = self;
   v61.super_class = _DPMLRuntimeSQL;
   v10 = [(_DPMLRuntimeSQL *)&v61 init];
@@ -20,7 +20,7 @@ LABEL_23:
     goto LABEL_39;
   }
 
-  if (![(_DPMLRuntimeSQL *)v10 checkSQLAccess:v8 allowedTableNamesForRecipeIdentifier:v9 withError:a5])
+  if (![(_DPMLRuntimeSQL *)v10 checkSQLAccess:tableCopy allowedTableNamesForRecipeIdentifier:identifierCopy withError:error])
   {
     goto LABEL_38;
   }
@@ -30,7 +30,7 @@ LABEL_23:
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v13 = v8;
+  v13 = tableCopy;
   v14 = [v13 countByEnumeratingWithState:&v57 objects:v63 count:16];
   if (!v14)
   {
@@ -39,10 +39,10 @@ LABEL_23:
 
   v15 = *v58;
   v16 = &INSupportedMediaCategories_ptr;
-  v47 = v8;
+  v47 = tableCopy;
   v48 = v12;
-  v46 = v9;
-  v49 = a5;
+  v46 = identifierCopy;
+  errorCopy = error;
   v50 = v13;
   v44 = *v58;
   while (2)
@@ -66,9 +66,9 @@ LABEL_23:
 
       if (!v24)
       {
-        v9 = v46;
-        v8 = v47;
-        if (!v49)
+        identifierCopy = v46;
+        tableCopy = v47;
+        if (!errorCopy)
         {
 LABEL_28:
 
@@ -78,13 +78,13 @@ LABEL_28:
         v25 = [v50 objectForKeyedSubscript:v18];
         v39 = [v25 componentsJoinedByString:@" "];
         v43 = [NSString stringWithFormat:@"Could not create BMSQLColumnAccessSet for table name, %@ with columns, %@", v18, v39];
-        *v49 = [_DPMLRuntimeError errorWithCode:400 description:v43];
+        *errorCopy = [_DPMLRuntimeError errorWithCode:400 description:v43];
 
 LABEL_26:
 LABEL_27:
 
-        v9 = v46;
-        v8 = v47;
+        identifierCopy = v46;
+        tableCopy = v47;
         v12 = v48;
         goto LABEL_28;
       }
@@ -126,13 +126,13 @@ LABEL_11:
           }
         }
 
-        if (!v49)
+        if (!errorCopy)
         {
           goto LABEL_27;
         }
 
         v39 = [NSString stringWithFormat:@"The %@ cannot be accessed for table name %@", v30, v18];
-        *v49 = [_DPMLRuntimeError errorWithCode:400 description:v39];
+        *errorCopy = [_DPMLRuntimeError errorWithCode:400 description:v39];
         goto LABEL_26;
       }
 
@@ -143,15 +143,15 @@ LABEL_17:
 
       v17 = v17 + 1;
       v15 = v44;
-      a5 = v49;
+      error = errorCopy;
       v13 = v50;
       v16 = v19;
     }
 
     while (v17 != v45);
     v14 = [v50 countByEnumeratingWithState:&v57 objects:v63 count:16];
-    v9 = v46;
-    v8 = v47;
+    identifierCopy = v46;
+    tableCopy = v47;
     if (v14)
     {
       continue;
@@ -164,18 +164,18 @@ LABEL_19:
 
   objc_storeStrong(&v11->_privileges, v12);
   v31 = [[BMSQLDatabase alloc] initWithPrivileges:v12 isColumnAccessLoggingEnabled:1];
-  if ([v31 registerFunctionWithName:@"sha1" numArgs:1 function:&stru_10002C530 error:a5])
+  if ([v31 registerFunctionWithName:@"sha1" numArgs:1 function:&stru_10002C530 error:error])
   {
     v32 = [NSCharacterSet characterSetWithCharactersInString:@"01"];
-    v33 = [v32 invertedSet];
+    invertedSet = [v32 invertedSet];
 
     v51[0] = _NSConcreteStackBlock;
     v51[1] = 3221225472;
     v51[2] = sub_100001A08;
     v51[3] = &unk_10002C558;
-    v34 = v33;
+    v34 = invertedSet;
     v52 = v34;
-    if ([v31 registerFunctionWithName:@"bit_string_to_int" numArgs:1 function:v51 error:a5])
+    if ([v31 registerFunctionWithName:@"bit_string_to_int" numArgs:1 function:v51 error:error])
     {
       if (v31)
       {
@@ -190,10 +190,10 @@ LABEL_19:
         goto LABEL_23;
       }
 
-      if (a5)
+      if (error)
       {
         v41 = [NSString stringWithFormat:@"Could not create the BIOME database"];
-        *a5 = [_DPMLRuntimeError errorWithCode:400 description:v41];
+        *error = [_DPMLRuntimeError errorWithCode:400 description:v41];
         goto LABEL_34;
       }
     }
@@ -227,35 +227,35 @@ LABEL_39:
   return v38;
 }
 
-- (id)runQuery:(id)a3 withError:(id *)a4
+- (id)runQuery:(id)query withError:(id *)error
 {
-  v5 = a3;
-  v6 = [(_DPMLRuntimeSQL *)self database];
-  [v6 resetColumnAccessLog];
+  queryCopy = query;
+  database = [(_DPMLRuntimeSQL *)self database];
+  [database resetColumnAccessLog];
 
-  v43 = v5;
-  v8 = v7 = [v5 copy];
+  v43 = queryCopy;
+  v8 = v7 = [queryCopy copy];
   v10 = v9 = objc_claimAutoreleasedReturnValue();
 
-  v40 = self;
-  v11 = [(_DPMLRuntimeSQL *)self database];
+  selfCopy = self;
+  database2 = [(_DPMLRuntimeSQL *)self database];
   v42 = v10;
-  v12 = [v11 executeQuery:{@"%@", v10}];
+  v12 = [database2 executeQuery:{@"%@", v10}];
 
   v44 = [FedStatsDataSampler samplerWithCount:20];
   if ([v12 next])
   {
     do
     {
-      v13 = [v12 columns];
-      v14 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v13 count]);
+      columns = [v12 columns];
+      v14 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [columns count]);
 
       v52 = 0u;
       v53 = 0u;
       v50 = 0u;
       v51 = 0u;
-      v15 = [v12 columns];
-      v16 = [v15 countByEnumeratingWithState:&v50 objects:v55 count:16];
+      columns2 = [v12 columns];
+      v16 = [columns2 countByEnumeratingWithState:&v50 objects:v55 count:16];
       if (v16)
       {
         v17 = v16;
@@ -266,7 +266,7 @@ LABEL_39:
           {
             if (*v51 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(columns2);
             }
 
             v20 = *(*(&v50 + 1) + 8 * i);
@@ -274,7 +274,7 @@ LABEL_39:
             [v14 setObject:v21 forKey:v20];
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v50 objects:v55 count:16];
+          v17 = [columns2 countByEnumeratingWithState:&v50 objects:v55 count:16];
         }
 
         while (v17);
@@ -289,22 +289,22 @@ LABEL_39:
     while (([v12 next] & 1) != 0);
   }
 
-  v23 = [v12 error];
+  error = [v12 error];
 
-  if (v23)
+  if (error)
   {
-    if (a4)
+    if (error)
     {
-      v24 = [v12 error];
-      *a4 = [_DPMLRuntimeError errorWithCode:400 underlyingError:v24 description:@"Query execution failed"];
+      error2 = [v12 error];
+      *error = [_DPMLRuntimeError errorWithCode:400 underlyingError:error2 description:@"Query execution failed"];
     }
 
-    v25 = +[_PFLLog extension];
+    getResults = +[_PFLLog extension];
     v27 = v10;
     v26 = v43;
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(getResults, OS_LOG_TYPE_ERROR))
     {
-      sub_10001C14C(v12, v25);
+      sub_10001C14C(v12, getResults);
     }
 
     v28 = 0;
@@ -312,8 +312,8 @@ LABEL_39:
 
   else
   {
-    v25 = [v44 getResults];
-    if (![v25 count])
+    getResults = [v44 getResults];
+    if (![getResults count])
     {
       v29 = +[_PFLLog extension];
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
@@ -328,10 +328,10 @@ LABEL_39:
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v31 = [(_DPMLRuntimeSQL *)v40 database];
-    v32 = [v31 accessedColumns];
+    database3 = [(_DPMLRuntimeSQL *)selfCopy database];
+    accessedColumns = [database3 accessedColumns];
 
-    v33 = [v32 countByEnumeratingWithState:&v45 objects:v54 count:16];
+    v33 = [accessedColumns countByEnumeratingWithState:&v45 objects:v54 count:16];
     if (v33)
     {
       v34 = v33;
@@ -342,14 +342,14 @@ LABEL_39:
         {
           if (*v46 != v35)
           {
-            objc_enumerationMutation(v32);
+            objc_enumerationMutation(accessedColumns);
           }
 
-          v37 = [*(*(&v45 + 1) + 8 * j) columns];
-          [v30 unionSet:v37];
+          columns3 = [*(*(&v45 + 1) + 8 * j) columns];
+          [v30 unionSet:columns3];
         }
 
-        v34 = [v32 countByEnumeratingWithState:&v45 objects:v54 count:16];
+        v34 = [accessedColumns countByEnumeratingWithState:&v45 objects:v54 count:16];
       }
 
       while (v34);
@@ -365,9 +365,9 @@ LABEL_39:
       }
     }
 
-    if ([(_DPMLRuntimeSQL *)v40 convertSQLDataTypes:v30 toGlobalDataTypesWithError:a4])
+    if ([(_DPMLRuntimeSQL *)selfCopy convertSQLDataTypes:v30 toGlobalDataTypesWithError:error])
     {
-      v28 = v25;
+      v28 = getResults;
     }
 
     else

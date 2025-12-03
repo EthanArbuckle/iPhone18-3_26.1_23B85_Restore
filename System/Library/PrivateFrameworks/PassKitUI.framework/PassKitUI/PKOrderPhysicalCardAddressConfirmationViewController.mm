@@ -1,50 +1,50 @@
 @interface PKOrderPhysicalCardAddressConfirmationViewController
 - (BOOL)_shouldShowCancelNavigationButton;
-- (PKOrderPhysicalCardAddressConfirmationViewController)initWithOrderPhysicalCardController:(id)a3;
+- (PKOrderPhysicalCardAddressConfirmationViewController)initWithOrderPhysicalCardController:(id)controller;
 - (PKPaymentSetupViewControllerDelegate)delegate;
-- (id)_addressBodyStringWithPostalAddress:(id)a3;
-- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)a3;
+- (id)_addressBodyStringWithPostalAddress:(id)address;
+- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)coordinator;
 - (void)_presentNextViewControllerOrTerminate;
-- (void)_presentViewController:(id)a3;
-- (void)_showDisplayableError:(id)a3;
-- (void)_showSpinner:(BOOL)a3;
+- (void)_presentViewController:(id)controller;
+- (void)_showDisplayableError:(id)error;
+- (void)_showSpinner:(BOOL)spinner;
 - (void)_terminateFlow;
 - (void)dealloc;
-- (void)explanationViewDidSelectContinue:(id)a3;
-- (void)explanationViewDidSelectSetupLater:(id)a3;
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizeApplePayTrustSignature:(id)a4 handler:(id)a5;
-- (void)paymentAuthorizationCoordinatorDidFinish:(id)a3;
-- (void)preflightWithCompletion:(id)a3;
+- (void)explanationViewDidSelectContinue:(id)continue;
+- (void)explanationViewDidSelectSetupLater:(id)later;
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizeApplePayTrustSignature:(id)signature handler:(id)handler;
+- (void)paymentAuthorizationCoordinatorDidFinish:(id)finish;
+- (void)preflightWithCompletion:(id)completion;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKOrderPhysicalCardAddressConfirmationViewController
 
-- (PKOrderPhysicalCardAddressConfirmationViewController)initWithOrderPhysicalCardController:(id)a3
+- (PKOrderPhysicalCardAddressConfirmationViewController)initWithOrderPhysicalCardController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = PKOrderPhysicalCardAddressConfirmationViewController;
-  v6 = -[PKExplanationViewController initWithContext:](&v15, sel_initWithContext_, [v5 paymentSetupContext]);
+  v6 = -[PKExplanationViewController initWithContext:](&v15, sel_initWithContext_, [controllerCopy paymentSetupContext]);
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_controller, a3);
-    v7->_featureIdentifier = [v5 featureIdentifier];
-    v8 = [v5 shippingAddress];
+    objc_storeStrong(&v6->_controller, controller);
+    v7->_featureIdentifier = [controllerCopy featureIdentifier];
+    shippingAddress = [controllerCopy shippingAddress];
     shippingAddress = v7->_shippingAddress;
-    v7->_shippingAddress = v8;
+    v7->_shippingAddress = shippingAddress;
 
-    v10 = [v5 selectedArtworkOption];
+    selectedArtworkOption = [controllerCopy selectedArtworkOption];
     artworkOption = v7->_artworkOption;
-    v7->_artworkOption = v10;
+    v7->_artworkOption = selectedArtworkOption;
 
     v7->_supportsAddressChange = +[PKBusinessChatController deviceSupportsBusinessChat];
     v12 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
     [v12 configureWithTransparentBackground];
-    v13 = [(PKOrderPhysicalCardAddressConfirmationViewController *)v7 navigationItem];
-    [v13 setStandardAppearance:v12];
+    navigationItem = [(PKOrderPhysicalCardAddressConfirmationViewController *)v7 navigationItem];
+    [navigationItem setStandardAppearance:v12];
 
     [(PKExplanationViewController *)v7 setExplanationViewControllerDelegate:v7];
   }
@@ -74,68 +74,68 @@
   [(PKExplanationViewController *)&v21 viewDidLoad];
   [(PKExplanationViewController *)self setShowCancelButton:[(PKOrderPhysicalCardAddressConfirmationViewController *)self _shouldShowCancelNavigationButton]];
   [(PKExplanationViewController *)self setShowDoneButton:0];
-  v3 = [(PKOrderPhysicalCardAddressConfirmationViewController *)self navigationItem];
-  [v3 setHidesBackButton:1 animated:0];
+  navigationItem = [(PKOrderPhysicalCardAddressConfirmationViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1 animated:0];
 
-  v4 = [(PKExplanationViewController *)self explanationView];
-  [v4 setDelegate:self];
-  [v4 setShowPrivacyView:0];
-  [v4 setForceShowSetupLaterButton:1];
-  [v4 setImageIgnoresTopSafeArea:1];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setDelegate:self];
+  [explanationView setShowPrivacyView:0];
+  [explanationView setForceShowSetupLaterButton:1];
+  [explanationView setImageIgnoresTopSafeArea:1];
   v5 = objc_alloc_init(PKOrderPhysicalCardHeroView);
   physicalCardHeroView = self->_physicalCardHeroView;
   self->_physicalCardHeroView = v5;
 
-  v7 = [(PKOrderPhysicalCardHeroView *)self->_physicalCardHeroView artworkView];
-  v8 = [(PKOrderPhysicalCardController *)self->_controller nameOnCard];
-  [v7 setNameOnCard:v8];
+  artworkView = [(PKOrderPhysicalCardHeroView *)self->_physicalCardHeroView artworkView];
+  nameOnCard = [(PKOrderPhysicalCardController *)self->_controller nameOnCard];
+  [artworkView setNameOnCard:nameOnCard];
 
   v9 = MEMORY[0x1E69DCAB8];
-  v10 = [(PKPhysicalCardArtworkOption *)self->_artworkOption frontFaceImage];
-  v11 = [v9 imageWithPKImage:v10];
-  [v7 setArtworkImage:v11];
+  frontFaceImage = [(PKPhysicalCardArtworkOption *)self->_artworkOption frontFaceImage];
+  v11 = [v9 imageWithPKImage:frontFaceImage];
+  [artworkView setArtworkImage:v11];
 
-  [v4 setHeroView:self->_physicalCardHeroView];
+  [explanationView setHeroView:self->_physicalCardHeroView];
   v12 = PKLocalizedFeatureString();
-  [v4 setTitleText:v12];
+  [explanationView setTitleText:v12];
 
   v13 = [(PKOrderPhysicalCardAddressConfirmationViewController *)self _addressBodyStringWithPostalAddress:self->_shippingAddress];
-  [v4 setBodyText:v13];
+  [explanationView setBodyText:v13];
 
-  v14 = [v4 dockView];
-  v15 = [v14 primaryButton];
+  dockView = [explanationView dockView];
+  primaryButton = [dockView primaryButton];
   v16 = PKLocalizedFeatureString();
-  [v15 setTitle:v16 forState:0];
+  [primaryButton setTitle:v16 forState:0];
 
-  v17 = [v4 dockView];
-  v18 = [v17 footerView];
+  dockView2 = [explanationView dockView];
+  footerView = [dockView2 footerView];
 
   if (self->_supportsAddressChange)
   {
-    v19 = [v18 setUpLaterButton];
+    setUpLaterButton = [footerView setUpLaterButton];
     v20 = PKLocalizedFeatureString();
-    [v19 setTitle:v20 forState:0];
+    [setUpLaterButton setTitle:v20 forState:0];
   }
 
   else
   {
-    [v18 setSetUpLaterButton:0];
+    [footerView setSetUpLaterButton:0];
   }
 }
 
 - (BOOL)_shouldShowCancelNavigationButton
 {
-  v2 = [(PKOrderPhysicalCardAddressConfirmationViewController *)self navigationController];
-  v3 = [v2 modalPresentationStyle] != 3;
+  navigationController = [(PKOrderPhysicalCardAddressConfirmationViewController *)self navigationController];
+  v3 = [navigationController modalPresentationStyle] != 3;
 
   return v3;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = PKOrderPhysicalCardAddressConfirmationViewController;
-  [(PKOrderPhysicalCardAddressConfirmationViewController *)&v6 viewWillDisappear:a3];
+  [(PKOrderPhysicalCardAddressConfirmationViewController *)&v6 viewWillDisappear:disappear];
   inUseAssertion = self->_inUseAssertion;
   if (inUseAssertion)
   {
@@ -145,15 +145,15 @@
   }
 }
 
-- (id)_addressBodyStringWithPostalAddress:(id)a3
+- (id)_addressBodyStringWithPostalAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v6 = [(PKPhysicalCardArtworkOption *)self->_artworkOption minimumEstimatedShippingTime];
-  v7 = [(PKPhysicalCardArtworkOption *)self->_artworkOption maximumEstimatedShippingTime];
-  if (v6)
+  minimumEstimatedShippingTime = [(PKPhysicalCardArtworkOption *)self->_artworkOption minimumEstimatedShippingTime];
+  maximumEstimatedShippingTime = [(PKPhysicalCardArtworkOption *)self->_artworkOption maximumEstimatedShippingTime];
+  if (minimumEstimatedShippingTime)
   {
-    v8 = v7 == 0;
+    v8 = maximumEstimatedShippingTime == 0;
   }
 
   else
@@ -168,19 +168,19 @@
 
   else
   {
-    v10 = v7;
-    v11 = [(PKPhysicalCardArtworkOption *)self->_artworkOption shippingTimeUnit];
-    if (v11 > 2)
+    v10 = maximumEstimatedShippingTime;
+    shippingTimeUnit = [(PKPhysicalCardArtworkOption *)self->_artworkOption shippingTimeUnit];
+    if (shippingTimeUnit > 2)
     {
       v12 = 0;
     }
 
     else
     {
-      v12 = PKLocalizedString(&off_1E8011DE8[v11]->isa);
+      v12 = PKLocalizedString(&off_1E8011DE8[shippingTimeUnit]->isa);
     }
 
-    v19 = v6;
+    v19 = minimumEstimatedShippingTime;
     v20 = v10;
     v9 = PKStringWithValidatedFormat();
   }
@@ -194,9 +194,9 @@
     [v5 appendString:v15];
   }
 
-  if (v4)
+  if (addressCopy)
   {
-    v16 = [MEMORY[0x1E695CF68] stringFromPostalAddress:v4 style:0];
+    v16 = [MEMORY[0x1E695CF68] stringFromPostalAddress:addressCopy style:0];
     if (v16)
     {
       [v5 appendString:@"\n\n"];
@@ -242,20 +242,20 @@ void __93__PKOrderPhysicalCardAddressConfirmationViewController__presentNextView
   }
 }
 
-- (void)_presentViewController:(id)a3
+- (void)_presentViewController:(id)controller
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  controllerCopy = controller;
+  v5 = controllerCopy;
+  if (controllerCopy)
   {
-    [v4 pk_paymentSetupSetHideSetupLaterButton:1];
-    v6 = [(PKOrderPhysicalCardAddressConfirmationViewController *)self navigationController];
+    [controllerCopy pk_paymentSetupSetHideSetupLaterButton:1];
+    navigationController = [(PKOrderPhysicalCardAddressConfirmationViewController *)self navigationController];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __79__PKOrderPhysicalCardAddressConfirmationViewController__presentViewController___block_invoke;
     v7[3] = &unk_1E8011D28;
     v7[4] = self;
-    [v6 pk_presentPaymentSetupViewController:v5 animated:1 completion:v7];
+    [navigationController pk_presentPaymentSetupViewController:v5 animated:1 completion:v7];
   }
 
   else
@@ -280,26 +280,26 @@ void __93__PKOrderPhysicalCardAddressConfirmationViewController__presentNextView
   }
 }
 
-- (void)_showSpinner:(BOOL)a3
+- (void)_showSpinner:(BOOL)spinner
 {
-  v3 = a3;
-  v8 = [(PKExplanationViewController *)self explanationView];
-  v4 = [v8 dockView];
-  v5 = [v4 primaryButton];
-  [v5 setShowSpinner:v3];
-  [v5 setEnabled:v3 ^ 1];
-  v6 = [v4 footerView];
-  v7 = [v6 setUpLaterButton];
-  [v7 setEnabled:v3 ^ 1];
+  spinnerCopy = spinner;
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
+  primaryButton = [dockView primaryButton];
+  [primaryButton setShowSpinner:spinnerCopy];
+  [primaryButton setEnabled:spinnerCopy ^ 1];
+  footerView = [dockView footerView];
+  setUpLaterButton = [footerView setUpLaterButton];
+  [setUpLaterButton setEnabled:spinnerCopy ^ 1];
 }
 
-- (void)_showDisplayableError:(id)a3
+- (void)_showDisplayableError:(id)error
 {
-  v4 = PKAlertForDisplayableErrorWithHandlers(a3, 0, 0, 0);
+  v4 = PKAlertForDisplayableErrorWithHandlers(error, 0, 0, 0);
   [(PKOrderPhysicalCardAddressConfirmationViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
   if (!self->_inUseAssertion)
   {
@@ -372,9 +372,9 @@ void __89__PKOrderPhysicalCardAddressConfirmationViewController_explanationViewD
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)explanationViewDidSelectSetupLater:(id)a3
+- (void)explanationViewDidSelectSetupLater:(id)later
 {
-  v4 = a3;
+  laterCopy = later;
   if (self->_supportsAddressChange)
   {
     if (!self->_businessChatController)
@@ -385,8 +385,8 @@ void __89__PKOrderPhysicalCardAddressConfirmationViewController_explanationViewD
     }
 
     v7 = [PKBusinessChatPhysicalCardContext alloc];
-    v8 = [(PKOrderPhysicalCardController *)self->_controller paymentPass];
-    v9 = [(PKBusinessChatPhysicalCardContext *)v7 initWithPaymentPass:v8 intent:0];
+    paymentPass = [(PKOrderPhysicalCardController *)self->_controller paymentPass];
+    v9 = [(PKBusinessChatPhysicalCardContext *)v7 initWithPaymentPass:paymentPass intent:0];
 
     objc_initWeak(&location, self);
     v10 = self->_businessChatController;
@@ -438,11 +438,11 @@ void __91__PKOrderPhysicalCardAddressConfirmationViewController_explanationViewD
   }
 }
 
-- (void)paymentAuthorizationCoordinatorDidFinish:(id)a3
+- (void)paymentAuthorizationCoordinatorDidFinish:(id)finish
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (self->_paymentAuthorizationCoordinator == v4)
+  finishCopy = finish;
+  if (self->_paymentAuthorizationCoordinator == finishCopy)
   {
     v5 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -450,7 +450,7 @@ void __91__PKOrderPhysicalCardAddressConfirmationViewController_explanationViewD
       *buf = 136315394;
       v11 = "[PKOrderPhysicalCardAddressConfirmationViewController paymentAuthorizationCoordinatorDidFinish:]";
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "%s %p: paymentAuthorizationCoordinatorDidFinish: callback called.", buf, 0x16u);
     }
 
@@ -461,8 +461,8 @@ void __91__PKOrderPhysicalCardAddressConfirmationViewController_explanationViewD
     v7[1] = 3221225472;
     v7[2] = __97__PKOrderPhysicalCardAddressConfirmationViewController_paymentAuthorizationCoordinatorDidFinish___block_invoke;
     v7[3] = &unk_1E8010A10;
-    v8 = v4;
-    v9 = self;
+    v8 = finishCopy;
+    selfCopy2 = self;
     dispatch_async(MEMORY[0x1E69E96A0], v7);
   }
 }
@@ -494,28 +494,28 @@ void __97__PKOrderPhysicalCardAddressConfirmationViewController_paymentAuthoriza
   }
 }
 
-- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)a3
+- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)coordinator
 {
-  v3 = [(PKOrderPhysicalCardAddressConfirmationViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 _sceneIdentifier];
+  view = [(PKOrderPhysicalCardAddressConfirmationViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  _sceneIdentifier = [windowScene _sceneIdentifier];
 
-  return v6;
+  return _sceneIdentifier;
 }
 
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizeApplePayTrustSignature:(id)a4 handler:(id)a5
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizeApplePayTrustSignature:(id)signature handler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   controller = self->_controller;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __131__PKOrderPhysicalCardAddressConfirmationViewController_paymentAuthorizationCoordinator_didAuthorizeApplePayTrustSignature_handler___block_invoke;
   v10[3] = &unk_1E8011DA0;
   v10[4] = self;
-  v11 = v7;
-  v9 = v7;
-  [(PKOrderPhysicalCardController *)controller completeOrderPhysicalCardWithApplePayTrustSignature:a4 completion:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [(PKOrderPhysicalCardController *)controller completeOrderPhysicalCardWithApplePayTrustSignature:signature completion:v10];
 }
 
 void __131__PKOrderPhysicalCardAddressConfirmationViewController_paymentAuthorizationCoordinator_didAuthorizeApplePayTrustSignature_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -562,10 +562,10 @@ void __131__PKOrderPhysicalCardAddressConfirmationViewController_paymentAuthoriz
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   artworkOption = self->_artworkOption;
   if (artworkOption)
   {
@@ -573,13 +573,13 @@ void __131__PKOrderPhysicalCardAddressConfirmationViewController_paymentAuthoriz
     v8[1] = 3221225472;
     v8[2] = __80__PKOrderPhysicalCardAddressConfirmationViewController_preflightWithCompletion___block_invoke;
     v8[3] = &unk_1E8011DC8;
-    v9 = v4;
+    v9 = completionCopy;
     v7 = [(PKPhysicalCardArtworkOption *)artworkOption artworkImage:v8];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 

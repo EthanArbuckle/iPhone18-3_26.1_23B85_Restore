@@ -1,10 +1,10 @@
 @interface PSOAuthAccountRedirectURLController
 + (id)sharedInstance;
-- (BOOL)handleOAuthRedirectURL:(id)a3;
+- (BOOL)handleOAuthRedirectURL:(id)l;
 - (PSOAuthAccountRedirectURLController)init;
-- (id)_redirectURLFromURL:(id)a3;
-- (void)registerOAuthClientForRedirectURL:(id)a3 redirectHandler:(id)a4;
-- (void)unRegisterOAuthClientForRedirectURL:(id)a3;
+- (id)_redirectURLFromURL:(id)l;
+- (void)registerOAuthClientForRedirectURL:(id)l redirectHandler:(id)handler;
+- (void)unRegisterOAuthClientForRedirectURL:(id)l;
 @end
 
 @implementation PSOAuthAccountRedirectURLController
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __53__PSOAuthAccountRedirectURLController_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_oauthRedirectInstanceToken != -1)
   {
     dispatch_once(&sharedInstance_oauthRedirectInstanceToken, block);
@@ -40,81 +40,81 @@ void __53__PSOAuthAccountRedirectURLController_sharedInstance__block_invoke(uint
   v2 = [(PSOAuthAccountRedirectURLController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
-    [(PSOAuthAccountRedirectURLController *)v2 setRedirectHandlerMap:v3];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    [(PSOAuthAccountRedirectURLController *)v2 setRedirectHandlerMap:strongToWeakObjectsMapTable];
   }
 
   return v2;
 }
 
-- (void)registerOAuthClientForRedirectURL:(id)a3 redirectHandler:(id)a4
+- (void)registerOAuthClientForRedirectURL:(id)l redirectHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(PSOAuthAccountRedirectURLController *)self redirectHandlerMap];
-  v8 = [v6 copy];
+  handlerCopy = handler;
+  lCopy = l;
+  redirectHandlerMap = [(PSOAuthAccountRedirectURLController *)self redirectHandlerMap];
+  v8 = [handlerCopy copy];
 
-  [v9 setObject:v8 forKey:v7];
+  [redirectHandlerMap setObject:v8 forKey:lCopy];
 }
 
-- (void)unRegisterOAuthClientForRedirectURL:(id)a3
+- (void)unRegisterOAuthClientForRedirectURL:(id)l
 {
-  v4 = a3;
-  v5 = [(PSOAuthAccountRedirectURLController *)self redirectHandlerMap];
-  [v5 removeObjectForKey:v4];
+  lCopy = l;
+  redirectHandlerMap = [(PSOAuthAccountRedirectURLController *)self redirectHandlerMap];
+  [redirectHandlerMap removeObjectForKey:lCopy];
 }
 
-- (BOOL)handleOAuthRedirectURL:(id)a3
+- (BOOL)handleOAuthRedirectURL:(id)l
 {
-  v4 = a3;
-  v5 = [(PSOAuthAccountRedirectURLController *)self _redirectURLFromURL:v4];
+  lCopy = l;
+  v5 = [(PSOAuthAccountRedirectURLController *)self _redirectURLFromURL:lCopy];
   for (i = 0; ; i)
   {
-    v7 = [(PSOAuthAccountRedirectURLController *)self redirectHandlerMap];
-    v8 = [v7 keyEnumerator];
-    v9 = [v8 nextObject];
+    redirectHandlerMap = [(PSOAuthAccountRedirectURLController *)self redirectHandlerMap];
+    keyEnumerator = [redirectHandlerMap keyEnumerator];
+    nextObject = [keyEnumerator nextObject];
 
-    if (!v9)
+    if (!nextObject)
     {
       break;
     }
 
-    i = v9;
+    i = nextObject;
     if (![i caseInsensitiveCompare:v5])
     {
-      v10 = [(PSOAuthAccountRedirectURLController *)self redirectHandlerMap];
-      v11 = [v10 objectForKey:i];
+      redirectHandlerMap2 = [(PSOAuthAccountRedirectURLController *)self redirectHandlerMap];
+      v11 = [redirectHandlerMap2 objectForKey:i];
 
       if (v11)
       {
-        (v11)[2](v11, v4);
+        (v11)[2](v11, lCopy);
 
         break;
       }
     }
   }
 
-  return v9 != 0;
+  return nextObject != 0;
 }
 
-- (id)_redirectURLFromURL:(id)a3
+- (id)_redirectURLFromURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 host];
-  if (v4)
+  lCopy = l;
+  host = [lCopy host];
+  if (host)
   {
-    v5 = [v3 host];
+    host2 = [lCopy host];
   }
 
   else
   {
-    v6 = [v3 path];
-    v5 = [v6 stringByReplacingOccurrencesOfString:@"/" withString:&stru_1EFE45030];
+    path = [lCopy path];
+    host2 = [path stringByReplacingOccurrencesOfString:@"/" withString:&stru_1EFE45030];
   }
 
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [v3 scheme];
-  v9 = [v7 stringWithFormat:@"%@://%@", v8, v5];
+  scheme = [lCopy scheme];
+  v9 = [v7 stringWithFormat:@"%@://%@", scheme, host2];
 
   return v9;
 }

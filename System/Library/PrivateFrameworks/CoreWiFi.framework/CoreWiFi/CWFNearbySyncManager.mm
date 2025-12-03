@@ -1,46 +1,46 @@
 @interface CWFNearbySyncManager
-- (BOOL)__calloutToCheckIfNetworkIsSyncable:(id)a3;
-- (BOOL)__deviceSupportsNearbyBBHConfirmRequests:(id)a3;
-- (BOOL)__deviceSupportsNearbySyncRequests:(id)a3;
+- (BOOL)__calloutToCheckIfNetworkIsSyncable:(id)syncable;
+- (BOOL)__deviceSupportsNearbyBBHConfirmRequests:(id)requests;
+- (BOOL)__deviceSupportsNearbySyncRequests:(id)requests;
 - (CWFNearbySyncManager)init;
 - (CWFNearbySyncNetwork)nearbySyncNetwork;
-- (id)__failedNearbyNetworkSyncRequestTimestampForDevice:(id)a3 network:(id)a4;
-- (id)__nearbyNetworkSyncRequestTimestampForDevice:(id)a3 network:(id)a4;
-- (id)__rapportClientTargetingDevice:(id)a3;
+- (id)__failedNearbyNetworkSyncRequestTimestampForDevice:(id)device network:(id)network;
+- (id)__nearbyNetworkSyncRequestTimestampForDevice:(id)device network:(id)network;
+- (id)__rapportClientTargetingDevice:(id)device;
 - (unsigned)__isCloudKeychainEnabled;
 - (void)__checkCloudKeychainSyncState;
-- (void)__handleAutoJoinAssistPayload:(id)a3 options:(id)a4;
-- (void)__handleBrokenBackhaulRestoreEvent:(id)a3 options:(id)a4;
+- (void)__handleAutoJoinAssistPayload:(id)payload options:(id)options;
+- (void)__handleBrokenBackhaulRestoreEvent:(id)event options:(id)options;
 - (void)__purgeBBHCache;
-- (void)__respondToAutoJoinAssistRequest:(id)a3 options:(id)a4 responseHandler:(id)a5;
-- (void)__respondToConfirmBrokenBackhaulRequest:(id)a3 options:(id)a4 responseHandler:(id)a5;
-- (void)__respondToNeedsConnectivityRequest:(id)a3 options:(id)a4 responseHandler:(id)a5;
+- (void)__respondToAutoJoinAssistRequest:(id)request options:(id)options responseHandler:(id)handler;
+- (void)__respondToConfirmBrokenBackhaulRequest:(id)request options:(id)options responseHandler:(id)handler;
+- (void)__respondToNeedsConnectivityRequest:(id)request options:(id)options responseHandler:(id)handler;
 - (void)__sendAutoJoinAssistRequestToAllNearbyDevices;
-- (void)__sendAutoJoinAssistRequestToNearbyDevice:(id)a3 retryCount:(unint64_t)a4;
+- (void)__sendAutoJoinAssistRequestToNearbyDevice:(id)device retryCount:(unint64_t)count;
 - (void)__sendBrokenBackhaulRestoreEventToAllNearbyDevices;
-- (void)__sendBrokenBackhaulRestoreEventToNearbyDevice:(id)a3;
-- (void)__sendConfirmBrokenBackhaulRequestToAllNearbyDevicesWithTimeout:(unint64_t)a3 count:(unint64_t)a4 network:(id)a5 minimumCacheTimestamp:(unint64_t)a6 completion:(id)a7;
-- (void)__sendConfirmBrokenBackhaulRequestToNearbyDevice:(id)a3 timeout:(unint64_t)a4 count:(unint64_t)a5 network:(id)a6 minimumCacheTimestamp:(unint64_t)a7 completion:(id)a8;
+- (void)__sendBrokenBackhaulRestoreEventToNearbyDevice:(id)device;
+- (void)__sendConfirmBrokenBackhaulRequestToAllNearbyDevicesWithTimeout:(unint64_t)timeout count:(unint64_t)count network:(id)network minimumCacheTimestamp:(unint64_t)timestamp completion:(id)completion;
+- (void)__sendConfirmBrokenBackhaulRequestToNearbyDevice:(id)device timeout:(unint64_t)timeout count:(unint64_t)count network:(id)network minimumCacheTimestamp:(unint64_t)timestamp completion:(id)completion;
 - (void)__sendNeedsConnectivityRequestToAllNearbyDevices;
-- (void)__sendNeedsConnectivityRequestToNearbyDevice:(id)a3 retryCount:(unint64_t)a4;
+- (void)__sendNeedsConnectivityRequestToNearbyDevice:(id)device retryCount:(unint64_t)count;
 - (void)__setupRapportDiscoveryClient;
 - (void)__startMonitoringCloudKeychainSyncStateEvents;
 - (void)__stopMonitoringCloudKeychainSyncStateEvents;
-- (void)__updateFailedNearbyNetworkSyncRequestTimestampForDevice:(id)a3 network:(id)a4;
-- (void)__updateNearbyNetworkSyncRequestTimestampForDevice:(id)a3 network:(id)a4;
+- (void)__updateFailedNearbyNetworkSyncRequestTimestampForDevice:(id)device network:(id)network;
+- (void)__updateNearbyNetworkSyncRequestTimestampForDevice:(id)device network:(id)network;
 - (void)activate;
 - (void)invalidate;
-- (void)setNearbySyncNetwork:(id)a3;
+- (void)setNearbySyncNetwork:(id)network;
 @end
 
 @implementation CWFNearbySyncManager
 
 - (CWFNearbySyncNetwork)nearbySyncNetwork
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CWFNearbySyncNetwork *)v2->_nearbySyncNetwork copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(CWFNearbySyncNetwork *)selfCopy->_nearbySyncNetwork copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -169,10 +169,10 @@ LABEL_12:
   dispatch_async(internalQueue, v5);
 }
 
-- (BOOL)__calloutToCheckIfNetworkIsSyncable:(id)a3
+- (BOOL)__calloutToCheckIfNetworkIsSyncable:(id)syncable
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  syncableCopy = syncable;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -189,7 +189,7 @@ LABEL_12:
   block[2] = sub_1E0CCA5FC;
   block[3] = &unk_1E86E7A10;
   block[4] = self;
-  v8 = v4;
+  v8 = syncableCopy;
   v23 = v8;
   v25 = &v29;
   v26 = v27;
@@ -220,10 +220,10 @@ LABEL_12:
 
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v8 knownNetworkProfile];
-      v16 = [v15 networkName];
-      v17 = [v16 redactedForWiFi];
-      v18 = v17;
+      knownNetworkProfile = [v8 knownNetworkProfile];
+      networkName = [knownNetworkProfile networkName];
+      redactedForWiFi = [networkName redactedForWiFi];
+      v18 = redactedForWiFi;
       if (*(v30 + 24))
       {
         v19 = "";
@@ -235,7 +235,7 @@ LABEL_12:
       }
 
       v33 = 138543618;
-      v34 = v17;
+      v34 = redactedForWiFi;
       v35 = 2080;
       v36 = v19;
       _os_log_send_and_compose_impl();
@@ -301,23 +301,23 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (id)__rapportClientTargetingDevice:(id)a3
+- (id)__rapportClientTargetingDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_alloc_init(sub_1E0CC9E44());
   [v5 setControlFlags:258];
-  [v5 setDestinationDevice:v4];
+  [v5 setDestinationDevice:deviceCopy];
 
   [v5 setDispatchQueue:self->_internalQueue];
 
   return v5;
 }
 
-- (void)__handleAutoJoinAssistPayload:(id)a3 options:(id)a4
+- (void)__handleAutoJoinAssistPayload:(id)payload options:(id)options
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  payloadCopy = payload;
+  optionsCopy = options;
   *v11 = 0;
   os_eligibility_get_domain_answer();
   v8 = CWFGetOSLog();
@@ -346,10 +346,10 @@ LABEL_12:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)__deviceSupportsNearbySyncRequests:(id)a3
+- (BOOL)__deviceSupportsNearbySyncRequests:(id)requests
 {
-  v3 = [a3 model];
-  sub_1E0CCBDAC(v3);
+  model = [requests model];
+  sub_1E0CCBDAC(model);
   v5 = v4;
 
   if ((v5 - 6) < 2 || v5 == 4)
@@ -365,18 +365,18 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)__deviceSupportsNearbyBBHConfirmRequests:(id)a3
+- (BOOL)__deviceSupportsNearbyBBHConfirmRequests:(id)requests
 {
-  v3 = a3;
-  if ([v3 hotspotInfo])
+  requestsCopy = requests;
+  if ([requestsCopy hotspotInfo])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [v3 model];
-    sub_1E0CCBDAC(v5);
+    model = [requestsCopy model];
+    sub_1E0CCBDAC(model);
     v7 = v6;
 
     v8 = v7 == 100;
@@ -391,14 +391,14 @@ LABEL_12:
   return v4;
 }
 
-- (void)__sendBrokenBackhaulRestoreEventToNearbyDevice:(id)a3
+- (void)__sendBrokenBackhaulRestoreEventToNearbyDevice:(id)device
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CWFNearbySyncManager *)self nearbySyncNetwork];
+  deviceCopy = device;
+  nearbySyncNetwork = [(CWFNearbySyncManager *)self nearbySyncNetwork];
   if (_os_feature_enabled_impl() && _os_feature_enabled_impl())
   {
-    if (![(CWFNearbySyncManager *)self __deviceSupportsNearbyBBHConfirmRequests:v4])
+    if (![(CWFNearbySyncManager *)self __deviceSupportsNearbyBBHConfirmRequests:deviceCopy])
     {
       v20 = CWFGetOSLog();
       if (v20)
@@ -414,7 +414,7 @@ LABEL_12:
 
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v25 = [v4 description];
+        v25 = [deviceCopy description];
         [v25 redactedForWiFi];
         *&location[4] = *location = 138543362;
         _os_log_send_and_compose_impl();
@@ -427,12 +427,12 @@ LABEL_12:
     {
       if ([(CWFNearbySyncManager *)self cloudKeychainEnabled]== 2)
       {
-        if (v5)
+        if (nearbySyncNetwork)
         {
-          v6 = [v5 isNearbyBrokenBackhaulStateSyncable];
+          isNearbyBrokenBackhaulStateSyncable = [nearbySyncNetwork isNearbyBrokenBackhaulStateSyncable];
           v7 = CWFGetOSLog();
           v8 = v7;
-          if (v6)
+          if (isNearbyBrokenBackhaulStateSyncable)
           {
             if (v7)
             {
@@ -447,18 +447,18 @@ LABEL_12:
 
             if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
             {
-              v11 = [v4 description];
-              v12 = [v11 redactedForWiFi];
+              v11 = [deviceCopy description];
+              redactedForWiFi = [v11 redactedForWiFi];
               *location = 138543618;
-              *&location[4] = v5;
+              *&location[4] = nearbySyncNetwork;
               v38 = 2114;
-              v39 = v12;
+              v39 = redactedForWiFi;
               LODWORD(v31) = 22;
               v30 = location;
               _os_log_send_and_compose_impl();
             }
 
-            v13 = [(CWFNearbySyncManager *)self __rapportClientTargetingDevice:v4];
+            v13 = [(CWFNearbySyncManager *)self __rapportClientTargetingDevice:deviceCopy];
             v14 = objc_alloc_init(CWFAsyncBlockOperation);
             HIDWORD(v16) = qos_class_self() - 9;
             LODWORD(v16) = HIDWORD(v16);
@@ -483,8 +483,8 @@ LABEL_12:
             objc_copyWeak(&v36, location);
             v18 = v13;
             v33 = v18;
-            v34 = v4;
-            v35 = v5;
+            v34 = deviceCopy;
+            v35 = nearbySyncNetwork;
             [(NSBlockOperation *)v14 addExecutionBlock:v32];
             [(NSOperationQueue *)self->_rapportRequestQueue addOperation:v14];
 
@@ -614,8 +614,8 @@ LABEL_18:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(RPCompanionLinkClient *)self->_rapportDiscoveryClient activeDevices];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  activeDevices = [(RPCompanionLinkClient *)self->_rapportDiscoveryClient activeDevices];
+  v4 = [activeDevices countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -627,14 +627,14 @@ LABEL_18:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(activeDevices);
         }
 
         [(CWFNearbySyncManager *)self __sendBrokenBackhaulRestoreEventToNearbyDevice:*(*(&v9 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [activeDevices countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -646,30 +646,30 @@ LABEL_18:
 - (void)__purgeBBHCache
 {
   v3 = clock_gettime_nsec_np(_CLOCK_MONOTONIC);
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   cachedBBHTimestampMap = self->_cachedBBHTimestampMap;
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = sub_1E0CCCAE8;
   v10 = &unk_1E86E8878;
-  v11 = v4;
+  v11 = array;
   v12 = v3;
-  v6 = v4;
+  v6 = array;
   [(NSMutableDictionary *)cachedBBHTimestampMap enumerateKeysAndObjectsUsingBlock:&v7];
   [(NSMutableDictionary *)self->_cachedBBHTimestampMap removeObjectsForKeys:v6, v7, v8, v9, v10];
   [(NSMutableDictionary *)self->_cachedBBHStateMap removeObjectsForKeys:v6];
 }
 
-- (void)__sendConfirmBrokenBackhaulRequestToNearbyDevice:(id)a3 timeout:(unint64_t)a4 count:(unint64_t)a5 network:(id)a6 minimumCacheTimestamp:(unint64_t)a7 completion:(id)a8
+- (void)__sendConfirmBrokenBackhaulRequestToNearbyDevice:(id)device timeout:(unint64_t)timeout count:(unint64_t)count network:(id)network minimumCacheTimestamp:(unint64_t)timestamp completion:(id)completion
 {
   v99 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a6;
-  v78 = a8;
-  v77 = v13;
+  deviceCopy = device;
+  networkCopy = network;
+  completionCopy = completion;
+  v77 = networkCopy;
   if (_os_feature_enabled_impl())
   {
-    if (![(CWFNearbySyncManager *)self __deviceSupportsNearbyBBHConfirmRequests:v12])
+    if (![(CWFNearbySyncManager *)self __deviceSupportsNearbyBBHConfirmRequests:deviceCopy])
     {
       v47 = *MEMORY[0x1E696A798];
       v48 = CWFErrorDescription(*MEMORY[0x1E696A798], 0x2DuLL);
@@ -689,7 +689,7 @@ LABEL_18:
 
       if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
       {
-        v66 = [v12 description];
+        v66 = [deviceCopy description];
         [v66 redactedForWiFi];
         *&location[4] = *location = 138543362;
         _os_log_send_and_compose_impl();
@@ -704,7 +704,7 @@ LABEL_56:
     {
       if ([(CWFNearbySyncManager *)self cloudKeychainEnabled]== 2)
       {
-        if (!v13)
+        if (!networkCopy)
         {
           v58 = *MEMORY[0x1E696A798];
           v59 = CWFErrorDescription(*MEMORY[0x1E696A798], 0x16uLL);
@@ -731,22 +731,22 @@ LABEL_56:
           goto LABEL_57;
         }
 
-        v14 = self;
-        objc_sync_enter(v14);
-        cachedBBHTimestampMap = v14->_cachedBBHTimestampMap;
-        v16 = [v12 identifier];
-        v17 = [(NSMutableDictionary *)cachedBBHTimestampMap objectForKeyedSubscript:v16];
-        v18 = [v17 unsignedLongLongValue];
+        selfCopy = self;
+        objc_sync_enter(selfCopy);
+        cachedBBHTimestampMap = selfCopy->_cachedBBHTimestampMap;
+        identifier = [deviceCopy identifier];
+        v17 = [(NSMutableDictionary *)cachedBBHTimestampMap objectForKeyedSubscript:identifier];
+        unsignedLongLongValue = [v17 unsignedLongLongValue];
 
-        cachedBBHStateMap = v14->_cachedBBHStateMap;
-        v20 = [v12 identifier];
-        v21 = [(NSMutableDictionary *)cachedBBHStateMap objectForKeyedSubscript:v20];
-        v22 = [v21 integerValue];
+        cachedBBHStateMap = selfCopy->_cachedBBHStateMap;
+        identifier2 = [deviceCopy identifier];
+        v21 = [(NSMutableDictionary *)cachedBBHStateMap objectForKeyedSubscript:identifier2];
+        integerValue = [v21 integerValue];
 
-        objc_sync_exit(v14);
+        objc_sync_exit(selfCopy);
         v23 = CWFGetOSLog();
         v24 = v23;
-        if (a7 - 1 < v18)
+        if (timestamp - 1 < unsignedLongLongValue)
         {
           if (v23)
           {
@@ -761,30 +761,30 @@ LABEL_56:
 
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
           {
-            v28 = sub_1E0BD3BE8(v22);
+            v28 = sub_1E0BD3BE8(integerValue);
             v29 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
             v30 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
-            v31 = [v12 description];
+            v31 = [deviceCopy description];
             [v31 redactedForWiFi];
             *location = 138413826;
             *&location[4] = v28;
             v87 = 2048;
-            v88 = (v29 - v18) / 0xF4240;
+            timeoutCopy2 = (v29 - unsignedLongLongValue) / 0xF4240;
             v89 = 2114;
-            v90 = v77;
+            countCopy2 = v77;
             v91 = 2048;
-            v92 = a4;
+            timeoutCopy = timeout;
             v93 = 2048;
-            v94 = a5;
+            countCopy = count;
             v95 = 2048;
-            v96 = (v30 - a7) / 0xF4240;
+            v96 = (v30 - timestamp) / 0xF4240;
             v98 = v97 = 2114;
             _os_log_send_and_compose_impl();
           }
 
-          if (v78)
+          if (completionCopy)
           {
-            v78[2](v78, 0);
+            completionCopy[2](completionCopy, 0);
           }
 
           goto LABEL_24;
@@ -804,24 +804,24 @@ LABEL_56:
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
           v33 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
-          v34 = [v12 description];
-          v35 = [v34 redactedForWiFi];
+          v34 = [deviceCopy description];
+          redactedForWiFi = [v34 redactedForWiFi];
           *location = 138544386;
           *&location[4] = v77;
           v87 = 2048;
-          v88 = a4;
+          timeoutCopy2 = timeout;
           v89 = 2048;
-          v90 = a5;
+          countCopy2 = count;
           v91 = 2048;
-          v92 = (v33 - a7) / 0xF4240;
+          timeoutCopy = (v33 - timestamp) / 0xF4240;
           v93 = 2114;
-          v94 = v35;
+          countCopy = redactedForWiFi;
           LODWORD(v74) = 52;
           v73 = location;
           _os_log_send_and_compose_impl();
         }
 
-        v36 = [(CWFNearbySyncManager *)v14 __rapportClientTargetingDevice:v12];
+        v36 = [(CWFNearbySyncManager *)selfCopy __rapportClientTargetingDevice:deviceCopy];
         if (v36)
         {
           v37 = objc_alloc_init(CWFAsyncBlockOperation);
@@ -848,15 +848,15 @@ LABEL_56:
           objc_copyWeak(v85, location);
           v41 = v36;
           v80 = v41;
-          v81 = v12;
+          v81 = deviceCopy;
           v42 = v77;
-          v85[1] = a4;
-          v85[2] = a5;
+          v85[1] = timeout;
+          v85[2] = count;
           v82 = v42;
-          v83 = v14;
-          v84 = v78;
+          v83 = selfCopy;
+          v84 = completionCopy;
           [(NSBlockOperation *)v37 addExecutionBlock:v79];
-          [(NSOperationQueue *)v14->_rapportRequestQueue addOperation:v37];
+          [(NSOperationQueue *)selfCopy->_rapportRequestQueue addOperation:v37];
 
           objc_destroyWeak(v85);
           objc_destroyWeak(location);
@@ -884,10 +884,10 @@ LABEL_24:
 
         if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
         {
-          v71 = [v12 description];
-          v72 = [v71 redactedForWiFi];
+          v71 = [deviceCopy description];
+          redactedForWiFi2 = [v71 redactedForWiFi];
           *location = 138543362;
-          *&location[4] = v72;
+          *&location[4] = redactedForWiFi2;
           _os_log_send_and_compose_impl();
         }
 
@@ -915,9 +915,9 @@ LABEL_24:
         *location = 136446722;
         *&location[4] = "[CWFNearbySyncManager __sendConfirmBrokenBackhaulRequestToNearbyDevice:timeout:count:network:minimumCacheTimestamp:completion:]";
         v87 = 2082;
-        v88 = "CWFNearbySyncManager.m";
+        timeoutCopy2 = "CWFNearbySyncManager.m";
         v89 = 1024;
-        LODWORD(v90) = 477;
+        LODWORD(countCopy2) = 477;
         _os_log_send_and_compose_impl();
       }
     }
@@ -945,9 +945,9 @@ LABEL_24:
         *location = 136446722;
         *&location[4] = "[CWFNearbySyncManager __sendConfirmBrokenBackhaulRequestToNearbyDevice:timeout:count:network:minimumCacheTimestamp:completion:]";
         v87 = 2082;
-        v88 = "CWFNearbySyncManager.m";
+        timeoutCopy2 = "CWFNearbySyncManager.m";
         v89 = 1024;
-        LODWORD(v90) = 472;
+        LODWORD(countCopy2) = 472;
         _os_log_send_and_compose_impl();
       }
     }
@@ -961,9 +961,9 @@ LABEL_24:
   }
 
 LABEL_57:
-  if (v78 && v43)
+  if (completionCopy && v43)
   {
-    (v78)[2](v78, v43);
+    (completionCopy)[2](completionCopy, v43);
   }
 
 LABEL_25:
@@ -971,11 +971,11 @@ LABEL_25:
   v44 = *MEMORY[0x1E69E9840];
 }
 
-- (void)__sendConfirmBrokenBackhaulRequestToAllNearbyDevicesWithTimeout:(unint64_t)a3 count:(unint64_t)a4 network:(id)a5 minimumCacheTimestamp:(unint64_t)a6 completion:(id)a7
+- (void)__sendConfirmBrokenBackhaulRequestToAllNearbyDevicesWithTimeout:(unint64_t)timeout count:(unint64_t)count network:(id)network minimumCacheTimestamp:(unint64_t)timestamp completion:(id)completion
 {
   v44 = *MEMORY[0x1E69E9840];
-  v24 = a5;
-  v23 = a7;
+  networkCopy = network;
+  completionCopy = completion;
   v42[0] = 0;
   v42[1] = v42;
   v42[2] = 0x2020000000;
@@ -985,12 +985,12 @@ LABEL_25:
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v13 = [(RPCompanionLinkClient *)self->_rapportDiscoveryClient activeDevices];
-  v14 = [v13 countByEnumeratingWithState:&v38 objects:v43 count:16];
+  activeDevices = [(RPCompanionLinkClient *)self->_rapportDiscoveryClient activeDevices];
+  v14 = [activeDevices countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v14)
   {
     v22 = *v39;
-    obj = v13;
+    obj = activeDevices;
     do
     {
       v15 = 0;
@@ -1007,49 +1007,49 @@ LABEL_25:
         v28[1] = 3221225472;
         v28[2] = sub_1E0CCDF3C;
         v28[3] = &unk_1E86E8918;
-        v17 = v24;
-        v35 = a3;
-        v36 = a4;
-        v37 = a6;
+        v17 = networkCopy;
+        timeoutCopy = timeout;
+        countCopy = count;
+        timestampCopy = timestamp;
         v29 = v17;
         v30 = v16;
-        v31 = self;
+        selfCopy = self;
         v34 = v42;
-        v33 = v23;
+        v33 = completionCopy;
         v32 = v12;
-        [(CWFNearbySyncManager *)self __sendConfirmBrokenBackhaulRequestToNearbyDevice:v16 timeout:a3 count:a4 network:v17 minimumCacheTimestamp:a6 completion:v28];
+        [(CWFNearbySyncManager *)self __sendConfirmBrokenBackhaulRequestToNearbyDevice:v16 timeout:timeout count:count network:v17 minimumCacheTimestamp:timestamp completion:v28];
 
         ++v15;
       }
 
       while (v14 != v15);
-      v13 = obj;
+      activeDevices = obj;
       v14 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
     }
 
     while (v14);
   }
 
-  v18 = [(CWFNearbySyncManager *)self targetQueue];
+  targetQueue = [(CWFNearbySyncManager *)self targetQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0CCE174;
   block[3] = &unk_1E86E8940;
   v27 = v42;
   block[4] = self;
-  v26 = v23;
-  v19 = v23;
-  dispatch_group_notify(v12, v18, block);
+  v26 = completionCopy;
+  v19 = completionCopy;
+  dispatch_group_notify(v12, targetQueue, block);
 
   _Block_object_dispose(v42, 8);
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)__respondToConfirmBrokenBackhaulRequest:(id)a3 options:(id)a4 responseHandler:(id)a5
+- (void)__respondToConfirmBrokenBackhaulRequest:(id)request options:(id)options responseHandler:(id)handler
 {
   v46 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  requestCopy = request;
+  handlerCopy = handler;
   if (![(CWFNearbySyncManager *)self activated])
   {
     v22 = *MEMORY[0x1E696A798];
@@ -1115,14 +1115,14 @@ LABEL_25:
   }
 
   v9 = [CWFNetworkProfile alloc];
-  v10 = [v7 objectForKeyedSubscript:@"Network"];
+  v10 = [requestCopy objectForKeyedSubscript:@"Network"];
   v11 = [(CWFNetworkProfile *)v9 initWithExternalForm:v10];
 
-  v12 = [v7 objectForKeyedSubscript:@"Timeout"];
-  v13 = [v12 unsignedIntegerValue];
+  v12 = [requestCopy objectForKeyedSubscript:@"Timeout"];
+  unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-  v14 = [v7 objectForKeyedSubscript:@"Count"];
-  v15 = [v14 unsignedIntegerValue];
+  v14 = [requestCopy objectForKeyedSubscript:@"Count"];
+  unsignedIntegerValue2 = [v14 unsignedIntegerValue];
 
   if (v11)
   {
@@ -1134,9 +1134,9 @@ LABEL_25:
     block[3] = &unk_1E86E8968;
     block[4] = self;
     v36 = v11;
-    v38 = v13;
-    v39 = v15;
-    v37 = v8;
+    v38 = unsignedIntegerValue;
+    v39 = unsignedIntegerValue2;
+    v37 = handlerCopy;
     v18 = v11;
     v19 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v17, 0, block);
     dispatch_async(targetQueue, v19);
@@ -1175,9 +1175,9 @@ LABEL_21:
 
 LABEL_22:
 
-  if (v8 && v20)
+  if (handlerCopy && v20)
   {
-    (*(v8 + 2))(v8, 0, 0, v20);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v20);
   }
 
 LABEL_5:
@@ -1185,11 +1185,11 @@ LABEL_5:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)__handleBrokenBackhaulRestoreEvent:(id)a3 options:(id)a4
+- (void)__handleBrokenBackhaulRestoreEvent:(id)event options:(id)options
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  optionsCopy = options;
   if (![(CWFNearbySyncManager *)self activated])
   {
     v21 = CWFGetOSLog();
@@ -1248,24 +1248,24 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v8 = [[CWFNearbySyncNetwork alloc] initWithExternalForm:v6];
-  v9 = [(CWFNearbySyncNetwork *)v8 knownNetworkProfile];
+  v8 = [[CWFNearbySyncNetwork alloc] initWithExternalForm:eventCopy];
+  knownNetworkProfile = [(CWFNearbySyncNetwork *)v8 knownNetworkProfile];
   v10 = sub_1E0CCB88C();
-  v11 = [v7 objectForKeyedSubscript:v10];
-  [v9 setReceivedFromDeviceFlags:{objc_msgSend(v11, "unsignedLongLongValue")}];
+  v11 = [optionsCopy objectForKeyedSubscript:v10];
+  [knownNetworkProfile setReceivedFromDeviceFlags:{objc_msgSend(v11, "unsignedLongLongValue")}];
 
-  v12 = [MEMORY[0x1E695DF00] date];
-  [v9 setReceivedFromDeviceAt:v12];
+  date = [MEMORY[0x1E695DF00] date];
+  [knownNetworkProfile setReceivedFromDeviceAt:date];
 
   v13 = sub_1E0CCB9F0();
-  v14 = [v7 objectForKeyedSubscript:v13];
-  [v9 setReceivedFromDeviceID:v14];
+  v14 = [optionsCopy objectForKeyedSubscript:v13];
+  [knownNetworkProfile setReceivedFromDeviceID:v14];
 
   v15 = sub_1E0CCBB54();
-  v16 = [v7 objectForKeyedSubscript:v15];
-  [v9 setReceivedFromDeviceName:v16];
+  v16 = [optionsCopy objectForKeyedSubscript:v15];
+  [knownNetworkProfile setReceivedFromDeviceName:v16];
 
-  [(CWFNearbySyncNetwork *)v8 setKnownNetworkProfile:v9];
+  [(CWFNearbySyncNetwork *)v8 setKnownNetworkProfile:knownNetworkProfile];
   if ([(CWFNearbySyncNetwork *)v8 isNearbyBrokenBackhaulStateSyncable])
   {
     targetQueue = self->_targetQueue;
@@ -1311,11 +1311,11 @@ LABEL_6:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)__sendAutoJoinAssistRequestToNearbyDevice:(id)a3 retryCount:(unint64_t)a4
+- (void)__sendAutoJoinAssistRequestToNearbyDevice:(id)device retryCount:(unint64_t)count
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(CWFNearbySyncManager *)self nearbySyncNetwork];
+  deviceCopy = device;
+  nearbySyncNetwork = [(CWFNearbySyncManager *)self nearbySyncNetwork];
   *location = 0;
   os_eligibility_get_domain_answer();
   v8 = CWFGetOSLog();
@@ -1351,8 +1351,8 @@ LABEL_6:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(RPCompanionLinkClient *)self->_rapportDiscoveryClient activeDevices];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  activeDevices = [(RPCompanionLinkClient *)self->_rapportDiscoveryClient activeDevices];
+  v4 = [activeDevices countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1364,14 +1364,14 @@ LABEL_6:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(activeDevices);
         }
 
         [(CWFNearbySyncManager *)self __sendAutoJoinAssistRequestToNearbyDevice:*(*(&v9 + 1) + 8 * v7++) retryCount:0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [activeDevices countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -1380,17 +1380,17 @@ LABEL_6:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)__respondToAutoJoinAssistRequest:(id)a3 options:(id)a4 responseHandler:(id)a5
+- (void)__respondToAutoJoinAssistRequest:(id)request options:(id)options responseHandler:(id)handler
 {
-  v8 = a5;
-  [(CWFNearbySyncManager *)self __handleAutoJoinAssistPayload:a3 options:a4];
-  (*(v8 + 2))(v8, MEMORY[0x1E695E0F8], 0, 0);
+  handlerCopy = handler;
+  [(CWFNearbySyncManager *)self __handleAutoJoinAssistPayload:request options:options];
+  (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F8], 0, 0);
 }
 
-- (void)__sendNeedsConnectivityRequestToNearbyDevice:(id)a3 retryCount:(unint64_t)a4
+- (void)__sendNeedsConnectivityRequestToNearbyDevice:(id)device retryCount:(unint64_t)count
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deviceCopy = device;
   *location = 0;
   os_eligibility_get_domain_answer();
   v6 = CWFGetOSLog();
@@ -1426,8 +1426,8 @@ LABEL_6:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(RPCompanionLinkClient *)self->_rapportDiscoveryClient activeDevices];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  activeDevices = [(RPCompanionLinkClient *)self->_rapportDiscoveryClient activeDevices];
+  v4 = [activeDevices countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1439,14 +1439,14 @@ LABEL_6:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(activeDevices);
         }
 
         [(CWFNearbySyncManager *)self __sendNeedsConnectivityRequestToNearbyDevice:*(*(&v9 + 1) + 8 * v7++) retryCount:0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [activeDevices countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -1455,11 +1455,11 @@ LABEL_6:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)__respondToNeedsConnectivityRequest:(id)a3 options:(id)a4 responseHandler:(id)a5
+- (void)__respondToNeedsConnectivityRequest:(id)request options:(id)options responseHandler:(id)handler
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a5;
-  v7 = [(CWFNearbySyncManager *)self nearbySyncNetwork];
+  handlerCopy = handler;
+  nearbySyncNetwork = [(CWFNearbySyncManager *)self nearbySyncNetwork];
   os_eligibility_get_domain_answer();
   v9 = CWFGetOSLog();
   if (v9)
@@ -1478,23 +1478,23 @@ LABEL_6:
     _os_log_send_and_compose_impl();
   }
 
-  if (v6)
+  if (handlerCopy)
   {
-    (*(v6 + 2))(v6, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setNearbySyncNetwork:(id)a3
+- (void)setNearbySyncNetwork:(id)network
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(CWFNearbySyncManager *)v5 associationState];
-  v7 = [v4 knownNetworkProfile];
-  if (v7)
+  networkCopy = network;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  associationState = [(CWFNearbySyncManager *)selfCopy associationState];
+  knownNetworkProfile = [networkCopy knownNetworkProfile];
+  if (knownNetworkProfile)
   {
     v8 = 2;
   }
@@ -1504,22 +1504,22 @@ LABEL_6:
     v8 = 1;
   }
 
-  [(CWFNearbySyncManager *)v5 setAssociationState:v8];
+  [(CWFNearbySyncManager *)selfCopy setAssociationState:v8];
 
-  v9 = [(CWFNearbySyncManager *)v5 nearbySyncNetwork];
-  v10 = v9;
-  if (v9 == v4)
+  nearbySyncNetwork = [(CWFNearbySyncManager *)selfCopy nearbySyncNetwork];
+  v10 = nearbySyncNetwork;
+  if (nearbySyncNetwork == networkCopy)
   {
   }
 
   else
   {
-    v11 = [(CWFNearbySyncManager *)v5 nearbySyncNetwork];
-    v12 = v11;
-    if (v4 && v11)
+    nearbySyncNetwork2 = [(CWFNearbySyncManager *)selfCopy nearbySyncNetwork];
+    v12 = nearbySyncNetwork2;
+    if (networkCopy && nearbySyncNetwork2)
     {
-      v13 = [(CWFNearbySyncManager *)v5 nearbySyncNetwork];
-      v14 = [v13 isEqual:v4];
+      nearbySyncNetwork3 = [(CWFNearbySyncManager *)selfCopy nearbySyncNetwork];
+      v14 = [nearbySyncNetwork3 isEqual:networkCopy];
 
       if (v14)
       {
@@ -1531,41 +1531,41 @@ LABEL_6:
     {
     }
 
-    v15 = [(CWFNearbySyncManager *)v5 nearbySyncNetwork];
-    if ([v15 isNearbySyncable])
+    nearbySyncNetwork4 = [(CWFNearbySyncManager *)selfCopy nearbySyncNetwork];
+    if ([nearbySyncNetwork4 isNearbySyncable])
     {
-      v16 = 1;
+      isNearbyRecommendable = 1;
     }
 
     else
     {
-      v17 = [(CWFNearbySyncManager *)v5 nearbySyncNetwork];
-      v16 = [v17 isNearbyRecommendable];
+      nearbySyncNetwork5 = [(CWFNearbySyncManager *)selfCopy nearbySyncNetwork];
+      isNearbyRecommendable = [nearbySyncNetwork5 isNearbyRecommendable];
     }
 
-    if ([v4 isNearbySyncable])
+    if ([networkCopy isNearbySyncable])
     {
-      v18 = 1;
+      isNearbyRecommendable2 = 1;
     }
 
     else
     {
-      v18 = [v4 isNearbyRecommendable];
+      isNearbyRecommendable2 = [networkCopy isNearbyRecommendable];
     }
 
-    v19 = [(CWFNearbySyncManager *)v5 nearbySyncNetwork];
-    v20 = [v19 knownNetworkProfile];
-    v38 = [v20 brokenBackhaulState];
+    nearbySyncNetwork6 = [(CWFNearbySyncManager *)selfCopy nearbySyncNetwork];
+    knownNetworkProfile2 = [nearbySyncNetwork6 knownNetworkProfile];
+    brokenBackhaulState = [knownNetworkProfile2 brokenBackhaulState];
 
-    v21 = [(CWFNearbySyncManager *)v5 nearbySyncNetwork];
-    v22 = [v21 knownNetworkProfile];
-    v23 = [v22 brokenBackhaulStateUpdatedAt];
+    nearbySyncNetwork7 = [(CWFNearbySyncManager *)selfCopy nearbySyncNetwork];
+    knownNetworkProfile3 = [nearbySyncNetwork7 knownNetworkProfile];
+    brokenBackhaulStateUpdatedAt = [knownNetworkProfile3 brokenBackhaulStateUpdatedAt];
 
-    v24 = [v4 knownNetworkProfile];
-    v25 = [v24 brokenBackhaulState];
+    knownNetworkProfile4 = [networkCopy knownNetworkProfile];
+    brokenBackhaulState2 = [knownNetworkProfile4 brokenBackhaulState];
 
-    v26 = [v4 knownNetworkProfile];
-    v27 = [v26 brokenBackhaulStateUpdatedAt];
+    knownNetworkProfile5 = [networkCopy knownNetworkProfile];
+    brokenBackhaulStateUpdatedAt2 = [knownNetworkProfile5 brokenBackhaulStateUpdatedAt];
 
     v28 = CWFGetOSLog();
     if (v28)
@@ -1582,101 +1582,101 @@ LABEL_6:
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
       v43 = 138543362;
-      v44 = v4;
+      v44 = networkCopy;
       LODWORD(v37) = 12;
       v36 = &v43;
       _os_log_send_and_compose_impl();
     }
 
-    v31 = [v4 copy];
-    nearbySyncNetwork = v5->_nearbySyncNetwork;
-    v5->_nearbySyncNetwork = v31;
+    v31 = [networkCopy copy];
+    nearbySyncNetwork = selfCopy->_nearbySyncNetwork;
+    selfCopy->_nearbySyncNetwork = v31;
 
-    if ((v16 ^ v18) & 1 | (v6 == 0))
+    if ((isNearbyRecommendable ^ isNearbyRecommendable2) & 1 | (associationState == 0))
     {
-      internalQueue = v5->_internalQueue;
+      internalQueue = selfCopy->_internalQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = sub_1E0CD1E74;
       block[3] = &unk_1E86E6420;
-      v41 = v4;
-      v42 = v5;
+      v41 = networkCopy;
+      v42 = selfCopy;
       dispatch_async(internalQueue, block);
     }
 
-    if ([v4 isNearbyBrokenBackhaulStateSyncable] && (v38 != v25 || v23 != v27 && (!v23 || !v27 || !objc_msgSend(v23, "isEqual:", v27))) || !v6)
+    if ([networkCopy isNearbyBrokenBackhaulStateSyncable] && (brokenBackhaulState != brokenBackhaulState2 || brokenBackhaulStateUpdatedAt != brokenBackhaulStateUpdatedAt2 && (!brokenBackhaulStateUpdatedAt || !brokenBackhaulStateUpdatedAt2 || !objc_msgSend(brokenBackhaulStateUpdatedAt, "isEqual:", brokenBackhaulStateUpdatedAt2))) || !associationState)
     {
-      v34 = v5->_internalQueue;
+      v34 = selfCopy->_internalQueue;
       v39[0] = MEMORY[0x1E69E9820];
       v39[1] = 3221225472;
       v39[2] = sub_1E0CD1EC4;
       v39[3] = &unk_1E86E6010;
-      v39[4] = v5;
+      v39[4] = selfCopy;
       dispatch_async(v34, v39);
     }
   }
 
 LABEL_33:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (id)__nearbyNetworkSyncRequestTimestampForDevice:(id)a3 network:(id)a4
+- (id)__nearbyNetworkSyncRequestTimestampForDevice:(id)device network:(id)network
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  nearbySyncRequestHistory = v8->_nearbySyncRequestHistory;
+  deviceCopy = device;
+  networkCopy = network;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  nearbySyncRequestHistory = selfCopy->_nearbySyncRequestHistory;
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [v6 effectiveIdentifier];
-  v12 = [v7 identifier];
-  v13 = [v10 stringWithFormat:@"%@/%@", v11, v12];
+  effectiveIdentifier = [deviceCopy effectiveIdentifier];
+  identifier = [networkCopy identifier];
+  v13 = [v10 stringWithFormat:@"%@/%@", effectiveIdentifier, identifier];
   v14 = [(NSMutableDictionary *)nearbySyncRequestHistory objectForKeyedSubscript:v13];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   return v14;
 }
 
-- (id)__failedNearbyNetworkSyncRequestTimestampForDevice:(id)a3 network:(id)a4
+- (id)__failedNearbyNetworkSyncRequestTimestampForDevice:(id)device network:(id)network
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  failedNearbySyncRequestHistory = v8->_failedNearbySyncRequestHistory;
+  deviceCopy = device;
+  networkCopy = network;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  failedNearbySyncRequestHistory = selfCopy->_failedNearbySyncRequestHistory;
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [v6 effectiveIdentifier];
-  v12 = [v7 identifier];
-  v13 = [v10 stringWithFormat:@"%@/%@", v11, v12];
+  effectiveIdentifier = [deviceCopy effectiveIdentifier];
+  identifier = [networkCopy identifier];
+  v13 = [v10 stringWithFormat:@"%@/%@", effectiveIdentifier, identifier];
   v14 = [(NSMutableDictionary *)failedNearbySyncRequestHistory objectForKeyedSubscript:v13];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   return v14;
 }
 
-- (void)__updateNearbyNetworkSyncRequestTimestampForDevice:(id)a3 network:(id)a4
+- (void)__updateNearbyNetworkSyncRequestTimestampForDevice:(id)device network:(id)network
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [MEMORY[0x1E695DF00] date];
-  nearbySyncRequestHistory = v8->_nearbySyncRequestHistory;
+  deviceCopy = device;
+  networkCopy = network;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  date = [MEMORY[0x1E695DF00] date];
+  nearbySyncRequestHistory = selfCopy->_nearbySyncRequestHistory;
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [v6 effectiveIdentifier];
-  v13 = [v7 identifier];
-  v14 = [v11 stringWithFormat:@"%@/%@", v12, v13];
-  [(NSMutableDictionary *)nearbySyncRequestHistory setObject:v9 forKeyedSubscript:v14];
+  effectiveIdentifier = [deviceCopy effectiveIdentifier];
+  identifier = [networkCopy identifier];
+  v14 = [v11 stringWithFormat:@"%@/%@", effectiveIdentifier, identifier];
+  [(NSMutableDictionary *)nearbySyncRequestHistory setObject:date forKeyedSubscript:v14];
 
-  failedNearbySyncRequestHistory = v8->_failedNearbySyncRequestHistory;
+  failedNearbySyncRequestHistory = selfCopy->_failedNearbySyncRequestHistory;
   v16 = MEMORY[0x1E696AEC0];
-  v17 = [v6 effectiveIdentifier];
-  v18 = [v7 identifier];
-  v19 = [v16 stringWithFormat:@"%@/%@", v17, v18];
+  effectiveIdentifier2 = [deviceCopy effectiveIdentifier];
+  identifier2 = [networkCopy identifier];
+  v19 = [v16 stringWithFormat:@"%@/%@", effectiveIdentifier2, identifier2];
   [(NSMutableDictionary *)failedNearbySyncRequestHistory setObject:0 forKeyedSubscript:v19];
 
   v20 = 604800;
@@ -1685,36 +1685,36 @@ LABEL_33:
     v20 = 60;
   }
 
-  v21 = [MEMORY[0x1E695DF70] array];
-  v22 = v8->_nearbySyncRequestHistory;
+  array = [MEMORY[0x1E695DF70] array];
+  v22 = selfCopy->_nearbySyncRequestHistory;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = sub_1E0CD2364;
   v25[3] = &unk_1E86E8A80;
-  v23 = v9;
+  v23 = date;
   v26 = v23;
   v28 = v20;
-  v24 = v21;
+  v24 = array;
   v27 = v24;
   [(NSMutableDictionary *)v22 enumerateKeysAndObjectsUsingBlock:v25];
-  [(NSMutableDictionary *)v8->_nearbySyncRequestHistory removeObjectsForKeys:v24];
+  [(NSMutableDictionary *)selfCopy->_nearbySyncRequestHistory removeObjectsForKeys:v24];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)__updateFailedNearbyNetworkSyncRequestTimestampForDevice:(id)a3 network:(id)a4
+- (void)__updateFailedNearbyNetworkSyncRequestTimestampForDevice:(id)device network:(id)network
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [MEMORY[0x1E695DF00] date];
-  failedNearbySyncRequestHistory = v8->_failedNearbySyncRequestHistory;
+  deviceCopy = device;
+  networkCopy = network;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  date = [MEMORY[0x1E695DF00] date];
+  failedNearbySyncRequestHistory = selfCopy->_failedNearbySyncRequestHistory;
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [v6 effectiveIdentifier];
-  v13 = [v7 identifier];
-  v14 = [v11 stringWithFormat:@"%@/%@", v12, v13];
-  [(NSMutableDictionary *)failedNearbySyncRequestHistory setObject:v9 forKeyedSubscript:v14];
+  effectiveIdentifier = [deviceCopy effectiveIdentifier];
+  identifier = [networkCopy identifier];
+  v14 = [v11 stringWithFormat:@"%@/%@", effectiveIdentifier, identifier];
+  [(NSMutableDictionary *)failedNearbySyncRequestHistory setObject:date forKeyedSubscript:v14];
 
   v15 = 604800;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
@@ -1722,21 +1722,21 @@ LABEL_33:
     v15 = 60;
   }
 
-  v16 = [MEMORY[0x1E695DF70] array];
-  v17 = v8->_failedNearbySyncRequestHistory;
+  array = [MEMORY[0x1E695DF70] array];
+  v17 = selfCopy->_failedNearbySyncRequestHistory;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = sub_1E0CD25F8;
   v20[3] = &unk_1E86E8A80;
-  v18 = v9;
+  v18 = date;
   v21 = v18;
   v23 = v15;
-  v19 = v16;
+  v19 = array;
   v22 = v19;
   [(NSMutableDictionary *)v17 enumerateKeysAndObjectsUsingBlock:v20];
-  [(NSMutableDictionary *)v8->_failedNearbySyncRequestHistory removeObjectsForKeys:v19];
+  [(NSMutableDictionary *)selfCopy->_failedNearbySyncRequestHistory removeObjectsForKeys:v19];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
 - (unsigned)__isCloudKeychainEnabled
@@ -1833,14 +1833,14 @@ LABEL_7:
 
 - (void)__checkCloudKeychainSyncState
 {
-  v3 = [(CWFNearbySyncManager *)self cloudKeychainEnabled];
-  v4 = [(CWFNearbySyncManager *)self __isCloudKeychainEnabled];
-  if (v4)
+  cloudKeychainEnabled = [(CWFNearbySyncManager *)self cloudKeychainEnabled];
+  __isCloudKeychainEnabled = [(CWFNearbySyncManager *)self __isCloudKeychainEnabled];
+  if (__isCloudKeychainEnabled)
   {
-    v5 = v4;
-    if (v4 != v3)
+    v5 = __isCloudKeychainEnabled;
+    if (__isCloudKeychainEnabled != cloudKeychainEnabled)
     {
-      [(CWFNearbySyncManager *)self setCloudKeychainEnabled:v4];
+      [(CWFNearbySyncManager *)self setCloudKeychainEnabled:__isCloudKeychainEnabled];
       v6 = CWFGetOSLog();
       v7 = v6;
       if (v5 == 2)
@@ -1866,17 +1866,17 @@ LABEL_7:
 
         if ([(CWFNearbySyncManager *)self associationState]== 2)
         {
-          v11 = [(CWFNearbySyncManager *)self nearbySyncNetwork];
-          if ([v11 isNearbySyncable])
+          nearbySyncNetwork = [(CWFNearbySyncManager *)self nearbySyncNetwork];
+          if ([nearbySyncNetwork isNearbySyncable])
           {
           }
 
           else
           {
-            v13 = [(CWFNearbySyncManager *)self nearbySyncNetwork];
-            v14 = [v13 isNearbyRecommendable];
+            nearbySyncNetwork2 = [(CWFNearbySyncManager *)self nearbySyncNetwork];
+            isNearbyRecommendable = [nearbySyncNetwork2 isNearbyRecommendable];
 
-            if (!v14)
+            if (!isNearbyRecommendable)
             {
               goto LABEL_23;
             }
@@ -1885,9 +1885,9 @@ LABEL_7:
           [(CWFNearbySyncManager *)self __sendAutoJoinAssistRequestToAllNearbyDevices:v17];
 LABEL_23:
           v15 = [(CWFNearbySyncManager *)self nearbySyncNetwork:v17];
-          v16 = [v15 isNearbyBrokenBackhaulStateSyncable];
+          isNearbyBrokenBackhaulStateSyncable = [v15 isNearbyBrokenBackhaulStateSyncable];
 
-          if (v16)
+          if (isNearbyBrokenBackhaulStateSyncable)
           {
             [(CWFNearbySyncManager *)self __sendBrokenBackhaulRestoreEventToAllNearbyDevices];
           }

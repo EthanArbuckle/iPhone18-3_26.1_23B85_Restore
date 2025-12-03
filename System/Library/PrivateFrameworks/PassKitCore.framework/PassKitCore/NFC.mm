@@ -9,7 +9,7 @@
 {
   v3 = objc_alloc_init(PKNFCPayload);
   v4 = +[NFC _propertySettersForNFC];
-  v5 = [v4 allKeys];
+  allKeys = [v4 allKeys];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100007538;
@@ -18,7 +18,7 @@
   v6 = v3;
   v13 = v6;
   v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v11];
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v11];
 
   v8 = v13;
   v9 = v6;

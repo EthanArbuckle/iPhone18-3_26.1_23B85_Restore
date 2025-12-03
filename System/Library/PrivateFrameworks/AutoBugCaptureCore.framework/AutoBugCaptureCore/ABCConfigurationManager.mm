@@ -8,13 +8,13 @@
 - (NSString)databaseContainerPath;
 - (NSString)logArchivePath;
 - (id)getAutoBugCaptureConfiguration;
-- (id)loadEmbeddedConfigurationPlist:(const char *)a3;
+- (id)loadEmbeddedConfigurationPlist:(const char *)plist;
 - (int)autoBugCaptureFeatures;
 - (unsigned)logArchiveGID;
 - (unsigned)logArchiveUID;
 - (void)dealloc;
 - (void)initializeOverrides;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation ABCConfigurationManager
@@ -49,8 +49,8 @@
 {
   v12 = *MEMORY[0x277D85DE8];
   v2 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
-  v3 = [v2 firstObject];
-  v4 = [v3 length];
+  firstObject = [v2 firstObject];
+  v4 = [firstObject length];
   v5 = configurationLogHandle();
   v6 = v5;
   if (v4)
@@ -58,11 +58,11 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = v3;
+      v11 = firstObject;
       _os_log_impl(&dword_241804000, v6, OS_LOG_TYPE_INFO, "Found usable Library directory at %@", &v10, 0xCu);
     }
 
-    v7 = v3;
+    v7 = firstObject;
   }
 
   else
@@ -145,14 +145,14 @@
   if (v3)
   {
     v4 = v3;
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     if (outCount)
     {
       for (i = 0; i < outCount; ++i)
       {
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:property_getName(v4[i])];
         v8 = [(ABCConfigurationManager *)self valueForKey:v7];
-        [v5 setObject:v8 forKeyedSubscript:v7];
+        [dictionary setObject:v8 forKeyedSubscript:v7];
       }
     }
 
@@ -160,7 +160,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v15 = v5;
+      v15 = dictionary;
       _os_log_impl(&dword_241804000, v9, OS_LOG_TYPE_DEBUG, "configuration dictionary: %@", buf, 0xCu);
     }
 
@@ -176,12 +176,12 @@
       _os_log_impl(&dword_241804000, v10, OS_LOG_TYPE_ERROR, "ConfigurationProperties is nil!!!!", buf, 2u);
     }
 
-    v5 = 0;
+    dictionary = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return dictionary;
 }
 
 - (void)initializeOverrides
@@ -199,36 +199,36 @@
 
   [(ABCConfigurationManager *)self setDisable_internal_build:v3];
   [v12 setInternalBuildDisabledByOverride:{objc_msgSend(v3, "BOOLValue")}];
-  v4 = [(ABCPreferences *)self->_preferences carrier_seed_flag];
-  [(ABCConfigurationManager *)self setCarrier_seed_flag:v4];
+  carrier_seed_flag = [(ABCPreferences *)self->_preferences carrier_seed_flag];
+  [(ABCConfigurationManager *)self setCarrier_seed_flag:carrier_seed_flag];
 
-  v5 = [(ABCPreferences *)self->_preferences carrier_seed_flag];
-  [v12 setCarrierSeedBuildOverride:v5];
+  carrier_seed_flag2 = [(ABCPreferences *)self->_preferences carrier_seed_flag];
+  [v12 setCarrierSeedBuildOverride:carrier_seed_flag2];
 
-  v6 = [(ABCPreferences *)self->_preferences seed_flag];
-  [(ABCConfigurationManager *)self setSeed_flag:v6];
+  seed_flag = [(ABCPreferences *)self->_preferences seed_flag];
+  [(ABCConfigurationManager *)self setSeed_flag:seed_flag];
 
-  v7 = [(ABCPreferences *)self->_preferences seed_flag];
-  [v12 setSeedBuildOverride:v7];
+  seed_flag2 = [(ABCPreferences *)self->_preferences seed_flag];
+  [v12 setSeedBuildOverride:seed_flag2];
 
-  v8 = [(ABCPreferences *)self->_preferences vendor_flag];
-  [(ABCConfigurationManager *)self setVendor_flag:v8];
+  vendor_flag = [(ABCPreferences *)self->_preferences vendor_flag];
+  [(ABCConfigurationManager *)self setVendor_flag:vendor_flag];
 
-  v9 = [(ABCPreferences *)self->_preferences vendor_flag];
-  [v12 setVendorBuildOverride:v9];
+  vendor_flag2 = [(ABCPreferences *)self->_preferences vendor_flag];
+  [v12 setVendorBuildOverride:vendor_flag2];
 
-  v10 = [(ABCPreferences *)self->_preferences npi_flag];
-  [(ABCConfigurationManager *)self setNpi_flag:v10];
+  npi_flag = [(ABCPreferences *)self->_preferences npi_flag];
+  [(ABCConfigurationManager *)self setNpi_flag:npi_flag];
 
-  v11 = [(ABCPreferences *)self->_preferences npi_flag];
-  [v12 setNpiDeviceOverride:v11];
+  npi_flag2 = [(ABCPreferences *)self->_preferences npi_flag];
+  [v12 setNpiDeviceOverride:npi_flag2];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [a5 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+  pathCopy = path;
+  v9 = [change objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -242,41 +242,41 @@
 
   v11 = v10;
   v12 = +[SystemProperties sharedInstance];
-  if ([v8 isEqualToString:@"disable_internal_build"])
+  if ([pathCopy isEqualToString:@"disable_internal_build"])
   {
     [(ABCConfigurationManager *)self setDisable_internal_build:v11];
     [v12 setInternalBuildDisabledByOverride:{objc_msgSend(v11, "BOOLValue")}];
     goto LABEL_21;
   }
 
-  if ([v8 isEqualToString:@"carrier_seed_flag"])
+  if ([pathCopy isEqualToString:@"carrier_seed_flag"])
   {
     [(ABCConfigurationManager *)self setCarrier_seed_flag:v11];
     [v12 setCarrierSeedBuildOverride:v11];
     goto LABEL_21;
   }
 
-  if ([v8 isEqualToString:@"seed_flag"])
+  if ([pathCopy isEqualToString:@"seed_flag"])
   {
     [(ABCConfigurationManager *)self setSeed_flag:v11];
     [v12 setSeedBuildOverride:v11];
 LABEL_21:
     [(ABCConfigurationManager *)self autoBugCaptureEnabled];
-    v13 = [(ABCConfigurationManager *)self getAutoBugCaptureConfiguration];
-    if (v13)
+    getAutoBugCaptureConfiguration = [(ABCConfigurationManager *)self getAutoBugCaptureConfiguration];
+    if (getAutoBugCaptureConfiguration)
     {
       previousConfiguration = self->_previousConfiguration;
       p_previousConfiguration = &self->_previousConfiguration;
-      if (![(NSDictionary *)previousConfiguration isEqualToDictionary:v13])
+      if (![(NSDictionary *)previousConfiguration isEqualToDictionary:getAutoBugCaptureConfiguration])
       {
         DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
         CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.autobugcapture.configurationchanged", 0, 0, 4u);
-        objc_storeStrong(p_previousConfiguration, v13);
+        objc_storeStrong(p_previousConfiguration, getAutoBugCaptureConfiguration);
         v17 = configurationLogHandle();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           v19 = 138412290;
-          v20 = v13;
+          v20 = getAutoBugCaptureConfiguration;
           _os_log_impl(&dword_241804000, v17, OS_LOG_TYPE_DEFAULT, "ABC Configuration dictionary changed: %@", &v19, 0xCu);
         }
       }
@@ -285,19 +285,19 @@ LABEL_21:
     goto LABEL_27;
   }
 
-  if ([v8 isEqualToString:@"vendor_flag"])
+  if ([pathCopy isEqualToString:@"vendor_flag"])
   {
     [(ABCConfigurationManager *)self setVendor_flag:v11];
     [v12 setVendorBuildOverride:v11];
   }
 
-  else if ([v8 isEqualToString:@"npi_flag"])
+  else if ([pathCopy isEqualToString:@"npi_flag"])
   {
     [(ABCConfigurationManager *)self setNpi_flag:v11];
     [v12 setNpiDeviceOverride:v11];
   }
 
-  if (([v8 isEqualToString:@"optin_autobugcapture"] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"disable_autobugcapture") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"ABCUserConsent") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"diagnosticsAndUsageEnabled") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"is_automated_device_group") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"ignore_automated_device_group") & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"autoFeedbackAssistantEnable"))
+  if (([pathCopy isEqualToString:@"optin_autobugcapture"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"disable_autobugcapture") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"ABCUserConsent") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"diagnosticsAndUsageEnabled") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"is_automated_device_group") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"ignore_automated_device_group") & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"autoFeedbackAssistantEnable"))
   {
     goto LABEL_21;
   }
@@ -309,8 +309,8 @@ LABEL_27:
 
 - (BOOL)autoBugCaptureAvailable
 {
-  v3 = [(ABCConfigurationManager *)self autoBugCaptureFeatures];
-  if (v3)
+  autoBugCaptureFeatures = [(ABCConfigurationManager *)self autoBugCaptureFeatures];
+  if (autoBugCaptureFeatures)
   {
     v4 = ![(ABCConfigurationManager *)self autoBugCaptureSupportedHardware];
   }
@@ -320,9 +320,9 @@ LABEL_27:
     v4 = 1;
   }
 
-  v5 = [(ABCPreferences *)self->_preferences disable_autobugcapture];
-  v6 = [(ABCPreferences *)self->_preferences optin_autobugcapture];
-  v7 = [(ABCPreferences *)self->_preferences diagnosticPipelineEnabled];
+  disable_autobugcapture = [(ABCPreferences *)self->_preferences disable_autobugcapture];
+  optin_autobugcapture = [(ABCPreferences *)self->_preferences optin_autobugcapture];
+  diagnosticPipelineEnabled = [(ABCPreferences *)self->_preferences diagnosticPipelineEnabled];
   if (v4)
   {
     return 0;
@@ -330,13 +330,13 @@ LABEL_27:
 
   else
   {
-    v8 = (v3 & 0x20) == 0 || v6;
-    if (!v7)
+    v8 = (autoBugCaptureFeatures & 0x20) == 0 || optin_autobugcapture;
+    if (!diagnosticPipelineEnabled)
     {
       v8 = 0;
     }
 
-    if (v5)
+    if (disable_autobugcapture)
     {
       return 0;
     }
@@ -348,24 +348,24 @@ LABEL_27:
 - (BOOL)autoBugCaptureEnabled
 {
   v44 = *MEMORY[0x277D85DE8];
-  v3 = [(ABCConfigurationManager *)self autoBugCaptureAvailable];
-  v4 = [(ABCPreferences *)self->_preferences diagnosticsAndUsageEnabled];
-  v27 = [(ABCPreferences *)self->_preferences diagnosticPipelineEnabled];
-  v5 = [(ABCPreferences *)self->_preferences ABCUserConsent];
-  v6 = [(ABCPreferences *)self->_preferences is_automated_device_group];
-  v7 = [(ABCPreferences *)self->_preferences ignore_automated_device_group];
-  v8 = !v6 || v7;
-  if (!v5)
+  autoBugCaptureAvailable = [(ABCConfigurationManager *)self autoBugCaptureAvailable];
+  diagnosticsAndUsageEnabled = [(ABCPreferences *)self->_preferences diagnosticsAndUsageEnabled];
+  diagnosticPipelineEnabled = [(ABCPreferences *)self->_preferences diagnosticPipelineEnabled];
+  aBCUserConsent = [(ABCPreferences *)self->_preferences ABCUserConsent];
+  is_automated_device_group = [(ABCPreferences *)self->_preferences is_automated_device_group];
+  ignore_automated_device_group = [(ABCPreferences *)self->_preferences ignore_automated_device_group];
+  v8 = !is_automated_device_group || ignore_automated_device_group;
+  if (!aBCUserConsent)
   {
     v8 = 0;
   }
 
-  if (!v4)
+  if (!diagnosticsAndUsageEnabled)
   {
     v8 = 0;
   }
 
-  autoBugCaptureEnabled = v3 && v8;
+  autoBugCaptureEnabled = autoBugCaptureAvailable && v8;
   v10 = autoBugCaptureEnabled;
   if (autoBugCaptureEnabled__logPrintCount && autoBugCaptureEnabled__prevEnabledValue == v10)
   {
@@ -386,12 +386,12 @@ LABEL_27:
         }
 
         v20 = "(ignored)";
-        if (!v7)
+        if (!ignore_automated_device_group)
         {
           v20 = "";
         }
 
-        if (v27)
+        if (diagnosticPipelineEnabled)
         {
           v21 = "en";
         }
@@ -401,7 +401,7 @@ LABEL_27:
           v21 = "dis";
         }
 
-        if (v3)
+        if (autoBugCaptureAvailable)
         {
           v22 = "";
         }
@@ -415,11 +415,11 @@ LABEL_27:
         v29 = v19;
         v18 = loga;
         v30 = 1024;
-        v31 = v4;
+        v31 = diagnosticsAndUsageEnabled;
         v32 = 1024;
-        v33 = v5;
+        v33 = aBCUserConsent;
         v34 = 1024;
-        v35 = v6;
+        v35 = is_automated_device_group;
         v36 = 2080;
         v37 = v20;
         v38 = 2080;
@@ -427,7 +427,7 @@ LABEL_27:
         v40 = 2080;
         v41 = v22;
         v42 = 1024;
-        v43 = [(ABCConfigurationManager *)self autoBugCaptureFeatures];
+        autoBugCaptureFeatures = [(ABCConfigurationManager *)self autoBugCaptureFeatures];
         _os_log_impl(&dword_241804000, loga, OS_LOG_TYPE_INFO, "AutoBugCapture is %s - DNU:%d, user consent:%d, automated device group:%d%s, DP:%sabled, ABC:%savailable, ABC features:%d", buf, 0x42u);
       }
     }
@@ -449,13 +449,13 @@ LABEL_27:
       }
 
       v14 = "(ignored)";
-      if (!v7)
+      if (!ignore_automated_device_group)
       {
         v14 = "";
       }
 
       v24 = v14;
-      if (v27)
+      if (diagnosticPipelineEnabled)
       {
         v15 = "en";
       }
@@ -465,7 +465,7 @@ LABEL_27:
         v15 = "dis";
       }
 
-      if (v3)
+      if (autoBugCaptureAvailable)
       {
         v16 = "";
       }
@@ -475,15 +475,15 @@ LABEL_27:
         v16 = "not ";
       }
 
-      v17 = [(ABCConfigurationManager *)self autoBugCaptureFeatures];
+      autoBugCaptureFeatures2 = [(ABCConfigurationManager *)self autoBugCaptureFeatures];
       *buf = 136316930;
       v29 = v23;
       v30 = 1024;
-      v31 = v4;
+      v31 = diagnosticsAndUsageEnabled;
       v32 = 1024;
-      v33 = v5;
+      v33 = aBCUserConsent;
       v34 = 1024;
-      v35 = v6;
+      v35 = is_automated_device_group;
       v36 = 2080;
       v37 = v24;
       v38 = 2080;
@@ -491,7 +491,7 @@ LABEL_27:
       v40 = 2080;
       v41 = v16;
       v42 = 1024;
-      v43 = v17;
+      autoBugCaptureFeatures = autoBugCaptureFeatures2;
       _os_log_impl(&dword_241804000, log, OS_LOG_TYPE_DEFAULT, "AutoBugCapture is %s - DNU:%d, user consent:%d, automated device group:%d%s, DP:%sabled, ABC:%savailable, ABC features:%d", buf, 0x42u);
     }
 
@@ -583,17 +583,17 @@ LABEL_27:
 - (NSString)databaseContainerPath
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(ABCPreferences *)self->_preferences database_container_path];
-  if ([v3 length])
+  database_container_path = [(ABCPreferences *)self->_preferences database_container_path];
+  if ([database_container_path length])
   {
-    v4 = [(ABCPreferences *)self->_preferences database_container_path];
-    v5 = [v4 isAbsolutePath];
+    database_container_path2 = [(ABCPreferences *)self->_preferences database_container_path];
+    isAbsolutePath = [database_container_path2 isAbsolutePath];
 
-    if (v5)
+    if (isAbsolutePath)
     {
-      v6 = [(ABCPreferences *)self->_preferences database_container_path];
+      database_container_path3 = [(ABCPreferences *)self->_preferences database_container_path];
       v7 = databaseContainerPath_dbContainerPath;
-      databaseContainerPath_dbContainerPath = v6;
+      databaseContainerPath_dbContainerPath = database_container_path3;
 
       v8 = configurationLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -644,32 +644,32 @@ LABEL_12:
 
 - (BOOL)cloudKitEnabled
 {
-  v2 = [(ABCPreferences *)self->_preferences cloudkit_enable];
+  cloudkit_enable = [(ABCPreferences *)self->_preferences cloudkit_enable];
   v3 = +[SystemProperties sharedInstance];
   if (([v3 vendorBuild] & 1) != 0 || objc_msgSend(v3, "customerBuild") && (objc_msgSend(v3, "seedBuild") & 1) == 0)
   {
-    v2 = 0;
+    cloudkit_enable = 0;
   }
 
-  return v2;
+  return cloudkit_enable;
 }
 
 - (BOOL)cloudKitPrefersAnonymous
 {
-  v2 = [(ABCPreferences *)self->_preferences cloudkit_prefers_anonymous];
+  cloudkit_prefers_anonymous = [(ABCPreferences *)self->_preferences cloudkit_prefers_anonymous];
   v3 = +[SystemProperties sharedInstance];
   if (([v3 vendorBuild] & 1) != 0 || objc_msgSend(v3, "customerBuild"))
   {
-    v2 = 1;
+    cloudkit_prefers_anonymous = 1;
   }
 
-  return v2;
+  return cloudkit_prefers_anonymous;
 }
 
-- (id)loadEmbeddedConfigurationPlist:(const char *)a3
+- (id)loadEmbeddedConfigurationPlist:(const char *)plist
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = load_embedded_xml_plist(a3);
+  v3 = load_embedded_xml_plist(plist);
   v4 = [v3 objectForKeyedSubscript:@"CONFIG_IDENTIFIER"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -705,9 +705,9 @@ LABEL_12:
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v14 = [v10 longValue];
+      longValue = [v10 longValue];
       v26 = 134217984;
-      v27 = v14;
+      v27 = longValue;
       _os_log_impl(&dword_241804000, v13, OS_LOG_TYPE_INFO, "Embedded configuration version: %ld", &v26, 0xCu);
     }
   }

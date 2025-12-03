@@ -2,14 +2,14 @@
 - (CGSize)intrinsicContentSize;
 - (NSLayoutYAxisAnchor)firstBaselineAnchor;
 - (void)layoutSubviews;
-- (void)textSizeUpdated:(id)a3;
+- (void)textSizeUpdated:(id)updated;
 @end
 
 @implementation IndexLabel
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_20B951B74();
   v5 = v4;
 
@@ -22,18 +22,18 @@
 
 - (NSLayoutYAxisAnchor)firstBaselineAnchor
 {
-  v2 = [*(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI10IndexLabel_label) firstBaselineAnchor];
+  firstBaselineAnchor = [*(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI10IndexLabel_label) firstBaselineAnchor];
 
-  return v2;
+  return firstBaselineAnchor;
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B952400();
 }
 
-- (void)textSizeUpdated:(id)a3
+- (void)textSizeUpdated:(id)updated
 {
   v4 = sub_20C132614();
   v5 = *(v4 - 8);
@@ -41,7 +41,7 @@
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_20C1325E4();
   v8 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI10IndexLabel_label);
-  v9 = self;
+  selfCopy = self;
   v10 = sub_20B951A08();
   [v8 setFont_];
 

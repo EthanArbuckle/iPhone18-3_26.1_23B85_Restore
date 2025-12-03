@@ -1,19 +1,19 @@
 @interface CAMCleanLensesInstructionLabel
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CAMCleanLensesInstructionLabel)initWithFrame:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CAMCleanLensesInstructionLabel)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)_textInsets;
 - (void)_updateText;
-- (void)labelWasTappedWithTarget:(id)a3 andAction:(SEL)a4;
-- (void)setDevicePosition:(int64_t)a3;
+- (void)labelWasTappedWithTarget:(id)target andAction:(SEL)action;
+- (void)setDevicePosition:(int64_t)position;
 @end
 
 @implementation CAMCleanLensesInstructionLabel
 
-- (CAMCleanLensesInstructionLabel)initWithFrame:(CGRect)a3
+- (CAMCleanLensesInstructionLabel)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CAMCleanLensesInstructionLabel;
-  v3 = [(CAMInstructionLabel *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMInstructionLabel *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -24,11 +24,11 @@
   return v4;
 }
 
-- (void)setDevicePosition:(int64_t)a3
+- (void)setDevicePosition:(int64_t)position
 {
-  if (self->_devicePosition != a3)
+  if (self->_devicePosition != position)
   {
-    self->_devicePosition = a3;
+    self->_devicePosition = position;
     [(CAMCleanLensesInstructionLabel *)self _updateText];
 
     [(CAMCleanLensesInstructionLabel *)self layoutIfNeeded];
@@ -37,14 +37,14 @@
 
 - (void)_updateText
 {
-  v3 = [(CAMCleanLensesInstructionLabel *)self devicePosition];
-  if (!v3)
+  devicePosition = [(CAMCleanLensesInstructionLabel *)self devicePosition];
+  if (!devicePosition)
   {
     v4 = @"SMUDGE_DETECTION_BACK_FACING";
     goto LABEL_5;
   }
 
-  if (v3 == 1)
+  if (devicePosition == 1)
   {
     v4 = @"SMUDGE_DETECTION_FRONT_FACING";
 LABEL_5:
@@ -58,10 +58,10 @@ LABEL_7:
   [(CAMInstructionLabel *)self setText:v5];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(CAMCleanLensesInstructionLabel *)self bounds];
   v11 = CGRectInset(v10, -11.0, -11.0);
   v6 = x;
@@ -84,11 +84,11 @@ LABEL_7:
   return result;
 }
 
-- (void)labelWasTappedWithTarget:(id)a3 andAction:(SEL)a4
+- (void)labelWasTappedWithTarget:(id)target andAction:(SEL)action
 {
   v6 = MEMORY[0x1E69DD060];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithTarget:v7 action:a4];
+  targetCopy = target;
+  v8 = [[v6 alloc] initWithTarget:targetCopy action:action];
 
   [(CAMCleanLensesInstructionLabel *)self addGestureRecognizer:v8];
   [(CAMCleanLensesInstructionLabel *)self setUserInteractionEnabled:1];

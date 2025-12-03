@@ -1,24 +1,24 @@
 @interface EMFAnchoredSearchManager
 - (EMFAnchoredSearchAnchorsLoader)anchorsLoader;
-- (EMFAnchoredSearchManager)initWithLocaleData:(id)a3;
+- (EMFAnchoredSearchManager)initWithLocaleData:(id)data;
 - (NSArray)localizedLeftHandAnchors;
 - (NSArray)localizedRightHandAnchors;
-- (void)_enumerateAnchoredReplacementCandidatesForContextLeft:(id)a3 withOptions:(unint64_t)a4 usingBlock:(id)a5;
-- (void)_enumerateAnchoredReplacementCandidatesForContextOmnidirectional:(id)a3 withOptions:(unint64_t)a4 usingBlock:(id)a5;
-- (void)_enumerateAnchoredReplacementCandidatesForContextRight:(id)a3 withOptions:(unint64_t)a4 usingBlock:(id)a5;
-- (void)enumerateAnchoredReplacementCandidatesForContext:(id)a3 withOptions:(unint64_t)a4 usingBlock:(id)a5;
+- (void)_enumerateAnchoredReplacementCandidatesForContextLeft:(id)left withOptions:(unint64_t)options usingBlock:(id)block;
+- (void)_enumerateAnchoredReplacementCandidatesForContextOmnidirectional:(id)omnidirectional withOptions:(unint64_t)options usingBlock:(id)block;
+- (void)_enumerateAnchoredReplacementCandidatesForContextRight:(id)right withOptions:(unint64_t)options usingBlock:(id)block;
+- (void)enumerateAnchoredReplacementCandidatesForContext:(id)context withOptions:(unint64_t)options usingBlock:(id)block;
 @end
 
 @implementation EMFAnchoredSearchManager
 
-- (EMFAnchoredSearchManager)initWithLocaleData:(id)a3
+- (EMFAnchoredSearchManager)initWithLocaleData:(id)data
 {
   v5.receiver = self;
   v5.super_class = EMFAnchoredSearchManager;
   result = [(EMFAnchoredSearchManager *)&v5 init];
   if (result)
   {
-    result->_localeData = a3;
+    result->_localeData = data;
   }
 
   return result;
@@ -35,9 +35,9 @@
   else
   {
     v5 = [EMFAnchoredSearchAnchorsLoader alloc];
-    v6 = [(EMFAnchoredSearchManager *)self localeData];
-    v7 = [v6 localeIdentifier];
-    v8 = [(EMFAnchoredSearchAnchorsLoader *)v5 initWithLocaleIdentifier:v7];
+    localeData = [(EMFAnchoredSearchManager *)self localeData];
+    localeIdentifier = [localeData localeIdentifier];
+    v8 = [(EMFAnchoredSearchAnchorsLoader *)v5 initWithLocaleIdentifier:localeIdentifier];
 
     v9 = self->_anchorsLoader;
     self->_anchorsLoader = v8;
@@ -51,29 +51,29 @@
 
 - (NSArray)localizedLeftHandAnchors
 {
-  v2 = [(EMFAnchoredSearchManager *)self anchorsLoader];
-  v3 = [v2 leftHandAnchors];
+  anchorsLoader = [(EMFAnchoredSearchManager *)self anchorsLoader];
+  leftHandAnchors = [anchorsLoader leftHandAnchors];
 
-  return v3;
+  return leftHandAnchors;
 }
 
 - (NSArray)localizedRightHandAnchors
 {
-  v2 = [(EMFAnchoredSearchManager *)self anchorsLoader];
-  v3 = [v2 rightHandAnchors];
+  anchorsLoader = [(EMFAnchoredSearchManager *)self anchorsLoader];
+  rightHandAnchors = [anchorsLoader rightHandAnchors];
 
-  return v3;
+  return rightHandAnchors;
 }
 
-- (void)enumerateAnchoredReplacementCandidatesForContext:(id)a3 withOptions:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumerateAnchoredReplacementCandidatesForContext:(id)context withOptions:(unint64_t)options usingBlock:(id)block
 {
-  v16 = a3;
-  v8 = a5;
-  v9 = [(EMFAnchoredSearchManager *)self localizedLeftHandAnchors];
-  if (v9)
+  contextCopy = context;
+  blockCopy = block;
+  localizedLeftHandAnchors = [(EMFAnchoredSearchManager *)self localizedLeftHandAnchors];
+  if (localizedLeftHandAnchors)
   {
-    v10 = [(EMFAnchoredSearchManager *)self localizedLeftHandAnchors];
-    v11 = [v10 count] != 0;
+    localizedLeftHandAnchors2 = [(EMFAnchoredSearchManager *)self localizedLeftHandAnchors];
+    v11 = [localizedLeftHandAnchors2 count] != 0;
   }
 
   else
@@ -81,16 +81,16 @@
     v11 = 0;
   }
 
-  v12 = [(EMFAnchoredSearchManager *)self localizedRightHandAnchors];
-  if (v12)
+  localizedRightHandAnchors = [(EMFAnchoredSearchManager *)self localizedRightHandAnchors];
+  if (localizedRightHandAnchors)
   {
-    v13 = v12;
-    v14 = [(EMFAnchoredSearchManager *)self localizedRightHandAnchors];
-    v15 = [v14 count];
+    v13 = localizedRightHandAnchors;
+    localizedRightHandAnchors2 = [(EMFAnchoredSearchManager *)self localizedRightHandAnchors];
+    v15 = [localizedRightHandAnchors2 count];
 
     if (v15 != 0 && v11)
     {
-      [(EMFAnchoredSearchManager *)self _enumerateAnchoredReplacementCandidatesForContextOmnidirectional:v16 withOptions:a4 usingBlock:v8];
+      [(EMFAnchoredSearchManager *)self _enumerateAnchoredReplacementCandidatesForContextOmnidirectional:contextCopy withOptions:options usingBlock:blockCopy];
       goto LABEL_13;
     }
 
@@ -101,23 +101,23 @@
 
     if (v15)
     {
-      [(EMFAnchoredSearchManager *)self _enumerateAnchoredReplacementCandidatesForContextRight:v16 withOptions:a4 usingBlock:v8];
+      [(EMFAnchoredSearchManager *)self _enumerateAnchoredReplacementCandidatesForContextRight:contextCopy withOptions:options usingBlock:blockCopy];
     }
   }
 
   else if (v11)
   {
 LABEL_10:
-    [(EMFAnchoredSearchManager *)self _enumerateAnchoredReplacementCandidatesForContextLeft:v16 withOptions:a4 usingBlock:v8];
+    [(EMFAnchoredSearchManager *)self _enumerateAnchoredReplacementCandidatesForContextLeft:contextCopy withOptions:options usingBlock:blockCopy];
   }
 
 LABEL_13:
 }
 
-- (void)_enumerateAnchoredReplacementCandidatesForContextLeft:(id)a3 withOptions:(unint64_t)a4 usingBlock:(id)a5
+- (void)_enumerateAnchoredReplacementCandidatesForContextLeft:(id)left withOptions:(unint64_t)options usingBlock:(id)block
 {
-  v7 = a3;
-  v8 = a5;
+  leftCopy = left;
+  blockCopy = block;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x3032000000;
@@ -125,19 +125,19 @@ LABEL_13:
   v18[4] = __Block_byref_object_dispose__3;
   v19 = objc_alloc_init(MEMORY[0x1E696AD50]);
   v9 = objc_alloc_init(EMFContextBuilderLeftHand);
-  v10 = [v7 length];
-  v11 = [(EMFAnchoredSearchManager *)self localizedLeftHandAnchors];
+  v10 = [leftCopy length];
+  localizedLeftHandAnchors = [(EMFAnchoredSearchManager *)self localizedLeftHandAnchors];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __105__EMFAnchoredSearchManager__enumerateAnchoredReplacementCandidatesForContextLeft_withOptions_usingBlock___block_invoke;
   v14[3] = &unk_1E7A5F8C0;
   v14[4] = self;
-  v12 = v7;
+  v12 = leftCopy;
   v15 = v12;
   v17 = v18;
-  v13 = v8;
+  v13 = blockCopy;
   v16 = v13;
-  [(EMFContextBuilderLeftHand *)v9 enumerateWindowsForContext:v12 range:0 searchAnchors:v10 usingBlock:v11, v14];
+  [(EMFContextBuilderLeftHand *)v9 enumerateWindowsForContext:v12 range:0 searchAnchors:v10 usingBlock:localizedLeftHandAnchors, v14];
 
   _Block_object_dispose(v18, 8);
 }
@@ -179,10 +179,10 @@ void __105__EMFAnchoredSearchManager__enumerateAnchoredReplacementCandidatesForC
   }
 }
 
-- (void)_enumerateAnchoredReplacementCandidatesForContextRight:(id)a3 withOptions:(unint64_t)a4 usingBlock:(id)a5
+- (void)_enumerateAnchoredReplacementCandidatesForContextRight:(id)right withOptions:(unint64_t)options usingBlock:(id)block
 {
-  v7 = a3;
-  v8 = a5;
+  rightCopy = right;
+  blockCopy = block;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x3032000000;
@@ -190,19 +190,19 @@ void __105__EMFAnchoredSearchManager__enumerateAnchoredReplacementCandidatesForC
   v18[4] = __Block_byref_object_dispose__3;
   v19 = objc_alloc_init(MEMORY[0x1E696AD50]);
   v9 = objc_alloc_init(EMFContextBuilderRightHand);
-  v10 = [v7 length];
-  v11 = [(EMFAnchoredSearchManager *)self localizedRightHandAnchors];
+  v10 = [rightCopy length];
+  localizedRightHandAnchors = [(EMFAnchoredSearchManager *)self localizedRightHandAnchors];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __106__EMFAnchoredSearchManager__enumerateAnchoredReplacementCandidatesForContextRight_withOptions_usingBlock___block_invoke;
   v14[3] = &unk_1E7A5F8C0;
   v14[4] = self;
-  v12 = v7;
+  v12 = rightCopy;
   v15 = v12;
   v17 = v18;
-  v13 = v8;
+  v13 = blockCopy;
   v16 = v13;
-  [(EMFContextBuilderRightHand *)v9 enumerateWindowsForContext:v12 range:0 searchAnchors:v10 usingBlock:v11, v14];
+  [(EMFContextBuilderRightHand *)v9 enumerateWindowsForContext:v12 range:0 searchAnchors:v10 usingBlock:localizedRightHandAnchors, v14];
 
   _Block_object_dispose(v18, 8);
 }
@@ -240,12 +240,12 @@ void __106__EMFAnchoredSearchManager__enumerateAnchoredReplacementCandidatesForC
   }
 }
 
-- (void)_enumerateAnchoredReplacementCandidatesForContextOmnidirectional:(id)a3 withOptions:(unint64_t)a4 usingBlock:(id)a5
+- (void)_enumerateAnchoredReplacementCandidatesForContextOmnidirectional:(id)omnidirectional withOptions:(unint64_t)options usingBlock:(id)block
 {
-  v8 = a5;
-  v9 = a3;
-  [(EMFAnchoredSearchManager *)self _enumerateAnchoredReplacementCandidatesForContextLeft:v9 withOptions:a4 usingBlock:v8];
-  [(EMFAnchoredSearchManager *)self _enumerateAnchoredReplacementCandidatesForContextRight:v9 withOptions:a4 usingBlock:v8];
+  blockCopy = block;
+  omnidirectionalCopy = omnidirectional;
+  [(EMFAnchoredSearchManager *)self _enumerateAnchoredReplacementCandidatesForContextLeft:omnidirectionalCopy withOptions:options usingBlock:blockCopy];
+  [(EMFAnchoredSearchManager *)self _enumerateAnchoredReplacementCandidatesForContextRight:omnidirectionalCopy withOptions:options usingBlock:blockCopy];
 }
 
 @end

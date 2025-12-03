@@ -1,31 +1,31 @@
 @interface BLFairPlayDecryptFileOperation
 - (BLBookInstallInfo)installInfo;
-- (BLFairPlayDecryptFileOperation)initWithPath:(id)a3 dpInfo:(id)a4 installInfo:(id)a5;
-- (BOOL)_decryptWithSession:(id)a3 error:(id *)a4;
-- (void)_initializeProgressWithFileHandle:(id)a3;
-- (void)_updateProgressWithByteCount:(int64_t)a3;
+- (BLFairPlayDecryptFileOperation)initWithPath:(id)path dpInfo:(id)info installInfo:(id)installInfo;
+- (BOOL)_decryptWithSession:(id)session error:(id *)error;
+- (void)_initializeProgressWithFileHandle:(id)handle;
+- (void)_updateProgressWithByteCount:(int64_t)count;
 - (void)main;
 @end
 
 @implementation BLFairPlayDecryptFileOperation
 
-- (BLFairPlayDecryptFileOperation)initWithPath:(id)a3 dpInfo:(id)a4 installInfo:(id)a5
+- (BLFairPlayDecryptFileOperation)initWithPath:(id)path dpInfo:(id)info installInfo:(id)installInfo
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  infoCopy = info;
+  installInfoCopy = installInfo;
   v16.receiver = self;
   v16.super_class = BLFairPlayDecryptFileOperation;
   v11 = [(BLFairPlayDecryptFileOperation *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_dpInfo, a4);
-    v13 = [v8 copy];
+    objc_storeStrong(&v11->_dpInfo, info);
+    v13 = [pathCopy copy];
     path = v12->_path;
     v12->_path = v13;
 
-    objc_storeWeak(&v12->_installInfo, v10);
+    objc_storeWeak(&v12->_installInfo, installInfoCopy);
   }
 
   return v12;
@@ -79,9 +79,9 @@
       v14 = BLBookInstallLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
-        v15 = [v23[5] identifier];
+        identifier = [v23[5] identifier];
         *buf = 138412290;
-        v29 = v15;
+        v29 = identifier;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "[Install-Decrypt-Op]: Took power assertion: %@", buf, 0xCu);
       }
 
@@ -90,9 +90,9 @@
       v16 = BLBookInstallLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
-        v17 = [v23[5] identifier];
+        identifier2 = [v23[5] identifier];
         *buf = 138412290;
-        v29 = v17;
+        v29 = identifier2;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "[Install-Decrypt-Op]: Released power assertion: %@", buf, 0xCu);
       }
 
@@ -130,9 +130,9 @@
   _Block_object_dispose(&v22, 8);
 }
 
-- (BOOL)_decryptWithSession:(id)a3 error:(id *)a4
+- (BOOL)_decryptWithSession:(id)session error:(id *)error
 {
-  v5 = a3;
+  sessionCopy = session;
   v6 = [NSFileHandle fileHandleForUpdatingAtPath:self->_path];
   if (v6)
   {
@@ -148,7 +148,7 @@
       if (v11)
       {
         v18 = 0;
-        v12 = [v5 decryptBytes:v10 error:&v18];
+        v12 = [sessionCopy decryptBytes:v10 error:&v18];
         v13 = v18;
         if (v12)
         {
@@ -190,19 +190,19 @@
     v8 = 0;
   }
 
-  if (a4)
+  if (error)
   {
     v15 = v7;
-    *a4 = v7;
+    *error = v7;
   }
 
   return v8;
 }
 
-- (void)_initializeProgressWithFileHandle:(id)a3
+- (void)_initializeProgressWithFileHandle:(id)handle
 {
   memset(&v4.st_size, 0, 48);
-  if (fstat([a3 fileDescriptor], &v4) != -1)
+  if (fstat([handle fileDescriptor], &v4) != -1)
   {
     [(BLOperationProgress *)self->_progress setUnits:1];
     [(BLOperationProgress *)self->_progress setMaxValue:v4.st_size];
@@ -212,29 +212,29 @@
   }
 }
 
-- (void)_updateProgressWithByteCount:(int64_t)a3
+- (void)_updateProgressWithByteCount:(int64_t)count
 {
   progress = self->_progress;
-  v6 = [(BLOperationProgress *)progress maxValue];
-  if (v6 >= a3)
+  maxValue = [(BLOperationProgress *)progress maxValue];
+  if (maxValue >= count)
   {
-    v7 = a3;
+    countCopy = count;
   }
 
   else
   {
-    v7 = v6;
+    countCopy = maxValue;
   }
 
-  [(BLOperationProgress *)progress setCurrentValue:v7];
+  [(BLOperationProgress *)progress setCurrentValue:countCopy];
   Current = CFAbsoluteTimeGetCurrent();
   v9 = *&qword_10013E0B0 + self->_lastSnapshotTime;
   if (v9 < Current)
   {
     [(BLOperationProgress *)self->_progress snapshot];
-    v11 = [(BLFairPlayDecryptFileOperation *)self installInfo];
-    v10 = [v11 progressDelegate];
-    [v10 operation:self updatedProgress:self->_progress forInstall:v11];
+    installInfo = [(BLFairPlayDecryptFileOperation *)self installInfo];
+    progressDelegate = [installInfo progressDelegate];
+    [progressDelegate operation:self updatedProgress:self->_progress forInstall:installInfo];
 
     self->_lastSnapshotTime = Current;
   }

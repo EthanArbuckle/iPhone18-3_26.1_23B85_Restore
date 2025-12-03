@@ -1,10 +1,10 @@
 @interface LPProductMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (LPProductMetadata)init;
-- (LPProductMetadata)initWithCoder:(id)a3;
-- (id)_initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (LPProductMetadata)initWithCoder:(id)coder;
+- (id)_initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LPProductMetadata
@@ -23,18 +23,18 @@
   return v3;
 }
 
-- (id)_initWithDictionary:(id)a3
+- (id)_initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(LPProductMetadata *)self init];
   if (v5)
   {
-    v6 = stringForKey(v4, @"LPMetadataProductPluralTitle");
+    v6 = stringForKey(dictionaryCopy, @"LPMetadataProductPluralTitle");
     pluralTitle = v5->_pluralTitle;
     v5->_pluralTitle = v6;
 
-    v8 = arrayOfDictionariesForKey(v4, @"LPMetadataProductPrices");
+    v8 = arrayOfDictionariesForKey(dictionaryCopy, @"LPMetadataProductPrices");
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v22 = 0u;
     v23 = 0u;
@@ -82,19 +82,19 @@
   return v5;
 }
 
-- (LPProductMetadata)initWithCoder:(id)a3
+- (LPProductMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = LPProductMetadata;
   v5 = [(LPProductMetadata *)&v12 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"pluralTitle");
+    v6 = decodeStringForKey(coderCopy, @"pluralTitle");
     pluralTitle = v5->_pluralTitle;
     v5->_pluralTitle = v6;
 
-    v8 = [v4 _lp_strictlyDecodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"prices"];
+    v8 = [coderCopy _lp_strictlyDecodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"prices"];
     prices = v5->_prices;
     v5->_prices = v8;
 
@@ -104,19 +104,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 _lp_encodeStringIfNotNil:self->_pluralTitle forKey:@"pluralTitle"];
-  [v4 _lp_encodeArrayIfNotEmpty:self->_prices forKey:@"prices"];
+  coderCopy = coder;
+  [coderCopy _lp_encodeStringIfNotNil:self->_pluralTitle forKey:@"pluralTitle"];
+  [coderCopy _lp_encodeArrayIfNotEmpty:self->_prices forKey:@"prices"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = LPProductMetadata;
-  if ([(LPProductMetadata *)&v8 isEqual:v4])
+  if ([(LPProductMetadata *)&v8 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -126,7 +126,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       if (objectsAreEqual_0(v6[2], self->_pluralTitle))
       {
         v5 = objectsAreEqual_0(v6[1], self->_prices);
@@ -147,16 +147,16 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPProductMetadata allocWithZone:a3];
+  v4 = [LPProductMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(LPProductMetadata *)self pluralTitle];
-    [(LPProductMetadata *)v4 setPluralTitle:v5];
+    pluralTitle = [(LPProductMetadata *)self pluralTitle];
+    [(LPProductMetadata *)v4 setPluralTitle:pluralTitle];
 
-    v6 = [(LPProductMetadata *)self prices];
-    [(LPProductMetadata *)v4 setPrices:v6];
+    prices = [(LPProductMetadata *)self prices];
+    [(LPProductMetadata *)v4 setPrices:prices];
 
     v7 = v4;
   }

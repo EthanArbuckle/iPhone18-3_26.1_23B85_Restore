@@ -1,44 +1,44 @@
 @interface HDFHIRCredentialResult
 - (BOOL)shouldRefresh;
 - (HKFHIRCredential)credential;
-- (id)_initWithCredential:(id)a3 authResponse:(id)a4;
-- (id)_initWithWrappedCredential:(id)a3 authResponse:(id)a4 refreshError:(id)a5;
-- (id)_resultWithAuthResponse:(id)a3;
-- (id)_resultWithRefreshError:(id)a3;
-- (id)asRefreshResultWithEndStates:(id)a3;
+- (id)_initWithCredential:(id)credential authResponse:(id)response;
+- (id)_initWithWrappedCredential:(id)credential authResponse:(id)response refreshError:(id)error;
+- (id)_resultWithAuthResponse:(id)response;
+- (id)_resultWithRefreshError:(id)error;
+- (id)asRefreshResultWithEndStates:(id)states;
 - (id)assembleUpdatedCredential;
 - (void)invalidate;
 @end
 
 @implementation HDFHIRCredentialResult
 
-- (id)_initWithCredential:(id)a3 authResponse:(id)a4
+- (id)_initWithCredential:(id)credential authResponse:(id)response
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_HDWrappedFHIRCredential alloc] _initWithCredential:v7];
+  responseCopy = response;
+  credentialCopy = credential;
+  v8 = [[_HDWrappedFHIRCredential alloc] _initWithCredential:credentialCopy];
 
-  v9 = [(HDFHIRCredentialResult *)self _initWithWrappedCredential:v8 authResponse:v6 refreshError:0];
+  v9 = [(HDFHIRCredentialResult *)self _initWithWrappedCredential:v8 authResponse:responseCopy refreshError:0];
   return v9;
 }
 
-- (id)_initWithWrappedCredential:(id)a3 authResponse:(id)a4 refreshError:(id)a5
+- (id)_initWithWrappedCredential:(id)credential authResponse:(id)response refreshError:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  credentialCopy = credential;
+  responseCopy = response;
+  errorCopy = error;
   v19.receiver = self;
   v19.super_class = HDFHIRCredentialResult;
   v12 = [(HDFHIRCredentialResult *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_wrappedCredential, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_wrappedCredential, credential);
+    v14 = [responseCopy copy];
     authResponse = v13->_authResponse;
     v13->_authResponse = v14;
 
-    v16 = [v11 copy];
+    v16 = [errorCopy copy];
     refreshError = v13->_refreshError;
     v13->_refreshError = v16;
   }
@@ -46,78 +46,78 @@
   return v13;
 }
 
-- (id)_resultWithAuthResponse:(id)a3
+- (id)_resultWithAuthResponse:(id)response
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) _initWithWrappedCredential:self->_wrappedCredential authResponse:v4 refreshError:0];
+  responseCopy = response;
+  v5 = [objc_alloc(objc_opt_class()) _initWithWrappedCredential:self->_wrappedCredential authResponse:responseCopy refreshError:0];
 
   return v5;
 }
 
-- (id)_resultWithRefreshError:(id)a3
+- (id)_resultWithRefreshError:(id)error
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) _initWithWrappedCredential:self->_wrappedCredential authResponse:self->_authResponse refreshError:v4];
+  errorCopy = error;
+  v5 = [objc_alloc(objc_opt_class()) _initWithWrappedCredential:self->_wrappedCredential authResponse:self->_authResponse refreshError:errorCopy];
 
   return v5;
 }
 
 - (BOOL)shouldRefresh
 {
-  v3 = [(HDFHIRCredentialResult *)self credential];
-  v4 = [(HDFHIRCredentialResult *)self refreshError];
-  v5 = [v4 hk_OAuth2_isAccessDeniedError];
+  credential = [(HDFHIRCredentialResult *)self credential];
+  refreshError = [(HDFHIRCredentialResult *)self refreshError];
+  hk_OAuth2_isAccessDeniedError = [refreshError hk_OAuth2_isAccessDeniedError];
 
-  if (v5)
+  if (hk_OAuth2_isAccessDeniedError)
   {
-    v6 = 0;
+    isInvalidated = 0;
   }
 
-  else if ([v3 isExpired])
+  else if ([credential isExpired])
   {
-    v6 = 1;
+    isInvalidated = 1;
   }
 
   else
   {
-    v7 = [(HDFHIRCredentialResult *)self wrappedCredential];
-    v6 = [v7 isInvalidated];
+    wrappedCredential = [(HDFHIRCredentialResult *)self wrappedCredential];
+    isInvalidated = [wrappedCredential isInvalidated];
   }
 
-  return v6;
+  return isInvalidated;
 }
 
 - (void)invalidate
 {
-  v2 = [(HDFHIRCredentialResult *)self wrappedCredential];
-  [v2 setInvalidated:1];
+  wrappedCredential = [(HDFHIRCredentialResult *)self wrappedCredential];
+  [wrappedCredential setInvalidated:1];
 }
 
 - (HKFHIRCredential)credential
 {
-  v3 = [(_HDWrappedFHIRCredential *)self->_wrappedCredential refreshedCredential];
-  v4 = v3;
-  if (v3)
+  refreshedCredential = [(_HDWrappedFHIRCredential *)self->_wrappedCredential refreshedCredential];
+  v4 = refreshedCredential;
+  if (refreshedCredential)
   {
-    v5 = v3;
+    originalCredential = refreshedCredential;
   }
 
   else
   {
-    v5 = [(_HDWrappedFHIRCredential *)self->_wrappedCredential originalCredential];
+    originalCredential = [(_HDWrappedFHIRCredential *)self->_wrappedCredential originalCredential];
   }
 
-  v6 = v5;
+  v6 = originalCredential;
 
   return v6;
 }
 
-- (id)asRefreshResultWithEndStates:(id)a3
+- (id)asRefreshResultWithEndStates:(id)states
 {
-  v4 = a3;
+  statesCopy = states;
   v5 = [HKFHIRCredentialRefreshResult alloc];
-  v6 = [(HDFHIRCredentialResult *)self credential];
-  v7 = [v5 initWithCredential:v6 authResponse:self->_authResponse endStates:v4 error:self->_refreshError];
+  credential = [(HDFHIRCredentialResult *)self credential];
+  v7 = [v5 initWithCredential:credential authResponse:self->_authResponse endStates:statesCopy error:self->_refreshError];
 
   return v7;
 }
@@ -125,67 +125,67 @@
 - (id)assembleUpdatedCredential
 {
   v23 = [HKFHIRCredential alloc];
-  v21 = [(HDFHIRCredentialResult *)self authResponse];
-  v3 = [v21 accessToken];
-  v29 = v3;
-  if (!v3)
+  authResponse = [(HDFHIRCredentialResult *)self authResponse];
+  accessToken = [authResponse accessToken];
+  accessToken2 = accessToken;
+  if (!accessToken)
   {
-    v19 = [(HDFHIRCredentialResult *)self credential];
-    v29 = [v19 accessToken];
+    credential = [(HDFHIRCredentialResult *)self credential];
+    accessToken2 = [credential accessToken];
   }
 
-  v26 = [(HDFHIRCredentialResult *)self authResponse];
-  v4 = [v26 refreshToken];
-  v28 = v4;
-  if (!v4)
+  authResponse2 = [(HDFHIRCredentialResult *)self authResponse];
+  refreshToken = [authResponse2 refreshToken];
+  refreshToken2 = refreshToken;
+  if (!refreshToken)
   {
-    v18 = [(HDFHIRCredentialResult *)self credential];
-    v28 = [v18 refreshToken];
+    credential2 = [(HDFHIRCredentialResult *)self credential];
+    refreshToken2 = [credential2 refreshToken];
   }
 
-  v24 = [(HDFHIRCredentialResult *)self authResponse];
-  v5 = [v24 patientID];
-  v27 = v5;
-  if (!v5)
+  authResponse3 = [(HDFHIRCredentialResult *)self authResponse];
+  patientID = [authResponse3 patientID];
+  patientID2 = patientID;
+  if (!patientID)
   {
-    v17 = [(HDFHIRCredentialResult *)self credential];
-    v27 = [v17 patientID];
+    credential3 = [(HDFHIRCredentialResult *)self credential];
+    patientID2 = [credential3 patientID];
   }
 
-  v25 = v4;
-  v22 = [(HDFHIRCredentialResult *)self authResponse];
-  v6 = [v22 expiration];
-  v7 = v6;
-  if (!v6)
+  v25 = refreshToken;
+  authResponse4 = [(HDFHIRCredentialResult *)self authResponse];
+  expiration = [authResponse4 expiration];
+  expiration2 = expiration;
+  if (!expiration)
   {
-    v16 = [(HDFHIRCredentialResult *)self credential];
-    v7 = [v16 expiration];
+    credential4 = [(HDFHIRCredentialResult *)self credential];
+    expiration2 = [credential4 expiration];
   }
 
-  v8 = [(HDFHIRCredentialResult *)self credential];
-  v9 = [v8 requestedScopeString];
-  v10 = [(HDFHIRCredentialResult *)self authResponse];
-  v11 = [v10 scope];
-  if (v11)
+  credential5 = [(HDFHIRCredentialResult *)self credential];
+  requestedScopeString = [credential5 requestedScopeString];
+  authResponse5 = [(HDFHIRCredentialResult *)self authResponse];
+  scope = [authResponse5 scope];
+  if (scope)
   {
-    v12 = [v23 initWithAccessToken:v29 refreshToken:v28 patientID:v27 expiration:v7 requestedScopeString:v9 scopeString:v11];
+    v12 = [v23 initWithAccessToken:accessToken2 refreshToken:refreshToken2 patientID:patientID2 expiration:expiration2 requestedScopeString:requestedScopeString scopeString:scope];
   }
 
   else
   {
-    v13 = [(HDFHIRCredentialResult *)self credential];
-    [v13 scopeString];
-    v14 = v20 = v3;
-    v12 = [v23 initWithAccessToken:v29 refreshToken:v28 patientID:v27 expiration:v7 requestedScopeString:v9 scopeString:v14];
+    credential6 = [(HDFHIRCredentialResult *)self credential];
+    [credential6 scopeString];
+    v14 = v20 = accessToken;
+    v12 = [v23 initWithAccessToken:accessToken2 refreshToken:refreshToken2 patientID:patientID2 expiration:expiration2 requestedScopeString:requestedScopeString scopeString:v14];
 
-    v3 = v20;
+    accessToken = v20;
   }
 
-  if (!v6)
+  if (!expiration)
   {
   }
 
-  if (!v5)
+  if (!patientID)
   {
   }
 
@@ -193,7 +193,7 @@
   {
   }
 
-  if (!v3)
+  if (!accessToken)
   {
   }
 

@@ -1,36 +1,36 @@
 @interface PKApplePayUserEducationDemoController
-- (PKApplePayUserEducationDemoController)initWithDelegate:(id)a3 method:(unint64_t)a4;
+- (PKApplePayUserEducationDemoController)initWithDelegate:(id)delegate method:(unint64_t)method;
 - (void)_startDipSimulation;
 - (void)_startTimerSimulation;
 - (void)dealloc;
 - (void)endContactlessSimulation;
-- (void)motionManager:(id)a3 didReceiveMotion:(id)a4;
+- (void)motionManager:(id)manager didReceiveMotion:(id)motion;
 - (void)requestPracticeAgain;
-- (void)runContactlessSimulationWithCompletion:(id)a3;
-- (void)setState:(unint64_t)a3;
+- (void)runContactlessSimulationWithCompletion:(id)completion;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation PKApplePayUserEducationDemoController
 
-- (PKApplePayUserEducationDemoController)initWithDelegate:(id)a3 method:(unint64_t)a4
+- (PKApplePayUserEducationDemoController)initWithDelegate:(id)delegate method:(unint64_t)method
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = PKApplePayUserEducationDemoController;
   v7 = [(PKApplePayUserEducationDemoController *)&v14 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_delegate, v6);
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     v9 = PKOverrideApplePayUserEducationDemoSimulationMethod();
     v10 = v9;
     if (v9)
     {
-      a4 = [v9 integerValue];
+      method = [v9 integerValue];
     }
 
-    v8->_method = a4;
-    if (a4 == 1)
+    v8->_method = method;
+    if (method == 1)
     {
       v11 = 3.0;
       v12 = 32;
@@ -38,7 +38,7 @@
 
     else
     {
-      if (a4)
+      if (method)
       {
 LABEL_9:
 
@@ -64,8 +64,8 @@ LABEL_10:
   if (self->_isCollectingMotions)
   {
     self->_isCollectingMotions = 0;
-    v3 = [MEMORY[0x1E69BC760] sharedManager];
-    [v3 unregisterClient:self];
+    mEMORY[0x1E69BC760] = [MEMORY[0x1E69BC760] sharedManager];
+    [mEMORY[0x1E69BC760] unregisterClient:self];
   }
 
   boopSimulationCompletion = self->_boopSimulationCompletion;
@@ -79,13 +79,13 @@ LABEL_10:
   [(PKApplePayUserEducationDemoController *)&v5 dealloc];
 }
 
-- (void)runContactlessSimulationWithCompletion:(id)a3
+- (void)runContactlessSimulationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_boopSimulationCompletion)
   {
-    (*(v4 + 2))(v4, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 
   else
@@ -159,14 +159,14 @@ uint64_t __80__PKApplePayUserEducationDemoController_runContactlessSimulationWit
   [(PKApplePayUserEducationDemoController *)self setState:0];
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   state = self->_state;
-  if (state != a3)
+  if (state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained userEducationDemoControllerDidChangeState:a3 oldState:state];
+    [WeakRetained userEducationDemoControllerDidChangeState:state oldState:state];
   }
 }
 
@@ -223,17 +223,17 @@ void __60__PKApplePayUserEducationDemoController__startDipSimulation__block_invo
   [v2 registerClient:*(a1 + 32)];
 }
 
-- (void)motionManager:(id)a3 didReceiveMotion:(id)a4
+- (void)motionManager:(id)manager didReceiveMotion:(id)motion
 {
-  v5 = a4;
-  v6 = v5;
+  motionCopy = motion;
+  v6 = motionCopy;
   if (!self->_isCollectingMotions)
   {
     goto LABEL_33;
   }
 
-  v7 = [v5 attitude];
-  [v7 pitch];
+  attitude = [motionCopy attitude];
+  [attitude pitch];
   v9 = v8;
 
   [v6 timestamp];
@@ -367,8 +367,8 @@ LABEL_29:
     _os_log_impl(&dword_1BD026000, v20, OS_LOG_TYPE_DEFAULT, "User education demo passed movement test for boop simulation", v24, 2u);
   }
 
-  v21 = [MEMORY[0x1E69BC760] sharedManager];
-  [v21 unregisterClient:self];
+  mEMORY[0x1E69BC760] = [MEMORY[0x1E69BC760] sharedManager];
+  [mEMORY[0x1E69BC760] unregisterClient:self];
 
   boopSimulationCompletion = self->_boopSimulationCompletion;
   if (boopSimulationCompletion)

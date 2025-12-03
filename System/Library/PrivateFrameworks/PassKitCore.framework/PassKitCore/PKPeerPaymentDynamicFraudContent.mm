@@ -1,36 +1,36 @@
 @interface PKPeerPaymentDynamicFraudContent
-- (BOOL)isEqual:(id)a3;
-- (PKPeerPaymentDynamicFraudContent)initWithCoder:(id)a3;
-- (PKPeerPaymentDynamicFraudContent)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPeerPaymentDynamicFraudContent)initWithCoder:(id)coder;
+- (PKPeerPaymentDynamicFraudContent)initWithDictionary:(id)dictionary;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPeerPaymentDynamicFraudContent
 
-- (PKPeerPaymentDynamicFraudContent)initWithDictionary:(id)a3
+- (PKPeerPaymentDynamicFraudContent)initWithDictionary:(id)dictionary
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v42.receiver = self;
   v42.super_class = PKPeerPaymentDynamicFraudContent;
   v5 = [(PKPeerPaymentDynamicFraudContent *)&v42 init];
   if (v5)
   {
     v6 = [PKPeerPaymentDynamicFraudAlertContent alloc];
-    v7 = [v4 PKDictionaryForKey:@"alertContent"];
+    v7 = [dictionaryCopy PKDictionaryForKey:@"alertContent"];
     v8 = [(PKPeerPaymentDynamicFraudAlertContent *)v6 initWithDictionary:v7];
     alertContent = v5->_alertContent;
     v5->_alertContent = v8;
 
     v10 = [PKPeerPaymentDynamicFraudTitleMessageContent alloc];
-    v11 = [v4 PKDictionaryForKey:@"paymentSheetContent"];
+    v11 = [dictionaryCopy PKDictionaryForKey:@"paymentSheetContent"];
     v12 = [(PKPeerPaymentDynamicFraudTitleMessageContent *)v10 initWithDictionary:v11];
     paymentSheetContent = v5->_paymentSheetContent;
     v5->_paymentSheetContent = v12;
 
-    v14 = [v4 PKArrayContaining:objc_opt_class() forKey:@"pages"];
+    v14 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"pages"];
     v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v38 = 0u;
     v39 = 0u;
@@ -76,10 +76,10 @@
 
     if (!v5->_alertContent && !v5->_paymentSheetContent && !v5->_pages)
     {
-      v26 = [v4 PKStringForKey:@"header"];
-      v27 = [v4 PKStringForKey:@"message"];
-      v28 = [v4 PKStringForKey:@"otherButtonTitle"];
-      v29 = [v4 PKStringForKey:@"defaultButtonTitle"];
+      v26 = [dictionaryCopy PKStringForKey:@"header"];
+      v27 = [dictionaryCopy PKStringForKey:@"message"];
+      v28 = [dictionaryCopy PKStringForKey:@"otherButtonTitle"];
+      v29 = [dictionaryCopy PKStringForKey:@"defaultButtonTitle"];
       v30 = v29;
       if (v26 && v27 && v28 && v29)
       {
@@ -115,26 +115,26 @@ LABEL_22:
   return v36;
 }
 
-- (PKPeerPaymentDynamicFraudContent)initWithCoder:(id)a3
+- (PKPeerPaymentDynamicFraudContent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = PKPeerPaymentDynamicFraudContent;
   v5 = [(PKPeerPaymentDynamicFraudContent *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alertContent"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alertContent"];
     alertContent = v5->_alertContent;
     v5->_alertContent = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentSheetContent"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentSheetContent"];
     paymentSheetContent = v5->_paymentSheetContent;
     v5->_paymentSheetContent = v8;
 
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"pages"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"pages"];
     pages = v5->_pages;
     v5->_pages = v13;
   }
@@ -142,13 +142,13 @@ LABEL_22:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   alertContent = self->_alertContent;
-  v5 = a3;
-  [v5 encodeObject:alertContent forKey:@"alertContent"];
-  [v5 encodeObject:self->_paymentSheetContent forKey:@"paymentSheetContent"];
-  [v5 encodeObject:self->_pages forKey:@"pages"];
+  coderCopy = coder;
+  [coderCopy encodeObject:alertContent forKey:@"alertContent"];
+  [coderCopy encodeObject:self->_paymentSheetContent forKey:@"paymentSheetContent"];
+  [coderCopy encodeObject:self->_pages forKey:@"pages"];
 }
 
 - (id)description
@@ -162,9 +162,9 @@ LABEL_22:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -172,7 +172,7 @@ LABEL_22:
   }
 
   alertContent = self->_alertContent;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (alertContent && v6)
   {
     if (![(PKPeerPaymentDynamicFraudAlertContent *)alertContent isEqual:?])
@@ -187,7 +187,7 @@ LABEL_22:
   }
 
   paymentSheetContent = self->_paymentSheetContent;
-  v8 = v4[2];
+  v8 = equalCopy[2];
   if (!paymentSheetContent || !v8)
   {
     if (paymentSheetContent == v8)
@@ -207,7 +207,7 @@ LABEL_14:
 
 LABEL_10:
   pages = self->_pages;
-  v10 = v4[3];
+  v10 = equalCopy[3];
   if (pages && v10)
   {
     v11 = [(NSArray *)pages isEqual:?];
@@ -225,11 +225,11 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_alertContent];
-  [v3 safelyAddObject:self->_paymentSheetContent];
-  [v3 safelyAddObject:self->_pages];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_alertContent];
+  [array safelyAddObject:self->_paymentSheetContent];
+  [array safelyAddObject:self->_pages];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }

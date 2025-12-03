@@ -1,9 +1,9 @@
 @interface TransitSchedulesDeparturePickerProvider
 - (TransitSchedulesDeparturePickerCollectionViewCellDelegate)delegate;
-- (id)collectionView:(id)a3 departureCellWithIdentifier:(id)a4 indexPath:(id)a5 referenceDate:(id)a6 dataProvider:(id)a7;
-- (id)identifiersForDepartures:(id)a3;
-- (void)collectionView:(id)a3 selectedDeparture:(id)a4 atIndexPath:(id)a5;
-- (void)registerCellsForCollectionView:(id)a3;
+- (id)collectionView:(id)view departureCellWithIdentifier:(id)identifier indexPath:(id)path referenceDate:(id)date dataProvider:(id)provider;
+- (id)identifiersForDepartures:(id)departures;
+- (void)collectionView:(id)view selectedDeparture:(id)departure atIndexPath:(id)path;
+- (void)registerCellsForCollectionView:(id)view;
 @end
 
 @implementation TransitSchedulesDeparturePickerProvider
@@ -15,41 +15,41 @@
   return WeakRetained;
 }
 
-- (id)collectionView:(id)a3 departureCellWithIdentifier:(id)a4 indexPath:(id)a5 referenceDate:(id)a6 dataProvider:(id)a7
+- (id)collectionView:(id)view departureCellWithIdentifier:(id)identifier indexPath:(id)path referenceDate:(id)date dataProvider:(id)provider
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = [a3 dequeueReusableCellWithReuseIdentifier:@"TransitDeparturePickerCellIdentifier" forIndexPath:a5];
+  providerCopy = provider;
+  dateCopy = date;
+  v13 = [view dequeueReusableCellWithReuseIdentifier:@"TransitDeparturePickerCellIdentifier" forIndexPath:path];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [v13 setDelegate:WeakRetained];
 
-  v15 = [v11 departures];
-  v16 = [v11 selectedDeparture];
-  v17 = [v11 timeZone];
-  v18 = [v11 timeDisplayStyle];
+  departures = [providerCopy departures];
+  selectedDeparture = [providerCopy selectedDeparture];
+  timeZone = [providerCopy timeZone];
+  timeDisplayStyle = [providerCopy timeDisplayStyle];
 
-  [v13 setDepartures:v15 withSelectedDeparture:v16 referenceDate:v12 timeZone:v17 timeDisplayStyle:v18];
+  [v13 setDepartures:departures withSelectedDeparture:selectedDeparture referenceDate:dateCopy timeZone:timeZone timeDisplayStyle:timeDisplayStyle];
 
   return v13;
 }
 
-- (void)collectionView:(id)a3 selectedDeparture:(id)a4 atIndexPath:(id)a5
+- (void)collectionView:(id)view selectedDeparture:(id)departure atIndexPath:(id)path
 {
-  v10 = a4;
-  v7 = a3;
-  v8 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", 0, [a5 section]);
-  v9 = [v7 cellForItemAtIndexPath:v8];
+  departureCopy = departure;
+  viewCopy = view;
+  v8 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", 0, [path section]);
+  v9 = [viewCopy cellForItemAtIndexPath:v8];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v9 setSelectedDeparture:v10];
+    [v9 setSelectedDeparture:departureCopy];
   }
 }
 
-- (id)identifiersForDepartures:(id)a3
+- (id)identifiersForDepartures:(id)departures
 {
-  if ([a3 count])
+  if ([departures count])
   {
     v5 = @"TransitDeparturePickerCellIdentifier";
     v3 = [NSArray arrayWithObjects:&v5 count:1];
@@ -63,10 +63,10 @@
   return v3;
 }
 
-- (void)registerCellsForCollectionView:(id)a3
+- (void)registerCellsForCollectionView:(id)view
 {
-  v3 = a3;
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"TransitDeparturePickerCellIdentifier"];
+  viewCopy = view;
+  [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:@"TransitDeparturePickerCellIdentifier"];
 }
 
 @end

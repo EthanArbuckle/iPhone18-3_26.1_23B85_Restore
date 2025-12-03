@@ -1,12 +1,12 @@
 @interface NDOClientConfiguration
-- (NDOClientConfiguration)initWithConfigDictionary:(id)a3;
+- (NDOClientConfiguration)initWithConfigDictionary:(id)dictionary;
 @end
 
 @implementation NDOClientConfiguration
 
-- (NDOClientConfiguration)initWithConfigDictionary:(id)a3
+- (NDOClientConfiguration)initWithConfigDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = NDOClientConfiguration;
   v5 = [(NDOClientConfiguration *)&v9 init];
@@ -17,7 +17,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v4 objectForKey:@"alwaysRefreshGeneralAbout"];
+      v7 = [dictionaryCopy objectForKey:@"alwaysRefreshGeneralAbout"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {

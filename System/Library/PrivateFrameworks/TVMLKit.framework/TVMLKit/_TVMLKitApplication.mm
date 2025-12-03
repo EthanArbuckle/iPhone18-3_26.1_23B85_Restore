@@ -7,7 +7,7 @@
 - (TVApplicationControllerContext)launchContext;
 - (UITraitEnvironment)keyTraitEnvironment;
 - (UIWindow)keyWindow;
-- (_TVMLKitApplication)initWithLaunchContext:(id)a3;
+- (_TVMLKitApplication)initWithLaunchContext:(id)context;
 - (id)activeDocument;
 - (id)appIdentifier;
 - (id)appJSCachePath;
@@ -21,16 +21,16 @@
 
 @implementation _TVMLKitApplication
 
-- (_TVMLKitApplication)initWithLaunchContext:(id)a3
+- (_TVMLKitApplication)initWithLaunchContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = _TVMLKitApplication;
   v5 = [(_TVMLKitApplication *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_launchContext, v4);
+    objc_storeWeak(&v5->_launchContext, contextCopy);
     v6->_headless = 0;
   }
 
@@ -40,19 +40,19 @@
 - (BOOL)supportsPictureInPicturePlayback
 {
   WeakRetained = objc_loadWeakRetained(&self->_launchContext);
-  v3 = [WeakRetained supportsPictureInPicturePlayback];
+  supportsPictureInPicturePlayback = [WeakRetained supportsPictureInPicturePlayback];
 
-  return v3;
+  return supportsPictureInPicturePlayback;
 }
 
 - (id)activeDocument
 {
-  v2 = [(_TVMLKitApplication *)self appRootViewController];
-  v3 = [v2 currentNavigationController];
+  appRootViewController = [(_TVMLKitApplication *)self appRootViewController];
+  currentNavigationController = [appRootViewController currentNavigationController];
 
-  if ([v3 conformsToProtocol:&unk_287E7C190])
+  if ([currentNavigationController conformsToProtocol:&unk_287E7C190])
   {
-    v4 = v3;
+    v4 = currentNavigationController;
   }
 
   else
@@ -60,83 +60,83 @@
     v4 = 0;
   }
 
-  v5 = [v4 activeDocument];
+  activeDocument = [v4 activeDocument];
 
-  return v5;
+  return activeDocument;
 }
 
 - (id)appIdentifier
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (id)appJSURL
 {
   WeakRetained = objc_loadWeakRetained(&self->_launchContext);
-  v3 = [WeakRetained javaScriptApplicationURL];
+  javaScriptApplicationURL = [WeakRetained javaScriptApplicationURL];
 
-  return v3;
+  return javaScriptApplicationURL;
 }
 
 - (id)appLocalJSURL
 {
   WeakRetained = objc_loadWeakRetained(&self->_launchContext);
-  v3 = [WeakRetained appLocalJSURL];
+  appLocalJSURL = [WeakRetained appLocalJSURL];
 
-  return v3;
+  return appLocalJSURL;
 }
 
 - (id)appJSCachePath
 {
   WeakRetained = objc_loadWeakRetained(&self->_launchContext);
-  v3 = [WeakRetained appJSCachePath];
+  appJSCachePath = [WeakRetained appJSCachePath];
 
-  return v3;
+  return appJSCachePath;
 }
 
 - (id)offlineJSURL
 {
   WeakRetained = objc_loadWeakRetained(&self->_launchContext);
-  v3 = [WeakRetained offlineJSURL];
+  offlineJSURL = [WeakRetained offlineJSURL];
 
-  return v3;
+  return offlineJSURL;
 }
 
 - (id)bagBootURLKey
 {
   WeakRetained = objc_loadWeakRetained(&self->_launchContext);
-  v3 = [WeakRetained bagBootURLKey];
+  bagBootURLKey = [WeakRetained bagBootURLKey];
 
-  return v3;
+  return bagBootURLKey;
 }
 
 - (id)appLaunchParams
 {
   v3 = objc_opt_new();
-  v4 = [(_TVMLKitApplication *)self appJSURL];
-  v5 = [v4 absoluteString];
+  appJSURL = [(_TVMLKitApplication *)self appJSURL];
+  absoluteString = [appJSURL absoluteString];
 
-  if (v5)
+  if (absoluteString)
   {
-    [v3 setObject:v5 forKey:@"location"];
+    [v3 setObject:absoluteString forKey:@"location"];
   }
 
-  v6 = [(_TVMLKitApplication *)self bagBootURLKey];
-  if (v6)
+  bagBootURLKey = [(_TVMLKitApplication *)self bagBootURLKey];
+  if (bagBootURLKey)
   {
-    [v3 setObject:v6 forKey:@"bagBootURLKey"];
+    [v3 setObject:bagBootURLKey forKey:@"bagBootURLKey"];
   }
 
-  v7 = [(_TVMLKitApplication *)self javaScriptLaunchOptions];
-  v8 = [v7 count];
+  javaScriptLaunchOptions = [(_TVMLKitApplication *)self javaScriptLaunchOptions];
+  v8 = [javaScriptLaunchOptions count];
 
   if (v8)
   {
-    v9 = [(_TVMLKitApplication *)self javaScriptLaunchOptions];
-    [v3 addEntriesFromDictionary:v9];
+    javaScriptLaunchOptions2 = [(_TVMLKitApplication *)self javaScriptLaunchOptions];
+    [v3 addEntriesFromDictionary:javaScriptLaunchOptions2];
   }
 
   if (self->_headless)
@@ -152,67 +152,67 @@
 - (BOOL)appIsTrusted
 {
   v2 = +[_TVProcessInfo currentProcessInfo];
-  v3 = [v2 hasiTunesAPIEntitlement];
+  hasiTunesAPIEntitlement = [v2 hasiTunesAPIEntitlement];
 
-  return v3;
+  return hasiTunesAPIEntitlement;
 }
 
 - (BOOL)appIsPrivileged
 {
   v2 = +[_TVProcessInfo currentProcessInfo];
-  v3 = [v2 hasPrivateEntitlement];
+  hasPrivateEntitlement = [v2 hasPrivateEntitlement];
 
-  return v3;
+  return hasPrivateEntitlement;
 }
 
 - (id)appTraitCollection
 {
   v56[12] = *MEMORY[0x277D85DE8];
-  v3 = [(_TVMLKitApplication *)self keyWindow];
-  v4 = v3;
+  keyWindow = [(_TVMLKitApplication *)self keyWindow];
+  window = keyWindow;
   v5 = MEMORY[0x277D76620];
-  if (!self->_headless && !v3)
+  if (!self->_headless && !keyWindow)
   {
-    v6 = [*MEMORY[0x277D76620] delegate];
+    delegate = [*MEMORY[0x277D76620] delegate];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [*v5 delegate];
-      v4 = [v7 window];
+      delegate2 = [*v5 delegate];
+      window = [delegate2 window];
     }
 
     else
     {
-      v4 = 0;
+      window = 0;
     }
   }
 
-  if (v4 && ([v4 traitCollection], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (window && ([window traitCollection], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v9 = v8;
   }
 
   else
   {
-    v10 = [(_TVMLKitApplication *)self keyTraitEnvironment];
+    keyTraitEnvironment = [(_TVMLKitApplication *)self keyTraitEnvironment];
 
-    if (!v10 || (-[_TVMLKitApplication keyTraitEnvironment](self, "keyTraitEnvironment"), v11 = objc_claimAutoreleasedReturnValue(), [v11 traitCollection], v9 = objc_claimAutoreleasedReturnValue(), v11, !v9))
+    if (!keyTraitEnvironment || (-[_TVMLKitApplication keyTraitEnvironment](self, "keyTraitEnvironment"), v11 = objc_claimAutoreleasedReturnValue(), [v11 traitCollection], v9 = objc_claimAutoreleasedReturnValue(), v11, !v9))
     {
       v32 = 0;
       goto LABEL_52;
     }
   }
 
-  v12 = [*v5 userInterfaceLayoutDirection];
-  v13 = [*v5 statusBarOrientation];
+  userInterfaceLayoutDirection = [*v5 userInterfaceLayoutDirection];
+  statusBarOrientation = [*v5 statusBarOrientation];
   v55[0] = @"userInterfaceIdiom";
-  v14 = [v9 userInterfaceIdiom];
+  userInterfaceIdiom = [v9 userInterfaceIdiom];
   if (UserInterfaceString_onceToken != -1)
   {
     [_TVMLKitApplication appTraitCollection];
   }
 
   v15 = UserInterfaceString_userInterfaceStrings;
-  v16 = [MEMORY[0x277CCABB0] numberWithInteger:v14];
+  v16 = [MEMORY[0x277CCABB0] numberWithInteger:userInterfaceIdiom];
   v17 = [v15 objectForKeyedSubscript:v16];
   v18 = v17;
   if (v17)
@@ -231,14 +231,14 @@
   v56[0] = v20;
   v55[1] = @"screenWidth";
   v21 = MEMORY[0x277CCABB0];
-  v53 = [MEMORY[0x277D759A0] mainScreen];
-  [v53 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v52 = [v21 numberWithDouble:v22];
   v56[1] = v52;
   v55[2] = @"screenHeight";
   v23 = MEMORY[0x277CCABB0];
-  v51 = [MEMORY[0x277D759A0] mainScreen];
-  [v51 bounds];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 bounds];
   v50 = [v23 numberWithDouble:v24];
   v56[2] = v50;
   v55[3] = @"displayScale";
@@ -246,7 +246,7 @@
   [v9 displayScale];
   v26 = [v25 numberWithDouble:?];
   v27 = @"ltr";
-  if (v12 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v27 = @"rtl";
   }
@@ -263,64 +263,64 @@
   v28 = SizeClassString([v9 verticalSizeClass]);
   v56[6] = v28;
   v55[7] = @"preferredContentSizeCategory";
-  v29 = [v9 preferredContentSizeCategory];
-  v30 = v29;
-  if (*MEMORY[0x277D76830] == v29)
+  preferredContentSizeCategory = [v9 preferredContentSizeCategory];
+  v30 = preferredContentSizeCategory;
+  if (*MEMORY[0x277D76830] == preferredContentSizeCategory)
   {
     v31 = @"extraSmall";
   }
 
-  else if (*MEMORY[0x277D76858] == v29)
+  else if (*MEMORY[0x277D76858] == preferredContentSizeCategory)
   {
     v31 = @"small";
   }
 
-  else if (*MEMORY[0x277D76840] == v29)
+  else if (*MEMORY[0x277D76840] == preferredContentSizeCategory)
   {
     v31 = @"medium";
   }
 
-  else if (*MEMORY[0x277D76838] == v29)
+  else if (*MEMORY[0x277D76838] == preferredContentSizeCategory)
   {
     v31 = @"large";
   }
 
-  else if (*MEMORY[0x277D76828] == v29)
+  else if (*MEMORY[0x277D76828] == preferredContentSizeCategory)
   {
     v31 = @"extraLarge";
   }
 
-  else if (*MEMORY[0x277D76820] == v29)
+  else if (*MEMORY[0x277D76820] == preferredContentSizeCategory)
   {
     v31 = @"extraExtraLarge";
   }
 
-  else if (*MEMORY[0x277D76818] == v29)
+  else if (*MEMORY[0x277D76818] == preferredContentSizeCategory)
   {
     v31 = @"extraExtraExtraLarge";
   }
 
-  else if (*MEMORY[0x277D76808] == v29)
+  else if (*MEMORY[0x277D76808] == preferredContentSizeCategory)
   {
     v31 = @"accessibilityMedium";
   }
 
-  else if (*MEMORY[0x277D76800] == v29)
+  else if (*MEMORY[0x277D76800] == preferredContentSizeCategory)
   {
     v31 = @"accessibilityLarge";
   }
 
-  else if (*MEMORY[0x277D767F8] == v29)
+  else if (*MEMORY[0x277D767F8] == preferredContentSizeCategory)
   {
     v31 = @"accessibilityExtraLarge";
   }
 
-  else if (*MEMORY[0x277D767F0] == v29)
+  else if (*MEMORY[0x277D767F0] == preferredContentSizeCategory)
   {
     v31 = @"accessibilityExtraExtraLarge";
   }
 
-  else if (*MEMORY[0x277D767E8] == v29)
+  else if (*MEMORY[0x277D767E8] == preferredContentSizeCategory)
   {
     v31 = @"accessibilityExtraExtraExtraLarge";
   }
@@ -334,21 +334,21 @@
   v55[8] = @"windowWidth";
   v33 = MEMORY[0x277CCABB0];
   v34 = v31;
-  [v4 size];
+  [window size];
   v35 = [v33 numberWithDouble:?];
   v56[8] = v35;
   v55[9] = @"windowHeight";
   v36 = MEMORY[0x277CCABB0];
-  [v4 size];
+  [window size];
   v38 = [v36 numberWithDouble:v37];
   v39 = v38;
   v40 = @"landscape";
-  if ((v13 - 3) >= 2)
+  if ((statusBarOrientation - 3) >= 2)
   {
     v40 = @"unspecified";
   }
 
-  if ((v13 - 1) < 2)
+  if ((statusBarOrientation - 1) < 2)
   {
     v40 = @"portrait";
   }
@@ -358,9 +358,9 @@
   v55[10] = @"orientation";
   v55[11] = @"forceTouchCapable";
   v41 = v40;
-  v42 = [v9 forceTouchCapability];
+  forceTouchCapability = [v9 forceTouchCapability];
   v43 = @"false";
-  if (v42 == 2)
+  if (forceTouchCapability == 2)
   {
     v43 = @"true";
   }

@@ -1,62 +1,62 @@
 @interface AMSDialogTextField
-+ (id)textFieldWithPlaceholder:(id)a3 secure:(BOOL)a4;
-- (AMSDialogTextField)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)textFieldWithPlaceholder:(id)placeholder secure:(BOOL)secure;
+- (AMSDialogTextField)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSDialogTextField
 
-+ (id)textFieldWithPlaceholder:(id)a3 secure:(BOOL)a4
++ (id)textFieldWithPlaceholder:(id)placeholder secure:(BOOL)secure
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = objc_alloc_init(a1);
-  [v7 setPlaceholder:v6];
+  secureCopy = secure;
+  placeholderCopy = placeholder;
+  v7 = objc_alloc_init(self);
+  [v7 setPlaceholder:placeholderCopy];
 
-  [v7 setSecure:v4];
+  [v7 setSecure:secureCopy];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  [v8 encodeInteger:-[AMSDialogTextField keyboardType](self forKey:{"keyboardType"), @"kCodingKeyKeyboardType"}];
-  v4 = [(AMSDialogTextField *)self placeholder];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[AMSDialogTextField keyboardType](self forKey:{"keyboardType"), @"kCodingKeyKeyboardType"}];
+  placeholder = [(AMSDialogTextField *)self placeholder];
 
-  if (v4)
+  if (placeholder)
   {
-    v5 = [(AMSDialogTextField *)self placeholder];
-    [v8 encodeObject:v5 forKey:@"kCodingKeyPlaceholder"];
+    placeholder2 = [(AMSDialogTextField *)self placeholder];
+    [coderCopy encodeObject:placeholder2 forKey:@"kCodingKeyPlaceholder"];
   }
 
-  [v8 encodeBool:-[AMSDialogTextField secure](self forKey:{"secure"), @"kCodingKeySecure"}];
-  [v8 encodeInteger:-[AMSDialogTextField tag](self forKey:{"tag"), @"kCodingKeyTag"}];
-  v6 = [(AMSDialogTextField *)self text];
+  [coderCopy encodeBool:-[AMSDialogTextField secure](self forKey:{"secure"), @"kCodingKeySecure"}];
+  [coderCopy encodeInteger:-[AMSDialogTextField tag](self forKey:{"tag"), @"kCodingKeyTag"}];
+  text = [(AMSDialogTextField *)self text];
 
-  if (v6)
+  if (text)
   {
-    v7 = [(AMSDialogTextField *)self text];
-    [v8 encodeObject:v7 forKey:@"kCodingKeyText"];
+    text2 = [(AMSDialogTextField *)self text];
+    [coderCopy encodeObject:text2 forKey:@"kCodingKeyText"];
   }
 }
 
-- (AMSDialogTextField)initWithCoder:(id)a3
+- (AMSDialogTextField)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = AMSDialogTextField;
   v5 = [(AMSDialogTextField *)&v11 init];
   if (v5)
   {
-    v5->_keyboardType = [v4 decodeIntegerForKey:@"kCodingKeyKeyboardType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyPlaceholder"];
+    v5->_keyboardType = [coderCopy decodeIntegerForKey:@"kCodingKeyKeyboardType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyPlaceholder"];
     placeholder = v5->_placeholder;
     v5->_placeholder = v6;
 
-    v5->_secure = [v4 decodeBoolForKey:@"kCodingKeySecure"];
-    v5->_tag = [v4 decodeIntegerForKey:@"kCodingKeyTag"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyText"];
+    v5->_secure = [coderCopy decodeBoolForKey:@"kCodingKeySecure"];
+    v5->_tag = [coderCopy decodeIntegerForKey:@"kCodingKeyTag"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyText"];
     text = v5->_text;
     v5->_text = v8;
   }

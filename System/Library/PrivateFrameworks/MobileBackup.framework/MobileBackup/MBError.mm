@@ -1,38 +1,38 @@
 @interface MBError
-+ (BOOL)isCancelledError:(id)a3;
-+ (BOOL)isCancelledXPCActivityDeferredError:(id)a3;
-+ (BOOL)isError:(id)a3 withCode:(int64_t)a4;
-+ (BOOL)isError:(id)a3 withCodes:(int64_t)a4;
-+ (BOOL)isRetryAfterError:(id)a3 retryAfterDate:(id *)a4;
-+ (BOOL)isTransientError:(id)a3;
-+ (BOOL)isUnexpectedErrorCode:(int64_t)a3;
-+ (id)_errorWithCode:(int64_t)a3 URL:(id)a4 format:(id)a5;
-+ (id)_formatErrors:(id)a3 descriptionSelector:(SEL)a4;
-+ (id)descriptionForError:(id)a3 paths:(BOOL)a4;
-+ (id)errorForHTTPURLResponse:(id)a3 error:(id)a4;
-+ (id)errorForNSError:(id)a3 path:(id)a4 description:(id)a5;
-+ (id)errorForNSError:(id)a3 path:(id)a4 format:(id)a5;
-+ (id)errorWithCode:(int64_t)a3 error:(id)a4 URL:(id)a5 format:(id)a6;
-+ (id)errorWithCode:(int64_t)a3 error:(id)a4 format:(id)a5;
-+ (id)errorWithCode:(int64_t)a3 error:(id)a4 path:(id)a5 format:(id)a6;
-+ (id)errorWithCode:(int64_t)a3 format:(id)a4;
-+ (id)errorWithCode:(int64_t)a3 path:(id)a4 format:(id)a5;
-+ (id)errorWithDomain:(id)a3 code:(int64_t)a4 format:(id)a5;
-+ (id)errorWithDomain:(id)a3 code:(int64_t)a4 path:(id)a5 format:(id)a6;
-+ (id)errorWithErrors:(id)a3;
-+ (id)loggableDescriptionForError:(id)a3;
-+ (id)signatureForError:(id)a3;
-+ (int)codeForNSError:(id)a3;
-+ (int)errnoForError:(id)a3;
++ (BOOL)isCancelledError:(id)error;
++ (BOOL)isCancelledXPCActivityDeferredError:(id)error;
++ (BOOL)isError:(id)error withCode:(int64_t)code;
++ (BOOL)isError:(id)error withCodes:(int64_t)codes;
++ (BOOL)isRetryAfterError:(id)error retryAfterDate:(id *)date;
++ (BOOL)isTransientError:(id)error;
++ (BOOL)isUnexpectedErrorCode:(int64_t)code;
++ (id)_errorWithCode:(int64_t)code URL:(id)l format:(id)format;
++ (id)_formatErrors:(id)errors descriptionSelector:(SEL)selector;
++ (id)descriptionForError:(id)error paths:(BOOL)paths;
++ (id)errorForHTTPURLResponse:(id)response error:(id)error;
++ (id)errorForNSError:(id)error path:(id)path description:(id)description;
++ (id)errorForNSError:(id)error path:(id)path format:(id)format;
++ (id)errorWithCode:(int64_t)code error:(id)error URL:(id)l format:(id)format;
++ (id)errorWithCode:(int64_t)code error:(id)error format:(id)format;
++ (id)errorWithCode:(int64_t)code error:(id)error path:(id)path format:(id)format;
++ (id)errorWithCode:(int64_t)code format:(id)format;
++ (id)errorWithCode:(int64_t)code path:(id)path format:(id)format;
++ (id)errorWithDomain:(id)domain code:(int64_t)code format:(id)format;
++ (id)errorWithDomain:(id)domain code:(int64_t)code path:(id)path format:(id)format;
++ (id)errorWithErrors:(id)errors;
++ (id)loggableDescriptionForError:(id)error;
++ (id)signatureForError:(id)error;
++ (int)codeForNSError:(id)error;
++ (int)errnoForError:(id)error;
 @end
 
 @implementation MBError
 
-+ (BOOL)isUnexpectedErrorCode:(int64_t)a3
++ (BOOL)isUnexpectedErrorCode:(int64_t)code
 {
-  if (a3)
+  if (code)
   {
-    v3 = a3 == 207;
+    v3 = code == 207;
   }
 
   else
@@ -43,28 +43,28 @@
   return !v3;
 }
 
-+ (BOOL)isTransientError:(id)a3
++ (BOOL)isTransientError:(id)error
 {
-  v4 = [objc_msgSend(a3 "domain")];
+  v4 = [objc_msgSend(error "domain")];
   if (v4)
   {
-    v5 = [a3 code];
+    code = [error code];
 
-    LOBYTE(v4) = MBIsTransientErrorCode(v5);
+    LOBYTE(v4) = MBIsTransientErrorCode(code);
   }
 
   return v4;
 }
 
-+ (BOOL)isCancelledError:(id)a3
++ (BOOL)isCancelledError:(id)error
 {
-  if (a3)
+  if (error)
   {
-    if ([objc_msgSend(a3 "domain")])
+    if ([objc_msgSend(error "domain")])
     {
-      v4 = [a3 code];
-      v5 = 0x7F8001u >> (v4 + 54);
-      if ((v4 - 202) > 0x16)
+      code = [error code];
+      v5 = 0x7F8001u >> (code + 54);
+      if ((code - 202) > 0x16)
       {
         LOBYTE(v5) = 0;
       }
@@ -84,32 +84,32 @@
   return v5 & 1;
 }
 
-+ (BOOL)isCancelledXPCActivityDeferredError:(id)a3
++ (BOOL)isCancelledXPCActivityDeferredError:(id)error
 {
-  v3 = a3;
-  if ([a1 isError:a3 withCode:202])
+  errorCopy = error;
+  if ([self isError:error withCode:202])
   {
-    v5 = [v3 userInfo];
-    v3 = [v5 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+    userInfo = [errorCopy userInfo];
+    errorCopy = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
   }
 
-  return [a1 isError:v3 withCode:223];
+  return [self isError:errorCopy withCode:223];
 }
 
-+ (int)errnoForError:(id)a3
++ (int)errnoForError:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (![objc_msgSend(a3 "domain")])
+  if (![objc_msgSend(error "domain")])
   {
     goto LABEL_19;
   }
 
-  v4 = [a3 code];
-  if (v4 > 7)
+  code = [error code];
+  if (code > 7)
   {
-    if (v4 > 25)
+    if (code > 25)
     {
-      switch(v4)
+      switch(code)
       {
         case 26:
           result = 18;
@@ -124,7 +124,7 @@
 
     else
     {
-      switch(v4)
+      switch(code)
       {
         case 8:
           result = 93;
@@ -142,9 +142,9 @@ LABEL_19:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = a3;
+      errorCopy = error;
       _os_log_impl(&dword_1DEB5D000, v6, OS_LOG_TYPE_DEFAULT, "No POSIX code for error: %@", buf, 0xCu);
-      _MBLog(@"Df", "No POSIX code for error: %@", v7, v8, v9, v10, v11, v12, a3);
+      _MBLog(@"Df", "No POSIX code for error: %@", v7, v8, v9, v10, v11, v12, error);
     }
 
 LABEL_21:
@@ -152,15 +152,15 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (v4 <= 4)
+  if (code <= 4)
   {
-    if (v4 == 3)
+    if (code == 3)
     {
       result = 17;
       goto LABEL_22;
     }
 
-    if (v4 == 4)
+    if (code == 4)
     {
       result = 2;
       goto LABEL_22;
@@ -169,12 +169,12 @@ LABEL_21:
     goto LABEL_19;
   }
 
-  if (v4 == 5)
+  if (code == 5)
   {
     result = 20;
   }
 
-  else if (v4 == 6)
+  else if (code == 6)
   {
     result = 21;
   }
@@ -189,18 +189,18 @@ LABEL_22:
   return result;
 }
 
-+ (int)codeForNSError:(id)a3
++ (int)codeForNSError:(id)error
 {
-  v4 = [a3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x1E696A250]])
+  domain = [error domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A250]])
   {
-    if (([a3 code] | 0x100) == 0x104)
+    if (([error code] | 0x100) == 0x104)
     {
       return 4;
     }
 
-    v9 = [a3 userInfo];
-    v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+    userInfo = [error userInfo];
+    v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
     if (v10)
     {
 
@@ -210,10 +210,10 @@ LABEL_22:
     return 100;
   }
 
-  v6 = [a3 domain];
-  if ([v6 isEqualToString:*MEMORY[0x1E696A978]])
+  domain2 = [error domain];
+  if ([domain2 isEqualToString:*MEMORY[0x1E696A978]])
   {
-    if ([a3 code] == -999)
+    if ([error code] == -999)
     {
       return 202;
     }
@@ -224,40 +224,40 @@ LABEL_22:
     }
   }
 
-  v7 = [a3 domain];
-  if (![v7 isEqualToString:*MEMORY[0x1E696A798]])
+  domain3 = [error domain];
+  if (![domain3 isEqualToString:*MEMORY[0x1E696A798]])
   {
-    if ([objc_msgSend(a3 "domain")])
+    if ([objc_msgSend(error "domain")])
     {
-      return [a3 code];
+      return [error code];
     }
 
     return 100;
   }
 
-  v8 = [a3 code];
+  code = [error code];
 
-  return [MBError codeForErrno:v8];
+  return [MBError codeForErrno:code];
 }
 
-+ (BOOL)isError:(id)a3 withCode:(int64_t)a4
++ (BOOL)isError:(id)error withCode:(int64_t)code
 {
-  if ([a3 code] != a4)
+  if ([error code] != code)
   {
     return 0;
   }
 
-  v5 = [a3 domain];
+  domain = [error domain];
 
-  return [v5 isEqualToString:@"MBErrorDomain"];
+  return [domain isEqualToString:@"MBErrorDomain"];
 }
 
-+ (BOOL)isError:(id)a3 withCodes:(int64_t)a4
++ (BOOL)isError:(id)error withCodes:(int64_t)codes
 {
-  v6 = [objc_msgSend(a3 "domain")];
+  v6 = [objc_msgSend(error "domain")];
   if (v6)
   {
-    if ([a3 code] == a4)
+    if ([error code] == codes)
     {
 LABEL_6:
       LOBYTE(v6) = 1;
@@ -275,7 +275,7 @@ LABEL_6:
         }
 
         v8 = *v7;
-        if ([a3 code] == v8)
+        if ([error code] == v8)
         {
           goto LABEL_6;
         }
@@ -288,10 +288,10 @@ LABEL_6:
   return v6;
 }
 
-+ (BOOL)isRetryAfterError:(id)a3 retryAfterDate:(id *)a4
++ (BOOL)isRetryAfterError:(id)error retryAfterDate:(id *)date
 {
-  v5 = a3;
-  if (![MBError isError:a3 withCodes:304, 17, 0])
+  errorCopy = error;
+  if (![MBError isError:error withCodes:304, 17, 0])
   {
     return 0;
   }
@@ -299,14 +299,14 @@ LABEL_6:
   v6 = *MEMORY[0x1E696AA08];
   while (1)
   {
-    v7 = [objc_msgSend(v5 "userInfo")];
+    v7 = [objc_msgSend(errorCopy "userInfo")];
     if (v7)
     {
       break;
     }
 
-    v5 = [objc_msgSend(v5 "userInfo")];
-    if (!v5)
+    errorCopy = [objc_msgSend(errorCopy "userInfo")];
+    if (!errorCopy)
     {
       return 0;
     }
@@ -316,7 +316,7 @@ LABEL_6:
   v10 = [MBHTTPDateFormatter() dateFromString:v7];
   if (v10)
   {
-    if (!a4)
+    if (!date)
     {
       return v10 != 0;
     }
@@ -324,14 +324,14 @@ LABEL_6:
 
   else
   {
-    v11 = [v9 integerValue];
-    if (v11 < 1)
+    integerValue = [v9 integerValue];
+    if (integerValue < 1)
     {
       return 0;
     }
 
-    v10 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:v11];
-    if (!a4)
+    v10 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:integerValue];
+    if (!date)
     {
       return v10 != 0;
     }
@@ -342,97 +342,97 @@ LABEL_6:
     return v10 != 0;
   }
 
-  *a4 = v10;
+  *date = v10;
   return 1;
 }
 
-+ (id)errorWithCode:(int64_t)a3 format:(id)a4
++ (id)errorWithCode:(int64_t)code format:(id)format
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:a4 arguments:&v10];
+  v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:format arguments:&v10];
   v8 = *MEMORY[0x1E696A578];
   v9[0] = v5;
-  result = [MEMORY[0x1E696ABC0] errorWithDomain:@"MBErrorDomain" code:a3 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v9, &v8, 1)}];
+  result = [MEMORY[0x1E696ABC0] errorWithDomain:@"MBErrorDomain" code:code userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v9, &v8, 1)}];
   v7 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-+ (id)errorWithCode:(int64_t)a3 error:(id)a4 format:(id)a5
++ (id)errorWithCode:(int64_t)code error:(id)error format:(id)format
 {
-  v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:a5 arguments:&v10];
-  v8 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v7, *MEMORY[0x1E696A578], a4, *MEMORY[0x1E696AA08], 0}];
-  return [MEMORY[0x1E696ABC0] errorWithDomain:@"MBErrorDomain" code:a3 userInfo:v8];
+  v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:format arguments:&v10];
+  v8 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v7, *MEMORY[0x1E696A578], error, *MEMORY[0x1E696AA08], 0}];
+  return [MEMORY[0x1E696ABC0] errorWithDomain:@"MBErrorDomain" code:code userInfo:v8];
 }
 
-+ (id)errorWithCode:(int64_t)a3 path:(id)a4 format:(id)a5
++ (id)errorWithCode:(int64_t)code path:(id)path format:(id)format
 {
-  v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:a5 arguments:&v10];
-  v8 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v7, *MEMORY[0x1E696A578], a4, *MEMORY[0x1E696A368], 0}];
-  return [MEMORY[0x1E696ABC0] errorWithDomain:@"MBErrorDomain" code:a3 userInfo:v8];
+  v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:format arguments:&v10];
+  v8 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v7, *MEMORY[0x1E696A578], path, *MEMORY[0x1E696A368], 0}];
+  return [MEMORY[0x1E696ABC0] errorWithDomain:@"MBErrorDomain" code:code userInfo:v8];
 }
 
-+ (id)_errorWithCode:(int64_t)a3 URL:(id)a4 format:(id)a5
++ (id)_errorWithCode:(int64_t)code URL:(id)l format:(id)format
 {
-  v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:a5 arguments:&v10];
-  v8 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v7, *MEMORY[0x1E696A578], a4, *MEMORY[0x1E696A998], 0}];
-  return [MEMORY[0x1E696ABC0] errorWithDomain:@"MBErrorDomain" code:a3 userInfo:v8];
+  v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:format arguments:&v10];
+  v8 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v7, *MEMORY[0x1E696A578], l, *MEMORY[0x1E696A998], 0}];
+  return [MEMORY[0x1E696ABC0] errorWithDomain:@"MBErrorDomain" code:code userInfo:v8];
 }
 
-+ (id)errorWithCode:(int64_t)a3 error:(id)a4 path:(id)a5 format:(id)a6
++ (id)errorWithCode:(int64_t)code error:(id)error path:(id)path format:(id)format
 {
-  v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:a6 arguments:&v12];
-  v10 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v9, *MEMORY[0x1E696A578], a4, *MEMORY[0x1E696AA08], a5, *MEMORY[0x1E696A368], 0}];
-  return [MEMORY[0x1E696ABC0] errorWithDomain:@"MBErrorDomain" code:a3 userInfo:v10];
+  v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:format arguments:&v12];
+  v10 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v9, *MEMORY[0x1E696A578], error, *MEMORY[0x1E696AA08], path, *MEMORY[0x1E696A368], 0}];
+  return [MEMORY[0x1E696ABC0] errorWithDomain:@"MBErrorDomain" code:code userInfo:v10];
 }
 
-+ (id)errorWithCode:(int64_t)a3 error:(id)a4 URL:(id)a5 format:(id)a6
++ (id)errorWithCode:(int64_t)code error:(id)error URL:(id)l format:(id)format
 {
-  v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:a6 arguments:&v12];
-  v10 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v9, *MEMORY[0x1E696A578], a4, *MEMORY[0x1E696AA08], a5, *MEMORY[0x1E696A998], 0}];
-  return [MEMORY[0x1E696ABC0] errorWithDomain:@"MBErrorDomain" code:a3 userInfo:v10];
+  v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:format arguments:&v12];
+  v10 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v9, *MEMORY[0x1E696A578], error, *MEMORY[0x1E696AA08], l, *MEMORY[0x1E696A998], 0}];
+  return [MEMORY[0x1E696ABC0] errorWithDomain:@"MBErrorDomain" code:code userInfo:v10];
 }
 
-+ (id)errorWithDomain:(id)a3 code:(int64_t)a4 format:(id)a5
++ (id)errorWithDomain:(id)domain code:(int64_t)code format:(id)format
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:a5 arguments:&v12];
+  v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:format arguments:&v12];
   v10 = *MEMORY[0x1E696A578];
   v11[0] = v7;
-  result = [MEMORY[0x1E696ABC0] errorWithDomain:a3 code:a4 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v11, &v10, 1)}];
+  result = [MEMORY[0x1E696ABC0] errorWithDomain:domain code:code userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v11, &v10, 1)}];
   v9 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-+ (id)errorWithDomain:(id)a3 code:(int64_t)a4 path:(id)a5 format:(id)a6
++ (id)errorWithDomain:(id)domain code:(int64_t)code path:(id)path format:(id)format
 {
-  v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:a6 arguments:&v12];
-  v10 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v9, *MEMORY[0x1E696A578], a5, *MEMORY[0x1E696A368], 0}];
-  return [MEMORY[0x1E696ABC0] errorWithDomain:a3 code:a4 userInfo:v10];
+  v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:format arguments:&v12];
+  v10 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v9, *MEMORY[0x1E696A578], path, *MEMORY[0x1E696A368], 0}];
+  return [MEMORY[0x1E696ABC0] errorWithDomain:domain code:code userInfo:v10];
 }
 
-+ (id)errorWithErrors:(id)a3
++ (id)errorWithErrors:(id)errors
 {
   v24 = *MEMORY[0x1E69E9840];
-  if ([a3 count] == 1)
+  if ([errors count] == 1)
   {
     v6 = *MEMORY[0x1E69E9840];
 
-    return [a3 objectAtIndexedSubscript:0];
+    return [errors objectAtIndexedSubscript:0];
   }
 
   else
   {
-    if (![a3 count])
+    if (![errors count])
     {
-      [(MBError *)a2 errorWithErrors:a1];
+      [(MBError *)a2 errorWithErrors:self];
     }
 
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = [a3 countByEnumeratingWithState:&v17 objects:v23 count:16];
+    v9 = [errors countByEnumeratingWithState:&v17 objects:v23 count:16];
     if (v9)
     {
       v10 = v9;
@@ -443,29 +443,29 @@ LABEL_6:
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(errors);
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
           if (+[MBError isError:withCode:](MBError, "isError:withCode:", v13, 2) && (v14 = [objc_msgSend(v13 "userInfo")]) != 0)
           {
-            [v8 addObjectsFromArray:v14];
+            [array addObjectsFromArray:v14];
           }
 
           else
           {
-            [v8 addObject:v13];
+            [array addObject:v13];
           }
         }
 
-        v10 = [a3 countByEnumeratingWithState:&v17 objects:v23 count:16];
+        v10 = [errors countByEnumeratingWithState:&v17 objects:v23 count:16];
       }
 
       while (v10);
     }
 
     v21 = @"kMBUnderlyingErrorsKey";
-    v22 = [v8 copy];
+    v22 = [array copy];
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
     result = [MEMORY[0x1E696ABC0] errorWithDomain:@"MBErrorDomain" code:2 userInfo:v15];
     v16 = *MEMORY[0x1E69E9840];
@@ -474,36 +474,36 @@ LABEL_6:
   return result;
 }
 
-+ (id)errorForNSError:(id)a3 path:(id)a4 format:(id)a5
++ (id)errorForNSError:(id)error path:(id)path format:(id)format
 {
-  v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:a5 arguments:&v10];
-  v8 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v7, *MEMORY[0x1E696A578], a3, *MEMORY[0x1E696AA08], a4, *MEMORY[0x1E696A368], 0}];
-  return [MEMORY[0x1E696ABC0] errorWithDomain:@"MBErrorDomain" code:+[MBError codeForNSError:](MBError userInfo:{"codeForNSError:", a3), v8}];
+  v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:format arguments:&v10];
+  v8 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v7, *MEMORY[0x1E696A578], error, *MEMORY[0x1E696AA08], path, *MEMORY[0x1E696A368], 0}];
+  return [MEMORY[0x1E696ABC0] errorWithDomain:@"MBErrorDomain" code:+[MBError codeForNSError:](MBError userInfo:{"codeForNSError:", error), v8}];
 }
 
-+ (id)errorForNSError:(id)a3 path:(id)a4 description:(id)a5
++ (id)errorForNSError:(id)error path:(id)path description:(id)description
 {
-  v6 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{a5, *MEMORY[0x1E696A578], a3, *MEMORY[0x1E696AA08], a4, *MEMORY[0x1E696A368], 0}];
+  v6 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{description, *MEMORY[0x1E696A578], error, *MEMORY[0x1E696AA08], path, *MEMORY[0x1E696A368], 0}];
   v7 = MEMORY[0x1E696ABC0];
-  v8 = [MBError codeForNSError:a3];
+  v8 = [MBError codeForNSError:error];
 
   return [v7 errorWithDomain:@"MBErrorDomain" code:v8 userInfo:v6];
 }
 
-+ (id)errorForHTTPURLResponse:(id)a3 error:(id)a4
++ (id)errorForHTTPURLResponse:(id)response error:(id)error
 {
-  if (a3)
+  if (response)
   {
-    if ([a3 statusCode] >= 200 && objc_msgSend(a3, "statusCode") < 300)
+    if ([response statusCode] >= 200 && objc_msgSend(response, "statusCode") < 300)
     {
       return 0;
     }
 
-    if ([a3 statusCode] >= 300 && objc_msgSend(a3, "statusCode") <= 399)
+    if ([response statusCode] >= 300 && objc_msgSend(response, "statusCode") <= 399)
     {
-      v6 = [a3 statusCode];
-      v7 = [a3 URL];
-      if (v6 == 330)
+      statusCode = [response statusCode];
+      v7 = [response URL];
+      if (statusCode == 330)
       {
         v8 = @"Account Moved";
         v9 = 307;
@@ -516,20 +516,20 @@ LABEL_40:
       goto LABEL_29;
     }
 
-    if ([a3 statusCode] >= 400 && objc_msgSend(a3, "statusCode") <= 499)
+    if ([response statusCode] >= 400 && objc_msgSend(response, "statusCode") <= 499)
     {
-      v13 = [a3 statusCode];
-      v14 = [a3 URL];
-      if (v13 <= 408)
+      statusCode2 = [response statusCode];
+      v14 = [response URL];
+      if (statusCode2 <= 408)
       {
-        if (v13 == 401)
+        if (statusCode2 == 401)
         {
           v8 = @"Unauthorized";
           v9 = 305;
           goto LABEL_39;
         }
 
-        if (v13 == 404)
+        if (statusCode2 == 404)
         {
           v8 = @"Not Found";
           v9 = 4;
@@ -539,7 +539,7 @@ LABEL_40:
 
       else
       {
-        switch(v13)
+        switch(statusCode2)
         {
           case 409:
             v8 = @"Conflict";
@@ -558,41 +558,41 @@ LABEL_39:
         }
       }
 
-      v23 = [a3 statusCode];
-      return +[MBError _errorWithCode:URL:format:](MBError, "_errorWithCode:URL:format:", 301, v14, @"Client error: %ld %@", v23, [MEMORY[0x1E696AC68] localizedStringForStatusCode:{objc_msgSend(a3, "statusCode")}]);
+      statusCode3 = [response statusCode];
+      return +[MBError _errorWithCode:URL:format:](MBError, "_errorWithCode:URL:format:", 301, v14, @"Client error: %ld %@", statusCode3, [MEMORY[0x1E696AC68] localizedStringForStatusCode:{objc_msgSend(response, "statusCode")}]);
     }
 
-    if ([a3 statusCode] < 500 || objc_msgSend(a3, "statusCode") > 599)
+    if ([response statusCode] < 500 || objc_msgSend(response, "statusCode") > 599)
     {
-      v7 = [a3 URL];
+      v7 = [response URL];
 LABEL_29:
-      v24 = [a3 statusCode];
+      statusCode4 = [response statusCode];
       v22 = @"Unexpected HTTP status code: %ld";
-      return [MBError _errorWithCode:302 URL:v7 format:v22, v24, v25];
+      return [MBError _errorWithCode:302 URL:v7 format:v22, statusCode4, v25];
     }
 
-    v15 = [a3 statusCode];
-    if (v15 == 507)
+    statusCode5 = [response statusCode];
+    if (statusCode5 == 507)
     {
-      v10 = [a3 URL];
+      v10 = [response URL];
       v8 = @"Insufficient Storage";
       v9 = 303;
       goto LABEL_40;
     }
 
-    if (v15 != 503)
+    if (statusCode5 != 503)
     {
-      v7 = [a3 URL];
-      v24 = [a3 statusCode];
-      v25 = [MEMORY[0x1E696AC68] localizedStringForStatusCode:{objc_msgSend(a3, "statusCode")}];
+      v7 = [response URL];
+      statusCode4 = [response statusCode];
+      v25 = [MEMORY[0x1E696AC68] localizedStringForStatusCode:{objc_msgSend(response, "statusCode")}];
       v22 = @"Server error: %ld %@";
-      return [MBError _errorWithCode:302 URL:v7 format:v22, v24, v25];
+      return [MBError _errorWithCode:302 URL:v7 format:v22, statusCode4, v25];
     }
 
-    v16 = [objc_msgSend(a3 "allHeaderFields")];
+    v16 = [objc_msgSend(response "allHeaderFields")];
     v17 = MEMORY[0x1E695DF20];
     v18 = *MEMORY[0x1E696A578];
-    v19 = [a3 URL];
+    v19 = [response URL];
     v20 = [v17 dictionaryWithObjectsAndKeys:{@"Service Unavailable", v18, v19, *MEMORY[0x1E696A998], v16, @"RetryAfter", 0}];
     v21 = MEMORY[0x1E696ABC0];
 
@@ -601,63 +601,63 @@ LABEL_29:
 
   else
   {
-    if (!a4)
+    if (!error)
     {
-      [MBError errorForHTTPURLResponse:a2 error:a1];
+      [MBError errorForHTTPURLResponse:a2 error:self];
     }
 
-    v12 = [MBError codeForNSError:a4];
+    v12 = [MBError codeForNSError:error];
 
-    return [MBError errorWithCode:v12 error:a4 format:@"HTTP connection error"];
+    return [MBError errorWithCode:v12 error:error format:@"HTTP connection error"];
   }
 }
 
-+ (id)signatureForError:(id)a3
++ (id)signatureForError:(id)error
 {
-  v4 = [MEMORY[0x1E696AD60] string];
-  if (a3)
+  string = [MEMORY[0x1E696AD60] string];
+  if (error)
   {
     v5 = *MEMORY[0x1E696AA08];
     do
     {
-      [v4 appendString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"/%@:%ld", objc_msgSend(a3, "domain"), objc_msgSend(a3, "code"))}];
-      v6 = [objc_msgSend(a3 "userInfo")];
-      v7 = [a3 userInfo];
+      [string appendString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"/%@:%ld", objc_msgSend(error, "domain"), objc_msgSend(error, "code"))}];
+      v6 = [objc_msgSend(error "userInfo")];
+      userInfo = [error userInfo];
       if (v6)
       {
-        v8 = [v7 objectForKeyedSubscript:v5];
+        v8 = [userInfo objectForKeyedSubscript:v5];
       }
 
       else
       {
-        if (![v7 objectForKeyedSubscript:@"kMBUnderlyingErrorsKey"])
+        if (![userInfo objectForKeyedSubscript:@"kMBUnderlyingErrorsKey"])
         {
           break;
         }
 
-        v8 = [objc_msgSend(objc_msgSend(a3 "userInfo")];
+        v8 = [objc_msgSend(objc_msgSend(error "userInfo")];
       }
 
-      a3 = v8;
+      error = v8;
     }
 
     while (v8);
   }
 
-  v9 = [v4 copy];
+  v9 = [string copy];
 
   return v9;
 }
 
-+ (id)_formatErrors:(id)a3 descriptionSelector:(SEL)a4
++ (id)_formatErrors:(id)errors descriptionSelector:(SEL)selector
 {
-  if (!a3)
+  if (!errors)
   {
     return 0;
   }
 
-  v7 = [a3 count];
-  v8 = [MEMORY[0x1E695DF70] array];
+  v7 = [errors count];
+  array = [MEMORY[0x1E695DF70] array];
   if (v7 >= 3)
   {
     v9 = 3;
@@ -673,69 +673,69 @@ LABEL_29:
     v10 = 0;
     do
     {
-      [v8 addObject:{objc_msgSend(a1, "performSelector:withObject:", a4, objc_msgSend(a3, "objectAtIndexedSubscript:", v10++))}];
+      [array addObject:{objc_msgSend(self, "performSelector:withObject:", selector, objc_msgSend(errors, "objectAtIndexedSubscript:", v10++))}];
     }
 
     while (v9 != v10);
     if (v7 > 3)
     {
-      [v8 addObject:@"..."];
+      [array addObject:@"..."];
     }
   }
 
-  return MBStringWithArray(v8);
+  return MBStringWithArray(array);
 }
 
-+ (id)loggableDescriptionForError:(id)a3
++ (id)loggableDescriptionForError:(id)error
 {
-  if (!a3)
+  if (!error)
   {
     return @"(null)";
   }
 
-  v5 = [MEMORY[0x1E696AD60] string];
-  [v5 appendFormat:@"%@(%ld)", objc_msgSend(a3, "domain"), objc_msgSend(a3, "code")];
-  v6 = [a3 userInfo];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"%@(%ld)", objc_msgSend(error, "domain"), objc_msgSend(error, "code")];
+  userInfo = [error userInfo];
+  v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
   if (v7)
   {
-    [v5 appendFormat:@" Underlying error: %@", +[MBError loggableDescriptionForError:](MBError, "loggableDescriptionForError:", v7)];
+    [string appendFormat:@" Underlying error: %@", +[MBError loggableDescriptionForError:](MBError, "loggableDescriptionForError:", v7)];
   }
 
-  v8 = [a1 _formatErrors:objc_msgSend(objc_msgSend(a3 descriptionSelector:{"userInfo"), "objectForKeyedSubscript:", @"kMMCSErrorUnderlyingErrorArrayKey", sel_loggableDescriptionForError_}];
+  v8 = [self _formatErrors:objc_msgSend(objc_msgSend(error descriptionSelector:{"userInfo"), "objectForKeyedSubscript:", @"kMMCSErrorUnderlyingErrorArrayKey", sel_loggableDescriptionForError_}];
   if (v8)
   {
-    [v5 appendFormat:@" Underlying MMCS errors: %@", v8];
+    [string appendFormat:@" Underlying MMCS errors: %@", v8];
   }
 
-  v9 = [a1 _formatErrors:objc_msgSend(objc_msgSend(objc_msgSend(a3 descriptionSelector:{"userInfo"), "objectForKeyedSubscript:", @"CKPartialErrors", "allValues"), sel_loggableDescriptionForError_}];
+  v9 = [self _formatErrors:objc_msgSend(objc_msgSend(objc_msgSend(error descriptionSelector:{"userInfo"), "objectForKeyedSubscript:", @"CKPartialErrors", "allValues"), sel_loggableDescriptionForError_}];
   if (v9)
   {
-    [v5 appendFormat:@" Underlying CloudKit errors: %@", v9];
+    [string appendFormat:@" Underlying CloudKit errors: %@", v9];
   }
 
-  v10 = [a1 _formatErrors:objc_msgSend(objc_msgSend(a3 descriptionSelector:{"userInfo"), "objectForKeyedSubscript:", @"kMBUnderlyingErrorsKey", sel_loggableDescriptionForError_}];
+  v10 = [self _formatErrors:objc_msgSend(objc_msgSend(error descriptionSelector:{"userInfo"), "objectForKeyedSubscript:", @"kMBUnderlyingErrorsKey", sel_loggableDescriptionForError_}];
   if (v10)
   {
-    [v5 appendFormat:@" Underlying Backup errors: %@", v10];
+    [string appendFormat:@" Underlying Backup errors: %@", v10];
   }
 
-  return v5;
+  return string;
 }
 
-+ (id)descriptionForError:(id)a3 paths:(BOOL)a4
++ (id)descriptionForError:(id)error paths:(BOOL)paths
 {
-  if (!a3)
+  if (!error)
   {
     return @"(null)";
   }
 
-  v4 = a4;
-  v6 = [MEMORY[0x1E696AD60] string];
-  v7 = [a3 localizedDescription];
-  if (v7)
+  pathsCopy = paths;
+  string = [MEMORY[0x1E696AD60] string];
+  localizedDescription = [error localizedDescription];
+  if (localizedDescription)
   {
-    v8 = v7;
+    v8 = localizedDescription;
   }
 
   else
@@ -743,38 +743,38 @@ LABEL_29:
     v8 = @"Unknown error";
   }
 
-  [v6 appendString:v8];
-  if (v4)
+  [string appendString:v8];
+  if (pathsCopy)
   {
-    v9 = [a3 userInfo];
-    v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E696A368]];
+    userInfo = [error userInfo];
+    v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A368]];
     if (v10)
     {
-      [v6 appendFormat:@" at path %@", v10];
+      [string appendFormat:@" at path %@", v10];
     }
 
-    v11 = [a3 userInfo];
-    v12 = [v11 objectForKeyedSubscript:*MEMORY[0x1E696A998]];
+    userInfo2 = [error userInfo];
+    v12 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E696A998]];
     if (v12)
     {
-      [v6 appendFormat:@" for URL %@", v12];
+      [string appendFormat:@" for URL %@", v12];
     }
   }
 
-  [v6 appendFormat:@" (%@/%d)", objc_msgSend(a3, "domain"), objc_msgSend(a3, "code")];
-  v13 = [a3 userInfo];
-  v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+  [string appendFormat:@" (%@/%d)", objc_msgSend(error, "domain"), objc_msgSend(error, "code")];
+  userInfo3 = [error userInfo];
+  v14 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
   if (v14)
   {
-    [v6 appendFormat:@". Underlying error: %@.", +[MBError descriptionForError:](MBError, "descriptionForError:", v14)];
+    [string appendFormat:@". Underlying error: %@.", +[MBError descriptionForError:](MBError, "descriptionForError:", v14)];
   }
 
-  v15 = [objc_msgSend(a3 "userInfo")];
+  v15 = [objc_msgSend(error "userInfo")];
   if (v15)
   {
     v16 = v15;
     v17 = [v15 count];
-    v18 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     if (v17 >= 3)
     {
       v19 = 3;
@@ -790,20 +790,20 @@ LABEL_29:
       v20 = 0;
       do
       {
-        [v18 addObject:{+[MBError descriptionForError:](MBError, "descriptionForError:", objc_msgSend(v16, "objectAtIndexedSubscript:", v20++))}];
+        [array addObject:{+[MBError descriptionForError:](MBError, "descriptionForError:", objc_msgSend(v16, "objectAtIndexedSubscript:", v20++))}];
       }
 
       while (v19 != v20);
       if (v17 > 3)
       {
-        [v18 addObject:@"..."];
+        [array addObject:@"..."];
       }
     }
 
-    [v6 appendFormat:@". Underlying MMCS errors: %@.", MBStringWithArray(v18)];
+    [string appendFormat:@". Underlying MMCS errors: %@.", MBStringWithArray(array)];
   }
 
-  return v6;
+  return string;
 }
 
 + (uint64_t)errorWithErrors:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

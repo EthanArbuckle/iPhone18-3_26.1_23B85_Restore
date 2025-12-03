@@ -1,7 +1,7 @@
 @interface InstanceInfoInternal
 - (NSData)securityDomainKeyInfo;
 - (_TtC9SEService20InstanceInfoInternal)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation InstanceInfoInternal
@@ -27,11 +27,11 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  InstanceInfoInternal.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  InstanceInfoInternal.encode(with:)(coderCopy);
 }
 
 - (_TtC9SEService20InstanceInfoInternal)init

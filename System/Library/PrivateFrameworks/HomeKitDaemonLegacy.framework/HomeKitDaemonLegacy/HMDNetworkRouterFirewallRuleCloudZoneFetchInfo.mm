@@ -1,19 +1,19 @@
 @interface HMDNetworkRouterFirewallRuleCloudZoneFetchInfo
 + (id)logCategory;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 @end
 
 @implementation HMDNetworkRouterFirewallRuleCloudZoneFetchInfo
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(HMDNetworkRouterFirewallRuleCloudZoneFetchInfo *)self mirrorInput];
-  [v5 abort];
+  errorCopy = error;
+  mirrorInput = [(HMDNetworkRouterFirewallRuleCloudZoneFetchInfo *)self mirrorInput];
+  [mirrorInput abort];
 
   v6.receiver = self;
   v6.super_class = HMDNetworkRouterFirewallRuleCloudZoneFetchInfo;
-  [(HMDNetworkRouterFirewallRuleManagerBackingStoreFetchHelper *)&v6 finishWithError:v4];
+  [(HMDNetworkRouterFirewallRuleManagerBackingStoreFetchHelper *)&v6 finishWithError:errorCopy];
 }
 
 + (id)logCategory

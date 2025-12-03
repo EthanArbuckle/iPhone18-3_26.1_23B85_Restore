@@ -1,63 +1,63 @@
 @interface AAUIAccountRecoveryManagementHook
-- (AAUIAccountRecoveryManagementHook)initWithAccountManager:(id)a3 recoveryContactsViewModel:(id)a4;
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (AAUIAccountRecoveryManagementHook)initWithAccountManager:(id)manager recoveryContactsViewModel:(id)model;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (unint64_t)_presentationTypeForString:(id)a3;
-- (void)_presentWithBasePresentationMode:(id)a3 fromCurrentViewController:(id)a4 completion:(id)a5;
-- (void)_showAccountRecoveryManagementWithServerAttributes:(id)a3 completion:(id)a4;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (unint64_t)_presentationTypeForString:(id)string;
+- (void)_presentWithBasePresentationMode:(id)mode fromCurrentViewController:(id)controller completion:(id)completion;
+- (void)_showAccountRecoveryManagementWithServerAttributes:(id)attributes completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation AAUIAccountRecoveryManagementHook
 
-- (AAUIAccountRecoveryManagementHook)initWithAccountManager:(id)a3 recoveryContactsViewModel:(id)a4
+- (AAUIAccountRecoveryManagementHook)initWithAccountManager:(id)manager recoveryContactsViewModel:(id)model
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  modelCopy = model;
   v12.receiver = self;
   v12.super_class = AAUIAccountRecoveryManagementHook;
   v9 = [(AAUIAccountRecoveryManagementHook *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accountManager, a3);
-    objc_storeStrong(&v10->_recoveryContactsViewModel, a4);
+    objc_storeStrong(&v9->_accountManager, manager);
+    objc_storeStrong(&v10->_recoveryContactsViewModel, model);
   }
 
   return v10;
 }
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = [a3 name];
-  v4 = [v3 isEqualToString:@"recoveryOptions:show"];
+  name = [element name];
+  v4 = [name isEqualToString:@"recoveryOptions:show"];
 
   return v4;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = [a3 clientInfo];
-  v4 = [v3 objectForKey:*MEMORY[0x1E69C7058]];
+  clientInfo = [model clientInfo];
+  v4 = [clientInfo objectForKey:*MEMORY[0x1E69C7058]];
   v5 = [v4 isEqualToString:@"recoveryOptions:show"];
 
   return v5;
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 clientInfo];
-  [(AAUIAccountRecoveryManagementHook *)self _showAccountRecoveryManagementWithServerAttributes:v7 completion:v6];
+  completionCopy = completion;
+  clientInfo = [model clientInfo];
+  [(AAUIAccountRecoveryManagementHook *)self _showAccountRecoveryManagementWithServerAttributes:clientInfo completion:completionCopy];
 }
 
-- (void)_showAccountRecoveryManagementWithServerAttributes:(id)a3 completion:(id)a4
+- (void)_showAccountRecoveryManagementWithServerAttributes:(id)attributes completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  completionCopy = completion;
   objc_opt_class();
-  v8 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69C7088]];
+  v8 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E69C7088]];
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -95,7 +95,7 @@
   v18 = v15;
   objc_copyWeak(&v21, &location);
   v20 = &v23;
-  v16 = v7;
+  v16 = completionCopy;
   v19 = v16;
   [(AAUIManateeStateValidator *)v15 repairIfPrimaryAppleAccountIsCDP:v17];
 
@@ -134,15 +134,15 @@ void __99__AAUIAccountRecoveryManagementHook__showAccountRecoveryManagementWithS
   }
 }
 
-- (void)_presentWithBasePresentationMode:(id)a3 fromCurrentViewController:(id)a4 completion:(id)a5
+- (void)_presentWithBasePresentationMode:(id)mode fromCurrentViewController:(id)controller completion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  modeCopy = mode;
+  controllerCopy = controller;
+  completionCopy = completion;
   objc_opt_class();
   objc_opt_class();
-  v10 = v8;
+  v10 = controllerCopy;
   if (objc_opt_isKindOfClass())
   {
     v11 = v10;
@@ -155,10 +155,10 @@ void __99__AAUIAccountRecoveryManagementHook__showAccountRecoveryManagementWithS
 
   objc_opt_class();
   objc_opt_class();
-  v12 = [v11 hostViewController];
+  hostViewController = [v11 hostViewController];
   if (objc_opt_isKindOfClass())
   {
-    v13 = v12;
+    v13 = hostViewController;
   }
 
   else
@@ -184,10 +184,10 @@ void __99__AAUIAccountRecoveryManagementHook__showAccountRecoveryManagementWithS
   v19[3] = &unk_1E820BFF8;
   v20 = v10;
   v21 = v13;
-  v22 = v7;
-  v23 = v9;
-  v15 = v9;
-  v16 = v7;
+  v22 = modeCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = modeCopy;
   v17 = v13;
   v18 = v10;
   [v18 dismissViewControllerAnimated:1 completion:v19];
@@ -205,20 +205,20 @@ uint64_t __107__AAUIAccountRecoveryManagementHook__presentWithBasePresentationMo
   return (*(*(a1 + 56) + 16))();
 }
 
-- (unint64_t)_presentationTypeForString:(id)a3
+- (unint64_t)_presentationTypeForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E69C7078]])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:*MEMORY[0x1E69C7078]])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E69C7080]])
+  else if ([stringCopy isEqualToString:*MEMORY[0x1E69C7080]])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E69C7090]])
+  else if ([stringCopy isEqualToString:*MEMORY[0x1E69C7090]])
   {
     v4 = 2;
   }

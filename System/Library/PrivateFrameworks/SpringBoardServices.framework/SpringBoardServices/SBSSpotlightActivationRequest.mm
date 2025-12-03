@@ -7,9 +7,9 @@
 - (void)requestSpotlightActivation
 {
   v2 = MEMORY[0x1E698F498];
-  v3 = [MEMORY[0x1E698F498] defaultShellMachName];
+  defaultShellMachName = [MEMORY[0x1E698F498] defaultShellMachName];
   v4 = +[SBSSpotlightActivationRequestServer identifier];
-  v5 = [v2 endpointForMachName:v3 service:v4 instance:0];
+  v5 = [v2 endpointForMachName:defaultShellMachName service:v4 instance:0];
 
   if (v5)
   {
@@ -30,8 +30,8 @@
   }
 
   [v6 activate];
-  v8 = [v6 remoteTarget];
-  [v8 requestSpotlightActivation];
+  remoteTarget = [v6 remoteTarget];
+  [remoteTarget requestSpotlightActivation];
 
   [v6 invalidate];
 }

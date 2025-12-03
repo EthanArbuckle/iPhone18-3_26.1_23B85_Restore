@@ -13,10 +13,10 @@
 + (id)bilateralAdd9Kernel;
 + (id)bilateralFinalizeKernel;
 + (id)bilateralKernels;
-- (CGRect)bilateralAddROI:(int64_t)a3 destRect:(CGRect)result userInfo:(id)a5;
-- (CGRect)boundsForPointArray:(id)a3;
-- (CGRect)enlargedBounds:(CGRect)a3 withPoints:(id)a4;
-- (id)doBilateralPass:(id)a3 points:(id)a4 weights:(id)a5 sums:(id)a6 slope:(id)a7;
+- (CGRect)bilateralAddROI:(int64_t)i destRect:(CGRect)result userInfo:(id)info;
+- (CGRect)boundsForPointArray:(id)array;
+- (CGRect)enlargedBounds:(CGRect)bounds withPoints:(id)points;
+- (id)doBilateralPass:(id)pass points:(id)points weights:(id)weights sums:(id)sums slope:(id)slope;
 - (id)outputImage;
 @end
 
@@ -24,96 +24,96 @@
 
 + (id)LabToRGBKernel
 {
-  v2 = [a1 RGBToLabKernels];
-  v3 = [v2 objectForKeyedSubscript:@"convertFromLabToRGB"];
+  rGBToLabKernels = [self RGBToLabKernels];
+  v3 = [rGBToLabKernels objectForKeyedSubscript:@"convertFromLabToRGB"];
 
   return v3;
 }
 
 + (id)RGBToLabKernel
 {
-  v2 = [a1 RGBToLabKernels];
-  v3 = [v2 objectForKeyedSubscript:@"convertFromRGBToLab"];
+  rGBToLabKernels = [self RGBToLabKernels];
+  v3 = [rGBToLabKernels objectForKeyedSubscript:@"convertFromRGBToLab"];
 
   return v3;
 }
 
 + (id)bilateralFinalizeKernel
 {
-  v2 = [a1 bilateralKernels];
-  v3 = [v2 objectForKeyedSubscript:@"bilateralFinalize"];
+  bilateralKernels = [self bilateralKernels];
+  v3 = [bilateralKernels objectForKeyedSubscript:@"bilateralFinalize"];
 
   return v3;
 }
 
 + (id)bilateralAdd9Kernel
 {
-  v2 = [a1 bilateralKernels];
-  v3 = [v2 objectForKeyedSubscript:@"bilateralAdd_9"];
+  bilateralKernels = [self bilateralKernels];
+  v3 = [bilateralKernels objectForKeyedSubscript:@"bilateralAdd_9"];
 
   return v3;
 }
 
 + (id)bilateralAdd8Kernel
 {
-  v2 = [a1 bilateralKernels];
-  v3 = [v2 objectForKeyedSubscript:@"bilateralAdd_8"];
+  bilateralKernels = [self bilateralKernels];
+  v3 = [bilateralKernels objectForKeyedSubscript:@"bilateralAdd_8"];
 
   return v3;
 }
 
 + (id)bilateralAdd7Kernel
 {
-  v2 = [a1 bilateralKernels];
-  v3 = [v2 objectForKeyedSubscript:@"bilateralAdd_7"];
+  bilateralKernels = [self bilateralKernels];
+  v3 = [bilateralKernels objectForKeyedSubscript:@"bilateralAdd_7"];
 
   return v3;
 }
 
 + (id)bilateralAdd6Kernel
 {
-  v2 = [a1 bilateralKernels];
-  v3 = [v2 objectForKeyedSubscript:@"bilateralAdd_6"];
+  bilateralKernels = [self bilateralKernels];
+  v3 = [bilateralKernels objectForKeyedSubscript:@"bilateralAdd_6"];
 
   return v3;
 }
 
 + (id)bilateralAdd5Kernel
 {
-  v2 = [a1 bilateralKernels];
-  v3 = [v2 objectForKeyedSubscript:@"bilateralAdd_5"];
+  bilateralKernels = [self bilateralKernels];
+  v3 = [bilateralKernels objectForKeyedSubscript:@"bilateralAdd_5"];
 
   return v3;
 }
 
 + (id)bilateralAdd4Kernel
 {
-  v2 = [a1 bilateralKernels];
-  v3 = [v2 objectForKeyedSubscript:@"bilateralAdd_4"];
+  bilateralKernels = [self bilateralKernels];
+  v3 = [bilateralKernels objectForKeyedSubscript:@"bilateralAdd_4"];
 
   return v3;
 }
 
 + (id)bilateralAdd3Kernel
 {
-  v2 = [a1 bilateralKernels];
-  v3 = [v2 objectForKeyedSubscript:@"bilateralAdd_3"];
+  bilateralKernels = [self bilateralKernels];
+  v3 = [bilateralKernels objectForKeyedSubscript:@"bilateralAdd_3"];
 
   return v3;
 }
 
 + (id)bilateralAdd2Kernel
 {
-  v2 = [a1 bilateralKernels];
-  v3 = [v2 objectForKeyedSubscript:@"bilateralAdd_2"];
+  bilateralKernels = [self bilateralKernels];
+  v3 = [bilateralKernels objectForKeyedSubscript:@"bilateralAdd_2"];
 
   return v3;
 }
 
 + (id)bilateralAdd1Kernel
 {
-  v2 = [a1 bilateralKernels];
-  v3 = [v2 objectForKeyedSubscript:@"bilateralAdd_1"];
+  bilateralKernels = [self bilateralKernels];
+  v3 = [bilateralKernels objectForKeyedSubscript:@"bilateralAdd_1"];
 
   return v3;
 }
@@ -163,7 +163,7 @@ uint64_t __42__GUBilateralConvolution_bilateralKernels__block_invoke()
 - (id)outputImage
 {
   v61[1] = *MEMORY[0x1E69E9840];
-  v3 = [(GUBilateralConvolution *)self samplesPerPass];
+  samplesPerPass = [(GUBilateralConvolution *)self samplesPerPass];
   v4 = [(NSArray *)self->_inputPoints count];
   v5 = [(NSArray *)self->_inputWeights count];
   if (v4)
@@ -181,7 +181,7 @@ uint64_t __42__GUBilateralConvolution_bilateralKernels__block_invoke()
     [(NSNumber *)self->_inputEdgeDetail floatValue];
     v58 = [MEMORY[0x1E696AD98] numberWithDouble:__exp10(v8 + -3.0) * -200.0];
     v9 = [MEMORY[0x1E695F680] samplerWithImage:self->_inputImage options:0];
-    v10 = [objc_opt_class() RGBToLabKernel];
+    rGBToLabKernel = [objc_opt_class() RGBToLabKernel];
     [(CIImage *)self->_inputImage extent];
     v12 = v11;
     v14 = v13;
@@ -190,7 +190,7 @@ uint64_t __42__GUBilateralConvolution_bilateralKernels__block_invoke()
     v56 = v9;
     v61[0] = v9;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:1];
-    v20 = [v10 applyWithExtent:v19 arguments:{v12, v14, v16, v18}];
+    v20 = [rGBToLabKernel applyWithExtent:v19 arguments:{v12, v14, v16, v18}];
 
     v57 = [MEMORY[0x1E695F680] samplerWithImage:v20 options:0];
     v21 = 0;
@@ -199,10 +199,10 @@ uint64_t __42__GUBilateralConvolution_bilateralKernels__block_invoke()
     v24 = v4;
     do
     {
-      v25 = v24 - v3;
-      if (v24 >= v3)
+      v25 = v24 - samplesPerPass;
+      if (v24 >= samplesPerPass)
       {
-        v26 = v3;
+        v26 = samplesPerPass;
       }
 
       else
@@ -221,7 +221,7 @@ uint64_t __42__GUBilateralConvolution_bilateralKernels__block_invoke()
       v29 = [(NSArray *)self->_inputWeights subarrayWithRange:v21, v26];
       v30 = [(GUBilateralConvolution *)self doBilateralPass:v57 points:v28 weights:v29 sums:v22 slope:v58];
 
-      v21 += v3;
+      v21 += samplesPerPass;
       v24 = v25;
       v20 = v30;
     }
@@ -229,7 +229,7 @@ uint64_t __42__GUBilateralConvolution_bilateralKernels__block_invoke()
     while (v21 < v23);
     v31 = [MEMORY[0x1E695F680] samplerWithImage:v30 options:0];
 
-    v32 = [objc_opt_class() bilateralFinalizeKernel];
+    bilateralFinalizeKernel = [objc_opt_class() bilateralFinalizeKernel];
     [v30 extent];
     v34 = v33;
     v36 = v35;
@@ -237,11 +237,11 @@ uint64_t __42__GUBilateralConvolution_bilateralKernels__block_invoke()
     v40 = v39;
     v60 = v31;
     v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v60 count:1];
-    v42 = [v32 applyWithExtent:v41 arguments:{v34, v36, v38, v40}];
+    v42 = [bilateralFinalizeKernel applyWithExtent:v41 arguments:{v34, v36, v38, v40}];
 
     v43 = [MEMORY[0x1E695F680] samplerWithImage:v42 options:0];
 
-    v44 = [objc_opt_class() LabToRGBKernel];
+    labToRGBKernel = [objc_opt_class() LabToRGBKernel];
     [v42 extent];
     v46 = v45;
     v48 = v47;
@@ -250,7 +250,7 @@ uint64_t __42__GUBilateralConvolution_bilateralKernels__block_invoke()
     v59[0] = v43;
     v59[1] = v56;
     v53 = [MEMORY[0x1E695DEC8] arrayWithObjects:v59 count:2];
-    v54 = [v44 applyWithExtent:v53 arguments:{v46, v48, v50, v52}];
+    v54 = [labToRGBKernel applyWithExtent:v53 arguments:{v46, v48, v50, v52}];
 
     v7 = v54;
   }
@@ -263,31 +263,31 @@ uint64_t __42__GUBilateralConvolution_bilateralKernels__block_invoke()
   return v7;
 }
 
-- (id)doBilateralPass:(id)a3 points:(id)a4 weights:(id)a5 sums:(id)a6 slope:(id)a7
+- (id)doBilateralPass:(id)pass points:(id)points weights:(id)weights sums:(id)sums slope:(id)slope
 {
   v263[6] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  passCopy = pass;
+  pointsCopy = points;
+  weightsCopy = weights;
+  sumsCopy = sums;
+  slopeCopy = slope;
   v17 = MEMORY[0x1E695F650];
-  [v12 extent];
-  [(GUBilateralConvolution *)self enlargedBounds:v13 withPoints:?];
+  [passCopy extent];
+  [(GUBilateralConvolution *)self enlargedBounds:pointsCopy withPoints:?];
   v18 = [v17 shapeWithRect:?];
-  v19 = [v13 count];
-  if (v15)
+  v19 = [pointsCopy count];
+  if (sumsCopy)
   {
-    v20 = v15;
-    v21 = [v20 definition];
-    v251 = [v18 unionWith:v21];
+    v20 = sumsCopy;
+    definition = [v20 definition];
+    v251 = [v18 unionWith:definition];
 
     v22 = 1.0;
   }
 
   else
   {
-    v20 = v12;
+    v20 = passCopy;
     v251 = v18;
     v22 = 0.0;
   }
@@ -297,26 +297,26 @@ uint64_t __42__GUBilateralConvolution_bilateralKernels__block_invoke()
   v253[2] = __68__GUBilateralConvolution_doBilateralPass_points_weights_sums_slope___block_invoke;
   v253[3] = &unk_1E82AA768;
   v253[4] = self;
-  v23 = v13;
+  v23 = pointsCopy;
   v254 = v23;
   v24 = MEMORY[0x1CCA61740](v253);
   v25 = v24;
   v26 = 0;
   v249 = v18;
-  v250 = v16;
+  v250 = slopeCopy;
   v252 = v20;
   if (v19 > 4)
   {
-    v240 = v12;
+    v240 = passCopy;
     if (v19 > 6)
     {
       v243 = v24;
-      v238 = v15;
+      v238 = sumsCopy;
       if (v19 == 7)
       {
-        v257[0] = v12;
+        v257[0] = passCopy;
         v257[1] = v20;
-        v257[2] = v16;
+        v257[2] = slopeCopy;
         v235 = [v23 objectAtIndex:0];
         v257[3] = v235;
         v227 = [v23 objectAtIndex:1];
@@ -332,27 +332,27 @@ uint64_t __42__GUBilateralConvolution_bilateralKernels__block_invoke()
         v200 = [v23 objectAtIndex:6];
         v257[9] = v200;
         v120 = MEMORY[0x1E695F688];
-        v196 = [v14 objectAtIndex:0];
+        v196 = [weightsCopy objectAtIndex:0];
         [v196 floatValue];
         v122 = v121;
-        v192 = [v14 objectAtIndex:1];
+        v192 = [weightsCopy objectAtIndex:1];
         [v192 floatValue];
         v124 = v123;
-        v188 = [v14 objectAtIndex:2];
+        v188 = [weightsCopy objectAtIndex:2];
         [v188 floatValue];
         v126 = v125;
-        v127 = [v14 objectAtIndex:3];
+        v127 = [weightsCopy objectAtIndex:3];
         [v127 floatValue];
         v129 = [v120 vectorWithX:v122 Y:v124 Z:v126 W:v128];
         v257[10] = v129;
         v130 = MEMORY[0x1E695F688];
-        v131 = [v14 objectAtIndex:4];
+        v131 = [weightsCopy objectAtIndex:4];
         [v131 floatValue];
         v133 = v132;
-        v134 = [v14 objectAtIndex:5];
+        v134 = [weightsCopy objectAtIndex:5];
         [v134 floatValue];
         v136 = v135;
-        v137 = [v14 objectAtIndex:6];
+        v137 = [weightsCopy objectAtIndex:6];
         [v137 floatValue];
         v139 = [v130 vectorWithX:v133 Y:v136 Z:v138];
         v257[11] = v139;
@@ -360,10 +360,10 @@ uint64_t __42__GUBilateralConvolution_bilateralKernels__block_invoke()
         v257[12] = v140;
         v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v257 count:13];
 
-        v15 = v238;
-        v12 = v240;
+        sumsCopy = v238;
+        passCopy = v240;
 
-        v141 = [objc_opt_class() bilateralAdd7Kernel];
+        bilateralAdd7Kernel = [objc_opt_class() bilateralAdd7Kernel];
       }
 
       else
@@ -379,9 +379,9 @@ uint64_t __42__GUBilateralConvolution_bilateralKernels__block_invoke()
             goto LABEL_35;
           }
 
-          v255[0] = v12;
+          v255[0] = passCopy;
           v255[1] = v252;
-          v255[2] = v16;
+          v255[2] = slopeCopy;
           v230 = [v23 objectAtIndex:0];
           v255[3] = v230;
           v223 = [v23 objectAtIndex:1];
@@ -401,34 +401,34 @@ uint64_t __42__GUBilateralConvolution_bilateralKernels__block_invoke()
           v190 = [v23 objectAtIndex:8];
           v255[11] = v190;
           v30 = MEMORY[0x1E695F688];
-          v187 = [v14 objectAtIndex:0];
+          v187 = [weightsCopy objectAtIndex:0];
           [v187 floatValue];
           v32 = v31;
-          v185 = [v14 objectAtIndex:1];
+          v185 = [weightsCopy objectAtIndex:1];
           [v185 floatValue];
           v34 = v33;
-          v183 = [v14 objectAtIndex:2];
+          v183 = [weightsCopy objectAtIndex:2];
           [v183 floatValue];
           v36 = v35;
-          v182 = [v14 objectAtIndex:3];
+          v182 = [weightsCopy objectAtIndex:3];
           [v182 floatValue];
           v181 = [v30 vectorWithX:v32 Y:v34 Z:v36 W:v37];
           v255[12] = v181;
           v38 = MEMORY[0x1E695F688];
-          v39 = [v14 objectAtIndex:4];
+          v39 = [weightsCopy objectAtIndex:4];
           [v39 floatValue];
           v41 = v40;
-          v42 = [v14 objectAtIndex:5];
+          v42 = [weightsCopy objectAtIndex:5];
           [v42 floatValue];
           v44 = v43;
-          v45 = [v14 objectAtIndex:6];
+          v45 = [weightsCopy objectAtIndex:6];
           [v45 floatValue];
           v47 = v46;
-          v48 = [v14 objectAtIndex:7];
+          v48 = [weightsCopy objectAtIndex:7];
           [v48 floatValue];
           v50 = [v38 vectorWithX:v41 Y:v44 Z:v47 W:v49];
           v255[13] = v50;
-          v51 = [v14 objectAtIndex:9];
+          v51 = [weightsCopy objectAtIndex:9];
           v255[14] = v51;
           v52 = [MEMORY[0x1E696AD98] numberWithDouble:v22];
           v255[15] = v52;
@@ -437,16 +437,16 @@ uint64_t __42__GUBilateralConvolution_bilateralKernels__block_invoke()
           v29 = v251;
           v25 = v243;
 
-          v15 = v238;
-          v12 = v240;
+          sumsCopy = v238;
+          passCopy = v240;
 
-          v53 = [objc_opt_class() bilateralAdd9Kernel];
+          bilateralAdd9Kernel = [objc_opt_class() bilateralAdd9Kernel];
           goto LABEL_24;
         }
 
-        v256[0] = v12;
+        v256[0] = passCopy;
         v256[1] = v20;
-        v256[2] = v16;
+        v256[2] = slopeCopy;
         v237 = [v23 objectAtIndex:0];
         v256[3] = v237;
         v229 = [v23 objectAtIndex:1];
@@ -464,30 +464,30 @@ uint64_t __42__GUBilateralConvolution_bilateralKernels__block_invoke()
         v197 = [v23 objectAtIndex:7];
         v256[10] = v197;
         v157 = MEMORY[0x1E695F688];
-        v193 = [v14 objectAtIndex:0];
+        v193 = [weightsCopy objectAtIndex:0];
         [v193 floatValue];
         v159 = v158;
-        v189 = [v14 objectAtIndex:1];
+        v189 = [weightsCopy objectAtIndex:1];
         [v189 floatValue];
         v161 = v160;
-        v186 = [v14 objectAtIndex:2];
+        v186 = [weightsCopy objectAtIndex:2];
         [v186 floatValue];
         v163 = v162;
-        v184 = [v14 objectAtIndex:3];
+        v184 = [weightsCopy objectAtIndex:3];
         [v184 floatValue];
         v165 = [v157 vectorWithX:v159 Y:v161 Z:v163 W:v164];
         v256[11] = v165;
         v166 = MEMORY[0x1E695F688];
-        v167 = [v14 objectAtIndex:4];
+        v167 = [weightsCopy objectAtIndex:4];
         [v167 floatValue];
         v169 = v168;
-        v170 = [v14 objectAtIndex:5];
+        v170 = [weightsCopy objectAtIndex:5];
         [v170 floatValue];
         v172 = v171;
-        v173 = [v14 objectAtIndex:6];
+        v173 = [weightsCopy objectAtIndex:6];
         [v173 floatValue];
         v175 = v174;
-        v176 = [v14 objectAtIndex:7];
+        v176 = [weightsCopy objectAtIndex:7];
         [v176 floatValue];
         v178 = [v166 vectorWithX:v169 Y:v172 Z:v175 W:v177];
         v256[12] = v178;
@@ -495,16 +495,16 @@ uint64_t __42__GUBilateralConvolution_bilateralKernels__block_invoke()
         v256[13] = v179;
         v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v256 count:14];
 
-        v15 = v238;
-        v12 = v240;
+        sumsCopy = v238;
+        passCopy = v240;
 
-        v141 = [objc_opt_class() bilateralAdd8Kernel];
+        bilateralAdd7Kernel = [objc_opt_class() bilateralAdd8Kernel];
       }
 
-      v99 = v141;
+      bilateralAdd1Kernel = bilateralAdd7Kernel;
       v29 = v251;
       [v251 extent];
-      v104 = v99;
+      v104 = bilateralAdd1Kernel;
       v25 = v243;
       goto LABEL_33;
     }
@@ -519,9 +519,9 @@ uint64_t __42__GUBilateralConvolution_bilateralKernels__block_invoke()
         goto LABEL_35;
       }
 
-      v258[0] = v12;
+      v258[0] = passCopy;
       v258[1] = v252;
-      v258[2] = v16;
+      v258[2] = slopeCopy;
       v233 = [v23 objectAtIndex:0];
       v258[3] = v233;
       v225 = [v23 objectAtIndex:1];
@@ -536,52 +536,52 @@ uint64_t __42__GUBilateralConvolution_bilateralKernels__block_invoke()
       v258[8] = v203;
       v246 = v25;
       v80 = MEMORY[0x1E695F688];
-      v199 = [v14 objectAtIndex:0];
+      v199 = [weightsCopy objectAtIndex:0];
       [v199 floatValue];
       v82 = v81;
-      v195 = [v14 objectAtIndex:1];
+      v195 = [weightsCopy objectAtIndex:1];
       [v195 floatValue];
       v84 = v83;
-      v191 = [v14 objectAtIndex:2];
+      v191 = [weightsCopy objectAtIndex:2];
       [v191 floatValue];
       v86 = v85;
-      v87 = [v14 objectAtIndex:3];
+      v87 = [weightsCopy objectAtIndex:3];
       [v87 floatValue];
       v89 = [v80 vectorWithX:v82 Y:v84 Z:v86 W:v88];
       v258[9] = v89;
       v90 = MEMORY[0x1E695F688];
-      v91 = [v14 objectAtIndex:4];
+      v91 = [weightsCopy objectAtIndex:4];
       [v91 floatValue];
       v93 = v92;
-      v94 = [v14 objectAtIndex:5];
+      v94 = [weightsCopy objectAtIndex:5];
       [v94 floatValue];
       v96 = [v90 vectorWithX:v93 Y:v95];
       v258[10] = v96;
       [MEMORY[0x1E696AD98] numberWithDouble:v22];
-      v98 = v97 = v15;
+      v98 = v97 = sumsCopy;
       v258[11] = v98;
       v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v258 count:12];
 
-      v15 = v97;
+      sumsCopy = v97;
       v29 = v251;
 
       v25 = v246;
-      v12 = v240;
+      passCopy = v240;
 
-      v53 = [objc_opt_class() bilateralAdd6Kernel];
+      bilateralAdd9Kernel = [objc_opt_class() bilateralAdd6Kernel];
 LABEL_24:
-      v99 = v53;
+      bilateralAdd1Kernel = bilateralAdd9Kernel;
 LABEL_30:
       [v29 extent];
-      v104 = v99;
+      v104 = bilateralAdd1Kernel;
 LABEL_33:
       v105 = v25;
       goto LABEL_34;
     }
 
-    v259[0] = v12;
+    v259[0] = passCopy;
     v259[1] = v20;
-    v259[2] = v16;
+    v259[2] = slopeCopy;
     v248 = [v23 objectAtIndex:0];
     v259[3] = v248;
     v236 = [v23 objectAtIndex:1];
@@ -593,32 +593,32 @@ LABEL_33:
     v215 = [v23 objectAtIndex:4];
     v259[7] = v215;
     v142 = MEMORY[0x1E695F688];
-    v209 = [v14 objectAtIndex:0];
+    v209 = [weightsCopy objectAtIndex:0];
     [v209 floatValue];
     v144 = v143;
-    v145 = [v14 objectAtIndex:1];
+    v145 = [weightsCopy objectAtIndex:1];
     [v145 floatValue];
     v147 = v146;
-    [v14 objectAtIndex:2];
-    v148 = v239 = v15;
+    [weightsCopy objectAtIndex:2];
+    v148 = v239 = sumsCopy;
     [v148 floatValue];
     v150 = v149;
-    [v14 objectAtIndex:3];
+    [weightsCopy objectAtIndex:3];
     v152 = v151 = v25;
     [v152 floatValue];
     v154 = [v142 vectorWithX:v144 Y:v147 Z:v150 W:v153];
     v259[8] = v154;
-    v155 = [v14 objectAtIndex:4];
+    v155 = [weightsCopy objectAtIndex:4];
     v259[9] = v155;
     v156 = [MEMORY[0x1E696AD98] numberWithDouble:v22];
     v259[10] = v156;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v259 count:11];
 
     v25 = v151;
-    v15 = v239;
+    sumsCopy = v239;
 
-    v12 = v240;
-    v119 = [objc_opt_class() bilateralAdd5Kernel];
+    passCopy = v240;
+    bilateralAdd5Kernel = [objc_opt_class() bilateralAdd5Kernel];
     goto LABEL_29;
   }
 
@@ -634,9 +634,9 @@ LABEL_33:
         goto LABEL_35;
       }
 
-      v260[0] = v12;
+      v260[0] = passCopy;
       v260[1] = v252;
-      v260[2] = v16;
+      v260[2] = slopeCopy;
       v232 = [v23 objectAtIndex:0];
       v260[3] = v232;
       v224 = [v23 objectAtIndex:1];
@@ -646,56 +646,56 @@ LABEL_33:
       v212 = [v23 objectAtIndex:3];
       v260[6] = v212;
       v65 = MEMORY[0x1E695F688];
-      [v14 objectAtIndex:0];
-      v66 = v241 = v12;
+      [weightsCopy objectAtIndex:0];
+      v66 = v241 = passCopy;
       [v66 floatValue];
       v68 = v67;
-      v69 = [v14 objectAtIndex:1];
+      v69 = [weightsCopy objectAtIndex:1];
       [v69 floatValue];
       v71 = v70;
-      [v14 objectAtIndex:2];
+      [weightsCopy objectAtIndex:2];
       v72 = v245 = v25;
       [v72 floatValue];
       v74 = v73;
-      v75 = [v14 objectAtIndex:3];
+      v75 = [weightsCopy objectAtIndex:3];
       [v75 floatValue];
       v77 = [v65 vectorWithX:v68 Y:v71 Z:v74 W:v76];
       v260[7] = v77;
       [MEMORY[0x1E696AD98] numberWithDouble:v22];
-      v79 = v78 = v15;
+      v79 = v78 = sumsCopy;
       v260[8] = v79;
       v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v260 count:9];
 
-      v15 = v78;
+      sumsCopy = v78;
       v25 = v245;
 
       v29 = v251;
-      v12 = v241;
+      passCopy = v241;
 
-      v53 = [objc_opt_class() bilateralAdd4Kernel];
+      bilateralAdd9Kernel = [objc_opt_class() bilateralAdd4Kernel];
       goto LABEL_24;
     }
 
-    v261[0] = v12;
+    v261[0] = passCopy;
     v261[1] = v20;
-    v261[2] = v16;
+    v261[2] = slopeCopy;
     v234 = [v23 objectAtIndex:0];
     v261[3] = v234;
     v226 = [v23 objectAtIndex:1];
     v261[4] = v226;
     [v23 objectAtIndex:2];
-    v106 = v242 = v12;
+    v106 = v242 = passCopy;
     v261[5] = v106;
     v107 = MEMORY[0x1E695F688];
-    v108 = [v14 objectAtIndex:0];
+    v108 = [weightsCopy objectAtIndex:0];
     [v108 floatValue];
     v110 = v109;
-    [v14 objectAtIndex:1];
+    [weightsCopy objectAtIndex:1];
     v111 = v247 = v25;
     [v111 floatValue];
     v113 = v112;
-    [v14 objectAtIndex:2];
-    v115 = v114 = v15;
+    [weightsCopy objectAtIndex:2];
+    v115 = v114 = sumsCopy;
     [v115 floatValue];
     v117 = [v107 vectorWithX:v110 Y:v113 Z:v116];
     v261[6] = v117;
@@ -703,42 +703,42 @@ LABEL_33:
     v261[7] = v118;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v261 count:8];
 
-    v15 = v114;
+    sumsCopy = v114;
     v25 = v247;
 
-    v12 = v242;
-    v119 = [objc_opt_class() bilateralAdd3Kernel];
+    passCopy = v242;
+    bilateralAdd5Kernel = [objc_opt_class() bilateralAdd3Kernel];
 LABEL_29:
-    v99 = v119;
+    bilateralAdd1Kernel = bilateralAdd5Kernel;
     v29 = v251;
     goto LABEL_30;
   }
 
   if (v19 == 1)
   {
-    v263[0] = v12;
+    v263[0] = passCopy;
     v263[1] = v20;
-    v263[2] = v16;
+    v263[2] = slopeCopy;
     [v23 objectAtIndex:0];
     v101 = v100 = v25;
     v263[3] = v101;
-    v102 = [v14 objectAtIndex:0];
+    v102 = [weightsCopy objectAtIndex:0];
     v263[4] = v102;
     v103 = [MEMORY[0x1E696AD98] numberWithDouble:v22];
     v263[5] = v103;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v263 count:6];
 
     v25 = v100;
-    v99 = [objc_opt_class() bilateralAdd1Kernel];
+    bilateralAdd1Kernel = [objc_opt_class() bilateralAdd1Kernel];
     v29 = v251;
     [v251 extent];
-    v104 = v99;
+    v104 = bilateralAdd1Kernel;
     v105 = v100;
 LABEL_34:
     v27 = [v104 applyWithExtent:v105 roiCallback:v26 arguments:?];
 
     v18 = v249;
-    v16 = v250;
+    slopeCopy = v250;
     goto LABEL_35;
   }
 
@@ -747,35 +747,35 @@ LABEL_34:
   v29 = v251;
   if (v28)
   {
-    v262[0] = v12;
+    v262[0] = passCopy;
     v262[1] = v252;
-    v262[2] = v16;
+    v262[2] = slopeCopy;
     v231 = [v23 objectAtIndex:0];
     v262[3] = v231;
     v54 = [v23 objectAtIndex:1];
     v262[4] = v54;
     v55 = MEMORY[0x1E695F688];
-    [v14 objectAtIndex:0];
+    [weightsCopy objectAtIndex:0];
     v56 = v244 = v25;
     [v56 floatValue];
     v58 = v57;
-    [v14 objectAtIndex:1];
-    v60 = v59 = v12;
+    [weightsCopy objectAtIndex:1];
+    v60 = v59 = passCopy;
     [v60 floatValue];
     v62 = [v55 vectorWithX:v58 Y:v61];
     v262[5] = v62;
     [MEMORY[0x1E696AD98] numberWithDouble:v22];
-    v64 = v63 = v15;
+    v64 = v63 = sumsCopy;
     v262[6] = v64;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v262 count:7];
 
-    v15 = v63;
-    v12 = v59;
+    sumsCopy = v63;
+    passCopy = v59;
 
     v25 = v244;
     v29 = v251;
 
-    v53 = [objc_opt_class() bilateralAdd2Kernel];
+    bilateralAdd9Kernel = [objc_opt_class() bilateralAdd2Kernel];
     goto LABEL_24;
   }
 
@@ -784,23 +784,23 @@ LABEL_35:
   return v27;
 }
 
-- (CGRect)bilateralAddROI:(int64_t)a3 destRect:(CGRect)result userInfo:(id)a5
+- (CGRect)bilateralAddROI:(int64_t)i destRect:(CGRect)result userInfo:(id)info
 {
-  if (!a3)
+  if (!i)
   {
-    [(GUBilateralConvolution *)self enlargedBounds:a5 withPoints:result.origin.x, result.origin.y, result.size.width, result.size.height, v5, v6];
+    [(GUBilateralConvolution *)self enlargedBounds:info withPoints:result.origin.x, result.origin.y, result.size.width, result.size.height, v5, v6];
   }
 
   return result;
 }
 
-- (CGRect)enlargedBounds:(CGRect)a3 withPoints:(id)a4
+- (CGRect)enlargedBounds:(CGRect)bounds withPoints:(id)points
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(GUBilateralConvolution *)self boundsForPointArray:a4];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  [(GUBilateralConvolution *)self boundsForPointArray:points];
   v9 = x + v8;
   v11 = y + v10;
   v13 = width + v12;
@@ -812,11 +812,11 @@ LABEL_35:
   return result;
 }
 
-- (CGRect)boundsForPointArray:(id)a3
+- (CGRect)boundsForPointArray:(id)array
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (![v3 count])
+  arrayCopy = array;
+  if (![arrayCopy count])
   {
     v22 = NUAssertLogger_8454();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -838,8 +838,8 @@ LABEL_35:
         v30 = dispatch_get_specific(*v24);
         v31 = MEMORY[0x1E696AF00];
         v32 = v30;
-        v33 = [v31 callStackSymbols];
-        v34 = [v33 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v31 callStackSymbols];
+        v34 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v36 = v30;
         v37 = 2114;
@@ -850,8 +850,8 @@ LABEL_35:
 
     else if (v27)
     {
-      v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v29 = [v28 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v29 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v36 = v29;
       _os_log_error_impl(&dword_1C7694000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -860,8 +860,8 @@ LABEL_35:
     _NUAssertFailHandler();
   }
 
-  v4 = [v3 count];
-  v5 = [v3 objectAtIndex:0];
+  v4 = [arrayCopy count];
+  v5 = [arrayCopy objectAtIndex:0];
   [v5 X];
   v7 = v6;
   [v5 Y];
@@ -880,7 +880,7 @@ LABEL_35:
     do
     {
       v13 = v5;
-      v5 = [v3 objectAtIndex:v10];
+      v5 = [arrayCopy objectAtIndex:v10];
 
       [v5 X];
       v15 = v14;

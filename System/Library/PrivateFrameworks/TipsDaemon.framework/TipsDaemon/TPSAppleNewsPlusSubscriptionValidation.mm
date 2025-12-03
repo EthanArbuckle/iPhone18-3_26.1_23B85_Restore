@@ -1,6 +1,6 @@
 @interface TPSAppleNewsPlusSubscriptionValidation
 - (TPSAppleNewsPlusSubscriptionValidation)init;
-- (TPSAppleNewsPlusSubscriptionValidation)initWithTargetContext:(id)a3;
+- (TPSAppleNewsPlusSubscriptionValidation)initWithTargetContext:(id)context;
 @end
 
 @implementation TPSAppleNewsPlusSubscriptionValidation
@@ -14,7 +14,7 @@
   return result;
 }
 
-- (TPSAppleNewsPlusSubscriptionValidation)initWithTargetContext:(id)a3
+- (TPSAppleNewsPlusSubscriptionValidation)initWithTargetContext:(id)context
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

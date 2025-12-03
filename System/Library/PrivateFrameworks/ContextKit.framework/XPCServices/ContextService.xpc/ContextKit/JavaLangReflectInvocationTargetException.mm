@@ -1,22 +1,22 @@
 @interface JavaLangReflectInvocationTargetException
-- (JavaLangReflectInvocationTargetException)initWithJavaLangThrowable:(id)a3;
-- (JavaLangReflectInvocationTargetException)initWithJavaLangThrowable:(id)a3 withNSString:(id)a4;
+- (JavaLangReflectInvocationTargetException)initWithJavaLangThrowable:(id)throwable;
+- (JavaLangReflectInvocationTargetException)initWithJavaLangThrowable:(id)throwable withNSString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation JavaLangReflectInvocationTargetException
 
-- (JavaLangReflectInvocationTargetException)initWithJavaLangThrowable:(id)a3
+- (JavaLangReflectInvocationTargetException)initWithJavaLangThrowable:(id)throwable
 {
-  JavaLangReflectiveOperationException_initWithNSString_withJavaLangThrowable_(self, 0, a3);
-  JreStrongAssign(&self->target_, a3);
+  JavaLangReflectiveOperationException_initWithNSString_withJavaLangThrowable_(self, 0, throwable);
+  JreStrongAssign(&self->target_, throwable);
   return self;
 }
 
-- (JavaLangReflectInvocationTargetException)initWithJavaLangThrowable:(id)a3 withNSString:(id)a4
+- (JavaLangReflectInvocationTargetException)initWithJavaLangThrowable:(id)throwable withNSString:(id)string
 {
-  JavaLangReflectiveOperationException_initWithNSString_withJavaLangThrowable_(self, a4, a3);
-  JreStrongAssign(&self->target_, a3);
+  JavaLangReflectiveOperationException_initWithNSString_withJavaLangThrowable_(self, string, throwable);
+  JreStrongAssign(&self->target_, throwable);
   return self;
 }
 

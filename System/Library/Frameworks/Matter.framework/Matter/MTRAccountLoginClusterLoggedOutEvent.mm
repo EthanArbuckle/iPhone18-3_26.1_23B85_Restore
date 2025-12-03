@@ -1,6 +1,6 @@
 @interface MTRAccountLoginClusterLoggedOutEvent
 - (MTRAccountLoginClusterLoggedOutEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRAccountLoginClusterLoggedOutEvent);
-  v5 = [(MTRAccountLoginClusterLoggedOutEvent *)self node];
-  [(MTRAccountLoginClusterLoggedOutEvent *)v4 setNode:v5];
+  node = [(MTRAccountLoginClusterLoggedOutEvent *)self node];
+  [(MTRAccountLoginClusterLoggedOutEvent *)v4 setNode:node];
 
-  v6 = [(MTRAccountLoginClusterLoggedOutEvent *)self fabricIndex];
-  [(MTRAccountLoginClusterLoggedOutEvent *)v4 setFabricIndex:v6];
+  fabricIndex = [(MTRAccountLoginClusterLoggedOutEvent *)self fabricIndex];
+  [(MTRAccountLoginClusterLoggedOutEvent *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

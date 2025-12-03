@@ -1,18 +1,18 @@
 @interface AASigningSessionResponse
-- (AASigningSessionResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
+- (AASigningSessionResponse)initWithHTTPResponse:(id)response data:(id)data;
 @end
 
 @implementation AASigningSessionResponse
 
-- (AASigningSessionResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (AASigningSessionResponse)initWithHTTPResponse:(id)response data:(id)data
 {
   v11.receiver = self;
   v11.super_class = AASigningSessionResponse;
-  v5 = [(AAResponse *)&v11 initWithHTTPResponse:a3 data:a4 bodyIsPlist:0];
+  v5 = [(AAResponse *)&v11 initWithHTTPResponse:response data:data bodyIsPlist:0];
   v6 = v5;
   if (v5)
   {
-    if (a4)
+    if (data)
     {
       v7 = [(NSDictionary *)v5->super._responseDictionary objectForKey:@"session-info"];
       if (v7)

@@ -1,10 +1,10 @@
 @interface FAFamilyPeopleSuggesterSuggester
-- (id)getFamilyRecommendationsWithContext:(id *)a3 error:(id *)a4;
+- (id)getFamilyRecommendationsWithContext:(id *)context error:(id *)error;
 @end
 
 @implementation FAFamilyPeopleSuggesterSuggester
 
-- (id)getFamilyRecommendationsWithContext:(id *)a3 error:(id *)a4
+- (id)getFamilyRecommendationsWithContext:(id *)context error:(id *)error
 {
   v46 = *MEMORY[0x1E69E9840];
   v4 = _FASignpostLogSystem();
@@ -35,14 +35,14 @@
 
   v36 = v5;
 
-  v11 = [MEMORY[0x1E69BDBF0] suggesterWithDaemon];
+  suggesterWithDaemon = [MEMORY[0x1E69BDBF0] suggesterWithDaemon];
   v12 = objc_alloc_init(MEMORY[0x1E69BDBE8]);
   v13 = +[FAPeopleDiscoveryService sharedInstance];
-  v14 = [v13 getNearbyPeople];
-  v15 = [v14 allObjects];
+  getNearbyPeople = [v13 getNearbyPeople];
+  allObjects = [getNearbyPeople allObjects];
 
-  [v12 setSeedContactIdentifiers:v15];
-  v16 = [v11 familyRecommendationSuggestionsWithPredictionContext:v12];
+  [v12 setSeedContactIdentifiers:allObjects];
+  v16 = [suggesterWithDaemon familyRecommendationSuggestionsWithPredictionContext:v12];
   v17 = _FALogSystem();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -51,7 +51,7 @@
     _os_log_impl(&dword_1B70B0000, v17, OS_LOG_TYPE_DEFAULT, "Loaded family PeopleSuggester suggestions. %@", buf, 0xCu);
   }
 
-  v18 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
@@ -71,13 +71,13 @@
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v39 + 1) + 8 * i) recipients];
-        v25 = [v24 firstObject];
+        recipients = [*(*(&v39 + 1) + 8 * i) recipients];
+        firstObject = [recipients firstObject];
 
-        if (v25)
+        if (firstObject)
         {
-          v26 = [[FARecommendedFamilyMember alloc] initWithPeopleSuggesterRecommendation:v25];
-          [v18 addObject:v26];
+          v26 = [[FARecommendedFamilyMember alloc] initWithPeopleSuggesterRecommendation:firstObject];
+          [array addObject:v26];
         }
       }
 
@@ -102,17 +102,17 @@
     [(FAFamilyPeopleSuggesterSuggester *)v36 getFamilyRecommendationsWithContext:v30 error:Nanoseconds / 1000000000.0];
   }
 
-  if (a3)
+  if (context)
   {
-    *a3 = [[FAFamilySuggesterFeedbackContext alloc] initWithPredictionContext:v12 suggestions:v19];
+    *context = [[FAFamilySuggesterFeedbackContext alloc] initWithPredictionContext:v12 suggestions:v19];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v31 = [v18 copy];
+  v31 = [array copy];
 
   v32 = *MEMORY[0x1E69E9840];
 

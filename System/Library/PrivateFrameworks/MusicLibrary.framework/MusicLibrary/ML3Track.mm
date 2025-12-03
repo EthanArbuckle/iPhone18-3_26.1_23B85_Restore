@@ -1,56 +1,56 @@
 @interface ML3Track
-+ (BOOL)_writeSyncDeletesToPlistWithLibrary:(id)a3 forPersistentIDs:(id)a4;
-+ (BOOL)clearLocationFromLibrary:(id)a3 persistentIDs:(id)a4 disableKeepLocal:(BOOL)a5;
-+ (BOOL)clearLocationFromLibrary:(id)a3 persistentIDs:(id)a4 disableKeepLocal:(BOOL)a5 usingConnection:(id)a6;
-+ (BOOL)clearPlaybackKeysFromLibrary:(id)a3 persistentIDs:(id)a4;
-+ (BOOL)deleteFromLibrary:(id)a3 deletionType:(int)a4 canonicalizeCollections:(BOOL)a5 persistentIDs:(const int64_t *)a6 count:(unint64_t)a7;
-+ (BOOL)deleteFromLibrary:(id)a3 deletionType:(int)a4 canonicalizeCollections:(BOOL)a5 persistentIDs:(const int64_t *)a6 count:(unint64_t)a7 usingConnection:(id)a8;
-+ (BOOL)deleteFromLibrary:(id)a3 deletionType:(int)a4 persistentIDs:(const int64_t *)a5 count:(unint64_t)a6;
-+ (BOOL)libraryContentsChangeForProperty:(id)a3;
-+ (BOOL)registerBookmarkMetadataIdentifierFunctionOnConnection:(id)a3;
-+ (BOOL)removeFromMyLibrary:(id)a3 deletionType:(int)a4 persistentIDs:(const int64_t *)a5 count:(unint64_t)a6;
-+ (BOOL)trackValueAreInTheCloud:(id)a3;
-+ (BOOL)trackWithPersistentID:(int64_t)a3 existsInLibrary:(id)a4;
-+ (BOOL)trackWithPersistentID:(int64_t)a3 existsInLibraryWithConnection:(id)a4;
-+ (BOOL)trackWithPersistentID:(int64_t)a3 visibleInLibrary:(id)a4;
-+ (BOOL)unlinkRedownloadableAssetsFromLibrary:(id)a3 persistentIDs:(id)a4 deletionType:(int)a5 disableKeepLocal:(BOOL)a6 deletedFileSize:(int64_t *)a7;
-+ (id)_normalizedImportChapters:(id)a3 trackPersistentID:(int64_t)a4;
++ (BOOL)_writeSyncDeletesToPlistWithLibrary:(id)library forPersistentIDs:(id)ds;
++ (BOOL)clearLocationFromLibrary:(id)library persistentIDs:(id)ds disableKeepLocal:(BOOL)local;
++ (BOOL)clearLocationFromLibrary:(id)library persistentIDs:(id)ds disableKeepLocal:(BOOL)local usingConnection:(id)connection;
++ (BOOL)clearPlaybackKeysFromLibrary:(id)library persistentIDs:(id)ds;
++ (BOOL)deleteFromLibrary:(id)library deletionType:(int)type canonicalizeCollections:(BOOL)collections persistentIDs:(const int64_t *)ds count:(unint64_t)count;
++ (BOOL)deleteFromLibrary:(id)library deletionType:(int)type canonicalizeCollections:(BOOL)collections persistentIDs:(const int64_t *)ds count:(unint64_t)count usingConnection:(id)connection;
++ (BOOL)deleteFromLibrary:(id)library deletionType:(int)type persistentIDs:(const int64_t *)ds count:(unint64_t)count;
++ (BOOL)libraryContentsChangeForProperty:(id)property;
++ (BOOL)registerBookmarkMetadataIdentifierFunctionOnConnection:(id)connection;
++ (BOOL)removeFromMyLibrary:(id)library deletionType:(int)type persistentIDs:(const int64_t *)ds count:(unint64_t)count;
++ (BOOL)trackValueAreInTheCloud:(id)cloud;
++ (BOOL)trackWithPersistentID:(int64_t)d existsInLibrary:(id)library;
++ (BOOL)trackWithPersistentID:(int64_t)d existsInLibraryWithConnection:(id)connection;
++ (BOOL)trackWithPersistentID:(int64_t)d visibleInLibrary:(id)library;
++ (BOOL)unlinkRedownloadableAssetsFromLibrary:(id)library persistentIDs:(id)ds deletionType:(int)type disableKeepLocal:(BOOL)local deletedFileSize:(int64_t *)size;
++ (id)_normalizedImportChapters:(id)chapters trackPersistentID:(int64_t)d;
 + (id)collectionClassesToUpdateBeforeDelete;
-+ (id)containerQueryWithContainer:(id)a3;
-+ (id)containerQueryWithContainer:(id)a3 predicate:(id)a4;
-+ (id)containerQueryWithContainer:(id)a3 predicate:(id)a4 orderingTerms:(id)a5;
-+ (id)flattenedChapterDataFromDAAPInfoDictionary:(id)a3 trackPersistentID:(int64_t)a4;
-+ (id)flattenedChapterDataFromSyncInfoDictionaries:(id)a3 trackPersistentID:(int64_t)a4;
-+ (id)flattenedChapterDataWithImportChapters:(id)a3 library:(id)a4 trackPersistentID:(int64_t)a5;
-+ (id)foreignColumnForProperty:(id)a3;
-+ (id)foreignDatabaseTableForProperty:(id)a3;
-+ (id)importChaptersByParsingAsset:(id)a3;
-+ (id)joinClausesForProperty:(id)a3;
-+ (id)orderingTermsForITTGTrackOrder:(unsigned int)a3 descending:(BOOL)a4;
-+ (id)predicateByOptimizingComparisonPredicate:(id)a3;
-+ (id)subselectPropertyForProperty:(id)a3;
-+ (id)subselectStatementForProperty:(id)a3;
-+ (void)enumeratePathsToDeleteFromLibrary:(id)a3 persistentIDs:(id)a4 usingBlock:(id)a5;
-+ (void)enumeratePathsToDeleteFromLibrary:(id)a3 persistentIDs:(id)a4 usingConnection:(id)a5 usingBlock:(id)a6;
++ (id)containerQueryWithContainer:(id)container;
++ (id)containerQueryWithContainer:(id)container predicate:(id)predicate;
++ (id)containerQueryWithContainer:(id)container predicate:(id)predicate orderingTerms:(id)terms;
++ (id)flattenedChapterDataFromDAAPInfoDictionary:(id)dictionary trackPersistentID:(int64_t)d;
++ (id)flattenedChapterDataFromSyncInfoDictionaries:(id)dictionaries trackPersistentID:(int64_t)d;
++ (id)flattenedChapterDataWithImportChapters:(id)chapters library:(id)library trackPersistentID:(int64_t)d;
++ (id)foreignColumnForProperty:(id)property;
++ (id)foreignDatabaseTableForProperty:(id)property;
++ (id)importChaptersByParsingAsset:(id)asset;
++ (id)joinClausesForProperty:(id)property;
++ (id)orderingTermsForITTGTrackOrder:(unsigned int)order descending:(BOOL)descending;
++ (id)predicateByOptimizingComparisonPredicate:(id)predicate;
++ (id)subselectPropertyForProperty:(id)property;
++ (id)subselectStatementForProperty:(id)property;
++ (void)enumeratePathsToDeleteFromLibrary:(id)library persistentIDs:(id)ds usingBlock:(id)block;
++ (void)enumeratePathsToDeleteFromLibrary:(id)library persistentIDs:(id)ds usingConnection:(id)connection usingBlock:(id)block;
 + (void)initialize;
-+ (void)populateSortOrdersOfPropertyValues:(id)a3 inLibrary:(id)a4 cachedNameOrders:(id)a5;
-+ (void)updateAllBookmarkableStoreBookmarkMetadataIdentifiersOnConnection:(id)a3;
-- (BOOL)_populateLocationPropertiesWithPath:(id)a3 protectionType:(int64_t)a4 fromLibrary:(id)a5 usingConnection:(id)a6;
++ (void)populateSortOrdersOfPropertyValues:(id)values inLibrary:(id)library cachedNameOrders:(id)orders;
++ (void)updateAllBookmarkableStoreBookmarkMetadataIdentifiersOnConnection:(id)connection;
+- (BOOL)_populateLocationPropertiesWithPath:(id)path protectionType:(int64_t)type fromLibrary:(id)library usingConnection:(id)connection;
 - (BOOL)needsVideoSnapshot;
-- (BOOL)populateArtworkCacheWithArtworkData:(id)a3;
+- (BOOL)populateArtworkCacheWithArtworkData:(id)data;
 - (BOOL)updateIntegrity;
-- (ML3Track)initWithDictionary:(id)a3 inLibrary:(id)a4 cachedNameOrders:(id)a5 usingConnection:(id)a6;
+- (ML3Track)initWithDictionary:(id)dictionary inLibrary:(id)library cachedNameOrders:(id)orders usingConnection:(id)connection;
 - (id)absoluteFilePath;
-- (id)artworkTokenAtPlaybackTime:(double)a3;
+- (id)artworkTokenAtPlaybackTime:(double)time;
 - (id)chapterTOC;
-- (id)multiverseIdentifierLibraryOnly:(BOOL)a3;
+- (id)multiverseIdentifierLibraryOnly:(BOOL)only;
 - (id)protocolItem;
 - (id)protocolItemForDynamicUpdate;
 - (id)rawIntegrity;
-- (void)createVideoSnapshotAtTime:(double)a3;
-- (void)populateChapterDataWithImportChapters:(id)a3;
-- (void)populateLocationPropertiesWithPath:(id)a3 protectionType:(int64_t)a4;
-- (void)populateLocationPropertiesWithPath:(id)a3 protectionType:(int64_t)a4 completionBlock:(id)a5;
+- (void)createVideoSnapshotAtTime:(double)time;
+- (void)populateChapterDataWithImportChapters:(id)chapters;
+- (void)populateLocationPropertiesWithPath:(id)path protectionType:(int64_t)type;
+- (void)populateLocationPropertiesWithPath:(id)path protectionType:(int64_t)type completionBlock:(id)block;
 - (void)updateCollectionCloudStatus;
 - (void)updateStoreBookmarkMetadataIdentifier;
 @end
@@ -60,9 +60,9 @@
 + (void)initialize
 {
   v157[6] = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v134 = a1;
+    selfCopy = self;
     v3 = [ML3OrderingTerm orderingTermWithProperty:@"title_order"];
     v157[0] = v3;
     v4 = [ML3OrderingTerm orderingTermWithProperty:@"item_artist_order"];
@@ -523,7 +523,7 @@
     v115 = +[ML3Entity predisambiguatedProperties];
     v116 = [v114 initWithDictionary:v115];
 
-    [v134 predisambiguateProperties:ML3TrackAllProperties toDictionary:v116];
+    [selfCopy predisambiguateProperties:ML3TrackAllProperties toDictionary:v116];
     v137 = 0u;
     v138 = 0u;
     v135 = 0u;
@@ -583,18 +583,18 @@
   }
 }
 
-- (void)createVideoSnapshotAtTime:(double)a3
+- (void)createVideoSnapshotAtTime:(double)time
 {
   v45[1] = *MEMORY[0x277D85DE8];
   v5 = [(ML3Entity *)self valueForProperty:@"item_video.is_rental"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  if ((v6 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v7 = [(ML3Entity *)self valueForProperty:@"(item.base_location_id > 0)"];
-    v8 = [v7 BOOLValue];
+    bOOLValue2 = [v7 BOOLValue];
 
-    if (v8)
+    if (bOOLValue2)
     {
       v9 = [(ML3Entity *)self valueForProperty:@"(IFNULL(base_location.path, '') || '/' || item_extra.location)"];
       if ([v9 length])
@@ -609,9 +609,9 @@
         if (([v14 hasProtectedContent] & 1) == 0)
         {
           v15 = 105.0;
-          if (a3 <= 0.0)
+          if (time <= 0.0)
           {
-            a3 = 105.0;
+            time = 105.0;
           }
 
           v37 = 0;
@@ -623,22 +623,22 @@
             v15 = (v37 / v38);
           }
 
-          if (a3 > v15)
+          if (time > v15)
           {
-            a3 = v15 * 0.5;
+            time = v15 * 0.5;
           }
 
           v16 = os_log_create("com.apple.amp.medialibrary", "Default");
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
             LODWORD(buf) = 134217984;
-            *(&buf + 4) = a3;
+            *(&buf + 4) = time;
             _os_log_impl(&dword_22D2FA000, v16, OS_LOG_TYPE_DEFAULT, "Generating video snapshot at time offset %g", &buf, 0xCu);
           }
 
           v17 = [MEMORY[0x277CE6408] assetImageGeneratorWithAsset:v14];
           memset(&v36, 0, sizeof(v36));
-          CMTimeMakeWithSeconds(&v36, a3, 1);
+          CMTimeMakeWithSeconds(&v36, time, 1);
           v18 = [MEMORY[0x277CCAE60] value:&v36 withObjCType:"{?=qiIq}"];
           v45[0] = v18;
           v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:1];
@@ -663,7 +663,7 @@
             if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
             {
               *v40 = 134217984;
-              v41 = a3;
+              timeCopy = time;
               _os_log_impl(&dword_22D2FA000, v23, OS_LOG_TYPE_DEFAULT, "Timed out waiting for generateCGImagesAsynchronouslyForTimes: %g", v40, 0xCu);
             }
 
@@ -673,7 +673,7 @@
           else if (*(*(&buf + 1) + 24))
           {
             v24 = +[ML3MusicLibrary devicePreferredImageFormat];
-            v32 = [MEMORY[0x277CBEB28] data];
+            data = [MEMORY[0x277CBEB28] data];
             DataImageDestination = MSVImageUtilitiesCreateDataImageDestination();
             if (v24)
             {
@@ -690,15 +690,15 @@
             CFRelease(*(*(&buf + 1) + 24));
             if (v26)
             {
-              v27 = [MEMORY[0x277CCAD78] UUID];
-              v28 = [v27 UUIDString];
+              uUID = [MEMORY[0x277CCAD78] UUID];
+              uUIDString = [uUID UUIDString];
 
-              v29 = [(ML3Entity *)self library];
-              [v29 importArtworkTokenForEntityPersistentID:-[ML3Entity persistentID](self entityType:"persistentID") artworkToken:0 artworkType:v28 sourceType:{2, 300}];
+              library = [(ML3Entity *)self library];
+              [library importArtworkTokenForEntityPersistentID:-[ML3Entity persistentID](self entityType:"persistentID") artworkToken:0 artworkType:uUIDString sourceType:{2, 300}];
               v30 = [(ML3Entity *)self valueForProperty:@"media_type"];
-              v31 = [v30 unsignedIntValue];
+              unsignedIntValue = [v30 unsignedIntValue];
 
-              [v29 importOriginalArtworkFromImageData:v32 withArtworkToken:v28 artworkType:2 sourceType:300 mediaType:v31];
+              [library importOriginalArtworkFromImageData:data withArtworkToken:uUIDString artworkType:2 sourceType:300 mediaType:unsignedIntValue];
             }
           }
 
@@ -732,9 +732,9 @@ intptr_t __53__ML3Track_VideoSnapshot__createVideoSnapshotAtTime___block_invoke(
   else
   {
     v5 = [(ML3Entity *)self valueForProperty:@"media_type"];
-    v6 = [v5 unsignedIntValue];
+    unsignedIntValue = [v5 unsignedIntValue];
 
-    v4 = v6 == 512 || v6 == 0x2000;
+    v4 = unsignedIntValue == 512 || unsignedIntValue == 0x2000;
   }
 
   return v4;
@@ -743,9 +743,9 @@ intptr_t __53__ML3Track_VideoSnapshot__createVideoSnapshotAtTime___block_invoke(
 - (void)updateStoreBookmarkMetadataIdentifier
 {
   WeakRetained = objc_loadWeakRetained(&self->super._library);
-  v4 = [WeakRetained supportsUbiquitousPlaybackPositions];
+  supportsUbiquitousPlaybackPositions = [WeakRetained supportsUbiquitousPlaybackPositions];
 
-  if (v4)
+  if (supportsUbiquitousPlaybackPositions)
   {
     v5 = [(ML3Entity *)self valueForProperty:@"item_kvs.key"];
     if ([v5 length])
@@ -783,13 +783,13 @@ intptr_t __53__ML3Track_VideoSnapshot__createVideoSnapshotAtTime___block_invoke(
     {
       if (v7)
       {
-        v13 = [(ML3Entity *)self library];
+        library = [(ML3Entity *)self library];
         v14[0] = MEMORY[0x277D85DD0];
         v14[1] = 3221225472;
         v14[2] = __49__ML3Track_updateStoreBookmarkMetadataIdentifier__block_invoke;
         v14[3] = &unk_278760178;
         v14[4] = self;
-        [v13 performDatabaseTransactionWithBlock:v14];
+        [library performDatabaseTransactionWithBlock:v14];
       }
 
       v9 = 0;
@@ -827,10 +827,10 @@ uint64_t __49__ML3Track_updateStoreBookmarkMetadataIdentifier__block_invoke(uint
   [(ML3Entity *)self getValues:v10 forProperties:v13 count:5];
   for (i = 0; i != 5; ++i)
   {
-    v4 = [*(v10 + i * 8) longLongValue];
-    if (v4)
+    longLongValue = [*(v10 + i * 8) longLongValue];
+    if (longLongValue)
     {
-      v5 = v4;
+      v5 = longLongValue;
       v6 = v12[i];
       WeakRetained = objc_loadWeakRetained(&self->super._library);
       v8 = [v6 newWithPersistentID:v5 inLibrary:WeakRetained];
@@ -844,9 +844,9 @@ uint64_t __49__ML3Track_updateStoreBookmarkMetadataIdentifier__block_invoke(uint
   }
 }
 
-- (id)artworkTokenAtPlaybackTime:(double)a3
+- (id)artworkTokenAtPlaybackTime:(double)time
 {
-  if (a3 < 0.0 || ([(ML3Track *)self chapterTOC], (v5 = objc_claimAutoreleasedReturnValue()) == 0) || (v6 = v5, [ML3MusicLibrary artworkTokenForChapterWithItemPID:[(ML3Entity *)self persistentID] retrievalTime:a3], v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
+  if (time < 0.0 || ([(ML3Track *)self chapterTOC], (v5 = objc_claimAutoreleasedReturnValue()) == 0) || (v6 = v5, [ML3MusicLibrary artworkTokenForChapterWithItemPID:[(ML3Entity *)self persistentID] retrievalTime:time], v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
   {
     v7 = [(ML3Entity *)self valueForProperty:@"best_artwork_token.available_artwork_token AS available_item_artwork_token"];
   }
@@ -921,15 +921,15 @@ void __24__ML3Track_rawIntegrity__block_invoke(uint64_t a1, void *a2)
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    null = v3;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v6 = v5;
+  v6 = null;
 
   WeakRetained = objc_loadWeakRetained(&self->super._library);
   v11[0] = MEMORY[0x277D85DD0];
@@ -939,7 +939,7 @@ void __24__ML3Track_rawIntegrity__block_invoke(uint64_t a1, void *a2)
   v14 = &v15;
   v8 = v6;
   v12 = v8;
-  v13 = self;
+  selfCopy = self;
   [WeakRetained databaseConnectionAllowingWrites:1 withBlock:v11];
 
   v9 = *(v16 + 24);
@@ -963,12 +963,12 @@ void __27__ML3Track_updateIntegrity__block_invoke(void *a1, void *a2)
   *(*(a1[6] + 8) + 24) = v9;
 }
 
-- (ML3Track)initWithDictionary:(id)a3 inLibrary:(id)a4 cachedNameOrders:(id)a5 usingConnection:(id)a6
+- (ML3Track)initWithDictionary:(id)dictionary inLibrary:(id)library cachedNameOrders:(id)orders usingConnection:(id)connection
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [a3 mutableCopy];
+  connectionCopy = connection;
+  ordersCopy = orders;
+  libraryCopy = library;
+  v13 = [dictionary mutableCopy];
   v14 = [v13 objectForKey:@"ROWID"];
   if (!v14)
   {
@@ -976,10 +976,10 @@ void __27__ML3Track_updateIntegrity__block_invoke(void *a1, void *a2)
     [v13 setObject:v14 forKey:@"ROWID"];
   }
 
-  [objc_opt_class() populateSortOrdersOfPropertyValues:v13 inLibrary:v12 cachedNameOrders:v11];
+  [objc_opt_class() populateSortOrdersOfPropertyValues:v13 inLibrary:libraryCopy cachedNameOrders:ordersCopy];
   v17.receiver = self;
   v17.super_class = ML3Track;
-  v15 = [(ML3Entity *)&v17 initWithDictionary:v13 inLibrary:v12 cachedNameOrders:v11 usingConnection:v10];
+  v15 = [(ML3Entity *)&v17 initWithDictionary:v13 inLibrary:libraryCopy cachedNameOrders:ordersCopy usingConnection:connectionCopy];
 
   return v15;
 }
@@ -1002,12 +1002,12 @@ void __27__ML3Track_updateIntegrity__block_invoke(void *a1, void *a2)
   return v5;
 }
 
-+ (void)enumeratePathsToDeleteFromLibrary:(id)a3 persistentIDs:(id)a4 usingConnection:(id)a5 usingBlock:(id)a6
++ (void)enumeratePathsToDeleteFromLibrary:(id)library persistentIDs:(id)ds usingConnection:(id)connection usingBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = [v8 count];
+  dsCopy = ds;
+  connectionCopy = connection;
+  blockCopy = block;
+  v11 = [dsCopy count];
   if (v11)
   {
     v12 = v11;
@@ -1024,16 +1024,16 @@ void __27__ML3Track_updateIntegrity__block_invoke(void *a1, void *a2)
         v14 = v12 - v13;
       }
 
-      v15 = [v8 subarrayWithRange:{v13, v14}];
+      v15 = [dsCopy subarrayWithRange:{v13, v14}];
       v16 = +[ML3DatabaseStatementRenderer defaultRenderer];
       v17 = [v16 statementWithPrefix:@"SELECT item_extra.location inParameterCount:{base_location.path, item.item_pid, item.base_location_id, item_store.store_saga_id, item_store.purchase_history_id, item_store.is_subscription FROM item JOIN item_extra USING (item_pid) JOIN item_store USING(item_pid) LEFT OUTER JOIN base_location USING (base_location_id) WHERE item.item_pid", objc_msgSend(v15, "count")}];
 
-      v18 = [v9 executeQuery:v17 withParameters:v15];
+      v18 = [connectionCopy executeQuery:v17 withParameters:v15];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __87__ML3Track_enumeratePathsToDeleteFromLibrary_persistentIDs_usingConnection_usingBlock___block_invoke;
       v19[3] = &unk_278760218;
-      v20 = v10;
+      v20 = blockCopy;
       [v18 enumerateRowsWithBlock:v19];
       v13 += v14;
     }
@@ -1080,30 +1080,30 @@ void __87__ML3Track_enumeratePathsToDeleteFromLibrary_persistentIDs_usingConnect
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)enumeratePathsToDeleteFromLibrary:(id)a3 persistentIDs:(id)a4 usingBlock:(id)a5
++ (void)enumeratePathsToDeleteFromLibrary:(id)library persistentIDs:(id)ds usingBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  libraryCopy = library;
+  dsCopy = ds;
+  blockCopy = block;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __71__ML3Track_enumeratePathsToDeleteFromLibrary_persistentIDs_usingBlock___block_invoke;
   v13[3] = &unk_2787640A0;
-  v14 = v7;
-  v15 = v8;
-  v16 = v9;
-  v10 = v9;
-  v11 = v8;
-  v12 = v7;
+  v14 = libraryCopy;
+  v15 = dsCopy;
+  v16 = blockCopy;
+  v10 = blockCopy;
+  v11 = dsCopy;
+  v12 = libraryCopy;
   [v12 databaseConnectionAllowingWrites:0 withBlock:v13];
 }
 
-+ (BOOL)clearPlaybackKeysFromLibrary:(id)a3 persistentIDs:(id)a4
++ (BOOL)clearPlaybackKeysFromLibrary:(id)library persistentIDs:(id)ds
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6 && [v6 count])
+  libraryCopy = library;
+  dsCopy = ds;
+  v7 = dsCopy;
+  if (dsCopy && [dsCopy count])
   {
     v13 = 0;
     v14 = &v13;
@@ -1115,7 +1115,7 @@ void __87__ML3Track_enumeratePathsToDeleteFromLibrary_persistentIDs_usingConnect
     v10[3] = &unk_2787651A8;
     v11 = v7;
     v12 = &v13;
-    [v5 databaseConnectionAllowingWrites:1 withBlock:v10];
+    [libraryCopy databaseConnectionAllowingWrites:1 withBlock:v10];
     v8 = *(v14 + 24);
 
     _Block_object_dispose(&v13, 8);
@@ -1155,17 +1155,17 @@ void __55__ML3Track_clearPlaybackKeysFromLibrary_persistentIDs___block_invoke(ui
   }
 }
 
-+ (BOOL)clearLocationFromLibrary:(id)a3 persistentIDs:(id)a4 disableKeepLocal:(BOOL)a5 usingConnection:(id)a6
++ (BOOL)clearLocationFromLibrary:(id)library persistentIDs:(id)ds disableKeepLocal:(BOOL)local usingConnection:(id)connection
 {
-  v7 = a5;
-  v34 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (v10 && [v10 count])
+  localCopy = local;
+  libraryCopy = library;
+  dsCopy = ds;
+  connectionCopy = connection;
+  if (dsCopy && [dsCopy count])
   {
-    v12 = [v10 count];
+    v12 = [dsCopy count];
     v13 = @"UPDATE item SET base_location_id=0, date_downloaded=0, download_source_container_pid=0 WHERE item.item_pid";
-    if (v7)
+    if (localCopy)
     {
       v13 = @"UPDATE item SET base_location_id=0, date_downloaded=0, download_source_container_pid=0, keep_local=-1, keep_local_constraints=0, keep_local_status=0, keep_local_status_reason=0 WHERE item.item_pid";
     }
@@ -1174,27 +1174,27 @@ void __55__ML3Track_clearPlaybackKeysFromLibrary_persistentIDs___block_invoke(ui
     if (v12)
     {
       v14 = v12;
-      v32 = a1;
+      selfCopy = self;
       v33 = v12;
       v15 = 0;
       v16 = 0x27875C000uLL;
-      v35 = v11;
+      v35 = connectionCopy;
       while (1)
       {
         v17 = v14 - v15 >= 0x1F4 ? 500 : v14 - v15;
-        v18 = [v10 subarrayWithRange:{v15, v17, v32}];
-        v19 = [*(v16 + 1208) defaultRenderer];
-        v20 = [v19 statementWithPrefix:v36 inParameterCount:{objc_msgSend(v18, "count")}];
+        v18 = [dsCopy subarrayWithRange:{v15, v17, selfCopy}];
+        defaultRenderer = [*(v16 + 1208) defaultRenderer];
+        v20 = [defaultRenderer statementWithPrefix:v36 inParameterCount:{objc_msgSend(v18, "count")}];
 
-        if (([v11 executeUpdate:v20 withParameters:v18 error:0] & 1) == 0)
+        if (([connectionCopy executeUpdate:v20 withParameters:v18 error:0] & 1) == 0)
         {
           break;
         }
 
-        v21 = [*(v16 + 1208) defaultRenderer];
-        v22 = [v21 statementWithPrefix:@"UPDATE item_extra SET location = '' WHERE item_extra.item_pid" inParameterCount:{objc_msgSend(v18, "count")}];
+        defaultRenderer2 = [*(v16 + 1208) defaultRenderer];
+        v22 = [defaultRenderer2 statementWithPrefix:@"UPDATE item_extra SET location = '' WHERE item_extra.item_pid" inParameterCount:{objc_msgSend(v18, "count")}];
 
-        if (([v11 executeUpdate:v22 withParameters:v18 error:0] & 1) == 0)
+        if (([connectionCopy executeUpdate:v22 withParameters:v18 error:0] & 1) == 0)
         {
           v30 = os_log_create("com.apple.amp.medialibrary", "Default");
           if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -1208,18 +1208,18 @@ LABEL_31:
         }
 
         v37 = v15;
-        v23 = [*(v16 + 1208) defaultRenderer];
-        v24 = [v23 statementWithPrefix:@"UPDATE item_store SET sync_id = 0 inParameterCount:{downloader_account_id = 0, family_account_id = 0, is_protected = 0, is_ota_purchased = 0 WHERE item_store.item_pid", objc_msgSend(v18, "count")}];
+        defaultRenderer3 = [*(v16 + 1208) defaultRenderer];
+        v24 = [defaultRenderer3 statementWithPrefix:@"UPDATE item_store SET sync_id = 0 inParameterCount:{downloader_account_id = 0, family_account_id = 0, is_protected = 0, is_ota_purchased = 0 WHERE item_store.item_pid", objc_msgSend(v18, "count")}];
 
-        if ([v11 executeUpdate:v24 withParameters:v18 error:0])
+        if ([connectionCopy executeUpdate:v24 withParameters:v18 error:0])
         {
-          v25 = v10;
-          v26 = [*(v16 + 1208) defaultRenderer];
-          v27 = [v26 statementWithPrefix:@"UPDATE item_video SET hls_asset_traits = 0 WHERE item_video.item_pid" inParameterCount:{objc_msgSend(v18, "count")}];
+          v25 = dsCopy;
+          defaultRenderer4 = [*(v16 + 1208) defaultRenderer];
+          v27 = [defaultRenderer4 statementWithPrefix:@"UPDATE item_video SET hls_asset_traits = 0 WHERE item_video.item_pid" inParameterCount:{objc_msgSend(v18, "count")}];
 
-          if ([v11 executeUpdate:v27 withParameters:v18 error:0])
+          if ([connectionCopy executeUpdate:v27 withParameters:v18 error:0])
           {
-            [v32 incrementRevisionForRevisionTypeContentWithConnection:v11 deletionType:0 persistentIDs:v18];
+            [selfCopy incrementRevisionForRevisionTypeContentWithConnection:connectionCopy deletionType:0 persistentIDs:v18];
             v37 += v17;
             v28 = 1;
           }
@@ -1236,7 +1236,7 @@ LABEL_31:
             v28 = 0;
           }
 
-          v10 = v25;
+          dsCopy = v25;
           v14 = v33;
         }
 
@@ -1254,13 +1254,13 @@ LABEL_31:
 
         if (!v28)
         {
-          v11 = v35;
+          connectionCopy = v35;
           goto LABEL_33;
         }
 
         v15 = v37;
         v16 = 0x27875C000;
-        v11 = v35;
+        connectionCopy = v35;
         if (v37 >= v14)
         {
           goto LABEL_33;
@@ -1291,10 +1291,10 @@ LABEL_33:
   return v28;
 }
 
-+ (BOOL)clearLocationFromLibrary:(id)a3 persistentIDs:(id)a4 disableKeepLocal:(BOOL)a5
++ (BOOL)clearLocationFromLibrary:(id)library persistentIDs:(id)ds disableKeepLocal:(BOOL)local
 {
-  v8 = a3;
-  v9 = a4;
+  libraryCopy = library;
+  dsCopy = ds;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -1304,12 +1304,12 @@ LABEL_33:
   v14[2] = __68__ML3Track_clearLocationFromLibrary_persistentIDs_disableKeepLocal___block_invoke;
   v14[3] = &unk_2787601F0;
   v17 = &v20;
-  v18 = a1;
-  v10 = v8;
+  selfCopy = self;
+  v10 = libraryCopy;
   v15 = v10;
-  v11 = v9;
+  v11 = dsCopy;
   v16 = v11;
-  v19 = a5;
+  localCopy = local;
   [v10 databaseConnectionAllowingWrites:1 withBlock:v14];
   v12 = *(v21 + 24);
 
@@ -1324,15 +1324,15 @@ uint64_t __68__ML3Track_clearLocationFromLibrary_persistentIDs_disableKeepLocal_
   return result;
 }
 
-+ (BOOL)registerBookmarkMetadataIdentifierFunctionOnConnection:(id)a3
++ (BOOL)registerBookmarkMetadataIdentifierFunctionOnConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__ML3Track_registerBookmarkMetadataIdentifierFunctionOnConnection___block_invoke;
   v6[3] = &unk_2787601C8;
-  v7 = v3;
-  v4 = v3;
+  v7 = connectionCopy;
+  v4 = connectionCopy;
   [v4 registerFunctionName:@"ML3TrackPropertyStoreBookmarkMetadataIdentifierFn" argumentCount:8 block:v6];
 
   return 1;
@@ -1478,10 +1478,10 @@ id __67__ML3Track_registerBookmarkMetadataIdentifierFunctionOnConnection___block
   return v18;
 }
 
-+ (void)updateAllBookmarkableStoreBookmarkMetadataIdentifiersOnConnection:(id)a3
++ (void)updateAllBookmarkableStoreBookmarkMetadataIdentifiersOnConnection:(id)connection
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  connectionCopy = connection;
   v4 = @"ROWID";
   v14[0] = @"ROWID";
   v14[1] = @"ML3TrackPropertyStoreBookmarkMetadataIdentifierFn(item.media_type, item_store.store_item_id, item_store.subscription_store_item_id, item_store.feed_url, item_store.external_guid, item.item_pid, item.item_artist_pid, item.album_pid)";
@@ -1494,31 +1494,31 @@ id __67__ML3Track_registerBookmarkMetadataIdentifierFunctionOnConnection___block
 
   v9 = [(ML3Entity *)ML3Track newSelectAllEntitiesSQLForProperties:v14 count:2 predicate:v8];
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"INSERT OR REPLACE INTO item_upp (item_pid, bookkeeper_identifier) %@", v9];
-  v11 = [v8 databaseStatementParameters];
-  [v3 executeUpdate:v10 withParameters:v11 error:0];
+  databaseStatementParameters = [v8 databaseStatementParameters];
+  [connectionCopy executeUpdate:v10 withParameters:databaseStatementParameters error:0];
 
   for (i = 1; i != -1; --i)
   {
   }
 }
 
-+ (BOOL)trackValueAreInTheCloud:(id)a3
++ (BOOL)trackValueAreInTheCloud:(id)cloud
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"(item.base_location_id BETWEEN 100 AND 200)"];
-  v5 = [v4 BOOLValue];
+  cloudCopy = cloud;
+  v4 = [cloudCopy objectForKey:@"(item.base_location_id BETWEEN 100 AND 200)"];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5 & 1) != 0 || ([v3 objectForKey:@"(item.base_location_id = 100)"], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "BOOLValue"), v6, (v7))
+  if (bOOLValue & 1) != 0 || ([cloudCopy objectForKey:@"(item.base_location_id = 100)"], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "BOOLValue"), v6, (v7))
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [v3 objectForKey:{@"(CASE WHEN LENGTH(IFNULL(item_store.match_redownload_params, '')) > 0 THEN item_store.match_redownload_params ELSE item_store.purchase_history_redownload_params END)"}];
+    v9 = [cloudCopy objectForKey:{@"(CASE WHEN LENGTH(IFNULL(item_store.match_redownload_params, '')) > 0 THEN item_store.match_redownload_params ELSE item_store.purchase_history_redownload_params END)"}];
     v10 = [v9 length];
 
-    v11 = [v3 objectForKey:@"item_extra.location"];
+    v11 = [cloudCopy objectForKey:@"item_extra.location"];
     v12 = [v11 length];
 
     if (v10)
@@ -1537,15 +1537,15 @@ id __67__ML3Track_registerBookmarkMetadataIdentifierFunctionOnConnection___block
   return v8;
 }
 
-+ (BOOL)unlinkRedownloadableAssetsFromLibrary:(id)a3 persistentIDs:(id)a4 deletionType:(int)a5 disableKeepLocal:(BOOL)a6 deletedFileSize:(int64_t *)a7
++ (BOOL)unlinkRedownloadableAssetsFromLibrary:(id)library persistentIDs:(id)ds deletionType:(int)type disableKeepLocal:(BOOL)local deletedFileSize:(int64_t *)size
 {
   v45 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = v13;
-  if (v13 && [v13 count])
+  libraryCopy = library;
+  dsCopy = ds;
+  v14 = dsCopy;
+  if (dsCopy && [dsCopy count])
   {
-    v15 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v37 = 0;
     v38 = &v37;
     v39 = 0x2020000000;
@@ -1556,15 +1556,15 @@ id __67__ML3Track_registerBookmarkMetadataIdentifierFunctionOnConnection___block
     v27[2] = __110__ML3Track_unlinkRedownloadableAssetsFromLibrary_persistentIDs_deletionType_disableKeepLocal_deletedFileSize___block_invoke;
     v27[3] = &unk_278760128;
     v28 = v14;
-    v33 = a1;
-    v29 = v12;
+    selfCopy = self;
+    v29 = libraryCopy;
     v17 = v16;
     v30 = v17;
     v32 = &v37;
-    v36 = a6;
-    v35 = a5;
-    v34 = a7;
-    v18 = v15;
+    localCopy = local;
+    typeCopy = type;
+    sizeCopy = size;
+    v18 = defaultManager;
     v31 = v18;
     [v29 performDatabaseTransactionWithBlock:v27];
     if (*(v38 + 24) == 1)
@@ -1574,7 +1574,7 @@ id __67__ML3Track_registerBookmarkMetadataIdentifierFunctionOnConnection___block
       {
         v20 = [v17 count];
         v21 = @"user action";
-        if (a5 == 2)
+        if (type == 2)
         {
           v21 = @"automated action";
         }
@@ -1814,27 +1814,27 @@ void __110__ML3Track_unlinkRedownloadableAssetsFromLibrary_persistentIDs_deletio
   return [v2 setWithObjects:{v3, v4, v5, v6, objc_opt_class(), 0}];
 }
 
-+ (void)populateSortOrdersOfPropertyValues:(id)a3 inLibrary:(id)a4 cachedNameOrders:(id)a5
++ (void)populateSortOrdersOfPropertyValues:(id)values inLibrary:(id)library cachedNameOrders:(id)orders
 {
   v40 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  valuesCopy = values;
+  libraryCopy = library;
+  ordersCopy = orders;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __74__ML3Track_populateSortOrdersOfPropertyValues_inLibrary_cachedNameOrders___block_invoke;
   v17[3] = &unk_278760008;
-  v10 = v7;
+  v10 = valuesCopy;
   v18 = v10;
-  v19 = v9;
-  v20 = v8;
-  v11 = v8;
-  v12 = v9;
+  v19 = ordersCopy;
+  v20 = libraryCopy;
+  v11 = libraryCopy;
+  v12 = ordersCopy;
   v13 = MEMORY[0x2318CDB10](v17);
   v14 = [v10 objectForKey:@"is_compilation"];
-  v15 = [v14 intValue];
+  intValue = [v14 intValue];
 
-  if (v15)
+  if (intValue)
   {
     v38 = xmmword_278760028;
     v39 = 0;
@@ -1967,33 +1967,33 @@ void __74__ML3Track_populateSortOrdersOfPropertyValues_inLibrary_cachedNameOrder
 LABEL_2:
 }
 
-+ (BOOL)trackWithPersistentID:(int64_t)a3 existsInLibraryWithConnection:(id)a4
++ (BOOL)trackWithPersistentID:(int64_t)d existsInLibraryWithConnection:(id)connection
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCABB0];
-  v6 = a4;
-  v7 = [v5 numberWithLongLong:a3];
+  connectionCopy = connection;
+  v7 = [v5 numberWithLongLong:d];
   v11[0] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-  v9 = [v6 executeQuery:@"SELECT 1 FROM item WHERE ROWID = ?" withParameters:v8];
+  v9 = [connectionCopy executeQuery:@"SELECT 1 FROM item WHERE ROWID = ?" withParameters:v8];
 
   LOBYTE(v7) = [v9 hasAtLeastOneRow];
   return v7;
 }
 
-+ (BOOL)trackWithPersistentID:(int64_t)a3 visibleInLibrary:(id)a4
++ (BOOL)trackWithPersistentID:(int64_t)d visibleInLibrary:(id)library
 {
-  v5 = a4;
-  v6 = [ML3ComparisonPredicate predicateWithProperty:@"ROWID" equalToInt64:a3];
-  v7 = [(ML3Entity *)ML3Track queryWithLibrary:v5 predicate:v6];
+  libraryCopy = library;
+  v6 = [ML3ComparisonPredicate predicateWithProperty:@"ROWID" equalToInt64:d];
+  v7 = [(ML3Entity *)ML3Track queryWithLibrary:libraryCopy predicate:v6];
 
-  v8 = [v7 hasEntities];
-  return v8;
+  hasEntities = [v7 hasEntities];
+  return hasEntities;
 }
 
-+ (BOOL)trackWithPersistentID:(int64_t)a3 existsInLibrary:(id)a4
++ (BOOL)trackWithPersistentID:(int64_t)d existsInLibrary:(id)library
 {
-  v6 = a4;
+  libraryCopy = library;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -2003,13 +2003,13 @@ LABEL_2:
   v8[2] = __50__ML3Track_trackWithPersistentID_existsInLibrary___block_invoke;
   v8[3] = &unk_27875FFE0;
   v8[4] = &v9;
-  v8[5] = a1;
-  v8[6] = a3;
-  [v6 databaseConnectionAllowingWrites:0 withBlock:v8];
-  LOBYTE(a3) = *(v10 + 24);
+  v8[5] = self;
+  v8[6] = d;
+  [libraryCopy databaseConnectionAllowingWrites:0 withBlock:v8];
+  LOBYTE(d) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
 
-  return a3;
+  return d;
 }
 
 uint64_t __50__ML3Track_trackWithPersistentID_existsInLibrary___block_invoke(uint64_t a1, uint64_t a2)
@@ -2019,12 +2019,12 @@ uint64_t __50__ML3Track_trackWithPersistentID_existsInLibrary___block_invoke(uin
   return result;
 }
 
-+ (BOOL)removeFromMyLibrary:(id)a3 deletionType:(int)a4 persistentIDs:(const int64_t *)a5 count:(unint64_t)a6
++ (BOOL)removeFromMyLibrary:(id)library deletionType:(int)type persistentIDs:(const int64_t *)ds count:(unint64_t)count
 {
-  v8 = a3;
-  for (i = [MEMORY[0x277CBEB18] arrayWithCapacity:a6];
+  libraryCopy = library;
+  for (i = [MEMORY[0x277CBEB18] arrayWithCapacity:count];
   {
-    v10 = *a5++;
+    v10 = *ds++;
     v11 = [MEMORY[0x277CCABB0] numberWithLongLong:v10];
     [i addObject:v11];
   }
@@ -2033,10 +2033,10 @@ uint64_t __50__ML3Track_trackWithPersistentID_existsInLibrary___block_invoke(uin
   v15[1] = 3221225472;
   v15[2] = __65__ML3Track_removeFromMyLibrary_deletionType_persistentIDs_count___block_invoke;
   v15[3] = &unk_278764E80;
-  v16 = v8;
+  v16 = libraryCopy;
   v17 = i;
   v12 = i;
-  v13 = v8;
+  v13 = libraryCopy;
   [v13 performDatabaseTransactionWithBlock:v15];
 
   return 1;
@@ -2070,40 +2070,40 @@ uint64_t __65__ML3Track_removeFromMyLibrary_deletionType_persistentIDs_count___b
   return 1;
 }
 
-+ (BOOL)deleteFromLibrary:(id)a3 deletionType:(int)a4 canonicalizeCollections:(BOOL)a5 persistentIDs:(const int64_t *)a6 count:(unint64_t)a7 usingConnection:(id)a8
++ (BOOL)deleteFromLibrary:(id)library deletionType:(int)type canonicalizeCollections:(BOOL)collections persistentIDs:(const int64_t *)ds count:(unint64_t)count usingConnection:(id)connection
 {
-  v11 = a5;
+  collectionsCopy = collections;
   v40 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a8;
-  v16 = v15;
-  if (a7)
+  libraryCopy = library;
+  connectionCopy = connection;
+  v16 = connectionCopy;
+  if (count)
   {
-    v29 = a4;
-    v30 = v15;
+    typeCopy = type;
+    v30 = connectionCopy;
     v17 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    v18 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v19 = 0;
     do
     {
-      v20 = [MEMORY[0x277CCABB0] numberWithLongLong:a6[v19]];
-      [v18 addObject:v20];
+      v20 = [MEMORY[0x277CCABB0] numberWithLongLong:ds[v19]];
+      [array addObject:v20];
 
       ++v19;
     }
 
-    while (a7 != v19);
+    while (count != v19);
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __103__ML3Track_deleteFromLibrary_deletionType_canonicalizeCollections_persistentIDs_count_usingConnection___block_invoke;
     v34[3] = &unk_278763DA8;
     v21 = v17;
     v35 = v21;
-    [a1 enumeratePathsToDeleteFromLibrary:v14 persistentIDs:v18 usingBlock:v34];
-    v33.receiver = a1;
+    [self enumeratePathsToDeleteFromLibrary:libraryCopy persistentIDs:array usingBlock:v34];
+    v33.receiver = self;
     v33.super_class = &OBJC_METACLASS___ML3Track;
     v16 = v30;
-    v22 = objc_msgSendSuper2(&v33, sel_deleteFromLibrary_deletionType_canonicalizeCollections_persistentIDs_count_usingConnection_, v14, v29, v11, a6, a7, v30);
+    v22 = objc_msgSendSuper2(&v33, sel_deleteFromLibrary_deletionType_canonicalizeCollections_persistentIDs_count_usingConnection_, libraryCopy, typeCopy, collectionsCopy, ds, count, v30);
     if (v22)
     {
       v23 = os_log_create("com.apple.amp.medialibrary", "Default");
@@ -2111,7 +2111,7 @@ uint64_t __65__ML3Track_removeFromMyLibrary_deletionType_persistentIDs_count___b
       {
         v24 = [v21 count];
         v25 = @"user action";
-        if (v29 == 2)
+        if (typeCopy == 2)
         {
           v25 = @"automated action";
         }
@@ -2152,9 +2152,9 @@ uint64_t __103__ML3Track_deleteFromLibrary_deletionType_canonicalizeCollections_
   return result;
 }
 
-+ (BOOL)deleteFromLibrary:(id)a3 deletionType:(int)a4 canonicalizeCollections:(BOOL)a5 persistentIDs:(const int64_t *)a6 count:(unint64_t)a7
++ (BOOL)deleteFromLibrary:(id)library deletionType:(int)type canonicalizeCollections:(BOOL)collections persistentIDs:(const int64_t *)ds count:(unint64_t)count
 {
-  v12 = a3;
+  libraryCopy = library;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -2164,23 +2164,23 @@ uint64_t __103__ML3Track_deleteFromLibrary_deletionType_canonicalizeCollections_
   v15[2] = __87__ML3Track_deleteFromLibrary_deletionType_canonicalizeCollections_persistentIDs_count___block_invoke;
   v15[3] = &unk_2787625C0;
   v17 = &v23;
-  v18 = a1;
-  v13 = v12;
-  v21 = a4;
-  v22 = a5;
+  selfCopy = self;
+  v13 = libraryCopy;
+  typeCopy = type;
+  collectionsCopy = collections;
   v16 = v13;
-  v19 = a6;
-  v20 = a7;
+  dsCopy = ds;
+  countCopy = count;
   [v13 performDatabaseTransactionWithBlock:v15];
-  LOBYTE(a7) = *(v24 + 24);
+  LOBYTE(count) = *(v24 + 24);
 
   _Block_object_dispose(&v23, 8);
-  return a7;
+  return count;
 }
 
-+ (BOOL)deleteFromLibrary:(id)a3 deletionType:(int)a4 persistentIDs:(const int64_t *)a5 count:(unint64_t)a6
++ (BOOL)deleteFromLibrary:(id)library deletionType:(int)type persistentIDs:(const int64_t *)ds count:(unint64_t)count
 {
-  v10 = a3;
+  libraryCopy = library;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -2190,31 +2190,31 @@ uint64_t __103__ML3Track_deleteFromLibrary_deletionType_canonicalizeCollections_
   v13[2] = __63__ML3Track_deleteFromLibrary_deletionType_persistentIDs_count___block_invoke;
   v13[3] = &unk_27875FFB8;
   v15 = &v20;
-  v16 = a1;
-  v11 = v10;
-  v19 = a4;
+  selfCopy = self;
+  v11 = libraryCopy;
+  typeCopy = type;
   v14 = v11;
-  v17 = a5;
-  v18 = a6;
+  dsCopy = ds;
+  countCopy = count;
   [v11 performDatabaseTransactionWithBlock:v13];
-  LOBYTE(a6) = *(v21 + 24);
+  LOBYTE(count) = *(v21 + 24);
 
   _Block_object_dispose(&v20, 8);
-  return a6;
+  return count;
 }
 
-+ (BOOL)_writeSyncDeletesToPlistWithLibrary:(id)a3 forPersistentIDs:(id)a4
++ (BOOL)_writeSyncDeletesToPlistWithLibrary:(id)library forPersistentIDs:(id)ds
 {
   v68 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  libraryCopy = library;
+  dsCopy = ds;
   v7 = 1;
-  v38 = [v5 pathForResourceFileOrFolder:1 basePath:0 relativeToBase:0 createParentFolderIfNecessary:1];
+  v38 = [libraryCopy pathForResourceFileOrFolder:1 basePath:0 relativeToBase:0 createParentFolderIfNecessary:1];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v8 = v6;
+  v8 = dsCopy;
   v9 = [v8 countByEnumeratingWithState:&v48 objects:v67 count:16];
   if (v9)
   {
@@ -2222,7 +2222,7 @@ uint64_t __103__ML3Track_deleteFromLibrary_deletionType_canonicalizeCollections_
     v40 = 0;
     v11 = 0x27875C000uLL;
     v47 = *v49;
-    v39 = v5;
+    v39 = libraryCopy;
     v44 = v8;
     do
     {
@@ -2236,7 +2236,7 @@ uint64_t __103__ML3Track_deleteFromLibrary_deletionType_canonicalizeCollections_
         }
 
         v13 = *(*(&v48 + 1) + 8 * v12);
-        v14 = [*(v11 + 1688) newWithPersistentID:objc_msgSend(v13 inLibrary:{"unsignedLongLongValue"), v5}];
+        v14 = [*(v11 + 1688) newWithPersistentID:objc_msgSend(v13 inLibrary:{"unsignedLongLongValue"), libraryCopy}];
         if ([v14 existsInLibrary])
         {
           v65[4] = xmmword_27875FF88;
@@ -2258,7 +2258,7 @@ uint64_t __103__ML3Track_deleteFromLibrary_deletionType_canonicalizeCollections_
           v16 = v64;
           if ([v15 unsignedLongLongValue] && (objc_msgSend(v16, "longLongValue") > 249 || !objc_msgSend(v16, "longLongValue")))
           {
-            v17 = [MEMORY[0x277CBEB38] dictionary];
+            dictionary = [MEMORY[0x277CBEB38] dictionary];
             v45 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(*(&v61 + 1), "longLongValue")}];
             v21 = MEMORY[0x277CCABB0];
             [v60 doubleValue];
@@ -2268,38 +2268,38 @@ uint64_t __103__ML3Track_deleteFromLibrary_deletionType_canonicalizeCollections_
             v42 = [v23 numberWithUnsignedInt:ML3UInt32MacTimeFromCFAbsoluteTime(v24)];
             v25 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(*(&v62 + 1), "longLongValue")}];
             v26 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v63, "longLongValue")}];
-            [v17 setValue:v58 forKey:@"persistentID"];
-            [v17 setValue:MEMORY[0x277CBEC38] forKey:@"deleted"];
+            [dictionary setValue:v58 forKey:@"persistentID"];
+            [dictionary setValue:MEMORY[0x277CBEC38] forKey:@"deleted"];
             if (![*(&v58 + 1) longLongValue])
             {
               if ([v59 intValue])
               {
-                [v17 setValue:v59 forKey:@"playCount"];
-                [v17 setObject:v43 forKey:@"playMacOSDate"];
-                [v17 setValue:v61 forKey:@"playedState"];
+                [dictionary setValue:v59 forKey:@"playCount"];
+                [dictionary setObject:v43 forKey:@"playMacOSDate"];
+                [dictionary setValue:v61 forKey:@"playedState"];
               }
 
               if ([*(&v59 + 1) intValue])
               {
-                [v17 setValue:*(&v59 + 1) forKey:@"skipCount"];
-                [v17 setObject:v42 forKey:@"skipMacOSDate"];
+                [dictionary setValue:*(&v59 + 1) forKey:@"skipCount"];
+                [dictionary setObject:v42 forKey:@"skipMacOSDate"];
               }
 
-              [v17 setValue:v45 forKey:@"bookmarkTimeInMS"];
-              [v17 setValue:v62 forKey:@"audioTrackID"];
-              [v17 setValue:v25 forKey:@"userRating"];
-              [v17 setValue:v26 forKey:@"likedState"];
-              [v17 setValue:*(&v63 + 1) forKey:@"albumLikedState"];
+              [dictionary setValue:v45 forKey:@"bookmarkTimeInMS"];
+              [dictionary setValue:v62 forKey:@"audioTrackID"];
+              [dictionary setValue:v25 forKey:@"userRating"];
+              [dictionary setValue:v26 forKey:@"likedState"];
+              [dictionary setValue:*(&v63 + 1) forKey:@"albumLikedState"];
             }
 
             v27 = os_log_create("com.apple.amp.medialibrary", "Default");
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
             {
-              v28 = [v13 longLongValue];
+              longLongValue = [v13 longLongValue];
               *buf = 134218242;
-              v53 = v28;
+              v53 = longLongValue;
               v54 = 2114;
-              v55 = v17;
+              v55 = dictionary;
               _os_log_impl(&dword_22D2FA000, v27, OS_LOG_TYPE_DEFAULT, "Writing tombstone for track with persistent ID %lld: %{public}@", buf, 0x16u);
             }
 
@@ -2312,42 +2312,42 @@ uint64_t __103__ML3Track_deleteFromLibrary_deletionType_canonicalizeCollections_
               v32 = v31;
               if (v31)
               {
-                v33 = v31;
+                array = v31;
               }
 
               else
               {
-                v33 = [MEMORY[0x277CBEB18] array];
+                array = [MEMORY[0x277CBEB18] array];
               }
 
-              v34 = v33;
+              v34 = array;
 
               v29 = v34;
               v25 = v41;
             }
 
             v40 = v29;
-            [v29 addObject:v17];
+            [v29 addObject:dictionary];
 
-            v5 = v39;
+            libraryCopy = v39;
           }
 
           else
           {
-            v17 = os_log_create("com.apple.amp.medialibrary", "Default");
-            if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+            dictionary = os_log_create("com.apple.amp.medialibrary", "Default");
+            if (os_log_type_enabled(dictionary, OS_LOG_TYPE_DEFAULT))
             {
-              v18 = [v13 longLongValue];
-              v19 = [v15 longLongValue];
-              v20 = [v16 longLongValue];
+              longLongValue2 = [v13 longLongValue];
+              longLongValue3 = [v15 longLongValue];
+              longLongValue4 = [v16 longLongValue];
               *buf = 134218496;
-              v53 = v18;
+              v53 = longLongValue2;
               v54 = 2048;
-              v55 = v19;
-              v5 = v39;
+              v55 = longLongValue3;
+              libraryCopy = v39;
               v56 = 2048;
-              v57 = v20;
-              _os_log_impl(&dword_22D2FA000, v17, OS_LOG_TYPE_DEFAULT, "Skipping writing tombstone for track with persistent ID %lld (sync_id = %lld, base_location_id = %lld)", buf, 0x20u);
+              v57 = longLongValue4;
+              _os_log_impl(&dword_22D2FA000, dictionary, OS_LOG_TYPE_DEFAULT, "Skipping writing tombstone for track with persistent ID %lld (sync_id = %lld, base_location_id = %lld)", buf, 0x20u);
             }
           }
 
@@ -2388,25 +2388,25 @@ LABEL_36:
   return v7;
 }
 
-+ (BOOL)libraryContentsChangeForProperty:(id)a3
++ (BOOL)libraryContentsChangeForProperty:(id)property
 {
-  v3 = a3;
-  if ([ML3TrackContentsUnchangingProperties containsObject:v3])
+  propertyCopy = property;
+  if ([ML3TrackContentsUnchangingProperties containsObject:propertyCopy])
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = [ML3TrackInvisibleProperties containsObject:v3] ^ 1;
+    v4 = [ML3TrackInvisibleProperties containsObject:propertyCopy] ^ 1;
   }
 
   return v4;
 }
 
-+ (id)foreignColumnForProperty:(id)a3
++ (id)foreignColumnForProperty:(id)property
 {
-  v3 = [ML3TrackForeignColumnForProperties objectForKey:a3];
+  v3 = [ML3TrackForeignColumnForProperties objectForKey:property];
   if ([v3 length])
   {
     v4 = v3;
@@ -2422,9 +2422,9 @@ LABEL_36:
   return v4;
 }
 
-+ (id)foreignDatabaseTableForProperty:(id)a3
++ (id)foreignDatabaseTableForProperty:(id)property
 {
-  v3 = [ML3TrackForeignDatabaseTableForProperties objectForKey:a3];
+  v3 = [ML3TrackForeignDatabaseTableForProperties objectForKey:property];
   if ([v3 length])
   {
     v4 = v3;
@@ -2440,10 +2440,10 @@ LABEL_36:
   return v4;
 }
 
-+ (id)joinClausesForProperty:(id)a3
++ (id)joinClausesForProperty:(id)property
 {
-  v4 = a3;
-  v5 = [ML3TrackJoinsForProperties objectForKey:v4];
+  propertyCopy = property;
+  v5 = [ML3TrackJoinsForProperties objectForKey:propertyCopy];
   v6 = v5;
   if (v5)
   {
@@ -2452,9 +2452,9 @@ LABEL_36:
 
   else
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &OBJC_METACLASS___ML3Track;
-    v7 = objc_msgSendSuper2(&v10, sel_joinClausesForProperty_, v4);
+    v7 = objc_msgSendSuper2(&v10, sel_joinClausesForProperty_, propertyCopy);
   }
 
   v8 = v7;
@@ -2462,29 +2462,29 @@ LABEL_36:
   return v8;
 }
 
-+ (id)subselectPropertyForProperty:(id)a3
++ (id)subselectPropertyForProperty:(id)property
 {
-  v3 = [ML3TrackSubSelectProperties objectForKey:a3];
+  v3 = [ML3TrackSubSelectProperties objectForKey:property];
   v4 = [v3 objectForKey:@"property"];
 
   return v4;
 }
 
-+ (id)subselectStatementForProperty:(id)a3
++ (id)subselectStatementForProperty:(id)property
 {
-  v3 = [ML3TrackSubSelectProperties objectForKey:a3];
+  v3 = [ML3TrackSubSelectProperties objectForKey:property];
   v4 = [v3 objectForKey:@"subselect"];
 
   return v4;
 }
 
-+ (id)predicateByOptimizingComparisonPredicate:(id)a3
++ (id)predicateByOptimizingComparisonPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [v4 property];
-  v6 = [v5 isEqualToString:@"((item.media_type & 1024) = 1024)"];
+  predicateCopy = predicate;
+  property = [predicateCopy property];
+  v6 = [property isEqualToString:@"((item.media_type & 1024) = 1024)"];
 
-  v7 = v4;
+  v7 = predicateCopy;
   if (v6)
   {
     v8 = 1024;
@@ -2495,117 +2495,117 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v9 = [v4 property];
-  v10 = [v9 isEqualToString:@"((item.media_type & 260)!=0)"];
+  property2 = [predicateCopy property];
+  v10 = [property2 isEqualToString:@"((item.media_type & 260)!=0)"];
 
-  v7 = v4;
+  v7 = predicateCopy;
   if (v10)
   {
     v8 = 260;
     goto LABEL_9;
   }
 
-  v11 = [v4 property];
-  v12 = [v11 isEqualToString:@"((item.media_type & 4128)!=0)"];
+  property3 = [predicateCopy property];
+  v12 = [property3 isEqualToString:@"((item.media_type & 4128)!=0)"];
 
-  v7 = v4;
+  v7 = predicateCopy;
   if (v12)
   {
     v8 = 4128;
     goto LABEL_9;
   }
 
-  v13 = [v4 property];
-  v14 = [v13 isEqualToString:@"(((item.media_type & ~65280) = 0) OR (item.media_type = 1032))"];
+  property4 = [predicateCopy property];
+  v14 = [property4 isEqualToString:@"(((item.media_type & ~65280) = 0) OR (item.media_type = 1032))"];
 
-  v7 = v4;
+  v7 = predicateCopy;
   if (v14)
   {
     v8 = 65280;
     goto LABEL_9;
   }
 
-  v18 = [v4 property];
-  v19 = [v18 isEqualToString:@"media_type"];
+  property5 = [predicateCopy property];
+  v19 = [property5 isEqualToString:@"media_type"];
 
   if (!v19)
   {
 LABEL_24:
-    v29.receiver = a1;
+    v29.receiver = self;
     v29.super_class = &OBJC_METACLASS___ML3Track;
-    v15 = objc_msgSendSuper2(&v29, sel_predicateByOptimizingComparisonPredicate_, v4);
+    v15 = objc_msgSendSuper2(&v29, sel_predicateByOptimizingComparisonPredicate_, predicateCopy);
     goto LABEL_10;
   }
 
-  v20 = [v4 comparison];
-  v21 = [v4 value];
-  v22 = [v21 integerValue];
+  comparison = [predicateCopy comparison];
+  value = [predicateCopy value];
+  integerValue = [value integerValue];
 
-  if (v20 == 2)
+  if (comparison == 2)
   {
-    v23 = [v4 property];
-    v24 = [ML3ComparisonPredicate predicateWithProperty:v23 equalToInteger:v22];
+    property6 = [predicateCopy property];
+    v24 = [ML3ComparisonPredicate predicateWithProperty:property6 equalToInteger:integerValue];
 
-    v25 = [a1 predicateByOptimizingComparisonPredicate:v24];
+    v25 = [self predicateByOptimizingComparisonPredicate:v24];
     v16 = [(ML3UnaryPredicate *)ML3NegationPredicate predicateWithPredicate:v25];
 
     goto LABEL_11;
   }
 
-  if (!v22)
+  if (!integerValue)
   {
     v15 = +[ML3TruthPredicate falsePredicate];
     goto LABEL_10;
   }
 
-  if (v22 == 0xFFFFFF)
+  if (integerValue == 0xFFFFFF)
   {
     v15 = +[ML3TruthPredicate truePredicate];
     goto LABEL_10;
   }
 
-  if (v20 != 10)
+  if (comparison != 10)
   {
-    if (v20 == 1)
+    if (comparison == 1)
     {
-      v15 = v4;
+      v15 = predicateCopy;
       goto LABEL_10;
     }
 
     goto LABEL_24;
   }
 
-  if (v22 == 32)
+  if (integerValue == 32)
   {
     v26 = &unk_2840C81E0;
   }
 
-  else if ((v22 & 0xFFFFF7FF) == 0x1000)
+  else if ((integerValue & 0xFFFFF7FF) == 0x1000)
   {
     v26 = &unk_2840C81F8;
   }
 
-  else if (v22 == 4128)
+  else if (integerValue == 4128)
   {
     v26 = &unk_2840C8210;
   }
 
-  else if (v22 == 4)
+  else if (integerValue == 4)
   {
     v26 = &unk_2840C8228;
   }
 
-  else if ((v22 & 0xFFFFF7FF) == 0x100)
+  else if ((integerValue & 0xFFFFF7FF) == 0x100)
   {
     v26 = &unk_2840C8240;
   }
 
   else
   {
-    if (v22 != 260)
+    if (integerValue != 260)
     {
 LABEL_39:
-      v15 = _containmentMediaTypeMasksPredicateForMediaTypeMask(v22);
+      v15 = _containmentMediaTypeMasksPredicateForMediaTypeMask(integerValue);
       goto LABEL_10;
     }
 
@@ -2626,12 +2626,12 @@ LABEL_11:
   return v16;
 }
 
-+ (id)orderingTermsForITTGTrackOrder:(unsigned int)a3 descending:(BOOL)a4
++ (id)orderingTermsForITTGTrackOrder:(unsigned int)order descending:(BOOL)descending
 {
   v218[6] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  descendingCopy = descending;
   v6 = 0;
-  switch(a3)
+  switch(order)
   {
     case 0u:
     case 1u:
@@ -2639,7 +2639,7 @@ LABEL_11:
       goto LABEL_263;
     case 3u:
       v79 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v80 = 2;
       }
@@ -2656,7 +2656,7 @@ LABEL_11:
       goto LABEL_232;
     case 5u:
       v116 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v117 = 2;
       }
@@ -2684,7 +2684,7 @@ LABEL_11:
     case 6u:
     case 0x22u:
       v7 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v8 = 2;
       }
@@ -2712,7 +2712,7 @@ LABEL_11:
     case 7u:
     case 0x20u:
       v23 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v24 = 2;
       }
@@ -2737,7 +2737,7 @@ LABEL_11:
       goto LABEL_244;
     case 8u:
       v71 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v72 = 2;
       }
@@ -2757,7 +2757,7 @@ LABEL_11:
     case 9u:
     case 0x23u:
       v21 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v22 = 2;
       }
@@ -2784,7 +2784,7 @@ LABEL_11:
       goto LABEL_256;
     case 0xAu:
       v134 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v135 = 2;
       }
@@ -2803,7 +2803,7 @@ LABEL_11:
       goto LABEL_209;
     case 0xCu:
       v128 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v129 = 2;
       }
@@ -2826,7 +2826,7 @@ LABEL_11:
       goto LABEL_188;
     case 0xDu:
       v85 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v86 = 2;
       }
@@ -2845,7 +2845,7 @@ LABEL_11:
       goto LABEL_209;
     case 0xEu:
       v87 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v88 = 2;
       }
@@ -2864,7 +2864,7 @@ LABEL_11:
       goto LABEL_209;
     case 0xFu:
       v124 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v125 = 2;
       }
@@ -2891,7 +2891,7 @@ LABEL_11:
       goto LABEL_256;
     case 0x10u:
       v93 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v94 = 2;
       }
@@ -2910,7 +2910,7 @@ LABEL_11:
       goto LABEL_209;
     case 0x11u:
       v138 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v139 = 2;
       }
@@ -2929,7 +2929,7 @@ LABEL_11:
       goto LABEL_209;
     case 0x14u:
       v69 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v70 = 2;
       }
@@ -2948,7 +2948,7 @@ LABEL_11:
       goto LABEL_209;
     case 0x15u:
       v130 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v131 = 2;
       }
@@ -2967,7 +2967,7 @@ LABEL_11:
       goto LABEL_209;
     case 0x16u:
       v51 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v52 = 2;
       }
@@ -2977,7 +2977,7 @@ LABEL_11:
         v52 = 1;
       }
 
-      if (v5)
+      if (descendingCopy)
       {
         v53 = 1;
       }
@@ -2996,7 +2996,7 @@ LABEL_11:
       goto LABEL_209;
     case 0x17u:
       v67 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v68 = 2;
       }
@@ -3016,7 +3016,7 @@ LABEL_11:
     case 0x18u:
     case 0x24u:
       v17 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v18 = 2;
       }
@@ -3041,7 +3041,7 @@ LABEL_11:
       goto LABEL_244;
     case 0x19u:
       v54 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v55 = 2;
       }
@@ -3051,7 +3051,7 @@ LABEL_11:
         v55 = 1;
       }
 
-      if (v5)
+      if (descendingCopy)
       {
         v56 = 1;
       }
@@ -3078,7 +3078,7 @@ LABEL_11:
       goto LABEL_256;
     case 0x1Au:
       v145 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v146 = 2;
       }
@@ -3088,7 +3088,7 @@ LABEL_11:
         v146 = 1;
       }
 
-      if (v5)
+      if (descendingCopy)
       {
         v147 = 1;
       }
@@ -3115,7 +3115,7 @@ LABEL_11:
       goto LABEL_256;
     case 0x1Bu:
       v142 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v143 = 2;
       }
@@ -3125,7 +3125,7 @@ LABEL_11:
         v143 = 1;
       }
 
-      if (v5)
+      if (descendingCopy)
       {
         v144 = 1;
       }
@@ -3152,7 +3152,7 @@ LABEL_11:
       goto LABEL_256;
     case 0x1Cu:
       v60 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v61 = 2;
       }
@@ -3177,7 +3177,7 @@ LABEL_188:
       goto LABEL_259;
     case 0x1Du:
       v73 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v74 = 2;
       }
@@ -3187,7 +3187,7 @@ LABEL_188:
         v74 = 1;
       }
 
-      if (v5)
+      if (descendingCopy)
       {
         v75 = 1;
       }
@@ -3214,7 +3214,7 @@ LABEL_188:
       goto LABEL_256;
     case 0x1Eu:
       v89 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v90 = 2;
       }
@@ -3224,7 +3224,7 @@ LABEL_188:
         v90 = 1;
       }
 
-      if (v5)
+      if (descendingCopy)
       {
         v91 = 1;
       }
@@ -3249,7 +3249,7 @@ LABEL_188:
       goto LABEL_244;
     case 0x1Fu:
       v76 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v77 = 2;
       }
@@ -3259,7 +3259,7 @@ LABEL_188:
         v77 = 1;
       }
 
-      if (v5)
+      if (descendingCopy)
       {
         v78 = 1;
       }
@@ -3286,7 +3286,7 @@ LABEL_188:
       goto LABEL_256;
     case 0x28u:
       v152 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v153 = 2;
       }
@@ -3296,7 +3296,7 @@ LABEL_188:
         v153 = 1;
       }
 
-      if (v5)
+      if (descendingCopy)
       {
         v154 = 1;
       }
@@ -3321,7 +3321,7 @@ LABEL_188:
       goto LABEL_244;
     case 0x29u:
       v57 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v58 = 2;
       }
@@ -3331,7 +3331,7 @@ LABEL_188:
         v58 = 1;
       }
 
-      if (v5)
+      if (descendingCopy)
       {
         v59 = 1;
       }
@@ -3358,7 +3358,7 @@ LABEL_188:
       goto LABEL_256;
     case 0x2Bu:
       v126 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v127 = 2;
       }
@@ -3387,7 +3387,7 @@ LABEL_188:
       goto LABEL_183;
     case 0x2Cu:
       v150 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v151 = 2;
       }
@@ -3412,7 +3412,7 @@ LABEL_188:
       goto LABEL_244;
     case 0x2Du:
       v46 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v47 = 2;
       }
@@ -3437,7 +3437,7 @@ LABEL_188:
       goto LABEL_244;
     case 0x2Eu:
       v95 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v96 = 2;
       }
@@ -3456,7 +3456,7 @@ LABEL_188:
       goto LABEL_209;
     case 0x2Fu:
       v44 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v45 = 2;
       }
@@ -3476,7 +3476,7 @@ LABEL_188:
       goto LABEL_260;
     case 0x31u:
       v34 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v35 = 2;
       }
@@ -3486,7 +3486,7 @@ LABEL_188:
         v35 = 1;
       }
 
-      if (v5)
+      if (descendingCopy)
       {
         v36 = 1;
       }
@@ -3513,7 +3513,7 @@ LABEL_188:
       goto LABEL_256;
     case 0x32u:
       v64 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v65 = 2;
       }
@@ -3523,7 +3523,7 @@ LABEL_188:
         v65 = 1;
       }
 
-      if (v5)
+      if (descendingCopy)
       {
         v66 = 1;
       }
@@ -3550,7 +3550,7 @@ LABEL_188:
       goto LABEL_256;
     case 0x33u:
       v83 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v84 = 2;
       }
@@ -3577,7 +3577,7 @@ LABEL_244:
       goto LABEL_258;
     case 0x34u:
       v132 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v133 = 2;
       }
@@ -3604,7 +3604,7 @@ LABEL_244:
       goto LABEL_256;
     case 0x35u:
       v158 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v159 = 2;
       }
@@ -3631,7 +3631,7 @@ LABEL_244:
       goto LABEL_256;
     case 0x36u:
       v48 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v49 = 2;
       }
@@ -3641,7 +3641,7 @@ LABEL_244:
         v49 = 1;
       }
 
-      if (v5)
+      if (descendingCopy)
       {
         v50 = 1;
       }
@@ -3674,12 +3674,12 @@ LABEL_244:
       }
 
       *buf = 67109120;
-      v168 = 55;
+      orderCopy = 55;
       v92 = "Unsupported order type: %u";
       goto LABEL_276;
     case 0x38u:
       v110 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v111 = 2;
       }
@@ -3689,7 +3689,7 @@ LABEL_244:
         v111 = 1;
       }
 
-      if (v5)
+      if (descendingCopy)
       {
         v112 = 1;
       }
@@ -3721,7 +3721,7 @@ LABEL_183:
       goto LABEL_257;
     case 0x39u:
       v155 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v156 = 2;
       }
@@ -3731,7 +3731,7 @@ LABEL_183:
         v156 = 1;
       }
 
-      if (v5)
+      if (descendingCopy)
       {
         v157 = 1;
       }
@@ -3770,7 +3770,7 @@ LABEL_183:
       goto LABEL_273;
     case 0x3Au:
       v97 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v98 = 2;
       }
@@ -3780,7 +3780,7 @@ LABEL_183:
         v98 = 1;
       }
 
-      if (v5)
+      if (descendingCopy)
       {
         v99 = 1;
       }
@@ -3819,7 +3819,7 @@ LABEL_183:
       goto LABEL_273;
     case 0x3Bu:
       v37 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v38 = 2;
       }
@@ -3829,7 +3829,7 @@ LABEL_183:
         v38 = 1;
       }
 
-      if (v5)
+      if (descendingCopy)
       {
         v39 = 1;
       }
@@ -3858,7 +3858,7 @@ LABEL_183:
       goto LABEL_260;
     case 0x3Cu:
       v25 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v26 = 2;
       }
@@ -3877,7 +3877,7 @@ LABEL_183:
       goto LABEL_209;
     case 0x3Du:
       v161 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v162 = 2;
       }
@@ -3887,7 +3887,7 @@ LABEL_183:
         v162 = 1;
       }
 
-      if (v5)
+      if (descendingCopy)
       {
         v163 = 1;
       }
@@ -3929,7 +3929,7 @@ LABEL_273:
       break;
     case 0x3Eu:
       v148 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v149 = 2;
       }
@@ -3946,7 +3946,7 @@ LABEL_273:
       goto LABEL_232;
     case 0x43u:
       v32 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v33 = 2;
       }
@@ -3965,7 +3965,7 @@ LABEL_273:
       goto LABEL_209;
     case 0x46u:
       v122 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v123 = 2;
       }
@@ -3984,7 +3984,7 @@ LABEL_273:
       goto LABEL_209;
     case 0x47u:
       v136 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v137 = 2;
       }
@@ -4005,7 +4005,7 @@ LABEL_209:
       goto LABEL_261;
     case 0x48u:
       v29 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v30 = 2;
       }
@@ -4015,7 +4015,7 @@ LABEL_209:
         v30 = 1;
       }
 
-      if (v5)
+      if (descendingCopy)
       {
         v31 = 1;
       }
@@ -4052,7 +4052,7 @@ LABEL_261:
       break;
     case 0x70u:
       v140 = [ML3OrderingTerm alloc];
-      if (v5)
+      if (descendingCopy)
       {
         v141 = 2;
       }
@@ -4074,7 +4074,7 @@ LABEL_232:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109120;
-        v168 = a3;
+        orderCopy = order;
         v92 = "Unexpected order type: %u";
 LABEL_276:
         _os_log_impl(&dword_22D2FA000, v9, OS_LOG_TYPE_ERROR, v92, buf, 8u);
@@ -4090,43 +4090,43 @@ LABEL_263:
   return v6;
 }
 
-+ (id)containerQueryWithContainer:(id)a3 predicate:(id)a4 orderingTerms:(id)a5
++ (id)containerQueryWithContainer:(id)container predicate:(id)predicate orderingTerms:(id)terms
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[ML3ContainerQuery alloc] initWithEntityClass:a1 container:v10 predicate:v9 orderingTerms:v8];
+  termsCopy = terms;
+  predicateCopy = predicate;
+  containerCopy = container;
+  v11 = [[ML3ContainerQuery alloc] initWithEntityClass:self container:containerCopy predicate:predicateCopy orderingTerms:termsCopy];
 
   return v11;
 }
 
-+ (id)containerQueryWithContainer:(id)a3 predicate:(id)a4
++ (id)containerQueryWithContainer:(id)container predicate:(id)predicate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[ML3ContainerQuery alloc] initWithEntityClass:a1 container:v7 predicate:v6 orderingTerms:0];
+  predicateCopy = predicate;
+  containerCopy = container;
+  v8 = [[ML3ContainerQuery alloc] initWithEntityClass:self container:containerCopy predicate:predicateCopy orderingTerms:0];
 
   return v8;
 }
 
-+ (id)containerQueryWithContainer:(id)a3
++ (id)containerQueryWithContainer:(id)container
 {
-  v4 = a3;
-  v5 = [[ML3ContainerQuery alloc] initWithEntityClass:a1 container:v4 predicate:0 orderingTerms:0];
+  containerCopy = container;
+  v5 = [[ML3ContainerQuery alloc] initWithEntityClass:self container:containerCopy predicate:0 orderingTerms:0];
 
   return v5;
 }
 
-- (BOOL)_populateLocationPropertiesWithPath:(id)a3 protectionType:(int64_t)a4 fromLibrary:(id)a5 usingConnection:(id)a6
+- (BOOL)_populateLocationPropertiesWithPath:(id)path protectionType:(int64_t)type fromLibrary:(id)library usingConnection:(id)connection
 {
   v34 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  pathCopy = path;
+  libraryCopy = library;
+  connectionCopy = connection;
   v14 = objc_alloc_init(MEMORY[0x277CCAA00]);
-  if ([v11 length])
+  if ([pathCopy length])
   {
-    v15 = [v14 fileExistsAtPath:v11] ^ 1;
+    v15 = [v14 fileExistsAtPath:pathCopy] ^ 1;
   }
 
   else
@@ -4134,13 +4134,13 @@ LABEL_263:
     v15 = 1;
   }
 
-  if ([v11 length] && v15)
+  if ([pathCopy length] && v15)
   {
     v16 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v33 = v11;
+      v33 = pathCopy;
       _os_log_impl(&dword_22D2FA000, v16, OS_LOG_TYPE_ERROR, "populateLocationPropertiesWithPath called with invalid path '%{public}@'", buf, 0xCu);
     }
   }
@@ -4150,7 +4150,7 @@ LABEL_263:
     v17 = [MEMORY[0x277CCABB0] numberWithLongLong:{-[ML3Entity persistentID](self, "persistentID")}];
     v31 = v17;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v31 count:1];
-    [ML3Track clearLocationFromLibrary:v12 persistentIDs:v18];
+    [ML3Track clearLocationFromLibrary:libraryCopy persistentIDs:v18];
   }
 
   else
@@ -4159,13 +4159,13 @@ LABEL_263:
     v21 = 3221225472;
     v22 = __109__ML3Track_ML3TrackImporter___populateLocationPropertiesWithPath_protectionType_fromLibrary_usingConnection___block_invoke;
     v23 = &unk_2787634F0;
-    v24 = self;
+    selfCopy = self;
     v25 = v14;
-    v26 = v11;
+    v26 = pathCopy;
     v29 = a2;
-    v27 = v12;
-    v30 = a4;
-    v28 = v13;
+    v27 = libraryCopy;
+    typeCopy = type;
+    v28 = connectionCopy;
     [v28 performTransactionWithBlock:&v20];
   }
 
@@ -4465,52 +4465,52 @@ BOOL __109__ML3Track_ML3TrackImporter___populateLocationPropertiesWithPath_prote
   return v22 != 0;
 }
 
-- (void)populateLocationPropertiesWithPath:(id)a3 protectionType:(int64_t)a4 completionBlock:(id)a5
+- (void)populateLocationPropertiesWithPath:(id)path protectionType:(int64_t)type completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(ML3Entity *)self library];
+  pathCopy = path;
+  blockCopy = block;
+  library = [(ML3Entity *)self library];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __96__ML3Track_ML3TrackImporter__populateLocationPropertiesWithPath_protectionType_completionBlock___block_invoke;
   v13[3] = &unk_278763490;
   v13[4] = self;
-  v14 = v8;
-  v15 = v10;
-  v16 = a4;
-  v11 = v10;
-  v12 = v8;
-  [v11 performAsyncDatabaseWriteTransactionWithBlock:v13 completionBlock:v9];
+  v14 = pathCopy;
+  v15 = library;
+  typeCopy = type;
+  v11 = library;
+  v12 = pathCopy;
+  [v11 performAsyncDatabaseWriteTransactionWithBlock:v13 completionBlock:blockCopy];
 }
 
-- (void)populateLocationPropertiesWithPath:(id)a3 protectionType:(int64_t)a4
+- (void)populateLocationPropertiesWithPath:(id)path protectionType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(ML3Entity *)self library];
+  pathCopy = path;
+  library = [(ML3Entity *)self library];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __80__ML3Track_ML3TrackImporter__populateLocationPropertiesWithPath_protectionType___block_invoke;
   v10[3] = &unk_278763490;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v13 = a4;
-  v8 = v7;
-  v9 = v6;
+  v11 = pathCopy;
+  v12 = library;
+  typeCopy = type;
+  v8 = library;
+  v9 = pathCopy;
   [v8 performDatabaseTransactionWithBlock:v10];
 }
 
-- (void)populateChapterDataWithImportChapters:(id)a3
+- (void)populateChapterDataWithImportChapters:(id)chapters
 {
-  v4 = a3;
+  chaptersCopy = chapters;
   WeakRetained = objc_loadWeakRetained(&self->super._library);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__ML3Track_ML3TrackImporter__populateChapterDataWithImportChapters___block_invoke;
   v7[3] = &unk_278764E80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = chaptersCopy;
+  v6 = chaptersCopy;
   [WeakRetained performDatabaseTransactionWithBlock:v7];
 }
 
@@ -4536,21 +4536,21 @@ uint64_t __68__ML3Track_ML3TrackImporter__populateChapterDataWithImportChapters_
   return 1;
 }
 
-- (BOOL)populateArtworkCacheWithArtworkData:(id)a3
+- (BOOL)populateArtworkCacheWithArtworkData:(id)data
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     v5 = [[ML3ArtworkTokenSet alloc] initWithEntity:self artworkType:1];
     v6 = [(ML3ArtworkTokenSet *)v5 artworkTokenForSource:500];
     if ([v6 length])
     {
       v7 = [(ML3Entity *)self valueForProperty:@"media_type"];
-      v8 = [v7 integerValue];
+      integerValue = [v7 integerValue];
 
       WeakRetained = objc_loadWeakRetained(&self->super._library);
-      v10 = [WeakRetained importOriginalArtworkFromImageData:v4 withArtworkToken:v6 artworkType:1 sourceType:500 mediaType:v8];
+      v10 = [WeakRetained importOriginalArtworkFromImageData:dataCopy withArtworkToken:v6 artworkType:1 sourceType:500 mediaType:integerValue];
     }
 
     else
@@ -4559,7 +4559,7 @@ uint64_t __68__ML3Track_ML3TrackImporter__populateChapterDataWithImportChapters_
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         v13 = 134217984;
-        v14 = [(ML3Entity *)self persistentID];
+        persistentID = [(ML3Entity *)self persistentID];
         _os_log_impl(&dword_22D2FA000, v11, OS_LOG_TYPE_ERROR, "Attempting to import store item artwork with invalid artwork token for item pid %lld", &v13, 0xCu);
       }
 
@@ -4575,29 +4575,29 @@ uint64_t __68__ML3Track_ML3TrackImporter__populateChapterDataWithImportChapters_
   return v10;
 }
 
-+ (id)importChaptersByParsingAsset:(id)a3
++ (id)importChaptersByParsingAsset:(id)asset
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 availableChapterLocales];
-  if ([v5 count])
+  assetCopy = asset;
+  availableChapterLocales = [assetCopy availableChapterLocales];
+  if ([availableChapterLocales count])
   {
-    v6 = [MEMORY[0x277CBEAF8] systemLocale];
-    v32 = a1;
-    v33 = v5;
-    if (([v5 containsObject:v6] & 1) == 0)
+    systemLocale = [MEMORY[0x277CBEAF8] systemLocale];
+    selfCopy = self;
+    v33 = availableChapterLocales;
+    if (([availableChapterLocales containsObject:systemLocale] & 1) == 0)
     {
-      v7 = [v5 objectAtIndex:0];
+      v7 = [availableChapterLocales objectAtIndex:0];
 
-      v6 = v7;
+      systemLocale = v7;
     }
 
     v42 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v43 = *MEMORY[0x277CE5F10];
     v8 = [MEMORY[0x277CBEA60] arrayWithObject:?];
-    v34 = v4;
-    v31 = v6;
-    v9 = [v4 chapterMetadataGroupsWithTitleLocale:v6 containingItemsWithCommonKeys:v8];
+    v34 = assetCopy;
+    v31 = systemLocale;
+    v9 = [assetCopy chapterMetadataGroupsWithTitleLocale:systemLocale containingItemsWithCommonKeys:v8];
 
     v54 = 0u;
     v55 = 0u;
@@ -4621,13 +4621,13 @@ uint64_t __68__ML3Track_ML3TrackImporter__populateChapterDataWithImportChapters_
           }
 
           v38 = v10;
-          v11 = [*(*(&v52 + 1) + 8 * v10) items];
+          items = [*(*(&v52 + 1) + 8 * v10) items];
           v48 = 0u;
           v49 = 0u;
           v50 = 0u;
           v51 = 0u;
-          v41 = v11;
-          v12 = [v11 countByEnumeratingWithState:&v48 objects:v56 count:16];
+          v41 = items;
+          v12 = [items countByEnumeratingWithState:&v48 objects:v56 count:16];
           if (v12)
           {
             v13 = v12;
@@ -4665,42 +4665,42 @@ uint64_t __68__ML3Track_ML3TrackImporter__populateChapterDataWithImportChapters_
 
                 v19 = (floor(CMTimeGetSeconds(&time)) * 1000.0);
                 v20 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:v19];
-                v21 = [v15 commonKey];
-                if ([v21 isEqualToString:v43])
+                commonKey = [v15 commonKey];
+                if ([commonKey isEqualToString:v43])
                 {
-                  v22 = [v15 dataValue];
+                  dataValue = [v15 dataValue];
                 }
 
                 else
                 {
-                  if ([v21 isEqualToString:v40])
+                  if ([commonKey isEqualToString:v40])
                   {
-                    v23 = [v15 stringValue];
-                    v24 = [v15 extraAttributes];
-                    v25 = [v24 objectForKey:v39];
+                    stringValue = [v15 stringValue];
+                    extraAttributes = [v15 extraAttributes];
+                    v25 = [extraAttributes objectForKey:v39];
 
-                    v22 = 0;
+                    dataValue = 0;
                     goto LABEL_23;
                   }
 
-                  v22 = 0;
+                  dataValue = 0;
                 }
 
-                v23 = 0;
+                stringValue = 0;
                 v25 = 0;
-                if (v22)
+                if (dataValue)
                 {
                   goto LABEL_25;
                 }
 
 LABEL_23:
-                if (v23 || v25)
+                if (stringValue || v25)
                 {
 LABEL_25:
                   v26 = [v42 objectForKey:v20];
                   if (v26)
                   {
-                    if (v22)
+                    if (dataValue)
                     {
                       goto LABEL_27;
                     }
@@ -4711,12 +4711,12 @@ LABEL_29:
                     {
                       v27 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v25];
                       [(MLTrackImportChapter *)v26 setURL:v27];
-                      [(MLTrackImportChapter *)v26 setURLTitle:v23];
+                      [(MLTrackImportChapter *)v26 setURLTitle:stringValue];
                     }
 
-                    else if (v23)
+                    else if (stringValue)
                     {
-                      [(MLTrackImportChapter *)v26 setTitle:v23];
+                      [(MLTrackImportChapter *)v26 setTitle:stringValue];
                     }
                   }
 
@@ -4725,13 +4725,13 @@ LABEL_29:
                     v26 = objc_alloc_init(MLTrackImportChapter);
                     [(MLTrackImportChapter *)v26 setStartTimeInMilliseconds:v19];
                     [v42 setObject:v26 forKey:v20];
-                    if (!v22)
+                    if (!dataValue)
                     {
                       goto LABEL_29;
                     }
 
 LABEL_27:
-                    [(MLTrackImportChapter *)v26 setImageData:v22];
+                    [(MLTrackImportChapter *)v26 setImageData:dataValue];
                   }
                 }
               }
@@ -4752,11 +4752,11 @@ LABEL_27:
       while (v37);
     }
 
-    v28 = [v42 allValues];
-    v29 = [v32 _normalizedImportChapters:v28 trackPersistentID:0];
+    allValues = [v42 allValues];
+    v29 = [selfCopy _normalizedImportChapters:allValues trackPersistentID:0];
 
-    v5 = v33;
-    v4 = v34;
+    availableChapterLocales = v33;
+    assetCopy = v34;
   }
 
   else
@@ -4767,34 +4767,34 @@ LABEL_27:
   return v29;
 }
 
-+ (id)flattenedChapterDataFromDAAPInfoDictionary:(id)a3 trackPersistentID:(int64_t)a4
++ (id)flattenedChapterDataFromDAAPInfoDictionary:(id)dictionary trackPersistentID:(int64_t)d
 {
   v57 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 objectForKey:@"chapters"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKey:@"chapters"];
   v8 = [v7 objectForKey:@"time-format"];
 
   if (v8 && ([v8 isEqualToString:@"decimal-seconds"] & 1) == 0)
   {
-    v10 = os_log_create("com.apple.amp.medialibrary", "Default");
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    currentLocale = os_log_create("com.apple.amp.medialibrary", "Default");
+    if (os_log_type_enabled(currentLocale, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v54 = v8;
-      _os_log_impl(&dword_22D2FA000, v10, OS_LOG_TYPE_ERROR, "Unknown time format in chapter data: %{public}@, returning nil", buf, 0xCu);
+      _os_log_impl(&dword_22D2FA000, currentLocale, OS_LOG_TYPE_ERROR, "Unknown time format in chapter data: %{public}@, returning nil", buf, 0xCu);
     }
 
     v28 = 0;
     goto LABEL_29;
   }
 
-  v43 = a4;
+  dCopy = d;
   v44 = v8;
   v9 = 0x277CBE000uLL;
-  v10 = [MEMORY[0x277CBEAF8] currentLocale];
-  v47 = [MEMORY[0x277CBEB18] array];
-  v45 = v6;
-  v11 = [v6 objectForKey:@"chapters"];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  array = [MEMORY[0x277CBEB18] array];
+  v45 = dictionaryCopy;
+  v11 = [dictionaryCopy objectForKey:@"chapters"];
   v12 = [v11 objectForKey:@"locales"];
 
   v13 = [v12 count];
@@ -4813,7 +4813,7 @@ LABEL_27:
     v18 = [v16 initWithLocaleIdentifier:v17];
 
     v19 = [v18 objectForKey:v14];
-    v20 = [v10 objectForKey:v14];
+    v20 = [currentLocale objectForKey:v14];
     if (([v19 isEqualToString:v20] & 1) == 0)
     {
 
@@ -4824,20 +4824,20 @@ LABEL_27:
 
 LABEL_8:
       v27 = [v18 objectForKey:v14];
-      [v47 addObject:v27];
+      [array addObject:v27];
 
       goto LABEL_9;
     }
 
     v21 = [v18 objectForKey:v46];
-    [v10 objectForKey:v46];
+    [currentLocale objectForKey:v46];
     v22 = v14;
     v23 = v9;
     v24 = v12;
-    v26 = v25 = v10;
+    v26 = v25 = currentLocale;
     v48 = [v21 isEqualToString:v26];
 
-    v10 = v25;
+    currentLocale = v25;
     v12 = v24;
     v9 = v23;
     v14 = v22;
@@ -4865,22 +4865,22 @@ LABEL_9:
   if (!v29)
   {
 LABEL_17:
-    v30 = [v10 objectForKey:v14];
-    v31 = [v47 indexOfObject:v30];
+    v30 = [currentLocale objectForKey:v14];
+    v31 = [array indexOfObject:v30];
     if (v31 != 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_22;
     }
 
-    if ([v47 count])
+    if ([array count])
     {
       v32 = os_log_create("com.apple.amp.medialibrary", "Default");
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
-        v33 = [v10 localeIdentifier];
+        localeIdentifier = [currentLocale localeIdentifier];
         v34 = [v12 objectAtIndex:0];
         *buf = 138543618;
-        v54 = v33;
+        v54 = localeIdentifier;
         v55 = 2114;
         v56 = v34;
         _os_log_impl(&dword_22D2FA000, v32, OS_LOG_TYPE_DEFAULT, "%{public}@ not found in locales, using %{public}@ instead", buf, 0x16u);
@@ -4897,7 +4897,7 @@ LABEL_22:
     }
   }
 
-  v6 = v45;
+  dictionaryCopy = v45;
   v35 = [v45 objectForKey:@"chapters"];
   v36 = [v35 objectForKey:@"chapter-list"];
 
@@ -4907,12 +4907,12 @@ LABEL_22:
   v49[2] = __91__ML3Track_ML3TrackImporter__flattenedChapterDataFromDAAPInfoDictionary_trackPersistentID___block_invoke;
   v49[3] = &unk_278763468;
   v50 = v29;
-  v52 = v43;
+  v52 = dCopy;
   v38 = v37;
   v51 = v38;
   v39 = v29;
   [v36 enumerateObjectsUsingBlock:v49];
-  v28 = [v42 flattenedChapterDataWithImportChapters:v38 library:0 trackPersistentID:v43];
+  v28 = [v42 flattenedChapterDataWithImportChapters:v38 library:0 trackPersistentID:dCopy];
   if (!v28)
   {
     v40 = os_log_create("com.apple.amp.medialibrary", "Default");
@@ -4950,12 +4950,12 @@ void __91__ML3Track_ML3TrackImporter__flattenedChapterDataFromDAAPInfoDictionary
   [*(a1 + 40) addObject:v10];
 }
 
-+ (id)flattenedChapterDataFromSyncInfoDictionaries:(id)a3 trackPersistentID:(int64_t)a4
++ (id)flattenedChapterDataFromSyncInfoDictionaries:(id)dictionaries trackPersistentID:(int64_t)d
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  dictionariesCopy = dictionaries;
+  v5 = dictionariesCopy;
+  if (dictionariesCopy && [dictionariesCopy count])
   {
     v6 = ChapterData_Create();
     v7 = os_log_create("com.apple.amp.medialibrary", "Default");
@@ -5008,10 +5008,10 @@ void __93__ML3Track_ML3TrackImporter__flattenedChapterDataFromSyncInfoDictionari
   [*(a1 + 32) addObject:v3];
 }
 
-+ (id)flattenedChapterDataWithImportChapters:(id)a3 library:(id)a4 trackPersistentID:(int64_t)a5
++ (id)flattenedChapterDataWithImportChapters:(id)chapters library:(id)library trackPersistentID:(int64_t)d
 {
-  v8 = a4;
-  v9 = [a1 _normalizedImportChapters:a3 trackPersistentID:a5];
+  libraryCopy = library;
+  v9 = [self _normalizedImportChapters:chapters trackPersistentID:d];
   if ([v9 count])
   {
     v21 = 0;
@@ -5031,8 +5031,8 @@ void __93__ML3Track_ML3TrackImporter__flattenedChapterDataFromSyncInfoDictionari
     v16 = v19;
     v17 = v21;
     v14 = v11;
-    v15 = v8;
-    v18 = a5;
+    v15 = libraryCopy;
+    dCopy = d;
     [v11 enumerateObjectsUsingBlock:v13];
     ChapterData_ExportFlattenedData();
     ChapterData_Release();
@@ -5183,10 +5183,10 @@ LABEL_20:
   *(v36 + 40) = v26;
 }
 
-+ (id)_normalizedImportChapters:(id)a3 trackPersistentID:(int64_t)a4
++ (id)_normalizedImportChapters:(id)chapters trackPersistentID:(int64_t)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  [a3 sortedArrayUsingSelector:sel_compare_];
+  [chapters sortedArrayUsingSelector:sel_compare_];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -5207,20 +5207,20 @@ LABEL_20:
 
         v10 = *(*(&v14 + 1) + 8 * i);
         [v10 normalizeProperties];
-        if (a4)
+        if (d)
         {
-          v11 = [v10 imageCacheKey];
-          if (!v11)
+          imageCacheKey = [v10 imageCacheKey];
+          if (!imageCacheKey)
           {
-            v12 = [v10 imageData];
+            imageData = [v10 imageData];
 
-            if (!v12)
+            if (!imageData)
             {
               continue;
             }
 
-            v11 = +[ML3MusicLibrary artworkTokenForChapterWithItemPID:retrievalTime:](ML3MusicLibrary, "artworkTokenForChapterWithItemPID:retrievalTime:", a4, [v10 startTimeInMilliseconds] / 1000.0);
-            [v10 setImageCacheKey:v11];
+            imageCacheKey = +[ML3MusicLibrary artworkTokenForChapterWithItemPID:retrievalTime:](ML3MusicLibrary, "artworkTokenForChapterWithItemPID:retrievalTime:", d, [v10 startTimeInMilliseconds] / 1000.0);
+            [v10 setImageCacheKey:imageCacheKey];
           }
         }
       }
@@ -6167,20 +6167,20 @@ LABEL_29:
   *a4 = 1;
 }
 
-- (id)multiverseIdentifierLibraryOnly:(BOOL)a3
+- (id)multiverseIdentifierLibraryOnly:(BOOL)only
 {
-  v3 = a3;
+  onlyCopy = only;
   v5 = objc_alloc_init(MIPMultiverseIdentifier);
   [(MIPMultiverseIdentifier *)v5 setMediaObjectType:6];
   WeakRetained = objc_loadWeakRetained(&self->super._library);
   v7 = objc_alloc_init(MIPLibraryIdentifier);
   [(MIPLibraryIdentifier *)v7 setLibraryId:self->super._persistentID];
-  v8 = [WeakRetained libraryUID];
-  [(MIPLibraryIdentifier *)v7 setLibraryName:v8];
+  libraryUID = [WeakRetained libraryUID];
+  [(MIPLibraryIdentifier *)v7 setLibraryName:libraryUID];
 
   [(MIPMultiverseIdentifier *)v5 addLibraryIdentifiers:v7];
   v9 = @"SELECT item_store.sync_id, item_extra.title, item.media_type, item_store.account_id, item_store.store_item_id, item_store.store_saga_id, item_store.purchase_history_id, item_store.cloud_universal_library_id FROM item JOIN item_store USING (item_pid) JOIN item_extra USING (item_pid) WHERE item.ROWID = ?";
-  if (v3)
+  if (onlyCopy)
   {
     v9 = @"SELECT item_store.sync_id FROM item JOIN item_store USING (item_pid) WHERE item.ROWID = ?";
   }
@@ -6191,10 +6191,10 @@ LABEL_29:
   v16[2] = __56__ML3Track_MLProtocol__multiverseIdentifierLibraryOnly___block_invoke;
   v16[3] = &unk_278764230;
   v17 = v10;
-  v18 = self;
+  selfCopy = self;
   v11 = v5;
   v19 = v11;
-  v20 = v3;
+  v20 = onlyCopy;
   v12 = v10;
   [WeakRetained databaseConnectionAllowingWrites:0 withBlock:v16];
   v13 = v19;

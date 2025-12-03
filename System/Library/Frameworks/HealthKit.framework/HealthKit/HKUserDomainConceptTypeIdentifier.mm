@@ -2,11 +2,11 @@
 + (id)baseUserDomainConceptIdentifier;
 + (id)listUserDomainConceptIdentifier;
 + (id)medicalUserDomainConceptIdentifier;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKUserDomainConceptTypeIdentifier)init;
-- (HKUserDomainConceptTypeIdentifier)initWithCode:(int64_t)a3 schema:(id)a4;
-- (HKUserDomainConceptTypeIdentifier)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HKUserDomainConceptTypeIdentifier)initWithCode:(int64_t)code schema:(id)schema;
+- (HKUserDomainConceptTypeIdentifier)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKUserDomainConceptTypeIdentifier
@@ -21,17 +21,17 @@
   return 0;
 }
 
-- (HKUserDomainConceptTypeIdentifier)initWithCode:(int64_t)a3 schema:(id)a4
+- (HKUserDomainConceptTypeIdentifier)initWithCode:(int64_t)code schema:(id)schema
 {
-  v6 = a4;
+  schemaCopy = schema;
   v12.receiver = self;
   v12.super_class = HKUserDomainConceptTypeIdentifier;
   v7 = [(HKUserDomainConceptTypeIdentifier *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_code = a3;
-    v9 = [v6 copy];
+    v7->_code = code;
+    v9 = [schemaCopy copy];
     schema = v8->_schema;
     v8->_schema = v9;
   }
@@ -39,10 +39,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -52,7 +52,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (self->_code != v5->_code)
       {
         goto LABEL_9;
@@ -90,19 +90,19 @@ LABEL_12:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   code = self->_code;
-  v5 = a3;
-  [v5 encodeInteger:code forKey:@"code"];
-  [v5 encodeObject:self->_schema forKey:@"schema"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:code forKey:@"code"];
+  [coderCopy encodeObject:self->_schema forKey:@"schema"];
 }
 
-- (HKUserDomainConceptTypeIdentifier)initWithCoder:(id)a3
+- (HKUserDomainConceptTypeIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"code"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"schema"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"code"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"schema"];
 
   v7 = [(HKUserDomainConceptTypeIdentifier *)self initWithCode:v5 schema:v6];
   return v7;
@@ -110,21 +110,21 @@ LABEL_12:
 
 + (id)baseUserDomainConceptIdentifier
 {
-  v2 = [[a1 alloc] initWithCode:0 schema:0];
+  v2 = [[self alloc] initWithCode:0 schema:0];
 
   return v2;
 }
 
 + (id)medicalUserDomainConceptIdentifier
 {
-  v2 = [[a1 alloc] initWithCode:1 schema:0];
+  v2 = [[self alloc] initWithCode:1 schema:0];
 
   return v2;
 }
 
 + (id)listUserDomainConceptIdentifier
 {
-  v2 = [[a1 alloc] initWithCode:2 schema:0];
+  v2 = [[self alloc] initWithCode:2 schema:0];
 
   return v2;
 }

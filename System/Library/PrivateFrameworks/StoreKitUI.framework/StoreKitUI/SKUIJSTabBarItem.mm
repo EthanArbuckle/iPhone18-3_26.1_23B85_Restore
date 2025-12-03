@@ -2,19 +2,19 @@
 - (NSString)badgeValue;
 - (NSString)rootURL;
 - (NSString)title;
-- (SKUIJSTabBarItem)initWithAppContext:(id)a3 navigationController:(id)a4 tabBarItem:(id)a5 owner:(id)a6;
+- (SKUIJSTabBarItem)initWithAppContext:(id)context navigationController:(id)controller tabBarItem:(id)item owner:(id)owner;
 - (void)dealloc;
-- (void)setBadgeValue:(id)a3;
+- (void)setBadgeValue:(id)value;
 @end
 
 @implementation SKUIJSTabBarItem
 
-- (SKUIJSTabBarItem)initWithAppContext:(id)a3 navigationController:(id)a4 tabBarItem:(id)a5 owner:(id)a6
+- (SKUIJSTabBarItem)initWithAppContext:(id)context navigationController:(id)controller tabBarItem:(id)item owner:(id)owner
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  objc_initWeak(&location, a6);
+  contextCopy = context;
+  controllerCopy = controller;
+  itemCopy = item;
+  objc_initWeak(&location, owner);
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIJSTabBarItem initWithAppContext:navigationController:tabBarItem:owner:];
@@ -22,30 +22,30 @@
 
   v26.receiver = self;
   v26.super_class = SKUIJSTabBarItem;
-  v13 = [(IKJSObject *)&v26 initWithAppContext:v10];
+  v13 = [(IKJSObject *)&v26 initWithAppContext:contextCopy];
   if (v13)
   {
     v14 = objc_loadWeakRetained(&location);
     objc_storeWeak(&v13->_owner, v14);
 
-    objc_storeStrong(&v13->_tabBarItem, a5);
-    if (v11)
+    objc_storeStrong(&v13->_tabBarItem, item);
+    if (controllerCopy)
     {
-      v15 = [objc_alloc(MEMORY[0x277D1B0B8]) initWithAppContext:v10 navigationController:v11];
+      v15 = [objc_alloc(MEMORY[0x277D1B0B8]) initWithAppContext:contextCopy navigationController:controllerCopy];
       navigationDocument = v13->_navigationDocument;
       v13->_navigationDocument = v15;
 
-      v17 = [v10 jsContext];
+      jsContext = [contextCopy jsContext];
       v18 = MEMORY[0x277CD4650];
-      v19 = [MEMORY[0x277CD4658] valueWithObject:v13->_navigationDocument inContext:v17];
+      v19 = [MEMORY[0x277CD4658] valueWithObject:v13->_navigationDocument inContext:jsContext];
       v20 = [v18 managedValueWithValue:v19];
       managedNavigationDocument = v13->_managedNavigationDocument;
       v13->_managedNavigationDocument = v20;
 
-      v22 = [v17 virtualMachine];
+      virtualMachine = [jsContext virtualMachine];
       v23 = v13->_managedNavigationDocument;
       v24 = objc_loadWeakRetained(&location);
-      [v22 addManagedReference:v23 withOwner:v24];
+      [virtualMachine addManagedReference:v23 withOwner:v24];
     }
   }
 
@@ -71,14 +71,14 @@
 
   if (!v6)
   {
-    v7 = [(IKJSObject *)self appContext];
+    appContext = [(IKJSObject *)self appContext];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __27__SKUIJSTabBarItem_dealloc__block_invoke;
     v9[3] = &unk_2781F9618;
     v10 = v5;
     v11 = WeakRetained;
-    [v7 evaluate:v9 completionBlock:0];
+    [appContext evaluate:v9 completionBlock:0];
   }
 
   v8.receiver = self;
@@ -124,22 +124,22 @@ void __30__SKUIJSTabBarItem_badgeValue__block_invoke(uint64_t a1)
 
 - (NSString)rootURL
 {
-  v2 = [(SKUITabBarItem *)self->_tabBarItem rootURL];
-  v3 = [v2 absoluteString];
+  rootURL = [(SKUITabBarItem *)self->_tabBarItem rootURL];
+  absoluteString = [rootURL absoluteString];
 
-  return v3;
+  return absoluteString;
 }
 
-- (void)setBadgeValue:(id)a3
+- (void)setBadgeValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __34__SKUIJSTabBarItem_setBadgeValue___block_invoke;
   v6[3] = &unk_2781F80C8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = valueCopy;
+  v5 = valueCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -151,10 +151,10 @@ void __34__SKUIJSTabBarItem_setBadgeValue___block_invoke(uint64_t a1)
 
 - (NSString)title
 {
-  v2 = [(SKUITabBarItem *)self->_tabBarItem underlyingTabBarItem];
-  v3 = [v2 title];
+  underlyingTabBarItem = [(SKUITabBarItem *)self->_tabBarItem underlyingTabBarItem];
+  title = [underlyingTabBarItem title];
 
-  return v3;
+  return title;
 }
 
 - (void)initWithAppContext:navigationController:tabBarItem:owner:.cold.1()

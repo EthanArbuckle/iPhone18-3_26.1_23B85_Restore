@@ -1,19 +1,19 @@
 @interface BiometricPreferences
-+ (BOOL)setPreferenceValue:(id)a3 forKey:(id)a4;
-+ (id)preferenceValueOfClass:(Class)a3 forKey:(id)a4;
++ (BOOL)setPreferenceValue:(id)value forKey:(id)key;
++ (id)preferenceValueOfClass:(Class)class forKey:(id)key;
 @end
 
 @implementation BiometricPreferences
 
-+ (id)preferenceValueOfClass:(Class)a3 forKey:(id)a4
++ (id)preferenceValueOfClass:(Class)class forKey:(id)key
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  keyCopy = key;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:@"/Library/Managed Preferences/mobile/com.apple.biometrickitd.plist"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectForKey:v4];
+    v7 = [v5 objectForKey:keyCopy];
     if (objc_opt_isKindOfClass())
     {
       if (v7)
@@ -27,7 +27,7 @@
     }
   }
 
-  v8 = CFPreferencesCopyValue(v4, @"com.apple.biometrickitd", *MEMORY[0x1E695E8A0], *MEMORY[0x1E695E8B0]);
+  v8 = CFPreferencesCopyValue(keyCopy, @"com.apple.biometrickitd", *MEMORY[0x1E695E8A0], *MEMORY[0x1E695E8B0]);
   if (v8)
   {
     v7 = v8;
@@ -64,7 +64,7 @@
     CFRelease(v7);
   }
 
-  v7 = CFPreferencesCopyValue(v4, @"com.apple.biometrickitd", @"mobile", *MEMORY[0x1E695E898]);
+  v7 = CFPreferencesCopyValue(keyCopy, @"com.apple.biometrickitd", @"mobile", *MEMORY[0x1E695E898]);
   if (v7 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     if (__osLog)
@@ -103,11 +103,11 @@ LABEL_22:
   return v7;
 }
 
-+ (BOOL)setPreferenceValue:(id)a3 forKey:(id)a4
++ (BOOL)setPreferenceValue:(id)value forKey:(id)key
 {
   v4 = *MEMORY[0x1E695E8A0];
   v5 = *MEMORY[0x1E695E8B0];
-  CFPreferencesSetValue(a4, a3, @"com.apple.biometrickitd", *MEMORY[0x1E695E8A0], *MEMORY[0x1E695E8B0]);
+  CFPreferencesSetValue(key, value, @"com.apple.biometrickitd", *MEMORY[0x1E695E8A0], *MEMORY[0x1E695E8B0]);
   return CFPreferencesSynchronize(@"com.apple.biometrickitd", v4, v5) != 0;
 }
 

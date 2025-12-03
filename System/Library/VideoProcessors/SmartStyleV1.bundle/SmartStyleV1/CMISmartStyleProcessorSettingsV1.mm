@@ -1,7 +1,7 @@
 @interface CMISmartStyleProcessorSettingsV1
 + (id)sharedInstance;
-+ (id)tuningParametersForVariant:(unint64_t)a3;
-- (id)tuningParametersForVariant:(uint64_t)a1;
++ (id)tuningParametersForVariant:(unint64_t)variant;
+- (id)tuningParametersForVariant:(uint64_t)variant;
 - (uint64_t)loadTuningParameters;
 - (void)initLoadingSmartStyleProcessorSettings;
 @end
@@ -28,22 +28,22 @@ void __50__CMISmartStyleProcessorSettingsV1_sharedInstance__block_invoke(id a1)
   _objc_release_x1();
 }
 
-+ (id)tuningParametersForVariant:(unint64_t)a3
++ (id)tuningParametersForVariant:(unint64_t)variant
 {
   v4 = +[CMISmartStyleProcessorSettingsV1 sharedInstance];
-  v5 = [(CMISmartStyleProcessorSettingsV1 *)v4 tuningParametersForVariant:a3];
+  v5 = [(CMISmartStyleProcessorSettingsV1 *)v4 tuningParametersForVariant:variant];
 
   return v5;
 }
 
 - (void)initLoadingSmartStyleProcessorSettings
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = CMISmartStyleProcessorSettingsV1;
   v1 = objc_msgSendSuper2(&v4, "init");
   v2 = v1;
@@ -67,11 +67,11 @@ void __50__CMISmartStyleProcessorSettingsV1_sharedInstance__block_invoke(id a1)
   return v2;
 }
 
-- (id)tuningParametersForVariant:(uint64_t)a1
+- (id)tuningParametersForVariant:(uint64_t)variant
 {
-  if (a1)
+  if (variant)
   {
-    v2 = *(a1 + 8);
+    v2 = *(variant + 8);
     v3 = [NSNumber numberWithUnsignedInteger:a2];
     v4 = [v2 objectForKeyedSubscript:v3];
   }
@@ -86,7 +86,7 @@ void __50__CMISmartStyleProcessorSettingsV1_sharedInstance__block_invoke(id a1)
 
 - (uint64_t)loadTuningParameters
 {
-  if (!a1)
+  if (!self)
   {
     LOBYTE(v5) = 0;
     return v5 & 1;
@@ -189,8 +189,8 @@ LABEL_19:
 
 LABEL_16:
 
-        v5 = *(a1 + 8);
-        *(a1 + 8) = v22;
+        v5 = *(self + 8);
+        *(self + 8) = v22;
         v18 = v22;
 
         LOBYTE(v5) = 1;

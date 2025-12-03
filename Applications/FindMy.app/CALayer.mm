@@ -1,13 +1,13 @@
 @interface CALayer
-+ (id)springAnimationWithDuration:(double)a3 dampingRatio:(double)a4 velocity:(double)a5;
++ (id)springAnimationWithDuration:(double)duration dampingRatio:(double)ratio velocity:(double)velocity;
 @end
 
 @implementation CALayer
 
-+ (id)springAnimationWithDuration:(double)a3 dampingRatio:(double)a4 velocity:(double)a5
++ (id)springAnimationWithDuration:(double)duration dampingRatio:(double)ratio velocity:(double)velocity
 {
-  v6 = fmin(fmax(a4, 0.00000011920929), 1.0);
-  v7 = fmin(fmax(a3, 0.01), 10.0);
+  v6 = fmin(fmax(ratio, 0.00000011920929), 1.0);
+  v7 = fmin(fmax(duration, 0.01), 10.0);
   if (v6 >= 1.0)
   {
     v35 = _NSConcreteStackBlock;
@@ -98,7 +98,7 @@
   v23 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
   [v22 setTimingFunction:v23];
 
-  [v22 setDuration:a3];
+  [v22 setDuration:duration];
 
   return v22;
 }

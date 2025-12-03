@@ -1,23 +1,23 @@
 @interface ButtonView
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)recognizedHover:(id)a3;
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)recognizedHover:(id)hover;
 @end
 
 @implementation ButtonView
 
-- (void)recognizedHover:(id)a3
+- (void)recognizedHover:(id)hover
 {
-  v4 = a3;
-  v5 = self;
-  sub_220E328EC(v4);
+  hoverCopy = hover;
+  selfCopy = self;
+  sub_220E328EC(hoverCopy);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_220E32A78(width, height);
   v7 = v6;
   v9 = v8;
@@ -29,11 +29,11 @@
   return result;
 }
 
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  sub_220E32C98(v4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_220E32C98(configurationCopy);
   v7 = v6;
   v9 = v8;
 

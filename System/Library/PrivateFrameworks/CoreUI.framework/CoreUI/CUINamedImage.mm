@@ -2,15 +2,15 @@
 - ($01BB1521EC52D44A8E7628F5261DCEC8)alignmentEdgeInsets;
 - ($01BB1521EC52D44A8E7628F5261DCEC8)edgeInsets;
 - (BOOL)_cacheRenditionProperties;
-- (CGImage)createImageFromPDFRenditionWithScale:(double)a3;
+- (CGImage)createImageFromPDFRenditionWithScale:(double)scale;
 - (CGImage)croppedImage;
 - (CGImage)image;
 - (CGRect)alphaCroppedRect;
 - (CGSize)originalUncroppedSize;
 - (CGSize)size;
-- (CUINamedImage)initWithName:(id)a3 usingRenditionKey:(id)a4 fromTheme:(unint64_t)a5;
+- (CUINamedImage)initWithName:(id)name usingRenditionKey:(id)key fromTheme:(unint64_t)theme;
 - (double)opacity;
-- (double)positionOfSliceBoundary:(unsigned int)a3;
+- (double)positionOfSliceBoundary:(unsigned int)boundary;
 - (id)baseKey;
 - (id)description;
 - (int)blendMode;
@@ -21,23 +21,23 @@
 
 - (CGImage)image
 {
-  v2 = [(CUINamedLookup *)self _rendition];
+  _rendition = [(CUINamedLookup *)self _rendition];
 
-  return [(CUIThemeRendition *)v2 uncroppedImage];
+  return [(CUIThemeRendition *)_rendition uncroppedImage];
 }
 
 - (BOOL)_cacheRenditionProperties
 {
   v28.receiver = self;
   v28.super_class = CUINamedImage;
-  v3 = [(CUINamedLookup *)&v28 _cacheRenditionProperties];
-  if (v3)
+  _cacheRenditionProperties = [(CUINamedLookup *)&v28 _cacheRenditionProperties];
+  if (_cacheRenditionProperties)
   {
-    v4 = [(CUINamedLookup *)self _rendition];
-    if (v4)
+    _rendition = [(CUINamedLookup *)self _rendition];
+    if (_rendition)
     {
-      v5 = v4;
-      v6 = [(CUINamedLookup *)self _distilledInVersion];
+      v5 = _rendition;
+      _distilledInVersion = [(CUINamedLookup *)self _distilledInVersion];
       [(CUIThemeRendition *)v5 scale];
       self->_scale = v7;
       self->_imageProperties = (*&self->_imageProperties & 0xFFFFFFFE | [(CUIThemeRendition *)v5 isVectorBased]);
@@ -80,7 +80,7 @@
 
       v14 = *&self->_imageProperties & 0xFFFFDFFF | v13;
       self->_imageProperties = v14;
-      if (v6 - 461 > 0x17)
+      if (_distilledInVersion - 461 > 0x17)
       {
         if ([(CUIThemeRendition *)v5 preservedVectorRepresentation])
         {
@@ -101,32 +101,32 @@
       }
 
       self->_imageProperties = v15;
-      LOBYTE(v3) = 1;
+      LOBYTE(_cacheRenditionProperties) = 1;
     }
 
     else
     {
-      v16 = [(CUINamedLookup *)self storageRef];
-      v18 = _LookupStructuredThemeProvider(v16, v17);
-      v19 = [(CUINamedLookup *)self name];
+      storageRef = [(CUINamedLookup *)self storageRef];
+      v18 = _LookupStructuredThemeProvider(storageRef, v17);
+      name = [(CUINamedLookup *)self name];
       [(CUINamedLookup *)self storageRef];
       [objc_msgSend(v18 "themeStore")];
-      _CUILog(4, "CoreUI: could not find rendition for '%@' in %d:'%@'", v20, v21, v22, v23, v24, v25, v19);
-      LOBYTE(v3) = 0;
+      _CUILog(4, "CoreUI: could not find rendition for '%@' in %d:'%@'", v20, v21, v22, v23, v24, v25, name);
+      LOBYTE(_cacheRenditionProperties) = 0;
     }
   }
 
-  return v3;
+  return _cacheRenditionProperties;
 }
 
 - ($01BB1521EC52D44A8E7628F5261DCEC8)alignmentEdgeInsets
 {
   if ([(CUINamedImage *)self hasAlignmentInformation])
   {
-    v3 = [(CUIThemeRendition *)[(CUINamedLookup *)self _rendition] metrics];
-    if (v3)
+    metrics = [(CUIThemeRendition *)[(CUINamedLookup *)self _rendition] metrics];
+    if (metrics)
     {
-      v4 = v3;
+      v4 = metrics;
       [(CUINamedImage *)self scale];
       v6 = v5;
       [v4 edgeBottomLeftMargin];
@@ -235,14 +235,14 @@
   return v2;
 }
 
-- (CUINamedImage)initWithName:(id)a3 usingRenditionKey:(id)a4 fromTheme:(unint64_t)a5
+- (CUINamedImage)initWithName:(id)name usingRenditionKey:(id)key fromTheme:(unint64_t)theme
 {
   v14.receiver = self;
   v14.super_class = CUINamedImage;
-  v6 = [(CUINamedLookup *)&v14 initWithName:a3 usingRenditionKey:a4 fromTheme:a5];
+  v6 = [(CUINamedLookup *)&v14 initWithName:name usingRenditionKey:key fromTheme:theme];
   if ([(CUIThemeRendition *)[(CUINamedLookup *)v6 _rendition] type]== 1000)
   {
-    _CUILog(4, "CoreUI: attempting to lookup a named image '%@' with a type that is not a data type in the AssetCatalog", v7, v8, v9, v10, v11, v12, a3);
+    _CUILog(4, "CoreUI: attempting to lookup a named image '%@' with a type that is not a data type in the AssetCatalog", v7, v8, v9, v10, v11, v12, name);
 
     return 0;
   }
@@ -252,9 +252,9 @@
 
 - (CGImage)croppedImage
 {
-  v2 = [(CUINamedLookup *)self _rendition];
+  _rendition = [(CUINamedLookup *)self _rendition];
 
-  return [(CUIThemeRendition *)v2 unslicedImage];
+  return [(CUIThemeRendition *)_rendition unslicedImage];
 }
 
 - (int64_t)imageType
@@ -268,27 +268,27 @@
   return result;
 }
 
-- (double)positionOfSliceBoundary:(unsigned int)a3
+- (double)positionOfSliceBoundary:(unsigned int)boundary
 {
-  v4 = [(CUIThemeRendition *)[(CUINamedLookup *)self _rendition] sliceInformation];
+  sliceInformation = [(CUIThemeRendition *)[(CUINamedLookup *)self _rendition] sliceInformation];
 
-  [v4 positionOfSliceBoundary:a3];
+  [sliceInformation positionOfSliceBoundary:boundary];
   return result;
 }
 
 - (double)opacity
 {
-  v2 = [(CUINamedLookup *)self _rendition];
+  _rendition = [(CUINamedLookup *)self _rendition];
 
-  [(CUIThemeRendition *)v2 opacity];
+  [(CUIThemeRendition *)_rendition opacity];
   return result;
 }
 
 - (int)blendMode
 {
-  v2 = [(CUINamedLookup *)self _rendition];
+  _rendition = [(CUINamedLookup *)self _rendition];
 
-  return [(CUIThemeRendition *)v2 blendMode];
+  return [(CUIThemeRendition *)_rendition blendMode];
 }
 
 - (id)description
@@ -303,23 +303,23 @@
   v17 = [NSString stringWithFormat:@"width: %f height: %f", v5, v6];
   [(CUINamedImage *)self edgeInsets];
   v14 = [NSString stringWithFormat:@"\nEdge insets top: %f left: %f bottom: %f right: %f", v7, v8, v9, v10];
-  v16 = [(CUINamedLookup *)self name];
+  name = [(CUINamedLookup *)self name];
   [(CUINamedImage *)self scale];
   v15 = v11;
   [(CUINamedImage *)self opacity];
-  return [NSString stringWithFormat:@"%@\n%@", v18, [NSString stringWithFormat:@"%@\nDevice Idiom: %d\nDevice Subtype: %d\nHorizontal Size Class: %d\nVertical Size Class: %d\nImage Identifier: %d", [NSString stringWithFormat:@"Name: %@\nScale: %d\nOpacity: %f\nSize: %@\nBlend Mode: %d\nResizing Mode: %d\nVector Based: %d\nTemplateRenderingMode: %ld\nEdgeInset: %@\nexifOrientation: %d, \nCropped: %d\nDisplay Gamut: %d\nLayout Direction: %d\nisFlippable: %d", v16, v15, v12, v17, [(CUINamedImage *)self blendMode], [(CUINamedImage *)self resizingMode], [(CUINamedImage *)self isVectorBased], [(CUINamedImage *)self templateRenderingMode], v14, [(CUINamedImage *)self exifOrientation], [(CUINamedImage *)self isAlphaCropped], [(CUIRenditionKey *)v3 themeDisplayGamut], [(CUIRenditionKey *)v3 themeDirection], [(CUINamedImage *)self isFlippable]], [(CUIRenditionKey *)v3 themeIdiom], [(CUIRenditionKey *)v3 themeSubtype], [(CUIRenditionKey *)v3 themeSizeClassHorizontal], [(CUIRenditionKey *)v3 themeSizeClassVertical], [(CUIRenditionKey *)v3 themeIdentifier]]];
+  return [NSString stringWithFormat:@"%@\n%@", v18, [NSString stringWithFormat:@"%@\nDevice Idiom: %d\nDevice Subtype: %d\nHorizontal Size Class: %d\nVertical Size Class: %d\nImage Identifier: %d", [NSString stringWithFormat:@"Name: %@\nScale: %d\nOpacity: %f\nSize: %@\nBlend Mode: %d\nResizing Mode: %d\nVector Based: %d\nTemplateRenderingMode: %ld\nEdgeInset: %@\nexifOrientation: %d, \nCropped: %d\nDisplay Gamut: %d\nLayout Direction: %d\nisFlippable: %d", name, v15, v12, v17, [(CUINamedImage *)self blendMode], [(CUINamedImage *)self resizingMode], [(CUINamedImage *)self isVectorBased], [(CUINamedImage *)self templateRenderingMode], v14, [(CUINamedImage *)self exifOrientation], [(CUINamedImage *)self isAlphaCropped], [(CUIRenditionKey *)v3 themeDisplayGamut], [(CUIRenditionKey *)v3 themeDirection], [(CUINamedImage *)self isFlippable]], [(CUIRenditionKey *)v3 themeIdiom], [(CUIRenditionKey *)v3 themeSubtype], [(CUIRenditionKey *)v3 themeSizeClassHorizontal], [(CUIRenditionKey *)v3 themeSizeClassVertical], [(CUIRenditionKey *)v3 themeIdentifier]]];
 }
 
-- (CGImage)createImageFromPDFRenditionWithScale:(double)a3
+- (CGImage)createImageFromPDFRenditionWithScale:(double)scale
 {
   if ([(CUIThemeRendition *)[(CUINamedLookup *)self _rendition] type]!= 9)
   {
     return 0;
   }
 
-  v5 = [(CUINamedLookup *)self _rendition];
+  _rendition = [(CUINamedLookup *)self _rendition];
 
-  return [(CUIThemeRendition *)v5 createImageFromPDFRenditionWithScale:a3];
+  return [(CUIThemeRendition *)_rendition createImageFromPDFRenditionWithScale:scale];
 }
 
 - (CGSize)originalUncroppedSize
@@ -333,9 +333,9 @@
 
 - (CGRect)alphaCroppedRect
 {
-  v2 = [(CUINamedLookup *)self _rendition];
+  _rendition = [(CUINamedLookup *)self _rendition];
 
-  [(CUIThemeRendition *)v2 alphaCroppedRect];
+  [(CUIThemeRendition *)_rendition alphaCroppedRect];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;

@@ -8,11 +8,11 @@
 
 - (id)comparator
 {
-  v2 = [(SGSuggestionSection *)self category];
+  category = [(SGSuggestionSection *)self category];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 suggestionComparator];
-    v4 = _Block_copy(v3);
+    suggestionComparator = [category suggestionComparator];
+    v4 = _Block_copy(suggestionComparator);
   }
 
   else
@@ -28,19 +28,19 @@
   if ([(SGList *)self count])
   {
     v3 = [(SGList *)self itemAtIndex:0];
-    v4 = 0;
+    suggestionList = 0;
     if (objc_opt_respondsToSelector())
     {
-      v4 = [v3 suggestionList];
+      suggestionList = [v3 suggestionList];
     }
   }
 
   else
   {
-    v4 = 0;
+    suggestionList = 0;
   }
 
-  return v4;
+  return suggestionList;
 }
 
 - (id)category
@@ -48,15 +48,15 @@
   if ([(SGList *)self count])
   {
     v3 = [(SGList *)self itemAtIndex:0];
-    v4 = [v3 suggestionCategory];
+    suggestionCategory = [v3 suggestionCategory];
   }
 
   else
   {
-    v4 = 0;
+    suggestionCategory = 0;
   }
 
-  return v4;
+  return suggestionCategory;
 }
 
 @end

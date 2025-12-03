@@ -1,10 +1,10 @@
 @interface SUICKPInteractiveCardSectionViewController
 + (id)cardSectionClasses;
 - (BOOL)_shouldRenderButtonOverlay;
-- (void)didEngageCardSection:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)didEngageCardSection:(id)section;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation SUICKPInteractiveCardSectionViewController
@@ -33,113 +33,113 @@ uint64_t __64__SUICKPInteractiveCardSectionViewController_cardSectionClasses__bl
 
 - (BOOL)_shouldRenderButtonOverlay
 {
-  v2 = [(CRKCardSectionViewController *)self cardSection];
-  v3 = [v2 backingCardSection];
+  cardSection = [(CRKCardSectionViewController *)self cardSection];
+  backingCardSection = [cardSection backingCardSection];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 _SUICKPInteractiveCardSectionViewController_shouldRenderButtonOverlay];
+    _SUICKPInteractiveCardSectionViewController_shouldRenderButtonOverlay = [backingCardSection _SUICKPInteractiveCardSectionViewController_shouldRenderButtonOverlay];
   }
 
   else
   {
-    v4 = 0;
+    _SUICKPInteractiveCardSectionViewController_shouldRenderButtonOverlay = 0;
   }
 
-  return v4;
+  return _SUICKPInteractiveCardSectionViewController_shouldRenderButtonOverlay;
 }
 
-- (void)didEngageCardSection:(id)a3
+- (void)didEngageCardSection:(id)section
 {
-  v17 = a3;
-  v4 = [(CRKCardSectionViewController *)self delegate];
+  sectionCopy = section;
+  delegate = [(CRKCardSectionViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CRKCardSectionViewController *)self delegate];
+    delegate2 = [(CRKCardSectionViewController *)self delegate];
     v7 = MEMORY[0x277CF9470];
-    v8 = [v17 cardSection];
-    v9 = [v7 cardSectionWithSFCardSection:v8];
-    [v6 cardSectionView:v9 willProcessEngagementFeedback:v17];
+    cardSection = [sectionCopy cardSection];
+    v9 = [v7 cardSectionWithSFCardSection:cardSection];
+    [delegate2 cardSectionView:v9 willProcessEngagementFeedback:sectionCopy];
   }
 
-  if ([v17 actionTarget] != 4)
+  if ([sectionCopy actionTarget] != 4)
   {
-    v10 = [v17 destination];
+    destination = [sectionCopy destination];
 
-    if (!v10)
+    if (!destination)
     {
       [(CRKCardSectionViewController *)self _performAllCommands];
     }
   }
 
-  v11 = [(CRKCardSectionViewController *)self delegate];
+  delegate3 = [(CRKCardSectionViewController *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(CRKCardSectionViewController *)self delegate];
+    delegate4 = [(CRKCardSectionViewController *)self delegate];
     v14 = MEMORY[0x277CF9470];
-    v15 = [v17 cardSection];
-    v16 = [v14 cardSectionWithSFCardSection:v15];
-    [v13 userDidEngageCardSection:v16 withEngagementFeedback:v17];
+    cardSection2 = [sectionCopy cardSection];
+    v16 = [v14 cardSectionWithSFCardSection:cardSection2];
+    [delegate4 userDidEngageCardSection:v16 withEngagementFeedback:sectionCopy];
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   v20.receiver = self;
   v20.super_class = SUICKPInteractiveCardSectionViewController;
-  [(SUICKPInteractiveCardSectionViewController *)&v20 touchesBegan:v6 withEvent:v7];
-  v8 = [(CRKCardSectionViewController *)self cardSection];
-  v9 = [v8 backingCardSection];
+  [(SUICKPInteractiveCardSectionViewController *)&v20 touchesBegan:beganCopy withEvent:eventCopy];
+  cardSection = [(CRKCardSectionViewController *)self cardSection];
+  backingCardSection = [cardSection backingCardSection];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v6 anyObject];
-    v11 = [(SUICKPInteractiveCardSectionViewController *)self view];
-    [v10 locationInView:v11];
+    anyObject = [beganCopy anyObject];
+    view = [(SUICKPInteractiveCardSectionViewController *)self view];
+    [anyObject locationInView:view];
     v13 = v12;
     v15 = v14;
 
-    v16 = [(SUICKPInteractiveCardSectionViewController *)self view];
-    v17 = [v16 hitTest:v7 withEvent:{v13, v15}];
+    view2 = [(SUICKPInteractiveCardSectionViewController *)self view];
+    v17 = [view2 hitTest:eventCopy withEvent:{v13, v15}];
 
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 && [v9 _SUICKPInteractiveCardSectionViewController_shouldHandlePunchout])
+    if ((objc_opt_isKindOfClass() & 1) == 0 && [backingCardSection _SUICKPInteractiveCardSectionViewController_shouldHandlePunchout])
     {
-      v18 = [(SUICKPInteractiveCardSectionViewController *)self view];
-      v19 = [MEMORY[0x277D75348] siriui_highlightColor];
-      [v18 setBackgroundColor:v19];
+      view3 = [(SUICKPInteractiveCardSectionViewController *)self view];
+      siriui_highlightColor = [MEMORY[0x277D75348] siriui_highlightColor];
+      [view3 setBackgroundColor:siriui_highlightColor];
 
       [(CRKCardSectionViewController *)self _cardSectionTapped];
     }
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = SUICKPInteractiveCardSectionViewController;
-  [(SUICKPInteractiveCardSectionViewController *)&v7 touchesEnded:a3 withEvent:a4];
-  v5 = [(SUICKPInteractiveCardSectionViewController *)self view];
-  v6 = [MEMORY[0x277D75348] clearColor];
-  [v5 setBackgroundColor:v6];
+  [(SUICKPInteractiveCardSectionViewController *)&v7 touchesEnded:ended withEvent:event];
+  view = [(SUICKPInteractiveCardSectionViewController *)self view];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [view setBackgroundColor:clearColor];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = SUICKPInteractiveCardSectionViewController;
-  [(SUICKPInteractiveCardSectionViewController *)&v7 touchesCancelled:a3 withEvent:a4];
-  v5 = [(SUICKPInteractiveCardSectionViewController *)self view];
-  v6 = [MEMORY[0x277D75348] clearColor];
-  [v5 setBackgroundColor:v6];
+  [(SUICKPInteractiveCardSectionViewController *)&v7 touchesCancelled:cancelled withEvent:event];
+  view = [(SUICKPInteractiveCardSectionViewController *)self view];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [view setBackgroundColor:clearColor];
 }
 
 @end

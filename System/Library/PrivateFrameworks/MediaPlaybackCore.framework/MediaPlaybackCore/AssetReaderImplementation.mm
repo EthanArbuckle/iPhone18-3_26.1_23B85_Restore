@@ -1,17 +1,17 @@
 @interface AssetReaderImplementation
 + (NSString)identifier;
-- (void)engine:(id)a3 didChangeToItem:(id)a4;
-- (void)subscribeToEventStream:(id)a3;
-- (void)unsubscribeFromEventStream:(id)a3;
+- (void)engine:(id)engine didChangeToItem:(id)item;
+- (void)subscribeToEventStream:(id)stream;
+- (void)unsubscribeFromEventStream:(id)stream;
 @end
 
 @implementation AssetReaderImplementation
 
-- (void)subscribeToEventStream:(id)a3
+- (void)subscribeToEventStream:(id)stream
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1C5C7FC08(a3);
+  selfCopy = self;
+  sub_1C5C7FC08(stream);
   swift_unknownObjectRelease();
 }
 
@@ -23,20 +23,20 @@
   return v2;
 }
 
-- (void)unsubscribeFromEventStream:(id)a3
+- (void)unsubscribeFromEventStream:(id)stream
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1C5CE0B00();
   swift_unknownObjectRelease();
 }
 
-- (void)engine:(id)a3 didChangeToItem:(id)a4
+- (void)engine:(id)engine didChangeToItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1C5CE0B74(v6, a4);
+  engineCopy = engine;
+  itemCopy = item;
+  selfCopy = self;
+  sub_1C5CE0B74(engineCopy, item);
 }
 
 @end

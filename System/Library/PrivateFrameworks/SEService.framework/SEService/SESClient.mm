@@ -1,10 +1,10 @@
 @interface SESClient
 + (id)sharedClient;
 - (id)connectToService;
-- (id)remoteObjectProxyWithError:(id *)a1;
-- (id)synchronousRemoteObjectProxyWithError:(id *)a1;
+- (id)remoteObjectProxyWithError:(id *)error;
+- (id)synchronousRemoteObjectProxyWithError:(id *)error;
 - (void)connectionResetHandler;
-- (void)setServiceName:(uint64_t)a1;
+- (void)setServiceName:(uint64_t)name;
 @end
 
 @implementation SESClient
@@ -35,9 +35,9 @@ void __25__SESClient_sharedClient__block_invoke()
 
 - (void)connectionResetHandler
 {
-  if (a1)
+  if (self)
   {
-    obj = a1;
+    obj = self;
     objc_sync_enter(obj);
     v1 = obj[2];
     [v1 invalidate];
@@ -51,19 +51,19 @@ void __25__SESClient_sharedClient__block_invoke()
 
 - (id)connectToService
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    objc_sync_enter(v1);
-    if (!v1[2])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (!selfCopy[2])
     {
       v2 = objc_alloc(MEMORY[0x1E696B0B8]);
-      v3 = v1[1];
+      v3 = selfCopy[1];
       v4 = [v2 initWithMachServiceName:v3 options:4096];
-      v5 = v1[2];
-      v1[2] = v4;
+      v5 = selfCopy[2];
+      selfCopy[2] = v4;
 
-      if (!v1[2])
+      if (!selfCopy[2])
       {
         v144 = SESDefaultLogObject();
         v145 = *MEMORY[0x1E69E5148];
@@ -72,8 +72,8 @@ void __25__SESClient_sharedClient__block_invoke()
         goto LABEL_6;
       }
 
-      objc_initWeak(location, v1);
-      v6 = v1[2];
+      objc_initWeak(location, selfCopy);
+      v6 = selfCopy[2];
       v148[0] = MEMORY[0x1E69E9820];
       v148[1] = 3221225472;
       v148[2] = __29__SESClient_connectToService__block_invoke;
@@ -81,7 +81,7 @@ void __25__SESClient_sharedClient__block_invoke()
       objc_copyWeak(&v149, location);
       [v6 setInterruptionHandler:v148];
 
-      v7 = v1[2];
+      v7 = selfCopy[2];
       v146[0] = MEMORY[0x1E69E9820];
       v146[1] = 3221225472;
       v146[2] = __29__SESClient_connectToService__block_invoke_510;
@@ -316,10 +316,10 @@ void __25__SESClient_sharedClient__block_invoke()
       [v8 setClasses:v139 forSelector:sel_getSupportedAliroVersionsWithReply_ argumentIndex:0 ofReply:1];
 
       [v8 setClass:objc_opt_class() forSelector:sel_deletePrivacyKey_completion_ argumentIndex:0 ofReply:0];
-      v140 = v1[2];
+      v140 = selfCopy[2];
       [v140 setRemoteObjectInterface:v8];
 
-      v141 = v1[2];
+      v141 = selfCopy[2];
       [v141 resume];
 
       objc_destroyWeak(&v147);
@@ -329,7 +329,7 @@ void __25__SESClient_sharedClient__block_invoke()
 
     v142 = 0;
 LABEL_6:
-    objc_sync_exit(v1);
+    objc_sync_exit(selfCopy);
 
     goto LABEL_7;
   }
@@ -366,16 +366,16 @@ void __29__SESClient_connectToService__block_invoke_510(uint64_t a1)
   [(SESClient *)WeakRetained connectionResetHandler];
 }
 
-- (id)remoteObjectProxyWithError:(id *)a1
+- (id)remoteObjectProxyWithError:(id *)error
 {
-  if (a1)
+  if (error)
   {
     v12 = 0;
     v13 = &v12;
     v14 = 0x3032000000;
     v15 = __Block_byref_object_copy__3;
     v16 = __Block_byref_object_dispose__3;
-    v17 = [(SESClient *)a1 connectToService];
+    connectToService = [(SESClient *)error connectToService];
     v4 = v13[5];
     if (v4)
     {
@@ -388,7 +388,7 @@ void __29__SESClient_connectToService__block_invoke_510(uint64_t a1)
 
     else
     {
-      v6 = a1[2];
+      v6 = error[2];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __40__SESClient_remoteObjectProxyWithError___block_invoke;
@@ -425,16 +425,16 @@ void __29__SESClient_connectToService__block_invoke_510(uint64_t a1)
   return v5;
 }
 
-- (id)synchronousRemoteObjectProxyWithError:(id *)a1
+- (id)synchronousRemoteObjectProxyWithError:(id *)error
 {
-  if (a1)
+  if (error)
   {
     v13 = 0;
     v14 = &v13;
     v15 = 0x3032000000;
     v16 = __Block_byref_object_copy__3;
     v17 = __Block_byref_object_dispose__3;
-    v18 = [(SESClient *)a1 connectToService];
+    connectToService = [(SESClient *)error connectToService];
     v4 = v14[5];
     if (v4)
     {
@@ -447,7 +447,7 @@ void __29__SESClient_connectToService__block_invoke_510(uint64_t a1)
 
     else
     {
-      v6 = a1[2];
+      v6 = error[2];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __51__SESClient_synchronousRemoteObjectProxyWithError___block_invoke;
@@ -485,11 +485,11 @@ void __29__SESClient_connectToService__block_invoke_510(uint64_t a1)
   return v5;
 }
 
-- (void)setServiceName:(uint64_t)a1
+- (void)setServiceName:(uint64_t)name
 {
-  if (a1)
+  if (name)
   {
-    objc_storeStrong((a1 + 8), a2);
+    objc_storeStrong((name + 8), a2);
   }
 }
 

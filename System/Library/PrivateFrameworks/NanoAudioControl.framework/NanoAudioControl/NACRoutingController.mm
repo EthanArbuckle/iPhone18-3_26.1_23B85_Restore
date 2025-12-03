@@ -1,22 +1,22 @@
 @interface NACRoutingController
-+ (id)localRoutingControllerWithAudioCategory:(id)a3;
-+ (id)proxyRoutingControllerWithAudioCategory:(id)a3;
++ (id)localRoutingControllerWithAudioCategory:(id)category;
++ (id)proxyRoutingControllerWithAudioCategory:(id)category;
 @end
 
 @implementation NACRoutingController
 
-+ (id)localRoutingControllerWithAudioCategory:(id)a3
++ (id)localRoutingControllerWithAudioCategory:(id)category
 {
-  v3 = a3;
-  v4 = [[NACRoutingControllerLocal alloc] initWithAudioCategory:v3];
+  categoryCopy = category;
+  v4 = [[NACRoutingControllerLocal alloc] initWithAudioCategory:categoryCopy];
 
   return v4;
 }
 
-+ (id)proxyRoutingControllerWithAudioCategory:(id)a3
++ (id)proxyRoutingControllerWithAudioCategory:(id)category
 {
-  v3 = a3;
-  v4 = [[NACRoutingControllerProxy alloc] initWithAudioCategory:v3];
+  categoryCopy = category;
+  v4 = [[NACRoutingControllerProxy alloc] initWithAudioCategory:categoryCopy];
 
   return v4;
 }

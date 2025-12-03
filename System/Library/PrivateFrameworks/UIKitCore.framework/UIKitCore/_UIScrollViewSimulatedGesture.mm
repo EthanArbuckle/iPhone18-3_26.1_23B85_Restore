@@ -1,31 +1,31 @@
 @interface _UIScrollViewSimulatedGesture
 - (BOOL)updateSimulation;
-- (_UIScrollViewSimulatedGesture)initWithDuration:(double)a3 begin:(id)a4 update:(id)a5 end:(id)a6;
+- (_UIScrollViewSimulatedGesture)initWithDuration:(double)duration begin:(id)begin update:(id)update end:(id)end;
 @end
 
 @implementation _UIScrollViewSimulatedGesture
 
-- (_UIScrollViewSimulatedGesture)initWithDuration:(double)a3 begin:(id)a4 update:(id)a5 end:(id)a6
+- (_UIScrollViewSimulatedGesture)initWithDuration:(double)duration begin:(id)begin update:(id)update end:(id)end
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  beginCopy = begin;
+  updateCopy = update;
+  endCopy = end;
   v22.receiver = self;
   v22.super_class = _UIScrollViewSimulatedGesture;
   v13 = [(_UIScrollViewSimulatedGesture *)&v22 init];
   v14 = v13;
   if (v13)
   {
-    v13->_simulationDuration = a3;
-    v15 = _Block_copy(v10);
+    v13->_simulationDuration = duration;
+    v15 = _Block_copy(beginCopy);
     beginBlock = v14->_beginBlock;
     v14->_beginBlock = v15;
 
-    v17 = _Block_copy(v11);
+    v17 = _Block_copy(updateCopy);
     updateBlock = v14->_updateBlock;
     v14->_updateBlock = v17;
 
-    v19 = _Block_copy(v12);
+    v19 = _Block_copy(endCopy);
     endBlock = v14->_endBlock;
     v14->_endBlock = v19;
   }

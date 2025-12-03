@@ -1,7 +1,7 @@
 @interface VCCannedAVSync
 + (id)sharedCannedAVSync;
 - (VCCannedAVSync)init;
-- (void)addStreamWithCount:(int)a3 rate:(double)a4;
+- (void)addStreamWithCount:(int)count rate:(double)rate;
 @end
 
 @implementation VCCannedAVSync
@@ -20,9 +20,9 @@
   return result;
 }
 
-- (void)addStreamWithCount:(int)a3 rate:(double)a4
+- (void)addStreamWithCount:(int)count rate:(double)rate
 {
-  modulo = a3 / a4;
+  modulo = count / rate;
   if (self->_modulo < modulo)
   {
     modulo = self->_modulo;

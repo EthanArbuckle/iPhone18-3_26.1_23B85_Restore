@@ -1,5 +1,5 @@
 @interface AKOverlayViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axShouldExposeDrawingElement;
 - (id)_accessibilityCreateOverlayViewElement;
 - (id)accessibilityElements;
@@ -7,20 +7,20 @@
 
 @implementation AKOverlayViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AKOverlayView" hasInstanceMethod:@"pageController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKPageController" hasInstanceMethod:@"pageIndex" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"AKPageController" hasInstanceMethod:@"inkPageOverlayController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKInkPageOverlayController" hasInstanceMethod:@"inkOverlayView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKInkOverlayView" hasInstanceMethod:@"canvasView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKInkOverlayView_iOS" isKindOfClass:@"AKInkOverlayView"];
-  [v3 validateClass:@"AKPageController" hasInstanceMethod:@"controller" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKController" hasInstanceMethod:@"toolController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKController" hasInstanceMethod:@"annotationEditingEnabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"AKController" hasInstanceMethod:@"currentPageIndex" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"AKToolController" hasInstanceMethod:@"toolMode" withFullSignature:{"Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AKOverlayView" hasInstanceMethod:@"pageController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKPageController" hasInstanceMethod:@"pageIndex" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"AKPageController" hasInstanceMethod:@"inkPageOverlayController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKInkPageOverlayController" hasInstanceMethod:@"inkOverlayView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKInkOverlayView" hasInstanceMethod:@"canvasView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKInkOverlayView_iOS" isKindOfClass:@"AKInkOverlayView"];
+  [validationsCopy validateClass:@"AKPageController" hasInstanceMethod:@"controller" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKController" hasInstanceMethod:@"toolController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKController" hasInstanceMethod:@"annotationEditingEnabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"AKController" hasInstanceMethod:@"currentPageIndex" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"AKToolController" hasInstanceMethod:@"toolMode" withFullSignature:{"Q", 0}];
 }
 
 - (BOOL)_axShouldExposeDrawingElement
@@ -50,28 +50,28 @@
 {
   if ([(AKOverlayViewAccessibility *)self _axShouldExposeDrawingElement])
   {
-    v3 = [(AKOverlayViewAccessibility *)self _axOverlayViewElement];
-    if (!v3)
+    _axOverlayViewElement = [(AKOverlayViewAccessibility *)self _axOverlayViewElement];
+    if (!_axOverlayViewElement)
     {
-      v3 = [objc_alloc(MEMORY[0x29EDC78F8]) initWithAccessibilityContainer:self];
+      _axOverlayViewElement = [objc_alloc(MEMORY[0x29EDC78F8]) initWithAccessibilityContainer:self];
       objc_initWeak(&location, self);
       v8[0] = MEMORY[0x29EDCA5F8];
       v8[1] = 3221225472;
       v8[2] = __68__AKOverlayViewAccessibility__accessibilityCreateOverlayViewElement__block_invoke;
       v8[3] = &unk_29F29D480;
       objc_copyWeak(&v9, &location);
-      [v3 _setAccessibilityLabelBlock:v8];
+      [_axOverlayViewElement _setAccessibilityLabelBlock:v8];
       v4 = accessibilityLocalizedString(@"drawing.hint");
-      [v3 setAccessibilityHint:v4];
+      [_axOverlayViewElement setAccessibilityHint:v4];
 
-      [v3 setAccessibilityActivationPoint:{-1.0, -1.0}];
+      [_axOverlayViewElement setAccessibilityActivationPoint:{-1.0, -1.0}];
       v6[0] = MEMORY[0x29EDCA5F8];
       v6[1] = 3221225472;
       v6[2] = __68__AKOverlayViewAccessibility__accessibilityCreateOverlayViewElement__block_invoke_2;
       v6[3] = &unk_29F29D4A8;
       objc_copyWeak(&v7, &location);
-      [v3 _setAccessibilityFrameBlock:v6];
-      [(AKOverlayViewAccessibility *)self _axSetOverlayViewElement:v3];
+      [_axOverlayViewElement _setAccessibilityFrameBlock:v6];
+      [(AKOverlayViewAccessibility *)self _axSetOverlayViewElement:_axOverlayViewElement];
       objc_destroyWeak(&v7);
       objc_destroyWeak(&v9);
       objc_destroyWeak(&location);
@@ -80,10 +80,10 @@
 
   else
   {
-    v3 = 0;
+    _axOverlayViewElement = 0;
   }
 
-  return v3;
+  return _axOverlayViewElement;
 }
 
 id __68__AKOverlayViewAccessibility__accessibilityCreateOverlayViewElement__block_invoke(uint64_t a1)
@@ -114,16 +114,16 @@ double __68__AKOverlayViewAccessibility__accessibilityCreateOverlayViewElement__
   v36 = *MEMORY[0x29EDCA608];
   v33.receiver = self;
   v33.super_class = AKOverlayViewAccessibility;
-  v3 = [(AKOverlayViewAccessibility *)&v33 accessibilityElements];
-  v4 = v3;
-  if (v3)
+  accessibilityElements = [(AKOverlayViewAccessibility *)&v33 accessibilityElements];
+  v4 = accessibilityElements;
+  if (accessibilityElements)
   {
-    v5 = v3;
+    v5 = accessibilityElements;
   }
 
   else
   {
-    v6 = [(AKOverlayViewAccessibility *)self _accessibilityCreateOverlayViewElement];
+    _accessibilityCreateOverlayViewElement = [(AKOverlayViewAccessibility *)self _accessibilityCreateOverlayViewElement];
     v32 = 0;
     objc_opt_class();
     v7 = [(AKOverlayViewAccessibility *)self safeValueForKey:@"pageController"];
@@ -131,16 +131,16 @@ double __68__AKOverlayViewAccessibility__accessibilityCreateOverlayViewElement__
     v9 = [v8 safeValueForKey:@"rootLayer"];
     v10 = __UIAccessibilityCastAsClass();
 
-    v11 = [v10 sublayers];
-    v12 = [(AKOverlayViewAccessibility *)self _axOverlayViewLayers];
+    sublayers = [v10 sublayers];
+    _axOverlayViewLayers = [(AKOverlayViewAccessibility *)self _axOverlayViewLayers];
     v27 = v10;
-    if (([v11 isEqualToArray:v12] & 1) == 0)
+    if (([sublayers isEqualToArray:_axOverlayViewLayers] & 1) == 0)
     {
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v13 = v12;
+      v13 = _axOverlayViewLayers;
       v14 = [v13 countByEnumeratingWithState:&v28 objects:v35 count:16];
       if (v14)
       {
@@ -164,20 +164,20 @@ double __68__AKOverlayViewAccessibility__accessibilityCreateOverlayViewElement__
         while (v15);
       }
 
-      v12 = [v11 copy];
-      [(AKOverlayViewAccessibility *)self _axSetOverlayViewLayers:v12];
+      _axOverlayViewLayers = [sublayers copy];
+      [(AKOverlayViewAccessibility *)self _axSetOverlayViewLayers:_axOverlayViewLayers];
     }
 
-    if (v6)
+    if (_accessibilityCreateOverlayViewElement)
     {
-      v34 = v6;
+      v34 = _accessibilityCreateOverlayViewElement;
       v18 = [MEMORY[0x29EDB8D80] arrayWithObjects:&v34 count:1];
-      v5 = [v18 arrayByAddingObjectsFromArray:v12];
+      v5 = [v18 arrayByAddingObjectsFromArray:_axOverlayViewLayers];
     }
 
     else
     {
-      v5 = v12;
+      v5 = _axOverlayViewLayers;
     }
 
     v32 = 0;

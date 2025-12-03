@@ -1,5 +1,5 @@
 @interface HKMedicationLogMetric
-- (HKMedicationLogMetric)initWithActions:(int64_t)a3 provenance:(int64_t)a4 context:(int64_t)a5 loggingMultipleMeds:(BOOL)a6 hoursAgoLoggedForMax:(id)a7 hoursAgoLoggedForMin:(id)a8 hoursFromScheduledTimeLoggedMax:(id)a9 hoursFromScheduledTimeLoggedMin:(id)a10 hoursFromScheduledToTakenOrSkippedMax:(id)a11 hoursFromScheduledToTakenOrSkippedMin:(id)a12 isPartiallyLoggingScheduledMeds:(id)a13 dataSource:(id)a14;
+- (HKMedicationLogMetric)initWithActions:(int64_t)actions provenance:(int64_t)provenance context:(int64_t)context loggingMultipleMeds:(BOOL)meds hoursAgoLoggedForMax:(id)max hoursAgoLoggedForMin:(id)min hoursFromScheduledTimeLoggedMax:(id)loggedMax hoursFromScheduledTimeLoggedMin:(id)self0 hoursFromScheduledToTakenOrSkippedMax:(id)self1 hoursFromScheduledToTakenOrSkippedMin:(id)self2 isPartiallyLoggingScheduledMeds:(id)self3 dataSource:(id)self4;
 - (NSDictionary)eventPayload;
 - (id)actionsPayload;
 - (id)description;
@@ -8,33 +8,33 @@
 
 @implementation HKMedicationLogMetric
 
-- (HKMedicationLogMetric)initWithActions:(int64_t)a3 provenance:(int64_t)a4 context:(int64_t)a5 loggingMultipleMeds:(BOOL)a6 hoursAgoLoggedForMax:(id)a7 hoursAgoLoggedForMin:(id)a8 hoursFromScheduledTimeLoggedMax:(id)a9 hoursFromScheduledTimeLoggedMin:(id)a10 hoursFromScheduledToTakenOrSkippedMax:(id)a11 hoursFromScheduledToTakenOrSkippedMin:(id)a12 isPartiallyLoggingScheduledMeds:(id)a13 dataSource:(id)a14
+- (HKMedicationLogMetric)initWithActions:(int64_t)actions provenance:(int64_t)provenance context:(int64_t)context loggingMultipleMeds:(BOOL)meds hoursAgoLoggedForMax:(id)max hoursAgoLoggedForMin:(id)min hoursFromScheduledTimeLoggedMax:(id)loggedMax hoursFromScheduledTimeLoggedMin:(id)self0 hoursFromScheduledToTakenOrSkippedMax:(id)self1 hoursFromScheduledToTakenOrSkippedMin:(id)self2 isPartiallyLoggingScheduledMeds:(id)self3 dataSource:(id)self4
 {
-  v31 = a7;
-  v30 = a9;
-  v29 = a10;
-  v28 = a11;
-  v27 = a12;
-  v17 = a13;
-  v18 = a14;
+  maxCopy = max;
+  loggedMaxCopy = loggedMax;
+  loggedMinCopy = loggedMin;
+  skippedMaxCopy = skippedMax;
+  skippedMinCopy = skippedMin;
+  scheduledMedsCopy = scheduledMeds;
+  sourceCopy = source;
   v32.receiver = self;
   v32.super_class = HKMedicationLogMetric;
   v19 = [(HKMedicationLogMetric *)&v32 init];
   v20 = v19;
   if (v19)
   {
-    v19->_actions = a3;
-    v19->_provenance = a4;
-    v19->_context = a5;
-    v19->_isLoggingMultipleMeds = a6;
-    objc_storeStrong(&v19->_hoursAgoLoggedForMax, a7);
-    objc_storeStrong(&v20->_hoursAgoLoggedForMin, a7);
-    objc_storeStrong(&v20->_hoursFromScheduledTimeLoggedMax, a9);
-    objc_storeStrong(&v20->_hoursFromScheduledTimeLoggedMin, a10);
-    objc_storeStrong(&v20->_hoursFromScheduledToTakenOrSkippedMax, a11);
-    objc_storeStrong(&v20->_hoursFromScheduledToTakenOrSkippedMin, a12);
-    objc_storeStrong(&v20->_isPartiallyLoggingScheduledMeds, a13);
-    v21 = [[HKMedicationAnalyticsGenericFieldsProvider alloc] initWithDataSource:v18];
+    v19->_actions = actions;
+    v19->_provenance = provenance;
+    v19->_context = context;
+    v19->_isLoggingMultipleMeds = meds;
+    objc_storeStrong(&v19->_hoursAgoLoggedForMax, max);
+    objc_storeStrong(&v20->_hoursAgoLoggedForMin, max);
+    objc_storeStrong(&v20->_hoursFromScheduledTimeLoggedMax, loggedMax);
+    objc_storeStrong(&v20->_hoursFromScheduledTimeLoggedMin, loggedMin);
+    objc_storeStrong(&v20->_hoursFromScheduledToTakenOrSkippedMax, skippedMax);
+    objc_storeStrong(&v20->_hoursFromScheduledToTakenOrSkippedMin, skippedMin);
+    objc_storeStrong(&v20->_isPartiallyLoggingScheduledMeds, scheduledMeds);
+    v21 = [[HKMedicationAnalyticsGenericFieldsProvider alloc] initWithDataSource:sourceCopy];
     genericDataProvider = v20->_genericDataProvider;
     v20->_genericDataProvider = v21;
   }
@@ -45,23 +45,23 @@
 - (NSDictionary)eventPayload
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(HKMedicationLogMetric *)self actionsPayload];
-  [v3 addEntriesFromDictionary:v4];
+  actionsPayload = [(HKMedicationLogMetric *)self actionsPayload];
+  [v3 addEntriesFromDictionary:actionsPayload];
 
-  v5 = [(HKMedicationLogMetric *)self contextValue];
+  contextValue = [(HKMedicationLogMetric *)self contextValue];
 
-  if (v5)
+  if (contextValue)
   {
-    v6 = [(HKMedicationLogMetric *)self contextValue];
-    [v3 setObject:v6 forKeyedSubscript:@"context"];
+    contextValue2 = [(HKMedicationLogMetric *)self contextValue];
+    [v3 setObject:contextValue2 forKeyedSubscript:@"context"];
   }
 
-  v7 = [(HKMedicationLogMetric *)self provenanceValue];
+  provenanceValue = [(HKMedicationLogMetric *)self provenanceValue];
 
-  if (v7)
+  if (provenanceValue)
   {
-    v8 = [(HKMedicationLogMetric *)self provenanceValue];
-    [v3 setObject:v8 forKeyedSubscript:@"provenance"];
+    provenanceValue2 = [(HKMedicationLogMetric *)self provenanceValue];
+    [v3 setObject:provenanceValue2 forKeyedSubscript:@"provenance"];
   }
 
   isPartiallyLoggingScheduledMeds = self->_isPartiallyLoggingScheduledMeds;
@@ -103,15 +103,15 @@
     [v3 setObject:v16 forKeyedSubscript:@"hoursFromScheduledToTakenOrSkippedMin"];
   }
 
-  v17 = [(HKMedicationAnalyticsGenericFieldsProvider *)self->_genericDataProvider biologicalSex];
-  if (v17)
+  biologicalSex = [(HKMedicationAnalyticsGenericFieldsProvider *)self->_genericDataProvider biologicalSex];
+  if (biologicalSex)
   {
-    [v3 setObject:v17 forKeyedSubscript:@"biologicalSex"];
+    [v3 setObject:biologicalSex forKeyedSubscript:@"biologicalSex"];
   }
 
   genericDataProvider = self->_genericDataProvider;
-  v19 = [MEMORY[0x277CBEAA8] date];
-  v20 = [(HKMedicationAnalyticsGenericFieldsProvider *)genericDataProvider bucketedUserAgeForCurrentDate:v19];
+  date = [MEMORY[0x277CBEAA8] date];
+  v20 = [(HKMedicationAnalyticsGenericFieldsProvider *)genericDataProvider bucketedUserAgeForCurrentDate:date];
   [v3 setObject:v20 forKeyedSubscript:@"age"];
 
   v21 = [v3 copy];
@@ -123,8 +123,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HKMedicationLogMetric *)self eventPayload];
-  v6 = [v3 stringWithFormat:@"%@:%p payload: %@", v4, self, v5];
+  eventPayload = [(HKMedicationLogMetric *)self eventPayload];
+  v6 = [v3 stringWithFormat:@"%@:%p payload: %@", v4, self, eventPayload];
 
   return v6;
 }
@@ -137,8 +137,8 @@
     return off_2796CA0E8[v2];
   }
 
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"HKMedicationLogMetric.m" lineNumber:150 description:{@"Invalid provenance for HKMedicationLoggingProvenance %ld", self->_provenance}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HKMedicationLogMetric.m" lineNumber:150 description:{@"Invalid provenance for HKMedicationLoggingProvenance %ld", self->_provenance}];
 
   return 0;
 }

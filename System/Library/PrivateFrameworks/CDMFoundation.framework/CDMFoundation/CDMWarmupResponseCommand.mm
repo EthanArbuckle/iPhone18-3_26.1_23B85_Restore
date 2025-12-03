@@ -1,20 +1,20 @@
 @interface CDMWarmupResponseCommand
-- (CDMWarmupResponseCommand)initWithServiceState:(int64_t)a3 serviceName:(id)a4;
+- (CDMWarmupResponseCommand)initWithServiceState:(int64_t)state serviceName:(id)name;
 @end
 
 @implementation CDMWarmupResponseCommand
 
-- (CDMWarmupResponseCommand)initWithServiceState:(int64_t)a3 serviceName:(id)a4
+- (CDMWarmupResponseCommand)initWithServiceState:(int64_t)state serviceName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = CDMWarmupResponseCommand;
   v7 = [(CDMBaseCommand *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_serviceState = a3;
-    v9 = [v6 copy];
+    v7->_serviceState = state;
+    v9 = [nameCopy copy];
     serviceName = v8->_serviceName;
     v8->_serviceName = v9;
   }

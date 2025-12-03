@@ -1,26 +1,26 @@
 @interface SUUIPostRatingOperation
 - (NSDictionary)responseDictionary;
-- (SUUIPostRatingOperation)initWithRating:(int64_t)a3 forItemID:(id)a4 reviewConfiguration:(id)a5;
+- (SUUIPostRatingOperation)initWithRating:(int64_t)rating forItemID:(id)d reviewConfiguration:(id)configuration;
 - (void)run;
 @end
 
 @implementation SUUIPostRatingOperation
 
-- (SUUIPostRatingOperation)initWithRating:(int64_t)a3 forItemID:(id)a4 reviewConfiguration:(id)a5
+- (SUUIPostRatingOperation)initWithRating:(int64_t)rating forItemID:(id)d reviewConfiguration:(id)configuration
 {
-  v8 = a5;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = SUUIPostRatingOperation;
   v9 = [(SUUIPostRatingOperation *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_rating = a3;
+    v9->_rating = rating;
     v11 = [(NSString *)v9->_itemID copy];
     itemID = v10->_itemID;
     v10->_itemID = v11;
 
-    objc_storeStrong(&v10->_reviewConfiguration, a5);
+    objc_storeStrong(&v10->_reviewConfiguration, configuration);
   }
 
   return v10;
@@ -37,13 +37,13 @@
 
 - (void)run
 {
-  v3 = [(SUUIReviewConfiguration *)self->_reviewConfiguration ratingURLString];
-  if (!v3)
+  ratingURLString = [(SUUIReviewConfiguration *)self->_reviewConfiguration ratingURLString];
+  if (!ratingURLString)
   {
-    v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"https://userpub.itunes.apple.com/WebObjects/MZUserPublishing.woa/wa/userRateContent?displayable-kind=11&id=%@", self->_itemID];
+    ratingURLString = [MEMORY[0x277CCACA8] stringWithFormat:@"https://userpub.itunes.apple.com/WebObjects/MZUserPublishing.woa/wa/userRateContent?displayable-kind=11&id=%@", self->_itemID];
   }
 
-  v4 = [MEMORY[0x277CBEBC0] URLWithString:v3];
+  v4 = [MEMORY[0x277CBEBC0] URLWithString:ratingURLString];
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", self->_rating];
   v6 = [v4 URLByAppendingQueryParameter:@"rating" value:v5];
 
@@ -62,12 +62,12 @@
   v11 = v17;
   if (v10)
   {
-    v12 = [v9 output];
-    v13 = [v12 objectForKey:@"status-code"];
+    output = [v9 output];
+    v13 = [output objectForKey:@"status-code"];
     objc_opt_class();
     v14 = (objc_opt_isKindOfClass() & 1) != 0 && [v13 integerValue] == 3200;
     [(SUUIPostRatingOperation *)self lock];
-    v15 = [v12 copy];
+    v15 = [output copy];
     responseDictionary = self->_responseDictionary;
     self->_responseDictionary = v15;
 

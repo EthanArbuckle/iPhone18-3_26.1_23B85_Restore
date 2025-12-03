@@ -1,29 +1,29 @@
 @interface ODDSiriSchemaODDMAErrorsDimensions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDMAErrorsDimensions)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDMAErrorsDimensions)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDMAErrorsDimensions)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDMAErrorsDimensions)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsDiscretionary:(BOOL)a3;
-- (void)setHasIsUserPriority:(BOOL)a3;
-- (void)setHasOperationType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsDiscretionary:(BOOL)discretionary;
+- (void)setHasIsUserPriority:(BOOL)priority;
+- (void)setHasOperationType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDMAErrorsDimensions
 
-- (ODDSiriSchemaODDMAErrorsDimensions)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDMAErrorsDimensions)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v33.receiver = self;
   v33.super_class = ODDSiriSchemaODDMAErrorsDimensions;
   v5 = [(ODDSiriSchemaODDMAErrorsDimensions *)&v33 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"AssetSpecifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"AssetSpecifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,7 +31,7 @@
       [(ODDSiriSchemaODDMAErrorsDimensions *)v5 setAssetSpecifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"AssetType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"AssetType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,7 +39,7 @@
       [(ODDSiriSchemaODDMAErrorsDimensions *)v5 setAssetType:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"AssetVersion"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"AssetVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,7 +47,7 @@
       [(ODDSiriSchemaODDMAErrorsDimensions *)v5 setAssetVersion:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"Result"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"Result"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,7 +56,7 @@
     }
 
     v29 = v12;
-    v14 = [v4 objectForKeyedSubscript:@"IsMAAutoAsset"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"IsMAAutoAsset"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,14 +64,14 @@
     }
 
     v28 = v14;
-    v15 = [v4 objectForKeyedSubscript:@"IsDiscretionary"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"IsDiscretionary"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDMAErrorsDimensions setIsDiscretionary:](v5, "setIsDiscretionary:", [v15 BOOLValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"IsUserPriority"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"IsUserPriority"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,7 +79,7 @@
     }
 
     v32 = v6;
-    v17 = [v4 objectForKeyedSubscript:@"operationType"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"operationType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -87,7 +87,7 @@
     }
 
     v31 = v8;
-    v18 = [v4 objectForKeyedSubscript:@"operationFailureReason"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"operationFailureReason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -96,7 +96,7 @@
     }
 
     v30 = v10;
-    v20 = [v4 objectForKeyedSubscript:@"operationResult"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"operationResult"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -104,7 +104,7 @@
       [(ODDSiriSchemaODDMAErrorsDimensions *)v5 setOperationResult:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"networkAccessType"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"networkAccessType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -112,7 +112,7 @@
       [(ODDSiriSchemaODDMAErrorsDimensions *)v5 setNetworkAccessType:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"subSystemName"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"subSystemName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -126,30 +126,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDMAErrorsDimensions)initWithJSON:(id)a3
+- (ODDSiriSchemaODDMAErrorsDimensions)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDMAErrorsDimensions *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDMAErrorsDimensions *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDMAErrorsDimensions *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -162,33 +162,33 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_AssetSpecifier)
   {
-    v4 = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetSpecifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"AssetSpecifier"];
+    assetSpecifier = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetSpecifier];
+    v5 = [assetSpecifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"AssetSpecifier"];
   }
 
   if (self->_AssetType)
   {
-    v6 = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetType];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"AssetType"];
+    assetType = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetType];
+    v7 = [assetType copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"AssetType"];
   }
 
   if (self->_AssetVersion)
   {
-    v8 = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetVersion];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"AssetVersion"];
+    assetVersion = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetVersion];
+    v9 = [assetVersion copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"AssetVersion"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDMAErrorsDimensions IsDiscretionary](self, "IsDiscretionary")}];
-    [v3 setObject:v16 forKeyedSubscript:@"IsDiscretionary"];
+    [dictionary setObject:v16 forKeyedSubscript:@"IsDiscretionary"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -209,51 +209,51 @@ LABEL_9:
   }
 
   v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDMAErrorsDimensions IsMAAutoAsset](self, "IsMAAutoAsset")}];
-  [v3 setObject:v17 forKeyedSubscript:@"IsMAAutoAsset"];
+  [dictionary setObject:v17 forKeyedSubscript:@"IsMAAutoAsset"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_10:
     v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDMAErrorsDimensions IsUserPriority](self, "IsUserPriority")}];
-    [v3 setObject:v11 forKeyedSubscript:@"IsUserPriority"];
+    [dictionary setObject:v11 forKeyedSubscript:@"IsUserPriority"];
   }
 
 LABEL_11:
   if (self->_Result)
   {
-    v12 = [(ODDSiriSchemaODDMAErrorsDimensions *)self Result];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"Result"];
+    result = [(ODDSiriSchemaODDMAErrorsDimensions *)self Result];
+    v13 = [result copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"Result"];
   }
 
   if (self->_networkAccessType)
   {
-    v14 = [(ODDSiriSchemaODDMAErrorsDimensions *)self networkAccessType];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    networkAccessType = [(ODDSiriSchemaODDMAErrorsDimensions *)self networkAccessType];
+    dictionaryRepresentation = [networkAccessType dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"networkAccessType"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"networkAccessType"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"networkAccessType"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"networkAccessType"];
     }
   }
 
   if (self->_operationFailureReason)
   {
-    v19 = [(ODDSiriSchemaODDMAErrorsDimensions *)self operationFailureReason];
-    v20 = [v19 copy];
-    [v3 setObject:v20 forKeyedSubscript:@"operationFailureReason"];
+    operationFailureReason = [(ODDSiriSchemaODDMAErrorsDimensions *)self operationFailureReason];
+    v20 = [operationFailureReason copy];
+    [dictionary setObject:v20 forKeyedSubscript:@"operationFailureReason"];
   }
 
   if (self->_operationResult)
   {
-    v21 = [(ODDSiriSchemaODDMAErrorsDimensions *)self operationResult];
-    v22 = [v21 copy];
-    [v3 setObject:v22 forKeyedSubscript:@"operationResult"];
+    operationResult = [(ODDSiriSchemaODDMAErrorsDimensions *)self operationResult];
+    v22 = [operationResult copy];
+    [dictionary setObject:v22 forKeyedSubscript:@"operationResult"];
   }
 
   if ((*&self->_has & 8) != 0)
@@ -269,19 +269,19 @@ LABEL_11:
       v24 = off_1E78DD918[v23];
     }
 
-    [v3 setObject:v24 forKeyedSubscript:@"operationType"];
+    [dictionary setObject:v24 forKeyedSubscript:@"operationType"];
   }
 
   if (self->_subSystemName)
   {
-    v25 = [(ODDSiriSchemaODDMAErrorsDimensions *)self subSystemName];
-    v26 = [v25 copy];
-    [v3 setObject:v26 forKeyedSubscript:@"subSystemName"];
+    subSystemName = [(ODDSiriSchemaODDMAErrorsDimensions *)self subSystemName];
+    v26 = [subSystemName copy];
+    [dictionary setObject:v26 forKeyedSubscript:@"subSystemName"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -347,28 +347,28 @@ LABEL_10:
   return v13 ^ v14 ^ [(NSString *)self->_subSystemName hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_57;
   }
 
-  v5 = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetSpecifier];
-  v6 = [v4 AssetSpecifier];
-  if ((v5 != 0) == (v6 == 0))
+  assetSpecifier = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetSpecifier];
+  assetSpecifier2 = [equalCopy AssetSpecifier];
+  if ((assetSpecifier != 0) == (assetSpecifier2 == 0))
   {
     goto LABEL_56;
   }
 
-  v7 = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetSpecifier];
-  if (v7)
+  assetSpecifier3 = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetSpecifier];
+  if (assetSpecifier3)
   {
-    v8 = v7;
-    v9 = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetSpecifier];
-    v10 = [v4 AssetSpecifier];
-    v11 = [v9 isEqual:v10];
+    v8 = assetSpecifier3;
+    assetSpecifier4 = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetSpecifier];
+    assetSpecifier5 = [equalCopy AssetSpecifier];
+    v11 = [assetSpecifier4 isEqual:assetSpecifier5];
 
     if (!v11)
     {
@@ -380,20 +380,20 @@ LABEL_10:
   {
   }
 
-  v5 = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetType];
-  v6 = [v4 AssetType];
-  if ((v5 != 0) == (v6 == 0))
+  assetSpecifier = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetType];
+  assetSpecifier2 = [equalCopy AssetType];
+  if ((assetSpecifier != 0) == (assetSpecifier2 == 0))
   {
     goto LABEL_56;
   }
 
-  v12 = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetType];
-  if (v12)
+  assetType = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetType];
+  if (assetType)
   {
-    v13 = v12;
-    v14 = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetType];
-    v15 = [v4 AssetType];
-    v16 = [v14 isEqual:v15];
+    v13 = assetType;
+    assetType2 = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetType];
+    assetType3 = [equalCopy AssetType];
+    v16 = [assetType2 isEqual:assetType3];
 
     if (!v16)
     {
@@ -405,20 +405,20 @@ LABEL_10:
   {
   }
 
-  v5 = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetVersion];
-  v6 = [v4 AssetVersion];
-  if ((v5 != 0) == (v6 == 0))
+  assetSpecifier = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetVersion];
+  assetSpecifier2 = [equalCopy AssetVersion];
+  if ((assetSpecifier != 0) == (assetSpecifier2 == 0))
   {
     goto LABEL_56;
   }
 
-  v17 = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetVersion];
-  if (v17)
+  assetVersion = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetVersion];
+  if (assetVersion)
   {
-    v18 = v17;
-    v19 = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetVersion];
-    v20 = [v4 AssetVersion];
-    v21 = [v19 isEqual:v20];
+    v18 = assetVersion;
+    assetVersion2 = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetVersion];
+    assetVersion3 = [equalCopy AssetVersion];
+    v21 = [assetVersion2 isEqual:assetVersion3];
 
     if (!v21)
     {
@@ -430,20 +430,20 @@ LABEL_10:
   {
   }
 
-  v5 = [(ODDSiriSchemaODDMAErrorsDimensions *)self Result];
-  v6 = [v4 Result];
-  if ((v5 != 0) == (v6 == 0))
+  assetSpecifier = [(ODDSiriSchemaODDMAErrorsDimensions *)self Result];
+  assetSpecifier2 = [equalCopy Result];
+  if ((assetSpecifier != 0) == (assetSpecifier2 == 0))
   {
     goto LABEL_56;
   }
 
-  v22 = [(ODDSiriSchemaODDMAErrorsDimensions *)self Result];
-  if (v22)
+  result = [(ODDSiriSchemaODDMAErrorsDimensions *)self Result];
+  if (result)
   {
-    v23 = v22;
-    v24 = [(ODDSiriSchemaODDMAErrorsDimensions *)self Result];
-    v25 = [v4 Result];
-    v26 = [v24 isEqual:v25];
+    v23 = result;
+    result2 = [(ODDSiriSchemaODDMAErrorsDimensions *)self Result];
+    result3 = [equalCopy Result];
+    v26 = [result2 isEqual:result3];
 
     if (!v26)
     {
@@ -456,7 +456,7 @@ LABEL_10:
   }
 
   has = self->_has;
-  v28 = v4[80];
+  v28 = equalCopy[80];
   if ((*&has & 1) != (v28 & 1))
   {
     goto LABEL_57;
@@ -465,13 +465,13 @@ LABEL_10:
   if (*&has)
   {
     IsMAAutoAsset = self->_IsMAAutoAsset;
-    if (IsMAAutoAsset != [v4 IsMAAutoAsset])
+    if (IsMAAutoAsset != [equalCopy IsMAAutoAsset])
     {
       goto LABEL_57;
     }
 
     has = self->_has;
-    v28 = v4[80];
+    v28 = equalCopy[80];
   }
 
   v30 = (*&has >> 1) & 1;
@@ -483,13 +483,13 @@ LABEL_10:
   if (v30)
   {
     IsDiscretionary = self->_IsDiscretionary;
-    if (IsDiscretionary != [v4 IsDiscretionary])
+    if (IsDiscretionary != [equalCopy IsDiscretionary])
     {
       goto LABEL_57;
     }
 
     has = self->_has;
-    v28 = v4[80];
+    v28 = equalCopy[80];
   }
 
   v32 = (*&has >> 2) & 1;
@@ -501,13 +501,13 @@ LABEL_10:
   if (v32)
   {
     IsUserPriority = self->_IsUserPriority;
-    if (IsUserPriority != [v4 IsUserPriority])
+    if (IsUserPriority != [equalCopy IsUserPriority])
     {
       goto LABEL_57;
     }
 
     has = self->_has;
-    v28 = v4[80];
+    v28 = equalCopy[80];
   }
 
   v34 = (*&has >> 3) & 1;
@@ -519,26 +519,26 @@ LABEL_10:
   if (v34)
   {
     operationType = self->_operationType;
-    if (operationType != [v4 operationType])
+    if (operationType != [equalCopy operationType])
     {
       goto LABEL_57;
     }
   }
 
-  v5 = [(ODDSiriSchemaODDMAErrorsDimensions *)self operationFailureReason];
-  v6 = [v4 operationFailureReason];
-  if ((v5 != 0) == (v6 == 0))
+  assetSpecifier = [(ODDSiriSchemaODDMAErrorsDimensions *)self operationFailureReason];
+  assetSpecifier2 = [equalCopy operationFailureReason];
+  if ((assetSpecifier != 0) == (assetSpecifier2 == 0))
   {
     goto LABEL_56;
   }
 
-  v36 = [(ODDSiriSchemaODDMAErrorsDimensions *)self operationFailureReason];
-  if (v36)
+  operationFailureReason = [(ODDSiriSchemaODDMAErrorsDimensions *)self operationFailureReason];
+  if (operationFailureReason)
   {
-    v37 = v36;
-    v38 = [(ODDSiriSchemaODDMAErrorsDimensions *)self operationFailureReason];
-    v39 = [v4 operationFailureReason];
-    v40 = [v38 isEqual:v39];
+    v37 = operationFailureReason;
+    operationFailureReason2 = [(ODDSiriSchemaODDMAErrorsDimensions *)self operationFailureReason];
+    operationFailureReason3 = [equalCopy operationFailureReason];
+    v40 = [operationFailureReason2 isEqual:operationFailureReason3];
 
     if (!v40)
     {
@@ -550,20 +550,20 @@ LABEL_10:
   {
   }
 
-  v5 = [(ODDSiriSchemaODDMAErrorsDimensions *)self operationResult];
-  v6 = [v4 operationResult];
-  if ((v5 != 0) == (v6 == 0))
+  assetSpecifier = [(ODDSiriSchemaODDMAErrorsDimensions *)self operationResult];
+  assetSpecifier2 = [equalCopy operationResult];
+  if ((assetSpecifier != 0) == (assetSpecifier2 == 0))
   {
     goto LABEL_56;
   }
 
-  v41 = [(ODDSiriSchemaODDMAErrorsDimensions *)self operationResult];
-  if (v41)
+  operationResult = [(ODDSiriSchemaODDMAErrorsDimensions *)self operationResult];
+  if (operationResult)
   {
-    v42 = v41;
-    v43 = [(ODDSiriSchemaODDMAErrorsDimensions *)self operationResult];
-    v44 = [v4 operationResult];
-    v45 = [v43 isEqual:v44];
+    v42 = operationResult;
+    operationResult2 = [(ODDSiriSchemaODDMAErrorsDimensions *)self operationResult];
+    operationResult3 = [equalCopy operationResult];
+    v45 = [operationResult2 isEqual:operationResult3];
 
     if (!v45)
     {
@@ -575,20 +575,20 @@ LABEL_10:
   {
   }
 
-  v5 = [(ODDSiriSchemaODDMAErrorsDimensions *)self networkAccessType];
-  v6 = [v4 networkAccessType];
-  if ((v5 != 0) == (v6 == 0))
+  assetSpecifier = [(ODDSiriSchemaODDMAErrorsDimensions *)self networkAccessType];
+  assetSpecifier2 = [equalCopy networkAccessType];
+  if ((assetSpecifier != 0) == (assetSpecifier2 == 0))
   {
     goto LABEL_56;
   }
 
-  v46 = [(ODDSiriSchemaODDMAErrorsDimensions *)self networkAccessType];
-  if (v46)
+  networkAccessType = [(ODDSiriSchemaODDMAErrorsDimensions *)self networkAccessType];
+  if (networkAccessType)
   {
-    v47 = v46;
-    v48 = [(ODDSiriSchemaODDMAErrorsDimensions *)self networkAccessType];
-    v49 = [v4 networkAccessType];
-    v50 = [v48 isEqual:v49];
+    v47 = networkAccessType;
+    networkAccessType2 = [(ODDSiriSchemaODDMAErrorsDimensions *)self networkAccessType];
+    networkAccessType3 = [equalCopy networkAccessType];
+    v50 = [networkAccessType2 isEqual:networkAccessType3];
 
     if (!v50)
     {
@@ -600,17 +600,17 @@ LABEL_10:
   {
   }
 
-  v5 = [(ODDSiriSchemaODDMAErrorsDimensions *)self subSystemName];
-  v6 = [v4 subSystemName];
-  if ((v5 != 0) == (v6 == 0))
+  assetSpecifier = [(ODDSiriSchemaODDMAErrorsDimensions *)self subSystemName];
+  assetSpecifier2 = [equalCopy subSystemName];
+  if ((assetSpecifier != 0) == (assetSpecifier2 == 0))
   {
 LABEL_56:
 
     goto LABEL_57;
   }
 
-  v51 = [(ODDSiriSchemaODDMAErrorsDimensions *)self subSystemName];
-  if (!v51)
+  subSystemName = [(ODDSiriSchemaODDMAErrorsDimensions *)self subSystemName];
+  if (!subSystemName)
   {
 
 LABEL_60:
@@ -618,10 +618,10 @@ LABEL_60:
     goto LABEL_58;
   }
 
-  v52 = v51;
-  v53 = [(ODDSiriSchemaODDMAErrorsDimensions *)self subSystemName];
-  v54 = [v4 subSystemName];
-  v55 = [v53 isEqual:v54];
+  v52 = subSystemName;
+  subSystemName2 = [(ODDSiriSchemaODDMAErrorsDimensions *)self subSystemName];
+  subSystemName3 = [equalCopy subSystemName];
+  v55 = [subSystemName2 isEqual:subSystemName3];
 
   if (v55)
   {
@@ -635,33 +635,33 @@ LABEL_58:
   return v56;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetSpecifier];
+  toCopy = to;
+  assetSpecifier = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetSpecifier];
 
-  if (v4)
+  if (assetSpecifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetType];
+  assetType = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetType];
 
-  if (v5)
+  if (assetType)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetVersion];
+  assetVersion = [(ODDSiriSchemaODDMAErrorsDimensions *)self AssetVersion];
 
-  if (v6)
+  if (assetVersion)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(ODDSiriSchemaODDMAErrorsDimensions *)self Result];
+  result = [(ODDSiriSchemaODDMAErrorsDimensions *)self Result];
 
-  if (v7)
+  if (result)
   {
     PBDataWriterWriteStringField();
   }
@@ -710,41 +710,41 @@ LABEL_13:
   }
 
 LABEL_14:
-  v9 = [(ODDSiriSchemaODDMAErrorsDimensions *)self operationFailureReason];
+  operationFailureReason = [(ODDSiriSchemaODDMAErrorsDimensions *)self operationFailureReason];
 
-  if (v9)
+  if (operationFailureReason)
   {
     PBDataWriterWriteStringField();
   }
 
-  v10 = [(ODDSiriSchemaODDMAErrorsDimensions *)self operationResult];
+  operationResult = [(ODDSiriSchemaODDMAErrorsDimensions *)self operationResult];
 
-  if (v10)
+  if (operationResult)
   {
     PBDataWriterWriteStringField();
   }
 
-  v11 = [(ODDSiriSchemaODDMAErrorsDimensions *)self networkAccessType];
+  networkAccessType = [(ODDSiriSchemaODDMAErrorsDimensions *)self networkAccessType];
 
-  if (v11)
+  if (networkAccessType)
   {
-    v12 = [(ODDSiriSchemaODDMAErrorsDimensions *)self networkAccessType];
+    networkAccessType2 = [(ODDSiriSchemaODDMAErrorsDimensions *)self networkAccessType];
     PBDataWriterWriteSubmessage();
   }
 
-  v13 = [(ODDSiriSchemaODDMAErrorsDimensions *)self subSystemName];
+  subSystemName = [(ODDSiriSchemaODDMAErrorsDimensions *)self subSystemName];
 
-  v14 = v15;
-  if (v13)
+  v14 = toCopy;
+  if (subSystemName)
   {
     PBDataWriterWriteStringField();
-    v14 = v15;
+    v14 = toCopy;
   }
 }
 
-- (void)setHasOperationType:(BOOL)a3
+- (void)setHasOperationType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -757,9 +757,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsUserPriority:(BOOL)a3
+- (void)setHasIsUserPriority:(BOOL)priority
 {
-  if (a3)
+  if (priority)
   {
     v3 = 4;
   }
@@ -772,9 +772,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsDiscretionary:(BOOL)a3
+- (void)setHasIsDiscretionary:(BOOL)discretionary
 {
-  if (a3)
+  if (discretionary)
   {
     v3 = 2;
   }
@@ -787,17 +787,17 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ODDSiriSchemaODDMAErrorsDimensions;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ODDSiriSchemaODDMAErrorsDimensions *)self networkAccessType:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ODDSiriSchemaODDMAErrorsDimensions *)self deleteNetworkAccessType];
   }

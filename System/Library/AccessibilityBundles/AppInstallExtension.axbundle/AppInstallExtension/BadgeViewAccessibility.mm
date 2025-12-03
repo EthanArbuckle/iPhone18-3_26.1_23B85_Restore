@@ -1,37 +1,37 @@
 @interface BadgeViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation BadgeViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AppInstallExtension.BadgeView" hasInstanceMethod:@"accessibilityValueLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AppInstallExtension.BadgeView" hasInstanceMethod:@"accessibilityCaptionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AppInstallExtension.BadgeView" hasInstanceMethod:@"accessibilityHeadingLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AppInstallExtension.BadgeView" hasInstanceMethod:@"accessibilityValueView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AppInstallExtension.BadgeView" hasSwiftField:@"valueView" withSwiftType:"Optional<UIView>"];
-  [v3 validateClass:@"AppStoreKit.ArtworkView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AppInstallExtension.BadgeView" hasInstanceMethod:@"accessibilityValueLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AppInstallExtension.BadgeView" hasInstanceMethod:@"accessibilityCaptionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AppInstallExtension.BadgeView" hasInstanceMethod:@"accessibilityHeadingLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AppInstallExtension.BadgeView" hasInstanceMethod:@"accessibilityValueView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AppInstallExtension.BadgeView" hasSwiftField:@"valueView" withSwiftType:"Optional<UIView>"];
+  [validationsCopy validateClass:@"AppStoreKit.ArtworkView"];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(BadgeViewAccessibility *)self safeValueForKey:@"accessibilityValueLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
-  if ([v4 length])
+  if ([accessibilityLabel length])
   {
     v34 = 0;
     v5 = [MEMORY[0x29EDBA0D0] regularExpressionWithPattern:@"(\\d*\\.\\d*)" options:1 error:&v34];
-    v6 = [v5 matchesInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
+    v6 = [v5 matchesInString:accessibilityLabel options:0 range:{0, objc_msgSend(accessibilityLabel, "length")}];
     if ([v6 count])
     {
       v7 = [v6 objectAtIndexedSubscript:0];
-      v8 = [v7 range];
-      v10 = [v4 substringWithRange:{v8, v9}];
+      range = [v7 range];
+      v10 = [accessibilityLabel substringWithRange:{range, v9}];
       [v10 doubleValue];
 
       v11 = UIAXStarRatingStringForRatingWithGranularity();
@@ -39,7 +39,7 @@
 
     else
     {
-      v11 = v4;
+      v11 = accessibilityLabel;
     }
 
     v33 = v11;
@@ -59,10 +59,10 @@
   v31 = v15;
   if (v15)
   {
-    v16 = [v15 image];
-    v17 = [v16 imageAsset];
+    image = [v15 image];
+    imageAsset = [image imageAsset];
 
-    v18 = [v17 safeStringForKey:@"assetName"];
+    v18 = [imageAsset safeStringForKey:@"assetName"];
     if ([v18 isEqualToString:@"br.10"] & 1) != 0 || (objc_msgSend(v18, "isEqualToString:", @"br.10.official"))
     {
       v19 = @"age.rating.10";
@@ -108,7 +108,7 @@ LABEL_12:
   v20 = 0;
 LABEL_14:
   v21 = [(BadgeViewAccessibility *)self safeValueForKey:@"accessibilityHeadingLabel"];
-  v22 = [v21 accessibilityLabel];
+  accessibilityLabel2 = [v21 accessibilityLabel];
   v32 = v13;
   v23 = [v13 stringByAppendingString:@".ArtworkView"];
   MEMORY[0x29C2C8630]();
@@ -116,16 +116,16 @@ LABEL_14:
   v25 = v12;
   if (isKindOfClass)
   {
-    v26 = 0;
+    accessibilityLabel3 = 0;
   }
 
   else
   {
-    v26 = [v12 accessibilityLabel];
+    accessibilityLabel3 = [v12 accessibilityLabel];
   }
 
   v27 = [(BadgeViewAccessibility *)self safeValueForKey:@"accessibilityCaptionLabel"];
-  v30 = [v27 accessibilityLabel];
+  accessibilityLabel4 = [v27 accessibilityLabel];
   v28 = __UIAXStringForVariables();
 
   if ((isKindOfClass & 1) == 0)

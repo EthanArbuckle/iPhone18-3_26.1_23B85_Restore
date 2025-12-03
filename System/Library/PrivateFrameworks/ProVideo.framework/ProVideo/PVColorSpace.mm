@@ -7,8 +7,8 @@
 + (id)p3PQGammaColorSpace;
 + (id)p3d65GammaColorSpace;
 + (id)preferredDisplayColorSpace;
-+ (id)pvColorSpaceForCVPixelBuffer:(__CVBuffer *)a3;
-+ (id)pvColorSpaceFromCGColorSpace:(CGColorSpace *)a3;
++ (id)pvColorSpaceForCVPixelBuffer:(__CVBuffer *)buffer;
++ (id)pvColorSpaceFromCGColorSpace:(CGColorSpace *)space;
 + (id)rec2020GammaColorSpace;
 + (id)rec2020LinearColorSpace;
 + (id)rec2100HLGColorSpace;
@@ -19,13 +19,13 @@
 + (id)rec709GammaColorSpace;
 + (id)rec709LinearColorSpace;
 + (id)sRGBColorSpace;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCGColorSpace:(CGColorSpace *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCGColorSpace:(CGColorSpace *)space;
 - (BOOL)isHDRSpace;
 - (BOOL)isWideGamutSpace;
 - (CGColorSpace)cgColorSpace;
-- (PVColorSpace)initWithType:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PVColorSpace)initWithType:(int)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)name;
 - (id)nclcTriplet;
@@ -37,12 +37,12 @@
 {
   if (+[PVDeviceCharacteristics hasExtendedColorDisplay])
   {
-    [a1 p3d65GammaColorSpace];
+    [self p3d65GammaColorSpace];
   }
 
   else
   {
-    [a1 sRGBColorSpace];
+    [self sRGBColorSpace];
   }
   v3 = ;
 
@@ -51,132 +51,132 @@
 
 + (id)sRGBColorSpace
 {
-  v2 = [[a1 alloc] initWithType:0];
+  v2 = [[self alloc] initWithType:0];
 
   return v2;
 }
 
 + (id)rec601_1_1_6_GammaColorSpace
 {
-  v2 = [[a1 alloc] initWithType:1];
+  v2 = [[self alloc] initWithType:1];
 
   return v2;
 }
 
 + (id)rec601_SMPTE_C_GammaColorSpace
 {
-  v2 = [[a1 alloc] initWithType:2];
+  v2 = [[self alloc] initWithType:2];
 
   return v2;
 }
 
 + (id)rec601_EBU_3213_GammaColorSpace
 {
-  v2 = [[a1 alloc] initWithType:3];
+  v2 = [[self alloc] initWithType:3];
 
   return v2;
 }
 
 + (id)rec709GammaColorSpace
 {
-  v2 = [[a1 alloc] initWithType:4];
+  v2 = [[self alloc] initWithType:4];
 
   return v2;
 }
 
 + (id)rec709LinearColorSpace
 {
-  v2 = [[a1 alloc] initWithType:5];
+  v2 = [[self alloc] initWithType:5];
 
   return v2;
 }
 
 + (id)extendedSRGBColorSpace
 {
-  v2 = [[a1 alloc] initWithType:6];
+  v2 = [[self alloc] initWithType:6];
 
   return v2;
 }
 
 + (id)extendedLinearSRGBColorSpace
 {
-  v2 = [[a1 alloc] initWithType:7];
+  v2 = [[self alloc] initWithType:7];
 
   return v2;
 }
 
 + (id)extendedDisplayP3ColorSpace
 {
-  v2 = [[a1 alloc] initWithType:8];
+  v2 = [[self alloc] initWithType:8];
 
   return v2;
 }
 
 + (id)p3d65GammaColorSpace
 {
-  v2 = [[a1 alloc] initWithType:9];
+  v2 = [[self alloc] initWithType:9];
 
   return v2;
 }
 
 + (id)p3HLGGammaColorSpace
 {
-  v2 = [[a1 alloc] initWithType:10];
+  v2 = [[self alloc] initWithType:10];
 
   return v2;
 }
 
 + (id)p3PQGammaColorSpace
 {
-  v2 = [[a1 alloc] initWithType:11];
+  v2 = [[self alloc] initWithType:11];
 
   return v2;
 }
 
 + (id)rec2100HLGColorSpace
 {
-  v2 = [[a1 alloc] initWithType:12];
+  v2 = [[self alloc] initWithType:12];
 
   return v2;
 }
 
 + (id)rec2100PQColorSpace
 {
-  v2 = [[a1 alloc] initWithType:13];
+  v2 = [[self alloc] initWithType:13];
 
   return v2;
 }
 
 + (id)rec2020LinearColorSpace
 {
-  v2 = [[a1 alloc] initWithType:14];
+  v2 = [[self alloc] initWithType:14];
 
   return v2;
 }
 
 + (id)rec2020GammaColorSpace
 {
-  v2 = [[a1 alloc] initWithType:15];
+  v2 = [[self alloc] initWithType:15];
 
   return v2;
 }
 
 + (id)ProResLogColorSpace
 {
-  v2 = [[a1 alloc] initWithType:16];
+  v2 = [[self alloc] initWithType:16];
 
   return v2;
 }
 
-+ (id)pvColorSpaceFromCGColorSpace:(CGColorSpace *)a3
++ (id)pvColorSpaceFromCGColorSpace:(CGColorSpace *)space
 {
-  if (!a3)
+  if (!space)
   {
     goto LABEL_32;
   }
 
   v4 = +[PVColorSpace sRGBColorSpace];
-  v5 = [v4 isEqualToCGColorSpace:a3];
+  v5 = [v4 isEqualToCGColorSpace:space];
 
   if (v5)
   {
@@ -185,7 +185,7 @@
   }
 
   v7 = +[PVColorSpace rec601_1_1_6_GammaColorSpace];
-  v8 = [v7 isEqualToCGColorSpace:a3];
+  v8 = [v7 isEqualToCGColorSpace:space];
 
   if (v8)
   {
@@ -194,7 +194,7 @@
   }
 
   v9 = +[PVColorSpace rec601_SMPTE_C_GammaColorSpace];
-  v10 = [v9 isEqualToCGColorSpace:a3];
+  v10 = [v9 isEqualToCGColorSpace:space];
 
   if (v10)
   {
@@ -203,7 +203,7 @@
   }
 
   v11 = +[PVColorSpace rec601_EBU_3213_GammaColorSpace];
-  v12 = [v11 isEqualToCGColorSpace:a3];
+  v12 = [v11 isEqualToCGColorSpace:space];
 
   if (v12)
   {
@@ -212,7 +212,7 @@
   }
 
   v13 = +[PVColorSpace rec709GammaColorSpace];
-  v14 = [v13 isEqualToCGColorSpace:a3];
+  v14 = [v13 isEqualToCGColorSpace:space];
 
   if (v14)
   {
@@ -221,7 +221,7 @@
   }
 
   v15 = +[PVColorSpace extendedSRGBColorSpace];
-  v16 = [v15 isEqualToCGColorSpace:a3];
+  v16 = [v15 isEqualToCGColorSpace:space];
 
   if (v16)
   {
@@ -230,7 +230,7 @@
   }
 
   v17 = +[PVColorSpace extendedLinearSRGBColorSpace];
-  v18 = [v17 isEqualToCGColorSpace:a3];
+  v18 = [v17 isEqualToCGColorSpace:space];
 
   if (v18)
   {
@@ -239,7 +239,7 @@
   }
 
   v19 = +[PVColorSpace extendedDisplayP3ColorSpace];
-  v20 = [v19 isEqualToCGColorSpace:a3];
+  v20 = [v19 isEqualToCGColorSpace:space];
 
   if (v20)
   {
@@ -248,7 +248,7 @@
   }
 
   v21 = +[PVColorSpace p3d65GammaColorSpace];
-  v22 = [v21 isEqualToCGColorSpace:a3];
+  v22 = [v21 isEqualToCGColorSpace:space];
 
   if (v22)
   {
@@ -257,7 +257,7 @@
   }
 
   v23 = +[PVColorSpace p3HLGGammaColorSpace];
-  v24 = [v23 isEqualToCGColorSpace:a3];
+  v24 = [v23 isEqualToCGColorSpace:space];
 
   if (v24)
   {
@@ -266,7 +266,7 @@
   }
 
   v25 = +[PVColorSpace p3PQGammaColorSpace];
-  v26 = [v25 isEqualToCGColorSpace:a3];
+  v26 = [v25 isEqualToCGColorSpace:space];
 
   if (v26)
   {
@@ -275,7 +275,7 @@
   }
 
   v27 = +[PVColorSpace rec2020LinearColorSpace];
-  v28 = [v27 isEqualToCGColorSpace:a3];
+  v28 = [v27 isEqualToCGColorSpace:space];
 
   if (v28)
   {
@@ -284,7 +284,7 @@
   }
 
   v29 = +[PVColorSpace rec2020GammaColorSpace];
-  v30 = [v29 isEqualToCGColorSpace:a3];
+  v30 = [v29 isEqualToCGColorSpace:space];
 
   if (v30)
   {
@@ -293,7 +293,7 @@
   }
 
   v31 = +[PVColorSpace rec2100HLGColorSpace];
-  v32 = [v31 isEqualToCGColorSpace:a3];
+  v32 = [v31 isEqualToCGColorSpace:space];
 
   if (v32)
   {
@@ -302,7 +302,7 @@
   }
 
   v33 = +[PVColorSpace rec2100PQColorSpace];
-  v34 = [v33 isEqualToCGColorSpace:a3];
+  v34 = [v33 isEqualToCGColorSpace:space];
 
   if (v34)
   {
@@ -320,25 +320,25 @@ LABEL_33:
   return v6;
 }
 
-+ (id)pvColorSpaceForCVPixelBuffer:(__CVBuffer *)a3
++ (id)pvColorSpaceForCVPixelBuffer:(__CVBuffer *)buffer
 {
-  v3 = a3;
-  if (!a3)
+  bufferCopy = buffer;
+  if (!buffer)
   {
     goto LABEL_13;
   }
 
-  v4 = CVBufferCopyAttachment(a3, *MEMORY[0x277CC4C00], 0);
+  v4 = CVBufferCopyAttachment(buffer, *MEMORY[0x277CC4C00], 0);
   if (!v4)
   {
-    v3 = 0;
+    bufferCopy = 0;
     goto LABEL_13;
   }
 
   v5 = v4;
-  v6 = CVBufferCopyAttachment(v3, *MEMORY[0x277CC4D10], 0);
-  v7 = CVBufferCopyAttachment(v3, *MEMORY[0x277CC4CC0], 0);
-  v8 = CVBufferCopyAttachment(v3, @"LogTransferFunction", 0);
+  v6 = CVBufferCopyAttachment(bufferCopy, *MEMORY[0x277CC4D10], 0);
+  v7 = CVBufferCopyAttachment(bufferCopy, *MEMORY[0x277CC4CC0], 0);
+  v8 = CVBufferCopyAttachment(bufferCopy, @"LogTransferFunction", 0);
   if (!v8)
   {
 LABEL_17:
@@ -351,7 +351,7 @@ LABEL_17:
         {
           v13 = +[PVColorSpace p3HLGGammaColorSpace];
 LABEL_28:
-          v3 = v13;
+          bufferCopy = v13;
 
           goto LABEL_8;
         }
@@ -363,7 +363,7 @@ LABEL_28:
         }
       }
 
-      v3 = v12;
+      bufferCopy = v12;
       goto LABEL_8;
     }
 
@@ -403,7 +403,7 @@ LABEL_28:
       {
         if (v7)
         {
-          v3 = 0;
+          bufferCopy = 0;
           if (!CFEqual(v7, *MEMORY[0x277CC4CD8]) || !v6)
           {
             goto LABEL_8;
@@ -419,7 +419,7 @@ LABEL_28:
 
       else
       {
-        v3 = 0;
+        bufferCopy = 0;
         if (!CFEqual(v5, *MEMORY[0x277CC4C10]))
         {
           goto LABEL_8;
@@ -430,7 +430,7 @@ LABEL_28:
           goto LABEL_8;
         }
 
-        v3 = 0;
+        bufferCopy = 0;
         if (!CFEqual(v7, *MEMORY[0x277CC4CD8]) || !v6)
         {
           goto LABEL_8;
@@ -443,7 +443,7 @@ LABEL_28:
         }
       }
 
-      v3 = 0;
+      bufferCopy = 0;
       goto LABEL_8;
     }
 
@@ -493,7 +493,7 @@ LABEL_56:
   CFRelease(v9);
   v10 = +[PVColorSpace ProResLogColorSpace];
 LABEL_7:
-  v3 = v10;
+  bufferCopy = v10;
 LABEL_8:
   CFRelease(v5);
   if (v7)
@@ -508,23 +508,23 @@ LABEL_8:
 
 LABEL_13:
 
-  return v3;
+  return bufferCopy;
 }
 
-- (PVColorSpace)initWithType:(int)a3
+- (PVColorSpace)initWithType:(int)type
 {
   v5.receiver = self;
   v5.super_class = PVColorSpace;
   result = [(PVColorSpace *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[PVColorSpace allocWithZone:?]];
   if (result)
@@ -555,15 +555,15 @@ LABEL_13:
   return [(PVColorSpace *)self isProResLogColorSpace];
 }
 
-- (BOOL)isEqualToCGColorSpace:(CGColorSpace *)a3
+- (BOOL)isEqualToCGColorSpace:(CGColorSpace *)space
 {
-  v4 = [(PVColorSpace *)self cgColorSpace];
+  cgColorSpace = [(PVColorSpace *)self cgColorSpace];
   result = 0;
-  if (a3)
+  if (space)
   {
-    if (v4)
+    if (cgColorSpace)
     {
-      return CFEqual(v4, a3) != 0;
+      return CFEqual(cgColorSpace, space) != 0;
     }
   }
 
@@ -573,8 +573,8 @@ LABEL_13:
 - (id)nclcTriplet
 {
   {
-    v16 = self;
-    self = v16;
+    selfCopy = self;
+    self = selfCopy;
     if (v4)
     {
       v5 = *MEMORY[0x277CC4C20];
@@ -606,7 +606,7 @@ LABEL_13:
       qword_280C5C778 = MakePVNCLCTriplet(v14, 3, v8, 1, v15, 3);
       qword_280C5C780 = MakePVNCLCTriplet(v14, 3, v8, 1, v15, 3);
       qword_280C5C788 = MakePVNCLCTriplet(0, 0, 0, 1, 0, 0);
-      self = v16;
+      self = selfCopy;
     }
   }
 
@@ -615,17 +615,17 @@ LABEL_13:
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
 
-  else if (v4)
+  else if (equalCopy)
   {
-    v5 = self->_type == v4->_type;
+    v5 = self->_type == equalCopy->_type;
   }
 
   else
@@ -654,8 +654,8 @@ LABEL_13:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(PVColorSpace *)self name];
-  v6 = [v3 stringWithFormat:@"<%@: %p> %@", v4, self, v5];
+  name = [(PVColorSpace *)self name];
+  v6 = [v3 stringWithFormat:@"<%@: %p> %@", v4, self, name];
 
   return v6;
 }

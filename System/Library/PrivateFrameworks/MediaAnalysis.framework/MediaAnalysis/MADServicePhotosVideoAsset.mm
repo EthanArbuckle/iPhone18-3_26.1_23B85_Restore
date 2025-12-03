@@ -1,29 +1,29 @@
 @interface MADServicePhotosVideoAsset
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)stillTime;
 - ($AFC8CF76A46F37F9FB23C20884F4FD99)trimTimeRange;
-- (MADServicePhotosVideoAsset)initWithPhotosAsset:(id)a3 clientBundleID:(id)a4 clientTeamID:(id)a5;
+- (MADServicePhotosVideoAsset)initWithPhotosAsset:(id)asset clientBundleID:(id)d clientTeamID:(id)iD;
 - (id)cachedSensitivity;
 - (id)resources;
 - (id)safetyScoresForLabels;
 - (id)url;
-- (id)videoURLWithAllowDownload:(BOOL)a3 progressHandler:(id)a4 cancelBlock:(id)a5;
-- (int)_downloadAssetResourceURLWithCancelBlock:(id)a3 progressHandler:(id)a4;
+- (id)videoURLWithAllowDownload:(BOOL)download progressHandler:(id)handler cancelBlock:(id)block;
+- (int)_downloadAssetResourceURLWithCancelBlock:(id)block progressHandler:(id)handler;
 - (signed)videoSensitivityAnalysisVersion;
-- (void)persistToPhotosWithCompactSCSensitivityAnalysis:(int64_t)a3 screenTimeDeviceImageSensitivity:(signed __int16)a4;
+- (void)persistToPhotosWithCompactSCSensitivityAnalysis:(int64_t)analysis screenTimeDeviceImageSensitivity:(signed __int16)sensitivity;
 @end
 
 @implementation MADServicePhotosVideoAsset
 
-- (MADServicePhotosVideoAsset)initWithPhotosAsset:(id)a3 clientBundleID:(id)a4 clientTeamID:(id)a5
+- (MADServicePhotosVideoAsset)initWithPhotosAsset:(id)asset clientBundleID:(id)d clientTeamID:(id)iD
 {
-  v9 = a3;
+  assetCopy = asset;
   v13.receiver = self;
   v13.super_class = MADServicePhotosVideoAsset;
-  v10 = [(MADServiceVideoAsset *)&v13 initWithClientBundleID:a4 clientTeamID:a5];
+  v10 = [(MADServiceVideoAsset *)&v13 initWithClientBundleID:d clientTeamID:iD];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_photosAsset, a3);
+    objc_storeStrong(&v10->_photosAsset, asset);
   }
 
   return v11;
@@ -46,10 +46,10 @@
 
 - (signed)videoSensitivityAnalysisVersion
 {
-  v2 = [(PHAsset *)self->_photosAsset mediaAnalysisProperties];
-  v3 = [v2 videoSensitivityAnalysisVersion];
+  mediaAnalysisProperties = [(PHAsset *)self->_photosAsset mediaAnalysisProperties];
+  videoSensitivityAnalysisVersion = [mediaAnalysisProperties videoSensitivityAnalysisVersion];
 
-  return v3;
+  return videoSensitivityAnalysisVersion;
 }
 
 - (id)url
@@ -57,32 +57,32 @@
   v55 = *MEMORY[0x1E69E9840];
   if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
-    v3 = [(PHAsset *)self->_photosAsset localIdentifier];
+    localIdentifier = [(PHAsset *)self->_photosAsset localIdentifier];
     [(PHAsset *)self->_photosAsset vcp_typeDescription];
     v5 = v4 = self;
-    v6 = [(PHAsset *)v4->_photosAsset mediaType];
-    v7 = [(PHAsset *)v4->_photosAsset mediaSubtypes];
-    v8 = [(PHAsset *)v4->_photosAsset pixelWidth];
-    v9 = [(PHAsset *)v4->_photosAsset pixelHeight];
+    mediaType = [(PHAsset *)v4->_photosAsset mediaType];
+    mediaSubtypes = [(PHAsset *)v4->_photosAsset mediaSubtypes];
+    pixelWidth = [(PHAsset *)v4->_photosAsset pixelWidth];
+    pixelHeight = [(PHAsset *)v4->_photosAsset pixelHeight];
     *buf = 138413570;
-    v46 = v3;
+    v46 = localIdentifier;
     v47 = 2112;
     *v48 = v5;
     *&v48[8] = 1024;
-    *v49 = v6;
+    *v49 = mediaType;
     *&v49[4] = 1024;
-    v50 = v7;
+    v50 = mediaSubtypes;
     v51 = 1024;
-    v52 = v8;
+    v52 = pixelWidth;
     v53 = 1024;
-    v54 = v9;
+    v54 = pixelHeight;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%@] Selecting resource for Asset Type: %@ [%d/%d] Resolution: %dx%d", buf, 0x2Eu);
 
     self = v4;
   }
 
-  v10 = [(MADServicePhotosVideoAsset *)self resources];
-  v11 = [v10 vcp_movieResourcesSorted:{-[PHAsset vcp_hasAdjustments](self->_photosAsset, "vcp_hasAdjustments")}];
+  resources = [(MADServicePhotosVideoAsset *)self resources];
+  v11 = [resources vcp_movieResourcesSorted:{-[PHAsset vcp_hasAdjustments](self->_photosAsset, "vcp_hasAdjustments")}];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -91,14 +91,14 @@
   v12 = [obj countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (!v12)
   {
-    v30 = 0;
+    privateFileURL2 = 0;
     goto LABEL_30;
   }
 
   v13 = v12;
   v36 = v11;
-  v37 = v10;
-  v38 = self;
+  v37 = resources;
+  selfCopy = self;
   v14 = *v41;
   v15 = MEMORY[0x1E69E9C10];
   while (2)
@@ -113,57 +113,57 @@
       v17 = *(*(&v40 + 1) + 8 * i);
       if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [(PHAsset *)v38->_photosAsset localIdentifier];
-        v19 = [v17 type];
-        v20 = [v17 pixelWidth];
-        v21 = [v17 pixelHeight];
+        localIdentifier2 = [(PHAsset *)selfCopy->_photosAsset localIdentifier];
+        type = [v17 type];
+        pixelWidth2 = [v17 pixelWidth];
+        pixelHeight2 = [v17 pixelHeight];
         *buf = 138413058;
-        v46 = v18;
+        v46 = localIdentifier2;
         v47 = 1024;
-        *v48 = v19;
+        *v48 = type;
         *&v48[4] = 1024;
-        *&v48[6] = v20;
+        *&v48[6] = pixelWidth2;
         *v49 = 1024;
-        *&v49[2] = v21;
+        *&v49[2] = pixelHeight2;
         _os_log_impl(&dword_1C9B70000, v15, OS_LOG_TYPE_DEFAULT, "[%@] Evaluating movie resource (Type: %d Resolution: %dx%d)", buf, 0x1Eu);
       }
 
       if ([v17 vcp_isLocallyAvailable])
       {
-        v22 = [MEMORY[0x1E696AC08] defaultManager];
-        v23 = [v17 privateFileURL];
-        v24 = [v23 path];
-        v25 = [v22 fileExistsAtPath:v24];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        privateFileURL = [v17 privateFileURL];
+        path = [privateFileURL path];
+        v25 = [defaultManager fileExistsAtPath:path];
 
         v26 = MediaAnalysisLogLevel();
         if (v25)
         {
           if (v26 >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
           {
-            v31 = [(PHAsset *)v38->_photosAsset localIdentifier];
-            v32 = [v17 type];
-            v33 = [v17 pixelWidth];
-            v34 = [v17 pixelHeight];
+            localIdentifier3 = [(PHAsset *)selfCopy->_photosAsset localIdentifier];
+            type2 = [v17 type];
+            pixelWidth3 = [v17 pixelWidth];
+            pixelHeight3 = [v17 pixelHeight];
             *buf = 138413058;
-            v46 = v31;
+            v46 = localIdentifier3;
             v47 = 1024;
-            *v48 = v32;
+            *v48 = type2;
             *&v48[4] = 1024;
-            *&v48[6] = v33;
+            *&v48[6] = pixelWidth3;
             *v49 = 1024;
-            *&v49[2] = v34;
+            *&v49[2] = pixelHeight3;
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%@] Selected resource (Type: %d Resolution: %dx%d)", buf, 0x1Eu);
           }
 
-          v30 = [v17 privateFileURL];
+          privateFileURL2 = [v17 privateFileURL];
           goto LABEL_28;
         }
 
         if (v26 >= 5 && os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v27 = [(PHAsset *)v38->_photosAsset localIdentifier];
+          localIdentifier4 = [(PHAsset *)selfCopy->_photosAsset localIdentifier];
           *buf = 138412290;
-          v46 = v27;
+          v46 = localIdentifier4;
           v28 = v15;
           v29 = "[%@] Resource marked available, but file does not exist; skipping resource";
 LABEL_20:
@@ -175,9 +175,9 @@ LABEL_20:
 
       else if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [(PHAsset *)v38->_photosAsset localIdentifier];
+        localIdentifier4 = [(PHAsset *)selfCopy->_photosAsset localIdentifier];
         *buf = 138412290;
-        v46 = v27;
+        v46 = localIdentifier4;
         v28 = v15;
         v29 = "[%@] Resource not locally available; skipping resource";
         goto LABEL_20;
@@ -193,20 +193,20 @@ LABEL_20:
     break;
   }
 
-  v30 = 0;
+  privateFileURL2 = 0;
 LABEL_28:
   v11 = v36;
-  v10 = v37;
+  resources = v37;
 LABEL_30:
 
-  return v30;
+  return privateFileURL2;
 }
 
-- (int)_downloadAssetResourceURLWithCancelBlock:(id)a3 progressHandler:(id)a4
+- (int)_downloadAssetResourceURLWithCancelBlock:(id)block progressHandler:(id)handler
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  handlerCopy = handler;
   v8 = VCPSignPostLog();
   v9 = os_signpost_id_generate(v8);
 
@@ -218,45 +218,45 @@ LABEL_30:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "MADServicePhotosVideoAsset_downloadAssetResource", "", buf, 2u);
   }
 
-  v12 = [(MADServicePhotosVideoAsset *)self resources];
-  v13 = [v12 vcp_movieResourcesSorted:{-[PHAsset vcp_hasAdjustments](self->_photosAsset, "vcp_hasAdjustments")}];
+  resources = [(MADServicePhotosVideoAsset *)self resources];
+  v13 = [resources vcp_movieResourcesSorted:{-[PHAsset vcp_hasAdjustments](self->_photosAsset, "vcp_hasAdjustments")}];
   if ([v13 count])
   {
     spid = v9;
     v35 = v9 - 1;
-    v14 = [v12 vcp_smallMovieDerivativeResource];
-    if (!v14)
+    vcp_smallMovieDerivativeResource = [resources vcp_smallMovieDerivativeResource];
+    if (!vcp_smallMovieDerivativeResource)
     {
       if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [(PHAsset *)self->_photosAsset localIdentifier];
+        localIdentifier = [(PHAsset *)self->_photosAsset localIdentifier];
         *buf = 138412290;
-        v40 = v15;
+        v40 = localIdentifier;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%@] No small video derivative, trying the original resource...", buf, 0xCu);
       }
 
-      v14 = [v13 objectAtIndexedSubscript:0];
+      vcp_smallMovieDerivativeResource = [v13 objectAtIndexedSubscript:0];
     }
 
     if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       [(PHAsset *)self->_photosAsset localIdentifier];
       v16 = v36 = v13;
-      v17 = v6;
-      v18 = [v14 type];
-      v19 = v7;
-      v20 = [v14 pixelWidth];
-      v21 = [v14 pixelHeight];
+      v17 = blockCopy;
+      type = [vcp_smallMovieDerivativeResource type];
+      v19 = handlerCopy;
+      pixelWidth = [vcp_smallMovieDerivativeResource pixelWidth];
+      pixelHeight = [vcp_smallMovieDerivativeResource pixelHeight];
       *buf = 138413058;
       v40 = v16;
       v41 = 1024;
-      v42 = v18;
-      v6 = v17;
+      v42 = type;
+      blockCopy = v17;
       v43 = 1024;
-      v44 = v20;
-      v7 = v19;
+      v44 = pixelWidth;
+      handlerCopy = v19;
       v45 = 1024;
-      v46 = v21;
+      v46 = pixelHeight;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%@] Video resource to download (Type: %d Resolution: %dx%d)", buf, 0x1Eu);
 
       v13 = v36;
@@ -264,16 +264,16 @@ LABEL_30:
 
     if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(PHAsset *)self->_photosAsset localIdentifier];
+      localIdentifier2 = [(PHAsset *)self->_photosAsset localIdentifier];
       *buf = 138412290;
-      v40 = v22;
+      v40 = localIdentifier2;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%@] Downloading video resource.", buf, 0xCu);
     }
 
-    v37 = v7;
+    v37 = handlerCopy;
     v38 = 0;
-    v23 = v6;
-    v24 = [MEMORY[0x1E69786E8] vcp_requestFileURLForAssetResource:v14 withTaskID:0 toResourceURL:&v38 progressHandler:v7 cancel:v6];
+    v23 = blockCopy;
+    v24 = [MEMORY[0x1E69786E8] vcp_requestFileURLForAssetResource:vcp_smallMovieDerivativeResource withTaskID:0 toResourceURL:&v38 progressHandler:handlerCopy cancel:blockCopy];
     v25 = v38;
     v26 = v38;
     v27 = MediaAnalysisLogLevel();
@@ -281,9 +281,9 @@ LABEL_30:
     {
       if (v27 >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [(PHAsset *)self->_photosAsset localIdentifier];
+        localIdentifier3 = [(PHAsset *)self->_photosAsset localIdentifier];
         *buf = 138412290;
-        v40 = v28;
+        v40 = localIdentifier3;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%@] Downloaded video resource", buf, 0xCu);
       }
 
@@ -292,9 +292,9 @@ LABEL_30:
 
     else if (v27 >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v30 = [(PHAsset *)self->_photosAsset localIdentifier];
+      localIdentifier4 = [(PHAsset *)self->_photosAsset localIdentifier];
       *buf = 138412546;
-      v40 = v30;
+      v40 = localIdentifier4;
       v41 = 1024;
       v42 = v24;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Failed to download video resource, err:%d", buf, 0x12u);
@@ -308,17 +308,17 @@ LABEL_30:
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v32, OS_SIGNPOST_INTERVAL_END, spid, "MADServicePhotosVideoAsset_downloadAssetResource", "", buf, 2u);
     }
 
-    v6 = v23;
-    v7 = v37;
+    blockCopy = v23;
+    handlerCopy = v37;
   }
 
   else
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v29 = [(PHAsset *)self->_photosAsset localIdentifier];
+      localIdentifier5 = [(PHAsset *)self->_photosAsset localIdentifier];
       *buf = 138412290;
-      v40 = v29;
+      v40 = localIdentifier5;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] No available video resource; skipping", buf, 0xCu);
     }
 
@@ -328,19 +328,19 @@ LABEL_30:
   return v24;
 }
 
-- (id)videoURLWithAllowDownload:(BOOL)a3 progressHandler:(id)a4 cancelBlock:(id)a5
+- (id)videoURLWithAllowDownload:(BOOL)download progressHandler:(id)handler cancelBlock:(id)block
 {
-  v6 = a3;
+  downloadCopy = download;
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  handlerCopy = handler;
+  blockCopy = block;
   if (self->_downloadedVideoURL)
   {
     if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(PHAsset *)self->_photosAsset localIdentifier];
+      localIdentifier = [(PHAsset *)self->_photosAsset localIdentifier];
       v18 = 138412290;
-      v19 = v10;
+      v19 = localIdentifier;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%@] Reuse downloaded video resource", &v18, 0xCu);
     }
 
@@ -360,9 +360,9 @@ LABEL_30:
         downloadedVideoURL = v12;
         if (v15)
         {
-          v16 = [(PHAsset *)self->_photosAsset localIdentifier];
+          localIdentifier2 = [(PHAsset *)self->_photosAsset localIdentifier];
           v18 = 138412290;
-          v19 = v16;
+          v19 = localIdentifier2;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%@] Use local video resource", &v18, 0xCu);
 
           downloadedVideoURL = v12;
@@ -372,9 +372,9 @@ LABEL_30:
 
     else
     {
-      if (v6)
+      if (downloadCopy)
       {
-        [(MADServicePhotosVideoAsset *)self _downloadAssetResourceURLWithCancelBlock:v9 progressHandler:v8];
+        [(MADServicePhotosVideoAsset *)self _downloadAssetResourceURLWithCancelBlock:blockCopy progressHandler:handlerCopy];
       }
 
       downloadedVideoURL = self->_downloadedVideoURL;
@@ -388,12 +388,12 @@ LABEL_30:
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)stillTime
 {
-  v4 = [(PHAsset *)self->_photosAsset photoIrisProperties];
-  if (v4)
+  photoIrisProperties = [(PHAsset *)self->_photosAsset photoIrisProperties];
+  if (photoIrisProperties)
   {
-    v6 = v4;
-    [v4 photoIrisStillDisplayTime];
-    v4 = v6;
+    v6 = photoIrisProperties;
+    [photoIrisProperties photoIrisStillDisplayTime];
+    photoIrisProperties = v6;
   }
 
   else
@@ -409,18 +409,18 @@ LABEL_30:
 - ($AFC8CF76A46F37F9FB23C20884F4FD99)trimTimeRange
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = [(PHAsset *)self->_photosAsset mediaAnalysisProperties];
-  v6 = [v5 mediaAnalysisTimeStamp];
-  v7 = [(PHAsset *)self->_photosAsset adjustmentVersion];
-  if (![v6 isEqual:v7])
+  mediaAnalysisProperties = [(PHAsset *)self->_photosAsset mediaAnalysisProperties];
+  mediaAnalysisTimeStamp = [mediaAnalysisProperties mediaAnalysisTimeStamp];
+  adjustmentVersion = [(PHAsset *)self->_photosAsset adjustmentVersion];
+  if (![mediaAnalysisTimeStamp isEqual:adjustmentVersion])
   {
 
     goto LABEL_10;
   }
 
-  v8 = [v5 mediaAnalysisVersion];
+  mediaAnalysisVersion = [mediaAnalysisProperties mediaAnalysisVersion];
 
-  if (!v8)
+  if (!mediaAnalysisVersion)
   {
 LABEL_10:
     v9 = MEMORY[0x1E6960C98];
@@ -431,16 +431,16 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([v5 mediaAnalysisVersion] != 75 && MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
+  if ([mediaAnalysisProperties mediaAnalysisVersion] != 75 && MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     v12[0] = 67109120;
-    v12[1] = [v5 mediaAnalysisVersion];
+    v12[1] = [mediaAnalysisProperties mediaAnalysisVersion];
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Using trim range from older analysis version (%d)", v12, 8u);
   }
 
-  if (v5)
+  if (mediaAnalysisProperties)
   {
-    [v5 bestVideoTimeRange];
+    [mediaAnalysisProperties bestVideoTimeRange];
   }
 
   else
@@ -460,21 +460,21 @@ LABEL_11:
   v10 = *MEMORY[0x1E69E9840];
   if ((![(MADServicePhotosVideoAsset *)self isSharedPhotosAsset]|| [(MADServicePhotosVideoAsset *)self videoSensitivityAnalysisVersion]== 1) && ([(MADServicePhotosVideoAsset *)self isSharedPhotosAsset]|| ![(PHAsset *)self->_photosAsset vcp_needsFullAnalysisProcessing:0]))
   {
-    v4 = [(PHAsset *)self->_photosAsset mediaAnalysisProperties];
-    v5 = [v4 screenTimeDeviceImageSensitivity];
+    mediaAnalysisProperties = [(PHAsset *)self->_photosAsset mediaAnalysisProperties];
+    screenTimeDeviceImageSensitivity = [mediaAnalysisProperties screenTimeDeviceImageSensitivity];
 
-    if (v5 != -1)
+    if (screenTimeDeviceImageSensitivity != -1)
     {
-      v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v5];
+      v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:screenTimeDeviceImageSensitivity];
       goto LABEL_11;
     }
   }
 
   else if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    v3 = [(PHAsset *)self->_photosAsset localIdentifier];
+    localIdentifier = [(PHAsset *)self->_photosAsset localIdentifier];
     v8 = 138412290;
-    v9 = v3;
+    v9 = localIdentifier;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[%@] Asset not processed or outdated for full analysis", &v8, 0xCu);
   }
 
@@ -491,9 +491,9 @@ LABEL_11:
   {
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      v3 = [(PHAsset *)self->_photosAsset localIdentifier];
+      localIdentifier = [(PHAsset *)self->_photosAsset localIdentifier];
       *buf = 138412290;
-      v23 = v3;
+      v23 = localIdentifier;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[%@] scoresForLabels not available, asset needs processing for full analysis", buf, 0xCu);
     }
 
@@ -502,7 +502,7 @@ LABEL_11:
 
   else
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v6 = [(PHAsset *)self->_photosAsset sceneClassificationsOfTypes:&unk_1F49BEE00];
     v17 = 0u;
     v18 = 0u;
@@ -531,7 +531,7 @@ LABEL_11:
               v13 = MEMORY[0x1E696AD98];
               [v11 confidence];
               v14 = [v13 numberWithDouble:?];
-              [v5 setObject:v14 forKeyedSubscript:v12];
+              [dictionary setObject:v14 forKeyedSubscript:v12];
             }
           }
         }
@@ -542,9 +542,9 @@ LABEL_11:
       while (v8);
     }
 
-    if ([v5 count])
+    if ([dictionary count])
     {
-      v15 = v5;
+      v15 = dictionary;
     }
 
     else
@@ -558,22 +558,22 @@ LABEL_11:
   return v4;
 }
 
-- (void)persistToPhotosWithCompactSCSensitivityAnalysis:(int64_t)a3 screenTimeDeviceImageSensitivity:(signed __int16)a4
+- (void)persistToPhotosWithCompactSCSensitivityAnalysis:(int64_t)analysis screenTimeDeviceImageSensitivity:(signed __int16)sensitivity
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (analysis)
   {
-    v7 = [(PHAsset *)self->_photosAsset photoLibrary];
+    photoLibrary = [(PHAsset *)self->_photosAsset photoLibrary];
     v16 = 0;
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __111__MADServicePhotosVideoAsset_persistToPhotosWithCompactSCSensitivityAnalysis_screenTimeDeviceImageSensitivity___block_invoke;
     v17[3] = &unk_1E83500A0;
     v17[4] = self;
-    v17[5] = a3;
-    v18 = a4;
-    v8 = [v7 performChangesAndWait:v17 error:&v16];
-    v9 = v16;
+    v17[5] = analysis;
+    sensitivityCopy = sensitivity;
+    v8 = [photoLibrary performChangesAndWait:v17 error:&v16];
+    localIdentifier2 = v16;
     v10 = MediaAnalysisLogLevel();
     if (v8)
     {
@@ -582,11 +582,11 @@ LABEL_11:
         goto LABEL_13;
       }
 
-      v11 = [(PHAsset *)self->_photosAsset localIdentifier];
+      localIdentifier = [(PHAsset *)self->_photosAsset localIdentifier];
       *buf = 138412546;
-      v20 = v11;
+      v20 = localIdentifier;
       v21 = 2048;
-      v22 = a3;
+      analysisCopy2 = analysis;
       v12 = MEMORY[0x1E69E9C10];
       v13 = "[%@] Successfully persisted compactSCSensitivityAnalysis %lld to Photos";
       v14 = OS_LOG_TYPE_DEFAULT;
@@ -600,13 +600,13 @@ LABEL_11:
         goto LABEL_13;
       }
 
-      v11 = [(PHAsset *)self->_photosAsset localIdentifier];
+      localIdentifier = [(PHAsset *)self->_photosAsset localIdentifier];
       *buf = 138412802;
-      v20 = v11;
+      v20 = localIdentifier;
       v21 = 2048;
-      v22 = a3;
+      analysisCopy2 = analysis;
       v23 = 2112;
-      v24 = v9;
+      v24 = localIdentifier2;
       v12 = MEMORY[0x1E69E9C10];
       v13 = "[%@] Failed persisting compactSCSensitivityAnalysis %lld to Photos, error:%@";
       v14 = OS_LOG_TYPE_ERROR;
@@ -621,9 +621,9 @@ LABEL_13:
 
   if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v9 = [(PHAsset *)self->_photosAsset localIdentifier];
+    localIdentifier2 = [(PHAsset *)self->_photosAsset localIdentifier];
     *buf = 138412290;
-    v20 = v9;
+    v20 = localIdentifier2;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Could not persist invalid compactSCSensitivityAnalysis to Photos", buf, 0xCu);
 LABEL_14:
   }

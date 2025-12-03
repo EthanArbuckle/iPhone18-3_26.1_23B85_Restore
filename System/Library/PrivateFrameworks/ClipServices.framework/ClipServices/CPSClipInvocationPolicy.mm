@@ -1,18 +1,18 @@
 @interface CPSClipInvocationPolicy
 + (id)eligiblePolicy;
-+ (id)ineligiblePolicyWithReason:(int64_t)a3;
-+ (id)invocationPolicyWithAMSDict:(id)a3;
-+ (void)requestAccountPolicyForClipMetadata:(id)a3 withCompletion:(id)a4;
-- (CPSClipInvocationPolicy)initWithCoder:(id)a3;
-- (CPSClipInvocationPolicy)initWithEligible:(BOOL)a3 reason:(int64_t)a4;
++ (id)ineligiblePolicyWithReason:(int64_t)reason;
++ (id)invocationPolicyWithAMSDict:(id)dict;
++ (void)requestAccountPolicyForClipMetadata:(id)metadata withCompletion:(id)completion;
+- (CPSClipInvocationPolicy)initWithCoder:(id)coder;
+- (CPSClipInvocationPolicy)initWithEligible:(BOOL)eligible reason:(int64_t)reason;
 - (NSString)localizedTitle;
-- (id)localizedMessageForClipMetadata:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)localizedMessageForClipMetadata:(id)metadata;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPSClipInvocationPolicy
 
-- (CPSClipInvocationPolicy)initWithEligible:(BOOL)a3 reason:(int64_t)a4
+- (CPSClipInvocationPolicy)initWithEligible:(BOOL)eligible reason:(int64_t)reason
 {
   v10.receiver = self;
   v10.super_class = CPSClipInvocationPolicy;
@@ -20,8 +20,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_eligible = a3;
-    v6->_reason = a4;
+    v6->_eligible = eligible;
+    v6->_reason = reason;
     v8 = v6;
   }
 
@@ -30,23 +30,23 @@
 
 + (id)eligiblePolicy
 {
-  v2 = [[a1 alloc] initWithEligible:1 reason:0];
+  v2 = [[self alloc] initWithEligible:1 reason:0];
 
   return v2;
 }
 
-+ (id)ineligiblePolicyWithReason:(int64_t)a3
++ (id)ineligiblePolicyWithReason:(int64_t)reason
 {
-  v3 = [[a1 alloc] initWithEligible:0 reason:a3];
+  v3 = [[self alloc] initWithEligible:0 reason:reason];
 
   return v3;
 }
 
-+ (void)requestAccountPolicyForClipMetadata:(id)a3 withCompletion:(id)a4
++ (void)requestAccountPolicyForClipMetadata:(id)metadata withCompletion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  completionCopy = completion;
   if (CPSBypassAccountEligibilityCheck())
   {
     v8 = CPS_LOG_CHANNEL_PREFIXClipServices();
@@ -56,12 +56,12 @@
       *buf = 138543618;
       *&buf[4] = objc_opt_class();
       *&buf[12] = 2048;
-      *&buf[14] = a1;
+      *&buf[14] = self;
       _os_log_impl(&dword_2436ED000, v9, OS_LOG_TYPE_INFO, "%{public}@ (%p): Bypassing account policy check.", buf, 0x16u);
     }
 
-    v10 = +[CPSClipInvocationPolicy eligiblePolicy];
-    v7[2](v7, v10);
+    sharedConnection = +[CPSClipInvocationPolicy eligiblePolicy];
+    completionCopy[2](completionCopy, sharedConnection);
   }
 
   else
@@ -77,14 +77,14 @@
         *buf = 138543874;
         *&buf[4] = objc_opt_class();
         *&buf[12] = 2048;
-        *&buf[14] = a1;
+        *&buf[14] = self;
         *&buf[22] = 2048;
         v31 = v11;
         _os_log_impl(&dword_2436ED000, v14, OS_LOG_TYPE_INFO, "%{public}@ (%p): Use policy override from user defaults: value = %ld ", buf, 0x20u);
       }
 
-      v10 = [CPSClipInvocationPolicy ineligiblePolicyWithReason:v11];
-      v7[2](v7, v10);
+      sharedConnection = [CPSClipInvocationPolicy ineligiblePolicyWithReason:v11];
+      completionCopy[2](completionCopy, sharedConnection);
     }
 
     else
@@ -95,7 +95,7 @@
         *buf = 138543618;
         *&buf[4] = objc_opt_class();
         *&buf[12] = 2048;
-        *&buf[14] = a1;
+        *&buf[14] = self;
         _os_log_impl(&dword_2436ED000, v15, OS_LOG_TYPE_INFO, "%{public}@ (%p): Determining account policy.", buf, 0x16u);
       }
 
@@ -117,10 +117,10 @@
 
       v17 = v16;
       _Block_object_dispose(&v26, 8);
-      v10 = [v16 sharedConnection];
-      if ([v10 isAppClipsAllowed])
+      sharedConnection = [v16 sharedConnection];
+      if ([sharedConnection isAppClipsAllowed])
       {
-        if ([v6 hasFullAppInstalledOnSystem])
+        if ([metadataCopy hasFullAppInstalledOnSystem])
         {
           v18 = CPS_LOG_CHANNEL_PREFIXClipServices();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -130,12 +130,12 @@
             *buf = 138543618;
             *&buf[4] = v20;
             *&buf[12] = 2048;
-            *&buf[14] = a1;
+            *&buf[14] = self;
             _os_log_impl(&dword_2436ED000, v19, OS_LOG_TYPE_INFO, "%{public}@ (%p): Bypassing account policy check because full app is already installed.", buf, 0x16u);
           }
 
           v21 = +[CPSClipInvocationPolicy eligiblePolicy];
-          v7[2](v7, v21);
+          completionCopy[2](completionCopy, v21);
         }
 
         else
@@ -146,8 +146,8 @@
           v23[1] = 3221225472;
           v23[2] = __78__CPSClipInvocationPolicy_requestAccountPolicyForClipMetadata_withCompletion___block_invoke;
           v23[3] = &unk_278DCEA18;
-          v25 = a1;
-          v24 = v7;
+          selfCopy = self;
+          v24 = completionCopy;
           [v21 statusWithCompletion:v23];
         }
       }
@@ -155,7 +155,7 @@
       else
       {
         v21 = [CPSClipInvocationPolicy ineligiblePolicyWithReason:6];
-        v7[2](v7, v21);
+        completionCopy[2](completionCopy, v21);
       }
     }
   }
@@ -276,35 +276,35 @@ LABEL_13:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)invocationPolicyWithAMSDict:(id)a3
++ (id)invocationPolicyWithAMSDict:(id)dict
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictCopy = dict;
   v5 = CPS_LOG_CHANNEL_PREFIXClipServices();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
     v17 = 138543618;
-    v18 = objc_opt_class();
+    selfCopy2 = objc_opt_class();
     v19 = 2048;
-    v20 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_2436ED000, v6, OS_LOG_TYPE_INFO, "%{public}@ (%p): Determining clip policy.", &v17, 0x16u);
   }
 
-  v7 = [objc_alloc(MEMORY[0x277CEC388]) initWithDictionary:v4];
+  v7 = [objc_alloc(MEMORY[0x277CEC388]) initWithDictionary:dictCopy];
 
   v8 = CPS_LOG_CHANNEL_PREFIXClipServices();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
     v10 = objc_opt_class();
-    v11 = [v7 responseCode];
+    responseCode = [v7 responseCode];
     v17 = 138543874;
-    v18 = a1;
+    selfCopy2 = self;
     v19 = 2048;
-    v20 = v10;
+    selfCopy = v10;
     v21 = 2048;
-    v22 = v11;
+    v22 = responseCode;
     _os_log_impl(&dword_2436ED000, v9, OS_LOG_TYPE_INFO, "%{public}@ (%p): Obtained ASDClipRestrictionsTask response code: %ld", &v17, 0x20u);
   }
 
@@ -365,9 +365,9 @@ LABEL_12:
   return v4;
 }
 
-- (id)localizedMessageForClipMetadata:(id)a3
+- (id)localizedMessageForClipMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   switch(self->_reason)
   {
     case 1:
@@ -413,8 +413,8 @@ LABEL_16:
     case 0xELL:
       v6 = MEMORY[0x277CCACA8];
       v7 = _CPSLocalizedString(@"This app clip requires iOS %@ or later", &_CPSLocalizableStringsBundleOnceToken, &_CPSLocalizableStringsBundle);
-      v8 = [v4 clipMinimumOSVersion];
-      v9 = [v6 stringWithFormat:v7, v8];
+      clipMinimumOSVersion = [metadataCopy clipMinimumOSVersion];
+      v9 = [v6 stringWithFormat:v7, clipMinimumOSVersion];
 
       break;
     default:
@@ -425,28 +425,28 @@ LABEL_16:
   return v9;
 }
 
-- (CPSClipInvocationPolicy)initWithCoder:(id)a3
+- (CPSClipInvocationPolicy)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CPSClipInvocationPolicy;
   v5 = [(CPSClipInvocationPolicy *)&v8 init];
   if (v5)
   {
-    v5->_reason = [v4 decodeIntegerForKey:@"CPSClipInvocationPolicyKeyReason"];
-    v5->_eligible = [v4 decodeBoolForKey:@"CPSClipInvocationPolicyKeyEligible"];
+    v5->_reason = [coderCopy decodeIntegerForKey:@"CPSClipInvocationPolicyKeyReason"];
+    v5->_eligible = [coderCopy decodeBoolForKey:@"CPSClipInvocationPolicyKeyEligible"];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   reason = self->_reason;
-  v5 = a3;
-  [v5 encodeInteger:reason forKey:@"CPSClipInvocationPolicyKeyReason"];
-  [v5 encodeBool:self->_eligible forKey:@"CPSClipInvocationPolicyKeyEligible"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:reason forKey:@"CPSClipInvocationPolicyKeyReason"];
+  [coderCopy encodeBool:self->_eligible forKey:@"CPSClipInvocationPolicyKeyEligible"];
 }
 
 void __78__CPSClipInvocationPolicy_requestAccountPolicyForClipMetadata_withCompletion___block_invoke_cold_1(uint64_t a1, void *a2, void *a3)

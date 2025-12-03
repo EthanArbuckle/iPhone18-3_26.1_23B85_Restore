@@ -1,10 +1,10 @@
 @interface FMUnknownItemsListViewController
-- (void)scrollViewDidScroll:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation FMUnknownItemsListViewController
@@ -16,25 +16,25 @@
   [(FMBaseContentViewController *)&v2 viewDidLoad];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1004E72B8(a3);
+  selfCopy = self;
+  sub_1004E72B8(appear);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1004E7470(a3);
+  selfCopy = self;
+  sub_1004E7470(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for FMUnknownItemsListViewController();
   v4 = v5.receiver;
-  [(FMUnknownItemsListViewController *)&v5 viewDidDisappear:v3];
+  [(FMUnknownItemsListViewController *)&v5 viewDidDisappear:disappearCopy];
   sub_1002393B0();
 }
 
@@ -47,11 +47,11 @@
   sub_1004E6754();
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_1004E7888(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_1004E7888(scrollCopy);
 }
 
 @end

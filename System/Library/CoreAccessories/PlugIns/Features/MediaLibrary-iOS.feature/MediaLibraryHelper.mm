@@ -1,13 +1,13 @@
 @interface MediaLibraryHelper
 - (MediaLibraryHelper)init;
-- (int)getFilteredMediaTypesMask:(int)a3;
+- (int)getFilteredMediaTypesMask:(int)mask;
 - (void)_updateITunesRadioEnabled;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
-- (void)applicationsWillUninstall:(id)a3;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
+- (void)applicationsWillUninstall:(id)uninstall;
 - (void)dealloc;
-- (void)handleAppInstall:(id)a3;
-- (void)handleAppUninstall:(id)a3;
+- (void)handleAppInstall:(id)install;
+- (void)handleAppUninstall:(id)uninstall;
 @end
 
 @implementation MediaLibraryHelper
@@ -40,8 +40,8 @@ LABEL_3:
 
   if (self->_showMusic)
   {
-    v4 = [MEMORY[0x277CD6020] defaultRadioLibrary];
-    self->_iTunesRadioEnabled = [v4 isEnabled];
+    defaultRadioLibrary = [MEMORY[0x277CD6020] defaultRadioLibrary];
+    self->_iTunesRadioEnabled = [defaultRadioLibrary isEnabled];
   }
 
   else
@@ -129,11 +129,11 @@ LABEL_7:
   [(MediaLibraryHelper *)&v4 dealloc];
 }
 
-- (void)handleAppInstall:(id)a3
+- (void)handleAppInstall:(id)install
 {
-  v15 = a3;
-  v4 = [v15 applicationIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.Music"];
+  installCopy = install;
+  applicationIdentifier = [installCopy applicationIdentifier];
+  v5 = [applicationIdentifier isEqualToString:@"com.apple.Music"];
 
   if (v5)
   {
@@ -144,14 +144,14 @@ LABEL_7:
       goto LABEL_10;
     }
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 postNotificationName:kMediaLibraryMusicAppInstalledNotification object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:kMediaLibraryMusicAppInstalledNotification object:0];
 
     goto LABEL_9;
   }
 
-  v8 = [v15 applicationIdentifier];
-  v9 = [v8 isEqualToString:@"com.apple.podcasts"];
+  applicationIdentifier2 = [installCopy applicationIdentifier];
+  v9 = [applicationIdentifier2 isEqualToString:@"com.apple.podcasts"];
 
   if (v9)
   {
@@ -163,14 +163,14 @@ LABEL_7:
     }
 
 LABEL_9:
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 postNotificationName:kMediaLibraryNeedFilterChange object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 postNotificationName:kMediaLibraryNeedFilterChange object:0];
 
     goto LABEL_10;
   }
 
-  v11 = [v15 applicationIdentifier];
-  v12 = [v11 isEqualToString:@"com.apple.iBooks"];
+  applicationIdentifier3 = [installCopy applicationIdentifier];
+  v12 = [applicationIdentifier3 isEqualToString:@"com.apple.iBooks"];
 
   if (v12)
   {
@@ -185,20 +185,20 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)handleAppUninstall:(id)a3
+- (void)handleAppUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   AppBooleanValue = __mediaLibraryAccessOverride___MLAccessOverride;
-  v17 = v4;
+  v17 = uninstallCopy;
   if (__mediaLibraryAccessOverride___MLAccessOverride == -1)
   {
     AppBooleanValue = CFPreferencesGetAppBooleanValue(@"MediaLibraryAccessOverride", @"com.apple.iapd", 0);
-    v4 = v17;
+    uninstallCopy = v17;
     __mediaLibraryAccessOverride___MLAccessOverride = AppBooleanValue;
   }
 
-  v6 = [v4 applicationIdentifier];
-  v7 = [v6 isEqualToString:@"com.apple.Music"];
+  applicationIdentifier = [uninstallCopy applicationIdentifier];
+  v7 = [applicationIdentifier isEqualToString:@"com.apple.Music"];
 
   if (v7)
   {
@@ -209,18 +209,18 @@ LABEL_10:
       goto LABEL_12;
     }
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 postNotificationName:kMediaLibraryMusicAppUninstalledNotification object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:kMediaLibraryMusicAppUninstalledNotification object:0];
 
 LABEL_11:
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 postNotificationName:kMediaLibraryNeedFilterChange object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 postNotificationName:kMediaLibraryNeedFilterChange object:0];
 
     goto LABEL_12;
   }
 
-  v10 = [v17 applicationIdentifier];
-  v11 = [v10 isEqualToString:@"com.apple.podcasts"];
+  applicationIdentifier2 = [v17 applicationIdentifier];
+  v11 = [applicationIdentifier2 isEqualToString:@"com.apple.podcasts"];
 
   if (v11)
   {
@@ -231,8 +231,8 @@ LABEL_11:
 
   else
   {
-    v14 = [v17 applicationIdentifier];
-    v15 = [v14 isEqualToString:@"com.apple.iBooks"];
+    applicationIdentifier3 = [v17 applicationIdentifier];
+    v15 = [applicationIdentifier3 isEqualToString:@"com.apple.iBooks"];
 
     if (!v15)
     {
@@ -252,48 +252,48 @@ LABEL_11:
 LABEL_12:
 }
 
-- (int)getFilteredMediaTypesMask:(int)a3
+- (int)getFilteredMediaTypesMask:(int)mask
 {
-  if (a3)
+  if (mask)
   {
-    v3 = a3;
+    maskCopy = mask;
   }
 
   else
   {
-    v3 = 3327;
+    maskCopy = 3327;
   }
 
   if (!self->_showMusic)
   {
-    v3 &= 0xFFFFF7FE;
+    maskCopy &= 0xFFFFF7FE;
   }
 
   if (!self->_showPodcasts)
   {
-    v3 &= 0xFFFFFBFD;
+    maskCopy &= 0xFFFFFBFD;
   }
 
   if (self->_showAudioBooks)
   {
-    return v3;
+    return maskCopy;
   }
 
   else
   {
-    return v3 & 0xFFFFFFFB;
+    return maskCopy & 0xFFFFFFFB;
   }
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  installCopy = install;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [installCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -305,14 +305,14 @@ LABEL_12:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(installCopy);
         }
 
         [(MediaLibraryHelper *)self handleAppInstall:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [installCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -321,15 +321,15 @@ LABEL_12:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applicationsWillUninstall:(id)a3
+- (void)applicationsWillUninstall:(id)uninstall
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  uninstallCopy = uninstall;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [uninstallCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -341,14 +341,14 @@ LABEL_12:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(uninstallCopy);
         }
 
         [(MediaLibraryHelper *)self handleAppUninstall:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [uninstallCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -357,15 +357,15 @@ LABEL_12:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  uninstallCopy = uninstall;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [uninstallCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -377,14 +377,14 @@ LABEL_12:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(uninstallCopy);
         }
 
         [(MediaLibraryHelper *)self handleAppUninstall:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [uninstallCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);

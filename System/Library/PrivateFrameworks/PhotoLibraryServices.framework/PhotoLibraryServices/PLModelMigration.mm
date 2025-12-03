@@ -1,37 +1,37 @@
 @interface PLModelMigration
-- (BOOL)isMigrationCancelledWithError:(id *)a3;
-- (PLModelMigration)initWithMigrationContext:(id)a3 logger:(id)a4;
-- (id)_managedObjectModelForLightweightMigrationStageWithURL:(id)a3;
-- (id)_nextRequiredStagedMigrationVersionAfterVersion:(id)a3;
-- (id)_stagedManagedObjectModelURLWithStageVersion:(id)a3;
-- (id)addStoreWithCoordinator:(id)a3 migrationUUID:(id)a4 storeURL:(id)a5 options:(id)a6 description:(id)a7 fromVersion:(int)a8 toVersion:(int)a9 progress:(id)a10 progressUnitCount:(unint64_t)a11 error:(id *)a12;
-- (int64_t)migratePostProcessingWithActions:(id)a3 migrationActionType:(int64_t)a4 progress:(id)a5 progressUnitCount:(unint64_t)a6 error:(id *)a7;
-- (int64_t)migratePostProcessingWithProgressUnitCount:(unint64_t)a3 error:(id *)a4;
-- (int64_t)migratePreSchemaMigrationWithCurrentStoreVersion:(id)a3 error:(id *)a4;
-- (int64_t)migrateSchemaMigrationWithAutoMigrationOptions:(id)a3 currentStoreVersion:(id)a4 error:(id *)a5;
-- (int64_t)migrateStagedMigrationWithAutoMigrationOptions:(id)a3 currentStoreVersion:(id)a4 error:(id *)a5;
-- (int64_t)migrateWithError:(id *)a3;
-- (int64_t)runMigrationAction:(id)a3 withCoordinator:(id)a4 error:(id *)a5;
-- (int64_t)setupWithError:(id *)a3;
-- (void)_registerActionClass:(Class)a3 actionsContainer:(id)a4 progressPortion:(unint64_t *)a5;
+- (BOOL)isMigrationCancelledWithError:(id *)error;
+- (PLModelMigration)initWithMigrationContext:(id)context logger:(id)logger;
+- (id)_managedObjectModelForLightweightMigrationStageWithURL:(id)l;
+- (id)_nextRequiredStagedMigrationVersionAfterVersion:(id)version;
+- (id)_stagedManagedObjectModelURLWithStageVersion:(id)version;
+- (id)addStoreWithCoordinator:(id)coordinator migrationUUID:(id)d storeURL:(id)l options:(id)options description:(id)description fromVersion:(int)version toVersion:(int)toVersion progress:(id)self0 progressUnitCount:(unint64_t)self1 error:(id *)self2;
+- (int64_t)migratePostProcessingWithActions:(id)actions migrationActionType:(int64_t)type progress:(id)progress progressUnitCount:(unint64_t)count error:(id *)error;
+- (int64_t)migratePostProcessingWithProgressUnitCount:(unint64_t)count error:(id *)error;
+- (int64_t)migratePreSchemaMigrationWithCurrentStoreVersion:(id)version error:(id *)error;
+- (int64_t)migrateSchemaMigrationWithAutoMigrationOptions:(id)options currentStoreVersion:(id)version error:(id *)error;
+- (int64_t)migrateStagedMigrationWithAutoMigrationOptions:(id)options currentStoreVersion:(id)version error:(id *)error;
+- (int64_t)migrateWithError:(id *)error;
+- (int64_t)runMigrationAction:(id)action withCoordinator:(id)coordinator error:(id *)error;
+- (int64_t)setupWithError:(id *)error;
+- (void)_registerActionClass:(Class)class actionsContainer:(id)container progressPortion:(unint64_t *)portion;
 - (void)actionRegistration;
-- (void)registerActionClass:(Class)a3 onCondition:(BOOL)a4;
-- (void)registerPostRepairActionClass:(Class)a3 onCondition:(BOOL)a4;
-- (void)registerPreRepairActionClass:(Class)a3 onCondition:(BOOL)a4;
-- (void)registerPreSchemaActionClass:(Class)a3 onCondition:(BOOL)a4;
-- (void)registerStagedActionClass:(Class)a3 onCondition:(BOOL)a4;
-- (void)resetBackgroundActionClass:(Class)a3 onCondition:(BOOL)a4;
+- (void)registerActionClass:(Class)class onCondition:(BOOL)condition;
+- (void)registerPostRepairActionClass:(Class)class onCondition:(BOOL)condition;
+- (void)registerPreRepairActionClass:(Class)class onCondition:(BOOL)condition;
+- (void)registerPreSchemaActionClass:(Class)class onCondition:(BOOL)condition;
+- (void)registerStagedActionClass:(Class)class onCondition:(BOOL)condition;
+- (void)resetBackgroundActionClass:(Class)class onCondition:(BOOL)condition;
 @end
 
 @implementation PLModelMigration
 
-- (BOOL)isMigrationCancelledWithError:(id *)a3
+- (BOOL)isMigrationCancelledWithError:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = [(PLModelMigration *)self progress];
-  v5 = [v4 isCancelled];
+  progress = [(PLModelMigration *)self progress];
+  isCancelled = [progress isCancelled];
 
-  if (v5)
+  if (isCancelled)
   {
     v6 = MEMORY[0x1E696ABC0];
     v7 = *MEMORY[0x1E69BFF48];
@@ -40,7 +40,7 @@
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v9 = [v6 errorWithDomain:v7 code:46008 userInfo:v8];
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -49,22 +49,22 @@
   }
 
   v9 = 0;
-  if (a3)
+  if (error)
   {
 LABEL_5:
     v10 = v9;
-    *a3 = v9;
+    *error = v9;
   }
 
 LABEL_6:
 
-  return v5;
+  return isCancelled;
 }
 
-- (int64_t)runMigrationAction:(id)a3 withCoordinator:(id)a4 error:(id *)a5
+- (int64_t)runMigrationAction:(id)action withCoordinator:(id)coordinator error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  actionCopy = action;
+  coordinatorCopy = coordinator;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -79,9 +79,9 @@ LABEL_6:
   pl_dispatch_once();
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
-  v13 = [(PLModelMigration *)self pathManager];
-  v14 = [(PLModelMigration *)self graphCache];
-  v15 = PLManagedObjectContextForMigrationActionWithCoordinator(v9, v12, v13, v14);
+  pathManager = [(PLModelMigration *)self pathManager];
+  graphCache = [(PLModelMigration *)self graphCache];
+  v15 = PLManagedObjectContextForMigrationActionWithCoordinator(coordinatorCopy, v12, pathManager, graphCache);
 
   [PLEnumerateAndSaveController disableConcurrencyLimiterForContext:v15];
   v20[0] = MEMORY[0x1E69E9820];
@@ -89,7 +89,7 @@ LABEL_6:
   v20[2] = __61__PLModelMigration_runMigrationAction_withCoordinator_error___block_invoke;
   v20[3] = &unk_1E7578898;
   v23 = &v31;
-  v16 = v8;
+  v16 = actionCopy;
   v21 = v16;
   v17 = v15;
   v22 = v17;
@@ -97,9 +97,9 @@ LABEL_6:
   [v17 performBlockAndWait:v20];
 
   objc_autoreleasePoolPop(v10);
-  if (a5)
+  if (error)
   {
-    *a5 = v26[5];
+    *error = v26[5];
   }
 
   v18 = v32[3];
@@ -121,9 +121,9 @@ uint64_t __61__PLModelMigration_runMigrationAction_withCoordinator_error___block
   return [a1[5] reset];
 }
 
-- (id)_stagedManagedObjectModelURLWithStageVersion:(id)a3
+- (id)_stagedManagedObjectModelURLWithStageVersion:(id)version
 {
-  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"photos-%d-STAGED", objc_msgSend(a3, "intValue")];
+  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"photos-%d-STAGED", objc_msgSend(version, "intValue")];
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v5 = [v4 URLForResource:v3 withExtension:@"omo"];
 
@@ -136,15 +136,15 @@ uint64_t __61__PLModelMigration_runMigrationAction_withCoordinator_error___block
   return v5;
 }
 
-- (id)_managedObjectModelForLightweightMigrationStageWithURL:(id)a3
+- (id)_managedObjectModelForLightweightMigrationStageWithURL:(id)l
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lCopy = l;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [objc_alloc(MEMORY[0x1E695D638]) initWithContentsOfURL:v3];
+  v4 = [objc_alloc(MEMORY[0x1E695D638]) initWithContentsOfURL:lCopy];
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -171,10 +171,10 @@ uint64_t __61__PLModelMigration_runMigrationAction_withCoordinator_error___block
   return v4;
 }
 
-- (id)_nextRequiredStagedMigrationVersionAfterVersion:(id)a3
+- (id)_nextRequiredStagedMigrationVersionAfterVersion:(id)version
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [a3 integerValue];
+  integerValue = [version integerValue];
   v4 = &unk_1F0FBFE20;
   v13 = 0u;
   v14 = 0u;
@@ -196,7 +196,7 @@ uint64_t __61__PLModelMigration_runMigrationAction_withCoordinator_error___block
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if (v3 < [v10 intValue])
+        if (integerValue < [v10 intValue])
         {
           v11 = v10;
           goto LABEL_11;
@@ -219,16 +219,16 @@ LABEL_11:
   return v11;
 }
 
-- (id)addStoreWithCoordinator:(id)a3 migrationUUID:(id)a4 storeURL:(id)a5 options:(id)a6 description:(id)a7 fromVersion:(int)a8 toVersion:(int)a9 progress:(id)a10 progressUnitCount:(unint64_t)a11 error:(id *)a12
+- (id)addStoreWithCoordinator:(id)coordinator migrationUUID:(id)d storeURL:(id)l options:(id)options description:(id)description fromVersion:(int)version toVersion:(int)toVersion progress:(id)self0 progressUnitCount:(unint64_t)self1 error:(id *)self2
 {
-  v41 = *&a8;
+  v41 = *&version;
   v102 = *MEMORY[0x1E69E9840];
-  v42 = a3;
-  v44 = a4;
-  v43 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a10;
+  coordinatorCopy = coordinator;
+  dCopy = d;
+  lCopy = l;
+  optionsCopy = options;
+  descriptionCopy = description;
+  progressCopy = progress;
   v59 = 0;
   v60 = &v59;
   v61 = 0x3032000000;
@@ -242,20 +242,20 @@ LABEL_11:
   v57 = __Block_byref_object_dispose__56806;
   v58 = 0;
   obj = 0;
-  LOBYTE(a7) = [(PLModelMigration *)self isMigrationCancelledWithError:&obj];
+  LOBYTE(description) = [(PLModelMigration *)self isMigrationCancelledWithError:&obj];
   objc_storeStrong(&v58, obj);
-  if ((a7 & 1) == 0)
+  if ((description & 1) == 0)
   {
-    v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (version: %d -> %d)", v18, v41, a9];
+    toVersion = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (version: %d -> %d)", descriptionCopy, v41, toVersion];
     v20 = [PLModelMigrationActionProcessor alloc];
-    v21 = [(PLModelMigration *)self pathManager];
-    v22 = [(PLModelMigration *)self analyticsEventManager];
-    v23 = [(PLModelMigration *)self logger];
-    v24 = [(PLModelMigrationActionProcessor *)v20 initWithUUID:v44 pathManager:v21 migrationActionType:1 analyticsEventManager:v22 logger:v23 progressUnitCount:1];
+    pathManager = [(PLModelMigration *)self pathManager];
+    analyticsEventManager = [(PLModelMigration *)self analyticsEventManager];
+    logger = [(PLModelMigration *)self logger];
+    v24 = [(PLModelMigrationActionProcessor *)v20 initWithUUID:dCopy pathManager:pathManager migrationActionType:1 analyticsEventManager:analyticsEventManager logger:logger progressUnitCount:1];
 
     [(PLModelMigrationActionProcessor *)v24 setIgnoreProgressUpdates:1];
-    v25 = [(PLModelMigrationActionProcessor *)v24 progress];
-    [v19 addChild:v25 withPendingUnitCount:a11];
+    progress = [(PLModelMigrationActionProcessor *)v24 progress];
+    [progressCopy addChild:progress withPendingUnitCount:count];
 
     v45[0] = MEMORY[0x1E69E9820];
     v45[1] = 3221225472;
@@ -265,10 +265,10 @@ LABEL_11:
     v46 = v26;
     v50 = &v59;
     v51 = &v53;
-    v47 = v42;
-    v48 = v43;
-    v49 = v17;
-    [(PLModelMigrationActionProcessor *)v26 performActionWithName:v40 ifRequired:1 block:v45];
+    v47 = coordinatorCopy;
+    v48 = lCopy;
+    v49 = optionsCopy;
+    [(PLModelMigrationActionProcessor *)v26 performActionWithName:toVersion ifRequired:1 block:v45];
     if (![(PLModelMigrationActionProcessor *)v26 isSuccess])
     {
       v27 = PLMigrationGetLog();
@@ -276,8 +276,8 @@ LABEL_11:
 
       if (v28)
       {
-        v29 = [(PLModelMigration *)self logger];
-        v30 = v29 == 0;
+        logger2 = [(PLModelMigration *)self logger];
+        v30 = logger2 == 0;
 
         if (v30)
         {
@@ -288,7 +288,7 @@ LABEL_11:
             LODWORD(buf) = 67109634;
             DWORD1(buf) = v41;
             WORD4(buf) = 1024;
-            *(&buf + 10) = a9;
+            *(&buf + 10) = toVersion;
             HIWORD(buf) = 2112;
             *&v71 = v36;
             _os_log_impl(&dword_19BF1F000, v35, OS_LOG_TYPE_ERROR, "Failed to open store for migration from version %d to %d. Error %@", &buf, 0x18u);
@@ -335,7 +335,7 @@ LABEL_11:
           v65[0] = 67109634;
           v65[1] = v41;
           v66 = 1024;
-          v67 = a9;
+          toVersionCopy = toVersion;
           v68 = 2112;
           v69 = v32;
           LODWORD(v39) = 24;
@@ -353,9 +353,9 @@ LABEL_11:
     }
   }
 
-  if (a12)
+  if (error)
   {
-    *a12 = v54[5];
+    *error = v54[5];
   }
 
   v37 = v60[5];
@@ -422,15 +422,15 @@ id __142__PLModelMigration_addStoreWithCoordinator_migrationUUID_storeURL_option
   return v7;
 }
 
-- (int64_t)migratePostProcessingWithActions:(id)a3 migrationActionType:(int64_t)a4 progress:(id)a5 progressUnitCount:(unint64_t)a6 error:(id *)a7
+- (int64_t)migratePostProcessingWithActions:(id)actions migrationActionType:(int64_t)type progress:(id)progress progressUnitCount:(unint64_t)count error:(id *)error
 {
   v120 = *MEMORY[0x1E69E9840];
-  v58 = a3;
-  v56 = a5;
-  if (a4 == 6)
+  actionsCopy = actions;
+  progressCopy = progress;
+  if (type == 6)
   {
-    v54 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v54 handleFailureInMethod:a2 object:self file:@"PLModelMigration.m" lineNumber:612 description:{@"Invalid parameter not satisfying: %@", @"type != PLMigrationActionTypeBackground"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigration.m" lineNumber:612 description:{@"Invalid parameter not satisfying: %@", @"type != PLMigrationActionTypeBackground"}];
   }
 
   v78 = 0;
@@ -443,7 +443,7 @@ id __142__PLModelMigration_addStoreWithCoordinator_migrationUUID_storeURL_option
   v75 = &v74;
   v76 = 0x2020000000;
   obj = 0;
-  v62 = self;
+  selfCopy = self;
   v12 = [(PLModelMigration *)self isMigrationCancelledWithError:&obj];
   objc_storeStrong(&v83, obj);
   v13 = 1;
@@ -453,43 +453,43 @@ id __142__PLModelMigration_addStoreWithCoordinator_migrationUUID_storeURL_option
   }
 
   v77 = v13;
-  if ([v58 count] && v75[3] == 1)
+  if ([actionsCopy count] && v75[3] == 1)
   {
     v14 = [PLModelMigrationActionProcessor alloc];
-    v15 = [(PLModelMigration *)self migrationUUID];
-    v16 = [(PLModelMigration *)self pathManager];
-    v17 = [(PLModelMigration *)self analyticsEventManager];
-    v18 = [(PLModelMigration *)self logger];
-    if (a4 == 5)
+    migrationUUID = [(PLModelMigration *)self migrationUUID];
+    pathManager = [(PLModelMigration *)self pathManager];
+    analyticsEventManager = [(PLModelMigration *)self analyticsEventManager];
+    logger = [(PLModelMigration *)self logger];
+    if (type == 5)
     {
-      v19 = 0;
+      countCopy = 0;
     }
 
     else
     {
-      v19 = a6;
+      countCopy = count;
     }
 
-    v20 = [(PLModelMigrationActionProcessor *)v14 initWithUUID:v15 pathManager:v16 migrationActionType:a4 analyticsEventManager:v17 logger:v18 progressUnitCount:v19];
+    v20 = [(PLModelMigrationActionProcessor *)v14 initWithUUID:migrationUUID pathManager:pathManager migrationActionType:type analyticsEventManager:analyticsEventManager logger:logger progressUnitCount:countCopy];
 
     [(PLModelMigrationActionProcessor *)v20 setIgnoreProgressUpdates:1];
-    v21 = [(PLModelMigrationActionProcessor *)v20 progress];
+    progress = [(PLModelMigrationActionProcessor *)v20 progress];
 
-    if (v21)
+    if (progress)
     {
-      v22 = [(PLModelMigrationActionProcessor *)v20 progress];
-      [v56 addChild:v22 withPendingUnitCount:a6];
+      progress2 = [(PLModelMigrationActionProcessor *)v20 progress];
+      [progressCopy addChild:progress2 withPendingUnitCount:count];
     }
 
-    v23 = [(PLModelMigration *)self migrationContext];
-    v24 = [v23 store];
-    v61 = [v24 persistentStoreCoordinator];
+    migrationContext = [(PLModelMigration *)self migrationContext];
+    store = [migrationContext store];
+    persistentStoreCoordinator = [store persistentStoreCoordinator];
 
     v72 = 0u;
     v70 = 0u;
     v71 = 0u;
     v69 = 0u;
-    v59 = v58;
+    v59 = actionsCopy;
     v25 = [v59 countByEnumeratingWithState:&v69 objects:v119 count:16];
     if (v25)
     {
@@ -505,23 +505,23 @@ LABEL_14:
 
         v27 = *(*(&v69 + 1) + 8 * v26);
         v28 = objc_autoreleasePoolPush();
-        v29 = [v27 progress];
-        v30 = [(PLModelMigrationActionProcessor *)v20 progress];
-        [v30 addChild:v29 withPendingUnitCount:{objc_msgSend(objc_opt_class(), "actionProgressWeight")}];
+        progress3 = [v27 progress];
+        progress4 = [(PLModelMigrationActionProcessor *)v20 progress];
+        [progress4 addChild:progress3 withPendingUnitCount:{objc_msgSend(objc_opt_class(), "actionProgressWeight")}];
 
         v31 = MEMORY[0x1E696AEC0];
-        v32 = [objc_opt_class() actionDescription];
-        v33 = [v31 stringWithFormat:@"%@", v32];
+        actionDescription = [objc_opt_class() actionDescription];
+        v33 = [v31 stringWithFormat:@"%@", actionDescription];
         v64[0] = MEMORY[0x1E69E9820];
         v64[1] = 3221225472;
         v64[2] = __106__PLModelMigration_migratePostProcessingWithActions_migrationActionType_progress_progressUnitCount_error___block_invoke;
         v64[3] = &unk_1E756E3C8;
         v67 = &v74;
-        v64[4] = v62;
+        v64[4] = selfCopy;
         v64[5] = v27;
-        v65 = v61;
+        v65 = persistentStoreCoordinator;
         v68 = &v78;
-        v34 = v29;
+        v34 = progress3;
         v66 = v34;
         [(PLModelMigrationActionProcessor *)v20 performActionWithName:v33 ifRequired:1 block:v64];
 
@@ -529,7 +529,7 @@ LABEL_14:
         {
           v35 = (v79 + 5);
           v63 = v79[5];
-          v36 = [(PLModelMigration *)v62 isMigrationCancelledWithError:&v63];
+          v36 = [(PLModelMigration *)selfCopy isMigrationCancelledWithError:&v63];
           objc_storeStrong(v35, v63);
           if (v36)
           {
@@ -550,8 +550,8 @@ LABEL_14:
 
           if (v39)
           {
-            v40 = [(PLModelMigration *)v62 logger];
-            v41 = v40 == 0;
+            logger2 = [(PLModelMigration *)selfCopy logger];
+            v41 = logger2 == 0;
 
             if (v41)
             {
@@ -614,7 +614,7 @@ LABEL_14:
               LODWORD(v55) = 22;
               v46 = _os_log_send_and_compose_impl();
 
-              v47 = [(PLModelMigration *)v62 logger:&v84];
+              v47 = [(PLModelMigration *)selfCopy logger:&v84];
               [v47 logWithMessage:v46 fromCodeLocation:"PLModelMigration.m" type:{649, 16}];
 
               if (v46 != buf)
@@ -647,9 +647,9 @@ LABEL_14:
     }
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = v79[5];
+    *error = v79[5];
   }
 
   v52 = v75[3];
@@ -696,34 +696,34 @@ BOOL __106__PLModelMigration_migratePostProcessingWithActions_migrationActionTyp
   return v12;
 }
 
-- (int64_t)migratePostProcessingWithProgressUnitCount:(unint64_t)a3 error:(id *)a4
+- (int64_t)migratePostProcessingWithProgressUnitCount:(unint64_t)count error:(id *)error
 {
   v52[1] = *MEMORY[0x1E69E9840];
   [(PLModelMigration *)self actionRegistration];
   v7 = self->_actionProgressPortionPreRepair + self->_actionProgressPortion + self->_actionProgressPortionPostRepair;
   v8 = vcvtd_n_f64_u64(v7, 1uLL);
   v9 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:v7 + v8];
-  v10 = [(PLModelMigration *)self progress];
-  [v10 addChild:v9 withPendingUnitCount:a3];
+  progress = [(PLModelMigration *)self progress];
+  [progress addChild:v9 withPendingUnitCount:count];
 
   actionsPreRepair = self->_actionsPreRepair;
   actionProgressPortionPreRepair = self->_actionProgressPortionPreRepair;
   v50 = 0;
   v13 = [(PLModelMigration *)self migratePostProcessingWithActions:actionsPreRepair migrationActionType:3 progress:v9 progressUnitCount:actionProgressPortionPreRepair error:&v50];
   v14 = v50;
-  v15 = [(PLModelMigration *)self analyticsEventManager];
-  [v15 startRecordingTimedEventToken];
+  analyticsEventManager = [(PLModelMigration *)self analyticsEventManager];
+  [analyticsEventManager startRecordingTimedEventToken];
   v17 = v16;
 
-  v47 = a4;
+  errorCopy = error;
   if (v13 == 1)
   {
-    v18 = [(PLModelMigration *)self legacyMigrationDelegate];
-    v19 = [(PLModelMigration *)self migrationContext];
-    v20 = [v19 store];
-    v21 = [(PLModelMigration *)self migrationUUID];
-    v22 = [(PLModelMigration *)self migrationContext];
-    v23 = [v18 postProcessMigratedStore:v20 migrationUUID:v21 fromVersion:objc_msgSend(v22 progress:"previousStoreVersion") progressUnitCount:{v9, v8}];
+    legacyMigrationDelegate = [(PLModelMigration *)self legacyMigrationDelegate];
+    migrationContext = [(PLModelMigration *)self migrationContext];
+    store = [migrationContext store];
+    migrationUUID = [(PLModelMigration *)self migrationUUID];
+    migrationContext2 = [(PLModelMigration *)self migrationContext];
+    v23 = [legacyMigrationDelegate postProcessMigratedStore:store migrationUUID:migrationUUID fromVersion:objc_msgSend(migrationContext2 progress:"previousStoreVersion") progressUnitCount:{v9, v8}];
 
     if (v23)
     {
@@ -750,18 +750,18 @@ BOOL __106__PLModelMigration_migratePostProcessingWithActions_migrationActionTyp
     v14 = v26;
   }
 
-  v30 = [(PLModelMigration *)self analyticsEventManager];
+  analyticsEventManager2 = [(PLModelMigration *)self analyticsEventManager];
   v31 = *MEMORY[0x1E69BF6D0];
-  [v30 stopRecordingTimedEventWithToken:*MEMORY[0x1E69BF700] forKey:*MEMORY[0x1E69BF6D0] onEventWithName:v17];
+  [analyticsEventManager2 stopRecordingTimedEventWithToken:*MEMORY[0x1E69BF700] forKey:*MEMORY[0x1E69BF6D0] onEventWithName:v17];
 
-  v32 = [(PLModelMigration *)self analyticsEventManager];
+  analyticsEventManager3 = [(PLModelMigration *)self analyticsEventManager];
   v33 = MEMORY[0x1E696AD98];
-  v34 = [(PLModelMigration *)self legacyMigrationDelegate];
-  v35 = [(PLModelMigration *)self migrationContext];
-  v36 = [v35 store];
-  v37 = [v33 numberWithUnsignedInteger:{objc_msgSend(v34, "assetCountForStore:", v36)}];
-  v38 = [v37 stringValue];
-  [v32 setPayloadValue:v38 forKey:*MEMORY[0x1E69BF738] onEventWithName:v31];
+  legacyMigrationDelegate2 = [(PLModelMigration *)self legacyMigrationDelegate];
+  migrationContext3 = [(PLModelMigration *)self migrationContext];
+  store2 = [migrationContext3 store];
+  v37 = [v33 numberWithUnsignedInteger:{objc_msgSend(legacyMigrationDelegate2, "assetCountForStore:", store2)}];
+  stringValue = [v37 stringValue];
+  [analyticsEventManager3 setPayloadValue:stringValue forKey:*MEMORY[0x1E69BF738] onEventWithName:v31];
 
   if (v13 == 1)
   {
@@ -773,8 +773,8 @@ BOOL __106__PLModelMigration_migratePostProcessingWithActions_migrationActionTyp
     v42 = v48;
 
     v14 = v42;
-    v43 = v47;
-    if (!v47)
+    v43 = errorCopy;
+    if (!errorCopy)
     {
       goto LABEL_11;
     }
@@ -783,8 +783,8 @@ BOOL __106__PLModelMigration_migratePostProcessingWithActions_migrationActionTyp
   }
 
   v41 = v46;
-  v43 = v47;
-  if (v47)
+  v43 = errorCopy;
+  if (errorCopy)
   {
 LABEL_10:
     v44 = v14;
@@ -796,17 +796,17 @@ LABEL_11:
   return v13;
 }
 
-- (int64_t)migrateSchemaMigrationWithAutoMigrationOptions:(id)a3 currentStoreVersion:(id)a4 error:(id *)a5
+- (int64_t)migrateSchemaMigrationWithAutoMigrationOptions:(id)options currentStoreVersion:(id)version error:(id *)error
 {
   v121 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  versionCopy = version;
   v8 = MEMORY[0x1E696AD98];
-  v9 = a3;
-  v10 = [(PLModelMigration *)self migrationContext];
-  v11 = [v8 numberWithUnsignedShort:{objc_msgSend(v10, "previousStoreVersion")}];
-  v12 = [v11 isEqual:v7];
+  optionsCopy = options;
+  migrationContext = [(PLModelMigration *)self migrationContext];
+  v11 = [v8 numberWithUnsignedShort:{objc_msgSend(migrationContext, "previousStoreVersion")}];
+  v12 = [v11 isEqual:versionCopy];
 
-  v80 = v7;
+  v80 = versionCopy;
   if ((v12 & 1) == 0)
   {
     v13 = PLMigrationGetLog();
@@ -814,9 +814,9 @@ LABEL_11:
 
     if (v14)
     {
-      v15 = [(PLModelMigration *)self logger];
+      logger = [(PLModelMigration *)self logger];
 
-      if (v15)
+      if (logger)
       {
         v119 = 0u;
         v120 = 0u;
@@ -852,8 +852,8 @@ LABEL_11:
         v16 = PLMigrationGetLog();
         os_log_type_enabled(v16, OS_LOG_TYPE_INFO);
         v17 = MEMORY[0x1E696AD98];
-        v18 = [(PLModelMigration *)self migrationContext];
-        v19 = [v17 numberWithUnsignedShort:{objc_msgSend(v18, "previousStoreVersion")}];
+        migrationContext2 = [(PLModelMigration *)self migrationContext];
+        v19 = [v17 numberWithUnsignedShort:{objc_msgSend(migrationContext2, "previousStoreVersion")}];
         v86 = 138543618;
         v87 = v19;
         v88 = 1024;
@@ -869,7 +869,7 @@ LABEL_11:
           free(v20);
         }
 
-        v7 = v80;
+        versionCopy = v80;
       }
 
       else
@@ -878,8 +878,8 @@ LABEL_11:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
           v23 = MEMORY[0x1E696AD98];
-          v24 = [(PLModelMigration *)self migrationContext];
-          v25 = [v23 numberWithUnsignedShort:{objc_msgSend(v24, "previousStoreVersion")}];
+          migrationContext3 = [(PLModelMigration *)self migrationContext];
+          v25 = [v23 numberWithUnsignedShort:{objc_msgSend(migrationContext3, "previousStoreVersion")}];
           *buf = 138543618;
           *&buf[4] = v25;
           *&buf[12] = 1024;
@@ -890,33 +890,33 @@ LABEL_11:
     }
   }
 
-  v26 = [(PLModelMigration *)self analyticsEventManager];
-  [v26 startRecordingTimedEventToken];
+  analyticsEventManager = [(PLModelMigration *)self analyticsEventManager];
+  [analyticsEventManager startRecordingTimedEventToken];
   v28 = v27;
 
-  v29 = [(PLModelMigration *)self migrationContext];
-  v30 = [v29 coordinator];
-  v31 = [(PLModelMigration *)self migrationUUID];
-  v32 = [(PLModelMigration *)self migrationContext];
-  v33 = [v32 storeURL];
-  v34 = [v7 intValue];
+  migrationContext4 = [(PLModelMigration *)self migrationContext];
+  coordinator = [migrationContext4 coordinator];
+  migrationUUID = [(PLModelMigration *)self migrationUUID];
+  migrationContext5 = [(PLModelMigration *)self migrationContext];
+  storeURL = [migrationContext5 storeURL];
+  intValue = [versionCopy intValue];
   v35 = +[PLModelMigration currentModelVersion];
-  v36 = [(PLModelMigration *)self progress];
+  progress = [(PLModelMigration *)self progress];
   v83 = 0;
   LODWORD(v75) = v35;
-  v37 = [(PLModelMigration *)self addStoreWithCoordinator:v30 migrationUUID:v31 storeURL:v33 options:v9 description:@"Adding lightweight migration store" fromVersion:v34 toVersion:v75 progress:v36 progressUnitCount:10 error:&v83];
+  v37 = [(PLModelMigration *)self addStoreWithCoordinator:coordinator migrationUUID:migrationUUID storeURL:storeURL options:optionsCopy description:@"Adding lightweight migration store" fromVersion:intValue toVersion:v75 progress:progress progressUnitCount:10 error:&v83];
 
   v38 = v83;
-  v39 = [(PLModelMigration *)self migrationContext];
-  [v39 setStore:v37];
+  migrationContext6 = [(PLModelMigration *)self migrationContext];
+  [migrationContext6 setStore:v37];
 
-  v40 = [(PLModelMigration *)self analyticsEventManager];
-  [v40 addRecordingTimedEventSnippetWithToken:*MEMORY[0x1E69BF718] forKey:*MEMORY[0x1E69BF6D0] onEventWithName:v28];
+  analyticsEventManager2 = [(PLModelMigration *)self analyticsEventManager];
+  [analyticsEventManager2 addRecordingTimedEventSnippetWithToken:*MEMORY[0x1E69BF718] forKey:*MEMORY[0x1E69BF6D0] onEventWithName:v28];
 
-  v41 = [(PLModelMigration *)self migrationContext];
-  v42 = [v41 store];
+  migrationContext7 = [(PLModelMigration *)self migrationContext];
+  store = [migrationContext7 store];
 
-  if (v42)
+  if (store)
   {
     v43 = flt_19C60AD80[(self->_performedActionKinds & 1) == 0];
     if ((self->_performedActionKinds & 2) != 0)
@@ -931,9 +931,9 @@ LABEL_11:
 
     if (v45 == 1)
     {
-      v47 = a5;
+      errorCopy3 = error;
       v48 = v80;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_36;
       }
@@ -941,12 +941,12 @@ LABEL_11:
       goto LABEL_35;
     }
 
-    v58 = [(PLModelMigration *)self migrationContext];
-    v59 = [v58 coordinator];
-    v60 = [(PLModelMigration *)self migrationContext];
-    v61 = [v60 store];
+    migrationContext8 = [(PLModelMigration *)self migrationContext];
+    coordinator2 = [migrationContext8 coordinator];
+    migrationContext9 = [(PLModelMigration *)self migrationContext];
+    store2 = [migrationContext9 store];
     v81 = 0;
-    v62 = [v59 removePersistentStore:v61 error:&v81];
+    v62 = [coordinator2 removePersistentStore:store2 error:&v81];
     v49 = v81;
 
     if (v62)
@@ -960,9 +960,9 @@ LABEL_11:
     v48 = v80;
     if (v64)
     {
-      v65 = [(PLModelMigration *)self logger];
+      logger2 = [(PLModelMigration *)self logger];
 
-      if (v65)
+      if (logger2)
       {
         v119 = 0u;
         v120 = 0u;
@@ -1016,7 +1016,7 @@ LABEL_11:
         }
 
 LABEL_24:
-        v47 = a5;
+        errorCopy3 = error;
         v48 = v80;
         goto LABEL_34;
       }
@@ -1057,9 +1057,9 @@ LABEL_24:
     v48 = v80;
     if (v53)
     {
-      v54 = [(PLModelMigration *)self logger];
+      logger3 = [(PLModelMigration *)self logger];
 
-      if (v54)
+      if (logger3)
       {
         v119 = 0u;
         v120 = 0u;
@@ -1129,14 +1129,14 @@ LABEL_24:
     v45 = 3;
   }
 
-  v47 = a5;
+  errorCopy3 = error;
 LABEL_34:
 
-  if (v47)
+  if (errorCopy3)
   {
 LABEL_35:
     v71 = v46;
-    *v47 = v46;
+    *errorCopy3 = v46;
   }
 
 LABEL_36:
@@ -1144,17 +1144,17 @@ LABEL_36:
   return v45;
 }
 
-- (int64_t)migrateStagedMigrationWithAutoMigrationOptions:(id)a3 currentStoreVersion:(id)a4 error:(id *)a5
+- (int64_t)migrateStagedMigrationWithAutoMigrationOptions:(id)options currentStoreVersion:(id)version error:(id *)error
 {
   v147 = *MEMORY[0x1E69E9840];
-  v96 = a3;
-  v8 = a4;
+  optionsCopy = options;
+  versionCopy = version;
   v9 = MEMORY[0x1E696AD98];
-  v10 = [(PLModelMigration *)self migrationContext];
-  v11 = [v9 numberWithUnsignedShort:{objc_msgSend(v10, "previousStoreVersion")}];
+  migrationContext = [(PLModelMigration *)self migrationContext];
+  v11 = [v9 numberWithUnsignedShort:{objc_msgSend(migrationContext, "previousStoreVersion")}];
   v12 = [(PLModelMigration *)self _nextRequiredStagedMigrationVersionAfterVersion:v11];
 
-  v91 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v13 = MEMORY[0x1E696AE38];
   v14 = &unk_1F0FBFE20;
   v15 = [v13 discreteProgressWithTotalUnitCount:{5 * objc_msgSend(&unk_1F0FBFE20, "count")}];
@@ -1166,11 +1166,11 @@ LABEL_36:
     goto LABEL_46;
   }
 
-  v86 = a5;
+  errorCopy = error;
   self->_performedActionKinds |= 2uLL;
-  v16 = [(PLModelMigration *)self progress];
+  progress = [(PLModelMigration *)self progress];
   v92 = v15;
-  [v16 addChild:v15 withPendingUnitCount:10];
+  [progress addChild:v15 withPendingUnitCount:10];
 
   v17 = 0;
   v90 = *MEMORY[0x1E69BF718];
@@ -1198,9 +1198,9 @@ LABEL_36:
 
     if (v23)
     {
-      v24 = [(PLModelMigration *)self logger];
+      logger = [(PLModelMigration *)self logger];
 
-      if (v24)
+      if (logger)
       {
         v25 = v20;
         v145 = 0u;
@@ -1236,13 +1236,13 @@ LABEL_36:
         memset(buf, 0, sizeof(buf));
         v26 = PLMigrationGetLog();
         os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT);
-        v27 = [v21 path];
+        path = [v21 path];
         v110 = 138543874;
-        v111 = v8;
+        v111 = versionCopy;
         v112 = 2114;
         v113 = v12;
         v114 = 2112;
-        v115 = v27;
+        v115 = path;
         LODWORD(v85) = 32;
         v28 = _os_log_send_and_compose_impl();
 
@@ -1262,13 +1262,13 @@ LABEL_36:
         v30 = PLMigrationGetLog();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
         {
-          v31 = [v21 path];
+          path2 = [v21 path];
           *buf = 138543874;
-          *&buf[4] = v8;
+          *&buf[4] = versionCopy;
           *&buf[12] = 2114;
           *&buf[14] = v12;
           *&buf[22] = 2112;
-          *&buf[24] = v31;
+          *&buf[24] = path2;
           _os_log_impl(&dword_19BF1F000, v30, OS_LOG_TYPE_DEFAULT, "Starting migration stage from version %{public}@ to %{public}@, with model %@.", buf, 0x20u);
         }
       }
@@ -1281,33 +1281,33 @@ LABEL_36:
       v97 = v20;
       v98 = v32;
       v33 = [objc_alloc(MEMORY[0x1E695D6C0]) initWithManagedObjectModel:v32];
-      v34 = [(PLModelMigration *)self analyticsEventManager];
-      [v34 startRecordingTimedEventToken];
+      analyticsEventManager = [(PLModelMigration *)self analyticsEventManager];
+      [analyticsEventManager startRecordingTimedEventToken];
       v36 = v35;
 
-      v37 = [(PLModelMigration *)self migrationUUID];
-      v38 = [(PLModelMigration *)self migrationContext];
-      v39 = [v38 storeURL];
-      v40 = [v8 intValue];
-      v41 = [v12 intValue];
+      migrationUUID = [(PLModelMigration *)self migrationUUID];
+      migrationContext2 = [(PLModelMigration *)self migrationContext];
+      storeURL = [migrationContext2 storeURL];
+      intValue = [versionCopy intValue];
+      intValue2 = [v12 intValue];
       v102 = v19;
-      LODWORD(v84) = v41;
+      LODWORD(v84) = intValue2;
       v99 = v33;
-      v42 = [(PLModelMigration *)self addStoreWithCoordinator:v33 migrationUUID:v37 storeURL:v39 options:v96 description:@"Adding staged migration store" fromVersion:v40 toVersion:v84 progress:v92 progressUnitCount:1 error:&v102];
+      v42 = [(PLModelMigration *)self addStoreWithCoordinator:v33 migrationUUID:migrationUUID storeURL:storeURL options:optionsCopy description:@"Adding staged migration store" fromVersion:intValue toVersion:v84 progress:v92 progressUnitCount:1 error:&v102];
       v43 = v102;
 
       if (v42)
       {
-        v44 = [(PLModelMigration *)self analyticsEventManager];
-        [v44 addRecordingTimedEventSnippetWithToken:v90 forKey:v93 onEventWithName:v36];
+        analyticsEventManager2 = [(PLModelMigration *)self analyticsEventManager];
+        [analyticsEventManager2 addRecordingTimedEventSnippetWithToken:v90 forKey:v93 onEventWithName:v36];
 
-        v45 = [(PLModelMigration *)self analyticsEventManager];
-        [v45 startRecordingTimedEventToken];
+        analyticsEventManager3 = [(PLModelMigration *)self analyticsEventManager];
+        [analyticsEventManager3 startRecordingTimedEventToken];
         v47 = v46;
 
-        v48 = [(PLModelMigration *)self legacyMigrationDelegate];
-        v49 = [(PLModelMigration *)self migrationUUID];
-        v50 = [v48 processWelterweightMigrationStageOnStore:v42 migrationUUID:v49 fromVersion:objc_msgSend(v8 toVersion:"intValue") migrationContext:objc_msgSend(v12 progress:"intValue") progressUnitCount:{v91, v92, 2}];
+        legacyMigrationDelegate = [(PLModelMigration *)self legacyMigrationDelegate];
+        migrationUUID2 = [(PLModelMigration *)self migrationUUID];
+        v50 = [legacyMigrationDelegate processWelterweightMigrationStageOnStore:v42 migrationUUID:migrationUUID2 fromVersion:objc_msgSend(versionCopy toVersion:"intValue") migrationContext:objc_msgSend(v12 progress:"intValue") progressUnitCount:{dictionary, v92, 2}];
 
         if (v50)
         {
@@ -1315,9 +1315,9 @@ LABEL_36:
           actionsStaged = self->_actionsStaged;
           self->_actionsStaged = v51;
 
-          PLModelMigrationActionRegistration_Staged(self, [v8 intValue], objc_msgSend(v12, "intValue"));
-          v53 = [(PLModelMigration *)self migrationContext];
-          [v53 setStore:v42];
+          PLModelMigrationActionRegistration_Staged(self, [versionCopy intValue], objc_msgSend(v12, "intValue"));
+          migrationContext3 = [(PLModelMigration *)self migrationContext];
+          [migrationContext3 setStore:v42];
 
           v54 = self->_actionsStaged;
           v101 = v43;
@@ -1337,19 +1337,19 @@ LABEL_36:
           v55 = 3;
         }
 
-        v68 = [(PLModelMigration *)self analyticsEventManager];
-        [v68 addRecordingTimedEventSnippetWithToken:v89 forKey:v93 onEventWithName:v47];
+        analyticsEventManager4 = [(PLModelMigration *)self analyticsEventManager];
+        [analyticsEventManager4 addRecordingTimedEventSnippetWithToken:v89 forKey:v93 onEventWithName:v47];
         v20 = v97;
       }
 
       else
       {
         v66 = MEMORY[0x1E696AEC0];
-        v67 = [v100 path];
-        v68 = [v66 stringWithFormat:@"Failed to open store for staged migration from version %@ to %@, with model %@", v8, v12, v67];
+        path3 = [v100 path];
+        analyticsEventManager4 = [v66 stringWithFormat:@"Failed to open store for staged migration from version %@ to %@, with model %@", versionCopy, v12, path3];
 
         v106 = v94;
-        v107 = v68;
+        v107 = analyticsEventManager4;
         v69 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v107 forKeys:&v106 count:1];
         v70 = [v69 mutableCopy];
 
@@ -1369,9 +1369,9 @@ LABEL_36:
         v42 = 0;
         if (v72)
         {
-          v73 = [(PLModelMigration *)self logger];
+          logger2 = [(PLModelMigration *)self logger];
 
-          if (v73)
+          if (logger2)
           {
             v145 = 0u;
             v146 = 0u;
@@ -1407,7 +1407,7 @@ LABEL_36:
             v74 = PLMigrationGetLog();
             os_log_type_enabled(v74, OS_LOG_TYPE_ERROR);
             v110 = 138543618;
-            v111 = v68;
+            v111 = analyticsEventManager4;
             v112 = 2114;
             v113 = v17;
             LODWORD(v85) = 22;
@@ -1430,7 +1430,7 @@ LABEL_36:
             if (os_log_type_enabled(v80, OS_LOG_TYPE_ERROR))
             {
               *buf = 138543618;
-              *&buf[4] = v68;
+              *&buf[4] = analyticsEventManager4;
               *&buf[12] = 2114;
               *&buf[14] = v17;
               _os_log_impl(&dword_19BF1F000, v80, OS_LOG_TYPE_ERROR, "%{public}@. Error: %{public}@", buf, 0x16u);
@@ -1445,8 +1445,8 @@ LABEL_36:
     else
     {
       v56 = MEMORY[0x1E696AEC0];
-      v57 = [v21 path];
-      v58 = [v56 stringWithFormat:@"Failed to open model for staged migration from version %@ to %@, with model path %@", v8, v12, v57];
+      path4 = [v21 path];
+      v58 = [v56 stringWithFormat:@"Failed to open model for staged migration from version %@ to %@, with model path %@", versionCopy, v12, path4];
 
       v59 = MEMORY[0x1E696ABC0];
       v104 = v94;
@@ -1463,9 +1463,9 @@ LABEL_36:
         goto LABEL_33;
       }
 
-      v62 = [(PLModelMigration *)self logger];
+      logger3 = [(PLModelMigration *)self logger];
 
-      if (!v62)
+      if (!logger3)
       {
         v79 = PLMigrationGetLog();
         if (os_log_type_enabled(v79, OS_LOG_TYPE_ERROR))
@@ -1541,10 +1541,10 @@ LABEL_39:
 
     v12 = [(PLModelMigration *)self _nextRequiredStagedMigrationVersionAfterVersion:v81];
 
-    v8 = v81;
+    versionCopy = v81;
     if (!v12)
     {
-      v8 = v81;
+      versionCopy = v81;
       v19 = v17;
       v55 = 1;
       goto LABEL_45;
@@ -1553,28 +1553,28 @@ LABEL_39:
 
   v19 = v17;
 LABEL_45:
-  a5 = v86;
+  error = errorCopy;
   v15 = v92;
 LABEL_46:
   [v15 setCompletedUnitCount:{objc_msgSend(v15, "totalUnitCount")}];
-  if (a5)
+  if (error)
   {
     v82 = v19;
-    *a5 = v19;
+    *error = v19;
   }
 
   return v55;
 }
 
-- (int64_t)migratePreSchemaMigrationWithCurrentStoreVersion:(id)a3 error:(id *)a4
+- (int64_t)migratePreSchemaMigrationWithCurrentStoreVersion:(id)version error:(id *)error
 {
   v49 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  versionCopy = version;
   v46 = 0;
   v47 = 0;
-  v6 = [(PLModelMigration *)self pathManager];
-  v7 = [v6 photosDatabasePath];
-  [PLManagedObjectContext getPersistentStoreURL:&v47 options:&v46 forDatabasePath:v7];
+  pathManager = [(PLModelMigration *)self pathManager];
+  photosDatabasePath = [pathManager photosDatabasePath];
+  [PLManagedObjectContext getPersistentStoreURL:&v47 options:&v46 forDatabasePath:photosDatabasePath];
   v8 = v47;
   v9 = v46;
 
@@ -1618,15 +1618,15 @@ LABEL_46:
   }
 
   v19 = [objc_alloc(MEMORY[0x1E695D6C0]) initWithManagedObjectModel:v14];
-  v20 = [(PLModelMigration *)self migrationUUID];
-  v21 = [v5 intValue];
-  v37 = v5;
-  v22 = [v5 intValue];
-  v23 = [(PLModelMigration *)self progress];
+  migrationUUID = [(PLModelMigration *)self migrationUUID];
+  intValue = [versionCopy intValue];
+  v37 = versionCopy;
+  intValue2 = [versionCopy intValue];
+  progress = [(PLModelMigration *)self progress];
   v40 = v13;
   v24 = 1;
-  LODWORD(v35) = v22;
-  v25 = [(PLModelMigration *)self addStoreWithCoordinator:v19 migrationUUID:v20 storeURL:v38 options:v10 description:@"Adding pre schema store" fromVersion:v21 toVersion:v35 progress:v23 progressUnitCount:1 error:&v40];
+  LODWORD(v35) = intValue2;
+  v25 = [(PLModelMigration *)self addStoreWithCoordinator:v19 migrationUUID:migrationUUID storeURL:v38 options:v10 description:@"Adding pre schema store" fromVersion:intValue toVersion:v35 progress:progress progressUnitCount:1 error:&v40];
   v26 = v40;
 
   if (v25)
@@ -1637,13 +1637,13 @@ LABEL_46:
 
     PLModelMigrationActionRegistration_PreSchema(self);
     v29 = [(NSMutableArray *)self->_actionsPreSchema count];
-    v30 = [(PLModelMigration *)self migrationContext];
-    [v30 setStore:v25];
+    migrationContext = [(PLModelMigration *)self migrationContext];
+    [migrationContext setStore:v25];
 
     v31 = self->_actionsPreSchema;
-    v32 = [(PLModelMigration *)self progress];
+    progress2 = [(PLModelMigration *)self progress];
     v39 = v26;
-    v24 = [(PLModelMigration *)self migratePostProcessingWithActions:v31 migrationActionType:0 progress:v32 progressUnitCount:10 error:&v39];
+    v24 = [(PLModelMigration *)self migratePostProcessingWithActions:v31 migrationActionType:0 progress:progress2 progressUnitCount:10 error:&v39];
     v33 = v39;
 
     if (v29)
@@ -1660,7 +1660,7 @@ LABEL_46:
   return v24;
 }
 
-- (int64_t)setupWithError:(id *)a3
+- (int64_t)setupWithError:(id *)error
 {
   v139 = *MEMORY[0x1E69E9840];
   v5 = PLMigrationGetLog();
@@ -1668,9 +1668,9 @@ LABEL_46:
 
   if (v6)
   {
-    v7 = [(PLModelMigration *)self logger];
+    logger = [(PLModelMigration *)self logger];
 
-    if (v7)
+    if (logger)
     {
       v137 = 0u;
       v138 = 0u;
@@ -1706,9 +1706,9 @@ LABEL_46:
       v108 = 0u;
       v8 = PLMigrationGetLog();
       os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
-      v9 = [(PLModelMigration *)self migrationContext];
+      migrationContext = [(PLModelMigration *)self migrationContext];
       v103 = 67109376;
-      v104 = [v9 previousStoreVersion];
+      previousStoreVersion = [migrationContext previousStoreVersion];
       v105 = 1024;
       v106 = +[PLModelMigration currentModelVersion];
       LODWORD(v92) = 14;
@@ -1728,9 +1728,9 @@ LABEL_46:
       v12 = PLMigrationGetLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
-        v13 = [(PLModelMigration *)self migrationContext];
+        migrationContext2 = [(PLModelMigration *)self migrationContext];
         *buf = 67109376;
-        *&buf[4] = [v13 previousStoreVersion];
+        *&buf[4] = [migrationContext2 previousStoreVersion];
         *&buf[8] = 1024;
         *&buf[10] = +[PLModelMigration currentModelVersion];
         _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_INFO, "Store has incompatible model version %d, will attempt migration to current version %d.", buf, 0xEu);
@@ -1739,10 +1739,10 @@ LABEL_46:
   }
 
   v14 = +[PLModelMigration currentModelVersion];
-  v15 = [(PLModelMigration *)self migrationContext];
-  v16 = [v15 previousStoreVersion];
+  migrationContext3 = [(PLModelMigration *)self migrationContext];
+  previousStoreVersion2 = [migrationContext3 previousStoreVersion];
 
-  if (v14 < v16)
+  if (v14 < previousStoreVersion2)
   {
     allowRebuild = self->_allowRebuild;
     v18 = PLMigrationGetLog();
@@ -1755,9 +1755,9 @@ LABEL_46:
         goto LABEL_25;
       }
 
-      v20 = [(PLModelMigration *)self logger];
+      logger2 = [(PLModelMigration *)self logger];
 
-      if (v20)
+      if (logger2)
       {
         v137 = 0u;
         v138 = 0u;
@@ -1793,11 +1793,11 @@ LABEL_46:
         v108 = 0u;
         v21 = PLMigrationGetLog();
         os_log_type_enabled(v21, OS_LOG_TYPE_ERROR);
-        v22 = [(PLModelMigration *)self migrationContext];
-        v23 = [v22 previousStoreVersion];
+        migrationContext4 = [(PLModelMigration *)self migrationContext];
+        previousStoreVersion3 = [migrationContext4 previousStoreVersion];
         v24 = +[PLModelMigration currentModelVersion];
         v103 = 67109376;
-        v104 = v23;
+        previousStoreVersion = previousStoreVersion3;
         v105 = 1024;
         v106 = v24;
         LODWORD(v92) = 14;
@@ -1813,11 +1813,11 @@ LABEL_46:
       v70 = PLMigrationGetLog();
       if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
       {
-        v71 = [(PLModelMigration *)self migrationContext];
-        v72 = [v71 previousStoreVersion];
+        migrationContext5 = [(PLModelMigration *)self migrationContext];
+        previousStoreVersion4 = [migrationContext5 previousStoreVersion];
         v73 = +[PLModelMigration currentModelVersion];
         *buf = 67109376;
-        *&buf[4] = v72;
+        *&buf[4] = previousStoreVersion4;
         *&buf[8] = 1024;
         *&buf[10] = v73;
         v74 = "*** MIGRATION INVERSION ***\n***\n***\n***\n*** Photos database has a model version [%d] that is newer than the Photos frameworks model version [%d].\n***\n*** Frameworks and database are out of sync.\n*** This will trigger a rebuild from file system.\n***\n***\n";
@@ -1833,9 +1833,9 @@ LABEL_46:
         goto LABEL_25;
       }
 
-      v54 = [(PLModelMigration *)self logger];
+      logger3 = [(PLModelMigration *)self logger];
 
-      if (v54)
+      if (logger3)
       {
         v137 = 0u;
         v138 = 0u;
@@ -1871,11 +1871,11 @@ LABEL_46:
         v108 = 0u;
         v55 = PLMigrationGetLog();
         os_log_type_enabled(v55, OS_LOG_TYPE_ERROR);
-        v56 = [(PLModelMigration *)self migrationContext];
-        v57 = [v56 previousStoreVersion];
+        migrationContext6 = [(PLModelMigration *)self migrationContext];
+        previousStoreVersion5 = [migrationContext6 previousStoreVersion];
         v58 = +[PLModelMigration currentModelVersion];
         v103 = 67109376;
-        v104 = v57;
+        previousStoreVersion = previousStoreVersion5;
         v105 = 1024;
         v106 = v58;
         LODWORD(v92) = 14;
@@ -1894,28 +1894,28 @@ LABEL_23:
         }
 
 LABEL_25:
-        if (a3)
+        if (error)
         {
 LABEL_26:
           v94 = *MEMORY[0x1E69BFF48];
           v96 = MEMORY[0x1E696ABC0];
           v101[0] = *MEMORY[0x1E696A368];
-          v97 = [(PLModelMigration *)self migrationContext];
-          v40 = [v97 storeURL];
-          [v40 path];
-          v41 = v98 = a3;
+          migrationContext7 = [(PLModelMigration *)self migrationContext];
+          storeURL = [migrationContext7 storeURL];
+          [storeURL path];
+          v41 = v98 = error;
           v102[0] = v41;
           v101[1] = *MEMORY[0x1E696A998];
-          v42 = [(PLModelMigration *)self migrationContext];
-          v43 = [v42 storeURL];
-          v44 = [v43 URLByDeletingLastPathComponent];
-          v45 = [v44 URLByDeletingLastPathComponent];
-          v102[1] = v45;
+          migrationContext8 = [(PLModelMigration *)self migrationContext];
+          storeURL2 = [migrationContext8 storeURL];
+          uRLByDeletingLastPathComponent = [storeURL2 URLByDeletingLastPathComponent];
+          v44URLByDeletingLastPathComponent = [uRLByDeletingLastPathComponent URLByDeletingLastPathComponent];
+          v102[1] = v44URLByDeletingLastPathComponent;
           v101[2] = *MEMORY[0x1E696A278];
           v59 = MEMORY[0x1E696AEC0];
-          v47 = [(PLModelMigration *)self migrationContext];
-          v48 = [v59 stringWithFormat:@"Database schema version %d is newer than the current schema version %d. A newer version of Photos needs to be installed.", objc_msgSend(v47, "previousStoreVersion"), +[PLModelMigration currentModelVersion](PLModelMigration, "currentModelVersion")];
-          v102[2] = v48;
+          migrationContext9 = [(PLModelMigration *)self migrationContext];
+          6006 = [v59 stringWithFormat:@"Database schema version %d is newer than the current schema version %d. A newer version of Photos needs to be installed.", objc_msgSend(migrationContext9, "previousStoreVersion"), +[PLModelMigration currentModelVersion](PLModelMigration, "currentModelVersion")];
+          v102[2] = 6006;
           v49 = 3;
           v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v102 forKeys:v101 count:3];
           v52 = v94;
@@ -1930,11 +1930,11 @@ LABEL_26:
       v70 = PLMigrationGetLog();
       if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
       {
-        v71 = [(PLModelMigration *)self migrationContext];
-        v78 = [v71 previousStoreVersion];
+        migrationContext5 = [(PLModelMigration *)self migrationContext];
+        previousStoreVersion6 = [migrationContext5 previousStoreVersion];
         v79 = +[PLModelMigration currentModelVersion];
         *buf = 67109376;
-        *&buf[4] = v78;
+        *&buf[4] = previousStoreVersion6;
         *&buf[8] = 1024;
         *&buf[10] = v79;
         v74 = "*** MIGRATION INVERSION ***\n***\n***\n***\n*** Photos database has a model version [%d] that is newer than the Photos frameworks model version [%d].\n***\n***\n";
@@ -1942,7 +1942,7 @@ LABEL_26:
       }
     }
 
-    if (a3)
+    if (error)
     {
       goto LABEL_26;
     }
@@ -1950,8 +1950,8 @@ LABEL_26:
     return 3;
   }
 
-  v30 = [(PLModelMigration *)self migrationContext];
-  v31 = [v30 previousStoreVersion] >> 1;
+  migrationContext10 = [(PLModelMigration *)self migrationContext];
+  v31 = [migrationContext10 previousStoreVersion] >> 1;
 
   if (v31 <= 0xBBA)
   {
@@ -1960,23 +1960,23 @@ LABEL_26:
 
     if (v33)
     {
-      v34 = [(PLModelMigration *)self logger];
+      logger4 = [(PLModelMigration *)self logger];
 
-      if (!v34)
+      if (!logger4)
       {
         v75 = PLMigrationGetLog();
         if (os_log_type_enabled(v75, OS_LOG_TYPE_ERROR))
         {
-          v76 = [(PLModelMigration *)self migrationContext];
-          v77 = [v76 previousStoreVersion];
+          migrationContext11 = [(PLModelMigration *)self migrationContext];
+          previousStoreVersion7 = [migrationContext11 previousStoreVersion];
           *buf = 67109376;
-          *&buf[4] = v77;
+          *&buf[4] = previousStoreVersion7;
           *&buf[8] = 1024;
           *&buf[10] = 6006;
           _os_log_impl(&dword_19BF1F000, v75, OS_LOG_TYPE_ERROR, "Cannot perform lightweight migration, store model version %d is older than oldest supported version %d", buf, 0xEu);
         }
 
-        if (!a3)
+        if (!error)
         {
           return 3;
         }
@@ -2018,10 +2018,10 @@ LABEL_26:
       v108 = 0u;
       v35 = PLMigrationGetLog();
       os_log_type_enabled(v35, OS_LOG_TYPE_ERROR);
-      v36 = [(PLModelMigration *)self migrationContext];
-      v37 = [v36 previousStoreVersion];
+      migrationContext12 = [(PLModelMigration *)self migrationContext];
+      previousStoreVersion8 = [migrationContext12 previousStoreVersion];
       v103 = 67109376;
-      v104 = v37;
+      previousStoreVersion = previousStoreVersion8;
       v105 = 1024;
       v106 = 6006;
       LODWORD(v92) = 14;
@@ -2036,7 +2036,7 @@ LABEL_26:
       }
     }
 
-    if (!a3)
+    if (!error)
     {
       return 3;
     }
@@ -2045,22 +2045,22 @@ LABEL_19:
     v93 = *MEMORY[0x1E69BFF48];
     v95 = MEMORY[0x1E696ABC0];
     v99[0] = *MEMORY[0x1E696A368];
-    v97 = [(PLModelMigration *)self migrationContext];
-    v40 = [v97 storeURL];
-    [v40 path];
-    v41 = v98 = a3;
+    migrationContext7 = [(PLModelMigration *)self migrationContext];
+    storeURL = [migrationContext7 storeURL];
+    [storeURL path];
+    v41 = v98 = error;
     v100[0] = v41;
     v99[1] = *MEMORY[0x1E696A998];
-    v42 = [(PLModelMigration *)self migrationContext];
-    v43 = [v42 storeURL];
-    v44 = [v43 URLByDeletingLastPathComponent];
-    v45 = [v44 URLByDeletingLastPathComponent];
-    v100[1] = v45;
+    migrationContext8 = [(PLModelMigration *)self migrationContext];
+    storeURL2 = [migrationContext8 storeURL];
+    uRLByDeletingLastPathComponent = [storeURL2 URLByDeletingLastPathComponent];
+    v44URLByDeletingLastPathComponent = [uRLByDeletingLastPathComponent URLByDeletingLastPathComponent];
+    v100[1] = v44URLByDeletingLastPathComponent;
     v99[2] = *MEMORY[0x1E696A578];
     v46 = MEMORY[0x1E696AEC0];
-    v47 = [(PLModelMigration *)self migrationContext];
-    v48 = [v46 stringWithFormat:@"Store version %d is unsupported for migration (older than %d).", objc_msgSend(v47, "previousStoreVersion"), 6006];
-    v100[2] = v48;
+    migrationContext9 = [(PLModelMigration *)self migrationContext];
+    6006 = [v46 stringWithFormat:@"Store version %d is unsupported for migration (older than %d).", objc_msgSend(migrationContext9, "previousStoreVersion"), 6006];
+    v100[2] = 6006;
     v49 = 3;
     v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v100 forKeys:v99 count:3];
     v52 = v93;
@@ -2074,17 +2074,17 @@ LABEL_27:
 
   if (!self->_allowRebuild)
   {
-    v66 = [(PLModelMigration *)self migrationContext];
-    if (([v66 policy] & 4) == 0)
+    migrationContext13 = [(PLModelMigration *)self migrationContext];
+    if (([migrationContext13 policy] & 4) == 0)
     {
 
       return 1;
     }
 
     v67 = MEMORY[0x1E69BF2A0];
-    v68 = [(PLModelMigration *)self pathManager];
-    v69 = [v68 libraryURL];
-    LODWORD(v67) = [v67 isSystemPhotoLibraryURL:v69];
+    pathManager = [(PLModelMigration *)self pathManager];
+    libraryURL = [pathManager libraryURL];
+    LODWORD(v67) = [v67 isSystemPhotoLibraryURL:libraryURL];
 
     if (!v67)
     {
@@ -2102,9 +2102,9 @@ LABEL_27:
 
   if (v61)
   {
-    v62 = [(PLModelMigration *)self logger];
+    logger5 = [(PLModelMigration *)self logger];
 
-    if (v62)
+    if (logger5)
     {
       v137 = 0u;
       v138 = 0u;
@@ -2166,22 +2166,22 @@ LABEL_27:
 
   v49 = 1;
   self->_didCreateSqliteErrorIndicator = 1;
-  v81 = [(PLModelMigration *)self pathManager];
-  [v81 setSqliteErrorForRebuildReason:4 allowsExit:0];
+  pathManager2 = [(PLModelMigration *)self pathManager];
+  [pathManager2 setSqliteErrorForRebuildReason:4 allowsExit:0];
 
-  v82 = [(PLModelMigration *)self pathManager];
-  v83 = [v82 sqliteErrorIndicatorFileExists];
+  pathManager3 = [(PLModelMigration *)self pathManager];
+  sqliteErrorIndicatorFileExists = [pathManager3 sqliteErrorIndicatorFileExists];
 
-  if ((v83 & 1) == 0)
+  if ((sqliteErrorIndicatorFileExists & 1) == 0)
   {
     v84 = PLMigrationGetLog();
     v85 = os_log_type_enabled(v84, OS_LOG_TYPE_ERROR);
 
     if (v85)
     {
-      v86 = [(PLModelMigration *)self logger];
+      logger6 = [(PLModelMigration *)self logger];
 
-      if (v86)
+      if (logger6)
       {
         v137 = 0u;
         v138 = 0u;
@@ -2247,17 +2247,17 @@ LABEL_27:
   return v49;
 }
 
-- (int64_t)migrateWithError:(id *)a3
+- (int64_t)migrateWithError:(id *)error
 {
   v127[1] = *MEMORY[0x1E69E9840];
   Current = CFAbsoluteTimeGetCurrent();
-  v6 = [MEMORY[0x1E69BF318] start];
+  start = [MEMORY[0x1E69BF318] start];
   v87 = 0;
   v7 = [(PLModelMigration *)self setupWithError:&v87];
   v8 = v87;
-  v9 = [(PLModelMigration *)self migrationContext];
-  v10 = [v9 store];
-  if (v10)
+  migrationContext = [(PLModelMigration *)self migrationContext];
+  store = [migrationContext store];
+  if (store)
   {
 
     if (v7 != 1)
@@ -2265,19 +2265,19 @@ LABEL_27:
       goto LABEL_13;
     }
 
-    v81 = v6;
-    v11 = [(PLModelMigration *)self analyticsEventManager];
+    v81 = start;
+    analyticsEventManager = [(PLModelMigration *)self analyticsEventManager];
     v12 = MEMORY[0x1E696AD98];
-    v13 = [(PLModelMigration *)self migrationContext];
-    v14 = [v12 numberWithUnsignedShort:{objc_msgSend(v13, "previousStoreVersion")}];
+    migrationContext2 = [(PLModelMigration *)self migrationContext];
+    v14 = [v12 numberWithUnsignedShort:{objc_msgSend(migrationContext2, "previousStoreVersion")}];
     v15 = [v14 description];
     v16 = *MEMORY[0x1E69BF6D0];
-    [v11 setPayloadValue:v15 forKey:*MEMORY[0x1E69BF6E0] onEventWithName:*MEMORY[0x1E69BF6D0]];
+    [analyticsEventManager setPayloadValue:v15 forKey:*MEMORY[0x1E69BF6E0] onEventWithName:*MEMORY[0x1E69BF6D0]];
 
-    v17 = [(PLModelMigration *)self analyticsEventManager];
+    analyticsEventManager2 = [(PLModelMigration *)self analyticsEventManager];
     v18 = [MEMORY[0x1E696AD98] numberWithInt:{+[PLModelMigration currentModelVersion](PLModelMigration, "currentModelVersion")}];
-    v19 = [v18 stringValue];
-    [v17 setPayloadValue:v19 forKey:*MEMORY[0x1E69BF730] onEventWithName:v16];
+    stringValue = [v18 stringValue];
+    [analyticsEventManager2 setPayloadValue:stringValue forKey:*MEMORY[0x1E69BF730] onEventWithName:v16];
 
     v83 = v8;
     v7 = [(PLModelMigration *)self migratePostProcessingWithProgressUnitCount:100 error:&v83];
@@ -2293,10 +2293,10 @@ LABEL_27:
       goto LABEL_13;
     }
 
-    v81 = v6;
-    v21 = [(PLModelMigration *)self migrationContext];
-    v22 = [v21 options];
-    v20 = [v22 mutableCopy];
+    v81 = start;
+    migrationContext3 = [(PLModelMigration *)self migrationContext];
+    options = [migrationContext3 options];
+    v20 = [options mutableCopy];
 
     v23 = MEMORY[0x1E695E118];
     [v20 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E695D380]];
@@ -2307,29 +2307,29 @@ LABEL_27:
     [v20 setObject:v25 forKeyedSubscript:*MEMORY[0x1E695D3D8]];
 
     v26 = MEMORY[0x1E696AD98];
-    v27 = [(PLModelMigration *)self migrationContext];
-    v28 = [v26 numberWithUnsignedShort:{objc_msgSend(v27, "previousStoreVersion")}];
+    migrationContext4 = [(PLModelMigration *)self migrationContext];
+    v28 = [v26 numberWithUnsignedShort:{objc_msgSend(migrationContext4, "previousStoreVersion")}];
 
-    v29 = [(PLModelMigration *)self analyticsEventManager];
-    v30 = [v28 stringValue];
+    analyticsEventManager3 = [(PLModelMigration *)self analyticsEventManager];
+    stringValue2 = [v28 stringValue];
     v16 = *MEMORY[0x1E69BF6D0];
-    [v29 setPayloadValue:v30 forKey:*MEMORY[0x1E69BF6E0] onEventWithName:*MEMORY[0x1E69BF6D0]];
+    [analyticsEventManager3 setPayloadValue:stringValue2 forKey:*MEMORY[0x1E69BF6E0] onEventWithName:*MEMORY[0x1E69BF6D0]];
 
-    v31 = [(PLModelMigration *)self analyticsEventManager];
+    analyticsEventManager4 = [(PLModelMigration *)self analyticsEventManager];
     v32 = [MEMORY[0x1E696AD98] numberWithInt:{+[PLModelMigration currentModelVersion](PLModelMigration, "currentModelVersion")}];
     v33 = [v32 description];
-    [v31 setPayloadValue:v33 forKey:*MEMORY[0x1E69BF730] onEventWithName:v16];
+    [analyticsEventManager4 setPayloadValue:v33 forKey:*MEMORY[0x1E69BF730] onEventWithName:v16];
 
-    v34 = [(PLModelMigration *)self analyticsEventManager];
-    [v34 startRecordingTimedEventToken];
+    analyticsEventManager5 = [(PLModelMigration *)self analyticsEventManager];
+    [analyticsEventManager5 startRecordingTimedEventToken];
     v36 = v35;
 
     v86 = v8;
     v7 = [(PLModelMigration *)self migratePreSchemaMigrationWithCurrentStoreVersion:v28 error:&v86];
     v37 = v86;
 
-    v38 = [(PLModelMigration *)self analyticsEventManager];
-    [v38 addRecordingTimedEventSnippetWithToken:*MEMORY[0x1E69BF708] forKey:v16 onEventWithName:v36];
+    analyticsEventManager6 = [(PLModelMigration *)self analyticsEventManager];
+    [analyticsEventManager6 addRecordingTimedEventSnippetWithToken:*MEMORY[0x1E69BF708] forKey:v16 onEventWithName:v36];
 
     if (v7 == 1)
     {
@@ -2355,24 +2355,24 @@ LABEL_27:
 
   if (v7 == 1)
   {
-    v40 = [(PLModelMigration *)self analyticsEventManager];
+    analyticsEventManager7 = [(PLModelMigration *)self analyticsEventManager];
     v41 = MEMORY[0x1E696AD98];
-    v42 = [(PLModelMigration *)self pathManager];
-    v43 = [v41 numberWithLongLong:{+[PLPersistentHistoryUtilities fetchApproximateChangeCountWithPathManager:error:](PLPersistentHistoryUtilities, "fetchApproximateChangeCountWithPathManager:error:", v42, 0)}];
-    [v40 setPayloadValue:v43 forKey:*MEMORY[0x1E69BF6F0] onEventWithName:v16];
+    pathManager = [(PLModelMigration *)self pathManager];
+    v43 = [v41 numberWithLongLong:{+[PLPersistentHistoryUtilities fetchApproximateChangeCountWithPathManager:error:](PLPersistentHistoryUtilities, "fetchApproximateChangeCountWithPathManager:error:", pathManager, 0)}];
+    [analyticsEventManager7 setPayloadValue:v43 forKey:*MEMORY[0x1E69BF6F0] onEventWithName:v16];
 
-    v44 = [(PLModelMigration *)self analyticsEventManager];
+    analyticsEventManager8 = [(PLModelMigration *)self analyticsEventManager];
     v45 = MEMORY[0x1E696AD98];
-    v46 = [(PLModelMigration *)self pathManager];
-    v47 = [v45 numberWithLongLong:{+[PLPersistentHistoryUtilities fetchApproximateTransactionCountWithPathManager:error:](PLPersistentHistoryUtilities, "fetchApproximateTransactionCountWithPathManager:error:", v46, 0)}];
-    [v44 setPayloadValue:v47 forKey:*MEMORY[0x1E69BF6F8] onEventWithName:v16];
+    pathManager2 = [(PLModelMigration *)self pathManager];
+    v47 = [v45 numberWithLongLong:{+[PLPersistentHistoryUtilities fetchApproximateTransactionCountWithPathManager:error:](PLPersistentHistoryUtilities, "fetchApproximateTransactionCountWithPathManager:error:", pathManager2, 0)}];
+    [analyticsEventManager8 setPayloadValue:v47 forKey:*MEMORY[0x1E69BF6F8] onEventWithName:v16];
 
     v7 = 1;
-    v6 = v81;
+    start = v81;
     goto LABEL_19;
   }
 
-  v6 = v81;
+  start = v81;
 LABEL_13:
   v48 = PLMigrationGetLog();
   v49 = os_log_type_enabled(v48, OS_LOG_TYPE_ERROR);
@@ -2382,9 +2382,9 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  v50 = [(PLModelMigration *)self logger];
+  logger = [(PLModelMigration *)self logger];
 
-  if (v50)
+  if (logger)
   {
     v125 = 0u;
     v126 = 0u;
@@ -2433,7 +2433,7 @@ LABEL_13:
     }
 
 LABEL_17:
-    if (!a3)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -2449,11 +2449,11 @@ LABEL_17:
     _os_log_impl(&dword_19BF1F000, v79, OS_LOG_TYPE_ERROR, "Failed to migrate library. Error: %@", buf, 0xCu);
   }
 
-  if (a3)
+  if (error)
   {
 LABEL_18:
     v54 = v8;
-    *a3 = v8;
+    *error = v8;
   }
 
 LABEL_19:
@@ -2468,15 +2468,15 @@ LABEL_19:
     v56 = v55;
   }
 
-  v57 = [v6 stop];
+  stop = [start stop];
   v58 = PLMigrationGetLog();
   v59 = os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT);
 
   if (v59)
   {
-    v60 = [(PLModelMigration *)self logger];
+    logger2 = [(PLModelMigration *)self logger];
 
-    if (v60)
+    if (logger2)
     {
       v125 = 0u;
       v126 = 0u;
@@ -2512,12 +2512,12 @@ LABEL_19:
       v61 = PLMigrationGetLog();
       os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT);
       v62 = PLStringFromModelMigrationActionResultShort(v7);
-      v82 = v6;
-      v63 = [v6 perfCheckLogStringWithPerfCheckInfo:v57];
-      v64 = [(PLModelMigration *)self progress];
-      v65 = [v64 completedUnitCount] * 100.0;
-      v66 = [(PLModelMigration *)self progress];
-      v67 = [v66 totalUnitCount];
+      v82 = start;
+      v63 = [start perfCheckLogStringWithPerfCheckInfo:stop];
+      progress = [(PLModelMigration *)self progress];
+      v65 = [progress completedUnitCount] * 100.0;
+      progress2 = [(PLModelMigration *)self progress];
+      totalUnitCount = [progress2 totalUnitCount];
       v88 = 138544130;
       v89 = v62;
       v90 = 2048;
@@ -2525,7 +2525,7 @@ LABEL_19:
       v92 = 2114;
       v93 = v63;
       v94 = 2048;
-      v95 = v65 / v67;
+      v95 = v65 / totalUnitCount;
       LODWORD(v80) = 42;
       v68 = _os_log_send_and_compose_impl();
 
@@ -2537,7 +2537,7 @@ LABEL_19:
         free(v68);
       }
 
-      v6 = v82;
+      start = v82;
     }
 
     else
@@ -2546,12 +2546,12 @@ LABEL_19:
       if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
       {
         v71 = PLStringFromModelMigrationActionResultShort(v7);
-        v72 = [v6 perfCheckLogStringWithPerfCheckInfo:v57];
+        v72 = [start perfCheckLogStringWithPerfCheckInfo:stop];
         [(PLModelMigration *)self progress];
-        v74 = v73 = v6;
+        v74 = v73 = start;
         v75 = [v74 completedUnitCount] * 100.0;
-        v76 = [(PLModelMigration *)self progress];
-        v77 = [v76 totalUnitCount];
+        progress3 = [(PLModelMigration *)self progress];
+        totalUnitCount2 = [progress3 totalUnitCount];
         *buf = 138544130;
         *&buf[4] = v71;
         *&buf[12] = 2048;
@@ -2559,10 +2559,10 @@ LABEL_19:
         *&buf[22] = 2114;
         *&buf[24] = v72;
         LOWORD(v97) = 2048;
-        *(&v97 + 2) = v75 / v77;
+        *(&v97 + 2) = v75 / totalUnitCount2;
         _os_log_impl(&dword_19BF1F000, v70, OS_LOG_TYPE_DEFAULT, "Completed migration - Result: %{public}@. Metrics: %.2lfs%{public}@, action progress:(%.2lf %%)", buf, 0x2Au);
 
-        v6 = v73;
+        start = v73;
       }
     }
   }
@@ -2570,14 +2570,14 @@ LABEL_19:
   return v7;
 }
 
-- (void)resetBackgroundActionClass:(Class)a3 onCondition:(BOOL)a4
+- (void)resetBackgroundActionClass:(Class)class onCondition:(BOOL)condition
 {
   v75 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (condition)
   {
-    v6 = [(PLModelMigration *)self pathManager];
+    pathManager = [(PLModelMigration *)self pathManager];
     v39 = 0;
-    v7 = [PLBackgroundModelMigration resetBackgroundActionClass:a3 pathManager:v6 error:&v39];
+    v7 = [PLBackgroundModelMigration resetBackgroundActionClass:class pathManager:pathManager error:&v39];
     v8 = v39;
 
     v9 = PLMigrationGetLog();
@@ -2588,9 +2588,9 @@ LABEL_19:
 
       if (v11)
       {
-        v12 = [(PLModelMigration *)self logger];
+        logger = [(PLModelMigration *)self logger];
 
-        if (v12)
+        if (logger)
         {
           v73 = 0u;
           v74 = 0u;
@@ -2625,7 +2625,7 @@ LABEL_19:
           memset(buf, 0, sizeof(buf));
           v13 = PLMigrationGetLog();
           os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-          v14 = NSStringFromClass(a3);
+          v14 = NSStringFromClass(class);
           v40 = 138543362;
           v41 = v14;
           LODWORD(v38) = 12;
@@ -2645,7 +2645,7 @@ LABEL_19:
           goto LABEL_22;
         }
 
-        v33 = NSStringFromClass(a3);
+        v33 = NSStringFromClass(class);
         *buf = 138543362;
         *&buf[4] = v33;
         v34 = "[ResetBackgroundAction] Successfully reset background action class: %{public}@.";
@@ -2662,9 +2662,9 @@ LABEL_19:
 
       if (v28)
       {
-        v29 = [(PLModelMigration *)self logger];
+        logger2 = [(PLModelMigration *)self logger];
 
-        if (v29)
+        if (logger2)
         {
           v73 = 0u;
           v74 = 0u;
@@ -2699,7 +2699,7 @@ LABEL_19:
           memset(buf, 0, sizeof(buf));
           v30 = PLMigrationGetLog();
           os_log_type_enabled(v30, OS_LOG_TYPE_ERROR);
-          v31 = NSStringFromClass(a3);
+          v31 = NSStringFromClass(class);
           v40 = 138543618;
           v41 = v31;
           v42 = 2114;
@@ -2729,7 +2729,7 @@ LABEL_13:
           goto LABEL_22;
         }
 
-        v33 = NSStringFromClass(a3);
+        v33 = NSStringFromClass(class);
         *buf = 138543618;
         *&buf[4] = v33;
         *&buf[12] = 2114;
@@ -2758,14 +2758,14 @@ LABEL_23:
     return;
   }
 
-  v23 = [(PLModelMigration *)self logger];
+  logger3 = [(PLModelMigration *)self logger];
 
-  if (!v23)
+  if (!logger3)
   {
     v8 = PLMigrationGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = NSStringFromClass(a3);
+      v32 = NSStringFromClass(class);
       *buf = 138543362;
       *&buf[4] = v32;
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "[ResetBackgroundAction] Skipping reset background action class: %{public}@", buf, 0xCu);
@@ -2810,7 +2810,7 @@ LABEL_22:
   memset(buf, 0, sizeof(buf));
   v24 = PLMigrationGetLog();
   os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
-  v25 = NSStringFromClass(a3);
+  v25 = NSStringFromClass(class);
   v40 = 138543362;
   v41 = v25;
   LODWORD(v38) = 12;
@@ -2825,28 +2825,28 @@ LABEL_22:
   }
 }
 
-- (void)_registerActionClass:(Class)a3 actionsContainer:(id)a4 progressPortion:(unint64_t *)a5
+- (void)_registerActionClass:(Class)class actionsContainer:(id)container progressPortion:(unint64_t *)portion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  if (!v9)
+  containerCopy = container;
+  if (!containerCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PLModelMigration.m" lineNumber:268 description:{@"Invalid parameter not satisfying: %@", @"actions"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigration.m" lineNumber:268 description:{@"Invalid parameter not satisfying: %@", @"actions"}];
   }
 
-  v10 = [a3 alloc];
-  v11 = [(PLModelMigration *)self migrationContext];
-  v12 = [(PLModelMigration *)self logger];
-  v13 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:{-[objc_class actionProgressWeight](a3, "actionProgressWeight")}];
-  v14 = [v10 initWithMigrationContext:v11 logger:v12 progress:v13];
+  v10 = [class alloc];
+  migrationContext = [(PLModelMigration *)self migrationContext];
+  logger = [(PLModelMigration *)self logger];
+  v13 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:{-[objc_class actionProgressWeight](class, "actionProgressWeight")}];
+  v14 = [v10 initWithMigrationContext:migrationContext logger:logger progress:v13];
 
-  if (a5)
+  if (portion)
   {
-    *a5 += [(objc_class *)a3 actionProgressWeight];
+    *portion += [(objc_class *)class actionProgressWeight];
   }
 
-  [v9 addObject:v14];
+  [containerCopy addObject:v14];
   v15 = PLMigrationGetLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
@@ -2858,28 +2858,28 @@ LABEL_22:
   }
 }
 
-- (void)registerPostRepairActionClass:(Class)a3 onCondition:(BOOL)a4
+- (void)registerPostRepairActionClass:(Class)class onCondition:(BOOL)condition
 {
-  v4 = a4;
+  conditionCopy = condition;
   v54 = *MEMORY[0x1E69E9840];
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0)
   {
-    if (v4)
+    if (conditionCopy)
     {
 LABEL_3:
       actionsPostRepair = self->_actionsPostRepair;
 
-      [(PLModelMigration *)self _registerActionClass:a3 actionsContainer:actionsPostRepair progressPortion:&self->_actionProgressPortionPostRepair];
+      [(PLModelMigration *)self _registerActionClass:class actionsContainer:actionsPostRepair progressPortion:&self->_actionProgressPortionPostRepair];
       return;
     }
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PLModelMigration.m" lineNumber:258 description:{@"Invalid parameter not satisfying: %@", @"[(Class)actionClass isSubclassOfClass:PLModelMigrationActionPostRepair.class]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigration.m" lineNumber:258 description:{@"Invalid parameter not satisfying: %@", @"[(Class)actionClass isSubclassOfClass:PLModelMigrationActionPostRepair.class]"}];
 
-    if (v4)
+    if (conditionCopy)
     {
       goto LABEL_3;
     }
@@ -2890,9 +2890,9 @@ LABEL_3:
 
   if (v11)
   {
-    v12 = [(PLModelMigration *)self logger];
+    logger = [(PLModelMigration *)self logger];
 
-    if (v12)
+    if (logger)
     {
       v52 = 0u;
       v53 = 0u;
@@ -2928,7 +2928,7 @@ LABEL_3:
       v23 = 0u;
       v13 = PLMigrationGetLog();
       os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-      v14 = NSStringFromClass(a3);
+      v14 = NSStringFromClass(class);
       v20 = 138543362;
       v21 = v14;
       LODWORD(v19) = 12;
@@ -2948,7 +2948,7 @@ LABEL_3:
       v17 = PLMigrationGetLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = NSStringFromClass(a3);
+        v18 = NSStringFromClass(class);
         *buf = 138543362;
         *&buf[4] = v18;
         _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEFAULT, "Skipping registering post repair action class: %{public}@", buf, 0xCu);
@@ -2957,28 +2957,28 @@ LABEL_3:
   }
 }
 
-- (void)registerPreRepairActionClass:(Class)a3 onCondition:(BOOL)a4
+- (void)registerPreRepairActionClass:(Class)class onCondition:(BOOL)condition
 {
-  v4 = a4;
+  conditionCopy = condition;
   v54 = *MEMORY[0x1E69E9840];
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0)
   {
-    if (v4)
+    if (conditionCopy)
     {
 LABEL_3:
       actionsPreRepair = self->_actionsPreRepair;
 
-      [(PLModelMigration *)self _registerActionClass:a3 actionsContainer:actionsPreRepair progressPortion:&self->_actionProgressPortionPreRepair];
+      [(PLModelMigration *)self _registerActionClass:class actionsContainer:actionsPreRepair progressPortion:&self->_actionProgressPortionPreRepair];
       return;
     }
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PLModelMigration.m" lineNumber:248 description:{@"Invalid parameter not satisfying: %@", @"[(Class)actionClass isSubclassOfClass:PLModelMigrationActionPreRepair.class]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigration.m" lineNumber:248 description:{@"Invalid parameter not satisfying: %@", @"[(Class)actionClass isSubclassOfClass:PLModelMigrationActionPreRepair.class]"}];
 
-    if (v4)
+    if (conditionCopy)
     {
       goto LABEL_3;
     }
@@ -2989,9 +2989,9 @@ LABEL_3:
 
   if (v11)
   {
-    v12 = [(PLModelMigration *)self logger];
+    logger = [(PLModelMigration *)self logger];
 
-    if (v12)
+    if (logger)
     {
       v52 = 0u;
       v53 = 0u;
@@ -3027,7 +3027,7 @@ LABEL_3:
       v23 = 0u;
       v13 = PLMigrationGetLog();
       os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-      v14 = NSStringFromClass(a3);
+      v14 = NSStringFromClass(class);
       v20 = 138543362;
       v21 = v14;
       LODWORD(v19) = 12;
@@ -3047,7 +3047,7 @@ LABEL_3:
       v17 = PLMigrationGetLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = NSStringFromClass(a3);
+        v18 = NSStringFromClass(class);
         *buf = 138543362;
         *&buf[4] = v18;
         _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEFAULT, "Skipping registering pre repair action class: %{public}@", buf, 0xCu);
@@ -3056,28 +3056,28 @@ LABEL_3:
   }
 }
 
-- (void)registerStagedActionClass:(Class)a3 onCondition:(BOOL)a4
+- (void)registerStagedActionClass:(Class)class onCondition:(BOOL)condition
 {
-  v4 = a4;
+  conditionCopy = condition;
   v54 = *MEMORY[0x1E69E9840];
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0)
   {
-    if (v4)
+    if (conditionCopy)
     {
 LABEL_3:
       actionsStaged = self->_actionsStaged;
 
-      [(PLModelMigration *)self _registerActionClass:a3 actionsContainer:actionsStaged progressPortion:0];
+      [(PLModelMigration *)self _registerActionClass:class actionsContainer:actionsStaged progressPortion:0];
       return;
     }
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PLModelMigration.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"[(Class)actionClass isSubclassOfClass:PLModelMigrationActionStaged.class]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigration.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"[(Class)actionClass isSubclassOfClass:PLModelMigrationActionStaged.class]"}];
 
-    if (v4)
+    if (conditionCopy)
     {
       goto LABEL_3;
     }
@@ -3088,9 +3088,9 @@ LABEL_3:
 
   if (v11)
   {
-    v12 = [(PLModelMigration *)self logger];
+    logger = [(PLModelMigration *)self logger];
 
-    if (v12)
+    if (logger)
     {
       v52 = 0u;
       v53 = 0u;
@@ -3126,7 +3126,7 @@ LABEL_3:
       v23 = 0u;
       v13 = PLMigrationGetLog();
       os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-      v14 = NSStringFromClass(a3);
+      v14 = NSStringFromClass(class);
       v20 = 138543362;
       v21 = v14;
       LODWORD(v19) = 12;
@@ -3146,7 +3146,7 @@ LABEL_3:
       v17 = PLMigrationGetLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = NSStringFromClass(a3);
+        v18 = NSStringFromClass(class);
         *buf = 138543362;
         *&buf[4] = v18;
         _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEFAULT, "Skipping registering staged action class: %{public}@", buf, 0xCu);
@@ -3155,28 +3155,28 @@ LABEL_3:
   }
 }
 
-- (void)registerPreSchemaActionClass:(Class)a3 onCondition:(BOOL)a4
+- (void)registerPreSchemaActionClass:(Class)class onCondition:(BOOL)condition
 {
-  v4 = a4;
+  conditionCopy = condition;
   v54 = *MEMORY[0x1E69E9840];
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0)
   {
-    if (v4)
+    if (conditionCopy)
     {
 LABEL_3:
       actionsPreSchema = self->_actionsPreSchema;
 
-      [(PLModelMigration *)self _registerActionClass:a3 actionsContainer:actionsPreSchema progressPortion:0];
+      [(PLModelMigration *)self _registerActionClass:class actionsContainer:actionsPreSchema progressPortion:0];
       return;
     }
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PLModelMigration.m" lineNumber:228 description:{@"Invalid parameter not satisfying: %@", @"[(Class)actionClass isSubclassOfClass:PLModelMigrationActionPreSchema.class]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigration.m" lineNumber:228 description:{@"Invalid parameter not satisfying: %@", @"[(Class)actionClass isSubclassOfClass:PLModelMigrationActionPreSchema.class]"}];
 
-    if (v4)
+    if (conditionCopy)
     {
       goto LABEL_3;
     }
@@ -3187,9 +3187,9 @@ LABEL_3:
 
   if (v11)
   {
-    v12 = [(PLModelMigration *)self logger];
+    logger = [(PLModelMigration *)self logger];
 
-    if (v12)
+    if (logger)
     {
       v52 = 0u;
       v53 = 0u;
@@ -3225,7 +3225,7 @@ LABEL_3:
       v23 = 0u;
       v13 = PLMigrationGetLog();
       os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-      v14 = NSStringFromClass(a3);
+      v14 = NSStringFromClass(class);
       v20 = 138543362;
       v21 = v14;
       LODWORD(v19) = 12;
@@ -3245,7 +3245,7 @@ LABEL_3:
       v17 = PLMigrationGetLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = NSStringFromClass(a3);
+        v18 = NSStringFromClass(class);
         *buf = 138543362;
         *&buf[4] = v18;
         _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEFAULT, "Skipping registering pre schema action class: %{public}@", buf, 0xCu);
@@ -3254,28 +3254,28 @@ LABEL_3:
   }
 }
 
-- (void)registerActionClass:(Class)a3 onCondition:(BOOL)a4
+- (void)registerActionClass:(Class)class onCondition:(BOOL)condition
 {
-  v4 = a4;
+  conditionCopy = condition;
   v54 = *MEMORY[0x1E69E9840];
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0)
   {
-    if (v4)
+    if (conditionCopy)
     {
 LABEL_3:
       actions = self->_actions;
 
-      [(PLModelMigration *)self _registerActionClass:a3 actionsContainer:actions progressPortion:&self->_actionProgressPortion];
+      [(PLModelMigration *)self _registerActionClass:class actionsContainer:actions progressPortion:&self->_actionProgressPortion];
       return;
     }
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PLModelMigration.m" lineNumber:219 description:{@"Invalid parameter not satisfying: %@", @"[(Class)actionClass isSubclassOfClass:PLModelMigrationAction.class]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigration.m" lineNumber:219 description:{@"Invalid parameter not satisfying: %@", @"[(Class)actionClass isSubclassOfClass:PLModelMigrationAction.class]"}];
 
-    if (v4)
+    if (conditionCopy)
     {
       goto LABEL_3;
     }
@@ -3286,9 +3286,9 @@ LABEL_3:
 
   if (v11)
   {
-    v12 = [(PLModelMigration *)self logger];
+    logger = [(PLModelMigration *)self logger];
 
-    if (v12)
+    if (logger)
     {
       v52 = 0u;
       v53 = 0u;
@@ -3324,7 +3324,7 @@ LABEL_3:
       v23 = 0u;
       v13 = PLMigrationGetLog();
       os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-      v14 = NSStringFromClass(a3);
+      v14 = NSStringFromClass(class);
       v20 = 138543362;
       v21 = v14;
       LODWORD(v19) = 12;
@@ -3344,7 +3344,7 @@ LABEL_3:
       v17 = PLMigrationGetLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = NSStringFromClass(a3);
+        v18 = NSStringFromClass(class);
         *buf = 138543362;
         *&buf[4] = v18;
         _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEFAULT, "Skipping registering action class: %{public}@", buf, 0xCu);
@@ -3365,21 +3365,21 @@ LABEL_3:
   PLModelMigrationActionRegistration_19000(self);
 }
 
-- (PLModelMigration)initWithMigrationContext:(id)a3 logger:(id)a4
+- (PLModelMigration)initWithMigrationContext:(id)context logger:(id)logger
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  contextCopy = context;
+  loggerCopy = logger;
+  if (!contextCopy)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PLModelMigration.m" lineNumber:159 description:{@"Invalid parameter not satisfying: %@", @"migrationContext"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigration.m" lineNumber:159 description:{@"Invalid parameter not satisfying: %@", @"migrationContext"}];
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"PLModelMigration.m" lineNumber:160 description:{@"Invalid parameter not satisfying: %@", @"[migrationContext isKindOfClass:PLMigrationContext.class]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLModelMigration.m" lineNumber:160 description:{@"Invalid parameter not satisfying: %@", @"[migrationContext isKindOfClass:PLMigrationContext.class]"}];
   }
 
   v31.receiver = self;
@@ -3388,15 +3388,15 @@ LABEL_3:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_logger, a4);
-    objc_storeStrong(&v11->_internalMigrationContext, a3);
+    objc_storeStrong(&v10->_logger, logger);
+    objc_storeStrong(&v11->_internalMigrationContext, context);
     v11->_performedActionKinds = 0;
     v11->_didCreateSqliteErrorIndicator = 0;
-    v11->_allowRebuild = ([v8 policy] & 2) != 0;
-    v12 = [MEMORY[0x1E696AFB0] UUID];
-    v13 = [v12 UUIDString];
+    v11->_allowRebuild = ([contextCopy policy] & 2) != 0;
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     migrationUUID = v11->_migrationUUID;
-    v11->_migrationUUID = v13;
+    v11->_migrationUUID = uUIDString;
 
     v15 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:100];
     progress = v11->_progress;

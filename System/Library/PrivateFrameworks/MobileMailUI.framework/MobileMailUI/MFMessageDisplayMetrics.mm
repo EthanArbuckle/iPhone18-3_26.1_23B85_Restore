@@ -1,18 +1,18 @@
 @interface MFMessageDisplayMetrics
-+ (MFMessageDisplayMetrics)displayMetricsWithTraitCollection:(id)a3 layoutMargins:(UIEdgeInsets)a4 safeAreaInsets:(UIEdgeInsets)a5 interfaceOrientation:(int64_t)a6;
++ (MFMessageDisplayMetrics)displayMetricsWithTraitCollection:(id)collection layoutMargins:(UIEdgeInsets)margins safeAreaInsets:(UIEdgeInsets)insets interfaceOrientation:(int64_t)orientation;
 + (double)avatarDiameter;
 - (BOOL)conversationHeaderViewShouldHideCollapsedSuperTitle;
 - (BOOL)hasCompactLayout;
 - (BOOL)hasGenerousMargins;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)prefersFlushSeparator;
 - (BOOL)prefersFlushSeparatorForLeadingEdge;
 - (BOOL)usePhoneLandscapeSymbolConfiguration;
 - (UIEdgeInsets)layoutMargins;
 - (UIEdgeInsets)safeAreaInsets;
 - (double)_calculateFooterViewButtonsAnimationOffset;
-- (double)_scaledFloatWithValue:(double)a3 fontStyle:(id)a4;
-- (double)_scaledFloatWithValue:(double)a3 fontStyle:(id)a4 maximumContentSizeCategory:(id)a5;
+- (double)_scaledFloatWithValue:(double)value fontStyle:(id)style;
+- (double)_scaledFloatWithValue:(double)value fontStyle:(id)style maximumContentSizeCategory:(id)category;
 - (double)avatarDiameterForCurrentContentSize;
 - (double)cellHeightToStartScroll;
 - (double)conversationHeaderViewCollapsedTitleTopToFirstBaseline;
@@ -22,27 +22,27 @@
 - (double)messageBottomPaddingInConversationForExpandedCell;
 - (double)messageBottomPaddingInConversationForMailActionHeader;
 - (double)recipientBaselineToFirstSeparatorInConversation;
-- (id)_cachedFontForStyle:(id)a3;
+- (id)_cachedFontForStyle:(id)style;
 - (id)description;
 - (unint64_t)hash;
-- (void)setFooterViewDisplayMetrics:(id)a3;
+- (void)setFooterViewDisplayMetrics:(id)metrics;
 @end
 
 @implementation MFMessageDisplayMetrics
 
-+ (MFMessageDisplayMetrics)displayMetricsWithTraitCollection:(id)a3 layoutMargins:(UIEdgeInsets)a4 safeAreaInsets:(UIEdgeInsets)a5 interfaceOrientation:(int64_t)a6
++ (MFMessageDisplayMetrics)displayMetricsWithTraitCollection:(id)collection layoutMargins:(UIEdgeInsets)margins safeAreaInsets:(UIEdgeInsets)insets interfaceOrientation:(int64_t)orientation
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  v11 = a4.right;
-  v12 = a4.bottom;
-  v13 = a4.left;
-  v14 = a4.top;
-  v15 = a3;
-  v16 = [v15 userInterfaceIdiom];
-  if (v16 == -1)
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  v11 = margins.right;
+  v12 = margins.bottom;
+  v13 = margins.left;
+  v14 = margins.top;
+  collectionCopy = collection;
+  userInterfaceIdiom = [collectionCopy userInterfaceIdiom];
+  if (userInterfaceIdiom == -1)
   {
     v19 = 0;
   }
@@ -50,27 +50,27 @@
   else
   {
     v17 = off_2781809C8;
-    if (v16 && [v15 horizontalSizeClass] != 1)
+    if (userInterfaceIdiom && [collectionCopy horizontalSizeClass] != 1)
     {
       v17 = off_2781809D0;
     }
 
     v18 = *v17;
     v19 = objc_alloc_init(objc_opt_class());
-    [v19 setTraitCollection:v15];
+    [v19 setTraitCollection:collectionCopy];
     [v19 setLayoutMargins:{v14, v13, v12, v11}];
     [v19 setSafeAreaInsets:{top, left, bottom, right}];
-    v20 = [ConversationFooterViewDisplayMetrics displayMetricsWithSafeAreaInsets:a6 interfaceOrientation:v15 traitCollection:top, left, bottom, right];
-    [v19 setFooterViewDisplayMetrics:v20];
+    right = [ConversationFooterViewDisplayMetrics displayMetricsWithSafeAreaInsets:orientation interfaceOrientation:collectionCopy traitCollection:top, left, bottom, right];
+    [v19 setFooterViewDisplayMetrics:right];
   }
 
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -80,10 +80,10 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = v4;
-      v8 = [(MFMessageDisplayMetrics *)self traitCollection];
-      v9 = [(MFMessageDisplayMetrics *)v7 traitCollection];
-      if ([v8 isEqual:v9])
+      v7 = equalCopy;
+      traitCollection = [(MFMessageDisplayMetrics *)self traitCollection];
+      traitCollection2 = [(MFMessageDisplayMetrics *)v7 traitCollection];
+      if ([traitCollection isEqual:traitCollection2])
       {
         [(MFMessageDisplayMetrics *)self layoutMargins];
         v11 = v10;
@@ -132,19 +132,19 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MFMessageDisplayMetrics *)self traitCollection];
-  v3 = [v2 hash];
+  traitCollection = [(MFMessageDisplayMetrics *)self traitCollection];
+  v3 = [traitCollection hash];
 
   return v3;
 }
 
 - (BOOL)hasCompactLayout
 {
-  v3 = [(MFMessageDisplayMetrics *)self traitCollection];
-  if ([v3 userInterfaceIdiom])
+  traitCollection = [(MFMessageDisplayMetrics *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom])
   {
-    v4 = [(MFMessageDisplayMetrics *)self traitCollection];
-    v5 = [v4 horizontalSizeClass] == 1;
+    traitCollection2 = [(MFMessageDisplayMetrics *)self traitCollection];
+    v5 = [traitCollection2 horizontalSizeClass] == 1;
   }
 
   else
@@ -157,10 +157,10 @@
 
 - (BOOL)hasGenerousMargins
 {
-  v2 = [(MFMessageDisplayMetrics *)self layoutMargins];
+  layoutMargins = [(MFMessageDisplayMetrics *)self layoutMargins];
   v4.n128_u64[0] = v3;
 
-  return MEMORY[0x282123C58](v2, v4);
+  return MEMORY[0x282123C58](layoutMargins, v4);
 }
 
 - (BOOL)prefersFlushSeparator
@@ -176,8 +176,8 @@
   }
 
   v4 = MEMORY[0x277D75780];
-  v5 = [(MFMessageDisplayMetrics *)self traitCollection];
-  v3 = [v4 mf_shouldUseDesktopClassNavigationBarForTraitCollection:v5];
+  traitCollection = [(MFMessageDisplayMetrics *)self traitCollection];
+  v3 = [v4 mf_shouldUseDesktopClassNavigationBarForTraitCollection:traitCollection];
 
   return v3;
 }
@@ -190,8 +190,8 @@
   }
 
   v4 = MEMORY[0x277D75780];
-  v5 = [(MFMessageDisplayMetrics *)self traitCollection];
-  v3 = [v4 mf_shouldUseDesktopClassNavigationBarForTraitCollection:v5];
+  traitCollection = [(MFMessageDisplayMetrics *)self traitCollection];
+  v3 = [v4 mf_shouldUseDesktopClassNavigationBarForTraitCollection:traitCollection];
 
   return v3;
 }
@@ -219,11 +219,11 @@
 - (double)avatarDiameterForCurrentContentSize
 {
   v20[12] = *MEMORY[0x277D85DE8];
-  v2 = [(MFMessageDisplayMetrics *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
+  traitCollection = [(MFMessageDisplayMetrics *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
   [objc_opt_class() avatarDiameter];
-  v4 = v3;
+  v4 = preferredContentSizeCategory;
   v5 = _avatarScaleForContentSize_avatarScales;
   if (!_avatarScaleForContentSize_avatarScales)
   {
@@ -306,8 +306,8 @@
 
 - (double)messageBottomPaddingInConversationForMailActionHeader
 {
-  v3 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -332,37 +332,37 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(MFMessageDisplayMetrics *)self traitCollection];
-  v6 = [v3 stringWithFormat:@"<%@: %p> traitCollection = %@", v4, self, v5];
+  traitCollection = [(MFMessageDisplayMetrics *)self traitCollection];
+  v6 = [v3 stringWithFormat:@"<%@: %p> traitCollection = %@", v4, self, traitCollection];
 
   return v6;
 }
 
-- (id)_cachedFontForStyle:(id)a3
+- (id)_cachedFontForStyle:(id)style
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CD6870] sharedFontMetricCache];
-  v5 = [v4 cachedPreferredFontForStyle:v3];
+  styleCopy = style;
+  mEMORY[0x277CD6870] = [MEMORY[0x277CD6870] sharedFontMetricCache];
+  v5 = [mEMORY[0x277CD6870] cachedPreferredFontForStyle:styleCopy];
 
   return v5;
 }
 
-- (double)_scaledFloatWithValue:(double)a3 fontStyle:(id)a4
+- (double)_scaledFloatWithValue:(double)value fontStyle:(id)style
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277CD6870] sharedFontMetricCache];
-  [v6 cachedScaledFloatWithValue:v5 fontStyle:a3];
+  styleCopy = style;
+  mEMORY[0x277CD6870] = [MEMORY[0x277CD6870] sharedFontMetricCache];
+  [mEMORY[0x277CD6870] cachedScaledFloatWithValue:styleCopy fontStyle:value];
   v8 = v7;
 
   return v8;
 }
 
-- (double)_scaledFloatWithValue:(double)a3 fontStyle:(id)a4 maximumContentSizeCategory:(id)a5
+- (double)_scaledFloatWithValue:(double)value fontStyle:(id)style maximumContentSizeCategory:(id)category
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x277CD6870] sharedFontMetricCache];
-  [v9 cachedScaledFloatWithValue:v7 fontStyle:v8 maximumContentSizeCategory:a3];
+  styleCopy = style;
+  categoryCopy = category;
+  mEMORY[0x277CD6870] = [MEMORY[0x277CD6870] sharedFontMetricCache];
+  [mEMORY[0x277CD6870] cachedScaledFloatWithValue:styleCopy fontStyle:categoryCopy maximumContentSizeCategory:value];
   v11 = v10;
 
   return v11;
@@ -388,8 +388,8 @@
 
 - (double)estimatedFooterViewHeight
 {
-  v2 = [(MFMessageDisplayMetrics *)self footerViewDisplayMetrics];
-  [v2 toolbarHeight];
+  footerViewDisplayMetrics = [(MFMessageDisplayMetrics *)self footerViewDisplayMetrics];
+  [footerViewDisplayMetrics toolbarHeight];
   v4 = v3;
 
   return v4;
@@ -397,8 +397,8 @@
 
 - (double)footerViewTopToBaseline
 {
-  v2 = [(MFMessageDisplayMetrics *)self footerViewDisplayMetrics];
-  [v2 topToBaseline];
+  footerViewDisplayMetrics = [(MFMessageDisplayMetrics *)self footerViewDisplayMetrics];
+  [footerViewDisplayMetrics topToBaseline];
   v4 = v3;
 
   return v4;
@@ -406,10 +406,10 @@
 
 - (BOOL)usePhoneLandscapeSymbolConfiguration
 {
-  v2 = [(MFMessageDisplayMetrics *)self footerViewDisplayMetrics];
-  v3 = [v2 usePhoneLandscapeSymbolConfiguration];
+  footerViewDisplayMetrics = [(MFMessageDisplayMetrics *)self footerViewDisplayMetrics];
+  usePhoneLandscapeSymbolConfiguration = [footerViewDisplayMetrics usePhoneLandscapeSymbolConfiguration];
 
-  return v3;
+  return usePhoneLandscapeSymbolConfiguration;
 }
 
 - (double)_calculateFooterViewButtonsAnimationOffset
@@ -444,23 +444,23 @@
   return v11;
 }
 
-- (void)setFooterViewDisplayMetrics:(id)a3
+- (void)setFooterViewDisplayMetrics:(id)metrics
 {
-  v5 = a3;
-  if (self->_footerViewDisplayMetrics != v5)
+  metricsCopy = metrics;
+  if (self->_footerViewDisplayMetrics != metricsCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_footerViewDisplayMetrics, a3);
+    v7 = metricsCopy;
+    objc_storeStrong(&self->_footerViewDisplayMetrics, metrics);
     [(MFMessageDisplayMetrics *)self _calculateFooterViewButtonsAnimationOffset];
     self->_footerViewButtonsAnimationOffset = v6;
-    v5 = v7;
+    metricsCopy = v7;
   }
 }
 
 - (BOOL)conversationHeaderViewShouldHideCollapsedSuperTitle
 {
-  v2 = [(MFMessageDisplayMetrics *)self footerViewDisplayMetrics];
-  [v2 toolbarHeight];
+  footerViewDisplayMetrics = [(MFMessageDisplayMetrics *)self footerViewDisplayMetrics];
+  [footerViewDisplayMetrics toolbarHeight];
   v4 = v3 < 44.0;
 
   return v4;
@@ -468,9 +468,9 @@
 
 - (double)conversationHeaderViewCollapsedTitleTopToFirstBaseline
 {
-  v2 = [(MFMessageDisplayMetrics *)self conversationHeaderViewShouldHideCollapsedSuperTitle];
+  conversationHeaderViewShouldHideCollapsedSuperTitle = [(MFMessageDisplayMetrics *)self conversationHeaderViewShouldHideCollapsedSuperTitle];
   result = 28.0;
-  if (v2)
+  if (conversationHeaderViewShouldHideCollapsedSuperTitle)
   {
     return 21.0;
   }

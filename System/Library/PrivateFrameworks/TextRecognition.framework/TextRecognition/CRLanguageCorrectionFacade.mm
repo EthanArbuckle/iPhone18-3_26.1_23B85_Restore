@@ -1,25 +1,25 @@
 @interface CRLanguageCorrectionFacade
-- (BOOL)validateProbability:(id)a3 validRangeMin:(double)a4 validRangeMax:(double)a5 options:(id)a6;
-- (CRLanguageCorrectionFacade)initWithRevision:(unint64_t)a3 localeCode:(id)a4 customWords:(id)a5 numberResultsNeeded:(int64_t)a6 options:(id)a7;
-- (id)applyLanguageCorrectionToResults:(id)a3 image:(id)a4 latticeResults:(id *)a5 progressHandler:(id)a6;
+- (BOOL)validateProbability:(id)probability validRangeMin:(double)min validRangeMax:(double)max options:(id)options;
+- (CRLanguageCorrectionFacade)initWithRevision:(unint64_t)revision localeCode:(id)code customWords:(id)words numberResultsNeeded:(int64_t)needed options:(id)options;
+- (id)applyLanguageCorrectionToResults:(id)results image:(id)image latticeResults:(id *)latticeResults progressHandler:(id)handler;
 @end
 
 @implementation CRLanguageCorrectionFacade
 
-- (CRLanguageCorrectionFacade)initWithRevision:(unint64_t)a3 localeCode:(id)a4 customWords:(id)a5 numberResultsNeeded:(int64_t)a6 options:(id)a7
+- (CRLanguageCorrectionFacade)initWithRevision:(unint64_t)revision localeCode:(id)code customWords:(id)words numberResultsNeeded:(int64_t)needed options:(id)options
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  codeCopy = code;
+  wordsCopy = words;
+  optionsCopy = options;
   v20.receiver = self;
   v20.super_class = CRLanguageCorrectionFacade;
   v15 = [(CRLanguageCorrectionFacade *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    [(CRLanguageCorrectionFacade *)v15 setOptions:v14];
-    [(CRLanguageCorrectionFacade *)v16 setNumberResultsNeeded:a6];
-    v17 = [[CRLanguageCorrection alloc] initWithRevision:a3 localeCode:v12 customWords:v13];
+    [(CRLanguageCorrectionFacade *)v15 setOptions:optionsCopy];
+    [(CRLanguageCorrectionFacade *)v16 setNumberResultsNeeded:needed];
+    v17 = [[CRLanguageCorrection alloc] initWithRevision:revision localeCode:codeCopy customWords:wordsCopy];
     [(CRLanguageCorrectionFacade *)v16 setLanguageCorrection:v17];
 
     v18 = [[CRPerformanceStatistics alloc] initWithName:@"Language Correction" measureRecentPeak:0];
@@ -29,20 +29,20 @@
   return v16;
 }
 
-- (id)applyLanguageCorrectionToResults:(id)a3 image:(id)a4 latticeResults:(id *)a5 progressHandler:(id)a6
+- (id)applyLanguageCorrectionToResults:(id)results image:(id)image latticeResults:(id *)latticeResults progressHandler:(id)handler
 {
   v50 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v25 = a4;
-  v23 = a6;
-  v21 = v10;
-  v24 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](v10, "count")}];
-  if ([(NSArray *)v10 count])
+  resultsCopy = results;
+  imageCopy = image;
+  handlerCopy = handler;
+  v21 = resultsCopy;
+  v24 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](resultsCopy, "count")}];
+  if ([(NSArray *)resultsCopy count])
   {
-    if (a5)
+    if (latticeResults)
     {
       v22 = objc_alloc_init(CRLatticeResults);
-      *a5 = v22;
+      *latticeResults = v22;
     }
 
     else
@@ -56,18 +56,18 @@
     v47[3] = __Block_byref_object_copy__2;
     v47[4] = __Block_byref_object_dispose__2;
     v47[5] = "4";
-    Segmenter::Segmenter(v48, v10, v25, 0, 0, 0, 0, 1, 0);
-    v11 = [(CRLanguageCorrectionFacade *)self numberResultsNeeded];
+    Segmenter::Segmenter(v48, resultsCopy, imageCopy, 0, 0, 0, 0, 1, 0);
+    numberResultsNeeded = [(CRLanguageCorrectionFacade *)self numberResultsNeeded];
     v46[0] = 0;
     v46[1] = v46;
-    if (v11 <= 4)
+    if (numberResultsNeeded <= 4)
     {
       v12 = 4;
     }
 
     else
     {
-      v12 = v11;
+      v12 = numberResultsNeeded;
     }
 
     v46[2] = 0x2020000000;
@@ -99,26 +99,26 @@
           }
 
           v17 = *(*(&v38 + 1) + 8 * i);
-          v18 = [(CRLanguageCorrectionFacade *)self languageCorrectionStats];
+          languageCorrectionStats = [(CRLanguageCorrectionFacade *)self languageCorrectionStats];
           v26[0] = MEMORY[0x1E69E9820];
           v26[1] = 3221225472;
           v26[2] = __100__CRLanguageCorrectionFacade_applyLanguageCorrectionToResults_image_latticeResults_progressHandler___block_invoke;
           v26[3] = &unk_1E7BC2578;
           v26[4] = v17;
           v26[5] = self;
-          v27 = v25;
+          v27 = imageCopy;
           v32 = v47;
           v33 = v46;
           v36 = v12;
           v28 = v22;
           v29 = v24;
-          v31 = v23;
+          v31 = handlerCopy;
           v34 = v42;
           v35 = v44;
           v19 = v13;
           v30 = v19;
           v37 = 0x3FE6666666666666;
-          [v18 measureBlock:v26];
+          [languageCorrectionStats measureBlock:v26];
         }
 
         v14 = [(NSArray *)v19 countByEnumeratingWithState:&v38 objects:v49 count:16];
@@ -276,16 +276,16 @@ void __100__CRLanguageCorrectionFacade_applyLanguageCorrectionToResults_image_la
   }
 }
 
-- (BOOL)validateProbability:(id)a3 validRangeMin:(double)a4 validRangeMax:(double)a5 options:(id)a6
+- (BOOL)validateProbability:(id)probability validRangeMin:(double)min validRangeMax:(double)max options:(id)options
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = [v10 objectForKey:@"CRImageReaderPrecisionThresholdKey"];
+  probabilityCopy = probability;
+  optionsCopy = options;
+  v11 = [optionsCopy objectForKey:@"CRImageReaderPrecisionThresholdKey"];
   [v11 doubleValue];
   v13 = v12;
 
-  [v9 doubleValue];
-  LOBYTE(v11) = v14 >= a4 + v13 * (a5 - a4);
+  [probabilityCopy doubleValue];
+  LOBYTE(v11) = v14 >= min + v13 * (max - min);
 
   return v11;
 }

@@ -1,52 +1,52 @@
 @interface TSCH3DChartTitleProperties
-+ (id)propertiesWithInfo:(id)a3 styleIndex:(unint64_t)a4 styleProvidingSource:(id)a5;
-- (TSCH3DChartTitleProperties)initWithInfo:(id)a3 styleIndex:(unint64_t)a4 styleProvidingSource:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)propertiesWithInfo:(id)info styleIndex:(unint64_t)index styleProvidingSource:(id)source;
+- (TSCH3DChartTitleProperties)initWithInfo:(id)info styleIndex:(unint64_t)index styleProvidingSource:(id)source;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TSCH3DChartTitleProperties
 
-+ (id)propertiesWithInfo:(id)a3 styleIndex:(unint64_t)a4 styleProvidingSource:(id)a5
++ (id)propertiesWithInfo:(id)info styleIndex:(unint64_t)index styleProvidingSource:(id)source
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a1 alloc];
-  v15 = objc_msgSend_initWithInfo_styleIndex_styleProvidingSource_(v10, v11, v12, v13, v14, v8, a4, v9);
+  infoCopy = info;
+  sourceCopy = source;
+  v10 = [self alloc];
+  v15 = objc_msgSend_initWithInfo_styleIndex_styleProvidingSource_(v10, v11, v12, v13, v14, infoCopy, index, sourceCopy);
 
   return v15;
 }
 
-- (TSCH3DChartTitleProperties)initWithInfo:(id)a3 styleIndex:(unint64_t)a4 styleProvidingSource:(id)a5
+- (TSCH3DChartTitleProperties)initWithInfo:(id)info styleIndex:(unint64_t)index styleProvidingSource:(id)source
 {
-  v9 = a3;
-  v10 = a5;
+  infoCopy = info;
+  sourceCopy = source;
   v39.receiver = self;
   v39.super_class = TSCH3DChartTitleProperties;
   v11 = [(TSCH3DChartTitleProperties *)&v39 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_info, a3);
-    v17 = objc_msgSend_paragraphStyleAtIndex_(v12->_info, v13, v14, v15, v16, a4);
+    objc_storeStrong(&v11->_info, info);
+    v17 = objc_msgSend_paragraphStyleAtIndex_(v12->_info, v13, v14, v15, v16, index);
     v18 = [TSCH3DLabelResources alloc];
     v38 = 0x200000001;
     v22 = objc_msgSend_initWithSize_(v18, v19, COERCE_DOUBLE(0x200000001), v20, v21, &v38);
     labels = v12->_labels;
     v12->_labels = v22;
 
-    objc_msgSend_setStyleProvidingSource_(v12->_labels, v24, v25, v26, v27, v10);
+    objc_msgSend_setStyleProvidingSource_(v12->_labels, v24, v25, v26, v27, sourceCopy);
     v28 = v12->_labels;
     v38 = 0;
-    objc_msgSend_setParagraphStyle_forKey_atIndex_(v28, v29, v30, v31, v32, v17, a4, &v38);
+    objc_msgSend_setParagraphStyle_forKey_atIndex_(v28, v29, v30, v31, v32, v17, index, &v38);
     v33 = v12->_labels;
     v38 = 0x100000000;
-    objc_msgSend_setParagraphStyle_forKey_atIndex_(v33, v34, COERCE_DOUBLE(0x100000000), v35, v36, v17, a4, &v38);
+    objc_msgSend_setParagraphStyle_forKey_atIndex_(v33, v34, COERCE_DOUBLE(0x100000000), v35, v36, v17, index, &v38);
   }
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v9 = v4;

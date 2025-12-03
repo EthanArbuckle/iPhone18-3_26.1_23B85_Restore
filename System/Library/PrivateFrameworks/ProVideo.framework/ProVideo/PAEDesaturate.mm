@@ -1,18 +1,18 @@
 @interface PAEDesaturate
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (PAEDesaturate)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAEDesaturate)initWithAPIManager:(id)manager;
 - (id)properties;
 @end
 
 @implementation PAEDesaturate
 
-- (PAEDesaturate)initWithAPIManager:(id)a3
+- (PAEDesaturate)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEDesaturate;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -42,7 +42,7 @@
   return v3 != 0;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   if (v9)
@@ -50,8 +50,8 @@
     v10 = v9;
     v20 = 0.0;
     v19 = 0;
-    [v9 getFloatValue:&v20 fromParm:1 atFxTime:a5->var0.var1];
-    [v10 getIntValue:&v19 fromParm:2 atFxTime:a5->var0.var1];
+    [v9 getFloatValue:&v20 fromParm:1 atFxTime:info->var0.var1];
+    [v10 getIntValue:&v19 fromParm:2 atFxTime:info->var0.var1];
     if (v19 > 5)
     {
       v13 = 1.0;
@@ -66,14 +66,14 @@
       v13 = flt_2603443A0[v19];
     }
 
-    LODWORD(v9) = [(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1];
+    LODWORD(v9) = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1];
     if (v9)
     {
-      if ([a4 imageType] == 3)
+      if ([input imageType] == 3)
       {
-        if (a4)
+        if (input)
         {
-          [a4 heliumRef];
+          [input heliumRef];
         }
 
         else
@@ -88,7 +88,7 @@
         v15 = v20;
         (*(*v14 + 96))(v14, 0, v15, 0.0, 0.0, 0.0);
         (*(*v14 + 96))(v14, 1, v11, v12, v13, 1.0);
-        [a3 setHeliumRef:&v17];
+        [output setHeliumRef:&v17];
         if (v17)
         {
           (*(*v17 + 24))(v17);
@@ -112,15 +112,15 @@
   return v9;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

@@ -1,5 +1,5 @@
 @interface DeviceInformationViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)subviewsForStackViewElement;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axLoadLabelAccessibility;
@@ -8,18 +8,18 @@
 
 @implementation DeviceInformationViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Diagnostics.DeviceInformationView" hasInstanceVariable:@"deviceIdentifierLabel" withType:"UILabel"];
-  [v3 validateClass:@"Diagnostics.DeviceInformationView" hasInstanceMethod:@"marketingNameLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Diagnostics.DeviceInformationView" hasInstanceMethod:@"descriptionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Diagnostics.DeviceInformationView" hasInstanceMethod:@"addButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Diagnostics.DeviceInformationView" hasInstanceMethod:@"ellipsisButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Diagnostics.DeviceInformationView" hasInstanceMethod:@"activityIndicator" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Diagnostics.DeviceInformationView" hasInstanceVariable:@"infoLabel" withType:"UILabel"];
-  [v3 validateClass:@"Diagnostics.DeviceInformationView" hasInstanceMethod:@"infoLabelType" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"Diagnostics.DeviceInformationView" hasInstanceMethod:@"infoLabelTapped" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Diagnostics.DeviceInformationView" hasInstanceVariable:@"deviceIdentifierLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"Diagnostics.DeviceInformationView" hasInstanceMethod:@"marketingNameLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Diagnostics.DeviceInformationView" hasInstanceMethod:@"descriptionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Diagnostics.DeviceInformationView" hasInstanceMethod:@"addButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Diagnostics.DeviceInformationView" hasInstanceMethod:@"ellipsisButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Diagnostics.DeviceInformationView" hasInstanceMethod:@"activityIndicator" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Diagnostics.DeviceInformationView" hasInstanceVariable:@"infoLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"Diagnostics.DeviceInformationView" hasInstanceMethod:@"infoLabelType" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"Diagnostics.DeviceInformationView" hasInstanceMethod:@"infoLabelTapped" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -90,9 +90,9 @@ void __80__DeviceInformationViewAccessibility__accessibilityLoadAccessibilityInf
     v7 = @"imei";
 LABEL_5:
     v8 = accessibilityLocalizedString(v7);
-    v9 = [v4 text];
+    text = [v4 text];
     v10 = __UIAXStringForVariables();
-    [v4 setAccessibilityLabel:{v10, v9, @"__AXStringForVariablesSentinel"}];
+    [v4 setAccessibilityLabel:{v10, text, @"__AXStringForVariablesSentinel"}];
 
     v11 = accessibilityLocalizedString(v6);
     [v4 setAccessibilityHint:v11];

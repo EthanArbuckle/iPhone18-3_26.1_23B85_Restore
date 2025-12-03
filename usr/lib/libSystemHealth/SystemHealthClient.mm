@@ -1,7 +1,7 @@
 @interface SystemHealthClient
 - (SystemHealthClient)init;
-- (SystemHealthClient)initWithComponentType:(unint64_t)a3;
-- (unint64_t)getComponentStatusWithError:(id *)a3;
+- (SystemHealthClient)initWithComponentType:(unint64_t)type;
+- (unint64_t)getComponentStatusWithError:(id *)error;
 @end
 
 @implementation SystemHealthClient
@@ -13,20 +13,20 @@
   return 0;
 }
 
-- (SystemHealthClient)initWithComponentType:(unint64_t)a3
+- (SystemHealthClient)initWithComponentType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = SystemHealthClient;
   result = [(SystemHealthClient *)&v5 init];
   if (result)
   {
-    result->componentType = a3;
+    result->componentType = type;
   }
 
   return result;
 }
 
-- (unint64_t)getComponentStatusWithError:(id *)a3
+- (unint64_t)getComponentStatusWithError:(id *)error
 {
   v3 = MEMORY[0x29EDB8DD0];
   v4 = *MEMORY[0x29EDB8CD0];

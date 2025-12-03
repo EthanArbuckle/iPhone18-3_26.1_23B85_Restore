@@ -1,25 +1,25 @@
 @interface HMIMotionDetection
-+ (id)firstMotionDetectionInArray:(id)a3 withMode:(unint64_t)a4;
-- (BOOL)applyEventTypeAndCheckIfSubBoundingIsStatic:(CGRect)a3 eventClass:(Class)a4 confidence:(float)a5;
++ (id)firstMotionDetectionInArray:(id)array withMode:(unint64_t)mode;
+- (BOOL)applyEventTypeAndCheckIfSubBoundingIsStatic:(CGRect)static eventClass:(Class)class confidence:(float)confidence;
 - (CGRect)boundingBox;
 - (CGSize)size;
-- (HMIMotionDetection)initWithBoundingBox:(CGRect)a3 size:(CGSize)a4 motionVectors:(id)a5 motionScore:(float)a6 motionMode:(unint64_t)a7;
-- (float)scoreForSubBoundingBox:(CGRect)a3 eventClass:(Class)a4 confidence:(float)a5;
+- (HMIMotionDetection)initWithBoundingBox:(CGRect)box size:(CGSize)size motionVectors:(id)vectors motionScore:(float)score motionMode:(unint64_t)mode;
+- (float)scoreForSubBoundingBox:(CGRect)box eventClass:(Class)class confidence:(float)confidence;
 - (id)classMotionScoreMap;
 - (id)classPaddingMap;
 @end
 
 @implementation HMIMotionDetection
 
-- (HMIMotionDetection)initWithBoundingBox:(CGRect)a3 size:(CGSize)a4 motionVectors:(id)a5 motionScore:(float)a6 motionMode:(unint64_t)a7
+- (HMIMotionDetection)initWithBoundingBox:(CGRect)box size:(CGSize)size motionVectors:(id)vectors motionScore:(float)score motionMode:(unint64_t)mode
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a3.size.height;
-  v12 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v16 = a5;
+  height = size.height;
+  width = size.width;
+  v11 = box.size.height;
+  v12 = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  vectorsCopy = vectors;
   v22.receiver = self;
   v22.super_class = HMIMotionDetection;
   v17 = [(HMIMotionDetection *)&v22 init];
@@ -32,54 +32,54 @@
     v17->_boundingBox.size.height = v11;
     v17->_size.width = width;
     v17->_size.height = height;
-    v19 = [v16 copy];
+    v19 = [vectorsCopy copy];
     motionVectors = v18->_motionVectors;
     v18->_motionVectors = v19;
 
-    v18->_motionScore = a6;
-    v18->_motionMode = a7;
+    v18->_motionScore = score;
+    v18->_motionMode = mode;
   }
 
   return v18;
 }
 
-+ (id)firstMotionDetectionInArray:(id)a3 withMode:(unint64_t)a4
++ (id)firstMotionDetectionInArray:(id)array withMode:(unint64_t)mode
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__HMIMotionDetection_firstMotionDetectionInArray_withMode___block_invoke;
   v6[3] = &__block_descriptor_40_e28_B16__0__HMIMotionDetection_8l;
-  v6[4] = a4;
-  v4 = [a3 na_firstObjectPassingTest:v6];
+  v6[4] = mode;
+  v4 = [array na_firstObjectPassingTest:v6];
 
   return v4;
 }
 
-- (float)scoreForSubBoundingBox:(CGRect)a3 eventClass:(Class)a4 confidence:(float)a5
+- (float)scoreForSubBoundingBox:(CGRect)box eventClass:(Class)class confidence:(float)confidence
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
   v11 = 0;
   v12 = 0.0;
   while (1)
   {
-    v13 = [(HMIMotionDetection *)self motionVectors];
-    v14 = [v13 count];
+    motionVectors = [(HMIMotionDetection *)self motionVectors];
+    v14 = [motionVectors count];
 
     if (v14 <= v11)
     {
       break;
     }
 
-    v15 = [(HMIMotionDetection *)self motionVectors];
-    v16 = [v15 objectAtIndexedSubscript:v11];
+    motionVectors2 = [(HMIMotionDetection *)self motionVectors];
+    v16 = [motionVectors2 objectAtIndexedSubscript:v11];
 
     [v16 target];
     v18 = v17;
     v20 = v19;
-    v21 = [v16 eventClass] != a4 && objc_msgSend(v16, "eventClass") != 0;
+    v21 = [v16 eventClass] != class && objc_msgSend(v16, "eventClass") != 0;
     v27.origin.x = x;
     v27.origin.y = y;
     v27.size.width = width;
@@ -91,10 +91,10 @@
       [v16 distance];
       v23 = sqrt(v22) + v12;
       v12 = v23;
-      *&v23 = a5;
-      if (a5 > 0.6)
+      *&v23 = confidence;
+      if (confidence > 0.6)
       {
-        [v16 setEventClass:{a4, v23}];
+        [v16 setEventClass:{class, v23}];
       }
     }
 
@@ -104,19 +104,19 @@
   return v12 / (height * width + 0.00000011920929);
 }
 
-- (BOOL)applyEventTypeAndCheckIfSubBoundingIsStatic:(CGRect)a3 eventClass:(Class)a4 confidence:(float)a5
+- (BOOL)applyEventTypeAndCheckIfSubBoundingIsStatic:(CGRect)static eventClass:(Class)class confidence:(float)confidence
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = [(HMIMotionDetection *)self classMotionScoreMap];
-  v13 = [(HMIMotionDetection *)self classPaddingMap];
-  v14 = [v13 objectForKeyedSubscript:a4];
+  height = static.size.height;
+  width = static.size.width;
+  y = static.origin.y;
+  x = static.origin.x;
+  classMotionScoreMap = [(HMIMotionDetection *)self classMotionScoreMap];
+  classPaddingMap = [(HMIMotionDetection *)self classPaddingMap];
+  v14 = [classPaddingMap objectForKeyedSubscript:class];
   [v14 floatValue];
   v16 = v15;
 
-  v17 = [v12 objectForKeyedSubscript:a4];
+  v17 = [classMotionScoreMap objectForKeyedSubscript:class];
   [v17 floatValue];
   v19 = v18;
 
@@ -126,13 +126,13 @@
   v25 = v24;
   v27 = v26;
   v29 = v28;
-  if (objc_opt_class() == a4)
+  if (objc_opt_class() == class)
   {
-    a4 = objc_opt_class();
+    class = objc_opt_class();
   }
 
-  *&v30 = a5;
-  [(HMIMotionDetection *)self scoreForSubBoundingBox:a4 eventClass:v23 confidence:v25, v27, v29, v30];
+  *&v30 = confidence;
+  [(HMIMotionDetection *)self scoreForSubBoundingBox:class eventClass:v23 confidence:v25, v27, v29, v30];
   v32 = v31 < v19;
 
   return v32;

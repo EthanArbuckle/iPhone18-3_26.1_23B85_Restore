@@ -19,9 +19,9 @@
 {
   [-[CLRoutineMonitor universe](self "universe")];
   [-[NSXPCConnection _unboostingRemoteObjectProxy](-[CLRoutineMonitor connection](self "connection")];
-  v3 = [(CLRoutineMonitor *)self inertialSamples];
+  inertialSamples = [(CLRoutineMonitor *)self inertialSamples];
 
-  [(NSMutableArray *)v3 removeAllObjects];
+  [(NSMutableArray *)inertialSamples removeAllObjects];
 }
 
 - (void)trySendLocations

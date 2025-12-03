@@ -1,6 +1,6 @@
 @interface PXCuratedLibraryChapterHeaderLayoutSpec
 - (CGSize)contentInset;
-- (PXCuratedLibraryChapterHeaderLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4;
+- (PXCuratedLibraryChapterHeaderLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options;
 @end
 
 @implementation PXCuratedLibraryChapterHeaderLayoutSpec
@@ -14,13 +14,13 @@
   return result;
 }
 
-- (PXCuratedLibraryChapterHeaderLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4
+- (PXCuratedLibraryChapterHeaderLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options
 {
   v10 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  collectionCopy = collection;
   v9.receiver = self;
   v9.super_class = PXCuratedLibraryChapterHeaderLayoutSpec;
-  v7 = [(PXCuratedLibraryChapterHeaderLayoutSpec *)&v9 initWithExtendedTraitCollection:v6 options:a4];
+  v7 = [(PXCuratedLibraryChapterHeaderLayoutSpec *)&v9 initWithExtendedTraitCollection:collectionCopy options:options];
   if (v7)
   {
     +[PXCuratedLibrarySettings sharedInstance];
@@ -28,12 +28,12 @@
     if ([(PXCuratedLibraryChapterHeaderLayoutSpec *)v7 sizeClass]== 1)
     {
       [(PXCuratedLibraryChapterHeaderLayoutSpec *)v7 layoutOrientation];
-      [v6 curatedLibraryLayoutStyle];
+      [collectionCopy curatedLibraryLayoutStyle];
     }
 
     else
     {
-      [v6 curatedLibraryLayoutStyle];
+      [collectionCopy curatedLibraryLayoutStyle];
     }
 
     [(PXCuratedLibraryChapterHeaderLayoutSpec *)v7 contentSizeCategory];

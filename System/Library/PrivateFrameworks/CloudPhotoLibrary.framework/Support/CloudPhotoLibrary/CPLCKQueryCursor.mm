@@ -1,25 +1,25 @@
 @interface CPLCKQueryCursor
-- (CPLCKQueryCursor)initWithCoder:(id)a3;
-- (CPLCKQueryCursor)initWithCursorData:(id)a3;
-- (CPLCKQueryCursor)initWithQueryCursor:(id)a3 additionalInfo:(id)a4;
+- (CPLCKQueryCursor)initWithCoder:(id)coder;
+- (CPLCKQueryCursor)initWithCursorData:(id)data;
+- (CPLCKQueryCursor)initWithQueryCursor:(id)cursor additionalInfo:(id)info;
 - (NSData)cursorData;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPLCKQueryCursor
 
-- (CPLCKQueryCursor)initWithQueryCursor:(id)a3 additionalInfo:(id)a4
+- (CPLCKQueryCursor)initWithQueryCursor:(id)cursor additionalInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
+  cursorCopy = cursor;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = CPLCKQueryCursor;
   v9 = [(CPLCKQueryCursor *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queryCursor, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_queryCursor, cursor);
+    v11 = [infoCopy copy];
     additionalInfo = v10->_additionalInfo;
     v10->_additionalInfo = v11;
   }
@@ -27,15 +27,15 @@
   return v10;
 }
 
-- (CPLCKQueryCursor)initWithCursorData:(id)a3
+- (CPLCKQueryCursor)initWithCursorData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   if (qword_1002C50E8 != -1)
   {
     sub_100199AD8();
   }
 
-  v6 = [NSKeyedUnarchiver cpl_safeUnarchiveObjectWithData:v5 classes:qword_1002C50E0];
+  v6 = [NSKeyedUnarchiver cpl_safeUnarchiveObjectWithData:dataCopy classes:qword_1002C50E0];
   if (v6)
   {
     objc_opt_class();
@@ -80,32 +80,32 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   queryCursor = self->_queryCursor;
-  v5 = a3;
-  [v5 encodeObject:queryCursor forKey:@"queryCursor"];
-  [v5 encodeObject:self->_additionalInfo forKey:@"additionalInfo"];
+  coderCopy = coder;
+  [coderCopy encodeObject:queryCursor forKey:@"queryCursor"];
+  [coderCopy encodeObject:self->_additionalInfo forKey:@"additionalInfo"];
 }
 
-- (CPLCKQueryCursor)initWithCoder:(id)a3
+- (CPLCKQueryCursor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"queryCursor"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"additionalInfo"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"queryCursor"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"additionalInfo"];
 
   if (v5)
   {
     self = [(CPLCKQueryCursor *)self initWithQueryCursor:v5 additionalInfo:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

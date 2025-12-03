@@ -1,14 +1,14 @@
 @interface HSPCSetupConfirmationNetworkRouterResidentRequiredViewController
 - (HFSetupPairingPopupDelegate)popupDelegate;
-- (HSPCSetupConfirmationNetworkRouterResidentRequiredViewController)initWithPopupDelegate:(id)a3 setupAccessoryDescription:(id)a4;
+- (HSPCSetupConfirmationNetworkRouterResidentRequiredViewController)initWithPopupDelegate:(id)delegate setupAccessoryDescription:(id)description;
 @end
 
 @implementation HSPCSetupConfirmationNetworkRouterResidentRequiredViewController
 
-- (HSPCSetupConfirmationNetworkRouterResidentRequiredViewController)initWithPopupDelegate:(id)a3 setupAccessoryDescription:(id)a4
+- (HSPCSetupConfirmationNetworkRouterResidentRequiredViewController)initWithPopupDelegate:(id)delegate setupAccessoryDescription:(id)description
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  descriptionCopy = description;
   v8 = sub_100063A44(@"HSSetupConfirmationNetworkRouterResidentRequiredViewControllerTitle");
   v9 = HFLocalizedWiFiStringKeyForKey();
   v10 = sub_100063A44(v9);
@@ -20,8 +20,8 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_popupDelegate, v6);
-    objc_storeStrong(&v13->_setupAccessoryDescription, a4);
+    objc_storeWeak(&v12->_popupDelegate, delegateCopy);
+    objc_storeStrong(&v13->_setupAccessoryDescription, description);
     v14 = HULocalizedString();
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;

@@ -1,26 +1,26 @@
 @interface _CNObservableTakeUntilSignalObserver
 - (NSString)description;
-- (_CNObservableTakeUntilSignalObserver)initWithObserver:(id)a3 delegate:(id)a4;
+- (_CNObservableTakeUntilSignalObserver)initWithObserver:(id)observer delegate:(id)delegate;
 - (_CNObservableTakeUntilSignalObserverDelegate)delegate;
 - (void)observerDidComplete;
-- (void)observerDidFailWithError:(id)a3;
-- (void)observerDidReceiveResult:(id)a3;
+- (void)observerDidFailWithError:(id)error;
+- (void)observerDidReceiveResult:(id)result;
 @end
 
 @implementation _CNObservableTakeUntilSignalObserver
 
-- (_CNObservableTakeUntilSignalObserver)initWithObserver:(id)a3 delegate:(id)a4
+- (_CNObservableTakeUntilSignalObserver)initWithObserver:(id)observer delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  observerCopy = observer;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = _CNObservableTakeUntilSignalObserver;
   v9 = [(_CNObservableTakeUntilSignalObserver *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_observer, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_observer, observer);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v11 = v10;
   }
 
@@ -30,36 +30,36 @@
 - (NSString)description
 {
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
-  v4 = [(_CNObservableTakeUntilSignalObserver *)self observer];
-  v5 = [v3 appendName:@"observer" object:v4];
+  observer = [(_CNObservableTakeUntilSignalObserver *)self observer];
+  v5 = [v3 appendName:@"observer" object:observer];
 
-  v6 = [(_CNObservableTakeUntilSignalObserver *)self delegate];
-  v7 = [v3 appendName:@"delegate" object:v6];
+  delegate = [(_CNObservableTakeUntilSignalObserver *)self delegate];
+  v7 = [v3 appendName:@"delegate" object:delegate];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (void)observerDidReceiveResult:(id)a3
+- (void)observerDidReceiveResult:(id)result
 {
-  v5 = [(_CNObservableTakeUntilSignalObserver *)self delegate];
-  v4 = [(_CNObservableTakeUntilSignalObserver *)self observer];
-  [v5 signalDidGenerateEventWithObserver:v4];
+  delegate = [(_CNObservableTakeUntilSignalObserver *)self delegate];
+  observer = [(_CNObservableTakeUntilSignalObserver *)self observer];
+  [delegate signalDidGenerateEventWithObserver:observer];
 }
 
 - (void)observerDidComplete
 {
-  v4 = [(_CNObservableTakeUntilSignalObserver *)self delegate];
-  v3 = [(_CNObservableTakeUntilSignalObserver *)self observer];
-  [v4 signalDidGenerateEventWithObserver:v3];
+  delegate = [(_CNObservableTakeUntilSignalObserver *)self delegate];
+  observer = [(_CNObservableTakeUntilSignalObserver *)self observer];
+  [delegate signalDidGenerateEventWithObserver:observer];
 }
 
-- (void)observerDidFailWithError:(id)a3
+- (void)observerDidFailWithError:(id)error
 {
-  v5 = [(_CNObservableTakeUntilSignalObserver *)self delegate];
-  v4 = [(_CNObservableTakeUntilSignalObserver *)self observer];
-  [v5 signalDidGenerateEventWithObserver:v4];
+  delegate = [(_CNObservableTakeUntilSignalObserver *)self delegate];
+  observer = [(_CNObservableTakeUntilSignalObserver *)self observer];
+  [delegate signalDidGenerateEventWithObserver:observer];
 }
 
 - (_CNObservableTakeUntilSignalObserverDelegate)delegate

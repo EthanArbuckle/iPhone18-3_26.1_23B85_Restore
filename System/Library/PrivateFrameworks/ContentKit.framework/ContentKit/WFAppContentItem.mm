@@ -1,17 +1,17 @@
 @interface WFAppContentItem
 + (id)contentCategories;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 + (id)propertyBuilders;
 + (id)stringConversionBehavior;
-+ (void)runQuery:(id)a3 withItems:(id)a4 permissionRequestor:(id)a5 completionHandler:(id)a6;
++ (void)runQuery:(id)query withItems:(id)items permissionRequestor:(id)requestor completionHandler:(id)handler;
 - (LNValue)intentApplication;
 - (NSString)wfName;
 - (WFApp)app;
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5;
-- (id)generateObjectRepresentationsForClass:(Class)a3 options:(id)a4 error:(id *)a5;
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error;
+- (id)generateObjectRepresentationsForClass:(Class)class options:(id)options error:(id *)error;
 - (id)windows;
 @end
 
@@ -21,8 +21,8 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v2 = [(WFAppContentItem *)self app];
-  v3 = [v2 bundleIdentifier];
-  v7[0] = v3;
+  bundleIdentifier = [v2 bundleIdentifier];
+  v7[0] = bundleIdentifier;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
   v5 = [WFWindow allWindowsForBundleIdentifiers:v4];
 
@@ -39,33 +39,33 @@
 - (NSString)wfName
 {
   v2 = [(WFAppContentItem *)self app];
-  v3 = [v2 localizedName];
+  localizedName = [v2 localizedName];
 
-  return v3;
+  return localizedName;
 }
 
-- (id)generateObjectRepresentationsForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationsForClass:(Class)class options:(id)options error:(id *)error
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
-    v8 = [(WFAppContentItem *)self windows];
-    v7 = [WFObjectRepresentation objects:v8];
+    windows = [(WFAppContentItem *)self windows];
+    v7 = [WFObjectRepresentation objects:windows];
   }
 
   else
   {
-    if (objc_opt_class() != a3)
+    if (objc_opt_class() != class)
     {
-      if (objc_opt_class() == a3)
+      if (objc_opt_class() == class)
       {
         v11 = [(WFAppContentItem *)self app];
-        v12 = [v11 localizedName];
-        if (v12)
+        localizedName = [v11 localizedName];
+        if (localizedName)
         {
           v13 = [(WFAppContentItem *)self app];
-          v14 = [v13 localizedName];
-          v16 = v14;
+          localizedName2 = [v13 localizedName];
+          v16 = localizedName2;
           v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
           v7 = [WFObjectRepresentation objects:v15];
         }
@@ -84,8 +84,8 @@
       goto LABEL_8;
     }
 
-    v8 = [(WFAppContentItem *)self intentApplication];
-    v17[0] = v8;
+    windows = [(WFAppContentItem *)self intentApplication];
+    v17[0] = windows;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
     v7 = [WFObjectRepresentation objects:v9];
   }
@@ -95,17 +95,17 @@ LABEL_8:
   return v7;
 }
 
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
-    v8 = [(WFAppContentItem *)self app];
-    v9 = [v8 localizedName];
-    if (v9)
+    intentApplication = [(WFAppContentItem *)self app];
+    localizedName = [intentApplication localizedName];
+    if (localizedName)
     {
       v10 = [(WFAppContentItem *)self app];
-      v11 = [v10 localizedName];
-      v7 = [WFObjectRepresentation object:v11];
+      localizedName2 = [v10 localizedName];
+      v7 = [WFObjectRepresentation object:localizedName2];
     }
 
     else
@@ -116,14 +116,14 @@ LABEL_8:
 
   else
   {
-    if (objc_opt_class() != a3)
+    if (objc_opt_class() != class)
     {
       v7 = 0;
       goto LABEL_10;
     }
 
-    v8 = [(WFAppContentItem *)self intentApplication];
-    v7 = [WFObjectRepresentation object:v8];
+    intentApplication = [(WFAppContentItem *)self intentApplication];
+    v7 = [WFObjectRepresentation object:intentApplication];
   }
 
 LABEL_10:
@@ -131,20 +131,20 @@ LABEL_10:
   return v7;
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"apps-type-description", @"Apps");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"App", @"App");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -179,28 +179,28 @@ LABEL_10:
   return v4;
 }
 
-+ (void)runQuery:(id)a3 withItems:(id)a4 permissionRequestor:(id)a5 completionHandler:(id)a6
++ (void)runQuery:(id)query withItems:(id)items permissionRequestor:(id)requestor completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (![v11 count])
+  queryCopy = query;
+  itemsCopy = items;
+  requestorCopy = requestor;
+  handlerCopy = handler;
+  if (![itemsCopy count])
   {
     v14 = +[WFApp allApps];
     v15 = [v14 if_map:&__block_literal_global_7779];
 
-    v11 = v15;
+    itemsCopy = v15;
   }
 
-  v16.receiver = a1;
+  v16.receiver = self;
   v16.super_class = &OBJC_METACLASS___WFAppContentItem;
-  objc_msgSendSuper2(&v16, sel_runQuery_withItems_permissionRequestor_completionHandler_, v10, v11, v12, v13);
+  objc_msgSendSuper2(&v16, sel_runQuery_withItems_permissionRequestor_completionHandler_, queryCopy, itemsCopy, requestorCopy, handlerCopy);
 }
 
 + (id)stringConversionBehavior
 {
-  v2 = [a1 propertyForName:@"Name"];
+  v2 = [self propertyForName:@"Name"];
   v3 = [WFContentItemStringConversionBehavior accessingProperty:v2];
 
   return v3;
@@ -259,9 +259,9 @@ LABEL_10:
 {
   v3 = objc_alloc(MEMORY[0x277D23950]);
   v4 = [(WFAppContentItem *)self app];
-  v5 = [v4 bundleIdentifier];
-  v6 = [MEMORY[0x277D23870] applicationValueType];
-  v7 = [v3 initWithValue:v5 valueType:v6];
+  bundleIdentifier = [v4 bundleIdentifier];
+  applicationValueType = [MEMORY[0x277D23870] applicationValueType];
+  v7 = [v3 initWithValue:bundleIdentifier valueType:applicationValueType];
 
   return v7;
 }

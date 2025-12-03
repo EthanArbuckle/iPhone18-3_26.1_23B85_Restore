@@ -1,25 +1,25 @@
 @interface PCPWorkoutCluster
-- (BOOL)isEqual:(id)a3;
-- (PCPWorkoutCluster)initWithCluster:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PCPWorkoutCluster)initWithCluster:(id)cluster;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addEmbeddingIdentifiers:(id)a3;
-- (void)addEmbeddingIdentifiersWithPhenotype:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mapPhenotypeData:(id)a3 toCluster:(id)a4;
-- (void)mapTimeProperties:(id)a3 toPhenotype:(id)a4;
-- (void)mergeFrom:(id)a3;
-- (void)setHasStartTimeCFAbsolute:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addEmbeddingIdentifiers:(id)identifiers;
+- (void)addEmbeddingIdentifiersWithPhenotype:(id)phenotype;
+- (void)copyTo:(id)to;
+- (void)mapPhenotypeData:(id)data toCluster:(id)cluster;
+- (void)mapTimeProperties:(id)properties toPhenotype:(id)phenotype;
+- (void)mergeFrom:(id)from;
+- (void)setHasStartTimeCFAbsolute:(BOOL)absolute;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PCPWorkoutCluster
 
-- (void)setHasStartTimeCFAbsolute:(BOOL)a3
+- (void)setHasStartTimeCFAbsolute:(BOOL)absolute
 {
-  if (a3)
+  if (absolute)
   {
     v3 = 2;
   }
@@ -32,40 +32,40 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addEmbeddingIdentifiersWithPhenotype:(id)a3
+- (void)addEmbeddingIdentifiersWithPhenotype:(id)phenotype
 {
-  v4 = a3;
+  phenotypeCopy = phenotype;
   embeddingIdentifiersWithPhenotypes = self->_embeddingIdentifiersWithPhenotypes;
-  v8 = v4;
+  v8 = phenotypeCopy;
   if (!embeddingIdentifiersWithPhenotypes)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_embeddingIdentifiersWithPhenotypes;
     self->_embeddingIdentifiersWithPhenotypes = v6;
 
-    v4 = v8;
+    phenotypeCopy = v8;
     embeddingIdentifiersWithPhenotypes = self->_embeddingIdentifiersWithPhenotypes;
   }
 
-  [(NSMutableArray *)embeddingIdentifiersWithPhenotypes addObject:v4];
+  [(NSMutableArray *)embeddingIdentifiersWithPhenotypes addObject:phenotypeCopy];
 }
 
-- (void)addEmbeddingIdentifiers:(id)a3
+- (void)addEmbeddingIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   embeddingIdentifiers = self->_embeddingIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!embeddingIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_embeddingIdentifiers;
     self->_embeddingIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     embeddingIdentifiers = self->_embeddingIdentifiers;
   }
 
-  [(NSMutableArray *)embeddingIdentifiers addObject:v4];
+  [(NSMutableArray *)embeddingIdentifiers addObject:identifiersCopy];
 }
 
 - (id)description
@@ -74,20 +74,20 @@
   v8.receiver = self;
   v8.super_class = PCPWorkoutCluster;
   v4 = [(PCPWorkoutCluster *)&v8 description];
-  v5 = [(PCPWorkoutCluster *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PCPWorkoutCluster *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   has = self->_has;
@@ -120,8 +120,8 @@
   clusterPhenotype = self->_clusterPhenotype;
   if (clusterPhenotype)
   {
-    v12 = [(PCPClusterPhenotype *)clusterPhenotype dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"clusterPhenotype"];
+    dictionaryRepresentation = [(PCPClusterPhenotype *)clusterPhenotype dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"clusterPhenotype"];
   }
 
   dominantSourceBundleIdentifier = self->_dominantSourceBundleIdentifier;
@@ -133,10 +133,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
@@ -227,37 +227,37 @@
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v15 = v4;
+  toCopy = to;
+  v15 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v15;
+    [toCopy setIdentifier:?];
+    toCopy = v15;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = *&self->_startTimeCFAbsolute;
-    *(v4 + 64) |= 2u;
+    *(toCopy + 2) = *&self->_startTimeCFAbsolute;
+    *(toCopy + 64) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_endTimeCFAbsolute;
-    *(v4 + 64) |= 1u;
+    *(toCopy + 1) = *&self->_endTimeCFAbsolute;
+    *(toCopy + 64) |= 1u;
   }
 
   if ([(PCPWorkoutCluster *)self embeddingIdentifiersWithPhenotypesCount])
   {
     [v15 clearEmbeddingIdentifiersWithPhenotypes];
-    v6 = [(PCPWorkoutCluster *)self embeddingIdentifiersWithPhenotypesCount];
-    if (v6)
+    embeddingIdentifiersWithPhenotypesCount = [(PCPWorkoutCluster *)self embeddingIdentifiersWithPhenotypesCount];
+    if (embeddingIdentifiersWithPhenotypesCount)
     {
-      v7 = v6;
+      v7 = embeddingIdentifiersWithPhenotypesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(PCPWorkoutCluster *)self embeddingIdentifiersWithPhenotypeAtIndex:i];
@@ -269,10 +269,10 @@
   if ([(PCPWorkoutCluster *)self embeddingIdentifiersCount])
   {
     [v15 clearEmbeddingIdentifiers];
-    v10 = [(PCPWorkoutCluster *)self embeddingIdentifiersCount];
-    if (v10)
+    embeddingIdentifiersCount = [(PCPWorkoutCluster *)self embeddingIdentifiersCount];
+    if (embeddingIdentifiersCount)
     {
-      v11 = v10;
+      v11 = embeddingIdentifiersCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(PCPWorkoutCluster *)self embeddingIdentifiersAtIndex:j];
@@ -294,11 +294,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 56);
   *(v5 + 56) = v6;
 
@@ -335,7 +335,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v31 + 1) + 8 * i) copyWithZone:a3];
+        v14 = [*(*(&v31 + 1) + 8 * i) copyWithZone:zone];
         [v5 addEmbeddingIdentifiersWithPhenotype:v14];
       }
 
@@ -364,7 +364,7 @@
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v27 + 1) + 8 * j) copyWithZone:{a3, v27}];
+        v20 = [*(*(&v27 + 1) + 8 * j) copyWithZone:{zone, v27}];
         [v5 addEmbeddingIdentifiers:v20];
       }
 
@@ -374,11 +374,11 @@
     while (v17);
   }
 
-  v21 = [(PCPClusterPhenotype *)self->_clusterPhenotype copyWithZone:a3];
+  v21 = [(PCPClusterPhenotype *)self->_clusterPhenotype copyWithZone:zone];
   v22 = *(v5 + 24);
   *(v5 + 24) = v21;
 
-  v23 = [(NSString *)self->_dominantSourceBundleIdentifier copyWithZone:a3];
+  v23 = [(NSString *)self->_dominantSourceBundleIdentifier copyWithZone:zone];
   v24 = *(v5 + 32);
   *(v5 + 32) = v23;
 
@@ -386,16 +386,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 7))
+  if (identifier | *(equalCopy + 7))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -403,16 +403,16 @@
     }
   }
 
-  v6 = *(v4 + 64);
+  v6 = *(equalCopy + 64);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_startTimeCFAbsolute != *(v4 + 2))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_startTimeCFAbsolute != *(equalCopy + 2))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 64) & 2) != 0)
+  else if ((*(equalCopy + 64) & 2) != 0)
   {
 LABEL_22:
     v11 = 0;
@@ -421,25 +421,25 @@ LABEL_22:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_endTimeCFAbsolute != *(v4 + 1))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_endTimeCFAbsolute != *(equalCopy + 1))
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_22;
   }
 
   embeddingIdentifiersWithPhenotypes = self->_embeddingIdentifiersWithPhenotypes;
-  if (embeddingIdentifiersWithPhenotypes | *(v4 + 6) && ![(NSMutableArray *)embeddingIdentifiersWithPhenotypes isEqual:?])
+  if (embeddingIdentifiersWithPhenotypes | *(equalCopy + 6) && ![(NSMutableArray *)embeddingIdentifiersWithPhenotypes isEqual:?])
   {
     goto LABEL_22;
   }
 
   embeddingIdentifiers = self->_embeddingIdentifiers;
-  if (embeddingIdentifiers | *(v4 + 5))
+  if (embeddingIdentifiers | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)embeddingIdentifiers isEqual:?])
     {
@@ -448,7 +448,7 @@ LABEL_22:
   }
 
   clusterPhenotype = self->_clusterPhenotype;
-  if (clusterPhenotype | *(v4 + 3))
+  if (clusterPhenotype | *(equalCopy + 3))
   {
     if (![(PCPClusterPhenotype *)clusterPhenotype isEqual:?])
     {
@@ -457,7 +457,7 @@ LABEL_22:
   }
 
   dominantSourceBundleIdentifier = self->_dominantSourceBundleIdentifier;
-  if (dominantSourceBundleIdentifier | *(v4 + 4))
+  if (dominantSourceBundleIdentifier | *(equalCopy + 4))
   {
     v11 = [(NSString *)dominantSourceBundleIdentifier isEqual:?];
   }
@@ -548,26 +548,26 @@ LABEL_23:
   return v14 ^ v16 ^ [(NSString *)self->_dominantSourceBundleIdentifier hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 7))
+  fromCopy = from;
+  if (*(fromCopy + 7))
   {
     [(PCPWorkoutCluster *)self setIdentifier:?];
   }
 
-  v5 = *(v4 + 64);
+  v5 = *(fromCopy + 64);
   if ((v5 & 2) != 0)
   {
-    self->_startTimeCFAbsolute = *(v4 + 2);
+    self->_startTimeCFAbsolute = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 64);
+    v5 = *(fromCopy + 64);
   }
 
   if (v5)
   {
-    self->_endTimeCFAbsolute = *(v4 + 1);
+    self->_endTimeCFAbsolute = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -575,7 +575,7 @@ LABEL_23:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = *(v4 + 6);
+  v6 = *(fromCopy + 6);
   v7 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v7)
   {
@@ -603,7 +603,7 @@ LABEL_23:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = *(v4 + 5);
+  v11 = *(fromCopy + 5);
   v12 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v12)
   {
@@ -628,7 +628,7 @@ LABEL_23:
   }
 
   clusterPhenotype = self->_clusterPhenotype;
-  v17 = *(v4 + 3);
+  v17 = *(fromCopy + 3);
   if (clusterPhenotype)
   {
     if (v17)
@@ -642,7 +642,7 @@ LABEL_23:
     [(PCPWorkoutCluster *)self setClusterPhenotype:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(PCPWorkoutCluster *)self setDominantSourceBundleIdentifier:?];
   }
@@ -650,44 +650,44 @@ LABEL_23:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (PCPWorkoutCluster)initWithCluster:(id)a3
+- (PCPWorkoutCluster)initWithCluster:(id)cluster
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  clusterCopy = cluster;
+  if (clusterCopy)
   {
     v5 = objc_alloc_init(PCPWorkoutCluster);
-    v6 = [v4 identifier];
-    v7 = [v6 UUIDString];
-    [(PCPWorkoutCluster *)v5 setIdentifier:v7];
+    identifier = [clusterCopy identifier];
+    uUIDString = [identifier UUIDString];
+    [(PCPWorkoutCluster *)v5 setIdentifier:uUIDString];
 
-    v8 = [v4 sourceBundleIdentifier];
-    [(PCPWorkoutCluster *)v5 setDominantSourceBundleIdentifier:v8];
+    sourceBundleIdentifier = [clusterCopy sourceBundleIdentifier];
+    [(PCPWorkoutCluster *)v5 setDominantSourceBundleIdentifier:sourceBundleIdentifier];
 
-    v9 = [v4 startDate];
+    startDate = [clusterCopy startDate];
 
-    if (v9)
+    if (startDate)
     {
-      v10 = [v4 startDate];
-      [v10 timeIntervalSinceReferenceDate];
+      startDate2 = [clusterCopy startDate];
+      [startDate2 timeIntervalSinceReferenceDate];
       [(PCPWorkoutCluster *)v5 setStartTimeCFAbsolute:?];
 
       [(PCPWorkoutCluster *)v5 setHasStartTimeCFAbsolute:1];
     }
 
-    v11 = [v4 endDate];
+    endDate = [clusterCopy endDate];
 
-    if (v11)
+    if (endDate)
     {
-      v12 = [v4 endDate];
-      [v12 timeIntervalSinceReferenceDate];
+      endDate2 = [clusterCopy endDate];
+      [endDate2 timeIntervalSinceReferenceDate];
       [(PCPWorkoutCluster *)v5 setEndTimeCFAbsolute:?];
 
       [(PCPWorkoutCluster *)v5 setHasEndTimeCFAbsolute:1];
     }
 
-    v13 = [v4 subSuggestionIDs];
-    v14 = [v13 count];
+    subSuggestionIDs = [clusterCopy subSuggestionIDs];
+    v14 = [subSuggestionIDs count];
 
     if (v14)
     {
@@ -695,8 +695,8 @@ LABEL_23:
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v15 = [v4 subSuggestionIDs];
-      v16 = [v15 countByEnumeratingWithState:&v35 objects:v40 count:16];
+      subSuggestionIDs2 = [clusterCopy subSuggestionIDs];
+      v16 = [subSuggestionIDs2 countByEnumeratingWithState:&v35 objects:v40 count:16];
       if (v16)
       {
         v17 = v16;
@@ -707,22 +707,22 @@ LABEL_23:
           {
             if (*v36 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(subSuggestionIDs2);
             }
 
             [(PCPWorkoutCluster *)v5 addEmbeddingIdentifiersWithPhenotype:*(*(&v35 + 1) + 8 * i)];
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v35 objects:v40 count:16];
+          v17 = [subSuggestionIDs2 countByEnumeratingWithState:&v35 objects:v40 count:16];
         }
 
         while (v17);
       }
     }
 
-    v20 = [v4 clusterMetadata];
-    v21 = [v20 subSuggestionIDsBeforePruning];
-    v22 = [v21 count];
+    clusterMetadata = [clusterCopy clusterMetadata];
+    subSuggestionIDsBeforePruning = [clusterMetadata subSuggestionIDsBeforePruning];
+    v22 = [subSuggestionIDsBeforePruning count];
 
     if (v22)
     {
@@ -730,10 +730,10 @@ LABEL_23:
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v23 = [v4 clusterMetadata];
-      v24 = [v23 subSuggestionIDsBeforePruning];
+      clusterMetadata2 = [clusterCopy clusterMetadata];
+      subSuggestionIDsBeforePruning2 = [clusterMetadata2 subSuggestionIDsBeforePruning];
 
-      v25 = [v24 countByEnumeratingWithState:&v31 objects:v39 count:16];
+      v25 = [subSuggestionIDsBeforePruning2 countByEnumeratingWithState:&v31 objects:v39 count:16];
       if (v25)
       {
         v26 = v25;
@@ -744,20 +744,20 @@ LABEL_23:
           {
             if (*v32 != v27)
             {
-              objc_enumerationMutation(v24);
+              objc_enumerationMutation(subSuggestionIDsBeforePruning2);
             }
 
             [(PCPWorkoutCluster *)v5 addEmbeddingIdentifiers:*(*(&v31 + 1) + 8 * j)];
           }
 
-          v26 = [v24 countByEnumeratingWithState:&v31 objects:v39 count:16];
+          v26 = [subSuggestionIDsBeforePruning2 countByEnumeratingWithState:&v31 objects:v39 count:16];
         }
 
         while (v26);
       }
     }
 
-    [(PCPWorkoutCluster *)self mapPhenotypeData:v4 toCluster:v5];
+    [(PCPWorkoutCluster *)self mapPhenotypeData:clusterCopy toCluster:v5];
   }
 
   else
@@ -769,26 +769,26 @@ LABEL_23:
   return v5;
 }
 
-- (void)mapPhenotypeData:(id)a3 toCluster:(id)a4
+- (void)mapPhenotypeData:(id)data toCluster:(id)cluster
 {
-  v23 = a3;
-  v6 = a4;
-  if (v23)
+  dataCopy = data;
+  clusterCopy = cluster;
+  if (dataCopy)
   {
-    v7 = [v23 clusterMetadata];
+    clusterMetadata = [dataCopy clusterMetadata];
 
-    if (v7)
+    if (clusterMetadata)
     {
       v8 = objc_alloc_init(PCPClusterPhenotype);
-      v9 = [v23 activityType];
-      [(PCPClusterPhenotype *)v8 setActivityType:v9];
+      activityType = [dataCopy activityType];
+      [(PCPClusterPhenotype *)v8 setActivityType:activityType];
 
-      v10 = [v23 placeName];
-      [(PCPClusterPhenotype *)v8 setPlaceName:v10];
+      placeName = [dataCopy placeName];
+      [(PCPClusterPhenotype *)v8 setPlaceName:placeName];
 
-      v11 = [v23 placeType];
+      placeType = [dataCopy placeType];
       v12 = @"PlaceType_Unknown";
-      switch(v11)
+      switch(placeType)
       {
         case 0:
           break;
@@ -853,14 +853,14 @@ LABEL_23:
           v12 = @"Division";
           break;
         default:
-          if (v11 == 1000)
+          if (placeType == 1000)
           {
             v12 = @"Undefined";
           }
 
           else
           {
-            v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v11];
+            v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", placeType];
           }
 
           break;
@@ -868,113 +868,113 @@ LABEL_23:
 
       [(PCPClusterPhenotype *)v8 setPlaceType:v12];
 
-      v13 = [v23 location];
-      [(PCPClusterPhenotype *)v8 setPlaceLocation:v13];
+      location = [dataCopy location];
+      [(PCPClusterPhenotype *)v8 setPlaceLocation:location];
 
-      v14 = [v23 poiCategory];
-      v15 = [v14 length];
+      poiCategory = [dataCopy poiCategory];
+      v15 = [poiCategory length];
 
       if (v15)
       {
-        v16 = [v23 poiCategory];
-        [(PCPClusterPhenotype *)v8 setPlaceType:v16];
+        poiCategory2 = [dataCopy poiCategory];
+        [(PCPClusterPhenotype *)v8 setPlaceType:poiCategory2];
       }
 
-      if ([v23 placeUserType])
+      if ([dataCopy placeUserType])
       {
-        v17 = [v23 placeUserType];
-        if (v17 >= 5)
+        placeUserType = [dataCopy placeUserType];
+        if (placeUserType >= 5)
         {
-          v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v17];
+          v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", placeUserType];
         }
 
         else
         {
-          v18 = off_1E83B8928[v17];
+          v18 = off_1E83B8928[placeUserType];
         }
 
         [(PCPClusterPhenotype *)v8 setPlaceType:v18];
       }
 
-      [v23 timeOfDayCircularStd];
+      [dataCopy timeOfDayCircularStd];
       [(PCPClusterPhenotype *)v8 setTimeOfDayCircularStd:?];
-      [v23 latLongCircularStd];
+      [dataCopy latLongCircularStd];
       [(PCPClusterPhenotype *)v8 setLatLongCircularStd:?];
-      v19 = [v23 clusterMetadata];
-      v20 = [v19 phenotype];
-      [(PCPWorkoutCluster *)self mapTimeProperties:v20 toPhenotype:v8];
+      clusterMetadata2 = [dataCopy clusterMetadata];
+      phenotype = [clusterMetadata2 phenotype];
+      [(PCPWorkoutCluster *)self mapTimeProperties:phenotype toPhenotype:v8];
 
       if ([(PCPClusterPhenotype *)v8 hasActivityType]|| [(PCPClusterPhenotype *)v8 hasPlaceName]|| [(PCPClusterPhenotype *)v8 hasPlaceType]|| [(PCPClusterPhenotype *)v8 hasPlaceLocation]|| [(PCPClusterPhenotype *)v8 hasDayOfWeekCos]|| [(PCPClusterPhenotype *)v8 hasDayOfWeekSin]|| [(PCPClusterPhenotype *)v8 hasIsWeekend]|| [(PCPClusterPhenotype *)v8 hasTimeOfDayCos]|| [(PCPClusterPhenotype *)v8 hasTimeOfDaySin]|| [(PCPClusterPhenotype *)v8 hasWeekOfYear]|| [(PCPClusterPhenotype *)v8 hasNormalizedDuration]|| ([(PCPClusterPhenotype *)v8 timeOfDayCircularStd], v21 != 0.0) || ([(PCPClusterPhenotype *)v8 latLongCircularStd], v22 != 0.0))
       {
-        [v6 setClusterPhenotype:v8];
+        [clusterCopy setClusterPhenotype:v8];
       }
     }
   }
 }
 
-- (void)mapTimeProperties:(id)a3 toPhenotype:(id)a4
+- (void)mapTimeProperties:(id)properties toPhenotype:(id)phenotype
 {
-  v13 = a3;
-  v5 = a4;
-  v6 = [v13 objectForKeyedSubscript:@"timeOfDayCos"];
+  propertiesCopy = properties;
+  phenotypeCopy = phenotype;
+  v6 = [propertiesCopy objectForKeyedSubscript:@"timeOfDayCos"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v6 doubleValue];
-    [v5 setTimeOfDayCos:?];
-    [v5 setHasTimeOfDayCos:1];
+    [phenotypeCopy setTimeOfDayCos:?];
+    [phenotypeCopy setHasTimeOfDayCos:1];
   }
 
-  v7 = [v13 objectForKeyedSubscript:@"timeOfDaySin"];
+  v7 = [propertiesCopy objectForKeyedSubscript:@"timeOfDaySin"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v7 doubleValue];
-    [v5 setTimeOfDaySin:?];
-    [v5 setHasTimeOfDaySin:1];
+    [phenotypeCopy setTimeOfDaySin:?];
+    [phenotypeCopy setHasTimeOfDaySin:1];
   }
 
-  v8 = [v13 objectForKeyedSubscript:@"dayOfWeekCos"];
+  v8 = [propertiesCopy objectForKeyedSubscript:@"dayOfWeekCos"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v8 doubleValue];
-    [v5 setDayOfWeekCos:?];
-    [v5 setHasDayOfWeekCos:1];
+    [phenotypeCopy setDayOfWeekCos:?];
+    [phenotypeCopy setHasDayOfWeekCos:1];
   }
 
-  v9 = [v13 objectForKeyedSubscript:@"dayOfWeekSin"];
+  v9 = [propertiesCopy objectForKeyedSubscript:@"dayOfWeekSin"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v9 doubleValue];
-    [v5 setDayOfWeekSin:?];
-    [v5 setHasDayOfWeekSin:1];
+    [phenotypeCopy setDayOfWeekSin:?];
+    [phenotypeCopy setHasDayOfWeekSin:1];
   }
 
-  v10 = [v13 objectForKeyedSubscript:@"normalizedDuration"];
+  v10 = [propertiesCopy objectForKeyedSubscript:@"normalizedDuration"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v10 doubleValue];
-    [v5 setNormalizedDuration:?];
-    [v5 setHasNormalizedDuration:1];
+    [phenotypeCopy setNormalizedDuration:?];
+    [phenotypeCopy setHasNormalizedDuration:1];
   }
 
-  v11 = [v13 objectForKeyedSubscript:@"weekOfYear"];
+  v11 = [propertiesCopy objectForKeyedSubscript:@"weekOfYear"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 setWeekOfYear:{objc_msgSend(v11, "unsignedIntValue")}];
-    [v5 setHasWeekOfYear:1];
+    [phenotypeCopy setWeekOfYear:{objc_msgSend(v11, "unsignedIntValue")}];
+    [phenotypeCopy setHasWeekOfYear:1];
   }
 
-  v12 = [v13 objectForKeyedSubscript:@"isWeekend"];
+  v12 = [propertiesCopy objectForKeyedSubscript:@"isWeekend"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    [v5 setIsWeekend:{objc_msgSend(v12, "BOOLValue")}];
-    [v5 setHasIsWeekend:1];
+    [phenotypeCopy setIsWeekend:{objc_msgSend(v12, "BOOLValue")}];
+    [phenotypeCopy setHasIsWeekend:1];
   }
 }
 

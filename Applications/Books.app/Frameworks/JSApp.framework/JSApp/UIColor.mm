@@ -1,12 +1,12 @@
 @interface UIColor
-+ (id)jsa_colorWithHexString:(id)a3 alpha:(double)a4;
++ (id)jsa_colorWithHexString:(id)string alpha:(double)alpha;
 @end
 
 @implementation UIColor
 
-+ (id)jsa_colorWithHexString:(id)a3 alpha:(double)a4
++ (id)jsa_colorWithHexString:(id)string alpha:(double)alpha
 {
-  if (a3)
+  if (string)
   {
     v9 = 0;
     v5 = [NSScanner scannerWithString:?];
@@ -14,7 +14,7 @@
     [v5 setCharactersToBeSkipped:v6];
 
     [v5 scanHexInt:&v9];
-    v7 = [UIColor _colorWithHexValue:v9 alpha:a4];
+    v7 = [UIColor _colorWithHexValue:v9 alpha:alpha];
   }
 
   else

@@ -1,6 +1,6 @@
 @interface HMDHomeSettingsModel
-+ (id)defaultModelForHomeUUID:(id)a3;
-+ (id)modelIDForHomeUUID:(id)a3;
++ (id)defaultModelForHomeUUID:(id)d;
++ (id)modelIDForHomeUUID:(id)d;
 + (id)modelNamespace;
 + (id)properties;
 @end
@@ -35,12 +35,12 @@ void __34__HMDHomeSettingsModel_properties__block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)defaultModelForHomeUUID:(id)a3
++ (id)defaultModelForHomeUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [HMDHomeSettingsModel alloc];
-  v6 = [a1 modelIDForHomeUUID:v4];
-  v7 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:1 uuid:v6 parentUUID:v4];
+  v6 = [self modelIDForHomeUUID:dCopy];
+  v7 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:1 uuid:v6 parentUUID:dCopy];
 
   [(HMDHomeSettingsModel *)v7 setAutomaticSoftwareUpdateEnabled:MEMORY[0x277CBEC38]];
   [(HMDHomeSettingsModel *)v7 setAutomaticThirdPartyAccessorySoftwareUpdateEnabled:MEMORY[0x277CBEC28]];
@@ -48,12 +48,12 @@ void __34__HMDHomeSettingsModel_properties__block_invoke()
   return v7;
 }
 
-+ (id)modelIDForHomeUUID:(id)a3
++ (id)modelIDForHomeUUID:(id)d
 {
   v3 = MEMORY[0x277CBEB28];
-  v4 = a3;
+  dCopy = d;
   v5 = [v3 dataWithLength:16];
-  [v4 getUUIDBytes:{objc_msgSend(v5, "mutableBytes")}];
+  [dCopy getUUIDBytes:{objc_msgSend(v5, "mutableBytes")}];
 
   v6 = objc_alloc(MEMORY[0x277CCAD78]);
   v7 = +[HMDHomeSettingsModel modelNamespace];

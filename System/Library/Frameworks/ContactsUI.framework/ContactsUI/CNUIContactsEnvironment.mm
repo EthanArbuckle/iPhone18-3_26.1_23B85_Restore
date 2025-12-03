@@ -12,7 +12,7 @@
 - (CNHealthStoreManager)healthStoreManager;
 - (CNLSApplicationWorkspace)applicationWorkspace;
 - (CNUIContactsEnvironment)init;
-- (CNUIContactsEnvironment)initWithContactsEnvironment:(id)a3;
+- (CNUIContactsEnvironment)initWithContactsEnvironment:(id)environment;
 - (CNUICoreRecentsManager)recentsManager;
 - (CNUIDefaultUserActionFetcher)defaultUserActionFetcher;
 - (CNUIExternalComponentsFactory)componentsFactory;
@@ -51,7 +51,7 @@
 - (id)nts_makeContactChangesNotifier;
 - (id)nts_makeRecentsManager;
 - (void)dealloc;
-- (void)setPersonaId:(id)a3;
+- (void)setPersonaId:(id)id;
 @end
 
 @implementation CNUIContactsEnvironment
@@ -65,8 +65,8 @@ uint64_t __45__CNUIContactsEnvironment_currentEnvironment__block_invoke(uint64_t
 
 + (id)makeCurrentEnvironment
 {
-  v3 = [MEMORY[0x1E695CE38] currentEnvironment];
-  v4 = [[a1 alloc] initWithContactsEnvironment:v3];
+  currentEnvironment = [MEMORY[0x1E695CE38] currentEnvironment];
+  v4 = [[self alloc] initWithContactsEnvironment:currentEnvironment];
 
   return v4;
 }
@@ -77,7 +77,7 @@ uint64_t __45__CNUIContactsEnvironment_currentEnvironment__block_invoke(uint64_t
   block[1] = 3221225472;
   block[2] = __45__CNUIContactsEnvironment_currentEnvironment__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (currentEnvironment_cn_once_token_10 != -1)
   {
     dispatch_once(&currentEnvironment_cn_once_token_10, block);
@@ -124,8 +124,8 @@ uint64_t __45__CNUIContactsEnvironment_currentEnvironment__block_invoke(uint64_t
   if (!contactStore)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695CE28]);
-    v5 = [(CNUIContactsEnvironment *)self cnEnvironment];
-    [v4 setEnvironment:v5];
+    cnEnvironment = [(CNUIContactsEnvironment *)self cnEnvironment];
+    [v4 setEnvironment:cnEnvironment];
 
     v6 = [objc_alloc(MEMORY[0x1E695CE18]) initWithConfiguration:v4];
     v7 = self->_contactStore;
@@ -143,8 +143,8 @@ uint64_t __45__CNUIContactsEnvironment_currentEnvironment__block_invoke(uint64_t
   if (!inProcessContactStore)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695CE28]);
-    v5 = [(CNUIContactsEnvironment *)self cnEnvironment];
-    [v4 setEnvironment:v5];
+    cnEnvironment = [(CNUIContactsEnvironment *)self cnEnvironment];
+    [v4 setEnvironment:cnEnvironment];
 
     [v4 setIncludeLocalContacts:1];
     [v4 setUseInProcessMapperExclusively:1];
@@ -160,20 +160,20 @@ uint64_t __45__CNUIContactsEnvironment_currentEnvironment__block_invoke(uint64_t
 
 - (id)nts_makeCachingLikenessResolver
 {
-  v3 = [(CNUIContactsEnvironment *)self nts_lazyDefaultSchedulerProvider];
-  v4 = [(CNUIContactsEnvironment *)self personaId];
+  nts_lazyDefaultSchedulerProvider = [(CNUIContactsEnvironment *)self nts_lazyDefaultSchedulerProvider];
+  personaId = [(CNUIContactsEnvironment *)self personaId];
 
-  if (v4)
+  if (personaId)
   {
     v5 = objc_alloc(MEMORY[0x1E6996BB0]);
-    v6 = [(CNUIContactsEnvironment *)self personaId];
-    v7 = [v5 initWithPersonaId:v6 schedulerProvider:v3];
+    personaId2 = [(CNUIContactsEnvironment *)self personaId];
+    v7 = [v5 initWithPersonaId:personaId2 schedulerProvider:nts_lazyDefaultSchedulerProvider];
   }
 
   else
   {
-    v6 = [(CNUIContactsEnvironment *)self nts_lazyInProcessContactStore];
-    v7 = [objc_alloc(MEMORY[0x1E6996BB0]) initWithContactStore:v6 schedulerProvider:v3];
+    personaId2 = [(CNUIContactsEnvironment *)self nts_lazyInProcessContactStore];
+    v7 = [objc_alloc(MEMORY[0x1E6996BB0]) initWithContactStore:personaId2 schedulerProvider:nts_lazyDefaultSchedulerProvider];
   }
 
   v8 = v7;
@@ -196,9 +196,9 @@ uint64_t __45__CNUIContactsEnvironment_currentEnvironment__block_invoke(uint64_t
   cachingLikenessResolver = self->_cachingLikenessResolver;
   if (!cachingLikenessResolver)
   {
-    v4 = [(CNUIContactsEnvironment *)self nts_makeCachingLikenessResolver];
+    nts_makeCachingLikenessResolver = [(CNUIContactsEnvironment *)self nts_makeCachingLikenessResolver];
     v5 = self->_cachingLikenessResolver;
-    self->_cachingLikenessResolver = v4;
+    self->_cachingLikenessResolver = nts_makeCachingLikenessResolver;
 
     cachingLikenessResolver = self->_cachingLikenessResolver;
   }
@@ -219,9 +219,9 @@ uint64_t __45__CNUIContactsEnvironment_currentEnvironment__block_invoke(uint64_t
   if (!cachingLikenessRenderer)
   {
     v4 = MEMORY[0x1E6996B90];
-    v5 = [(CNUIContactsEnvironment *)self nts_lazyCachingLikenessResolver];
-    v6 = [(CNUIContactsEnvironment *)self nts_lazyDefaultSchedulerProvider];
-    v7 = [v4 cachingRendererWithLikenessResolver:v5 schedulerProvider:v6];
+    nts_lazyCachingLikenessResolver = [(CNUIContactsEnvironment *)self nts_lazyCachingLikenessResolver];
+    nts_lazyDefaultSchedulerProvider = [(CNUIContactsEnvironment *)self nts_lazyDefaultSchedulerProvider];
+    v7 = [v4 cachingRendererWithLikenessResolver:nts_lazyCachingLikenessResolver schedulerProvider:nts_lazyDefaultSchedulerProvider];
     v8 = self->_cachingLikenessRenderer;
     self->_cachingLikenessRenderer = v7;
 
@@ -243,9 +243,9 @@ uint64_t __45__CNUIContactsEnvironment_currentEnvironment__block_invoke(uint64_t
   contactChangesNotifier = self->_contactChangesNotifier;
   if (!contactChangesNotifier)
   {
-    v4 = [(CNUIContactsEnvironment *)self nts_makeContactChangesNotifier];
+    nts_makeContactChangesNotifier = [(CNUIContactsEnvironment *)self nts_makeContactChangesNotifier];
     v5 = self->_contactChangesNotifier;
-    self->_contactChangesNotifier = v4;
+    self->_contactChangesNotifier = nts_makeContactChangesNotifier;
 
     contactChangesNotifier = self->_contactChangesNotifier;
   }
@@ -255,18 +255,18 @@ uint64_t __45__CNUIContactsEnvironment_currentEnvironment__block_invoke(uint64_t
 
 - (id)nts_makeContactChangesNotifier
 {
-  v3 = [(CNUIContactsEnvironment *)self nts_lazyInProcessContactStore];
-  v4 = [(CNUIContactsEnvironment *)self nts_lazyDefaultSchedulerProvider];
-  v5 = [v4 mainThreadScheduler];
-  v6 = [objc_alloc(MEMORY[0x1E695CD68]) initWithContactStore:v3 downstreamScheduler:v5 schedulerProvider:v4];
+  nts_lazyInProcessContactStore = [(CNUIContactsEnvironment *)self nts_lazyInProcessContactStore];
+  nts_lazyDefaultSchedulerProvider = [(CNUIContactsEnvironment *)self nts_lazyDefaultSchedulerProvider];
+  mainThreadScheduler = [nts_lazyDefaultSchedulerProvider mainThreadScheduler];
+  v6 = [objc_alloc(MEMORY[0x1E695CD68]) initWithContactStore:nts_lazyInProcessContactStore downstreamScheduler:mainThreadScheduler schedulerProvider:nts_lazyDefaultSchedulerProvider];
 
   return v6;
 }
 
 - (BOOL)runningInContactsAppOniPad
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 1 && CNUIIsContacts();
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 1 && CNUIIsContacts();
 
   return v3;
 }
@@ -276,9 +276,9 @@ uint64_t __45__CNUIContactsEnvironment_currentEnvironment__block_invoke(uint64_t
   inProcessActivityManager = self->_inProcessActivityManager;
   if (!inProcessActivityManager)
   {
-    v4 = [(CNUIContactsEnvironment *)self nts_lazyInProcessContactStore];
-    v5 = [(CNUIContactsEnvironment *)self nts_lazyApplicationWorkspace];
-    v6 = [objc_alloc(MEMORY[0x1E6996C00]) initWithContactStore:v4 applicationWorkspace:v5];
+    nts_lazyInProcessContactStore = [(CNUIContactsEnvironment *)self nts_lazyInProcessContactStore];
+    nts_lazyApplicationWorkspace = [(CNUIContactsEnvironment *)self nts_lazyApplicationWorkspace];
+    v6 = [objc_alloc(MEMORY[0x1E6996C00]) initWithContactStore:nts_lazyInProcessContactStore applicationWorkspace:nts_lazyApplicationWorkspace];
     v7 = self->_inProcessActivityManager;
     self->_inProcessActivityManager = v6;
 
@@ -315,8 +315,8 @@ uint64_t __45__CNUIContactsEnvironment_currentEnvironment__block_invoke(uint64_t
   collation = self->_collation;
   if (!collation)
   {
-    v4 = [(CNUIContactsEnvironment *)self nts_lazySortCollator];
-    v5 = [objc_alloc(MEMORY[0x1E6996680]) initWithCollator:v4];
+    nts_lazySortCollator = [(CNUIContactsEnvironment *)self nts_lazySortCollator];
+    v5 = [objc_alloc(MEMORY[0x1E6996680]) initWithCollator:nts_lazySortCollator];
     v6 = self->_collation;
     self->_collation = v5;
 
@@ -331,7 +331,7 @@ uint64_t __45__CNUIContactsEnvironment_currentEnvironment__block_invoke(uint64_t
   result = self->_sortCollator;
   if (!result)
   {
-    v4 = [MEMORY[0x1E6996680] defaultSortCollatorIdentifier];
+    defaultSortCollatorIdentifier = [MEMORY[0x1E6996680] defaultSortCollatorIdentifier];
     self->_sortCollator = CNCreateCollatorWithPreferredLocale();
 
     return self->_sortCollator;
@@ -431,8 +431,8 @@ uint64_t __39__CNUIContactsEnvironment_sortCollator__block_invoke(uint64_t a1)
   inProcessFavorites = self->_inProcessFavorites;
   if (!inProcessFavorites)
   {
-    v4 = [(CNUIContactsEnvironment *)self nts_lazyInProcessContactStore];
-    v5 = [objc_alloc(MEMORY[0x1E695CE90]) initWithContactStore:v4];
+    nts_lazyInProcessContactStore = [(CNUIContactsEnvironment *)self nts_lazyInProcessContactStore];
+    v5 = [objc_alloc(MEMORY[0x1E695CE90]) initWithContactStore:nts_lazyInProcessContactStore];
     v6 = self->_inProcessFavorites;
     self->_inProcessFavorites = v5;
 
@@ -473,8 +473,8 @@ uint64_t __39__CNUIContactsEnvironment_sortCollator__block_invoke(uint64_t a1)
 
 - (id)nts_makeRecentsManager
 {
-  v2 = [(CNUIContactsEnvironment *)self nts_lazyDefaultSchedulerProvider];
-  v3 = [CNUIContactsEnvironmentServicesProvider recentsManagerWithSchedulerProvider:v2];
+  nts_lazyDefaultSchedulerProvider = [(CNUIContactsEnvironment *)self nts_lazyDefaultSchedulerProvider];
+  v3 = [CNUIContactsEnvironmentServicesProvider recentsManagerWithSchedulerProvider:nts_lazyDefaultSchedulerProvider];
 
   return v3;
 }
@@ -484,9 +484,9 @@ uint64_t __39__CNUIContactsEnvironment_sortCollator__block_invoke(uint64_t a1)
   recentsManager = self->_recentsManager;
   if (!recentsManager)
   {
-    v4 = [(CNUIContactsEnvironment *)self nts_makeRecentsManager];
+    nts_makeRecentsManager = [(CNUIContactsEnvironment *)self nts_makeRecentsManager];
     v5 = self->_recentsManager;
-    self->_recentsManager = v4;
+    self->_recentsManager = nts_makeRecentsManager;
 
     recentsManager = self->_recentsManager;
   }
@@ -571,12 +571,12 @@ uint64_t __39__CNUIContactsEnvironment_sortCollator__block_invoke(uint64_t a1)
 
 - (id)nts_makeActionDiscoveringEnvironment
 {
-  v3 = [(CNUIContactsEnvironment *)self nts_lazyIDSAvailabilityProvider];
-  v4 = [(CNUIContactsEnvironment *)self nts_lazyDefaultSchedulerProvider];
-  v5 = [(CNUIContactsEnvironment *)self nts_lazyCapabilities];
-  v6 = [(CNUIContactsEnvironment *)self nts_lazyDefaultUserActionFetcher];
-  v7 = [(CNUIContactsEnvironment *)self nts_lazyApplicationWorkspace];
-  v8 = [objc_alloc(MEMORY[0x1E6996BD8]) initWithIDSAvailabilityProvider:v3 schedulerProvider:v4 capabilities:v5 defaultUserActionFetcher:v6 applicationWorkspace:v7];
+  nts_lazyIDSAvailabilityProvider = [(CNUIContactsEnvironment *)self nts_lazyIDSAvailabilityProvider];
+  nts_lazyDefaultSchedulerProvider = [(CNUIContactsEnvironment *)self nts_lazyDefaultSchedulerProvider];
+  nts_lazyCapabilities = [(CNUIContactsEnvironment *)self nts_lazyCapabilities];
+  nts_lazyDefaultUserActionFetcher = [(CNUIContactsEnvironment *)self nts_lazyDefaultUserActionFetcher];
+  nts_lazyApplicationWorkspace = [(CNUIContactsEnvironment *)self nts_lazyApplicationWorkspace];
+  v8 = [objc_alloc(MEMORY[0x1E6996BD8]) initWithIDSAvailabilityProvider:nts_lazyIDSAvailabilityProvider schedulerProvider:nts_lazyDefaultSchedulerProvider capabilities:nts_lazyCapabilities defaultUserActionFetcher:nts_lazyDefaultUserActionFetcher applicationWorkspace:nts_lazyApplicationWorkspace];
 
   return v8;
 }
@@ -586,9 +586,9 @@ uint64_t __39__CNUIContactsEnvironment_sortCollator__block_invoke(uint64_t a1)
   actionDiscoveringEnvironment = self->_actionDiscoveringEnvironment;
   if (!actionDiscoveringEnvironment)
   {
-    v4 = [(CNUIContactsEnvironment *)self nts_makeActionDiscoveringEnvironment];
+    nts_makeActionDiscoveringEnvironment = [(CNUIContactsEnvironment *)self nts_makeActionDiscoveringEnvironment];
     v5 = self->_actionDiscoveringEnvironment;
-    self->_actionDiscoveringEnvironment = v4;
+    self->_actionDiscoveringEnvironment = nts_makeActionDiscoveringEnvironment;
 
     actionDiscoveringEnvironment = self->_actionDiscoveringEnvironment;
   }
@@ -608,14 +608,14 @@ uint64_t __39__CNUIContactsEnvironment_sortCollator__block_invoke(uint64_t a1)
   cachingMonogramRenderer = self->_cachingMonogramRenderer;
   if (!cachingMonogramRenderer)
   {
-    v4 = [(CNUIContactsEnvironment *)self nts_lazyInProcessContactStore];
-    v5 = [(CNUIContactsEnvironment *)self nts_lazyDefaultSchedulerProvider];
-    v6 = [objc_alloc(MEMORY[0x1E6996BB0]) initWithContactStore:v4 schedulerProvider:v5];
+    nts_lazyInProcessContactStore = [(CNUIContactsEnvironment *)self nts_lazyInProcessContactStore];
+    nts_lazyDefaultSchedulerProvider = [(CNUIContactsEnvironment *)self nts_lazyDefaultSchedulerProvider];
+    v6 = [objc_alloc(MEMORY[0x1E6996BB0]) initWithContactStore:nts_lazyInProcessContactStore schedulerProvider:nts_lazyDefaultSchedulerProvider];
     [v6 setProhibitedSources:9];
     v7 = [objc_alloc(MEMORY[0x1E6996BB8]) initWithLikenessResolver:v6];
     v8 = MEMORY[0x1E6996B90];
-    v9 = [(CNUIContactsEnvironment *)self nts_lazyDefaultSchedulerProvider];
-    v10 = [v8 cachingRendererWithLikenessResolver:v7 schedulerProvider:v9];
+    nts_lazyDefaultSchedulerProvider2 = [(CNUIContactsEnvironment *)self nts_lazyDefaultSchedulerProvider];
+    v10 = [v8 cachingRendererWithLikenessResolver:v7 schedulerProvider:nts_lazyDefaultSchedulerProvider2];
     v11 = self->_cachingMonogramRenderer;
     self->_cachingMonogramRenderer = v10;
 
@@ -654,9 +654,9 @@ uint64_t __39__CNUIContactsEnvironment_sortCollator__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setPersonaId:(id)a3
+- (void)setPersonaId:(id)id
 {
-  personaId = a3;
+  personaId = id;
   v6 = personaId;
   if (personaId)
   {
@@ -672,7 +672,7 @@ uint64_t __39__CNUIContactsEnvironment_sortCollator__block_invoke(uint64_t a1)
         cachingLikenessRenderer = self->_cachingLikenessRenderer;
         self->_cachingLikenessRenderer = 0;
 
-        objc_storeStrong(&self->_personaId, a3);
+        objc_storeStrong(&self->_personaId, id);
         v6 = v9;
       }
     }
@@ -688,16 +688,16 @@ uint64_t __39__CNUIContactsEnvironment_sortCollator__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (CNUIContactsEnvironment)initWithContactsEnvironment:(id)a3
+- (CNUIContactsEnvironment)initWithContactsEnvironment:(id)environment
 {
-  v5 = a3;
+  environmentCopy = environment;
   v10.receiver = self;
   v10.super_class = CNUIContactsEnvironment;
   v6 = [(CNUIContactsEnvironment *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cnEnvironment, a3);
+    objc_storeStrong(&v6->_cnEnvironment, environment);
     v8 = v7;
   }
 
@@ -706,8 +706,8 @@ uint64_t __39__CNUIContactsEnvironment_sortCollator__block_invoke(uint64_t a1)
 
 - (CNUIContactsEnvironment)init
 {
-  v3 = [MEMORY[0x1E695CE38] currentEnvironment];
-  v4 = [(CNUIContactsEnvironment *)self initWithContactsEnvironment:v3];
+  currentEnvironment = [MEMORY[0x1E695CE38] currentEnvironment];
+  v4 = [(CNUIContactsEnvironment *)self initWithContactsEnvironment:currentEnvironment];
 
   return v4;
 }

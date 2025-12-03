@@ -1,61 +1,61 @@
 @interface NSFileAccessClaim
-+ (BOOL)canNewWriteOfItemAtLocation:(id)a3 options:(unint64_t)a4 safelyOverlapExistingWriteOfItemAtLocation:(id)a5 options:(unint64_t)a6;
-- (BOOL)_writeArchiveOfDirectoryAtURL:(id)a3 toURL:(id)a4 error:(id *)a5;
-- (BOOL)canAccessLocations:(id)a3 forReading:(BOOL)a4 error:(id *)a5;
-- (BOOL)checkIfSymbolicLinkAtURL:(id)a3 withResolutionCount:(int64_t *)a4 andIfSoThenReevaluateSelf:(id)a5;
-- (BOOL)claimerInvokingIsBlockedByReactorWithID:(id)a3;
-- (BOOL)isBlockedByClaimWithPurposeID:(id)a3;
-- (BOOL)shouldInformProvidersAboutEndOfWriteWithOptions:(unint64_t)a3;
-- (BOOL)shouldMakeProviderProvideItemAtLocation:(id)a3 withOptions:(unint64_t)a4;
-- (BOOL)shouldReadingWithOptions:(unint64_t)a3 causePresenterToRelinquish:(id)a4;
-- (NSFileAccessClaim)initWithClient:(id)a3 claimID:(id)a4 purposeID:(id)a5;
-- (NSFileAccessClaim)initWithCoder:(id)a3;
++ (BOOL)canNewWriteOfItemAtLocation:(id)location options:(unint64_t)options safelyOverlapExistingWriteOfItemAtLocation:(id)atLocation options:(unint64_t)a6;
+- (BOOL)_writeArchiveOfDirectoryAtURL:(id)l toURL:(id)rL error:(id *)error;
+- (BOOL)canAccessLocations:(id)locations forReading:(BOOL)reading error:(id *)error;
+- (BOOL)checkIfSymbolicLinkAtURL:(id)l withResolutionCount:(int64_t *)count andIfSoThenReevaluateSelf:(id)self;
+- (BOOL)claimerInvokingIsBlockedByReactorWithID:(id)d;
+- (BOOL)isBlockedByClaimWithPurposeID:(id)d;
+- (BOOL)shouldInformProvidersAboutEndOfWriteWithOptions:(unint64_t)options;
+- (BOOL)shouldMakeProviderProvideItemAtLocation:(id)location withOptions:(unint64_t)options;
+- (BOOL)shouldReadingWithOptions:(unint64_t)options causePresenterToRelinquish:(id)relinquish;
+- (NSFileAccessClaim)initWithClient:(id)client claimID:(id)d purposeID:(id)iD;
+- (NSFileAccessClaim)initWithCoder:(id)coder;
 - (id)claimID;
 - (id)claimerError;
 - (id)client;
-- (id)descriptionWithIndenting:(id)a3;
+- (id)descriptionWithIndenting:(id)indenting;
 - (id)pendingClaims;
-- (id)prepareAndBlockOnClaimRelinquishmentForPresentersOfItemAtLocation:(id)a3 orContainedItem:(BOOL)a4 withRelinquishProcedureGetter:(id)a5;
+- (id)prepareAndBlockOnClaimRelinquishmentForPresentersOfItemAtLocation:(id)location orContainedItem:(BOOL)item withRelinquishProcedureGetter:(id)getter;
 - (id)purposeID;
-- (id)purposeIDOfClaimOnItemAtLocation:(id)a3 forMessagingPresenter:(id)a4;
+- (id)purposeIDOfClaimOnItemAtLocation:(id)location forMessagingPresenter:(id)presenter;
 - (int)clientProcessIdentifier;
-- (uint64_t)_recursive_claimerInvokingIsBlockedByReactorWithID:(void *)a3 checkedClaims:;
-- (void)_checkIfMovingRequiresProvidingAmongWritingLocations:(id)a3 options:(unint64_t *)a4 thenContinue:(id)a5;
-- (void)_protectIfNecessaryFileAtURL:(id)a3 withOptions:(unint64_t)a4 forReading:(BOOL)a5;
-- (void)_setupWithClaimID:(id)a3 purposeID:(id)a4 originatingReactorQueueID:(id)a5;
-- (void)acceptClaimFromClient:(id)a3 arbiterQueue:(id)a4 grantHandler:(id)a5;
-- (void)addBlockingReactorID:(id)a3;
-- (void)addPendingClaim:(id)a3;
-- (void)addReacquirer:(id)a3 forPresenterID:(id)a4;
+- (uint64_t)_recursive_claimerInvokingIsBlockedByReactorWithID:(void *)d checkedClaims:;
+- (void)_checkIfMovingRequiresProvidingAmongWritingLocations:(id)locations options:(unint64_t *)options thenContinue:(id)continue;
+- (void)_protectIfNecessaryFileAtURL:(id)l withOptions:(unint64_t)options forReading:(BOOL)reading;
+- (void)_setupWithClaimID:(id)d purposeID:(id)iD originatingReactorQueueID:(id)queueID;
+- (void)acceptClaimFromClient:(id)client arbiterQueue:(id)queue grantHandler:(id)handler;
+- (void)addBlockingReactorID:(id)d;
+- (void)addPendingClaim:(id)claim;
+- (void)addReacquirer:(id)reacquirer forPresenterID:(id)d;
 - (void)block;
-- (void)blockClaimerForReason:(id)a3;
+- (void)blockClaimerForReason:(id)reason;
 - (void)cancelled;
 - (void)dealloc;
 - (void)devalueSelf;
 - (void)disavowed;
-- (void)encodeWithCoder:(id)a3;
-- (void)ensureProvidersOfItemsAtReadingLocations:(id)a3 writingLocations:(id)a4 thenContinue:(id)a5;
-- (void)evaluateNewClaim:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)ensureProvidersOfItemsAtReadingLocations:(id)locations writingLocations:(id)writingLocations thenContinue:(id)continue;
+- (void)evaluateNewClaim:(id)claim;
 - (void)finished;
-- (void)givePriorityToClaim:(id)a3;
+- (void)givePriorityToClaim:(id)claim;
 - (void)invokeClaimer;
-- (void)makeProviderOfItemAtLocation:(id)a3 provideIfNecessaryWithOptions:(unint64_t)a4 thenContinue:(id)a5;
-- (void)makeProviderOfItemAtLocation:(id)a3 provideOrAttachPhysicalURLIfNecessaryForPurposeID:(id)a4 readingOptions:(unint64_t)a5 thenContinue:(id)a6;
-- (void)makeProviderOfItemAtLocation:(id)a3 provideOrAttachPhysicalURLIfNecessaryForPurposeID:(id)a4 writingOptions:(unint64_t)a5 thenContinue:(id)a6;
-- (void)makeProviderOfItemAtLocation:(id)a3 providePhysicalURLThenContinue:(id)a4;
-- (void)makeProvidersProvideItemsForReadingLocations:(id)a3 options:(unint64_t *)a4 andWritingLocationsIfNecessary:(id)a5 options:(unint64_t *)a6 thenContinue:(id)a7;
-- (void)prepareClaimForGrantingWithArbiterQueue:(id)a3;
-- (void)prepareItemForUploadingFromURL:(id)a3 thenContinue:(id)a4;
-- (void)removePendingClaims:(id)a3;
+- (void)makeProviderOfItemAtLocation:(id)location provideIfNecessaryWithOptions:(unint64_t)options thenContinue:(id)continue;
+- (void)makeProviderOfItemAtLocation:(id)location provideOrAttachPhysicalURLIfNecessaryForPurposeID:(id)d readingOptions:(unint64_t)options thenContinue:(id)continue;
+- (void)makeProviderOfItemAtLocation:(id)location provideOrAttachPhysicalURLIfNecessaryForPurposeID:(id)d writingOptions:(unint64_t)options thenContinue:(id)continue;
+- (void)makeProviderOfItemAtLocation:(id)location providePhysicalURLThenContinue:(id)continue;
+- (void)makeProvidersProvideItemsForReadingLocations:(id)locations options:(unint64_t *)options andWritingLocationsIfNecessary:(id)necessary options:(unint64_t *)a6 thenContinue:(id)continue;
+- (void)prepareClaimForGrantingWithArbiterQueue:(id)queue;
+- (void)prepareItemForUploadingFromURL:(id)l thenContinue:(id)continue;
+- (void)removePendingClaims:(id)claims;
 - (void)revoked;
-- (void)scheduleBlockedClaim:(id)a3;
-- (void)setClaimerError:(id)a3;
+- (void)scheduleBlockedClaim:(id)claim;
+- (void)setClaimerError:(id)error;
 - (void)startObservingClientState;
 - (void)unblock;
-- (void)unblockClaimerForReason:(id)a3;
-- (void)whenDevaluedPerformProcedure:(id)a3;
-- (void)whenFinishedPerformProcedure:(id)a3;
-- (void)whenRevokedPerformProcedure:(id)a3;
+- (void)unblockClaimerForReason:(id)reason;
+- (void)whenDevaluedPerformProcedure:(id)procedure;
+- (void)whenFinishedPerformProcedure:(id)procedure;
+- (void)whenRevokedPerformProcedure:(id)procedure;
 @end
 
 @implementation NSFileAccessClaim
@@ -408,13 +408,13 @@
   client = self->_client;
   if (client && self->_arbiterQueue && !self->_cameFromSuperarbiter)
   {
-    v4 = [(NSXPCConnection *)client processIdentifier];
+    processIdentifier = [(NSXPCConnection *)client processIdentifier];
     v5 = _NSFCProcessMonitorLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       claimID = self->_claimID;
       *buf = 67109378;
-      v10 = v4;
+      v10 = processIdentifier;
       v11 = 2114;
       v12 = claimID;
       _os_log_impl(&dword_18075C000, v5, OS_LOG_TYPE_INFO, "Starting to observe state of client with pid %d on behalf of claim %{public}@", buf, 0x12u);
@@ -427,7 +427,7 @@
     v7[2] = __46__NSFileAccessClaim_startObservingClientState__block_invoke;
     v7[3] = &unk_1E69F8030;
     v7[4] = self;
-    v8 = v4;
+    v8 = processIdentifier;
     [(NSFileAccessProcessManager *)self->_processManager setSuspensionHandler:v7];
   }
 }
@@ -462,66 +462,66 @@ void __29__NSFileAccessClaim_finished__block_invoke(uint64_t a1, void *a2, void 
   }
 }
 
-+ (BOOL)canNewWriteOfItemAtLocation:(id)a3 options:(unint64_t)a4 safelyOverlapExistingWriteOfItemAtLocation:(id)a5 options:(unint64_t)a6
++ (BOOL)canNewWriteOfItemAtLocation:(id)location options:(unint64_t)options safelyOverlapExistingWriteOfItemAtLocation:(id)atLocation options:(unint64_t)a6
 {
-  if (a4 >> 31)
+  if (options >> 31)
   {
     return 1;
   }
 
   v6 = a6;
-  v8 = a4;
-  return ([a3 itemIsItemAtLocation:a5] & 1) == 0 && ((*&v8 & 0x13000BLL) == 0 || (objc_msgSend(a5, "itemIsInItemAtLocation:", a3) & 1) == 0) && ((*&v6 & 0x13000BLL) == 0 || (objc_msgSend(a3, "itemIsInItemAtLocation:", a5) & 1) == 0);
+  optionsCopy = options;
+  return ([location itemIsItemAtLocation:atLocation] & 1) == 0 && ((*&optionsCopy & 0x13000BLL) == 0 || (objc_msgSend(atLocation, "itemIsInItemAtLocation:", location) & 1) == 0) && ((*&v6 & 0x13000BLL) == 0 || (objc_msgSend(location, "itemIsInItemAtLocation:", atLocation) & 1) == 0);
 }
 
-- (BOOL)shouldReadingWithOptions:(unint64_t)a3 causePresenterToRelinquish:(id)a4
+- (BOOL)shouldReadingWithOptions:(unint64_t)options causePresenterToRelinquish:(id)relinquish
 {
-  if ((a3 & 0x40000000) != 0)
+  if ((options & 0x40000000) != 0)
   {
     return 0;
   }
 
-  if ((a3 & 0x80000001) != 0x80000000)
+  if ((options & 0x80000001) != 0x80000000)
   {
     return 1;
   }
 
-  if (![a4 usesMainThreadDuringReliquishing])
+  if (![relinquish usesMainThreadDuringReliquishing])
   {
     return 1;
   }
 
-  v6 = [objc_msgSend(a4 "client")];
+  v6 = [objc_msgSend(relinquish "client")];
   return v6 != [(NSXPCConnection *)self->_client processIdentifier];
 }
 
-- (BOOL)shouldInformProvidersAboutEndOfWriteWithOptions:(unint64_t)a3
+- (BOOL)shouldInformProvidersAboutEndOfWriteWithOptions:(unint64_t)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = ![(NSFileAccessClaim *)self cameFromSuperarbiter];
-  return (*&v3 & 0x30000) == 0 && v4;
+  return (*&optionsCopy & 0x30000) == 0 && v4;
 }
 
-- (void)_setupWithClaimID:(id)a3 purposeID:(id)a4 originatingReactorQueueID:(id)a5
+- (void)_setupWithClaimID:(id)d purposeID:(id)iD originatingReactorQueueID:(id)queueID
 {
-  if (a3)
+  if (d)
   {
-    v8 = a3;
+    dCopy = d;
   }
 
   else
   {
-    v8 = +[NSFileCoordinator _createIdentifierForNewClaim];
+    dCopy = +[NSFileCoordinator _createIdentifierForNewClaim];
   }
 
-  self->_claimID = v8;
-  self->_purposeIDOrNil = a4;
+  self->_claimID = dCopy;
+  self->_purposeIDOrNil = iD;
   self->_blockageCount = 1;
   self->_claimerBlockageReasons = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{@"Initial blockage", 0}];
-  self->_originatingReactorQueueID = a5;
+  self->_originatingReactorQueueID = queueID;
 }
 
-- (NSFileAccessClaim)initWithClient:(id)a3 claimID:(id)a4 purposeID:(id)a5
+- (NSFileAccessClaim)initWithClient:(id)client claimID:(id)d purposeID:(id)iD
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -529,29 +529,29 @@ void __29__NSFileAccessClaim_finished__block_invoke(uint64_t a1, void *a2, void 
   v8 = [(NSFileAccessClaim *)&v10 init];
   if (v8)
   {
-    v8->_client = a3;
+    v8->_client = client;
     v8->_claimerWaiter = dispatch_semaphore_create(0);
-    [(NSFileAccessClaim *)v8 _setupWithClaimID:a4 purposeID:a5 originatingReactorQueueID:0];
+    [(NSFileAccessClaim *)v8 _setupWithClaimID:d purposeID:iD originatingReactorQueueID:0];
   }
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"NSFileAccessClaims should only ever be encoded by XPC" userInfo:0]);
   }
 
-  [a3 encodeObject:self->_claimID forKey:@"NSClaimIDKey"];
-  [a3 encodeObject:self->_purposeIDOrNil forKey:@"NSPurposeIDKey"];
+  [coder encodeObject:self->_claimID forKey:@"NSClaimIDKey"];
+  [coder encodeObject:self->_purposeIDOrNil forKey:@"NSPurposeIDKey"];
   originatingReactorQueueID = self->_originatingReactorQueueID;
 
-  [a3 encodeObject:originatingReactorQueueID forKey:@"NSOriginatingReactorQueueID"];
+  [coder encodeObject:originatingReactorQueueID forKey:@"NSOriginatingReactorQueueID"];
 }
 
-- (NSFileAccessClaim)initWithCoder:(id)a3
+- (NSFileAccessClaim)initWithCoder:(id)coder
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -559,9 +559,9 @@ void __29__NSFileAccessClaim_finished__block_invoke(uint64_t a1, void *a2, void 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"NSFileAccessClaims should only ever be decoded by XPC" userInfo:0]);
   }
 
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSClaimIDKey"];
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSPurposeIDKey"];
-  -[NSFileAccessClaim _setupWithClaimID:purposeID:originatingReactorQueueID:](self, "_setupWithClaimID:purposeID:originatingReactorQueueID:", v5, v6, [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSOriginatingReactorQueueID"]);
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSClaimIDKey"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSPurposeIDKey"];
+  -[NSFileAccessClaim _setupWithClaimID:purposeID:originatingReactorQueueID:](self, "_setupWithClaimID:purposeID:originatingReactorQueueID:", v5, v6, [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSOriginatingReactorQueueID"]);
   return self;
 }
 
@@ -586,37 +586,37 @@ void __29__NSFileAccessClaim_finished__block_invoke(uint64_t a1, void *a2, void 
   }
 }
 
-- (void)prepareClaimForGrantingWithArbiterQueue:(id)a3
+- (void)prepareClaimForGrantingWithArbiterQueue:(id)queue
 {
   if (self->_arbiterQueue)
   {
     [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"NSFileAccessClaim.m" description:307, @"This claim has already been prepared for granting"];
   }
 
-  self->_arbiterQueue = a3;
-  if (a3)
+  self->_arbiterQueue = queue;
+  if (queue)
   {
-    dispatch_retain(a3);
+    dispatch_retain(queue);
   }
 
   self->_originatingReactorQueueID = -[NSMutableDictionary objectForKeyedSubscript:]([+[NSThread currentThread](NSThread threadDictionary], "objectForKeyedSubscript:", @"_NSCurrentReactorID");
 }
 
-- (void)acceptClaimFromClient:(id)a3 arbiterQueue:(id)a4 grantHandler:(id)a5
+- (void)acceptClaimFromClient:(id)client arbiterQueue:(id)queue grantHandler:(id)handler
 {
   if (self->_client)
   {
     [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"NSFileAccessClaim.m" description:321, @"This claim has already been accepted"];
   }
 
-  self->_client = a3;
-  self->_arbiterQueue = a4;
-  if (a4)
+  self->_client = client;
+  self->_arbiterQueue = queue;
+  if (queue)
   {
-    dispatch_retain(a4);
+    dispatch_retain(queue);
   }
 
-  self->_serverClaimerOrNil = [a5 copy];
+  self->_serverClaimerOrNil = [handler copy];
 }
 
 uint64_t __46__NSFileAccessClaim_startObservingClientState__block_invoke(uint64_t a1, void *a2)
@@ -646,21 +646,21 @@ uint64_t __46__NSFileAccessClaim_startObservingClientState__block_invoke(uint64_
   }
 }
 
-- (void)blockClaimerForReason:(id)a3
+- (void)blockClaimerForReason:(id)reason
 {
   if (![(NSMutableArray *)self->_claimerBlockageReasons count])
   {
-    NSLog(@"NSFileCoordinator: [NSFileAccessClaim blockClaimerForReason:] is being invoked with %@ when the claimer has already been invoked.", a3);
+    NSLog(@"NSFileCoordinator: [NSFileAccessClaim blockClaimerForReason:] is being invoked with %@ when the claimer has already been invoked.", reason);
   }
 
   claimerBlockageReasons = self->_claimerBlockageReasons;
 
-  [(NSMutableArray *)claimerBlockageReasons addObject:a3];
+  [(NSMutableArray *)claimerBlockageReasons addObject:reason];
 }
 
-- (void)unblockClaimerForReason:(id)a3
+- (void)unblockClaimerForReason:(id)reason
 {
-  v4 = [(NSMutableArray *)self->_claimerBlockageReasons indexOfObject:a3];
+  v4 = [(NSMutableArray *)self->_claimerBlockageReasons indexOfObject:reason];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(NSMutableArray *)self->_claimerBlockageReasons removeObjectAtIndex:v4];
@@ -673,50 +673,50 @@ uint64_t __46__NSFileAccessClaim_startObservingClientState__block_invoke(uint64_
   }
 }
 
-- (void)setClaimerError:(id)a3
+- (void)setClaimerError:(id)error
 {
   claimerError = self->_claimerError;
-  if (claimerError != a3)
+  if (claimerError != error)
   {
 
-    self->_claimerError = [a3 copy];
+    self->_claimerError = [error copy];
   }
 }
 
-- (void)whenRevokedPerformProcedure:(id)a3
+- (void)whenRevokedPerformProcedure:(id)procedure
 {
   if (!self->_revocationProcedures)
   {
     self->_revocationProcedures = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
-  v5 = [a3 copy];
+  v5 = [procedure copy];
   [(NSMutableArray *)self->_revocationProcedures addObject:v5];
 }
 
-- (void)whenDevaluedPerformProcedure:(id)a3
+- (void)whenDevaluedPerformProcedure:(id)procedure
 {
   if (!self->_devaluationProcedures)
   {
     self->_devaluationProcedures = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
-  v5 = [a3 copy];
+  v5 = [procedure copy];
   [(NSMutableArray *)self->_devaluationProcedures addObject:v5];
 }
 
-- (void)whenFinishedPerformProcedure:(id)a3
+- (void)whenFinishedPerformProcedure:(id)procedure
 {
   if (!self->_finishingProcedures)
   {
     self->_finishingProcedures = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
-  v5 = [a3 copy];
+  v5 = [procedure copy];
   [(NSMutableArray *)self->_finishingProcedures addObject:v5];
 }
 
-- (void)addBlockingReactorID:(id)a3
+- (void)addBlockingReactorID:(id)d
 {
   blockingReactorIDs = self->_blockingReactorIDs;
   if (!blockingReactorIDs)
@@ -725,24 +725,24 @@ uint64_t __46__NSFileAccessClaim_startObservingClientState__block_invoke(uint64_
     self->_blockingReactorIDs = blockingReactorIDs;
   }
 
-  [(NSCountedSet *)blockingReactorIDs addObject:a3];
+  [(NSCountedSet *)blockingReactorIDs addObject:d];
 }
 
-- (BOOL)claimerInvokingIsBlockedByReactorWithID:(id)a3
+- (BOOL)claimerInvokingIsBlockedByReactorWithID:(id)d
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  LOBYTE(a3) = [(NSFileAccessClaim *)self _recursive_claimerInvokingIsBlockedByReactorWithID:a3 checkedClaims:v5];
+  LOBYTE(d) = [(NSFileAccessClaim *)self _recursive_claimerInvokingIsBlockedByReactorWithID:d checkedClaims:v5];
 
-  return a3;
+  return d;
 }
 
-- (uint64_t)_recursive_claimerInvokingIsBlockedByReactorWithID:(void *)a3 checkedClaims:
+- (uint64_t)_recursive_claimerInvokingIsBlockedByReactorWithID:(void *)d checkedClaims:
 {
   v15 = *MEMORY[0x1E69E9840];
   if (result)
   {
     v5 = result;
-    if ([a3 containsObject:result])
+    if ([d containsObject:result])
     {
       return 0;
     }
@@ -752,7 +752,7 @@ uint64_t __46__NSFileAccessClaim_startObservingClientState__block_invoke(uint64_
       return 1;
     }
 
-    [a3 addObject:v5];
+    [d addObject:v5];
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
@@ -772,7 +772,7 @@ LABEL_9:
           objc_enumerationMutation(v6);
         }
 
-        if (([(NSFileAccessClaim *)*(*(&v11 + 1) + 8 * v9) _recursive_claimerInvokingIsBlockedByReactorWithID:a2 checkedClaims:a3]& 1) != 0)
+        if (([(NSFileAccessClaim *)*(*(&v11 + 1) + 8 * v9) _recursive_claimerInvokingIsBlockedByReactorWithID:a2 checkedClaims:d]& 1) != 0)
         {
           return 1;
         }
@@ -795,7 +795,7 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)isBlockedByClaimWithPurposeID:(id)a3
+- (BOOL)isBlockedByClaimWithPurposeID:(id)d
 {
   v15 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -842,21 +842,21 @@ LABEL_9:
   return v5;
 }
 
-- (void)givePriorityToClaim:(id)a3
+- (void)givePriorityToClaim:(id)claim
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v5 = [a3 claimID];
-  v6 = [NSString stringWithFormat:@"Avoiding deadlock with claim: %@", v5];
+  claimID = [claim claimID];
+  v6 = [NSString stringWithFormat:@"Avoiding deadlock with claim: %@", claimID];
   [(NSFileAccessClaim *)self blockClaimerForReason:v6];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__NSFileAccessClaim_givePriorityToClaim___block_invoke;
   v7[3] = &unk_1E69F68D8;
   v7[4] = self;
-  v7[5] = v5;
+  v7[5] = claimID;
   v7[6] = v6;
-  [a3 whenDevaluedPerformProcedure:v7];
-  v8[0] = a3;
+  [claim whenDevaluedPerformProcedure:v7];
+  v8[0] = claim;
   -[NSFileAccessClaim removePendingClaims:](self, "removePendingClaims:", [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1]);
 }
 
@@ -879,22 +879,22 @@ uint64_t __41__NSFileAccessClaim_givePriorityToClaim___block_invoke(uint64_t a1)
   return [*(a1 + 32) unblockClaimerForReason:*(a1 + 48)];
 }
 
-- (void)scheduleBlockedClaim:(id)a3
+- (void)scheduleBlockedClaim:(id)claim
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [a3 purposeID];
-  if (v5)
+  purposeID = [claim purposeID];
+  if (purposeID)
   {
-    v6 = v5;
-    if ([(NSFileAccessClaim *)self claimerInvokingIsBlockedByReactorWithID:v5])
+    v6 = purposeID;
+    if ([(NSFileAccessClaim *)self claimerInvokingIsBlockedByReactorWithID:purposeID])
     {
       v7 = _NSFCClaimsLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [a3 claimID];
+        claimID = [claim claimID];
         claimID = self->_claimID;
         *v20 = 138543874;
-        *&v20[4] = v8;
+        *&v20[4] = claimID;
         *&v20[12] = 2114;
         *&v20[14] = claimID;
         *&v20[22] = 2114;
@@ -913,10 +913,10 @@ LABEL_8:
       v7 = _NSFCClaimsLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [a3 claimID];
+        claimID2 = [claim claimID];
         v12 = self->_claimID;
         *v20 = 138543874;
-        *&v20[4] = v11;
+        *&v20[4] = claimID2;
         *&v20[12] = 2114;
         *&v20[14] = v12;
         *&v20[22] = 2114;
@@ -926,63 +926,63 @@ LABEL_8:
       }
 
 LABEL_9:
-      [(NSFileAccessClaim *)self givePriorityToClaim:a3, *v20, *&v20[16], v21];
+      [(NSFileAccessClaim *)self givePriorityToClaim:claim, *v20, *&v20[16], v21];
       return;
     }
   }
 
-  v13 = [a3 shouldCancelInsteadOfWaiting];
+  shouldCancelInsteadOfWaiting = [claim shouldCancelInsteadOfWaiting];
   v14 = _NSFCClaimsLog();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-  if (v13)
+  if (shouldCancelInsteadOfWaiting)
   {
     if (v15)
     {
-      v16 = [a3 claimID];
+      claimID3 = [claim claimID];
       v17 = self->_claimID;
       *v20 = 138543618;
-      *&v20[4] = v16;
+      *&v20[4] = claimID3;
       *&v20[12] = 2114;
       *&v20[14] = v17;
       _os_log_impl(&dword_18075C000, v14, OS_LOG_TYPE_DEFAULT, "As requested, cancelling claim %{public}@ because it is blocked by claim %{public}@.", v20, 0x16u);
     }
 
-    [a3 setClaimerError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 3072, 0)}];
+    [claim setClaimerError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 3072, 0)}];
   }
 
   else
   {
     if (v15)
     {
-      v18 = [a3 claimID];
+      claimID4 = [claim claimID];
       v19 = self->_claimID;
       *v20 = 138543618;
-      *&v20[4] = v18;
+      *&v20[4] = claimID4;
       *&v20[12] = 2114;
       *&v20[14] = v19;
       _os_log_impl(&dword_18075C000, v14, OS_LOG_TYPE_DEFAULT, "Claim %{public}@ is blocked waiting for claim %{public}@ to finish.", v20, 0x16u);
     }
 
-    [(NSFileAccessClaim *)self addPendingClaim:a3];
+    [(NSFileAccessClaim *)self addPendingClaim:claim];
   }
 }
 
-- (void)evaluateNewClaim:(id)a3
+- (void)evaluateNewClaim:(id)claim
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a3 != self)
+  if (claim != self)
   {
-    v5 = [a3 purposeID];
-    if (v5 && [(NSString *)self->_purposeIDOrNil isEqual:v5]&& !self->_isRevoked)
+    purposeID = [claim purposeID];
+    if (purposeID && [(NSString *)self->_purposeIDOrNil isEqual:purposeID]&& !self->_isRevoked)
     {
       v6 = _NSFCClaimsLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [a3 claimID];
+        claimID = [claim claimID];
         claimID = self->_claimID;
         purposeIDOrNil = self->_purposeIDOrNil;
         v10 = 138543874;
-        v11 = v7;
+        v11 = claimID;
         v12 = 2114;
         v13 = claimID;
         v14 = 2114;
@@ -991,15 +991,15 @@ LABEL_9:
       }
     }
 
-    else if ([(NSFileAccessClaim *)self blocksClaim:a3])
+    else if ([(NSFileAccessClaim *)self blocksClaim:claim])
     {
 
-      [(NSFileAccessClaim *)self scheduleBlockedClaim:a3];
+      [(NSFileAccessClaim *)self scheduleBlockedClaim:claim];
     }
   }
 }
 
-- (void)addPendingClaim:(id)a3
+- (void)addPendingClaim:(id)claim
 {
   pendingClaims = self->_pendingClaims;
   if (!pendingClaims)
@@ -1008,30 +1008,30 @@ LABEL_9:
     self->_pendingClaims = pendingClaims;
   }
 
-  if (([(NSMutableOrderedSet *)pendingClaims containsObject:a3]& 1) == 0)
+  if (([(NSMutableOrderedSet *)pendingClaims containsObject:claim]& 1) == 0)
   {
-    [(NSMutableOrderedSet *)self->_pendingClaims addObject:a3];
-    [a3 block];
-    v6 = *(a3 + 10);
+    [(NSMutableOrderedSet *)self->_pendingClaims addObject:claim];
+    [claim block];
+    v6 = *(claim + 10);
     if (!v6)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-      *(a3 + 10) = v6;
+      *(claim + 10) = v6;
     }
 
     [v6 addObject:self];
-    *(a3 + 48) = 1;
+    *(claim + 48) = 1;
   }
 }
 
-- (void)removePendingClaims:(id)a3
+- (void)removePendingClaims:(id)claims
 {
   v15 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  v5 = [claims countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1042,7 +1042,7 @@ LABEL_9:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(claims);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -1053,61 +1053,61 @@ LABEL_9:
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+      v6 = [claims countByEnumeratingWithState:&v11 objects:v10 count:16];
     }
 
     while (v6);
   }
 
-  [(NSMutableOrderedSet *)self->_pendingClaims removeObjectsInArray:a3];
+  [(NSMutableOrderedSet *)self->_pendingClaims removeObjectsInArray:claims];
 }
 
-- (void)ensureProvidersOfItemsAtReadingLocations:(id)a3 writingLocations:(id)a4 thenContinue:(id)a5
+- (void)ensureProvidersOfItemsAtReadingLocations:(id)locations writingLocations:(id)writingLocations thenContinue:(id)continue
 {
-  if ([a3 count] || objc_msgSend(a4, "count"))
+  if ([locations count] || objc_msgSend(writingLocations, "count"))
   {
     v10 = objc_opt_new();
-    if (a3)
+    if (locations)
     {
-      [v10 addObjectsFromArray:a3];
+      [v10 addObjectsFromArray:locations];
     }
 
-    if (a4)
+    if (writingLocations)
     {
-      [v10 addObjectsFromArray:a4];
+      [v10 addObjectsFromArray:writingLocations];
     }
 
-    [NSFileAccessArbiter ensureProvidersIfNecessaryForClaim:self user:[(NSXPCConnection *)self->_client effectiveUserIdentifier] atLocations:v10 queue:self->_arbiterQueue thenContinue:a5];
+    [NSFileAccessArbiter ensureProvidersIfNecessaryForClaim:self user:[(NSXPCConnection *)self->_client effectiveUserIdentifier] atLocations:v10 queue:self->_arbiterQueue thenContinue:continue];
   }
 
   else
   {
-    v9 = *(a5 + 2);
+    v9 = *(continue + 2);
 
-    v9(a5);
+    v9(continue);
   }
 }
 
-- (BOOL)shouldMakeProviderProvideItemAtLocation:(id)a3 withOptions:(unint64_t)a4
+- (BOOL)shouldMakeProviderProvideItemAtLocation:(id)location withOptions:(unint64_t)options
 {
-  v4 = a4;
-  v6 = [a3 itemProvider];
-  if (v6)
+  optionsCopy = options;
+  itemProvider = [location itemProvider];
+  if (itemProvider)
   {
-    LOBYTE(v6) = !-[NSString isEqual:](self->_purposeIDOrNil, "isEqual:", [v6 reactorID]) && !self->_cameFromSuperarbiter && (v4 & 4) == 0;
+    LOBYTE(itemProvider) = !-[NSString isEqual:](self->_purposeIDOrNil, "isEqual:", [itemProvider reactorID]) && !self->_cameFromSuperarbiter && (optionsCopy & 4) == 0;
   }
 
-  return v6;
+  return itemProvider;
 }
 
-- (void)makeProviderOfItemAtLocation:(id)a3 provideIfNecessaryWithOptions:(unint64_t)a4 thenContinue:(id)a5
+- (void)makeProviderOfItemAtLocation:(id)location provideIfNecessaryWithOptions:(unint64_t)options thenContinue:(id)continue
 {
   v23 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_arbiterQueue);
-  if ([(NSFileAccessClaim *)self shouldMakeProviderProvideItemAtLocation:a3 withOptions:a4])
+  if ([(NSFileAccessClaim *)self shouldMakeProviderProvideItemAtLocation:location withOptions:options])
   {
-    v9 = [a3 itemProvider];
-    v10 = [v9 reactorID];
+    itemProvider = [location itemProvider];
+    reactorID = [itemProvider reactorID];
     v11 = _NSFCClaimsLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -1115,30 +1115,30 @@ LABEL_9:
       *buf = 138543618;
       *&buf[4] = claimID;
       *&buf[12] = 2114;
-      *&buf[14] = v10;
+      *&buf[14] = reactorID;
       _os_log_impl(&dword_18075C000, v11, OS_LOG_TYPE_DEFAULT, "Claimer for %{public}@ is waiting for provider %{public}@ to provide", buf, 0x16u);
     }
 
-    v13 = [NSString stringWithFormat:@"Waiting for provider %@ to provide", v10];
+    v13 = [NSString stringWithFormat:@"Waiting for provider %@ to provide", reactorID];
     [(NSFileAccessClaim *)self blockClaimerForReason:v13];
-    [(NSFileAccessClaim *)self addBlockingReactorID:v10];
+    [(NSFileAccessClaim *)self addBlockingReactorID:reactorID];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3052000000;
     v20 = __Block_byref_object_copy__27;
     v21 = __Block_byref_object_dispose__27;
     v22 = 0;
-    v14 = [a3 url];
+    v14 = [location url];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __93__NSFileAccessClaim_makeProviderOfItemAtLocation_provideIfNecessaryWithOptions_thenContinue___block_invoke;
     v18[3] = &unk_1E69F8058;
-    v18[4] = v10;
+    v18[4] = reactorID;
     v18[5] = self;
-    v18[7] = a5;
+    v18[7] = continue;
     v18[8] = buf;
     v18[6] = v13;
-    v15 = [v9 provideItemAtURL:v14 withOptions:a4 forAccessClaim:self completionHandler:v18];
+    v15 = [itemProvider provideItemAtURL:v14 withOptions:options forAccessClaim:self completionHandler:v18];
     *(*&buf[8] + 40) = v15;
     if (v15)
     {
@@ -1157,9 +1157,9 @@ LABEL_9:
 
   else
   {
-    v17 = *(a5 + 2);
+    v17 = *(continue + 2);
 
-    v17(a5, 1);
+    v17(continue, 1);
   }
 }
 
@@ -1223,19 +1223,19 @@ uint64_t __93__NSFileAccessClaim_makeProviderOfItemAtLocation_provideIfNecessary
   return [*(a1 + 40) unblockClaimerForReason:*(a1 + 48)];
 }
 
-- (void)_checkIfMovingRequiresProvidingAmongWritingLocations:(id)a3 options:(unint64_t *)a4 thenContinue:(id)a5
+- (void)_checkIfMovingRequiresProvidingAmongWritingLocations:(id)locations options:(unint64_t *)options thenContinue:(id)continue
 {
   v64 = *MEMORY[0x1E69E9840];
-  if ([a3 count] < 2)
+  if ([locations count] < 2)
   {
-    v37 = *(a5 + 2);
+    v37 = *(continue + 2);
 
-    v37(a5, 0);
+    v37(continue, 0);
   }
 
   else
   {
-    v39 = a5;
+    continueCopy = continue;
     v9 = objc_opt_new();
     v10 = objc_opt_new();
     v11 = objc_opt_new();
@@ -1246,8 +1246,8 @@ uint64_t __93__NSFileAccessClaim_makeProviderOfItemAtLocation_provideIfNecessary
     v48[4] = v10;
     v48[5] = v11;
     v48[6] = v9;
-    v48[7] = a4;
-    [a3 enumerateObjectsUsingBlock:v48];
+    v48[7] = options;
+    [locations enumerateObjectsUsingBlock:v48];
 
     v42 = [MEMORY[0x1E695DFA8] set];
     obj = objc_opt_new();
@@ -1274,9 +1274,9 @@ uint64_t __93__NSFileAccessClaim_makeProviderOfItemAtLocation_provideIfNecessary
           v18 = [(NSFileAccessClaim *)self shouldMakeProviderProvideItemAtLocation:v16 withOptions:0];
           if (v16 != v17 && v18)
           {
-            v20 = [v16 itemProvider];
-            v21 = [v17 itemProvider];
-            if (v20 == v21 || [objc_msgSend(v20 "reactorID")])
+            itemProvider = [v16 itemProvider];
+            itemProvider2 = [v17 itemProvider];
+            if (itemProvider == itemProvider2 || [objc_msgSend(itemProvider "reactorID")])
             {
               [obj addObject:v15];
             }
@@ -1327,11 +1327,11 @@ uint64_t __93__NSFileAccessClaim_makeProviderOfItemAtLocation_provideIfNecessary
             v27 = [v26 objectAtIndexedSubscript:0];
             v28 = [v26 objectAtIndexedSubscript:1];
             dispatch_group_enter(v23);
-            v29 = [v27 itemProvider];
-            [v43 addObject:{objc_msgSend(v29, "reactorID")}];
-            v30 = [v27 standardizedURL];
+            itemProvider3 = [v27 itemProvider];
+            [v43 addObject:{objc_msgSend(itemProvider3, "reactorID")}];
+            standardizedURL = [v27 standardizedURL];
             v31 = [objc_msgSend(v28 "parent")];
-            v32 = [v28 name];
+            name = [v28 name];
             v45[0] = MEMORY[0x1E69E9820];
             v45[1] = 3221225472;
             v45[2] = __95__NSFileAccessClaim__checkIfMovingRequiresProvidingAmongWritingLocations_options_thenContinue___block_invoke_2;
@@ -1341,7 +1341,7 @@ uint64_t __93__NSFileAccessClaim_makeProviderOfItemAtLocation_provideIfNecessary
             v45[4] = v42;
             v45[5] = v27;
             v45[6] = self;
-            [v29 movingItemAtURL:v30 requiresProvidingWithDestinationDirectoryURL:v31 newFileName:v32 completionHandler:v45];
+            [itemProvider3 movingItemAtURL:standardizedURL requiresProvidingWithDestinationDirectoryURL:v31 newFileName:name completionHandler:v45];
           }
 
           v24 = [obj countByEnumeratingWithState:&v55 objects:v54 count:16];
@@ -1385,7 +1385,7 @@ uint64_t __93__NSFileAccessClaim_makeProviderOfItemAtLocation_provideIfNecessary
       block[5] = self;
       block[6] = v38;
       block[7] = v43;
-      block[8] = v39;
+      block[8] = continueCopy;
       dispatch_group_notify(v23, arbiterQueue, block);
       dispatch_release(v23);
       _Block_object_dispose(v46, 8);
@@ -1393,7 +1393,7 @@ uint64_t __93__NSFileAccessClaim_makeProviderOfItemAtLocation_provideIfNecessary
 
     else
     {
-      v39[2](v39, v42);
+      continueCopy[2](continueCopy, v42);
     }
   }
 }
@@ -1487,7 +1487,7 @@ void __95__NSFileAccessClaim__checkIfMovingRequiresProvidingAmongWritingLocation
   }
 }
 
-- (void)makeProvidersProvideItemsForReadingLocations:(id)a3 options:(unint64_t *)a4 andWritingLocationsIfNecessary:(id)a5 options:(unint64_t *)a6 thenContinue:(id)a7
+- (void)makeProvidersProvideItemsForReadingLocations:(id)locations options:(unint64_t *)options andWritingLocationsIfNecessary:(id)necessary options:(unint64_t *)a6 thenContinue:(id)continue
 {
   v13[10] = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_arbiterQueue);
@@ -1496,12 +1496,12 @@ void __95__NSFileAccessClaim__checkIfMovingRequiresProvidingAmongWritingLocation
   v13[2] = __126__NSFileAccessClaim_makeProvidersProvideItemsForReadingLocations_options_andWritingLocationsIfNecessary_options_thenContinue___block_invoke;
   v13[3] = &unk_1E69F8198;
   v13[4] = self;
-  v13[5] = a5;
-  v13[6] = a3;
-  v13[7] = a7;
+  v13[5] = necessary;
+  v13[6] = locations;
+  v13[7] = continue;
   v13[8] = a6;
-  v13[9] = a4;
-  [(NSFileAccessClaim *)self ensureProvidersOfItemsAtReadingLocations:a3 writingLocations:a5 thenContinue:v13];
+  v13[9] = options;
+  [(NSFileAccessClaim *)self ensureProvidersOfItemsAtReadingLocations:locations writingLocations:necessary thenContinue:v13];
 }
 
 uint64_t __126__NSFileAccessClaim_makeProvidersProvideItemsForReadingLocations_options_andWritingLocationsIfNecessary_options_thenContinue___block_invoke(uint64_t a1)
@@ -1799,16 +1799,16 @@ uint64_t __126__NSFileAccessClaim_makeProvidersProvideItemsForReadingLocations_o
   return [v2 unblockClaimerForReason:v3];
 }
 
-- (void)makeProviderOfItemAtLocation:(id)a3 providePhysicalURLThenContinue:(id)a4
+- (void)makeProviderOfItemAtLocation:(id)location providePhysicalURLThenContinue:(id)continue
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = [a3 itemProvider];
-  v8 = [v7 reactorID];
-  if (!v7 || (v9 = v8, [(NSString *)self->_purposeIDOrNil isEqual:v8]) || self->_cameFromSuperarbiter || [(NSFileAccessClaim *)self claimerError])
+  itemProvider = [location itemProvider];
+  reactorID = [itemProvider reactorID];
+  if (!itemProvider || (v9 = reactorID, [(NSString *)self->_purposeIDOrNil isEqual:reactorID]) || self->_cameFromSuperarbiter || [(NSFileAccessClaim *)self claimerError])
   {
-    v10 = *(a4 + 2);
+    v10 = *(continue + 2);
 
-    v10(a4, 0);
+    v10(continue, 0);
   }
 
   else
@@ -1827,7 +1827,7 @@ uint64_t __126__NSFileAccessClaim_makeProvidersProvideItemsForReadingLocations_o
     v13 = [NSString stringWithFormat:@"Waiting for provider %@ to provide a physical URL", v9];
     [(NSMutableArray *)self->_claimerBlockageReasons addObject:v13];
     [(NSFileAccessClaim *)self addBlockingReactorID:v9];
-    v14 = [a3 standardizedURL];
+    standardizedURL = [location standardizedURL];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __81__NSFileAccessClaim_makeProviderOfItemAtLocation_providePhysicalURLThenContinue___block_invoke;
@@ -1835,8 +1835,8 @@ uint64_t __126__NSFileAccessClaim_makeProvidersProvideItemsForReadingLocations_o
     v15[4] = v9;
     v15[5] = self;
     v15[6] = v13;
-    v15[7] = a4;
-    [v7 providePhysicalURLForURL:v14 completionHandler:v15];
+    v15[7] = continue;
+    [itemProvider providePhysicalURLForURL:standardizedURL completionHandler:v15];
   }
 }
 
@@ -1860,28 +1860,28 @@ uint64_t __81__NSFileAccessClaim_makeProviderOfItemAtLocation_providePhysicalURL
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)makeProviderOfItemAtLocation:(id)a3 provideOrAttachPhysicalURLIfNecessaryForPurposeID:(id)a4 readingOptions:(unint64_t)a5 thenContinue:(id)a6
+- (void)makeProviderOfItemAtLocation:(id)location provideOrAttachPhysicalURLIfNecessaryForPurposeID:(id)d readingOptions:(unint64_t)options thenContinue:(id)continue
 {
-  v7 = a5;
+  optionsCopy = options;
   v16 = *MEMORY[0x1E69E9840];
-  v11 = [a3 itemProvider];
-  if (v11 && (v12 = [objc_msgSend(v11 "reactorID")], (v7 & 4) != 0) && (v12 & 1) == 0)
+  itemProvider = [location itemProvider];
+  if (itemProvider && (v12 = [objc_msgSend(itemProvider "reactorID")], (optionsCopy & 4) != 0) && (v12 & 1) == 0)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __128__NSFileAccessClaim_makeProviderOfItemAtLocation_provideOrAttachPhysicalURLIfNecessaryForPurposeID_readingOptions_thenContinue___block_invoke;
     v14[3] = &unk_1E69F81E8;
     v15 = 1;
-    v14[4] = a3;
-    v14[5] = a6;
-    [(NSFileAccessClaim *)self makeProviderOfItemAtLocation:a3 providePhysicalURLThenContinue:v14];
+    v14[4] = location;
+    v14[5] = continue;
+    [(NSFileAccessClaim *)self makeProviderOfItemAtLocation:location providePhysicalURLThenContinue:v14];
   }
 
   else
   {
-    v13 = *(a6 + 2);
+    v13 = *(continue + 2);
 
-    v13(a6, 0);
+    v13(continue, 0);
   }
 }
 
@@ -1898,28 +1898,28 @@ uint64_t __128__NSFileAccessClaim_makeProviderOfItemAtLocation_provideOrAttachPh
   return v3();
 }
 
-- (void)makeProviderOfItemAtLocation:(id)a3 provideOrAttachPhysicalURLIfNecessaryForPurposeID:(id)a4 writingOptions:(unint64_t)a5 thenContinue:(id)a6
+- (void)makeProviderOfItemAtLocation:(id)location provideOrAttachPhysicalURLIfNecessaryForPurposeID:(id)d writingOptions:(unint64_t)options thenContinue:(id)continue
 {
-  v7 = a5;
+  optionsCopy = options;
   v16 = *MEMORY[0x1E69E9840];
-  v11 = [a3 itemProvider];
-  if (v11 && (v12 = [objc_msgSend(v11 "reactorID")], (v7 & 0x13) != 0) && (v12 & 1) == 0)
+  itemProvider = [location itemProvider];
+  if (itemProvider && (v12 = [objc_msgSend(itemProvider "reactorID")], (optionsCopy & 0x13) != 0) && (v12 & 1) == 0)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __128__NSFileAccessClaim_makeProviderOfItemAtLocation_provideOrAttachPhysicalURLIfNecessaryForPurposeID_writingOptions_thenContinue___block_invoke;
     v14[3] = &unk_1E69F81E8;
-    v15 = (v7 & 0x11) == 0;
-    v14[4] = a3;
-    v14[5] = a6;
-    [(NSFileAccessClaim *)self makeProviderOfItemAtLocation:a3 providePhysicalURLThenContinue:v14];
+    v15 = (optionsCopy & 0x11) == 0;
+    v14[4] = location;
+    v14[5] = continue;
+    [(NSFileAccessClaim *)self makeProviderOfItemAtLocation:location providePhysicalURLThenContinue:v14];
   }
 
   else
   {
-    v13 = *(a6 + 2);
+    v13 = *(continue + 2);
 
-    v13(a6, 0);
+    v13(continue, 0);
   }
 }
 
@@ -1936,7 +1936,7 @@ uint64_t __128__NSFileAccessClaim_makeProviderOfItemAtLocation_provideOrAttachPh
   return v3();
 }
 
-- (void)addReacquirer:(id)a3 forPresenterID:(id)a4
+- (void)addReacquirer:(id)reacquirer forPresenterID:(id)d
 {
   v11[6] = *MEMORY[0x1E69E9840];
   reacquisitionProceduresByPresenterID = self->_reacquisitionProceduresByPresenterID;
@@ -1946,25 +1946,25 @@ uint64_t __128__NSFileAccessClaim_makeProviderOfItemAtLocation_provideOrAttachPh
     self->_reacquisitionProceduresByPresenterID = reacquisitionProceduresByPresenterID;
   }
 
-  v8 = [(NSMutableDictionary *)reacquisitionProceduresByPresenterID objectForKey:a4];
+  v8 = [(NSMutableDictionary *)reacquisitionProceduresByPresenterID objectForKey:d];
   if (v8)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __50__NSFileAccessClaim_addReacquirer_forPresenterID___block_invoke;
     v11[3] = &unk_1E69F8210;
-    v11[4] = a3;
+    v11[4] = reacquirer;
     v11[5] = v8;
-    v9 = v11;
+    reacquirerCopy = v11;
   }
 
   else
   {
-    v9 = a3;
+    reacquirerCopy = reacquirer;
   }
 
-  v10 = [v9 copy];
-  [(NSMutableDictionary *)self->_reacquisitionProceduresByPresenterID setObject:v10 forKey:a4];
+  v10 = [reacquirerCopy copy];
+  [(NSMutableDictionary *)self->_reacquisitionProceduresByPresenterID setObject:v10 forKey:d];
 }
 
 uint64_t __50__NSFileAccessClaim_addReacquirer_forPresenterID___block_invoke(uint64_t a1, uint64_t a2)
@@ -1980,10 +1980,10 @@ uint64_t __50__NSFileAccessClaim_addReacquirer_forPresenterID___block_invoke(uin
   return (*(v2 + 16))(v2, v4);
 }
 
-- (id)prepareAndBlockOnClaimRelinquishmentForPresentersOfItemAtLocation:(id)a3 orContainedItem:(BOOL)a4 withRelinquishProcedureGetter:(id)a5
+- (id)prepareAndBlockOnClaimRelinquishmentForPresentersOfItemAtLocation:(id)location orContainedItem:(BOOL)item withRelinquishProcedureGetter:(id)getter
 {
   v38 = *MEMORY[0x1E69E9840];
-  v22 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (!self->_cameFromSuperarbiter)
   {
     v26[0] = MEMORY[0x1E69E9820];
@@ -1991,30 +1991,30 @@ uint64_t __50__NSFileAccessClaim_addReacquirer_forPresenterID___block_invoke(uin
     v26[2] = __133__NSFileAccessClaim_prepareAndBlockOnClaimRelinquishmentForPresentersOfItemAtLocation_orContainedItem_withRelinquishProcedureGetter___block_invoke;
     v26[3] = &unk_1E69F8260;
     v26[4] = self;
-    v26[5] = a3;
-    v26[6] = v22;
-    v26[7] = a5;
+    v26[5] = location;
+    v26[6] = array;
+    v26[7] = getter;
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __133__NSFileAccessClaim_prepareAndBlockOnClaimRelinquishmentForPresentersOfItemAtLocation_orContainedItem_withRelinquishProcedureGetter___block_invoke_3;
     v25[3] = &unk_1E69F8288;
-    v25[4] = a3;
+    v25[4] = location;
     v25[5] = v26;
-    [a3 forEachPresenterOfContainingFilePackagePerformProcedure:v25];
+    [location forEachPresenterOfContainingFilePackagePerformProcedure:v25];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __133__NSFileAccessClaim_prepareAndBlockOnClaimRelinquishmentForPresentersOfItemAtLocation_orContainedItem_withRelinquishProcedureGetter___block_invoke_4;
     v24[3] = &unk_1E69F82B0;
     v24[4] = v26;
-    [a3 forEachPresenterOfItemPerformProcedure:v24];
-    if (a4 || [a3 itemIsFilePackage])
+    [location forEachPresenterOfItemPerformProcedure:v24];
+    if (item || [location itemIsFilePackage])
     {
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __133__NSFileAccessClaim_prepareAndBlockOnClaimRelinquishmentForPresentersOfItemAtLocation_orContainedItem_withRelinquishProcedureGetter___block_invoke_5;
       v23[3] = &unk_1E69F82B0;
       v23[4] = v26;
-      [a3 forEachPresenterOfContainedItemPerformProcedure:v23];
+      [location forEachPresenterOfContainedItemPerformProcedure:v23];
     }
 
     v9 = [MEMORY[0x1E695DEC8] arrayWithArray:{-[NSFileAccessClaim pendingClaims](self, "pendingClaims")}];
@@ -2055,10 +2055,10 @@ uint64_t __50__NSFileAccessClaim_addReacquirer_forPresenterID___block_invoke(uin
             v18 = _NSFCClaimsLog();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
             {
-              v19 = [v16 claimID];
+              claimID = [v16 claimID];
               v20 = self->_claimID;
               *buf = 138543874;
-              v28 = v19;
+              v28 = claimID;
               v29 = 2114;
               v30 = v20;
               v31 = 2114;
@@ -2077,7 +2077,7 @@ uint64_t __50__NSFileAccessClaim_addReacquirer_forPresenterID___block_invoke(uin
     }
   }
 
-  return v22;
+  return array;
 }
 
 void __133__NSFileAccessClaim_prepareAndBlockOnClaimRelinquishmentForPresentersOfItemAtLocation_orContainedItem_withRelinquishProcedureGetter___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4)
@@ -2152,9 +2152,9 @@ void __133__NSFileAccessClaim_prepareAndBlockOnClaimRelinquishmentForPresentersO
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)canAccessLocations:(id)a3 forReading:(BOOL)a4 error:(id *)a5
+- (BOOL)canAccessLocations:(id)locations forReading:(BOOL)reading error:(id *)error
 {
-  v18 = a4;
+  readingCopy = reading;
   v33 = *MEMORY[0x1E69E9840];
   v20 = 0;
   v21 = &v20;
@@ -2164,7 +2164,7 @@ void __133__NSFileAccessClaim_prepareAndBlockOnClaimRelinquishmentForPresentersO
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v29 objects:v28 count:16];
+  v8 = [locations countByEnumeratingWithState:&v29 objects:v28 count:16];
   if (v8)
   {
     v9 = *v30;
@@ -2174,7 +2174,7 @@ void __133__NSFileAccessClaim_prepareAndBlockOnClaimRelinquishmentForPresentersO
       {
         if (*v30 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(locations);
         }
 
         v11 = *(*(&v29 + 1) + 8 * i);
@@ -2187,7 +2187,7 @@ void __133__NSFileAccessClaim_prepareAndBlockOnClaimRelinquishmentForPresentersO
         [v11 forEachPresenterOfItemPerformProcedure:v19];
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v29 objects:v28 count:16];
+      v8 = [locations countByEnumeratingWithState:&v29 objects:v28 count:16];
     }
 
     while (v8);
@@ -2205,18 +2205,18 @@ void __133__NSFileAccessClaim_prepareAndBlockOnClaimRelinquishmentForPresentersO
       v26 = 2114;
       v27 = purposeIDOrNil;
       _os_log_error_impl(&dword_18075C000, v12, OS_LOG_TYPE_ERROR, "Denying access for claim %{public}@ because the presenter (reactor ID: %{public}@) performing it has been disconnected", buf, 0x16u);
-      if (!a5)
+      if (!error)
       {
         goto LABEL_15;
       }
     }
 
-    else if (!a5)
+    else if (!error)
     {
       goto LABEL_15;
     }
 
-    if (v18)
+    if (readingCopy)
     {
       v13 = 257;
     }
@@ -2226,7 +2226,7 @@ void __133__NSFileAccessClaim_prepareAndBlockOnClaimRelinquishmentForPresentersO
       v13 = 513;
     }
 
-    *a5 = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:v13 userInfo:0];
+    *error = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:v13 userInfo:0];
   }
 
 LABEL_15:
@@ -2251,38 +2251,38 @@ uint64_t __57__NSFileAccessClaim_canAccessLocations_forReading_error___block_inv
   return result;
 }
 
-- (BOOL)_writeArchiveOfDirectoryAtURL:(id)a3 toURL:(id)a4 error:(id *)a5
+- (BOOL)_writeArchiveOfDirectoryAtURL:(id)l toURL:(id)rL error:(id *)error
 {
   v59 = *MEMORY[0x1E69E9840];
-  v8 = [a3 path];
-  v9 = [a3 fileSystemRepresentation];
-  v10 = [a4 fileSystemRepresentation];
-  if (!v8 || !v9 || !v10)
+  path = [l path];
+  fileSystemRepresentation = [l fileSystemRepresentation];
+  fileSystemRepresentation2 = [rL fileSystemRepresentation];
+  if (!path || !fileSystemRepresentation || !fileSystemRepresentation2)
   {
-    if (!a5)
+    if (!error)
     {
       return 0;
     }
 
     v55[0] = @"NSSourceFilePathErrorKey";
     v55[1] = @"NSDestinationFilePath";
-    v56[0] = a3;
-    v56[1] = a4;
+    v56[0] = l;
+    v56[1] = rL;
     v16 = 0;
-    *a5 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 256, [MEMORY[0x1E695DF20] dictionaryWithObjects:v56 forKeys:v55 count:2]);
+    *error = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 256, [MEMORY[0x1E695DF20] dictionaryWithObjects:v56 forKeys:v55 count:2]);
     return v16;
   }
 
   v11 = archive_write_new();
   archive_write_set_format_zip();
-  v54 = a4;
-  v52 = a3;
+  rLCopy = rL;
+  lCopy = l;
   if (archive_write_open_filename())
   {
-    if (a5)
+    if (error)
     {
       v12 = __error();
-      *a5 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(*v12, a4, 0, 0, 0);
+      *error = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(*v12, rL, 0, 0, 0);
     }
 
     free(v11);
@@ -2290,7 +2290,7 @@ uint64_t __57__NSFileAccessClaim_canAccessLocations_forReading_error___block_inv
     v11 = 0;
     v14 = 0;
     v15 = 0;
-    v57 = v9;
+    v57 = fileSystemRepresentation;
     v58 = 0;
   }
 
@@ -2298,7 +2298,7 @@ uint64_t __57__NSFileAccessClaim_canAccessLocations_forReading_error___block_inv
   {
     disk_new = archive_read_disk_new();
     archive_read_disk_set_standard_lookup();
-    v57 = v9;
+    v57 = fileSystemRepresentation;
     v58 = 0;
     v17 = fts_open(&v57, 84, 0);
     if (v17)
@@ -2307,12 +2307,12 @@ uint64_t __57__NSFileAccessClaim_canAccessLocations_forReading_error___block_inv
       v15 = 1;
     }
 
-    else if (a5)
+    else if (error)
     {
       v18 = __error();
       v14 = 0;
       v15 = 0;
-      *a5 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(*v18, v52, 1, 0, 0);
+      *error = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(*v18, lCopy, 1, 0, 0);
     }
 
     else
@@ -2322,7 +2322,7 @@ uint64_t __57__NSFileAccessClaim_canAccessLocations_forReading_error___block_inv
     }
   }
 
-  v19 = [objc_msgSend(v8 "stringByDeletingLastPathComponent")];
+  v19 = [objc_msgSend(path "stringByDeletingLastPathComponent")];
   if (!v15)
   {
     v16 = 0;
@@ -2359,11 +2359,11 @@ uint64_t __57__NSFileAccessClaim_canAccessLocations_forReading_error___block_inv
 
       if ((v24 & 0x490) != 0)
       {
-        if (a5)
+        if (error)
         {
           v41 = *__error();
           v16 = 0;
-          *a5 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(v41, [MEMORY[0x1E695DFF8] fileURLWithFileSystemRepresentation:v22->fts_path isDirectory:0 relativeToURL:{0, v50}], 1, 0, 0);
+          *error = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(v41, [MEMORY[0x1E695DFF8] fileURLWithFileSystemRepresentation:v22->fts_path isDirectory:0 relativeToURL:{0, v50}], 1, 0, 0);
           goto LABEL_59;
         }
 
@@ -2373,7 +2373,7 @@ LABEL_49:
       }
     }
 
-    v25 = a5;
+    errorCopy = error;
     fts_accpath = v22->fts_accpath;
     v27 = _NSOpenFileDescriptor(fts_accpath, 0, 0);
     if (!v27)
@@ -2386,7 +2386,7 @@ LABEL_49:
     archive_entry_set_pathname();
     if (archive_read_disk_entry_from_file())
     {
-      if (v25)
+      if (errorCopy)
       {
         v43 = archive_errno();
         v44 = [MEMORY[0x1E695DFF8] fileURLWithFileSystemRepresentation:fts_accpath isDirectory:0 relativeToURL:{0, v50}];
@@ -2399,20 +2399,20 @@ LABEL_58:
       archive_entry_free();
       close(v28);
       v16 = 0;
-      a5 = v25;
+      error = errorCopy;
       disk_new = v51;
       goto LABEL_59;
     }
 
     if (archive_write_header())
     {
-      if (v25)
+      if (errorCopy)
       {
         v45 = archive_errno();
-        v44 = v54;
+        v44 = rLCopy;
         v46 = 0;
 LABEL_57:
-        *v25 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(v45, v44, v46, 0, 0);
+        *errorCopy = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(v45, v44, v46, 0, 0);
       }
 
       goto LABEL_58;
@@ -2449,11 +2449,11 @@ LABEL_57:
 
       if (archive_write_data() == -1)
       {
-        if (v25)
+        if (errorCopy)
         {
-          v35 = v25;
+          v35 = errorCopy;
           v36 = archive_errno();
-          v37 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(v36, v54, 0, 0, 0);
+          v37 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(v36, rLCopy, 0, 0, 0);
 LABEL_39:
           v38 = 0;
           *v35 = v37;
@@ -2466,11 +2466,11 @@ LABEL_39:
     }
 
     v38 = v34 == 0;
-    if (v25 && v34)
+    if (errorCopy && v34)
     {
       v39 = *__error();
       v37 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(v39, [MEMORY[0x1E695DFF8] fileURLWithFileSystemRepresentation:fts_accpath isDirectory:0 relativeToURL:{0, v50}], 1, 0, 0);
-      v35 = v25;
+      v35 = errorCopy;
       goto LABEL_39;
     }
 
@@ -2482,7 +2482,7 @@ LABEL_41:
 
     archive_entry_free();
     close(v28);
-    a5 = v25;
+    error = errorCopy;
     disk_new = v51;
     if (!v38)
     {
@@ -2498,10 +2498,10 @@ LABEL_21:
     }
   }
 
-  if (a5)
+  if (error)
   {
     v42 = *__error();
-    *a5 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(v42, [MEMORY[0x1E695DFF8] fileURLWithFileSystemRepresentation:fts_accpath isDirectory:0 relativeToURL:{0, v50}], 1, 0, 0);
+    *error = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(v42, [MEMORY[0x1E695DFF8] fileURLWithFileSystemRepresentation:fts_accpath isDirectory:0 relativeToURL:{0, v50}], 1, 0, 0);
   }
 
   close(0);
@@ -2525,11 +2525,11 @@ LABEL_64:
     goto LABEL_65;
   }
 
-  if (a5)
+  if (error)
   {
     v47 = __error();
     v16 = 0;
-    *a5 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(*v47, v52, 1, 0, 0);
+    *error = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(*v47, lCopy, 1, 0, 0);
     goto LABEL_64;
   }
 
@@ -2539,11 +2539,11 @@ LABEL_64:
 LABEL_65:
     if (archive_write_free())
     {
-      if (a5)
+      if (error)
       {
         v48 = archive_errno();
         v16 = 0;
-        *a5 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(v48, v54, 0, 0, 0);
+        *error = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(v48, rLCopy, 0, 0, 0);
       }
 
       else
@@ -2567,18 +2567,18 @@ LABEL_70:
   return v16;
 }
 
-- (void)prepareItemForUploadingFromURL:(id)a3 thenContinue:(id)a4
+- (void)prepareItemForUploadingFromURL:(id)l thenContinue:(id)continue
 {
   v29 = *MEMORY[0x1E69E9840];
   [(NSFileAccessClaim *)self blockClaimerForReason:@"Zipping"];
-  v7 = [(NSFileAccessClaim *)self claimID];
+  claimID = [(NSFileAccessClaim *)self claimID];
   v8 = _NSFCClaimsLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138543619;
-    *&buf[4] = v7;
+    *&buf[4] = claimID;
     v27 = 2113;
-    v28 = [a3 path];
+    path = [l path];
     _os_log_impl(&dword_18075C000, v8, OS_LOG_TYPE_INFO, "Claim %{public}@ is waiting for file %{private}@ to be prepared for uploading", buf, 0x16u);
   }
 
@@ -2586,12 +2586,12 @@ LABEL_70:
   v19[1] = 3221225472;
   v20 = __65__NSFileAccessClaim_prepareItemForUploadingFromURL_thenContinue___block_invoke;
   v21 = &unk_1E69F8300;
-  v23 = self;
-  v24 = a4;
-  v22 = v7;
+  selfCopy = self;
+  continueCopy = continue;
+  v22 = claimID;
   *buf = 0;
-  v9 = [[(NSString *)NSTemporaryDirectory() stringByAppendingPathComponent:@"CoordinatedZipFileXXXXXX"] fileSystemRepresentation];
-  v10 = strdup(v9);
+  fileSystemRepresentation = [[(NSString *)NSTemporaryDirectory() stringByAppendingPathComponent:@"CoordinatedZipFileXXXXXX"] fileSystemRepresentation];
+  v10 = strdup(fileSystemRepresentation);
   if (![+[NSFileManager createDirectoryAtPath:"createDirectoryAtPath:withIntermediateDirectories:attributes:error:"]
   {
     v14 = *buf;
@@ -2617,13 +2617,13 @@ LABEL_9:
   v12 = *MEMORY[0x1E695DC68];
   v25[0] = *MEMORY[0x1E695DB78];
   v25[1] = v12;
-  v13 = [a3 resourceValuesForKeys:objc_msgSend(MEMORY[0x1E695DEC8] error:{"arrayWithObjects:count:", v25, 2), &v17}];
+  v13 = [l resourceValuesForKeys:objc_msgSend(MEMORY[0x1E695DEC8] error:{"arrayWithObjects:count:", v25, 2), &v17}];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __65__NSFileAccessClaim_prepareItemForUploadingFromURL_thenContinue___block_invoke_102;
   v16[3] = &unk_1E69F7CA0;
   v16[4] = v13;
-  v16[5] = a3;
+  v16[5] = l;
   v16[6] = self;
   v16[7] = v11;
   v16[8] = v19;
@@ -2633,7 +2633,7 @@ LABEL_9:
   v15[3] = &unk_1E69F8328;
   v15[4] = v13;
   v15[5] = v11;
-  v15[6] = a3;
+  v15[6] = l;
   v15[7] = self;
   v15[8] = v17;
   v15[9] = v19;
@@ -2983,14 +2983,14 @@ uint64_t __28__NSFileAccessClaim_revoked__block_invoke_2(uint64_t result)
   return result;
 }
 
-- (id)descriptionWithIndenting:(id)a3
+- (id)descriptionWithIndenting:(id)indenting
 {
   v38 = *MEMORY[0x1E69E9840];
   client = self->_client;
   if (client)
   {
-    v6 = [(NSXPCConnection *)client processIdentifier];
-    v7 = proc_name(v6, buffer, 0x100u);
+    processIdentifier = [(NSXPCConnection *)client processIdentifier];
+    v7 = proc_name(processIdentifier, buffer, 0x100u);
     if (v7 < 1)
     {
       v8 = 0;
@@ -3001,7 +3001,7 @@ uint64_t __28__NSFileAccessClaim_revoked__block_invoke_2(uint64_t result)
       v8 = [[NSString alloc] initWithBytes:buffer length:v7 encoding:4];
     }
 
-    v9 = [NSString stringWithFormat:@"%@ (%i)", v8, v6];
+    v9 = [NSString stringWithFormat:@"%@ (%i)", v8, processIdentifier];
   }
 
   else
@@ -3010,8 +3010,8 @@ uint64_t __28__NSFileAccessClaim_revoked__block_invoke_2(uint64_t result)
   }
 
   v10 = +[(NSString *)NSMutableString];
-  v11 = [a3 stringByAppendingString:@"    "];
-  [(NSString *)v10 appendFormat:@"%@<%@ %p> client: %@, claim ID: %@", a3, objc_opt_class(), self, v9, self->_claimID];
+  v11 = [indenting stringByAppendingString:@"    "];
+  [(NSString *)v10 appendFormat:@"%@<%@ %p> client: %@, claim ID: %@", indenting, objc_opt_class(), self, v9, self->_claimID];
   if (self->_cameFromSuperarbiter)
   {
     [(NSString *)v10 appendString:@" - came from superabiter"];
@@ -3099,7 +3099,7 @@ uint64_t __28__NSFileAccessClaim_revoked__block_invoke_2(uint64_t result)
   return v10;
 }
 
-- (BOOL)checkIfSymbolicLinkAtURL:(id)a3 withResolutionCount:(int64_t *)a4 andIfSoThenReevaluateSelf:(id)a5
+- (BOOL)checkIfSymbolicLinkAtURL:(id)l withResolutionCount:(int64_t *)count andIfSoThenReevaluateSelf:(id)self
 {
   v27 = *MEMORY[0x1E69E9840];
   if (self->_claimerError)
@@ -3108,37 +3108,37 @@ uint64_t __28__NSFileAccessClaim_revoked__block_invoke_2(uint64_t result)
   }
 
   v24 = 0;
-  if (![a3 getResourceValue:&v24 forKey:*MEMORY[0x1E695DBC8] error:0] || !objc_msgSend(v24, "BOOLValue"))
+  if (![l getResourceValue:&v24 forKey:*MEMORY[0x1E695DBC8] error:0] || !objc_msgSend(v24, "BOOLValue"))
   {
     return 0;
   }
 
-  v9 = (*a4)++;
+  v9 = (*count)++;
   if (v9 > 31)
   {
     v20 = _NSFCClaimsLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v22 = [(NSFileAccessClaim *)self claimID];
+      claimID = [(NSFileAccessClaim *)self claimID];
       *buf = 138543362;
-      v26 = v22;
+      v26 = claimID;
       _os_log_error_impl(&dword_18075C000, v20, OS_LOG_TYPE_ERROR, "Claim %{public}@ failed symbolic link resolution due to an apparent link cycle", buf, 0xCu);
     }
 
-    [(NSFileAccessClaim *)self setClaimerError:_NSErrorWithFilePathErrnoVariantAndExtraUserInfo(62, a3, 1, 0, 0)];
+    [(NSFileAccessClaim *)self setClaimerError:_NSErrorWithFilePathErrnoVariantAndExtraUserInfo(62, l, 1, 0, 0)];
     return 0;
   }
 
-  v10 = [a3 path];
-  if (!v10)
+  path = [l path];
+  if (!path)
   {
     return 0;
   }
 
-  v11 = v10;
+  v11 = path;
   v12 = objc_alloc_init(NSFileManager);
   v13 = [(NSFileManager *)v12 destinationOfSymbolicLinkAtPath:v11 error:0];
-  if (v13 && (v14 = [MEMORY[0x1E695DFF8] fileURLWithPath:v13 relativeToURL:a3]) != 0)
+  if (v13 && (v14 = [MEMORY[0x1E695DFF8] fileURLWithPath:v13 relativeToURL:l]) != 0)
   {
     v15 = v14;
     if (self->_blockageCount || [(NSMutableArray *)self->_claimerBlockageReasons count])
@@ -3165,7 +3165,7 @@ uint64_t __28__NSFileAccessClaim_revoked__block_invoke_2(uint64_t result)
     }
 
     [(NSFileAccessClaim *)self devalueSelf];
-    (*(a5 + 2))(a5, v15);
+    (*(self + 2))(self, v15);
     [(NSFileAccessClaim *)self unblock];
     v19 = 1;
   }
@@ -3178,7 +3178,7 @@ uint64_t __28__NSFileAccessClaim_revoked__block_invoke_2(uint64_t result)
   return v19;
 }
 
-- (id)purposeIDOfClaimOnItemAtLocation:(id)a3 forMessagingPresenter:(id)a4
+- (id)purposeIDOfClaimOnItemAtLocation:(id)location forMessagingPresenter:(id)presenter
 {
   v16 = *MEMORY[0x1E69E9840];
   v10 = 0;
@@ -3186,15 +3186,15 @@ uint64_t __28__NSFileAccessClaim_revoked__block_invoke_2(uint64_t result)
   v12 = 0x3052000000;
   v13 = __Block_byref_object_copy__172;
   v14 = __Block_byref_object_dispose__173;
-  v15 = [(NSFileAccessClaim *)self purposeID];
+  purposeID = [(NSFileAccessClaim *)self purposeID];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __76__NSFileAccessClaim_purposeIDOfClaimOnItemAtLocation_forMessagingPresenter___block_invoke;
   v9[3] = &unk_1E69F8378;
   v9[4] = self;
-  v9[5] = a4;
+  v9[5] = presenter;
   v9[6] = &v10;
-  [a3 forEachRelevantAccessClaimPerformProcedure:v9];
+  [location forEachRelevantAccessClaimPerformProcedure:v9];
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
   return v7;
@@ -3258,18 +3258,18 @@ uint64_t __76__NSFileAccessClaim_purposeIDOfClaimOnItemAtLocation_forMessagingPr
   }
 }
 
-- (void)_protectIfNecessaryFileAtURL:(id)a3 withOptions:(unint64_t)a4 forReading:(BOOL)a5
+- (void)_protectIfNecessaryFileAtURL:(id)l withOptions:(unint64_t)options forReading:(BOOL)reading
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v7 = (a4 >> 2) & 1;
-  if (!a4)
+  v7 = (options >> 2) & 1;
+  if (!options)
   {
     LODWORD(v7) = 1;
   }
 
-  if (a5)
+  if (reading)
   {
-    v8 = (a4 & 0xC) == 0;
+    v8 = (options & 0xC) == 0;
   }
 
   else
@@ -3280,7 +3280,7 @@ uint64_t __76__NSFileAccessClaim_purposeIDOfClaimOnItemAtLocation_forMessagingPr
   if (![(NSMutableDictionary *)self->_fileHandlesForEvictionProtection objectForKey:?])
   {
     v11[0] = 0;
-    if ([a3 getResourceValue:v11 forKey:*MEMORY[0x1E695DDA8] error:0])
+    if ([l getResourceValue:v11 forKey:*MEMORY[0x1E695DDA8] error:0])
     {
       if ((v8 & [v11[0] BOOLValue] & 1) == 0)
       {
@@ -3298,18 +3298,18 @@ uint64_t __76__NSFileAccessClaim_purposeIDOfClaimOnItemAtLocation_forMessagingPr
       self->_fileHandlesForEvictionProtection = objc_alloc_init(MEMORY[0x1E695DF90]);
     }
 
-    if ([a3 fileSystemRepresentation])
+    if ([l fileSystemRepresentation])
     {
-      v9 = open([a3 fileSystemRepresentation], 0x8000);
+      v9 = open([l fileSystemRepresentation], 0x8000);
       if (v9 == -1)
       {
-        [(NSMutableDictionary *)self->_fileHandlesForEvictionProtection setObject:+[NSFileHandle forKey:"fileHandleWithNullDevice"], a3];
+        [(NSMutableDictionary *)self->_fileHandlesForEvictionProtection setObject:+[NSFileHandle forKey:"fileHandleWithNullDevice"], l];
       }
 
       else
       {
         v10 = [[NSFileHandle alloc] initWithFileDescriptor:v9 closeOnDealloc:1];
-        [(NSMutableDictionary *)self->_fileHandlesForEvictionProtection setObject:v10 forKey:a3];
+        [(NSMutableDictionary *)self->_fileHandlesForEvictionProtection setObject:v10 forKey:l];
       }
     }
   }

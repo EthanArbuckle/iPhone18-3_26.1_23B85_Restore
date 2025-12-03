@@ -1,12 +1,12 @@
 @interface Choice
 - (RUIElement)parent;
 - (_TtC8RemoteUI6Choice)init;
-- (_TtC8RemoteUI6Choice)initWithAttributes:(id)a3 parent:(id)a4;
+- (_TtC8RemoteUI6Choice)initWithAttributes:(id)attributes parent:(id)parent;
 - (id)staticValues;
 - (void)pageDidChange;
 - (void)startActivityIndicator;
 - (void)stopActivityIndicator;
-- (void)tappedWithSender:(id)a3;
+- (void)tappedWithSender:(id)sender;
 @end
 
 @implementation Choice
@@ -14,7 +14,7 @@
 - (RUIElement)parent
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.super.isa) + 0x198);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
 
   return v4;
@@ -22,7 +22,7 @@
 
 - (void)startActivityIndicator
 {
-  v2 = self;
+  selfCopy = self;
   sub_21BA0B9AC();
 }
 
@@ -42,7 +42,7 @@
     if (v5 <= 0)
     {
       v6 = *((*MEMORY[0x277D85000] & self->super.super.isa) + 0x120);
-      v8 = self;
+      selfCopy = self;
       v7 = v6();
       v7();
     }
@@ -51,27 +51,27 @@
 
 - (void)pageDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_21BA0BB68();
 }
 
-- (void)tappedWithSender:(id)a3
+- (void)tappedWithSender:(id)sender
 {
-  if (a3)
+  if (sender)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_21BA8846C();
-    v5 = swift_unknownObjectRelease();
+    selfCopy2 = swift_unknownObjectRelease();
   }
 
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
-  v6 = (*((*MEMORY[0x277D85000] & self->super.super.isa) + 0xF0))(v5);
+  v6 = (*((*MEMORY[0x277D85000] & self->super.super.isa) + 0xF0))(selfCopy2);
   if (v6)
   {
     v7 = v6;
@@ -98,7 +98,7 @@
   return v2;
 }
 
-- (_TtC8RemoteUI6Choice)initWithAttributes:(id)a3 parent:(id)a4
+- (_TtC8RemoteUI6Choice)initWithAttributes:(id)attributes parent:(id)parent
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

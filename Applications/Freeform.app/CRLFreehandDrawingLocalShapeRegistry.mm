@@ -1,8 +1,8 @@
 @interface CRLFreehandDrawingLocalShapeRegistry
 + (id)sharedInstance;
-- (BOOL)consumeLocallyDrawnShapeItemUUID:(id)a3;
+- (BOOL)consumeLocallyDrawnShapeItemUUID:(id)d;
 - (CRLFreehandDrawingLocalShapeRegistry)init;
-- (void)registerLocallyDrawnShapeItem:(id)a3;
+- (void)registerLocallyDrawnShapeItem:(id)item;
 @end
 
 @implementation CRLFreehandDrawingLocalShapeRegistry
@@ -37,12 +37,12 @@
   return v2;
 }
 
-- (void)registerLocallyDrawnShapeItem:(id)a3
+- (void)registerLocallyDrawnShapeItem:(id)item
 {
-  v6 = a3;
+  itemCopy = item;
   os_unfair_lock_lock(&self->_localShapeUUIDLock);
   localShapeUUIDs = self->_localShapeUUIDs;
-  v5 = [v6 id];
+  v5 = [itemCopy id];
   [(NSMutableOrderedSet *)localShapeUUIDs addObject:v5];
 
   if ([(NSMutableOrderedSet *)self->_localShapeUUIDs count]>= 0x33)
@@ -58,14 +58,14 @@
   os_unfair_lock_unlock(&self->_localShapeUUIDLock);
 }
 
-- (BOOL)consumeLocallyDrawnShapeItemUUID:(id)a3
+- (BOOL)consumeLocallyDrawnShapeItemUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_localShapeUUIDLock);
-  v5 = [(NSMutableOrderedSet *)self->_localShapeUUIDs containsObject:v4];
+  v5 = [(NSMutableOrderedSet *)self->_localShapeUUIDs containsObject:dCopy];
   if (v5)
   {
-    [(NSMutableOrderedSet *)self->_localShapeUUIDs removeObject:v4];
+    [(NSMutableOrderedSet *)self->_localShapeUUIDs removeObject:dCopy];
   }
 
   os_unfair_lock_unlock(&self->_localShapeUUIDLock);

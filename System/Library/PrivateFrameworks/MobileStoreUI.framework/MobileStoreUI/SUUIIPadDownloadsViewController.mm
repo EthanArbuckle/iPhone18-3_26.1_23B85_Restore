@@ -1,38 +1,38 @@
 @interface SUUIIPadDownloadsViewController
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
 - (SUUIDownloadsChildViewControllerDelegate)delegate;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (void)_deleteAction:(id)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (void)_deleteAction:(id)action;
 - (void)_reload;
 - (void)_reloadLayout;
 - (void)_reloadNavigationItem;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)loadView;
-- (void)reloadDownloadsAtIndexes:(id)a3;
-- (void)setDownloads:(id)a3;
+- (void)reloadDownloadsAtIndexes:(id)indexes;
+- (void)setDownloads:(id)downloads;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation SUUIIPadDownloadsViewController
 
-- (void)setDownloads:(id)a3
+- (void)setDownloads:(id)downloads
 {
-  v3 = a3;
+  downloadsCopy = downloads;
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_downloads != v5)
+  downloadsCopy2 = downloads;
+  if (self->_downloads != downloadsCopy2)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if (self->_editing)
     {
-      v18 = v3;
+      v18 = downloadsCopy;
       v21 = 0u;
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v7 = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
-      v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      indexPathsForSelectedItems = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
+      v8 = [indexPathsForSelectedItems countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v8)
       {
         v9 = v8;
@@ -43,24 +43,24 @@
           {
             if (*v20 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(indexPathsForSelectedItems);
             }
 
             v12 = -[NSArray objectAtIndex:](self->_downloads, "objectAtIndex:", [*(*(&v19 + 1) + 8 * i) item]);
             v13 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v12, "persistentIdentifier")}];
-            [v6 addObject:v13];
+            [array addObject:v13];
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v9 = [indexPathsForSelectedItems countByEnumeratingWithState:&v19 objects:v23 count:16];
         }
 
         while (v9);
       }
 
-      v3 = v18;
+      downloadsCopy = v18;
     }
 
-    objc_storeStrong(&self->_downloads, v3);
+    objc_storeStrong(&self->_downloads, downloadsCopy);
     [(SUUIIPadDownloadsViewController *)self _reload];
     if ([(NSArray *)self->_downloads count])
     {
@@ -69,14 +69,14 @@
       {
         v15 = [(NSArray *)self->_downloads objectAtIndex:v14];
         v16 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v15, "persistentIdentifier")}];
-        if (![v6 containsObject:v16])
+        if (![array containsObject:v16])
         {
           goto LABEL_16;
         }
 
-        v17 = [v15 isCancelable];
+        isCancelable = [v15 isCancelable];
 
-        if (v17)
+        if (isCancelable)
         {
           break;
         }
@@ -100,14 +100,14 @@ LABEL_18:
   }
 }
 
-- (void)reloadDownloadsAtIndexes:(id)a3
+- (void)reloadDownloadsAtIndexes:(id)indexes
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __60__SUUIIPadDownloadsViewController_reloadDownloadsAtIndexes___block_invoke;
   v3[3] = &unk_2798F6230;
   v3[4] = self;
-  [a3 enumerateIndexesUsingBlock:v3];
+  [indexes enumerateIndexesUsingBlock:v3];
 }
 
 void __60__SUUIIPadDownloadsViewController_reloadDownloadsAtIndexes___block_invoke(uint64_t a1, uint64_t a2)
@@ -160,8 +160,8 @@ void __60__SUUIIPadDownloadsViewController_reloadDownloadsAtIndexes___block_invo
   [(UICollectionView *)self->_collectionView setDelegate:self];
   [(UICollectionView *)self->_collectionView setDataSource:self];
   v7 = self->_collectionView;
-  v8 = [MEMORY[0x277D75348] whiteColor];
-  [(UICollectionView *)v7 setBackgroundColor:v8];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [(UICollectionView *)v7 setBackgroundColor:whiteColor];
 
   [(UICollectionView *)self->_collectionView setAlwaysBounceVertical:1];
   [(UICollectionView *)self->_collectionView setAllowsMultipleSelection:1];
@@ -178,18 +178,18 @@ void __60__SUUIIPadDownloadsViewController_reloadDownloadsAtIndexes___block_invo
   [(SUUIIPadDownloadsViewController *)&v3 viewDidLayoutSubviews];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   downloads = self->_downloads;
-  v7 = a4;
-  v8 = a3;
-  v9 = -[NSArray objectAtIndex:](downloads, "objectAtIndex:", [v7 item]);
-  v10 = [v8 dequeueReusableCellWithReuseIdentifier:@"a" forIndexPath:v7];
+  pathCopy = path;
+  viewCopy = view;
+  v9 = -[NSArray objectAtIndex:](downloads, "objectAtIndex:", [pathCopy item]);
+  v10 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"a" forIndexPath:pathCopy];
 
-  v11 = [v10 cellView];
+  cellView = [v10 cellView];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v13 = [WeakRetained childViewController:self artworkForDownload:v9];
-  SUUIConfigureDownloadsCellView(v11, v9, v13, 1u, self->_clientContext);
+  SUUIConfigureDownloadsCellView(cellView, v9, v13, 1u, self->_clientContext);
 
   if (self->_editing)
   {
@@ -203,8 +203,8 @@ void __60__SUUIIPadDownloadsViewController_reloadDownloadsAtIndexes___block_invo
       v14 = 2;
     }
 
-    v15 = [v10 cellView];
-    [v15 setButtonType:0];
+    cellView2 = [v10 cellView];
+    [cellView2 setButtonType:0];
   }
 
   else
@@ -217,17 +217,17 @@ void __60__SUUIIPadDownloadsViewController_reloadDownloadsAtIndexes___block_invo
   return v10;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v4 = -[NSArray objectAtIndex:](self->_downloads, "objectAtIndex:", [a4 item]);
-  v5 = [v4 isCancelable];
+  v4 = -[NSArray objectAtIndex:](self->_downloads, "objectAtIndex:", [path item]);
+  isCancelable = [v4 isCancelable];
 
-  return v5;
+  return isCancelable;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v7 = a4;
+  pathCopy = path;
   if (self->_editing)
   {
     [(SUUIIPadDownloadsViewController *)self _reloadNavigationItem];
@@ -236,14 +236,14 @@ void __60__SUUIIPadDownloadsViewController_reloadDownloadsAtIndexes___block_invo
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v6 = -[NSArray objectAtIndex:](self->_downloads, "objectAtIndex:", [v7 item]);
+    v6 = -[NSArray objectAtIndex:](self->_downloads, "objectAtIndex:", [pathCopy item]);
     [WeakRetained childViewController:self performActionForDownload:v6];
   }
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
-  v7 = a4;
+  pathCopy = path;
   if (self->_editing)
   {
     [(SUUIIPadDownloadsViewController *)self _reloadNavigationItem];
@@ -252,21 +252,21 @@ void __60__SUUIIPadDownloadsViewController_reloadDownloadsAtIndexes___block_invo
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v6 = -[NSArray objectAtIndex:](self->_downloads, "objectAtIndex:", [v7 item]);
+    v6 = -[NSArray objectAtIndex:](self->_downloads, "objectAtIndex:", [pathCopy item]);
     [WeakRetained childViewController:self performActionForDownload:v6];
   }
 }
 
-- (void)_deleteAction:(id)a3
+- (void)_deleteAction:(id)action
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  indexPathsForSelectedItems = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
+  v6 = [indexPathsForSelectedItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -278,24 +278,24 @@ void __60__SUUIIPadDownloadsViewController_reloadDownloadsAtIndexes___block_invo
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
         v10 = -[NSArray objectAtIndex:](self->_downloads, "objectAtIndex:", [*(*(&v12 + 1) + 8 * v9) item]);
-        [v4 addObject:v10];
+        [array addObject:v10];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [indexPathsForSelectedItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained childViewController:self removeDownloads:v4];
+  [WeakRetained childViewController:self removeDownloads:array];
 
   self->_editing = 0;
   [(SUUIIPadDownloadsViewController *)self _reload];
@@ -306,8 +306,8 @@ void __60__SUUIIPadDownloadsViewController_reloadDownloadsAtIndexes___block_invo
   if ([(NSArray *)self->_downloads count])
   {
     [(UICollectionView *)self->_collectionView reloadData];
-    v3 = [(SUUIIPadDownloadsViewController *)self view];
-    [v3 setOverlayView:0];
+    view = [(SUUIIPadDownloadsViewController *)self view];
+    [view setOverlayView:0];
   }
 
   else
@@ -342,14 +342,14 @@ void __60__SUUIIPadDownloadsViewController_reloadDownloadsAtIndexes___block_invo
       self->_noContentView = v9;
 
       v11 = self->_noContentView;
-      v12 = [MEMORY[0x277D75348] whiteColor];
-      [(_UIContentUnavailableView *)v11 setBackgroundColor:v12];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [(_UIContentUnavailableView *)v11 setBackgroundColor:whiteColor];
 
       [(_UIContentUnavailableView *)self->_noContentView setMessage:v7];
     }
 
-    v13 = [(SUUIIPadDownloadsViewController *)self view];
-    [v13 setOverlayView:self->_noContentView];
+    view2 = [(SUUIIPadDownloadsViewController *)self view];
+    [view2 setOverlayView:self->_noContentView];
 
     [(UICollectionView *)self->_collectionView reloadData];
   }
@@ -362,34 +362,34 @@ void __60__SUUIIPadDownloadsViewController_reloadDownloadsAtIndexes___block_invo
   collectionView = self->_collectionView;
   v4 = SUUILayoutGuideInsets(self);
   SUUIScrollViewSetDefaultContentInsets(collectionView, v4, v5, v6, v7);
-  v8 = [(SUUIIPadDownloadsViewController *)self view];
-  [v8 frame];
+  view = [(SUUIIPadDownloadsViewController *)self view];
+  [view frame];
   v10 = v9;
 
-  v11 = [(UICollectionView *)self->_collectionView collectionViewLayout];
-  v13 = v11;
+  collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
+  v13 = collectionViewLayout;
   v12 = 2.0;
   if (v10 > 1000.0)
   {
     v12 = 3.0;
   }
 
-  [v11 setItemSize:{v10 / v12, 100.0}];
+  [collectionViewLayout setItemSize:{v10 / v12, 100.0}];
   [v13 invalidateLayout];
 }
 
 - (void)_reloadNavigationItem
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SUUIIPadDownloadsViewController *)self navigationItem];
-  [v3 setLeftItemsSupplementBackButton:1];
+  navigationItem = [(SUUIIPadDownloadsViewController *)self navigationItem];
+  [navigationItem setLeftItemsSupplementBackButton:1];
 
   if ([(NSArray *)self->_downloads count])
   {
     if (self->_editing)
     {
-      v4 = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
-      v5 = [v4 count];
+      indexPathsForSelectedItems = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
+      v5 = [indexPathsForSelectedItems count];
 
       clientContext = self->_clientContext;
       if (clientContext)
@@ -436,31 +436,31 @@ void __60__SUUIIPadDownloadsViewController_reloadDownloadsAtIndexes___block_invo
 
       v15 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v7 style:2 target:self action:sel__cancelAction_];
       v16 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v14 style:0 target:self action:sel__deleteAction_];
-      v17 = [MEMORY[0x277D75348] systemRedColor];
-      [v16 setTintColor:v17];
+      systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+      [v16 setTintColor:systemRedColor];
 
       [v16 setEnabled:v5 > 0];
-      v18 = [(SUUIIPadDownloadsViewController *)self navigationItem];
+      navigationItem2 = [(SUUIIPadDownloadsViewController *)self navigationItem];
       v21[0] = v15;
       v21[1] = v16;
       v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
-      [v18 setLeftBarButtonItems:v19];
+      [navigationItem2 setLeftBarButtonItems:v19];
     }
 
     else
     {
       v7 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:2 target:self action:sel__editAction_];
-      v8 = [(SUUIIPadDownloadsViewController *)self navigationItem];
+      navigationItem3 = [(SUUIIPadDownloadsViewController *)self navigationItem];
       v22[0] = v7;
       v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
-      [v8 setLeftBarButtonItems:v9];
+      [navigationItem3 setLeftBarButtonItems:v9];
     }
   }
 
   else
   {
-    v20 = [(SUUIIPadDownloadsViewController *)self navigationItem];
-    [v20 setLeftBarButtonItems:0];
+    navigationItem4 = [(SUUIIPadDownloadsViewController *)self navigationItem];
+    [navigationItem4 setLeftBarButtonItems:0];
   }
 }
 

@@ -1,25 +1,25 @@
 @interface RRSchemaRREntityPoolResolveStarted
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (RRSchemaRREntityPoolResolveStarted)initWithDictionary:(id)a3;
-- (RRSchemaRREntityPoolResolveStarted)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (RRSchemaRREntityPoolResolveStarted)initWithDictionary:(id)dictionary;
+- (RRSchemaRREntityPoolResolveStarted)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RRSchemaRREntityPoolResolveStarted
 
-- (RRSchemaRREntityPoolResolveStarted)initWithDictionary:(id)a3
+- (RRSchemaRREntityPoolResolveStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = RRSchemaRREntityPoolResolveStarted;
   v5 = [(RRSchemaRREntityPoolResolveStarted *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"usoQuery"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"usoQuery"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,30 +33,30 @@
   return v5;
 }
 
-- (RRSchemaRREntityPoolResolveStarted)initWithJSON:(id)a3
+- (RRSchemaRREntityPoolResolveStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(RRSchemaRREntityPoolResolveStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(RRSchemaRREntityPoolResolveStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(RRSchemaRREntityPoolResolveStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -69,40 +69,40 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_usoQuery)
   {
-    v4 = [(RRSchemaRREntityPoolResolveStarted *)self usoQuery];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    usoQuery = [(RRSchemaRREntityPoolResolveStarted *)self usoQuery];
+    dictionaryRepresentation = [usoQuery dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"usoQuery"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"usoQuery"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"usoQuery"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"usoQuery"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(RRSchemaRREntityPoolResolveStarted *)self usoQuery];
-    v6 = [v4 usoQuery];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    usoQuery = [(RRSchemaRREntityPoolResolveStarted *)self usoQuery];
+    usoQuery2 = [equalCopy usoQuery];
+    v7 = usoQuery2;
+    if ((usoQuery != 0) != (usoQuery2 == 0))
     {
-      v8 = [(RRSchemaRREntityPoolResolveStarted *)self usoQuery];
-      if (!v8)
+      usoQuery3 = [(RRSchemaRREntityPoolResolveStarted *)self usoQuery];
+      if (!usoQuery3)
       {
 
 LABEL_10:
@@ -110,10 +110,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(RRSchemaRREntityPoolResolveStarted *)self usoQuery];
-      v11 = [v4 usoQuery];
-      v12 = [v10 isEqual:v11];
+      v9 = usoQuery3;
+      usoQuery4 = [(RRSchemaRREntityPoolResolveStarted *)self usoQuery];
+      usoQuery5 = [equalCopy usoQuery];
+      v12 = [usoQuery4 isEqual:usoQuery5];
 
       if (v12)
       {
@@ -132,29 +132,29 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(RRSchemaRREntityPoolResolveStarted *)self usoQuery];
+  toCopy = to;
+  usoQuery = [(RRSchemaRREntityPoolResolveStarted *)self usoQuery];
 
-  if (v4)
+  if (usoQuery)
   {
-    v5 = [(RRSchemaRREntityPoolResolveStarted *)self usoQuery];
+    usoQuery2 = [(RRSchemaRREntityPoolResolveStarted *)self usoQuery];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = RRSchemaRREntityPoolResolveStarted;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(RRSchemaRREntityPoolResolveStarted *)self usoQuery:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(RRSchemaRREntityPoolResolveStarted *)self deleteUsoQuery];
   }

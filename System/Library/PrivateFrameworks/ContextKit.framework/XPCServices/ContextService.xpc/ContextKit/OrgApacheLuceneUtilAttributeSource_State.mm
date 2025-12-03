@@ -1,6 +1,6 @@
 @interface OrgApacheLuceneUtilAttributeSource_State
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
@@ -32,11 +32,11 @@
   [(OrgApacheLuceneUtilAttributeSource_State *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(OrgApacheLuceneUtilAttributeSource_State *)self clone];
+  clone = [(OrgApacheLuceneUtilAttributeSource_State *)self clone];
 
-  return v3;
+  return clone;
 }
 
 @end

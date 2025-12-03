@@ -1,9 +1,9 @@
 @interface CFXProgramHashCodeEncoder
-+ (id)programHashCodeEncoderWithHashCode:(__CFXProgramHashCode *)a3;
-- (CFXProgramHashCodeEncoder)initWithCoder:(id)a3;
-- (CFXProgramHashCodeEncoder)initWithHashCode:(__CFXProgramHashCode *)a3;
++ (id)programHashCodeEncoderWithHashCode:(__CFXProgramHashCode *)code;
+- (CFXProgramHashCodeEncoder)initWithCoder:(id)coder;
+- (CFXProgramHashCodeEncoder)initWithHashCode:(__CFXProgramHashCode *)code;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CFXProgramHashCodeEncoder
@@ -15,46 +15,46 @@
   [(CFXProgramHashCodeEncoder *)&v3 dealloc];
 }
 
-+ (id)programHashCodeEncoderWithHashCode:(__CFXProgramHashCode *)a3
++ (id)programHashCodeEncoderWithHashCode:(__CFXProgramHashCode *)code
 {
-  v4 = [a1 alloc];
-  v7 = objc_msgSend_initWithHashCode_(v4, v5, a3, v6);
+  v4 = [self alloc];
+  v7 = objc_msgSend_initWithHashCode_(v4, v5, code, v6);
 
   return v7;
 }
 
-- (CFXProgramHashCodeEncoder)initWithHashCode:(__CFXProgramHashCode *)a3
+- (CFXProgramHashCodeEncoder)initWithHashCode:(__CFXProgramHashCode *)code
 {
   v6.receiver = self;
   v6.super_class = CFXProgramHashCodeEncoder;
   v4 = [(CFXProgramHashCodeEncoder *)&v6 init];
   if (v4)
   {
-    v4->_hashCode = a3;
+    v4->_hashCode = code;
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   hashCode = self->_hashCode;
-  objc_msgSend_encodeObject_forKey_(a3, a2, hashCode->var2, @"hash");
-  objc_msgSend_encodeInt32_forKey_(a3, v5, hashCode->var3, @"version");
+  objc_msgSend_encodeObject_forKey_(coder, a2, hashCode->var2, @"hash");
+  objc_msgSend_encodeInt32_forKey_(coder, v5, hashCode->var3, @"version");
   v7 = objc_msgSend_dataWithBytesNoCopy_length_freeWhenDone_(MEMORY[0x1E695DEF0], v6, &hashCode->var1, 180, 0);
-  objc_msgSend_encodeObject_forKey_(a3, v8, v7, @"desc");
+  objc_msgSend_encodeObject_forKey_(coder, v8, v7, @"desc");
   v11 = hashCode->var4[0];
   if (v11)
   {
     v12 = objc_msgSend_shaderModifierArrayEncoderWithArray_(CFXShaderModifierArrayEncoder, v9, v11, v10);
-    objc_msgSend_encodeObject_forKey_(a3, v13, v12, @"shaderModifiers[material]");
+    objc_msgSend_encodeObject_forKey_(coder, v13, v12, @"shaderModifiers[material]");
   }
 
   v14 = hashCode->var4[1];
   if (v14)
   {
     v15 = objc_msgSend_shaderModifierArrayEncoderWithArray_(CFXShaderModifierArrayEncoder, v9, v14, v10);
-    objc_msgSend_encodeObject_forKey_(a3, v16, v15, @"shaderModifiers[model]");
+    objc_msgSend_encodeObject_forKey_(coder, v16, v15, @"shaderModifiers[model]");
   }
 
   v19 = objc_msgSend_arrayWithCapacity_(MEMORY[0x1E695DF70], v9, 8, v10);
@@ -74,10 +74,10 @@
 
   while (v20 != 8);
 
-  objc_msgSend_encodeObject_forKey_(a3, v17, v19, @"customPropertyNames");
+  objc_msgSend_encodeObject_forKey_(coder, v17, v19, @"customPropertyNames");
 }
 
-- (CFXProgramHashCodeEncoder)initWithCoder:(id)a3
+- (CFXProgramHashCodeEncoder)initWithCoder:(id)coder
 {
   v86 = *MEMORY[0x1E69E9840];
   v67.receiver = self;
@@ -102,10 +102,10 @@
     v70 = 0u;
     v71 = 0u;
     v5 = objc_opt_class();
-    *(&v82 + 1) = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"hash");
-    LODWORD(v83) = objc_msgSend_decodeInt32ForKey_(a3, v7, @"version", v8);
+    *(&v82 + 1) = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"hash");
+    LODWORD(v83) = objc_msgSend_decodeInt32ForKey_(coder, v7, @"version", v8);
     v9 = objc_opt_class();
-    v11 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v10, v9, @"desc");
+    v11 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v10, v9, @"desc");
     v15 = objc_msgSend_bytes(v11, v12, v13, v14);
     v16 = *(v15 + 48);
     v18 = *v15;
@@ -129,17 +129,17 @@
     v81 = v22;
     v79 = v24;
     v25 = objc_opt_class();
-    v27 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v26, v25, @"shaderModifiers[material]");
+    v27 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v26, v25, @"shaderModifiers[material]");
     *(&v83 + 1) = objc_msgSend_shaderModifiers(v27, v28, v29, v30);
     v31 = objc_opt_class();
-    v33 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v32, v31, @"shaderModifiers[model]");
+    v33 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v32, v31, @"shaderModifiers[model]");
     *&v84[0] = objc_msgSend_shaderModifiers(v33, v34, v35, v36);
     v37 = MEMORY[0x1E695DFD8];
     v69[0] = objc_opt_class();
     v69[1] = objc_opt_class();
     v39 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v38, v69, 2);
     v42 = objc_msgSend_setWithArray_(v37, v40, v39, v41);
-    v44 = objc_msgSend_decodeObjectOfClasses_forKey_(a3, v43, v42, @"customPropertyNames");
+    v44 = objc_msgSend_decodeObjectOfClasses_forKey_(coder, v43, v42, @"customPropertyNames");
     if (objc_msgSend_count(v44, v45, v46, v47) >= 8)
     {
       v49 = sub_1AF0D5194();

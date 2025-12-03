@@ -62,8 +62,8 @@
       }
 
       v23 = *(*(&v60 + 1) + 8 * i);
-      v24 = [v23 attributes];
-      v25 = [v24 objectForKey:v20];
+      attributes = [v23 attributes];
+      v25 = [attributes objectForKey:v20];
 
       if ([v25 isEqualToString:@"CIFaceBalance"])
       {
@@ -276,8 +276,8 @@ LABEL_13:
       }
 
       v43 = *(*(&v54 + 1) + 8 * v42);
-      v44 = [v43 attributes];
-      v45 = [v44 objectForKey:v41];
+      attributes = [v43 attributes];
+      v45 = [attributes objectForKey:v41];
 
       if ([v45 isEqualToString:@"CIRedEyeCorrections"])
       {
@@ -409,7 +409,7 @@ LABEL_27:
   if (v28)
   {
     v29 = [v18 objectForKeyedSubscript:v27];
-    v30 = [v29 firstObject];
+    firstObject = [v29 firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -499,8 +499,8 @@ LABEL_27:
       }
 
       v51 = *(*(&v83 + 1) + 8 * j);
-      v52 = [v51 attributes];
-      v53 = [v52 objectForKey:v49];
+      attributes = [v51 attributes];
+      v53 = [attributes objectForKey:v49];
 
       if ([v53 isEqualToString:@"CIAffineTransform"])
       {
@@ -704,11 +704,11 @@ LABEL_30:
     v58 = 0uLL;
     if (CGColorSpaceGetType() == 1)
     {
-      v22 = [v13 colorSpace];
-      if (!v22)
+      colorSpace = [v13 colorSpace];
+      if (!colorSpace)
       {
-        v22 = [v16 workingColorSpace];
-        if (!v22)
+        colorSpace = [v16 workingColorSpace];
+        if (!colorSpace)
         {
           v38 = NUAssertLogger_20556();
           if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -729,8 +729,8 @@ LABEL_30:
               v45 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
               v46 = MEMORY[0x1E696AF00];
               v47 = v45;
-              v48 = [v46 callStackSymbols];
-              v49 = [v48 componentsJoinedByString:@"\n"];
+              callStackSymbols = [v46 callStackSymbols];
+              v49 = [callStackSymbols componentsJoinedByString:@"\n"];
               *components = 138543618;
               *&components[4] = v45;
               *&components[12] = 2114;
@@ -741,8 +741,8 @@ LABEL_30:
 
           else if (v42)
           {
-            v43 = [MEMORY[0x1E696AF00] callStackSymbols];
-            v44 = [v43 componentsJoinedByString:@"\n"];
+            callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+            v44 = [callStackSymbols2 componentsJoinedByString:@"\n"];
             *components = 138543362;
             *&components[4] = v44;
             _os_log_error_impl(&dword_1C0184000, v41, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", components, 0xCu);
@@ -752,7 +752,7 @@ LABEL_30:
         }
       }
 
-      a7 = v22;
+      a7 = colorSpace;
     }
 
     else if (!a7)
@@ -795,20 +795,20 @@ LABEL_17:
     *components = vcvtq_f64_f32(*v58.f32);
     *&components[16] = vcvt_hight_f64_f32(v58);
     v27 = +[NUColorSpace extendedSRGBLinearColorSpace];
-    v28 = [v27 CGColorSpace];
+    cGColorSpace = [v27 CGColorSpace];
 
-    v29 = a7;
+    colorSpace2 = a7;
     v13 = v24;
     if (v26)
     {
-      v29 = [v24 colorSpace];
-      if (!v29)
+      colorSpace2 = [v24 colorSpace];
+      if (!colorSpace2)
       {
-        v29 = v28;
+        colorSpace2 = cGColorSpace;
       }
     }
 
-    v30 = CGColorCreate(v29, components);
+    v30 = CGColorCreate(colorSpace2, components);
     if (v30)
     {
       v31 = v30;

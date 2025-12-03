@@ -1,18 +1,18 @@
 @interface SBSiriHardwareButtonInteraction
-+ (BOOL)dismissSiriTransientOverlayOnSinglePressUp:(int64_t)a3;
++ (BOOL)dismissSiriTransientOverlayOnSinglePressUp:(int64_t)up;
 + (id)hardwareButtonInteractionForHomeButton;
 + (id)hardwareButtonInteractionForLockButton;
 + (id)hardwareButtonInteractionForVoiceCommandButton;
 - (BOOL)consumeInitialPressDown;
 - (BOOL)consumeLongPress;
 - (BOOL)consumeSinglePressUp;
-- (SBSiriHardwareButtonInteraction)initWithSiriButton:(int64_t)a3;
+- (SBSiriHardwareButtonInteraction)initWithSiriButton:(int64_t)button;
 - (id)hardwareButtonGestureParameters;
 - (void)_cancelAllSiriActions;
 - (void)_cancelPreheating;
-- (void)_preheatSiriForPresentationAfterInterval:(double)a3;
-- (void)_siriHomeButtonPrefsDidChange:(id)a3;
-- (void)configurationDidUpdateOnLongPressSource:(id)a3;
+- (void)_preheatSiriForPresentationAfterInterval:(double)interval;
+- (void)_siriHomeButtonPrefsDidChange:(id)change;
+- (void)configurationDidUpdateOnLongPressSource:(id)source;
 @end
 
 @implementation SBSiriHardwareButtonInteraction
@@ -38,7 +38,7 @@
   return v2;
 }
 
-- (SBSiriHardwareButtonInteraction)initWithSiriButton:(int64_t)a3
+- (SBSiriHardwareButtonInteraction)initWithSiriButton:(int64_t)button
 {
   v10.receiver = self;
   v10.super_class = SBSiriHardwareButtonInteraction;
@@ -46,8 +46,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_siriButtonIdentifier = a3;
-    v6 = [MEMORY[0x277D551F8] longPressButtonForIdentifier:a3];
+    v4->_siriButtonIdentifier = button;
+    v6 = [MEMORY[0x277D551F8] longPressButtonForIdentifier:button];
     siriActivationSource = v5->_siriActivationSource;
     v5->_siriActivationSource = v6;
 
@@ -60,38 +60,38 @@
   return v5;
 }
 
-+ (BOOL)dismissSiriTransientOverlayOnSinglePressUp:(int64_t)a3
++ (BOOL)dismissSiriTransientOverlayOnSinglePressUp:(int64_t)up
 {
   if (+[SBAssistantController isVisible])
   {
     v6 = +[SBWorkspace mainWorkspace];
-    v7 = [v6 transientOverlayPresentationManager];
+    transientOverlayPresentationManager = [v6 transientOverlayPresentationManager];
 
     v8 = +[SBAssistantController sharedInstance];
-    v9 = [v8 window];
-    [v9 windowLevel];
-    v10 = [v7 hasPresentationAboveWindowLevel:?];
+    window = [v8 window];
+    [window windowLevel];
+    v10 = [transientOverlayPresentationManager hasPresentationAboveWindowLevel:?];
 
     if (v10)
     {
-      switch(a3)
+      switch(up)
       {
         case 1:
-          if ([v7 handleHomeButtonPress])
+          if ([transientOverlayPresentationManager handleHomeButtonPress])
           {
             goto LABEL_12;
           }
 
           break;
         case 9:
-          if (([v7 handleVoiceCommandButtonPress] & 1) == 0)
+          if (([transientOverlayPresentationManager handleVoiceCommandButtonPress] & 1) == 0)
           {
             break;
           }
 
           goto LABEL_12;
         case 2:
-          if (([v7 handleLockButtonPress] & 1) == 0)
+          if (([transientOverlayPresentationManager handleLockButtonPress] & 1) == 0)
           {
             break;
           }
@@ -102,8 +102,8 @@ LABEL_15:
 
           return v11;
         default:
-          v12 = [MEMORY[0x277CCA890] currentHandler];
-          [v12 handleFailureInMethod:a2 object:a1 file:@"SBSiriHardwareButtonInteraction.m" lineNumber:89 description:@"We don't handle this activation event"];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"SBSiriHardwareButtonInteraction.m" lineNumber:89 description:@"We don't handle this activation event"];
 
           break;
       }
@@ -116,10 +116,10 @@ LABEL_15:
   return 0;
 }
 
-- (void)configurationDidUpdateOnLongPressSource:(id)a3
+- (void)configurationDidUpdateOnLongPressSource:(id)source
 {
   v10 = *MEMORY[0x277D85DE8];
-  [a3 longPressInterval];
+  [source longPressInterval];
   self->_activationInterval = v4;
   v5 = SBLogButtonsInteraction();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -130,17 +130,17 @@ LABEL_15:
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Siri: updating activation interval to %f", &v8, 0xCu);
   }
 
-  v7 = [(SBSiriHardwareButtonInteraction *)self hardwareButtonGestureParameters];
-  [(SBHardwareButtonGestureParametersProviderBase *)self publishUpdatedParameters:v7];
+  hardwareButtonGestureParameters = [(SBSiriHardwareButtonInteraction *)self hardwareButtonGestureParameters];
+  [(SBHardwareButtonGestureParametersProviderBase *)self publishUpdatedParameters:hardwareButtonGestureParameters];
 }
 
-- (void)_siriHomeButtonPrefsDidChange:(id)a3
+- (void)_siriHomeButtonPrefsDidChange:(id)change
 {
-  v4 = [(SBSiriHardwareButtonInteraction *)self hardwareButtonGestureParameters];
-  [(SBHardwareButtonGestureParametersProviderBase *)self publishUpdatedParameters:v4];
+  hardwareButtonGestureParameters = [(SBSiriHardwareButtonInteraction *)self hardwareButtonGestureParameters];
+  [(SBHardwareButtonGestureParametersProviderBase *)self publishUpdatedParameters:hardwareButtonGestureParameters];
 }
 
-- (void)_preheatSiriForPresentationAfterInterval:(double)a3
+- (void)_preheatSiriForPresentationAfterInterval:(double)interval
 {
   siriPreheatAssertion = self->_siriPreheatAssertion;
   if (siriPreheatAssertion)
@@ -155,14 +155,14 @@ LABEL_15:
   }
 
   v6 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-  v7 = [v6 policyAggregator];
-  v8 = [v7 allowsCapability:5];
+  policyAggregator = [v6 policyAggregator];
+  v8 = [policyAggregator allowsCapability:5];
 
   if (v8)
   {
-    v9 = [(SiriLongPressButtonSource *)self->_siriActivationSource prepareForActivation];
+    prepareForActivation = [(SiriLongPressButtonSource *)self->_siriActivationSource prepareForActivation];
     v10 = self->_siriPreheatAssertion;
-    self->_siriPreheatAssertion = v9;
+    self->_siriPreheatAssertion = prepareForActivation;
 
     v11 = SBLogButtonsInteraction();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -256,19 +256,19 @@ LABEL_8:
   }
 
   v9 = +[SBSyncController sharedInstance];
-  v10 = [v9 isResetting];
+  isResetting = [v9 isResetting];
 
-  if (v10)
+  if (isResetting)
   {
     goto LABEL_6;
   }
 
   v15 = +[SBWorkspace mainWorkspace];
-  v16 = [v15 isPowerDownTransientOverlayTopmost];
+  isPowerDownTransientOverlayTopmost = [v15 isPowerDownTransientOverlayTopmost];
 
   v11 = SBLogButtonsHome();
   v17 = os_log_type_enabled(v11, OS_LOG_TYPE_INFO);
-  if (v16)
+  if (isPowerDownTransientOverlayTopmost)
   {
     if (!v17)
     {
@@ -312,19 +312,19 @@ LABEL_10:
 
   [objc_opt_class() dismissSiriTransientOverlayOnSinglePressUp:self->_siriButtonIdentifier];
   [(SiriLongPressButtonSource *)self->_siriActivationSource didRecognizeButtonSinglePressUp];
-  v3 = [MEMORY[0x277CF0CA8] sharedInstance];
-  v4 = [v3 homeButtonType];
+  mEMORY[0x277CF0CA8] = [MEMORY[0x277CF0CA8] sharedInstance];
+  homeButtonType = [mEMORY[0x277CF0CA8] homeButtonType];
 
   v5 = +[SBAssistantController sharedInstance];
-  v6 = [v5 contentObscuresEmbeddedDisplayScreen];
-  if (v4 == 2)
+  contentObscuresEmbeddedDisplayScreen = [v5 contentObscuresEmbeddedDisplayScreen];
+  if (homeButtonType == 2)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = v6;
+    v7 = contentObscuresEmbeddedDisplayScreen;
   }
 
   return v7;
@@ -333,12 +333,12 @@ LABEL_10:
 - (BOOL)consumeLongPress
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [SBApp windowSceneManager];
-  v5 = [v4 activeDisplayWindowScene];
+  windowSceneManager = [SBApp windowSceneManager];
+  activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
 
   v6 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-  v7 = [v6 policyAggregator];
-  v8 = [v7 allowsCapability:5];
+  policyAggregator = [v6 policyAggregator];
+  v8 = [policyAggregator allowsCapability:5];
 
   if (v8)
   {
@@ -357,9 +357,9 @@ LABEL_10:
   else
   {
     v11 = +[SBVoiceControlController sharedInstance];
-    v12 = [v11 handleHomeButtonHeld];
+    handleHomeButtonHeld = [v11 handleHomeButtonHeld];
 
-    if (!v12)
+    if (!handleHomeButtonHeld)
     {
       v16 = 0;
       goto LABEL_11;
@@ -375,8 +375,8 @@ LABEL_10:
     }
   }
 
-  v15 = [v5 commandTabController];
-  [v15 dismiss];
+  commandTabController = [activeDisplayWindowScene commandTabController];
+  [commandTabController dismiss];
 
   v16 = 1;
 LABEL_11:

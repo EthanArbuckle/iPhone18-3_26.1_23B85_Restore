@@ -1,5 +1,5 @@
 @interface SKUIGiftThemeCollectionView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)_visibleBounds;
 - (UIEdgeInsets)visibleBoundsInsets;
 - (void)_visibleBounds;
@@ -30,27 +30,27 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIGiftThemeCollectionView pointInside:withEvent:];
   }
 
-  v7 = [(SKUIGiftThemeCollectionView *)self superview];
-  [(SKUIGiftThemeCollectionView *)self convertPoint:v7 toView:x, y];
+  superview = [(SKUIGiftThemeCollectionView *)self superview];
+  [(SKUIGiftThemeCollectionView *)self convertPoint:superview toView:x, y];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(SKUIGiftThemeCollectionView *)self superview];
-  [v12 bounds];
+  superview2 = [(SKUIGiftThemeCollectionView *)self superview];
+  [superview2 bounds];
   v14.x = v9;
   v14.y = v11;
-  LOBYTE(v7) = CGRectContainsPoint(v15, v14);
+  LOBYTE(superview) = CGRectContainsPoint(v15, v14);
 
-  return v7;
+  return superview;
 }
 
 - (UIEdgeInsets)visibleBoundsInsets

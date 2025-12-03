@@ -3,14 +3,14 @@
 - (UIImageView)imageView;
 - (UILabel)altLabel;
 - (UILabel)subtitleLabel;
-- (WFRichContentItemCellView)initWithFrame:(CGRect)a3;
+- (WFRichContentItemCellView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setAttributedAlertButton:(id)a3;
-- (void)setContentAlertButton:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setImage:(id)a3 options:(id)a4;
-- (void)setSelectableAlertButton:(id)a3;
-- (void)setSubtitle:(id)a3;
+- (void)setAttributedAlertButton:(id)button;
+- (void)setContentAlertButton:(id)button;
+- (void)setImage:(id)image;
+- (void)setImage:(id)image options:(id)options;
+- (void)setSelectableAlertButton:(id)button;
+- (void)setSubtitle:(id)subtitle;
 - (void)tintColorDidChange;
 - (void)updateConstraints;
 - (void)updateImageCornerRadius;
@@ -39,41 +39,41 @@
   return WeakRetained;
 }
 
-- (void)setContentAlertButton:(id)a3
+- (void)setContentAlertButton:(id)button
 {
-  v4 = a3;
-  v5 = [v4 contentItem];
-  if (v5 != self->_item)
+  buttonCopy = button;
+  contentItem = [buttonCopy contentItem];
+  if (contentItem != self->_item)
   {
     objc_initWeak(&location, self);
-    objc_initWeak(&from, v5);
-    objc_storeStrong(&self->_item, v5);
-    v6 = [(WFContentItem *)v5 richListTitle];
-    v7 = [(WFRichContentItemCellView *)self titleLabel];
-    [v7 setText:v6];
+    objc_initWeak(&from, contentItem);
+    objc_storeStrong(&self->_item, contentItem);
+    richListTitle = [(WFContentItem *)contentItem richListTitle];
+    titleLabel = [(WFRichContentItemCellView *)self titleLabel];
+    [titleLabel setText:richListTitle];
 
-    v8 = [(WFRichContentItemCellView *)self subtitleLabel];
-    [v8 setText:0];
+    subtitleLabel = [(WFRichContentItemCellView *)self subtitleLabel];
+    [subtitleLabel setText:0];
 
-    v9 = [(WFRichContentItemCellView *)self altLabel];
-    [v9 setText:0];
+    altLabel = [(WFRichContentItemCellView *)self altLabel];
+    [altLabel setText:0];
 
     [(WFRichContentItemCellView *)self setImage:0 options:0];
-    v10 = [v4 hideSubtitle];
+    hideSubtitle = [buttonCopy hideSubtitle];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __51__WFRichContentItemCellView_setContentAlertButton___block_invoke;
     v26[3] = &unk_279EF4EE8;
     objc_copyWeak(&v27, &location);
     objc_copyWeak(&v28, &from);
-    [v4 getSubtitle:v26];
+    [buttonCopy getSubtitle:v26];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __51__WFRichContentItemCellView_setContentAlertButton___block_invoke_2;
     v23[3] = &unk_279EF4EE8;
     objc_copyWeak(&v24, &location);
     objc_copyWeak(&v25, &from);
-    LOBYTE(v7) = [(WFContentItem *)v5 getListAltText:v23];
+    LOBYTE(titleLabel) = [(WFContentItem *)contentItem getListAltText:v23];
     [(WFRichContentItemCellView *)self imageDimension];
     v12 = v11;
     v17 = MEMORY[0x277D85DD0];
@@ -82,11 +82,11 @@
     v20 = &unk_279EF4F10;
     objc_copyWeak(&v21, &location);
     objc_copyWeak(&v22, &from);
-    v13 = [(WFContentItem *)v5 getListThumbnail:&v17 forSize:v12, v12];
+    v13 = [(WFContentItem *)contentItem getListThumbnail:&v17 forSize:v12, v12];
     [(WFRichContentItemCellView *)self setHasImage:v13, v17, v18, v19, v20];
-    v14 = self->_hasImage | v7;
+    v14 = self->_hasImage | titleLabel;
     v15 = 4;
-    if ((v14 & 1) == 0 && ((v10 ^ 1) & 1) == 0)
+    if ((v14 & 1) == 0 && ((hideSubtitle ^ 1) & 1) == 0)
     {
       if (self->_alwaysLeftAlign)
       {
@@ -99,8 +99,8 @@
       }
     }
 
-    v16 = [(WFRichContentItemCellView *)self titleLabel];
-    [v16 setTextAlignment:v15];
+    titleLabel2 = [(WFRichContentItemCellView *)self titleLabel];
+    [titleLabel2 setTextAlignment:v15];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&v21);
@@ -155,38 +155,38 @@ void __51__WFRichContentItemCellView_setContentAlertButton___block_invoke_3(uint
   }
 }
 
-- (void)setAttributedAlertButton:(id)a3
+- (void)setAttributedAlertButton:(id)button
 {
-  v4 = a3;
-  v5 = [v4 attributedTitle];
-  v6 = [(WFRichContentItemCellView *)self titleLabel];
-  [v6 setAttributedText:v5];
+  buttonCopy = button;
+  attributedTitle = [buttonCopy attributedTitle];
+  titleLabel = [(WFRichContentItemCellView *)self titleLabel];
+  [titleLabel setAttributedText:attributedTitle];
 
-  v7 = [(WFRichContentItemCellView *)self titleLabel];
-  [v7 setTextAlignment:1];
+  titleLabel2 = [(WFRichContentItemCellView *)self titleLabel];
+  [titleLabel2 setTextAlignment:1];
 
-  v8 = [(WFRichContentItemCellView *)self subtitleLabel];
-  [v8 setText:0];
+  subtitleLabel = [(WFRichContentItemCellView *)self subtitleLabel];
+  [subtitleLabel setText:0];
 
-  v9 = [(WFRichContentItemCellView *)self altLabel];
-  [v9 setText:0];
+  altLabel = [(WFRichContentItemCellView *)self altLabel];
+  [altLabel setText:0];
 
   [(WFRichContentItemCellView *)self setImage:0 options:0];
   item = self->_item;
   self->_item = 0;
 
-  v11 = [v4 label];
+  label = [buttonCopy label];
 
-  [(WFRichContentItemCellView *)self setAccessibilityLabel:v11];
+  [(WFRichContentItemCellView *)self setAccessibilityLabel:label];
 }
 
-- (void)setSelectableAlertButton:(id)a3
+- (void)setSelectableAlertButton:(id)button
 {
-  v17 = a3;
+  buttonCopy = button;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(WFRichContentItemCellView *)self setContentAlertButton:v17];
+    [(WFRichContentItemCellView *)self setContentAlertButton:buttonCopy];
   }
 
   else
@@ -194,30 +194,30 @@ void __51__WFRichContentItemCellView_setContentAlertButton___block_invoke_3(uint
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(WFRichContentItemCellView *)self setAttributedAlertButton:v17];
+      [(WFRichContentItemCellView *)self setAttributedAlertButton:buttonCopy];
     }
 
     else
     {
-      v4 = [v17 image];
-      v5 = [v4 UIImage];
+      image = [buttonCopy image];
+      uIImage = [image UIImage];
 
-      v6 = [v17 title];
-      v7 = [(WFRichContentItemCellView *)self titleLabel];
-      [v7 setText:v6];
+      title = [buttonCopy title];
+      titleLabel = [(WFRichContentItemCellView *)self titleLabel];
+      [titleLabel setText:title];
 
-      v8 = [(WFRichContentItemCellView *)self alwaysLeftAlign];
-      if (v8)
+      alwaysLeftAlign = [(WFRichContentItemCellView *)self alwaysLeftAlign];
+      if (alwaysLeftAlign)
       {
         v9 = 4;
       }
 
       else
       {
-        v7 = [v17 subtitle];
-        v10 = [v7 length];
+        titleLabel = [buttonCopy subtitle];
+        v10 = [titleLabel length];
         v11 = 4;
-        if (!v5)
+        if (!uIImage)
         {
           v11 = 1;
         }
@@ -233,87 +233,87 @@ void __51__WFRichContentItemCellView_setContentAlertButton___block_invoke_3(uint
         }
       }
 
-      v12 = [(WFRichContentItemCellView *)self titleLabel];
-      [v12 setTextAlignment:v9];
+      titleLabel2 = [(WFRichContentItemCellView *)self titleLabel];
+      [titleLabel2 setTextAlignment:v9];
 
-      if (!v8)
+      if (!alwaysLeftAlign)
       {
       }
 
-      v13 = [v17 subtitle];
-      v14 = [(WFRichContentItemCellView *)self subtitleLabel];
-      [v14 setText:v13];
+      subtitle = [buttonCopy subtitle];
+      subtitleLabel = [(WFRichContentItemCellView *)self subtitleLabel];
+      [subtitleLabel setText:subtitle];
 
-      v15 = [(WFRichContentItemCellView *)self altLabel];
-      [v15 setText:0];
+      altLabel = [(WFRichContentItemCellView *)self altLabel];
+      [altLabel setText:0];
 
-      [(WFRichContentItemCellView *)self setImage:v5 options:0];
+      [(WFRichContentItemCellView *)self setImage:uIImage options:0];
       item = self->_item;
       self->_item = 0;
     }
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(WFRichContentItemCellView *)self subtitleLabel];
-  [v5 setText:v4];
+  subtitleCopy = subtitle;
+  subtitleLabel = [(WFRichContentItemCellView *)self subtitleLabel];
+  [subtitleLabel setText:subtitleCopy];
 
   [(WFRichContentItemCellView *)self setNeedsUpdateConstraints];
 }
 
 - (void)updateImageCornerRadius
 {
-  v10 = [(WFRichContentItemCellView *)self imageView];
-  v3 = [(WFRichContentItemCellView *)self imageRoundingStyle];
-  [v10 bounds];
+  imageView = [(WFRichContentItemCellView *)self imageView];
+  imageRoundingStyle = [(WFRichContentItemCellView *)self imageRoundingStyle];
+  [imageView bounds];
   WFContentItemListThumbnailCornerRadiusForRoundingStyle();
   v5 = v4;
-  v6 = [v10 layer];
-  [v6 setCornerRadius:v5];
+  layer = [imageView layer];
+  [layer setCornerRadius:v5];
 
   v7 = MEMORY[0x277CDA130];
-  if (v3 != 3)
+  if (imageRoundingStyle != 3)
   {
     v7 = MEMORY[0x277CDA138];
   }
 
   v8 = *v7;
-  v9 = [v10 layer];
-  [v9 setCornerCurve:v8];
+  layer2 = [imageView layer];
+  [layer2 setCornerCurve:v8];
 }
 
-- (void)setImage:(id)a3 options:(id)a4
+- (void)setImage:(id)image options:(id)options
 {
-  v6 = a4;
-  [(WFRichContentItemCellView *)self setImage:a3];
-  v8 = [v6 objectForKey:*MEMORY[0x277D7A398]];
+  optionsCopy = options;
+  [(WFRichContentItemCellView *)self setImage:image];
+  v8 = [optionsCopy objectForKey:*MEMORY[0x277D7A398]];
 
   if (v8)
   {
-    v7 = [v8 unsignedIntegerValue];
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  [(WFRichContentItemCellView *)self setImageRoundingStyle:v7];
+  [(WFRichContentItemCellView *)self setImageRoundingStyle:unsignedIntegerValue];
   [(WFRichContentItemCellView *)self updateImageCornerRadius];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  [v4 size];
+  imageCopy = image;
+  [imageCopy size];
   v6 = v5;
   v8 = v7;
   [(WFRichContentItemCellView *)self imageDimension];
   v10 = v9;
-  v11 = [(WFRichContentItemCellView *)self imageView];
-  v12 = v11;
+  imageView = [(WFRichContentItemCellView *)self imageView];
+  v12 = imageView;
   if (fmax(v6, v8) > v10)
   {
     v13 = 1;
@@ -324,20 +324,20 @@ void __51__WFRichContentItemCellView_setContentAlertButton___block_invoke_3(uint
     v13 = 4;
   }
 
-  [v11 setContentMode:v13];
+  [imageView setContentMode:v13];
 
-  v14 = [(WFRichContentItemCellView *)self imageView];
-  [v14 setImage:v4];
+  imageView2 = [(WFRichContentItemCellView *)self imageView];
+  [imageView2 setImage:imageCopy];
 
-  [(WFRichContentItemCellView *)self setHasImage:v4 != 0];
+  [(WFRichContentItemCellView *)self setHasImage:imageCopy != 0];
 }
 
 - (UIImage)image
 {
-  v2 = [(WFRichContentItemCellView *)self imageView];
-  v3 = [v2 image];
+  imageView = [(WFRichContentItemCellView *)self imageView];
+  image = [imageView image];
 
-  return v3;
+  return image;
 }
 
 - (void)layoutSubviews
@@ -353,9 +353,9 @@ void __51__WFRichContentItemCellView_setContentAlertButton___block_invoke_3(uint
   v5.receiver = self;
   v5.super_class = WFRichContentItemCellView;
   [(WFRichContentItemCellView *)&v5 tintColorDidChange];
-  v3 = [(WFRichContentItemCellView *)self tintColor];
-  v4 = [(WFRichContentItemCellView *)self titleLabel];
-  [v4 setTextColor:v3];
+  tintColor = [(WFRichContentItemCellView *)self tintColor];
+  titleLabel = [(WFRichContentItemCellView *)self titleLabel];
+  [titleLabel setTextColor:tintColor];
 }
 
 - (void)updateConstraints
@@ -375,15 +375,15 @@ void __51__WFRichContentItemCellView_setContentAlertButton___block_invoke_3(uint
   [(NSLayoutConstraint *)self->_imageWidthConstraint setConstant:v3];
   [(NSLayoutConstraint *)self->_imageHeightConstraint setConstant:v3];
   [(NSLayoutConstraint *)self->_imageLeadingConstraint setConstant:v4];
-  v6 = [(WFRichContentItemCellView *)self altLabel];
-  v7 = [v6 text];
-  v8 = [v7 length];
+  altLabel = [(WFRichContentItemCellView *)self altLabel];
+  text = [altLabel text];
+  v8 = [text length];
 
   v9 = MEMORY[0x277CCAAD0];
   if (v8)
   {
-    v10 = [(WFRichContentItemCellView *)self firstRowConstraintsWithoutAltText];
-    [v9 deactivateConstraints:v10];
+    firstRowConstraintsWithoutAltText = [(WFRichContentItemCellView *)self firstRowConstraintsWithoutAltText];
+    [v9 deactivateConstraints:firstRowConstraintsWithoutAltText];
 
     v11 = MEMORY[0x277CCAAD0];
     [(WFRichContentItemCellView *)self firstRowConstraintsWithAltText];
@@ -391,8 +391,8 @@ void __51__WFRichContentItemCellView_setContentAlertButton___block_invoke_3(uint
 
   else
   {
-    v12 = [(WFRichContentItemCellView *)self firstRowConstraintsWithAltText];
-    [v9 deactivateConstraints:v12];
+    firstRowConstraintsWithAltText = [(WFRichContentItemCellView *)self firstRowConstraintsWithAltText];
+    [v9 deactivateConstraints:firstRowConstraintsWithAltText];
 
     v11 = MEMORY[0x277CCAAD0];
     [(WFRichContentItemCellView *)self firstRowConstraintsWithoutAltText];
@@ -400,15 +400,15 @@ void __51__WFRichContentItemCellView_setContentAlertButton___block_invoke_3(uint
   v13 = ;
   [v11 activateConstraints:v13];
 
-  v14 = [(WFRichContentItemCellView *)self subtitleLabel];
-  v15 = [v14 text];
-  v16 = [v15 length];
+  subtitleLabel = [(WFRichContentItemCellView *)self subtitleLabel];
+  text2 = [subtitleLabel text];
+  v16 = [text2 length];
 
   v17 = MEMORY[0x277CCAAD0];
   if (v16)
   {
-    v18 = [(WFRichContentItemCellView *)self verticalConstraintsWithoutSubtitle];
-    [v17 deactivateConstraints:v18];
+    verticalConstraintsWithoutSubtitle = [(WFRichContentItemCellView *)self verticalConstraintsWithoutSubtitle];
+    [v17 deactivateConstraints:verticalConstraintsWithoutSubtitle];
 
     v19 = MEMORY[0x277CCAAD0];
     [(WFRichContentItemCellView *)self verticalConstraintsWithSubtitle];
@@ -416,8 +416,8 @@ void __51__WFRichContentItemCellView_setContentAlertButton___block_invoke_3(uint
 
   else
   {
-    v20 = [(WFRichContentItemCellView *)self verticalConstraintsWithSubtitle];
-    [v17 deactivateConstraints:v20];
+    verticalConstraintsWithSubtitle = [(WFRichContentItemCellView *)self verticalConstraintsWithSubtitle];
+    [v17 deactivateConstraints:verticalConstraintsWithSubtitle];
 
     v19 = MEMORY[0x277CCAAD0];
     [(WFRichContentItemCellView *)self verticalConstraintsWithoutSubtitle];
@@ -426,12 +426,12 @@ void __51__WFRichContentItemCellView_setContentAlertButton___block_invoke_3(uint
   [v19 activateConstraints:v21];
 }
 
-- (WFRichContentItemCellView)initWithFrame:(CGRect)a3
+- (WFRichContentItemCellView)initWithFrame:(CGRect)frame
 {
   v42[3] = *MEMORY[0x277D85DE8];
   v41.receiver = self;
   v41.super_class = WFRichContentItemCellView;
-  v3 = [(WFRichContentItemCellView *)&v41 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WFRichContentItemCellView *)&v41 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -440,8 +440,8 @@ void __51__WFRichContentItemCellView_setContentAlertButton___block_invoke_3(uint
     v7 = [v5 scaledFontForFont:v6 maximumPointSize:36.0];
     [(UILabel *)v4 setFont:v7];
 
-    v8 = [(WFRichContentItemCellView *)v3 tintColor];
-    [(UILabel *)v4 setTextColor:v8];
+    tintColor = [(WFRichContentItemCellView *)v3 tintColor];
+    [(UILabel *)v4 setTextColor:tintColor];
 
     [(UILabel *)v4 setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)v4 setMinimumScaleFactor:0.8];
@@ -520,11 +520,11 @@ void __51__WFRichContentItemCellView_setContentAlertButton___block_invoke_3(uint
     v34 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:[subtitleLabel]-elementPadding-|" options:0 metrics:&unk_2883D5D58 views:v23];
     [v29 addObjectsFromArray:v34];
 
-    v35 = [(WFRichContentItemCellView *)v3 firstRowConstraintsWithoutAltText];
-    [v29 addObjectsFromArray:v35];
+    firstRowConstraintsWithoutAltText = [(WFRichContentItemCellView *)v3 firstRowConstraintsWithoutAltText];
+    [v29 addObjectsFromArray:firstRowConstraintsWithoutAltText];
 
-    v36 = [(WFRichContentItemCellView *)v3 verticalConstraintsWithSubtitle];
-    [v29 addObjectsFromArray:v36];
+    verticalConstraintsWithSubtitle = [(WFRichContentItemCellView *)v3 verticalConstraintsWithSubtitle];
+    [v29 addObjectsFromArray:verticalConstraintsWithSubtitle];
 
     v37 = [MEMORY[0x277CCAAD0] constraintWithItem:v10 attribute:10 relatedBy:0 toItem:v13 attribute:10 multiplier:1.0 constant:0.0];
     [v29 addObject:v37];

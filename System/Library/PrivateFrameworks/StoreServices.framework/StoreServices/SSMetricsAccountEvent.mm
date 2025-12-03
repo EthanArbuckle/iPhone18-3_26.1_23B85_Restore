@@ -1,6 +1,6 @@
 @interface SSMetricsAccountEvent
 - (SSMetricsAccountEvent)init;
-- (void)setAccountEventTypeWithEventIdentifier:(int64_t)a3;
+- (void)setAccountEventTypeWithEventIdentifier:(int64_t)identifier;
 @end
 
 @implementation SSMetricsAccountEvent
@@ -19,11 +19,11 @@
   return v3;
 }
 
-- (void)setAccountEventTypeWithEventIdentifier:(int64_t)a3
+- (void)setAccountEventTypeWithEventIdentifier:(int64_t)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    if (a3 != 1)
+    if (identifier != 1)
     {
       return;
     }

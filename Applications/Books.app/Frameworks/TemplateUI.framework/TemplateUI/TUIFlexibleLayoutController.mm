@@ -3,11 +3,11 @@
 + (id)newHeightController;
 + (id)newStrictEqualWidthController;
 + (id)newWidthController;
-- (double)adjustedLengthForLayout:(id)a3;
+- (double)adjustedLengthForLayout:(id)layout;
 - (id).cxx_construct;
 - (id)_init;
-- (void)addLayout:(id)a3 length:(id *)a4 compressed:(unint64_t)a5;
-- (void)computeWithMeasured:(double)a3 desired:(id *)a4;
+- (void)addLayout:(id)layout length:(id *)length compressed:(unint64_t)compressed;
+- (void)computeWithMeasured:(double)measured desired:(id *)desired;
 @end
 
 @implementation TUIFlexibleLayoutController
@@ -63,34 +63,34 @@
   return [(TUIFlexibleLayoutController *)v2 _init];
 }
 
-- (void)addLayout:(id)a3 length:(id *)a4 compressed:(unint64_t)a5
+- (void)addLayout:(id)layout length:(id *)length compressed:(unint64_t)compressed
 {
   v6 = v5;
-  v10 = a3;
-  [(NSMutableArray *)self->_layouts addObject:v10];
-  self->_layoutTotalLength = fmax(*&a4, 0.0) + self->_layoutTotalLength;
+  layoutCopy = layout;
+  [(NSMutableArray *)self->_layouts addObject:layoutCopy];
+  self->_layoutTotalLength = fmax(*&length, 0.0) + self->_layoutTotalLength;
   priorityToLayouts = self->_priorityToLayouts;
-  v12 = [NSNumber numberWithUnsignedInteger:WORD2(a5)];
+  v12 = [NSNumber numberWithUnsignedInteger:WORD2(compressed)];
   v13 = [(NSMutableDictionary *)priorityToLayouts objectForKeyedSubscript:v12];
 
   if (!v13)
   {
     v14 = objc_opt_new();
     v15 = self->_priorityToLayouts;
-    v16 = [NSNumber numberWithUnsignedInteger:WORD2(a5)];
+    v16 = [NSNumber numberWithUnsignedInteger:WORD2(compressed)];
     [(NSMutableDictionary *)v15 setObject:v14 forKeyedSubscript:v16];
 
     v13 = v14;
   }
 
-  [v13 addObject:v10];
-  v21[0] = v10;
+  [v13 addObject:layoutCopy];
+  v21[0] = layoutCopy;
   v21[2] = v21;
   v17 = sub_F4048(&self->_layoutToLength.__table_.__bucket_list_.__ptr_, v21);
-  v17[3] = a4;
-  v17[4] = a5;
-  [(NSMapTable *)self->_layoutToFlexed setObject:&off_275CB8 forKey:v10];
-  [v10 setHidden:0];
+  v17[3] = length;
+  v17[4] = compressed;
+  [(NSMapTable *)self->_layoutToFlexed setObject:&off_275CB8 forKey:layoutCopy];
+  [layoutCopy setHidden:0];
   if (v6 == 1)
   {
     hideableLayouts = self->_hideableLayouts;
@@ -103,16 +103,16 @@
       hideableLayouts = self->_hideableLayouts;
     }
 
-    [(NSHashTable *)hideableLayouts addObject:v10];
+    [(NSHashTable *)hideableLayouts addObject:layoutCopy];
   }
 }
 
-- (void)computeWithMeasured:(double)a3 desired:(id *)a4
+- (void)computeWithMeasured:(double)measured desired:(id *)desired
 {
-  [(TUIFlexibleLayoutController *)self _lengthToAdjustWithMeasured:a4 desired:a3];
+  [(TUIFlexibleLayoutController *)self _lengthToAdjustWithMeasured:desired desired:measured];
   v6 = v5;
-  v7 = [(NSMutableDictionary *)self->_priorityToLayouts allKeys];
-  v8 = [v7 sortedArrayUsingSelector:"compare:"];
+  allKeys = [(NSMutableDictionary *)self->_priorityToLayouts allKeys];
+  v8 = [allKeys sortedArrayUsingSelector:"compare:"];
 
   v81 = 0u;
   v82 = 0u;
@@ -380,9 +380,9 @@ LABEL_67:
   }
 }
 
-- (double)adjustedLengthForLayout:(id)a3
+- (double)adjustedLengthForLayout:(id)layout
 {
-  v3 = [(NSMapTable *)self->_layoutToFlexed objectForKey:a3];
+  v3 = [(NSMapTable *)self->_layoutToFlexed objectForKey:layout];
   [v3 floatValue];
   v5 = v4;
 

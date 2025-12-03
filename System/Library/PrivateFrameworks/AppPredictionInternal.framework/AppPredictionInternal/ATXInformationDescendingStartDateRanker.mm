@@ -1,20 +1,20 @@
 @interface ATXInformationDescendingStartDateRanker
-- (id)sortFeaturizedSuggestions:(id)a3 withFeatureWeights:(id)a4;
+- (id)sortFeaturizedSuggestions:(id)suggestions withFeatureWeights:(id)weights;
 @end
 
 @implementation ATXInformationDescendingStartDateRanker
 
-- (id)sortFeaturizedSuggestions:(id)a3 withFeatureWeights:(id)a4
+- (id)sortFeaturizedSuggestions:(id)suggestions withFeatureWeights:(id)weights
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  suggestionsCopy = suggestions;
+  weightsCopy = weights;
+  v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(suggestionsCopy, "count")}];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = v5;
+  v8 = suggestionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
@@ -30,12 +30,12 @@
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        [v13 scoreWithFeatureWeights:{v6, v22}];
+        [v13 scoreWithFeatureWeights:{weightsCopy, v22}];
         v15 = v14;
         v16 = [ATXScoredInfoSuggestion alloc];
-        v17 = [v13 suggestion];
-        v18 = [v13 featureSet];
-        v19 = [(ATXScoredInfoSuggestion *)v16 initWithSuggestion:v17 featureSet:v18 score:v15];
+        suggestion = [v13 suggestion];
+        featureSet = [v13 featureSet];
+        v19 = [(ATXScoredInfoSuggestion *)v16 initWithSuggestion:suggestion featureSet:featureSet score:v15];
 
         [v7 addObject:v19];
       }

@@ -1,42 +1,42 @@
 @interface PKPeerPaymentDeviceRegistrationData
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPeerPaymentDeviceRegistrationData:(id)a3;
-- (PKPeerPaymentDeviceRegistrationData)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPeerPaymentDeviceRegistrationData:(id)data;
+- (PKPeerPaymentDeviceRegistrationData)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPeerPaymentDeviceRegistrationData
 
-- (PKPeerPaymentDeviceRegistrationData)initWithCoder:(id)a3
+- (PKPeerPaymentDeviceRegistrationData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = PKPeerPaymentDeviceRegistrationData;
   v5 = [(PKPeerPaymentDeviceRegistrationData *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"authorizationHeader"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"authorizationHeader"];
     authorizationHeader = v5->_authorizationHeader;
     v5->_authorizationHeader = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signedAuthToken"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signedAuthToken"];
     signedAuthToken = v5->_signedAuthToken;
     v5->_signedAuthToken = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"enrollmentData"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"enrollmentData"];
     enrollmentData = v5->_enrollmentData;
     v5->_enrollmentData = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signedEnrollmentDataSignature"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signedEnrollmentDataSignature"];
     signedEnrollmentDataSignature = v5->_signedEnrollmentDataSignature;
     v5->_signedEnrollmentDataSignature = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"devSigned"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"devSigned"];
     v5->_devSigned = [v14 BOOLValue];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"companionSerialNumber"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"companionSerialNumber"];
     companionSerialNumber = v5->_companionSerialNumber;
     v5->_companionSerialNumber = v15;
   }
@@ -44,18 +44,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   authorizationHeader = self->_authorizationHeader;
-  v6 = a3;
-  [v6 encodeObject:authorizationHeader forKey:@"authorizationHeader"];
-  [v6 encodeObject:self->_signedAuthToken forKey:@"signedAuthToken"];
-  [v6 encodeObject:self->_enrollmentData forKey:@"enrollmentData"];
-  [v6 encodeObject:self->_signedEnrollmentDataSignature forKey:@"signedEnrollmentDataSignature"];
+  coderCopy = coder;
+  [coderCopy encodeObject:authorizationHeader forKey:@"authorizationHeader"];
+  [coderCopy encodeObject:self->_signedAuthToken forKey:@"signedAuthToken"];
+  [coderCopy encodeObject:self->_enrollmentData forKey:@"enrollmentData"];
+  [coderCopy encodeObject:self->_signedEnrollmentDataSignature forKey:@"signedEnrollmentDataSignature"];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_devSigned];
-  [v6 encodeObject:v5 forKey:@"devSigned"];
+  [coderCopy encodeObject:v5 forKey:@"devSigned"];
 
-  [v6 encodeObject:self->_companionSerialNumber forKey:@"companionSerialNumber"];
+  [coderCopy encodeObject:self->_companionSerialNumber forKey:@"companionSerialNumber"];
 }
 
 - (id)description
@@ -81,11 +81,11 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_authorizationHeader)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_signedAuthToken)
@@ -114,28 +114,28 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPeerPaymentDeviceRegistrationData *)self isEqualToPeerPaymentDeviceRegistrationData:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPeerPaymentDeviceRegistrationData *)self isEqualToPeerPaymentDeviceRegistrationData:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPeerPaymentDeviceRegistrationData:(id)a3
+- (BOOL)isEqualToPeerPaymentDeviceRegistrationData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   signedAuthToken = self->_signedAuthToken;
-  v6 = v4[3];
+  v6 = dataCopy[3];
   if (signedAuthToken)
   {
     v7 = v6 == 0;
@@ -163,7 +163,7 @@
     }
   }
 
-  v9 = v4[2];
+  v9 = dataCopy[2];
   v10 = self->_authorizationHeader;
   v11 = v9;
   v12 = v11;
@@ -188,7 +188,7 @@
   }
 
   enrollmentData = self->_enrollmentData;
-  v15 = v4[4];
+  v15 = dataCopy[4];
   if (enrollmentData && v15)
   {
     if (([(NSDictionary *)enrollmentData isEqual:?]& 1) == 0)
@@ -203,7 +203,7 @@
   }
 
   signedEnrollmentDataSignature = self->_signedEnrollmentDataSignature;
-  v17 = v4[5];
+  v17 = dataCopy[5];
   if (!signedEnrollmentDataSignature || !v17)
   {
     if (signedEnrollmentDataSignature == v17)
@@ -222,13 +222,13 @@ LABEL_30:
   }
 
 LABEL_26:
-  if (self->_devSigned != *(v4 + 8))
+  if (self->_devSigned != *(dataCopy + 8))
   {
     goto LABEL_30;
   }
 
   companionSerialNumber = self->_companionSerialNumber;
-  v19 = v4[6];
+  v19 = dataCopy[6];
   if (companionSerialNumber && v19)
   {
     v20 = [(NSString *)companionSerialNumber isEqual:?];

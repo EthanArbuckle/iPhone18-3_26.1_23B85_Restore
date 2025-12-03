@@ -1,26 +1,26 @@
 @interface ICNoteContainerViewModeActivity
-- (ICNoteContainerViewModeActivity)initWithPresentingViewController:(id)a3 viewControllerManager:(id)a4;
+- (ICNoteContainerViewModeActivity)initWithPresentingViewController:(id)controller viewControllerManager:(id)manager;
 - (UIViewController)presentingViewController;
 - (id)activityImage;
 - (id)activityTitle;
-- (void)performActivityWithCompletion:(id)a3;
+- (void)performActivityWithCompletion:(id)completion;
 @end
 
 @implementation ICNoteContainerViewModeActivity
 
-- (ICNoteContainerViewModeActivity)initWithPresentingViewController:(id)a3 viewControllerManager:(id)a4
+- (ICNoteContainerViewModeActivity)initWithPresentingViewController:(id)controller viewControllerManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = ICNoteContainerViewModeActivity;
   v8 = [(ICNoteContainerViewModeActivity *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_presentingViewController, v6);
-    objc_storeStrong(&v9->_viewControllerManager, a4);
-    v9->_targetNoteViewMode = [v7 noteContainerViewMode] != 1;
+    objc_storeWeak(&v8->_presentingViewController, controllerCopy);
+    objc_storeStrong(&v9->_viewControllerManager, manager);
+    v9->_targetNoteViewMode = [managerCopy noteContainerViewMode] != 1;
   }
 
   return v9;
@@ -28,8 +28,8 @@
 
 - (id)activityImage
 {
-  v2 = [(ICNoteContainerViewModeActivity *)self targetNoteViewMode];
-  switch(v2)
+  targetNoteViewMode = [(ICNoteContainerViewModeActivity *)self targetNoteViewMode];
+  switch(targetNoteViewMode)
   {
     case -1:
       v4 = os_log_create("com.apple.notes", "UI");
@@ -58,8 +58,8 @@ LABEL_11:
 
 - (id)activityTitle
 {
-  v2 = [(ICNoteContainerViewModeActivity *)self targetNoteViewMode];
-  if (v2 == -1)
+  targetNoteViewMode = [(ICNoteContainerViewModeActivity *)self targetNoteViewMode];
+  if (targetNoteViewMode == -1)
   {
     v7 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -74,9 +74,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v2 != 1)
+  if (targetNoteViewMode != 1)
   {
-    if (v2)
+    if (targetNoteViewMode)
     {
       v3 = 0;
       goto LABEL_11;
@@ -96,18 +96,18 @@ LABEL_11:
   return v3;
 }
 
-- (void)performActivityWithCompletion:(id)a3
+- (void)performActivityWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICNoteContainerViewModeActivity *)self presentingViewController];
+  completionCopy = completion;
+  presentingViewController = [(ICNoteContainerViewModeActivity *)self presentingViewController];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000827D0;
   v7[3] = &unk_100645E80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 dismissViewControllerAnimated:1 completion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [presentingViewController dismissViewControllerAnimated:1 completion:v7];
 }
 
 - (UIViewController)presentingViewController

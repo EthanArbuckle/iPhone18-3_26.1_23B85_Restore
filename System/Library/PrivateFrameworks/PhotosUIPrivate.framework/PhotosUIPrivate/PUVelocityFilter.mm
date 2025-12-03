@@ -1,21 +1,21 @@
 @interface PUVelocityFilter
 + (id)gestureVelocityFilter;
 - (PUVelocityFilter)init;
-- (void)setInputValue:(double)a3;
+- (void)setInputValue:(double)value;
 @end
 
 @implementation PUVelocityFilter
 
-- (void)setInputValue:(double)a3
+- (void)setInputValue:(double)value
 {
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   lastTime = self->_lastTime;
   if (v5 >= lastTime + self->__minimumSampleInterval)
   {
     velocity = self->_velocity;
-    v8 = (a3 - self->_lastValue) / (v5 - lastTime);
+    v8 = (value - self->_lastValue) / (v5 - lastTime);
     previousVelocityWeight = self->__previousVelocityWeight;
-    self->_lastValue = a3;
+    self->_lastValue = value;
     self->_lastTime = v5;
     self->_velocity = v8;
     self->_previousVelocity = velocity;
@@ -38,7 +38,7 @@
 
 + (id)gestureVelocityFilter
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 _setMinimumSampleInterval:0.008];
   [v2 _setPreviousVelocityWeight:0.75];
 

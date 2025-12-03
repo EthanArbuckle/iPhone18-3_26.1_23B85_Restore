@@ -1,7 +1,7 @@
 @interface BMBehaviorDatabaseMetadata
-- (BMBehaviorDatabaseMetadata)initWithDictionary:(id)a3;
-- (BMBehaviorDatabaseMetadata)initWithMiningDate:(id)a3 eventInterval:(id)a4 minimumAbsoluteSupport:(unint64_t)a5 minimumConfidence:(double)a6 samplingInterval:(double)a7 itemTypeIdentifiers:(id)a8 targetTypeIdentifiers:(id)a9 numberOfBaskets:(unint64_t)a10;
-- (BOOL)isEqual:(id)a3;
+- (BMBehaviorDatabaseMetadata)initWithDictionary:(id)dictionary;
+- (BMBehaviorDatabaseMetadata)initWithMiningDate:(id)date eventInterval:(id)interval minimumAbsoluteSupport:(unint64_t)support minimumConfidence:(double)confidence samplingInterval:(double)samplingInterval itemTypeIdentifiers:(id)identifiers targetTypeIdentifiers:(id)typeIdentifiers numberOfBaskets:(unint64_t)self0;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (id)dictionaryRepresntation;
 - (unint64_t)hash;
@@ -9,9 +9,9 @@
 
 @implementation BMBehaviorDatabaseMetadata
 
-- (BMBehaviorDatabaseMetadata)initWithDictionary:(id)a3
+- (BMBehaviorDatabaseMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKeyedSubscript:@"BMBehaviorDatabaseMetadata"];
+  v4 = [dictionary objectForKeyedSubscript:@"BMBehaviorDatabaseMetadata"];
   v5 = v4;
   if (v4)
   {
@@ -21,7 +21,7 @@
     v22 = [v5 objectForKeyedSubscript:@"eventIntervalEnd"];
     v20 = [v7 initWithStartDate:v23 endDate:v22];
     v21 = [v5 objectForKeyedSubscript:@"minimumAbsoluteSupport"];
-    v8 = [v21 unsignedIntegerValue];
+    unsignedIntegerValue = [v21 unsignedIntegerValue];
     v9 = [v5 objectForKeyedSubscript:@"minimumConfidence"];
     [v9 doubleValue];
     v11 = v10;
@@ -31,53 +31,53 @@
     v15 = [v5 objectForKeyedSubscript:@"itemTypeIdentifiers"];
     v16 = [v5 objectForKeyedSubscript:@"targetTypeIdentifiers"];
     v17 = [v5 objectForKeyedSubscript:@"numberOfBaskets"];
-    self = -[BMBehaviorDatabaseMetadata initWithMiningDate:eventInterval:minimumAbsoluteSupport:minimumConfidence:samplingInterval:itemTypeIdentifiers:targetTypeIdentifiers:numberOfBaskets:](self, "initWithMiningDate:eventInterval:minimumAbsoluteSupport:minimumConfidence:samplingInterval:itemTypeIdentifiers:targetTypeIdentifiers:numberOfBaskets:", v6, v20, v8, v15, v16, [v17 unsignedIntegerValue], v11, v14);
+    self = -[BMBehaviorDatabaseMetadata initWithMiningDate:eventInterval:minimumAbsoluteSupport:minimumConfidence:samplingInterval:itemTypeIdentifiers:targetTypeIdentifiers:numberOfBaskets:](self, "initWithMiningDate:eventInterval:minimumAbsoluteSupport:minimumConfidence:samplingInterval:itemTypeIdentifiers:targetTypeIdentifiers:numberOfBaskets:", v6, v20, unsignedIntegerValue, v15, v16, [v17 unsignedIntegerValue], v11, v14);
 
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (BMBehaviorDatabaseMetadata)initWithMiningDate:(id)a3 eventInterval:(id)a4 minimumAbsoluteSupport:(unint64_t)a5 minimumConfidence:(double)a6 samplingInterval:(double)a7 itemTypeIdentifiers:(id)a8 targetTypeIdentifiers:(id)a9 numberOfBaskets:(unint64_t)a10
+- (BMBehaviorDatabaseMetadata)initWithMiningDate:(id)date eventInterval:(id)interval minimumAbsoluteSupport:(unint64_t)support minimumConfidence:(double)confidence samplingInterval:(double)samplingInterval itemTypeIdentifiers:(id)identifiers targetTypeIdentifiers:(id)typeIdentifiers numberOfBaskets:(unint64_t)self0
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a8;
-  v21 = a9;
+  dateCopy = date;
+  intervalCopy = interval;
+  identifiersCopy = identifiers;
+  typeIdentifiersCopy = typeIdentifiers;
   v28.receiver = self;
   v28.super_class = BMBehaviorDatabaseMetadata;
   v22 = [(BMBehaviorDatabaseMetadata *)&v28 init];
   if (v22)
   {
-    if (v18)
+    if (dateCopy)
     {
-      v23 = [v18 copy];
+      distantPast = [dateCopy copy];
     }
 
     else
     {
-      v23 = [MEMORY[0x277CBEAA8] distantPast];
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
     }
 
     miningDate = v22->_miningDate;
-    v22->_miningDate = v23;
+    v22->_miningDate = distantPast;
 
-    v25 = [v19 copy];
+    v25 = [intervalCopy copy];
     eventInterval = v22->_eventInterval;
     v22->_eventInterval = v25;
 
-    v22->_minimumAbsoluteSupport = a5;
-    v22->_minimumConfidence = a6;
-    v22->_samplingInterval = a7;
-    objc_storeStrong(&v22->_itemTypeIdentifiers, a8);
-    objc_storeStrong(&v22->_targetTypeIdentifiers, a9);
-    v22->_numberOfBaskets = a10;
+    v22->_minimumAbsoluteSupport = support;
+    v22->_minimumConfidence = confidence;
+    v22->_samplingInterval = samplingInterval;
+    objc_storeStrong(&v22->_itemTypeIdentifiers, identifiers);
+    objc_storeStrong(&v22->_targetTypeIdentifiers, typeIdentifiers);
+    v22->_numberOfBaskets = baskets;
   }
 
   return v22;
@@ -88,16 +88,16 @@
   v23[1] = *MEMORY[0x277D85DE8];
   v22 = @"BMBehaviorDatabaseMetadata";
   v20[0] = @"miningDate";
-  v19 = [(BMBehaviorDatabaseMetadata *)self miningDate];
-  v21[0] = v19;
+  miningDate = [(BMBehaviorDatabaseMetadata *)self miningDate];
+  v21[0] = miningDate;
   v20[1] = @"eventIntervalStart";
-  v18 = [(BMBehaviorDatabaseMetadata *)self eventInterval];
-  v17 = [v18 startDate];
-  v21[1] = v17;
+  eventInterval = [(BMBehaviorDatabaseMetadata *)self eventInterval];
+  startDate = [eventInterval startDate];
+  v21[1] = startDate;
   v20[2] = @"eventIntervalEnd";
-  v3 = [(BMBehaviorDatabaseMetadata *)self eventInterval];
-  v4 = [v3 endDate];
-  v21[2] = v4;
+  eventInterval2 = [(BMBehaviorDatabaseMetadata *)self eventInterval];
+  endDate = [eventInterval2 endDate];
+  v21[2] = endDate;
   v20[3] = @"minimumAbsoluteSupport";
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[BMBehaviorDatabaseMetadata minimumAbsoluteSupport](self, "minimumAbsoluteSupport")}];
   v21[3] = v5;
@@ -112,11 +112,11 @@
   v9 = [v8 numberWithDouble:?];
   v21[5] = v9;
   v20[6] = @"itemTypeIdentifiers";
-  v10 = [(BMBehaviorDatabaseMetadata *)self itemTypeIdentifiers];
-  v21[6] = v10;
+  itemTypeIdentifiers = [(BMBehaviorDatabaseMetadata *)self itemTypeIdentifiers];
+  v21[6] = itemTypeIdentifiers;
   v20[7] = @"targetTypeIdentifiers";
-  v11 = [(BMBehaviorDatabaseMetadata *)self targetTypeIdentifiers];
-  v21[7] = v11;
+  targetTypeIdentifiers = [(BMBehaviorDatabaseMetadata *)self targetTypeIdentifiers];
+  v21[7] = targetTypeIdentifiers;
   v20[8] = @"numberOfBaskets";
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[BMBehaviorDatabaseMetadata numberOfBaskets](self, "numberOfBaskets")}];
   v21[8] = v12;
@@ -131,40 +131,40 @@
 
 - (unint64_t)hash
 {
-  v3 = [(BMBehaviorDatabaseMetadata *)self miningDate];
-  v4 = [v3 hash];
-  v5 = [(BMBehaviorDatabaseMetadata *)self eventInterval];
-  v6 = [v5 hash] ^ v4;
+  miningDate = [(BMBehaviorDatabaseMetadata *)self miningDate];
+  v4 = [miningDate hash];
+  eventInterval = [(BMBehaviorDatabaseMetadata *)self eventInterval];
+  v6 = [eventInterval hash] ^ v4;
   v7 = v6 ^ [(BMBehaviorDatabaseMetadata *)self minimumAbsoluteSupport];
   [(BMBehaviorDatabaseMetadata *)self minimumConfidence];
   v9 = v7 ^ (v8 * 1000.0);
   [(BMBehaviorDatabaseMetadata *)self samplingInterval];
   v11 = (v10 * 1000.0);
-  v12 = [(BMBehaviorDatabaseMetadata *)self itemTypeIdentifiers];
-  v13 = v9 ^ v11 ^ [v12 hash];
-  v14 = [(BMBehaviorDatabaseMetadata *)self targetTypeIdentifiers];
-  v15 = [v14 hash];
+  itemTypeIdentifiers = [(BMBehaviorDatabaseMetadata *)self itemTypeIdentifiers];
+  v13 = v9 ^ v11 ^ [itemTypeIdentifiers hash];
+  targetTypeIdentifiers = [(BMBehaviorDatabaseMetadata *)self targetTypeIdentifiers];
+  v15 = [targetTypeIdentifiers hash];
   v16 = v15 ^ [(BMBehaviorDatabaseMetadata *)self numberOfBaskets];
 
   return v13 ^ v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(BMBehaviorDatabaseMetadata *)self dictionaryRepresntation];
-    v8 = [(BMBehaviorDatabaseMetadata *)v6 dictionaryRepresntation];
+    dictionaryRepresntation = [(BMBehaviorDatabaseMetadata *)self dictionaryRepresntation];
+    dictionaryRepresntation2 = [(BMBehaviorDatabaseMetadata *)v6 dictionaryRepresntation];
 
-    v9 = [v7 isEqualToDictionary:v8];
+    v9 = [dictionaryRepresntation isEqualToDictionary:dictionaryRepresntation2];
   }
 
   else
@@ -179,8 +179,8 @@
 {
   v16 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
-  v4 = [(BMBehaviorDatabaseMetadata *)self miningDate];
-  v5 = [(BMBehaviorDatabaseMetadata *)self eventInterval];
+  miningDate = [(BMBehaviorDatabaseMetadata *)self miningDate];
+  eventInterval = [(BMBehaviorDatabaseMetadata *)self eventInterval];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[BMBehaviorDatabaseMetadata minimumAbsoluteSupport](self, "minimumAbsoluteSupport")}];
   v7 = MEMORY[0x277CCABB0];
   [(BMBehaviorDatabaseMetadata *)self minimumConfidence];
@@ -188,10 +188,10 @@
   v9 = MEMORY[0x277CCABB0];
   [(BMBehaviorDatabaseMetadata *)self samplingInterval];
   v10 = [v9 numberWithDouble:?];
-  v11 = [(BMBehaviorDatabaseMetadata *)self itemTypeIdentifiers];
-  v12 = [(BMBehaviorDatabaseMetadata *)self targetTypeIdentifiers];
+  itemTypeIdentifiers = [(BMBehaviorDatabaseMetadata *)self itemTypeIdentifiers];
+  targetTypeIdentifiers = [(BMBehaviorDatabaseMetadata *)self targetTypeIdentifiers];
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[BMBehaviorDatabaseMetadata numberOfBaskets](self, "numberOfBaskets")}];
-  v14 = [v16 stringWithFormat:@"<%@ %p> miningDate: %@, eventInterval: %@, minimumAbsoluteSupport: %@, minimumConfidence: %@, samplingInterval: %@s, itemTypeIdentifiers: %@, targetTypeIdentifiers: %@, numberOfBaskets: %@", v3, self, v4, v5, v6, v8, v10, v11, v12, v13];
+  v14 = [v16 stringWithFormat:@"<%@ %p> miningDate: %@, eventInterval: %@, minimumAbsoluteSupport: %@, minimumConfidence: %@, samplingInterval: %@s, itemTypeIdentifiers: %@, targetTypeIdentifiers: %@, numberOfBaskets: %@", v3, self, miningDate, eventInterval, v6, v8, v10, itemTypeIdentifiers, targetTypeIdentifiers, v13];
 
   return v14;
 }

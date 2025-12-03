@@ -1,10 +1,10 @@
 @interface MADStateHandler
 + (id)sharedStateHandler;
 - (MADStateHandler)init;
-- (unint64_t)currentTimeoutRiskAndStartTime:(id *)a3;
-- (void)addBreadcrumb:(id)a3;
+- (unint64_t)currentTimeoutRiskAndStartTime:(id *)time;
+- (void)addBreadcrumb:(id)breadcrumb;
 - (void)dumpBreadcrumps;
-- (void)enterKnownTimeoutRisk:(unint64_t)a3;
+- (void)enterKnownTimeoutRisk:(unint64_t)risk;
 - (void)exitKnownTimeoutRisk;
 @end
 
@@ -39,7 +39,7 @@
   block[1] = 3221225472;
   block[2] = __37__MADStateHandler_sharedStateHandler__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedStateHandler_onceToken != -1)
   {
     dispatch_once(&sharedStateHandler_onceToken, block);
@@ -57,12 +57,12 @@ void __37__MADStateHandler_sharedStateHandler__block_invoke()
   sharedStateHandler_instance = v0;
 }
 
-- (void)addBreadcrumb:(id)a3
+- (void)addBreadcrumb:(id)breadcrumb
 {
   v18[1] = &v19;
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v19];
+  breadcrumbCopy = breadcrumb;
+  v6 = [[v4 alloc] initWithFormat:breadcrumbCopy arguments:&v19];
 
   v18[0] = 0;
   pthread_threadid_np(0, v18);
@@ -161,7 +161,7 @@ void __34__MADStateHandler_dumpBreadcrumps__block_invoke(uint64_t a1)
   }
 }
 
-- (void)enterKnownTimeoutRisk:(unint64_t)a3
+- (void)enterKnownTimeoutRisk:(unint64_t)risk
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -169,7 +169,7 @@ void __34__MADStateHandler_dumpBreadcrumps__block_invoke(uint64_t a1)
   v4[2] = __41__MADStateHandler_enterKnownTimeoutRisk___block_invoke;
   v4[3] = &unk_1E8350240;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = risk;
   dispatch_sync(queue, v4);
 }
 
@@ -201,7 +201,7 @@ void __39__MADStateHandler_exitKnownTimeoutRisk__block_invoke(uint64_t a1)
   *(v1 + 32) = 0;
 }
 
-- (unint64_t)currentTimeoutRiskAndStartTime:(id *)a3
+- (unint64_t)currentTimeoutRiskAndStartTime:(id *)time
 {
   v7 = 0;
   v8 = &v7;
@@ -213,7 +213,7 @@ void __39__MADStateHandler_exitKnownTimeoutRisk__block_invoke(uint64_t a1)
   block[2] = __50__MADStateHandler_currentTimeoutRiskAndStartTime___block_invoke;
   block[3] = &unk_1E8350110;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = time;
   block[4] = self;
   dispatch_sync(queue, block);
   v4 = v8[3];

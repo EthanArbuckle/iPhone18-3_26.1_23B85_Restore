@@ -1,12 +1,12 @@
 @interface STUIStatusBarBuildVersionItem
-- (BOOL)canEnableDisplayItem:(id)a3 fromData:(id)a4;
+- (BOOL)canEnableDisplayItem:(id)item fromData:(id)data;
 - (STUIStatusBarStringView)buildVersionView;
 - (void)_create_buildVersionView;
 @end
 
 @implementation STUIStatusBarBuildVersionItem
 
-- (BOOL)canEnableDisplayItem:(id)a3 fromData:(id)a4
+- (BOOL)canEnableDisplayItem:(id)item fromData:(id)data
 {
   if (qword_280C1E8C8 != -1)
   {
@@ -43,8 +43,8 @@ void __63__STUIStatusBarBuildVersionItem_canEnableDisplayItem_fromData___block_i
   buildVersionView = self->_buildVersionView;
   self->_buildVersionView = v4;
 
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v6 buildVersion];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  buildVersion = [currentDevice buildVersion];
 
   if (MEMORY[0x26D6A38C0]("[STUIStatusBarBuildVersionItem _create_buildVersionView]"))
   {
@@ -55,13 +55,13 @@ void __63__STUIStatusBarBuildVersionItem_canEnableDisplayItem_fromData___block_i
 
     if (byte_280C1E8C1 == 1)
     {
-      v7 = [v8 stringByAppendingString:@"*"];
+      v7 = [buildVersion stringByAppendingString:@"*"];
 
-      v8 = v7;
+      buildVersion = v7;
     }
   }
 
-  [(STUIStatusBarStringView *)self->_buildVersionView setText:v8];
+  [(STUIStatusBarStringView *)self->_buildVersionView setText:buildVersion];
 }
 
 @end

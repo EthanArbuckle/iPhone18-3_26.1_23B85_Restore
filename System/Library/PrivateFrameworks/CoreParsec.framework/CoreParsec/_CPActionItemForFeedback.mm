@@ -1,23 +1,23 @@
 @interface _CPActionItemForFeedback
-- (BOOL)isEqual:(id)a3;
-- (_CPActionItemForFeedback)initWithFacade:(id)a3;
-- (void)writeTo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_CPActionItemForFeedback)initWithFacade:(id)facade;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPActionItemForFeedback
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_CPActionItemForFeedback *)self punchout];
-    v6 = [v4 punchout];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    punchout = [(_CPActionItemForFeedback *)self punchout];
+    punchout2 = [equalCopy punchout];
+    v7 = punchout2;
+    if ((punchout != 0) != (punchout2 == 0))
     {
-      v8 = [(_CPActionItemForFeedback *)self punchout];
-      if (!v8)
+      punchout3 = [(_CPActionItemForFeedback *)self punchout];
+      if (!punchout3)
       {
 
 LABEL_10:
@@ -25,10 +25,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_CPActionItemForFeedback *)self punchout];
-      v11 = [v4 punchout];
-      v12 = [v10 isEqual:v11];
+      v9 = punchout3;
+      punchout4 = [(_CPActionItemForFeedback *)self punchout];
+      punchout5 = [equalCopy punchout];
+      v12 = [punchout4 isEqual:punchout5];
 
       if (v12)
       {
@@ -47,33 +47,33 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_CPActionItemForFeedback *)self punchout];
+  toCopy = to;
+  punchout = [(_CPActionItemForFeedback *)self punchout];
 
-  if (v4)
+  if (punchout)
   {
-    v5 = [(_CPActionItemForFeedback *)self punchout];
+    punchout2 = [(_CPActionItemForFeedback *)self punchout];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (_CPActionItemForFeedback)initWithFacade:(id)a3
+- (_CPActionItemForFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v12.receiver = self;
   v12.super_class = _CPActionItemForFeedback;
   v5 = [(_CPActionItemForFeedback *)&v12 init];
   if (v5)
   {
-    v6 = [v4 punchout];
+    punchout = [facadeCopy punchout];
 
-    if (v6)
+    if (punchout)
     {
       v7 = [_CPPunchoutForFeedback alloc];
-      v8 = [v4 punchout];
-      v9 = [(_CPPunchoutForFeedback *)v7 initWithFacade:v8];
+      punchout2 = [facadeCopy punchout];
+      v9 = [(_CPPunchoutForFeedback *)v7 initWithFacade:punchout2];
       [(_CPActionItemForFeedback *)v5 setPunchout:v9];
     }
 

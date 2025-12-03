@@ -1,19 +1,19 @@
 @interface SQLiteNullPredicate
-+ (id)isNotNullPredicateWithProperty:(id)a3;
-+ (id)isNullPredicateWithProperty:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)SQLForEntityClass:(Class)a3;
++ (id)isNotNullPredicateWithProperty:(id)property;
++ (id)isNullPredicateWithProperty:(id)property;
+- (BOOL)isEqual:(id)equal;
+- (id)SQLForEntityClass:(Class)class;
 - (id)description;
 @end
 
 @implementation SQLiteNullPredicate
 
-+ (id)isNotNullPredicateWithProperty:(id)a3
++ (id)isNotNullPredicateWithProperty:(id)property
 {
-  v3 = a3;
+  propertyCopy = property;
   v4 = objc_alloc_init(objc_opt_class());
   v4[16] = 0;
-  v5 = [v3 copy];
+  v5 = [propertyCopy copy];
 
   v6 = *(v4 + 1);
   *(v4 + 1) = v5;
@@ -21,12 +21,12 @@
   return v4;
 }
 
-+ (id)isNullPredicateWithProperty:(id)a3
++ (id)isNullPredicateWithProperty:(id)property
 {
-  v3 = a3;
+  propertyCopy = property;
   v4 = objc_alloc_init(objc_opt_class());
   v4[16] = 1;
-  v5 = [v3 copy];
+  v5 = [propertyCopy copy];
 
   v6 = *(v4 + 1);
   *(v4 + 1) = v5;
@@ -54,14 +54,14 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = SQLiteNullPredicate;
-  if ([(SQLitePropertyPredicate *)&v7 isEqual:v4])
+  if ([(SQLitePropertyPredicate *)&v7 isEqual:equalCopy])
   {
-    v5 = self->_matchesNull == v4[16];
+    v5 = self->_matchesNull == equalCopy[16];
   }
 
   else
@@ -72,9 +72,9 @@
   return v5;
 }
 
-- (id)SQLForEntityClass:(Class)a3
+- (id)SQLForEntityClass:(Class)class
 {
-  v4 = [(objc_class *)a3 disambiguatedSQLForProperty:self->super._property];
+  v4 = [(objc_class *)class disambiguatedSQLForProperty:self->super._property];
   if (self->_matchesNull)
   {
     v5 = @"IS NULL";

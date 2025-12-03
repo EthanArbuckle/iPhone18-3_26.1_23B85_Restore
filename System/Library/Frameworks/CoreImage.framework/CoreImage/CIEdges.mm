@@ -8,12 +8,12 @@
 - (id)outputImage
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v3 = [(CIEdges *)self _CIEdges];
+  _CIEdges = [(CIEdges *)self _CIEdges];
   [(CIImage *)self->inputImage extent];
   inputIntensity = self->inputIntensity;
   v10[0] = self->inputImage;
   v10[1] = inputIntensity;
-  return [v3 applyWithExtent:&__block_literal_global_25 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v10, 2), v5, v6, v7, v8}];
+  return [_CIEdges applyWithExtent:&__block_literal_global_25 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v10, 2), v5, v6, v7, v8}];
 }
 
 + (id)customAttributes

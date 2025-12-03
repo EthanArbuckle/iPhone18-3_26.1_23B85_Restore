@@ -1,7 +1,7 @@
 @interface VCAudioHALPluginMockAudioInject
 - (BOOL)start;
 - (BOOL)stop;
-- (VCAudioHALPluginMockAudioInject)initWithConfig:(tagVCAudioHALPluginConfiguration *)a3;
+- (VCAudioHALPluginMockAudioInject)initWithConfig:(tagVCAudioHALPluginConfiguration *)config;
 - (void)dealloc;
 - (void)injectAudioCallbacks;
 - (void)invalidate;
@@ -9,7 +9,7 @@
 
 @implementation VCAudioHALPluginMockAudioInject
 
-- (VCAudioHALPluginMockAudioInject)initWithConfig:(tagVCAudioHALPluginConfiguration *)a3
+- (VCAudioHALPluginMockAudioInject)initWithConfig:(tagVCAudioHALPluginConfiguration *)config
 {
   v38 = *MEMORY[0x1E69E9840];
   v35.receiver = self;
@@ -44,7 +44,7 @@ LABEL_11:
     }
   }
 
-  if (!a3)
+  if (!config)
   {
     [(VCAudioHALPluginMockAudioInject *)v4 initWithConfig:?];
 LABEL_33:
@@ -52,13 +52,13 @@ LABEL_33:
     goto LABEL_11;
   }
 
-  v7 = *&a3->sinkFormat.format.mSampleRate;
-  v8 = *&a3->sinkFormat.format.mBytesPerPacket;
-  *(v4 + 40) = *&a3->sinkFormat.format.mBitsPerChannel;
+  v7 = *&config->sinkFormat.format.mSampleRate;
+  v8 = *&config->sinkFormat.format.mBytesPerPacket;
+  *(v4 + 40) = *&config->sinkFormat.format.mBitsPerChannel;
   *(v4 + 24) = v8;
   *(v4 + 8) = v7;
-  *(v4 + 7) = a3->sinkContext;
-  *(v4 + 8) = a3->sinkProc;
+  *(v4 + 7) = config->sinkContext;
+  *(v4 + 8) = config->sinkProc;
   *(v4 + 32) = 3;
   if (![VCDefaults BOOLeanValueForKey:@"forceEnableAudioHALPluginMockInput" defaultValue:0])
   {
@@ -126,10 +126,10 @@ LABEL_20:
   }
 
   v11 = objc_alloc_init(VCAudioInjectorConfig);
-  v19 = *&a3->sinkFormat.format.mBytesPerPacket;
-  *&buf.mSampleRate = *&a3->sinkFormat.format.mSampleRate;
+  v19 = *&config->sinkFormat.format.mBytesPerPacket;
+  *&buf.mSampleRate = *&config->sinkFormat.format.mSampleRate;
   *&buf.mBytesPerPacket = v19;
-  *&buf.mBitsPerChannel = *&a3->sinkFormat.format.mBitsPerChannel;
+  *&buf.mBitsPerChannel = *&config->sinkFormat.format.mBitsPerChannel;
   [(VCAudioInjectorConfig *)v11 setAudioFormat:&buf];
   [(VCAudioInjectorConfig *)v11 setSineWaveFrequencyHz:440];
   if ([(VCAudioInjectorConfig *)v11 isValid])
@@ -142,11 +142,11 @@ LABEL_20:
       goto LABEL_33;
     }
 
-    samplesPerFrame = a3->sinkFormat.samplesPerFrame;
-    v22 = *&a3->sinkFormat.format.mBytesPerPacket;
-    *&buf.mSampleRate = *&a3->sinkFormat.format.mSampleRate;
+    samplesPerFrame = config->sinkFormat.samplesPerFrame;
+    v22 = *&config->sinkFormat.format.mBytesPerPacket;
+    *&buf.mSampleRate = *&config->sinkFormat.format.mSampleRate;
     *&buf.mBytesPerPacket = v22;
-    *&buf.mBitsPerChannel = *&a3->sinkFormat.format.mBitsPerChannel;
+    *&buf.mBitsPerChannel = *&config->sinkFormat.format.mBitsPerChannel;
     VCAudioBufferList_Allocate(&buf, samplesPerFrame, v4 + 20);
     if (!*(v4 + 20))
     {
@@ -156,7 +156,7 @@ LABEL_20:
   }
 
   v23 = [MEMORY[0x1E6986630] weakObjectHolderWithObject:v4];
-  LODWORD(v24) = a3->sinkFormat.samplesPerFrame;
+  LODWORD(v24) = config->sinkFormat.samplesPerFrame;
   v25 = v24;
   if (v11)
   {
@@ -216,7 +216,7 @@ uint64_t __50__VCAudioHALPluginMockAudioInject_initWithConfig___block_invoke(uin
       v10 = 1024;
       v11 = 73;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAudioHALPluginMockAudioInject-dealloc (%p)", buf, 0x26u);
     }
   }
@@ -244,7 +244,7 @@ uint64_t __50__VCAudioHALPluginMockAudioInject_initWithConfig___block_invoke(uin
       v9 = 1024;
       v10 = 81;
       v11 = 2048;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAudioHALPluginMockAudioInject-invalidate (%p)", &v5, 0x26u);
     }
   }
@@ -267,7 +267,7 @@ uint64_t __50__VCAudioHALPluginMockAudioInject_initWithConfig___block_invoke(uin
       v10 = 1024;
       v11 = 85;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAudioHALPluginMockAudioInject-start (%p)", &v6, 0x26u);
     }
   }
@@ -293,7 +293,7 @@ uint64_t __50__VCAudioHALPluginMockAudioInject_initWithConfig___block_invoke(uin
       v10 = 1024;
       v11 = 91;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAudioHALPluginMockAudioInject-stop (%p)", &v6, 0x26u);
     }
   }

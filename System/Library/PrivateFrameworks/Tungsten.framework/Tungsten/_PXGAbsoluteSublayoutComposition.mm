@@ -2,15 +2,15 @@
 - (CGRect)contentBounds;
 - (CGSize)contentSize;
 - (void)dealloc;
-- (void)insertRange:(_NSRange)a3;
-- (void)removeRange:(_NSRange)a3;
-- (void)setFrames:(const CGRect *)a3 forSublayoutsInRange:(_NSRange)a4;
-- (void)setOrigins:(const CGPoint *)a3 forSublayoutsInRange:(_NSRange)a4;
-- (void)setReferenceDepths:(const double *)a3 forSublayoutsInRange:(_NSRange)a4;
-- (void)setSpriteTransforms:(id *)a3 forSublayoutsInRange:(_NSRange)a4;
-- (void)setZPositions:(const double *)a3 forSublayoutsInRange:(_NSRange)a4;
+- (void)insertRange:(_NSRange)range;
+- (void)removeRange:(_NSRange)range;
+- (void)setFrames:(const CGRect *)frames forSublayoutsInRange:(_NSRange)range;
+- (void)setOrigins:(const CGPoint *)origins forSublayoutsInRange:(_NSRange)range;
+- (void)setReferenceDepths:(const double *)depths forSublayoutsInRange:(_NSRange)range;
+- (void)setSpriteTransforms:(id *)transforms forSublayoutsInRange:(_NSRange)range;
+- (void)setZPositions:(const double *)positions forSublayoutsInRange:(_NSRange)range;
 - (void)updateEstimatedSublayoutGeometries;
-- (void)updateSublayoutGeometriesFromAnchorSublayoutIndex:(int64_t)a3 usingSublayoutUpdateBlock:(id)a4;
+- (void)updateSublayoutGeometriesFromAnchorSublayoutIndex:(int64_t)index usingSublayoutUpdateBlock:(id)block;
 @end
 
 @implementation _PXGAbsoluteSublayoutComposition
@@ -36,22 +36,22 @@
   return result;
 }
 
-- (void)updateSublayoutGeometriesFromAnchorSublayoutIndex:(int64_t)a3 usingSublayoutUpdateBlock:(id)a4
+- (void)updateSublayoutGeometriesFromAnchorSublayoutIndex:(int64_t)index usingSublayoutUpdateBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __112___PXGAbsoluteSublayoutComposition_updateSublayoutGeometriesFromAnchorSublayoutIndex_usingSublayoutUpdateBlock___block_invoke;
   v13[3] = &unk_2782ABC30;
-  v7 = v6;
+  v7 = blockCopy;
   v14 = v7;
   v8 = MEMORY[0x21CEE40A0](v13);
-  v9 = [(PXGSublayoutComposition *)self numberOfSublayouts];
+  numberOfSublayouts = [(PXGSublayoutComposition *)self numberOfSublayouts];
   if ([(_PXGAbsoluteSublayoutComposition *)self shouldUpdateSublayoutsInStrictOrder])
   {
-    if (v9 >= 1)
+    if (numberOfSublayouts >= 1)
     {
-      for (i = 0; i != v9; ++i)
+      for (i = 0; i != numberOfSublayouts; ++i)
       {
         v8[2](v8, i);
       }
@@ -60,8 +60,8 @@
 
   else
   {
-    v8[2](v8, a3);
-    if (a3 >= 1)
+    v8[2](v8, index);
+    if (index >= 1)
     {
       v11 = 0;
       do
@@ -69,38 +69,38 @@
         v8[2](v8, v11++);
       }
 
-      while (a3 != v11);
+      while (index != v11);
     }
 
-    v12 = a3 + 1;
-    if (v12 < v9)
+    v12 = index + 1;
+    if (v12 < numberOfSublayouts)
     {
       do
       {
         v8[2](v8, v12++);
       }
 
-      while (v9 != v12);
+      while (numberOfSublayouts != v12);
     }
   }
 }
 
 - (void)updateEstimatedSublayoutGeometries
 {
-  v4 = [(PXGSublayoutComposition *)self sublayoutGeometries];
-  v5 = [(PXGSublayoutComposition *)self numberOfSublayouts];
-  if (v5 != self->_sublayoutCount)
+  sublayoutGeometries = [(PXGSublayoutComposition *)self sublayoutGeometries];
+  numberOfSublayouts = [(PXGSublayoutComposition *)self numberOfSublayouts];
+  if (numberOfSublayouts != self->_sublayoutCount)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXGAbsoluteCompositeLayout.m" lineNumber:198 description:{@"number of sublayouts (%li) doesn't match the number of sublayout frames (%li)", v5, self->_sublayoutCount}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAbsoluteCompositeLayout.m" lineNumber:198 description:{@"number of sublayouts (%li) doesn't match the number of sublayout frames (%li)", numberOfSublayouts, self->_sublayoutCount}];
   }
 
-  if (v5 >= 1)
+  if (numberOfSublayouts >= 1)
   {
     v6 = 0;
     v7 = 0;
     v8 = 0;
-    p_var4 = &v4->var4;
+    p_var4 = &sublayoutGeometries->var4;
     do
     {
       v10 = &self->_sublayoutFrames[v6];
@@ -125,93 +125,93 @@
       p_var4 = (p_var4 + 136);
     }
 
-    while (v5 != v8);
+    while (numberOfSublayouts != v8);
   }
 }
 
-- (void)setSpriteTransforms:(id *)a3 forSublayoutsInRange:(_NSRange)a4
+- (void)setSpriteTransforms:(id *)transforms forSublayoutsInRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if (a4.location + a4.length > self->_sublayoutCount)
+  length = range.length;
+  location = range.location;
+  if (range.location + range.length > self->_sublayoutCount)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v12.location = location;
     v12.length = length;
     v10 = NSStringFromRange(v12);
-    [v9 handleFailureInMethod:a2 object:self file:@"PXGAbsoluteCompositeLayout.m" lineNumber:190 description:{@"range (%@) not within 0 ..< %li", v10, self->_sublayoutCount}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAbsoluteCompositeLayout.m" lineNumber:190 description:{@"range (%@) not within 0 ..< %li", v10, self->_sublayoutCount}];
   }
 
-  memcpy(&self->_sublayoutSpriteTransforms[location], a3, 56 * length);
+  memcpy(&self->_sublayoutSpriteTransforms[location], transforms, 56 * length);
 
   [(PXGSublayoutComposition *)self invalidateEstimatedSublayoutGeometries];
 }
 
-- (void)setReferenceDepths:(const double *)a3 forSublayoutsInRange:(_NSRange)a4
+- (void)setReferenceDepths:(const double *)depths forSublayoutsInRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if (a4.location + a4.length > self->_sublayoutCount)
+  length = range.length;
+  location = range.location;
+  if (range.location + range.length > self->_sublayoutCount)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v12.location = location;
     v12.length = length;
     v10 = NSStringFromRange(v12);
-    [v9 handleFailureInMethod:a2 object:self file:@"PXGAbsoluteCompositeLayout.m" lineNumber:184 description:{@"range (%@) not within 0 ..< %li", v10, self->_sublayoutCount}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAbsoluteCompositeLayout.m" lineNumber:184 description:{@"range (%@) not within 0 ..< %li", v10, self->_sublayoutCount}];
   }
 
-  memcpy(&self->_sublayoutReferenceDepths[location], a3, 8 * length);
+  memcpy(&self->_sublayoutReferenceDepths[location], depths, 8 * length);
 
   [(PXGSublayoutComposition *)self invalidateEstimatedSublayoutGeometries];
 }
 
-- (void)setZPositions:(const double *)a3 forSublayoutsInRange:(_NSRange)a4
+- (void)setZPositions:(const double *)positions forSublayoutsInRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if (a4.location + a4.length > self->_sublayoutCount)
+  length = range.length;
+  location = range.location;
+  if (range.location + range.length > self->_sublayoutCount)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v12.location = location;
     v12.length = length;
     v10 = NSStringFromRange(v12);
-    [v9 handleFailureInMethod:a2 object:self file:@"PXGAbsoluteCompositeLayout.m" lineNumber:178 description:{@"range (%@) not within 0 ..< %li", v10, self->_sublayoutCount}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAbsoluteCompositeLayout.m" lineNumber:178 description:{@"range (%@) not within 0 ..< %li", v10, self->_sublayoutCount}];
   }
 
-  memcpy(&self->_sublayoutZPositions[location], a3, 8 * length);
+  memcpy(&self->_sublayoutZPositions[location], positions, 8 * length);
 
   [(PXGSublayoutComposition *)self invalidateEstimatedSublayoutGeometries];
 }
 
-- (void)setFrames:(const CGRect *)a3 forSublayoutsInRange:(_NSRange)a4
+- (void)setFrames:(const CGRect *)frames forSublayoutsInRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if (a4.location + a4.length > self->_sublayoutCount)
+  length = range.length;
+  location = range.location;
+  if (range.location + range.length > self->_sublayoutCount)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v12.location = location;
     v12.length = length;
     v10 = NSStringFromRange(v12);
-    [v9 handleFailureInMethod:a2 object:self file:@"PXGAbsoluteCompositeLayout.m" lineNumber:172 description:{@"range (%@) not within 0 ..< %li", v10, self->_sublayoutCount}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAbsoluteCompositeLayout.m" lineNumber:172 description:{@"range (%@) not within 0 ..< %li", v10, self->_sublayoutCount}];
   }
 
-  memcpy(&self->_sublayoutFrames[location], a3, 32 * length);
+  memcpy(&self->_sublayoutFrames[location], frames, 32 * length);
 
   [(PXGSublayoutComposition *)self invalidateEstimatedSublayoutGeometries];
 }
 
-- (void)setOrigins:(const CGPoint *)a3 forSublayoutsInRange:(_NSRange)a4
+- (void)setOrigins:(const CGPoint *)origins forSublayoutsInRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if (a4.location + a4.length > self->_sublayoutCount)
+  length = range.length;
+  location = range.location;
+  if (range.location + range.length > self->_sublayoutCount)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v14.location = location;
     v14.length = length;
     v12 = NSStringFromRange(v14);
-    [v11 handleFailureInMethod:a2 object:self file:@"PXGAbsoluteCompositeLayout.m" lineNumber:164 description:{@"range (%@) not within 0 ..< %li", v12, self->_sublayoutCount}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAbsoluteCompositeLayout.m" lineNumber:164 description:{@"range (%@) not within 0 ..< %li", v12, self->_sublayoutCount}];
 
     if (!length)
     {
@@ -219,7 +219,7 @@
     }
   }
 
-  else if (!a4.length)
+  else if (!range.length)
   {
     goto LABEL_5;
   }
@@ -227,7 +227,7 @@
   v8 = location;
   do
   {
-    v9 = *a3++;
+    v9 = *origins++;
     self->_sublayoutFrames[v8++].origin = v9;
     --length;
   }
@@ -238,11 +238,11 @@ LABEL_5:
   [(_PXGAbsoluteSublayoutComposition *)self updateEstimatedSublayoutGeometries];
 }
 
-- (void)removeRange:(_NSRange)a3
+- (void)removeRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  _PXGArrayRemoveRange(self->_sublayoutFrames, 32, self->_sublayoutCount, a3.location, a3.length);
+  length = range.length;
+  location = range.location;
+  _PXGArrayRemoveRange(self->_sublayoutFrames, 32, self->_sublayoutCount, range.location, range.length);
   _PXGArrayRemoveRange(self->_sublayoutZPositions, 8, self->_sublayoutCount, location, length);
   _PXGArrayRemoveRange(self->_sublayoutReferenceDepths, 8, self->_sublayoutCount, location, length);
   _PXGArrayRemoveRange(self->_sublayoutSpriteTransforms, 56, self->_sublayoutCount, location, length);
@@ -254,13 +254,13 @@ LABEL_5:
   self->_sublayoutSpriteTransforms = malloc_type_realloc(self->_sublayoutSpriteTransforms, 56 * self->_sublayoutCount, 0x42760281uLL);
 }
 
-- (void)insertRange:(_NSRange)a3
+- (void)insertRange:(_NSRange)range
 {
-  if (a3.length)
+  if (range.length)
   {
-    length = a3.length;
-    location = a3.location;
-    v6 = self->_sublayoutCount + a3.length;
+    length = range.length;
+    location = range.location;
+    v6 = self->_sublayoutCount + range.length;
     self->_sublayoutCount = v6;
     self->_sublayoutFrames = malloc_type_realloc(self->_sublayoutFrames, 32 * v6, 0x42760281uLL);
     self->_sublayoutZPositions = malloc_type_realloc(self->_sublayoutZPositions, 8 * self->_sublayoutCount, 0x42760281uLL);

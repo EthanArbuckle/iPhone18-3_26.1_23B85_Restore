@@ -1,10 +1,10 @@
 @interface DOCNodeObserver
 - (DOCNode)node;
 - (_TtC26DocumentManagerExecutables15DOCNodeObserver)init;
-- (_TtC26DocumentManagerExecutables15DOCNodeObserver)initWithObservedNode:(id)a3 source:(id)a4 enableDeepObserving:(BOOL)a5;
+- (_TtC26DocumentManagerExecutables15DOCNodeObserver)initWithObservedNode:(id)node source:(id)source enableDeepObserving:(BOOL)observing;
 - (void)dealloc;
-- (void)removeSubscriber:(id)a3;
-- (void)setNode:(id)a3;
+- (void)removeSubscriber:(id)subscriber;
+- (void)setNode:(id)node;
 @end
 
 @implementation DOCNodeObserver
@@ -17,29 +17,29 @@
   return v2;
 }
 
-- (void)setNode:(id)a3
+- (void)setNode:(id)node
 {
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables15DOCNodeObserver_node;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = node;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
 
-- (_TtC26DocumentManagerExecutables15DOCNodeObserver)initWithObservedNode:(id)a3 source:(id)a4 enableDeepObserving:(BOOL)a5
+- (_TtC26DocumentManagerExecutables15DOCNodeObserver)initWithObservedNode:(id)node source:(id)source enableDeepObserving:(BOOL)observing
 {
   swift_unknownObjectRetain();
-  v8 = a4;
-  return DOCNodeObserver.init(observedNode:source:enableDeepObserving:)(a3, a4, a5);
+  sourceCopy = source;
+  return DOCNodeObserver.init(observedNode:source:enableDeepObserving:)(node, source, observing);
 }
 
 - (void)dealloc
 {
   ObjectType = swift_getObjectType();
   v4 = *((*MEMORY[0x277D85000] & **(&self->super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables15DOCNodeObserver_collection)) + 0x1C8);
-  v5 = self;
+  selfCopy = self;
   v4();
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(DOCNodeObserver *)&v6 dealloc];
 }
@@ -51,10 +51,10 @@
   return result;
 }
 
-- (void)removeSubscriber:(id)a3
+- (void)removeSubscriber:(id)subscriber
 {
-  v4 = a3;
-  v5 = self;
+  subscriberCopy = subscriber;
+  selfCopy = self;
   DOCNodeObserver.removeSubscriber(_:)();
 }
 

@@ -1,35 +1,35 @@
 @interface SFInfoTuple
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFInfoTuple)initWithCoder:(id)a3;
-- (SFInfoTuple)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFInfoTuple)initWithCoder:(id)coder;
+- (SFInfoTuple)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFInfoTuple
 
-- (SFInfoTuple)initWithProtobuf:(id)a3
+- (SFInfoTuple)initWithProtobuf:(id)protobuf
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v25.receiver = self;
   v25.super_class = SFInfoTuple;
   v5 = [(SFInfoTuple *)&v25 init];
   if (v5)
   {
-    v6 = [v4 key];
+    v6 = [protobufCopy key];
 
     if (v6)
     {
-      v7 = [v4 key];
+      v7 = [protobufCopy key];
       [(SFInfoTuple *)v5 setKey:v7];
     }
 
-    v8 = [v4 values];
-    if (v8)
+    values = [protobufCopy values];
+    if (values)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -43,8 +43,8 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v10 = [v4 values];
-    v11 = [v10 countByEnumeratingWithState:&v21 objects:v26 count:16];
+    values2 = [protobufCopy values];
+    v11 = [values2 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v11)
     {
       v12 = v11;
@@ -55,7 +55,7 @@
         {
           if (*v22 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(values2);
           }
 
           v15 = [[SFCommandButtonItem alloc] initWithProtobuf:*(*(&v21 + 1) + 8 * i)];
@@ -65,24 +65,24 @@
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v12 = [values2 countByEnumeratingWithState:&v21 objects:v26 count:16];
       }
 
       while (v12);
     }
 
     [(SFInfoTuple *)v5 setValues:v9];
-    if ([v4 initiallyVisibleValues])
+    if ([protobufCopy initiallyVisibleValues])
     {
-      -[SFInfoTuple setInitiallyVisibleValues:](v5, "setInitiallyVisibleValues:", [v4 initiallyVisibleValues]);
+      -[SFInfoTuple setInitiallyVisibleValues:](v5, "setInitiallyVisibleValues:", [protobufCopy initiallyVisibleValues]);
     }
 
-    v16 = [v4 showMoreString];
+    showMoreString = [protobufCopy showMoreString];
 
-    if (v16)
+    if (showMoreString)
     {
-      v17 = [v4 showMoreString];
-      [(SFInfoTuple *)v5 setShowMoreString:v17];
+      showMoreString2 = [protobufCopy showMoreString];
+      [(SFInfoTuple *)v5 setShowMoreString:showMoreString2];
     }
 
     v18 = v5;
@@ -96,28 +96,28 @@
 {
   v3 = [(SFInfoTuple *)self key];
   v4 = [v3 hash];
-  v5 = [(SFInfoTuple *)self values];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(SFInfoTuple *)self initiallyVisibleValues];
-  v8 = [(SFInfoTuple *)self showMoreString];
-  v9 = v7 ^ [v8 hash];
+  values = [(SFInfoTuple *)self values];
+  v6 = [values hash] ^ v4;
+  initiallyVisibleValues = [(SFInfoTuple *)self initiallyVisibleValues];
+  showMoreString = [(SFInfoTuple *)self showMoreString];
+  v9 = initiallyVisibleValues ^ [showMoreString hash];
 
   return v6 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFInfoTuple *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFInfoTuple *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
+      v6 = equalCopy;
       v7 = [(SFInfoTuple *)self key];
       v8 = [(SFInfoTuple *)v6 key];
       if ((v7 != 0) == (v8 == 0))
@@ -142,31 +142,31 @@ LABEL_30:
         v31 = v10;
       }
 
-      v12 = [(SFInfoTuple *)self values];
-      v13 = [(SFInfoTuple *)v6 values];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      values = [(SFInfoTuple *)self values];
+      values2 = [(SFInfoTuple *)v6 values];
+      v14 = values2;
+      if ((values != 0) == (values2 == 0))
       {
 
         v11 = 0;
         goto LABEL_27;
       }
 
-      v15 = [(SFInfoTuple *)self values];
-      if (v15)
+      values3 = [(SFInfoTuple *)self values];
+      if (values3)
       {
         v26 = v3;
-        v16 = [(SFInfoTuple *)self values];
-        v28 = [(SFInfoTuple *)v6 values];
-        v29 = v16;
-        if (![v16 isEqual:?])
+        values4 = [(SFInfoTuple *)self values];
+        values5 = [(SFInfoTuple *)v6 values];
+        v29 = values4;
+        if (![values4 isEqual:?])
         {
           v11 = 0;
           v3 = v26;
           goto LABEL_25;
         }
 
-        v30 = v15;
+        v30 = values3;
         v3 = v26;
       }
 
@@ -175,22 +175,22 @@ LABEL_30:
         v30 = 0;
       }
 
-      v17 = [(SFInfoTuple *)self initiallyVisibleValues];
-      if (v17 == [(SFInfoTuple *)v6 initiallyVisibleValues])
+      initiallyVisibleValues = [(SFInfoTuple *)self initiallyVisibleValues];
+      if (initiallyVisibleValues == [(SFInfoTuple *)v6 initiallyVisibleValues])
       {
-        v18 = [(SFInfoTuple *)self showMoreString];
-        v19 = [(SFInfoTuple *)v6 showMoreString];
-        if ((v18 != 0) != (v19 == 0))
+        showMoreString = [(SFInfoTuple *)self showMoreString];
+        showMoreString2 = [(SFInfoTuple *)v6 showMoreString];
+        if ((showMoreString != 0) != (showMoreString2 == 0))
         {
-          v25 = v19;
-          v27 = v18;
-          v20 = [(SFInfoTuple *)self showMoreString];
-          if (v20)
+          v25 = showMoreString2;
+          v27 = showMoreString;
+          showMoreString3 = [(SFInfoTuple *)self showMoreString];
+          if (showMoreString3)
           {
-            v24 = v20;
-            v23 = [(SFInfoTuple *)self showMoreString];
-            v21 = [(SFInfoTuple *)v6 showMoreString];
-            v11 = [v23 isEqual:v21];
+            v24 = showMoreString3;
+            showMoreString4 = [(SFInfoTuple *)self showMoreString];
+            showMoreString5 = [(SFInfoTuple *)v6 showMoreString];
+            v11 = [showMoreString4 isEqual:showMoreString5];
           }
 
           else
@@ -200,7 +200,7 @@ LABEL_30:
           }
 
 LABEL_24:
-          v15 = v30;
+          values3 = v30;
           if (!v30)
           {
 LABEL_26:
@@ -237,20 +237,20 @@ LABEL_31:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(SFInfoTuple *)self key];
   v6 = [v5 copy];
   [v4 setKey:v6];
 
-  v7 = [(SFInfoTuple *)self values];
-  v8 = [v7 copy];
+  values = [(SFInfoTuple *)self values];
+  v8 = [values copy];
   [v4 setValues:v8];
 
   [v4 setInitiallyVisibleValues:{-[SFInfoTuple initiallyVisibleValues](self, "initiallyVisibleValues")}];
-  v9 = [(SFInfoTuple *)self showMoreString];
-  v10 = [v9 copy];
+  showMoreString = [(SFInfoTuple *)self showMoreString];
+  v10 = [showMoreString copy];
   [v4 setShowMoreString:v10];
 
   return v4;
@@ -259,31 +259,31 @@ LABEL_31:
 - (NSData)jsonData
 {
   v2 = [[_SFPBInfoTuple alloc] initWithFacade:self];
-  v3 = [(_SFPBInfoTuple *)v2 jsonData];
+  jsonData = [(_SFPBInfoTuple *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBInfoTuple alloc] initWithFacade:self];
-  v3 = [(_SFPBInfoTuple *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBInfoTuple *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBInfoTuple alloc] initWithFacade:self];
-  v5 = [(_SFPBInfoTuple *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBInfoTuple *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFInfoTuple)initWithCoder:(id)a3
+- (SFInfoTuple)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBInfoTuple alloc] initWithData:v5];
   v7 = [(SFInfoTuple *)self initWithProtobuf:v6];

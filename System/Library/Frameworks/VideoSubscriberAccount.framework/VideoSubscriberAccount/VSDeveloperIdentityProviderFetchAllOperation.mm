@@ -7,16 +7,16 @@
 
 - (VSDeveloperServiceConnection)connection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_connection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_connection;
   if (!v3)
   {
     v3 = objc_alloc_init(VSDeveloperServiceConnection);
-    objc_storeStrong(&v2->_connection, v3);
+    objc_storeStrong(&selfCopy->_connection, v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
@@ -29,13 +29,13 @@
 - (void)executionDidBegin
 {
   objc_initWeak(&location, self);
-  v3 = [(VSDeveloperIdentityProviderFetchAllOperation *)self connection];
+  connection = [(VSDeveloperIdentityProviderFetchAllOperation *)self connection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __65__VSDeveloperIdentityProviderFetchAllOperation_executionDidBegin__block_invoke;
   v9[3] = &unk_278B73358;
   objc_copyWeak(&v10, &location);
-  v4 = [v3 serviceWithErrorHandler:v9];
+  v4 = [connection serviceWithErrorHandler:v9];
 
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))

@@ -1,7 +1,7 @@
 @interface PKPeerPaymentMessagesContentRenderBubbleViewController
-- (BOOL)_isMessage:(id)a3 validForTransaction:(id)a4;
-- (BOOL)_isMessageFromMe:(id)a3;
-- (CGSize)contentSizeThatFits:(CGSize)a3;
+- (BOOL)_isMessage:(id)message validForTransaction:(id)transaction;
+- (BOOL)_isMessageFromMe:(id)me;
+- (CGSize)contentSizeThatFits:(CGSize)fits;
 - (PKPeerPaymentMessagesContentRenderBubbleDelegate)renderBubbleDelegate;
 - (id)_analyticsMessagesContext;
 - (void)_bubbleViewDoubleTapped;
@@ -10,8 +10,8 @@
 - (void)_bubbleViewSelected;
 - (void)_fetchStatus;
 - (void)_resizeBubbleViewToReferenceSizeAnimated;
-- (void)_resizeBubbleViewToSize:(CGSize)a3 completion:(id)a4;
-- (void)_updateiOSBubbleViewWithFetchedStatusForMessage:(id)a3;
+- (void)_resizeBubbleViewToSize:(CGSize)size completion:(id)completion;
+- (void)_updateiOSBubbleViewWithFetchedStatusForMessage:(id)message;
 - (void)loadView;
 - (void)reloadContent;
 @end
@@ -203,11 +203,11 @@ void __66__PKPeerPaymentMessagesContentRenderBubbleViewController_loadView__bloc
 - (id)_analyticsMessagesContext
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PKPeerPaymentMessagesContentBaseViewController *)self contentDelegate];
-  v4 = [v3 conversationSize];
+  contentDelegate = [(PKPeerPaymentMessagesContentBaseViewController *)self contentDelegate];
+  conversationSize = [contentDelegate conversationSize];
 
   v5 = MEMORY[0x1E69BAF00];
-  if (v4 <= 2)
+  if (conversationSize <= 2)
   {
     v5 = MEMORY[0x1E69BAF08];
   }
@@ -218,31 +218,31 @@ void __66__PKPeerPaymentMessagesContentRenderBubbleViewController_loadView__bloc
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
   v8 = [v7 mutableCopy];
 
-  if (v4 >= 3)
+  if (conversationSize >= 3)
   {
-    v9 = [(PKPeerPaymentMessagesContentBaseViewController *)self contentDelegate];
-    v10 = [v9 conversationSize];
+    contentDelegate2 = [(PKPeerPaymentMessagesContentBaseViewController *)self contentDelegate];
+    conversationSize2 = [contentDelegate2 conversationSize];
 
-    v11 = [MEMORY[0x1E69B8540] bucketValueForGroupSize:v10];
+    v11 = [MEMORY[0x1E69B8540] bucketValueForGroupSize:conversationSize2];
     [v8 safelySetObject:v11 forKey:*MEMORY[0x1E69BAF18]];
   }
 
-  v12 = [(PKPeerPaymentMessagesContentBaseViewController *)self contentDelegate];
-  v13 = [v12 presentationStyle];
+  contentDelegate3 = [(PKPeerPaymentMessagesContentBaseViewController *)self contentDelegate];
+  presentationStyle = [contentDelegate3 presentationStyle];
 
   v14 = MEMORY[0x1E69BAF48];
-  if (v13 != 1)
+  if (presentationStyle != 1)
   {
     v14 = MEMORY[0x1E69BAF40];
   }
 
   v15 = *v14;
   [v8 setObject:v15 forKeyedSubscript:*MEMORY[0x1E69BAF50]];
-  v16 = [(PKPeerPaymentMessage *)self->_currentMessage amount];
-  v17 = [v16 pk_isPositiveNumber];
+  amount = [(PKPeerPaymentMessage *)self->_currentMessage amount];
+  pk_isPositiveNumber = [amount pk_isPositiveNumber];
 
   v18 = MEMORY[0x1E69BAF28];
-  if (!v17)
+  if (!pk_isPositiveNumber)
   {
     v18 = MEMORY[0x1E69BAF38];
   }
@@ -255,27 +255,27 @@ void __66__PKPeerPaymentMessagesContentRenderBubbleViewController_loadView__bloc
 - (void)reloadContent
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPeerPaymentMessagesContentBaseViewController *)self contentDelegate];
-  v4 = [v3 activeConversation];
-  v5 = [v4 selectedMessage];
-  v6 = [v5 peerPaymentMessage];
+  contentDelegate = [(PKPeerPaymentMessagesContentBaseViewController *)self contentDelegate];
+  activeConversation = [contentDelegate activeConversation];
+  selectedMessage = [activeConversation selectedMessage];
+  peerPaymentMessage = [selectedMessage peerPaymentMessage];
 
   currentMessage = self->_currentMessage;
-  if (!currentMessage || (-[PKPeerPaymentMessage identifier](currentMessage, "identifier"), v8 = objc_claimAutoreleasedReturnValue(), [v6 identifier], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqual:", v9), v9, v8, (v10 & 1) == 0))
+  if (!currentMessage || (-[PKPeerPaymentMessage identifier](currentMessage, "identifier"), v8 = objc_claimAutoreleasedReturnValue(), [peerPaymentMessage identifier], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqual:", v9), v9, v8, (v10 & 1) == 0))
   {
-    objc_storeStrong(&self->_currentMessage, v6);
+    objc_storeStrong(&self->_currentMessage, peerPaymentMessage);
     v11 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 134218242;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
-      v15 = v6;
+      v15 = peerPaymentMessage;
       _os_log_impl(&dword_1BD026000, v11, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentMessagesContentRenderBubbleViewController %p: rendering message : %@", &v12, 0x16u);
     }
 
-    [(PKPeerPaymentBubbleView *)self->_bubbleView updateWithPeerPaymentMessage:v6 animated:0];
-    if ([v6 type] == 2 && !-[PKPeerPaymentMessagesContentRenderBubbleViewController _isMessageFromMe:](self, "_isMessageFromMe:", v6))
+    [(PKPeerPaymentBubbleView *)self->_bubbleView updateWithPeerPaymentMessage:peerPaymentMessage animated:0];
+    if ([peerPaymentMessage type] == 2 && !-[PKPeerPaymentMessagesContentRenderBubbleViewController _isMessageFromMe:](self, "_isMessageFromMe:", peerPaymentMessage))
     {
       [(PKPeerPaymentBubbleView *)self->_bubbleView setAction:1 animated:0];
     }
@@ -286,34 +286,34 @@ void __66__PKPeerPaymentMessagesContentRenderBubbleViewController_loadView__bloc
   [(PKPeerPaymentMessagesContentRenderBubbleViewController *)self _fetchStatus];
 }
 
-- (BOOL)_isMessageFromMe:(id)a3
+- (BOOL)_isMessageFromMe:(id)me
 {
-  v4 = [a3 underlyingMessage];
-  v5 = [v4 senderParticipantIdentifier];
+  underlyingMessage = [me underlyingMessage];
+  senderParticipantIdentifier = [underlyingMessage senderParticipantIdentifier];
 
-  v6 = [(PKPeerPaymentMessagesContentBaseViewController *)self contentDelegate];
-  v7 = [v6 activeConversation];
-  v8 = [v7 localParticipantIdentifier];
+  contentDelegate = [(PKPeerPaymentMessagesContentBaseViewController *)self contentDelegate];
+  activeConversation = [contentDelegate activeConversation];
+  localParticipantIdentifier = [activeConversation localParticipantIdentifier];
 
   v9 = 0;
-  if (v5 && v8)
+  if (senderParticipantIdentifier && localParticipantIdentifier)
   {
-    v9 = [v5 isEqual:v8];
+    v9 = [senderParticipantIdentifier isEqual:localParticipantIdentifier];
   }
 
   return v9;
 }
 
-- (BOOL)_isMessage:(id)a3 validForTransaction:(id)a4
+- (BOOL)_isMessage:(id)message validForTransaction:(id)transaction
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 peerPaymentMessageReceivedDate];
-  v9 = [v6 underlyingMessage];
-  v10 = [v9 time];
+  messageCopy = message;
+  transactionCopy = transaction;
+  peerPaymentMessageReceivedDate = [transactionCopy peerPaymentMessageReceivedDate];
+  underlyingMessage = [messageCopy underlyingMessage];
+  time = [underlyingMessage time];
 
-  if ([(PKPeerPaymentMessagesContentRenderBubbleViewController *)self _isMessageFromMe:v6])
+  if ([(PKPeerPaymentMessagesContentRenderBubbleViewController *)self _isMessageFromMe:messageCopy])
   {
     v11 = 1;
   }
@@ -321,28 +321,28 @@ void __66__PKPeerPaymentMessagesContentRenderBubbleViewController_loadView__bloc
   else
   {
     v11 = 1;
-    if ([v6 hasBeenSent])
+    if ([messageCopy hasBeenSent])
     {
-      if (v8)
+      if (peerPaymentMessageReceivedDate)
       {
-        if (v10)
+        if (time)
         {
-          [v8 timeIntervalSinceDate:v10];
+          [peerPaymentMessageReceivedDate timeIntervalSinceDate:time];
           if (fabs(v13) >= 1.0)
           {
             v14 = PKLogFacilityTypeGetObject();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
               v15 = 134219010;
-              v16 = self;
+              selfCopy = self;
               v17 = 2112;
-              v18 = v6;
+              v18 = messageCopy;
               v19 = 2112;
-              v20 = v7;
+              v20 = transactionCopy;
               v21 = 2114;
-              v22 = v10;
+              v22 = time;
               v23 = 2114;
-              v24 = v8;
+              v24 = peerPaymentMessageReceivedDate;
               _os_log_impl(&dword_1BD026000, v14, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentMessagesContentRenderBubbleViewController %p: Message: %@ is not valid for Transaction: %@. (%{public}@ != %{public}@)", &v15, 0x34u);
             }
 
@@ -356,10 +356,10 @@ void __66__PKPeerPaymentMessagesContentRenderBubbleViewController_loadView__bloc
   return v11;
 }
 
-- (CGSize)contentSizeThatFits:(CGSize)a3
+- (CGSize)contentSizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(PKPeerPaymentMessagesContentRenderBubbleViewController *)self loadViewIfNeeded];
   if (!self->_currentMessage)
   {
@@ -404,18 +404,18 @@ void __66__PKPeerPaymentMessagesContentRenderBubbleViewController_loadView__bloc
   }
 
   v7 = self->_bubbleView;
-  v8 = [(PKPeerPaymentMessage *)v3 recipientAddress];
-  [(PKPeerPaymentBubbleView *)v7 setRecipientAddress:v8];
+  recipientAddress = [(PKPeerPaymentMessage *)v3 recipientAddress];
+  [(PKPeerPaymentBubbleView *)v7 setRecipientAddress:recipientAddress];
 
   v9 = self->_bubbleView;
-  v10 = [(PKPeerPaymentMessage *)v3 senderAddress];
-  [(PKPeerPaymentBubbleView *)v9 setSenderAddress:v10];
+  senderAddress = [(PKPeerPaymentMessage *)v3 senderAddress];
+  [(PKPeerPaymentBubbleView *)v9 setSenderAddress:senderAddress];
 
   if (!v3)
   {
 LABEL_15:
-    v14 = [(PKPeerPaymentMessagesContentRenderBubbleViewController *)self renderBubbleDelegate];
-    [v14 noteReadyForDisplay];
+    renderBubbleDelegate = [(PKPeerPaymentMessagesContentRenderBubbleViewController *)self renderBubbleDelegate];
+    [renderBubbleDelegate noteReadyForDisplay];
 
     goto LABEL_16;
   }
@@ -424,14 +424,14 @@ LABEL_15:
   {
     if ([(PKPeerPaymentMessage *)v3 type]== 2 && [(PKPeerPaymentMessage *)v3 context]== 2 && ![(PKPeerPaymentMessagesContentRenderBubbleViewController *)self _isMessageFromMe:v3])
     {
-      v23 = [(PKPeerPaymentMessagesContentRenderBubbleViewController *)self renderBubbleDelegate];
+      renderBubbleDelegate2 = [(PKPeerPaymentMessagesContentRenderBubbleViewController *)self renderBubbleDelegate];
       v5 = v24;
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __70__PKPeerPaymentMessagesContentRenderBubbleViewController__fetchStatus__block_invoke_4;
       v24[3] = &unk_1E8026B10;
       objc_copyWeak(&v25, &location);
-      [v23 localStatusForMessage:v3 completion:v24];
+      [renderBubbleDelegate2 localStatusForMessage:v3 completion:v24];
 
 LABEL_5:
       v6 = (v5 + 4);
@@ -445,14 +445,14 @@ LABEL_6:
 
   if ((PKUseMockSURFServer() & 1) == 0)
   {
-    v11 = [MEMORY[0x1E69B9020] sharedService];
-    v12 = [v11 needsRegistration];
+    mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
+    needsRegistration = [mEMORY[0x1E69B9020] needsRegistration];
 
-    if (v12)
+    if (needsRegistration)
     {
       [(PKPeerPaymentBubbleView *)self->_bubbleView setState:10 animated:0];
-      v13 = [(PKPeerPaymentMessagesContentRenderBubbleViewController *)self renderBubbleDelegate];
-      [v13 noteReadyForDisplay];
+      renderBubbleDelegate3 = [(PKPeerPaymentMessagesContentRenderBubbleViewController *)self renderBubbleDelegate];
+      [renderBubbleDelegate3 noteReadyForDisplay];
 
       [(PKPeerPaymentMessagesContentRenderBubbleViewController *)self _resizeBubbleViewToReferenceSizeAnimated];
       goto LABEL_16;
@@ -477,16 +477,16 @@ LABEL_6:
   {
     [(PKPeerPaymentBubbleView *)self->_bubbleView setState:12];
     v15 = self->_bubbleView;
-    v16 = [(PKPeerPaymentMessage *)v3 currency];
-    [(PKPeerPaymentBubbleView *)v15 setCurrency:v16];
+    currency = [(PKPeerPaymentMessage *)v3 currency];
+    [(PKPeerPaymentBubbleView *)v15 setCurrency:currency];
 
     v17 = self->_bubbleView;
-    v18 = [(PKPeerPaymentMessage *)v3 amount];
-    [(PKPeerPaymentBubbleView *)v17 setAmount:v18];
+    amount = [(PKPeerPaymentMessage *)v3 amount];
+    [(PKPeerPaymentBubbleView *)v17 setAmount:amount];
 
     v19 = self->_bubbleView;
-    v20 = [(PKPeerPaymentMessage *)v3 paymentSignature];
-    [(PKPeerPaymentBubbleView *)v19 setPaymentSignature:v20];
+    paymentSignature = [(PKPeerPaymentMessage *)v3 paymentSignature];
+    [(PKPeerPaymentBubbleView *)v19 setPaymentSignature:paymentSignature];
 
     v21 = self->_bubbleView;
     v28[0] = MEMORY[0x1E69E9820];
@@ -605,20 +605,20 @@ void __70__PKPeerPaymentMessagesContentRenderBubbleViewController__fetchStatus__
   }
 }
 
-- (void)_updateiOSBubbleViewWithFetchedStatusForMessage:(id)a3
+- (void)_updateiOSBubbleViewWithFetchedStatusForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   objc_initWeak(&location, self);
-  v5 = [(PKPeerPaymentMessagesContentRenderBubbleViewController *)self renderBubbleDelegate];
+  renderBubbleDelegate = [(PKPeerPaymentMessagesContentRenderBubbleViewController *)self renderBubbleDelegate];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __106__PKPeerPaymentMessagesContentRenderBubbleViewController__updateiOSBubbleViewWithFetchedStatusForMessage___block_invoke;
   v7[3] = &unk_1E8026B60;
   objc_copyWeak(&v10, &location);
-  v6 = v4;
+  v6 = messageCopy;
   v8 = v6;
-  v9 = self;
-  [v5 localStatusForMessage:v6 completion:v7];
+  selfCopy = self;
+  [renderBubbleDelegate localStatusForMessage:v6 completion:v7];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -861,15 +861,15 @@ void __106__PKPeerPaymentMessagesContentRenderBubbleViewController__updateiOSBub
   [(PKPeerPaymentMessagesContentRenderBubbleViewController *)self _resizeBubbleViewToSize:0 completion:?];
 }
 
-- (void)_resizeBubbleViewToSize:(CGSize)a3 completion:(id)a4
+- (void)_resizeBubbleViewToSize:(CGSize)size completion:(id)completion
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(PKPeerPaymentMessagesContentRenderBubbleViewController *)self renderBubbleDelegate];
-  [v8 contentSize];
+  renderBubbleDelegate = [(PKPeerPaymentMessagesContentRenderBubbleViewController *)self renderBubbleDelegate];
+  [renderBubbleDelegate contentSize];
   v10 = v9;
   v12 = v11;
 
@@ -883,15 +883,15 @@ void __106__PKPeerPaymentMessagesContentRenderBubbleViewController__updateiOSBub
       v31.height = height;
       v15 = NSStringFromSize(v31);
       *buf = 134218242;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2114;
       v27 = v15;
       _os_log_impl(&dword_1BD026000, v13, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentMessagesContentRenderBubbleViewController %p: No bubble view resize needed. Size: %{public}@.", buf, 0x16u);
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -906,7 +906,7 @@ void __106__PKPeerPaymentMessagesContentRenderBubbleViewController__updateiOSBub
       v33.height = v12;
       v17 = NSStringFromSize(v33);
       *buf = 134218498;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2114;
       v27 = v16;
       v28 = 2114;
@@ -916,8 +916,8 @@ void __106__PKPeerPaymentMessagesContentRenderBubbleViewController__updateiOSBub
 
     self->_pendingBubbleViewSize.width = width;
     self->_pendingBubbleViewSize.height = height;
-    v18 = [(PKPeerPaymentMessagesContentRenderBubbleViewController *)self renderBubbleDelegate];
-    [v18 noteContentSizeNeedsUpdate];
+    renderBubbleDelegate2 = [(PKPeerPaymentMessagesContentRenderBubbleViewController *)self renderBubbleDelegate];
+    [renderBubbleDelegate2 noteContentSizeNeedsUpdate];
 
     v19 = dispatch_time(0, 800000000);
     v20[0] = MEMORY[0x1E69E9820];
@@ -928,7 +928,7 @@ void __106__PKPeerPaymentMessagesContentRenderBubbleViewController__updateiOSBub
     v20[4] = self;
     v22[1] = *&width;
     v22[2] = *&height;
-    v21 = v7;
+    v21 = completionCopy;
     dispatch_after(v19, MEMORY[0x1E69E96A0], v20);
 
     objc_destroyWeak(v22);
@@ -957,51 +957,51 @@ void __93__PKPeerPaymentMessagesContentRenderBubbleViewController__resizeBubbleV
 - (void)_bubbleViewSelected
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPeerPaymentMessagesContentBaseViewController *)self contentDelegate];
-  v4 = [v3 activeConversation];
-  v5 = [v4 selectedMessage];
-  v6 = [v5 peerPaymentMessage];
+  contentDelegate = [(PKPeerPaymentMessagesContentBaseViewController *)self contentDelegate];
+  activeConversation = [contentDelegate activeConversation];
+  selectedMessage = [activeConversation selectedMessage];
+  peerPaymentMessage = [selectedMessage peerPaymentMessage];
 
-  if ([v6 isObserver])
+  if ([peerPaymentMessage isObserver])
   {
-    v7 = PKLogFacilityTypeGetObject();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    contentDelegate2 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(contentDelegate2, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 134218242;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2112;
-      v14 = v6;
+      v14 = peerPaymentMessage;
       v8 = "PKPeerPaymentMessagesContentRenderBubbleViewController %p: Ignoring bubble tap on observer message: %@";
 LABEL_16:
-      _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, v8, &v11, 0x16u);
+      _os_log_impl(&dword_1BD026000, contentDelegate2, OS_LOG_TYPE_DEFAULT, v8, &v11, 0x16u);
       goto LABEL_17;
     }
 
     goto LABEL_17;
   }
 
-  if (!v6)
+  if (!peerPaymentMessage)
   {
     goto LABEL_14;
   }
 
-  if ([v6 type] == 1 && objc_msgSend(v6, "hasBeenSent") && -[PKPeerPaymentBubbleView state](self->_bubbleView, "state") != 9)
+  if ([peerPaymentMessage type] == 1 && objc_msgSend(peerPaymentMessage, "hasBeenSent") && -[PKPeerPaymentBubbleView state](self->_bubbleView, "state") != 9)
   {
-    v7 = [(PKPeerPaymentMessagesContentBaseViewController *)self contentDelegate];
-    [v7 handleAction:6 sender:self completion:0];
+    contentDelegate2 = [(PKPeerPaymentMessagesContentBaseViewController *)self contentDelegate];
+    [contentDelegate2 handleAction:6 sender:self completion:0];
     goto LABEL_17;
   }
 
-  if ([v6 type] != 3 || !objc_msgSend(v6, "hasBeenSent"))
+  if ([peerPaymentMessage type] != 3 || !objc_msgSend(peerPaymentMessage, "hasBeenSent"))
   {
 LABEL_14:
-    v7 = PKLogFacilityTypeGetObject();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    contentDelegate2 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(contentDelegate2, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 134218242;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2112;
-      v14 = v6;
+      v14 = peerPaymentMessage;
       v8 = "PKPeerPaymentMessagesContentRenderBubbleViewController %p: Ignoring bubble tap on message: %@";
       goto LABEL_16;
     }
@@ -1011,7 +1011,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if ([v6 isFromMe])
+  if ([peerPaymentMessage isFromMe])
   {
     v9 = 8;
   }
@@ -1021,8 +1021,8 @@ LABEL_17:
     v9 = 5;
   }
 
-  v10 = [(PKPeerPaymentMessagesContentBaseViewController *)self contentDelegate];
-  [v10 handleAction:v9 sender:self completion:0];
+  contentDelegate3 = [(PKPeerPaymentMessagesContentBaseViewController *)self contentDelegate];
+  [contentDelegate3 handleAction:v9 sender:self completion:0];
 
 LABEL_18:
 }
@@ -1034,7 +1034,7 @@ LABEL_18:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 134217984;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentMessagesContentRenderBubbleViewController %p: Pan gesture detected. Not showing transaction details.", &v4, 0xCu);
   }
 }
@@ -1046,7 +1046,7 @@ LABEL_18:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 134217984;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentMessagesContentRenderBubbleViewController %p: Double tap gesture detected. Not showing transaction details.", &v4, 0xCu);
   }
 }
@@ -1058,7 +1058,7 @@ LABEL_18:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 134217984;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentMessagesContentRenderBubbleViewController %p: Long press gesture detected. Not showing transaction details.", &v4, 0xCu);
   }
 }

@@ -1,16 +1,16 @@
 @interface HMDRemoteMessagePolicy
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMDRemoteMessagePolicy)init;
-- (id)__initWithRequiresSecureMessage:(BOOL)a3 allowsAnonymousMessage:(BOOL)a4 requiresAccountMessage:(BOOL)a5 transportRestriction:(unint64_t)a6 roles:(unint64_t)a7;
+- (id)__initWithRequiresSecureMessage:(BOOL)message allowsAnonymousMessage:(BOOL)anonymousMessage requiresAccountMessage:(BOOL)accountMessage transportRestriction:(unint64_t)restriction roles:(unint64_t)roles;
 - (unint64_t)hash;
 @end
 
 @implementation HMDRemoteMessagePolicy
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -20,7 +20,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -31,8 +31,8 @@
     v6 = v5;
     if (v6 && (v7 = [(HMDRemoteMessagePolicy *)self requiresSecureMessage], v7 == [(HMDRemoteMessagePolicy *)v6 requiresSecureMessage]) && (v8 = [(HMDRemoteMessagePolicy *)self allowsAnonymousMessage], v8 == [(HMDRemoteMessagePolicy *)v6 allowsAnonymousMessage]) && (v9 = [(HMDRemoteMessagePolicy *)self requiresAccountMessage], v9 == [(HMDRemoteMessagePolicy *)v6 requiresAccountMessage]) && (v10 = [(HMDRemoteMessagePolicy *)self transportRestriction], v10 == [(HMDRemoteMessagePolicy *)v6 transportRestriction]))
     {
-      v11 = [(HMDRemoteMessagePolicy *)self roles];
-      v12 = v11 == [(HMDRemoteMessagePolicy *)v6 roles];
+      roles = [(HMDRemoteMessagePolicy *)self roles];
+      v12 = roles == [(HMDRemoteMessagePolicy *)v6 roles];
     }
 
     else
@@ -46,18 +46,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMDRemoteMessagePolicy *)self requiresSecureMessage];
-  v4 = [(HMDRemoteMessagePolicy *)self allowsAnonymousMessage];
+  requiresSecureMessage = [(HMDRemoteMessagePolicy *)self requiresSecureMessage];
+  allowsAnonymousMessage = [(HMDRemoteMessagePolicy *)self allowsAnonymousMessage];
   v5 = 2;
-  if (!v4)
+  if (!allowsAnonymousMessage)
   {
     v5 = 0;
   }
 
-  v6 = v5 | v3;
-  v7 = [(HMDRemoteMessagePolicy *)self requiresAccountMessage];
+  v6 = v5 | requiresSecureMessage;
+  requiresAccountMessage = [(HMDRemoteMessagePolicy *)self requiresAccountMessage];
   v8 = 4;
-  if (!v7)
+  if (!requiresAccountMessage)
   {
     v8 = 0;
   }
@@ -66,18 +66,18 @@
   return v9 ^ (16 * [(HMDRemoteMessagePolicy *)self roles]);
 }
 
-- (id)__initWithRequiresSecureMessage:(BOOL)a3 allowsAnonymousMessage:(BOOL)a4 requiresAccountMessage:(BOOL)a5 transportRestriction:(unint64_t)a6 roles:(unint64_t)a7
+- (id)__initWithRequiresSecureMessage:(BOOL)message allowsAnonymousMessage:(BOOL)anonymousMessage requiresAccountMessage:(BOOL)accountMessage transportRestriction:(unint64_t)restriction roles:(unint64_t)roles
 {
   v13.receiver = self;
   v13.super_class = HMDRemoteMessagePolicy;
   result = [(HMDRemoteMessagePolicy *)&v13 init];
   if (result)
   {
-    *(result + 8) = a3;
-    *(result + 9) = a4;
-    *(result + 10) = a5;
-    *(result + 2) = a6;
-    *(result + 3) = a7;
+    *(result + 8) = message;
+    *(result + 9) = anonymousMessage;
+    *(result + 10) = accountMessage;
+    *(result + 2) = restriction;
+    *(result + 3) = roles;
   }
 
   return result;

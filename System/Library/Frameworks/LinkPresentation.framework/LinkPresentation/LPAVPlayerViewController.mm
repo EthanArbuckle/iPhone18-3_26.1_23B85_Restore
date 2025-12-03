@@ -1,7 +1,7 @@
 @interface LPAVPlayerViewController
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)prepareForDisplayWithCompletionHandler:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)prepareForDisplayWithCompletionHandler:(id)handler;
 @end
 
 @implementation LPAVPlayerViewController
@@ -18,9 +18,9 @@
   [(LPAVPlayerViewController *)&v3 dealloc];
 }
 
-- (void)prepareForDisplayWithCompletionHandler:(id)a3
+- (void)prepareForDisplayWithCompletionHandler:(id)handler
 {
-  aBlock = a3;
+  aBlock = handler;
   if ([(LPAVPlayerViewController *)self isReadyForDisplay])
   {
     aBlock[2]();
@@ -39,12 +39,12 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 == &readyForDisplayKVOContext_0)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context == &readyForDisplayKVOContext_0)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -58,7 +58,7 @@
   {
     v13.receiver = self;
     v13.super_class = LPAVPlayerViewController;
-    [(LPAVPlayerViewController *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(LPAVPlayerViewController *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 

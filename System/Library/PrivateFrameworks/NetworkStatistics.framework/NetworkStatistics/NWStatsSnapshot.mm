@@ -1,6 +1,6 @@
 @interface NWStatsSnapshot
-+ (double)_intervalWithContinuousTime:(unint64_t)a3;
-+ (double)_referenceIntervalWithContinuousTime:(unint64_t)a3;
++ (double)_intervalWithContinuousTime:(unint64_t)time;
++ (double)_referenceIntervalWithContinuousTime:(unint64_t)time;
 + (void)initialize;
 - (BOOL)attributedEntityIsBundleName;
 - (BOOL)attributedEntityIsProcessName;
@@ -8,7 +8,7 @@
 - (NSString)attributionReasonString;
 - (NSString)delegateAttributionReasonString;
 - (NSString)snapshotReasonString;
-- (id)_createNSUUIDForBytes:(unsigned __int8)a3[16];
+- (id)_createNSUUIDForBytes:(unsigned __int8)bytes[16];
 - (id)extensionDictionaries;
 @end
 
@@ -41,16 +41,16 @@
   }
 }
 
-- (id)_createNSUUIDForBytes:(unsigned __int8)a3[16]
+- (id)_createNSUUIDForBytes:(unsigned __int8)bytes[16]
 {
-  if (uuid_is_null(a3))
+  if (uuid_is_null(bytes))
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3];
+    v4 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:bytes];
   }
 
   return v4;
@@ -58,40 +58,40 @@
 
 - (NSString)attributionReasonString
 {
-  v2 = [(NWStatsSnapshot *)self attributionReason];
+  attributionReason = [(NWStatsSnapshot *)self attributionReason];
 
-  return attributionReasonString(v2);
+  return attributionReasonString(attributionReason);
 }
 
 - (NSString)delegateAttributionReasonString
 {
-  v2 = [(NWStatsSnapshot *)self delegateAttributionReason];
+  delegateAttributionReason = [(NWStatsSnapshot *)self delegateAttributionReason];
 
-  return attributionReasonString(v2);
+  return attributionReasonString(delegateAttributionReason);
 }
 
 - (BOOL)attributedEntityIsBundleName
 {
-  v2 = [(NWStatsSnapshot *)self attributionReason];
+  attributionReason = [(NWStatsSnapshot *)self attributionReason];
 
-  return attributionReasonImpliesBundleName(v2);
+  return attributionReasonImpliesBundleName(attributionReason);
 }
 
 - (BOOL)attributedEntityIsProcessName
 {
-  v2 = [(NWStatsSnapshot *)self attributionReason];
+  attributionReason = [(NWStatsSnapshot *)self attributionReason];
 
-  return attributionReasonImpliesProcessName(v2);
+  return attributionReasonImpliesProcessName(attributionReason);
 }
 
-+ (double)_intervalWithContinuousTime:(unint64_t)a3
++ (double)_intervalWithContinuousTime:(unint64_t)time
 {
   LODWORD(v3) = timebase_info_1;
   LODWORD(v4) = *algn_280C54FDC;
-  return a3 * v3 / v4 / 1000000000.0;
+  return time * v3 / v4 / 1000000000.0;
 }
 
-+ (double)_referenceIntervalWithContinuousTime:(unint64_t)a3
++ (double)_referenceIntervalWithContinuousTime:(unint64_t)time
 {
   v5 = 9;
   do
@@ -100,20 +100,20 @@
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     v8 = v7;
     v9 = mach_continuous_time() - v6;
-    [a1 _intervalWithContinuousTime:v9];
+    [self _intervalWithContinuousTime:v9];
   }
 
   while (v10 * 1000000.0 >= 50.0 && v5-- != 0);
   v12 = v6 + (v9 >> 1);
-  if (v12 <= a3)
+  if (v12 <= time)
   {
-    [a1 _intervalWithContinuousTime:a3 - v12];
+    [self _intervalWithContinuousTime:time - v12];
     return v8 + v15;
   }
 
   else
   {
-    [a1 _intervalWithContinuousTime:v12 - a3];
+    [self _intervalWithContinuousTime:v12 - time];
     return v8 - v13;
   }
 }
@@ -150,8 +150,8 @@
       v17 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v5 = [(NWStatsSnapshot *)self extensions];
-      v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      extensions = [(NWStatsSnapshot *)self extensions];
+      v6 = [extensions countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v6)
       {
         v7 = v6;
@@ -163,19 +163,19 @@
           {
             if (*v17 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(extensions);
             }
 
             v10 = *(*(&v16 + 1) + 8 * v9);
-            v11 = [(NWStatsSnapshot *)self extensions];
-            v12 = [v11 objectForKeyedSubscript:v10];
+            extensions2 = [(NWStatsSnapshot *)self extensions];
+            v12 = [extensions2 objectForKeyedSubscript:v10];
             [(NSDictionary *)v4 setObject:v12 forKeyedSubscript:v10];
 
             ++v9;
           }
 
           while (v7 != v9);
-          v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v7 = [extensions countByEnumeratingWithState:&v16 objects:v20 count:16];
         }
 
         while (v7);

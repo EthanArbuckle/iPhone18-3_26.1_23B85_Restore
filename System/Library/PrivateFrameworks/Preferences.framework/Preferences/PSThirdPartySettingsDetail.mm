@@ -1,26 +1,26 @@
 @interface PSThirdPartySettingsDetail
-+ (id)preferencesURLForBundleID:(id)a3 forSettingType:(int64_t)a4;
++ (id)preferencesURLForBundleID:(id)d forSettingType:(int64_t)type;
 @end
 
 @implementation PSThirdPartySettingsDetail
 
-+ (id)preferencesURLForBundleID:(id)a3 forSettingType:(int64_t)a4
++ (id)preferencesURLForBundleID:(id)d forSettingType:(int64_t)type
 {
   v49 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dCopy = d;
   v6 = _PSLoggingFacility();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v46 = v5;
+    v46 = dCopy;
     v47 = 1024;
-    v48 = a4;
+    typeCopy = type;
     _os_log_impl(&dword_18B008000, v6, OS_LOG_TYPE_DEFAULT, "########### Find (%@) type (%d)", buf, 0x12u);
   }
 
   v7 = MEMORY[0x1E69D5500];
   v8 = kTCCContactsID;
-  switch(a4)
+  switch(type)
   {
     case 0:
       v9 = _PSLoggingFacility();
@@ -30,13 +30,13 @@
         _os_log_impl(&dword_18B008000, v9, OS_LOG_TYPE_DEFAULT, "########### PSSettingTypeTopLevel", buf, 2u);
       }
 
-      v10 = [MEMORY[0x1E6963608] defaultWorkspace];
-      v11 = [v10 applicationIsInstalled:v5];
+      defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+      v11 = [defaultWorkspace applicationIsInstalled:dCopy];
 
       if (v11)
       {
         v12 = MEMORY[0x1E695DFF8];
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"app-prefs:%@", v5];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"app-prefs:%@", dCopy];
         goto LABEL_19;
       }
 
@@ -44,12 +44,12 @@
       goto LABEL_46;
     case 1:
       v16 = +[PSNotificationSettingsController sharedInstance];
-      v17 = [v16 sectionInfoForIdentifier:v5];
+      v17 = [v16 sectionInfoForIdentifier:dCopy];
 
       if (v17)
       {
         v12 = MEMORY[0x1E695DFF8];
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"prefs:root=NOTIFICATIONS_ID&path=%@", v5];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"prefs:root=NOTIFICATIONS_ID&path=%@", dCopy];
         v15 = LABEL_19:;
         v17 = [v12 URLWithString:v15];
         goto LABEL_45;
@@ -57,7 +57,7 @@
 
       goto LABEL_46;
     case 2:
-      if (([(__CFString *)v5 isEqualToString:@"com.apple.weather"]& 1) != 0)
+      if (([(__CFString *)dCopy isEqualToString:@"com.apple.weather"]& 1) != 0)
       {
         v13 = @"com.apple.locationd.bundle-/System/Library/PrivateFrameworks/Weather.framework";
 LABEL_53:
@@ -65,16 +65,16 @@ LABEL_53:
         goto LABEL_56;
       }
 
-      if ([(__CFString *)v5 isEqualToString:@"com.apple.AssistantServices"])
+      if ([(__CFString *)dCopy isEqualToString:@"com.apple.AssistantServices"])
       {
         v13 = @"com.apple.locationd.bundle-/System/Library/PrivateFrameworks/AssistantServices.framework";
         goto LABEL_53;
       }
 
-      v13 = v5;
+      v13 = dCopy;
 LABEL_56:
-      v5 = CLCopyAppsUsingLocation();
-      [(__CFString *)v5 allKeys];
+      dCopy = CLCopyAppsUsingLocation();
+      [(__CFString *)dCopy allKeys];
       v39 = 0u;
       v40 = 0u;
       v41 = 0u;
@@ -85,8 +85,8 @@ LABEL_56:
 LABEL_64:
 
         v15 = @"LOCATION";
-        v24 = v5;
-        v5 = v13;
+        v24 = dCopy;
+        dCopy = v13;
         v13 = 0;
         goto LABEL_36;
       }
@@ -125,12 +125,12 @@ LABEL_35:
 LABEL_36:
 
       v18 = v24;
-      v25 = v5;
-      v5 = v13;
+      v25 = dCopy;
+      dCopy = v13;
 LABEL_38:
-      v26 = v5;
+      v26 = dCopy;
 
-      v5 = v25;
+      dCopy = v25;
 LABEL_40:
 
       if ([(__CFString *)v15 length]&& [(__CFString *)v26 length])
@@ -145,7 +145,7 @@ LABEL_40:
         v17 = 0;
       }
 
-      v5 = v26;
+      dCopy = v26;
 LABEL_45:
 
 LABEL_46:
@@ -236,7 +236,7 @@ LABEL_26:
             }
 
             v22 = CFBundleGetIdentifier([*(*(&v35 + 1) + 8 * i) objectForKey:*v20]);
-            v23 = [v22 isEqualToString:v5];
+            v23 = [v22 isEqualToString:dCopy];
 
             if (v23)
             {

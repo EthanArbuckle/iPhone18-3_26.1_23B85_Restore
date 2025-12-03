@@ -1,26 +1,26 @@
 @interface ProxyAgent
-- (ProxyAgent)initWithParameters:(id)a3;
+- (ProxyAgent)initWithParameters:(id)parameters;
 - (id)getAgentName;
 - (id)getAgentUUID;
-- (void)setAgentDescription:(id)a3;
-- (void)setAgentUUID:(id)a3;
-- (void)setInternalAgentName:(id)a3;
+- (void)setAgentDescription:(id)description;
+- (void)setAgentUUID:(id)d;
+- (void)setInternalAgentName:(id)name;
 @end
 
 @implementation ProxyAgent
 
-- (ProxyAgent)initWithParameters:(id)a3
+- (ProxyAgent)initWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v18.receiver = self;
   v18.super_class = ProxyAgent;
-  v5 = [(ConfigAgent *)&v18 initWithParameters:v4];
+  v5 = [(ConfigAgent *)&v18 initWithParameters:parametersCopy];
   if (v5)
   {
-    v6 = [v4 valueForKey:@"EntityName"];
-    v7 = [v4 valueForKey:@"AgentSubType"];
-    v8 = [objc_opt_class() agentType];
-    v9 = [NSString stringWithFormat:@"%@-%@", v8, v6];
+    v6 = [parametersCopy valueForKey:@"EntityName"];
+    v7 = [parametersCopy valueForKey:@"AgentSubType"];
+    agentType = [objc_opt_class() agentType];
+    v9 = [NSString stringWithFormat:@"%@-%@", agentType, v6];
     internalAgentName = v5->_internalAgentName;
     v5->_internalAgentName = v9;
 
@@ -59,23 +59,23 @@
   return agentUUID;
 }
 
-- (void)setAgentUUID:(id)a3
+- (void)setAgentUUID:(id)d
 {
 
-  objc_setProperty_nonatomic_copy(self, a2, a3, 80);
+  objc_setProperty_nonatomic_copy(self, a2, d, 80);
 }
 
-- (void)setAgentDescription:(id)a3
+- (void)setAgentDescription:(id)description
 {
 
-  objc_setProperty_nonatomic_copy(self, a2, a3, 88);
+  objc_setProperty_nonatomic_copy(self, a2, description, 88);
 }
 
-- (void)setInternalAgentName:(id)a3
+- (void)setInternalAgentName:(id)name
 {
   p_internalAgentName = &self->_internalAgentName;
 
-  objc_storeStrong(p_internalAgentName, a3);
+  objc_storeStrong(p_internalAgentName, name);
 }
 
 @end

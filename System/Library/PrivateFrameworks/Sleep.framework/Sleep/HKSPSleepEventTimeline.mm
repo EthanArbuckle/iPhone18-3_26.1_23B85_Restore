@@ -1,35 +1,35 @@
 @interface HKSPSleepEventTimeline
-- (HKSPSleepEventTimeline)initWithOriginDate:(id)a3;
+- (HKSPSleepEventTimeline)initWithOriginDate:(id)date;
 - (NSArray)events;
 - (NSArray)previousEvents;
 - (NSArray)previousResolvedOccurrences;
 - (NSArray)resolvedOccurrences;
 - (NSArray)upcomingEvents;
 - (NSArray)upcomingResolvedOccurrences;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)resolvedOccurrenceContainingDate:(id)a3;
-- (id)resolvedOccurrenceContainingOrPrecedingDate:(id)a3;
-- (id)resolvedOccurrenceOverlappingOccurrence:(id)a3;
-- (id)resolvedOccurrencePrecedingDate:(id)a3;
-- (id)upcomingResolvedOccurrencesBeforeDate:(id)a3;
-- (void)_adjustedResolvedOccurrence:(id)a3 adjustmentBlock:(id)a4;
-- (void)addResolvedOccurrence:(id)a3;
-- (void)adjustResolvedOccurrence:(id)a3 removingEventWithIdentifier:(id)a4;
-- (void)adjustResolvedOccurrence:(id)a3 withEvent:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)resolvedOccurrenceContainingDate:(id)date;
+- (id)resolvedOccurrenceContainingOrPrecedingDate:(id)date;
+- (id)resolvedOccurrenceOverlappingOccurrence:(id)occurrence;
+- (id)resolvedOccurrencePrecedingDate:(id)date;
+- (id)upcomingResolvedOccurrencesBeforeDate:(id)date;
+- (void)_adjustedResolvedOccurrence:(id)occurrence adjustmentBlock:(id)block;
+- (void)addResolvedOccurrence:(id)occurrence;
+- (void)adjustResolvedOccurrence:(id)occurrence removingEventWithIdentifier:(id)identifier;
+- (void)adjustResolvedOccurrence:(id)occurrence withEvent:(id)event;
 @end
 
 @implementation HKSPSleepEventTimeline
 
-- (HKSPSleepEventTimeline)initWithOriginDate:(id)a3
+- (HKSPSleepEventTimeline)initWithOriginDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = HKSPSleepEventTimeline;
   v6 = [(HKSPSleepEventTimeline *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_originDate, a3);
+    objc_storeStrong(&v6->_originDate, date);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     orderedOccurrences = v7->_orderedOccurrences;
     v7->_orderedOccurrences = v8;
@@ -44,7 +44,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(HKSPSleepEventTimeline);
   v5 = [(NSDate *)self->_originDate copy];
@@ -71,8 +71,8 @@
 
 - (NSArray)events
 {
-  v2 = [(HKSPSleepEventTimeline *)self resolvedOccurrences];
-  v3 = [v2 na_flatMap:&__block_literal_global_17];
+  resolvedOccurrences = [(HKSPSleepEventTimeline *)self resolvedOccurrences];
+  v3 = [resolvedOccurrences na_flatMap:&__block_literal_global_17];
 
   return v3;
 }
@@ -105,13 +105,13 @@ id __32__HKSPSleepEventTimeline_events__block_invoke(uint64_t a1, void *a2)
 
 - (NSArray)upcomingEvents
 {
-  v3 = [(HKSPSleepEventTimeline *)self events];
+  events = [(HKSPSleepEventTimeline *)self events];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__HKSPSleepEventTimeline_upcomingEvents__block_invoke;
   v6[3] = &unk_279C73CF8;
   v6[4] = self;
-  v4 = [v3 na_filter:v6];
+  v4 = [events na_filter:v6];
 
   return v4;
 }
@@ -126,16 +126,16 @@ uint64_t __40__HKSPSleepEventTimeline_upcomingEvents__block_invoke(uint64_t a1, 
 
 - (NSArray)previousEvents
 {
-  v3 = [(HKSPSleepEventTimeline *)self events];
+  events = [(HKSPSleepEventTimeline *)self events];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__HKSPSleepEventTimeline_previousEvents__block_invoke;
   v7[3] = &unk_279C73CF8;
   v7[4] = self;
-  v4 = [v3 na_filter:v7];
-  v5 = [v4 bs_reverse];
+  v4 = [events na_filter:v7];
+  bs_reverse = [v4 bs_reverse];
 
-  return v5;
+  return bs_reverse;
 }
 
 uint64_t __40__HKSPSleepEventTimeline_previousEvents__block_invoke(uint64_t a1, void *a2)
@@ -148,13 +148,13 @@ uint64_t __40__HKSPSleepEventTimeline_previousEvents__block_invoke(uint64_t a1, 
 
 - (NSArray)upcomingResolvedOccurrences
 {
-  v3 = [(HKSPSleepEventTimeline *)self resolvedOccurrences];
+  resolvedOccurrences = [(HKSPSleepEventTimeline *)self resolvedOccurrences];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__HKSPSleepEventTimeline_upcomingResolvedOccurrences__block_invoke;
   v6[3] = &unk_279C75C08;
   v6[4] = self;
-  v4 = [v3 na_filter:v6];
+  v4 = [resolvedOccurrences na_filter:v6];
 
   return v4;
 }
@@ -170,16 +170,16 @@ uint64_t __53__HKSPSleepEventTimeline_upcomingResolvedOccurrences__block_invoke(
 
 - (NSArray)previousResolvedOccurrences
 {
-  v3 = [(HKSPSleepEventTimeline *)self resolvedOccurrences];
+  resolvedOccurrences = [(HKSPSleepEventTimeline *)self resolvedOccurrences];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__HKSPSleepEventTimeline_previousResolvedOccurrences__block_invoke;
   v7[3] = &unk_279C75C08;
   v7[4] = self;
-  v4 = [v3 na_filter:v7];
-  v5 = [v4 bs_reverse];
+  v4 = [resolvedOccurrences na_filter:v7];
+  bs_reverse = [v4 bs_reverse];
 
-  return v5;
+  return bs_reverse;
 }
 
 uint64_t __53__HKSPSleepEventTimeline_previousResolvedOccurrences__block_invoke(uint64_t a1, void *a2)
@@ -191,13 +191,13 @@ uint64_t __53__HKSPSleepEventTimeline_previousResolvedOccurrences__block_invoke(
   return v5;
 }
 
-- (id)upcomingResolvedOccurrencesBeforeDate:(id)a3
+- (id)upcomingResolvedOccurrencesBeforeDate:(id)date
 {
   v4 = MEMORY[0x277CCA970];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithStartDate:self->_originDate endDate:v5];
+  dateCopy = date;
+  v6 = [[v4 alloc] initWithStartDate:self->_originDate endDate:dateCopy];
 
-  v7 = [(HKSPSleepEventTimeline *)self resolvedOccurrences];
+  resolvedOccurrences = [(HKSPSleepEventTimeline *)self resolvedOccurrences];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __64__HKSPSleepEventTimeline_upcomingResolvedOccurrencesBeforeDate___block_invoke;
@@ -205,7 +205,7 @@ uint64_t __53__HKSPSleepEventTimeline_previousResolvedOccurrences__block_invoke(
   v11[4] = self;
   v12 = v6;
   v8 = v6;
-  v9 = [v7 na_filter:v11];
+  v9 = [resolvedOccurrences na_filter:v11];
 
   return v9;
 }
@@ -238,74 +238,74 @@ uint64_t __64__HKSPSleepEventTimeline_upcomingResolvedOccurrencesBeforeDate___bl
   return v10;
 }
 
-- (void)addResolvedOccurrence:(id)a3
+- (void)addResolvedOccurrence:(id)occurrence
 {
-  [(NSMutableArray *)self->_orderedOccurrences addObject:a3];
+  [(NSMutableArray *)self->_orderedOccurrences addObject:occurrence];
   orderedOccurrences = self->_orderedOccurrences;
   v5 = &__block_literal_global_15;
   [(NSMutableArray *)orderedOccurrences sortUsingComparator:&__block_literal_global_15];
 }
 
-- (void)adjustResolvedOccurrence:(id)a3 withEvent:(id)a4
+- (void)adjustResolvedOccurrence:(id)occurrence withEvent:(id)event
 {
-  v6 = a4;
+  eventCopy = event;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __61__HKSPSleepEventTimeline_adjustResolvedOccurrence_withEvent___block_invoke;
   v8[3] = &unk_279C75C58;
-  v9 = v6;
-  v7 = v6;
-  [(HKSPSleepEventTimeline *)self _adjustedResolvedOccurrence:a3 adjustmentBlock:v8];
+  v9 = eventCopy;
+  v7 = eventCopy;
+  [(HKSPSleepEventTimeline *)self _adjustedResolvedOccurrence:occurrence adjustmentBlock:v8];
 }
 
-- (void)adjustResolvedOccurrence:(id)a3 removingEventWithIdentifier:(id)a4
+- (void)adjustResolvedOccurrence:(id)occurrence removingEventWithIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __79__HKSPSleepEventTimeline_adjustResolvedOccurrence_removingEventWithIdentifier___block_invoke;
   v8[3] = &unk_279C75C58;
-  v9 = v6;
-  v7 = v6;
-  [(HKSPSleepEventTimeline *)self _adjustedResolvedOccurrence:a3 adjustmentBlock:v8];
+  v9 = identifierCopy;
+  v7 = identifierCopy;
+  [(HKSPSleepEventTimeline *)self _adjustedResolvedOccurrence:occurrence adjustmentBlock:v8];
 }
 
-- (void)_adjustedResolvedOccurrence:(id)a3 adjustmentBlock:(id)a4
+- (void)_adjustedResolvedOccurrence:(id)occurrence adjustmentBlock:(id)block
 {
-  v6 = a3;
+  occurrenceCopy = occurrence;
   timelineAdjustments = self->_timelineAdjustments;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __70__HKSPSleepEventTimeline__adjustedResolvedOccurrence_adjustmentBlock___block_invoke;
   v17[3] = &unk_279C75C80;
-  v8 = v6;
+  v8 = occurrenceCopy;
   v18 = v8;
-  v9 = a4;
+  blockCopy = block;
   v10 = [(NSMutableArray *)timelineAdjustments na_firstObjectPassingTest:v17];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 adjustedOccurrence];
-    v13 = v9[2](v9, v12);
+    adjustedOccurrence = [v10 adjustedOccurrence];
+    v13 = blockCopy[2](blockCopy, adjustedOccurrence);
 
     [v11 setAdjustedOccurrence:v13];
-    v14 = [v11 adjustedOccurrence];
+    adjustedOccurrence2 = [v11 adjustedOccurrence];
   }
 
   else
   {
     v15 = objc_alloc_init(_HKSPSleepEventTimelineAdjustment);
     [(_HKSPSleepEventTimelineAdjustment *)v15 setOriginalOccurrence:v8];
-    v16 = v9[2](v9, v8);
+    v16 = blockCopy[2](blockCopy, v8);
 
     [(_HKSPSleepEventTimelineAdjustment *)v15 setAdjustedOccurrence:v16];
     [(NSMutableArray *)self->_timelineAdjustments addObject:v15];
-    v12 = v8;
-    v14 = [(_HKSPSleepEventTimelineAdjustment *)v15 adjustedOccurrence];
+    adjustedOccurrence = v8;
+    adjustedOccurrence2 = [(_HKSPSleepEventTimelineAdjustment *)v15 adjustedOccurrence];
   }
 
-  [(NSMutableArray *)self->_orderedOccurrences removeObject:v12];
-  [(HKSPSleepEventTimeline *)self addResolvedOccurrence:v14];
+  [(NSMutableArray *)self->_orderedOccurrences removeObject:adjustedOccurrence];
+  [(HKSPSleepEventTimeline *)self addResolvedOccurrence:adjustedOccurrence2];
 }
 
 uint64_t __70__HKSPSleepEventTimeline__adjustedResolvedOccurrence_adjustmentBlock___block_invoke(uint64_t a1, void *a2)
@@ -326,17 +326,17 @@ uint64_t __70__HKSPSleepEventTimeline__adjustedResolvedOccurrence_adjustmentBloc
   return v5;
 }
 
-- (id)resolvedOccurrenceOverlappingOccurrence:(id)a3
+- (id)resolvedOccurrenceOverlappingOccurrence:(id)occurrence
 {
-  v4 = a3;
-  v5 = [(HKSPSleepEventTimeline *)self resolvedOccurrences];
+  occurrenceCopy = occurrence;
+  resolvedOccurrences = [(HKSPSleepEventTimeline *)self resolvedOccurrences];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __66__HKSPSleepEventTimeline_resolvedOccurrenceOverlappingOccurrence___block_invoke;
   v9[3] = &unk_279C75C08;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 na_firstObjectPassingTest:v9];
+  v10 = occurrenceCopy;
+  v6 = occurrenceCopy;
+  v7 = [resolvedOccurrences na_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -350,17 +350,17 @@ uint64_t __66__HKSPSleepEventTimeline_resolvedOccurrenceOverlappingOccurrence___
   return v5;
 }
 
-- (id)resolvedOccurrenceContainingDate:(id)a3
+- (id)resolvedOccurrenceContainingDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HKSPSleepEventTimeline *)self resolvedOccurrences];
+  dateCopy = date;
+  resolvedOccurrences = [(HKSPSleepEventTimeline *)self resolvedOccurrences];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__HKSPSleepEventTimeline_resolvedOccurrenceContainingDate___block_invoke;
   v9[3] = &unk_279C75C08;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 na_firstObjectPassingTest:v9];
+  v10 = dateCopy;
+  v6 = dateCopy;
+  v7 = [resolvedOccurrences na_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -373,18 +373,18 @@ uint64_t __59__HKSPSleepEventTimeline_resolvedOccurrenceContainingDate___block_i
   return v4;
 }
 
-- (id)resolvedOccurrencePrecedingDate:(id)a3
+- (id)resolvedOccurrencePrecedingDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HKSPSleepEventTimeline *)self resolvedOccurrences];
-  v6 = [v5 bs_reverse];
+  dateCopy = date;
+  resolvedOccurrences = [(HKSPSleepEventTimeline *)self resolvedOccurrences];
+  bs_reverse = [resolvedOccurrences bs_reverse];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __58__HKSPSleepEventTimeline_resolvedOccurrencePrecedingDate___block_invoke;
   v10[3] = &unk_279C75C08;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v6 na_firstObjectPassingTest:v10];
+  v11 = dateCopy;
+  v7 = dateCopy;
+  v8 = [bs_reverse na_firstObjectPassingTest:v10];
 
   return v8;
 }
@@ -398,10 +398,10 @@ uint64_t __58__HKSPSleepEventTimeline_resolvedOccurrencePrecedingDate___block_in
   return v5;
 }
 
-- (id)resolvedOccurrenceContainingOrPrecedingDate:(id)a3
+- (id)resolvedOccurrenceContainingOrPrecedingDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HKSPSleepEventTimeline *)self resolvedOccurrenceContainingDate:v4];
+  dateCopy = date;
+  v5 = [(HKSPSleepEventTimeline *)self resolvedOccurrenceContainingDate:dateCopy];
   v6 = v5;
   if (v5)
   {
@@ -410,7 +410,7 @@ uint64_t __58__HKSPSleepEventTimeline_resolvedOccurrencePrecedingDate___block_in
 
   else
   {
-    v7 = [(HKSPSleepEventTimeline *)self resolvedOccurrencePrecedingDate:v4];
+    v7 = [(HKSPSleepEventTimeline *)self resolvedOccurrencePrecedingDate:dateCopy];
   }
 
   v8 = v7;

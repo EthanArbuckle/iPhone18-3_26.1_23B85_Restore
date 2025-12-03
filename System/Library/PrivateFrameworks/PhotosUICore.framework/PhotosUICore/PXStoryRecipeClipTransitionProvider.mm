@@ -1,20 +1,20 @@
 @interface PXStoryRecipeClipTransitionProvider
-- ($7B05257DCED3654557744F96476E9D8A)_nextTransitionFromTable:(SEL)a3 currentMotion:(id)a4 nextMotion:(id *)a5;
+- ($7B05257DCED3654557744F96476E9D8A)_nextTransitionFromTable:(SEL)table currentMotion:(id)motion nextMotion:(id *)nextMotion;
 - ($7B05257DCED3654557744F96476E9D8A)nextIntraMomentTransition;
-- (BOOL)_cameraMovement:(int64_t)a3 allowsTransition:(int64_t)a4;
+- (BOOL)_cameraMovement:(int64_t)movement allowsTransition:(int64_t)transition;
 - (PXStoryRecipeClipTransitionProvider)init;
-- (PXStoryRecipeClipTransitionProvider)initWithConfiguration:(id)a3 colorGradeCategory:(id)a4 songPace:(int64_t)a5 randomNumberGenerator:(id)a6;
-- (void)provideTransitionsForMomentClipRange:(_NSRange)a3 withClipCatalog:(id)a4 usingBlock:(id)a5;
+- (PXStoryRecipeClipTransitionProvider)initWithConfiguration:(id)configuration colorGradeCategory:(id)category songPace:(int64_t)pace randomNumberGenerator:(id)generator;
+- (void)provideTransitionsForMomentClipRange:(_NSRange)range withClipCatalog:(id)catalog usingBlock:(id)block;
 @end
 
 @implementation PXStoryRecipeClipTransitionProvider
 
-- (void)provideTransitionsForMomentClipRange:(_NSRange)a3 withClipCatalog:(id)a4 usingBlock:(id)a5
+- (void)provideTransitionsForMomentClipRange:(_NSRange)range withClipCatalog:(id)catalog usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = a4;
-  v38 = a5;
+  length = range.length;
+  location = range.location;
+  catalogCopy = catalog;
+  blockCopy = block;
   v53 = 0u;
   v54 = 0u;
   v9 = length - 1;
@@ -22,44 +22,44 @@
   if (!__CFADD__(length - 1, location))
   {
     v10 = 0;
-    v35 = v8;
+    v35 = catalogCopy;
     while (1)
     {
       v37 = v10;
       v11 = location + 1;
-      v12 = [v8 numberOfClips];
-      v13 = [v8 clipAtIndex:location];
-      if (location + 1 >= v12)
+      numberOfClips = [catalogCopy numberOfClips];
+      v13 = [catalogCopy clipAtIndex:location];
+      if (location + 1 >= numberOfClips)
       {
         v14 = 0;
       }
 
       else
       {
-        v14 = [v8 clipAtIndex:location + 1];
+        v14 = [catalogCopy clipAtIndex:location + 1];
       }
 
-      v15 = [v13 displayAssets];
-      v40 = [v15 count];
+      displayAssets = [v13 displayAssets];
+      v40 = [displayAssets count];
 
       v42 = v14;
-      if (v11 >= v12)
+      if (v11 >= numberOfClips)
       {
-        v17 = [v13 moduleInfo];
+        moduleInfo = [v13 moduleInfo];
         [v13 moduleInfo];
         v20 = v23;
-        v18 = 0;
+        moduleInfo2 = 0;
         v22 = 0;
         v41 = 1;
       }
 
       else
       {
-        v16 = [v14 displayAssets];
-        v41 = [v16 count] < 2;
+        displayAssets2 = [v14 displayAssets];
+        v41 = [displayAssets2 count] < 2;
 
-        v17 = [v13 moduleInfo];
-        v18 = [v14 moduleInfo];
+        moduleInfo = [v13 moduleInfo];
+        moduleInfo2 = [v14 moduleInfo];
         [v13 moduleInfo];
         v20 = v19;
         [v14 moduleInfo];
@@ -68,24 +68,24 @@
 
       [v13 moduleInfo];
       v25 = v24;
-      v26 = v17 == v18 ? v22 : 1;
+      v26 = moduleInfo == moduleInfo2 ? v22 : 1;
       v51 = 0u;
       v52 = 0u;
-      if ((v20 & 1) != 0 || v22 || !v17 || v17 != v18)
+      if ((v20 & 1) != 0 || v22 || !moduleInfo || moduleInfo != moduleInfo2)
       {
         break;
       }
 
       v51 = v53;
       v52 = v54;
-      v8 = v35;
+      catalogCopy = v35;
       v27 = v42;
       v10 = v26;
 LABEL_31:
-      v34 = v38[2];
+      v34 = blockCopy[2];
       v43 = v51;
       v44 = v52;
-      v34(v38, &v43, location);
+      v34(blockCopy, &v43, location);
       v53 = v51;
       v54 = v52;
 
@@ -131,7 +131,7 @@ LABEL_31:
 
     v28 = v31;
 LABEL_24:
-    v8 = v35;
+    catalogCopy = v35;
     v32 = [v35 clipAtIndex:location];
     v33 = v32;
     v43 = 0uLL;
@@ -177,20 +177,20 @@ LABEL_3:
   return [(PXStoryRecipeClipTransitionProvider *)self _nextTransitionFromTable:baseTransitionTable currentMotion:v6 nextMotion:v5];
 }
 
-- ($7B05257DCED3654557744F96476E9D8A)_nextTransitionFromTable:(SEL)a3 currentMotion:(id)a4 nextMotion:(id *)a5
+- ($7B05257DCED3654557744F96476E9D8A)_nextTransitionFromTable:(SEL)table currentMotion:(id)motion nextMotion:(id *)nextMotion
 {
-  var0 = a5->var0;
+  var0 = nextMotion->var0;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __89__PXStoryRecipeClipTransitionProvider__nextTransitionFromTable_currentMotion_nextMotion___block_invoke;
   v17[3] = &unk_1E77433A8;
   v17[4] = self;
   v17[5] = var0;
-  v11 = [a4 nextValuePassingTest:v17];
-  v12 = [v11 integerValue];
-  if (v12 == 8)
+  v11 = [motion nextValuePassingTest:v17];
+  integerValue = [v11 integerValue];
+  if (integerValue == 8)
   {
-    if (a6->var0 == 1 || (a6 = a5, a5->var0 == 1))
+    if (a6->var0 == 1 || (a6 = nextMotion, nextMotion->var0 == 1))
     {
       v13 = a6->var1.var0.var0;
       if (v13 > 1)
@@ -242,17 +242,17 @@ LABEL_14:
     goto LABEL_20;
   }
 
-  var1 = a5->var1;
-  retstr->var0 = v12;
+  var1 = nextMotion->var1;
+  retstr->var0 = integerValue;
   retstr->var1 = 0.0;
   retstr->var2.var0.var0 = 0;
   retstr->var2.var0.var1 = 0;
-  if (v12 == 7 || v12 == 6)
+  if (integerValue == 7 || integerValue == 6)
   {
     retstr->var2.var0.var0 = var1.var0.var0;
   }
 
-  else if (v12 == 5)
+  else if (integerValue == 5)
   {
     retstr->var2 = var1;
   }
@@ -271,17 +271,17 @@ uint64_t __89__PXStoryRecipeClipTransitionProvider__nextTransitionFromTable_curr
   return [v4 _cameraMovement:v5 allowsTransition:v3];
 }
 
-- (BOOL)_cameraMovement:(int64_t)a3 allowsTransition:(int64_t)a4
+- (BOOL)_cameraMovement:(int64_t)movement allowsTransition:(int64_t)transition
 {
-  v4 = a4 != 5 || a3 == 1;
-  if (a4 == 6)
+  v4 = transition != 5 || movement == 1;
+  if (transition == 6)
   {
-    v4 = a3 == 2;
+    v4 = movement == 2;
   }
 
-  if (a4 == 7)
+  if (transition == 7)
   {
-    return a3 == 3;
+    return movement == 3;
   }
 
   else
@@ -290,54 +290,54 @@ uint64_t __89__PXStoryRecipeClipTransitionProvider__nextTransitionFromTable_curr
   }
 }
 
-- (PXStoryRecipeClipTransitionProvider)initWithConfiguration:(id)a3 colorGradeCategory:(id)a4 songPace:(int64_t)a5 randomNumberGenerator:(id)a6
+- (PXStoryRecipeClipTransitionProvider)initWithConfiguration:(id)configuration colorGradeCategory:(id)category songPace:(int64_t)pace randomNumberGenerator:(id)generator
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  configurationCopy = configuration;
+  categoryCopy = category;
+  generatorCopy = generator;
   v36.receiver = self;
   v36.super_class = PXStoryRecipeClipTransitionProvider;
   v13 = [(PXStoryRecipeClipTransitionProvider *)&v36 init];
   v14 = v13;
   if (v13)
   {
-    v13->_songPace = a5;
-    v15 = [v10 defaultTransitionTable];
-    v35 = [v15 transitionsForColorGrade:v11 songPace:a5];
+    v13->_songPace = pace;
+    defaultTransitionTable = [configurationCopy defaultTransitionTable];
+    v35 = [defaultTransitionTable transitionsForColorGrade:categoryCopy songPace:pace];
 
-    v16 = [objc_alloc(MEMORY[0x1E69C08A8]) initWithValueCounts:v35 randomNumberGenerator:v12 fallbackValue:&unk_1F190D8E8];
+    v16 = [objc_alloc(MEMORY[0x1E69C08A8]) initWithValueCounts:v35 randomNumberGenerator:generatorCopy fallbackValue:&unk_1F190D8E8];
     baseTransitionTable = v14->_baseTransitionTable;
     v14->_baseTransitionTable = v16;
 
-    v18 = [v10 interMomentTransitionTable];
-    v19 = [v18 transitionsForColorGrade:v11 songPace:a5];
+    interMomentTransitionTable = [configurationCopy interMomentTransitionTable];
+    v19 = [interMomentTransitionTable transitionsForColorGrade:categoryCopy songPace:pace];
 
-    v20 = [objc_alloc(MEMORY[0x1E69C08A8]) initWithValueCounts:v19 randomNumberGenerator:v12 fallbackValue:&unk_1F190D900];
+    v20 = [objc_alloc(MEMORY[0x1E69C08A8]) initWithValueCounts:v19 randomNumberGenerator:generatorCopy fallbackValue:&unk_1F190D900];
     interMomentTransitionTable = v14->_interMomentTransitionTable;
     v14->_interMomentTransitionTable = v20;
 
-    v22 = [v10 portraitTransitionTable];
-    v23 = [v22 transitionsForColorGrade:v11 songPace:a5];
+    portraitTransitionTable = [configurationCopy portraitTransitionTable];
+    v23 = [portraitTransitionTable transitionsForColorGrade:categoryCopy songPace:pace];
 
-    v24 = [objc_alloc(MEMORY[0x1E69C08A8]) initWithValueCounts:v23 randomNumberGenerator:v12 fallbackValue:&unk_1F190D918];
+    v24 = [objc_alloc(MEMORY[0x1E69C08A8]) initWithValueCounts:v23 randomNumberGenerator:generatorCopy fallbackValue:&unk_1F190D918];
     portraitTransitionTable = v14->_portraitTransitionTable;
     v14->_portraitTransitionTable = v24;
 
-    v26 = [v10 nUpTransitionTable];
-    v27 = [v26 transitionsForColorGrade:v11 songPace:a5];
+    nUpTransitionTable = [configurationCopy nUpTransitionTable];
+    v27 = [nUpTransitionTable transitionsForColorGrade:categoryCopy songPace:pace];
 
-    v28 = [objc_alloc(MEMORY[0x1E69C08A8]) initWithValueCounts:v27 randomNumberGenerator:v12 fallbackValue:&unk_1F190D930];
+    v28 = [objc_alloc(MEMORY[0x1E69C08A8]) initWithValueCounts:v27 randomNumberGenerator:generatorCopy fallbackValue:&unk_1F190D930];
     nUpTransitionTable = v14->_nUpTransitionTable;
     v14->_nUpTransitionTable = v28;
 
-    v30 = [v10 interModuleTransitionTable];
-    v31 = [v30 transitionsForColorGrade:v11 songPace:a5];
+    interModuleTransitionTable = [configurationCopy interModuleTransitionTable];
+    v31 = [interModuleTransitionTable transitionsForColorGrade:categoryCopy songPace:pace];
 
-    v32 = [objc_alloc(MEMORY[0x1E69C08A8]) initWithValueCounts:v31 randomNumberGenerator:v12 fallbackValue:&unk_1F190D918];
+    v32 = [objc_alloc(MEMORY[0x1E69C08A8]) initWithValueCounts:v31 randomNumberGenerator:generatorCopy fallbackValue:&unk_1F190D918];
     interModuleTransitionTable = v14->_interModuleTransitionTable;
     v14->_interModuleTransitionTable = v32;
 
-    objc_storeStrong(&v14->_randomNumberGenerator, a6);
+    objc_storeStrong(&v14->_randomNumberGenerator, generator);
   }
 
   return v14;
@@ -345,8 +345,8 @@ uint64_t __89__PXStoryRecipeClipTransitionProvider__nextTransitionFromTable_curr
 
 - (PXStoryRecipeClipTransitionProvider)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryRecipeClipTransitionProvider.m" lineNumber:29 description:{@"%s is not available as initializer", "-[PXStoryRecipeClipTransitionProvider init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRecipeClipTransitionProvider.m" lineNumber:29 description:{@"%s is not available as initializer", "-[PXStoryRecipeClipTransitionProvider init]"}];
 
   abort();
 }

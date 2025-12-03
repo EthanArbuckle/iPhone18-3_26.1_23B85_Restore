@@ -1,11 +1,11 @@
 @interface AirTagCustomNameViewController
-- (_TtC21FindMyRemoteUIService30AirTagCustomNameViewController)initWithContentView:(id)a3;
+- (_TtC21FindMyRemoteUIService30AirTagCustomNameViewController)initWithContentView:(id)view;
 - (void)updateContinueButton;
 @end
 
 @implementation AirTagCustomNameViewController
 
-- (_TtC21FindMyRemoteUIService30AirTagCustomNameViewController)initWithContentView:(id)a3
+- (_TtC21FindMyRemoteUIService30AirTagCustomNameViewController)initWithContentView:(id)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -14,7 +14,7 @@
 
 - (void)updateContinueButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000C688();
 }
 

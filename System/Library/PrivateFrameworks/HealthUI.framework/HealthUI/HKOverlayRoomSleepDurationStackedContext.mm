@@ -1,137 +1,137 @@
 @interface HKOverlayRoomSleepDurationStackedContext
-- (HKOverlayRoomSleepDurationStackedContext)initWithApplicationItems:(id)a3 overlayChartController:(id)a4 sleepChartFormatter:(id)a5 primaryDisplayType:(id)a6 uniqueIdentifier:(id)a7 firstWeekdayOverride:(id)a8 currentCalendarOverride:(id)a9 isInfoButtonHidden:(BOOL)a10;
-- (HKOverlayRoomSleepDurationStackedContext)initWithApplicationItems:(id)a3 overlayChartController:(id)a4 sleepChartFormatter:(id)a5 primarySampleType:(id)a6 uniqueIdentifier:(id)a7 firstWeekdayOverride:(id)a8 currentCalendarOverride:(id)a9 isInfoButtonHidden:(BOOL)a10;
-- (id)_generateNamedDataSourceWithTemplateDisplayType:(id)a3 overlayChartController:(id)a4 applicationItems:(id)a5;
-- (id)_generateSleepDurationStackedDisplayTypeWithApplicationItems:(id)a3 overlayChartController:(id)a4 sleepChartFormatter:(id)a5;
-- (id)_generateSleepSeriesWithTemplateDisplayType:(id)a3 applicationItems:(id)a4;
+- (HKOverlayRoomSleepDurationStackedContext)initWithApplicationItems:(id)items overlayChartController:(id)controller sleepChartFormatter:(id)formatter primaryDisplayType:(id)type uniqueIdentifier:(id)identifier firstWeekdayOverride:(id)override currentCalendarOverride:(id)calendarOverride isInfoButtonHidden:(BOOL)self0;
+- (HKOverlayRoomSleepDurationStackedContext)initWithApplicationItems:(id)items overlayChartController:(id)controller sleepChartFormatter:(id)formatter primarySampleType:(id)type uniqueIdentifier:(id)identifier firstWeekdayOverride:(id)override currentCalendarOverride:(id)calendarOverride isInfoButtonHidden:(BOOL)self0;
+- (id)_generateNamedDataSourceWithTemplateDisplayType:(id)type overlayChartController:(id)controller applicationItems:(id)items;
+- (id)_generateSleepDurationStackedDisplayTypeWithApplicationItems:(id)items overlayChartController:(id)controller sleepChartFormatter:(id)formatter;
+- (id)_generateSleepSeriesWithTemplateDisplayType:(id)type applicationItems:(id)items;
 @end
 
 @implementation HKOverlayRoomSleepDurationStackedContext
 
-- (HKOverlayRoomSleepDurationStackedContext)initWithApplicationItems:(id)a3 overlayChartController:(id)a4 sleepChartFormatter:(id)a5 primaryDisplayType:(id)a6 uniqueIdentifier:(id)a7 firstWeekdayOverride:(id)a8 currentCalendarOverride:(id)a9 isInfoButtonHidden:(BOOL)a10
+- (HKOverlayRoomSleepDurationStackedContext)initWithApplicationItems:(id)items overlayChartController:(id)controller sleepChartFormatter:(id)formatter primaryDisplayType:(id)type uniqueIdentifier:(id)identifier firstWeekdayOverride:(id)override currentCalendarOverride:(id)calendarOverride isInfoButtonHidden:(BOOL)self0
 {
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
-  v19 = a6;
-  v20 = a4;
-  v21 = a3;
-  v22 = [(HKOverlayRoomSleepDurationStackedContext *)self _generateSleepDurationStackedDisplayTypeWithApplicationItems:v21 overlayChartController:v20 sleepChartFormatter:a5];
+  identifierCopy = identifier;
+  overrideCopy = override;
+  calendarOverrideCopy = calendarOverride;
+  typeCopy = type;
+  controllerCopy = controller;
+  itemsCopy = items;
+  v22 = [(HKOverlayRoomSleepDurationStackedContext *)self _generateSleepDurationStackedDisplayTypeWithApplicationItems:itemsCopy overlayChartController:controllerCopy sleepChartFormatter:formatter];
   uniqueIdentifier = self->_uniqueIdentifier;
-  self->_uniqueIdentifier = v16;
-  v24 = v16;
+  self->_uniqueIdentifier = identifierCopy;
+  v24 = identifierCopy;
 
   firstWeekdayOverride = self->_firstWeekdayOverride;
-  self->_firstWeekdayOverride = v17;
-  v26 = v17;
+  self->_firstWeekdayOverride = overrideCopy;
+  v26 = overrideCopy;
 
   v30.receiver = self;
   v30.super_class = HKOverlayRoomSleepDurationStackedContext;
-  v27 = [(HKOverlayRoomStackedContext *)&v30 initWithDisplayType:v19 overlayDisplayType:0 stackedDisplayType:v22 overlayChartController:v20 currentCalendarOverride:v18 applicationItems:v21 isInfoButtonHidden:a10];
+  v27 = [(HKOverlayRoomStackedContext *)&v30 initWithDisplayType:typeCopy overlayDisplayType:0 stackedDisplayType:v22 overlayChartController:controllerCopy currentCalendarOverride:calendarOverrideCopy applicationItems:itemsCopy isInfoButtonHidden:hidden];
 
   return v27;
 }
 
-- (HKOverlayRoomSleepDurationStackedContext)initWithApplicationItems:(id)a3 overlayChartController:(id)a4 sleepChartFormatter:(id)a5 primarySampleType:(id)a6 uniqueIdentifier:(id)a7 firstWeekdayOverride:(id)a8 currentCalendarOverride:(id)a9 isInfoButtonHidden:(BOOL)a10
+- (HKOverlayRoomSleepDurationStackedContext)initWithApplicationItems:(id)items overlayChartController:(id)controller sleepChartFormatter:(id)formatter primarySampleType:(id)type uniqueIdentifier:(id)identifier firstWeekdayOverride:(id)override currentCalendarOverride:(id)calendarOverride isInfoButtonHidden:(BOOL)self0
 {
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
-  v19 = a6;
-  v20 = a4;
-  v21 = a3;
-  v22 = [(HKOverlayRoomSleepDurationStackedContext *)self _generateSleepDurationStackedDisplayTypeWithApplicationItems:v21 overlayChartController:v20 sleepChartFormatter:a5];
+  identifierCopy = identifier;
+  overrideCopy = override;
+  calendarOverrideCopy = calendarOverride;
+  typeCopy = type;
+  controllerCopy = controller;
+  itemsCopy = items;
+  v22 = [(HKOverlayRoomSleepDurationStackedContext *)self _generateSleepDurationStackedDisplayTypeWithApplicationItems:itemsCopy overlayChartController:controllerCopy sleepChartFormatter:formatter];
   uniqueIdentifier = self->_uniqueIdentifier;
-  self->_uniqueIdentifier = v16;
-  v24 = v16;
+  self->_uniqueIdentifier = identifierCopy;
+  v24 = identifierCopy;
 
   firstWeekdayOverride = self->_firstWeekdayOverride;
-  self->_firstWeekdayOverride = v17;
-  v26 = v17;
+  self->_firstWeekdayOverride = overrideCopy;
+  v26 = overrideCopy;
 
   v30.receiver = self;
   v30.super_class = HKOverlayRoomSleepDurationStackedContext;
-  v27 = [(HKOverlayRoomStackedContext *)&v30 initWithSampleType:v19 overlayDisplayType:0 stackedDisplayType:v22 overlayChartController:v20 currentCalendarOverride:v18 applicationItems:v21 isInfoButtonHidden:a10];
+  v27 = [(HKOverlayRoomStackedContext *)&v30 initWithSampleType:typeCopy overlayDisplayType:0 stackedDisplayType:v22 overlayChartController:controllerCopy currentCalendarOverride:calendarOverrideCopy applicationItems:itemsCopy isInfoButtonHidden:hidden];
 
   return v27;
 }
 
-- (id)_generateSleepDurationStackedDisplayTypeWithApplicationItems:(id)a3 overlayChartController:(id)a4 sleepChartFormatter:(id)a5
+- (id)_generateSleepDurationStackedDisplayTypeWithApplicationItems:(id)items overlayChartController:(id)controller sleepChartFormatter:(id)formatter
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 displayTypeController];
-  v12 = [v11 displayTypeWithIdentifier:&unk_1F4383E20];
+  formatterCopy = formatter;
+  controllerCopy = controller;
+  itemsCopy = items;
+  displayTypeController = [itemsCopy displayTypeController];
+  v12 = [displayTypeController displayTypeWithIdentifier:&unk_1F4383E20];
 
-  v13 = [(HKOverlayRoomSleepDurationStackedContext *)self _generateSleepSeriesWithTemplateDisplayType:v12 applicationItems:v10];
-  v14 = [(HKOverlayRoomSleepDurationStackedContext *)self _generateNamedDataSourceWithTemplateDisplayType:v12 overlayChartController:v9 applicationItems:v10];
+  v13 = [(HKOverlayRoomSleepDurationStackedContext *)self _generateSleepSeriesWithTemplateDisplayType:v12 applicationItems:itemsCopy];
+  v14 = [(HKOverlayRoomSleepDurationStackedContext *)self _generateNamedDataSourceWithTemplateDisplayType:v12 overlayChartController:controllerCopy applicationItems:itemsCopy];
 
   v15 = [HKInteractiveChartDisplayType alloc];
-  v16 = [v12 sampleType];
-  v17 = -[HKInteractiveChartDisplayType initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:](v15, "initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:", v13, v12, v8, [v16 code]);
+  sampleType = [v12 sampleType];
+  v17 = -[HKInteractiveChartDisplayType initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:](v15, "initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:", v13, v12, formatterCopy, [sampleType code]);
 
-  v18 = [v9 displayTypeForGraphSeries:v13 namedDataSource:v14 templateDisplayType:v17 timeScope:3 formatter:v8];
+  v18 = [controllerCopy displayTypeForGraphSeries:v13 namedDataSource:v14 templateDisplayType:v17 timeScope:3 formatter:formatterCopy];
 
   return v18;
 }
 
-- (id)_generateSleepSeriesWithTemplateDisplayType:(id)a3 applicationItems:(id)a4
+- (id)_generateSleepSeriesWithTemplateDisplayType:(id)type applicationItems:(id)items
 {
-  v5 = a3;
-  v6 = [a4 unitController];
+  typeCopy = type;
+  unitController = [items unitController];
   v7 = +[HKOverlayContextUtilities stackedAxisConfiguration];
-  v8 = [HKSleepUtilities buildSleepGraphSeriesForSleepSeriesType:0 sleepDisplayType:v5 unitController:v6 numericAxisConfigurationOverrides:v7 timeScope:3];
+  v8 = [HKSleepUtilities buildSleepGraphSeriesForSleepSeriesType:0 sleepDisplayType:typeCopy unitController:unitController numericAxisConfigurationOverrides:v7 timeScope:3];
 
   v9 = [HKValueRange valueRangeWithMinValue:&unk_1F4383E38 maxValue:&unk_1F4383E50];
   v10 = [HKValueRange valueRangeWithMinValue:&unk_1F4383E38 maxValue:&unk_1F4383E68];
   v11 = [HKNumericFixedAxisScalingRule ruleWithDefaultAxisBounds:v9 axisBoundsOverrides:0];
   [v11 setNoDataAxisBounds:v10];
   [v8 setAxisScalingRule:v11];
-  v12 = [v5 localization];
+  localization = [typeCopy localization];
 
-  v13 = [v12 shortenedDisplayName];
-  [HKOverlayContextUtilities setStackedSeriesLegend:v8 title:v13];
+  shortenedDisplayName = [localization shortenedDisplayName];
+  [HKOverlayContextUtilities setStackedSeriesLegend:v8 title:shortenedDisplayName];
 
   return v8;
 }
 
-- (id)_generateNamedDataSourceWithTemplateDisplayType:(id)a3 overlayChartController:(id)a4 applicationItems:(id)a5
+- (id)_generateNamedDataSourceWithTemplateDisplayType:(id)type overlayChartController:(id)controller applicationItems:(id)items
 {
   v7 = MEMORY[0x1E695DEE8];
-  v8 = a5;
-  v9 = a3;
-  v10 = [v7 hk_gregorianCalendar];
-  v11 = [(HKOverlayRoomSleepDurationStackedContext *)self firstWeekdayOverride];
+  itemsCopy = items;
+  typeCopy = type;
+  hk_gregorianCalendar = [v7 hk_gregorianCalendar];
+  firstWeekdayOverride = [(HKOverlayRoomSleepDurationStackedContext *)self firstWeekdayOverride];
 
-  if (v11)
+  if (firstWeekdayOverride)
   {
-    v12 = [(HKOverlayRoomSleepDurationStackedContext *)self firstWeekdayOverride];
-    [v10 setFirstWeekday:{objc_msgSend(v12, "integerValue")}];
+    firstWeekdayOverride2 = [(HKOverlayRoomSleepDurationStackedContext *)self firstWeekdayOverride];
+    [hk_gregorianCalendar setFirstWeekday:{objc_msgSend(firstWeekdayOverride2, "integerValue")}];
   }
 
   v13 = MEMORY[0x1E696AEC0];
-  v14 = [(HKOverlayRoomSleepDurationStackedContext *)self uniqueIdentifier];
-  v15 = [(HKOverlayRoomSleepDurationStackedContext *)self firstWeekdayOverride];
-  if (v15)
+  uniqueIdentifier = [(HKOverlayRoomSleepDurationStackedContext *)self uniqueIdentifier];
+  firstWeekdayOverride3 = [(HKOverlayRoomSleepDurationStackedContext *)self firstWeekdayOverride];
+  if (firstWeekdayOverride3)
   {
-    v16 = [(HKOverlayRoomSleepDurationStackedContext *)self firstWeekdayOverride];
-    v17 = [v16 stringValue];
-    v18 = [v13 stringWithFormat:@"%@%@", v14, v17];
+    firstWeekdayOverride4 = [(HKOverlayRoomSleepDurationStackedContext *)self firstWeekdayOverride];
+    stringValue = [firstWeekdayOverride4 stringValue];
+    v18 = [v13 stringWithFormat:@"%@%@", uniqueIdentifier, stringValue];
   }
 
   else
   {
-    v18 = [v13 stringWithFormat:@"%@%@", v14, &stru_1F42FFBE0];
+    v18 = [v13 stringWithFormat:@"%@%@", uniqueIdentifier, &stru_1F42FFBE0];
   }
 
   v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"HKSleepQueryCacheIdentifier%@", v18];
   v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"HKSleepQueryIdentifier%@", v18];
   v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"HKOverlayRoomStackedContextSleepDuration%@", v18];
   v22 = [HKSleepChartDataSource alloc];
-  v23 = [v8 healthStore];
+  healthStore = [itemsCopy healthStore];
 
-  v24 = [(HKSleepChartDataSource *)v22 initWithHealthStore:v23 representativeDisplayType:v9 queryOptions:2 cacheIdentifier:v19 queryIdentifier:v20 calendar:v10];
+  v24 = [(HKSleepChartDataSource *)v22 initWithHealthStore:healthStore representativeDisplayType:typeCopy queryOptions:2 cacheIdentifier:v19 queryIdentifier:v20 calendar:hk_gregorianCalendar];
   v25 = [[HKInteractiveChartOverlayNamedDataSource alloc] initWithDataSource:v24 named:v21 withContextTitleForTimeScope:0];
 
   return v25;

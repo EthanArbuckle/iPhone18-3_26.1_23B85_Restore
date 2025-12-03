@@ -1,69 +1,69 @@
 @interface MPSCNNArithmetic
-- (MPSCNNArithmetic)initWithCoder:(id)a3 device:(id)a4;
-- (MPSCNNArithmetic)initWithDevice:(id)a3 arithmeticType:(int)a4;
+- (MPSCNNArithmetic)initWithCoder:(id)coder device:(id)device;
 - (MPSCNNArithmetic)initWithDevice:(id)device;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (MPSCNNArithmetic)initWithDevice:(id)device arithmeticType:(int)type;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 primaryOffset:(id *)a6 secondaryOffset:(id *)a7 kernelOffset:(id *)a8;
-- (id)privateResultStateForPrimaryImage:(id)a3 secondaryImage:(id)a4 sourceStates:(id)a5 destinationImage:(id)a6 commandBuffer:(id)a7 isTemporary:(BOOL)a8;
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method primaryOffset:(id *)offset secondaryOffset:(id *)secondaryOffset kernelOffset:(id *)kernelOffset;
+- (id)privateResultStateForPrimaryImage:(id)image secondaryImage:(id)secondaryImage sourceStates:(id)states destinationImage:(id)destinationImage commandBuffer:(id)buffer isTemporary:(BOOL)temporary;
 - (void)encodeBatchToCommandBuffer:(id)commandBuffer primaryImages:(MPSImageBatch *)primaryImages secondaryImages:(MPSImageBatch *)secondaryImages destinationStates:(MPSCNNArithmeticGradientStateBatch *)destinationStates destinationImages:(MPSImageBatch *)destinationImages;
 - (void)encodeToCommandBuffer:(id)commandBuffer primaryImage:(MPSImage *)primaryImage secondaryImage:(MPSImage *)secondaryImage destinationState:(MPSCNNArithmeticGradientState *)destinationState destinationImage:(MPSImage *)destinationImage;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setPrimaryStrideInFeatureChannels:(NSUInteger)primaryStrideInFeatureChannels;
-- (void)setPrimaryStrideInPixelsX:(unint64_t)a3;
-- (void)setPrimaryStrideInPixelsY:(unint64_t)a3;
+- (void)setPrimaryStrideInPixelsX:(unint64_t)x;
+- (void)setPrimaryStrideInPixelsY:(unint64_t)y;
 - (void)setSecondaryStrideInFeatureChannels:(NSUInteger)secondaryStrideInFeatureChannels;
-- (void)setSecondaryStrideInPixelsX:(unint64_t)a3;
-- (void)setSecondaryStrideInPixelsY:(unint64_t)a3;
+- (void)setSecondaryStrideInPixelsX:(unint64_t)x;
+- (void)setSecondaryStrideInPixelsY:(unint64_t)y;
 @end
 
 @implementation MPSCNNArithmetic
 
-- (void)setPrimaryStrideInPixelsX:(unint64_t)a3
+- (void)setPrimaryStrideInPixelsX:(unint64_t)x
 {
-  if (a3 >= 2)
+  if (x >= 2)
   {
     v5 = MTLReportFailureTypeEnabled();
-    v6 = a3;
+    xCopy2 = x;
     v7 = v5;
-    v8 = self;
+    selfCopy2 = self;
     if (v7)
     {
       MTLReportFailure();
-      v8 = self;
-      v6 = a3;
+      selfCopy2 = self;
+      xCopy2 = x;
     }
 
-    v8->super._primaryStrideInPixelsX = v6;
+    selfCopy2->super._primaryStrideInPixelsX = xCopy2;
   }
 
   else
   {
-    self->super._primaryStrideInPixelsX = a3;
+    self->super._primaryStrideInPixelsX = x;
   }
 }
 
-- (void)setPrimaryStrideInPixelsY:(unint64_t)a3
+- (void)setPrimaryStrideInPixelsY:(unint64_t)y
 {
-  if (a3 >= 2)
+  if (y >= 2)
   {
     v5 = MTLReportFailureTypeEnabled();
-    v6 = a3;
+    yCopy2 = y;
     v7 = v5;
-    v8 = self;
+    selfCopy2 = self;
     if (v7)
     {
       MTLReportFailure();
-      v8 = self;
-      v6 = a3;
+      selfCopy2 = self;
+      yCopy2 = y;
     }
 
-    v8->super._primaryStrideInPixelsY = v6;
+    selfCopy2->super._primaryStrideInPixelsY = yCopy2;
   }
 
   else
   {
-    self->super._primaryStrideInPixelsY = a3;
+    self->super._primaryStrideInPixelsY = y;
   }
 }
 
@@ -74,15 +74,15 @@
     v5 = MTLReportFailureTypeEnabled();
     v6 = primaryStrideInFeatureChannels;
     v7 = v5;
-    v8 = self;
+    selfCopy2 = self;
     if (v7)
     {
       MTLReportFailure();
-      v8 = self;
+      selfCopy2 = self;
       v6 = primaryStrideInFeatureChannels;
     }
 
-    v8->_primaryStrideInFeatureChannels = v6;
+    selfCopy2->_primaryStrideInFeatureChannels = v6;
   }
 
   else
@@ -91,51 +91,51 @@
   }
 }
 
-- (void)setSecondaryStrideInPixelsX:(unint64_t)a3
+- (void)setSecondaryStrideInPixelsX:(unint64_t)x
 {
-  if (a3 >= 2)
+  if (x >= 2)
   {
     v5 = MTLReportFailureTypeEnabled();
-    v6 = a3;
+    xCopy2 = x;
     v7 = v5;
-    v8 = self;
+    selfCopy2 = self;
     if (v7)
     {
       MTLReportFailure();
-      v8 = self;
-      v6 = a3;
+      selfCopy2 = self;
+      xCopy2 = x;
     }
 
-    v8->super._secondaryStrideInPixelsX = v6;
+    selfCopy2->super._secondaryStrideInPixelsX = xCopy2;
   }
 
   else
   {
-    self->super._secondaryStrideInPixelsX = a3;
+    self->super._secondaryStrideInPixelsX = x;
   }
 }
 
-- (void)setSecondaryStrideInPixelsY:(unint64_t)a3
+- (void)setSecondaryStrideInPixelsY:(unint64_t)y
 {
-  if (a3 >= 2)
+  if (y >= 2)
   {
     v5 = MTLReportFailureTypeEnabled();
-    v6 = a3;
+    yCopy2 = y;
     v7 = v5;
-    v8 = self;
+    selfCopy2 = self;
     if (v7)
     {
       MTLReportFailure();
-      v8 = self;
-      v6 = a3;
+      selfCopy2 = self;
+      yCopy2 = y;
     }
 
-    v8->super._secondaryStrideInPixelsY = v6;
+    selfCopy2->super._secondaryStrideInPixelsY = yCopy2;
   }
 
   else
   {
-    self->super._secondaryStrideInPixelsY = a3;
+    self->super._secondaryStrideInPixelsY = y;
   }
 }
 
@@ -146,15 +146,15 @@
     v5 = MTLReportFailureTypeEnabled();
     v6 = secondaryStrideInFeatureChannels;
     v7 = v5;
-    v8 = self;
+    selfCopy2 = self;
     if (v7)
     {
       MTLReportFailure();
-      v8 = self;
+      selfCopy2 = self;
       v6 = secondaryStrideInFeatureChannels;
     }
 
-    v8->_secondaryStrideInFeatureChannels = v6;
+    selfCopy2->_secondaryStrideInFeatureChannels = v6;
   }
 
   else
@@ -173,11 +173,11 @@
   return 0;
 }
 
-- (MPSCNNArithmetic)initWithDevice:(id)a3 arithmeticType:(int)a4
+- (MPSCNNArithmetic)initWithDevice:(id)device arithmeticType:(int)type
 {
   v7.receiver = self;
   v7.super_class = MPSCNNArithmetic;
-  result = [(MPSCNNBinaryKernel *)&v7 initWithDevice:a3];
+  result = [(MPSCNNBinaryKernel *)&v7 initWithDevice:device];
   if (result)
   {
     result->_primaryScale = 1.0;
@@ -187,7 +187,7 @@
     result->_maximumValue = INFINITY;
     result->_primaryStrideInFeatureChannels = 1;
     result->_secondaryStrideInFeatureChannels = 1;
-    if (a4 >= 10)
+    if (type >= 10)
     {
       v6 = result;
       if (MTLReportFailureTypeEnabled())
@@ -200,7 +200,7 @@
 
     else
     {
-      result->_arithmeticType = a4;
+      result->_arithmeticType = type;
       result->super._isBackwards = 0;
       result->super._checkFlags |= 2u;
       result->super._encode = sub_239BB4830;
@@ -212,11 +212,11 @@
   return result;
 }
 
-- (MPSCNNArithmetic)initWithCoder:(id)a3 device:(id)a4
+- (MPSCNNArithmetic)initWithCoder:(id)coder device:(id)device
 {
   v62.receiver = self;
   v62.super_class = MPSCNNArithmetic;
-  v5 = [(MPSCNNBinaryKernel *)&v62 initWithCoder:a3 device:a4];
+  v5 = [(MPSCNNBinaryKernel *)&v62 initWithCoder:coder device:device];
   v12 = v5;
   if (!v5)
   {
@@ -225,19 +225,19 @@
 
   if (*(&v5->super.super.super.isa + *MEMORY[0x277CD7358] + 2) << 16 == 0x10000)
   {
-    objc_msgSend_decodeFloatForKey_(a3, v6, @"MPSArithmetic.primaryScale", v7, v8, v9, v10, v11);
+    objc_msgSend_decodeFloatForKey_(coder, v6, @"MPSArithmetic.primaryScale", v7, v8, v9, v10, v11);
     v12->_primaryScale = v13;
-    objc_msgSend_decodeFloatForKey_(a3, v14, @"MPSArithmetic.secondaryScale", v15, v16, v17, v18, v19);
+    objc_msgSend_decodeFloatForKey_(coder, v14, @"MPSArithmetic.secondaryScale", v15, v16, v17, v18, v19);
     v12->_secondaryScale = v20;
-    objc_msgSend_decodeFloatForKey_(a3, v21, @"MPSArithmetic.bias", v22, v23, v24, v25, v26);
+    objc_msgSend_decodeFloatForKey_(coder, v21, @"MPSArithmetic.bias", v22, v23, v24, v25, v26);
     v12->_bias = v27;
-    objc_msgSend_decodeFloatForKey_(a3, v28, @"MPSArithmetic.minimumValue", v29, v30, v31, v32, v33);
+    objc_msgSend_decodeFloatForKey_(coder, v28, @"MPSArithmetic.minimumValue", v29, v30, v31, v32, v33);
     v12->_minimumValue = v34;
-    objc_msgSend_decodeFloatForKey_(a3, v35, @"MPSArithmetic.maximumValue", v36, v37, v38, v39, v40);
+    objc_msgSend_decodeFloatForKey_(coder, v35, @"MPSArithmetic.maximumValue", v36, v37, v38, v39, v40);
     v12->_maximumValue = v41;
-    v12->_primaryStrideInFeatureChannels = objc_msgSend_decodeInt64ForKey_(a3, v42, @"MPSArithmetic.primaryStrideInFeatureChannels", v43, v44, v45, v46, v47);
-    v12->_secondaryStrideInFeatureChannels = objc_msgSend_decodeInt64ForKey_(a3, v48, @"MPSArithmetic.secondaryStrideInFeatureChannels", v49, v50, v51, v52, v53);
-    v12->_arithmeticType = objc_msgSend_decodeInt64ForKey_(a3, v54, @"MPSArithmetic.arithmeticType", v55, v56, v57, v58, v59);
+    v12->_primaryStrideInFeatureChannels = objc_msgSend_decodeInt64ForKey_(coder, v42, @"MPSArithmetic.primaryStrideInFeatureChannels", v43, v44, v45, v46, v47);
+    v12->_secondaryStrideInFeatureChannels = objc_msgSend_decodeInt64ForKey_(coder, v48, @"MPSArithmetic.secondaryStrideInFeatureChannels", v49, v50, v51, v52, v53);
+    v12->_arithmeticType = objc_msgSend_decodeInt64ForKey_(coder, v54, @"MPSArithmetic.arithmeticType", v55, v56, v57, v58, v59);
     v12->super._encode = sub_239BB4830;
     v12->super._batchEncode = sub_239BB4C38;
     v12->super._encodeData = v12;
@@ -255,32 +255,32 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v55.receiver = self;
   v55.super_class = MPSCNNArithmetic;
   [(MPSCNNBinaryKernel *)&v55 encodeWithCoder:?];
   *&v5 = self->_primaryScale;
-  objc_msgSend_encodeFloat_forKey_(a3, v6, @"MPSArithmetic.primaryScale", v7, v8, v9, v10, v11, v5);
+  objc_msgSend_encodeFloat_forKey_(coder, v6, @"MPSArithmetic.primaryScale", v7, v8, v9, v10, v11, v5);
   *&v12 = self->_secondaryScale;
-  objc_msgSend_encodeFloat_forKey_(a3, v13, @"MPSArithmetic.secondaryScale", v14, v15, v16, v17, v18, v12);
+  objc_msgSend_encodeFloat_forKey_(coder, v13, @"MPSArithmetic.secondaryScale", v14, v15, v16, v17, v18, v12);
   *&v19 = self->_bias;
-  objc_msgSend_encodeFloat_forKey_(a3, v20, @"MPSArithmetic.bias", v21, v22, v23, v24, v25, v19);
+  objc_msgSend_encodeFloat_forKey_(coder, v20, @"MPSArithmetic.bias", v21, v22, v23, v24, v25, v19);
   *&v26 = self->_minimumValue;
-  objc_msgSend_encodeFloat_forKey_(a3, v27, @"MPSArithmetic.minimumValue", v28, v29, v30, v31, v32, v26);
+  objc_msgSend_encodeFloat_forKey_(coder, v27, @"MPSArithmetic.minimumValue", v28, v29, v30, v31, v32, v26);
   *&v33 = self->_maximumValue;
-  objc_msgSend_encodeFloat_forKey_(a3, v34, @"MPSArithmetic.maximumValue", v35, v36, v37, v38, v39, v33);
-  objc_msgSend_encodeInt64_forKey_(a3, v40, self->_primaryStrideInFeatureChannels, @"MPSArithmetic.primaryStrideInFeatureChannels", v41, v42, v43, v44);
-  objc_msgSend_encodeInt64_forKey_(a3, v45, self->_secondaryStrideInFeatureChannels, @"MPSArithmetic.secondaryStrideInFeatureChannels", v46, v47, v48, v49);
-  objc_msgSend_encodeInt64_forKey_(a3, v50, self->_arithmeticType, @"MPSArithmetic.arithmeticType", v51, v52, v53, v54);
+  objc_msgSend_encodeFloat_forKey_(coder, v34, @"MPSArithmetic.maximumValue", v35, v36, v37, v38, v39, v33);
+  objc_msgSend_encodeInt64_forKey_(coder, v40, self->_primaryStrideInFeatureChannels, @"MPSArithmetic.primaryStrideInFeatureChannels", v41, v42, v43, v44);
+  objc_msgSend_encodeInt64_forKey_(coder, v45, self->_secondaryStrideInFeatureChannels, @"MPSArithmetic.secondaryStrideInFeatureChannels", v46, v47, v48, v49);
+  objc_msgSend_encodeInt64_forKey_(coder, v50, self->_arithmeticType, @"MPSArithmetic.arithmeticType", v51, v52, v53, v54);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSCNNArithmetic;
-  result = [(MPSCNNBinaryKernel *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSCNNBinaryKernel *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 104) = LODWORD(self->_primaryScale);
@@ -309,18 +309,18 @@
   return objc_msgSend_stringWithFormat_(v3, v5, @"%@\n\tprimaryScale: %f\n \tsecondaryScale: %f\n \tbias: %f\n \tminmumValue: %f\n \tmaximumValue: %f\n \tprimaryStrideInPixelsX: %lu\n \tprimaryStrideInPixelsY: %lu\n \tprimaryStrideInFeatureChannels: %lu\n \tsecondaryStrideInPixelsX: %lu\n \tsecondaryStrideInPixelsY: %lu\n \tsecondaryStrideInFeatureChannels: %lu\n \tarithmeticType: %lu", v6, v7, v8, v9, v10, v4, self->_primaryScale, self->_secondaryScale, self->_bias, self->_minimumValue, self->_maximumValue, self->super._primaryStrideInPixelsX, self->super._primaryStrideInPixelsY, self->_primaryStrideInFeatureChannels, self->super._secondaryStrideInPixelsX, self->super._secondaryStrideInPixelsY, self->_secondaryStrideInFeatureChannels, self->_arithmeticType);
 }
 
-- (id)privateResultStateForPrimaryImage:(id)a3 secondaryImage:(id)a4 sourceStates:(id)a5 destinationImage:(id)a6 commandBuffer:(id)a7 isTemporary:(BOOL)a8
+- (id)privateResultStateForPrimaryImage:(id)image secondaryImage:(id)secondaryImage sourceStates:(id)states destinationImage:(id)destinationImage commandBuffer:(id)buffer isTemporary:(BOOL)temporary
 {
-  if (a5 && (*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 1) == 0 && MTLReportFailureTypeEnabled())
+  if (states && (*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 1) == 0 && MTLReportFailureTypeEnabled())
   {
     v105 = objc_opt_class();
     v106 = NSStringFromClass(v105);
     MTLReportFailure();
   }
 
-  v13 = objc_msgSend_width(a6, a2, a3, a4, a5, a6, a7, a8, v106);
-  v21 = objc_msgSend_height(a6, v14, v15, v16, v17, v18, v19, v20);
-  v36 = objc_msgSend_featureChannels(a6, v22, v23, v24, v25, v26, v27, v28) + 3;
+  v13 = objc_msgSend_width(destinationImage, a2, image, secondaryImage, states, destinationImage, buffer, temporary, v106);
+  v21 = objc_msgSend_height(destinationImage, v14, v15, v16, v17, v18, v19, v20);
+  v36 = objc_msgSend_featureChannels(destinationImage, v22, v23, v24, v25, v26, v27, v28) + 3;
   v37 = v36 >> 2;
   if (v36 > 7)
   {
@@ -329,7 +329,7 @@
 
   else
   {
-    v38 = objc_msgSend_textureType(a6, v29, v30, v31, v32, v33, v34, v35);
+    v38 = objc_msgSend_textureType(destinationImage, v29, v30, v31, v32, v33, v34, v35);
     if (v38 == 3)
     {
       v39 = 3;
@@ -349,12 +349,12 @@
   v40 = objc_opt_new();
   objc_msgSend_setTextureType_(v40, v41, v39, v42, v43, v44, v45, v46);
   objc_msgSend_setPixelFormat_(v40, v47, 125, v48, v49, v50, v51, v52);
-  if (objc_msgSend_featureChannels(a6, v53, v54, v55, v56, v57, v58, v59) == 1)
+  if (objc_msgSend_featureChannels(destinationImage, v53, v54, v55, v56, v57, v58, v59) == 1)
   {
     objc_msgSend_setPixelFormat_(v40, v60, 55, v62, v63, v64, v65, v66);
   }
 
-  else if (objc_msgSend_featureChannels(a6, v60, v61, v62, v63, v64, v65, v66) == 2)
+  else if (objc_msgSend_featureChannels(destinationImage, v60, v61, v62, v63, v64, v65, v66) == 2)
   {
     objc_msgSend_setPixelFormat_(v40, v67, 105, v68, v69, v70, v71, v72);
   }
@@ -362,9 +362,9 @@
   objc_msgSend_setWidth_(v40, v67, v13, v68, v69, v70, v71, v72);
   objc_msgSend_setHeight_(v40, v73, v21, v74, v75, v76, v77, v78);
   objc_msgSend_setArrayLength_(v40, v79, v37, v80, v81, v82, v83, v84);
-  if (a8)
+  if (temporary)
   {
-    v90 = objc_msgSend_temporaryStateWithCommandBuffer_textureDescriptor_(MPSCNNArithmeticGradientState, v85, a7, v40, v86, v87, v88, v89);
+    v90 = objc_msgSend_temporaryStateWithCommandBuffer_textureDescriptor_(MPSCNNArithmeticGradientState, v85, buffer, v40, v86, v87, v88, v89);
     if (!v90)
     {
       return v90;
@@ -380,7 +380,7 @@
 LABEL_18:
     v109.receiver = self;
     v109.super_class = MPSCNNArithmetic;
-    [(MPSCNNBinaryKernel *)&v109 copyToBinaryGradientState:v90 primaryImage:a3 secondaryImage:a4 sourceStates:a5 destinationImage:a6];
+    [(MPSCNNBinaryKernel *)&v109 copyToBinaryGradientState:v90 primaryImage:image secondaryImage:secondaryImage sourceStates:states destinationImage:destinationImage];
     v90[53] = objc_msgSend_pixelFormat(v40, v97, v98, v99, v100, v101, v102, v103);
     v90[54] = v13;
     v90[55] = v21;
@@ -392,9 +392,9 @@ LABEL_18:
   return v90;
 }
 
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 primaryOffset:(id *)a6 secondaryOffset:(id *)a7 kernelOffset:(id *)a8
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method primaryOffset:(id *)offset secondaryOffset:(id *)secondaryOffset kernelOffset:(id *)kernelOffset
 {
-  v12 = objc_msgSend_count(a3, a2, a3, a4, a5, a6, a7, a8);
+  v12 = objc_msgSend_count(images, a2, images, states, method, offset, secondaryOffset, kernelOffset);
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 1) == 0 && v12 <= 1 && MTLReportFailureTypeEnabled())
   {
     v86 = objc_opt_class();
@@ -402,9 +402,9 @@ LABEL_18:
     MTLReportFailure();
   }
 
-  v19 = objc_msgSend_objectAtIndexedSubscript_(a3, v13, 0, v14, v15, v16, v17, v18, v87);
-  v26 = objc_msgSend_objectAtIndexedSubscript_(a3, v20, 1, v21, v22, v23, v24, v25);
-  v33 = objc_msgSend_objectAtIndexedSubscript_(a3, v27, 0, v28, v29, v30, v31, v32);
+  v19 = objc_msgSend_objectAtIndexedSubscript_(images, v13, 0, v14, v15, v16, v17, v18, v87);
+  v26 = objc_msgSend_objectAtIndexedSubscript_(images, v20, 1, v21, v22, v23, v24, v25);
+  v33 = objc_msgSend_objectAtIndexedSubscript_(images, v27, 0, v28, v29, v30, v31, v32);
   v41 = objc_msgSend_primarySourceFeatureChannelOffset(self, v34, v35, v36, v37, v38, v39, v40);
   v49 = objc_msgSend_primarySourceFeatureChannelMaxCount(self, v42, v43, v44, v45, v46, v47, v48);
   v56 = MEMORY[0x277CD72F8];
@@ -426,7 +426,7 @@ LABEL_18:
     v60 = v59;
   }
 
-  v61 = objc_msgSend_objectAtIndexedSubscript_(a3, v50, 1, v51, v52, v53, v54, v55);
+  v61 = objc_msgSend_objectAtIndexedSubscript_(images, v50, 1, v51, v52, v53, v54, v55);
   v69 = objc_msgSend_secondarySourceFeatureChannelOffset(self, v62, v63, v64, v65, v66, v67, v68);
   v77 = objc_msgSend_secondarySourceFeatureChannelMaxCount(self, v70, v71, v72, v73, v74, v75, v76);
   v78 = *v56;
@@ -481,14 +481,14 @@ LABEL_18:
 
   v91.receiver = self;
   v91.super_class = MPSCNNArithmetic;
-  return [(MPSCNNBinaryKernel *)&v91 destinationImageDescriptorForSourceImages:a3 sourceStates:a4 paddingMethod:a5 primaryOffset:a6 secondaryOffset:a7 kernelOffset:a8];
+  return [(MPSCNNBinaryKernel *)&v91 destinationImageDescriptorForSourceImages:images sourceStates:states paddingMethod:method primaryOffset:offset secondaryOffset:secondaryOffset kernelOffset:kernelOffset];
 }
 
 - (void)encodeToCommandBuffer:(id)commandBuffer primaryImage:(MPSImage *)primaryImage secondaryImage:(MPSImage *)secondaryImage destinationState:(MPSCNNArithmeticGradientState *)destinationState destinationImage:(MPSImage *)destinationImage
 {
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 1) == 0)
   {
-    v10 = self;
+    selfCopy = self;
     v11 = commandBuffer;
     v12 = primaryImage;
     v13 = secondaryImage;
@@ -509,7 +509,7 @@ LABEL_18:
     secondaryImage = v13;
     primaryImage = v12;
     commandBuffer = v11;
-    self = v10;
+    self = selfCopy;
     if ((isKindOfClass & 1) == 0)
     {
       v17 = MTLReportFailureTypeEnabled();
@@ -518,14 +518,14 @@ LABEL_18:
       secondaryImage = v13;
       destinationImage = v14;
       v18 = v17;
-      self = v10;
+      self = selfCopy;
       if (v18)
       {
         v19 = objc_opt_class();
         NSStringFromClass(v19);
         NSStringFromSelector(a2);
         MTLReportFailure();
-        self = v10;
+        self = selfCopy;
         commandBuffer = v11;
         primaryImage = v12;
         secondaryImage = v13;
@@ -541,7 +541,7 @@ LABEL_18:
 {
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 1) == 0)
   {
-    v10 = self;
+    selfCopy = self;
     v11 = commandBuffer;
     v12 = primaryImages;
     v13 = secondaryImages;
@@ -564,7 +564,7 @@ LABEL_18:
     secondaryImages = v13;
     primaryImages = v12;
     commandBuffer = v11;
-    self = v10;
+    self = selfCopy;
     if ((isKindOfClass & 1) == 0)
     {
       v23 = MTLReportFailureTypeEnabled();
@@ -573,14 +573,14 @@ LABEL_18:
       secondaryImages = v13;
       destinationImages = v14;
       v24 = v23;
-      self = v10;
+      self = selfCopy;
       if (v24)
       {
         v25 = objc_opt_class();
         NSStringFromClass(v25);
         NSStringFromSelector(a2);
         MTLReportFailure();
-        self = v10;
+        self = selfCopy;
         commandBuffer = v11;
         primaryImages = v12;
         secondaryImages = v13;

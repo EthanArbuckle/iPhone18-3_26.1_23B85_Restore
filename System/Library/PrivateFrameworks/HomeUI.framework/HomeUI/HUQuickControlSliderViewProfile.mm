@@ -1,7 +1,7 @@
 @interface HUQuickControlSliderViewProfile
 - (HUQuickControlSliderViewProfile)init;
 - (double)gestureDragCoefficient;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HUQuickControlSliderViewProfile
@@ -24,16 +24,16 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = HUQuickControlSliderViewProfile;
-  v4 = [(HUQuickControlViewProfile *)&v8 copyWithZone:a3];
-  v5 = [(HUQuickControlSliderViewProfile *)self primaryValueConstraints];
-  [v4 setPrimaryValueConstraints:v5];
+  v4 = [(HUQuickControlViewProfile *)&v8 copyWithZone:zone];
+  primaryValueConstraints = [(HUQuickControlSliderViewProfile *)self primaryValueConstraints];
+  [v4 setPrimaryValueConstraints:primaryValueConstraints];
 
-  v6 = [(HUQuickControlSliderViewProfile *)self secondaryValueConstraints];
-  [v4 setSecondaryValueConstraints:v6];
+  secondaryValueConstraints = [(HUQuickControlSliderViewProfile *)self secondaryValueConstraints];
+  [v4 setSecondaryValueConstraints:secondaryValueConstraints];
 
   [v4 setHasOffState:{-[HUQuickControlSliderViewProfile hasOffState](self, "hasOffState")}];
   [v4 setHasSecondaryValue:{-[HUQuickControlSliderViewProfile hasSecondaryValue](self, "hasSecondaryValue")}];
@@ -43,9 +43,9 @@
 
 - (double)gestureDragCoefficient
 {
-  v2 = [(HUQuickControlSliderViewProfile *)self interactionFidelity];
+  interactionFidelity = [(HUQuickControlSliderViewProfile *)self interactionFidelity];
   result = 1.75;
-  if (!v2)
+  if (!interactionFidelity)
   {
     return 1.0;
   }

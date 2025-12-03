@@ -1,7 +1,7 @@
 @interface BCPreloader
 + (BCPreloader)shared;
 - (BCPreloader)init;
-- (void)preloadResourcesWithCompletion:(id)a3;
+- (void)preloadResourcesWithCompletion:(id)completion;
 @end
 
 @implementation BCPreloader
@@ -29,9 +29,9 @@
   return v3;
 }
 
-- (void)preloadResourcesWithCompletion:(id)a3
+- (void)preloadResourcesWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -46,7 +46,7 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_23DDC73C4(v7, v6);
   sub_23DDCC0D8(v7);
 }

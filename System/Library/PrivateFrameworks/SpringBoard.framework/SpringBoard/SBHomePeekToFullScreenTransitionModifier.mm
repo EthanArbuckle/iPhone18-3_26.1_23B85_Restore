@@ -1,41 +1,41 @@
 @interface SBHomePeekToFullScreenTransitionModifier
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3;
-- (BOOL)wantsSpaceAccessoryViewGenieForAppLayout:(id)a3;
-- (CGPoint)perspectiveAngleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withPerspectiveAngle:(CGPoint)a5;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (SBHomePeekToFullScreenTransitionModifier)initWithTransitionModifier:(id)a3 slidingOffPeekingAppLayout:(id)a4 fromPeekingConfiguration:(int64_t)a5;
-- (SBWindowingItemFrame)frameForItem:(SEL)a3;
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space;
+- (BOOL)wantsSpaceAccessoryViewGenieForAppLayout:(id)layout;
+- (CGPoint)perspectiveAngleForLayoutRole:(int64_t)role inAppLayout:(id)layout withPerspectiveAngle:(CGPoint)angle;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (SBHomePeekToFullScreenTransitionModifier)initWithTransitionModifier:(id)modifier slidingOffPeekingAppLayout:(id)layout fromPeekingConfiguration:(int64_t)configuration;
+- (SBWindowingItemFrame)frameForItem:(SEL)item;
 - (double)fadeInDelayForSplitViewHandles;
-- (double)opacityForItem:(id)a3;
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (id)animationAttributesForItem:(id)a3;
-- (id)appLayoutsToEnsureExistForMainTransitionEvent:(id)a3;
+- (double)opacityForItem:(id)item;
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (id)animationAttributesForItem:(id)item;
+- (id)appLayoutsToEnsureExistForMainTransitionEvent:(id)event;
 - (id)topMostItems;
-- (void)transitionWillBegin:(id)a3;
+- (void)transitionWillBegin:(id)begin;
 @end
 
 @implementation SBHomePeekToFullScreenTransitionModifier
 
-- (SBHomePeekToFullScreenTransitionModifier)initWithTransitionModifier:(id)a3 slidingOffPeekingAppLayout:(id)a4 fromPeekingConfiguration:(int64_t)a5
+- (SBHomePeekToFullScreenTransitionModifier)initWithTransitionModifier:(id)modifier slidingOffPeekingAppLayout:(id)layout fromPeekingConfiguration:(int64_t)configuration
 {
-  v10 = a3;
-  v11 = a4;
+  modifierCopy = modifier;
+  layoutCopy = layout;
   v16.receiver = self;
   v16.super_class = SBHomePeekToFullScreenTransitionModifier;
   v12 = [(SBWindowingModifier *)&v16 init];
   if (v12)
   {
-    if (!v10)
+    if (!modifierCopy)
     {
       [SBHomePeekToFullScreenTransitionModifier initWithTransitionModifier:a2 slidingOffPeekingAppLayout:v12 fromPeekingConfiguration:?];
     }
 
-    objc_storeStrong(&v12->_slidingOffPeekingAppLayout, a4);
-    objc_storeStrong(&v12->_transitionModifier, a3);
+    objc_storeStrong(&v12->_slidingOffPeekingAppLayout, layout);
+    objc_storeStrong(&v12->_transitionModifier, modifier);
     [(SBChainableModifier *)v12 addChildModifier:v12->_transitionModifier];
-    if (v12->_slidingOffPeekingAppLayout && SBPeekConfigurationIsValid(a5))
+    if (v12->_slidingOffPeekingAppLayout && SBPeekConfigurationIsValid(configuration))
     {
-      v13 = [[SBHomePeekWindowingModifier alloc] initWithPeekingAppLayout:v12->_slidingOffPeekingAppLayout configuration:a5];
+      v13 = [[SBHomePeekWindowingModifier alloc] initWithPeekingAppLayout:v12->_slidingOffPeekingAppLayout configuration:configuration];
       fromHomePeekModifier = v12->_fromHomePeekModifier;
       v12->_fromHomePeekModifier = v13;
     }
@@ -44,28 +44,28 @@
   return v12;
 }
 
-- (id)appLayoutsToEnsureExistForMainTransitionEvent:(id)a3
+- (id)appLayoutsToEnsureExistForMainTransitionEvent:(id)event
 {
   v15.receiver = self;
   v15.super_class = SBHomePeekToFullScreenTransitionModifier;
-  v3 = a3;
-  v4 = [(SBHomePeekToFullScreenTransitionModifier *)&v15 appLayoutsToEnsureExistForMainTransitionEvent:v3];
+  eventCopy = event;
+  v4 = [(SBHomePeekToFullScreenTransitionModifier *)&v15 appLayoutsToEnsureExistForMainTransitionEvent:eventCopy];
   v5 = objc_opt_new();
-  v6 = [v3 fromAppLayout];
-  v7 = [v3 toAppLayout];
+  fromAppLayout = [eventCopy fromAppLayout];
+  toAppLayout = [eventCopy toAppLayout];
 
   v8 = v4;
   if ((BSEqualObjects() & 1) == 0)
   {
     v8 = v4;
-    if ([v6 containsAnyItemFromAppLayout:v7])
+    if ([fromAppLayout containsAnyItemFromAppLayout:toAppLayout])
     {
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __90__SBHomePeekToFullScreenTransitionModifier_appLayoutsToEnsureExistForMainTransitionEvent___block_invoke;
       v11[3] = &unk_2783B7128;
-      v12 = v6;
-      v13 = v7;
+      v12 = fromAppLayout;
+      v13 = toAppLayout;
       v8 = v5;
       v14 = v8;
       [v4 enumerateObjectsUsingBlock:v11];
@@ -202,13 +202,13 @@ uint64_t __90__SBHomePeekToFullScreenTransitionModifier_appLayoutsToEnsureExistF
 
 - (double)fadeInDelayForSplitViewHandles
 {
-  v2 = [(SBHomePeekToFullScreenTransitionModifier *)self switcherSettings];
-  v3 = [v2 windowingSettings];
-  [v3 percentageOfTransitionForSplitViewHandleFadeInDelay];
+  switcherSettings = [(SBHomePeekToFullScreenTransitionModifier *)self switcherSettings];
+  windowingSettings = [switcherSettings windowingSettings];
+  [windowingSettings percentageOfTransitionForSplitViewHandleFadeInDelay];
   v5 = v4;
-  v6 = [v2 animationSettings];
-  v7 = [v6 layoutSettings];
-  [v7 settlingDuration];
+  animationSettings = [switcherSettings animationSettings];
+  layoutSettings = [animationSettings layoutSettings];
+  [layoutSettings settlingDuration];
   v9 = v5 * v8;
 
   return v9;
@@ -219,13 +219,13 @@ uint64_t __90__SBHomePeekToFullScreenTransitionModifier_appLayoutsToEnsureExistF
   toAppLayout = self->_toAppLayout;
   v7.receiver = self;
   v7.super_class = SBHomePeekToFullScreenTransitionModifier;
-  v4 = [(SBWindowingModifier *)&v7 topMostItems];
-  v5 = [(SBWindowingModifierBase *)self topMostItemsByAddingAppLayoutAndAccessories:toAppLayout toTopMostItems:v4 orderFront:1];
+  topMostItems = [(SBWindowingModifier *)&v7 topMostItems];
+  v5 = [(SBWindowingModifierBase *)self topMostItemsByAddingAppLayoutAndAccessories:toAppLayout toTopMostItems:topMostItems orderFront:1];
 
   return v5;
 }
 
-- (BOOL)wantsSpaceAccessoryViewGenieForAppLayout:(id)a3
+- (BOOL)wantsSpaceAccessoryViewGenieForAppLayout:(id)layout
 {
   if (self->_toFullScreen)
   {
@@ -234,15 +234,15 @@ uint64_t __90__SBHomePeekToFullScreenTransitionModifier_appLayoutsToEnsureExistF
 
   v4.receiver = self;
   v4.super_class = SBHomePeekToFullScreenTransitionModifier;
-  return [(SBHomePeekToFullScreenTransitionModifier *)&v4 wantsSpaceAccessoryViewGenieForAppLayout:a3];
+  return [(SBHomePeekToFullScreenTransitionModifier *)&v4 wantsSpaceAccessoryViewGenieForAppLayout:layout];
 }
 
-- (SBWindowingItemFrame)frameForItem:(SEL)a3
+- (SBWindowingItemFrame)frameForItem:(SEL)item
 {
   v6 = a4;
   slidingOffPeekingAppLayout = self->_slidingOffPeekingAppLayout;
-  v8 = [v6 appLayout];
-  LODWORD(slidingOffPeekingAppLayout) = [(SBAppLayout *)slidingOffPeekingAppLayout isOrContainsAppLayout:v8];
+  appLayout = [v6 appLayout];
+  LODWORD(slidingOffPeekingAppLayout) = [(SBAppLayout *)slidingOffPeekingAppLayout isOrContainsAppLayout:appLayout];
 
   if (slidingOffPeekingAppLayout)
   {
@@ -260,14 +260,14 @@ uint64_t __90__SBHomePeekToFullScreenTransitionModifier_appLayoutsToEnsureExistF
   return result;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
-  v12 = [v11 itemForLayoutRole:a3];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
+  v12 = [layoutCopy itemForLayoutRole:role];
   if (self->_fromHomePeekModifier && [(SBAppLayout *)self->_slidingOffPeekingAppLayout containsItem:v12])
   {
     v44 = 0;
@@ -282,22 +282,22 @@ uint64_t __90__SBHomePeekToFullScreenTransitionModifier_appLayoutsToEnsureExistF
     v36[2] = __86__SBHomePeekToFullScreenTransitionModifier_frameForLayoutRole_inAppLayout_withBounds___block_invoke;
     v36[3] = &unk_2783AA640;
     v38 = &v44;
-    v39 = a3;
+    roleCopy = role;
     v36[4] = self;
-    v37 = v11;
+    v37 = layoutCopy;
     v40 = x;
     v41 = y;
     v42 = width;
     v43 = height;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:fromHomePeekModifier usingBlock:v36];
-    v14 = [(SBWindowingModifier *)self transitionPhase];
+    transitionPhase = [(SBWindowingModifier *)self transitionPhase];
     v15 = v45;
     v16 = v45[4];
-    if (v14 >= 2)
+    if (transitionPhase >= 2)
     {
-      v17 = [(SBHomePeekToFullScreenTransitionModifier *)self switcherSettings];
-      v18 = [v17 windowingSettings];
-      [v18 diffuseShadowRadius];
+      switcherSettings = [(SBHomePeekToFullScreenTransitionModifier *)self switcherSettings];
+      windowingSettings = [switcherSettings windowingSettings];
+      [windowingSettings diffuseShadowRadius];
       v20 = v19;
 
       [(SBHomePeekToFullScreenTransitionModifier *)self containerViewBounds];
@@ -329,7 +329,7 @@ uint64_t __90__SBHomePeekToFullScreenTransitionModifier_appLayoutsToEnsureExistF
   {
     v35.receiver = self;
     v35.super_class = SBHomePeekToFullScreenTransitionModifier;
-    [(SBHomePeekToFullScreenTransitionModifier *)&v35 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+    [(SBHomePeekToFullScreenTransitionModifier *)&v35 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
     v16 = v23;
     v25 = v24;
     v27 = v26;
@@ -358,10 +358,10 @@ uint64_t __86__SBHomePeekToFullScreenTransitionModifier_frameForLayoutRole_inApp
   return result;
 }
 
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  v7 = [v6 itemForLayoutRole:a3];
+  layoutCopy = layout;
+  v7 = [layoutCopy itemForLayoutRole:role];
   if (self->_fromHomePeekModifier && [(SBAppLayout *)self->_slidingOffPeekingAppLayout containsItem:v7])
   {
     v8 = 1.0;
@@ -377,9 +377,9 @@ uint64_t __86__SBHomePeekToFullScreenTransitionModifier_frameForLayoutRole_inApp
       v13[2] = __75__SBHomePeekToFullScreenTransitionModifier_scaleForLayoutRole_inAppLayout___block_invoke;
       v13[3] = &unk_2783AA668;
       v15 = &v17;
-      v16 = a3;
+      roleCopy = role;
       v13[4] = self;
-      v14 = v6;
+      v14 = layoutCopy;
       [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:fromHomePeekModifier usingBlock:v13];
       v8 = v18[3];
 
@@ -391,7 +391,7 @@ uint64_t __86__SBHomePeekToFullScreenTransitionModifier_frameForLayoutRole_inApp
   {
     v12.receiver = self;
     v12.super_class = SBHomePeekToFullScreenTransitionModifier;
-    [(SBHomePeekToFullScreenTransitionModifier *)&v12 scaleForLayoutRole:a3 inAppLayout:v6];
+    [(SBHomePeekToFullScreenTransitionModifier *)&v12 scaleForLayoutRole:role inAppLayout:layoutCopy];
     v8 = v10;
   }
 
@@ -405,12 +405,12 @@ uint64_t __75__SBHomePeekToFullScreenTransitionModifier_scaleForLayoutRole_inApp
   return result;
 }
 
-- (CGPoint)perspectiveAngleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withPerspectiveAngle:(CGPoint)a5
+- (CGPoint)perspectiveAngleForLayoutRole:(int64_t)role inAppLayout:(id)layout withPerspectiveAngle:(CGPoint)angle
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4;
-  v10 = [v9 itemForLayoutRole:a3];
+  y = angle.y;
+  x = angle.x;
+  layoutCopy = layout;
+  v10 = [layoutCopy itemForLayoutRole:role];
   if (self->_fromHomePeekModifier && [(SBAppLayout *)self->_slidingOffPeekingAppLayout containsItem:v10])
   {
     if ([(SBWindowingModifier *)self transitionPhase]< 2)
@@ -427,9 +427,9 @@ uint64_t __75__SBHomePeekToFullScreenTransitionModifier_scaleForLayoutRole_inApp
       v19[2] = __107__SBHomePeekToFullScreenTransitionModifier_perspectiveAngleForLayoutRole_inAppLayout_withPerspectiveAngle___block_invoke;
       v19[3] = &unk_2783B7150;
       v21 = &v25;
-      v22 = a3;
+      roleCopy = role;
       v19[4] = self;
-      v20 = v9;
+      v20 = layoutCopy;
       v23 = x;
       v24 = y;
       [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:fromHomePeekModifier usingBlock:v19];
@@ -450,7 +450,7 @@ uint64_t __75__SBHomePeekToFullScreenTransitionModifier_scaleForLayoutRole_inApp
   {
     v18.receiver = self;
     v18.super_class = SBHomePeekToFullScreenTransitionModifier;
-    [(SBHomePeekToFullScreenTransitionModifier *)&v18 perspectiveAngleForLayoutRole:a3 inAppLayout:v9 withPerspectiveAngle:x, y];
+    [(SBHomePeekToFullScreenTransitionModifier *)&v18 perspectiveAngleForLayoutRole:role inAppLayout:layoutCopy withPerspectiveAngle:x, y];
     v11 = v13;
     v12 = v14;
   }
@@ -471,10 +471,10 @@ uint64_t __107__SBHomePeekToFullScreenTransitionModifier_perspectiveAngleForLayo
   return result;
 }
 
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space
 {
-  v5 = [(SBHomePeekToFullScreenTransitionModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBHomePeekToFullScreenTransitionModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:space];
 
   if (self->_fromHomePeekModifier && [(SBAppLayout *)self->_slidingOffPeekingAppLayout isOrContainsAppLayout:v6])
   {
@@ -489,7 +489,7 @@ uint64_t __107__SBHomePeekToFullScreenTransitionModifier_perspectiveAngleForLayo
     v11[3] = &unk_2783AA618;
     v11[4] = self;
     v11[5] = &v12;
-    v11[6] = a3;
+    v11[6] = space;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:fromHomePeekModifier usingBlock:v11];
     v8 = *(v13 + 24);
     _Block_object_dispose(&v12, 8);
@@ -499,7 +499,7 @@ uint64_t __107__SBHomePeekToFullScreenTransitionModifier_perspectiveAngleForLayo
   {
     v10.receiver = self;
     v10.super_class = SBHomePeekToFullScreenTransitionModifier;
-    v8 = [(SBHomePeekToFullScreenTransitionModifier *)&v10 shouldUseAnchorPointToPinLayoutRolesToSpace:a3];
+    v8 = [(SBHomePeekToFullScreenTransitionModifier *)&v10 shouldUseAnchorPointToPinLayoutRolesToSpace:space];
   }
 
   return v8 & 1;
@@ -512,46 +512,46 @@ uint64_t __88__SBHomePeekToFullScreenTransitionModifier_shouldUseAnchorPointToPi
   return result;
 }
 
-- (double)opacityForItem:(id)a3
+- (double)opacityForItem:(id)item
 {
-  v4 = a3;
-  if (![v4 isAppLayout] || (slidingOffPeekingAppLayout = self->_slidingOffPeekingAppLayout, objc_msgSend(v4, "appLayout"), v6 = objc_claimAutoreleasedReturnValue(), LOBYTE(slidingOffPeekingAppLayout) = -[SBAppLayout isOrContainsAppLayout:](slidingOffPeekingAppLayout, "isOrContainsAppLayout:", v6), v6, v7 = 1.0, (slidingOffPeekingAppLayout & 1) == 0))
+  itemCopy = item;
+  if (![itemCopy isAppLayout] || (slidingOffPeekingAppLayout = self->_slidingOffPeekingAppLayout, objc_msgSend(itemCopy, "appLayout"), v6 = objc_claimAutoreleasedReturnValue(), LOBYTE(slidingOffPeekingAppLayout) = -[SBAppLayout isOrContainsAppLayout:](slidingOffPeekingAppLayout, "isOrContainsAppLayout:", v6), v6, v7 = 1.0, (slidingOffPeekingAppLayout & 1) == 0))
   {
     v10.receiver = self;
     v10.super_class = SBHomePeekToFullScreenTransitionModifier;
-    [(SBWindowingModifier *)&v10 opacityForItem:v4];
+    [(SBWindowingModifier *)&v10 opacityForItem:itemCopy];
     v7 = v8;
   }
 
   return v7;
 }
 
-- (id)animationAttributesForItem:(id)a3
+- (id)animationAttributesForItem:(id)item
 {
-  v4 = a3;
-  if ([v4 isAppLayout])
+  itemCopy = item;
+  if ([itemCopy isAppLayout])
   {
     slidingOffPeekingAppLayout = self->_slidingOffPeekingAppLayout;
-    v6 = [v4 appLayout];
-    LODWORD(slidingOffPeekingAppLayout) = [(SBAppLayout *)slidingOffPeekingAppLayout isOrContainsAppLayout:v6];
+    appLayout = [itemCopy appLayout];
+    LODWORD(slidingOffPeekingAppLayout) = [(SBAppLayout *)slidingOffPeekingAppLayout isOrContainsAppLayout:appLayout];
 
     if (slidingOffPeekingAppLayout)
     {
       v7 = objc_alloc_init(SBMutableSwitcherAnimationAttributes);
       [(SBSwitcherAnimationAttributes *)v7 setUpdateMode:3];
-      v8 = [(SBHomePeekToFullScreenTransitionModifier *)self switcherSettings];
-      v9 = [v8 windowingSettings];
-      v10 = [v9 appToPeekLayoutSettings];
-      [(SBSwitcherAnimationAttributes *)v7 setLayoutSettings:v10];
+      switcherSettings = [(SBHomePeekToFullScreenTransitionModifier *)self switcherSettings];
+      windowingSettings = [switcherSettings windowingSettings];
+      appToPeekLayoutSettings = [windowingSettings appToPeekLayoutSettings];
+      [(SBSwitcherAnimationAttributes *)v7 setLayoutSettings:appToPeekLayoutSettings];
 
       goto LABEL_13;
     }
   }
 
-  if ([v4 isAppLayout])
+  if ([itemCopy isAppLayout])
   {
-    v11 = [v4 appLayout];
-    if ([(SBHomePeekToFullScreenTransitionModifier *)self prioritizesSortOrderForAppLayout:v11])
+    appLayout2 = [itemCopy appLayout];
+    if ([(SBHomePeekToFullScreenTransitionModifier *)self prioritizesSortOrderForAppLayout:appLayout2])
     {
 
 LABEL_7:
@@ -564,8 +564,8 @@ LABEL_7:
     if ([(SBHomePeekToFullScreenTransitionModifier *)self prefersStripHiddenAndDisabled])
     {
       toAppLayout = self->_toAppLayout;
-      v13 = [v4 appLayout];
-      LOBYTE(toAppLayout) = [(SBAppLayout *)toAppLayout isOrContainsAppLayout:v13];
+      appLayout3 = [itemCopy appLayout];
+      LOBYTE(toAppLayout) = [(SBAppLayout *)toAppLayout isOrContainsAppLayout:appLayout3];
 
       if ((toAppLayout & 1) == 0)
       {
@@ -580,27 +580,27 @@ LABEL_7:
 
   v15.receiver = self;
   v15.super_class = SBHomePeekToFullScreenTransitionModifier;
-  v7 = [(SBWindowingModifier *)&v15 animationAttributesForItem:v4];
+  v7 = [(SBWindowingModifier *)&v15 animationAttributesForItem:itemCopy];
 LABEL_13:
 
   return v7;
 }
 
-- (void)transitionWillBegin:(id)a3
+- (void)transitionWillBegin:(id)begin
 {
-  v9 = a3;
-  v4 = [v9 toAppLayout];
+  beginCopy = begin;
+  toAppLayout = [beginCopy toAppLayout];
   toAppLayout = self->_toAppLayout;
-  self->_toAppLayout = v4;
+  self->_toAppLayout = toAppLayout;
 
-  v6 = [v9 fromAppLayout];
+  fromAppLayout = [beginCopy fromAppLayout];
   fromAppLayout = self->_fromAppLayout;
-  self->_fromAppLayout = v6;
+  self->_fromAppLayout = fromAppLayout;
 
-  if (SBPeekConfigurationIsValid([v9 fromPeekConfiguration]) && !SBPeekConfigurationIsValid(objc_msgSend(v9, "toPeekConfiguration")) && self->_toAppLayout)
+  if (SBPeekConfigurationIsValid([beginCopy fromPeekConfiguration]) && !SBPeekConfigurationIsValid(objc_msgSend(beginCopy, "toPeekConfiguration")) && self->_toAppLayout)
   {
-    v8 = [v9 fromAppLayout];
-    self->_toFullScreen = [v8 isEqual:self->_toAppLayout] ^ 1;
+    fromAppLayout2 = [beginCopy fromAppLayout];
+    self->_toFullScreen = [fromAppLayout2 isEqual:self->_toAppLayout] ^ 1;
   }
 
   else

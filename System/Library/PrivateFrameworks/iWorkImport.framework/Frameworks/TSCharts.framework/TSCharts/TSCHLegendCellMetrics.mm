@@ -1,14 +1,14 @@
 @interface TSCHLegendCellMetrics
-- (TSCHLegendCellMetrics)initWithParagraphStyle:(id)a3;
+- (TSCHLegendCellMetrics)initWithParagraphStyle:(id)style;
 - (void)dealloc;
 @end
 
 @implementation TSCHLegendCellMetrics
 
-- (TSCHLegendCellMetrics)initWithParagraphStyle:(id)a3
+- (TSCHLegendCellMetrics)initWithParagraphStyle:(id)style
 {
-  v6 = a3;
-  if (v6)
+  styleCopy = style;
+  if (styleCopy)
   {
     v43.receiver = self;
     v43.super_class = TSCHLegendCellMetrics;
@@ -16,7 +16,7 @@
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_paragraphStyle, a3);
+      objc_storeStrong(&v10->_paragraphStyle, style);
       v16 = objc_msgSend_sharedText(TSCHText, v12, v13, v14, v15);
       v11->_font = objc_msgSend_retainedCTFontForParagraphStyle_(v16, v17, v18, v19, v20, v11->_paragraphStyle);
 
@@ -37,7 +37,7 @@
     }
 
     self = v11;
-    v26 = self;
+    selfCopy = self;
   }
 
   else
@@ -48,10 +48,10 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v27, v34, v35, v36, v37, v28, v33, 49, 0, "invalid nil value for '%{public}s'", "paragraphStyle");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v38, v39, v40, v41);
-    v26 = 0;
+    selfCopy = 0;
   }
 
-  return v26;
+  return selfCopy;
 }
 
 - (void)dealloc

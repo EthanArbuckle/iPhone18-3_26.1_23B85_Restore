@@ -1,13 +1,13 @@
 @interface SASValidateTTRMessage
-+ (id)validateWithMessage:(id)a3 error:(id *)a4;
++ (id)validateWithMessage:(id)message error:(id *)error;
 - (_TtC21transparencyStaticKey21SASValidateTTRMessage)init;
 @end
 
 @implementation SASValidateTTRMessage
 
-+ (id)validateWithMessage:(id)a3 error:(id *)a4
++ (id)validateWithMessage:(id)message error:(id *)error
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
 

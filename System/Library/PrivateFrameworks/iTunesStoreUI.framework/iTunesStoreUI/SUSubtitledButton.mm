@@ -1,24 +1,24 @@
 @interface SUSubtitledButton
-- (CGRect)subtitleRectForContentRect:(CGRect)a3;
-- (CGRect)titleRectForContentRect:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGRect)subtitleRectForContentRect:(CGRect)rect;
+- (CGRect)titleRectForContentRect:(CGRect)rect;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)currentSubtitle;
 - (UIColor)currentSubtitleColor;
 - (UIColor)currentSubtitleShadowColor;
 - (UILabel)subtitleLabel;
 - (id)_subtitleFont;
-- (id)_subtitledContentForState:(unint64_t)a3;
-- (id)subtitleColorForState:(unint64_t)a3;
-- (id)subtitleForState:(unint64_t)a3;
-- (id)subtitleShadowColorForState:(unint64_t)a3;
+- (id)_subtitledContentForState:(unint64_t)state;
+- (id)subtitleColorForState:(unint64_t)state;
+- (id)subtitleForState:(unint64_t)state;
+- (id)subtitleShadowColorForState:(unint64_t)state;
 - (int64_t)_subtitleLineBreakMode;
 - (void)_setupSubtitleView;
-- (void)configureFromScriptButton:(id)a3;
+- (void)configureFromScriptButton:(id)button;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setSubtitle:(id)a3 forState:(unint64_t)a4;
-- (void)setSubtitleColor:(id)a3 forState:(unint64_t)a4;
-- (void)setSubtitleShadowColor:(id)a3 forState:(unint64_t)a4;
+- (void)setSubtitle:(id)subtitle forState:(unint64_t)state;
+- (void)setSubtitleColor:(id)color forState:(unint64_t)state;
+- (void)setSubtitleShadowColor:(id)color forState:(unint64_t)state;
 @end
 
 @implementation SUSubtitledButton
@@ -43,13 +43,13 @@
   v5.receiver = self;
   v5.super_class = SUSubtitledButton;
   [(SUSubtitledButton *)&v5 layoutSubviews];
-  v3 = [(SUSubtitledButton *)self currentSubtitle];
-  if ([(NSString *)v3 length])
+  currentSubtitle = [(SUSubtitledButton *)self currentSubtitle];
+  if ([(NSString *)currentSubtitle length])
   {
     [(SUSubtitledButton *)self _setupSubtitleView];
     [(UILabel *)self->_subtitleView setHidden:0];
     [(UILabel *)self->_subtitleView setShadowColor:[(SUSubtitledButton *)self currentSubtitleShadowColor]];
-    [(UILabel *)self->_subtitleView setText:v3];
+    [(UILabel *)self->_subtitleView setText:currentSubtitle];
     [(UILabel *)self->_subtitleView setTextColor:[(SUSubtitledButton *)self currentSubtitleColor]];
     subtitleView = self->_subtitleView;
     [(SUSubtitledButton *)self bounds];
@@ -64,17 +64,17 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v17.receiver = self;
   v17.super_class = SUSubtitledButton;
-  [(SUSubtitledButton *)&v17 sizeThatFits:a3.width, a3.height];
+  [(SUSubtitledButton *)&v17 sizeThatFits:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
-  v8 = [(SUSubtitledButton *)self currentSubtitle];
-  if ([(NSString *)v8 length])
+  currentSubtitle = [(SUSubtitledButton *)self currentSubtitle];
+  if ([(NSString *)currentSubtitle length])
   {
-    [(NSString *)v8 _legacy_sizeWithFont:[(SUSubtitledButton *)self _subtitleFont] forWidth:[(SUSubtitledButton *)self _subtitleLineBreakMode] lineBreakMode:3.40282347e38];
+    [(NSString *)currentSubtitle _legacy_sizeWithFont:[(SUSubtitledButton *)self _subtitleFont] forWidth:[(SUSubtitledButton *)self _subtitleLineBreakMode] lineBreakMode:3.40282347e38];
     v10 = v9;
     v12 = v11;
     [(SUSubtitledButton *)self contentEdgeInsets];
@@ -92,32 +92,32 @@
   return result;
 }
 
-- (void)configureFromScriptButton:(id)a3
+- (void)configureFromScriptButton:(id)button
 {
-  [a3 subtitle];
+  [button subtitle];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = 0;
+    subtitle = 0;
   }
 
   else
   {
-    v5 = [a3 subtitle];
+    subtitle = [button subtitle];
   }
 
-  [(SUSubtitledButton *)self setSubtitle:v5 forState:0];
+  [(SUSubtitledButton *)self setSubtitle:subtitle forState:0];
   v6.receiver = self;
   v6.super_class = SUSubtitledButton;
-  [(UIButton *)&v6 configureFromScriptButton:a3];
+  [(UIButton *)&v6 configureFromScriptButton:button];
 }
 
-- (CGRect)titleRectForContentRect:(CGRect)a3
+- (CGRect)titleRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v33.receiver = self;
   v33.super_class = SUSubtitledButton;
   [(SUSubtitledButton *)&v33 titleRectForContentRect:?];
@@ -125,25 +125,25 @@
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(SUSubtitledButton *)self currentSubtitle];
-  if ([(NSString *)v16 length])
+  currentSubtitle = [(SUSubtitledButton *)self currentSubtitle];
+  if ([(NSString *)currentSubtitle length])
   {
     [(SUSubtitledButton *)self titleEdgeInsets];
     v18 = x + v17;
     v20 = y + v19;
     v22 = width - (v17 + v21);
     v24 = height - (v19 + v23);
-    v25 = [(SUSubtitledButton *)self _subtitleFont];
+    _subtitleFont = [(SUSubtitledButton *)self _subtitleFont];
     v34.origin.x = v18;
     v34.origin.y = v20;
     v34.size.width = v22;
     v34.size.height = v24;
-    [(NSString *)v16 _legacy_sizeWithFont:v25 forWidth:[(SUSubtitledButton *)self _subtitleLineBreakMode] lineBreakMode:CGRectGetWidth(v34)];
+    [(NSString *)currentSubtitle _legacy_sizeWithFont:_subtitleFont forWidth:[(SUSubtitledButton *)self _subtitleLineBreakMode] lineBreakMode:CGRectGetWidth(v34)];
     v27 = v26;
-    v28 = [(SUSubtitledButton *)self contentVerticalAlignment];
-    if (v28 != 1 && v28 != 3)
+    contentVerticalAlignment = [(SUSubtitledButton *)self contentVerticalAlignment];
+    if (contentVerticalAlignment != 1 && contentVerticalAlignment != 3)
     {
-      if (v28 == 2)
+      if (contentVerticalAlignment == 2)
       {
         v11 = v11 - (v27 + 1.0);
       }
@@ -168,66 +168,66 @@
 
 - (NSString)currentSubtitle
 {
-  v3 = [(SUSubtitledButton *)self state];
+  state = [(SUSubtitledButton *)self state];
 
-  return [(SUSubtitledButton *)self subtitleForState:v3];
+  return [(SUSubtitledButton *)self subtitleForState:state];
 }
 
 - (UIColor)currentSubtitleColor
 {
-  v3 = [(SUSubtitledButton *)self state];
+  state = [(SUSubtitledButton *)self state];
 
-  return [(SUSubtitledButton *)self subtitleColorForState:v3];
+  return [(SUSubtitledButton *)self subtitleColorForState:state];
 }
 
 - (UIColor)currentSubtitleShadowColor
 {
-  v3 = [(SUSubtitledButton *)self state];
+  state = [(SUSubtitledButton *)self state];
 
-  return [(SUSubtitledButton *)self subtitleShadowColorForState:v3];
+  return [(SUSubtitledButton *)self subtitleShadowColorForState:state];
 }
 
-- (void)setSubtitle:(id)a3 forState:(unint64_t)a4
+- (void)setSubtitle:(id)subtitle forState:(unint64_t)state
 {
-  [-[SUSubtitledButton _subtitledContentForState:](self _subtitledContentForState:{a4), "setSubtitle:", a3}];
+  [-[SUSubtitledButton _subtitledContentForState:](self _subtitledContentForState:{state), "setSubtitle:", subtitle}];
   if ([(SUSubtitledButton *)self autosizesToFit])
   {
     [(SUSubtitledButton *)self sizeToFit];
   }
 
   [(SUSubtitledButton *)self setNeedsLayout];
-  if (a4 && [(SUSubtitledButton *)self state]== a4)
+  if (state && [(SUSubtitledButton *)self state]== state)
   {
 
     [(SUSubtitledButton *)self layoutIfNeeded];
   }
 }
 
-- (void)setSubtitleColor:(id)a3 forState:(unint64_t)a4
+- (void)setSubtitleColor:(id)color forState:(unint64_t)state
 {
-  [-[SUSubtitledButton _subtitledContentForState:](self _subtitledContentForState:{a4), "setSubtitleColor:", a3}];
+  [-[SUSubtitledButton _subtitledContentForState:](self _subtitledContentForState:{state), "setSubtitleColor:", color}];
   [(SUSubtitledButton *)self setNeedsLayout];
-  if (a4 && [(SUSubtitledButton *)self state]== a4)
+  if (state && [(SUSubtitledButton *)self state]== state)
   {
 
     [(SUSubtitledButton *)self layoutIfNeeded];
   }
 }
 
-- (void)setSubtitleShadowColor:(id)a3 forState:(unint64_t)a4
+- (void)setSubtitleShadowColor:(id)color forState:(unint64_t)state
 {
-  [-[SUSubtitledButton _subtitledContentForState:](self _subtitledContentForState:{a4), "setSubtitleShadowColor:", a3}];
+  [-[SUSubtitledButton _subtitledContentForState:](self _subtitledContentForState:{state), "setSubtitleShadowColor:", color}];
   [(SUSubtitledButton *)self setNeedsLayout];
-  if (a4 && [(SUSubtitledButton *)self state]== a4)
+  if (state && [(SUSubtitledButton *)self state]== state)
   {
 
     [(SUSubtitledButton *)self layoutIfNeeded];
   }
 }
 
-- (id)subtitleColorForState:(unint64_t)a3
+- (id)subtitleColorForState:(unint64_t)state
 {
-  result = [-[SUSubtitledButton _subtitledContentForState:](self _subtitledContentForState:{a3), "subtitleColor"}];
+  result = [-[SUSubtitledButton _subtitledContentForState:](self _subtitledContentForState:{state), "subtitleColor"}];
   if (!result)
   {
     v5 = [(SUSubtitledButton *)self _subtitledContentForState:0];
@@ -238,9 +238,9 @@
   return result;
 }
 
-- (id)subtitleForState:(unint64_t)a3
+- (id)subtitleForState:(unint64_t)state
 {
-  result = [-[SUSubtitledButton _subtitledContentForState:](self _subtitledContentForState:{a3), "subtitle"}];
+  result = [-[SUSubtitledButton _subtitledContentForState:](self _subtitledContentForState:{state), "subtitle"}];
   if (!result)
   {
     v5 = [(SUSubtitledButton *)self _subtitledContentForState:0];
@@ -258,35 +258,35 @@
   return self->_subtitleView;
 }
 
-- (CGRect)subtitleRectForContentRect:(CGRect)a3
+- (CGRect)subtitleRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(SUSubtitledButton *)self currentSubtitle];
-  if ([(NSString *)v8 length])
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  currentSubtitle = [(SUSubtitledButton *)self currentSubtitle];
+  if ([(NSString *)currentSubtitle length])
   {
     [(SUSubtitledButton *)self titleEdgeInsets];
     v10 = x + v9;
     v12 = y + v11;
     v14 = width - (v9 + v13);
     v16 = height - (v11 + v15);
-    v17 = [(SUSubtitledButton *)self _subtitleFont];
+    _subtitleFont = [(SUSubtitledButton *)self _subtitleFont];
     v36.origin.x = v10;
     v36.origin.y = v12;
     v33 = v16;
     v34 = v14;
     v36.size.width = v14;
     v36.size.height = v16;
-    [(NSString *)v8 _legacy_sizeWithFont:v17 forWidth:[(SUSubtitledButton *)self _subtitleLineBreakMode] lineBreakMode:CGRectGetWidth(v36)];
+    [(NSString *)currentSubtitle _legacy_sizeWithFont:_subtitleFont forWidth:[(SUSubtitledButton *)self _subtitleLineBreakMode] lineBreakMode:CGRectGetWidth(v36)];
     v19 = v18;
     v35 = v20;
-    v21 = [(SUSubtitledButton *)self contentHorizontalAlignment];
+    contentHorizontalAlignment = [(SUSubtitledButton *)self contentHorizontalAlignment];
     v22 = v10;
-    if (v21 != 1 && v21 != 3)
+    if (contentHorizontalAlignment != 1 && contentHorizontalAlignment != 3)
     {
-      if (v21 == 2)
+      if (contentHorizontalAlignment == 2)
       {
         v37.origin.x = v10;
         v37.origin.y = v12;
@@ -304,11 +304,11 @@
     [(SUSubtitledButton *)self titleRectForContentRect:x, y, width, height];
     if (v27 <= 0.00000011920929)
     {
-      v32 = [(SUSubtitledButton *)self contentVerticalAlignment];
+      contentVerticalAlignment = [(SUSubtitledButton *)self contentVerticalAlignment];
       v23 = v35;
-      if (v32 != 1 && v32 != 3)
+      if (contentVerticalAlignment != 1 && contentVerticalAlignment != 3)
       {
-        if (v32 == 2)
+        if (contentVerticalAlignment == 2)
         {
           v38.origin.x = v10;
           v38.origin.y = v12;
@@ -350,9 +350,9 @@
   return result;
 }
 
-- (id)subtitleShadowColorForState:(unint64_t)a3
+- (id)subtitleShadowColorForState:(unint64_t)state
 {
-  result = [-[SUSubtitledButton _subtitledContentForState:](self _subtitledContentForState:{a3), "subtitleShadowColor"}];
+  result = [-[SUSubtitledButton _subtitledContentForState:](self _subtitledContentForState:{state), "subtitleShadowColor"}];
   if (!result)
   {
     v5 = [(SUSubtitledButton *)self _subtitledContentForState:0];
@@ -381,7 +381,7 @@
   }
 }
 
-- (id)_subtitledContentForState:(unint64_t)a3
+- (id)_subtitledContentForState:(unint64_t)state
 {
   subtitleContentLookup = self->_subtitleContentLookup;
   if (!subtitleContentLookup)
@@ -390,11 +390,11 @@
     self->_subtitleContentLookup = subtitleContentLookup;
   }
 
-  Value = CFDictionaryGetValue(subtitleContentLookup, a3);
+  Value = CFDictionaryGetValue(subtitleContentLookup, state);
   if (!Value)
   {
     Value = objc_alloc_init(SUSubtitledButtonContent);
-    CFDictionarySetValue(self->_subtitleContentLookup, a3, Value);
+    CFDictionarySetValue(self->_subtitleContentLookup, state, Value);
   }
 
   return Value;

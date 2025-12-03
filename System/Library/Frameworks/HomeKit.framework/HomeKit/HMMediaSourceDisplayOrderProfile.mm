@@ -1,10 +1,10 @@
 @interface HMMediaSourceDisplayOrderProfile
-- (_TtC7HomeKit32HMMediaSourceDisplayOrderProfile)initWithAccessoryProfile:(id)a3;
+- (_TtC7HomeKit32HMMediaSourceDisplayOrderProfile)initWithAccessoryProfile:(id)profile;
 @end
 
 @implementation HMMediaSourceDisplayOrderProfile
 
-- (_TtC7HomeKit32HMMediaSourceDisplayOrderProfile)initWithAccessoryProfile:(id)a3
+- (_TtC7HomeKit32HMMediaSourceDisplayOrderProfile)initWithAccessoryProfile:(id)profile
 {
   *(&self->super._accessoryProfile + OBJC_IVAR____TtC7HomeKit32HMMediaSourceDisplayOrderProfile_delegate) = 0;
   swift_unknownObjectWeakInit();

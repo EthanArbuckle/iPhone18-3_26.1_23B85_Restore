@@ -1,8 +1,8 @@
 @interface W5WiFiSnifferRequest
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToWiFiSnifferRequest:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToWiFiSnifferRequest:(id)request;
 - (W5WiFiSnifferRequest)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
 @end
@@ -38,30 +38,30 @@
 {
   v3 = [NSMutableString stringWithCapacity:0];
   [(NSMutableString *)v3 appendFormat:@"UUID: %@\n", self->_uuid];
-  v4 = [(W5WiFiChannel *)self->_channel channel];
+  channel = [(W5WiFiChannel *)self->_channel channel];
   channel = self->_channel;
-  [(NSMutableString *)v3 appendFormat:@"Channel: %ld (%@)\n", v4, W5DescriptionForChannelWidth()];
+  [(NSMutableString *)v3 appendFormat:@"Channel: %ld (%@)\n", channel, W5DescriptionForChannelWidth()];
   v6 = [(NSMutableString *)v3 copy];
 
   return v6;
 }
 
-- (BOOL)isEqualToWiFiSnifferRequest:(id)a3
+- (BOOL)isEqualToWiFiSnifferRequest:(id)request
 {
   uuid = self->_uuid;
-  v4 = [a3 uuid];
+  uuid = [request uuid];
 
-  return [(NSUUID *)uuid isEqual:v4];
+  return [(NSUUID *)uuid isEqual:uuid];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -72,10 +72,10 @@
     return 0;
   }
 
-  return [(W5WiFiSnifferRequest *)self isEqualToWiFiSnifferRequest:a3];
+  return [(W5WiFiSnifferRequest *)self isEqualToWiFiSnifferRequest:equal];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[W5WiFiSnifferRequest allocWithZone:?]];
   [(W5WiFiSnifferRequest *)v4 setUuid:self->_uuid];

@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 + (int64_t)_currentNetworkStatus;
 - (NFReachability)init;
-- (int64_t)_statusFromNetworkPath:(id)a3;
-- (void)_updateCurrentNetworkPath:(id)a3;
+- (int64_t)_statusFromNetworkPath:(id)path;
+- (void)_updateCurrentNetworkPath:(id)path;
 - (void)dealloc;
 @end
 
@@ -112,11 +112,11 @@ void __22__NFReachability_init__block_invoke(uint64_t a1, void *a2)
   [(NFReachability *)&v3 dealloc];
 }
 
-- (void)_updateCurrentNetworkPath:(id)a3
+- (void)_updateCurrentNetworkPath:(id)path
 {
-  path = a3;
-  v4 = [(NFReachability *)self currentNetworkPath];
-  is_equal = nw_path_is_equal(path, v4);
+  path = path;
+  currentNetworkPath = [(NFReachability *)self currentNetworkPath];
+  is_equal = nw_path_is_equal(path, currentNetworkPath);
 
   if (!is_equal)
   {
@@ -132,18 +132,18 @@ void __44__NFReachability__updateCurrentNetworkPath___block_invoke()
   [v0 postNotificationName:@"kNFReachabilityChangedNotification" object:0];
 }
 
-- (int64_t)_statusFromNetworkPath:(id)a3
+- (int64_t)_statusFromNetworkPath:(id)path
 {
-  v3 = a3;
-  if ((nw_path_get_status(v3) | 2) == 3)
+  pathCopy = path;
+  if ((nw_path_get_status(pathCopy) | 2) == 3)
   {
-    v4 = (MEMORY[0x25F8808D0](v3, 1) & 1) != 0 || MEMORY[0x25F8808D0](v3, 3);
-    if (MEMORY[0x25F8808D0](v3, 2))
+    v4 = (MEMORY[0x25F8808D0](pathCopy, 1) & 1) != 0 || MEMORY[0x25F8808D0](pathCopy, 3);
+    if (MEMORY[0x25F8808D0](pathCopy, 2))
     {
       v4 |= 2uLL;
     }
 
-    if (MEMORY[0x25F8808D0](v3, 0))
+    if (MEMORY[0x25F8808D0](pathCopy, 0))
     {
       v4 |= 4uLL;
     }
@@ -154,12 +154,12 @@ void __44__NFReachability__updateCurrentNetworkPath___block_invoke()
     v4 = 0;
   }
 
-  if (MEMORY[0x25F880870](v3))
+  if (MEMORY[0x25F880870](pathCopy))
   {
     v4 |= 8uLL;
   }
 
-  if (MEMORY[0x25F880850](v3))
+  if (MEMORY[0x25F880850](pathCopy))
   {
     v4 |= 0x10uLL;
   }

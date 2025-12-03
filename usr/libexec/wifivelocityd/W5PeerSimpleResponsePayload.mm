@@ -1,27 +1,27 @@
 @interface W5PeerSimpleResponsePayload
-+ (id)payloadFromDictionary:(id)a3;
-- (W5PeerSimpleResponsePayload)initWithRequest:(id)a3;
++ (id)payloadFromDictionary:(id)dictionary;
+- (W5PeerSimpleResponsePayload)initWithRequest:(id)request;
 @end
 
 @implementation W5PeerSimpleResponsePayload
 
-+ (id)payloadFromDictionary:(id)a3
++ (id)payloadFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithRequest:v3];
+  dictionaryCopy = dictionary;
+  v4 = [objc_alloc(objc_opt_class()) initWithRequest:dictionaryCopy];
 
   return v4;
 }
 
-- (W5PeerSimpleResponsePayload)initWithRequest:(id)a3
+- (W5PeerSimpleResponsePayload)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = W5PeerSimpleResponsePayload;
   v5 = [(W5PeerSimpleResponsePayload *)&v9 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = requestCopy;
     p_super = &v5->_dictionary->super;
     v5->_dictionary = v6;
   }

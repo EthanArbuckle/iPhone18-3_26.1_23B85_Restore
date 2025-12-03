@@ -1,24 +1,24 @@
 @interface NSURLHostNameAddressInfo
-+ (id)addressInfoForHost:(id)a3;
-+ (void)asyncResolveWithCallbackClient:(id)a3;
-- (id)_initWithAddressInfo:(addrinfo *)a3;
++ (id)addressInfoForHost:(id)host;
++ (void)asyncResolveWithCallbackClient:(id)client;
+- (id)_initWithAddressInfo:(addrinfo *)info;
 - (void)dealloc;
 @end
 
 @implementation NSURLHostNameAddressInfo
 
-+ (id)addressInfoForHost:(id)a3
++ (id)addressInfoForHost:(id)host
 {
   pthread_once(&initControl_0, NSURLHostNameAddressInfoInit);
   [_MergedGlobals_125 lock];
-  v4 = [qword_1ED43FC38 objectForKey:a3];
+  v4 = [qword_1ED43FC38 objectForKey:host];
   v5 = v4;
   if (v4)
   {
     [v4 _timestamp];
     if (v6 + 600.0 <= CFAbsoluteTimeGetCurrent())
     {
-      [qword_1ED43FC38 removeObjectForKey:a3];
+      [qword_1ED43FC38 removeObjectForKey:host];
       v5 = 0;
     }
 
@@ -33,11 +33,11 @@
   return v5;
 }
 
-+ (void)asyncResolveWithCallbackClient:(id)a3
++ (void)asyncResolveWithCallbackClient:(id)client
 {
   v8 = *MEMORY[0x1E69E9840];
   pthread_once(&initControl_0, NSURLHostNameAddressInfoInit);
-  v4 = a3;
+  clientCopy = client;
   __dmb(0xBu);
   v6 = 0;
   memset(&__attr, 0, sizeof(__attr));
@@ -45,11 +45,11 @@
   pthread_attr_setdetachstate(&__attr, 2);
   v5 = qos_class_main();
   pthread_attr_set_qos_class_np(&__attr, v5, 0);
-  pthread_create(&v6, &__attr, resolveHostName, a3);
+  pthread_create(&v6, &__attr, resolveHostName, client);
   pthread_attr_destroy(&__attr);
 }
 
-- (id)_initWithAddressInfo:(addrinfo *)a3
+- (id)_initWithAddressInfo:(addrinfo *)info
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -58,7 +58,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->addressInfo = a3;
+    v4->addressInfo = info;
     v4->timestamp = CFAbsoluteTimeGetCurrent();
   }
 

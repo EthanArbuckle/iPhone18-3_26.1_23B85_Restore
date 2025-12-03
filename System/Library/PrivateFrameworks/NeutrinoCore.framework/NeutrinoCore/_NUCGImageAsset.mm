@@ -1,6 +1,6 @@
 @interface _NUCGImageAsset
-- (_NUCGImageAsset)initWithCGImage:(CGImage *)a3 type:(int64_t)a4 identifier:(id)a5;
-- (_NUCGImageAsset)initWithCIImage:(id)a3 type:(int64_t)a4 identifier:(id)a5;
+- (_NUCGImageAsset)initWithCGImage:(CGImage *)image type:(int64_t)type identifier:(id)identifier;
+- (_NUCGImageAsset)initWithCIImage:(id)image type:(int64_t)type identifier:(id)identifier;
 - (void)dealloc;
 @end
 
@@ -14,11 +14,11 @@
   [(_NUCGImageAsset *)&v3 dealloc];
 }
 
-- (_NUCGImageAsset)initWithCGImage:(CGImage *)a3 type:(int64_t)a4 identifier:(id)a5
+- (_NUCGImageAsset)initWithCGImage:(CGImage *)image type:(int64_t)type identifier:(id)identifier
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (!a3)
+  identifierCopy = identifier;
+  if (!image)
   {
     v13 = NUAssertLogger_10839();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -39,8 +39,8 @@
         v20 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v21 = MEMORY[0x1E696AF00];
         v22 = v20;
-        v23 = [v21 callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v21 callStackSymbols];
+        v24 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v31 = v20;
         v32 = 2114;
@@ -51,8 +51,8 @@
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -61,21 +61,21 @@
     _NUAssertFailHandler("[_NUCGImageAsset initWithCGImage:type:identifier:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUAsset.m", 748, @"Invalid parameter not satisfying: %s", v25, v26, v27, v28, "cgImage != NULL");
   }
 
-  v9 = v8;
-  v10 = [MEMORY[0x1E695F658] imageWithCGImage:a3];
+  v9 = identifierCopy;
+  v10 = [MEMORY[0x1E695F658] imageWithCGImage:image];
   v29.receiver = self;
   v29.super_class = _NUCGImageAsset;
-  v11 = [(_NUCIImageAsset *)&v29 initWithCIImage:v10 type:a4 identifier:v9];
-  v11->_cgImage = CGImageRetain(a3);
+  v11 = [(_NUCIImageAsset *)&v29 initWithCIImage:v10 type:type identifier:v9];
+  v11->_cgImage = CGImageRetain(image);
 
   return v11;
 }
 
-- (_NUCGImageAsset)initWithCIImage:(id)a3 type:(int64_t)a4 identifier:(id)a5
+- (_NUCGImageAsset)initWithCIImage:(id)image type:(int64_t)type identifier:(id)identifier
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  imageCopy = image;
+  identifierCopy = identifier;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_10855);
@@ -119,8 +119,8 @@ LABEL_8:
     {
       v18 = MEMORY[0x1E696AF00];
       v19 = v17;
-      v20 = [v18 callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v18 callStackSymbols];
+      v21 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v36 = v21;
       _os_log_error_impl(&dword_1C0184000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -136,8 +136,8 @@ LABEL_8:
     v24 = MEMORY[0x1E696AF00];
     v25 = specific;
     v26 = v22;
-    v27 = [v24 callStackSymbols];
-    v28 = [v27 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v24 callStackSymbols];
+    v28 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v36 = specific;
     v37 = 2114;

@@ -1,27 +1,27 @@
 @interface _UISceneLifecycleMultiplexer
 + (id)_mostActiveSceneForApplicationState;
-+ (id)mostActiveSceneIncludingInternal:(BOOL)a3 withTest:(id)a4;
-+ (id)mostActiveWindowSceneOnScreen:(id)a3;
++ (id)mostActiveSceneIncludingInternal:(BOOL)internal withTest:(id)test;
++ (id)mostActiveWindowSceneOnScreen:(id)screen;
 + (id)sharedInstance;
-+ (int64_t)_compareLifecycleStateOfScene:(id)a3 toScene:(id)a4;
-+ (void)configureInitialDeactivationReasons:(unint64_t)a3;
-- (BOOL)_prepareForClientSuspensionWithScene:(id)a3;
++ (int64_t)_compareLifecycleStateOfScene:(id)scene toScene:(id)toScene;
++ (void)configureInitialDeactivationReasons:(unint64_t)reasons;
+- (BOOL)_prepareForClientSuspensionWithScene:(id)scene;
 - (BOOL)isActive;
-- (BOOL)isTrackingScene:(id)a3;
+- (BOOL)isTrackingScene:(id)scene;
 - (BOOL)lifecycleWantsUnnecessaryDelayForSceneDelivery;
 - (BOOL)runningInTaskSwitcher;
 - (BOOL)suspendedEventsOnly;
 - (BOOL)suspendedUnderLock;
-- (id)initForAppSingleton:(id)a3;
+- (id)initForAppSingleton:(id)singleton;
 - (int64_t)applicationState;
-- (void)_evalTransitionToSettings:(id)a3 fromSettings:(id)a4 forceExit:(BOOL)a5 withTransitionStore:(id)a6;
-- (void)_globalTestRelatedActivationActionsForFirstActivation:(BOOL)a3 foreground:(BOOL)a4 interfaceStyle:(int64_t)a5 transitionContext:(id)a6;
-- (void)_performBlock:(id)a3 withApplicationOfDeactivationReasons:(unint64_t)a4 fromReasons:(unint64_t)a5;
+- (void)_evalTransitionToSettings:(id)settings fromSettings:(id)fromSettings forceExit:(BOOL)exit withTransitionStore:(id)store;
+- (void)_globalTestRelatedActivationActionsForFirstActivation:(BOOL)activation foreground:(BOOL)foreground interfaceStyle:(int64_t)style transitionContext:(id)context;
+- (void)_performBlock:(id)block withApplicationOfDeactivationReasons:(unint64_t)reasons fromReasons:(unint64_t)fromReasons;
 - (void)_scheduleFirstCommit;
 - (void)collectBackingStores;
-- (void)completeApplicationLaunchWithFBSScene:(id)a3 transitionContext:(id)a4;
-- (void)forceExitWithTransitionContext:(id)a3 scene:(id)a4;
-- (void)uiScene:(id)a3 transitionedFromState:(id)a4 withTransitionContext:(id)a5;
+- (void)completeApplicationLaunchWithFBSScene:(id)scene transitionContext:(id)context;
+- (void)forceExitWithTransitionContext:(id)context scene:(id)scene;
+- (void)uiScene:(id)scene transitionedFromState:(id)state withTransitionContext:(id)context;
 @end
 
 @implementation _UISceneLifecycleMultiplexer
@@ -69,13 +69,13 @@
   }
 
   v8 = objc_loadWeakRetained(&self->_uiSceneOfRecord);
-  v9 = [v8 activationState];
-  if (v9 == -1 || v9 == 2)
+  activationState = [v8 activationState];
+  if (activationState == -1 || activationState == 2)
   {
     v4 = 2;
   }
 
-  else if (v9)
+  else if (activationState)
   {
     v4 = 1;
   }
@@ -110,9 +110,9 @@
   else
   {
     v6 = objc_loadWeakRetained(&self->_uiSceneOfRecord);
-    v7 = [v6 _isSuspendedEventsOnly];
+    _isSuspendedEventsOnly = [v6 _isSuspendedEventsOnly];
 
-    return v7;
+    return _isSuspendedEventsOnly;
   }
 }
 
@@ -129,16 +129,16 @@
 + (id)_mostActiveSceneForApplicationState
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [a1 mostActiveScene];
-  v4 = [a1 mostActiveSceneIncludingInternal:1 withTest:&__block_literal_global_12_0];
-  if ([a1 _compareLifecycleStateOfScene:v3 toScene:v4] == -1)
+  mostActiveScene = [self mostActiveScene];
+  v4 = [self mostActiveSceneIncludingInternal:1 withTest:&__block_literal_global_12_0];
+  if ([self _compareLifecycleStateOfScene:mostActiveScene toScene:v4] == -1)
   {
     v5 = v4;
   }
 
   else
   {
-    v5 = v3;
+    v5 = mostActiveScene;
   }
 
   v6 = v5;
@@ -146,12 +146,12 @@
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [v6 _sceneIdentifier];
-    v10 = [v6 _persistenceIdentifier];
+    _sceneIdentifier = [v6 _sceneIdentifier];
+    _persistenceIdentifier = [v6 _persistenceIdentifier];
     v12 = 138543618;
-    v13 = v9;
+    v13 = _sceneIdentifier;
     v14 = 2114;
-    v15 = v10;
+    v15 = _persistenceIdentifier;
     _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEFAULT, "sceneOfRecord: sceneID: %{public}@  persistentID: %{public}@", &v12, 0x16u);
   }
 
@@ -160,8 +160,8 @@
 
 - (void)_scheduleFirstCommit
 {
-  v2 = [UIApp _firstCommitBlock];
-  v2[2]();
+  _firstCommitBlock = [UIApp _firstCommitBlock];
+  _firstCommitBlock[2]();
 }
 
 - (BOOL)suspendedUnderLock
@@ -186,9 +186,9 @@
   else
   {
     v6 = objc_loadWeakRetained(&self->_uiSceneOfRecord);
-    v7 = [v6 _isSuspendedUnderLock];
+    _isSuspendedUnderLock = [v6 _isSuspendedUnderLock];
 
-    return v7;
+    return _isSuspendedUnderLock;
   }
 }
 
@@ -196,9 +196,9 @@
 {
   [MEMORY[0x1E6979518] flush];
   v2 = +[_UISceneLifecycleMultiplexer sharedInstance];
-  v3 = [v2 applicationState];
+  applicationState = [v2 applicationState];
 
-  if (v3 == 2)
+  if (applicationState == 2)
   {
     [UIApp _beginBackgroundTaskWithName:@"com.apple.UIKit.CABackingStoreCollect" expirationHandler:0];
     CABackingStoreCollectWithCompletionHandler();
@@ -234,13 +234,13 @@
   else
   {
     v6 = objc_loadWeakRetained(&self->_uiSceneOfRecord);
-    v7 = [v6 _isActive];
+    _isActive = [v6 _isActive];
 
-    return v7;
+    return _isActive;
   }
 }
 
-- (id)initForAppSingleton:(id)a3
+- (id)initForAppSingleton:(id)singleton
 {
   v7.receiver = self;
   v7.super_class = _UISceneLifecycleMultiplexer;
@@ -280,26 +280,26 @@
   else
   {
     v6 = objc_loadWeakRetained(&self->_uiSceneOfRecord);
-    v7 = [v6 _isRunningInTaskSwitcher];
+    _isRunningInTaskSwitcher = [v6 _isRunningInTaskSwitcher];
 
-    LOBYTE(v4) = v7;
+    LOBYTE(v4) = _isRunningInTaskSwitcher;
   }
 
   return v4;
 }
 
-+ (id)mostActiveSceneIncludingInternal:(BOOL)a3 withTest:(id)a4
++ (id)mostActiveSceneIncludingInternal:(BOOL)internal withTest:(id)test
 {
-  v4 = a3;
-  v6 = a4;
+  internalCopy = internal;
+  testCopy = test;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __74___UISceneLifecycleMultiplexer_mostActiveSceneIncludingInternal_withTest___block_invoke;
   aBlock[3] = &unk_1E70F99B8;
-  v7 = v6;
+  v7 = testCopy;
   v30 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [UIScene _scenesIncludingInternal:v4];
+  v9 = [UIScene _scenesIncludingInternal:internalCopy];
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -318,7 +318,7 @@
   v15 = v10;
   v16 = &v23;
   v17 = &v19;
-  v18 = a1;
+  selfCopy = self;
   [v9 enumerateObjectsUsingBlock:v14];
   if (v20[3] == -1)
   {
@@ -338,16 +338,16 @@
   return v12;
 }
 
-+ (int64_t)_compareLifecycleStateOfScene:(id)a3 toScene:(id)a4
++ (int64_t)_compareLifecycleStateOfScene:(id)scene toScene:(id)toScene
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  sceneCopy = scene;
+  toSceneCopy = toScene;
+  if (!toSceneCopy)
   {
     goto LABEL_8;
   }
 
-  if (!v5 || (v7 = [v5 activationState], v8 = objc_msgSend(v6, "activationState"), v7 > v8))
+  if (!sceneCopy || (v7 = [sceneCopy activationState], v8 = objc_msgSend(toSceneCopy, "activationState"), v7 > v8))
   {
     v9 = -1;
     goto LABEL_9;
@@ -360,23 +360,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v10 = [v5 _effectiveSettings];
-  if ([v10 underLock])
+  _effectiveSettings = [sceneCopy _effectiveSettings];
+  if ([_effectiveSettings underLock])
   {
     v11 = 1;
   }
 
-  else if (_UISceneLifecycleStateIsSEO(v10))
+  else if (_UISceneLifecycleStateIsSEO(_effectiveSettings))
   {
     v11 = 2;
   }
 
-  else if (([v10 deactivationReasons] & 8) != 0)
+  else if (([_effectiveSettings deactivationReasons] & 8) != 0)
   {
     v11 = 3;
   }
 
-  else if ([UIScene _activationStateFromSceneSettings:v10])
+  else if ([UIScene _activationStateFromSceneSettings:_effectiveSettings])
   {
     v11 = 0;
   }
@@ -386,23 +386,23 @@ LABEL_8:
     v11 = -1;
   }
 
-  v13 = [v6 _effectiveSettings];
-  if ([v13 underLock])
+  _effectiveSettings2 = [toSceneCopy _effectiveSettings];
+  if ([_effectiveSettings2 underLock])
   {
     v14 = 1;
   }
 
-  else if (_UISceneLifecycleStateIsSEO(v13))
+  else if (_UISceneLifecycleStateIsSEO(_effectiveSettings2))
   {
     v14 = 2;
   }
 
-  else if (([v13 deactivationReasons] & 8) != 0)
+  else if (([_effectiveSettings2 deactivationReasons] & 8) != 0)
   {
     v14 = 3;
   }
 
-  else if ([UIScene _activationStateFromSceneSettings:v13])
+  else if ([UIScene _activationStateFromSceneSettings:_effectiveSettings2])
   {
     v14 = 0;
   }
@@ -427,47 +427,47 @@ LABEL_9:
   return v9;
 }
 
-+ (id)mostActiveWindowSceneOnScreen:(id)a3
++ (id)mostActiveWindowSceneOnScreen:(id)screen
 {
-  v4 = a3;
+  screenCopy = screen;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __62___UISceneLifecycleMultiplexer_mostActiveWindowSceneOnScreen___block_invoke;
   v8[3] = &unk_1E70F44A8;
-  v9 = v4;
-  v5 = v4;
-  v6 = [a1 mostActiveSceneWithTest:v8];
+  v9 = screenCopy;
+  v5 = screenCopy;
+  v6 = [self mostActiveSceneWithTest:v8];
 
   return v6;
 }
 
-- (BOOL)isTrackingScene:(id)a3
+- (BOOL)isTrackingScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   WeakRetained = objc_loadWeakRetained(&self->_uiSceneOfRecord);
 
-  return WeakRetained == v4;
+  return WeakRetained == sceneCopy;
 }
 
-+ (void)configureInitialDeactivationReasons:(unint64_t)a3
++ (void)configureInitialDeactivationReasons:(unint64_t)reasons
 {
-  v4 = [a1 sharedInstance];
-  v5 = [v4 activatedOnce];
+  sharedInstance = [self sharedInstance];
+  activatedOnce = [sharedInstance activatedOnce];
 
-  if (a3 && (v5 & 1) == 0)
+  if (reasons && (activatedOnce & 1) == 0)
   {
     v6 = 0;
     do
     {
       v7 = (1 << v6);
-      if ((a3 & v7) != 0)
+      if ((reasons & v7) != 0)
       {
         if (v6 <= 0x13 && ((0xC3FFFu >> v6) & 1) != 0)
         {
           [UIApp _deactivateForReason:dword_18A6789E0[v6]];
         }
 
-        a3 &= ~v7;
+        reasons &= ~v7;
       }
 
       if (v6 > 0x12)
@@ -478,46 +478,46 @@ LABEL_9:
       ++v6;
     }
 
-    while (a3);
+    while (reasons);
   }
 }
 
-- (void)completeApplicationLaunchWithFBSScene:(id)a3 transitionContext:(id)a4
+- (void)completeApplicationLaunchWithFBSScene:(id)scene transitionContext:(id)context
 {
   if ((*&self->_multiplexerFlags & 1) == 0)
   {
-    v5 = a4;
-    v6 = a3;
+    contextCopy = context;
+    sceneCopy = scene;
     entr_act_end();
     _requestHardwareEventsIfNeeded();
     [UIApp _deactivateForReason:11];
-    [UIApp _runWithMainScene:v6 transitionContext:v5 completion:0];
+    [UIApp _runWithMainScene:sceneCopy transitionContext:contextCopy completion:0];
   }
 }
 
-- (void)uiScene:(id)a3 transitionedFromState:(id)a4 withTransitionContext:(id)a5
+- (void)uiScene:(id)scene transitionedFromState:(id)state withTransitionContext:(id)context
 {
-  v19 = a3;
-  v18 = a4;
-  v8 = a5;
-  v9 = [objc_opt_class() _mostActiveSceneForApplicationState];
+  sceneCopy = scene;
+  stateCopy = state;
+  contextCopy = context;
+  _mostActiveSceneForApplicationState = [objc_opt_class() _mostActiveSceneForApplicationState];
   WeakRetained = objc_loadWeakRetained(&self->_uiSceneOfRecord);
-  objc_storeWeak(&self->_uiSceneOfRecord, v9);
-  v11 = [v19 _FBSScene];
-  v12 = v8;
-  v13 = [v9 _effectiveUISettings];
-  v14 = [WeakRetained isEqual:v19];
-  v15 = v18;
+  objc_storeWeak(&self->_uiSceneOfRecord, _mostActiveSceneForApplicationState);
+  _FBSScene = [sceneCopy _FBSScene];
+  v12 = contextCopy;
+  _effectiveUISettings = [_mostActiveSceneForApplicationState _effectiveUISettings];
+  v14 = [WeakRetained isEqual:sceneCopy];
+  _effectiveUISettings2 = stateCopy;
   if ((v14 & 1) == 0)
   {
-    v15 = [WeakRetained _effectiveUISettings];
+    _effectiveUISettings2 = [WeakRetained _effectiveUISettings];
   }
 
-  v16 = v11;
+  v16 = _FBSScene;
   v17 = v12;
   if (self)
   {
-    [(_UISceneLifecycleMultiplexer *)self _evalTransitionToSettings:v13 fromSettings:v15 forceExit:0 withTransitionStore:v16, v17];
+    [(_UISceneLifecycleMultiplexer *)self _evalTransitionToSettings:_effectiveUISettings fromSettings:_effectiveUISettings2 forceExit:0 withTransitionStore:v16, v17];
     if (v14)
     {
       goto LABEL_6;
@@ -534,22 +534,22 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)forceExitWithTransitionContext:(id)a3 scene:(id)a4
+- (void)forceExitWithTransitionContext:(id)context scene:(id)scene
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 uiSettings];
-  v9 = [v8 mutableCopy];
+  contextCopy = context;
+  sceneCopy = scene;
+  uiSettings = [sceneCopy uiSettings];
+  v9 = [uiSettings mutableCopy];
   [v9 setForeground:0];
-  v10 = v7;
-  v11 = v6;
+  v10 = sceneCopy;
+  v11 = contextCopy;
   v12 = [v9 copy];
   v13 = v10;
   v14 = v11;
   v15 = v14;
   if (self)
   {
-    [(_UISceneLifecycleMultiplexer *)self _evalTransitionToSettings:v12 fromSettings:v8 forceExit:1 withTransitionStore:v13, v14];
+    [(_UISceneLifecycleMultiplexer *)self _evalTransitionToSettings:v12 fromSettings:uiSettings forceExit:1 withTransitionStore:v13, v14];
   }
 
   else
@@ -557,27 +557,27 @@ LABEL_6:
   }
 }
 
-- (void)_performBlock:(id)a3 withApplicationOfDeactivationReasons:(unint64_t)a4 fromReasons:(unint64_t)a5
+- (void)_performBlock:(id)block withApplicationOfDeactivationReasons:(unint64_t)reasons fromReasons:(unint64_t)fromReasons
 {
-  v15 = a3;
-  v7 = [UIApp _isSpringBoardShowingAnAlert];
-  v8 = v7;
-  if (v7)
+  blockCopy = block;
+  _isSpringBoardShowingAnAlert = [UIApp _isSpringBoardShowingAnAlert];
+  v8 = _isSpringBoardShowingAnAlert;
+  if (_isSpringBoardShowingAnAlert)
   {
     [UIApp _deactivateForReason:13];
   }
 
-  if (!v15 || a5 == a4)
+  if (!blockCopy || fromReasons == reasons)
   {
-    if (v15)
+    if (blockCopy)
     {
-      v15[2]();
+      blockCopy[2]();
     }
   }
 
   else
   {
-    v9 = a4 & ~a5;
+    v9 = reasons & ~fromReasons;
     if (v9)
     {
       v10 = 0;
@@ -605,8 +605,8 @@ LABEL_6:
       while (v9);
     }
 
-    v15[2]();
-    v12 = a5 & ~a4;
+    blockCopy[2]();
+    v12 = fromReasons & ~reasons;
     if (v12)
     {
       v13 = 0;
@@ -641,16 +641,16 @@ LABEL_6:
   }
 }
 
-- (void)_evalTransitionToSettings:(id)a3 fromSettings:(id)a4 forceExit:(BOOL)a5 withTransitionStore:(id)a6
+- (void)_evalTransitionToSettings:(id)settings fromSettings:(id)fromSettings forceExit:(BOOL)exit withTransitionStore:(id)store
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
-  v8 = a5;
-  v11 = a3;
-  v12 = a4;
-  if (_UISceneLifecycleStateIsEqual(v11, v12))
+  var1 = store.var1;
+  var0 = store.var0;
+  exitCopy = exit;
+  settingsCopy = settings;
+  fromSettingsCopy = fromSettings;
+  if (_UISceneLifecycleStateIsEqual(settingsCopy, fromSettingsCopy))
   {
-    if (v8)
+    if (exitCopy)
     {
       [UIApp _handleTaskCompletionAndTerminate:var1];
     }
@@ -658,12 +658,12 @@ LABEL_6:
 
   else
   {
-    objc_storeStrong(&self->_transitionalLifecycleState, a4);
+    objc_storeStrong(&self->_transitionalLifecycleState, fromSettings);
     v32 = var0;
     v33 = var1;
-    v13 = [UIScene _activationStateFromSceneSettings:v12];
-    v31 = v8;
-    v14 = _UISceneLifecycleCompositeActionMaskFromStateToState__staticStateMap[4 * v13 + 5 + [UIScene _activationStateFromSceneSettings:v11]];
+    v13 = [UIScene _activationStateFromSceneSettings:fromSettingsCopy];
+    v31 = exitCopy;
+    v14 = _UISceneLifecycleCompositeActionMaskFromStateToState__staticStateMap[4 * v13 + 5 + [UIScene _activationStateFromSceneSettings:settingsCopy]];
     _UISceneLifecycleCompositeActionMaskHighestLifecycleActionType(v14);
     multiplexerFlags = self->_multiplexerFlags;
     v16 = multiplexerFlags & 2;
@@ -671,12 +671,12 @@ LABEL_6:
     v17 = var0;
     v30 = [UIScene _sceneForFBSScene:v17];
     v18 = [(UIScene *)UIWindowScene _sceneForFBSScene:v17];
-    v19 = [v17 uiSettings];
-    v29 = [v17 uiClientSettings];
+    uiSettings = [v17 uiSettings];
+    uiClientSettings = [v17 uiClientSettings];
     v20 = (v16 == 0) & (v14 >> 5) | ((v14 & 4) >> 2);
     if (v20)
     {
-      -[_UISceneLifecycleMultiplexer _globalTestRelatedActivationActionsForFirstActivation:foreground:interfaceStyle:transitionContext:](self, "_globalTestRelatedActivationActionsForFirstActivation:foreground:interfaceStyle:transitionContext:", v16 == 0, [v11 isForeground], objc_msgSend(v19, "userInterfaceStyle"), var1);
+      -[_UISceneLifecycleMultiplexer _globalTestRelatedActivationActionsForFirstActivation:foreground:interfaceStyle:transitionContext:](self, "_globalTestRelatedActivationActionsForFirstActivation:foreground:interfaceStyle:transitionContext:", v16 == 0, [settingsCopy isForeground], objc_msgSend(uiSettings, "userInterfaceStyle"), var1);
     }
 
     v34[0] = MEMORY[0x1E69E9820];
@@ -688,16 +688,16 @@ LABEL_6:
     v23 = v21 ^ 1;
     v43 = v14;
     v34[4] = self;
-    v35 = v11;
+    v35 = settingsCopy;
     v36 = v17;
     v24 = v36;
     v41 = v24;
     v42 = v22;
-    v25 = v19;
+    v25 = uiSettings;
     v37 = v25;
     v26 = v30;
     v38 = v26;
-    v39 = v12;
+    v39 = fromSettingsCopy;
     v44 = v23;
     v45 = v31;
     v27 = v18;
@@ -713,10 +713,10 @@ LABEL_6:
   self->_transitionalLifecycleState = 0;
 }
 
-- (BOOL)_prepareForClientSuspensionWithScene:(id)a3
+- (BOOL)_prepareForClientSuspensionWithScene:(id)scene
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
+  sceneCopy = scene;
   v5 = objc_alloc_init(v3);
   [UIApp defaultImageSnapshotExpiration];
   v7 = v6;
@@ -725,8 +725,8 @@ LABEL_6:
     LOBYTE(v8) = [UIApp applicationSuspendWithSettings:v5];
     if ((*(UIApp + 176) & 0x8000000000000000) == 0)
     {
-      v9 = [MEMORY[0x1E695E000] standardUserDefaults];
-      [v9 synchronize];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      [standardUserDefaults synchronize];
     }
 
     v10 = [v5 valueForKey:@"UISuspendedDefaultPNGKey"];
@@ -746,7 +746,7 @@ LABEL_6:
     v8 = (*(UIApp + 180) >> 3) & 1;
   }
 
-  v13 = [UIScene _sceneForFBSScene:v4];
+  v13 = [UIScene _sceneForFBSScene:sceneCopy];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -762,15 +762,15 @@ LABEL_6:
   return v8;
 }
 
-- (void)_globalTestRelatedActivationActionsForFirstActivation:(BOOL)a3 foreground:(BOOL)a4 interfaceStyle:(int64_t)a5 transitionContext:(id)a6
+- (void)_globalTestRelatedActivationActionsForFirstActivation:(BOOL)activation foreground:(BOOL)foreground interfaceStyle:(int64_t)style transitionContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  foregroundCopy = foreground;
+  activationCopy = activation;
   *(UIApp + 176) |= 0x400000000uLL;
-  [UIApp _configureLaunchOptions:{a6, a4, a5}];
+  [UIApp _configureLaunchOptions:{context, foreground, style}];
   v8 = UIApp;
 
-  [v8 _initiateLaunchActionsBackgrounded:!v6 firstActivation:v7];
+  [v8 _initiateLaunchActionsBackgrounded:!foregroundCopy firstActivation:activationCopy];
 }
 
 @end

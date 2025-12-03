@@ -1,21 +1,21 @@
 @interface ASSettingsNeedsAuthenticationFooterView
-- (ASSettingsNeedsAuthenticationFooterView)initWithSpecifier:(id)a3;
-- (double)_heightForMessageConstrainedToWidth:(double)a3;
+- (ASSettingsNeedsAuthenticationFooterView)initWithSpecifier:(id)specifier;
+- (double)_heightForMessageConstrainedToWidth:(double)width;
 - (void)dealloc;
 - (void)layoutSubviews;
 @end
 
 @implementation ASSettingsNeedsAuthenticationFooterView
 
-- (ASSettingsNeedsAuthenticationFooterView)initWithSpecifier:(id)a3
+- (ASSettingsNeedsAuthenticationFooterView)initWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v20.receiver = self;
   v20.super_class = ASSettingsNeedsAuthenticationFooterView;
   v5 = [(ASSettingsNeedsAuthenticationFooterView *)&v20 init];
   if (v5)
   {
-    v6 = [v4 propertyForKey:@"EASNameForAccountToAuthenticate"];
+    v6 = [specifierCopy propertyForKey:@"EASNameForAccountToAuthenticate"];
     v7 = [NSBundle bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"ACCOUNT_NOT_AUTHENTICATED" value:&stru_30C98 table:@"ASAccountSetup"];
 
@@ -38,8 +38,8 @@
     [(UILabel *)v15 setTextColor:v16];
 
     v17 = v5->_verificationMessageLabel;
-    v18 = [(ASSettingsNeedsAuthenticationFooterView *)v5 _font];
-    [(UILabel *)v17 setFont:v18];
+    _font = [(ASSettingsNeedsAuthenticationFooterView *)v5 _font];
+    [(UILabel *)v17 setFont:_font];
 
     [(ASSettingsNeedsAuthenticationFooterView *)v5 addSubview:v5->_verificationMessageLabel];
   }
@@ -66,14 +66,14 @@
   [(UILabel *)self->_verificationMessageLabel setFrame:14.0, 0.0, v4, v6];
 }
 
-- (double)_heightForMessageConstrainedToWidth:(double)a3
+- (double)_heightForMessageConstrainedToWidth:(double)width
 {
   verificationMessage = self->_verificationMessage;
   v10 = NSFontAttributeName;
-  v5 = [(ASSettingsNeedsAuthenticationFooterView *)self _font];
-  v11 = v5;
+  _font = [(ASSettingsNeedsAuthenticationFooterView *)self _font];
+  v11 = _font;
   v6 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-  [(NSString *)verificationMessage boundingRectWithSize:1 options:v6 attributes:0 context:a3, 1.79769313e308];
+  [(NSString *)verificationMessage boundingRectWithSize:1 options:v6 attributes:0 context:width, 1.79769313e308];
   v8 = v7;
 
   return v8;

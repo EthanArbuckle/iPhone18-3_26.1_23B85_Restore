@@ -1,10 +1,10 @@
 @interface VCVideoRuleCollectionsBodyData
-+ (void)addRulesForU1ToCollection:(id)a3;
++ (void)addRulesForU1ToCollection:(id)collection;
 @end
 
 @implementation VCVideoRuleCollectionsBodyData
 
-+ (void)addRulesForU1ToCollection:(id)a3
++ (void)addRulesForU1ToCollection:(id)collection
 {
   v19 = *MEMORY[0x1E69E9840];
   v15 = 0u;
@@ -25,20 +25,20 @@
           objc_enumerationMutation(&unk_1F579D200);
         }
 
-        v8 = [*(*(&v15 + 1) + 8 * i) intValue];
+        intValue = [*(*(&v15 + 1) + 8 * i) intValue];
         v9 = [VCVideoRule alloc];
         LODWORD(v10) = 30.0;
-        v11 = [(VCVideoRule *)v9 initWithFrameWidth:480 frameHeight:480 frameRate:v8 payload:v10];
+        v11 = [(VCVideoRule *)v9 initWithFrameWidth:480 frameHeight:480 frameRate:intValue payload:v10];
         if (!v11)
         {
-          [VCVideoRuleCollectionsBodyData addRulesForU1ToCollection:a3];
+          [VCVideoRuleCollectionsBodyData addRulesForU1ToCollection:collection];
           return;
         }
 
         v12 = v11;
         v13 = [MEMORY[0x1E695DF70] arrayWithObject:v11];
-        [a3 addVideoRules:v13 transportType:1 payload:v8 encodingType:1];
-        [a3 addVideoRules:v13 transportType:1 payload:v8 encodingType:2];
+        [collection addVideoRules:v13 transportType:1 payload:intValue encodingType:1];
+        [collection addVideoRules:v13 transportType:1 payload:intValue encodingType:2];
       }
 
       v5 = [&unk_1F579D200 countByEnumeratingWithState:&v15 objects:v14 count:16];

@@ -1,28 +1,28 @@
 @interface WiFiP2PXPCConnection
-+ (BOOL)directRequestOnEndpointType:(unint64_t)a3 error:(id *)a4 requesting:(id)a5;
++ (BOOL)directRequestOnEndpointType:(unint64_t)type error:(id *)error requesting:(id)requesting;
 + (BOOL)supportsWiFiP2P;
-+ (id)convertError:(int64_t)a3;
-+ (id)directQueryOnEndpointType:(unint64_t)a3 exportedObject:(id)a4 withExportedInterface:(id)a5 error:(id *)a6 querying:(id)a7;
-+ (id)endpointForEndpointType:(unint64_t)a3;
++ (id)convertError:(int64_t)error;
++ (id)directQueryOnEndpointType:(unint64_t)type exportedObject:(id)object withExportedInterface:(id)interface error:(id *)error querying:(id)querying;
++ (id)endpointForEndpointType:(unint64_t)type;
 + (id)frameworkBundle;
 + (id)localization;
-+ (id)weakExportedObjectProxy:(id)a3;
++ (id)weakExportedObjectProxy:(id)proxy;
 + (id)wifiPeerToPeerWorkloop;
-+ (id)wifip2pExportedXPCInterfaceFor:(id)a3;
++ (id)wifip2pExportedXPCInterfaceFor:(id)for;
 + (id)wifip2pRemoteXPCInterface;
-- (WiFiP2PXPCConnection)initWithEndpointType:(unint64_t)a3 queue:(id)a4 retryTimeout:(int64_t)a5;
+- (WiFiP2PXPCConnection)initWithEndpointType:(unint64_t)type queue:(id)queue retryTimeout:(int64_t)timeout;
 - (WiFiP2PXPCConnectionDelegate)delegate;
 - (void)attemptConnection;
-- (void)cleanUpRemovingNotifyToken:(BOOL)a3;
+- (void)cleanUpRemovingNotifyToken:(BOOL)token;
 - (void)dealloc;
 - (void)handleConnectionInvalidated;
-- (void)handleError:(int64_t)a3;
+- (void)handleError:(int64_t)error;
 - (void)invalidate;
 - (void)reconnectOnAvailableNotification;
 - (void)start;
-- (void)withRemoteObjectProxy:(id)a3;
-- (void)withRemoteObjectProxy:(id)a3 clientCompletionHandler:(id)a4;
-- (void)withRemoteObjectProxy:(id)a3 clientErrorHandler:(id)a4;
+- (void)withRemoteObjectProxy:(id)proxy;
+- (void)withRemoteObjectProxy:(id)proxy clientCompletionHandler:(id)handler;
+- (void)withRemoteObjectProxy:(id)proxy clientErrorHandler:(id)handler;
 @end
 
 @implementation WiFiP2PXPCConnection
@@ -158,7 +158,7 @@ LABEL_31:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)endpointForEndpointType:(unint64_t)a3
++ (id)endpointForEndpointType:(unint64_t)type
 {
   v22 = *MEMORY[0x277D85DE8];
   if (+[WiFiP2PXPCConnection supportsWiFiP2P])
@@ -197,7 +197,7 @@ LABEL_31:
     v13[2] = __48__WiFiP2PXPCConnection_endpointForEndpointType___block_invoke_2;
     v13[3] = &unk_2787AB108;
     v13[4] = &v15;
-    [v6 endpointForType:a3 processName:v9 completionHandler:v13];
+    [v6 endpointForType:type processName:v9 completionHandler:v13];
     if (v8 >= 1)
     {
     }
@@ -225,22 +225,22 @@ void __48__WiFiP2PXPCConnection_endpointForEndpointType___block_invoke(uint64_t 
   *(v1 + 40) = 0;
 }
 
-+ (id)directQueryOnEndpointType:(unint64_t)a3 exportedObject:(id)a4 withExportedInterface:(id)a5 error:(id *)a6 querying:(id)a7
++ (id)directQueryOnEndpointType:(unint64_t)type exportedObject:(id)object withExportedInterface:(id)interface error:(id *)error querying:(id)querying
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a7;
-  v14 = [WiFiP2PXPCConnection endpointForEndpointType:a3];
+  objectCopy = object;
+  interfaceCopy = interface;
+  queryingCopy = querying;
+  v14 = [WiFiP2PXPCConnection endpointForEndpointType:type];
   if (v14)
   {
     v15 = [objc_alloc(MEMORY[0x277CCAE80]) initWithListenerEndpoint:v14];
-    if (v12)
+    if (interfaceCopy)
     {
-      v16 = [MEMORY[0x277CCAE90] interfaceWithProtocol:v12];
+      v16 = [MEMORY[0x277CCAE90] interfaceWithProtocol:interfaceCopy];
       [v15 setExportedInterface:v16];
     }
 
-    [v15 setExportedObject:v11];
+    [v15 setExportedObject:objectCopy];
     v17 = +[WiFiP2PXPCConnection wifip2pRemoteXPCInterface];
     [v15 setRemoteObjectInterface:v17];
 
@@ -272,10 +272,10 @@ void __48__WiFiP2PXPCConnection_endpointForEndpointType___block_invoke(uint64_t 
       v22[2] = __102__WiFiP2PXPCConnection_directQueryOnEndpointType_exportedObject_withExportedInterface_error_querying___block_invoke_2;
       v22[3] = &unk_2787AB158;
       v22[4] = &v30;
-      v13[2](v13, v18, v22);
-      if (a6)
+      queryingCopy[2](queryingCopy, v18, v22);
+      if (error)
       {
-        *a6 = v25[5];
+        *error = v25[5];
       }
 
       [v15 invalidate];
@@ -284,9 +284,9 @@ void __48__WiFiP2PXPCConnection_endpointForEndpointType___block_invoke(uint64_t 
     else
     {
       [v15 invalidate];
-      if (a6 && !*a6)
+      if (error && !*error)
       {
-        *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:102 userInfo:0];
+        *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:102 userInfo:0];
       }
     }
 
@@ -296,10 +296,10 @@ void __48__WiFiP2PXPCConnection_endpointForEndpointType___block_invoke(uint64_t 
     _Block_object_dispose(&v30, 8);
   }
 
-  else if (a6)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:57 userInfo:0];
-    *a6 = v20 = 0;
+    *error = v20 = 0;
   }
 
   else
@@ -319,21 +319,21 @@ void __102__WiFiP2PXPCConnection_directQueryOnEndpointType_exportedObject_withEx
   *(v4 + 40) = 0;
 }
 
-+ (BOOL)directRequestOnEndpointType:(unint64_t)a3 error:(id *)a4 requesting:(id)a5
++ (BOOL)directRequestOnEndpointType:(unint64_t)type error:(id *)error requesting:(id)requesting
 {
-  v7 = a5;
+  requestingCopy = requesting;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __69__WiFiP2PXPCConnection_directRequestOnEndpointType_error_requesting___block_invoke;
   v13[3] = &unk_2787AB180;
-  v8 = v7;
+  v8 = requestingCopy;
   v14 = v8;
-  v9 = [WiFiP2PXPCConnection directQueryOnEndpointType:a3 error:a4 querying:v13];
+  v9 = [WiFiP2PXPCConnection directQueryOnEndpointType:type error:error querying:v13];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 integerValue];
-    if (!a4)
+    integerValue = [v9 integerValue];
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -341,21 +341,21 @@ void __102__WiFiP2PXPCConnection_directQueryOnEndpointType_exportedObject_withEx
 
   else
   {
-    v11 = 7;
-    if (!a4)
+    integerValue = 7;
+    if (!error)
     {
       goto LABEL_7;
     }
   }
 
-  if (!*a4)
+  if (!*error)
   {
-    *a4 = [WiFiP2PXPCConnection convertError:v11];
+    *error = [WiFiP2PXPCConnection convertError:integerValue];
   }
 
 LABEL_7:
 
-  return v11 == 0;
+  return integerValue == 0;
 }
 
 void __69__WiFiP2PXPCConnection_directRequestOnEndpointType_error_requesting___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -379,18 +379,18 @@ void __69__WiFiP2PXPCConnection_directRequestOnEndpointType_error_requesting___b
   (*(v2 + 16))(v2, v3);
 }
 
-- (WiFiP2PXPCConnection)initWithEndpointType:(unint64_t)a3 queue:(id)a4 retryTimeout:(int64_t)a5
+- (WiFiP2PXPCConnection)initWithEndpointType:(unint64_t)type queue:(id)queue retryTimeout:(int64_t)timeout
 {
-  v9 = a4;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = WiFiP2PXPCConnection;
   v10 = [(WiFiP2PXPCConnection *)&v18 init];
   v11 = v10;
   if (v10)
   {
-    v10->_endpointType = a3;
-    v10->_retryTimeout = a5;
-    objc_storeStrong(&v10->_queue, a4);
+    v10->_endpointType = type;
+    v10->_retryTimeout = timeout;
+    objc_storeStrong(&v10->_queue, queue);
     connection = v11->_connection;
     v11->_connection = 0;
 
@@ -401,9 +401,9 @@ void __69__WiFiP2PXPCConnection_directRequestOnEndpointType_error_requesting___b
     v11->_retryTimer = 0;
 
     v11->_notifyToken = -1;
-    v15 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     queuedRequests = v11->_queuedRequests;
-    v11->_queuedRequests = v15;
+    v11->_queuedRequests = array;
   }
 
   return v11;
@@ -422,8 +422,8 @@ void __69__WiFiP2PXPCConnection_directRequestOnEndpointType_error_requesting___b
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_connection)
   {
-    v3 = [(WiFiP2PXPCConnection *)self delegate];
-    if (v3)
+    delegate = [(WiFiP2PXPCConnection *)self delegate];
+    if (delegate)
     {
       if (self->_retryTimeout < 0 || (objc_opt_respondsToSelector() & 1) == 0)
       {
@@ -448,15 +448,15 @@ void __69__WiFiP2PXPCConnection_directRequestOnEndpointType_error_requesting___b
         if (objc_opt_respondsToSelector())
         {
           v10 = self->_connection;
-          v11 = [v3 exportedInterface];
-          [(NSXPCConnection *)v10 setExportedInterface:v11];
+          exportedInterface = [delegate exportedInterface];
+          [(NSXPCConnection *)v10 setExportedInterface:exportedInterface];
         }
 
         if (objc_opt_respondsToSelector())
         {
           v12 = self->_connection;
-          v13 = [v3 exportedObject];
-          v14 = [WiFiP2PXPCConnection weakExportedObjectProxy:v13];
+          exportedObject = [delegate exportedObject];
+          v14 = [WiFiP2PXPCConnection weakExportedObjectProxy:exportedObject];
           [(NSXPCConnection *)v12 setExportedObject:v14];
         }
 
@@ -487,7 +487,7 @@ void __69__WiFiP2PXPCConnection_directRequestOnEndpointType_error_requesting___b
         v19[2] = __41__WiFiP2PXPCConnection_attemptConnection__block_invoke_4;
         v19[3] = &unk_2787AB1F8;
         objc_copyWeak(&v20, &location);
-        [v3 startConnectionUsingProxy:v18 completionHandler:v19];
+        [delegate startConnectionUsingProxy:v18 completionHandler:v19];
 
         [(NSXPCConnection *)self->_connection activate];
         objc_destroyWeak(&v20);
@@ -536,17 +536,17 @@ void __41__WiFiP2PXPCConnection_attemptConnection__block_invoke_4(uint64_t a1, u
   [WeakRetained handleError:a2];
 }
 
-- (void)withRemoteObjectProxy:(id)a3
+- (void)withRemoteObjectProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__WiFiP2PXPCConnection_withRemoteObjectProxy___block_invoke;
   v7[3] = &unk_2787AB248;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = proxyCopy;
+  v6 = proxyCopy;
   dispatch_async(queue, v7);
 }
 
@@ -585,20 +585,20 @@ void __46__WiFiP2PXPCConnection_withRemoteObjectProxy___block_invoke_2(uint64_t 
   }
 }
 
-- (void)withRemoteObjectProxy:(id)a3 clientCompletionHandler:(id)a4
+- (void)withRemoteObjectProxy:(id)proxy clientCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  proxyCopy = proxy;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__WiFiP2PXPCConnection_withRemoteObjectProxy_clientCompletionHandler___block_invoke;
   block[3] = &unk_2787AB2C0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = proxyCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = proxyCopy;
   dispatch_async(queue, block);
 }
 
@@ -717,20 +717,20 @@ uint64_t __70__WiFiP2PXPCConnection_withRemoteObjectProxy_clientCompletionHandle
   return result;
 }
 
-- (void)withRemoteObjectProxy:(id)a3 clientErrorHandler:(id)a4
+- (void)withRemoteObjectProxy:(id)proxy clientErrorHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  proxyCopy = proxy;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__WiFiP2PXPCConnection_withRemoteObjectProxy_clientErrorHandler___block_invoke;
   block[3] = &unk_2787AB2C0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = proxyCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = proxyCopy;
   dispatch_async(queue, block);
 }
 
@@ -872,14 +872,14 @@ uint64_t __65__WiFiP2PXPCConnection_withRemoteObjectProxy_clientErrorHandler___b
   dispatch_async(queue, block);
 }
 
-- (void)cleanUpRemovingNotifyToken:(BOOL)a3
+- (void)cleanUpRemovingNotifyToken:(BOOL)token
 {
-  v3 = a3;
+  tokenCopy = token;
   v24 = *MEMORY[0x277D85DE8];
   v5 = self->_queuedRequests;
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   queuedRequests = self->_queuedRequests;
-  self->_queuedRequests = v6;
+  self->_queuedRequests = array;
 
   v21 = 0u;
   v22 = 0u;
@@ -921,7 +921,7 @@ uint64_t __65__WiFiP2PXPCConnection_withRemoteObjectProxy_clientErrorHandler___b
   self->_remoteObject = 0;
 
   notifyToken = self->_notifyToken;
-  if ((notifyToken & 0x80000000) == 0 && v3)
+  if ((notifyToken & 0x80000000) == 0 && tokenCopy)
   {
     notify_cancel(notifyToken);
     self->_notifyToken = -1;
@@ -938,17 +938,17 @@ uint64_t __65__WiFiP2PXPCConnection_withRemoteObjectProxy_clientErrorHandler___b
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleError:(int64_t)a3
+- (void)handleError:(int64_t)error
 {
   v35 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(WiFiP2PXPCConnection *)self delegate];
+  delegate = [(WiFiP2PXPCConnection *)self delegate];
   v6 = self->_queuedRequests;
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   queuedRequests = self->_queuedRequests;
-  self->_queuedRequests = v7;
+  self->_queuedRequests = array;
 
-  if (a3)
+  if (error)
   {
     v27 = 0u;
     v28 = 0u;
@@ -984,7 +984,7 @@ uint64_t __65__WiFiP2PXPCConnection_withRemoteObjectProxy_clientErrorHandler___b
     v14 = objc_opt_respondsToSelector();
     if (v14)
     {
-      [v5 handleError:{a3, v25}];
+      [delegate handleError:{error, v25}];
     }
 
     [(WiFiP2PXPCConnection *)self cleanUpRemovingNotifyToken:v14 & 1, v25];
@@ -995,17 +995,17 @@ uint64_t __65__WiFiP2PXPCConnection_withRemoteObjectProxy_clientErrorHandler___b
     if (objc_opt_respondsToSelector())
     {
       connection = self->_connection;
-      v16 = [v5 remoteObjectInterface];
-      [(NSXPCConnection *)connection setRemoteObjectInterface:v16];
+      remoteObjectInterface = [delegate remoteObjectInterface];
+      [(NSXPCConnection *)connection setRemoteObjectInterface:remoteObjectInterface];
     }
 
-    v17 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
     remoteObject = self->_remoteObject;
-    self->_remoteObject = v17;
+    self->_remoteObject = remoteObjectProxy;
 
     if (objc_opt_respondsToSelector())
     {
-      [v5 handleConnectionEstablishedWithProxy:self->_remoteObject];
+      [delegate handleConnectionEstablishedWithProxy:self->_remoteObject];
     }
 
     v31 = 0u;
@@ -1150,34 +1150,34 @@ uint64_t __46__WiFiP2PXPCConnection_wifiPeerToPeerWorkloop__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)convertError:(int64_t)a3
++ (id)convertError:(int64_t)error
 {
   v5 = 16;
-  if (a3 > 3)
+  if (error > 3)
   {
     v8 = 35;
     v9 = 45;
-    if (a3 != 10)
+    if (error != 10)
     {
       v9 = 16;
     }
 
-    if (a3 != 7)
+    if (error != 7)
     {
       v8 = v9;
     }
 
-    if (a3 == 6)
+    if (error == 6)
     {
       v5 = 1;
     }
 
-    if (a3 == 4)
+    if (error == 4)
     {
       v5 = 12;
     }
 
-    if (a3 <= 6)
+    if (error <= 6)
     {
       v10 = v5;
     }
@@ -1190,21 +1190,21 @@ uint64_t __46__WiFiP2PXPCConnection_wifiPeerToPeerWorkloop__block_invoke()
     goto LABEL_22;
   }
 
-  if (a3 > 1)
+  if (error > 1)
   {
     v7 = 22;
-    if (a3 == 3)
+    if (error == 3)
     {
       v5 = 2;
     }
 
-    v6 = a3 == 2;
+    v6 = error == 2;
     goto LABEL_19;
   }
 
-  if (a3)
+  if (error)
   {
-    v6 = a3 == 1;
+    v6 = error == 1;
     v7 = 57;
 LABEL_19:
     if (v6)
@@ -1259,40 +1259,40 @@ void __39__WiFiP2PXPCConnection_frameworkBundle__block_invoke()
   v18[1] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CCA8D8];
   v3 = +[WiFiP2PXPCConnection frameworkBundle];
-  v4 = [v3 localizations];
-  v5 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v6 = [v2 preferredLocalizationsFromArray:v4 forPreferences:v5];
-  v7 = [v6 firstObject];
+  localizations = [v3 localizations];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  v6 = [v2 preferredLocalizationsFromArray:localizations forPreferences:preferredLanguages];
+  firstObject = [v6 firstObject];
 
-  if (!v7)
+  if (!firstObject)
   {
     v8 = MEMORY[0x277CCA8D8];
     v9 = +[WiFiP2PXPCConnection frameworkBundle];
-    v10 = [v9 localizations];
-    v11 = [MEMORY[0x277CBEAF8] currentLocale];
-    v12 = [v11 localeIdentifier];
-    v18[0] = v12;
+    localizations2 = [v9 localizations];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
+    v18[0] = localeIdentifier;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
-    v14 = [v8 preferredLocalizationsFromArray:v10 forPreferences:v13];
-    v7 = [v14 firstObject];
+    v14 = [v8 preferredLocalizationsFromArray:localizations2 forPreferences:v13];
+    firstObject = [v14 firstObject];
 
-    if (!v7)
+    if (!firstObject)
     {
-      v15 = [MEMORY[0x277CBEAF8] currentLocale];
-      v7 = [v15 localeIdentifier];
+      currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+      firstObject = [currentLocale2 localeIdentifier];
     }
   }
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return firstObject;
 }
 
-+ (id)weakExportedObjectProxy:(id)a3
++ (id)weakExportedObjectProxy:(id)proxy
 {
-  v3 = a3;
+  proxyCopy = proxy;
   v4 = objc_alloc_init(WiFiP2PXPCExportedObjectProxy);
-  [(WiFiP2PXPCExportedObjectProxy *)v4 setExportedObject:v3];
+  [(WiFiP2PXPCExportedObjectProxy *)v4 setExportedObject:proxyCopy];
 
   return v4;
 }
@@ -1310,16 +1310,16 @@ void __49__WiFiP2PXPCConnection_wifip2pRemoteXPCInterface__block_invoke()
   [v2 setClasses:v5 forSelector:sel_updateAWDLLTERestrictedChannels_completionHandler_ argumentIndex:0 ofReply:0];
 }
 
-+ (id)wifip2pExportedXPCInterfaceFor:(id)a3
++ (id)wifip2pExportedXPCInterfaceFor:(id)for
 {
-  v3 = a3;
+  forCopy = for;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__WiFiP2PXPCConnection_wifip2pExportedXPCInterfaceFor___block_invoke;
   block[3] = &unk_2787AB2E8;
-  v10 = v3;
+  v10 = forCopy;
   v4 = qword_280B20B60;
-  v5 = v3;
+  v5 = forCopy;
   if (v4 != -1)
   {
     dispatch_once(&qword_280B20B60, block);

@@ -1,16 +1,16 @@
 @interface VNCRImageReaderDetector
-+ (id)_imageReaderInitializationOptionsForCreationOptions:(id)a3 computeDevice:(id)a4 error:(id *)a5;
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3;
++ (id)_imageReaderInitializationOptionsForCreationOptions:(id)options computeDevice:(id)device error:(id *)error;
++ (id)computeStagesToBindForConfigurationOptions:(id)options;
 + (id)configurationOptionKeysForDetectorKey;
-+ (id)imageReaderRecognitionOptionsForProcessOptions:(id)a3;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-+ (id)supportedLanguagesForProcessOptions:(id)a3 error:(id *)a4;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
-- (BOOL)isCRImageReaderViableAfterError:(id)a3;
-- (id)_observationsForImageReaderOutput:(id)a3 requestRevision:(unint64_t)a4 error:(id *)a5;
-- (id)newImageReaderAndReturnError:(id *)a3;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
++ (id)imageReaderRecognitionOptionsForProcessOptions:(id)options;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
++ (id)supportedLanguagesForProcessOptions:(id)options error:(id *)error;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
+- (BOOL)isCRImageReaderViableAfterError:(id)error;
+- (id)_observationsForImageReaderOutput:(id)output requestRevision:(unint64_t)revision error:(id *)error;
+- (id)newImageReaderAndReturnError:(id *)error;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 @end
 
 @implementation VNCRImageReaderDetector
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __64__VNCRImageReaderDetector_configurationOptionKeysForDetectorKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNCRImageReaderDetector configurationOptionKeysForDetectorKey]::onceToken != -1)
   {
     dispatch_once(&+[VNCRImageReaderDetector configurationOptionKeysForDetectorKey]::onceToken, block);
@@ -55,17 +55,17 @@ void __64__VNCRImageReaderDetector_configurationOptionKeysForDetectorKey__block_
   +[VNCRImageReaderDetector configurationOptionKeysForDetectorKey]::configurationOptionKeys = v3;
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  optionsCopy = options;
   v12 = 0;
-  if ([VNValidationUtilities getNSIntegerValue:&v12 forKey:@"VNCRImageReaderDetectorCreationOption_CRImageReaderRevisionKey" inOptions:v6 error:a4])
+  if ([VNValidationUtilities getNSIntegerValue:&v12 forKey:@"VNCRImageReaderDetectorCreationOption_CRImageReaderRevisionKey" inOptions:optionsCopy error:error])
   {
-    v7 = [a1 _imageReaderInitializationOptionsForCreationOptions:v6 computeDevice:0 error:a4];
+    v7 = [self _imageReaderInitializationOptionsForCreationOptions:optionsCopy computeDevice:0 error:error];
     if (v7)
     {
-      v8 = [MEMORY[0x1E69D9D90] supportedComputeDevicesForOptions:v7 revision:v12 error:a4];
+      v8 = [MEMORY[0x1E69D9D90] supportedComputeDevicesForOptions:v7 revision:v12 error:error];
       v9 = v8;
       if (v8)
       {
@@ -94,7 +94,7 @@ void __64__VNCRImageReaderDetector_configurationOptionKeysForDetectorKey__block_
   return v10;
 }
 
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3
++ (id)computeStagesToBindForConfigurationOptions:(id)options
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v5[0] = @"VNComputeStageMain";
@@ -103,22 +103,22 @@ void __64__VNCRImageReaderDetector_configurationOptionKeysForDetectorKey__block_
   return v3;
 }
 
-+ (id)supportedLanguagesForProcessOptions:(id)a3 error:(id *)a4
++ (id)supportedLanguagesForProcessOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 computeDeviceForComputeStage:@"VNComputeStageMain" configurationOptions:v6 error:a4];
-  v8 = [a1 _imageReaderInitializationOptionsForCreationOptions:v6 computeDevice:v7 error:a4];
+  optionsCopy = options;
+  v7 = [self computeDeviceForComputeStage:@"VNComputeStageMain" configurationOptions:optionsCopy error:error];
+  v8 = [self _imageReaderInitializationOptionsForCreationOptions:optionsCopy computeDevice:v7 error:error];
   v9 = v8;
   if (v8)
   {
     v10 = [v8 mutableCopy];
-    v11 = [a1 imageReaderRecognitionOptionsForProcessOptions:v6];
+    v11 = [self imageReaderRecognitionOptionsForProcessOptions:optionsCopy];
     [v10 addEntriesFromDictionary:v11];
 
     v12 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69D9CF0]];
-    v13 = [v12 unsignedIntegerValue];
+    unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-    v14 = [MEMORY[0x1E69D9D90] supportedLanguagesForOptions:v10 revision:v13 error:a4];
+    v14 = [MEMORY[0x1E69D9D90] supportedLanguagesForOptions:v10 revision:unsignedIntegerValue error:error];
   }
 
   else
@@ -129,30 +129,30 @@ void __64__VNCRImageReaderDetector_configurationOptionKeysForDetectorKey__block_
   return v14;
 }
 
-+ (id)imageReaderRecognitionOptionsForProcessOptions:(id)a3
++ (id)imageReaderRecognitionOptionsForProcessOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v5 = [v3 objectForKeyedSubscript:@"VNCRImageReaderDetectorProcessOption_MinimumTextHeight"];
+  v5 = [optionsCopy objectForKeyedSubscript:@"VNCRImageReaderDetectorProcessOption_MinimumTextHeight"];
   [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x1E69D9CD8]];
 
-  v6 = [v3 objectForKeyedSubscript:@"VNCRImageReaderDetectorProcessOption_UsesFormFieldDetection"];
+  v6 = [optionsCopy objectForKeyedSubscript:@"VNCRImageReaderDetectorProcessOption_UsesFormFieldDetection"];
   [v4 setObject:v6 forKeyedSubscript:*MEMORY[0x1E69D9C98]];
 
   return v4;
 }
 
-+ (id)_imageReaderInitializationOptionsForCreationOptions:(id)a3 computeDevice:(id)a4 error:(id *)a5
++ (id)_imageReaderInitializationOptionsForCreationOptions:(id)options computeDevice:(id)device error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  deviceCopy = device;
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v8 setObject:v7 forKeyedSubscript:*MEMORY[0x1E69D9C88]];
-  v9 = [v6 objectForKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_FastRecognition"];
-  v10 = [v9 BOOLValue];
+  [v8 setObject:deviceCopy forKeyedSubscript:*MEMORY[0x1E69D9C88]];
+  v9 = [optionsCopy objectForKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_FastRecognition"];
+  bOOLValue = [v9 BOOLValue];
 
   v11 = *MEMORY[0x1E69D9D00];
-  if (v10)
+  if (bOOLValue)
   {
     [v8 setObject:*MEMORY[0x1E69D9D08] forKeyedSubscript:v11];
     v12 = MEMORY[0x1E69D9D20];
@@ -165,58 +165,58 @@ void __64__VNCRImageReaderDetector_configurationOptionKeysForDetectorKey__block_
   }
 
   [v8 setObject:*v12 forKeyedSubscript:*MEMORY[0x1E69D9D18]];
-  v13 = [v6 objectForKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_MaximumCandidatesCount"];
+  v13 = [optionsCopy objectForKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_MaximumCandidatesCount"];
   [v8 setObject:v13 forKeyedSubscript:*MEMORY[0x1E69D9CE0]];
 
-  v14 = [v6 objectForKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_RecognitionLanguages"];
+  v14 = [optionsCopy objectForKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_RecognitionLanguages"];
   [v8 setObject:v14 forKeyedSubscript:*MEMORY[0x1E69D9CD0]];
-  v15 = [v6 objectForKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_UsesLanguageDetection"];
-  v16 = [v15 BOOLValue];
+  v15 = [optionsCopy objectForKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_UsesLanguageDetection"];
+  bOOLValue2 = [v15 BOOLValue];
 
-  v17 = [MEMORY[0x1E696AD98] numberWithBool:v16 ^ 1u];
+  v17 = [MEMORY[0x1E696AD98] numberWithBool:bOOLValue2 ^ 1u];
   [v8 setObject:v17 forKeyedSubscript:*MEMORY[0x1E69D9CB0]];
 
-  v18 = [v6 objectForKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_CRImageReaderRevisionKey"];
+  v18 = [optionsCopy objectForKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_CRImageReaderRevisionKey"];
   [v8 setObject:v18 forKeyedSubscript:*MEMORY[0x1E69D9CF0]];
 
-  v19 = [v6 objectForKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_CustomWords"];
+  v19 = [optionsCopy objectForKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_CustomWords"];
   [v8 setObject:v19 forKeyedSubscript:*MEMORY[0x1E69D9CB8]];
 
-  v20 = [v6 objectForKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_DisableLanguageCorrection"];
+  v20 = [optionsCopy objectForKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_DisableLanguageCorrection"];
   [v8 setObject:v20 forKeyedSubscript:*MEMORY[0x1E69D9CA8]];
 
-  v21 = [v6 objectForKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_UsesAlternateLineGrouping"];
+  v21 = [optionsCopy objectForKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_UsesAlternateLineGrouping"];
   [v8 setObject:v21 forKeyedSubscript:*MEMORY[0x1E69D9CE8]];
 
-  v22 = [v6 objectForKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_UsesCoreMode"];
+  v22 = [optionsCopy objectForKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_UsesCoreMode"];
   [v8 setObject:v22 forKeyedSubscript:*MEMORY[0x1E69D9C90]];
 
-  v23 = [v6 objectForKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_SkipVerticalText"];
+  v23 = [optionsCopy objectForKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_SkipVerticalText"];
   [v8 setObject:v23 forKeyedSubscript:*MEMORY[0x1E69D9CF8]];
 
-  v24 = [v6 objectForKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_KeepResourcesLoaded"];
+  v24 = [optionsCopy objectForKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_KeepResourcesLoaded"];
   [v8 setObject:v24 forKeyedSubscript:*MEMORY[0x1E69D9CC8]];
 
   return v8;
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
   v66 = *MEMORY[0x1E69E9840];
-  v13 = a5;
-  v14 = a9;
-  v15 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNCRImageReaderDetectorProcessOption_OriginatingRequest" inOptions:v13 error:a8];
+  optionsCopy = options;
+  handlerCopy = handler;
+  v15 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNCRImageReaderDetectorProcessOption_OriginatingRequest" inOptions:optionsCopy error:error];
   if (!v15)
   {
     v24 = 0;
     goto LABEL_31;
   }
 
-  v34 = [(VNDetector *)self requiredCancellerInOptions:v13 error:a8];
+  v34 = [(VNDetector *)self requiredCancellerInOptions:optionsCopy error:error];
   if (v34)
   {
     v33 = v15;
-    v16 = [objc_opt_class() imageReaderRecognitionOptionsForProcessOptions:v13];
+    v16 = [objc_opt_class() imageReaderRecognitionOptionsForProcessOptions:optionsCopy];
     v17 = self->_imageReader;
     v59 = 0;
     v60 = &v59;
@@ -238,10 +238,10 @@ void __64__VNCRImageReaderDetector_configurationOptionKeysForDetectorKey__block_
     v42[1] = 3221225472;
     v42[2] = __125__VNCRImageReaderDetector_processRegionOfInterest_croppedPixelBuffer_options_qosClass_warningRecorder_error_progressHandler___block_invoke;
     v42[3] = &unk_1E77B2708;
-    v45 = v14;
+    v45 = handlerCopy;
     v46 = &v59;
     v43 = v17;
-    v48 = a4;
+    bufferCopy = buffer;
     v18 = v16;
     v44 = v18;
     v47 = &v53;
@@ -270,7 +270,7 @@ void __64__VNCRImageReaderDetector_configurationOptionKeysForDetectorKey__block_
         v25 = v60[5];
         if (v25)
         {
-          v26 = [(VNCRImageReaderDetector *)self _observationsForImageReaderOutput:v25 requestRevision:[(VNRequest *)v15 revision] error:a8];
+          v26 = [(VNCRImageReaderDetector *)self _observationsForImageReaderOutput:v25 requestRevision:[(VNRequest *)v15 revision] error:error];
           v24 = v26;
           if (v26)
           {
@@ -292,7 +292,7 @@ void __64__VNCRImageReaderDetector_configurationOptionKeysForDetectorKey__block_
                     objc_enumerationMutation(v27);
                   }
 
-                  [(VNDetector *)self recordImageCropQuickLookInfoFromOptions:v13 toObservation:*(*(&v35 + 1) + 8 * i)];
+                  [(VNDetector *)self recordImageCropQuickLookInfoFromOptions:optionsCopy toObservation:*(*(&v35 + 1) + 8 * i)];
                 }
 
                 v28 = [v27 countByEnumeratingWithState:&v35 objects:v65 count:16];
@@ -309,12 +309,12 @@ void __64__VNCRImageReaderDetector_configurationOptionKeysForDetectorKey__block_
         }
       }
 
-      if (a8)
+      if (error)
       {
         v23 = _vnErrorForError(v22, v15);
 LABEL_16:
         v24 = 0;
-        *a8 = v23;
+        *error = v23;
 LABEL_29:
 
         _Block_object_dispose(&v49, 8);
@@ -325,7 +325,7 @@ LABEL_29:
       }
     }
 
-    else if (a8)
+    else if (error)
     {
       v23 = [VNError errorForCancellationOfRequest:v15];
       goto LABEL_16;
@@ -374,27 +374,27 @@ void __125__VNCRImageReaderDetector_processRegionOfInterest_croppedPixelBuffer_o
   *(v13 + 40) = v12;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v16 = a4;
-  v17 = [(VNDetector *)self validatedImageBufferFromOptions:v16 error:a8];
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  optionsCopy = options;
+  v17 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   if (v17)
   {
     v18 = self->_imageReader;
-    v19 = [v16 objectForKeyedSubscript:@"VNCRImageReaderDetectorProcessOption_MinimumTextHeight"];
+    v19 = [optionsCopy objectForKeyedSubscript:@"VNCRImageReaderDetectorProcessOption_MinimumTextHeight"];
     [v19 doubleValue];
     v21 = v20;
 
-    v22 = [v17 width];
-    v23 = [v17 height];
-    v36.origin.x = x * v22;
-    v36.size.width = width * v22;
-    v36.origin.y = y * v23;
-    v36.size.height = height * v23;
+    width = [v17 width];
+    height = [v17 height];
+    v36.origin.x = x * width;
+    v36.size.width = width * width;
+    v36.origin.y = y * height;
+    v36.size.height = height * height;
     v37 = CGRectIntegral(v36);
     v24 = v37.origin.x;
     v25 = v37.origin.y;
@@ -406,39 +406,39 @@ void __125__VNCRImageReaderDetector_processRegionOfInterest_croppedPixelBuffer_o
     {
       v33 = [v17 croppedBufferWithWidth:v24 height:v25 format:v26 cropRect:v27 options:? error:? pixelBufferRepsCacheKey:?];
       v34 = 0;
-      *a7 = v33;
-      LOBYTE(a8) = v33 != 0;
+      *buffer = v33;
+      LOBYTE(error) = v33 != 0;
       if (v33)
       {
-        [(VNDetector *)self recordImageCropQuickLookInfoToOptions:v16 cacheKey:v34 imageBuffer:v17];
+        [(VNDetector *)self recordImageCropQuickLookInfoToOptions:optionsCopy cacheKey:v34 imageBuffer:v17];
       }
     }
 
-    else if (a8)
+    else if (error)
     {
       v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"The image is too small in at least one dimension %ld x %ld (each dimension has to be more than 2 pixels)", (v28 + 1) & 0xFFFFFFFFFFFFFFFELL, v30];
-      *a8 = [VNError errorForInvalidImageFailureWithLocalizedDescription:v32];
+      *error = [VNError errorForInvalidImageFailureWithLocalizedDescription:v32];
 
-      LOBYTE(a8) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   else
   {
-    LOBYTE(a8) = 0;
+    LOBYTE(error) = 0;
   }
 
-  return a8;
+  return error;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
-  v6 = a3;
+  sessionCopy = session;
   v11.receiver = self;
   v11.super_class = VNCRImageReaderDetector;
-  if ([(VNDetector *)&v11 completeInitializationForSession:v6 error:a4])
+  if ([(VNDetector *)&v11 completeInitializationForSession:sessionCopy error:error])
   {
-    v7 = [(VNCRImageReaderDetector *)self newImageReaderAndReturnError:a4];
+    v7 = [(VNCRImageReaderDetector *)self newImageReaderAndReturnError:error];
     imageReader = self->_imageReader;
     self->_imageReader = v7;
 
@@ -453,16 +453,16 @@ void __125__VNCRImageReaderDetector_processRegionOfInterest_croppedPixelBuffer_o
   return v9;
 }
 
-- (id)_observationsForImageReaderOutput:(id)a3 requestRevision:(unint64_t)a4 error:(id *)a5
+- (id)_observationsForImageReaderOutput:(id)output requestRevision:(unint64_t)revision error:(id *)error
 {
   v63 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  outputCopy = output;
+  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(outputCopy, "count")}];
   v59 = 0u;
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = v6;
+  obj = outputCopy;
   v47 = v7;
   v8 = [obj countByEnumeratingWithState:&v57 objects:v62 count:16];
   if (v8)
@@ -483,13 +483,13 @@ void __125__VNCRImageReaderDetector_processRegionOfInterest_croppedPixelBuffer_o
         }
 
         v11 = *(*(&v57 + 1) + 8 * v10);
-        v12 = [v11 type];
-        v13 = [v12 isEqualToString:v50];
+        type = [v11 type];
+        v13 = [type isEqualToString:v50];
 
         if (v13)
         {
-          v14 = [v11 stringValue];
-          v15 = v14 == 0;
+          stringValue = [v11 stringValue];
+          v15 = stringValue == 0;
 
           if (!v15)
           {
@@ -504,12 +504,12 @@ void __125__VNCRImageReaderDetector_processRegionOfInterest_croppedPixelBuffer_o
             v26 = v25;
             v28 = v27;
             [v11 bottomLeft];
-            v31 = [(VNRectangleObservation *)v16 initWithRequestRevision:a4 topLeft:v18 topRight:1.0 - v20 bottomRight:v22 bottomLeft:1.0 - v24, v26, 1.0 - v28, v30, 1.0 - v29];
+            v31 = [(VNRectangleObservation *)v16 initWithRequestRevision:revision topLeft:v18 topRight:1.0 - v20 bottomRight:v22 bottomLeft:1.0 - v24, v26, 1.0 - v28, v30, 1.0 - v29];
             if (!v31)
             {
-              if (a5)
+              if (error)
               {
-                *a5 = +[VNError errorForMemoryAllocationFailure];
+                *error = +[VNError errorForMemoryAllocationFailure];
               }
 
 LABEL_26:
@@ -520,11 +520,11 @@ LABEL_26:
             }
 
             v48 = v31;
-            v32 = [v11 confidence];
+            confidence = [v11 confidence];
             v33 = 0.0;
-            if (v32 <= 2)
+            if (confidence <= 2)
             {
-              LODWORD(v33) = dword_1A6050128[v32];
+              LODWORD(v33) = dword_1A6050128[confidence];
             }
 
             [(VNObservation *)v31 setConfidence:v33];
@@ -549,12 +549,12 @@ LABEL_26:
                     objc_enumerationMutation(v36);
                   }
 
-                  v40 = [[VNRecognizedText alloc] initWithRequestRevision:a4 CRImageReaderOutput:*(*(&v53 + 1) + 8 * i)];
+                  v40 = [[VNRecognizedText alloc] initWithRequestRevision:revision CRImageReaderOutput:*(*(&v53 + 1) + 8 * i)];
                   if (!v40)
                   {
-                    if (a5)
+                    if (error)
                     {
-                      *a5 = +[VNError errorForMemoryAllocationFailure];
+                      *error = +[VNError errorForMemoryAllocationFailure];
                     }
 
                     goto LABEL_26;
@@ -574,8 +574,8 @@ LABEL_26:
             }
 
             [(VNRecognizedTextObservation *)v48 setTextObjects:v34];
-            v41 = [v11 stringValue];
-            [(VNRecognizedTextObservation *)v48 setText:v41];
+            stringValue2 = [v11 stringValue];
+            [(VNRecognizedTextObservation *)v48 setText:stringValue2];
 
             [v47 addObject:v48];
           }
@@ -603,14 +603,14 @@ LABEL_27:
   return v43;
 }
 
-- (id)newImageReaderAndReturnError:(id *)a3
+- (id)newImageReaderAndReturnError:(id *)error
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = [(VNDetector *)self configurationOptions];
-  v6 = [(VNDetector *)self computeDeviceForComputeStage:@"VNComputeStageMain" processingOptions:v5 error:a3];
+  configurationOptions = [(VNDetector *)self configurationOptions];
+  v6 = [(VNDetector *)self computeDeviceForComputeStage:@"VNComputeStageMain" processingOptions:configurationOptions error:error];
   if (v6)
   {
-    v7 = [objc_opt_class() _imageReaderInitializationOptionsForCreationOptions:v5 computeDevice:v6 error:a3];
+    v7 = [objc_opt_class() _imageReaderInitializationOptionsForCreationOptions:configurationOptions computeDevice:v6 error:error];
     if (v7)
     {
       v8 = [objc_alloc(MEMORY[0x1E69D9D90]) initWithOptions:v7];
@@ -633,14 +633,14 @@ LABEL_27:
   return v8;
 }
 
-- (BOOL)isCRImageReaderViableAfterError:(id)a3
+- (BOOL)isCRImageReaderViableAfterError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
-    v5 = [v3 domain];
-    v6 = [v5 isEqualToString:*MEMORY[0x1E69D9CC0]];
+    domain = [errorCopy domain];
+    v6 = [domain isEqualToString:*MEMORY[0x1E69D9CC0]];
 
     v7 = v6 ^ 1;
   }

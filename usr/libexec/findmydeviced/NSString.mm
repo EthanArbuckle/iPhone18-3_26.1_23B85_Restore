@@ -1,32 +1,32 @@
 @interface NSString
-+ (NSString)stringWithFourCC:(unsigned int)a3;
-+ (id)sanitizedHexString:(id)a3;
-- (BOOL)encodeWithFMDCoder:(id)a3 error:(id *)a4;
++ (NSString)stringWithFourCC:(unsigned int)c;
++ (id)sanitizedHexString:(id)string;
+- (BOOL)encodeWithFMDCoder:(id)coder error:(id *)error;
 - (NSString)fmd_localizedString;
-- (NSString)initWithFMDCoder:(id)a3 error:(id *)a4;
-- (id)fmd_localizedStringInTable:(id)a3;
+- (NSString)initWithFMDCoder:(id)coder error:(id *)error;
+- (id)fmd_localizedStringInTable:(id)table;
 @end
 
 @implementation NSString
 
-+ (NSString)stringWithFourCC:(unsigned int)a3
++ (NSString)stringWithFourCC:(unsigned int)c
 {
-  v6 = bswap32(a3) >> 16;
-  v5[1] = BYTE2(a3);
-  v5[0] = HIBYTE(a3);
+  v6 = bswap32(c) >> 16;
+  v5[1] = BYTE2(c);
+  v5[0] = HIBYTE(c);
   v7 = 0;
   v3 = [NSString stringWithCString:v5 encoding:4];
 
   return v3;
 }
 
-+ (id)sanitizedHexString:(id)a3
++ (id)sanitizedHexString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [NSCharacterSet characterSetWithCharactersInString:@"01234567890ABCDEFabcdef"];
-  v5 = [v4 invertedSet];
+  invertedSet = [v4 invertedSet];
 
-  v6 = [v3 componentsSeparatedByCharactersInSet:v5];
+  v6 = [stringCopy componentsSeparatedByCharactersInSet:invertedSet];
 
   v7 = [v6 componentsJoinedByString:&stru_1002DCE08];
 
@@ -50,14 +50,14 @@
   return v5;
 }
 
-- (id)fmd_localizedStringInTable:(id)a3
+- (id)fmd_localizedStringInTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 localizedStringForKey:self value:&stru_1002DCE08 table:v4];
+    v7 = [v5 localizedStringForKey:self value:&stru_1002DCE08 table:tableCopy];
   }
 
   else
@@ -68,38 +68,38 @@
   return v7;
 }
 
-- (BOOL)encodeWithFMDCoder:(id)a3 error:(id *)a4
+- (BOOL)encodeWithFMDCoder:(id)coder error:(id *)error
 {
-  v5 = a3;
+  coderCopy = coder;
   v6 = +[NSString objectType];
-  [v5 encodeString:self forKey:v6];
+  [coderCopy encodeString:self forKey:v6];
 
   return 1;
 }
 
-- (NSString)initWithFMDCoder:(id)a3 error:(id *)a4
+- (NSString)initWithFMDCoder:(id)coder error:(id *)error
 {
-  v6 = a3;
+  coderCopy = coder;
   v7 = +[NSString objectType];
-  v8 = [v6 decodeStringForKey:v7];
+  v8 = [coderCopy decodeStringForKey:v7];
 
   if (v8)
   {
     self = [(NSString *)self initWithString:v8];
-    a4 = self;
+    error = self;
   }
 
-  else if (a4)
+  else if (error)
   {
     v11 = NSLocalizedFailureReasonErrorKey;
     v12 = @"Key FM.String not found.";
     v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-    *a4 = [NSError errorWithDomain:@"FMStringErrorDomain" code:0 userInfo:v9];
+    *error = [NSError errorWithDomain:@"FMStringErrorDomain" code:0 userInfo:v9];
 
-    a4 = 0;
+    error = 0;
   }
 
-  return a4;
+  return error;
 }
 
 @end

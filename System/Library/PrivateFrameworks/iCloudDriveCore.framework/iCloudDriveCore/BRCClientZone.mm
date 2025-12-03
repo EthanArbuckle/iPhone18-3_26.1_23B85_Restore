@@ -1,167 +1,167 @@
 @interface BRCClientZone
-- (BOOL)_checkIfEnumeratorContainsNonDiscretionaryOp:(id)a3;
-- (BOOL)_crossZoneMoveDocumentsToZone:(id)a3;
-- (BOOL)_deleteRelevantPackageItemsWithDB:(id)a3 error:(id *)a4;
-- (BOOL)_dumpItemsToContext:(id)a3 includeAllItems:(BOOL)a4 error:(id *)a5;
+- (BOOL)_checkIfEnumeratorContainsNonDiscretionaryOp:(id)op;
+- (BOOL)_crossZoneMoveDocumentsToZone:(id)zone;
+- (BOOL)_deleteRelevantPackageItemsWithDB:(id)b error:(id *)error;
+- (BOOL)_dumpItemsToContext:(id)context includeAllItems:(BOOL)items error:(id *)error;
 - (BOOL)_hasNonDiscretionaryServerStitchingOperation;
 - (BOOL)_isIdle;
-- (BOOL)_isSideSyncOperationBlockedWithName:(id)a3 isWaitingOnShareAccept:(BOOL)a4;
-- (BOOL)_performHardResetOnClientItemsAndWantsUnlink:(BOOL)a3 db:(id)a4 error:(id *)a5;
-- (BOOL)_postHardResetHandlingWithDB:(id)a3 completionBlock:(id)a4 error:(id *)a5;
+- (BOOL)_isSideSyncOperationBlockedWithName:(id)name isWaitingOnShareAccept:(BOOL)accept;
+- (BOOL)_performHardResetOnClientItemsAndWantsUnlink:(BOOL)unlink db:(id)db error:(id *)error;
+- (BOOL)_postHardResetHandlingWithDB:(id)b completionBlock:(id)block error:(id *)error;
 - (BOOL)_resetItemsTable;
 - (BOOL)_shouldFailSyncDownWaitImmediately;
-- (BOOL)dumpActivityToContext:(id)a3 includeExpensiveActivity:(BOOL)a4 error:(id *)a5;
-- (BOOL)dumpStatusToContext:(id)a3 error:(id *)a4;
+- (BOOL)dumpActivityToContext:(id)context includeExpensiveActivity:(BOOL)activity error:(id *)error;
+- (BOOL)dumpStatusToContext:(id)context error:(id *)error;
 - (BOOL)enhancedDrivePrivacyEnabled;
-- (BOOL)handleSaltingErrorIfNeeded:(id)a3 record:(id)a4;
-- (BOOL)handleZoneLevelErrorIfNeeded:(id)a3 forItemCreation:(BOOL)a4;
+- (BOOL)handleSaltingErrorIfNeeded:(id)needed record:(id)record;
+- (BOOL)handleZoneLevelErrorIfNeeded:(id)needed forItemCreation:(BOOL)creation;
 - (BOOL)hasHighPriorityWatchers;
 - (BOOL)isCloudDocsZone;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToClientZone:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToClientZone:(id)zone;
 - (BOOL)isForeground;
 - (BOOL)isSyncBlocked;
-- (BOOL)removeItemIsDownloadedBlock:(id)a3;
-- (BOOL)removeItemOnDiskBlock:(id)a3;
-- (BOOL)removeSyncDownForItemIDBlock:(id)a3;
-- (BOOL)setStateBits:(unsigned int)a3;
-- (BOOL)shouldSyncMangledID:(id)a3;
-- (BOOL)validateItemsLoggingToFile:(__sFILE *)a3 db:(id)a4;
-- (BOOL)validateStructureLoggingToFile:(__sFILE *)a3 db:(id)a4;
+- (BOOL)removeItemIsDownloadedBlock:(id)block;
+- (BOOL)removeItemOnDiskBlock:(id)block;
+- (BOOL)removeSyncDownForItemIDBlock:(id)block;
+- (BOOL)setStateBits:(unsigned int)bits;
+- (BOOL)shouldSyncMangledID:(id)d;
+- (BOOL)validateItemsLoggingToFile:(__sFILE *)file db:(id)db;
+- (BOOL)validateStructureLoggingToFile:(__sFILE *)file db:(id)db;
 - (BRCClientZone)init;
-- (BRCClientZone)initWithMangledID:(id)a3 dbRowID:(id)a4 plist:(id)a5 session:(id)a6 initialCreation:(BOOL)a7;
+- (BRCClientZone)initWithMangledID:(id)d dbRowID:(id)iD plist:(id)plist session:(id)session initialCreation:(BOOL)creation;
 - (BRCItemID)rootItemID;
 - (NSArray)syncThrottles;
 - (NSMutableDictionary)plist;
-- (char)serverItemTypeByItemID:(id)a3 dbFacade:(id)a4;
+- (char)serverItemTypeByItemID:(id)d dbFacade:(id)facade;
 - (id)_cancelAllOperationsForReset;
 - (id)asPrivateClientZone;
 - (id)asSharedClientZone;
-- (id)cancelFetchParentChainOperationAndReschedule:(id)a3;
-- (id)cancelListOperationAndReschedule:(id)a3;
-- (id)cancelLocateRecordOperationAndReschedule:(id)a3;
-- (id)childBaseSaltForItemID:(id)a3;
-- (id)contentBoundaryKeyForItemID:(id)a3 withDB:(id)a4;
-- (id)deadItemByParentID:(id)a3 andUnbouncedLogicalName:(id)a4;
-- (id)descriptionWithContext:(id)a3;
-- (id)directUnsaltedNonAliasItemsInServerTruthEnumeratorParentedTo:(id)a3;
+- (id)cancelFetchParentChainOperationAndReschedule:(id)reschedule;
+- (id)cancelListOperationAndReschedule:(id)reschedule;
+- (id)cancelLocateRecordOperationAndReschedule:(id)reschedule;
+- (id)childBaseSaltForItemID:(id)d;
+- (id)contentBoundaryKeyForItemID:(id)d withDB:(id)b;
+- (id)deadItemByParentID:(id)d andUnbouncedLogicalName:(id)name;
+- (id)descriptionWithContext:(id)context;
+- (id)directUnsaltedNonAliasItemsInServerTruthEnumeratorParentedTo:(id)to;
 - (id)directoryItemIDsCreatedLastSyncUp;
-- (id)documentsNotIdleEnumeratorWithStartingRowID:(unint64_t)a3 batchSize:(unint64_t)a4;
-- (id)fetchDirectoryContentsIfNecessary:(id)a3 isUserWaiting:(BOOL)a4 rescheduleApplyScheduler:(BOOL)a5;
-- (id)insertParentChainForItem:(id)a3;
-- (id)itemByFileID:(unint64_t)a3 dbFacade:(id)a4;
-- (id)itemByItemID:(id)a3 dbFacade:(id)a4;
-- (id)itemByParentID:(id)a3 andLogicalName:(id)a4 excludingItemID:(id)a5;
-- (id)itemByRowID:(unint64_t)a3;
-- (id)itemCountPendingUploadOrSyncUpAndReturnError:(id *)a3;
-- (id)itemsEnumeratorWithDB:(id)a3;
-- (id)itemsEnumeratorWithParentID:(id)a3 andLogicalName:(id)a4;
+- (id)documentsNotIdleEnumeratorWithStartingRowID:(unint64_t)d batchSize:(unint64_t)size;
+- (id)fetchDirectoryContentsIfNecessary:(id)necessary isUserWaiting:(BOOL)waiting rescheduleApplyScheduler:(BOOL)scheduler;
+- (id)insertParentChainForItem:(id)item;
+- (id)itemByFileID:(unint64_t)d dbFacade:(id)facade;
+- (id)itemByItemID:(id)d dbFacade:(id)facade;
+- (id)itemByParentID:(id)d andLogicalName:(id)name excludingItemID:(id)iD;
+- (id)itemByRowID:(unint64_t)d;
+- (id)itemCountPendingUploadOrSyncUpAndReturnError:(id *)error;
+- (id)itemsEnumeratorWithDB:(id)b;
+- (id)itemsEnumeratorWithParentID:(id)d andLogicalName:(id)name;
 - (id)itemsParentedToThisZoneButLivingInAnOtherZone;
 - (id)itemsWithInFlightDiffsEnumerator;
-- (id)liveItemByParentID:(id)a3 andCaseInsensitiveLogicalName:(id)a4 excludingItemGlobalID:(id)a5;
-- (id)liveItemByParentID:(id)a3 andLogicalName:(id)a4 excludingItemGlobalID:(id)a5;
-- (id)popDownloadedBlockForItemID:(id)a3;
-- (id)popOnDiskBlockForItemID:(id)a3;
-- (id)serverItemByItemID:(id)a3 dbFacade:(id)a4;
-- (id)serverItemByParentID:(id)a3 andLogicalName:(id)a4;
-- (id)serverItemByRank:(int64_t)a3;
-- (id)sizeOfItemsNeedingSyncUpOrUploadAndReturnError:(id *)a3;
+- (id)liveItemByParentID:(id)d andCaseInsensitiveLogicalName:(id)name excludingItemGlobalID:(id)iD;
+- (id)liveItemByParentID:(id)d andLogicalName:(id)name excludingItemGlobalID:(id)iD;
+- (id)popDownloadedBlockForItemID:(id)d;
+- (id)popOnDiskBlockForItemID:(id)d;
+- (id)serverItemByItemID:(id)d dbFacade:(id)facade;
+- (id)serverItemByParentID:(id)d andLogicalName:(id)name;
+- (id)serverItemByRank:(int64_t)rank;
+- (id)sizeOfItemsNeedingSyncUpOrUploadAndReturnError:(id *)error;
 - (id)syncDownAnalyticsError;
 - (id)syncDownImmediately;
 - (id)syncUpAnalyticsError;
-- (int64_t)throttleHashWithItemID:(id)a3;
+- (int64_t)throttleHashWithItemID:(id)d;
 - (unint64_t)allocateSyncUpRequestID;
-- (unsigned)_activateState:(unsigned int)a3 origState:(unsigned int)a4;
+- (unsigned)_activateState:(unsigned int)state origState:(unsigned int)origState;
 - (unsigned)_appLibrariesState;
-- (unsigned)saltingStateForItemID:(id)a3;
+- (unsigned)saltingStateForItemID:(id)d;
 - (unsigned)syncUpBatchSize;
-- (void)_allItemsDidUploadWithError:(id)a3;
-- (void)_appendToString:(id)a3 descriptionOfFieldNamed:(id)a4 inResultSet:(id)a5 pos:(int *)a6 containsSize:(BOOL)a7 context:(id)a8;
+- (void)_allItemsDidUploadWithError:(id)error;
+- (void)_appendToString:(id)string descriptionOfFieldNamed:(id)named inResultSet:(id)set pos:(int *)pos containsSize:(BOOL)size context:(id)context;
 - (void)_blockSyncDownOnStitchingOperations;
 - (void)_cancelOutOfBandOperations;
 - (void)_decreaseSyncUpBatchSizeAfterError;
 - (void)_deleteJobsMatchingServerZone;
-- (void)_didSyncDownRequestID:(unint64_t)a3 maxApplyRank:(int64_t)a4 caughtUpWithServer:(BOOL)a5 syncDownDate:(id)a6 isFixingState:(BOOL)a7;
-- (void)_enumerateAndClearLocateBlocksForRecordID:(id)a3 exists:(BOOL)a4;
-- (void)_finishedReset:(unint64_t)a3 signpostTracker:(id)a4 completionHandler:(id)a5;
+- (void)_didSyncDownRequestID:(unint64_t)d maxApplyRank:(int64_t)rank caughtUpWithServer:(BOOL)server syncDownDate:(id)date isFixingState:(BOOL)state;
+- (void)_enumerateAndClearLocateBlocksForRecordID:(id)d exists:(BOOL)exists;
+- (void)_finishedReset:(unint64_t)reset signpostTracker:(id)tracker completionHandler:(id)handler;
 - (void)_fixupEnhancedDrivePrivacyState;
 - (void)_fixupMissingCrossMovedItems;
 - (void)_flushIdleBlocksIfNeeded;
-- (void)_forDBUpgrade_setStateBits:(unsigned int)a3 clearStateBits:(unsigned int)a4;
+- (void)_forDBUpgrade_setStateBits:(unsigned int)bits clearStateBits:(unsigned int)stateBits;
 - (void)_increaseSyncUpBatchSizeAfterSuccess;
 - (void)_isIdle;
-- (void)_learnCKInfosFromSavedRecords:(id)a3 isOutOfBandModifyRecords:(BOOL)a4 basedOnOriginalVersion:(BOOL)a5;
+- (void)_learnCKInfosFromSavedRecords:(id)records isOutOfBandModifyRecords:(BOOL)modifyRecords basedOnOriginalVersion:(BOOL)version;
 - (void)_markLatestSyncRequestFailed;
 - (void)_markRequestIDAcked;
-- (void)_performAfterResetServerAndClientSharedTruthsAndUnlinkData:(id)a3;
-- (void)_performAfterResetServerAndClientTruthsAndUnlinkData:(id)a3;
-- (void)_performAfterResetServerAndClientTruthsAndUnlinkDataAndPurgeTheZone:(id)a3;
-- (void)_performResetAndWantsUnlink:(BOOL)a3 clientTruthBlock:(id)a4 completionBlock:(id)a5;
+- (void)_performAfterResetServerAndClientSharedTruthsAndUnlinkData:(id)data;
+- (void)_performAfterResetServerAndClientTruthsAndUnlinkData:(id)data;
+- (void)_performAfterResetServerAndClientTruthsAndUnlinkDataAndPurgeTheZone:(id)zone;
+- (void)_performResetAndWantsUnlink:(BOOL)unlink clientTruthBlock:(id)block completionBlock:(id)completionBlock;
 - (void)_prepareForForegroundSyncDown;
 - (void)_recreateSyncBudgetsAndThrottlesIfNeeded;
-- (void)_registerFetchParentChainOperation:(id)a3;
-- (void)_registerListOperation:(id)a3 shareAcceptOperation:(id)a4;
-- (void)_registerLocateRecordOperation:(id)a3;
-- (void)_registerOperation:(id)a3 throttler:(id)a4;
+- (void)_registerFetchParentChainOperation:(id)operation;
+- (void)_registerListOperation:(id)operation shareAcceptOperation:(id)acceptOperation;
+- (void)_registerLocateRecordOperation:(id)operation;
+- (void)_registerOperation:(id)operation throttler:(id)throttler;
 - (void)_removeAllShareAcceptanceBlocks;
-- (void)_removeDownloadedBlockToPerformForItemID:(id)a3;
-- (void)_removeOnDiskBlockToPerformForItemID:(id)a3;
-- (void)_reset:(unint64_t)a3 completionHandler:(id)a4;
+- (void)_removeDownloadedBlockToPerformForItemID:(id)d;
+- (void)_removeOnDiskBlockToPerformForItemID:(id)d;
+- (void)_reset:(unint64_t)_reset completionHandler:(id)handler;
 - (void)_resetAndDeleteServerTruthData;
 - (void)_resetChildBasehashSaltsIfNeeded;
 - (void)_scheduleZoneResetForUninstalledAppIfNecessary;
 - (void)_shouldFailSyncDownWaitImmediately;
 - (void)_startSync;
-- (void)_syncUpOfRecords:(id)a3 createdAppLibraryNames:(id)a4 didFinishWithError:(id)a5 errorWasOnPCSChainedItem:(BOOL)a6 throttledItemInBatch:(BOOL)a7;
-- (void)addOutOfBandOperation:(id)a3;
-- (void)addSyncDownDependency:(id)a3;
+- (void)_syncUpOfRecords:(id)records createdAppLibraryNames:(id)names didFinishWithError:(id)error errorWasOnPCSChainedItem:(BOOL)item throttledItemInBatch:(BOOL)batch;
+- (void)addOutOfBandOperation:(id)operation;
+- (void)addSyncDownDependency:(id)dependency;
 - (void)asPrivateClientZone;
 - (void)asSharedClientZone;
 - (void)beginSyncBubbleActivityIfNecessary;
 - (void)cancelReset;
 - (void)clearAndRefetchRecentAndFavoriteDocuments;
-- (void)clearSyncStateBits:(unsigned int)a3;
+- (void)clearSyncStateBits:(unsigned int)bits;
 - (void)clearSyncUpError;
 - (void)close;
 - (void)dealloc;
-- (void)didApplyTombstoneForRank:(int64_t)a3;
+- (void)didApplyTombstoneForRank:(int64_t)rank;
 - (void)didClearOutOfQuota;
-- (void)didGCTombstoneRanks:(id)a3;
+- (void)didGCTombstoneRanks:(id)ranks;
 - (void)disconnectNSMDQListenerAsync;
-- (void)fetchRecentAndFavoriteDocuments:(BOOL)a3;
+- (void)fetchRecentAndFavoriteDocuments:(BOOL)documents;
 - (void)flushAppliedTombstones;
 - (void)handleRootRecordDeletion;
-- (void)itemMovedIntoShareInThisZone:(id)a3 associatedItemID:(id)a4;
-- (void)networkReachabilityChanged:(BOOL)a3;
-- (void)notifyClient:(id)a3 afterNextSyncDown:(id)a4;
-- (void)notifyClient:(id)a3 whenFaultingIsDone:(id)a4;
-- (void)notifyClient:(id)a3 whenIdle:(id)a4;
-- (void)performBlock:(id)a3 whenItemWithIDIsDownloaded:(id)a4;
-- (void)performBlock:(id)a3 whenItemWithRecordIDIsOnDisk:(id)a4;
-- (void)performBlock:(id)a3 whenLocatingCompletesForItemWithRecordID:(id)a4;
-- (void)performBlock:(id)a3 whenSyncDownCompletesLookingForItemID:(id)a4;
-- (void)prepareDirectoryForSyncUp:(id)a3;
+- (void)itemMovedIntoShareInThisZone:(id)zone associatedItemID:(id)d;
+- (void)networkReachabilityChanged:(BOOL)changed;
+- (void)notifyClient:(id)client afterNextSyncDown:(id)down;
+- (void)notifyClient:(id)client whenFaultingIsDone:(id)done;
+- (void)notifyClient:(id)client whenIdle:(id)idle;
+- (void)performBlock:(id)block whenItemWithIDIsDownloaded:(id)downloaded;
+- (void)performBlock:(id)block whenItemWithRecordIDIsOnDisk:(id)disk;
+- (void)performBlock:(id)block whenLocatingCompletesForItemWithRecordID:(id)d;
+- (void)performBlock:(id)block whenSyncDownCompletesLookingForItemID:(id)d;
+- (void)prepareDirectoryForSyncUp:(id)up;
 - (void)recomputeAllItemsDidUploadState;
-- (void)registerAllItemsDidUploadTracker:(id)a3;
-- (void)removeOutOfBandOperation:(id)a3;
-- (void)removeSyncDownDependency:(id)a3;
+- (void)registerAllItemsDidUploadTracker:(id)tracker;
+- (void)removeOutOfBandOperation:(id)operation;
+- (void)removeSyncDownDependency:(id)dependency;
 - (void)resetSyncBudgetAndThrottle;
 - (void)resume;
 - (void)rootItemID;
-- (void)scheduleApplyWithLocalItem:(id)a3 serverItem:(id)a4;
-- (void)scheduleReset:(unint64_t)a3 completionHandler:(id)a4;
-- (void)scheduleResetServerAndClientTruthsForReason:(id)a3 completionHandler:(id)a4;
+- (void)scheduleApplyWithLocalItem:(id)item serverItem:(id)serverItem;
+- (void)scheduleReset:(unint64_t)reset completionHandler:(id)handler;
+- (void)scheduleResetServerAndClientTruthsForReason:(id)reason completionHandler:(id)handler;
 - (void)scheduleSyncDownFirst;
-- (void)scheduleSyncDownForOOBModifyRecordsAckForItemID:(id)a3;
-- (void)scheduleSyncDownWithGroup:(id)a3;
+- (void)scheduleSyncDownForOOBModifyRecordsAckForItemID:(id)d;
+- (void)scheduleSyncDownWithGroup:(id)group;
 - (void)scheduleSyncUp;
-- (void)setNeedsSave:(BOOL)a3;
-- (void)setSyncStateBits:(unsigned int)a3;
-- (void)signalFaultingWatchersWithError:(id)a3;
+- (void)setNeedsSave:(BOOL)save;
+- (void)setSyncStateBits:(unsigned int)bits;
+- (void)signalFaultingWatchersWithError:(id)error;
 - (void)syncDownImmediately;
-- (void)syncDownOperation:(id)a3 didFinishWithError:(id)a4 status:(int64_t)a5;
-- (void)unregisterAllItemsDidUploadTracker:(id)a3;
-- (void)updateWithPlist:(id)a3;
+- (void)syncDownOperation:(id)operation didFinishWithError:(id)error status:(int64_t)status;
+- (void)unregisterAllItemsDidUploadTracker:(id)tracker;
+- (void)updateWithPlist:(id)plist;
 @end
 
 @implementation BRCClientZone
@@ -185,7 +185,7 @@
 {
   OUTLINED_FUNCTION_18();
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [v0 mangledID];
+  mangledID = [v0 mangledID];
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_2_1();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0x16u);
@@ -202,25 +202,25 @@
 
 - (BOOL)isCloudDocsZone
 {
-  v3 = [(BRCClientZone *)self isPrivateZone];
-  if (v3)
+  isPrivateZone = [(BRCClientZone *)self isPrivateZone];
+  if (isPrivateZone)
   {
     zoneName = self->_zoneName;
     v5 = *MEMORY[0x277CFAD68];
 
-    LOBYTE(v3) = [(NSString *)zoneName isEqualToString:v5];
+    LOBYTE(isPrivateZone) = [(NSString *)zoneName isEqualToString:v5];
   }
 
-  return v3;
+  return isPrivateZone;
 }
 
 - (BOOL)isForeground
 {
-  v2 = [(BRCClientZone *)self serverZone];
-  v3 = [v2 metadataSyncContextIfExists];
-  v4 = [v3 isForeground];
+  serverZone = [(BRCClientZone *)self serverZone];
+  metadataSyncContextIfExists = [serverZone metadataSyncContextIfExists];
+  isForeground = [metadataSyncContextIfExists isForeground];
 
-  return v4;
+  return isForeground;
 }
 
 - (NSMutableDictionary)plist
@@ -294,7 +294,7 @@
 
 - (void)flushAppliedTombstones
 {
-  OUTLINED_FUNCTION_17_2(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_17_2(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_3_1();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x16u);
@@ -311,15 +311,15 @@
 
 - (unsigned)syncUpBatchSize
 {
-  v3 = [(BRCClientZone *)self mangledID];
-  v4 = [BRCUserDefaults defaultsForMangledID:v3];
-  v5 = [v4 maxRecordCountInModifyRecordsOperation];
+  mangledID = [(BRCClientZone *)self mangledID];
+  v4 = [BRCUserDefaults defaultsForMangledID:mangledID];
+  maxRecordCountInModifyRecordsOperation = [v4 maxRecordCountInModifyRecordsOperation];
 
   syncUpBatchSizeMultiplier = self->_syncUpBatchSizeMultiplier;
-  v7 = (syncUpBatchSizeMultiplier * v5);
+  v7 = (syncUpBatchSizeMultiplier * maxRecordCountInModifyRecordsOperation);
   if (syncUpBatchSizeMultiplier >= 1.0)
   {
-    v7 = v5;
+    v7 = maxRecordCountInModifyRecordsOperation;
   }
 
   if (v7 <= 2)
@@ -342,10 +342,10 @@
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v3 = [(BRCClientZone *)self asPrivateClientZone];
-    v4 = [v3 appLibraries];
+    asPrivateClientZone = [(BRCClientZone *)self asPrivateClientZone];
+    appLibraries = [asPrivateClientZone appLibraries];
 
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v5 = [appLibraries countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -357,13 +357,13 @@
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(appLibraries);
           }
 
           v7 |= [*(*(&v12 + 1) + 8 * i) state];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [appLibraries countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v6);
@@ -480,28 +480,28 @@ void __23__BRCClientZone_resume__block_invoke(uint64_t a1)
 
 - (BOOL)enhancedDrivePrivacyEnabled
 {
-  v3 = [(BRCClientZone *)self mangledID];
-  v4 = [BRCUserDefaults defaultsForMangledID:v3];
-  v5 = [v4 supportsEnhancedDrivePrivacy];
+  mangledID = [(BRCClientZone *)self mangledID];
+  v4 = [BRCUserDefaults defaultsForMangledID:mangledID];
+  supportsEnhancedDrivePrivacy = [v4 supportsEnhancedDrivePrivacy];
 
-  if (!v5)
+  if (!supportsEnhancedDrivePrivacy)
   {
 LABEL_5:
     LOBYTE(v9) = 0;
     return v9;
   }
 
-  v6 = [(BRCClientZone *)self mangledID];
-  v7 = [BRCUserDefaults defaultsForMangledID:v6];
-  v8 = [v7 enhancedDrivePrivacyForced];
+  mangledID2 = [(BRCClientZone *)self mangledID];
+  v7 = [BRCUserDefaults defaultsForMangledID:mangledID2];
+  enhancedDrivePrivacyForced = [v7 enhancedDrivePrivacyForced];
 
-  if ((v8 & 1) == 0)
+  if ((enhancedDrivePrivacyForced & 1) == 0)
   {
-    v10 = [(BRCClientZone *)self mangledID];
-    v11 = [BRCUserDefaults defaultsForMangledID:v10];
-    v12 = [v11 enhancedDrivePrivacyRolledBack];
+    mangledID3 = [(BRCClientZone *)self mangledID];
+    v11 = [BRCUserDefaults defaultsForMangledID:mangledID3];
+    enhancedDrivePrivacyRolledBack = [v11 enhancedDrivePrivacyRolledBack];
 
-    if ((v12 & 1) == 0)
+    if ((enhancedDrivePrivacyRolledBack & 1) == 0)
     {
       return ([(BRCClientZone *)self state]>> 22) & 1;
     }
@@ -525,16 +525,16 @@ LABEL_5:
 
   else
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v6 = [(BRCClientZone *)self mangledID];
-    v7 = [BRCUserDefaults defaultsForMangledID:v6];
-    v8 = [v7 syncThrottles];
+    mangledID = [(BRCClientZone *)self mangledID];
+    v7 = [BRCUserDefaults defaultsForMangledID:mangledID];
+    syncThrottles = [v7 syncThrottles];
 
-    v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v9 = [syncThrottles countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
       v10 = v9;
@@ -545,23 +545,23 @@ LABEL_5:
         {
           if (*v19 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(syncThrottles);
           }
 
           v13 = [[BRCSyncThrottle alloc] initWithName:@"defaultSyncThrottle" andParameters:*(*(&v18 + 1) + 8 * i)];
           if (v13)
           {
-            [v5 addObject:v13];
+            [array addObject:v13];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v10 = [syncThrottles countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v10);
     }
 
-    v14 = [v5 copy];
+    v14 = [array copy];
     v15 = self->_syncThrottles;
     self->_syncThrottles = v14;
 
@@ -591,8 +591,8 @@ void __27__BRCClientZone__startSync__block_invoke_cold_2()
 - (void)_fixupEnhancedDrivePrivacyState
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(BRCClientZone *)self mangledID];
-  v4 = [BRCUserDefaults defaultsForMangledID:v3];
+  mangledID = [(BRCClientZone *)self mangledID];
+  v4 = [BRCUserDefaults defaultsForMangledID:mangledID];
   v5 = v4;
   state = self->_state;
   if ((state & 0x400000) != 0)
@@ -616,7 +616,7 @@ void __27__BRCClientZone__startSync__block_invoke_cold_2()
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *v14 = 138412546;
-        *&v14[4] = v3;
+        *&v14[4] = mangledID;
         *&v14[12] = 2112;
         *&v14[14] = v10;
         v12 = "[WARNING] Stripping enhanced drive privacy bit because it was rolled back %@%@";
@@ -632,7 +632,7 @@ LABEL_15:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *v14 = 138412546;
-        *&v14[4] = v3;
+        *&v14[4] = mangledID;
         *&v14[12] = 2112;
         *&v14[14] = v10;
         v12 = "[WARNING] Stripping enhanced drive privacy bit because it's not supported on %@%@";
@@ -655,7 +655,7 @@ LABEL_2:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *v14 = 138412546;
-      *&v14[4] = v3;
+      *&v14[4] = mangledID;
       *&v14[12] = 2112;
       *&v14[14] = v7;
       _os_log_impl(&dword_223E7A000, v8, OS_LOG_TYPE_DEFAULT, "[WARNING] Adding enhanced drive privacy bit because it's forced on %@%@", v14, 0x16u);
@@ -670,12 +670,12 @@ LABEL_18:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)directUnsaltedNonAliasItemsInServerTruthEnumeratorParentedTo:(id)a3
+- (id)directUnsaltedNonAliasItemsInServerTruthEnumeratorParentedTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = [(BRCClientZone *)self db];
-  v6 = [(BRCClientZone *)self dbRowID];
-  v7 = [v5 fetch:{@"SELECT zone_rowid, item_rank, item_origname, pcs_state, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, child_basehash_salt, salting_state, basehash_salt_validation_key, quota_used, recursive_child_count, shared_children_count, shared_alias_count, child_count FROM server_items WHERE item_parent_id = %@ AND basehash_salt_validation_key IS NULL AND item_type != 3 and zone_rowid = %@", v4, v6}];
+  dbRowID = [(BRCClientZone *)self dbRowID];
+  v7 = [v5 fetch:{@"SELECT zone_rowid, item_rank, item_origname, pcs_state, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, child_basehash_salt, salting_state, basehash_salt_validation_key, quota_used, recursive_child_count, shared_children_count, shared_alias_count, child_count FROM server_items WHERE item_parent_id = %@ AND basehash_salt_validation_key IS NULL AND item_type != 3 and zone_rowid = %@", toCopy, dbRowID}];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -697,20 +697,20 @@ id __104__BRCClientZone_BRCBaseHashSaltAdditions__directUnsaltedNonAliasItemsInS
   return v7;
 }
 
-- (unsigned)saltingStateForItemID:(id)a3
+- (unsigned)saltingStateForItemID:(id)d
 {
-  v4 = a3;
-  if ([v4 isNonDesktopRoot])
+  dCopy = d;
+  if ([dCopy isNonDesktopRoot])
   {
     if (![(BRCClientZone *)self isPrivateZone])
     {
       [BRCClientZone(BRCBaseHashSaltAdditions) saltingStateForItemID:];
     }
 
-    v5 = [(BRCClientZone *)self session];
-    v6 = [v4 appLibraryRowID];
+    session = [(BRCClientZone *)self session];
+    appLibraryRowID = [dCopy appLibraryRowID];
 
-    v7 = [v5 appLibraryByRowID:v6];
+    v7 = [session appLibraryByRowID:appLibraryRowID];
 
     if (![v7 rootRecordCreated])
     {
@@ -718,62 +718,62 @@ id __104__BRCClientZone_BRCBaseHashSaltAdditions__directUnsaltedNonAliasItemsInS
       goto LABEL_10;
     }
 
-    v8 = [v7 saltingState];
+    saltingState = [v7 saltingState];
   }
 
   else
   {
     v9 = [(BRCClientZone *)self db];
-    v10 = [(BRCClientZone *)self dbRowID];
-    v7 = [v9 numberWithSQL:{@"SELECT salting_state FROM server_items WHERE item_id = %@ AND zone_rowid = %@ LIMIT 1", v4, v10}];
+    dbRowID = [(BRCClientZone *)self dbRowID];
+    v7 = [v9 numberWithSQL:{@"SELECT salting_state FROM server_items WHERE item_id = %@ AND zone_rowid = %@ LIMIT 1", dCopy, dbRowID}];
 
     if (!v7)
     {
       return -1;
     }
 
-    v8 = [v7 intValue];
+    saltingState = [v7 intValue];
   }
 
-  v11 = v8;
+  v11 = saltingState;
 LABEL_10:
 
   return v11;
 }
 
-- (id)childBaseSaltForItemID:(id)a3
+- (id)childBaseSaltForItemID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isNonDesktopRoot])
+  dCopy = d;
+  if ([dCopy isNonDesktopRoot])
   {
     if (![(BRCClientZone *)self isPrivateZone])
     {
       [BRCClientZone(BRCBaseHashSaltAdditions) childBaseSaltForItemID:];
     }
 
-    v5 = [(BRCClientZone *)self session];
-    v6 = [v4 appLibraryRowID];
-    v7 = [v5 appLibraryByRowID:v6];
-    v8 = [v7 childBasehashSalt];
+    session = [(BRCClientZone *)self session];
+    appLibraryRowID = [dCopy appLibraryRowID];
+    v7 = [session appLibraryByRowID:appLibraryRowID];
+    childBasehashSalt = [v7 childBasehashSalt];
   }
 
   else
   {
-    v5 = [(BRCClientZone *)self db];
-    v6 = [(BRCClientZone *)self dbRowID];
-    v8 = [v5 dataWithSQL:{@"SELECT child_basehash_salt FROM server_items WHERE item_id = %@ AND zone_rowid = %@ LIMIT 1", v4, v6}];
+    session = [(BRCClientZone *)self db];
+    appLibraryRowID = [(BRCClientZone *)self dbRowID];
+    childBasehashSalt = [session dataWithSQL:{@"SELECT child_basehash_salt FROM server_items WHERE item_id = %@ AND zone_rowid = %@ LIMIT 1", dCopy, appLibraryRowID}];
   }
 
   v9 = brc_bread_crumbs();
   v10 = brc_default_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v13 = [v8 brc_truncatedSHA256];
-    v14 = [v13 brc_hexadecimalString];
-    v15 = [v4 debugDescription];
+    brc_truncatedSHA256 = [childBasehashSalt brc_truncatedSHA256];
+    brc_hexadecimalString = [brc_truncatedSHA256 brc_hexadecimalString];
+    v15 = [dCopy debugDescription];
     *buf = 138412802;
-    v17 = v14;
+    v17 = brc_hexadecimalString;
     v18 = 2112;
     v19 = v15;
     v20 = 2112;
@@ -783,20 +783,20 @@ LABEL_10:
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return childBasehashSalt;
 }
 
 - (void)cancelReset
 {
   if (self->_resetTimer)
   {
-    v3 = [(BRCAccountSession *)self->_session resetQueue];
+    resetQueue = [(BRCAccountSession *)self->_session resetQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __42__BRCClientZone_BRCZoneReset__cancelReset__block_invoke;
     block[3] = &unk_2784FF450;
     block[4] = self;
-    dispatch_sync(v3, block);
+    dispatch_sync(resetQueue, block);
   }
 }
 
@@ -812,11 +812,11 @@ void __42__BRCClientZone_BRCZoneReset__cancelReset__block_invoke(uint64_t a1)
   }
 }
 
-- (void)scheduleReset:(unint64_t)a3 completionHandler:(id)a4
+- (void)scheduleReset:(unint64_t)reset completionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(BRCAccountSession *)self->_session resetQueue];
+  handlerCopy = handler;
+  resetQueue = [(BRCAccountSession *)self->_session resetQueue];
   memset(v19, 0, sizeof(v19));
   __brc_create_section(0, "[BRCClientZone(BRCZoneReset) scheduleReset:completionHandler:]", 97, 0, v19);
   v8 = brc_bread_crumbs();
@@ -830,7 +830,7 @@ void __42__BRCClientZone_BRCZoneReset__cancelReset__block_invoke(uint64_t a1)
     v22 = 2080;
     v23 = v14;
     v24 = 2112;
-    v25 = self;
+    selfCopy = self;
     v26 = 2112;
     v27 = v8;
     _os_log_debug_impl(&dword_223E7A000, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx scheduling reset %s of %@%@", buf, 0x2Au);
@@ -841,10 +841,10 @@ void __42__BRCClientZone_BRCZoneReset__cancelReset__block_invoke(uint64_t a1)
   v15[2] = __63__BRCClientZone_BRCZoneReset__scheduleReset_completionHandler___block_invoke;
   v15[3] = &unk_2785018C8;
   v15[4] = self;
-  v18 = a3;
-  v10 = v6;
+  resetCopy = reset;
+  v10 = handlerCopy;
   v17 = v10;
-  v11 = v7;
+  v11 = resetQueue;
   v16 = v11;
   dispatch_async_with_logs_3(v11, v15);
 
@@ -1231,12 +1231,12 @@ void __63__BRCClientZone_BRCZoneReset__scheduleReset_completionHandler___block_i
   __brc_leave_section(&v6);
 }
 
-- (void)_reset:(unint64_t)a3 completionHandler:(id)a4
+- (void)_reset:(unint64_t)_reset completionHandler:(id)handler
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(BRCAccountSession *)self->_session resetQueue];
-  dispatch_assert_queue_V2(v7);
+  handlerCopy = handler;
+  resetQueue = [(BRCAccountSession *)self->_session resetQueue];
+  dispatch_assert_queue_V2(resetQueue);
 
   if (self->_activated)
   {
@@ -1244,9 +1244,9 @@ void __63__BRCClientZone_BRCZoneReset__scheduleReset_completionHandler___block_i
     v9 = brc_default_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(BRCClientZone *)self mangledID];
+      mangledID = [(BRCClientZone *)self mangledID];
       *buf = 138412802;
-      v35 = v10;
+      v35 = mangledID;
       v36 = 2080;
       v37 = BRCPrettyPrintEnum();
       v38 = 2112;
@@ -1256,7 +1256,7 @@ void __63__BRCClientZone_BRCZoneReset__scheduleReset_completionHandler___block_i
 
     v11 = [[BRCSignpostTracker alloc] initWithLabel:2];
     v12 = v11;
-    switch(a3)
+    switch(_reset)
     {
       case 4uLL:
         v25[0] = MEMORY[0x277D85DD0];
@@ -1265,7 +1265,7 @@ void __63__BRCClientZone_BRCZoneReset__scheduleReset_completionHandler___block_i
         v25[3] = &unk_2784FF5B8;
         v25[4] = self;
         v26 = v11;
-        v27 = v6;
+        v27 = handlerCopy;
         [(BRCClientZone *)self _performAfterResetServerAndClientTruthsAndUnlinkDataAndPurgeTheZone:v25];
 
         v13 = v26;
@@ -1277,7 +1277,7 @@ void __63__BRCClientZone_BRCZoneReset__scheduleReset_completionHandler___block_i
         v28[3] = &unk_2784FF5B8;
         v28[4] = self;
         v29 = v11;
-        v30 = v6;
+        v30 = handlerCopy;
         [(BRCClientZone *)self _performAfterResetServerAndClientTruthsAndUnlinkData:v28];
 
         v13 = v29;
@@ -1289,7 +1289,7 @@ void __63__BRCClientZone_BRCZoneReset__scheduleReset_completionHandler___block_i
         v31[3] = &unk_2784FF5B8;
         v31[4] = self;
         v32 = v11;
-        v33 = v6;
+        v33 = handlerCopy;
         [(BRCClientZone *)self _performResetAndWantsUnlink:0 clientTruthBlock:0 completionBlock:v31];
 
         v13 = v32;
@@ -1316,9 +1316,9 @@ LABEL_18:
     [(BRCClientZone(BRCZoneReset) *)self _reset:v14 completionHandler:v15];
   }
 
-  if (v6)
+  if (handlerCopy)
   {
-    v6[2](v6);
+    handlerCopy[2](handlerCopy);
   }
 
 LABEL_19:
@@ -1331,13 +1331,13 @@ LABEL_19:
   v17 = *MEMORY[0x277D85DE8];
   if ([(BRCClientZone *)self isPrivateZone])
   {
-    v3 = [(BRCClientZone *)self asPrivateClientZone];
+    asPrivateClientZone = [(BRCClientZone *)self asPrivateClientZone];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = [v3 appLibraries];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    appLibraries = [asPrivateClientZone appLibraries];
+    v5 = [appLibraries countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1348,19 +1348,19 @@ LABEL_19:
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(appLibraries);
           }
 
           v9 = *(*(&v12 + 1) + 8 * i);
-          v10 = [v9 childBasehashSalt];
+          childBasehashSalt = [v9 childBasehashSalt];
 
-          if (v10)
+          if (childBasehashSalt)
           {
             [v9 resetChildBasehashSalt];
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [appLibraries countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v6);
@@ -1374,7 +1374,7 @@ LABEL_19:
 {
   v3 = self->_session;
   v4 = [(BRCServerZone *)self->_serverZone db];
-  v5 = [v4 serialQueue];
+  serialQueue = [v4 serialQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__BRCClientZone_BRCZoneReset___resetAndDeleteServerTruthData__block_invoke;
@@ -1382,7 +1382,7 @@ LABEL_19:
   v7[4] = self;
   v8 = v3;
   v6 = v3;
-  dispatch_sync(v5, v7);
+  dispatch_sync(serialQueue, v7);
 }
 
 void __61__BRCClientZone_BRCZoneReset___resetAndDeleteServerTruthData__block_invoke(uint64_t a1)
@@ -1401,35 +1401,35 @@ void __61__BRCClientZone_BRCZoneReset___resetAndDeleteServerTruthData__block_inv
 
 - (void)_deleteJobsMatchingServerZone
 {
-  v3 = [(BRCAccountSession *)self->_session applyScheduler];
-  [v3 deleteNonRejectionJobsForZone:self->_serverZone];
+  applyScheduler = [(BRCAccountSession *)self->_session applyScheduler];
+  [applyScheduler deleteNonRejectionJobsForZone:self->_serverZone];
 
-  v4 = [(BRCAccountSession *)self->_session fsUploader];
-  [v4 deleteJobsMatching:self->_serverZone];
+  fsUploader = [(BRCAccountSession *)self->_session fsUploader];
+  [fsUploader deleteJobsMatching:self->_serverZone];
 
-  v5 = [(BRCAccountSession *)self->_session fsDownloader];
-  [v5 deleteJobsMatching:self->_serverZone];
+  fsDownloader = [(BRCAccountSession *)self->_session fsDownloader];
+  [fsDownloader deleteJobsMatching:self->_serverZone];
 
-  v6 = [(BRCAccountSession *)self->_session syncUpScheduler];
-  [v6 deleteJobsMatching:self->_serverZone];
+  syncUpScheduler = [(BRCAccountSession *)self->_session syncUpScheduler];
+  [syncUpScheduler deleteJobsMatching:self->_serverZone];
 }
 
-- (BOOL)_deleteRelevantPackageItemsWithDB:(id)a3 error:(id *)a4
+- (BOOL)_deleteRelevantPackageItemsWithDB:(id)b error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 executeWithSlowStatementRadar:@"<rdar://problem/23829401>" sql:{@"DELETE FROM client_pkg_upload_items WHERE item_rowid IN (SELECT rowid FROM client_items WHERE zone_rowid = %@ AND +item_type = 1 AND  HEX(SUBSTR(version_content_signature, 1, 1)) = '1B')", self->_dbRowID}];
+  bCopy = b;
+  v7 = [bCopy executeWithSlowStatementRadar:@"<rdar://problem/23829401>" sql:{@"DELETE FROM client_pkg_upload_items WHERE item_rowid IN (SELECT rowid FROM client_items WHERE zone_rowid = %@ AND +item_type = 1 AND  HEX(SUBSTR(version_content_signature, 1, 1)) = '1B')", self->_dbRowID}];
   if ((v7 & 1) == 0)
   {
     v8 = brc_bread_crumbs();
     v9 = brc_default_log();
     if (os_log_type_enabled(v9, 0x90u))
     {
-      [BRCClientZone(BRCZoneReset) _deleteRelevantPackageItemsWithDB:v6 error:?];
+      [BRCClientZone(BRCZoneReset) _deleteRelevantPackageItemsWithDB:bCopy error:?];
     }
 
-    v10 = [v6 lastError];
-    if (v10)
+    lastError = [bCopy lastError];
+    if (lastError)
     {
       v11 = brc_bread_crumbs();
       v12 = brc_default_log();
@@ -1439,24 +1439,24 @@ void __61__BRCClientZone_BRCZoneReset___resetAndDeleteServerTruthData__block_inv
         *buf = 136315906;
         v18 = "[BRCClientZone(BRCZoneReset) _deleteRelevantPackageItemsWithDB:error:]";
         v19 = 2080;
-        if (!a4)
+        if (!error)
         {
           v16 = "(ignored by caller)";
         }
 
         v20 = v16;
         v21 = 2112;
-        v22 = v10;
+        v22 = lastError;
         v23 = 2112;
         v24 = v11;
         _os_log_error_impl(&dword_223E7A000, v12, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
       }
     }
 
-    if (a4)
+    if (error)
     {
-      v13 = v10;
-      *a4 = v10;
+      v13 = lastError;
+      *error = lastError;
     }
   }
 
@@ -1464,25 +1464,25 @@ void __61__BRCClientZone_BRCZoneReset___resetAndDeleteServerTruthData__block_inv
   return v7;
 }
 
-- (BOOL)_performHardResetOnClientItemsAndWantsUnlink:(BOOL)a3 db:(id)a4 error:(id *)a5
+- (BOOL)_performHardResetOnClientItemsAndWantsUnlink:(BOOL)unlink db:(id)db error:(id *)error
 {
-  v6 = a3;
+  unlinkCopy = unlink;
   v53 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  if ([(BRCClientZone *)self _deleteRelevantPackageItemsWithDB:v8 error:a5])
+  dbCopy = db;
+  if ([(BRCClientZone *)self _deleteRelevantPackageItemsWithDB:dbCopy error:error])
   {
-    if (v6)
+    if (unlinkCopy)
     {
       v42 = 0u;
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v9 = [(BRCClientZone *)self allItemsSortedByDepthDescending:1];
-      v10 = [v9 countByEnumeratingWithState:&v40 objects:v52 count:16];
+      lastError2 = [(BRCClientZone *)self allItemsSortedByDepthDescending:1];
+      v10 = [lastError2 countByEnumeratingWithState:&v40 objects:v52 count:16];
       if (v10)
       {
         v11 = v10;
-        v38 = v8;
+        v38 = dbCopy;
         v12 = *v41;
         v39 = *MEMORY[0x277CFACB0];
         do
@@ -1491,14 +1491,14 @@ void __61__BRCClientZone_BRCZoneReset___resetAndDeleteServerTruthData__block_inv
           {
             if (*v41 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(lastError2);
             }
 
             v14 = *(*(&v40 + 1) + 8 * i);
-            v15 = [v14 itemID];
-            v16 = [v15 isDocumentsFolder];
+            itemID = [v14 itemID];
+            isDocumentsFolder = [itemID isDocumentsFolder];
 
-            if (v16)
+            if (isDocumentsFolder)
             {
               v17 = brc_bread_crumbs();
               v18 = brc_default_log();
@@ -1534,11 +1534,11 @@ void __61__BRCClientZone_BRCZoneReset___resetAndDeleteServerTruthData__block_inv
             if (([v14 saveToDB] & 1) == 0)
             {
               v21 = [v14 db];
-              v22 = [v21 lastError];
-              v23 = v22;
-              if (v22)
+              lastError = [v21 lastError];
+              v23 = lastError;
+              if (lastError)
               {
-                v24 = v22;
+                v24 = lastError;
               }
 
               else
@@ -1572,11 +1572,11 @@ void __61__BRCClientZone_BRCZoneReset___resetAndDeleteServerTruthData__block_inv
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v40 objects:v52 count:16];
+          v11 = [lastError2 countByEnumeratingWithState:&v40 objects:v52 count:16];
         }
 
         while (v11);
-        v8 = v38;
+        dbCopy = v38;
       }
 
 LABEL_37:
@@ -1584,17 +1584,17 @@ LABEL_37:
       goto LABEL_38;
     }
 
-    if (([v8 execute:{@"DELETE FROM client_items WHERE zone_rowid = %@", self->_dbRowID}] & 1) == 0)
+    if (([dbCopy execute:{@"DELETE FROM client_items WHERE zone_rowid = %@", self->_dbRowID}] & 1) == 0)
     {
       v30 = brc_bread_crumbs();
       v31 = brc_default_log();
       if (os_log_type_enabled(v31, 0x90u))
       {
-        [BRCClientZone(BRCZoneReset) _performHardResetOnClientItemsAndWantsUnlink:v8 db:? error:?];
+        [BRCClientZone(BRCZoneReset) _performHardResetOnClientItemsAndWantsUnlink:dbCopy db:? error:?];
       }
 
-      v9 = [v8 lastError];
-      if (v9)
+      lastError2 = [dbCopy lastError];
+      if (lastError2)
       {
         v32 = brc_bread_crumbs();
         v33 = brc_default_log();
@@ -1604,48 +1604,48 @@ LABEL_37:
           *buf = 136315906;
           v45 = "[BRCClientZone(BRCZoneReset) _performHardResetOnClientItemsAndWantsUnlink:db:error:]";
           v46 = 2080;
-          if (!a5)
+          if (!error)
           {
             v37 = "(ignored by caller)";
           }
 
           v47 = v37;
           v48 = 2112;
-          v49 = v9;
+          v49 = lastError2;
           v50 = 2112;
           v51 = v32;
           _os_log_error_impl(&dword_223E7A000, v33, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
         }
       }
 
-      if (a5)
+      if (error)
       {
-        v34 = v9;
-        *a5 = v9;
+        v34 = lastError2;
+        *error = lastError2;
       }
 
       goto LABEL_37;
     }
 
-    LOBYTE(v6) = 1;
+    LOBYTE(unlinkCopy) = 1;
   }
 
   else
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(unlinkCopy) = 0;
   }
 
 LABEL_38:
 
   v35 = *MEMORY[0x277D85DE8];
-  return v6;
+  return unlinkCopy;
 }
 
-- (BOOL)_postHardResetHandlingWithDB:(id)a3 completionBlock:(id)a4 error:(id *)a5
+- (BOOL)_postHardResetHandlingWithDB:(id)b completionBlock:(id)block error:(id *)error
 {
   v57 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  bCopy = b;
+  blockCopy = block;
   if (![(BRCClientZone *)self isPrivateZone])
   {
 LABEL_13:
@@ -1653,8 +1653,8 @@ LABEL_13:
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v22 = [(BRCClientZone *)self itemsParentedToThisZoneButLivingInAnOtherZone];
-    v23 = [v22 countByEnumeratingWithState:&v39 objects:v47 count:16];
+    itemsParentedToThisZoneButLivingInAnOtherZone = [(BRCClientZone *)self itemsParentedToThisZoneButLivingInAnOtherZone];
+    v23 = [itemsParentedToThisZoneButLivingInAnOtherZone countByEnumeratingWithState:&v39 objects:v47 count:16];
     if (v23)
     {
       v24 = v23;
@@ -1665,18 +1665,18 @@ LABEL_13:
         {
           if (*v40 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(itemsParentedToThisZoneButLivingInAnOtherZone);
           }
 
           v27 = *(*(&v39 + 1) + 8 * i);
           v28 = objc_autoreleasePoolPush();
-          v29 = [v27 appLibrary];
-          [v29 clearStateBits:0x40000];
+          appLibrary = [v27 appLibrary];
+          [appLibrary clearStateBits:0x40000];
 
           objc_autoreleasePoolPop(v28);
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v39 objects:v47 count:16];
+        v24 = [itemsParentedToThisZoneButLivingInAnOtherZone countByEnumeratingWithState:&v39 objects:v47 count:16];
       }
 
       while (v24);
@@ -1684,20 +1684,20 @@ LABEL_13:
 
     if ([(BRCClientZone *)self isPrivateZone])
     {
-      v30 = [(BRCClientZone *)self asPrivateClientZone];
-      [v30 clearProblemReport];
+      asPrivateClientZone = [(BRCClientZone *)self asPrivateClientZone];
+      [asPrivateClientZone clearProblemReport];
     }
 
-    v9[2](v9);
+    blockCopy[2](blockCopy);
     v31 = 1;
     goto LABEL_29;
   }
 
-  v10 = [(BRCClientZone *)self asPrivateClientZone];
-  v11 = [v10 defaultAppLibrary];
-  v12 = [v11 documentsFolderItemID];
-  v13 = [(BRCClientZone *)self dbRowID];
-  v14 = [v8 executeWithSlowStatementRadar:@"<rdar://problem//26848061>" sql:{@"UPDATE client_items SET item_parent_id = %@ WHERE item_parent_zone_rowid != zone_rowid AND item_parent_zone_rowid = %@", v12, v13}];
+  asPrivateClientZone2 = [(BRCClientZone *)self asPrivateClientZone];
+  defaultAppLibrary = [asPrivateClientZone2 defaultAppLibrary];
+  documentsFolderItemID = [defaultAppLibrary documentsFolderItemID];
+  dbRowID = [(BRCClientZone *)self dbRowID];
+  v14 = [bCopy executeWithSlowStatementRadar:@"<rdar://problem//26848061>" sql:{@"UPDATE client_items SET item_parent_id = %@ WHERE item_parent_zone_rowid != zone_rowid AND item_parent_zone_rowid = %@", documentsFolderItemID, dbRowID}];
 
   if (v14)
   {
@@ -1705,8 +1705,8 @@ LABEL_13:
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v15 = [v10 appLibraries];
-    v16 = [v15 countByEnumeratingWithState:&v43 objects:v48 count:16];
+    appLibraries = [asPrivateClientZone2 appLibraries];
+    v16 = [appLibraries countByEnumeratingWithState:&v43 objects:v48 count:16];
     if (v16)
     {
       v17 = v16;
@@ -1717,13 +1717,13 @@ LABEL_13:
         {
           if (*v44 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(appLibraries);
           }
 
           v20 = *(*(&v43 + 1) + 8 * j);
           [v20 setStateBits:1310720];
-          v21 = [(BRCAccountSession *)self->_session clientReadWriteDatabaseFacade];
-          [v21 saveAppLibrary:v20];
+          clientReadWriteDatabaseFacade = [(BRCAccountSession *)self->_session clientReadWriteDatabaseFacade];
+          [clientReadWriteDatabaseFacade saveAppLibrary:v20];
 
           if ([v20 includesDataScope])
           {
@@ -1731,7 +1731,7 @@ LABEL_13:
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v43 objects:v48 count:16];
+        v17 = [appLibraries countByEnumeratingWithState:&v43 objects:v48 count:16];
       }
 
       while (v17);
@@ -1740,8 +1740,8 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v32 = [v8 lastError];
-  if (v32)
+  lastError = [bCopy lastError];
+  if (lastError)
   {
     v33 = brc_bread_crumbs();
     v34 = brc_default_log();
@@ -1751,24 +1751,24 @@ LABEL_13:
       *buf = 136315906;
       v50 = "[BRCClientZone(BRCZoneReset) _postHardResetHandlingWithDB:completionBlock:error:]";
       v51 = 2080;
-      if (!a5)
+      if (!error)
       {
         v38 = "(ignored by caller)";
       }
 
       v52 = v38;
       v53 = 2112;
-      v54 = v32;
+      v54 = lastError;
       v55 = 2112;
       v56 = v33;
       _os_log_error_impl(&dword_223E7A000, v34, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
     }
   }
 
-  if (a5)
+  if (error)
   {
-    v35 = v32;
-    *a5 = v32;
+    v35 = lastError;
+    *error = lastError;
   }
 
   v31 = 0;
@@ -1778,26 +1778,26 @@ LABEL_29:
   return v31;
 }
 
-- (void)_performResetAndWantsUnlink:(BOOL)a3 clientTruthBlock:(id)a4 completionBlock:(id)a5
+- (void)_performResetAndWantsUnlink:(BOOL)unlink clientTruthBlock:(id)block completionBlock:(id)completionBlock
 {
-  v8 = a4;
-  v9 = a5;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   v10 = self->_session;
-  v11 = [(BRCAccountSession *)v10 resetQueue];
-  dispatch_assert_queue_V2(v11);
+  resetQueue = [(BRCAccountSession *)v10 resetQueue];
+  dispatch_assert_queue_V2(resetQueue);
   [(BRCClientZone *)self _resetAndDeleteServerTruthData];
-  v12 = [(BRCPQLConnection *)self->_db serialQueue];
+  serialQueue = [(BRCPQLConnection *)self->_db serialQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __92__BRCClientZone_BRCZoneReset___performResetAndWantsUnlink_clientTruthBlock_completionBlock___block_invoke;
   v15[3] = &unk_2785021B8;
   v15[4] = self;
-  v16 = v8;
-  v18 = a3;
-  v17 = v9;
-  v13 = v9;
-  v14 = v8;
-  dispatch_sync(v12, v15);
+  v16 = blockCopy;
+  unlinkCopy = unlink;
+  v17 = completionBlockCopy;
+  v13 = completionBlockCopy;
+  v14 = blockCopy;
+  dispatch_sync(serialQueue, v15);
 }
 
 void __92__BRCClientZone_BRCZoneReset___performResetAndWantsUnlink_clientTruthBlock_completionBlock___block_invoke(uint64_t a1)
@@ -1896,41 +1896,41 @@ LABEL_19:
   return v11;
 }
 
-- (void)_performAfterResetServerAndClientSharedTruthsAndUnlinkData:(id)a3
+- (void)_performAfterResetServerAndClientSharedTruthsAndUnlinkData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (![(BRCClientZone *)self isSharedZone])
   {
     [BRCClientZone(BRCZoneReset) _performAfterResetServerAndClientSharedTruthsAndUnlinkData:];
   }
 
-  [(BRCClientZone *)self _performResetAndWantsUnlink:1 clientTruthBlock:0 completionBlock:v4];
+  [(BRCClientZone *)self _performResetAndWantsUnlink:1 clientTruthBlock:0 completionBlock:dataCopy];
 }
 
-- (void)_performAfterResetServerAndClientTruthsAndUnlinkData:(id)a3
+- (void)_performAfterResetServerAndClientTruthsAndUnlinkData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if ([(BRCClientZone *)self isSharedZone])
   {
-    [(BRCClientZone *)self _performAfterResetServerAndClientSharedTruthsAndUnlinkData:v4];
+    [(BRCClientZone *)self _performAfterResetServerAndClientSharedTruthsAndUnlinkData:dataCopy];
   }
 
   else
   {
-    [(BRCClientZone *)self _performAfterResetServerAndClientPrivateTruthsAndUnlinkData:v4];
+    [(BRCClientZone *)self _performAfterResetServerAndClientPrivateTruthsAndUnlinkData:dataCopy];
   }
 }
 
-- (void)_performAfterResetServerAndClientTruthsAndUnlinkDataAndPurgeTheZone:(id)a3
+- (void)_performAfterResetServerAndClientTruthsAndUnlinkDataAndPurgeTheZone:(id)zone
 {
-  v4 = a3;
+  zoneCopy = zone;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAndUnlinkDataAndPurgeTheZone___block_invoke;
   v6[3] = &unk_278500048;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = zoneCopy;
+  v5 = zoneCopy;
   [(BRCClientZone *)self _performAfterResetServerAndClientTruthsAndUnlinkData:v6];
 }
 
@@ -1993,19 +1993,19 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
 {
   v131 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v91 = self;
+  selfCopy = self;
   if ([(BRCClientZone *)self isSharedZone])
   {
-    v4 = [(BRCClientZone *)self serverZone];
-    v5 = [v4 asSharedZone];
-    v6 = [v5 transferSyncContext];
+    serverZone = [(BRCClientZone *)self serverZone];
+    asSharedZone = [serverZone asSharedZone];
+    transferSyncContext = [asSharedZone transferSyncContext];
 
-    v7 = [v6 uploadStream];
-    v8 = [v7 operations];
-    [v3 addObjectsFromArray:v8];
+    uploadStream = [transferSyncContext uploadStream];
+    operations = [uploadStream operations];
+    [v3 addObjectsFromArray:operations];
 
-    v9 = [v6 allDownloadOperations];
-    [v3 addObjectsFromArray:v9];
+    allDownloadOperations = [transferSyncContext allDownloadOperations];
+    [v3 addObjectsFromArray:allDownloadOperations];
   }
 
   else
@@ -2014,10 +2014,10 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
     v119 = 0u;
     v116 = 0u;
     v117 = 0u;
-    v10 = [(BRCClientZone *)self asPrivateClientZone];
-    v11 = [v10 appLibraries];
+    asPrivateClientZone = [(BRCClientZone *)self asPrivateClientZone];
+    appLibraries = [asPrivateClientZone appLibraries];
 
-    v12 = [v11 countByEnumeratingWithState:&v116 objects:v130 count:16];
+    v12 = [appLibraries countByEnumeratingWithState:&v116 objects:v130 count:16];
     if (v12)
     {
       v13 = v12;
@@ -2028,19 +2028,19 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
         {
           if (*v117 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(appLibraries);
           }
 
-          v16 = [*(*(&v116 + 1) + 8 * i) transferSyncContext];
-          v17 = [v16 uploadStream];
-          v18 = [v17 operations];
-          [v3 addObjectsFromArray:v18];
+          transferSyncContext2 = [*(*(&v116 + 1) + 8 * i) transferSyncContext];
+          uploadStream2 = [transferSyncContext2 uploadStream];
+          operations2 = [uploadStream2 operations];
+          [v3 addObjectsFromArray:operations2];
 
-          v19 = [v16 allDownloadOperations];
-          [v3 addObjectsFromArray:v19];
+          allDownloadOperations2 = [transferSyncContext2 allDownloadOperations];
+          [v3 addObjectsFromArray:allDownloadOperations2];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v116 objects:v130 count:16];
+        v13 = [appLibraries countByEnumeratingWithState:&v116 objects:v130 count:16];
       }
 
       while (v13);
@@ -2087,7 +2087,7 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
     while (v22);
   }
 
-  v28 = v91->_syncUpOperation;
+  v28 = selfCopy->_syncUpOperation;
   if (v28)
   {
     v29 = brc_bread_crumbs();
@@ -2101,13 +2101,13 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
     [(_BRCOperation *)v28 cancel];
   }
 
-  syncUpOperation = v91->_syncUpOperation;
-  v91->_syncUpOperation = 0;
+  syncUpOperation = selfCopy->_syncUpOperation;
+  selfCopy->_syncUpOperation = 0;
 
-  lastSyncUpError = v91->_lastSyncUpError;
-  v91->_lastSyncUpError = 0;
+  lastSyncUpError = selfCopy->_lastSyncUpError;
+  selfCopy->_lastSyncUpError = 0;
 
-  v33 = v91->_syncDownOperation;
+  v33 = selfCopy->_syncDownOperation;
   if (v33)
   {
     v34 = brc_bread_crumbs();
@@ -2121,13 +2121,13 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
     [(_BRCOperation *)v33 cancel];
   }
 
-  syncDownOperation = v91->_syncDownOperation;
-  v91->_syncDownOperation = 0;
+  syncDownOperation = selfCopy->_syncDownOperation;
+  selfCopy->_syncDownOperation = 0;
 
-  lastSyncDownError = v91->_lastSyncDownError;
-  v91->_lastSyncDownError = 0;
+  lastSyncDownError = selfCopy->_lastSyncDownError;
+  selfCopy->_lastSyncDownError = 0;
 
-  v38 = v91->_fetchRecentsOperation;
+  v38 = selfCopy->_fetchRecentsOperation;
   if (v38)
   {
     v39 = brc_bread_crumbs();
@@ -2141,15 +2141,15 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
     [(_BRCOperation *)v38 cancel];
   }
 
-  fetchRecentsOperation = v91->_fetchRecentsOperation;
-  v91->_fetchRecentsOperation = 0;
+  fetchRecentsOperation = selfCopy->_fetchRecentsOperation;
+  selfCopy->_fetchRecentsOperation = 0;
 
   v110 = 0u;
   v111 = 0u;
   v108 = 0u;
   v109 = 0u;
-  v42 = [(NSMutableDictionary *)v91->_locateRecordOperations allValues];
-  v43 = [v42 countByEnumeratingWithState:&v108 objects:v124 count:16];
+  allValues = [(NSMutableDictionary *)selfCopy->_locateRecordOperations allValues];
+  v43 = [allValues countByEnumeratingWithState:&v108 objects:v124 count:16];
   if (v43)
   {
     v44 = v43;
@@ -2162,7 +2162,7 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
       {
         if (*v109 != v45)
         {
-          objc_enumerationMutation(v42);
+          objc_enumerationMutation(allValues);
         }
 
         v38 = *(*(&v108 + 1) + 8 * v46);
@@ -2185,20 +2185,20 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
       }
 
       while (v44 != v46);
-      v44 = [v42 countByEnumeratingWithState:&v108 objects:v124 count:16];
+      v44 = [allValues countByEnumeratingWithState:&v108 objects:v124 count:16];
     }
 
     while (v44);
   }
 
-  p_isa = &v91->super.isa;
-  [(NSMutableDictionary *)v91->_locateRecordOperations removeAllObjects];
+  p_isa = &selfCopy->super.isa;
+  [(NSMutableDictionary *)selfCopy->_locateRecordOperations removeAllObjects];
   v106 = 0u;
   v107 = 0u;
   v104 = 0u;
   v105 = 0u;
-  v51 = [(NSMutableDictionary *)v91->_fetchParentOperations allValues];
-  v52 = [v51 countByEnumeratingWithState:&v104 objects:v123 count:16];
+  allValues2 = [(NSMutableDictionary *)selfCopy->_fetchParentOperations allValues];
+  v52 = [allValues2 countByEnumeratingWithState:&v104 objects:v123 count:16];
   if (v52)
   {
     v53 = v52;
@@ -2212,7 +2212,7 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
       {
         if (*v105 != v55)
         {
-          objc_enumerationMutation(v51);
+          objc_enumerationMutation(allValues2);
         }
 
         v54 = *(*(&v104 + 1) + 8 * v56);
@@ -2235,12 +2235,12 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
       }
 
       while (v53 != v56);
-      v53 = [v51 countByEnumeratingWithState:&v104 objects:v123 count:16];
+      v53 = [allValues2 countByEnumeratingWithState:&v104 objects:v123 count:16];
     }
 
     while (v53);
 
-    p_isa = &v91->super.isa;
+    p_isa = &selfCopy->super.isa;
   }
 
   [p_isa[27] removeAllObjects];
@@ -2248,8 +2248,8 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
   v103 = 0u;
   v100 = 0u;
   v101 = 0u;
-  v60 = [p_isa[26] allValues];
-  v61 = [v60 countByEnumeratingWithState:&v100 objects:v122 count:16];
+  allValues3 = [p_isa[26] allValues];
+  v61 = [allValues3 countByEnumeratingWithState:&v100 objects:v122 count:16];
   if (v61)
   {
     v62 = v61;
@@ -2263,7 +2263,7 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
       {
         if (*v101 != v64)
         {
-          objc_enumerationMutation(v60);
+          objc_enumerationMutation(allValues3);
         }
 
         v63 = *(*(&v100 + 1) + 8 * v65);
@@ -2286,12 +2286,12 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
       }
 
       while (v62 != v65);
-      v62 = [v60 countByEnumeratingWithState:&v100 objects:v122 count:16];
+      v62 = [allValues3 countByEnumeratingWithState:&v100 objects:v122 count:16];
     }
 
     while (v62);
 
-    p_isa = &v91->super.isa;
+    p_isa = &selfCopy->super.isa;
   }
 
   [p_isa[26] removeAllObjects];
@@ -2299,8 +2299,8 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
   v99 = 0u;
   v96 = 0u;
   v97 = 0u;
-  v69 = [p_isa[25] allValues];
-  v70 = [v69 countByEnumeratingWithState:&v96 objects:v121 count:16];
+  allValues4 = [p_isa[25] allValues];
+  v70 = [allValues4 countByEnumeratingWithState:&v96 objects:v121 count:16];
   if (v70)
   {
     v71 = v70;
@@ -2314,7 +2314,7 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
       {
         if (*v97 != v73)
         {
-          objc_enumerationMutation(v69);
+          objc_enumerationMutation(allValues4);
         }
 
         v72 = *(*(&v96 + 1) + 8 * v74);
@@ -2337,21 +2337,21 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
       }
 
       while (v71 != v74);
-      v71 = [v69 countByEnumeratingWithState:&v96 objects:v121 count:16];
+      v71 = [allValues4 countByEnumeratingWithState:&v96 objects:v121 count:16];
     }
 
     while (v71);
 
-    p_isa = &v91->super.isa;
+    p_isa = &selfCopy->super.isa;
   }
 
   [p_isa[25] removeAllObjects];
   if ([p_isa[2] isPrivateZone])
   {
-    v78 = [p_isa asPrivateClientZone];
-    v79 = [v78 getCreateCloudKitZoneOperation];
+    asPrivateClientZone2 = [p_isa asPrivateClientZone];
+    getCreateCloudKitZoneOperation = [asPrivateClientZone2 getCreateCloudKitZoneOperation];
 
-    if (v79)
+    if (getCreateCloudKitZoneOperation)
     {
       v80 = brc_bread_crumbs();
       v81 = brc_default_log();
@@ -2360,8 +2360,8 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
         [BRCClientZone(BRCZoneReset) _cancelAllOperationsForReset];
       }
 
-      [v20 addObject:v79];
-      [v79 cancel];
+      [v20 addObject:getCreateCloudKitZoneOperation];
+      [getCreateCloudKitZoneOperation cancel];
     }
   }
 
@@ -2408,11 +2408,11 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
   return v20;
 }
 
-- (void)_finishedReset:(unint64_t)a3 signpostTracker:(id)a4 completionHandler:(id)a5
+- (void)_finishedReset:(unint64_t)reset signpostTracker:(id)tracker completionHandler:(id)handler
 {
   v90 = *MEMORY[0x277D85DE8];
-  v52 = a4;
-  v53 = a5;
+  trackerCopy = tracker;
+  handlerCopy = handler;
   [(BRCPQLConnection *)self->_db assertOnQueue];
   v51 = [MEMORY[0x277CCACA8] stringWithFormat:@"reset %s", BRCPrettyPrintEnum()];
   memset(v77, 0, sizeof(v77));
@@ -2424,16 +2424,16 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
     *buf = 134218754;
     v83 = v77[0];
     v84 = 2112;
-    v85 = v51;
+    selfCopy3 = v51;
     v86 = 2112;
-    v87 = self;
+    selfCopy = self;
     v88 = 2112;
     v89 = v8;
     _os_log_debug_impl(&dword_223E7A000, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx finishing %@ of %@%@", buf, 0x2Au);
   }
 
   v10 = ![(BRCClientZone *)self isSharedZone];
-  if (a3 < 3)
+  if (reset < 3)
   {
     LOBYTE(v10) = 1;
   }
@@ -2443,7 +2443,7 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
     [(BRCClientZone *)self _flushIdleBlocksIfNeeded];
   }
 
-  if (a3 <= 2)
+  if (reset <= 2)
   {
     v11 = 256;
   }
@@ -2460,10 +2460,10 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
     v76 = 0u;
     v73 = 0u;
     v74 = 0u;
-    v12 = [(BRCClientZone *)self asPrivateClientZone];
-    v13 = [v12 appLibraries];
+    asPrivateClientZone = [(BRCClientZone *)self asPrivateClientZone];
+    appLibraries = [asPrivateClientZone appLibraries];
 
-    v14 = [v13 countByEnumeratingWithState:&v73 objects:v81 count:16];
+    v14 = [appLibraries countByEnumeratingWithState:&v73 objects:v81 count:16];
     if (v14)
     {
       v15 = *v74;
@@ -2473,13 +2473,13 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
         {
           if (*v74 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(appLibraries);
           }
 
           [*(*(&v73 + 1) + 8 * i) clearStateBits:503316482];
         }
 
-        v14 = [v13 countByEnumeratingWithState:&v73 objects:v81 count:16];
+        v14 = [appLibraries countByEnumeratingWithState:&v73 objects:v81 count:16];
       }
 
       while (v14);
@@ -2495,9 +2495,9 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
       *buf = 138412802;
       v83 = v51;
       v84 = 2112;
-      v85 = self;
+      selfCopy3 = self;
       v86 = 2112;
-      v87 = v27;
+      selfCopy = v27;
       _os_log_debug_impl(&dword_223E7A000, v28, OS_LOG_TYPE_DEBUG, "[DEBUG] finished %@ of %@ but we still need to delete data%@", buf, 0x20u);
     }
 
@@ -2518,10 +2518,10 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
       v72 = 0u;
       v69 = 0u;
       v70 = 0u;
-      v18 = [(BRCClientZone *)self asPrivateClientZone];
-      v19 = [v18 appLibraries];
+      asPrivateClientZone2 = [(BRCClientZone *)self asPrivateClientZone];
+      appLibraries2 = [asPrivateClientZone2 appLibraries];
 
-      v20 = [v19 countByEnumeratingWithState:&v69 objects:v80 count:16];
+      v20 = [appLibraries2 countByEnumeratingWithState:&v69 objects:v80 count:16];
       if (v20)
       {
         v21 = *v70;
@@ -2531,16 +2531,16 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
           {
             if (*v70 != v21)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(appLibraries2);
             }
 
             v23 = *(*(&v69 + 1) + 8 * j);
             [v23 clearStateBits:134217730];
-            v24 = [(BRCAccountSession *)self->_session clientReadWriteDatabaseFacade];
-            [v24 saveAppLibrary:v23];
+            clientReadWriteDatabaseFacade = [(BRCAccountSession *)self->_session clientReadWriteDatabaseFacade];
+            [clientReadWriteDatabaseFacade saveAppLibrary:v23];
           }
 
-          v20 = [v19 countByEnumeratingWithState:&v69 objects:v80 count:16];
+          v20 = [appLibraries2 countByEnumeratingWithState:&v69 objects:v80 count:16];
         }
 
         while (v20);
@@ -2554,16 +2554,16 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
       *buf = 138412802;
       v83 = v51;
       v84 = 2112;
-      v85 = self;
+      selfCopy3 = self;
       v86 = 2112;
-      v87 = v25;
+      selfCopy = v25;
       _os_log_debug_impl(&dword_223E7A000, v26, OS_LOG_TYPE_DEBUG, "[DEBUG] finished %@ of %@%@", buf, 0x20u);
     }
   }
 
   [(BRCAccountSession *)self->_session saveClientZoneToDB:self];
   v29 = dispatch_group_create();
-  if (a3 > 2)
+  if (reset > 2)
   {
     if (![(BRCClientZone *)self isPrivateZone])
     {
@@ -2574,10 +2574,10 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v36 = [(BRCClientZone *)self asPrivateClientZone];
-    v31 = [v36 appLibraries];
+    asPrivateClientZone3 = [(BRCClientZone *)self asPrivateClientZone];
+    appLibraries3 = [asPrivateClientZone3 appLibraries];
 
-    v37 = [v31 countByEnumeratingWithState:&v56 objects:v78 count:16];
+    v37 = [appLibraries3 countByEnumeratingWithState:&v56 objects:v78 count:16];
     if (v37)
     {
       v38 = *v57;
@@ -2587,13 +2587,13 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
         {
           if (*v57 != v38)
           {
-            objc_enumerationMutation(v31);
+            objc_enumerationMutation(appLibraries3);
           }
 
           [*(*(&v56 + 1) + 8 * k) clearStateBits:8];
         }
 
-        v37 = [v31 countByEnumeratingWithState:&v56 objects:v78 count:16];
+        v37 = [appLibraries3 countByEnumeratingWithState:&v56 objects:v78 count:16];
       }
 
       while (v37);
@@ -2606,10 +2606,10 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
     v68 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v30 = [(BRCClientZone *)self asPrivateClientZone];
-    v31 = [v30 appLibraries];
+    asPrivateClientZone4 = [(BRCClientZone *)self asPrivateClientZone];
+    appLibraries3 = [asPrivateClientZone4 appLibraries];
 
-    v32 = [v31 countByEnumeratingWithState:&v65 objects:v79 count:16];
+    v32 = [appLibraries3 countByEnumeratingWithState:&v65 objects:v79 count:16];
     if (v32)
     {
       v33 = *v66;
@@ -2619,7 +2619,7 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
         {
           if (*v66 != v33)
           {
-            objc_enumerationMutation(v31);
+            objc_enumerationMutation(appLibraries3);
           }
 
           v35 = *(*(&v65 + 1) + 8 * m);
@@ -2632,7 +2632,7 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
           [v35 reimportLibraryRootAndFinishResetWithCompletion:v63];
         }
 
-        v32 = [v31 countByEnumeratingWithState:&v65 objects:v79 count:16];
+        v32 = [appLibraries3 countByEnumeratingWithState:&v65 objects:v79 count:16];
       }
 
       while (v32);
@@ -2641,12 +2641,12 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
 
   else
   {
-    v31 = [(BRCPQLConnection *)self->_db fetch:@"SELECT rowid, item_type FROM client_items  WHERE zone_rowid = %@ AND (item_sharing_options & 4) != 0", self->_dbRowID];
-    while ([v31 next])
+    appLibraries3 = [(BRCPQLConnection *)self->_db fetch:@"SELECT rowid, item_type FROM client_items  WHERE zone_rowid = %@ AND (item_sharing_options & 4) != 0", self->_dbRowID];
+    while ([appLibraries3 next])
     {
       v42 = objc_autoreleasePoolPush();
-      v43 = [v31 longLongAtIndex:0];
-      v44 = [v31 intAtIndex:1];
+      v43 = [appLibraries3 longLongAtIndex:0];
+      v44 = [appLibraries3 intAtIndex:1];
       v45 = objc_alloc(MEMORY[0x277CFAE48]);
       if (v44 - 1 < 2 || v44 == 8)
       {
@@ -2659,13 +2659,13 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
       }
 
       v48 = [v45 initWithRowID:v43 type:v47];
-      v49 = [v48 asString];
+      asString = [v48 asString];
       dispatch_group_enter(v29);
       v60[0] = MEMORY[0x277D85DD0];
       v60[1] = 3221225472;
       v60[2] = __80__BRCClientZone_BRCZoneReset___finishedReset_signpostTracker_completionHandler___block_invoke_2;
       v60[3] = &unk_2784FFFA8;
-      v50 = v49;
+      v50 = asString;
       v61 = v50;
       v62 = v29;
       [BRCImportUtil reimportItemsBelowItemWithIdentifier:v50 completionHandler:v60];
@@ -2675,16 +2675,16 @@ void __99__BRCClientZone_BRCZoneReset___performAfterResetServerAndClientTruthsAn
   }
 
 LABEL_54:
-  [v52 endSignpostEvent];
-  if (v53)
+  [trackerCopy endSignpostEvent];
+  if (handlerCopy)
   {
-    v40 = [(BRCPQLConnection *)self->_db serialQueue];
+    serialQueue = [(BRCPQLConnection *)self->_db serialQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __80__BRCClientZone_BRCZoneReset___finishedReset_signpostTracker_completionHandler___block_invoke_46;
     block[3] = &unk_278501520;
-    v55 = v53;
-    dispatch_group_notify(v29, v40, block);
+    v55 = handlerCopy;
+    dispatch_group_notify(v29, serialQueue, block);
   }
 
   __brc_leave_section(v77);
@@ -2751,8 +2751,8 @@ void __80__BRCClientZone_BRCZoneReset___finishedReset_signpostTracker_completion
 
 - (void)_decreaseSyncUpBatchSizeAfterError
 {
-  v3 = [(BRCClientZone *)self mangledID];
-  v4 = [BRCUserDefaults defaultsForMangledID:v3];
+  mangledID = [(BRCClientZone *)self mangledID];
+  v4 = [BRCUserDefaults defaultsForMangledID:mangledID];
   [v4 modifyRecordsCountMultiplicativeDecrease];
   v6 = v5;
 
@@ -2763,8 +2763,8 @@ void __80__BRCClientZone_BRCZoneReset___finishedReset_signpostTracker_completion
 {
   if (self->_syncUpBatchSizeMultiplier < 1.0)
   {
-    v3 = [(BRCClientZone *)self mangledID];
-    v4 = [BRCUserDefaults defaultsForMangledID:v3];
+    mangledID = [(BRCClientZone *)self mangledID];
+    v4 = [BRCUserDefaults defaultsForMangledID:mangledID];
     [v4 modifyRecordsCountAdditiveIncreaseFraction];
     v6 = v5;
 
@@ -2778,11 +2778,11 @@ void __80__BRCClientZone_BRCZoneReset___finishedReset_signpostTracker_completion
   }
 }
 
-- (void)setNeedsSave:(BOOL)a3
+- (void)setNeedsSave:(BOOL)save
 {
-  if (self->_needsSave != a3)
+  if (self->_needsSave != save)
   {
-    if (a3)
+    if (save)
     {
       [(BRCPQLConnection *)self->_db forceBatchStart];
       v5 = brc_bread_crumbs();
@@ -2793,7 +2793,7 @@ void __80__BRCClientZone_BRCZoneReset___finishedReset_signpostTracker_completion
       }
     }
 
-    self->_needsSave = a3;
+    self->_needsSave = save;
   }
 }
 
@@ -2807,38 +2807,38 @@ void __80__BRCClientZone_BRCZoneReset___finishedReset_signpostTracker_completion
   return 0;
 }
 
-- (BRCClientZone)initWithMangledID:(id)a3 dbRowID:(id)a4 plist:(id)a5 session:(id)a6 initialCreation:(BOOL)a7
+- (BRCClientZone)initWithMangledID:(id)d dbRowID:(id)iD plist:(id)plist session:(id)session initialCreation:(BOOL)creation
 {
-  v7 = a7;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  creationCopy = creation;
+  dCopy = d;
+  iDCopy = iD;
+  plistCopy = plist;
+  sessionCopy = session;
   v56.receiver = self;
   v56.super_class = BRCClientZone;
   v17 = [(BRCClientZone *)&v56 init];
   v18 = v17;
   if (v17)
   {
-    v17->_isInitialCreation = v7;
-    v19 = [v16 clientDB];
+    v17->_isInitialCreation = creationCopy;
+    clientDB = [sessionCopy clientDB];
     db = v18->_db;
-    v18->_db = v19;
+    v18->_db = clientDB;
 
-    v21 = [v16 clientReadWriteDatabaseFacade];
+    clientReadWriteDatabaseFacade = [sessionCopy clientReadWriteDatabaseFacade];
     dbFacade = v18->_dbFacade;
-    v18->_dbFacade = v21;
+    v18->_dbFacade = clientReadWriteDatabaseFacade;
 
-    objc_storeStrong(&v18->_dbRowID, a4);
-    objc_storeStrong(&v18->_session, a6);
-    objc_storeStrong(&v18->_mangledID, a3);
-    v23 = [v13 appLibraryOrZoneName];
+    objc_storeStrong(&v18->_dbRowID, iD);
+    objc_storeStrong(&v18->_session, session);
+    objc_storeStrong(&v18->_mangledID, d);
+    appLibraryOrZoneName = [dCopy appLibraryOrZoneName];
     zoneName = v18->_zoneName;
-    v18->_zoneName = v23;
+    v18->_zoneName = appLibraryOrZoneName;
 
-    v25 = [v13 ownerName];
+    ownerName = [dCopy ownerName];
     ownerName = v18->_ownerName;
-    v18->_ownerName = v25;
+    v18->_ownerName = ownerName;
 
     v27 = brc_task_tracker_create("zone-tracker");
     taskTracker = v18->_taskTracker;
@@ -2878,32 +2878,32 @@ void __80__BRCClientZone_BRCZoneReset___finishedReset_signpostTracker_completion
     directoriesCreatedLastSyncUp = v18->_directoriesCreatedLastSyncUp;
     v18->_directoriesCreatedLastSyncUp = v43;
 
-    v45 = [BRCUserDefaults defaultsForMangledID:v13];
-    v46 = [v45 serverStitchingThrottleParams];
+    v45 = [BRCUserDefaults defaultsForMangledID:dCopy];
+    serverStitchingThrottleParams = [v45 serverStitchingThrottleParams];
 
-    v47 = [[BRCThrottle alloc] initWithName:@"server-stitching-throttle" andParameters:v46];
+    v47 = [[BRCThrottle alloc] initWithName:@"server-stitching-throttle" andParameters:serverStitchingThrottleParams];
     serverStitchingOperationThrottle = v18->_serverStitchingOperationThrottle;
     v18->_serverStitchingOperationThrottle = v47;
 
-    v49 = [BRCUserDefaults defaultsForMangledID:v13];
-    v50 = [v49 locateRecordsThrottleParams];
+    v49 = [BRCUserDefaults defaultsForMangledID:dCopy];
+    locateRecordsThrottleParams = [v49 locateRecordsThrottleParams];
 
-    v51 = [[BRCThrottle alloc] initWithName:@"locate-records-throttle" andParameters:v50];
+    v51 = [[BRCThrottle alloc] initWithName:@"locate-records-throttle" andParameters:locateRecordsThrottleParams];
     locateRecordsOperationThrottle = v18->_locateRecordsOperationThrottle;
     v18->_locateRecordsOperationThrottle = v51;
 
-    if (v7)
+    if (creationCopy)
     {
-      v53 = [MEMORY[0x277CBC4F8] br_syncDownInitial];
+      br_syncDownInitial = [MEMORY[0x277CBC4F8] br_syncDownInitial];
       syncDownGroup = v18->_syncDownGroup;
-      v18->_syncDownGroup = v53;
+      v18->_syncDownGroup = br_syncDownInitial;
 
       [(BRCClientZone *)v18 setNeedsSave:1];
     }
 
     else
     {
-      [(BRCClientZone *)v18 updateWithPlist:v15];
+      [(BRCClientZone *)v18 updateWithPlist:plistCopy];
     }
 
     [(BRCClientZone *)v18 _recreateSyncBudgetsAndThrottlesIfNeeded];
@@ -2916,8 +2916,8 @@ void __80__BRCClientZone_BRCZoneReset___finishedReset_signpostTracker_completion
 {
   if (self->_hasWorkDidUpdateObserver)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self->_hasWorkDidUpdateObserver];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_hasWorkDidUpdateObserver];
   }
 
   v4.receiver = self;
@@ -2964,53 +2964,53 @@ void __80__BRCClientZone_BRCZoneReset___finishedReset_signpostTracker_completion
   }
 }
 
-- (void)updateWithPlist:(id)a3
+- (void)updateWithPlist:(id)plist
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"state"];
+  plistCopy = plist;
+  v5 = [plistCopy objectForKeyedSubscript:@"state"];
   self->_state = [v5 unsignedIntValue];
 
-  v6 = [v4 objectForKeyedSubscript:@"requestID"];
+  v6 = [plistCopy objectForKeyedSubscript:@"requestID"];
   self->_requestID = [v6 unsignedLongLongValue];
 
-  v7 = [v4 objectForKeyedSubscript:@"lastApplyRank"];
+  v7 = [plistCopy objectForKeyedSubscript:@"lastApplyRank"];
   self->_lastInsertedRank = [v7 longLongValue];
 
-  v8 = [v4 objectForKeyedSubscript:@"appliedTombstoneRanks"];
+  v8 = [plistCopy objectForKeyedSubscript:@"appliedTombstoneRanks"];
   v9 = [v8 mutableCopy];
   appliedTombstoneRanks = self->_appliedTombstoneRanks;
   self->_appliedTombstoneRanks = v9;
 
-  v11 = [v4 objectForKeyedSubscript:@"syncUpThrottle"];
+  v11 = [plistCopy objectForKeyedSubscript:@"syncUpThrottle"];
   p_syncUpThrottle = &self->_syncUpThrottle;
   syncUpThrottle = self->_syncUpThrottle;
   self->_syncUpThrottle = v11;
 
-  v14 = [v4 objectForKeyedSubscript:@"syncUpBudget"];
+  v14 = [plistCopy objectForKeyedSubscript:@"syncUpBudget"];
   syncUpBudget = self->_syncUpBudget;
   self->_syncUpBudget = v14;
 
-  v16 = [v4 objectForKeyedSubscript:@"syncUpBackoffRatio"];
+  v16 = [plistCopy objectForKeyedSubscript:@"syncUpBackoffRatio"];
   syncUpBackoffRatio = self->_syncUpBackoffRatio;
   self->_syncUpBackoffRatio = v16;
 
-  v18 = [v4 objectForKeyedSubscript:@"syncDownThrottle"];
+  v18 = [plistCopy objectForKeyedSubscript:@"syncDownThrottle"];
   syncDownThrottle = self->_syncDownThrottle;
   self->_syncDownThrottle = v18;
 
-  v20 = [v4 objectForKeyedSubscript:@"lastSyncDownDate"];
+  v20 = [plistCopy objectForKeyedSubscript:@"lastSyncDownDate"];
   lastSyncDownDate = self->_lastSyncDownDate;
   self->_lastSyncDownDate = v20;
 
-  v22 = [v4 objectForKeyedSubscript:@"osNameRequiredToSync"];
+  v22 = [plistCopy objectForKeyedSubscript:@"osNameRequiredToSync"];
   osNameRequiredToSync = self->_osNameRequiredToSync;
   self->_osNameRequiredToSync = v22;
 
-  v24 = [v4 objectForKeyedSubscript:@"syncDownGroup"];
+  v24 = [plistCopy objectForKeyedSubscript:@"syncDownGroup"];
   syncDownGroup = self->_syncDownGroup;
   self->_syncDownGroup = v24;
 
-  v26 = [v4 objectForKeyedSubscript:@"appUninstalledDate"];
+  v26 = [plistCopy objectForKeyedSubscript:@"appUninstalledDate"];
 
   appUninstalledDate = self->_appUninstalledDate;
   self->_appUninstalledDate = v26;
@@ -3035,7 +3035,7 @@ void __80__BRCClientZone_BRCZoneReset___finishedReset_signpostTracker_completion
 
 - (void)close
 {
-  OUTLINED_FUNCTION_21(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_21(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_3_1();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x16u);
@@ -3298,28 +3298,28 @@ void __22__BRCClientZone_close__block_invoke_89(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scheduleResetServerAndClientTruthsForReason:(id)a3 completionHandler:(id)a4
+- (void)scheduleResetServerAndClientTruthsForReason:(id)reason completionHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  handlerCopy = handler;
   if (scheduleResetServerAndClientTruthsForReason_completionHandler__onceToken != -1)
   {
     [BRCClientZone scheduleResetServerAndClientTruthsForReason:completionHandler:];
   }
 
   v8 = [BRCUserDefaults defaultsForMangledID:self->_mangledID];
-  v9 = [v8 resetReasonsToTriggerTTR];
+  resetReasonsToTriggerTTR = [v8 resetReasonsToTriggerTTR];
 
-  if ([v9 containsObject:v6])
+  if ([resetReasonsToTriggerTTR containsObject:reasonCopy])
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Zone Reset: %@", v6];
-    v11 = [(BRCAccountSession *)self->_session tapToRadarManager];
-    v12 = [MEMORY[0x277CCA9B8] brc_errorZoneReset];
-    [v11 requestTapToRadarWithTitle:v10 description:v10 keywords:MEMORY[0x277CBEBF8] attachments:MEMORY[0x277CBEBF8] sendFullLog:0 displayReason:@"it got to an invalid state" triggerRootCause:v12 additionalDevices:0];
+    reasonCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Zone Reset: %@", reasonCopy];
+    tapToRadarManager = [(BRCAccountSession *)self->_session tapToRadarManager];
+    brc_errorZoneReset = [MEMORY[0x277CCA9B8] brc_errorZoneReset];
+    [tapToRadarManager requestTapToRadarWithTitle:reasonCopy description:reasonCopy keywords:MEMORY[0x277CBEBF8] attachments:MEMORY[0x277CBEBF8] sendFullLog:0 displayReason:@"it got to an invalid state" triggerRootCause:brc_errorZoneReset additionalDevices:0];
   }
 
-  if (([scheduleResetServerAndClientTruthsForReason_completionHandler__reasonsToIgnoreForABC containsObject:v6] & 1) == 0)
+  if (([scheduleResetServerAndClientTruthsForReason_completionHandler__reasonsToIgnoreForABC containsObject:reasonCopy] & 1) == 0)
   {
     v13 = brc_bread_crumbs();
     v14 = brc_default_log();
@@ -3334,20 +3334,20 @@ void __22__BRCClientZone_close__block_invoke_89(uint64_t a1)
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v22 = v6;
+    v22 = reasonCopy;
     v23 = 2112;
     v24 = v15;
     _os_log_impl(&dword_223E7A000, v16, OS_LOG_TYPE_DEFAULT, "[WARNING] Container needs server and client truths reset: %@%@", buf, 0x16u);
   }
 
   v17 = +[BRCEventsAnalytics sharedAnalytics];
-  [v17 registerAndSendNewContainerResetWithOutcome:v6];
+  [v17 registerAndSendNewContainerResetWithOutcome:reasonCopy];
 
-  v18 = [AppTelemetryTimeSeriesEvent newZoneResetEventWithZoneMangledID:self->_mangledID enhancedDrivePrivacyEnabled:[(BRCClientZone *)self enhancedDrivePrivacyEnabled] lastSyncDate:self->_lastSyncDownDate error:0 errorDescription:v6];
-  v19 = [(BRCAccountSession *)self->_session analyticsReporter];
-  [v19 postReportForDefaultSubCategoryWithCategory:8 telemetryTimeEvent:v18];
+  v18 = [AppTelemetryTimeSeriesEvent newZoneResetEventWithZoneMangledID:self->_mangledID enhancedDrivePrivacyEnabled:[(BRCClientZone *)self enhancedDrivePrivacyEnabled] lastSyncDate:self->_lastSyncDownDate error:0 errorDescription:reasonCopy];
+  analyticsReporter = [(BRCAccountSession *)self->_session analyticsReporter];
+  [analyticsReporter postReportForDefaultSubCategoryWithCategory:8 telemetryTimeEvent:v18];
 
-  [(BRCClientZone *)self scheduleReset:2 completionHandler:v7];
+  [(BRCClientZone *)self scheduleReset:2 completionHandler:handlerCopy];
   v20 = *MEMORY[0x277D85DE8];
 }
 
@@ -3358,15 +3358,15 @@ uint64_t __79__BRCClientZone_scheduleResetServerAndClientTruthsForReason_complet
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)handleZoneLevelErrorIfNeeded:(id)a3 forItemCreation:(BOOL)a4
+- (BOOL)handleZoneLevelErrorIfNeeded:(id)needed forItemCreation:(BOOL)creation
 {
-  v4 = a4;
+  creationCopy = creation;
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  neededCopy = needed;
   [(BRCPQLConnection *)self->_db assertOnQueue];
   v31 = 0;
   v32 = 0;
-  v7 = [v6 brc_isCloudKitErrorUnsupportedOSForZoneAndGetMinimumSupported:&v31];
+  v7 = [neededCopy brc_isCloudKitErrorUnsupportedOSForZoneAndGetMinimumSupported:&v31];
   v8 = v31;
   v9 = v31;
   if (v7)
@@ -3375,16 +3375,16 @@ uint64_t __79__BRCClientZone_scheduleResetServerAndClientTruthsForReason_complet
     [(BRCClientZone *)self setStateBits:0x200000];
   }
 
-  v10 = [(BRCClientZone *)self serverZone];
-  v11 = [v10 hasFetchedServerZoneState];
+  serverZone = [(BRCClientZone *)self serverZone];
+  hasFetchedServerZoneState = [serverZone hasFetchedServerZoneState];
 
-  if ((v11 & 1) != 0 || v4)
+  if ((hasFetchedServerZoneState & 1) != 0 || creationCopy)
   {
-    v12 = [v6 brc_containerResetErrorForSharedZone:-[BRCClientZone isSharedZone](self resetReason:{"isSharedZone"), &v32}];
+    v12 = [neededCopy brc_containerResetErrorForSharedZone:-[BRCClientZone isSharedZone](self resetReason:{"isSharedZone"), &v32}];
     if (v12)
     {
       v13 = v12;
-      if (([v6 brc_containsCloudKitErrorCode:26] & 1) != 0 || objc_msgSend(v6, "brc_containsCloudKitErrorCode:", 28))
+      if (([neededCopy brc_containsCloudKitErrorCode:26] & 1) != 0 || objc_msgSend(neededCopy, "brc_containsCloudKitErrorCode:", 28))
       {
         v14 = brc_bread_crumbs();
         v15 = brc_default_log();
@@ -3396,10 +3396,10 @@ LABEL_21:
           [v25 registerAndSendNewContainerResetWithOutcome:v32];
 
           mangledID = self->_mangledID;
-          v27 = [(BRCClientZone *)self enhancedDrivePrivacyEnabled];
-          v22 = [AppTelemetryTimeSeriesEvent newZoneResetEventWithZoneMangledID:mangledID enhancedDrivePrivacyEnabled:v27 lastSyncDate:self->_lastSyncDownDate error:v6 errorDescription:v32];
-          v28 = [(BRCAccountSession *)self->_session analyticsReporter];
-          [v28 postReportForDefaultSubCategoryWithCategory:8 telemetryTimeEvent:v22];
+          enhancedDrivePrivacyEnabled = [(BRCClientZone *)self enhancedDrivePrivacyEnabled];
+          containerScheduler = [AppTelemetryTimeSeriesEvent newZoneResetEventWithZoneMangledID:mangledID enhancedDrivePrivacyEnabled:enhancedDrivePrivacyEnabled lastSyncDate:self->_lastSyncDownDate error:neededCopy errorDescription:v32];
+          analyticsReporter = [(BRCAccountSession *)self->_session analyticsReporter];
+          [analyticsReporter postReportForDefaultSubCategoryWithCategory:8 telemetryTimeEvent:containerScheduler];
 
           [(BRCClientZone *)self scheduleReset:v13];
           v21 = 1;
@@ -3408,14 +3408,14 @@ LABEL_22:
           goto LABEL_23;
         }
 
-        v16 = [(BRCClientZone *)self mangledID];
-        v17 = [v16 debugDescription];
+        mangledID = [(BRCClientZone *)self mangledID];
+        v17 = [mangledID debugDescription];
         *buf = 138413058;
         v35 = v17;
         v36 = 2048;
         v37 = v13;
         v38 = 2112;
-        v39 = v6;
+        v39 = neededCopy;
         v40 = 2112;
         v41 = v14;
         _os_log_impl(&dword_223E7A000, v15, OS_LOG_TYPE_DEFAULT, "[WARNING] Container %@ needs reset - %lu for %@%@", buf, 0x2Au);
@@ -3430,14 +3430,14 @@ LABEL_22:
           goto LABEL_21;
         }
 
-        v16 = [(BRCClientZone *)self mangledID];
-        v17 = [v16 debugDescription];
+        mangledID = [(BRCClientZone *)self mangledID];
+        v17 = [mangledID debugDescription];
         *buf = 138413058;
         v35 = v17;
         v36 = 2048;
         v37 = v13;
         v38 = 2112;
-        v39 = v6;
+        v39 = neededCopy;
         v40 = 2112;
         v41 = v14;
         _os_log_fault_impl(&dword_223E7A000, v15, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: Container %@ needs reset - %lu for %@%@", buf, 0x2Au);
@@ -3447,7 +3447,7 @@ LABEL_22:
     }
   }
 
-  if ([v6 brc_isCloudKitErrorZoneMigrated])
+  if ([neededCopy brc_isCloudKitErrorZoneMigrated])
   {
     v18 = brc_bread_crumbs();
     v19 = brc_default_log();
@@ -3461,12 +3461,12 @@ LABEL_22:
     session = self->_session;
     serverZone = self->_serverZone;
     v21 = 1;
-    v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&serverZone count:1];
-    [(BRCAccountSession *)session scheduleZoneMovesToCloudDocs:v22];
+    containerScheduler = [MEMORY[0x277CBEA60] arrayWithObjects:&serverZone count:1];
+    [(BRCAccountSession *)session scheduleZoneMovesToCloudDocs:containerScheduler];
     goto LABEL_22;
   }
 
-  if ([v6 brc_isCloudKitErrorNeedsPCSPrep])
+  if ([neededCopy brc_isCloudKitErrorNeedsPCSPrep])
   {
     v23 = brc_bread_crumbs();
     v24 = brc_default_log();
@@ -3477,8 +3477,8 @@ LABEL_22:
       _os_log_impl(&dword_223E7A000, v24, OS_LOG_TYPE_DEFAULT, "[WARNING] Server tells us we need to redo PCS prep%@", buf, 0xCu);
     }
 
-    v22 = [(BRCAccountSession *)self->_session containerScheduler];
-    [v22 redoZonePCSPreperation];
+    containerScheduler = [(BRCAccountSession *)self->_session containerScheduler];
+    [containerScheduler redoZonePCSPreperation];
     v21 = 0;
     goto LABEL_22;
   }
@@ -3490,21 +3490,21 @@ LABEL_23:
   return v21;
 }
 
-- (BOOL)handleSaltingErrorIfNeeded:(id)a3 record:(id)a4
+- (BOOL)handleSaltingErrorIfNeeded:(id)needed record:(id)record
 {
   v66 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  neededCopy = needed;
+  recordCopy = record;
+  if (!neededCopy)
   {
     v14 = 0;
     goto LABEL_36;
   }
 
-  if (([v6 brc_isCloudKitValidationKeyMismatchError] & 1) == 0 && !objc_msgSend(v6, "brc_isStaleRecordUpdateError"))
+  if (([neededCopy brc_isCloudKitValidationKeyMismatchError] & 1) == 0 && !objc_msgSend(neededCopy, "brc_isStaleRecordUpdateError"))
   {
     v55 = 0;
-    v15 = [v6 brc_isCloudKitParentValidationKeyMismatchErrorWithFieldName:&v55];
+    v15 = [neededCopy brc_isCloudKitParentValidationKeyMismatchErrorWithFieldName:&v55];
     v16 = v55;
     if (v15)
     {
@@ -3513,39 +3513,39 @@ LABEL_23:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138413058;
-        v59 = v7;
+        v59 = recordCopy;
         v60 = 2112;
         v61 = v16;
         v62 = 2112;
-        v63 = v6;
+        v63 = neededCopy;
         v64 = 2112;
         v65 = v17;
         _os_log_debug_impl(&dword_223E7A000, v18, OS_LOG_TYPE_DEBUG, "[DEBUG] Encountered parent validation key error for record:%@ field:%@ error:%@%@", buf, 0x2Au);
       }
 
-      v19 = [v7 objectForKeyedSubscript:@"parent"];
+      v19 = [recordCopy objectForKeyedSubscript:@"parent"];
       v20 = v19;
       if (v19)
       {
-        v21 = v19;
+        parent = v19;
       }
 
       else
       {
-        v21 = [v7 parent];
+        parent = [recordCopy parent];
       }
 
-      v34 = v21;
+      v34 = parent;
 
-      v35 = [v34 recordID];
+      recordID = [v34 recordID];
 
-      if (!v35)
+      if (!recordID)
       {
         [BRCClientZone handleSaltingErrorIfNeeded:record:];
       }
 
       v36 = [(BRCClientZone *)self db];
-      v37 = [v36 serialQueue];
+      serialQueue = [v36 serialQueue];
       v53[0] = MEMORY[0x277D85DD0];
       v53[1] = 3221225472;
       v53[2] = __51__BRCClientZone_handleSaltingErrorIfNeeded_record___block_invoke_128;
@@ -3553,15 +3553,15 @@ LABEL_23:
       v53[4] = self;
       v54 = v34;
       v25 = v34;
-      dispatch_async(v37, v53);
+      dispatch_async(serialQueue, v53);
     }
 
     else
     {
       v52 = 0;
-      v22 = [v7 recordID];
-      v23 = [v22 zoneID];
-      v24 = [v6 brc_isCloudKitHasUnsaltedChildrenWithUnsaltedRecord:&v52 zoneID:v23];
+      recordID2 = [recordCopy recordID];
+      zoneID = [recordID2 zoneID];
+      v24 = [neededCopy brc_isCloudKitHasUnsaltedChildrenWithUnsaltedRecord:&v52 zoneID:zoneID];
       v25 = v52;
 
       if (v24)
@@ -3571,9 +3571,9 @@ LABEL_23:
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138413058;
-          v59 = v7;
+          v59 = recordCopy;
           v60 = 2112;
-          v61 = v6;
+          v61 = neededCopy;
           v62 = 2112;
           v63 = v25;
           v64 = 2112;
@@ -3582,21 +3582,21 @@ LABEL_23:
         }
 
         v28 = [(BRCClientZone *)self db];
-        v29 = [v28 serialQueue];
+        serialQueue2 = [v28 serialQueue];
         v49[0] = MEMORY[0x277D85DD0];
         v49[1] = 3221225472;
         v49[2] = __51__BRCClientZone_handleSaltingErrorIfNeeded_record___block_invoke_129;
         v49[3] = &unk_2784FF478;
         v50 = v25;
-        v51 = self;
-        dispatch_async(v29, v49);
+        selfCopy = self;
+        dispatch_async(serialQueue2, v49);
 
         v30 = v50;
       }
 
       else
       {
-        if (![v6 brc_isCloudKitDestinationNeedsSalting])
+        if (![neededCopy brc_isCloudKitDestinationNeedsSalting])
         {
           v14 = 0;
 LABEL_35:
@@ -3604,43 +3604,43 @@ LABEL_35:
           goto LABEL_36;
         }
 
-        v31 = [v7 objectForKeyedSubscript:@"parent"];
+        v31 = [recordCopy objectForKeyedSubscript:@"parent"];
         v32 = v31;
         if (v31)
         {
-          v33 = v31;
+          parent2 = v31;
         }
 
         else
         {
-          v33 = [v7 parent];
+          parent2 = [recordCopy parent];
         }
 
-        v38 = v33;
+        v38 = parent2;
 
         v39 = brc_bread_crumbs();
         v40 = brc_default_log();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
         {
-          v46 = [v38 recordID];
+          recordID3 = [v38 recordID];
           *buf = 138412802;
-          v59 = v46;
+          v59 = recordID3;
           v60 = 2112;
-          v61 = v6;
+          v61 = neededCopy;
           v62 = 2112;
           v63 = v39;
           _os_log_debug_impl(&dword_223E7A000, v40, OS_LOG_TYPE_DEBUG, "[DEBUG] Encountered destination record:%@ should be salted error:%@%@", buf, 0x20u);
         }
 
-        v41 = [v38 recordID];
+        recordID4 = [v38 recordID];
 
-        if (!v41)
+        if (!recordID4)
         {
           [BRCClientZone handleSaltingErrorIfNeeded:record:];
         }
 
         v42 = [(BRCClientZone *)self db];
-        v43 = [v42 serialQueue];
+        serialQueue3 = [v42 serialQueue];
         v47[0] = MEMORY[0x277D85DD0];
         v47[1] = 3221225472;
         v47[2] = __51__BRCClientZone_handleSaltingErrorIfNeeded_record___block_invoke_130;
@@ -3648,7 +3648,7 @@ LABEL_35:
         v47[4] = self;
         v48 = v38;
         v30 = v38;
-        dispatch_async(v43, v47);
+        dispatch_async(serialQueue3, v47);
       }
     }
 
@@ -3661,30 +3661,30 @@ LABEL_35:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v59 = v7;
+    v59 = recordCopy;
     v60 = 2112;
-    v61 = v6;
+    v61 = neededCopy;
     v62 = 2112;
     v63 = v8;
     _os_log_debug_impl(&dword_223E7A000, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] Encountered validation key error for record:%@ error:%@%@", buf, 0x20u);
   }
 
-  v10 = [v7 recordID];
-  if (([v10 brc_isZoneRootRecordID] & 1) == 0)
+  recordID5 = [recordCopy recordID];
+  if (([recordID5 brc_isZoneRootRecordID] & 1) == 0)
   {
-    v11 = [v7 recordID];
-    [v11 brc_isAppLibraryRootRecordID];
+    recordID6 = [recordCopy recordID];
+    [recordID6 brc_isAppLibraryRootRecordID];
   }
 
   v12 = [(BRCClientZone *)self db];
-  v13 = [v12 serialQueue];
+  serialQueue4 = [v12 serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__BRCClientZone_handleSaltingErrorIfNeeded_record___block_invoke;
   block[3] = &unk_2784FF478;
   block[4] = self;
-  v57 = v7;
-  dispatch_async(v13, block);
+  v57 = recordCopy;
+  dispatch_async(serialQueue4, block);
 
   v14 = 1;
 LABEL_36:
@@ -3750,23 +3750,23 @@ void __51__BRCClientZone_handleSaltingErrorIfNeeded_record___block_invoke_130(ui
   v2 = [v1 locateRecordIfNecessaryForRecordID:v3 isUserWaiting:0];
 }
 
-- (id)itemCountPendingUploadOrSyncUpAndReturnError:(id *)a3
+- (id)itemCountPendingUploadOrSyncUpAndReturnError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    v5 = *a3;
-    *a3 = 0;
+    v5 = *error;
+    *error = 0;
   }
 
   v6 = [(BRCClientZone *)self db];
-  v7 = [(BRCServerZone *)self->_serverZone dbRowID];
+  dbRowID = [(BRCServerZone *)self->_serverZone dbRowID];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __62__BRCClientZone_itemCountPendingUploadOrSyncUpAndReturnError___block_invoke;
   v11[3] = &__block_descriptor_40_e48_v28__0__sqlite3_context__8i16___sqlite3_value_20l;
-  v11[4] = a3;
+  v11[4] = error;
   v8 = MEMORY[0x22AA4A310](v11);
-  v9 = [v6 numberWithSQL:{@"SELECT COUNT(1) FROM client_items WHERE item_localsyncupstate IN (3, 4) AND zone_rowid = %@  AND call_block(%p, version_upload_error, item_id)", v7, v8}];
+  v9 = [v6 numberWithSQL:{@"SELECT COUNT(1) FROM client_items WHERE item_localsyncupstate IN (3, 4) AND zone_rowid = %@  AND call_block(%p, version_upload_error, item_id)", dbRowID, v8}];
 
   return v9;
 }
@@ -3787,7 +3787,7 @@ void __62__BRCClientZone_itemCountPendingUploadOrSyncUpAndReturnError___block_in
   }
 }
 
-- (id)sizeOfItemsNeedingSyncUpOrUploadAndReturnError:(id *)a3
+- (id)sizeOfItemsNeedingSyncUpOrUploadAndReturnError:(id *)error
 {
   if ([(BRCClientZone *)self isSyncBlocked])
   {
@@ -3802,22 +3802,22 @@ void __62__BRCClientZone_itemCountPendingUploadOrSyncUpAndReturnError___block_in
     goto LABEL_7;
   }
 
-  v5 = [(BRCClientZone *)self itemCountPendingUploadOrSyncUpAndReturnError:a3];
+  v5 = [(BRCClientZone *)self itemCountPendingUploadOrSyncUpAndReturnError:error];
   if ([v5 intValue])
   {
     v8 = [(BRCClientZone *)self db];
-    v9 = [(BRCServerZone *)self->_serverZone dbRowID];
+    dbRowID = [(BRCServerZone *)self->_serverZone dbRowID];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __64__BRCClientZone_sizeOfItemsNeedingSyncUpOrUploadAndReturnError___block_invoke;
     v14[3] = &__block_descriptor_40_e48_v28__0__sqlite3_context__8i16___sqlite3_value_20l;
-    v14[4] = a3;
+    v14[4] = error;
     v10 = MEMORY[0x22AA4A310](v14);
-    v6 = [v8 numberWithSQL:{@"SELECT SUM(version_size) FROM client_items WHERE item_localsyncupstate IN (3, 4)   AND zone_rowid = %@   AND call_block(%p, version_upload_error)", v9, v10}];
+    v6 = [v8 numberWithSQL:{@"SELECT SUM(version_size) FROM client_items WHERE item_localsyncupstate IN (3, 4)   AND zone_rowid = %@   AND call_block(%p, version_upload_error)", dbRowID, v10}];
 
-    v11 = [v6 integerValue];
-    v12 = [v5 integerValue];
-    v7 = [MEMORY[0x277CCABB0] numberWithInteger:v11 + 100 * v12];
+    integerValue = [v6 integerValue];
+    integerValue2 = [v5 integerValue];
+    v7 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue + 100 * integerValue2];
 LABEL_7:
 
     goto LABEL_8;
@@ -3841,9 +3841,9 @@ LABEL_8:
     {
       bubbleSyncTask = self->_bubbleSyncTask;
       *buf = 138412802;
-      v13 = self;
+      selfCopy2 = self;
       v14 = 2112;
-      v15 = bubbleSyncTask;
+      unsignedLongLongValue = bubbleSyncTask;
       v16 = 2112;
       v17 = v3;
       _os_log_impl(&dword_223E7A000, v4, OS_LOG_TYPE_DEFAULT, "[WARNING] %@ - We already have a bubble sync task %@%@", buf, 0x20u);
@@ -3866,9 +3866,9 @@ LABEL_8:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v13 = self;
+      selfCopy2 = self;
       v14 = 2048;
-      v15 = [v3 unsignedLongLongValue];
+      unsignedLongLongValue = [v3 unsignedLongLongValue];
       v16 = 2112;
       v17 = v9;
       _os_log_impl(&dword_223E7A000, v10, OS_LOG_TYPE_DEFAULT, "[NOTICE] %@ - shared iPad: needs to sync items in the sync bubble (sz:%llu)%@", buf, 0x20u);
@@ -3886,9 +3886,9 @@ LABEL_9:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerAllItemsDidUploadTracker:(id)a3
+- (void)registerAllItemsDidUploadTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   [(BRCPQLConnection *)self->_db assertOnQueue];
   v9 = 0;
   v5 = [(BRCClientZone *)self sizeOfItemsNeedingSyncUpOrUploadAndReturnError:&v9];
@@ -3904,21 +3904,21 @@ LABEL_9:
       allItemsDidUploadTrackers = self->_allItemsDidUploadTrackers;
     }
 
-    [(NSMutableArray *)allItemsDidUploadTrackers addObject:v4];
+    [(NSMutableArray *)allItemsDidUploadTrackers addObject:trackerCopy];
   }
 
   else
   {
-    [v4 clientZone:self didFinishUploadingAllItemsWithError:v9];
+    [trackerCopy clientZone:self didFinishUploadingAllItemsWithError:v9];
   }
 }
 
-- (void)unregisterAllItemsDidUploadTracker:(id)a3
+- (void)unregisterAllItemsDidUploadTracker:(id)tracker
 {
   db = self->_db;
-  v5 = a3;
+  trackerCopy = tracker;
   [(BRCPQLConnection *)db assertOnQueue];
-  [(NSMutableArray *)self->_allItemsDidUploadTrackers removeObject:v5];
+  [(NSMutableArray *)self->_allItemsDidUploadTrackers removeObject:trackerCopy];
 
   if (![(NSMutableArray *)self->_allItemsDidUploadTrackers count])
   {
@@ -3929,7 +3929,7 @@ LABEL_9:
 
 - (void)disconnectNSMDQListenerAsync
 {
-  OUTLINED_FUNCTION_21(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_21(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_3_1();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x16u);
@@ -3959,10 +3959,10 @@ void __45__BRCClientZone_disconnectNSMDQListenerAsync__block_invoke(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_forDBUpgrade_setStateBits:(unsigned int)a3 clearStateBits:(unsigned int)a4
+- (void)_forDBUpgrade_setStateBits:(unsigned int)bits clearStateBits:(unsigned int)stateBits
 {
   state = self->_state;
-  v5 = (state | a3) & ~a4;
+  v5 = (state | bits) & ~stateBits;
   if (state != v5)
   {
     [(BRCClientZone *)self setNeedsSave:1];
@@ -3989,8 +3989,8 @@ void __45__BRCClientZone_disconnectNSMDQListenerAsync__block_invoke(uint64_t a1)
   }
 
   v3 = [(BRCClientZone *)self db];
-  v4 = [(BRCClientZone *)self dbRowID];
-  v5 = [v3 numberWithSQL:{@"SELECT 1 FROM client_items ci WHERE ci.zone_rowid = %@ AND NOT item_id_is_documents(ci.item_id)", v4}];
+  dbRowID = [(BRCClientZone *)self dbRowID];
+  v5 = [v3 numberWithSQL:{@"SELECT 1 FROM client_items ci WHERE ci.zone_rowid = %@ AND NOT item_id_is_documents(ci.item_id)", dbRowID}];
 
   if (!v5)
   {
@@ -4021,11 +4021,11 @@ LABEL_11:
     v15 = brc_default_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      v22 = [(BRCClientZone *)self zoneName];
+      zoneName = [(BRCClientZone *)self zoneName];
       *location = 134218498;
       *&location[4] = v13;
       v26 = 2112;
-      v27 = v22;
+      v27 = zoneName;
       v28 = 2112;
       v29 = v14;
       _os_log_debug_impl(&dword_223E7A000, v15, OS_LOG_TYPE_DEBUG, "[DEBUG] schedule zone reset timer to run after %f sec for %@%@", location, 0x20u);
@@ -4033,13 +4033,13 @@ LABEL_11:
 
     objc_initWeak(location, self);
     v16 = objc_alloc(MEMORY[0x277CFAEF8]);
-    v17 = [(BRCAccountSession *)self->_session clientTruthWorkloop];
+    clientTruthWorkloop = [(BRCAccountSession *)self->_session clientTruthWorkloop];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __63__BRCClientZone__scheduleZoneResetForUninstalledAppIfNecessary__block_invoke;
     v23[3] = &unk_278500FD8;
     objc_copyWeak(&v24, location);
-    v18 = [v16 initWithName:@"zone-auto-reset" interval:v17 callbackQueue:v23 block:v13];
+    v18 = [v16 initWithName:@"zone-auto-reset" interval:clientTruthWorkloop callbackQueue:v23 block:v13];
     resetAfterAppUninstallTimer = self->_resetAfterAppUninstallTimer;
     self->_resetAfterAppUninstallTimer = v18;
 
@@ -4089,25 +4089,25 @@ uint64_t __63__BRCClientZone__scheduleZoneResetForUninstalledAppIfNecessary__blo
   return 0;
 }
 
-- (unsigned)_activateState:(unsigned int)a3 origState:(unsigned int)a4
+- (unsigned)_activateState:(unsigned int)state origState:(unsigned int)origState
 {
   v38 = *MEMORY[0x277D85DE8];
   [(BRCPQLConnection *)self->_db assertOnQueue];
-  if (self->_state != a3)
+  if (self->_state != state)
   {
     [(BRCClientZone *)self setNeedsSave:1];
-    self->_state = a3;
+    self->_state = state;
   }
 
-  if ((a3 & 0x100) != 0)
+  if ((state & 0x100) != 0)
   {
-    self->_state = a3 & 0xFFFFFFEF;
+    self->_state = state & 0xFFFFFFEF;
   }
 
   [(BRCClientZone *)self _fixupEnhancedDrivePrivacyState];
   state = self->_state;
-  v8 = state ^ a4;
-  if (state != a4)
+  v8 = state ^ origState;
+  if (state != origState)
   {
     if (self->_needsSave)
     {
@@ -4115,9 +4115,9 @@ uint64_t __63__BRCClientZone__scheduleZoneResetForUninstalledAppIfNecessary__blo
       v10 = brc_default_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        v29 = BRCPrettyPrintBitmapWithContext(a4, &local_container_state_entries, 0);
+        v29 = BRCPrettyPrintBitmapWithContext(origState, &local_container_state_entries, 0);
         *buf = 138412802;
-        v33 = self;
+        selfCopy = self;
         v34 = 2112;
         v35 = v29;
         v36 = 2112;
@@ -4141,14 +4141,14 @@ uint64_t __63__BRCClientZone__scheduleZoneResetForUninstalledAppIfNecessary__blo
     }
 
     v12 = self->_state & 0x201000;
-    if ((a4 & 0x201000) != v12)
+    if ((origState & 0x201000) != v12)
     {
       if (v12)
       {
-        v13 = [(BRCAccountSession *)self->_session applyScheduler];
-        [v13 deleteJobsMatching:self->_serverZone];
+        applyScheduler = [(BRCAccountSession *)self->_session applyScheduler];
+        [applyScheduler deleteJobsMatching:self->_serverZone];
 
-        if ((a4 & 0x1000) == 0 && (self->_state & 0x1000) != 0 && [(BRCClientZone *)self isPrivateZone])
+        if ((origState & 0x1000) == 0 && (self->_state & 0x1000) != 0 && [(BRCClientZone *)self isPrivateZone])
         {
           v14 = [MEMORY[0x277CBEAA8] now];
           appUninstalledDate = self->_appUninstalledDate;
@@ -4179,8 +4179,8 @@ uint64_t __63__BRCClientZone__scheduleZoneResetForUninstalledAppIfNecessary__blo
         self->_appUninstalledDate = 0;
 
         [(BRCClientZone *)self setNeedsSave:1];
-        v20 = [(BRCAccountSession *)self->_session applyScheduler];
-        [v20 repopulateJobsForZone:self->_serverZone];
+        applyScheduler2 = [(BRCAccountSession *)self->_session applyScheduler];
+        [applyScheduler2 repopulateJobsForZone:self->_serverZone];
 
         [(BRCClientZone *)self scheduleSyncDown];
         [(BRCClientZone *)self scheduleSyncUp];
@@ -4199,7 +4199,7 @@ uint64_t __63__BRCClientZone__scheduleZoneResetForUninstalledAppIfNecessary__blo
         v30[3] = &unk_2785002E8;
         v31 = v21;
         [(BRCAccountSession *)session enumeratePrivateClientZones:v30];
-        v23 = v31;
+        documentsFolderItemID = v31;
       }
 
       else
@@ -4220,11 +4220,11 @@ LABEL_31:
           goto LABEL_35;
         }
 
-        v24 = [(BRCClientZone *)self asPrivateClientZone];
-        v25 = [v24 defaultAppLibrary];
-        v23 = [v25 documentsFolderItemID];
+        asPrivateClientZone = [(BRCClientZone *)self asPrivateClientZone];
+        defaultAppLibrary = [asPrivateClientZone defaultAppLibrary];
+        documentsFolderItemID = [defaultAppLibrary documentsFolderItemID];
 
-        v26 = [[BRCItemGlobalID alloc] initWithZoneRowID:self->_dbRowID itemID:v23];
+        v26 = [[BRCItemGlobalID alloc] initWithZoneRowID:self->_dbRowID itemID:documentsFolderItemID];
         [(BRCAccountSession *)v21 bumpNotificationRankOnItemGlobalID:v26];
       }
 
@@ -4253,21 +4253,21 @@ uint64_t __42__BRCClientZone__activateState_origState___block_invoke(uint64_t a1
   return 1;
 }
 
-- (BOOL)setStateBits:(unsigned int)a3
+- (BOOL)setStateBits:(unsigned int)bits
 {
   state = self->_state;
-  v4 = (a3 & ~state) != 0;
-  [(BRCClientZone *)self _activateState:state | a3 origState:?];
+  v4 = (bits & ~state) != 0;
+  [(BRCClientZone *)self _activateState:state | bits origState:?];
   return v4;
 }
 
-- (BOOL)isEqualToClientZone:(id)a3
+- (BOOL)isEqualToClientZone:(id)zone
 {
-  v4 = a3;
-  v5 = [v4 mangledID];
-  if (v5)
+  zoneCopy = zone;
+  mangledID = [zoneCopy mangledID];
+  if (mangledID)
   {
-    v6 = [(BRMangledID *)self->_mangledID isEqualToMangledID:v4[7]];
+    v6 = [(BRMangledID *)self->_mangledID isEqualToMangledID:zoneCopy[7]];
   }
 
   else
@@ -4278,10 +4278,10 @@ uint64_t __42__BRCClientZone__activateState_origState___block_invoke(uint64_t a1
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -4289,16 +4289,16 @@ uint64_t __42__BRCClientZone__activateState_origState___block_invoke(uint64_t a1
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BRCClientZone *)self isEqualToClientZone:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BRCClientZone *)self isEqualToClientZone:equalCopy];
   }
 
   return v5;
 }
 
-- (id)descriptionWithContext:(id)a3
+- (id)descriptionWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(BRCServerZone *)self->_serverZone changeState];
+  contextCopy = context;
+  changeState = [(BRCServerZone *)self->_serverZone changeState];
   if ([(BRCClientZone *)self isForeground])
   {
     v6 = @"foreground";
@@ -4311,13 +4311,13 @@ uint64_t __42__BRCClientZone__activateState_origState___block_invoke(uint64_t a1
     v7 = 2;
   }
 
-  v18 = [BRCDumpContext highlightedString:v6 type:v7 context:v4];
+  v18 = [BRCDumpContext highlightedString:v6 type:v7 context:contextCopy];
   v17 = objc_alloc(MEMORY[0x277CCACA8]);
   v8 = [(BRMangledID *)self->_mangledID description];
-  v9 = [v8 fp_obfuscatedDotSeparatedComponents];
+  fp_obfuscatedDotSeparatedComponents = [v8 fp_obfuscatedDotSeparatedComponents];
   dbRowID = self->_dbRowID;
-  v10 = BRCPrettyPrintBitmapWithContext(self->_state, &local_container_state_entries, v4);
-  v11 = BRCServerZoneStatePrettyPrintWithContext([(BRCServerZone *)self->_serverZone state], v4);
+  v10 = BRCPrettyPrintBitmapWithContext(self->_state, &local_container_state_entries, contextCopy);
+  v11 = BRCServerZoneStatePrettyPrintWithContext([(BRCServerZone *)self->_serverZone state], contextCopy);
   if ([(BRCClientZone *)self syncState])
   {
     v12 = BRCPrettyPrintBitmap();
@@ -4328,8 +4328,8 @@ uint64_t __42__BRCClientZone__activateState_origState___block_invoke(uint64_t a1
     v12 = @"idle";
   }
 
-  v13 = [v5 descriptionWithContext:v4];
-  v14 = [v17 initWithFormat:@"<%@[%@] %@ {client:%@ server:%@ sync:%@ %@ rid:%llu appuninstalled:%@}>", v9, dbRowID, v18, v10, v11, v12, v13, self->_requestID, self->_appUninstalledDate];
+  v13 = [changeState descriptionWithContext:contextCopy];
+  v14 = [v17 initWithFormat:@"<%@[%@] %@ {client:%@ server:%@ sync:%@ %@ rid:%llu appuninstalled:%@}>", fp_obfuscatedDotSeparatedComponents, dbRowID, v18, v10, v11, v12, v13, self->_requestID, self->_appUninstalledDate];
 
   return v14;
 }
@@ -4344,125 +4344,125 @@ id __34__BRCClientZone_itemByDocumentID___block_invoke(uint64_t a1, void *a2, ui
   return v8;
 }
 
-- (id)itemByFileID:(unint64_t)a3 dbFacade:(id)a4
+- (id)itemByFileID:(unint64_t)d dbFacade:(id)facade
 {
   session = self->_session;
-  v7 = a4;
-  v8 = [(BRCAccountSession *)session itemFetcher];
-  v9 = [v8 globalItemByFileID:a3 zoneRowID:self->_dbRowID dbFacade:v7];
+  facadeCopy = facade;
+  itemFetcher = [(BRCAccountSession *)session itemFetcher];
+  v9 = [itemFetcher globalItemByFileID:d zoneRowID:self->_dbRowID dbFacade:facadeCopy];
 
   return v9;
 }
 
-- (id)serverItemByParentID:(id)a3 andLogicalName:(id)a4
+- (id)serverItemByParentID:(id)d andLogicalName:(id)name
 {
   session = self->_session;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(BRCAccountSession *)session itemFetcher];
-  v10 = [v9 serverItemByParentID:v8 andLogicalName:v7 zoneRowID:self->_dbRowID dbFacade:self->_dbFacade];
+  nameCopy = name;
+  dCopy = d;
+  itemFetcher = [(BRCAccountSession *)session itemFetcher];
+  v10 = [itemFetcher serverItemByParentID:dCopy andLogicalName:nameCopy zoneRowID:self->_dbRowID dbFacade:self->_dbFacade];
 
   return v10;
 }
 
-- (id)itemByParentID:(id)a3 andLogicalName:(id)a4 excludingItemID:(id)a5
+- (id)itemByParentID:(id)d andLogicalName:(id)name excludingItemID:(id)iD
 {
   session = self->_session;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(BRCAccountSession *)session itemFetcher];
-  v13 = [v12 itemByParentID:v11 andLogicalName:v10 excludingItemID:v9 zoneRowID:self->_dbRowID];
+  iDCopy = iD;
+  nameCopy = name;
+  dCopy = d;
+  itemFetcher = [(BRCAccountSession *)session itemFetcher];
+  v13 = [itemFetcher itemByParentID:dCopy andLogicalName:nameCopy excludingItemID:iDCopy zoneRowID:self->_dbRowID];
 
   return v13;
 }
 
-- (id)itemsEnumeratorWithParentID:(id)a3 andLogicalName:(id)a4
+- (id)itemsEnumeratorWithParentID:(id)d andLogicalName:(id)name
 {
   session = self->_session;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(BRCAccountSession *)session itemFetcher];
-  v10 = [v9 clientItemsEnumeratorWithParentID:v8 andLogicalName:v7 zoneRowID:self->_dbRowID];
+  nameCopy = name;
+  dCopy = d;
+  itemFetcher = [(BRCAccountSession *)session itemFetcher];
+  v10 = [itemFetcher clientItemsEnumeratorWithParentID:dCopy andLogicalName:nameCopy zoneRowID:self->_dbRowID];
 
   return v10;
 }
 
-- (char)serverItemTypeByItemID:(id)a3 dbFacade:(id)a4
+- (char)serverItemTypeByItemID:(id)d dbFacade:(id)facade
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isSharedZoneRoot])
+  dCopy = d;
+  facadeCopy = facade;
+  if ([dCopy isSharedZoneRoot])
   {
-    v8 = 4;
+    integerValue = 4;
   }
 
-  else if ([v6 isNonDesktopRoot])
+  else if ([dCopy isNonDesktopRoot])
   {
     session = self->_session;
-    v10 = [v6 appLibraryRowID];
-    v11 = [(BRCAccountSession *)session appLibraryByRowID:v10];
-    v12 = [v11 state];
+    appLibraryRowID = [dCopy appLibraryRowID];
+    v11 = [(BRCAccountSession *)session appLibraryByRowID:appLibraryRowID];
+    state = [v11 state];
 
-    if ((v12 & 0x2000000) != 0)
+    if ((state & 0x2000000) != 0)
     {
-      v8 = 4;
+      integerValue = 4;
     }
 
     else
     {
-      v8 = 9;
+      integerValue = 9;
     }
   }
 
   else
   {
-    v13 = [(BRCClientZone *)self dbRowID];
-    v14 = [v7 serverItemTypeForItemWithID:v6 zoneRowID:v13];
+    dbRowID = [(BRCClientZone *)self dbRowID];
+    v14 = [facadeCopy serverItemTypeForItemWithID:dCopy zoneRowID:dbRowID];
 
     if (v14)
     {
-      v8 = [v14 integerValue];
+      integerValue = [v14 integerValue];
     }
 
-    else if ([v6 isDocumentsFolder])
+    else if ([dCopy isDocumentsFolder])
     {
       v15 = self->_session;
-      v16 = [v6 appLibraryRowID];
-      v17 = [(BRCAccountSession *)v15 appLibraryByRowID:v16];
-      v18 = [v17 state];
+      appLibraryRowID2 = [dCopy appLibraryRowID];
+      v17 = [(BRCAccountSession *)v15 appLibraryByRowID:appLibraryRowID2];
+      state2 = [v17 state];
 
-      if ((v18 & 0x4000000) != 0)
+      if ((state2 & 0x4000000) != 0)
       {
-        v8 = 0;
+        integerValue = 0;
       }
 
       else
       {
-        v8 = 9;
+        integerValue = 9;
       }
     }
 
     else
     {
-      v8 = -1;
+      integerValue = -1;
     }
   }
 
-  return v8;
+  return integerValue;
 }
 
-- (id)itemsEnumeratorWithDB:(id)a3
+- (id)itemsEnumeratorWithDB:(id)b
 {
-  v4 = a3;
-  v5 = [v4 fetch:{@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE zone_rowid = %@", self->_dbRowID}];
+  bCopy = b;
+  v5 = [bCopy fetch:{@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE zone_rowid = %@", self->_dbRowID}];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __39__BRCClientZone_itemsEnumeratorWithDB___block_invoke;
   v9[3] = &unk_2784FF938;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = bCopy;
+  v6 = bCopy;
   v7 = [v5 enumerateObjects:v9];
 
   return v7;
@@ -4480,15 +4480,15 @@ id __39__BRCClientZone_itemsEnumeratorWithDB___block_invoke(uint64_t a1, void *a
 
 - (id)itemsWithInFlightDiffsEnumerator
 {
-  v3 = [(BRCAccountSession *)self->_session itemFetcher];
-  v4 = [v3 clientItemsWithInFlightDiffsEnumeratorInZone:self->_dbRowID];
+  itemFetcher = [(BRCAccountSession *)self->_session itemFetcher];
+  v4 = [itemFetcher clientItemsWithInFlightDiffsEnumeratorInZone:self->_dbRowID];
 
   return v4;
 }
 
-- (id)documentsNotIdleEnumeratorWithStartingRowID:(unint64_t)a3 batchSize:(unint64_t)a4
+- (id)documentsNotIdleEnumeratorWithStartingRowID:(unint64_t)d batchSize:(unint64_t)size
 {
-  v5 = [(BRCPQLConnection *)self->_db fetch:@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE zone_rowid = %@    AND item_type IN (1, 6)    AND (item_localsyncupstate IN(      3, 4))   AND item_scope = 2   AND rowid > %lld ORDER BY rowid ASC LIMIT %lld", self->_dbRowID, a3, a4];
+  v5 = [(BRCPQLConnection *)self->_db fetch:@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE zone_rowid = %@    AND item_type IN (1, 6)    AND (item_localsyncupstate IN(      3, 4))   AND item_scope = 2   AND rowid > %lld ORDER BY rowid ASC LIMIT %lld", self->_dbRowID, d, size];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __71__BRCClientZone_documentsNotIdleEnumeratorWithStartingRowID_batchSize___block_invoke;
@@ -4513,18 +4513,18 @@ id __71__BRCClientZone_documentsNotIdleEnumeratorWithStartingRowID_batchSize___b
 
 - (void)didClearOutOfQuota
 {
-  OUTLINED_FUNCTION_21(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_21(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_3_1();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x16u);
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSyncStateBits:(unsigned int)a3
+- (void)setSyncStateBits:(unsigned int)bits
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = [(BRCClientZone *)self isSyncBlocked];
-  if ((a3 & 3) != 0 && v5)
+  isSyncBlocked = [(BRCClientZone *)self isSyncBlocked];
+  if ((bits & 3) != 0 && isSyncBlocked)
   {
     v6 = brc_bread_crumbs();
     v7 = brc_default_log();
@@ -4534,13 +4534,13 @@ id __71__BRCClientZone_documentsNotIdleEnumeratorWithStartingRowID_batchSize___b
     }
 
     [(BRCClientZone *)self clearSyncStateBits:3];
-    a3 &= 0xFFFFFFFC;
+    bits &= 0xFFFFFFFC;
   }
 
-  v8 = atomic_fetch_or(&self->_syncState, a3);
-  v9 = v8 | a3;
+  v8 = atomic_fetch_or(&self->_syncState, bits);
+  v9 = v8 | bits;
   [(BRCPQLConnection *)self->_db assertOnQueue];
-  if (v8 != (v8 | a3))
+  if (v8 != (v8 | bits))
   {
     v10 = brc_bread_crumbs();
     v11 = brc_default_log();
@@ -4557,7 +4557,7 @@ id __71__BRCClientZone_documentsNotIdleEnumeratorWithStartingRowID_batchSize___b
       }
 
       v22 = 138412802;
-      v23 = self;
+      selfCopy = self;
       v24 = 2112;
       v25 = v21;
       v26 = 2112;
@@ -4568,7 +4568,7 @@ id __71__BRCClientZone_documentsNotIdleEnumeratorWithStartingRowID_batchSize___b
     v12 = MEMORY[0x277CFAE20];
     mangledID = self->_mangledID;
     v14 = *MEMORY[0x277CFABD8];
-    if (((v8 | a3) & 0xA) != 0)
+    if (((v8 | bits) & 0xA) != 0)
     {
       v15 = (2 * ((v9 & 5) != 0)) | 4;
     }
@@ -4592,12 +4592,12 @@ id __71__BRCClientZone_documentsNotIdleEnumeratorWithStartingRowID_batchSize___b
     [v12 postContainerStatusChangeNotificationWithID:mangledID key:v14 value:v17];
   }
 
-  if ((a3 & 0xF) != 0 && (v8 & 0xF) == 0)
+  if ((bits & 0xF) != 0 && (v8 & 0xF) == 0)
   {
     [(BRCClientZone *)self setStateBits:16];
   }
 
-  if ((a3 & 0x20) != 0 && (v8 & 0x20) == 0)
+  if ((bits & 0x20) != 0 && (v8 & 0x20) == 0)
   {
     [(BRCClientZoneDelegate *)self->_delegate didInitialSyncDownForClientZone:self];
   }
@@ -4614,7 +4614,7 @@ id __71__BRCClientZone_documentsNotIdleEnumeratorWithStartingRowID_batchSize___b
     [(BRCClientZone *)self setSyncStateBits:2];
   }
 
-  if ((a3 & 3) != 0 && (v9 & 0xC) == 0)
+  if ((bits & 3) != 0 && (v9 & 0xC) == 0)
   {
     [(BRCDeadlineSource *)self->_syncDeadlineSource signal];
   }
@@ -4623,11 +4623,11 @@ id __71__BRCClientZone_documentsNotIdleEnumeratorWithStartingRowID_batchSize___b
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearSyncStateBits:(unsigned int)a3
+- (void)clearSyncStateBits:(unsigned int)bits
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = atomic_fetch_and(&self->_syncState, ~a3);
-  v5 = v4 & ~a3;
+  v4 = atomic_fetch_and(&self->_syncState, ~bits);
+  v5 = v4 & ~bits;
   [(BRCPQLConnection *)self->_db assertOnQueue];
   if (v4 != v5)
   {
@@ -4646,7 +4646,7 @@ id __71__BRCClientZone_documentsNotIdleEnumeratorWithStartingRowID_batchSize___b
       }
 
       v19 = 138412802;
-      v20 = self;
+      selfCopy = self;
       v21 = 2112;
       v22 = v18;
       v23 = 2112;
@@ -4686,37 +4686,37 @@ id __71__BRCClientZone_documentsNotIdleEnumeratorWithStartingRowID_batchSize___b
     [(BRCClientZone *)self clearStateBits:16];
   }
 
-  v15 = [(BRCClientZone *)self session];
-  v16 = [v15 periodicSyncInvestigation];
-  [v16 completeInvestigationIfNecessaryWithOldSyncState:v4 newSyncState:v5];
+  session = [(BRCClientZone *)self session];
+  periodicSyncInvestigation = [session periodicSyncInvestigation];
+  [periodicSyncInvestigation completeInvestigationIfNecessaryWithOldSyncState:v4 newSyncState:v5];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addSyncDownDependency:(id)a3
+- (void)addSyncDownDependency:(id)dependency
 {
-  v4 = a3;
-  v5 = [v4 completionBlock];
-  objc_initWeak(&location, v4);
+  dependencyCopy = dependency;
+  completionBlock = [dependencyCopy completionBlock];
+  objc_initWeak(&location, dependencyCopy);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __39__BRCClientZone_addSyncDownDependency___block_invoke;
   v12[3] = &unk_2785036A8;
-  v6 = v5;
+  v6 = completionBlock;
   v12[4] = self;
   v13 = v6;
   objc_copyWeak(&v14, &location);
-  [v4 setCompletionBlock:v12];
-  v7 = [(BRCAccountSession *)self->_session clientDB];
-  v8 = [v7 serialQueue];
+  [dependencyCopy setCompletionBlock:v12];
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
+  serialQueue = [clientDB serialQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __39__BRCClientZone_addSyncDownDependency___block_invoke_2;
   v10[3] = &unk_2784FF478;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  dispatch_async(v8, v10);
+  v11 = dependencyCopy;
+  v9 = dependencyCopy;
+  dispatch_async(serialQueue, v10);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -4757,30 +4757,30 @@ void __39__BRCClientZone_addSyncDownDependency___block_invoke_2(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addOutOfBandOperation:(id)a3
+- (void)addOutOfBandOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [v4 completionBlock];
-  objc_initWeak(&location, v4);
+  operationCopy = operation;
+  completionBlock = [operationCopy completionBlock];
+  objc_initWeak(&location, operationCopy);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __39__BRCClientZone_addOutOfBandOperation___block_invoke;
   v12[3] = &unk_2785036A8;
-  v6 = v5;
+  v6 = completionBlock;
   v12[4] = self;
   v13 = v6;
   objc_copyWeak(&v14, &location);
-  [v4 setCompletionBlock:v12];
-  v7 = [(BRCAccountSession *)self->_session clientDB];
-  v8 = [v7 serialQueue];
+  [operationCopy setCompletionBlock:v12];
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
+  serialQueue = [clientDB serialQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __39__BRCClientZone_addOutOfBandOperation___block_invoke_2;
   v10[3] = &unk_2784FF478;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  dispatch_async(v8, v10);
+  v11 = operationCopy;
+  v9 = operationCopy;
+  dispatch_async(serialQueue, v10);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -4811,19 +4811,19 @@ void __39__BRCClientZone_addOutOfBandOperation___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)removeOutOfBandOperation:(id)a3
+- (void)removeOutOfBandOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [(BRCAccountSession *)self->_session clientDB];
-  v6 = [v5 serialQueue];
+  operationCopy = operation;
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
+  serialQueue = [clientDB serialQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42__BRCClientZone_removeOutOfBandOperation___block_invoke;
   v8[3] = &unk_2784FF478;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = operationCopy;
+  v7 = operationCopy;
+  dispatch_async(serialQueue, v8);
 }
 
 void __42__BRCClientZone_removeOutOfBandOperation___block_invoke(uint64_t a1)
@@ -4875,19 +4875,19 @@ void __42__BRCClientZone_removeOutOfBandOperation___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeSyncDownDependency:(id)a3
+- (void)removeSyncDownDependency:(id)dependency
 {
-  v4 = a3;
-  v5 = [(BRCAccountSession *)self->_session clientDB];
-  v6 = [v5 serialQueue];
+  dependencyCopy = dependency;
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
+  serialQueue = [clientDB serialQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42__BRCClientZone_removeSyncDownDependency___block_invoke;
   v8[3] = &unk_2784FF478;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = dependencyCopy;
+  v7 = dependencyCopy;
+  dispatch_async(serialQueue, v8);
 }
 
 void __42__BRCClientZone_removeSyncDownDependency___block_invoke(uint64_t a1)
@@ -4923,11 +4923,11 @@ void __42__BRCClientZone_removeSyncDownDependency___block_invoke(uint64_t a1)
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = v40[0];
-    v6 = [(BRCClientZone *)self mangledID];
+    mangledID = [(BRCClientZone *)self mangledID];
     *buf = 134218498;
     v43 = v5;
     v44 = 2112;
-    v45 = v6;
+    v45 = mangledID;
     v46 = 2112;
     v47 = v3;
     _os_log_impl(&dword_223E7A000, v4, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@: starting sync down%@", buf, 0x20u);
@@ -4935,44 +4935,44 @@ void __42__BRCClientZone_removeSyncDownDependency___block_invoke(uint64_t a1)
 
   if (self->_activated)
   {
-    v7 = [(BRCAccountSession *)self->_session serverState];
+    serverState = [(BRCAccountSession *)self->_session serverState];
     mangledID = self->_mangledID;
     v39 = 0;
-    v33 = [v7 migrationQueryKeyForMangledID:mangledID continuationCursor:&v39];
+    v33 = [serverState migrationQueryKeyForMangledID:mangledID continuationCursor:&v39];
     v34 = v39;
 
-    v9 = self;
-    objc_sync_enter(v9);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (v33)
     {
-      v10 = [[BRCMigrationQueryOperation alloc] initWithServerZone:v9->_serverZone migrationKey:v33 continuationCursor:v34 sessionContext:self->_session];
-      syncDownOperation = v9->_syncDownOperation;
-      v9->_syncDownOperation = &v10->super;
+      v10 = [[BRCMigrationQueryOperation alloc] initWithServerZone:selfCopy->_serverZone migrationKey:v33 continuationCursor:v34 sessionContext:self->_session];
+      syncDownOperation = selfCopy->_syncDownOperation;
+      selfCopy->_syncDownOperation = &v10->super;
     }
 
     else
     {
       v14 = [BRCSyncDownHandler alloc];
-      serverZone = v9->_serverZone;
-      v16 = [(BRCAccountSession *)self->_session applyScheduler];
-      syncDownOperation = [(BRCSyncDownHandler *)v14 initWithServerZone:serverZone applyScheduler:v16];
+      serverZone = selfCopy->_serverZone;
+      applyScheduler = [(BRCAccountSession *)self->_session applyScheduler];
+      syncDownOperation = [(BRCSyncDownHandler *)v14 initWithServerZone:serverZone applyScheduler:applyScheduler];
 
-      v17 = [[BRCSyncDownOperation alloc] initDeltaSyncWithServerZone:v9->_serverZone sessionContext:self->_session syncDownHandler:syncDownOperation];
-      v18 = v9->_syncDownOperation;
-      v9->_syncDownOperation = v17;
+      v17 = [[BRCSyncDownOperation alloc] initDeltaSyncWithServerZone:selfCopy->_serverZone sessionContext:self->_session syncDownHandler:syncDownOperation];
+      v18 = selfCopy->_syncDownOperation;
+      selfCopy->_syncDownOperation = v17;
     }
 
-    [(BRCClientZone *)v9 _blockSyncDownOnStitchingOperations];
-    objc_sync_exit(v9);
+    [(BRCClientZone *)selfCopy _blockSyncDownOnStitchingOperations];
+    objc_sync_exit(selfCopy);
 
-    if (v9->_syncDownGroup)
+    if (selfCopy->_syncDownGroup)
     {
-      [(_BRCOperation *)v9->_syncDownOperation setGroup:?];
+      [(_BRCOperation *)selfCopy->_syncDownOperation setGroup:?];
     }
 
     else
     {
-      if ([(BRCServerZone *)v9->_serverZone hasFetchedServerZoneState])
+      if ([(BRCServerZone *)selfCopy->_serverZone hasFetchedServerZoneState])
       {
         [MEMORY[0x277CBC4F8] br_syncDown];
       }
@@ -4982,20 +4982,20 @@ void __42__BRCClientZone_removeSyncDownDependency___block_invoke(uint64_t a1)
         [MEMORY[0x277CBC4F8] br_syncDownInitial];
       }
       v19 = ;
-      [(_BRCOperation *)v9->_syncDownOperation setGroup:v19, v33];
+      [(_BRCOperation *)selfCopy->_syncDownOperation setGroup:v19, v33];
     }
 
     if (v33)
     {
-      syncDownGroup = v9->_syncDownGroup;
-      v9->_syncDownGroup = 0;
+      syncDownGroup = selfCopy->_syncDownGroup;
+      selfCopy->_syncDownGroup = 0;
     }
 
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v21 = v9->_syncDownDependencies;
+    v21 = selfCopy->_syncDownDependencies;
     v22 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v35 objects:v41 count:16];
     if (v22)
     {
@@ -5022,7 +5022,7 @@ void __42__BRCClientZone_removeSyncDownDependency___block_invoke(uint64_t a1)
             _os_log_debug_impl(&dword_223E7A000, v27, OS_LOG_TYPE_DEBUG, "[DEBUG] adding sync down dependency: %@%@", buf, 0x16u);
           }
 
-          [(_BRCOperation *)v9->_syncDownOperation addDependency:v25];
+          [(_BRCOperation *)selfCopy->_syncDownOperation addDependency:v25];
           ++v24;
         }
 
@@ -5033,22 +5033,22 @@ void __42__BRCClientZone_removeSyncDownDependency___block_invoke(uint64_t a1)
       while (v22);
     }
 
-    [(NSMutableArray *)v9->_currentSyncDownBarriers addObjectsFromArray:v9->_nextSyncDownBarriers];
-    [(NSMutableArray *)v9->_nextSyncDownBarriers removeAllObjects];
-    [(BRCClientZone *)v9 setSyncStateBits:8];
-    [(BRCClientZone *)v9 clearSyncStateBits:2];
-    [(BRCSyncOperationThrottle *)v9->_syncDownThrottle updateAfterSchedulingTask];
+    [(NSMutableArray *)selfCopy->_currentSyncDownBarriers addObjectsFromArray:selfCopy->_nextSyncDownBarriers];
+    [(NSMutableArray *)selfCopy->_nextSyncDownBarriers removeAllObjects];
+    [(BRCClientZone *)selfCopy setSyncStateBits:8];
+    [(BRCClientZone *)selfCopy clearSyncStateBits:2];
+    [(BRCSyncOperationThrottle *)selfCopy->_syncDownThrottle updateAfterSchedulingTask];
     v28 = brc_bread_crumbs();
     v29 = brc_default_log();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
     {
-      [(BRCClientZone *)&v9->_syncDownThrottle syncDownImmediately];
+      [(BRCClientZone *)&selfCopy->_syncDownThrottle syncDownImmediately];
     }
 
-    [(BRCClientZone *)v9 _cancelOutOfBandOperations];
-    [(_BRCOperation *)v9->_syncDownOperation schedule];
-    v30 = v9->_syncDownOperation;
-    v9->_syncDeadlineSourceResumer = v30;
+    [(BRCClientZone *)selfCopy _cancelOutOfBandOperations];
+    [(_BRCOperation *)selfCopy->_syncDownOperation schedule];
+    v30 = selfCopy->_syncDownOperation;
+    selfCopy->_syncDeadlineSourceResumer = v30;
     v13 = v30;
     v12 = v33;
   }
@@ -5161,13 +5161,13 @@ uint64_t __27__BRCClientZone__startSync__block_invoke_194(uint64_t a1)
   return [*(*(*(a1 + 40) + 8) + 40) schedule];
 }
 
-- (void)scheduleSyncDownWithGroup:(id)a3
+- (void)scheduleSyncDownWithGroup:(id)group
 {
-  v5 = a3;
+  groupCopy = group;
   [(BRCPQLConnection *)self->_db assertOnQueue];
   if (!self->_syncDownGroup || ([(BRCClientZone *)self syncState]& 0xA) == 0)
   {
-    objc_storeStrong(&self->_syncDownGroup, a3);
+    objc_storeStrong(&self->_syncDownGroup, group);
   }
 
   [(BRCClientZone *)self setSyncStateBits:2];
@@ -5180,18 +5180,18 @@ uint64_t __27__BRCClientZone__startSync__block_invoke_194(uint64_t a1)
   [(BRCClientZone *)self setSyncStateBits:66];
 }
 
-- (void)scheduleSyncDownForOOBModifyRecordsAckForItemID:(id)a3
+- (void)scheduleSyncDownForOOBModifyRecordsAckForItemID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   [(BRCPQLConnection *)self->_db assertOnQueue];
   [(BRCClientZone *)self setSyncStateBits:194];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(NSMutableDictionary *)self->_locateRecordOperations allValues];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_locateRecordOperations allValues];
+  v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -5203,14 +5203,14 @@ uint64_t __27__BRCClientZone__startSync__block_invoke_194(uint64_t a1)
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) itemMarkedForOOBSync:v4];
+        [*(*(&v11 + 1) + 8 * v9++) itemMarkedForOOBSync:dCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -5237,18 +5237,18 @@ uint64_t __27__BRCClientZone__startSync__block_invoke_194(uint64_t a1)
   [(BRCDeadlineSource *)syncDeadlineSource signal];
 }
 
-- (void)prepareDirectoryForSyncUp:(id)a3
+- (void)prepareDirectoryForSyncUp:(id)up
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([v4 isKnownByServer] & 1) == 0 && (objc_msgSend(v4, "localDiffs") & 0x400000000000000) == 0 && (-[BRCServerZone state](self->_serverZone, "state") & 4) == 0)
+  upCopy = up;
+  if (([upCopy isKnownByServer] & 1) == 0 && (objc_msgSend(upCopy, "localDiffs") & 0x400000000000000) == 0 && (-[BRCServerZone state](self->_serverZone, "state") & 4) == 0)
   {
     v5 = brc_bread_crumbs();
     v6 = brc_default_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412546;
-      v12 = v4;
+      v12 = upCopy;
       v13 = 2112;
       v14 = v5;
       _os_log_impl(&dword_223E7A000, v6, OS_LOG_TYPE_DEFAULT, "[NOTICE] Item %@ isn't known by the server so marking it as created by the current device%@", &v11, 0x16u);
@@ -5257,8 +5257,8 @@ uint64_t __27__BRCClientZone__startSync__block_invoke_194(uint64_t a1)
     v7 = self->_directoriesCreatedLastSyncUp;
     objc_sync_enter(v7);
     directoriesCreatedLastSyncUp = self->_directoriesCreatedLastSyncUp;
-    v9 = [v4 itemID];
-    [(NSMutableArray *)directoriesCreatedLastSyncUp addObject:v9];
+    itemID = [upCopy itemID];
+    [(NSMutableArray *)directoriesCreatedLastSyncUp addObject:itemID];
 
     objc_sync_exit(v7);
   }
@@ -5293,8 +5293,8 @@ uint64_t __27__BRCClientZone__startSync__block_invoke_194(uint64_t a1)
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(BRCClientZone *)self itemsWithInFlightDiffsEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  itemsWithInFlightDiffsEnumerator = [(BRCClientZone *)self itemsWithInFlightDiffsEnumerator];
+  v4 = [itemsWithInFlightDiffsEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -5306,19 +5306,19 @@ uint64_t __27__BRCClientZone__startSync__block_invoke_194(uint64_t a1)
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsWithInFlightDiffsEnumerator);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
-        v9 = [(BRCServerZone *)self->_serverZone dbRowID];
-        [v8 markLatestSyncRequestFailedInZone:v9];
+        dbRowID = [(BRCServerZone *)self->_serverZone dbRowID];
+        [v8 markLatestSyncRequestFailedInZone:dbRowID];
 
         [v8 saveToDB];
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [itemsWithInFlightDiffsEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -5344,20 +5344,20 @@ uint64_t __27__BRCClientZone__startSync__block_invoke_194(uint64_t a1)
   return self->_requestID;
 }
 
-- (void)_learnCKInfosFromSavedRecords:(id)a3 isOutOfBandModifyRecords:(BOOL)a4 basedOnOriginalVersion:(BOOL)a5
+- (void)_learnCKInfosFromSavedRecords:(id)records isOutOfBandModifyRecords:(BOOL)modifyRecords basedOnOriginalVersion:(BOOL)version
 {
-  v119 = a4;
+  modifyRecordsCopy = modifyRecords;
   v161 = *MEMORY[0x277D85DE8];
   v148 = 0u;
   v149 = 0u;
   v150 = 0u;
   v151 = 0u;
-  obj = a3;
+  obj = records;
   v145 = [obj countByEnumeratingWithState:&v148 objects:v160 count:16];
   if (v145)
   {
     v144 = *v149;
-    v142 = self;
+    selfCopy = self;
     do
     {
       v6 = 0;
@@ -5371,24 +5371,24 @@ uint64_t __27__BRCClientZone__startSync__block_invoke_194(uint64_t a1)
         v7 = *(*(&v148 + 1) + 8 * v6);
         v8 = objc_autoreleasePoolPush();
         v9 = [[BRFieldCKInfo alloc] initWithRecord:v7];
-        v10 = [v7 recordID];
-        v11 = [(BRCAccountSession *)self->_session zoneAppRetriever];
-        v12 = [v10 brc_itemIDWithZoneAppRetriever:v11];
+        recordID = [v7 recordID];
+        zoneAppRetriever = [(BRCAccountSession *)self->_session zoneAppRetriever];
+        v12 = [recordID brc_itemIDWithZoneAppRetriever:zoneAppRetriever];
 
-        v13 = [v7 brc_updateDroppedReason];
-        v14 = [v7 brc_oplockMergeEtag];
-        v15 = v14;
-        if (v13)
+        brc_updateDroppedReason = [v7 brc_updateDroppedReason];
+        brc_oplockMergeEtag = [v7 brc_oplockMergeEtag];
+        v15 = brc_oplockMergeEtag;
+        if (brc_updateDroppedReason)
         {
           v16 = brc_bread_crumbs();
           v17 = brc_default_log();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
           {
-            v18 = [v7 recordID];
+            recordID2 = [v7 recordID];
             *buf = 138412802;
-            v153 = v18;
+            v153 = recordID2;
             v154 = 2112;
-            v155 = v13;
+            v155 = brc_updateDroppedReason;
             v156 = 2112;
             v157 = v16;
             _os_log_debug_impl(&dword_223E7A000, v17, OS_LOG_TYPE_DEBUG, "[DEBUG] Not learning anything about %@ because the update was dropped: %@%@", buf, 0x20u);
@@ -5399,25 +5399,25 @@ LABEL_12:
           goto LABEL_13;
         }
 
-        if (v14)
+        if (brc_oplockMergeEtag)
         {
           v16 = brc_bread_crumbs();
           v17 = brc_default_log();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
           {
-            v36 = [v7 recordID];
-            v37 = [v7 etag];
+            recordID3 = [v7 recordID];
+            etag = [v7 etag];
             *buf = 138413058;
-            v153 = v36;
+            v153 = recordID3;
             v154 = 2112;
             v155 = v15;
             v156 = 2112;
-            v157 = v37;
+            v157 = etag;
             v158 = 2112;
             v159 = v16;
             _os_log_debug_impl(&dword_223E7A000, v17, OS_LOG_TYPE_DEBUG, "[DEBUG] Not learning anything about %@ because the server merged ETag %@ to produce %@%@", buf, 0x2Au);
 
-            self = v142;
+            self = selfCopy;
           }
 
           goto LABEL_12;
@@ -5425,8 +5425,8 @@ LABEL_12:
 
         if (v12 && ([v12 isNonDesktopRoot] & 1) == 0)
         {
-          v19 = [(BRFieldCKInfo *)v9 etag];
-          v20 = [v19 length];
+          etag2 = [(BRFieldCKInfo *)v9 etag];
+          v20 = [etag2 length];
 
           if (v20)
           {
@@ -5437,15 +5437,15 @@ LABEL_12:
             v138 = v9;
             v147 = v138;
             v139 = MEMORY[0x22AA4A310](v146);
-            v21 = [v7 recordType];
-            v22 = [v21 isEqualToString:@"structure"];
+            recordType = [v7 recordType];
+            v22 = [recordType isEqualToString:@"structure"];
 
             if (v22)
             {
-              v140 = v142;
-              v23 = [v7 recordID];
-              v24 = [v23 recordName];
-              v25 = [v24 hasPrefix:@"shareAlias/"];
+              clientZone = selfCopy;
+              recordID4 = [v7 recordID];
+              recordName = [recordID4 recordName];
+              v25 = [recordName hasPrefix:@"shareAlias/"];
 
               if (!v25)
               {
@@ -5454,29 +5454,29 @@ LABEL_12:
                 goto LABEL_35;
               }
 
-              v26 = [v7 recordID];
-              v27 = [(BRCAccountSession *)v142->_session zoneAppRetriever];
-              v127 = [v26 brc_itemIDWithZoneAppRetriever:v27];
+              recordID5 = [v7 recordID];
+              zoneAppRetriever2 = [(BRCAccountSession *)selfCopy->_session zoneAppRetriever];
+              v127 = [recordID5 brc_itemIDWithZoneAppRetriever:zoneAppRetriever2];
 
-              v135 = v140;
+              v135 = clientZone;
               v28 = [v7 objectForKeyedSubscript:@"target"];
               objc_opt_class();
-              LOBYTE(v27) = objc_opt_isKindOfClass();
+              LOBYTE(zoneAppRetriever2) = objc_opt_isKindOfClass();
 
-              if (v27)
+              if (zoneAppRetriever2)
               {
                 v29 = [v7 objectForKeyedSubscript:@"target"];
                 v141 = objc_alloc(MEMORY[0x277CFAE60]);
-                v30 = [v29 recordID];
-                v31 = [v30 zoneID];
-                v130 = [v141 initWithRecordZoneID:v31];
+                recordID6 = [v29 recordID];
+                zoneID = [recordID6 zoneID];
+                v130 = [v141 initWithRecordZoneID:zoneID];
 
-                v32 = [v29 recordID];
-                v33 = [(BRCAccountSession *)v142->_session zoneAppRetriever];
-                v122 = [v32 brc_itemIDWithZoneAppRetriever:v33];
+                recordID7 = [v29 recordID];
+                zoneAppRetriever3 = [(BRCAccountSession *)selfCopy->_session zoneAppRetriever];
+                v122 = [recordID7 brc_itemIDWithZoneAppRetriever:zoneAppRetriever3];
 
-                v34 = [(BRCAccountSession *)v142->_session serverZoneByMangledID:v130];
-                v140 = [v34 clientZone];
+                v34 = [(BRCAccountSession *)selfCopy->_session serverZoneByMangledID:v130];
+                clientZone = [v34 clientZone];
 
                 v35 = v130;
                 v12 = v122;
@@ -5485,38 +5485,38 @@ LABEL_12:
               else
               {
                 v29 = [(BRCClientZone *)v135 serverItemByItemID:v12];
-                v45 = [v29 aliasTargetItemID];
+                aliasTargetItemID = [v29 aliasTargetItemID];
 
-                v140 = [v29 aliasTargetClientZone];
+                clientZone = [v29 aliasTargetClientZone];
                 v35 = v135;
-                v12 = v45;
+                v12 = aliasTargetItemID;
               }
 
-              if (v12 && v140)
+              if (v12 && clientZone)
               {
 LABEL_35:
-                v46 = v142;
+                v46 = selfCopy;
                 v47 = brc_bread_crumbs();
                 v48 = brc_default_log();
                 if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
                 {
-                  v134 = [v12 debugItemIDString];
-                  v106 = [(BRFieldCKInfo *)v138 etag];
+                  debugItemIDString = [v12 debugItemIDString];
+                  etag3 = [(BRFieldCKInfo *)v138 etag];
                   *buf = 138412802;
-                  v153 = v134;
+                  v153 = debugItemIDString;
                   v154 = 2112;
-                  v155 = v106;
-                  v107 = v106;
+                  v155 = etag3;
+                  v107 = etag3;
                   v156 = 2112;
                   v157 = v47;
                   _os_log_debug_impl(&dword_223E7A000, v48, OS_LOG_TYPE_DEBUG, "[DEBUG] Learn structural ETag for %@: %@%@", buf, 0x20u);
 
-                  v46 = v142;
+                  v46 = selfCopy;
                 }
 
                 db = v46->_db;
-                v50 = [(BRCClientZone *)v140 dbRowID];
-                v51 = [(BRCPQLConnection *)db fetch:@"SELECT item_stat_ckinfo, item_local_change_count, version_old_zone_item_id IS NOT NULL, item_parent_zone_rowid FROM client_items WHERE zone_rowid = %@ AND item_id = %@", v50, v12];
+                dbRowID = [(BRCClientZone *)clientZone dbRowID];
+                v51 = [(BRCPQLConnection *)db fetch:@"SELECT item_stat_ckinfo, item_local_change_count, version_old_zone_item_id IS NOT NULL, item_parent_zone_rowid FROM client_items WHERE zone_rowid = %@ AND item_id = %@", dbRowID, v12];
 
                 v120 = v51;
                 if ([v51 next])
@@ -5524,12 +5524,12 @@ LABEL_35:
                   v52 = [v51 objectOfClass:objc_opt_class() atIndex:0];
                   v53 = [v51 unsignedLongLongAtIndex:1];
                   v124 = v52;
-                  v54 = [v52 etag];
-                  v55 = v54;
+                  etag4 = [v52 etag];
+                  v55 = etag4;
                   v56 = &stru_2837504F0;
-                  if (v54)
+                  if (etag4)
                   {
-                    v56 = v54;
+                    v56 = etag4;
                   }
 
                   v57 = v56;
@@ -5537,9 +5537,9 @@ LABEL_35:
                   {
                     v113 = v53;
                     v58 = v57;
-                    v59 = [(__CFString *)v57 stringByAppendingFormat:@"%llu", v113];;
+                    v113 = [(__CFString *)v57 stringByAppendingFormat:@"%llu", v113];;
 
-                    v131 = v59;
+                    v131 = v113;
                     v51 = v120;
                   }
 
@@ -5550,8 +5550,8 @@ LABEL_35:
 
                   if ([v51 BOOLAtIndex:2])
                   {
-                    v78 = [v124 etagBeforeCrossZoneMove];
-                    [(BRFieldCKInfo *)v138 setEtagBeforeCrossZoneMove:v78];
+                    etagBeforeCrossZoneMove = [v124 etagBeforeCrossZoneMove];
+                    [(BRFieldCKInfo *)v138 setEtagBeforeCrossZoneMove:etagBeforeCrossZoneMove];
 
                     v51 = v120;
                   }
@@ -5582,7 +5582,7 @@ LABEL_35:
                     v60 = v127;
                     v96 = v135;
 
-                    v140 = v96;
+                    clientZone = v96;
                   }
 
                   v61 = v131;
@@ -5593,21 +5593,21 @@ LABEL_35:
                 v61 = 0;
                 v117 = 0;
 LABEL_85:
-                v116 = v142->_db;
-                v97 = [(BRCClientZone *)v140 dbRowID];
+                v116 = selfCopy->_db;
+                dbRowID2 = [(BRCClientZone *)clientZone dbRowID];
                 v126 = v60;
                 v114 = v60;
                 v133 = v61;
-                self = v142;
-                [(BRCPQLConnection *)v116 execute:@"UPDATE client_items SET item_stat_ckinfo = %@, item_local_change_count = 0, item_old_version_identifier = %@  WHERE zone_rowid = %@ AND item_id = %@", v138, v61, v97, v114];
+                self = selfCopy;
+                [(BRCPQLConnection *)v116 execute:@"UPDATE client_items SET item_stat_ckinfo = %@, item_local_change_count = 0, item_old_version_identifier = %@  WHERE zone_rowid = %@ AND item_id = %@", v138, v61, dbRowID2, v114];
 
-                if (![(BRCPQLConnection *)v142->_db changes])
+                if (![(BRCPQLConnection *)selfCopy->_db changes])
                 {
-                  v98 = [v7 recordID];
-                  v99 = [v98 recordName];
-                  v100 = [v99 hasPrefix:@"documentStructure/"];
+                  recordID8 = [v7 recordID];
+                  recordName2 = [recordID8 recordName];
+                  v100 = [recordName2 hasPrefix:@"documentStructure/"];
 
-                  self = v142;
+                  self = selfCopy;
                   if (v100)
                   {
                     v101 = brc_bread_crumbs();
@@ -5621,11 +5621,11 @@ LABEL_85:
                       _os_log_impl(&dword_223E7A000, v102, OS_LOG_TYPE_DEFAULT, "[WARNING] Couldn't locate the item to learn stat info for %@, checking to see if it has undergone a CZM%@", buf, 0x16u);
                     }
 
-                    v103 = v142->_db;
+                    v103 = selfCopy->_db;
                     v104 = MEMORY[0x22AA4A310](v139);
                     v105 = v103;
-                    self = v142;
-                    [(BRCPQLConnection *)v105 execute:@"UPDATE client_items SET item_stat_ckinfo = call_block(%p, item_stat_ckinfo) WHERE version_old_zone_rowid = %@ AND version_old_zone_item_id = %@", v104, v142->_dbRowID, v12];
+                    self = selfCopy;
+                    [(BRCPQLConnection *)v105 execute:@"UPDATE client_items SET item_stat_ckinfo = call_block(%p, item_stat_ckinfo) WHERE version_old_zone_rowid = %@ AND version_old_zone_item_id = %@", v104, selfCopy->_dbRowID, v12];
                   }
                 }
 
@@ -5635,7 +5635,7 @@ LABEL_91:
 
               v62 = brc_bread_crumbs();
               v63 = brc_default_log();
-              self = v142;
+              self = selfCopy;
               if (os_log_type_enabled(v63, OS_LOG_TYPE_FAULT))
               {
                 *buf = 138412546;
@@ -5645,36 +5645,36 @@ LABEL_91:
                 _os_log_fault_impl(&dword_223E7A000, v63, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: Couldn't locate alias target for %@%@", buf, 0x16u);
               }
 
-              v64 = v140;
+              v64 = clientZone;
 LABEL_94:
             }
 
             else
             {
-              v38 = [v7 recordType];
-              v39 = [v38 isEqualToString:@"content"];
+              recordType2 = [v7 recordType];
+              v39 = [recordType2 isEqualToString:@"content"];
 
               if (v39)
               {
-                self = v142;
-                v123 = [v7 brc_currentUserOwnsLastEditorDeviceWithSessionContext:v142->_session];
+                self = selfCopy;
+                v123 = [v7 brc_currentUserOwnsLastEditorDeviceWithSessionContext:selfCopy->_session];
                 if (v123)
                 {
-                  v40 = [v7 brc_lastEditorDeviceName];
-                  v140 = [(BRCDatabaseFacade *)v142->_dbFacade deviceKeyForName:v40];
+                  brc_lastEditorDeviceName = [v7 brc_lastEditorDeviceName];
+                  clientZone = [(BRCDatabaseFacade *)selfCopy->_dbFacade deviceKeyForName:brc_lastEditorDeviceName];
                 }
 
                 else
                 {
-                  v65 = [(BRCAccountSession *)v142->_session cachedCurrentUserRecordName];
-                  v40 = [v7 brc_lastModifiedUserRecordNameWithCurrentUserRecordName:v65 personNameComponents:0];
+                  cachedCurrentUserRecordName = [(BRCAccountSession *)selfCopy->_session cachedCurrentUserRecordName];
+                  brc_lastEditorDeviceName = [v7 brc_lastModifiedUserRecordNameWithCurrentUserRecordName:cachedCurrentUserRecordName personNameComponents:0];
 
                   v66 = MEMORY[0x277CCABB0];
-                  v67 = [(BRCDatabaseFacade *)v142->_dbFacade userKeyForOwnerName:v40];
+                  v67 = [(BRCDatabaseFacade *)selfCopy->_dbFacade userKeyForOwnerName:brc_lastEditorDeviceName];
                   v68 = -[v67 longLongValue];
                   v69 = v66;
-                  self = v142;
-                  v140 = [v69 numberWithLongLong:v68];
+                  self = selfCopy;
+                  clientZone = [v69 numberWithLongLong:v68];
                 }
 
                 v70 = [(BRCPQLConnection *)self->_db fetch:@"SELECT version_ckinfo, version_local_change_count, version_old_zone_item_id IS NOT NULL FROM client_items WHERE zone_rowid = %@ AND item_id = %@", self->_dbRowID, v12];
@@ -5684,22 +5684,22 @@ LABEL_94:
                   v71 = [v70 objectOfClass:objc_opt_class() atIndex:0];
                   v136 = [v70 unsignedLongLongAtIndex:1];
                   v128 = v71;
-                  v72 = [v71 etag];
-                  v73 = v72;
+                  etag5 = [v71 etag];
+                  v73 = etag5;
                   v74 = &stru_2837504F0;
-                  if (v72)
+                  if (etag5)
                   {
-                    v74 = v72;
+                    v74 = etag5;
                   }
 
                   v75 = v74;
                   v76 = v75;
                   if (v136)
                   {
-                    v77 = [(__CFString *)v75 stringByAppendingFormat:@"%llu", v136];;
+                    v136 = [(__CFString *)v75 stringByAppendingFormat:@"%llu", v136];;
 
-                    v137 = v77;
-                    self = v142;
+                    v137 = v136;
+                    self = selfCopy;
                   }
 
                   else
@@ -5710,10 +5710,10 @@ LABEL_94:
                   v70 = v132;
                   if ([v132 BOOLAtIndex:2])
                   {
-                    v82 = [v128 etagBeforeCrossZoneMove];
-                    [(BRFieldCKInfo *)v138 setEtagBeforeCrossZoneMove:v82];
+                    etagBeforeCrossZoneMove2 = [v128 etagBeforeCrossZoneMove];
+                    [(BRFieldCKInfo *)v138 setEtagBeforeCrossZoneMove:etagBeforeCrossZoneMove2];
 
-                    self = v142;
+                    self = selfCopy;
                   }
                 }
 
@@ -5722,7 +5722,7 @@ LABEL_94:
                   v137 = 0;
                 }
 
-                if (!a5)
+                if (!version)
                 {
                   v83 = brc_bread_crumbs();
                   v84 = brc_default_log();
@@ -5737,14 +5737,14 @@ LABEL_94:
                   v70 = v132;
                 }
 
-                if (v140)
+                if (clientZone)
                 {
                   v129 = brc_bread_crumbs();
                   v85 = brc_default_log();
                   if (os_log_type_enabled(v85, OS_LOG_TYPE_DEBUG))
                   {
-                    v121 = [v12 debugItemIDString];
-                    v118 = [(BRFieldCKInfo *)v138 etag];
+                    debugItemIDString2 = [v12 debugItemIDString];
+                    etag6 = [(BRFieldCKInfo *)v138 etag];
                     if (v123)
                     {
                       [v7 brc_lastEditorDeviceName];
@@ -5756,9 +5756,9 @@ LABEL_94:
                     }
                     v110 = ;
                     *buf = 138413058;
-                    v153 = v121;
+                    v153 = debugItemIDString2;
                     v154 = 2112;
-                    v155 = v118;
+                    v155 = etag6;
                     v156 = 2112;
                     v157 = v110;
                     v158 = 2112;
@@ -5769,7 +5769,7 @@ LABEL_94:
                   }
 
                   v86 = v137;
-                  [(BRCPQLConnection *)self->_db execute:@"UPDATE client_items SET version_ckinfo = %@, version_device = %@, version_local_change_count = 0, version_old_version_identifier = %@ WHERE zone_rowid = %@ AND item_id = %@", v138, v140, v137, self->_dbRowID, v12];
+                  [(BRCPQLConnection *)self->_db execute:@"UPDATE client_items SET version_ckinfo = %@, version_device = %@, version_local_change_count = 0, version_old_version_identifier = %@ WHERE zone_rowid = %@ AND item_id = %@", v138, clientZone, v137, self->_dbRowID, v12];
                 }
 
                 else
@@ -5778,16 +5778,16 @@ LABEL_94:
                   v88 = brc_default_log();
                   if (os_log_type_enabled(v88, OS_LOG_TYPE_DEBUG))
                   {
-                    v109 = [(BRFieldCKInfo *)v138 etag];
+                    etag7 = [(BRFieldCKInfo *)v138 etag];
                     *buf = 138412802;
                     v153 = v12;
                     v154 = 2112;
-                    v155 = v109;
+                    v155 = etag7;
                     v156 = 2112;
                     v157 = v87;
                     _os_log_debug_impl(&dword_223E7A000, v88, OS_LOG_TYPE_DEBUG, "[DEBUG] Learn content ETag for %@: %@%@", buf, 0x20u);
 
-                    self = v142;
+                    self = selfCopy;
                   }
 
                   v86 = v137;
@@ -5808,11 +5808,11 @@ LABEL_94:
                     _os_log_impl(&dword_223E7A000, v90, OS_LOG_TYPE_DEFAULT, "[WARNING] Couldn't locate the item to learn version info for %@, checking to see if it has undergone a CZM%@", buf, 0x16u);
                   }
 
-                  v91 = v142->_db;
+                  v91 = selfCopy->_db;
                   v92 = MEMORY[0x22AA4A310](v139);
                   v93 = v91;
-                  self = v142;
-                  [(BRCPQLConnection *)v93 execute:@"UPDATE client_items SET version_ckinfo = call_block(%p, version_ckinfo) WHERE version_old_zone_rowid = %@ AND version_old_zone_item_id = %@", v92, v142->_dbRowID, v12];
+                  self = selfCopy;
+                  [(BRCPQLConnection *)v93 execute:@"UPDATE client_items SET version_ckinfo = call_block(%p, version_ckinfo) WHERE version_old_zone_rowid = %@ AND version_old_zone_item_id = %@", v92, selfCopy->_dbRowID, v12];
 
                   v70 = v132;
                 }
@@ -5820,26 +5820,26 @@ LABEL_94:
                 goto LABEL_91;
               }
 
-              v41 = [v7 recordType];
-              v42 = [v41 isEqualToString:@"perParticipantMetadata"];
+              recordType3 = [v7 recordType];
+              v42 = [recordType3 isEqualToString:@"perParticipantMetadata"];
 
               if (v42)
               {
                 v43 = brc_bread_crumbs();
                 v44 = brc_default_log();
-                self = v142;
+                self = selfCopy;
                 if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
                 {
-                  v108 = [(BRFieldCKInfo *)v138 etag];
+                  etag8 = [(BRFieldCKInfo *)v138 etag];
                   *buf = 138412802;
                   v153 = v12;
                   v154 = 2112;
-                  v155 = v108;
+                  v155 = etag8;
                   v156 = 2112;
                   v157 = v43;
                   _os_log_debug_impl(&dword_223E7A000, v44, OS_LOG_TYPE_DEBUG, "[DEBUG] Learn side-car ETag for %@: %@%@", buf, 0x20u);
 
-                  self = v142;
+                  self = selfCopy;
                 }
 
                 [(BRCPQLConnection *)self->_db execute:@"UPDATE client_items SET item_side_car_ckinfo = %@ WHERE zone_rowid = %@ AND item_id = %@", v138, self->_dbRowID, v12];
@@ -5847,11 +5847,11 @@ LABEL_94:
 
               else
               {
-                self = v142;
+                self = selfCopy;
               }
 
 LABEL_92:
-              if (v119)
+              if (modifyRecordsCopy)
               {
                 v64 = [(BRCClientZone *)self itemByItemID:v12];
                 [v64 scheduleSyncDownForOOBModifyRecordsAck];
@@ -5866,7 +5866,7 @@ LABEL_13:
             goto LABEL_14;
           }
 
-          self = v142;
+          self = selfCopy;
         }
 
 LABEL_14:
@@ -5908,13 +5908,13 @@ void __95__BRCClientZone__learnCKInfosFromSavedRecords_isOutOfBandModifyRecords_
   sqlite3_result_blob(a2, [v11 bytes], objc_msgSend(v11, "length"), 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (void)_syncUpOfRecords:(id)a3 createdAppLibraryNames:(id)a4 didFinishWithError:(id)a5 errorWasOnPCSChainedItem:(BOOL)a6 throttledItemInBatch:(BOOL)a7
+- (void)_syncUpOfRecords:(id)records createdAppLibraryNames:(id)names didFinishWithError:(id)error errorWasOnPCSChainedItem:(BOOL)item throttledItemInBatch:(BOOL)batch
 {
-  v7 = a7;
+  batchCopy = batch;
   v74 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  recordsCopy = records;
+  namesCopy = names;
+  errorCopy = error;
   [(BRCPQLConnection *)self->_db assertOnQueue];
   memset(v60, 0, sizeof(v60));
   __brc_create_section(0, "[BRCClientZone _syncUpOfRecords:createdAppLibraryNames:didFinishWithError:errorWasOnPCSChainedItem:throttledItemInBatch:]", 2170, 0, v60);
@@ -5925,17 +5925,17 @@ void __95__BRCClientZone__learnCKInfosFromSavedRecords_isOutOfBandModifyRecords_
     v48 = v60[0];
     [(BRCSyncUpOperation *)self->_syncUpOperation cost];
     v50 = v49;
-    v51 = [v12 count];
+    v51 = [recordsCopy count];
     *buf = 134219266;
     v52 = @"(successful)";
     v63 = v48;
-    if (v14)
+    if (errorCopy)
     {
-      v52 = v14;
+      v52 = errorCopy;
     }
 
     v64 = 2112;
-    v65 = self;
+    selfCopy2 = self;
     v66 = 2048;
     v67 = v50;
     v68 = 2048;
@@ -5947,12 +5947,12 @@ void __95__BRCClientZone__learnCKInfosFromSavedRecords_isOutOfBandModifyRecords_
     _os_log_debug_impl(&dword_223E7A000, v16, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx Sync: completed sync up for %@, cost:%.1f, itemCount:%llu %@%@", buf, 0x3Eu);
   }
 
-  if (!v14)
+  if (!errorCopy)
   {
-    v17 = [(BRCAccountSession *)self->_session containerScheduler];
-    v18 = [v17 syncUpBudget];
+    containerScheduler = [(BRCAccountSession *)self->_session containerScheduler];
+    syncUpBudget = [containerScheduler syncUpBudget];
     [(BRCSyncUpOperation *)self->_syncUpOperation cost];
-    [v18 consume:?];
+    [syncUpBudget consume:?];
 
     syncUpBudget = self->_syncUpBudget;
     [(BRCSyncUpOperation *)self->_syncUpOperation cost];
@@ -5963,10 +5963,10 @@ void __95__BRCClientZone__learnCKInfosFromSavedRecords_isOutOfBandModifyRecords_
   syncUpOperation = self->_syncUpOperation;
   self->_syncUpOperation = 0;
 
-  objc_storeStrong(&self->_lastSyncUpError, a5);
-  self->_lastSyncUpErrorWasOnChainedItem = a6;
-  [(BRCSyncOperationBackoffRatio *)self->_syncUpBackoffRatio newSyncOperationWithError:v14];
-  if ([(__CFString *)v14 brc_containsCloudKitErrorCode:27])
+  objc_storeStrong(&self->_lastSyncUpError, error);
+  self->_lastSyncUpErrorWasOnChainedItem = item;
+  [(BRCSyncOperationBackoffRatio *)self->_syncUpBackoffRatio newSyncOperationWithError:errorCopy];
+  if ([(__CFString *)errorCopy brc_containsCloudKitErrorCode:27])
   {
     v21 = brc_bread_crumbs();
     v22 = brc_default_log();
@@ -5978,9 +5978,9 @@ void __95__BRCClientZone__learnCKInfosFromSavedRecords_isOutOfBandModifyRecords_
     [(BRCClientZone *)self _decreaseSyncUpBatchSizeAfterError];
   }
 
-  if (v14)
+  if (errorCopy)
   {
-    if ([(__CFString *)v14 brc_isResetError])
+    if ([(__CFString *)errorCopy brc_isResetError])
     {
       brc_bread_crumbs();
       v23 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
@@ -5991,7 +5991,7 @@ void __95__BRCClientZone__learnCKInfosFromSavedRecords_isOutOfBandModifyRecords_
       }
     }
 
-    else if ([(__CFString *)v14 brc_isCloudKitErrorRequiringAssetRescan])
+    else if ([(__CFString *)errorCopy brc_isCloudKitErrorRequiringAssetRescan])
     {
       brc_bread_crumbs();
       v23 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
@@ -6002,7 +6002,7 @@ void __95__BRCClientZone__learnCKInfosFromSavedRecords_isOutOfBandModifyRecords_
         *buf = 134218498;
         v63 = requestID;
         v64 = 2112;
-        v65 = v14;
+        selfCopy2 = errorCopy;
         v66 = 2112;
         v67 = v23;
         _os_log_debug_impl(&dword_223E7A000, v24, OS_LOG_TYPE_DEBUG, "[DEBUG] Sync: requestID:%llu failed sending: %@%@", buf, 0x20u);
@@ -6020,7 +6020,7 @@ void __95__BRCClientZone__learnCKInfosFromSavedRecords_isOutOfBandModifyRecords_
         *buf = 134218498;
         v63 = v54;
         v64 = 2112;
-        v65 = v14;
+        selfCopy2 = errorCopy;
         v66 = 2112;
         v67 = v23;
         _os_log_error_impl(&dword_223E7A000, v24, 0x90u, "[ERROR] Sync: requestID:%llu failed sending: %@%@", buf, 0x20u);
@@ -6028,14 +6028,14 @@ void __95__BRCClientZone__learnCKInfosFromSavedRecords_isOutOfBandModifyRecords_
     }
 
     v36 = +[BRCAccountsManager sharedManager];
-    [v36 retrySyncBubbleLaterIfNeededWithError:v14];
+    [v36 retrySyncBubbleLaterIfNeededWithError:errorCopy];
 
-    if (([(__CFString *)v14 brc_isEverRetriable]& 1) == 0)
+    if (([(__CFString *)errorCopy brc_isEverRetriable]& 1) == 0)
     {
       [(BRCClientZone *)self recomputeAllItemsDidUploadState];
     }
 
-    if (([(__CFString *)v14 brc_isResetError]& 1) != 0 || ![(__CFString *)v14 brc_isCloudKitErrorSafeToSyncUpWithoutSyncDown])
+    if (([(__CFString *)errorCopy brc_isResetError]& 1) != 0 || ![(__CFString *)errorCopy brc_isCloudKitErrorSafeToSyncUpWithoutSyncDown])
     {
       v34 = 19;
     }
@@ -6043,8 +6043,8 @@ void __95__BRCClientZone__learnCKInfosFromSavedRecords_isOutOfBandModifyRecords_
     else
     {
       [(BRCClientZone *)self _markLatestSyncRequestFailed];
-      v37 = [(__CFString *)v14 userInfo];
-      v38 = [v37 objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
+      userInfo = [(__CFString *)errorCopy userInfo];
+      v38 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
 
       v59[0] = MEMORY[0x277D85DD0];
       v59[1] = 3221225472;
@@ -6057,7 +6057,7 @@ void __95__BRCClientZone__learnCKInfosFromSavedRecords_isOutOfBandModifyRecords_
     }
 
     v39 = +[BRCAutoBugCaptureReporter sharedABCReporter];
-    [v39 captureLogsForOperationType:@"SyncHealth" ofSubtype:@"SyncUp" forError:v14];
+    [v39 captureLogsForOperationType:@"SyncHealth" ofSubtype:@"SyncUp" forError:errorCopy];
   }
 
   else
@@ -6071,16 +6071,16 @@ void __95__BRCClientZone__learnCKInfosFromSavedRecords_isOutOfBandModifyRecords_
 
     if ([(BRCClientZone *)self isPrivateZone])
     {
-      v27 = [(BRCClientZone *)self asPrivateClientZone];
-      v28 = [v27 defaultAppLibrary];
-      [v28 setStateBits:2];
+      asPrivateClientZone = [(BRCClientZone *)self asPrivateClientZone];
+      defaultAppLibrary = [asPrivateClientZone defaultAppLibrary];
+      [defaultAppLibrary setStateBits:2];
     }
 
     v57 = 0u;
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v29 = v13;
+    v29 = namesCopy;
     v30 = [v29 countByEnumeratingWithState:&v55 objects:v61 count:16];
     if (v30)
     {
@@ -6108,30 +6108,30 @@ void __95__BRCClientZone__learnCKInfosFromSavedRecords_isOutOfBandModifyRecords_
       while (v30);
     }
 
-    [(BRCClientZone *)self learnCKInfosFromSavedRecords:v12 isOutOfBandModifyRecords:0];
+    [(BRCClientZone *)self learnCKInfosFromSavedRecords:recordsCopy isOutOfBandModifyRecords:0];
     v34 = 18;
   }
 
   [(BRCClientZone *)self setSyncStateBits:v34, v55];
   [(BRCClientZone *)self clearSyncStateBits:4];
-  if (v7 && (-[BRCClientZone mangledID](self, "mangledID"), v40 = objc_claimAutoreleasedReturnValue(), +[BRCUserDefaults defaultsForMangledID:](BRCUserDefaults, "defaultsForMangledID:", v40), v41 = objc_claimAutoreleasedReturnValue(), v42 = [v41 treatPerItemThrottleAsOperationSuccess], v41, v40, (v42 & 1) != 0))
+  if (batchCopy && (-[BRCClientZone mangledID](self, "mangledID"), v40 = objc_claimAutoreleasedReturnValue(), +[BRCUserDefaults defaultsForMangledID:](BRCUserDefaults, "defaultsForMangledID:", v40), v41 = objc_claimAutoreleasedReturnValue(), v42 = [v41 treatPerItemThrottleAsOperationSuccess], v41, v40, (v42 & 1) != 0))
   {
     v43 = 0;
   }
 
   else
   {
-    v43 = v14;
+    v43 = errorCopy;
   }
 
   [(BRCSyncOperationThrottle *)self->_syncUpThrottle updateForError:v43];
-  if (v14 || ([(BRCClientZone *)self syncDownImmediately], v44 = objc_claimAutoreleasedReturnValue(), v44, !v44))
+  if (errorCopy || ([(BRCClientZone *)self syncDownImmediately], v44 = objc_claimAutoreleasedReturnValue(), v44, !v44))
   {
     [(BRCDeadlineSource *)self->_syncDeadlineSource resume];
     [(BRCDeadlineSource *)self->_syncDeadlineSource signal];
   }
 
-  [(BRCClientZone *)self handleZoneLevelErrorIfNeeded:v14 forItemCreation:1];
+  [(BRCClientZone *)self handleZoneLevelErrorIfNeeded:errorCopy forItemCreation:1];
   brc_bread_crumbs();
   v45 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
   v46 = brc_default_log();
@@ -6141,7 +6141,7 @@ void __95__BRCClientZone__learnCKInfosFromSavedRecords_isOutOfBandModifyRecords_
     *buf = 138412802;
     v63 = syncUpThrottle;
     v64 = 2112;
-    v65 = self;
+    selfCopy2 = self;
     v66 = 2112;
     v67 = v45;
     _os_log_debug_impl(&dword_223E7A000, v46, OS_LOG_TYPE_DEBUG, "[DEBUG] Sync: updated sync-up throttle: %@\n      and container state: %@%@", buf, 0x20u);
@@ -6184,10 +6184,10 @@ void __122__BRCClientZone__syncUpOfRecords_createdAppLibraryNames_didFinishWithE
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v3 = [(BRCClientZone *)self asPrivateClientZone];
-    v4 = [v3 appLibraries];
+    asPrivateClientZone = [(BRCClientZone *)self asPrivateClientZone];
+    appLibraries = [asPrivateClientZone appLibraries];
 
-    v5 = [v4 countByEnumeratingWithState:&v22 objects:v32 count:16];
+    v5 = [appLibraries countByEnumeratingWithState:&v22 objects:v32 count:16];
     if (v5)
     {
       v6 = v5;
@@ -6198,7 +6198,7 @@ void __122__BRCClientZone__syncUpOfRecords_createdAppLibraryNames_didFinishWithE
         {
           if (*v23 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(appLibraries);
           }
 
           v9 = *(*(&v22 + 1) + 8 * i);
@@ -6209,7 +6209,7 @@ void __122__BRCClientZone__syncUpOfRecords_createdAppLibraryNames_didFinishWithE
             if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412802;
-              v27 = self;
+              selfCopy = self;
               v28 = 2112;
               v29 = v9;
               v30 = 2112;
@@ -6221,7 +6221,7 @@ void __122__BRCClientZone__syncUpOfRecords_createdAppLibraryNames_didFinishWithE
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v22 objects:v32 count:16];
+        v6 = [appLibraries countByEnumeratingWithState:&v22 objects:v32 count:16];
         if (v6)
         {
           continue;
@@ -6234,7 +6234,7 @@ void __122__BRCClientZone__syncUpOfRecords_createdAppLibraryNames_didFinishWithE
 
   if ((self->_state & 0x110) != 0)
   {
-    v4 = brc_bread_crumbs();
+    appLibraries = brc_bread_crumbs();
     v10 = brc_default_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
@@ -6247,7 +6247,7 @@ void __122__BRCClientZone__syncUpOfRecords_createdAppLibraryNames_didFinishWithE
     v12 = atomic_load(&self->_syncState);
     if ((v12 & 0xF) != 0)
     {
-      v4 = brc_bread_crumbs();
+      appLibraries = brc_bread_crumbs();
       v10 = brc_default_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
@@ -6257,12 +6257,12 @@ void __122__BRCClientZone__syncUpOfRecords_createdAppLibraryNames_didFinishWithE
 
     else
     {
-      v13 = [(BRCAccountSession *)self->_session fsDownloader];
-      v14 = [v13 haveActiveJobsMatching:self->_serverZone];
+      fsDownloader = [(BRCAccountSession *)self->_session fsDownloader];
+      v14 = [fsDownloader haveActiveJobsMatching:self->_serverZone];
 
       if (v14)
       {
-        v4 = brc_bread_crumbs();
+        appLibraries = brc_bread_crumbs();
         v10 = brc_default_log();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
         {
@@ -6272,12 +6272,12 @@ void __122__BRCClientZone__syncUpOfRecords_createdAppLibraryNames_didFinishWithE
 
       else
       {
-        v15 = [(BRCAccountSession *)self->_session fsUploader];
-        v16 = [v15 haveActiveJobsMatching:self->_serverZone];
+        fsUploader = [(BRCAccountSession *)self->_session fsUploader];
+        v16 = [fsUploader haveActiveJobsMatching:self->_serverZone];
 
         if (v16)
         {
-          v4 = brc_bread_crumbs();
+          appLibraries = brc_bread_crumbs();
           v10 = brc_default_log();
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
           {
@@ -6287,11 +6287,11 @@ void __122__BRCClientZone__syncUpOfRecords_createdAppLibraryNames_didFinishWithE
 
         else
         {
-          v17 = [(BRCAccountSession *)self->_session applyScheduler];
-          [v17 deleteExpiredJobs];
+          applyScheduler = [(BRCAccountSession *)self->_session applyScheduler];
+          [applyScheduler deleteExpiredJobs];
 
-          v18 = [(BRCAccountSession *)self->_session applyScheduler];
-          v19 = [v18 haveActiveJobsMatching:self->_serverZone];
+          applyScheduler2 = [(BRCAccountSession *)self->_session applyScheduler];
+          v19 = [applyScheduler2 haveActiveJobsMatching:self->_serverZone];
 
           if (!v19)
           {
@@ -6299,7 +6299,7 @@ void __122__BRCClientZone__syncUpOfRecords_createdAppLibraryNames_didFinishWithE
             goto LABEL_30;
           }
 
-          v4 = brc_bread_crumbs();
+          appLibraries = brc_bread_crumbs();
           v10 = brc_default_log();
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
           {
@@ -6318,21 +6318,21 @@ LABEL_30:
   return result;
 }
 
-- (void)notifyClient:(id)a3 afterNextSyncDown:(id)a4
+- (void)notifyClient:(id)client afterNextSyncDown:(id)down
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BRCPQLConnection *)self->_db serialQueue];
+  clientCopy = client;
+  downCopy = down;
+  serialQueue = [(BRCPQLConnection *)self->_db serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__BRCClientZone_notifyClient_afterNextSyncDown___block_invoke;
   block[3] = &unk_2784FF5B8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = clientCopy;
+  selfCopy = self;
+  v14 = downCopy;
+  v9 = downCopy;
+  v10 = clientCopy;
+  dispatch_async(serialQueue, block);
 }
 
 void __48__BRCClientZone_notifyClient_afterNextSyncDown___block_invoke(uint64_t a1)
@@ -6399,21 +6399,21 @@ void __48__BRCClientZone_notifyClient_afterNextSyncDown___block_invoke(uint64_t 
   }
 }
 
-- (void)notifyClient:(id)a3 whenIdle:(id)a4
+- (void)notifyClient:(id)client whenIdle:(id)idle
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BRCPQLConnection *)self->_db serialQueue];
+  clientCopy = client;
+  idleCopy = idle;
+  serialQueue = [(BRCPQLConnection *)self->_db serialQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __39__BRCClientZone_notifyClient_whenIdle___block_invoke;
   v11[3] = &unk_2785037C0;
-  v12 = v6;
-  v13 = v7;
+  v12 = clientCopy;
+  v13 = idleCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async_with_logs_5(v8, v11);
+  v9 = clientCopy;
+  v10 = idleCopy;
+  dispatch_async_with_logs_5(serialQueue, v11);
 }
 
 void __39__BRCClientZone_notifyClient_whenIdle___block_invoke(id *a1)
@@ -6696,13 +6696,13 @@ void __39__BRCClientZone_notifyClient_whenIdle___block_invoke_251(uint64_t a1)
   __brc_leave_section(v4);
 }
 
-- (void)syncDownOperation:(id)a3 didFinishWithError:(id)a4 status:(int64_t)a5
+- (void)syncDownOperation:(id)operation didFinishWithError:(id)error status:(int64_t)status
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(BRCAccountSession *)self->_session fsUploader];
-  v11 = [(BRCServerZone *)self->_serverZone ownerName];
-  [v10 scheduleQuotaFetchIfNeededForOwner:v11];
+  operationCopy = operation;
+  errorCopy = error;
+  fsUploader = [(BRCAccountSession *)self->_session fsUploader];
+  ownerName = [(BRCServerZone *)self->_serverZone ownerName];
+  [fsUploader scheduleQuotaFetchIfNeededForOwner:ownerName];
 
   db = self->_db;
   v15[0] = MEMORY[0x277D85DD0];
@@ -6710,11 +6710,11 @@ void __39__BRCClientZone_notifyClient_whenIdle___block_invoke_251(uint64_t a1)
   v15[2] = __61__BRCClientZone_syncDownOperation_didFinishWithError_status___block_invoke;
   v15[3] = &unk_278503860;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = a5;
-  v13 = v9;
-  v14 = v8;
+  v16 = operationCopy;
+  v17 = errorCopy;
+  statusCopy = status;
+  v13 = errorCopy;
+  v14 = operationCopy;
   [(BRCPQLConnection *)db performWithFlags:9 action:v15];
 }
 
@@ -7174,9 +7174,9 @@ void __61__BRCClientZone_syncDownOperation_didFinishWithError_status___block_inv
   v4 = brc_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(BRCPQLConnection *)self->_db changes];
+    changes = [(BRCPQLConnection *)self->_db changes];
     *buf = 134218242;
-    v9 = v5;
+    v9 = changes;
     v10 = 2112;
     v11 = v3;
     _os_log_impl(&dword_223E7A000, v4, OS_LOG_TYPE_DEFAULT, "[WARNING] marked %lld items rejected after cross zone move%@", buf, 0x16u);
@@ -7184,27 +7184,27 @@ void __61__BRCClientZone_syncDownOperation_didFinishWithError_status___block_inv
 
   if ([(BRCPQLConnection *)self->_db changes])
   {
-    v6 = [(BRCAccountSession *)self->_session applyScheduler];
-    [v6 repopulateJobsForZone:self->_serverZone];
+    applyScheduler = [(BRCAccountSession *)self->_session applyScheduler];
+    [applyScheduler repopulateJobsForZone:self->_serverZone];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didSyncDownRequestID:(unint64_t)a3 maxApplyRank:(int64_t)a4 caughtUpWithServer:(BOOL)a5 syncDownDate:(id)a6 isFixingState:(BOOL)a7
+- (void)_didSyncDownRequestID:(unint64_t)d maxApplyRank:(int64_t)rank caughtUpWithServer:(BOOL)server syncDownDate:(id)date isFixingState:(BOOL)state
 {
-  v111 = a5;
+  serverCopy = server;
   v150 = *MEMORY[0x277D85DE8];
-  v107 = a6;
-  v110 = [(BRCAccountSession *)self->_session applyScheduler];
-  if (!a7)
+  dateCopy = date;
+  applyScheduler = [(BRCAccountSession *)self->_session applyScheduler];
+  if (!state)
   {
     requestID = self->_requestID;
     if (requestID)
     {
-      if (requestID < a3)
+      if (requestID < d)
       {
-        [BRCClientZone _didSyncDownRequestID:self maxApplyRank:a3 caughtUpWithServer:? syncDownDate:? isFixingState:?];
+        [BRCClientZone _didSyncDownRequestID:self maxApplyRank:d caughtUpWithServer:? syncDownDate:? isFixingState:?];
       }
     }
   }
@@ -7216,10 +7216,10 @@ void __61__BRCClientZone_syncDownOperation_didFinishWithError_status___block_inv
 
   if ([(NSMutableArray *)self->_blockedOperationsOnInitialSync count])
   {
-    v11 = [(BRCServerZone *)self->_serverZone changeState];
-    v12 = [v11 changeToken];
+    changeState = [(BRCServerZone *)self->_serverZone changeState];
+    changeToken = [changeState changeToken];
 
-    if (v12)
+    if (changeToken)
     {
       [(NSMutableArray *)self->_blockedOperationsOnInitialSync sortWithOptions:16 usingComparator:&__block_literal_global_270];
     }
@@ -7231,7 +7231,7 @@ void __61__BRCClientZone_syncDownOperation_didFinishWithError_status___block_inv
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v133 = v13;
+        dCopy3 = v13;
         _os_log_impl(&dword_223E7A000, v14, OS_LOG_TYPE_DEFAULT, "[WARNING] The zone wasn't found on sync down so failing all blocked operations right away%@", buf, 0xCu);
       }
 
@@ -7255,8 +7255,8 @@ void __61__BRCClientZone_syncDownOperation_didFinishWithError_status___block_inv
 
             v19 = *(*(&v128 + 1) + 8 * i);
             v20 = MEMORY[0x277CCA9B8];
-            v21 = [(BRMangledID *)self->_mangledID appLibraryOrZoneName];
-            v22 = [v20 brc_errorClientZoneNotFound:v21];
+            appLibraryOrZoneName = [(BRMangledID *)self->_mangledID appLibraryOrZoneName];
+            v22 = [v20 brc_errorClientZoneNotFound:appLibraryOrZoneName];
             [v19 completedWithResult:0 error:v22];
 
             [v19 cancel];
@@ -7299,10 +7299,10 @@ void __61__BRCClientZone_syncDownOperation_didFinishWithError_status___block_inv
     [(NSMutableArray *)self->_blockedOperationsOnInitialSync removeAllObjects];
   }
 
-  self->_lastInsertedRank = a4;
-  objc_storeStrong(&self->_lastSyncDownDate, a6);
+  self->_lastInsertedRank = rank;
+  objc_storeStrong(&self->_lastSyncDownDate, date);
   [(BRCClientZone *)self setNeedsSave:1];
-  if (v111)
+  if (serverCopy)
   {
     if ([(BRCClientZone *)self isPrivateZone])
     {
@@ -7310,10 +7310,10 @@ void __61__BRCClientZone_syncDownOperation_didFinishWithError_status___block_inv
       v121 = 0u;
       v122 = 0u;
       v120 = 0u;
-      v27 = [(BRCClientZone *)self asPrivateClientZone];
-      v28 = [v27 appLibraries];
+      asPrivateClientZone = [(BRCClientZone *)self asPrivateClientZone];
+      appLibraries = [asPrivateClientZone appLibraries];
 
-      v29 = [v28 countByEnumeratingWithState:&v120 objects:v147 count:16];
+      v29 = [appLibraries countByEnumeratingWithState:&v120 objects:v147 count:16];
       if (v29)
       {
         v30 = 0;
@@ -7324,7 +7324,7 @@ void __61__BRCClientZone_syncDownOperation_didFinishWithError_status___block_inv
           {
             if (*v121 != v31)
             {
-              objc_enumerationMutation(v28);
+              objc_enumerationMutation(appLibraries);
             }
 
             v33 = *(*(&v120 + 1) + 8 * k);
@@ -7335,7 +7335,7 @@ void __61__BRCClientZone_syncDownOperation_didFinishWithError_status___block_inv
             }
           }
 
-          v29 = [v28 countByEnumeratingWithState:&v120 objects:v147 count:16];
+          v29 = [appLibraries countByEnumeratingWithState:&v120 objects:v147 count:16];
         }
 
         while (v29);
@@ -7354,7 +7354,7 @@ void __61__BRCClientZone_syncDownOperation_didFinishWithError_status___block_inv
     if (([(BRCClientZone *)self syncState]& 0x82) == 0x80)
     {
       [(BRCPQLConnection *)self->_db execute:@"UPDATE client_items SET item_local_diffs = (item_local_diffs & (~%lld)) WHERE zone_rowid = %@ AND (item_local_diffs & %lld) != 0", 0x1000000000000000, self->_dbRowID, 0x1000000000000000];
-      v36 = [(BRCPQLConnection *)self->_db changes];
+      changes = [(BRCPQLConnection *)self->_db changes];
       v37 = brc_bread_crumbs();
       v38 = brc_default_log();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
@@ -7363,17 +7363,17 @@ void __61__BRCClientZone_syncDownOperation_didFinishWithError_status___block_inv
       }
 
       [(BRCClientZone *)self clearSyncStateBits:128];
-      if (v36)
+      if (changes)
       {
-        v39 = [(BRCAccountSession *)self->_session applyScheduler];
-        [v39 rescheduleSuspendedJobsMatching:self->_serverZone inState:22];
+        applyScheduler2 = [(BRCAccountSession *)self->_session applyScheduler];
+        [applyScheduler2 rescheduleSuspendedJobsMatching:self->_serverZone inState:22];
       }
     }
 
     v40 = self->_requestID;
-    if (v40 != a3 && v40)
+    if (v40 != d && v40)
     {
-      if ((a3 | 1) == v40)
+      if ((d | 1) == v40)
       {
         v41 = brc_bread_crumbs();
         v42 = brc_default_log();
@@ -7391,19 +7391,19 @@ void __61__BRCClientZone_syncDownOperation_didFinishWithError_status___block_inv
         {
           v103 = self->_requestID;
           *buf = 134218754;
-          v133 = a3;
+          dCopy3 = d;
           v134 = 2048;
           v135 = v103;
           v136 = 2112;
-          v137 = self;
+          selfCopy = self;
           v138 = 2112;
           v139 = v101;
           _os_log_impl(&dword_223E7A000, v102, OS_LOG_TYPE_DEFAULT, "[WARNING] Marking latest sync request failed because the requestIDs differ %llu vs %llu for %@\n%@", buf, 0x2Au);
         }
 
-        if (self->_requestID < a3)
+        if (self->_requestID < d)
         {
-          self->_requestID = a3;
+          self->_requestID = d;
         }
 
         [(BRCClientZone *)self _markLatestSyncRequestFailed];
@@ -7421,7 +7421,7 @@ void __61__BRCClientZone_syncDownOperation_didFinishWithError_status___block_inv
 
     if (!v40)
     {
-      self->_requestID = a3;
+      self->_requestID = d;
     }
 
     v118 = 0u;
@@ -7445,10 +7445,10 @@ void __61__BRCClientZone_syncDownOperation_didFinishWithError_status___block_inv
 
           v44 = *(*(&v116 + 1) + 8 * v43);
           v45 = objc_autoreleasePoolPush();
-          v46 = [v44 itemID];
-          v47 = [(BRCClientZone *)self serverItemByItemID:v46];
+          itemID = [v44 itemID];
+          v47 = [(BRCClientZone *)self serverItemByItemID:itemID];
 
-          v48 = [v44 isSharedToMeTopLevelItem];
+          isSharedToMeTopLevelItem = [v44 isSharedToMeTopLevelItem];
           if (v47)
           {
             v49 = 0;
@@ -7456,14 +7456,14 @@ void __61__BRCClientZone_syncDownOperation_didFinishWithError_status___block_inv
 
           else
           {
-            v49 = v48;
+            v49 = isSharedToMeTopLevelItem;
           }
 
           if (v49 == 1)
           {
-            v50 = [(BRCAccountSession *)self->_session itemFetcher];
-            v51 = [(BRCClientZone *)self serverZone];
-            v47 = [v50 serverAliasItemForSharedItem:v44 inZone:v51];
+            itemFetcher = [(BRCAccountSession *)self->_session itemFetcher];
+            serverZone = [(BRCClientZone *)self serverZone];
+            v47 = [itemFetcher serverAliasItemForSharedItem:v44 inZone:serverZone];
           }
 
           v52 = brc_bread_crumbs();
@@ -7471,11 +7471,11 @@ void __61__BRCClientZone_syncDownOperation_didFinishWithError_status___block_inv
           if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
           {
             *buf = 134218754;
-            v133 = a3;
+            dCopy3 = d;
             v134 = 2112;
             v135 = v44;
             v136 = 2112;
-            v137 = v47;
+            selfCopy = v47;
             v138 = 2112;
             v139 = v52;
             _os_log_debug_impl(&dword_223E7A000, v53, OS_LOG_TYPE_DEBUG, "[DEBUG] received item in request:%llu\n   local:  %@\n   server: %@\n%@", buf, 0x2Au);
@@ -7486,7 +7486,7 @@ void __61__BRCClientZone_syncDownOperation_didFinishWithError_status___block_inv
             if (v47)
             {
               v54 = ([v44 diffAgainstServerItem:v47] & 0x63) == 1;
-              [v110 createApplyJobFromServerItem:v47 localItem:0 state:1 kind:2];
+              [applyScheduler createApplyJobFromServerItem:v47 localItem:0 state:1 kind:2];
               if (v54)
               {
                 [v44 updateStructuralCKInfoFromServerItem:v47];
@@ -7498,13 +7498,13 @@ void __61__BRCClientZone_syncDownOperation_didFinishWithError_status___block_inv
             goto LABEL_106;
           }
 
-          v55 = [v44 isSharedToMeTopLevelItem];
+          isSharedToMeTopLevelItem2 = [v44 isSharedToMeTopLevelItem];
           if (v47)
           {
-            if (v55 && [(BRCClientZone *)v47 isBRAlias])
+            if (isSharedToMeTopLevelItem2 && [(BRCClientZone *)v47 isBRAlias])
             {
-              v56 = [v44 asSharedToMeTopLevelItem];
-              v57 = [v56 diffAgainstServerAliasItem:v47];
+              asSharedToMeTopLevelItem = [v44 asSharedToMeTopLevelItem];
+              v57 = [asSharedToMeTopLevelItem diffAgainstServerAliasItem:v47];
             }
 
             else
@@ -7522,12 +7522,12 @@ void __61__BRCClientZone_syncDownOperation_didFinishWithError_status___block_inv
               v58 = (v57 & 0x7FFF) == 1;
               if ((v57 & 0x3FF0000) == 0x10000)
               {
-                v59 = [v44 isDocument];
+                isDocument = [v44 isDocument];
                 goto LABEL_89;
               }
             }
 
-            v59 = 0;
+            isDocument = 0;
 LABEL_89:
             v66 = brc_bread_crumbs();
             v67 = brc_default_log();
@@ -7546,8 +7546,8 @@ LABEL_89:
                 v91 = "NO";
               }
 
-              v133 = a3;
-              if (v59)
+              dCopy3 = d;
+              if (isDocument)
               {
                 v92 = "YES";
               }
@@ -7560,7 +7560,7 @@ LABEL_89:
               v134 = 2112;
               v135 = v44;
               v136 = 2112;
-              v137 = v47;
+              selfCopy = v47;
               v138 = 2112;
               v139 = v89;
               v140 = 2080;
@@ -7572,49 +7572,49 @@ LABEL_89:
               _os_log_debug_impl(&dword_223E7A000, v67, OS_LOG_TYPE_DEBUG, "[DEBUG] item acknowledged in requestID:%llu\n   local:  %@\n   server: %@\n   diffs:  %@\n learning etag: structural:%s content:%s%@", buf, 0x48u);
             }
 
-            [v110 createApplyJobFromServerItem:v47 localItem:0 state:1 kind:2];
+            [applyScheduler createApplyJobFromServerItem:v47 localItem:0 state:1 kind:2];
             if (v58)
             {
               [v44 updateStructuralCKInfoFromServerItem:v47];
-              if ((v59 & 1) == 0)
+              if ((isDocument & 1) == 0)
               {
                 goto LABEL_95;
               }
             }
 
-            else if (!v59)
+            else if (!isDocument)
             {
               goto LABEL_95;
             }
 
-            v68 = [v44 asDocument];
-            [v68 updateContentsCKInfoAndDeviceIDFromServerItem:v47];
+            asDocument = [v44 asDocument];
+            [asDocument updateContentsCKInfoAndDeviceIDFromServerItem:v47];
 
             goto LABEL_95;
           }
 
-          if (v55 && [(BRCClientZone *)self isPrivateZone])
+          if (isSharedToMeTopLevelItem2 && [(BRCClientZone *)self isPrivateZone])
           {
             v60 = brc_bread_crumbs();
             v61 = brc_default_log();
             if (os_log_type_enabled(v61, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412546;
-              v133 = v44;
+              dCopy3 = v44;
               v134 = 2112;
               v135 = v60;
               _os_log_debug_impl(&dword_223E7A000, v61, OS_LOG_TYPE_DEBUG, "[DEBUG] Alias was rejected when syncing up in private zone %@%@", buf, 0x16u);
             }
 
-            v62 = [(BRCServerZone *)self->_serverZone dbRowID];
-            [v44 markLatestSyncRequestAcknowledgedInZone:v62];
+            dbRowID = [(BRCServerZone *)self->_serverZone dbRowID];
+            [v44 markLatestSyncRequestAcknowledgedInZone:dbRowID];
 
             [v44 saveToDBForServerEdit:1 keepAliases:0];
-            v63 = [v44 clientZone];
-            v64 = [v44 itemID];
-            v65 = [v63 serverItemByItemID:v64];
+            clientZone = [v44 clientZone];
+            itemID2 = [v44 itemID];
+            v65 = [clientZone serverItemByItemID:itemID2];
 
-            [v110 createApplyJobFromServerItem:v65 localItem:v44 state:1 kind:2];
+            [applyScheduler createApplyJobFromServerItem:v65 localItem:v44 state:1 kind:2];
           }
 
           else
@@ -7626,19 +7626,19 @@ LABEL_89:
             if (os_log_type_enabled(v71, OS_LOG_TYPE_DEBUG))
             {
               *buf = 134218498;
-              v133 = v115[0];
+              dCopy3 = v115[0];
               v134 = 2112;
               v135 = v44;
               v136 = 2112;
-              v137 = v70;
+              selfCopy = v70;
               _os_log_debug_impl(&dword_223E7A000, v71, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx Resolving server-side folded path-match for: %@%@", buf, 0x20u);
             }
 
             v72 = [v44 st];
-            v73 = [v72 parentID];
+            parentID = [v72 parentID];
             v74 = [v44 st];
-            v75 = [v74 logicalNameWithoutLocalBounce];
-            v47 = [(BRCClientZone *)self serverItemByParentID:v73 andLogicalName:v75];
+            logicalNameWithoutLocalBounce = [v74 logicalNameWithoutLocalBounce];
+            v47 = [(BRCClientZone *)self serverItemByParentID:parentID andLogicalName:logicalNameWithoutLocalBounce];
 
             if (!v47)
             {
@@ -7652,11 +7652,11 @@ LABEL_89:
               if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412802;
-                v133 = v47;
+                dCopy3 = v47;
                 v134 = 2112;
                 v135 = v44;
                 v136 = 2112;
-                v137 = v76;
+                selfCopy = v76;
                 _os_log_impl(&dword_223E7A000, v77, OS_LOG_TYPE_DEFAULT, "[WARNING] Can't merge %@ with %@%@", buf, 0x20u);
               }
 
@@ -7668,12 +7668,12 @@ LABEL_106:
               if (os_log_type_enabled(v79, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138412290;
-                v133 = v78;
+                dCopy3 = v78;
                 _os_log_debug_impl(&dword_223E7A000, v79, OS_LOG_TYPE_DEBUG, "[DEBUG] we couldn't find a suitable path-match, mark the item as rejected%@", buf, 0xCu);
               }
 
-              v80 = [(BRCServerZone *)self->_serverZone dbRowID];
-              [v44 markLatestSyncRequestRejectedInZone:v80];
+              dbRowID2 = [(BRCServerZone *)self->_serverZone dbRowID];
+              [v44 markLatestSyncRequestRejectedInZone:dbRowID2];
 
               [v44 saveToDBForServerEdit:1 keepAliases:0];
               goto LABEL_109;
@@ -7683,23 +7683,23 @@ LABEL_106:
             {
               __brc_leave_section(v115);
 LABEL_133:
-              [v110 createApplyJobFromServerItem:v47 localItem:0 state:1 kind:2];
+              [applyScheduler createApplyJobFromServerItem:v47 localItem:0 state:1 kind:2];
 LABEL_95:
-              v69 = [(BRCServerZone *)self->_serverZone dbRowID];
-              [v44 markLatestSyncRequestAcknowledgedInZone:v69];
+              dbRowID3 = [(BRCServerZone *)self->_serverZone dbRowID];
+              [v44 markLatestSyncRequestAcknowledgedInZone:dbRowID3];
 
               [v44 saveToDBForServerEdit:1 keepAliases:0];
               goto LABEL_109;
             }
 
-            v81 = [(BRCClientZone *)v47 itemID];
-            v82 = [(BRCClientZone *)self itemByItemID:v81];
+            itemID3 = [(BRCClientZone *)v47 itemID];
+            v82 = [(BRCClientZone *)self itemByItemID:itemID3];
             v83 = brc_bread_crumbs();
             v84 = brc_default_log();
             if (os_log_type_enabled(v84, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412546;
-              v133 = v47;
+              dCopy3 = v47;
               v134 = 2112;
               v135 = v83;
               _os_log_debug_impl(&dword_223E7A000, v84, OS_LOG_TYPE_DEBUG, "[DEBUG] Found a path-match in the server truth: %@%@", buf, 0x16u);
@@ -7711,17 +7711,17 @@ LABEL_95:
               v96 = brc_default_log();
               if (os_log_type_enabled(v96, OS_LOG_TYPE_DEBUG))
               {
-                v97 = [v44 itemID];
+                itemID4 = [v44 itemID];
                 *buf = 138412802;
-                v133 = v81;
+                dCopy3 = itemID3;
                 v134 = 2112;
-                v135 = v97;
+                v135 = itemID4;
                 v136 = 2112;
-                v137 = v95;
+                selfCopy = v95;
                 _os_log_debug_impl(&dword_223E7A000, v96, OS_LOG_TYPE_DEBUG, "[DEBUG] path-match is new, learn new item ID %@ instead of %@%@", buf, 0x20u);
               }
 
-              [v44 learnItemID:v81 serverItem:v47];
+              [v44 learnItemID:itemID3 serverItem:v47];
 LABEL_132:
 
               __brc_leave_section(v115);
@@ -7740,7 +7740,7 @@ LABEL_132:
               if (os_log_type_enabled(v94, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138412290;
-                v133 = v93;
+                dCopy3 = v93;
                 _os_log_debug_impl(&dword_223E7A000, v94, OS_LOG_TYPE_DEBUG, "[DEBUG] path-match exists on the filesystem. Forcing a rejection%@", buf, 0xCu);
               }
 
@@ -7753,13 +7753,13 @@ LABEL_132:
             if (os_log_type_enabled(v86, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412290;
-              v133 = v85;
+              dCopy3 = v85;
               _os_log_debug_impl(&dword_223E7A000, v86, OS_LOG_TYPE_DEBUG, "[DEBUG] path-match exists on the filesystem. Merging the contents of the directories%@", buf, 0xCu);
             }
 
-            v87 = [v44 asDirectory];
-            v88 = [v82 asDirectory];
-            [v87 mergeContentsIntoDirectory:v88];
+            asDirectory = [v44 asDirectory];
+            asDirectory2 = [v82 asDirectory];
+            [asDirectory mergeContentsIntoDirectory:asDirectory2];
 
             __brc_leave_section(v115);
           }
@@ -7796,7 +7796,7 @@ LABEL_109:
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v133 = v34;
+      dCopy3 = v34;
       _os_log_impl(&dword_223E7A000, v35, OS_LOG_TYPE_DEFAULT, "[WARNING] not enumerating in-flight items until we are caught up.%@", buf, 0xCu);
     }
   }
@@ -7826,11 +7826,11 @@ uint64_t __98__BRCClientZone__didSyncDownRequestID_maxApplyRank_caughtUpWithServ
   return v8;
 }
 
-- (BOOL)_crossZoneMoveDocumentsToZone:(id)a3
+- (BOOL)_crossZoneMoveDocumentsToZone:(id)zone
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(BRCClientZone *)self isEqualToClientZone:v4])
+  zoneCopy = zone;
+  if ([(BRCClientZone *)self isEqualToClientZone:zoneCopy])
   {
     v5 = brc_bread_crumbs();
     v6 = brc_default_log();
@@ -7853,9 +7853,9 @@ uint64_t __98__BRCClientZone__didSyncDownRequestID_maxApplyRank_caughtUpWithServ
       *buf = 134218754;
       v26 = v24[0];
       v27 = 2112;
-      v28 = self;
+      selfCopy = self;
       v29 = 2112;
-      v30 = v4;
+      v30 = zoneCopy;
       v31 = 2112;
       v32 = v8;
       _os_log_debug_impl(&dword_223E7A000, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx cross zone move documents from %@ to %@%@", buf, 0x2Au);
@@ -7863,19 +7863,19 @@ uint64_t __98__BRCClientZone__didSyncDownRequestID_maxApplyRank_caughtUpWithServ
 
     v10 = self->_session;
     v11 = [(BRCClientZone *)self db];
-    v12 = [(BRCClientZone *)self asPrivateClientZone];
+    asPrivateClientZone = [(BRCClientZone *)self asPrivateClientZone];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __47__BRCClientZone__crossZoneMoveDocumentsToZone___block_invoke;
     v18[3] = &unk_2785038A8;
-    v13 = v12;
+    v13 = asPrivateClientZone;
     v19 = v13;
     v14 = v11;
     v20 = v14;
-    v21 = self;
+    selfCopy2 = self;
     v15 = v10;
     v22 = v15;
-    v23 = v4;
+    v23 = zoneCopy;
     v7 = [v14 performWithFlags:24 action:v18];
 
     __brc_leave_section(v24);
@@ -8323,24 +8323,24 @@ void __47__BRCClientZone__crossZoneMoveDocumentsToZone___block_invoke_303(uint64
   sqlite3_result_blob(a2, [v5 bytes], objc_msgSend(v5, "length"), 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (void)_allItemsDidUploadWithError:(id)a3
+- (void)_allItemsDidUploadWithError:(id)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   [(BRCPQLConnection *)self->_db assertOnQueue];
   if (![(BRCClientZone *)self _hasAllItemsDidUploadHandlers])
   {
     [BRCClientZone _allItemsDidUploadWithError:];
   }
 
-  if (v4)
+  if (errorCopy)
   {
     v5 = brc_bread_crumbs();
     v6 = brc_default_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v23 = v4;
+      v23 = errorCopy;
       v24 = 2112;
       v25 = v5;
       _os_log_impl(&dword_223E7A000, v6, OS_LOG_TYPE_DEFAULT, "[WARNING] shared iPad: calling the upload handler because sync is failing: %@%@", buf, 0x16u);
@@ -8388,7 +8388,7 @@ void __47__BRCClientZone__crossZoneMoveDocumentsToZone___block_invoke_303(uint64
             objc_enumerationMutation(v10);
           }
 
-          [*(*(&v17 + 1) + 8 * v14++) clientZone:self didFinishUploadingAllItemsWithError:{v4, v17}];
+          [*(*(&v17 + 1) + 8 * v14++) clientZone:self didFinishUploadingAllItemsWithError:{errorCopy, v17}];
         }
 
         while (v12 != v14);
@@ -8431,7 +8431,7 @@ LABEL_16:
         *buf = 138412802;
         v15 = v8;
         v16 = 2112;
-        v17 = self;
+        selfCopy = self;
         v18 = 2112;
         v19 = v9;
         _os_log_debug_impl(&dword_223E7A000, v10, OS_LOG_TYPE_DEBUG, "[DEBUG] shared iPad: Still need to sync up %@ more items for sync bubble for %@%@", buf, 0x20u);
@@ -8487,18 +8487,18 @@ uint64_t __41__BRCClientZone_handleRootRecordDeletion__block_invoke(uint64_t a1)
   return 1;
 }
 
-- (void)didGCTombstoneRanks:(id)a3
+- (void)didGCTombstoneRanks:(id)ranks
 {
-  v4 = a3;
-  v5 = [(BRCPQLConnection *)self->_db serialQueue];
+  ranksCopy = ranks;
+  serialQueue = [(BRCPQLConnection *)self->_db serialQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__BRCClientZone_didGCTombstoneRanks___block_invoke;
   v7[3] = &unk_2784FF478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = ranksCopy;
+  v6 = ranksCopy;
+  dispatch_async(serialQueue, v7);
 }
 
 uint64_t __37__BRCClientZone_didGCTombstoneRanks___block_invoke(uint64_t a1)
@@ -8527,19 +8527,19 @@ uint64_t __37__BRCClientZone_didGCTombstoneRanks___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)didApplyTombstoneForRank:(int64_t)a3
+- (void)didApplyTombstoneForRank:(int64_t)rank
 {
-  if (a3 >= 1)
+  if (rank >= 1)
   {
     appliedTombstoneRanks = self->_appliedTombstoneRanks;
     if (appliedTombstoneRanks)
     {
-      [(NSMutableIndexSet *)appliedTombstoneRanks addIndex:a3];
+      [(NSMutableIndexSet *)appliedTombstoneRanks addIndex:rank];
     }
 
     else
     {
-      v5 = [objc_alloc(MEMORY[0x277CCAB58]) initWithIndex:a3];
+      v5 = [objc_alloc(MEMORY[0x277CCAB58]) initWithIndex:rank];
       v6 = self->_appliedTombstoneRanks;
       self->_appliedTombstoneRanks = v5;
     }
@@ -8555,13 +8555,13 @@ uint64_t __37__BRCClientZone_didGCTombstoneRanks___block_invoke(uint64_t a1)
   }
 }
 
-- (void)scheduleApplyWithLocalItem:(id)a3 serverItem:(id)a4
+- (void)scheduleApplyWithLocalItem:(id)item serverItem:(id)serverItem
 {
-  v10 = a3;
-  v6 = a4;
-  if (v10 && ([v10 isDead] & 1) == 0)
+  itemCopy = item;
+  serverItemCopy = serverItem;
+  if (itemCopy && ([itemCopy isDead] & 1) == 0)
   {
-    v7 = v10;
+    v7 = itemCopy;
     v8 = 2;
   }
 
@@ -8571,19 +8571,19 @@ uint64_t __37__BRCClientZone_didGCTombstoneRanks___block_invoke(uint64_t a1)
     v8 = 1;
   }
 
-  v9 = [(BRCAccountSession *)self->_session applyScheduler];
-  [v9 createApplyJobFromServerItem:v6 localItem:v7 state:1 kind:v8];
+  applyScheduler = [(BRCAccountSession *)self->_session applyScheduler];
+  [applyScheduler createApplyJobFromServerItem:serverItemCopy localItem:v7 state:1 kind:v8];
 }
 
-- (BOOL)_checkIfEnumeratorContainsNonDiscretionaryOp:(id)a3
+- (BOOL)_checkIfEnumeratorContainsNonDiscretionaryOp:(id)op
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  opCopy = op;
+  v4 = [opCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -8593,7 +8593,7 @@ uint64_t __37__BRCClientZone_didGCTombstoneRanks___block_invoke(uint64_t a1)
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(opCopy);
         }
 
         if ([*(*(&v9 + 1) + 8 * i) nonDiscretionary])
@@ -8603,7 +8603,7 @@ uint64_t __37__BRCClientZone_didGCTombstoneRanks___block_invoke(uint64_t a1)
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [opCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -8621,32 +8621,32 @@ LABEL_11:
 
 - (BOOL)_hasNonDiscretionaryServerStitchingOperation
 {
-  v3 = [(NSMutableDictionary *)self->_runningListOperations objectEnumerator];
-  if ([(BRCClientZone *)self _checkIfEnumeratorContainsNonDiscretionaryOp:v3])
+  objectEnumerator = [(NSMutableDictionary *)self->_runningListOperations objectEnumerator];
+  if ([(BRCClientZone *)self _checkIfEnumeratorContainsNonDiscretionaryOp:objectEnumerator])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(NSMutableDictionary *)self->_recursiveListOperations objectEnumerator];
-    if ([(BRCClientZone *)self _checkIfEnumeratorContainsNonDiscretionaryOp:v5])
+    objectEnumerator2 = [(NSMutableDictionary *)self->_recursiveListOperations objectEnumerator];
+    if ([(BRCClientZone *)self _checkIfEnumeratorContainsNonDiscretionaryOp:objectEnumerator2])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(NSMutableDictionary *)self->_fetchParentOperations objectEnumerator];
-      if ([(BRCClientZone *)self _checkIfEnumeratorContainsNonDiscretionaryOp:v6])
+      objectEnumerator3 = [(NSMutableDictionary *)self->_fetchParentOperations objectEnumerator];
+      if ([(BRCClientZone *)self _checkIfEnumeratorContainsNonDiscretionaryOp:objectEnumerator3])
       {
         v4 = 1;
       }
 
       else
       {
-        v7 = [(NSMutableDictionary *)self->_locateRecordOperations objectEnumerator];
-        v4 = [(BRCClientZone *)self _checkIfEnumeratorContainsNonDiscretionaryOp:v7];
+        objectEnumerator4 = [(NSMutableDictionary *)self->_locateRecordOperations objectEnumerator];
+        v4 = [(BRCClientZone *)self _checkIfEnumeratorContainsNonDiscretionaryOp:objectEnumerator4];
       }
     }
   }
@@ -8654,24 +8654,24 @@ LABEL_11:
   return v4;
 }
 
-- (void)_registerOperation:(id)a3 throttler:(id)a4
+- (void)_registerOperation:(id)operation throttler:(id)throttler
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  operationCopy = operation;
   db = self->_db;
-  v8 = a4;
+  throttlerCopy = throttler;
   [(BRCPQLConnection *)db assertOnQueue];
-  [(BRCServerZone *)v6 setOperationThrottle:v8];
+  [(BRCServerZone *)operationCopy setOperationThrottle:throttlerCopy];
 
-  v9 = [(BRCServerZone *)self->_serverZone mangledID];
-  v10 = [BRCUserDefaults defaultsForMangledID:v9];
+  mangledID = [(BRCServerZone *)self->_serverZone mangledID];
+  v10 = [BRCUserDefaults defaultsForMangledID:mangledID];
 
-  v11 = [(BRCServerZone *)self->_serverZone clientZone];
-  if ([v11 isSyncBlockedBecauseAppNotInstalled])
+  clientZone = [(BRCServerZone *)self->_serverZone clientZone];
+  if ([clientZone isSyncBlockedBecauseAppNotInstalled])
   {
-    v12 = [(BRCServerZone *)v6 nonDiscretionary];
+    nonDiscretionary = [(BRCServerZone *)operationCopy nonDiscretionary];
 
-    if (v12)
+    if (nonDiscretionary)
     {
       v13 = brc_bread_crumbs();
       v14 = brc_default_log();
@@ -8681,7 +8681,7 @@ LABEL_11:
         v42 = 138412802;
         v43 = serverZone;
         v44 = 2112;
-        v45 = v6;
+        v45 = operationCopy;
         v46 = 2112;
         v47 = v13;
         _os_log_impl(&dword_223E7A000, v14, OS_LOG_TYPE_DEFAULT, "[WARNING] The zone %@ is blocked because the app isn't installed but we have a non-discretionary op %@. Unblocking the zone%@", &v42, 0x20u);
@@ -8697,9 +8697,9 @@ LABEL_11:
 
   if (self->_syncDownOperation)
   {
-    v16 = [(BRCServerZone *)v6 nonDiscretionary];
-    v17 = [(_BRCOperation *)self->_syncDownOperation nonDiscretionary];
-    if (v16 && !v17)
+    nonDiscretionary2 = [(BRCServerZone *)operationCopy nonDiscretionary];
+    nonDiscretionary3 = [(_BRCOperation *)self->_syncDownOperation nonDiscretionary];
+    if (nonDiscretionary2 && !nonDiscretionary3)
     {
       v18 = brc_bread_crumbs();
       v19 = brc_default_log();
@@ -8713,7 +8713,7 @@ LABEL_11:
       [(BRCClientZone *)self scheduleSyncDown];
     }
 
-    [(BRCServerZone *)v6 addDependency:self->_syncDownOperation];
+    [(BRCServerZone *)operationCopy addDependency:self->_syncDownOperation];
   }
 
   if (![(BRCClientZone *)self isSharedZone]&& [(BRCServerZone *)self->_serverZone zoneCreationState]== 2)
@@ -8726,26 +8726,26 @@ LABEL_11:
     }
 
     v22 = MEMORY[0x277CCA9B8];
-    v23 = [(BRMangledID *)self->_mangledID appLibraryOrZoneName];
-    v24 = [v22 brc_errorClientZoneNotFound:v23];
-    [(BRCServerZone *)v6 completedWithResult:0 error:v24];
+    appLibraryOrZoneName = [(BRMangledID *)self->_mangledID appLibraryOrZoneName];
+    v24 = [v22 brc_errorClientZoneNotFound:appLibraryOrZoneName];
+    [(BRCServerZone *)operationCopy completedWithResult:0 error:v24];
 
-    [(BRCServerZone *)v6 cancel];
+    [(BRCServerZone *)operationCopy cancel];
     goto LABEL_22;
   }
 
-  v25 = [(BRCServerZone *)self->_serverZone clientZone];
-  if ([v25 hasCompletedInitialSyncDownOnce])
+  clientZone2 = [(BRCServerZone *)self->_serverZone clientZone];
+  if ([clientZone2 hasCompletedInitialSyncDownOnce])
   {
 
 LABEL_22:
-    [(BRCServerZone *)v6 schedule];
+    [(BRCServerZone *)operationCopy schedule];
     goto LABEL_23;
   }
 
-  v26 = [v10 allowsDirectoryListBeforeInitialChangeToken];
+  allowsDirectoryListBeforeInitialChangeToken = [v10 allowsDirectoryListBeforeInitialChangeToken];
 
-  if (v26)
+  if (allowsDirectoryListBeforeInitialChangeToken)
   {
     goto LABEL_22;
   }
@@ -8757,27 +8757,27 @@ LABEL_22:
   brc_current_date_nsec();
   brc_interval_from_nsec();
   v33 = v32;
-  if ([(BRCServerZone *)v6 nonDiscretionary]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && !self->_syncDownOperation && v31 > v29 + v33)
+  if ([(BRCServerZone *)operationCopy nonDiscretionary]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && !self->_syncDownOperation && v31 > v29 + v33)
   {
     lastSyncDownError = self->_lastSyncDownError;
     if (lastSyncDownError)
     {
-      v35 = lastSyncDownError;
+      brc_errorOperationCancelled = lastSyncDownError;
     }
 
     else
     {
-      v35 = [MEMORY[0x277CCA9B8] brc_errorOperationCancelled];
+      brc_errorOperationCancelled = [MEMORY[0x277CCA9B8] brc_errorOperationCancelled];
     }
 
-    v38 = v35;
+    v38 = brc_errorOperationCancelled;
     v39 = brc_bread_crumbs();
     v40 = brc_default_log();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
       v41 = [BRCDumpContext stringFromInterval:0 context:v31 - v33];
       v42 = 138413058;
-      v43 = v6;
+      v43 = operationCopy;
       v44 = 2112;
       v45 = v41;
       v46 = 2112;
@@ -8787,9 +8787,9 @@ LABEL_22:
       _os_log_impl(&dword_223E7A000, v40, OS_LOG_TYPE_DEFAULT, "[WARNING] Failing non-discretionary list operation %@ right away because we are heavily throttled (next try %@) %@%@", &v42, 0x2Au);
     }
 
-    [(BRCServerZone *)v6 completedWithResult:0 error:v38];
-    [(BRCServerZone *)v6 cancel];
-    [(BRCServerZone *)v6 schedule];
+    [(BRCServerZone *)operationCopy completedWithResult:0 error:v38];
+    [(BRCServerZone *)operationCopy cancel];
+    [(BRCServerZone *)operationCopy schedule];
   }
 
   else
@@ -8801,7 +8801,7 @@ LABEL_22:
       [BRCClientZone _registerOperation:throttler:];
     }
 
-    [(NSMutableArray *)self->_blockedOperationsOnInitialSync addObject:v6];
+    [(NSMutableArray *)self->_blockedOperationsOnInitialSync addObject:operationCopy];
     [(BRCClientZone *)self scheduleSyncDownFirst];
   }
 
@@ -8810,10 +8810,10 @@ LABEL_23:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerListOperation:(id)a3 shareAcceptOperation:(id)a4
+- (void)_registerListOperation:(id)operation shareAcceptOperation:(id)acceptOperation
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  acceptOperationCopy = acceptOperation;
   [(BRCPQLConnection *)self->_db assertOnQueue];
   v8 = brc_bread_crumbs();
   v9 = brc_default_log();
@@ -8822,8 +8822,8 @@ LABEL_23:
     [BRCClientZone _registerListOperation:shareAcceptOperation:];
   }
 
-  [(BRCClientZone *)self _registerServerStitchingOperation:v6];
-  if (v7)
+  [(BRCClientZone *)self _registerServerStitchingOperation:operationCopy];
+  if (acceptOperationCopy)
   {
     v10 = brc_bread_crumbs();
     v11 = brc_default_log();
@@ -8832,58 +8832,58 @@ LABEL_23:
       [BRCClientZone _registerListOperation:shareAcceptOperation:];
     }
 
-    [v6 addDependency:v7];
+    [operationCopy addDependency:acceptOperationCopy];
   }
 
-  v12 = [(BRCServerZone *)self->_serverZone changeState];
-  v13 = [v12 changeToken];
-  if (v13)
+  changeState = [(BRCServerZone *)self->_serverZone changeState];
+  changeToken = [changeState changeToken];
+  if (changeToken)
   {
   }
 
   else
   {
-    v14 = [(BRCClientZone *)self isSyncBlockedBecauseAppNotInstalled];
+    isSyncBlockedBecauseAppNotInstalled = [(BRCClientZone *)self isSyncBlockedBecauseAppNotInstalled];
 
-    if (!v14)
+    if (!isSyncBlockedBecauseAppNotInstalled)
     {
-      v17 = [(BRCServerZone *)self->_serverZone clientZone];
-      [v17 scheduleSyncDownFirst];
+      clientZone = [(BRCServerZone *)self->_serverZone clientZone];
+      [clientZone scheduleSyncDownFirst];
 
       goto LABEL_11;
     }
   }
 
-  [(BRCClientZone *)self _blockLowPriorityStitchingOperationsForOperation:v6];
+  [(BRCClientZone *)self _blockLowPriorityStitchingOperationsForOperation:operationCopy];
 LABEL_11:
   runningListOperations = self->_runningListOperations;
-  v16 = [v6 folderToList];
-  [(NSMutableDictionary *)runningListOperations setObject:v6 forKeyedSubscript:v16];
+  folderToList = [operationCopy folderToList];
+  [(NSMutableDictionary *)runningListOperations setObject:operationCopy forKeyedSubscript:folderToList];
 }
 
-- (id)cancelListOperationAndReschedule:(id)a3
+- (id)cancelListOperationAndReschedule:(id)reschedule
 {
   db = self->_db;
-  v5 = a3;
+  rescheduleCopy = reschedule;
   [(BRCPQLConnection *)db assertOnQueue];
   runningListOperations = self->_runningListOperations;
-  v7 = [v5 folderToList];
-  [(NSMutableDictionary *)runningListOperations removeObjectForKey:v7];
+  folderToList = [rescheduleCopy folderToList];
+  [(NSMutableDictionary *)runningListOperations removeObjectForKey:folderToList];
 
-  v8 = [v5 folderToList];
-  v9 = -[BRCClientZone fetchDirectoryContentsIfNecessary:isUserWaiting:rescheduleApplyScheduler:](self, "fetchDirectoryContentsIfNecessary:isUserWaiting:rescheduleApplyScheduler:", v8, [v5 nonDiscretionary], objc_msgSend(v5, "rescheduleApply"));
+  folderToList2 = [rescheduleCopy folderToList];
+  v9 = -[BRCClientZone fetchDirectoryContentsIfNecessary:isUserWaiting:rescheduleApplyScheduler:](self, "fetchDirectoryContentsIfNecessary:isUserWaiting:rescheduleApplyScheduler:", folderToList2, [rescheduleCopy nonDiscretionary], objc_msgSend(rescheduleCopy, "rescheduleApply"));
 
-  [v5 cancelToBeReplacedByOperation:v9];
+  [rescheduleCopy cancelToBeReplacedByOperation:v9];
 
   return v9;
 }
 
-- (void)_registerFetchParentChainOperation:(id)a3
+- (void)_registerFetchParentChainOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   [(BRCPQLConnection *)self->_db assertOnQueue];
-  v5 = [v4 parentIDToList];
-  if (v5)
+  parentIDToList = [operationCopy parentIDToList];
+  if (parentIDToList)
   {
     v6 = brc_bread_crumbs();
     v7 = brc_default_log();
@@ -8892,9 +8892,9 @@ LABEL_11:
       [BRCClientZone _registerFetchParentChainOperation:];
     }
 
-    [(BRCClientZone *)self _registerServerStitchingOperation:v4];
-    [(BRCClientZone *)self _blockLowPriorityStitchingOperationsForOperation:v4];
-    [(NSMutableDictionary *)self->_fetchParentOperations setObject:v4 forKeyedSubscript:v5];
+    [(BRCClientZone *)self _registerServerStitchingOperation:operationCopy];
+    [(BRCClientZone *)self _blockLowPriorityStitchingOperationsForOperation:operationCopy];
+    [(NSMutableDictionary *)self->_fetchParentOperations setObject:operationCopy forKeyedSubscript:parentIDToList];
   }
 
   else
@@ -8908,24 +8908,24 @@ LABEL_11:
   }
 }
 
-- (id)cancelFetchParentChainOperationAndReschedule:(id)a3
+- (id)cancelFetchParentChainOperationAndReschedule:(id)reschedule
 {
   db = self->_db;
-  v5 = a3;
+  rescheduleCopy = reschedule;
   [(BRCPQLConnection *)db assertOnQueue];
-  v6 = [v5 parentIDToList];
-  [(NSMutableDictionary *)self->_fetchParentOperations removeObjectForKey:v6];
-  v7 = -[BRCClientZone fetchParentChainIfNecessaryWithParentItemID:isUserWaiting:](self, "fetchParentChainIfNecessaryWithParentItemID:isUserWaiting:", v6, [v5 nonDiscretionary]);
-  [v5 cancelToBeReplacedByOperation:v7];
+  parentIDToList = [rescheduleCopy parentIDToList];
+  [(NSMutableDictionary *)self->_fetchParentOperations removeObjectForKey:parentIDToList];
+  v7 = -[BRCClientZone fetchParentChainIfNecessaryWithParentItemID:isUserWaiting:](self, "fetchParentChainIfNecessaryWithParentItemID:isUserWaiting:", parentIDToList, [rescheduleCopy nonDiscretionary]);
+  [rescheduleCopy cancelToBeReplacedByOperation:v7];
 
   return v7;
 }
 
-- (void)_registerLocateRecordOperation:(id)a3
+- (void)_registerLocateRecordOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   [(BRCPQLConnection *)self->_db assertOnQueue];
-  v5 = [v4 recordID];
+  recordID = [operationCopy recordID];
   v6 = brc_bread_crumbs();
   v7 = brc_default_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -8933,27 +8933,27 @@ LABEL_11:
     [BRCClientZone _registerLocateRecordOperation:];
   }
 
-  [(BRCClientZone *)self _registerOperation:v4 throttler:self->_locateRecordsOperationThrottle];
-  [(BRCClientZone *)self _blockLowPriorityStitchingOperationsForOperation:v4];
-  [(NSMutableDictionary *)self->_locateRecordOperations setObject:v4 forKeyedSubscript:v5];
+  [(BRCClientZone *)self _registerOperation:operationCopy throttler:self->_locateRecordsOperationThrottle];
+  [(BRCClientZone *)self _blockLowPriorityStitchingOperationsForOperation:operationCopy];
+  [(NSMutableDictionary *)self->_locateRecordOperations setObject:operationCopy forKeyedSubscript:recordID];
 }
 
-- (id)cancelLocateRecordOperationAndReschedule:(id)a3
+- (id)cancelLocateRecordOperationAndReschedule:(id)reschedule
 {
   db = self->_db;
-  v5 = a3;
+  rescheduleCopy = reschedule;
   [(BRCPQLConnection *)db assertOnQueue];
-  v6 = [v5 recordID];
-  [(NSMutableDictionary *)self->_locateRecordOperations removeObjectForKey:v6];
-  v7 = -[BRCClientZone locateRecordIfNecessaryForRecordID:isUserWaiting:](self, "locateRecordIfNecessaryForRecordID:isUserWaiting:", v6, [v5 nonDiscretionary]);
-  [v5 cancelToBeReplacedByOperation:v7];
+  recordID = [rescheduleCopy recordID];
+  [(NSMutableDictionary *)self->_locateRecordOperations removeObjectForKey:recordID];
+  v7 = -[BRCClientZone locateRecordIfNecessaryForRecordID:isUserWaiting:](self, "locateRecordIfNecessaryForRecordID:isUserWaiting:", recordID, [rescheduleCopy nonDiscretionary]);
+  [rescheduleCopy cancelToBeReplacedByOperation:v7];
 
   return v7;
 }
 
-- (BOOL)_isSideSyncOperationBlockedWithName:(id)a3 isWaitingOnShareAccept:(BOOL)a4
+- (BOOL)_isSideSyncOperationBlockedWithName:(id)name isWaitingOnShareAccept:(BOOL)accept
 {
-  v6 = a3;
+  nameCopy = name;
   if (!self->_activated)
   {
     v7 = brc_bread_crumbs();
@@ -8999,9 +8999,9 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v11 = [(BRCClientZone *)self isSyncBlockedBecauseAppNotInstalled];
+  isSyncBlockedBecauseAppNotInstalled = [(BRCClientZone *)self isSyncBlockedBecauseAppNotInstalled];
   v9 = 0;
-  if (!v11 && !a4)
+  if (!isSyncBlockedBecauseAppNotInstalled && !accept)
   {
     v7 = brc_bread_crumbs();
     v8 = brc_default_log();
@@ -9018,17 +9018,17 @@ LABEL_8:
   return v9;
 }
 
-- (id)fetchDirectoryContentsIfNecessary:(id)a3 isUserWaiting:(BOOL)a4 rescheduleApplyScheduler:(BOOL)a5
+- (id)fetchDirectoryContentsIfNecessary:(id)necessary isUserWaiting:(BOOL)waiting rescheduleApplyScheduler:(BOOL)scheduler
 {
-  v5 = a5;
-  v6 = a4;
+  schedulerCopy = scheduler;
+  waitingCopy = waiting;
   v62 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  necessaryCopy = necessary;
   [(BRCPQLConnection *)self->_db assertOnQueue];
   if ([(BRCClientZone *)self isSharedZone])
   {
-    v9 = [(BRCClientZone *)self asSharedClientZone];
-    v10 = [v9 shareAcceptOperationForItemID:v8];
+    asSharedClientZone = [(BRCClientZone *)self asSharedClientZone];
+    v10 = [asSharedClientZone shareAcceptOperationForItemID:necessaryCopy];
   }
 
   else
@@ -9042,7 +9042,7 @@ LABEL_8:
     goto LABEL_24;
   }
 
-  if (!v8)
+  if (!necessaryCopy)
   {
     v12 = brc_bread_crumbs();
     v15 = brc_default_log();
@@ -9054,16 +9054,16 @@ LABEL_8:
     goto LABEL_22;
   }
 
-  v12 = [[BRCItemGlobalID alloc] initWithZoneRowID:self->_dbRowID itemID:v8];
+  v12 = [[BRCItemGlobalID alloc] initWithZoneRowID:self->_dbRowID itemID:necessaryCopy];
   if (([(BRCServerZone *)self->_serverZone state]& 4) != 0)
   {
-    if (v5)
+    if (schedulerCopy)
     {
-      v16 = [(PQLConnection *)self->_db numberWithSQL:@"SELECT item_type FROM client_items WHERE item_id = %@ AND zone_rowid = %@", v8, self->_dbRowID];
+      v16 = [(PQLConnection *)self->_db numberWithSQL:@"SELECT item_type FROM client_items WHERE item_id = %@ AND zone_rowid = %@", necessaryCopy, self->_dbRowID];
       if ([v16 intValue] == 9)
       {
-        v17 = [(BRCAccountSession *)self->_session applyScheduler];
-        [v17 rescheduleItemsParentedToItemGlobalID:v12];
+        applyScheduler = [(BRCAccountSession *)self->_session applyScheduler];
+        [applyScheduler rescheduleItemsParentedToItemGlobalID:v12];
       }
     }
 
@@ -9071,15 +9071,15 @@ LABEL_8:
     v19 = brc_default_log();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
-      [BRCClientZone fetchDirectoryContentsIfNecessary:v8 isUserWaiting:? rescheduleApplyScheduler:?];
+      [BRCClientZone fetchDirectoryContentsIfNecessary:necessaryCopy isUserWaiting:? rescheduleApplyScheduler:?];
     }
 
     goto LABEL_22;
   }
 
-  v13 = [(NSMutableDictionary *)self->_runningListOperations objectForKeyedSubscript:v8];
+  v13 = [(NSMutableDictionary *)self->_runningListOperations objectForKeyedSubscript:necessaryCopy];
   v11 = v13;
-  if (v6 && v13)
+  if (waitingCopy && v13)
   {
     if (![(_BRCOperation *)v13 nonDiscretionary])
     {
@@ -9088,7 +9088,7 @@ LABEL_8:
     }
 
 LABEL_28:
-    if (v5)
+    if (schedulerCopy)
     {
       [(BRCListDirectoryContentsOperation *)v11 setRescheduleApply:1];
     }
@@ -9103,26 +9103,26 @@ LABEL_28:
 
   v14 = 0;
 LABEL_31:
-  v22 = [(BRCServerZone *)self->_serverZone failedListItemIDs];
-  v23 = [v22 containsObject:v8];
+  failedListItemIDs = [(BRCServerZone *)self->_serverZone failedListItemIDs];
+  v23 = [failedListItemIDs containsObject:necessaryCopy];
 
   if (!v23)
   {
-    v26 = [(BRCClientZone *)self serverItemTypeByItemID:v8 dbFacade:self->_dbFacade];
+    v26 = [(BRCClientZone *)self serverItemTypeByItemID:necessaryCopy dbFacade:self->_dbFacade];
     if (v26 == -1)
     {
-      v26 = [(BRCClientZone *)self itemTypeByItemID:v8 dbFacade:self->_dbFacade];
+      v26 = [(BRCClientZone *)self itemTypeByItemID:necessaryCopy dbFacade:self->_dbFacade];
     }
 
     if (v26 - 9 >= 2 && v26 != 255)
     {
-      if (v5)
+      if (schedulerCopy)
       {
-        v39 = [(PQLConnection *)self->_db numberWithSQL:@"SELECT item_type FROM client_items WHERE item_id = %@ AND zone_rowid = %@", v8, self->_dbRowID];
+        v39 = [(PQLConnection *)self->_db numberWithSQL:@"SELECT item_type FROM client_items WHERE item_id = %@ AND zone_rowid = %@", necessaryCopy, self->_dbRowID];
         if ([v39 intValue] == 9)
         {
-          v40 = [(BRCAccountSession *)self->_session applyScheduler];
-          [v40 rescheduleItemsParentedToItemGlobalID:v12];
+          applyScheduler2 = [(BRCAccountSession *)self->_session applyScheduler];
+          [applyScheduler2 rescheduleItemsParentedToItemGlobalID:v12];
         }
       }
 
@@ -9130,11 +9130,11 @@ LABEL_31:
       v42 = brc_default_log();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
       {
-        v47 = [v8 debugItemIDString];
+        debugItemIDString = [necessaryCopy debugItemIDString];
         *location = 138413058;
-        *&location[4] = v47;
+        *&location[4] = debugItemIDString;
         v56 = 2112;
-        v57 = self;
+        selfCopy = self;
         v58 = 1024;
         v59 = v26;
         v60 = 2112;
@@ -9142,15 +9142,15 @@ LABEL_31:
         _os_log_debug_impl(&dword_223E7A000, v42, OS_LOG_TYPE_DEBUG, "[DEBUG] Can't list item %@ in zone %@ which isn't a directory fault %d%@", location, 0x26u);
       }
 
-      [BRCAppLibrary didListItemID:v8 sessionContext:self->_session];
+      [BRCAppLibrary didListItemID:necessaryCopy sessionContext:self->_session];
       goto LABEL_22;
     }
 
-    if ([v8 isDocumentsFolder])
+    if ([necessaryCopy isDocumentsFolder])
     {
       session = self->_session;
-      v28 = [v8 appLibraryRowID];
-      v29 = [(BRCAccountSession *)session appLibraryByRowID:v28];
+      appLibraryRowID = [necessaryCopy appLibraryRowID];
+      v29 = [(BRCAccountSession *)session appLibraryByRowID:appLibraryRowID];
 
       if (([v29 includesDataScope] & 1) == 0)
       {
@@ -9158,12 +9158,12 @@ LABEL_31:
         v44 = brc_default_log();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
         {
-          v45 = [v29 mangledID];
-          v46 = [v45 debugDescription];
+          mangledID = [v29 mangledID];
+          v46 = [mangledID debugDescription];
           *location = 138412546;
           *&location[4] = v46;
           v56 = 2112;
-          v57 = v43;
+          selfCopy = v43;
           _os_log_impl(&dword_223E7A000, v44, OS_LOG_TYPE_DEFAULT, "[WARNING] Got request to list documents directory of app library that don't have data scope. AppLibrary [%@].%@", location, 0x16u);
         }
 
@@ -9180,12 +9180,12 @@ LABEL_31:
     from[3] = __90__BRCClientZone_fetchDirectoryContentsIfNecessary_isUserWaiting_rescheduleApplyScheduler___block_invoke;
     from[4] = &unk_2784FF478;
     from[5] = self;
-    v54 = v8;
+    v54 = necessaryCopy;
     v34 = v30;
     v48 = v54;
     v35 = v31;
     v36 = [BRCListDirectoryContentsOperation initWithItemID:v34 sessionContext:"initWithItemID:sessionContext:zone:isUserWaiting:rescheduleApplyBlock:" zone:? isUserWaiting:? rescheduleApplyBlock:?];
-    [(BRCListDirectoryContentsOperation *)v36 setRescheduleApply:[(BRCListDirectoryContentsOperation *)v31 rescheduleApply]| v5];
+    [(BRCListDirectoryContentsOperation *)v36 setRescheduleApply:[(BRCListDirectoryContentsOperation *)v31 rescheduleApply]| schedulerCopy];
     objc_initWeak(location, self);
     if (v31)
     {
@@ -9227,7 +9227,7 @@ LABEL_31:
   v25 = brc_default_log();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
   {
-    [BRCClientZone fetchDirectoryContentsIfNecessary:v8 isUserWaiting:? rescheduleApplyScheduler:?];
+    [BRCClientZone fetchDirectoryContentsIfNecessary:necessaryCopy isUserWaiting:? rescheduleApplyScheduler:?];
   }
 
 LABEL_22:
@@ -9395,13 +9395,13 @@ void __87__BRCClientZone__locateRecordIfNecessaryForRecordID_isUserWaiting_maxOp
 - (void)clearAndRefetchRecentAndFavoriteDocuments
 {
   v3 = [(BRCServerZone *)self->_serverZone db];
-  v4 = [v3 serialQueue];
+  serialQueue = [v3 serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__BRCClientZone_clearAndRefetchRecentAndFavoriteDocuments__block_invoke;
   block[3] = &unk_2784FF450;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(serialQueue, block);
 }
 
 void __58__BRCClientZone_clearAndRefetchRecentAndFavoriteDocuments__block_invoke(uint64_t a1)
@@ -9416,27 +9416,27 @@ void __58__BRCClientZone_clearAndRefetchRecentAndFavoriteDocuments__block_invoke
   dispatch_async(v2, block);
 }
 
-- (void)fetchRecentAndFavoriteDocuments:(BOOL)a3
+- (void)fetchRecentAndFavoriteDocuments:(BOOL)documents
 {
-  v3 = a3;
+  documentsCopy = documents;
   v57 = *MEMORY[0x277D85DE8];
   [(BRCPQLConnection *)self->_db assertOnQueue];
   v5 = [(BRCServerZone *)self->_serverZone db];
-  v6 = [v5 serialQueue];
+  serialQueue = [v5 serialQueue];
 
-  if (v6)
+  if (serialQueue)
   {
-    v7 = [(BRCServerZone *)self->_serverZone changeState];
-    v8 = [v7 changeToken];
-    if (v8)
+    changeState = [(BRCServerZone *)self->_serverZone changeState];
+    changeToken = [changeState changeToken];
+    if (changeToken)
     {
     }
 
     else
     {
-      v12 = [(BRCClientZone *)self hasCompletedInitialSyncDownOnce];
+      hasCompletedInitialSyncDownOnce = [(BRCClientZone *)self hasCompletedInitialSyncDownOnce];
 
-      if (!v12)
+      if (!hasCompletedInitialSyncDownOnce)
       {
         v24 = brc_bread_crumbs();
         v25 = brc_default_log();
@@ -9449,17 +9449,17 @@ void __58__BRCClientZone_clearAndRefetchRecentAndFavoriteDocuments__block_invoke
       }
     }
 
-    v13 = [(BRCServerZone *)self->_serverZone changeState];
-    v14 = [v13 changeToken];
-    if (v14)
+    changeState2 = [(BRCServerZone *)self->_serverZone changeState];
+    changeToken2 = [changeState2 changeToken];
+    if (changeToken2)
     {
     }
 
     else
     {
-      v15 = [(BRCClientZone *)self hasCompletedInitialSyncDownOnce];
+      hasCompletedInitialSyncDownOnce2 = [(BRCClientZone *)self hasCompletedInitialSyncDownOnce];
 
-      if (v15)
+      if (hasCompletedInitialSyncDownOnce2)
       {
         v16 = brc_bread_crumbs();
         v17 = brc_default_log();
@@ -9469,13 +9469,13 @@ void __58__BRCClientZone_clearAndRefetchRecentAndFavoriteDocuments__block_invoke
         }
 
         v18 = [(BRCServerZone *)self->_serverZone db];
-        v19 = [v18 serialQueue];
+        serialQueue2 = [v18 serialQueue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __49__BRCClientZone_fetchRecentAndFavoriteDocuments___block_invoke;
         block[3] = &unk_2784FF450;
         block[4] = self;
-        dispatch_async(v19, block);
+        dispatch_async(serialQueue2, block);
 
         goto LABEL_36;
       }
@@ -9490,7 +9490,7 @@ void __58__BRCClientZone_clearAndRefetchRecentAndFavoriteDocuments__block_invoke
         [BRCClientZone fetchRecentAndFavoriteDocuments:?];
       }
 
-      if (v3)
+      if (documentsCopy)
       {
         v22 = brc_bread_crumbs();
         v23 = brc_default_log();
@@ -9529,13 +9529,13 @@ LABEL_24:
       }
 
       v32 = [(BRCServerZone *)self->_serverZone db];
-      v33 = [v32 serialQueue];
+      serialQueue3 = [v32 serialQueue];
       v51[0] = MEMORY[0x277D85DD0];
       v51[1] = 3221225472;
       v51[2] = __49__BRCClientZone_fetchRecentAndFavoriteDocuments___block_invoke_349;
       v51[3] = &unk_2784FF450;
       v51[4] = self;
-      dispatch_async(v33, v51);
+      dispatch_async(serialQueue3, v51);
     }
 
     else if ([(BRCClientZone *)self isSharedZone])
@@ -9548,23 +9548,23 @@ LABEL_24:
       }
 
       v28 = [(BRCServerZone *)self->_serverZone db];
-      v29 = [v28 serialQueue];
+      serialQueue4 = [v28 serialQueue];
       v50[0] = MEMORY[0x277D85DD0];
       v50[1] = 3221225472;
       v50[2] = __49__BRCClientZone_fetchRecentAndFavoriteDocuments___block_invoke_350;
       v50[3] = &unk_2784FF450;
       v50[4] = self;
-      dispatch_async(v29, v50);
+      dispatch_async(serialQueue4, v50);
     }
 
     else
     {
-      v35 = [(BRCClientZone *)self asPrivateClientZone];
-      v36 = [v35 defaultAppLibrary];
-      v37 = [v36 containerMetadata];
-      v38 = [v37 isDocumentScopePublic];
+      asPrivateClientZone = [(BRCClientZone *)self asPrivateClientZone];
+      defaultAppLibrary = [asPrivateClientZone defaultAppLibrary];
+      containerMetadata = [defaultAppLibrary containerMetadata];
+      isDocumentScopePublic = [containerMetadata isDocumentScopePublic];
 
-      if (v38)
+      if (isDocumentScopePublic)
       {
         if (![(BRCClientZone *)self _isSideSyncOperationBlockedWithName:@"fetch recents and favorites"])
         {
@@ -9602,13 +9602,13 @@ LABEL_24:
         }
 
         v45 = [(BRCServerZone *)self->_serverZone db];
-        v46 = [v45 serialQueue];
+        serialQueue5 = [v45 serialQueue];
         v49[0] = MEMORY[0x277D85DD0];
         v49[1] = 3221225472;
         v49[2] = __49__BRCClientZone_fetchRecentAndFavoriteDocuments___block_invoke_351;
         v49[3] = &unk_2784FF450;
         v49[4] = self;
-        dispatch_async(v46, v49);
+        dispatch_async(serialQueue5, v49);
       }
     }
   }
@@ -9703,10 +9703,10 @@ uint64_t __49__BRCClientZone_fetchRecentAndFavoriteDocuments___block_invoke_356(
   return result;
 }
 
-- (BOOL)dumpStatusToContext:(id)a3 error:(id *)a4
+- (BOOL)dumpStatusToContext:(id)context error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  contextCopy = context;
   v7 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v8 = self->_session;
   v38[0] = 0;
@@ -9722,11 +9722,11 @@ uint64_t __49__BRCClientZone_fetchRecentAndFavoriteDocuments___block_invoke_356(
   v26[2] = __43__BRCClientZone_dumpStatusToContext_error___block_invoke;
   v26[3] = &unk_278503998;
   v32 = v38;
-  v21 = v6;
+  v21 = contextCopy;
   v27 = v21;
   v9 = v7;
   v28 = v9;
-  v29 = self;
+  selfCopy = self;
   v10 = v8;
   v30 = v10;
   v31 = 0;
@@ -9738,10 +9738,10 @@ uint64_t __49__BRCClientZone_fetchRecentAndFavoriteDocuments___block_invoke_356(
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v11 = [(BRCClientZone *)self asPrivateClientZone];
-    v12 = [v11 appLibraries];
+    asPrivateClientZone = [(BRCClientZone *)self asPrivateClientZone];
+    appLibraries = [asPrivateClientZone appLibraries];
 
-    v13 = [v12 countByEnumeratingWithState:&v22 objects:v40 count:16];
+    v13 = [appLibraries countByEnumeratingWithState:&v22 objects:v40 count:16];
     if (v13)
     {
       v14 = *v23;
@@ -9751,12 +9751,12 @@ uint64_t __49__BRCClientZone_fetchRecentAndFavoriteDocuments___block_invoke_356(
         {
           if (*v23 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(appLibraries);
           }
 
           v16 = v35[3];
-          v17 = [*(*(&v22 + 1) + 8 * i) rootItemID];
-          LOBYTE(v16) = (*(v16 + 16))(v16, v17, 0, @"/", a4);
+          rootItemID = [*(*(&v22 + 1) + 8 * i) rootItemID];
+          LOBYTE(v16) = (*(v16 + 16))(v16, rootItemID, 0, @"/", error);
 
           if ((v16 & 1) == 0)
           {
@@ -9765,7 +9765,7 @@ uint64_t __49__BRCClientZone_fetchRecentAndFavoriteDocuments___block_invoke_356(
           }
         }
 
-        v13 = [v12 countByEnumeratingWithState:&v22 objects:v40 count:16];
+        v13 = [appLibraries countByEnumeratingWithState:&v22 objects:v40 count:16];
         if (v13)
         {
           continue;
@@ -10062,61 +10062,61 @@ uint64_t __43__BRCClientZone_dumpStatusToContext_error___block_invoke_2(uint64_t
   }
 
   brc_append_system_info_to_message();
-  v5 = [objc_claimAutoreleasedReturnValue() UTF8String];
-  __assert_rtn("[BRCClientZone _resetItemsTable]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/containers/BRCClientZone.m", 4051, v5);
+  uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+  __assert_rtn("[BRCClientZone _resetItemsTable]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/containers/BRCClientZone.m", 4051, uTF8String);
 }
 
 - (id)itemsParentedToThisZoneButLivingInAnOtherZone
 {
-  v3 = [(BRCAccountSession *)self->_session itemFetcher];
-  v4 = [v3 clientItemsParentedToPassedZoneButLivingInAnOtherZone:self->_dbRowID];
+  itemFetcher = [(BRCAccountSession *)self->_session itemFetcher];
+  v4 = [itemFetcher clientItemsParentedToPassedZoneButLivingInAnOtherZone:self->_dbRowID];
 
   return v4;
 }
 
-- (id)serverItemByRank:(int64_t)a3
+- (id)serverItemByRank:(int64_t)rank
 {
-  v5 = [(BRCAccountSession *)self->_session itemFetcher];
-  v6 = [v5 serverItemByRank:a3 zoneRowID:self->_dbRowID dbFacade:self->_dbFacade];
+  itemFetcher = [(BRCAccountSession *)self->_session itemFetcher];
+  v6 = [itemFetcher serverItemByRank:rank zoneRowID:self->_dbRowID dbFacade:self->_dbFacade];
 
   return v6;
 }
 
-- (id)serverItemByItemID:(id)a3 dbFacade:(id)a4
+- (id)serverItemByItemID:(id)d dbFacade:(id)facade
 {
   session = self->_session;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(BRCAccountSession *)session itemFetcher];
-  v10 = [v9 serverItemByItemID:v8 zoneRowID:self->_dbRowID dbFacade:v7];
+  facadeCopy = facade;
+  dCopy = d;
+  itemFetcher = [(BRCAccountSession *)session itemFetcher];
+  v10 = [itemFetcher serverItemByItemID:dCopy zoneRowID:self->_dbRowID dbFacade:facadeCopy];
 
   return v10;
 }
 
-- (id)itemByItemID:(id)a3 dbFacade:(id)a4
+- (id)itemByItemID:(id)d dbFacade:(id)facade
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[BRCItemGlobalID alloc] initWithZoneRowID:self->_dbRowID itemID:v7];
+  facadeCopy = facade;
+  dCopy = d;
+  v8 = [[BRCItemGlobalID alloc] initWithZoneRowID:self->_dbRowID itemID:dCopy];
 
-  v9 = [(BRCAccountSession *)self->_session itemFetcher];
-  v10 = [v9 itemByItemGlobalID:v8 dbFacade:v6];
+  itemFetcher = [(BRCAccountSession *)self->_session itemFetcher];
+  v10 = [itemFetcher itemByItemGlobalID:v8 dbFacade:facadeCopy];
 
   return v10;
 }
 
-- (id)itemByRowID:(unint64_t)a3
+- (id)itemByRowID:(unint64_t)d
 {
-  v5 = [(BRCAccountSession *)self->_session itemFetcher];
-  v6 = [v5 itemByRowID:a3 zoneRowID:self->_dbRowID];
+  itemFetcher = [(BRCAccountSession *)self->_session itemFetcher];
+  v6 = [itemFetcher itemByRowID:d zoneRowID:self->_dbRowID];
 
   return v6;
 }
 
-- (BOOL)validateItemsLoggingToFile:(__sFILE *)a3 db:(id)a4
+- (BOOL)validateItemsLoggingToFile:(__sFILE *)file db:(id)db
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  dbCopy = db;
   abc_report_panic_with_signature();
   [MEMORY[0x277CCACA8] stringWithFormat:@"must implement in subclass"];
   objc_claimAutoreleasedReturnValue();
@@ -10133,14 +10133,14 @@ uint64_t __43__BRCClientZone_dumpStatusToContext_error___block_invoke_2(uint64_t
   }
 
   brc_append_system_info_to_message();
-  v8 = [objc_claimAutoreleasedReturnValue() UTF8String];
-  __assert_rtn("[BRCClientZone validateItemsLoggingToFile:db:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/containers/BRCClientZone.m", 4160, v8);
+  uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+  __assert_rtn("[BRCClientZone validateItemsLoggingToFile:db:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/containers/BRCClientZone.m", 4160, uTF8String);
 }
 
-- (BOOL)validateStructureLoggingToFile:(__sFILE *)a3 db:(id)a4
+- (BOOL)validateStructureLoggingToFile:(__sFILE *)file db:(id)db
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  dbCopy = db;
   abc_report_panic_with_signature();
   [MEMORY[0x277CCACA8] stringWithFormat:@"must implement in subclass"];
   objc_claimAutoreleasedReturnValue();
@@ -10157,8 +10157,8 @@ uint64_t __43__BRCClientZone_dumpStatusToContext_error___block_invoke_2(uint64_t
   }
 
   brc_append_system_info_to_message();
-  v8 = [objc_claimAutoreleasedReturnValue() UTF8String];
-  __assert_rtn("[BRCClientZone validateStructureLoggingToFile:db:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/containers/BRCClientZone.m", 4165, v8);
+  uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+  __assert_rtn("[BRCClientZone validateStructureLoggingToFile:db:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/containers/BRCClientZone.m", 4165, uTF8String);
 }
 
 - (void)_removeAllShareAcceptanceBlocks
@@ -10178,8 +10178,8 @@ uint64_t __43__BRCClientZone_dumpStatusToContext_error___block_invoke_2(uint64_t
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v5 = [(NSMutableDictionary *)self->_downloadedBlockToPerformForItemID objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v72 objects:v82 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_downloadedBlockToPerformForItemID objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v72 objects:v82 count:16];
   if (v6)
   {
     v7 = v6;
@@ -10191,14 +10191,14 @@ uint64_t __43__BRCClientZone_dumpStatusToContext_error___block_invoke_2(uint64_t
       {
         if (*v73 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         (*(*(*(&v72 + 1) + 8 * v9++) + 16))();
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v72 objects:v82 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v72 objects:v82 count:16];
     }
 
     while (v7);
@@ -10211,8 +10211,8 @@ uint64_t __43__BRCClientZone_dumpStatusToContext_error___block_invoke_2(uint64_t
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v11 = [(NSMutableDictionary *)self->_onDiskBlockToPerformForItemID objectEnumerator];
-  v12 = [v11 countByEnumeratingWithState:&v68 objects:v81 count:16];
+  objectEnumerator2 = [(NSMutableDictionary *)self->_onDiskBlockToPerformForItemID objectEnumerator];
+  v12 = [objectEnumerator2 countByEnumeratingWithState:&v68 objects:v81 count:16];
   if (v12)
   {
     v13 = v12;
@@ -10224,14 +10224,14 @@ uint64_t __43__BRCClientZone_dumpStatusToContext_error___block_invoke_2(uint64_t
       {
         if (*v69 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(objectEnumerator2);
         }
 
         (*(*(*(&v68 + 1) + 8 * v15++) + 16))();
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v68 objects:v81 count:16];
+      v13 = [objectEnumerator2 countByEnumeratingWithState:&v68 objects:v81 count:16];
     }
 
     while (v13);
@@ -10244,8 +10244,8 @@ uint64_t __43__BRCClientZone_dumpStatusToContext_error___block_invoke_2(uint64_t
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v17 = [(NSMutableDictionary *)self->_syncDownBlockToPerformForItemID objectEnumerator];
-  v18 = [v17 countByEnumeratingWithState:&v64 objects:v80 count:16];
+  objectEnumerator3 = [(NSMutableDictionary *)self->_syncDownBlockToPerformForItemID objectEnumerator];
+  v18 = [objectEnumerator3 countByEnumeratingWithState:&v64 objects:v80 count:16];
   if (v18)
   {
     v19 = v18;
@@ -10257,7 +10257,7 @@ uint64_t __43__BRCClientZone_dumpStatusToContext_error___block_invoke_2(uint64_t
       {
         if (*v65 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(objectEnumerator3);
         }
 
         v22 = *(*(&v64 + 1) + 8 * v21);
@@ -10295,7 +10295,7 @@ uint64_t __43__BRCClientZone_dumpStatusToContext_error___block_invoke_2(uint64_t
       }
 
       while (v21 != v19);
-      v19 = [v17 countByEnumeratingWithState:&v64 objects:v80 count:16];
+      v19 = [objectEnumerator3 countByEnumeratingWithState:&v64 objects:v80 count:16];
     }
 
     while (v19);
@@ -10308,8 +10308,8 @@ uint64_t __43__BRCClientZone_dumpStatusToContext_error___block_invoke_2(uint64_t
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v29 = [(NSMutableDictionary *)self->_locateBlocksToPerformForRecordID objectEnumerator];
-  v30 = [v29 countByEnumeratingWithState:&v56 objects:v78 count:16];
+  objectEnumerator4 = [(NSMutableDictionary *)self->_locateBlocksToPerformForRecordID objectEnumerator];
+  v30 = [objectEnumerator4 countByEnumeratingWithState:&v56 objects:v78 count:16];
   if (v30)
   {
     v31 = v30;
@@ -10321,7 +10321,7 @@ uint64_t __43__BRCClientZone_dumpStatusToContext_error___block_invoke_2(uint64_t
       {
         if (*v57 != v32)
         {
-          objc_enumerationMutation(v29);
+          objc_enumerationMutation(objectEnumerator4);
         }
 
         v34 = *(*(&v56 + 1) + 8 * v33);
@@ -10359,7 +10359,7 @@ uint64_t __43__BRCClientZone_dumpStatusToContext_error___block_invoke_2(uint64_t
       }
 
       while (v33 != v31);
-      v31 = [v29 countByEnumeratingWithState:&v56 objects:v78 count:16];
+      v31 = [objectEnumerator4 countByEnumeratingWithState:&v56 objects:v78 count:16];
     }
 
     while (v31);
@@ -10372,8 +10372,8 @@ uint64_t __43__BRCClientZone_dumpStatusToContext_error___block_invoke_2(uint64_t
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v41 = [(NSMutableDictionary *)self->_syncDownBlockToPerformForBookmarkData objectEnumerator];
-  v42 = [v41 countByEnumeratingWithState:&v48 objects:v76 count:16];
+  objectEnumerator5 = [(NSMutableDictionary *)self->_syncDownBlockToPerformForBookmarkData objectEnumerator];
+  v42 = [objectEnumerator5 countByEnumeratingWithState:&v48 objects:v76 count:16];
   if (v42)
   {
     v43 = v42;
@@ -10385,14 +10385,14 @@ uint64_t __43__BRCClientZone_dumpStatusToContext_error___block_invoke_2(uint64_t
       {
         if (*v49 != v44)
         {
-          objc_enumerationMutation(v41);
+          objc_enumerationMutation(objectEnumerator5);
         }
 
         (*(*(*(&v48 + 1) + 8 * v45++) + 16))();
       }
 
       while (v43 != v45);
-      v43 = [v41 countByEnumeratingWithState:&v48 objects:v76 count:16];
+      v43 = [objectEnumerator5 countByEnumeratingWithState:&v48 objects:v76 count:16];
     }
 
     while (v43);
@@ -10404,12 +10404,12 @@ uint64_t __43__BRCClientZone_dumpStatusToContext_error___block_invoke_2(uint64_t
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeOnDiskBlockToPerformForItemID:(id)a3
+- (void)_removeOnDiskBlockToPerformForItemID:(id)d
 {
   db = self->_db;
-  v5 = a3;
+  dCopy = d;
   [(BRCPQLConnection *)db assertOnQueue];
-  [(NSMutableDictionary *)self->_onDiskBlockToPerformForItemID removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->_onDiskBlockToPerformForItemID removeObjectForKey:dCopy];
 
   if (![(NSMutableDictionary *)self->_onDiskBlockToPerformForItemID count])
   {
@@ -10418,12 +10418,12 @@ uint64_t __43__BRCClientZone_dumpStatusToContext_error___block_invoke_2(uint64_t
   }
 }
 
-- (void)_removeDownloadedBlockToPerformForItemID:(id)a3
+- (void)_removeDownloadedBlockToPerformForItemID:(id)d
 {
   db = self->_db;
-  v5 = a3;
+  dCopy = d;
   [(BRCPQLConnection *)db assertOnQueue];
-  [(NSMutableDictionary *)self->_downloadedBlockToPerformForItemID removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->_downloadedBlockToPerformForItemID removeObjectForKey:dCopy];
 
   if (![(NSMutableDictionary *)self->_downloadedBlockToPerformForItemID count])
   {
@@ -10432,26 +10432,26 @@ uint64_t __43__BRCClientZone_dumpStatusToContext_error___block_invoke_2(uint64_t
   }
 }
 
-- (id)popOnDiskBlockForItemID:(id)a3
+- (id)popOnDiskBlockForItemID:(id)d
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v11 = 138412546;
-    v12 = v4;
+    v12 = dCopy;
     v13 = 2112;
     v14 = v5;
     _os_log_impl(&dword_223E7A000, v6, OS_LOG_TYPE_INFO, "[INFO] popOnDiskBlockForItemID [%@]%@", &v11, 0x16u);
   }
 
-  if (v4)
+  if (dCopy)
   {
     [(BRCPQLConnection *)self->_db assertOnQueue];
-    v7 = [(NSMutableDictionary *)self->_onDiskBlockToPerformForItemID objectForKeyedSubscript:v4];
-    [(BRCClientZone *)self _removeOnDiskBlockToPerformForItemID:v4];
+    v7 = [(NSMutableDictionary *)self->_onDiskBlockToPerformForItemID objectForKeyedSubscript:dCopy];
+    [(BRCClientZone *)self _removeOnDiskBlockToPerformForItemID:dCopy];
     v8 = MEMORY[0x22AA4A310](v7);
   }
 
@@ -10465,15 +10465,15 @@ uint64_t __43__BRCClientZone_dumpStatusToContext_error___block_invoke_2(uint64_t
   return v8;
 }
 
-- (id)popDownloadedBlockForItemID:(id)a3
+- (id)popDownloadedBlockForItemID:(id)d
 {
-  if (a3)
+  if (d)
   {
     db = self->_db;
-    v5 = a3;
+    dCopy = d;
     [(BRCPQLConnection *)db assertOnQueue];
-    v6 = [(NSMutableDictionary *)self->_downloadedBlockToPerformForItemID objectForKeyedSubscript:v5];
-    [(BRCClientZone *)self _removeDownloadedBlockToPerformForItemID:v5];
+    v6 = [(NSMutableDictionary *)self->_downloadedBlockToPerformForItemID objectForKeyedSubscript:dCopy];
+    [(BRCClientZone *)self _removeDownloadedBlockToPerformForItemID:dCopy];
 
     v7 = MEMORY[0x22AA4A310](v6);
   }
@@ -10486,13 +10486,13 @@ uint64_t __43__BRCClientZone_dumpStatusToContext_error___block_invoke_2(uint64_t
   return v7;
 }
 
-- (void)performBlock:(id)a3 whenItemWithRecordIDIsOnDisk:(id)a4
+- (void)performBlock:(id)block whenItemWithRecordIDIsOnDisk:(id)disk
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BRCAccountSession *)self->_session zoneAppRetriever];
-  v9 = [v7 brc_itemIDWithZoneAppRetriever:v8];
+  blockCopy = block;
+  diskCopy = disk;
+  zoneAppRetriever = [(BRCAccountSession *)self->_session zoneAppRetriever];
+  v9 = [diskCopy brc_itemIDWithZoneAppRetriever:zoneAppRetriever];
 
   v27 = 0uLL;
   v28 = 0;
@@ -10512,7 +10512,7 @@ uint64_t __43__BRCClientZone_dumpStatusToContext_error___block_invoke_2(uint64_t
 
   v29 = v27;
   v30 = v28;
-  if (v6 && v9)
+  if (blockCopy && v9)
   {
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
@@ -10520,20 +10520,20 @@ uint64_t __43__BRCClientZone_dumpStatusToContext_error___block_invoke_2(uint64_t
     v23[3] = &unk_2785039C0;
     v25 = v29;
     v26 = v30;
-    v24 = v6;
+    v24 = blockCopy;
     v12 = MEMORY[0x22AA4A310](v23);
-    v13 = [(BRCAccountSession *)self->_session clientDB];
-    v14 = [v13 serialQueue];
+    clientDB = [(BRCAccountSession *)self->_session clientDB];
+    serialQueue = [clientDB serialQueue];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __59__BRCClientZone_performBlock_whenItemWithRecordIDIsOnDisk___block_invoke_430;
     v19[3] = &unk_2785003B0;
     v19[4] = self;
     v20 = v9;
-    v6 = v12;
-    v22 = v6;
-    v21 = v7;
-    dispatch_async_with_logs_5(v14, v19);
+    blockCopy = v12;
+    v22 = blockCopy;
+    v21 = diskCopy;
+    dispatch_async_with_logs_5(serialQueue, v19);
 
     v15 = v24;
   }
@@ -10544,7 +10544,7 @@ uint64_t __43__BRCClientZone_dumpStatusToContext_error___block_invoke_2(uint64_t
     v16 = brc_default_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = MEMORY[0x22AA4A310](v6);
+      v17 = MEMORY[0x22AA4A310](blockCopy);
       *buf = 138412802;
       v32 = v17;
       v33 = 2112;
@@ -10773,11 +10773,11 @@ void __59__BRCClientZone_performBlock_whenItemWithRecordIDIsOnDisk___block_invok
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performBlock:(id)a3 whenItemWithIDIsDownloaded:(id)a4
+- (void)performBlock:(id)block whenItemWithIDIsDownloaded:(id)downloaded
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  downloadedCopy = downloaded;
   v24 = 0uLL;
   v25 = 0;
   __brc_create_section(0, "[BRCClientZone performBlock:whenItemWithIDIsDownloaded:]", 4312, 0, &v24);
@@ -10788,7 +10788,7 @@ void __59__BRCClientZone_performBlock_whenItemWithRecordIDIsOnDisk___block_invok
     *buf = 134218498;
     v29 = v24;
     v30 = 2112;
-    v31 = v7;
+    v31 = downloadedCopy;
     v32 = 2112;
     v33 = v8;
     _os_log_debug_impl(&dword_223E7A000, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] ┣%llx waiting for item %@ to be downloaded%@", buf, 0x20u);
@@ -10796,7 +10796,7 @@ void __59__BRCClientZone_performBlock_whenItemWithRecordIDIsOnDisk___block_invok
 
   v26 = v24;
   v27 = v25;
-  if (v6 && v7)
+  if (blockCopy && downloadedCopy)
   {
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
@@ -10804,19 +10804,19 @@ void __59__BRCClientZone_performBlock_whenItemWithRecordIDIsOnDisk___block_invok
     v20[3] = &unk_278503A60;
     v22 = v26;
     v23 = v27;
-    v21 = v6;
+    v21 = blockCopy;
     v10 = MEMORY[0x22AA4A310](v20);
-    v11 = [(BRCAccountSession *)self->_session clientDB];
-    v12 = [v11 serialQueue];
+    clientDB = [(BRCAccountSession *)self->_session clientDB];
+    serialQueue = [clientDB serialQueue];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __57__BRCClientZone_performBlock_whenItemWithIDIsDownloaded___block_invoke_434;
     v17[3] = &unk_2784FF5B8;
     v17[4] = self;
-    v18 = v7;
-    v6 = v10;
-    v19 = v6;
-    dispatch_async_with_logs_5(v12, v17);
+    v18 = downloadedCopy;
+    blockCopy = v10;
+    v19 = blockCopy;
+    dispatch_async_with_logs_5(serialQueue, v17);
 
     v13 = v21;
   }
@@ -10827,11 +10827,11 @@ void __59__BRCClientZone_performBlock_whenItemWithRecordIDIsOnDisk___block_invok
     v14 = brc_default_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = MEMORY[0x22AA4A310](v6);
+      v15 = MEMORY[0x22AA4A310](blockCopy);
       *buf = 138412802;
       v29 = v15;
       v30 = 2112;
-      v31 = v7;
+      v31 = downloadedCopy;
       v32 = 2112;
       v33 = v13;
       _os_log_impl(&dword_223E7A000, v14, OS_LOG_TYPE_DEFAULT, "[WARNING] %@ and %@ must be non nil to register action%@", buf, 0x20u);
@@ -11008,7 +11008,7 @@ LABEL_18:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412546;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
       v12 = v6;
       _os_log_impl(&dword_223E7A000, v7, OS_LOG_TYPE_DEFAULT, "[WARNING] %@ is resetting. Not waiting on sync down%@", &v9, 0x16u);
@@ -11018,9 +11018,9 @@ LABEL_18:
   }
 
   v3 = +[BRCSystemResourcesManager manager];
-  v4 = [v3 isNetworkReachable];
+  isNetworkReachable = [v3 isNetworkReachable];
 
-  if ((v4 & 1) == 0)
+  if ((isNetworkReachable & 1) == 0)
   {
     v6 = brc_bread_crumbs();
     v7 = brc_default_log();
@@ -11041,11 +11041,11 @@ LABEL_9:
   return result;
 }
 
-- (void)performBlock:(id)a3 whenSyncDownCompletesLookingForItemID:(id)a4
+- (void)performBlock:(id)block whenSyncDownCompletesLookingForItemID:(id)d
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  dCopy = d;
   v28 = 0uLL;
   v29 = 0;
   __brc_create_section(0, "[BRCClientZone performBlock:whenSyncDownCompletesLookingForItemID:]", 4386, 0, &v28);
@@ -11056,9 +11056,9 @@ LABEL_9:
     *buf = 134218754;
     v33 = v28;
     v34 = 2112;
-    v35 = self;
+    selfCopy = self;
     v36 = 2112;
-    v37 = v7;
+    v37 = dCopy;
     v38 = 2112;
     v39 = v8;
     _os_log_debug_impl(&dword_223E7A000, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] ┣%llx %@ - waiting sync down to complete for item %@%@", buf, 0x2Au);
@@ -11066,7 +11066,7 @@ LABEL_9:
 
   v30 = v28;
   v31 = v29;
-  if (v6 && v7)
+  if (blockCopy && dCopy)
   {
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
@@ -11074,13 +11074,13 @@ LABEL_9:
     v23[3] = &unk_278503AB0;
     v26 = v30;
     v27 = v31;
-    v10 = v6;
+    v10 = blockCopy;
     v25 = v10;
     v23[4] = self;
-    v11 = v7;
+    v11 = dCopy;
     v24 = v11;
     v12 = MEMORY[0x22AA4A310](v23);
-    v13 = [(BRCAccountSession *)self->_session clientTruthWorkloop];
+    clientTruthWorkloop = [(BRCAccountSession *)self->_session clientTruthWorkloop];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __68__BRCClientZone_performBlock_whenSyncDownCompletesLookingForItemID___block_invoke_437;
@@ -11090,7 +11090,7 @@ LABEL_9:
     v21 = v12;
     v22 = v10;
     v14 = v12;
-    dispatch_async_with_logs_5(v13, v19);
+    dispatch_async_with_logs_5(clientTruthWorkloop, v19);
 
     v15 = v25;
   }
@@ -11101,11 +11101,11 @@ LABEL_9:
     v16 = brc_default_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = MEMORY[0x22AA4A310](v6);
+      v17 = MEMORY[0x22AA4A310](blockCopy);
       *buf = 138412802;
       v33 = v17;
       v34 = 2112;
-      v35 = v7;
+      selfCopy = dCopy;
       v36 = 2112;
       v37 = v15;
       _os_log_impl(&dword_223E7A000, v16, OS_LOG_TYPE_DEFAULT, "[WARNING] %@ and %@ must be non nil to register action%@", buf, 0x20u);
@@ -11283,25 +11283,25 @@ LABEL_21:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)insertParentChainForItem:(id)a3
+- (id)insertParentChainForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__26;
   v18 = __Block_byref_object_dispose__26;
   v19 = 0;
-  v5 = [(BRCAccountSession *)self->_session clientDB];
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __42__BRCClientZone_insertParentChainForItem___block_invoke;
   v10[3] = &unk_278503AD8;
-  v6 = v4;
+  v6 = itemCopy;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v13 = &v14;
-  LOBYTE(self) = [v5 groupInTransaction:v10];
+  LOBYTE(self) = [clientDB groupInTransaction:v10];
 
   if ((self & 1) == 0)
   {
@@ -11360,12 +11360,12 @@ LABEL_8:
   return v14;
 }
 
-- (void)_enumerateAndClearLocateBlocksForRecordID:(id)a3 exists:(BOOL)a4
+- (void)_enumerateAndClearLocateBlocksForRecordID:(id)d exists:(BOOL)exists
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(NSMutableDictionary *)self->_locateBlocksToPerformForRecordID objectForKeyedSubscript:v5];
-  [(NSMutableDictionary *)self->_locateBlocksToPerformForRecordID removeObjectForKey:v5];
+  dCopy = d;
+  v6 = [(NSMutableDictionary *)self->_locateBlocksToPerformForRecordID objectForKeyedSubscript:dCopy];
+  [(NSMutableDictionary *)self->_locateBlocksToPerformForRecordID removeObjectForKey:dCopy];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
@@ -11400,13 +11400,13 @@ LABEL_8:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performBlock:(id)a3 whenLocatingCompletesForItemWithRecordID:(id)a4
+- (void)performBlock:(id)block whenLocatingCompletesForItemWithRecordID:(id)d
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BRCAccountSession *)self->_session zoneAppRetriever];
-  v9 = [v7 brc_itemIDWithZoneAppRetriever:v8];
+  blockCopy = block;
+  dCopy = d;
+  zoneAppRetriever = [(BRCAccountSession *)self->_session zoneAppRetriever];
+  v9 = [dCopy brc_itemIDWithZoneAppRetriever:zoneAppRetriever];
 
   v32 = 0uLL;
   v33 = 0;
@@ -11420,7 +11420,7 @@ LABEL_8:
     v38 = 2112;
     v39 = v9;
     v40 = 2112;
-    v41 = v7;
+    v41 = dCopy;
     v42 = 2112;
     v43 = v10;
     _os_log_debug_impl(&dword_223E7A000, v11, OS_LOG_TYPE_DEBUG, "[DEBUG] ┣%llx waiting to locate item [%@] with record ID [%@]%@", buf, 0x2Au);
@@ -11428,7 +11428,7 @@ LABEL_8:
 
   v34 = v32;
   v35 = v33;
-  if (v7 && v6 && v9)
+  if (dCopy && blockCopy && v9)
   {
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
@@ -11438,12 +11438,12 @@ LABEL_8:
     v31 = v35;
     v12 = v9;
     v26 = v12;
-    v13 = v6;
+    v13 = blockCopy;
     v29 = v13;
-    v27 = self;
-    v28 = v7;
+    selfCopy = self;
+    v28 = dCopy;
     v14 = MEMORY[0x22AA4A310](v25);
-    v15 = [(BRCAccountSession *)self->_session clientTruthWorkloop];
+    clientTruthWorkloop = [(BRCAccountSession *)self->_session clientTruthWorkloop];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __71__BRCClientZone_performBlock_whenLocatingCompletesForItemWithRecordID___block_invoke_453;
@@ -11453,7 +11453,7 @@ LABEL_8:
     v23 = v14;
     v24 = v13;
     v16 = v14;
-    dispatch_async_with_logs_5(v15, v21);
+    dispatch_async_with_logs_5(clientTruthWorkloop, v21);
 
     v17 = v26;
   }
@@ -11464,13 +11464,13 @@ LABEL_8:
     v18 = brc_default_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = MEMORY[0x22AA4A310](v6);
+      v19 = MEMORY[0x22AA4A310](blockCopy);
       *buf = 138413058;
       v37 = v19;
       v38 = 2112;
       v39 = v9;
       v40 = 2112;
-      v41 = v7;
+      v41 = dCopy;
       v42 = 2112;
       v43 = v17;
       _os_log_impl(&dword_223E7A000, v18, OS_LOG_TYPE_DEFAULT, "[WARNING] %@, %@ and %@ must be non nil to register action%@", buf, 0x2Au);
@@ -11810,28 +11810,28 @@ LABEL_22:
   return v8 + [(NSMutableArray *)self->_blockedOperationsOnInitialSync count]!= 0;
 }
 
-- (BOOL)removeItemOnDiskBlock:(id)a3
+- (BOOL)removeItemOnDiskBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(BRCAccountSession *)self->_session clientDB];
-  v6 = [v5 serialQueue];
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
+  serialQueue = [clientDB serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__BRCClientZone_removeItemOnDiskBlock___block_invoke;
   block[3] = &unk_278500D08;
-  v10 = v4;
+  v10 = blockCopy;
   v11 = &v12;
   block[4] = self;
-  v7 = v4;
-  dispatch_sync(v6, block);
+  v7 = blockCopy;
+  dispatch_sync(serialQueue, block);
 
-  LOBYTE(v4) = *(v13 + 24);
+  LOBYTE(blockCopy) = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
-  return v4;
+  return blockCopy;
 }
 
 void __39__BRCClientZone_removeItemOnDiskBlock___block_invoke(uint64_t a1)
@@ -11840,28 +11840,28 @@ void __39__BRCClientZone_removeItemOnDiskBlock___block_invoke(uint64_t a1)
   *(*(*(a1 + 48) + 8) + 24) = v2 != 0;
 }
 
-- (BOOL)removeItemIsDownloadedBlock:(id)a3
+- (BOOL)removeItemIsDownloadedBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(BRCAccountSession *)self->_session clientDB];
-  v6 = [v5 serialQueue];
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
+  serialQueue = [clientDB serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__BRCClientZone_removeItemIsDownloadedBlock___block_invoke;
   block[3] = &unk_278500D08;
-  v10 = v4;
+  v10 = blockCopy;
   v11 = &v12;
   block[4] = self;
-  v7 = v4;
-  dispatch_sync(v6, block);
+  v7 = blockCopy;
+  dispatch_sync(serialQueue, block);
 
-  LOBYTE(v4) = *(v13 + 24);
+  LOBYTE(blockCopy) = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
-  return v4;
+  return blockCopy;
 }
 
 void __45__BRCClientZone_removeItemIsDownloadedBlock___block_invoke(uint64_t a1)
@@ -11870,28 +11870,28 @@ void __45__BRCClientZone_removeItemIsDownloadedBlock___block_invoke(uint64_t a1)
   *(*(*(a1 + 48) + 8) + 24) = v2 != 0;
 }
 
-- (BOOL)removeSyncDownForItemIDBlock:(id)a3
+- (BOOL)removeSyncDownForItemIDBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(BRCAccountSession *)self->_session clientDB];
-  v6 = [v5 serialQueue];
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
+  serialQueue = [clientDB serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__BRCClientZone_removeSyncDownForItemIDBlock___block_invoke;
   block[3] = &unk_278500D08;
-  v10 = v4;
+  v10 = blockCopy;
   v11 = &v12;
   block[4] = self;
-  v7 = v4;
-  dispatch_sync(v6, block);
+  v7 = blockCopy;
+  dispatch_sync(serialQueue, block);
 
-  LOBYTE(v4) = *(v13 + 24);
+  LOBYTE(blockCopy) = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
-  return v4;
+  return blockCopy;
 }
 
 uint64_t __46__BRCClientZone_removeSyncDownForItemIDBlock___block_invoke(void *a1)
@@ -11945,19 +11945,19 @@ uint64_t __46__BRCClientZone_removeSyncDownForItemIDBlock___block_invoke(void *a
   return v12;
 }
 
-- (void)networkReachabilityChanged:(BOOL)a3
+- (void)networkReachabilityChanged:(BOOL)changed
 {
-  if (!a3)
+  if (!changed)
   {
     if ([(BRCClientZone *)self hasHighPriorityWatchers])
     {
-      v4 = [(BRCPQLConnection *)self->_db serialQueue];
+      serialQueue = [(BRCPQLConnection *)self->_db serialQueue];
       v5[0] = MEMORY[0x277D85DD0];
       v5[1] = 3221225472;
       v5[2] = __44__BRCClientZone_networkReachabilityChanged___block_invoke;
       v5[3] = &unk_2784FF450;
       v5[4] = self;
-      dispatch_async_with_logs_5(v4, v5);
+      dispatch_async_with_logs_5(serialQueue, v5);
     }
   }
 }
@@ -11998,29 +11998,29 @@ void __44__BRCClientZone_networkReachabilityChanged___block_invoke_2(uint64_t a1
   }
 }
 
-- (int64_t)throttleHashWithItemID:(id)a3
+- (int64_t)throttleHashWithItemID:(id)d
 {
-  v4 = a3;
-  v5 = [(BRCClientZone *)self mangledID];
-  v6 = [v5 hash];
-  v7 = [v4 hash];
+  dCopy = d;
+  mangledID = [(BRCClientZone *)self mangledID];
+  v6 = [mangledID hash];
+  v7 = [dCopy hash];
 
   return v7 ^ v6;
 }
 
-- (void)_appendToString:(id)a3 descriptionOfFieldNamed:(id)a4 inResultSet:(id)a5 pos:(int *)a6 containsSize:(BOOL)a7 context:(id)a8
+- (void)_appendToString:(id)string descriptionOfFieldNamed:(id)named inResultSet:(id)set pos:(int *)pos containsSize:(BOOL)size context:(id)context
 {
-  v9 = a7;
-  v23 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a8;
-  if (v9)
+  sizeCopy = size;
+  stringCopy = string;
+  namedCopy = named;
+  setCopy = set;
+  contextCopy = context;
+  if (sizeCopy)
   {
-    ++*a6;
-    v16 = [v14 unsignedLongLongAtIndex:?];
-    ++*a6;
-    v17 = [v14 unsignedLongLongAtIndex:?];
+    ++*pos;
+    v16 = [setCopy unsignedLongLongAtIndex:?];
+    ++*pos;
+    v17 = [setCopy unsignedLongLongAtIndex:?];
   }
 
   else
@@ -12029,31 +12029,31 @@ void __44__BRCClientZone_networkReachabilityChanged___block_invoke_2(uint64_t a1
     v16 = 0;
   }
 
-  ++*a6;
-  v18 = [v14 unsignedLongLongAtIndex:?];
-  ++*a6;
-  v19 = [v14 unsignedLongLongAtIndex:?];
+  ++*pos;
+  v18 = [setCopy unsignedLongLongAtIndex:?];
+  ++*pos;
+  v19 = [setCopy unsignedLongLongAtIndex:?];
   v20 = v19;
   if (v16 || v17 || v18 || v19)
   {
-    if (v9)
+    if (sizeCopy)
     {
-      v21 = [BRCDumpContext stringFromByteCount:v17 context:v15];
-      v22 = [BRCDumpContext stringFromByteCount:v16 context:v15];
-      [v23 appendFormat:@"%@{needs:(count:%lld, size:%@) done:(count:%lld, size:%@)} ", v13, v20, v21, v18, v22];
+      v21 = [BRCDumpContext stringFromByteCount:v17 context:contextCopy];
+      v22 = [BRCDumpContext stringFromByteCount:v16 context:contextCopy];
+      [stringCopy appendFormat:@"%@{needs:(count:%lld, size:%@) done:(count:%lld, size:%@)} ", namedCopy, v20, v21, v18, v22];
     }
 
     else
     {
-      [v23 appendFormat:@"%@{needs:%lld done:%lld} ", v13, v19, v18];
+      [stringCopy appendFormat:@"%@{needs:%lld done:%lld} ", namedCopy, v19, v18];
     }
   }
 }
 
-- (BOOL)_dumpItemsToContext:(id)a3 includeAllItems:(BOOL)a4 error:(id *)a5
+- (BOOL)_dumpItemsToContext:(id)context includeAllItems:(BOOL)items error:(id *)error
 {
   v73 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  contextCopy = context;
   v9 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v10 = self->_session;
   v67 = 0;
@@ -12068,30 +12068,30 @@ void __44__BRCClientZone_networkReachabilityChanged___block_invoke_2(uint64_t a1
   v55[1] = 3221225472;
   v55[2] = __59__BRCClientZone__dumpItemsToContext_includeAllItems_error___block_invoke;
   v55[3] = &unk_278503B50;
-  v11 = v8;
+  v11 = contextCopy;
   v56 = v11;
   v60 = &v63;
-  v62 = a4;
+  itemsCopy = items;
   v42 = v9;
   v57 = v42;
-  v58 = self;
+  selfCopy = self;
   v41 = v10;
   v59 = v41;
   v61 = &v67;
   v68[3] = v55;
-  v43 = self;
+  selfCopy2 = self;
   if ([(BRCClientZone *)self isPrivateZone])
   {
-    v12 = [(BRCClientZone *)self asPrivateClientZone];
-    v13 = [v12 appLibraries];
-    v14 = [v13 count];
+    asPrivateClientZone = [(BRCClientZone *)self asPrivateClientZone];
+    appLibraries = [asPrivateClientZone appLibraries];
+    v14 = [appLibraries count];
 
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v15 = [(BRCClientZone *)self asPrivateClientZone];
-    obj = [v15 appLibraries];
+    asPrivateClientZone2 = [(BRCClientZone *)self asPrivateClientZone];
+    obj = [asPrivateClientZone2 appLibraries];
 
     v16 = [obj countByEnumeratingWithState:&v51 objects:v72 count:16];
     if (v16)
@@ -12115,21 +12115,21 @@ void __44__BRCClientZone_networkReachabilityChanged___block_invoke_2(uint64_t a1
               [v11 writeLineWithFormat:&stru_2837504F0];
             }
 
-            v21 = [v20 logName];
-            v22 = [v20 dbRowID];
-            [v11 writeLineWithFormat:@"----------------------%@[%@]----------------------", v21, v22];
+            logName = [v20 logName];
+            dbRowID = [v20 dbRowID];
+            [v11 writeLineWithFormat:@"----------------------%@[%@]----------------------", logName, dbRowID];
 
             v18 = 0;
           }
 
-          v23 = [v20 fetchRootItem];
-          v24 = [v23 descriptionWithContext:v11];
+          fetchRootItem = [v20 fetchRootItem];
+          v24 = [fetchRootItem descriptionWithContext:v11];
           [v11 writeLineWithFormat:@"%@", v24];
 
           *(v64 + 6) = 0;
           v25 = v68[3];
-          v26 = [v23 itemGlobalID];
-          (*(v25 + 16))(v25, v26, 0, a5);
+          itemGlobalID = [fetchRootItem itemGlobalID];
+          (*(v25 + 16))(v25, itemGlobalID, 0, error);
 
           LOBYTE(v25) = [v11 isCancelled];
           if (v25)
@@ -12152,18 +12152,18 @@ void __44__BRCClientZone_networkReachabilityChanged___block_invoke_2(uint64_t a1
 
   [v11 writeLineWithFormat:&stru_2837504F0];
   v27 = [v11 db];
-  obj = [v27 numberWithSQL:{@"SELECT COUNT(*) FROM client_items WHERE zone_rowid = %@", v43->_dbRowID}];
+  obj = [v27 numberWithSQL:{@"SELECT COUNT(*) FROM client_items WHERE zone_rowid = %@", selfCopy2->_dbRowID}];
 
-  v28 = [obj unsignedIntegerValue];
-  if (v28 > [v42 count])
+  unsignedIntegerValue = [obj unsignedIntegerValue];
+  if (unsignedIntegerValue > [v42 count])
   {
-    if (![(BRCClientZone *)v43 isSharedZone])
+    if (![(BRCClientZone *)selfCopy2 isSharedZone])
     {
       [v11 writeLineWithFormat:@"ORPHANED ITEMS:"];
     }
 
     v29 = [v11 db];
-    v30 = [v29 fetch:{@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE zone_rowid = %@ AND NOT indexset_contains(%p, rowid)", v43->_dbRowID, v42}];
+    v30 = [v29 fetch:{@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE zone_rowid = %@ AND NOT indexset_contains(%p, rowid)", selfCopy2->_dbRowID, v42}];
     *(v64 + 6) = 0;
     v47 = 0u;
     v48 = 0u;
@@ -12173,7 +12173,7 @@ void __44__BRCClientZone_networkReachabilityChanged___block_invoke_2(uint64_t a1
     v45[1] = 3221225472;
     v45[2] = __59__BRCClientZone__dumpItemsToContext_includeAllItems_error___block_invoke_2;
     v45[3] = &unk_2784FF938;
-    v45[4] = v43;
+    v45[4] = selfCopy2;
     v31 = v29;
     v46 = v31;
     v32 = [v30 enumerateObjects:v45];
@@ -12405,66 +12405,66 @@ id __59__BRCClientZone__dumpItemsToContext_includeAllItems_error___block_invoke_
   return v8;
 }
 
-- (BOOL)dumpActivityToContext:(id)a3 includeExpensiveActivity:(BOOL)a4 error:(id *)a5
+- (BOOL)dumpActivityToContext:(id)context includeExpensiveActivity:(BOOL)activity error:(id *)error
 {
-  v5 = a4;
+  activityCopy = activity;
   v135 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  contextCopy = context;
   if (!self->_activated)
   {
     goto LABEL_95;
   }
 
   v8 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v97 = [(BRCClientZone *)self syncState];
+  syncState = [(BRCClientZone *)self syncState];
   brc_current_date_nsec();
   v100 = [BRCUserDefaults defaultsForMangledID:self->_mangledID];
   if ([(BRCClientZone *)self isPrivateZone])
   {
-    v9 = [(BRCClientZone *)self asPrivateClientZone];
-    v10 = [v9 defaultAppLibrary];
-    v11 = [v10 isGreedy];
+    asPrivateClientZone = [(BRCClientZone *)self asPrivateClientZone];
+    defaultAppLibrary = [asPrivateClientZone defaultAppLibrary];
+    isGreedy = [defaultAppLibrary isGreedy];
     v12 = @"(greedy)";
-    if (!v11)
+    if (!isGreedy)
     {
       v12 = &stru_2837504F0;
     }
 
-    [v7 writeLineWithFormat:@"pending activity %@", v12];
+    [contextCopy writeLineWithFormat:@"pending activity %@", v12];
   }
 
   else
   {
-    [v7 writeLineWithFormat:@"pending activity %@", &stru_2837504F0];
+    [contextCopy writeLineWithFormat:@"pending activity %@", &stru_2837504F0];
   }
 
-  [v7 writeLineWithFormat:@"================"];
-  if (v5)
+  [contextCopy writeLineWithFormat:@"================"];
+  if (activityCopy)
   {
-    v13 = [(BRCAccountSession *)self->_session fsDownloader];
-    v14 = [v13 aggregateDescriptionForJobsMatching:self->_serverZone context:v7];
-    [v7 writeLineWithFormat:@"+ downloads:%@", v14];
+    fsDownloader = [(BRCAccountSession *)self->_session fsDownloader];
+    v14 = [fsDownloader aggregateDescriptionForJobsMatching:self->_serverZone context:contextCopy];
+    [contextCopy writeLineWithFormat:@"+ downloads:%@", v14];
   }
 
   else
   {
-    [v7 writeLineWithFormat:@"+ downloads: not dumping"];
+    [contextCopy writeLineWithFormat:@"+ downloads: not dumping"];
   }
 
-  [v7 pushIndentation];
-  v99 = self;
-  v98 = v5;
+  [contextCopy pushIndentation];
+  selfCopy = self;
+  v98 = activityCopy;
   if ([(BRCClientZone *)self isPrivateZone])
   {
     v129 = 0u;
     v130 = 0u;
     v127 = 0u;
     v128 = 0u;
-    v15 = [(BRCClientZone *)self asPrivateClientZone];
-    v16 = [v15 appLibraries];
+    asPrivateClientZone2 = [(BRCClientZone *)self asPrivateClientZone];
+    appLibraries = [asPrivateClientZone2 appLibraries];
 
-    obj = v16;
-    v105 = [v16 countByEnumeratingWithState:&v127 objects:v134 count:16];
+    obj = appLibraries;
+    v105 = [appLibraries countByEnumeratingWithState:&v127 objects:v134 count:16];
     if (v105)
     {
       v103 = *v128;
@@ -12482,10 +12482,10 @@ id __59__BRCClientZone__dumpItemsToContext_includeAllItems_error___block_invoke_
           v124 = 0u;
           v125 = 0u;
           v126 = 0u;
-          v19 = [v18 transferSyncContextIfExists];
-          v20 = [v19 allDownloadOperations];
+          transferSyncContextIfExists = [v18 transferSyncContextIfExists];
+          allDownloadOperations = [transferSyncContextIfExists allDownloadOperations];
 
-          v21 = [v20 countByEnumeratingWithState:&v123 objects:v133 count:16];
+          v21 = [allDownloadOperations countByEnumeratingWithState:&v123 objects:v133 count:16];
           if (v21)
           {
             v22 = v21;
@@ -12496,16 +12496,16 @@ id __59__BRCClientZone__dumpItemsToContext_includeAllItems_error___block_invoke_
               {
                 if (*v124 != v23)
                 {
-                  objc_enumerationMutation(v20);
+                  objc_enumerationMutation(allDownloadOperations);
                 }
 
                 v25 = *(*(&v123 + 1) + 8 * j);
-                v26 = [v18 logName];
-                v27 = [v25 descriptionWithContext:v7];
-                [v7 writeLineWithFormat:@"%@: %@", v26, v27];
+                logName = [v18 logName];
+                v27 = [v25 descriptionWithContext:contextCopy];
+                [contextCopy writeLineWithFormat:@"%@: %@", logName, v27];
               }
 
-              v22 = [v20 countByEnumeratingWithState:&v123 objects:v133 count:16];
+              v22 = [allDownloadOperations countByEnumeratingWithState:&v123 objects:v133 count:16];
             }
 
             while (v22);
@@ -12518,27 +12518,27 @@ id __59__BRCClientZone__dumpItemsToContext_includeAllItems_error___block_invoke_
       while (v105);
     }
 
-    self = v99;
-    v5 = v98;
+    self = selfCopy;
+    activityCopy = v98;
   }
 
-  [v7 popIndentation];
-  if (v5)
+  [contextCopy popIndentation];
+  if (activityCopy)
   {
-    v28 = [(BRCAccountSession *)self->_session fsUploader];
-    v29 = [v28 aggregateDescriptionForJobsMatching:self->_serverZone context:v7];
-    [v7 writeLineWithFormat:@"+ uploads:  %@", v29];
+    fsUploader = [(BRCAccountSession *)self->_session fsUploader];
+    v29 = [fsUploader aggregateDescriptionForJobsMatching:self->_serverZone context:contextCopy];
+    [contextCopy writeLineWithFormat:@"+ uploads:  %@", v29];
   }
 
   else
   {
-    [v7 writeLineWithFormat:@"+ uploads:  not dumping"];
+    [contextCopy writeLineWithFormat:@"+ uploads:  not dumping"];
   }
 
-  [v7 pushIndentation];
-  v30 = [(BRCAccountSession *)self->_session fsUploader];
-  v31 = [v30 thumbnailGenerationManager];
-  [v7 writeLineWithFormat:@"%@", v31];
+  [contextCopy pushIndentation];
+  fsUploader2 = [(BRCAccountSession *)self->_session fsUploader];
+  thumbnailGenerationManager = [fsUploader2 thumbnailGenerationManager];
+  [contextCopy writeLineWithFormat:@"%@", thumbnailGenerationManager];
 
   if ([(BRCClientZone *)self isPrivateZone])
   {
@@ -12546,11 +12546,11 @@ id __59__BRCClientZone__dumpItemsToContext_includeAllItems_error___block_invoke_
     v122 = 0u;
     v119 = 0u;
     v120 = 0u;
-    v32 = [(BRCClientZone *)self asPrivateClientZone];
-    v33 = [v32 appLibraries];
+    asPrivateClientZone3 = [(BRCClientZone *)self asPrivateClientZone];
+    appLibraries2 = [asPrivateClientZone3 appLibraries];
 
-    obja = v33;
-    v106 = [v33 countByEnumeratingWithState:&v119 objects:v132 count:16];
+    obja = appLibraries2;
+    v106 = [appLibraries2 countByEnumeratingWithState:&v119 objects:v132 count:16];
     if (v106)
     {
       v104 = *v120;
@@ -12568,11 +12568,11 @@ id __59__BRCClientZone__dumpItemsToContext_includeAllItems_error___block_invoke_
           v116 = 0u;
           v117 = 0u;
           v118 = 0u;
-          v36 = [v35 transferSyncContextIfExists];
-          v37 = [v36 uploadStream];
-          v38 = [v37 operations];
+          transferSyncContextIfExists2 = [v35 transferSyncContextIfExists];
+          uploadStream = [transferSyncContextIfExists2 uploadStream];
+          operations = [uploadStream operations];
 
-          v39 = [v38 countByEnumeratingWithState:&v115 objects:v131 count:16];
+          v39 = [operations countByEnumeratingWithState:&v115 objects:v131 count:16];
           if (v39)
           {
             v40 = v39;
@@ -12583,16 +12583,16 @@ id __59__BRCClientZone__dumpItemsToContext_includeAllItems_error___block_invoke_
               {
                 if (*v116 != v41)
                 {
-                  objc_enumerationMutation(v38);
+                  objc_enumerationMutation(operations);
                 }
 
                 v43 = *(*(&v115 + 1) + 8 * m);
-                v44 = [v35 logName];
-                v45 = [v43 descriptionWithContext:v7];
-                [v7 writeLineWithFormat:@"%@: %@", v44, v45];
+                logName2 = [v35 logName];
+                v45 = [v43 descriptionWithContext:contextCopy];
+                [contextCopy writeLineWithFormat:@"%@: %@", logName2, v45];
               }
 
-              v40 = [v38 countByEnumeratingWithState:&v115 objects:v131 count:16];
+              v40 = [operations countByEnumeratingWithState:&v115 objects:v131 count:16];
             }
 
             while (v40);
@@ -12605,39 +12605,39 @@ id __59__BRCClientZone__dumpItemsToContext_includeAllItems_error___block_invoke_
       while (v106);
     }
 
-    self = v99;
-    v5 = v98;
+    self = selfCopy;
+    activityCopy = v98;
   }
 
   if (self->_allItemsDidUploadTrackers)
   {
-    [v7 writeLineWithFormat:@"sync bubble waiting"];
+    [contextCopy writeLineWithFormat:@"sync bubble waiting"];
   }
 
-  [v7 popIndentation];
-  if (v5)
+  [contextCopy popIndentation];
+  if (activityCopy)
   {
-    v46 = [(BRCAccountSession *)self->_session applyScheduler];
-    v47 = [v46 aggregateDescriptionForJobsMatching:self->_serverZone context:v7];
-    [v7 writeLineWithFormat:@"+ apply:    %@", v47];
+    applyScheduler = [(BRCAccountSession *)self->_session applyScheduler];
+    v47 = [applyScheduler aggregateDescriptionForJobsMatching:self->_serverZone context:contextCopy];
+    [contextCopy writeLineWithFormat:@"+ apply:    %@", v47];
   }
 
   else
   {
-    [v7 writeLineWithFormat:@"+ reader:   not dumping"];
-    [v7 writeLineWithFormat:@"+ apply:    not dumping"];
+    [contextCopy writeLineWithFormat:@"+ reader:   not dumping"];
+    [contextCopy writeLineWithFormat:@"+ apply:    not dumping"];
   }
 
   if ([(NSMutableDictionary *)self->_runningListOperations count])
   {
-    [v7 writeLineWithFormat:@"+ list:"];
-    [v7 pushIndentation];
+    [contextCopy writeLineWithFormat:@"+ list:"];
+    [contextCopy pushIndentation];
     v48 = [(NSMutableDictionary *)self->_runningListOperations copy];
     v113[0] = MEMORY[0x277D85DD0];
     v113[1] = 3221225472;
     v113[2] = __70__BRCClientZone_dumpActivityToContext_includeExpensiveActivity_error___block_invoke;
     v113[3] = &unk_278503B78;
-    v49 = v7;
+    v49 = contextCopy;
     v114 = v49;
     [v48 enumerateKeysAndObjectsUsingBlock:v113];
 
@@ -12646,14 +12646,14 @@ id __59__BRCClientZone__dumpItemsToContext_includeAllItems_error___block_invoke_
 
   if ([(NSMutableDictionary *)self->_recursiveListOperations count])
   {
-    [v7 writeLineWithFormat:@"+ rec-list:"];
-    [v7 pushIndentation];
+    [contextCopy writeLineWithFormat:@"+ rec-list:"];
+    [contextCopy pushIndentation];
     v50 = [(NSMutableDictionary *)self->_recursiveListOperations copy];
     v111[0] = MEMORY[0x277D85DD0];
     v111[1] = 3221225472;
     v111[2] = __70__BRCClientZone_dumpActivityToContext_includeExpensiveActivity_error___block_invoke_2;
     v111[3] = &unk_278503BA0;
-    v51 = v7;
+    v51 = contextCopy;
     v112 = v51;
     [v50 enumerateKeysAndObjectsUsingBlock:v111];
 
@@ -12662,14 +12662,14 @@ id __59__BRCClientZone__dumpItemsToContext_includeAllItems_error___block_invoke_
 
   if ([(NSMutableDictionary *)self->_fetchParentOperations count])
   {
-    [v7 writeLineWithFormat:@"+ fetch-parent:"];
-    [v7 pushIndentation];
+    [contextCopy writeLineWithFormat:@"+ fetch-parent:"];
+    [contextCopy pushIndentation];
     v52 = [(NSMutableDictionary *)self->_fetchParentOperations copy];
     v109[0] = MEMORY[0x277D85DD0];
     v109[1] = 3221225472;
     v109[2] = __70__BRCClientZone_dumpActivityToContext_includeExpensiveActivity_error___block_invoke_3;
     v109[3] = &unk_278503BC8;
-    v53 = v7;
+    v53 = contextCopy;
     v110 = v53;
     [v52 enumerateKeysAndObjectsUsingBlock:v109];
 
@@ -12678,14 +12678,14 @@ id __59__BRCClientZone__dumpItemsToContext_includeAllItems_error___block_invoke_
 
   if ([(NSMutableDictionary *)self->_locateRecordOperations count])
   {
-    [v7 writeLineWithFormat:@"+ locate-record:"];
-    [v7 pushIndentation];
+    [contextCopy writeLineWithFormat:@"+ locate-record:"];
+    [contextCopy pushIndentation];
     v54 = [(NSMutableDictionary *)self->_locateRecordOperations copy];
     v107[0] = MEMORY[0x277D85DD0];
     v107[1] = 3221225472;
     v107[2] = __70__BRCClientZone_dumpActivityToContext_includeExpensiveActivity_error___block_invoke_4;
     v107[3] = &unk_278503BF0;
-    v55 = v7;
+    v55 = contextCopy;
     v108 = v55;
     [v54 enumerateKeysAndObjectsUsingBlock:v107];
 
@@ -12694,25 +12694,25 @@ id __59__BRCClientZone__dumpItemsToContext_includeAllItems_error___block_invoke_
 
   if (self->_fetchRecentsOperation)
   {
-    [v7 writeLineWithFormat:@"+ fetch-recents:"];
-    [v7 pushIndentation];
-    [v7 writeLineWithFormat:@"%@", self->_fetchRecentsOperation];
-    [v7 popIndentation];
+    [contextCopy writeLineWithFormat:@"+ fetch-recents:"];
+    [contextCopy pushIndentation];
+    [contextCopy writeLineWithFormat:@"%@", self->_fetchRecentsOperation];
+    [contextCopy popIndentation];
   }
 
   [(BRCClientZone *)self _appLibrariesState];
-  if ([v7 liveDaemon])
+  if ([contextCopy liveDaemon])
   {
     if (self->_syncUpOperation)
     {
       v56 = @" [sync-up running]";
-      v57 = v97;
+      v57 = syncState;
     }
 
     else
     {
-      v57 = v97;
-      if ((self->_state & 0x100) == 0 && (v97 & 0x71) == 0x21)
+      v57 = syncState;
+      if ((self->_state & 0x100) == 0 && (syncState & 0x71) == 0x21)
       {
         syncUpRetryAfter = self->_syncUpRetryAfter;
         brc_interval_from_nsec();
@@ -12753,7 +12753,7 @@ id __59__BRCClientZone__dumpItemsToContext_includeAllItems_error___block_invoke_
           v65 = 3;
         }
 
-        v57 = v97;
+        v57 = syncState;
         goto LABEL_74;
       }
 
@@ -12822,67 +12822,67 @@ LABEL_74:
 
     if (v64)
     {
-      v68 = [BRCDumpContext highlightedString:v64 type:v65 context:v7];
+      v68 = [BRCDumpContext highlightedString:v64 type:v65 context:contextCopy];
       [v8 appendString:v68];
     }
 
     if (v66)
     {
-      v69 = [BRCDumpContext highlightedString:v66 type:v67 context:v7];
+      v69 = [BRCDumpContext highlightedString:v66 type:v67 context:contextCopy];
       [v8 appendString:v69];
     }
 
     [v8 appendFormat:@" [scheduling: %@]", self->_syncDeadlineSource];
-    [v7 writeLineWithFormat:@"+ sync:      %@", v8];
-    v70 = [(BRCAccountSession *)self->_session syncUpScheduler];
-    v71 = [v70 aggregateDescriptionForJobsMatching:self->_serverZone context:v7];
-    [v7 writeLineWithFormat:@"  up:        %@", v71];
+    [contextCopy writeLineWithFormat:@"+ sync:      %@", v8];
+    syncUpScheduler = [(BRCAccountSession *)self->_session syncUpScheduler];
+    v71 = [syncUpScheduler aggregateDescriptionForJobsMatching:self->_serverZone context:contextCopy];
+    [contextCopy writeLineWithFormat:@"  up:        %@", v71];
 
     v72 = [(BRCSyncBudgetThrottle *)self->_syncUpBudget debugDescriptionWithDefaults:v100];
-    [v7 writeLineWithFormat:@"  up-budget: %@", v72];
+    [contextCopy writeLineWithFormat:@"  up-budget: %@", v72];
 
     lastSyncUpError = self->_lastSyncUpError;
     if (lastSyncUpError)
     {
-      v74 = [(NSError *)lastSyncUpError brc_obfuscate];
-      v75 = [BRCDumpContext stringFromError:v74 context:v7];
-      [v7 writeLineWithFormat:@"  up-error:  %@", v75];
+      brc_obfuscate = [(NSError *)lastSyncUpError brc_obfuscate];
+      v75 = [BRCDumpContext stringFromError:brc_obfuscate context:contextCopy];
+      [contextCopy writeLineWithFormat:@"  up-error:  %@", v75];
     }
 
     lastSyncDownError = self->_lastSyncDownError;
     if (lastSyncDownError)
     {
-      v77 = [(NSError *)lastSyncDownError brc_obfuscate];
-      v78 = [BRCDumpContext stringFromError:v77 context:v7];
-      [v7 writeLineWithFormat:@"  dn-error   %@", v78];
+      brc_obfuscate2 = [(NSError *)lastSyncDownError brc_obfuscate];
+      v78 = [BRCDumpContext stringFromError:brc_obfuscate2 context:contextCopy];
+      [contextCopy writeLineWithFormat:@"  dn-error   %@", v78];
     }
 
     syncUpOperation = self->_syncUpOperation;
     if (syncUpOperation || (syncUpOperation = self->_syncDownOperation) != 0)
     {
-      v80 = [syncUpOperation descriptionWithContext:v7];
-      [v7 writeLineWithFormat:@"  operation: %@", v80];
+      v80 = [syncUpOperation descriptionWithContext:contextCopy];
+      [contextCopy writeLineWithFormat:@"  operation: %@", v80];
     }
 
-    v81 = [(BRCClientZone *)self session];
-    v82 = [v81 serverState];
-    v83 = [(BRCClientZone *)self mangledID];
-    v84 = [v82 dumpMigrationQueriesForMangledID:v83];
+    session = [(BRCClientZone *)self session];
+    serverState = [session serverState];
+    mangledID = [(BRCClientZone *)self mangledID];
+    v84 = [serverState dumpMigrationQueriesForMangledID:mangledID];
 
     if (v84)
     {
-      [v7 writeLineWithFormat:@"+ migration: %@", v84];
+      [contextCopy writeLineWithFormat:@"+ migration: %@", v84];
     }
   }
 
   if ([(NSSet *)self->_itemIDsBlockedFromSyncForCZMProcessing count])
   {
-    [v7 writeLineWithFormat:@"+ process-removal: %@", self->_itemIDsBlockedFromSyncForCZMProcessing];
+    [contextCopy writeLineWithFormat:@"+ process-removal: %@", self->_itemIDsBlockedFromSyncForCZMProcessing];
   }
 
   if ([(NSMutableArray *)self->_faultsLiveBarriers count])
   {
-    [v7 writeLineWithFormat:@"+ barriers:  %ld", -[NSMutableArray count](self->_faultsLiveBarriers, "count")];
+    [contextCopy writeLineWithFormat:@"+ barriers:  %ld", -[NSMutableArray count](self->_faultsLiveBarriers, "count")];
   }
 
 LABEL_95:
@@ -12890,56 +12890,56 @@ LABEL_95:
   return 1;
 }
 
-- (BOOL)shouldSyncMangledID:(id)a3
+- (BOOL)shouldSyncMangledID:(id)d
 {
-  v4 = a3;
-  v5 = [BRCUserDefaults defaultsForMangledID:v4];
-  v6 = [v5 forceSyncOverride];
+  dCopy = d;
+  v5 = [BRCUserDefaults defaultsForMangledID:dCopy];
+  forceSyncOverride = [v5 forceSyncOverride];
 
-  if (v6 == 1)
+  if (forceSyncOverride == 1)
   {
     goto LABEL_7;
   }
 
-  if (v6 == 255)
+  if (forceSyncOverride == 255)
   {
     v7 = 0;
     goto LABEL_8;
   }
 
-  if (-[BRCClientZone isSharedZone](self, "isSharedZone") || (-[BRCAccountSession appLibraryByMangledID:](self->_session, "appLibraryByMangledID:", v4), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 hasLocalChanges], v8, (v9 & 1) != 0) || -[BRCClientZone _hasNonDiscretionaryServerStitchingOperation](self, "_hasNonDiscretionaryServerStitchingOperation"))
+  if (-[BRCClientZone isSharedZone](self, "isSharedZone") || (-[BRCAccountSession appLibraryByMangledID:](self->_session, "appLibraryByMangledID:", dCopy), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 hasLocalChanges], v8, (v9 & 1) != 0) || -[BRCClientZone _hasNonDiscretionaryServerStitchingOperation](self, "_hasNonDiscretionaryServerStitchingOperation"))
   {
 LABEL_7:
     v7 = 1;
     goto LABEL_8;
   }
 
-  v11 = [v4 appLibraryOrZoneName];
-  v12 = [(BRCClientZone *)self session];
-  v13 = [v12 appLibraryByMangledID:v4];
-  v14 = [v13 containerMetadata];
-  v15 = [v14 isDocumentScopePublic];
+  appLibraryOrZoneName = [dCopy appLibraryOrZoneName];
+  session = [(BRCClientZone *)self session];
+  v13 = [session appLibraryByMangledID:dCopy];
+  containerMetadata = [v13 containerMetadata];
+  isDocumentScopePublic = [containerMetadata isDocumentScopePublic];
 
-  v16 = [v11 isEqualToString:*MEMORY[0x277CFAD68]];
+  v16 = [appLibraryOrZoneName isEqualToString:*MEMORY[0x277CFAD68]];
   v7 = 1;
-  if ((v15 & 1) == 0 && (v16 & 1) == 0)
+  if ((isDocumentScopePublic & 1) == 0 && (v16 & 1) == 0)
   {
     v17 = +[BRCCloudDocsAppsMonitor cloudDocsAppsMonitor];
-    v7 = [v17 isApplicationInstalledForContainerID:v11];
+    v7 = [v17 isApplicationInstalledForContainerID:appLibraryOrZoneName];
   }
 
 LABEL_8:
   return v7;
 }
 
-- (id)liveItemByParentID:(id)a3 andLogicalName:(id)a4 excludingItemGlobalID:(id)a5
+- (id)liveItemByParentID:(id)d andLogicalName:(id)name excludingItemGlobalID:(id)iD
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[BRCPQLInjectionExcludingItemGlobalID alloc] initWithExcludingItemGlobalID:v8];
+  iDCopy = iD;
+  nameCopy = name;
+  dCopy = d;
+  v11 = [[BRCPQLInjectionExcludingItemGlobalID alloc] initWithExcludingItemGlobalID:iDCopy];
 
-  v12 = [(BRCPQLConnection *)self->_db fetch:@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE ((item_parent_id = %@ AND item_filename = %@ AND item_parent_zone_rowid = %@        AND item_bouncedname IS NULL)   OR  (item_parent_id = %@ AND item_bouncedname = %@ AND item_parent_zone_rowid = %@))  AND item_state != 1  %@ LIMIT 1", v10, v9, self->_dbRowID, v10, v9, self->_dbRowID, v11];
+  v12 = [(BRCPQLConnection *)self->_db fetch:@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE ((item_parent_id = %@ AND item_filename = %@ AND item_parent_zone_rowid = %@        AND item_bouncedname IS NULL)   OR  (item_parent_id = %@ AND item_bouncedname = %@ AND item_parent_zone_rowid = %@))  AND item_state != 1  %@ LIMIT 1", dCopy, nameCopy, self->_dbRowID, dCopy, nameCopy, self->_dbRowID, v11];
   if ([v12 next])
   {
     v16[0] = MEMORY[0x277D85DD0];
@@ -12971,14 +12971,14 @@ id __88__BRCClientZone_FPFSAdditions__liveItemByParentID_andLogicalName_excludin
   return v8;
 }
 
-- (id)liveItemByParentID:(id)a3 andCaseInsensitiveLogicalName:(id)a4 excludingItemGlobalID:(id)a5
+- (id)liveItemByParentID:(id)d andCaseInsensitiveLogicalName:(id)name excludingItemGlobalID:(id)iD
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[BRCPQLInjectionExcludingItemGlobalID alloc] initWithExcludingItemGlobalID:v8];
+  iDCopy = iD;
+  nameCopy = name;
+  dCopy = d;
+  v11 = [[BRCPQLInjectionExcludingItemGlobalID alloc] initWithExcludingItemGlobalID:iDCopy];
 
-  v12 = [(BRCPQLConnection *)self->_db fetch:@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE ((item_parent_id = %@ AND item_filename = %@ COLLATE NOCASE AND item_parent_zone_rowid = %@        AND item_bouncedname IS NULL)   OR  (item_parent_id = %@ AND item_bouncedname = %@ COLLATE NOCASE AND item_parent_zone_rowid = %@))  AND item_state != 1  %@ LIMIT 1", v10, v9, self->_dbRowID, v10, v9, self->_dbRowID, v11];
+  v12 = [(BRCPQLConnection *)self->_db fetch:@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE ((item_parent_id = %@ AND item_filename = %@ COLLATE NOCASE AND item_parent_zone_rowid = %@        AND item_bouncedname IS NULL)   OR  (item_parent_id = %@ AND item_bouncedname = %@ COLLATE NOCASE AND item_parent_zone_rowid = %@))  AND item_state != 1  %@ LIMIT 1", dCopy, nameCopy, self->_dbRowID, dCopy, nameCopy, self->_dbRowID, v11];
   if ([v12 next])
   {
     v16[0] = MEMORY[0x277D85DD0];
@@ -13010,9 +13010,9 @@ id __103__BRCClientZone_FPFSAdditions__liveItemByParentID_andCaseInsensitiveLogi
   return v8;
 }
 
-- (id)deadItemByParentID:(id)a3 andUnbouncedLogicalName:(id)a4
+- (id)deadItemByParentID:(id)d andUnbouncedLogicalName:(id)name
 {
-  v5 = [(BRCPQLConnection *)self->_db fetch:@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE item_parent_id = %@ AND item_filename = %@ AND item_parent_zone_rowid = %@ AND zone_rowid = %@ AND item_state IN (1, -3) LIMIT 1", a3, a4, self->_dbRowID, self->_dbRowID];
+  v5 = [(BRCPQLConnection *)self->_db fetch:@"SELECT rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation FROM client_items WHERE item_parent_id = %@ AND item_filename = %@ AND item_parent_zone_rowid = %@ AND zone_rowid = %@ AND item_state IN (1, -3) LIMIT 1", d, name, self->_dbRowID, self->_dbRowID];
   if ([v5 next])
   {
     v9[0] = MEMORY[0x277D85DD0];
@@ -13044,17 +13044,17 @@ id __75__BRCClientZone_FPFSAdditions__deadItemByParentID_andUnbouncedLogicalName
   return v8;
 }
 
-- (void)itemMovedIntoShareInThisZone:(id)a3 associatedItemID:(id)a4
+- (void)itemMovedIntoShareInThisZone:(id)zone associatedItemID:(id)d
 {
-  v5 = a3;
+  zoneCopy = zone;
   [(BRCPQLConnection *)self->_db assertOnQueue];
   db = self->_db;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __78__BRCClientZone_FPFSAdditions__itemMovedIntoShareInThisZone_associatedItemID___block_invoke;
   v8[3] = &unk_2784FFA48;
-  v9 = v5;
-  v7 = v5;
+  v9 = zoneCopy;
+  v7 = zoneCopy;
   [(BRCPQLConnection *)db groupInTransaction:v8];
 }
 
@@ -13070,10 +13070,10 @@ uint64_t __78__BRCClientZone_FPFSAdditions__itemMovedIntoShareInThisZone_associa
   return 1;
 }
 
-- (void)signalFaultingWatchersWithError:(id)a3
+- (void)signalFaultingWatchersWithError:(id)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = self->_faultsLiveBarriers;
   faultsLiveBarriers = self->_faultsLiveBarriers;
   self->_faultsLiveBarriers = 0;
@@ -13112,21 +13112,21 @@ uint64_t __78__BRCClientZone_FPFSAdditions__itemMovedIntoShareInThisZone_associa
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyClient:(id)a3 whenFaultingIsDone:(id)a4
+- (void)notifyClient:(id)client whenFaultingIsDone:(id)done
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BRCPQLConnection *)self->_db serialQueue];
+  clientCopy = client;
+  doneCopy = done;
+  serialQueue = [(BRCPQLConnection *)self->_db serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__BRCClientZone_FPFSAdditions__notifyClient_whenFaultingIsDone___block_invoke;
   block[3] = &unk_2784FF5B8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = clientCopy;
+  selfCopy = self;
+  v14 = doneCopy;
+  v9 = doneCopy;
+  v10 = clientCopy;
+  dispatch_async(serialQueue, block);
 }
 
 void __64__BRCClientZone_FPFSAdditions__notifyClient_whenFaultingIsDone___block_invoke(uint64_t a1)
@@ -13166,12 +13166,12 @@ void __64__BRCClientZone_FPFSAdditions__notifyClient_whenFaultingIsDone___block_
   }
 }
 
-- (id)contentBoundaryKeyForItemID:(id)a3 withDB:(id)a4
+- (id)contentBoundaryKeyForItemID:(id)d withDB:(id)b
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BRCClientZone *)self dbRowID];
-  v9 = [v6 dataWithSQL:{@"SELECT content_boundary_key FROM server_items WHERE item_id = %@ AND zone_rowid = %@", v7, v8}];
+  bCopy = b;
+  dCopy = d;
+  dbRowID = [(BRCClientZone *)self dbRowID];
+  v9 = [bCopy dataWithSQL:{@"SELECT content_boundary_key FROM server_items WHERE item_id = %@ AND zone_rowid = %@", dCopy, dbRowID}];
 
   return v9;
 }
@@ -13412,7 +13412,7 @@ void __42__BRCClientZone_removeOutOfBandOperation___block_invoke_cold_1(uint64_t
 
 - (void)_blockSyncDownOnStitchingOperations
 {
-  OUTLINED_FUNCTION_21(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_21(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_3_1();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x16u);
@@ -13421,7 +13421,7 @@ void __42__BRCClientZone_removeOutOfBandOperation___block_invoke_cold_1(uint64_t
 
 - (void)syncDownImmediately
 {
-  OUTLINED_FUNCTION_21(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_21(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_3_1();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x16u);

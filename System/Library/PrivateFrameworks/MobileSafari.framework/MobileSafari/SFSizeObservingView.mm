@@ -1,17 +1,17 @@
 @interface SFSizeObservingView
-- (SFSizeObservingView)initWithFrame:(CGRect)a3;
+- (SFSizeObservingView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setObservedHeightDimension:(id)a3;
+- (void)setObservedHeightDimension:(id)dimension;
 @end
 
 @implementation SFSizeObservingView
 
-- (SFSizeObservingView)initWithFrame:(CGRect)a3
+- (SFSizeObservingView)initWithFrame:(CGRect)frame
 {
   v18[2] = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = SFSizeObservingView;
-  v3 = [(SFSizeObservingView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFSizeObservingView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -19,13 +19,13 @@
     [(SFSizeObservingView *)v4 setHidden:1];
     [(SFSizeObservingView *)v4 setUserInteractionEnabled:0];
     v5 = MEMORY[0x1E696ACD8];
-    v6 = [(SFSizeObservingView *)v4 heightAnchor];
-    v7 = [v6 constraintEqualToConstant:0.0];
+    heightAnchor = [(SFSizeObservingView *)v4 heightAnchor];
+    v7 = [heightAnchor constraintEqualToConstant:0.0];
     LODWORD(v8) = 1132068864;
     v9 = [v7 sf_withPriority:v8];
     v18[0] = v9;
-    v10 = [(SFSizeObservingView *)v4 widthAnchor];
-    v11 = [v10 constraintEqualToConstant:0.0];
+    widthAnchor = [(SFSizeObservingView *)v4 widthAnchor];
+    v11 = [widthAnchor constraintEqualToConstant:0.0];
     LODWORD(v12) = 1132068864;
     v13 = [v11 sf_withPriority:v12];
     v18[1] = v13;
@@ -38,18 +38,18 @@
   return v4;
 }
 
-- (void)setObservedHeightDimension:(id)a3
+- (void)setObservedHeightDimension:(id)dimension
 {
-  v10 = a3;
-  v5 = [(SFSizeObservingView *)self observedHeightDimension];
+  dimensionCopy = dimension;
+  observedHeightDimension = [(SFSizeObservingView *)self observedHeightDimension];
   v6 = WBSIsEqual();
 
   if ((v6 & 1) == 0)
   {
-    objc_storeStrong(&self->_observedHeightDimension, a3);
+    objc_storeStrong(&self->_observedHeightDimension, dimension);
     [(NSLayoutConstraint *)self->_heightConstraint setActive:0];
-    v7 = [(SFSizeObservingView *)self heightAnchor];
-    v8 = [v7 constraintEqualToAnchor:v10];
+    heightAnchor = [(SFSizeObservingView *)self heightAnchor];
+    v8 = [heightAnchor constraintEqualToAnchor:dimensionCopy];
     heightConstraint = self->_heightConstraint;
     self->_heightConstraint = v8;
 

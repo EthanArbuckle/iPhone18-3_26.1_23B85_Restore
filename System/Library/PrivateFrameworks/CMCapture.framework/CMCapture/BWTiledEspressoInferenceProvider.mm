@@ -1,31 +1,31 @@
 @interface BWTiledEspressoInferenceProvider
-+ (id)videoFormatWithPixelFormat:(unsigned int)a3 size:(unsigned int)a4 sliceCount:(BOOL)a5 includesInvalidContent:(BOOL)a6 appliesFinalCropRect:;
-- (BWTiledEspressoInferenceProvider)initWithConfiguration:(id)a3 inputVideoRequirements:(id)a4 outputVideoRequirements:(id)a5 resourceProvider:(id)a6;
++ (id)videoFormatWithPixelFormat:(unsigned int)format size:(unsigned int)size sliceCount:(BOOL)count includesInvalidContent:(BOOL)content appliesFinalCropRect:;
+- (BWTiledEspressoInferenceProvider)initWithConfiguration:(id)configuration inputVideoRequirements:(id)requirements outputVideoRequirements:(id)videoRequirements resourceProvider:(id)provider;
 - (id)newStorage;
-- (int)loadNetworkWithURL:(id)a3 configName:(id)a4 inferenceType:(int)a5 maxTileCount:(id)a6 inputFormatsByBindingName:(id)a7 outputFormatsByBindingName:(id)a8 additionalVideoRequirements:;
-- (int)prepareForSubmissionWithWorkQueue:(id)a3;
-- (int)reconcileWithPlaceholderProvider:(id)a3;
-- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withSubmissionTime:(id *)a5 workQueue:(id)a6 completionHandler:(id)a7;
-- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withSubmissionTime:(id *)a5 workQueue:(id)a6 completionHandler:(id)a7 currentTileCount:;
+- (int)loadNetworkWithURL:(id)l configName:(id)name inferenceType:(int)type maxTileCount:(id)count inputFormatsByBindingName:(id)bindingName outputFormatsByBindingName:(id)byBindingName additionalVideoRequirements:;
+- (int)prepareForSubmissionWithWorkQueue:(id)queue;
+- (int)reconcileWithPlaceholderProvider:(id)provider;
+- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withSubmissionTime:(id *)time workQueue:(id)queue completionHandler:(id)handler;
+- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withSubmissionTime:(id *)time workQueue:(id)queue completionHandler:(id)handler currentTileCount:;
 - (uint64_t)newStorage;
 - (void)dealloc;
-- (void)migrateInputVideoRequirements:(id)a3 outputVideoRequirements:(id)a4;
-- (void)propagateInferenceResultsToInferenceDictionary:(id)a3 usingStorage:(id)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 propagationSampleBuffer:(opaqueCMSampleBuffer *)a6;
-- (void)setCustomInferenceIdentifier:(id)a3;
+- (void)migrateInputVideoRequirements:(id)requirements outputVideoRequirements:(id)videoRequirements;
+- (void)propagateInferenceResultsToInferenceDictionary:(id)dictionary usingStorage:(id)storage inputSampleBuffer:(opaqueCMSampleBuffer *)buffer propagationSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer;
+- (void)setCustomInferenceIdentifier:(id)identifier;
 @end
 
 @implementation BWTiledEspressoInferenceProvider
 
-+ (id)videoFormatWithPixelFormat:(unsigned int)a3 size:(unsigned int)a4 sliceCount:(BOOL)a5 includesInvalidContent:(BOOL)a6 appliesFinalCropRect:
++ (id)videoFormatWithPixelFormat:(unsigned int)format size:(unsigned int)size sliceCount:(BOOL)count includesInvalidContent:(BOOL)content appliesFinalCropRect:
 {
   v7 = v6;
-  v8 = a6;
-  v9 = a5;
-  v11 = *&a3;
+  contentCopy = content;
+  countCopy = count;
+  v11 = *&format;
   v12 = objc_alloc_init(BWInferenceVideoFormatRequirements);
-  [(BWVideoFormatRequirements *)v12 setWidth:a4];
-  [(BWVideoFormatRequirements *)v12 setHeight:HIWORD(a4)];
-  [(BWVideoFormatRequirements *)v12 setSliceCount:v9];
+  [(BWVideoFormatRequirements *)v12 setWidth:size];
+  [(BWVideoFormatRequirements *)v12 setHeight:HIWORD(size)];
+  [(BWVideoFormatRequirements *)v12 setSliceCount:countCopy];
   if (v7)
   {
     v13 = [BWInferenceFinalRectCropDescriptor finalCropRectDescriptorWithName:@"TiledEspresso"];
@@ -41,33 +41,33 @@
   -[BWVideoFormatRequirements setSupportedPixelFormats:](v12, "setSupportedPixelFormats:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1]);
   [(BWInferenceVideoFormatRequirements *)v12 setDeviceOriented:0];
   [(BWVideoFormatRequirements *)v12 setBytesPerRowAlignment:64];
-  [(BWInferenceVideoFormatRequirements *)v12 setIncludesInvalidContent:v8];
+  [(BWInferenceVideoFormatRequirements *)v12 setIncludesInvalidContent:contentCopy];
   v15 = v12;
   return +[BWInferenceVideoFormat formatByResolvingRequirements:](BWInferenceVideoFormat, "formatByResolvingRequirements:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1]);
 }
 
-- (BWTiledEspressoInferenceProvider)initWithConfiguration:(id)a3 inputVideoRequirements:(id)a4 outputVideoRequirements:(id)a5 resourceProvider:(id)a6
+- (BWTiledEspressoInferenceProvider)initWithConfiguration:(id)configuration inputVideoRequirements:(id)requirements outputVideoRequirements:(id)videoRequirements resourceProvider:(id)provider
 {
   v12.receiver = self;
   v12.super_class = BWTiledEspressoInferenceProvider;
   v10 = [(BWTiledEspressoInferenceProvider *)&v12 init];
   if (v10)
   {
-    v10->_configuration = a3;
-    objc_storeWeak(&v10->_resourceProvider, a6);
-    v10->_inputVideoRequirements = a4;
-    v10->_outputVideoRequirements = a5;
+    v10->_configuration = configuration;
+    objc_storeWeak(&v10->_resourceProvider, provider);
+    v10->_inputVideoRequirements = requirements;
+    v10->_outputVideoRequirements = videoRequirements;
     *v10->_maxTileCount = 0;
   }
 
   return v10;
 }
 
-- (void)migrateInputVideoRequirements:(id)a3 outputVideoRequirements:(id)a4
+- (void)migrateInputVideoRequirements:(id)requirements outputVideoRequirements:(id)videoRequirements
 {
-  self->_inputVideoRequirements = a3;
+  self->_inputVideoRequirements = requirements;
 
-  self->_outputVideoRequirements = a4;
+  self->_outputVideoRequirements = videoRequirements;
 }
 
 - (void)dealloc
@@ -77,17 +77,17 @@
   [(BWTiledEspressoInferenceProvider *)&v3 dealloc];
 }
 
-- (void)setCustomInferenceIdentifier:(id)a3
+- (void)setCustomInferenceIdentifier:(id)identifier
 {
   customInferenceIdentifier = self->_customInferenceIdentifier;
-  if (customInferenceIdentifier != a3)
+  if (customInferenceIdentifier != identifier)
   {
 
-    self->_customInferenceIdentifier = a3;
+    self->_customInferenceIdentifier = identifier;
   }
 }
 
-- (int)loadNetworkWithURL:(id)a3 configName:(id)a4 inferenceType:(int)a5 maxTileCount:(id)a6 inputFormatsByBindingName:(id)a7 outputFormatsByBindingName:(id)a8 additionalVideoRequirements:
+- (int)loadNetworkWithURL:(id)l configName:(id)name inferenceType:(int)type maxTileCount:(id)count inputFormatsByBindingName:(id)bindingName outputFormatsByBindingName:(id)byBindingName additionalVideoRequirements:
 {
   if (self->_espressoProvider)
   {
@@ -96,12 +96,12 @@
 
   v57 = v8;
   v58 = v9;
-  v13 = a6;
-  v14 = *&a5;
-  v18 = [MEMORY[0x1E695DF70] array];
-  v19 = [MEMORY[0x1E695DF70] array];
-  v45 = [MEMORY[0x1E695DF70] array];
-  v44 = [MEMORY[0x1E695DF70] array];
+  countCopy = count;
+  v14 = *&type;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
   if (![(NSArray *)self->_inputVideoRequirements count])
   {
     [BWTiledEspressoInferenceProvider loadNetworkWithURL:v56 configName:? inferenceType:? maxTileCount:? inputFormatsByBindingName:? outputFormatsByBindingName:? additionalVideoRequirements:?];
@@ -114,20 +114,20 @@
     return v56[0];
   }
 
-  if (![a7 count])
+  if (![bindingName count])
   {
     [BWTiledEspressoInferenceProvider loadNetworkWithURL:v56 configName:? inferenceType:? maxTileCount:? inputFormatsByBindingName:? outputFormatsByBindingName:? additionalVideoRequirements:?];
     return v56[0];
   }
 
-  if (![a8 count])
+  if (![byBindingName count])
   {
     [BWTiledEspressoInferenceProvider loadNetworkWithURL:v56 configName:? inferenceType:? maxTileCount:? inputFormatsByBindingName:? outputFormatsByBindingName:? additionalVideoRequirements:?];
     return v56[0];
   }
 
-  v20 = v19;
-  v21 = a3;
+  v20 = array2;
+  lCopy = l;
   if (([objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")] & 1) == 0)
   {
     [BWTiledEspressoInferenceProvider loadNetworkWithURL:v56 configName:? inferenceType:? maxTileCount:? inputFormatsByBindingName:? outputFormatsByBindingName:? additionalVideoRequirements:?];
@@ -135,17 +135,17 @@
   }
 
   v41 = v20;
-  v42 = a8;
+  byBindingNameCopy = byBindingName;
   v22 = [objc_loadWeak(&self->_resourceProvider) espressoContextForExecutionTarget:3];
-  *self->_maxTileCount = v13;
+  *self->_maxTileCount = countCopy;
   v43 = [BWEspressoInferenceProvider alloc];
-  v23 = [(BWInferenceConfiguration *)self->_configuration priority];
+  priority = [(BWInferenceConfiguration *)self->_configuration priority];
   v24 = v14;
   v25 = [MEMORY[0x1E695DFD8] set];
   Weak = objc_loadWeak(&self->_resourceProvider);
   LOBYTE(v40) = 0;
   LODWORD(v39) = [(BWTiledEspressoInferenceProvider *)self allowedPixelBufferCompressionDirection];
-  v27 = [(BWEspressoInferenceProvider *)v43 initWithType:v24 networkURL:v21 networkConfiguration:a4 context:v22 executionTarget:3 schedulerPriority:v23 preventionReasons:v25 resourceProvider:Weak allowedCompressionDirection:v39 concurrentSubmissionLimit:2 updateMetadataWithCropRect:v40];
+  v27 = [(BWEspressoInferenceProvider *)v43 initWithType:v24 networkURL:lCopy networkConfiguration:name context:v22 executionTarget:3 schedulerPriority:priority preventionReasons:v25 resourceProvider:Weak allowedCompressionDirection:v39 concurrentSubmissionLimit:2 updateMetadataWithCropRect:v40];
   self->_espressoProvider = v27;
   if (!v27)
   {
@@ -157,7 +157,7 @@
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v28 = [a7 countByEnumeratingWithState:&v52 objects:v51 count:16];
+  v28 = [bindingName countByEnumeratingWithState:&v52 objects:v51 count:16];
   if (v28)
   {
     v29 = v28;
@@ -168,20 +168,20 @@
       {
         if (*v53 != v30)
         {
-          objc_enumerationMutation(a7);
+          objc_enumerationMutation(bindingName);
         }
 
         v32 = *(*(&v52 + 1) + 8 * i);
-        [v45 addObject:v32];
-        [v18 addObject:{-[BWEspressoInferenceProvider bindEspressoInput:fromAttachedMediaUsingKey:withVideoFormat:](self->_espressoProvider, "bindEspressoInput:fromAttachedMediaUsingKey:withVideoFormat:", v32, objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"TileInput_%i_%@", -[BWInferenceConfiguration inferenceType](self->_configuration, "inferenceType"), v32), objc_msgSend(a7, "objectForKeyedSubscript:", v32))}];
-        if (![v18 lastObject])
+        [array3 addObject:v32];
+        [array addObject:{-[BWEspressoInferenceProvider bindEspressoInput:fromAttachedMediaUsingKey:withVideoFormat:](self->_espressoProvider, "bindEspressoInput:fromAttachedMediaUsingKey:withVideoFormat:", v32, objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"TileInput_%i_%@", -[BWInferenceConfiguration inferenceType](self->_configuration, "inferenceType"), v32), objc_msgSend(bindingName, "objectForKeyedSubscript:", v32))}];
+        if (![array lastObject])
         {
           [BWTiledEspressoInferenceProvider loadNetworkWithURL:v56 configName:? inferenceType:? maxTileCount:? inputFormatsByBindingName:? outputFormatsByBindingName:? additionalVideoRequirements:?];
           return v56[0];
         }
       }
 
-      v29 = [a7 countByEnumeratingWithState:&v52 objects:v51 count:16];
+      v29 = [bindingName countByEnumeratingWithState:&v52 objects:v51 count:16];
       if (v29)
       {
         continue;
@@ -191,13 +191,13 @@
     }
   }
 
-  self->_tileInputBindingNames = v45;
-  self->_tileInputVideoRequirements = v18;
+  self->_tileInputBindingNames = array3;
+  self->_tileInputVideoRequirements = array;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v33 = [v42 countByEnumeratingWithState:&v47 objects:v46 count:16];
+  v33 = [byBindingNameCopy countByEnumeratingWithState:&v47 objects:v46 count:16];
   if (v33)
   {
     v34 = v33;
@@ -208,12 +208,12 @@
       {
         if (*v48 != v35)
         {
-          objc_enumerationMutation(v42);
+          objc_enumerationMutation(byBindingNameCopy);
         }
 
         v37 = *(*(&v47 + 1) + 8 * j);
-        [v44 addObject:v37];
-        [v41 addObject:{-[BWEspressoInferenceProvider bindEspressoOutput:asAttachedMediaUsingKey:withVideoFormat:](self->_espressoProvider, "bindEspressoOutput:asAttachedMediaUsingKey:withVideoFormat:", v37, objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"TileOutput_%i_%@", -[BWInferenceConfiguration inferenceType](self->_configuration, "inferenceType"), v37), objc_msgSend(v42, "objectForKeyedSubscript:", v37))}];
+        [array4 addObject:v37];
+        [v41 addObject:{-[BWEspressoInferenceProvider bindEspressoOutput:asAttachedMediaUsingKey:withVideoFormat:](self->_espressoProvider, "bindEspressoOutput:asAttachedMediaUsingKey:withVideoFormat:", v37, objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"TileOutput_%i_%@", -[BWInferenceConfiguration inferenceType](self->_configuration, "inferenceType"), v37), objc_msgSend(byBindingNameCopy, "objectForKeyedSubscript:", v37))}];
         if (![v41 lastObject])
         {
           [BWTiledEspressoInferenceProvider loadNetworkWithURL:v56 configName:? inferenceType:? maxTileCount:? inputFormatsByBindingName:? outputFormatsByBindingName:? additionalVideoRequirements:?];
@@ -221,7 +221,7 @@
         }
       }
 
-      v34 = [v42 countByEnumeratingWithState:&v47 objects:v46 count:16];
+      v34 = [byBindingNameCopy countByEnumeratingWithState:&v47 objects:v46 count:16];
       if (v34)
       {
         continue;
@@ -231,7 +231,7 @@
     }
   }
 
-  self->_tileOutputBindingNames = v44;
+  self->_tileOutputBindingNames = array4;
   self->_tileOutputVideoRequirements = v41;
   v38 = v59;
   result = 0;
@@ -239,15 +239,15 @@
   return result;
 }
 
-- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withSubmissionTime:(id *)a5 workQueue:(id)a6 completionHandler:(id)a7 currentTileCount:
+- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withSubmissionTime:(id *)time workQueue:(id)queue completionHandler:(id)handler currentTileCount:
 {
   v8 = v7;
-  v12 = [(BWTiledEspressoInferenceProvider *)self outputRequirementsToProduceForInputSampleBuffer:a3, a4, a5, a6];
+  queue = [(BWTiledEspressoInferenceProvider *)self outputRequirementsToProduceForInputSampleBuffer:buffer, storage, time, queue];
   v13 = [(NSArray *)self->_inputVideoRequirements count];
   v14 = [(NSArray *)self->_tileInputVideoRequirements count];
-  count = [v12 count];
+  count = [queue count];
   v15 = [(NSArray *)self->_tileOutputVideoRequirements count];
-  if ([objc_msgSend(a4 "espressoStorages")] != 2)
+  if ([objc_msgSend(storage "espressoStorages")] != 2)
   {
     [BWTiledEspressoInferenceProvider submitForSampleBuffer:? usingStorage:? withSubmissionTime:? workQueue:? completionHandler:? currentTileCount:?];
 LABEL_113:
@@ -276,7 +276,7 @@ LABEL_115:
   }
 
   v76 = v8;
-  v92 = v12;
+  v92 = queue;
   v16 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v13];
   v91 = malloc_type_calloc(2 * (v14 & 0x7FFFFFFF), 8uLL, 0x2004093837F09uLL);
   if (!v91)
@@ -306,7 +306,7 @@ LABEL_115:
       while (1)
       {
         v20 = [-[NSArray objectAtIndexedSubscript:](self->_inputVideoRequirements objectAtIndexedSubscript:{v19), "attachedMediaKey"}];
-        [v16 setObject:objc_msgSend(a4 forKeyedSubscript:{"pixelBufferForRequirement:", -[NSArray objectAtIndexedSubscript:](self->_inputVideoRequirements, "objectAtIndexedSubscript:", v19)), v20}];
+        [v16 setObject:objc_msgSend(storage forKeyedSubscript:{"pixelBufferForRequirement:", -[NSArray objectAtIndexedSubscript:](self->_inputVideoRequirements, "objectAtIndexedSubscript:", v19)), v20}];
         if (![v16 objectForKeyedSubscript:v20])
         {
           break;
@@ -337,7 +337,7 @@ LABEL_10:
           do
           {
             v26 = v24;
-            v27 = [objc_msgSend(a4 pixelBufferPoolForRequirement:{v22), "newPixelBuffer"}];
+            v27 = [objc_msgSend(storage pixelBufferPoolForRequirement:{v22), "newPixelBuffer"}];
             v25[v23] = v27;
             if (!v27)
             {
@@ -348,7 +348,7 @@ LABEL_10:
               goto LABEL_78;
             }
 
-            [objc_msgSend(objc_msgSend(a4 "espressoStorages")];
+            [objc_msgSend(objc_msgSend(storage "espressoStorages")];
             v24 = 0;
             v23 = 1;
           }
@@ -364,7 +364,7 @@ LABEL_10:
       }
 
       v93 = v17;
-      v78 = a7;
+      handlerCopy = handler;
       v28 = 0;
       v29 = 1;
       do
@@ -389,7 +389,7 @@ LABEL_10:
                 objc_enumerationMutation(tileOutputVideoRequirements);
               }
 
-              [objc_msgSend(objc_msgSend(a4 "espressoStorages")];
+              [objc_msgSend(objc_msgSend(storage "espressoStorages")];
             }
 
             v32 = [(NSArray *)tileOutputVideoRequirements countByEnumeratingWithState:&v108 objects:v107 count:16];
@@ -418,13 +418,13 @@ LABEL_10:
               }
 
               v41 = *(*(&v103 + 1) + 8 * j);
-              v42 = [objc_msgSend(a4 pixelBufferPoolForRequirement:{v41), "newPixelBuffer"}];
+              v42 = [objc_msgSend(storage pixelBufferPoolForRequirement:{v41), "newPixelBuffer"}];
               if (!v42)
               {
                 [BWTiledEspressoInferenceProvider submitForSampleBuffer:? usingStorage:? withSubmissionTime:? workQueue:? completionHandler:? currentTileCount:?];
                 v57 = v99;
                 v65 = 1;
-                a7 = v78;
+                handler = handlerCopy;
                 v16 = v80;
                 v18 = v84;
                 v17 = v93;
@@ -432,7 +432,7 @@ LABEL_10:
               }
 
               v43 = v42;
-              [objc_msgSend(objc_msgSend(a4 "espressoStorages")];
+              [objc_msgSend(objc_msgSend(storage "espressoStorages")];
               CFRelease(v43);
             }
 
@@ -451,7 +451,7 @@ LABEL_10:
       }
 
       while ((v88 & 1) != 0);
-      a7 = v78;
+      handler = handlerCopy;
       v16 = v80;
       v18 = v84;
       v44 = v92;
@@ -505,22 +505,22 @@ LABEL_74:
 
             [v101 commit];
             [v101 waitUntilScheduled];
-            v52 = [(BWTiledEspressoInferenceConfiguration *)self->_configuration forceSynchronousInference];
+            forceSynchronousInference = [(BWTiledEspressoInferenceConfiguration *)self->_configuration forceSynchronousInference];
             espressoProvider = self->_espressoProvider;
-            v54 = [objc_msgSend(a4 "espressoStorages")];
-            if (v52)
+            v54 = [objc_msgSend(storage "espressoStorages")];
+            if (forceSynchronousInference)
             {
-              v99 = *&a5->var0;
-              var3 = a5->var3;
-              v55 = [(BWEspressoInferenceProvider *)espressoProvider executeOnSampleBuffer:a3 usingStorage:v54 withExecutionTime:&v99 completionHandler:0];
+              v99 = *&time->var0;
+              var3 = time->var3;
+              v55 = [(BWEspressoInferenceProvider *)espressoProvider executeOnSampleBuffer:buffer usingStorage:v54 withExecutionTime:&v99 completionHandler:0];
             }
 
             else
             {
               espressoWorkQueue = self->_espressoWorkQueue;
-              v99 = *&a5->var0;
-              var3 = a5->var3;
-              v55 = [(BWEspressoInferenceProvider *)espressoProvider submitForSampleBuffer:a3 usingStorage:v54 withSubmissionTime:&v99 workQueue:espressoWorkQueue completionHandler:0];
+              v99 = *&time->var0;
+              var3 = time->var3;
+              v55 = [(BWEspressoInferenceProvider *)espressoProvider submitForSampleBuffer:buffer usingStorage:v54 withSubmissionTime:&v99 workQueue:espressoWorkQueue completionHandler:0];
             }
 
             v57 = v55;
@@ -534,7 +534,7 @@ LABEL_74:
               v58 = 0;
               while (1)
               {
-                [v95 setObject:objc_msgSend(objc_msgSend(objc_msgSend(a4 forKeyedSubscript:{"espressoStorages"), "objectAtIndexedSubscript:", v47), "pixelBufferForRequirement:", -[NSArray objectAtIndexedSubscript:](self->_tileOutputVideoRequirements, "objectAtIndexedSubscript:", v58)), -[NSArray objectAtIndexedSubscript:](self->_tileOutputBindingNames, "objectAtIndexedSubscript:", v58)}];
+                [v95 setObject:objc_msgSend(objc_msgSend(objc_msgSend(storage forKeyedSubscript:{"espressoStorages"), "objectAtIndexedSubscript:", v47), "pixelBufferForRequirement:", -[NSArray objectAtIndexedSubscript:](self->_tileOutputVideoRequirements, "objectAtIndexedSubscript:", v58)), -[NSArray objectAtIndexedSubscript:](self->_tileOutputBindingNames, "objectAtIndexedSubscript:", v58)}];
                 if (![v95 objectForKeyedSubscript:{-[NSArray objectAtIndexedSubscript:](self->_tileOutputBindingNames, "objectAtIndexedSubscript:", v58)}])
                 {
                   break;
@@ -557,7 +557,7 @@ LABEL_53:
               while (1)
               {
                 v60 = [-[NSArray objectAtIndexedSubscript:](self->_additionalVideoRequirements objectAtIndexedSubscript:{v59), "attachedMediaKey"}];
-                [v85 setObject:objc_msgSend(objc_msgSend(objc_msgSend(a4 forKeyedSubscript:{"espressoStorages"), "objectAtIndexedSubscript:", v47), "pixelBufferForRequirement:", -[NSArray objectAtIndexedSubscript:](self->_additionalVideoRequirements, "objectAtIndexedSubscript:", v59)), v60}];
+                [v85 setObject:objc_msgSend(objc_msgSend(objc_msgSend(storage forKeyedSubscript:{"espressoStorages"), "objectAtIndexedSubscript:", v47), "pixelBufferForRequirement:", -[NSArray objectAtIndexedSubscript:](self->_additionalVideoRequirements, "objectAtIndexedSubscript:", v59)), v60}];
                 if (![v85 objectForKeyedSubscript:v60])
                 {
                   break;
@@ -654,20 +654,20 @@ LABEL_69:
           [BWTiledEspressoInferenceProvider submitForSampleBuffer:usingStorage:withSubmissionTime:workQueue:completionHandler:currentTileCount:];
 LABEL_104:
           v65 = 1;
-          a7 = v78;
+          handler = handlerCopy;
         }
 
         else
         {
           v74 = 0;
 LABEL_95:
-          [objc_msgSend(objc_msgSend(a4 "espressoStorages")];
-          [objc_msgSend(objc_msgSend(a4 "espressoStorages")];
+          [objc_msgSend(objc_msgSend(storage "espressoStorages")];
+          [objc_msgSend(objc_msgSend(storage "espressoStorages")];
           if (count)
           {
             for (k = 0; k != count; ++k)
             {
-              [a4 setPixelBuffer:v17[k] forRequirement:{objc_msgSend(v44, "objectAtIndexedSubscript:", k)}];
+              [storage setPixelBuffer:v17[k] forRequirement:{objc_msgSend(v44, "objectAtIndexedSubscript:", k)}];
             }
           }
 
@@ -676,9 +676,9 @@ LABEL_95:
           v97[2] = __135__BWTiledEspressoInferenceProvider_submitForSampleBuffer_usingStorage_withSubmissionTime_workQueue_completionHandler_currentTileCount___block_invoke_2;
           v97[3] = &unk_1E798FB70;
           v98 = 0;
-          a7 = v78;
+          handler = handlerCopy;
           v97[4] = self;
-          v97[5] = v78;
+          v97[5] = handlerCopy;
           [v74 addScheduledHandler:v97];
           [v74 commit];
           [(BWTiledEspressoInferenceProvider *)self purgeIntermediateResources];
@@ -692,7 +692,7 @@ LABEL_95:
       v45 = 0;
       while (1)
       {
-        v46 = [objc_msgSend(a4 pixelBufferPoolForRequirement:{objc_msgSend(v92, "objectAtIndexedSubscript:", v45)), "newPixelBuffer"}];
+        v46 = [objc_msgSend(storage pixelBufferPoolForRequirement:{objc_msgSend(v92, "objectAtIndexedSubscript:", v45)), "newPixelBuffer"}];
         v93[v45] = v46;
         if (!v46)
         {
@@ -757,9 +757,9 @@ LABEL_78:
 LABEL_90:
   free(v17);
 
-  if (a7 && v65)
+  if (handler && v65)
   {
-    (*(a7 + 2))(a7, v57, self);
+    (*(handler + 2))(handler, v57, self);
   }
 
   return v57;
@@ -776,14 +776,14 @@ uint64_t __135__BWTiledEspressoInferenceProvider_submitForSampleBuffer_usingStor
   return result;
 }
 
-- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withSubmissionTime:(id *)a5 workQueue:(id)a6 completionHandler:(id)a7
+- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withSubmissionTime:(id *)time workQueue:(id)queue completionHandler:(id)handler
 {
   v7 = *self->_maxTileCount;
-  v9 = *a5;
-  return [(BWTiledEspressoInferenceProvider *)self submitForSampleBuffer:a3 usingStorage:a4 withSubmissionTime:&v9 workQueue:a6 completionHandler:a7 currentTileCount:v7];
+  v9 = *time;
+  return [(BWTiledEspressoInferenceProvider *)self submitForSampleBuffer:buffer usingStorage:storage withSubmissionTime:&v9 workQueue:queue completionHandler:handler currentTileCount:v7];
 }
 
-- (int)prepareForSubmissionWithWorkQueue:(id)a3
+- (int)prepareForSubmissionWithWorkQueue:(id)queue
 {
   espressoProvider = self->_espressoProvider;
   if (espressoProvider)
@@ -796,7 +796,7 @@ uint64_t __135__BWTiledEspressoInferenceProvider_submitForSampleBuffer_usingStor
 
     else
     {
-      self->_espressoWorkQueue = a3;
+      self->_espressoWorkQueue = queue;
     }
   }
 
@@ -809,9 +809,9 @@ uint64_t __135__BWTiledEspressoInferenceProvider_submitForSampleBuffer_usingStor
   return v6;
 }
 
-- (void)propagateInferenceResultsToInferenceDictionary:(id)a3 usingStorage:(id)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 propagationSampleBuffer:(opaqueCMSampleBuffer *)a6
+- (void)propagateInferenceResultsToInferenceDictionary:(id)dictionary usingStorage:(id)storage inputSampleBuffer:(opaqueCMSampleBuffer *)buffer propagationSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer
 {
-  v9 = [(BWTiledEspressoInferenceProvider *)self outputRequirementsToProduceForInputSampleBuffer:a5];
+  v9 = [(BWTiledEspressoInferenceProvider *)self outputRequirementsToProduceForInputSampleBuffer:buffer];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -831,7 +831,7 @@ uint64_t __135__BWTiledEspressoInferenceProvider_submitForSampleBuffer_usingStor
           objc_enumerationMutation(v9);
         }
 
-        [(BWTiledEspressoInferenceProvider *)self propagateInferenceResultForOutputRequirement:*(*(&v15 + 1) + 8 * v13++) storage:a4 propagationSampleBuffer:a6];
+        [(BWTiledEspressoInferenceProvider *)self propagateInferenceResultForOutputRequirement:*(*(&v15 + 1) + 8 * v13++) storage:storage propagationSampleBuffer:sampleBuffer];
       }
 
       while (v11 != v13);
@@ -846,26 +846,26 @@ uint64_t __135__BWTiledEspressoInferenceProvider_submitForSampleBuffer_usingStor
 {
   if (self->_espressoProvider)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     if ([(NSArray *)self->_inputVideoRequirements count])
     {
       v5 = 0;
       do
       {
-        [v4 addObject:{-[NSArray objectAtIndexedSubscript:](self->_inputVideoRequirements, "objectAtIndexedSubscript:", v5++)}];
+        [array2 addObject:{-[NSArray objectAtIndexedSubscript:](self->_inputVideoRequirements, "objectAtIndexedSubscript:", v5++)}];
       }
 
       while (v5 < [(NSArray *)self->_inputVideoRequirements count]);
     }
 
-    v6 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     if ([(NSArray *)self->_outputVideoRequirements count])
     {
       v7 = 0;
       do
       {
-        [v6 addObject:{-[NSArray objectAtIndexedSubscript:](self->_outputVideoRequirements, "objectAtIndexedSubscript:", v7++)}];
+        [array3 addObject:{-[NSArray objectAtIndexedSubscript:](self->_outputVideoRequirements, "objectAtIndexedSubscript:", v7++)}];
       }
 
       while (v7 < [(NSArray *)self->_outputVideoRequirements count]);
@@ -876,9 +876,9 @@ uint64_t __135__BWTiledEspressoInferenceProvider_submitForSampleBuffer_usingStor
     do
     {
       v10 = v9;
-      [v3 addObject:{-[BWEspressoInferenceProvider newStorage](self->_espressoProvider, "newStorage")}];
-      [v6 addObjectsFromArray:{objc_msgSend(objc_msgSend(v3, "objectAtIndexedSubscript:", v8), "requirementsNeedingPixelBuffers")}];
-      [v6 addObjectsFromArray:{objc_msgSend(objc_msgSend(v3, "objectAtIndexedSubscript:", v8), "requirementsNeedingPixelBufferPools")}];
+      [array addObject:{-[BWEspressoInferenceProvider newStorage](self->_espressoProvider, "newStorage")}];
+      [array3 addObjectsFromArray:{objc_msgSend(objc_msgSend(array, "objectAtIndexedSubscript:", v8), "requirementsNeedingPixelBuffers")}];
+      [array3 addObjectsFromArray:{objc_msgSend(objc_msgSend(array, "objectAtIndexedSubscript:", v8), "requirementsNeedingPixelBufferPools")}];
       v20 = 0u;
       v21 = 0u;
       v18 = 0u;
@@ -898,7 +898,7 @@ uint64_t __135__BWTiledEspressoInferenceProvider_submitForSampleBuffer_usingStor
               objc_enumerationMutation(additionalVideoRequirements);
             }
 
-            [v6 addObject:*(*(&v18 + 1) + 8 * i)];
+            [array3 addObject:*(*(&v18 + 1) + 8 * i)];
           }
 
           v13 = [(NSArray *)additionalVideoRequirements countByEnumeratingWithState:&v18 objects:v17 count:16];
@@ -912,7 +912,7 @@ uint64_t __135__BWTiledEspressoInferenceProvider_submitForSampleBuffer_usingStor
     }
 
     while ((v10 & 1) != 0);
-    return [[BWTiledEspressoInferenceStorage alloc] initWithRequirementsNeedingPixelBuffers:v4 requirementsNeedingPixelBufferPools:v6 espressoStorages:v3];
+    return [[BWTiledEspressoInferenceStorage alloc] initWithRequirementsNeedingPixelBuffers:array2 requirementsNeedingPixelBufferPools:array3 espressoStorages:array];
   }
 
   else
@@ -922,18 +922,18 @@ uint64_t __135__BWTiledEspressoInferenceProvider_submitForSampleBuffer_usingStor
   }
 }
 
-- (int)reconcileWithPlaceholderProvider:(id)a3
+- (int)reconcileWithPlaceholderProvider:(id)provider
 {
-  v5 = [(BWTiledEspressoInferenceProvider *)self type];
-  if (v5 != [a3 type] || !-[NSString isEqualToString:](self->_customInferenceIdentifier, "isEqualToString:", objc_msgSend(a3, "customInferenceIdentifier")))
+  type = [(BWTiledEspressoInferenceProvider *)self type];
+  if (type != [provider type] || !-[NSString isEqualToString:](self->_customInferenceIdentifier, "isEqualToString:", objc_msgSend(provider, "customInferenceIdentifier")))
   {
     return -31783;
   }
 
-  self->_inputVideoRequirements = [a3 inputVideoRequirements];
-  v6 = [a3 outputVideoRequirements];
+  self->_inputVideoRequirements = [provider inputVideoRequirements];
+  outputVideoRequirements = [provider outputVideoRequirements];
   result = 0;
-  self->_outputVideoRequirements = v6;
+  self->_outputVideoRequirements = outputVideoRequirements;
   return result;
 }
 

@@ -1,14 +1,14 @@
 @interface POAgentListener
-- (POAgentListener)initWithMachServiceName:(id)a3;
+- (POAgentListener)initWithMachServiceName:(id)name;
 @end
 
 @implementation POAgentListener
 
-- (POAgentListener)initWithMachServiceName:(id)a3
+- (POAgentListener)initWithMachServiceName:(id)name
 {
   v6.receiver = self;
   v6.super_class = POAgentListener;
-  v3 = [(POAgentListener *)&v6 initWithMachServiceName:a3];
+  v3 = [(POAgentListener *)&v6 initWithMachServiceName:name];
   v4 = v3;
   if (v3)
   {

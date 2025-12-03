@@ -1,13 +1,13 @@
 @interface ICHTMLSearchIndexerDataSource
-- (id)allIndexableObjectIDsInReversedReindexingOrderWithContext:(id)a3;
-- (void)contextWillSave:(id)a3;
+- (id)allIndexableObjectIDsInReversedReindexingOrderWithContext:(id)context;
+- (void)contextWillSave:(id)save;
 @end
 
 @implementation ICHTMLSearchIndexerDataSource
 
-- (id)allIndexableObjectIDsInReversedReindexingOrderWithContext:(id)a3
+- (id)allIndexableObjectIDsInReversedReindexingOrderWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -18,7 +18,7 @@
   v8 = 3221225472;
   v9 = __91__ICHTMLSearchIndexerDataSource_allIndexableObjectIDsInReversedReindexingOrderWithContext___block_invoke;
   v10 = &unk_2799AC9C8;
-  v4 = v3;
+  v4 = contextCopy;
   v11 = v4;
   v12 = &v13;
   [v4 performBlockAndWait:&v7];
@@ -106,17 +106,17 @@ void __91__ICHTMLSearchIndexerDataSource_allIndexableObjectIDsInReversedReindexi
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contextWillSave:(id)a3
+- (void)contextWillSave:(id)save
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  saveCopy = save;
   v34.receiver = self;
   v34.super_class = ICHTMLSearchIndexerDataSource;
-  [(ICBaseSearchIndexerDataSource *)&v34 contextWillSave:v4];
-  v5 = [v4 object];
-  v6 = [v5 persistentStoreCoordinator];
-  v7 = [(ICHTMLSearchIndexerDataSource *)self persistentStoreCoordinator];
-  v8 = [v6 isEqual:v7];
+  [(ICBaseSearchIndexerDataSource *)&v34 contextWillSave:saveCopy];
+  object = [saveCopy object];
+  persistentStoreCoordinator = [object persistentStoreCoordinator];
+  persistentStoreCoordinator2 = [(ICHTMLSearchIndexerDataSource *)self persistentStoreCoordinator];
+  v8 = [persistentStoreCoordinator isEqual:persistentStoreCoordinator2];
 
   if (v8)
   {
@@ -124,13 +124,13 @@ void __91__ICHTMLSearchIndexerDataSource_allIndexableObjectIDsInReversedReindexi
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v9 = [v5 updatedObjects];
-    v10 = [v9 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    updatedObjects = [object updatedObjects];
+    v10 = [updatedObjects countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v10)
     {
       v11 = v10;
-      v28 = v5;
-      v29 = v4;
+      v28 = object;
+      v29 = saveCopy;
       v12 = *v31;
       while (2)
       {
@@ -138,7 +138,7 @@ void __91__ICHTMLSearchIndexerDataSource_allIndexableObjectIDsInReversedReindexi
         {
           if (*v31 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(updatedObjects);
           }
 
           v14 = *(*(&v30 + 1) + 8 * i);
@@ -146,16 +146,16 @@ void __91__ICHTMLSearchIndexerDataSource_allIndexableObjectIDsInReversedReindexi
           v15 = ICDynamicCast();
           if (v15)
           {
-            v16 = [v14 changedValues];
-            v17 = [v16 objectForKeyedSubscript:@"didChooseToMigrate"];
+            changedValues = [v14 changedValues];
+            v17 = [changedValues objectForKeyedSubscript:@"didChooseToMigrate"];
 
             if (v17)
             {
               if ([v15 didChooseToMigrate])
               {
                 v18 = MEMORY[0x277D361A0];
-                v19 = [v15 accountIdentifier];
-                LOBYTE(v18) = [v18 isAccountReindexedForMigration:v19];
+                accountIdentifier = [v15 accountIdentifier];
+                LOBYTE(v18) = [v18 isAccountReindexedForMigration:accountIdentifier];
 
                 if ((v18 & 1) == 0)
                 {
@@ -166,8 +166,8 @@ void __91__ICHTMLSearchIndexerDataSource_allIndexableObjectIDsInReversedReindexi
                   }
 
                   v22 = MEMORY[0x277D361A0];
-                  v23 = [v15 accountIdentifier];
-                  [v22 markAccountReindexedForMigration:v23];
+                  accountIdentifier2 = [v15 accountIdentifier];
+                  [v22 markAccountReindexedForMigration:accountIdentifier2];
 
                   v20 = 0;
                   goto LABEL_17;
@@ -177,7 +177,7 @@ void __91__ICHTMLSearchIndexerDataSource_allIndexableObjectIDsInReversedReindexi
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v30 objects:v35 count:16];
+        v11 = [updatedObjects countByEnumeratingWithState:&v30 objects:v35 count:16];
         if (v11)
         {
           continue;
@@ -188,8 +188,8 @@ void __91__ICHTMLSearchIndexerDataSource_allIndexableObjectIDsInReversedReindexi
 
       v20 = 1;
 LABEL_17:
-      v4 = v29;
-      v5 = v28;
+      saveCopy = v29;
+      object = v28;
     }
 
     else
@@ -207,8 +207,8 @@ LABEL_17:
       }
 
       [(ICBaseSearchIndexerDataSource *)self setNeedsReindexing:1];
-      v26 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v26 postNotificationName:*MEMORY[0x277D36150] object:self];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:*MEMORY[0x277D36150] object:self];
     }
   }
 

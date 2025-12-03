@@ -1,7 +1,7 @@
 @interface DMDBluetoothManager
 + (DMDBluetoothManager)sharedManager;
 - (DMDBluetoothManager)init;
-- (void)availabilityChanged:(id)a3;
+- (void)availabilityChanged:(id)changed;
 @end
 
 @implementation DMDBluetoothManager
@@ -33,29 +33,29 @@
   return v2;
 }
 
-- (void)availabilityChanged:(id)a3
+- (void)availabilityChanged:(id)changed
 {
-  v9 = [(DMDBluetoothManager *)self bluetoothManager];
-  if ([v9 available])
+  bluetoothManager = [(DMDBluetoothManager *)self bluetoothManager];
+  if ([bluetoothManager available])
   {
-    v4 = [(DMDBluetoothManager *)self stillNeedsUpdate];
+    stillNeedsUpdate = [(DMDBluetoothManager *)self stillNeedsUpdate];
 
-    if (!v4)
+    if (!stillNeedsUpdate)
     {
       return;
     }
 
-    v5 = [(DMDBluetoothManager *)self enabled];
-    v6 = [(DMDBluetoothManager *)self bluetoothManager];
-    [v6 setEnabled:v5];
+    enabled = [(DMDBluetoothManager *)self enabled];
+    bluetoothManager2 = [(DMDBluetoothManager *)self bluetoothManager];
+    [bluetoothManager2 setEnabled:enabled];
 
-    v7 = [(DMDBluetoothManager *)self enabled];
-    v8 = [(DMDBluetoothManager *)self bluetoothManager];
-    [v8 setPowered:v7];
+    enabled2 = [(DMDBluetoothManager *)self enabled];
+    bluetoothManager3 = [(DMDBluetoothManager *)self bluetoothManager];
+    [bluetoothManager3 setPowered:enabled2];
 
     [(DMDBluetoothManager *)self setStillNeedsUpdate:0];
-    v9 = +[NSNotificationCenter defaultCenter];
-    [v9 removeObserver:self name:BluetoothAvailabilityChangedNotification object:0];
+    bluetoothManager = +[NSNotificationCenter defaultCenter];
+    [bluetoothManager removeObserver:self name:BluetoothAvailabilityChangedNotification object:0];
   }
 }
 

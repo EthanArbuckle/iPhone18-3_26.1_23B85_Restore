@@ -1,12 +1,12 @@
 @interface HSTPhoneFirmwareManager
 - (BOOL)_readAODLogging;
-- (HSTPhoneFirmwareManager)initWithDevice:(__MTDevice *)a3;
-- (void)_handleGetPropertyEvent:(id)a3;
-- (void)_handleSetPropertyEvent:(id)a3;
+- (HSTPhoneFirmwareManager)initWithDevice:(__MTDevice *)device;
+- (void)_handleGetPropertyEvent:(id)event;
+- (void)_handleSetPropertyEvent:(id)event;
 - (void)_restoreFirmwareState;
 - (void)_setAODLogging;
 - (void)_setEnabledInputsReport;
-- (void)_writeAODLogging:(id)a3;
+- (void)_writeAODLogging:(id)logging;
 @end
 
 @implementation HSTPhoneFirmwareManager
@@ -59,9 +59,9 @@
   }
 }
 
-- (HSTPhoneFirmwareManager)initWithDevice:(__MTDevice *)a3
+- (HSTPhoneFirmwareManager)initWithDevice:(__MTDevice *)device
 {
-  if (!a3)
+  if (!device)
   {
     v9 = +[NSAssertionHandler currentHandler];
     [v9 handleFailureInMethod:a2 object:self file:@"HSTFirmwareManager.mm" lineNumber:737 description:{@"Invalid parameter not satisfying: %@", @"device"}];
@@ -69,10 +69,10 @@
 
   v10.receiver = self;
   v10.super_class = HSTPhoneFirmwareManager;
-  v5 = [(HSTFirmwareManager *)&v10 initWithDevice:a3];
+  v5 = [(HSTFirmwareManager *)&v10 initWithDevice:device];
   if (v5)
   {
-    *(&v5->super.super._state + 14) = getIntProperty(a3, @"InCallPowerOff") != 0;
+    *(&v5->super.super._state + 14) = getIntProperty(device, @"InCallPowerOff") != 0;
     v6 = v5;
   }
 
@@ -87,17 +87,17 @@
   [(HSTPhoneFirmwareManager *)self _setAODLogging];
 }
 
-- (void)_handleSetPropertyEvent:(id)a3
+- (void)_handleSetPropertyEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v12.receiver = self;
   v12.super_class = HSTPhoneFirmwareManager;
-  [(HSTFirmwareManager *)&v12 _handleSetPropertyEvent:v4];
-  v5 = v4 + 16;
-  v6 = v4[39];
+  [(HSTFirmwareManager *)&v12 _handleSetPropertyEvent:eventCopy];
+  v5 = eventCopy + 16;
+  v6 = eventCopy[39];
   if (v6 < 0)
   {
-    if (*(v4 + 3) != 10)
+    if (*(eventCopy + 3) != 10)
     {
       goto LABEL_15;
     }
@@ -114,7 +114,7 @@
   v8 = *(v5 + 4);
   if (v7 == 0x6967676F4C444F41 && v8 == 26478)
   {
-    v10 = *(v4 + 5);
+    v10 = *(eventCopy + 5);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -133,12 +133,12 @@
 LABEL_15:
 }
 
-- (void)_writeAODLogging:(id)a3
+- (void)_writeAODLogging:(id)logging
 {
-  v3 = a3;
+  loggingCopy = logging;
   v4 = +[NSUserDefaults standardUserDefaults];
   v8 = @"AODLogging";
-  v9 = v3;
+  v9 = loggingCopy;
   v5 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
@@ -166,28 +166,28 @@ LABEL_15:
 
   if (v7)
   {
-    v8 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v8 = 1;
+    bOOLValue = 1;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-- (void)_handleGetPropertyEvent:(id)a3
+- (void)_handleGetPropertyEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v12.receiver = self;
   v12.super_class = HSTPhoneFirmwareManager;
-  [(HSTFirmwareManager *)&v12 _handleGetPropertyEvent:v4];
-  v5 = v4 + 16;
-  v6 = v4[39];
+  [(HSTFirmwareManager *)&v12 _handleGetPropertyEvent:eventCopy];
+  v5 = eventCopy + 16;
+  v6 = eventCopy[39];
   if (v6 < 0)
   {
-    if (*(v4 + 3) != 10)
+    if (*(eventCopy + 3) != 10)
     {
       goto LABEL_12;
     }
@@ -205,8 +205,8 @@ LABEL_15:
   if (v7 == 0x6967676F4C444F41 && v8 == 26478)
   {
     v10 = [NSNumber numberWithBool:[(HSTPhoneFirmwareManager *)self _readAODLogging]];
-    v11 = *(v4 + 5);
-    *(v4 + 5) = v10;
+    v11 = *(eventCopy + 5);
+    *(eventCopy + 5) = v10;
   }
 
 LABEL_12:
@@ -220,14 +220,14 @@ LABEL_12:
     if (IntProperty)
     {
       v4 = IntProperty;
-      v5 = [(HSTPhoneFirmwareManager *)self _readAODLogging];
+      _readAODLogging = [(HSTPhoneFirmwareManager *)self _readAODLogging];
       v6 = MTLoggingPlugin();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109376;
         v14 = v4;
         v15 = 1024;
-        v16 = v5;
+        v16 = _readAODLogging;
         _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Setting AOD logging report 0x%x: %u", buf, 0xEu);
       }
 

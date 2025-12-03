@@ -1,10 +1,10 @@
 @interface FMRemoveItemViewController
-- (_TtC6FindMy26FMRemoveItemViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC6FindMy26FMRemoveItemViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC6FindMy26FMRemoveItemViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC6FindMy26FMRemoveItemViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)removeItem;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation FMRemoveItemViewController
@@ -21,13 +21,13 @@
   sub_1001D595C();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for FMRemoveItemViewController();
   v4 = v7.receiver;
-  [(FMRemoveItemViewController *)&v7 viewWillAppear:v3];
+  [(FMRemoveItemViewController *)&v7 viewWillAppear:appearCopy];
   v5 = *(*&v4[OBJC_IVAR____TtC6FindMy26FMRemoveItemViewController_mediator] + 56);
 
   v6 = sub_1003CD23C(v4, v5);
@@ -35,26 +35,26 @@
   *&v4[OBJC_IVAR____TtC6FindMy26FMRemoveItemViewController_selectionSubscription] = v6;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1001CFD64(a3);
+  selfCopy = self;
+  sub_1001CFD64(disappear);
 }
 
 - (void)removeItem
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001D1E50();
 }
 
-- (_TtC6FindMy26FMRemoveItemViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC6FindMy26FMRemoveItemViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC6FindMy26FMRemoveItemViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC6FindMy26FMRemoveItemViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,7 +1,7 @@
 @interface PULegacyViewControllerSpec
 + (id)padSpec;
 + (id)phoneSpec;
-+ (id)specForIdiom:(int64_t)a3;
++ (id)specForIdiom:(int64_t)idiom;
 + (id)visionOSSpec;
 @end
 
@@ -9,75 +9,75 @@
 
 + (id)visionOSSpec
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PULegacyViewControllerSpec.m" lineNumber:51 description:{@"Method %s is a responsibility of subclass %@", "+[PULegacyViewControllerSpec visionOSSpec]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PULegacyViewControllerSpec.m" lineNumber:51 description:{@"Method %s is a responsibility of subclass %@", "+[PULegacyViewControllerSpec visionOSSpec]", v6}];
 
   abort();
 }
 
 + (id)padSpec
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PULegacyViewControllerSpec.m" lineNumber:46 description:{@"Method %s is a responsibility of subclass %@", "+[PULegacyViewControllerSpec padSpec]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PULegacyViewControllerSpec.m" lineNumber:46 description:{@"Method %s is a responsibility of subclass %@", "+[PULegacyViewControllerSpec padSpec]", v6}];
 
   abort();
 }
 
 + (id)phoneSpec
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PULegacyViewControllerSpec.m" lineNumber:41 description:{@"Method %s is a responsibility of subclass %@", "+[PULegacyViewControllerSpec phoneSpec]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PULegacyViewControllerSpec.m" lineNumber:41 description:{@"Method %s is a responsibility of subclass %@", "+[PULegacyViewControllerSpec phoneSpec]", v6}];
 
   abort();
 }
 
-+ (id)specForIdiom:(int64_t)a3
++ (id)specForIdiom:(int64_t)idiom
 {
-  v4 = 0;
-  if (a3 > 2)
+  visionOSSpec = 0;
+  if (idiom > 2)
   {
-    if (a3 != 3)
+    if (idiom != 3)
     {
-      if (a3 == 5)
+      if (idiom == 5)
       {
-        v4 = [a1 visionOSSpec];
+        visionOSSpec = [self visionOSSpec];
         goto LABEL_11;
       }
 
-      if (a3 != 4)
+      if (idiom != 4)
       {
         goto LABEL_11;
       }
 
 LABEL_8:
-      v4 = [a1 padSpec];
+      visionOSSpec = [self padSpec];
       goto LABEL_11;
     }
 
 LABEL_9:
-    v4 = [a1 phoneSpec];
+    visionOSSpec = [self phoneSpec];
     goto LABEL_11;
   }
 
-  if (a3 < 2)
+  if (idiom < 2)
   {
     goto LABEL_9;
   }
 
-  if (a3 == 2)
+  if (idiom == 2)
   {
     goto LABEL_8;
   }
 
 LABEL_11:
 
-  return v4;
+  return visionOSSpec;
 }
 
 @end

@@ -2,10 +2,10 @@
 - (MTDownloadOfferButton)downloadButton;
 - (void)cellTapped;
 - (void)configureSubviews;
-- (void)downloadButtonTapped:(id)a3;
-- (void)setPausable:(BOOL)a3;
-- (void)setPaused:(BOOL)a3;
-- (void)updateWithObject:(id)a3;
+- (void)downloadButtonTapped:(id)tapped;
+- (void)setPausable:(BOOL)pausable;
+- (void)setPaused:(BOOL)paused;
+- (void)updateWithObject:(id)object;
 @end
 
 @implementation MTEpisodeDownloadCell
@@ -15,79 +15,79 @@
   v10.receiver = self;
   v10.super_class = MTEpisodeDownloadCell;
   [(MTGenericCollectionCell *)&v10 configureSubviews];
-  v3 = [(MTEpisodeDownloadCell *)self downloadButton];
-  [(MTGenericCollectionCell *)self setSideView:v3];
+  downloadButton = [(MTEpisodeDownloadCell *)self downloadButton];
+  [(MTGenericCollectionCell *)self setSideView:downloadButton];
 
-  v4 = [(MTCollectionViewCell *)self deleteButton];
+  deleteButton = [(MTCollectionViewCell *)self deleteButton];
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"DOWNLOAD_CANCEL" value:&stru_1004F3018 table:0];
-  [v4 setTitle:v6 forState:0];
+  [deleteButton setTitle:v6 forState:0];
 
-  v7 = [(MTCollectionViewCell *)self actionButtonsContainer];
-  [v7 setNeedsLayout];
+  actionButtonsContainer = [(MTCollectionViewCell *)self actionButtonsContainer];
+  [actionButtonsContainer setNeedsLayout];
 
   [(MTEpisodeDownloadCell *)self setNeedsLayout];
   v8 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"cellTapped"];
   [(MTEpisodeDownloadCell *)self setTapGesture:v8];
 
-  v9 = [(MTEpisodeDownloadCell *)self tapGesture];
-  [(MTEpisodeDownloadCell *)self addGestureRecognizer:v9];
+  tapGesture = [(MTEpisodeDownloadCell *)self tapGesture];
+  [(MTEpisodeDownloadCell *)self addGestureRecognizer:tapGesture];
 }
 
-- (void)updateWithObject:(id)a3
+- (void)updateWithObject:(id)object
 {
-  v18 = a3;
-  if (v18 && (+[MTDB sharedInstance](MTDB, "sharedInstance"), v4 = objc_claimAutoreleasedReturnValue(), [v4 mainQueueContext], v5 = objc_claimAutoreleasedReturnValue(), v4, objc_msgSend(v18, "episodeUuid"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "episodeForUuid:", v6), v7 = objc_claimAutoreleasedReturnValue(), v6, v5, v7))
+  objectCopy = object;
+  if (objectCopy && (+[MTDB sharedInstance](MTDB, "sharedInstance"), v4 = objc_claimAutoreleasedReturnValue(), [v4 mainQueueContext], v5 = objc_claimAutoreleasedReturnValue(), v4, objc_msgSend(objectCopy, "episodeUuid"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "episodeForUuid:", v6), contentView2 = objc_claimAutoreleasedReturnValue(), v6, v5, contentView2))
   {
-    v8 = [(MTCollectionViewCell *)self contentView];
-    [v8 setHidden:0];
+    contentView = [(MTCollectionViewCell *)self contentView];
+    [contentView setHidden:0];
 
-    v9 = [v7 podcastUuid];
-    [(MTGenericCollectionCell *)self setArtworkKey:v9];
+    podcastUuid = [contentView2 podcastUuid];
+    [(MTGenericCollectionCell *)self setArtworkKey:podcastUuid];
 
-    [v18 downloadProgress];
+    [objectCopy downloadProgress];
     v11 = v10;
-    v12 = [(MTEpisodeDownloadCell *)self downloadButton];
-    [v12 setProgress:v11];
+    downloadButton = [(MTEpisodeDownloadCell *)self downloadButton];
+    [downloadButton setProgress:v11];
 
-    v13 = [v7 bestTitle];
-    [(MTGenericCollectionCell *)self setTitle:v13];
+    bestTitle = [contentView2 bestTitle];
+    [(MTGenericCollectionCell *)self setTitle:bestTitle];
 
-    v14 = [MTEpisode dateLabelDescriptionForEpisode:v7 download:v18];
+    v14 = [MTEpisode dateLabelDescriptionForEpisode:contentView2 download:objectCopy];
     [(MTGenericCollectionCell *)self setSubtitle:v14];
 
-    -[MTEpisodeDownloadCell setPausable:](self, "setPausable:", [v18 isPausable]);
-    v15 = [v18 downloadPhase];
-    [(MTEpisodeDownloadCell *)self setPaused:[(MTEpisodeDownloadCell *)self _isPausedForDownloadPhase:v15]];
-    v16 = [(MTEpisodeDownloadCell *)self _isDownloadButtonEnabledForDownloadPhase:v15];
-    v17 = [(MTEpisodeDownloadCell *)self downloadButton];
-    [v17 setEnabled:v16];
+    -[MTEpisodeDownloadCell setPausable:](self, "setPausable:", [objectCopy isPausable]);
+    downloadPhase = [objectCopy downloadPhase];
+    [(MTEpisodeDownloadCell *)self setPaused:[(MTEpisodeDownloadCell *)self _isPausedForDownloadPhase:downloadPhase]];
+    v16 = [(MTEpisodeDownloadCell *)self _isDownloadButtonEnabledForDownloadPhase:downloadPhase];
+    downloadButton2 = [(MTEpisodeDownloadCell *)self downloadButton];
+    [downloadButton2 setEnabled:v16];
 
     [(MTEpisodeDownloadCell *)self setNeedsLayout];
   }
 
   else
   {
-    v7 = [(MTCollectionViewCell *)self contentView];
-    [v7 setHidden:1];
+    contentView2 = [(MTCollectionViewCell *)self contentView];
+    [contentView2 setHidden:1];
   }
 }
 
-- (void)setPausable:(BOOL)a3
+- (void)setPausable:(BOOL)pausable
 {
-  v3 = a3;
-  self->_pausable = a3;
-  v4 = [(MTEpisodeDownloadCell *)self downloadButton];
-  [v4 setHidden:!v3];
+  pausableCopy = pausable;
+  self->_pausable = pausable;
+  downloadButton = [(MTEpisodeDownloadCell *)self downloadButton];
+  [downloadButton setHidden:!pausableCopy];
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
-  self->_paused = a3;
-  v5 = [(MTEpisodeDownloadCell *)self downloadButton];
-  v6 = v5;
-  if (v3)
+  pausedCopy = paused;
+  self->_paused = paused;
+  downloadButton = [(MTEpisodeDownloadCell *)self downloadButton];
+  v6 = downloadButton;
+  if (pausedCopy)
   {
     v7 = 3;
   }
@@ -97,7 +97,7 @@
     v7 = 2;
   }
 
-  [v5 setProgressType:v7 animated:0];
+  [downloadButton setProgressType:v7 animated:0];
 
   [(MTEpisodeDownloadCell *)self setNeedsLayout];
 }
@@ -118,27 +118,27 @@
   return downloadButton;
 }
 
-- (void)downloadButtonTapped:(id)a3
+- (void)downloadButtonTapped:(id)tapped
 {
-  v4 = [(MTCollectionViewCell *)self scrollView];
-  [v4 contentOffset];
+  scrollView = [(MTCollectionViewCell *)self scrollView];
+  [scrollView contentOffset];
   v6 = v5;
 
   if (v6 <= 0.0)
   {
-    v7 = [(MTCollectionViewCell *)self delegate];
-    [v7 cellDidPressToggleDownload:self];
+    delegate = [(MTCollectionViewCell *)self delegate];
+    [delegate cellDidPressToggleDownload:self];
   }
 }
 
 - (void)cellTapped
 {
-  v5 = [(MTCollectionViewCell *)self collectionView];
-  v3 = [v5 indexPathForCell:self];
+  collectionView = [(MTCollectionViewCell *)self collectionView];
+  v3 = [collectionView indexPathForCell:self];
   if (v3)
   {
-    v4 = [v5 delegate];
-    [v4 collectionView:v5 didSelectItemAtIndexPath:v3];
+    delegate = [collectionView delegate];
+    [delegate collectionView:collectionView didSelectItemAtIndexPath:v3];
   }
 }
 

@@ -1,17 +1,17 @@
 @interface CSCoverSheetContentsContainerView
 - (CSCoverSheetView)coverSheetView;
-- (void)didAddSubview:(id)a3;
+- (void)didAddSubview:(id)subview;
 @end
 
 @implementation CSCoverSheetContentsContainerView
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
   v5.receiver = self;
   v5.super_class = CSCoverSheetContentsContainerView;
-  [(CSCoverSheetContentsContainerView *)&v5 didAddSubview:a3];
-  v4 = [(CSCoverSheetContentsContainerView *)self coverSheetView];
-  [v4 _orderSubviews];
+  [(CSCoverSheetContentsContainerView *)&v5 didAddSubview:subview];
+  coverSheetView = [(CSCoverSheetContentsContainerView *)self coverSheetView];
+  [coverSheetView _orderSubviews];
 }
 
 - (CSCoverSheetView)coverSheetView

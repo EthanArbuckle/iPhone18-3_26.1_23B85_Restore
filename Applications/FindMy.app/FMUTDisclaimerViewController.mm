@@ -1,23 +1,23 @@
 @interface FMUTDisclaimerViewController
-- (_TtC6FindMy28FMUTDisclaimerViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC6FindMy28FMUTDisclaimerViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC6FindMy28FMUTDisclaimerViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC6FindMy28FMUTDisclaimerViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)continue;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation FMUTDisclaimerViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   v4 = v8.receiver;
-  [(FMUTDisclaimerViewController *)&v8 viewWillAppear:v3];
-  v5 = [v4 parentViewController];
-  if (v5)
+  [(FMUTDisclaimerViewController *)&v8 viewWillAppear:appearCopy];
+  parentViewController = [v4 parentViewController];
+  if (parentViewController)
   {
-    v6 = v5;
+    v6 = parentViewController;
     objc_opt_self();
     if (swift_dynamicCastObjCClass())
     {
@@ -35,11 +35,11 @@
 
 - (void)continue
 {
-  v5 = self;
-  v2 = [(FMUTDisclaimerViewController *)v5 parentViewController];
-  if (v2)
+  selfCopy = self;
+  parentViewController = [(FMUTDisclaimerViewController *)selfCopy parentViewController];
+  if (parentViewController)
   {
-    v3 = v2;
+    v3 = parentViewController;
     objc_opt_self();
     if (swift_dynamicCastObjCClass())
     {
@@ -49,20 +49,20 @@
 
     else
     {
-      v4 = v5;
-      v5 = v3;
+      v4 = selfCopy;
+      selfCopy = v3;
     }
   }
 }
 
-- (_TtC6FindMy28FMUTDisclaimerViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC6FindMy28FMUTDisclaimerViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  if (!a4)
+  if (!text)
   {
     v13 = 0;
-    if (a5)
+    if (name)
     {
       goto LABEL_3;
     }
@@ -70,12 +70,12 @@
 LABEL_5:
     v14 = 0;
     v16 = 0;
-    return sub_10027E6F4(v9, v11, a4, v13, v14, v16, a6);
+    return sub_10027E6F4(v9, v11, text, v13, v14, v16, layout);
   }
 
-  a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+  text = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
-  if (!a5)
+  if (!name)
   {
     goto LABEL_5;
   }
@@ -83,29 +83,29 @@ LABEL_5:
 LABEL_3:
   v14 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v16 = v15;
-  return sub_10027E6F4(v9, v11, a4, v13, v14, v16, a6);
+  return sub_10027E6F4(v9, v11, text, v13, v14, v16, layout);
 }
 
-- (_TtC6FindMy28FMUTDisclaimerViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC6FindMy28FMUTDisclaimerViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   ObjectType = swift_getObjectType();
-  if (a4)
+  if (text)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v12 = a3;
-    v13 = a5;
-    a4 = String._bridgeToObjectiveC()();
+    titleCopy = title;
+    iconCopy = icon;
+    text = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v14 = a3;
-    v15 = a5;
+    titleCopy2 = title;
+    iconCopy2 = icon;
   }
 
   v18.receiver = self;
   v18.super_class = ObjectType;
-  v16 = [(FMUTDisclaimerViewController *)&v18 initWithTitle:a3 detailText:a4 icon:a5 contentLayout:a6];
+  v16 = [(FMUTDisclaimerViewController *)&v18 initWithTitle:title detailText:text icon:icon contentLayout:layout];
 
   return v16;
 }

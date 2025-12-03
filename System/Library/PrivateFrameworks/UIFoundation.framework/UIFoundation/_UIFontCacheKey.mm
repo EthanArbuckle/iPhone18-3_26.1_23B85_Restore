@@ -1,84 +1,84 @@
 @interface _UIFontCacheKey
-+ (id)newFontCacheKeyWithFontDescriptor:(id)a3 pointSize:(double)a4 textStyleForScaling:(id)a5 pointSizeForScaling:(double)a6 maximumPointSizeAfterScaling:(double)a7 textLegibility:(BOOL)a8;
-+ (id)newFontCacheKeyWithFontName:(id)a3 traits:(int)a4 pointSize:(double)a5;
-+ (id)newFontCacheKeyWithTextStyle:(id)a3 contentSizeCategory:(id)a4 textLegibility:(BOOL)a5;
-+ (id)newSystemFontCacheKeyWithDesign:(id)a3 weight:(double)a4 width:(id)a5 pointSize:(double)a6 monospacedDigits:(BOOL)a7;
-+ (id)newSystemFontCacheKeyWithTraits:(int)a3 pointSize:(double)a4 width:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)newFontCacheKeyWithFontDescriptor:(id)descriptor pointSize:(double)size textStyleForScaling:(id)scaling pointSizeForScaling:(double)forScaling maximumPointSizeAfterScaling:(double)afterScaling textLegibility:(BOOL)legibility;
++ (id)newFontCacheKeyWithFontName:(id)name traits:(int)traits pointSize:(double)size;
++ (id)newFontCacheKeyWithTextStyle:(id)style contentSizeCategory:(id)category textLegibility:(BOOL)legibility;
++ (id)newSystemFontCacheKeyWithDesign:(id)design weight:(double)weight width:(id)width pointSize:(double)size monospacedDigits:(BOOL)digits;
++ (id)newSystemFontCacheKeyWithTraits:(int)traits pointSize:(double)size width:(id)width;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation _UIFontCacheKey
 
-+ (id)newFontCacheKeyWithFontName:(id)a3 traits:(int)a4 pointSize:(double)a5
++ (id)newFontCacheKeyWithFontName:(id)name traits:(int)traits pointSize:(double)size
 {
-  v6 = *&a4;
+  v6 = *&traits;
   v8 = objc_alloc_init(_UIFontNameCacheKey);
-  [(_UIFontNameCacheKey *)v8 setFontName:a3];
+  [(_UIFontNameCacheKey *)v8 setFontName:name];
   [(_UIFontNameCacheKey *)v8 setTraits:v6];
-  [(_UIFontNameCacheKey *)v8 setPointSize:a5];
+  [(_UIFontNameCacheKey *)v8 setPointSize:size];
   [(_UIFontCacheKey *)v8 _precalculateHash];
   return v8;
 }
 
-+ (id)newSystemFontCacheKeyWithTraits:(int)a3 pointSize:(double)a4 width:(id)a5
++ (id)newSystemFontCacheKeyWithTraits:(int)traits pointSize:(double)size width:(id)width
 {
-  v7 = *&a3;
+  v7 = *&traits;
   v8 = objc_alloc_init(_UIFontSystemCacheKey);
   [(_UIFontSystemCacheKey *)v8 setTraits:v7];
-  [(_UIFontSystemCacheKey *)v8 setPointSize:a4];
-  [(_UIFontSystemCacheKey *)v8 setWidth:a5];
+  [(_UIFontSystemCacheKey *)v8 setPointSize:size];
+  [(_UIFontSystemCacheKey *)v8 setWidth:width];
   [(_UIFontSystemCacheKey *)v8 setTextLegibility:_AXSEnhanceTextLegibilityEnabled() != 0];
   [(_UIFontCacheKey *)v8 _precalculateHash];
   return v8;
 }
 
-+ (id)newSystemFontCacheKeyWithDesign:(id)a3 weight:(double)a4 width:(id)a5 pointSize:(double)a6 monospacedDigits:(BOOL)a7
++ (id)newSystemFontCacheKeyWithDesign:(id)design weight:(double)weight width:(id)width pointSize:(double)size monospacedDigits:(BOOL)digits
 {
-  v7 = a7;
+  digitsCopy = digits;
   v12 = objc_alloc_init(_UIFontSystemCacheKey);
-  [(_UIFontSystemCacheKey *)v12 setDesign:a3];
-  [(_UIFontSystemCacheKey *)v12 setWeight:a4];
-  [(_UIFontSystemCacheKey *)v12 setWidth:a5];
-  [(_UIFontSystemCacheKey *)v12 setPointSize:a6];
-  [(_UIFontSystemCacheKey *)v12 setMonospacedDigits:v7];
+  [(_UIFontSystemCacheKey *)v12 setDesign:design];
+  [(_UIFontSystemCacheKey *)v12 setWeight:weight];
+  [(_UIFontSystemCacheKey *)v12 setWidth:width];
+  [(_UIFontSystemCacheKey *)v12 setPointSize:size];
+  [(_UIFontSystemCacheKey *)v12 setMonospacedDigits:digitsCopy];
   [(_UIFontSystemCacheKey *)v12 setTextLegibility:_AXSEnhanceTextLegibilityEnabled() != 0];
   [(_UIFontCacheKey *)v12 _precalculateHash];
   return v12;
 }
 
-+ (id)newFontCacheKeyWithTextStyle:(id)a3 contentSizeCategory:(id)a4 textLegibility:(BOOL)a5
++ (id)newFontCacheKeyWithTextStyle:(id)style contentSizeCategory:(id)category textLegibility:(BOOL)legibility
 {
-  v5 = a5;
+  legibilityCopy = legibility;
   v8 = objc_alloc_init(_UIFontTextStyleCacheKey);
-  [(_UIFontTextStyleCacheKey *)v8 setTextStyle:a3];
-  [(_UIFontTextStyleCacheKey *)v8 setContentSizeCategory:a4];
-  [(_UIFontTextStyleCacheKey *)v8 setTextLegibility:v5];
+  [(_UIFontTextStyleCacheKey *)v8 setTextStyle:style];
+  [(_UIFontTextStyleCacheKey *)v8 setContentSizeCategory:category];
+  [(_UIFontTextStyleCacheKey *)v8 setTextLegibility:legibilityCopy];
   [(_UIFontCacheKey *)v8 _precalculateHash];
   return v8;
 }
 
-+ (id)newFontCacheKeyWithFontDescriptor:(id)a3 pointSize:(double)a4 textStyleForScaling:(id)a5 pointSizeForScaling:(double)a6 maximumPointSizeAfterScaling:(double)a7 textLegibility:(BOOL)a8
++ (id)newFontCacheKeyWithFontDescriptor:(id)descriptor pointSize:(double)size textStyleForScaling:(id)scaling pointSizeForScaling:(double)forScaling maximumPointSizeAfterScaling:(double)afterScaling textLegibility:(BOOL)legibility
 {
-  v8 = a8;
+  legibilityCopy = legibility;
   v14 = objc_alloc_init(_UIFontDescriptorCacheKey);
-  [(_UIFontDescriptorCacheKey *)v14 setFontDescriptor:a3];
-  [(_UIFontDescriptorCacheKey *)v14 setPointSize:a4];
-  [(_UIFontDescriptorCacheKey *)v14 setTextStyleForScaling:a5];
-  [(_UIFontDescriptorCacheKey *)v14 setPointSizeForScaling:a6];
-  [(_UIFontDescriptorCacheKey *)v14 setMaximumPointSizeAfterScaling:a7];
-  [(_UIFontDescriptorCacheKey *)v14 setTextLegibility:v8];
+  [(_UIFontDescriptorCacheKey *)v14 setFontDescriptor:descriptor];
+  [(_UIFontDescriptorCacheKey *)v14 setPointSize:size];
+  [(_UIFontDescriptorCacheKey *)v14 setTextStyleForScaling:scaling];
+  [(_UIFontDescriptorCacheKey *)v14 setPointSizeForScaling:forScaling];
+  [(_UIFontDescriptorCacheKey *)v14 setMaximumPointSizeAfterScaling:afterScaling];
+  [(_UIFontDescriptorCacheKey *)v14 setTextLegibility:legibilityCopy];
   [(_UIFontCacheKey *)v14 _precalculateHash];
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -90,12 +90,12 @@
   }
 
   hash = self->_hash;
-  if (hash != [a3 hash])
+  if (hash != [equal hash])
   {
     return 0;
   }
 
-  return [(_UIFontCacheKey *)self _isEqualToKey:a3];
+  return [(_UIFontCacheKey *)self _isEqualToKey:equal];
 }
 
 @end

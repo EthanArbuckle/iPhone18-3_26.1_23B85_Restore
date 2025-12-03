@@ -1,17 +1,17 @@
 @interface CPLExtractedBatch
 - (CPLExtractedBatch)init;
-- (CPLExtractedBatch)initWithCoder:(id)a3;
+- (CPLExtractedBatch)initWithCoder:(id)coder;
 - (NSFastEnumeration)uploadIdentifiers;
-- (id)uploadIdentifierForChange:(id)a3;
-- (unint64_t)effectiveResourceSizeToUploadUsingStorage:(id)a3;
-- (void)addChange:(id)a3 fromStorage:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)forceScopeIndexOnAllRecordsTo:(int64_t)a3;
+- (id)uploadIdentifierForChange:(id)change;
+- (unint64_t)effectiveResourceSizeToUploadUsingStorage:(id)storage;
+- (void)addChange:(id)change fromStorage:(id)storage;
+- (void)encodeWithCoder:(id)coder;
+- (void)forceScopeIndexOnAllRecordsTo:(int64_t)to;
 @end
 
 @implementation CPLExtractedBatch
 
-- (void)forceScopeIndexOnAllRecordsTo:(int64_t)a3
+- (void)forceScopeIndexOnAllRecordsTo:(int64_t)to
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
@@ -34,7 +34,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v10 + 1) + 8 * v8++) setScopeIndex:{a3, v10}];
+        [*(*(&v10 + 1) + 8 * v8++) setScopeIndex:{to, v10}];
       }
 
       while (v6 != v8);
@@ -47,10 +47,10 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)effectiveResourceSizeToUploadUsingStorage:(id)a3
+- (unint64_t)effectiveResourceSizeToUploadUsingStorage:(id)storage
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storageCopy = storage;
   if (!self->_resourceSizeIsCalculated)
   {
     self->_resourceSizeIsCalculated = 1;
@@ -76,7 +76,7 @@
           v10 = *(*(&v14 + 1) + 8 * i);
           if ([v10 supportsResources] && objc_msgSend(v10, "hasChangeType:", 8))
           {
-            self->_resourceSize += [v10 effectiveResourceSizeToUploadUsingStorage:v4];
+            self->_resourceSize += [v10 effectiveResourceSizeToUploadUsingStorage:storageCopy];
           }
         }
 
@@ -102,19 +102,19 @@
     mutablePushContexts = self->_pushContexts;
   }
 
-  v5 = [(NSMutableDictionary *)mutablePushContexts objectEnumerator];
-  v6 = [(CPLMapEnumerator *)v3 initWithEnumerator:v5 map:&__block_literal_global_32_22566];
+  objectEnumerator = [(NSMutableDictionary *)mutablePushContexts objectEnumerator];
+  v6 = [(CPLMapEnumerator *)v3 initWithEnumerator:objectEnumerator map:&__block_literal_global_32_22566];
 
   return v6;
 }
 
-- (void)addChange:(id)a3 fromStorage:(id)a4
+- (void)addChange:(id)change fromStorage:(id)storage
 {
-  v22 = a3;
-  v6 = a4;
-  v7 = [v22 scopedIdentifier];
-  v8 = [v22 _pushContext];
-  if (v8)
+  changeCopy = change;
+  storageCopy = storage;
+  scopedIdentifier = [changeCopy scopedIdentifier];
+  _pushContext = [changeCopy _pushContext];
+  if (_pushContext)
   {
     mutablePushContexts = self->_mutablePushContexts;
     if (!mutablePushContexts)
@@ -140,10 +140,10 @@
       mutablePushContexts = self->_mutablePushContexts;
     }
 
-    [(NSMutableDictionary *)mutablePushContexts setObject:v8 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)mutablePushContexts setObject:_pushContext forKeyedSubscript:scopedIdentifier];
   }
 
-  if ([v22 _shouldNotTrustCloudCache])
+  if ([changeCopy _shouldNotTrustCloudCache])
   {
     mutableUntrustableScopedIndentifiers = self->_mutableUntrustableScopedIndentifiers;
     if (!mutableUntrustableScopedIndentifiers)
@@ -169,29 +169,29 @@
       mutableUntrustableScopedIndentifiers = self->_mutableUntrustableScopedIndentifiers;
     }
 
-    [(NSMutableSet *)mutableUntrustableScopedIndentifiers addObject:v7];
+    [(NSMutableSet *)mutableUntrustableScopedIndentifiers addObject:scopedIdentifier];
   }
 
   if (self->_batchCanLowerQuota)
   {
-    v21 = 1;
+    canLowerQuota = 1;
   }
 
   else
   {
-    v21 = [v22 canLowerQuota];
+    canLowerQuota = [changeCopy canLowerQuota];
   }
 
-  self->_batchCanLowerQuota = v21;
-  if ([v22 supportsResources] && objc_msgSend(v22, "hasChangeType:", 8))
+  self->_batchCanLowerQuota = canLowerQuota;
+  if ([changeCopy supportsResources] && objc_msgSend(changeCopy, "hasChangeType:", 8))
   {
-    self->_resourceSize += [v22 effectiveResourceSizeToUploadUsingStorage:v6];
+    self->_resourceSize += [changeCopy effectiveResourceSizeToUploadUsingStorage:storageCopy];
   }
 
-  [(CPLChangeBatch *)self->_batch addRecord:v22];
+  [(CPLChangeBatch *)self->_batch addRecord:changeCopy];
 }
 
-- (id)uploadIdentifierForChange:(id)a3
+- (id)uploadIdentifierForChange:(id)change
 {
   mutablePushContexts = self->_mutablePushContexts;
   if (!mutablePushContexts)
@@ -199,18 +199,18 @@
     mutablePushContexts = self->_pushContexts;
   }
 
-  v4 = [a3 scopedIdentifier];
-  v5 = [(NSMutableDictionary *)mutablePushContexts objectForKeyedSubscript:v4];
-  v6 = [v5 uploadIdentifier];
+  scopedIdentifier = [change scopedIdentifier];
+  v5 = [(NSMutableDictionary *)mutablePushContexts objectForKeyedSubscript:scopedIdentifier];
+  uploadIdentifier = [v5 uploadIdentifier];
 
-  return v6;
+  return uploadIdentifier;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v15 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  [v12 encodeObject:self->_batch forKey:@"batch"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_batch forKey:@"batch"];
   mutablePushContexts = self->_mutablePushContexts;
   if (mutablePushContexts)
   {
@@ -222,14 +222,14 @@
         if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v14 = self;
+          selfCopy2 = self;
           _os_log_impl(&dword_1DC05A000, v6, OS_LOG_TYPE_ERROR, "%@ can't have both mutable and immutable push contexts", buf, 0xCu);
         }
       }
 
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLExtractedBatch.m"];
-      [v7 handleFailureInMethod:a2 object:self file:v8 lineNumber:79 description:{@"%@ can't have both mutable and immutable push contexts", self}];
+      [currentHandler handleFailureInMethod:a2 object:self file:v8 lineNumber:79 description:{@"%@ can't have both mutable and immutable push contexts", self}];
       goto LABEL_16;
     }
   }
@@ -239,7 +239,7 @@
     mutablePushContexts = self->_pushContexts;
   }
 
-  [v12 encodeObject:mutablePushContexts forKey:@"pushContexts"];
+  [coderCopy encodeObject:mutablePushContexts forKey:@"pushContexts"];
   mutableUntrustableScopedIndentifiers = self->_mutableUntrustableScopedIndentifiers;
   if (mutableUntrustableScopedIndentifiers)
   {
@@ -251,14 +251,14 @@
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v14 = self;
+          selfCopy2 = self;
           _os_log_impl(&dword_1DC05A000, v10, OS_LOG_TYPE_ERROR, "%@ can't have both mutable and immutable untrustable identifiers", buf, 0xCu);
         }
       }
 
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLExtractedBatch.m"];
-      [v7 handleFailureInMethod:a2 object:self file:v8 lineNumber:81 description:{@"%@ can't have both mutable and immutable untrustable identifiers", self}];
+      [currentHandler handleFailureInMethod:a2 object:self file:v8 lineNumber:81 description:{@"%@ can't have both mutable and immutable untrustable identifiers", self}];
 LABEL_16:
 
       abort();
@@ -270,21 +270,21 @@ LABEL_16:
     mutableUntrustableScopedIndentifiers = self->_untrustableScopedIdentifiers;
   }
 
-  [v12 encodeObject:mutableUntrustableScopedIndentifiers forKey:@"untrustableIdentifiers"];
-  [v12 encodeObject:self->_clientCacheIdentifier forKey:@"clientCacheIdentifier"];
+  [coderCopy encodeObject:mutableUntrustableScopedIndentifiers forKey:@"untrustableIdentifiers"];
+  [coderCopy encodeObject:self->_clientCacheIdentifier forKey:@"clientCacheIdentifier"];
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (CPLExtractedBatch)initWithCoder:(id)a3
+- (CPLExtractedBatch)initWithCoder:(id)coder
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = CPLExtractedBatch;
   v5 = [(CPLExtractedBatch *)&v32 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"batch"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"batch"];
     batch = v5->_batch;
     v5->_batch = v6;
 
@@ -293,18 +293,18 @@ LABEL_16:
       dispatch_once(&initWithCoder__onceToken_22597, &__block_literal_global_22598);
     }
 
-    v8 = [v4 decodeObjectOfClasses:initWithCoder__pushContextsClasses_22599 forKey:@"pushContexts"];
+    v8 = [coderCopy decodeObjectOfClasses:initWithCoder__pushContextsClasses_22599 forKey:@"pushContexts"];
     pushContexts = v5->_pushContexts;
     v5->_pushContexts = v8;
 
     if (!v5->_pushContexts)
     {
-      v10 = [CPLRecordPushContext pushContextsFromStoredUploadIdentifiersInCoder:v4 key:@"uploadIdentifiers"];
+      v10 = [CPLRecordPushContext pushContextsFromStoredUploadIdentifiersInCoder:coderCopy key:@"uploadIdentifiers"];
       v11 = v5->_pushContexts;
       v5->_pushContexts = v10;
     }
 
-    v12 = [v4 decodeObjectOfClasses:initWithCoder__untrustableIdentifiersClasses forKey:@"untrustableIdentifiers"];
+    v12 = [coderCopy decodeObjectOfClasses:initWithCoder__untrustableIdentifiersClasses forKey:@"untrustableIdentifiers"];
     untrustableScopedIdentifiers = v5->_untrustableScopedIdentifiers;
     v5->_untrustableScopedIdentifiers = v12;
 
@@ -332,15 +332,15 @@ LABEL_16:
           }
 
           v21 = *(*(&v28 + 1) + 8 * i);
-          v22 = [v21 scopedIdentifier];
-          v23 = [(NSDictionary *)v5->_pushContexts objectForKeyedSubscript:v22];
+          scopedIdentifier = [v21 scopedIdentifier];
+          v23 = [(NSDictionary *)v5->_pushContexts objectForKeyedSubscript:scopedIdentifier];
           if (!v23)
           {
             v23 = +[CPLRecordPushContext newEmptyPushContext];
           }
 
           [v21 _setPushContext:v23];
-          if ([(NSSet *)v5->_untrustableScopedIdentifiers containsObject:v22])
+          if ([(NSSet *)v5->_untrustableScopedIdentifiers containsObject:scopedIdentifier])
           {
             [v21 _setShouldNotTrustCloudCache:1];
           }
@@ -352,7 +352,7 @@ LABEL_16:
       while (v18);
     }
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientCacheIdentifier"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientCacheIdentifier"];
     clientCacheIdentifier = v5->_clientCacheIdentifier;
     v5->_clientCacheIdentifier = v24;
   }

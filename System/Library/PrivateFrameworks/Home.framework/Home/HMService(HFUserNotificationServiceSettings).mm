@@ -8,13 +8,13 @@
 - (HFUserNotificationServiceSettings)hf_userNotificationSettings
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v2 = [a1 bulletinBoardNotification];
+  bulletinBoardNotification = [self bulletinBoardNotification];
 
-  if (v2)
+  if (bulletinBoardNotification)
   {
     v3 = [HFUserNotificationServiceSettings alloc];
-    v4 = [a1 bulletinBoardNotification];
-    v9[0] = v4;
+    bulletinBoardNotification2 = [self bulletinBoardNotification];
+    v9[0] = bulletinBoardNotification2;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
     v6 = [(HFUserNotificationServiceSettings *)v3 initWithBulletinBoardNotifications:v5];
   }
@@ -33,12 +33,12 @@
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 hf_userNotificationSettings];
+  hf_userNotificationSettings = [self hf_userNotificationSettings];
 
-  if (v5)
+  if (hf_userNotificationSettings)
   {
-    v6 = [a1 bulletinBoardNotification];
-    v12[0] = v6;
+    bulletinBoardNotification = [self bulletinBoardNotification];
+    v12[0] = bulletinBoardNotification;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
     v8 = [v4 applySettingsToBulletinBoardNotifications:v7];
   }
@@ -46,8 +46,8 @@
   else
   {
     v9 = MEMORY[0x277D2C900];
-    v6 = [MEMORY[0x277CCA9B8] hf_errorWithCode:32];
-    v8 = [v9 futureWithError:v6];
+    bulletinBoardNotification = [MEMORY[0x277CCA9B8] hf_errorWithCode:32];
+    v8 = [v9 futureWithError:bulletinBoardNotification];
   }
 
   v10 = *MEMORY[0x277D85DE8];

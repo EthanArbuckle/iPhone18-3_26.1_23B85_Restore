@@ -19,8 +19,8 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PGGraphOverTheYearsNode *)self label];
-  v7 = [v3 stringWithFormat:@"%@|%@", v5, v6];
+  label = [(PGGraphOverTheYearsNode *)self label];
+  v7 = [v3 stringWithFormat:@"%@|%@", v5, label];
 
   return v7;
 }

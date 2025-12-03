@@ -1,20 +1,20 @@
 @interface PHTableViewCell
 + (NSString)reuseIdentifier;
-+ (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
++ (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)category;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSDirectionalEdgeInsets)rootViewLayoutMargins;
-- (PHTableViewCell)initWithCoder:(id)a3;
-- (PHTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PHTableViewCell)initWithCoder:(id)coder;
+- (PHTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UIColor)foregroundColor;
 - (UIView)foregroundView;
 - (double)titleLabelLeadingLayoutConstraintConstant;
 - (id)loadRootViewAndContentViews;
 - (void)commonInit;
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5;
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason;
 - (void)layoutSubviews;
-- (void)setForegroundColor:(id)a3;
-- (void)setForegroundView:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setForegroundColor:(id)color;
+- (void)setForegroundView:(id)view;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateFontsAndLayoutMetrics;
 - (void)updateFontsLayoutMetricsAndSeparatorInset;
 @end
@@ -23,7 +23,7 @@
 
 + (NSString)reuseIdentifier
 {
-  v2 = NSStringFromClass(a1);
+  v2 = NSStringFromClass(self);
   v3 = [NSString stringWithFormat:@"%@ReuseIdentifier", v2];
 
   return v3;
@@ -33,37 +33,37 @@
 {
   [(PHTableViewCell *)self updateFontsAndLayoutMetrics];
   v3 = objc_opt_class();
-  v5 = [(PHTableViewCell *)self traitCollection];
-  v4 = [v5 preferredContentSizeCategory];
-  [v3 separatorInsetForContentSizeCategory:v4];
+  traitCollection = [(PHTableViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  [v3 separatorInsetForContentSizeCategory:preferredContentSizeCategory];
   [(PHTableViewCell *)self setSeparatorInset:?];
 }
 
-- (PHTableViewCell)initWithCoder:(id)a3
+- (PHTableViewCell)initWithCoder:(id)coder
 {
   [(PHTableViewCell *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = PHTableViewCell;
-  v4 = a3;
-  [(PHTableViewCell *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(PHTableViewCell *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(PHTableViewCell *)self traitCollection:v8.receiver];
-  v6 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
 
-  v7 = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [v5 preferredContentSizeCategory];
 
-  if (v6 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
     [(PHTableViewCell *)self updateFontsLayoutMetricsAndSeparatorInset];
   }
 }
 
-+ (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)a3
++ (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)category
 {
   top = UIEdgeInsetsZero.top;
   left = UIEdgeInsetsZero.left;
@@ -80,37 +80,37 @@
 {
   if (self->_foregroundView)
   {
-    v2 = [(PHTableViewCell *)self foregroundView];
-    v3 = [v2 backgroundColor];
+    foregroundView = [(PHTableViewCell *)self foregroundView];
+    backgroundColor = [foregroundView backgroundColor];
   }
 
   else
   {
-    v3 = 0;
+    backgroundColor = 0;
   }
 
-  return v3;
+  return backgroundColor;
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
-  v11 = a3;
-  if (v11 && (+[UIColor clearColor](UIColor, "clearColor"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v11 isEqual:v4], v4, (v5 & 1) == 0))
+  colorCopy = color;
+  if (colorCopy && (+[UIColor clearColor](UIColor, "clearColor"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [colorCopy isEqual:v4], v4, (v5 & 1) == 0))
   {
-    v6 = [(PHTableViewCell *)self foregroundView];
-    v7 = [v6 backgroundColor];
+    foregroundView = [(PHTableViewCell *)self foregroundView];
+    backgroundColor = [foregroundView backgroundColor];
 
-    v8 = v11;
-    if (v7 == v11)
+    v8 = colorCopy;
+    if (backgroundColor == colorCopy)
     {
       goto LABEL_7;
     }
 
-    v9 = [(PHTableViewCell *)self foregroundView];
-    [v9 setBackgroundColor:v11];
+    foregroundView2 = [(PHTableViewCell *)self foregroundView];
+    [foregroundView2 setBackgroundColor:colorCopy];
 
-    v10 = [(PHTableViewCell *)self foregroundView];
-    [v10 setUserInteractionEnabled:0];
+    foregroundView3 = [(PHTableViewCell *)self foregroundView];
+    [foregroundView3 setUserInteractionEnabled:0];
   }
 
   else
@@ -118,7 +118,7 @@
     [(PHTableViewCell *)self setForegroundView:0];
   }
 
-  v8 = v11;
+  v8 = colorCopy;
 LABEL_7:
 }
 
@@ -136,15 +136,15 @@ LABEL_7:
   return foregroundView;
 }
 
-- (void)setForegroundView:(id)a3
+- (void)setForegroundView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   foregroundView = self->_foregroundView;
-  v7 = v5;
-  if (foregroundView != v5)
+  v7 = viewCopy;
+  if (foregroundView != viewCopy)
   {
     [(UIView *)foregroundView removeFromSuperview];
-    objc_storeStrong(&self->_foregroundView, a3);
+    objc_storeStrong(&self->_foregroundView, view);
     if (self->_foregroundView)
     {
       [(PHTableViewCell *)self addSubview:?];
@@ -152,11 +152,11 @@ LABEL_7:
   }
 }
 
-- (PHTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PHTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = PHTableViewCell;
-  v4 = [(PHTableViewCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PHTableViewCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -168,9 +168,9 @@ LABEL_7:
 
 - (void)commonInit
 {
-  v3 = [(PHTableViewCell *)self loadRootViewAndContentViews];
+  loadRootViewAndContentViews = [(PHTableViewCell *)self loadRootViewAndContentViews];
   rootView = self->_rootView;
-  self->_rootView = v3;
+  self->_rootView = loadRootViewAndContentViews;
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -178,8 +178,8 @@ LABEL_7:
     [(UIView *)self->_rootView setDelegate:self];
   }
 
-  v5 = [(PHTableViewCell *)self contentView];
-  [v5 addSubview:self->_rootView];
+  contentView = [(PHTableViewCell *)self contentView];
+  [contentView addSubview:self->_rootView];
 }
 
 - (id)loadRootViewAndContentViews
@@ -207,21 +207,21 @@ LABEL_7:
 
 - (void)updateFontsAndLayoutMetrics
 {
-  v3 = [(PHTableViewCell *)self titleLabel];
-  v4 = [v3 font];
-  v5 = [v4 fontName];
+  titleLabel = [(PHTableViewCell *)self titleLabel];
+  font = [titleLabel font];
+  fontName = [font fontName];
   v6 = OS_os_log_ptr;
   v7 = +[UIFont telephonyUIBodyShortEmphasizedFont];
-  v8 = [v7 fontName];
-  if ([v5 isEqual:v8])
+  fontName2 = [v7 fontName];
+  if ([fontName isEqual:fontName2])
   {
-    v9 = [(PHTableViewCell *)self subtitleLabel];
-    v10 = [v9 font];
-    v11 = [v10 fontName];
+    subtitleLabel = [(PHTableViewCell *)self subtitleLabel];
+    font2 = [subtitleLabel font];
+    fontName3 = [font2 fontName];
     v12 = +[UIFont telephonyUISubheadlineShortFont];
     [v12 fontName];
-    v13 = v23 = v3;
-    v22 = [v11 isEqual:v13];
+    v13 = v23 = titleLabel;
+    v22 = [fontName3 isEqual:v13];
 
     v6 = OS_os_log_ptr;
     if (v22)
@@ -234,40 +234,40 @@ LABEL_7:
   {
   }
 
-  v14 = [v6[69] telephonyUIBodyShortEmphasizedFont];
-  v15 = [(PHTableViewCell *)self titleLabel];
-  [v15 setFont:v14];
+  telephonyUIBodyShortEmphasizedFont = [v6[69] telephonyUIBodyShortEmphasizedFont];
+  titleLabel2 = [(PHTableViewCell *)self titleLabel];
+  [titleLabel2 setFont:telephonyUIBodyShortEmphasizedFont];
 
-  v16 = [v6[69] telephonyUISubheadlineShortFont];
-  v17 = [(PHTableViewCell *)self subtitleLabel];
-  [v17 setFont:v16];
+  telephonyUISubheadlineShortFont = [v6[69] telephonyUISubheadlineShortFont];
+  subtitleLabel2 = [(PHTableViewCell *)self subtitleLabel];
+  [subtitleLabel2 setFont:telephonyUISubheadlineShortFont];
 
   v18 = NUIContainerViewLengthUseDefault;
-  v19 = [(PHTableViewCell *)self subtitleLabel];
-  [v19 setCustomBaselineOffsetFromBottom:v18];
+  subtitleLabel3 = [(PHTableViewCell *)self subtitleLabel];
+  [subtitleLabel3 setCustomBaselineOffsetFromBottom:v18];
 
   [(PHTableViewCell *)self effectiveBaselineOffsetFromBottom];
   v21 = v20;
-  v24 = [(PHTableViewCell *)self subtitleLabel];
-  [v24 setCustomBaselineOffsetFromBottom:v21];
+  subtitleLabel4 = [(PHTableViewCell *)self subtitleLabel];
+  [subtitleLabel4 setCustomBaselineOffsetFromBottom:v21];
 }
 
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason
 {
-  v7 = a3;
+  viewCopy = view;
   [(PHTableViewCell *)self rootViewLayoutMargins];
-  if (!a5)
+  if (!reason)
   {
-    [v7 setDirectionalLayoutMargins:?];
+    [viewCopy setDirectionalLayoutMargins:?];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(PHTableViewCell *)self contentView];
-  [v6 bounds];
+  height = fits.height;
+  width = fits.width;
+  contentView = [(PHTableViewCell *)self contentView];
+  [contentView bounds];
   v8 = v7;
 
   if (width >= v8)
@@ -275,8 +275,8 @@ LABEL_7:
     width = v8;
   }
 
-  v9 = [(PHTableViewCell *)self rootView];
-  [v9 sizeThatFits:{width, height}];
+  rootView = [(PHTableViewCell *)self rootView];
+  [rootView sizeThatFits:{width, height}];
   v11 = v10;
   v13 = v12;
 
@@ -292,19 +292,19 @@ LABEL_7:
   v14.receiver = self;
   v14.super_class = PHTableViewCell;
   [(PHTableViewCell *)&v14 layoutSubviews];
-  v3 = [(PHTableViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PHTableViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(PHTableViewCell *)self rootView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  rootView = [(PHTableViewCell *)self rootView];
+  [rootView setFrame:{v5, v7, v9, v11}];
 
   if (self->_foregroundView)
   {
-    v13 = [(PHTableViewCell *)self contentView];
-    [v13 bringSubviewToFront:self->_foregroundView];
+    contentView2 = [(PHTableViewCell *)self contentView];
+    [contentView2 bringSubviewToFront:self->_foregroundView];
 
     [(PHTableViewCell *)self bounds];
     [(UIView *)self->_foregroundView setFrame:?];
@@ -315,15 +315,15 @@ LABEL_7:
 {
   [(PHTableViewCell *)self titleLabelFirstBaselineLayoutConstraintConstant];
   v4 = v3;
-  v5 = [(PHTableViewCell *)self titleLabel];
-  [v5 effectiveFirstBaselineOffsetFromContentTop];
+  titleLabel = [(PHTableViewCell *)self titleLabel];
+  [titleLabel effectiveFirstBaselineOffsetFromContentTop];
   v7 = v4 - v6;
   [(PHTableViewCell *)self titleLabelLeadingLayoutConstraintConstant];
   v9 = v8;
   [(PHTableViewCell *)self subtitleLabelLastBaselineLayoutConstraintConstant];
   v11 = v10;
-  v12 = [(PHTableViewCell *)self subtitleLabel];
-  [v12 effectiveBaselineOffsetFromContentBottom];
+  subtitleLabel = [(PHTableViewCell *)self subtitleLabel];
+  [subtitleLabel effectiveBaselineOffsetFromContentBottom];
   v14 = v11 - v13;
   [(PHTableViewCell *)self titleLabelTrailingLayoutConstraintConstant];
   v16 = v15;
@@ -342,9 +342,9 @@ LABEL_7:
 - (double)titleLabelLeadingLayoutConstraintConstant
 {
   v3 = objc_opt_class();
-  v4 = [(PHTableViewCell *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
-  [v3 titleLabelLeadingAnchorLayoutConstraintConstantForContentCategorySize:v5];
+  traitCollection = [(PHTableViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  [v3 titleLabelLeadingAnchorLayoutConstraintConstantForContentCategorySize:preferredContentSizeCategory];
   v7 = v6;
 
   return v7;

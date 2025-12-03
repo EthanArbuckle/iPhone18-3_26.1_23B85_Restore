@@ -1,17 +1,17 @@
 @interface NSSingleLineTypesetter
-+ (BOOL)_validateAttributes:(id)a3 measuringOnly:(BOOL)a4;
++ (BOOL)_validateAttributes:(id)attributes measuringOnly:(BOOL)only;
 + (void)initialize;
-+ (void)performWithSingleLineTypesetterContext:(id)a3;
++ (void)performWithSingleLineTypesetterContext:(id)context;
 - (NSSingleLineTypesetter)init;
-- (_NSRange)characterRangeForGlyphRange:(_NSRange)a3 actualGlyphRange:(_NSRange *)a4;
-- (_NSRange)glyphRangeForCharacterRange:(_NSRange)a3 actualCharacterRange:(_NSRange *)a4;
+- (_NSRange)characterRangeForGlyphRange:(_NSRange)range actualGlyphRange:(_NSRange *)glyphRange;
+- (_NSRange)glyphRangeForCharacterRange:(_NSRange)range actualCharacterRange:(_NSRange *)characterRange;
 - (id)_textContainerForAttachmentProtocol;
-- (id)createRenderingContextForCharacterRange:(_NSRange)a3 typesetterBehavior:(int64_t)a4 usesScreenFonts:(BOOL)a5 hasStrongRight:(BOOL)a6 syncDirection:(BOOL)a7 mirrorsTextAlignment:(BOOL)a8 maximumWidth:(double)a9;
-- (id)substituteFontForFont:(id)a3;
-- (unint64_t)getGlyphsInRange:(_NSRange)a3 glyphs:(unsigned __int16 *)a4 properties:(int64_t *)a5 characterIndexes:(unint64_t *)a6 bidiLevels:(char *)a7;
+- (id)createRenderingContextForCharacterRange:(_NSRange)range typesetterBehavior:(int64_t)behavior usesScreenFonts:(BOOL)fonts hasStrongRight:(BOOL)right syncDirection:(BOOL)direction mirrorsTextAlignment:(BOOL)alignment maximumWidth:(double)width;
+- (id)substituteFontForFont:(id)font;
+- (unint64_t)getGlyphsInRange:(_NSRange)range glyphs:(unsigned __int16 *)glyphs properties:(int64_t *)properties characterIndexes:(unint64_t *)indexes bidiLevels:(char *)levels;
 - (void)dealloc;
-- (void)getLineFragmentRect:(CGRect *)a3 usedRect:(CGRect *)a4 remainingRect:(CGRect *)a5 forStartingGlyphAtIndex:(unint64_t)a6 proposedRect:(CGRect)a7 lineSpacing:(double)a8 paragraphSpacingBefore:(double)a9 paragraphSpacingAfter:(double)a10;
-- (void)setGlyphs:(const unsigned __int16 *)a3 properties:(const int64_t *)a4 characterIndexes:(const unint64_t *)a5 font:(id)a6 forGlyphRange:(_NSRange)a7;
+- (void)getLineFragmentRect:(CGRect *)rect usedRect:(CGRect *)usedRect remainingRect:(CGRect *)remainingRect forStartingGlyphAtIndex:(unint64_t)index proposedRect:(CGRect)proposedRect lineSpacing:(double)spacing paragraphSpacingBefore:(double)before paragraphSpacingAfter:(double)self0;
+- (void)setGlyphs:(const unsigned __int16 *)glyphs properties:(const int64_t *)properties characterIndexes:(const unint64_t *)indexes font:(id)font forGlyphRange:(_NSRange)range;
 @end
 
 @implementation NSSingleLineTypesetter
@@ -51,7 +51,7 @@
   return v3;
 }
 
-+ (void)performWithSingleLineTypesetterContext:(id)a3
++ (void)performWithSingleLineTypesetterContext:(id)context
 {
   os_unfair_lock_lock_with_options();
   v5 = __NSSingleLineTypesetterCacheNextIndex;
@@ -72,10 +72,10 @@
     os_unfair_lock_unlock(&__NSSingleLineTypesetterLock);
   }
 
-  v6 = [objc_allocWithZone(a1) init];
+  v6 = [objc_allocWithZone(self) init];
 LABEL_6:
   v9 = v6;
-  (*(a3 + 2))(a3);
+  (*(context + 2))(context);
   os_unfair_lock_lock_with_options();
   v7 = __NSSingleLineTypesetterCacheNextIndex;
   if (__NSSingleLineTypesetterCacheNextIndex > 4)
@@ -99,16 +99,16 @@ LABEL_6:
   [(NSATSTypesetter *)&v3 dealloc];
 }
 
-+ (BOOL)_validateAttributes:(id)a3 measuringOnly:(BOOL)a4
++ (BOOL)_validateAttributes:(id)attributes measuringOnly:(BOOL)only
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (only)
   {
     return 1;
   }
 
   memset(v12, 0, sizeof(v12));
-  Count = CFDictionaryGetCount(a3);
+  Count = CFDictionaryGetCount(attributes);
   if (Count > 40)
   {
     return 0;
@@ -116,7 +116,7 @@ LABEL_6:
 
   v7 = Count;
   v8 = v12;
-  CFDictionaryGetKeysAndValues(a3, v12, 0);
+  CFDictionaryGetKeysAndValues(attributes, v12, 0);
   v9 = v12 + v7;
   do
   {
@@ -140,9 +140,9 @@ LABEL_6:
   {
     v4 = [[__NSImmutableTextStorage alloc] initWithAttributedString:[(NSSingleLineTypesetter *)self attributedString]];
     self->_textStorage = v4;
-    v5 = [(__NSImmutableTextStorage *)v4 layoutManager];
-    [(NSLayoutManager *)v5 setApplicationFrameworkContext:[(NSTypesetter *)self applicationFrameworkContext]];
-    [(NSLayoutManager *)v5 setUsesFontLeading:[(NSTypesetter *)self usesFontLeading]];
+    layoutManager = [(__NSImmutableTextStorage *)v4 layoutManager];
+    [(NSLayoutManager *)layoutManager setApplicationFrameworkContext:[(NSTypesetter *)self applicationFrameworkContext]];
+    [(NSLayoutManager *)layoutManager setUsesFontLeading:[(NSTypesetter *)self usesFontLeading]];
     [(NSTextContainer *)[(__NSImmutableTextStorage *)self->_textStorage textContainer] setSize:self->_lineWidth, 0.0];
     textStorage = self->_textStorage;
   }
@@ -150,21 +150,21 @@ LABEL_6:
   return [(__NSImmutableTextStorage *)textStorage textContainer];
 }
 
-- (id)createRenderingContextForCharacterRange:(_NSRange)a3 typesetterBehavior:(int64_t)a4 usesScreenFonts:(BOOL)a5 hasStrongRight:(BOOL)a6 syncDirection:(BOOL)a7 mirrorsTextAlignment:(BOOL)a8 maximumWidth:(double)a9
+- (id)createRenderingContextForCharacterRange:(_NSRange)range typesetterBehavior:(int64_t)behavior usesScreenFonts:(BOOL)fonts hasStrongRight:(BOOL)right syncDirection:(BOOL)direction mirrorsTextAlignment:(BOOL)alignment maximumWidth:(double)width
 {
-  v9 = a7;
-  v10 = a6;
-  v11 = a5;
-  length = a3.length;
-  location = a3.location;
+  directionCopy = direction;
+  rightCopy = right;
+  fontsCopy = fonts;
+  length = range.length;
+  location = range.location;
   v30 = 0;
   v29 = *MEMORY[0x1E696AA78];
   v17 = [(NSAttributedString *)self->super.attributedString length];
   if (length || (v18 = v17, result = 0, location <= v18))
   {
-    self->_lineWidth = a9;
-    self->_slFlags = (*&self->_slFlags & 0xFFFFFFFE | v11);
-    [(NSTypesetter *)self setTypesetterBehavior:a4];
+    self->_lineWidth = width;
+    self->_slFlags = (*&self->_slFlags & 0xFFFFFFFE | fontsCopy);
+    [(NSTypesetter *)self setTypesetterBehavior:behavior];
     [(NSTypesetter *)self setParagraphGlyphRange:location separatorGlyphRange:length, location + length, 0];
     [(NSATSTypesetter *)self beginParagraph];
     v27 = location;
@@ -177,7 +177,7 @@ LABEL_6:
     }
 
     v21 = v20[5];
-    if (v10)
+    if (rightCopy)
     {
       v22 = 0x8000;
     }
@@ -188,7 +188,7 @@ LABEL_6:
     }
 
     *(v21 + 216) = *(v21 + 216) & 0xFFFF7FFF | v22;
-    if (a8)
+    if (alignment)
     {
       v23 = 4;
     }
@@ -198,7 +198,7 @@ LABEL_6:
       v23 = 0;
     }
 
-    if (v9)
+    if (directionCopy)
     {
       v24 = 2;
     }
@@ -218,8 +218,8 @@ LABEL_6:
     }
 
     [v30 setResolvedTextAlignment:{(*(v25[5] + 216) >> 7) & 0xF, v27, v28}];
-    v26 = [(NSATSTypesetter *)self _baseWritingDirection];
-    [v30 setResolvedBaseWritingDirection:v26];
+    _baseWritingDirection = [(NSATSTypesetter *)self _baseWritingDirection];
+    [v30 setResolvedBaseWritingDirection:_baseWritingDirection];
     [(NSATSTypesetter *)self endParagraph];
     [(NSATSTypesetter *)self _flushCachedObjects];
 
@@ -230,68 +230,68 @@ LABEL_6:
   return result;
 }
 
-- (void)setGlyphs:(const unsigned __int16 *)a3 properties:(const int64_t *)a4 characterIndexes:(const unint64_t *)a5 font:(id)a6 forGlyphRange:(_NSRange)a7
+- (void)setGlyphs:(const unsigned __int16 *)glyphs properties:(const int64_t *)properties characterIndexes:(const unint64_t *)indexes font:(id)font forGlyphRange:(_NSRange)range
 {
-  length = a7.length;
-  v11 = a7.location - self->_currentBufferRange.location;
-  if (a3)
+  length = range.length;
+  v11 = range.location - self->_currentBufferRange.location;
+  if (glyphs)
   {
     glyphs = self->_glyphs;
     if (glyphs)
     {
-      memcpy(&glyphs[v11], a3, 2 * a7.length);
+      memcpy(&glyphs[v11], glyphs, 2 * range.length);
     }
   }
 
-  if (a4)
+  if (properties)
   {
     props = self->_props;
     if (props)
     {
-      memcpy(&props[v11], a4, 8 * length);
+      memcpy(&props[v11], properties, 8 * length);
     }
   }
 
-  if (a5)
+  if (indexes)
   {
     charIndexes = self->_charIndexes;
     if (charIndexes)
     {
 
-      memcpy(&charIndexes[v11], a5, 8 * length);
+      memcpy(&charIndexes[v11], indexes, 8 * length);
     }
   }
 }
 
-- (_NSRange)characterRangeForGlyphRange:(_NSRange)a3 actualGlyphRange:(_NSRange *)a4
+- (_NSRange)characterRangeForGlyphRange:(_NSRange)range actualGlyphRange:(_NSRange *)glyphRange
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   result.length = length;
   result.location = location;
   return result;
 }
 
-- (_NSRange)glyphRangeForCharacterRange:(_NSRange)a3 actualCharacterRange:(_NSRange *)a4
+- (_NSRange)glyphRangeForCharacterRange:(_NSRange)range actualCharacterRange:(_NSRange *)characterRange
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   result.length = length;
   result.location = location;
   return result;
 }
 
-- (unint64_t)getGlyphsInRange:(_NSRange)a3 glyphs:(unsigned __int16 *)a4 properties:(int64_t *)a5 characterIndexes:(unint64_t *)a6 bidiLevels:(char *)a7
+- (unint64_t)getGlyphsInRange:(_NSRange)range glyphs:(unsigned __int16 *)glyphs properties:(int64_t *)properties characterIndexes:(unint64_t *)indexes bidiLevels:(char *)levels
 {
-  length = a3.length;
-  location = a3.location;
-  self->_currentBufferRange = a3;
-  self->_glyphs = a4;
-  self->_props = a5;
-  self->_charIndexes = a6;
-  if (a7)
+  length = range.length;
+  location = range.location;
+  self->_currentBufferRange = range;
+  self->_glyphs = glyphs;
+  self->_props = properties;
+  self->_charIndexes = indexes;
+  if (levels)
   {
-    bzero(a7, a3.length);
+    bzero(levels, range.length);
   }
 
   [+[NSGlyphGenerator defaultGlyphGenerator](NSGlyphGenerator defaultGlyphGenerator];
@@ -301,48 +301,48 @@ LABEL_6:
   return length;
 }
 
-- (void)getLineFragmentRect:(CGRect *)a3 usedRect:(CGRect *)a4 remainingRect:(CGRect *)a5 forStartingGlyphAtIndex:(unint64_t)a6 proposedRect:(CGRect)a7 lineSpacing:(double)a8 paragraphSpacingBefore:(double)a9 paragraphSpacingAfter:(double)a10
+- (void)getLineFragmentRect:(CGRect *)rect usedRect:(CGRect *)usedRect remainingRect:(CGRect *)remainingRect forStartingGlyphAtIndex:(unint64_t)index proposedRect:(CGRect)proposedRect lineSpacing:(double)spacing paragraphSpacingBefore:(double)before paragraphSpacingAfter:(double)self0
 {
   lineWidth = self->_lineWidth;
-  if (lineWidth < a7.size.width && lineWidth > 0.0)
+  if (lineWidth < proposedRect.size.width && lineWidth > 0.0)
   {
-    a7.size.width = self->_lineWidth;
+    proposedRect.size.width = self->_lineWidth;
   }
 
-  if (a3)
+  if (rect)
   {
-    a3->origin.x = a7.origin.x;
-    a3->origin.y = a7.origin.y;
-    a3->size.width = a7.size.width;
-    a3->size.height = a7.size.height + a8 + a9 + a10;
+    rect->origin.x = proposedRect.origin.x;
+    rect->origin.y = proposedRect.origin.y;
+    rect->size.width = proposedRect.size.width;
+    rect->size.height = proposedRect.size.height + spacing + before + after;
   }
 
-  if (a4)
+  if (usedRect)
   {
-    a4->origin.x = a7.origin.x;
-    a4->origin.y = a7.origin.y + a9;
-    a4->size.width = a7.size.width;
-    a4->size.height = a7.size.height + a9 + a10;
+    usedRect->origin.x = proposedRect.origin.x;
+    usedRect->origin.y = proposedRect.origin.y + before;
+    usedRect->size.width = proposedRect.size.width;
+    usedRect->size.height = proposedRect.size.height + before + after;
   }
 
-  if (a5)
+  if (remainingRect)
   {
     v12 = *(MEMORY[0x1E696AA80] + 16);
-    a5->origin = *MEMORY[0x1E696AA80];
-    a5->size = v12;
+    remainingRect->origin = *MEMORY[0x1E696AA80];
+    remainingRect->size = v12;
   }
 }
 
-- (id)substituteFontForFont:(id)a3
+- (id)substituteFontForFont:(id)font
 {
   if (*&self->_slFlags)
   {
-    return [a3 screenFontWithRenderingMode:0];
+    return [font screenFontWithRenderingMode:0];
   }
 
   else
   {
-    return a3;
+    return font;
   }
 }
 

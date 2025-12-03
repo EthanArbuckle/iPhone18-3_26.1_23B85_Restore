@@ -1,24 +1,24 @@
 @interface PUSectionedTilingLayout
 - (BOOL)_scrollsHorizontallyNotVertically;
-- (CGRect)boundsForSection:(int64_t)a3;
+- (CGRect)boundsForSection:(int64_t)section;
 - (CGRect)contentBounds;
-- (CGRect)visibleRectForScrollingToItemAtIndexPath:(id)a3 scrollPosition:(int64_t)a4;
+- (CGRect)visibleRectForScrollingToItemAtIndexPath:(id)path scrollPosition:(int64_t)position;
 - (CGSize)interSectionSpacing;
-- (CGSize)sizeForSection:(int64_t)a3 numberOfItems:(int64_t)a4;
-- (PUSectionedTilingLayout)initWithDataSource:(id)a3;
+- (CGSize)sizeForSection:(int64_t)section numberOfItems:(int64_t)items;
+- (PUSectionedTilingLayout)initWithDataSource:(id)source;
 - (_NSRange)computedSections;
-- (_PUSectionedTilingLayoutSectionInfo)_sectionInfoForSection:(int64_t)a3;
-- (id)layoutInfosForTilesInRect:(CGRect)a3;
+- (_PUSectionedTilingLayoutSectionInfo)_sectionInfoForSection:(int64_t)section;
+- (id)layoutInfosForTilesInRect:(CGRect)rect;
 - (int64_t)_numberOfSections;
 - (void)_computeSeedSectionIfNeeded;
 - (void)_ensureComputedSectionsHaveBeenSeeded;
 - (void)_markAllSectionInfosInvalid;
-- (void)computeSectionsInRect:(CGRect)a3;
+- (void)computeSectionsInRect:(CGRect)rect;
 - (void)dealloc;
-- (void)invalidateLayoutForUpdateWithItems:(id)a3;
+- (void)invalidateLayoutForUpdateWithItems:(id)items;
 - (void)invalidateSectionInfos;
 - (void)prepareLayout;
-- (void)setVisibleRect:(CGRect)a3;
+- (void)setVisibleRect:(CGRect)rect;
 @end
 
 @implementation PUSectionedTilingLayout
@@ -154,8 +154,8 @@
   result = self->_numberOfSections;
   if (result == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PUSectionedTilingLayout.m" lineNumber:349 description:{@"Invalid parameter not satisfying: %@", @"_numberOfSections != NSNotFound"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUSectionedTilingLayout.m" lineNumber:349 description:{@"Invalid parameter not satisfying: %@", @"_numberOfSections != NSNotFound"}];
 
     return self->_numberOfSections;
   }
@@ -163,50 +163,50 @@
   return result;
 }
 
-- (_PUSectionedTilingLayoutSectionInfo)_sectionInfoForSection:(int64_t)a3
+- (_PUSectionedTilingLayoutSectionInfo)_sectionInfoForSection:(int64_t)section
 {
   if (self->_numberOfSections == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v43 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v43 handleFailureInMethod:a2 object:self file:@"PUSectionedTilingLayout.m" lineNumber:274 description:{@"_numberOfSections is NSNotFound, this is indicative of the layout not being prepared yet. Make sure the tiling view has performed a layout pass before asking the layout for information."}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUSectionedTilingLayout.m" lineNumber:274 description:{@"_numberOfSections is NSNotFound, this is indicative of the layout not being prepared yet. Make sure the tiling view has performed a layout pass before asking the layout for information."}];
 
-    if ((a3 & 0x8000000000000000) == 0)
+    if ((section & 0x8000000000000000) == 0)
     {
       goto LABEL_3;
     }
   }
 
-  else if ((a3 & 0x8000000000000000) == 0)
+  else if ((section & 0x8000000000000000) == 0)
   {
     goto LABEL_3;
   }
 
-  v44 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v44 handleFailureInMethod:a2 object:self file:@"PUSectionedTilingLayout.m" lineNumber:275 description:{@"Invalid parameter not satisfying: %@", @"section >= 0"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUSectionedTilingLayout.m" lineNumber:275 description:{@"Invalid parameter not satisfying: %@", @"section >= 0"}];
 
 LABEL_3:
-  if (self->_numberOfSections <= a3)
+  if (self->_numberOfSections <= section)
   {
-    v45 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v45 handleFailureInMethod:a2 object:self file:@"PUSectionedTilingLayout.m" lineNumber:276 description:{@"Invalid parameter not satisfying: %@", @"section < _numberOfSections"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PUSectionedTilingLayout.m" lineNumber:276 description:{@"Invalid parameter not satisfying: %@", @"section < _numberOfSections"}];
   }
 
-  v6 = &self->_sectionInfos[a3];
+  v6 = &self->_sectionInfos[section];
   if (!v6->var0)
   {
     [(PUSectionedTilingLayout *)self interSectionSpacing];
     v8 = v7;
     v10 = v9;
-    if ([(PUSectionedTilingLayout *)self _numberOfSections]<= a3)
+    if ([(PUSectionedTilingLayout *)self _numberOfSections]<= section)
     {
       v13 = 0;
     }
 
     else
     {
-      v11 = [(PUTilingLayout *)self dataSource];
-      v12 = [MEMORY[0x1E696AC88] indexPathWithIndex:a3];
-      v13 = [v11 numberOfSubItemsAtIndexPath:v12];
+      dataSource = [(PUTilingLayout *)self dataSource];
+      v12 = [MEMORY[0x1E696AC88] indexPathWithIndex:section];
+      v13 = [dataSource numberOfSubItemsAtIndexPath:v12];
     }
 
     if (v13)
@@ -229,7 +229,7 @@ LABEL_3:
       v15 = *MEMORY[0x1E695F060];
     }
 
-    [(PUSectionedTilingLayout *)self sizeForSection:a3 numberOfItems:v13, *MEMORY[0x1E695F060]];
+    [(PUSectionedTilingLayout *)self sizeForSection:section numberOfItems:v13, *MEMORY[0x1E695F060]];
     v17 = v16;
     v19 = v18;
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -237,16 +237,16 @@ LABEL_3:
     aBlock[2] = __50__PUSectionedTilingLayout__sectionInfoForSection___block_invoke;
     aBlock[3] = &unk_1E7B7E0B0;
     aBlock[4] = self;
-    aBlock[5] = a3;
+    aBlock[5] = section;
     v20 = _Block_copy(aBlock);
-    v21 = [(PUSectionedTilingLayout *)self leftToRight];
+    leftToRight = [(PUSectionedTilingLayout *)self leftToRight];
     p_computedSections = &self->_computedSections;
     location = self->_computedSections.location;
     if (location == 0x7FFFFFFFFFFFFFFFLL)
     {
-      p_computedSections->location = a3;
+      p_computedSections->location = section;
       self->_computedSections.length = 1;
-      if (self->_seedSection == a3)
+      if (self->_seedSection == section)
       {
         p_seedSectionOrigin = &self->_seedSectionOrigin;
       }
@@ -261,33 +261,33 @@ LABEL_3:
       goto LABEL_24;
     }
 
-    v25 = v21;
+    v25 = leftToRight;
     x = *MEMORY[0x1E695F058];
     y = *(MEMORY[0x1E695F058] + 8);
-    if (location <= a3)
+    if (location <= section)
     {
       v38 = self->_computedSections.length + location;
-      if (a3 < v38)
+      if (section < v38)
       {
-        v39 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v39 handleFailureInMethod:a2 object:self file:@"PUSectionedTilingLayout.m" lineNumber:333 description:@"unexpected section"];
+        currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler4 handleFailureInMethod:a2 object:self file:@"PUSectionedTilingLayout.m" lineNumber:333 description:@"unexpected section"];
 
         goto LABEL_24;
       }
 
-      v20[2](v20, a3 - v38);
-      for (i = self->_computedSections.length + p_computedSections->location; i < a3 - 1; ++i)
+      v20[2](v20, section - v38);
+      for (i = self->_computedSections.length + p_computedSections->location; i < section - 1; ++i)
       {
         [(PUSectionedTilingLayout *)self _sectionInfoForSection:i];
       }
 
-      v41 = [(PUSectionedTilingLayout *)self _sectionInfoForSection:a3 - 1];
-      v42 = [(PUSectionedTilingLayout *)self _scrollsHorizontallyNotVertically];
+      v41 = [(PUSectionedTilingLayout *)self _sectionInfoForSection:section - 1];
+      _scrollsHorizontallyNotVertically = [(PUSectionedTilingLayout *)self _scrollsHorizontallyNotVertically];
       v34 = v41->var2.origin.x;
       v35 = v41->var2.origin.y;
       width = v41->var2.size.width;
       height = v41->var2.size.height;
-      if (!v42)
+      if (!_scrollsHorizontallyNotVertically)
       {
         y = v14 + CGRectGetMaxY(*&v34);
         goto LABEL_24;
@@ -306,7 +306,7 @@ LABEL_24:
         v6->var0 = 1;
         v47.location = p_computedSections->location;
         v47.length = self->_computedSections.length;
-        v48.location = a3;
+        v48.location = section;
         v48.length = 1;
         v29 = NSUnionRange(v47, v48);
         p_computedSections->location = v29.location;
@@ -321,19 +321,19 @@ LABEL_24:
 
     else
     {
-      v20[2](v20, location + ~a3);
-      for (j = p_computedSections->location - 1; j > a3 + 1; --j)
+      v20[2](v20, location + ~section);
+      for (j = p_computedSections->location - 1; j > section + 1; --j)
       {
         [(PUSectionedTilingLayout *)self _sectionInfoForSection:j];
       }
 
-      v32 = [(PUSectionedTilingLayout *)self _sectionInfoForSection:a3 + 1];
-      v33 = [(PUSectionedTilingLayout *)self _scrollsHorizontallyNotVertically];
+      v32 = [(PUSectionedTilingLayout *)self _sectionInfoForSection:section + 1];
+      _scrollsHorizontallyNotVertically2 = [(PUSectionedTilingLayout *)self _scrollsHorizontallyNotVertically];
       v34 = v32->var2.origin.x;
       v35 = v32->var2.origin.y;
       width = v32->var2.size.width;
       height = v32->var2.size.height;
-      if (!v33)
+      if (!_scrollsHorizontallyNotVertically2)
       {
         y = CGRectGetMinY(*&v34) - v14 - v19;
         goto LABEL_24;
@@ -376,19 +376,19 @@ void __50__PUSectionedTilingLayout__sectionInfoForSection___block_invoke(uint64_
   }
 }
 
-- (void)computeSectionsInRect:(CGRect)a3
+- (void)computeSectionsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(PUSectionedTilingLayout *)self _computeSeedSectionIfNeeded];
   [(PUSectionedTilingLayout *)self _ensureComputedSectionsHaveBeenSeeded];
-  v8 = [(PUSectionedTilingLayout *)self leftToRight];
+  leftToRight = [(PUSectionedTilingLayout *)self leftToRight];
   location = self->_computedSections.location;
   if (location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = v8;
+    v10 = leftToRight;
     v26 = 0;
     v27 = &v26;
     v28 = 0x2020000000;
@@ -516,7 +516,7 @@ BOOL __49__PUSectionedTilingLayout_computeSectionsInRect___block_invoke_2(uint64
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v4 = 138412546;
-      v5 = self;
+      selfCopy = self;
       v6 = 2112;
       v7 = &stru_1F2AC6818;
       _os_log_impl(&dword_1B36F3000, v3, OS_LOG_TYPE_DEFAULT, "No sections have been seeded in sectioned layout %@. Seeding with section zero, but performance impact is unbounded. %@", &v4, 0x16u);
@@ -529,22 +529,22 @@ BOOL __49__PUSectionedTilingLayout_computeSectionsInRect___block_invoke_2(uint64
 
 - (BOOL)_scrollsHorizontallyNotVertically
 {
-  v4 = [(PUTilingLayout *)self preferredScrollInfo];
-  v5 = [v4 scrollDirections];
-  v6 = v5 & 2;
-  if (((v5 >> 2) & 1) == ((v5 >> 1) & 1))
+  preferredScrollInfo = [(PUTilingLayout *)self preferredScrollInfo];
+  scrollDirections = [preferredScrollInfo scrollDirections];
+  v6 = scrollDirections & 2;
+  if (((scrollDirections >> 2) & 1) == ((scrollDirections >> 1) & 1))
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PUSectionedTilingLayout.m" lineNumber:207 description:{@"sectioned layout should either scroll horizontally or vertically, but not in both directions"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUSectionedTilingLayout.m" lineNumber:207 description:{@"sectioned layout should either scroll horizontally or vertically, but not in both directions"}];
   }
 
   return v6 != 0;
 }
 
-- (CGSize)sizeForSection:(int64_t)a3 numberOfItems:(int64_t)a4
+- (CGSize)sizeForSection:(int64_t)section numberOfItems:(int64_t)items
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PUSectionedTilingLayout.m" lineNumber:198 description:@"subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUSectionedTilingLayout.m" lineNumber:198 description:@"subclass must implement"];
 
   v7 = *MEMORY[0x1E695F060];
   v8 = *(MEMORY[0x1E695F060] + 8);
@@ -563,9 +563,9 @@ BOOL __49__PUSectionedTilingLayout_computeSectionsInRect___block_invoke_2(uint64
   return result;
 }
 
-- (CGRect)boundsForSection:(int64_t)a3
+- (CGRect)boundsForSection:(int64_t)section
 {
-  v3 = [(PUSectionedTilingLayout *)self _sectionInfoForSection:a3];
+  v3 = [(PUSectionedTilingLayout *)self _sectionInfoForSection:section];
   x = v3->var2.origin.x;
   y = v3->var2.origin.y;
   width = v3->var2.size.width;
@@ -577,18 +577,18 @@ BOOL __49__PUSectionedTilingLayout_computeSectionsInRect___block_invoke_2(uint64
   return result;
 }
 
-- (void)invalidateLayoutForUpdateWithItems:(id)a3
+- (void)invalidateLayoutForUpdateWithItems:(id)items
 {
   v4.receiver = self;
   v4.super_class = PUSectionedTilingLayout;
-  [(PUTilingLayout *)&v4 invalidateLayoutForUpdateWithItems:a3];
+  [(PUTilingLayout *)&v4 invalidateLayoutForUpdateWithItems:items];
   [(PUSectionedTilingLayout *)self invalidateSectionInfos];
   [(PUSectionedTilingLayout *)self _invalidateNumberOfSections];
 }
 
-- (CGRect)visibleRectForScrollingToItemAtIndexPath:(id)a3 scrollPosition:(int64_t)a4
+- (CGRect)visibleRectForScrollingToItemAtIndexPath:(id)path scrollPosition:(int64_t)position
 {
-  v5 = [(PUTilingLayout *)self layoutInfoForTileWithIndexPath:a3 kind:@"PUTileKindItemContent"];
+  v5 = [(PUTilingLayout *)self layoutInfoForTileWithIndexPath:path kind:@"PUTileKindItemContent"];
   [v5 center];
   v7 = v6;
   v9 = v8;
@@ -720,12 +720,12 @@ BOOL __49__PUSectionedTilingLayout_computeSectionsInRect___block_invoke_2(uint64
   return result;
 }
 
-- (id)layoutInfosForTilesInRect:(CGRect)a3
+- (id)layoutInfosForTilesInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(PUSectionedTilingLayout *)self computeSectionsInRect:?];
   v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   [(PUSectionedTilingLayout *)self addLayoutInfosForSupplementaryTilesInRect:v8 toSet:x, y, width, height];
@@ -745,16 +745,16 @@ BOOL __49__PUSectionedTilingLayout_computeSectionsInRect___block_invoke_2(uint64
     ++location;
   }
 
-  v11 = [v8 allObjects];
+  allObjects = [v8 allObjects];
 
-  return v11;
+  return allObjects;
 }
 
 - (CGRect)contentBounds
 {
   [(PUSectionedTilingLayout *)self _computeSeedSectionIfNeeded];
   [(PUSectionedTilingLayout *)self _ensureComputedSectionsHaveBeenSeeded];
-  v3 = [(PUSectionedTilingLayout *)self leftToRight];
+  leftToRight = [(PUSectionedTilingLayout *)self leftToRight];
   location = self->_computedSections.location;
   if (location == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -766,7 +766,7 @@ BOOL __49__PUSectionedTilingLayout_computeSectionsInRect___block_invoke_2(uint64
 
   else
   {
-    v9 = v3;
+    v9 = leftToRight;
     v10 = self->_computedSections.length + location;
     v37 = CGRectUnion([(PUSectionedTilingLayout *)self _sectionInfoForSection:self->_computedSections.location][16], [(PUSectionedTilingLayout *)self _sectionInfoForSection:v10 - 1][16]);
     y = v37.origin.y;
@@ -785,9 +785,9 @@ BOOL __49__PUSectionedTilingLayout_computeSectionsInRect___block_invoke_2(uint64
     v22 = v21;
     if (location >= 1)
     {
-      v23 = [(PUSectionedTilingLayout *)self _scrollsHorizontallyNotVertically];
+      _scrollsHorizontallyNotVertically = [(PUSectionedTilingLayout *)self _scrollsHorizontallyNotVertically];
       v24 = location;
-      if (v23)
+      if (_scrollsHorizontallyNotVertically)
       {
         v25 = (v16 + v20) * v24;
         if (v9)
@@ -808,13 +808,13 @@ BOOL __49__PUSectionedTilingLayout_computeSectionsInRect___block_invoke_2(uint64
     }
 
     v26 = *(v11 + 16);
-    v27 = [(PUSectionedTilingLayout *)self _numberOfSections];
-    if ((v10 - 1) < v27 - 1)
+    _numberOfSections = [(PUSectionedTilingLayout *)self _numberOfSections];
+    if ((v10 - 1) < _numberOfSections - 1)
     {
-      v28 = v27;
-      v29 = [(PUSectionedTilingLayout *)self _scrollsHorizontallyNotVertically];
+      v28 = _numberOfSections;
+      _scrollsHorizontallyNotVertically2 = [(PUSectionedTilingLayout *)self _scrollsHorizontallyNotVertically];
       v30 = (v28 - v10);
-      if (v29)
+      if (_scrollsHorizontallyNotVertically2)
       {
         v31 = -((v16 + v20) * v30 - v20);
         v32 = -((v16 + v20) * v30);
@@ -855,21 +855,21 @@ BOOL __49__PUSectionedTilingLayout_computeSectionsInRect___block_invoke_2(uint64
   [(PUTilingLayout *)&v5 prepareLayout];
   if (self->_numberOfSections == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = [(PUTilingLayout *)self dataSource];
-    v4 = [MEMORY[0x1E696AC88] pu_rootIndexPath];
-    self->_numberOfSections = [v3 numberOfSubItemsAtIndexPath:v4];
+    dataSource = [(PUTilingLayout *)self dataSource];
+    pu_rootIndexPath = [MEMORY[0x1E696AC88] pu_rootIndexPath];
+    self->_numberOfSections = [dataSource numberOfSubItemsAtIndexPath:pu_rootIndexPath];
 
     self->_sectionInfos = malloc_type_realloc(self->_sectionInfos, 48 * self->_numberOfSections, 0x1000040AC875A91uLL);
     [(PUSectionedTilingLayout *)self _markAllSectionInfosInvalid];
   }
 }
 
-- (void)setVisibleRect:(CGRect)a3
+- (void)setVisibleRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(PUTilingLayout *)self visibleRect];
   v9 = v8;
   v11 = v10;
@@ -892,11 +892,11 @@ BOOL __49__PUSectionedTilingLayout_computeSectionsInRect___block_invoke_2(uint64
   [(PUSectionedTilingLayout *)&v3 dealloc];
 }
 
-- (PUSectionedTilingLayout)initWithDataSource:(id)a3
+- (PUSectionedTilingLayout)initWithDataSource:(id)source
 {
   v7.receiver = self;
   v7.super_class = PUSectionedTilingLayout;
-  v3 = [(PUTilingLayout *)&v7 initWithDataSource:a3];
+  v3 = [(PUTilingLayout *)&v7 initWithDataSource:source];
   v4 = v3;
   if (v3)
   {
@@ -905,8 +905,8 @@ BOOL __49__PUSectionedTilingLayout_computeSectionsInRect___block_invoke_2(uint64
     v3->_sectionInfos = 0;
     v3->_computedSections = xmmword_1B3D0D060;
     v3->_seedSection = 0x7FFFFFFFFFFFFFFFLL;
-    v5 = [MEMORY[0x1E69DC668] sharedApplication];
-    v4->_leftToRight = [v5 userInterfaceLayoutDirection] == 0;
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    v4->_leftToRight = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection] == 0;
   }
 
   return v4;

@@ -3,31 +3,31 @@
 - (CGAffineTransform)drawingTransform;
 - (PKCanvasView)canvasView;
 - (id)tiledView;
-- (void)drawingDidChangeVisibleStrokes:(BOOL)a3;
+- (void)drawingDidChangeVisibleStrokes:(BOOL)strokes;
 - (void)fullyRendered;
 @end
 
 @implementation PKCanvasAttachmentView
 
-- (void)drawingDidChangeVisibleStrokes:(BOOL)a3
+- (void)drawingDidChangeVisibleStrokes:(BOOL)strokes
 {
   v5.receiver = self;
   v5.super_class = PKCanvasAttachmentView;
-  [(PKAttachmentView *)&v5 drawingDidChangeVisibleStrokes:a3];
-  v4 = [(PKCanvasAttachmentView *)self canvasView];
-  [v4 _drawingDidChange];
+  [(PKAttachmentView *)&v5 drawingDidChangeVisibleStrokes:strokes];
+  canvasView = [(PKCanvasAttachmentView *)self canvasView];
+  [canvasView _drawingDidChange];
 }
 
 - (void)fullyRendered
 {
-  v2 = [(PKCanvasAttachmentView *)self canvasView];
-  [v2 _fullyRendered];
+  canvasView = [(PKCanvasAttachmentView *)self canvasView];
+  [canvasView _fullyRendered];
 }
 
 - (BOOL)disableTileAnimations
 {
-  v3 = [(PKCanvasAttachmentView *)self canvasView];
-  v4 = ([v3 isHidden] & 1) != 0 || -[NSMutableArray count](self->_fullyRenderedCompletionBlocks, "count") != 0;
+  canvasView = [(PKCanvasAttachmentView *)self canvasView];
+  v4 = ([canvasView isHidden] & 1) != 0 || -[NSMutableArray count](self->_fullyRenderedCompletionBlocks, "count") != 0;
 
   return v4;
 }
@@ -59,10 +59,10 @@
 
 - (id)tiledView
 {
-  v2 = [(PKCanvasAttachmentView *)self canvasView];
-  v3 = [v2 _tiledView];
+  canvasView = [(PKCanvasAttachmentView *)self canvasView];
+  _tiledView = [canvasView _tiledView];
 
-  return v3;
+  return _tiledView;
 }
 
 - (PKCanvasView)canvasView

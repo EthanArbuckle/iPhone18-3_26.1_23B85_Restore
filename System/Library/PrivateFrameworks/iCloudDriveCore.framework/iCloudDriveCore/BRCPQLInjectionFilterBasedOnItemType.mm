@@ -1,26 +1,26 @@
 @interface BRCPQLInjectionFilterBasedOnItemType
 + (id)_injectionOptions;
-- (BRCPQLInjectionFilterBasedOnItemType)initWithItemType:(id)a3;
+- (BRCPQLInjectionFilterBasedOnItemType)initWithItemType:(id)type;
 @end
 
 @implementation BRCPQLInjectionFilterBasedOnItemType
 
-- (BRCPQLInjectionFilterBasedOnItemType)initWithItemType:(id)a3
+- (BRCPQLInjectionFilterBasedOnItemType)initWithItemType:(id)type
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _injectionOptions];
-  v6 = v4;
-  if (!v4)
+  typeCopy = type;
+  _injectionOptions = [objc_opt_class() _injectionOptions];
+  null = typeCopy;
+  if (!typeCopy)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [_injectionOptions objectForKeyedSubscript:null];
   v10.receiver = self;
   v10.super_class = BRCPQLInjectionFilterBasedOnItemType;
   v8 = [(BRCPQLInjectionBase *)&v10 initWithActualInjection:v7];
 
-  if (!v4)
+  if (!typeCopy)
   {
   }
 

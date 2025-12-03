@@ -3,12 +3,12 @@
 - (OBWelcomeController)welcomeController;
 - (UICollectionView)collectionView;
 - (id)_configuredCollectionView;
-- (void)_appDidBecomeActive:(id)a3;
-- (void)_configureCell:(id)a3 viewModel:(id)a4;
-- (void)_configureChildViewController:(id)a3;
+- (void)_appDidBecomeActive:(id)active;
+- (void)_configureCell:(id)cell viewModel:(id)model;
+- (void)_configureChildViewController:(id)controller;
 - (void)_configureOnboardingViewController;
-- (void)_updateSelectionForCellAtIndexPath:(id)a3 isSelected:(BOOL)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)_updateSelectionForCellAtIndexPath:(id)path isSelected:(BOOL)selected;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
 - (void)viewDidLoad;
 @end
@@ -38,14 +38,14 @@
   [v14 appendSectionsWithIdentifiers:&off_100674F70];
   [v14 appendItemsWithIdentifiers:&off_100674F88 intoSectionWithIdentifier:&off_100674258];
   [v14 appendItemsWithIdentifiers:&off_100674FA0 intoSectionWithIdentifier:&off_100674270];
-  v15 = [(MailTrackingProtectionOnboardingViewController *)self dataSource];
-  [v15 applySnapshot:v14 animatingDifferences:0];
+  dataSource = [(MailTrackingProtectionOnboardingViewController *)self dataSource];
+  [dataSource applySnapshot:v14 animatingDifferences:0];
 
   v16 = +[NSNotificationCenter defaultCenter];
   [v16 addObserver:self selector:"_appDidBecomeActive:" name:UIApplicationDidBecomeActiveNotification object:0];
 
-  v17 = [(MailTrackingProtectionOnboardingViewController *)self welcomeController];
-  [v17 setModalPresentationStyle:2];
+  welcomeController = [(MailTrackingProtectionOnboardingViewController *)self welcomeController];
+  [welcomeController setModalPresentationStyle:2];
 }
 
 - (void)dealloc
@@ -63,24 +63,24 @@
   v4 = objc_alloc_init(MailTrackingProtectionOnboardingViewControllerValues);
   [(MailTrackingProtectionOnboardingViewController *)self setValues:v4];
 
-  v5 = [(MailTrackingProtectionOnboardingViewController *)self values];
-  v43 = [v5 icon];
+  values = [(MailTrackingProtectionOnboardingViewController *)self values];
+  icon = [values icon];
 
   v6 = [OBWelcomeController alloc];
   v7 = sub_10013B8C4(@"MAIL_TRACKING_PROTECTION_TITLE");
   v8 = sub_10013B8C4(@"MAIL_TRACKING_PROTECTION_DETAIL");
-  v9 = [v6 initWithTitle:v7 detailText:v8 icon:v43 contentLayout:2];
+  v9 = [v6 initWithTitle:v7 detailText:v8 icon:icon contentLayout:2];
 
   v46 = v9;
   [(MailTrackingProtectionOnboardingViewController *)self setWelcomeController:v9];
-  v10 = [(MailTrackingProtectionOnboardingViewController *)self values];
-  v45 = [v10 learnMoreButton];
+  values2 = [(MailTrackingProtectionOnboardingViewController *)self values];
+  learnMoreButton = [values2 learnMoreButton];
 
   v11 = sub_10013B8C4(@"MAIL_TRACKING_PROTECTION_LEARN_MORE");
-  [v45 setTitle:v11 forState:0];
+  [learnMoreButton setTitle:v11 forState:0];
 
-  v12 = [v9 headerView];
-  [v12 addAccessoryButton:v45];
+  headerView = [v9 headerView];
+  [headerView addAccessoryButton:learnMoreButton];
 
   objc_initWeak(&location, self);
   v56[0] = _NSConcreteStackBlock;
@@ -89,7 +89,7 @@
   v56[3] = &unk_10064F278;
   objc_copyWeak(&v57, &location);
   v13 = [UIAction actionWithHandler:v56];
-  [v45 addAction:v13 forControlEvents:64];
+  [learnMoreButton addAction:v13 forControlEvents:64];
 
   v44 = +[OBBoldTrayButton boldButton];
   [v44 setEnabled:0];
@@ -106,47 +106,47 @@
   v15 = [UIAction actionWithHandler:v54];
   [v44 addAction:v15 forControlEvents:0x2000];
 
-  v16 = [v9 buttonTray];
-  [v16 addButton:v44];
+  buttonTray = [v9 buttonTray];
+  [buttonTray addButton:v44];
 
-  v47 = [(MailTrackingProtectionOnboardingViewController *)self _configuredCollectionView];
-  v17 = [v9 contentView];
-  [v17 addSubview:v47];
+  _configuredCollectionView = [(MailTrackingProtectionOnboardingViewController *)self _configuredCollectionView];
+  contentView = [v9 contentView];
+  [contentView addSubview:_configuredCollectionView];
 
-  [(MailTrackingProtectionOnboardingViewController *)self setCollectionView:v47];
-  v18 = [v47 heightAnchor];
-  v19 = [v18 constraintEqualToConstant:50.0];
+  [(MailTrackingProtectionOnboardingViewController *)self setCollectionView:_configuredCollectionView];
+  heightAnchor = [_configuredCollectionView heightAnchor];
+  v19 = [heightAnchor constraintEqualToConstant:50.0];
   [(MailTrackingProtectionOnboardingViewController *)self setCollectionViewHeightConstraint:v19];
 
-  v20 = [v47 widthAnchor];
-  v21 = [(MailTrackingProtectionOnboardingViewController *)self values];
-  [v21 widthConstant];
-  v22 = [v20 constraintEqualToConstant:?];
+  widthAnchor = [_configuredCollectionView widthAnchor];
+  values3 = [(MailTrackingProtectionOnboardingViewController *)self values];
+  [values3 widthConstant];
+  v22 = [widthAnchor constraintEqualToConstant:?];
   [(MailTrackingProtectionOnboardingViewController *)self setCollectionViewWidthConstraint:v22];
 
-  v23 = [v47 topAnchor];
-  v24 = [v46 contentView];
-  v25 = [v24 topAnchor];
-  v26 = [(MailTrackingProtectionOnboardingViewController *)self values];
-  [v26 topConstant];
-  v41 = [v23 constraintEqualToAnchor:v25 constant:?];
+  topAnchor = [_configuredCollectionView topAnchor];
+  contentView2 = [v46 contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  values4 = [(MailTrackingProtectionOnboardingViewController *)self values];
+  [values4 topConstant];
+  v41 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
 
-  [v47 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [_configuredCollectionView setTranslatesAutoresizingMaskIntoConstraints:0];
   v59[0] = v41;
-  v42 = [v47 bottomAnchor];
-  v40 = [v46 contentView];
-  v39 = [v40 bottomAnchor];
-  v27 = [v42 constraintEqualToAnchor:-50.0 constant:?];
+  bottomAnchor = [_configuredCollectionView bottomAnchor];
+  contentView3 = [v46 contentView];
+  bottomAnchor2 = [contentView3 bottomAnchor];
+  v27 = [bottomAnchor constraintEqualToAnchor:-50.0 constant:?];
   v59[1] = v27;
-  v28 = [v47 centerXAnchor];
-  v29 = [v46 contentView];
-  v30 = [v29 centerXAnchor];
-  v31 = [v28 constraintEqualToAnchor:v30];
+  centerXAnchor = [_configuredCollectionView centerXAnchor];
+  contentView4 = [v46 contentView];
+  centerXAnchor2 = [contentView4 centerXAnchor];
+  v31 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v59[2] = v31;
-  v32 = [(MailTrackingProtectionOnboardingViewController *)self collectionViewHeightConstraint];
-  v59[3] = v32;
-  v33 = [(MailTrackingProtectionOnboardingViewController *)self collectionViewWidthConstraint];
-  v59[4] = v33;
+  collectionViewHeightConstraint = [(MailTrackingProtectionOnboardingViewController *)self collectionViewHeightConstraint];
+  v59[3] = collectionViewHeightConstraint;
+  collectionViewWidthConstraint = [(MailTrackingProtectionOnboardingViewController *)self collectionViewWidthConstraint];
+  v59[4] = collectionViewWidthConstraint;
   v34 = [NSArray arrayWithObjects:v59 count:5];
   [NSLayoutConstraint activateConstraints:v34];
 
@@ -155,7 +155,7 @@
   v51[2] = sub_10013C814;
   v51[3] = &unk_10064CB70;
   objc_copyWeak(&v53, &location);
-  v35 = v47;
+  v35 = _configuredCollectionView;
   v52 = v35;
   v36 = [v35 ef_observeKeyPath:@"contentSize" options:1 autoCancelToken:1 usingBlock:v51];
   [(MailTrackingProtectionOnboardingViewController *)self setContentSizeObserver:v36];
@@ -180,41 +180,41 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_configureChildViewController:(id)a3
+- (void)_configureChildViewController:(id)controller
 {
-  v4 = a3;
-  [(MailTrackingProtectionOnboardingViewController *)self addChildViewController:v4];
-  v5 = [(MailTrackingProtectionOnboardingViewController *)self view];
-  v6 = [v4 view];
-  [v5 addSubview:v6];
+  controllerCopy = controller;
+  [(MailTrackingProtectionOnboardingViewController *)self addChildViewController:controllerCopy];
+  view = [(MailTrackingProtectionOnboardingViewController *)self view];
+  view2 = [controllerCopy view];
+  [view addSubview:view2];
 
-  [v4 didMoveToParentViewController:self];
-  v7 = [v4 view];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [controllerCopy didMoveToParentViewController:self];
+  view3 = [controllerCopy view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v25 = [v4 view];
-  v28 = [v25 topAnchor];
-  v24 = [(MailTrackingProtectionOnboardingViewController *)self view];
-  v23 = [v24 topAnchor];
-  v22 = [v28 constraintEqualToAnchor:?];
+  view4 = [controllerCopy view];
+  topAnchor = [view4 topAnchor];
+  view5 = [(MailTrackingProtectionOnboardingViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:?];
   v29[0] = v22;
-  v21 = [v4 view];
-  v27 = [v21 leadingAnchor];
-  v20 = [(MailTrackingProtectionOnboardingViewController *)self view];
-  v19 = [v20 leadingAnchor];
-  v18 = [v27 constraintEqualToAnchor:?];
+  view6 = [controllerCopy view];
+  leadingAnchor = [view6 leadingAnchor];
+  view7 = [(MailTrackingProtectionOnboardingViewController *)self view];
+  leadingAnchor2 = [view7 leadingAnchor];
+  v18 = [leadingAnchor constraintEqualToAnchor:?];
   v29[1] = v18;
-  v17 = [v4 view];
-  v26 = [v17 bottomAnchor];
-  v16 = [(MailTrackingProtectionOnboardingViewController *)self view];
-  v8 = [v16 bottomAnchor];
-  v9 = [v26 constraintEqualToAnchor:v8];
+  view8 = [controllerCopy view];
+  bottomAnchor = [view8 bottomAnchor];
+  view9 = [(MailTrackingProtectionOnboardingViewController *)self view];
+  bottomAnchor2 = [view9 bottomAnchor];
+  v9 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v29[2] = v9;
-  v10 = [v4 view];
-  v11 = [v10 trailingAnchor];
-  v12 = [(MailTrackingProtectionOnboardingViewController *)self view];
-  v13 = [v12 trailingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  view10 = [controllerCopy view];
+  trailingAnchor = [view10 trailingAnchor];
+  view11 = [(MailTrackingProtectionOnboardingViewController *)self view];
+  trailingAnchor2 = [view11 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v29[3] = v14;
   v15 = [NSArray arrayWithObjects:v29 count:4];
   [NSLayoutConstraint activateConstraints:v15];
@@ -240,12 +240,12 @@
   v15 = &unk_100651490;
   v8 = v6;
   v16 = v8;
-  v17 = self;
+  selfCopy = self;
   v9 = [v7 initWithCollectionView:v4 cellProvider:&v12];
   [(MailTrackingProtectionOnboardingViewController *)self setDataSource:v9, v12, v13, v14, v15];
 
-  v10 = [(MailTrackingProtectionOnboardingViewController *)self dataSource];
-  [v4 setDataSource:v10];
+  dataSource = [(MailTrackingProtectionOnboardingViewController *)self dataSource];
+  [v4 setDataSource:dataSource];
 
   [v4 setDelegate:self];
   objc_destroyWeak(&v19);
@@ -254,11 +254,11 @@
   return v4;
 }
 
-- (void)_configureCell:(id)a3 viewModel:(id)a4
+- (void)_configureCell:(id)cell viewModel:(id)model
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isSelected])
+  cellCopy = cell;
+  modelCopy = model;
+  if ([modelCopy isSelected])
   {
     +[UIColor tintColor];
   }
@@ -268,68 +268,68 @@
     +[UIColor systemGray5Color];
   }
   v8 = ;
-  v9 = [v8 CGColor];
-  v10 = [v6 layer];
-  [v10 setBorderColor:v9];
+  cGColor = [v8 CGColor];
+  layer = [cellCopy layer];
+  [layer setBorderColor:cGColor];
 
-  v11 = [v7 isSelected];
-  v12 = [v6 layer];
-  v13 = v12;
+  isSelected = [modelCopy isSelected];
+  layer2 = [cellCopy layer];
+  v13 = layer2;
   v14 = 1.0;
-  if (v11)
+  if (isSelected)
   {
     v14 = 2.0;
   }
 
-  [v12 setBorderWidth:v14];
+  [layer2 setBorderWidth:v14];
 
   v15 = objc_alloc_init(_UICellAccessoryConfigurationMultiselect);
   v41 = v15;
   v16 = [NSArray arrayWithObjects:&v41 count:1];
-  [v6 setTrailingAccessoryConfigurations:v16];
+  [cellCopy setTrailingAccessoryConfigurations:v16];
 
-  v17 = [(MailTrackingProtectionOnboardingViewController *)self values];
-  v18 = [v17 cellConfiguration];
+  values = [(MailTrackingProtectionOnboardingViewController *)self values];
+  cellConfiguration = [values cellConfiguration];
 
-  v19 = [v7 title];
-  [v18 setText:v19];
+  title = [modelCopy title];
+  [cellConfiguration setText:title];
 
-  v20 = [(MailTrackingProtectionOnboardingViewController *)self values];
-  v21 = [v20 primaryTextFont];
-  v22 = [v18 textProperties];
-  [v22 setFont:v21];
+  values2 = [(MailTrackingProtectionOnboardingViewController *)self values];
+  primaryTextFont = [values2 primaryTextFont];
+  textProperties = [cellConfiguration textProperties];
+  [textProperties setFont:primaryTextFont];
 
-  v23 = [v7 detail];
-  [v18 setSecondaryText:v23];
+  detail = [modelCopy detail];
+  [cellConfiguration setSecondaryText:detail];
 
-  v24 = [(MailTrackingProtectionOnboardingViewController *)self values];
-  v25 = [v24 secondaryTextPropertiesColor];
-  v26 = [v18 secondaryTextProperties];
-  [v26 setColor:v25];
+  values3 = [(MailTrackingProtectionOnboardingViewController *)self values];
+  secondaryTextPropertiesColor = [values3 secondaryTextPropertiesColor];
+  secondaryTextProperties = [cellConfiguration secondaryTextProperties];
+  [secondaryTextProperties setColor:secondaryTextPropertiesColor];
 
-  v27 = [(MailTrackingProtectionOnboardingViewController *)self values];
-  v28 = [v27 secondaryTextPropertiesFont];
-  v29 = [v18 secondaryTextProperties];
-  [v29 setFont:v28];
+  values4 = [(MailTrackingProtectionOnboardingViewController *)self values];
+  secondaryTextPropertiesFont = [values4 secondaryTextPropertiesFont];
+  secondaryTextProperties2 = [cellConfiguration secondaryTextProperties];
+  [secondaryTextProperties2 setFont:secondaryTextPropertiesFont];
 
-  v30 = [v7 image];
-  [v18 setImage:v30];
+  image = [modelCopy image];
+  [cellConfiguration setImage:image];
 
-  v31 = [(MailTrackingProtectionOnboardingViewController *)self values];
-  v32 = [v31 imageSymbolConfiguration];
-  v33 = [v18 imageProperties];
-  [v33 setPreferredSymbolConfiguration:v32];
+  values5 = [(MailTrackingProtectionOnboardingViewController *)self values];
+  imageSymbolConfiguration = [values5 imageSymbolConfiguration];
+  imageProperties = [cellConfiguration imageProperties];
+  [imageProperties setPreferredSymbolConfiguration:imageSymbolConfiguration];
 
-  [v18 setImageToTextPadding:28.0];
-  [v18 directionalLayoutMargins];
-  [v18 setDirectionalLayoutMargins:{14.0, 26.0, 14.0}];
-  [v18 setTextToSecondaryTextVerticalPadding:2.0];
-  [v6 setContentConfiguration:v18];
-  v34 = [v7 accessibilityIdentifier];
-  [v6 setAccessibilityIdentifier:v34];
+  [cellConfiguration setImageToTextPadding:28.0];
+  [cellConfiguration directionalLayoutMargins];
+  [cellConfiguration setDirectionalLayoutMargins:{14.0, 26.0, 14.0}];
+  [cellConfiguration setTextToSecondaryTextVerticalPadding:2.0];
+  [cellCopy setContentConfiguration:cellConfiguration];
+  accessibilityIdentifier = [modelCopy accessibilityIdentifier];
+  [cellCopy setAccessibilityIdentifier:accessibilityIdentifier];
 
-  v35 = [v6 backgroundConfiguration];
-  v36 = [v35 copy];
+  backgroundConfiguration = [cellCopy backgroundConfiguration];
+  v36 = [backgroundConfiguration copy];
   v37 = v36;
   if (v36)
   {
@@ -346,44 +346,44 @@
   v40 = +[UIColor systemBackgroundColor];
   [v39 setBackgroundColor:v40];
 
-  [v6 setBackgroundConfiguration:v39];
+  [cellCopy setBackgroundConfiguration:v39];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v8 = a4;
-  v5 = [(MailTrackingProtectionOnboardingViewController *)self selectedIndexPath];
+  pathCopy = path;
+  selectedIndexPath = [(MailTrackingProtectionOnboardingViewController *)self selectedIndexPath];
 
-  if (v5)
+  if (selectedIndexPath)
   {
-    v6 = [(MailTrackingProtectionOnboardingViewController *)self selectedIndexPath];
-    [(MailTrackingProtectionOnboardingViewController *)self _updateSelectionForCellAtIndexPath:v6 isSelected:0];
+    selectedIndexPath2 = [(MailTrackingProtectionOnboardingViewController *)self selectedIndexPath];
+    [(MailTrackingProtectionOnboardingViewController *)self _updateSelectionForCellAtIndexPath:selectedIndexPath2 isSelected:0];
   }
 
-  [(MailTrackingProtectionOnboardingViewController *)self setSelectedIndexPath:v8];
-  [(MailTrackingProtectionOnboardingViewController *)self _updateSelectionForCellAtIndexPath:v8 isSelected:1];
-  v7 = [(MailTrackingProtectionOnboardingViewController *)self continueButton];
-  [v7 setEnabled:1];
+  [(MailTrackingProtectionOnboardingViewController *)self setSelectedIndexPath:pathCopy];
+  [(MailTrackingProtectionOnboardingViewController *)self _updateSelectionForCellAtIndexPath:pathCopy isSelected:1];
+  continueButton = [(MailTrackingProtectionOnboardingViewController *)self continueButton];
+  [continueButton setEnabled:1];
 }
 
-- (void)_updateSelectionForCellAtIndexPath:(id)a3 isSelected:(BOOL)a4
+- (void)_updateSelectionForCellAtIndexPath:(id)path isSelected:(BOOL)selected
 {
-  v4 = a4;
-  v9 = a3;
-  v6 = sub_10013C774(self, v9);
-  [v6 setSelected:v4];
-  v7 = [(MailTrackingProtectionOnboardingViewController *)self collectionView];
-  v8 = [v7 cellForItemAtIndexPath:v9];
+  selectedCopy = selected;
+  pathCopy = path;
+  v6 = sub_10013C774(self, pathCopy);
+  [v6 setSelected:selectedCopy];
+  collectionView = [(MailTrackingProtectionOnboardingViewController *)self collectionView];
+  v8 = [collectionView cellForItemAtIndexPath:pathCopy];
 
   [(MailTrackingProtectionOnboardingViewController *)self _configureCell:v8 viewModel:v6];
 }
 
-- (void)_appDidBecomeActive:(id)a3
+- (void)_appDidBecomeActive:(id)active
 {
   v5 = +[NSUserDefaults em_userDefaults];
-  v4 = [v5 shouldPresentRemoteContentOptionsSheet];
+  shouldPresentRemoteContentOptionsSheet = [v5 shouldPresentRemoteContentOptionsSheet];
 
-  if ((v4 & 1) == 0)
+  if ((shouldPresentRemoteContentOptionsSheet & 1) == 0)
   {
     v6 = +[NSNotificationCenter defaultCenter];
     [v6 postNotificationName:@"MailTrackingProtectionOnboardingViewControllerDidCompleteNotification" object:self];

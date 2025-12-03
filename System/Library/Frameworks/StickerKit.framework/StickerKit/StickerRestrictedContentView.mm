@@ -1,11 +1,11 @@
 @interface StickerRestrictedContentView
-- (_TtC10StickerKit28StickerRestrictedContentView)initWithCoder:(id)a3;
+- (_TtC10StickerKit28StickerRestrictedContentView)initWithCoder:(id)coder;
 - (void)handleRestrictedContentTap;
 @end
 
 @implementation StickerRestrictedContentView
 
-- (_TtC10StickerKit28StickerRestrictedContentView)initWithCoder:(id)a3
+- (_TtC10StickerKit28StickerRestrictedContentView)initWithCoder:(id)coder
 {
   *(&self->super.super.super._responderFlags + OBJC_IVAR____TtC10StickerKit28StickerRestrictedContentView_delegate) = 0;
   swift_unknownObjectWeakInit();
@@ -21,7 +21,7 @@
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v3 = self;
+    selfCopy = self;
     sub_19A6EE154();
     swift_unknownObjectRelease();
   }

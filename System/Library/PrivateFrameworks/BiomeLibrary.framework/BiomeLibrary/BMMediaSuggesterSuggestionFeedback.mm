@@ -1,58 +1,58 @@
 @interface BMMediaSuggesterSuggestionFeedback
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMediaSuggesterSuggestionFeedback)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMMediaSuggesterSuggestionFeedback)initWithSessionIdentifier:(id)a3 numberOfVisibleSuggestions:(id)a4 indexSelected:(id)a5 intent:(id)a6 engagementType:(int)a7 suggestionsRequestDate:(id)a8 targetBundleID:(id)a9 workoutType:(id)a10 isNowPlaying:(id)a11 allowedBundleIDs:(id)a12;
-- (BMMediaSuggesterSuggestionFeedback)initWithSessionIdentifier:(id)a3 numberOfVisibleSuggestions:(id)a4 indexSelected:(id)a5 intent:(id)a6 engagementType:(int)a7 suggestionsRequestDate:(id)a8 targetBundleID:(id)a9 workoutType:(id)a10 isNowPlaying:(id)a11 allowedBundleIDs:(id)a12 suggestionsIntent:(id)a13;
-- (BOOL)isEqual:(id)a3;
+- (BMMediaSuggesterSuggestionFeedback)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMMediaSuggesterSuggestionFeedback)initWithSessionIdentifier:(id)identifier numberOfVisibleSuggestions:(id)suggestions indexSelected:(id)selected intent:(id)intent engagementType:(int)type suggestionsRequestDate:(id)date targetBundleID:(id)d workoutType:(id)self0 isNowPlaying:(id)self1 allowedBundleIDs:(id)self2;
+- (BMMediaSuggesterSuggestionFeedback)initWithSessionIdentifier:(id)identifier numberOfVisibleSuggestions:(id)suggestions indexSelected:(id)selected intent:(id)intent engagementType:(int)type suggestionsRequestDate:(id)date targetBundleID:(id)d workoutType:(id)self0 isNowPlaying:(id)self1 allowedBundleIDs:(id)self2 suggestionsIntent:(id)self3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_allowedBundleIDsJSONArray;
 - (id)_suggestionsIntentJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMediaSuggesterSuggestionFeedback
 
-- (BMMediaSuggesterSuggestionFeedback)initWithSessionIdentifier:(id)a3 numberOfVisibleSuggestions:(id)a4 indexSelected:(id)a5 intent:(id)a6 engagementType:(int)a7 suggestionsRequestDate:(id)a8 targetBundleID:(id)a9 workoutType:(id)a10 isNowPlaying:(id)a11 allowedBundleIDs:(id)a12
+- (BMMediaSuggesterSuggestionFeedback)initWithSessionIdentifier:(id)identifier numberOfVisibleSuggestions:(id)suggestions indexSelected:(id)selected intent:(id)intent engagementType:(int)type suggestionsRequestDate:(id)date targetBundleID:(id)d workoutType:(id)self0 isNowPlaying:(id)self1 allowedBundleIDs:(id)self2
 {
-  v16 = a12;
-  v17 = a11;
-  v18 = a10;
-  v19 = a9;
-  v20 = a8;
-  v21 = a6;
-  v22 = a5;
-  v23 = a4;
-  v24 = a3;
+  dsCopy = ds;
+  playingCopy = playing;
+  workoutTypeCopy = workoutType;
+  dCopy = d;
+  dateCopy = date;
+  intentCopy = intent;
+  selectedCopy = selected;
+  suggestionsCopy = suggestions;
+  identifierCopy = identifier;
   v25 = objc_opt_new();
-  v30 = [(BMMediaSuggesterSuggestionFeedback *)self initWithSessionIdentifier:v24 numberOfVisibleSuggestions:v23 indexSelected:v22 intent:v21 engagementType:a7 suggestionsRequestDate:v20 targetBundleID:v19 workoutType:v18 isNowPlaying:v17 allowedBundleIDs:v16 suggestionsIntent:v25];
+  v30 = [(BMMediaSuggesterSuggestionFeedback *)self initWithSessionIdentifier:identifierCopy numberOfVisibleSuggestions:suggestionsCopy indexSelected:selectedCopy intent:intentCopy engagementType:type suggestionsRequestDate:dateCopy targetBundleID:dCopy workoutType:workoutTypeCopy isNowPlaying:playingCopy allowedBundleIDs:dsCopy suggestionsIntent:v25];
 
   return v30;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMediaSuggesterSuggestionFeedback *)self sessionIdentifier];
-    v7 = [v5 sessionIdentifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    sessionIdentifier = [(BMMediaSuggesterSuggestionFeedback *)self sessionIdentifier];
+    sessionIdentifier2 = [v5 sessionIdentifier];
+    v8 = sessionIdentifier2;
+    if (sessionIdentifier == sessionIdentifier2)
     {
     }
 
     else
     {
-      v9 = [(BMMediaSuggesterSuggestionFeedback *)self sessionIdentifier];
-      v10 = [v5 sessionIdentifier];
-      v11 = [v9 isEqual:v10];
+      sessionIdentifier3 = [(BMMediaSuggesterSuggestionFeedback *)self sessionIdentifier];
+      sessionIdentifier4 = [v5 sessionIdentifier];
+      v11 = [sessionIdentifier3 isEqual:sessionIdentifier4];
 
       if (!v11)
       {
@@ -93,25 +93,25 @@
         goto LABEL_43;
       }
 
-      v16 = [(BMMediaSuggesterSuggestionFeedback *)self indexSelected];
-      if (v16 != [v5 indexSelected])
+      indexSelected = [(BMMediaSuggesterSuggestionFeedback *)self indexSelected];
+      if (indexSelected != [v5 indexSelected])
       {
         goto LABEL_43;
       }
     }
 
-    v17 = [(BMMediaSuggesterSuggestionFeedback *)self intent];
-    v18 = [v5 intent];
-    v19 = v18;
-    if (v17 == v18)
+    intent = [(BMMediaSuggesterSuggestionFeedback *)self intent];
+    intent2 = [v5 intent];
+    v19 = intent2;
+    if (intent == intent2)
     {
     }
 
     else
     {
-      v20 = [(BMMediaSuggesterSuggestionFeedback *)self intent];
-      v21 = [v5 intent];
-      v22 = [v20 isEqual:v21];
+      intent3 = [(BMMediaSuggesterSuggestionFeedback *)self intent];
+      intent4 = [v5 intent];
+      v22 = [intent3 isEqual:intent4];
 
       if (!v22)
       {
@@ -119,8 +119,8 @@
       }
     }
 
-    v23 = [(BMMediaSuggesterSuggestionFeedback *)self engagementType];
-    if (v23 != [v5 engagementType])
+    engagementType = [(BMMediaSuggesterSuggestionFeedback *)self engagementType];
+    if (engagementType != [v5 engagementType])
     {
       goto LABEL_43;
     }
@@ -146,18 +146,18 @@
       }
     }
 
-    v27 = [(BMMediaSuggesterSuggestionFeedback *)self targetBundleID];
-    v28 = [v5 targetBundleID];
-    v29 = v28;
-    if (v27 == v28)
+    targetBundleID = [(BMMediaSuggesterSuggestionFeedback *)self targetBundleID];
+    targetBundleID2 = [v5 targetBundleID];
+    v29 = targetBundleID2;
+    if (targetBundleID == targetBundleID2)
     {
     }
 
     else
     {
-      v30 = [(BMMediaSuggesterSuggestionFeedback *)self targetBundleID];
-      v31 = [v5 targetBundleID];
-      v32 = [v30 isEqual:v31];
+      targetBundleID3 = [(BMMediaSuggesterSuggestionFeedback *)self targetBundleID];
+      targetBundleID4 = [v5 targetBundleID];
+      v32 = [targetBundleID3 isEqual:targetBundleID4];
 
       if (!v32)
       {
@@ -177,8 +177,8 @@
         goto LABEL_43;
       }
 
-      v33 = [(BMMediaSuggesterSuggestionFeedback *)self workoutType];
-      if (v33 != [v5 workoutType])
+      workoutType = [(BMMediaSuggesterSuggestionFeedback *)self workoutType];
+      if (workoutType != [v5 workoutType])
       {
         goto LABEL_43;
       }
@@ -196,25 +196,25 @@
         goto LABEL_43;
       }
 
-      v34 = [(BMMediaSuggesterSuggestionFeedback *)self isNowPlaying];
-      if (v34 != [v5 isNowPlaying])
+      isNowPlaying = [(BMMediaSuggesterSuggestionFeedback *)self isNowPlaying];
+      if (isNowPlaying != [v5 isNowPlaying])
       {
         goto LABEL_43;
       }
     }
 
-    v35 = [(BMMediaSuggesterSuggestionFeedback *)self allowedBundleIDs];
-    v36 = [v5 allowedBundleIDs];
-    v37 = v36;
-    if (v35 == v36)
+    allowedBundleIDs = [(BMMediaSuggesterSuggestionFeedback *)self allowedBundleIDs];
+    allowedBundleIDs2 = [v5 allowedBundleIDs];
+    v37 = allowedBundleIDs2;
+    if (allowedBundleIDs == allowedBundleIDs2)
     {
     }
 
     else
     {
-      v38 = [(BMMediaSuggesterSuggestionFeedback *)self allowedBundleIDs];
-      v39 = [v5 allowedBundleIDs];
-      v40 = [v38 isEqual:v39];
+      allowedBundleIDs3 = [(BMMediaSuggesterSuggestionFeedback *)self allowedBundleIDs];
+      allowedBundleIDs4 = [v5 allowedBundleIDs];
+      v40 = [allowedBundleIDs3 isEqual:allowedBundleIDs4];
 
       if (!v40)
       {
@@ -226,18 +226,18 @@ LABEL_44:
       }
     }
 
-    v42 = [(BMMediaSuggesterSuggestionFeedback *)self suggestionsIntent];
-    v43 = [v5 suggestionsIntent];
-    if (v42 == v43)
+    suggestionsIntent = [(BMMediaSuggesterSuggestionFeedback *)self suggestionsIntent];
+    suggestionsIntent2 = [v5 suggestionsIntent];
+    if (suggestionsIntent == suggestionsIntent2)
     {
       v12 = 1;
     }
 
     else
     {
-      v44 = [(BMMediaSuggesterSuggestionFeedback *)self suggestionsIntent];
-      v45 = [v5 suggestionsIntent];
-      v12 = [v44 isEqual:v45];
+      suggestionsIntent3 = [(BMMediaSuggesterSuggestionFeedback *)self suggestionsIntent];
+      suggestionsIntent4 = [v5 suggestionsIntent];
+      v12 = [suggestionsIntent3 isEqual:suggestionsIntent4];
     }
 
     goto LABEL_44;
@@ -252,7 +252,7 @@ LABEL_45:
 - (id)jsonDictionary
 {
   v45[11] = *MEMORY[0x1E69E9840];
-  v3 = [(BMMediaSuggesterSuggestionFeedback *)self sessionIdentifier];
+  sessionIdentifier = [(BMMediaSuggesterSuggestionFeedback *)self sessionIdentifier];
   if (![(BMMediaSuggesterSuggestionFeedback *)self hasNumberOfVisibleSuggestions]|| ([(BMMediaSuggesterSuggestionFeedback *)self numberOfVisibleSuggestions], fabs(v4) == INFINITY))
   {
     v6 = 0;
@@ -276,8 +276,8 @@ LABEL_45:
     v7 = 0;
   }
 
-  v8 = [(BMMediaSuggesterSuggestionFeedback *)self intent];
-  v9 = [v8 jsonDictionary];
+  intent = [(BMMediaSuggesterSuggestionFeedback *)self intent];
+  jsonDictionary = [intent jsonDictionary];
 
   v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMediaSuggesterSuggestionFeedback engagementType](self, "engagementType")}];
   if (![(BMMediaSuggesterSuggestionFeedback *)self hasSuggestionsRequestDate]|| ([(BMMediaSuggesterSuggestionFeedback *)self suggestionsRequestDate], fabs(v11) == INFINITY))
@@ -293,7 +293,7 @@ LABEL_45:
     v13 = [v12 numberWithDouble:?];
   }
 
-  v43 = [(BMMediaSuggesterSuggestionFeedback *)self targetBundleID];
+  targetBundleID = [(BMMediaSuggesterSuggestionFeedback *)self targetBundleID];
   if ([(BMMediaSuggesterSuggestionFeedback *)self hasWorkoutType])
   {
     v42 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMediaSuggesterSuggestionFeedback workoutType](self, "workoutType")}];
@@ -314,111 +314,111 @@ LABEL_45:
     v14 = 0;
   }
 
-  v15 = [(BMMediaSuggesterSuggestionFeedback *)self _allowedBundleIDsJSONArray];
-  v16 = [(BMMediaSuggesterSuggestionFeedback *)self _suggestionsIntentJSONArray];
+  _allowedBundleIDsJSONArray = [(BMMediaSuggesterSuggestionFeedback *)self _allowedBundleIDsJSONArray];
+  _suggestionsIntentJSONArray = [(BMMediaSuggesterSuggestionFeedback *)self _suggestionsIntentJSONArray];
   v44[0] = @"sessionIdentifier";
-  v17 = v3;
-  if (!v3)
+  null = sessionIdentifier;
+  if (!sessionIdentifier)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35 = v17;
-  v45[0] = v17;
+  v35 = null;
+  v45[0] = null;
   v44[1] = @"numberOfVisibleSuggestions";
-  v18 = v6;
+  null2 = v6;
   if (!v6)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v34 = v18;
-  v45[1] = v18;
+  v34 = null2;
+  v45[1] = null2;
   v44[2] = @"indexSelected";
-  v19 = v7;
+  null3 = v7;
   if (!v7)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33 = v19;
-  v45[2] = v19;
+  v33 = null3;
+  v45[2] = null3;
   v44[3] = @"intent";
-  v20 = v9;
-  if (!v9)
+  null4 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v40 = v6;
-  v41 = v3;
-  v32 = v20;
-  v45[3] = v20;
+  v41 = sessionIdentifier;
+  v32 = null4;
+  v45[3] = null4;
   v44[4] = @"engagementType";
-  v21 = v10;
+  null5 = v10;
   if (!v10)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
   v39 = v7;
-  v31 = v21;
-  v45[4] = v21;
+  v31 = null5;
+  v45[4] = null5;
   v44[5] = @"suggestionsRequestDate";
-  v22 = v13;
+  null6 = v13;
   if (!v13)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v38 = v9;
-  v45[5] = v22;
+  v38 = jsonDictionary;
+  v45[5] = null6;
   v44[6] = @"targetBundleID";
-  v23 = v43;
-  if (!v43)
+  null7 = targetBundleID;
+  if (!targetBundleID)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
   v37 = v10;
-  v45[6] = v23;
+  v45[6] = null7;
   v44[7] = @"workoutType";
-  v24 = v42;
+  null8 = v42;
   if (!v42)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
   v25 = v13;
-  v45[7] = v24;
+  v45[7] = null8;
   v44[8] = @"isNowPlaying";
-  v26 = v14;
+  null9 = v14;
   if (!v14)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v45[8] = v26;
+  v45[8] = null9;
   v44[9] = @"allowedBundleIDs";
-  v27 = v15;
-  if (!v15)
+  null10 = _allowedBundleIDsJSONArray;
+  if (!_allowedBundleIDsJSONArray)
   {
-    v27 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v45[9] = v27;
+  v45[9] = null10;
   v44[10] = @"suggestionsIntent";
-  v28 = v16;
-  if (!v16)
+  null11 = _suggestionsIntentJSONArray;
+  if (!_suggestionsIntentJSONArray)
   {
-    v28 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v45[10] = v28;
+  v45[10] = null11;
   v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:11];
-  if (v16)
+  if (_suggestionsIntentJSONArray)
   {
-    if (v15)
+    if (_allowedBundleIDsJSONArray)
     {
       goto LABEL_42;
     }
@@ -433,7 +433,7 @@ LABEL_59:
     goto LABEL_60;
   }
 
-  if (!v15)
+  if (!_allowedBundleIDsJSONArray)
   {
     goto LABEL_59;
   }
@@ -451,7 +451,7 @@ LABEL_43:
   {
   }
 
-  if (!v43)
+  if (!targetBundleID)
   {
   }
 
@@ -520,8 +520,8 @@ LABEL_55:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMMediaSuggesterSuggestionFeedback *)self suggestionsIntent];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  suggestionsIntent = [(BMMediaSuggesterSuggestionFeedback *)self suggestionsIntent];
+  v5 = [suggestionsIntent countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -532,14 +532,14 @@ LABEL_55:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(suggestionsIntent);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [suggestionsIntent countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -558,8 +558,8 @@ LABEL_55:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMMediaSuggesterSuggestionFeedback *)self allowedBundleIDs];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allowedBundleIDs = [(BMMediaSuggesterSuggestionFeedback *)self allowedBundleIDs];
+  v5 = [allowedBundleIDs countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -570,13 +570,13 @@ LABEL_55:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allowedBundleIDs);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allowedBundleIDs countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -587,20 +587,20 @@ LABEL_55:
   return v3;
 }
 
-- (BMMediaSuggesterSuggestionFeedback)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMediaSuggesterSuggestionFeedback)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v201[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"sessionIdentifier"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"sessionIdentifier"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v22 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v23 = a4;
+        errorCopy = error;
         v24 = *MEMORY[0x1E698F240];
         v200 = *MEMORY[0x1E696A578];
         v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"sessionIdentifier"];
@@ -609,7 +609,7 @@ LABEL_55:
         v25 = [v22 initWithDomain:v24 code:2 userInfo:v9];
         v8 = 0;
         v19 = 0;
-        *v23 = v25;
+        *errorCopy = v25;
         goto LABEL_149;
       }
 
@@ -626,18 +626,18 @@ LABEL_55:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"numberOfVisibleSuggestions"];
-  v158 = self;
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"numberOfVisibleSuggestions"];
+  selfCopy = self;
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v26 = v8;
         v27 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v28 = a4;
+        errorCopy2 = error;
         v29 = *MEMORY[0x1E698F240];
         v198 = *MEMORY[0x1E696A578];
         v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"numberOfVisibleSuggestions"];
@@ -648,8 +648,8 @@ LABEL_55:
         v157 = v30;
         v10 = 0;
         v19 = 0;
-        *v28 = [v31 initWithDomain:v29 code:2 userInfo:?];
-        self = v158;
+        *errorCopy2 = [v31 initWithDomain:v29 code:2 userInfo:?];
+        self = selfCopy;
         goto LABEL_148;
       }
 
@@ -666,7 +666,7 @@ LABEL_55:
     v10 = 0;
   }
 
-  v11 = [v6 objectForKeyedSubscript:@"indexSelected"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"indexSelected"];
   v159 = v10;
   v157 = v11;
   if (v11 && (v12 = v11, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -674,7 +674,7 @@ LABEL_55:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v20 = 0;
         v19 = 0;
@@ -683,7 +683,7 @@ LABEL_55:
 
       v154 = v8;
       v32 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v33 = a4;
+      errorCopy3 = error;
       v34 = *MEMORY[0x1E698F240];
       v196 = *MEMORY[0x1E696A578];
       v35 = v10;
@@ -700,9 +700,9 @@ LABEL_55:
       v21 = v38;
       v20 = 0;
       v19 = 0;
-      *v33 = [v39 initWithDomain:v40 code:2 userInfo:v38];
+      *errorCopy3 = [v39 initWithDomain:v40 code:2 userInfo:v38];
 LABEL_37:
-      self = v158;
+      self = selfCopy;
       goto LABEL_146;
     }
 
@@ -714,7 +714,7 @@ LABEL_37:
     v155 = 0;
   }
 
-  v13 = [v6 objectForKeyedSubscript:@"intent"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"intent"];
   if (!v13 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v151 = 0;
@@ -726,17 +726,17 @@ LABEL_37:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v41 = v13;
-    if (!a4)
+    if (!error)
     {
       v19 = 0;
       v20 = v155;
       v17 = v41;
-      self = v158;
+      self = selfCopy;
       goto LABEL_147;
     }
 
     v152 = objc_alloc(MEMORY[0x1E696ABC0]);
-    v42 = a4;
+    errorCopy4 = error;
     v43 = *MEMORY[0x1E698F240];
     v194 = *MEMORY[0x1E696A578];
     v44 = objc_alloc(MEMORY[0x1E696AEC0]);
@@ -748,7 +748,7 @@ LABEL_37:
     v47 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v195 forKeys:&v194 count:1];
     v48 = v43;
     v21 = v46;
-    *v42 = [v152 initWithDomain:v48 code:2 userInfo:v47];
+    *errorCopy4 = [v152 initWithDomain:v48 code:2 userInfo:v47];
 
     v19 = 0;
     v17 = v13;
@@ -762,10 +762,10 @@ LABEL_37:
   v18 = v169;
   if (v18)
   {
-    if (a4)
+    if (error)
     {
       v18 = v18;
-      *a4 = v18;
+      *error = v18;
     }
 
     v19 = 0;
@@ -776,8 +776,8 @@ LABEL_37:
 
   v153 = v8;
 LABEL_13:
-  v14 = [v6 objectForKeyedSubscript:@"engagementType"];
-  v156 = a4;
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"engagementType"];
+  errorCopy5 = error;
   v148 = v13;
   if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -793,7 +793,7 @@ LABEL_13:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v150 = objc_alloc(MEMORY[0x1E696ABC0]);
           v97 = *MEMORY[0x1E698F240];
@@ -806,7 +806,7 @@ LABEL_13:
           v100 = [v99 initWithDomain:v97 code:2 userInfo:?];
           v75 = 0;
           v19 = 0;
-          *a4 = v100;
+          *error = v100;
           v20 = v155;
           v21 = v151;
           goto LABEL_144;
@@ -833,18 +833,18 @@ LABEL_13:
     v146 = 0;
   }
 
-  v49 = [v6 objectForKeyedSubscript:@"suggestionsRequestDate"];
+  v49 = [dictionaryCopy objectForKeyedSubscript:@"suggestionsRequestDate"];
   v149 = v49;
   if (v49 && (v50 = v49, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v67 = v14;
         v68 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v69 = a4;
+        errorCopy6 = error;
         v70 = *MEMORY[0x1E698F240];
         v190 = *MEMORY[0x1E696A578];
         v71 = objc_alloc(MEMORY[0x1E696AEC0]);
@@ -859,7 +859,7 @@ LABEL_13:
         v145 = v73;
         v147 = 0;
         v19 = 0;
-        *v69 = [v74 initWithDomain:v70 code:2 userInfo:?];
+        *errorCopy6 = [v74 initWithDomain:v70 code:2 userInfo:?];
         v20 = v155;
         v21 = v151;
         v75 = v146;
@@ -886,7 +886,7 @@ LABEL_13:
     v147 = 0;
   }
 
-  v51 = [v6 objectForKeyedSubscript:@"targetBundleID"];
+  v51 = [dictionaryCopy objectForKeyedSubscript:@"targetBundleID"];
   v7 = v16;
   v142 = v14;
   v145 = v51;
@@ -904,7 +904,7 @@ LABEL_13:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v144 = 0;
           v19 = 0;
@@ -924,7 +924,7 @@ LABEL_13:
         v144 = 0;
         v19 = 0;
         v20 = v155;
-        *v156 = v83;
+        *errorCopy5 = v83;
         v21 = v151;
         goto LABEL_121;
       }
@@ -938,7 +938,7 @@ LABEL_13:
     v9 = v15;
   }
 
-  v52 = [v6 objectForKeyedSubscript:@"workoutType"];
+  v52 = [dictionaryCopy objectForKeyedSubscript:@"workoutType"];
   v144 = v51;
   if (v52)
   {
@@ -952,7 +952,7 @@ LABEL_13:
         goto LABEL_55;
       }
 
-      if (a4)
+      if (error)
       {
         v86 = v14;
         v87 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -970,7 +970,7 @@ LABEL_13:
         v136 = v91;
         v141 = 0;
         v19 = 0;
-        *v156 = [v92 initWithDomain:v88 code:2 userInfo:?];
+        *errorCopy5 = [v92 initWithDomain:v88 code:2 userInfo:?];
         goto LABEL_123;
       }
 
@@ -986,7 +986,7 @@ LABEL_121:
 
   v141 = 0;
 LABEL_55:
-  v53 = [v6 objectForKeyedSubscript:@"isNowPlaying"];
+  v53 = [dictionaryCopy objectForKeyedSubscript:@"isNowPlaying"];
   v136 = v53;
   if (v53)
   {
@@ -1001,7 +1001,7 @@ LABEL_55:
         goto LABEL_58;
       }
 
-      if (a4)
+      if (error)
       {
         v93 = objc_alloc(MEMORY[0x1E696ABC0]);
         v94 = v52;
@@ -1015,7 +1015,7 @@ LABEL_55:
         v135 = 0;
         v19 = 0;
         v20 = v155;
-        *v156 = [v93 initWithDomain:v96 code:2 userInfo:v58];
+        *errorCopy5 = [v93 initWithDomain:v96 code:2 userInfo:v58];
         v21 = v151;
         v75 = v146;
         goto LABEL_139;
@@ -1033,9 +1033,9 @@ LABEL_123:
 
   v135 = 0;
 LABEL_58:
-  v55 = [v6 objectForKeyedSubscript:@"allowedBundleIDs"];
-  v56 = [MEMORY[0x1E695DFB0] null];
-  v57 = [v55 isEqual:v56];
+  v55 = [dictionaryCopy objectForKeyedSubscript:@"allowedBundleIDs"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v57 = [v55 isEqual:null];
 
   if (v57)
   {
@@ -1052,7 +1052,7 @@ LABEL_58:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v156)
+        if (!errorCopy5)
         {
           v19 = 0;
           v20 = v155;
@@ -1072,7 +1072,7 @@ LABEL_58:
         v52 = v117;
         obj = v119;
         v19 = 0;
-        *v156 = [v116 initWithDomain:v120 code:2 userInfo:?];
+        *errorCopy5 = [v116 initWithDomain:v120 code:2 userInfo:?];
 LABEL_117:
         v20 = v155;
         v21 = v151;
@@ -1113,7 +1113,7 @@ LABEL_117:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (v156)
+        if (errorCopy5)
         {
           v76 = objc_alloc(MEMORY[0x1E696ABC0]);
           v77 = *MEMORY[0x1E698F240];
@@ -1141,7 +1141,7 @@ LABEL_92:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v156)
+        if (errorCopy5)
         {
           v84 = objc_alloc(MEMORY[0x1E696ABC0]);
           v85 = *MEMORY[0x1E698F240];
@@ -1154,7 +1154,7 @@ LABEL_92:
 LABEL_87:
           v9 = v143;
           v20 = v155;
-          *v156 = [v79 initWithDomain:v80 code:2 userInfo:v78];
+          *errorCopy5 = [v79 initWithDomain:v80 code:2 userInfo:v78];
 
           v19 = 0;
           obj = v55;
@@ -1179,9 +1179,9 @@ LABEL_136:
   while (v60);
 LABEL_72:
 
-  v64 = [v6 objectForKeyedSubscript:@"suggestionsIntent"];
-  v65 = [MEMORY[0x1E695DFB0] null];
-  v66 = [v64 isEqual:v65];
+  v64 = [dictionaryCopy objectForKeyedSubscript:@"suggestionsIntent"];
+  null2 = [MEMORY[0x1E695DFB0] null];
+  v66 = [v64 isEqual:null2];
 
   if (v66)
   {
@@ -1193,13 +1193,13 @@ LABEL_72:
   if (v64)
   {
     objc_opt_class();
-    v101 = v156;
+    v101 = errorCopy5;
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       obj = v64;
       v7 = v137;
       v9 = v143;
-      if (v156)
+      if (errorCopy5)
       {
         v102 = objc_alloc(MEMORY[0x1E696ABC0]);
         v103 = *MEMORY[0x1E698F240];
@@ -1208,7 +1208,7 @@ LABEL_72:
         v176 = v140;
         [MEMORY[0x1E695DF20] dictionaryWithObjects:&v176 forKeys:&v175 count:1];
         v105 = v104 = v52;
-        *v156 = [v102 initWithDomain:v103 code:2 userInfo:v105];
+        *errorCopy5 = [v102 initWithDomain:v103 code:2 userInfo:v105];
 
         v52 = v104;
         v19 = 0;
@@ -1227,7 +1227,7 @@ LABEL_72:
   else
   {
 LABEL_103:
-    v101 = v156;
+    v101 = errorCopy5;
   }
 
   v139 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v64, "count")}];
@@ -1275,7 +1275,7 @@ LABEL_103:
           v125 = &v172;
 LABEL_130:
           v126 = [v123 dictionaryWithObjects:v124 forKeys:v125 count:1];
-          *v156 = [v121 initWithDomain:v122 code:2 userInfo:v126];
+          *errorCopy5 = [v121 initWithDomain:v122 code:2 userInfo:v126];
 LABEL_134:
         }
 
@@ -1315,10 +1315,10 @@ LABEL_135:
       if (v115)
       {
         v126 = v115;
-        if (v156)
+        if (errorCopy5)
         {
           v127 = v115;
-          *v156 = v126;
+          *errorCopy5 = v126;
         }
 
         v7 = v137;
@@ -1330,7 +1330,7 @@ LABEL_135:
       [v139 addObject:v114];
 
       ++v110;
-      v101 = v156;
+      v101 = errorCopy5;
       if (v108 != v110)
       {
         continue;
@@ -1355,8 +1355,8 @@ LABEL_114:
   v75 = v146;
   v20 = v155;
   v21 = v151;
-  v19 = -[BMMediaSuggesterSuggestionFeedback initWithSessionIdentifier:numberOfVisibleSuggestions:indexSelected:intent:engagementType:suggestionsRequestDate:targetBundleID:workoutType:isNowPlaying:allowedBundleIDs:suggestionsIntent:](v158, "initWithSessionIdentifier:numberOfVisibleSuggestions:indexSelected:intent:engagementType:suggestionsRequestDate:targetBundleID:workoutType:isNowPlaying:allowedBundleIDs:suggestionsIntent:", v153, v159, v155, v151, [v146 intValue], v147, v144, v141, v135, v58, v139);
-  v158 = v19;
+  v19 = -[BMMediaSuggesterSuggestionFeedback initWithSessionIdentifier:numberOfVisibleSuggestions:indexSelected:intent:engagementType:suggestionsRequestDate:targetBundleID:workoutType:isNowPlaying:allowedBundleIDs:suggestionsIntent:](selfCopy, "initWithSessionIdentifier:numberOfVisibleSuggestions:indexSelected:intent:engagementType:suggestionsRequestDate:targetBundleID:workoutType:isNowPlaying:allowedBundleIDs:suggestionsIntent:", v153, v159, v155, v151, [v146 intValue], v147, v144, v141, v135, v58, v139);
+  selfCopy = v19;
   v7 = v137;
   v9 = v143;
 LABEL_137:
@@ -1376,7 +1376,7 @@ LABEL_144:
 LABEL_145:
 
   v17 = v148;
-  self = v158;
+  self = selfCopy;
   v8 = v153;
 LABEL_146:
 
@@ -1394,15 +1394,15 @@ LABEL_150:
 {
   v3 = objc_opt_new();
   [(BMMediaSuggesterSuggestionFeedback *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_sessionIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -1424,7 +1424,7 @@ LABEL_150:
   {
     v32 = 0;
     PBDataWriterPlaceMark();
-    [(BMMediaSuggesterSuggestionFeedbackMediaIntent *)self->_intent writeTo:v4];
+    [(BMMediaSuggesterSuggestionFeedbackMediaIntent *)self->_intent writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -1508,7 +1508,7 @@ LABEL_150:
         v22 = *(*(&v24 + 1) + 8 * v21);
         v32 = 0;
         PBDataWriterPlaceMark();
-        [v22 writeTo:{v4, v24}];
+        [v22 writeTo:{toCopy, v24}];
         PBDataWriterRecallMark();
         ++v21;
       }
@@ -1523,9 +1523,9 @@ LABEL_150:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v70.receiver = self;
   v70.super_class = BMMediaSuggesterSuggestionFeedback;
   v5 = [(BMEventBase *)&v70 init];
@@ -1536,12 +1536,12 @@ LABEL_150:
 
   v6 = objc_opt_new();
   v7 = objc_opt_new();
-  v8 = [v4 position];
-  if (v8 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_109;
       }
@@ -1552,18 +1552,18 @@ LABEL_150:
       while (1)
       {
         LOBYTE(v71) = 0;
-        v12 = [v4 position] + 1;
-        if (v12 >= [v4 position] && (v13 = objc_msgSend(v4, "position") + 1, v13 <= objc_msgSend(v4, "length")))
+        v12 = [fromCopy position] + 1;
+        if (v12 >= [fromCopy position] && (v13 = objc_msgSend(fromCopy, "position") + 1, v13 <= objc_msgSend(fromCopy, "length")))
         {
-          v14 = [v4 data];
-          [v14 getBytes:&v71 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v71 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v11 |= (v71 & 0x7F) << v9;
@@ -1581,9 +1581,9 @@ LABEL_150:
         }
       }
 
-      v16 = [v4 hasError] ? 0 : v11;
+      v16 = [fromCopy hasError] ? 0 : v11;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v16 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v16 & 7) == 4)
       {
         goto LABEL_109;
       }
@@ -1611,18 +1611,18 @@ LABEL_61:
         {
           v5->_hasNumberOfVisibleSuggestions = 1;
           v71 = 0;
-          v34 = [v4 position] + 8;
-          if (v34 >= [v4 position] && (v35 = objc_msgSend(v4, "position") + 8, v35 <= objc_msgSend(v4, "length")))
+          v34 = [fromCopy position] + 8;
+          if (v34 >= [fromCopy position] && (v35 = objc_msgSend(fromCopy, "position") + 8, v35 <= objc_msgSend(fromCopy, "length")))
           {
-            v58 = [v4 data];
-            [v58 getBytes:&v71 range:{objc_msgSend(v4, "position"), 8}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v71 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v59 = v71;
@@ -1642,18 +1642,18 @@ LABEL_61:
         while (1)
         {
           LOBYTE(v71) = 0;
-          v45 = [v4 position] + 1;
-          if (v45 >= [v4 position] && (v46 = objc_msgSend(v4, "position") + 1, v46 <= objc_msgSend(v4, "length")))
+          v45 = [fromCopy position] + 1;
+          if (v45 >= [fromCopy position] && (v46 = objc_msgSend(fromCopy, "position") + 1, v46 <= objc_msgSend(fromCopy, "length")))
           {
-            v47 = [v4 data];
-            [v47 getBytes:&v71 range:{objc_msgSend(v4, "position"), 1}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v71 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v44 |= (v71 & 0x7F) << v42;
@@ -1671,7 +1671,7 @@ LABEL_61:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v24 = 0;
         }
@@ -1696,18 +1696,18 @@ LABEL_95:
           while (1)
           {
             LOBYTE(v71) = 0;
-            v28 = [v4 position] + 1;
-            if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 1, v29 <= objc_msgSend(v4, "length")))
+            v28 = [fromCopy position] + 1;
+            if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 1, v29 <= objc_msgSend(fromCopy, "length")))
             {
-              v30 = [v4 data];
-              [v30 getBytes:&v71 range:{objc_msgSend(v4, "position"), 1}];
+              data4 = [fromCopy data];
+              [data4 getBytes:&v71 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v27 |= (v71 & 0x7F) << v25;
@@ -1723,7 +1723,7 @@ LABEL_95:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v27 > 3)
+          if (([fromCopy hasError] & 1) != 0 || v27 > 3)
           {
 LABEL_90:
             LODWORD(v27) = 0;
@@ -1744,7 +1744,7 @@ LABEL_86:
 
       v71 = 0;
       v72 = 0;
-      if (!PBReaderPlaceMark() || (v38 = [[BMMediaSuggesterSuggestionFeedbackMediaIntent alloc] initByReadFrom:v4]) == 0)
+      if (!PBReaderPlaceMark() || (v38 = [[BMMediaSuggesterSuggestionFeedbackMediaIntent alloc] initByReadFrom:fromCopy]) == 0)
       {
 LABEL_113:
 
@@ -1756,8 +1756,8 @@ LABEL_113:
 
       PBReaderRecallMark();
 LABEL_108:
-      v62 = [v4 position];
-      if (v62 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_109;
       }
@@ -1775,18 +1775,18 @@ LABEL_108:
           while (1)
           {
             LOBYTE(v71) = 0;
-            v53 = [v4 position] + 1;
-            if (v53 >= [v4 position] && (v54 = objc_msgSend(v4, "position") + 1, v54 <= objc_msgSend(v4, "length")))
+            v53 = [fromCopy position] + 1;
+            if (v53 >= [fromCopy position] && (v54 = objc_msgSend(fromCopy, "position") + 1, v54 <= objc_msgSend(fromCopy, "length")))
             {
-              v55 = [v4 data];
-              [v55 getBytes:&v71 range:{objc_msgSend(v4, "position"), 1}];
+              data5 = [fromCopy data];
+              [data5 getBytes:&v71 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v52 |= (v71 & 0x7F) << v50;
@@ -1804,7 +1804,7 @@ LABEL_108:
             }
           }
 
-          v56 = (v52 != 0) & ~[v4 hasError];
+          v56 = (v52 != 0) & ~[fromCopy hasError];
 LABEL_102:
           v5->_isNowPlaying = v56;
           goto LABEL_108;
@@ -1828,7 +1828,7 @@ LABEL_64:
             goto LABEL_113;
           }
 
-          v32 = [[BMMediaSuggesterSuggestionFeedbackMediaIntent alloc] initByReadFrom:v4];
+          v32 = [[BMMediaSuggesterSuggestionFeedbackMediaIntent alloc] initByReadFrom:fromCopy];
           if (!v32)
           {
             goto LABEL_113;
@@ -1848,18 +1848,18 @@ LABEL_64:
         case 6:
           v5->_hasSuggestionsRequestDate = 1;
           v71 = 0;
-          v48 = [v4 position] + 8;
-          if (v48 >= [v4 position] && (v49 = objc_msgSend(v4, "position") + 8, v49 <= objc_msgSend(v4, "length")))
+          v48 = [fromCopy position] + 8;
+          if (v48 >= [fromCopy position] && (v49 = objc_msgSend(fromCopy, "position") + 8, v49 <= objc_msgSend(fromCopy, "length")))
           {
-            v61 = [v4 data];
-            [v61 getBytes:&v71 range:{objc_msgSend(v4, "position"), 8}];
+            data6 = [fromCopy data];
+            [data6 getBytes:&v71 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v59 = v71;
@@ -1879,18 +1879,18 @@ LABEL_107:
           while (1)
           {
             LOBYTE(v71) = 0;
-            v21 = [v4 position] + 1;
-            if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+            v21 = [fromCopy position] + 1;
+            if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
             {
-              v23 = [v4 data];
-              [v23 getBytes:&v71 range:{objc_msgSend(v4, "position"), 1}];
+              data7 = [fromCopy data];
+              [data7 getBytes:&v71 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v20 |= (v71 & 0x7F) << v18;
@@ -1908,7 +1908,7 @@ LABEL_107:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v24 = 0;
           }
@@ -1938,8 +1938,8 @@ LABEL_109:
   suggestionsIntent = v5->_suggestionsIntent;
   v5->_suggestionsIntent = v65;
 
-  v67 = [v4 hasError];
-  if (v67)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_110:
     v68 = 0;
@@ -1957,50 +1957,50 @@ LABEL_111:
 - (NSString)description
 {
   v16 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v15 = [(BMMediaSuggesterSuggestionFeedback *)self sessionIdentifier];
+  sessionIdentifier = [(BMMediaSuggesterSuggestionFeedback *)self sessionIdentifier];
   v3 = MEMORY[0x1E696AD98];
   [(BMMediaSuggesterSuggestionFeedback *)self numberOfVisibleSuggestions];
   v18 = [v3 numberWithDouble:?];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMediaSuggesterSuggestionFeedback indexSelected](self, "indexSelected")}];
-  v5 = [(BMMediaSuggesterSuggestionFeedback *)self intent];
+  intent = [(BMMediaSuggesterSuggestionFeedback *)self intent];
   v6 = BMMediaSuggesterSuggestionFeedbackEngagementTypeAsString([(BMMediaSuggesterSuggestionFeedback *)self engagementType]);
   v7 = MEMORY[0x1E696AD98];
   [(BMMediaSuggesterSuggestionFeedback *)self suggestionsRequestDate];
   v8 = [v7 numberWithDouble:?];
-  v9 = [(BMMediaSuggesterSuggestionFeedback *)self targetBundleID];
+  targetBundleID = [(BMMediaSuggesterSuggestionFeedback *)self targetBundleID];
   v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMediaSuggesterSuggestionFeedback workoutType](self, "workoutType")}];
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMediaSuggesterSuggestionFeedback isNowPlaying](self, "isNowPlaying")}];
-  v12 = [(BMMediaSuggesterSuggestionFeedback *)self allowedBundleIDs];
-  v13 = [(BMMediaSuggesterSuggestionFeedback *)self suggestionsIntent];
-  v17 = [v16 initWithFormat:@"BMMediaSuggesterSuggestionFeedback with sessionIdentifier: %@, numberOfVisibleSuggestions: %@, indexSelected: %@, intent: %@, engagementType: %@, suggestionsRequestDate: %@, targetBundleID: %@, workoutType: %@, isNowPlaying: %@, allowedBundleIDs: %@, suggestionsIntent: %@", v15, v18, v4, v5, v6, v8, v9, v10, v11, v12, v13];
+  allowedBundleIDs = [(BMMediaSuggesterSuggestionFeedback *)self allowedBundleIDs];
+  suggestionsIntent = [(BMMediaSuggesterSuggestionFeedback *)self suggestionsIntent];
+  v17 = [v16 initWithFormat:@"BMMediaSuggesterSuggestionFeedback with sessionIdentifier: %@, numberOfVisibleSuggestions: %@, indexSelected: %@, intent: %@, engagementType: %@, suggestionsRequestDate: %@, targetBundleID: %@, workoutType: %@, isNowPlaying: %@, allowedBundleIDs: %@, suggestionsIntent: %@", sessionIdentifier, v18, v4, intent, v6, v8, targetBundleID, v10, v11, allowedBundleIDs, suggestionsIntent];
 
   return v17;
 }
 
-- (BMMediaSuggesterSuggestionFeedback)initWithSessionIdentifier:(id)a3 numberOfVisibleSuggestions:(id)a4 indexSelected:(id)a5 intent:(id)a6 engagementType:(int)a7 suggestionsRequestDate:(id)a8 targetBundleID:(id)a9 workoutType:(id)a10 isNowPlaying:(id)a11 allowedBundleIDs:(id)a12 suggestionsIntent:(id)a13
+- (BMMediaSuggesterSuggestionFeedback)initWithSessionIdentifier:(id)identifier numberOfVisibleSuggestions:(id)suggestions indexSelected:(id)selected intent:(id)intent engagementType:(int)type suggestionsRequestDate:(id)date targetBundleID:(id)d workoutType:(id)self0 isNowPlaying:(id)self1 allowedBundleIDs:(id)self2 suggestionsIntent:(id)self3
 {
-  v36 = a3;
-  v17 = a4;
-  v18 = a5;
-  v30 = a6;
-  v35 = a6;
-  v19 = a8;
-  v34 = a9;
-  v20 = a10;
-  v21 = a11;
-  v22 = a12;
-  v33 = a13;
+  identifierCopy = identifier;
+  suggestionsCopy = suggestions;
+  selectedCopy = selected;
+  intentCopy = intent;
+  intentCopy2 = intent;
+  dateCopy = date;
+  dCopy = d;
+  workoutTypeCopy = workoutType;
+  playingCopy = playing;
+  dsCopy = ds;
+  suggestionsIntentCopy = suggestionsIntent;
   v37.receiver = self;
   v37.super_class = BMMediaSuggesterSuggestionFeedback;
   v23 = [(BMEventBase *)&v37 init];
   if (v23)
   {
     v23->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v23->_sessionIdentifier, a3);
-    if (v17)
+    objc_storeStrong(&v23->_sessionIdentifier, identifier);
+    if (suggestionsCopy)
     {
       v23->_hasNumberOfVisibleSuggestions = 1;
-      [v17 doubleValue];
+      [suggestionsCopy doubleValue];
     }
 
     else
@@ -2010,25 +2010,25 @@ LABEL_111:
     }
 
     v23->_numberOfVisibleSuggestions = v24;
-    if (v18)
+    if (selectedCopy)
     {
       v23->_hasIndexSelected = 1;
-      v25 = [v18 intValue];
+      intValue = [selectedCopy intValue];
     }
 
     else
     {
       v23->_hasIndexSelected = 0;
-      v25 = -1;
+      intValue = -1;
     }
 
-    v23->_indexSelected = v25;
-    objc_storeStrong(&v23->_intent, v30);
-    v23->_engagementType = a7;
-    if (v19)
+    v23->_indexSelected = intValue;
+    objc_storeStrong(&v23->_intent, intentCopy);
+    v23->_engagementType = type;
+    if (dateCopy)
     {
       v23->_hasSuggestionsRequestDate = 1;
-      [v19 doubleValue];
+      [dateCopy doubleValue];
     }
 
     else
@@ -2038,24 +2038,24 @@ LABEL_111:
     }
 
     v23->_suggestionsRequestDate = v26;
-    objc_storeStrong(&v23->_targetBundleID, a9);
-    if (v20)
+    objc_storeStrong(&v23->_targetBundleID, d);
+    if (workoutTypeCopy)
     {
       v23->_hasWorkoutType = 1;
-      v27 = [v20 intValue];
+      intValue2 = [workoutTypeCopy intValue];
     }
 
     else
     {
       v23->_hasWorkoutType = 0;
-      v27 = -1;
+      intValue2 = -1;
     }
 
-    v23->_workoutType = v27;
-    if (v21)
+    v23->_workoutType = intValue2;
+    if (playingCopy)
     {
       v23->_hasIsNowPlaying = 1;
-      v23->_isNowPlaying = [v21 BOOLValue];
+      v23->_isNowPlaying = [playingCopy BOOLValue];
     }
 
     else
@@ -2064,8 +2064,8 @@ LABEL_111:
       v23->_isNowPlaying = 0;
     }
 
-    objc_storeStrong(&v23->_allowedBundleIDs, a12);
-    objc_storeStrong(&v23->_suggestionsIntent, a13);
+    objc_storeStrong(&v23->_allowedBundleIDs, ds);
+    objc_storeStrong(&v23->_suggestionsIntent, suggestionsIntent);
   }
 
   return v23;
@@ -2163,9 +2163,9 @@ id __45__BMMediaSuggesterSuggestionFeedback_columns__block_invoke(uint64_t a1, v
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -2173,8 +2173,8 @@ id __45__BMMediaSuggesterSuggestionFeedback_columns__block_invoke(uint64_t a1, v
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMediaSuggesterSuggestionFeedback alloc] initByReadFrom:v7];
     v4 = v8;

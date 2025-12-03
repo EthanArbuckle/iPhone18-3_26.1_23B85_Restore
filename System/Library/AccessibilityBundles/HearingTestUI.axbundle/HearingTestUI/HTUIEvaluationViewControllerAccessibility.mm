@@ -1,5 +1,5 @@
 @interface HTUIEvaluationViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsSessionActive;
 - (BOOL)_axIsSessionPaused;
 - (BOOL)accessibilityPerformEscape;
@@ -7,7 +7,7 @@
 - (id)_axSessionManagerCategory;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnouncementFinished;
-- (void)_axHandleElementFocusedNotification:(id)a3;
+- (void)_axHandleElementFocusedNotification:(id)notification;
 - (void)_axIsSessionActive;
 - (void)_axStartAnnouncement;
 - (void)didTapAction;
@@ -19,16 +19,16 @@
 
 @implementation HTUIEvaluationViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HearingTestUI.HTUIEvaluationViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"HearingTestUI.HTUIEvaluationViewController" hasInstanceMethod:@"scheduleEvaluationStart" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"HearingTestUI.HTUIEvaluationViewController" hasInstanceMethod:@"pauseHearingTestSession" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"HearingTestUI.HTUIEvaluationViewController" hasInstanceMethod:@"resumeHearingTestSession" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"HearingTestUI.HTUIEvaluationViewController" hasInstanceMethod:@"didTapAction" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"HearingTestUI.HTUIEvaluationViewController" hasInstanceMethod:@"didTapCancel" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"HearingTestUI.HTUIEvaluationViewController" hasSwiftFieldOfAnyClass:@"sessionManager"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HearingTestUI.HTUIEvaluationViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"HearingTestUI.HTUIEvaluationViewController" hasInstanceMethod:@"scheduleEvaluationStart" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"HearingTestUI.HTUIEvaluationViewController" hasInstanceMethod:@"pauseHearingTestSession" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"HearingTestUI.HTUIEvaluationViewController" hasInstanceMethod:@"resumeHearingTestSession" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"HearingTestUI.HTUIEvaluationViewController" hasInstanceMethod:@"didTapAction" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"HearingTestUI.HTUIEvaluationViewController" hasInstanceMethod:@"didTapCancel" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"HearingTestUI.HTUIEvaluationViewController" hasSwiftFieldOfAnyClass:@"sessionManager"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -38,11 +38,11 @@
   [(HTUIEvaluationViewControllerAccessibility *)&v7 _accessibilityLoadAccessibilityInformation];
   if (![(HTUIEvaluationViewControllerAccessibility *)self _axIsSubscribed])
   {
-    v3 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v3 addObserver:self selector:sel__axAnnouncementFinished name:*MEMORY[0x29EDC7E98] object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__axAnnouncementFinished name:*MEMORY[0x29EDC7E98] object:0];
 
-    v4 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v4 addObserver:self selector:sel__axHandleElementFocusedNotification_ name:*MEMORY[0x29EDC7EB8] object:0];
+    defaultCenter2 = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__axHandleElementFocusedNotification_ name:*MEMORY[0x29EDC7EB8] object:0];
 
     v5 = AXLogHearingTest();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -93,14 +93,14 @@
     v23 = 0;
     objc_opt_class();
     v3 = __UIAccessibilityCastAsClass();
-    v4 = [v3 navigationItem];
+    navigationItem = [v3 navigationItem];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = [v4 rightBarButtonItems];
-    v6 = [v5 countByEnumeratingWithState:&v19 objects:v26 count:16];
+    rightBarButtonItems = [navigationItem rightBarButtonItems];
+    v6 = [rightBarButtonItems countByEnumeratingWithState:&v19 objects:v26 count:16];
     if (v6)
     {
       v7 = v6;
@@ -111,20 +111,20 @@
         {
           if (*v20 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(rightBarButtonItems);
           }
 
           [*(*(&v19 + 1) + 8 * i) setIsAccessibilityElement:0];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v19 objects:v26 count:16];
+        v7 = [rightBarButtonItems countByEnumeratingWithState:&v19 objects:v26 count:16];
       }
 
       while (v7);
     }
 
-    v10 = [(HTUIEvaluationViewControllerAccessibility *)self _axContentViewCategory];
-    v11 = [v10 _axTapHearButton];
+    _axContentViewCategory = [(HTUIEvaluationViewControllerAccessibility *)self _axContentViewCategory];
+    _axTapHearButton = [_axContentViewCategory _axTapHearButton];
 
     v12 = objc_alloc(MEMORY[0x29EDC78E0]);
     v13 = accessibilityLocalizedString(@"HEARING_TEST_CANCEL_BUTTON");
@@ -138,7 +138,7 @@
 
     v25 = v15;
     v16 = [MEMORY[0x29EDB8D80] arrayWithObjects:&v25 count:1];
-    [v11 setAccessibilityCustomActions:v16];
+    [_axTapHearButton setAccessibilityCustomActions:v16];
   }
 
   v17 = *MEMORY[0x29EDCA608];
@@ -177,8 +177,8 @@ uint64_t __56__HTUIEvaluationViewControllerAccessibility_viewDidLoad__block_invo
   }
 
   [(HTUIEvaluationViewControllerAccessibility *)self _axSetAnnouncementState:0];
-  v4 = [(HTUIEvaluationViewControllerAccessibility *)self _axContentViewCategory];
-  [v4 _axStopPlayingTones];
+  _axContentViewCategory = [(HTUIEvaluationViewControllerAccessibility *)self _axContentViewCategory];
+  [_axContentViewCategory _axStopPlayingTones];
 }
 
 - (void)resumeHearingTestSession
@@ -223,21 +223,21 @@ uint64_t __56__HTUIEvaluationViewControllerAccessibility_viewDidLoad__block_invo
     }
 
     [(HTUIEvaluationViewControllerAccessibility *)self _axSetAnnouncementState:2];
-    v4 = [(HTUIEvaluationViewControllerAccessibility *)self _axContentViewCategory];
-    [v4 _axBeforePlayingTones];
+    _axContentViewCategory = [(HTUIEvaluationViewControllerAccessibility *)self _axContentViewCategory];
+    [_axContentViewCategory _axBeforePlayingTones];
 
-    v5 = [(HTUIEvaluationViewControllerAccessibility *)self _axIsSessionPaused];
+    _axIsSessionPaused = [(HTUIEvaluationViewControllerAccessibility *)self _axIsSessionPaused];
     v6 = AXLogHearingTest();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
-    if (v5)
+    if (_axIsSessionPaused)
     {
       if (v7)
       {
         [HTUIEvaluationViewControllerAccessibility _axAnnouncementFinished];
       }
 
-      v8 = [(HTUIEvaluationViewControllerAccessibility *)self _axSessionManagerCategory];
-      [v8 _axResumeSession];
+      _axSessionManagerCategory = [(HTUIEvaluationViewControllerAccessibility *)self _axSessionManagerCategory];
+      [_axSessionManagerCategory _axResumeSession];
     }
 
     else
@@ -247,29 +247,29 @@ uint64_t __56__HTUIEvaluationViewControllerAccessibility_viewDidLoad__block_invo
         [HTUIEvaluationViewControllerAccessibility _axAnnouncementFinished];
       }
 
-      v9 = [(HTUIEvaluationViewControllerAccessibility *)self _axSessionManagerCategory];
-      [v9 _axStartSession];
+      _axSessionManagerCategory2 = [(HTUIEvaluationViewControllerAccessibility *)self _axSessionManagerCategory];
+      [_axSessionManagerCategory2 _axStartSession];
 
       [(HTUIEvaluationViewControllerAccessibility *)self _axSetIsSessionStarted:1];
     }
   }
 }
 
-- (void)_axHandleElementFocusedNotification:(id)a3
+- (void)_axHandleElementFocusedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v5 = [(HTUIEvaluationViewControllerAccessibility *)self _axContentViewCategory];
-    v6 = [v5 _axIsStateInProgress];
+    _axContentViewCategory = [(HTUIEvaluationViewControllerAccessibility *)self _axContentViewCategory];
+    _axIsStateInProgress = [_axContentViewCategory _axIsStateInProgress];
 
-    if (v6)
+    if (_axIsStateInProgress)
     {
-      v7 = [v4 userInfo];
-      v8 = [v7 objectForKeyedSubscript:*MEMORY[0x29EDC7EC0]];
+      userInfo = [notificationCopy userInfo];
+      v8 = [userInfo objectForKeyedSubscript:*MEMORY[0x29EDC7EC0]];
 
-      v9 = [v4 userInfo];
-      v10 = [v9 objectForKeyedSubscript:*MEMORY[0x29EDC7FF8]];
+      userInfo2 = [notificationCopy userInfo];
+      v10 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x29EDC7FF8]];
 
       v11 = AXLogHearingTest();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -277,20 +277,20 @@ uint64_t __56__HTUIEvaluationViewControllerAccessibility_viewDidLoad__block_invo
         [(HTUIEvaluationViewControllerAccessibility *)v8 _axHandleElementFocusedNotification:v10, v11];
       }
 
-      v12 = [(HTUIEvaluationViewControllerAccessibility *)self _axContentViewCategory];
-      v13 = [v12 _axTapHearButton];
+      _axContentViewCategory2 = [(HTUIEvaluationViewControllerAccessibility *)self _axContentViewCategory];
+      _axTapHearButton = [_axContentViewCategory2 _axTapHearButton];
 
       if (v8)
       {
         objc_opt_class();
         v14 = __UIAccessibilityCastAsClass();
-        v15 = [v14 presentedViewController];
+        presentedViewController = [v14 presentedViewController];
 
-        if (v15)
+        if (presentedViewController)
         {
           [(HTUIEvaluationViewControllerAccessibility *)self _axSetAnnouncementState:0];
-          v16 = [(HTUIEvaluationViewControllerAccessibility *)self _axContentViewCategory];
-          [v16 _axStopPlayingTones];
+          _axContentViewCategory3 = [(HTUIEvaluationViewControllerAccessibility *)self _axContentViewCategory];
+          [_axContentViewCategory3 _axStopPlayingTones];
 
           v17 = AXLogHearingTest();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -307,7 +307,7 @@ uint64_t __56__HTUIEvaluationViewControllerAccessibility_viewDidLoad__block_invo
             [HTUIEvaluationViewControllerAccessibility _axHandleElementFocusedNotification:];
           }
 
-          if (v8 == v13)
+          if (v8 == _axTapHearButton)
           {
             if ([(HTUIEvaluationViewControllerAccessibility *)self _axIsSessionPaused])
             {
@@ -322,10 +322,10 @@ uint64_t __56__HTUIEvaluationViewControllerAccessibility_viewDidLoad__block_invo
 
             else if (![(HTUIEvaluationViewControllerAccessibility *)self _axIsSessionStarted])
             {
-              v21 = [(HTUIEvaluationViewControllerAccessibility *)self _axContentViewCategory];
-              v22 = [v21 _axIsStateInProgress];
+              _axContentViewCategory4 = [(HTUIEvaluationViewControllerAccessibility *)self _axContentViewCategory];
+              _axIsStateInProgress2 = [_axContentViewCategory4 _axIsStateInProgress];
 
-              if (v22)
+              if (_axIsStateInProgress2)
               {
                 v23 = AXLogHearingTest();
                 if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -357,7 +357,7 @@ uint64_t __56__HTUIEvaluationViewControllerAccessibility_viewDidLoad__block_invo
 
       else
       {
-        if (v10 != v13)
+        if (v10 != _axTapHearButton)
         {
 LABEL_36:
 
@@ -401,13 +401,13 @@ LABEL_37:
 
 - (BOOL)_axIsSessionPaused
 {
-  v3 = [(HTUIEvaluationViewControllerAccessibility *)self _axIsSessionStarted];
-  if (v3)
+  _axIsSessionStarted = [(HTUIEvaluationViewControllerAccessibility *)self _axIsSessionStarted];
+  if (_axIsSessionStarted)
   {
-    LOBYTE(v3) = ![(HTUIEvaluationViewControllerAccessibility *)self _axIsSessionActive];
+    LOBYTE(_axIsSessionStarted) = ![(HTUIEvaluationViewControllerAccessibility *)self _axIsSessionActive];
   }
 
-  return v3;
+  return _axIsSessionStarted;
 }
 
 - (BOOL)_axIsSessionActive
@@ -438,7 +438,7 @@ LABEL_37:
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
   objc_opt_class();
-  v3 = [v2 view];
+  view = [v2 view];
   v4 = __UIAccessibilityCastAsSafeCategory();
 
   return v4;

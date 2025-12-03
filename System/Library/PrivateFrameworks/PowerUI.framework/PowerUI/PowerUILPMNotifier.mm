@@ -5,7 +5,7 @@
 - (void)displayAutoDisabledNotification;
 - (void)displayFirstUseNotification;
 - (void)removeAutoDisabledNotification;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation PowerUILPMNotifier
@@ -48,8 +48,8 @@
 
 - (void)displayAutoDisabledNotification
 {
-  v3 = [(PowerUILPMNotifier *)self autoDisabledNotificationRequest];
-  [(UNUserNotificationCenter *)self->_userNotificationCenter addNotificationRequest:v3 withCompletionHandler:0];
+  autoDisabledNotificationRequest = [(PowerUILPMNotifier *)self autoDisabledNotificationRequest];
+  [(UNUserNotificationCenter *)self->_userNotificationCenter addNotificationRequest:autoDisabledNotificationRequest withCompletionHandler:0];
 }
 
 + (id)sharedInstance
@@ -71,27 +71,27 @@ uint64_t __36__PowerUILPMNotifier_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v12 = a4;
-  v6 = a5;
-  v7 = [v12 actionIdentifier];
-  if (v7)
+  responseCopy = response;
+  handlerCopy = handler;
+  actionIdentifier = [responseCopy actionIdentifier];
+  if (actionIdentifier)
   {
-    v8 = v7;
-    v9 = [v12 actionIdentifier];
-    v10 = [v9 compare:@"reenable"];
+    v8 = actionIdentifier;
+    actionIdentifier2 = [responseCopy actionIdentifier];
+    v10 = [actionIdentifier2 compare:@"reenable"];
 
     if (!v10)
     {
-      v11 = [MEMORY[0x277D244D8] sharedInstance];
-      [v11 setPowerMode:1 fromSource:*MEMORY[0x277D244E8]];
+      mEMORY[0x277D244D8] = [MEMORY[0x277D244D8] sharedInstance];
+      [mEMORY[0x277D244D8] setPowerMode:1 fromSource:*MEMORY[0x277D244E8]];
     }
   }
 
-  if (v6)
+  if (handlerCopy)
   {
-    v6[2](v6);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -109,9 +109,9 @@ uint64_t __36__PowerUILPMNotifier_sharedInstance__block_invoke()
   [v2 setDefaultActionURL:v5];
 
   v6 = MEMORY[0x277CE1FC0];
-  v7 = [MEMORY[0x277CCAD78] UUID];
-  v8 = [v7 UUIDString];
-  v9 = [v6 requestWithIdentifier:v8 content:v2 trigger:0];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v9 = [v6 requestWithIdentifier:uUIDString content:v2 trigger:0];
 
   return v9;
 }

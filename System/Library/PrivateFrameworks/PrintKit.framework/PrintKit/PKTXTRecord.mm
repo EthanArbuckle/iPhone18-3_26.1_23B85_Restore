@@ -1,28 +1,28 @@
 @interface PKTXTRecord
-+ (id)txtRecordDictionaryForTxtRecord:(id)a3;
++ (id)txtRecordDictionaryForTxtRecord:(id)record;
 - (NSString)printerProduct;
-- (PKTXTRecord)initWithCoder:(id)a3;
-- (PKTXTRecord)initWithDictionary:(id)a3;
-- (PKTXTRecord)initWithNWTXTRecord:(id)a3;
-- (PKTXTRecord)initWithTXTRecordData:(id)a3;
-- (id)_checkMake:(id)a3 propertyName:(id)a4 maker:(id)a5;
-- (id)_checkMakeString:(id)a3 propertyName:(id)a4;
-- (id)_checkMakeStringArray:(id)a3 propertyName:(id)a4;
-- (id)_checkMakeURL:(id)a3 propertyName:(id)a4;
-- (id)_checkMakeUUID:(id)a3 propertyName:(id)a4;
-- (id)_initWithLowercasedDictionary:(id)a3;
-- (id)_stringValueForKey:(id)a3;
-- (id)_wrapProduct:(id)a3;
-- (int64_t)_checkMakeInt:(id)a3 propertyName:(id)a4;
-- (unint64_t)_checkMakeAvail:(id)a3 propertyName:(id)a4;
-- (unsigned)_checkMakeTLS:(id)a3 propertyName:(id)a4;
+- (PKTXTRecord)initWithCoder:(id)coder;
+- (PKTXTRecord)initWithDictionary:(id)dictionary;
+- (PKTXTRecord)initWithNWTXTRecord:(id)record;
+- (PKTXTRecord)initWithTXTRecordData:(id)data;
+- (id)_checkMake:(id)make propertyName:(id)name maker:(id)maker;
+- (id)_checkMakeString:(id)string propertyName:(id)name;
+- (id)_checkMakeStringArray:(id)array propertyName:(id)name;
+- (id)_checkMakeURL:(id)l propertyName:(id)name;
+- (id)_checkMakeUUID:(id)d propertyName:(id)name;
+- (id)_initWithLowercasedDictionary:(id)dictionary;
+- (id)_stringValueForKey:(id)key;
+- (id)_wrapProduct:(id)product;
+- (int64_t)_checkMakeInt:(id)int propertyName:(id)name;
+- (unint64_t)_checkMakeAvail:(id)avail propertyName:(id)name;
+- (unsigned)_checkMakeTLS:(id)s propertyName:(id)name;
 @end
 
 @implementation PKTXTRecord
 
-+ (id)txtRecordDictionaryForTxtRecord:(id)a3
++ (id)txtRecordDictionaryForTxtRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   v4 = objc_opt_new();
   applier[0] = MEMORY[0x277D85DD0];
   applier[1] = 3221225472;
@@ -30,7 +30,7 @@
   applier[3] = &unk_279A93408;
   v5 = v4;
   v8 = v5;
-  nw_txt_record_apply(v3, applier);
+  nw_txt_record_apply(recordCopy, applier);
 
   return v5;
 }
@@ -46,15 +46,15 @@ uint64_t __47__PKTXTRecord_txtRecordDictionaryForTxtRecord___block_invoke(uint64
   return 1;
 }
 
-- (id)_initWithLowercasedDictionary:(id)a3
+- (id)_initWithLowercasedDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = PKTXTRecord;
   v5 = [(PKTXTRecord *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     stringDict = v5->_stringDict;
     v5->_stringDict = v6;
 
@@ -66,17 +66,17 @@ uint64_t __47__PKTXTRecord_txtRecordDictionaryForTxtRecord___block_invoke(uint64
   return v5;
 }
 
-- (PKTXTRecord)initWithDictionary:(id)a3
+- (PKTXTRecord)initWithDictionary:(id)dictionary
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v4 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allKeys = [dictionaryCopy allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -86,16 +86,16 @@ uint64_t __47__PKTXTRecord_txtRecordDictionaryForTxtRecord___block_invoke(uint64
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v4 objectForKey:v10];
-        v12 = [v10 lowercaseString];
-        [v5 setObject:v11 forKey:v12];
+        v11 = [dictionaryCopy objectForKey:v10];
+        lowercaseString = [v10 lowercaseString];
+        [v5 setObject:v11 forKey:lowercaseString];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -105,9 +105,9 @@ uint64_t __47__PKTXTRecord_txtRecordDictionaryForTxtRecord___block_invoke(uint64
   return v13;
 }
 
-- (PKTXTRecord)initWithTXTRecordData:(id)a3
+- (PKTXTRecord)initWithTXTRecordData:(id)data
 {
-  v4 = [MEMORY[0x277CBAB60] dictionaryFromTXTRecordData:a3];
+  v4 = [MEMORY[0x277CBAB60] dictionaryFromTXTRecordData:data];
   v5 = objc_opt_new();
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -129,85 +129,85 @@ void __37__PKTXTRecord_initWithTXTRecordData___block_invoke(uint64_t a1, void *a
   [*(a1 + 32) setObject:v6 forKey:v7];
 }
 
-- (PKTXTRecord)initWithNWTXTRecord:(id)a3
+- (PKTXTRecord)initWithNWTXTRecord:(id)record
 {
-  v4 = [PKTXTRecord txtRecordDictionaryForTxtRecord:a3];
+  v4 = [PKTXTRecord txtRecordDictionaryForTxtRecord:record];
   v5 = [(PKTXTRecord *)self _initWithLowercasedDictionary:v4];
 
   return v5;
 }
 
-- (PKTXTRecord)initWithCoder:(id)a3
+- (PKTXTRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v6 = [v4 decodeDictionaryWithKeysOfClass:v5 objectsOfClass:objc_opt_class() forKey:@"txtDict"];
+  v6 = [coderCopy decodeDictionaryWithKeysOfClass:v5 objectsOfClass:objc_opt_class() forKey:@"txtDict"];
   v7 = [(PKTXTRecord *)self initWithDictionary:v6];
 
   return v7;
 }
 
-- (id)_stringValueForKey:(id)a3
+- (id)_stringValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [v4 lowercaseString];
-  if (([v5 isEqualToString:v4] & 1) == 0)
+  keyCopy = key;
+  lowercaseString = [keyCopy lowercaseString];
+  if (([lowercaseString isEqualToString:keyCopy] & 1) == 0)
   {
     __assert_rtn("[PKTXTRecord _stringValueForKey:]", "PKTXTRecord.m", 89, "[[key lowercaseString] isEqualToString:key]");
   }
 
-  v6 = [(NSDictionary *)self->_stringDict objectForKey:v4];
+  v6 = [(NSDictionary *)self->_stringDict objectForKey:keyCopy];
 
   return v6;
 }
 
-- (id)_checkMake:(id)a3 propertyName:(id)a4 maker:(id)a5
+- (id)_checkMake:(id)make propertyName:(id)name maker:(id)maker
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NSMutableDictionary *)self->_seenDict objectForKeyedSubscript:v9];
-  if (!v11)
+  makeCopy = make;
+  nameCopy = name;
+  makerCopy = maker;
+  null = [(NSMutableDictionary *)self->_seenDict objectForKeyedSubscript:nameCopy];
+  if (!null)
   {
-    v12 = [(PKTXTRecord *)self _stringValueForKey:v8];
-    if (!v12 || (v10[2](v10, v12), (v11 = objc_claimAutoreleasedReturnValue()) == 0))
+    v12 = [(PKTXTRecord *)self _stringValueForKey:makeCopy];
+    if (!v12 || (makerCopy[2](makerCopy, v12), (null = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v11 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
-    [(NSMutableDictionary *)self->_seenDict setObject:v11 forKeyedSubscript:v9];
+    [(NSMutableDictionary *)self->_seenDict setObject:null forKeyedSubscript:nameCopy];
   }
 
-  v13 = [MEMORY[0x277CBEB68] null];
+  null2 = [MEMORY[0x277CBEB68] null];
 
-  if (v11 == v13)
+  if (null == null2)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = v11;
+    v14 = null;
   }
 
   return v14;
 }
 
-- (int64_t)_checkMakeInt:(id)a3 propertyName:(id)a4
+- (int64_t)_checkMakeInt:(id)int propertyName:(id)name
 {
-  v4 = [(PKTXTRecord *)self _checkMake:a3 propertyName:a4 maker:&__block_literal_global_12];
+  v4 = [(PKTXTRecord *)self _checkMake:int propertyName:name maker:&__block_literal_global_12];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
-    v6 = -1;
+    integerValue = -1;
   }
 
-  return v6;
+  return integerValue;
 }
 
 id __42__PKTXTRecord__checkMakeInt_propertyName___block_invoke(uint64_t a1, void *a2)
@@ -218,16 +218,16 @@ id __42__PKTXTRecord__checkMakeInt_propertyName___block_invoke(uint64_t a1, void
   return v3;
 }
 
-- (id)_checkMakeString:(id)a3 propertyName:(id)a4
+- (id)_checkMakeString:(id)string propertyName:(id)name
 {
-  v4 = [(PKTXTRecord *)self _checkMake:a3 propertyName:a4 maker:&__block_literal_global_13];
+  v4 = [(PKTXTRecord *)self _checkMake:string propertyName:name maker:&__block_literal_global_13];
 
   return v4;
 }
 
-- (id)_checkMakeStringArray:(id)a3 propertyName:(id)a4
+- (id)_checkMakeStringArray:(id)array propertyName:(id)name
 {
-  v4 = [(PKTXTRecord *)self _checkMake:a3 propertyName:a4 maker:&__block_literal_global_16_0];
+  v4 = [(PKTXTRecord *)self _checkMake:array propertyName:name maker:&__block_literal_global_16_0];
 
   return v4;
 }
@@ -239,21 +239,21 @@ id __50__PKTXTRecord__checkMakeStringArray_propertyName___block_invoke(uint64_t 
   return v2;
 }
 
-- (unint64_t)_checkMakeAvail:(id)a3 propertyName:(id)a4
+- (unint64_t)_checkMakeAvail:(id)avail propertyName:(id)name
 {
-  v4 = [(PKTXTRecord *)self _checkMake:a3 propertyName:a4 maker:&__block_literal_global_21_0];
+  v4 = [(PKTXTRecord *)self _checkMake:avail propertyName:name maker:&__block_literal_global_21_0];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v6 = 2;
+    bOOLValue = 2;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 id __44__PKTXTRecord__checkMakeAvail_propertyName___block_invoke(uint64_t a1, void *a2)
@@ -265,9 +265,9 @@ id __44__PKTXTRecord__checkMakeAvail_propertyName___block_invoke(uint64_t a1, vo
   return v4;
 }
 
-- (id)_checkMakeUUID:(id)a3 propertyName:(id)a4
+- (id)_checkMakeUUID:(id)d propertyName:(id)name
 {
-  v4 = [(PKTXTRecord *)self _checkMake:a3 propertyName:a4 maker:&__block_literal_global_27];
+  v4 = [(PKTXTRecord *)self _checkMake:d propertyName:name maker:&__block_literal_global_27];
 
   return v4;
 }
@@ -280,9 +280,9 @@ id __43__PKTXTRecord__checkMakeUUID_propertyName___block_invoke(uint64_t a1, voi
   return v3;
 }
 
-- (id)_checkMakeURL:(id)a3 propertyName:(id)a4
+- (id)_checkMakeURL:(id)l propertyName:(id)name
 {
-  v4 = [(PKTXTRecord *)self _checkMake:a3 propertyName:a4 maker:&__block_literal_global_31];
+  v4 = [(PKTXTRecord *)self _checkMake:l propertyName:name maker:&__block_literal_global_31];
 
   return v4;
 }
@@ -294,12 +294,12 @@ id __42__PKTXTRecord__checkMakeURL_propertyName___block_invoke(uint64_t a1, void
   return v2;
 }
 
-- (unsigned)_checkMakeTLS:(id)a3 propertyName:(id)a4
+- (unsigned)_checkMakeTLS:(id)s propertyName:(id)name
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKTXTRecord *)self _checkMakeString:v6 propertyName:v7];
+  sCopy = s;
+  nameCopy = name;
+  v8 = [(PKTXTRecord *)self _checkMakeString:sCopy propertyName:nameCopy];
   v9 = v8;
   if (!v8)
   {
@@ -339,24 +339,24 @@ LABEL_12:
   return v10;
 }
 
-- (id)_wrapProduct:(id)a3
+- (id)_wrapProduct:(id)product
 {
-  v4 = a3;
-  if (!v4)
+  productCopy = product;
+  if (!productCopy)
   {
-    v5 = [(PKTXTRecord *)self printerType];
-    if (v5)
+    printerType = [(PKTXTRecord *)self printerType];
+    if (printerType)
     {
-      v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@)", v5];
+      productCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@)", printerType];
     }
 
     else
     {
-      v4 = 0;
+      productCopy = 0;
     }
   }
 
-  return v4;
+  return productCopy;
 }
 
 - (NSString)printerProduct

@@ -1,27 +1,27 @@
 @interface MISDBManager
-- (BOOL)authorizeEntryWithProfileUUID:(id)a3 cdHash:(id)a4 gracePeriod:(int)a5 currentMonotonicTime:(int64_t)a6 currentResetCount:(int64_t)a7 error:(id *)a8;
-- (BOOL)banCDHash:(id)a3 error:(id *)a4;
-- (BOOL)banProfileUUID:(id)a3 error:(id *)a4;
-- (BOOL)createOnlineAuthEntry:(id)a3 error:(id *)a4;
-- (BOOL)deleteOnlineAuthEntryWithCdHash:(id)a3 error:(id *)a4;
-- (BOOL)deleteOnlineAuthEntryWithProfileUUID:(id)a3 cdHash:(id)a4 error:(id *)a5;
+- (BOOL)authorizeEntryWithProfileUUID:(id)d cdHash:(id)hash gracePeriod:(int)period currentMonotonicTime:(int64_t)time currentResetCount:(int64_t)count error:(id *)error;
+- (BOOL)banCDHash:(id)hash error:(id *)error;
+- (BOOL)banProfileUUID:(id)d error:(id *)error;
+- (BOOL)createOnlineAuthEntry:(id)entry error:(id *)error;
+- (BOOL)deleteOnlineAuthEntryWithCdHash:(id)hash error:(id *)error;
+- (BOOL)deleteOnlineAuthEntryWithProfileUUID:(id)d cdHash:(id)hash error:(id *)error;
 - (BOOL)migrate;
-- (BOOL)recordIndeterminateEntryWithProfileUUID:(id)a3 cdHash:(id)a4 onConflictDoNothing:(BOOL)a5 error:(id *)a6;
-- (BOOL)rejectEntryWithProfileUUID:(id)a3 cdHash:(id)a4 isRejectedByWholeProfile:(BOOL)a5 error:(id *)a6;
-- (BOOL)setGracePeriodWithProfileUUID:(id)a3 gracePeriod:(int)a4 error:(id *)a5;
+- (BOOL)recordIndeterminateEntryWithProfileUUID:(id)d cdHash:(id)hash onConflictDoNothing:(BOOL)nothing error:(id *)error;
+- (BOOL)rejectEntryWithProfileUUID:(id)d cdHash:(id)hash isRejectedByWholeProfile:(BOOL)profile error:(id *)error;
+- (BOOL)setGracePeriodWithProfileUUID:(id)d gracePeriod:(int)period error:(id *)error;
 - (BOOL)setupSchema;
 - (id)allCMSBlobs;
 - (id)allProfiles;
-- (id)findProfilesMatchingEntitlements:(id)a3 withCertificate:(id)a4;
-- (id)findProfilesMatchingPredicates:(id)a3 withCertificate:(id)a4;
-- (id)findProfilesWithCertificate:(id)a3;
+- (id)findProfilesMatchingEntitlements:(id)entitlements withCertificate:(id)certificate;
+- (id)findProfilesMatchingPredicates:(id)predicates withCertificate:(id)certificate;
+- (id)findProfilesWithCertificate:(id)certificate;
 - (id)getOnlineAuthEntriesNoThrow;
-- (id)getOnlineAuthEntryNoThrowWithProfileUUID:(id)a3 cdHash:(id)a4;
-- (int)insertProfile:(void *)a3;
-- (int64_t)countCDHashesRejectedByProfileNoThrowWithProfileUUID:(id)a3;
-- (void)deleteOnlineAuthEntryNoThrowWithCdHash:(id)a3;
-- (void)deleteOnlineAuthEntryNoThrowWithProfileUUID:(id)a3 cdHash:(id)a4;
-- (void)recordIndeterminateEntryNoThrowWithProfileUUID:(id)a3 cdHash:(id)a4 onConflictDoNothing:(BOOL)a5;
+- (id)getOnlineAuthEntryNoThrowWithProfileUUID:(id)d cdHash:(id)hash;
+- (int)insertProfile:(void *)profile;
+- (int64_t)countCDHashesRejectedByProfileNoThrowWithProfileUUID:(id)d;
+- (void)deleteOnlineAuthEntryNoThrowWithCdHash:(id)hash;
+- (void)deleteOnlineAuthEntryNoThrowWithProfileUUID:(id)d cdHash:(id)hash;
+- (void)recordIndeterminateEntryNoThrowWithProfileUUID:(id)d cdHash:(id)hash onConflictDoNothing:(BOOL)nothing;
 @end
 
 @implementation MISDBManager
@@ -38,13 +38,13 @@
 
   v9.receiver = self;
   v9.super_class = MISDBManager;
-  v7 = [(SQLDB *)&v9 setupSchema];
-  if (v7)
+  setupSchema = [(SQLDB *)&v9 setupSchema];
+  if (setupSchema)
   {
-    LOBYTE(v7) = [(MISDBManager *)self migrate];
+    LOBYTE(setupSchema) = [(MISDBManager *)self migrate];
   }
 
-  return v7;
+  return setupSchema;
 }
 
 - (BOOL)migrate
@@ -86,7 +86,7 @@
   return v4;
 }
 
-- (int)insertProfile:(void *)a3
+- (int)insertProfile:(void *)profile
 {
   v6 = 0;
   v7 = &v6;
@@ -97,7 +97,7 @@
   v5[2] = sub_10000CAD8;
   v5[3] = &unk_10005DE48;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = profile;
   v5[4] = self;
   [(SQLDB *)self transaction:v5];
   v3 = *(v7 + 6);
@@ -140,31 +140,31 @@
   return v3;
 }
 
-- (id)findProfilesMatchingEntitlements:(id)a3 withCertificate:(id)a4
+- (id)findProfilesMatchingEntitlements:(id)entitlements withCertificate:(id)certificate
 {
-  v6 = a4;
-  v7 = a3;
+  certificateCopy = certificate;
+  entitlementsCopy = entitlements;
   v8 = [NSMutableArray arrayWithCapacity:10];
-  v9 = [(MISDBManager *)self Entitlements];
+  entitlements = [(MISDBManager *)self Entitlements];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000CFD8;
   v13[3] = &unk_10005DE70;
   v14 = v8;
   v10 = v8;
-  [v9 emitEntitlementPredicates:v7 predicateHandler:v13];
+  [entitlements emitEntitlementPredicates:entitlementsCopy predicateHandler:v13];
 
-  v11 = [(MISDBManager *)self findProfilesMatchingPredicates:v10 withCertificate:v6];
+  v11 = [(MISDBManager *)self findProfilesMatchingPredicates:v10 withCertificate:certificateCopy];
 
   return v11;
 }
 
-- (id)findProfilesMatchingPredicates:(id)a3 withCertificate:(id)a4
+- (id)findProfilesMatchingPredicates:(id)predicates withCertificate:(id)certificate
 {
-  v6 = a3;
-  v7 = a4;
+  predicatesCopy = predicates;
+  certificateCopy = certificate;
   v8 = [NSMutableArray arrayWithCapacity:2];
-  if (v7)
+  if (certificateCopy)
   {
     v9 = @"SELECT uuid FROM certificate_provisioning_cache JOIN certificates ON certificates.pk = leaf_pk WHERE certificates.leaf = @cert";
   }
@@ -180,22 +180,22 @@
   v23[2] = sub_10000D1E4;
   v24 = v23[3] = &unk_10005DE98;
   v10 = v24;
-  [v6 enumerateObjectsUsingBlock:v23];
+  [predicatesCopy enumerateObjectsUsingBlock:v23];
   v11 = [NSString stringWithFormat:@"WITH predicates(idx, predicate) AS (VALUES %@), filteredProfileUUIDs(uuid) AS (%@) SELECT * FROM (SELECT profiles.uuid, profiles.team_id, profiles.name, profiles.expires, profiles.is_for_all_devices, profiles.is_apple_internal, profiles.is_local, profiles.is_beta, profiles.is_der, COUNT(DISTINCT predicates.idx) as matchCount FROM filteredProfileUUIDs JOIN profiles ON profiles.uuid = filteredProfileUUIDs.uuid JOIN entitlements_provisioning_cache ON entitlements_provisioning_cache.uuid = filteredProfileUUIDs.uuid CROSS JOIN predicates WHERE profiles.is_apple_internal OR ((entitlements_provisioning_cache.wildcard = 0 AND entitlements_provisioning_cache.predicate = predicates.predicate) OR (entitlements_provisioning_cache.wildcard = 1 AND glob(entitlements_provisioning_cache.predicate, predicates.predicate))) GROUP BY profiles.uuid, profiles.is_apple_internal) AS aggregated WHERE aggregated.matchCount = @totalPredicates OR aggregated.is_apple_internal ORDER BY  aggregated.is_der DESC, aggregated.is_local ASC, aggregated.is_for_all_devices ASC", v10, v9];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10000D23C;
   v20[3] = &unk_10005D8D0;
-  v21 = v7;
-  v22 = v6;
+  v21 = certificateCopy;
+  v22 = predicatesCopy;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10000D3C0;
   v18[3] = &unk_10005DDA8;
   v12 = v8;
   v19 = v12;
-  v13 = v6;
-  v14 = v7;
+  v13 = predicatesCopy;
+  v14 = certificateCopy;
   [(SQLDB *)self executeQuery:v11 withBind:v20 withResults:v18];
 
   v15 = v19;
@@ -204,12 +204,12 @@
   return v12;
 }
 
-- (id)findProfilesWithCertificate:(id)a3
+- (id)findProfilesWithCertificate:(id)certificate
 {
-  v4 = a3;
+  certificateCopy = certificate;
   v5 = [NSMutableArray arrayWithCapacity:2];
   v6 = @"SELECT uuid FROM certificate_provisioning_cache JOIN certificates ON certificates.pk = leaf_pk WHERE certificates.leaf = @cert";
-  if (!v4)
+  if (!certificateCopy)
   {
     v6 = @"SELECT uuid FROM profiles";
   }
@@ -219,14 +219,14 @@
   v15[1] = 3221225472;
   v15[2] = sub_10000D580;
   v15[3] = &unk_10005D880;
-  v16 = v4;
+  v16 = certificateCopy;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000D608;
   v13[3] = &unk_10005DDA8;
   v8 = v5;
   v14 = v8;
-  v9 = v4;
+  v9 = certificateCopy;
   [(SQLDB *)self executeQuery:v7 withBind:v15 withResults:v13];
 
   v10 = v14;
@@ -235,34 +235,34 @@
   return v8;
 }
 
-- (BOOL)createOnlineAuthEntry:(id)a3 error:(id *)a4
+- (BOOL)createOnlineAuthEntry:(id)entry error:(id *)error
 {
   v6 = swift_allocObject();
-  *(v6 + 16) = a3;
-  v7 = a3;
-  v8 = self;
+  *(v6 + 16) = entry;
+  entryCopy = entry;
+  selfCopy = self;
   sub_100012AE8(0xD00000000000019CLL, 0x800000010004BBB0, sub_100027658, v6, 0, 0);
 
   return 1;
 }
 
-- (BOOL)authorizeEntryWithProfileUUID:(id)a3 cdHash:(id)a4 gracePeriod:(int)a5 currentMonotonicTime:(int64_t)a6 currentResetCount:(int64_t)a7 error:(id *)a8
+- (BOOL)authorizeEntryWithProfileUUID:(id)d cdHash:(id)hash gracePeriod:(int)period currentMonotonicTime:(int64_t)time currentResetCount:(int64_t)count error:(id *)error
 {
   v13 = sub_100043314();
   v15 = v14;
-  v16 = a4;
-  v17 = self;
+  hashCopy = hash;
+  selfCopy = self;
   v18 = sub_1000430B4();
   v20 = v19;
 
   v21 = swift_allocObject();
-  *(v21 + 16) = a6;
-  *(v21 + 24) = a7;
+  *(v21 + 16) = time;
+  *(v21 + 24) = count;
   *(v21 + 32) = v13;
   *(v21 + 40) = v15;
   *(v21 + 48) = v18;
   *(v21 + 56) = v20;
-  *(v21 + 64) = a5;
+  *(v21 + 64) = period;
   sub_100013104(v18, v20);
   sub_100012AE8(0xD000000000000198, 0x800000010004BD50, sub_10002760C, v21, 0, 0);
 
@@ -270,55 +270,55 @@
   return 1;
 }
 
-- (BOOL)recordIndeterminateEntryWithProfileUUID:(id)a3 cdHash:(id)a4 onConflictDoNothing:(BOOL)a5 error:(id *)a6
+- (BOOL)recordIndeterminateEntryWithProfileUUID:(id)d cdHash:(id)hash onConflictDoNothing:(BOOL)nothing error:(id *)error
 {
   v9 = sub_100043314();
   v11 = v10;
-  v12 = a4;
-  v13 = self;
+  hashCopy = hash;
+  selfCopy = self;
   v14 = sub_1000430B4();
   v16 = v15;
 
-  sub_100024614(v9, v11, v14, v16, a5);
+  sub_100024614(v9, v11, v14, v16, nothing);
   sub_10001316C(v14, v16);
 
   return 1;
 }
 
-- (void)recordIndeterminateEntryNoThrowWithProfileUUID:(id)a3 cdHash:(id)a4 onConflictDoNothing:(BOOL)a5
+- (void)recordIndeterminateEntryNoThrowWithProfileUUID:(id)d cdHash:(id)hash onConflictDoNothing:(BOOL)nothing
 {
-  v5 = a5;
+  nothingCopy = nothing;
   v8 = sub_100043314();
   v10 = v9;
-  v11 = a4;
-  v12 = self;
+  hashCopy = hash;
+  selfCopy = self;
   v13 = sub_1000430B4();
   v15 = v14;
 
-  sub_100024868(v8, v10, v13, v15, v5);
+  sub_100024868(v8, v10, v13, v15, nothingCopy);
   sub_10001316C(v13, v15);
 }
 
-- (BOOL)setGracePeriodWithProfileUUID:(id)a3 gracePeriod:(int)a4 error:(id *)a5
+- (BOOL)setGracePeriodWithProfileUUID:(id)d gracePeriod:(int)period error:(id *)error
 {
   v7 = sub_100043314();
   v9 = v8;
   v10 = swift_allocObject();
   *(v10 + 16) = v7;
   *(v10 + 24) = v9;
-  *(v10 + 32) = a4;
-  v11 = self;
+  *(v10 + 32) = period;
+  selfCopy = self;
   sub_100012AE8(0xD000000000000038, 0x800000010004C090, sub_100027608, v10, 0, 0);
 
   return 1;
 }
 
-- (BOOL)rejectEntryWithProfileUUID:(id)a3 cdHash:(id)a4 isRejectedByWholeProfile:(BOOL)a5 error:(id *)a6
+- (BOOL)rejectEntryWithProfileUUID:(id)d cdHash:(id)hash isRejectedByWholeProfile:(BOOL)profile error:(id *)error
 {
   v9 = sub_100043314();
   v11 = v10;
-  v12 = a4;
-  v13 = self;
+  hashCopy = hash;
+  selfCopy = self;
   v14 = sub_1000430B4();
   v16 = v15;
 
@@ -327,7 +327,7 @@
   *(v17 + 24) = v11;
   *(v17 + 32) = v14;
   *(v17 + 40) = v16;
-  *(v17 + 48) = a5;
+  *(v17 + 48) = profile;
   sub_100013104(v14, v16);
   sub_100012AE8(0xD000000000000139, 0x800000010004C0D0, sub_100027604, v17, 0, 0);
 
@@ -335,23 +335,23 @@
   return 1;
 }
 
-- (BOOL)banProfileUUID:(id)a3 error:(id *)a4
+- (BOOL)banProfileUUID:(id)d error:(id *)error
 {
   v5 = sub_100043314();
   v7 = v6;
   v8 = swift_allocObject();
   *(v8 + 16) = v5;
   *(v8 + 24) = v7;
-  v9 = self;
+  selfCopy = self;
   sub_100012AE8(0xD00000000000004ALL, 0x800000010004C210, sub_1000275F8, v8, 0, 0);
 
   return 1;
 }
 
-- (BOOL)banCDHash:(id)a3 error:(id *)a4
+- (BOOL)banCDHash:(id)hash error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
+  hashCopy = hash;
+  selfCopy = self;
   v7 = sub_1000430B4();
   v9 = v8;
 
@@ -365,12 +365,12 @@
   return 1;
 }
 
-- (id)getOnlineAuthEntryNoThrowWithProfileUUID:(id)a3 cdHash:(id)a4
+- (id)getOnlineAuthEntryNoThrowWithProfileUUID:(id)d cdHash:(id)hash
 {
   v6 = sub_100043314();
   v8 = v7;
-  v9 = a4;
-  v10 = self;
+  hashCopy = hash;
+  selfCopy = self;
   v11 = sub_1000430B4();
   v13 = v12;
 
@@ -382,7 +382,7 @@
 
 - (id)getOnlineAuthEntriesNoThrow
 {
-  v2 = self;
+  selfCopy = self;
   sub_100025CFC();
 
   sub_1000272E8();
@@ -391,22 +391,22 @@
   return v3.super.isa;
 }
 
-- (int64_t)countCDHashesRejectedByProfileNoThrowWithProfileUUID:(id)a3
+- (int64_t)countCDHashesRejectedByProfileNoThrowWithProfileUUID:(id)d
 {
   v4 = sub_100043314();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_100025FDC(v4, v6);
 
   return v8;
 }
 
-- (BOOL)deleteOnlineAuthEntryWithProfileUUID:(id)a3 cdHash:(id)a4 error:(id *)a5
+- (BOOL)deleteOnlineAuthEntryWithProfileUUID:(id)d cdHash:(id)hash error:(id *)error
 {
   v7 = sub_100043314();
   v9 = v8;
-  v10 = a4;
-  v11 = self;
+  hashCopy = hash;
+  selfCopy = self;
   v12 = sub_1000430B4();
   v14 = v13;
 
@@ -422,12 +422,12 @@
   return 1;
 }
 
-- (void)deleteOnlineAuthEntryNoThrowWithProfileUUID:(id)a3 cdHash:(id)a4
+- (void)deleteOnlineAuthEntryNoThrowWithProfileUUID:(id)d cdHash:(id)hash
 {
   v6 = sub_100043314();
   v8 = v7;
-  v9 = a4;
-  v10 = self;
+  hashCopy = hash;
+  selfCopy = self;
   v11 = sub_1000430B4();
   v13 = v12;
 
@@ -435,10 +435,10 @@
   sub_10001316C(v11, v13);
 }
 
-- (BOOL)deleteOnlineAuthEntryWithCdHash:(id)a3 error:(id *)a4
+- (BOOL)deleteOnlineAuthEntryWithCdHash:(id)hash error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
+  hashCopy = hash;
+  selfCopy = self;
   v7 = sub_1000430B4();
   v9 = v8;
 
@@ -452,10 +452,10 @@
   return 1;
 }
 
-- (void)deleteOnlineAuthEntryNoThrowWithCdHash:(id)a3
+- (void)deleteOnlineAuthEntryNoThrowWithCdHash:(id)hash
 {
-  v4 = a3;
-  v8 = self;
+  hashCopy = hash;
+  selfCopy = self;
   v5 = sub_1000430B4();
   v7 = v6;
 

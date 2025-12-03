@@ -1,30 +1,30 @@
 @interface GMSSchemaGMSPrivateCloudMetrics
-- (BOOL)isEqual:(id)a3;
-- (GMSSchemaGMSPrivateCloudMetrics)initWithDictionary:(id)a3;
-- (GMSSchemaGMSPrivateCloudMetrics)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GMSSchemaGMSPrivateCloudMetrics)initWithDictionary:(id)dictionary;
+- (GMSSchemaGMSPrivateCloudMetrics)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasExtendLatencyMillis:(BOOL)a3;
-- (void)setHasInputTokensCount:(BOOL)a3;
-- (void)setHasOutputTokensCount:(BOOL)a3;
-- (void)setHasTimeToFirstTokenMillis:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasExtendLatencyMillis:(BOOL)millis;
+- (void)setHasInputTokensCount:(BOOL)count;
+- (void)setHasOutputTokensCount:(BOOL)count;
+- (void)setHasTimeToFirstTokenMillis:(BOOL)millis;
+- (void)writeTo:(id)to;
 @end
 
 @implementation GMSSchemaGMSPrivateCloudMetrics
 
-- (GMSSchemaGMSPrivateCloudMetrics)initWithDictionary:(id)a3
+- (GMSSchemaGMSPrivateCloudMetrics)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = GMSSchemaGMSPrivateCloudMetrics;
   v5 = [(GMSSchemaGMSPrivateCloudMetrics *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"tokenRate"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"tokenRate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,7 +32,7 @@
       [(GMSSchemaGMSPrivateCloudMetrics *)v5 setTokenRate:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"timeToFirstTokenMillis"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"timeToFirstTokenMillis"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,7 +40,7 @@
       [(GMSSchemaGMSPrivateCloudMetrics *)v5 setTimeToFirstTokenMillis:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"extendLatencyMillis"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"extendLatencyMillis"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,21 +48,21 @@
       [(GMSSchemaGMSPrivateCloudMetrics *)v5 setExtendLatencyMillis:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"outputTokensCount"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"outputTokensCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[GMSSchemaGMSPrivateCloudMetrics setOutputTokensCount:](v5, "setOutputTokensCount:", [v9 longLongValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"inputTokensCount"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"inputTokensCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[GMSSchemaGMSPrivateCloudMetrics setInputTokensCount:](v5, "setInputTokensCount:", [v10 longLongValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"gmsPrivateCloudSpeculativeDecodingMetrics"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"gmsPrivateCloudSpeculativeDecodingMetrics"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -76,30 +76,30 @@
   return v5;
 }
 
-- (GMSSchemaGMSPrivateCloudMetrics)initWithJSON:(id)a3
+- (GMSSchemaGMSPrivateCloudMetrics)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(GMSSchemaGMSPrivateCloudMetrics *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(GMSSchemaGMSPrivateCloudMetrics *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(GMSSchemaGMSPrivateCloudMetrics *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -112,28 +112,28 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 4) != 0)
   {
     v4 = MEMORY[0x1E696AD98];
     [(GMSSchemaGMSPrivateCloudMetrics *)self extendLatencyMillis];
     v5 = [v4 numberWithDouble:?];
-    [v3 setObject:v5 forKeyedSubscript:@"extendLatencyMillis"];
+    [dictionary setObject:v5 forKeyedSubscript:@"extendLatencyMillis"];
   }
 
   if (self->_gmsPrivateCloudSpeculativeDecodingMetrics)
   {
-    v6 = [(GMSSchemaGMSPrivateCloudMetrics *)self gmsPrivateCloudSpeculativeDecodingMetrics];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    gmsPrivateCloudSpeculativeDecodingMetrics = [(GMSSchemaGMSPrivateCloudMetrics *)self gmsPrivateCloudSpeculativeDecodingMetrics];
+    dictionaryRepresentation = [gmsPrivateCloudSpeculativeDecodingMetrics dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"gmsPrivateCloudSpeculativeDecodingMetrics"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"gmsPrivateCloudSpeculativeDecodingMetrics"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"gmsPrivateCloudSpeculativeDecodingMetrics"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"gmsPrivateCloudSpeculativeDecodingMetrics"];
     }
   }
 
@@ -141,7 +141,7 @@
   if ((has & 0x10) != 0)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[GMSSchemaGMSPrivateCloudMetrics inputTokensCount](self, "inputTokensCount")}];
-    [v3 setObject:v13 forKeyedSubscript:@"inputTokensCount"];
+    [dictionary setObject:v13 forKeyedSubscript:@"inputTokensCount"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -162,7 +162,7 @@ LABEL_10:
   }
 
   v14 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[GMSSchemaGMSPrivateCloudMetrics outputTokensCount](self, "outputTokensCount")}];
-  [v3 setObject:v14 forKeyedSubscript:@"outputTokensCount"];
+  [dictionary setObject:v14 forKeyedSubscript:@"outputTokensCount"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -180,7 +180,7 @@ LABEL_18:
   v15 = MEMORY[0x1E696AD98];
   [(GMSSchemaGMSPrivateCloudMetrics *)self timeToFirstTokenMillis];
   v16 = [v15 numberWithDouble:?];
-  [v3 setObject:v16 forKeyedSubscript:@"timeToFirstTokenMillis"];
+  [dictionary setObject:v16 forKeyedSubscript:@"timeToFirstTokenMillis"];
 
   if (*&self->_has)
   {
@@ -188,13 +188,13 @@ LABEL_12:
     v10 = MEMORY[0x1E696AD98];
     [(GMSSchemaGMSPrivateCloudMetrics *)self tokenRate];
     v11 = [v10 numberWithDouble:?];
-    [v3 setObject:v11 forKeyedSubscript:@"tokenRate"];
+    [dictionary setObject:v11 forKeyedSubscript:@"tokenRate"];
   }
 
 LABEL_13:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -324,16 +324,16 @@ LABEL_27:
   return v12 ^ v8 ^ v16 ^ v20 ^ v21 ^ [(GMSSchemaGMSPrivateCloudSpeculativeDecodingMetrics *)self->_gmsPrivateCloudSpeculativeDecodingMetrics hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   has = self->_has;
-  v6 = v4[56];
+  v6 = equalCopy[56];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_26;
@@ -342,14 +342,14 @@ LABEL_27:
   if (*&has)
   {
     tokenRate = self->_tokenRate;
-    [v4 tokenRate];
+    [equalCopy tokenRate];
     if (tokenRate != v8)
     {
       goto LABEL_26;
     }
 
     has = self->_has;
-    v6 = v4[56];
+    v6 = equalCopy[56];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -358,14 +358,14 @@ LABEL_27:
     if (v9)
     {
       timeToFirstTokenMillis = self->_timeToFirstTokenMillis;
-      [v4 timeToFirstTokenMillis];
+      [equalCopy timeToFirstTokenMillis];
       if (timeToFirstTokenMillis != v11)
       {
         goto LABEL_26;
       }
 
       has = self->_has;
-      v6 = v4[56];
+      v6 = equalCopy[56];
     }
 
     v12 = (*&has >> 2) & 1;
@@ -374,14 +374,14 @@ LABEL_27:
       if (v12)
       {
         extendLatencyMillis = self->_extendLatencyMillis;
-        [v4 extendLatencyMillis];
+        [equalCopy extendLatencyMillis];
         if (extendLatencyMillis != v14)
         {
           goto LABEL_26;
         }
 
         has = self->_has;
-        v6 = v4[56];
+        v6 = equalCopy[56];
       }
 
       v15 = (*&has >> 3) & 1;
@@ -390,27 +390,27 @@ LABEL_27:
         if (v15)
         {
           outputTokensCount = self->_outputTokensCount;
-          if (outputTokensCount != [v4 outputTokensCount])
+          if (outputTokensCount != [equalCopy outputTokensCount])
           {
             goto LABEL_26;
           }
 
           has = self->_has;
-          v6 = v4[56];
+          v6 = equalCopy[56];
         }
 
         v17 = (*&has >> 4) & 1;
         if (v17 == ((v6 >> 4) & 1))
         {
-          if (!v17 || (inputTokensCount = self->_inputTokensCount, inputTokensCount == [v4 inputTokensCount]))
+          if (!v17 || (inputTokensCount = self->_inputTokensCount, inputTokensCount == [equalCopy inputTokensCount]))
           {
-            v19 = [(GMSSchemaGMSPrivateCloudMetrics *)self gmsPrivateCloudSpeculativeDecodingMetrics];
-            v20 = [v4 gmsPrivateCloudSpeculativeDecodingMetrics];
-            v21 = v20;
-            if ((v19 != 0) != (v20 == 0))
+            gmsPrivateCloudSpeculativeDecodingMetrics = [(GMSSchemaGMSPrivateCloudMetrics *)self gmsPrivateCloudSpeculativeDecodingMetrics];
+            gmsPrivateCloudSpeculativeDecodingMetrics2 = [equalCopy gmsPrivateCloudSpeculativeDecodingMetrics];
+            v21 = gmsPrivateCloudSpeculativeDecodingMetrics2;
+            if ((gmsPrivateCloudSpeculativeDecodingMetrics != 0) != (gmsPrivateCloudSpeculativeDecodingMetrics2 == 0))
             {
-              v22 = [(GMSSchemaGMSPrivateCloudMetrics *)self gmsPrivateCloudSpeculativeDecodingMetrics];
-              if (!v22)
+              gmsPrivateCloudSpeculativeDecodingMetrics3 = [(GMSSchemaGMSPrivateCloudMetrics *)self gmsPrivateCloudSpeculativeDecodingMetrics];
+              if (!gmsPrivateCloudSpeculativeDecodingMetrics3)
               {
 
 LABEL_29:
@@ -418,10 +418,10 @@ LABEL_29:
                 goto LABEL_27;
               }
 
-              v23 = v22;
-              v24 = [(GMSSchemaGMSPrivateCloudMetrics *)self gmsPrivateCloudSpeculativeDecodingMetrics];
-              v25 = [v4 gmsPrivateCloudSpeculativeDecodingMetrics];
-              v26 = [v24 isEqual:v25];
+              v23 = gmsPrivateCloudSpeculativeDecodingMetrics3;
+              gmsPrivateCloudSpeculativeDecodingMetrics4 = [(GMSSchemaGMSPrivateCloudMetrics *)self gmsPrivateCloudSpeculativeDecodingMetrics];
+              gmsPrivateCloudSpeculativeDecodingMetrics5 = [equalCopy gmsPrivateCloudSpeculativeDecodingMetrics];
+              v26 = [gmsPrivateCloudSpeculativeDecodingMetrics4 isEqual:gmsPrivateCloudSpeculativeDecodingMetrics5];
 
               if (v26)
               {
@@ -445,9 +445,9 @@ LABEL_27:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -506,21 +506,21 @@ LABEL_6:
   }
 
 LABEL_7:
-  v5 = [(GMSSchemaGMSPrivateCloudMetrics *)self gmsPrivateCloudSpeculativeDecodingMetrics];
+  gmsPrivateCloudSpeculativeDecodingMetrics = [(GMSSchemaGMSPrivateCloudMetrics *)self gmsPrivateCloudSpeculativeDecodingMetrics];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (gmsPrivateCloudSpeculativeDecodingMetrics)
   {
-    v7 = [(GMSSchemaGMSPrivateCloudMetrics *)self gmsPrivateCloudSpeculativeDecodingMetrics];
+    gmsPrivateCloudSpeculativeDecodingMetrics2 = [(GMSSchemaGMSPrivateCloudMetrics *)self gmsPrivateCloudSpeculativeDecodingMetrics];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasInputTokensCount:(BOOL)a3
+- (void)setHasInputTokensCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 16;
   }
@@ -533,9 +533,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasOutputTokensCount:(BOOL)a3
+- (void)setHasOutputTokensCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -548,9 +548,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasExtendLatencyMillis:(BOOL)a3
+- (void)setHasExtendLatencyMillis:(BOOL)millis
 {
-  if (a3)
+  if (millis)
   {
     v3 = 4;
   }
@@ -563,9 +563,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasTimeToFirstTokenMillis:(BOOL)a3
+- (void)setHasTimeToFirstTokenMillis:(BOOL)millis
 {
-  if (a3)
+  if (millis)
   {
     v3 = 2;
   }
@@ -578,17 +578,17 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = GMSSchemaGMSPrivateCloudMetrics;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(GMSSchemaGMSPrivateCloudMetrics *)self gmsPrivateCloudSpeculativeDecodingMetrics:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(GMSSchemaGMSPrivateCloudMetrics *)self deleteGmsPrivateCloudSpeculativeDecodingMetrics];
   }

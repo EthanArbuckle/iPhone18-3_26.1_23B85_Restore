@@ -1,36 +1,36 @@
 @interface PREditingContentStylePickerComponentViewController
 - (BOOL)shouldShowContentStyleItems;
 - (PREditingContentStylePickerComponentViewController)init;
-- (PREditingContentStylePickerComponentViewController)initWithConfiguration:(id)a3 role:(id)a4;
+- (PREditingContentStylePickerComponentViewController)initWithConfiguration:(id)configuration role:(id)role;
 - (PREditingContentStylePickerComponentViewControllerDelegate)delegate;
 - (double)estimatedHeight;
-- (id)coordinatorForStyle:(id)a3 isSuggestedStyle:(BOOL)a4 fromDataSource:(id)a5;
-- (void)_didSelectContentStyle:(id)a3 isSuggestedStyle:(BOOL)a4;
-- (void)colorSliderDidUpdateVariation:(id)a3;
-- (void)contentStyleItemsViewController:(id)a3 didSelectContentStyleCoordinator:(id)a4;
-- (void)contentStyleItemsViewControllerDidUpdateEstimatedSize:(id)a3;
+- (id)coordinatorForStyle:(id)style isSuggestedStyle:(BOOL)suggestedStyle fromDataSource:(id)source;
+- (void)_didSelectContentStyle:(id)style isSuggestedStyle:(BOOL)suggestedStyle;
+- (void)colorSliderDidUpdateVariation:(id)variation;
+- (void)contentStyleItemsViewController:(id)controller didSelectContentStyleCoordinator:(id)coordinator;
+- (void)contentStyleItemsViewControllerDidUpdateEstimatedSize:(id)size;
 - (void)loadItemsViewControllerIfNeeded;
 - (void)loadView;
-- (void)setContentsLuminance:(double)a3;
-- (void)updateEditingContentStyleItemsWithGlassSelectionEnabled:(BOOL)a3;
-- (void)updateSliderVisibility:(BOOL)a3;
+- (void)setContentsLuminance:(double)luminance;
+- (void)updateEditingContentStyleItemsWithGlassSelectionEnabled:(BOOL)enabled;
+- (void)updateSliderVisibility:(BOOL)visibility;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation PREditingContentStylePickerComponentViewController
 
-- (PREditingContentStylePickerComponentViewController)initWithConfiguration:(id)a3 role:(id)a4
+- (PREditingContentStylePickerComponentViewController)initWithConfiguration:(id)configuration role:(id)role
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  roleCopy = role;
   v12.receiver = self;
   v12.super_class = PREditingContentStylePickerComponentViewController;
   v9 = [(PREditingContentStylePickerComponentViewController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_configuration, a3);
-    objc_storeStrong(&v10->_role, a4);
+    objc_storeStrong(&v9->_configuration, configuration);
+    objc_storeStrong(&v10->_role, role);
   }
 
   return v10;
@@ -53,16 +53,16 @@
   itemStyleControl = self->_itemStyleControl;
   if (itemStyleControl)
   {
-    v4 = [(PREditingContentStylePickerComponentViewController *)self view];
-    [v4 bounds];
+    view = [(PREditingContentStylePickerComponentViewController *)self view];
+    [view bounds];
     [(PUIStylePickerSegmentedControl *)itemStyleControl calculatedWidthForAvailableWidth:v5];
     v7 = v6;
 
     itemStyleControlWidthConstraint = self->_itemStyleControlWidthConstraint;
     if (!itemStyleControlWidthConstraint)
     {
-      v9 = [(PUIStylePickerSegmentedControl *)self->_itemStyleControl widthAnchor];
-      v10 = [v9 constraintEqualToConstant:v7];
+      widthAnchor = [(PUIStylePickerSegmentedControl *)self->_itemStyleControl widthAnchor];
+      v10 = [widthAnchor constraintEqualToConstant:v7];
       v11 = self->_itemStyleControlWidthConstraint;
       self->_itemStyleControlWidthConstraint = v10;
 
@@ -97,14 +97,14 @@
       v6 = v5;
       if ([(PREditorContentStylePickerConfiguration *)self->_configuration colorWellDisplayMode]== 2)
       {
-        v7 = [(PREditingContentStyleItemsViewController *)v6 colorWellView];
+        colorWellView = [(PREditingContentStyleItemsViewController *)v6 colorWellView];
         colorWellView = self->_colorWellView;
-        self->_colorWellView = v7;
-        v9 = v7;
+        self->_colorWellView = colorWellView;
+        v9 = colorWellView;
 
-        v10 = [(PUIColorWellView *)v9 colorWell];
+        colorWell = [(PUIColorWellView *)v9 colorWell];
         colorWell = self->_colorWell;
-        self->_colorWell = v10;
+        self->_colorWell = colorWell;
       }
     }
 
@@ -118,8 +118,8 @@
 {
   v93[2] = *MEMORY[0x1E69E9840];
   v83 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  [v83 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v83 setBackgroundColor:clearColor];
 
   if (self->_showsHeader)
   {
@@ -131,8 +131,8 @@
     v6 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:18.0];
     [v76 setFont:v6];
 
-    v7 = [MEMORY[0x1E69DC888] labelColor];
-    [v76 setTextColor:v7];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [v76 setTextColor:labelColor];
 
     [v76 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v83 addSubview:v76];
@@ -144,43 +144,43 @@
   }
 
   [(PREditingContentStylePickerComponentViewController *)self loadItemsViewControllerIfNeeded];
-  v82 = [(PREditingContentStylePickerComponentViewController *)self itemsViewController];
-  v78 = [v82 view];
-  [v78 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v75 = [MEMORY[0x1E695DF70] array];
-  [v75 addObject:v78];
-  v77 = [v82 selectedContentStyleCoordinator];
+  itemsViewController = [(PREditingContentStylePickerComponentViewController *)self itemsViewController];
+  view = [itemsViewController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObject:view];
+  selectedContentStyleCoordinator = [itemsViewController selectedContentStyleCoordinator];
   v8 = [(PREditingContentStyleItemsDataSource *)self->_dataSource firstCoordinatorPassingTest:&__block_literal_global_379];
 
-  if (!v77)
+  if (!selectedContentStyleCoordinator)
   {
-    v9 = [(PREditingContentStylePickerComponentViewController *)self delegate];
-    v10 = [0 style];
-    [v9 contentStylePickerComponentViewController:self didSelectStyle:v10 isSuggestedStyle:objc_msgSend(0 userSelected:{"isSuggested"), 0}];
+    delegate = [(PREditingContentStylePickerComponentViewController *)self delegate];
+    style = [0 style];
+    [delegate contentStylePickerComponentViewController:self didSelectStyle:style isSuggestedStyle:objc_msgSend(0 userSelected:{"isSuggested"), 0}];
   }
 
   if (v8)
   {
     v11 = [PREditingVariationSlider alloc];
-    v12 = [(PREditorContentStylePickerConfiguration *)self->_configuration identifier];
-    v13 = [(PREditingVariationSlider *)v11 initWithStyleCoordinator:v77 contextIdentifier:v12];
+    identifier = [(PREditorContentStylePickerConfiguration *)self->_configuration identifier];
+    v13 = [(PREditingVariationSlider *)v11 initWithStyleCoordinator:selectedContentStyleCoordinator contextIdentifier:identifier];
 
     v81 = v13;
     [(PREditingVariationSlider *)v13 addTarget:self action:sel_colorSliderDidUpdateVariation_ forControlEvents:4096];
-    v14 = [v82 selectedContentStyleCoordinator];
-    v15 = [v14 style];
-    v16 = [v15 allowsVariation];
+    selectedContentStyleCoordinator2 = [itemsViewController selectedContentStyleCoordinator];
+    style2 = [selectedContentStyleCoordinator2 style];
+    allowsVariation = [style2 allowsVariation];
 
-    if ((v16 & 1) == 0)
+    if ((allowsVariation & 1) == 0)
     {
       [(PREditingVariationSlider *)v81 setHidden:1];
     }
 
-    v17 = [(PREditorContentStylePickerConfiguration *)self->_configuration stylePalette];
-    -[PREditingVariationSlider setApplyVariationOnGlass:](v81, "setApplyVariationOnGlass:", [v17 displayingGlassStyles]);
+    stylePalette = [(PREditorContentStylePickerConfiguration *)self->_configuration stylePalette];
+    -[PREditingVariationSlider setApplyVariationOnGlass:](v81, "setApplyVariationOnGlass:", [stylePalette displayingGlassStyles]);
 
     objc_storeStrong(&self->_sliderView, v81);
-    [v75 addObject:v81];
+    [array addObject:v81];
   }
 
   else
@@ -188,11 +188,11 @@
     v81 = 0;
   }
 
-  v18 = [v77 style];
-  if ([v18 conformsToProtocol:&unk_1F1C8ED30])
+  style3 = [selectedContentStyleCoordinator style];
+  if ([style3 conformsToProtocol:&unk_1F1C8ED30])
   {
-    v19 = [v77 style];
-    v20 = [v19 supportsGlassAppearance] ^ 1;
+    style4 = [selectedContentStyleCoordinator style];
+    v20 = [style4 supportsGlassAppearance] ^ 1;
   }
 
   else
@@ -202,8 +202,8 @@
 
   if (PUIFeatureEnabled() && PUIFeatureEnabled())
   {
-    v21 = [(PREditingContentStylePickerComponentViewController *)self role];
-    v22 = [v21 isEqual:@"PRPosterRoleLockScreen"];
+    role = [(PREditingContentStylePickerComponentViewController *)self role];
+    v22 = [role isEqual:@"PRPosterRoleLockScreen"];
 
     if (v22)
     {
@@ -239,10 +239,10 @@
       [(PUIStylePickerSegmentedControl *)self->_itemStyleControl setSelectedSegmentIndex:v20];
       [(PUIStylePickerSegmentedControl *)self->_itemStyleControl setTranslatesAutoresizingMaskIntoConstraints:0];
       v34 = self->_itemStyleControl;
-      v35 = [MEMORY[0x1E69DC888] clearColor];
-      [(PUIStylePickerSegmentedControl *)v34 setBackgroundColor:v35];
+      clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+      [(PUIStylePickerSegmentedControl *)v34 setBackgroundColor:clearColor2];
 
-      [v75 addObject:self->_itemStyleControl];
+      [array addObject:self->_itemStyleControl];
       objc_destroyWeak(&v85);
 
       objc_destroyWeak(&v87);
@@ -256,98 +256,98 @@
     v22 = 0;
   }
 
-  v36 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:v75];
+  v36 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:array];
   [v36 setAxis:1];
   [v36 setAlignment:3];
   [v36 setSpacing:24.0];
   [v36 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v37 = [MEMORY[0x1E69DC888] clearColor];
-  [v36 setBackgroundColor:v37];
+  clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+  [v36 setBackgroundColor:clearColor3];
 
   objc_storeStrong(&self->_verticalStack, v36);
   [v83 addSubview:v36];
-  [(PREditingContentStylePickerComponentViewController *)self addChildViewController:v82];
+  [(PREditingContentStylePickerComponentViewController *)self addChildViewController:itemsViewController];
   [(PREditingContentStylePickerComponentViewController *)self setView:v83];
-  [v82 didMoveToParentViewController:self];
-  v80 = [MEMORY[0x1E695DF70] array];
+  [itemsViewController didMoveToParentViewController:self];
+  array2 = [MEMORY[0x1E695DF70] array];
   if (v22)
   {
-    v38 = [(PUIStylePickerSegmentedControl *)self->_itemStyleControl heightAnchor];
+    heightAnchor = [(PUIStylePickerSegmentedControl *)self->_itemStyleControl heightAnchor];
     [MEMORY[0x1E69C5648] defaultHeight];
-    v39 = [v38 constraintEqualToConstant:?];
-    [v80 addObject:v39];
+    v39 = [heightAnchor constraintEqualToConstant:?];
+    [array2 addObject:v39];
   }
 
   if (self->_showsHeader)
   {
-    v40 = [v76 leadingAnchor];
-    v41 = [v83 leadingAnchor];
-    v42 = [v40 constraintEqualToAnchor:v41 constant:20.0];
+    leadingAnchor = [v76 leadingAnchor];
+    leadingAnchor2 = [v83 leadingAnchor];
+    v42 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
     v92[0] = v42;
-    v43 = [v76 topAnchor];
-    v73 = [v83 topAnchor];
-    v44 = [v43 constraintEqualToAnchor:v73 constant:10.0];
+    topAnchor = [v76 topAnchor];
+    topAnchor2 = [v83 topAnchor];
+    v44 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
     v92[1] = v44;
-    v45 = [v36 topAnchor];
-    v46 = [v76 bottomAnchor];
-    v47 = [v45 constraintEqualToAnchor:v46 constant:20.0];
+    topAnchor3 = [v36 topAnchor];
+    bottomAnchor = [v76 bottomAnchor];
+    v47 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:20.0];
     v92[2] = v47;
     v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:v92 count:3];
-    [v80 addObjectsFromArray:v48];
+    [array2 addObjectsFromArray:v48];
   }
 
   else
   {
-    v40 = [v36 topAnchor];
-    v41 = [v83 topAnchor];
-    v42 = [v40 constraintEqualToAnchor:v41];
+    leadingAnchor = [v36 topAnchor];
+    leadingAnchor2 = [v83 topAnchor];
+    v42 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v91 = v42;
-    v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v91 count:1];
-    [v80 addObjectsFromArray:v43];
+    topAnchor = [MEMORY[0x1E695DEC8] arrayWithObjects:&v91 count:1];
+    [array2 addObjectsFromArray:topAnchor];
   }
 
   if (v81)
   {
-    v49 = [(PREditingVariationSlider *)v81 heightAnchor];
+    heightAnchor2 = [(PREditingVariationSlider *)v81 heightAnchor];
     +[PREditingVariationSlider defaultHeight];
-    v50 = [v49 constraintEqualToConstant:?];
+    v50 = [heightAnchor2 constraintEqualToConstant:?];
     v90[0] = v50;
-    v51 = [(PREditingVariationSlider *)v81 leadingAnchor];
-    v52 = [v36 leadingAnchor];
-    v53 = [v51 constraintEqualToAnchor:v52 constant:36.0];
+    leadingAnchor3 = [(PREditingVariationSlider *)v81 leadingAnchor];
+    leadingAnchor4 = [v36 leadingAnchor];
+    v53 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:36.0];
     v90[1] = v53;
-    v54 = [(PREditingVariationSlider *)v81 trailingAnchor];
-    v55 = [v36 trailingAnchor];
-    v56 = [v54 constraintEqualToAnchor:v55 constant:-36.0];
+    trailingAnchor = [(PREditingVariationSlider *)v81 trailingAnchor];
+    trailingAnchor2 = [v36 trailingAnchor];
+    v56 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-36.0];
     v90[2] = v56;
     v57 = [MEMORY[0x1E695DEC8] arrayWithObjects:v90 count:3];
-    [v80 addObjectsFromArray:v57];
+    [array2 addObjectsFromArray:v57];
   }
 
-  v74 = [v78 leadingAnchor];
-  v72 = [v36 leadingAnchor];
-  v71 = [v74 constraintEqualToAnchor:v72];
+  leadingAnchor5 = [view leadingAnchor];
+  leadingAnchor6 = [v36 leadingAnchor];
+  v71 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v89[0] = v71;
-  v70 = [v78 trailingAnchor];
-  v69 = [v36 trailingAnchor];
-  v68 = [v70 constraintEqualToAnchor:v69];
+  trailingAnchor3 = [view trailingAnchor];
+  trailingAnchor4 = [v36 trailingAnchor];
+  v68 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v89[1] = v68;
-  v67 = [v36 leadingAnchor];
-  v58 = [v83 leadingAnchor];
-  v59 = [v67 constraintEqualToAnchor:v58];
+  leadingAnchor7 = [v36 leadingAnchor];
+  leadingAnchor8 = [v83 leadingAnchor];
+  v59 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   v89[2] = v59;
-  v60 = [v36 trailingAnchor];
-  v61 = [v83 trailingAnchor];
-  v62 = [v60 constraintEqualToAnchor:v61];
+  trailingAnchor5 = [v36 trailingAnchor];
+  trailingAnchor6 = [v83 trailingAnchor];
+  v62 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v89[3] = v62;
-  v63 = [v36 bottomAnchor];
-  v64 = [v83 bottomAnchor];
-  v65 = [v63 constraintEqualToAnchor:v64];
+  bottomAnchor2 = [v36 bottomAnchor];
+  bottomAnchor3 = [v83 bottomAnchor];
+  v65 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v89[4] = v65;
   v66 = [MEMORY[0x1E695DEC8] arrayWithObjects:v89 count:5];
-  [v80 addObjectsFromArray:v66];
+  [array2 addObjectsFromArray:v66];
 
-  [MEMORY[0x1E696ACD8] activateConstraints:v80];
+  [MEMORY[0x1E696ACD8] activateConstraints:array2];
 }
 
 uint64_t __62__PREditingContentStylePickerComponentViewController_loadView__block_invoke(uint64_t a1, void *a2)
@@ -372,23 +372,23 @@ void __62__PREditingContentStylePickerComponentViewController_loadView__block_in
 
 - (BOOL)shouldShowContentStyleItems
 {
-  v2 = [(PREditingContentStylePickerComponentViewController *)self itemsViewController];
-  v3 = [v2 configuration];
-  v4 = [v3 stylePalette];
-  v5 = [v4 styles];
-  v6 = [v5 count];
+  itemsViewController = [(PREditingContentStylePickerComponentViewController *)self itemsViewController];
+  configuration = [itemsViewController configuration];
+  stylePalette = [configuration stylePalette];
+  styles = [stylePalette styles];
+  v6 = [styles count];
 
   return v6 < 2;
 }
 
-- (void)setContentsLuminance:(double)a3
+- (void)setContentsLuminance:(double)luminance
 {
-  self->_contentsLuminance = a3;
+  self->_contentsLuminance = luminance;
   if ([(PREditingContentStylePickerComponentViewController *)self isViewLoaded])
   {
     itemsViewController = self->_itemsViewController;
 
-    [(PREditingContentStyleItemsViewController *)itemsViewController setContentsLuminance:a3];
+    [(PREditingContentStyleItemsViewController *)itemsViewController setContentsLuminance:luminance];
   }
 }
 
@@ -399,13 +399,13 @@ void __62__PREditingContentStylePickerComponentViewController_loadView__block_in
   v4 = v3;
   if (self->_sliderView)
   {
-    v5 = [(PREditingContentStyleItemsViewController *)self->_itemsViewController selectedContentStyleCoordinator];
-    v6 = [v5 style];
-    if ([v6 allowsVariation])
+    selectedContentStyleCoordinator = [(PREditingContentStyleItemsViewController *)self->_itemsViewController selectedContentStyleCoordinator];
+    style = [selectedContentStyleCoordinator style];
+    if ([style allowsVariation])
     {
-      v7 = [(PREditingContentStylePickerComponentViewController *)self shouldShowContentStyleItems];
+      shouldShowContentStyleItems = [(PREditingContentStylePickerComponentViewController *)self shouldShowContentStyleItems];
 
-      if (!v7)
+      if (!shouldShowContentStyleItems)
       {
         v4 = v4 + 58.0;
       }
@@ -425,24 +425,24 @@ void __62__PREditingContentStylePickerComponentViewController_loadView__block_in
   return result;
 }
 
-- (void)contentStyleItemsViewController:(id)a3 didSelectContentStyleCoordinator:(id)a4
+- (void)contentStyleItemsViewController:(id)controller didSelectContentStyleCoordinator:(id)coordinator
 {
-  v5 = a4;
-  v6 = [v5 style];
-  v7 = [v6 allowsVariation];
+  coordinatorCopy = coordinator;
+  style = [coordinatorCopy style];
+  allowsVariation = [style allowsVariation];
 
   v8 = [(PREditingContentStyleItemsDataSource *)self->_dataSource firstCoordinatorPassingTest:&__block_literal_global_449];
 
-  if (v8 && v7 == [(PREditingVariationSlider *)self->_sliderView isHidden])
+  if (v8 && allowsVariation == [(PREditingVariationSlider *)self->_sliderView isHidden])
   {
-    [(PREditingContentStylePickerComponentViewController *)self updateSliderVisibility:v7];
+    [(PREditingContentStylePickerComponentViewController *)self updateSliderVisibility:allowsVariation];
   }
 
-  [(PREditingVariationSlider *)self->_sliderView setStyleCoordinator:v5];
-  v10 = [v5 style];
-  v9 = [v5 isSuggested];
+  [(PREditingVariationSlider *)self->_sliderView setStyleCoordinator:coordinatorCopy];
+  style2 = [coordinatorCopy style];
+  isSuggested = [coordinatorCopy isSuggested];
 
-  [(PREditingContentStylePickerComponentViewController *)self _didSelectContentStyle:v10 isSuggestedStyle:v9];
+  [(PREditingContentStylePickerComponentViewController *)self _didSelectContentStyle:style2 isSuggestedStyle:isSuggested];
 }
 
 uint64_t __119__PREditingContentStylePickerComponentViewController_contentStyleItemsViewController_didSelectContentStyleCoordinator___block_invoke(uint64_t a1, void *a2)
@@ -453,61 +453,61 @@ uint64_t __119__PREditingContentStylePickerComponentViewController_contentStyleI
   return v3;
 }
 
-- (void)contentStyleItemsViewControllerDidUpdateEstimatedSize:(id)a3
+- (void)contentStyleItemsViewControllerDidUpdateEstimatedSize:(id)size
 {
-  v4 = [(PREditingContentStylePickerComponentViewController *)self delegate];
-  [v4 contentStylePickerComponentViewControllerDidChangeHeight:self];
+  delegate = [(PREditingContentStylePickerComponentViewController *)self delegate];
+  [delegate contentStylePickerComponentViewControllerDidChangeHeight:self];
 }
 
-- (void)updateSliderVisibility:(BOOL)a3
+- (void)updateSliderVisibility:(BOOL)visibility
 {
-  [(PREditingVariationSlider *)self->_sliderView setHidden:!a3];
-  v4 = [(PREditingContentStylePickerComponentViewController *)self delegate];
-  [v4 contentStylePickerComponentViewControllerDidChangeHeight:self];
+  [(PREditingVariationSlider *)self->_sliderView setHidden:!visibility];
+  delegate = [(PREditingContentStylePickerComponentViewController *)self delegate];
+  [delegate contentStylePickerComponentViewControllerDidChangeHeight:self];
 }
 
-- (void)_didSelectContentStyle:(id)a3 isSuggestedStyle:(BOOL)a4
+- (void)_didSelectContentStyle:(id)style isSuggestedStyle:(BOOL)suggestedStyle
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PREditingContentStylePickerComponentViewController *)self delegate];
-  [v7 contentStylePickerComponentViewController:self didSelectStyle:v6 isSuggestedStyle:v4 userSelected:1];
+  suggestedStyleCopy = suggestedStyle;
+  styleCopy = style;
+  delegate = [(PREditingContentStylePickerComponentViewController *)self delegate];
+  [delegate contentStylePickerComponentViewController:self didSelectStyle:styleCopy isSuggestedStyle:suggestedStyleCopy userSelected:1];
 }
 
-- (void)colorSliderDidUpdateVariation:(id)a3
+- (void)colorSliderDidUpdateVariation:(id)variation
 {
-  v4 = [(PREditingContentStyleItemsViewController *)self->_itemsViewController selectedContentStyleCoordinator];
-  if (v4)
+  selectedContentStyleCoordinator = [(PREditingContentStyleItemsViewController *)self->_itemsViewController selectedContentStyleCoordinator];
+  if (selectedContentStyleCoordinator)
   {
-    v6 = v4;
-    v5 = [v4 style];
-    -[PREditingContentStylePickerComponentViewController _didSelectContentStyle:isSuggestedStyle:](self, "_didSelectContentStyle:isSuggestedStyle:", v5, [v6 isSuggested]);
+    v6 = selectedContentStyleCoordinator;
+    style = [selectedContentStyleCoordinator style];
+    -[PREditingContentStylePickerComponentViewController _didSelectContentStyle:isSuggestedStyle:](self, "_didSelectContentStyle:isSuggestedStyle:", style, [v6 isSuggested]);
 
-    v4 = v6;
+    selectedContentStyleCoordinator = v6;
   }
 }
 
-- (id)coordinatorForStyle:(id)a3 isSuggestedStyle:(BOOL)a4 fromDataSource:(id)a5
+- (id)coordinatorForStyle:(id)style isSuggestedStyle:(BOOL)suggestedStyle fromDataSource:(id)source
 {
-  v5 = a4;
-  v7 = a3;
-  v8 = [(PREditingContentStylePickerComponentViewController *)self delegate];
-  v9 = [v8 contentStylePickerComponentViewController:self coordinatorForStyle:v7 isSuggested:v5];
+  suggestedStyleCopy = suggestedStyle;
+  styleCopy = style;
+  delegate = [(PREditingContentStylePickerComponentViewController *)self delegate];
+  v9 = [delegate contentStylePickerComponentViewController:self coordinatorForStyle:styleCopy isSuggested:suggestedStyleCopy];
 
   return v9;
 }
 
-- (void)updateEditingContentStyleItemsWithGlassSelectionEnabled:(BOOL)a3
+- (void)updateEditingContentStyleItemsWithGlassSelectionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = self;
+  enabledCopy = enabled;
+  selfCopy = self;
   v74 = *MEMORY[0x1E69E9840];
-  v5 = [(PREditingContentStyleItemsViewController *)self->_itemsViewController selectedContentStyleCoordinator];
-  v61 = [v5 style];
+  selectedContentStyleCoordinator = [(PREditingContentStyleItemsViewController *)self->_itemsViewController selectedContentStyleCoordinator];
+  style = [selectedContentStyleCoordinator style];
 
-  v6 = [(PREditorContentStylePickerConfiguration *)v4->_configuration suggestedStyle];
-  v54 = v3;
-  if (v3)
+  suggestedStyle = [(PREditorContentStylePickerConfiguration *)selfCopy->_configuration suggestedStyle];
+  v54 = enabledCopy;
+  if (enabledCopy)
   {
     v7 = 0;
   }
@@ -517,10 +517,10 @@ uint64_t __119__PREditingContentStylePickerComponentViewController_contentStyleI
     v7 = 2;
   }
 
-  if (v6)
+  if (suggestedStyle)
   {
-    v8 = v6;
-    if ([v6 conformsToProtocol:&unk_1F1C8ED30])
+    v8 = suggestedStyle;
+    if ([suggestedStyle conformsToProtocol:&unk_1F1C8ED30])
     {
       v9 = [v8 copyWithPreferredMaterial:v7];
 
@@ -539,27 +539,27 @@ uint64_t __119__PREditingContentStylePickerComponentViewController_contentStyleI
   }
 
   v10 = 0.0;
-  if ([v61 allowsVariation])
+  if ([style allowsVariation])
   {
-    [v61 variation];
+    [style variation];
     v10 = v11;
   }
 
-  v12 = [(PREditorContentStylePickerConfiguration *)v4->_configuration copy];
-  v57 = [v12 stylePalette];
-  v13 = [v57 withPreferredMaterialType:v7];
+  v12 = [(PREditorContentStylePickerConfiguration *)selfCopy->_configuration copy];
+  stylePalette = [v12 stylePalette];
+  v13 = [stylePalette withPreferredMaterialType:v7];
   [v12 setStylePalette:v13];
-  v14 = v61;
+  v14 = style;
   v58 = v13;
   v59 = v12;
-  if (!v61)
+  if (!style)
   {
     if (!v60)
     {
       goto LABEL_49;
     }
 
-    v27 = 0;
+    firstObject5 = 0;
     goto LABEL_28;
   }
 
@@ -567,12 +567,12 @@ uint64_t __119__PREditingContentStylePickerComponentViewController_contentStyleI
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v15 = [v13 styles];
-  v16 = [v15 countByEnumeratingWithState:&v67 objects:v73 count:16];
+  styles = [v13 styles];
+  v16 = [styles countByEnumeratingWithState:&v67 objects:v73 count:16];
   if (v16)
   {
     v17 = v16;
-    v55 = v4;
+    v55 = selfCopy;
     v18 = *v68;
     while (2)
     {
@@ -580,29 +580,29 @@ uint64_t __119__PREditingContentStylePickerComponentViewController_contentStyleI
       {
         if (*v68 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(styles);
         }
 
         v20 = *(*(&v67 + 1) + 8 * i);
-        v21 = [v20 type];
-        if (v21 == [v14 type])
+        type = [v20 type];
+        if (type == [v14 type])
         {
-          v22 = [v20 colors];
-          v23 = [v22 firstObject];
-          v24 = [v14 colors];
-          v25 = [v24 firstObject];
-          v26 = [v23 isEqual:v25];
+          colors = [v20 colors];
+          firstObject = [colors firstObject];
+          colors2 = [v14 colors];
+          firstObject2 = [colors2 firstObject];
+          v26 = [firstObject isEqual:firstObject2];
 
-          v14 = v61;
+          v14 = style;
           if (v26)
           {
-            v27 = v20;
+            firstObject5 = v20;
             goto LABEL_25;
           }
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v67 objects:v73 count:16];
+      v17 = [styles countByEnumeratingWithState:&v67 objects:v73 count:16];
       if (v17)
       {
         continue;
@@ -611,15 +611,15 @@ uint64_t __119__PREditingContentStylePickerComponentViewController_contentStyleI
       break;
     }
 
-    v27 = 0;
+    firstObject5 = 0;
 LABEL_25:
-    v4 = v55;
+    selfCopy = v55;
     v13 = v58;
   }
 
   else
   {
-    v27 = 0;
+    firstObject5 = 0;
   }
 
   v12 = v59;
@@ -632,15 +632,15 @@ LABEL_28:
     v64 = 0u;
     v71 = v60;
     v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v71 count:1];
-    v29 = [v13 styles];
-    v30 = [v28 arrayByAddingObjectsFromArray:v29];
+    styles2 = [v13 styles];
+    v30 = [v28 arrayByAddingObjectsFromArray:styles2];
 
     v31 = [v30 countByEnumeratingWithState:&v63 objects:v72 count:16];
     if (v31)
     {
       v32 = v31;
-      v53 = v27;
-      v56 = v4;
+      v53 = firstObject5;
+      v56 = selfCopy;
       v33 = *v64;
       v34 = v60;
       while (2)
@@ -653,16 +653,16 @@ LABEL_28:
           }
 
           v36 = *(*(&v63 + 1) + 8 * j);
-          v37 = [v36 type];
-          if (v37 == [v34 type])
+          type2 = [v36 type];
+          if (type2 == [v34 type])
           {
-            v38 = [v36 colors];
-            v39 = [v38 firstObject];
-            v40 = [v14 colors];
-            v41 = [v40 firstObject];
-            v42 = [v39 isEqual:v41];
+            colors3 = [v36 colors];
+            firstObject3 = [colors3 firstObject];
+            colors4 = [v14 colors];
+            firstObject4 = [colors4 firstObject];
+            v42 = [firstObject3 isEqual:firstObject4];
 
-            v14 = v61;
+            v14 = style;
             v34 = v60;
 
             if (v42)
@@ -684,9 +684,9 @@ LABEL_28:
 
       v43 = 0;
 LABEL_39:
-      v4 = v56;
+      selfCopy = v56;
       v12 = v59;
-      v27 = v53;
+      firstObject5 = v53;
     }
 
     else
@@ -694,16 +694,16 @@ LABEL_39:
       v43 = 0;
     }
 
-    if (v27)
+    if (firstObject5)
     {
       v13 = v58;
 LABEL_45:
       v62 = v43;
       if ([v14 allowsVariation])
       {
-        v44 = [v27 copyWithVariation:v10];
+        v44 = [firstObject5 copyWithVariation:v10];
 
-        v27 = v44;
+        firstObject5 = v44;
       }
 
       goto LABEL_53;
@@ -712,47 +712,47 @@ LABEL_45:
     v13 = v58;
     if (v43)
     {
-      v27 = v43;
-      v62 = v27;
+      firstObject5 = v43;
+      v62 = firstObject5;
       goto LABEL_53;
     }
 
     goto LABEL_49;
   }
 
-  if (v27)
+  if (firstObject5)
   {
     v43 = 0;
     goto LABEL_45;
   }
 
 LABEL_49:
-  if (!v54 || ([v13 styles], v45 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v45, "bs_firstObjectPassingTest:", &__block_literal_global_452), v27 = objc_claimAutoreleasedReturnValue(), v45, !v27))
+  if (!v54 || ([v13 styles], v45 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v45, "bs_firstObjectPassingTest:", &__block_literal_global_452), firstObject5 = objc_claimAutoreleasedReturnValue(), v45, !firstObject5))
   {
-    v46 = [v13 styles];
-    v27 = [v46 firstObject];
+    styles3 = [v13 styles];
+    firstObject5 = [styles3 firstObject];
   }
 
   v62 = 0;
 LABEL_53:
-  [v12 setSelectedStyle:v27];
+  [v12 setSelectedStyle:firstObject5];
   [v12 setSuggestedStyle:v60];
-  v47 = [[PREditingContentStyleItemsDataSource alloc] initWithConfiguration:v12 includesSuggestedStyle:1 delegate:v4];
-  dataSource = v4->_dataSource;
-  v4->_dataSource = v47;
+  v47 = [[PREditingContentStyleItemsDataSource alloc] initWithConfiguration:v12 includesSuggestedStyle:1 delegate:selfCopy];
+  dataSource = selfCopy->_dataSource;
+  selfCopy->_dataSource = v47;
 
-  objc_storeStrong(&v4->_configuration, v12);
-  [(PREditingContentStyleItemsViewController *)v4->_itemsViewController updateDataSource:v4->_dataSource configuration:v4->_configuration];
-  sliderView = v4->_sliderView;
-  v50 = [(PREditorContentStylePickerConfiguration *)v4->_configuration stylePalette];
-  -[PREditingVariationSlider setApplyVariationOnGlass:](sliderView, "setApplyVariationOnGlass:", [v50 displayingGlassStyles]);
+  objc_storeStrong(&selfCopy->_configuration, v12);
+  [(PREditingContentStyleItemsViewController *)selfCopy->_itemsViewController updateDataSource:selfCopy->_dataSource configuration:selfCopy->_configuration];
+  sliderView = selfCopy->_sliderView;
+  stylePalette2 = [(PREditorContentStylePickerConfiguration *)selfCopy->_configuration stylePalette];
+  -[PREditingVariationSlider setApplyVariationOnGlass:](sliderView, "setApplyVariationOnGlass:", [stylePalette2 displayingGlassStyles]);
 
-  v51 = [(PREditingContentStyleItemsViewController *)v4->_itemsViewController selectedContentStyleCoordinator];
-  v52 = [v51 style];
+  selectedContentStyleCoordinator2 = [(PREditingContentStyleItemsViewController *)selfCopy->_itemsViewController selectedContentStyleCoordinator];
+  style2 = [selectedContentStyleCoordinator2 style];
 
-  if (v52)
+  if (style2)
   {
-    [(PREditingVariationSlider *)v4->_sliderView setVariation:v10];
+    [(PREditingVariationSlider *)selfCopy->_sliderView setVariation:v10];
   }
 }
 

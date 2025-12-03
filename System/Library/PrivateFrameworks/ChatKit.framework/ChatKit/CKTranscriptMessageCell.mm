@@ -5,12 +5,12 @@
 - (CKTranscriptMessageCellFailureButtonDelegate)failureButtonDelegate;
 - (UIEdgeInsets)safeAreaInsets;
 - (id)description;
-- (void)configureMessageDeliveryFailureButtonForFailed:(BOOL)a3;
-- (void)didTapFailureButtonWithSender:(id)a3;
+- (void)configureMessageDeliveryFailureButtonForFailed:(BOOL)failed;
+- (void)didTapFailureButtonWithSender:(id)sender;
 - (void)layoutSubviewsForContents;
 - (void)prepareForReuse;
-- (void)setFailed:(BOOL)a3;
-- (void)setWantsContactImageLayout:(BOOL)a3;
+- (void)setFailed:(BOOL)failed;
+- (void)setWantsContactImageLayout:(BOOL)layout;
 @end
 
 @implementation CKTranscriptMessageCell
@@ -35,15 +35,15 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v12 = [v11 isModernSplitViewControllerEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernSplitViewControllerEnabled = [mEMORY[0x1E69A8070] isModernSplitViewControllerEnabled];
 
-  if ((v12 & 1) == 0 && (v6 > 0.0 || v10 > 0.0))
+  if ((isModernSplitViewControllerEnabled & 1) == 0 && (v6 > 0.0 || v10 > 0.0))
   {
-    v13 = [(CKTranscriptMessageCell *)self window];
-    v14 = [v13 windowScene];
+    window = [(CKTranscriptMessageCell *)self window];
+    windowScene = [window windowScene];
 
-    if (v14 && ([v14 interfaceOrientation] - 3) <= 1)
+    if (windowScene && ([windowScene interfaceOrientation] - 3) <= 1)
     {
       v15 = +[CKUIBehavior sharedBehaviors];
       [v15 landscapeKeyboardInsets];
@@ -83,11 +83,11 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKEditableCollectionViewCell *)self orientation];
-  v12 = [(CKTranscriptMessageCell *)self failureButton];
-  v13 = [(CKTranscriptMessageCell *)self wantsContactImageLayout];
-  v14 = v13;
-  if (!v12 && !v13)
+  orientation = [(CKEditableCollectionViewCell *)self orientation];
+  failureButton = [(CKTranscriptMessageCell *)self failureButton];
+  wantsContactImageLayout = [(CKTranscriptMessageCell *)self wantsContactImageLayout];
+  v14 = wantsContactImageLayout;
+  if (!failureButton && !wantsContactImageLayout)
   {
 LABEL_19:
     if (!v14)
@@ -145,34 +145,34 @@ LABEL_19:
 
   v51 = v46 + v50;
   v52 = v44 + v48;
-  v53 = [(CKTranscriptMessageCell *)self traitCollection];
-  v54 = [v53 isTranscriptBackgroundActive];
+  traitCollection = [(CKTranscriptMessageCell *)self traitCollection];
+  isTranscriptBackgroundActive = [traitCollection isTranscriptBackgroundActive];
 
-  if (v54)
+  if (isTranscriptBackgroundActive)
   {
-    [v12 __ck_applyPortalGlassEffect];
+    [failureButton __ck_applyPortalGlassEffect];
   }
 
   else
   {
-    [v12 __ck_removePortalGlassEffect];
+    [failureButton __ck_removePortalGlassEffect];
   }
 
   v55 = v119 + v46;
   v6 = v39 + v44;
   v8 = v40 - v51;
   v10 = v41 - v52;
-  if (!v12 || ![(CKTranscriptMessageCell *)self failureButtonAdjustsContentAlignmentRect])
+  if (!failureButton || ![(CKTranscriptMessageCell *)self failureButtonAdjustsContentAlignmentRect])
   {
     v4 = v55;
     goto LABEL_19;
   }
 
   recta = v8;
-  [v12 frame];
+  [failureButton frame];
   v57 = v56;
   v59 = v58;
-  [v12 frame];
+  [failureButton frame];
   v61 = v60;
   v123 = v59;
   if (CKMainScreenScale_once_84 != -1)
@@ -199,7 +199,7 @@ LABEL_19:
 
   v129 = v10;
   v132 = v65;
-  if (v11)
+  if (orientation)
   {
     v68 = v63[1];
     v142.origin.x = v55;
@@ -226,7 +226,7 @@ LABEL_19:
     v135[1] = 3221225472;
     v135[2] = __52__CKTranscriptMessageCell_layoutSubviewsForContents__block_invoke;
     v135[3] = &unk_1E72EC7B0;
-    v136 = v12;
+    v136 = failureButton;
     v137 = v69;
     v138 = v113;
     v139 = v57;
@@ -236,7 +236,7 @@ LABEL_19:
 
   else
   {
-    [v12 setFrame:{v69, v113, v57, v123}];
+    [failureButton setFrame:{v69, v113, v57, v123}];
   }
 
   v115 = v68 + v67;
@@ -302,7 +302,7 @@ LABEL_20:
 
     v95 = v130 + v94;
     rectb = v8;
-    if (v11)
+    if (orientation)
     {
       v121 = v91[1];
       v144.origin.x = v87;
@@ -322,14 +322,14 @@ LABEL_20:
     v97 = v90 - v124;
     v98 = *v91;
     v99 = v91[2];
-    v100 = [(CKTranscriptMessageCell *)self contactImageView];
+    contactImageView = [(CKTranscriptMessageCell *)self contactImageView];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v101 = v87;
-      if (v100)
+      if (contactImageView)
       {
-        [v100 transform];
+        [contactImageView transform];
       }
 
       else
@@ -339,7 +339,7 @@ LABEL_20:
 
       if (CGAffineTransformIsIdentity(&v134))
       {
-        [v100 setFrame:{v96, v97, v130, v124}];
+        [contactImageView setFrame:{v96, v97, v130, v124}];
       }
 
       else
@@ -353,13 +353,13 @@ LABEL_20:
         v146.origin.y = v97;
         v146.size.width = v130;
         v146.size.height = v124;
-        [v100 setCenter:{MidX, CGRectGetMidY(v146)}];
+        [contactImageView setCenter:{MidX, CGRectGetMidY(v146)}];
       }
     }
 
     else
     {
-      [v100 setFrame:{v96, v97, v130, v124}];
+      [contactImageView setFrame:{v96, v97, v130, v124}];
       v101 = v87;
     }
 
@@ -374,7 +374,7 @@ LABEL_20:
   }
 
 LABEL_37:
-  if ([(CKTranscriptMessageCell *)self isReplyContextPreview]&& ![(CKTranscriptMessageCell *)self isFromMe]&& v11 == 2)
+  if ([(CKTranscriptMessageCell *)self isReplyContextPreview]&& ![(CKTranscriptMessageCell *)self isFromMe]&& orientation == 2)
   {
     v108 = +[CKUIBehavior sharedBehaviors];
     [v108 balloonMaskTailSizeForTailShape:1];
@@ -422,29 +422,29 @@ LABEL_6:
   return result;
 }
 
-- (void)setWantsContactImageLayout:(BOOL)a3
+- (void)setWantsContactImageLayout:(BOOL)layout
 {
-  if (self->_wantsContactImageLayout != a3)
+  if (self->_wantsContactImageLayout != layout)
   {
-    self->_wantsContactImageLayout = a3;
+    self->_wantsContactImageLayout = layout;
     [(CKTranscriptMessageCell *)self setNeedsLayout];
   }
 }
 
-- (void)setFailed:(BOOL)a3
+- (void)setFailed:(BOOL)failed
 {
-  v3 = a3;
-  if ([(CKTranscriptMessageCell *)self failed]!= a3)
+  failedCopy = failed;
+  if ([(CKTranscriptMessageCell *)self failed]!= failed)
   {
 
-    [(CKTranscriptMessageCell *)self configureMessageDeliveryFailureButtonForFailed:v3];
+    [(CKTranscriptMessageCell *)self configureMessageDeliveryFailureButtonForFailed:failedCopy];
   }
 }
 
 - (BOOL)failed
 {
-  v2 = [(CKTranscriptMessageCell *)self failureButton];
-  v3 = v2 != 0;
+  failureButton = [(CKTranscriptMessageCell *)self failureButton];
+  v3 = failureButton != 0;
 
   return v3;
 }
@@ -486,17 +486,17 @@ void __56__CKTranscriptMessageCell_failureButtonWidthPlusSpacing__block_invoke()
   return WeakRetained;
 }
 
-- (void)configureMessageDeliveryFailureButtonForFailed:(BOOL)a3
+- (void)configureMessageDeliveryFailureButtonForFailed:(BOOL)failed
 {
-  v4 = self;
-  CKTranscriptMessageCell.configureMessageDeliveryFailureButton(failed:)(a3);
+  selfCopy = self;
+  CKTranscriptMessageCell.configureMessageDeliveryFailureButton(failed:)(failed);
 }
 
-- (void)didTapFailureButtonWithSender:(id)a3
+- (void)didTapFailureButtonWithSender:(id)sender
 {
-  if (a3)
+  if (sender)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_190D58140();
     swift_unknownObjectRelease();
@@ -505,7 +505,7 @@ void __56__CKTranscriptMessageCell_failureButtonWidthPlusSpacing__block_invoke()
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   CKTranscriptMessageCell.didTapFailureButton(sender:)(v6);

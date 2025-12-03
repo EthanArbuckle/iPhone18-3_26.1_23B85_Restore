@@ -1,7 +1,7 @@
 @interface OADLuminanceEffect
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADLuminanceEffect)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -14,9 +14,9 @@
   return [(OADBlipEffect *)&v3 initWithType:2];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   LODWORD(v5) = *(&self->super.mType + 1);
   [v4 setBrightness:v5];
   *&v6 = self->mBrightness;
@@ -32,15 +32,15 @@
   return v2 ^ [(OADBlipEffect *)&v4 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = *(&self->super.mType + 1), [v4 brightness], v5 == v6) && (mBrightness = self->mBrightness, objc_msgSend(v4, "contrast"), mBrightness == v8))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = *(&self->super.mType + 1), [equalCopy brightness], v5 == v6) && (mBrightness = self->mBrightness, objc_msgSend(equalCopy, "contrast"), mBrightness == v8))
   {
     v11.receiver = self;
     v11.super_class = OADLuminanceEffect;
-    v9 = [(OADBlipEffect *)&v11 isEqual:v4];
+    v9 = [(OADBlipEffect *)&v11 isEqual:equalCopy];
   }
 
   else

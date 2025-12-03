@@ -1,11 +1,11 @@
 @interface NRBabelPrefix
-- (BOOL)isContainedInPrefix:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesPrefix:(const in6_addr *)a3 plen:(unsigned __int8)a4;
+- (BOOL)isContainedInPrefix:(id)prefix;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesPrefix:(const in6_addr *)prefix plen:(unsigned __int8)plen;
 - (id)description;
 - (id)descriptionWithoutPlen;
 - (in6_addr)prefixInner;
-- (unsigned)writeToAE:(char *)a3 plen:(char *)a4 prefix:(char *)a5;
+- (unsigned)writeToAE:(char *)e plen:(char *)plen prefix:(char *)prefix;
 @end
 
 @implementation NRBabelPrefix
@@ -19,17 +19,17 @@
   return result;
 }
 
-- (unsigned)writeToAE:(char *)a3 plen:(char *)a4 prefix:(char *)a5
+- (unsigned)writeToAE:(char *)e plen:(char *)plen prefix:(char *)prefix
 {
-  *a5 = 0;
-  *(a5 + 1) = 0;
+  *prefix = 0;
+  *(prefix + 1) = 0;
   plen = self->_plen;
   if (plen < 0x81)
   {
     if (!self->_plen)
     {
       LOBYTE(v12) = 0;
-      *a3 = 0;
+      *e = 0;
       goto LABEL_14;
     }
   }
@@ -65,7 +65,7 @@
       {
         LOBYTE(plen) = plen - 96;
         v12 = (v10 >> 3) - 12;
-        *a3 = 1;
+        *e = 1;
         p_prefixInner = &self->_prefixInner.__u6_addr32[3];
         goto LABEL_13;
       }
@@ -73,7 +73,7 @@
 
     else if (self->_prefixInner.__u6_addr32[3] == 0x1000000)
     {
-      *a3 = 3;
+      *e = 3;
       v12 = (v10 >> 3) - 8;
       p_prefixInner = &self->_prefixInner.__u6_addr32[2];
       goto LABEL_13;
@@ -81,21 +81,21 @@
   }
 
   v12 = v10 >> 3;
-  *a3 = 2;
+  *e = 2;
 LABEL_13:
-  memcpy(a5, p_prefixInner, v12);
+  memcpy(prefix, p_prefixInner, v12);
 LABEL_14:
-  *a4 = plen;
+  *plen = plen;
   return v12;
 }
 
-- (BOOL)isContainedInPrefix:(id)a3
+- (BOOL)isContainedInPrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   plen = self->_plen;
-  if (plen >= [v4 plen])
+  if (plen >= [prefixCopy plen])
   {
-    v6 = [v4 matchesPrefix:&self->_prefixInner plen:{objc_msgSend(v4, "plen")}];
+    v6 = [prefixCopy matchesPrefix:&self->_prefixInner plen:{objc_msgSend(prefixCopy, "plen")}];
   }
 
   else
@@ -106,13 +106,13 @@ LABEL_14:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 matchesPrefix:&self->_prefixInner plen:self->_plen];
+    v5 = [equalCopy matchesPrefix:&self->_prefixInner plen:self->_plen];
   }
 
   else
@@ -148,21 +148,21 @@ LABEL_14:
 
   v3 = [NSString alloc];
   IPv6AddrString = createIPv6AddrString();
-  v5 = [v3 initWithFormat:@"%@/%u", IPv6AddrString, plen];
+  plen = [v3 initWithFormat:@"%@/%u", IPv6AddrString, plen];
 
-  return v5;
+  return plen;
 }
 
-- (BOOL)matchesPrefix:(const in6_addr *)a3 plen:(unsigned __int8)a4
+- (BOOL)matchesPrefix:(const in6_addr *)prefix plen:(unsigned __int8)plen
 {
-  if (self->_plen != a4)
+  if (self->_plen != plen)
   {
     return 0;
   }
 
-  v4 = a4;
+  plenCopy = plen;
   p_prefixInner = &self->_prefixInner;
-  if (a4 >= 0x81u)
+  if (plen >= 0x81u)
   {
     if (qword_100229100 != -1)
     {
@@ -179,12 +179,12 @@ LABEL_14:
       _NRLogWithArgs();
     }
 
-    v4 = 128;
+    plenCopy = 128;
   }
 
-  v7 = v4;
-  v8 = v4 >> 3;
-  if (memcmp(p_prefixInner, a3, v8))
+  v7 = plenCopy;
+  v8 = plenCopy >> 3;
+  if (memcmp(p_prefixInner, prefix, v8))
   {
     return 0;
   }
@@ -193,7 +193,7 @@ LABEL_14:
   {
     if ((v7 & 0x80) == 0)
     {
-      return (a3->__u6_addr8[v8] ^ p_prefixInner->__u6_addr8[v8]) >> (8 - (v7 & 7)) == 0;
+      return (prefix->__u6_addr8[v8] ^ p_prefixInner->__u6_addr8[v8]) >> (8 - (v7 & 7)) == 0;
     }
 
     if (qword_100229100 != -1)

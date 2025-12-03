@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __45__PIRAWFaceBalance_linearWideGamutColorSpace__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (linearWideGamutColorSpace_onceToken != -1)
   {
     dispatch_once(&linearWideGamutColorSpace_onceToken, block);
@@ -61,7 +61,7 @@ uint64_t __38__PIRAWFaceBalance_faceBalanceKernels__block_invoke()
 - (id)outputImage
 {
   v41[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PIRAWFaceBalance *)self inputImage];
+  inputImage = [(PIRAWFaceBalance *)self inputImage];
   [(PIRAWFaceBalance *)self inputWarmth];
   v5 = v4;
   [(PIRAWFaceBalance *)self inputWarmth];
@@ -77,12 +77,12 @@ uint64_t __38__PIRAWFaceBalance_faceBalanceKernels__block_invoke()
   {
     v16 = v7 - v13;
     v17 = v11 - v14;
-    v18 = [objc_opt_class() linearWideGamutColorSpace];
-    v19 = [objc_opt_class() faceBalanceKernels];
-    v20 = [v19 objectForKeyedSubscript:@"facebalance"];
+    linearWideGamutColorSpace = [objc_opt_class() linearWideGamutColorSpace];
+    faceBalanceKernels = [objc_opt_class() faceBalanceKernels];
+    v20 = [faceBalanceKernels objectForKeyedSubscript:@"facebalance"];
 
-    v21 = [(PIRAWFaceBalance *)self inputImage];
-    v22 = [v21 imageByColorMatchingWorkingSpaceToColorSpace:v18];
+    inputImage2 = [(PIRAWFaceBalance *)self inputImage];
+    v22 = [inputImage2 imageByColorMatchingWorkingSpaceToColorSpace:linearWideGamutColorSpace];
 
     [v22 extent];
     v24 = v23;
@@ -98,10 +98,10 @@ uint64_t __38__PIRAWFaceBalance_faceBalanceKernels__block_invoke()
     v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:3];
     v36 = [v20 applyWithExtent:v35 arguments:{v24, v26, v28, v30}];
 
-    v37 = [v36 imageByColorMatchingColorSpaceToWorkingSpace:v18];
+    v37 = [v36 imageByColorMatchingColorSpaceToWorkingSpace:linearWideGamutColorSpace];
 
-    v38 = [(PIRAWFaceBalance *)self inputImage];
-    [v38 extent];
+    inputImage3 = [(PIRAWFaceBalance *)self inputImage];
+    [inputImage3 extent];
     v39 = [v37 imageByCroppingToRect:?];
 
     v15 = v39;
@@ -109,7 +109,7 @@ uint64_t __38__PIRAWFaceBalance_faceBalanceKernels__block_invoke()
 
   else
   {
-    v15 = v3;
+    v15 = inputImage;
   }
 
   return v15;

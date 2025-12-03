@@ -1,12 +1,12 @@
 @interface TUISeparatedVariantCell
 - (CGSize)intrinsicContentSize;
-- (TUISeparatedVariantCell)initWithFrame:(CGRect)a3 string:(id)a4 annotation:(id)a5 traits:(id)a6;
+- (TUISeparatedVariantCell)initWithFrame:(CGRect)frame string:(id)string annotation:(id)annotation traits:(id)traits;
 - (UIEdgeInsets)annotationLabelInsets;
 - (UIEdgeInsets)backgroundInsets;
 - (UIEdgeInsets)labelInsets;
 - (UIView)touchesForwardingView;
 - (double)backgroundCornerRadius;
-- (void)transitionToHighlighted:(BOOL)a3;
+- (void)transitionToHighlighted:(BOOL)highlighted;
 @end
 
 @implementation TUISeparatedVariantCell
@@ -18,9 +18,9 @@
   return WeakRetained;
 }
 
-- (void)transitionToHighlighted:(BOOL)a3
+- (void)transitionToHighlighted:(BOOL)highlighted
 {
-  if (a3)
+  if (highlighted)
   {
     v5 = 0.05;
   }
@@ -35,14 +35,14 @@
   v8[2] = __51__TUISeparatedVariantCell_transitionToHighlighted___block_invoke;
   v8[3] = &unk_1E72D85B8;
   v8[4] = self;
-  v9 = a3;
+  highlightedCopy = highlighted;
   [MEMORY[0x1E69DD250] animateWithDuration:2 delay:v8 options:&__block_literal_global_5988 animations:v5 completion:0.0];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__TUISeparatedVariantCell_transitionToHighlighted___block_invoke_3;
   v6[3] = &unk_1E72D85B8;
   v6[4] = self;
-  v7 = a3;
+  highlightedCopy2 = highlighted;
   [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v6 options:&__block_literal_global_38 animations:v5 completion:0.0];
 }
 
@@ -132,18 +132,18 @@ uint64_t __51__TUISeparatedVariantCell_transitionToHighlighted___block_invoke_3(
 
 - (double)backgroundCornerRadius
 {
-  v2 = [(TUIVariantCell *)self backgroundView];
-  [v2 frame];
+  backgroundView = [(TUIVariantCell *)self backgroundView];
+  [backgroundView frame];
   v3 = CGRectGetHeight(v5) * 0.5;
 
   return v3;
 }
 
-- (TUISeparatedVariantCell)initWithFrame:(CGRect)a3 string:(id)a4 annotation:(id)a5 traits:(id)a6
+- (TUISeparatedVariantCell)initWithFrame:(CGRect)frame string:(id)string annotation:(id)annotation traits:(id)traits
 {
   v7.receiver = self;
   v7.super_class = TUISeparatedVariantCell;
-  return [(TUIVariantCell *)&v7 initWithFrame:a4 string:a5 annotation:a6 traits:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(TUIVariantCell *)&v7 initWithFrame:string string:annotation annotation:traits traits:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
 @end

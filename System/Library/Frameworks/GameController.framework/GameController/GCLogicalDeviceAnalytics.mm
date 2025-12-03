@@ -1,5 +1,5 @@
 @interface GCLogicalDeviceAnalytics
-- (GCLogicalDeviceAnalytics)initWithAnonymousIdentifier:(id)a3 bundleIdentifier:(id)a4 productCategory:(id)a5;
+- (GCLogicalDeviceAnalytics)initWithAnonymousIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier productCategory:(id)category;
 - (double)sessionActiveDuration;
 - (double)sessionTotalDuration;
 - (id)description;
@@ -10,23 +10,23 @@
 
 @implementation GCLogicalDeviceAnalytics
 
-- (GCLogicalDeviceAnalytics)initWithAnonymousIdentifier:(id)a3 bundleIdentifier:(id)a4 productCategory:(id)a5
+- (GCLogicalDeviceAnalytics)initWithAnonymousIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier productCategory:(id)category
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  categoryCopy = category;
   v16.receiver = self;
   v16.super_class = GCLogicalDeviceAnalytics;
   v12 = [(GCLogicalDeviceAnalytics *)&v16 init];
   if (v12)
   {
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     sessionIntervals = v12->_sessionIntervals;
-    v12->_sessionIntervals = v13;
+    v12->_sessionIntervals = array;
 
-    objc_storeStrong(&v12->_bundleID, a4);
-    objc_storeStrong(&v12->_productCategory, a5);
-    objc_storeStrong(&v12->_controllerID, a3);
+    objc_storeStrong(&v12->_bundleID, bundleIdentifier);
+    objc_storeStrong(&v12->_productCategory, category);
+    objc_storeStrong(&v12->_controllerID, identifier);
     if (!v12->_bundleID)
     {
       v12->_bundleID = @"N/A";
@@ -97,8 +97,8 @@
 
   v3 = objc_alloc(MEMORY[0x1E696AB80]);
   firstSessionStartTime = self->_firstSessionStartTime;
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [v3 initWithStartDate:firstSessionStartTime endDate:v5];
+  date = [MEMORY[0x1E695DF00] date];
+  v6 = [v3 initWithStartDate:firstSessionStartTime endDate:date];
   [v6 duration];
   v8 = v7;
 
@@ -176,13 +176,13 @@ id __54__GCLogicalDeviceAnalytics_flushSessionAndSendCAEvent__block_invoke(uint6
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(GCLogicalDeviceAnalytics *)self controllerID];
-  v6 = [(GCLogicalDeviceAnalytics *)self productCategory];
-  v7 = [(GCLogicalDeviceAnalytics *)self bundleID];
+  controllerID = [(GCLogicalDeviceAnalytics *)self controllerID];
+  productCategory = [(GCLogicalDeviceAnalytics *)self productCategory];
+  bundleID = [(GCLogicalDeviceAnalytics *)self bundleID];
   [(GCLogicalDeviceAnalytics *)self sessionTotalDuration];
   v9 = v8;
   [(GCLogicalDeviceAnalytics *)self sessionActiveDuration];
-  v11 = [v3 stringWithFormat:@"<%@ for %@ (%@) - %@, total = %f, active = %f>", v4, v5, v6, v7, v9, v10];
+  v11 = [v3 stringWithFormat:@"<%@ for %@ (%@) - %@, total = %f, active = %f>", v4, controllerID, productCategory, bundleID, v9, v10];
 
   return v11;
 }

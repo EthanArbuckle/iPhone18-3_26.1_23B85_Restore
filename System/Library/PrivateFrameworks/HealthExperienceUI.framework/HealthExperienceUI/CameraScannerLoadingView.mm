@@ -1,7 +1,7 @@
 @interface CameraScannerLoadingView
 - (_TtC18HealthExperienceUI24CameraScannerLoadingView)init;
-- (_TtC18HealthExperienceUI24CameraScannerLoadingView)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI24CameraScannerLoadingView)initWithFrame:(CGRect)a3;
+- (_TtC18HealthExperienceUI24CameraScannerLoadingView)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI24CameraScannerLoadingView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation CameraScannerLoadingView
@@ -18,7 +18,7 @@
   return v2;
 }
 
-- (_TtC18HealthExperienceUI24CameraScannerLoadingView)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI24CameraScannerLoadingView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI24CameraScannerLoadingView____lazy_storage___spinner) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI24CameraScannerLoadingView____lazy_storage___blurView) = 0;
@@ -27,7 +27,7 @@
   return result;
 }
 
-- (_TtC18HealthExperienceUI24CameraScannerLoadingView)initWithFrame:(CGRect)a3
+- (_TtC18HealthExperienceUI24CameraScannerLoadingView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

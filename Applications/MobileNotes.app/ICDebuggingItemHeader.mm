@@ -1,44 +1,44 @@
 @interface ICDebuggingItemHeader
 - (UIButton)clearButton;
-- (void)setClearButtonHandler:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)setClearButtonHandler:(id)handler;
+- (void)setTitle:(id)title;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation ICDebuggingItemHeader
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
+  objc_storeStrong(&self->_title, title);
 
   [(ICDebuggingItemHeader *)self setNeedsUpdateConfiguration];
 }
 
-- (void)setClearButtonHandler:(id)a3
+- (void)setClearButtonHandler:(id)handler
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(handler);
   clearButtonHandler = self->_clearButtonHandler;
   self->_clearButtonHandler = v4;
 
   [(ICDebuggingItemHeader *)self setNeedsUpdateConfiguration];
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
   v11.receiver = self;
   v11.super_class = ICDebuggingItemHeader;
-  [(ICDebuggingItemHeader *)&v11 updateConfigurationUsingState:a3];
+  [(ICDebuggingItemHeader *)&v11 updateConfigurationUsingState:state];
   v4 = +[UIListContentConfiguration groupedHeaderConfiguration];
-  v5 = [(ICDebuggingItemHeader *)self title];
-  [v4 setText:v5];
+  title = [(ICDebuggingItemHeader *)self title];
+  [v4 setText:title];
 
-  v6 = [(ICDebuggingItemHeader *)self clearButtonHandler];
+  clearButtonHandler = [(ICDebuggingItemHeader *)self clearButtonHandler];
 
-  if (v6)
+  if (clearButtonHandler)
   {
     v7 = [UICellAccessoryCustomView alloc];
-    v8 = [(ICDebuggingItemHeader *)self clearButton];
-    v9 = [v7 initWithCustomView:v8 placement:1];
+    clearButton = [(ICDebuggingItemHeader *)self clearButton];
+    v9 = [v7 initWithCustomView:clearButton placement:1];
 
     v12 = v9;
     v10 = [NSArray arrayWithObjects:&v12 count:1];

@@ -37,7 +37,7 @@ void __27__ML3Booklet_allProperties__block_invoke()
   block[1] = 3221225472;
   block[2] = __40__ML3Booklet_predisambiguatedProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (predisambiguatedProperties___predisambiguatedPropertiesOnceToken != -1)
   {
     dispatch_once(&predisambiguatedProperties___predisambiguatedPropertiesOnceToken, block);

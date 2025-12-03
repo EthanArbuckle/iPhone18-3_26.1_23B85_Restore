@@ -1,60 +1,60 @@
 @interface NRDeviceCollectionHistoryEntry
-- (BOOL)isEqual:(id)a3;
-- (NRDeviceCollectionHistoryEntry)initWithCoder:(id)a3;
-- (NRDeviceCollectionHistoryEntry)initWithHistory:(id)a3 index:(unint64_t)a4 date:(id)a5 diff:(id)a6 switchIndex:(unsigned int)a7;
-- (NRDeviceCollectionHistoryEntry)initWithProtobuf:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NRDeviceCollectionHistoryEntry)initWithCoder:(id)coder;
+- (NRDeviceCollectionHistoryEntry)initWithHistory:(id)history index:(unint64_t)index date:(id)date diff:(id)diff switchIndex:(unsigned int)switchIndex;
+- (NRDeviceCollectionHistoryEntry)initWithProtobuf:(id)protobuf;
 - (NRMutableDeviceCollection)state;
 - (NRPBDeviceCollectionHistoryEntry)protobuf;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHistoryManager:(uint64_t)a1;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHistoryManager:(uint64_t)manager;
 @end
 
 @implementation NRDeviceCollectionHistoryEntry
 
-- (NRDeviceCollectionHistoryEntry)initWithHistory:(id)a3 index:(unint64_t)a4 date:(id)a5 diff:(id)a6 switchIndex:(unsigned int)a7
+- (NRDeviceCollectionHistoryEntry)initWithHistory:(id)history index:(unint64_t)index date:(id)date diff:(id)diff switchIndex:(unsigned int)switchIndex
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  historyCopy = history;
+  dateCopy = date;
+  diffCopy = diff;
   v16 = [(NRDeviceCollectionHistoryEntry *)self init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_historyManager, a3);
-    v17->_index = a4;
-    objc_storeStrong(&v17->_date, a5);
-    objc_storeStrong(&v17->_diff, a6);
-    v17->_switchIndex = a7;
+    objc_storeStrong(&v16->_historyManager, history);
+    v17->_index = index;
+    objc_storeStrong(&v17->_date, date);
+    objc_storeStrong(&v17->_diff, diff);
+    v17->_switchIndex = switchIndex;
   }
 
   return v17;
 }
 
-- (NRDeviceCollectionHistoryEntry)initWithCoder:(id)a3
+- (NRDeviceCollectionHistoryEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(NRDeviceCollectionHistoryEntry *)self init];
   if (!v5)
   {
     goto LABEL_5;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
   if (!v6)
   {
-    v5->_index = [v4 decodeInt64ForKey:@"index"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    v5->_index = [coderCopy decodeInt64ForKey:@"index"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
     date = v5->_date;
     v5->_date = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"diff"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"diff"];
     diff = v5->_diff;
     v5->_diff = v12;
 
-    v5->_switchIndex = [v4 decodeInt32ForKey:@"switchIndex"];
+    v5->_switchIndex = [coderCopy decodeInt32ForKey:@"switchIndex"];
 LABEL_5:
     v9 = v5;
     goto LABEL_6;
@@ -68,25 +68,25 @@ LABEL_6:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(NRDeviceCollectionHistoryEntry *)self protobuf];
-  v5 = [v6 data];
-  [v4 encodeObject:v5 forKey:@"data"];
+  coderCopy = coder;
+  protobuf = [(NRDeviceCollectionHistoryEntry *)self protobuf];
+  data = [protobuf data];
+  [coderCopy encodeObject:data forKey:@"data"];
 }
 
-- (NRDeviceCollectionHistoryEntry)initWithProtobuf:(id)a3
+- (NRDeviceCollectionHistoryEntry)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v5 = [(NRDeviceCollectionHistoryEntry *)self init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (protobufCopy)
     {
-      v7 = *(v4 + 2);
-      v8 = v4[1];
+      v7 = *(protobufCopy + 2);
+      v8 = protobufCopy[1];
     }
 
     else
@@ -101,9 +101,9 @@ LABEL_6:
     v6->_date = v9;
 
     v11 = [NRDeviceCollectionDiff alloc];
-    if (v4)
+    if (protobufCopy)
     {
-      v12 = *(v4 + 3);
+      v12 = *(protobufCopy + 3);
     }
 
     else
@@ -139,13 +139,13 @@ LABEL_6:
     [(NSDate *)self->_date timeIntervalSinceReferenceDate];
   }
 
-  v7 = [(NRDeviceCollectionDiff *)self->_diff protobuf];
-  [(NRPBDeviceCollectionHistoryEntry *)v4 setDiff:v7];
+  protobuf = [(NRDeviceCollectionDiff *)self->_diff protobuf];
+  [(NRPBDeviceCollectionHistoryEntry *)v4 setDiff:protobuf];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NRDeviceCollectionHistoryEntry allocWithZone:?]];
   objc_storeStrong(&v4->_historyManager, self->_historyManager);
@@ -213,8 +213,8 @@ LABEL_6:
         do
         {
           v11 = [(NSMutableArray *)historyManager->_history objectAtIndexedSubscript:v8];
-          v12 = [v11 diff];
-          v13 = [(NRMutableStateBase *)v7 applyDiff:v12];
+          diff = [v11 diff];
+          v13 = [(NRMutableStateBase *)v7 applyDiff:diff];
 
           ++v8;
         }
@@ -239,8 +239,8 @@ LABEL_6:
       do
       {
         v18 = [(NSMutableArray *)historyManager->_history objectAtIndexedSubscript:v8];
-        v19 = [v18 diff];
-        v20 = [(NRMutableStateBase *)v7 applyDiff:v19];
+        diff2 = [v18 diff];
+        v20 = [(NRMutableStateBase *)v7 applyDiff:diff2];
 
         ++v8;
       }
@@ -290,24 +290,24 @@ LABEL_6:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_10;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v8 = 1;
     goto LABEL_14;
   }
 
-  if (v4)
+  if (equalCopy)
   {
-    v5 = v4;
+    v5 = equalCopy;
     v8 = self->_index == v5->_index && ((date = self->_date, !(date | v5->_date)) || [(NSDate *)date isEqual:?]) && ((diff = self->_diff, !(diff | v5->_diff)) || [(NRDeviceCollectionDiff *)diff isEqual:?]) && self->_switchIndex == v5->_switchIndex;
   }
 
@@ -322,11 +322,11 @@ LABEL_14:
   return v8;
 }
 
-- (void)setHistoryManager:(uint64_t)a1
+- (void)setHistoryManager:(uint64_t)manager
 {
-  if (a1)
+  if (manager)
   {
-    objc_storeStrong((a1 + 40), a2);
+    objc_storeStrong((manager + 40), a2);
   }
 }
 

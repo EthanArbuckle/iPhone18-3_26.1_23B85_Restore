@@ -1,8 +1,8 @@
 @interface MRAVRoomOutputDevice
-+ (id)calculateOutputDeviceIDFromOutputDeviceID:(id)a3 withRoomID:(id)a4;
-- (BOOL)containsUID:(id)a3;
++ (id)calculateOutputDeviceIDFromOutputDeviceID:(id)d withRoomID:(id)iD;
+- (BOOL)containsUID:(id)d;
 - (BOOL)isVolumeMuted;
-- (MRAVRoomOutputDevice)initWithOutputDevice:(id)a3 memberOutputDevices:(id)a4;
+- (MRAVRoomOutputDevice)initWithOutputDevice:(id)device memberOutputDevices:(id)devices;
 - (float)volume;
 - (id)clusterComposition;
 - (id)modelID;
@@ -12,26 +12,26 @@
 - (id)roomName;
 - (unsigned)deviceType;
 - (unsigned)volumeCapabilities;
-- (void)adjustVolume:(int64_t)a3 details:(id)a4;
+- (void)adjustVolume:(int64_t)volume details:(id)details;
 @end
 
 @implementation MRAVRoomOutputDevice
 
-- (MRAVRoomOutputDevice)initWithOutputDevice:(id)a3 memberOutputDevices:(id)a4
+- (MRAVRoomOutputDevice)initWithOutputDevice:(id)device memberOutputDevices:(id)devices
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  devicesCopy = devices;
   v22.receiver = self;
   v22.super_class = MRAVRoomOutputDevice;
   v9 = [(MRAVRoomOutputDevice *)&v22 init];
   if (v9)
   {
-    if (!v7)
+    if (!deviceCopy)
     {
       [MRAVRoomOutputDevice initWithOutputDevice:memberOutputDevices:];
     }
 
-    if (![v8 count])
+    if (![devicesCopy count])
     {
       [MRAVRoomOutputDevice initWithOutputDevice:memberOutputDevices:];
     }
@@ -39,23 +39,23 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v9->_concreteOutputDevice, a3);
+      objc_storeStrong(&v9->_concreteOutputDevice, device);
     }
 
-    objc_storeStrong(&v9->_outputDevice, a3);
-    objc_storeStrong(&v9->_roomMemberOutputDevices, a4);
+    objc_storeStrong(&v9->_outputDevice, device);
+    objc_storeStrong(&v9->_roomMemberOutputDevices, devices);
     v10 = objc_opt_class();
-    v11 = [(MRAVRoomOutputDevice *)v9 primaryID];
-    v12 = [(MRAVRoomOutputDevice *)v9 roomID];
-    v13 = [v10 calculateOutputDeviceIDFromOutputDeviceID:v11 withRoomID:v12];
+    primaryID = [(MRAVRoomOutputDevice *)v9 primaryID];
+    roomID = [(MRAVRoomOutputDevice *)v9 roomID];
+    v13 = [v10 calculateOutputDeviceIDFromOutputDeviceID:primaryID withRoomID:roomID];
     uid = v9->_uid;
     v9->_uid = v13;
 
     v15 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v16 = [(MRAVOutputDevice *)v9->_outputDevice debugName];
-    v17 = [(MRAVRoomOutputDevice *)v9 roomID];
-    v18 = [(MRAVRoomOutputDevice *)v9 roomName];
-    v19 = [v15 initWithFormat:@"<outputDevice=%@, room=%@:%@>", v16, v17, v18];
+    debugName = [(MRAVOutputDevice *)v9->_outputDevice debugName];
+    roomID2 = [(MRAVRoomOutputDevice *)v9 roomID];
+    roomName = [(MRAVRoomOutputDevice *)v9 roomName];
+    v19 = [v15 initWithFormat:@"<outputDevice=%@, room=%@:%@>", debugName, roomID2, roomName];
     label = v9->_label;
     v9->_label = v19;
   }
@@ -63,50 +63,50 @@
   return v9;
 }
 
-+ (id)calculateOutputDeviceIDFromOutputDeviceID:(id)a3 withRoomID:(id)a4
++ (id)calculateOutputDeviceIDFromOutputDeviceID:(id)d withRoomID:(id)iD
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithFormat:@"%@/%@", v7, v6];
+  iDCopy = iD;
+  dCopy = d;
+  iDCopy = [[v5 alloc] initWithFormat:@"%@/%@", dCopy, iDCopy];
 
-  return v8;
+  return iDCopy;
 }
 
 - (id)parentUID
 {
-  v2 = [(MRAVRoomOutputDevice *)self outputDevice];
-  v3 = [v2 uid];
+  outputDevice = [(MRAVRoomOutputDevice *)self outputDevice];
+  v3 = [outputDevice uid];
 
   return v3;
 }
 
 - (id)primaryID
 {
-  v2 = [(MRAVRoomOutputDevice *)self outputDevice];
-  v3 = [v2 primaryID];
+  outputDevice = [(MRAVRoomOutputDevice *)self outputDevice];
+  primaryID = [outputDevice primaryID];
 
-  return v3;
+  return primaryID;
 }
 
-- (BOOL)containsUID:(id)a3
+- (BOOL)containsUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [(MRAVRoomOutputDevice *)self uid];
-  if ([v4 isEqualToString:v5])
+  if ([dCopy isEqualToString:v5])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(MRAVRoomOutputDevice *)self clusterComposition];
+    clusterComposition = [(MRAVRoomOutputDevice *)self clusterComposition];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __36__MRAVRoomOutputDevice_containsUID___block_invoke;
     v9[3] = &unk_1E769A150;
-    v10 = v4;
-    v6 = [v7 mr_any:v9];
+    v10 = dCopy;
+    v6 = [clusterComposition mr_any:v9];
   }
 
   return v6;
@@ -122,52 +122,52 @@ uint64_t __36__MRAVRoomOutputDevice_containsUID___block_invoke(uint64_t a1, void
 
 - (id)modelID
 {
-  v2 = [(MRAVRoomOutputDevice *)self roomMemberOutputDevice];
-  v3 = [v2 modelID];
+  roomMemberOutputDevice = [(MRAVRoomOutputDevice *)self roomMemberOutputDevice];
+  modelID = [roomMemberOutputDevice modelID];
 
-  return v3;
+  return modelID;
 }
 
 - (unsigned)deviceType
 {
-  v2 = [(MRAVRoomOutputDevice *)self roomMemberOutputDevice];
-  v3 = [v2 deviceType];
+  roomMemberOutputDevice = [(MRAVRoomOutputDevice *)self roomMemberOutputDevice];
+  deviceType = [roomMemberOutputDevice deviceType];
 
-  return v3;
+  return deviceType;
 }
 
 - (id)roomID
 {
-  v2 = [(MRAVRoomOutputDevice *)self roomMemberOutputDevice];
-  v3 = [v2 roomID];
+  roomMemberOutputDevice = [(MRAVRoomOutputDevice *)self roomMemberOutputDevice];
+  roomID = [roomMemberOutputDevice roomID];
 
-  return v3;
+  return roomID;
 }
 
 - (id)roomName
 {
-  v2 = [(MRAVRoomOutputDevice *)self roomMemberOutputDevice];
-  v3 = [v2 roomName];
+  roomMemberOutputDevice = [(MRAVRoomOutputDevice *)self roomMemberOutputDevice];
+  roomName = [roomMemberOutputDevice roomName];
 
-  return v3;
+  return roomName;
 }
 
 - (id)clusterComposition
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  clusterComposition = v2->_clusterComposition;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  clusterComposition = selfCopy->_clusterComposition;
   if (!clusterComposition)
   {
-    v4 = [(NSArray *)v2->_roomMemberOutputDevices msv_map:&__block_literal_global_73];
-    v5 = v2->_clusterComposition;
-    v2->_clusterComposition = v4;
+    v4 = [(NSArray *)selfCopy->_roomMemberOutputDevices msv_map:&__block_literal_global_73];
+    v5 = selfCopy->_clusterComposition;
+    selfCopy->_clusterComposition = v4;
 
-    clusterComposition = v2->_clusterComposition;
+    clusterComposition = selfCopy->_clusterComposition;
   }
 
   v6 = [(NSArray *)clusterComposition copy];
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -189,8 +189,8 @@ MRAVOutputDeviceDescription *__42__MRAVRoomOutputDevice_clusterComposition__bloc
 
 - (float)volume
 {
-  v2 = [(MRAVRoomOutputDevice *)self roomMemberOutputDevice];
-  [v2 volume];
+  roomMemberOutputDevice = [(MRAVRoomOutputDevice *)self roomMemberOutputDevice];
+  [roomMemberOutputDevice volume];
   v4 = v3;
 
   return v4;
@@ -198,43 +198,43 @@ MRAVOutputDeviceDescription *__42__MRAVRoomOutputDevice_clusterComposition__bloc
 
 - (BOOL)isVolumeMuted
 {
-  v2 = [(MRAVRoomOutputDevice *)self roomMemberOutputDevice];
-  v3 = [v2 isVolumeMuted];
+  roomMemberOutputDevice = [(MRAVRoomOutputDevice *)self roomMemberOutputDevice];
+  isVolumeMuted = [roomMemberOutputDevice isVolumeMuted];
 
-  return v3;
+  return isVolumeMuted;
 }
 
 - (unsigned)volumeCapabilities
 {
-  v2 = [(MRAVRoomOutputDevice *)self roomMemberOutputDevice];
-  v3 = [v2 volumeCapabilities];
+  roomMemberOutputDevice = [(MRAVRoomOutputDevice *)self roomMemberOutputDevice];
+  volumeCapabilities = [roomMemberOutputDevice volumeCapabilities];
 
-  return v3;
+  return volumeCapabilities;
 }
 
-- (void)adjustVolume:(int64_t)a3 details:(id)a4
+- (void)adjustVolume:(int64_t)volume details:(id)details
 {
   v21 = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E696AD60];
-  v8 = a4;
+  detailsCopy = details;
   v9 = [v7 alloc];
-  v10 = [v8 requestID];
+  requestID = [detailsCopy requestID];
 
-  v11 = [v9 initWithFormat:@"%@<%@>", @"MRAVRoomOutputDevice.adjustVolume", v10];
-  v12 = MRMediaRemoteVolumeControlAdjustmentDescription(a3);
+  v11 = [v9 initWithFormat:@"%@<%@>", @"MRAVRoomOutputDevice.adjustVolume", requestID];
+  v12 = MRMediaRemoteVolumeControlAdjustmentDescription(volume);
 
   if (v12)
   {
-    v13 = MRMediaRemoteVolumeControlAdjustmentDescription(a3);
+    v13 = MRMediaRemoteVolumeControlAdjustmentDescription(volume);
     [v11 appendFormat:@" to %@", v13];
   }
 
-  v14 = [(MRAVRoomOutputDevice *)self debugName];
+  debugName = [(MRAVRoomOutputDevice *)self debugName];
 
-  if (v14)
+  if (debugName)
   {
-    v15 = [(MRAVRoomOutputDevice *)self debugName];
-    [v11 appendFormat:@" for %@", v15];
+    debugName2 = [(MRAVRoomOutputDevice *)self debugName];
+    [v11 appendFormat:@" for %@", debugName2];
   }
 
   v16 = _MRLogForCategory(0xAuLL);
@@ -250,8 +250,8 @@ MRAVOutputDeviceDescription *__42__MRAVRoomOutputDevice_clusterComposition__bloc
     [MRAVRoomOutputDevice adjustVolume:details:];
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"MRAVRoomOutputDevice.m" lineNumber:179 description:{@"Invalid parameter not satisfying: %@", @"NO"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MRAVRoomOutputDevice.m" lineNumber:179 description:{@"Invalid parameter not satisfying: %@", @"NO"}];
 
   v18 = *MEMORY[0x1E69E9840];
 }

@@ -1,9 +1,9 @@
 @interface MCLNotificationCenterObserver
 - (MCLNotificationCenterObserver)init;
 - (void)dealloc;
-- (void)observeNotification:(id)a3;
-- (void)setNotification:(id)a3;
-- (void)setObject:(id)a3;
+- (void)observeNotification:(id)notification;
+- (void)setNotification:(id)notification;
+- (void)setObject:(id)object;
 - (void)setup;
 @end
 
@@ -29,75 +29,75 @@
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 removeObserver:v5];
-  MEMORY[0x277D82BD8](v2);
-  v3.receiver = v5;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
+  MEMORY[0x277D82BD8](defaultCenter);
+  v3.receiver = selfCopy;
   v3.super_class = MCLNotificationCenterObserver;
   [(MCLNotificationCenterObserver *)&v3 dealloc];
 }
 
-- (void)setNotification:(id)a3
+- (void)setNotification:(id)notification
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, notification);
   v3 = [location[0] copy];
-  notification = v6->_notification;
-  v6->_notification = v3;
+  notification = selfCopy->_notification;
+  selfCopy->_notification = v3;
   MEMORY[0x277D82BD8](notification);
-  [(MCLNotificationCenterObserver *)v6 setup];
+  [(MCLNotificationCenterObserver *)selfCopy setup];
   objc_storeStrong(location, 0);
 }
 
-- (void)setObject:(id)a3
+- (void)setObject:(id)object
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v4->_object, location[0]);
-  [(MCLNotificationCenterObserver *)v4 setup];
+  objc_storeStrong(location, object);
+  objc_storeStrong(&selfCopy->_object, location[0]);
+  [(MCLNotificationCenterObserver *)selfCopy setup];
   objc_storeStrong(location, 0);
 }
 
 - (void)setup
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
-  MEMORY[0x277D82BD8](v3);
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
+  MEMORY[0x277D82BD8](defaultCenter);
   if (self->_enabled)
   {
     if ([(NSString *)self->_notification length])
     {
-      v2 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v2 addObserver:self selector:sel_observeNotification_ name:self->_notification object:self->_object];
-      MEMORY[0x277D82BD8](v2);
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel_observeNotification_ name:self->_notification object:self->_object];
+      MEMORY[0x277D82BD8](defaultCenter2);
     }
   }
 }
 
-- (void)observeNotification:(id)a3
+- (void)observeNotification:(id)notification
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v11->_enabled)
+  objc_storeStrong(location, notification);
+  if (selfCopy->_enabled)
   {
-    v4 = v11;
-    v5 = [location[0] userInfo];
+    v4 = selfCopy;
+    userInfo = [location[0] userInfo];
     v8 = 0;
     v6 = 0;
-    if (v5)
+    if (userInfo)
     {
-      v9 = [location[0] userInfo];
+      userInfo2 = [location[0] userInfo];
       v8 = 1;
-      v12[0] = v9;
+      v12[0] = userInfo2;
       v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
       v6 = 1;
       v3 = v7;
@@ -116,10 +116,10 @@
 
     if (v8)
     {
-      MEMORY[0x277D82BD8](v9);
+      MEMORY[0x277D82BD8](userInfo2);
     }
 
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](userInfo);
   }
 
   objc_storeStrong(location, 0);

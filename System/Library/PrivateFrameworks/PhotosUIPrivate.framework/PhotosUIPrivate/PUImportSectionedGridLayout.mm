@@ -1,36 +1,36 @@
 @interface PUImportSectionedGridLayout
 - (PUImportSectionedGridLayout)init;
-- (id)createLayoutAttributesForSectionBackgroundAtSection:(unint64_t)a3;
-- (id)indexPathsToDeleteForDecorationViewOfKind:(id)a3;
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
+- (id)createLayoutAttributesForSectionBackgroundAtSection:(unint64_t)section;
+- (id)indexPathsToDeleteForDecorationViewOfKind:(id)kind;
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
 - (void)finalizeCollectionViewUpdates;
-- (void)prepareForCollectionViewUpdates:(id)a3;
+- (void)prepareForCollectionViewUpdates:(id)updates;
 - (void)prepareLayout;
 - (void)recreateSectionDecorationAttributes;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation PUImportSectionedGridLayout
 
-- (id)indexPathsToDeleteForDecorationViewOfKind:(id)a3
+- (id)indexPathsToDeleteForDecorationViewOfKind:(id)kind
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  kindCopy = kind;
   v23.receiver = self;
   v23.super_class = PUImportSectionedGridLayout;
-  v5 = [(PUImportSectionedGridLayout *)&v23 indexPathsToDeleteForDecorationViewOfKind:v4];
+  v5 = [(PUImportSectionedGridLayout *)&v23 indexPathsToDeleteForDecorationViewOfKind:kindCopy];
   v6 = [v5 mutableCopy];
 
-  if ([v4 isEqualToString:@"PUImportSectionedGridLayoutDecorationKindSectionBackground"])
+  if ([kindCopy isEqualToString:@"PUImportSectionedGridLayoutDecorationKindSectionBackground"])
   {
-    v18 = v4;
+    v18 = kindCopy;
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = [(PUImportSectionedGridLayout *)self sectionIndexPathsBeingDeleted];
-    v8 = [v7 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    sectionIndexPathsBeingDeleted = [(PUImportSectionedGridLayout *)self sectionIndexPathsBeingDeleted];
+    v8 = [sectionIndexPathsBeingDeleted countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v8)
     {
       v9 = v8;
@@ -41,48 +41,48 @@
         {
           if (*v20 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(sectionIndexPathsBeingDeleted);
           }
 
-          v12 = [*(*(&v19 + 1) + 8 * i) section];
-          v13 = [(PUImportSectionedGridLayout *)self preUpdateSectionDecorationAttributesBySection];
-          v14 = [MEMORY[0x1E696AD98] numberWithInteger:v12];
-          v15 = [v13 objectForKeyedSubscript:v14];
+          section = [*(*(&v19 + 1) + 8 * i) section];
+          preUpdateSectionDecorationAttributesBySection = [(PUImportSectionedGridLayout *)self preUpdateSectionDecorationAttributesBySection];
+          v14 = [MEMORY[0x1E696AD98] numberWithInteger:section];
+          v15 = [preUpdateSectionDecorationAttributesBySection objectForKeyedSubscript:v14];
 
           if (v15)
           {
-            v16 = [v15 indexPath];
-            [v6 addObject:v16];
+            indexPath = [v15 indexPath];
+            [v6 addObject:indexPath];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v9 = [sectionIndexPathsBeingDeleted countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v9);
     }
 
-    v4 = v18;
+    kindCopy = v18;
   }
 
   return v6;
 }
 
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
-  if ([v6 isEqualToString:@"PUImportSectionedGridLayoutDecorationKindSectionBackground"])
+  kindCopy = kind;
+  pathCopy = path;
+  section = [pathCopy section];
+  if ([kindCopy isEqualToString:@"PUImportSectionedGridLayoutDecorationKindSectionBackground"])
   {
-    v9 = [(PUImportSectionedGridLayout *)self createLayoutAttributesForSectionBackgroundAtSection:v8];
+    v9 = [(PUImportSectionedGridLayout *)self createLayoutAttributesForSectionBackgroundAtSection:section];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = PUImportSectionedGridLayout;
-    v9 = [(PUImportSectionedGridLayout *)&v12 layoutAttributesForDecorationViewOfKind:v6 atIndexPath:v7];
+    v9 = [(PUImportSectionedGridLayout *)&v12 layoutAttributesForDecorationViewOfKind:kindCopy atIndexPath:pathCopy];
   }
 
   v10 = v9;
@@ -90,24 +90,24 @@
   return v10;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v23 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
   v21.super_class = PUImportSectionedGridLayout;
   v8 = [(PUSectionedGridLayout *)&v21 layoutAttributesForElementsInRect:?];
   v9 = [v8 mutableCopy];
 
-  v10 = [(PUImportSectionedGridLayout *)self sectionDecorationAttributesBySection];
+  sectionDecorationAttributesBySection = [(PUImportSectionedGridLayout *)self sectionDecorationAttributesBySection];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  v11 = [sectionDecorationAttributesBySection countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v11)
   {
     v12 = v11;
@@ -118,10 +118,10 @@
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(sectionDecorationAttributesBySection);
         }
 
-        v15 = [v10 objectForKeyedSubscript:*(*(&v17 + 1) + 8 * i)];
+        v15 = [sectionDecorationAttributesBySection objectForKeyedSubscript:*(*(&v17 + 1) + 8 * i)];
         [v15 frame];
         v26.origin.x = x;
         v26.origin.y = y;
@@ -133,7 +133,7 @@
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v12 = [sectionDecorationAttributesBySection countByEnumeratingWithState:&v17 objects:v22 count:16];
     }
 
     while (v12);
@@ -151,16 +151,16 @@
   [(PUImportSectionedGridLayout *)self setPreUpdateSectionDecorationAttributesBySection:0];
 }
 
-- (void)prepareForCollectionViewUpdates:(id)a3
+- (void)prepareForCollectionViewUpdates:(id)updates
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updatesCopy = updates;
   v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:1];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = updatesCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -176,12 +176,12 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 indexPathBeforeUpdate];
-        if ([v12 section] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v12, "item") == 0x7FFFFFFFFFFFFFFFLL)
+        indexPathBeforeUpdate = [v11 indexPathBeforeUpdate];
+        if ([indexPathBeforeUpdate section] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(indexPathBeforeUpdate, "item") == 0x7FFFFFFFFFFFFFFFLL)
         {
           if ([v11 updateAction] == 1)
           {
-            [v5 addObject:v12];
+            [v5 addObject:indexPathBeforeUpdate];
           }
 
           else
@@ -205,19 +205,19 @@
   [(PUSectionedGridLayout *)&v14 prepareForCollectionViewUpdates:v6];
 }
 
-- (id)createLayoutAttributesForSectionBackgroundAtSection:(unint64_t)a3
+- (id)createLayoutAttributesForSectionBackgroundAtSection:(unint64_t)section
 {
   [(PUSectionedGridLayout *)self globalTopPadding];
   v6 = v5;
   [(PUSectionedGridLayout *)self sectionTopPadding];
   v8 = v7;
-  v9 = [(PUSectionedGridLayout *)self sectionHeaderElementKind];
-  v10 = [MEMORY[0x1E696AC88] indexPathWithIndex:a3];
-  v48 = v9;
-  v11 = [(PUSectionedGridLayout *)self layoutAttributesForSupplementaryViewOfKind:v9 atIndexPath:v10];
+  sectionHeaderElementKind = [(PUSectionedGridLayout *)self sectionHeaderElementKind];
+  v10 = [MEMORY[0x1E696AC88] indexPathWithIndex:section];
+  v48 = sectionHeaderElementKind;
+  v11 = [(PUSectionedGridLayout *)self layoutAttributesForSupplementaryViewOfKind:sectionHeaderElementKind atIndexPath:v10];
   [v11 frame];
   v16 = v12;
-  if (a3)
+  if (section)
   {
     v17 = CGRectGetMinY(*&v12) - v8 - v6;
   }
@@ -230,10 +230,10 @@
   [v11 size];
   v19 = v18;
   v20 = [(UICollectionViewLayoutAttributes *)PUImportSectionedGridLayoutAttributes layoutAttributesForDecorationViewOfKind:@"PUImportSectionedGridLayoutDecorationKindSectionBackground" withIndexPath:v10];
-  v21 = [(PUImportSectionedGridLayout *)self collectionView];
-  v22 = [v21 dataSource];
-  v23 = [(PUImportSectionedGridLayout *)self collectionView];
-  v24 = [v22 collectionView:v23 numberOfItemsInSection:a3];
+  collectionView = [(PUImportSectionedGridLayout *)self collectionView];
+  dataSource = [collectionView dataSource];
+  collectionView2 = [(PUImportSectionedGridLayout *)self collectionView];
+  v24 = [dataSource collectionView:collectionView2 numberOfItemsInSection:section];
 
   if (v24 <= 0)
   {
@@ -244,7 +244,7 @@
   {
     v47 = v8;
     rect = *(MEMORY[0x1E695F058] + 24);
-    v25 = [MEMORY[0x1E696AC88] indexPathForItem:v24 - 1 inSection:a3];
+    v25 = [MEMORY[0x1E696AC88] indexPathForItem:v24 - 1 inSection:section];
     v26 = [(PUSectionedGridLayout *)self layoutAttributesForItemAtIndexPath:v25];
     [v26 frame];
     v28 = v27;
@@ -280,13 +280,13 @@
   }
 
   [v20 setFrame:{v16, v17, v19, v42}];
-  v43 = [(PUImportSectionedGridLayout *)self emphasizedSectionBackgroundColor];
-  [v20 setBackgroundColor:v43];
+  emphasizedSectionBackgroundColor = [(PUImportSectionedGridLayout *)self emphasizedSectionBackgroundColor];
+  [v20 setBackgroundColor:emphasizedSectionBackgroundColor];
 
   [(PUImportSectionedGridLayout *)self emphasizedSectionBottomStrokeWidth];
   [v20 setStrokeWidth:?];
-  v44 = [(PUImportSectionedGridLayout *)self emphasizedSectionBottomStrokeColor];
-  [v20 setBottomStrokeColor:v44];
+  emphasizedSectionBottomStrokeColor = [(PUImportSectionedGridLayout *)self emphasizedSectionBottomStrokeColor];
+  [v20 setBottomStrokeColor:emphasizedSectionBottomStrokeColor];
 
   [v20 setZIndex:-1];
 
@@ -295,13 +295,13 @@
 
 - (void)recreateSectionDecorationAttributes
 {
-  v3 = [(PUImportSectionedGridLayout *)self sectionDecorationAttributesBySection];
-  [v3 removeAllObjects];
+  sectionDecorationAttributesBySection = [(PUImportSectionedGridLayout *)self sectionDecorationAttributesBySection];
+  [sectionDecorationAttributesBySection removeAllObjects];
 
-  v4 = [(PUImportSectionedGridLayout *)self collectionView];
-  v5 = [v4 dataSource];
-  v6 = [(PUImportSectionedGridLayout *)self collectionView];
-  v7 = [v5 numberOfSectionsInCollectionView:v6];
+  collectionView = [(PUImportSectionedGridLayout *)self collectionView];
+  dataSource = [collectionView dataSource];
+  collectionView2 = [(PUImportSectionedGridLayout *)self collectionView];
+  v7 = [dataSource numberOfSectionsInCollectionView:collectionView2];
 
   if (v7 >= 1)
   {
@@ -309,8 +309,8 @@
     {
       if (self->_delegateSupportsPerSectionHighlight)
       {
-        v9 = [(PUSectionedGridLayout *)self delegate];
-        v10 = [v9 importSectionedGridLayout:self shouldEmphasizeSection:i];
+        delegate = [(PUSectionedGridLayout *)self delegate];
+        v10 = [delegate importSectionedGridLayout:self shouldEmphasizeSection:i];
       }
 
       else
@@ -318,19 +318,19 @@
         v10 = 0;
       }
 
-      v11 = [(PUImportSectionedGridLayout *)self collectionView];
-      v12 = [v11 dataSource];
-      v13 = [(PUImportSectionedGridLayout *)self collectionView];
-      v14 = [v12 collectionView:v13 numberOfItemsInSection:i];
+      collectionView3 = [(PUImportSectionedGridLayout *)self collectionView];
+      dataSource2 = [collectionView3 dataSource];
+      collectionView4 = [(PUImportSectionedGridLayout *)self collectionView];
+      v14 = [dataSource2 collectionView:collectionView4 numberOfItemsInSection:i];
 
       if (v10)
       {
         if (v14 >= 1)
         {
           v15 = [(PUImportSectionedGridLayout *)self createLayoutAttributesForSectionBackgroundAtSection:i];
-          v16 = [(PUImportSectionedGridLayout *)self sectionDecorationAttributesBySection];
+          sectionDecorationAttributesBySection2 = [(PUImportSectionedGridLayout *)self sectionDecorationAttributesBySection];
           v17 = [MEMORY[0x1E696AD98] numberWithInteger:i];
-          [v16 setObject:v15 forKeyedSubscript:v17];
+          [sectionDecorationAttributesBySection2 setObject:v15 forKeyedSubscript:v17];
         }
       }
     }
@@ -342,28 +342,28 @@
   v5.receiver = self;
   v5.super_class = PUImportSectionedGridLayout;
   [(PUSectionedGridLayout *)&v5 prepareLayout];
-  v3 = [(PUImportSectionedGridLayout *)self sectionDecorationAttributesBySection];
-  v4 = [v3 mutableCopy];
+  sectionDecorationAttributesBySection = [(PUImportSectionedGridLayout *)self sectionDecorationAttributesBySection];
+  v4 = [sectionDecorationAttributesBySection mutableCopy];
   [(PUImportSectionedGridLayout *)self setPreUpdateSectionDecorationAttributesBySection:v4];
 
   [(PUImportSectionedGridLayout *)self recreateSectionDecorationAttributes];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(PUSectionedGridLayout *)self delegate];
+  delegateCopy = delegate;
+  delegate = [(PUSectionedGridLayout *)self delegate];
 
-  if (v5 != v4)
+  if (delegate != delegateCopy)
   {
     v9.receiver = self;
     v9.super_class = PUImportSectionedGridLayout;
-    [(PUSectionedGridLayout *)&v9 setDelegate:v4];
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    [(PUSectionedGridLayout *)&v9 setDelegate:delegateCopy];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     sectionDecorationAttributesBySection = self->_sectionDecorationAttributesBySection;
-    self->_sectionDecorationAttributesBySection = v6;
+    self->_sectionDecorationAttributesBySection = dictionary;
 
-    v8 = [(PUSectionedGridLayout *)self delegate];
+    delegate2 = [(PUSectionedGridLayout *)self delegate];
     self->_delegateSupportsPerSectionHighlight = objc_opt_respondsToSelector() & 1;
 
     [(PUImportSectionedGridLayout *)self invalidateLayout];
@@ -378,16 +378,16 @@
   if (v2)
   {
     [(PUImportSectionedGridLayout *)v2 registerClass:objc_opt_class() forDecorationViewOfKind:@"PUImportSectionedGridLayoutDecorationKindSectionBackground"];
-    v3 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
     emphasizedSectionBackgroundColor = v2->_emphasizedSectionBackgroundColor;
-    v2->_emphasizedSectionBackgroundColor = v3;
+    v2->_emphasizedSectionBackgroundColor = secondarySystemBackgroundColor;
 
-    v5 = [MEMORY[0x1E69DC888] separatorColor];
+    separatorColor = [MEMORY[0x1E69DC888] separatorColor];
     emphasizedSectionBottomStrokeColor = v2->_emphasizedSectionBottomStrokeColor;
-    v2->_emphasizedSectionBottomStrokeColor = v5;
+    v2->_emphasizedSectionBottomStrokeColor = separatorColor;
 
-    v7 = [MEMORY[0x1E69DCEB0] px_mainScreen];
-    [v7 scale];
+    px_mainScreen = [MEMORY[0x1E69DCEB0] px_mainScreen];
+    [px_mainScreen scale];
     v2->_emphasizedSectionBottomStrokeWidth = 1.0 / v8;
   }
 

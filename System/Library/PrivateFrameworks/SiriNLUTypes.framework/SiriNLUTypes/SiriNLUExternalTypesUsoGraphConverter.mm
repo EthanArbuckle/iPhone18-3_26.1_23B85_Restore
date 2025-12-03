@@ -1,44 +1,44 @@
 @interface SiriNLUExternalTypesUsoGraphConverter
-+ (id)convertFromGraphEdge:(id)a3;
-+ (id)convertFromGraphEdges:(id)a3;
-+ (id)convertFromUsoEntityIdentifier:(id)a3;
-+ (id)convertFromUsoEntityIdentifiers:(id)a3;
-+ (id)convertFromUsoGraph:(id)a3;
-+ (id)convertFromUsoGraphs:(id)a3;
-+ (id)convertFromUsoNode:(id)a3;
-+ (id)convertFromUsoNodes:(id)a3;
-+ (id)convertFromUtteranceAlignment:(id)a3;
-+ (id)convertFromUtteranceAlignments:(id)a3;
-+ (id)convertFromUtteranceSpan:(id)a3;
-+ (id)convertFromUtteranceSpans:(id)a3;
++ (id)convertFromGraphEdge:(id)edge;
++ (id)convertFromGraphEdges:(id)edges;
++ (id)convertFromUsoEntityIdentifier:(id)identifier;
++ (id)convertFromUsoEntityIdentifiers:(id)identifiers;
++ (id)convertFromUsoGraph:(id)graph;
++ (id)convertFromUsoGraphs:(id)graphs;
++ (id)convertFromUsoNode:(id)node;
++ (id)convertFromUsoNodes:(id)nodes;
++ (id)convertFromUtteranceAlignment:(id)alignment;
++ (id)convertFromUtteranceAlignments:(id)alignments;
++ (id)convertFromUtteranceSpan:(id)span;
++ (id)convertFromUtteranceSpans:(id)spans;
 @end
 
 @implementation SiriNLUExternalTypesUsoGraphConverter
 
-+ (id)convertFromUsoNode:(id)a3
++ (id)convertFromUsoNode:(id)node
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  nodeCopy = node;
+  if (nodeCopy)
   {
     v4 = objc_alloc_init(SIRINLUEXTERNALUsoNode);
-    v5 = [v3 entityLabel];
-    [(SIRINLUEXTERNALUsoNode *)v4 setEntityLabel:v5];
+    entityLabel = [nodeCopy entityLabel];
+    [(SIRINLUEXTERNALUsoNode *)v4 setEntityLabel:entityLabel];
 
-    v6 = [v3 integerPayload];
-    v7 = [SiriNLUExternalTypesConverter convertFromNumber:v6];
+    integerPayload = [nodeCopy integerPayload];
+    v7 = [SiriNLUExternalTypesConverter convertFromNumber:integerPayload];
     [(SIRINLUEXTERNALUsoNode *)v4 setIntegerPayload:v7];
 
-    v8 = [v3 stringPayload];
-    v9 = [SiriNLUExternalTypesConverter convertFromString:v8];
+    stringPayload = [nodeCopy stringPayload];
+    v9 = [SiriNLUExternalTypesConverter convertFromString:stringPayload];
     [(SIRINLUEXTERNALUsoNode *)v4 setStringPayload:v9];
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v10 = [v3 normalizedStringPayloads];
-    v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    normalizedStringPayloads = [nodeCopy normalizedStringPayloads];
+    v11 = [normalizedStringPayloads countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v11)
     {
       v12 = v11;
@@ -49,29 +49,29 @@
         {
           if (*v22 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(normalizedStringPayloads);
           }
 
           [(SIRINLUEXTERNALUsoNode *)v4 addNormalizedStringPayloads:*(*(&v21 + 1) + 8 * i)];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v12 = [normalizedStringPayloads countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v12);
     }
 
-    v15 = [v3 verbLabel];
-    [(SIRINLUEXTERNALUsoNode *)v4 setVerbLabel:v15];
+    verbLabel = [nodeCopy verbLabel];
+    [(SIRINLUEXTERNALUsoNode *)v4 setVerbLabel:verbLabel];
 
-    -[SIRINLUEXTERNALUsoNode setUsoElementId:](v4, "setUsoElementId:", [v3 usoElementId]);
-    v16 = [v3 usoVerbId];
+    -[SIRINLUEXTERNALUsoNode setUsoElementId:](v4, "setUsoElementId:", [nodeCopy usoElementId]);
+    usoVerbId = [nodeCopy usoVerbId];
 
-    if (v16)
+    if (usoVerbId)
     {
       v17 = objc_alloc_init(SIRICOMMONUInt32Value);
-      v18 = [v3 usoVerbId];
-      -[SIRICOMMONUInt32Value setValue:](v17, "setValue:", [v18 intValue]);
+      usoVerbId2 = [nodeCopy usoVerbId];
+      -[SIRICOMMONUInt32Value setValue:](v17, "setValue:", [usoVerbId2 intValue]);
 
       [(SIRINLUEXTERNALUsoNode *)v4 setUsoVerbElementId:v17];
     }
@@ -87,18 +87,18 @@
   return v4;
 }
 
-+ (id)convertFromUsoNodes:(id)a3
++ (id)convertFromUsoNodes:(id)nodes
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  nodesCopy = nodes;
+  if (nodesCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v4;
+    v6 = nodesCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -113,7 +113,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [a1 convertFromUsoNode:{*(*(&v14 + 1) + 8 * i), v14}];
+          v11 = [self convertFromUsoNode:{*(*(&v14 + 1) + 8 * i), v14}];
           [v5 addObject:v11];
         }
 
@@ -134,18 +134,18 @@
   return v5;
 }
 
-+ (id)convertFromGraphEdges:(id)a3
++ (id)convertFromGraphEdges:(id)edges
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  edgesCopy = edges;
+  if (edgesCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v4;
+    v6 = edgesCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -160,7 +160,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [a1 convertFromGraphEdge:{*(*(&v14 + 1) + 8 * i), v14}];
+          v11 = [self convertFromGraphEdge:{*(*(&v14 + 1) + 8 * i), v14}];
           [v5 addObject:v11];
         }
 
@@ -181,23 +181,23 @@
   return v5;
 }
 
-+ (id)convertFromGraphEdge:(id)a3
++ (id)convertFromGraphEdge:(id)edge
 {
-  if (a3)
+  if (edge)
   {
-    v3 = a3;
+    edgeCopy = edge;
     v4 = objc_alloc_init(SIRINLUEXTERNALUsoEdge);
-    -[SIRINLUEXTERNALUsoEdge setFromIndex:](v4, "setFromIndex:", [v3 fromVertex]);
-    -[SIRINLUEXTERNALUsoEdge setToIndex:](v4, "setToIndex:", [v3 toVertex]);
+    -[SIRINLUEXTERNALUsoEdge setFromIndex:](v4, "setFromIndex:", [edgeCopy fromVertex]);
+    -[SIRINLUEXTERNALUsoEdge setToIndex:](v4, "setToIndex:", [edgeCopy toVertex]);
     v5 = objc_alloc_init(SIRINLUEXTERNALUsoLabel);
-    v6 = [v3 edgeLabel];
-    [(SIRINLUEXTERNALUsoLabel *)v5 setValue:v6];
+    edgeLabel = [edgeCopy edgeLabel];
+    [(SIRINLUEXTERNALUsoLabel *)v5 setValue:edgeLabel];
 
     v7 = objc_alloc_init(SIRINLUEXTERNALUsoEdgeLabel);
-    -[SIRINLUEXTERNALUsoEdgeLabel setUsoElementId:](v7, "setUsoElementId:", [v3 usoElementId]);
-    v8 = [v3 enumeration];
+    -[SIRINLUEXTERNALUsoEdgeLabel setUsoElementId:](v7, "setUsoElementId:", [edgeCopy usoElementId]);
+    enumeration = [edgeCopy enumeration];
 
-    [(SIRINLUEXTERNALUsoEdgeLabel *)v7 setEnumeration:v8];
+    [(SIRINLUEXTERNALUsoEdgeLabel *)v7 setEnumeration:enumeration];
     [(SIRINLUEXTERNALUsoEdgeLabel *)v7 setBaseEdgeLabel:v5];
     [(SIRINLUEXTERNALUsoEdge *)v4 setLabel:v7];
   }
@@ -210,18 +210,18 @@
   return v4;
 }
 
-+ (id)convertFromUtteranceSpans:(id)a3
++ (id)convertFromUtteranceSpans:(id)spans
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  spansCopy = spans;
+  if (spansCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v4;
+    v6 = spansCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -236,7 +236,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [a1 convertFromUtteranceSpan:{*(*(&v14 + 1) + 8 * i), v14}];
+          v11 = [self convertFromUtteranceSpan:{*(*(&v14 + 1) + 8 * i), v14}];
           [v5 addObject:v11];
         }
 
@@ -257,18 +257,18 @@
   return v5;
 }
 
-+ (id)convertFromUsoEntityIdentifiers:(id)a3
++ (id)convertFromUsoEntityIdentifiers:(id)identifiers
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  identifiersCopy = identifiers;
+  if (identifiersCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v4;
+    v6 = identifiersCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -283,7 +283,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [a1 convertFromUsoEntityIdentifier:{*(*(&v14 + 1) + 8 * i), v14}];
+          v11 = [self convertFromUsoEntityIdentifier:{*(*(&v14 + 1) + 8 * i), v14}];
           [v5 addObject:v11];
         }
 
@@ -304,59 +304,59 @@
   return v5;
 }
 
-+ (id)convertFromUsoEntityIdentifier:(id)a3
++ (id)convertFromUsoEntityIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v4 = objc_alloc_init(SIRINLUEXTERNALUsoEntityIdentifier);
-    v5 = [v3 appBundleId];
-    [(SIRINLUEXTERNALUsoEntityIdentifier *)v4 setBackingAppBundleId:v5];
+    appBundleId = [identifierCopy appBundleId];
+    [(SIRINLUEXTERNALUsoEntityIdentifier *)v4 setBackingAppBundleId:appBundleId];
 
-    v6 = [v3 namespaceString];
-    v7 = [SiriNLUExternalTypesConverter convertFromString:v6];
+    namespaceString = [identifierCopy namespaceString];
+    v7 = [SiriNLUExternalTypesConverter convertFromString:namespaceString];
     [(SIRINLUEXTERNALUsoEntityIdentifier *)v4 setNamespaceA:v7];
 
-    -[SIRINLUEXTERNALUsoEntityIdentifier setNodeIndex:](v4, "setNodeIndex:", [v3 nodeIndex]);
-    v8 = [v3 value];
-    [(SIRINLUEXTERNALUsoEntityIdentifier *)v4 setValue:v8];
+    -[SIRINLUEXTERNALUsoEntityIdentifier setNodeIndex:](v4, "setNodeIndex:", [identifierCopy nodeIndex]);
+    value = [identifierCopy value];
+    [(SIRINLUEXTERNALUsoEntityIdentifier *)v4 setValue:value];
 
-    v9 = [v3 probability];
+    probability = [identifierCopy probability];
 
-    if (v9)
+    if (probability)
     {
       v10 = objc_alloc_init(SIRICOMMONDoubleValue);
       [(SIRINLUEXTERNALUsoEntityIdentifier *)v4 setProbability:v10];
 
-      v11 = [v3 probability];
-      [v11 doubleValue];
+      probability2 = [identifierCopy probability];
+      [probability2 doubleValue];
       v13 = v12;
-      v14 = [(SIRINLUEXTERNALUsoEntityIdentifier *)v4 probability];
-      [v14 setValue:v13];
+      probability3 = [(SIRINLUEXTERNALUsoEntityIdentifier *)v4 probability];
+      [probability3 setValue:v13];
     }
 
-    v15 = [v3 sourceComponent];
+    sourceComponent = [identifierCopy sourceComponent];
 
-    if (v15)
+    if (sourceComponent)
     {
-      v16 = [v3 sourceComponent];
-      -[SIRINLUEXTERNALUsoEntityIdentifier setSourceComponent:](v4, "setSourceComponent:", [v16 intValue]);
+      sourceComponent2 = [identifierCopy sourceComponent];
+      -[SIRINLUEXTERNALUsoEntityIdentifier setSourceComponent:](v4, "setSourceComponent:", [sourceComponent2 intValue]);
     }
 
-    v17 = [v3 groupIndex];
+    groupIndex = [identifierCopy groupIndex];
 
-    if (v17)
+    if (groupIndex)
     {
-      v18 = [v3 groupIndex];
-      -[SIRINLUEXTERNALUsoEntityIdentifier setGroupIndex:](v4, "setGroupIndex:", [v18 unsignedIntValue]);
+      groupIndex2 = [identifierCopy groupIndex];
+      -[SIRINLUEXTERNALUsoEntityIdentifier setGroupIndex:](v4, "setGroupIndex:", [groupIndex2 unsignedIntValue]);
     }
 
-    v19 = [v3 interpretationGroup];
+    interpretationGroup = [identifierCopy interpretationGroup];
 
-    if (v19)
+    if (interpretationGroup)
     {
-      v20 = [v3 interpretationGroup];
-      -[SIRINLUEXTERNALUsoEntityIdentifier setInterpretationGroup:](v4, "setInterpretationGroup:", [v20 unsignedIntValue]);
+      interpretationGroup2 = [identifierCopy interpretationGroup];
+      -[SIRINLUEXTERNALUsoEntityIdentifier setInterpretationGroup:](v4, "setInterpretationGroup:", [interpretationGroup2 unsignedIntValue]);
     }
   }
 
@@ -368,20 +368,20 @@
   return v4;
 }
 
-+ (id)convertFromUtteranceSpan:(id)a3
++ (id)convertFromUtteranceSpan:(id)span
 {
-  if (a3)
+  if (span)
   {
-    v3 = a3;
+    spanCopy = span;
     v4 = objc_alloc_init(SIRINLUEXTERNALUtteranceSpan);
-    -[SIRINLUEXTERNALUtteranceSpan setEndIndex:](v4, "setEndIndex:", [v3 endIndex]);
-    -[SIRINLUEXTERNALUtteranceSpan setStartIndex:](v4, "setStartIndex:", [v3 startIndex]);
-    -[SIRINLUEXTERNALUtteranceSpan setStartUnicodeScalarIndex:](v4, "setStartUnicodeScalarIndex:", [v3 startUnicodeScalarIndex]);
-    -[SIRINLUEXTERNALUtteranceSpan setEndUnicodeScalarIndex:](v4, "setEndUnicodeScalarIndex:", [v3 endUnicodeScalarIndex]);
-    -[SIRINLUEXTERNALUtteranceSpan setStartMilliSeconds:](v4, "setStartMilliSeconds:", [v3 startMilliSeconds]);
-    v5 = [v3 endMilliSeconds];
+    -[SIRINLUEXTERNALUtteranceSpan setEndIndex:](v4, "setEndIndex:", [spanCopy endIndex]);
+    -[SIRINLUEXTERNALUtteranceSpan setStartIndex:](v4, "setStartIndex:", [spanCopy startIndex]);
+    -[SIRINLUEXTERNALUtteranceSpan setStartUnicodeScalarIndex:](v4, "setStartUnicodeScalarIndex:", [spanCopy startUnicodeScalarIndex]);
+    -[SIRINLUEXTERNALUtteranceSpan setEndUnicodeScalarIndex:](v4, "setEndUnicodeScalarIndex:", [spanCopy endUnicodeScalarIndex]);
+    -[SIRINLUEXTERNALUtteranceSpan setStartMilliSeconds:](v4, "setStartMilliSeconds:", [spanCopy startMilliSeconds]);
+    endMilliSeconds = [spanCopy endMilliSeconds];
 
-    [(SIRINLUEXTERNALUtteranceSpan *)v4 setEndMilliSeconds:v5];
+    [(SIRINLUEXTERNALUtteranceSpan *)v4 setEndMilliSeconds:endMilliSeconds];
   }
 
   else
@@ -392,18 +392,18 @@
   return v4;
 }
 
-+ (id)convertFromUtteranceAlignments:(id)a3
++ (id)convertFromUtteranceAlignments:(id)alignments
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  alignmentsCopy = alignments;
+  if (alignmentsCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v4;
+    v6 = alignmentsCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -418,7 +418,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [a1 convertFromUtteranceAlignment:{*(*(&v14 + 1) + 8 * i), v14}];
+          v11 = [self convertFromUtteranceAlignment:{*(*(&v14 + 1) + 8 * i), v14}];
           [v5 addObject:v11];
         }
 
@@ -439,20 +439,20 @@
   return v5;
 }
 
-+ (id)convertFromUtteranceAlignment:(id)a3
++ (id)convertFromUtteranceAlignment:(id)alignment
 {
-  if (a3)
+  if (alignment)
   {
-    v4 = a3;
+    alignmentCopy = alignment;
     v5 = objc_alloc_init(SIRINLUEXTERNALUtteranceAlignment);
-    v6 = [v4 spans];
-    v7 = [a1 convertFromUtteranceSpans:v6];
+    spans = [alignmentCopy spans];
+    v7 = [self convertFromUtteranceSpans:spans];
     [(SIRINLUEXTERNALUtteranceAlignment *)v5 setSpans:v7];
 
-    -[SIRINLUEXTERNALUtteranceAlignment setAsrHypothesisIndex:](v5, "setAsrHypothesisIndex:", [v4 asrHypothesisIndex]);
-    v8 = [v4 nodeIndex];
+    -[SIRINLUEXTERNALUtteranceAlignment setAsrHypothesisIndex:](v5, "setAsrHypothesisIndex:", [alignmentCopy asrHypothesisIndex]);
+    nodeIndex = [alignmentCopy nodeIndex];
 
-    [(SIRINLUEXTERNALUtteranceAlignment *)v5 setNodeIndex:v8];
+    [(SIRINLUEXTERNALUtteranceAlignment *)v5 setNodeIndex:nodeIndex];
   }
 
   else
@@ -463,18 +463,18 @@
   return v5;
 }
 
-+ (id)convertFromUsoGraphs:(id)a3
++ (id)convertFromUsoGraphs:(id)graphs
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  graphsCopy = graphs;
+  if (graphsCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v4;
+    v6 = graphsCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -489,7 +489,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [a1 convertFromUsoGraph:{*(*(&v14 + 1) + 8 * i), v14}];
+          v11 = [self convertFromUsoGraph:{*(*(&v14 + 1) + 8 * i), v14}];
           [v5 addObject:v11];
         }
 
@@ -510,27 +510,27 @@
   return v5;
 }
 
-+ (id)convertFromUsoGraph:(id)a3
++ (id)convertFromUsoGraph:(id)graph
 {
-  if (a3)
+  if (graph)
   {
-    v4 = a3;
+    graphCopy = graph;
     v5 = objc_alloc_init(SIRINLUEXTERNALUsoGraph);
-    v6 = [v4 nodes];
-    v7 = [a1 convertFromUsoNodes:v6];
+    nodes = [graphCopy nodes];
+    v7 = [self convertFromUsoNodes:nodes];
     [(SIRINLUEXTERNALUsoGraph *)v5 setNodes:v7];
 
-    v8 = [v4 edges];
-    v9 = [a1 convertFromGraphEdges:v8];
+    edges = [graphCopy edges];
+    v9 = [self convertFromGraphEdges:edges];
     [(SIRINLUEXTERNALUsoGraph *)v5 setEdges:v9];
 
-    v10 = [v4 alignments];
-    v11 = [a1 convertFromUtteranceAlignments:v10];
+    alignments = [graphCopy alignments];
+    v11 = [self convertFromUtteranceAlignments:alignments];
     [(SIRINLUEXTERNALUsoGraph *)v5 setAlignments:v11];
 
-    v12 = [v4 identifiers];
+    identifiers = [graphCopy identifiers];
 
-    v13 = [a1 convertFromUsoEntityIdentifiers:v12];
+    v13 = [self convertFromUsoEntityIdentifiers:identifiers];
     [(SIRINLUEXTERNALUsoGraph *)v5 setIdentifiers:v13];
   }
 

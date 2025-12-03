@@ -1,20 +1,20 @@
 @interface COSExpressSetupDetailSectionView
-- (id)itemViewForItem:(id)a3;
+- (id)itemViewForItem:(id)item;
 - (void)_didTapSection;
-- (void)_setCollapsed:(BOOL)a3 animated:(BOOL)a4;
-- (void)populateSection:(id)a3;
+- (void)_setCollapsed:(BOOL)collapsed animated:(BOOL)animated;
+- (void)populateSection:(id)section;
 @end
 
 @implementation COSExpressSetupDetailSectionView
 
-- (void)populateSection:(id)a3
+- (void)populateSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   v5 = +[UIColor systemGray6Color];
   [(COSExpressSetupDetailSectionView *)self setBackgroundColor:v5];
 
-  v6 = [(COSExpressSetupDetailSectionView *)self layer];
-  [v6 setCornerRadius:8.0];
+  layer = [(COSExpressSetupDetailSectionView *)self layer];
+  [layer setCornerRadius:8.0];
 
   v7 = objc_opt_new();
   titleLabel = self->_titleLabel;
@@ -22,8 +22,8 @@
 
   [(COSExpressSetupDetailSectionView *)self addSubview:self->_titleLabel];
   [(UILabel *)self->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [v4 title];
-  [(UILabel *)self->_titleLabel setText:v9];
+  title = [sectionCopy title];
+  [(UILabel *)self->_titleLabel setText:title];
 
   v10 = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
   [(UILabel *)self->_titleLabel setFont:v10];
@@ -34,9 +34,9 @@
 
   [(COSExpressSetupDetailSectionView *)self addSubview:self->_subtitleLabel];
   [(UILabel *)self->_subtitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v87 = v4;
-  v13 = [v4 subtitle];
-  [(UILabel *)self->_subtitleLabel setText:v13];
+  v87 = sectionCopy;
+  subtitle = [sectionCopy subtitle];
+  [(UILabel *)self->_subtitleLabel setText:subtitle];
 
   v14 = +[UIColor systemGrayColor];
   [(UILabel *)self->_subtitleLabel setTextColor:v14];
@@ -53,8 +53,8 @@
   [(COSExpressSetupDetailSectionView *)self addSubview:self->_imageView];
   [(UIImageView *)self->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIImageView *)self->_imageView setContentMode:1];
-  v18 = [v4 image];
-  [(UIImageView *)self->_imageView setImage:v18];
+  image = [sectionCopy image];
+  [(UIImageView *)self->_imageView setImage:image];
 
   v19 = objc_opt_new();
   chevron = self->_chevron;
@@ -76,67 +76,67 @@
   [(UIStackView *)self->_itemStackView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIStackView *)self->_itemStackView setAxis:1];
   [(UIStackView *)self->_itemStackView setAlignment:0];
-  v86 = [(UIImageView *)self->_imageView topAnchor];
-  v85 = [(COSExpressSetupDetailSectionView *)self topAnchor];
-  v84 = [v86 constraintEqualToAnchor:v85 constant:16.0];
+  topAnchor = [(UIImageView *)self->_imageView topAnchor];
+  topAnchor2 = [(COSExpressSetupDetailSectionView *)self topAnchor];
+  v84 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
   v93[0] = v84;
-  v83 = [(UIImageView *)self->_imageView leadingAnchor];
-  v82 = [(COSExpressSetupDetailSectionView *)self leadingAnchor];
-  v81 = [v83 constraintEqualToAnchor:v82 constant:16.0];
+  leadingAnchor = [(UIImageView *)self->_imageView leadingAnchor];
+  leadingAnchor2 = [(COSExpressSetupDetailSectionView *)self leadingAnchor];
+  v81 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v93[1] = v81;
-  v80 = [(UIImageView *)self->_imageView widthAnchor];
-  v79 = [v80 constraintEqualToConstant:36.0];
+  widthAnchor = [(UIImageView *)self->_imageView widthAnchor];
+  v79 = [widthAnchor constraintEqualToConstant:36.0];
   v93[2] = v79;
-  v78 = [(UIImageView *)self->_imageView heightAnchor];
-  v77 = [v78 constraintEqualToConstant:36.0];
+  heightAnchor = [(UIImageView *)self->_imageView heightAnchor];
+  v77 = [heightAnchor constraintEqualToConstant:36.0];
   v93[3] = v77;
-  v76 = [(UIImageView *)self->_chevron trailingAnchor];
-  v75 = [(COSExpressSetupDetailSectionView *)self trailingAnchor];
-  v74 = [v76 constraintEqualToAnchor:v75 constant:-16.0];
+  trailingAnchor = [(UIImageView *)self->_chevron trailingAnchor];
+  trailingAnchor2 = [(COSExpressSetupDetailSectionView *)self trailingAnchor];
+  v74 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   v93[4] = v74;
-  v73 = [(UIImageView *)self->_chevron centerYAnchor];
-  v72 = [(UIImageView *)self->_imageView centerYAnchor];
-  v71 = [v73 constraintEqualToAnchor:v72];
+  centerYAnchor = [(UIImageView *)self->_chevron centerYAnchor];
+  centerYAnchor2 = [(UIImageView *)self->_imageView centerYAnchor];
+  v71 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v93[5] = v71;
-  v70 = [(UILabel *)self->_titleLabel topAnchor];
-  v69 = [(UIImageView *)self->_imageView topAnchor];
-  v68 = [v70 constraintEqualToAnchor:v69];
+  topAnchor3 = [(UILabel *)self->_titleLabel topAnchor];
+  topAnchor4 = [(UIImageView *)self->_imageView topAnchor];
+  v68 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v93[6] = v68;
-  v67 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v66 = [(UIImageView *)self->_imageView trailingAnchor];
-  v65 = [v67 constraintEqualToAnchor:v66 constant:8.0];
+  leadingAnchor3 = [(UILabel *)self->_titleLabel leadingAnchor];
+  trailingAnchor3 = [(UIImageView *)self->_imageView trailingAnchor];
+  v65 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor3 constant:8.0];
   v93[7] = v65;
-  v64 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v63 = [(UIImageView *)self->_chevron trailingAnchor];
-  v62 = [v64 constraintEqualToAnchor:v63 constant:-2.0];
+  trailingAnchor4 = [(UILabel *)self->_titleLabel trailingAnchor];
+  trailingAnchor5 = [(UIImageView *)self->_chevron trailingAnchor];
+  v62 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-2.0];
   v93[8] = v62;
-  v61 = [(UILabel *)self->_subtitleLabel topAnchor];
-  v60 = [(UILabel *)self->_titleLabel bottomAnchor];
-  v59 = [v61 constraintEqualToAnchor:v60 constant:2.0];
+  topAnchor5 = [(UILabel *)self->_subtitleLabel topAnchor];
+  bottomAnchor = [(UILabel *)self->_titleLabel bottomAnchor];
+  v59 = [topAnchor5 constraintEqualToAnchor:bottomAnchor constant:2.0];
   v93[9] = v59;
-  v58 = [(UILabel *)self->_subtitleLabel leadingAnchor];
-  v57 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v56 = [v58 constraintEqualToAnchor:v57];
+  leadingAnchor4 = [(UILabel *)self->_subtitleLabel leadingAnchor];
+  leadingAnchor5 = [(UILabel *)self->_titleLabel leadingAnchor];
+  v56 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
   v93[10] = v56;
-  v55 = [(UILabel *)self->_subtitleLabel trailingAnchor];
-  v54 = [(UIImageView *)self->_chevron trailingAnchor];
-  v53 = [v55 constraintEqualToAnchor:v54 constant:-2.0];
+  trailingAnchor6 = [(UILabel *)self->_subtitleLabel trailingAnchor];
+  trailingAnchor7 = [(UIImageView *)self->_chevron trailingAnchor];
+  v53 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7 constant:-2.0];
   v93[11] = v53;
-  v52 = [(UILabel *)self->_subtitleLabel bottomAnchor];
-  v51 = [(UIStackView *)self->_itemStackView topAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51 constant:-16.0];
+  bottomAnchor2 = [(UILabel *)self->_subtitleLabel bottomAnchor];
+  topAnchor6 = [(UIStackView *)self->_itemStackView topAnchor];
+  v50 = [bottomAnchor2 constraintEqualToAnchor:topAnchor6 constant:-16.0];
   v93[12] = v50;
-  v49 = [(UIStackView *)self->_itemStackView leadingAnchor];
-  v48 = [(COSExpressSetupDetailSectionView *)self leadingAnchor];
-  v25 = [v49 constraintEqualToAnchor:v48];
+  leadingAnchor6 = [(UIStackView *)self->_itemStackView leadingAnchor];
+  leadingAnchor7 = [(COSExpressSetupDetailSectionView *)self leadingAnchor];
+  v25 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
   v93[13] = v25;
-  v26 = [(UIStackView *)self->_itemStackView trailingAnchor];
-  v27 = [(COSExpressSetupDetailSectionView *)self trailingAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  trailingAnchor8 = [(UIStackView *)self->_itemStackView trailingAnchor];
+  trailingAnchor9 = [(COSExpressSetupDetailSectionView *)self trailingAnchor];
+  v28 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9];
   v93[14] = v28;
-  v29 = [(UIStackView *)self->_itemStackView bottomAnchor];
-  v30 = [(COSExpressSetupDetailSectionView *)self bottomAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30];
+  bottomAnchor3 = [(UIStackView *)self->_itemStackView bottomAnchor];
+  bottomAnchor4 = [(COSExpressSetupDetailSectionView *)self bottomAnchor];
+  v31 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v93[15] = v31;
   v32 = [NSArray arrayWithObjects:v93 count:16];
   [NSLayoutConstraint activateConstraints:v32];
@@ -146,8 +146,8 @@
   itemMap = self->_itemMap;
   self->_itemMap = v34;
 
-  v36 = [v87 items];
-  v37 = [v36 count];
+  items = [v87 items];
+  v37 = [items count];
 
   if (v37)
   {
@@ -155,8 +155,8 @@
     v91 = 0u;
     v88 = 0u;
     v89 = 0u;
-    v38 = [v87 items];
-    v39 = [v38 countByEnumeratingWithState:&v88 objects:v92 count:16];
+    items2 = [v87 items];
+    v39 = [items2 countByEnumeratingWithState:&v88 objects:v92 count:16];
     if (v39)
     {
       v40 = v39;
@@ -167,20 +167,20 @@
         {
           if (*v89 != v41)
           {
-            objc_enumerationMutation(v38);
+            objc_enumerationMutation(items2);
           }
 
           v43 = *(*(&v88 + 1) + 8 * i);
           v44 = objc_opt_new();
           [v44 populateItem:v43];
           v45 = self->_itemMap;
-          v46 = [v43 identifier];
-          [(NSMutableDictionary *)v45 setObject:v44 forKey:v46];
+          identifier = [v43 identifier];
+          [(NSMutableDictionary *)v45 setObject:v44 forKey:identifier];
 
           [(UIStackView *)self->_itemStackView addArrangedSubview:v44];
         }
 
-        v40 = [v38 countByEnumeratingWithState:&v88 objects:v92 count:16];
+        v40 = [items2 countByEnumeratingWithState:&v88 objects:v92 count:16];
       }
 
       while (v40);
@@ -199,11 +199,11 @@
   }
 }
 
-- (id)itemViewForItem:(id)a3
+- (id)itemViewForItem:(id)item
 {
   itemMap = self->_itemMap;
-  v4 = [a3 identifier];
-  v5 = [(NSMutableDictionary *)itemMap objectForKey:v4];
+  identifier = [item identifier];
+  v5 = [(NSMutableDictionary *)itemMap objectForKey:identifier];
 
   return v5;
 }
@@ -215,12 +215,12 @@
   [(COSExpressSetupDetailSectionView *)self _setCollapsed:v3 animated:1];
 }
 
-- (void)_setCollapsed:(BOOL)a3 animated:(BOOL)a4
+- (void)_setCollapsed:(BOOL)collapsed animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  collapsedCopy = collapsed;
   v7 = objc_opt_new();
-  if (v4)
+  if (animatedCopy)
   {
     v8 = 0.25;
   }
@@ -235,7 +235,7 @@
   v20[2] = sub_1000C0658;
   v20[3] = &unk_10026B130;
   v20[4] = self;
-  v22 = v5;
+  v22 = collapsedCopy;
   v21 = v7;
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
@@ -244,12 +244,12 @@
   v9 = v21;
   v19 = v9;
   [UIView animateWithDuration:v20 animations:&v15 completion:v8];
-  if (v5)
+  if (collapsedCopy)
   {
     v10 = [UIApplication sharedApplication:v15];
-    v11 = [v10 userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [v10 userInterfaceLayoutDirection];
 
-    if (v11 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v12 = @"chevron.left";
     }
@@ -266,10 +266,10 @@
   }
 
   v13 = [UIImage systemImageNamed:v12, v15, v16, v17, v18];
-  v14 = [(COSExpressSetupDetailSectionView *)self chevron];
-  [v14 setImage:v13];
+  chevron = [(COSExpressSetupDetailSectionView *)self chevron];
+  [chevron setImage:v13];
 
-  [(COSExpressSetupDetailSectionView *)self setIsCollapsed:v5];
+  [(COSExpressSetupDetailSectionView *)self setIsCollapsed:collapsedCopy];
 }
 
 @end

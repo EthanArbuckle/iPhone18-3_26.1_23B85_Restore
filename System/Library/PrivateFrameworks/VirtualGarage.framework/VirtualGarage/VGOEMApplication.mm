@@ -1,21 +1,21 @@
 @interface VGOEMApplication
-- (BOOL)_isValidConsumptionModelForResponse:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_isValidConsumptionModelForResponse:(id)response;
+- (BOOL)isEqual:(id)equal;
 - (VGOEMAppSOCStreaming)chargeStreamingDelegate;
-- (VGOEMApplication)initWithIdentifier:(id)a3 applicationRecord:(id)a4;
-- (id)_powerByConnectorDictionaryFromCar:(id)a3;
-- (id)_vehicleStateFromResponse:(id)a3 error:(id *)a4;
-- (id)_vehiclesFromListCarsIntentResponse:(id)a3;
-- (unint64_t)_VGChargingConnectorTypeOptionFromINCarChargingConnectorType:(id)a3;
-- (unint64_t)_VGChargingConnectorTypeOptionsFromINCarChargingConnectorTypes:(id)a3;
-- (void)_createChargeStreamingConnectionIfNeededForVehicle:(id)a3;
-- (void)getStateOfChargeForVehicle:(id)a3 completion:(id)a4;
-- (void)intentResponseDidUpdate:(id)a3 withSerializedCacheItems:(id)a4;
-- (void)listCarsWithCompletion:(id)a3;
+- (VGOEMApplication)initWithIdentifier:(id)identifier applicationRecord:(id)record;
+- (id)_powerByConnectorDictionaryFromCar:(id)car;
+- (id)_vehicleStateFromResponse:(id)response error:(id *)error;
+- (id)_vehiclesFromListCarsIntentResponse:(id)response;
+- (unint64_t)_VGChargingConnectorTypeOptionFromINCarChargingConnectorType:(id)type;
+- (unint64_t)_VGChargingConnectorTypeOptionsFromINCarChargingConnectorTypes:(id)types;
+- (void)_createChargeStreamingConnectionIfNeededForVehicle:(id)vehicle;
+- (void)getStateOfChargeForVehicle:(id)vehicle completion:(id)completion;
+- (void)intentResponseDidUpdate:(id)update withSerializedCacheItems:(id)items;
+- (void)listCarsWithCompletion:(id)completion;
 - (void)resetStreamingConnection;
-- (void)startSendingChargeUpdatesForVehicle:(id)a3;
-- (void)stopSendingChargeUpdatesForVehicle:(id)a3;
-- (void)tearDownStreamingConnectionForVehicle:(id)a3;
+- (void)startSendingChargeUpdatesForVehicle:(id)vehicle;
+- (void)stopSendingChargeUpdatesForVehicle:(id)vehicle;
+- (void)tearDownStreamingConnectionForVehicle:(id)vehicle;
 @end
 
 @implementation VGOEMApplication
@@ -27,15 +27,15 @@
   return WeakRetained;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(VGOEMApplication *)self identifier];
-    v6 = [v4 identifier];
-    v7 = [v5 isEqualToString:v6];
+    identifier = [(VGOEMApplication *)self identifier];
+    identifier2 = [equalCopy identifier];
+    v7 = [identifier isEqualToString:identifier2];
   }
 
   else
@@ -46,10 +46,10 @@
   return v7;
 }
 
-- (void)intentResponseDidUpdate:(id)a3 withSerializedCacheItems:(id)a4
+- (void)intentResponseDidUpdate:(id)update withSerializedCacheItems:(id)items
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  updateCopy = update;
   WeakRetained = objc_loadWeakRetained(&self->_chargeStreamingDelegate);
   if (WeakRetained)
   {
@@ -60,7 +60,7 @@
     block[2] = __69__VGOEMApplication_intentResponseDidUpdate_withSerializedCacheItems___block_invoke;
     block[3] = &unk_279E26D98;
     objc_copyWeak(&v13, location);
-    v11 = v5;
+    v11 = updateCopy;
     v12 = WeakRetained;
     dispatch_async(queue, block);
 
@@ -250,10 +250,10 @@ LABEL_26:
   self->_chargeStreamingConnection = 0;
 }
 
-- (void)tearDownStreamingConnectionForVehicle:(id)a3
+- (void)tearDownStreamingConnectionForVehicle:(id)vehicle
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (vehicle)
   {
     v5 = VGGetVirtualGarageLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -267,9 +267,9 @@ LABEL_26:
     v7 = VGGetOEMApplicationLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [(VGOEMApplication *)self identifier];
+      identifier = [(VGOEMApplication *)self identifier];
       *buf = 138412290;
-      v15 = v8;
+      v15 = identifier;
       _os_log_impl(&dword_270EC1000, v7, OS_LOG_TYPE_INFO, "%@ tearing down streaming connection", buf, 0xCu);
     }
 
@@ -378,11 +378,11 @@ void __58__VGOEMApplication_tearDownStreamingConnectionForVehicle___block_invoke
   [WeakRetained resetStreamingConnection];
 }
 
-- (void)stopSendingChargeUpdatesForVehicle:(id)a3
+- (void)stopSendingChargeUpdatesForVehicle:(id)vehicle
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  vehicleCopy = vehicle;
+  if (vehicleCopy)
   {
     v6 = VGGetVirtualGarageLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -396,13 +396,13 @@ void __58__VGOEMApplication_tearDownStreamingConnectionForVehicle___block_invoke
     v8 = VGGetOEMApplicationLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(VGOEMApplication *)self identifier];
+      identifier = [(VGOEMApplication *)self identifier];
       *buf = 138412290;
-      v17 = v9;
+      v17 = identifier;
       _os_log_impl(&dword_270EC1000, v8, OS_LOG_TYPE_INFO, "%@ stopping updates", buf, 0xCu);
     }
 
-    [(VGOEMApplication *)self _createChargeStreamingConnectionIfNeededForVehicle:v5];
+    [(VGOEMApplication *)self _createChargeStreamingConnectionIfNeededForVehicle:vehicleCopy];
     objc_initWeak(buf, self);
     queue = self->_queue;
     v13[0] = MEMORY[0x277D85DD0];
@@ -410,7 +410,7 @@ void __58__VGOEMApplication_tearDownStreamingConnectionForVehicle___block_invoke
     v13[2] = __55__VGOEMApplication_stopSendingChargeUpdatesForVehicle___block_invoke;
     v13[3] = &unk_279E26F20;
     objc_copyWeak(&v15, buf);
-    v14 = v5;
+    v14 = vehicleCopy;
     dispatch_async(queue, v13);
 
     objc_destroyWeak(&v15);
@@ -510,11 +510,11 @@ void __55__VGOEMApplication_stopSendingChargeUpdatesForVehicle___block_invoke_65
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startSendingChargeUpdatesForVehicle:(id)a3
+- (void)startSendingChargeUpdatesForVehicle:(id)vehicle
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  vehicleCopy = vehicle;
+  if (vehicleCopy)
   {
     v6 = VGGetVirtualGarageLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -528,13 +528,13 @@ void __55__VGOEMApplication_stopSendingChargeUpdatesForVehicle___block_invoke_65
     v8 = VGGetOEMApplicationLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(VGOEMApplication *)self identifier];
+      identifier = [(VGOEMApplication *)self identifier];
       *buf = 138412290;
-      v16 = v9;
+      v16 = identifier;
       _os_log_impl(&dword_270EC1000, v8, OS_LOG_TYPE_INFO, "%@ starting updates", buf, 0xCu);
     }
 
-    [(VGOEMApplication *)self _createChargeStreamingConnectionIfNeededForVehicle:v5];
+    [(VGOEMApplication *)self _createChargeStreamingConnectionIfNeededForVehicle:vehicleCopy];
     objc_initWeak(buf, self);
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -637,11 +637,11 @@ void __56__VGOEMApplication_startSendingChargeUpdatesForVehicle___block_invoke_6
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createChargeStreamingConnectionIfNeededForVehicle:(id)a3
+- (void)_createChargeStreamingConnectionIfNeededForVehicle:(id)vehicle
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  vehicleCopy = vehicle;
+  if (vehicleCopy)
   {
     objc_initWeak(location, self);
     queue = self->_queue;
@@ -650,7 +650,7 @@ void __56__VGOEMApplication_startSendingChargeUpdatesForVehicle___block_invoke_6
     v8[2] = __71__VGOEMApplication__createChargeStreamingConnectionIfNeededForVehicle___block_invoke;
     v8[3] = &unk_279E26F20;
     objc_copyWeak(&v10, location);
-    v9 = v4;
+    v9 = vehicleCopy;
     dispatch_async(queue, v8);
 
     objc_destroyWeak(&v10);
@@ -741,15 +741,15 @@ LABEL_12:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getStateOfChargeForVehicle:(id)a3 completion:(id)a4
+- (void)getStateOfChargeForVehicle:(id)vehicle completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  vehicleCopy = vehicle;
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v12 = VGGetAssertLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    currentVehicleState = VGGetAssertLog();
+    if (os_log_type_enabled(currentVehicleState, OS_LOG_TYPE_ERROR))
     {
       *buf = 136446722;
       v21 = "[VGOEMApplication getStateOfChargeForVehicle:completion:]";
@@ -757,7 +757,7 @@ LABEL_12:
       v23 = "completion == nil";
       v24 = 2082;
       v25 = "Completion cannot be nil!";
-      _os_log_impl(&dword_270EC1000, v12, OS_LOG_TYPE_ERROR, "%{public}s forbids: %{public}s. %{public}s", buf, 0x20u);
+      _os_log_impl(&dword_270EC1000, currentVehicleState, OS_LOG_TYPE_ERROR, "%{public}s forbids: %{public}s. %{public}s", buf, 0x20u);
     }
 
     goto LABEL_11;
@@ -783,8 +783,8 @@ LABEL_12:
       _os_log_impl(&dword_270EC1000, v13, OS_LOG_TYPE_INFO, "Application %@ is not enabled returning existing SoC", buf, 0xCu);
     }
 
-    v12 = [v7 currentVehicleState];
-    v8[2](v8, v12, 0);
+    currentVehicleState = [vehicleCopy currentVehicleState];
+    completionCopy[2](completionCopy, currentVehicleState, 0);
 LABEL_11:
 
     goto LABEL_12;
@@ -797,8 +797,8 @@ LABEL_11:
   block[2] = __58__VGOEMApplication_getStateOfChargeForVehicle_completion___block_invoke;
   block[3] = &unk_279E26CD0;
   objc_copyWeak(&v19, buf);
-  v17 = v7;
-  v18 = v8;
+  v17 = vehicleCopy;
+  v18 = completionCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v19);
@@ -1177,11 +1177,11 @@ void __58__VGOEMApplication_getStateOfChargeForVehicle_completion___block_invoke
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)listCarsWithCompletion:(id)a3
+- (void)listCarsWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v6 = VGGetVirtualGarageLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -1201,7 +1201,7 @@ void __58__VGOEMApplication_getStateOfChargeForVehicle_completion___block_invoke
       v13[2] = __43__VGOEMApplication_listCarsWithCompletion___block_invoke;
       v13[3] = &unk_279E26F48;
       objc_copyWeak(&v15, buf);
-      v14 = v5;
+      v14 = completionCopy;
       dispatch_async(queue, v13);
 
       objc_destroyWeak(&v15);
@@ -1219,7 +1219,7 @@ void __58__VGOEMApplication_getStateOfChargeForVehicle_completion___block_invoke
         _os_log_impl(&dword_270EC1000, v10, OS_LOG_TYPE_INFO, "Application %@ is not enabled returning no results", buf, 0xCu);
       }
 
-      (*(v5 + 2))(v5, MEMORY[0x277CBEBF8], 0);
+      (*(completionCopy + 2))(completionCopy, MEMORY[0x277CBEBF8], 0);
     }
   }
 
@@ -1452,11 +1452,11 @@ void __43__VGOEMApplication_listCarsWithCompletion___block_invoke_37(uint64_t a1
   (*(v2 + 16))(v2, v4, v3);
 }
 
-- (id)_powerByConnectorDictionaryFromCar:(id)a3
+- (id)_powerByConnectorDictionaryFromCar:(id)car
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  carCopy = car;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -1466,8 +1466,8 @@ void __43__VGOEMApplication_listCarsWithCompletion___block_invoke_37(uint64_t a1
     dispatch_once(&_connectorMapping_onceToken, &__block_literal_global_1730);
   }
 
-  v6 = [_connectorMapping_s_connectorMapping allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v30 objects:v42 count:16];
+  allKeys = [_connectorMapping_s_connectorMapping allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v30 objects:v42 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1479,16 +1479,16 @@ void __43__VGOEMApplication_listCarsWithCompletion___block_invoke_37(uint64_t a1
       {
         if (*v31 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v30 + 1) + 8 * v10);
-        v12 = [v4 supportedChargingConnectors];
-        v13 = [v12 containsObject:v11];
+        supportedChargingConnectors = [carCopy supportedChargingConnectors];
+        v13 = [supportedChargingConnectors containsObject:v11];
 
         if (v13)
         {
-          v14 = [v4 maximumPowerForChargingConnectorType:v11];
+          v14 = [carCopy maximumPowerForChargingConnectorType:v11];
           if (v14)
           {
             objc_opt_class();
@@ -1513,9 +1513,9 @@ void __43__VGOEMApplication_listCarsWithCompletion___block_invoke_37(uint64_t a1
                 v18 = VGGetAssertLog();
                 if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
                 {
-                  v28 = [MEMORY[0x277CCACC8] callStackSymbols];
+                  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
                   *buf = 138412290;
-                  v35 = v28;
+                  v35 = callStackSymbols;
                   _os_log_impl(&dword_270EC1000, v18, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
                 }
               }
@@ -1525,7 +1525,7 @@ void __43__VGOEMApplication_listCarsWithCompletion___block_invoke_37(uint64_t a1
             if (v15)
             {
               v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v15];
-              [v5 setObject:v14 forKeyedSubscript:v16];
+              [dictionary setObject:v14 forKeyedSubscript:v16];
             }
 
             else
@@ -1549,9 +1549,9 @@ void __43__VGOEMApplication_listCarsWithCompletion___block_invoke_37(uint64_t a1
                 v20 = VGGetAssertLog();
                 if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
                 {
-                  v29 = [MEMORY[0x277CCACC8] callStackSymbols];
+                  callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
                   *buf = 138412290;
-                  v35 = v29;
+                  v35 = callStackSymbols2;
                   _os_log_impl(&dword_270EC1000, v20, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
                 }
               }
@@ -1559,12 +1559,12 @@ void __43__VGOEMApplication_listCarsWithCompletion___block_invoke_37(uint64_t a1
               v16 = VGGetOEMApplicationLog();
               if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
               {
-                v21 = [v4 powerPerConnectors];
+                powerPerConnectors = [carCopy powerPerConnectors];
                 *buf = 134218242;
                 v35 = v11;
                 v36 = 2112;
-                v37 = v21;
-                v22 = v21;
+                v37 = powerPerConnectors;
+                v22 = powerPerConnectors;
                 _os_log_impl(&dword_270EC1000, v16, OS_LOG_TYPE_ERROR, "Failed to extract power for connector type: %lu, from car array: %@.", buf, 0x16u);
               }
             }
@@ -1575,7 +1575,7 @@ void __43__VGOEMApplication_listCarsWithCompletion___block_invoke_37(uint64_t a1
       }
 
       while (v8 != v10);
-      v23 = [v6 countByEnumeratingWithState:&v30 objects:v42 count:16];
+      v23 = [allKeys countByEnumeratingWithState:&v30 objects:v42 count:16];
       v8 = v23;
     }
 
@@ -1586,20 +1586,20 @@ void __43__VGOEMApplication_listCarsWithCompletion___block_invoke_37(uint64_t a1
   if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v35 = v5;
+    v35 = dictionary;
     _os_log_impl(&dword_270EC1000, v24, OS_LOG_TYPE_INFO, "Constructed powerByConnector dictionary: %@", buf, 0xCu);
   }
 
-  v25 = [v5 copy];
+  v25 = [dictionary copy];
   v26 = *MEMORY[0x277D85DE8];
 
   return v25;
 }
 
-- (id)_vehiclesFromListCarsIntentResponse:(id)a3
+- (id)_vehiclesFromListCarsIntentResponse:(id)response
 {
   v65 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  responseCopy = response;
   v6 = VGGetVirtualGarageLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -1609,16 +1609,16 @@ void __43__VGOEMApplication_listCarsWithCompletion___block_invoke_37(uint64_t a1
     _os_log_impl(&dword_270EC1000, v6, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
   }
 
-  if ([v5 code] == 3)
+  if ([responseCopy code] == 3)
   {
     v8 = objc_alloc(MEMORY[0x277CBEB18]);
-    v9 = [v5 cars];
-    v10 = [v8 initWithCapacity:{objc_msgSend(v9, "count")}];
+    cars = [responseCopy cars];
+    v10 = [v8 initWithCapacity:{objc_msgSend(cars, "count")}];
 
     v11 = VGGetOEMApplicationLog();
-    LODWORD(v9) = os_log_type_enabled(v11, OS_LOG_TYPE_INFO);
+    LODWORD(cars) = os_log_type_enabled(v11, OS_LOG_TYPE_INFO);
 
-    if (v9)
+    if (cars)
     {
       v45 = objc_opt_new();
     }
@@ -1632,13 +1632,13 @@ void __43__VGOEMApplication_listCarsWithCompletion___block_invoke_37(uint64_t a1
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v44 = v5;
-    obj = [v5 cars];
+    v44 = responseCopy;
+    obj = [responseCopy cars];
     v50 = [obj countByEnumeratingWithState:&v58 objects:v62 count:16];
     if (v50)
     {
       v47 = *v59;
-      v48 = self;
+      selfCopy = self;
       v49 = v10;
       do
       {
@@ -1651,16 +1651,16 @@ void __43__VGOEMApplication_listCarsWithCompletion___block_invoke_37(uint64_t a1
           }
 
           v15 = *(*(&v58 + 1) + 8 * v14);
-          v16 = [v15 color];
+          color = [v15 color];
           v52 = [VGVehicle alloc];
-          v57 = [v15 displayName];
-          v56 = [v15 year];
-          v55 = [v15 make];
+          displayName = [v15 displayName];
+          year = [v15 year];
+          make = [v15 make];
           [v15 model];
           v54 = v53 = v14;
-          if (v16)
+          if (color)
           {
-            v17 = VGHexRepresentationFromCGColor(v16);
+            v17 = VGHexRepresentationFromCGColor(color);
             v51 = v17;
           }
 
@@ -1669,26 +1669,26 @@ void __43__VGOEMApplication_listCarsWithCompletion___block_invoke_37(uint64_t a1
             v17 = 0;
           }
 
-          v18 = [v15 headUnit];
-          v19 = [v18 iAP2Identifier];
-          v20 = [v15 headUnit];
-          v21 = [v20 bluetoothIdentifier];
-          v22 = [v15 supportedChargingConnectors];
-          v23 = [(VGOEMApplication *)self _VGChargingConnectorTypeOptionsFromINCarChargingConnectorTypes:v22];
+          headUnit = [v15 headUnit];
+          iAP2Identifier = [headUnit iAP2Identifier];
+          headUnit2 = [v15 headUnit];
+          bluetoothIdentifier = [headUnit2 bluetoothIdentifier];
+          supportedChargingConnectors = [v15 supportedChargingConnectors];
+          v23 = [(VGOEMApplication *)self _VGChargingConnectorTypeOptionsFromINCarChargingConnectorTypes:supportedChargingConnectors];
           v24 = [(VGOEMApplication *)self _powerByConnectorDictionaryFromCar:v15];
-          v25 = [(VGVehicle *)v52 initWithDisplayName:v57 year:v56 manufacturer:v55 model:v54 colorHex:v17 headUnitIdentifier:v19 headUnitBluetoothIdentifier:v21 supportedConnectors:v23 powerByConnector:v24];
+          v25 = [(VGVehicle *)v52 initWithDisplayName:displayName year:year manufacturer:make model:v54 colorHex:v17 headUnitIdentifier:iAP2Identifier headUnitBluetoothIdentifier:bluetoothIdentifier supportedConnectors:v23 powerByConnector:v24];
 
-          if (v16)
+          if (color)
           {
           }
 
-          v26 = [v15 carIdentifier];
-          v27 = [v26 copy];
+          carIdentifier = [v15 carIdentifier];
+          v27 = [carIdentifier copy];
           [(VGVehicle *)v25 setSiriIntentsIdentifier:v27];
 
-          self = v48;
-          v28 = [(VGOEMApplication *)v48 identifier];
-          v29 = [v28 copy];
+          self = selfCopy;
+          identifier = [(VGOEMApplication *)selfCopy identifier];
+          v29 = [identifier copy];
           [(VGVehicle *)v25 setPairedAppIdentifier:v29];
 
           v30 = VGGetOEMApplicationLog();
@@ -1698,19 +1698,19 @@ void __43__VGOEMApplication_listCarsWithCompletion___block_invoke_37(uint64_t a1
           if (v29)
           {
             v31 = MEMORY[0x277CCAB68];
-            v32 = [(VGVehicle *)v25 displayName];
-            v33 = [(VGVehicle *)v25 siriIntentsIdentifier];
-            v34 = [v31 stringWithFormat:@"%@ (%@) ", v32, v33];
+            displayName2 = [(VGVehicle *)v25 displayName];
+            siriIntentsIdentifier = [(VGVehicle *)v25 siriIntentsIdentifier];
+            v34 = [v31 stringWithFormat:@"%@ (%@) ", displayName2, siriIntentsIdentifier];
 
-            if (v16)
+            if (color)
             {
-              Components = CGColorGetComponents(v16);
-              for (i = 0; i < CGColorGetNumberOfComponents(v16); ++i)
+              Components = CGColorGetComponents(color);
+              for (i = 0; i < CGColorGetNumberOfComponents(color); ++i)
               {
                 [v34 appendFormat:@"%f ", *&Components[i]];
               }
 
-              ColorSpace = CGColorGetColorSpace(v16);
+              ColorSpace = CGColorGetColorSpace(color);
               [v34 appendFormat:@"%@", CGColorSpaceGetName(ColorSpace)];
             }
 
@@ -1737,7 +1737,7 @@ void __43__VGOEMApplication_listCarsWithCompletion___block_invoke_37(uint64_t a1
     v38 = VGGetOEMApplicationLog();
     v39 = os_log_type_enabled(v38, OS_LOG_TYPE_INFO);
 
-    v5 = v44;
+    responseCopy = v44;
     if (v39)
     {
       v40 = VGGetOEMApplicationLog();
@@ -1758,9 +1758,9 @@ void __43__VGOEMApplication_listCarsWithCompletion___block_invoke_37(uint64_t a1
     v10 = VGGetOEMApplicationLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v12 = [v5 code];
+      code = [responseCopy code];
       *buf = 134217984;
-      v64 = v12;
+      v64 = code;
       _os_log_impl(&dword_270EC1000, v10, OS_LOG_TYPE_INFO, "Listing cars received a non-Success response code: %ld", buf, 0xCu);
     }
 
@@ -1772,10 +1772,10 @@ void __43__VGOEMApplication_listCarsWithCompletion___block_invoke_37(uint64_t a1
   return v13;
 }
 
-- (id)_vehicleStateFromResponse:(id)a3 error:(id *)a4
+- (id)_vehicleStateFromResponse:(id)response error:(id *)error
 {
   v62 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  responseCopy = response;
   v8 = VGGetVirtualGarageLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -1785,18 +1785,18 @@ void __43__VGOEMApplication_listCarsWithCompletion___block_invoke_37(uint64_t a1
     _os_log_impl(&dword_270EC1000, v8, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
   }
 
-  v10 = [v7 carIdentifier];
-  if (v10)
+  carIdentifier = [responseCopy carIdentifier];
+  if (carIdentifier)
   {
-    v11 = [v7 dateOfLastStateUpdate];
-    v12 = v11;
-    if (v11)
+    dateOfLastStateUpdate = [responseCopy dateOfLastStateUpdate];
+    v12 = dateOfLastStateUpdate;
+    if (dateOfLastStateUpdate)
     {
-      v13 = [v11 calendar];
+      calendar = [dateOfLastStateUpdate calendar];
 
-      if (v13)
+      if (calendar)
       {
-        v14 = [v12 calendar];
+        calendar2 = [v12 calendar];
       }
 
       else
@@ -1808,11 +1808,11 @@ void __43__VGOEMApplication_listCarsWithCompletion___block_invoke_37(uint64_t a1
           _os_log_impl(&dword_270EC1000, v18, OS_LOG_TYPE_INFO, "Date components did not specify a calendar; assuming the current one", buf, 2u);
         }
 
-        v14 = [MEMORY[0x277CBEA80] currentCalendar];
+        calendar2 = [MEMORY[0x277CBEA80] currentCalendar];
       }
 
-      v19 = v14;
-      v20 = [v14 dateFromComponents:v12];
+      v19 = calendar2;
+      v20 = [calendar2 dateFromComponents:v12];
 
       if (v20)
       {
@@ -1832,26 +1832,26 @@ void __43__VGOEMApplication_listCarsWithCompletion___block_invoke_37(uint64_t a1
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       *buf = 138477827;
-      v59 = v7;
+      v59 = responseCopy;
       _os_log_impl(&dword_270EC1000, v22, OS_LOG_TYPE_ERROR, "Assuming vehicle state response: %{private}@ was created now", buf, 0xCu);
     }
 
     v20 = objc_opt_new();
 LABEL_19:
     v45 = [VGVehicleState alloc];
-    v55 = [v7 carIdentifier];
-    v51 = [v7 chargePercentRemaining];
-    v49 = [v7 distanceRemainingElectric];
-    v48 = [v7 maximumDistanceElectric];
-    v54 = [v7 minimumBatteryCapacity];
-    v47 = [v7 currentBatteryCapacity];
-    v46 = [v7 maximumBatteryCapacity];
-    v23 = [v7 consumptionFormulaArguments];
-    v53 = v23;
-    if (v23)
+    carIdentifier2 = [responseCopy carIdentifier];
+    chargePercentRemaining = [responseCopy chargePercentRemaining];
+    distanceRemainingElectric = [responseCopy distanceRemainingElectric];
+    maximumDistanceElectric = [responseCopy maximumDistanceElectric];
+    minimumBatteryCapacity = [responseCopy minimumBatteryCapacity];
+    currentBatteryCapacity = [responseCopy currentBatteryCapacity];
+    maximumBatteryCapacity = [responseCopy maximumBatteryCapacity];
+    consumptionFormulaArguments = [responseCopy consumptionFormulaArguments];
+    v53 = consumptionFormulaArguments;
+    if (consumptionFormulaArguments)
     {
       v57 = 0;
-      v24 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v23 options:0 error:&v57];
+      v24 = [MEMORY[0x277CCAAA0] dataWithJSONObject:consumptionFormulaArguments options:0 error:&v57];
       v25 = v57;
       v26 = v25;
       if (!v24 || v25)
@@ -1871,7 +1871,7 @@ LABEL_19:
 
       else
       {
-        v27 = self;
+        selfCopy = self;
         v28 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v24 encoding:4];
         v29 = VGGetOEMApplicationLog();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
@@ -1887,7 +1887,7 @@ LABEL_19:
           v30 = v28;
         }
 
-        self = v27;
+        self = selfCopy;
       }
     }
 
@@ -1903,16 +1903,16 @@ LABEL_19:
       v30 = 0;
     }
 
-    v31 = [v7 chargingFormulaArguments];
+    chargingFormulaArguments = [responseCopy chargingFormulaArguments];
     v52 = v12;
     v56 = v20;
-    v50 = v10;
-    v44 = v31;
-    if (v31)
+    v50 = carIdentifier;
+    v44 = chargingFormulaArguments;
+    if (chargingFormulaArguments)
     {
-      v32 = v31;
+      v32 = chargingFormulaArguments;
       v57 = 0;
-      v33 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v31 options:0 error:&v57];
+      v33 = [MEMORY[0x277CCAAA0] dataWithJSONObject:chargingFormulaArguments options:0 error:&v57];
       v34 = v57;
       v35 = v34;
       if (!v33 || v34)
@@ -1955,18 +1955,18 @@ LABEL_19:
       v36 = 0;
     }
 
-    v38 = [v7 charging];
-    v39 = [v38 BOOLValue];
-    v40 = [v7 activeConnector];
-    LOBYTE(v43) = v39;
-    v17 = [(VGVehicleState *)v45 initWithIdentifier:v55 dateOfUpdate:v56 origin:2 batteryPercentage:v51 currentEVRange:v49 maxEVRange:v48 minBatteryCapacity:v54 currentBatteryCapacity:v47 maxBatteryCapacity:v46 consumptionArguments:v30 chargingArguments:v36 isCharging:v43 activeConnector:[(VGOEMApplication *)self _VGChargingConnectorTypeOptionFromINCarChargingConnectorType:v40]];
+    charging = [responseCopy charging];
+    bOOLValue = [charging BOOLValue];
+    activeConnector = [responseCopy activeConnector];
+    LOBYTE(v43) = bOOLValue;
+    v17 = [(VGVehicleState *)v45 initWithIdentifier:carIdentifier2 dateOfUpdate:v56 origin:2 batteryPercentage:chargePercentRemaining currentEVRange:distanceRemainingElectric maxEVRange:maximumDistanceElectric minBatteryCapacity:minimumBatteryCapacity currentBatteryCapacity:currentBatteryCapacity maxBatteryCapacity:maximumBatteryCapacity consumptionArguments:v30 chargingArguments:v36 isCharging:v43 activeConnector:[(VGOEMApplication *)self _VGChargingConnectorTypeOptionFromINCarChargingConnectorType:activeConnector]];
 
-    v10 = v50;
+    carIdentifier = v50;
     v16 = v52;
     goto LABEL_47;
   }
 
-  if (!a4)
+  if (!error)
   {
     v17 = 0;
     goto LABEL_48;
@@ -1975,7 +1975,7 @@ LABEL_19:
   v15 = MEMORY[0x277CCA9B8];
   v16 = GEOErrorDomain();
   [v15 errorWithDomain:v16 code:-11 userInfo:0];
-  *a4 = v17 = 0;
+  *error = v17 = 0;
 LABEL_47:
 
 LABEL_48:
@@ -1984,17 +1984,17 @@ LABEL_48:
   return v17;
 }
 
-- (BOOL)_isValidConsumptionModelForResponse:(id)a3
+- (BOOL)_isValidConsumptionModelForResponse:(id)response
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = *MEMORY[0x277D0EA90];
   v6 = *(MEMORY[0x277D0EA90] + 8);
   if (GEOConfigGetBOOL())
   {
     v7 = GEOConfigGetString();
-    v8 = [v4 consumptionFormulaArguments];
-    v9 = [v8 objectForKeyedSubscript:v7];
+    consumptionFormulaArguments = [responseCopy consumptionFormulaArguments];
+    v9 = [consumptionFormulaArguments objectForKeyedSubscript:v7];
 
     if (v9 && (-[VGOEMApplication allowedFormulaIDs](self, "allowedFormulaIDs"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 containsObject:v9], v10, (v11 & 1) != 0))
     {
@@ -2006,11 +2006,11 @@ LABEL_48:
       v13 = VGGetOEMApplicationLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v14 = [(VGOEMApplication *)self allowedFormulaIDs];
+        allowedFormulaIDs = [(VGOEMApplication *)self allowedFormulaIDs];
         v17 = 138412546;
         v18 = v9;
         v19 = 2112;
-        v20 = v14;
+        v20 = allowedFormulaIDs;
         _os_log_impl(&dword_270EC1000, v13, OS_LOG_TYPE_ERROR, "Allowlisted formula IDs do not contain the formula in the Consumption Arguments. Current formula: %@, Allowed formula IDs: %@", &v17, 0x16u);
       }
 
@@ -2027,34 +2027,34 @@ LABEL_48:
   return v12;
 }
 
-- (unint64_t)_VGChargingConnectorTypeOptionFromINCarChargingConnectorType:(id)a3
+- (unint64_t)_VGChargingConnectorTypeOptionFromINCarChargingConnectorType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   if (_connectorMapping_onceToken != -1)
   {
     dispatch_once(&_connectorMapping_onceToken, &__block_literal_global_1730);
   }
 
   v4 = _connectorMapping_s_connectorMapping;
-  v5 = [v4 objectForKeyedSubscript:v3];
+  v5 = [v4 objectForKeyedSubscript:typeCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:v3];
-    v7 = [v6 unsignedIntegerValue];
+    v6 = [v4 objectForKeyedSubscript:typeCopy];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-- (unint64_t)_VGChargingConnectorTypeOptionsFromINCarChargingConnectorTypes:(id)a3
+- (unint64_t)_VGChargingConnectorTypeOptionsFromINCarChargingConnectorTypes:(id)types
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  typesCopy = types;
   if (_connectorMapping_onceToken != -1)
   {
     dispatch_once(&_connectorMapping_onceToken, &__block_literal_global_1730);
@@ -2065,7 +2065,7 @@ LABEL_48:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = typesCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -2106,10 +2106,10 @@ LABEL_48:
   return v8;
 }
 
-- (VGOEMApplication)initWithIdentifier:(id)a3 applicationRecord:(id)a4
+- (VGOEMApplication)initWithIdentifier:(id)identifier applicationRecord:(id)record
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  recordCopy = record;
   v14.receiver = self;
   v14.super_class = VGOEMApplication;
   v9 = [(VGOEMApplication *)&v14 init];
@@ -2120,8 +2120,8 @@ LABEL_48:
     queue = v9->_queue;
     v9->_queue = v11;
 
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v9->_applicationRecord, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v9->_applicationRecord, record);
   }
 
   return v9;

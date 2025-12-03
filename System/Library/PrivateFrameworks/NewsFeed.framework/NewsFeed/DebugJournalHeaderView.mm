@@ -1,15 +1,15 @@
 @interface DebugJournalHeaderView
-- (_TtC8NewsFeed22DebugJournalHeaderView)initWithCoder:(id)a3;
-- (_TtC8NewsFeed22DebugJournalHeaderView)initWithReuseIdentifier:(id)a3;
+- (_TtC8NewsFeed22DebugJournalHeaderView)initWithCoder:(id)coder;
+- (_TtC8NewsFeed22DebugJournalHeaderView)initWithReuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation DebugJournalHeaderView
 
-- (_TtC8NewsFeed22DebugJournalHeaderView)initWithReuseIdentifier:(id)a3
+- (_TtC8NewsFeed22DebugJournalHeaderView)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = sub_1D726207C();
   }
@@ -23,7 +23,7 @@
   return sub_1D7212DE0(v3, v4);
 }
 
-- (_TtC8NewsFeed22DebugJournalHeaderView)initWithCoder:(id)a3
+- (_TtC8NewsFeed22DebugJournalHeaderView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8NewsFeed22DebugJournalHeaderView_showHideLabel;
   sub_1D725D04C();
@@ -35,7 +35,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7212F94();
 }
 

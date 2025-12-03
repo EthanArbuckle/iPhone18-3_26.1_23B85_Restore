@@ -1,40 +1,40 @@
 @interface URTAlert
-+ (id)alertWithTitle:(id)a3 message:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (URTAlert)initWithCoder:(id)a3;
-- (URTAlert)initWithTitle:(id)a3 message:(id)a4;
++ (id)alertWithTitle:(id)title message:(id)message;
+- (BOOL)isEqual:(id)equal;
+- (URTAlert)initWithCoder:(id)coder;
+- (URTAlert)initWithTitle:(id)title message:(id)message;
 - (id)userNotificationRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation URTAlert
 
-+ (id)alertWithTitle:(id)a3 message:(id)a4
++ (id)alertWithTitle:(id)title message:(id)message
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithTitle:v7 message:v6];
+  messageCopy = message;
+  titleCopy = title;
+  v8 = [[self alloc] initWithTitle:titleCopy message:messageCopy];
 
   return v8;
 }
 
-- (URTAlert)initWithTitle:(id)a3 message:(id)a4
+- (URTAlert)initWithTitle:(id)title message:(id)message
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  messageCopy = message;
   v15.receiver = self;
   v15.super_class = URTAlert;
   v9 = [(URTAlert *)&v15 init];
   if (v9)
   {
-    v10 = [MEMORY[0x277CCAD78] UUID];
-    v11 = [v10 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v9->_identifier;
-    v9->_identifier = v11;
+    v9->_identifier = uUIDString;
 
-    objc_storeStrong(&v9->_title, a3);
-    objc_storeStrong(&v9->_message, a4);
+    objc_storeStrong(&v9->_title, title);
+    objc_storeStrong(&v9->_message, message);
     allowedApplicationBundleIDs = v9->_allowedApplicationBundleIDs;
     v9->_allowedApplicationBundleIDs = MEMORY[0x277CBEBF8];
   }
@@ -42,42 +42,42 @@
   return v9;
 }
 
-- (URTAlert)initWithCoder:(id)a3
+- (URTAlert)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = URTAlert;
   v5 = [(URTAlert *)&v24 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URTAlertIdentifierKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URTAlertIdentifierKey"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URTAlertTitleKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URTAlertTitleKey"];
     title = v5->_title;
     v5->_title = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URTAlertMessageKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URTAlertMessageKey"];
     message = v5->_message;
     v5->_message = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URTAlertDefaultActionKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URTAlertDefaultActionKey"];
     defaultAction = v5->_defaultAction;
     v5->_defaultAction = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URTAlertOtherActionKey"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URTAlertOtherActionKey"];
     otherAction = v5->_otherAction;
     v5->_otherAction = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URTAlertCancelActionKey"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URTAlertCancelActionKey"];
     cancelAction = v5->_cancelAction;
     v5->_cancelAction = v16;
 
     v18 = MEMORY[0x277CBEB98];
     v19 = objc_opt_class();
     v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"URTAlertAllowedApplicationsKey"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"URTAlertAllowedApplicationsKey"];
     allowedApplicationBundleIDs = v5->_allowedApplicationBundleIDs;
     v5->_allowedApplicationBundleIDs = v21;
 
@@ -90,65 +90,65 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v16 = a3;
-  v4 = [(URTAlert *)self identifier];
-  [v16 encodeObject:v4 forKey:@"URTAlertIdentifierKey"];
+  coderCopy = coder;
+  identifier = [(URTAlert *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"URTAlertIdentifierKey"];
 
-  v5 = [(URTAlert *)self title];
+  title = [(URTAlert *)self title];
 
-  if (v5)
+  if (title)
   {
-    v6 = [(URTAlert *)self title];
-    [v16 encodeObject:v6 forKey:@"URTAlertTitleKey"];
+    title2 = [(URTAlert *)self title];
+    [coderCopy encodeObject:title2 forKey:@"URTAlertTitleKey"];
   }
 
-  v7 = [(URTAlert *)self message];
+  message = [(URTAlert *)self message];
 
-  if (v7)
+  if (message)
   {
-    v8 = [(URTAlert *)self message];
-    [v16 encodeObject:v8 forKey:@"URTAlertMessageKey"];
+    message2 = [(URTAlert *)self message];
+    [coderCopy encodeObject:message2 forKey:@"URTAlertMessageKey"];
   }
 
-  v9 = [(URTAlert *)self defaultAction];
+  defaultAction = [(URTAlert *)self defaultAction];
 
-  if (v9)
+  if (defaultAction)
   {
-    v10 = [(URTAlert *)self defaultAction];
-    [v16 encodeObject:v10 forKey:@"URTAlertDefaultActionKey"];
+    defaultAction2 = [(URTAlert *)self defaultAction];
+    [coderCopy encodeObject:defaultAction2 forKey:@"URTAlertDefaultActionKey"];
   }
 
-  v11 = [(URTAlert *)self otherAction];
+  otherAction = [(URTAlert *)self otherAction];
 
-  if (v11)
+  if (otherAction)
   {
-    v12 = [(URTAlert *)self otherAction];
-    [v16 encodeObject:v12 forKey:@"URTAlertOtherActionKey"];
+    otherAction2 = [(URTAlert *)self otherAction];
+    [coderCopy encodeObject:otherAction2 forKey:@"URTAlertOtherActionKey"];
   }
 
-  v13 = [(URTAlert *)self cancelAction];
+  cancelAction = [(URTAlert *)self cancelAction];
 
-  if (v13)
+  if (cancelAction)
   {
-    v14 = [(URTAlert *)self cancelAction];
-    [v16 encodeObject:v14 forKey:@"URTAlertCancelActionKey"];
+    cancelAction2 = [(URTAlert *)self cancelAction];
+    [coderCopy encodeObject:cancelAction2 forKey:@"URTAlertCancelActionKey"];
   }
 
-  v15 = [(URTAlert *)self allowedApplicationBundleIDs];
-  [v16 encodeObject:v15 forKey:@"URTAlertAllowedApplicationsKey"];
+  allowedApplicationBundleIDs = [(URTAlert *)self allowedApplicationBundleIDs];
+  [coderCopy encodeObject:allowedApplicationBundleIDs forKey:@"URTAlertAllowedApplicationsKey"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(URTAlert *)self identifier];
-    v6 = [v4 identifier];
-    v7 = [v5 isEqual:v6];
+    identifier = [(URTAlert *)self identifier];
+    identifier2 = [equalCopy identifier];
+    v7 = [identifier isEqual:identifier2];
   }
 
   else
@@ -161,68 +161,68 @@
 
 - (unint64_t)hash
 {
-  v2 = [(URTAlert *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(URTAlert *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
 - (id)userNotificationRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(URTAlert *)self title];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  title = [(URTAlert *)self title];
 
-  if (v4)
+  if (title)
   {
-    v5 = [(URTAlert *)self title];
-    [v3 setObject:v5 forKeyedSubscript:*MEMORY[0x277CBF188]];
+    title2 = [(URTAlert *)self title];
+    [dictionary setObject:title2 forKeyedSubscript:*MEMORY[0x277CBF188]];
   }
 
-  v6 = [(URTAlert *)self message];
+  message = [(URTAlert *)self message];
 
-  if (v6)
+  if (message)
   {
-    v7 = [(URTAlert *)self message];
-    [v3 setObject:v7 forKeyedSubscript:*MEMORY[0x277CBF198]];
+    message2 = [(URTAlert *)self message];
+    [dictionary setObject:message2 forKeyedSubscript:*MEMORY[0x277CBF198]];
   }
 
-  v8 = [(URTAlert *)self defaultAction];
+  defaultAction = [(URTAlert *)self defaultAction];
 
-  if (v8)
+  if (defaultAction)
   {
-    v9 = [(URTAlert *)self defaultAction];
-    v10 = [v9 title];
-    [v3 setObject:v10 forKeyedSubscript:*MEMORY[0x277CBF1E8]];
+    defaultAction2 = [(URTAlert *)self defaultAction];
+    title3 = [defaultAction2 title];
+    [dictionary setObject:title3 forKeyedSubscript:*MEMORY[0x277CBF1E8]];
   }
 
-  v11 = [(URTAlert *)self otherAction];
+  otherAction = [(URTAlert *)self otherAction];
 
-  if (v11)
+  if (otherAction)
   {
-    v12 = [(URTAlert *)self otherAction];
-    v13 = [v12 title];
-    [v3 setObject:v13 forKeyedSubscript:*MEMORY[0x277CBF218]];
+    otherAction2 = [(URTAlert *)self otherAction];
+    title4 = [otherAction2 title];
+    [dictionary setObject:title4 forKeyedSubscript:*MEMORY[0x277CBF218]];
   }
 
-  v14 = [(URTAlert *)self cancelAction];
+  cancelAction = [(URTAlert *)self cancelAction];
 
-  if (v14)
+  if (cancelAction)
   {
-    v15 = [(URTAlert *)self cancelAction];
-    v16 = [v15 title];
-    [v3 setObject:v16 forKeyedSubscript:*MEMORY[0x277CBF1C0]];
+    cancelAction2 = [(URTAlert *)self cancelAction];
+    title5 = [cancelAction2 title];
+    [dictionary setObject:title5 forKeyedSubscript:*MEMORY[0x277CBF1C0]];
   }
 
-  v17 = [(URTAlert *)self allowedApplicationBundleIDs];
-  v18 = [v17 count];
+  allowedApplicationBundleIDs = [(URTAlert *)self allowedApplicationBundleIDs];
+  v18 = [allowedApplicationBundleIDs count];
 
   if (v18)
   {
-    v19 = [(URTAlert *)self allowedApplicationBundleIDs];
-    [v3 setObject:v19 forKeyedSubscript:@"SBUserNotificationAllowedApplications"];
+    allowedApplicationBundleIDs2 = [(URTAlert *)self allowedApplicationBundleIDs];
+    [dictionary setObject:allowedApplicationBundleIDs2 forKeyedSubscript:@"SBUserNotificationAllowedApplications"];
   }
 
-  v20 = [v3 copy];
+  v20 = [dictionary copy];
 
   return v20;
 }

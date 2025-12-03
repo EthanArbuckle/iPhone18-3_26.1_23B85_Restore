@@ -1,30 +1,30 @@
 @interface NUIOSurface
 - ($0AC6E346AE4835514AAA8AC86D8F4844)size;
 - (BOOL)makeNonPurgeable;
-- (BOOL)read:(id)a3;
-- (BOOL)write:(id)a3;
+- (BOOL)read:(id)read;
+- (BOOL)write:(id)write;
 - (CGColorSpace)colorSpace;
 - (NSString)name;
 - (NUIOSurface)init;
-- (NUIOSurface)initWithIOSurface:(__IOSurface *)a3;
-- (NUIOSurface)initWithSize:(id)a3 format:(id)a4;
+- (NUIOSurface)initWithIOSurface:(__IOSurface *)surface;
+- (NUIOSurface)initWithSize:(id)size format:(id)format;
 - (__CVBuffer)pixelBuffer;
 - (float)contentHeadroom;
-- (id)_newTextureForDevice:(id)a3;
+- (id)_newTextureForDevice:(id)device;
 - (id)_purgeStateDescription;
 - (id)description;
 - (id)newRenderDestination;
-- (id)textureForDevice:(id)a3;
-- (int)_fetchPurgeState:(unsigned int *)a3;
-- (unsigned)_purgeLevelToOSValue:(int64_t)a3;
+- (id)textureForDevice:(id)device;
+- (int)_fetchPurgeState:(unsigned int *)state;
+- (unsigned)_purgeLevelToOSValue:(int64_t)value;
 - (void)_allocateSurface;
 - (void)dealloc;
-- (void)debugDump:(id)a3;
+- (void)debugDump:(id)dump;
 - (void)invalidatePixelBuffer;
-- (void)makePurgeable:(int64_t)a3;
-- (void)setColorSpace:(CGColorSpace *)a3;
-- (void)setContentHeadroom:(float)a3;
-- (void)setName:(id)a3;
+- (void)makePurgeable:(int64_t)purgeable;
+- (void)setColorSpace:(CGColorSpace *)space;
+- (void)setContentHeadroom:(float)headroom;
+- (void)setName:(id)name;
 @end
 
 @implementation NUIOSurface
@@ -38,10 +38,10 @@
   return result;
 }
 
-- (void)debugDump:(id)a3
+- (void)debugDump:(id)dump
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dumpCopy = dump;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v5 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696DFC0]];
   v6 = CGImageCreateFromIOSurface();
@@ -49,15 +49,15 @@
   {
     v7 = v6;
     v8 = +[NUGlobalSettings tempDir];
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
-    [v9 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:0];
 
-    v10 = [v4 stringByAppendingPathExtension:@"tiff"];
+    v10 = [dumpCopy stringByAppendingPathExtension:@"tiff"];
     v11 = [v8 stringByAppendingPathComponent:v10];
 
     v12 = [MEMORY[0x1E695DFF8] fileURLWithPath:v11];
-    v13 = [*MEMORY[0x1E6983008] identifier];
-    v14 = CGImageDestinationCreateWithURL(v12, v13, 1uLL, 0);
+    identifier = [*MEMORY[0x1E6983008] identifier];
+    v14 = CGImageDestinationCreateWithURL(v12, identifier, 1uLL, 0);
 
     CGImageDestinationAddImage(v14, v7, 0);
     if (CGImageDestinationFinalize(v14))
@@ -74,7 +74,7 @@
       }
 
       v21 = 138412546;
-      v22 = self;
+      selfCopy3 = self;
       v23 = 2112;
       v24 = v11;
       v16 = "Dumped IOSurface: %@ to: %@";
@@ -96,7 +96,7 @@
       }
 
       v21 = 138412290;
-      v22 = self;
+      selfCopy3 = self;
       v16 = "Failed to dump IOSurface: %@";
       v17 = v20;
       v18 = 12;
@@ -119,7 +119,7 @@ LABEL_16:
   if (os_log_type_enabled(_NULogger, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412290;
-    v22 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_1C0184000, v19, OS_LOG_TYPE_DEFAULT, "Failed to create CGImage from IOSurface: %@", &v21, 0xCu);
   }
 
@@ -138,15 +138,15 @@ LABEL_17:
 - (__CVBuffer)pixelBuffer
 {
   v29 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  pixelBufferOut = v2->_pixelBuffer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pixelBufferOut = selfCopy->_pixelBuffer;
   v3 = pixelBufferOut;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (!pixelBufferOut)
   {
-    if (CVPixelBufferCreateWithIOSurface(0, v2->_IOSurfaceRef, 0, &pixelBufferOut))
+    if (CVPixelBufferCreateWithIOSurface(0, selfCopy->_IOSurfaceRef, 0, &pixelBufferOut))
     {
       v6 = NUAssertLogger_14382();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -167,8 +167,8 @@ LABEL_17:
           v13 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v14 = MEMORY[0x1E696AF00];
           v15 = v13;
-          v16 = [v14 callStackSymbols];
-          v17 = [v16 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v14 callStackSymbols];
+          v17 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v26 = v13;
           v27 = 2114;
@@ -180,8 +180,8 @@ LABEL_17:
 
       else if (v10)
       {
-        v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v12 = [v11 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v12 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v26 = v12;
         _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -190,10 +190,10 @@ LABEL_17:
       _NUAssertFailHandler("[NUIOSurface pixelBuffer]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUIOSurface.m", 383, @"Failed to create pixel buffer from IOSUrface", v19, v20, v21, v22, v23);
     }
 
-    v4 = v2;
+    v4 = selfCopy;
     objc_sync_enter(v4);
-    CVPixelBufferRelease(v2->_pixelBuffer);
-    v2->_pixelBuffer = pixelBufferOut;
+    CVPixelBufferRelease(selfCopy->_pixelBuffer);
+    selfCopy->_pixelBuffer = pixelBufferOut;
     objc_sync_exit(v4);
 
     return pixelBufferOut;
@@ -202,23 +202,23 @@ LABEL_17:
   return v3;
 }
 
-- (id)_newTextureForDevice:(id)a3
+- (id)_newTextureForDevice:(id)device
 {
   v4 = MEMORY[0x1E69741C0];
   format = self->_format;
-  v6 = a3;
+  deviceCopy = device;
   v7 = [v4 texture2DDescriptorWithPixelFormat:-[NUPixelFormat metalFormat](format width:"metalFormat") height:self->_size.width mipmapped:self->_size.height, 0];
   [v7 setUsage:3];
-  v8 = [v6 newTextureWithDescriptor:v7 iosurface:-[NUIOSurface IOSurfaceRef](self plane:{"IOSurfaceRef"), 0}];
+  v8 = [deviceCopy newTextureWithDescriptor:v7 iosurface:-[NUIOSurface IOSurfaceRef](self plane:{"IOSurfaceRef"), 0}];
 
   return v8;
 }
 
-- (id)textureForDevice:(id)a3
+- (id)textureForDevice:(id)device
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  deviceCopy = device;
+  if (!deviceCopy)
   {
     v16 = NUAssertLogger_14382();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -239,8 +239,8 @@ LABEL_17:
         v23 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v24 = MEMORY[0x1E696AF00];
         v25 = v23;
-        v26 = [v24 callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v24 callStackSymbols];
+        v27 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v33 = v23;
         v34 = 2114;
@@ -251,8 +251,8 @@ LABEL_17:
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v22;
       _os_log_error_impl(&dword_1C0184000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -261,27 +261,27 @@ LABEL_17:
     _NUAssertFailHandler("[NUIOSurface textureForDevice:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUIOSurface.m", 348, @"Invalid parameter not satisfying: %s", v28, v29, v30, v31, "device != nil");
   }
 
-  v5 = v4;
-  v6 = self;
-  objc_sync_enter(v6);
-  textures = v6->_textures;
+  v5 = deviceCopy;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  textures = selfCopy->_textures;
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v5, "registryID")}];
   v9 = [(NSMutableDictionary *)textures objectForKeyedSubscript:v8];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
   if (!v9)
   {
-    v9 = [(NUIOSurface *)v6 _newTextureForDevice:v5];
-    v10 = v6;
+    v9 = [(NUIOSurface *)selfCopy _newTextureForDevice:v5];
+    v10 = selfCopy;
     objc_sync_enter(v10);
-    v11 = v6->_textures;
+    v11 = selfCopy->_textures;
     if (!v11)
     {
       v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v13 = v6->_textures;
-      v6->_textures = v12;
+      v13 = selfCopy->_textures;
+      selfCopy->_textures = v12;
 
-      v11 = v6->_textures;
+      v11 = selfCopy->_textures;
     }
 
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v5, "registryID")}];
@@ -296,18 +296,18 @@ LABEL_17:
 - (id)newRenderDestination
 {
   v3 = objc_alloc(MEMORY[0x1E695F678]);
-  v4 = [(NUIOSurface *)self IOSurface];
-  v5 = [v3 initWithIOSurface:v4];
+  iOSurface = [(NUIOSurface *)self IOSurface];
+  v5 = [v3 initWithIOSurface:iOSurface];
 
   [v5 setLabel:@"NUIOSurface-new"];
   return v5;
 }
 
-- (BOOL)write:(id)a3
+- (BOOL)write:(id)write
 {
   v74 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  writeCopy = write;
+  if (!writeCopy)
   {
     v54 = NUAssertLogger_14382();
     if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
@@ -328,8 +328,8 @@ LABEL_17:
         v61 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v62 = MEMORY[0x1E696AF00];
         v63 = v61;
-        v64 = [v62 callStackSymbols];
-        v65 = [v64 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v62 callStackSymbols];
+        v65 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v71 = v61;
         v72 = 2114;
@@ -340,8 +340,8 @@ LABEL_17:
 
     else if (v58)
     {
-      v59 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v60 = [v59 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v60 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v71 = v60;
       _os_log_error_impl(&dword_1C0184000, v57, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -350,7 +350,7 @@ LABEL_17:
     _NUAssertFailHandler("[NUIOSurface write:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUIOSurface.m", 312, @"Invalid parameter not satisfying: %s", v66, v67, v68, v69, "block != nil");
   }
 
-  v5 = v4;
+  v5 = writeCopy;
   v6 = 0;
   if (IOSurfaceLock(self->_IOSurfaceRef, 0, 0))
   {
@@ -361,9 +361,9 @@ LABEL_17:
   v6 = BaseAddress != 0;
   if (BaseAddress)
   {
-    v8 = [[NUMutableBufferAdapter alloc] initWithSize:self->_size.width format:self->_size.height rowBytes:self->_format mutableBytes:IOSurfaceGetBytesPerRow(self->_IOSurfaceRef), BaseAddress];
-    (v5)[2](v5, v8);
-    [(NUBufferAdapter *)v8 invalidate];
+    baseAddress = [[NUMutableBufferAdapter alloc] initWithSize:self->_size.width format:self->_size.height rowBytes:self->_format mutableBytes:IOSurfaceGetBytesPerRow(self->_IOSurfaceRef), BaseAddress];
+    (v5)[2](v5, baseAddress);
+    [(NUBufferAdapter *)baseAddress invalidate];
 
     goto LABEL_19;
   }
@@ -405,8 +405,8 @@ LABEL_16:
     {
       v50 = MEMORY[0x1E696AF00];
       v51 = v25;
-      v52 = [v50 callStackSymbols];
-      v53 = [v52 componentsJoinedByString:@"\n"];
+      callStackSymbols3 = [v50 callStackSymbols];
+      v53 = [callStackSymbols3 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v71 = v53;
       _os_log_error_impl(&dword_1C0184000, v51, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -428,8 +428,8 @@ LABEL_12:
     v20 = MEMORY[0x1E696AF00];
     v21 = v19;
     v22 = v14;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols4 = [v20 callStackSymbols];
+    v24 = [callStackSymbols4 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v71 = v19;
     v72 = 2114;
@@ -486,8 +486,8 @@ LABEL_27:
         v39 = MEMORY[0x1E696AF00];
         v40 = v38;
         v41 = v33;
-        v42 = [v39 callStackSymbols];
-        v43 = [v42 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v39 callStackSymbols];
+        v43 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v71 = v38;
         v72 = 2114;
@@ -505,8 +505,8 @@ LABEL_33:
     {
       v46 = MEMORY[0x1E696AF00];
       v47 = v44;
-      v48 = [v46 callStackSymbols];
-      v49 = [v48 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [v46 callStackSymbols];
+      v49 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v71 = v49;
       _os_log_error_impl(&dword_1C0184000, v47, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -520,11 +520,11 @@ LABEL_34:
   return v6;
 }
 
-- (BOOL)read:(id)a3
+- (BOOL)read:(id)read
 {
   v74 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  readCopy = read;
+  if (!readCopy)
   {
     v54 = NUAssertLogger_14382();
     if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
@@ -545,8 +545,8 @@ LABEL_34:
         v61 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v62 = MEMORY[0x1E696AF00];
         v63 = v61;
-        v64 = [v62 callStackSymbols];
-        v65 = [v64 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v62 callStackSymbols];
+        v65 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v71 = v61;
         v72 = 2114;
@@ -557,8 +557,8 @@ LABEL_34:
 
     else if (v58)
     {
-      v59 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v60 = [v59 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v60 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v71 = v60;
       _os_log_error_impl(&dword_1C0184000, v57, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -567,16 +567,16 @@ LABEL_34:
     _NUAssertFailHandler("[NUIOSurface read:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUIOSurface.m", 284, @"Invalid parameter not satisfying: %s", v66, v67, v68, v69, "block != nil");
   }
 
-  v5 = v4;
+  v5 = readCopy;
   if (!IOSurfaceLock(self->_IOSurfaceRef, 1u, 0))
   {
     BaseAddress = IOSurfaceGetBaseAddress(self->_IOSurfaceRef);
     v6 = BaseAddress != 0;
     if (BaseAddress)
     {
-      v8 = [[NUBufferAdapter alloc] initWithSize:self->_size.width format:self->_size.height rowBytes:self->_format bytes:IOSurfaceGetBytesPerRow(self->_IOSurfaceRef), BaseAddress];
-      (v5)[2](v5, v8);
-      [(NUBufferAdapter *)v8 invalidate];
+      baseAddress = [[NUBufferAdapter alloc] initWithSize:self->_size.width format:self->_size.height rowBytes:self->_format bytes:IOSurfaceGetBytesPerRow(self->_IOSurfaceRef), BaseAddress];
+      (v5)[2](v5, baseAddress);
+      [(NUBufferAdapter *)baseAddress invalidate];
 
       goto LABEL_20;
     }
@@ -623,8 +623,8 @@ LABEL_13:
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
         v22 = v14;
-        v23 = [v20 callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v20 callStackSymbols];
+        v24 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v71 = v19;
         v72 = 2114;
@@ -684,8 +684,8 @@ LABEL_28:
           v39 = MEMORY[0x1E696AF00];
           v40 = v38;
           v41 = v33;
-          v42 = [v39 callStackSymbols];
-          v43 = [v42 componentsJoinedByString:@"\n"];
+          callStackSymbols4 = [v39 callStackSymbols];
+          v43 = [callStackSymbols4 componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v71 = v38;
           v72 = 2114;
@@ -703,8 +703,8 @@ LABEL_34:
       {
         v46 = MEMORY[0x1E696AF00];
         v47 = v44;
-        v48 = [v46 callStackSymbols];
-        v49 = [v48 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v46 callStackSymbols];
+        v49 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v71 = v49;
         _os_log_error_impl(&dword_1C0184000, v47, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -718,8 +718,8 @@ LABEL_34:
     {
       v50 = MEMORY[0x1E696AF00];
       v51 = v25;
-      v52 = [v50 callStackSymbols];
-      v53 = [v52 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [v50 callStackSymbols];
+      v53 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v71 = v53;
       _os_log_error_impl(&dword_1C0184000, v51, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -740,23 +740,23 @@ LABEL_35:
   v4 = objc_opt_class();
   size = self->_size;
   format = self->_format;
-  v6 = [(NUIOSurface *)self colorSpace];
-  v7 = [(NUIOSurface *)self _purgeStateDescription];
-  v8 = [v3 stringWithFormat:@"<%@:%p size:%dx%d format:%@ colorSpace:%@ purgeable:%@>", v4, self, size, format, v6, v7];
+  colorSpace = [(NUIOSurface *)self colorSpace];
+  _purgeStateDescription = [(NUIOSurface *)self _purgeStateDescription];
+  v8 = [v3 stringWithFormat:@"<%@:%p size:%dx%d format:%@ colorSpace:%@ purgeable:%@>", v4, self, size, format, colorSpace, _purgeStateDescription];
 
   return v8;
 }
 
-- (unsigned)_purgeLevelToOSValue:(int64_t)a3
+- (unsigned)_purgeLevelToOSValue:(int64_t)value
 {
-  if ((a3 - 1) > 3)
+  if ((value - 1) > 3)
   {
     return 33;
   }
 
   else
   {
-    return dword_1C03C2A70[a3 - 1];
+    return dword_1C03C2A70[value - 1];
   }
 }
 
@@ -776,10 +776,10 @@ LABEL_35:
   return off_1E810A450[v3];
 }
 
-- (int)_fetchPurgeState:(unsigned int *)a3
+- (int)_fetchPurgeState:(unsigned int *)state
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = IOSurfaceSetPurgeable(self->_IOSurfaceRef, 3u, a3);
+  v4 = IOSurfaceSetPurgeable(self->_IOSurfaceRef, 3u, state);
   if (v4)
   {
     if (_NULogOnceToken != -1)
@@ -824,8 +824,8 @@ LABEL_9:
         v16 = MEMORY[0x1E696AF00];
         v17 = specific;
         v18 = v10;
-        v19 = [v16 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v16 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = specific;
         v29 = 2114;
@@ -843,8 +843,8 @@ LABEL_15:
     {
       v23 = MEMORY[0x1E696AF00];
       v24 = v21;
-      v25 = [v23 callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v23 callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v26;
       _os_log_error_impl(&dword_1C0184000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -883,8 +883,8 @@ LABEL_15:
         v13 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v14 = MEMORY[0x1E696AF00];
         v15 = v13;
-        v16 = [v14 callStackSymbols];
-        v17 = [v16 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v14 callStackSymbols];
+        v17 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v24 = v13;
         v25 = 2114;
@@ -895,8 +895,8 @@ LABEL_15:
 
     else if (v10)
     {
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v12 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v12;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -908,10 +908,10 @@ LABEL_15:
   return oldState != 2;
 }
 
-- (void)makePurgeable:(int64_t)a3
+- (void)makePurgeable:(int64_t)purgeable
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = IOSurfaceSetPurgeable(self->_IOSurfaceRef, [(NUIOSurface *)self _purgeLevelToOSValue:a3], 0);
+  v4 = IOSurfaceSetPurgeable(self->_IOSurfaceRef, [(NUIOSurface *)self _purgeLevelToOSValue:purgeable], 0);
   if (v4)
   {
     v5 = v4;
@@ -934,8 +934,8 @@ LABEL_15:
         v13 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v14 = MEMORY[0x1E696AF00];
         v15 = v13;
-        v16 = [v14 callStackSymbols];
-        v17 = [v16 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v14 callStackSymbols];
+        v17 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v23 = v13;
         v24 = 2114;
@@ -946,8 +946,8 @@ LABEL_15:
 
     else if (v10)
     {
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v12 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v23 = v12;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -957,9 +957,9 @@ LABEL_15:
   }
 }
 
-- (void)setContentHeadroom:(float)a3
+- (void)setContentHeadroom:(float)headroom
 {
-  if (a3 >= 1.0)
+  if (headroom >= 1.0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithFloat:?];
     IOSurfaceSetValue(self->_IOSurfaceRef, *MEMORY[0x1E696CEF0], v6);
@@ -983,11 +983,11 @@ LABEL_15:
   return v4;
 }
 
-- (void)setColorSpace:(CGColorSpace *)a3
+- (void)setColorSpace:(CGColorSpace *)space
 {
-  if (a3)
+  if (space)
   {
-    v4 = CGColorSpaceCopyPropertyList(a3);
+    v4 = CGColorSpaceCopyPropertyList(space);
     if (v4)
     {
       v5 = v4;
@@ -1021,9 +1021,9 @@ LABEL_15:
   return result;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   IOSurfaceSetValue(self->_IOSurfaceRef, *MEMORY[0x1E696CF98], v4);
 }
 
@@ -1053,9 +1053,9 @@ LABEL_15:
   v77[5] = *MEMORY[0x1E69E9840];
   if ([(NUPixelFormat *)self->_format isYCC])
   {
-    v3 = [(NUPixelFormat *)self->_format chromaSubsampling];
+    chromaSubsampling = [(NUPixelFormat *)self->_format chromaSubsampling];
     width = self->_size.width;
-    v5 = (v3 + width - 1) / v3;
+    v5 = (chromaSubsampling + width - 1) / chromaSubsampling;
     v7 = (v6 + self->_size.height - 1) / v6;
     v48 = v5;
     v8 = [NUImageUtilities alignedRowBytesForWidth:width bytesPerPixel:[(NUPixelFormat *)self->_format bytesPerLuma]];
@@ -1172,8 +1172,8 @@ LABEL_15:
         v36 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v37 = MEMORY[0x1E696AF00];
         v38 = v36;
-        v39 = [v37 callStackSymbols];
-        v40 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v37 callStackSymbols];
+        v40 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v61 = v36;
         v62 = 2114;
@@ -1184,8 +1184,8 @@ LABEL_15:
 
     else if (v33)
     {
-      v34 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v35 = [v34 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v35 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v61 = v35;
       _os_log_error_impl(&dword_1C0184000, v32, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1195,10 +1195,10 @@ LABEL_15:
   }
 }
 
-- (NUIOSurface)initWithIOSurface:(__IOSurface *)a3
+- (NUIOSurface)initWithIOSurface:(__IOSurface *)surface
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!surface)
   {
     v9 = NUAssertLogger_14382();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1219,8 +1219,8 @@ LABEL_15:
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v16;
         v28 = 2114;
@@ -1231,8 +1231,8 @@ LABEL_15:
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1244,7 +1244,7 @@ LABEL_15:
   v25.receiver = self;
   v25.super_class = NUIOSurface;
   v4 = [(NUIOSurface *)&v25 init];
-  v5 = CFRetain(a3);
+  v5 = CFRetain(surface);
   v4->_IOSurfaceRef = v5;
   v4->_size.width = IOSurfaceGetWidth(v5);
   v4->_size.height = IOSurfaceGetHeight(v4->_IOSurfaceRef);
@@ -1255,12 +1255,12 @@ LABEL_15:
   return v4;
 }
 
-- (NUIOSurface)initWithSize:(id)a3 format:(id)a4
+- (NUIOSurface)initWithSize:(id)size format:(id)format
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = size.var1;
+  var0 = size.var0;
   v49 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  formatCopy = format;
   if (var0 < 1 || var1 <= 0)
   {
     v12 = NUAssertLogger_14382();
@@ -1282,8 +1282,8 @@ LABEL_15:
         v26 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v46 = v26;
         v47 = 2114;
@@ -1294,8 +1294,8 @@ LABEL_15:
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v46 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1304,8 +1304,8 @@ LABEL_15:
     _NUAssertFailHandler("[NUIOSurface initWithSize:format:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUIOSurface.m", 36, @"Invalid parameter not satisfying: %s", v31, v32, v33, v34, "size.width > 0 && size.height > 0");
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = formatCopy;
+  if (!formatCopy)
   {
     v19 = NUAssertLogger_14382();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -1326,8 +1326,8 @@ LABEL_15:
         v35 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v36 = MEMORY[0x1E696AF00];
         v37 = v35;
-        v38 = [v36 callStackSymbols];
-        v39 = [v38 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v36 callStackSymbols];
+        v39 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v46 = v35;
         v47 = 2114;
@@ -1338,8 +1338,8 @@ LABEL_15:
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v46 = v25;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1406,8 +1406,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1423,8 +1423,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

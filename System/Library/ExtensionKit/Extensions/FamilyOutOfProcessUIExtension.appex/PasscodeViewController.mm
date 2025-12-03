@@ -1,6 +1,6 @@
 @interface PasscodeViewController
-- (_TtC29FamilyOutOfProcessUIExtension22PasscodeViewController)initWithCoder:(id)a3;
-- (_TtC29FamilyOutOfProcessUIExtension22PasscodeViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC29FamilyOutOfProcessUIExtension22PasscodeViewController)initWithCoder:(id)coder;
+- (_TtC29FamilyOutOfProcessUIExtension22PasscodeViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)nextTapped;
 - (void)viewDidLoad;
 @end
@@ -13,12 +13,12 @@
   v6.super_class = type metadata accessor for PasscodeViewController();
   v2 = v6.receiver;
   [(PasscodeViewController *)&v6 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [objc_opt_self() whiteColor];
-    [v4 setBackgroundColor:v5];
+    v4 = view;
+    whiteColor = [objc_opt_self() whiteColor];
+    [v4 setBackgroundColor:whiteColor];
 
     sub_100018F28();
   }
@@ -31,42 +31,42 @@
 
 - (void)nextTapped
 {
-  v4 = self;
-  v2 = [(PasscodeViewController *)v4 navigationController];
-  if (v2)
+  selfCopy = self;
+  navigationController = [(PasscodeViewController *)selfCopy navigationController];
+  if (navigationController)
   {
-    v3 = v2;
+    v3 = navigationController;
   }
 }
 
-- (_TtC29FamilyOutOfProcessUIExtension22PasscodeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC29FamilyOutOfProcessUIExtension22PasscodeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_10001BD30();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_10001BD00();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for PasscodeViewController();
-  v9 = [(PasscodeViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(PasscodeViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC29FamilyOutOfProcessUIExtension22PasscodeViewController)initWithCoder:(id)a3
+- (_TtC29FamilyOutOfProcessUIExtension22PasscodeViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for PasscodeViewController();
-  v4 = a3;
-  v5 = [(PasscodeViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(PasscodeViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

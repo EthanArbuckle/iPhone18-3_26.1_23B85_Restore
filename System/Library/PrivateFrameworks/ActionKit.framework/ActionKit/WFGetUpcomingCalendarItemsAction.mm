@@ -1,44 +1,44 @@
 @interface WFGetUpcomingCalendarItemsAction
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 - (void)updateCalendars;
-- (void)wasAddedToWorkflow:(id)a3;
-- (void)wasRemovedFromWorkflow:(id)a3;
+- (void)wasAddedToWorkflow:(id)workflow;
+- (void)wasRemovedFromWorkflow:(id)workflow;
 @end
 
 @implementation WFGetUpcomingCalendarItemsAction
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v77[1] = *MEMORY[0x277D85DE8];
-  v59 = a3;
+  inputCopy = input;
   v4 = [(WFGetUpcomingCalendarItemsAction *)self parameterValueForKey:@"WFGetUpcomingItemCount" ofClass:objc_opt_class()];
-  v65 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
-  v5 = [(WFGetUpcomingCalendarItemsAction *)self definition];
-  v6 = [v5 objectForKey:@"WFGetUpcomingItemType"];
-  v7 = [v6 unsignedIntegerValue];
+  definition = [(WFGetUpcomingCalendarItemsAction *)self definition];
+  v6 = [definition objectForKey:@"WFGetUpcomingItemType"];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
   v60 = [(WFGetUpcomingCalendarItemsAction *)self parameterValueForKey:@"WFGetUpcomingItemCalendar" ofClass:objc_opt_class()];
-  v8 = [(WFGetUpcomingCalendarItemsAction *)self resourceManager];
+  resourceManager = [(WFGetUpcomingCalendarItemsAction *)self resourceManager];
   v9 = off_278C013C0;
-  if (v7)
+  if (unsignedIntegerValue)
   {
     v9 = off_278C01728;
   }
 
   v10 = *v9;
-  v11 = [v8 resourceObjectsOfClass:objc_opt_class()];
-  v61 = [v11 anyObject];
+  v11 = [resourceManager resourceObjectsOfClass:objc_opt_class()];
+  anyObject = [v11 anyObject];
 
-  if ([v61 status] != 4)
+  if ([anyObject status] != 4)
   {
-    v32 = [v61 availabilityError];
-    [(WFGetUpcomingCalendarItemsAction *)self finishRunningWithError:v32];
+    availabilityError = [anyObject availabilityError];
+    [(WFGetUpcomingCalendarItemsAction *)self finishRunningWithError:availabilityError];
 
     goto LABEL_28;
   }
 
-  if (!v7)
+  if (!unsignedIntegerValue)
   {
     v33 = WFGetWorkflowEventStore();
     v64 = [v33 calendarsForEntityType:0];
@@ -70,15 +70,15 @@
 
       if (v58)
       {
-        v38 = [MEMORY[0x277CBEA80] currentCalendar];
-        v44 = [MEMORY[0x277CBEAA8] date];
-        v40 = [v38 components:28 fromDate:v44];
+        currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+        date = [MEMORY[0x277CBEAA8] date];
+        currentCalendar2 = [currentCalendar components:28 fromDate:date];
 
-        [v40 setDay:{objc_msgSend(v40, "day") + 1}];
-        v41 = [v38 dateFromComponents:v40];
-        [v40 setDay:{objc_msgSend(v40, "day") + 1}];
-        v42 = [v38 dateFromComponents:v40];
-        v43 = [v33 predicateForEventsWithStartDate:v41 endDate:v42 calendars:v64];
+        [currentCalendar2 setDay:{objc_msgSend(currentCalendar2, "day") + 1}];
+        date4 = [currentCalendar dateFromComponents:currentCalendar2];
+        [currentCalendar2 setDay:{objc_msgSend(currentCalendar2, "day") + 1}];
+        v42 = [currentCalendar dateFromComponents:currentCalendar2];
+        v43 = [v33 predicateForEventsWithStartDate:date4 endDate:v42 calendars:v64];
         goto LABEL_16;
       }
 
@@ -88,30 +88,30 @@
         v49 = v48;
         if (v48)
         {
-          v50 = v48;
+          date2 = v48;
         }
 
         else
         {
-          v50 = [MEMORY[0x277CBEAA8] date];
+          date2 = [MEMORY[0x277CBEAA8] date];
         }
 
-        v38 = v50;
+        currentCalendar = date2;
 
-        v40 = [MEMORY[0x277CBEA80] currentCalendar];
-        v41 = [v40 components:28 fromDate:v38];
-        v42 = [v40 dateFromComponents:v41];
-        [v41 setDay:{objc_msgSend(v41, "day") + 1}];
-        v51 = [v40 dateFromComponents:v41];
+        currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+        date4 = [currentCalendar2 components:28 fromDate:currentCalendar];
+        v42 = [currentCalendar2 dateFromComponents:date4];
+        [date4 setDay:{objc_msgSend(date4, "day") + 1}];
+        v51 = [currentCalendar2 dateFromComponents:date4];
         v45 = [v33 predicateForEventsWithStartDate:v42 endDate:v51 calendars:v64];
 
         goto LABEL_17;
       }
 
       v76 = 1;
-      v38 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v35];
-      v40 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v37];
-      v45 = [v33 predicateForEventsWithStartDate:v38 endDate:v40 calendars:v64];
+      currentCalendar = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v35];
+      currentCalendar2 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v37];
+      v45 = [v33 predicateForEventsWithStartDate:currentCalendar endDate:currentCalendar2 calendars:v64];
 LABEL_18:
 
       v69[0] = MEMORY[0x277D85DD0];
@@ -121,7 +121,7 @@ LABEL_18:
       v46 = v62;
       v70 = v46;
       v71 = &v73;
-      v72 = v65;
+      v72 = integerValue;
       [v33 enumerateEventsMatchingPredicate:v45 usingBlock:v69];
       v47 = *(v74 + 24);
 
@@ -137,8 +137,8 @@ LABEL_18:
         }
       }
 
-      v52 = [v46 allValues];
-      v53 = [v52 sortedArrayUsingSelector:sel_compareStartDateWithEvent_];
+      allValues = [v46 allValues];
+      v53 = [allValues sortedArrayUsingSelector:sel_compareStartDateWithEvent_];
       v67[0] = MEMORY[0x277D85DD0];
       v67[1] = 3221225472;
       v67[2] = __63__WFGetUpcomingCalendarItemsAction_runAsynchronouslyWithInput___block_invoke_2;
@@ -152,14 +152,14 @@ LABEL_18:
       goto LABEL_28;
     }
 
-    v38 = [MEMORY[0x277CBEA80] currentCalendar];
-    v39 = [MEMORY[0x277CBEAA8] date];
-    v40 = [v38 components:28 fromDate:v39];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    date3 = [MEMORY[0x277CBEAA8] date];
+    currentCalendar2 = [currentCalendar components:28 fromDate:date3];
 
-    [v40 setDay:{objc_msgSend(v40, "day") + 1}];
-    v41 = [MEMORY[0x277CBEAA8] date];
-    v42 = [v38 dateFromComponents:v40];
-    v43 = [v33 predicateForEventsWithStartDate:v41 endDate:v42 calendars:v64];
+    [currentCalendar2 setDay:{objc_msgSend(currentCalendar2, "day") + 1}];
+    date4 = [MEMORY[0x277CBEAA8] date];
+    v42 = [currentCalendar dateFromComponents:currentCalendar2];
+    v43 = [v33 predicateForEventsWithStartDate:date4 endDate:v42 calendars:v64];
 LABEL_16:
     v45 = v43;
 LABEL_17:
@@ -183,8 +183,8 @@ LABEL_17:
   if (([v60 allCalendars] & 1) == 0)
   {
     v22 = MEMORY[0x277CFC2E8];
-    v23 = [v60 calendarTitle];
-    v24 = [v22 predicateWithValue:v23 forProperty:v18 comparisonType:4];
+    calendarTitle = [v60 calendarTitle];
+    v24 = [v22 predicateWithValue:calendarTitle forProperty:v18 comparisonType:4];
     [v12 addObject:v24];
   }
 
@@ -198,15 +198,15 @@ LABEL_17:
   v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v77 count:1];
   [v27 setSortDescriptors:v29];
 
-  [v27 setSlice:{0x7FFFFFFFFFFFFFFFLL, v65}];
+  [v27 setSlice:{0x7FFFFFFFFFFFFFFFLL, integerValue}];
   v30 = MEMORY[0x277CFC4E8];
-  v31 = [(WFGetUpcomingCalendarItemsAction *)self contentPermissionRequestor];
+  contentPermissionRequestor = [(WFGetUpcomingCalendarItemsAction *)self contentPermissionRequestor];
   v66[0] = MEMORY[0x277D85DD0];
   v66[1] = 3221225472;
   v66[2] = __63__WFGetUpcomingCalendarItemsAction_runAsynchronouslyWithInput___block_invoke_3;
   v66[3] = &unk_278C22518;
   v66[4] = self;
-  [v30 runQuery:v27 withItems:0 permissionRequestor:v31 completionHandler:v66];
+  [v30 runQuery:v27 withItems:0 permissionRequestor:contentPermissionRequestor completionHandler:v66];
 
 LABEL_28:
   v55 = *MEMORY[0x277D85DE8];
@@ -306,22 +306,22 @@ void __63__WFGetUpcomingCalendarItemsAction_runAsynchronouslyWithInput___block_i
   }
 }
 
-- (void)wasRemovedFromWorkflow:(id)a3
+- (void)wasRemovedFromWorkflow:(id)workflow
 {
   v5.receiver = self;
   v5.super_class = WFGetUpcomingCalendarItemsAction;
-  [(WFGetUpcomingCalendarItemsAction *)&v5 wasRemovedFromWorkflow:a3];
-  v4 = [(WFGetUpcomingCalendarItemsAction *)self resourceManager];
-  [v4 removeTarget:self selector:sel_updateCalendars];
+  [(WFGetUpcomingCalendarItemsAction *)&v5 wasRemovedFromWorkflow:workflow];
+  resourceManager = [(WFGetUpcomingCalendarItemsAction *)self resourceManager];
+  [resourceManager removeTarget:self selector:sel_updateCalendars];
 }
 
-- (void)wasAddedToWorkflow:(id)a3
+- (void)wasAddedToWorkflow:(id)workflow
 {
   v5.receiver = self;
   v5.super_class = WFGetUpcomingCalendarItemsAction;
-  [(WFGetUpcomingCalendarItemsAction *)&v5 wasAddedToWorkflow:a3];
-  v4 = [(WFGetUpcomingCalendarItemsAction *)self resourceManager];
-  [v4 addTarget:self selector:sel_updateCalendars];
+  [(WFGetUpcomingCalendarItemsAction *)&v5 wasAddedToWorkflow:workflow];
+  resourceManager = [(WFGetUpcomingCalendarItemsAction *)self resourceManager];
+  [resourceManager addTarget:self selector:sel_updateCalendars];
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface VisionCoreANSTInferenceNetworkDescriptor
-+ (id)descriptorForIdentifier:(id)a3 version:(id)a4 error:(id *)a5;
-- (VisionCoreANSTInferenceNetworkDescriptor)initWithDescriptor:(id)a3 version:(id)a4 identifier:(id)a5;
++ (id)descriptorForIdentifier:(id)identifier version:(id)version error:(id *)error;
+- (VisionCoreANSTInferenceNetworkDescriptor)initWithDescriptor:(id)descriptor version:(id)version identifier:(id)identifier;
 - (id)URL;
-- (id)_anstPixelBufferRepresentation:(id)a3 pixelBufferRepresentation:(__CVBuffer *)a4 orientation:(unsigned int)a5 error:(id *)a6;
-- (id)_anstTensorDataRepresentation:(id)a3 data:(id)a4 error:(id *)a5;
-- (id)_outputDescriptorWithName:(id)a3 postProcessor:(id)a4;
+- (id)_anstPixelBufferRepresentation:(id)representation pixelBufferRepresentation:(__CVBuffer *)bufferRepresentation orientation:(unsigned int)orientation error:(id *)error;
+- (id)_anstTensorDataRepresentation:(id)representation data:(id)data error:(id *)error;
+- (id)_outputDescriptorWithName:(id)name postProcessor:(id)processor;
 - (id)postProcessingOutputDescriptors;
 @end
 
@@ -16,8 +16,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 processedOutputDescriptors];
-    v5 = VisionCoreTensorDescriptorsFromANSTDescriptors(v4);
+    processedOutputDescriptors = [v2 processedOutputDescriptors];
+    v5 = VisionCoreTensorDescriptorsFromANSTDescriptors(processedOutputDescriptors);
   }
 
   else
@@ -28,10 +28,10 @@
   return v5;
 }
 
-- (id)_anstPixelBufferRepresentation:(id)a3 pixelBufferRepresentation:(__CVBuffer *)a4 orientation:(unsigned int)a5 error:(id *)a6
+- (id)_anstPixelBufferRepresentation:(id)representation pixelBufferRepresentation:(__CVBuffer *)bufferRepresentation orientation:(unsigned int)orientation error:(id *)error
 {
-  v7 = *&a5;
-  v9 = a3;
+  v7 = *&orientation;
+  representationCopy = representation;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2050000000;
@@ -50,16 +50,16 @@
 
   v11 = v10;
   _Block_object_dispose(&v15, 8);
-  v12 = [[v10 alloc] initWithDescriptor:v9 pixelBuffer:a4 orientation:v7 error:a6];
+  v12 = [[v10 alloc] initWithDescriptor:representationCopy pixelBuffer:bufferRepresentation orientation:v7 error:error];
 
   return v12;
 }
 
-- (id)_anstTensorDataRepresentation:(id)a3 data:(id)a4 error:(id *)a5
+- (id)_anstTensorDataRepresentation:(id)representation data:(id)data error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 sizeInBytes];
+  representationCopy = representation;
+  dataCopy = data;
+  sizeInBytes = [representationCopy sizeInBytes];
   v15 = 0;
   v16 = &v15;
   v17 = 0x2050000000;
@@ -78,16 +78,16 @@
 
   v11 = v10;
   _Block_object_dispose(&v15, 8);
-  v12 = [[v10 alloc] initWithDescriptor:v7 dataPointer:objc_msgSend(v8 length:"bytes") deallocator:v9 error:{0, a5}];
+  v12 = [[v10 alloc] initWithDescriptor:representationCopy dataPointer:objc_msgSend(dataCopy length:"bytes") deallocator:sizeInBytes error:{0, error}];
 
   return v12;
 }
 
-- (id)_outputDescriptorWithName:(id)a3 postProcessor:(id)a4
+- (id)_outputDescriptorWithName:(id)name postProcessor:(id)processor
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  [a4 processedOutputDescriptors];
+  nameCopy = name;
+  [processor processedOutputDescriptors];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -106,8 +106,8 @@
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 name];
-        v12 = [v11 isEqualToString:v5];
+        name = [v10 name];
+        v12 = [name isEqualToString:nameCopy];
 
         if (v12)
         {
@@ -136,8 +136,8 @@ LABEL_11:
   v9.receiver = self;
   v9.super_class = VisionCoreANSTInferenceNetworkDescriptor;
   v2 = [(VisionCoreInferenceNetworkDescriptor *)&v9 URL];
-  v3 = [v2 absoluteString];
-  v4 = [v3 hasPrefix:@"file://"];
+  absoluteString = [v2 absoluteString];
+  v4 = [absoluteString hasPrefix:@"file://"];
 
   if (v4)
   {
@@ -154,27 +154,27 @@ LABEL_11:
   return v7;
 }
 
-- (VisionCoreANSTInferenceNetworkDescriptor)initWithDescriptor:(id)a3 version:(id)a4 identifier:(id)a5
+- (VisionCoreANSTInferenceNetworkDescriptor)initWithDescriptor:(id)descriptor version:(id)version identifier:(id)identifier
 {
   v34 = *MEMORY[0x1E69E9840];
-  objc_storeStrong(&self->_descriptor, a3);
-  v8 = a3;
-  v25 = a5;
-  v9 = a4;
-  v27 = [v8 assetURL];
-  v10 = [v8 inputDescriptors];
-  v26 = VisionCoreTensorDescriptorsFromANSTDescriptors(v10);
+  objc_storeStrong(&self->_descriptor, descriptor);
+  descriptorCopy = descriptor;
+  identifierCopy = identifier;
+  versionCopy = version;
+  assetURL = [descriptorCopy assetURL];
+  inputDescriptors = [descriptorCopy inputDescriptors];
+  v26 = VisionCoreTensorDescriptorsFromANSTDescriptors(inputDescriptors);
 
-  v11 = [v8 outputDescriptors];
-  v12 = VisionCoreTensorDescriptorsFromANSTDescriptors(v11);
+  outputDescriptors = [descriptorCopy outputDescriptors];
+  v12 = VisionCoreTensorDescriptorsFromANSTDescriptors(outputDescriptors);
 
-  v13 = [v8 allInputPixelBufferDescriptors];
+  allInputPixelBufferDescriptors = [descriptorCopy allInputPixelBufferDescriptors];
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v15 = v13;
+  v15 = allInputPixelBufferDescriptors;
   v16 = [v15 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v16)
   {
@@ -204,13 +204,13 @@ LABEL_11:
   }
 
   v21 = [VisionCoreProcessingDescriptorSpecifier alloc];
-  v22 = [(VisionCoreProcessingDescriptorSpecifier *)v21 initWithIdentifier:v25 version:v9];
+  v22 = [(VisionCoreProcessingDescriptorSpecifier *)v21 initWithIdentifier:identifierCopy version:versionCopy];
 
-  v23 = [(VisionCoreInferenceNetworkDescriptor *)self initWithURL:v27 specifier:v22 networkHeadVersions:0 inputs:v26 outputs:v12 inputImages:v14 confidencesOutput:0];
+  v23 = [(VisionCoreInferenceNetworkDescriptor *)self initWithURL:assetURL specifier:v22 networkHeadVersions:0 inputs:v26 outputs:v12 inputImages:v14 confidencesOutput:0];
   return v23;
 }
 
-+ (id)descriptorForIdentifier:(id)a3 version:(id)a4 error:(id *)a5
++ (id)descriptorForIdentifier:(id)identifier version:(id)version error:(id *)error
 {
   v5 = objc_alloc_init(VisionCoreProcessingDescriptor);
 

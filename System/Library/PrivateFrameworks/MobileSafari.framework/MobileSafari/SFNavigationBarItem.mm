@@ -1,41 +1,41 @@
 @interface SFNavigationBarItem
-- (BOOL)_showsAvailabilityTextForType:(int64_t)a3 style:(int64_t)a4;
-- (BOOL)showsReaderAvailabilityTextForStyle:(int64_t)a3;
-- (BOOL)showsTranslationAvailabilityTextForStyle:(int64_t)a3;
+- (BOOL)_showsAvailabilityTextForType:(int64_t)type style:(int64_t)style;
+- (BOOL)showsReaderAvailabilityTextForStyle:(int64_t)style;
+- (BOOL)showsTranslationAvailabilityTextForStyle:(int64_t)style;
 - (NSString)text;
 - (NSString)textWhenExpanded;
 - (SFNavigationBarItem)init;
 - (WBSFluidProgressStateSource)fluidProgressStateSource;
 - (unint64_t)mediaStateIconToDisplay;
 - (void)resetContentOptions;
-- (void)setCustomPlaceholderText:(id)a3;
-- (void)setDidFinishShowingAvailabilityLabel:(BOOL)a3 ofType:(int64_t)a4;
-- (void)setExtensionButtonConfiguration:(id)a3;
-- (void)setExtensionsAreActive:(BOOL)a3;
-- (void)setFluidProgressController:(id)a3;
-- (void)setGlobalMediaStateIcon:(unint64_t)a3;
-- (void)setHasHiddenElements:(BOOL)a3;
-- (void)setLockdownModeAnnotation:(int64_t)a3;
-- (void)setMediaStateIcon:(unint64_t)a3;
-- (void)setNeedsExtensionBadge:(BOOL)a3;
-- (void)setOverlayConfiguration:(id)a3;
-- (void)setOverlayNarrowConfiguration:(id)a3;
-- (void)setOverrideBarStyleForSecurityWarning:(BOOL)a3;
-- (void)setReaderButtonSelected:(BOOL)a3;
-- (void)setSecurityAnnotation:(int64_t)a3;
-- (void)setSecurityAnnotation:(int64_t)a3 hasFocusedInputFieldOnCurrentPage:(BOOL)a4;
-- (void)setShowsPageFormatButton:(BOOL)a3;
-- (void)setShowsReaderButton:(BOOL)a3 showsAvailabilityText:(BOOL)a4;
-- (void)setShowsSearchIndicator:(BOOL)a3;
-- (void)setShowsSiriReaderPlayingIcon:(BOOL)a3;
-- (void)setShowsStopReloadButtons:(BOOL)a3;
-- (void)setShowsTranslationButton:(BOOL)a3 showsAvailabilityText:(BOOL)a4;
-- (void)setShowsTranslationIcon:(BOOL)a3;
-- (void)setShowsVoiceSearchButton:(BOOL)a3;
-- (void)setStopReloadButtonShowsStop:(BOOL)a3;
-- (void)setTemporarilySuppressText:(BOOL)a3;
-- (void)setText:(id)a3 textWhenExpanded:(id)a4 startIndex:(unint64_t)a5;
-- (void)updateContentOptions:(unint64_t)a3;
+- (void)setCustomPlaceholderText:(id)text;
+- (void)setDidFinishShowingAvailabilityLabel:(BOOL)label ofType:(int64_t)type;
+- (void)setExtensionButtonConfiguration:(id)configuration;
+- (void)setExtensionsAreActive:(BOOL)active;
+- (void)setFluidProgressController:(id)controller;
+- (void)setGlobalMediaStateIcon:(unint64_t)icon;
+- (void)setHasHiddenElements:(BOOL)elements;
+- (void)setLockdownModeAnnotation:(int64_t)annotation;
+- (void)setMediaStateIcon:(unint64_t)icon;
+- (void)setNeedsExtensionBadge:(BOOL)badge;
+- (void)setOverlayConfiguration:(id)configuration;
+- (void)setOverlayNarrowConfiguration:(id)configuration;
+- (void)setOverrideBarStyleForSecurityWarning:(BOOL)warning;
+- (void)setReaderButtonSelected:(BOOL)selected;
+- (void)setSecurityAnnotation:(int64_t)annotation;
+- (void)setSecurityAnnotation:(int64_t)annotation hasFocusedInputFieldOnCurrentPage:(BOOL)page;
+- (void)setShowsPageFormatButton:(BOOL)button;
+- (void)setShowsReaderButton:(BOOL)button showsAvailabilityText:(BOOL)text;
+- (void)setShowsSearchIndicator:(BOOL)indicator;
+- (void)setShowsSiriReaderPlayingIcon:(BOOL)icon;
+- (void)setShowsStopReloadButtons:(BOOL)buttons;
+- (void)setShowsTranslationButton:(BOOL)button showsAvailabilityText:(BOOL)text;
+- (void)setShowsTranslationIcon:(BOOL)icon;
+- (void)setShowsVoiceSearchButton:(BOOL)button;
+- (void)setStopReloadButtonShowsStop:(BOOL)stop;
+- (void)setTemporarilySuppressText:(BOOL)text;
+- (void)setText:(id)text textWhenExpanded:(id)expanded startIndex:(unint64_t)index;
+- (void)updateContentOptions:(unint64_t)options;
 @end
 
 @implementation SFNavigationBarItem
@@ -80,9 +80,9 @@
   v2 = [(SFNavigationBarItem *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
     v5 = v2;
   }
@@ -101,29 +101,29 @@
   return result;
 }
 
-- (void)setText:(id)a3 textWhenExpanded:(id)a4 startIndex:(unint64_t)a5
+- (void)setText:(id)text textWhenExpanded:(id)expanded startIndex:(unint64_t)index
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (self->_text == v8 || [(NSString *)v8 isEqualToString:?])
+  textCopy = text;
+  expandedCopy = expanded;
+  if (self->_text == textCopy || [(NSString *)textCopy isEqualToString:?])
   {
     v10 = 0;
   }
 
   else
   {
-    v11 = [(NSString *)v8 copy];
+    v11 = [(NSString *)textCopy copy];
     text = self->_text;
     self->_text = v11;
 
     v10 = 1;
   }
 
-  if (self->_textWhenExpanded == v9 || [(NSString *)v9 isEqualToString:?])
+  if (self->_textWhenExpanded == expandedCopy || [(NSString *)expandedCopy isEqualToString:?])
   {
     p_startIndexOfTextInExpandedText = &self->_startIndexOfTextInExpandedText;
-    if (self->_startIndexOfTextInExpandedText == a5)
+    if (self->_startIndexOfTextInExpandedText == index)
     {
       if (!v10)
       {
@@ -136,15 +136,15 @@
     goto LABEL_11;
   }
 
-  v14 = [(NSString *)v9 copy];
+  v14 = [(NSString *)expandedCopy copy];
   textWhenExpanded = self->_textWhenExpanded;
   self->_textWhenExpanded = v14;
 
   p_startIndexOfTextInExpandedText = &self->_startIndexOfTextInExpandedText;
-  if (self->_startIndexOfTextInExpandedText != a5)
+  if (self->_startIndexOfTextInExpandedText != index)
   {
 LABEL_11:
-    *p_startIndexOfTextInExpandedText = a5;
+    *p_startIndexOfTextInExpandedText = index;
   }
 
 LABEL_12:
@@ -153,8 +153,8 @@ LABEL_12:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v16 = [(NSHashTable *)self->_observers allObjects];
-  v17 = [v16 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v17 = [allObjects countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v17)
   {
     v18 = v17;
@@ -166,7 +166,7 @@ LABEL_12:
       {
         if (*v23 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(allObjects);
         }
 
         v21 = *(*(&v22 + 1) + 8 * v20);
@@ -179,7 +179,7 @@ LABEL_12:
       }
 
       while (v18 != v20);
-      v18 = [v16 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v18 = [allObjects countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v18);
@@ -188,18 +188,18 @@ LABEL_12:
 LABEL_22:
 }
 
-- (void)setTemporarilySuppressText:(BOOL)a3
+- (void)setTemporarilySuppressText:(BOOL)text
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_temporarilySuppressText != a3)
+  if (self->_temporarilySuppressText != text)
   {
-    self->_temporarilySuppressText = a3;
+    self->_temporarilySuppressText = text;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSHashTable *)self->_observers allObjects];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v5 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -211,7 +211,7 @@ LABEL_22:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -224,7 +224,7 @@ LABEL_22:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -232,18 +232,18 @@ LABEL_22:
   }
 }
 
-- (void)setShowsSearchIndicator:(BOOL)a3
+- (void)setShowsSearchIndicator:(BOOL)indicator
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_showsSearchIndicator == !a3)
+  if (self->_showsSearchIndicator == !indicator)
   {
-    self->_showsSearchIndicator = a3;
+    self->_showsSearchIndicator = indicator;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSHashTable *)self->_observers allObjects];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v5 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -255,7 +255,7 @@ LABEL_22:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -268,7 +268,7 @@ LABEL_22:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -276,18 +276,18 @@ LABEL_22:
   }
 }
 
-- (void)setShowsStopReloadButtons:(BOOL)a3
+- (void)setShowsStopReloadButtons:(BOOL)buttons
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_showsStopReloadButtons == !a3)
+  if (self->_showsStopReloadButtons == !buttons)
   {
-    self->_showsStopReloadButtons = a3;
+    self->_showsStopReloadButtons = buttons;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSHashTable *)self->_observers allObjects];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v5 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -299,7 +299,7 @@ LABEL_22:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -312,7 +312,7 @@ LABEL_22:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -320,18 +320,18 @@ LABEL_22:
   }
 }
 
-- (void)setStopReloadButtonShowsStop:(BOOL)a3
+- (void)setStopReloadButtonShowsStop:(BOOL)stop
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_stopReloadButtonShowsStop == !a3)
+  if (self->_stopReloadButtonShowsStop == !stop)
   {
-    self->_stopReloadButtonShowsStop = a3;
+    self->_stopReloadButtonShowsStop = stop;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSHashTable *)self->_observers allObjects];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v5 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -343,7 +343,7 @@ LABEL_22:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -356,7 +356,7 @@ LABEL_22:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -364,18 +364,18 @@ LABEL_22:
   }
 }
 
-- (void)setReaderButtonSelected:(BOOL)a3
+- (void)setReaderButtonSelected:(BOOL)selected
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_readerButtonSelected == !a3)
+  if (self->_readerButtonSelected == !selected)
   {
-    self->_readerButtonSelected = a3;
+    self->_readerButtonSelected = selected;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSHashTable *)self->_observers allObjects];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v5 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -387,7 +387,7 @@ LABEL_22:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -400,7 +400,7 @@ LABEL_22:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -408,18 +408,18 @@ LABEL_22:
   }
 }
 
-- (void)setOverrideBarStyleForSecurityWarning:(BOOL)a3
+- (void)setOverrideBarStyleForSecurityWarning:(BOOL)warning
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_overrideBarStyleForSecurityWarning == !a3)
+  if (self->_overrideBarStyleForSecurityWarning == !warning)
   {
-    self->_overrideBarStyleForSecurityWarning = a3;
+    self->_overrideBarStyleForSecurityWarning = warning;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSHashTable *)self->_observers allObjects];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v5 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -431,7 +431,7 @@ LABEL_22:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -444,7 +444,7 @@ LABEL_22:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -452,18 +452,18 @@ LABEL_22:
   }
 }
 
-- (void)setShowsPageFormatButton:(BOOL)a3
+- (void)setShowsPageFormatButton:(BOOL)button
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_showsPageFormatButton == !a3)
+  if (self->_showsPageFormatButton == !button)
   {
-    self->_showsPageFormatButton = a3;
+    self->_showsPageFormatButton = button;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSHashTable *)self->_observers allObjects];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v5 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -475,7 +475,7 @@ LABEL_22:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -488,7 +488,7 @@ LABEL_22:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -496,18 +496,18 @@ LABEL_22:
   }
 }
 
-- (void)setShowsTranslationIcon:(BOOL)a3
+- (void)setShowsTranslationIcon:(BOOL)icon
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_showsTranslationIcon == !a3)
+  if (self->_showsTranslationIcon == !icon)
   {
-    self->_showsTranslationIcon = a3;
+    self->_showsTranslationIcon = icon;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSHashTable *)self->_observers allObjects];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v5 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -519,7 +519,7 @@ LABEL_22:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -532,7 +532,7 @@ LABEL_22:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -540,18 +540,18 @@ LABEL_22:
   }
 }
 
-- (void)setShowsVoiceSearchButton:(BOOL)a3
+- (void)setShowsVoiceSearchButton:(BOOL)button
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_showsVoiceSearchButton == !a3)
+  if (self->_showsVoiceSearchButton == !button)
   {
-    self->_showsVoiceSearchButton = a3;
+    self->_showsVoiceSearchButton = button;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSHashTable *)self->_observers allObjects];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v5 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -563,7 +563,7 @@ LABEL_22:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -576,7 +576,7 @@ LABEL_22:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -584,18 +584,18 @@ LABEL_22:
   }
 }
 
-- (void)setShowsSiriReaderPlayingIcon:(BOOL)a3
+- (void)setShowsSiriReaderPlayingIcon:(BOOL)icon
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_showsSiriReaderPlayingIcon == !a3)
+  if (self->_showsSiriReaderPlayingIcon == !icon)
   {
-    self->_showsSiriReaderPlayingIcon = a3;
+    self->_showsSiriReaderPlayingIcon = icon;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSHashTable *)self->_observers allObjects];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v5 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -607,7 +607,7 @@ LABEL_22:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -620,7 +620,7 @@ LABEL_22:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -628,18 +628,18 @@ LABEL_22:
   }
 }
 
-- (void)updateContentOptions:(unint64_t)a3
+- (void)updateContentOptions:(unint64_t)options
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_contentOptions != a3)
+  if (self->_contentOptions != options)
   {
-    self->_contentOptions = a3;
+    self->_contentOptions = options;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSHashTable *)self->_observers allObjects];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v5 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -651,7 +651,7 @@ LABEL_22:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -664,7 +664,7 @@ LABEL_22:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -680,8 +680,8 @@ LABEL_22:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSHashTable *)self->_observers allObjects];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v4 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -693,7 +693,7 @@ LABEL_22:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -706,18 +706,18 @@ LABEL_22:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)setDidFinishShowingAvailabilityLabel:(BOOL)a3 ofType:(int64_t)a4
+- (void)setDidFinishShowingAvailabilityLabel:(BOOL)label ofType:(int64_t)type
 {
-  if (a4)
+  if (type)
   {
-    if (a4 != 1)
+    if (type != 1)
     {
       return;
     }
@@ -730,24 +730,24 @@ LABEL_22:
     v4 = 32;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = label;
 }
 
-- (void)setShowsReaderButton:(BOOL)a3 showsAvailabilityText:(BOOL)a4
+- (void)setShowsReaderButton:(BOOL)button showsAvailabilityText:(BOOL)text
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (self->_showsReaderButton != a3 || self->_showsReaderAvailabilityTextWhenReplacingDomain != a4)
+  if (self->_showsReaderButton != button || self->_showsReaderAvailabilityTextWhenReplacingDomain != text)
   {
     v5 = !self->_overrideBarStyleForSecurityWarning;
-    self->_showsReaderButton = v5 && a3;
-    self->_showsReaderAvailabilityTextWhenReplacingDomain = v5 && a4;
+    self->_showsReaderButton = v5 && button;
+    self->_showsReaderAvailabilityTextWhenReplacingDomain = v5 && text;
     [(SFNavigationBarItem *)self setDidFinishShowingAvailabilityLabel:0 ofType:0];
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(NSHashTable *)self->_observers allObjects];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v7 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -759,7 +759,7 @@ LABEL_22:
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allObjects);
           }
 
           v11 = *(*(&v12 + 1) + 8 * v10);
@@ -772,7 +772,7 @@ LABEL_22:
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -780,15 +780,15 @@ LABEL_22:
   }
 }
 
-- (BOOL)showsReaderAvailabilityTextForStyle:(int64_t)a3
+- (BOOL)showsReaderAvailabilityTextForStyle:(int64_t)style
 {
-  if (!a3)
+  if (!style)
   {
     v4 = 24;
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (style == 1)
   {
     v4 = 31;
 LABEL_5:
@@ -798,20 +798,20 @@ LABEL_5:
   return v3 & 1;
 }
 
-- (void)setShowsTranslationButton:(BOOL)a3 showsAvailabilityText:(BOOL)a4
+- (void)setShowsTranslationButton:(BOOL)button showsAvailabilityText:(BOOL)text
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (self->_showsTranslationButton != a3 || self->_showsTranslationAvailabilityTextWhenReplacingDomain != a4)
+  if (self->_showsTranslationButton != button || self->_showsTranslationAvailabilityTextWhenReplacingDomain != text)
   {
-    self->_showsTranslationButton = a3 & ~self->_overrideBarStyleForSecurityWarning;
-    self->_showsTranslationAvailabilityTextWhenReplacingDomain = a4;
+    self->_showsTranslationButton = button & ~self->_overrideBarStyleForSecurityWarning;
+    self->_showsTranslationAvailabilityTextWhenReplacingDomain = text;
     [(SFNavigationBarItem *)self setDidFinishShowingAvailabilityLabel:0 ofType:1];
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(NSHashTable *)self->_observers allObjects];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v6 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -823,7 +823,7 @@ LABEL_5:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allObjects);
           }
 
           v10 = *(*(&v11 + 1) + 8 * v9);
@@ -836,7 +836,7 @@ LABEL_5:
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -844,15 +844,15 @@ LABEL_5:
   }
 }
 
-- (BOOL)showsTranslationAvailabilityTextForStyle:(int64_t)a3
+- (BOOL)showsTranslationAvailabilityTextForStyle:(int64_t)style
 {
-  if (!a3)
+  if (!style)
   {
     v4 = 25;
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (style == 1)
   {
     v4 = 34;
 LABEL_5:
@@ -862,33 +862,33 @@ LABEL_5:
   return v3 & 1;
 }
 
-- (BOOL)_showsAvailabilityTextForType:(int64_t)a3 style:(int64_t)a4
+- (BOOL)_showsAvailabilityTextForType:(int64_t)type style:(int64_t)style
 {
-  if (a3 == 1)
+  if (type == 1)
   {
-    return [(SFNavigationBarItem *)self showsTranslationAvailabilityTextForStyle:a4];
+    return [(SFNavigationBarItem *)self showsTranslationAvailabilityTextForStyle:style];
   }
 
-  if (a3)
+  if (type)
   {
     return 0;
   }
 
-  return [(SFNavigationBarItem *)self showsReaderAvailabilityTextForStyle:a4];
+  return [(SFNavigationBarItem *)self showsReaderAvailabilityTextForStyle:style];
 }
 
-- (void)setExtensionsAreActive:(BOOL)a3
+- (void)setExtensionsAreActive:(BOOL)active
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_extensionsAreActive != a3)
+  if (self->_extensionsAreActive != active)
   {
-    self->_extensionsAreActive = a3;
+    self->_extensionsAreActive = active;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSHashTable *)self->_observers allObjects];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v5 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -900,7 +900,7 @@ LABEL_5:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -913,7 +913,7 @@ LABEL_5:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -921,18 +921,18 @@ LABEL_5:
   }
 }
 
-- (void)setNeedsExtensionBadge:(BOOL)a3
+- (void)setNeedsExtensionBadge:(BOOL)badge
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_needsExtensionBadge != a3)
+  if (self->_needsExtensionBadge != badge)
   {
-    self->_needsExtensionBadge = a3;
+    self->_needsExtensionBadge = badge;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSHashTable *)self->_observers allObjects];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v5 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -944,7 +944,7 @@ LABEL_5:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -957,7 +957,7 @@ LABEL_5:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -965,19 +965,19 @@ LABEL_5:
   }
 }
 
-- (void)setExtensionButtonConfiguration:(id)a3
+- (void)setExtensionButtonConfiguration:(id)configuration
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  configurationCopy = configuration;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_extensionButtonConfiguration, a3);
+    objc_storeStrong(&self->_extensionButtonConfiguration, configuration);
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(NSHashTable *)self->_observers allObjects];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v7 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -989,7 +989,7 @@ LABEL_5:
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allObjects);
           }
 
           v11 = *(*(&v12 + 1) + 8 * v10);
@@ -1002,7 +1002,7 @@ LABEL_5:
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -1010,18 +1010,18 @@ LABEL_5:
   }
 }
 
-- (void)setMediaStateIcon:(unint64_t)a3
+- (void)setMediaStateIcon:(unint64_t)icon
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_mediaStateIcon != a3)
+  if (self->_mediaStateIcon != icon)
   {
-    self->_mediaStateIcon = a3;
+    self->_mediaStateIcon = icon;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSHashTable *)self->_observers allObjects];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v5 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1033,7 +1033,7 @@ LABEL_5:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -1046,7 +1046,7 @@ LABEL_5:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -1054,18 +1054,18 @@ LABEL_5:
   }
 }
 
-- (void)setGlobalMediaStateIcon:(unint64_t)a3
+- (void)setGlobalMediaStateIcon:(unint64_t)icon
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_globalMediaStateIcon != a3)
+  if (self->_globalMediaStateIcon != icon)
   {
-    self->_globalMediaStateIcon = a3;
+    self->_globalMediaStateIcon = icon;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSHashTable *)self->_observers allObjects];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v5 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1077,7 +1077,7 @@ LABEL_5:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -1090,7 +1090,7 @@ LABEL_5:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -1098,18 +1098,18 @@ LABEL_5:
   }
 }
 
-- (void)setSecurityAnnotation:(int64_t)a3
+- (void)setSecurityAnnotation:(int64_t)annotation
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_securityAnnotation != a3)
+  if (self->_securityAnnotation != annotation)
   {
-    self->_securityAnnotation = a3;
+    self->_securityAnnotation = annotation;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSHashTable *)self->_observers allObjects];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v5 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1121,7 +1121,7 @@ LABEL_5:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -1134,7 +1134,7 @@ LABEL_5:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -1142,19 +1142,19 @@ LABEL_5:
   }
 }
 
-- (void)setSecurityAnnotation:(int64_t)a3 hasFocusedInputFieldOnCurrentPage:(BOOL)a4
+- (void)setSecurityAnnotation:(int64_t)annotation hasFocusedInputFieldOnCurrentPage:(BOOL)page
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (self->_securityAnnotation != a3 || self->_hasFocusedSensitiveFieldOnCurrentPage != a4)
+  if (self->_securityAnnotation != annotation || self->_hasFocusedSensitiveFieldOnCurrentPage != page)
   {
-    self->_securityAnnotation = a3;
-    self->_hasFocusedSensitiveFieldOnCurrentPage = a4;
+    self->_securityAnnotation = annotation;
+    self->_hasFocusedSensitiveFieldOnCurrentPage = page;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(NSHashTable *)self->_observers allObjects];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v6 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1166,7 +1166,7 @@ LABEL_5:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allObjects);
           }
 
           v10 = *(*(&v11 + 1) + 8 * v9);
@@ -1179,7 +1179,7 @@ LABEL_5:
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -1187,18 +1187,18 @@ LABEL_5:
   }
 }
 
-- (void)setLockdownModeAnnotation:(int64_t)a3
+- (void)setLockdownModeAnnotation:(int64_t)annotation
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_lockdownModeAnnotation != a3)
+  if (self->_lockdownModeAnnotation != annotation)
   {
-    self->_lockdownModeAnnotation = a3;
+    self->_lockdownModeAnnotation = annotation;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSHashTable *)self->_observers allObjects];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v5 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1210,7 +1210,7 @@ LABEL_5:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -1223,7 +1223,7 @@ LABEL_5:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -1231,14 +1231,14 @@ LABEL_5:
   }
 }
 
-- (void)setCustomPlaceholderText:(id)a3
+- (void)setCustomPlaceholderText:(id)text
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  textCopy = text;
   customPlaceholderText = self->_customPlaceholderText;
-  if (customPlaceholderText != v4 && ![(NSString *)customPlaceholderText isEqualToString:v4])
+  if (customPlaceholderText != textCopy && ![(NSString *)customPlaceholderText isEqualToString:textCopy])
   {
-    v6 = [(NSString *)v4 copy];
+    v6 = [(NSString *)textCopy copy];
     v7 = self->_customPlaceholderText;
     self->_customPlaceholderText = v6;
 
@@ -1246,8 +1246,8 @@ LABEL_5:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [(NSHashTable *)self->_observers allObjects];
-    v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v9 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1259,7 +1259,7 @@ LABEL_5:
         {
           if (*v15 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allObjects);
           }
 
           v13 = *(*(&v14 + 1) + 8 * v12);
@@ -1272,7 +1272,7 @@ LABEL_5:
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v10 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v10);
@@ -1280,18 +1280,18 @@ LABEL_5:
   }
 }
 
-- (void)setHasHiddenElements:(BOOL)a3
+- (void)setHasHiddenElements:(BOOL)elements
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_hasHiddenElements == !a3)
+  if (self->_hasHiddenElements == !elements)
   {
-    self->_hasHiddenElements = a3;
+    self->_hasHiddenElements = elements;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSHashTable *)self->_observers allObjects];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v5 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1303,7 +1303,7 @@ LABEL_5:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -1316,7 +1316,7 @@ LABEL_5:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -1324,19 +1324,19 @@ LABEL_5:
   }
 }
 
-- (void)setOverlayConfiguration:(id)a3
+- (void)setOverlayConfiguration:(id)configuration
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_overlayConfiguration != v5)
+  configurationCopy = configuration;
+  if (self->_overlayConfiguration != configurationCopy)
   {
-    objc_storeStrong(&self->_overlayConfiguration, a3);
+    objc_storeStrong(&self->_overlayConfiguration, configuration);
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(NSHashTable *)self->_observers allObjects];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v7 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1347,7 +1347,7 @@ LABEL_5:
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allObjects);
           }
 
           v11 = *(*(&v12 + 1) + 8 * i);
@@ -1357,7 +1357,7 @@ LABEL_5:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -1365,19 +1365,19 @@ LABEL_5:
   }
 }
 
-- (void)setOverlayNarrowConfiguration:(id)a3
+- (void)setOverlayNarrowConfiguration:(id)configuration
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_overlayNarrowConfiguration != v5)
+  configurationCopy = configuration;
+  if (self->_overlayNarrowConfiguration != configurationCopy)
   {
-    objc_storeStrong(&self->_overlayNarrowConfiguration, a3);
+    objc_storeStrong(&self->_overlayNarrowConfiguration, configuration);
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(NSHashTable *)self->_observers allObjects];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v7 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1388,7 +1388,7 @@ LABEL_5:
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allObjects);
           }
 
           v11 = *(*(&v12 + 1) + 8 * i);
@@ -1398,7 +1398,7 @@ LABEL_5:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -1406,19 +1406,19 @@ LABEL_5:
   }
 }
 
-- (void)setFluidProgressController:(id)a3
+- (void)setFluidProgressController:(id)controller
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_fluidProgressController != v5)
+  controllerCopy = controller;
+  if (self->_fluidProgressController != controllerCopy)
   {
-    objc_storeStrong(&self->_fluidProgressController, a3);
+    objc_storeStrong(&self->_fluidProgressController, controller);
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(NSHashTable *)self->_observers allObjects];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v7 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1429,7 +1429,7 @@ LABEL_5:
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allObjects);
           }
 
           v11 = *(*(&v12 + 1) + 8 * i);
@@ -1439,7 +1439,7 @@ LABEL_5:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);

@@ -1,23 +1,23 @@
 @interface HMDCloudManagerMetricsDispatcher
 + (id)logCategory;
-- (HMDCloudManagerMetricsDispatcher)initWithLogEventDispatcher:(id)a3;
-- (void)submitFailureEventWithModelType:(id)a3 failureCode:(unint64_t)a4 error:(id)a5;
+- (HMDCloudManagerMetricsDispatcher)initWithLogEventDispatcher:(id)dispatcher;
+- (void)submitFailureEventWithModelType:(id)type failureCode:(unint64_t)code error:(id)error;
 @end
 
 @implementation HMDCloudManagerMetricsDispatcher
 
-- (void)submitFailureEventWithModelType:(id)a3 failureCode:(unint64_t)a4 error:(id)a5
+- (void)submitFailureEventWithModelType:(id)type failureCode:(unint64_t)code error:(id)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  typeCopy = type;
+  errorCopy = error;
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    if (a4 == 1)
+    if (code == 1)
     {
       v14 = @"NoAddTransaction";
     }
@@ -25,39 +25,39 @@
     else
     {
       v15 = MEMORY[0x277CCACA8];
-      v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+      v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:code];
       v14 = [v15 stringWithFormat:@"failureCode(%@)", v16];
     }
 
     *buf = 138544130;
     v21 = v13;
     v22 = 2112;
-    v23 = v8;
+    v23 = typeCopy;
     v24 = 2112;
     v25 = v14;
     v26 = 2112;
-    v27 = v9;
+    v27 = errorCopy;
     _os_log_impl(&dword_2531F8000, v12, OS_LOG_TYPE_INFO, "%{public}@Submitting failure event with model type: %@ failure code: %@ error: %@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v10);
-  v17 = [[HMDCloudManagerModelFailureEvent alloc] initWithModel:v8 failureCode:a4 error:v9];
-  v18 = [(HMDCloudManagerMetricsDispatcher *)v11 logEventSubmitter];
-  [v18 submitLogEvent:v17];
+  v17 = [[HMDCloudManagerModelFailureEvent alloc] initWithModel:typeCopy failureCode:code error:errorCopy];
+  logEventSubmitter = [(HMDCloudManagerMetricsDispatcher *)selfCopy logEventSubmitter];
+  [logEventSubmitter submitLogEvent:v17];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCloudManagerMetricsDispatcher)initWithLogEventDispatcher:(id)a3
+- (HMDCloudManagerMetricsDispatcher)initWithLogEventDispatcher:(id)dispatcher
 {
-  v5 = a3;
+  dispatcherCopy = dispatcher;
   v9.receiver = self;
   v9.super_class = HMDCloudManagerMetricsDispatcher;
   v6 = [(HMDCloudManagerMetricsDispatcher *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_logEventSubmitter, a3);
+    objc_storeStrong(&v6->_logEventSubmitter, dispatcher);
   }
 
   return v7;

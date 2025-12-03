@@ -1,31 +1,31 @@
 @interface WFLinkDynamicOptionSubstitutableState
-+ (id)serializedRepresentationFromValue:(id)a3;
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5 bundleIdentifier:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)stateIsEquivalent:(id)a3;
++ (id)serializedRepresentationFromValue:(id)value;
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter bundleIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)stateIsEquivalent:(id)equivalent;
 - (BOOL)valueNeedsDisplayRepresentation;
 - (NSString)localizedSubtitle;
 - (NSString)localizedTitle;
 - (WFImage)image;
-- (WFLinkDynamicOptionSubstitutableState)initWithValue:(id)a3 localizedTitle:(id)a4 localizedSubtitle:(id)a5 image:(id)a6;
+- (WFLinkDynamicOptionSubstitutableState)initWithValue:(id)value localizedTitle:(id)title localizedSubtitle:(id)subtitle image:(id)image;
 - (unint64_t)hash;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFLinkDynamicOptionSubstitutableState
 
 - (BOOL)valueNeedsDisplayRepresentation
 {
-  v3 = [(WFVariableSubstitutableParameterState *)self value];
-  v4 = [v3 value];
-  v5 = [v4 valueType];
+  value = [(WFVariableSubstitutableParameterState *)self value];
+  v3Value = [value value];
+  valueType = [v3Value valueType];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(WFVariableSubstitutableParameterState *)self value];
-    v7 = [v6 value];
-    v8 = [v7 displayRepresentation];
-    v9 = v8 == 0;
+    value2 = [(WFVariableSubstitutableParameterState *)self value];
+    v6Value = [value2 value];
+    displayRepresentation = [v6Value displayRepresentation];
+    v9 = displayRepresentation == 0;
   }
 
   else
@@ -41,11 +41,11 @@
   image = self->_image;
   if (!image)
   {
-    v4 = [(WFVariableSubstitutableParameterState *)self value];
-    v5 = [v4 image];
-    v6 = [v5 wf_image];
+    value = [(WFVariableSubstitutableParameterState *)self value];
+    image = [value image];
+    wf_image = [image wf_image];
     v7 = self->_image;
-    self->_image = v6;
+    self->_image = wf_image;
 
     image = self->_image;
   }
@@ -57,11 +57,11 @@
 {
   if (![(NSString *)self->_localizedSubtitle length])
   {
-    v3 = [(WFVariableSubstitutableParameterState *)self value];
-    v4 = [v3 subtitle];
-    v5 = [v4 wf_localizedString];
+    value = [(WFVariableSubstitutableParameterState *)self value];
+    subtitle = [value subtitle];
+    wf_localizedString = [subtitle wf_localizedString];
     localizedSubtitle = self->_localizedSubtitle;
-    self->_localizedSubtitle = v5;
+    self->_localizedSubtitle = wf_localizedString;
   }
 
   v7 = self->_localizedSubtitle;
@@ -73,11 +73,11 @@
 {
   if (![(NSString *)self->_localizedTitle length])
   {
-    v3 = [(WFVariableSubstitutableParameterState *)self value];
-    v4 = [v3 title];
-    v5 = [v4 wf_localizedString];
+    value = [(WFVariableSubstitutableParameterState *)self value];
+    title = [value title];
+    wf_localizedString = [title wf_localizedString];
     localizedTitle = self->_localizedTitle;
-    self->_localizedTitle = v5;
+    self->_localizedTitle = wf_localizedString;
   }
 
   v7 = self->_localizedTitle;
@@ -85,16 +85,16 @@
   return v7;
 }
 
-- (BOOL)stateIsEquivalent:(id)a3
+- (BOOL)stateIsEquivalent:(id)equivalent
 {
-  v4 = a3;
-  v5 = [(WFVariableSubstitutableParameterState *)self value];
-  if (v5)
+  equivalentCopy = equivalent;
+  value = [(WFVariableSubstitutableParameterState *)self value];
+  if (value)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = value;
     }
 
     else
@@ -110,14 +110,14 @@
 
   v7 = v6;
 
-  v8 = [v4 value];
+  value2 = [equivalentCopy value];
 
-  if (v8)
+  if (value2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = value2;
     }
 
     else
@@ -136,9 +136,9 @@
   LOBYTE(v11) = 0;
   if (v7 && v10)
   {
-    v12 = [v7 value];
-    v13 = [v10 value];
-    v14 = [v12 isEqual:v13];
+    value3 = [v7 value];
+    value4 = [v10 value];
+    v14 = [value3 isEqual:value4];
 
     if (v14)
     {
@@ -146,51 +146,51 @@
       goto LABEL_99;
     }
 
-    v15 = [v7 value];
-    v16 = [v15 valueType];
+    value5 = [v7 value];
+    valueType = [value5 valueType];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = [v7 value];
-      v18 = [v17 valueType];
-      v19 = [v10 value];
-      v20 = [v19 valueType];
-      v21 = [v18 isEqual:v20];
+      value6 = [v7 value];
+      valueType2 = [value6 valueType];
+      value7 = [v10 value];
+      valueType3 = [value7 valueType];
+      v21 = [valueType2 isEqual:valueType3];
 
       if (v21)
       {
-        v22 = [v7 value];
-        v23 = [v22 value];
+        value8 = [v7 value];
+        v22Value = [value8 value];
 
-        v24 = [v10 value];
-        v25 = [v24 value];
+        value9 = [v10 value];
+        v24Value = [value9 value];
 
-        if (([v23 isTransient] & 1) == 0 && (objc_msgSend(v25, "isTransient") & 1) == 0)
+        if (([v22Value isTransient] & 1) == 0 && (objc_msgSend(v24Value, "isTransient") & 1) == 0)
         {
-          v26 = [v23 identifier];
-          if (v26)
+          identifier = [v22Value identifier];
+          if (identifier)
           {
-            v27 = v26;
-            v28 = [v25 identifier];
+            v27 = identifier;
+            identifier2 = [v24Value identifier];
 
-            if (v28)
+            if (identifier2)
             {
-              v29 = [v23 identifier];
-              v30 = [v25 identifier];
-              LOBYTE(v11) = [v29 isEqual:v30];
+              identifier3 = [v22Value identifier];
+              identifier4 = [v24Value identifier];
+              LOBYTE(v11) = [identifier3 isEqual:identifier4];
               goto LABEL_96;
             }
           }
         }
 
-        if ([v23 isTransient] && objc_msgSend(v25, "isTransient"))
+        if ([v22Value isTransient] && objc_msgSend(v24Value, "isTransient"))
         {
-          v48 = [v23 properties];
-          v49 = [v25 properties];
-          v29 = v48;
-          v50 = v49;
-          v30 = v50;
-          if (v29 == v50)
+          properties = [v22Value properties];
+          properties2 = [v24Value properties];
+          identifier3 = properties;
+          v50 = properties2;
+          identifier4 = v50;
+          if (identifier3 == v50)
           {
           }
 
@@ -198,13 +198,13 @@
           {
             LOBYTE(v11) = 0;
             v51 = v50;
-            v52 = v29;
-            if (!v29 || !v50)
+            v52 = identifier3;
+            if (!identifier3 || !v50)
             {
               goto LABEL_95;
             }
 
-            v11 = [v29 isEqualToArray:v50];
+            v11 = [identifier3 isEqualToArray:v50];
 
             if (!v11)
             {
@@ -212,10 +212,10 @@
             }
           }
 
-          v80 = [v23 managedAccountIdentifier];
-          v81 = [v25 managedAccountIdentifier];
-          v52 = v80;
-          v82 = v81;
+          managedAccountIdentifier = [v22Value managedAccountIdentifier];
+          managedAccountIdentifier2 = [v24Value managedAccountIdentifier];
+          v52 = managedAccountIdentifier;
+          v82 = managedAccountIdentifier2;
           v51 = v82;
           v94 = v52;
           if (v52 == v82)
@@ -244,10 +244,10 @@ LABEL_95:
             }
           }
 
-          v87 = [v23 prototypeMangledTypeName];
-          v88 = [v25 prototypeMangledTypeName];
-          v52 = v87;
-          v89 = v88;
+          prototypeMangledTypeName = [v22Value prototypeMangledTypeName];
+          prototypeMangledTypeName2 = [v24Value prototypeMangledTypeName];
+          v52 = prototypeMangledTypeName;
+          v89 = prototypeMangledTypeName2;
           v83 = v89;
           if (v52 == v89)
           {
@@ -278,43 +278,43 @@ LABEL_98:
     {
     }
 
-    v31 = [v7 value];
-    v32 = [v31 valueType];
+    value10 = [v7 value];
+    valueType4 = [value10 valueType];
     v33 = 0x1E69AC000uLL;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v34 = [v7 value];
-      v35 = [v34 valueType];
-      if ([v35 typeIdentifier] == 13)
+      value11 = [v7 value];
+      valueType5 = [value11 valueType];
+      if ([valueType5 typeIdentifier] == 13)
       {
-        v36 = [v7 value];
-        v37 = [v36 valueType];
-        v38 = [v10 value];
-        v39 = [v38 valueType];
-        v92 = [v37 isEqual:v39];
+        value12 = [v7 value];
+        valueType6 = [value12 valueType];
+        value13 = [v10 value];
+        valueType7 = [value13 valueType];
+        v92 = [valueType6 isEqual:valueType7];
 
         v33 = 0x1E69AC000;
         if (v92)
         {
-          v40 = [v7 value];
-          v23 = [v40 value];
+          value14 = [v7 value];
+          v22Value = [value14 value];
 
-          v41 = [v10 value];
-          v25 = [v41 value];
+          value15 = [v10 value];
+          v24Value = [value15 value];
 
-          v42 = [v23 type];
-          if (v42 != [v25 type])
+          type = [v22Value type];
+          if (type != [v24Value type])
           {
             goto LABEL_54;
           }
 
-          v43 = [v23 name];
-          v44 = [v25 name];
-          v29 = v43;
-          v45 = v44;
-          v30 = v45;
-          if (v29 == v45)
+          name = [v22Value name];
+          name2 = [v24Value name];
+          identifier3 = name;
+          v45 = name2;
+          identifier4 = v45;
+          if (identifier3 == v45)
           {
           }
 
@@ -322,15 +322,15 @@ LABEL_98:
           {
             LOBYTE(v11) = 0;
             v46 = v45;
-            v47 = v29;
-            if (!v29 || !v45)
+            v47 = identifier3;
+            if (!identifier3 || !v45)
             {
 LABEL_91:
 
               goto LABEL_96;
             }
 
-            v11 = [v29 isEqualToString:v45];
+            v11 = [identifier3 isEqualToString:v45];
 
             if (!v11)
             {
@@ -338,10 +338,10 @@ LABEL_91:
             }
           }
 
-          v84 = [v23 identificationHint];
-          v85 = [v25 identificationHint];
-          v47 = v84;
-          v86 = v85;
+          identificationHint = [v22Value identificationHint];
+          identificationHint2 = [v24Value identificationHint];
+          v47 = identificationHint;
+          v86 = identificationHint2;
           v46 = v86;
           if (v47 == v86)
           {
@@ -361,41 +361,41 @@ LABEL_91:
         }
 
 LABEL_41:
-        v53 = [v7 value];
-        v54 = [v53 valueType];
+        value16 = [v7 value];
+        valueType8 = [value16 valueType];
         v55 = *(v33 + 2184);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v56 = [v7 value];
-          v30 = [v56 valueType];
-          if ([v30 typeIdentifier] == 12)
+          value17 = [v7 value];
+          identifier4 = [value17 valueType];
+          if ([identifier4 typeIdentifier] == 12)
           {
-            v57 = [v7 value];
-            v58 = [v57 valueType];
-            v59 = [v10 value];
-            v60 = [v59 valueType];
-            LODWORD(v91) = [v58 isEqual:v60];
+            value18 = [v7 value];
+            valueType9 = [value18 valueType];
+            value19 = [v10 value];
+            valueType10 = [value19 valueType];
+            LODWORD(v91) = [valueType9 isEqual:valueType10];
 
             v33 = 0x1E69AC000;
             if (v91)
             {
-              v61 = [v7 value];
-              v23 = [v61 value];
+              value20 = [v7 value];
+              v22Value = [value20 value];
 
-              v62 = [v10 value];
-              v25 = [v62 value];
+              value21 = [v10 value];
+              v24Value = [value21 value];
 
-              v29 = [v23 fileURL];
-              if (v29 || ([v25 fileURL], (v30 = objc_claimAutoreleasedReturnValue()) != 0))
+              identifier3 = [v22Value fileURL];
+              if (identifier3 || ([v24Value fileURL], (identifier4 = objc_claimAutoreleasedReturnValue()) != 0))
               {
-                v63 = [v23 filename];
-                if (!v63 || ([v25 filename], (v91 = objc_claimAutoreleasedReturnValue()) != 0))
+                filename = [v22Value filename];
+                if (!filename || ([v24Value filename], (v91 = objc_claimAutoreleasedReturnValue()) != 0))
                 {
-                  v75 = [v23 fileURL];
-                  v76 = [v25 fileURL];
-                  v77 = v75;
-                  v78 = v76;
+                  fileURL = [v22Value fileURL];
+                  fileURL2 = [v24Value fileURL];
+                  v77 = fileURL;
+                  v78 = fileURL2;
                   v79 = v78;
                   if (v77 == v78)
                   {
@@ -412,11 +412,11 @@ LABEL_41:
                   }
 
                   v64 = v91;
-                  if (!v63)
+                  if (!filename)
                   {
 LABEL_74:
 
-                    if (v29)
+                    if (identifier3)
                     {
 LABEL_97:
 
@@ -438,15 +438,15 @@ LABEL_96:
                 goto LABEL_74;
               }
 
-              v29 = 0;
+              identifier3 = 0;
 LABEL_53:
               LOBYTE(v11) = 0;
               goto LABEL_96;
             }
 
 LABEL_51:
-            v23 = [v7 value];
-            v25 = [v23 valueType];
+            v22Value = [v7 value];
+            v24Value = [v22Value valueType];
             v65 = *(v33 + 2184);
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -454,15 +454,15 @@ LABEL_51:
               goto LABEL_54;
             }
 
-            v29 = [v7 value];
-            v30 = [v29 valueType];
-            if (![v30 typeIdentifier])
+            identifier3 = [v7 value];
+            identifier4 = [identifier3 valueType];
+            if (![identifier4 typeIdentifier])
             {
-              v66 = [v7 value];
-              v67 = [v66 valueType];
-              v68 = [v10 value];
-              v69 = [v68 valueType];
-              v93 = [v67 isEqual:v69];
+              value22 = [v7 value];
+              valueType11 = [value22 valueType];
+              value23 = [v10 value];
+              valueType12 = [value23 valueType];
+              v93 = [valueType11 isEqual:valueType12];
 
               if (!v93)
               {
@@ -470,16 +470,16 @@ LABEL_51:
                 goto LABEL_99;
               }
 
-              v70 = [v7 value];
-              v71 = [v70 value];
+              value24 = [v7 value];
+              v70Value = [value24 value];
 
-              v72 = [v7 value];
-              v73 = [v72 value];
+              value25 = [v7 value];
+              v72Value = [value25 value];
 
-              v29 = v71;
-              v74 = v73;
-              v30 = v74;
-              if (v29 == v74)
+              identifier3 = v70Value;
+              v74 = v72Value;
+              identifier4 = v74;
+              if (identifier3 == v74)
               {
                 LOBYTE(v11) = 1;
               }
@@ -487,14 +487,14 @@ LABEL_51:
               else
               {
                 LOBYTE(v11) = 0;
-                if (v29 && v74)
+                if (identifier3 && v74)
                 {
-                  LOBYTE(v11) = [v29 isEqualToString:v74];
+                  LOBYTE(v11) = [identifier3 isEqualToString:v74];
                 }
               }
 
-              v25 = v30;
-              v23 = v29;
+              v24Value = identifier4;
+              v22Value = identifier3;
               goto LABEL_96;
             }
 
@@ -516,15 +516,15 @@ LABEL_99:
 
 - (unint64_t)hash
 {
-  v3 = [(WFVariableSubstitutableParameterState *)self value];
-  if ([v3 containsSensitiveContent])
+  value = [(WFVariableSubstitutableParameterState *)self value];
+  if ([value containsSensitiveContent])
   {
     v9.receiver = self;
     v9.super_class = WFLinkDynamicOptionSubstitutableState;
     v4 = [(WFVariableSubstitutableParameterState *)&v9 hash];
-    v5 = [v3 value];
-    v6 = [v5 displayRepresentation];
-    v7 = [v6 hash] ^ v4;
+    v3Value = [value value];
+    displayRepresentation = [v3Value displayRepresentation];
+    v7 = [displayRepresentation hash] ^ v4;
   }
 
   else
@@ -537,13 +537,13 @@ LABEL_99:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(WFVariableSubstitutableParameterState *)self value];
-  if ([v5 containsSensitiveContent])
+  equalCopy = equal;
+  value = [(WFVariableSubstitutableParameterState *)self value];
+  if ([value containsSensitiveContent])
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6)
     {
       objc_opt_class();
@@ -565,13 +565,13 @@ LABEL_99:
 
     v9 = v7;
 
-    v10 = [v9 value];
-    if (v10)
+    value2 = [v9 value];
+    if (value2)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = v10;
+        v11 = value2;
       }
 
       else
@@ -591,12 +591,12 @@ LABEL_99:
     v21.super_class = WFLinkDynamicOptionSubstitutableState;
     if ([(WFVariableSubstitutableParameterState *)&v21 isEqual:v6])
     {
-      v13 = [v5 value];
-      v14 = [v13 displayRepresentation];
-      v15 = [v12 value];
-      v16 = [v15 displayRepresentation];
-      v17 = v14;
-      v18 = v16;
+      v5Value = [value value];
+      displayRepresentation = [v5Value displayRepresentation];
+      value3 = [v12 value];
+      displayRepresentation2 = [value3 displayRepresentation];
+      v17 = displayRepresentation;
+      v18 = displayRepresentation2;
       v19 = v18;
       if (v17 == v18)
       {
@@ -623,56 +623,56 @@ LABEL_99:
   {
     v22.receiver = self;
     v22.super_class = WFLinkDynamicOptionSubstitutableState;
-    v8 = [(WFVariableSubstitutableParameterState *)&v22 isEqual:v4];
+    v8 = [(WFVariableSubstitutableParameterState *)&v22 isEqual:equalCopy];
   }
 
   return v8;
 }
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFVariableSubstitutableParameterState *)self variable];
+  contextCopy = context;
+  handlerCopy = handler;
+  valueHandlerCopy = valueHandler;
+  variable = [(WFVariableSubstitutableParameterState *)self variable];
 
-  if (v11)
+  if (variable)
   {
-    v12 = [(WFVariableSubstitutableParameterState *)self variable];
-    if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    variable2 = [(WFVariableSubstitutableParameterState *)self variable];
+    if (variable2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v13 = [v12 prompt];
-      v9[2](v9, v13, 0);
+      prompt = [variable2 prompt];
+      handlerCopy[2](handlerCopy, prompt, 0);
     }
 
     else
     {
 
-      v14 = [v8 parameter];
-      v15 = [v14 parameterMetadata];
-      v16 = [v15 valueType];
+      parameter = [contextCopy parameter];
+      parameterMetadata = [parameter parameterMetadata];
+      valueType = [parameterMetadata valueType];
 
-      v17 = [v16 wf_objectClass];
-      v18 = [(WFVariableSubstitutableParameterState *)self variable];
+      wf_objectClass = [valueType wf_objectClass];
+      variable3 = [(WFVariableSubstitutableParameterState *)self variable];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __98__WFLinkDynamicOptionSubstitutableState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke;
       v22[3] = &unk_1E837A650;
-      v25 = v10;
-      v26 = v17;
-      v23 = v16;
-      v24 = v14;
-      v19 = v14;
-      v12 = v16;
-      [v18 getContentWithContext:v8 completionHandler:v22];
+      v25 = valueHandlerCopy;
+      v26 = wf_objectClass;
+      v23 = valueType;
+      v24 = parameter;
+      v19 = parameter;
+      variable2 = valueType;
+      [variable3 getContentWithContext:contextCopy completionHandler:v22];
     }
   }
 
   else
   {
-    v20 = [(WFVariableSubstitutableParameterState *)self value];
-    v21 = [v20 value];
-    (*(v10 + 2))(v10, v21, 0);
+    value = [(WFVariableSubstitutableParameterState *)self value];
+    v20Value = [value value];
+    (*(valueHandlerCopy + 2))(valueHandlerCopy, v20Value, 0);
   }
 }
 
@@ -1184,25 +1184,25 @@ id __98__WFLinkDynamicOptionSubstitutableState_processWithContext_userInputRequi
   return v5;
 }
 
-- (WFLinkDynamicOptionSubstitutableState)initWithValue:(id)a3 localizedTitle:(id)a4 localizedSubtitle:(id)a5 image:(id)a6
+- (WFLinkDynamicOptionSubstitutableState)initWithValue:(id)value localizedTitle:(id)title localizedSubtitle:(id)subtitle image:(id)image
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  imageCopy = image;
   v22.receiver = self;
   v22.super_class = WFLinkDynamicOptionSubstitutableState;
-  v13 = [(WFVariableSubstitutableParameterState *)&v22 initWithValue:a3];
+  v13 = [(WFVariableSubstitutableParameterState *)&v22 initWithValue:value];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [titleCopy copy];
     localizedTitle = v13->_localizedTitle;
     v13->_localizedTitle = v14;
 
-    v16 = [v11 copy];
+    v16 = [subtitleCopy copy];
     localizedSubtitle = v13->_localizedSubtitle;
     v13->_localizedSubtitle = v16;
 
-    v18 = [v12 copy];
+    v18 = [imageCopy copy];
     image = v13->_image;
     v13->_image = v18;
 
@@ -1212,23 +1212,23 @@ id __98__WFLinkDynamicOptionSubstitutableState_processWithContext_userInputRequi
   return v13;
 }
 
-+ (id)serializedRepresentationFromValue:(id)a3
++ (id)serializedRepresentationFromValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"WFLinkDynamicOptionSubstitutableState.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"[option isKindOfClass:[LNDynamicOption class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFLinkDynamicOptionSubstitutableState.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"[option isKindOfClass:[LNDynamicOption class]]"}];
   }
 
-  v6 = [v5 containsSensitiveContent];
+  containsSensitiveContent = [valueCopy containsSensitiveContent];
   v7 = MEMORY[0x1E695DF90];
-  v8 = [v5 value];
-  v9 = [v8 wfSerializedRepresentation];
-  v10 = [v7 dictionaryWithDictionary:v9];
+  value = [valueCopy value];
+  wfSerializedRepresentation = [value wfSerializedRepresentation];
+  v10 = [v7 dictionaryWithDictionary:wfSerializedRepresentation];
 
-  if (v6)
+  if (containsSensitiveContent)
   {
     [v10 removeObjectForKey:@"title"];
     [v10 removeObjectForKey:@"symbol"];
@@ -1238,19 +1238,19 @@ id __98__WFLinkDynamicOptionSubstitutableState_processWithContext_userInputRequi
   return v10;
 }
 
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5 bundleIdentifier:(id)a6
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter bundleIdentifier:(id)identifier
 {
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v9)
+  representationCopy = representation;
+  providerCopy = provider;
+  parameterCopy = parameter;
+  identifierCopy = identifier;
+  if (representationCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = v9;
+      v13 = representationCopy;
     }
 
     else
@@ -1265,7 +1265,7 @@ id __98__WFLinkDynamicOptionSubstitutableState_processWithContext_userInputRequi
   }
 
   v14 = v13;
-  v15 = v11;
+  v15 = parameterCopy;
   if (v15)
   {
     objc_opt_class();
@@ -1287,10 +1287,10 @@ id __98__WFLinkDynamicOptionSubstitutableState_processWithContext_userInputRequi
 
   v17 = v16;
 
-  v18 = [v17 parameterMetadata];
-  v19 = [v18 valueType];
+  parameterMetadata = [v17 parameterMetadata];
+  valueType = [parameterMetadata valueType];
 
-  if (!v19)
+  if (!valueType)
   {
     v21 = [v14 objectForKeyedSubscript:@"valueType"];
     if (!v21 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -1300,7 +1300,7 @@ id __98__WFLinkDynamicOptionSubstitutableState_processWithContext_userInputRequi
       goto LABEL_26;
     }
 
-    v19 = v21;
+    valueType = v21;
   }
 
   v20 = v14;
@@ -1314,25 +1314,25 @@ id __98__WFLinkDynamicOptionSubstitutableState_processWithContext_userInputRequi
 
     else
     {
-      v20 = v9;
+      v20 = representationCopy;
     }
   }
 
-  v23 = [MEMORY[0x1E69ACA90] valueFromSerializedRepresentation:v20 valueType:v19 variableProvider:v10 parameter:v15 bundleIdentifier:v12];
+  v23 = [MEMORY[0x1E69ACA90] valueFromSerializedRepresentation:v20 valueType:valueType variableProvider:providerCopy parameter:v15 bundleIdentifier:identifierCopy];
   if (v23)
   {
     v22 = [objc_alloc(MEMORY[0x1E69ACEC8]) initWithValue:v23 indentationLevel:0];
     [v17 dataSource];
-    v31 = v9;
+    v31 = representationCopy;
     v24 = v14;
-    v25 = v12;
-    v27 = v26 = v10;
+    v25 = identifierCopy;
+    v27 = v26 = providerCopy;
     [v22 setContainsSensitiveContent:{objc_msgSend(v27, "enumeration:shouldStripSenstitiveContentFromValue:", v17, v22)}];
 
-    v10 = v26;
-    v12 = v25;
+    providerCopy = v26;
+    identifierCopy = v25;
     v14 = v24;
-    v9 = v31;
+    representationCopy = v31;
   }
 
   else

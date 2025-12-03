@@ -1,6 +1,6 @@
 @interface TPBottomSingleButtonBar
 - (double)buttonWidth;
-- (void)setButton:(id)a3 andStyle:(BOOL)a4;
+- (void)setButton:(id)button andStyle:(BOOL)style;
 @end
 
 @implementation TPBottomSingleButtonBar
@@ -17,28 +17,28 @@
   return result;
 }
 
-- (void)setButton:(id)a3 andStyle:(BOOL)a4
+- (void)setButton:(id)button andStyle:(BOOL)style
 {
-  v4 = a4;
-  v7 = a3;
+  styleCopy = style;
+  buttonCopy = button;
   button = self->_button;
-  v9 = v7;
-  v26 = v7;
-  if (button != v7)
+  v9 = buttonCopy;
+  v26 = buttonCopy;
+  if (button != buttonCopy)
   {
     [(TPButton *)button removeFromSuperview];
-    objc_storeStrong(&self->_button, a3);
+    objc_storeStrong(&self->_button, button);
     v9 = self->_button;
   }
 
   if (v9)
   {
-    v10 = [MEMORY[0x1E69DC938] currentDevice];
-    v11 = [v10 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v11 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
-      if (v4)
+      if (styleCopy)
       {
         [(TPBottomSingleButtonBar *)self bounds];
         v13 = v12;
@@ -55,7 +55,7 @@ LABEL_9:
       }
     }
 
-    else if (v4)
+    else if (styleCopy)
     {
       [(TPBottomSingleButtonBar *)self bounds];
       v23 = v22;

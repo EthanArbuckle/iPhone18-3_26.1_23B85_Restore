@@ -1,41 +1,41 @@
 @interface CKTransientReplicaButtonContainer
-- (CKTransientReplicaButtonContainer)initWithFrame:(CGRect)a3 hasDarkVibrancy:(BOOL)a4 isInDarkMode:(BOOL)a5 color:(id)a6 sendColor:(char)a7;
-- (id)_glyphLayerForButtonAnimationWithImage:(id)a3;
-- (id)_invertedCircularFillGlyph:(id)a3;
+- (CKTransientReplicaButtonContainer)initWithFrame:(CGRect)frame hasDarkVibrancy:(BOOL)vibrancy isInDarkMode:(BOOL)mode color:(id)color sendColor:(char)sendColor;
+- (id)_glyphLayerForButtonAnimationWithImage:(id)image;
+- (id)_invertedCircularFillGlyph:(id)glyph;
 @end
 
 @implementation CKTransientReplicaButtonContainer
 
-- (CKTransientReplicaButtonContainer)initWithFrame:(CGRect)a3 hasDarkVibrancy:(BOOL)a4 isInDarkMode:(BOOL)a5 color:(id)a6 sendColor:(char)a7
+- (CKTransientReplicaButtonContainer)initWithFrame:(CGRect)frame hasDarkVibrancy:(BOOL)vibrancy isInDarkMode:(BOOL)mode color:(id)color sendColor:(char)sendColor
 {
-  v7 = a7;
-  v8 = a5;
-  v9 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a6;
+  sendColorCopy = sendColor;
+  modeCopy = mode;
+  vibrancyCopy = vibrancy;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  colorCopy = color;
   v73.receiver = self;
   v73.super_class = CKTransientReplicaButtonContainer;
-  v16 = [(CKTransientReplicaButtonContainer *)&v73 initWithFrame:x, y, width, height];
-  v17 = v16;
-  if (v16)
+  height = [(CKTransientReplicaButtonContainer *)&v73 initWithFrame:x, y, width, height];
+  v17 = height;
+  if (height)
   {
-    v18 = [(CKTransientReplicaButtonContainer *)v16 layer];
-    [v18 setAllowsGroupBlending:1];
+    layer = [(CKTransientReplicaButtonContainer *)height layer];
+    [layer setAllowsGroupBlending:1];
 
-    v19 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v20 = [v19 isEntryViewRefreshEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-    if (v20)
+    if (isEntryViewRefreshEnabled)
     {
       v21 = objc_alloc_init(CKGlassSendButton);
       +[CKGlassSendButton buttonSize];
       v23 = v22;
       v25 = v24;
       [(CKGlassSendButton *)v21 setFrame:0.0, 0.0, v22, v24];
-      [(CKGlassSendButton *)v21 setCkTintColor:v7];
+      [(CKGlassSendButton *)v21 setCkTintColor:sendColorCopy];
       [(CKTransientReplicaButtonContainer *)v17 addSubview:v21];
       sendButtonCircle = v17->_sendButtonCircle;
       v17->_sendButtonCircle = &v21->super.super.super;
@@ -50,8 +50,8 @@
 
     else
     {
-      v64 = v9;
-      v65 = v8;
+      v64 = vibrancyCopy;
+      v65 = modeCopy;
       cancelButtonCircle = [MEMORY[0x1E69DCAD8] configurationWithPointSize:5 weight:3 scale:19.0];
       v27 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"circle.fill" withConfiguration:cancelButtonCircle];
       v30 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"arrow.up.circle.fill" withConfiguration:cancelButtonCircle];
@@ -74,21 +74,21 @@
       [(UIView *)v35 setFrame:?];
       [v36 setFrame:{v38, v40, v42, v44}];
       v45 = +[CKUIBehavior sharedBehaviors];
-      v46 = [v45 theme];
-      v47 = [v46 sendButtonColorForColorType:v7];
+      theme = [v45 theme];
+      v47 = [theme sendButtonColorForColorType:sendColorCopy];
 
       [(UIView *)v35 setImage:v27 forState:0];
       v67 = v47;
       [(UIView *)v35 setTintColor:v47];
-      v48 = v15;
+      v48 = colorCopy;
       [v36 setImage:v27 forState:0];
       v66 = v48;
       [v36 setTintColor:v48];
       v49 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v38, v40, v42, v44}];
       if (!UIAccessibilityIsReduceTransparencyEnabled() && !UIAccessibilityDarkerSystemColorsEnabled())
       {
-        v50 = [(UIView *)v49 layer];
-        setUpVibrancyForLayer(v50, v64, v65 ^ 1, v65);
+        layer2 = [(UIView *)v49 layer];
+        setUpVibrancyForLayer(layer2, v64, v65 ^ 1, v65);
       }
 
       [(UIView *)v49 addSubview:v36];
@@ -106,11 +106,11 @@
       MidY = CGRectGetMidY(v75);
       [(CALayer *)v34 setPosition:MidX, MidY];
       [(CALayer *)v68 setPosition:MidX, MidY];
-      v53 = [(UIView *)v35 layer];
-      [v53 addSublayer:v34];
+      layer3 = [(UIView *)v35 layer];
+      [layer3 addSublayer:v34];
 
-      v54 = [v36 layer];
-      [v54 addSublayer:v68];
+      layer4 = [v36 layer];
+      [layer4 addSublayer:v68];
 
       v55 = v17->_cancelButtonCircle;
       v17->_cancelButtonCircle = v49;
@@ -134,28 +134,28 @@
   return v17;
 }
 
-- (id)_invertedCircularFillGlyph:(id)a3
+- (id)_invertedCircularFillGlyph:(id)glyph
 {
   v23[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 configuration];
+  glyphCopy = glyph;
+  configuration = [glyphCopy configuration];
   v6 = MEMORY[0x1E69DCAD8];
-  v7 = [MEMORY[0x1E69DC888] blackColor];
-  v23[0] = v7;
-  v8 = [MEMORY[0x1E69DC888] clearColor];
-  v23[1] = v8;
-  v9 = [MEMORY[0x1E69DC888] clearColor];
-  v23[2] = v9;
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v23[0] = blackColor;
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  v23[1] = clearColor;
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  v23[2] = clearColor2;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:3];
   v11 = [v6 _configurationWithHierarchicalColors:v10];
-  v12 = [v5 configurationByApplyingConfiguration:v11];
+  v12 = [configuration configurationByApplyingConfiguration:v11];
 
   v13 = objc_alloc_init(MEMORY[0x1E69DCA80]);
-  v14 = [(CKTransientReplicaButtonContainer *)self traitCollection];
-  [v14 displayScale];
+  traitCollection = [(CKTransientReplicaButtonContainer *)self traitCollection];
+  [traitCollection displayScale];
   [v13 setScale:?];
 
-  v15 = [v4 imageWithConfiguration:v12];
+  v15 = [glyphCopy imageWithConfiguration:v12];
 
   v16 = objc_alloc(MEMORY[0x1E69DCA78]);
   [v15 size];
@@ -171,21 +171,21 @@
   return v19;
 }
 
-- (id)_glyphLayerForButtonAnimationWithImage:(id)a3
+- (id)_glyphLayerForButtonAnimationWithImage:(id)image
 {
-  v3 = a3;
-  [v3 size];
+  imageCopy = image;
+  [imageCopy size];
   v5 = v4;
   v7 = v6;
-  v8 = [MEMORY[0x1E6979398] layer];
-  v9 = [v3 CGImage];
+  layer = [MEMORY[0x1E6979398] layer];
+  cGImage = [imageCopy CGImage];
 
-  [v8 setContents:v9];
-  [v8 setBounds:{0.0, 0.0, v5, v7}];
+  [layer setContents:cGImage];
+  [layer setBounds:{0.0, 0.0, v5, v7}];
   v10 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E69798E8]];
-  [v8 setCompositingFilter:v10];
+  [layer setCompositingFilter:v10];
 
-  return v8;
+  return layer;
 }
 
 @end

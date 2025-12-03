@@ -16,11 +16,11 @@
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v2 = [a1 _accessibilityAncestorIsKindOf:objc_opt_class()];
+    v2 = [self _accessibilityAncestorIsKindOf:objc_opt_class()];
     v3 = __UIAccessibilityCastAsClass();
 
     v4 = [v3 _accessibilityFindUnsortedSubviewDescendantsPassingTest:&__block_literal_global_12];
-    v5 = [a1 _atvaccessibilityClosestElementAbove:v4];
+    v5 = [self _atvaccessibilityClosestElementAbove:v4];
   }
 
   else
@@ -35,7 +35,7 @@
 {
   v25 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  [a1 accessibilityFrame];
+  [self accessibilityFrame];
   v6 = v5;
   v20 = 0u;
   v21 = 0u;
@@ -97,32 +97,32 @@
 - (id)_atvaccessibilityAncestorHasAXID:()AXATV_Extras
 {
   v4 = a3;
-  v5 = a1;
-  if (v5)
+  selfCopy = self;
+  if (selfCopy)
   {
     while (1)
     {
-      v6 = [v5 accessibilityIdentifier];
-      if ([v4 containsObject:v6])
+      accessibilityIdentifier = [selfCopy accessibilityIdentifier];
+      if ([v4 containsObject:accessibilityIdentifier])
       {
         break;
       }
 
-      v7 = [v5 accessibilityContainer];
+      accessibilityContainer = [selfCopy accessibilityContainer];
 
-      v5 = v7;
-      if (!v7)
+      selfCopy = accessibilityContainer;
+      if (!accessibilityContainer)
       {
         goto LABEL_6;
       }
     }
 
-    v5 = v5;
+    selfCopy = selfCopy;
   }
 
 LABEL_6:
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)_atvAccessibilityITMLAccessibilityContentWithElement:()AXATV_Extras
@@ -171,8 +171,8 @@ LABEL_6:
         if (objc_opt_isKindOfClass())
         {
           v11 = v8;
-          v12 = [v11 accessibilityText];
-          if (v12)
+          accessibilityText = [v11 accessibilityText];
+          if (accessibilityText)
           {
             goto LABEL_10;
           }
@@ -196,12 +196,12 @@ LABEL_6:
           v15 = v14;
           _Block_object_dispose(&v40, 8);
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) != 0 && (+[AXATVUtils sharedInstance](AXATVUtils, "sharedInstance"), v16 = objc_claimAutoreleasedReturnValue(), [v11 url], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "accessibilityLabelForResourceURL:", v17), v12 = objc_claimAutoreleasedReturnValue(), v17, v16, v12))
+          if ((objc_opt_isKindOfClass() & 1) != 0 && (+[AXATVUtils sharedInstance](AXATVUtils, "sharedInstance"), v16 = objc_claimAutoreleasedReturnValue(), [v11 url], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "accessibilityLabelForResourceURL:", v17), accessibilityText = objc_claimAutoreleasedReturnValue(), v17, v16, accessibilityText))
           {
 LABEL_10:
-            if (([v4 containsString:{v12, v27}] & 1) == 0)
+            if (([v4 containsString:{accessibilityText, v27}] & 1) == 0)
             {
-              v27 = v12;
+              v27 = accessibilityText;
               v28 = @"__AXStringForVariablesSentinel";
               v13 = __AXStringForVariables();
               goto LABEL_22;
@@ -210,18 +210,18 @@ LABEL_10:
 
           else
           {
-            v18 = [v11 tv_elementType];
-            if (v18 == 43)
+            tv_elementType = [v11 tv_elementType];
+            if (tv_elementType == 43)
             {
-              v12 = 0;
+              accessibilityText = 0;
             }
 
             else
             {
-              if (v18 == 39)
+              if (tv_elementType == 39)
               {
-                v19 = [v11 attributes];
-                v20 = [v19 objectForKeyedSubscript:@"value"];
+                attributes = [v11 attributes];
+                v20 = [attributes objectForKeyedSubscript:@"value"];
                 [v20 floatValue];
 
                 v21 = +[AXATVUtils sharedInstance];
@@ -238,13 +238,13 @@ LABEL_10:
 
               else
               {
-                v22 = [a1 _atvAccessibilityITMLAccessibilityContentWithElement:v11];
+                v22 = [self _atvAccessibilityITMLAccessibilityContentWithElement:v11];
                 v27 = v22;
                 v28 = @"__AXStringForVariablesSentinel";
                 v13 = __AXStringForVariables();
               }
 
-              v12 = 0;
+              accessibilityText = 0;
               v4 = v22;
 LABEL_22:
 
@@ -269,18 +269,18 @@ LABEL_22:
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 performSelector:sel_tv_AccessibilityText];
+    accessibilityText = [self performSelector:sel_tv_AccessibilityText];
   }
 
   else
   {
-    v2 = 0;
+    accessibilityText = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v3 = [a1 tv_associatedIKViewElement];
-    if (v2)
+    tv_associatedIKViewElement = [self tv_associatedIKViewElement];
+    if (accessibilityText)
     {
       goto LABEL_10;
     }
@@ -288,17 +288,17 @@ LABEL_22:
 
   else
   {
-    v3 = 0;
-    if (v2)
+    tv_associatedIKViewElement = 0;
+    if (accessibilityText)
     {
       goto LABEL_10;
     }
   }
 
-  v2 = [v3 accessibilityText];
-  if (!v2)
+  accessibilityText = [tv_associatedIKViewElement accessibilityText];
+  if (!accessibilityText)
   {
-    v2 = [a1 _atvAccessibilityITMLAccessibilityContentWithElement:v3];
+    accessibilityText = [self _atvAccessibilityITMLAccessibilityContentWithElement:tv_associatedIKViewElement];
   }
 
 LABEL_10:
@@ -323,29 +323,29 @@ LABEL_10:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [a1 _accessibilityBadgeTextForTextElement:v3];
+    v8 = [self _accessibilityBadgeTextForTextElement:tv_associatedIKViewElement];
     v6 = __AXStringForVariables();
 
-    v2 = v6;
+    accessibilityText = v6;
   }
 
-  return v2;
+  return accessibilityText;
 }
 
 - (id)_atvaccessibilityITMLClass
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 tv_associatedIKViewElement];
-    v3 = [v2 attributes];
+    tv_associatedIKViewElement = [self tv_associatedIKViewElement];
+    attributes = [tv_associatedIKViewElement attributes];
   }
 
   else
   {
-    v3 = 0;
+    attributes = 0;
   }
 
-  v4 = [v3 objectForKey:@"class"];
+  v4 = [attributes objectForKey:@"class"];
 
   return v4;
 }

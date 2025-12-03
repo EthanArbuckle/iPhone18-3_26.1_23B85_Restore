@@ -1,21 +1,21 @@
 @interface TIFitAffineMLLMatrixWrapper
-- (CGPoint)transformedPoint:(CGPoint)a3;
+- (CGPoint)transformedPoint:(CGPoint)point;
 - (TIFitAffineMLLMatrixWrapper)init;
 - (void)calcMatrix;
 - (void)dealloc;
-- (void)setMatrix:(void *)a3;
-- (void)setRotation:(double)a3;
-- (void)setSkewRotation:(double)a3;
-- (void)setXScale:(double)a3 yScale:(double)a4;
-- (void)setXTrans:(double)a3 yTrans:(double)a4;
+- (void)setMatrix:(void *)matrix;
+- (void)setRotation:(double)rotation;
+- (void)setSkewRotation:(double)rotation;
+- (void)setXScale:(double)scale yScale:(double)yScale;
+- (void)setXTrans:(double)trans yTrans:(double)yTrans;
 @end
 
 @implementation TIFitAffineMLLMatrixWrapper
 
-- (CGPoint)transformedPoint:(CGPoint)a3
+- (CGPoint)transformedPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v12[3] = *MEMORY[0x277D85DE8];
   [(TIFitAffineMLLMatrixWrapper *)self calcMatrix];
   *v12 = x;
@@ -92,7 +92,7 @@
   }
 }
 
-- (void)setXTrans:(double)a3 yTrans:(double)a4
+- (void)setXTrans:(double)trans yTrans:(double)yTrans
 {
   pMatrix = self->_pMatrix;
   if (pMatrix)
@@ -112,7 +112,7 @@
   operator new();
 }
 
-- (void)setSkewRotation:(double)a3
+- (void)setSkewRotation:(double)rotation
 {
   pMatrix = self->_pMatrix;
   if (pMatrix)
@@ -132,7 +132,7 @@
   operator new();
 }
 
-- (void)setRotation:(double)a3
+- (void)setRotation:(double)rotation
 {
   pMatrix = self->_pMatrix;
   if (pMatrix)
@@ -149,11 +149,11 @@
     MEMORY[0x26D6C07C0](pRotationMatrix, 0x1020C40FAF5D19FLL);
   }
 
-  __sincos_stret(a3);
+  __sincos_stret(rotation);
   operator new();
 }
 
-- (void)setXScale:(double)a3 yScale:(double)a4
+- (void)setXScale:(double)scale yScale:(double)yScale
 {
   pMatrix = self->_pMatrix;
   if (pMatrix)
@@ -173,7 +173,7 @@
   operator new();
 }
 
-- (void)setMatrix:(void *)a3
+- (void)setMatrix:(void *)matrix
 {
   pMatrix = self->_pMatrix;
   if (pMatrix)

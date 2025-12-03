@@ -1,18 +1,18 @@
 @interface AAUIAwardsQuery
-- (BOOL)activateAndReturnError:(id *)a3;
+- (BOOL)activateAndReturnError:(id *)error;
 - (_TtC22ActivityAchievementsUI15AAUIAwardsQuery)init;
-- (_TtC22ActivityAchievementsUI15AAUIAwardsQuery)initWithInitialAwardsHandler:(id)a3 addedAwardsHandler:(id)a4 removedAwardsHandler:(id)a5 updatedAwardsHandler:(id)a6;
+- (_TtC22ActivityAchievementsUI15AAUIAwardsQuery)initWithInitialAwardsHandler:(id)handler addedAwardsHandler:(id)awardsHandler removedAwardsHandler:(id)removedAwardsHandler updatedAwardsHandler:(id)updatedAwardsHandler;
 - (void)deactivate;
 @end
 
 @implementation AAUIAwardsQuery
 
-- (_TtC22ActivityAchievementsUI15AAUIAwardsQuery)initWithInitialAwardsHandler:(id)a3 addedAwardsHandler:(id)a4 removedAwardsHandler:(id)a5 updatedAwardsHandler:(id)a6
+- (_TtC22ActivityAchievementsUI15AAUIAwardsQuery)initWithInitialAwardsHandler:(id)handler addedAwardsHandler:(id)awardsHandler removedAwardsHandler:(id)removedAwardsHandler updatedAwardsHandler:(id)updatedAwardsHandler
 {
-  v10 = _Block_copy(a3);
-  v11 = _Block_copy(a4);
-  v12 = _Block_copy(a5);
-  v13 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
+  v11 = _Block_copy(awardsHandler);
+  v12 = _Block_copy(removedAwardsHandler);
+  v13 = _Block_copy(updatedAwardsHandler);
   *(swift_allocObject() + 16) = v10;
   *(swift_allocObject() + 16) = v11;
   *(swift_allocObject() + 16) = v12;
@@ -27,9 +27,9 @@
   return v15;
 }
 
-- (BOOL)activateAndReturnError:(id *)a3
+- (BOOL)activateAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   sub_23E4DCC4C();
 
   return 1;
@@ -37,7 +37,7 @@
 
 - (void)deactivate
 {
-  v2 = self;
+  selfCopy = self;
   sub_23E4DCC3C();
 }
 

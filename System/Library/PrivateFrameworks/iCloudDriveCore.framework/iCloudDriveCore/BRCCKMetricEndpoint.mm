@@ -1,29 +1,29 @@
 @interface BRCCKMetricEndpoint
-- (BRCCKMetricEndpoint)initWithSession:(id)a3;
-- (void)submitEventMetric:(id)a3;
+- (BRCCKMetricEndpoint)initWithSession:(id)session;
+- (void)submitEventMetric:(id)metric;
 @end
 
 @implementation BRCCKMetricEndpoint
 
-- (BRCCKMetricEndpoint)initWithSession:(id)a3
+- (BRCCKMetricEndpoint)initWithSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v9.receiver = self;
   v9.super_class = BRCCKMetricEndpoint;
   v6 = [(BRCCKMetricEndpoint *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_session, a3);
+    objc_storeStrong(&v6->_session, session);
   }
 
   return v7;
 }
 
-- (void)submitEventMetric:(id)a3
+- (void)submitEventMetric:(id)metric
 {
-  v4 = a3;
-  if (v4)
+  metricCopy = metric;
+  if (metricCopy)
   {
     v5 = brc_bread_crumbs();
     v6 = brc_default_log();
@@ -32,35 +32,35 @@
       [BRCCKMetricEndpoint submitEventMetric:];
     }
 
-    v7 = [v4 associatedCKEventMetricIfAvailable];
-    if (!v7)
+    associatedCKEventMetricIfAvailable = [metricCopy associatedCKEventMetricIfAvailable];
+    if (!associatedCKEventMetricIfAvailable)
     {
       v8 = objc_alloc(MEMORY[0x277CBC358]);
-      v9 = [v4 eventName];
-      v10 = [v4 startTime];
-      v7 = [v8 initWithEventName:v9 atTime:v10];
+      eventName = [metricCopy eventName];
+      startTime = [metricCopy startTime];
+      associatedCKEventMetricIfAvailable = [v8 initWithEventName:eventName atTime:startTime];
     }
 
-    v11 = [v4 startTime];
-    [v7 setStartTime:v11];
+    startTime2 = [metricCopy startTime];
+    [associatedCKEventMetricIfAvailable setStartTime:startTime2];
 
-    v12 = [v4 endTime];
-    [v7 setEndTime:v12];
+    endTime = [metricCopy endTime];
+    [associatedCKEventMetricIfAvailable setEndTime:endTime];
 
-    v13 = [v4 additionalPayload];
+    additionalPayload = [metricCopy additionalPayload];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __41__BRCCKMetricEndpoint_submitEventMetric___block_invoke;
     v18[3] = &unk_278500270;
-    v19 = v7;
-    v14 = v7;
-    [v13 enumerateKeysAndObjectsUsingBlock:v18];
+    v19 = associatedCKEventMetricIfAvailable;
+    v14 = associatedCKEventMetricIfAvailable;
+    [additionalPayload enumerateKeysAndObjectsUsingBlock:v18];
 
-    v15 = [(BRCAccountSession *)self->_session syncContextProvider];
-    v16 = [v15 defaultSyncContext];
-    v17 = [v16 ckContainer];
+    syncContextProvider = [(BRCAccountSession *)self->_session syncContextProvider];
+    defaultSyncContext = [syncContextProvider defaultSyncContext];
+    ckContainer = [defaultSyncContext ckContainer];
 
-    [v17 submitEventMetric:v14];
+    [ckContainer submitEventMetric:v14];
   }
 }
 

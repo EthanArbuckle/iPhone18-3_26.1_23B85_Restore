@@ -1,7 +1,7 @@
 @interface AVPlayerView
 + (Class)layerClass;
-- (_TtC7HomeUI2P33_33C2D5E6D8C15322E88C11963146B55E12AVPlayerView)initWithCoder:(id)a3;
-- (_TtC7HomeUI2P33_33C2D5E6D8C15322E88C11963146B55E12AVPlayerView)initWithFrame:(CGRect)a3;
+- (_TtC7HomeUI2P33_33C2D5E6D8C15322E88C11963146B55E12AVPlayerView)initWithCoder:(id)coder;
+- (_TtC7HomeUI2P33_33C2D5E6D8C15322E88C11963146B55E12AVPlayerView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation AVPlayerView
@@ -21,12 +21,12 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC7HomeUI2P33_33C2D5E6D8C15322E88C11963146B55E12AVPlayerView)initWithFrame:(CGRect)a3
+- (_TtC7HomeUI2P33_33C2D5E6D8C15322E88C11963146B55E12AVPlayerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_25454BE14();
   sub_25454BE04();
   sub_25454BDB4();
@@ -37,12 +37,12 @@
 
   v10.receiver = self;
   v10.super_class = type metadata accessor for AVPlayerView();
-  v8 = [(AVPlayerView *)&v10 initWithFrame:x, y, width, height];
+  height = [(AVPlayerView *)&v10 initWithFrame:x, y, width, height];
 
-  return v8;
+  return height;
 }
 
-- (_TtC7HomeUI2P33_33C2D5E6D8C15322E88C11963146B55E12AVPlayerView)initWithCoder:(id)a3
+- (_TtC7HomeUI2P33_33C2D5E6D8C15322E88C11963146B55E12AVPlayerView)initWithCoder:(id)coder
 {
   sub_25454BE14();
   sub_25454BE04();
@@ -54,8 +54,8 @@
 
   v8.receiver = self;
   v8.super_class = type metadata accessor for AVPlayerView();
-  v5 = a3;
-  v6 = [(AVPlayerView *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(AVPlayerView *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

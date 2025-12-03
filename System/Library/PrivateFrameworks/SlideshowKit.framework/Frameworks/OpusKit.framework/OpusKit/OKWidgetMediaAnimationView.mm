@@ -1,25 +1,25 @@
 @interface OKWidgetMediaAnimationView
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
-- (BOOL)prepareForDisplay:(BOOL)a3;
-- (OKWidgetMediaAnimationView)initWithWidget:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
++ (void)setupJavascriptContext:(id)context;
+- (BOOL)prepareForDisplay:(BOOL)display;
+- (OKWidgetMediaAnimationView)initWithWidget:(id)widget;
+- (id)valueForUndefinedKey:(id)key;
 - (void)dealloc;
 - (void)playAnimation;
-- (void)setSettingAutoplay:(BOOL)a3;
-- (void)setSettingContentMode:(int64_t)a3;
-- (void)setSettingLoop:(BOOL)a3;
-- (void)setSettingUrls:(id)a3;
+- (void)setSettingAutoplay:(BOOL)autoplay;
+- (void)setSettingContentMode:(int64_t)mode;
+- (void)setSettingLoop:(BOOL)loop;
+- (void)setSettingUrls:(id)urls;
 - (void)stopAnimation;
 @end
 
 @implementation OKWidgetMediaAnimationView
 
-- (OKWidgetMediaAnimationView)initWithWidget:(id)a3
+- (OKWidgetMediaAnimationView)initWithWidget:(id)widget
 {
   v5.receiver = self;
   v5.super_class = OKWidgetMediaAnimationView;
-  v3 = [(OKWidgetViewProxy *)&v5 initWithWidget:a3];
+  v3 = [(OKWidgetViewProxy *)&v5 initWithWidget:widget];
   if (v3)
   {
     v3->_uuid = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", objc_msgSend(objc_opt_class(), "animationKeyPrefix"), objc_msgSend(MEMORY[0x277CCACA8], "generateUUID")];
@@ -44,10 +44,10 @@
 
 - (void)stopAnimation
 {
-  v3 = [(OKWidgetMediaAnimationView *)self layer];
+  layer = [(OKWidgetMediaAnimationView *)self layer];
   uuid = self->_uuid;
 
-  [v3 removeAnimationForKey:uuid];
+  [layer removeAnimationForKey:uuid];
 }
 
 - (void)playAnimation
@@ -66,18 +66,18 @@
       [v3 setRepeatCount:v4];
     }
 
-    v5 = [(OKWidgetMediaAnimationView *)self layer];
+    layer = [(OKWidgetMediaAnimationView *)self layer];
     uuid = self->_uuid;
 
-    [v5 addAnimation:v3 forKey:uuid];
+    [layer addAnimation:v3 forKey:uuid];
   }
 }
 
-- (BOOL)prepareForDisplay:(BOOL)a3
+- (BOOL)prepareForDisplay:(BOOL)display
 {
   v6.receiver = self;
   v6.super_class = OKWidgetMediaAnimationView;
-  v4 = [(OKWidgetViewProxy *)&v6 prepareForDisplay:a3];
+  v4 = [(OKWidgetViewProxy *)&v6 prepareForDisplay:display];
   if (v4 && self->_autoplay)
   {
     [(OKWidgetMediaAnimationView *)self playAnimation];
@@ -89,7 +89,7 @@
 + (id)supportedSettings
 {
   v17[5] = *MEMORY[0x277D85DE8];
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___OKWidgetMediaAnimationView;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v5, sel_supportedSettings)}];
   v16[0] = @"contentMode";
@@ -135,16 +135,16 @@
   return v2;
 }
 
-- (void)setSettingContentMode:(int64_t)a3
+- (void)setSettingContentMode:(int64_t)mode
 {
-  if ([(OKWidgetMediaAnimationView *)self contentMode]!= a3)
+  if ([(OKWidgetMediaAnimationView *)self contentMode]!= mode)
   {
 
-    [(OKWidgetMediaAnimationView *)self setContentMode:a3];
+    [(OKWidgetMediaAnimationView *)self setContentMode:mode];
   }
 }
 
-- (void)setSettingUrls:(id)a3
+- (void)setSettingUrls:(id)urls
 {
   v16 = *MEMORY[0x277D85DE8];
   CGImages = self->_CGImages;
@@ -154,12 +154,12 @@
     self->_CGImages = 0;
   }
 
-  self->_CGImages = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(a3, "count")}];
+  self->_CGImages = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(urls, "count")}];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [urls countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -171,7 +171,7 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(urls);
         }
 
         v10 = [[(OKPresentationViewControllerProxy *)[(OKWidgetViewProxy *)self presentationViewController] presentation] mediaItemForURL:*(*(&v11 + 1) + 8 * v9)];
@@ -180,42 +180,42 @@
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [urls countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setSettingAutoplay:(BOOL)a3
+- (void)setSettingAutoplay:(BOOL)autoplay
 {
-  if (self->_autoplay != a3)
+  if (self->_autoplay != autoplay)
   {
-    self->_autoplay = a3;
+    self->_autoplay = autoplay;
   }
 }
 
-- (void)setSettingLoop:(BOOL)a3
+- (void)setSettingLoop:(BOOL)loop
 {
-  if (self->_loop != a3)
+  if (self->_loop != loop)
   {
-    self->_loop = a3;
+    self->_loop = loop;
   }
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v4.receiver = self;
   v4.super_class = OKWidgetMediaAnimationView;
-  return [(OKWidgetViewProxy *)&v4 valueForUndefinedKey:a3];
+  return [(OKWidgetViewProxy *)&v4 valueForUndefinedKey:key];
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
   v17[4] = *MEMORY[0x277D85DE8];
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetMediaAnimationView"];
-  [OKSettings exportClassSettings:objc_opt_class() toJavaScriptContext:a3];
-  v4 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetMediaAnimationView", "objectForKeyedSubscript:", @"prototype"}];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetMediaAnimationView"];
+  [OKSettings exportClassSettings:objc_opt_class() toJavaScriptContext:context];
+  v4 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetMediaAnimationView", "objectForKeyedSubscript:", @"prototype"}];
   v6 = *MEMORY[0x277CD4638];
   v14[0] = *MEMORY[0x277CD4630];
   v5 = v14[0];
@@ -231,7 +231,7 @@
   v17[2] = MEMORY[0x277CBEC28];
   v17[3] = MEMORY[0x277CBEC38];
   [v4 defineProperty:@"playAnimation" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v17, v14, 4)}];
-  v11 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetMediaAnimationView", "objectForKeyedSubscript:", @"prototype"}];
+  v11 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetMediaAnimationView", "objectForKeyedSubscript:", @"prototype"}];
   v12[0] = v5;
   v12[1] = v6;
   v13[0] = &__block_literal_global_78;

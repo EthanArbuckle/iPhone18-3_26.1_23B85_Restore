@@ -1,12 +1,12 @@
 @interface SearchResultsContextCardCollectionViewCell
-- (_TtC20ProductPageExtension42SearchResultsContextCardCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC20ProductPageExtension42SearchResultsContextCardCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation SearchResultsContextCardCollectionViewCell
 
-- (_TtC20ProductPageExtension42SearchResultsContextCardCollectionViewCell)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension42SearchResultsContextCardCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtension42SearchResultsContextCardCollectionViewCell_itemLayoutContext;
   v5 = sub_10076341C();

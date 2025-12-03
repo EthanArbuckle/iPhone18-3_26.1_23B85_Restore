@@ -1,12 +1,12 @@
 @interface MapScrubberGestureRecognizer
-- (_TtC11WeatherMaps28MapScrubberGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_TtC11WeatherMaps28MapScrubberGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 @end
 
 @implementation MapScrubberGestureRecognizer
 
-- (_TtC11WeatherMaps28MapScrubberGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtC11WeatherMaps28MapScrubberGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     sub_220FC3410();
@@ -18,7 +18,7 @@
     memset(v6, 0, sizeof(v6));
   }
 
-  return sub_220F75044(v6, a4);
+  return sub_220F75044(v6, action);
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface HACCSlider
 - (BOOL)_isSubModule;
 - (HACCContentModuleDelegate)delegate;
-- (HACCSlider)initWithModule:(unint64_t)a3 andDelegate:(id)a4;
+- (HACCSlider)initWithModule:(unint64_t)module andDelegate:(id)delegate;
 - (id)_sliderConfig;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -10,69 +10,69 @@
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
 - (void)layoutSubviews;
-- (void)setNumberOfSteps:(unint64_t)a3;
-- (void)setValue:(double)a3 andNotify:(BOOL)a4;
-- (void)sliderDidChange:(id)a3;
+- (void)setNumberOfSteps:(unint64_t)steps;
+- (void)setValue:(double)value andNotify:(BOOL)notify;
+- (void)sliderDidChange:(id)change;
 - (void)updateValue;
 - (void)updateValueString;
 @end
 
 @implementation HACCSlider
 
-- (HACCSlider)initWithModule:(unint64_t)a3 andDelegate:(id)a4
+- (HACCSlider)initWithModule:(unint64_t)module andDelegate:(id)delegate
 {
   v42[4] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  delegateCopy = delegate;
   v41.receiver = self;
   v41.super_class = HACCSlider;
   v7 = [(HACCSlider *)&v41 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v8 = v7;
   if (v7)
   {
-    [(HACCSlider *)v7 setModule:a3];
-    [(HACCSlider *)v8 setDelegate:v6];
+    [(HACCSlider *)v7 setModule:module];
+    [(HACCSlider *)v8 setDelegate:delegateCopy];
     v9 = [HUITitleDarkStepSliderView alloc];
     [(HACCSlider *)v8 _sliderConfig];
-    v10 = v40 = v6;
+    v10 = v40 = delegateCopy;
     v11 = [(HUITitleDarkStepSliderView *)v9 initWithConfig:v10];
     sliderView = v8->_sliderView;
     v8->_sliderView = v11;
 
-    v13 = [(HUITitleDarkStepSliderView *)v8->_sliderView slider];
-    [v13 setSupportsVibrancy:1];
+    slider = [(HUITitleDarkStepSliderView *)v8->_sliderView slider];
+    [slider setSupportsVibrancy:1];
 
-    v14 = [(HUITitleDarkStepSliderView *)v8->_sliderView slider];
-    [v14 setDrawsEndTicks:0];
+    slider2 = [(HUITitleDarkStepSliderView *)v8->_sliderView slider];
+    [slider2 setDrawsEndTicks:0];
 
-    v15 = [(HUITitleDarkStepSliderView *)v8->_sliderView slider];
-    v16 = [MEMORY[0x277D75348] whiteColor];
-    [v15 setMinimumTrackTintColor:v16];
+    slider3 = [(HUITitleDarkStepSliderView *)v8->_sliderView slider];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [slider3 setMinimumTrackTintColor:whiteColor];
 
-    v17 = [(HUITitleDarkStepSliderView *)v8->_sliderView slider];
-    v18 = [MEMORY[0x277D75348] whiteColor];
-    [v17 setTickColor:v18];
+    slider4 = [(HUITitleDarkStepSliderView *)v8->_sliderView slider];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [slider4 setTickColor:whiteColor2];
 
     [(HUITitleDarkStepSliderView *)v8->_sliderView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v19 = [(HUITitleDarkStepSliderView *)v8->_sliderView slider];
-    [v19 addTarget:v8 action:sel_sliderDidChange_ forControlEvents:4096];
+    slider5 = [(HUITitleDarkStepSliderView *)v8->_sliderView slider];
+    [slider5 addTarget:v8 action:sel_sliderDidChange_ forControlEvents:4096];
 
     [(HACCSlider *)v8 addSubview:v8->_sliderView];
     v35 = MEMORY[0x277CCAAD0];
-    v39 = [(HUITitleDarkStepSliderView *)v8->_sliderView leadingAnchor];
-    v38 = [(HACCSlider *)v8 leadingAnchor];
-    v37 = [v39 constraintEqualToAnchor:v38];
+    leadingAnchor = [(HUITitleDarkStepSliderView *)v8->_sliderView leadingAnchor];
+    leadingAnchor2 = [(HACCSlider *)v8 leadingAnchor];
+    v37 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v42[0] = v37;
-    v36 = [(HUITitleDarkStepSliderView *)v8->_sliderView trailingAnchor];
-    v20 = [(HACCSlider *)v8 trailingAnchor];
-    v21 = [v36 constraintEqualToAnchor:v20];
+    trailingAnchor = [(HUITitleDarkStepSliderView *)v8->_sliderView trailingAnchor];
+    trailingAnchor2 = [(HACCSlider *)v8 trailingAnchor];
+    v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v42[1] = v21;
-    v22 = [(HUITitleDarkStepSliderView *)v8->_sliderView topAnchor];
-    v23 = [(HACCSlider *)v8 topAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    topAnchor = [(HUITitleDarkStepSliderView *)v8->_sliderView topAnchor];
+    topAnchor2 = [(HACCSlider *)v8 topAnchor];
+    v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v42[2] = v24;
-    v25 = [(HUITitleDarkStepSliderView *)v8->_sliderView bottomAnchor];
-    v26 = [(HACCSlider *)v8 bottomAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    bottomAnchor = [(HUITitleDarkStepSliderView *)v8->_sliderView bottomAnchor];
+    bottomAnchor2 = [(HACCSlider *)v8 bottomAnchor];
+    v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v42[3] = v27;
     v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:4];
     [v35 activateConstraints:v28];
@@ -89,7 +89,7 @@
     v33 = [(NSNumberFormatter *)v31 stringFromNumber:v32];
     [(NSNumberFormatter *)v31 setNotANumberSymbol:v33];
 
-    v6 = v40;
+    delegateCopy = v40;
     [(HACCSlider *)v8 updateValue];
   }
 
@@ -101,52 +101,52 @@
   v14.receiver = self;
   v14.super_class = HACCSlider;
   [(HACCSlider *)&v14 layoutSubviews];
-  v3 = [MEMORY[0x277CFC968] controlCenterModuleBackgroundMaterial];
+  controlCenterModuleBackgroundMaterial = [MEMORY[0x277CFC968] controlCenterModuleBackgroundMaterial];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 visualStylingProviderForCategory:2];
+    v4 = [controlCenterModuleBackgroundMaterial visualStylingProviderForCategory:2];
     v5 = [v4 _visualStylingForStyle:1];
     if ([(HACCSlider *)self module]== 11 || [(HACCSlider *)self module]== 10)
     {
-      v6 = [(HUITitleDarkStepSliderView *)self->_sliderView slider];
-      v7 = [v5 color];
-      [v6 setMinimumTrackTintColor:v7];
+      slider = [(HUITitleDarkStepSliderView *)self->_sliderView slider];
+      color = [v5 color];
+      [slider setMinimumTrackTintColor:color];
 
-      v8 = [(HUITitleDarkStepSliderView *)self->_sliderView slider];
-      v9 = [v8 _minTrackView];
-      [v9 mt_replaceVisualStyling:v5];
+      slider2 = [(HUITitleDarkStepSliderView *)self->_sliderView slider];
+      _minTrackView = [slider2 _minTrackView];
+      [_minTrackView mt_replaceVisualStyling:v5];
     }
 
-    v10 = [(HUITitleDarkStepSliderView *)self->_sliderView slider];
-    v11 = [v5 color];
-    [v10 setMaximumTrackTintColor:v11];
+    slider3 = [(HUITitleDarkStepSliderView *)self->_sliderView slider];
+    color2 = [v5 color];
+    [slider3 setMaximumTrackTintColor:color2];
 
-    v12 = [(HUITitleDarkStepSliderView *)self->_sliderView slider];
-    v13 = [v12 _maxTrackView];
-    [v13 mt_replaceVisualStyling:v5];
+    slider4 = [(HUITitleDarkStepSliderView *)self->_sliderView slider];
+    _maxTrackView = [slider4 _maxTrackView];
+    [_maxTrackView mt_replaceVisualStyling:v5];
   }
 }
 
 - (BOOL)_isSubModule
 {
-  v3 = [(HACCSlider *)self providesOwnSeparator];
-  if (v3)
+  providesOwnSeparator = [(HACCSlider *)self providesOwnSeparator];
+  if (providesOwnSeparator)
   {
     v4 = [(HACCSlider *)self module]- 1;
-    v5 = [(HACCSlider *)self delegate];
-    LOBYTE(v4) = [v5 shouldDisplayControlForModule:v4];
+    delegate = [(HACCSlider *)self delegate];
+    LOBYTE(v4) = [delegate shouldDisplayControlForModule:v4];
 
-    LOBYTE(v3) = v4;
+    LOBYTE(providesOwnSeparator) = v4;
   }
 
-  return v3;
+  return providesOwnSeparator;
 }
 
 - (id)_sliderConfig
 {
   v3 = HUICCMenuTextLabel();
   v4 = HUICCMenuTextLabel();
-  v5 = [(HACCSlider *)self _isSubModule];
+  _isSubModule = [(HACCSlider *)self _isSubModule];
   switch([(HACCSlider *)self module])
   {
     case 1uLL:
@@ -170,9 +170,9 @@
     case 14uLL:
     case 25uLL:
     case 26uLL:
-      v6 = [MEMORY[0x277D75348] whiteColor];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
       v7 = [MEMORY[0x277D755B8] _systemImageNamed:@"speaker.fill"];
-      v8 = [v7 imageWithTintColor:v6 renderingMode:1];
+      v8 = [v7 imageWithTintColor:whiteColor renderingMode:1];
 
       v9 = v8;
       objc_initWeak(&location, self);
@@ -191,13 +191,13 @@
       v13 = 2;
       break;
     case 9uLL:
-      v17 = [MEMORY[0x277D75348] whiteColor];
+      whiteColor2 = [MEMORY[0x277D75348] whiteColor];
       v18 = [MEMORY[0x277D755B8] _systemImageNamed:@"circle.fill"];
       v13 = 1;
-      v9 = [v18 imageWithTintColor:v17 renderingMode:1];
+      v9 = [v18 imageWithTintColor:whiteColor2 renderingMode:1];
 
       v19 = [MEMORY[0x277D755B8] _systemImageNamed:@"sun.max"];
-      v12 = [v19 imageWithTintColor:v17 renderingMode:1];
+      v12 = [v19 imageWithTintColor:whiteColor2 renderingMode:1];
 
       v4 = 0;
       v3 = 0;
@@ -232,7 +232,7 @@
   [(HUISliderConfig *)v15 setMinImageAction:v11];
   [(HUISliderConfig *)v15 setValueLabel:v4];
   [(HUISliderConfig *)v15 setProvidesOwnSeparator:[(HACCSlider *)self providesOwnSeparator]];
-  [(HUISliderConfig *)v15 setIsSubmenuSlider:v5];
+  [(HUISliderConfig *)v15 setIsSubmenuSlider:_isSubModule];
   [(HUISliderConfig *)v15 setIsLargeText:HUICCLargeTextEnabled()];
 
   return v15;
@@ -251,10 +251,10 @@ void __27__HACCSlider__sliderConfig__block_invoke(uint64_t a1)
   [v6 sendActionsForControlEvents:4096];
 }
 
-- (void)setNumberOfSteps:(unint64_t)a3
+- (void)setNumberOfSteps:(unint64_t)steps
 {
-  v5 = [(HUITitleDarkStepSliderView *)self->_sliderView slider];
-  [v5 setSegmentCount:a3];
+  slider = [(HUITitleDarkStepSliderView *)self->_sliderView slider];
+  [slider setSegmentCount:steps];
 
   sliderView = self->_sliderView;
 
@@ -263,31 +263,31 @@ void __27__HACCSlider__sliderConfig__block_invoke(uint64_t a1)
 
 - (unint64_t)numberOfSteps
 {
-  v2 = [(HUITitleDarkStepSliderView *)self->_sliderView slider];
-  v3 = [v2 segmentCount];
+  slider = [(HUITitleDarkStepSliderView *)self->_sliderView slider];
+  segmentCount = [slider segmentCount];
 
-  return v3;
+  return segmentCount;
 }
 
-- (void)sliderDidChange:(id)a3
+- (void)sliderDidChange:(id)change
 {
-  [a3 value];
+  [change value];
   v5 = v4;
 
   [(HACCSlider *)self setValue:1 andNotify:v5];
 }
 
-- (void)setValue:(double)a3 andNotify:(BOOL)a4
+- (void)setValue:(double)value andNotify:(BOOL)notify
 {
-  if (a3 < 0.0)
+  if (value < 0.0)
   {
-    a3 = 0.0;
+    value = 0.0;
   }
 
-  v5 = llround(fmin(a3, 1.0) * 100.0) / 100.0;
+  v5 = llround(fmin(value, 1.0) * 100.0) / 100.0;
   if (self->_value != v5)
   {
-    v6 = a4;
+    notifyCopy = notify;
     numberOfSteps = self->_numberOfSteps;
     if (v5 != 1.0 && numberOfSteps >= 2)
     {
@@ -299,10 +299,10 @@ void __27__HACCSlider__sliderConfig__block_invoke(uint64_t a1)
     self->_value = v5;
     [(HACCSlider *)self setNeedsLayout];
     [(HACCSlider *)self layoutIfNeeded];
-    if (v6)
+    if (notifyCopy)
     {
-      v11 = [(HACCSlider *)self delegate];
-      [v11 controlDidActivate:self];
+      delegate = [(HACCSlider *)self delegate];
+      [delegate controlDidActivate:self];
     }
   }
 
@@ -311,11 +311,11 @@ void __27__HACCSlider__sliderConfig__block_invoke(uint64_t a1)
 
 - (void)updateValueString
 {
-  v3 = [(HACCSlider *)self module];
+  module = [(HACCSlider *)self module];
   v4 = 0.0;
-  if (v3 <= 0x1A)
+  if (module <= 0x1A)
   {
-    if (((1 << v3) & 0x60073FE) != 0)
+    if (((1 << module) & 0x60073FE) != 0)
     {
       value = self->_value;
 LABEL_4:
@@ -323,7 +323,7 @@ LABEL_4:
       goto LABEL_5;
     }
 
-    if (((1 << v3) & 0xC00) != 0)
+    if (((1 << module) & 0xC00) != 0)
     {
       value = self->_value + -0.5 + self->_value + -0.5;
       goto LABEL_4;
@@ -331,20 +331,20 @@ LABEL_4:
   }
 
 LABEL_5:
-  v11 = [(HACCSlider *)self sliderView];
-  v6 = [v11 valueLabel];
+  sliderView = [(HACCSlider *)self sliderView];
+  valueLabel = [sliderView valueLabel];
   numberFormatter = self->_numberFormatter;
   *&v8 = v4;
   v9 = [MEMORY[0x277CCABB0] numberWithFloat:v8];
   v10 = [(NSNumberFormatter *)numberFormatter stringFromNumber:v9];
-  [v6 setText:v10];
+  [valueLabel setText:v10];
 }
 
 - (void)updateValue
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(HACCSlider *)self delegate];
-  v5 = [v4 currentHearingDevice];
+  delegate = [(HACCSlider *)self delegate];
+  currentHearingDevice = [delegate currentHearingDevice];
 
   v6 = 0;
   v7 = 0.0;
@@ -352,78 +352,78 @@ LABEL_5:
   switch([(HACCSlider *)self module])
   {
     case 1uLL:
-      [v5 leftMixedVolume];
+      [currentHearingDevice leftMixedVolume];
       v7 = v9;
-      v10 = [v5 leftMixedVolumeSteps];
+      leftMixedVolumeSteps = [currentHearingDevice leftMixedVolumeSteps];
       goto LABEL_26;
     case 2uLL:
-      [v5 rightMixedVolume];
+      [currentHearingDevice rightMixedVolume];
       v7 = v31;
-      v10 = [v5 rightMixedVolumeSteps];
+      leftMixedVolumeSteps = [currentHearingDevice rightMixedVolumeSteps];
 LABEL_26:
-      v8 = v10;
+      v8 = leftMixedVolumeSteps;
       goto LABEL_42;
     case 3uLL:
-      [v5 combinedVolumeForProperty:0x4000000000];
+      [currentHearingDevice combinedVolumeForProperty:0x4000000000];
       v7 = v23;
-      v24 = [v5 leftMixedVolumeSteps];
-      v25 = [v5 rightMixedVolumeSteps];
+      leftMixedVolumeSteps2 = [currentHearingDevice leftMixedVolumeSteps];
+      rightMixedVolumeSteps = [currentHearingDevice rightMixedVolumeSteps];
       goto LABEL_17;
     case 4uLL:
-      [v5 leftMicrophoneVolume];
+      [currentHearingDevice leftMicrophoneVolume];
       v7 = v41;
-      v42 = [v5 leftMicrophoneVolumeSteps];
+      leftMicrophoneVolumeSteps = [currentHearingDevice leftMicrophoneVolumeSteps];
       goto LABEL_35;
     case 5uLL:
-      [v5 rightMicrophoneVolume];
+      [currentHearingDevice rightMicrophoneVolume];
       v7 = v43;
-      v42 = [v5 rightMicrophoneVolumeSteps];
+      leftMicrophoneVolumeSteps = [currentHearingDevice rightMicrophoneVolumeSteps];
 LABEL_35:
-      v8 = v42;
+      v8 = leftMicrophoneVolumeSteps;
       goto LABEL_42;
     case 6uLL:
-      [v5 combinedVolumeForProperty:64];
+      [currentHearingDevice combinedVolumeForProperty:64];
       v7 = v26;
-      v24 = [v5 leftMicrophoneVolumeSteps];
-      v25 = [v5 rightMicrophoneVolumeSteps];
+      leftMixedVolumeSteps2 = [currentHearingDevice leftMicrophoneVolumeSteps];
+      rightMixedVolumeSteps = [currentHearingDevice rightMicrophoneVolumeSteps];
 LABEL_17:
-      if (v24 <= v25)
+      if (leftMixedVolumeSteps2 <= rightMixedVolumeSteps)
       {
-        v27 = v25;
+        v27 = rightMixedVolumeSteps;
       }
 
       else
       {
-        v27 = v24;
+        v27 = leftMixedVolumeSteps2;
       }
 
       v8 = v27;
       goto LABEL_42;
     case 7uLL:
-      [v5 leftSensitivity];
+      [currentHearingDevice leftSensitivity];
       v7 = v32;
-      v33 = [v5 leftSensitivitySteps];
+      leftSensitivitySteps = [currentHearingDevice leftSensitivitySteps];
       goto LABEL_29;
     case 8uLL:
-      [v5 rightSensitivity];
+      [currentHearingDevice rightSensitivity];
       v7 = v34;
-      v33 = [v5 rightSensitivitySteps];
+      leftSensitivitySteps = [currentHearingDevice rightSensitivitySteps];
 LABEL_29:
-      v8 = v33;
+      v8 = leftSensitivitySteps;
       goto LABEL_42;
     case 9uLL:
-      [v5 combinedVolumeForProperty:0x80000000];
+      [currentHearingDevice combinedVolumeForProperty:0x80000000];
       v7 = v46;
-      v47 = [v5 leftSensitivitySteps];
-      v48 = [v5 rightSensitivitySteps];
-      if (v47 <= v48)
+      leftSensitivitySteps2 = [currentHearingDevice leftSensitivitySteps];
+      rightSensitivitySteps = [currentHearingDevice rightSensitivitySteps];
+      if (leftSensitivitySteps2 <= rightSensitivitySteps)
       {
-        v49 = v48;
+        v49 = rightSensitivitySteps;
       }
 
       else
       {
-        v49 = v47;
+        v49 = leftSensitivitySteps2;
       }
 
       v8 = v49;
@@ -431,17 +431,17 @@ LABEL_42:
       v6 = hearingLocString();
       break;
     case 10uLL:
-      v16 = v5;
+      v16 = currentHearingDevice;
       v17 = 0x2000000000;
       goto LABEL_37;
     case 11uLL:
-      v16 = v5;
+      v16 = currentHearingDevice;
       v17 = 0x1000000000;
 LABEL_37:
       [v16 combinedVolumeForProperty:v17];
       v7 = v44;
-      v45 = [(HUITitleDarkStepSliderView *)self->_sliderView slider];
-      [v45 setRestrictsValuesToTicks:0];
+      slider = [(HUITitleDarkStepSliderView *)self->_sliderView slider];
+      [slider setRestrictsValuesToTicks:0];
 
       v6 = hearingLocString();
       v8 = 2;
@@ -452,21 +452,21 @@ LABEL_37:
       v63 = 0x3032000000;
       v64 = __Block_byref_object_copy__0;
       v65 = __Block_byref_object_dispose__0;
-      v66 = [v5 leftSelectedStreamingProgram];
+      leftSelectedStreamingProgram = [currentHearingDevice leftSelectedStreamingProgram];
       if (([v62[5] isStream] & 1) == 0)
       {
-        v28 = [v5 leftPrograms];
+        leftPrograms = [currentHearingDevice leftPrograms];
         v60[0] = MEMORY[0x277D85DD0];
         v60[1] = 3221225472;
         v60[2] = __25__HACCSlider_updateValue__block_invoke;
         v60[3] = &unk_2796F73C0;
         v60[4] = &v61;
-        [v28 enumerateObjectsUsingBlock:v60];
+        [leftPrograms enumerateObjectsUsingBlock:v60];
       }
 
-      [v5 leftStreamVolume];
+      [currentHearingDevice leftStreamVolume];
       v20 = v29;
-      LODWORD(v8) = [v5 leftStreamVolumeSteps];
+      LODWORD(v8) = [currentHearingDevice leftStreamVolumeSteps];
       v30 = MEMORY[0x277CCACA8];
       v22 = hearingLocString();
       if ([v62[5] isStream])
@@ -487,21 +487,21 @@ LABEL_37:
       v63 = 0x3032000000;
       v64 = __Block_byref_object_copy__0;
       v65 = __Block_byref_object_dispose__0;
-      v66 = [v5 rightSelectedStreamingProgram];
+      leftSelectedStreamingProgram = [currentHearingDevice rightSelectedStreamingProgram];
       if (([v62[5] isStream] & 1) == 0)
       {
-        v18 = [v5 rightPrograms];
+        rightPrograms = [currentHearingDevice rightPrograms];
         v59[0] = MEMORY[0x277D85DD0];
         v59[1] = 3221225472;
         v59[2] = __25__HACCSlider_updateValue__block_invoke_2;
         v59[3] = &unk_2796F73C0;
         v59[4] = &v61;
-        [v18 enumerateObjectsUsingBlock:v59];
+        [rightPrograms enumerateObjectsUsingBlock:v59];
       }
 
-      [v5 rightStreamVolume];
+      [currentHearingDevice rightStreamVolume];
       v20 = v19;
-      LODWORD(v8) = [v5 rightStreamVolumeSteps];
+      LODWORD(v8) = [currentHearingDevice rightStreamVolumeSteps];
       v21 = MEMORY[0x277CCACA8];
       v22 = hearingLocString();
       if ([v62[5] isStream])
@@ -527,30 +527,30 @@ LABEL_49:
       v63 = 0x3032000000;
       v64 = __Block_byref_object_copy__0;
       v65 = __Block_byref_object_dispose__0;
-      v66 = [v5 rightSelectedStreamingProgram];
+      leftSelectedStreamingProgram = [currentHearingDevice rightSelectedStreamingProgram];
       if (([v62[5] isStream] & 1) == 0)
       {
-        v11 = [v5 programs];
+        programs = [currentHearingDevice programs];
         v58[0] = MEMORY[0x277D85DD0];
         v58[1] = 3221225472;
         v58[2] = __25__HACCSlider_updateValue__block_invoke_3;
         v58[3] = &unk_2796F73C0;
         v58[4] = &v61;
-        [v11 enumerateObjectsUsingBlock:v58];
+        [programs enumerateObjectsUsingBlock:v58];
       }
 
-      [v5 combinedVolumeForProperty:128];
+      [currentHearingDevice combinedVolumeForProperty:128];
       v13 = v12;
-      v14 = [v5 leftStreamVolumeSteps];
-      v15 = [v5 rightStreamVolumeSteps];
-      if (v14 <= v15)
+      leftStreamVolumeSteps = [currentHearingDevice leftStreamVolumeSteps];
+      rightStreamVolumeSteps = [currentHearingDevice rightStreamVolumeSteps];
+      if (leftStreamVolumeSteps <= rightStreamVolumeSteps)
       {
-        LODWORD(v8) = v15;
+        LODWORD(v8) = rightStreamVolumeSteps;
       }
 
       else
       {
-        LODWORD(v8) = v14;
+        LODWORD(v8) = leftStreamVolumeSteps;
       }
 
       if ([v62[5] isStream])
@@ -570,21 +570,21 @@ LABEL_50:
 
       break;
     case 25uLL:
-      v35 = [MEMORY[0x277D12E18] sharedInstance];
-      [v35 relativeVolume];
+      mEMORY[0x277D12E18] = [MEMORY[0x277D12E18] sharedInstance];
+      [mEMORY[0x277D12E18] relativeVolume];
       v7 = v36;
 
-      v37 = [(HUITitleDarkStepSliderView *)self->_sliderView slider];
-      [v37 setRestrictsValuesToTicks:0];
+      slider2 = [(HUITitleDarkStepSliderView *)self->_sliderView slider];
+      [slider2 setRestrictsValuesToTicks:0];
 
       goto LABEL_32;
     case 26uLL:
-      v38 = [MEMORY[0x277D12E18] sharedInstance];
-      [v38 mediaVolume];
+      mEMORY[0x277D12E18]2 = [MEMORY[0x277D12E18] sharedInstance];
+      [mEMORY[0x277D12E18]2 mediaVolume];
       v7 = v39;
 
-      v40 = [(HUITitleDarkStepSliderView *)self->_sliderView slider];
-      [v40 setRestrictsValuesToTicks:0];
+      slider3 = [(HUITitleDarkStepSliderView *)self->_sliderView slider];
+      [slider3 setRestrictsValuesToTicks:0];
 
 LABEL_32:
       v6 = hearingLocString();
@@ -595,17 +595,17 @@ LABEL_32:
   }
 
   [(HACCSlider *)self updateValueString];
-  v52 = [(HACCSlider *)self sliderView];
-  v53 = [v52 titleLabel];
-  [v53 setText:v6];
+  sliderView = [(HACCSlider *)self sliderView];
+  titleLabel = [sliderView titleLabel];
+  [titleLabel setText:v6];
 
-  v54 = [(HACCSlider *)self sliderView];
-  v55 = [v54 slider];
+  sliderView2 = [(HACCSlider *)self sliderView];
+  slider4 = [sliderView2 slider];
   *&v56 = v7;
-  [v55 setValue:v56];
+  [slider4 setValue:v56];
 
-  v57 = [(HACCSlider *)self sliderView];
-  [v57 setIsSubmenu:{-[HACCSlider _isSubModule](self, "_isSubModule")}];
+  sliderView3 = [(HACCSlider *)self sliderView];
+  [sliderView3 setIsSubmenu:{-[HACCSlider _isSubModule](self, "_isSubModule")}];
 
   [(HACCSlider *)self setNumberOfSteps:v8];
   [(HACCSlider *)self setValue:0 andNotify:v7];
@@ -653,12 +653,12 @@ void __25__HACCSlider_updateValue__block_invoke_3(uint64_t a1, void *a2, uint64_
 
 - (id)accessibilityLabel
 {
-  v3 = [(HACCSlider *)self delegate];
-  v4 = [v3 currentHearingDevice];
+  delegate = [(HACCSlider *)self delegate];
+  currentHearingDevice = [delegate currentHearingDevice];
 
-  v5 = [(HACCSlider *)self module];
+  module = [(HACCSlider *)self module];
   v6 = 0;
-  switch(v5)
+  switch(module)
   {
     case 1uLL:
     case 2uLL:
@@ -680,16 +680,16 @@ void __25__HACCSlider_updateValue__block_invoke_3(uint64_t a1, void *a2, uint64_
       v27 = 0x3032000000;
       v28 = __Block_byref_object_copy__0;
       v29 = __Block_byref_object_dispose__0;
-      v30 = [v4 leftSelectedStreamingProgram];
+      leftSelectedStreamingProgram = [currentHearingDevice leftSelectedStreamingProgram];
       if (([v26[5] isStream] & 1) == 0)
       {
-        v12 = [v4 leftPrograms];
+        leftPrograms = [currentHearingDevice leftPrograms];
         v24[0] = MEMORY[0x277D85DD0];
         v24[1] = 3221225472;
         v24[2] = __32__HACCSlider_accessibilityLabel__block_invoke;
         v24[3] = &unk_2796F73C0;
         v24[4] = &v25;
-        [v12 enumerateObjectsUsingBlock:v24];
+        [leftPrograms enumerateObjectsUsingBlock:v24];
       }
 
       v13 = MEMORY[0x277CCACA8];
@@ -712,16 +712,16 @@ void __25__HACCSlider_updateValue__block_invoke_3(uint64_t a1, void *a2, uint64_
       v27 = 0x3032000000;
       v28 = __Block_byref_object_copy__0;
       v29 = __Block_byref_object_dispose__0;
-      v30 = [v4 rightSelectedStreamingProgram];
+      leftSelectedStreamingProgram = [currentHearingDevice rightSelectedStreamingProgram];
       if (([v26[5] isStream] & 1) == 0)
       {
-        v10 = [v4 rightPrograms];
+        rightPrograms = [currentHearingDevice rightPrograms];
         v23[0] = MEMORY[0x277D85DD0];
         v23[1] = 3221225472;
         v23[2] = __32__HACCSlider_accessibilityLabel__block_invoke_2;
         v23[3] = &unk_2796F73C0;
         v23[4] = &v25;
-        [v10 enumerateObjectsUsingBlock:v23];
+        [rightPrograms enumerateObjectsUsingBlock:v23];
       }
 
       v11 = MEMORY[0x277CCACA8];
@@ -744,16 +744,16 @@ void __25__HACCSlider_updateValue__block_invoke_3(uint64_t a1, void *a2, uint64_
       v27 = 0x3032000000;
       v28 = __Block_byref_object_copy__0;
       v29 = __Block_byref_object_dispose__0;
-      v30 = [v4 rightSelectedStreamingProgram];
+      leftSelectedStreamingProgram = [currentHearingDevice rightSelectedStreamingProgram];
       if (([v26[5] isStream] & 1) == 0)
       {
-        v7 = [v4 programs];
+        programs = [currentHearingDevice programs];
         v22[0] = MEMORY[0x277D85DD0];
         v22[1] = 3221225472;
         v22[2] = __32__HACCSlider_accessibilityLabel__block_invoke_3;
         v22[3] = &unk_2796F73C0;
         v22[4] = &v25;
-        [v7 enumerateObjectsUsingBlock:v22];
+        [programs enumerateObjectsUsingBlock:v22];
       }
 
       v8 = MEMORY[0x277CCACA8];
@@ -777,10 +777,10 @@ LABEL_25:
     case 0x19uLL:
       v14 = MEMORY[0x277CCACA8];
       v15 = hearingLocString();
-      v16 = [MEMORY[0x277D12E18] sharedInstance];
-      v17 = [v16 selectedComfortSound];
-      v18 = [v17 localizedName];
-      v6 = [v14 stringWithFormat:v15, v18];
+      mEMORY[0x277D12E18] = [MEMORY[0x277D12E18] sharedInstance];
+      selectedComfortSound = [mEMORY[0x277D12E18] selectedComfortSound];
+      localizedName = [selectedComfortSound localizedName];
+      v6 = [v14 stringWithFormat:v15, localizedName];
 
       break;
     default:
@@ -822,11 +822,11 @@ void __32__HACCSlider_accessibilityLabel__block_invoke_3(uint64_t a1, void *a2, 
 
 - (id)accessibilityValue
 {
-  v2 = [(HACCSlider *)self sliderView];
-  v3 = [v2 valueLabel];
-  v4 = [v3 accessibilityLabel];
+  sliderView = [(HACCSlider *)self sliderView];
+  valueLabel = [sliderView valueLabel];
+  accessibilityLabel = [valueLabel accessibilityLabel];
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (void)accessibilityDecrement

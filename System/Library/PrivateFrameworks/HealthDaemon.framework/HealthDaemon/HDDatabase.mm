@@ -1,99 +1,99 @@
 @interface HDDatabase
-+ (__CFString)_stateDebugName:(uint64_t)a1;
++ (__CFString)_stateDebugName:(uint64_t)name;
 + (id)allCurrentAndFutureEntityClasses;
-+ (id)allEntityClassesWithBehavior:(id)a3;
++ (id)allEntityClassesWithBehavior:(id)behavior;
 - (BOOL)_protectedDataLock_isProtectedDataFlushDeadlinePassed;
-- (BOOL)addJournalEntries:(id)a3 error:(id *)a4;
-- (BOOL)addJournalEntry:(id)a3 error:(id *)a4;
+- (BOOL)addJournalEntries:(id)entries error:(id *)error;
+- (BOOL)addJournalEntry:(id)entry error:(id *)error;
 - (BOOL)isInSession;
-- (BOOL)performHighPriorityTransactionsWithError:(id *)a3 block:(id)a4;
-- (BOOL)performTransactionWithContext:(id)a3 error:(id *)a4 block:(id)a5 inaccessibilityHandler:(id)a6;
-- (BOOL)performWithJournalType:(int64_t)a3 error:(id *)a4 block:(id)a5;
-- (HDDatabase)initWithConfiguration:(id)a3 profile:(id)a4;
+- (BOOL)performHighPriorityTransactionsWithError:(id *)error block:(id)block;
+- (BOOL)performTransactionWithContext:(id)context error:(id *)error block:(id)block inaccessibilityHandler:(id)handler;
+- (BOOL)performWithJournalType:(int64_t)type error:(id *)error block:(id)block;
+- (HDDatabase)initWithConfiguration:(id)configuration profile:(id)profile;
 - (HDProfile)profile;
 - (HKProfileIdentifier)profileIdentifier;
 - (NSDate)mostRecentObliterationDate;
-- (id)_checkOutDatabaseForTransaction:(uint64_t)a3 databaseType:(__CFString *)a4 error:;
-- (id)_createAndVerifyDatabaseConnectionWithType:(int64_t)a3 error:(id *)a4;
-- (id)_journalForType:(int64_t)a3;
+- (id)_checkOutDatabaseForTransaction:(uint64_t)transaction databaseType:(__CFString *)type error:;
+- (id)_createAndVerifyDatabaseConnectionWithType:(int64_t)type error:(id *)error;
+- (id)_journalForType:(int64_t)type;
 - (id)_newCorruptionEventStore;
-- (id)_newDatabaseConnectionWithURL:(id)a3;
-- (id)_newTTRPromptControllerWithProfile:(id)a3 domainName:(id)a4 loggingCategory:(id)a5;
+- (id)_newDatabaseConnectionWithURL:(id)l;
+- (id)_newTTRPromptControllerWithProfile:(id)profile domainName:(id)name loggingCategory:(id)category;
 - (id)_threadLocalTransactionContext;
-- (id)allEntityClassesWithProtectionClass:(int64_t)a3;
+- (id)allEntityClassesWithProtectionClass:(int64_t)class;
 - (id)allSeriesEntityClasses;
-- (id)beginExtendedTransactionWithContext:(id)a3 transactionTimeout:(double)a4 continuationTimeout:(double)a5 error:(id *)a6;
-- (id)checkOutProtectedDatabase:(id)a3 error:(id *)a4;
-- (id)checkOutProtectedResources:(id)a3 error:(id *)a4;
-- (id)checkOutUnprotectedDatabase:(id)a3 error:(id *)a4;
-- (id)cloneAccessibilityAssertion:(id)a3 ownerIdentifier:(id)a4 error:(id *)a5;
-- (id)databasePoolForDatabaseType:(int64_t)a3;
+- (id)beginExtendedTransactionWithContext:(id)context transactionTimeout:(double)timeout continuationTimeout:(double)continuationTimeout error:(id *)error;
+- (id)checkOutProtectedDatabase:(id)database error:(id *)error;
+- (id)checkOutProtectedResources:(id)resources error:(id *)error;
+- (id)checkOutUnprotectedDatabase:(id)database error:(id *)error;
+- (id)cloneAccessibilityAssertion:(id)assertion ownerIdentifier:(id)identifier error:(id *)error;
+- (id)databasePoolForDatabaseType:(int64_t)type;
 - (id)databaseSizeInBytes;
-- (id)databaseSizeInBytesForTypeUnprotected:(BOOL)a3 WAL:(BOOL)a4;
-- (id)databaseUUIDWithError:(id *)a3;
+- (id)databaseSizeInBytesForTypeUnprotected:(BOOL)unprotected WAL:(BOOL)l;
+- (id)databaseUUIDWithError:(id *)error;
 - (id)diagnosticDescription;
-- (id)extendedDatabaseTransactionForIdentifier:(id)a3;
-- (id)migrationTransaction:(id)a3 entityClassesWithBehavior:(id)a4;
-- (id)newConnectionForPool:(id)a3 error:(id *)a4;
-- (id)progressForJournalMergeWithType:(int64_t)a3;
-- (id)store:(id)a3 objectForKey:(id)a4;
-- (id)takeAccessibilityAssertionWithOwnerIdentifier:(id)a3 contextType:(int64_t)a4 error:(id *)a5;
-- (id)takeAccessibilityAssertionWithOwnerIdentifier:(id)a3 contextType:(int64_t)a4 shouldPerformTransaction:(BOOL)a5 error:(id *)a6;
-- (id)takeAccessibilityAssertionWithOwnerIdentifier:(id)a3 shouldPerformTransaction:(BOOL)a4 timeout:(double)a5 error:(id *)a6;
-- (id)takeAccessibilityAssertionWithOwnerIdentifier:(id)a3 timeout:(double)a4 error:(id *)a5;
-- (id)takeAccessibilityAssertionWithOwnerIdentifier:(uint64_t)a3 contextType:(int)a4 timeout:(void *)a5 shouldPerformTransaction:(double)a6 error:;
-- (off_t)_fileSizeForURL:(uint64_t)a3 error:;
+- (id)extendedDatabaseTransactionForIdentifier:(id)identifier;
+- (id)migrationTransaction:(id)transaction entityClassesWithBehavior:(id)behavior;
+- (id)newConnectionForPool:(id)pool error:(id *)error;
+- (id)progressForJournalMergeWithType:(int64_t)type;
+- (id)store:(id)store objectForKey:(id)key;
+- (id)takeAccessibilityAssertionWithOwnerIdentifier:(id)identifier contextType:(int64_t)type error:(id *)error;
+- (id)takeAccessibilityAssertionWithOwnerIdentifier:(id)identifier contextType:(int64_t)type shouldPerformTransaction:(BOOL)transaction error:(id *)error;
+- (id)takeAccessibilityAssertionWithOwnerIdentifier:(id)identifier shouldPerformTransaction:(BOOL)transaction timeout:(double)timeout error:(id *)error;
+- (id)takeAccessibilityAssertionWithOwnerIdentifier:(id)identifier timeout:(double)timeout error:(id *)error;
+- (id)takeAccessibilityAssertionWithOwnerIdentifier:(uint64_t)identifier contextType:(int)type timeout:(void *)timeout shouldPerformTransaction:(double)transaction error:;
+- (off_t)_fileSizeForURL:(uint64_t)l error:;
 - (os_unfair_lock_s)isInvalid;
 - (uint64_t)_isDatabaseValidWithError:(uint64_t)result;
-- (uint64_t)_performMigrationWithUnprotectedDatabase:(void *)a3 protectedDatabase:(void *)a4 error:;
-- (uint64_t)_performWithTransactionContext:(int)a3 merge:(void *)a4 error:(void *)a5 block:;
+- (uint64_t)_performMigrationWithUnprotectedDatabase:(void *)database protectedDatabase:(void *)protectedDatabase error:;
+- (uint64_t)_performWithTransactionContext:(int)context merge:(void *)merge error:(void *)error block:;
 - (uint64_t)_protectedDataState;
-- (uint64_t)_transitionToState:(os_unfair_lock_s *)a1;
-- (unint64_t)journalChapterCountForType:(int64_t)a3;
-- (void)_checkInDatabase:(uint64_t)a3 type:(uint64_t)a4 flushImmediately:;
-- (void)_checkInProtectedResources:(uint64_t)a1;
+- (uint64_t)_transitionToState:(os_unfair_lock_s *)state;
+- (unint64_t)journalChapterCountForType:(int64_t)type;
+- (void)_checkInDatabase:(uint64_t)database type:(uint64_t)type flushImmediately:;
+- (void)_checkInProtectedResources:(uint64_t)resources;
 - (void)_invalidateProtectedResourceAssertions;
 - (void)_mainDatabaseURL;
 - (void)_mergeSecondaryJournals;
-- (void)_mergeSecondaryJournalsWithActivity:(void *)a3 completion:;
-- (void)_performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:(void *)a3 block:;
+- (void)_mergeSecondaryJournalsWithActivity:(void *)activity completion:;
+- (void)_performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:(void *)queue block:;
 - (void)_protectedDataQueue_cancelProtectedDataFlushTimer;
-- (void)_protectedDataQueue_contentProtectionStateChanged:(uint64_t)a3 previousState:;
+- (void)_protectedDataQueue_contentProtectionStateChanged:(uint64_t)changed previousState:;
 - (void)_protectedDataQueue_flushProtectedData;
 - (void)_protectedDataQueue_flushProtectedDataIfNecessary;
 - (void)_protectedDataQueue_handleSpringboardLockoutNotification;
-- (void)_protectedDataQueue_mergeJournalWithPrimaryJournalMergeCompletion:(uint64_t)a1;
+- (void)_protectedDataQueue_mergeJournalWithPrimaryJournalMergeCompletion:(uint64_t)completion;
 - (void)_protectedDataQueue_updateInactivityFlushTimer;
 - (void)_protectedDatabaseURL;
-- (void)_reportDatabaseMigrationStatus:(int64_t)a3 component:(int64_t)a4 schemaVersion:(int64_t)a5 error:(id)a6;
-- (void)_reportMigrationResultIfNecessaryForStatus:(void *)a3 database:(unsigned int)a4 protectedDatabase:(void *)a5 error:;
-- (void)_reportSQLiteCorruption:(id)a3 forDatabase:(int64_t)a4 shouldPrompt:(BOOL)a5;
+- (void)_reportDatabaseMigrationStatus:(int64_t)status component:(int64_t)component schemaVersion:(int64_t)version error:(id)error;
+- (void)_reportMigrationResultIfNecessaryForStatus:(void *)status database:(unsigned int)database protectedDatabase:(void *)protectedDatabase error:;
+- (void)_reportSQLiteCorruption:(id)corruption forDatabase:(int64_t)database shouldPrompt:(BOOL)prompt;
 - (void)_threadLocalTransaction;
 - (void)_updateInactivityFlushTimer;
 - (void)_waitForContentProtectionObservationSetup;
-- (void)addDatabaseJournalMergeObserver:(id)a3 journalType:(int64_t)a4 queue:(id)a5;
-- (void)addProtectedResourceStores:(id)a3;
-- (void)assertionManager:(id)a3 assertionInvalidated:(id)a4;
-- (void)checkInDatabase:(id)a3 type:(int64_t)a4 protectedResources:(id)a5;
-- (void)contentProtectionStateChanged:(int64_t)a3 previousState:(int64_t)a4;
-- (void)databaseJournalMergeDidComplete:(id)a3;
-- (void)databasePool:(id)a3 didFlushConnections:(id)a4;
+- (void)addDatabaseJournalMergeObserver:(id)observer journalType:(int64_t)type queue:(id)queue;
+- (void)addProtectedResourceStores:(id)stores;
+- (void)assertionManager:(id)manager assertionInvalidated:(id)invalidated;
+- (void)checkInDatabase:(id)database type:(int64_t)type protectedResources:(id)resources;
+- (void)contentProtectionStateChanged:(int64_t)changed previousState:(int64_t)state;
+- (void)databaseJournalMergeDidComplete:(id)complete;
+- (void)databasePool:(id)pool didFlushConnections:(id)connections;
 - (void)dealloc;
 - (void)enterStateInitialized;
 - (void)enterStateRun;
-- (void)finalizeExtendedTransactionForIdentifier:(id)a3;
-- (void)invalidateAllAssertionsWithContextType:(int64_t)a3;
+- (void)finalizeExtendedTransactionForIdentifier:(id)identifier;
+- (void)invalidateAllAssertionsWithContextType:(int64_t)type;
 - (void)invalidateAndWait;
-- (void)migrationTransaction:(id)a3 didCreateDatabasesWithIdentifier:(id)a4;
-- (void)migrationTransaction:(id)a3 didEncounterDatabaseMismatchWithUnprotectedIdentifier:(id)a4 protectedIdentifier:(id)a5;
-- (void)performInFirstProtectedWriteTransaction:(id)a3;
-- (void)performInFirstUnprotectedWriteTransaction:(id)a3;
-- (void)removeDatabaseJournalMergeObserver:(id)a3 journalType:(int64_t)a4;
-- (void)setProtectedDataFlushInterval:(double)a3;
-- (void)store:(id)a3 setObject:(id)a4 forKey:(id)a5;
+- (void)migrationTransaction:(id)transaction didCreateDatabasesWithIdentifier:(id)identifier;
+- (void)migrationTransaction:(id)transaction didEncounterDatabaseMismatchWithUnprotectedIdentifier:(id)identifier protectedIdentifier:(id)protectedIdentifier;
+- (void)performInFirstProtectedWriteTransaction:(id)transaction;
+- (void)performInFirstUnprotectedWriteTransaction:(id)transaction;
+- (void)removeDatabaseJournalMergeObserver:(id)observer journalType:(int64_t)type;
+- (void)setProtectedDataFlushInterval:(double)interval;
+- (void)store:(id)store setObject:(id)object forKey:(id)key;
 - (void)unitTest_disableDatabaseAccessibilityAssertions;
 - (void)unitTest_enableDatabaseAccessibilityAssertions;
-- (void)unitTest_setContentProtectionStateAndWait:(int64_t)a3;
+- (void)unitTest_setContentProtectionStateAndWait:(int64_t)wait;
 - (void)unitTest_triggerSpringboardLockout;
 @end
 
@@ -101,17 +101,17 @@
 
 - (uint64_t)_protectedDataState
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  os_unfair_lock_lock((a1 + 80));
-  v2 = *(a1 + 96);
-  os_unfair_lock_unlock((a1 + 80));
+  os_unfair_lock_lock((self + 80));
+  v2 = *(self + 96);
+  os_unfair_lock_unlock((self + 80));
   if (v2 == 2)
   {
-    [*(a1 + 408) recheckContentProtectionState];
+    [*(self + 408) recheckContentProtectionState];
   }
 
   return v2;
@@ -144,11 +144,11 @@
   return v6;
 }
 
-+ (id)allEntityClassesWithBehavior:(id)a3
++ (id)allEntityClassesWithBehavior:(id)behavior
 {
-  v3 = [a3 futureMigrationsEnabled];
+  futureMigrationsEnabled = [behavior futureMigrationsEnabled];
   v4 = _EntityClasses();
-  if (v3)
+  if (futureMigrationsEnabled)
   {
     v5 = _FutureEntityClasses();
     v6 = v5;
@@ -170,18 +170,18 @@
   return v4;
 }
 
-- (id)allEntityClassesWithProtectionClass:(int64_t)a3
+- (id)allEntityClassesWithProtectionClass:(int64_t)class
 {
   v5 = objc_opt_class();
-  v6 = [(HDDatabase *)self profile];
-  v7 = [v6 daemon];
-  v8 = [v7 behavior];
-  v9 = [v5 allEntityClassesWithBehavior:v8];
+  profile = [(HDDatabase *)self profile];
+  daemon = [profile daemon];
+  behavior = [daemon behavior];
+  v9 = [v5 allEntityClassesWithBehavior:behavior];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __67__HDDatabase_BuiltInEntities__allEntityClassesWithProtectionClass___block_invoke;
   v12[3] = &__block_descriptor_40_e8_B16__0_8l;
-  v12[4] = a3;
+  v12[4] = class;
   v10 = [v9 hk_filter:v12];
 
   return v10;
@@ -190,38 +190,38 @@
 - (id)allSeriesEntityClasses
 {
   v3 = objc_opt_class();
-  v4 = [(HDDatabase *)self profile];
-  v5 = [v4 daemon];
-  v6 = [v5 behavior];
-  v7 = [v3 allEntityClassesWithBehavior:v6];
+  profile = [(HDDatabase *)self profile];
+  daemon = [profile daemon];
+  behavior = [daemon behavior];
+  v7 = [v3 allEntityClassesWithBehavior:behavior];
   v8 = [v7 hk_filter:&__block_literal_global_356_0];
 
   return v8;
 }
 
-- (HDDatabase)initWithConfiguration:(id)a3 profile:(id)a4
+- (HDDatabase)initWithConfiguration:(id)configuration profile:(id)profile
 {
   v112[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  configurationCopy = configuration;
+  profileCopy = profile;
+  if (!profileCopy)
   {
-    v99 = [MEMORY[0x277CCA890] currentHandler];
-    [v99 handleFailureInMethod:a2 object:self file:@"HDDatabase.mm" lineNumber:200 description:{@"Invalid parameter not satisfying: %@", @"profile != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabase.mm" lineNumber:200 description:{@"Invalid parameter not satisfying: %@", @"profile != nil"}];
   }
 
-  v10 = [v9 directoryPath];
+  directoryPath = [profileCopy directoryPath];
 
-  if (!v10)
+  if (!directoryPath)
   {
-    v100 = [MEMORY[0x277CCA890] currentHandler];
-    [v100 handleFailureInMethod:a2 object:self file:@"HDDatabase.mm" lineNumber:201 description:{@"Invalid parameter not satisfying: %@", @"[profile directoryPath] != nil"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDDatabase.mm" lineNumber:201 description:{@"Invalid parameter not satisfying: %@", @"[profile directoryPath] != nil"}];
   }
 
-  if (![v8 concurrentReaderLimit])
+  if (![configurationCopy concurrentReaderLimit])
   {
-    v101 = [MEMORY[0x277CCA890] currentHandler];
-    [v101 handleFailureInMethod:a2 object:self file:@"HDDatabase.mm" lineNumber:202 description:{@"Invalid parameter not satisfying: %@", @"configuration.concurrentReaderLimit > 0"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"HDDatabase.mm" lineNumber:202 description:{@"Invalid parameter not satisfying: %@", @"configuration.concurrentReaderLimit > 0"}];
   }
 
   v106.receiver = self;
@@ -232,13 +232,13 @@
   {
     v11->_stateLock._os_unfair_lock_opaque = 0;
     v11->_state = 0;
-    objc_storeStrong(&v11->_configuration, a3);
-    v13 = [v9 directoryPath];
-    v14 = [v13 copy];
+    objc_storeStrong(&v11->_configuration, configuration);
+    directoryPath2 = [profileCopy directoryPath];
+    v14 = [directoryPath2 copy];
     profileDirectoryPath = v12->_profileDirectoryPath;
     v12->_profileDirectoryPath = v14;
 
-    objc_storeWeak(&v12->_profile, v9);
+    objc_storeWeak(&v12->_profile, profileCopy);
     v16 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     schemaMigrationLock = v12->_schemaMigrationLock;
     v12->_schemaMigrationLock = v16;
@@ -251,9 +251,9 @@
     activeDatabases = v12->_activeDatabases;
     v12->_activeDatabases = v20;
 
-    v22 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     migratedDatabases = v12->_migratedDatabases;
-    v12->_migratedDatabases = v22;
+    v12->_migratedDatabases = weakObjectsHashTable;
 
     v24 = MEMORY[0x277CCACA8];
     v25 = objc_opt_class();
@@ -270,14 +270,14 @@
     v12->_threadLocalTransactionContextStackKey = v32;
 
     v34 = objc_alloc(MEMORY[0x277D10AF0]);
-    v35 = [(HDDatabaseConfiguration *)v12->_configuration concurrentReaderLimit];
-    v36 = [(HDDatabaseConfiguration *)v12->_configuration behavior];
-    v102 = [v34 initWithConcurrentReaderLimit:v35 behavior:v36 debugIdentifier:@"protected" delegate:v12];
+    concurrentReaderLimit = [(HDDatabaseConfiguration *)v12->_configuration concurrentReaderLimit];
+    behavior = [(HDDatabaseConfiguration *)v12->_configuration behavior];
+    v102 = [v34 initWithConcurrentReaderLimit:concurrentReaderLimit behavior:behavior debugIdentifier:@"protected" delegate:v12];
 
     v37 = objc_alloc(MEMORY[0x277D10AF0]);
-    v38 = [(HDDatabaseConfiguration *)v12->_configuration concurrentReaderLimit];
-    v39 = [(HDDatabaseConfiguration *)v12->_configuration behavior];
-    v40 = [v37 initWithConcurrentReaderLimit:v38 behavior:v39 debugIdentifier:@"unprotected" delegate:v12];
+    concurrentReaderLimit2 = [(HDDatabaseConfiguration *)v12->_configuration concurrentReaderLimit];
+    behavior2 = [(HDDatabaseConfiguration *)v12->_configuration behavior];
+    v40 = [v37 initWithConcurrentReaderLimit:concurrentReaderLimit2 behavior:behavior2 debugIdentifier:@"unprotected" delegate:v12];
 
     v111[0] = &unk_283CB0A68;
     v111[1] = &unk_283CB0A80;
@@ -287,8 +287,8 @@
     databasePoolForType = v12->_databasePoolForType;
     v12->_databasePoolForType = v41;
 
-    v43 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-    [v43 addObject:v12];
+    mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+    [mEMORY[0x277D10AF8] addObject:v12];
 
     v44 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     writeLock = v12->_writeLock;
@@ -365,23 +365,23 @@
     v75 = [objc_alloc(MEMORY[0x277CCD738]) initWithName:@"database-cloudsync-journal-observers" loggingCategory:*v53];
     [(NSMutableDictionary *)v12->_databaseJournalMergeObserverSetByType setObject:v75 forKeyedSubscript:&unk_283CB0AB0];
 
-    v76 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     protectedResourceStores = v12->_protectedResourceStores;
-    v12->_protectedResourceStores = v76;
+    v12->_protectedResourceStores = weakObjectsHashTable2;
 
     v12->_protectedResourceAssertionsLock._os_unfair_lock_opaque = 0;
     v12->_databaseUUIDLock._os_unfair_lock_opaque = 0;
     v78 = objc_alloc(MEMORY[0x277D10AE0]);
     WeakRetained = objc_loadWeakRetained(&v12->_profile);
-    v80 = [WeakRetained directoryPath];
-    v81 = [v78 initWithDirectoryPath:v80 prefix:@"_secure"];
+    directoryPath3 = [WeakRetained directoryPath];
+    v81 = [v78 initWithDirectoryPath:directoryPath3 prefix:@"_secure"];
     assertionManager = v12->_assertionManager;
     v12->_assertionManager = v81;
 
     [(HDDatabaseAssertionManager *)v12->_assertionManager addObserver:v12 forAssertionIdentifier:@"DatabaseAccessibility" queue:v12->_protectedDataQueue];
-    v83 = [(HDDatabaseConfiguration *)v12->_configuration contentProtectionManager];
+    contentProtectionManager = [(HDDatabaseConfiguration *)v12->_configuration contentProtectionManager];
     contentProtectionManager = v12->_contentProtectionManager;
-    v12->_contentProtectionManager = v83;
+    v12->_contentProtectionManager = contentProtectionManager;
 
     *&v12->_protectedDataLock_protectedDataState = xmmword_22916A750;
     v12->_protectedDataFlushInterval = 600.0;
@@ -408,11 +408,11 @@
     v95 = *v53;
     if (os_log_type_enabled(v95, OS_LOG_TYPE_DEFAULT))
     {
-      v96 = [(HDDatabaseConfiguration *)v12->_configuration concurrentReaderLimit];
+      concurrentReaderLimit3 = [(HDDatabaseConfiguration *)v12->_configuration concurrentReaderLimit];
       *buf = 138543618;
       v108 = v12;
       v109 = 2050;
-      v110 = v96;
+      v110 = concurrentReaderLimit3;
       _os_log_impl(&dword_228986000, v95, OS_LOG_TYPE_DEFAULT, "%{public}@: HDDatabase allocated with %{public}lu concurrent readers", buf, 0x16u);
     }
 
@@ -438,21 +438,21 @@ void __44__HDDatabase_initWithConfiguration_profile___block_invoke(uint64_t a1, 
   [(HDDatabase *)v8 _mergeSecondaryJournalsWithActivity:v9 completion:v6];
 }
 
-- (void)_mergeSecondaryJournalsWithActivity:(void *)a3 completion:
+- (void)_mergeSecondaryJournalsWithActivity:(void *)activity completion:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  activityCopy = activity;
+  if (self)
   {
-    v7 = [*(a1 + 312) mergeQueue];
+    mergeQueue = [*(self + 312) mergeQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __61__HDDatabase__mergeSecondaryJournalsWithActivity_completion___block_invoke;
     block[3] = &unk_27861C9D8;
-    block[4] = a1;
+    block[4] = self;
     v9 = v5;
-    v10 = v6;
-    dispatch_sync(v7, block);
+    v10 = activityCopy;
+    dispatch_sync(mergeQueue, block);
   }
 }
 
@@ -469,7 +469,7 @@ void __44__HDDatabase_initWithConfiguration_profile___block_invoke(uint64_t a1, 
   [(HDDatabase *)&v3 dealloc];
 }
 
-+ (__CFString)_stateDebugName:(uint64_t)a1
++ (__CFString)_stateDebugName:(uint64_t)name
 {
   objc_opt_self();
   if (a2 >= 6)
@@ -485,19 +485,19 @@ void __44__HDDatabase_initWithConfiguration_profile___block_invoke(uint64_t a1, 
   return v3;
 }
 
-- (uint64_t)_transitionToState:(os_unfair_lock_s *)a1
+- (uint64_t)_transitionToState:(os_unfair_lock_s *)state
 {
-  v2 = a1;
+  stateCopy = state;
   v16 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (state)
   {
-    os_unfair_lock_lock(a1 + 2);
-    v4 = *(v2 + 16);
+    os_unfair_lock_lock(state + 2);
+    v4 = *(stateCopy + 16);
     if (v4 == a2)
     {
 LABEL_27:
-      os_unfair_lock_unlock((v2 + 8));
-      v2 = 0;
+      os_unfair_lock_unlock((stateCopy + 8));
+      stateCopy = 0;
       v9 = 0;
 LABEL_28:
 
@@ -562,7 +562,7 @@ LABEL_28:
     {
       if (a2 != 4)
       {
-        *(v2 + 16) = 5;
+        *(stateCopy + 16) = 5;
         if (v4 == 5)
         {
           goto LABEL_27;
@@ -570,12 +570,12 @@ LABEL_28:
 
 LABEL_20:
         v9 = [HDDatabase _stateDebugName:a2];
-        os_unfair_lock_unlock((v2 + 8));
+        os_unfair_lock_unlock((stateCopy + 8));
         if (v9)
         {
           _HKInitializeLogging();
           v10 = *MEMORY[0x277CCC2A0];
-          v2 = 1;
+          stateCopy = 1;
           if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_INFO))
           {
             v14 = 138543362;
@@ -586,7 +586,7 @@ LABEL_20:
 
         else
         {
-          v2 = 1;
+          stateCopy = 1;
         }
 
         goto LABEL_28;
@@ -610,13 +610,13 @@ LABEL_26:
       }
     }
 
-    *(v2 + 16) = a2;
+    *(stateCopy + 16) = a2;
     goto LABEL_20;
   }
 
 LABEL_29:
   v11 = *MEMORY[0x277D85DE8];
-  return v2;
+  return stateCopy;
 }
 
 - (void)enterStateInitialized
@@ -721,9 +721,9 @@ void __27__HDDatabase_enterStateRun__block_invoke(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addProtectedResourceStores:(id)a3
+- (void)addProtectedResourceStores:(id)stores
 {
-  v4 = a3;
+  storesCopy = stores;
   if (self && (os_unfair_lock_lock(&self->_stateLock), state = self->_state, os_unfair_lock_unlock(&self->_stateLock), state == 2) || ([(HDDatabase *)self _transitionToState:?]& 1) != 0)
   {
     protectedDataQueue = self->_protectedDataQueue;
@@ -731,8 +731,8 @@ void __27__HDDatabase_enterStateRun__block_invoke(uint64_t a1)
     v8[1] = 3221225472;
     v8[2] = __41__HDDatabase_addProtectedResourceStores___block_invoke;
     v8[3] = &unk_27861C6C0;
-    v9 = v4;
-    v10 = self;
+    v9 = storesCopy;
+    selfCopy = self;
     dispatch_sync(protectedDataQueue, v8);
   }
 
@@ -785,41 +785,41 @@ void __41__HDDatabase_addProtectedResourceStores___block_invoke(uint64_t a1)
 
 - (void)_threadLocalTransaction
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [MEMORY[0x277CCACC8] currentThread];
-    v3 = [v2 threadDictionary];
-    v1 = [v3 objectForKey:v1[41]];
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    threadDictionary = [currentThread threadDictionary];
+    selfCopy = [threadDictionary objectForKey:selfCopy[41]];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)_threadLocalTransactionContext
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x277CCACC8] currentThread];
-    v3 = [v2 threadDictionary];
-    v4 = [v3 objectForKey:*(a1 + 336)];
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    threadDictionary = [currentThread threadDictionary];
+    v4 = [threadDictionary objectForKey:*(self + 336)];
 
-    v5 = [v4 lastObject];
+    lastObject = [v4 lastObject];
   }
 
   else
   {
-    v5 = 0;
+    lastObject = 0;
   }
 
-  return v5;
+  return lastObject;
 }
 
-- (off_t)_fileSizeForURL:(uint64_t)a3 error:
+- (off_t)_fileSizeForURL:(uint64_t)l error:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     if (stat([v5 fileSystemRepresentation], &v11))
     {
@@ -827,7 +827,7 @@ void __41__HDDatabase_addProtectedResourceStores___block_invoke(uint64_t a1)
       {
         v7 = MEMORY[0x277CCA9B8];
         v8 = __error();
-        [v7 hk_assignError:a3 code:102 format:{@"Failed to retrieve size for file at '%@': %s", v6, strerror(*v8)}];
+        [v7 hk_assignError:l code:102 format:{@"Failed to retrieve size for file at '%@': %s", v6, strerror(*v8)}];
       }
 
       st_size = -1;
@@ -847,24 +847,24 @@ void __41__HDDatabase_addProtectedResourceStores___block_invoke(uint64_t a1)
   return st_size;
 }
 
-- (void)_protectedDataQueue_mergeJournalWithPrimaryJournalMergeCompletion:(uint64_t)a1
+- (void)_protectedDataQueue_mergeJournalWithPrimaryJournalMergeCompletion:(uint64_t)completion
 {
   v3 = a2;
-  if (a1)
+  if (completion)
   {
-    dispatch_assert_queue_V2(*(a1 + 72));
-    v4 = [*(a1 + 304) mergeQueue];
+    dispatch_assert_queue_V2(*(completion + 72));
+    mergeQueue = [*(completion + 304) mergeQueue];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __80__HDDatabase__protectedDataQueue_mergeJournalWithPrimaryJournalMergeCompletion___block_invoke;
     v5[3] = &unk_27861C710;
-    v5[4] = a1;
+    v5[4] = completion;
     v6 = v3;
-    dispatch_async(v4, v5);
+    dispatch_async(mergeQueue, v5);
   }
 }
 
-- (id)databasePoolForDatabaseType:(int64_t)a3
+- (id)databasePoolForDatabaseType:(int64_t)type
 {
   databasePoolForType = self->_databasePoolForType;
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:?];
@@ -872,36 +872,36 @@ void __41__HDDatabase_addProtectedResourceStores___block_invoke(uint64_t a1)
 
   if (!v8)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    v11 = HDStringFromHDDatabaseType(a3);
-    [v10 handleFailureInMethod:a2 object:self file:@"HDDatabase.mm" lineNumber:529 description:{@"Missing database pool for type %@", v11}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    v11 = HDStringFromHDDatabaseType(type);
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabase.mm" lineNumber:529 description:{@"Missing database pool for type %@", v11}];
   }
 
   return v8;
 }
 
-- (uint64_t)_performWithTransactionContext:(int)a3 merge:(void *)a4 error:(void *)a5 block:
+- (uint64_t)_performWithTransactionContext:(int)context merge:(void *)merge error:(void *)error block:
 {
   v31 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a5;
-  if (!a1)
+  errorCopy = error;
+  if (!self)
   {
     v22 = 0;
     goto LABEL_28;
   }
 
-  v11 = [(HDDatabase *)a1 _threadLocalTransaction];
-  if (v11)
+  _threadLocalTransaction = [(HDDatabase *)self _threadLocalTransaction];
+  if (_threadLocalTransaction)
   {
     v12 = [MEMORY[0x277CCA9B8] hk_error:100 description:@"Cannot set database transaction context inside transaction"];
     v13 = v12;
     if (v12)
     {
-      if (a4)
+      if (merge)
       {
         v14 = v12;
-        *a4 = v13;
+        *merge = v13;
       }
 
       else
@@ -923,14 +923,14 @@ void __41__HDDatabase_addProtectedResourceStores___block_invoke(uint64_t a1)
     goto LABEL_27;
   }
 
-  v15 = [MEMORY[0x277CCACC8] currentThread];
-  v16 = [v15 threadDictionary];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v17 = [v16 objectForKeyedSubscript:a1[42]];
+  v17 = [threadDictionary objectForKeyedSubscript:self[42]];
   if (!v17)
   {
     v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [v16 setObject:v17 forKey:a1[42]];
+    [threadDictionary setObject:v17 forKey:self[42]];
   }
 
   v18 = v9;
@@ -955,13 +955,13 @@ void __41__HDDatabase_addProtectedResourceStores___block_invoke(uint64_t a1)
     v20 = v18;
   }
 
-  if (a3)
+  if (context)
   {
-    v23 = [(HDDatabase *)a1 _threadLocalTransactionContext];
-    v24 = v23;
-    if (v23)
+    _threadLocalTransactionContext = [(HDDatabase *)self _threadLocalTransactionContext];
+    v24 = _threadLocalTransactionContext;
+    if (_threadLocalTransactionContext)
     {
-      v25 = [v23 mergedContextWithContext:v20 error:a4];
+      v25 = [_threadLocalTransactionContext mergedContextWithContext:v20 error:merge];
     }
 
     else
@@ -985,7 +985,7 @@ void __41__HDDatabase_addProtectedResourceStores___block_invoke(uint64_t a1)
     [v17 addObject:v20];
   }
 
-  v22 = v10[2](v10, a4);
+  v22 = errorCopy[2](errorCopy, merge);
   [v17 removeLastObject];
 LABEL_26:
 
@@ -996,27 +996,27 @@ LABEL_28:
   return v22 & 1;
 }
 
-- (BOOL)performTransactionWithContext:(id)a3 error:(id *)a4 block:(id)a5 inaccessibilityHandler:(id)a6
+- (BOOL)performTransactionWithContext:(id)context error:(id *)error block:(id)block inaccessibilityHandler:(id)handler
 {
   v165 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v136 = a5;
-  v11 = a6;
-  if (([(HDDatabase *)self _isDatabaseValidWithError:a4]& 1) != 0)
+  contextCopy = context;
+  blockCopy = block;
+  handlerCopy = handler;
+  if (([(HDDatabase *)self _isDatabaseValidWithError:error]& 1) != 0)
   {
     if (([(HDContentProtectionManager *)self->_contentProtectionManager deviceUnlockedSinceBoot]& 1) != 0)
     {
-      v12 = [MEMORY[0x277CCACC8] currentThread];
-      v133 = [v12 threadDictionary];
+      currentThread = [MEMORY[0x277CCACC8] currentThread];
+      threadDictionary = [currentThread threadDictionary];
 
-      v13 = [(HDDatabase *)self _threadLocalTransaction];
-      v134 = [v10 requiresWrite];
-      if (v13)
+      _threadLocalTransaction = [(HDDatabase *)self _threadLocalTransaction];
+      requiresWrite = [contextCopy requiresWrite];
+      if (_threadLocalTransaction)
       {
-        v14 = [(HDDatabaseTransaction *)v13 rootContext];
-        v15 = v13;
+        rootContext = [(HDDatabaseTransaction *)_threadLocalTransaction rootContext];
+        v15 = _threadLocalTransaction;
         v146 = 0;
-        v16 = [v14 containsContext:v10 error:&v146];
+        v16 = [rootContext containsContext:contextCopy error:&v146];
         v17 = v146;
 
         if ((v16 & 1) == 0)
@@ -1025,9 +1025,9 @@ LABEL_28:
           v23 = *MEMORY[0x277CCC2A0];
           if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
           {
-            v63 = [v17 localizedDescription];
+            localizedDescription = [v17 localizedDescription];
             *buf = 138412290;
-            v164 = v63;
+            v164 = localizedDescription;
             _os_log_fault_impl(&dword_228986000, v23, OS_LOG_TYPE_FAULT, "Incompatible nested transaction context: %@", buf, 0xCu);
           }
 
@@ -1035,11 +1035,11 @@ LABEL_28:
           v25 = v24;
           if (v24)
           {
-            if (a4)
+            if (error)
             {
               v26 = v24;
               v27 = 0;
-              *a4 = v25;
+              *error = v25;
             }
 
             else
@@ -1060,17 +1060,17 @@ LABEL_28:
           goto LABEL_144;
         }
 
-        v13 = v15;
+        _threadLocalTransaction = v15;
       }
 
       else
       {
-        v21 = [(HDDatabase *)self _threadLocalTransactionContext];
-        if (!v21)
+        _threadLocalTransactionContext = [(HDDatabase *)self _threadLocalTransactionContext];
+        if (!_threadLocalTransactionContext)
         {
-          if (v10)
+          if (contextCopy)
           {
-            v22 = v10;
+            v22 = contextCopy;
           }
 
           else
@@ -1078,10 +1078,10 @@ LABEL_28:
             v22 = objc_alloc_init(HDDatabaseTransactionContext);
           }
 
-          v21 = v22;
+          _threadLocalTransactionContext = v22;
         }
 
-        v28 = [v21 mergedContextWithContext:v10 error:a4];
+        v28 = [_threadLocalTransactionContext mergedContextWithContext:contextCopy error:error];
 
         if (!v28)
         {
@@ -1094,14 +1094,14 @@ LABEL_145:
         v15 = [[HDDatabaseTransaction alloc] initWithDatabase:self provider:self rootContext:v28];
       }
 
-      v29 = [(HDDatabaseTransaction *)v15 rootContext];
+      rootContext2 = [(HDDatabaseTransaction *)v15 rootContext];
       v135 = v15;
-      v132 = -[HDDatabase _journalForType:](self, "_journalForType:", [v29 journalType]);
-      v129 = v13;
+      v132 = -[HDDatabase _journalForType:](self, "_journalForType:", [rootContext2 journalType]);
+      v129 = _threadLocalTransaction;
 
-      if (v13)
+      if (_threadLocalTransaction)
       {
-        LOBYTE(v134) = 0;
+        LOBYTE(requiresWrite) = 0;
         v25 = 0;
         goto LABEL_110;
       }
@@ -1116,13 +1116,13 @@ LABEL_145:
       v130 = v30;
       if (!v32)
       {
-        v34 = [(HDDatabase *)self profile];
-        v35 = [v34 daemon];
-        v36 = [v35 behavior];
-        v37 = [v36 isAppleInternalInstall];
+        profile = [(HDDatabase *)self profile];
+        daemon = [profile daemon];
+        behavior = [daemon behavior];
+        isAppleInternalInstall = [behavior isAppleInternalInstall];
 
         v33 = v130;
-        if (v37)
+        if (isAppleInternalInstall)
         {
           _HKInitializeLogging();
           v38 = *MEMORY[0x277CCC2A0];
@@ -1152,7 +1152,7 @@ LABEL_145:
           v147[3] = &unk_27861CA00;
           v42 = v40;
           v148 = v42;
-          v149 = self;
+          selfCopy = self;
           v43 = [(HDDatabase *)self _performWithTransactionContext:v41 merge:0 error:&v145 block:v147];
 
           if ((v43 & 1) == 0)
@@ -1223,8 +1223,8 @@ LABEL_43:
             v158 = 0u;
             v155 = 0u;
             v156 = 0u;
-            v52 = [v126 accessibilityAssertions];
-            v53 = [v52 countByEnumeratingWithState:&v155 objects:buf count:16];
+            accessibilityAssertions = [v126 accessibilityAssertions];
+            v53 = [accessibilityAssertions countByEnumeratingWithState:&v155 objects:buf count:16];
             if (v53)
             {
               v54 = *v156;
@@ -1234,13 +1234,13 @@ LABEL_43:
                 {
                   if (*v156 != v54)
                   {
-                    objc_enumerationMutation(v52);
+                    objc_enumerationMutation(accessibilityAssertions);
                   }
 
                   [v51 addAccessibilityAssertion:*(*(&v155 + 1) + 8 * i)];
                 }
 
-                v53 = [v52 countByEnumeratingWithState:&v155 objects:buf count:16];
+                v53 = [accessibilityAssertions countByEnumeratingWithState:&v155 objects:buf count:16];
               }
 
               while (v53);
@@ -1291,11 +1291,11 @@ LABEL_43:
                   }
                 }
 
-                v65 = [MEMORY[0x277CCA9B8] hk_protectedDataInaccessibilityError];
-                v61 = v65;
-                if (v65)
+                hk_protectedDataInaccessibilityError = [MEMORY[0x277CCA9B8] hk_protectedDataInaccessibilityError];
+                v61 = hk_protectedDataInaccessibilityError;
+                if (hk_protectedDataInaccessibilityError)
                 {
-                  v66 = v65;
+                  v66 = hk_protectedDataInaccessibilityError;
                   v145 = v61;
                 }
               }
@@ -1327,7 +1327,7 @@ LABEL_43:
             goto LABEL_86;
           }
 
-          v127 = v11;
+          v127 = handlerCopy;
           os_unfair_lock_lock(&self->_transactionStartLock);
           os_unfair_lock_lock(&self->_protectedDataLock);
           journalMergeEpoch = self->_journalMergeEpoch;
@@ -1337,13 +1337,13 @@ LABEL_43:
           if (protectedDataLock_protectedDataState)
           {
             v39 = 1;
-            v11 = v127;
+            handlerCopy = v127;
 LABEL_86:
 
             goto LABEL_87;
           }
 
-          v11 = v127;
+          handlerCopy = v127;
           while (1)
           {
             v125 = v123;
@@ -1356,8 +1356,8 @@ LABEL_86:
               v153 = 0u;
               v150 = 0u;
               v151 = 0u;
-              v100 = [v125 accessibilityAssertions];
-              v101 = [v100 countByEnumeratingWithState:&v150 objects:buf count:16];
+              accessibilityAssertions2 = [v125 accessibilityAssertions];
+              v101 = [accessibilityAssertions2 countByEnumeratingWithState:&v150 objects:buf count:16];
               if (v101)
               {
                 v102 = *v151;
@@ -1367,19 +1367,19 @@ LABEL_86:
                   {
                     if (*v151 != v102)
                     {
-                      objc_enumerationMutation(v100);
+                      objc_enumerationMutation(accessibilityAssertions2);
                     }
 
                     [(HDMutableDatabaseTransactionContext *)v99 addAccessibilityAssertion:*(*(&v150 + 1) + 8 * j)];
                   }
 
-                  v101 = [v100 countByEnumeratingWithState:&v150 objects:buf count:16];
+                  v101 = [accessibilityAssertions2 countByEnumeratingWithState:&v150 objects:buf count:16];
                 }
 
                 while (v101);
               }
 
-              v11 = v127;
+              handlerCopy = v127;
               v159 = 0;
               *&v155 = MEMORY[0x277D85DD0];
               *(&v155 + 1) = 3221225472;
@@ -1414,11 +1414,11 @@ LABEL_86:
                     _os_log_error_impl(&dword_228986000, v111, OS_LOG_TYPE_ERROR, "Journal merge failed with non-accessibility error: %{public}@", v161, 0xCu);
                   }
 
-                  v112 = [MEMORY[0x277CCA9B8] hk_protectedDataInaccessibilityError];
-                  v107 = v112;
-                  if (v112)
+                  hk_protectedDataInaccessibilityError2 = [MEMORY[0x277CCA9B8] hk_protectedDataInaccessibilityError];
+                  v107 = hk_protectedDataInaccessibilityError2;
+                  if (hk_protectedDataInaccessibilityError2)
                   {
-                    v113 = v112;
+                    v113 = hk_protectedDataInaccessibilityError2;
                     v145 = v107;
                   }
                 }
@@ -1427,11 +1427,11 @@ LABEL_86:
 
             else
             {
-              v109 = [MEMORY[0x277CCA9B8] hk_protectedDataInaccessibilityError];
-              v105 = v109;
-              if (v109)
+              hk_protectedDataInaccessibilityError3 = [MEMORY[0x277CCA9B8] hk_protectedDataInaccessibilityError];
+              v105 = hk_protectedDataInaccessibilityError3;
+              if (hk_protectedDataInaccessibilityError3)
               {
-                v110 = v109;
+                v110 = hk_protectedDataInaccessibilityError3;
                 v39 = 0;
                 v145 = v105;
                 v99 = v105;
@@ -1519,19 +1519,19 @@ LABEL_87:
 LABEL_88:
 
       v71 = v145;
-      v72 = [(HDDatabaseTransaction *)v135 rootContext];
-      if ([v72 requiresProtectedData])
+      rootContext3 = [(HDDatabaseTransaction *)v135 rootContext];
+      if ([rootContext3 requiresProtectedData])
       {
-        v73 = [(HDDatabaseTransaction *)v135 rootContext];
-        v74 = [v73 skipTransactionStartTasks];
+        rootContext4 = [(HDDatabaseTransaction *)v135 rootContext];
+        skipTransactionStartTasks = [rootContext4 skipTransactionStartTasks];
 
-        if (v74)
+        if (skipTransactionStartTasks)
         {
           goto LABEL_93;
         }
 
         v75 = _Block_copy(self->_unitTest_didWaitForJournalMergeHandler);
-        v72 = v75;
+        rootContext3 = v75;
         if (v75)
         {
           (*(v75 + 2))(v75, self);
@@ -1539,12 +1539,12 @@ LABEL_88:
       }
 
 LABEL_93:
-      if (v134)
+      if (requiresWrite)
       {
-        v76 = [(HDDatabaseTransaction *)v135 rootContext];
-        v77 = [v76 skipJournalMerge];
+        rootContext5 = [(HDDatabaseTransaction *)v135 rootContext];
+        skipJournalMerge = [rootContext5 skipJournalMerge];
 
-        if ((v77 & 1) == 0)
+        if ((skipJournalMerge & 1) == 0)
         {
           [(HDDatabaseJournal *)v132 lock];
         }
@@ -1565,15 +1565,15 @@ LABEL_93:
         goto LABEL_108;
       }
 
-      v78 = [(HDDatabaseTransaction *)v135 rootContext];
-      if ([v78 requiresProtectedData])
+      rootContext6 = [(HDDatabaseTransaction *)v135 rootContext];
+      if ([rootContext6 requiresProtectedData])
       {
-        v79 = [(HDDatabaseTransaction *)v135 rootContext];
-        v131 = v78;
-        v80 = [v79 allowsJournalingDuringProtectedRead];
-        if (v11)
+        rootContext7 = [(HDDatabaseTransaction *)v135 rootContext];
+        v131 = rootContext6;
+        allowsJournalingDuringProtectedRead = [rootContext7 allowsJournalingDuringProtectedRead];
+        if (handlerCopy)
         {
-          v81 = v80;
+          v81 = allowsJournalingDuringProtectedRead;
         }
 
         else
@@ -1591,22 +1591,22 @@ LABEL_93:
         aBlock[2] = __79__HDDatabase_performTransactionWithContext_error_block_inaccessibilityHandler___block_invoke;
         aBlock[3] = &unk_27861C6E8;
         v143 = v132;
-        v144 = v11;
-        v11 = _Block_copy(aBlock);
+        v144 = handlerCopy;
+        handlerCopy = _Block_copy(aBlock);
 
-        v78 = v143;
+        rootContext6 = v143;
       }
 
 LABEL_105:
       v25 = 0;
 LABEL_108:
-      [v133 setObject:v135 forKeyedSubscript:self->_threadLocalTransactionKey];
+      [threadDictionary setObject:v135 forKeyedSubscript:self->_threadLocalTransactionKey];
       if ((v39 & 1) == 0)
       {
-        v91 = [(HDMutableDatabaseTransactionContext *)v71 hk_isDatabaseAccessibilityError];
-        if (v11)
+        hk_isDatabaseAccessibilityError = [(HDMutableDatabaseTransactionContext *)v71 hk_isDatabaseAccessibilityError];
+        if (handlerCopy)
         {
-          v92 = v91;
+          v92 = hk_isDatabaseAccessibilityError;
         }
 
         else
@@ -1616,7 +1616,7 @@ LABEL_108:
 
         if (v92 == 1)
         {
-          v27 = (*(v11 + 2))(v11, v71, a4);
+          v27 = (*(handlerCopy + 2))(handlerCopy, v71, error);
         }
 
         else
@@ -1625,10 +1625,10 @@ LABEL_108:
           v94 = v93;
           if (v93)
           {
-            if (a4)
+            if (error)
             {
               v95 = v93;
-              *a4 = v94;
+              *error = v94;
             }
 
             else
@@ -1642,7 +1642,7 @@ LABEL_108:
 
         v84 = 0;
         v82 = 0;
-        if (!v134)
+        if (!requiresWrite)
         {
           goto LABEL_138;
         }
@@ -1652,15 +1652,15 @@ LABEL_108:
 
 LABEL_110:
       v141 = 0;
-      v82 = [(HDDatabaseTransaction *)v135 performWithContext:v10 error:&v141 block:v136 inaccessibilityHandler:v11];
+      v82 = [(HDDatabaseTransaction *)v135 performWithContext:contextCopy error:&v141 block:blockCopy inaccessibilityHandler:handlerCopy];
       v83 = v141;
       v84 = v83;
       if (v83)
       {
-        if (a4)
+        if (error)
         {
           v85 = v83;
-          *a4 = v84;
+          *error = v84;
         }
 
         else
@@ -1670,7 +1670,7 @@ LABEL_110:
       }
 
       v27 = v82;
-      if ((v134 & 1) == 0)
+      if ((requiresWrite & 1) == 0)
       {
 LABEL_125:
         if (v129)
@@ -1684,7 +1684,7 @@ LABEL_144:
         }
 
 LABEL_138:
-        [v133 removeObjectForKey:self->_threadLocalTransactionKey];
+        [threadDictionary removeObjectForKey:self->_threadLocalTransactionKey];
         if (v82)
         {
           [(HDDatabaseTransaction *)v135 transactionDidEndWithError:0];
@@ -1704,7 +1704,7 @@ LABEL_138:
       }
 
 LABEL_115:
-      v128 = v11;
+      v128 = handlerCopy;
       v139 = 0u;
       v140 = 0u;
       v137 = 0u;
@@ -1732,11 +1732,11 @@ LABEL_115:
         while (v86);
       }
 
-      v11 = v128;
-      v89 = [(HDDatabaseTransaction *)v135 rootContext];
-      v90 = [v89 skipJournalMerge];
+      handlerCopy = v128;
+      rootContext8 = [(HDDatabaseTransaction *)v135 rootContext];
+      skipJournalMerge2 = [rootContext8 skipJournalMerge];
 
-      if ((v90 & 1) == 0)
+      if ((skipJournalMerge2 & 1) == 0)
       {
         [(HDDatabaseJournal *)v132 unlock];
       }
@@ -1745,14 +1745,14 @@ LABEL_115:
       goto LABEL_125;
     }
 
-    v18 = [MEMORY[0x277CCA9B8] hk_databaseInaccessibleBeforeFirstUnlockError];
-    v19 = v18;
-    if (v18)
+    hk_databaseInaccessibleBeforeFirstUnlockError = [MEMORY[0x277CCA9B8] hk_databaseInaccessibleBeforeFirstUnlockError];
+    v19 = hk_databaseInaccessibleBeforeFirstUnlockError;
+    if (hk_databaseInaccessibleBeforeFirstUnlockError)
     {
-      if (a4)
+      if (error)
       {
-        v20 = v18;
-        *a4 = v19;
+        v20 = hk_databaseInaccessibleBeforeFirstUnlockError;
+        *error = v19;
       }
 
       else
@@ -1824,21 +1824,21 @@ uint64_t __79__HDDatabase_performTransactionWithContext_error_block_inaccessibil
   return v4;
 }
 
-- (BOOL)performHighPriorityTransactionsWithError:(id *)a3 block:(id)a4
+- (BOOL)performHighPriorityTransactionsWithError:(id *)error block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = +[HDDatabaseTransactionContext highPriorityContext];
-  LOBYTE(a3) = [(HDDatabase *)self performWithTransactionContext:v7 error:a3 block:v6];
+  LOBYTE(error) = [(HDDatabase *)self performWithTransactionContext:v7 error:error block:blockCopy];
 
-  return a3;
+  return error;
 }
 
-- (void)_performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:(void *)a3 block:
+- (void)_performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:(void *)queue block:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1 && v6)
+  queueCopy = queue;
+  v7 = queueCopy;
+  if (self && queueCopy)
   {
     if (!v5)
     {
@@ -1857,18 +1857,18 @@ uint64_t __79__HDDatabase_performTransactionWithContext_error_block_inaccessibil
     v14[1] = 3221225472;
     v14[2] = __77__HDDatabase__performWhenDataProtectedByFirstUnlockIsAvailableOnQueue_block___block_invoke_3;
     v14[3] = &unk_27861C738;
-    v14[4] = a1;
+    v14[4] = self;
     v7 = v8;
     v15 = v7;
     v9 = _Block_copy(v14);
     if ((v9[2]() & 1) == 0)
     {
-      v10 = *(a1 + 72);
+      v10 = *(self + 72);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __77__HDDatabase__performWhenDataProtectedByFirstUnlockIsAvailableOnQueue_block___block_invoke_4;
       block[3] = &unk_27861C760;
-      block[4] = a1;
+      block[4] = self;
       v12 = v9;
       v13 = v7;
       dispatch_async(v10, block);
@@ -1956,20 +1956,20 @@ void __77__HDDatabase__performWhenDataProtectedByFirstUnlockIsAvailableOnQueue_b
   return result;
 }
 
-- (BOOL)performWithJournalType:(int64_t)a3 error:(id *)a4 block:(id)a5
+- (BOOL)performWithJournalType:(int64_t)type error:(id *)error block:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v9 = objc_alloc_init(HDMutableDatabaseTransactionContext);
-  [(HDMutableDatabaseTransactionContext *)v9 setJournalType:a3];
-  LOBYTE(a4) = [(HDDatabase *)self performWithTransactionContext:v9 error:a4 block:v8];
+  [(HDMutableDatabaseTransactionContext *)v9 setJournalType:type];
+  LOBYTE(error) = [(HDDatabase *)self performWithTransactionContext:v9 error:error block:blockCopy];
 
-  return a4;
+  return error;
 }
 
-- (id)beginExtendedTransactionWithContext:(id)a3 transactionTimeout:(double)a4 continuationTimeout:(double)a5 error:(id *)a6
+- (id)beginExtendedTransactionWithContext:(id)context transactionTimeout:(double)timeout continuationTimeout:(double)continuationTimeout error:(id *)error
 {
-  v10 = a3;
-  v11 = [[HDExtendedDatabaseTransaction alloc] initWithDatabase:self context:v10 transactionTimeout:a6 continuationTimeout:a4 error:a5];
+  contextCopy = context;
+  v11 = [[HDExtendedDatabaseTransaction alloc] initWithDatabase:self context:contextCopy transactionTimeout:error continuationTimeout:timeout error:continuationTimeout];
   v12 = v11;
   if (v11)
   {
@@ -2004,13 +2004,13 @@ void __95__HDDatabase_beginExtendedTransactionWithContext_transactionTimeout_con
   [v2 setObject:v6 forKeyedSubscript:?];
 }
 
-- (id)extendedDatabaseTransactionForIdentifier:(id)a3
+- (id)extendedDatabaseTransactionForIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"HDDatabase.mm" lineNumber:896 description:{@"Invalid parameter not satisfying: %@", @"transactionIdentifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabase.mm" lineNumber:896 description:{@"Invalid parameter not satisfying: %@", @"transactionIdentifier != nil"}];
   }
 
   v14 = 0;
@@ -2024,10 +2024,10 @@ void __95__HDDatabase_beginExtendedTransactionWithContext_transactionTimeout_con
   block[1] = 3221225472;
   block[2] = __55__HDDatabase_extendedDatabaseTransactionForIdentifier___block_invoke;
   block[3] = &unk_27861C788;
-  v12 = v5;
+  v12 = identifierCopy;
   v13 = &v14;
   block[4] = self;
-  v7 = v5;
+  v7 = identifierCopy;
   dispatch_sync(protectedDataQueue, block);
   v8 = v15[5];
 
@@ -2046,13 +2046,13 @@ uint64_t __55__HDDatabase_extendedDatabaseTransactionForIdentifier___block_invok
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)finalizeExtendedTransactionForIdentifier:(id)a3
+- (void)finalizeExtendedTransactionForIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"HDDatabase.mm" lineNumber:906 description:{@"Invalid parameter not satisfying: %@", @"transactionIdentifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabase.mm" lineNumber:906 description:{@"Invalid parameter not satisfying: %@", @"transactionIdentifier != nil"}];
   }
 
   protectedDataQueue = self->_protectedDataQueue;
@@ -2061,17 +2061,17 @@ uint64_t __55__HDDatabase_extendedDatabaseTransactionForIdentifier___block_invok
   block[2] = __55__HDDatabase_finalizeExtendedTransactionForIdentifier___block_invoke;
   block[3] = &unk_27861C6C0;
   block[4] = self;
-  v10 = v5;
-  v7 = v5;
+  v10 = identifierCopy;
+  v7 = identifierCopy;
   dispatch_async(protectedDataQueue, block);
 }
 
-- (id)databaseSizeInBytesForTypeUnprotected:(BOOL)a3 WAL:(BOOL)a4
+- (id)databaseSizeInBytesForTypeUnprotected:(BOOL)unprotected WAL:(BOOL)l
 {
-  v4 = a4;
-  v5 = a3;
+  lCopy = l;
+  unprotectedCopy = unprotected;
   v28 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (unprotected)
   {
     [(HDDatabase *)self _mainDatabaseURL];
   }
@@ -2082,14 +2082,14 @@ uint64_t __55__HDDatabase_extendedDatabaseTransactionForIdentifier___block_invok
   }
   v7 = ;
   v8 = v7;
-  if (v4)
+  if (lCopy)
   {
     v9 = v7;
     v10 = v9;
     if (self)
     {
-      v11 = [v9 URLByDeletingPathExtension];
-      v12 = [v11 URLByAppendingPathExtension:@"sqlite-wal"];
+      uRLByDeletingPathExtension = [v9 URLByDeletingPathExtension];
+      v12 = [uRLByDeletingPathExtension URLByAppendingPathExtension:@"sqlite-wal"];
     }
 
     else
@@ -2123,13 +2123,13 @@ LABEL_8:
   if (v14)
   {
     v16 = @"protected";
-    if (v5)
+    if (unprotectedCopy)
     {
       v16 = @"unprotected";
     }
 
     v17 = &stru_283BF39C8;
-    if (v4)
+    if (lCopy)
     {
       v17 = @"WAL";
     }
@@ -2157,24 +2157,24 @@ LABEL_19:
 
 - (void)_mainDatabaseURL
 {
-  if (a1)
+  if (self)
   {
-    a1 = [MEMORY[0x277D10B30] mainDatabaseURLWithProfileDirectoryPath:a1[4]];
+    self = [MEMORY[0x277D10B30] mainDatabaseURLWithProfileDirectoryPath:self[4]];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_protectedDatabaseURL
 {
-  if (a1)
+  if (self)
   {
-    a1 = [MEMORY[0x277D10B30] protectedDatabaseURLWithProfileDirectoryPath:a1[4]];
+    self = [MEMORY[0x277D10B30] protectedDatabaseURLWithProfileDirectoryPath:self[4]];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)databaseSizeInBytes
@@ -2184,19 +2184,19 @@ LABEL_19:
   v5 = v3 == 0;
   if (v3)
   {
-    v6 = [v3 longLongValue];
+    longLongValue = [v3 longLongValue];
   }
 
   else
   {
-    v6 = 0;
+    longLongValue = 0;
   }
 
   v7 = [(HDDatabase *)self databaseSizeInBytesForTypeUnprotected:1 WAL:1];
   v8 = v7;
   if (v7)
   {
-    v6 += [v7 longLongValue];
+    longLongValue += [v7 longLongValue];
   }
 
   else
@@ -2208,7 +2208,7 @@ LABEL_19:
   v10 = v9;
   if (v9)
   {
-    v6 += [v9 longLongValue];
+    longLongValue += [v9 longLongValue];
   }
 
   else
@@ -2220,7 +2220,7 @@ LABEL_19:
   v12 = v11;
   if (v11 && (v13 = [v11 longLongValue], !v5))
   {
-    v14 = [MEMORY[0x277CCABB0] numberWithLongLong:v13 + v6];
+    v14 = [MEMORY[0x277CCABB0] numberWithLongLong:v13 + longLongValue];
   }
 
   else
@@ -2231,33 +2231,33 @@ LABEL_19:
   return v14;
 }
 
-- (void)_reportDatabaseMigrationStatus:(int64_t)a3 component:(int64_t)a4 schemaVersion:(int64_t)a5 error:(id)a6
+- (void)_reportDatabaseMigrationStatus:(int64_t)status component:(int64_t)component schemaVersion:(int64_t)version error:(id)error
 {
-  v10 = a6;
-  v11 = [(HDDatabase *)self _newCorruptionEventStore];
-  if (!v10)
+  errorCopy = error;
+  _newCorruptionEventStore = [(HDDatabase *)self _newCorruptionEventStore];
+  if (!errorCopy)
   {
     goto LABEL_7;
   }
 
   v25 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v13 = [WeakRetained profileIdentifier];
-  v14 = [v11 mostRecentMigrationFailureEventForProfile:v13 component:a4 schemaVersion:&v25];
+  profileIdentifier = [WeakRetained profileIdentifier];
+  v14 = [_newCorruptionEventStore mostRecentMigrationFailureEventForProfile:profileIdentifier component:component schemaVersion:&v25];
 
-  if (!v14 || ([MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-86400.0], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v14, "compare:", v15), v17 = v25, v15, v16 != 1) || v17 != a5)
+  if (!v14 || ([MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-86400.0], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v14, "compare:", v15), v17 = v25, v15, v16 != 1) || v17 != version)
   {
     v18 = objc_loadWeakRetained(&self->_profile);
-    v19 = [v18 profileIdentifier];
-    [v11 persistMigrationFailureEventForProfile:v19 component:a4 schemaVersion:a5];
+    profileIdentifier2 = [v18 profileIdentifier];
+    [_newCorruptionEventStore persistMigrationFailureEventForProfile:profileIdentifier2 component:component schemaVersion:version];
 
 LABEL_7:
-    v20 = HDStringFromDatabaseComponentIdentifier(a4);
-    v21 = [(HDDatabase *)self profile];
-    v22 = [v21 daemon];
-    v23 = [v22 analyticsSubmissionCoordinator];
+    v20 = HDStringFromDatabaseComponentIdentifier(component);
+    profile = [(HDDatabase *)self profile];
+    daemon = [profile daemon];
+    analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
     v24 = objc_loadWeakRetained(&self->_profile);
-    [v23 database_reportDatabaseMigrationStatus:a3 database:v20 schemaVersion:a5 error:v10 profileType:{objc_msgSend(v24, "profileType")}];
+    [analyticsSubmissionCoordinator database_reportDatabaseMigrationStatus:status database:v20 schemaVersion:version error:errorCopy profileType:{objc_msgSend(v24, "profileType")}];
 
     goto LABEL_8;
   }
@@ -2265,11 +2265,11 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_reportSQLiteCorruption:(id)a3 forDatabase:(int64_t)a4 shouldPrompt:(BOOL)a5
+- (void)_reportSQLiteCorruption:(id)corruption forDatabase:(int64_t)database shouldPrompt:(BOOL)prompt
 {
-  v5 = a5;
+  promptCopy = prompt;
   v58 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  corruptionCopy = corruption;
   if (atomic_exchange(&self->_hasFaultedForCorruptionError._Value, 1u))
   {
     _HKInitializeLogging();
@@ -2277,7 +2277,7 @@ LABEL_8:
     if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
     {
       v48 = "protected";
-      if (!a4)
+      if (!database)
       {
         v48 = "unprotected";
       }
@@ -2285,7 +2285,7 @@ LABEL_8:
       *buf = 136315394;
       v55 = v48;
       v56 = 2112;
-      v57 = v8;
+      v57 = corruptionCopy;
       _os_log_error_impl(&dword_228986000, v11, OS_LOG_TYPE_ERROR, "Corruption of the %s database detected:%@", buf, 0x16u);
     }
   }
@@ -2297,7 +2297,7 @@ LABEL_8:
     if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_FAULT))
     {
       v10 = "protected";
-      if (!a4)
+      if (!database)
       {
         v10 = "unprotected";
       }
@@ -2305,41 +2305,41 @@ LABEL_8:
       *buf = 136315394;
       v55 = v10;
       v56 = 2112;
-      v57 = v8;
+      v57 = corruptionCopy;
       _os_log_fault_impl(&dword_228986000, v9, OS_LOG_TYPE_FAULT, "Corruption of the %s database detected:%@", buf, 0x16u);
     }
   }
 
-  v52 = [(HDDatabase *)self _newCorruptionEventStore];
+  _newCorruptionEventStore = [(HDDatabase *)self _newCorruptionEventStore];
   v53 = 0;
-  [v52 dateOfMostRecentObliteration:&v53];
-  v50 = v49 = v5;
+  [_newCorruptionEventStore dateOfMostRecentObliteration:&v53];
+  v50 = v49 = promptCopy;
   v51 = v53;
   if (v50)
   {
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v13 = MEMORY[0x277CCACA8];
-    v14 = [(HDDatabase *)self _protectedDatabaseURL];
-    v15 = v14;
-    v16 = [v13 stringWithUTF8String:{objc_msgSend(v14, "fileSystemRepresentation")}];
-    v17 = [v12 attributesOfItemAtPath:v16 error:0];
-    v18 = [v17 fileCreationDate];
+    _protectedDatabaseURL = [(HDDatabase *)self _protectedDatabaseURL];
+    v15 = _protectedDatabaseURL;
+    v16 = [v13 stringWithUTF8String:{objc_msgSend(_protectedDatabaseURL, "fileSystemRepresentation")}];
+    v17 = [defaultManager attributesOfItemAtPath:v16 error:0];
+    fileCreationDate = [v17 fileCreationDate];
 
     v19 = MEMORY[0x277CCACA8];
-    v20 = [(HDDatabase *)self _mainDatabaseURL];
-    v21 = v20;
-    v22 = [v19 stringWithUTF8String:{objc_msgSend(v20, "fileSystemRepresentation")}];
-    v23 = [v12 attributesOfItemAtPath:v22 error:0];
-    v24 = [v23 fileCreationDate];
+    _mainDatabaseURL = [(HDDatabase *)self _mainDatabaseURL];
+    v21 = _mainDatabaseURL;
+    v22 = [v19 stringWithUTF8String:{objc_msgSend(_mainDatabaseURL, "fileSystemRepresentation")}];
+    v23 = [defaultManager attributesOfItemAtPath:v22 error:0];
+    fileCreationDate2 = [v23 fileCreationDate];
 
-    if (v18 && [v50 compare:v18] == 1)
+    if (fileCreationDate && [v50 compare:fileCreationDate] == 1)
     {
       v25 = 1;
     }
 
-    else if (v24)
+    else if (fileCreationDate2)
     {
-      v25 = [v50 compare:v24] == 1;
+      v25 = [v50 compare:fileCreationDate2] == 1;
     }
 
     else
@@ -2353,22 +2353,22 @@ LABEL_8:
     v25 = 0;
   }
 
-  v26 = [(HDDatabase *)self profile];
-  v27 = [HDDatabaseCorruptionEvent createForProfile:v26 component:a4 != 0 error:v8 failedObliterationReason:v51];
+  profile = [(HDDatabase *)self profile];
+  v27 = [HDDatabaseCorruptionEvent createForProfile:profile component:database != 0 error:corruptionCopy failedObliterationReason:v51];
 
-  [v52 persistCorruptionEvent:v27];
+  [_newCorruptionEventStore persistCorruptionEvent:v27];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v29 = [WeakRetained daemon];
-  v30 = [v29 analyticsSubmissionCoordinator];
+  daemon = [WeakRetained daemon];
+  analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
 
-  v31 = [v8 hd_sqliteExtendedErrorCode];
+  hd_sqliteExtendedErrorCode = [corruptionCopy hd_sqliteExtendedErrorCode];
   v32 = objc_loadWeakRetained(&self->_profile);
-  v33 = [v8 localizedDescription];
-  v34 = [v8 hd_failingSQLStatement];
-  v35 = v34;
-  if (v34)
+  localizedDescription = [corruptionCopy localizedDescription];
+  hd_failingSQLStatement = [corruptionCopy hd_failingSQLStatement];
+  v35 = hd_failingSQLStatement;
+  if (hd_failingSQLStatement)
   {
-    v36 = v34;
+    v36 = hd_failingSQLStatement;
   }
 
   else
@@ -2376,24 +2376,24 @@ LABEL_8:
     v36 = &stru_283BF39C8;
   }
 
-  [v30 database_reportSQLiteCorruptionWithExtendedErrorCode:v31 type:a4 profile:v32 description:v33 sqlStatement:v36 failedObliterationAttempt:v25];
+  [analyticsSubmissionCoordinator database_reportSQLiteCorruptionWithExtendedErrorCode:hd_sqliteExtendedErrorCode type:database profile:v32 description:localizedDescription sqlStatement:v36 failedObliterationAttempt:v25];
 
   if (v49)
   {
     v37 = [HDDatabaseCorruptionTTRPrompter alloc];
-    v38 = [(HDDatabase *)self profile];
-    v39 = [v38 daemon];
-    v40 = [v39 behavior];
-    v41 = [(HDDatabaseCorruptionTTRPrompter *)v37 initWithStore:v52 behavior:v40];
+    profile2 = [(HDDatabase *)self profile];
+    daemon2 = [profile2 daemon];
+    behavior = [daemon2 behavior];
+    v41 = [(HDDatabaseCorruptionTTRPrompter *)v37 initWithStore:_newCorruptionEventStore behavior:behavior];
 
     [(HDDatabaseCorruptionTTRPrompter *)v41 promptForEvent:v27];
   }
 
-  v42 = [(HDDatabase *)self profile];
-  v43 = [v42 daemon];
-  v44 = [v43 autoBugCaptureReporter];
-  v45 = [v8 hd_sqliteExtendedErrorCode];
-  if (a4)
+  profile3 = [(HDDatabase *)self profile];
+  daemon3 = [profile3 daemon];
+  autoBugCaptureReporter = [daemon3 autoBugCaptureReporter];
+  hd_sqliteExtendedErrorCode2 = [corruptionCopy hd_sqliteExtendedErrorCode];
+  if (database)
   {
     v46 = @"protected";
   }
@@ -2403,15 +2403,15 @@ LABEL_8:
     v46 = @"unprotected";
   }
 
-  [v44 reportCorruptionForDatabase:v46 resultCode:v45];
+  [autoBugCaptureReporter reportCorruptionForDatabase:v46 resultCode:hd_sqliteExtendedErrorCode2];
 
   v47 = *MEMORY[0x277D85DE8];
 }
 
 - (NSDate)mostRecentObliterationDate
 {
-  v2 = [(HDDatabase *)self _newCorruptionEventStore];
-  v3 = [v2 dateOfMostRecentObliteration:0];
+  _newCorruptionEventStore = [(HDDatabase *)self _newCorruptionEventStore];
+  v3 = [_newCorruptionEventStore dateOfMostRecentObliteration:0];
 
   return v3;
 }
@@ -2423,48 +2423,48 @@ LABEL_8:
   return [(HDDatabaseCorruptionEventStore *)v3 initWithDelegate:self];
 }
 
-- (id)_newTTRPromptControllerWithProfile:(id)a3 domainName:(id)a4 loggingCategory:(id)a5
+- (id)_newTTRPromptControllerWithProfile:(id)profile domainName:(id)name loggingCategory:(id)category
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [[HDTTRPromptController alloc] initWithProfile:v7 domainName:v8 loggingCategory:v9];
+  profileCopy = profile;
+  nameCopy = name;
+  categoryCopy = category;
+  v10 = [[HDTTRPromptController alloc] initWithProfile:profileCopy domainName:nameCopy loggingCategory:categoryCopy];
 
   return v10;
 }
 
-- (void)store:(id)a3 setObject:(id)a4 forKey:(id)a5
+- (void)store:(id)store setObject:(id)object forKey:(id)key
 {
-  v8 = a4;
-  v6 = a5;
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v7 setObject:v8 forKey:v6];
+  objectCopy = object;
+  keyCopy = key;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setObject:objectCopy forKey:keyCopy];
 }
 
-- (id)store:(id)a3 objectForKey:(id)a4
+- (id)store:(id)store objectForKey:(id)key
 {
-  v4 = a4;
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v6 = [standardUserDefaults objectForKey:keyCopy];
 
   return v6;
 }
 
-- (id)_newDatabaseConnectionWithURL:(id)a3
+- (id)_newDatabaseConnectionWithURL:(id)l
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277D10B30]) initWithDatabaseURL:v3];
+  lCopy = l;
+  v4 = [objc_alloc(MEMORY[0x277D10B30]) initWithDatabaseURL:lCopy];
 
   return v4;
 }
 
-- (id)_createAndVerifyDatabaseConnectionWithType:(int64_t)a3 error:(id *)a4
+- (id)_createAndVerifyDatabaseConnectionWithType:(int64_t)type error:(id *)error
 {
   *&v27[5] = *MEMORY[0x277D85DE8];
   if (self)
   {
     profileDirectoryPath = self->_profileDirectoryPath;
-    if (a3)
+    if (type)
     {
       [MEMORY[0x277D10B30] protectedDatabaseURLWithProfileDirectoryPath:profileDirectoryPath];
     }
@@ -2476,19 +2476,19 @@ LABEL_8:
     v8 = ;
     v9 = [(HDDatabase *)self _newDatabaseConnectionWithURL:v8];
     [v9 setDelegate:self];
-    if (a3 == 1)
+    if (type == 1)
     {
       v10 = MEMORY[0x277CCA198];
     }
 
-    else if (a3)
+    else if (type)
     {
       _HKInitializeLogging();
       v11 = *MEMORY[0x277CCC2A0];
       if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_FAULT))
       {
         *buf = 134217984;
-        *v27 = a3;
+        *v27 = type;
         _os_log_fault_impl(&dword_228986000, v11, OS_LOG_TYPE_FAULT, "Unexpected database type (%ld), defaulting to complete protection.", buf, 0xCu);
       }
 
@@ -2508,7 +2508,7 @@ LABEL_8:
     v9 = 0;
   }
 
-  v12 = [v9 fileURL];
+  fileURL = [v9 fileURL];
   v25 = 0;
   v13 = [v9 openWithError:&v25];
   v14 = v25;
@@ -2523,16 +2523,16 @@ LABEL_8:
   if (v13 == 26)
   {
 LABEL_17:
-    [(HDDatabase *)self _reportSQLiteCorruption:v14 forDatabase:a3 shouldPrompt:1];
+    [(HDDatabase *)self _reportSQLiteCorruption:v14 forDatabase:type shouldPrompt:1];
     v15 = @"unprotected";
-    if (a3 == 1)
+    if (type == 1)
     {
       v15 = @"protected";
     }
 
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Corrupt %@ database (%d)", v15, v13];
+    _newCorruptionEventStore = [MEMORY[0x277CCACA8] stringWithFormat:@"Corrupt %@ database (%d)", v15, v13];
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    [WeakRetained obliterateAndTerminateWithOptions:2 reason:v16 completion:0];
+    [WeakRetained obliterateAndTerminateWithOptions:2 reason:_newCorruptionEventStore completion:0];
 
     goto LABEL_24;
   }
@@ -2542,15 +2542,15 @@ LABEL_17:
     if (v13 != 11)
     {
       _HKInitializeLogging();
-      v16 = *MEMORY[0x277CCC2A0];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      _newCorruptionEventStore = *MEMORY[0x277CCC2A0];
+      if (os_log_type_enabled(_newCorruptionEventStore, OS_LOG_TYPE_ERROR))
       {
-        v24 = [v12 path];
+        path = [fileURL path];
         *buf = 67109378;
         v27[0] = v13;
         LOWORD(v27[1]) = 2114;
-        *(&v27[1] + 2) = v24;
-        _os_log_error_impl(&dword_228986000, v16, OS_LOG_TYPE_ERROR, "Unable to open database: [%d, %{public}@]", buf, 0x12u);
+        *(&v27[1] + 2) = path;
+        _os_log_error_impl(&dword_228986000, _newCorruptionEventStore, OS_LOG_TYPE_ERROR, "Unable to open database: [%d, %{public}@]", buf, 0x12u);
       }
 
       goto LABEL_24;
@@ -2559,8 +2559,8 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v16 = [(HDDatabase *)self _newCorruptionEventStore];
-  [v16 persistDeviceOutOfSpaceEvent];
+  _newCorruptionEventStore = [(HDDatabase *)self _newCorruptionEventStore];
+  [_newCorruptionEventStore persistDeviceOutOfSpaceEvent];
 LABEL_24:
 
   v18 = 0;
@@ -2569,10 +2569,10 @@ LABEL_25:
   v20 = v19;
   if (v19)
   {
-    if (a4)
+    if (error)
     {
       v21 = v19;
-      *a4 = v20;
+      *error = v20;
     }
 
     else
@@ -2586,61 +2586,61 @@ LABEL_25:
   return v18;
 }
 
-- (uint64_t)_performMigrationWithUnprotectedDatabase:(void *)a3 protectedDatabase:(void *)a4 error:
+- (uint64_t)_performMigrationWithUnprotectedDatabase:(void *)database protectedDatabase:(void *)protectedDatabase error:
 {
   v45 = *MEMORY[0x277D85DE8];
   v37 = a2;
-  v6 = a3;
-  v7 = [(HDDatabase *)a1 _threadLocalTransaction];
-  if (v7)
+  databaseCopy = database;
+  _threadLocalTransaction = [(HDDatabase *)self _threadLocalTransaction];
+  if (_threadLocalTransaction)
   {
-    if (v6)
+    if (databaseCopy)
     {
 LABEL_3:
-      v38 = [v7 protectedDatabase];
+      protectedDatabase = [_threadLocalTransaction protectedDatabase];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:sel__performMigrationWithUnprotectedDatabase_protectedDatabase_error_ object:a1 file:@"HDDatabase.mm" lineNumber:1328 description:@"Migration must be performed inside a database transaction"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel__performMigrationWithUnprotectedDatabase_protectedDatabase_error_ object:self file:@"HDDatabase.mm" lineNumber:1328 description:@"Migration must be performed inside a database transaction"];
 
-    if (v6)
+    if (databaseCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v38 = [v7 unprotectedDatabase];
+  protectedDatabase = [_threadLocalTransaction unprotectedDatabase];
 LABEL_6:
-  if (v38)
+  if (protectedDatabase)
   {
-    v34 = [MEMORY[0x277CCA890] currentHandler];
-    [v34 handleFailureInMethod:sel__performMigrationWithUnprotectedDatabase_protectedDatabase_error_ object:a1 file:@"HDDatabase.mm" lineNumber:1331 description:@"Transaction database connection must be nil before migration"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:sel__performMigrationWithUnprotectedDatabase_protectedDatabase_error_ object:self file:@"HDDatabase.mm" lineNumber:1331 description:@"Transaction database connection must be nil before migration"];
   }
 
-  [v7 setPerformingMigration:1];
-  v9 = [a1 profile];
-  v10 = [v9 daemon];
+  [_threadLocalTransaction setPerformingMigration:1];
+  profile = [self profile];
+  daemon = [profile daemon];
 
-  v11 = [v10 pluginManager];
-  v12 = [v11 pluginsConformingToProtocol:&unk_283CCAD48];
-  v13 = [v12 allValues];
+  pluginManager = [daemon pluginManager];
+  v12 = [pluginManager pluginsConformingToProtocol:&unk_283CCAD48];
+  allValues = [v12 allValues];
 
   v14 = [HDDatabaseMigrationTransaction alloc];
-  v15 = [v10 behavior];
-  v16 = [(HDDatabaseMigrationTransaction *)v14 initWithUnprotectedDatabase:v37 protectedDatabase:v6 schemaProviders:v13 behavior:v15];
+  behavior = [daemon behavior];
+  v16 = [(HDDatabaseMigrationTransaction *)v14 initWithUnprotectedDatabase:v37 protectedDatabase:databaseCopy schemaProviders:allValues behavior:behavior];
 
-  [(HDDatabaseMigrationTransaction *)v16 setDelegate:a1];
+  [(HDDatabaseMigrationTransaction *)v16 setDelegate:self];
   v40 = 0;
   v17 = [(HDDatabaseMigrationTransaction *)v16 migrateOrCreateSchemaWithError:&v40];
   v18 = v40;
   if (!v17)
   {
-    v20 = [v7 protectedDatabase];
-    v21 = v20 == 0;
+    protectedDatabase2 = [_threadLocalTransaction protectedDatabase];
+    v21 = protectedDatabase2 == 0;
 
     if (v21)
     {
@@ -2648,16 +2648,16 @@ LABEL_6:
       goto LABEL_23;
     }
 
-    [v7 protectedDatabase];
+    [_threadLocalTransaction protectedDatabase];
     v22 = v39 = v18;
     if (!v22)
     {
-      v35 = [MEMORY[0x277CCA890] currentHandler];
-      [v35 handleFailureInMethod:sel__runPostMigrationUpdatesWithDatabase_error_ object:a1 file:@"HDDatabase.mm" lineNumber:1374 description:{@"Invalid parameter not satisfying: %@", @"database != nil"}];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler3 handleFailureInMethod:sel__runPostMigrationUpdatesWithDatabase_error_ object:self file:@"HDDatabase.mm" lineNumber:1374 description:{@"Invalid parameter not satisfying: %@", @"database != nil"}];
     }
 
-    [a1 offsetTimeInterval];
-    if (v23 == 0.0 || (*(a1 + 297) & 1) != 0)
+    [self offsetTimeInterval];
+    if (v23 == 0.0 || (*(self + 297) & 1) != 0)
     {
       v24 = 1;
     }
@@ -2668,13 +2668,13 @@ LABEL_6:
       *&buf[8] = 3221225472;
       *&buf[16] = __57__HDDatabase__runPostMigrationUpdatesWithDatabase_error___block_invoke;
       v42 = &unk_27861C7D8;
-      v43 = a1;
+      selfCopy = self;
       v44 = v23;
       v32 = [v22 performTransactionWithType:1 error:&v39 usingBlock:buf];
       v24 = v32;
       if (v32)
       {
-        *(a1 + 297) = 1;
+        *(self + 297) = 1;
       }
     }
 
@@ -2701,18 +2701,18 @@ LABEL_6:
 
   if ([v18 hd_isCorruptionError])
   {
-    [a1 setCorruptedMigrationAttemptsCount:{objc_msgSend(a1, "corruptedMigrationAttemptsCount") + 1}];
-    if ([a1 corruptedMigrationAttemptsCount] >= 6)
+    [self setCorruptedMigrationAttemptsCount:{objc_msgSend(self, "corruptedMigrationAttemptsCount") + 1}];
+    if ([self corruptedMigrationAttemptsCount] >= 6)
     {
       _HKInitializeLogging();
       v19 = *MEMORY[0x277CCC2A0];
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v33 = [a1 corruptedMigrationAttemptsCount];
+        corruptedMigrationAttemptsCount = [self corruptedMigrationAttemptsCount];
         *buf = 138412546;
-        *&buf[4] = a1;
+        *&buf[4] = self;
         *&buf[12] = 2048;
-        *&buf[14] = v33;
+        *&buf[14] = corruptedMigrationAttemptsCount;
         _os_log_error_impl(&dword_228986000, v19, OS_LOG_TYPE_ERROR, "%@ received database corruption errors from %ld migration attempts.", buf, 0x16u);
       }
 
@@ -2725,10 +2725,10 @@ LABEL_23:
   v27 = v26;
   if (v26)
   {
-    if (a4)
+    if (protectedDatabase)
     {
       v28 = v26;
-      *a4 = v27;
+      *protectedDatabase = v27;
     }
 
     else
@@ -2737,21 +2737,21 @@ LABEL_23:
     }
   }
 
-  [v7 setPerformingMigration:0];
+  [_threadLocalTransaction setPerformingMigration:0];
   v29 = *MEMORY[0x277D85DE8];
   return v17;
 }
 
-- (void)_reportMigrationResultIfNecessaryForStatus:(void *)a3 database:(unsigned int)a4 protectedDatabase:(void *)a5 error:
+- (void)_reportMigrationResultIfNecessaryForStatus:(void *)status database:(unsigned int)database protectedDatabase:(void *)protectedDatabase error:
 {
   v30 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if ((a2 > 4 || ((1 << a2) & 0x19) == 0) && ([v10 hk_isDatabaseSchemaRolledBackError] & 1) == 0)
+  statusCopy = status;
+  protectedDatabaseCopy = protectedDatabase;
+  v11 = protectedDatabaseCopy;
+  if ((a2 > 4 || ((1 << a2) & 0x19) == 0) && ([protectedDatabaseCopy hk_isDatabaseSchemaRolledBackError] & 1) == 0)
   {
     v13 = @"unprotected";
-    if (a4)
+    if (database)
     {
       v13 = @"protected";
     }
@@ -2759,7 +2759,7 @@ LABEL_23:
     v23 = v13;
     v22 = HDDatabaseMigrationStatusToString(a2);
     v25 = 0;
-    v14 = [v9 userVersionWithDatabaseName:0 error:&v25];
+    v14 = [statusCopy userVersionWithDatabaseName:0 error:&v25];
     v24 = v25;
     v15 = MEMORY[0x277CCC2A0];
     if (v14 == -1)
@@ -2788,12 +2788,12 @@ LABEL_23:
       _os_log_error_impl(&dword_228986000, v18, OS_LOG_TYPE_ERROR, "Report %{public}@ database migration failure %{public}@", buf, 0x16u);
     }
 
-    v19 = [a1 profile];
-    v20 = [v19 daemon];
-    v21 = [v20 autoBugCaptureReporter];
-    [v21 reportDatabaseMigrationFailureWithContext:v17];
+    profile = [self profile];
+    daemon = [profile daemon];
+    autoBugCaptureReporter = [daemon autoBugCaptureReporter];
+    [autoBugCaptureReporter reportDatabaseMigrationFailureWithContext:v17];
 
-    [a1 _reportDatabaseMigrationStatus:a2 component:a4 schemaVersion:v14 error:v11];
+    [self _reportDatabaseMigrationStatus:a2 component:database schemaVersion:v14 error:v11];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -2911,49 +2911,49 @@ uint64_t __54__HDDatabase__applyOffsetTimeInterval_database_error___block_invoke
   return result;
 }
 
-- (void)migrationTransaction:(id)a3 didCreateDatabasesWithIdentifier:(id)a4
+- (void)migrationTransaction:(id)transaction didCreateDatabasesWithIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  identifierCopy = identifier;
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC2A0];
   if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543362;
-    v15 = v5;
+    v15 = identifierCopy;
     _os_log_impl(&dword_228986000, v6, OS_LOG_TYPE_DEFAULT, "Inserting identifier %{public}@ in user defaults", &v14, 0xCu);
   }
 
-  v7 = [(HDDatabase *)self profile];
-  v8 = [v7 profileIdentifier];
+  profile = [(HDDatabase *)self profile];
+  profileIdentifier = [profile profileIdentifier];
 
-  v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v10 = [MEMORY[0x277CCAD78] hk_UUIDWithData:v5];
-  v11 = [v10 UUIDString];
-  v12 = HDDatabaseIdentifierDefaultKeyForProfileIdentifier(v8);
-  [v9 setObject:v11 forKey:v12];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v10 = [MEMORY[0x277CCAD78] hk_UUIDWithData:identifierCopy];
+  uUIDString = [v10 UUIDString];
+  v12 = HDDatabaseIdentifierDefaultKeyForProfileIdentifier(profileIdentifier);
+  [standardUserDefaults setObject:uUIDString forKey:v12];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)migrationTransaction:(id)a3 didEncounterDatabaseMismatchWithUnprotectedIdentifier:(id)a4 protectedIdentifier:(id)a5
+- (void)migrationTransaction:(id)transaction didEncounterDatabaseMismatchWithUnprotectedIdentifier:(id)identifier protectedIdentifier:(id)protectedIdentifier
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [(HDDatabase *)self profile];
-  v9 = [v8 daemon];
-  v10 = [v9 analyticsSubmissionCoordinator];
-  [v10 database_reportUnprotectedDatabaseIdentifier:v11 doesNotMatchProtectedDatabaseIdentifier:v7];
+  identifierCopy = identifier;
+  protectedIdentifierCopy = protectedIdentifier;
+  profile = [(HDDatabase *)self profile];
+  daemon = [profile daemon];
+  analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
+  [analyticsSubmissionCoordinator database_reportUnprotectedDatabaseIdentifier:identifierCopy doesNotMatchProtectedDatabaseIdentifier:protectedIdentifierCopy];
 }
 
-- (id)migrationTransaction:(id)a3 entityClassesWithBehavior:(id)a4
+- (id)migrationTransaction:(id)transaction entityClassesWithBehavior:(id)behavior
 {
-  v4 = [HDDatabase allEntityClassesWithBehavior:a4];
+  v4 = [HDDatabase allEntityClassesWithBehavior:behavior];
 
   return v4;
 }
 
-- (void)assertionManager:(id)a3 assertionInvalidated:(id)a4
+- (void)assertionManager:(id)manager assertionInvalidated:(id)invalidated
 {
   dispatch_assert_queue_V2(self->_protectedDataQueue);
 
@@ -2963,15 +2963,15 @@ uint64_t __54__HDDatabase__applyOffsetTimeInterval_database_error___block_invoke
 - (void)_protectedDataQueue_flushProtectedDataIfNecessary
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 72));
-    os_unfair_lock_lock((a1 + 80));
-    v2 = *(a1 + 104);
-    os_unfair_lock_unlock((a1 + 80));
-    if (v2 == 2 && (*(a1 + 208) & 1) == 0)
+    dispatch_assert_queue_V2(*(self + 72));
+    os_unfair_lock_lock((self + 80));
+    v2 = *(self + 104);
+    os_unfair_lock_unlock((self + 80));
+    if (v2 == 2 && (*(self + 208) & 1) == 0)
     {
-      v3 = [*(a1 + 344) activeAssertionsForIdentifier:@"DatabaseAccessibility"];
+      v3 = [*(self + 344) activeAssertionsForIdentifier:@"DatabaseAccessibility"];
       if ([v3 hk_containsObjectPassingTest:&__block_literal_global_562])
       {
         _HKInitializeLogging();
@@ -2987,9 +2987,9 @@ uint64_t __54__HDDatabase__applyOffsetTimeInterval_database_error___block_invoke
 
       if ([v3 count])
       {
-        os_unfair_lock_lock((a1 + 80));
-        isProtectedDataFlushDeadline = [(HDDatabase *)a1 _protectedDataLock_isProtectedDataFlushDeadlinePassed];
-        os_unfair_lock_unlock((a1 + 80));
+        os_unfair_lock_lock((self + 80));
+        isProtectedDataFlushDeadline = [(HDDatabase *)self _protectedDataLock_isProtectedDataFlushDeadlinePassed];
+        os_unfair_lock_unlock((self + 80));
         if (!isProtectedDataFlushDeadline)
         {
 LABEL_10:
@@ -3022,7 +3022,7 @@ LABEL_17:
         _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_DEFAULT, "Flushing protected data%{public}@", buf, 0xCu);
       }
 
-      [(HDDatabase *)a1 _protectedDataQueue_flushProtectedData];
+      [(HDDatabase *)self _protectedDataQueue_flushProtectedData];
       goto LABEL_17;
     }
   }
@@ -3031,39 +3031,39 @@ LABEL_18:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)checkOutProtectedDatabase:(id)a3 error:(id *)a4
+- (id)checkOutProtectedDatabase:(id)database error:(id *)error
 {
-  v4 = [(HDDatabase *)self _checkOutDatabaseForTransaction:a3 databaseType:1 error:a4];
+  v4 = [(HDDatabase *)self _checkOutDatabaseForTransaction:database databaseType:1 error:error];
 
   return v4;
 }
 
-- (id)_checkOutDatabaseForTransaction:(uint64_t)a3 databaseType:(__CFString *)a4 error:
+- (id)_checkOutDatabaseForTransaction:(uint64_t)transaction databaseType:(__CFString *)type error:
 {
   v80 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  if (a1)
+  if (self)
   {
-    if (([(HDDatabase *)a1 _isDatabaseValidWithError:a4]& 1) == 0)
+    if (([(HDDatabase *)self _isDatabaseValidWithError:type]& 1) == 0)
     {
-      a1 = 0;
+      self = 0;
       goto LABEL_78;
     }
 
-    v8 = [v7 rootContext];
-    v9 = [v8 requiresWrite];
-    if (v9)
+    rootContext = [v7 rootContext];
+    requiresWrite = [rootContext requiresWrite];
+    if (requiresWrite)
     {
-      if ([v8 highPriority])
+      if ([rootContext highPriority])
       {
-        v56 = [MEMORY[0x277CCA890] currentHandler];
-        [v56 handleFailureInMethod:sel__checkOutDatabaseForTransaction_databaseType_error_ object:a1 file:@"HDDatabase.mm" lineNumber:1581 description:@"Transaction may not be both high priority and write"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:sel__checkOutDatabaseForTransaction_databaseType_error_ object:self file:@"HDDatabase.mm" lineNumber:1581 description:@"Transaction may not be both high priority and write"];
       }
 
       v10 = 1;
     }
 
-    else if ([v8 highPriority])
+    else if ([rootContext highPriority])
     {
       v10 = 2;
     }
@@ -3073,7 +3073,7 @@ LABEL_18:
       v10 = 0;
     }
 
-    if ([v8 requiresNewDatabaseConnection])
+    if ([rootContext requiresNewDatabaseConnection])
     {
       v11 = v10 | 8;
     }
@@ -3083,48 +3083,48 @@ LABEL_18:
       v11 = v10;
     }
 
-    if (a3 == 1)
+    if (transaction == 1)
     {
       v12 = v7;
-      v13 = [(HDDatabase *)a1 _protectedDataState];
-      if (v13)
+      _protectedDataState = [(HDDatabase *)self _protectedDataState];
+      if (_protectedDataState)
       {
-        if (v13 != 1)
+        if (_protectedDataState != 1)
         {
-          if (v13 != 2)
+          if (_protectedDataState != 2)
           {
 LABEL_68:
 
-            a1 = 0;
+            self = 0;
 LABEL_77:
 
             goto LABEL_78;
           }
 
           v61 = v12;
-          v14 = [v61 rootContext];
-          v15 = [v14 accessibilityAssertions];
+          rootContext2 = [v61 rootContext];
+          accessibilityAssertions = [rootContext2 accessibilityAssertions];
 
-          if (![v15 count])
+          if (![accessibilityAssertions count])
           {
             goto LABEL_21;
           }
 
-          os_unfair_lock_lock(a1 + 20);
-          if ([(HDDatabase *)a1 _protectedDataLock_isProtectedDataFlushDeadlinePassed])
+          os_unfair_lock_lock(self + 20);
+          if ([(HDDatabase *)self _protectedDataLock_isProtectedDataFlushDeadlinePassed])
           {
-            os_unfair_lock_unlock(a1 + 20);
+            os_unfair_lock_unlock(self + 20);
 LABEL_21:
 
 LABEL_22:
-            v16 = [MEMORY[0x277CCA9B8] hk_protectedDataInaccessibilityError];
-            v17 = v16;
-            if (v16)
+            hk_protectedDataInaccessibilityError = [MEMORY[0x277CCA9B8] hk_protectedDataInaccessibilityError];
+            v17 = hk_protectedDataInaccessibilityError;
+            if (hk_protectedDataInaccessibilityError)
             {
-              if (a4)
+              if (type)
               {
-                v18 = v16;
-                *a4 = v17;
+                v18 = hk_protectedDataInaccessibilityError;
+                *type = v17;
               }
 
               else
@@ -3136,10 +3136,10 @@ LABEL_22:
             goto LABEL_68;
           }
 
-          v24 = [*(a1 + 43) activeAssertionsForIdentifier:@"DatabaseAccessibility"];
-          v58 = [v24 intersectsSet:v15];
+          v24 = [*(self + 43) activeAssertionsForIdentifier:@"DatabaseAccessibility"];
+          v58 = [v24 intersectsSet:accessibilityAssertions];
 
-          os_unfair_lock_unlock(a1 + 20);
+          os_unfair_lock_unlock(self + 20);
           if ((v58 & 1) == 0)
           {
             goto LABEL_22;
@@ -3149,19 +3149,19 @@ LABEL_22:
 
       else
       {
-        v19 = [v12 rootContext];
-        v20 = [v19 skipJournalMerge];
+        rootContext3 = [v12 rootContext];
+        skipJournalMerge = [rootContext3 skipJournalMerge];
 
-        if ((v20 & 1) == 0)
+        if ((skipJournalMerge & 1) == 0)
         {
-          v21 = [MEMORY[0x277CCA9B8] hk_protectedDataInaccessibilityError];
-          v22 = v21;
-          if (v21)
+          hk_protectedDataInaccessibilityError2 = [MEMORY[0x277CCA9B8] hk_protectedDataInaccessibilityError];
+          v22 = hk_protectedDataInaccessibilityError2;
+          if (hk_protectedDataInaccessibilityError2)
           {
-            if (a4)
+            if (type)
             {
-              v23 = v21;
-              *a4 = v22;
+              v23 = hk_protectedDataInaccessibilityError2;
+              *type = v22;
             }
 
             else
@@ -3170,47 +3170,47 @@ LABEL_22:
             }
           }
 
-          v49 = *(a1 + 9);
+          v49 = *(self + 9);
           block = MEMORY[0x277D85DD0];
           v64 = 3221225472;
           v65 = __62__HDDatabase__canAccessProtectedDatabaseForTransaction_error___block_invoke;
           v66 = &unk_27861C698;
-          v67 = a1;
+          selfCopy = self;
           dispatch_async(v49, &block);
           goto LABEL_68;
         }
       }
 
-      if (([v8 requiresNewDatabaseConnection] & 1) == 0 && !objc_msgSend(*(a1 + 51), "isProtectedDataAvailable"))
+      if (([rootContext requiresNewDatabaseConnection] & 1) == 0 && !objc_msgSend(*(self + 51), "isProtectedDataAvailable"))
       {
         v11 |= 4uLL;
       }
     }
 
-    v25 = [a1 databasePoolForDatabaseType:a3];
-    v26 = [v25 checkOutConnectionWithOptions:v11 error:a4];
+    v25 = [self databasePoolForDatabaseType:transaction];
+    v26 = [v25 checkOutConnectionWithOptions:v11 error:type];
     v27 = v26;
     if (!v26)
     {
       goto LABEL_65;
     }
 
-    [v26 setWriter:v9];
-    if (a3 == 1)
+    [v26 setWriter:requiresWrite];
+    if (transaction == 1)
     {
       v28 = v27;
       v29 = v7;
       v30 = v28;
-      [*(a1 + 44) lock];
-      if (([(HDDatabase *)a1 _isDatabaseValidWithError:a4]& 1) == 0)
+      [*(self + 44) lock];
+      if (([(HDDatabase *)self _isDatabaseValidWithError:type]& 1) == 0)
       {
-        [*(a1 + 44) unlock];
+        [*(self + 44) unlock];
 
         goto LABEL_64;
       }
 
       v62 = v29;
-      if ([*(a1 + 47) containsObject:v30])
+      if ([*(self + 47) containsObject:v30])
       {
         v31 = 0;
         v32 = 0;
@@ -3218,13 +3218,13 @@ LABEL_22:
 
       else
       {
-        v33 = [a1 _createAndVerifyDatabaseConnectionWithType:0 error:a4];
+        v33 = [self _createAndVerifyDatabaseConnectionWithType:0 error:type];
         v34 = v30;
         v59 = v34;
         if (v33)
         {
           v71 = 0;
-          v32 = [(HDDatabase *)a1 _performMigrationWithUnprotectedDatabase:v33 protectedDatabase:v34 error:&v71];
+          v32 = [(HDDatabase *)self _performMigrationWithUnprotectedDatabase:v33 protectedDatabase:v34 error:&v71];
           v31 = v71;
           [v33 close];
         }
@@ -3243,12 +3243,12 @@ LABEL_22:
           v32 = 1;
         }
 
-        [(HDDatabase *)a1 _reportMigrationResultIfNecessaryForStatus:v32 database:v59 protectedDatabase:1u error:v31];
+        [(HDDatabase *)self _reportMigrationResultIfNecessaryForStatus:v32 database:v59 protectedDatabase:1u error:v31];
         if (v32 - 1 > 2)
         {
           if (!v32)
           {
-            [*(a1 + 47) addObject:v59];
+            [*(self + 47) addObject:v59];
           }
         }
 
@@ -3280,7 +3280,7 @@ LABEL_22:
             }
 
             v57 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fatal migration failure accessing protected database: %@", v31];
-            WeakRetained = objc_loadWeakRetained(a1 + 40);
+            WeakRetained = objc_loadWeakRetained(self + 40);
             [WeakRetained obliterateAndTerminateWithOptions:0 reason:v57 completion:0];
 
             v39 = [MEMORY[0x277CCA9B8] hk_error:100 description:@"Invalid database pair (removed)"];
@@ -3290,15 +3290,15 @@ LABEL_22:
         }
       }
 
-      [*(a1 + 44) unlock];
+      [*(self + 44) unlock];
       v40 = v31;
       v41 = v40;
       if (v40)
       {
-        if (a4)
+        if (type)
         {
           v42 = v40;
-          *a4 = v41;
+          *type = v41;
         }
 
         else
@@ -3319,16 +3319,16 @@ LABEL_22:
         v77 = __Block_byref_object_copy__64;
         v78 = __Block_byref_object_dispose__64;
         v79 = 0;
-        v43 = [v62 rootContext];
-        v44 = [v43 mutableCopy];
+        rootContext4 = [v62 rootContext];
+        v44 = [rootContext4 mutableCopy];
 
         block = MEMORY[0x277D85DD0];
         v64 = 3221225472;
         v65 = __74__HDDatabase__migrateOrCreateProtectedSchemaInDatabase_transaction_error___block_invoke;
         v66 = &unk_27861C7B0;
         v60 = v44;
-        v67 = v60;
-        v68 = a1;
+        selfCopy = v60;
+        selfCopy2 = self;
         p_buf = &buf;
         v70 = &v71;
         v45 = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, &block);
@@ -3340,7 +3340,7 @@ LABEL_22:
         {
           if (v47)
           {
-            [MEMORY[0x277CCA9B8] hk_assignError:a4 code:103 description:@"Timed out waiting for protected database migration transaction."];
+            [MEMORY[0x277CCA9B8] hk_assignError:type code:103 description:@"Timed out waiting for protected database migration transaction."];
           }
 
           else
@@ -3349,10 +3349,10 @@ LABEL_22:
             v51 = v50;
             if (v50)
             {
-              if (a4)
+              if (type)
               {
                 v52 = v50;
-                *a4 = v51;
+                *type = v51;
               }
 
               else
@@ -3377,9 +3377,9 @@ LABEL_22:
       if (v32)
       {
 LABEL_64:
-        [(HDDatabase *)a1 _checkInDatabase:v30 type:1 flushImmediately:1];
+        [(HDDatabase *)self _checkInDatabase:v30 type:1 flushImmediately:1];
 LABEL_65:
-        a1 = 0;
+        self = 0;
 LABEL_76:
 
         goto LABEL_77;
@@ -3387,8 +3387,8 @@ LABEL_76:
     }
 
 LABEL_75:
-    [(HDDatabase *)a1 _updateInactivityFlushTimer];
-    a1 = v27;
+    [(HDDatabase *)self _updateInactivityFlushTimer];
+    self = v27;
     goto LABEL_76;
   }
 
@@ -3396,26 +3396,26 @@ LABEL_78:
 
   v53 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return self;
 }
 
-- (id)checkOutUnprotectedDatabase:(id)a3 error:(id *)a4
+- (id)checkOutUnprotectedDatabase:(id)database error:(id *)error
 {
-  v4 = [(HDDatabase *)self _checkOutDatabaseForTransaction:a3 databaseType:0 error:a4];
+  v4 = [(HDDatabase *)self _checkOutDatabaseForTransaction:database databaseType:0 error:error];
 
   return v4;
 }
 
-- (id)checkOutProtectedResources:(id)a3 error:(id *)a4
+- (id)checkOutProtectedResources:(id)resources error:(id *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v45 = a3;
+  resourcesCopy = resources;
   v42 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6 = objc_alloc(MEMORY[0x277CCACA8]);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained profileIdentifier];
-  v9 = [v8 identifier];
-  v46 = [v6 initWithFormat:@"%@:%@", @"HDDatabase", v9];
+  profileIdentifier = [WeakRetained profileIdentifier];
+  identifier = [profileIdentifier identifier];
+  v46 = [v6 initWithFormat:@"%@:%@", @"HDDatabase", identifier];
 
   v51 = 0u;
   v52 = 0u;
@@ -3437,7 +3437,7 @@ LABEL_36:
   do
   {
     v11 = 0;
-    v12 = v4;
+    v12 = protectedResourceIdentifier4;
     do
     {
       if (*v50 != v44)
@@ -3460,8 +3460,8 @@ LABEL_36:
         protectedResourceAssertionsByIdentifier = self->_protectedResourceAssertionsByIdentifier;
       }
 
-      v19 = [v14 protectedResourceIdentifier];
-      v20 = [(NSMutableDictionary *)protectedResourceAssertionsByIdentifier objectForKeyedSubscript:v19];
+      protectedResourceIdentifier = [v14 protectedResourceIdentifier];
+      v20 = [(NSMutableDictionary *)protectedResourceAssertionsByIdentifier objectForKeyedSubscript:protectedResourceIdentifier];
 
       if (v20 && [v20 state] != 3)
       {
@@ -3476,9 +3476,9 @@ LABEL_36:
           v21 = *MEMORY[0x277CCC2A0];
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
-            v22 = [v14 protectedResourceIdentifier];
+            protectedResourceIdentifier2 = [v14 protectedResourceIdentifier];
             *buf = 138543362;
-            v55 = v22;
+            v55 = protectedResourceIdentifier2;
             _os_log_impl(&dword_228986000, v21, OS_LOG_TYPE_DEFAULT, "Protected resource assertion for %{public}@ is unexpectedly invalid", buf, 0xCu);
           }
         }
@@ -3488,8 +3488,8 @@ LABEL_36:
         if (v23)
         {
           v24 = self->_protectedResourceAssertionsByIdentifier;
-          v25 = [v14 protectedResourceIdentifier];
-          [(NSMutableDictionary *)v24 setObject:v23 forKeyedSubscript:v25];
+          protectedResourceIdentifier3 = [v14 protectedResourceIdentifier];
+          [(NSMutableDictionary *)v24 setObject:v23 forKeyedSubscript:protectedResourceIdentifier3];
         }
       }
 
@@ -3509,10 +3509,10 @@ LABEL_36:
         if (v35)
         {
 LABEL_40:
-          if (a4)
+          if (error)
           {
             v36 = v35;
-            *a4 = v35;
+            *error = v35;
           }
 
           else
@@ -3535,29 +3535,29 @@ LABEL_44:
       }
 
       v47 = 0;
-      v28 = [v14 checkOutProtectedResourceWithAssertion:v23 transaction:v45 error:&v47];
+      v28 = [v14 checkOutProtectedResourceWithAssertion:v23 transaction:resourcesCopy error:&v47];
       v29 = v47;
       v30 = v29;
       if (v28)
       {
-        v4 = [v14 protectedResourceIdentifier];
-        [v42 setObject:v28 forKeyedSubscript:v4];
+        protectedResourceIdentifier4 = [v14 protectedResourceIdentifier];
+        [v42 setObject:v28 forKeyedSubscript:protectedResourceIdentifier4];
 LABEL_20:
 
-        v4 = v12;
+        protectedResourceIdentifier4 = v12;
         goto LABEL_28;
       }
 
       if (v29)
       {
         v31 = v29;
-        v4 = v12;
+        protectedResourceIdentifier4 = v12;
       }
 
       else
       {
         v31 = [MEMORY[0x277CCA9B8] hk_error:122 format:{@"Protected data store %@ failed to check out a required protected resource without providing an error.", v14}];
-        v4 = v31;
+        protectedResourceIdentifier4 = v31;
         if (!v31)
         {
           v39 = 0;
@@ -3566,10 +3566,10 @@ LABEL_20:
         }
       }
 
-      if (a4)
+      if (error)
       {
         v32 = v31;
-        *a4 = v31;
+        *error = v31;
       }
 
       else
@@ -3578,7 +3578,7 @@ LABEL_20:
       }
 
       v39 = 0;
-      v12 = v4;
+      v12 = protectedResourceIdentifier4;
       if (!v30)
       {
         goto LABEL_20;
@@ -3592,7 +3592,7 @@ LABEL_28:
       }
 
       ++v11;
-      v12 = v4;
+      v12 = protectedResourceIdentifier4;
     }
 
     while (v43 != v11);
@@ -3618,17 +3618,17 @@ LABEL_47:
   return v34;
 }
 
-- (void)_checkInProtectedResources:(uint64_t)a1
+- (void)_checkInProtectedResources:(uint64_t)resources
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (resources)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = *(a1 + 272);
+    v4 = *(resources + 272);
     v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
@@ -3643,8 +3643,8 @@ LABEL_47:
           }
 
           v8 = *(*(&v12 + 1) + 8 * i);
-          v9 = [v8 protectedResourceIdentifier];
-          v10 = [v3 objectForKeyedSubscript:v9];
+          protectedResourceIdentifier = [v8 protectedResourceIdentifier];
+          v10 = [v3 objectForKeyedSubscript:protectedResourceIdentifier];
 
           if (v10)
           {
@@ -3662,25 +3662,25 @@ LABEL_47:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkInDatabase:(id)a3 type:(int64_t)a4 protectedResources:(id)a5
+- (void)checkInDatabase:(id)database type:(int64_t)type protectedResources:(id)resources
 {
-  v9 = a3;
-  v8 = a5;
-  [(HDDatabase *)self _checkInDatabase:v9 type:a4 flushImmediately:0];
-  if (a4 == 1 && v8)
+  databaseCopy = database;
+  resourcesCopy = resources;
+  [(HDDatabase *)self _checkInDatabase:databaseCopy type:type flushImmediately:0];
+  if (type == 1 && resourcesCopy)
   {
-    [(HDDatabase *)self _checkInProtectedResources:v8];
+    [(HDDatabase *)self _checkInProtectedResources:resourcesCopy];
   }
 
   [(HDDatabase *)self _updateInactivityFlushTimer];
 }
 
-- (void)_checkInDatabase:(uint64_t)a3 type:(uint64_t)a4 flushImmediately:
+- (void)_checkInDatabase:(uint64_t)database type:(uint64_t)type flushImmediately:
 {
   v29 = *MEMORY[0x277D85DE8];
   v7 = a2;
   v8 = v7;
-  if (a1)
+  if (self)
   {
     if ([v7 checkpointRequired])
     {
@@ -3716,7 +3716,7 @@ LABEL_47:
           v15 = v14;
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
-            v22 = HDStringFromHDDatabaseType(a3);
+            v22 = HDStringFromHDDatabaseType(database);
             *buf = 138543618;
             v26 = v13;
             v27 = 2114;
@@ -3726,30 +3726,30 @@ LABEL_47:
         }
       }
 
-      [(HDDatabase *)a1 _mergeSecondaryJournals];
+      [(HDDatabase *)self _mergeSecondaryJournals];
     }
 
-    v16 = [v8 corruptionError];
-    v17 = v16 == 0;
+    corruptionError = [v8 corruptionError];
+    v17 = corruptionError == 0;
 
     if (!v17)
     {
-      v18 = [v8 corruptionError];
-      [a1 _reportSQLiteCorruption:v18 forDatabase:a3 shouldPrompt:1];
+      corruptionError2 = [v8 corruptionError];
+      [self _reportSQLiteCorruption:corruptionError2 forDatabase:database shouldPrompt:1];
 
-      a4 = 1;
+      type = 1;
     }
 
     if ([v8 encounteredOutOfSpace])
     {
-      v19 = [a1 _newCorruptionEventStore];
-      [v19 persistDeviceOutOfSpaceEvent];
+      _newCorruptionEventStore = [self _newCorruptionEventStore];
+      [_newCorruptionEventStore persistDeviceOutOfSpaceEvent];
 
       [v8 setEncounteredOutOfSpace:0];
     }
 
-    v20 = [a1 databasePoolForDatabaseType:a3];
-    [v20 checkInConnection:v8 flushImmediately:a4];
+    v20 = [self databasePoolForDatabaseType:database];
+    [v20 checkInConnection:v8 flushImmediately:type];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -3757,34 +3757,34 @@ LABEL_47:
 
 - (void)_updateInactivityFlushTimer
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 72);
+    v1 = *(self + 72);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __41__HDDatabase__updateInactivityFlushTimer__block_invoke;
     block[3] = &unk_27861C698;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(v1, block);
   }
 }
 
 - (void)_mergeSecondaryJournals
 {
-  if (a1)
+  if (self)
   {
     v2 = 0;
-    atomic_compare_exchange_strong((a1 + 240), &v2, 1u);
+    atomic_compare_exchange_strong((self + 240), &v2, 1u);
     if (!v2)
     {
-      v3 = [*(a1 + 24) behavior];
-      v4 = [v3 features];
-      v5 = [v4 xpcGatedSecondaryJournalMerge];
+      behavior = [*(self + 24) behavior];
+      features = [behavior features];
+      xpcGatedSecondaryJournalMerge = [features xpcGatedSecondaryJournalMerge];
 
-      if (v5)
+      if (xpcGatedSecondaryJournalMerge)
       {
-        objc_initWeak(&location, a1);
-        v6 = *(a1 + 248);
+        objc_initWeak(&location, self);
+        v6 = *(self + 248);
         v9[0] = MEMORY[0x277D85DD0];
         v9[1] = 3221225472;
         v9[2] = __37__HDDatabase__mergeSecondaryJournals__block_invoke;
@@ -3797,37 +3797,37 @@ LABEL_47:
 
       else
       {
-        v7 = [*(a1 + 312) mergeQueue];
+        mergeQueue = [*(self + 312) mergeQueue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __37__HDDatabase__mergeSecondaryJournals__block_invoke_2;
         block[3] = &unk_27861C698;
-        block[4] = a1;
-        dispatch_async(v7, block);
+        block[4] = self;
+        dispatch_async(mergeQueue, block);
       }
     }
   }
 }
 
-- (id)newConnectionForPool:(id)a3 error:(id *)a4
+- (id)newConnectionForPool:(id)pool error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (([(HDDatabase *)self _isDatabaseValidWithError:a4]& 1) != 0)
+  poolCopy = pool;
+  if (([(HDDatabase *)self _isDatabaseValidWithError:error]& 1) != 0)
   {
     [(NSConditionLock *)self->_activeDatabasesLock lock];
-    v7 = v6;
+    v7 = poolCopy;
     v8 = [(HDDatabase *)self databasePoolForDatabaseType:0];
 
     v9 = [(HDDatabase *)self databasePoolForDatabaseType:1];
 
     if (v8 != v7 && v9 != v7)
     {
-      v30 = [MEMORY[0x277CCA890] currentHandler];
-      [v30 handleFailureInMethod:sel__databaseTypeForDatabasePool_ object:self file:@"HDDatabase.mm" lineNumber:537 description:{@"Database pool %@ not created by %@", v7, self}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel__databaseTypeForDatabasePool_ object:self file:@"HDDatabase.mm" lineNumber:537 description:{@"Database pool %@ not created by %@", v7, self}];
     }
 
-    if (([(HDDatabase *)self _isDatabaseValidWithError:a4]& 1) == 0)
+    if (([(HDDatabase *)self _isDatabaseValidWithError:error]& 1) == 0)
     {
       goto LABEL_29;
     }
@@ -3888,9 +3888,9 @@ LABEL_47:
           if (v16 == 2)
           {
             v19 = MEMORY[0x277CCACA8];
-            v20 = [v10 fileURL];
-            v21 = [v20 path];
-            v22 = [v19 stringWithFormat:@"Failed migrations for %@, error: %@", v21, v11];
+            fileURL = [v10 fileURL];
+            path = [fileURL path];
+            v22 = [v19 stringWithFormat:@"Failed migrations for %@, error: %@", path, v11];
 
             WeakRetained = objc_loadWeakRetained(&self->_profile);
             [WeakRetained obliterateAndTerminateWithOptions:0 reason:v22 completion:0];
@@ -3913,10 +3913,10 @@ LABEL_47:
     v25 = v24;
     if (v24)
     {
-      if (a4)
+      if (error)
       {
         v26 = v24;
-        *a4 = v25;
+        *error = v25;
       }
 
       else
@@ -3948,16 +3948,16 @@ LABEL_29:
   return v10;
 }
 
-- (void)databasePool:(id)a3 didFlushConnections:(id)a4
+- (void)databasePool:(id)pool didFlushConnections:(id)connections
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  connectionsCopy = connections;
   [(NSConditionLock *)self->_activeDatabasesLock lock];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v5;
+  v6 = connectionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -3988,46 +3988,46 @@ LABEL_29:
 
 - (void)_protectedDataQueue_updateInactivityFlushTimer
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 72));
-    v2 = [a1 databasePoolForDatabaseType:0];
-    v3 = [v2 checkedOutDatabaseCount];
+    dispatch_assert_queue_V2(*(self + 72));
+    v2 = [self databasePoolForDatabaseType:0];
+    checkedOutDatabaseCount = [v2 checkedOutDatabaseCount];
 
-    if (v3 || *(a1 + 432) <= 0.0 || (*(a1 + 136) & 1) != 0)
+    if (checkedOutDatabaseCount || *(self + 432) <= 0.0 || (*(self + 136) & 1) != 0)
     {
-      v4 = *(a1 + 128);
+      v4 = *(self + 128);
       if (v4)
       {
         dispatch_source_cancel(v4);
-        v5 = *(a1 + 128);
-        *(a1 + 128) = 0;
+        v5 = *(self + 128);
+        *(self + 128) = 0;
       }
 
-      if (v3 >= 1)
+      if (checkedOutDatabaseCount >= 1)
       {
-        *(a1 + 136) = 0;
+        *(self + 136) = 0;
       }
     }
 
-    else if (!*(a1 + 128))
+    else if (!*(self + 128))
     {
-      objc_initWeak(&location, a1);
-      v6 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, *(a1 + 72));
-      v7 = *(a1 + 128);
-      *(a1 + 128) = v6;
+      objc_initWeak(&location, self);
+      v6 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, *(self + 72));
+      v7 = *(self + 128);
+      *(self + 128) = v6;
 
-      v8 = *(a1 + 128);
+      v8 = *(self + 128);
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __60__HDDatabase__protectedDataQueue_updateInactivityFlushTimer__block_invoke;
       v11[3] = &unk_27861C800;
       objc_copyWeak(&v12, &location);
       dispatch_source_set_event_handler(v8, v11);
-      v9 = *(a1 + 128);
-      v10 = dispatch_time(0, (*(a1 + 432) * 1000000000.0));
+      v9 = *(self + 128);
+      v10 = dispatch_time(0, (*(self + 432) * 1000000000.0));
       dispatch_source_set_timer(v9, v10, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
-      dispatch_resume(*(a1 + 128));
+      dispatch_resume(*(self + 128));
       objc_destroyWeak(&v12);
       objc_destroyWeak(&location);
     }
@@ -4067,19 +4067,19 @@ void __60__HDDatabase__protectedDataQueue_updateInactivityFlushTimer__block_invo
 
 - (BOOL)_protectedDataLock_isProtectedDataFlushDeadlinePassed
 {
-  os_unfair_lock_assert_owner((a1 + 80));
-  if (*(a1 + 104) != 2)
+  os_unfair_lock_assert_owner((self + 80));
+  if (*(self + 104) != 2)
   {
     return 0;
   }
 
-  v2 = *(a1 + 192);
+  v2 = *(self + 192);
   if (!v2)
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
-    [v5 handleFailureInMethod:sel__protectedDataLock_isProtectedDataFlushDeadlinePassed object:a1 file:@"HDDatabase.mm" lineNumber:2465 description:{@"Invalid parameter not satisfying: %@", @"_protectedDataFlushDeadlineDate != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel__protectedDataLock_isProtectedDataFlushDeadlinePassed object:self file:@"HDDatabase.mm" lineNumber:2465 description:{@"Invalid parameter not satisfying: %@", @"_protectedDataFlushDeadlineDate != nil"}];
 
-    v2 = *(a1 + 192);
+    v2 = *(self + 192);
   }
 
   [v2 timeIntervalSinceNow];
@@ -4088,29 +4088,29 @@ void __60__HDDatabase__protectedDataQueue_updateInactivityFlushTimer__block_invo
 
 - (void)_protectedDataQueue_flushProtectedData
 {
-  dispatch_assert_queue_V2(*(a1 + 72));
-  v2 = [*(a1 + 400) objectForKeyedSubscript:&unk_283CB0A68];
-  v3 = [v2 flush];
+  dispatch_assert_queue_V2(*(self + 72));
+  v2 = [*(self + 400) objectForKeyedSubscript:&unk_283CB0A68];
+  flush = [v2 flush];
 
-  v4 = *(a1 + 72);
+  v4 = *(self + 72);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__HDDatabase__protectedDataQueue_flushProtectedData__block_invoke;
   block[3] = &unk_27861C698;
-  block[4] = a1;
-  dispatch_group_notify(v3, v4, block);
-  *(a1 + 208) = 1;
+  block[4] = self;
+  dispatch_group_notify(flush, v4, block);
+  *(self + 208) = 1;
 }
 
-- (void)setProtectedDataFlushInterval:(double)a3
+- (void)setProtectedDataFlushInterval:(double)interval
 {
-  if (a3 < 0.0)
+  if (interval < 0.0)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"HDDatabase.mm" lineNumber:1792 description:{@"Invalid parameter not satisfying: %@", @"protectedDataFlushInterval >= 0.0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabase.mm" lineNumber:1792 description:{@"Invalid parameter not satisfying: %@", @"protectedDataFlushInterval >= 0.0"}];
   }
 
-  self->_protectedDataFlushInterval = a3;
+  self->_protectedDataFlushInterval = interval;
 }
 
 void __65__HDDatabase__protectedDataQueue_beginObservingContentProtection__block_invoke(uint64_t a1)
@@ -4122,19 +4122,19 @@ void __65__HDDatabase__protectedDataQueue_beginObservingContentProtection__block
 - (void)_protectedDataQueue_handleSpringboardLockoutNotification
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 72));
-    os_unfair_lock_lock((a1 + 80));
-    if (*(a1 + 104) == 4)
+    dispatch_assert_queue_V2(*(self + 72));
+    os_unfair_lock_lock((self + 80));
+    if (*(self + 104) == 4)
     {
-      os_unfair_lock_unlock((a1 + 80));
+      os_unfair_lock_unlock((self + 80));
       _HKInitializeLogging();
       v2 = *MEMORY[0x277CCC2A0];
       if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v21 = a1;
+        selfCopy2 = self;
         _os_log_impl(&dword_228986000, v2, OS_LOG_TYPE_DEFAULT, "%{public}@: Received biolockout notification; ignoring (no passcode)", buf, 0xCu);
       }
     }
@@ -4142,24 +4142,24 @@ void __65__HDDatabase__protectedDataQueue_beginObservingContentProtection__block
     else
     {
       v3 = [MEMORY[0x277D10AD8] isProtectedDataAvailableWithState:?];
-      *(a1 + 104) = 2;
+      *(self + 104) = 2;
       v4 = [MEMORY[0x277CBEAA8] now];
-      v5 = *(a1 + 192);
-      *(a1 + 192) = v4;
+      v5 = *(self + 192);
+      *(self + 192) = v4;
 
-      *(a1 + 96) = 2;
-      os_unfair_lock_unlock((a1 + 80));
+      *(self + 96) = 2;
+      os_unfair_lock_unlock((self + 80));
       _HKInitializeLogging();
       v6 = *MEMORY[0x277CCC2A0];
       if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v21 = a1;
+        selfCopy2 = self;
         _os_log_impl(&dword_228986000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Received biolockout notification; flushing protected data", buf, 0xCu);
       }
 
-      [(HDDatabase *)a1 _protectedDataQueue_cancelProtectedDataFlushTimer];
-      [a1 currentlyActiveAssertions];
+      [(HDDatabase *)self _protectedDataQueue_cancelProtectedDataFlushTimer];
+      [self currentlyActiveAssertions];
       v17 = 0u;
       v18 = 0u;
       v15 = 0u;
@@ -4188,13 +4188,13 @@ void __65__HDDatabase__protectedDataQueue_beginObservingContentProtection__block
         while (v8);
       }
 
-      [(HDDatabase *)a1 _protectedDataQueue_flushProtectedData];
-      v11 = *(a1 + 88);
+      [(HDDatabase *)self _protectedDataQueue_flushProtectedData];
+      v11 = *(self + 88);
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __70__HDDatabase__protectedDataQueue_handleSpringboardLockoutNotification__block_invoke;
       v13[3] = &unk_27861C878;
-      v13[4] = a1;
+      v13[4] = self;
       v14 = v3;
       [v11 notifyObservers:v13];
     }
@@ -4203,27 +4203,27 @@ void __65__HDDatabase__protectedDataQueue_beginObservingContentProtection__block
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_protectedDataQueue_contentProtectionStateChanged:(uint64_t)a3 previousState:
+- (void)_protectedDataQueue_contentProtectionStateChanged:(uint64_t)changed previousState:
 {
   v98 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v6 = [*(a1 + 24) behavior];
-    v7 = [v6 features];
-    v8 = [v7 dbAvailablityAfterPrimaryMerge];
+    behavior = [*(self + 24) behavior];
+    features = [behavior features];
+    dbAvailablityAfterPrimaryMerge = [features dbAvailablityAfterPrimaryMerge];
 
-    if (v8)
+    if (dbAvailablityAfterPrimaryMerge)
     {
-      dispatch_assert_queue_V2(*(a1 + 72));
-      os_unfair_lock_lock((a1 + 80));
-      v9 = [MEMORY[0x277D10AD8] isProtectedDataAvailableWithState:*(a1 + 104)];
+      dispatch_assert_queue_V2(*(self + 72));
+      os_unfair_lock_lock((self + 80));
+      v9 = [MEMORY[0x277D10AD8] isProtectedDataAvailableWithState:*(self + 104)];
       v10 = [MEMORY[0x277D10AD8] isProtectedDataAvailableWithState:a2];
       _HKInitializeLogging();
       v11 = MEMORY[0x277CCC2A0];
       v12 = *MEMORY[0x277CCC2A0];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = *(a1 + 104);
+        v13 = *(self + 104);
         v14 = HDStringFromContentProtectionState();
         v15 = HDStringFromContentProtectionState();
         v16 = v15;
@@ -4254,14 +4254,14 @@ void __65__HDDatabase__protectedDataQueue_beginObservingContentProtection__block
         _os_log_impl(&dword_228986000, v12, OS_LOG_TYPE_DEFAULT, "Got content protection state change notification %{public}@ (%{public}@) -> %{public}@ (%{public}@).", buf, 0x2Au);
       }
 
-      if (*(a1 + 104) != a3)
+      if (*(self + 104) != changed)
       {
         _HKInitializeLogging();
         v19 = *v11;
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           v20 = HDStringFromContentProtectionState();
-          v21 = *(a1 + 104);
+          v21 = *(self + 104);
           v22 = HDStringFromContentProtectionState();
           *buf = 138543618;
           *&buf[4] = v20;
@@ -4271,47 +4271,47 @@ void __65__HDDatabase__protectedDataQueue_beginObservingContentProtection__block
         }
       }
 
-      *(a1 + 104) = a2;
-      os_unfair_lock_unlock((a1 + 80));
+      *(self + 104) = a2;
+      os_unfair_lock_unlock((self + 80));
       if (v10)
       {
-        v23 = *(a1 + 192);
-        *(a1 + 192) = 0;
+        v23 = *(self + 192);
+        *(self + 192) = 0;
 
-        [(HDDatabase *)a1 _protectedDataQueue_cancelProtectedDataFlushTimer];
-        [*(a1 + 344) suspendBudgetConsumption];
+        [(HDDatabase *)self _protectedDataQueue_cancelProtectedDataFlushTimer];
+        [*(self + 344) suspendBudgetConsumption];
       }
 
       else
       {
-        [*(a1 + 344) resumeBudgetConsumption];
-        if (!*(a1 + 192))
+        [*(self + 344) resumeBudgetConsumption];
+        if (!*(self + 192))
         {
           v43 = MEMORY[0x277CBEAA8];
-          [a1 protectedDataFlushInterval];
+          [self protectedDataFlushInterval];
           v44 = [v43 dateWithTimeIntervalSinceNow:?];
-          v45 = *(a1 + 192);
-          *(a1 + 192) = v44;
+          v45 = *(self + 192);
+          *(self + 192) = v44;
 
-          *(a1 + 208) = 0;
-          if (*(a1 + 424) > 0.0)
+          *(self + 208) = 0;
+          if (*(self + 424) > 0.0)
           {
-            [(HDDatabase *)a1 _protectedDataQueue_cancelProtectedDataFlushTimer];
-            v46 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, *(a1 + 72));
-            v47 = *(a1 + 200);
-            *(a1 + 200) = v46;
+            [(HDDatabase *)self _protectedDataQueue_cancelProtectedDataFlushTimer];
+            v46 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, *(self + 72));
+            v47 = *(self + 200);
+            *(self + 200) = v46;
 
-            v48 = dispatch_walltime(0, (*(a1 + 424) * 1000000000.0));
-            dispatch_source_set_timer(*(a1 + 200), v48, 0xFFFFFFFFFFFFFFFFLL, 0);
-            objc_initWeak(buf, a1);
-            v49 = *(a1 + 200);
+            v48 = dispatch_walltime(0, (*(self + 424) * 1000000000.0));
+            dispatch_source_set_timer(*(self + 200), v48, 0xFFFFFFFFFFFFFFFFLL, 0);
+            objc_initWeak(buf, self);
+            v49 = *(self + 200);
             *&v87 = MEMORY[0x277D85DD0];
             *(&v87 + 1) = 3221225472;
             *&v88 = __82__HDDatabase__new_protectedDataQueue_contentProtectionStateChanged_previousState___block_invoke;
             *(&v88 + 1) = &unk_27861C800;
             objc_copyWeak(v89, buf);
             dispatch_source_set_event_handler(v49, &v87);
-            dispatch_activate(*(a1 + 200));
+            dispatch_activate(*(self + 200));
             objc_destroyWeak(v89);
             objc_destroyWeak(buf);
           }
@@ -4320,7 +4320,7 @@ void __65__HDDatabase__protectedDataQueue_beginObservingContentProtection__block
           v50 = *v11;
           if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
           {
-            v51 = *(a1 + 192);
+            v51 = *(self + 192);
             v52 = HKDiagnosticStringFromDate();
             *buf = 138543362;
             *&buf[4] = v52;
@@ -4329,19 +4329,19 @@ void __65__HDDatabase__protectedDataQueue_beginObservingContentProtection__block
         }
       }
 
-      [(HDDatabase *)a1 _protectedDataQueue_flushProtectedDataIfNecessary];
+      [(HDDatabase *)self _protectedDataQueue_flushProtectedDataIfNecessary];
       if (v9 != v10)
       {
-        os_unfair_lock_lock((a1 + 160));
-        os_unfair_lock_lock((a1 + 80));
+        os_unfair_lock_lock((self + 160));
+        os_unfair_lock_lock((self + 80));
         if (v10)
         {
-          if (*(a1 + 184) == 1 && (os_unfair_lock_lock((a1 + 8)), v53 = *(a1 + 16), os_unfair_lock_unlock((a1 + 8)), v53 == 4))
+          if (*(self + 184) == 1 && (os_unfair_lock_lock((self + 8)), v53 = *(self + 16), os_unfair_lock_unlock((self + 8)), v53 == 4))
           {
-            *(a1 + 184) = 0;
-            v54 = *(a1 + 176);
-            v55 = *(a1 + 176);
-            *(a1 + 176) = 0;
+            *(self + 184) = 0;
+            v54 = *(self + 176);
+            v55 = *(self + 176);
+            *(self + 176) = 0;
 
             v56 = 1;
           }
@@ -4352,60 +4352,60 @@ void __65__HDDatabase__protectedDataQueue_beginObservingContentProtection__block
             v56 = 0;
           }
 
-          *(a1 + 96) = 0;
-          ++*(a1 + 224);
+          *(self + 96) = 0;
+          ++*(self + 224);
           *buf = MEMORY[0x277D85DD0];
           *&buf[8] = 3221225472;
           *&buf[16] = __82__HDDatabase__new_protectedDataQueue_contentProtectionStateChanged_previousState___block_invoke_541;
           v95 = &unk_27861C8F0;
-          *&v96 = a1;
+          *&v96 = self;
           v97 = v56;
           v74 = v54;
           *(&v96 + 1) = v74;
-          [(HDDatabase *)a1 _protectedDataQueue_mergeJournalWithPrimaryJournalMergeCompletion:buf];
+          [(HDDatabase *)self _protectedDataQueue_mergeJournalWithPrimaryJournalMergeCompletion:buf];
         }
 
         else
         {
-          *(a1 + 96) = 2;
+          *(self + 96) = 2;
           notify_post(*MEMORY[0x277CCC8F8]);
           _HKInitializeLogging();
           v71 = *v11;
           if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
           {
-            v72 = [*(a1 + 88) count];
+            v72 = [*(self + 88) count];
             *buf = 134217984;
             *&buf[4] = v72;
             _os_log_impl(&dword_228986000, v71, OS_LOG_TYPE_DEFAULT, "Notifying %lu observers of protected data availability change: unavailable", buf, 0xCu);
           }
 
-          v73 = *(a1 + 88);
+          v73 = *(self + 88);
           *buf = MEMORY[0x277D85DD0];
           *&buf[8] = 3221225472;
           *&buf[16] = __82__HDDatabase__new_protectedDataQueue_contentProtectionStateChanged_previousState___block_invoke_544;
           v95 = &unk_27861C8A0;
-          *&v96 = a1;
+          *&v96 = self;
           [v73 notifyObservers:buf];
           v74 = 0;
         }
 
-        os_unfair_lock_unlock((a1 + 80));
-        os_unfair_lock_unlock((a1 + 160));
+        os_unfair_lock_unlock((self + 80));
+        os_unfair_lock_unlock((self + 160));
       }
     }
 
     else
     {
-      dispatch_assert_queue_V2(*(a1 + 72));
-      os_unfair_lock_lock((a1 + 80));
-      v24 = [MEMORY[0x277D10AD8] isProtectedDataAvailableWithState:*(a1 + 104)];
+      dispatch_assert_queue_V2(*(self + 72));
+      os_unfair_lock_lock((self + 80));
+      v24 = [MEMORY[0x277D10AD8] isProtectedDataAvailableWithState:*(self + 104)];
       v25 = [MEMORY[0x277D10AD8] isProtectedDataAvailableWithState:a2];
       _HKInitializeLogging();
       v26 = MEMORY[0x277CCC2A0];
       v27 = *MEMORY[0x277CCC2A0];
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = *(a1 + 104);
+        v28 = *(self + 104);
         v29 = HDStringFromContentProtectionState();
         v30 = HDStringFromContentProtectionState();
         v31 = v30;
@@ -4436,14 +4436,14 @@ void __65__HDDatabase__protectedDataQueue_beginObservingContentProtection__block
         _os_log_impl(&dword_228986000, v27, OS_LOG_TYPE_DEFAULT, "Got content protection state change notification %{public}@ (%{public}@) -> %{public}@ (%{public}@).", buf, 0x2Au);
       }
 
-      if (*(a1 + 104) != a3)
+      if (*(self + 104) != changed)
       {
         _HKInitializeLogging();
         v34 = *v26;
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
         {
           v35 = HDStringFromContentProtectionState();
-          v36 = *(a1 + 104);
+          v36 = *(self + 104);
           v37 = HDStringFromContentProtectionState();
           *buf = 138543618;
           *&buf[4] = v35;
@@ -4452,16 +4452,16 @@ void __65__HDDatabase__protectedDataQueue_beginObservingContentProtection__block
           _os_log_impl(&dword_228986000, v34, OS_LOG_TYPE_DEFAULT, "Previous content protection state %{public}@ does not match observed content protection state %{public}@", buf, 0x16u);
         }
 
-        a3 = *(a1 + 104);
+        changed = *(self + 104);
       }
 
-      if (a2 == 3 && a3 == 2)
+      if (a2 == 3 && changed == 2)
       {
         _HKInitializeLogging();
         v38 = *v26;
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
         {
-          v39 = *(a1 + 104);
+          v39 = *(self + 104);
           v40 = HDStringFromContentProtectionState();
           v41 = HDStringFromContentProtectionState();
           *buf = 138543618;
@@ -4471,52 +4471,52 @@ void __65__HDDatabase__protectedDataQueue_beginObservingContentProtection__block
           _os_log_impl(&dword_228986000, v38, OS_LOG_TYPE_DEFAULT, "Ignoring invalid protection state transition (%{public}@ -> %{public}@)", buf, 0x16u);
         }
 
-        os_unfair_lock_unlock((a1 + 80));
+        os_unfair_lock_unlock((self + 80));
       }
 
       else
       {
-        *(a1 + 104) = a2;
-        os_unfair_lock_unlock((a1 + 80));
+        *(self + 104) = a2;
+        os_unfair_lock_unlock((self + 80));
         if (v25)
         {
-          v42 = *(a1 + 192);
-          *(a1 + 192) = 0;
+          v42 = *(self + 192);
+          *(self + 192) = 0;
 
-          [(HDDatabase *)a1 _protectedDataQueue_cancelProtectedDataFlushTimer];
-          [*(a1 + 344) suspendBudgetConsumption];
+          [(HDDatabase *)self _protectedDataQueue_cancelProtectedDataFlushTimer];
+          [*(self + 344) suspendBudgetConsumption];
         }
 
         else
         {
-          [*(a1 + 344) resumeBudgetConsumption];
-          if (!*(a1 + 192))
+          [*(self + 344) resumeBudgetConsumption];
+          if (!*(self + 192))
           {
             v57 = MEMORY[0x277CBEAA8];
-            [a1 protectedDataFlushInterval];
+            [self protectedDataFlushInterval];
             v58 = [v57 dateWithTimeIntervalSinceNow:?];
-            v59 = *(a1 + 192);
-            *(a1 + 192) = v58;
+            v59 = *(self + 192);
+            *(self + 192) = v58;
 
-            *(a1 + 208) = 0;
-            if (*(a1 + 424) > 0.0)
+            *(self + 208) = 0;
+            if (*(self + 424) > 0.0)
             {
-              [(HDDatabase *)a1 _protectedDataQueue_cancelProtectedDataFlushTimer];
-              v60 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, *(a1 + 72));
-              v61 = *(a1 + 200);
-              *(a1 + 200) = v60;
+              [(HDDatabase *)self _protectedDataQueue_cancelProtectedDataFlushTimer];
+              v60 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, *(self + 72));
+              v61 = *(self + 200);
+              *(self + 200) = v60;
 
-              v62 = dispatch_walltime(0, (*(a1 + 424) * 1000000000.0));
-              dispatch_source_set_timer(*(a1 + 200), v62, 0xFFFFFFFFFFFFFFFFLL, 0);
-              objc_initWeak(buf, a1);
-              v63 = *(a1 + 200);
+              v62 = dispatch_walltime(0, (*(self + 424) * 1000000000.0));
+              dispatch_source_set_timer(*(self + 200), v62, 0xFFFFFFFFFFFFFFFFLL, 0);
+              objc_initWeak(buf, self);
+              v63 = *(self + 200);
               handler[0] = MEMORY[0x277D85DD0];
               handler[1] = 3221225472;
               handler[2] = __82__HDDatabase__old_protectedDataQueue_contentProtectionStateChanged_previousState___block_invoke;
               handler[3] = &unk_27861C800;
               objc_copyWeak(&v93, buf);
               dispatch_source_set_event_handler(v63, handler);
-              dispatch_activate(*(a1 + 200));
+              dispatch_activate(*(self + 200));
               objc_destroyWeak(&v93);
               objc_destroyWeak(buf);
             }
@@ -4525,7 +4525,7 @@ void __65__HDDatabase__protectedDataQueue_beginObservingContentProtection__block
             v64 = *v26;
             if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
             {
-              v65 = *(a1 + 192);
+              v65 = *(self + 192);
               v66 = HKDiagnosticStringFromDate();
               *buf = 138543362;
               *&buf[4] = v66;
@@ -4534,19 +4534,19 @@ void __65__HDDatabase__protectedDataQueue_beginObservingContentProtection__block
           }
         }
 
-        [(HDDatabase *)a1 _protectedDataQueue_flushProtectedDataIfNecessary];
+        [(HDDatabase *)self _protectedDataQueue_flushProtectedDataIfNecessary];
         if (v24 != v25)
         {
-          os_unfair_lock_lock((a1 + 160));
-          os_unfair_lock_lock((a1 + 80));
+          os_unfair_lock_lock((self + 160));
+          os_unfair_lock_lock((self + 80));
           if (v25)
           {
-            if (*(a1 + 184) == 1 && (os_unfair_lock_lock((a1 + 8)), v67 = *(a1 + 16), os_unfair_lock_unlock((a1 + 8)), v67 == 4))
+            if (*(self + 184) == 1 && (os_unfair_lock_lock((self + 8)), v67 = *(self + 16), os_unfair_lock_unlock((self + 8)), v67 == 4))
             {
-              *(a1 + 184) = 0;
-              v68 = *(a1 + 176);
-              v69 = *(a1 + 176);
-              *(a1 + 176) = 0;
+              *(self + 184) = 0;
+              v68 = *(self + 176);
+              v69 = *(self + 176);
+              *(self + 176) = 0;
 
               v70 = 1;
             }
@@ -4557,25 +4557,25 @@ void __65__HDDatabase__protectedDataQueue_beginObservingContentProtection__block
               v70 = 0;
             }
 
-            *(a1 + 96) = 0;
-            ++*(a1 + 224);
-            [(HDDatabase *)a1 _protectedDataQueue_mergeJournalWithPrimaryJournalMergeCompletion:?];
+            *(self + 96) = 0;
+            ++*(self + 224);
+            [(HDDatabase *)self _protectedDataQueue_mergeJournalWithPrimaryJournalMergeCompletion:?];
           }
 
           else
           {
             v68 = 0;
             v70 = 0;
-            *(a1 + 96) = 2;
+            *(self + 96) = 2;
           }
 
-          os_unfair_lock_unlock((a1 + 80));
-          os_unfair_lock_unlock((a1 + 160));
+          os_unfair_lock_unlock((self + 80));
+          os_unfair_lock_unlock((self + 160));
           _HKInitializeLogging();
           v75 = *v26;
           if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
           {
-            v76 = [*(a1 + 88) count];
+            v76 = [*(self + 88) count];
             v77 = "unavailable";
             if (v25)
             {
@@ -4589,12 +4589,12 @@ void __65__HDDatabase__protectedDataQueue_beginObservingContentProtection__block
             _os_log_impl(&dword_228986000, v75, OS_LOG_TYPE_DEFAULT, "Notifying %lu observers of protected data availability change: %{public}s", buf, 0x16u);
           }
 
-          v78 = *(a1 + 88);
+          v78 = *(self + 88);
           v90[0] = MEMORY[0x277D85DD0];
           v90[1] = 3221225472;
           v90[2] = __82__HDDatabase__old_protectedDataQueue_contentProtectionStateChanged_previousState___block_invoke_547;
           v90[3] = &unk_27861C878;
-          v90[4] = a1;
+          v90[4] = self;
           v91 = v25;
           [v78 notifyObservers:v90];
           v79 = MEMORY[0x277CCC8F0];
@@ -4693,14 +4693,14 @@ void __80__HDDatabase__protectedDataQueue_mergeJournalWithPrimaryJournalMergeCom
 
 - (void)_waitForContentProtectionObservationSetup
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 8));
-    v2 = *(a1 + 16);
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_lock((self + 8));
+    v2 = *(self + 16);
+    os_unfair_lock_unlock((self + 8));
     if (v2)
     {
-      v3 = *(a1 + 120);
+      v3 = *(self + 120);
 
       dispatch_group_wait(v3, 0xFFFFFFFFFFFFFFFFLL);
     }
@@ -4726,7 +4726,7 @@ void __80__HDDatabase__protectedDataQueue_mergeJournalWithPrimaryJournalMergeCom
   return [(HDContentProtectionManager *)contentProtectionManager isInSession];
 }
 
-- (void)contentProtectionStateChanged:(int64_t)a3 previousState:(int64_t)a4
+- (void)contentProtectionStateChanged:(int64_t)changed previousState:(int64_t)state
 {
   protectedDataQueue = self->_protectedDataQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -4734,22 +4734,22 @@ void __80__HDDatabase__protectedDataQueue_mergeJournalWithPrimaryJournalMergeCom
   block[2] = __58__HDDatabase_contentProtectionStateChanged_previousState___block_invoke;
   block[3] = &unk_27861C850;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = changed;
+  block[6] = state;
   dispatch_sync(protectedDataQueue, block);
 }
 
 - (void)_protectedDataQueue_cancelProtectedDataFlushTimer
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 72));
-    v2 = *(a1 + 200);
+    dispatch_assert_queue_V2(*(self + 72));
+    v2 = *(self + 200);
     if (v2)
     {
       dispatch_source_cancel(v2);
-      v3 = *(a1 + 200);
-      *(a1 + 200) = 0;
+      v3 = *(self + 200);
+      *(self + 200) = 0;
     }
   }
 }
@@ -4864,29 +4864,29 @@ void __82__HDDatabase__old_protectedDataQueue_contentProtectionStateChanged_prev
   [(HDDatabase *)WeakRetained _protectedDataQueue_flushProtectedDataIfNecessary];
 }
 
-- (id)takeAccessibilityAssertionWithOwnerIdentifier:(id)a3 timeout:(double)a4 error:(id *)a5
+- (id)takeAccessibilityAssertionWithOwnerIdentifier:(id)identifier timeout:(double)timeout error:(id *)error
 {
-  v5 = [(HDDatabase *)self takeAccessibilityAssertionWithOwnerIdentifier:a3 contextType:1 timeout:1 shouldPerformTransaction:a5 error:a4];
+  v5 = [(HDDatabase *)self takeAccessibilityAssertionWithOwnerIdentifier:identifier contextType:1 timeout:1 shouldPerformTransaction:error error:timeout];
 
   return v5;
 }
 
-- (id)takeAccessibilityAssertionWithOwnerIdentifier:(uint64_t)a3 contextType:(int)a4 timeout:(void *)a5 shouldPerformTransaction:(double)a6 error:
+- (id)takeAccessibilityAssertionWithOwnerIdentifier:(uint64_t)identifier contextType:(int)type timeout:(void *)timeout shouldPerformTransaction:(double)transaction error:
 {
   v55 = *MEMORY[0x277D85DE8];
   v11 = a2;
-  if (a1)
+  if (self)
   {
-    if (a3 == 3 && ([*(a1 + 27) shouldAllowWorkoutDatabaseAccessWhileLocked] & 1) == 0)
+    if (identifier == 3 && ([*(self + 27) shouldAllowWorkoutDatabaseAccessWhileLocked] & 1) == 0)
     {
       v22 = [MEMORY[0x277CCA9B8] hk_error:6 description:@"Database assertion is not available. Data is not accessible while locked"];
       v23 = v22;
       if (v22)
       {
-        if (a5)
+        if (timeout)
         {
           v24 = v22;
-          *a5 = v23;
+          *timeout = v23;
         }
 
         else
@@ -4895,7 +4895,7 @@ void __82__HDDatabase__old_protectedDataQueue_contentProtectionStateChanged_prev
         }
       }
 
-      a1 = 0;
+      self = 0;
     }
 
     else
@@ -4916,24 +4916,24 @@ void __82__HDDatabase__old_protectedDataQueue_contentProtectionStateChanged_prev
       v38 = __Block_byref_object_copy__64;
       v39 = __Block_byref_object_dispose__64;
       v40 = 0;
-      v12 = *(a1 + 9);
+      v12 = *(self + 9);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __111__HDDatabase_takeAccessibilityAssertionWithOwnerIdentifier_contextType_timeout_shouldPerformTransaction_error___block_invoke;
       block[3] = &unk_27861C918;
       v32 = &v41;
-      v33 = a3;
-      block[4] = a1;
+      identifierCopy = identifier;
+      block[4] = self;
       v30 = &v35;
       v31 = &v47;
       v13 = v11;
       v29 = v13;
-      v34 = a6;
+      transactionCopy = transaction;
       dispatch_sync(v12, block);
       v14 = v42[5];
       if (v14)
       {
-        if (a4 && v48[3] >= 1)
+        if (type && v48[3] >= 1)
         {
           v15 = objc_alloc_init(HDMutableDatabaseTransactionContext);
           [(HDMutableDatabaseTransactionContext *)v15 addAccessibilityAssertion:v42[5]];
@@ -4941,7 +4941,7 @@ void __82__HDDatabase__old_protectedDataQueue_contentProtectionStateChanged_prev
           [(HDMutableDatabaseTransactionContext *)v15 setRequiresNewDatabaseConnection:1];
           [(HDMutableDatabaseTransactionContext *)v15 setHighPriority:1];
           v27 = 0;
-          v16 = [a1 performTransactionWithContext:v15 error:&v27 block:&__block_literal_global_556 inaccessibilityHandler:0];
+          v16 = [self performTransactionWithContext:v15 error:&v27 block:&__block_literal_global_556 inaccessibilityHandler:0];
           v17 = v27;
           if ((v16 & 1) == 0)
           {
@@ -4960,7 +4960,7 @@ void __82__HDDatabase__old_protectedDataQueue_contentProtectionStateChanged_prev
           v14 = v42[5];
         }
 
-        a1 = v14;
+        self = v14;
       }
 
       else
@@ -4969,10 +4969,10 @@ void __82__HDDatabase__old_protectedDataQueue_contentProtectionStateChanged_prev
         v20 = v19;
         if (v19)
         {
-          if (a5)
+          if (timeout)
           {
             v21 = v19;
-            *a5 = v20;
+            *timeout = v20;
           }
 
           else
@@ -4981,7 +4981,7 @@ void __82__HDDatabase__old_protectedDataQueue_contentProtectionStateChanged_prev
           }
         }
 
-        a1 = 0;
+        self = 0;
       }
 
       _Block_object_dispose(&v35, 8);
@@ -4993,26 +4993,26 @@ void __82__HDDatabase__old_protectedDataQueue_contentProtectionStateChanged_prev
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return self;
 }
 
-- (id)takeAccessibilityAssertionWithOwnerIdentifier:(id)a3 contextType:(int64_t)a4 error:(id *)a5
+- (id)takeAccessibilityAssertionWithOwnerIdentifier:(id)identifier contextType:(int64_t)type error:(id *)error
 {
-  v5 = [(HDDatabase *)self takeAccessibilityAssertionWithOwnerIdentifier:a3 contextType:a4 timeout:1 shouldPerformTransaction:a5 error:0.0];
+  v5 = [(HDDatabase *)self takeAccessibilityAssertionWithOwnerIdentifier:identifier contextType:type timeout:1 shouldPerformTransaction:error error:0.0];
 
   return v5;
 }
 
-- (id)takeAccessibilityAssertionWithOwnerIdentifier:(id)a3 contextType:(int64_t)a4 shouldPerformTransaction:(BOOL)a5 error:(id *)a6
+- (id)takeAccessibilityAssertionWithOwnerIdentifier:(id)identifier contextType:(int64_t)type shouldPerformTransaction:(BOOL)transaction error:(id *)error
 {
-  v6 = [(HDDatabase *)self takeAccessibilityAssertionWithOwnerIdentifier:a3 contextType:a4 timeout:a5 shouldPerformTransaction:a6 error:0.0];
+  v6 = [(HDDatabase *)self takeAccessibilityAssertionWithOwnerIdentifier:identifier contextType:type timeout:transaction shouldPerformTransaction:error error:0.0];
 
   return v6;
 }
 
-- (id)takeAccessibilityAssertionWithOwnerIdentifier:(id)a3 shouldPerformTransaction:(BOOL)a4 timeout:(double)a5 error:(id *)a6
+- (id)takeAccessibilityAssertionWithOwnerIdentifier:(id)identifier shouldPerformTransaction:(BOOL)transaction timeout:(double)timeout error:(id *)error
 {
-  v6 = [(HDDatabase *)self takeAccessibilityAssertionWithOwnerIdentifier:a3 contextType:1 timeout:a4 shouldPerformTransaction:a6 error:a5];
+  v6 = [(HDDatabase *)self takeAccessibilityAssertionWithOwnerIdentifier:identifier contextType:1 timeout:transaction shouldPerformTransaction:error error:timeout];
 
   return v6;
 }
@@ -5084,13 +5084,13 @@ LABEL_18:
   }
 }
 
-- (id)cloneAccessibilityAssertion:(id)a3 ownerIdentifier:(id)a4 error:(id *)a5
+- (id)cloneAccessibilityAssertion:(id)assertion ownerIdentifier:(id)identifier error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 assertionIdentifier];
-  v11 = [v10 isEqualToString:@"DatabaseAccessibility"];
+  assertionCopy = assertion;
+  identifierCopy = identifier;
+  assertionIdentifier = [assertionCopy assertionIdentifier];
+  v11 = [assertionIdentifier isEqualToString:@"DatabaseAccessibility"];
 
   if ((v11 & 1) == 0)
   {
@@ -5099,14 +5099,14 @@ LABEL_18:
     if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_FAULT))
     {
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = assertionCopy;
       _os_log_fault_impl(&dword_228986000, v17, OS_LOG_TYPE_FAULT, "Attempting to clone improper database accessibility assertion: %{public}@", &buf, 0xCu);
     }
 
     goto LABEL_10;
   }
 
-  if ([v8 state] != 2)
+  if ([assertionCopy state] != 2)
   {
 LABEL_10:
     v18 = 0;
@@ -5118,7 +5118,7 @@ LABEL_10:
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy__64;
   v31 = __Block_byref_object_dispose__64;
-  v32 = [v8 cloneWithOwnerIdentifier:v9];
+  v32 = [assertionCopy cloneWithOwnerIdentifier:identifierCopy];
   if (*(*(&buf + 1) + 40))
   {
     v22 = 0;
@@ -5143,10 +5143,10 @@ LABEL_10:
       v15 = v14;
       if (v14)
       {
-        if (a5)
+        if (error)
         {
           v16 = v14;
-          *a5 = v15;
+          *error = v15;
         }
 
         else
@@ -5209,28 +5209,28 @@ uint64_t __52__HDDatabase__protectedDataQueue_flushProtectedData__block_invoke(u
 - (void)_invalidateProtectedResourceAssertions
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     _HKInitializeLogging();
     v2 = *MEMORY[0x277CCC2A0];
     if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v16 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_228986000, v2, OS_LOG_TYPE_INFO, "%{public}@: Invalidate protected resource assertions", buf, 0xCu);
     }
 
-    os_unfair_lock_lock((a1 + 280));
-    v3 = [*(a1 + 288) allValues];
-    v4 = *(a1 + 288);
-    *(a1 + 288) = 0;
+    os_unfair_lock_lock((self + 280));
+    allValues = [*(self + 288) allValues];
+    v4 = *(self + 288);
+    *(self + 288) = 0;
 
-    os_unfair_lock_unlock((a1 + 280));
+    os_unfair_lock_unlock((self + 280));
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = v3;
+    v5 = allValues;
     v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
@@ -5259,30 +5259,30 @@ uint64_t __52__HDDatabase__protectedDataQueue_flushProtectedData__block_invoke(u
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)addJournalEntry:(id)a3 error:(id *)a4
+- (BOOL)addJournalEntry:(id)entry error:(id *)error
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v10[0] = v6;
+  entryCopy = entry;
+  v10[0] = entryCopy;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-  LOBYTE(a4) = [(HDDatabase *)self addJournalEntries:v7 error:a4];
+  LOBYTE(error) = [(HDDatabase *)self addJournalEntries:v7 error:error];
 
   v8 = *MEMORY[0x277D85DE8];
-  return a4;
+  return error;
 }
 
-- (BOOL)addJournalEntries:(id)a3 error:(id *)a4
+- (BOOL)addJournalEntries:(id)entries error:(id *)error
 {
-  v6 = a3;
+  entriesCopy = entries;
   if (self && ((-[HDDatabase _threadLocalTransactionContext](self), v7 = objc_claimAutoreleasedReturnValue(), (v8 = v7) == 0) ? (v9 = self->_journal) : (-[HDDatabase _journalForType:](self, "_journalForType:", [v7 journalType]), v9 = objc_claimAutoreleasedReturnValue()), v10 = v9, v8, v10))
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v12 = [(HDDatabaseJournal *)v10 addJournalEntries:v6 profile:WeakRetained error:a4];
+    v12 = [(HDDatabaseJournal *)v10 addJournalEntries:entriesCopy profile:WeakRetained error:error];
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:@"Attempt to add a journal entry when no journal is active."];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"Attempt to add a journal entry when no journal is active."];
     v10 = 0;
     v12 = 0;
   }
@@ -5290,18 +5290,18 @@ uint64_t __52__HDDatabase__protectedDataQueue_flushProtectedData__block_invoke(u
   return v12;
 }
 
-- (id)progressForJournalMergeWithType:(int64_t)a3
+- (id)progressForJournalMergeWithType:(int64_t)type
 {
-  v3 = [(HDDatabase *)self _journalForType:a3];
-  v4 = [v3 progressForJournalMerge];
+  v3 = [(HDDatabase *)self _journalForType:type];
+  progressForJournalMerge = [v3 progressForJournalMerge];
 
-  return v4;
+  return progressForJournalMerge;
 }
 
-- (id)_journalForType:(int64_t)a3
+- (id)_journalForType:(int64_t)type
 {
   v3 = 304;
-  if (a3 == 2)
+  if (type == 2)
   {
     v3 = 312;
   }
@@ -5435,21 +5435,21 @@ uint64_t __61__HDDatabase__mergeSecondaryJournalsWithActivity_completion___block
   return v3 ^ 1u;
 }
 
-- (unint64_t)journalChapterCountForType:(int64_t)a3
+- (unint64_t)journalChapterCountForType:(int64_t)type
 {
-  v3 = [(HDDatabase *)self _journalForType:a3];
-  v4 = [v3 journalChapterCount];
+  v3 = [(HDDatabase *)self _journalForType:type];
+  journalChapterCount = [v3 journalChapterCount];
 
-  return v4;
+  return journalChapterCount;
 }
 
-- (void)performInFirstUnprotectedWriteTransaction:(id)a3
+- (void)performInFirstUnprotectedWriteTransaction:(id)transaction
 {
-  v12 = a3;
+  transactionCopy = transaction;
   os_unfair_lock_lock(&self->_transactionStartLock);
-  v5 = v12;
+  v5 = transactionCopy;
   firstUnprotectedWriteTransactionBlocks = self->_firstUnprotectedWriteTransactionBlocks;
-  if (firstUnprotectedWriteTransactionBlocks || (v7 = objc_alloc_init(MEMORY[0x277CBEB18]), v8 = self->_firstUnprotectedWriteTransactionBlocks, self->_firstUnprotectedWriteTransactionBlocks = v7, v8, firstUnprotectedWriteTransactionBlocks = self->_firstUnprotectedWriteTransactionBlocks, v5 = v12, firstUnprotectedWriteTransactionBlocks))
+  if (firstUnprotectedWriteTransactionBlocks || (v7 = objc_alloc_init(MEMORY[0x277CBEB18]), v8 = self->_firstUnprotectedWriteTransactionBlocks, self->_firstUnprotectedWriteTransactionBlocks = v7, v8, firstUnprotectedWriteTransactionBlocks = self->_firstUnprotectedWriteTransactionBlocks, v5 = transactionCopy, firstUnprotectedWriteTransactionBlocks))
   {
     v9 = [v5 copy];
     v10 = _Block_copy(v9);
@@ -5461,19 +5461,19 @@ uint64_t __61__HDDatabase__mergeSecondaryJournalsWithActivity_completion___block
   else
   {
     os_unfair_lock_unlock(&self->_transactionStartLock);
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"HDDatabase.mm" lineNumber:2637 description:@"Attempt to add a first unprotected write transaction block after blocks have already been run."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabase.mm" lineNumber:2637 description:@"Attempt to add a first unprotected write transaction block after blocks have already been run."];
   }
 }
 
-- (void)performInFirstProtectedWriteTransaction:(id)a3
+- (void)performInFirstProtectedWriteTransaction:(id)transaction
 {
-  v9 = a3;
+  transactionCopy = transaction;
   os_unfair_lock_lock(&self->_transactionStartLock);
   firstProtectedWriteTransactionBlocks = self->_firstProtectedWriteTransactionBlocks;
   if (firstProtectedWriteTransactionBlocks)
   {
-    v6 = [v9 copy];
+    v6 = [transactionCopy copy];
     v7 = _Block_copy(v6);
     [(NSMutableArray *)firstProtectedWriteTransactionBlocks addObject:v7];
 
@@ -5483,8 +5483,8 @@ uint64_t __61__HDDatabase__mergeSecondaryJournalsWithActivity_completion___block
   else
   {
     os_unfair_lock_unlock(&self->_transactionStartLock);
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"HDDatabase.mm" lineNumber:2648 description:@"Attempt to add a first protected write transaction block after blocks have already been run."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabase.mm" lineNumber:2648 description:@"Attempt to add a first protected write transaction block after blocks have already been run."];
   }
 }
 
@@ -5826,8 +5826,8 @@ uint64_t __51__HDDatabase__mergePrimaryJournalForContext_error___block_invoke(ui
 - (id)diagnosticDescription
 {
   v49 = *MEMORY[0x277D85DE8];
-  v3 = [(HDDatabase *)self databaseSizeInBytes];
-  v4 = [v3 unsignedLongLongValue];
+  databaseSizeInBytes = [(HDDatabase *)self databaseSizeInBytes];
+  unsignedLongLongValue = [databaseSizeInBytes unsignedLongLongValue];
 
   os_unfair_lock_lock(&self->_protectedDataLock);
   v5 = MEMORY[0x277CCAB68];
@@ -5865,11 +5865,11 @@ uint64_t __51__HDDatabase__mergePrimaryJournalForContext_error___block_invoke(ui
     }
   }
 
-  [v8 appendFormat:@"\nDatabase aggregate size: %.2f MB", vcvtd_n_f64_u64(v4, 0x14uLL)];
-  v13 = [MEMORY[0x277CCAA00] defaultManager];
+  [v8 appendFormat:@"\nDatabase aggregate size: %.2f MB", vcvtd_n_f64_u64(unsignedLongLongValue, 0x14uLL)];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v14 = [(NSString *)self->_profileDirectoryPath stringByAppendingPathComponent:@"Journals"];
   v46 = 0;
-  v15 = [v13 contentsOfDirectoryAtPath:v14 error:&v46];
+  v15 = [defaultManager contentsOfDirectoryAtPath:v14 error:&v46];
   v16 = v46;
   v17 = [v15 count];
 
@@ -5889,8 +5889,8 @@ uint64_t __51__HDDatabase__mergePrimaryJournalForContext_error___block_invoke(ui
   {
     [v8 appendFormat:@"\n\nAccessibility Assertions (%lu):", objc_msgSend(v19, "count")];
     v20 = objc_alloc(MEMORY[0x277CCA940]);
-    v21 = [v19 allObjects];
-    v22 = [v21 hk_map:&__block_literal_global_628];
+    allObjects = [v19 allObjects];
+    v22 = [allObjects hk_map:&__block_literal_global_628];
     v23 = [v20 initWithArray:v22];
 
     v44 = 0u;
@@ -5921,8 +5921,8 @@ uint64_t __51__HDDatabase__mergePrimaryJournalForContext_error___block_invoke(ui
     }
   }
 
-  v28 = [(HKObserverSet *)self->_protectedDataObservers allObservers];
-  v29 = [v28 count];
+  allObservers = [(HKObserverSet *)self->_protectedDataObservers allObservers];
+  v29 = [allObservers count];
   v30 = &stru_283BF39C8;
   if (!v29)
   {
@@ -5934,7 +5934,7 @@ uint64_t __51__HDDatabase__mergePrimaryJournalForContext_error___block_invoke(ui
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v31 = v28;
+  v31 = allObservers;
   v32 = [v31 countByEnumeratingWithState:&v38 objects:v47 count:16];
   if (v32)
   {
@@ -5970,39 +5970,39 @@ id __35__HDDatabase_diagnosticDescription__block_invoke(uint64_t a1, void *a2)
   return v2;
 }
 
-- (void)addDatabaseJournalMergeObserver:(id)a3 journalType:(int64_t)a4 queue:(id)a5
+- (void)addDatabaseJournalMergeObserver:(id)observer journalType:(int64_t)type queue:(id)queue
 {
-  v12 = a3;
-  v8 = a5;
+  observerCopy = observer;
+  queueCopy = queue;
   databaseJournalMergeObserverSetByType = self->_databaseJournalMergeObserverSetByType;
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   v11 = [(NSMutableDictionary *)databaseJournalMergeObserverSetByType objectForKeyedSubscript:v10];
-  [v11 registerObserver:v12 queue:v8];
+  [v11 registerObserver:observerCopy queue:queueCopy];
 }
 
-- (void)removeDatabaseJournalMergeObserver:(id)a3 journalType:(int64_t)a4
+- (void)removeDatabaseJournalMergeObserver:(id)observer journalType:(int64_t)type
 {
-  v9 = a3;
+  observerCopy = observer;
   databaseJournalMergeObserverSetByType = self->_databaseJournalMergeObserverSetByType;
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   v8 = [(NSMutableDictionary *)databaseJournalMergeObserverSetByType objectForKeyedSubscript:v7];
-  [v8 unregisterObserver:v9];
+  [v8 unregisterObserver:observerCopy];
 }
 
-- (void)databaseJournalMergeDidComplete:(id)a3
+- (void)databaseJournalMergeDidComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   if (([(HDDatabase *)self isInvalid]& 1) == 0)
   {
     databaseJournalMergeObserverSetByType = self->_databaseJournalMergeObserverSetByType;
-    v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "type")}];
+    v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(completeCopy, "type")}];
     v7 = [(NSMutableDictionary *)databaseJournalMergeObserverSetByType objectForKeyedSubscript:v6];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __46__HDDatabase_databaseJournalMergeDidComplete___block_invoke;
     v8[3] = &unk_27861CAC0;
     v8[4] = self;
-    v9 = v4;
+    v9 = completeCopy;
     [v7 notifyObservers:v8];
   }
 }
@@ -6034,8 +6034,8 @@ void __46__HDDatabase_databaseJournalMergeDidComplete___block_invoke(uint64_t a1
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [(NSDictionary *)self->_databasePoolForType allValues];
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v22 count:16];
+    allValues = [(NSDictionary *)self->_databasePoolForType allValues];
+    v6 = [allValues countByEnumeratingWithState:&v15 objects:v22 count:16];
     if (v6)
     {
       v7 = *v16;
@@ -6046,17 +6046,17 @@ void __46__HDDatabase_databaseJournalMergeDidComplete___block_invoke(uint64_t a1
         {
           if (*v16 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allValues);
           }
 
-          v9 = [*(*(&v15 + 1) + 8 * v8) flush];
-          dispatch_group_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
+          flush = [*(*(&v15 + 1) + 8 * v8) flush];
+          dispatch_group_wait(flush, 0xFFFFFFFFFFFFFFFFLL);
 
           ++v8;
         }
 
         while (v6 != v8);
-        v6 = [v5 countByEnumeratingWithState:&v15 objects:v22 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v15 objects:v22 count:16];
       }
 
       while (v6);
@@ -6073,7 +6073,7 @@ void __46__HDDatabase_databaseJournalMergeDidComplete___block_invoke(uint64_t a1
     if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v21 = self;
+      selfCopy = self;
       _os_log_impl(&dword_228986000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: Health database invalidated", buf, 0xCu);
     }
   }
@@ -6083,8 +6083,8 @@ void __46__HDDatabase_databaseJournalMergeDidComplete___block_invoke(uint64_t a1
   [(NSConditionLock *)self->_activeDatabasesLock unlock];
   if (v12)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"HDDatabase.mm" lineNumber:3123 description:{@"Invalid parameter not satisfying: %@", @"activeDatabaseCount == 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabase.mm" lineNumber:3123 description:{@"Invalid parameter not satisfying: %@", @"activeDatabaseCount == 0"}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -6102,7 +6102,7 @@ void __31__HDDatabase_invalidateAndWait__block_invoke(uint64_t a1)
   [(HDDatabase *)v4 _protectedDataQueue_cancelProtectedDataFlushTimer];
 }
 
-- (id)databaseUUIDWithError:(id *)a3
+- (id)databaseUUIDWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_databaseUUIDLock);
   v5 = self->_databaseUUID;
@@ -6126,7 +6126,7 @@ void __31__HDDatabase_invalidateAndWait__block_invoke(uint64_t a1)
     v9[3] = &unk_27861CAE8;
     v9[4] = self;
     v9[5] = &v10;
-    [(HDDatabase *)self performHighPriorityTransactionsWithError:a3 block:v9];
+    [(HDDatabase *)self performHighPriorityTransactionsWithError:error block:v9];
     v7 = [MEMORY[0x277CCAD78] hk_UUIDWithData:v11[5]];
     os_unfair_lock_lock(&self->_databaseUUIDLock);
     if (!self->_databaseUUID)
@@ -6153,7 +6153,7 @@ BOOL __36__HDDatabase_databaseUUIDWithError___block_invoke(uint64_t a1, uint64_t
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (void)invalidateAllAssertionsWithContextType:(int64_t)a3
+- (void)invalidateAllAssertionsWithContextType:(int64_t)type
 {
   v15 = *MEMORY[0x277D85DE8];
   [(HDDatabase *)self currentlyActiveAssertions];
@@ -6175,7 +6175,7 @@ BOOL __36__HDDatabase_databaseUUIDWithError___block_invoke(uint64_t a1, uint64_t
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
-        if ([v8 contextType] == a3)
+        if ([v8 contextType] == type)
         {
           [v8 invalidate];
         }
@@ -6190,10 +6190,10 @@ BOOL __36__HDDatabase_databaseUUIDWithError___block_invoke(uint64_t a1, uint64_t
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unitTest_setContentProtectionStateAndWait:(int64_t)a3
+- (void)unitTest_setContentProtectionStateAndWait:(int64_t)wait
 {
-  v5 = [(HDDatabase *)self contentProtectionManager];
-  [v5 setContentProtectionState:a3];
+  contentProtectionManager = [(HDDatabase *)self contentProtectionManager];
+  [contentProtectionManager setContentProtectionState:wait];
 
   protectedDataQueue = self->_protectedDataQueue;
 
@@ -6271,10 +6271,10 @@ void __61__HDDatabase_unitTest_disableDatabaseAccessibilityAssertions__block_inv
 
 - (HKProfileIdentifier)profileIdentifier
 {
-  v2 = [(HDDatabase *)self profile];
-  v3 = [v2 profileIdentifier];
+  profile = [(HDDatabase *)self profile];
+  profileIdentifier = [profile profileIdentifier];
 
-  return v3;
+  return profileIdentifier;
 }
 
 @end

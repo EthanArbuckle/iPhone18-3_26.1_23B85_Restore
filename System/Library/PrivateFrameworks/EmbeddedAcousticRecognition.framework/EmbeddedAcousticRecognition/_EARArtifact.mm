@@ -1,15 +1,15 @@
 @interface _EARArtifact
-+ (BOOL)isValid:(id)a3;
-- (BOOL)hasContent:(id)a3;
-- (BOOL)hasInfo:(id)a3;
-- (BOOL)isEquivalentTo:(id)a3;
-- (BOOL)supportsContent:(id)a3;
-- (BOOL)supportsInfo:(id)a3;
-- (BOOL)write:(id)a3;
-- (_EARArtifact)initWithAcceptedContent:(id)a3 acceptedInfo:(id)a4 dependent:(id)a5;
++ (BOOL)isValid:(id)valid;
+- (BOOL)hasContent:(id)content;
+- (BOOL)hasInfo:(id)info;
+- (BOOL)isEquivalentTo:(id)to;
+- (BOOL)supportsContent:(id)content;
+- (BOOL)supportsInfo:(id)info;
+- (BOOL)write:(id)write;
+- (_EARArtifact)initWithAcceptedContent:(id)content acceptedInfo:(id)info dependent:(id)dependent;
 - (id).cxx_construct;
-- (id)getContent:(id)a3;
-- (id)getInfo:(id)a3;
+- (id)getContent:(id)content;
+- (id)getInfo:(id)info;
 - (id)getLocale;
 - (id)getVersion;
 - (void)getVersion;
@@ -17,17 +17,17 @@
 
 @implementation _EARArtifact
 
-- (_EARArtifact)initWithAcceptedContent:(id)a3 acceptedInfo:(id)a4 dependent:(id)a5
+- (_EARArtifact)initWithAcceptedContent:(id)content acceptedInfo:(id)info dependent:(id)dependent
 {
   v46[10] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contentCopy = content;
+  infoCopy = info;
+  dependentCopy = dependent;
   v31.receiver = self;
   v31.super_class = _EARArtifact;
   if ([(_EARArtifact *)&v31 init])
   {
-    v11 = v8;
+    v11 = contentCopy;
     v30[0] = 0;
     v30[1] = 0;
     v29 = v30;
@@ -76,7 +76,7 @@
       while (v13);
     }
 
-    v18 = v9;
+    v18 = infoCopy;
     v28[0] = 0;
     v28[1] = 0;
     v27 = v28;
@@ -125,7 +125,7 @@
       while (v20);
     }
 
-    v25 = v10;
+    v25 = dependentCopy;
     v39 = 0;
     v40 = &v39;
     v41 = 0x4812000000;
@@ -211,14 +211,14 @@
   return v4;
 }
 
-- (BOOL)supportsInfo:(id)a3
+- (BOOL)supportsInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
+  infoCopy = info;
+  v5 = infoCopy;
   ptr = self->_artifact.__ptr_;
-  if (v4)
+  if (infoCopy)
   {
-    [v4 ear_toString];
+    [infoCopy ear_toString];
   }
 
   else
@@ -237,14 +237,14 @@
   return v7;
 }
 
-- (BOOL)hasInfo:(id)a3
+- (BOOL)hasInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
+  infoCopy = info;
+  v5 = infoCopy;
   ptr = self->_artifact.__ptr_;
-  if (v4)
+  if (infoCopy)
   {
-    [v4 ear_toString];
+    [infoCopy ear_toString];
   }
 
   else
@@ -263,16 +263,16 @@
   return hasInfo;
 }
 
-- (id)getInfo:(id)a3
+- (id)getInfo:(id)info
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  infoCopy = info;
+  v5 = infoCopy;
   v6 = MEMORY[0x1E696AEC0];
   ptr = self->_artifact.__ptr_;
-  if (v4)
+  if (infoCopy)
   {
-    [v4 ear_toString];
+    [infoCopy ear_toString];
   }
 
   else
@@ -307,14 +307,14 @@
   return v9;
 }
 
-- (BOOL)supportsContent:(id)a3
+- (BOOL)supportsContent:(id)content
 {
-  v4 = a3;
-  v5 = v4;
+  contentCopy = content;
+  v5 = contentCopy;
   ptr = self->_artifact.__ptr_;
-  if (v4)
+  if (contentCopy)
   {
-    [v4 ear_toString];
+    [contentCopy ear_toString];
   }
 
   else
@@ -333,14 +333,14 @@
   return v7;
 }
 
-- (BOOL)hasContent:(id)a3
+- (BOOL)hasContent:(id)content
 {
-  v4 = a3;
-  v5 = v4;
+  contentCopy = content;
+  v5 = contentCopy;
   ptr = self->_artifact.__ptr_;
-  if (v4)
+  if (contentCopy)
   {
-    [v4 ear_toString];
+    [contentCopy ear_toString];
   }
 
   else
@@ -359,16 +359,16 @@
   return hasContent;
 }
 
-- (id)getContent:(id)a3
+- (id)getContent:(id)content
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  contentCopy = content;
+  v5 = contentCopy;
   v6 = MEMORY[0x1E696AEC0];
   ptr = self->_artifact.__ptr_;
-  if (v4)
+  if (contentCopy)
   {
-    [v4 ear_toString];
+    [contentCopy ear_toString];
   }
 
   else
@@ -403,14 +403,14 @@
   return v9;
 }
 
-- (BOOL)write:(id)a3
+- (BOOL)write:(id)write
 {
-  v4 = a3;
-  v5 = v4;
+  writeCopy = write;
+  v5 = writeCopy;
   ptr = self->_artifact.__ptr_;
-  if (v4)
+  if (writeCopy)
   {
-    [v4 ear_toString];
+    [writeCopy ear_toString];
   }
 
   else
@@ -428,21 +428,21 @@
   return v7;
 }
 
-- (BOOL)isEquivalentTo:(id)a3
+- (BOOL)isEquivalentTo:(id)to
 {
-  v4 = a3;
-  LOBYTE(self) = quasar::artifact::Artifact::operator==(self->_artifact.__ptr_, v4[1]);
+  toCopy = to;
+  LOBYTE(self) = quasar::artifact::Artifact::operator==(self->_artifact.__ptr_, toCopy[1]);
 
   return self;
 }
 
-+ (BOOL)isValid:(id)a3
++ (BOOL)isValid:(id)valid
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  validCopy = valid;
+  v4 = validCopy;
+  if (validCopy)
   {
-    [v3 ear_toString];
+    [validCopy ear_toString];
   }
 
   else
@@ -469,7 +469,7 @@
 
 - (void)getVersion
 {
-  if (a1)
+  if (self)
   {
     (*(*a2 + 16))(a2);
     OUTLINED_FUNCTION_3_0();

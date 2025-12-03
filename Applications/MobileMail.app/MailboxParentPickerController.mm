@@ -1,88 +1,88 @@
 @interface MailboxParentPickerController
-- (MailboxParentPickerController)initWithMailboxUid:(id)a3 parentMailbox:(id)a4 visibleAccounts:(id)a5;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (MailboxParentPickerController)initWithMailboxUid:(id)uid parentMailbox:(id)mailbox visibleAccounts:(id)accounts;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation MailboxParentPickerController
 
-- (MailboxParentPickerController)initWithMailboxUid:(id)a3 parentMailbox:(id)a4 visibleAccounts:(id)a5
+- (MailboxParentPickerController)initWithMailboxUid:(id)uid parentMailbox:(id)mailbox visibleAccounts:(id)accounts
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  uidCopy = uid;
+  mailboxCopy = mailbox;
+  accountsCopy = accounts;
   v19.receiver = self;
   v19.super_class = MailboxParentPickerController;
   v11 = [(MailboxParentPickerController *)&v19 initWithStyle:2];
   if (v11)
   {
-    v12 = [[MailboxParentPickerTableController alloc] initWithMailboxUid:v8 parentMailbox:v9 visibleAccounts:v10];
+    v12 = [[MailboxParentPickerTableController alloc] initWithMailboxUid:uidCopy parentMailbox:mailboxCopy visibleAccounts:accountsCopy];
     tableController = v11->_tableController;
     v11->_tableController = v12;
 
     v14 = [NSBundle bundleForClass:objc_opt_class()];
     v15 = [v14 localizedStringForKey:@"MAILBOX_LOCATION" value:&stru_100662A88 table:@"Main"];
-    v16 = [(MailboxParentPickerController *)v11 navigationItem];
-    [v16 setTitle:v15];
+    navigationItem = [(MailboxParentPickerController *)v11 navigationItem];
+    [navigationItem setTitle:v15];
 
-    v17 = [(MailboxParentPickerController *)v11 tableView];
-    [v17 setEstimatedRowHeight:75.0];
+    tableView = [(MailboxParentPickerController *)v11 tableView];
+    [tableView setEstimatedRowHeight:75.0];
   }
 
   return v11;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = MailboxParentPickerController;
-  [(MailboxParentPickerController *)&v9 viewWillAppear:a3];
-  v4 = [(MailboxParentPickerController *)self mf_updatePreferredContentSizeBasedOnTableView];
-  [(MailboxParentPickerController *)self setTableViewObserver:v4];
+  [(MailboxParentPickerController *)&v9 viewWillAppear:appear];
+  mf_updatePreferredContentSizeBasedOnTableView = [(MailboxParentPickerController *)self mf_updatePreferredContentSizeBasedOnTableView];
+  [(MailboxParentPickerController *)self setTableViewObserver:mf_updatePreferredContentSizeBasedOnTableView];
 
-  v5 = [(MailboxParentPickerTableController *)self->_tableController indexOfParentMailbox];
-  if (v5 != 0x7FFFFFFFFFFFFFFFLL)
+  indexOfParentMailbox = [(MailboxParentPickerTableController *)self->_tableController indexOfParentMailbox];
+  if (indexOfParentMailbox != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = v5;
-    v7 = [(MailboxParentPickerController *)self tableView];
+    v6 = indexOfParentMailbox;
+    tableView = [(MailboxParentPickerController *)self tableView];
     v8 = [NSIndexPath indexPathForRow:v6 inSection:0];
-    [v7 scrollToRowAtIndexPath:v8 atScrollPosition:0 animated:0];
+    [tableView scrollToRowAtIndexPath:v8 atScrollPosition:0 animated:0];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5.receiver = self;
   v5.super_class = MailboxParentPickerController;
-  [(MailboxParentPickerController *)&v5 traitCollectionDidChange:v4];
+  [(MailboxParentPickerController *)&v5 traitCollectionDidChange:changeCopy];
   [(MailboxParentPickerController *)self mf_updateTableViewBackgroundColorForPopover];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v4 = [(MailboxParentPickerTableController *)self->_tableController tableView:a3 cellForRowAtIndexPath:a4];
+  v4 = [(MailboxParentPickerTableController *)self->_tableController tableView:view cellForRowAtIndexPath:path];
 
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v9 = a3;
-  v6 = a4;
-  [(MailboxParentPickerTableController *)self->_tableController tableView:v9 didSelectRowAtIndexPath:v6 tableViewPath:v6];
-  v7 = [(MailboxParentPickerController *)self navigationController];
-  v8 = [v7 popViewControllerAnimated:1];
+  viewCopy = view;
+  pathCopy = path;
+  [(MailboxParentPickerTableController *)self->_tableController tableView:viewCopy didSelectRowAtIndexPath:pathCopy tableViewPath:pathCopy];
+  navigationController = [(MailboxParentPickerController *)self navigationController];
+  v8 = [navigationController popViewControllerAnimated:1];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [v6 mf_updateBackgroundColorForPopover:{-[MailboxParentPickerController mf_supportsPopoverPresentation](self, "mf_supportsPopoverPresentation")}];
-  [v6 setAccessibilityIdentifier:MSAccessibilityIdentifierMailEditMailboxViewMailboxPickerViewMailboxCell];
+  cellCopy = cell;
+  [cellCopy mf_updateBackgroundColorForPopover:{-[MailboxParentPickerController mf_supportsPopoverPresentation](self, "mf_supportsPopoverPresentation")}];
+  [cellCopy setAccessibilityIdentifier:MSAccessibilityIdentifierMailEditMailboxViewMailboxPickerViewMailboxCell];
 }
 
 @end

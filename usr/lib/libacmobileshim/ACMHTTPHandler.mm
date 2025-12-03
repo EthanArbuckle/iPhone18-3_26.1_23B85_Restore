@@ -17,23 +17,23 @@
 
 - (id)iForgotURL
 {
-  v2 = [(ACMHTTPHandler *)self environmentPreferences];
+  environmentPreferences = [(ACMHTTPHandler *)self environmentPreferences];
 
-  return [v2 iForgotURL];
+  return [environmentPreferences iForgotURL];
 }
 
 - (id)serverHosts
 {
-  v2 = [(ACMHTTPHandler *)self environmentPreferences];
+  environmentPreferences = [(ACMHTTPHandler *)self environmentPreferences];
 
-  return [v2 serverHosts];
+  return [environmentPreferences serverHosts];
 }
 
 - (id)serverAttemptsDelays
 {
-  v2 = [(ACMHTTPHandler *)self environmentPreferences];
+  environmentPreferences = [(ACMHTTPHandler *)self environmentPreferences];
 
-  return [v2 serverAttemptsDelays];
+  return [environmentPreferences serverAttemptsDelays];
 }
 
 @end

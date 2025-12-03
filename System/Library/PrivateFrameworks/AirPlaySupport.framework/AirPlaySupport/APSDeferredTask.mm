@@ -3,7 +3,7 @@
 - (id)result;
 - (void)dealloc;
 - (void)setNotCompleted;
-- (void)setResult:(id)a3;
+- (void)setResult:(id)result;
 @end
 
 @implementation APSDeferredTask
@@ -29,12 +29,12 @@
   pthread_mutex_unlock(&self->_mutex);
 }
 
-- (void)setResult:(id)a3
+- (void)setResult:(id)result
 {
   pthread_mutex_lock(&self->_mutex);
   obj = self->_obj;
-  v6 = a3;
-  self->_obj = a3;
+  resultCopy = result;
+  self->_obj = result;
 
   self->_completed = 1;
   pthread_cond_signal(&self->_cond);

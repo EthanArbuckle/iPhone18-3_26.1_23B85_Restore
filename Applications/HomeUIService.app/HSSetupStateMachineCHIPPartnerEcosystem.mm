@@ -1,15 +1,15 @@
 @interface HSSetupStateMachineCHIPPartnerEcosystem
-- (BOOL)_sync_shouldSkipStep:(int64_t)a3 withConfiguration:(id)a4;
-- (int64_t)stepFollowingStep:(int64_t)a3 withConfiguration:(id)a4;
+- (BOOL)_sync_shouldSkipStep:(int64_t)step withConfiguration:(id)configuration;
+- (int64_t)stepFollowingStep:(int64_t)step withConfiguration:(id)configuration;
 @end
 
 @implementation HSSetupStateMachineCHIPPartnerEcosystem
 
-- (int64_t)stepFollowingStep:(int64_t)a3 withConfiguration:(id)a4
+- (int64_t)stepFollowingStep:(int64_t)step withConfiguration:(id)configuration
 {
-  v5 = a4;
+  configurationCopy = configuration;
   objc_opt_class();
-  v6 = v5;
+  v6 = configurationCopy;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -34,12 +34,12 @@
     v8 = 0;
   }
 
-  v9 = [v8 pairingError];
+  pairingError = [v8 pairingError];
 
-  if (!v9)
+  if (!pairingError)
   {
     v11 = sub_10004C888();
-    v12 = [NSNumber numberWithInteger:a3];
+    v12 = [NSNumber numberWithInteger:step];
     v13 = [v11 indexOfObject:v12];
 
     if (v13 == 0x7FFFFFFFFFFFFFFFLL)
@@ -57,15 +57,15 @@
       if (v15 < [v11 count])
       {
         v16 = [v11 objectAtIndexedSubscript:v15];
-        v17 = [v16 intValue];
+        intValue = [v16 intValue];
 
-        if (v17 >= 8)
+        if (intValue >= 8)
         {
           [v8 setIsReadyToPair:1];
         }
 
         v18 = [v11 objectAtIndexedSubscript:v15];
-        v10 = [v18 intValue];
+        intValue2 = [v18 intValue];
 
         goto LABEL_20;
       }
@@ -77,23 +77,23 @@
       }
     }
 
-    v10 = 58;
+    intValue2 = 58;
 LABEL_20:
 
     goto LABEL_21;
   }
 
-  v10 = 58;
+  intValue2 = 58;
 LABEL_21:
 
-  return v10;
+  return intValue2;
 }
 
-- (BOOL)_sync_shouldSkipStep:(int64_t)a3 withConfiguration:(id)a4
+- (BOOL)_sync_shouldSkipStep:(int64_t)step withConfiguration:(id)configuration
 {
-  v5 = a4;
+  configurationCopy = configuration;
   objc_opt_class();
-  v6 = v5;
+  v6 = configurationCopy;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -119,19 +119,19 @@ LABEL_21:
   }
 
   v9 = 0;
-  if (a3 > 5)
+  if (step > 5)
   {
-    if (a3 == 6)
+    if (step == 6)
     {
-      v13 = [v8 matterDeviceSetupRequest];
-      v15 = [v13 topology];
-      v18 = [v15 homes];
-      if (v18)
+      matterDeviceSetupRequest = [v8 matterDeviceSetupRequest];
+      topology = [matterDeviceSetupRequest topology];
+      homes = [topology homes];
+      if (homes)
       {
-        v19 = [v8 matterDeviceSetupRequest];
-        v20 = [v19 topology];
-        v21 = [v20 homes];
-        v9 = [v21 count] < 2;
+        matterDeviceSetupRequest2 = [v8 matterDeviceSetupRequest];
+        topology2 = [matterDeviceSetupRequest2 topology];
+        homes2 = [topology2 homes];
+        v9 = [homes2 count] < 2;
       }
 
       else
@@ -142,9 +142,9 @@ LABEL_21:
 
     else
     {
-      if (a3 != 13)
+      if (step != 13)
       {
-        if (a3 == 26)
+        if (step == 26)
         {
           v9 = [HSPCNetworkCredentialManagementViewController shouldSkipForConfig:v8];
         }
@@ -152,27 +152,27 @@ LABEL_21:
         goto LABEL_30;
       }
 
-      v13 = [v8 matterDeviceSetupRequest];
-      v15 = [v13 topology];
-      v18 = [v15 homes];
-      v9 = [v18 count] == 0;
+      matterDeviceSetupRequest = [v8 matterDeviceSetupRequest];
+      topology = [matterDeviceSetupRequest topology];
+      homes = [topology homes];
+      v9 = [homes count] == 0;
     }
 
 LABEL_28:
     goto LABEL_29;
   }
 
-  if ((a3 - 2) < 2)
+  if ((step - 2) < 2)
   {
-    v16 = [v8 setupDescription];
-    v17 = [v16 setupAccessoryPayload];
+    setupDescription = [v8 setupDescription];
+    setupAccessoryPayload = [setupDescription setupAccessoryPayload];
 
-    if (!v17)
+    if (!setupAccessoryPayload)
     {
-      v22 = [v8 delegate];
-      v13 = [v22 stateMachineConfigurationGetDiscoveredAccessory:v8];
+      delegate = [v8 delegate];
+      matterDeviceSetupRequest = [delegate stateMachineConfigurationGetDiscoveredAccessory:v8];
 
-      v9 = v13 != 0;
+      v9 = matterDeviceSetupRequest != 0;
 LABEL_29:
 
       goto LABEL_30;
@@ -183,20 +183,20 @@ LABEL_21:
     goto LABEL_30;
   }
 
-  if (a3 == 1 || a3 == 4)
+  if (step == 1 || step == 4)
   {
-    v10 = [v8 setupDescription];
-    v11 = [v10 setupAccessoryPayload];
+    setupDescription2 = [v8 setupDescription];
+    setupAccessoryPayload2 = [setupDescription2 setupAccessoryPayload];
 
-    if (!v11)
+    if (!setupAccessoryPayload2)
     {
-      v12 = [v8 delegate];
-      v13 = [v12 stateMachineConfigurationGetDiscoveredAccessory:v8];
+      delegate2 = [v8 delegate];
+      matterDeviceSetupRequest = [delegate2 stateMachineConfigurationGetDiscoveredAccessory:v8];
 
-      v14 = [v8 delegate];
-      v15 = [v14 stateMachineConfigurationGetSetupCode:v8];
+      delegate3 = [v8 delegate];
+      topology = [delegate3 stateMachineConfigurationGetSetupCode:v8];
 
-      v9 = v13 && ![v13 requiresSetupCode] || objc_msgSend(v15, "length") != 0;
+      v9 = matterDeviceSetupRequest && ![matterDeviceSetupRequest requiresSetupCode] || objc_msgSend(topology, "length") != 0;
       goto LABEL_28;
     }
 

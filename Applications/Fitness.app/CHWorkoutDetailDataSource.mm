@@ -2,26 +2,26 @@
 - (BOOL)_createRouteAndWeatherCellIfNeeded;
 - (BOOL)_isExtendedMode;
 - (BOOL)_shouldShowSplits;
-- (BOOL)_showAveragePaceForWorkout:(id)a3 workoutActivity:(id)a4;
+- (BOOL)_showAveragePaceForWorkout:(id)workout workoutActivity:(id)activity;
 - (BOOL)weatherOrLocationAvailableForWorkout;
-- (CHWorkoutDetailDataSource)initWithTableView:(id)a3 workout:(id)a4 workoutActivity:(id)a5 healthStore:(id)a6 model:(id)a7 fitnessAppContext:(id)a8 formattingManager:(id)a9 badgeImageFactory:(id)a10 achievementLocalizationProvider:(id)a11 awardsDataProvider:(id)a12 fiuiFormattingManager:(id)a13 showCurrentWorkloadButton:(BOOL)a14 isWorkoutSummaryFetchRequired:(BOOL)a15 supplementaryDataSource:(id)a16;
+- (CHWorkoutDetailDataSource)initWithTableView:(id)view workout:(id)workout workoutActivity:(id)activity healthStore:(id)store model:(id)model fitnessAppContext:(id)context formattingManager:(id)manager badgeImageFactory:(id)self0 achievementLocalizationProvider:(id)self1 awardsDataProvider:(id)self2 fiuiFormattingManager:(id)self3 showCurrentWorkloadButton:(BOOL)self4 isWorkoutSummaryFetchRequired:(BOOL)self5 supplementaryDataSource:(id)self6;
 - (CHWorkoutDetailLocationFetcherObserver)locationFetcherObserver;
 - (CHWorkoutDetailNavigationDelegate)delegate;
 - (UITableView)tableView;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
 - (id)_createSubItemsForWorkoutMetrics;
 - (id)_makeAppleWeatherFooterView;
 - (id)_makeUltraModeFooterView;
-- (id)_normalizeSubItemsArray:(id)a3;
+- (id)_normalizeSubItemsArray:(id)array;
 - (id)analyticsHandler;
-- (id)navigationActionForHeaderInSection:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)navigationActionForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_createAndInsertValuesSection;
 - (void)_createAwardSection;
 - (void)_createBurnBarSection;
@@ -31,11 +31,11 @@
 - (void)_createDownhillRunsSection;
 - (void)_createEffortSection;
 - (void)_createGuidedRunMediaMomentsSection;
-- (void)_createHeartRateSectionWithHeartRateReadings:(id)a3 averageHeartRate:(id)a4 recoveryHeartRateReadings:(id)a5;
+- (void)_createHeartRateSectionWithHeartRateReadings:(id)readings averageHeartRate:(id)rate recoveryHeartRateReadings:(id)rateReadings;
 - (void)_createIntervalsSection;
 - (void)_createMultiSportSection;
 - (void)_createNormalSplits;
-- (void)_createPowerSectionWithPowerSamples:(id)a3;
+- (void)_createPowerSectionWithPowerSamples:(id)samples;
 - (void)_createRouteAndWeatherSection;
 - (void)_createSegmentsSection;
 - (void)_createSplitsSection;
@@ -51,7 +51,7 @@
 - (void)_fetchPreferredTrackDistanceUnit;
 - (void)_handleDidUpdateDemoOverrideEffortValues;
 - (void)_handleFitnessUnitPreferencesDidChange;
-- (void)_handleLocations:(id)a3;
+- (void)_handleLocations:(id)locations;
 - (void)_insertBurnBarSection;
 - (void)_insertDownhillRunsSection;
 - (void)_insertEffortSection;
@@ -67,46 +67,46 @@
 - (void)_insertWorkoutVoiceOutroSection;
 - (void)_refreshWorkoutDataWithUpdatedWorkout;
 - (void)_registerCellClasses;
-- (void)_section:(int64_t)a3 setExpanded:(BOOL)a4;
+- (void)_section:(int64_t)_section setExpanded:(BOOL)expanded;
 - (void)_startObservingWorkouts;
 - (void)_stopRouteQueryIfNecessary;
-- (void)_updatePaceFormatForSets:(int64_t)a3;
+- (void)_updatePaceFormatForSets:(int64_t)sets;
 - (void)_warmDataCalculatorCache;
-- (void)dataSourceDidUpdateOutroState:(id)a3;
+- (void)dataSourceDidUpdateOutroState:(id)state;
 - (void)dealloc;
-- (void)didUpdateKeyValueDomain:(id)a3;
+- (void)didUpdateKeyValueDomain:(id)domain;
 - (void)divingDataDidFinishLoading;
-- (void)expandingHeaderView:(id)a3 didChangeExpanded:(BOOL)a4;
+- (void)expandingHeaderView:(id)view didChangeExpanded:(BOOL)expanded;
 - (void)fetchLocations;
-- (void)presentEffortViewController:(BOOL)a3 presentationCompletion:(id)a4;
-- (void)presentPageForSection:(int64_t)a3;
-- (void)setCurrentlySelectedSwimmingPaceFormat:(int64_t)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5;
+- (void)presentEffortViewController:(BOOL)controller presentationCompletion:(id)completion;
+- (void)presentPageForSection:(int64_t)section;
+- (void)setCurrentlySelectedSwimmingPaceFormat:(int64_t)format;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section;
 - (void)updateSharingImage;
 @end
 
 @implementation CHWorkoutDetailDataSource
 
-- (CHWorkoutDetailDataSource)initWithTableView:(id)a3 workout:(id)a4 workoutActivity:(id)a5 healthStore:(id)a6 model:(id)a7 fitnessAppContext:(id)a8 formattingManager:(id)a9 badgeImageFactory:(id)a10 achievementLocalizationProvider:(id)a11 awardsDataProvider:(id)a12 fiuiFormattingManager:(id)a13 showCurrentWorkloadButton:(BOOL)a14 isWorkoutSummaryFetchRequired:(BOOL)a15 supplementaryDataSource:(id)a16
+- (CHWorkoutDetailDataSource)initWithTableView:(id)view workout:(id)workout workoutActivity:(id)activity healthStore:(id)store model:(id)model fitnessAppContext:(id)context formattingManager:(id)manager badgeImageFactory:(id)self0 achievementLocalizationProvider:(id)self1 awardsDataProvider:(id)self2 fiuiFormattingManager:(id)self3 showCurrentWorkloadButton:(BOOL)self4 isWorkoutSummaryFetchRequired:(BOOL)self5 supplementaryDataSource:(id)self6
 {
-  v21 = a3;
-  v58 = a4;
-  v22 = a4;
-  v59 = a5;
-  v23 = a5;
-  v24 = a8;
-  v71 = v23;
-  v67 = a6;
-  v66 = a7;
-  v65 = a8;
-  v70 = a9;
-  v64 = a10;
-  v63 = a11;
-  v62 = a12;
-  v61 = a13;
-  v60 = a16;
+  viewCopy = view;
+  workoutCopy = workout;
+  workoutCopy2 = workout;
+  activityCopy = activity;
+  activityCopy2 = activity;
+  contextCopy = context;
+  v71 = activityCopy2;
+  storeCopy = store;
+  modelCopy = model;
+  contextCopy2 = context;
+  managerCopy = manager;
+  factoryCopy = factory;
+  providerCopy = provider;
+  dataProviderCopy = dataProvider;
+  formattingManagerCopy = formattingManager;
+  sourceCopy = source;
   v72.receiver = self;
   v72.super_class = CHWorkoutDetailDataSource;
   v25 = [(CHWorkoutDetailDataSource *)&v72 init];
@@ -115,8 +115,8 @@
     goto LABEL_14;
   }
 
-  v69 = v22;
-  if ([v22 workoutActivityType] == 46)
+  v69 = workoutCopy2;
+  if ([workoutCopy2 workoutActivityType] == 46)
   {
     isSwimmingActivity = 1;
     v25->_isSwimmingActivity = 1;
@@ -126,8 +126,8 @@
   else
   {
     v27 = v71;
-    v28 = [v71 workoutConfiguration];
-    v25->_isSwimmingActivity = [v28 activityType] == 46;
+    workoutConfiguration = [v71 workoutConfiguration];
+    v25->_isSwimmingActivity = [workoutConfiguration activityType] == 46;
 
     isSwimmingActivity = v25->_isSwimmingActivity;
     if ((isSwimmingActivity & 1) == 0)
@@ -138,8 +138,8 @@
 
   if ([v69 fi_swimmingLocationType] != 1)
   {
-    v29 = [v27 workoutConfiguration];
-    v25->_workoutIsPoolSwim = [v29 swimmingLocationType] == 1;
+    workoutConfiguration2 = [v27 workoutConfiguration];
+    v25->_workoutIsPoolSwim = [workoutConfiguration2 swimmingLocationType] == 1;
 
     goto LABEL_8;
   }
@@ -149,11 +149,11 @@ LABEL_6:
 LABEL_8:
   v25->_workoutIsFirstParty = [v69 isFirstPartyWorkout];
   v25->_isUnderwaterDive = [v69 workoutActivityType] == 84;
-  objc_storeStrong(&v25->_fiuiFormattingManager, a13);
+  objc_storeStrong(&v25->_fiuiFormattingManager, formattingManager);
   v25->_currentlySelectedSwimmingPaceFormat = 100;
   v25->_didSetInitialSwimmingPaceFormat = 0;
-  v30 = objc_storeWeak(&v25->_tableView, v21);
-  [v21 setEstimatedRowHeight:44.0];
+  v30 = objc_storeWeak(&v25->_tableView, viewCopy);
+  [viewCopy setEstimatedRowHeight:44.0];
 
   WeakRetained = objc_loadWeakRetained(&v25->_tableView);
   [WeakRetained setRowHeight:UITableViewAutomaticDimension];
@@ -161,17 +161,17 @@ LABEL_8:
   v32 = objc_loadWeakRetained(&v25->_tableView);
   [v32 setSectionHeaderTopPadding:0.0];
 
-  objc_storeStrong(&v25->_healthStore, a6);
-  objc_storeStrong(&v25->_formattingManager, a9);
-  v33 = [v70 dataCalculator];
+  objc_storeStrong(&v25->_healthStore, store);
+  objc_storeStrong(&v25->_formattingManager, manager);
+  dataCalculator = [managerCopy dataCalculator];
   dataCalculator = v25->_dataCalculator;
-  v25->_dataCalculator = v33;
+  v25->_dataCalculator = dataCalculator;
 
-  objc_storeStrong(&v25->_model, a7);
-  objc_storeStrong(&v25->_fitnessAppContext, v24);
-  objc_storeStrong(&v25->_workout, v58);
-  objc_storeStrong(&v25->_workoutActivity, v59);
-  v35 = [v69 isMultiSportWorkout];
+  objc_storeStrong(&v25->_model, model);
+  objc_storeStrong(&v25->_fitnessAppContext, contextCopy);
+  objc_storeStrong(&v25->_workout, workoutCopy);
+  objc_storeStrong(&v25->_workoutActivity, activityCopy);
+  isMultiSportWorkout = [v69 isMultiSportWorkout];
   if (v27)
   {
     v36 = 0;
@@ -179,17 +179,17 @@ LABEL_8:
 
   else
   {
-    v36 = v35;
+    v36 = isMultiSportWorkout;
   }
 
   v25->_isTopLevelMultisport = v36;
   v25->_hasAverageHeartRate = 0;
-  objc_storeStrong(&v25->_badgeImageFactory, a10);
-  objc_storeStrong(&v25->_achievementLocalizationProvider, a11);
-  objc_storeStrong(&v25->_awardsDataProvider, a12);
-  v25->_isWorkoutSummaryFetchRequired = a15;
-  v37 = [(HKWorkout *)v25->_workout metadata];
-  v38 = [v37 objectForKey:_HKPrivateMetadataKeyWorkoutExtendedMode];
+  objc_storeStrong(&v25->_badgeImageFactory, factory);
+  objc_storeStrong(&v25->_achievementLocalizationProvider, provider);
+  objc_storeStrong(&v25->_awardsDataProvider, dataProvider);
+  v25->_isWorkoutSummaryFetchRequired = required;
+  metadata = [(HKWorkout *)v25->_workout metadata];
+  v38 = [metadata objectForKey:_HKPrivateMetadataKeyWorkoutExtendedMode];
 
   [v38 BOOLValue];
   v39 = [[CHWorkoutRouteMapGenerator alloc] initWithPathRendererClass:objc_opt_class()];
@@ -212,7 +212,7 @@ LABEL_8:
 
   [(HKKeyValueDomain *)v25->_trackValueDomain startObservation:v25];
   v25->_trackDistanceUnit = 1;
-  objc_storeStrong(&v25->_supplementaryDataSource, a16);
+  objc_storeStrong(&v25->_supplementaryDataSource, source);
   [(CHWorkoutSummaryDataSourceBridge *)v25->_supplementaryDataSource addWithObserver:v25];
   [(CHWorkoutDetailDataSource *)v25 _fetchPreferredTrackDistanceUnit];
   [(CHWorkoutDetailDataSource *)v25 _registerCellClasses];
@@ -237,7 +237,7 @@ LABEL_8:
   v53 = objc_loadWeakRetained(&v25->_tableView);
   [v53 setSectionFooterHeight:0.0];
 
-  v25->_showCurrentWorkloadButton = a14;
+  v25->_showCurrentWorkloadButton = button;
   [(CHWorkoutDetailDataSource *)v25 _warmDataCalculatorCache];
   v54 = +[NSNotificationCenter defaultCenter];
   [v54 addObserver:v25 selector:"_handleFitnessUnitPreferencesDidChange" name:kFIUIFitnessUnitPreferencesDidChangeNotification object:0];
@@ -246,7 +246,7 @@ LABEL_8:
   v56 = +[WOEffortBridges didUpdateDemoOverrideEffortValues];
   [v55 addObserver:v25 selector:"_handleDidUpdateDemoOverrideEffortValues" name:v56 object:0];
 
-  v22 = v69;
+  workoutCopy2 = v69;
 LABEL_14:
 
   return v25;
@@ -264,20 +264,20 @@ LABEL_14:
 
 - (void)_createCatalogItemViewModelIfNeeded
 {
-  v3 = [(CHFitnessAppContext *)self->_fitnessAppContext seymourCatalogItemDataProvider];
-  v4 = [v3 isSeymourWorkout:self->_workout];
+  seymourCatalogItemDataProvider = [(CHFitnessAppContext *)self->_fitnessAppContext seymourCatalogItemDataProvider];
+  v4 = [seymourCatalogItemDataProvider isSeymourWorkout:self->_workout];
 
   if (v4)
   {
     objc_initWeak(&location, self);
-    v5 = [(CHFitnessAppContext *)self->_fitnessAppContext seymourCatalogItemDataProvider];
+    seymourCatalogItemDataProvider2 = [(CHFitnessAppContext *)self->_fitnessAppContext seymourCatalogItemDataProvider];
     workout = self->_workout;
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1000F1FFC;
     v7[3] = &unk_10083BF50;
     objc_copyWeak(&v8, &location);
-    [v5 fetchCatalogItemViewModelForWorkout:workout completion:v7];
+    [seymourCatalogItemDataProvider2 fetchCatalogItemViewModelForWorkout:workout completion:v7];
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
@@ -287,7 +287,7 @@ LABEL_14:
 - (void)_fetchBurnBarScoreSummary
 {
   objc_initWeak(&location, self);
-  v3 = [(CHFitnessAppContext *)self->_fitnessAppContext seymourCatalogItemDataProvider];
+  seymourCatalogItemDataProvider = [(CHFitnessAppContext *)self->_fitnessAppContext seymourCatalogItemDataProvider];
   workout = self->_workout;
   healthStore = self->_healthStore;
   v6[0] = _NSConcreteStackBlock;
@@ -295,7 +295,7 @@ LABEL_14:
   v6[2] = sub_1000F220C;
   v6[3] = &unk_10083BF78;
   objc_copyWeak(&v7, &location);
-  [v3 fetchScoreSummaryForWorkout:workout healthStore:healthStore completion:v6];
+  [seymourCatalogItemDataProvider fetchScoreSummaryForWorkout:workout healthStore:healthStore completion:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -338,33 +338,33 @@ LABEL_14:
   }
 }
 
-- (void)setCurrentlySelectedSwimmingPaceFormat:(int64_t)a3
+- (void)setCurrentlySelectedSwimmingPaceFormat:(int64_t)format
 {
-  if (self->_currentlySelectedSwimmingPaceFormat != a3 || ![(CHWorkoutDetailDataSource *)self didSetInitialSwimmingPaceFormat])
+  if (self->_currentlySelectedSwimmingPaceFormat != format || ![(CHWorkoutDetailDataSource *)self didSetInitialSwimmingPaceFormat])
   {
     [(CHWorkoutDetailDataSource *)self setDidSetInitialSwimmingPaceFormat:1];
-    v5 = [(CHWorkoutDetailDataSource *)self swimmingSplitItems];
+    swimmingSplitItems = [(CHWorkoutDetailDataSource *)self swimmingSplitItems];
     v6 = dword_1008F99F8;
 
-    if (v5 || v6 > 9)
+    if (swimmingSplitItems || v6 > 9)
     {
       dword_1008F99F8 = 0;
-      self->_currentlySelectedSwimmingPaceFormat = a3;
+      self->_currentlySelectedSwimmingPaceFormat = format;
       if ([(CHWorkoutDetailDataSource *)self segmentsExpanded])
       {
-        [(CHWorkoutDetailDataSource *)self _updatePaceFormatForSets:a3];
+        [(CHWorkoutDetailDataSource *)self _updatePaceFormatForSets:format];
       }
 
-      v8 = [(CHWorkoutDetailDataSource *)self swimmingSplitItems];
+      swimmingSplitItems2 = [(CHWorkoutDetailDataSource *)self swimmingSplitItems];
       v9 = [NSNumber numberWithInteger:self->_currentlySelectedSwimmingPaceFormat];
-      v24 = [v8 objectForKeyedSubscript:v9];
+      v24 = [swimmingSplitItems2 objectForKeyedSubscript:v9];
 
-      LOBYTE(v8) = [(CHWorkoutDetailDataSource *)self splitsExpanded];
-      v10 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-      v11 = v10;
-      if ((v8 & 1) != 0 || !v24)
+      LOBYTE(swimmingSplitItems2) = [(CHWorkoutDetailDataSource *)self splitsExpanded];
+      tableItemsBySection = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+      v11 = tableItemsBySection;
+      if ((swimmingSplitItems2 & 1) != 0 || !v24)
       {
-        v12 = [v10 objectAtIndexedSubscript:9];
+        v12 = [tableItemsBySection objectAtIndexedSubscript:9];
 
         v13 = objc_alloc_init(NSMutableArray);
         v14 = objc_alloc_init(NSMutableArray);
@@ -396,28 +396,28 @@ LABEL_14:
           while (v17 < [v24 count]);
         }
 
-        v19 = [(CHWorkoutDetailDataSource *)self tableView];
-        [v19 beginUpdates];
+        tableView = [(CHWorkoutDetailDataSource *)self tableView];
+        [tableView beginUpdates];
 
-        v20 = [(CHWorkoutDetailDataSource *)self tableView];
-        [v20 deleteRowsAtIndexPaths:v13 withRowAnimation:3];
+        tableView2 = [(CHWorkoutDetailDataSource *)self tableView];
+        [tableView2 deleteRowsAtIndexPaths:v13 withRowAnimation:3];
 
         if ([v24 count])
         {
-          v21 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-          [v21 setObject:v24 atIndexedSubscript:9];
+          tableItemsBySection2 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+          [tableItemsBySection2 setObject:v24 atIndexedSubscript:9];
         }
 
-        v22 = [(CHWorkoutDetailDataSource *)self tableView];
-        [v22 insertRowsAtIndexPaths:v14 withRowAnimation:3];
+        tableView3 = [(CHWorkoutDetailDataSource *)self tableView];
+        [tableView3 insertRowsAtIndexPaths:v14 withRowAnimation:3];
 
-        v23 = [(CHWorkoutDetailDataSource *)self tableView];
-        [v23 endUpdates];
+        tableView4 = [(CHWorkoutDetailDataSource *)self tableView];
+        [tableView4 endUpdates];
       }
 
       else
       {
-        [v10 setObject:v24 atIndexedSubscript:9];
+        [tableItemsBySection setObject:v24 atIndexedSubscript:9];
         v12 = v11;
       }
     }
@@ -431,16 +431,16 @@ LABEL_14:
       block[2] = sub_1000F2798;
       block[3] = &unk_10083BFA0;
       block[4] = self;
-      block[5] = a3;
+      block[5] = format;
       dispatch_after(v7, &_dispatch_main_q, block);
     }
   }
 }
 
-- (void)_updatePaceFormatForSets:(int64_t)a3
+- (void)_updatePaceFormatForSets:(int64_t)sets
 {
-  v4 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-  v5 = [v4 objectAtIndexedSubscript:8];
+  tableItemsBySection = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+  v5 = [tableItemsBySection objectAtIndexedSubscript:8];
 
   v16 = 0u;
   v17 = 0u;
@@ -462,12 +462,12 @@ LABEL_14:
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v11 paceFormatUpdatedBlock];
+        paceFormatUpdatedBlock = [v11 paceFormatUpdatedBlock];
 
-        if (v12)
+        if (paceFormatUpdatedBlock)
         {
-          v13 = [v11 paceFormatUpdatedBlock];
-          v13[2](v13, a3);
+          paceFormatUpdatedBlock2 = [v11 paceFormatUpdatedBlock];
+          paceFormatUpdatedBlock2[2](paceFormatUpdatedBlock2, sets);
         }
       }
 
@@ -508,8 +508,8 @@ LABEL_14:
   v5 = [NSArray arrayWithObjects:v23 count:18];
   [(CHWorkoutDetailDataSource *)self setCellClassesBySection:v5];
 
-  v6 = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
-  if ([v6 count] != 18)
+  cellClassesBySection = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
+  if ([cellClassesBySection count] != 18)
   {
     sub_10069C36C();
   }
@@ -518,8 +518,8 @@ LABEL_14:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  cellClassesBySection2 = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
+  v8 = [cellClassesBySection2 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -531,19 +531,19 @@ LABEL_14:
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(cellClassesBySection2);
         }
 
         v12 = *(*(&v18 + 1) + 8 * v11);
-        v13 = [(CHWorkoutDetailDataSource *)self tableView];
+        tableView = [(CHWorkoutDetailDataSource *)self tableView];
         v14 = NSStringFromClass(v12);
-        [v13 registerClass:v12 forCellReuseIdentifier:v14];
+        [tableView registerClass:v12 forCellReuseIdentifier:v14];
 
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [cellClassesBySection2 countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
@@ -551,35 +551,35 @@ LABEL_14:
 
   v15 = objc_opt_class();
   v16 = +[(ActivityTileSectionHeader *)_TtC10FitnessApp26WorkoutDetailSectionHeader];
-  v17 = [(CHWorkoutDetailDataSource *)self tableView];
-  [v17 registerClass:v15 forHeaderFooterViewReuseIdentifier:v16];
+  tableView2 = [(CHWorkoutDetailDataSource *)self tableView];
+  [tableView2 registerClass:v15 forHeaderFooterViewReuseIdentifier:v16];
 }
 
 - (void)_warmDataCalculatorCache
 {
-  v3 = [(CHWorkoutDetailDataSource *)self workout];
-  if ([v3 workoutActivityType] == 37)
+  workout = [(CHWorkoutDetailDataSource *)self workout];
+  if ([workout workoutActivityType] == 37)
   {
   }
 
   else
   {
-    v4 = [(CHWorkoutDetailDataSource *)self workout];
-    v5 = [v4 workoutActivityType];
+    workout2 = [(CHWorkoutDetailDataSource *)self workout];
+    workoutActivityType = [workout2 workoutActivityType];
 
-    if (v5 != 13)
+    if (workoutActivityType != 13)
     {
       return;
     }
   }
 
-  v6 = [(CHWorkoutDetailDataSource *)self dataCalculator];
-  v7 = [(CHWorkoutDetailDataSource *)self workout];
-  [v6 cadenceSamplesForWorkout:v7 workoutActivity:0 completion:&stru_10083BFE0];
+  dataCalculator = [(CHWorkoutDetailDataSource *)self dataCalculator];
+  workout3 = [(CHWorkoutDetailDataSource *)self workout];
+  [dataCalculator cadenceSamplesForWorkout:workout3 workoutActivity:0 completion:&stru_10083BFE0];
 
-  v9 = [(CHWorkoutDetailDataSource *)self dataCalculator];
-  v8 = [(CHWorkoutDetailDataSource *)self workout];
-  [v9 powerSamplesForWorkout:v8 workoutActivity:0 completion:&stru_10083C000];
+  dataCalculator2 = [(CHWorkoutDetailDataSource *)self dataCalculator];
+  workout4 = [(CHWorkoutDetailDataSource *)self workout];
+  [dataCalculator2 powerSamplesForWorkout:workout4 workoutActivity:0 completion:&stru_10083C000];
 }
 
 - (void)_handleFitnessUnitPreferencesDidChange
@@ -591,12 +591,12 @@ LABEL_14:
 
 - (void)_handleDidUpdateDemoOverrideEffortValues
 {
-  v3 = [(CHWorkoutDetailDataSource *)self tableView];
+  tableView = [(CHWorkoutDetailDataSource *)self tableView];
   v2 = [NSIndexSet indexSetWithIndex:3];
-  [v3 reloadSections:v2 withRowAnimation:5];
+  [tableView reloadSections:v2 withRowAnimation:5];
 }
 
-- (void)didUpdateKeyValueDomain:(id)a3
+- (void)didUpdateKeyValueDomain:(id)domain
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -611,20 +611,20 @@ LABEL_14:
   v3 = objc_alloc_init(NSMutableArray);
   [(CHWorkoutDetailDataSource *)self setTableItemsBySection:v3];
 
-  v4 = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
-  v5 = [v4 count];
+  cellClassesBySection = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
+  v5 = [cellClassesBySection count];
 
   if (v5)
   {
     v6 = 0;
     do
     {
-      v7 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-      [v7 addObject:&__NSArray0__struct];
+      tableItemsBySection = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+      [tableItemsBySection addObject:&__NSArray0__struct];
 
       ++v6;
-      v8 = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
-      v9 = [v8 count];
+      cellClassesBySection2 = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
+      v9 = [cellClassesBySection2 count];
     }
 
     while (v9 > v6);
@@ -693,8 +693,8 @@ LABEL_14:
   v20 = [NSArray arrayWithObjects:v47 count:18];
   [(CHWorkoutDetailDataSource *)self setTableSectionHeaders:v20];
 
-  v21 = [(CHWorkoutDetailDataSource *)self tableSectionHeaders];
-  if ([v21 count] != 18)
+  tableSectionHeaders = [(CHWorkoutDetailDataSource *)self tableSectionHeaders];
+  if ([tableSectionHeaders count] != 18)
   {
     sub_10069C398();
   }
@@ -762,26 +762,26 @@ LABEL_14:
 - (void)_createSummarySection
 {
   v3 = objc_alloc_init(_CHWorkoutDetailSummaryLocationItem);
-  v4 = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
-  -[_CHWorkoutDetailTableItem setCellClass:](v3, "setCellClass:", [v4 objectAtIndexedSubscript:0]);
+  cellClassesBySection = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
+  -[_CHWorkoutDetailTableItem setCellClass:](v3, "setCellClass:", [cellClassesBySection objectAtIndexedSubscript:0]);
 
   v15 = v3;
   v5 = [NSArray arrayWithObjects:&v15 count:1];
-  v6 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-  [v6 setObject:v5 atIndexedSubscript:0];
+  tableItemsBySection = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+  [tableItemsBySection setObject:v5 atIndexedSubscript:0];
 
   if ([(CHWorkoutDetailDataSource *)self workoutIsPoolSwim])
   {
-    v7 = [(CHWorkoutDetailDataSource *)self dataCalculator];
-    v8 = [(CHWorkoutDetailDataSource *)self workout];
-    v9 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+    dataCalculator = [(CHWorkoutDetailDataSource *)self dataCalculator];
+    workout = [(CHWorkoutDetailDataSource *)self workout];
+    workoutActivity = [(CHWorkoutDetailDataSource *)self workoutActivity];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000F3828;
     v13[3] = &unk_10083C028;
     v10 = &v14;
     v14 = v3;
-    [v7 swimDistanceByStrokeStyleForWorkout:v8 workoutActivity:v9 completion:v13];
+    [dataCalculator swimDistanceByStrokeStyleForWorkout:workout workoutActivity:workoutActivity completion:v13];
 LABEL_5:
 
     goto LABEL_6;
@@ -789,16 +789,16 @@ LABEL_5:
 
   if ([(CHWorkoutDetailDataSource *)self isSwimmingActivity])
   {
-    v7 = [(CHWorkoutDetailDataSource *)self dataCalculator];
-    v8 = [(CHWorkoutDetailDataSource *)self workout];
-    v9 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+    dataCalculator = [(CHWorkoutDetailDataSource *)self dataCalculator];
+    workout = [(CHWorkoutDetailDataSource *)self workout];
+    workoutActivity = [(CHWorkoutDetailDataSource *)self workoutActivity];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1000F38D4;
     v11[3] = &unk_10083C028;
     v10 = &v12;
     v12 = v3;
-    [v7 openWaterSwimDistanceByStrokeStyleForWorkout:v8 workoutActivity:v9 completion:v11];
+    [dataCalculator openWaterSwimDistanceByStrokeStyleForWorkout:workout workoutActivity:workoutActivity completion:v11];
     goto LABEL_5;
   }
 
@@ -814,8 +814,8 @@ LABEL_6:
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = [(HKWorkout *)self->_workout workoutActivities];
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    workoutActivities = [(HKWorkout *)self->_workout workoutActivities];
+    v5 = [workoutActivities countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
       v6 = v5;
@@ -827,13 +827,13 @@ LABEL_6:
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(workoutActivities);
           }
 
           v9 = *(*(&v13 + 1) + 8 * v8);
           v10 = objc_alloc_init(_CHWorkoutDetailMultiSportTableItem);
-          v11 = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
-          -[_CHWorkoutDetailTableItem setCellClass:](v10, "setCellClass:", [v11 objectAtIndexedSubscript:5]);
+          cellClassesBySection = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
+          -[_CHWorkoutDetailTableItem setCellClass:](v10, "setCellClass:", [cellClassesBySection objectAtIndexedSubscript:5]);
 
           [(_CHWorkoutDetailMultiSportTableItem *)v10 setWorkoutActivity:v9];
           [v3 addObject:v10];
@@ -842,14 +842,14 @@ LABEL_6:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [workoutActivities countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v6);
     }
 
-    v12 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-    [v12 setObject:v3 atIndexedSubscript:5];
+    tableItemsBySection = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+    [tableItemsBySection setObject:v3 atIndexedSubscript:5];
 
     [(CHWorkoutDetailDataSource *)self _insertMultiSportSection];
   }
@@ -857,9 +857,9 @@ LABEL_6:
 
 - (void)_createValuesSection
 {
-  v15 = [(CHWorkoutDetailDataSource *)self _createSubItemsForWorkoutMetrics];
-  v3 = [v15 count];
-  v4 = ([v15 count] & 1) + (v3 >> 1);
+  _createSubItemsForWorkoutMetrics = [(CHWorkoutDetailDataSource *)self _createSubItemsForWorkoutMetrics];
+  v3 = [_createSubItemsForWorkoutMetrics count];
+  v4 = ([_createSubItemsForWorkoutMetrics count] & 1) + (v3 >> 1);
   v5 = objc_alloc_init(NSMutableArray);
   if (v4 >= 1)
   {
@@ -868,8 +868,8 @@ LABEL_6:
     {
       if (v4 == 1)
       {
-        v7 = ([v15 count] & 1) == 0;
-        v8 = v15;
+        v7 = ([_createSubItemsForWorkoutMetrics count] & 1) == 0;
+        v8 = _createSubItemsForWorkoutMetrics;
         if (v7)
         {
           v9 = 2;
@@ -884,13 +884,13 @@ LABEL_6:
       else
       {
         v9 = 2;
-        v8 = v15;
+        v8 = _createSubItemsForWorkoutMetrics;
       }
 
       v10 = [v8 subarrayWithRange:{v6, v9}];
       v11 = objc_alloc_init(_CHWorkoutDetailTableItem);
-      v12 = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
-      -[_CHWorkoutDetailTableItem setCellClass:](v11, "setCellClass:", [v12 objectAtIndexedSubscript:2]);
+      cellClassesBySection = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
+      -[_CHWorkoutDetailTableItem setCellClass:](v11, "setCellClass:", [cellClassesBySection objectAtIndexedSubscript:2]);
 
       v13 = [NSArray arrayWithArray:v10];
       [(_CHWorkoutDetailTableItem *)v11 setSubItems:v13];
@@ -903,8 +903,8 @@ LABEL_6:
     while (v4);
   }
 
-  v14 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-  [v14 setObject:v5 atIndexedSubscript:2];
+  tableItemsBySection = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+  [tableItemsBySection setObject:v5 atIndexedSubscript:2];
 }
 
 - (void)_createWorkoutVoiceTranscriptSection
@@ -918,15 +918,15 @@ LABEL_6:
       {
         v4 = objc_alloc_init(_CHWorkoutVoiceOutroItem);
         objc_initWeak(&location, self);
-        v5 = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
-        -[_CHWorkoutDetailTableItem setCellClass:](v4, "setCellClass:", [v5 objectAtIndexedSubscript:1]);
+        cellClassesBySection = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
+        -[_CHWorkoutDetailTableItem setCellClass:](v4, "setCellClass:", [cellClassesBySection objectAtIndexedSubscript:1]);
 
         [(_CHWorkoutVoiceOutroItem *)v4 setOutroState:[(CHWorkoutSummaryDataSourceBridge *)self->_supplementaryDataSource workoutVoiceOutroState]];
         v11 = v4;
         v6 = [NSArray arrayWithObjects:&v11 count:1];
         v7 = objc_loadWeakRetained(&location);
-        v8 = [v7 tableItemsBySection];
-        [v8 setObject:v6 atIndexedSubscript:1];
+        tableItemsBySection = [v7 tableItemsBySection];
+        [tableItemsBySection setObject:v6 atIndexedSubscript:1];
 
         v9 = objc_loadWeakRetained(&location);
         [v9 _insertWorkoutVoiceOutroSection];
@@ -942,14 +942,14 @@ LABEL_6:
   if (!self->_isUnderwaterDive && (FIIsTinkerVegaOrFitnessJunior() & 1) == 0)
   {
     v3 = objc_alloc_init(_CHWorkoutDetailEffortItem);
-    v4 = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
-    -[_CHWorkoutDetailTableItem setCellClass:](v3, "setCellClass:", [v4 objectAtIndexedSubscript:3]);
+    cellClassesBySection = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
+    -[_CHWorkoutDetailTableItem setCellClass:](v3, "setCellClass:", [cellClassesBySection objectAtIndexedSubscript:3]);
 
     [(_CHWorkoutDetailEffortItem *)v3 setEffortQuantity:0];
     v7 = v3;
     v5 = [NSArray arrayWithObjects:&v7 count:1];
-    v6 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-    [v6 setObject:v5 atIndexedSubscript:3];
+    tableItemsBySection = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+    [tableItemsBySection setObject:v5 atIndexedSubscript:3];
 
     [(CHWorkoutDetailDataSource *)self _insertEffortSection];
   }
@@ -960,40 +960,40 @@ LABEL_6:
   v6 = objc_alloc_init(_CHWorkoutDetailTableItem);
   [(_CHWorkoutDetailTableItem *)v6 setCellClass:objc_opt_class()];
   [(_CHWorkoutDetailTableItem *)v6 setSubItems:&__NSArray0__struct];
-  v3 = [(CHDivingDataCalculator *)self->_divingDataCalculator diveDetailViewRowCount];
-  v4 = [[NSMutableArray alloc] initWithCapacity:v3];
-  if (v3 >= 1)
+  diveDetailViewRowCount = [(CHDivingDataCalculator *)self->_divingDataCalculator diveDetailViewRowCount];
+  v4 = [[NSMutableArray alloc] initWithCapacity:diveDetailViewRowCount];
+  if (diveDetailViewRowCount >= 1)
   {
     do
     {
       [v4 addObject:v6];
-      --v3;
+      --diveDetailViewRowCount;
     }
 
-    while (v3);
+    while (diveDetailViewRowCount);
   }
 
-  v5 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-  [v5 setObject:v4 atIndexedSubscript:2];
+  tableItemsBySection = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+  [tableItemsBySection setObject:v4 atIndexedSubscript:2];
 }
 
 - (void)_createTrackLapsSection
 {
-  v3 = [(CHWorkoutDetailDataSource *)self workout];
-  v4 = [v3 supportsTrackWorkout];
+  workout = [(CHWorkoutDetailDataSource *)self workout];
+  supportsTrackWorkout = [workout supportsTrackWorkout];
 
-  if (v4)
+  if (supportsTrackWorkout)
   {
     objc_initWeak(&location, self);
-    v5 = [(CHWorkoutDetailDataSource *)self dataCalculator];
-    v6 = [(CHWorkoutDetailDataSource *)self workout];
+    dataCalculator = [(CHWorkoutDetailDataSource *)self dataCalculator];
+    workout2 = [(CHWorkoutDetailDataSource *)self workout];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1000F40EC;
     v7[3] = &unk_10083C078;
     objc_copyWeak(v8, &location);
     v8[1] = 7;
-    [v5 trackLapsForWorkout:v6 completion:v7];
+    [dataCalculator trackLapsForWorkout:workout2 completion:v7];
 
     objc_destroyWeak(v8);
     objc_destroyWeak(&location);
@@ -1002,18 +1002,18 @@ LABEL_6:
 
 - (BOOL)_shouldShowSplits
 {
-  v3 = [(CHWorkoutDetailDataSource *)self workout];
-  v4 = [v3 wasUserEntered];
+  workout = [(CHWorkoutDetailDataSource *)self workout];
+  wasUserEntered = [workout wasUserEntered];
 
-  if (v4)
+  if (wasUserEntered)
   {
     return 0;
   }
 
-  v6 = [(CHWorkoutDetailDataSource *)self formattingManager];
-  v7 = [(CHWorkoutDetailDataSource *)self workout];
-  v8 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-  v9 = [v6 supportsPaceForWorkout:v7 workoutActivity:v8];
+  formattingManager = [(CHWorkoutDetailDataSource *)self formattingManager];
+  workout2 = [(CHWorkoutDetailDataSource *)self workout];
+  workoutActivity = [(CHWorkoutDetailDataSource *)self workoutActivity];
+  v9 = [formattingManager supportsPaceForWorkout:workout2 workoutActivity:workoutActivity];
 
   return v9;
 }
@@ -1030,9 +1030,9 @@ LABEL_6:
 
     else
     {
-      v3 = [(CHWorkoutDetailDataSource *)self workout];
-      v4 = [v3 fiui_workoutCustomSplits];
-      v5 = [v4 count];
+      workout = [(CHWorkoutDetailDataSource *)self workout];
+      fiui_workoutCustomSplits = [workout fiui_workoutCustomSplits];
+      v5 = [fiui_workoutCustomSplits count];
 
       if (v5)
       {
@@ -1052,19 +1052,19 @@ LABEL_6:
 - (void)_createNormalSplits
 {
   objc_initWeak(&location, self);
-  v3 = [(HKWorkout *)self->_workout fiui_activityType];
-  v4 = [(CHWorkoutDetailDataSource *)self dataCalculator];
-  v5 = [(CHWorkoutDetailDataSource *)self workout];
-  v6 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+  fiui_activityType = [(HKWorkout *)self->_workout fiui_activityType];
+  dataCalculator = [(CHWorkoutDetailDataSource *)self dataCalculator];
+  workout = [(CHWorkoutDetailDataSource *)self workout];
+  workoutActivity = [(CHWorkoutDetailDataSource *)self workoutActivity];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000F4674;
   v8[3] = &unk_10083C0C8;
   objc_copyWeak(v10, &location);
-  v7 = v3;
+  v7 = fiui_activityType;
   v9 = v7;
   v10[1] = 9;
-  [v4 splitsForWorkout:v5 workoutActivity:v6 completion:v8];
+  [dataCalculator splitsForWorkout:workout workoutActivity:workoutActivity completion:v8];
 
   objc_destroyWeak(v10);
   objc_destroyWeak(&location);
@@ -1073,19 +1073,19 @@ LABEL_6:
 - (void)_createCustomSplits
 {
   objc_initWeak(&location, self);
-  v3 = [(HKWorkout *)self->_workout fiui_activityType];
-  v4 = [(CHWorkoutDetailDataSource *)self dataCalculator];
-  v5 = [(CHWorkoutDetailDataSource *)self workout];
-  v6 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+  fiui_activityType = [(HKWorkout *)self->_workout fiui_activityType];
+  dataCalculator = [(CHWorkoutDetailDataSource *)self dataCalculator];
+  workout = [(CHWorkoutDetailDataSource *)self workout];
+  workoutActivity = [(CHWorkoutDetailDataSource *)self workoutActivity];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000F4B5C;
   v8[3] = &unk_10083C0C8;
   objc_copyWeak(v10, &location);
-  v7 = v3;
+  v7 = fiui_activityType;
   v9 = v7;
   v10[1] = 9;
-  [v4 customSplitsForWorkout:v5 workoutActivity:v6 completion:v8];
+  [dataCalculator customSplitsForWorkout:workout workoutActivity:workoutActivity completion:v8];
 
   objc_destroyWeak(v10);
   objc_destroyWeak(&location);
@@ -1094,16 +1094,16 @@ LABEL_6:
 - (void)_createSwimSplits
 {
   objc_initWeak(&location, self);
-  v3 = [(CHWorkoutDetailDataSource *)self dataCalculator];
-  v4 = [(CHWorkoutDetailDataSource *)self workout];
-  v5 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+  dataCalculator = [(CHWorkoutDetailDataSource *)self dataCalculator];
+  workout = [(CHWorkoutDetailDataSource *)self workout];
+  workoutActivity = [(CHWorkoutDetailDataSource *)self workoutActivity];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F5014;
   v6[3] = &unk_10083C118;
   objc_copyWeak(v7, &location);
   v7[1] = 9;
-  [v3 swimmingSplitsForWorkout:v4 workoutActivity:v5 completion:v6];
+  [dataCalculator swimmingSplitsForWorkout:workout workoutActivity:workoutActivity completion:v6];
 
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);
@@ -1116,15 +1116,15 @@ LABEL_6:
     if ([(CHWorkoutDetailDataSource *)self workoutIsFirstParty])
     {
       objc_initWeak(&location, self);
-      v3 = [(CHWorkoutDetailDataSource *)self dataCalculator];
-      v4 = [(CHWorkoutDetailDataSource *)self workout];
+      dataCalculator = [(CHWorkoutDetailDataSource *)self dataCalculator];
+      workout = [(CHWorkoutDetailDataSource *)self workout];
       v5[0] = _NSConcreteStackBlock;
       v5[1] = 3221225472;
       v5[2] = sub_1000F55B8;
       v5[3] = &unk_10083C078;
       objc_copyWeak(v6, &location);
       v6[1] = 11;
-      [v3 segmentsForWorkout:v4 completion:v5];
+      [dataCalculator segmentsForWorkout:workout completion:v5];
 
       objc_destroyWeak(v6);
       objc_destroyWeak(&location);
@@ -1134,22 +1134,22 @@ LABEL_6:
 
 - (void)_createDownhillRunsSection
 {
-  v3 = [(CHWorkoutDetailDataSource *)self workout];
-  v4 = [v3 fiui_activityType];
-  v5 = [v4 bridge_isDownhillSnowSport];
+  workout = [(CHWorkoutDetailDataSource *)self workout];
+  fiui_activityType = [workout fiui_activityType];
+  bridge_isDownhillSnowSport = [fiui_activityType bridge_isDownhillSnowSport];
 
-  if (v5)
+  if (bridge_isDownhillSnowSport)
   {
     objc_initWeak(&location, self);
-    v6 = [(CHWorkoutDetailDataSource *)self dataCalculator];
-    v7 = [(CHWorkoutDetailDataSource *)self workout];
+    dataCalculator = [(CHWorkoutDetailDataSource *)self dataCalculator];
+    workout2 = [(CHWorkoutDetailDataSource *)self workout];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_1000F5990;
     v8[3] = &unk_10083C078;
     objc_copyWeak(v9, &location);
     v9[1] = 10;
-    [v6 downhillRunsForWorkout:v7 completion:v8];
+    [dataCalculator downhillRunsForWorkout:workout2 completion:v8];
 
     objc_destroyWeak(v9);
     objc_destroyWeak(&location);
@@ -1158,21 +1158,21 @@ LABEL_6:
 
 - (void)_createIntervalsSection
 {
-  v3 = [(CHWorkoutDetailDataSource *)self workout];
-  v4 = [v3 isIntervalWorkout];
+  workout = [(CHWorkoutDetailDataSource *)self workout];
+  isIntervalWorkout = [workout isIntervalWorkout];
 
-  if (v4)
+  if (isIntervalWorkout)
   {
     objc_initWeak(&location, self);
-    v5 = [(CHWorkoutDetailDataSource *)self dataCalculator];
-    v6 = [(CHWorkoutDetailDataSource *)self workout];
+    dataCalculator = [(CHWorkoutDetailDataSource *)self dataCalculator];
+    workout2 = [(CHWorkoutDetailDataSource *)self workout];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1000F5E30;
     v7[3] = &unk_10083C078;
     objc_copyWeak(v8, &location);
     v8[1] = 6;
-    [v5 intervalsForWorkout:v6 completion:v7];
+    [dataCalculator intervalsForWorkout:workout2 completion:v7];
 
     objc_destroyWeak(v8);
     objc_destroyWeak(&location);
@@ -1183,8 +1183,8 @@ LABEL_6:
 {
   if ([(CHWorkoutDetailDataSource *)self workoutIsPoolSwim]&& [(CHWorkoutDetailDataSource *)self workoutIsFirstParty])
   {
-    v3 = [(CHWorkoutDetailDataSource *)self workout];
-    if ([v3 isIntervalWorkout])
+    workout = [(CHWorkoutDetailDataSource *)self workout];
+    if ([workout isIntervalWorkout])
     {
       v4 = sub_10013AA98();
 
@@ -1199,16 +1199,16 @@ LABEL_6:
     }
 
     objc_initWeak(&location, self);
-    v5 = [(CHWorkoutDetailDataSource *)self dataCalculator];
-    v6 = [(CHWorkoutDetailDataSource *)self workout];
-    v7 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+    dataCalculator = [(CHWorkoutDetailDataSource *)self dataCalculator];
+    workout2 = [(CHWorkoutDetailDataSource *)self workout];
+    workoutActivity = [(CHWorkoutDetailDataSource *)self workoutActivity];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_1000F6238;
     v8[3] = &unk_10083C078;
     objc_copyWeak(v9, &location);
     v9[1] = 8;
-    [v5 swimmingSetsForWorkout:v6 workoutActivity:v7 completion:v8];
+    [dataCalculator swimmingSetsForWorkout:workout2 workoutActivity:workoutActivity completion:v8];
 
     objc_destroyWeak(v9);
     objc_destroyWeak(&location);
@@ -1220,36 +1220,36 @@ LABEL_6:
   if ([(CHCatalogItemViewModel *)self->_catalogItemViewModel isSeymourPairedWorkout])
   {
     v3 = objc_alloc_init(_CHWorkoutDetailBurnBarTableItem);
-    v4 = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
-    -[_CHWorkoutDetailTableItem setCellClass:](v3, "setCellClass:", [v4 objectAtIndexedSubscript:12]);
+    cellClassesBySection = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
+    -[_CHWorkoutDetailTableItem setCellClass:](v3, "setCellClass:", [cellClassesBySection objectAtIndexedSubscript:12]);
 
     v7 = v3;
     v5 = [NSArray arrayWithObjects:&v7 count:1];
-    v6 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-    [v6 setObject:v5 atIndexedSubscript:12];
+    tableItemsBySection = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+    [tableItemsBySection setObject:v5 atIndexedSubscript:12];
 
     [(CHWorkoutDetailDataSource *)self _insertBurnBarSection];
   }
 }
 
-- (void)_createHeartRateSectionWithHeartRateReadings:(id)a3 averageHeartRate:(id)a4 recoveryHeartRateReadings:(id)a5
+- (void)_createHeartRateSectionWithHeartRateReadings:(id)readings averageHeartRate:(id)rate recoveryHeartRateReadings:(id)rateReadings
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  readingsCopy = readings;
+  rateCopy = rate;
+  rateReadingsCopy = rateReadings;
+  if ([readingsCopy count])
   {
     v11 = objc_alloc_init(_CHWorkoutDetailHeartRateTableItem);
-    v12 = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
-    -[_CHWorkoutDetailTableItem setCellClass:](v11, "setCellClass:", [v12 objectAtIndexedSubscript:13]);
+    cellClassesBySection = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
+    -[_CHWorkoutDetailTableItem setCellClass:](v11, "setCellClass:", [cellClassesBySection objectAtIndexedSubscript:13]);
 
-    [(_CHWorkoutDetailHeartRateTableItem *)v11 setHeartRateReadings:v8];
-    [(_CHWorkoutDetailHeartRateTableItem *)v11 setAverageHeartRate:v9];
-    [(_CHWorkoutDetailHeartRateTableItem *)v11 setRecoveryHeartRateReadings:v10];
+    [(_CHWorkoutDetailHeartRateTableItem *)v11 setHeartRateReadings:readingsCopy];
+    [(_CHWorkoutDetailHeartRateTableItem *)v11 setAverageHeartRate:rateCopy];
+    [(_CHWorkoutDetailHeartRateTableItem *)v11 setRecoveryHeartRateReadings:rateReadingsCopy];
     v15 = v11;
     v13 = [NSArray arrayWithObjects:&v15 count:1];
-    v14 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-    [v14 setObject:v13 atIndexedSubscript:13];
+    tableItemsBySection = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+    [tableItemsBySection setObject:v13 atIndexedSubscript:13];
 
     [(CHWorkoutDetailDataSource *)self _insertHeartRateSection];
   }
@@ -1259,9 +1259,9 @@ LABEL_6:
 {
   [(CHWorkoutDetailDataSource *)self _stopRouteQueryIfNecessary];
   v3 = [HKLocationFetcher alloc];
-  v4 = [(CHWorkoutDetailDataSource *)self model];
-  v5 = [v4 healthStore];
-  v6 = [v3 initWithHealthStore:v5];
+  model = [(CHWorkoutDetailDataSource *)self model];
+  healthStore = [model healthStore];
+  v6 = [v3 initWithHealthStore:healthStore];
   [(CHWorkoutDetailDataSource *)self setLocationFetcher:v6];
 
   objc_initWeak(&location, self);
@@ -1273,10 +1273,10 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[routes] Setting up route query", buf, 2u);
   }
 
-  v8 = [(CHWorkoutDetailDataSource *)self formattingManager];
-  v9 = [(CHWorkoutDetailDataSource *)self workout];
-  v10 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-  v11 = [v8 locationForWorkout:v9 workoutActivity:v10];
+  formattingManager = [(CHWorkoutDetailDataSource *)self formattingManager];
+  workout = [(CHWorkoutDetailDataSource *)self workout];
+  workoutActivity = [(CHWorkoutDetailDataSource *)self workoutActivity];
+  v11 = [formattingManager locationForWorkout:workout workoutActivity:workoutActivity];
 
   if (v11)
   {
@@ -1288,8 +1288,8 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[routes] Using location from metadata as route placeholder", buf, 2u);
     }
 
-    v13 = [(CHWorkoutDetailDataSource *)self locationFetcher];
-    v14 = [v13 shifter];
+    locationFetcher = [(CHWorkoutDetailDataSource *)self locationFetcher];
+    shifter = [locationFetcher shifter];
     v33 = v11;
     v15 = [NSArray arrayWithObjects:&v33 count:1];
     v29[0] = _NSConcreteStackBlock;
@@ -1297,7 +1297,7 @@ LABEL_6:
     v29[2] = sub_1000F6B30;
     v29[3] = &unk_10083AB78;
     objc_copyWeak(&v30, &location);
-    [v14 shiftLocations:v15 withCompletion:v29];
+    [shifter shiftLocations:v15 withCompletion:v29];
 
     objc_destroyWeak(&v30);
   }
@@ -1345,8 +1345,8 @@ LABEL_6:
 {
   objc_initWeak(&location, self);
   v3 = +[HKObjectType workoutType];
-  v4 = [(HKWorkout *)self->_workout fiui_finalWorkoutUUID];
-  v5 = [HKQuery predicateForObjectWithUUID:v4];
+  fiui_finalWorkoutUUID = [(HKWorkout *)self->_workout fiui_finalWorkoutUUID];
+  v5 = [HKQuery predicateForObjectWithUUID:fiui_finalWorkoutUUID];
 
   v6 = [HKAnchoredObjectQuery alloc];
   v10[0] = _NSConcreteStackBlock;
@@ -1391,22 +1391,22 @@ LABEL_6:
 
   if (v4)
   {
-    v5 = [(CHWorkoutDetailDataSource *)self locationFetcher];
-    v6 = [(CHWorkoutDetailDataSource *)self workout];
-    v7 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-    [v5 fetchLocationsFromWorkout:v6 workoutActivity:v7 samplesHandler:v3];
+    locationFetcher = [(CHWorkoutDetailDataSource *)self locationFetcher];
+    workout = [(CHWorkoutDetailDataSource *)self workout];
+    workoutActivity = [(CHWorkoutDetailDataSource *)self workoutActivity];
+    [locationFetcher fetchLocationsFromWorkout:workout workoutActivity:workoutActivity samplesHandler:v3];
   }
 
   else
   {
-    v8 = [(CHWorkoutDetailDataSource *)self workout];
-    v9 = [v8 metadata];
-    v5 = [v9 objectForKey:_HKPrivateMetadataKeyWorkoutExtendedMode];
+    workout2 = [(CHWorkoutDetailDataSource *)self workout];
+    metadata = [workout2 metadata];
+    locationFetcher = [metadata objectForKey:_HKPrivateMetadataKeyWorkoutExtendedMode];
 
-    LODWORD(v9) = [v5 BOOLValue];
-    v6 = [(CHWorkoutDetailDataSource *)self locationFetcher];
-    v7 = [(CHWorkoutDetailDataSource *)self workout];
-    [v6 fetchLocationsFromWorkout:v7 applyThreshold:v9 ^ 1 withSamplesHandler:v3];
+    LODWORD(metadata) = [locationFetcher BOOLValue];
+    workout = [(CHWorkoutDetailDataSource *)self locationFetcher];
+    workoutActivity = [(CHWorkoutDetailDataSource *)self workout];
+    [workout fetchLocationsFromWorkout:workoutActivity applyThreshold:metadata ^ 1 withSamplesHandler:v3];
   }
 
   objc_destroyWeak(&v14);
@@ -1418,9 +1418,9 @@ LABEL_6:
   if (AAUIShouldUseNewTrophyCase())
   {
     awardsDataProvider = self->_awardsDataProvider;
-    v4 = [(HKWorkout *)self->_workout UUID];
-    v5 = [v4 UUIDString];
-    v6 = [(CHAwardsDataProvider *)awardsDataProvider achievementsForWorkoutIdentifier:v5];
+    uUID = [(HKWorkout *)self->_workout UUID];
+    uUIDString = [uUID UUIDString];
+    v6 = [(CHAwardsDataProvider *)awardsDataProvider achievementsForWorkoutIdentifier:uUIDString];
   }
 
   else
@@ -1452,8 +1452,8 @@ LABEL_6:
         v13 = *(*(&v17 + 1) + 8 * v12);
         v14 = objc_alloc_init(_CHWorkoutDetailAwardItem);
         [(_CHWorkoutDetailAwardItem *)v14 setAchievement:v13, v17];
-        v15 = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
-        -[_CHWorkoutDetailTableItem setCellClass:](v14, "setCellClass:", [v15 objectAtIndexedSubscript:17]);
+        cellClassesBySection = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
+        -[_CHWorkoutDetailTableItem setCellClass:](v14, "setCellClass:", [cellClassesBySection objectAtIndexedSubscript:17]);
 
         [v7 addObject:v14];
         v12 = v12 + 1;
@@ -1466,8 +1466,8 @@ LABEL_6:
     while (v10);
   }
 
-  v16 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-  [v16 setObject:v7 atIndexedSubscript:17];
+  tableItemsBySection = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+  [tableItemsBySection setObject:v7 atIndexedSubscript:17];
 }
 
 - (void)_createGuidedRunMediaMomentsSection
@@ -1475,13 +1475,13 @@ LABEL_6:
   if ([(CHCatalogItemViewModel *)self->_catalogItemViewModel isSeymourGuidedRunWorkout])
   {
     v3 = objc_alloc_init(_CHWorkoutDetailGuidedRunMediaMomentsTableItem);
-    v4 = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
-    -[_CHWorkoutDetailTableItem setCellClass:](v3, "setCellClass:", [v4 objectAtIndexedSubscript:16]);
+    cellClassesBySection = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
+    -[_CHWorkoutDetailTableItem setCellClass:](v3, "setCellClass:", [cellClassesBySection objectAtIndexedSubscript:16]);
 
     v7 = v3;
     v5 = [NSArray arrayWithObjects:&v7 count:1];
-    v6 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-    [v6 setObject:v5 atIndexedSubscript:16];
+    tableItemsBySection = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+    [tableItemsBySection setObject:v5 atIndexedSubscript:16];
 
     [(CHWorkoutDetailDataSource *)self _insertGuidedRunMediaMomentsSection];
   }
@@ -1494,32 +1494,32 @@ LABEL_6:
     return 0;
   }
 
-  v4 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-  v5 = [v4 objectAtIndexedSubscript:15];
-  v6 = [v5 firstObject];
+  tableItemsBySection = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+  v5 = [tableItemsBySection objectAtIndexedSubscript:15];
+  firstObject = [v5 firstObject];
 
-  v2 = v6 == 0;
-  if (!v6)
+  v2 = firstObject == 0;
+  if (!firstObject)
   {
-    v6 = objc_alloc_init(_CHWorkoutDetailRouteAndWeatherItem);
-    v7 = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
-    -[_CHWorkoutDetailTableItem setCellClass:](v6, "setCellClass:", [v7 objectAtIndexedSubscript:15]);
+    firstObject = objc_alloc_init(_CHWorkoutDetailRouteAndWeatherItem);
+    cellClassesBySection = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
+    -[_CHWorkoutDetailTableItem setCellClass:](firstObject, "setCellClass:", [cellClassesBySection objectAtIndexedSubscript:15]);
 
-    v11 = v6;
+    v11 = firstObject;
     v8 = [NSArray arrayWithObjects:&v11 count:1];
-    v9 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-    [v9 setObject:v8 atIndexedSubscript:15];
+    tableItemsBySection2 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+    [tableItemsBySection2 setObject:v8 atIndexedSubscript:15];
   }
 
   return v2;
 }
 
-- (void)_handleLocations:(id)a3
+- (void)_handleLocations:(id)locations
 {
-  v4 = a3;
-  if ([v4 count])
+  locationsCopy = locations;
+  if ([locationsCopy count])
   {
-    if ([v4 count] == 1 && (-[CHWorkoutDetailDataSource locationReadings](self, "locationReadings"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v6 >= 1))
+    if ([locationsCopy count] == 1 && (-[CHWorkoutDetailDataSource locationReadings](self, "locationReadings"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v6 >= 1))
     {
       _HKInitializeLogging();
       v7 = HKLogWorkouts;
@@ -1540,37 +1540,37 @@ LABEL_20:
       {
         v10 = v9;
         v29 = 134217984;
-        v30 = [v4 count];
+        v30 = [locationsCopy count];
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[routes] Storing %li locations", &v29, 0xCu);
       }
 
-      [(CHWorkoutDetailDataSource *)self setLocationReadings:v4];
-      v11 = [(CHWorkoutDetailDataSource *)self delegate];
-      v12 = [v11 presentedViewController];
+      [(CHWorkoutDetailDataSource *)self setLocationReadings:locationsCopy];
+      delegate = [(CHWorkoutDetailDataSource *)self delegate];
+      presentedViewController = [delegate presentedViewController];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = [v12 topViewController];
+        topViewController = [presentedViewController topViewController];
         if ([objc_opt_class() conformsToProtocol:&OBJC_PROTOCOL____TtP10FitnessApp40LocationReadingsUpdateableViewController_])
         {
-          [v13 updateLocationReadings:v4];
+          [topViewController updateLocationReadings:locationsCopy];
         }
       }
 
       [(CHWorkoutDetailDataSource *)self updateSharingImage];
-      v14 = [v4 firstObject];
-      v15 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-      v16 = [v15 objectAtIndexedSubscript:0];
-      v17 = [v16 firstObject];
+      firstObject = [locationsCopy firstObject];
+      tableItemsBySection = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+      v16 = [tableItemsBySection objectAtIndexedSubscript:0];
+      firstObject2 = [v16 firstObject];
 
-      [v17 setFirstCoordinate:v14];
-      v18 = [v17 firstCoordinateUpdatedBlock];
+      [firstObject2 setFirstCoordinate:firstObject];
+      firstCoordinateUpdatedBlock = [firstObject2 firstCoordinateUpdatedBlock];
 
-      if (v18)
+      if (firstCoordinateUpdatedBlock)
       {
-        v19 = [v17 firstCoordinateUpdatedBlock];
-        (v19)[2](v19, v14);
+        firstCoordinateUpdatedBlock2 = [firstObject2 firstCoordinateUpdatedBlock];
+        (firstCoordinateUpdatedBlock2)[2](firstCoordinateUpdatedBlock2, firstObject);
       }
 
       if ([(CHWorkoutDetailDataSource *)self _createRouteAndWeatherCellIfNeeded])
@@ -1583,22 +1583,22 @@ LABEL_20:
         v20 = 0;
       }
 
-      v21 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-      v22 = [v21 objectAtIndexedSubscript:15];
-      v23 = [v22 firstObject];
+      tableItemsBySection2 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+      v22 = [tableItemsBySection2 objectAtIndexedSubscript:15];
+      firstObject3 = [v22 firstObject];
 
-      v24 = [(CHWorkoutDetailDataSource *)self locationReadings];
-      [v23 setLocationReadings:v24];
+      locationReadings = [(CHWorkoutDetailDataSource *)self locationReadings];
+      [firstObject3 setLocationReadings:locationReadings];
 
-      v25 = [(CHWorkoutDetailDataSource *)self tableView];
-      [v25 beginUpdates];
+      tableView = [(CHWorkoutDetailDataSource *)self tableView];
+      [tableView beginUpdates];
 
-      v26 = [(CHWorkoutDetailDataSource *)self tableView];
+      tableView2 = [(CHWorkoutDetailDataSource *)self tableView];
       v27 = [NSIndexSet indexSetWithIndex:15];
-      [v26 reloadSections:v27 withRowAnimation:v20];
+      [tableView2 reloadSections:v27 withRowAnimation:v20];
 
-      v28 = [(CHWorkoutDetailDataSource *)self tableView];
-      [v28 endUpdates];
+      tableView3 = [(CHWorkoutDetailDataSource *)self tableView];
+      [tableView3 endUpdates];
     }
   }
 
@@ -1617,8 +1617,8 @@ LABEL_20:
 
 - (void)updateSharingImage
 {
-  v3 = [(CHWorkoutDetailDataSource *)self workout];
-  if ([v3 workoutActivityType] == 84)
+  workout = [(CHWorkoutDetailDataSource *)self workout];
+  if ([workout workoutActivityType] == 84)
   {
     v4 = 1;
   }
@@ -1628,15 +1628,15 @@ LABEL_20:
     v4 = 2;
   }
 
-  v5 = [(CHWorkoutDetailDataSource *)self locationReadings];
-  v6 = [v5 count];
+  locationReadings = [(CHWorkoutDetailDataSource *)self locationReadings];
+  v6 = [locationReadings count];
 
   if (v6 >= v4)
   {
     objc_initWeak(&location, self);
     snapshotGenerator = self->_snapshotGenerator;
-    v8 = [(CHWorkoutDetailDataSource *)self locationReadings];
-    [(CHWorkoutRouteMapGenerator *)snapshotGenerator setLocationReadings:v8];
+    locationReadings2 = [(CHWorkoutDetailDataSource *)self locationReadings];
+    [(CHWorkoutRouteMapGenerator *)snapshotGenerator setLocationReadings:locationReadings2];
 
     v9 = [UITraitCollection traitCollectionWithTraits:&stru_10083C270];
     v10 = self->_snapshotGenerator;
@@ -1656,23 +1656,23 @@ LABEL_20:
 {
   v236 = objc_alloc_init(NSMutableArray);
   objc_initWeak(location, self);
-  v3 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-  v4 = [v3 fiui_activityType];
-  v5 = v4;
-  if (v4)
+  workoutActivity = [(CHWorkoutDetailDataSource *)self workoutActivity];
+  fiui_activityType = [workoutActivity fiui_activityType];
+  v5 = fiui_activityType;
+  if (fiui_activityType)
   {
-    v231 = v4;
+    fiui_activityType2 = fiui_activityType;
   }
 
   else
   {
-    v6 = [(CHWorkoutDetailDataSource *)self workout];
-    v231 = [v6 fiui_activityType];
+    workout = [(CHWorkoutDetailDataSource *)self workout];
+    fiui_activityType2 = [workout fiui_activityType];
   }
 
-  v7 = [(CHWorkoutDetailDataSource *)self formattingManager];
-  v8 = [(CHWorkoutDetailDataSource *)self workout];
-  v9 = [v7 workoutHasGoalCompletionEvent:v8];
+  formattingManager = [(CHWorkoutDetailDataSource *)self formattingManager];
+  workout2 = [(CHWorkoutDetailDataSource *)self workout];
+  v9 = [formattingManager workoutHasGoalCompletionEvent:workout2];
 
   if (v9)
   {
@@ -1681,9 +1681,9 @@ LABEL_20:
     v12 = [v11 localizedStringForKey:@"WORKOUT_PACER_RESULT_TITLE" value:&stru_1008680E8 table:@"Localizable"];
     [(_CHWorkoutDetailTableSubItem *)v10 setTitleString:v12];
 
-    v13 = [(CHWorkoutDetailDataSource *)self formattingManager];
-    v14 = [(CHWorkoutDetailDataSource *)self workout];
-    v15 = [v13 formattedGoalCompletedDurationForWorkout:v14 context:@"WorkoutsListDisplayContext"];
+    formattingManager2 = [(CHWorkoutDetailDataSource *)self formattingManager];
+    workout3 = [(CHWorkoutDetailDataSource *)self workout];
+    v15 = [formattingManager2 formattedGoalCompletedDurationForWorkout:workout3 context:@"WorkoutsListDisplayContext"];
     [(_CHWorkoutDetailTableSubItem *)v10 setValueAttrString:v15];
 
     [v236 addObject:v10];
@@ -1693,10 +1693,10 @@ LABEL_20:
 
   else
   {
-    v17 = [(CHWorkoutDetailDataSource *)self workout];
-    v18 = [v17 shouldShowRaceResults];
+    workout4 = [(CHWorkoutDetailDataSource *)self workout];
+    shouldShowRaceResults = [workout4 shouldShowRaceResults];
 
-    if (!v18)
+    if (!shouldShowRaceResults)
     {
       goto LABEL_9;
     }
@@ -1706,10 +1706,10 @@ LABEL_20:
     v20 = [v19 localizedStringForKey:@"WORKOUT_RACE_TIME" value:&stru_1008680E8 table:@"Localizable"];
     [(_CHWorkoutDetailTableSubItem *)v10 setTitleString:v20];
 
-    v21 = [(CHWorkoutDetailDataSource *)self formattingManager];
-    v22 = [(CHWorkoutDetailDataSource *)self workout];
-    v23 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-    v24 = [v21 formattedRaceTimeForWorkout:v22 workoutActivity:v23 context:@"WorkoutDetailDisplayContext"];
+    formattingManager3 = [(CHWorkoutDetailDataSource *)self formattingManager];
+    workout5 = [(CHWorkoutDetailDataSource *)self workout];
+    workoutActivity2 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+    v24 = [formattingManager3 formattedRaceTimeForWorkout:workout5 workoutActivity:workoutActivity2 context:@"WorkoutDetailDisplayContext"];
     [(_CHWorkoutDetailTableSubItem *)v10 setValueAttrString:v24];
 
     [v236 addObject:v10];
@@ -1718,14 +1718,14 @@ LABEL_20:
     v26 = [v25 localizedStringForKey:@"WORKOUT_RACE_PACE" value:&stru_1008680E8 table:@"Localizable"];
     [(_CHWorkoutDetailTableSubItem *)v16 setTitleString:v26];
 
-    v27 = [(CHWorkoutDetailDataSource *)self workout];
-    v28 = [v27 metadata];
+    workout6 = [(CHWorkoutDetailDataSource *)self workout];
+    metadata = [workout6 metadata];
     v29 = +[HKWorkout kRaceWorkoutAveragePaceOnRouteMetadataKey];
-    v30 = [v28 valueForKey:v29];
+    v30 = [metadata valueForKey:v29];
 
-    v31 = [(CHWorkoutDetailDataSource *)self formattingManager];
-    v32 = [(CHWorkoutDetailDataSource *)self workout];
-    v33 = [v31 formattedRacePaceOrSpeedForWorkout:v32 metersPerSecond:v30 context:@"WorkoutsListDisplayContext"];
+    formattingManager4 = [(CHWorkoutDetailDataSource *)self formattingManager];
+    workout7 = [(CHWorkoutDetailDataSource *)self workout];
+    v33 = [formattingManager4 formattedRacePaceOrSpeedForWorkout:workout7 metersPerSecond:v30 context:@"WorkoutsListDisplayContext"];
     [(_CHWorkoutDetailTableSubItem *)v16 setValueAttrString:v33];
 
     [v236 addObject:v16];
@@ -1737,10 +1737,10 @@ LABEL_9:
   v35 = [v34 localizedStringForKey:@"WORKOUT_TIME_TITLE" value:&stru_1008680E8 table:@"Localizable"];
   [(_CHWorkoutDetailTableSubItem *)v235 setTitleString:v35];
 
-  v36 = [(CHWorkoutDetailDataSource *)self formattingManager];
-  v37 = [(CHWorkoutDetailDataSource *)self workout];
-  v38 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-  v39 = [v36 formattedDurationForWorkout:v37 workoutActivity:v38 context:@"WorkoutDetailDisplayContext"];
+  formattingManager5 = [(CHWorkoutDetailDataSource *)self formattingManager];
+  workout8 = [(CHWorkoutDetailDataSource *)self workout];
+  workoutActivity3 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+  v39 = [formattingManager5 formattedDurationForWorkout:workout8 workoutActivity:workoutActivity3 context:@"WorkoutDetailDisplayContext"];
   [(_CHWorkoutDetailTableSubItem *)v235 setValueAttrString:v39];
 
   [v236 addObject:v235];
@@ -1749,30 +1749,30 @@ LABEL_9:
   v41 = [v40 localizedStringForKey:@"WORKOUT_ELAPSED_TIME_TITLE" value:&stru_1008680E8 table:@"Localizable"];
   [(_CHWorkoutDetailTableSubItem *)v234 setTitleString:v41];
 
-  v42 = [(CHWorkoutDetailDataSource *)self formattingManager];
-  v43 = [(CHWorkoutDetailDataSource *)self workout];
-  v44 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-  v45 = [v42 formattedElapsedTimeForWorkout:v43 workoutActivity:v44 context:@"WorkoutDetailDisplayContext"];
+  formattingManager6 = [(CHWorkoutDetailDataSource *)self formattingManager];
+  workout9 = [(CHWorkoutDetailDataSource *)self workout];
+  workoutActivity4 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+  v45 = [formattingManager6 formattedElapsedTimeForWorkout:workout9 workoutActivity:workoutActivity4 context:@"WorkoutDetailDisplayContext"];
   [(_CHWorkoutDetailTableSubItem *)v234 setValueAttrString:v45];
 
-  v46 = [(_CHWorkoutDetailTableSubItem *)v235 valueAttrString];
-  v47 = [(_CHWorkoutDetailTableSubItem *)v234 valueAttrString];
-  LOBYTE(v43) = [v46 isEqualToAttributedString:v47];
+  valueAttrString = [(_CHWorkoutDetailTableSubItem *)v235 valueAttrString];
+  valueAttrString2 = [(_CHWorkoutDetailTableSubItem *)v234 valueAttrString];
+  LOBYTE(workout9) = [valueAttrString isEqualToAttributedString:valueAttrString2];
 
-  if ((v43 & 1) == 0)
+  if ((workout9 & 1) == 0)
   {
     [v236 addObject:v234];
   }
 
   v233 = objc_alloc_init(_CHWorkoutDetailTableSubItem);
-  v48 = [(CHWorkoutDetailDataSource *)self formattingManager];
-  v49 = [(CHWorkoutDetailDataSource *)self workout];
-  v50 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-  v51 = [v48 shouldShowDistanceForWorkout:v49 workoutActivity:v50];
+  formattingManager7 = [(CHWorkoutDetailDataSource *)self formattingManager];
+  workout10 = [(CHWorkoutDetailDataSource *)self workout];
+  workoutActivity5 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+  v51 = [formattingManager7 shouldShowDistanceForWorkout:workout10 workoutActivity:workoutActivity5];
 
   if (v51)
   {
-    if ([v231 bridge_isDownhillSnowSport])
+    if ([fiui_activityType2 bridge_isDownhillSnowSport])
     {
       v52 = +[NSBundle mainBundle];
       [v52 localizedStringForKey:@"WORKOUT_RUN_DISTANCE_TITLE" value:&stru_1008680E8 table:@"Localizable"];
@@ -1784,16 +1784,16 @@ LABEL_9:
       [v52 localizedStringForKey:@"WORKOUT_DISTANCE_TITLE" value:&stru_1008680E8 table:@"Localizable"];
     }
     v53 = ;
-    [(_CHWorkoutDetailTableSubItem *)v233 setTitleString:v53, v231];
+    [(_CHWorkoutDetailTableSubItem *)v233 setTitleString:v53, fiui_activityType2];
 
     WeakRetained = objc_loadWeakRetained(location);
-    v55 = [WeakRetained formattingManager];
-    v56 = [(CHWorkoutDetailDataSource *)self workout];
-    v57 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-    v58 = [v55 formattedDistanceForWorkout:v56 workoutActivity:v57 context:@"WorkoutDetailDisplayContext"];
+    formattingManager8 = [WeakRetained formattingManager];
+    workout11 = [(CHWorkoutDetailDataSource *)self workout];
+    workoutActivity6 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+    v58 = [formattingManager8 formattedDistanceForWorkout:workout11 workoutActivity:workoutActivity6 context:@"WorkoutDetailDisplayContext"];
     [(_CHWorkoutDetailTableSubItem *)v233 setValueAttrString:v58];
 
-    if (([v231 bridge_isDownhillSnowSport] & 1) == 0)
+    if (([fiui_activityType2 bridge_isDownhillSnowSport] & 1) == 0)
     {
       [v236 addObject:v233];
     }
@@ -1803,31 +1803,31 @@ LABEL_9:
   {
     v59 = objc_alloc_init(_CHWorkoutDetailTableSubItem);
     v60 = +[NSBundle mainBundle];
-    v61 = [(CHWorkoutDetailDataSource *)self formattingManager];
-    v62 = [v61 fitnessUIFormattingManager];
-    v63 = [v62 localizationKeyForEnergyBaseKey:@"WORKOUT_ACTIVE_ENERGY_TITLE"];
+    formattingManager9 = [(CHWorkoutDetailDataSource *)self formattingManager];
+    fitnessUIFormattingManager = [formattingManager9 fitnessUIFormattingManager];
+    v63 = [fitnessUIFormattingManager localizationKeyForEnergyBaseKey:@"WORKOUT_ACTIVE_ENERGY_TITLE"];
     v64 = [v60 localizedStringForKey:v63 value:&stru_1008680E8 table:@"Localizable"];
     [(_CHWorkoutDetailTableSubItem *)v59 setTitleString:v64];
 
-    v65 = [(CHWorkoutDetailDataSource *)self formattingManager];
-    v66 = [(CHWorkoutDetailDataSource *)self workout];
-    v67 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-    v68 = [v65 formattedActiveEnergyForWorkout:v66 workoutActivity:v67 context:@"WorkoutDetailDisplayContext"];
+    formattingManager10 = [(CHWorkoutDetailDataSource *)self formattingManager];
+    workout12 = [(CHWorkoutDetailDataSource *)self workout];
+    workoutActivity7 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+    v68 = [formattingManager10 formattedActiveEnergyForWorkout:workout12 workoutActivity:workoutActivity7 context:@"WorkoutDetailDisplayContext"];
     [(_CHWorkoutDetailTableSubItem *)v59 setValueAttrString:v68];
 
     [v236 addObject:v59];
     v69 = objc_alloc_init(_CHWorkoutDetailTableSubItem);
     v70 = +[NSBundle mainBundle];
-    v71 = [(CHWorkoutDetailDataSource *)self formattingManager];
-    v72 = [v71 fitnessUIFormattingManager];
-    v73 = [v72 localizationKeyForEnergyBaseKey:@"WORKOUT_TOTAL_ENERGY_TITLE"];
+    formattingManager11 = [(CHWorkoutDetailDataSource *)self formattingManager];
+    fitnessUIFormattingManager2 = [formattingManager11 fitnessUIFormattingManager];
+    v73 = [fitnessUIFormattingManager2 localizationKeyForEnergyBaseKey:@"WORKOUT_TOTAL_ENERGY_TITLE"];
     v74 = [v70 localizedStringForKey:v73 value:&stru_1008680E8 table:@"Localizable"];
     [(_CHWorkoutDetailTableSubItem *)v69 setTitleString:v74];
 
-    v75 = [(CHWorkoutDetailDataSource *)self formattingManager];
-    v76 = [(CHWorkoutDetailDataSource *)self workout];
-    v77 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-    v78 = [v75 formattedTotalEnergyForWorkout:v76 workoutActivity:v77 context:@"WorkoutDetailDisplayContext"];
+    formattingManager12 = [(CHWorkoutDetailDataSource *)self formattingManager];
+    workout13 = [(CHWorkoutDetailDataSource *)self workout];
+    workoutActivity8 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+    v78 = [formattingManager12 formattedTotalEnergyForWorkout:workout13 workoutActivity:workoutActivity8 context:@"WorkoutDetailDisplayContext"];
     [(_CHWorkoutDetailTableSubItem *)v69 setValueAttrString:v78];
 
     [v236 addObject:v69];
@@ -1840,17 +1840,17 @@ LABEL_9:
 
   else
   {
-    v80 = [(CHWorkoutDetailDataSource *)self formattingManager];
-    v81 = [(CHWorkoutDetailDataSource *)self workout];
-    v82 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-    v83 = [v80 supportsElevationAscendedForWorkout:v81 workoutActivity:v82];
+    formattingManager13 = [(CHWorkoutDetailDataSource *)self formattingManager];
+    workout14 = [(CHWorkoutDetailDataSource *)self workout];
+    workoutActivity9 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+    v83 = [formattingManager13 supportsElevationAscendedForWorkout:workout14 workoutActivity:workoutActivity9];
 
     if (v83)
     {
-      v84 = [(CHWorkoutDetailDataSource *)self formattingManager];
-      v85 = [(CHWorkoutDetailDataSource *)self workout];
-      v86 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-      v87 = [v84 hasElevationAscendedDataForWorkout:v85 workoutActivity:v86];
+      formattingManager14 = [(CHWorkoutDetailDataSource *)self formattingManager];
+      workout15 = [(CHWorkoutDetailDataSource *)self workout];
+      workoutActivity10 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+      v87 = [formattingManager14 hasElevationAscendedDataForWorkout:workout15 workoutActivity:workoutActivity10];
 
       if (v87)
       {
@@ -1859,25 +1859,25 @@ LABEL_9:
         v90 = [v89 localizedStringForKey:@"WORKOUT_ELEVATION_TITLE" value:&stru_1008680E8 table:@"Localizable"];
         [(_CHWorkoutDetailTableSubItem *)v88 setTitleString:v90];
 
-        v91 = [(CHWorkoutDetailDataSource *)self formattingManager];
-        v92 = [(CHWorkoutDetailDataSource *)self workout];
-        v93 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-        v94 = [v91 formattedElevationGainForWorkout:v92 workoutActivity:v93 context:@"WorkoutDetailDisplayContext"];
+        formattingManager15 = [(CHWorkoutDetailDataSource *)self formattingManager];
+        workout16 = [(CHWorkoutDetailDataSource *)self workout];
+        workoutActivity11 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+        v94 = [formattingManager15 formattedElevationGainForWorkout:workout16 workoutActivity:workoutActivity11 context:@"WorkoutDetailDisplayContext"];
         [(_CHWorkoutDetailTableSubItem *)v88 setValueAttrString:v94];
 
-        v95 = [(_CHWorkoutDetailTableSubItem *)v88 valueAttrString];
+        valueAttrString3 = [(_CHWorkoutDetailTableSubItem *)v88 valueAttrString];
 
-        if (v95)
+        if (valueAttrString3)
         {
           [v236 addObject:v88];
         }
       }
     }
 
-    v96 = [(CHWorkoutDetailDataSource *)self formattingManager];
-    v97 = [(CHWorkoutDetailDataSource *)self workout];
-    v98 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-    v99 = [v96 hasAveragePowerForWorkout:v97 workoutActivity:v98];
+    formattingManager16 = [(CHWorkoutDetailDataSource *)self formattingManager];
+    workout17 = [(CHWorkoutDetailDataSource *)self workout];
+    workoutActivity12 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+    v99 = [formattingManager16 hasAveragePowerForWorkout:workout17 workoutActivity:workoutActivity12];
 
     if (v99)
     {
@@ -1886,19 +1886,19 @@ LABEL_9:
       v102 = [v101 localizedStringForKey:@"WORKOUT_AVERAGE_POWER_TITLE" value:&stru_1008680E8 table:@"Localizable"];
       [(_CHWorkoutDetailTableSubItem *)v100 setTitleString:v102];
 
-      v103 = [(CHWorkoutDetailDataSource *)self formattingManager];
-      v104 = [(CHWorkoutDetailDataSource *)self workout];
-      v105 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-      v106 = [v103 formattedAveragePowerForWorkout:v104 workoutActivity:v105 context:@"WorkoutDetailDisplayContext"];
+      formattingManager17 = [(CHWorkoutDetailDataSource *)self formattingManager];
+      workout18 = [(CHWorkoutDetailDataSource *)self workout];
+      workoutActivity13 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+      v106 = [formattingManager17 formattedAveragePowerForWorkout:workout18 workoutActivity:workoutActivity13 context:@"WorkoutDetailDisplayContext"];
       [(_CHWorkoutDetailTableSubItem *)v100 setValueAttrString:v106];
 
       [v236 addObject:v100];
     }
 
-    v107 = [(CHWorkoutDetailDataSource *)self formattingManager];
-    v108 = [(CHWorkoutDetailDataSource *)self workout];
-    v109 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-    v110 = [v107 hasStepCountForWorkout:v108 workoutActivity:v109];
+    formattingManager18 = [(CHWorkoutDetailDataSource *)self formattingManager];
+    workout19 = [(CHWorkoutDetailDataSource *)self workout];
+    workoutActivity14 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+    v110 = [formattingManager18 hasStepCountForWorkout:workout19 workoutActivity:workoutActivity14];
 
     if (v110)
     {
@@ -1907,19 +1907,19 @@ LABEL_9:
       v113 = [v112 localizedStringForKey:@"WORKOUT_STEP_COUNT_TITLE" value:&stru_1008680E8 table:@"Localizable"];
       [(_CHWorkoutDetailTableSubItem *)v111 setTitleString:v113];
 
-      v114 = [(CHWorkoutDetailDataSource *)self formattingManager];
-      v115 = [(CHWorkoutDetailDataSource *)self workout];
-      v116 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-      v117 = [v114 formattedStepCountForWorkout:v115 workoutActivity:v116 context:@"WorkoutDetailDisplayContext"];
+      formattingManager19 = [(CHWorkoutDetailDataSource *)self formattingManager];
+      workout20 = [(CHWorkoutDetailDataSource *)self workout];
+      workoutActivity15 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+      v117 = [formattingManager19 formattedStepCountForWorkout:workout20 workoutActivity:workoutActivity15 context:@"WorkoutDetailDisplayContext"];
       [(_CHWorkoutDetailTableSubItem *)v111 setValueAttrString:v117];
 
       [v236 addObject:v111];
     }
 
-    v118 = [(CHWorkoutDetailDataSource *)self formattingManager];
-    v119 = [(CHWorkoutDetailDataSource *)self workout];
-    v120 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-    v121 = [v118 hasFlightsClimbedForWorkout:v119 workoutActivity:v120];
+    formattingManager20 = [(CHWorkoutDetailDataSource *)self formattingManager];
+    workout21 = [(CHWorkoutDetailDataSource *)self workout];
+    workoutActivity16 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+    v121 = [formattingManager20 hasFlightsClimbedForWorkout:workout21 workoutActivity:workoutActivity16];
 
     if (v121)
     {
@@ -1928,38 +1928,38 @@ LABEL_9:
       v124 = [v123 localizedStringForKey:@"WORKOUT_FLIGHTS_CLIMBED_TITLE" value:&stru_1008680E8 table:@"Localizable"];
       [(_CHWorkoutDetailTableSubItem *)v122 setTitleString:v124];
 
-      v125 = [(CHWorkoutDetailDataSource *)self formattingManager];
-      v126 = [(CHWorkoutDetailDataSource *)self workout];
-      v127 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-      v128 = [v125 formattedFlightsClimbedForWorkout:v126 workoutActivity:v127 context:@"WorkoutDetailDisplayContext"];
+      formattingManager21 = [(CHWorkoutDetailDataSource *)self formattingManager];
+      workout22 = [(CHWorkoutDetailDataSource *)self workout];
+      workoutActivity17 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+      v128 = [formattingManager21 formattedFlightsClimbedForWorkout:workout22 workoutActivity:workoutActivity17 context:@"WorkoutDetailDisplayContext"];
       [(_CHWorkoutDetailTableSubItem *)v122 setValueAttrString:v128];
 
       [v236 addObject:v122];
     }
 
-    v129 = [(CHWorkoutDetailDataSource *)self formattingManager];
-    v130 = [(CHWorkoutDetailDataSource *)self workout];
-    v131 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-    v132 = [v129 hasAverageCadenceForWorkout:v130 workoutActivity:v131];
+    formattingManager22 = [(CHWorkoutDetailDataSource *)self formattingManager];
+    workout23 = [(CHWorkoutDetailDataSource *)self workout];
+    workoutActivity18 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+    v132 = [formattingManager22 hasAverageCadenceForWorkout:workout23 workoutActivity:workoutActivity18];
 
     if (v132)
     {
       v133 = objc_alloc_init(_CHWorkoutDetailTableSubItem);
-      v134 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-      v135 = [v134 fiui_activityType];
-      v136 = v135;
-      if (v135)
+      workoutActivity19 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+      fiui_activityType3 = [workoutActivity19 fiui_activityType];
+      v136 = fiui_activityType3;
+      if (fiui_activityType3)
       {
-        v137 = v135;
+        fiui_activityType4 = fiui_activityType3;
       }
 
       else
       {
-        v138 = [(CHWorkoutDetailDataSource *)self workout];
-        v137 = [v138 fiui_activityType];
+        workout24 = [(CHWorkoutDetailDataSource *)self workout];
+        fiui_activityType4 = [workout24 fiui_activityType];
       }
 
-      [v137 effectiveTypeIdentifier];
+      [fiui_activityType4 effectiveTypeIdentifier];
       if (FIUIIsWorkoutTypePedestrianActivity())
       {
         v139 = +[NSBundle mainBundle];
@@ -1974,24 +1974,24 @@ LABEL_9:
       v140 = ;
       [(_CHWorkoutDetailTableSubItem *)v133 setTitleString:v140];
 
-      v141 = [(CHWorkoutDetailDataSource *)self formattingManager];
-      v142 = [(CHWorkoutDetailDataSource *)self workout];
-      v143 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-      v144 = [v141 formattedAverageCadenceForWorkout:v142 workoutActivity:v143 context:@"WorkoutDetailDisplayContext"];
+      formattingManager23 = [(CHWorkoutDetailDataSource *)self formattingManager];
+      workout25 = [(CHWorkoutDetailDataSource *)self workout];
+      workoutActivity20 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+      v144 = [formattingManager23 formattedAverageCadenceForWorkout:workout25 workoutActivity:workoutActivity20 context:@"WorkoutDetailDisplayContext"];
       [(_CHWorkoutDetailTableSubItem *)v133 setValueAttrString:v144];
 
       [v236 addObject:v133];
     }
 
-    v145 = [(CHWorkoutDetailDataSource *)self workout];
-    v146 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-    v147 = [(CHWorkoutDetailDataSource *)self _showAveragePaceForWorkout:v145 workoutActivity:v146];
+    workout26 = [(CHWorkoutDetailDataSource *)self workout];
+    workoutActivity21 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+    v147 = [(CHWorkoutDetailDataSource *)self _showAveragePaceForWorkout:workout26 workoutActivity:workoutActivity21];
 
     if (v147)
     {
       v148 = objc_alloc_init(_CHWorkoutDetailTableSubItem);
-      v149 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-      if (v149)
+      workoutActivity22 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+      if (workoutActivity22)
       {
         [(CHWorkoutDetailDataSource *)self workoutActivity];
       }
@@ -2001,7 +2001,7 @@ LABEL_9:
         [(CHWorkoutDetailDataSource *)self workout];
       }
       v150 = ;
-      v151 = [v150 fiui_activityType];
+      fiui_activityType5 = [v150 fiui_activityType];
       FIUIDistanceTypeForActivityType();
 
       if (FIUIPaceFormatForDistanceType() == 4)
@@ -2020,26 +2020,26 @@ LABEL_9:
 
       if ([(CHWorkoutDetailDataSource *)self isSwimmingActivity])
       {
-        v154 = [(CHWorkoutDetailDataSource *)self dataCalculator];
-        v155 = [(CHWorkoutDetailDataSource *)self workout];
-        v156 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+        dataCalculator = [(CHWorkoutDetailDataSource *)self dataCalculator];
+        workout27 = [(CHWorkoutDetailDataSource *)self workout];
+        workoutActivity23 = [(CHWorkoutDetailDataSource *)self workoutActivity];
         v240[0] = _NSConcreteStackBlock;
         v240[1] = 3221225472;
         v240[2] = sub_1000F9E50;
         v240[3] = &unk_10083C2C0;
         v241 = v148;
-        v242 = self;
-        [v154 swimmingPacePerHundredForWorkout:v155 workoutActivity:v156 completion:v240];
+        selfCopy = self;
+        [dataCalculator swimmingPacePerHundredForWorkout:workout27 workoutActivity:workoutActivity23 completion:v240];
 
-        v157 = v241;
+        formattingManager24 = v241;
       }
 
       else
       {
-        v157 = [(CHWorkoutDetailDataSource *)self formattingManager];
-        v158 = [(CHWorkoutDetailDataSource *)self workout];
-        v159 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-        v160 = [v157 formattedPaceOrSpeedForWorkout:v158 workoutActivity:v159 context:@"WorkoutDetailDisplayContext"];
+        formattingManager24 = [(CHWorkoutDetailDataSource *)self formattingManager];
+        workout28 = [(CHWorkoutDetailDataSource *)self workout];
+        workoutActivity24 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+        v160 = [formattingManager24 formattedPaceOrSpeedForWorkout:workout28 workoutActivity:workoutActivity24 context:@"WorkoutDetailDisplayContext"];
         [(_CHWorkoutDetailTableSubItem *)v148 setValueAttrString:v160];
       }
 
@@ -2053,14 +2053,14 @@ LABEL_9:
       v163 = [v162 localizedStringForKey:@"WORKOUT_HEART_RATE_TITLE" value:&stru_1008680E8 table:@"Localizable"];
       [(_CHWorkoutDetailTableSubItem *)v161 setTitleString:v163];
 
-      v164 = [(CHWorkoutDetailDataSource *)self formattingManager];
-      v165 = [v164 formattedHeartRate:0 context:@"WorkoutDetailDisplayContext"];
+      formattingManager25 = [(CHWorkoutDetailDataSource *)self formattingManager];
+      v165 = [formattingManager25 formattedHeartRate:0 context:@"WorkoutDetailDisplayContext"];
       [(_CHWorkoutDetailTableSubItem *)v161 setValueAttrString:v165];
 
-      v166 = [(CHWorkoutDetailDataSource *)self dataCalculator];
-      v167 = [(CHWorkoutDetailDataSource *)self workout];
-      v168 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-      v169 = [v166 averageHeartRateForWorkout:v167 workoutActivity:v168];
+      dataCalculator2 = [(CHWorkoutDetailDataSource *)self dataCalculator];
+      workout29 = [(CHWorkoutDetailDataSource *)self workout];
+      workoutActivity25 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+      v169 = [dataCalculator2 averageHeartRateForWorkout:workout29 workoutActivity:workoutActivity25];
 
       self->_hasAverageHeartRate = v169 != 0;
       v238[0] = _NSConcreteStackBlock;
@@ -2070,16 +2070,16 @@ LABEL_9:
       v238[4] = self;
       objc_copyWeak(&v239, location);
       v170 = objc_retainBlock(v238);
-      v171 = [(CHWorkoutDetailDataSource *)self dataCalculator];
-      v172 = [(CHWorkoutDetailDataSource *)self workout];
-      v173 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-      [v171 heartRateDataForWorkout:v172 workoutActivity:v173 completion:v170];
+      dataCalculator3 = [(CHWorkoutDetailDataSource *)self dataCalculator];
+      workout30 = [(CHWorkoutDetailDataSource *)self workout];
+      workoutActivity26 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+      [dataCalculator3 heartRateDataForWorkout:workout30 workoutActivity:workoutActivity26 completion:v170];
 
       if (self->_hasAverageHeartRate)
       {
         v174 = objc_loadWeakRetained(location);
-        v175 = [v174 formattingManager];
-        v176 = [v175 formattedHeartRate:v169 context:@"WorkoutDetailDisplayContext"];
+        formattingManager26 = [v174 formattingManager];
+        v176 = [formattingManager26 formattedHeartRate:v169 context:@"WorkoutDetailDisplayContext"];
         [(_CHWorkoutDetailTableSubItem *)v161 setValueAttrString:v176];
 
         [v236 addObject:v161];
@@ -2088,15 +2088,15 @@ LABEL_9:
       objc_destroyWeak(&v239);
     }
 
-    v177 = [(CHWorkoutDetailDataSource *)self dataCalculator];
-    v178 = [(CHWorkoutDetailDataSource *)self workout];
-    v179 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+    dataCalculator4 = [(CHWorkoutDetailDataSource *)self dataCalculator];
+    workout31 = [(CHWorkoutDetailDataSource *)self workout];
+    workoutActivity27 = [(CHWorkoutDetailDataSource *)self workoutActivity];
     v237[0] = _NSConcreteStackBlock;
     v237[1] = 3221225472;
     v237[2] = sub_1000FA030;
     v237[3] = &unk_10083C310;
     v237[4] = self;
-    [v177 powerSamplesForWorkout:v178 workoutActivity:v179 completion:v237];
+    [dataCalculator4 powerSamplesForWorkout:workout31 workoutActivity:workoutActivity27 completion:v237];
 
     v180 = objc_alloc_init(_CHWorkoutDetailTableSubItem);
     v181 = +[NSBundle mainBundle];
@@ -2110,15 +2110,15 @@ LABEL_9:
       [(_CHWorkoutDetailTableSubItem *)v180 setTitleString:v184];
     }
 
-    v185 = [(CHWorkoutDetailDataSource *)self formattingManager];
-    v186 = [(CHWorkoutDetailDataSource *)self workout];
-    v187 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-    v188 = [v185 formattedLapCountForWorkout:v186 workoutActivity:v187 context:@"WorkoutDetailDisplayContext"];
+    formattingManager27 = [(CHWorkoutDetailDataSource *)self formattingManager];
+    workout32 = [(CHWorkoutDetailDataSource *)self workout];
+    workoutActivity28 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+    v188 = [formattingManager27 formattedLapCountForWorkout:workout32 workoutActivity:workoutActivity28 context:@"WorkoutDetailDisplayContext"];
     [(_CHWorkoutDetailTableSubItem *)v180 setValueAttrString:v188];
 
-    v189 = [(_CHWorkoutDetailTableSubItem *)v180 valueAttrString];
+    valueAttrString4 = [(_CHWorkoutDetailTableSubItem *)v180 valueAttrString];
 
-    if (v189)
+    if (valueAttrString4)
     {
       [v236 addObject:v180];
     }
@@ -2128,23 +2128,23 @@ LABEL_9:
     v192 = [v191 localizedStringForKey:@"SUMMARY_LAP_LENGTH" value:&stru_1008680E8 table:@"Localizable-Ariel"];
     [(_CHWorkoutDetailTableSubItem *)v190 setTitleString:v192];
 
-    v193 = [(CHWorkoutDetailDataSource *)self formattingManager];
-    v194 = [(CHWorkoutDetailDataSource *)self workout];
-    v195 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-    v196 = [v193 formattedPoolLengthForWorkout:v194 workoutActivity:v195 context:@"WorkoutDetailDisplayContext"];
+    formattingManager28 = [(CHWorkoutDetailDataSource *)self formattingManager];
+    workout33 = [(CHWorkoutDetailDataSource *)self workout];
+    workoutActivity29 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+    v196 = [formattingManager28 formattedPoolLengthForWorkout:workout33 workoutActivity:workoutActivity29 context:@"WorkoutDetailDisplayContext"];
     [(_CHWorkoutDetailTableSubItem *)v190 setValueAttrString:v196];
 
-    v197 = [(_CHWorkoutDetailTableSubItem *)v190 valueAttrString];
+    valueAttrString5 = [(_CHWorkoutDetailTableSubItem *)v190 valueAttrString];
 
-    if (v197)
+    if (valueAttrString5)
     {
       [v236 addObject:v190];
     }
 
-    v198 = [(CHWorkoutDetailDataSource *)self formattingManager];
-    v199 = [(CHWorkoutDetailDataSource *)self workout];
-    v200 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-    v201 = [v198 supportsDownhillRunsCountForWorkout:v199 workoutActivity:v200];
+    formattingManager29 = [(CHWorkoutDetailDataSource *)self formattingManager];
+    workout34 = [(CHWorkoutDetailDataSource *)self workout];
+    workoutActivity30 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+    v201 = [formattingManager29 supportsDownhillRunsCountForWorkout:workout34 workoutActivity:workoutActivity30];
 
     if (v201)
     {
@@ -2153,28 +2153,28 @@ LABEL_9:
       v204 = [v203 localizedStringForKey:@"WORKOUT_DOWNHILL_RUNS_HEADER_TITLE" value:&stru_1008680E8 table:@"Localizable"];
       [(_CHWorkoutDetailTableSubItem *)v202 setTitleString:v204];
 
-      v205 = [(CHWorkoutDetailDataSource *)self formattingManager];
-      v206 = [(CHWorkoutDetailDataSource *)self workout];
-      v207 = [v206 downhillRunEventsBridge];
-      v208 = [v205 formattedDownhillRunsCount:objc_msgSend(v207 context:{"count"), @"WorkoutDetailDisplayContext"}];
+      formattingManager30 = [(CHWorkoutDetailDataSource *)self formattingManager];
+      workout35 = [(CHWorkoutDetailDataSource *)self workout];
+      downhillRunEventsBridge = [workout35 downhillRunEventsBridge];
+      v208 = [formattingManager30 formattedDownhillRunsCount:objc_msgSend(downhillRunEventsBridge context:{"count"), @"WorkoutDetailDisplayContext"}];
       [(_CHWorkoutDetailTableSubItem *)v202 setValueAttrString:v208];
 
-      v209 = [(_CHWorkoutDetailTableSubItem *)v202 valueAttrString];
+      valueAttrString6 = [(_CHWorkoutDetailTableSubItem *)v202 valueAttrString];
 
-      if (v209)
+      if (valueAttrString6)
       {
         [v236 addObject:v202];
       }
     }
 
-    v210 = [(CHWorkoutDetailDataSource *)self formattingManager];
-    v211 = [(CHWorkoutDetailDataSource *)self workout];
-    v212 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-    if ([v210 shouldShowDistanceForWorkout:v211 workoutActivity:v212])
+    formattingManager31 = [(CHWorkoutDetailDataSource *)self formattingManager];
+    workout36 = [(CHWorkoutDetailDataSource *)self workout];
+    workoutActivity31 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+    if ([formattingManager31 shouldShowDistanceForWorkout:workout36 workoutActivity:workoutActivity31])
     {
-      v213 = [v232 bridge_isDownhillSnowSport];
+      bridge_isDownhillSnowSport = [v232 bridge_isDownhillSnowSport];
 
-      if (v213)
+      if (bridge_isDownhillSnowSport)
       {
         [v236 addObject:v233];
       }
@@ -2184,17 +2184,17 @@ LABEL_9:
     {
     }
 
-    v214 = [(CHWorkoutDetailDataSource *)self formattingManager];
-    v215 = [(CHWorkoutDetailDataSource *)self workout];
-    v216 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-    v217 = [v214 supportsElevationDescendedForWorkout:v215 workoutActivity:v216];
+    formattingManager32 = [(CHWorkoutDetailDataSource *)self formattingManager];
+    workout37 = [(CHWorkoutDetailDataSource *)self workout];
+    workoutActivity32 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+    v217 = [formattingManager32 supportsElevationDescendedForWorkout:workout37 workoutActivity:workoutActivity32];
 
     if (v217)
     {
-      v218 = [(CHWorkoutDetailDataSource *)self dataCalculator];
-      v219 = [(CHWorkoutDetailDataSource *)self workout];
-      v220 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-      v221 = [v218 cachedDownhillRunsForWorkout:v219 workoutActivity:v220];
+      dataCalculator5 = [(CHWorkoutDetailDataSource *)self dataCalculator];
+      workout38 = [(CHWorkoutDetailDataSource *)self workout];
+      workoutActivity33 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+      v221 = [dataCalculator5 cachedDownhillRunsForWorkout:workout38 workoutActivity:workoutActivity33];
 
       if (v221)
       {
@@ -2204,14 +2204,14 @@ LABEL_9:
         [(_CHWorkoutDetailTableSubItem *)v222 setTitleString:v224];
 
         v225 = [[CHWorkoutDownhillRunsStats alloc] initWithDownhillRunBridges:v221];
-        v226 = [(CHWorkoutDownhillRunsStats *)v225 elevationDescended];
-        v227 = [(CHWorkoutDetailDataSource *)self formattingManager];
-        v228 = [v227 formattedElevation:v226 context:@"WorkoutDetailDisplayContext"];
+        elevationDescended = [(CHWorkoutDownhillRunsStats *)v225 elevationDescended];
+        formattingManager33 = [(CHWorkoutDetailDataSource *)self formattingManager];
+        v228 = [formattingManager33 formattedElevation:elevationDescended context:@"WorkoutDetailDisplayContext"];
         [(_CHWorkoutDetailTableSubItem *)v222 setValueAttrString:v228];
 
-        v229 = [(_CHWorkoutDetailTableSubItem *)v222 valueAttrString];
+        valueAttrString7 = [(_CHWorkoutDetailTableSubItem *)v222 valueAttrString];
 
-        if (v229)
+        if (valueAttrString7)
         {
           [v236 addObject:v222];
         }
@@ -2226,31 +2226,31 @@ LABEL_9:
   return v79;
 }
 
-- (BOOL)_showAveragePaceForWorkout:(id)a3 workoutActivity:(id)a4
+- (BOOL)_showAveragePaceForWorkout:(id)workout workoutActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CHWorkoutDetailDataSource *)self formattingManager];
-  v9 = [v8 isIndoorCyclingForWorkout:v6 workoutActivity:v7];
+  workoutCopy = workout;
+  activityCopy = activity;
+  formattingManager = [(CHWorkoutDetailDataSource *)self formattingManager];
+  v9 = [formattingManager isIndoorCyclingForWorkout:workoutCopy workoutActivity:activityCopy];
 
-  v10 = [(CHWorkoutDetailDataSource *)self formattingManager];
-  v11 = [v10 hasAverageCyclingSpeedForWorkout:v6 workoutActivity:v7];
+  formattingManager2 = [(CHWorkoutDetailDataSource *)self formattingManager];
+  v11 = [formattingManager2 hasAverageCyclingSpeedForWorkout:workoutCopy workoutActivity:activityCopy];
 
   if (!v9 || v11)
   {
-    v13 = [v7 fiui_activityType];
-    v14 = v13;
-    if (v13)
+    fiui_activityType = [activityCopy fiui_activityType];
+    v14 = fiui_activityType;
+    if (fiui_activityType)
     {
-      v15 = v13;
+      fiui_activityType2 = fiui_activityType;
     }
 
     else
     {
-      v15 = [v6 fiui_activityType];
+      fiui_activityType2 = [workoutCopy fiui_activityType];
     }
 
-    v16 = v15;
+    v16 = fiui_activityType2;
 
     if ([v16 bridge_isDownhillSnowSport])
     {
@@ -2259,8 +2259,8 @@ LABEL_9:
 
     else
     {
-      v17 = [(CHWorkoutDetailDataSource *)self formattingManager];
-      v12 = [v17 supportsPaceForWorkout:v6 workoutActivity:v7];
+      formattingManager3 = [(CHWorkoutDetailDataSource *)self formattingManager];
+      v12 = [formattingManager3 supportsPaceForWorkout:workoutCopy workoutActivity:activityCopy];
     }
   }
 
@@ -2272,46 +2272,46 @@ LABEL_9:
   return v12;
 }
 
-- (void)_createPowerSectionWithPowerSamples:(id)a3
+- (void)_createPowerSectionWithPowerSamples:(id)samples
 {
-  v4 = a3;
-  v5 = [(CHWorkoutDetailDataSource *)self formattingManager];
-  v6 = [(CHWorkoutDetailDataSource *)self workout];
-  v7 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-  if (![(_CHWorkoutDetailPowerTableItem *)v5 hasAverageCyclingPowerForWorkout:v6 workoutActivity:v7])
+  samplesCopy = samples;
+  formattingManager = [(CHWorkoutDetailDataSource *)self formattingManager];
+  workout = [(CHWorkoutDetailDataSource *)self workout];
+  workoutActivity = [(CHWorkoutDetailDataSource *)self workoutActivity];
+  if (![(_CHWorkoutDetailPowerTableItem *)formattingManager hasAverageCyclingPowerForWorkout:workout workoutActivity:workoutActivity])
   {
 
     goto LABEL_5;
   }
 
-  v8 = [v4 count];
+  v8 = [samplesCopy count];
 
   if (v8)
   {
-    v5 = objc_alloc_init(_CHWorkoutDetailPowerTableItem);
-    v9 = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
-    -[_CHWorkoutDetailTableItem setCellClass:](v5, "setCellClass:", [v9 objectAtIndexedSubscript:14]);
+    formattingManager = objc_alloc_init(_CHWorkoutDetailPowerTableItem);
+    cellClassesBySection = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
+    -[_CHWorkoutDetailTableItem setCellClass:](formattingManager, "setCellClass:", [cellClassesBySection objectAtIndexedSubscript:14]);
 
-    [(_CHWorkoutDetailPowerTableItem *)v5 setPowerSamples:v4];
-    v12 = v5;
+    [(_CHWorkoutDetailPowerTableItem *)formattingManager setPowerSamples:samplesCopy];
+    v12 = formattingManager;
     v10 = [NSArray arrayWithObjects:&v12 count:1];
-    v11 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-    [v11 setObject:v10 atIndexedSubscript:14];
+    tableItemsBySection = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+    [tableItemsBySection setObject:v10 atIndexedSubscript:14];
 
     [(CHWorkoutDetailDataSource *)self _insertPowerSection];
 LABEL_5:
   }
 }
 
-- (id)_normalizeSubItemsArray:(id)a3
+- (id)_normalizeSubItemsArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v5 = objc_alloc_init(NSMutableArray);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = arrayCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -2385,31 +2385,31 @@ LABEL_5:
   v2 = objc_alloc_init(UITableViewHeaderFooterView);
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"WORKOUT_DETAIL_ULTRA_MODE_FOOTER_TEXT" value:&stru_1008680E8 table:@"Localizable"];
-  v5 = [v2 textLabel];
-  [v5 setText:v4];
+  textLabel = [v2 textLabel];
+  [textLabel setText:v4];
 
-  v6 = [v2 textLabel];
-  [v6 setNumberOfLines:0];
+  textLabel2 = [v2 textLabel];
+  [textLabel2 setNumberOfLines:0];
 
-  v7 = [v2 textLabel];
-  [v7 setLineBreakMode:0];
+  textLabel3 = [v2 textLabel];
+  [textLabel3 setLineBreakMode:0];
 
   v8 = [UIFont defaultFontForTextStyle:UIFontTextStyleFootnote];
-  v9 = [v2 textLabel];
-  [v9 setFont:v8];
+  textLabel4 = [v2 textLabel];
+  [textLabel4 setFont:v8];
 
   v10 = +[UIColor tertiaryLabelColor];
-  v11 = [v2 textLabel];
-  [v11 setTextColor:v10];
+  textLabel5 = [v2 textLabel];
+  [textLabel5 setTextColor:v10];
 
   return v2;
 }
 
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section
 {
-  isKindOfClass = a4;
+  isKindOfClass = footerView;
   v8 = isKindOfClass;
-  if (a5 == 2)
+  if (section == 2)
   {
     v14 = isKindOfClass;
     isKindOfClass = [(CHWorkoutDetailDataSource *)self _isExtendedMode];
@@ -2423,13 +2423,13 @@ LABEL_5:
       {
         v9 = v14;
         v10 = [UIFont defaultFontForTextStyle:UIFontTextStyleFootnote];
-        v11 = [v9 textLabel];
-        [v11 setFont:v10];
+        textLabel = [v9 textLabel];
+        [textLabel setFont:v10];
 
         v12 = +[UIColor tertiaryLabelColor];
-        v13 = [v9 textLabel];
+        textLabel2 = [v9 textLabel];
 
-        [v13 setTextColor:v12];
+        [textLabel2 setTextColor:v12];
         v8 = v14;
       }
     }
@@ -2453,18 +2453,18 @@ LABEL_5:
   return v3;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-  v4 = [v3 count];
+  tableItemsBySection = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+  v4 = [tableItemsBySection count];
 
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  tableItemsBySection = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+  v6 = [tableItemsBySection objectAtIndexedSubscript:section];
 
   v7 = [v6 count];
   return v7;
@@ -2473,55 +2473,55 @@ LABEL_5:
 - (id)analyticsHandler
 {
   v3 = +[CHWorkoutDetailAnalyticsTracker sharedInstance];
-  v4 = [(CHWorkoutDetailDataSource *)self workout];
-  v5 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-  v6 = [v3 workoutAnalyticsHandlerFor:v4 workoutActivity:v5];
+  workout = [(CHWorkoutDetailDataSource *)self workout];
+  workoutActivity = [(CHWorkoutDetailDataSource *)self workoutActivity];
+  v6 = [v3 workoutAnalyticsHandlerFor:workout workoutActivity:workoutActivity];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v7, "section")}];
-  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+  viewCopy = view;
+  pathCopy = path;
+  tableItemsBySection = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+  v9 = [tableItemsBySection objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-  v11 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-  v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v7, "section")}];
+  tableItemsBySection2 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+  v12 = [tableItemsBySection2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
   v13 = [v12 count];
-  v14 = [v7 row];
+  v14 = [pathCopy row];
 
   v15 = NSStringFromClass([v10 cellClass]);
-  v16 = [v6 dequeueReusableCellWithIdentifier:v15];
+  v16 = [viewCopy dequeueReusableCellWithIdentifier:v15];
 
-  v17 = [v10 cellClass];
-  if (v17 == objc_opt_class())
+  cellClass = [v10 cellClass];
+  if (cellClass == objc_opt_class())
   {
-    v40 = v16;
-    v41 = [(CHWorkoutDetailDataSource *)self workout];
-    v42 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-    [v40 summaryConfigureWithWorkout:v41 workoutActivity:v42 fitnessAppContext:self->_fitnessAppContext catalogItemViewModel:self->_catalogItemViewModel formattingManager:self->_formattingManager resizeBlock:0];
+    workout19 = v16;
+    workout = [(CHWorkoutDetailDataSource *)self workout];
+    workoutActivity = [(CHWorkoutDetailDataSource *)self workoutActivity];
+    [workout19 summaryConfigureWithWorkout:workout workoutActivity:workoutActivity fitnessAppContext:self->_fitnessAppContext catalogItemViewModel:self->_catalogItemViewModel formattingManager:self->_formattingManager resizeBlock:0];
 
-    v43 = [v40 location];
+    location = [workout19 location];
 
-    if (!v43)
+    if (!location)
     {
       v44 = v10;
-      v45 = [v44 firstCoordinate];
-      [v40 setLocation:v45];
+      firstCoordinate = [v44 firstCoordinate];
+      [workout19 setLocation:firstCoordinate];
 
-      v46 = [v44 firstCoordinate];
+      firstCoordinate2 = [v44 firstCoordinate];
 
-      if (!v46)
+      if (!firstCoordinate2)
       {
         v194[0] = _NSConcreteStackBlock;
         v194[1] = 3221225472;
         v194[2] = sub_1000FBC64;
         v194[3] = &unk_10083C338;
-        v195 = v40;
-        v196 = v6;
+        v195 = workout19;
+        v196 = viewCopy;
         [v44 setFirstCoordinateUpdatedBlock:v194];
       }
     }
@@ -2529,31 +2529,31 @@ LABEL_5:
     if ([(CHWorkoutDetailDataSource *)self isSwimmingActivity])
     {
       v47 = v10;
-      v48 = [v47 swimDistanceByStrokeStyle];
-      [v40 setSwimDistanceByStrokeStyle:v48];
+      swimDistanceByStrokeStyle = [v47 swimDistanceByStrokeStyle];
+      [workout19 setSwimDistanceByStrokeStyle:swimDistanceByStrokeStyle];
 
       v191[0] = _NSConcreteStackBlock;
       v191[1] = 3221225472;
       v191[2] = sub_1000FBD30;
       v191[3] = &unk_10083C360;
-      v192 = v40;
-      v193 = v6;
+      v192 = workout19;
+      v193 = viewCopy;
       [v47 setSwimDistanceByStrokeStyleUpdateBlock:v191];
     }
 
     goto LABEL_38;
   }
 
-  v18 = [v10 cellClass];
-  if (v18 == objc_opt_class())
+  cellClass2 = [v10 cellClass];
+  if (cellClass2 == objc_opt_class())
   {
-    [v16 configureWithDive:self->_workout row:objc_msgSend(v7 dataCalculator:{"row"), self->_divingDataCalculator}];
+    [v16 configureWithDive:self->_workout row:objc_msgSend(pathCopy dataCalculator:{"row"), self->_divingDataCalculator}];
     goto LABEL_39;
   }
 
   v19 = v13 - 1;
-  v20 = [v10 cellClass];
-  if (v20 == objc_opt_class())
+  cellClass3 = [v10 cellClass];
+  if (cellClass3 == objc_opt_class())
   {
     [v16 setHidesSeparator:v19 == v14];
     if (self->_isTopLevelMultisport || self->_isSwimmingActivity)
@@ -2561,46 +2561,46 @@ LABEL_5:
       [v16 removeLeadingPadding];
     }
 
-    v49 = [v10 subItems];
-    v50 = [v49 count];
+    subItems = [v10 subItems];
+    v50 = [subItems count];
 
     if (v50)
     {
-      v51 = [v10 subItems];
-      v52 = [v51 objectAtIndexedSubscript:0];
+      subItems2 = [v10 subItems];
+      v52 = [subItems2 objectAtIndexedSubscript:0];
 
-      v53 = [v52 titleString];
-      v54 = [v52 valueAttrString];
-      [v16 configureWithTitle1:v53 value1:v54];
+      titleString = [v52 titleString];
+      valueAttrString = [v52 valueAttrString];
+      [v16 configureWithTitle1:titleString value1:valueAttrString];
       v188[0] = _NSConcreteStackBlock;
       v188[1] = 3221225472;
       v188[2] = sub_1000FBD78;
       v188[3] = &unk_10083C388;
       v189 = v16;
-      v190 = v53;
-      v55 = v53;
+      v190 = titleString;
+      v55 = titleString;
       [v52 setUpdateBlock:v188];
     }
 
-    v56 = [v10 subItems];
-    v57 = [v56 count];
+    subItems3 = [v10 subItems];
+    v57 = [subItems3 count];
 
     if (v57 >= 2)
     {
-      v58 = [v10 subItems];
-      v39 = [v58 objectAtIndexedSubscript:1];
+      subItems4 = [v10 subItems];
+      delegate4 = [subItems4 objectAtIndexedSubscript:1];
 
-      v59 = [v39 titleString];
-      v38 = [v39 valueAttrString];
-      [v16 configureWithTitle2:v59 value2:v38];
+      titleString2 = [delegate4 titleString];
+      valueAttrString2 = [delegate4 valueAttrString];
+      [v16 configureWithTitle2:titleString2 value2:valueAttrString2];
       v185[0] = _NSConcreteStackBlock;
       v185[1] = 3221225472;
       v185[2] = sub_1000FBD88;
       v185[3] = &unk_10083C388;
       v186 = v16;
-      v187 = v59;
-      v60 = v59;
-      [v39 setUpdateBlock:v185];
+      v187 = titleString2;
+      v60 = titleString2;
+      [delegate4 setUpdateBlock:v185];
 
 LABEL_35:
 LABEL_36:
@@ -2611,140 +2611,140 @@ LABEL_36:
     goto LABEL_39;
   }
 
-  v21 = [v10 cellClass];
-  if (v21 == objc_opt_class())
+  cellClass4 = [v10 cellClass];
+  if (cellClass4 == objc_opt_class())
   {
-    v40 = v16;
-    v61 = [(CHWorkoutDetailDataSource *)self formattingManager];
-    [v40 setFormattingManager:v61];
+    workout19 = v16;
+    formattingManager = [(CHWorkoutDetailDataSource *)self formattingManager];
+    [workout19 setFormattingManager:formattingManager];
 
-    [v40 setSelectedPaceFormat:-[CHWorkoutDetailDataSource currentlySelectedSwimmingPaceFormat](self, "currentlySelectedSwimmingPaceFormat")];
-    v62 = [(CHWorkoutDetailDataSource *)self workout];
-    v63 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-    v64 = [(CHWorkoutDetailDataSource *)self dataCalculator];
-    [v40 configureWithWorkout:v62 workoutActivity:v63 dataCalculator:v64];
+    [workout19 setSelectedPaceFormat:-[CHWorkoutDetailDataSource currentlySelectedSwimmingPaceFormat](self, "currentlySelectedSwimmingPaceFormat")];
+    workout2 = [(CHWorkoutDetailDataSource *)self workout];
+    workoutActivity2 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+    dataCalculator = [(CHWorkoutDetailDataSource *)self dataCalculator];
+    [workout19 configureWithWorkout:workout2 workoutActivity:workoutActivity2 dataCalculator:dataCalculator];
 
-    [v40 setPaceSelectionDelegate:self];
+    [workout19 setPaceSelectionDelegate:self];
     goto LABEL_38;
   }
 
-  v22 = [v10 cellClass];
-  if (v22 == objc_opt_class())
+  cellClass5 = [v10 cellClass];
+  if (cellClass5 == objc_opt_class())
   {
     v66 = v16;
     v67 = v10;
-    v68 = [(CHWorkoutDetailDataSource *)self workout];
-    v69 = [v67 workoutActivity];
+    workout3 = [(CHWorkoutDetailDataSource *)self workout];
+    workoutActivity3 = [v67 workoutActivity];
 
-    v70 = [(CHWorkoutDetailDataSource *)self formattingManager];
-    [v70 fitnessUIFormattingManager];
+    formattingManager2 = [(CHWorkoutDetailDataSource *)self formattingManager];
+    [formattingManager2 fitnessUIFormattingManager];
     v173 = v16;
-    v72 = v71 = v6;
-    v73 = [(CHWorkoutDetailDataSource *)self dataCalculator];
-    [v66 configureWithWorkout:v68 workoutActivity:v69 formattingManager:v72 dataCalculator:v73];
+    v72 = v71 = viewCopy;
+    dataCalculator2 = [(CHWorkoutDetailDataSource *)self dataCalculator];
+    [v66 configureWithWorkout:workout3 workoutActivity:workoutActivity3 formattingManager:v72 dataCalculator:dataCalculator2];
 
-    v6 = v71;
+    viewCopy = v71;
     v16 = v173;
 
-    v74 = [(CHWorkoutDetailDataSource *)self delegate];
-    [v66 setNavigationDelegate:v74];
+    delegate = [(CHWorkoutDetailDataSource *)self delegate];
+    [v66 setNavigationDelegate:delegate];
 
     goto LABEL_39;
   }
 
-  v23 = [v10 cellClass];
-  v181 = v6;
-  if (v23 == objc_opt_class())
+  cellClass6 = [v10 cellClass];
+  v181 = viewCopy;
+  if (cellClass6 == objc_opt_class())
   {
-    v75 = v10;
-    v76 = [v75 split];
+    downhillRun = v10;
+    split = [downhillRun split];
 
-    if (v76)
+    if (split)
     {
       v174 = v19 == v14;
-      v77 = [(CHWorkoutDetailDataSource *)self workout];
-      v162 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-      v168 = [v75 unit];
-      [v75 split];
-      v79 = v78 = v75;
-      v164 = [v78 splitIndex];
+      workout4 = [(CHWorkoutDetailDataSource *)self workout];
+      workoutActivity4 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+      unit = [downhillRun unit];
+      [downhillRun split];
+      v79 = v78 = downhillRun;
+      splitIndex = [v78 splitIndex];
       [v78 expectedSplitDistance];
       v81 = v80;
       hasAverageHeartRate = self->_hasAverageHeartRate;
-      v82 = [(CHWorkoutDetailDataSource *)self dataCalculator];
-      v83 = [(CHWorkoutDetailDataSource *)self formattingManager];
-      v84 = [v83 fitnessUIFormattingManager];
+      dataCalculator3 = [(CHWorkoutDetailDataSource *)self dataCalculator];
+      formattingManager3 = [(CHWorkoutDetailDataSource *)self formattingManager];
+      fitnessUIFormattingManager = [formattingManager3 fitnessUIFormattingManager];
       LOBYTE(v160) = v174;
-      [v16 configureWithWorkout:v77 workoutActivity:v162 unit:v168 split:v79 splitIndex:v164 splitDistance:hasAverageHeartRate includeHeartRate:v81 isLastCell:v160 dataCalculator:v82 formattingManager:v84];
+      [v16 configureWithWorkout:workout4 workoutActivity:workoutActivity4 unit:unit split:v79 splitIndex:splitIndex splitDistance:hasAverageHeartRate includeHeartRate:v81 isLastCell:v160 dataCalculator:dataCalculator3 formattingManager:fitnessUIFormattingManager];
 
-      v75 = v78;
+      downhillRun = v78;
     }
 
     else
     {
-      v96 = [v75 swimmingSplit];
+      swimmingSplit = [downhillRun swimmingSplit];
 
-      if (v96)
+      if (swimmingSplit)
       {
         v97 = v19 == v14;
-        v77 = [v75 swimmingSplit];
-        v98 = [v75 splitIndex];
-        v99 = [(CHWorkoutDetailDataSource *)self formattingManager];
-        v100 = [v99 fitnessUIFormattingManager];
-        [v16 configureWithSwimmingSplit:v77 splitIndex:v98 isLastCell:v97 formattingManager:v100];
+        workout4 = [downhillRun swimmingSplit];
+        splitIndex2 = [downhillRun splitIndex];
+        formattingManager4 = [(CHWorkoutDetailDataSource *)self formattingManager];
+        fitnessUIFormattingManager2 = [formattingManager4 fitnessUIFormattingManager];
+        [v16 configureWithSwimmingSplit:workout4 splitIndex:splitIndex2 isLastCell:v97 formattingManager:fitnessUIFormattingManager2];
       }
 
       else
       {
-        v122 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-        v123 = [v122 fiui_activityType];
-        v124 = v123;
-        if (v123)
+        workoutActivity5 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+        fiui_activityType = [workoutActivity5 fiui_activityType];
+        v124 = fiui_activityType;
+        if (fiui_activityType)
         {
-          v125 = v123;
+          fiui_activityType2 = fiui_activityType;
         }
 
         else
         {
-          v131 = [(CHWorkoutDetailDataSource *)self workout];
-          v125 = [v131 fiui_activityType];
+          workout5 = [(CHWorkoutDetailDataSource *)self workout];
+          fiui_activityType2 = [workout5 fiui_activityType];
         }
 
-        v77 = v125;
-        [v16 configureHeaderWithActivityType:v125 includeHeartRate:self->_hasAverageHeartRate];
+        workout4 = fiui_activityType2;
+        [v16 configureHeaderWithActivityType:fiui_activityType2 includeHeartRate:self->_hasAverageHeartRate];
       }
     }
 
     goto LABEL_52;
   }
 
-  v24 = [v10 cellClass];
-  if (v24 == objc_opt_class())
+  cellClass7 = [v10 cellClass];
+  if (cellClass7 == objc_opt_class())
   {
     v175 = v19 == v14;
     v85 = v10;
-    v169 = [v85 segment];
-    v165 = [v85 segmentIndex];
+    segment = [v85 segment];
+    segmentIndex = [v85 segmentIndex];
 
-    v86 = [(CHWorkoutDetailDataSource *)self workout];
-    v163 = [(CHWorkoutDetailDataSource *)self trackDistanceUnit];
-    v87 = [(CHWorkoutDetailDataSource *)self workout];
-    v88 = [v87 fiui_activityType];
-    v89 = [(CHWorkoutDetailDataSource *)self workout];
-    v90 = [v89 _activityMoveMode];
-    v91 = [(CHWorkoutDetailDataSource *)self formattingManager];
+    workout6 = [(CHWorkoutDetailDataSource *)self workout];
+    trackDistanceUnit = [(CHWorkoutDetailDataSource *)self trackDistanceUnit];
+    workout7 = [(CHWorkoutDetailDataSource *)self workout];
+    fiui_activityType3 = [workout7 fiui_activityType];
+    workout8 = [(CHWorkoutDetailDataSource *)self workout];
+    _activityMoveMode = [workout8 _activityMoveMode];
+    formattingManager5 = [(CHWorkoutDetailDataSource *)self formattingManager];
     LOBYTE(v160) = v175;
-    v92 = v169;
-    [v16 configureWithSegment:v169 segmentIndex:v165 workout:v86 trackDistanceUnit:v163 activityType:v88 activityMoveMode:v90 isLastCell:v160 formattingManager:v91];
+    downhillRunsStats = segment;
+    [v16 configureWithSegment:segment segmentIndex:segmentIndex workout:workout6 trackDistanceUnit:trackDistanceUnit activityType:fiui_activityType3 activityMoveMode:_activityMoveMode isLastCell:v160 formattingManager:formattingManager5];
 
 LABEL_48:
 LABEL_59:
-    v6 = v181;
+    viewCopy = v181;
     goto LABEL_39;
   }
 
-  v25 = [v10 cellClass];
-  if (v25 == objc_opt_class())
+  cellClass8 = [v10 cellClass];
+  if (cellClass8 == objc_opt_class())
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2754,13 +2754,13 @@ LABEL_59:
       {
         v109 = v19 == v14;
         v110 = v10;
-        v75 = [v110 downhillRun];
-        v111 = [v110 downhillRunIndex];
+        downhillRun = [v110 downhillRun];
+        downhillRunIndex = [v110 downhillRunIndex];
 
-        v112 = [(CHWorkoutDetailDataSource *)self workout];
-        v113 = [v112 fiui_activityType];
-        v114 = [(CHWorkoutDetailDataSource *)self formattingManager];
-        [v16 configureWithDownhillRun:v75 downhillRunIndex:v111 activityType:v113 isLastCell:v109 formattingManager:v114];
+        workout9 = [(CHWorkoutDetailDataSource *)self workout];
+        fiui_activityType4 = [workout9 fiui_activityType];
+        formattingManager6 = [(CHWorkoutDetailDataSource *)self formattingManager];
+        [v16 configureWithDownhillRun:downhillRun downhillRunIndex:downhillRunIndex activityType:fiui_activityType4 isLastCell:v109 formattingManager:formattingManager6];
 
 LABEL_56:
 LABEL_52:
@@ -2771,169 +2771,169 @@ LABEL_52:
       goto LABEL_39;
     }
 
-    v92 = [v10 downhillRunsStats];
-    v93 = [(CHWorkoutDetailDataSource *)self workout];
-    v94 = [v93 fiui_activityType];
-    v95 = [(CHWorkoutDetailDataSource *)self formattingManager];
-    [v16 configureWithDownhillRunsStats:v92 activityType:v94 formattingManager:v95];
+    downhillRunsStats = [v10 downhillRunsStats];
+    workout10 = [(CHWorkoutDetailDataSource *)self workout];
+    fiui_activityType5 = [workout10 fiui_activityType];
+    formattingManager7 = [(CHWorkoutDetailDataSource *)self formattingManager];
+    [v16 configureWithDownhillRunsStats:downhillRunsStats activityType:fiui_activityType5 formattingManager:formattingManager7];
 
     goto LABEL_48;
   }
 
-  v26 = [v10 cellClass];
-  if (v26 == objc_opt_class())
+  cellClass9 = [v10 cellClass];
+  if (cellClass9 == objc_opt_class())
   {
     v176 = v19 == v14;
     v101 = v10;
-    v102 = [v101 interval];
-    v170 = [v101 intervalIndex];
+    interval = [v101 interval];
+    intervalIndex = [v101 intervalIndex];
 
-    v103 = [(CHWorkoutDetailDataSource *)self workout];
-    v104 = [(CHWorkoutDetailDataSource *)self workout];
-    v105 = [v104 fiui_activityType];
-    v106 = [(CHWorkoutDetailDataSource *)self workout];
-    v107 = [v106 _activityMoveMode];
-    v108 = [(CHWorkoutDetailDataSource *)self formattingManager];
-    [v16 configureWithInterval:v102 index:v170 workout:v103 activityType:v105 activityMoveMode:v107 isLastCell:v176 formattingManager:v108];
+    workout11 = [(CHWorkoutDetailDataSource *)self workout];
+    workout12 = [(CHWorkoutDetailDataSource *)self workout];
+    fiui_activityType6 = [workout12 fiui_activityType];
+    workout13 = [(CHWorkoutDetailDataSource *)self workout];
+    _activityMoveMode2 = [workout13 _activityMoveMode];
+    formattingManager8 = [(CHWorkoutDetailDataSource *)self formattingManager];
+    [v16 configureWithInterval:interval index:intervalIndex workout:workout11 activityType:fiui_activityType6 activityMoveMode:_activityMoveMode2 isLastCell:v176 formattingManager:formattingManager8];
 
 LABEL_58:
     goto LABEL_59;
   }
 
-  v27 = [v10 cellClass];
-  if (v27 == objc_opt_class())
+  cellClass10 = [v10 cellClass];
+  if (cellClass10 == objc_opt_class())
   {
     v177 = v19 == v14;
     v115 = v10;
-    v102 = [v115 trackLap];
-    v171 = [v115 lapIndex];
-    v116 = [(CHWorkoutDetailDataSource *)self workout];
-    v166 = [v115 distanceUnit];
+    interval = [v115 trackLap];
+    lapIndex = [v115 lapIndex];
+    workout14 = [(CHWorkoutDetailDataSource *)self workout];
+    distanceUnit = [v115 distanceUnit];
 
-    v117 = [(CHWorkoutDetailDataSource *)self workout];
-    v118 = [v117 fiui_activityType];
-    v119 = [(CHWorkoutDetailDataSource *)self workout];
-    v120 = [v119 _activityMoveMode];
-    v121 = [(CHWorkoutDetailDataSource *)self formattingManager];
+    workout15 = [(CHWorkoutDetailDataSource *)self workout];
+    fiui_activityType7 = [workout15 fiui_activityType];
+    workout16 = [(CHWorkoutDetailDataSource *)self workout];
+    _activityMoveMode3 = [workout16 _activityMoveMode];
+    formattingManager9 = [(CHWorkoutDetailDataSource *)self formattingManager];
     LOBYTE(v160) = v177;
-    [v16 configureWithTrackLap:v102 lapIndex:v171 workout:v116 distanceUnit:v166 activityType:v118 activityMoveMode:v120 isLastCell:v160 formattingManager:v121];
+    [v16 configureWithTrackLap:interval lapIndex:lapIndex workout:workout14 distanceUnit:distanceUnit activityType:fiui_activityType7 activityMoveMode:_activityMoveMode3 isLastCell:v160 formattingManager:formattingManager9];
 
     goto LABEL_58;
   }
 
-  v28 = [v10 cellClass];
-  if (v28 == objc_opt_class())
+  cellClass11 = [v10 cellClass];
+  if (cellClass11 == objc_opt_class())
   {
     v126 = v19 == v14;
     v127 = [v10 set];
-    v128 = [v7 row];
-    v129 = [(CHWorkoutDetailDataSource *)self formattingManager];
-    v130 = [v129 fitnessUIFormattingManager];
-    [v16 configureWithSwimmingSet:v127 index:v128 isLastCell:v126 formattingManager:v130];
+    v128 = [pathCopy row];
+    formattingManager10 = [(CHWorkoutDetailDataSource *)self formattingManager];
+    fitnessUIFormattingManager3 = [formattingManager10 fitnessUIFormattingManager];
+    [v16 configureWithSwimmingSet:v127 index:v128 isLastCell:v126 formattingManager:fitnessUIFormattingManager3];
 
     goto LABEL_59;
   }
 
-  v29 = [v10 cellClass];
-  if (v29 == objc_opt_class())
+  cellClass12 = [v10 cellClass];
+  if (cellClass12 == objc_opt_class())
   {
     [v16 configureWithFitnessAppContext:self->_fitnessAppContext workout:self->_workout scoreSummaryWrapper:self->_scoreSummaryWrapper];
   }
 
   else
   {
-    v30 = [v10 cellClass];
-    if (v30 == objc_opt_class())
+    cellClass13 = [v10 cellClass];
+    if (cellClass13 == objc_opt_class())
     {
       v132 = v16;
       v133 = v10;
-      v178 = [(CHWorkoutDetailDataSource *)self workout];
-      v172 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-      v134 = [(CHWorkoutDetailDataSource *)self dataCalculator];
-      v167 = [(CHWorkoutDetailDataSource *)self formattingManager];
-      v135 = [v133 heartRateReadings];
-      v136 = [v133 averageHeartRate];
+      workout17 = [(CHWorkoutDetailDataSource *)self workout];
+      workoutActivity6 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+      dataCalculator4 = [(CHWorkoutDetailDataSource *)self dataCalculator];
+      formattingManager11 = [(CHWorkoutDetailDataSource *)self formattingManager];
+      heartRateReadings = [v133 heartRateReadings];
+      averageHeartRate = [v133 averageHeartRate];
 
-      v137 = [(CHWorkoutDetailDataSource *)self delegate];
-      v39 = v178;
-      v138 = v134;
-      [v132 configureWithWorkout:v178 workoutActivity:v172 dataCalculator:v134 formattingManager:v167 heartRateReadings:v135 averageHeartRate:v136 parent:v137];
+      delegate2 = [(CHWorkoutDetailDataSource *)self delegate];
+      delegate4 = workout17;
+      v138 = dataCalculator4;
+      [v132 configureWithWorkout:workout17 workoutActivity:workoutActivity6 dataCalculator:dataCalculator4 formattingManager:formattingManager11 heartRateReadings:heartRateReadings averageHeartRate:averageHeartRate parent:delegate2];
 
-      v6 = v181;
+      viewCopy = v181;
       goto LABEL_36;
     }
 
-    v31 = [v10 cellClass];
-    if (v31 == objc_opt_class())
+    cellClass14 = [v10 cellClass];
+    if (cellClass14 == objc_opt_class())
     {
       v139 = v16;
       v140 = v10;
-      v179 = [(CHWorkoutDetailDataSource *)self workout];
-      v141 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-      v142 = [(CHWorkoutDetailDataSource *)self dataCalculator];
-      v143 = [(CHWorkoutDetailDataSource *)self formattingManager];
-      v144 = [v140 powerSamples];
+      workout18 = [(CHWorkoutDetailDataSource *)self workout];
+      workoutActivity7 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+      dataCalculator5 = [(CHWorkoutDetailDataSource *)self dataCalculator];
+      formattingManager12 = [(CHWorkoutDetailDataSource *)self formattingManager];
+      powerSamples = [v140 powerSamples];
 
-      v145 = [(CHWorkoutDetailDataSource *)self delegate];
-      v146 = v179;
-      [v139 configureWithWorkout:v179 workoutActivity:v141 dataCalculator:v142 formattingManager:v143 powerSamples:v144 parent:v145];
+      delegate3 = [(CHWorkoutDetailDataSource *)self delegate];
+      workout20 = workout18;
+      [v139 configureWithWorkout:workout18 workoutActivity:workoutActivity7 dataCalculator:dataCalculator5 formattingManager:formattingManager12 powerSamples:powerSamples parent:delegate3];
 
-      v6 = v181;
+      viewCopy = v181;
     }
 
     else
     {
-      v32 = [v10 cellClass];
-      if (v32 != objc_opt_class())
+      cellClass15 = [v10 cellClass];
+      if (cellClass15 != objc_opt_class())
       {
-        v33 = [v10 cellClass];
-        if (v33 != objc_opt_class())
+        cellClass16 = [v10 cellClass];
+        if (cellClass16 != objc_opt_class())
         {
-          v34 = [v10 cellClass];
-          if (v34 != objc_opt_class())
+          cellClass17 = [v10 cellClass];
+          if (cellClass17 != objc_opt_class())
           {
-            v35 = [v10 cellClass];
-            if (v35 != objc_opt_class())
+            cellClass18 = [v10 cellClass];
+            if (cellClass18 != objc_opt_class())
             {
-              v36 = [v10 cellClass];
-              if (v36 != objc_opt_class())
+              cellClass19 = [v10 cellClass];
+              if (cellClass19 != objc_opt_class())
               {
                 goto LABEL_39;
               }
 
               supplementaryDataSource = self->_supplementaryDataSource;
-              v38 = v16;
-              v39 = [(CHWorkoutDetailDataSource *)self delegate];
-              [v38 configureWithSupplementaryDataSource:supplementaryDataSource parent:v39];
+              valueAttrString2 = v16;
+              delegate4 = [(CHWorkoutDetailDataSource *)self delegate];
+              [valueAttrString2 configureWithSupplementaryDataSource:supplementaryDataSource parent:delegate4];
               goto LABEL_35;
             }
 
             v156 = v16;
-            v40 = [(CHWorkoutDetailDataSource *)self workout];
-            v157 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-            v158 = [(CHWorkoutDetailDataSource *)self dataCalculator];
-            v159 = [(CHWorkoutDetailDataSource *)self delegate];
-            [v156 configureWithWorkout:v40 workoutActivity:v157 dataCalculator:v158 parent:v159];
+            workout19 = [(CHWorkoutDetailDataSource *)self workout];
+            workoutActivity8 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+            dataCalculator6 = [(CHWorkoutDetailDataSource *)self dataCalculator];
+            delegate5 = [(CHWorkoutDetailDataSource *)self delegate];
+            [v156 configureWithWorkout:workout19 workoutActivity:workoutActivity8 dataCalculator:dataCalculator6 parent:delegate5];
 
             goto LABEL_38;
           }
 
           v155 = v19 == v14;
-          v112 = v16;
-          v75 = [v10 achievement];
-          [v112 configureForAchievement:v75 badgeImageFactory:self->_badgeImageFactory localizationProvider:self->_achievementLocalizationProvider isLastCell:v155];
+          workout9 = v16;
+          downhillRun = [v10 achievement];
+          [workout9 configureForAchievement:downhillRun badgeImageFactory:self->_badgeImageFactory localizationProvider:self->_achievementLocalizationProvider isLastCell:v155];
           goto LABEL_56;
         }
 
-        v40 = v16;
-        [v40 configureWithWorkout:self->_workout fitnessAppContext:self->_fitnessAppContext];
+        workout19 = v16;
+        [workout19 configureWithWorkout:self->_workout fitnessAppContext:self->_fitnessAppContext];
         objc_initWeak(&location, self);
         v182[0] = _NSConcreteStackBlock;
         v182[1] = 3221225472;
         v182[2] = sub_1000FBD98;
         v182[3] = &unk_10083C3B0;
         objc_copyWeak(&v183, &location);
-        [v40 setOnDidTapMediaMomentItem:v182];
+        [workout19 setOnDidTapMediaMomentItem:v182];
         objc_destroyWeak(&v183);
         objc_destroyWeak(&location);
 LABEL_38:
@@ -2943,23 +2943,23 @@ LABEL_38:
 
       v147 = v16;
       v148 = v10;
-      v149 = [(CHWorkoutDetailDataSource *)self delegate];
-      [v147 setNavigationDelegate:v149];
+      delegate6 = [(CHWorkoutDetailDataSource *)self delegate];
+      [v147 setNavigationDelegate:delegate6];
 
-      v150 = [(CHWorkoutDetailDataSource *)self analyticsHandler];
-      [v147 setAnalyticsHandler:v150];
+      analyticsHandler = [(CHWorkoutDetailDataSource *)self analyticsHandler];
+      [v147 setAnalyticsHandler:analyticsHandler];
 
-      v146 = [(CHWorkoutDetailDataSource *)self workout];
-      v180 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-      v151 = [(CHWorkoutDetailDataSource *)self dataCalculator];
-      v152 = [(CHWorkoutDetailDataSource *)self formattingManager];
-      v153 = [(CHWorkoutDetailDataSource *)self delegate];
-      v154 = [v148 locationReadings];
+      workout20 = [(CHWorkoutDetailDataSource *)self workout];
+      workoutActivity9 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+      dataCalculator7 = [(CHWorkoutDetailDataSource *)self dataCalculator];
+      formattingManager13 = [(CHWorkoutDetailDataSource *)self formattingManager];
+      delegate7 = [(CHWorkoutDetailDataSource *)self delegate];
+      locationReadings = [v148 locationReadings];
 
-      v141 = v180;
-      [v147 configureWithWorkout:v146 workoutActivity:v180 dataCalculator:v151 formattingManager:v152 parent:v153 locationReadings:v154];
+      workoutActivity7 = workoutActivity9;
+      [v147 configureWithWorkout:workout20 workoutActivity:workoutActivity9 dataCalculator:dataCalculator7 formattingManager:formattingManager13 parent:delegate7 locationReadings:locationReadings];
 
-      v6 = v181;
+      viewCopy = v181;
     }
   }
 
@@ -2968,16 +2968,16 @@ LABEL_39:
   return v16;
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
+  pathCopy = path;
+  cellClassesBySection = [(CHWorkoutDetailDataSource *)self cellClassesBySection];
+  v7 = [cellClassesBySection objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(CHWorkoutDetailDataSource *)self workout];
-    [v7 preferredHeightForWorkout:v8];
+    workout = [(CHWorkoutDetailDataSource *)self workout];
+    [v7 preferredHeightForWorkout:workout];
     v10 = v9;
   }
 
@@ -2989,10 +2989,10 @@ LABEL_39:
       goto LABEL_7;
     }
 
-    v8 = [(CHWorkoutDetailDataSource *)self workout];
-    v11 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-    v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
-    [v7 preferredHeightForWorkout:v8 indexPath:v5 numberOfRows:{objc_msgSend(v12, "count")}];
+    workout = [(CHWorkoutDetailDataSource *)self workout];
+    tableItemsBySection = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+    v12 = [tableItemsBySection objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+    [v7 preferredHeightForWorkout:workout indexPath:pathCopy numberOfRows:{objc_msgSend(v12, "count")}];
     v10 = v13;
   }
 
@@ -3000,18 +3000,18 @@ LABEL_7:
   return v10;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-  v7 = [v6 objectAtIndexedSubscript:a4];
+  tableItemsBySection = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+  v7 = [tableItemsBySection objectAtIndexedSubscript:section];
 
   v8 = [v7 count];
-  if (a4 != 3 || (v9 = 10.0, !v8))
+  if (section != 3 || (v9 = 10.0, !v8))
   {
-    v10 = [(CHWorkoutDetailDataSource *)self tableSectionHeaders];
-    v11 = [v10 objectAtIndexedSubscript:a4];
+    tableSectionHeaders = [(CHWorkoutDetailDataSource *)self tableSectionHeaders];
+    v11 = [tableSectionHeaders objectAtIndexedSubscript:section];
 
-    if (a4 == 2)
+    if (section == 2)
     {
       v12 = self->_isTopLevelMultisport || self->_isSwimmingActivity;
     }
@@ -3046,11 +3046,11 @@ LABEL_7:
   return v9;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   v7 = 0.0;
-  if (a4 == 2)
+  if (section == 2)
   {
     if ([(CHWorkoutDetailDataSource *)self _isExtendedMode])
     {
@@ -3059,19 +3059,19 @@ LABEL_6:
     }
   }
 
-  else if (a4 == 15)
+  else if (section == 15)
   {
-    v8 = [(HKWorkout *)self->_workout metadata];
+    metadata = [(HKWorkout *)self->_workout metadata];
     v9 = _HKPrivateMetadataKeyWorkoutWeatherSourceName;
-    v10 = [v8 objectForKeyedSubscript:_HKPrivateMetadataKeyWorkoutWeatherSourceName];
+    v10 = [metadata objectForKeyedSubscript:_HKPrivateMetadataKeyWorkoutWeatherSourceName];
     if ([v10 isEqualToString:kHKAppleWeatherSourceName])
     {
     }
 
     else
     {
-      v12 = [(HKWorkout *)self->_workout metadata];
-      v13 = [v12 objectForKeyedSubscript:v9];
+      metadata2 = [(HKWorkout *)self->_workout metadata];
+      v13 = [metadata2 objectForKeyedSubscript:v9];
       v14 = [v13 isEqualToString:kHKAppleWeatherLogoSourceName];
 
       if ((v14 & 1) == 0)
@@ -3088,32 +3088,32 @@ LABEL_7:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v13 = a3;
-  v6 = a4;
-  if ([v6 section] == 17)
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section] == 17)
   {
-    v7 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-    v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
-    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+    tableItemsBySection = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+    v8 = [tableItemsBySection objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-    v10 = [v13 cellForRowAtIndexPath:v6];
-    v11 = [(CHWorkoutDetailDataSource *)self delegate];
-    v12 = [v9 achievement];
+    v10 = [viewCopy cellForRowAtIndexPath:pathCopy];
+    delegate = [(CHWorkoutDetailDataSource *)self delegate];
+    achievement = [v9 achievement];
     [v10 badgeRect];
-    [v11 presentAchievement:v12 badgeRect:v10 cell:?];
+    [delegate presentAchievement:achievement badgeRect:v10 cell:?];
   }
 
   else
   {
-    -[CHWorkoutDetailDataSource presentPageForSection:](self, "presentPageForSection:", [v6 section]);
+    -[CHWorkoutDetailDataSource presentPageForSection:](self, "presentPageForSection:", [pathCopy section]);
   }
 }
 
-- (void)presentPageForSection:(int64_t)a3
+- (void)presentPageForSection:(int64_t)section
 {
-  v3 = [(CHWorkoutDetailDataSource *)self navigationActionForHeaderInSection:a3];
+  v3 = [(CHWorkoutDetailDataSource *)self navigationActionForHeaderInSection:section];
   if (v3)
   {
     v4 = v3;
@@ -3122,7 +3122,7 @@ LABEL_7:
   }
 }
 
-- (id)navigationActionForHeaderInSection:(int64_t)a3
+- (id)navigationActionForHeaderInSection:(int64_t)section
 {
   objc_initWeak(&location, self);
   v53[0] = _NSConcreteStackBlock;
@@ -3130,14 +3130,14 @@ LABEL_7:
   v53[2] = sub_1000FCAF8;
   v53[3] = &unk_10083C3D8;
   objc_copyWeak(v54, &location);
-  v54[1] = a3;
+  v54[1] = section;
   v5 = objc_retainBlock(v53);
   v6 = 0;
-  if (a3 > 8)
+  if (section > 8)
   {
-    if (a3 > 12)
+    if (section > 12)
     {
-      switch(a3)
+      switch(section)
       {
         case 13:
           v23[0] = _NSConcreteStackBlock;
@@ -3179,7 +3179,7 @@ LABEL_7:
 
     else
     {
-      switch(a3)
+      switch(section)
       {
         case 9:
           if ([(CHWorkoutDetailDataSource *)self isSwimmingActivity])
@@ -3239,9 +3239,9 @@ LABEL_7:
     goto LABEL_33;
   }
 
-  if (a3 > 5)
+  if (section > 5)
   {
-    if (a3 == 6)
+    if (section == 6)
     {
       v29[0] = _NSConcreteStackBlock;
       v29[1] = 3221225472;
@@ -3254,7 +3254,7 @@ LABEL_7:
       v8 = v30;
     }
 
-    else if (a3 == 7)
+    else if (section == 7)
     {
       v26[0] = _NSConcreteStackBlock;
       v26[1] = 3221225472;
@@ -3284,9 +3284,9 @@ LABEL_7:
     goto LABEL_33;
   }
 
-  if (a3 != 2)
+  if (section != 2)
   {
-    if (a3 != 3)
+    if (section != 3)
     {
       goto LABEL_34;
     }
@@ -3303,8 +3303,8 @@ LABEL_7:
     goto LABEL_33;
   }
 
-  v9 = [(CHWorkoutDetailDataSource *)self workoutActivity];
-  if ([v9 hasChartableMetrics])
+  workoutActivity = [(CHWorkoutDetailDataSource *)self workoutActivity];
+  if ([workoutActivity hasChartableMetrics])
   {
 
     if (!self->_isUnderwaterDive)
@@ -3328,15 +3328,15 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  v10 = [(CHWorkoutDetailDataSource *)self workout];
-  v11 = [v10 hasChartableMetrics];
+  workout = [(CHWorkoutDetailDataSource *)self workout];
+  hasChartableMetrics = [workout hasChartableMetrics];
 
   if (self->_isUnderwaterDive)
   {
     goto LABEL_30;
   }
 
-  if (v11)
+  if (hasChartableMetrics)
   {
 LABEL_32:
     v47[0] = _NSConcreteStackBlock;
@@ -3361,44 +3361,44 @@ LABEL_34:
   return v12;
 }
 
-- (void)presentEffortViewController:(BOOL)a3 presentationCompletion:(id)a4
+- (void)presentEffortViewController:(BOOL)controller presentationCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v7 = [(CHWorkoutDetailDataSource *)self dataCalculator];
-  v8 = [(CHWorkoutDetailDataSource *)self workout];
-  v9 = [(CHWorkoutDetailDataSource *)self workoutActivity];
+  dataCalculator = [(CHWorkoutDetailDataSource *)self dataCalculator];
+  workout = [(CHWorkoutDetailDataSource *)self workout];
+  workoutActivity = [(CHWorkoutDetailDataSource *)self workoutActivity];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000FDB48;
   v11[3] = &unk_10083C490;
   objc_copyWeak(&v13, &location);
-  v14 = a3;
-  v10 = v6;
+  controllerCopy = controller;
+  v10 = completionCopy;
   v12 = v10;
-  [v7 effortForWorkout:v8 workoutActivity:v9 completion:v11];
+  [dataCalculator effortForWorkout:workout workoutActivity:workoutActivity completion:v11];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 == 3)
+  viewCopy = view;
+  if (section == 3)
   {
     v7 = +[(ActivityTileSectionHeader *)_TtC10FitnessApp26WorkoutDetailSectionHeader];
-    v8 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:v7];
+    v8 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:v7];
 
     [v8 configureWithTitle:&stru_1008680E8 buttonAction:0];
   }
 
   else
   {
-    v9 = [(CHWorkoutDetailDataSource *)self tableSectionHeaders];
-    v10 = [v9 objectAtIndexedSubscript:a4];
+    tableSectionHeaders = [(CHWorkoutDetailDataSource *)self tableSectionHeaders];
+    v10 = [tableSectionHeaders objectAtIndexedSubscript:section];
 
-    if (a4 == 2)
+    if (section == 2)
     {
       v11 = self->_isTopLevelMultisport || self->_isSwimmingActivity;
     }
@@ -3414,9 +3414,9 @@ LABEL_34:
     v8 = 0;
     if ((v13 & 1) == 0 && !v11)
     {
-      v14 = [(CHWorkoutDetailDataSource *)self navigationActionForHeaderInSection:a4];
+      v14 = [(CHWorkoutDetailDataSource *)self navigationActionForHeaderInSection:section];
       v15 = +[(ActivityTileSectionHeader *)_TtC10FitnessApp26WorkoutDetailSectionHeader];
-      v8 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:v15];
+      v8 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:v15];
 
       [v8 configureWithTitle:v10 buttonAction:v14];
     }
@@ -3427,44 +3427,44 @@ LABEL_34:
 
 - (BOOL)_isExtendedMode
 {
-  v2 = [(CHWorkoutDetailDataSource *)self workout];
-  v3 = [v2 metadata];
-  v4 = [v3 objectForKey:_HKPrivateMetadataKeyWorkoutExtendedMode];
+  workout = [(CHWorkoutDetailDataSource *)self workout];
+  metadata = [workout metadata];
+  v4 = [metadata objectForKey:_HKPrivateMetadataKeyWorkoutExtendedMode];
 
-  LOBYTE(v2) = [v4 BOOLValue];
-  return v2;
+  LOBYTE(workout) = [v4 BOOLValue];
+  return workout;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 == 15)
+  viewCopy = view;
+  if (section == 15)
   {
-    v7 = [(CHWorkoutDetailDataSource *)self _makeAppleWeatherFooterView];
+    _makeAppleWeatherFooterView = [(CHWorkoutDetailDataSource *)self _makeAppleWeatherFooterView];
   }
 
   else
   {
-    if (a4 != 2 || ![(CHWorkoutDetailDataSource *)self _isExtendedMode])
+    if (section != 2 || ![(CHWorkoutDetailDataSource *)self _isExtendedMode])
     {
       v8 = 0;
       goto LABEL_8;
     }
 
-    v7 = [(CHWorkoutDetailDataSource *)self _makeUltraModeFooterView];
+    _makeAppleWeatherFooterView = [(CHWorkoutDetailDataSource *)self _makeUltraModeFooterView];
   }
 
-  v8 = v7;
+  v8 = _makeAppleWeatherFooterView;
 LABEL_8:
 
   return v8;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v10 = a5;
-  v7 = a4;
-  if (![v10 section] || objc_msgSend(v10, "section") == 5 || objc_msgSend(v10, "section") == 17 || objc_msgSend(v10, "section") == 2 && (self->_isTopLevelMultisport || self->_isSwimmingActivity))
+  pathCopy = path;
+  cellCopy = cell;
+  if (![pathCopy section] || objc_msgSend(pathCopy, "section") == 5 || objc_msgSend(pathCopy, "section") == 17 || objc_msgSend(pathCopy, "section") == 2 && (self->_isTopLevelMultisport || self->_isSwimmingActivity))
   {
     v8 = +[UIColor systemBackgroundColor];
   }
@@ -3475,52 +3475,52 @@ LABEL_8:
   }
 
   v9 = v8;
-  [v7 setBackgroundColor:v8];
+  [cellCopy setBackgroundColor:v8];
 
-  [v7 setSelectionStyle:0];
+  [cellCopy setSelectionStyle:0];
 }
 
-- (void)_section:(int64_t)a3 setExpanded:(BOOL)a4
+- (void)_section:(int64_t)_section setExpanded:(BOOL)expanded
 {
-  v4 = a4;
-  if (a3 <= 10)
+  expandedCopy = expanded;
+  if (_section <= 10)
   {
-    if (a3 != 8)
+    if (_section != 8)
     {
-      if (a3 != 9 || [(CHWorkoutDetailDataSource *)self splitsExpanded]== a4)
+      if (_section != 9 || [(CHWorkoutDetailDataSource *)self splitsExpanded]== expanded)
       {
         return;
       }
 
-      [(CHWorkoutDetailDataSource *)self setSplitsExpanded:v4];
+      [(CHWorkoutDetailDataSource *)self setSplitsExpanded:expandedCopy];
       goto LABEL_12;
     }
 
     goto LABEL_10;
   }
 
-  if (a3 == 11)
+  if (_section == 11)
   {
 LABEL_10:
-    if ([(CHWorkoutDetailDataSource *)self segmentsExpanded]== a4)
+    if ([(CHWorkoutDetailDataSource *)self segmentsExpanded]== expanded)
     {
       return;
     }
 
-    [(CHWorkoutDetailDataSource *)self setSegmentsExpanded:v4];
+    [(CHWorkoutDetailDataSource *)self setSegmentsExpanded:expandedCopy];
     goto LABEL_12;
   }
 
-  if (a3 != 12 || [(CHWorkoutDetailDataSource *)self burnBarExpanded]== a4)
+  if (_section != 12 || [(CHWorkoutDetailDataSource *)self burnBarExpanded]== expanded)
   {
     return;
   }
 
-  [(CHWorkoutDetailDataSource *)self setBurnBarExpanded:v4];
+  [(CHWorkoutDetailDataSource *)self setBurnBarExpanded:expandedCopy];
 LABEL_12:
   v17 = objc_alloc_init(NSMutableArray);
-  v7 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-  v8 = [v7 objectAtIndexedSubscript:a3];
+  tableItemsBySection = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+  v8 = [tableItemsBySection objectAtIndexedSubscript:_section];
   v9 = [v8 count];
 
   if (v9)
@@ -3528,141 +3528,141 @@ LABEL_12:
     v10 = 0;
     do
     {
-      v11 = [NSIndexPath indexPathForRow:v10 inSection:a3];
+      v11 = [NSIndexPath indexPathForRow:v10 inSection:_section];
       [v17 addObject:v11];
 
       ++v10;
-      v12 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
-      v13 = [v12 objectAtIndexedSubscript:a3];
+      tableItemsBySection2 = [(CHWorkoutDetailDataSource *)self tableItemsBySection];
+      v13 = [tableItemsBySection2 objectAtIndexedSubscript:_section];
       v14 = [v13 count];
     }
 
     while (v10 < v14);
   }
 
-  v15 = [(CHWorkoutDetailDataSource *)self tableView];
-  v16 = v15;
-  if (v4)
+  tableView = [(CHWorkoutDetailDataSource *)self tableView];
+  v16 = tableView;
+  if (expandedCopy)
   {
-    [v15 insertRowsAtIndexPaths:v17 withRowAnimation:3];
+    [tableView insertRowsAtIndexPaths:v17 withRowAnimation:3];
   }
 
   else
   {
-    [v15 deleteRowsAtIndexPaths:v17 withRowAnimation:3];
+    [tableView deleteRowsAtIndexPaths:v17 withRowAnimation:3];
   }
 }
 
-- (void)expandingHeaderView:(id)a3 didChangeExpanded:(BOOL)a4
+- (void)expandingHeaderView:(id)view didChangeExpanded:(BOOL)expanded
 {
-  v4 = a4;
-  v6 = [a3 section];
+  expandedCopy = expanded;
+  section = [view section];
 
-  [(CHWorkoutDetailDataSource *)self _section:v6 setExpanded:v4];
+  [(CHWorkoutDetailDataSource *)self _section:section setExpanded:expandedCopy];
 }
 
 - (void)_insertMultiSportSection
 {
-  v3 = [(CHWorkoutDetailDataSource *)self tableView];
+  tableView = [(CHWorkoutDetailDataSource *)self tableView];
   v2 = [NSIndexSet indexSetWithIndex:5];
-  [v3 reloadSections:v2 withRowAnimation:3];
+  [tableView reloadSections:v2 withRowAnimation:3];
 }
 
 - (void)_insertSegmentsSection
 {
-  v3 = [(CHWorkoutDetailDataSource *)self tableView];
+  tableView = [(CHWorkoutDetailDataSource *)self tableView];
   v2 = [NSIndexSet indexSetWithIndex:11];
-  [v3 reloadSections:v2 withRowAnimation:3];
+  [tableView reloadSections:v2 withRowAnimation:3];
 }
 
 - (void)_insertDownhillRunsSection
 {
-  v3 = [(CHWorkoutDetailDataSource *)self tableView];
+  tableView = [(CHWorkoutDetailDataSource *)self tableView];
   v4 = [NSIndexSet indexSetWithIndex:10];
-  [v3 reloadSections:v4 withRowAnimation:3];
+  [tableView reloadSections:v4 withRowAnimation:3];
 
   [(CHWorkoutDetailDataSource *)self _createValuesSection];
-  v6 = [(CHWorkoutDetailDataSource *)self tableView];
+  tableView2 = [(CHWorkoutDetailDataSource *)self tableView];
   v5 = [NSIndexSet indexSetWithIndex:2];
-  [v6 reloadSections:v5 withRowAnimation:5];
+  [tableView2 reloadSections:v5 withRowAnimation:5];
 }
 
 - (void)_insertIntervalsSection
 {
-  v3 = [(CHWorkoutDetailDataSource *)self tableView];
+  tableView = [(CHWorkoutDetailDataSource *)self tableView];
   v2 = [NSIndexSet indexSetWithIndex:6];
-  [v3 reloadSections:v2 withRowAnimation:3];
+  [tableView reloadSections:v2 withRowAnimation:3];
 }
 
 - (void)_insertTrackLapsSection
 {
-  v3 = [(CHWorkoutDetailDataSource *)self tableView];
+  tableView = [(CHWorkoutDetailDataSource *)self tableView];
   v2 = [NSIndexSet indexSetWithIndex:7];
-  [v3 reloadSections:v2 withRowAnimation:3];
+  [tableView reloadSections:v2 withRowAnimation:3];
 }
 
 - (void)_insertSwimSetsSection
 {
-  v3 = [(CHWorkoutDetailDataSource *)self tableView];
+  tableView = [(CHWorkoutDetailDataSource *)self tableView];
   v2 = [NSIndexSet indexSetWithIndex:8];
-  [v3 reloadSections:v2 withRowAnimation:3];
+  [tableView reloadSections:v2 withRowAnimation:3];
 }
 
 - (void)_insertSplitsSection
 {
-  v3 = [(CHWorkoutDetailDataSource *)self tableView];
+  tableView = [(CHWorkoutDetailDataSource *)self tableView];
   v2 = [NSIndexSet indexSetWithIndex:9];
-  [v3 reloadSections:v2 withRowAnimation:3];
+  [tableView reloadSections:v2 withRowAnimation:3];
 }
 
 - (void)_insertBurnBarSection
 {
-  v3 = [(CHWorkoutDetailDataSource *)self tableView];
+  tableView = [(CHWorkoutDetailDataSource *)self tableView];
   v2 = [NSIndexSet indexSetWithIndex:12];
-  [v3 reloadSections:v2 withRowAnimation:100];
+  [tableView reloadSections:v2 withRowAnimation:100];
 }
 
 - (void)_createAndInsertValuesSection
 {
   [(CHWorkoutDetailDataSource *)self _createValuesSection];
-  v4 = [(CHWorkoutDetailDataSource *)self tableView];
+  tableView = [(CHWorkoutDetailDataSource *)self tableView];
   v3 = [NSIndexSet indexSetWithIndex:2];
-  [v4 reloadSections:v3 withRowAnimation:100];
+  [tableView reloadSections:v3 withRowAnimation:100];
 }
 
 - (void)_insertHeartRateSection
 {
-  v3 = [(CHWorkoutDetailDataSource *)self tableView];
+  tableView = [(CHWorkoutDetailDataSource *)self tableView];
   v2 = [NSIndexSet indexSetWithIndex:13];
-  [v3 reloadSections:v2 withRowAnimation:100];
+  [tableView reloadSections:v2 withRowAnimation:100];
 }
 
 - (void)_insertPowerSection
 {
-  v3 = [(CHWorkoutDetailDataSource *)self tableView];
+  tableView = [(CHWorkoutDetailDataSource *)self tableView];
   v2 = [NSIndexSet indexSetWithIndex:14];
-  [v3 reloadSections:v2 withRowAnimation:100];
+  [tableView reloadSections:v2 withRowAnimation:100];
 }
 
 - (void)_insertGuidedRunMediaMomentsSection
 {
-  v3 = [(CHWorkoutDetailDataSource *)self tableView];
+  tableView = [(CHWorkoutDetailDataSource *)self tableView];
   v2 = [NSIndexSet indexSetWithIndex:16];
-  [v3 reloadSections:v2 withRowAnimation:100];
+  [tableView reloadSections:v2 withRowAnimation:100];
 }
 
 - (void)_insertEffortSection
 {
-  v3 = [(CHWorkoutDetailDataSource *)self tableView];
+  tableView = [(CHWorkoutDetailDataSource *)self tableView];
   v2 = [NSIndexSet indexSetWithIndex:3];
-  [v3 reloadSections:v2 withRowAnimation:100];
+  [tableView reloadSections:v2 withRowAnimation:100];
 }
 
 - (void)_insertWorkoutVoiceOutroSection
 {
-  v3 = [(CHWorkoutDetailDataSource *)self tableView];
+  tableView = [(CHWorkoutDetailDataSource *)self tableView];
   v2 = [NSIndexSet indexSetWithIndex:1];
-  [v3 reloadSections:v2 withRowAnimation:100];
+  [tableView reloadSections:v2 withRowAnimation:100];
 }
 
 - (BOOL)weatherOrLocationAvailableForWorkout
@@ -3699,7 +3699,7 @@ LABEL_12:
   [WeakRetained reloadData];
 }
 
-- (void)dataSourceDidUpdateOutroState:(id)a3
+- (void)dataSourceDidUpdateOutroState:(id)state
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

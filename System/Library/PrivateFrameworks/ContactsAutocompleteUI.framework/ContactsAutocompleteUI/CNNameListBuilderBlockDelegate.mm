@@ -1,23 +1,23 @@
 @interface CNNameListBuilderBlockDelegate
-- (BOOL)builder:(id)a3 isValidLengthOfString:(id)a4;
-- (id)builder:(id)a3 nameAtIndex:(int64_t)a4;
+- (BOOL)builder:(id)builder isValidLengthOfString:(id)string;
+- (id)builder:(id)builder nameAtIndex:(int64_t)index;
 @end
 
 @implementation CNNameListBuilderBlockDelegate
 
-- (BOOL)builder:(id)a3 isValidLengthOfString:(id)a4
+- (BOOL)builder:(id)builder isValidLengthOfString:(id)string
 {
-  v5 = a4;
-  v6 = [(CNNameListBuilderBlockDelegate *)self lengthValidationBlock];
-  v7 = (v6)[2](v6, v5);
+  stringCopy = string;
+  lengthValidationBlock = [(CNNameListBuilderBlockDelegate *)self lengthValidationBlock];
+  v7 = (lengthValidationBlock)[2](lengthValidationBlock, stringCopy);
 
   return v7;
 }
 
-- (id)builder:(id)a3 nameAtIndex:(int64_t)a4
+- (id)builder:(id)builder nameAtIndex:(int64_t)index
 {
-  v5 = [(CNNameListBuilderBlockDelegate *)self nameProviderBlock];
-  v6 = v5[2](v5, a4);
+  nameProviderBlock = [(CNNameListBuilderBlockDelegate *)self nameProviderBlock];
+  v6 = nameProviderBlock[2](nameProviderBlock, index);
 
   return v6;
 }

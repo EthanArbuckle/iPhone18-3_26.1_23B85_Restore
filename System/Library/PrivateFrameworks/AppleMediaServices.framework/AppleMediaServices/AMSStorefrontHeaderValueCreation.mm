@@ -1,18 +1,18 @@
 @interface AMSStorefrontHeaderValueCreation
-+ (id)combinedStorefrontFromStorefront:(id)a3 suffix:(id)a4 error:(id *)a5;
-+ (void)storefrontHeaderValueForAccount:(ACAccount *)a3 bag:(AMSBagProtocol *)a4 mediaType:(NSString *)a5 allowFailedSuffixFetch:(BOOL)a6 completionHandler:(id)a7;
++ (id)combinedStorefrontFromStorefront:(id)storefront suffix:(id)suffix error:(id *)error;
++ (void)storefrontHeaderValueForAccount:(ACAccount *)account bag:(AMSBagProtocol *)bag mediaType:(NSString *)type allowFailedSuffixFetch:(BOOL)fetch completionHandler:(id)handler;
 @end
 
 @implementation AMSStorefrontHeaderValueCreation
 
-+ (id)combinedStorefrontFromStorefront:(id)a3 suffix:(id)a4 error:(id *)a5
++ (id)combinedStorefrontFromStorefront:(id)storefront suffix:(id)suffix error:(id *)error
 {
   v6 = sub_192F967CC();
   v8 = v7;
-  if (a4)
+  if (suffix)
   {
     v9 = sub_192F967CC();
-    a4 = v10;
+    suffix = v10;
   }
 
   else
@@ -20,26 +20,26 @@
     v9 = 0;
   }
 
-  static StorefrontHeaderValueCreation.combinedStorefront(fromStorefront:suffix:)(v6, v8, v9, a4);
+  static StorefrontHeaderValueCreation.combinedStorefront(fromStorefront:suffix:)(v6, v8, v9, suffix);
 
   v11 = sub_192F9679C();
 
   return v11;
 }
 
-+ (void)storefrontHeaderValueForAccount:(ACAccount *)a3 bag:(AMSBagProtocol *)a4 mediaType:(NSString *)a5 allowFailedSuffixFetch:(BOOL)a6 completionHandler:(id)a7
++ (void)storefrontHeaderValueForAccount:(ACAccount *)account bag:(AMSBagProtocol *)bag mediaType:(NSString *)type allowFailedSuffixFetch:(BOOL)fetch completionHandler:(id)handler
 {
-  v12 = _Block_copy(a7);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  *(v13 + 16) = a3;
-  *(v13 + 24) = a4;
-  *(v13 + 32) = a5;
-  *(v13 + 40) = a6;
+  *(v13 + 16) = account;
+  *(v13 + 24) = bag;
+  *(v13 + 32) = type;
+  *(v13 + 40) = fetch;
   *(v13 + 48) = v12;
-  *(v13 + 56) = a1;
-  v14 = a3;
+  *(v13 + 56) = self;
+  accountCopy = account;
   swift_unknownObjectRetain();
-  v15 = a5;
+  typeCopy = type;
 
   sub_1928FB3BC(&unk_192FCE290, v13);
 }

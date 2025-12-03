@@ -1,7 +1,7 @@
 @interface PersonalCollectionShareItemSource
 - (NSArray)activityProviders;
 - (NSArray)excludedActivityTypes;
-- (PersonalCollectionShareItemSource)initWithCollectionHandlerInfo:(id)a3;
+- (PersonalCollectionShareItemSource)initWithCollectionHandlerInfo:(id)info;
 @end
 
 @implementation PersonalCollectionShareItemSource
@@ -16,52 +16,52 @@
 
 - (NSArray)activityProviders
 {
-  v3 = [(PersonalCollectionShareItemSource *)self textProvider];
-  v4 = [(PersonalCollectionShareItemSource *)self urlProvider];
-  v8[1] = v4;
-  v5 = [(PersonalCollectionShareItemSource *)self linkPresentationProvider];
-  v8[2] = v5;
+  textProvider = [(PersonalCollectionShareItemSource *)self textProvider];
+  urlProvider = [(PersonalCollectionShareItemSource *)self urlProvider];
+  v8[1] = urlProvider;
+  linkPresentationProvider = [(PersonalCollectionShareItemSource *)self linkPresentationProvider];
+  v8[2] = linkPresentationProvider;
   v6 = [NSArray arrayWithObjects:v8 count:3];
 
   return v6;
 }
 
-- (PersonalCollectionShareItemSource)initWithCollectionHandlerInfo:(id)a3
+- (PersonalCollectionShareItemSource)initWithCollectionHandlerInfo:(id)info
 {
-  v4 = a3;
-  if ([v4 canShare])
+  infoCopy = info;
+  if ([infoCopy canShare])
   {
     v15.receiver = self;
     v15.super_class = PersonalCollectionShareItemSource;
     v5 = [(PersonalCollectionShareItemSource *)&v15 init];
     if (v5)
     {
-      v6 = [[_TtC4Maps30UserGuidesActivityDataProvider alloc] initWithUserGuide:v4];
+      v6 = [[_TtC4Maps30UserGuidesActivityDataProvider alloc] initWithUserGuide:infoCopy];
       [(PersonalCollectionShareItemSource *)v5 setDataProvider:v6];
 
-      v7 = [(PersonalCollectionShareItemSource *)v5 dataProvider];
-      v8 = [MUTextActivityProvider activityProviderFromDataProvider:v7];
+      dataProvider = [(PersonalCollectionShareItemSource *)v5 dataProvider];
+      v8 = [MUTextActivityProvider activityProviderFromDataProvider:dataProvider];
       [(PersonalCollectionShareItemSource *)v5 setTextProvider:v8];
 
-      v9 = [(PersonalCollectionShareItemSource *)v5 dataProvider];
-      v10 = [MUURLActivityProvider activityProviderFromDataProvider:v9];
+      dataProvider2 = [(PersonalCollectionShareItemSource *)v5 dataProvider];
+      v10 = [MUURLActivityProvider activityProviderFromDataProvider:dataProvider2];
       [(PersonalCollectionShareItemSource *)v5 setUrlProvider:v10];
 
-      v11 = [(PersonalCollectionShareItemSource *)v5 dataProvider];
-      v12 = [MULinkMetadataActivityProvider activityProviderFromDataProvider:v11];
+      dataProvider3 = [(PersonalCollectionShareItemSource *)v5 dataProvider];
+      v12 = [MULinkMetadataActivityProvider activityProviderFromDataProvider:dataProvider3];
       [(PersonalCollectionShareItemSource *)v5 setLinkPresentationProvider:v12];
     }
 
     self = v5;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 @end

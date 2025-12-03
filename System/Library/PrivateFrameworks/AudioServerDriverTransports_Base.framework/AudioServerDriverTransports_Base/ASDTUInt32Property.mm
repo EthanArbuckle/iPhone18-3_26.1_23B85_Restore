@@ -1,32 +1,32 @@
 @interface ASDTUInt32Property
-- (ASDTUInt32Property)initWithConfig:(id)a3;
-- (int)checkPropertyValue:(id)a3;
+- (ASDTUInt32Property)initWithConfig:(id)config;
+- (int)checkPropertyValue:(id)value;
 - (unsigned)uint32Value;
-- (void)setUint32Value:(unsigned int)a3;
+- (void)setUint32Value:(unsigned int)value;
 @end
 
 @implementation ASDTUInt32Property
 
-- (ASDTUInt32Property)initWithConfig:(id)a3
+- (ASDTUInt32Property)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v11.receiver = self;
   v11.super_class = ASDTUInt32Property;
-  v5 = [(ASDTCustomProperty *)&v11 initWithConfig:v4 propertyDataType:1918990199 qualifierDataType:0];
+  v5 = [(ASDTCustomProperty *)&v11 initWithConfig:configCopy propertyDataType:1918990199 qualifierDataType:0];
   v6 = v5;
   if (v5)
   {
     [(ASDTCustomProperty *)v5 setCacheMode:2];
-    v10 = 0;
-    v7 = [v4 asdtPropertyValue];
+    unsignedIntValue = 0;
+    asdtPropertyValue = [configCopy asdtPropertyValue];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v7 unsignedIntValue];
+      unsignedIntValue = [asdtPropertyValue unsignedIntValue];
     }
 
     [(ASDTCustomProperty *)v6 setPropertyValueSize:4];
-    v8 = [MEMORY[0x277CBEA90] dataWithBytes:&v10 length:4];
+    v8 = [MEMORY[0x277CBEA90] dataWithBytes:&unsignedIntValue length:4];
     [(ASDTCustomProperty *)v6 storePropertyValue:v8];
   }
 
@@ -35,14 +35,14 @@
 
 - (unsigned)uint32Value
 {
-  v3 = [(ASDTCustomProperty *)self propertyValue];
-  v4 = [(ASDTCustomProperty *)self propertyValue];
+  propertyValue = [(ASDTCustomProperty *)self propertyValue];
+  propertyValue2 = [(ASDTCustomProperty *)self propertyValue];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = *[v3 bytes];
+    v6 = *[propertyValue bytes];
   }
 
   else
@@ -53,22 +53,22 @@
   return v6;
 }
 
-- (void)setUint32Value:(unsigned int)a3
+- (void)setUint32Value:(unsigned int)value
 {
-  v5 = a3;
-  v4 = [MEMORY[0x277CBEA90] dataWithBytes:&v5 length:4];
+  valueCopy = value;
+  v4 = [MEMORY[0x277CBEA90] dataWithBytes:&valueCopy length:4];
   [(ASDTCustomProperty *)self setPropertyValue:v4];
 }
 
-- (int)checkPropertyValue:(id)a3
+- (int)checkPropertyValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v8.receiver = self;
   v8.super_class = ASDTUInt32Property;
-  v5 = [(ASDTCustomProperty *)&v8 checkPropertyValue:v4];
+  v5 = [(ASDTCustomProperty *)&v8 checkPropertyValue:valueCopy];
   if (!v5)
   {
-    v6 = [v4 length];
+    v6 = [valueCopy length];
     if (v6 == [(ASDTCustomProperty *)self propertyValueSize])
     {
       v5 = 0;

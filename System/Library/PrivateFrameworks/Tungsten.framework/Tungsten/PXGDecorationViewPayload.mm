@@ -1,7 +1,7 @@
 @interface PXGDecorationViewPayload
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)shouldSeparateViewLayers;
-- (PXGDecorationViewPayload)initWithDecorationOptions:(unint64_t)a3 viewClass:(Class)a4 userData:(id)a5;
+- (PXGDecorationViewPayload)initWithDecorationOptions:(unint64_t)options viewClass:(Class)class userData:(id)data;
 - (unint64_t)hash;
 @end
 
@@ -11,9 +11,9 @@
 {
   v6.receiver = self;
   v6.super_class = PXGDecorationViewPayload;
-  v3 = [(PXGViewPayload *)&v6 shouldSeparateViewLayers];
+  shouldSeparateViewLayers = [(PXGViewPayload *)&v6 shouldSeparateViewLayers];
   v4 = NSClassFromString(&cfstr_Pxphotosgridre.isa);
-  return v3 && [(PXGViewPayload *)self viewClass]!= v4;
+  return shouldSeparateViewLayers && [(PXGViewPayload *)self viewClass]!= v4;
 }
 
 - (unint64_t)hash
@@ -24,10 +24,10 @@
   return v3 ^ (4 * [(PXGDecorationViewPayload *)self decorationOptions]);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -36,10 +36,10 @@
   {
     v8.receiver = self;
     v8.super_class = PXGDecorationViewPayload;
-    if ([(PXGViewPayload *)&v8 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(PXGViewPayload *)&v8 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = [(PXGDecorationViewPayload *)v4 decorationOptions];
-      v6 = v5 == [(PXGDecorationViewPayload *)self decorationOptions];
+      decorationOptions = [(PXGDecorationViewPayload *)equalCopy decorationOptions];
+      v6 = decorationOptions == [(PXGDecorationViewPayload *)self decorationOptions];
     }
 
     else
@@ -51,14 +51,14 @@
   return v6;
 }
 
-- (PXGDecorationViewPayload)initWithDecorationOptions:(unint64_t)a3 viewClass:(Class)a4 userData:(id)a5
+- (PXGDecorationViewPayload)initWithDecorationOptions:(unint64_t)options viewClass:(Class)class userData:(id)data
 {
   v7.receiver = self;
   v7.super_class = PXGDecorationViewPayload;
-  result = [(PXGViewPayload *)&v7 initWithViewClass:a4 userData:a5];
+  result = [(PXGViewPayload *)&v7 initWithViewClass:class userData:data];
   if (result)
   {
-    result->_decorationOptions = a3;
+    result->_decorationOptions = options;
   }
 
   return result;

@@ -1,12 +1,12 @@
 @interface CAMutableDisplayPreferences
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CAMutableDisplayPreferences
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CADisplayPreferences allocWithZone:a3];
+  v4 = [CADisplayPreferences allocWithZone:zone];
 
   return [(CADisplayPreferences *)v4 initWithPreferences:self];
 }

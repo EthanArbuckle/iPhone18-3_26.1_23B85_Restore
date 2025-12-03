@@ -1,6 +1,6 @@
 @interface IDSListener
 - (_TtC23ActivitySharingServices11IDSListener)init;
-- (void)messageCenter:(id)a3 didReceivePayload:(id)a4 type:(int)a5 fromSenderAddress:(id)a6 messageHandledCompletion:(id)a7;
+- (void)messageCenter:(id)center didReceivePayload:(id)payload type:(int)type fromSenderAddress:(id)address messageHandledCompletion:(id)completion;
 @end
 
 @implementation IDSListener
@@ -12,13 +12,13 @@
   return result;
 }
 
-- (void)messageCenter:(id)a3 didReceivePayload:(id)a4 type:(int)a5 fromSenderAddress:(id)a6 messageHandledCompletion:(id)a7
+- (void)messageCenter:(id)center didReceivePayload:(id)payload type:(int)type fromSenderAddress:(id)address messageHandledCompletion:(id)completion
 {
-  v12 = _Block_copy(a7);
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v22 = self;
+  v12 = _Block_copy(completion);
+  centerCopy = center;
+  payloadCopy = payload;
+  addressCopy = address;
+  selfCopy = self;
   v16 = sub_221FB5B18();
   v18 = v17;
 
@@ -26,7 +26,7 @@
   v21 = v20;
 
   _Block_copy(v12);
-  sub_221EDA988(v16, v18, a5, v19, v21, v22, v12);
+  sub_221EDA988(v16, v18, type, v19, v21, selfCopy, v12);
   _Block_release(v12);
   _Block_release(v12);
 

@@ -1,16 +1,16 @@
 @interface TSCHMultiDataBarChartRep
-- (BOOL)p_repElementIsAboveInterceptForSeriesIndex:(unint64_t)a3 groupIndex:(unint64_t)a4;
+- (BOOL)p_repElementIsAboveInterceptForSeriesIndex:(unint64_t)index groupIndex:(unint64_t)groupIndex;
 - (CGRect)currentRepElementBoundsInNaturalSpace;
-- (CGRect)p_clampRenderingElementFrame:(CGRect)a3 barElementFrame:(CGRect)a4;
-- (CGRect)p_renderingElementFrameForBarElementFrame:(CGRect)a3;
+- (CGRect)p_clampRenderingElementFrame:(CGRect)frame barElementFrame:(CGRect)elementFrame;
+- (CGRect)p_renderingElementFrameForBarElementFrame:(CGRect)frame;
 - (id)p_barElementsRenderer;
 - (id)p_currentBarSeriesModelCache;
 - (unint64_t)p_currentGroupIndex;
 - (unint64_t)p_currentSeriesIndex;
-- (void)p_calculateInterceptForElementFrame:(CGRect)a3 elementLayer:(id)a4 animationInfo:(id)a5;
-- (void)updateAppearanceForElementLayer:(id)a3 seriesIndex:(unint64_t)a4;
-- (void)updateElementFrame:(CGRect)a3 forElementLayer:(id)a4 series:(id)a5 addingAnimationsToAnimationInfo:(id)a6;
-- (void)updateElementLayerLayoutForCurrentRepElementIndexAnimationInfo:(id)a3;
+- (void)p_calculateInterceptForElementFrame:(CGRect)frame elementLayer:(id)layer animationInfo:(id)info;
+- (void)updateAppearanceForElementLayer:(id)layer seriesIndex:(unint64_t)index;
+- (void)updateElementFrame:(CGRect)frame forElementLayer:(id)layer series:(id)series addingAnimationsToAnimationInfo:(id)info;
+- (void)updateElementLayerLayoutForCurrentRepElementIndexAnimationInfo:(id)info;
 @end
 
 @implementation TSCHMultiDataBarChartRep
@@ -127,17 +127,17 @@ LABEL_11:
   return v37;
 }
 
-- (CGRect)p_clampRenderingElementFrame:(CGRect)a3 barElementFrame:(CGRect)a4
+- (CGRect)p_clampRenderingElementFrame:(CGRect)frame barElementFrame:(CGRect)elementFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  if (CGRectIsNull(a3))
+  height = elementFrame.size.height;
+  width = elementFrame.size.width;
+  y = elementFrame.origin.y;
+  x = elementFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
+  if (CGRectIsNull(frame))
   {
     v22.origin.x = x;
     v22.origin.y = y;
@@ -182,13 +182,13 @@ LABEL_11:
   return result;
 }
 
-- (CGRect)p_renderingElementFrameForBarElementFrame:(CGRect)a3
+- (CGRect)p_renderingElementFrameForBarElementFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectIsEmpty(a3))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (!CGRectIsEmpty(frame))
   {
     v13 = objc_msgSend_p_barElementsRenderer(self, v8, v9, v10, v11);
     if (!v13)
@@ -298,7 +298,7 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)p_repElementIsAboveInterceptForSeriesIndex:(unint64_t)a3 groupIndex:(unint64_t)a4
+- (BOOL)p_repElementIsAboveInterceptForSeriesIndex:(unint64_t)index groupIndex:(unint64_t)groupIndex
 {
   v9 = objc_msgSend_chartLayout(self, a2, v4, v5, v6);
   v14 = objc_msgSend_model(v9, v10, v11, v12, v13);
@@ -313,7 +313,7 @@ LABEL_11:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v30, v31, v32, v33);
   }
 
-  v35 = objc_msgSend_barModelCacheForSeries_(v14, v15, v16, v17, v18, a3);
+  v35 = objc_msgSend_barModelCacheForSeries_(v14, v15, v16, v17, v18, index);
   if (!v35)
   {
     v39 = MEMORY[0x277D81150];
@@ -329,25 +329,25 @@ LABEL_11:
   v64 = objc_msgSend_valueAxis(v35, v60, v61, v62, v63);
   objc_msgSend_unitSpaceIntercept(v35, v65, v66, v67, v68);
   v70 = v69;
-  objc_msgSend_unitSpaceValueForSeries_groupIndex_(v64, v71, v69, v72, v73, v54, a4);
+  objc_msgSend_unitSpaceValueForSeries_groupIndex_(v64, v71, v69, v72, v73, v54, groupIndex);
   v75 = v74;
-  objc_msgSend_beginValueForSeries_groupIndex_unitSpaceIntercept_relativelyPositive_valueAxis_(v59, v76, v70, v77, v78, a3, a4, v74 >= v70, v64);
+  objc_msgSend_beginValueForSeries_groupIndex_unitSpaceIntercept_relativelyPositive_valueAxis_(v59, v76, v70, v77, v78, index, groupIndex, v74 >= v70, v64);
   v80 = v75 >= v79;
 
   return v80;
 }
 
-- (void)p_calculateInterceptForElementFrame:(CGRect)a3 elementLayer:(id)a4 animationInfo:(id)a5
+- (void)p_calculateInterceptForElementFrame:(CGRect)frame elementLayer:(id)layer animationInfo:(id)info
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v110[3] = *MEMORY[0x277D85DE8];
-  v109 = a3;
-  v11 = a4;
-  v13 = a5;
-  if (!v13)
+  frameCopy = frame;
+  layerCopy = layer;
+  infoCopy = info;
+  if (!infoCopy)
   {
     v17 = MEMORY[0x277D81150];
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, v14, v15, v16, "[TSCHMultiDataBarChartRep p_calculateInterceptForElementFrame:elementLayer:animationInfo:]");
@@ -357,9 +357,9 @@ LABEL_11:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v28, v29, v30, v31);
   }
 
-  v32 = objc_msgSend_aboveIntercept(v13, v12, v14, v15, v16);
+  v32 = objc_msgSend_aboveIntercept(infoCopy, v12, v14, v15, v16);
   isHorizontalChart = objc_msgSend_isHorizontalChart(self, v33, v34, v35, v36);
-  v42 = objc_msgSend_currentValueLayer(v11, v38, v39, v40, v41);
+  v42 = objc_msgSend_currentValueLayer(layerCopy, v38, v39, v40, v41);
   v43 = *(MEMORY[0x277CBF3A0] + 16);
   v44 = *(MEMORY[0x277CBF3A0] + 24);
   if (v32)
@@ -383,7 +383,7 @@ LABEL_11:
     x = CGRectGetMaxX(v112);
   }
 
-  v46 = sub_276377A04(&v109, isHorizontalChart);
+  v46 = sub_276377A04(&frameCopy, isHorizontalChart);
   if (isHorizontalChart)
   {
     v49 = v43;
@@ -434,15 +434,15 @@ LABEL_11:
   }
 
   v69 = sub_276377A04(&v105, v65);
-  v70 = sub_276377A04(&v109, v65);
-  objc_msgSend_setCurrentAtIntercept_(v13, v71, v70, v72, v73, v69 == 0.0);
-  objc_msgSend_setAtIntercept_(v13, v74, v75, v76, v77, v70 == 0.0);
-  objc_msgSend_setCurrentAboveIntercept_(v13, v78, v79, v80, v81, v68);
-  objc_msgSend_setInterceptRect_(v13, v82, x, y, v49, v50);
+  v70 = sub_276377A04(&frameCopy, v65);
+  objc_msgSend_setCurrentAtIntercept_(infoCopy, v71, v70, v72, v73, v69 == 0.0);
+  objc_msgSend_setAtIntercept_(infoCopy, v74, v75, v76, v77, v70 == 0.0);
+  objc_msgSend_setCurrentAboveIntercept_(infoCopy, v78, v79, v80, v81, v68);
+  objc_msgSend_setInterceptRect_(infoCopy, v82, x, y, v49, v50);
   if (v32 != v68 && v69 != 0.0 && v70 != 0.0)
   {
     v83 = sub_276377A04(&v105, v65);
-    v85 = v83 + sub_276377A04(&v109, v65);
+    v85 = v83 + sub_276377A04(&frameCopy, v65);
     v87 = v83 / v85;
     v88 = v85 == 0.0;
     v89 = 0.5;
@@ -456,16 +456,16 @@ LABEL_11:
     v110[1] = v90;
     v110[2] = &unk_28856E8A0;
     v95 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v91, v92, v93, v94, v110, 3);
-    objc_msgSend_setKeyTimes_(v13, v96, v97, v98, v99, v95);
+    objc_msgSend_setKeyTimes_(infoCopy, v96, v97, v98, v99, v95);
 
-    objc_msgSend_setCrossesIntercept_(v13, v100, v101, v102, v103, 1);
+    objc_msgSend_setCrossesIntercept_(infoCopy, v100, v101, v102, v103, 1);
   }
 }
 
-- (void)updateElementLayerLayoutForCurrentRepElementIndexAnimationInfo:(id)a3
+- (void)updateElementLayerLayoutForCurrentRepElementIndexAnimationInfo:(id)info
 {
-  v5 = a3;
-  if (!v5)
+  infoCopy = info;
+  if (!infoCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, v6, v7, v8, "[TSCHMultiDataBarChartRep updateElementLayerLayoutForCurrentRepElementIndexAnimationInfo:]");
@@ -499,22 +499,22 @@ LABEL_11:
   v61.size.width = v53;
   v61.size.height = v55;
   v62 = CGRectApplyAffineTransform(v61, &v60);
-  objc_msgSend_setChartBodyFrameInRepElementSpace_(v5, v57, v62.origin.x, v62.origin.y, v62.size.width, v62.size.height);
+  objc_msgSend_setChartBodyFrameInRepElementSpace_(infoCopy, v57, v62.origin.x, v62.origin.y, v62.size.width, v62.size.height);
   v58.receiver = self;
   v58.super_class = TSCHMultiDataBarChartRep;
-  [(TSCHMultiDataBarChartRep *)&v58 updateElementLayerLayoutForCurrentRepElementIndexAnimationInfo:v5];
+  [(TSCHMultiDataBarChartRep *)&v58 updateElementLayerLayoutForCurrentRepElementIndexAnimationInfo:infoCopy];
 }
 
-- (void)updateElementFrame:(CGRect)a3 forElementLayer:(id)a4 series:(id)a5 addingAnimationsToAnimationInfo:(id)a6
+- (void)updateElementFrame:(CGRect)frame forElementLayer:(id)layer series:(id)series addingAnimationsToAnimationInfo:(id)info
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a4;
-  v14 = a5;
-  v16 = a6;
-  if (!v16)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layerCopy = layer;
+  seriesCopy = series;
+  infoCopy = info;
+  if (!infoCopy)
   {
     v20 = MEMORY[0x277D81150];
     v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, v17, v18, v19, "[TSCHMultiDataBarChartRep updateElementFrame:forElementLayer:series:addingAnimationsToAnimationInfo:]");
@@ -524,22 +524,22 @@ LABEL_11:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v31, v32, v33, v34);
   }
 
-  v35 = objc_msgSend_seriesIndex(v14, v15, v17, v18, v19);
+  v35 = objc_msgSend_seriesIndex(seriesCopy, v15, v17, v18, v19);
   v40 = objc_msgSend_currentGroupIndex(self, v36, v37, v38, v39);
   IsAboveInterceptForSeriesIndex_groupIndex = objc_msgSend_p_repElementIsAboveInterceptForSeriesIndex_groupIndex_(self, v41, v42, v43, v44, v35, v40);
-  objc_msgSend_setAboveIntercept_(v16, v46, v47, v48, v49, IsAboveInterceptForSeriesIndex_groupIndex);
-  objc_msgSend_p_calculateInterceptForElementFrame_elementLayer_animationInfo_(self, v50, x, y, width, v13, v16, height);
+  objc_msgSend_setAboveIntercept_(infoCopy, v46, v47, v48, v49, IsAboveInterceptForSeriesIndex_groupIndex);
+  objc_msgSend_p_calculateInterceptForElementFrame_elementLayer_animationInfo_(self, v50, x, y, width, layerCopy, infoCopy, height);
   v51.receiver = self;
   v51.super_class = TSCHMultiDataBarChartRep;
-  [(TSCHMultiDataBarChartRep *)&v51 updateElementFrame:v13 forElementLayer:v14 series:v16 addingAnimationsToAnimationInfo:x, y, width, height];
+  [(TSCHMultiDataBarChartRep *)&v51 updateElementFrame:layerCopy forElementLayer:seriesCopy series:infoCopy addingAnimationsToAnimationInfo:x, y, width, height];
 }
 
-- (void)updateAppearanceForElementLayer:(id)a3 seriesIndex:(unint64_t)a4
+- (void)updateAppearanceForElementLayer:(id)layer seriesIndex:(unint64_t)index
 {
-  v6 = a3;
+  layerCopy = layer;
   v55.receiver = self;
   v55.super_class = TSCHMultiDataBarChartRep;
-  [(TSCHMultiDataBarChartRep *)&v55 updateAppearanceForElementLayer:v6 seriesIndex:a4];
+  [(TSCHMultiDataBarChartRep *)&v55 updateAppearanceForElementLayer:layerCopy seriesIndex:index];
   v11 = objc_msgSend_chartLayout(self, v7, v8, v9, v10);
   v16 = objc_msgSend_model(v11, v12, v13, v14, v15);
 
@@ -553,11 +553,11 @@ LABEL_11:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v32, v33, v34, v35);
   }
 
-  v36 = objc_msgSend_barModelCacheForSeries_(v16, v17, v18, v19, v20, a4);
+  v36 = objc_msgSend_barModelCacheForSeries_(v16, v17, v18, v19, v20, index);
   v41 = objc_msgSend_fill(v36, v37, v38, v39, v40);
   v46 = objc_msgSend_stroke(v36, v42, v43, v44, v45);
   objc_msgSend_viewScale(self, v47, v48, v49, v50);
-  objc_msgSend_setFill_stroke_withViewScale_(v6, v51, v52, v53, v54, v41, v46);
+  objc_msgSend_setFill_stroke_withViewScale_(layerCopy, v51, v52, v53, v54, v41, v46);
 }
 
 @end

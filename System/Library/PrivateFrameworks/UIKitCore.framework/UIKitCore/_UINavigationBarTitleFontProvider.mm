@@ -1,6 +1,6 @@
 @interface _UINavigationBarTitleFontProvider
-+ (id)providerForIdiom:(int64_t)a3;
-+ (void)registerProviderClass:(Class)a3 forIdiom:(int64_t)a4;
++ (id)providerForIdiom:(int64_t)idiom;
++ (void)registerProviderClass:(Class)class forIdiom:(int64_t)idiom;
 - (id)defaultInlineTitleFont;
 - (id)defaultTitleFont;
 @end
@@ -39,7 +39,7 @@ LABEL_6:
   return [off_1E70ECC18 boldSystemFontOfSize:?];
 }
 
-+ (void)registerProviderClass:(Class)a3 forIdiom:(int64_t)a4
++ (void)registerProviderClass:(Class)class forIdiom:(int64_t)idiom
 {
   v6 = _register;
   if (!_register)
@@ -51,11 +51,11 @@ LABEL_6:
     v6 = _register;
   }
 
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v6 setObject:a3 forKeyedSubscript:v9];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:idiom];
+  [v6 setObject:class forKeyedSubscript:v9];
 }
 
-+ (id)providerForIdiom:(int64_t)a3
++ (id)providerForIdiom:(int64_t)idiom
 {
   v4 = _register;
   if (!_register)
@@ -67,7 +67,7 @@ LABEL_6:
     v4 = _register;
   }
 
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:idiom];
   v8 = [v4 objectForKeyedSubscript:v7];
 
   v9 = objc_opt_new();

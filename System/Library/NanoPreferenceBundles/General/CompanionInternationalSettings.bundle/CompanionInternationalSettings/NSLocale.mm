@@ -1,38 +1,38 @@
 @interface NSLocale
-+ (id)_distinctiveLanguageIdentifierForLanguageIdentifier:(id)a3;
-+ (id)string:(id)a3 withCapitalizedDisplayNamesForFirstLanguageIdentifier:(id)a4 secondLanguageIdentifier:(id)a5 thirdLanguageIdentifier:(id)a6;
++ (id)_distinctiveLanguageIdentifierForLanguageIdentifier:(id)identifier;
++ (id)string:(id)string withCapitalizedDisplayNamesForFirstLanguageIdentifier:(id)identifier secondLanguageIdentifier:(id)languageIdentifier thirdLanguageIdentifier:(id)thirdLanguageIdentifier;
 @end
 
 @implementation NSLocale
 
-+ (id)string:(id)a3 withCapitalizedDisplayNamesForFirstLanguageIdentifier:(id)a4 secondLanguageIdentifier:(id)a5 thirdLanguageIdentifier:(id)a6
++ (id)string:(id)string withCapitalizedDisplayNamesForFirstLanguageIdentifier:(id)identifier secondLanguageIdentifier:(id)languageIdentifier thirdLanguageIdentifier:(id)thirdLanguageIdentifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  stringCopy = string;
+  identifierCopy = identifier;
+  languageIdentifierCopy = languageIdentifier;
+  thirdLanguageIdentifierCopy = thirdLanguageIdentifier;
   v13 = +[NSMutableArray array];
   v14 = v13;
-  if (v10)
+  if (identifierCopy)
   {
-    [v13 addObject:v10];
+    [v13 addObject:identifierCopy];
   }
 
-  if (v11)
+  if (languageIdentifierCopy)
   {
-    [v14 addObject:v11];
+    [v14 addObject:languageIdentifierCopy];
   }
 
-  v35 = v11;
-  v36 = v10;
-  if (v12)
+  v35 = languageIdentifierCopy;
+  v36 = identifierCopy;
+  if (thirdLanguageIdentifierCopy)
   {
-    [v14 addObject:v12];
+    [v14 addObject:thirdLanguageIdentifierCopy];
   }
 
-  v34 = v12;
+  v34 = thirdLanguageIdentifierCopy;
   v15 = +[NSMutableArray array];
-  v16 = [v9 rangeOfString:@"%@"];
+  v16 = [stringCopy rangeOfString:@"%@"];
   if ([v14 count])
   {
     v17 = 0;
@@ -57,7 +57,7 @@
       v23 = 0x7FFFFFFFFFFFFFFFLL;
       if (v16 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v23 = [v9 rangeOfString:@"%@" options:0 range:{v16 + 1, objc_msgSend(v9, "length") + ~v16}];
+        v23 = [stringCopy rangeOfString:@"%@" options:0 range:{v16 + 1, objc_msgSend(stringCopy, "length") + ~v16}];
       }
 
       ++v17;
@@ -67,7 +67,7 @@
     while (v17 < [v14 count]);
   }
 
-  v24 = v9;
+  v24 = stringCopy;
   v25 = v15;
   if ([v15 count] == &dword_0 + 1)
   {
@@ -113,7 +113,7 @@ LABEL_22:
   return v27;
 }
 
-+ (id)_distinctiveLanguageIdentifierForLanguageIdentifier:(id)a3
++ (id)_distinctiveLanguageIdentifierForLanguageIdentifier:(id)identifier
 {
   v3 = sub_1ABF8();
   sub_155C0(v3);

@@ -1,10 +1,10 @@
 @interface _ICLLPlaybackItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _ICLLPlaybackItem
@@ -48,16 +48,16 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   itemId = self->_itemId;
-  if (itemId | *(v4 + 3))
+  if (itemId | *(equalCopy + 3))
   {
     if (![(NSString *)itemId isEqual:?])
     {
@@ -66,7 +66,7 @@
   }
 
   mediaId = self->_mediaId;
-  if (mediaId | *(v4 + 4))
+  if (mediaId | *(equalCopy + 4))
   {
     if (![(NSString *)mediaId isEqual:?])
     {
@@ -75,22 +75,22 @@
   }
 
   has = self->_has;
-  v8 = *(v4 + 56);
+  v8 = *(equalCopy + 56);
   if (has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_contributingParticipantId != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_contributingParticipantId != *(equalCopy + 1))
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
     goto LABEL_24;
   }
 
   container = self->_container;
-  if (container | *(v4 + 2))
+  if (container | *(equalCopy + 2))
   {
     if (![(_ICLLPlaybackItemContainer *)container isEqual:?])
     {
@@ -98,7 +98,7 @@
     }
 
     has = self->_has;
-    v8 = *(v4 + 56);
+    v8 = *(equalCopy + 56);
   }
 
   if ((has & 4) != 0)
@@ -110,13 +110,13 @@
 
     if (self->_isExplicit)
     {
-      if ((*(v4 + 52) & 1) == 0)
+      if ((*(equalCopy + 52) & 1) == 0)
       {
         goto LABEL_24;
       }
     }
 
-    else if (*(v4 + 52))
+    else if (*(equalCopy + 52))
     {
       goto LABEL_24;
     }
@@ -128,7 +128,7 @@
   }
 
   mediaInfo = self->_mediaInfo;
-  if (!(mediaInfo | *(v4 + 5)))
+  if (!(mediaInfo | *(equalCopy + 5)))
   {
     goto LABEL_19;
   }
@@ -141,12 +141,12 @@ LABEL_24:
   }
 
   has = self->_has;
-  v8 = *(v4 + 56);
+  v8 = *(equalCopy + 56);
 LABEL_19:
   v11 = (v8 & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((v8 & 2) == 0 || self->_sectionType != *(v4 + 12))
+    if ((v8 & 2) == 0 || self->_sectionType != *(equalCopy + 12))
     {
       goto LABEL_24;
     }
@@ -159,14 +159,14 @@ LABEL_25:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_itemId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_itemId copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_mediaId copyWithZone:a3];
+  v8 = [(NSString *)self->_mediaId copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -176,7 +176,7 @@ LABEL_25:
     *(v5 + 56) |= 1u;
   }
 
-  v10 = [(_ICLLPlaybackItemContainer *)self->_container copyWithZone:a3];
+  v10 = [(_ICLLPlaybackItemContainer *)self->_container copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
@@ -186,7 +186,7 @@ LABEL_25:
     *(v5 + 56) |= 4u;
   }
 
-  v12 = [(_ICLLMediaInfo *)self->_mediaInfo copyWithZone:a3];
+  v12 = [(_ICLLMediaInfo *)self->_mediaInfo copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 
@@ -199,61 +199,61 @@ LABEL_25:
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_itemId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_mediaId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_container)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_mediaInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   itemId = self->_itemId;
   if (itemId)
   {
-    [v3 setObject:itemId forKey:@"itemId"];
+    [dictionary setObject:itemId forKey:@"itemId"];
   }
 
   mediaId = self->_mediaId;
@@ -271,8 +271,8 @@ LABEL_25:
   container = self->_container;
   if (container)
   {
-    v9 = [(_ICLLPlaybackItemContainer *)container dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"container"];
+    dictionaryRepresentation = [(_ICLLPlaybackItemContainer *)container dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"container"];
   }
 
   if ((*&self->_has & 4) != 0)
@@ -284,8 +284,8 @@ LABEL_25:
   mediaInfo = self->_mediaInfo;
   if (mediaInfo)
   {
-    v12 = [(_ICLLMediaInfo *)mediaInfo dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"mediaInfo"];
+    dictionaryRepresentation2 = [(_ICLLMediaInfo *)mediaInfo dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"mediaInfo"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -303,8 +303,8 @@ LABEL_25:
   v8.receiver = self;
   v8.super_class = _ICLLPlaybackItem;
   v4 = [(_ICLLPlaybackItem *)&v8 description];
-  v5 = [(_ICLLPlaybackItem *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_ICLLPlaybackItem *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

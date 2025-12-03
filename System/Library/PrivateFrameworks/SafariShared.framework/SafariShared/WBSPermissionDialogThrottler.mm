@@ -1,8 +1,8 @@
 @interface WBSPermissionDialogThrottler
 - (WBSPermissionDialogThrottler)init;
 - (void)_callNextPresentationHandlerIfNeeded;
-- (void)didCompletePermissionDialog:(BOOL)a3;
-- (void)requestPermissionDialogPresentation:(id)a3;
+- (void)didCompletePermissionDialog:(BOOL)dialog;
+- (void)requestPermissionDialogPresentation:(id)presentation;
 @end
 
 @implementation WBSPermissionDialogThrottler
@@ -24,19 +24,19 @@
   return v2;
 }
 
-- (void)requestPermissionDialogPresentation:(id)a3
+- (void)requestPermissionDialogPresentation:(id)presentation
 {
   requestedPresentations = self->_requestedPresentations;
-  v5 = MEMORY[0x1BFB13CE0](a3, a2);
+  v5 = MEMORY[0x1BFB13CE0](presentation, a2);
   [(NSMutableArray *)requestedPresentations addObject:v5];
 
   [(WBSPermissionDialogThrottler *)self _callNextPresentationHandlerIfNeeded];
 }
 
-- (void)didCompletePermissionDialog:(BOOL)a3
+- (void)didCompletePermissionDialog:(BOOL)dialog
 {
   self->_isShowingDialog = 0;
-  if (a3)
+  if (dialog)
   {
     v3 = 0;
   }
@@ -61,13 +61,13 @@
         break;
       }
 
-      v3 = [(NSMutableArray *)self->_requestedPresentations firstObject];
-      if (!v3)
+      firstObject = [(NSMutableArray *)self->_requestedPresentations firstObject];
+      if (!firstObject)
       {
         break;
       }
 
-      v4 = v3;
+      v4 = firstObject;
       [(NSMutableArray *)self->_requestedPresentations removeObjectAtIndex:0];
       v5 = !self->_invalidated && [(WBSPermissionDialogThrottler *)self _canShowPermissionDialog];
       self->_isShowingDialog |= v5;

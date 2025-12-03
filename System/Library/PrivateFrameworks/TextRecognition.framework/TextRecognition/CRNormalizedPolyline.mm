@@ -1,69 +1,69 @@
 @interface CRNormalizedPolyline
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPath)path;
 - (CGSize)normalizationSize;
 - (CRNormalizedPolyline)init;
-- (CRNormalizedPolyline)initWithCRCodableDataRepresentation:(id)a3;
-- (CRNormalizedPolyline)initWithCoder:(id)a3;
-- (CRNormalizedPolyline)initWithDenormalizedPolyline:(id)a3 size:(CGSize)a4;
-- (CRNormalizedPolyline)initWithNormalizedPointValues:(id)a3 size:(CGSize)a4;
-- (CRNormalizedPolyline)initWithNormalizedPoints:(CGPoint *)a3 count:(unint64_t)a4 size:(CGSize)a5;
-- (CRNormalizedPolyline)initWithPolyline:(id)a3;
+- (CRNormalizedPolyline)initWithCRCodableDataRepresentation:(id)representation;
+- (CRNormalizedPolyline)initWithCoder:(id)coder;
+- (CRNormalizedPolyline)initWithDenormalizedPolyline:(id)polyline size:(CGSize)size;
+- (CRNormalizedPolyline)initWithNormalizedPointValues:(id)values size:(CGSize)size;
+- (CRNormalizedPolyline)initWithNormalizedPoints:(CGPoint *)points count:(unint64_t)count size:(CGSize)size;
+- (CRNormalizedPolyline)initWithPolyline:(id)polyline;
 - (NSArray)pointValues;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)crCodableDataRepresentation;
-- (id)polylineByAppendingPoint:(CGPoint)a3;
-- (id)polylineByAppendingPolyline:(id)a3;
+- (id)polylineByAppendingPoint:(CGPoint)point;
+- (id)polylineByAppendingPolyline:(id)polyline;
 - (id)rotated180;
 - (id)simplified;
 - (unint64_t)pointCount;
-- (void)appendPoint:(CGPoint)a3;
-- (void)appendPolyline:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumeratePoints:(id)a3;
+- (void)appendPoint:(CGPoint)point;
+- (void)appendPolyline:(id)polyline;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumeratePoints:(id)points;
 @end
 
 @implementation CRNormalizedPolyline
 
-- (CRNormalizedPolyline)initWithCoder:(id)a3
+- (CRNormalizedPolyline)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CRPolylineData"];
-  v6 = uncompressDataOfSize(v5, [v4 decodeIntegerForKey:@"CRPolylineUncompressedDataSize"]);
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CRPolylineData"];
+  v6 = uncompressDataOfSize(v5, [coderCopy decodeIntegerForKey:@"CRPolylineUncompressedDataSize"]);
   v7 = [(CRNormalizedPolyline *)self initWithCRCodableDataRepresentation:v6];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(CRNormalizedPolyline *)self crCodableDataRepresentation];
-  v5 = compressData(v4);
-  [v6 encodeObject:v5 forKey:@"CRPolylineData"];
-  [v6 encodeInteger:objc_msgSend(v4 forKey:{"length"), @"CRPolylineUncompressedDataSize"}];
+  coderCopy = coder;
+  crCodableDataRepresentation = [(CRNormalizedPolyline *)self crCodableDataRepresentation];
+  v5 = compressData(crCodableDataRepresentation);
+  [coderCopy encodeObject:v5 forKey:@"CRPolylineData"];
+  [coderCopy encodeInteger:objc_msgSend(crCodableDataRepresentation forKey:{"length"), @"CRPolylineUncompressedDataSize"}];
 }
 
-- (CRNormalizedPolyline)initWithNormalizedPoints:(CGPoint *)a3 count:(unint64_t)a4 size:(CGSize)a5
+- (CRNormalizedPolyline)initWithNormalizedPoints:(CGPoint *)points count:(unint64_t)count size:(CGSize)size
 {
-  width = a5.width;
-  height = a5.height;
-  v5 = a4;
-  std::vector<CGPoint>::vector[abi:ne200100](__p, a4);
-  if (v5)
+  width = size.width;
+  height = size.height;
+  countCopy = count;
+  std::vector<CGPoint>::vector[abi:ne200100](__p, count);
+  if (countCopy)
   {
     v8 = __p[0];
     v9.f64[0] = width;
     v9.f64[1] = height;
     do
     {
-      v10 = *a3++;
+      v10 = *points++;
       *v8++ = vmulq_f64(v9, v10);
-      --v5;
+      --countCopy;
     }
 
-    while (v5);
+    while (countCopy);
   }
 
   v11 = [(CRNormalizedPolyline *)self init];
@@ -103,50 +103,50 @@
   return v3;
 }
 
-- (CRNormalizedPolyline)initWithPolyline:(id)a3
+- (CRNormalizedPolyline)initWithPolyline:(id)polyline
 {
-  v4 = a3;
+  polylineCopy = polyline;
   v5 = [(CRNormalizedPolyline *)self init];
   if (v5)
   {
-    v6 = [v4 denormalizedPolyline];
-    [(CRNormalizedPolyline *)v5 setDenormalizedPolyline:v6];
+    denormalizedPolyline = [polylineCopy denormalizedPolyline];
+    [(CRNormalizedPolyline *)v5 setDenormalizedPolyline:denormalizedPolyline];
 
-    [v4 normalizationSize];
+    [polylineCopy normalizationSize];
     [(CRNormalizedPolyline *)v5 setNormalizationSize:?];
   }
 
   return v5;
 }
 
-- (CRNormalizedPolyline)initWithDenormalizedPolyline:(id)a3 size:(CGSize)a4
+- (CRNormalizedPolyline)initWithDenormalizedPolyline:(id)polyline size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  polylineCopy = polyline;
   v8 = [(CRNormalizedPolyline *)self init];
   v9 = v8;
   if (v8)
   {
-    [(CRNormalizedPolyline *)v8 setDenormalizedPolyline:v7];
+    [(CRNormalizedPolyline *)v8 setDenormalizedPolyline:polylineCopy];
     [(CRNormalizedPolyline *)v9 setNormalizationSize:width, height];
   }
 
   return v9;
 }
 
-- (CRNormalizedPolyline)initWithNormalizedPointValues:(id)a3 size:(CGSize)a4
+- (CRNormalizedPolyline)initWithNormalizedPointValues:(id)values size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  valuesCopy = values;
   v8 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v7;
+  v9 = valuesCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -176,32 +176,32 @@
   }
 
   v16 = [[CRImageSpacePolyline alloc] initWithPointValues:v8];
-  v17 = [(CRNormalizedPolyline *)self initWithDenormalizedPolyline:v16 size:width, height];
+  height = [(CRNormalizedPolyline *)self initWithDenormalizedPolyline:v16 size:width, height];
 
-  return v17;
+  return height;
 }
 
-- (id)polylineByAppendingPoint:(CGPoint)a3
+- (id)polylineByAppendingPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v5 = [(CRNormalizedPolyline *)self copy];
   [v5 appendPoint:{x, y}];
 
   return v5;
 }
 
-- (id)polylineByAppendingPolyline:(id)a3
+- (id)polylineByAppendingPolyline:(id)polyline
 {
-  v4 = a3;
+  polylineCopy = polyline;
   [(CRNormalizedPolyline *)self normalizationSize];
   v6 = v5;
   v8 = v7;
-  [v4 normalizationSize];
+  [polylineCopy normalizationSize];
   if (v6 == v10 && v8 == v9)
   {
     v12 = [(CRNormalizedPolyline *)self copy];
-    [v12 appendPolyline:v4];
+    [v12 appendPolyline:polylineCopy];
   }
 
   else
@@ -217,8 +217,8 @@
   v3 = MEMORY[0x1E696AD60];
   [(CRNormalizedPolyline *)self normalizationSize];
   v4 = NSStringFromSize(v11);
-  v5 = [(CRNormalizedPolyline *)self denormalizedPolyline];
-  v6 = [v5 description];
+  denormalizedPolyline = [(CRNormalizedPolyline *)self denormalizedPolyline];
+  v6 = [denormalizedPolyline description];
   v7 = [v3 stringWithFormat:@"Size: %@\nDenormalized Polyline: %@", v4, v6];
 
   v8 = [MEMORY[0x1E696AEC0] stringWithString:v7];
@@ -236,13 +236,13 @@
 
   else
   {
-    v3 = [(CRNormalizedPolyline *)self denormalizedPolyline];
+    denormalizedPolyline = [(CRNormalizedPolyline *)self denormalizedPolyline];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __28__CRNormalizedPolyline_path__block_invoke;
     v6[3] = &unk_1E7BC2BE8;
     v6[4] = self;
-    [(CRImageSpacePolyline *)&v7 createPathWithTransformer:v3, v6];
+    [(CRImageSpacePolyline *)&v7 createPathWithTransformer:denormalizedPolyline, v6];
     [(CRNormalizedPolyline *)self set_pathRef:&v7];
     if (v7)
     {
@@ -273,10 +273,10 @@ double __28__CRNormalizedPolyline_path__block_invoke(uint64_t a1, double a2)
 
 - (unint64_t)pointCount
 {
-  v2 = [(CRNormalizedPolyline *)self denormalizedPolyline];
-  v3 = [v2 pointCount];
+  denormalizedPolyline = [(CRNormalizedPolyline *)self denormalizedPolyline];
+  pointCount = [denormalizedPolyline pointCount];
 
-  return v3;
+  return pointCount;
 }
 
 - (NSArray)pointValues
@@ -301,16 +301,16 @@ void __35__CRNormalizedPolyline_pointValues__block_invoke(uint64_t a1)
   [v1 addObject:?];
 }
 
-- (void)enumeratePoints:(id)a3
+- (void)enumeratePoints:(id)points
 {
-  v4 = a3;
-  v5 = [(CRNormalizedPolyline *)self denormalizedPolyline];
+  pointsCopy = points;
+  denormalizedPolyline = [(CRNormalizedPolyline *)self denormalizedPolyline];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__CRNormalizedPolyline_enumeratePoints___block_invoke;
   v6[3] = &unk_1E7BC2BE8;
   v6[4] = self;
-  [(CRImageSpacePolyline *)v5 enumeratePointsWithTransformer:v6 block:v4];
+  [(CRImageSpacePolyline *)denormalizedPolyline enumeratePointsWithTransformer:v6 block:pointsCopy];
 }
 
 double __40__CRNormalizedPolyline_enumeratePoints___block_invoke(uint64_t a1, double a2)
@@ -324,13 +324,13 @@ double __40__CRNormalizedPolyline_enumeratePoints___block_invoke(uint64_t a1, do
   return a2;
 }
 
-- (void)appendPoint:(CGPoint)a3
+- (void)appendPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CRNormalizedPolyline *)self denormalizedPolyline];
+  y = point.y;
+  x = point.x;
+  denormalizedPolyline = [(CRNormalizedPolyline *)self denormalizedPolyline];
   [(CRNormalizedPolyline *)self normalizationSize];
-  [(CRImageSpacePolyline *)v6 appendPoint:y * v8];
+  [(CRImageSpacePolyline *)denormalizedPolyline appendPoint:y * v8];
 
   cf = 0;
   [(CRNormalizedPolyline *)self set_pathRef:&cf];
@@ -340,12 +340,12 @@ double __40__CRNormalizedPolyline_enumeratePoints___block_invoke(uint64_t a1, do
   }
 }
 
-- (void)appendPolyline:(id)a3
+- (void)appendPolyline:(id)polyline
 {
-  v4 = a3;
-  v5 = [(CRNormalizedPolyline *)self denormalizedPolyline];
-  v6 = [v4 denormalizedPolyline];
-  [(CRImageSpacePolyline *)v5 appendPolyline:v6];
+  polylineCopy = polyline;
+  denormalizedPolyline = [(CRNormalizedPolyline *)self denormalizedPolyline];
+  denormalizedPolyline2 = [polylineCopy denormalizedPolyline];
+  [(CRImageSpacePolyline *)denormalizedPolyline appendPolyline:denormalizedPolyline2];
 
   cf = 0;
   [(CRNormalizedPolyline *)self set_pathRef:&cf];
@@ -358,10 +358,10 @@ double __40__CRNormalizedPolyline_enumeratePoints___block_invoke(uint64_t a1, do
 - (id)simplified
 {
   v3 = [CRNormalizedPolyline alloc];
-  v4 = [(CRNormalizedPolyline *)self denormalizedPolyline];
-  v5 = [v4 simplified];
+  denormalizedPolyline = [(CRNormalizedPolyline *)self denormalizedPolyline];
+  simplified = [denormalizedPolyline simplified];
   [(CRNormalizedPolyline *)self normalizationSize];
-  v6 = [(CRNormalizedPolyline *)v3 initWithDenormalizedPolyline:v5 size:?];
+  v6 = [(CRNormalizedPolyline *)v3 initWithDenormalizedPolyline:simplified size:?];
 
   return v6;
 }
@@ -369,18 +369,18 @@ double __40__CRNormalizedPolyline_enumeratePoints___block_invoke(uint64_t a1, do
 - (id)rotated180
 {
   v3 = [CRNormalizedPolyline alloc];
-  v4 = [(CRNormalizedPolyline *)self denormalizedPolyline];
-  v5 = [v4 rotated180];
+  denormalizedPolyline = [(CRNormalizedPolyline *)self denormalizedPolyline];
+  rotated180 = [denormalizedPolyline rotated180];
   [(CRNormalizedPolyline *)self normalizationSize];
-  v6 = [(CRNormalizedPolyline *)v3 initWithDenormalizedPolyline:v5 size:?];
+  v6 = [(CRNormalizedPolyline *)v3 initWithDenormalizedPolyline:rotated180 size:?];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -390,7 +390,7 @@ double __40__CRNormalizedPolyline_enumeratePoints___block_invoke(uint64_t a1, do
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(CRNormalizedPolyline *)self normalizationSize];
       v7 = v6;
       v9 = v8;
@@ -398,9 +398,9 @@ double __40__CRNormalizedPolyline_enumeratePoints___block_invoke(uint64_t a1, do
       v11 = 0;
       if (v7 == v12 && v9 == v10)
       {
-        v13 = [(CRNormalizedPolyline *)self denormalizedPolyline];
-        v14 = [(CRNormalizedPolyline *)v5 denormalizedPolyline];
-        v11 = [v13 isEqual:v14];
+        denormalizedPolyline = [(CRNormalizedPolyline *)self denormalizedPolyline];
+        denormalizedPolyline2 = [(CRNormalizedPolyline *)v5 denormalizedPolyline];
+        v11 = [denormalizedPolyline isEqual:denormalizedPolyline2];
       }
     }
 
@@ -413,11 +413,11 @@ double __40__CRNormalizedPolyline_enumeratePoints___block_invoke(uint64_t a1, do
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CRNormalizedPolyline allocWithZone:a3];
-  v5 = [(CRNormalizedPolyline *)self denormalizedPolyline];
-  v6 = [v5 copy];
+  v4 = [CRNormalizedPolyline allocWithZone:zone];
+  denormalizedPolyline = [(CRNormalizedPolyline *)self denormalizedPolyline];
+  v6 = [denormalizedPolyline copy];
   [(CRNormalizedPolyline *)self normalizationSize];
   v7 = [(CRNormalizedPolyline *)v4 initWithDenormalizedPolyline:v6 size:?];
 
@@ -428,8 +428,8 @@ double __40__CRNormalizedPolyline_enumeratePoints___block_invoke(uint64_t a1, do
 {
   v3 = objc_opt_new();
   [CRCodingUtilities appendInteger:1 toData:v3];
-  v4 = [(CRNormalizedPolyline *)self denormalizedPolyline];
-  [CRCodingUtilities appendCodable:v4 toData:v3];
+  denormalizedPolyline = [(CRNormalizedPolyline *)self denormalizedPolyline];
+  [CRCodingUtilities appendCodable:denormalizedPolyline toData:v3];
 
   [(CRNormalizedPolyline *)self normalizationSize];
   [CRCodingUtilities appendSize:v3 toData:?];
@@ -437,28 +437,28 @@ double __40__CRNormalizedPolyline_enumeratePoints___block_invoke(uint64_t a1, do
   return v3;
 }
 
-- (CRNormalizedPolyline)initWithCRCodableDataRepresentation:(id)a3
+- (CRNormalizedPolyline)initWithCRCodableDataRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v10 = 0;
-  if ([CRCodingUtilities integerFromEncodingData:v4 offset:&v10]== 1)
+  if ([CRCodingUtilities integerFromEncodingData:representationCopy offset:&v10]== 1)
   {
     v5 = [CRImageSpacePolyline alloc];
-    v6 = [CRCodingUtilities objectDataFromEncodingData:v4 offset:&v10];
+    v6 = [CRCodingUtilities objectDataFromEncodingData:representationCopy offset:&v10];
     v7 = [(CRImageSpacePolyline *)v5 initWithCRCodableDataRepresentation:v6];
 
-    [CRCodingUtilities sizeFromEncodingData:v4 offset:&v10];
+    [CRCodingUtilities sizeFromEncodingData:representationCopy offset:&v10];
     self = [(CRNormalizedPolyline *)self initWithDenormalizedPolyline:v7 size:?];
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (CGSize)normalizationSize

@@ -1,6 +1,6 @@
 @interface SGSuggestionsICSMetrics
 + (id)instance;
-+ (void)recordWithTimezoneValue:(SGMFoundInAppsICSTZValue_)a3 datetimeType:(SGMFoundInAppsDatetimeType_)a4;
++ (void)recordWithTimezoneValue:(SGMFoundInAppsICSTZValue_)value datetimeType:(SGMFoundInAppsDatetimeType_)type;
 - (SGSuggestionsICSMetrics)init;
 @end
 
@@ -20,23 +20,23 @@
   return v2;
 }
 
-+ (void)recordWithTimezoneValue:(SGMFoundInAppsICSTZValue_)a3 datetimeType:(SGMFoundInAppsDatetimeType_)a4
++ (void)recordWithTimezoneValue:(SGMFoundInAppsICSTZValue_)value datetimeType:(SGMFoundInAppsDatetimeType_)type
 {
-  v6 = [a1 instance];
-  v7 = [v6 foundInAppsICS];
-  [v7 trackEventWithScalar:1 timezone:a3.var0 datetime:a4.var0];
+  instance = [self instance];
+  foundInAppsICS = [instance foundInAppsICS];
+  [foundInAppsICS trackEventWithScalar:1 timezone:value.var0 datetime:type.var0];
 
   v13 = objc_opt_new();
-  [v13 setTimezone:a3.var0];
-  [v13 setDatetime:a4.var0];
-  v8 = [MEMORY[0x1E69C5B48] sharedInstance];
-  [v8 trackScalarForMessage:v13];
+  [v13 setTimezone:value.var0];
+  [v13 setDatetime:type.var0];
+  mEMORY[0x1E69C5B48] = [MEMORY[0x1E69C5B48] sharedInstance];
+  [mEMORY[0x1E69C5B48] trackScalarForMessage:v13];
 
   v9 = objc_alloc(MEMORY[0x1E696AEC0]);
   v10 = [v13 key];
   v11 = [v9 initWithFormat:@"%@.%@", @"com.apple.Proactive.CoreSuggestions", v10];
 
-  v12 = [v13 dictionaryRepresentation];
+  dictionaryRepresentation = [v13 dictionaryRepresentation];
   AnalyticsSendEvent();
 }
 

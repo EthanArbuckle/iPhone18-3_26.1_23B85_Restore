@@ -1,45 +1,45 @@
 @interface TSWReviewMultiChoiceResponseEvaluator
-- (id)evaluateBlockIfCorrect:(id)a3 blockIfIncorrect:(id)a4 blockIfMissing:(id)a5;
+- (id)evaluateBlockIfCorrect:(id)correct blockIfIncorrect:(id)incorrect blockIfMissing:(id)missing;
 @end
 
 @implementation TSWReviewMultiChoiceResponseEvaluator
 
-- (id)evaluateBlockIfCorrect:(id)a3 blockIfIncorrect:(id)a4 blockIfMissing:(id)a5
+- (id)evaluateBlockIfCorrect:(id)correct blockIfIncorrect:(id)incorrect blockIfMissing:(id)missing
 {
-  v8 = [(TSWReviewResponseEvaluator *)self dataSource];
-  v9 = [(TSWReviewResponseEvaluatorDataSource *)v8 response];
+  dataSource = [(TSWReviewResponseEvaluator *)self dataSource];
+  response = [(TSWReviewResponseEvaluatorDataSource *)dataSource response];
   objc_opt_class();
-  [(TSWReviewResponse *)v9 answerState];
+  [(TSWReviewResponse *)response answerState];
   v10 = TSUDynamicCast();
-  v11 = [(TSWReviewResponseEvaluatorDataSource *)v8 choiceCount];
-  if (v11)
+  choiceCount = [(TSWReviewResponseEvaluatorDataSource *)dataSource choiceCount];
+  if (choiceCount)
   {
-    v12 = v11;
+    v12 = choiceCount;
     v13 = 0;
     v14 = 0;
     v15 = 0;
-    v22 = a5 + 16;
-    v23 = a5;
+    v22 = missing + 16;
+    missingCopy = missing;
     v24 = 0;
     do
     {
-      v16 = [objc_msgSend(v10 selectedChoices];
-      [(TSWReviewResponseEvaluatorDataSource *)v8 fractionForChoiceIndex:v14];
-      if (v16 && v17 > 0.0)
+      selectedChoices = [objc_msgSend(v10 selectedChoices];
+      [(TSWReviewResponseEvaluatorDataSource *)dataSource fractionForChoiceIndex:v14];
+      if (selectedChoices && v17 > 0.0)
       {
-        if (a3)
+        if (correct)
         {
-          (*(a3 + 2))(a3, v14);
+          (*(correct + 2))(correct, v14);
         }
 
         ++v13;
       }
 
-      else if (v16)
+      else if (selectedChoices)
       {
-        if (a4)
+        if (incorrect)
         {
-          (*(a4 + 2))(a4, v14);
+          (*(incorrect + 2))(incorrect, v14);
         }
 
         ++v15;
@@ -47,9 +47,9 @@
 
       else if (v17 > 0.0)
       {
-        if (v23)
+        if (missingCopy)
         {
-          v23[2]();
+          missingCopy[2]();
         }
 
         ++v24;

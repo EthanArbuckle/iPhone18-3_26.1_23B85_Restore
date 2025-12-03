@@ -1,64 +1,64 @@
 @interface MSStickerUsageEvent
-+ (BOOL)isPreferredRepresentationAnimated:(id)a3;
-+ (int64_t)effectTypeForMediaPayload:(id)a3;
-+ (int64_t)effectTypeForSticker:(id)a3;
-+ (int64_t)effectTypeFromVKCStickerEffectType:(unint64_t)a3;
-+ (int64_t)stickerTypeFromExternalURI:(id)a3;
-- (MSStickerUsageEvent)initWithMediaPayload:(id)a3;
-- (MSStickerUsageEvent)initWithSticker:(id)a3;
++ (BOOL)isPreferredRepresentationAnimated:(id)animated;
++ (int64_t)effectTypeForMediaPayload:(id)payload;
++ (int64_t)effectTypeForSticker:(id)sticker;
++ (int64_t)effectTypeFromVKCStickerEffectType:(unint64_t)type;
++ (int64_t)stickerTypeFromExternalURI:(id)i;
+- (MSStickerUsageEvent)initWithMediaPayload:(id)payload;
+- (MSStickerUsageEvent)initWithSticker:(id)sticker;
 - (void)send;
 @end
 
 @implementation MSStickerUsageEvent
 
-+ (int64_t)effectTypeFromVKCStickerEffectType:(unint64_t)a3
++ (int64_t)effectTypeFromVKCStickerEffectType:(unint64_t)type
 {
-  if (a3 - 1 > 3)
+  if (type - 1 > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_1CAE1BDA8[a3 - 1];
+    return qword_1CAE1BDA8[type - 1];
   }
 }
 
-+ (int64_t)stickerTypeFromExternalURI:(id)a3
++ (int64_t)stickerTypeFromExternalURI:(id)i
 {
-  v3 = a3;
-  if ([v3 containsString:@"sticker:///user/"])
+  iCopy = i;
+  if ([iCopy containsString:@"sticker:///user/"])
   {
     v4 = 0;
   }
 
-  else if ([v3 containsString:@"sticker:///memoji/"])
+  else if ([iCopy containsString:@"sticker:///memoji/"])
   {
     v4 = 1;
   }
 
-  else if ([v3 containsString:@"sticker:///emoji/"])
+  else if ([iCopy containsString:@"sticker:///emoji/"])
   {
     v4 = 2;
   }
 
   else
   {
-    [v3 containsString:@"sticker:///third_party/"];
+    [iCopy containsString:@"sticker:///third_party/"];
     v4 = 3;
   }
 
   return v4;
 }
 
-+ (BOOL)isPreferredRepresentationAnimated:(id)a3
++ (BOOL)isPreferredRepresentationAnimated:(id)animated
 {
-  v3 = a3;
-  if ([v3 count])
+  animatedCopy = animated;
+  if ([animatedCopy count])
   {
-    v4 = [v3 firstObject];
-    v5 = [v4 role];
-    v6 = [v5 isEqualToString:*MEMORY[0x1E69DEA78]];
+    firstObject = [animatedCopy firstObject];
+    role = [firstObject role];
+    v6 = [role isEqualToString:*MEMORY[0x1E69DEA78]];
   }
 
   else
@@ -69,11 +69,11 @@
   return v6;
 }
 
-+ (int64_t)effectTypeForSticker:(id)a3
++ (int64_t)effectTypeForSticker:(id)sticker
 {
-  v3 = a3;
-  v4 = [v3 representations];
-  v5 = [MSStickerUsageEvent isPreferredRepresentationAnimated:v4];
+  stickerCopy = sticker;
+  representations = [stickerCopy representations];
+  v5 = [MSStickerUsageEvent isPreferredRepresentationAnimated:representations];
 
   if (v5)
   {
@@ -82,17 +82,17 @@
 
   else
   {
-    v6 = +[MSStickerUsageEvent effectTypeFromVKCStickerEffectType:](MSStickerUsageEvent, "effectTypeFromVKCStickerEffectType:", [v3 stickerEffectType]);
+    v6 = +[MSStickerUsageEvent effectTypeFromVKCStickerEffectType:](MSStickerUsageEvent, "effectTypeFromVKCStickerEffectType:", [stickerCopy stickerEffectType]);
   }
 
   return v6;
 }
 
-+ (int64_t)effectTypeForMediaPayload:(id)a3
++ (int64_t)effectTypeForMediaPayload:(id)payload
 {
-  v3 = a3;
-  v4 = [v3 stickerRepresentations];
-  v5 = [MSStickerUsageEvent isPreferredRepresentationAnimated:v4];
+  payloadCopy = payload;
+  stickerRepresentations = [payloadCopy stickerRepresentations];
+  v5 = [MSStickerUsageEvent isPreferredRepresentationAnimated:stickerRepresentations];
 
   if (v5)
   {
@@ -101,42 +101,42 @@
 
   else
   {
-    v6 = +[MSStickerUsageEvent effectTypeFromVKCStickerEffectType:](MSStickerUsageEvent, "effectTypeFromVKCStickerEffectType:", [v3 stickerEffectType]);
+    v6 = +[MSStickerUsageEvent effectTypeFromVKCStickerEffectType:](MSStickerUsageEvent, "effectTypeFromVKCStickerEffectType:", [payloadCopy stickerEffectType]);
   }
 
   return v6;
 }
 
-- (MSStickerUsageEvent)initWithSticker:(id)a3
+- (MSStickerUsageEvent)initWithSticker:(id)sticker
 {
-  v4 = a3;
+  stickerCopy = sticker;
   v8.receiver = self;
   v8.super_class = MSStickerUsageEvent;
   v5 = [(MSStickerUsageEvent *)&v8 init];
   if (v5)
   {
-    v6 = [v4 externalURI];
-    [(MSStickerUsageEvent *)v5 setStickerType:[MSStickerUsageEvent stickerTypeFromExternalURI:v6]];
+    externalURI = [stickerCopy externalURI];
+    [(MSStickerUsageEvent *)v5 setStickerType:[MSStickerUsageEvent stickerTypeFromExternalURI:externalURI]];
 
-    [(MSStickerUsageEvent *)v5 setEffectType:[MSStickerUsageEvent effectTypeForSticker:v4]];
+    [(MSStickerUsageEvent *)v5 setEffectType:[MSStickerUsageEvent effectTypeForSticker:stickerCopy]];
     [(MSStickerUsageEvent *)v5 setSourceType:+[MSStickerUsageEvent autoSourceType]];
   }
 
   return v5;
 }
 
-- (MSStickerUsageEvent)initWithMediaPayload:(id)a3
+- (MSStickerUsageEvent)initWithMediaPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v8.receiver = self;
   v8.super_class = MSStickerUsageEvent;
   v5 = [(MSStickerUsageEvent *)&v8 init];
   if (v5)
   {
-    v6 = [v4 externalURI];
-    [(MSStickerUsageEvent *)v5 setStickerType:[MSStickerUsageEvent stickerTypeFromExternalURI:v6]];
+    externalURI = [payloadCopy externalURI];
+    [(MSStickerUsageEvent *)v5 setStickerType:[MSStickerUsageEvent stickerTypeFromExternalURI:externalURI]];
 
-    [(MSStickerUsageEvent *)v5 setEffectType:[MSStickerUsageEvent effectTypeForMediaPayload:v4]];
+    [(MSStickerUsageEvent *)v5 setEffectType:[MSStickerUsageEvent effectTypeForMediaPayload:payloadCopy]];
     [(MSStickerUsageEvent *)v5 setSourceType:+[MSStickerUsageEvent autoSourceType]];
   }
 

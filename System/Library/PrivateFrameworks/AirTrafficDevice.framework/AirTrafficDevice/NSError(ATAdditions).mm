@@ -37,18 +37,18 @@
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v3 = a3;
-  v4 = [v3 code];
-  if (v4 > 203)
+  code = [v3 code];
+  if (code > 203)
   {
-    if (v4 <= 299)
+    if (code <= 299)
     {
-      if (v4 <= 209)
+      if (code <= 209)
       {
-        if ((v4 - 204) >= 2)
+        if ((code - 204) >= 2)
         {
-          if (v4 != 207)
+          if (code != 207)
           {
-            if (v4 == 208)
+            if (code == 208)
             {
               v5 = 20;
 LABEL_45:
@@ -76,18 +76,18 @@ LABEL_44:
         goto LABEL_45;
       }
 
-      if (v4 == 210)
+      if (code == 210)
       {
         goto LABEL_44;
       }
 
-      if (v4 == 219)
+      if (code == 219)
       {
         v5 = 31;
         goto LABEL_45;
       }
 
-      if (v4 != 220)
+      if (code != 220)
       {
         goto LABEL_53;
       }
@@ -97,22 +97,22 @@ LABEL_43:
       goto LABEL_45;
     }
 
-    if (v4 > 303)
+    if (code > 303)
     {
-      if (v4 > 305)
+      if (code > 305)
       {
-        if (v4 == 306)
+        if (code == 306)
         {
           goto LABEL_44;
         }
 
-        if (v4 != 308)
+        if (code != 308)
         {
           goto LABEL_53;
         }
       }
 
-      else if (v4 != 304)
+      else if (code != 304)
       {
         goto LABEL_17;
       }
@@ -120,12 +120,12 @@ LABEL_43:
       goto LABEL_43;
     }
 
-    if (v4 == 300 || v4 == 302)
+    if (code == 300 || code == 302)
     {
       goto LABEL_43;
     }
 
-    if (v4 != 303)
+    if (code != 303)
     {
       goto LABEL_53;
     }
@@ -135,11 +135,11 @@ LABEL_40:
     goto LABEL_45;
   }
 
-  if (v4 > 17)
+  if (code > 17)
   {
-    if (v4 <= 22)
+    if (code <= 22)
     {
-      if ((v4 - 18) >= 3)
+      if ((code - 18) >= 3)
       {
         goto LABEL_53;
       }
@@ -147,11 +147,11 @@ LABEL_40:
       goto LABEL_43;
     }
 
-    if (v4 > 105)
+    if (code > 105)
     {
-      if (v4 != 106)
+      if (code != 106)
       {
-        if (v4 == 202)
+        if (code == 202)
         {
           v5 = 2;
           goto LABEL_45;
@@ -163,13 +163,13 @@ LABEL_40:
 
     else
     {
-      if (v4 == 23)
+      if (code == 23)
       {
         v5 = 24;
         goto LABEL_45;
       }
 
-      if (v4 != 105)
+      if (code != 105)
       {
         goto LABEL_53;
       }
@@ -178,17 +178,17 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  if (v4 > 12)
+  if (code > 12)
   {
-    if (v4 != 13)
+    if (code != 13)
     {
-      if (v4 == 15)
+      if (code == 15)
       {
         v5 = 7;
         goto LABEL_45;
       }
 
-      if (v4 == 17)
+      if (code == 17)
       {
         v5 = 25;
         goto LABEL_45;
@@ -200,11 +200,11 @@ LABEL_40:
     goto LABEL_44;
   }
 
-  if (v4)
+  if (code)
   {
-    if (v4 != 3)
+    if (code != 3)
     {
-      if (v4 != 4)
+      if (code != 4)
       {
         goto LABEL_53;
       }
@@ -225,33 +225,33 @@ LABEL_46:
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v3 = a3;
-  v4 = [v3 code];
+  code = [v3 code];
   v5 = MEMORY[0x277CCA7E8];
-  if (v4 > 99)
+  if (code > 99)
   {
-    if (v4 == 101)
+    if (code == 101)
     {
       v7 = 4;
       goto LABEL_19;
     }
 
-    if (v4 != 100)
+    if (code != 100)
     {
       v7 = 0;
       goto LABEL_19;
     }
 
-    v8 = [v3 userInfo];
-    v9 = [v8 objectForKey:*v5];
+    userInfo = [v3 userInfo];
+    v9 = [userInfo objectForKey:*v5];
 
     if (v9)
     {
-      v10 = [v9 domain];
-      if ([v10 isEqualToString:*MEMORY[0x277CEE188]])
+      domain = [v9 domain];
+      if ([domain isEqualToString:*MEMORY[0x277CEE188]])
       {
-        v11 = [v9 code];
+        code2 = [v9 code];
 
-        if (v11 == 6)
+        if (code2 == 6)
         {
           v7 = 2;
         }
@@ -272,12 +272,12 @@ LABEL_18:
   }
 
   v6 = 2;
-  if (v4 != 6)
+  if (code != 6)
   {
     v6 = 0;
   }
 
-  if (v4 == 1)
+  if (code == 1)
   {
     v7 = 7;
   }
@@ -301,20 +301,20 @@ LABEL_19:
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v3 = a3;
-  v4 = [v3 code];
+  code = [v3 code];
   v5 = 14;
   v6 = 2;
-  if (v4 != 16)
+  if (code != 16)
   {
     v6 = 0;
   }
 
-  if (v4 != 103)
+  if (code != 103)
   {
     v5 = v6;
   }
 
-  if (v4 == 4)
+  if (code == 4)
   {
     v7 = 4;
   }
@@ -337,11 +337,11 @@ LABEL_19:
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v3 = a3;
-  v4 = [v3 code];
+  code = [v3 code];
   v5 = 0;
-  if (v4 <= 2033)
+  if (code <= 2033)
   {
-    if ((v4 - 1003) >= 2 && v4 != 2002)
+    if ((code - 1003) >= 2 && code != 2002)
     {
       goto LABEL_8;
     }
@@ -351,7 +351,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v4 == 2070 || v4 == 2034)
+  if (code == 2070 || code == 2034)
   {
     goto LABEL_7;
   }
@@ -370,66 +370,66 @@ LABEL_8:
 {
   v24[1] = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [v4 code];
+  code = [v4 code];
   v6 = MEMORY[0x277CCA7E8];
-  if (v5 <= -7102)
+  if (code <= -7102)
   {
-    if (v5 > -7403)
+    if (code > -7403)
     {
       v18 = 3;
-      if (v5 != -7104)
+      if (code != -7104)
       {
         v18 = 0;
       }
 
-      if (v5 == -7402)
+      if (code == -7402)
       {
-        v12 = 4;
+        code2 = 4;
       }
 
       else
       {
-        v12 = v18;
+        code2 = v18;
       }
     }
 
-    else if (v5 == -8302)
+    else if (code == -8302)
     {
-      v12 = 27;
+      code2 = 27;
     }
 
-    else if (v5 == -7403)
+    else if (code == -7403)
     {
-      v13 = [v4 userInfo];
-      v14 = [v13 objectForKey:*v6];
+      userInfo = [v4 userInfo];
+      v14 = [userInfo objectForKey:*v6];
 
       if (v14 && ([v14 domain], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isEqualToString:", *MEMORY[0x277CEE188]), v15, v16))
       {
-        v17 = [a1 _ATErrorFromAMSError:v14];
-        v12 = [v17 code];
+        v17 = [self _ATErrorFromAMSError:v14];
+        code2 = [v17 code];
       }
 
       else
       {
-        v12 = 4;
+        code2 = 4;
       }
     }
 
     else
     {
-      v12 = 0;
+      code2 = 0;
     }
   }
 
   else
   {
     v7 = 7;
-    if (v5 != -7003)
+    if (code != -7003)
     {
       v7 = 0;
     }
 
-    if (v5 == -7004)
+    if (code == -7004)
     {
       v8 = 2;
     }
@@ -439,7 +439,7 @@ LABEL_8:
       v8 = v7;
     }
 
-    if (v5 == -7006)
+    if (code == -7006)
     {
       v9 = 20;
     }
@@ -450,12 +450,12 @@ LABEL_8:
     }
 
     v10 = 8;
-    if (v5 != -7100)
+    if (code != -7100)
     {
       v10 = 0;
     }
 
-    if (v5 == -7101)
+    if (code == -7101)
     {
       v11 = 23;
     }
@@ -465,14 +465,14 @@ LABEL_8:
       v11 = v10;
     }
 
-    if (v5 <= -7007)
+    if (code <= -7007)
     {
-      v12 = v11;
+      code2 = v11;
     }
 
     else
     {
-      v12 = v9;
+      code2 = v9;
     }
   }
 
@@ -480,7 +480,7 @@ LABEL_8:
   v23 = *v6;
   v24[0] = v4;
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
-  v21 = [v19 errorWithDomain:@"ATError" code:v12 userInfo:v20];
+  v21 = [v19 errorWithDomain:@"ATError" code:code2 userInfo:v20];
 
   return v21;
 }
@@ -489,8 +489,8 @@ LABEL_8:
 {
   v30 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [v4 domain];
-  v6 = v5;
+  domain = [v4 domain];
+  v6 = domain;
   if (!v4)
   {
     v7 = 0;
@@ -498,14 +498,14 @@ LABEL_8:
   }
 
   v7 = v4;
-  if ([v5 isEqualToString:@"ATError"])
+  if ([domain isEqualToString:@"ATError"])
   {
     goto LABEL_9;
   }
 
   if ([v6 isEqualToString:*MEMORY[0x277D7F900]])
   {
-    v8 = [a1 _ATErrorFromICError:v4];
+    v8 = [self _ATErrorFromICError:v4];
 LABEL_8:
     v7 = v8;
 
@@ -514,7 +514,7 @@ LABEL_8:
 
   if ([v6 isEqualToString:*MEMORY[0x277D7F9C0]])
   {
-    v8 = [a1 _ATErrorFromICServerError:v4];
+    v8 = [self _ATErrorFromICServerError:v4];
     goto LABEL_8;
   }
 
@@ -548,31 +548,31 @@ LABEL_8:
     _Block_object_dispose(&v18, 8);
     if (!v12)
     {
-      v16 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getBLErrorDomain(void)"];
-      [v16 handleFailureInFunction:v17 file:@"NSError+ATAdditions.m" lineNumber:19 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v17 file:@"NSError+ATAdditions.m" lineNumber:19 description:{@"%s", dlerror()}];
 
       __break(1u);
     }
 
     if ([v6 isEqualToString:*v12])
     {
-      v7 = [a1 _ATErrorFromBLError:v4];
+      v7 = [self _ATErrorFromBLError:v4];
     }
 
     else if ([v6 isEqualToString:*MEMORY[0x277CEE188]])
     {
-      v7 = [a1 _ATErrorFromAMSError:v4];
+      v7 = [self _ATErrorFromAMSError:v4];
     }
 
     else if ([v6 isEqualToString:@"MBErrorDomain"])
     {
-      v7 = [a1 _ATErrorFromMBError:v4];
+      v7 = [self _ATErrorFromMBError:v4];
     }
 
     else if ([v6 isEqualToString:@"CoreMediaErrorDomain"])
     {
-      v7 = [a1 _ATErrorFromCoreMediaError:v4];
+      v7 = [self _ATErrorFromCoreMediaError:v4];
     }
 
     else

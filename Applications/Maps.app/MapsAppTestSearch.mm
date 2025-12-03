@@ -2,36 +2,36 @@
 - (BOOL)runTest;
 - (void)_runTestNow;
 - (void)_startPrewarmingKeyboard;
-- (void)annotationPinDroppedForAResult:(id)a3;
-- (void)annotationPinDroppedForResults:(id)a3;
+- (void)annotationPinDroppedForAResult:(id)result;
+- (void)annotationPinDroppedForResults:(id)results;
 - (void)continueDirectionIntentTest;
-- (void)continueToAnnotationsTestsWithSearchSession:(id)a3;
+- (void)continueToAnnotationsTestsWithSearchSession:(id)session;
 - (void)continueToNearbyScrollTests;
 - (void)didDisplayCarplayBrowseCategories;
-- (void)didEndGEOPPTTest_PlaceRequestTicket_PlaceDataRequest:(id)a3;
-- (void)didEndMSGPPTTest_Insights_ACRanking_Contacts:(id)a3;
-- (void)didEndMSGPPTTest_Insights_ACRanking_MapItems:(id)a3;
-- (void)didEndMSGPPTTest_Insights_ACRanking_PortraitCall:(id)a3;
-- (void)didEndMSGPPTTest_Insights_ACRanking_PreLoad:(id)a3;
-- (void)didEndMSGPPTTest_Insights_ACRanking_RoutineCall:(id)a3;
-- (void)didEndMSGPPTTest_Insights_ACRanking_Tourist:(id)a3;
-- (void)endNearbyTestCategory:(id)a3;
-- (void)finishSearchTest:(id)a3;
-- (void)finishedSubTest:(id)a3;
-- (void)performOnMainQueue:(id)a3;
-- (void)refreshSearchAnnotationPinDroppedForResults:(id)a3;
-- (void)refreshSearchRequestSent:(id)a3;
-- (void)refreshSearchSessionDidChangeSearchResults:(id)a3;
+- (void)didEndGEOPPTTest_PlaceRequestTicket_PlaceDataRequest:(id)request;
+- (void)didEndMSGPPTTest_Insights_ACRanking_Contacts:(id)contacts;
+- (void)didEndMSGPPTTest_Insights_ACRanking_MapItems:(id)items;
+- (void)didEndMSGPPTTest_Insights_ACRanking_PortraitCall:(id)call;
+- (void)didEndMSGPPTTest_Insights_ACRanking_PreLoad:(id)load;
+- (void)didEndMSGPPTTest_Insights_ACRanking_RoutineCall:(id)call;
+- (void)didEndMSGPPTTest_Insights_ACRanking_Tourist:(id)tourist;
+- (void)endNearbyTestCategory:(id)category;
+- (void)finishSearchTest:(id)test;
+- (void)finishedSubTest:(id)test;
+- (void)performOnMainQueue:(id)queue;
+- (void)refreshSearchAnnotationPinDroppedForResults:(id)results;
+- (void)refreshSearchRequestSent:(id)sent;
+- (void)refreshSearchSessionDidChangeSearchResults:(id)results;
 - (void)runScrollBrowseCategoriesInCarPlay;
 - (void)searchAutoCompleteTestDidFinish;
-- (void)searchAutoCompleteTestReceiveHandlesOrAddresses:(id)a3;
-- (void)searchAutoCompleteTestReceiveResponse:(id)a3;
+- (void)searchAutoCompleteTestReceiveHandlesOrAddresses:(id)addresses;
+- (void)searchAutoCompleteTestReceiveResponse:(id)response;
 - (void)searchAutoCompleteTestSendQuery;
 - (void)searchKeyboardDidHide;
 - (void)searchKeyboardDidShow;
 - (void)searchKeyboardWillShow;
-- (void)searchRequestSent:(id)a3;
-- (void)searchSessionDidChangeSearchResults:(id)a3;
+- (void)searchRequestSent:(id)sent;
+- (void)searchSessionDidChangeSearchResults:(id)results;
 - (void)searchUILayoutDone;
 - (void)sendSearchRequest;
 - (void)startAutocompleteOrNearbySearchTest;
@@ -40,15 +40,15 @@
 - (void)startRefreshSearchTestIfNeeded;
 - (void)startScrollNearbyTestCategory;
 - (void)startSearchAutoCompleteTest;
-- (void)startedSubTest:(id)a3;
-- (void)startedSubTest:(id)a3 withMetrics:(id)a4;
-- (void)willBeginGEOPPTTest_PlaceRequestTicket_PlaceDataRequest:(id)a3;
-- (void)willBeginMSGPPTTest_Insights_ACRanking_Contacts:(id)a3;
-- (void)willBeginMSGPPTTest_Insights_ACRanking_MapItems:(id)a3;
-- (void)willBeginMSGPPTTest_Insights_ACRanking_PortraitCall:(id)a3;
-- (void)willBeginMSGPPTTest_Insights_ACRanking_PreLoad:(id)a3;
-- (void)willBeginMSGPPTTest_Insights_ACRanking_RoutineCall:(id)a3;
-- (void)willBeginMSGPPTTest_Insights_ACRanking_Tourist:(id)a3;
+- (void)startedSubTest:(id)test;
+- (void)startedSubTest:(id)test withMetrics:(id)metrics;
+- (void)willBeginGEOPPTTest_PlaceRequestTicket_PlaceDataRequest:(id)request;
+- (void)willBeginMSGPPTTest_Insights_ACRanking_Contacts:(id)contacts;
+- (void)willBeginMSGPPTTest_Insights_ACRanking_MapItems:(id)items;
+- (void)willBeginMSGPPTTest_Insights_ACRanking_PortraitCall:(id)call;
+- (void)willBeginMSGPPTTest_Insights_ACRanking_PreLoad:(id)load;
+- (void)willBeginMSGPPTTest_Insights_ACRanking_RoutineCall:(id)call;
+- (void)willBeginMSGPPTTest_Insights_ACRanking_Tourist:(id)tourist;
 @end
 
 @implementation MapsAppTestSearch
@@ -67,7 +67,7 @@
     v11 = 3221225472;
     v12 = sub_1007B9278;
     v13 = &unk_101650D20;
-    v14 = self;
+    selfCopy = self;
     v3 = @"RouteSearchViewControllerDidAppear";
     v4 = &v10;
   }
@@ -78,17 +78,17 @@
     v6 = 3221225472;
     v7 = sub_1007B92BC;
     v8 = &unk_101650D20;
-    v9 = self;
+    selfCopy2 = self;
     v3 = @"MapsRoutePlanningShowingRoutesNotification";
     v4 = &v5;
   }
 
-  [PPTNotificationCenter addOnceObserverForName:v3 object:0 usingBlock:v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14];
+  [PPTNotificationCenter addOnceObserverForName:v3 object:0 usingBlock:v4, v5, v6, v7, v8, selfCopy2, v10, v11, v12, v13, selfCopy];
 }
 
-- (void)refreshSearchAnnotationPinDroppedForResults:(id)a3
+- (void)refreshSearchAnnotationPinDroppedForResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 removeObserver:self name:@"MapsPinsDroppedForSearchResultsNotification" object:0];
   [(MapsAppTestSearch *)self finishedSubTest:@"refreshSearch - annotationsDropped"];
@@ -104,20 +104,20 @@
   objc_destroyWeak(&location);
 }
 
-- (void)refreshSearchSessionDidChangeSearchResults:(id)a3
+- (void)refreshSearchSessionDidChangeSearchResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 removeObserver:self name:@"SearchSessionDidChangeSearchResultsNotification" object:0];
 
-  v10 = [v4 object];
+  object = [resultsCopy object];
 
-  if (v10)
+  if (object)
   {
     [(MapsAppTestSearch *)self finishedSubTest:@"refreshSearch - searchResultReceived"];
-    v6 = [v10 searchInfo];
-    v7 = [v6 results];
-    v8 = [v7 count];
+    searchInfo = [object searchInfo];
+    results = [searchInfo results];
+    v8 = [results count];
 
     if (v8 < 2)
     {
@@ -139,7 +139,7 @@
   }
 }
 
-- (void)refreshSearchRequestSent:(id)a3
+- (void)refreshSearchRequestSent:(id)sent
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:@"SearchManagerSearchForStringRequestSentNotification" object:0];
@@ -157,22 +157,22 @@
 
 - (void)startRefreshSearchTestIfNeeded
 {
-  v3 = [(MapsAppTest *)self options];
-  v4 = [v3 valueForKey:@"refreshWestLng"];
+  options = [(MapsAppTest *)self options];
+  v4 = [options valueForKey:@"refreshWestLng"];
   if (!v4)
   {
     goto LABEL_8;
   }
 
   v5 = v4;
-  v6 = [v3 valueForKey:@"refreshEastLng"];
+  v6 = [options valueForKey:@"refreshEastLng"];
   if (!v6)
   {
     goto LABEL_7;
   }
 
   v7 = v6;
-  v8 = [v3 valueForKey:@"refreshSouthLat"];
+  v8 = [options valueForKey:@"refreshSouthLat"];
   if (!v8)
   {
 
@@ -181,7 +181,7 @@ LABEL_7:
   }
 
   v9 = v8;
-  v10 = [v3 valueForKey:@"refreshNorthLat"];
+  v10 = [options valueForKey:@"refreshNorthLat"];
 
   if (!v10)
   {
@@ -194,34 +194,34 @@ LABEL_8:
   [v11 removeObserver:self name:@"SearchSessionDidChangeSearchResultsNotification" object:0];
 
   v12 = objc_opt_new();
-  v13 = [v3 valueForKey:@"refreshWestLng"];
+  v13 = [options valueForKey:@"refreshWestLng"];
   [v13 doubleValue];
   [v12 setWestLng:?];
 
-  v14 = [v3 valueForKey:@"refreshEastLng"];
+  v14 = [options valueForKey:@"refreshEastLng"];
   [v14 doubleValue];
   [v12 setEastLng:?];
 
-  v15 = [v3 valueForKey:@"refreshSouthLat"];
+  v15 = [options valueForKey:@"refreshSouthLat"];
   [v15 doubleValue];
   [v12 setSouthLat:?];
 
-  v16 = [v3 valueForKey:@"refreshNorthLat"];
+  v16 = [options valueForKey:@"refreshNorthLat"];
   [v16 doubleValue];
   [v12 setNorthLat:?];
 
-  v17 = [(MapsAppTest *)self mainVKMapView];
+  mainVKMapView = [(MapsAppTest *)self mainVKMapView];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1007B98C4;
   v18[3] = &unk_101661738;
   v18[4] = self;
-  [v17 setMapRegion:v12 pitch:v18 yaw:0.0 duration:0.0 completion:2.0];
+  [mainVKMapView setMapRegion:v12 pitch:v18 yaw:0.0 duration:0.0 completion:2.0];
 
 LABEL_9:
 }
 
-- (void)finishSearchTest:(id)a3
+- (void)finishSearchTest:(id)test
 {
   [(MapsAppTestSearch *)self finishedSubTest:@"mapViewFullyDrawn"];
   if (self->_isNearbyTest)
@@ -244,8 +244,8 @@ LABEL_9:
 
 - (void)continueToNearbyScrollTests
 {
-  v3 = [(MapsAppTest *)self options];
-  v4 = [v3 objectForKeyedSubscript:@"testName"];
+  options = [(MapsAppTest *)self options];
+  v4 = [options objectForKeyedSubscript:@"testName"];
 
   v5 = dispatch_time(0, 1000000000);
   v7[0] = _NSConcreteStackBlock;
@@ -253,14 +253,14 @@ LABEL_9:
   v7[2] = sub_1007B9B0C;
   v7[3] = &unk_101661A90;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   v6 = v4;
   dispatch_after(v5, &_dispatch_main_q, v7);
 }
 
-- (void)annotationPinDroppedForResults:(id)a3
+- (void)annotationPinDroppedForResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 removeObserver:self name:@"MapsPinsDroppedForSearchResultsNotification" object:0];
   [(MapsAppTestSearch *)self finishedSubTest:@"annotationsDropped"];
@@ -276,9 +276,9 @@ LABEL_9:
   objc_destroyWeak(&location);
 }
 
-- (void)annotationPinDroppedForAResult:(id)a3
+- (void)annotationPinDroppedForAResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 removeObserver:self name:@"MapsPinsDroppedForSearchResultsNotification" object:0];
   [(MapsAppTestSearch *)self finishedSubTest:@"annotationsDroppedAndSelected"];
@@ -294,18 +294,18 @@ LABEL_9:
   objc_destroyWeak(&location);
 }
 
-- (void)continueToAnnotationsTestsWithSearchSession:(id)a3
+- (void)continueToAnnotationsTestsWithSearchSession:(id)session
 {
-  v4 = a3;
-  v5 = [v4 searchInfo];
-  v6 = [v5 results];
-  v7 = [v6 count];
+  sessionCopy = session;
+  searchInfo = [sessionCopy searchInfo];
+  results = [searchInfo results];
+  v7 = [results count];
 
-  v8 = [v4 searchInfo];
+  searchInfo2 = [sessionCopy searchInfo];
 
-  v9 = [v8 directionIntent];
+  directionIntent = [searchInfo2 directionIntent];
 
-  if (v9)
+  if (directionIntent)
   {
 
     [(MapsAppTestSearch *)self continueDirectionIntentTest];
@@ -342,10 +342,10 @@ LABEL_9:
   }
 }
 
-- (void)searchSessionDidChangeSearchResults:(id)a3
+- (void)searchSessionDidChangeSearchResults:(id)results
 {
-  v4 = a3;
-  v10 = v4;
+  resultsCopy = results;
+  v10 = resultsCopy;
   if (!self->_isNearbyTest)
   {
     v5 = +[GEONotificationPreferenceManager sharedManager];
@@ -360,18 +360,18 @@ LABEL_9:
     v8 = +[NSNotificationCenter defaultCenter];
     [v8 removeObserver:self name:@"SearchSessionDidChangeSearchResultsNotification" object:0];
 
-    v4 = v10;
+    resultsCopy = v10;
   }
 
-  v9 = [v4 object];
-  if (v9)
+  object = [resultsCopy object];
+  if (object)
   {
     if (!self->_isNearbyTest)
     {
       [(MapsAppTestSearch *)self finishedSubTest:@"searchResultReceived"];
     }
 
-    [(MapsAppTestSearch *)self continueToAnnotationsTestsWithSearchSession:v9];
+    [(MapsAppTestSearch *)self continueToAnnotationsTestsWithSearchSession:object];
   }
 
   else
@@ -380,7 +380,7 @@ LABEL_9:
   }
 }
 
-- (void)searchRequestSent:(id)a3
+- (void)searchRequestSent:(id)sent
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:@"SearchManagerSearchForStringRequestSentNotification" object:0];
@@ -405,52 +405,52 @@ LABEL_9:
     [(MapsAppTestSearch *)self startedSubTest:*(&off_10162A188 + v4)];
   }
 
-  v5 = [(MapsAppTest *)self testCoordinator];
-  [v5 pptTestSearchForFieldItem:v6];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestSearchForFieldItem:v6];
 }
 
-- (void)didEndGEOPPTTest_PlaceRequestTicket_PlaceDataRequest:(id)a3
+- (void)didEndGEOPPTTest_PlaceRequestTicket_PlaceDataRequest:(id)request
 {
-  v14 = a3;
-  v4 = [v14 object];
+  requestCopy = request;
+  object = [requestCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v6 = v14;
+  v6 = requestCopy;
   if (isKindOfClass)
   {
-    v7 = [v14 object];
-    v8 = [v7 data];
-    v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 length]);
-    v10 = [(MapsAppTest *)self results];
-    [v10 setObject:v9 forKeyedSubscript:@"extras:searchResponseSize:bytes"];
+    object2 = [requestCopy object];
+    data = [object2 data];
+    v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [data length]);
+    results = [(MapsAppTest *)self results];
+    [results setObject:v9 forKeyedSubscript:@"extras:searchResponseSize:bytes"];
 
-    if ([v7 hasDebugLatencyMs])
+    if ([object2 hasDebugLatencyMs])
     {
-      *&v11 = [v7 debugLatencyMs] * 0.001;
+      *&v11 = [object2 debugLatencyMs] * 0.001;
       v12 = [NSNumber numberWithFloat:v11];
-      v13 = [(MapsAppTest *)self results];
-      [v13 setObject:v12 forKeyedSubscript:@"extras:searchResponseServerLatency:time"];
+      results2 = [(MapsAppTest *)self results];
+      [results2 setObject:v12 forKeyedSubscript:@"extras:searchResponseServerLatency:time"];
     }
 
-    v6 = v14;
+    v6 = requestCopy;
   }
 }
 
-- (void)willBeginGEOPPTTest_PlaceRequestTicket_PlaceDataRequest:(id)a3
+- (void)willBeginGEOPPTTest_PlaceRequestTicket_PlaceDataRequest:(id)request
 {
-  v10 = a3;
-  v4 = [v10 object];
+  requestCopy = request;
+  object = [requestCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v10 object];
-    v7 = [v6 data];
-    v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 length]);
-    v9 = [(MapsAppTest *)self results];
-    [v9 setObject:v8 forKeyedSubscript:@"extras:searchRequestSize:bytes"];
+    object2 = [requestCopy object];
+    data = [object2 data];
+    v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [data length]);
+    results = [(MapsAppTest *)self results];
+    [results setObject:v8 forKeyedSubscript:@"extras:searchRequestSize:bytes"];
   }
 }
 
@@ -465,8 +465,8 @@ LABEL_9:
   {
     if (self->_selectACSuggestionMatchingAddress)
     {
-      v3 = [(MapsAppTest *)self testCoordinator];
-      [v3 pptSelectACSuggestionMatchingAddress:self->_selectACSuggestionMatchingAddress];
+      testCoordinator = [(MapsAppTest *)self testCoordinator];
+      [testCoordinator pptSelectACSuggestionMatchingAddress:self->_selectACSuggestionMatchingAddress];
 
       [(MapsAppTestSearch *)self startedSubTest:@"displayPlacecard"];
       [(MapsAppTestSearch *)self startedSubTest:@"fetchPlaceEnrichment"];
@@ -505,8 +505,8 @@ LABEL_9:
 
   else
   {
-    v4 = [(MapsAppTest *)self testCoordinator];
-    [v4 pptTestSearchEndEditing];
+    testCoordinator2 = [(MapsAppTest *)self testCoordinator];
+    [testCoordinator2 pptTestSearchEndEditing];
 
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -517,15 +517,15 @@ LABEL_9:
   }
 }
 
-- (void)searchAutoCompleteTestReceiveResponse:(id)a3
+- (void)searchAutoCompleteTestReceiveResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(NSMutableArray *)self->_autoCompleteQueries firstObject];
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"SearchDataProviderQueryKey"];
+  responseCopy = response;
+  firstObject = [(NSMutableArray *)self->_autoCompleteQueries firstObject];
+  userInfo = [responseCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"SearchDataProviderQueryKey"];
 
-  v8 = [v4 userInfo];
-  v9 = [v8 objectForKeyedSubscript:@"SearchDataProviderQueryResultGroupsKey"];
+  userInfo2 = [responseCopy userInfo];
+  v9 = [userInfo2 objectForKeyedSubscript:@"SearchDataProviderQueryResultGroupsKey"];
 
   v23 = 0u;
   v24 = 0u;
@@ -547,8 +547,8 @@ LABEL_9:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v21 + 1) + 8 * v14) items];
-        v12 += [v15 count];
+        items = [*(*(&v21 + 1) + 8 * v14) items];
+        v12 += [items count];
 
         v14 = v14 + 1;
       }
@@ -561,7 +561,7 @@ LABEL_9:
     LODWORD(v11) = v12 != 0;
   }
 
-  if ([v7 isEqualToString:v5])
+  if ([v7 isEqualToString:firstObject])
   {
     v16 = v11 == 0;
   }
@@ -573,7 +573,7 @@ LABEL_9:
 
   if (!v16)
   {
-    v17 = [v5 length];
+    v17 = [firstObject length];
     if (v17 < 6 || self->_directionIntentTestType)
     {
       v18 = [NSString stringWithFormat:@"autoCompleteSubTest - Letter number %lu", v17];
@@ -594,15 +594,15 @@ LABEL_9:
 
 - (void)searchAutoCompleteTestSendQuery
 {
-  v3 = [(NSMutableArray *)self->_autoCompleteQueries firstObject];
-  if (!v3)
+  firstObject = [(NSMutableArray *)self->_autoCompleteQueries firstObject];
+  if (!firstObject)
   {
     [(MapsAppTestSearch *)self searchAutoCompleteTestDidFinish];
   }
 
   v4 = objc_alloc_init(SearchFieldItem);
-  [(SearchFieldItem *)v4 setSearchString:v3];
-  v5 = [v3 length];
+  [(SearchFieldItem *)v4 setSearchString:firstObject];
+  v5 = [firstObject length];
   v6 = v5;
   if (self->_searchTestACMode != 1 || v5 == self->_maxACSearchQueryLength)
   {
@@ -619,8 +619,8 @@ LABEL_9:
     }
   }
 
-  v10 = [(MapsAppTest *)self testCoordinator];
-  [v10 pptTestAutocompleteSearchForFieldItem:v4];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestAutocompleteSearchForFieldItem:v4];
 
   if ([(NSMutableArray *)self->_autoCompleteQueries count]&& self->_searchTestACMode == 1 && v6 != self->_maxACSearchQueryLength)
   {
@@ -634,10 +634,10 @@ LABEL_9:
   }
 }
 
-- (void)searchAutoCompleteTestReceiveHandlesOrAddresses:(id)a3
+- (void)searchAutoCompleteTestReceiveHandlesOrAddresses:(id)addresses
 {
-  v5 = [(NSMutableArray *)self->_autoCompleteQueries firstObject];
-  v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"collecting handles or contacts - Letter number %lu", [v5 length]);
+  firstObject = [(NSMutableArray *)self->_autoCompleteQueries firstObject];
+  v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"collecting handles or contacts - Letter number %lu", [firstObject length]);
   [(MapsAppTestSearch *)self finishedSubTest:v4];
 }
 
@@ -685,8 +685,8 @@ LABEL_9:
 {
   [(MapsAppTestSearch *)self startedSubTest:@"nearby search results list - scroll"];
   objc_initWeak(&location, self);
-  v3 = [(MapsAppTest *)self testCoordinator];
-  v4 = [v3 pptTestScrollView];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  pptTestScrollView = [testCoordinator pptTestScrollView];
 
   RPTContentSizeInDirection();
   v6 = v5;
@@ -708,18 +708,18 @@ LABEL_9:
   objc_destroyWeak(&location);
 }
 
-- (void)endNearbyTestCategory:(id)a3
+- (void)endNearbyTestCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   [(MapsAppTestSearch *)self finishedSubTest:@"nearby - category"];
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 removeObserver:self name:@"SearchSessionDidChangeSearchResultsNotification" object:0];
 
-  v6 = [v4 object];
+  object = [categoryCopy object];
 
-  if (v6)
+  if (object)
   {
-    [(MapsAppTestSearch *)self continueToAnnotationsTestsWithSearchSession:v6];
+    [(MapsAppTestSearch *)self continueToAnnotationsTestsWithSearchSession:object];
   }
 
   else
@@ -734,8 +734,8 @@ LABEL_9:
   [v3 addObserver:self selector:"endNearbyTestCategory:" name:@"SearchSessionDidChangeSearchResultsNotification" object:0];
 
   [(MapsAppTestSearch *)self startedSubTest:@"nearby - category"];
-  v4 = [(MapsAppTest *)self testCoordinator];
-  [v4 pptTestSearchNearbyCategoryWithIndex:self->_nearbyCategoryIndex];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestSearchNearbyCategoryWithIndex:self->_nearbyCategoryIndex];
 }
 
 - (void)startNearbyTest
@@ -770,8 +770,8 @@ LABEL_9:
 {
   if (self->_isPrewarmingKeyboard)
   {
-    v3 = [(MapsAppTest *)self testCoordinator];
-    [v3 pptTestSearchCancel];
+    testCoordinator = [(MapsAppTest *)self testCoordinator];
+    [testCoordinator pptTestSearchCancel];
   }
 
   else
@@ -801,12 +801,12 @@ LABEL_9:
 
 - (void)didDisplayCarplayBrowseCategories
 {
-  v3 = [(MapsAppTest *)self options];
-  v4 = [v3 objectForKeyedSubscript:@"testName"];
-  v5 = [(MapsAppTest *)self testCoordinator];
-  v6 = [v5 pptTestScrollView];
+  options = [(MapsAppTest *)self options];
+  v4 = [options objectForKeyedSubscript:@"testName"];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  pptTestScrollView = [testCoordinator pptTestScrollView];
 
-  if (v6)
+  if (pptTestScrollView)
   {
     if ([v4 isEqualToString:@"searchScrollBrowseCategoryResultsInCarPlay"])
     {
@@ -818,11 +818,11 @@ LABEL_9:
       v15[3] = &unk_10162A0D8;
       v15[4] = self;
       v16 = @"scrollBrowseCategoryResultsInCarPlay";
-      v17 = v6;
+      v17 = pptTestScrollView;
       objc_copyWeak(&v18, &location);
       [PPTNotificationCenter addOnceObserverForName:@"PPTTest_CarSearchResultsModeController_DidDisplaySearchResults" object:0 usingBlock:v15];
-      v7 = [(MapsAppTest *)self testCoordinator];
-      [v7 pptTestSearchNearbyCategoryWithIndex:0];
+      testCoordinator2 = [(MapsAppTest *)self testCoordinator];
+      [testCoordinator2 pptTestSearchNearbyCategoryWithIndex:0];
 
       objc_destroyWeak(&v18);
     }
@@ -834,14 +834,14 @@ LABEL_9:
       if (!v8)
       {
         [(MapsAppTestSearch *)self startedSubTest:@"scrollBrowseCategoriesInCarPlay"];
-        [v6 contentSize];
+        [pptTestScrollView contentSize];
         v11[0] = _NSConcreteStackBlock;
         v11[1] = 3221225472;
         v11[2] = sub_1007BBC20;
         v11[3] = &unk_10162A100;
         v11[4] = self;
         v12 = @"scrollBrowseCategoriesInCarPlay";
-        [v6 _performScrollTest:0 iterations:10 delta:20 length:v10 scrollAxis:2 extraResultsBlock:0 completionBlock:v11];
+        [pptTestScrollView _performScrollTest:0 iterations:10 delta:20 length:v10 scrollAxis:2 extraResultsBlock:0 completionBlock:v11];
 
         goto LABEL_9;
       }
@@ -854,8 +854,8 @@ LABEL_9:
       v13[3] = &unk_10165FBE8;
       objc_copyWeak(&v14, &location);
       [PPTNotificationCenter addOnceObserverForName:@"PPTTest_CarKeyboardModeController_DidDisplayKeyboard" object:0 usingBlock:v13];
-      v9 = [(MapsAppTest *)self testCoordinator];
-      [v9 pptSelectKeyboardInteractionModel];
+      testCoordinator3 = [(MapsAppTest *)self testCoordinator];
+      [testCoordinator3 pptSelectKeyboardInteractionModel];
 
       objc_destroyWeak(&v14);
     }
@@ -874,8 +874,8 @@ LABEL_9:
 - (void)_startPrewarmingKeyboard
 {
   self->_isPrewarmingKeyboard = 1;
-  v2 = [(MapsAppTest *)self testCoordinator];
-  [v2 pptTestEnterSearchMode];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestEnterSearchMode];
 }
 
 - (void)_runTestNow
@@ -907,32 +907,32 @@ LABEL_9:
   v11 = +[GEONotificationPreferenceManager sharedManager];
   [v11 setEnabled:1 forSubTestWithName:@"MSGPPTTest_Insights_ACRanking_PreLoad"];
 
-  v12 = [(MapsAppTest *)self options];
-  v13 = [v12 objectForKeyedSubscript:@"testName"];
+  options = [(MapsAppTest *)self options];
+  v13 = [options objectForKeyedSubscript:@"testName"];
   if ([v13 containsString:@"Nearby"])
   {
     self->_isNearbyTest = 1;
-    v14 = [v12 objectForKeyedSubscript:@"categoryIndex"];
+    v14 = [options objectForKeyedSubscript:@"categoryIndex"];
     v15 = v14;
     if (v14)
     {
-      v16 = [v14 integerValue];
+      integerValue = [v14 integerValue];
     }
 
     else
     {
-      v16 = arc4random() & 7;
+      integerValue = arc4random() & 7;
     }
 
-    self->_nearbyCategoryIndex = v16;
+    self->_nearbyCategoryIndex = integerValue;
   }
 
   else
   {
-    self->_searchTestACMode = [v12 _mapstest_searchTestACMode];
-    self->_directionIntentTestType = [v12 _mapstest_directionIntentType];
-    v15 = [v12 objectForKeyedSubscript:@"searchQuery"];
-    v17 = [v12 objectForKeyedSubscript:@"searchQueryPrefix"];
+    self->_searchTestACMode = [options _mapstest_searchTestACMode];
+    self->_directionIntentTestType = [options _mapstest_directionIntentType];
+    v15 = [options objectForKeyedSubscript:@"searchQuery"];
+    v17 = [options objectForKeyedSubscript:@"searchQueryPrefix"];
     v18 = [v17 length];
     v19 = [v15 length];
     v20 = &v18[v19];
@@ -988,13 +988,13 @@ LABEL_9:
     self->_query = v27;
   }
 
-  v29 = [v12 objectForKeyedSubscript:@"isShowcase"];
-  v30 = [v29 BOOLValue];
+  v29 = [options objectForKeyedSubscript:@"isShowcase"];
+  bOOLValue = [v29 BOOLValue];
 
-  if (v30)
+  if (bOOLValue)
   {
     self->_isShowcaseTest = 1;
-    v31 = [v12 objectForKeyedSubscript:@"selectACSuggestionMatchingAddress"];
+    v31 = [options objectForKeyedSubscript:@"selectACSuggestionMatchingAddress"];
     selectACSuggestionMatchingAddress = self->_selectACSuggestionMatchingAddress;
     self->_selectACSuggestionMatchingAddress = v31;
   }
@@ -1006,14 +1006,14 @@ LABEL_9:
 
   else
   {
-    v33 = [(MapsAppTest *)self testCoordinator];
-    [v33 pptTestResetForLaunchURL];
+    testCoordinator = [(MapsAppTest *)self testCoordinator];
+    [testCoordinator pptTestResetForLaunchURL];
 
-    v34 = [v12 _mapstest_mapType];
-    v35 = [v12 _mapstest_mapRegion];
-    [(MapsAppTest *)self switchToMapType:v34];
-    v36 = [(MapsAppTest *)self mainVKMapView];
-    [v36 setMapRegion:v35 pitch:0.0 yaw:0.0];
+    _mapstest_mapType = [options _mapstest_mapType];
+    _mapstest_mapRegion = [options _mapstest_mapRegion];
+    [(MapsAppTest *)self switchToMapType:_mapstest_mapType];
+    mainVKMapView = [(MapsAppTest *)self mainVKMapView];
+    [mainVKMapView setMapRegion:_mapstest_mapRegion pitch:0.0 yaw:0.0];
 
     objc_initWeak(&location, self);
     v37[0] = _NSConcreteStackBlock;
@@ -1044,9 +1044,9 @@ LABEL_9:
 - (BOOL)runTest
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if (v4 == 5)
+  if (userInterfaceIdiom == 5)
   {
     [(MapsAppTestSearch *)self _runTestNow];
   }
@@ -1055,8 +1055,8 @@ LABEL_9:
   {
     if ([(MapsAppTest *)self isRunningOnCarPlay])
     {
-      v5 = [(MapsAppTest *)self options];
-      v6 = [v5 objectForKeyedSubscript:@"testName"];
+      options = [(MapsAppTest *)self options];
+      v6 = [options objectForKeyedSubscript:@"testName"];
       if (([v6 isEqualToString:@"searchScrollBrowseCategoriesInCarPlay"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"searchScrollBrowseCategoryResultsInCarPlay") & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"searchEmbarcadero"))
       {
         [(MapsAppTestSearch *)self runScrollBrowseCategoriesInCarPlay];
@@ -1065,10 +1065,10 @@ LABEL_9:
 
     else
     {
-      v5 = +[NSNotificationCenter defaultCenter];
-      [v5 addObserver:self selector:"searchKeyboardWillShow" name:UIKeyboardWillShowNotification object:0];
-      [v5 addObserver:self selector:"searchKeyboardDidShow" name:UIKeyboardDidShowNotification object:0];
-      [v5 addObserver:self selector:"searchKeyboardDidHide" name:UIKeyboardDidHideNotification object:0];
+      options = +[NSNotificationCenter defaultCenter];
+      [options addObserver:self selector:"searchKeyboardWillShow" name:UIKeyboardWillShowNotification object:0];
+      [options addObserver:self selector:"searchKeyboardDidShow" name:UIKeyboardDidShowNotification object:0];
+      [options addObserver:self selector:"searchKeyboardDidHide" name:UIKeyboardDidHideNotification object:0];
       [(MapsAppTestSearch *)self _startPrewarmingKeyboard];
     }
   }
@@ -1076,12 +1076,12 @@ LABEL_9:
   return 1;
 }
 
-- (void)performOnMainQueue:(id)a3
+- (void)performOnMainQueue:(id)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   if (+[NSThread isMainThread])
   {
-    v3[2](v3);
+    queueCopy[2](queueCopy);
   }
 
   else
@@ -1090,50 +1090,50 @@ LABEL_9:
     block[1] = 3221225472;
     block[2] = sub_1007BC858;
     block[3] = &unk_101661760;
-    v5 = v3;
+    v5 = queueCopy;
     dispatch_sync(&_dispatch_main_q, block);
   }
 }
 
-- (void)startedSubTest:(id)a3 withMetrics:(id)a4
+- (void)startedSubTest:(id)test withMetrics:(id)metrics
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1007BC928;
   v8[3] = &unk_101661A40;
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  v6 = v10;
-  v7 = v9;
+  testCopy = test;
+  metricsCopy = metrics;
+  selfCopy = self;
+  v6 = metricsCopy;
+  v7 = testCopy;
   [(MapsAppTestSearch *)self performOnMainQueue:v8];
 }
 
-- (void)finishedSubTest:(id)a3
+- (void)finishedSubTest:(id)test
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1007BC9FC;
   v5[3] = &unk_101661A90;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  testCopy = test;
+  selfCopy = self;
+  v4 = testCopy;
   [(MapsAppTestSearch *)self performOnMainQueue:v5];
 }
 
-- (void)startedSubTest:(id)a3
+- (void)startedSubTest:(id)test
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1007BCACC;
   v5[3] = &unk_101661A90;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  testCopy = test;
+  selfCopy = self;
+  v4 = testCopy;
   [(MapsAppTestSearch *)self performOnMainQueue:v5];
 }
 
-- (void)didEndMSGPPTTest_Insights_ACRanking_PreLoad:(id)a3
+- (void)didEndMSGPPTTest_Insights_ACRanking_PreLoad:(id)load
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1143,7 +1143,7 @@ LABEL_9:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)willBeginMSGPPTTest_Insights_ACRanking_PreLoad:(id)a3
+- (void)willBeginMSGPPTTest_Insights_ACRanking_PreLoad:(id)load
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1153,7 +1153,7 @@ LABEL_9:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didEndMSGPPTTest_Insights_ACRanking_RoutineCall:(id)a3
+- (void)didEndMSGPPTTest_Insights_ACRanking_RoutineCall:(id)call
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1163,7 +1163,7 @@ LABEL_9:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)willBeginMSGPPTTest_Insights_ACRanking_RoutineCall:(id)a3
+- (void)willBeginMSGPPTTest_Insights_ACRanking_RoutineCall:(id)call
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1173,7 +1173,7 @@ LABEL_9:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didEndMSGPPTTest_Insights_ACRanking_PortraitCall:(id)a3
+- (void)didEndMSGPPTTest_Insights_ACRanking_PortraitCall:(id)call
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1183,7 +1183,7 @@ LABEL_9:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)willBeginMSGPPTTest_Insights_ACRanking_PortraitCall:(id)a3
+- (void)willBeginMSGPPTTest_Insights_ACRanking_PortraitCall:(id)call
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1193,7 +1193,7 @@ LABEL_9:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didEndMSGPPTTest_Insights_ACRanking_Tourist:(id)a3
+- (void)didEndMSGPPTTest_Insights_ACRanking_Tourist:(id)tourist
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1203,7 +1203,7 @@ LABEL_9:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)willBeginMSGPPTTest_Insights_ACRanking_Tourist:(id)a3
+- (void)willBeginMSGPPTTest_Insights_ACRanking_Tourist:(id)tourist
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1213,7 +1213,7 @@ LABEL_9:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didEndMSGPPTTest_Insights_ACRanking_Contacts:(id)a3
+- (void)didEndMSGPPTTest_Insights_ACRanking_Contacts:(id)contacts
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1223,7 +1223,7 @@ LABEL_9:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)willBeginMSGPPTTest_Insights_ACRanking_Contacts:(id)a3
+- (void)willBeginMSGPPTTest_Insights_ACRanking_Contacts:(id)contacts
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1233,7 +1233,7 @@ LABEL_9:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didEndMSGPPTTest_Insights_ACRanking_MapItems:(id)a3
+- (void)didEndMSGPPTTest_Insights_ACRanking_MapItems:(id)items
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1243,7 +1243,7 @@ LABEL_9:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)willBeginMSGPPTTest_Insights_ACRanking_MapItems:(id)a3
+- (void)willBeginMSGPPTTest_Insights_ACRanking_MapItems:(id)items
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

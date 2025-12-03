@@ -1,26 +1,26 @@
 @interface TSCEFunction_SLOPE
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_SLOPE
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
   TSUDecimal::operator=();
-  v9 = *(*a5 + 8);
+  v9 = *(*arguments + 8);
   v105 = 0;
-  v11 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v9, v10, a3, a4, 1, 1, &v105);
+  v11 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v9, v10, context, spec, 1, 1, &v105);
   v12 = v105;
   if (v12)
   {
     v16 = v12;
-    v17 = objc_msgSend_raiseErrorOrConvert_(a3, v13, v12, v14, v15);
+    v17 = objc_msgSend_raiseErrorOrConvert_(context, v13, v12, v14, v15);
     goto LABEL_34;
   }
 
-  v18 = **a5;
+  v18 = **arguments;
   v104 = 0;
-  v20 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v18, v19, a3, a4, 0, 1, &v104);
+  v20 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v18, v19, context, spec, 0, 1, &v104);
   v21 = v104;
   if (!v21)
   {
@@ -29,13 +29,13 @@
     v31 = objc_msgSend_nilValue(TSCENilValue, v27, v28, v29, v30);
     v102 = v31;
     v103 = v26;
-    v16 = objc_msgSend_computeSlope_functionSpec_xs_xArgumentIndex_ys_yArgumentIndex_xAverageResult_yAverageResult_slopeResult_xExamplePtr_yExamplePtr_(a1, v32, a3, a4, v11, 1, v94, 0, 0, 0, v106, &v103, &v102);
+    v16 = objc_msgSend_computeSlope_functionSpec_xs_xArgumentIndex_ys_yArgumentIndex_xAverageResult_yAverageResult_slopeResult_xExamplePtr_yExamplePtr_(self, v32, context, spec, v11, 1, v94, 0, 0, 0, v106, &v103, &v102);
     v33 = v103;
 
     v34 = v102;
     if (v16)
     {
-      v17 = objc_msgSend_raiseErrorOrConvert_(a3, v35, v16, v37, v38);
+      v17 = objc_msgSend_raiseErrorOrConvert_(context, v35, v16, v37, v38);
       v39 = v33;
       v20 = v94;
 LABEL_32:
@@ -46,18 +46,18 @@ LABEL_32:
     v93 = v33;
     v40 = objc_msgSend_nilValue(TSCENilValue, v35, v36, v37, v38);
     v20 = v94;
-    if (objc_msgSend_deepType_(v34, v41, a3, v42, v43) == 5 && objc_msgSend_deepType_(v93, v44, a3, v45, v46) == 5)
+    if (objc_msgSend_deepType_(v34, v41, context, v42, v43) == 5 && objc_msgSend_deepType_(v93, v44, context, v45, v46) == 5)
     {
       v101 = 0;
-      v92 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v34, v44, a3, a4, 0, &v101);
+      v92 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v34, v44, context, spec, 0, &v101);
       v47 = v101;
       v100 = v47;
-      v49 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v93, v48, a3, a4, 1, &v100);
+      v49 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v93, v48, context, spec, 1, &v100);
       v16 = v100;
 
       if (v16)
       {
-        v17 = objc_msgSend_raiseErrorOrConvert_(a3, v50, v16, v52, v53);
+        v17 = objc_msgSend_raiseErrorOrConvert_(context, v50, v16, v52, v53);
 
         v39 = v93;
 LABEL_31:
@@ -83,7 +83,7 @@ LABEL_31:
 
     else
     {
-      if (objc_msgSend_deepType_(v34, v44, a3, v45, v46) != 3 || objc_msgSend_deepType_(v93, v54, a3, v56, v57) != 5)
+      if (objc_msgSend_deepType_(v34, v44, context, v45, v46) != 3 || objc_msgSend_deepType_(v93, v54, context, v56, v57) != 5)
       {
 LABEL_23:
         if (objc_msgSend_isNil(v40, v54, v55, v56, v57))
@@ -96,11 +96,11 @@ LABEL_23:
         v39 = v93;
         if (v11)
         {
-          objc_msgSend_formatWithContext_(v11, v83, a3, v85, v86);
+          objc_msgSend_formatWithContext_(v11, v83, context, v85, v86);
           if (v94)
           {
 LABEL_27:
-            objc_msgSend_formatWithContext_(v94, v83, a3, v85, v86);
+            objc_msgSend_formatWithContext_(v94, v83, context, v85, v86);
 LABEL_30:
             TSCEFormat::formatByMergingWithFormat(&v97, &v96, v84, v85, v86, &v95);
             TSCEFormat::TSCEFormat(&v98, &v95);
@@ -126,12 +126,12 @@ LABEL_30:
       }
 
       v99 = 0;
-      v58 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v93, v54, a3, a4, 1, &v99);
+      v58 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v93, v54, context, spec, 1, &v99);
       v16 = v99;
       if (v16)
       {
         v39 = v93;
-        v17 = objc_msgSend_raiseErrorOrConvert_(a3, v59, v16, v61, v62);
+        v17 = objc_msgSend_raiseErrorOrConvert_(context, v59, v16, v61, v62);
 
         goto LABEL_31;
       }
@@ -155,7 +155,7 @@ LABEL_30:
   }
 
   v16 = v21;
-  v17 = objc_msgSend_raiseErrorOrConvert_(a3, v22, v21, v24, v25);
+  v17 = objc_msgSend_raiseErrorOrConvert_(context, v22, v21, v24, v25);
 LABEL_33:
 
 LABEL_34:

@@ -1,8 +1,8 @@
 @interface HMDMatterV2KeyCountLogEvent
 + (id)logCategory;
-- (HMDMatterV2KeyCountLogEvent)initWithConfigurationDataSource:(id)a3;
-- (HMDMatterV2KeyCountLogEvent)initWithDictionary:(id)a3;
-- (HMDMatterV2KeyCountLogEvent)initWithHomeUUID:(id)a3 numV2Keys:(unint64_t)a4;
+- (HMDMatterV2KeyCountLogEvent)initWithConfigurationDataSource:(id)source;
+- (HMDMatterV2KeyCountLogEvent)initWithDictionary:(id)dictionary;
+- (HMDMatterV2KeyCountLogEvent)initWithHomeUUID:(id)d numV2Keys:(unint64_t)keys;
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (id)serializedMetrics;
 @end
@@ -26,9 +26,9 @@
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v8[0] = @"homeUUID";
-  v3 = [(HMMHomeLogEvent *)self homeUUIDString];
+  homeUUIDString = [(HMMHomeLogEvent *)self homeUUIDString];
   v8[1] = @"numV2Keys";
-  v9[0] = v3;
+  v9[0] = homeUUIDString;
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDMatterV2KeyCountLogEvent numV2Keys](self, "numV2Keys")}];
   v9[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
@@ -38,23 +38,23 @@
   return v5;
 }
 
-- (HMDMatterV2KeyCountLogEvent)initWithDictionary:(id)a3
+- (HMDMatterV2KeyCountLogEvent)initWithDictionary:(id)dictionary
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"homeUUID"];
-  v6 = [v4 objectForKeyedSubscript:@"numV2Keys"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"homeUUID"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"numV2Keys"];
   v7 = v6;
   if (v5 && v6)
   {
-    v8 = -[HMDMatterV2KeyCountLogEvent initWithHomeUUID:numV2Keys:](self, "initWithHomeUUID:numV2Keys:", v5, [v6 unsignedIntValue]);
-    v9 = v8;
+    selfCopy = -[HMDMatterV2KeyCountLogEvent initWithHomeUUID:numV2Keys:](self, "initWithHomeUUID:numV2Keys:", v5, [v6 unsignedIntValue]);
+    v9 = selfCopy;
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -62,7 +62,7 @@
       v15 = 138543618;
       v16 = v12;
       v17 = 2112;
-      v18 = v4;
+      v18 = dictionaryCopy;
       _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_ERROR, "%{public}@Could not init HMDMatterV2KeyCountLogEvent with dictionary %@", &v15, 0x16u);
     }
 
@@ -74,26 +74,26 @@
   return v9;
 }
 
-- (HMDMatterV2KeyCountLogEvent)initWithHomeUUID:(id)a3 numV2Keys:(unint64_t)a4
+- (HMDMatterV2KeyCountLogEvent)initWithHomeUUID:(id)d numV2Keys:(unint64_t)keys
 {
   v6.receiver = self;
   v6.super_class = HMDMatterV2KeyCountLogEvent;
-  result = [(HMMHomeLogEvent *)&v6 initWithHomeUUID:a3];
+  result = [(HMMHomeLogEvent *)&v6 initWithHomeUUID:d];
   if (result)
   {
-    result->_numV2Keys = a4;
+    result->_numV2Keys = keys;
   }
 
   return result;
 }
 
-- (HMDMatterV2KeyCountLogEvent)initWithConfigurationDataSource:(id)a3
+- (HMDMatterV2KeyCountLogEvent)initWithConfigurationDataSource:(id)source
 {
-  v4 = a3;
-  v5 = [v4 uuid];
-  v6 = [v4 numMatterV2Keys];
+  sourceCopy = source;
+  uuid = [sourceCopy uuid];
+  numMatterV2Keys = [sourceCopy numMatterV2Keys];
 
-  v7 = [(HMDMatterV2KeyCountLogEvent *)self initWithHomeUUID:v5 numV2Keys:v6];
+  v7 = [(HMDMatterV2KeyCountLogEvent *)self initWithHomeUUID:uuid numV2Keys:numMatterV2Keys];
   return v7;
 }
 

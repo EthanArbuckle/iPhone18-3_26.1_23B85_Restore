@@ -1,5 +1,5 @@
 @interface UPEmbedding
-- (UPEmbedding)initWithCoordinates:(id)a3;
+- (UPEmbedding)initWithCoordinates:(id)coordinates;
 - (id)getCoordinates;
 - (unint64_t)getDimension;
 - (void)dealloc;
@@ -79,10 +79,10 @@
   return v7;
 }
 
-- (UPEmbedding)initWithCoordinates:(id)a3
+- (UPEmbedding)initWithCoordinates:(id)coordinates
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coordinatesCopy = coordinates;
   v28.receiver = self;
   v28.super_class = UPEmbedding;
   if ([(UPEmbedding *)&v28 init])
@@ -90,12 +90,12 @@
     __src = 0;
     v26 = 0;
     v27 = 0;
-    std::vector<double>::reserve(&__src, [v4 count]);
+    std::vector<double>::reserve(&__src, [coordinatesCopy count]);
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v5 = v4;
+    v5 = coordinatesCopy;
     v6 = [v5 countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v6)
     {

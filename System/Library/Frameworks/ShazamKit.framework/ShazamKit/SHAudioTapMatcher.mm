@@ -1,61 +1,61 @@
 @interface SHAudioTapMatcher
-- (BOOL)finishSessionConditionsMetForRequest:(id)a3 response:(id)a4;
+- (BOOL)finishSessionConditionsMetForRequest:(id)request response:(id)response;
 - (BOOL)isRunning;
-- (BOOL)session:(id)a3 shouldAttemptToMatchSignature:(id)a4;
+- (BOOL)session:(id)session shouldAttemptToMatchSignature:(id)signature;
 - (BOOL)shouldGenerateSpectralOutput;
-- (SHAudioTapMatcher)initWithAudioTap:(id)a3 audioRecordingManager:(id)a4 catalog:(id)a5;
-- (SHAudioTapMatcher)initWithAudioTap:(id)a3 audioRecordingManager:(id)a4 session:(id)a5;
-- (SHAudioTapMatcher)initWithAudioTap:(id)a3 sessionDriver:(id)a4 audioRecordingManager:(id)a5 catalog:(id)a6;
+- (SHAudioTapMatcher)initWithAudioTap:(id)tap audioRecordingManager:(id)manager catalog:(id)catalog;
+- (SHAudioTapMatcher)initWithAudioTap:(id)tap audioRecordingManager:(id)manager session:(id)session;
+- (SHAudioTapMatcher)initWithAudioTap:(id)tap sessionDriver:(id)driver audioRecordingManager:(id)manager catalog:(id)catalog;
 - (SHMatcherDelegate)delegate;
 - (id)errorResponseSignature;
 - (void)_stop;
-- (void)session:(id)a3 didProduceResponse:(id)a4;
-- (void)startRecognitionForRequest:(id)a3;
+- (void)session:(id)session didProduceResponse:(id)response;
+- (void)startRecognitionForRequest:(id)request;
 - (void)stopRecognition;
-- (void)stopRecognitionForRequestID:(id)a3;
+- (void)stopRecognitionForRequestID:(id)d;
 @end
 
 @implementation SHAudioTapMatcher
 
-- (SHAudioTapMatcher)initWithAudioTap:(id)a3 sessionDriver:(id)a4 audioRecordingManager:(id)a5 catalog:(id)a6
+- (SHAudioTapMatcher)initWithAudioTap:(id)tap sessionDriver:(id)driver audioRecordingManager:(id)manager catalog:(id)catalog
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  catalogCopy = catalog;
+  managerCopy = manager;
+  driverCopy = driver;
+  tapCopy = tap;
   v14 = [SHSession alloc];
-  v15 = [v10 _createMatcher];
-  v16 = [v14 initWithCatalog:v10 matcher:v15 sessionDriver:v12];
+  _createMatcher = [catalogCopy _createMatcher];
+  v16 = [v14 initWithCatalog:catalogCopy matcher:_createMatcher sessionDriver:driverCopy];
 
-  v17 = [(SHAudioTapMatcher *)self initWithAudioTap:v13 audioRecordingManager:v11 session:v16];
+  v17 = [(SHAudioTapMatcher *)self initWithAudioTap:tapCopy audioRecordingManager:managerCopy session:v16];
   return v17;
 }
 
-- (SHAudioTapMatcher)initWithAudioTap:(id)a3 audioRecordingManager:(id)a4 catalog:(id)a5
+- (SHAudioTapMatcher)initWithAudioTap:(id)tap audioRecordingManager:(id)manager catalog:(id)catalog
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[SHSession alloc] initWithCatalog:v8];
+  catalogCopy = catalog;
+  managerCopy = manager;
+  tapCopy = tap;
+  v11 = [[SHSession alloc] initWithCatalog:catalogCopy];
 
-  v12 = [(SHAudioTapMatcher *)self initWithAudioTap:v10 audioRecordingManager:v9 session:v11];
+  v12 = [(SHAudioTapMatcher *)self initWithAudioTap:tapCopy audioRecordingManager:managerCopy session:v11];
   return v12;
 }
 
-- (SHAudioTapMatcher)initWithAudioTap:(id)a3 audioRecordingManager:(id)a4 session:(id)a5
+- (SHAudioTapMatcher)initWithAudioTap:(id)tap audioRecordingManager:(id)manager session:(id)session
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  tapCopy = tap;
+  managerCopy = manager;
+  sessionCopy = session;
   v21.receiver = self;
   v21.super_class = SHAudioTapMatcher;
   v12 = [(SHAudioTapMatcher *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_audioTap, a3);
-    objc_storeStrong(&v13->_audioRecordingManager, a4);
-    objc_storeStrong(&v13->_session, a5);
+    objc_storeStrong(&v12->_audioTap, tap);
+    objc_storeStrong(&v13->_audioRecordingManager, manager);
+    objc_storeStrong(&v13->_session, session);
     v14 = objc_alloc_init(NSRecursiveLock);
     lock = v13->_lock;
     v13->_lock = v14;
@@ -72,11 +72,11 @@
   return v13;
 }
 
-- (void)startRecognitionForRequest:(id)a3
+- (void)startRecognitionForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(SHAudioTapMatcher *)self lock];
-  [v5 lock];
+  requestCopy = request;
+  lock = [(SHAudioTapMatcher *)self lock];
+  [lock lock];
 
   if ([(SHAudioTapMatcher *)self isRunning])
   {
@@ -84,79 +84,79 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v17 = 138412290;
-      v18 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "Error: audio tap matcher: %@ asked to start recognition when it is already matching", &v17, 0xCu);
     }
 
-    v7 = [SHCoreError errorWithCode:101 underlyingError:0];
-    v8 = [SHError errorWithCode:202 underlyingError:v7];
-    v9 = [(SHAudioTapMatcher *)self delegate];
-    v10 = [(SHAudioTapMatcher *)self errorResponseSignature];
-    v11 = [SHMatcherResponse errorResponseForSignature:v10 error:v8];
-    [v9 matcher:self didProduceResponse:v11];
+    lock2 = [SHCoreError errorWithCode:101 underlyingError:0];
+    v8 = [SHError errorWithCode:202 underlyingError:lock2];
+    delegate = [(SHAudioTapMatcher *)self delegate];
+    errorResponseSignature = [(SHAudioTapMatcher *)self errorResponseSignature];
+    v11 = [SHMatcherResponse errorResponseForSignature:errorResponseSignature error:v8];
+    [delegate matcher:self didProduceResponse:v11];
   }
 
   else
   {
-    [(SHAudioTapMatcher *)self setMatcherRequest:v4];
-    v12 = [(SHAudioTapMatcher *)self session];
-    [v12 setDelegate:self];
+    [(SHAudioTapMatcher *)self setMatcherRequest:requestCopy];
+    session = [(SHAudioTapMatcher *)self session];
+    [session setDelegate:self];
 
     v13 = sh_log_object();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      v14 = [v4 deadline];
+      deadline = [requestCopy deadline];
       v17 = 138412290;
-      v18 = v14;
+      selfCopy = deadline;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "startRecognition based upon deadline %@", &v17, 0xCu);
     }
 
-    v15 = [(SHAudioTapMatcher *)self audioRecordingManager];
-    v16 = [(SHAudioTapMatcher *)self audioTap];
-    [v15 attachTap:v16];
+    audioRecordingManager = [(SHAudioTapMatcher *)self audioRecordingManager];
+    audioTap = [(SHAudioTapMatcher *)self audioTap];
+    [audioRecordingManager attachTap:audioTap];
 
-    v7 = [(SHAudioTapMatcher *)self lock];
-    [v7 unlock];
+    lock2 = [(SHAudioTapMatcher *)self lock];
+    [lock2 unlock];
   }
 }
 
 - (id)errorResponseSignature
 {
   v3 = objc_opt_new();
-  v4 = [(SHAudioTapMatcher *)self audioTap];
-  v5 = [v4 recordingSource];
-  v6 = [v3 metrics];
-  [v6 setRecordingSource:v5];
+  audioTap = [(SHAudioTapMatcher *)self audioTap];
+  recordingSource = [audioTap recordingSource];
+  metrics = [v3 metrics];
+  [metrics setRecordingSource:recordingSource];
 
   return v3;
 }
 
 - (BOOL)isRunning
 {
-  v2 = [(SHAudioTapMatcher *)self matcherRequest];
-  v3 = v2 != 0;
+  matcherRequest = [(SHAudioTapMatcher *)self matcherRequest];
+  v3 = matcherRequest != 0;
 
   return v3;
 }
 
-- (BOOL)session:(id)a3 shouldAttemptToMatchSignature:(id)a4
+- (BOOL)session:(id)session shouldAttemptToMatchSignature:(id)signature
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SHAudioTapMatcher *)self audioTap];
-  v9 = [v8 recordingSource];
-  v10 = [v7 metrics];
-  [v10 setRecordingSource:v9];
+  sessionCopy = session;
+  signatureCopy = signature;
+  audioTap = [(SHAudioTapMatcher *)self audioTap];
+  recordingSource = [audioTap recordingSource];
+  metrics = [signatureCopy metrics];
+  [metrics setRecordingSource:recordingSource];
 
   if ([(SHAudioTapMatcher *)self isRunning])
   {
-    v11 = [(SHAudioTapMatcher *)self delegate];
+    delegate = [(SHAudioTapMatcher *)self delegate];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [(SHAudioTapMatcher *)self delegate];
-      v14 = [v13 session:v6 shouldAttemptToMatchSignature:v7];
+      delegate2 = [(SHAudioTapMatcher *)self delegate];
+      v14 = [delegate2 session:sessionCopy shouldAttemptToMatchSignature:signatureCopy];
     }
 
     else
@@ -173,33 +173,33 @@
   return v14;
 }
 
-- (void)session:(id)a3 didProduceResponse:(id)a4
+- (void)session:(id)session didProduceResponse:(id)response
 {
-  v21 = a4;
-  v5 = [(SHAudioTapMatcher *)self matcherRequest];
-  v6 = [(SHAudioTapMatcher *)self finishSessionConditionsMetForRequest:v5 response:v21];
+  responseCopy = response;
+  matcherRequest = [(SHAudioTapMatcher *)self matcherRequest];
+  v6 = [(SHAudioTapMatcher *)self finishSessionConditionsMetForRequest:matcherRequest response:responseCopy];
 
   if ((v6 & 1) == 0)
   {
     v7 = [SHMatcherResponse alloc];
-    [v21 recordingIntermission];
+    [responseCopy recordingIntermission];
     v9 = v8;
-    [v21 recordingSignatureOffset];
+    [responseCopy recordingSignatureOffset];
     v11 = v10;
-    [v21 retrySeconds];
+    [responseCopy retrySeconds];
     v13 = v12;
-    v14 = [v21 match];
-    v15 = [v21 signature];
-    v16 = [(SHAudioTapMatcher *)self matcherRequest];
-    v17 = [v16 requestID];
-    v18 = [v21 error];
-    v19 = [v7 initWithRecordingIntermission:v14 recordingSignatureOffset:v15 retrySeconds:v17 match:v18 signature:v9 runningAssociatedRequestID:v11 error:v13];
+    match = [responseCopy match];
+    signature = [responseCopy signature];
+    matcherRequest2 = [(SHAudioTapMatcher *)self matcherRequest];
+    requestID = [matcherRequest2 requestID];
+    error = [responseCopy error];
+    v19 = [v7 initWithRecordingIntermission:match recordingSignatureOffset:signature retrySeconds:requestID match:error signature:v9 runningAssociatedRequestID:v11 error:v13];
 
-    v21 = v19;
+    responseCopy = v19;
   }
 
-  v20 = [(SHAudioTapMatcher *)self delegate];
-  [v20 matcher:self didProduceResponse:v21];
+  delegate = [(SHAudioTapMatcher *)self delegate];
+  [delegate matcher:self didProduceResponse:responseCopy];
 
   if (v6)
   {
@@ -207,26 +207,26 @@
   }
 }
 
-- (BOOL)finishSessionConditionsMetForRequest:(id)a3 response:(id)a4
+- (BOOL)finishSessionConditionsMetForRequest:(id)request response:(id)response
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 result];
-  if ([v5 stopCondition] == 3)
+  requestCopy = request;
+  responseCopy = response;
+  result = [responseCopy result];
+  if ([requestCopy stopCondition] == 3)
   {
-    v8 = [v5 hasHitDeadline];
+    hasHitDeadline = [requestCopy hasHitDeadline];
   }
 
   else
   {
-    v8 = 0;
+    hasHitDeadline = 0;
   }
 
-  v9 = [v5 stopCondition];
-  if ([v5 stopCondition] == 2)
+  stopCondition = [requestCopy stopCondition];
+  if ([requestCopy stopCondition] == 2)
   {
-    v10 = [v6 match];
-    v11 = v10 != 0;
+    match = [responseCopy match];
+    v11 = match != 0;
   }
 
   else
@@ -238,24 +238,24 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     v15[0] = 67109888;
-    v15[1] = v8;
+    v15[1] = hasHitDeadline;
     v16 = 1024;
-    v17 = v9 == 0;
+    v17 = stopCondition == 0;
     v18 = 1024;
     v19 = v11;
     v20 = 1024;
-    v21 = v7 == 3;
+    v21 = result == 3;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Tagging finish conditions: timeOut %d, oneAttempt: %d, foundMatch: %d, failed %d", v15, 0x1Au);
   }
 
-  v13 = v7 == 3;
+  v13 = result == 3;
 
-  if (!v9)
+  if (!stopCondition)
   {
-    LOBYTE(v8) = 1;
+    LOBYTE(hasHitDeadline) = 1;
   }
 
-  return (v8 | v11 | v13) & 1;
+  return (hasHitDeadline | v11 | v13) & 1;
 }
 
 - (void)_stop
@@ -267,17 +267,17 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "Stopping recognition", v11, 2u);
   }
 
-  v4 = [(SHAudioTapMatcher *)self lock];
-  [v4 lock];
+  lock = [(SHAudioTapMatcher *)self lock];
+  [lock lock];
 
   [(SHAudioTapMatcher *)self setMatcherRequest:0];
   [(SHAudioTapMatcher *)self setDelegate:0];
-  v5 = [(SHAudioTapMatcher *)self session];
-  [v5 setDelegate:0];
+  session = [(SHAudioTapMatcher *)self session];
+  [session setDelegate:0];
 
-  v6 = [(SHAudioTapMatcher *)self audioRecordingManager];
-  v7 = [(SHAudioTapMatcher *)self audioTap];
-  [v6 detachTap:v7];
+  audioRecordingManager = [(SHAudioTapMatcher *)self audioRecordingManager];
+  audioTap = [(SHAudioTapMatcher *)self audioTap];
+  [audioRecordingManager detachTap:audioTap];
 
   audioRecordingManager = self->_audioRecordingManager;
   self->_audioRecordingManager = 0;
@@ -285,23 +285,23 @@
   audioTap = self->_audioTap;
   self->_audioTap = 0;
 
-  v10 = [(SHAudioTapMatcher *)self lock];
-  [v10 unlock];
+  lock2 = [(SHAudioTapMatcher *)self lock];
+  [lock2 unlock];
 }
 
 - (void)stopRecognition
 {
-  v4 = [(SHAudioTapMatcher *)self matcherRequest];
-  v3 = [v4 requestID];
-  [(SHAudioTapMatcher *)self stopRecognitionForRequestID:v3];
+  matcherRequest = [(SHAudioTapMatcher *)self matcherRequest];
+  requestID = [matcherRequest requestID];
+  [(SHAudioTapMatcher *)self stopRecognitionForRequestID:requestID];
 }
 
-- (void)stopRecognitionForRequestID:(id)a3
+- (void)stopRecognitionForRequestID:(id)d
 {
-  v4 = a3;
-  v5 = [(SHAudioTapMatcher *)self matcherRequest];
-  v6 = [v5 requestID];
-  v7 = [v6 isEqual:v4];
+  dCopy = d;
+  matcherRequest = [(SHAudioTapMatcher *)self matcherRequest];
+  requestID = [matcherRequest requestID];
+  v7 = [requestID isEqual:dCopy];
 
   if (v7)
   {
@@ -309,34 +309,34 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v15 = 138412290;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Stopping recognition for matcher %@", &v15, 0xCu);
     }
 
-    v9 = [(SHAudioTapMatcher *)self lock];
-    [v9 lock];
+    lock = [(SHAudioTapMatcher *)self lock];
+    [lock lock];
 
     v10 = [SHError privateErrorWithCode:203 underlyingError:0];
-    v11 = [(SHAudioTapMatcher *)self errorResponseSignature];
-    v12 = [SHMatcherResponse errorResponseForSignature:v11 error:v10];
+    errorResponseSignature = [(SHAudioTapMatcher *)self errorResponseSignature];
+    v12 = [SHMatcherResponse errorResponseForSignature:errorResponseSignature error:v10];
 
-    v13 = [(SHAudioTapMatcher *)self delegate];
-    [v13 matcher:self didProduceResponse:v12];
+    delegate = [(SHAudioTapMatcher *)self delegate];
+    [delegate matcher:self didProduceResponse:v12];
 
     [(SHAudioTapMatcher *)self _stop];
-    v14 = [(SHAudioTapMatcher *)self lock];
-    [v14 unlock];
+    lock2 = [(SHAudioTapMatcher *)self lock];
+    [lock2 unlock];
   }
 }
 
 - (BOOL)shouldGenerateSpectralOutput
 {
-  v3 = [(SHAudioTapMatcher *)self audioTap];
-  v4 = [v3 recordingSource];
-  v5 = [(SHAudioTapMatcher *)self audioRecordingManager];
-  LOBYTE(v4) = v4 == [v5 suggestedAudioRecordingSource];
+  audioTap = [(SHAudioTapMatcher *)self audioTap];
+  recordingSource = [audioTap recordingSource];
+  audioRecordingManager = [(SHAudioTapMatcher *)self audioRecordingManager];
+  LOBYTE(recordingSource) = recordingSource == [audioRecordingManager suggestedAudioRecordingSource];
 
-  return v4;
+  return recordingSource;
 }
 
 - (SHMatcherDelegate)delegate

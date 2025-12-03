@@ -1,23 +1,23 @@
 @interface TSUProgressContextProgress
-- (TSUProgressContextProgress)initWithProgressContext:(id)a3;
+- (TSUProgressContextProgress)initWithProgressContext:(id)context;
 - (double)value;
-- (id)addProgressObserverWithValueInterval:(double)a3 queue:(id)a4 handler:(id)a5;
+- (id)addProgressObserverWithValueInterval:(double)interval queue:(id)queue handler:(id)handler;
 - (void)dealloc;
-- (void)p_progressDidChange:(id)a3;
+- (void)p_progressDidChange:(id)change;
 - (void)p_updateProgressContextObserver;
-- (void)removeProgressObserver:(id)a3;
+- (void)removeProgressObserver:(id)observer;
 @end
 
 @implementation TSUProgressContextProgress
 
-- (TSUProgressContextProgress)initWithProgressContext:(id)a3
+- (TSUProgressContextProgress)initWithProgressContext:(id)context
 {
   v6.receiver = self;
   v6.super_class = TSUProgressContextProgress;
   v4 = [(TSUProgress *)&v6 init];
   if (v4)
   {
-    v4->mProgressContext = a3;
+    v4->mProgressContext = context;
     v4->mProgressContextObserverQueue = dispatch_queue_create("com.apple.iWork.TSUProgressContextProgress", 0);
   }
 
@@ -49,20 +49,20 @@
   return result;
 }
 
-- (id)addProgressObserverWithValueInterval:(double)a3 queue:(id)a4 handler:(id)a5
+- (id)addProgressObserverWithValueInterval:(double)interval queue:(id)queue handler:(id)handler
 {
   v8.receiver = self;
   v8.super_class = TSUProgressContextProgress;
-  v6 = [(TSUProgress *)&v8 addProgressObserverWithValueInterval:a4 queue:a5 handler:a3];
+  v6 = [(TSUProgress *)&v8 addProgressObserverWithValueInterval:queue queue:handler handler:interval];
   [(TSUProgressContextProgress *)self p_updateProgressContextObserver];
   return v6;
 }
 
-- (void)removeProgressObserver:(id)a3
+- (void)removeProgressObserver:(id)observer
 {
   v4.receiver = self;
   v4.super_class = TSUProgressContextProgress;
-  [(TSUProgress *)&v4 removeProgressObserver:a3];
+  [(TSUProgress *)&v4 removeProgressObserver:observer];
   [(TSUProgressContextProgress *)self p_updateProgressContextObserver];
 }
 
@@ -99,9 +99,9 @@ uint64_t __61__TSUProgressContextProgress_p_updateProgressContextObserver__block
   return [v2 drain];
 }
 
-- (void)p_progressDidChange:(id)a3
+- (void)p_progressDidChange:(id)change
 {
-  v4 = [objc_msgSend(a3 "userInfo")];
+  v4 = [objc_msgSend(change "userInfo")];
   if (v4)
   {
     [(TSUProgress *)self setMessage:v4];

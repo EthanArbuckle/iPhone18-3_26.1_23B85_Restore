@@ -1,42 +1,42 @@
 @interface CKQLPreviewController
 - (BOOL)canCurrentPreviewItemQuickSave;
-- (BOOL)fullScreenBalloonViewControllerPickerViewUsesBottomTail:(id)a3;
-- (BOOL)fullScreenBalloonViewControllerShouldEnableStickerTapbacks:(id)a3;
-- (BOOL)shouldShowTapbackAttributionForFullScreenBalloonViewController:(id)a3;
-- (BOOL)shouldShowTapbackPickerForFullScreenBalloonViewController:(id)a3;
-- (CGRect)fullScreenBalloonViewController:(id)a3 balloonFrameForChatItem:(id)a4;
-- (CGRect)fullScreenBalloonViewControllerSafeAreaLayoutFrame:(id)a3;
-- (CGRect)tapbackButtonFrameForFullScreenBalloonViewController:(id)a3;
+- (BOOL)fullScreenBalloonViewControllerPickerViewUsesBottomTail:(id)tail;
+- (BOOL)fullScreenBalloonViewControllerShouldEnableStickerTapbacks:(id)tapbacks;
+- (BOOL)shouldShowTapbackAttributionForFullScreenBalloonViewController:(id)controller;
+- (BOOL)shouldShowTapbackPickerForFullScreenBalloonViewController:(id)controller;
+- (CGRect)fullScreenBalloonViewController:(id)controller balloonFrameForChatItem:(id)item;
+- (CGRect)fullScreenBalloonViewControllerSafeAreaLayoutFrame:(id)frame;
+- (CGRect)tapbackButtonFrameForFullScreenBalloonViewController:(id)controller;
 - (CGSize)preferredContentSize;
 - (CKChatItem)chatItem;
 - (CKQLPreviewController)init;
 - (CKQLPreviewControllerDelegate)chatControllerPreviewDelegate;
-- (char)fullScreenBalloonViewControllerAnchorVertialOrientation:(id)a3 withBalloonFrame:(CGRect)a4;
-- (id)contextualChatItemsForFullScreenBalloonViewController:(id)a3;
+- (char)fullScreenBalloonViewControllerAnchorVertialOrientation:(id)orientation withBalloonFrame:(CGRect)frame;
+- (id)contextualChatItemsForFullScreenBalloonViewController:(id)controller;
 - (id)currentChatItem;
 - (id)currentPreviewItem;
 - (id)previewActions;
 - (id)replyButton;
-- (id)textInputContextIdentifierForFullScreenBalloonViewController:(id)a3;
-- (void)_dismissFullScreenBubbleViewController:(id)a3 animated:(BOOL)a4 withSendAnimation:(BOOL)a5 completion:(id)a6;
-- (void)_sendTapback:(id)a3 targetChatItem:(id)a4 isRemoval:(BOOL)a5;
+- (id)textInputContextIdentifierForFullScreenBalloonViewController:(id)controller;
+- (void)_dismissFullScreenBubbleViewController:(id)controller animated:(BOOL)animated withSendAnimation:(BOOL)animation completion:(id)completion;
+- (void)_sendTapback:(id)tapback targetChatItem:(id)item isRemoval:(BOOL)removal;
 - (void)currentPreviewItemDidChange;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)fullScreenBalloonViewController:(id)a3 didDeselectTapback:(id)a4;
-- (void)fullScreenBalloonViewController:(id)a3 didSelectTapback:(id)a4;
-- (void)fullScreenBalloonViewController:(id)a3 verticallyScrollTranscriptByAmount:(double)a4 animated:(BOOL)a5 duration:(double)a6 completion:(id)a7;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)fullScreenBalloonViewController:(id)controller didDeselectTapback:(id)tapback;
+- (void)fullScreenBalloonViewController:(id)controller didSelectTapback:(id)tapback;
+- (void)fullScreenBalloonViewController:(id)controller verticallyScrollTranscriptByAmount:(double)amount animated:(BOOL)animated duration:(double)duration completion:(id)completion;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)photoLibraryPersistedSyndicatedAssetSetDidChange;
-- (void)replyTapped:(id)a3;
-- (void)saveTapped:(id)a3;
-- (void)tapbackTapped:(id)a3;
+- (void)replyTapped:(id)tapped;
+- (void)saveTapped:(id)tapped;
+- (void)tapbackTapped:(id)tapped;
 - (void)updateBarButtonItems;
-- (void)updateCurrentPreviewItemIsSaved:(BOOL)a3 valueDidChange:(BOOL *)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)updateCurrentPreviewItemIsSaved:(BOOL)saved valueDidChange:(BOOL *)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CKQLPreviewController
@@ -51,27 +51,27 @@
     [(QLPreviewController *)v2 setPresentationStyle:1];
     [(CKQLPreviewController *)v2 updateBarButtonItems];
     [(CKQLPreviewController *)v2 addObserver:v2 forKeyPath:@"currentPreviewItemIndex" options:3 context:0];
-    v3 = [MEMORY[0x1E69A5C30] sharedInstance];
-    [v3 registerPhotoLibraryPersistenceManagerListener:v2];
+    mEMORY[0x1E69A5C30] = [MEMORY[0x1E69A5C30] sharedInstance];
+    [mEMORY[0x1E69A5C30] registerPhotoLibraryPersistenceManagerListener:v2];
   }
 
   return v2;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"currentPreviewItemIndex"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"currentPreviewItemIndex"])
   {
-    v13 = [v12 objectForKey:*MEMORY[0x1E696A500]];
-    v14 = [v13 integerValue];
+    v13 = [changeCopy objectForKey:*MEMORY[0x1E696A500]];
+    integerValue = [v13 integerValue];
 
-    v15 = [v12 objectForKey:*MEMORY[0x1E696A4F0]];
-    v16 = [v15 integerValue];
+    v15 = [changeCopy objectForKey:*MEMORY[0x1E696A4F0]];
+    integerValue2 = [v15 integerValue];
 
-    if (v14 != v16)
+    if (integerValue != integerValue2)
     {
       [(CKQLPreviewController *)self currentPreviewItemDidChange];
     }
@@ -81,7 +81,7 @@
   {
     v17.receiver = self;
     v17.super_class = CKQLPreviewController;
-    [(CKQLPreviewController *)&v17 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(CKQLPreviewController *)&v17 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -90,144 +90,144 @@
   v7.receiver = self;
   v7.super_class = CKQLPreviewController;
   [(QLPreviewController *)&v7 loadView];
-  v3 = [(CKQLPreviewController *)self navigationController];
-  v4 = [v3 navigationBar];
+  navigationController = [(CKQLPreviewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 theme];
-  [v4 setBarStyle:{objc_msgSend(v6, "navBarStyle")}];
+  theme = [v5 theme];
+  [navigationBar setBarStyle:{objc_msgSend(theme, "navBarStyle")}];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v27.receiver = self;
   v27.super_class = CKQLPreviewController;
-  [(QLPreviewController *)&v27 viewDidAppear:a3];
-  v4 = [(CKQLPreviewController *)self presentationController];
+  [(QLPreviewController *)&v27 viewDidAppear:appear];
+  presentationController = [(CKQLPreviewController *)self presentationController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
-    v7 = [v6 invisibleInkEffectControllerForPreviewController:self];
+    ckQLPreviewControllerDelegate = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
+    v7 = [ckQLPreviewControllerDelegate invisibleInkEffectControllerForPreviewController:self];
 
-    v8 = [v7 borrowEffectView];
-    v9 = [(CKQLPreviewController *)self view];
-    [v9 addSubview:v8];
+    borrowEffectView = [v7 borrowEffectView];
+    view = [(CKQLPreviewController *)self view];
+    [view addSubview:borrowEffectView];
 
     [v7 setSuspended:1];
-    [v8 bounds];
+    [borrowEffectView bounds];
     v11 = v10;
     v13 = v12;
-    v14 = [(CKQLPreviewController *)self view];
-    [v14 bounds];
+    view2 = [(CKQLPreviewController *)self view];
+    [view2 bounds];
     v16 = v15;
     v18 = v17;
 
     v19 = fmin(v16 / v11, v18 / v13);
     CGAffineTransformMakeScale(&v26, v19, v19);
-    [v8 setTransform:&v26];
-    [v8 setCenter:{v16 * 0.5, v18 * 0.5}];
+    [borrowEffectView setTransform:&v26];
+    [borrowEffectView setCenter:{v16 * 0.5, v18 * 0.5}];
   }
 
   if ([(CKQLPreviewController *)self controllerWasDismissed])
   {
-    v20 = [(QLPreviewController *)self delegate];
+    delegate = [(QLPreviewController *)self delegate];
     v21 = objc_opt_respondsToSelector();
 
     if (v21)
     {
-      v22 = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
-      [v22 previewControllerDidCancelDismiss:self];
+      ckQLPreviewControllerDelegate2 = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
+      [ckQLPreviewControllerDelegate2 previewControllerDidCancelDismiss:self];
     }
 
     [(CKQLPreviewController *)self setControllerWasDismissed:0];
   }
 
-  v23 = [(QLPreviewController *)self delegate];
+  delegate2 = [(QLPreviewController *)self delegate];
   v24 = objc_opt_respondsToSelector();
 
   if (v24)
   {
-    v25 = [(QLPreviewController *)self delegate];
-    [v25 previewController:self didTransitionToState:1];
+    delegate3 = [(QLPreviewController *)self delegate];
+    [delegate3 previewController:self didTransitionToState:1];
   }
 
   [(CKQLPreviewController *)self updateBarButtonItems];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = CKQLPreviewController;
   [(QLPreviewController *)&v8 viewWillDisappear:?];
-  if (!a3 && [(CKQLPreviewController *)self isBeingDismissed])
+  if (!disappear && [(CKQLPreviewController *)self isBeingDismissed])
   {
-    v5 = [(QLPreviewController *)self delegate];
+    delegate = [(QLPreviewController *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(QLPreviewController *)self delegate];
-      [v7 previewController:self willTransitionToState:3];
+      delegate2 = [(QLPreviewController *)self delegate];
+      [delegate2 previewController:self willTransitionToState:3];
     }
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if ([(CKQLPreviewController *)self isBeingDismissed])
   {
-    v5 = [(QLPreviewController *)self delegate];
+    delegate = [(QLPreviewController *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(QLPreviewController *)self delegate];
-      [v7 previewController:self didTransitionToState:3];
+      delegate2 = [(QLPreviewController *)self delegate];
+      [delegate2 previewController:self didTransitionToState:3];
     }
   }
 
   v8.receiver = self;
   v8.super_class = CKQLPreviewController;
-  [(QLPreviewController *)&v8 viewDidDisappear:v3];
+  [(QLPreviewController *)&v8 viewDidDisappear:disappearCopy];
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   [(CKQLPreviewController *)self setControllerWasDismissed:1];
-  v7 = [(CKQLPreviewController *)self presentationController];
+  presentationController = [(CKQLPreviewController *)self presentationController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
-    v10 = [v9 invisibleInkEffectControllerForPreviewController:self];
+    ckQLPreviewControllerDelegate = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
+    v10 = [ckQLPreviewControllerDelegate invisibleInkEffectControllerForPreviewController:self];
 
     [v10 updateBorrowedEffectViewSnapshot];
   }
 
   v11.receiver = self;
   v11.super_class = CKQLPreviewController;
-  [(CKQLPreviewController *)&v11 dismissViewControllerAnimated:v4 completion:v6];
+  [(CKQLPreviewController *)&v11 dismissViewControllerAnimated:animatedCopy completion:completionCopy];
 }
 
-- (void)saveTapped:(id)a3
+- (void)saveTapped:(id)tapped
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKQLPreviewController *)self currentPreviewItem];
+  tappedCopy = tapped;
+  currentPreviewItem = [(CKQLPreviewController *)self currentPreviewItem];
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v20 = v5;
+      v20 = currentPreviewItem;
       _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "Attempting to save preview item: %@", buf, 0xCu);
     }
   }
@@ -235,7 +235,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
+    v7 = currentPreviewItem;
     if ([v7 canPerformQuickAction])
     {
       v18 = v7;
@@ -252,10 +252,10 @@
       v15[4] = self;
       v7 = v7;
       v16 = v7;
-      v12 = [CKUtilities quickSaveConfirmationAlertForMediaObjects:v10 momentShareURL:v9 popoverSource:v4 metricsSource:v11 cancelHandler:0 preSaveHandler:0 postSaveHandler:v15];
+      v12 = [CKUtilities quickSaveConfirmationAlertForMediaObjects:v10 momentShareURL:v9 popoverSource:tappedCopy metricsSource:v11 cancelHandler:0 preSaveHandler:0 postSaveHandler:v15];
 
-      v13 = [v12 popoverPresentationController];
-      [v13 setBarButtonItem:v4];
+      popoverPresentationController = [v12 popoverPresentationController];
+      [popoverPresentationController setBarButtonItem:tappedCopy];
 
       if (v12)
       {
@@ -280,7 +280,7 @@
     v7 = IMLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(CKQLPreviewController *)v5 saveTapped:v7];
+      [(CKQLPreviewController *)currentPreviewItem saveTapped:v7];
     }
   }
 }
@@ -297,18 +297,18 @@ void __36__CKQLPreviewController_saveTapped___block_invoke(uint64_t a1)
   }
 }
 
-- (void)replyTapped:(id)a3
+- (void)replyTapped:(id)tapped
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKQLPreviewController *)self currentPreviewItem];
+  tappedCopy = tapped;
+  currentPreviewItem = [(CKQLPreviewController *)self currentPreviewItem];
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = v5;
+      v12 = currentPreviewItem;
       _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "Attempting reply to item: %@", &v11, 0xCu);
     }
   }
@@ -316,30 +316,30 @@ void __36__CKQLPreviewController_saveTapped___block_invoke(uint64_t a1)
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
-    v8 = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
+    v7 = currentPreviewItem;
+    ckQLPreviewControllerDelegate = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
-      [v10 replyButtonTappedForMediaObject:v7 previewController:self];
+      ckQLPreviewControllerDelegate2 = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
+      [ckQLPreviewControllerDelegate2 replyButtonTappedForMediaObject:v7 previewController:self];
     }
   }
 }
 
-- (void)tapbackTapped:(id)a3
+- (void)tapbackTapped:(id)tapped
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKQLPreviewController *)self currentPreviewItem];
+  tappedCopy = tapped;
+  currentPreviewItem = [(CKQLPreviewController *)self currentPreviewItem];
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v5;
+      v14 = currentPreviewItem;
       _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "Showing tapback menu for: %@", &v13, 0xCu);
     }
   }
@@ -347,8 +347,8 @@ void __36__CKQLPreviewController_saveTapped___block_invoke(uint64_t a1)
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
-    v8 = [(QLPreviewController *)self delegate];
+    v7 = currentPreviewItem;
+    delegate = [(QLPreviewController *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if ((v9 & 1) == 0)
@@ -357,8 +357,8 @@ void __36__CKQLPreviewController_saveTapped___block_invoke(uint64_t a1)
       goto LABEL_10;
     }
 
-    v10 = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
-    v11 = [v10 chatItemForMediaObject:v7 previewController:self];
+    ckQLPreviewControllerDelegate = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
+    v11 = [ckQLPreviewControllerDelegate chatItemForMediaObject:v7 previewController:self];
 
     if (v11)
     {
@@ -375,24 +375,24 @@ LABEL_10:
 
 - (BOOL)canCurrentPreviewItemQuickSave
 {
-  v2 = [(CKQLPreviewController *)self currentPreviewItem];
+  currentPreviewItem = [(CKQLPreviewController *)self currentPreviewItem];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 canPerformQuickAction];
+    canPerformQuickAction = [currentPreviewItem canPerformQuickAction];
   }
 
   else
   {
-    v3 = 0;
+    canPerformQuickAction = 0;
   }
 
-  return v3;
+  return canPerformQuickAction;
 }
 
 - (void)updateBarButtonItems
 {
-  v3 = [(CKQLPreviewController *)self currentPreviewItem];
+  currentPreviewItem = [(CKQLPreviewController *)self currentPreviewItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -407,22 +407,22 @@ LABEL_10:
 
   v30 = objc_opt_new();
   v6 = objc_opt_new();
-  v7 = [(QLPreviewController *)self delegate];
+  delegate = [(QLPreviewController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if ((v8 & 1) == 0 || (-[CKQLPreviewController ckQLPreviewControllerDelegate](self, "ckQLPreviewControllerDelegate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 shouldHideInteractionOptions], v9, !v10))
   {
-    v12 = [(CKQLPreviewController *)self currentPreviewItem];
+    currentPreviewItem2 = [(CKQLPreviewController *)self currentPreviewItem];
     objc_opt_class();
     v13 = objc_opt_isKindOfClass();
 
     if (v13)
     {
-      v14 = [(CKQLPreviewController *)self currentPreviewItem];
-      v15 = [v14 transferGUID];
+      currentPreviewItem3 = [(CKQLPreviewController *)self currentPreviewItem];
+      transferGUID = [currentPreviewItem3 transferGUID];
 
-      v16 = [MEMORY[0x1E69A5B80] sharedInstance];
-      v17 = [v16 transferForGUID:v15];
+      mEMORY[0x1E69A5B80] = [MEMORY[0x1E69A5B80] sharedInstance];
+      v17 = [mEMORY[0x1E69A5B80] transferForGUID:transferGUID];
 
       if ([CKCommSafetyHelper shouldDisableTranscriptCapabilitiesForFileTransfer:v17])
       {
@@ -435,18 +435,18 @@ LABEL_24:
       }
     }
 
-    v15 = [(CKQLPreviewController *)self currentChatItem];
-    if ([v15 canSendTapbacks])
+    transferGUID = [(CKQLPreviewController *)self currentChatItem];
+    if ([transferGUID canSendTapbacks])
     {
-      v19 = [MEMORY[0x1E69DC708] ck_tapbackItemWithChatItem:v15 target:self action:sel_tapbackTapped_];
+      v19 = [MEMORY[0x1E69DC708] ck_tapbackItemWithChatItem:transferGUID target:self action:sel_tapbackTapped_];
       [v19 setTarget:self];
       [v19 setAction:sel_tapbackTapped_];
       [(CKQLPreviewController *)self setTapbackButton:v19];
-      v20 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-      v21 = [v20 isTapbacksRefreshEnabled];
+      mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+      isTapbacksRefreshEnabled = [mEMORY[0x1E69A8070] isTapbacksRefreshEnabled];
 
       v22 = v30;
-      if (!v21)
+      if (!isTapbacksRefreshEnabled)
       {
         v22 = v6;
       }
@@ -454,17 +454,17 @@ LABEL_24:
       [v22 addObject:v19];
     }
 
-    v23 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v24 = [v23 isTapbacksRefreshEnabled];
+    mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isTapbacksRefreshEnabled2 = [mEMORY[0x1E69A8070]2 isTapbacksRefreshEnabled];
 
-    v25 = [(CKQLPreviewController *)self replyButton];
+    replyButton = [(CKQLPreviewController *)self replyButton];
     v26 = v30;
-    if (!v24)
+    if (!isTapbacksRefreshEnabled2)
     {
       v26 = v6;
     }
 
-    [v26 addObject:v25];
+    [v26 addObject:replyButton];
 
     if ([(CKQLPreviewController *)self canCurrentPreviewItemQuickSave])
     {
@@ -498,21 +498,21 @@ LABEL_25:
 {
   v3 = objc_alloc(MEMORY[0x1E69DC708]);
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 replyImage];
-  v6 = [v3 initWithImage:v5 style:0 target:self action:sel_replyTapped_];
+  replyImage = [v4 replyImage];
+  v6 = [v3 initWithImage:replyImage style:0 target:self action:sel_replyTapped_];
 
-  v7 = [(CKQLPreviewController *)self currentPreviewItem];
+  currentPreviewItem = [(CKQLPreviewController *)self currentPreviewItem];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
-    v9 = [(QLPreviewController *)self delegate];
+    v8 = currentPreviewItem;
+    delegate = [(QLPreviewController *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
-      v12 = [v11 shouldShowReplyButtonForMediaObject:v8 previewController:self];
+      ckQLPreviewControllerDelegate = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
+      v12 = [ckQLPreviewControllerDelegate shouldShowReplyButtonForMediaObject:v8 previewController:self];
     }
 
     else
@@ -533,18 +533,18 @@ LABEL_25:
 
 - (id)currentChatItem
 {
-  v3 = [(CKQLPreviewController *)self currentPreviewItem];
+  currentPreviewItem = [(CKQLPreviewController *)self currentPreviewItem];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [(QLPreviewController *)self delegate];
+    v4 = currentPreviewItem;
+    delegate = [(QLPreviewController *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
-      v8 = [v7 chatItemForMediaObject:v4 previewController:self];
+      ckQLPreviewControllerDelegate = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
+      v8 = [ckQLPreviewControllerDelegate chatItemForMediaObject:v4 previewController:self];
     }
 
     else
@@ -563,9 +563,9 @@ LABEL_25:
 
 - (CGSize)preferredContentSize
 {
-  v3 = [(CKQLPreviewController *)self navigationController];
+  navigationController = [(CKQLPreviewController *)self navigationController];
 
-  if (v3)
+  if (navigationController)
   {
     v4 = *MEMORY[0x1E695F060];
     v5 = *(MEMORY[0x1E695F060] + 8);
@@ -583,26 +583,26 @@ LABEL_25:
   return result;
 }
 
-- (void)updateCurrentPreviewItemIsSaved:(BOOL)a3 valueDidChange:(BOOL *)a4
+- (void)updateCurrentPreviewItemIsSaved:(BOOL)saved valueDidChange:(BOOL *)change
 {
-  v5 = a3;
+  savedCopy = saved;
   v21 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (change)
   {
-    *a4 = 0;
+    *change = 0;
   }
 
-  v7 = [(CKQLPreviewController *)self currentPreviewItem];
+  currentPreviewItem = [(CKQLPreviewController *)self currentPreviewItem];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
-    v9 = [v8 syndicationIdentifier];
-    if (v9)
+    v8 = currentPreviewItem;
+    syndicationIdentifier = [v8 syndicationIdentifier];
+    if (syndicationIdentifier)
     {
-      v10 = [MEMORY[0x1E69A5C30] sharedInstance];
-      v11 = [MEMORY[0x1E695DFD8] setWithObject:v9];
-      v12 = [v10 cachedCountOfSyndicationIdentifiersSavedToSystemPhotoLibrary:v11 shouldFetchAndNotifyAsNeeded:v5 didStartFetch:0] != 0;
+      mEMORY[0x1E69A5C30] = [MEMORY[0x1E69A5C30] sharedInstance];
+      v11 = [MEMORY[0x1E695DFD8] setWithObject:syndicationIdentifier];
+      currentPreviewItemIsSaved2 = [mEMORY[0x1E69A5C30] cachedCountOfSyndicationIdentifiersSavedToSystemPhotoLibrary:v11 shouldFetchAndNotifyAsNeeded:savedCopy didStartFetch:0] != 0;
     }
 
     else
@@ -612,9 +612,9 @@ LABEL_25:
         v14 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
-          v15 = [(CKQLPreviewController *)self currentPreviewItemIsSaved];
+          currentPreviewItemIsSaved = [(CKQLPreviewController *)self currentPreviewItemIsSaved];
           v16 = @"NO";
-          if (v15)
+          if (currentPreviewItemIsSaved)
           {
             v16 = @"YES";
           }
@@ -627,10 +627,10 @@ LABEL_25:
         }
       }
 
-      v12 = [(CKQLPreviewController *)self currentPreviewItemIsSaved];
+      currentPreviewItemIsSaved2 = [(CKQLPreviewController *)self currentPreviewItemIsSaved];
     }
 
-    if (v12 != [(CKQLPreviewController *)self currentPreviewItemIsSaved])
+    if (currentPreviewItemIsSaved2 != [(CKQLPreviewController *)self currentPreviewItemIsSaved])
     {
       goto LABEL_20;
     }
@@ -650,14 +650,14 @@ LABEL_25:
 
     if ([(CKQLPreviewController *)self currentPreviewItemIsSaved])
     {
-      v12 = 0;
+      currentPreviewItemIsSaved2 = 0;
 LABEL_20:
-      if (a4)
+      if (change)
       {
-        *a4 = 1;
+        *change = 1;
       }
 
-      [(CKQLPreviewController *)self setCurrentPreviewItemIsSaved:v12];
+      [(CKQLPreviewController *)self setCurrentPreviewItemIsSaved:currentPreviewItemIsSaved2];
     }
   }
 }
@@ -673,11 +673,11 @@ LABEL_20:
 {
   v13.receiver = self;
   v13.super_class = CKQLPreviewController;
-  v3 = [(QLPreviewController *)&v13 currentPreviewItem];
-  if (!v3)
+  currentPreviewItem = [(QLPreviewController *)&v13 currentPreviewItem];
+  if (!currentPreviewItem)
   {
-    v5 = [(QLPreviewController *)self currentPreviewItemIndex];
-    if (v5 < 1 || (v6 = v5, -[QLPreviewController dataSource](self, "dataSource"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 numberOfPreviewItemsInPreviewController:self], v7, v6 >= v8))
+    currentPreviewItemIndex = [(QLPreviewController *)self currentPreviewItemIndex];
+    if (currentPreviewItemIndex < 1 || (v6 = currentPreviewItemIndex, -[QLPreviewController dataSource](self, "dataSource"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 numberOfPreviewItemsInPreviewController:self], v7, v6 >= v8))
     {
       if (IMOSLoggingEnabled())
       {
@@ -692,23 +692,23 @@ LABEL_20:
 
     else
     {
-      v9 = [(QLPreviewController *)self dataSource];
-      v10 = [v9 previewController:self previewItemAtIndex:v6];
+      dataSource = [(QLPreviewController *)self dataSource];
+      v10 = [dataSource previewController:self previewItemAtIndex:v6];
     }
   }
 
-  return v3;
+  return currentPreviewItem;
 }
 
 - (id)previewActions
 {
-  v3 = [(QLPreviewController *)self delegate];
+  delegate = [(QLPreviewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
-    v6 = [v5 previewActionsForPreviewController:self];
+    ckQLPreviewControllerDelegate = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
+    v6 = [ckQLPreviewControllerDelegate previewActionsForPreviewController:self];
   }
 
   else
@@ -729,13 +729,13 @@ LABEL_20:
   }
 }
 
-- (id)contextualChatItemsForFullScreenBalloonViewController:(id)a3
+- (id)contextualChatItemsForFullScreenBalloonViewController:(id)controller
 {
-  v4 = [(QLPreviewController *)self delegate];
+  delegate = [(QLPreviewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
-    v6 = [v5 contextualCKChatItemsForPreviewController:self];
+    ckQLPreviewControllerDelegate = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
+    v6 = [ckQLPreviewControllerDelegate contextualCKChatItemsForPreviewController:self];
   }
 
   else
@@ -746,7 +746,7 @@ LABEL_20:
   return v6;
 }
 
-- (CGRect)tapbackButtonFrameForFullScreenBalloonViewController:(id)a3
+- (CGRect)tapbackButtonFrameForFullScreenBalloonViewController:(id)controller
 {
   if (objc_opt_respondsToSelector())
   {
@@ -768,10 +768,10 @@ LABEL_20:
   return result;
 }
 
-- (BOOL)fullScreenBalloonViewControllerPickerViewUsesBottomTail:(id)a3
+- (BOOL)fullScreenBalloonViewControllerPickerViewUsesBottomTail:(id)tail
 {
   v21 = *MEMORY[0x1E69E9840];
-  [(CKQLPreviewController *)self tapbackButtonFrameForFullScreenBalloonViewController:a3];
+  [(CKQLPreviewController *)self tapbackButtonFrameForFullScreenBalloonViewController:tail];
   y = v22.origin.y;
   if (CGRectIsEmpty(v22))
   {
@@ -788,8 +788,8 @@ LABEL_20:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [(CKQLPreviewController *)self childViewControllers];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    childViewControllers = [(CKQLPreviewController *)self childViewControllers];
+    v7 = [childViewControllers countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -800,7 +800,7 @@ LABEL_6:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v11 = *(*(&v16 + 1) + 8 * v10);
@@ -812,7 +812,7 @@ LABEL_6:
 
         if (v8 == ++v10)
         {
-          v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v8 = [childViewControllers countByEnumeratingWithState:&v16 objects:v20 count:16];
           if (v8)
           {
             goto LABEL_6;
@@ -826,8 +826,8 @@ LABEL_6:
 
       if (v5)
       {
-        v12 = [v5 navigationBar];
-        [v12 frame];
+        navigationBar = [v5 navigationBar];
+        [navigationBar frame];
         MaxY = CGRectGetMaxY(v23);
 
         if (y < MaxY)
@@ -852,7 +852,7 @@ LABEL_17:
   return v14;
 }
 
-- (CGRect)fullScreenBalloonViewController:(id)a3 balloonFrameForChatItem:(id)a4
+- (CGRect)fullScreenBalloonViewController:(id)controller balloonFrameForChatItem:(id)item
 {
   if (objc_opt_respondsToSelector())
   {
@@ -874,11 +874,11 @@ LABEL_17:
   return result;
 }
 
-- (char)fullScreenBalloonViewControllerAnchorVertialOrientation:(id)a3 withBalloonFrame:(CGRect)a4
+- (char)fullScreenBalloonViewControllerAnchorVertialOrientation:(id)orientation withBalloonFrame:(CGRect)frame
 {
-  y = a4.origin.y;
+  y = frame.origin.y;
   v22 = *MEMORY[0x1E69E9840];
-  if (CGRectIsEmpty(a4))
+  if (CGRectIsEmpty(frame))
   {
     return 0;
   }
@@ -887,8 +887,8 @@ LABEL_17:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [(CKQLPreviewController *)self childViewControllers];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  childViewControllers = [(CKQLPreviewController *)self childViewControllers];
+  v8 = [childViewControllers countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -899,7 +899,7 @@ LABEL_5:
     {
       if (*v18 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(childViewControllers);
       }
 
       v12 = *(*(&v17 + 1) + 8 * v11);
@@ -911,7 +911,7 @@ LABEL_5:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v9 = [childViewControllers countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v9)
         {
           goto LABEL_5;
@@ -925,8 +925,8 @@ LABEL_5:
 
     if (v13)
     {
-      v14 = [v13 navigationBar];
-      [v14 frame];
+      navigationBar = [v13 navigationBar];
+      [navigationBar frame];
       MaxY = CGRectGetMaxY(v23);
 
       if (y < MaxY)
@@ -950,18 +950,18 @@ LABEL_16:
   return v6;
 }
 
-- (void)fullScreenBalloonViewController:(id)a3 verticallyScrollTranscriptByAmount:(double)a4 animated:(BOOL)a5 duration:(double)a6 completion:(id)a7
+- (void)fullScreenBalloonViewController:(id)controller verticallyScrollTranscriptByAmount:(double)amount animated:(BOOL)animated duration:(double)duration completion:(id)completion
 {
-  if (a7)
+  if (completion)
   {
-    (*(a7 + 2))(a7, a4, a6);
+    (*(completion + 2))(completion, amount, duration);
   }
 }
 
-- (CGRect)fullScreenBalloonViewControllerSafeAreaLayoutFrame:(id)a3
+- (CGRect)fullScreenBalloonViewControllerSafeAreaLayoutFrame:(id)frame
 {
-  v3 = [(CKQLPreviewController *)self view];
-  [v3 bounds];
+  view = [(CKQLPreviewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -978,52 +978,52 @@ LABEL_16:
   return result;
 }
 
-- (void)fullScreenBalloonViewController:(id)a3 didSelectTapback:(id)a4
+- (void)fullScreenBalloonViewController:(id)controller didSelectTapback:(id)tapback
 {
-  v6 = a4;
-  v8 = a3;
-  v7 = [v8 chatItem];
-  [(CKQLPreviewController *)self _sendTapback:v6 targetChatItem:v7 isRemoval:0];
+  tapbackCopy = tapback;
+  controllerCopy = controller;
+  chatItem = [controllerCopy chatItem];
+  [(CKQLPreviewController *)self _sendTapback:tapbackCopy targetChatItem:chatItem isRemoval:0];
 
-  [v8 beginDismissal];
+  [controllerCopy beginDismissal];
 }
 
-- (void)fullScreenBalloonViewController:(id)a3 didDeselectTapback:(id)a4
+- (void)fullScreenBalloonViewController:(id)controller didDeselectTapback:(id)tapback
 {
-  v6 = a4;
-  v8 = a3;
-  v7 = [v8 chatItem];
-  [(CKQLPreviewController *)self _sendTapback:v6 targetChatItem:v7 isRemoval:1];
+  tapbackCopy = tapback;
+  controllerCopy = controller;
+  chatItem = [controllerCopy chatItem];
+  [(CKQLPreviewController *)self _sendTapback:tapbackCopy targetChatItem:chatItem isRemoval:1];
 
-  [v8 beginDismissal];
+  [controllerCopy beginDismissal];
 }
 
-- (void)_sendTapback:(id)a3 targetChatItem:(id)a4 isRemoval:(BOOL)a5
+- (void)_sendTapback:(id)tapback targetChatItem:(id)item isRemoval:(BOOL)removal
 {
-  v5 = a5;
-  v12 = a3;
-  v8 = a4;
-  v9 = [(QLPreviewController *)self delegate];
+  removalCopy = removal;
+  tapbackCopy = tapback;
+  itemCopy = item;
+  delegate = [(QLPreviewController *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
-    [v11 previewController:self sendTapback:v12 targetChatItem:v8 isRemoval:v5];
+    ckQLPreviewControllerDelegate = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
+    [ckQLPreviewControllerDelegate previewController:self sendTapback:tapbackCopy targetChatItem:itemCopy isRemoval:removalCopy];
   }
 }
 
-- (BOOL)shouldShowTapbackAttributionForFullScreenBalloonViewController:(id)a3
+- (BOOL)shouldShowTapbackAttributionForFullScreenBalloonViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(QLPreviewController *)self delegate];
+  controllerCopy = controller;
+  delegate = [(QLPreviewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
-    v8 = [v4 chatItem];
-    v9 = [v7 previewController:self shouldShowTapbackAttributionForChatItem:v8];
+    ckQLPreviewControllerDelegate = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
+    chatItem = [controllerCopy chatItem];
+    v9 = [ckQLPreviewControllerDelegate previewController:self shouldShowTapbackAttributionForChatItem:chatItem];
   }
 
   else
@@ -1034,17 +1034,17 @@ LABEL_16:
   return v9;
 }
 
-- (BOOL)shouldShowTapbackPickerForFullScreenBalloonViewController:(id)a3
+- (BOOL)shouldShowTapbackPickerForFullScreenBalloonViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(QLPreviewController *)self delegate];
+  controllerCopy = controller;
+  delegate = [(QLPreviewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
-    v8 = [v4 chatItem];
-    v9 = [v7 previewController:self shouldShowTapbackPickerForChatItem:v8];
+    ckQLPreviewControllerDelegate = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
+    chatItem = [controllerCopy chatItem];
+    v9 = [ckQLPreviewControllerDelegate previewController:self shouldShowTapbackPickerForChatItem:chatItem];
   }
 
   else
@@ -1055,9 +1055,9 @@ LABEL_16:
   return v9;
 }
 
-- (BOOL)fullScreenBalloonViewControllerShouldEnableStickerTapbacks:(id)a3
+- (BOOL)fullScreenBalloonViewControllerShouldEnableStickerTapbacks:(id)tapbacks
 {
-  v4 = [(QLPreviewController *)self delegate];
+  delegate = [(QLPreviewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) == 0)
@@ -1065,21 +1065,21 @@ LABEL_16:
     return 0;
   }
 
-  v6 = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
-  v7 = [v6 previewControllerShouldEnableStickerTapbacks:self];
+  ckQLPreviewControllerDelegate = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
+  v7 = [ckQLPreviewControllerDelegate previewControllerShouldEnableStickerTapbacks:self];
 
   return v7;
 }
 
-- (id)textInputContextIdentifierForFullScreenBalloonViewController:(id)a3
+- (id)textInputContextIdentifierForFullScreenBalloonViewController:(id)controller
 {
-  v4 = [(QLPreviewController *)self delegate];
+  delegate = [(QLPreviewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
-    v7 = [v6 textInputContextIdentifierForPreviewController:self];
+    ckQLPreviewControllerDelegate = [(CKQLPreviewController *)self ckQLPreviewControllerDelegate];
+    v7 = [ckQLPreviewControllerDelegate textInputContextIdentifierForPreviewController:self];
   }
 
   else
@@ -1090,13 +1090,13 @@ LABEL_16:
   return v7;
 }
 
-- (void)_dismissFullScreenBubbleViewController:(id)a3 animated:(BOOL)a4 withSendAnimation:(BOOL)a5 completion:(id)a6
+- (void)_dismissFullScreenBubbleViewController:(id)controller animated:(BOOL)animated withSendAnimation:(BOOL)animation completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
+  animationCopy = animation;
+  animatedCopy = animated;
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
+  controllerCopy = controller;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v12 = OSLogHandleForIMFoundationCategory();
@@ -1111,8 +1111,8 @@ LABEL_16:
   v19 = 3221225472;
   v20 = __102__CKQLPreviewController__dismissFullScreenBubbleViewController_animated_withSendAnimation_completion___block_invoke;
   v21 = &unk_1E72ED1C8;
-  v22 = self;
-  v13 = v11;
+  selfCopy = self;
+  v13 = completionCopy;
   v23 = v13;
   v14 = _Block_copy(&v18);
   if (IMOSLoggingEnabled())
@@ -1120,7 +1120,7 @@ LABEL_16:
     v15 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      if (v8)
+      if (animatedCopy)
       {
         v16 = @"YES";
       }
@@ -1134,7 +1134,7 @@ LABEL_16:
       *buf = 138412802;
       v25 = v16;
       v26 = 1024;
-      v27 = v7;
+      v27 = animationCopy;
       v28 = 2112;
       v29 = v17;
       _os_log_impl(&dword_19020E000, v15, OS_LOG_TYPE_INFO, "_dismissFullScreenBubbleViewControllerAnimated %@:WithSendAnimation: %d, completion %@", buf, 0x1Cu);
@@ -1146,22 +1146,22 @@ LABEL_16:
     v14[2](v14);
   }
 
-  else if (v8)
+  else if (animatedCopy)
   {
-    if (v7)
+    if (animationCopy)
     {
-      [v10 performSendAndCloseAnimationWithCompletion:{v14, v18, v19, v20, v21, v22}];
+      [controllerCopy performSendAndCloseAnimationWithCompletion:{v14, v18, v19, v20, v21, selfCopy}];
     }
 
     else
     {
-      [v10 performCancelAnimationWithCompletion:{v14, v18, v19, v20, v21, v22}];
+      [controllerCopy performCancelAnimationWithCompletion:{v14, v18, v19, v20, v21, selfCopy}];
     }
   }
 
   else
   {
-    [v10 dismissImmediatelyWithNoAnimations];
+    [controllerCopy dismissImmediatelyWithNoAnimations];
     v14[2](v14);
   }
 }
@@ -1180,16 +1180,16 @@ uint64_t __102__CKQLPreviewController__dismissFullScreenBubbleViewController_ani
   return result;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v6.receiver = self;
   v6.super_class = CKQLPreviewController;
-  [(QLPreviewController *)&v6 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
-  v5 = [(CKQLPreviewController *)self presentedViewController];
+  [(QLPreviewController *)&v6 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
+  presentedViewController = [(CKQLPreviewController *)self presentedViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 dismissViewControllerAnimated:1 completion:0];
+    [presentedViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 

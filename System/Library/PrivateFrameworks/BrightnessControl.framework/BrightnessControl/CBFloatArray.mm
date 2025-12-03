@@ -1,40 +1,40 @@
 @interface CBFloatArray
-- (CBFloatArray)initWithCount:(unint64_t)a3;
-- (CBFloatArray)initWithValues:(float *)a3 andCount:(unint64_t)a4;
-- (const)at:(unint64_t)a3;
+- (CBFloatArray)initWithCount:(unint64_t)count;
+- (CBFloatArray)initWithValues:(float *)values andCount:(unint64_t)count;
+- (const)at:(unint64_t)at;
 - (float)dataCopy;
-- (float)get:(unint64_t)a3;
+- (float)get:(unint64_t)get;
 - (float)mutableData;
 - (id)copyNSArray;
 - (id)description;
-- (id)objectAtIndexedSubscript:(unint64_t)a3;
+- (id)objectAtIndexedSubscript:(unint64_t)subscript;
 - (void)dealloc;
 @end
 
 @implementation CBFloatArray
 
-- (CBFloatArray)initWithValues:(float *)a3 andCount:(unint64_t)a4
+- (CBFloatArray)initWithValues:(float *)values andCount:(unint64_t)count
 {
-  v5 = [(CBFloatArray *)self initWithCount:a4];
+  v5 = [(CBFloatArray *)self initWithCount:count];
   v6 = v5;
   if (v5)
   {
-    memcpy(v5->_data, a3, v5->_size);
+    memcpy(v5->_data, values, v5->_size);
   }
 
   return v6;
 }
 
-- (CBFloatArray)initWithCount:(unint64_t)a3
+- (CBFloatArray)initWithCount:(unint64_t)count
 {
   v7.receiver = self;
   v7.super_class = CBFloatArray;
   v4 = [(CBFloatArray *)&v7 init];
   if (v4)
   {
-    v4->_count = a3;
-    v4->_size = 4 * a3;
-    v5 = malloc_type_malloc(4 * a3, 0x100004052888210uLL);
+    v4->_count = count;
+    v4->_size = 4 * count;
+    v5 = malloc_type_malloc(4 * count, 0x100004052888210uLL);
     v4->_data = v5;
     if (!v5)
     {
@@ -59,20 +59,20 @@
   [(CBFloatArray *)&v4 dealloc];
 }
 
-- (float)get:(unint64_t)a3
+- (float)get:(unint64_t)get
 {
-  if (self->_count <= a3)
+  if (self->_count <= get)
   {
     objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE730] reason:0 userInfo:{0, v3, v4}]);
   }
 
-  return self->_data[a3];
+  return self->_data[get];
 }
 
-- (id)objectAtIndexedSubscript:(unint64_t)a3
+- (id)objectAtIndexedSubscript:(unint64_t)subscript
 {
   v3 = MEMORY[0x277CCABB0];
-  [(CBFloatArray *)self get:a3];
+  [(CBFloatArray *)self get:subscript];
 
   return [v3 numberWithFloat:?];
 }
@@ -91,14 +91,14 @@
   return result;
 }
 
-- (const)at:(unint64_t)a3
+- (const)at:(unint64_t)at
 {
-  if (self->_count <= a3)
+  if (self->_count <= at)
   {
     objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE730] reason:0 userInfo:{0, v3, v4}]);
   }
 
-  return &self->_data[a3];
+  return &self->_data[at];
 }
 
 - (float)mutableData

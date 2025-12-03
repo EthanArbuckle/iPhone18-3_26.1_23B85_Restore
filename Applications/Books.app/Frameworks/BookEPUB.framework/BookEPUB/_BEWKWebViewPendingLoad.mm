@@ -1,29 +1,29 @@
 @interface _BEWKWebViewPendingLoad
-+ (id)pendingLoadWithRequest:(id)a3;
-+ (id)pendingLoadWithRequest:(id)a3 response:(id)a4 data:(id)a5;
++ (id)pendingLoadWithRequest:(id)request;
++ (id)pendingLoadWithRequest:(id)request response:(id)response data:(id)data;
 @end
 
 @implementation _BEWKWebViewPendingLoad
 
-+ (id)pendingLoadWithRequest:(id)a3
++ (id)pendingLoadWithRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_alloc_init(_BEWKWebViewPendingLoad);
-  [(_BEWKWebViewPendingLoad *)v4 setRequest:v3];
+  [(_BEWKWebViewPendingLoad *)v4 setRequest:requestCopy];
 
   return v4;
 }
 
-+ (id)pendingLoadWithRequest:(id)a3 response:(id)a4 data:(id)a5
++ (id)pendingLoadWithRequest:(id)request response:(id)response data:(id)data
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  dataCopy = data;
+  responseCopy = response;
+  requestCopy = request;
   v10 = objc_alloc_init(_BEWKWebViewPendingLoad);
-  [(_BEWKWebViewPendingLoad *)v10 setRequest:v9];
+  [(_BEWKWebViewPendingLoad *)v10 setRequest:requestCopy];
 
-  [(_BEWKWebViewPendingLoad *)v10 setResponse:v8];
-  [(_BEWKWebViewPendingLoad *)v10 setData:v7];
+  [(_BEWKWebViewPendingLoad *)v10 setResponse:responseCopy];
+  [(_BEWKWebViewPendingLoad *)v10 setData:dataCopy];
 
   return v10;
 }

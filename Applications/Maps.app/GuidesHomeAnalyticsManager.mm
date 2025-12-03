@@ -1,23 +1,23 @@
 @interface GuidesHomeAnalyticsManager
-- (GuidesHomeAnalyticsManager)initWithGuideLocationId:(id)a3 isCuratedGuidesHome:(BOOL)a4;
+- (GuidesHomeAnalyticsManager)initWithGuideLocationId:(id)id isCuratedGuidesHome:(BOOL)home;
 - (void)cleanUp;
-- (void)guideHomeTappedFilter:(id)a3 atIndex:(unint64_t)a4 carouselIndex:(unint64_t)a5;
+- (void)guideHomeTappedFilter:(id)filter atIndex:(unint64_t)index carouselIndex:(unint64_t)carouselIndex;
 - (void)guidesHomeCityGuidesMoreButtonTapped;
 - (void)guidesHomeCitySelectorTapped;
 - (void)guidesHomeClosed;
-- (void)guidesHomeDisplayFilteredGuideList:(id)a3;
+- (void)guidesHomeDisplayFilteredGuideList:(id)list;
 - (void)guidesHomeRevealed;
 - (void)guidesHomeScrolledDown;
 - (void)guidesHomeScrolledUp;
-- (void)guidesHomeTappedCityGuide:(id)a3 atIndex:(unint64_t)a4 carouselIndex:(unint64_t)a5;
-- (void)guidesHomeTappedEditorPickedGuide:(id)a3 publisherId:(id)a4 isCurrentlySaved:(BOOL)a5 atIndex:(unint64_t)a6 carouselIndex:(unint64_t)a7;
-- (void)guidesHomeTappedFeaturedGuide:(id)a3 publisherId:(id)a4 isCurrentlySaved:(BOOL)a5;
-- (void)guidesHomeTappedFilteredGuide:(id)a3 publisherId:(id)a4 isCurrentlySaved:(BOOL)a5 atIndex:(unint64_t)a6 carouselIndex:(unint64_t)a7 filterValue:(id)a8;
-- (void)guidesHomeTappedLatestGuide:(id)a3 publisherId:(id)a4 isCurrentlySaved:(BOOL)a5 atIndex:(unint64_t)a6 carouselIndex:(unint64_t)a7;
-- (void)guidesHomeTappedPublisher:(id)a3 atIndex:(unint64_t)a4 carouselIndex:(unint64_t)a5;
-- (void)guidesHomeTappedTemporalGuide:(id)a3 publisherId:(id)a4 isCurrentlySaved:(BOOL)a5 atIndex:(unint64_t)a6 carouselIndex:(unint64_t)a7;
+- (void)guidesHomeTappedCityGuide:(id)guide atIndex:(unint64_t)index carouselIndex:(unint64_t)carouselIndex;
+- (void)guidesHomeTappedEditorPickedGuide:(id)guide publisherId:(id)id isCurrentlySaved:(BOOL)saved atIndex:(unint64_t)index carouselIndex:(unint64_t)carouselIndex;
+- (void)guidesHomeTappedFeaturedGuide:(id)guide publisherId:(id)id isCurrentlySaved:(BOOL)saved;
+- (void)guidesHomeTappedFilteredGuide:(id)guide publisherId:(id)id isCurrentlySaved:(BOOL)saved atIndex:(unint64_t)index carouselIndex:(unint64_t)carouselIndex filterValue:(id)value;
+- (void)guidesHomeTappedLatestGuide:(id)guide publisherId:(id)id isCurrentlySaved:(BOOL)saved atIndex:(unint64_t)index carouselIndex:(unint64_t)carouselIndex;
+- (void)guidesHomeTappedPublisher:(id)publisher atIndex:(unint64_t)index carouselIndex:(unint64_t)carouselIndex;
+- (void)guidesHomeTappedTemporalGuide:(id)guide publisherId:(id)id isCurrentlySaved:(BOOL)saved atIndex:(unint64_t)index carouselIndex:(unint64_t)carouselIndex;
 - (void)logEvent;
-- (void)updateAnalyticsManagerWithGuideLocationId:(id)a3 isCuratedGuidesHome:(BOOL)a4;
+- (void)updateAnalyticsManagerWithGuideLocationId:(id)id isCuratedGuidesHome:(BOOL)home;
 @end
 
 @implementation GuidesHomeAnalyticsManager
@@ -125,11 +125,11 @@
   objc_destroyWeak(&location);
 }
 
-- (void)guidesHomeTappedFilteredGuide:(id)a3 publisherId:(id)a4 isCurrentlySaved:(BOOL)a5 atIndex:(unint64_t)a6 carouselIndex:(unint64_t)a7 filterValue:(id)a8
+- (void)guidesHomeTappedFilteredGuide:(id)guide publisherId:(id)id isCurrentlySaved:(BOOL)saved atIndex:(unint64_t)index carouselIndex:(unint64_t)carouselIndex filterValue:(id)value
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
+  guideCopy = guide;
+  idCopy = id;
+  valueCopy = value;
   objc_initWeak(&location, self);
   utilityQueue = self->_utilityQueue;
   v21[0] = _NSConcreteStackBlock;
@@ -137,24 +137,24 @@
   v21[2] = sub_100BF160C;
   v21[3] = &unk_10164D6B0;
   objc_copyWeak(v25, &location);
-  v22 = v14;
-  v23 = v15;
-  v26 = a5;
-  v25[1] = a6;
-  v25[2] = a7;
-  v24 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
+  v22 = guideCopy;
+  v23 = idCopy;
+  savedCopy = saved;
+  v25[1] = index;
+  v25[2] = carouselIndex;
+  v24 = valueCopy;
+  v18 = valueCopy;
+  v19 = idCopy;
+  v20 = guideCopy;
   dispatch_async(utilityQueue, v21);
 
   objc_destroyWeak(v25);
   objc_destroyWeak(&location);
 }
 
-- (void)guidesHomeDisplayFilteredGuideList:(id)a3
+- (void)guidesHomeDisplayFilteredGuideList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   objc_initWeak(&location, self);
   utilityQueue = self->_utilityQueue;
   block[0] = _NSConcreteStackBlock;
@@ -162,17 +162,17 @@
   block[2] = sub_100BF182C;
   block[3] = &unk_101661340;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = listCopy;
+  v6 = listCopy;
   dispatch_async(utilityQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)guideHomeTappedFilter:(id)a3 atIndex:(unint64_t)a4 carouselIndex:(unint64_t)a5
+- (void)guideHomeTappedFilter:(id)filter atIndex:(unint64_t)index carouselIndex:(unint64_t)carouselIndex
 {
-  v8 = a3;
+  filterCopy = filter;
   objc_initWeak(&location, self);
   utilityQueue = self->_utilityQueue;
   block[0] = _NSConcreteStackBlock;
@@ -180,20 +180,20 @@
   block[2] = sub_100BF1B0C;
   block[3] = &unk_10164D638;
   objc_copyWeak(v13, &location);
-  v12 = v8;
-  v13[1] = a4;
-  v13[2] = a5;
-  v10 = v8;
+  v12 = filterCopy;
+  v13[1] = index;
+  v13[2] = carouselIndex;
+  v10 = filterCopy;
   dispatch_async(utilityQueue, block);
 
   objc_destroyWeak(v13);
   objc_destroyWeak(&location);
 }
 
-- (void)guidesHomeTappedEditorPickedGuide:(id)a3 publisherId:(id)a4 isCurrentlySaved:(BOOL)a5 atIndex:(unint64_t)a6 carouselIndex:(unint64_t)a7
+- (void)guidesHomeTappedEditorPickedGuide:(id)guide publisherId:(id)id isCurrentlySaved:(BOOL)saved atIndex:(unint64_t)index carouselIndex:(unint64_t)carouselIndex
 {
-  v12 = a3;
-  v13 = a4;
+  guideCopy = guide;
+  idCopy = id;
   objc_initWeak(&location, self);
   utilityQueue = self->_utilityQueue;
   block[0] = _NSConcreteStackBlock;
@@ -201,23 +201,23 @@
   block[2] = sub_100BF1D04;
   block[3] = &unk_10164D660;
   objc_copyWeak(v20, &location);
-  v18 = v12;
-  v19 = v13;
-  v21 = a5;
-  v20[1] = a6;
-  v20[2] = a7;
-  v15 = v13;
-  v16 = v12;
+  v18 = guideCopy;
+  v19 = idCopy;
+  savedCopy = saved;
+  v20[1] = index;
+  v20[2] = carouselIndex;
+  v15 = idCopy;
+  v16 = guideCopy;
   dispatch_async(utilityQueue, block);
 
   objc_destroyWeak(v20);
   objc_destroyWeak(&location);
 }
 
-- (void)guidesHomeTappedTemporalGuide:(id)a3 publisherId:(id)a4 isCurrentlySaved:(BOOL)a5 atIndex:(unint64_t)a6 carouselIndex:(unint64_t)a7
+- (void)guidesHomeTappedTemporalGuide:(id)guide publisherId:(id)id isCurrentlySaved:(BOOL)saved atIndex:(unint64_t)index carouselIndex:(unint64_t)carouselIndex
 {
-  v12 = a3;
-  v13 = a4;
+  guideCopy = guide;
+  idCopy = id;
   objc_initWeak(&location, self);
   utilityQueue = self->_utilityQueue;
   block[0] = _NSConcreteStackBlock;
@@ -225,23 +225,23 @@
   block[2] = sub_100BF1F5C;
   block[3] = &unk_10164D660;
   objc_copyWeak(v20, &location);
-  v18 = v12;
-  v19 = v13;
-  v21 = a5;
-  v20[1] = a6;
-  v20[2] = a7;
-  v15 = v13;
-  v16 = v12;
+  v18 = guideCopy;
+  v19 = idCopy;
+  savedCopy = saved;
+  v20[1] = index;
+  v20[2] = carouselIndex;
+  v15 = idCopy;
+  v16 = guideCopy;
   dispatch_async(utilityQueue, block);
 
   objc_destroyWeak(v20);
   objc_destroyWeak(&location);
 }
 
-- (void)guidesHomeTappedLatestGuide:(id)a3 publisherId:(id)a4 isCurrentlySaved:(BOOL)a5 atIndex:(unint64_t)a6 carouselIndex:(unint64_t)a7
+- (void)guidesHomeTappedLatestGuide:(id)guide publisherId:(id)id isCurrentlySaved:(BOOL)saved atIndex:(unint64_t)index carouselIndex:(unint64_t)carouselIndex
 {
-  v12 = a3;
-  v13 = a4;
+  guideCopy = guide;
+  idCopy = id;
   objc_initWeak(&location, self);
   utilityQueue = self->_utilityQueue;
   block[0] = _NSConcreteStackBlock;
@@ -249,22 +249,22 @@
   block[2] = sub_100BF21B4;
   block[3] = &unk_10164D660;
   objc_copyWeak(v20, &location);
-  v18 = v12;
-  v19 = v13;
-  v21 = a5;
-  v20[1] = a6;
-  v20[2] = a7;
-  v15 = v13;
-  v16 = v12;
+  v18 = guideCopy;
+  v19 = idCopy;
+  savedCopy = saved;
+  v20[1] = index;
+  v20[2] = carouselIndex;
+  v15 = idCopy;
+  v16 = guideCopy;
   dispatch_async(utilityQueue, block);
 
   objc_destroyWeak(v20);
   objc_destroyWeak(&location);
 }
 
-- (void)guidesHomeTappedPublisher:(id)a3 atIndex:(unint64_t)a4 carouselIndex:(unint64_t)a5
+- (void)guidesHomeTappedPublisher:(id)publisher atIndex:(unint64_t)index carouselIndex:(unint64_t)carouselIndex
 {
-  v8 = a3;
+  publisherCopy = publisher;
   objc_initWeak(&location, self);
   utilityQueue = self->_utilityQueue;
   block[0] = _NSConcreteStackBlock;
@@ -272,19 +272,19 @@
   block[2] = sub_100BF23DC;
   block[3] = &unk_10164D638;
   objc_copyWeak(v13, &location);
-  v12 = v8;
-  v13[1] = a4;
-  v13[2] = a5;
-  v10 = v8;
+  v12 = publisherCopy;
+  v13[1] = index;
+  v13[2] = carouselIndex;
+  v10 = publisherCopy;
   dispatch_async(utilityQueue, block);
 
   objc_destroyWeak(v13);
   objc_destroyWeak(&location);
 }
 
-- (void)guidesHomeTappedCityGuide:(id)a3 atIndex:(unint64_t)a4 carouselIndex:(unint64_t)a5
+- (void)guidesHomeTappedCityGuide:(id)guide atIndex:(unint64_t)index carouselIndex:(unint64_t)carouselIndex
 {
-  v8 = a3;
+  guideCopy = guide;
   objc_initWeak(&location, self);
   utilityQueue = self->_utilityQueue;
   block[0] = _NSConcreteStackBlock;
@@ -292,10 +292,10 @@
   block[2] = sub_100BF25E8;
   block[3] = &unk_10164D638;
   objc_copyWeak(v13, &location);
-  v12 = v8;
-  v13[1] = a4;
-  v13[2] = a5;
-  v10 = v8;
+  v12 = guideCopy;
+  v13[1] = index;
+  v13[2] = carouselIndex;
+  v10 = guideCopy;
   dispatch_async(utilityQueue, block);
 
   objc_destroyWeak(v13);
@@ -345,10 +345,10 @@
   objc_destroyWeak(&location);
 }
 
-- (void)guidesHomeTappedFeaturedGuide:(id)a3 publisherId:(id)a4 isCurrentlySaved:(BOOL)a5
+- (void)guidesHomeTappedFeaturedGuide:(id)guide publisherId:(id)id isCurrentlySaved:(BOOL)saved
 {
-  v8 = a3;
-  v9 = a4;
+  guideCopy = guide;
+  idCopy = id;
   objc_initWeak(&location, self);
   utilityQueue = self->_utilityQueue;
   block[0] = _NSConcreteStackBlock;
@@ -356,23 +356,23 @@
   block[2] = sub_100BF2C48;
   block[3] = &unk_10164D610;
   objc_copyWeak(&v16, &location);
-  v17 = a5;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  savedCopy = saved;
+  v14 = guideCopy;
+  v15 = idCopy;
+  v11 = idCopy;
+  v12 = guideCopy;
   dispatch_async(utilityQueue, block);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 }
 
-- (void)updateAnalyticsManagerWithGuideLocationId:(id)a3 isCuratedGuidesHome:(BOOL)a4
+- (void)updateAnalyticsManagerWithGuideLocationId:(id)id isCuratedGuidesHome:(BOOL)home
 {
-  v4 = a4;
-  v7 = a3;
+  homeCopy = home;
+  idCopy = id;
   guideLocationId = self->_guideLocationId;
-  if (guideLocationId == v7)
+  if (guideLocationId == idCopy)
   {
     goto LABEL_12;
   }
@@ -384,7 +384,7 @@
     if (v10)
     {
       v13 = 138412290;
-      v14 = v7;
+      v14 = idCopy;
       v11 = "GuidesHomeAnalyticsManager *refreshed* to report analytics for : %@";
 LABEL_7:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, v11, &v13, 0xCu);
@@ -394,14 +394,14 @@ LABEL_7:
   else if (v10)
   {
     v13 = 138412290;
-    v14 = v7;
+    v14 = idCopy;
     v11 = "GuidesHomeAnalyticsManager initialized to report analytics for : %@";
     goto LABEL_7;
   }
 
-  objc_storeStrong(&self->_guideLocationId, a3);
-  self->_isCuratedGuidesHome = v4;
-  if (v4)
+  objc_storeStrong(&self->_guideLocationId, id);
+  self->_isCuratedGuidesHome = homeCopy;
+  if (homeCopy)
   {
     v12 = 19;
   }
@@ -415,10 +415,10 @@ LABEL_7:
 LABEL_12:
 }
 
-- (GuidesHomeAnalyticsManager)initWithGuideLocationId:(id)a3 isCuratedGuidesHome:(BOOL)a4
+- (GuidesHomeAnalyticsManager)initWithGuideLocationId:(id)id isCuratedGuidesHome:(BOOL)home
 {
-  v4 = a4;
-  v6 = a3;
+  homeCopy = home;
+  idCopy = id;
   v11.receiver = self;
   v11.super_class = GuidesHomeAnalyticsManager;
   v7 = [(GuidesHomeAnalyticsManager *)&v11 init];
@@ -429,7 +429,7 @@ LABEL_12:
     v7->_utilityQueue = v8;
 
     v7->event.cardType = 14;
-    [(GuidesHomeAnalyticsManager *)v7 updateAnalyticsManagerWithGuideLocationId:v6 isCuratedGuidesHome:v4];
+    [(GuidesHomeAnalyticsManager *)v7 updateAnalyticsManagerWithGuideLocationId:idCopy isCuratedGuidesHome:homeCopy];
   }
 
   return v7;

@@ -1,8 +1,8 @@
 @interface MTRChannelClusterCancelRecordProgramParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRChannelClusterCancelRecordProgramParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -22,13 +22,13 @@
     shouldRecordSeries = v3->_shouldRecordSeries;
     v3->_shouldRecordSeries = &unk_284C3E4C8;
 
-    v6 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     externalIDList = v3->_externalIDList;
-    v3->_externalIDList = v6;
+    v3->_externalIDList = array;
 
-    v8 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     data = v3->_data;
-    v3->_data = v8;
+    v3->_data = data;
 
     timedInvokeTimeoutMs = v3->_timedInvokeTimeoutMs;
     v3->_timedInvokeTimeoutMs = 0;
@@ -40,26 +40,26 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRChannelClusterCancelRecordProgramParams);
-  v5 = [(MTRChannelClusterCancelRecordProgramParams *)self programIdentifier];
-  [(MTRChannelClusterCancelRecordProgramParams *)v4 setProgramIdentifier:v5];
+  programIdentifier = [(MTRChannelClusterCancelRecordProgramParams *)self programIdentifier];
+  [(MTRChannelClusterCancelRecordProgramParams *)v4 setProgramIdentifier:programIdentifier];
 
-  v6 = [(MTRChannelClusterCancelRecordProgramParams *)self shouldRecordSeries];
-  [(MTRChannelClusterCancelRecordProgramParams *)v4 setShouldRecordSeries:v6];
+  shouldRecordSeries = [(MTRChannelClusterCancelRecordProgramParams *)self shouldRecordSeries];
+  [(MTRChannelClusterCancelRecordProgramParams *)v4 setShouldRecordSeries:shouldRecordSeries];
 
-  v7 = [(MTRChannelClusterCancelRecordProgramParams *)self externalIDList];
-  [(MTRChannelClusterCancelRecordProgramParams *)v4 setExternalIDList:v7];
+  externalIDList = [(MTRChannelClusterCancelRecordProgramParams *)self externalIDList];
+  [(MTRChannelClusterCancelRecordProgramParams *)v4 setExternalIDList:externalIDList];
 
-  v8 = [(MTRChannelClusterCancelRecordProgramParams *)self data];
-  [(MTRChannelClusterCancelRecordProgramParams *)v4 setData:v8];
+  data = [(MTRChannelClusterCancelRecordProgramParams *)self data];
+  [(MTRChannelClusterCancelRecordProgramParams *)v4 setData:data];
 
-  v9 = [(MTRChannelClusterCancelRecordProgramParams *)self timedInvokeTimeoutMs];
-  [(MTRChannelClusterCancelRecordProgramParams *)v4 setTimedInvokeTimeoutMs:v9];
+  timedInvokeTimeoutMs = [(MTRChannelClusterCancelRecordProgramParams *)self timedInvokeTimeoutMs];
+  [(MTRChannelClusterCancelRecordProgramParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v10 = [(MTRChannelClusterCancelRecordProgramParams *)self serverSideProcessingTimeout];
-  [(MTRChannelClusterCancelRecordProgramParams *)v4 setServerSideProcessingTimeout:v10];
+  serverSideProcessingTimeout = [(MTRChannelClusterCancelRecordProgramParams *)self serverSideProcessingTimeout];
+  [(MTRChannelClusterCancelRecordProgramParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -78,26 +78,26 @@
   return v10;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v33 = *MEMORY[0x277D85DE8];
   v24 = 0uLL;
-  v25 = 0;
+  bOOLValue = 0;
   v26 = 0u;
   v27 = 0u;
   v23[0] = 0;
   v23[1] = 0;
   v22 = v23;
-  v4 = [(MTRChannelClusterCancelRecordProgramParams *)self programIdentifier];
-  v5 = v4;
-  sub_238DB9BD8(buf, [v4 UTF8String], objc_msgSend(v4, "lengthOfBytesUsingEncoding:", 4));
+  programIdentifier = [(MTRChannelClusterCancelRecordProgramParams *)self programIdentifier];
+  v5 = programIdentifier;
+  sub_238DB9BD8(buf, [programIdentifier UTF8String], objc_msgSend(programIdentifier, "lengthOfBytesUsingEncoding:", 4));
 
   v24 = *buf;
-  v6 = [(MTRChannelClusterCancelRecordProgramParams *)self shouldRecordSeries];
-  v25 = [v6 BOOLValue];
+  shouldRecordSeries = [(MTRChannelClusterCancelRecordProgramParams *)self shouldRecordSeries];
+  bOOLValue = [shouldRecordSeries BOOLValue];
 
-  v7 = [(MTRChannelClusterCancelRecordProgramParams *)self externalIDList];
-  v8 = [v7 count] == 0;
+  externalIDList = [(MTRChannelClusterCancelRecordProgramParams *)self externalIDList];
+  v8 = [externalIDList count] == 0;
 
   if (!v8)
   {
@@ -105,9 +105,9 @@
   }
 
   v26 = 0uLL;
-  v9 = [(MTRChannelClusterCancelRecordProgramParams *)self data];
-  v10 = v9;
-  sub_238DB6950(buf, [v9 bytes], objc_msgSend(v9, "length"));
+  data = [(MTRChannelClusterCancelRecordProgramParams *)self data];
+  v10 = data;
+  sub_238DB6950(buf, [data bytes], objc_msgSend(data, "length"));
 
   v27 = *buf;
   sub_2393D9C18(0x62FuLL, 0, &v21);
@@ -129,8 +129,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v21);
-      v11 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v21);
+      v11 = sub_2393C7114(reader, 21, 256);
       v14 = v19;
       v13 = v11;
     }
@@ -159,19 +159,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRChannelClusterCancelRecordProgramParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -182,7 +182,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x70DD00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

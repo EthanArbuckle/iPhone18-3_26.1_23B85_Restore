@@ -1,19 +1,19 @@
 @interface CHSWatchComplicationsCurvedLabelMetrics
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)circleCenter;
 - (CGSize)accessoryMaxSize;
 - (CHSWatchComplicationsCurvedLabelMetrics)init;
-- (CHSWatchComplicationsCurvedLabelMetrics)initWithBSXPCCoder:(id)a3;
-- (CHSWatchComplicationsCurvedLabelMetrics)initWithCoder:(id)a3;
+- (CHSWatchComplicationsCurvedLabelMetrics)initWithBSXPCCoder:(id)coder;
+- (CHSWatchComplicationsCurvedLabelMetrics)initWithCoder:(id)coder;
 - (NSString)description;
 - (id)_filenameSafeStableHash;
-- (id)_filenameSafeStableHashFromData:(id)a3;
-- (id)_initWithInstance:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_filenameSafeStableHashFromData:(id)data;
+- (id)_initWithInstance:(id)instance;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)_filenameSafeStableHash;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSWatchComplicationsCurvedLabelMetrics
@@ -48,33 +48,33 @@
   return v3;
 }
 
-- (id)_initWithInstance:(id)a3
+- (id)_initWithInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   v12.receiver = self;
   v12.super_class = CHSWatchComplicationsCurvedLabelMetrics;
   v5 = [(CHSWatchComplicationsCurvedLabelMetrics *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    *(v5 + 8) = *(v4 + 8);
-    *(v5 + 3) = *(v4 + 3);
-    *(v5 + 4) = *(v4 + 4);
-    *(v5 + 5) = *(v4 + 5);
-    v7 = [*(v4 + 6) copy];
+    *(v5 + 8) = *(instanceCopy + 8);
+    *(v5 + 3) = *(instanceCopy + 3);
+    *(v5 + 4) = *(instanceCopy + 4);
+    *(v5 + 5) = *(instanceCopy + 5);
+    v7 = [*(instanceCopy + 6) copy];
     v8 = *(v6 + 6);
     *(v6 + 6) = v7;
 
-    v6[56] = v4[56];
-    *(v6 + 8) = *(v4 + 8);
-    *(v6 + 9) = *(v4 + 9);
-    v9 = [*(v4 + 10) copy];
+    v6[56] = instanceCopy[56];
+    *(v6 + 8) = *(instanceCopy + 8);
+    *(v6 + 9) = *(instanceCopy + 9);
+    v9 = [*(instanceCopy + 10) copy];
     v10 = *(v6 + 10);
     *(v6 + 10) = v9;
 
-    *(v6 + 11) = *(v4 + 11);
-    *(v6 + 12) = *(v4 + 12);
-    *(v6 + 104) = *(v4 + 104);
+    *(v6 + 11) = *(instanceCopy + 11);
+    *(v6 + 12) = *(instanceCopy + 12);
+    *(v6 + 104) = *(instanceCopy + 104);
   }
 
   return v6;
@@ -89,11 +89,11 @@
   v11 = &unk_1E7453000;
   v4 = v3;
   v12 = v4;
-  v13 = self;
+  selfCopy = self;
   v5 = [v4 modifyProem:&v8];
-  v6 = [v4 build];
+  build = [v4 build];
 
-  return v6;
+  return build;
 }
 
 id __54__CHSWatchComplicationsCurvedLabelMetrics_description__block_invoke(uint64_t a1)
@@ -112,12 +112,12 @@ id __54__CHSWatchComplicationsCurvedLabelMetrics_description__block_invoke(uint6
   return [*(a1 + 32) appendSize:@"accessoryMaxSize" withName:{*(*(a1 + 40) + 104), *(*(a1 + 40) + 112)}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   v6 = objc_opt_class();
-  v7 = v4;
+  v7 = equalCopy;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -239,94 +239,94 @@ id __54__CHSWatchComplicationsCurvedLabelMetrics_description__block_invoke(uint6
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendCGPoint:{self->_circleCenter.x, self->_circleCenter.y}];
-  v5 = [v3 appendCGFloat:self->_circleRadius];
-  v6 = [v3 appendCGFloat:self->_maximumAngularWidth];
-  v7 = [v3 appendCGFloat:self->_centerAngle];
-  v8 = [v3 appendObject:self->_bezierPath];
-  v9 = [v3 appendBool:self->_interior];
-  v10 = [v3 appendCGFloat:self->_tracking];
-  v11 = [v3 appendCGFloat:self->_fontSize];
-  v12 = [v3 appendObject:self->_textColor];
-  v13 = [v3 appendUnsignedInteger:self->_accessoryPlacement];
-  v14 = [v3 appendCGFloat:self->_accessoryPadding];
-  v15 = [v3 appendCGSize:{self->_accessoryMaxSize.width, self->_accessoryMaxSize.height}];
-  v16 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendCGPoint:{self->_circleCenter.x, self->_circleCenter.y}];
+  v5 = [builder appendCGFloat:self->_circleRadius];
+  v6 = [builder appendCGFloat:self->_maximumAngularWidth];
+  v7 = [builder appendCGFloat:self->_centerAngle];
+  v8 = [builder appendObject:self->_bezierPath];
+  v9 = [builder appendBool:self->_interior];
+  v10 = [builder appendCGFloat:self->_tracking];
+  v11 = [builder appendCGFloat:self->_fontSize];
+  v12 = [builder appendObject:self->_textColor];
+  v13 = [builder appendUnsignedInteger:self->_accessoryPlacement];
+  v14 = [builder appendCGFloat:self->_accessoryPadding];
+  v15 = [builder appendCGSize:{self->_accessoryMaxSize.width, self->_accessoryMaxSize.height}];
+  v16 = [builder hash];
 
   return v16;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CHSMutableWatchComplicationsCurvedLabelMetrics alloc];
 
   return [(CHSWatchComplicationsCurvedLabelMetrics *)v4 _initWithInstance:self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
+  coderCopy = coder;
   x = self->_circleCenter.x;
   y = self->_circleCenter.y;
   v6 = BSValueWithPoint();
-  [v11 encodeObject:v6 forKey:@"circleCenter"];
+  [coderCopy encodeObject:v6 forKey:@"circleCenter"];
 
-  [v11 encodeDouble:@"circleRadius" forKey:self->_circleRadius];
-  [v11 encodeDouble:@"maximumAngularWidth" forKey:self->_maximumAngularWidth];
-  [v11 encodeDouble:@"centerAngle" forKey:self->_centerAngle];
-  [v11 encodeObject:self->_bezierPath forKey:@"bezierPath"];
-  [v11 encodeBool:self->_interior forKey:@"interior"];
-  [v11 encodeDouble:@"tracking" forKey:self->_tracking];
-  [v11 encodeDouble:@"fontSize" forKey:self->_fontSize];
-  [v11 encodeObject:self->_textColor forKey:@"textColor"];
+  [coderCopy encodeDouble:@"circleRadius" forKey:self->_circleRadius];
+  [coderCopy encodeDouble:@"maximumAngularWidth" forKey:self->_maximumAngularWidth];
+  [coderCopy encodeDouble:@"centerAngle" forKey:self->_centerAngle];
+  [coderCopy encodeObject:self->_bezierPath forKey:@"bezierPath"];
+  [coderCopy encodeBool:self->_interior forKey:@"interior"];
+  [coderCopy encodeDouble:@"tracking" forKey:self->_tracking];
+  [coderCopy encodeDouble:@"fontSize" forKey:self->_fontSize];
+  [coderCopy encodeObject:self->_textColor forKey:@"textColor"];
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_accessoryPlacement];
-  [v11 encodeObject:v7 forKey:@"accessoryPlacement"];
+  [coderCopy encodeObject:v7 forKey:@"accessoryPlacement"];
 
-  [v11 encodeDouble:@"accessoryPadding" forKey:self->_accessoryPadding];
+  [coderCopy encodeDouble:@"accessoryPadding" forKey:self->_accessoryPadding];
   width = self->_accessoryMaxSize.width;
   height = self->_accessoryMaxSize.height;
   v10 = BSValueWithSize();
-  [v11 encodeObject:v10 forKey:@"accessoryMaxSize"];
+  [coderCopy encodeObject:v10 forKey:@"accessoryMaxSize"];
 }
 
-- (CHSWatchComplicationsCurvedLabelMetrics)initWithCoder:(id)a3
+- (CHSWatchComplicationsCurvedLabelMetrics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = CHSWatchComplicationsCurvedLabelMetrics;
   v5 = [(CHSWatchComplicationsCurvedLabelMetrics *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"circleCenter"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"circleCenter"];
     v5->_circleCenter.x = MEMORY[0x19A8C4BA0]();
     v5->_circleCenter.y = v7;
 
-    [v4 decodeDoubleForKey:@"circleRadius"];
+    [coderCopy decodeDoubleForKey:@"circleRadius"];
     v5->_circleRadius = v8;
-    [v4 decodeDoubleForKey:@"maximumAngularWidth"];
+    [coderCopy decodeDoubleForKey:@"maximumAngularWidth"];
     v5->_maximumAngularWidth = v9;
-    [v4 decodeDoubleForKey:@"centerAngle"];
+    [coderCopy decodeDoubleForKey:@"centerAngle"];
     v5->_centerAngle = v10;
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bezierPath"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bezierPath"];
     bezierPath = v5->_bezierPath;
     v5->_bezierPath = v11;
 
-    v5->_interior = [v4 decodeBoolForKey:@"interior"];
-    [v4 decodeDoubleForKey:@"tracking"];
+    v5->_interior = [coderCopy decodeBoolForKey:@"interior"];
+    [coderCopy decodeDoubleForKey:@"tracking"];
     v5->_tracking = v13;
-    [v4 decodeDoubleForKey:@"fontSize"];
+    [coderCopy decodeDoubleForKey:@"fontSize"];
     v5->_fontSize = v14;
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textColor"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textColor"];
     textColor = v5->_textColor;
     v5->_textColor = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessoryPlacement"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessoryPlacement"];
     v5->_accessoryPlacement = [v17 unsignedIntegerValue];
 
-    [v4 decodeDoubleForKey:@"accessoryPadding"];
+    [coderCopy decodeDoubleForKey:@"accessoryPadding"];
     v5->_accessoryPadding = v18;
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessoryMaxSize"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessoryMaxSize"];
     v5->_accessoryMaxSize.width = MEMORY[0x19A8C4C10]();
     v5->_accessoryMaxSize.height = v20;
   }
@@ -334,57 +334,57 @@ id __54__CHSWatchComplicationsCurvedLabelMetrics_description__block_invoke(uint6
   return v5;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeCGPoint:@"circleCenter" forKey:{self->_circleCenter.x, self->_circleCenter.y}];
-  [v4 encodeDouble:@"circleRadius" forKey:self->_circleRadius];
-  [v4 encodeDouble:@"maximumAngularWidth" forKey:self->_maximumAngularWidth];
-  [v4 encodeDouble:@"centerAngle" forKey:self->_centerAngle];
-  [v4 encodeObject:self->_bezierPath forKey:@"bezierPath"];
-  [v4 encodeBool:self->_interior forKey:@"interior"];
-  [v4 encodeDouble:@"tracking" forKey:self->_tracking];
-  [v4 encodeDouble:@"fontSize" forKey:self->_fontSize];
-  [v4 encodeObject:self->_textColor forKey:@"textColor"];
-  [v4 encodeUInt64:self->_accessoryPlacement forKey:@"accessoryPlacement"];
-  [v4 encodeDouble:@"accessoryPadding" forKey:self->_accessoryPadding];
-  [v4 encodeCGSize:@"accessoryMaxSize" forKey:{self->_accessoryMaxSize.width, self->_accessoryMaxSize.height}];
+  coderCopy = coder;
+  [coderCopy encodeCGPoint:@"circleCenter" forKey:{self->_circleCenter.x, self->_circleCenter.y}];
+  [coderCopy encodeDouble:@"circleRadius" forKey:self->_circleRadius];
+  [coderCopy encodeDouble:@"maximumAngularWidth" forKey:self->_maximumAngularWidth];
+  [coderCopy encodeDouble:@"centerAngle" forKey:self->_centerAngle];
+  [coderCopy encodeObject:self->_bezierPath forKey:@"bezierPath"];
+  [coderCopy encodeBool:self->_interior forKey:@"interior"];
+  [coderCopy encodeDouble:@"tracking" forKey:self->_tracking];
+  [coderCopy encodeDouble:@"fontSize" forKey:self->_fontSize];
+  [coderCopy encodeObject:self->_textColor forKey:@"textColor"];
+  [coderCopy encodeUInt64:self->_accessoryPlacement forKey:@"accessoryPlacement"];
+  [coderCopy encodeDouble:@"accessoryPadding" forKey:self->_accessoryPadding];
+  [coderCopy encodeCGSize:@"accessoryMaxSize" forKey:{self->_accessoryMaxSize.width, self->_accessoryMaxSize.height}];
 }
 
-- (CHSWatchComplicationsCurvedLabelMetrics)initWithBSXPCCoder:(id)a3
+- (CHSWatchComplicationsCurvedLabelMetrics)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = CHSWatchComplicationsCurvedLabelMetrics;
   v5 = [(CHSWatchComplicationsCurvedLabelMetrics *)&v21 init];
   if (v5)
   {
-    [v4 decodeCGPointForKey:@"circleCenter"];
+    [coderCopy decodeCGPointForKey:@"circleCenter"];
     v5->_circleCenter.x = v6;
     v5->_circleCenter.y = v7;
-    [v4 decodeDoubleForKey:@"circleRadius"];
+    [coderCopy decodeDoubleForKey:@"circleRadius"];
     v5->_circleRadius = v8;
-    [v4 decodeDoubleForKey:@"maximumAngularWidth"];
+    [coderCopy decodeDoubleForKey:@"maximumAngularWidth"];
     v5->_maximumAngularWidth = v9;
-    [v4 decodeDoubleForKey:@"centerAngle"];
+    [coderCopy decodeDoubleForKey:@"centerAngle"];
     v5->_centerAngle = v10;
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bezierPath"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bezierPath"];
     bezierPath = v5->_bezierPath;
     v5->_bezierPath = v11;
 
-    v5->_interior = [v4 decodeBoolForKey:@"interior"];
-    [v4 decodeDoubleForKey:@"tracking"];
+    v5->_interior = [coderCopy decodeBoolForKey:@"interior"];
+    [coderCopy decodeDoubleForKey:@"tracking"];
     v5->_tracking = v13;
-    [v4 decodeDoubleForKey:@"fontSize"];
+    [coderCopy decodeDoubleForKey:@"fontSize"];
     v5->_fontSize = v14;
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textColor"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textColor"];
     textColor = v5->_textColor;
     v5->_textColor = v15;
 
-    v5->_accessoryPlacement = [v4 decodeUInt64ForKey:@"accessoryPlacement"];
-    [v4 decodeDoubleForKey:@"accessoryPadding"];
+    v5->_accessoryPlacement = [coderCopy decodeUInt64ForKey:@"accessoryPlacement"];
+    [coderCopy decodeDoubleForKey:@"accessoryPadding"];
     v5->_accessoryPadding = v17;
-    [v4 decodeCGSizeForKey:@"accessoryMaxSize"];
+    [coderCopy decodeCGSizeForKey:@"accessoryMaxSize"];
     v5->_accessoryMaxSize.width = v18;
     v5->_accessoryMaxSize.height = v19;
   }
@@ -411,14 +411,14 @@ id __54__CHSWatchComplicationsCurvedLabelMetrics_description__block_invoke(uint6
   return v6;
 }
 
-- (id)_filenameSafeStableHashFromData:(id)a3
+- (id)_filenameSafeStableHashFromData:(id)data
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v4 = objc_autoreleasePoolPush();
-    if (CC_SHA256([v3 bytes], objc_msgSend(v3, "length"), md))
+    if (CC_SHA256([dataCopy bytes], objc_msgSend(dataCopy, "length"), md))
     {
       v5 = [MEMORY[0x1E695DEF0] dataWithBytes:md length:32];
       v6 = [v5 base64EncodedStringWithOptions:0];
@@ -467,7 +467,7 @@ id __54__CHSWatchComplicationsCurvedLabelMetrics_description__block_invoke(uint6
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_195EB2000, a2, OS_LOG_TYPE_ERROR, "Error encoding object: %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

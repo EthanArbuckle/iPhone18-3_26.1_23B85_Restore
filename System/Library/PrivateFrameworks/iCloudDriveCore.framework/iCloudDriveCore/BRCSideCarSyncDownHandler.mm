@@ -1,47 +1,47 @@
 @interface BRCSideCarSyncDownHandler
-- (BRCSideCarSyncDownHandler)initWithSessionContext:(id)a3 sideCarPersistedState:(id)a4 serverPersistedState:(id)a5 applyScheduler:(id)a6;
-- (void)saveChangedRecords:(id)a3 deletedRecords:(id)a4 serverChangeToken:(id)a5 clientChangeToken:(id)a6;
+- (BRCSideCarSyncDownHandler)initWithSessionContext:(id)context sideCarPersistedState:(id)state serverPersistedState:(id)persistedState applyScheduler:(id)scheduler;
+- (void)saveChangedRecords:(id)records deletedRecords:(id)deletedRecords serverChangeToken:(id)token clientChangeToken:(id)changeToken;
 @end
 
 @implementation BRCSideCarSyncDownHandler
 
-- (BRCSideCarSyncDownHandler)initWithSessionContext:(id)a3 sideCarPersistedState:(id)a4 serverPersistedState:(id)a5 applyScheduler:(id)a6
+- (BRCSideCarSyncDownHandler)initWithSessionContext:(id)context sideCarPersistedState:(id)state serverPersistedState:(id)persistedState applyScheduler:(id)scheduler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  contextCopy = context;
+  stateCopy = state;
+  persistedStateCopy = persistedState;
+  schedulerCopy = scheduler;
   v18.receiver = self;
   v18.super_class = BRCSideCarSyncDownHandler;
   v15 = [(BRCSideCarSyncDownHandler *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_sessionContext, a3);
-    objc_storeStrong(&v16->_sideCarPersistedState, a4);
-    objc_storeStrong(&v16->_serverPersistedState, a5);
-    objc_storeStrong(&v16->_applyScheduler, a6);
+    objc_storeStrong(&v15->_sessionContext, context);
+    objc_storeStrong(&v16->_sideCarPersistedState, state);
+    objc_storeStrong(&v16->_serverPersistedState, persistedState);
+    objc_storeStrong(&v16->_applyScheduler, scheduler);
   }
 
   return v16;
 }
 
-- (void)saveChangedRecords:(id)a3 deletedRecords:(id)a4 serverChangeToken:(id)a5 clientChangeToken:(id)a6
+- (void)saveChangedRecords:(id)records deletedRecords:(id)deletedRecords serverChangeToken:(id)token clientChangeToken:(id)changeToken
 {
   v52 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  recordsCopy = records;
+  deletedRecordsCopy = deletedRecords;
+  tokenCopy = token;
+  changeTokenCopy = changeToken;
   v41[0] = 0;
   v41[1] = v41;
   v41[2] = 0x2020000000;
   v41[3] = 0;
   v14 = objc_opt_new();
-  if ([v13 length] == 8)
+  if ([changeTokenCopy length] == 8)
   {
-    v15 = v13;
-    v16 = *[v13 bytes];
+    v15 = changeTokenCopy;
+    v16 = *[changeTokenCopy bytes];
   }
 
   else
@@ -54,11 +54,11 @@
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413314;
-    v43 = v10;
+    v43 = recordsCopy;
     v44 = 2112;
-    v45 = v11;
+    v45 = deletedRecordsCopy;
     v46 = 2112;
-    v47 = v12;
+    v47 = tokenCopy;
     v48 = 2048;
     v49 = v16;
     v50 = 2112;
@@ -66,32 +66,32 @@
     _os_log_debug_impl(&dword_223E7A000, v18, OS_LOG_TYPE_DEBUG, "[DEBUG] Saving side car changed records %@\ndeleted record %@\nserver change token %@\nrequestID %llu%@", buf, 0x34u);
   }
 
-  v19 = [(BRCSessionContext *)self->_sessionContext serverReadWriteDatabaseFacade];
+  serverReadWriteDatabaseFacade = [(BRCSessionContext *)self->_sessionContext serverReadWriteDatabaseFacade];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __99__BRCSideCarSyncDownHandler_saveChangedRecords_deletedRecords_serverChangeToken_clientChangeToken___block_invoke;
   v35[3] = &unk_278501050;
   v35[4] = self;
-  v20 = v10;
+  v20 = recordsCopy;
   v36 = v20;
-  v21 = v19;
+  v21 = serverReadWriteDatabaseFacade;
   v37 = v21;
   v22 = v14;
   v38 = v22;
-  v23 = v11;
+  v23 = deletedRecordsCopy;
   v39 = v23;
   v40 = v41;
   [v21 performWithFlags:9 action:v35];
-  v24 = [(BRCSessionContext *)self->_sessionContext clientReadWriteDatabaseFacade];
+  clientReadWriteDatabaseFacade = [(BRCSessionContext *)self->_sessionContext clientReadWriteDatabaseFacade];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __99__BRCSideCarSyncDownHandler_saveChangedRecords_deletedRecords_serverChangeToken_clientChangeToken___block_invoke_1;
   v29[3] = &unk_278501078;
   v29[4] = self;
   v34 = v16;
-  v25 = v24;
+  v25 = clientReadWriteDatabaseFacade;
   v30 = v25;
-  v26 = v12;
+  v26 = tokenCopy;
   v31 = v26;
   v27 = v22;
   v32 = v27;

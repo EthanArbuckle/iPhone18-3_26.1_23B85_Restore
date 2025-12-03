@@ -1,7 +1,7 @@
 @interface UIPDFPageContentLayer
 - (UIPDFPageContentLayer)init;
 - (void)dealloc;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
 - (void)layoutSublayers;
 - (void)setNeedsDisplay;
 - (void)setSelectionNeedsDisplay;
@@ -55,14 +55,14 @@
 
 - (void)layoutSublayers
 {
-  v3 = [(UIPDFPageContentLayer *)self delegate];
-  if (v3)
+  delegate = [(UIPDFPageContentLayer *)self delegate];
+  if (delegate)
   {
-    v4 = v3;
-    [v3 computeTransform];
-    v5 = [v4 pageHasSelection];
+    v4 = delegate;
+    [delegate computeTransform];
+    pageHasSelection = [v4 pageHasSelection];
     selectionLayer = self->_selectionLayer;
-    if (v5)
+    if (pageHasSelection)
     {
       if (!selectionLayer)
       {
@@ -88,13 +88,13 @@
   }
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
-  v6 = [(UIPDFPageContentLayer *)self delegate];
-  if (v6)
+  delegate = [(UIPDFPageContentLayer *)self delegate];
+  if (delegate)
   {
 
-    [v6 drawSelectionLayer:a3 inContext:a4];
+    [delegate drawSelectionLayer:layer inContext:context];
   }
 }
 

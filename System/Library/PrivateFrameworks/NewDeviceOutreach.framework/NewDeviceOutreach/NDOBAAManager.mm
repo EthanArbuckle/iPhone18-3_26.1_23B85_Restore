@@ -1,21 +1,21 @@
 @interface NDOBAAManager
-- (BOOL)generateBAACertficate:(id)a3;
-- (id)BAAAuthenticationHeadersForBody:(id)a3 error:(id *)a4;
-- (id)_compressCertificates:(id)a3;
-- (id)_zlibCompressionForData:(id)a3;
-- (id)certificatesEncodeToBase64:(id)a3 status:(id *)a4;
-- (id)serializeCertificateChain:(id)a3;
-- (id)signDataAndEncodeToBase64:(id)a3 withPrivateKey:(__SecKey *)a4 status:(id *)a5;
+- (BOOL)generateBAACertficate:(id)certficate;
+- (id)BAAAuthenticationHeadersForBody:(id)body error:(id *)error;
+- (id)_compressCertificates:(id)certificates;
+- (id)_zlibCompressionForData:(id)data;
+- (id)certificatesEncodeToBase64:(id)base64 status:(id *)status;
+- (id)serializeCertificateChain:(id)chain;
+- (id)signDataAndEncodeToBase64:(id)base64 withPrivateKey:(__SecKey *)key status:(id *)status;
 - (void)dealloc;
-- (void)writeCertsToDevice:(id)a3;
+- (void)writeCertsToDevice:(id)device;
 @end
 
 @implementation NDOBAAManager
 
-- (BOOL)generateBAACertficate:(id)a3
+- (BOOL)generateBAACertficate:(id)certficate
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  certficateCopy = certficate;
   v4 = dispatch_semaphore_create(0);
   IsSupported = DeviceIdentityIsSupported();
   v6 = _NDOLogSystem();
@@ -61,7 +61,7 @@
       [v13 setObject:v7 forKeyedSubscript:*MEMORY[0x277D048A0]];
       [v13 setObject:v12 forKeyedSubscript:*MEMORY[0x277D04928]];
       v15 = v13;
-      v25 = v3;
+      v25 = certficateCopy;
       v24 = v4;
       DeviceIdentityIssueClientCertificateWithCompletion();
       v16 = dispatch_time(0, 60000000000);
@@ -89,9 +89,9 @@
       {
         v21 = [(__CFError *)error description];
         v22 = v21;
-        v23 = [v21 UTF8String];
+        uTF8String = [v21 UTF8String];
         *v27 = 136315138;
-        v28 = v23;
+        v28 = uTF8String;
         _os_log_error_impl(&dword_25BD52000, v12, OS_LOG_TYPE_ERROR, "Failed to create access control: %s", v27, 0xCu);
       }
 
@@ -194,16 +194,16 @@ void __39__NDOBAAManager_generateBAACertficate___block_invoke_10(uint64_t a1, ui
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (id)BAAAuthenticationHeadersForBody:(id)a3 error:(id *)a4
+- (id)BAAAuthenticationHeadersForBody:(id)body error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(NDOBAAManager *)self signDataAndEncodeToBase64:v6 withPrivateKey:[(NDOBAAManager *)self privateKey] status:a4];
+  bodyCopy = body;
+  v7 = [(NDOBAAManager *)self signDataAndEncodeToBase64:bodyCopy withPrivateKey:[(NDOBAAManager *)self privateKey] status:error];
 
   if (v7)
   {
-    v8 = [(NDOBAAManager *)self clientCertArray];
-    v9 = [(NDOBAAManager *)self certificatesEncodeToBase64:v8 status:a4];
+    clientCertArray = [(NDOBAAManager *)self clientCertArray];
+    v9 = [(NDOBAAManager *)self certificatesEncodeToBase64:clientCertArray status:error];
 
     v10 = _NDOLogSystem();
     v11 = v10;
@@ -231,7 +231,7 @@ void __39__NDOBAAManager_generateBAACertficate___block_invoke_10(uint64_t a1, ui
     {
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [NDOBAAManager BAAAuthenticationHeadersForBody:a4 error:?];
+        [NDOBAAManager BAAAuthenticationHeadersForBody:error error:?];
       }
 
       v12 = 0;
@@ -244,7 +244,7 @@ void __39__NDOBAAManager_generateBAACertficate___block_invoke_10(uint64_t a1, ui
     v9 = _NDOLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [NDOBAAManager BAAAuthenticationHeadersForBody:a4 error:?];
+      [NDOBAAManager BAAAuthenticationHeadersForBody:error error:?];
     }
 
     v12 = 0;
@@ -255,10 +255,10 @@ void __39__NDOBAAManager_generateBAACertficate___block_invoke_10(uint64_t a1, ui
   return v12;
 }
 
-- (id)signDataAndEncodeToBase64:(id)a3 withPrivateKey:(__SecKey *)a4 status:(id *)a5
+- (id)signDataAndEncodeToBase64:(id)base64 withPrivateKey:(__SecKey *)key status:(id *)status
 {
   error = 0;
-  v5 = SecKeyCreateSignature(a4, *MEMORY[0x277CDC300], a3, &error);
+  v5 = SecKeyCreateSignature(key, *MEMORY[0x277CDC300], base64, &error);
   v6 = v5;
   if (v5)
   {
@@ -284,10 +284,10 @@ void __39__NDOBAAManager_generateBAACertficate___block_invoke_10(uint64_t a1, ui
   return v7;
 }
 
-- (id)certificatesEncodeToBase64:(id)a3 status:(id *)a4
+- (id)certificatesEncodeToBase64:(id)base64 status:(id *)status
 {
-  v5 = [(NDOBAAManager *)self serializeCertificateChain:a3, a4];
-  v6 = [(NDOBAAManager *)self _compressCertificates:v5];
+  status = [(NDOBAAManager *)self serializeCertificateChain:base64, status];
+  v6 = [(NDOBAAManager *)self _compressCertificates:status];
   v7 = v6;
   if (v6)
   {
@@ -308,16 +308,16 @@ void __39__NDOBAAManager_generateBAACertficate___block_invoke_10(uint64_t a1, ui
   return v8;
 }
 
-- (id)serializeCertificateChain:(id)a3
+- (id)serializeCertificateChain:(id)chain
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  chainCopy = chain;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(chainCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = chainCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v6)
   {
@@ -365,11 +365,11 @@ void __39__NDOBAAManager_generateBAACertficate___block_invoke_10(uint64_t a1, ui
   return v12;
 }
 
-- (void)writeCertsToDevice:(id)a3
+- (void)writeCertsToDevice:(id)device
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count] > 1)
+  deviceCopy = device;
+  v4 = deviceCopy;
+  if (deviceCopy && [deviceCopy count] > 1)
   {
     v6 = [v4 objectAtIndex:0];
     v7 = [v4 objectAtIndex:1];
@@ -389,12 +389,12 @@ void __39__NDOBAAManager_generateBAACertficate___block_invoke_10(uint64_t a1, ui
   }
 }
 
-- (id)_compressCertificates:(id)a3
+- (id)_compressCertificates:(id)certificates
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  certificatesCopy = certificates;
   v13 = @"certs";
-  v14[0] = v4;
+  v14[0] = certificatesCopy;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
   v12 = 0;
   v6 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v5 options:0 error:&v12];
@@ -423,17 +423,17 @@ void __39__NDOBAAManager_generateBAACertficate___block_invoke_10(uint64_t a1, ui
   return v8;
 }
 
-- (id)_zlibCompressionForData:(id)a3
+- (id)_zlibCompressionForData:(id)data
 {
   v3 = MEMORY[0x277CBEB28];
-  v4 = a3;
-  v5 = [v3 dataWithLength:{objc_msgSend(v4, "length")}];
-  v6 = [v5 bytes];
-  v7 = [v4 length];
-  v8 = [v4 bytes];
-  v9 = [v4 length];
+  dataCopy = data;
+  v5 = [v3 dataWithLength:{objc_msgSend(dataCopy, "length")}];
+  bytes = [v5 bytes];
+  v7 = [dataCopy length];
+  bytes2 = [dataCopy bytes];
+  v9 = [dataCopy length];
 
-  v10 = compression_encode_buffer(v6, v7, v8, v9, 0, COMPRESSION_ZLIB);
+  v10 = compression_encode_buffer(bytes, v7, bytes2, v9, 0, COMPRESSION_ZLIB);
   if (v10)
   {
     v10 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:objc_msgSend(v5 length:"bytes") freeWhenDone:{v10, 0}];

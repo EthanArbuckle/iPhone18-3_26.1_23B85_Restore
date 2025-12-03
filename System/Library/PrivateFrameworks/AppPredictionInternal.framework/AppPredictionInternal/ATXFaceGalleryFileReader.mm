@@ -1,22 +1,22 @@
 @interface ATXFaceGalleryFileReader
-+ (id)_loadConfigurationFromPath:(id)a3;
-+ (id)_pathForSource:(int64_t)a3;
++ (id)_loadConfigurationFromPath:(id)path;
++ (id)_pathForSource:(int64_t)source;
 - (ATXFaceGalleryConfiguration)configuration;
-- (ATXFaceGalleryFileReader)initWithSource:(int64_t)a3;
-- (BOOL)writeConfiguration:(id)a3 error:(id *)a4;
+- (ATXFaceGalleryFileReader)initWithSource:(int64_t)source;
+- (BOOL)writeConfiguration:(id)configuration error:(id *)error;
 - (void)configuration;
 @end
 
 @implementation ATXFaceGalleryFileReader
 
-- (ATXFaceGalleryFileReader)initWithSource:(int64_t)a3
+- (ATXFaceGalleryFileReader)initWithSource:(int64_t)source
 {
   v5.receiver = self;
   v5.super_class = ATXFaceGalleryFileReader;
   result = [(ATXFaceGalleryFileReader *)&v5 init];
   if (result)
   {
-    result->_source = a3;
+    result->_source = source;
   }
 
   return result;
@@ -38,28 +38,28 @@
   return v3;
 }
 
-- (BOOL)writeConfiguration:(id)a3 error:(id *)a4
+- (BOOL)writeConfiguration:(id)configuration error:(id *)error
 {
   source = self->_source;
-  v6 = a3;
+  configurationCopy = configuration;
   v7 = [ATXFaceGalleryFileReader _pathForSource:source];
   v8 = MEMORY[0x277CCAAA0];
-  v9 = [v6 jsonDictionary];
+  jsonDictionary = [configurationCopy jsonDictionary];
 
-  v10 = [v8 dataWithJSONObject:v9 options:1 error:a4];
+  v10 = [v8 dataWithJSONObject:jsonDictionary options:1 error:error];
 
   if (!v10)
   {
     v12 = __atxlog_handle_lock_screen();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(ATXFaceGalleryFileReader *)a4 writeConfiguration:v12 error:v13, v14, v15, v16, v17, v18];
+      [(ATXFaceGalleryFileReader *)error writeConfiguration:v12 error:v13, v14, v15, v16, v17, v18];
     }
 
     goto LABEL_8;
   }
 
-  if (([v10 writeToFile:v7 options:0 error:a4] & 1) == 0)
+  if (([v10 writeToFile:v7 options:0 error:error] & 1) == 0)
   {
     v12 = __atxlog_handle_lock_screen();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -79,11 +79,11 @@ LABEL_9:
   return v11;
 }
 
-+ (id)_loadConfigurationFromPath:(id)a3
++ (id)_loadConfigurationFromPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v12 = 0;
-  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v3 options:0 error:&v12];
+  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:pathCopy options:0 error:&v12];
   v5 = v12;
   if (v4)
   {
@@ -136,18 +136,18 @@ LABEL_13:
   return v8;
 }
 
-+ (id)_pathForSource:(int64_t)a3
++ (id)_pathForSource:(int64_t)source
 {
-  if (a3)
+  if (source)
   {
   }
 
   else
   {
-    a1 = [MEMORY[0x277CEBCB0] faceGalleryDemoConfigurationFilePath];
+    self = [MEMORY[0x277CEBCB0] faceGalleryDemoConfigurationFilePath];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)configuration

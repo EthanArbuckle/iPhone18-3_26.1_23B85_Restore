@@ -1,6 +1,6 @@
 @interface NSSubstituteWebResource
 - (Class)_webResourceClass;
-- (NSSubstituteWebResource)initWithData:(id)a3 URL:(id)a4 MIMEType:(id)a5 textEncodingName:(id)a6 frameName:(id)a7;
+- (NSSubstituteWebResource)initWithData:(id)data URL:(id)l MIMEType:(id)type textEncodingName:(id)name frameName:(id)frameName;
 - (id)webResource;
 - (void)dealloc;
 @end
@@ -31,16 +31,16 @@ Class __44__NSSubstituteWebResource__webResourceClass__block_invoke()
   return result;
 }
 
-- (NSSubstituteWebResource)initWithData:(id)a3 URL:(id)a4 MIMEType:(id)a5 textEncodingName:(id)a6 frameName:(id)a7
+- (NSSubstituteWebResource)initWithData:(id)data URL:(id)l MIMEType:(id)type textEncodingName:(id)name frameName:(id)frameName
 {
   v14.receiver = self;
   v14.super_class = NSSubstituteWebResource;
   v12 = [(NSSubstituteWebResource *)&v14 init];
-  v12->_data = [a3 copy];
-  v12->_url = [a4 copy];
-  v12->_mimeType = [a5 copy];
-  v12->_textEncodingName = [a6 copy];
-  v12->_frameName = [a7 copy];
+  v12->_data = [data copy];
+  v12->_url = [l copy];
+  v12->_mimeType = [type copy];
+  v12->_textEncodingName = [name copy];
+  v12->_frameName = [frameName copy];
   return v12;
 }
 

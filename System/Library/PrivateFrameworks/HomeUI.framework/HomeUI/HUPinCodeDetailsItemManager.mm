@@ -1,40 +1,40 @@
 @interface HUPinCodeDetailsItemManager
-- (HUPinCodeDetailsItemManager)initWithDelegate:(id)a3;
-- (HUPinCodeDetailsItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (HUPinCodeDetailsItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4 pinCodeManager:(id)a5 home:(id)a6;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (HUPinCodeDetailsItemManager)initWithDelegate:(id)delegate;
+- (HUPinCodeDetailsItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (HUPinCodeDetailsItemManager)initWithDelegate:(id)delegate sourceItem:(id)item pinCodeManager:(id)manager home:(id)home;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (id)_homeFuture;
 - (id)_itemsToUpdateWhenApplicationDidBecomeActive;
 - (void)_registerForExternalUpdates;
 - (void)_unregisterForExternalUpdates;
-- (void)pinCodeManagerDidUpdate:(id)a3 pinCodes:(id)a4;
+- (void)pinCodeManagerDidUpdate:(id)update pinCodes:(id)codes;
 @end
 
 @implementation HUPinCodeDetailsItemManager
 
-- (HUPinCodeDetailsItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4 pinCodeManager:(id)a5 home:(id)a6
+- (HUPinCodeDetailsItemManager)initWithDelegate:(id)delegate sourceItem:(id)item pinCodeManager:(id)manager home:(id)home
 {
-  v12 = a5;
-  v13 = a6;
+  managerCopy = manager;
+  homeCopy = home;
   v29.receiver = self;
   v29.super_class = HUPinCodeDetailsItemManager;
-  v14 = [(HFItemManager *)&v29 initWithDelegate:a3 sourceItem:a4];
+  v14 = [(HFItemManager *)&v29 initWithDelegate:delegate sourceItem:item];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_pinCodeManager, a5);
-    objc_storeStrong(&v15->_overrideHome, a6);
+    objc_storeStrong(&v14->_pinCodeManager, manager);
+    objc_storeStrong(&v15->_overrideHome, home);
     v16 = objc_alloc_init(MEMORY[0x277D2C900]);
     restoreFuture = v15->_restoreFuture;
     v15->_restoreFuture = v16;
   }
 
   objc_opt_class();
-  v18 = [(HFItemManager *)v15 sourceItem];
+  sourceItem = [(HFItemManager *)v15 sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v19 = v18;
+    v19 = sourceItem;
   }
 
   else
@@ -44,27 +44,27 @@
 
   v20 = v19;
 
-  v21 = [v20 user];
+  user = [v20 user];
 
-  if (v21)
+  if (user)
   {
-    v22 = [v20 user];
+    user2 = [v20 user];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __79__HUPinCodeDetailsItemManager_initWithDelegate_sourceItem_pinCodeManager_home___block_invoke;
     v26[3] = &unk_277DC2198;
     v27 = v15;
     v28 = a2;
-    [v13 fetchMissingWalletKeysForUser:v22 completion:v26];
+    [homeCopy fetchMissingWalletKeysForUser:user2 completion:v26];
 
-    v23 = v27;
+    restoreFuture = v27;
   }
 
   else
   {
-    v23 = [(HUPinCodeDetailsItemManager *)v15 restoreFuture];
+    restoreFuture = [(HUPinCodeDetailsItemManager *)v15 restoreFuture];
     v24 = [MEMORY[0x277CBEB98] set];
-    [v23 finishWithResult:v24];
+    [restoreFuture finishWithResult:v24];
   }
 
   return v15;
@@ -104,33 +104,33 @@ void __79__HUPinCodeDetailsItemManager_initWithDelegate_sourceItem_pinCodeManage
   v8 = [*(a1 + 32) reloadAndUpdateAllItemsFromSenderSelector:*(a1 + 40)];
 }
 
-- (HUPinCodeDetailsItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HUPinCodeDetailsItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithDelegate_sourceItem_pinCodeManager_home_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUPinCodeDetailsItemManager.m" lineNumber:92 description:{@"%s is unavailable; use %@ instead", "-[HUPinCodeDetailsItemManager initWithDelegate:sourceItem:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUPinCodeDetailsItemManager.m" lineNumber:92 description:{@"%s is unavailable; use %@ instead", "-[HUPinCodeDetailsItemManager initWithDelegate:sourceItem:]", v7}];
 
   return 0;
 }
 
-- (HUPinCodeDetailsItemManager)initWithDelegate:(id)a3
+- (HUPinCodeDetailsItemManager)initWithDelegate:(id)delegate
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithDelegate_sourceItem_pinCodeManager_home_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUPinCodeDetailsItemManager.m" lineNumber:97 description:{@"%s is unavailable; use %@ instead", "-[HUPinCodeDetailsItemManager initWithDelegate:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUPinCodeDetailsItemManager.m" lineNumber:97 description:{@"%s is unavailable; use %@ instead", "-[HUPinCodeDetailsItemManager initWithDelegate:]", v6}];
 
   return 0;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v132[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   objc_opt_class();
-  v5 = [(HFItemManager *)self sourceItem];
+  sourceItem = [(HFItemManager *)self sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = sourceItem;
   }
 
   else
@@ -141,10 +141,10 @@ void __79__HUPinCodeDetailsItemManager_initWithDelegate_sourceItem_pinCodeManage
   v79 = v6;
 
   objc_opt_class();
-  v7 = [(HFItemManager *)self sourceItem];
+  sourceItem2 = [(HFItemManager *)self sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = sourceItem2;
   }
 
   else
@@ -154,16 +154,16 @@ void __79__HUPinCodeDetailsItemManager_initWithDelegate_sourceItem_pinCodeManage
 
   v9 = v8;
 
-  v10 = [(HFItemManager *)self sourceItem];
+  sourceItem3 = [(HFItemManager *)self sourceItem];
 
-  if (v10 && !v9 && !v79)
+  if (sourceItem3 && !v9 && !v79)
   {
-    v11 = [(HFItemManager *)self sourceItem];
-    NSLog(&cfstr_ExpectedItemTo.isa, v11);
+    sourceItem4 = [(HFItemManager *)self sourceItem];
+    NSLog(&cfstr_ExpectedItemTo.isa, sourceItem4);
   }
 
-  v12 = [(HFItemManager *)self sourceItem];
-  v81 = v12 == 0;
+  sourceItem5 = [(HFItemManager *)self sourceItem];
+  v81 = sourceItem5 == 0;
 
   if (v9)
   {
@@ -175,18 +175,18 @@ void __79__HUPinCodeDetailsItemManager_initWithDelegate_sourceItem_pinCodeManage
     [v79 user];
   }
   v13 = ;
-  v14 = [v4 hasOnboardedForAccessCode];
-  v15 = [v4 hf_accessoriesSupportingAccessCodes];
-  v16 = [v15 count] != 0;
+  hasOnboardedForAccessCode = [homeCopy hasOnboardedForAccessCode];
+  hf_accessoriesSupportingAccessCodes = [homeCopy hf_accessoriesSupportingAccessCodes];
+  v16 = [hf_accessoriesSupportingAccessCodes count] != 0;
 
-  if ([v4 hf_hasHomeHubSupportingAccessCodes])
+  if ([homeCopy hf_hasHomeHubSupportingAccessCodes])
   {
-    v80 = 1;
+    hf_currentUserIsOwner = 1;
   }
 
   else
   {
-    v80 = [v4 hf_currentUserIsOwner];
+    hf_currentUserIsOwner = [homeCopy hf_currentUserIsOwner];
   }
 
   objc_initWeak(&location, self);
@@ -196,20 +196,20 @@ void __79__HUPinCodeDetailsItemManager_initWithDelegate_sourceItem_pinCodeManage
   v122[2] = __58__HUPinCodeDetailsItemManager__buildItemProvidersForHome___block_invoke;
   v122[3] = &unk_277DC21C0;
   objc_copyWeak(&v126, &location);
-  v18 = v16 & v14;
+  v18 = v16 & hasOnboardedForAccessCode;
   v19 = v13;
   v123 = v19;
   v127 = v18;
-  v20 = v4;
+  v20 = homeCopy;
   v124 = v20;
-  v128 = v14;
+  v128 = hasOnboardedForAccessCode;
   v21 = v9;
   v125 = v21;
   v22 = [v17 initWithResultsBlock:v122];
   [(HUPinCodeDetailsItemManager *)self setPinCodeLabelItem:v22];
 
   v23 = objc_alloc(MEMORY[0x277D14B38]);
-  v24 = v14 & (v12 == 0);
+  v24 = hasOnboardedForAccessCode & (sourceItem5 == 0);
   v117[0] = MEMORY[0x277D85DD0];
   v117[1] = 3221225472;
   v117[2] = __58__HUPinCodeDetailsItemManager__buildItemProvidersForHome___block_invoke_96;
@@ -217,7 +217,7 @@ void __79__HUPinCodeDetailsItemManager_initWithDelegate_sourceItem_pinCodeManage
   v25 = v21;
   v118 = v25;
   v119 = v24;
-  v120 = v14;
+  v120 = hasOnboardedForAccessCode;
   v121 = v81;
   v26 = [v23 initWithResultsBlock:v117];
   [(HUPinCodeDetailsItemManager *)self setPinCodeValueItem:v26];
@@ -231,11 +231,11 @@ void __79__HUPinCodeDetailsItemManager_initWithDelegate_sourceItem_pinCodeManage
   v111 = v28;
   v29 = v25;
   v112 = v29;
-  v115 = v14;
+  v115 = hasOnboardedForAccessCode;
   v30 = v19;
-  v116 = v80;
+  v116 = hf_currentUserIsOwner;
   v113 = v30;
-  v114 = self;
+  selfCopy = self;
   v31 = [v27 initWithResultsBlock:v110];
   [(HUPinCodeDetailsItemManager *)self setPinCodeRestoreAccessItem:v31];
 
@@ -260,14 +260,14 @@ void __79__HUPinCodeDetailsItemManager_initWithDelegate_sourceItem_pinCodeManage
   v102[2] = __58__HUPinCodeDetailsItemManager__buildItemProvidersForHome___block_invoke_118;
   v102[3] = &unk_277DC2238;
   v102[4] = self;
-  v106 = v14;
+  v106 = hasOnboardedForAccessCode;
   v107 = v81;
   v40 = v29;
   v103 = v40;
   v108 = v18;
   v41 = v30;
   v104 = v41;
-  v109 = v80;
+  v109 = hf_currentUserIsOwner;
   v42 = v28;
   v105 = v42;
   v43 = [v39 initWithResultsBlock:v102];
@@ -293,9 +293,9 @@ void __79__HUPinCodeDetailsItemManager_initWithDelegate_sourceItem_pinCodeManage
   v93[3] = &unk_277DC22D0;
   v96 = v81;
   v49 = v46;
-  v97 = v14;
+  v97 = hasOnboardedForAccessCode;
   v94 = v49;
-  v95 = self;
+  selfCopy2 = self;
   v50 = [v48 initWithResultsBlock:v93];
   [(HUPinCodeDetailsItemManager *)self setDeleteGuestPINCodeItem:v50];
 
@@ -309,35 +309,35 @@ void __79__HUPinCodeDetailsItemManager_initWithDelegate_sourceItem_pinCodeManage
   [(HUPinCodeDetailsItemManager *)self setRestoreHomeKeyAccessItem:v52];
 
   v53 = objc_opt_new();
-  v54 = [(HUPinCodeDetailsItemManager *)self pinCodeLabelItem];
-  [v53 na_safeAddObject:v54];
+  pinCodeLabelItem = [(HUPinCodeDetailsItemManager *)self pinCodeLabelItem];
+  [v53 na_safeAddObject:pinCodeLabelItem];
 
-  v55 = [(HUPinCodeDetailsItemManager *)self pinCodeValueItem];
-  [v53 na_safeAddObject:v55];
+  pinCodeValueItem = [(HUPinCodeDetailsItemManager *)self pinCodeValueItem];
+  [v53 na_safeAddObject:pinCodeValueItem];
 
-  v56 = [(HUPinCodeDetailsItemManager *)self pinCodeRestoreAccessItem];
-  [v53 na_safeAddObject:v56];
+  pinCodeRestoreAccessItem = [(HUPinCodeDetailsItemManager *)self pinCodeRestoreAccessItem];
+  [v53 na_safeAddObject:pinCodeRestoreAccessItem];
 
-  v57 = [(HUPinCodeDetailsItemManager *)self pinCodeChangeItem];
-  [v53 na_safeAddObject:v57];
+  pinCodeChangeItem = [(HUPinCodeDetailsItemManager *)self pinCodeChangeItem];
+  [v53 na_safeAddObject:pinCodeChangeItem];
 
-  v58 = [(HUPinCodeDetailsItemManager *)self personalPINCodeItem];
-  [v53 na_safeAddObject:v58];
+  personalPINCodeItem = [(HUPinCodeDetailsItemManager *)self personalPINCodeItem];
+  [v53 na_safeAddObject:personalPINCodeItem];
 
-  v59 = [(HUPinCodeDetailsItemManager *)self addOrShowHomeKeyItem];
-  [v53 na_safeAddObject:v59];
+  addOrShowHomeKeyItem = [(HUPinCodeDetailsItemManager *)self addOrShowHomeKeyItem];
+  [v53 na_safeAddObject:addOrShowHomeKeyItem];
 
-  v60 = [(HUPinCodeDetailsItemManager *)self deleteGuestPINCodeItem];
-  [v53 na_safeAddObject:v60];
+  deleteGuestPINCodeItem = [(HUPinCodeDetailsItemManager *)self deleteGuestPINCodeItem];
+  [v53 na_safeAddObject:deleteGuestPINCodeItem];
 
-  v61 = [(HUPinCodeDetailsItemManager *)self restoreHomeKeyAccessItem];
-  [v53 na_safeAddObject:v61];
+  restoreHomeKeyAccessItem = [(HUPinCodeDetailsItemManager *)self restoreHomeKeyAccessItem];
+  [v53 na_safeAddObject:restoreHomeKeyAccessItem];
 
   v62 = [objc_alloc(MEMORY[0x277D142F0]) initWithHome:v45];
   [(HUPinCodeDetailsItemManager *)self setLocksItemProvider:v62];
 
-  v63 = [(HUPinCodeDetailsItemManager *)self locksItemProvider];
-  [v63 setIncludesMatterOnlyAccessoryItems:1];
+  locksItemProvider = [(HUPinCodeDetailsItemManager *)self locksItemProvider];
+  [locksItemProvider setIncludesMatterOnlyAccessoryItems:1];
 
   v90[0] = MEMORY[0x277D85DD0];
   v90[1] = 3221225472;
@@ -345,11 +345,11 @@ void __79__HUPinCodeDetailsItemManager_initWithDelegate_sourceItem_pinCodeManage
   v90[3] = &unk_277DB83E8;
   v64 = v49;
   v91 = v64;
-  v65 = [(HUPinCodeDetailsItemManager *)self locksItemProvider];
-  [v65 setFilter:v90];
+  locksItemProvider2 = [(HUPinCodeDetailsItemManager *)self locksItemProvider];
+  [locksItemProvider2 setFilter:v90];
 
   v66 = objc_alloc(MEMORY[0x277D14C38]);
-  v67 = [(HUPinCodeDetailsItemManager *)self locksItemProvider];
+  locksItemProvider3 = [(HUPinCodeDetailsItemManager *)self locksItemProvider];
   v82[0] = MEMORY[0x277D85DD0];
   v82[1] = 3221225472;
   v82[2] = __58__HUPinCodeDetailsItemManager__buildItemProvidersForHome___block_invoke_2_173;
@@ -364,8 +364,8 @@ void __79__HUPinCodeDetailsItemManager_initWithDelegate_sourceItem_pinCodeManage
   v88 = v81;
   v70 = v45;
   v86 = v70;
-  v89 = v80;
-  v71 = [v66 initWithSourceProvider:v67 transformationBlock:v82];
+  v89 = hf_currentUserIsOwner;
+  v71 = [v66 initWithSourceProvider:locksItemProvider3 transformationBlock:v82];
   [(HUPinCodeDetailsItemManager *)self setTransformedLocksItemProvider:v71];
 
   v72 = objc_alloc(MEMORY[0x277D14B40]);
@@ -373,8 +373,8 @@ void __79__HUPinCodeDetailsItemManager_initWithDelegate_sourceItem_pinCodeManage
   v74 = [v72 initWithItems:v73];
 
   v130[0] = v74;
-  v75 = [(HUPinCodeDetailsItemManager *)self transformedLocksItemProvider];
-  v130[1] = v75;
+  transformedLocksItemProvider = [(HUPinCodeDetailsItemManager *)self transformedLocksItemProvider];
+  v130[1] = transformedLocksItemProvider;
   v76 = [MEMORY[0x277CBEA60] arrayWithObjects:v130 count:2];
 
   objc_destroyWeak(&v87);
@@ -1232,17 +1232,17 @@ LABEL_17:
   return v12;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v63[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB18];
-  v59 = a3;
-  v5 = [v4 array];
+  itemsCopy = items;
+  array = [v4 array];
   objc_opt_class();
-  v6 = [(HFItemManager *)self sourceItem];
+  sourceItem = [(HFItemManager *)self sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = sourceItem;
   }
 
   else
@@ -1252,27 +1252,27 @@ LABEL_17:
 
   v8 = v7;
 
-  v9 = [(HFItemManager *)self sourceItem];
+  sourceItem2 = [(HFItemManager *)self sourceItem];
 
-  v10 = [(HFItemManager *)self home];
-  if ([v10 hf_hasHomeHubSupportingAccessCodes])
+  home = [(HFItemManager *)self home];
+  if ([home hf_hasHomeHubSupportingAccessCodes])
   {
-    v11 = 1;
+    hf_currentUserIsAdministrator = 1;
   }
 
   else
   {
-    v12 = [(HFItemManager *)self home];
-    v11 = [v12 hf_currentUserIsAdministrator];
+    home2 = [(HFItemManager *)self home];
+    hf_currentUserIsAdministrator = [home2 hf_currentUserIsAdministrator];
   }
 
   v13 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"PinCodesLabel"];
-  v14 = [(HUPinCodeDetailsItemManager *)self pinCodeLabelItem];
-  v63[0] = v14;
+  pinCodeLabelItem = [(HUPinCodeDetailsItemManager *)self pinCodeLabelItem];
+  v63[0] = pinCodeLabelItem;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v63 count:1];
   [v13 setItems:v15];
 
-  if (v9)
+  if (sourceItem2)
   {
     v16 = _HULocalizedStringWithDefaultValue(@"HUPinCodeNameLabelSectionHeader", @"HUPinCodeNameLabelSectionHeader", 1);
     [v13 setHeaderTitle:v16];
@@ -1286,52 +1286,52 @@ LABEL_17:
   }
 
   v58 = v13;
-  [v5 na_safeAddObject:v13];
-  if (v11)
+  [array na_safeAddObject:v13];
+  if (hf_currentUserIsAdministrator)
   {
     v18 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"PinCodesAccessories"];
-    v19 = [(HUPinCodeDetailsItemManager *)self transformedLocksItemProvider];
-    v20 = [v19 items];
-    v21 = [v20 allObjects];
-    v22 = [MEMORY[0x277D14778] defaultItemComparator];
-    v23 = [v21 sortedArrayUsingComparator:v22];
+    transformedLocksItemProvider = [(HUPinCodeDetailsItemManager *)self transformedLocksItemProvider];
+    items = [transformedLocksItemProvider items];
+    allObjects = [items allObjects];
+    defaultItemComparator = [MEMORY[0x277D14778] defaultItemComparator];
+    v23 = [allObjects sortedArrayUsingComparator:defaultItemComparator];
     v24 = [v23 mutableCopy];
 
-    v25 = [(HUPinCodeDetailsItemManager *)self pinCodeRestoreAccessItem];
-    [v24 addObject:v25];
+    pinCodeRestoreAccessItem = [(HUPinCodeDetailsItemManager *)self pinCodeRestoreAccessItem];
+    [v24 addObject:pinCodeRestoreAccessItem];
 
-    v26 = [(HUPinCodeDetailsItemManager *)self restoreHomeKeyAccessItem];
-    [v24 addObject:v26];
+    restoreHomeKeyAccessItem = [(HUPinCodeDetailsItemManager *)self restoreHomeKeyAccessItem];
+    [v24 addObject:restoreHomeKeyAccessItem];
 
     [v18 setItems:v24];
     v27 = _HULocalizedStringWithDefaultValue(@"HUPinCodeAccessorySectionHeader", @"HUPinCodeAccessorySectionHeader", 1);
     [v18 setHeaderTitle:v27];
 
-    v28 = [v60 user];
+    user = [v60 user];
 
-    if (v28)
+    if (user)
     {
-      v29 = [(HFItemManager *)self home];
-      v30 = [v29 name];
-      v37 = HULocalizedStringWithFormat(@"HUPinCodeUserAccessorySectionFooter", @"%@", v31, v32, v33, v34, v35, v36, v30);
+      home3 = [(HFItemManager *)self home];
+      name = [home3 name];
+      v37 = HULocalizedStringWithFormat(@"HUPinCodeUserAccessorySectionFooter", @"%@", v31, v32, v33, v34, v35, v36, name);
       [v18 setFooterTitle:v37];
     }
 
     else
     {
-      v29 = _HULocalizedStringWithDefaultValue(@"HUPinCodeGuestAccessorySectionFooter", @"HUPinCodeGuestAccessorySectionFooter", 1);
-      [v18 setFooterTitle:v29];
+      home3 = _HULocalizedStringWithDefaultValue(@"HUPinCodeGuestAccessorySectionFooter", @"HUPinCodeGuestAccessorySectionFooter", 1);
+      [v18 setFooterTitle:home3];
     }
 
-    [v5 addObject:v18];
+    [array addObject:v18];
   }
 
   v38 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"PinCodesValue"];
   v39 = MEMORY[0x277CBEB18];
-  v40 = [(HUPinCodeDetailsItemManager *)self pinCodeValueItem];
-  v62[0] = v40;
-  v41 = [(HUPinCodeDetailsItemManager *)self pinCodeChangeItem];
-  v62[1] = v41;
+  pinCodeValueItem = [(HUPinCodeDetailsItemManager *)self pinCodeValueItem];
+  v62[0] = pinCodeValueItem;
+  pinCodeChangeItem = [(HUPinCodeDetailsItemManager *)self pinCodeChangeItem];
+  v62[1] = pinCodeChangeItem;
   v42 = [MEMORY[0x277CBEA60] arrayWithObjects:v62 count:2];
   v43 = [v39 arrayWithArray:v42];
 
@@ -1339,29 +1339,29 @@ LABEL_17:
   v44 = _HULocalizedStringWithDefaultValue(@"HUPinCodeValueSectionFooter", @"HUPinCodeValueSectionFooter", 1);
   [v38 setFooterTitle:v44];
 
-  [v5 na_safeAddObject:v38];
+  [array na_safeAddObject:v38];
   v45 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"PersonalPINCode"];
   v46 = MEMORY[0x277CBEA60];
-  v47 = [(HUPinCodeDetailsItemManager *)self personalPINCodeItem];
-  v48 = [v46 na_arrayWithSafeObject:v47];
+  personalPINCodeItem = [(HUPinCodeDetailsItemManager *)self personalPINCodeItem];
+  v48 = [v46 na_arrayWithSafeObject:personalPINCodeItem];
   [v45 setItems:v48];
 
-  [v5 na_safeAddObject:v45];
+  [array na_safeAddObject:v45];
   v49 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"ShowHomeKeyInWallet"];
   v50 = MEMORY[0x277CBEA60];
-  v51 = [(HUPinCodeDetailsItemManager *)self addOrShowHomeKeyItem];
-  v52 = [v50 na_arrayWithSafeObject:v51];
+  addOrShowHomeKeyItem = [(HUPinCodeDetailsItemManager *)self addOrShowHomeKeyItem];
+  v52 = [v50 na_arrayWithSafeObject:addOrShowHomeKeyItem];
   [v49 setItems:v52];
 
-  [v5 na_safeAddObject:v49];
+  [array na_safeAddObject:v49];
   v53 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"PinCodesDelete"];
-  v54 = [(HUPinCodeDetailsItemManager *)self deleteGuestPINCodeItem];
-  v61 = v54;
+  deleteGuestPINCodeItem = [(HUPinCodeDetailsItemManager *)self deleteGuestPINCodeItem];
+  v61 = deleteGuestPINCodeItem;
   v55 = [MEMORY[0x277CBEA60] arrayWithObjects:&v61 count:1];
   [v53 setItems:v55];
 
-  [v5 addObject:v53];
-  v56 = [MEMORY[0x277D14778] filterSections:v5 toDisplayedItems:v59];
+  [array addObject:v53];
+  v56 = [MEMORY[0x277D14778] filterSections:array toDisplayedItems:itemsCopy];
 
   return v56;
 }
@@ -1369,8 +1369,8 @@ LABEL_17:
 - (id)_homeFuture
 {
   v2 = MEMORY[0x277D2C900];
-  v3 = [(HUPinCodeDetailsItemManager *)self overrideHome];
-  v4 = [v2 futureWithResult:v3];
+  overrideHome = [(HUPinCodeDetailsItemManager *)self overrideHome];
+  v4 = [v2 futureWithResult:overrideHome];
 
   return v4;
 }
@@ -1378,8 +1378,8 @@ LABEL_17:
 - (id)_itemsToUpdateWhenApplicationDidBecomeActive
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HUPinCodeDetailsItemManager *)self addOrShowHomeKeyItem];
-  v4 = [v2 na_setWithSafeObject:v3];
+  addOrShowHomeKeyItem = [(HUPinCodeDetailsItemManager *)self addOrShowHomeKeyItem];
+  v4 = [v2 na_setWithSafeObject:addOrShowHomeKeyItem];
 
   return v4;
 }
@@ -1389,8 +1389,8 @@ LABEL_17:
   v4.receiver = self;
   v4.super_class = HUPinCodeDetailsItemManager;
   [(HFItemManager *)&v4 _registerForExternalUpdates];
-  v3 = [(HUPinCodeDetailsItemManager *)self pinCodeManager];
-  [v3 addObserver:self];
+  pinCodeManager = [(HUPinCodeDetailsItemManager *)self pinCodeManager];
+  [pinCodeManager addObserver:self];
 }
 
 - (void)_unregisterForExternalUpdates
@@ -1398,11 +1398,11 @@ LABEL_17:
   v4.receiver = self;
   v4.super_class = HUPinCodeDetailsItemManager;
   [(HFItemManager *)&v4 _unregisterForExternalUpdates];
-  v3 = [(HUPinCodeDetailsItemManager *)self pinCodeManager];
-  [v3 removeObserver:self];
+  pinCodeManager = [(HUPinCodeDetailsItemManager *)self pinCodeManager];
+  [pinCodeManager removeObserver:self];
 }
 
-- (void)pinCodeManagerDidUpdate:(id)a3 pinCodes:(id)a4
+- (void)pinCodeManagerDidUpdate:(id)update pinCodes:(id)codes
 {
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1412,10 +1412,10 @@ LABEL_17:
   }
 
   objc_opt_class();
-  v7 = [(HFItemManager *)self sourceItem];
+  sourceItem = [(HFItemManager *)self sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = sourceItem;
   }
 
   else
@@ -1427,15 +1427,15 @@ LABEL_17:
 
   if (v9)
   {
-    v10 = [(HUPinCodeDetailsItemManager *)self pinCodeManager];
-    v11 = [v9 pinCodeValue];
-    v12 = [v10 pinCodeForCodeValue:v11];
+    pinCodeManager = [(HUPinCodeDetailsItemManager *)self pinCodeManager];
+    pinCodeValue = [v9 pinCodeValue];
+    v12 = [pinCodeManager pinCodeForCodeValue:pinCodeValue];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __64__HUPinCodeDetailsItemManager_pinCodeManagerDidUpdate_pinCodes___block_invoke;
     v14[3] = &unk_277DC2368;
     v15 = v9;
-    v16 = self;
+    selfCopy = self;
     v17 = a2;
     v13 = [v12 addSuccessBlock:v14];
   }

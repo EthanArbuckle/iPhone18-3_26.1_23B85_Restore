@@ -2,9 +2,9 @@
 + (GKMatchBackgroundAssertionManager)shared;
 - (RBSAssertion)activeAssertion;
 - (void)acquire;
-- (void)assertionWillInvalidate:(id)a3;
+- (void)assertionWillInvalidate:(id)invalidate;
 - (void)invalidate;
-- (void)setActiveAssertion:(id)a3;
+- (void)setActiveAssertion:(id)assertion;
 @end
 
 @implementation GKMatchBackgroundAssertionManager
@@ -23,29 +23,29 @@
   return matched;
 }
 
-- (void)setActiveAssertion:(id)a3
+- (void)setActiveAssertion:(id)assertion
 {
-  v5 = a3;
-  v6 = self;
-  MatchBackgroundAssertionManager.activeAssertion.setter(a3);
+  assertionCopy = assertion;
+  selfCopy = self;
+  MatchBackgroundAssertionManager.activeAssertion.setter(assertion);
 }
 
 - (void)acquire
 {
-  v2 = self;
+  selfCopy = self;
   MatchBackgroundAssertionManager.acquire()();
 }
 
-- (void)assertionWillInvalidate:(id)a3
+- (void)assertionWillInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = self;
-  MatchBackgroundAssertionManager.assertionWillInvalidate(_:)(v4);
+  invalidateCopy = invalidate;
+  selfCopy = self;
+  MatchBackgroundAssertionManager.assertionWillInvalidate(_:)(invalidateCopy);
 }
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   MatchBackgroundAssertionManager.invalidate()();
 }
 

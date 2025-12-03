@@ -1,41 +1,41 @@
 @interface NRSimpleReferenceCounter
-- (BOOL)containsObject:(id)a3;
-- (NRSimpleReferenceCounter)initWithIdentifier:(id)a3 allocateBlock:(id)a4 freeBlock:(id)a5 queue:(id)a6 async:(BOOL)a7;
+- (BOOL)containsObject:(id)object;
+- (NRSimpleReferenceCounter)initWithIdentifier:(id)identifier allocateBlock:(id)block freeBlock:(id)freeBlock queue:(id)queue async:(BOOL)async;
 - (id)description;
 - (unint64_t)count;
-- (void)_clearWithCleanupBlock:(id)a3;
-- (void)_justDoItWithBlock:(id)a3;
-- (void)addObject:(id)a3 withAllocationBlock:(id)a4;
-- (void)clearWithCleanupBlock:(id)a3;
-- (void)enumerateObjects:(id)a3;
-- (void)removeObject:(id)a3 withCleanupBlock:(id)a4;
+- (void)_clearWithCleanupBlock:(id)block;
+- (void)_justDoItWithBlock:(id)block;
+- (void)addObject:(id)object withAllocationBlock:(id)block;
+- (void)clearWithCleanupBlock:(id)block;
+- (void)enumerateObjects:(id)objects;
+- (void)removeObject:(id)object withCleanupBlock:(id)block;
 @end
 
 @implementation NRSimpleReferenceCounter
 
-- (NRSimpleReferenceCounter)initWithIdentifier:(id)a3 allocateBlock:(id)a4 freeBlock:(id)a5 queue:(id)a6 async:(BOOL)a7
+- (NRSimpleReferenceCounter)initWithIdentifier:(id)identifier allocateBlock:(id)block freeBlock:(id)freeBlock queue:(id)queue async:(BOOL)async
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  identifierCopy = identifier;
+  blockCopy = block;
+  freeBlockCopy = freeBlock;
+  queueCopy = queue;
   v26.receiver = self;
   v26.super_class = NRSimpleReferenceCounter;
   v17 = [(NRSimpleReferenceCounter *)&v26 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_identifier, a3);
-    v19 = objc_retainBlock(v14);
+    objc_storeStrong(&v17->_identifier, identifier);
+    v19 = objc_retainBlock(blockCopy);
     allocateBlock = v18->_allocateBlock;
     v18->_allocateBlock = v19;
 
-    v21 = objc_retainBlock(v15);
+    v21 = objc_retainBlock(freeBlockCopy);
     freeBlock = v18->_freeBlock;
     v18->_freeBlock = v21;
 
-    objc_storeStrong(&v18->_queue, a6);
-    v18->_async = a7;
+    objc_storeStrong(&v18->_queue, queue);
+    v18->_async = async;
     v18->_mapLock._os_unfair_lock_opaque = 0;
     v23 = +[NSMapTable strongToStrongObjectsMapTable];
     map = v18->_map;
@@ -55,19 +55,19 @@
   return v6;
 }
 
-- (void)_justDoItWithBlock:(id)a3
+- (void)_justDoItWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  blockCopy2 = blockCopy;
+  if (blockCopy)
   {
     queue = self->_queue;
-    block = v5;
+    block = blockCopy2;
     if (queue)
     {
       if (self->_async)
       {
-        dispatch_async(queue, v5);
+        dispatch_async(queue, blockCopy2);
       }
 
       else
@@ -79,29 +79,29 @@
 
     else
     {
-      v4 = v5[2](v5);
+      blockCopy = blockCopy2[2](blockCopy2);
     }
 
-    v5 = block;
+    blockCopy2 = block;
   }
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(blockCopy, blockCopy2);
 }
 
-- (void)_clearWithCleanupBlock:(id)a3
+- (void)_clearWithCleanupBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_mapLock);
-  v5 = [(NSMapTable *)self->_map dictionaryRepresentation];
+  dictionaryRepresentation = [(NSMapTable *)self->_map dictionaryRepresentation];
   [(NSMapTable *)self->_map removeAllObjects];
   os_unfair_lock_unlock(&self->_mapLock);
-  if ([v5 count])
+  if ([dictionaryRepresentation count])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v5;
+    v6 = dictionaryRepresentation;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -134,9 +134,9 @@
       while (v8);
     }
 
-    if (v4)
+    if (blockCopy)
     {
-      v4[2](v4, 1);
+      blockCopy[2](blockCopy, 1);
     }
 
     freeBlock = self->_freeBlock;
@@ -146,28 +146,28 @@
     }
   }
 
-  else if (v4)
+  else if (blockCopy)
   {
-    v4[2](v4, 0);
+    blockCopy[2](blockCopy, 0);
   }
 }
 
-- (void)clearWithCleanupBlock:(id)a3
+- (void)clearWithCleanupBlock:(id)block
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000A2F74;
   v4[3] = &unk_100175FA0;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(NRSimpleReferenceCounter *)v5 _justDoItWithBlock:v4];
+  selfCopy = self;
+  blockCopy = block;
+  v3 = blockCopy;
+  [(NRSimpleReferenceCounter *)selfCopy _justDoItWithBlock:v4];
 }
 
-- (void)addObject:(id)a3 withAllocationBlock:(id)a4
+- (void)addObject:(id)object withAllocationBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  blockCopy = block;
   v8 = nr_daemon_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -181,9 +181,9 @@
       *buf = 138412802;
       v20 = v12;
       v21 = 2048;
-      v22 = v6;
+      v22 = objectCopy;
       v23 = 2112;
-      v24 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Requesting to add object %@[%p] to %@", buf, 0x20u);
     }
   }
@@ -192,18 +192,18 @@
   v15[1] = 3221225472;
   v15[2] = sub_1000A3128;
   v15[3] = &unk_1001768B0;
-  v16 = v6;
-  v17 = self;
-  v18 = v7;
-  v13 = v7;
-  v14 = v6;
+  v16 = objectCopy;
+  selfCopy2 = self;
+  v18 = blockCopy;
+  v13 = blockCopy;
+  v14 = objectCopy;
   [(NRSimpleReferenceCounter *)self _justDoItWithBlock:v15];
 }
 
-- (void)removeObject:(id)a3 withCleanupBlock:(id)a4
+- (void)removeObject:(id)object withCleanupBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  blockCopy = block;
   v8 = nr_daemon_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -217,9 +217,9 @@
       *buf = 138412802;
       v20 = v12;
       v21 = 2048;
-      v22 = v6;
+      v22 = objectCopy;
       v23 = 2112;
-      v24 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Requesting to remove object %@[%p] from %@", buf, 0x20u);
     }
   }
@@ -228,33 +228,33 @@
   v15[1] = 3221225472;
   v15[2] = sub_1000A35C0;
   v15[3] = &unk_1001768B0;
-  v16 = v6;
-  v17 = self;
-  v18 = v7;
-  v13 = v7;
-  v14 = v6;
+  v16 = objectCopy;
+  selfCopy2 = self;
+  v18 = blockCopy;
+  v13 = blockCopy;
+  v14 = objectCopy;
   [(NRSimpleReferenceCounter *)self _justDoItWithBlock:v15];
 }
 
-- (void)enumerateObjects:(id)a3
+- (void)enumerateObjects:(id)objects
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  objectsCopy = objects;
+  v5 = objectsCopy;
+  if (objectsCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000A3B20;
     v6[3] = &unk_100175FA0;
     v6[4] = self;
-    v7 = v4;
+    v7 = objectsCopy;
     [(NRSimpleReferenceCounter *)self _justDoItWithBlock:v6];
   }
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
-  v4 = [NSValue valueWithNonretainedObject:a3];
+  v4 = [NSValue valueWithNonretainedObject:object];
   os_unfair_lock_lock(&self->_mapLock);
   v5 = [(NSMapTable *)self->_map objectForKey:v4];
   v6 = v5 != 0;

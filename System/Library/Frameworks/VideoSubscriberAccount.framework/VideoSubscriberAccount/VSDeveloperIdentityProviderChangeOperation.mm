@@ -1,6 +1,6 @@
 @interface VSDeveloperIdentityProviderChangeOperation
 - (VSDeveloperIdentityProviderChangeOperation)init;
-- (id)_serviceWithErrorHandler:(id)a3;
+- (id)_serviceWithErrorHandler:(id)handler;
 - (void)dealloc;
 - (void)executionDidBegin;
 @end
@@ -39,11 +39,11 @@
   [(VSDeveloperIdentityProviderChangeOperation *)&v3 dealloc];
 }
 
-- (id)_serviceWithErrorHandler:(id)a3
+- (id)_serviceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(VSDeveloperIdentityProviderChangeOperation *)self connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  connection = [(VSDeveloperIdentityProviderChangeOperation *)self connection];
+  v6 = [connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
@@ -69,21 +69,21 @@
   aBlock[3] = &unk_278B73308;
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
-  v6 = [(VSDeveloperIdentityProviderChangeOperation *)self identityProvider];
-  v7 = [(VSDeveloperIdentityProviderChangeOperation *)self changeKind];
-  switch(v7)
+  identityProvider = [(VSDeveloperIdentityProviderChangeOperation *)self identityProvider];
+  changeKind = [(VSDeveloperIdentityProviderChangeOperation *)self changeKind];
+  switch(changeKind)
   {
     case 2:
-      v8 = [v6 uniqueID];
-      v9 = [v8 forceUnwrapObject];
-      [v3 removeDeveloperIdentityProviderWithUniqueID:v9 completionHandler:v5];
+      uniqueID = [identityProvider uniqueID];
+      forceUnwrapObject = [uniqueID forceUnwrapObject];
+      [v3 removeDeveloperIdentityProviderWithUniqueID:forceUnwrapObject completionHandler:v5];
 
       break;
     case 1:
-      [v3 updateExistingDeveloperIdentityProvider:v6 completionHandler:v5];
+      [v3 updateExistingDeveloperIdentityProvider:identityProvider completionHandler:v5];
       break;
     case 0:
-      [v3 addDeveloperIdentityProvider:v6 completionHandler:v5];
+      [v3 addDeveloperIdentityProvider:identityProvider completionHandler:v5];
       break;
   }
 }

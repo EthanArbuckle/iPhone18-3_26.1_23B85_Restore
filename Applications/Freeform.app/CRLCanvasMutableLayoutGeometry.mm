@@ -1,35 +1,35 @@
 @interface CRLCanvasMutableLayoutGeometry
-- (void)outsetBy:(CGSize)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
-- (void)transformBy:(CGAffineTransform *)a3;
+- (void)outsetBy:(CGSize)by;
+- (void)setTransform:(CGAffineTransform *)transform;
+- (void)transformBy:(CGAffineTransform *)by;
 @end
 
 @implementation CRLCanvasMutableLayoutGeometry
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->c;
-  v4[0] = *&a3->a;
+  v3 = *&transform->c;
+  v4[0] = *&transform->a;
   v4[1] = v3;
-  v4[2] = *&a3->tx;
+  v4[2] = *&transform->tx;
   [(CRLCanvasLayoutGeometry *)self i_setTransform:v4];
 }
 
-- (void)transformBy:(CGAffineTransform *)a3
+- (void)transformBy:(CGAffineTransform *)by
 {
   [(CRLCanvasLayoutGeometry *)self transform];
-  v5 = *&a3->c;
-  *&v6.a = *&a3->a;
+  v5 = *&by->c;
+  *&v6.a = *&by->a;
   *&v6.c = v5;
-  *&v6.tx = *&a3->tx;
+  *&v6.tx = *&by->tx;
   CGAffineTransformConcat(&v8, &t1, &v6);
   [(CRLCanvasLayoutGeometry *)self i_setTransform:&v8];
 }
 
-- (void)outsetBy:(CGSize)a3
+- (void)outsetBy:(CGSize)by
 {
-  height = a3.height;
-  width = a3.width;
+  height = by.height;
+  width = by.width;
   [(CRLCanvasLayoutGeometry *)self size];
   v7 = v6;
   v9 = v8;

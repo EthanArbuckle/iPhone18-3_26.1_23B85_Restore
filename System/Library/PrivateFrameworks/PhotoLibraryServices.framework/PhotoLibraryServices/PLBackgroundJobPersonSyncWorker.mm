@@ -1,60 +1,60 @@
 @interface PLBackgroundJobPersonSyncWorker
-- (BOOL)_hasCompletedResetSyncFromLibrary:(id)a3;
-- (BOOL)_isFaceCropsWorkItem:(id)a3;
-- (BOOL)_isResetWorkItem:(id)a3;
-- (BOOL)_processWorkItemObjectIDs:(id)a3 fromSystemLibrary:(id)a4 toSyndicationLibrary:(id)a5 error:(id *)a6;
-- (BOOL)_resumeResetSyncDeletedPersonsFromSyndicationLibrary:(id)a3 toSystemLibrary:(id)a4 error:(id *)a5;
-- (BOOL)_resumeResetSyncPersonsFromSystemLibrary:(id)a3 toSyndicationLibrary:(id)a4 error:(id *)a5;
-- (BOOL)_syncFaceCropsFromLibrary:(id)a3 toLibrary:(id)a4 error:(id *)a5;
-- (BOOL)_syncPerson:(id)a3 toLibrary:(id)a4 error:(id *)a5;
-- (BOOL)_syncStateMatchesBetweenSystemLibrary:(id)a3 syndicationLibrary:(id)a4;
-- (id)_coalescedWorkItemObjectIDsFrom:(id)a3 inLibrary:(id)a4;
-- (id)_faceCropUuidsFromLibrary:(id)a3 error:(id *)a4;
-- (id)_faceCropUuidsMissingFromList:(id)a3 inLibrary:(id)a4 error:(id *)a5;
-- (id)_nextBatchOfPersonsWithResumeObjectId:(id)a3 inManagedObjectContext:(id)a4;
-- (id)_resumeObjectIDInLibrary:(id)a3;
-- (id)_syndicationLibraryWithName:(const char *)a3;
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4;
-- (void)_deleteAllExistingPersonSyncWorkItemsInLibrary:(id)a3;
-- (void)_deletePersonWithUuid:(id)a3 fromLibrary:(id)a4;
-- (void)_resetFacesProcessingForPerson:(id)a3;
-- (void)_setCompletedResetSyncFromLibrary:(id)a3;
-- (void)_setMatchingSyncStateWithSystemLibrary:(id)a3 syndicationLibrary:(id)a4;
-- (void)_setResumeMarkerInLibrary:(id)a3 objectID:(id)a4;
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5;
-- (void)stopWorkingOnItem:(id)a3;
+- (BOOL)_hasCompletedResetSyncFromLibrary:(id)library;
+- (BOOL)_isFaceCropsWorkItem:(id)item;
+- (BOOL)_isResetWorkItem:(id)item;
+- (BOOL)_processWorkItemObjectIDs:(id)ds fromSystemLibrary:(id)library toSyndicationLibrary:(id)syndicationLibrary error:(id *)error;
+- (BOOL)_resumeResetSyncDeletedPersonsFromSyndicationLibrary:(id)library toSystemLibrary:(id)systemLibrary error:(id *)error;
+- (BOOL)_resumeResetSyncPersonsFromSystemLibrary:(id)library toSyndicationLibrary:(id)syndicationLibrary error:(id *)error;
+- (BOOL)_syncFaceCropsFromLibrary:(id)library toLibrary:(id)toLibrary error:(id *)error;
+- (BOOL)_syncPerson:(id)person toLibrary:(id)library error:(id *)error;
+- (BOOL)_syncStateMatchesBetweenSystemLibrary:(id)library syndicationLibrary:(id)syndicationLibrary;
+- (id)_coalescedWorkItemObjectIDsFrom:(id)from inLibrary:(id)library;
+- (id)_faceCropUuidsFromLibrary:(id)library error:(id *)error;
+- (id)_faceCropUuidsMissingFromList:(id)list inLibrary:(id)library error:(id *)error;
+- (id)_nextBatchOfPersonsWithResumeObjectId:(id)id inManagedObjectContext:(id)context;
+- (id)_resumeObjectIDInLibrary:(id)library;
+- (id)_syndicationLibraryWithName:(const char *)name;
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias;
+- (void)_deleteAllExistingPersonSyncWorkItemsInLibrary:(id)library;
+- (void)_deletePersonWithUuid:(id)uuid fromLibrary:(id)library;
+- (void)_resetFacesProcessingForPerson:(id)person;
+- (void)_setCompletedResetSyncFromLibrary:(id)library;
+- (void)_setMatchingSyncStateWithSystemLibrary:(id)library syndicationLibrary:(id)syndicationLibrary;
+- (void)_setResumeMarkerInLibrary:(id)library objectID:(id)d;
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion;
+- (void)stopWorkingOnItem:(id)item;
 @end
 
 @implementation PLBackgroundJobPersonSyncWorker
 
-- (void)_setMatchingSyncStateWithSystemLibrary:(id)a3 syndicationLibrary:(id)a4
+- (void)_setMatchingSyncStateWithSystemLibrary:(id)library syndicationLibrary:(id)syndicationLibrary
 {
   v5 = MEMORY[0x1E696AFB0];
-  v6 = a4;
-  v7 = a3;
+  syndicationLibraryCopy = syndicationLibrary;
+  libraryCopy = library;
   v8 = objc_alloc_init(v5);
-  v11 = [v8 UUIDString];
+  uUIDString = [v8 UUIDString];
 
-  v9 = [v7 globalValues];
+  globalValues = [libraryCopy globalValues];
 
-  [v9 setPersonSyncState:v11];
-  v10 = [v6 globalValues];
+  [globalValues setPersonSyncState:uUIDString];
+  globalValues2 = [syndicationLibraryCopy globalValues];
 
-  [v10 setPersonSyncState:v11];
+  [globalValues2 setPersonSyncState:uUIDString];
 }
 
-- (BOOL)_syncStateMatchesBetweenSystemLibrary:(id)a3 syndicationLibrary:(id)a4
+- (BOOL)_syncStateMatchesBetweenSystemLibrary:(id)library syndicationLibrary:(id)syndicationLibrary
 {
-  v5 = a4;
-  v6 = [a3 globalValues];
-  v7 = [v6 personSyncState];
+  syndicationLibraryCopy = syndicationLibrary;
+  globalValues = [library globalValues];
+  personSyncState = [globalValues personSyncState];
 
-  v8 = [v5 globalValues];
+  globalValues2 = [syndicationLibraryCopy globalValues];
 
-  v9 = [v8 personSyncState];
+  personSyncState2 = [globalValues2 personSyncState];
 
   IsEqual = 0;
-  if (v7 && v9)
+  if (personSyncState && personSyncState2)
   {
     IsEqual = PLObjectIsEqual();
   }
@@ -62,71 +62,71 @@
   return IsEqual;
 }
 
-- (void)_setResumeMarkerInLibrary:(id)a3 objectID:(id)a4
+- (void)_setResumeMarkerInLibrary:(id)library objectID:(id)d
 {
-  v5 = a3;
-  v6 = [a4 URIRepresentation];
-  v8 = [v6 absoluteString];
+  libraryCopy = library;
+  uRIRepresentation = [d URIRepresentation];
+  absoluteString = [uRIRepresentation absoluteString];
 
-  v7 = [v5 globalValues];
+  globalValues = [libraryCopy globalValues];
 
-  [v7 setPersonSyncResumeMarker:v8];
+  [globalValues setPersonSyncResumeMarker:absoluteString];
 }
 
-- (id)_resumeObjectIDInLibrary:(id)a3
+- (id)_resumeObjectIDInLibrary:(id)library
 {
-  v3 = a3;
-  v4 = [v3 globalValues];
-  v5 = [v4 personSyncResumeMarker];
+  libraryCopy = library;
+  globalValues = [libraryCopy globalValues];
+  personSyncResumeMarker = [globalValues personSyncResumeMarker];
 
-  v6 = [v3 managedObjectContext];
+  managedObjectContext = [libraryCopy managedObjectContext];
 
-  v7 = [v6 persistentStoreCoordinator];
-  v8 = [MEMORY[0x1E695DFF8] URLWithString:v5];
-  v9 = [v7 managedObjectIDForURIRepresentation:v8];
+  persistentStoreCoordinator = [managedObjectContext persistentStoreCoordinator];
+  v8 = [MEMORY[0x1E695DFF8] URLWithString:personSyncResumeMarker];
+  v9 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:v8];
 
   return v9;
 }
 
-- (void)_setCompletedResetSyncFromLibrary:(id)a3
+- (void)_setCompletedResetSyncFromLibrary:(id)library
 {
-  v3 = [a3 globalValues];
-  [v3 setPersonSyncResumeMarker:@"BackgroundJobPersonSyncResumeMarkerFinished"];
+  globalValues = [library globalValues];
+  [globalValues setPersonSyncResumeMarker:@"BackgroundJobPersonSyncResumeMarkerFinished"];
 }
 
-- (BOOL)_hasCompletedResetSyncFromLibrary:(id)a3
+- (BOOL)_hasCompletedResetSyncFromLibrary:(id)library
 {
-  v3 = [a3 globalValues];
-  v4 = [v3 personSyncResumeMarker];
-  v5 = [v4 isEqual:@"BackgroundJobPersonSyncResumeMarkerFinished"];
+  globalValues = [library globalValues];
+  personSyncResumeMarker = [globalValues personSyncResumeMarker];
+  v5 = [personSyncResumeMarker isEqual:@"BackgroundJobPersonSyncResumeMarkerFinished"];
 
   return v5;
 }
 
-- (id)_syndicationLibraryWithName:(const char *)a3
+- (id)_syndicationLibraryWithName:(const char *)name
 {
   v4 = +[PLPhotoLibraryBundleController sharedBundleController];
   v5 = [MEMORY[0x1E69BF2A0] wellKnownPhotoLibraryURLForIdentifier:3];
   v6 = [v4 openBundleAtLibraryURL:v5];
 
-  v7 = [v6 libraryServicesManager];
+  libraryServicesManager = [v6 libraryServicesManager];
   v17 = 0;
-  v8 = [v7 activate:&v17];
+  v8 = [libraryServicesManager activate:&v17];
   v9 = v17;
   v10 = v9;
-  if (v8 && (v9, v16 = 0, v11 = [v7 awaitLibraryState:7 error:&v16], v10 = v16, v11))
+  if (v8 && (v9, v16 = 0, v11 = [libraryServicesManager awaitLibraryState:7 error:&v16], v10 = v16, v11))
   {
-    v12 = [v7 databaseContext];
-    v13 = [v12 newShortLivedLibraryWithName:a3];
+    databaseContext = [libraryServicesManager databaseContext];
+    v13 = [databaseContext newShortLivedLibraryWithName:name];
   }
 
   else
   {
-    v12 = PLSyndicationGetLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    databaseContext = PLSyndicationGetLog();
+    if (os_log_type_enabled(databaseContext, OS_LOG_TYPE_ERROR))
     {
       *v15 = 0;
-      _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "PersonSync: Unable to provide syndication library for person sync worker", v15, 2u);
+      _os_log_impl(&dword_19BF1F000, databaseContext, OS_LOG_TYPE_ERROR, "PersonSync: Unable to provide syndication library for person sync worker", v15, 2u);
     }
 
     v13 = 0;
@@ -135,15 +135,15 @@
   return v13;
 }
 
-- (void)_deleteAllExistingPersonSyncWorkItemsInLibrary:(id)a3
+- (void)_deleteAllExistingPersonSyncWorkItemsInLibrary:(id)library
 {
-  v3 = a3;
+  libraryCopy = library;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __82__PLBackgroundJobPersonSyncWorker__deleteAllExistingPersonSyncWorkItemsInLibrary___block_invoke;
   v5[3] = &unk_1E75781E8;
-  v6 = v3;
-  v4 = v3;
+  v6 = libraryCopy;
+  v4 = libraryCopy;
   [v4 performTransactionAndWait:v5];
 }
 
@@ -173,12 +173,12 @@ void __82__PLBackgroundJobPersonSyncWorker__deleteAllExistingPersonSyncWorkItems
   [v4 deleteObject:v3];
 }
 
-- (BOOL)_resumeResetSyncPersonsFromSystemLibrary:(id)a3 toSyndicationLibrary:(id)a4 error:(id *)a5
+- (BOOL)_resumeResetSyncPersonsFromSystemLibrary:(id)library toSyndicationLibrary:(id)syndicationLibrary error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PLBackgroundJobPersonSyncWorker *)self _resumeObjectIDInLibrary:v8];
+  libraryCopy = library;
+  syndicationLibraryCopy = syndicationLibrary;
+  v10 = [(PLBackgroundJobPersonSyncWorker *)self _resumeObjectIDInLibrary:libraryCopy];
   v11 = PLSyndicationGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -204,11 +204,11 @@ void __82__PLBackgroundJobPersonSyncWorker__deleteAllExistingPersonSyncWorkItems
   v20[4] = self;
   v12 = v10;
   v21 = v12;
-  v13 = v8;
+  v13 = libraryCopy;
   v22 = v13;
   v24 = &v26;
   p_buf = &buf;
-  v14 = v9;
+  v14 = syndicationLibraryCopy;
   v23 = v14;
   [v13 performBlockAndWait:v20];
   v15 = v27;
@@ -218,10 +218,10 @@ void __82__PLBackgroundJobPersonSyncWorker__deleteAllExistingPersonSyncWorkItems
     v17 = v16;
     if (v16)
     {
-      if (a5)
+      if (error)
       {
         v17 = v17;
-        *a5 = v17;
+        *error = v17;
       }
 
       v15 = v27;
@@ -351,12 +351,12 @@ LABEL_17:
 LABEL_22:
 }
 
-- (BOOL)_resumeResetSyncDeletedPersonsFromSyndicationLibrary:(id)a3 toSystemLibrary:(id)a4 error:(id *)a5
+- (BOOL)_resumeResetSyncDeletedPersonsFromSyndicationLibrary:(id)library toSystemLibrary:(id)systemLibrary error:(id *)error
 {
   v71 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PLBackgroundJobPersonSyncWorker *)self _resumeObjectIDInLibrary:v8];
+  libraryCopy = library;
+  systemLibraryCopy = systemLibrary;
+  v10 = [(PLBackgroundJobPersonSyncWorker *)self _resumeObjectIDInLibrary:libraryCopy];
   v11 = PLSyndicationGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -394,7 +394,7 @@ LABEL_22:
   v40[4] = self;
   v12 = v10;
   v41 = v12;
-  v13 = v8;
+  v13 = libraryCopy;
   v42 = v13;
   v43 = &v59;
   p_buf = &buf;
@@ -416,7 +416,7 @@ LABEL_22:
     v36[2] = __110__PLBackgroundJobPersonSyncWorker__resumeResetSyncDeletedPersonsFromSyndicationLibrary_toSystemLibrary_error___block_invoke_2;
     v36[3] = &unk_1E7578820;
     v39 = &v53;
-    v37 = v9;
+    v37 = systemLibraryCopy;
     v15 = v14;
     v38 = v15;
     [v37 performBlockAndWait:v36];
@@ -481,10 +481,10 @@ LABEL_22:
       v26 = v25;
       if (v25)
       {
-        if (a5)
+        if (error)
         {
           v26 = v26;
-          *a5 = v26;
+          *error = v26;
         }
 
         v24 = v60;
@@ -501,11 +501,11 @@ LABEL_25:
     v29 = v28;
     v15 = v29;
     v27 = 0;
-    if (v28 && a5)
+    if (v28 && error)
     {
       v30 = v29;
       v27 = 0;
-      *a5 = v15;
+      *error = v15;
     }
   }
 
@@ -605,18 +605,18 @@ void __110__PLBackgroundJobPersonSyncWorker__resumeResetSyncDeletedPersonsFromSy
   }
 }
 
-- (id)_nextBatchOfPersonsWithResumeObjectId:(id)a3 inManagedObjectContext:(id)a4
+- (id)_nextBatchOfPersonsWithResumeObjectId:(id)id inManagedObjectContext:(id)context
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  idCopy = id;
   v6 = MEMORY[0x1E695D5E0];
-  v7 = a4;
+  contextCopy = context;
   v8 = +[PLPerson entityName];
   v9 = [v6 fetchRequestWithEntityName:v8];
 
-  if (v5)
+  if (idCopy)
   {
-    [MEMORY[0x1E696AE18] predicateWithFormat:@"self < %@", v5];
+    [MEMORY[0x1E696AE18] predicateWithFormat:@"self < %@", idCopy];
   }
 
   else
@@ -638,7 +638,7 @@ void __110__PLBackgroundJobPersonSyncWorker__resumeResetSyncDeletedPersonsFromSy
   [v9 setPropertiesToFetch:v13];
 
   v18 = 0;
-  v14 = [v7 executeFetchRequest:v9 error:&v18];
+  v14 = [contextCopy executeFetchRequest:v9 error:&v18];
 
   v15 = v18;
   if (v14)
@@ -655,11 +655,11 @@ void __110__PLBackgroundJobPersonSyncWorker__resumeResetSyncDeletedPersonsFromSy
   return v16;
 }
 
-- (void)_deletePersonWithUuid:(id)a3 fromLibrary:(id)a4
+- (void)_deletePersonWithUuid:(id)uuid fromLibrary:(id)library
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  uuidCopy = uuid;
+  libraryCopy = library;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -671,11 +671,11 @@ void __110__PLBackgroundJobPersonSyncWorker__resumeResetSyncDeletedPersonsFromSy
   v11[2] = __69__PLBackgroundJobPersonSyncWorker__deletePersonWithUuid_fromLibrary___block_invoke;
   v11[3] = &unk_1E75778C0;
   v15 = &v16;
-  v8 = v6;
+  v8 = uuidCopy;
   v12 = v8;
-  v9 = v7;
+  v9 = libraryCopy;
   v13 = v9;
-  v14 = self;
+  selfCopy = self;
   [v9 performTransactionAndWait:v11];
   if (v17[5])
   {
@@ -722,43 +722,43 @@ void __69__PLBackgroundJobPersonSyncWorker__deletePersonWithUuid_fromLibrary___b
   }
 }
 
-- (void)_resetFacesProcessingForPerson:(id)a3
+- (void)_resetFacesProcessingForPerson:(id)person
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  personCopy = person;
   v4 = PLSyndicationGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [v3 personUUID];
+    personUUID = [personCopy personUUID];
     v6 = 138543362;
-    v7 = v5;
+    v7 = personUUID;
     _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_INFO, "PersonSync: resetting faces processing on person %{public}@", &v6, 0xCu);
   }
 
-  [v3 resetFacesProcessing];
+  [personCopy resetFacesProcessing];
 }
 
-- (BOOL)_syncPerson:(id)a3 toLibrary:(id)a4 error:(id *)a5
+- (BOOL)_syncPerson:(id)person toLibrary:(id)library error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 personUUID];
+  libraryCopy = library;
+  personCopy = person;
+  personUUID = [personCopy personUUID];
   v11 = PLSyndicationGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v29 = v10;
+    v29 = personUUID;
     _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_INFO, "PersonSync: _syncPerson %{public}@ begin", buf, 0xCu);
   }
 
   v12 = +[PLInterLibraryTransferOptions newTransferOptionsForPersonFromSystemToSyndication];
   v13 = [PLInterLibraryTransfer alloc];
-  v14 = [v9 photoLibrary];
+  photoLibrary = [personCopy photoLibrary];
 
-  v15 = [(PLInterLibraryTransfer *)v13 initWithSourceLibrary:v14 destinationLibrary:v8 options:v12];
+  v15 = [(PLInterLibraryTransfer *)v13 initWithSourceLibrary:photoLibrary destinationLibrary:libraryCopy options:v12];
   v27 = 0;
-  v16 = [(PLInterLibraryTransfer *)v15 transferPersonWithUuid:v10 error:&v27];
+  v16 = [(PLInterLibraryTransfer *)v15 transferPersonWithUuid:personUUID error:&v27];
   v17 = v27;
   v18 = PLSyndicationGetLog();
   v19 = v18;
@@ -767,7 +767,7 @@ void __69__PLBackgroundJobPersonSyncWorker__deletePersonWithUuid_fromLibrary___b
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v29 = v10;
+      v29 = personUUID;
       _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_INFO, "PersonSync: _syncPerson %{public}@ succeeded", buf, 0xCu);
     }
 
@@ -775,9 +775,9 @@ void __69__PLBackgroundJobPersonSyncWorker__deletePersonWithUuid_fromLibrary___b
     v23[1] = 3221225472;
     v23[2] = __63__PLBackgroundJobPersonSyncWorker__syncPerson_toLibrary_error___block_invoke;
     v23[3] = &unk_1E75761B8;
-    v24 = v10;
-    v25 = v8;
-    v26 = self;
+    v24 = personUUID;
+    v25 = libraryCopy;
+    selfCopy = self;
     [v25 performTransactionAndWait:v23];
 
     v20 = v17;
@@ -788,16 +788,16 @@ void __69__PLBackgroundJobPersonSyncWorker__deletePersonWithUuid_fromLibrary___b
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v29 = v10;
+      v29 = personUUID;
       v30 = 2112;
       v31 = v17;
       _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_ERROR, "PersonSync: _syncPerson %{public}@ failed with error %@", buf, 0x16u);
     }
 
     v21 = v17;
-    if (v17 && a5)
+    if (v17 && error)
     {
-      *a5 = v21;
+      *error = v21;
     }
   }
 
@@ -818,11 +818,11 @@ void __63__PLBackgroundJobPersonSyncWorker__syncPerson_toLibrary_error___block_i
   }
 }
 
-- (BOOL)_processWorkItemObjectIDs:(id)a3 fromSystemLibrary:(id)a4 toSyndicationLibrary:(id)a5 error:(id *)a6
+- (BOOL)_processWorkItemObjectIDs:(id)ds fromSystemLibrary:(id)library toSyndicationLibrary:(id)syndicationLibrary error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dsCopy = ds;
+  libraryCopy = library;
+  syndicationLibraryCopy = syndicationLibrary;
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
@@ -837,13 +837,13 @@ void __63__PLBackgroundJobPersonSyncWorker__syncPerson_toLibrary_error___block_i
   v21[1] = 3221225472;
   v21[2] = __106__PLBackgroundJobPersonSyncWorker__processWorkItemObjectIDs_fromSystemLibrary_toSyndicationLibrary_error___block_invoke;
   v21[3] = &unk_1E7576F10;
-  v13 = v10;
+  v13 = dsCopy;
   v26 = &v34;
   v22 = v13;
-  v23 = self;
-  v14 = v11;
+  selfCopy = self;
+  v14 = libraryCopy;
   v24 = v14;
-  v15 = v12;
+  v15 = syndicationLibraryCopy;
   v25 = v15;
   v27 = &v28;
   [v14 performBlockAndWait:v21];
@@ -854,10 +854,10 @@ void __63__PLBackgroundJobPersonSyncWorker__syncPerson_toLibrary_error___block_i
     v18 = v17;
     if (v17)
     {
-      if (a6)
+      if (error)
       {
         v18 = v18;
-        *a6 = v18;
+        *error = v18;
       }
 
       v16 = v35;
@@ -991,19 +991,19 @@ LABEL_23:
 LABEL_24:
 }
 
-- (BOOL)_syncFaceCropsFromLibrary:(id)a3 toLibrary:(id)a4 error:(id *)a5
+- (BOOL)_syncFaceCropsFromLibrary:(id)library toLibrary:(id)toLibrary error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PLBackgroundJobPersonSyncWorker *)self _faceCropUuidsFromLibrary:v8 error:a5];
+  libraryCopy = library;
+  toLibraryCopy = toLibrary;
+  v10 = [(PLBackgroundJobPersonSyncWorker *)self _faceCropUuidsFromLibrary:libraryCopy error:error];
   if (v10)
   {
-    v11 = [(PLBackgroundJobPersonSyncWorker *)self _faceCropUuidsMissingFromList:v10 inLibrary:v9 error:a5];
+    v11 = [(PLBackgroundJobPersonSyncWorker *)self _faceCropUuidsMissingFromList:v10 inLibrary:toLibraryCopy error:error];
     if (v11)
     {
       v12 = +[PLInterLibraryTransferOptions newTransferOptionsForFaceCropFromSyndicationToSystem];
-      v13 = [[PLInterLibraryTransfer alloc] initWithSourceLibrary:v8 destinationLibrary:v9 options:v12];
+      v13 = [[PLInterLibraryTransfer alloc] initWithSourceLibrary:libraryCopy destinationLibrary:toLibraryCopy options:v12];
       v14 = PLSyndicationGetLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
@@ -1034,7 +1034,7 @@ LABEL_24:
               objc_enumerationMutation(v15);
             }
 
-            if (![(PLInterLibraryTransfer *)v13 transferFaceCropWithUuid:*(*(&v23 + 1) + 8 * i) error:a5])
+            if (![(PLInterLibraryTransfer *)v13 transferFaceCropWithUuid:*(*(&v23 + 1) + 8 * i) error:error])
             {
               v20 = 0;
               goto LABEL_16;
@@ -1075,17 +1075,17 @@ LABEL_16:
   return v20;
 }
 
-- (id)_faceCropUuidsMissingFromList:(id)a3 inLibrary:(id)a4 error:(id *)a5
+- (id)_faceCropUuidsMissingFromList:(id)list inLibrary:(id)library error:(id *)error
 {
   v46[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  listCopy = list;
+  libraryCopy = library;
   v9 = MEMORY[0x1E695D5E0];
   v10 = +[PLFaceCrop entityName];
   v11 = [v9 fetchRequestWithEntityName:v10];
 
-  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"uuid", v7];
-  [v11 setPredicate:v12];
+  listCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"uuid", listCopy];
+  [v11 setPredicate:listCopy];
 
   [v11 setResultType:2];
   v46[0] = @"uuid";
@@ -1109,7 +1109,7 @@ LABEL_16:
   v27[2] = __81__PLBackgroundJobPersonSyncWorker__faceCropUuidsMissingFromList_inLibrary_error___block_invoke;
   v27[3] = &unk_1E7578898;
   v30 = &v38;
-  v14 = v8;
+  v14 = libraryCopy;
   v28 = v14;
   v15 = v11;
   v29 = v15;
@@ -1117,7 +1117,7 @@ LABEL_16:
   [v14 performBlockAndWait:v27];
   if (v39[5])
   {
-    v16 = [v7 count];
+    v16 = [listCopy count];
     if (v16 == [v39[5] count])
     {
       v17 = PLSyndicationGetLog();
@@ -1127,12 +1127,12 @@ LABEL_16:
         _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_INFO, "PersonSync: all face crops from processing library are in the SPL", buf, 2u);
       }
 
-      v18 = MEMORY[0x1E695E0F0];
+      allObjects = MEMORY[0x1E695E0F0];
     }
 
     else
     {
-      v21 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:v7];
+      v21 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:listCopy];
       v22 = objc_alloc(MEMORY[0x1E695DFD8]);
       v23 = [v39[5] valueForKey:@"uuid"];
       v24 = [v22 initWithArray:v23];
@@ -1146,7 +1146,7 @@ LABEL_16:
         _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_INFO, "PersonSync: missing the following face crops in the SPL: %{public}@", buf, 0xCu);
       }
 
-      v18 = [v21 allObjects];
+      allObjects = [v21 allObjects];
     }
   }
 
@@ -1161,17 +1161,17 @@ LABEL_16:
       _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_ERROR, "PersonSync: Unable to fetch face crop uuids from the SPL: %@", buf, 0xCu);
     }
 
-    v18 = 0;
-    if (a5)
+    allObjects = 0;
+    if (error)
     {
-      *a5 = v33[5];
+      *error = v33[5];
     }
   }
 
   _Block_object_dispose(&v32, 8);
   _Block_object_dispose(&v38, 8);
 
-  return v18;
+  return allObjects;
 }
 
 void __81__PLBackgroundJobPersonSyncWorker__faceCropUuidsMissingFromList_inLibrary_error___block_invoke(uint64_t a1)
@@ -1192,10 +1192,10 @@ void __81__PLBackgroundJobPersonSyncWorker__faceCropUuidsMissingFromList_inLibra
   }
 }
 
-- (id)_faceCropUuidsFromLibrary:(id)a3 error:(id *)a4
+- (id)_faceCropUuidsFromLibrary:(id)library error:(id *)error
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  libraryCopy = library;
   v6 = MEMORY[0x1E695D5E0];
   v7 = +[PLFaceCrop entityName];
   v8 = [v6 fetchRequestWithEntityName:v7];
@@ -1225,7 +1225,7 @@ void __81__PLBackgroundJobPersonSyncWorker__faceCropUuidsMissingFromList_inLibra
   v18[2] = __67__PLBackgroundJobPersonSyncWorker__faceCropUuidsFromLibrary_error___block_invoke;
   v18[3] = &unk_1E7578898;
   v21 = &v29;
-  v11 = v5;
+  v11 = libraryCopy;
   v19 = v11;
   v12 = v8;
   v20 = v12;
@@ -1249,9 +1249,9 @@ void __81__PLBackgroundJobPersonSyncWorker__faceCropUuidsMissingFromList_inLibra
     }
 
     v14 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = v24[5];
+      *error = v24[5];
     }
   }
 
@@ -1279,13 +1279,13 @@ void __67__PLBackgroundJobPersonSyncWorker__faceCropUuidsFromLibrary_error___blo
   }
 }
 
-- (BOOL)_isFaceCropsWorkItem:(id)a3
+- (BOOL)_isFaceCropsWorkItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 isEqual:@"BackgroundJobPersonSyncFaceCrops"];
+    v4 = [itemCopy isEqual:@"BackgroundJobPersonSyncFaceCrops"];
   }
 
   else
@@ -1296,13 +1296,13 @@ void __67__PLBackgroundJobPersonSyncWorker__faceCropUuidsFromLibrary_error___blo
   return v4;
 }
 
-- (BOOL)_isResetWorkItem:(id)a3
+- (BOOL)_isResetWorkItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 isEqual:@"BackgroundJobPersonSyncReset"];
+    v4 = [itemCopy isEqual:@"BackgroundJobPersonSyncReset"];
   }
 
   else
@@ -1313,25 +1313,25 @@ void __67__PLBackgroundJobPersonSyncWorker__faceCropUuidsFromLibrary_error___blo
   return v4;
 }
 
-- (void)stopWorkingOnItem:(id)a3
+- (void)stopWorkingOnItem:(id)item
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v5 = PLSyndicationGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 134217984;
-    v7 = v4;
+    v7 = itemCopy;
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_INFO, "PersonSync: PLBackgroundJobPersonSyncWorker stopWorkingOnItem: %p", &v6, 0xCu);
   }
 
   [(PLBackgroundJobPersonSyncWorker *)self setIsCancelled:1];
 }
 
-- (id)_coalescedWorkItemObjectIDsFrom:(id)a3 inLibrary:(id)a4
+- (id)_coalescedWorkItemObjectIDsFrom:(id)from inLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  libraryCopy = library;
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -1339,21 +1339,21 @@ void __67__PLBackgroundJobPersonSyncWorker__faceCropUuidsFromLibrary_error___blo
   v19 = 3221225472;
   v20 = __77__PLBackgroundJobPersonSyncWorker__coalescedWorkItemObjectIDsFrom_inLibrary___block_invoke;
   v21 = &unk_1E75768C8;
-  v22 = v6;
-  v23 = v7;
-  v24 = self;
+  v22 = fromCopy;
+  v23 = libraryCopy;
+  selfCopy = self;
   v25 = v10;
   v26 = v9;
   v27 = v8;
   v11 = v8;
   v12 = v9;
   v13 = v10;
-  v14 = v7;
-  v15 = v6;
+  v14 = libraryCopy;
+  v15 = fromCopy;
   [v14 performBlockAndWait:&v18];
-  v16 = [v11 allValues];
+  allValues = [v11 allValues];
 
-  return v16;
+  return allValues;
 }
 
 void __77__PLBackgroundJobPersonSyncWorker__coalescedWorkItemObjectIDsFrom_inLibrary___block_invoke(uint64_t a1)
@@ -1434,48 +1434,48 @@ LABEL_12:
   }
 }
 
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion
 {
   v63 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemCopy = item;
+  libraryCopy = library;
+  completionCopy = completion;
   [(PLBackgroundJobPersonSyncWorker *)self setIsCancelled:0];
   v12 = PLSyndicationGetLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 134218242;
-    *&buf[4] = v9;
+    *&buf[4] = itemCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = itemCopy;
     _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_INFO, "PersonSync: PLBackgroundJobPersonSyncWorker performWorkOnItem: %p %@", buf, 0x16u);
   }
 
-  if (!v10)
+  if (!libraryCopy)
   {
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobPersonSyncWorker.m" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"library != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundJobPersonSyncWorker.m" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"library != nil"}];
   }
 
-  v13 = v10;
+  v13 = libraryCopy;
   v14 = [(PLBackgroundJobPersonSyncWorker *)self _syndicationLibraryWithName:"[PLBackgroundJobPersonSyncWorker performWorkOnItem:inLibrary:completion:]"];
   if (v14)
   {
-    if ([(PLBackgroundJobPersonSyncWorker *)self _isResetWorkItem:v9])
+    if ([(PLBackgroundJobPersonSyncWorker *)self _isResetWorkItem:itemCopy])
     {
       if (![(PLBackgroundJobPersonSyncWorker *)self _syncStateMatchesBetweenSystemLibrary:v13 syndicationLibrary:v14])
       {
-        v15 = [v13 globalValues];
-        [v15 setPersonSyncState:0];
+        globalValues = [v13 globalValues];
+        [globalValues setPersonSyncState:0];
 
-        v16 = [v14 globalValues];
-        [v16 setPersonSyncState:0];
+        globalValues2 = [v14 globalValues];
+        [globalValues2 setPersonSyncState:0];
 
-        v17 = [v13 globalValues];
-        [v17 setPersonSyncResumeMarker:0];
+        globalValues3 = [v13 globalValues];
+        [globalValues3 setPersonSyncResumeMarker:0];
 
-        v18 = [v14 globalValues];
-        [v18 setPersonSyncResumeMarker:0];
+        globalValues4 = [v14 globalValues];
+        [globalValues4 setPersonSyncResumeMarker:0];
 
         [(PLBackgroundJobPersonSyncWorker *)self _deleteAllExistingPersonSyncWorkItemsInLibrary:v13];
         [(PLBackgroundJobPersonSyncWorker *)self _setMatchingSyncStateWithSystemLibrary:v13 syndicationLibrary:v14];
@@ -1500,7 +1500,7 @@ LABEL_12:
       if ([(PLBackgroundJobPersonSyncWorker *)self _hasCompletedResetSyncFromLibrary:v13]|| (v53 = v19, v35 = [(PLBackgroundJobPersonSyncWorker *)self _resumeResetSyncPersonsFromSystemLibrary:v13 toSyndicationLibrary:v14 error:&v53], v36 = v53, v19, v19 = v36, v35))
       {
 LABEL_33:
-        v11[2](v11, v19);
+        completionCopy[2](completionCopy, v19);
 
         goto LABEL_45;
       }
@@ -1531,9 +1531,9 @@ LABEL_30:
       }
     }
 
-    if ([(PLBackgroundJobPersonSyncWorker *)self _isFaceCropsWorkItem:v9])
+    if ([(PLBackgroundJobPersonSyncWorker *)self _isFaceCropsWorkItem:itemCopy])
     {
-      v11[2](v11, 0);
+      completionCopy[2](completionCopy, 0);
 LABEL_44:
 
       goto LABEL_45;
@@ -1542,11 +1542,11 @@ LABEL_44:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v43 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v43 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobPersonSyncWorker.m" lineNumber:207 description:{@"Invalid parameter not satisfying: %@", @"[item isKindOfClass:NSArray.class]"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobPersonSyncWorker.m" lineNumber:207 description:{@"Invalid parameter not satisfying: %@", @"[item isKindOfClass:NSArray.class]"}];
     }
 
-    v24 = v9;
+    v24 = itemCopy;
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
@@ -1607,7 +1607,7 @@ LABEL_44:
           _os_log_impl(&dword_19BF1F000, v41, OS_LOG_TYPE_INFO, "PersonSync: calling completionBlock after finishing processing successfully", v55, 2u);
         }
 
-        v11[2](v11, 0);
+        completionCopy[2](completionCopy, 0);
         goto LABEL_43;
       }
 
@@ -1627,7 +1627,7 @@ LABEL_44:
       v33 = v32;
     }
 
-    v11[2](v11, v33);
+    completionCopy[2](completionCopy, v33);
 LABEL_43:
 
     _Block_object_dispose(buf, 8);
@@ -1641,7 +1641,7 @@ LABEL_43:
     _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_INFO, "PersonSync: No work to do, syndicationLibrary is nil", buf, 2u);
   }
 
-  v11[2](v11, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_45:
 }
 
@@ -1679,22 +1679,22 @@ void __74__PLBackgroundJobPersonSyncWorker_performWorkOnItem_inLibrary_completio
   [v4 deleteObject:v3];
 }
 
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  criteriasCopy = criterias;
   v8 = +[PLBackgroundJobCriteria criteriaForHubbleWorker];
-  if (([v7 containsObject:v8] & 1) == 0)
+  if (([criteriasCopy containsObject:v8] & 1) == 0)
   {
-    v17 = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItemsForValidCriteria];
+    initWithZeroWorkItemsForValidCriteria = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItemsForValidCriteria];
 LABEL_8:
-    self = v17;
+    self = initWithZeroWorkItemsForValidCriteria;
     goto LABEL_14;
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = v6;
+  v10 = libraryCopy;
   v11 = [(PLBackgroundJobPersonSyncWorker *)self _syndicationLibraryWithName:"[PLBackgroundJobPersonSyncWorker workItemsNeedingProcessingInLibrary:validCriterias:]"];
   if (!v11)
   {
@@ -1764,7 +1764,7 @@ LABEL_13:
   objc_autoreleasePoolPop(v9);
   if (v16)
   {
-    v17 = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItems];
+    initWithZeroWorkItemsForValidCriteria = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItems];
     goto LABEL_8;
   }
 

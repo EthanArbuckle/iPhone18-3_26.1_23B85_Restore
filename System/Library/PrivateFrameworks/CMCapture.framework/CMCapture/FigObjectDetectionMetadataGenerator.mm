@@ -1,17 +1,17 @@
 @interface FigObjectDetectionMetadataGenerator
 - (CGRect)regionOfInterest;
 - (FigObjectDetectionMetadataGenerator)init;
-- (id)getCurrentDetectedObjectsAndPTS:(id *)a3;
-- (id)getDetectedObjectsForPixelBuffer:(__CVBuffer *)a3 pts:(id *)a4;
+- (id)getCurrentDetectedObjectsAndPTS:(id *)s;
+- (id)getDetectedObjectsForPixelBuffer:(__CVBuffer *)buffer pts:(id *)pts;
 - (void)_compareFaceDetections:currentFaceDetections:time:;
 - (void)_compareHumanBodyDetections:currentHumanDetections:time:;
-- (void)_detectObjectsWithPixelBufferInOut:(uint64_t)a3 time:(char)a4 faceDetectionEnabled:(char)a5 humanBodyDetectionEnabled:;
+- (void)_detectObjectsWithPixelBufferInOut:(uint64_t)out time:(char)time faceDetectionEnabled:(char)enabled humanBodyDetectionEnabled:;
 - (void)_processFaceObservations:time:;
 - (void)_processHumanObservations:time:;
 - (void)dealloc;
-- (void)prepareForVideoFormat:(opaqueCMFormatDescription *)a3;
-- (void)processPixelBuffer:(__CVBuffer *)a3 pts:(id *)a4;
-- (void)processSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (void)prepareForVideoFormat:(opaqueCMFormatDescription *)format;
+- (void)processPixelBuffer:(__CVBuffer *)buffer pts:(id *)pts;
+- (void)processSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (void)unprepare;
 @end
 
@@ -73,7 +73,7 @@
   return result;
 }
 
-- (void)prepareForVideoFormat:(opaqueCMFormatDescription *)a3
+- (void)prepareForVideoFormat:(opaqueCMFormatDescription *)format
 {
   if (!self->_prepared)
   {
@@ -126,7 +126,7 @@ void *__61__FigObjectDetectionMetadataGenerator_prepareForVideoFormat___block_in
   return result;
 }
 
-- (void)processSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)processSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   if (self->_prepared)
   {
@@ -137,19 +137,19 @@ void *__61__FigObjectDetectionMetadataGenerator_prepareForVideoFormat___block_in
     os_unfair_lock_unlock(&self->_lock);
     if (v7)
     {
-      v12[0] = CMSampleBufferGetImageBuffer(a3);
+      v12[0] = CMSampleBufferGetImageBuffer(buffer);
       memset(&v11, 0, sizeof(v11));
-      CMSampleBufferGetPresentationTimeStamp(&v11, a3);
+      CMSampleBufferGetPresentationTimeStamp(&v11, buffer);
       v8 = *off_1E798A3C8;
-      v9 = CMGetAttachment(a3, *off_1E798A3C8, 0);
-      if (!v9)
+      dictionary = CMGetAttachment(buffer, *off_1E798A3C8, 0);
+      if (!dictionary)
       {
-        v9 = [MEMORY[0x1E695DF90] dictionary];
-        CMSetAttachment(a3, v8, v9, 1u);
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        CMSetAttachment(buffer, v8, dictionary, 1u);
       }
 
       v10 = v11;
-      [v9 setObject:-[FigObjectDetectionMetadataGenerator getDetectedObjectsForPixelBuffer:pts:](self forKeyedSubscript:{"getDetectedObjectsForPixelBuffer:pts:", v12, &v10), *off_1E798B220}];
+      [dictionary setObject:-[FigObjectDetectionMetadataGenerator getDetectedObjectsForPixelBuffer:pts:](self forKeyedSubscript:{"getDetectedObjectsForPixelBuffer:pts:", v12, &v10), *off_1E798B220}];
     }
   }
 }
@@ -354,9 +354,9 @@ void __126__FigObjectDetectionMetadataGenerator__detectObjectsWithPixelBufferInO
   }
 }
 
-- (void)processPixelBuffer:(__CVBuffer *)a3 pts:(id *)a4
+- (void)processPixelBuffer:(__CVBuffer *)buffer pts:(id *)pts
 {
-  if (a3 && self->_prepared && (a4->var2 & 1) != 0)
+  if (buffer && self->_prepared && (pts->var2 & 1) != 0)
   {
     maxHumanFaces = self->_maxHumanFaces;
     maxHumanBodies = self->_maxHumanBodies;
@@ -364,15 +364,15 @@ void __126__FigObjectDetectionMetadataGenerator__detectObjectsWithPixelBufferInO
     {
       v9 = v4;
       v10 = v5;
-      v8 = *a4;
-      [(FigObjectDetectionMetadataGenerator *)self _detectObjectsWithPixelBufferInOut:a3 time:&v8 faceDetectionEnabled:maxHumanFaces != 0 humanBodyDetectionEnabled:maxHumanBodies != 0];
+      v8 = *pts;
+      [(FigObjectDetectionMetadataGenerator *)self _detectObjectsWithPixelBufferInOut:buffer time:&v8 faceDetectionEnabled:maxHumanFaces != 0 humanBodyDetectionEnabled:maxHumanBodies != 0];
     }
   }
 }
 
-- (void)_detectObjectsWithPixelBufferInOut:(uint64_t)a3 time:(char)a4 faceDetectionEnabled:(char)a5 humanBodyDetectionEnabled:
+- (void)_detectObjectsWithPixelBufferInOut:(uint64_t)out time:(char)time faceDetectionEnabled:(char)enabled humanBodyDetectionEnabled:
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_11_46();
     v10 = mach_absolute_time();
@@ -394,8 +394,8 @@ void __126__FigObjectDetectionMetadataGenerator__detectObjectsWithPixelBufferInO
           v21[1] = 3221225472;
           v21[2] = __126__FigObjectDetectionMetadataGenerator__detectObjectsWithPixelBufferInOut_time_faceDetectionEnabled_humanBodyDetectionEnabled___block_invoke;
           v21[3] = &unk_1E799B950;
-          v24 = a4;
-          v25 = a5;
+          timeCopy = time;
+          enabledCopy = enabled;
           v21[4] = v19;
           v21[5] = v7;
           v22 = *v6;
@@ -408,17 +408,17 @@ void __126__FigObjectDetectionMetadataGenerator__detectObjectsWithPixelBufferInO
   }
 }
 
-- (id)getCurrentDetectedObjectsAndPTS:(id *)a3
+- (id)getCurrentDetectedObjectsAndPTS:(id *)s
 {
   if (self->_prepared && (self->_maxHumanFaces || self->_maxHumanBodies))
   {
     os_unfair_lock_lock(&self->_lock);
     v5 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:self->_objectMetadataDictionary copyItems:1];
-    if (a3)
+    if (s)
     {
       v6 = *&self->_objectMetadataDictionaryPTS.value;
-      a3->var3 = self->_objectMetadataDictionaryPTS.epoch;
-      *&a3->var0 = v6;
+      s->var3 = self->_objectMetadataDictionaryPTS.epoch;
+      *&s->var0 = v6;
     }
 
     os_unfair_lock_unlock(&self->_lock);
@@ -432,16 +432,16 @@ void __126__FigObjectDetectionMetadataGenerator__detectObjectsWithPixelBufferInO
   return v5;
 }
 
-- (id)getDetectedObjectsForPixelBuffer:(__CVBuffer *)a3 pts:(id *)a4
+- (id)getDetectedObjectsForPixelBuffer:(__CVBuffer *)buffer pts:(id *)pts
 {
-  if (a3)
+  if (buffer)
   {
-    v5 = *a3;
-    v7 = *a4;
+    v5 = *buffer;
+    v7 = *pts;
     [(FigObjectDetectionMetadataGenerator *)self processPixelBuffer:v5 pts:&v7];
   }
 
-  return [(FigObjectDetectionMetadataGenerator *)self getCurrentDetectedObjectsAndPTS:0, a4];
+  return [(FigObjectDetectionMetadataGenerator *)self getCurrentDetectedObjectsAndPTS:0, pts];
 }
 
 - (void)_processFaceObservations:time:
@@ -464,9 +464,9 @@ void __126__FigObjectDetectionMetadataGenerator__detectObjectsWithPixelBufferInO
     }
 
     [v0 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", v8), *off_1E798B780}];
-    v93 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v9 = [v0 setObject:? forKeyedSubscript:?];
-    v17 = OUTLINED_FUNCTION_20_24(v9, v10, v11, v12, v13, v14, v15, v16, v73, v75, v77, v79, v81, v83, v85, v87, v89, v91, v93, obj, v97, v99, v101, v103, v105, v107, v109, v111, v113, v115, v117, v119, v121, v123, v125, v127, v129, v131, v132, v134, v135, v137, v138, v140, v141, v143, v145, v147, v149, v151, v153, v155, v157, v159, v161, v163, v165, v167, v169, v171, 0);
+    v17 = OUTLINED_FUNCTION_20_24(v9, v10, v11, v12, v13, v14, v15, v16, v73, v75, v77, v79, v81, v83, v85, v87, v89, v91, array, obj, v97, v99, v101, v103, v105, v107, v109, v111, v113, v115, v117, v119, v121, v123, v125, v127, v129, v131, v132, v134, v135, v137, v138, v140, v141, v143, v145, v147, v149, v151, v153, v155, v157, v159, v161, v163, v165, v167, v169, v171, 0);
     if (v17)
     {
       v18 = v17;
@@ -525,7 +525,7 @@ void __126__FigObjectDetectionMetadataGenerator__detectObjectsWithPixelBufferInO
                     }
 
                     v47 = *(8 * i);
-                    v48 = [v47 confidence];
+                    confidence = [v47 confidence];
                     if (v56 > v45)
                     {
                       [v47 confidence];
@@ -536,7 +536,7 @@ void __126__FigObjectDetectionMetadataGenerator__detectObjectsWithPixelBufferInO
                     }
                   }
 
-                  v42 = OUTLINED_FUNCTION_22_24(v48, v49, v50, v51, v52, v53, v54, v55, v74, v76, *&v78, v80, v82, v84, v86, v88, v90, v92, v94, obja, v98, v100, v102, v104, v106, v108, v110, v112, v114, v116, v118, v120, v122, v124, v126, v128, v130);
+                  v42 = OUTLINED_FUNCTION_22_24(confidence, v49, v50, v51, v52, v53, v54, v55, v74, v76, *&v78, v80, v82, v84, v86, v88, v90, v92, v94, obja, v98, v100, v102, v104, v106, v108, v110, v112, v114, v116, v118, v120, v122, v124, v126, v128, v130);
                 }
 
                 while (v42);
@@ -548,15 +548,15 @@ void __126__FigObjectDetectionMetadataGenerator__detectObjectsWithPixelBufferInO
                 v45 = 0.0;
               }
 
-              v58 = [v21 faceTrackingRequest];
+              faceTrackingRequest = [v21 faceTrackingRequest];
               if (v45 <= v78)
               {
-                [v58 setLastFrame:1];
+                [faceTrackingRequest setLastFrame:1];
               }
 
               else
               {
-                [v58 setInputObservation:v43];
+                [faceTrackingRequest setInputObservation:v43];
               }
 
               v19 = v32;
@@ -672,9 +672,9 @@ void __126__FigObjectDetectionMetadataGenerator__detectObjectsWithPixelBufferInO
     }
 
     [v0 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", v8), *off_1E798B780}];
-    v73 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v9 = [v0 setObject:? forKeyedSubscript:?];
-    v17 = OUTLINED_FUNCTION_21_29(v9, v10, v11, v12, v13, v14, v15, v16, v61, v63, v65, v67, v69, v71, v73, obj, v77, v79, v81, v83, v85, v87, v89, v91, v93, v95, v97, v99, v101, v103, v105, v107, v109, v111, v112, v114, v115, v117, v118, v120, v121, v123, v125, v127, v129, v131, v133, v135, v137, v139, v141, v143, v145, v147, v149, v151, 0);
+    v17 = OUTLINED_FUNCTION_21_29(v9, v10, v11, v12, v13, v14, v15, v16, v61, v63, v65, v67, v69, v71, array, obj, v77, v79, v81, v83, v85, v87, v89, v91, v93, v95, v97, v99, v101, v103, v105, v107, v109, v111, v112, v114, v115, v117, v118, v120, v121, v123, v125, v127, v129, v131, v133, v135, v137, v139, v141, v143, v145, v147, v149, v151, 0);
     if (v17)
     {
       v18 = v17;
@@ -697,9 +697,9 @@ void __126__FigObjectDetectionMetadataGenerator__detectObjectsWithPixelBufferInO
           v22 = [objc_msgSend(v21 "humanTrackingRequest")];
           if ((v22 & 1) == 0)
           {
-            v30 = [MEMORY[0x1E695DF90] dictionary];
-            [v74 addObject:v30];
-            [v30 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLongLong:", objc_msgSend(v21, "humanBodyID")), v72}];
+            dictionary = [MEMORY[0x1E695DF90] dictionary];
+            [v74 addObject:dictionary];
+            [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLongLong:", objc_msgSend(v21, "humanBodyID")), v72}];
             v31 = [objc_msgSend(v21 "humanTrackingRequest")];
             if (v31)
             {
@@ -727,7 +727,7 @@ void __126__FigObjectDetectionMetadataGenerator__detectObjectsWithPixelBufferInO
                     }
 
                     v47 = *(8 * j);
-                    v48 = [v47 confidence];
+                    confidence = [v47 confidence];
                     if (v56 > v45)
                     {
                       [v47 confidence];
@@ -738,7 +738,7 @@ void __126__FigObjectDetectionMetadataGenerator__detectObjectsWithPixelBufferInO
                     }
                   }
 
-                  v42 = OUTLINED_FUNCTION_23_23(v48, v49, v50, v51, v52, v53, v54, v55, v62, v64, v66, v68, v70, v72, v74, obja, v78, v80, v82, v84, v86, v88, v90, v92, v94, v96, v98, v100, v102, v104, v106, v108, v110);
+                  v42 = OUTLINED_FUNCTION_23_23(confidence, v49, v50, v51, v52, v53, v54, v55, v62, v64, v66, v68, v70, v72, v74, obja, v78, v80, v82, v84, v86, v88, v90, v92, v94, v96, v98, v100, v102, v104, v106, v108, v110);
                 }
 
                 while (v42);
@@ -750,15 +750,15 @@ void __126__FigObjectDetectionMetadataGenerator__detectObjectsWithPixelBufferInO
                 v45 = 0.0;
               }
 
-              v58 = [v21 humanTrackingRequest];
+              humanTrackingRequest = [v21 humanTrackingRequest];
               if (v45 <= 0.3)
               {
-                [v58 setLastFrame:1];
+                [humanTrackingRequest setLastFrame:1];
               }
 
               else
               {
-                [v58 setInputObservation:v43];
+                [humanTrackingRequest setInputObservation:v43];
               }
 
               v19 = v66;
@@ -776,9 +776,9 @@ void __126__FigObjectDetectionMetadataGenerator__detectObjectsWithPixelBufferInO
             v154.size.width = v2;
             v154.size.height = v3;
             DictionaryRepresentation = CGRectCreateDictionaryRepresentation(v154);
-            [v30 setObject:CFAutorelease(DictionaryRepresentation) forKeyedSubscript:v70];
+            [dictionary setObject:CFAutorelease(DictionaryRepresentation) forKeyedSubscript:v70];
             *&v60 = OUTLINED_FUNCTION_17_31();
-            v22 = [v30 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", v60), v68}];
+            v22 = [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", v60), v68}];
           }
         }
 
@@ -799,7 +799,7 @@ void __126__FigObjectDetectionMetadataGenerator__detectObjectsWithPixelBufferInO
   if (v6)
   {
     OUTLINED_FUNCTION_11_46();
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v8 = [v1 count];
     v9 = [v0 count];
     if (v9)
@@ -860,7 +860,7 @@ void __126__FigObjectDetectionMetadataGenerator__detectObjectsWithPixelBufferInO
             v23 = [OUTLINED_FUNCTION_16_37() initWithHumanObservation:? humanBodyID:? time:?];
           }
 
-          [v7 addObject:v23];
+          [array addObject:v23];
         }
 
         OUTLINED_FUNCTION_18_29();
@@ -880,7 +880,7 @@ void __126__FigObjectDetectionMetadataGenerator__detectObjectsWithPixelBufferInO
   if (v6)
   {
     OUTLINED_FUNCTION_11_46();
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v8 = [v1 count];
     v9 = [v0 count];
     if (v9)
@@ -941,7 +941,7 @@ void __126__FigObjectDetectionMetadataGenerator__detectObjectsWithPixelBufferInO
             v23 = [OUTLINED_FUNCTION_16_37() initWithFaceObservation:? faceID:? time:?];
           }
 
-          [v7 addObject:v23];
+          [array addObject:v23];
         }
 
         OUTLINED_FUNCTION_18_29();

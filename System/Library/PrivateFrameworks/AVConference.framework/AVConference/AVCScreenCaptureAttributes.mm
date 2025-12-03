@@ -1,12 +1,12 @@
 @interface AVCScreenCaptureAttributes
-- (AVCScreenCaptureAttributes)initWithConfiguration:(id)a3;
+- (AVCScreenCaptureAttributes)initWithConfiguration:(id)configuration;
 - (CGRect)contentRect;
 - (void)dealloc;
 @end
 
 @implementation AVCScreenCaptureAttributes
 
-- (AVCScreenCaptureAttributes)initWithConfiguration:(id)a3
+- (AVCScreenCaptureAttributes)initWithConfiguration:(id)configuration
 {
   v26 = *MEMORY[0x1E69E9840];
   v20.receiver = self;
@@ -32,7 +32,7 @@
         *&buf[22] = 1024;
         *&buf[24] = 22;
         *&buf[28] = 2112;
-        *&buf[30] = a3;
+        *&buf[30] = configuration;
         v8 = " [%s] %s:%d configuration=%@";
         v9 = v7;
         v10 = 38;
@@ -71,7 +71,7 @@ LABEL_12:
         v22 = 2048;
         v23 = v4;
         v24 = 2112;
-        v25 = a3;
+        configurationCopy = configuration;
         v8 = " [%s] %s:%d %@(%p) configuration=%@";
         v9 = v12;
         v10 = 58;
@@ -80,7 +80,7 @@ LABEL_12:
     }
   }
 
-  v13 = [a3 objectForKey:@"vcScreenCaptureAttributesStreamType"];
+  v13 = [configuration objectForKey:@"vcScreenCaptureAttributesStreamType"];
   if (!v13)
   {
     [AVCScreenCaptureAttributes initWithConfiguration:];
@@ -90,7 +90,7 @@ LABEL_24:
   }
 
   *(v4 + 2) = [v13 integerValue];
-  v14 = [a3 objectForKey:@"vcScreenCaptureAttributesPixelScale"];
+  v14 = [configuration objectForKey:@"vcScreenCaptureAttributesPixelScale"];
   if (!v14)
   {
     [AVCScreenCaptureAttributes initWithConfiguration:];
@@ -99,7 +99,7 @@ LABEL_24:
 
   [v14 floatValue];
   *(v4 + 2) = v15;
-  v16 = [a3 objectForKey:@"vcScreenCaptureAttributesContentsRect"];
+  v16 = [configuration objectForKey:@"vcScreenCaptureAttributesContentsRect"];
   if (!v16)
   {
     [AVCScreenCaptureAttributes initWithConfiguration:];
@@ -117,7 +117,7 @@ LABEL_24:
     return v4;
   }
 
-  v18 = [a3 objectForKey:@"vcScreenCaptureAttributesDisplayID"];
+  v18 = [configuration objectForKey:@"vcScreenCaptureAttributesDisplayID"];
   if (!v18)
   {
     [AVCScreenCaptureAttributes initWithConfiguration:];
@@ -181,7 +181,7 @@ LABEL_11:
         v18 = 2112;
         v19 = v3;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;

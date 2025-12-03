@@ -9,9 +9,9 @@
 - (BOOL)isTrue
 {
   v2 = +[MNNavdStateUpdater sharedUpdater];
-  v3 = [v2 isNavigatingWithETA];
+  isNavigatingWithETA = [v2 isNavigatingWithETA];
 
-  return v3 ^ 1;
+  return isNavigatingWithETA ^ 1;
 }
 
 - (NavdAvocadoNavigationSessionTrigger)init

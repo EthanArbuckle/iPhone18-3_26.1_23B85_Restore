@@ -1,25 +1,25 @@
 @interface UISSlotMachine
 + (id)allowedLocalizations;
 - (NSSet)allTags;
-- (UISSlotMachine)initWithSlotDrawer:(id)a3 options:(unint64_t)a4;
-- (id)remoteContentForLayerContextWithId:(unint64_t)a3 style:(id)a4 tag:(id)a5;
-- (void)_getRemoteContentForLayerContextWithId:(unint64_t)a3 style:(id)a4 tag:(id)a5 forceSync:(BOOL)a6 reply:(id)a7;
-- (void)removeContentForStyle:(id)a3 tag:(id)a4;
-- (void)removeContentsForTag:(id)a3;
+- (UISSlotMachine)initWithSlotDrawer:(id)drawer options:(unint64_t)options;
+- (id)remoteContentForLayerContextWithId:(unint64_t)id style:(id)style tag:(id)tag;
+- (void)_getRemoteContentForLayerContextWithId:(unint64_t)id style:(id)style tag:(id)tag forceSync:(BOOL)sync reply:(id)reply;
+- (void)removeContentForStyle:(id)style tag:(id)tag;
+- (void)removeContentsForTag:(id)tag;
 @end
 
 @implementation UISSlotMachine
 
-- (UISSlotMachine)initWithSlotDrawer:(id)a3 options:(unint64_t)a4
+- (UISSlotMachine)initWithSlotDrawer:(id)drawer options:(unint64_t)options
 {
-  v8 = a3;
+  drawerCopy = drawer;
   v25.receiver = self;
   v25.super_class = UISSlotMachine;
   v9 = [(UISSlotMachine *)&v25 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_slotDrawer, a3);
+    objc_storeStrong(&v9->_slotDrawer, drawer);
     v11 = objc_opt_respondsToSelector();
     if (objc_opt_respondsToSelector())
     {
@@ -42,8 +42,8 @@
     v16 = v13 | v15;
     if (v16 > 5 || ((1 << v16) & 0x36) == 0)
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v24 handleFailureInMethod:a2 object:v10 file:@"UISSlotMachine.m" lineNumber:75 description:@"Unsupported drawer method configuration."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v10 file:@"UISSlotMachine.m" lineNumber:75 description:@"Unsupported drawer method configuration."];
     }
 
     else
@@ -51,7 +51,7 @@
       v10->_slotDrawerMethod = v16;
     }
 
-    v10->_options = a4;
+    v10->_options = options;
     *&v10->_cachedContentsLock._os_unfair_lock_opaque = 0;
     v10->_LRUTagsByClassLock._os_unfair_lock_opaque = 0;
     v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -61,7 +61,7 @@
     layerContext = v10->_layerContext;
     v10->_layerContext = 0;
 
-    if ((a4 & 2) != 0)
+    if ((options & 2) != 0)
     {
       v21 = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:258 valueOptions:0 capacity:0];
       LRUTagsByClass = v10->_LRUTagsByClass;
@@ -110,32 +110,32 @@ void __38__UISSlotMachine_allowedLocalizations__block_invoke()
 - (NSSet)allTags
 {
   v3 = objc_alloc(MEMORY[0x1E695DFD8]);
-  v4 = [(NSMutableDictionary *)self->_cachedContents allKeys];
-  v5 = [v3 initWithArray:v4];
+  allKeys = [(NSMutableDictionary *)self->_cachedContents allKeys];
+  v5 = [v3 initWithArray:allKeys];
 
   return v5;
 }
 
-- (void)_getRemoteContentForLayerContextWithId:(unint64_t)a3 style:(id)a4 tag:(id)a5 forceSync:(BOOL)a6 reply:(id)a7
+- (void)_getRemoteContentForLayerContextWithId:(unint64_t)id style:(id)style tag:(id)tag forceSync:(BOOL)sync reply:(id)reply
 {
-  v45 = a6;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  syncCopy = sync;
+  styleCopy = style;
+  tagCopy = tag;
+  replyCopy = reply;
   v62[0] = MEMORY[0x1E69E9820];
   v62[1] = 3221225472;
   v62[2] = __83__UISSlotMachine__getRemoteContentForLayerContextWithId_style_tag_forceSync_reply___block_invoke;
   v62[3] = &unk_1E74592E8;
-  v15 = v14;
+  v15 = replyCopy;
   v63 = v15;
   v16 = MEMORY[0x19A8C69E0](v62);
-  if (!a3)
+  if (!id)
   {
-    v44 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v44 handleFailureInMethod:a2 object:self file:@"UISSlotMachine.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"layerContextId"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISSlotMachine.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"layerContextId"}];
   }
 
-  v17 = [v13 failGradeForStyle:v12];
+  v17 = [tagCopy failGradeForStyle:styleCopy];
   if (v17)
   {
     v18 = v17;
@@ -149,13 +149,13 @@ void __38__UISSlotMachine_allowedLocalizations__block_invoke()
       [MEMORY[0x1E695DFD8] set];
     }
     v19 = ;
-    if ([v12 gradeWithOnlyFails:v18 allowedLocalizations:v19])
+    if ([styleCopy gradeWithOnlyFails:v18 allowedLocalizations:v19])
     {
       v16[2](v16, 0);
     }
   }
 
-  if (([v13 isValid] & 1) == 0)
+  if (([tagCopy isValid] & 1) == 0)
   {
     v16[2](v16, 0);
   }
@@ -164,15 +164,15 @@ void __38__UISSlotMachine_allowedLocalizations__block_invoke()
   v21 = v20;
   if ((self->_options & 2) != 0)
   {
-    v22 = [v20 cacheLimit];
+    cacheLimit = [v20 cacheLimit];
   }
 
   else
   {
-    v22 = -1;
+    cacheLimit = -1;
   }
 
-  v23 = [v13 resolvedStyleForStyle:v12];
+  v23 = [tagCopy resolvedStyleForStyle:styleCopy];
   objc_initWeak(&location, self);
   v53[0] = MEMORY[0x1E69E9820];
   v53[1] = 3221225472;
@@ -181,21 +181,21 @@ void __38__UISSlotMachine_allowedLocalizations__block_invoke()
   objc_copyWeak(v60, &location);
   v24 = v16;
   v58 = v24;
-  v25 = v13;
+  v25 = tagCopy;
   v54 = v25;
   v26 = v23;
   v55 = v26;
-  v56 = self;
+  selfCopy = self;
   v60[1] = a2;
-  v60[2] = a3;
-  v46 = v12;
+  v60[2] = id;
+  v46 = styleCopy;
   v57 = v46;
-  v60[3] = v22;
+  v60[3] = cacheLimit;
   v60[4] = v21;
   v27 = v15;
   v59 = v27;
   v28 = MEMORY[0x19A8C69E0](v53);
-  if (v22)
+  if (cacheLimit)
   {
     os_unfair_lock_lock(&self->_cachedContentsLock);
     v29 = [(NSMutableDictionary *)self->_cachedContents objectForKeyedSubscript:v25];
@@ -242,8 +242,8 @@ void __38__UISSlotMachine_allowedLocalizations__block_invoke()
       if (slotDrawerMethod != 5)
       {
 LABEL_28:
-        v34 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v34 handleFailureInMethod:a2 object:self file:@"UISSlotMachine.m" lineNumber:279 description:@"Unsupported drawer method configuration."];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"UISSlotMachine.m" lineNumber:279 description:@"Unsupported drawer method configuration."];
 LABEL_31:
         v30 = 0;
 LABEL_32:
@@ -255,8 +255,8 @@ LABEL_32:
       if (v35)
       {
 LABEL_30:
-        v34 = +[UISSlotLocalContent contentWithImage:scale:](UISSlotLocalContent, "contentWithImage:scale:", v35, [v26 displayScale]);
-        (v28)[2](v28, v34, v22 != 0);
+        currentHandler2 = +[UISSlotLocalContent contentWithImage:scale:](UISSlotLocalContent, "contentWithImage:scale:", v35, [v26 displayScale]);
+        (v28)[2](v28, currentHandler2, cacheLimit != 0);
         goto LABEL_31;
       }
 
@@ -271,8 +271,8 @@ LABEL_30:
           if (v42 > 0.0)
           {
 LABEL_37:
-            v34 = [UISSlotLocalContent contentWithDrawing:v30 style:v26];
-            (v28)[2](v28, v34, v22 != 0);
+            currentHandler2 = [UISSlotLocalContent contentWithDrawing:v30 style:v26];
+            (v28)[2](v28, currentHandler2, cacheLimit != 0);
             goto LABEL_32;
           }
         }
@@ -294,10 +294,10 @@ LABEL_37:
   {
     if (slotDrawerMethod == 2)
     {
-      if (v45)
+      if (syncCopy)
       {
-        v32 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v32 handleFailureInMethod:a2 object:self file:@"UISSlotMachine.m" lineNumber:286 description:@"Cannot synchronously create local content with asynchronous image drawer method."];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler3 handleFailureInMethod:a2 object:self file:@"UISSlotMachine.m" lineNumber:286 description:@"Cannot synchronously create local content with asynchronous image drawer method."];
       }
 
       slotDrawer = self->_slotDrawer;
@@ -307,12 +307,12 @@ LABEL_37:
       v47[3] = &unk_1E7459338;
       v49 = v28;
       v48 = v26;
-      v51 = v22 != 0;
+      v51 = cacheLimit != 0;
       v50 = v24;
       [(UISSlotDrawer *)slotDrawer getImageWithStyle:v48 tag:v25 forRemote:1 reply:v47];
 
       v30 = 0;
-      v34 = v49;
+      currentHandler2 = v49;
       goto LABEL_32;
     }
 
@@ -482,10 +482,10 @@ void __83__UISSlotMachine__getRemoteContentForLayerContextWithId_style_tag_force
   }
 }
 
-- (id)remoteContentForLayerContextWithId:(unint64_t)a3 style:(id)a4 tag:(id)a5
+- (id)remoteContentForLayerContextWithId:(unint64_t)id style:(id)style tag:(id)tag
 {
-  v8 = a4;
-  v9 = a5;
+  styleCopy = style;
+  tagCopy = tag;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -497,33 +497,33 @@ void __83__UISSlotMachine__getRemoteContentForLayerContextWithId_style_tag_force
   v12[2] = __63__UISSlotMachine_remoteContentForLayerContextWithId_style_tag___block_invoke;
   v12[3] = &unk_1E7459360;
   v12[4] = &v13;
-  [(UISSlotMachine *)self _getRemoteContentForLayerContextWithId:a3 style:v8 tag:v9 forceSync:1 reply:v12];
+  [(UISSlotMachine *)self _getRemoteContentForLayerContextWithId:id style:styleCopy tag:tagCopy forceSync:1 reply:v12];
   v10 = v14[5];
   _Block_object_dispose(&v13, 8);
 
   return v10;
 }
 
-- (void)removeContentForStyle:(id)a3 tag:(id)a4
+- (void)removeContentForStyle:(id)style tag:(id)tag
 {
-  v8 = a4;
-  v6 = [v8 resolvedStyleForStyle:a3];
+  tagCopy = tag;
+  v6 = [tagCopy resolvedStyleForStyle:style];
   os_unfair_lock_lock(&self->_cachedContentsLock);
-  v7 = [(NSMutableDictionary *)self->_cachedContents objectForKeyedSubscript:v8];
+  v7 = [(NSMutableDictionary *)self->_cachedContents objectForKeyedSubscript:tagCopy];
   [v7 removeObjectForKey:v6];
   if (![v7 count])
   {
-    [(NSMutableDictionary *)self->_cachedContents removeObjectForKey:v8];
+    [(NSMutableDictionary *)self->_cachedContents removeObjectForKey:tagCopy];
   }
 
   os_unfair_lock_unlock(&self->_cachedContentsLock);
 }
 
-- (void)removeContentsForTag:(id)a3
+- (void)removeContentsForTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   os_unfair_lock_lock(&self->_cachedContentsLock);
-  [(NSMutableDictionary *)self->_cachedContents removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_cachedContents removeObjectForKey:tagCopy];
 
   os_unfair_lock_unlock(&self->_cachedContentsLock);
 }

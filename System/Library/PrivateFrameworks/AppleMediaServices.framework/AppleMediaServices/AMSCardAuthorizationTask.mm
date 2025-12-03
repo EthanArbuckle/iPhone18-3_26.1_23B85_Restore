@@ -1,21 +1,21 @@
 @interface AMSCardAuthorizationTask
-- (AMSCardAuthorizationTask)initWithPaymentSession:(id)a3;
+- (AMSCardAuthorizationTask)initWithPaymentSession:(id)session;
 - (id)_metricsTimestamp;
 - (id)_metricsUserActionDictionary;
-- (id)_presentPaymentRequest:(id)a3;
+- (id)_presentPaymentRequest:(id)request;
 - (id)performCardAuthorization;
 - (void)_metricsPost;
-- (void)paymentAuthorizationController:(id)a3 didAuthorizePayment:(id)a4 handler:(id)a5;
-- (void)paymentAuthorizationController:(id)a3 didEncounterAuthorizationEvent:(unint64_t)a4;
-- (void)paymentAuthorizationController:(id)a3 willFinishWithError:(id)a4;
-- (void)paymentAuthorizationControllerDidFinish:(id)a3;
+- (void)paymentAuthorizationController:(id)controller didAuthorizePayment:(id)payment handler:(id)handler;
+- (void)paymentAuthorizationController:(id)controller didEncounterAuthorizationEvent:(unint64_t)event;
+- (void)paymentAuthorizationController:(id)controller willFinishWithError:(id)error;
+- (void)paymentAuthorizationControllerDidFinish:(id)finish;
 @end
 
 @implementation AMSCardAuthorizationTask
 
-- (AMSCardAuthorizationTask)initWithPaymentSession:(id)a3
+- (AMSCardAuthorizationTask)initWithPaymentSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v11.receiver = self;
   v11.super_class = AMSCardAuthorizationTask;
   v6 = [(AMSTask *)&v11 init];
@@ -24,7 +24,7 @@
   {
     v6->_didBiometricsLockout = 0;
     v6->_didCancelHomeButton = 0;
-    objc_storeStrong(&v6->_paymentSession, a3);
+    objc_storeStrong(&v6->_paymentSession, session);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     userActions = v7->_userActions;
     v7->_userActions = v8;
@@ -342,9 +342,9 @@ LABEL_45:
 - (void)_metricsPost
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = [(AMSCardAuthorizationTask *)self metricsEvent];
+  metricsEvent = [(AMSCardAuthorizationTask *)self metricsEvent];
 
-  if (!v2)
+  if (!metricsEvent)
   {
     v3 = +[AMSLogConfig sharedConfig];
     if (!v3)
@@ -352,8 +352,8 @@ LABEL_45:
       v3 = +[AMSLogConfig sharedConfig];
     }
 
-    v4 = [v3 OSLogObject];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v3 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v5 = objc_opt_class();
       v6 = v5;
@@ -362,15 +362,15 @@ LABEL_45:
       v9 = v5;
       v10 = 2114;
       v11 = v7;
-      _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Metrics post failed for no metrics event", &v8, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Metrics post failed for no metrics event", &v8, 0x16u);
     }
   }
 }
 
 - (id)_metricsTimestamp
 {
-  v2 = [MEMORY[0x1E695DF00] date];
-  [v2 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v4 = v3;
 
   v5 = MEMORY[0x1E696AEC0];
@@ -383,8 +383,8 @@ LABEL_45:
 - (id)_metricsUserActionDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(AMSCardAuthorizationTask *)self _metricsTimestamp];
-  [v3 setObject:v4 forKeyedSubscript:@"responseTime"];
+  _metricsTimestamp = [(AMSCardAuthorizationTask *)self _metricsTimestamp];
+  [v3 setObject:_metricsTimestamp forKeyedSubscript:@"responseTime"];
 
   if ([(AMSCardAuthorizationTask *)self didBiometricsLockout])
   {
@@ -394,9 +394,9 @@ LABEL_45:
   return v3;
 }
 
-- (id)_presentPaymentRequest:(id)a3
+- (id)_presentPaymentRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_initWeak(&location, self);
   v5 = [AMSMutableLazyPromise alloc];
   v9[0] = MEMORY[0x1E69E9820];
@@ -404,7 +404,7 @@ LABEL_45:
   v9[2] = __51__AMSCardAuthorizationTask__presentPaymentRequest___block_invoke;
   v9[3] = &unk_1E73B5678;
   objc_copyWeak(&v11, &location);
-  v6 = v4;
+  v6 = requestCopy;
   v10 = v6;
   v7 = [(AMSMutableLazyPromise *)v5 initWithBlock:v9];
 
@@ -481,11 +481,11 @@ void __51__AMSCardAuthorizationTask__presentPaymentRequest___block_invoke_2(uint
   }
 }
 
-- (void)paymentAuthorizationControllerDidFinish:(id)a3
+- (void)paymentAuthorizationControllerDidFinish:(id)finish
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AMSCardAuthorizationTask *)self payment];
+  finishCopy = finish;
+  payment = [(AMSCardAuthorizationTask *)self payment];
 
   v6 = +[AMSLogConfig sharedConfig];
   if (!v6)
@@ -493,10 +493,10 @@ void __51__AMSCardAuthorizationTask__presentPaymentRequest___block_invoke_2(uint
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = v5 == 0;
+    v8 = payment == 0;
     v9 = objc_opt_class();
     v10 = v9;
     v11 = AMSSetLogKeyIfNeeded();
@@ -513,7 +513,7 @@ void __51__AMSCardAuthorizationTask__presentPaymentRequest___block_invoke_2(uint
     v19 = v11;
     v20 = 2112;
     v21 = v13;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] paymentAuthorizationControllerDidFinish: Card authorization did finish with payment: %@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] paymentAuthorizationControllerDidFinish: Card authorization did finish with payment: %@", buf, 0x20u);
   }
 
   objc_initWeak(buf, self);
@@ -522,8 +522,8 @@ void __51__AMSCardAuthorizationTask__presentPaymentRequest___block_invoke_2(uint
   v14[2] = __68__AMSCardAuthorizationTask_paymentAuthorizationControllerDidFinish___block_invoke;
   v14[3] = &unk_1E73B4418;
   objc_copyWeak(&v15, buf);
-  [v4 dismissWithCompletion:v14];
-  [v4 setDelegate:0];
+  [finishCopy dismissWithCompletion:v14];
+  [finishCopy setDelegate:0];
   objc_destroyWeak(&v15);
   objc_destroyWeak(buf);
 }
@@ -535,19 +535,19 @@ void __68__AMSCardAuthorizationTask_paymentAuthorizationControllerDidFinish___bl
   [v1 finishWithSuccess];
 }
 
-- (void)paymentAuthorizationController:(id)a3 didAuthorizePayment:(id)a4 handler:(id)a5
+- (void)paymentAuthorizationController:(id)controller didAuthorizePayment:(id)payment handler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  paymentCopy = payment;
+  handlerCopy = handler;
   v9 = +[AMSLogConfig sharedConfig];
   if (!v9)
   {
     v9 = +[AMSLogConfig sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v11 = objc_opt_class();
     v12 = v11;
@@ -557,7 +557,7 @@ void __68__AMSCardAuthorizationTask_paymentAuthorizationControllerDidFinish___bl
     *buf = 138543874;
     v22 = v11;
     v23 = 2114;
-    if (!v7)
+    if (!paymentCopy)
     {
       v15 = @"NO";
     }
@@ -565,11 +565,11 @@ void __68__AMSCardAuthorizationTask_paymentAuthorizationControllerDidFinish___bl
     v24 = v13;
     v25 = 2114;
     v26 = v15;
-    _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] paymentAuthorizationControllerDidFinish: Did finish with payment? %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] paymentAuthorizationControllerDidFinish: Did finish with payment? %{public}@", buf, 0x20u);
   }
 
-  [(AMSCardAuthorizationTask *)self setPayment:v7];
-  if (v7)
+  [(AMSCardAuthorizationTask *)self setPayment:paymentCopy];
+  if (paymentCopy)
   {
     v16 = [objc_alloc(getPKPaymentAuthorizationResultClass_0[0]()) initWithStatus:0 errors:0];
   }
@@ -583,10 +583,10 @@ void __68__AMSCardAuthorizationTask_paymentAuthorizationControllerDidFinish___bl
     v16 = [v18 initWithStatus:1 errors:v19];
   }
 
-  v8[2](v8, v16);
+  handlerCopy[2](handlerCopy, v16);
 }
 
-- (void)paymentAuthorizationController:(id)a3 didEncounterAuthorizationEvent:(unint64_t)a4
+- (void)paymentAuthorizationController:(id)controller didEncounterAuthorizationEvent:(unint64_t)event
 {
   v26 = *MEMORY[0x1E69E9840];
   v6 = +[AMSLogConfig sharedConfig];
@@ -595,42 +595,42 @@ void __68__AMSCardAuthorizationTask_paymentAuthorizationControllerDidFinish___bl
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
     v9 = v8;
     v10 = AMSSetLogKeyIfNeeded();
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:event];
     v20 = 138543874;
     v21 = v8;
     v22 = 2114;
     v23 = v10;
     v24 = 2114;
     v25 = v11;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Did encounter authorization event: %{public}@", &v20, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Did encounter authorization event: %{public}@", &v20, 0x20u);
   }
 
-  if (a4 > 4)
+  if (event > 4)
   {
-    if (a4 > 6)
+    if (event > 6)
     {
-      if (a4 == 7)
+      if (event == 7)
       {
-        v15 = [(AMSCardAuthorizationTask *)self _metricsUserActionDictionary];
-        v13 = v15;
+        _metricsUserActionDictionary = [(AMSCardAuthorizationTask *)self _metricsUserActionDictionary];
+        _metricsUserActionDictionary2 = _metricsUserActionDictionary;
         v16 = @"enterPasswordPressed";
       }
 
       else
       {
-        if (a4 != 8)
+        if (event != 8)
         {
           return;
         }
 
-        v15 = [(AMSCardAuthorizationTask *)self _metricsUserActionDictionary];
-        v13 = v15;
+        _metricsUserActionDictionary = [(AMSCardAuthorizationTask *)self _metricsUserActionDictionary];
+        _metricsUserActionDictionary2 = _metricsUserActionDictionary;
         v16 = @"enterPasswordCancelled";
       }
 
@@ -639,47 +639,47 @@ void __68__AMSCardAuthorizationTask_paymentAuthorizationControllerDidFinish___bl
 
     else
     {
-      if (a4 != 5)
+      if (event != 5)
       {
         [(AMSCardAuthorizationTask *)self setDidCancelHomeButton:1];
         return;
       }
 
-      v13 = [(AMSCardAuthorizationTask *)self _metricsUserActionDictionary];
-      [v13 setObject:@"invalidCredentials" forKeyedSubscript:@"reason"];
+      _metricsUserActionDictionary2 = [(AMSCardAuthorizationTask *)self _metricsUserActionDictionary];
+      [_metricsUserActionDictionary2 setObject:@"invalidCredentials" forKeyedSubscript:@"reason"];
       v16 = @"failure";
       v18 = @"result";
-      v15 = v13;
+      _metricsUserActionDictionary = _metricsUserActionDictionary2;
     }
 
-    [v15 setObject:v16 forKeyedSubscript:v18];
+    [_metricsUserActionDictionary setObject:v16 forKeyedSubscript:v18];
     v17 = @"authenticate";
   }
 
-  else if (a4 > 2)
+  else if (event > 2)
   {
-    v12 = [(AMSCardAuthorizationTask *)self _metricsUserActionDictionary];
-    if (a4 == 3)
+    _metricsUserActionDictionary3 = [(AMSCardAuthorizationTask *)self _metricsUserActionDictionary];
+    if (event == 3)
     {
-      v13 = v12;
+      _metricsUserActionDictionary2 = _metricsUserActionDictionary3;
       v14 = @"open";
     }
 
     else
     {
-      v13 = v12;
+      _metricsUserActionDictionary2 = _metricsUserActionDictionary3;
       v14 = @"cancel";
     }
 
-    [v12 setObject:v14 forKeyedSubscript:@"actionType"];
+    [_metricsUserActionDictionary3 setObject:v14 forKeyedSubscript:@"actionType"];
     v17 = @"IForgot";
   }
 
   else
   {
-    if (a4 != 1)
+    if (event != 1)
     {
-      if (a4 == 2)
+      if (event == 2)
       {
         [(AMSCardAuthorizationTask *)self setDidBiometricsLockout:1];
       }
@@ -687,15 +687,15 @@ void __68__AMSCardAuthorizationTask_paymentAuthorizationControllerDidFinish___bl
       return;
     }
 
-    v13 = [(AMSCardAuthorizationTask *)self _metricsUserActionDictionary];
-    [v13 setObject:@"authenticate" forKeyedSubscript:@"actionType"];
-    [v13 setObject:@"invalidCredentials" forKeyedSubscript:@"reason"];
-    [v13 setObject:@"failure" forKeyedSubscript:@"result"];
+    _metricsUserActionDictionary2 = [(AMSCardAuthorizationTask *)self _metricsUserActionDictionary];
+    [_metricsUserActionDictionary2 setObject:@"authenticate" forKeyedSubscript:@"actionType"];
+    [_metricsUserActionDictionary2 setObject:@"invalidCredentials" forKeyedSubscript:@"reason"];
+    [_metricsUserActionDictionary2 setObject:@"failure" forKeyedSubscript:@"result"];
     v17 = @"Biometric";
   }
 
-  [v13 setObject:v17 forKeyedSubscript:@"targetId"];
-  v19 = [v13 copy];
+  [_metricsUserActionDictionary2 setObject:v17 forKeyedSubscript:@"targetId"];
+  v19 = [_metricsUserActionDictionary2 copy];
 
   if (v19)
   {
@@ -703,19 +703,19 @@ void __68__AMSCardAuthorizationTask_paymentAuthorizationControllerDidFinish___bl
   }
 }
 
-- (void)paymentAuthorizationController:(id)a3 willFinishWithError:(id)a4
+- (void)paymentAuthorizationController:(id)controller willFinishWithError:(id)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  errorCopy = error;
+  controllerCopy = controller;
   v7 = +[AMSLogConfig sharedConfig];
   if (!v7)
   {
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v9 = objc_opt_class();
     v10 = v9;
@@ -725,11 +725,11 @@ void __68__AMSCardAuthorizationTask_paymentAuthorizationControllerDidFinish___bl
     v14 = 2114;
     v15 = v11;
     v16 = 2114;
-    v17 = v5;
-    _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Payment sheet will finish with error: %{public}@", &v12, 0x20u);
+    v17 = errorCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Payment sheet will finish with error: %{public}@", &v12, 0x20u);
   }
 
-  [v6 setPrivateDelegate:0];
+  [controllerCopy setPrivateDelegate:0];
 }
 
 @end

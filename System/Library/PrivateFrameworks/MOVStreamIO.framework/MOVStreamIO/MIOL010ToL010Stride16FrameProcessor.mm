@@ -1,13 +1,13 @@
 @interface MIOL010ToL010Stride16FrameProcessor
-- (BOOL)buffer:(__CVBuffer *)a3 needsAlignmentTo:(unint64_t)a4;
-- (MIOL010ToL010Stride16FrameProcessor)initWithInputFormatDescription:(opaqueCMFormatDescription *)a3;
-- (__CVBuffer)processPixelBuffer:(__CVBuffer *)a3 preserveAttachments:(id)a4 error:(id *)a5;
+- (BOOL)buffer:(__CVBuffer *)buffer needsAlignmentTo:(unint64_t)to;
+- (MIOL010ToL010Stride16FrameProcessor)initWithInputFormatDescription:(opaqueCMFormatDescription *)description;
+- (__CVBuffer)processPixelBuffer:(__CVBuffer *)buffer preserveAttachments:(id)attachments error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation MIOL010ToL010Stride16FrameProcessor
 
-- (MIOL010ToL010Stride16FrameProcessor)initWithInputFormatDescription:(opaqueCMFormatDescription *)a3
+- (MIOL010ToL010Stride16FrameProcessor)initWithInputFormatDescription:(opaqueCMFormatDescription *)description
 {
   v7.receiver = self;
   v7.super_class = MIOL010ToL010Stride16FrameProcessor;
@@ -15,8 +15,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_formatDescForEncoding = a3;
-    CFRetain(a3);
+    v4->_formatDescForEncoding = description;
+    CFRetain(description);
     [(MIOFrameProcessor *)v5 setFormatDescriptionNeedsUpdate:1];
     v5->_needAlignment = 0;
     v5->_firstBufferProcessed = 0;
@@ -38,24 +38,24 @@
   [(MIOFrameProcessor *)&v4 dealloc];
 }
 
-- (BOOL)buffer:(__CVBuffer *)a3 needsAlignmentTo:(unint64_t)a4
+- (BOOL)buffer:(__CVBuffer *)buffer needsAlignmentTo:(unint64_t)to
 {
   v9 = 0;
   extraColumnsOnRight = 0;
-  CVPixelBufferGetExtendedPixels(a3, 0, &extraColumnsOnRight, 0, &v9);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  return (extraColumnsOnRight + Width) % a4 || (v9 + Height) % a4 != 0;
+  CVPixelBufferGetExtendedPixels(buffer, 0, &extraColumnsOnRight, 0, &v9);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  return (extraColumnsOnRight + Width) % to || (v9 + Height) % to != 0;
 }
 
-- (__CVBuffer)processPixelBuffer:(__CVBuffer *)a3 preserveAttachments:(id)a4 error:(id *)a5
+- (__CVBuffer)processPixelBuffer:(__CVBuffer *)buffer preserveAttachments:(id)attachments error:(id *)error
 {
   v34[6] = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  attachmentsCopy = attachments;
   if (!self->_firstBufferProcessed)
   {
     self->_firstBufferProcessed = 1;
-    v9 = [(MIOL010ToL010Stride16FrameProcessor *)self buffer:a3 needsAlignmentTo:16];
+    v9 = [(MIOL010ToL010Stride16FrameProcessor *)self buffer:buffer needsAlignmentTo:16];
     self->_needAlignment = v9;
     if (!v9)
     {
@@ -65,15 +65,15 @@
 
   if (!self->_needAlignment)
   {
-    v22 = [(MIOPixelBufferUtility *)PixelBufferUtility newPixelBufferRefCopy:a3 attachmentKeysToCopy:v8];
+    getPixelBuffer = [(MIOPixelBufferUtility *)PixelBufferUtility newPixelBufferRefCopy:buffer attachmentKeysToCopy:attachmentsCopy];
     goto LABEL_19;
   }
 
   pool = self->_pool;
   if (!pool)
   {
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
     v33[0] = *MEMORY[0x277CC4DB8];
     v28 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{-(Width - ceil(vcvtd_n_f64_u64(Width, 4uLL)) * 16.0)}];
     v34[0] = v28;
@@ -108,10 +108,10 @@
     if (!self->_pool)
     {
       v24 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:@"Cannot create pixel buffer pool for L010 stream." code:19];
-      if (a5)
+      if (error)
       {
         v24 = v24;
-        *a5 = v24;
+        *error = v24;
       }
 
       goto LABEL_18;
@@ -120,33 +120,33 @@
     pool = self->_pool;
   }
 
-  v22 = [(MIOPixelBufferPool *)pool getPixelBuffer];
-  if (!v22)
+  getPixelBuffer = [(MIOPixelBufferPool *)pool getPixelBuffer];
+  if (!getPixelBuffer)
   {
     NSLog(&cfstr_RunningOutOfBu.isa);
     __assert_rtn("[MIOL010ToL010Stride16FrameProcessor processPixelBuffer:preserveAttachments:error:]", "MIOL010ToL010Stride16FrameProcessor.mm", 141, "0");
   }
 
-  if (![MIOPixelBufferUtility copyPixelBuffer:a3 toPixelBuffer:v22])
+  if (![MIOPixelBufferUtility copyPixelBuffer:buffer toPixelBuffer:getPixelBuffer])
   {
-    CVPixelBufferRelease(v22);
-    CVPixelBufferRelease(a3);
+    CVPixelBufferRelease(getPixelBuffer);
+    CVPixelBufferRelease(buffer);
     v23 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:@"Cannot copy L010 to L010 (stride) buffer." code:20];
-    if (a5)
+    if (error)
     {
       v23 = v23;
-      *a5 = v23;
+      *error = v23;
     }
 
 LABEL_18:
-    v22 = 0;
+    getPixelBuffer = 0;
     goto LABEL_19;
   }
 
-  self->_formatDescForEncoding = [(MIOFrameProcessor *)self updatedFormatDescriptionIfNeededWithBuffer:v22 currentFormatDescription:self->_formatDescForEncoding];
+  self->_formatDescForEncoding = [(MIOFrameProcessor *)self updatedFormatDescriptionIfNeededWithBuffer:getPixelBuffer currentFormatDescription:self->_formatDescForEncoding];
 LABEL_19:
 
-  return v22;
+  return getPixelBuffer;
 }
 
 @end

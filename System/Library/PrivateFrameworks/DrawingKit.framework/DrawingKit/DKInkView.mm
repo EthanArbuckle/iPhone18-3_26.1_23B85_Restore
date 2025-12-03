@@ -1,77 +1,77 @@
 @interface DKInkView
-+ (CGVector)normalizeVector:(CGVector)a3;
-+ (double)windowBackingScaleFactor:(id)a3;
++ (CGVector)normalizeVector:(CGVector)vector;
++ (double)windowBackingScaleFactor:(id)factor;
 - (BOOL)_deviceSupportsGL;
 - (BOOL)canvasHasInk;
-- (CGPoint)_velocityForTouch:(id)a3;
+- (CGPoint)_velocityForTouch:(id)touch;
 - (CGPoint)strokeLastLocation;
 - (CGPoint)strokeStartLocation;
 - (CGRect)aggregateInvalid;
 - (CGRect)inkBounds;
 - (CGRect)unionDrawingRect;
-- (DKInkView)initWithCoder:(id)a3;
-- (DKInkView)initWithFrame:(CGRect)a3;
+- (DKInkView)initWithCoder:(id)coder;
+- (DKInkView)initWithFrame:(CGRect)frame;
 - (DKInkViewRenderDelegate)renderPreviewDelegate;
-- (__n128)_vector4ForTouchSettingWeightAndVelocity:(void *)a3 average:(uint64_t)a4;
+- (__n128)_vector4ForTouchSettingWeightAndVelocity:(void *)velocity average:(uint64_t)average;
 - (__n128)lastVectorPoint;
-- (double)weightForTouch:(id)a3;
-- (double)weightForValue:(double)a3;
+- (double)weightForTouch:(id)touch;
+- (double)weightForValue:(double)value;
 - (int64_t)countOfCurrentStroke;
-- (void)_addUninterpolatedPoints:(DKInkView *)self controlPoint:(SEL)a2 count:flushing:;
+- (void)_addUninterpolatedPoints:(DKInkView *)self controlPoint:(SEL)point count:flushing:;
 - (void)_commonInit;
-- (void)_computeAnimationFramesFittingInMaxDuration:(double)a3;
+- (void)_computeAnimationFramesFittingInMaxDuration:(double)duration;
 - (void)_display;
 - (void)_notifyRenderDelegate;
-- (void)_postTouchesBeganNotification:(CGPoint)a3;
-- (void)_postTouchesEndedNotification:(CGPoint)a3;
-- (void)_renderEmittedPoints:(DKInkView *)self count:(SEL)a2;
-- (void)_replayAnimationTick:(id)a3;
-- (void)_setDrawingOnRenderer:(id)a3;
-- (void)_setDrawingOnRendererWithBleedAnimation:(id)a3;
-- (void)_setDrawingOnRendererWithReplayAnimation:(id)a3;
+- (void)_postTouchesBeganNotification:(CGPoint)notification;
+- (void)_postTouchesEndedNotification:(CGPoint)notification;
+- (void)_renderEmittedPoints:(DKInkView *)self count:(SEL)count;
+- (void)_replayAnimationTick:(id)tick;
+- (void)_setDrawingOnRenderer:(id)renderer;
+- (void)_setDrawingOnRendererWithBleedAnimation:(id)animation;
+- (void)_setDrawingOnRendererWithReplayAnimation:(id)animation;
 - (void)_startDisplayLink;
 - (void)_stopDisplayLink;
-- (void)_undoLastStroke:(id)a3;
-- (void)_updateVelocityWithTouch:(id)a3 average:(BOOL)a4;
+- (void)_undoLastStroke:(id)stroke;
+- (void)_updateVelocityWithTouch:(id)touch average:(BOOL)average;
 - (void)clear;
 - (void)continueStroke:(DKInkView *)self;
 - (void)continueStrokeWithoutSmoothing:(DKInkView *)self;
 - (void)dealloc;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
-- (void)handleCoalescedTouches:(id)a3 forTouch:(id)a4 average:(BOOL)a5;
-- (void)inkDidCompleteRender:(id)a3;
-- (void)inkDidRender:(id)a3;
+- (void)handleCoalescedTouches:(id)touches forTouch:(id)touch average:(BOOL)average;
+- (void)inkDidCompleteRender:(id)render;
+- (void)inkDidRender:(id)render;
 - (void)layoutSubviews;
 - (void)pauseRendering;
 - (void)resumeRendering;
-- (void)setCurrentDrawing:(id)a3 scaleDrawingToFitBounds:(BOOL)a4 withAnimationType:(unint64_t)a5 animationCompletionHandler:(id)a6;
-- (void)setDrawingScale:(double)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)setCurrentDrawing:(id)drawing scaleDrawingToFitBounds:(BOOL)bounds withAnimationType:(unint64_t)type animationCompletionHandler:(id)handler;
+- (void)setDrawingScale:(double)scale;
+- (void)setFrame:(CGRect)frame;
+- (void)setHidden:(BOOL)hidden;
 - (void)setLastVectorPoint:(DKInkView *)self;
-- (void)setRenderer:(id)a3;
-- (void)setStrokeColor:(id)a3;
+- (void)setRenderer:(id)renderer;
+- (void)setStrokeColor:(id)color;
 - (void)setupRenderer;
 - (void)startStroke:(DKInkView *)self;
 - (void)teardown;
 - (void)terminateStroke;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 - (void)undoLastStroke;
-- (void)willMoveToSuperview:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToSuperview:(id)superview;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation DKInkView
 
-- (DKInkView)initWithFrame:(CGRect)a3
+- (DKInkView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = DKInkView;
-  v3 = [(DKInkView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DKInkView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -81,12 +81,12 @@
   return v4;
 }
 
-- (DKInkView)initWithCoder:(id)a3
+- (DKInkView)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = DKInkView;
-  v5 = [(DKInkView *)&v8 initWithCoder:v4];
+  v5 = [(DKInkView *)&v8 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
@@ -113,8 +113,8 @@
   if (!self->_isRenderingPaused)
   {
     strokeColor = self->_strokeColor;
-    v4 = [(DKInkView *)self renderer];
-    [v4 setInkColor:strokeColor];
+    renderer = [(DKInkView *)self renderer];
+    [renderer setInkColor:strokeColor];
 
     if (!self->_scaleDrawingToFitCanvas || !self->_currentDrawing || ([(DKInkView *)self bounds], (CGRectIsUnrepresentable(v5, v6, v7, v8) & 1) != 0) || ([(DKDrawing *)self->_currentDrawing canvasBounds], (CGRectIsUnrepresentable(v9, v10, v11, v12) & 1) != 0) || ([(DKDrawing *)self->_currentDrawing strokesFrame], (CGRectIsUnrepresentable(v13, v14, v15, v16) & 1) != 0))
     {
@@ -168,13 +168,13 @@ LABEL_11:
   }
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  v4 = a3;
+  superviewCopy = superview;
   v5.receiver = self;
   v5.super_class = DKInkView;
-  [(DKInkView *)&v5 willMoveToSuperview:v4];
-  if (!v4)
+  [(DKInkView *)&v5 willMoveToSuperview:superviewCopy];
+  if (!superviewCopy)
   {
     [(DKInkView *)self _stopDisplayLink];
   }
@@ -185,16 +185,16 @@ LABEL_11:
   v7.receiver = self;
   v7.super_class = DKInkView;
   [(DKInkView *)&v7 didMoveToSuperview];
-  v3 = [(DKInkView *)self superview];
-  if (v3)
+  superview = [(DKInkView *)self superview];
+  if (superview)
   {
-    v4 = v3;
-    v5 = [(DKInkView *)self window];
-    if (v5)
+    v4 = superview;
+    window = [(DKInkView *)self window];
+    if (window)
     {
-      v6 = [(DKInkRenderer *)self->_renderer initialized];
+      initialized = [(DKInkRenderer *)self->_renderer initialized];
 
-      if (v6)
+      if (initialized)
       {
         [(DKInkView *)self _startDisplayLink];
       }
@@ -206,13 +206,13 @@ LABEL_11:
   }
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v5.receiver = self;
   v5.super_class = DKInkView;
-  [(DKInkView *)&v5 willMoveToWindow:v4];
-  if (!v4)
+  [(DKInkView *)&v5 willMoveToWindow:windowCopy];
+  if (!windowCopy)
   {
     [(DKInkView *)self _stopDisplayLink];
   }
@@ -223,41 +223,41 @@ LABEL_11:
   v6.receiver = self;
   v6.super_class = DKInkView;
   [(DKInkView *)&v6 didMoveToWindow];
-  v3 = [(DKInkView *)self superview];
-  if (v3)
+  superview = [(DKInkView *)self superview];
+  if (superview)
   {
-    v4 = v3;
-    v5 = [(DKInkRenderer *)self->_renderer initialized];
+    v4 = superview;
+    initialized = [(DKInkRenderer *)self->_renderer initialized];
 
-    if (v5)
+    if (initialized)
     {
       [(DKInkView *)self _startDisplayLink];
     }
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v6.receiver = self;
   v6.super_class = DKInkView;
   [(DKInkView *)&v6 setHidden:?];
-  [(CADisplayLink *)self->_displayLink setPaused:v3];
-  v5 = [(DKInkView *)self renderer];
-  [v5 setHidden:v3];
+  [(CADisplayLink *)self->_displayLink setPaused:hiddenCopy];
+  renderer = [(DKInkView *)self renderer];
+  [renderer setHidden:hiddenCopy];
 }
 
 - (void)setupRenderer
 {
-  v3 = [(DKInkView *)self renderer];
+  renderer = [(DKInkView *)self renderer];
 
-  if (v3)
+  if (renderer)
   {
-    v4 = [(DKInkView *)self renderer];
-    [v4 removeFromSuperview];
+    renderer2 = [(DKInkView *)self renderer];
+    [renderer2 removeFromSuperview];
 
-    v5 = [(DKInkView *)self renderer];
-    [v5 setDelegate:0];
+    renderer3 = [(DKInkView *)self renderer];
+    [renderer3 setDelegate:0];
 
     [(DKInkView *)self setRenderer:0];
   }
@@ -278,32 +278,32 @@ LABEL_11:
     [(DKInkView *)self setRenderer:v7];
   }
 
-  v9 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v10 = [(DKInkView *)self renderer];
-  [v10 setBackgroundColor:v9];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  renderer4 = [(DKInkView *)self renderer];
+  [renderer4 setBackgroundColor:systemBackgroundColor];
 
   [(DKInkView *)self setMode:0];
   [(DKInkView *)self setScaleDrawingToFitCanvas:0];
   [(DKInkView *)self setAllowInput:1];
-  v11 = [(DKInkView *)self renderer];
-  [v11 setDelegate:self];
+  renderer5 = [(DKInkView *)self renderer];
+  [renderer5 setDelegate:self];
 
-  v12 = [(DKInkView *)self renderer];
-  v13 = [(DKInkView *)self strokeColor];
-  [v12 setInkColor:v13];
+  renderer6 = [(DKInkView *)self renderer];
+  strokeColor = [(DKInkView *)self strokeColor];
+  [renderer6 setInkColor:strokeColor];
 
-  v14 = [(DKInkView *)self renderer];
-  [(DKInkView *)self addSubview:v14];
+  renderer7 = [(DKInkView *)self renderer];
+  [(DKInkView *)self addSubview:renderer7];
 
   [(DKInkView *)self layoutIfNeeded];
 }
 
 - (BOOL)_deviceSupportsGL
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 dk_deviceSupportsGL];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  dk_deviceSupportsGL = [currentDevice dk_deviceSupportsGL];
 
-  return v3;
+  return dk_deviceSupportsGL;
 }
 
 - (void)_commonInit
@@ -311,8 +311,8 @@ LABEL_11:
   [(DKInkView *)self setExclusiveTouch:1];
   [(DKInkView *)self setDrawingScale:1.0];
   [(DKInkView *)self setupRenderer];
-  v3 = [MEMORY[0x277D75348] blackColor];
-  [(DKInkView *)self setStrokeColor:v3];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(DKInkView *)self setStrokeColor:blackColor];
 
   [(DKInkView *)self setCurrentWeight:2.0];
   [(DKInkView *)self setRenderPreviewMode:0];
@@ -384,13 +384,13 @@ void __24__DKInkView__commonInit__block_invoke(uint64_t a1, __int128 *a2, uint64
   }
 }
 
-- (void)_addUninterpolatedPoints:(DKInkView *)self controlPoint:(SEL)a2 count:flushing:
+- (void)_addUninterpolatedPoints:(DKInkView *)self controlPoint:(SEL)point count:flushing:
 {
   v6 = v5;
   v7 = v4;
   v8 = v3;
   v9 = v2;
-  v20 = [(DKDrawingStroke *)self->_currentBrushStroke strokePoints];
+  strokePoints = [(DKDrawingStroke *)self->_currentBrushStroke strokePoints];
   if (v7)
   {
     if (v7 == 1)
@@ -431,8 +431,8 @@ void __24__DKInkView__commonInit__block_invoke(uint64_t a1, __int128 *a2, uint64
       [v12 setLocation:vcvtq_f64_f32(*&v16)];
       [v12 setForce:*(&v16 + 3)];
       [v12 setVelocity:*(&v16 + 2)];
-      [v20 addObject:v11];
-      [v20 addObject:v12];
+      [strokePoints addObject:v11];
+      [strokePoints addObject:v12];
       if (v6)
       {
         v19 = *v9;
@@ -440,13 +440,13 @@ void __24__DKInkView__commonInit__block_invoke(uint64_t a1, __int128 *a2, uint64
         [v14 setLocation:vcvtq_f64_f32(*&v19)];
         [v14 setForce:*(&v19 + 3)];
         [v14 setVelocity:*(&v19 + 2)];
-        [v20 addObject:v14];
+        [strokePoints addObject:v14];
       }
     }
   }
 }
 
-- (void)_renderEmittedPoints:(DKInkView *)self count:(SEL)a2
+- (void)_renderEmittedPoints:(DKInkView *)self count:(SEL)count
 {
   v4 = v3;
   v5 = v2;
@@ -591,17 +591,17 @@ LABEL_13:
   animationCompletionHandler = self->_animationCompletionHandler;
   self->_animationCompletionHandler = 0;
 
-  v4 = [(DKInkView *)self inputFIFO];
-  [v4 setEmissionHandler:0];
+  inputFIFO = [(DKInkView *)self inputFIFO];
+  [inputFIFO setEmissionHandler:0];
 
   [(DKInkView *)self setInputFIFO:0];
   objc_storeWeak(&self->_renderPreviewDelegate, 0);
   [(DKInkView *)self _stopDisplayLink];
-  v5 = [(DKInkView *)self renderer];
-  [v5 teardown];
+  renderer = [(DKInkView *)self renderer];
+  [renderer teardown];
 
-  v6 = [(DKInkView *)self renderer];
-  [v6 setDelegate:0];
+  renderer2 = [(DKInkView *)self renderer];
+  [renderer2 setDelegate:0];
 
   [(DKInkView *)self setRenderer:0];
 }
@@ -626,15 +626,15 @@ LABEL_13:
   [(DKInkView *)self setNeedsLayout];
 }
 
-- (void)setCurrentDrawing:(id)a3 scaleDrawingToFitBounds:(BOOL)a4 withAnimationType:(unint64_t)a5 animationCompletionHandler:(id)a6
+- (void)setCurrentDrawing:(id)drawing scaleDrawingToFitBounds:(BOOL)bounds withAnimationType:(unint64_t)type animationCompletionHandler:(id)handler
 {
-  v8 = a4;
-  v34 = a3;
-  v10 = a6;
-  v11 = [(DKInkRenderer *)self->_renderer supportsBleedAnimation];
-  if (a5 == 2)
+  boundsCopy = bounds;
+  drawingCopy = drawing;
+  handlerCopy = handler;
+  supportsBleedAnimation = [(DKInkRenderer *)self->_renderer supportsBleedAnimation];
+  if (type == 2)
   {
-    v12 = v11;
+    v12 = supportsBleedAnimation;
   }
 
   else
@@ -644,33 +644,33 @@ LABEL_13:
 
   if (!v12)
   {
-    a5 = 0;
+    type = 0;
   }
 
   animationCompletionHandler = self->_animationCompletionHandler;
   self->_animationCompletionHandler = 0;
 
-  if (a5)
+  if (type)
   {
-    v14 = MEMORY[0x24C202DE0](v10);
+    v14 = MEMORY[0x24C202DE0](handlerCopy);
     v15 = self->_animationCompletionHandler;
     self->_animationCompletionHandler = v14;
   }
 
-  [(DKInkView *)self setAnimationType:a5];
-  [(DKInkView *)self setScaleDrawingToFitCanvas:v8];
-  if (self->_currentDrawing != v34)
+  [(DKInkView *)self setAnimationType:type];
+  [(DKInkView *)self setScaleDrawingToFitCanvas:boundsCopy];
+  if (self->_currentDrawing != drawingCopy)
   {
     [(DKInkView *)self clear];
-    if (v8)
+    if (boundsCopy)
     {
       [(DKInkView *)self bounds];
       v17 = v16;
-      [(DKDrawing *)v34 strokesFrame];
+      [(DKDrawing *)drawingCopy strokesFrame];
       v19 = v18;
       [(DKInkView *)self bounds];
       v21 = v20;
-      [(DKDrawing *)v34 strokesFrame];
+      [(DKDrawing *)drawingCopy strokesFrame];
       if (v17 / v19 >= v21 / v22)
       {
         v23 = v21 / v22;
@@ -682,17 +682,17 @@ LABEL_13:
       }
 
       [(DKInkView *)self bounds];
-      v24 = [DKDrawing copyOfDrawing:v34 toFitInBounds:?];
+      v24 = [DKDrawing copyOfDrawing:drawingCopy toFitInBounds:?];
 
       [(DKInkView *)self setDrawingScale:v23];
       v25 = v24;
-      v34 = v25;
+      drawingCopy = v25;
     }
 
     else
     {
       [(DKInkView *)self setDrawingScale:1.0];
-      v25 = [(DKDrawing *)v34 copy];
+      v25 = [(DKDrawing *)drawingCopy copy];
     }
 
     currentDrawing = self->_currentDrawing;
@@ -700,32 +700,32 @@ LABEL_13:
 
     if (!self->_cachedInterpolatedBrushStrokes)
     {
-      v27 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       cachedInterpolatedBrushStrokes = self->_cachedInterpolatedBrushStrokes;
-      self->_cachedInterpolatedBrushStrokes = v27;
+      self->_cachedInterpolatedBrushStrokes = array;
     }
 
     if (!self->_cachedInterpolatedAnimationPoints)
     {
-      v29 = [MEMORY[0x277CBEB18] array];
+      array2 = [MEMORY[0x277CBEB18] array];
       cachedInterpolatedAnimationPoints = self->_cachedInterpolatedAnimationPoints;
-      self->_cachedInterpolatedAnimationPoints = v29;
+      self->_cachedInterpolatedAnimationPoints = array2;
     }
 
     if (!self->_cachedInterpolatedAnimationStrokes)
     {
-      v31 = [MEMORY[0x277CBEB18] array];
+      array3 = [MEMORY[0x277CBEB18] array];
       cachedInterpolatedAnimationStrokes = self->_cachedInterpolatedAnimationStrokes;
-      self->_cachedInterpolatedAnimationStrokes = v31;
+      self->_cachedInterpolatedAnimationStrokes = array3;
     }
 
     v33 = self->_currentDrawing;
-    if (a5 == 2)
+    if (type == 2)
     {
       [(DKInkView *)self _setDrawingOnRendererWithBleedAnimation:v33];
     }
 
-    else if (a5 == 1)
+    else if (type == 1)
     {
       [(DKInkView *)self _setDrawingOnRendererWithReplayAnimation:v33];
     }
@@ -737,18 +737,18 @@ LABEL_13:
   }
 }
 
-- (void)setRenderer:(id)a3
+- (void)setRenderer:(id)renderer
 {
-  v5 = a3;
-  objc_storeStrong(&self->_renderer, a3);
+  rendererCopy = renderer;
+  objc_storeStrong(&self->_renderer, renderer);
   [(DKInkRenderer *)self->_renderer setDrawingScale:self->_drawingScale];
   [(DKInkRenderer *)self->_renderer setMode:self->_mode];
   [(DKInkRenderer *)self->_renderer setScaleDrawingToFitCanvas:self->_scaleDrawingToFitCanvas];
 }
 
-- (void)setDrawingScale:(double)a3
+- (void)setDrawingScale:(double)scale
 {
-  self->_drawingScale = a3;
+  self->_drawingScale = scale;
   [(DKInkRenderer *)self->_renderer setDrawingScale:?];
   drawingScale = self->_drawingScale;
   inputFIFO = self->_inputFIFO;
@@ -782,20 +782,20 @@ LABEL_13:
 
 - (void)_notifyRenderDelegate
 {
-  v4 = [(DKInkView *)self renderPreviewDelegate];
+  renderPreviewDelegate = [(DKInkView *)self renderPreviewDelegate];
   v3 = objc_opt_respondsToSelector();
 
   if (v3)
   {
-    v5 = [(DKInkView *)self renderPreviewDelegate];
-    [v5 performSelector:sel_inkViewDidRender_ withObject:self afterDelay:0.0];
+    renderPreviewDelegate2 = [(DKInkView *)self renderPreviewDelegate];
+    [renderPreviewDelegate2 performSelector:sel_inkViewDidRender_ withObject:self afterDelay:0.0];
   }
 }
 
-- (void)_postTouchesBeganNotification:(CGPoint)a3
+- (void)_postTouchesBeganNotification:(CGPoint)notification
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  DictionaryRepresentation = CGPointCreateDictionaryRepresentation(a3);
+  DictionaryRepresentation = CGPointCreateDictionaryRepresentation(notification);
   v5 = MEMORY[0x277CCAB88];
   v6 = DKInkViewTouchesBeganNotification;
   v10 = DKInkViewTouchesEndedLocationInViewUserInfoKey;
@@ -803,14 +803,14 @@ LABEL_13:
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v8 = [v5 notificationWithName:v6 object:self userInfo:v7];
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 postNotification:v8];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotification:v8];
 }
 
-- (void)_postTouchesEndedNotification:(CGPoint)a3
+- (void)_postTouchesEndedNotification:(CGPoint)notification
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  DictionaryRepresentation = CGPointCreateDictionaryRepresentation(a3);
+  DictionaryRepresentation = CGPointCreateDictionaryRepresentation(notification);
   v5 = MEMORY[0x277CCAB88];
   v6 = DKInkViewTouchesEndedNotification;
   v10 = DKInkViewTouchesEndedLocationInViewUserInfoKey;
@@ -818,18 +818,18 @@ LABEL_13:
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v8 = [v5 notificationWithName:v6 object:self userInfo:v7];
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 postNotification:v8];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotification:v8];
 }
 
-+ (double)windowBackingScaleFactor:(id)a3
++ (double)windowBackingScaleFactor:(id)factor
 {
-  v3 = a3;
-  v4 = [v3 screen];
+  factorCopy = factor;
+  screen = [factorCopy screen];
 
-  if (v4)
+  if (screen)
   {
-    [v3 screen];
+    [factorCopy screen];
   }
 
   else
@@ -843,24 +843,24 @@ LABEL_13:
   return v7;
 }
 
-- (void)setStrokeColor:(id)a3
+- (void)setStrokeColor:(id)color
 {
-  v6 = a3;
-  objc_storeStrong(&self->_strokeColor, a3);
-  v5 = [(DKInkView *)self renderer];
-  [v5 setInkColor:v6];
+  colorCopy = color;
+  objc_storeStrong(&self->_strokeColor, color);
+  renderer = [(DKInkView *)self renderer];
+  [renderer setInkColor:colorCopy];
 }
 
 - (void)clear
 {
-  v3 = [(DKInkView *)self renderer];
-  [v3 completeAnimationsImmediately];
+  renderer = [(DKInkView *)self renderer];
+  [renderer completeAnimationsImmediately];
 
-  v4 = [(DKInkView *)self renderer];
-  [v4 resetRendererState];
+  renderer2 = [(DKInkView *)self renderer];
+  [renderer2 resetRendererState];
 
-  v5 = [(DKInkView *)self renderer];
-  [v5 clear];
+  renderer3 = [(DKInkView *)self renderer];
+  [renderer3 clear];
 
   [(DKPointSmoothing *)self->_inputFIFO clear];
   v6 = *(MEMORY[0x277CBF398] + 16);
@@ -870,11 +870,11 @@ LABEL_13:
   [(NSMutableArray *)self->_cachedInterpolatedAnimationPoints removeAllObjects];
   [(NSMutableArray *)self->_cachedInterpolatedAnimationStrokes removeAllObjects];
   [(NSMutableArray *)self->_computedAnimationFrames removeAllObjects];
-  v7 = [(DKInkView *)self currentDrawing];
-  [v7 reset];
+  currentDrawing = [(DKInkView *)self currentDrawing];
+  [currentDrawing reset];
 
-  v8 = [(DKInkView *)self strokeUndoManager];
-  [v8 removeAllActions];
+  strokeUndoManager = [(DKInkView *)self strokeUndoManager];
+  [strokeUndoManager removeAllActions];
 
   memset(v9, 0, sizeof(v9));
   [(DKInkView *)self setLastVectorPoint:v9];
@@ -883,12 +883,12 @@ LABEL_13:
   [(DKInkView *)self _notifyRenderDelegate];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(DKInkView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -906,26 +906,26 @@ LABEL_13:
       [(DKInkView *)self setCurrentDrawing:v14];
     }
 
-    v15 = [(DKInkView *)self renderer];
+    renderer = [(DKInkView *)self renderer];
     [(DKInkView *)self bounds];
-    [v15 setNeedsDisplayInRect:?];
+    [renderer setNeedsDisplayInRect:?];
   }
 }
 
 - (int64_t)countOfCurrentStroke
 {
-  v2 = [(DKDrawingStroke *)self->_currentBrushStroke strokePoints];
-  v3 = [v2 count];
+  strokePoints = [(DKDrawingStroke *)self->_currentBrushStroke strokePoints];
+  v3 = [strokePoints count];
 
   return v3;
 }
 
 - (BOOL)canvasHasInk
 {
-  v3 = [(DKInkView *)self currentDrawing];
-  v4 = [v3 totalPoints];
-  v5 = [(DKDrawingStroke *)self->_currentBrushStroke strokePoints];
-  v6 = [v5 count] + v4;
+  currentDrawing = [(DKInkView *)self currentDrawing];
+  totalPoints = [currentDrawing totalPoints];
+  strokePoints = [(DKDrawingStroke *)self->_currentBrushStroke strokePoints];
+  v6 = [strokePoints count] + totalPoints;
 
   return v6 > 0;
 }
@@ -940,13 +940,13 @@ LABEL_13:
 
     [(CADisplayLink *)self->_displayLink setPreferredFramesPerSecond:60];
     v5 = self->_displayLink;
-    v6 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [(CADisplayLink *)v5 addToRunLoop:v6 forMode:*MEMORY[0x277CBE640]];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [(CADisplayLink *)v5 addToRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE640]];
 
-    v7 = [(DKInkView *)self isHidden];
+    isHidden = [(DKInkView *)self isHidden];
     v8 = self->_displayLink;
 
-    [(CADisplayLink *)v8 setPaused:v7];
+    [(CADisplayLink *)v8 setPaused:isHidden];
   }
 }
 
@@ -966,19 +966,19 @@ LABEL_13:
       [(DKInkView *)self _replayAnimationTick:self];
     }
 
-    v3 = [(DKInkView *)self renderer];
-    [v3 display];
+    renderer = [(DKInkView *)self renderer];
+    [renderer display];
   }
 
   else
   {
-    v3 = [(DKInkView *)self renderer];
+    renderer = [(DKInkView *)self renderer];
     [(DKInkView *)self bounds];
-    [v3 setNeedsDisplayInRect:?];
+    [renderer setNeedsDisplayInRect:?];
   }
 }
 
-- (void)_setDrawingOnRenderer:(id)a3
+- (void)_setDrawingOnRenderer:(id)renderer
 {
   v60 = *MEMORY[0x277D85DE8];
   v55 = 0;
@@ -989,13 +989,13 @@ LABEL_13:
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v39 = a3;
-  v4 = [v39 strokes];
-  v5 = [v4 countByEnumeratingWithState:&v51 objects:v59 count:16];
+  rendererCopy = renderer;
+  strokes = [rendererCopy strokes];
+  v5 = [strokes countByEnumeratingWithState:&v51 objects:v59 count:16];
   if (v5)
   {
     v41 = *v52;
-    v40 = v4;
+    v40 = strokes;
     do
     {
       v6 = 0;
@@ -1004,26 +1004,26 @@ LABEL_13:
       {
         if (*v52 != v41)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(strokes);
         }
 
-        v7 = [*(*(&v51 + 1) + 8 * v6) strokePoints];
-        if ([v7 count] >= 3)
+        strokePoints = [*(*(&v51 + 1) + 8 * v6) strokePoints];
+        if ([strokePoints count] >= 3)
         {
-          v8 = [MEMORY[0x277CBEB18] array];
+          array = [MEMORY[0x277CBEB18] array];
           currentInterpolatedBrushStroke = self->_currentInterpolatedBrushStroke;
-          self->_currentInterpolatedBrushStroke = v8;
+          self->_currentInterpolatedBrushStroke = array;
 
           v10 = 0;
           *self->_lastVectorPoint = 0u;
           *&self->_lastVectorPoint[16] = 0u;
-          while (v10 < [v7 count] - 2)
+          while (v10 < [strokePoints count] - 2)
           {
-            v11 = [v7 objectAtIndexedSubscript:v10];
+            v11 = [strokePoints objectAtIndexedSubscript:v10];
             v12 = v10 + 1;
-            v13 = [v7 objectAtIndexedSubscript:v10 + 1];
+            v13 = [strokePoints objectAtIndexedSubscript:v10 + 1];
             v10 += 2;
-            v14 = [v7 objectAtIndexedSubscript:v12 + 1];
+            v14 = [strokePoints objectAtIndexedSubscript:v12 + 1];
             [v11 location];
             v16 = v15;
             [v11 location];
@@ -1074,7 +1074,7 @@ LABEL_13:
         }
 
         ++v6;
-        v4 = v40;
+        strokes = v40;
       }
 
       while (v6 != v42);
@@ -1086,17 +1086,17 @@ LABEL_13:
 
   if (*(v56 + 24) == 1)
   {
-    v35 = [(DKInkView *)self renderer];
-    [v35 endStroke];
+    renderer = [(DKInkView *)self renderer];
+    [renderer endStroke];
   }
 
-  v36 = [v39 strokes];
-  v37 = [v36 count] == 0;
+  strokes2 = [rendererCopy strokes];
+  v37 = [strokes2 count] == 0;
 
   if (!v37)
   {
-    v38 = [(DKInkView *)self renderer];
-    [v38 force];
+    renderer2 = [(DKInkView *)self renderer];
+    [renderer2 force];
   }
 
   _Block_object_dispose(&v55, 8);
@@ -1122,17 +1122,17 @@ void __35__DKInkView__setDrawingOnRenderer___block_invoke(uint64_t a1, uint64_t 
   [WeakRetained _renderEmittedPoints:a2 count:a3];
 }
 
-- (void)_setDrawingOnRendererWithBleedAnimation:(id)a3
+- (void)_setDrawingOnRendererWithBleedAnimation:(id)animation
 {
   v88 = *MEMORY[0x277D85DE8];
-  v56 = a3;
+  animationCopy = animation;
   if ([(DKInkRenderer *)self->_renderer supportsBleedAnimation])
   {
     v83 = 0u;
     v84 = 0u;
     v81 = 0u;
     v82 = 0u;
-    obj = [v56 strokes];
+    obj = [animationCopy strokes];
     v4 = [obj countByEnumeratingWithState:&v81 objects:v87 count:16];
     if (v4)
     {
@@ -1147,23 +1147,23 @@ void __35__DKInkView__setDrawingOnRenderer___block_invoke(uint64_t a1, uint64_t 
             objc_enumerationMutation(obj);
           }
 
-          v6 = [*(*(&v81 + 1) + 8 * i) strokePoints];
-          if ([v6 count] >= 3)
+          strokePoints = [*(*(&v81 + 1) + 8 * i) strokePoints];
+          if ([strokePoints count] >= 3)
           {
-            v7 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
             currentInterpolatedBrushStroke = self->_currentInterpolatedBrushStroke;
-            self->_currentInterpolatedBrushStroke = v7;
+            self->_currentInterpolatedBrushStroke = array;
 
             v9 = 0;
             *self->_lastVectorPoint = 0u;
             *&self->_lastVectorPoint[16] = 0u;
-            while (v9 < [v6 count] - 2)
+            while (v9 < [strokePoints count] - 2)
             {
-              v10 = [v6 objectAtIndexedSubscript:v9];
+              v10 = [strokePoints objectAtIndexedSubscript:v9];
               v11 = v9 + 1;
-              v12 = [v6 objectAtIndexedSubscript:v9 + 1];
+              v12 = [strokePoints objectAtIndexedSubscript:v9 + 1];
               v9 += 2;
-              v13 = [v6 objectAtIndexedSubscript:v11 + 1];
+              v13 = [strokePoints objectAtIndexedSubscript:v11 + 1];
               [v10 location];
               v15 = v14;
               [v10 location];
@@ -1219,10 +1219,10 @@ void __35__DKInkView__setDrawingOnRenderer___block_invoke(uint64_t a1, uint64_t 
       while (v4);
     }
 
-    v34 = [(DKInkRenderer *)self->_renderer maximumPointsForBleedAnimation];
+    maximumPointsForBleedAnimation = [(DKInkRenderer *)self->_renderer maximumPointsForBleedAnimation];
     if ([(NSMutableArray *)self->_cachedInterpolatedAnimationPoints count])
     {
-      v35 = v34 < 1;
+      v35 = maximumPointsForBleedAnimation < 1;
     }
 
     else
@@ -1234,7 +1234,7 @@ void __35__DKInkView__setDrawingOnRenderer___block_invoke(uint64_t a1, uint64_t 
     {
       v36 = [(NSMutableArray *)self->_cachedInterpolatedAnimationPoints count];
       v37 = [(NSMutableArray *)self->_cachedInterpolatedAnimationPoints count];
-      v38 = (v36 - v34) & ~((v36 - v34) >> 63);
+      v38 = (v36 - maximumPointsForBleedAnimation) & ~((v36 - maximumPointsForBleedAnimation) >> 63);
       v39 = [(NSMutableArray *)self->_cachedInterpolatedAnimationPoints subarrayWithRange:0, v38];
       v40 = [(NSMutableArray *)self->_cachedInterpolatedAnimationPoints subarrayWithRange:v38, v37 - v38];
       v77 = 0u;
@@ -1353,7 +1353,7 @@ void __35__DKInkView__setDrawingOnRenderer___block_invoke(uint64_t a1, uint64_t 
 
   else
   {
-    [(DKInkView *)self _setDrawingOnRenderer:v56];
+    [(DKInkView *)self _setDrawingOnRenderer:animationCopy];
   }
 }
 
@@ -1363,21 +1363,21 @@ void __53__DKInkView__setDrawingOnRendererWithBleedAnimation___block_invoke(uint
   [WeakRetained _renderEmittedPoints:a2 count:a3];
 }
 
-- (void)_setDrawingOnRendererWithReplayAnimation:(id)a3
+- (void)_setDrawingOnRendererWithReplayAnimation:(id)animation
 {
   v66 = *MEMORY[0x277D85DE8];
-  v45 = a3;
+  animationCopy = animation;
   v61 = 0;
   v62 = &v61;
   v63 = 0x2020000000;
   v64 = 0;
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   computedAnimationFrames = self->_computedAnimationFrames;
-  self->_computedAnimationFrames = v4;
+  self->_computedAnimationFrames = array;
 
   v6 = MEMORY[0x277CBEB18];
-  v7 = [v45 strokes];
-  v8 = [v6 arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  strokes = [animationCopy strokes];
+  v8 = [v6 arrayWithCapacity:{objc_msgSend(strokes, "count")}];
   cachedInterpolatedAnimationStrokes = self->_cachedInterpolatedAnimationStrokes;
   self->_cachedInterpolatedAnimationStrokes = v8;
 
@@ -1385,12 +1385,12 @@ void __53__DKInkView__setDrawingOnRendererWithBleedAnimation___block_invoke(uint
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v10 = [v45 strokes];
-  v11 = [v10 countByEnumeratingWithState:&v57 objects:v65 count:16];
+  strokes2 = [animationCopy strokes];
+  v11 = [strokes2 countByEnumeratingWithState:&v57 objects:v65 count:16];
   if (v11)
   {
     v47 = *v58;
-    v46 = v10;
+    v46 = strokes2;
     do
     {
       v12 = 0;
@@ -1399,26 +1399,26 @@ void __53__DKInkView__setDrawingOnRendererWithBleedAnimation___block_invoke(uint
       {
         if (*v58 != v47)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(strokes2);
         }
 
-        v13 = [*(*(&v57 + 1) + 8 * v12) strokePoints];
-        if ([v13 count] >= 3)
+        strokePoints = [*(*(&v57 + 1) + 8 * v12) strokePoints];
+        if ([strokePoints count] >= 3)
         {
-          v14 = [MEMORY[0x277CBEB18] array];
+          array2 = [MEMORY[0x277CBEB18] array];
           currentInterpolatedBrushStroke = self->_currentInterpolatedBrushStroke;
-          self->_currentInterpolatedBrushStroke = v14;
+          self->_currentInterpolatedBrushStroke = array2;
 
           v16 = 0;
           *self->_lastVectorPoint = 0u;
           *&self->_lastVectorPoint[16] = 0u;
-          while (v16 < [v13 count] - 2)
+          while (v16 < [strokePoints count] - 2)
           {
-            v17 = [v13 objectAtIndexedSubscript:v16];
+            v17 = [strokePoints objectAtIndexedSubscript:v16];
             v18 = v16 + 1;
-            v19 = [v13 objectAtIndexedSubscript:v16 + 1];
+            v19 = [strokePoints objectAtIndexedSubscript:v16 + 1];
             v16 += 2;
-            v20 = [v13 objectAtIndexedSubscript:v18 + 1];
+            v20 = [strokePoints objectAtIndexedSubscript:v18 + 1];
             [v17 location];
             v22 = v21;
             [v17 location];
@@ -1469,7 +1469,7 @@ void __53__DKInkView__setDrawingOnRendererWithBleedAnimation___block_invoke(uint
         }
 
         ++v12;
-        v10 = v46;
+        strokes2 = v46;
       }
 
       while (v12 != v48);
@@ -1481,12 +1481,12 @@ void __53__DKInkView__setDrawingOnRendererWithBleedAnimation___block_invoke(uint
 
   if (*(v62 + 24) == 1)
   {
-    v41 = [(DKInkView *)self renderer];
-    [v41 endStroke];
+    renderer = [(DKInkView *)self renderer];
+    [renderer endStroke];
   }
 
-  v42 = [(NSMutableArray *)self->_cachedInterpolatedAnimationStrokes firstObject];
-  v43 = [v42 mutableCopy];
+  firstObject = [(NSMutableArray *)self->_cachedInterpolatedAnimationStrokes firstObject];
+  v43 = [firstObject mutableCopy];
   cachedInterpolatedAnimationPoints = self->_cachedInterpolatedAnimationPoints;
   self->_cachedInterpolatedAnimationPoints = v43;
 
@@ -1514,7 +1514,7 @@ void __54__DKInkView__setDrawingOnRendererWithReplayAnimation___block_invoke(uin
   [WeakRetained _renderEmittedPoints:a2 count:a3];
 }
 
-- (void)_computeAnimationFramesFittingInMaxDuration:(double)a3
+- (void)_computeAnimationFramesFittingInMaxDuration:(double)duration
 {
   v32 = *MEMORY[0x277D85DE8];
   v27 = 0u;
@@ -1539,7 +1539,7 @@ void __54__DKInkView__setDrawingOnRendererWithReplayAnimation___block_invoke(uin
         v5 = *(*(&v27 + 1) + 8 * i);
         v6 = *v4;
         v7 = v4[1];
-        v8 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v9 = 0;
         v10 = 0.0;
         while (v9 < [v5 count])
@@ -1558,15 +1558,15 @@ void __54__DKInkView__setDrawingOnRendererWithReplayAnimation___block_invoke(uin
 
           v7 = 0.0;
           v6 = 0.0;
-          [v8 addObject:v12];
+          [array addObject:v12];
           if (v10 > 7.0 && v9 > 2 || v9 == [v5 count] - 1)
           {
             computedAnimationFrames = self->_computedAnimationFrames;
-            v15 = [MEMORY[0x277CBEA60] arrayWithArray:v8];
+            v15 = [MEMORY[0x277CBEA60] arrayWithArray:array];
             [(NSMutableArray *)computedAnimationFrames addObject:v15];
 
             v10 = 0.0;
-            [v8 removeAllObjects];
+            [array removeAllObjects];
           }
 
           ++v9;
@@ -1575,18 +1575,18 @@ void __54__DKInkView__setDrawingOnRendererWithReplayAnimation___block_invoke(uin
         v16 = [(NSMutableArray *)self->_cachedInterpolatedAnimationStrokes indexOfObject:v5]+ 1;
         if (v16 < [(NSMutableArray *)self->_cachedInterpolatedAnimationStrokes count])
         {
-          v25 = [v5 lastObject];
+          lastObject = [v5 lastObject];
           v17 = [(NSMutableArray *)self->_cachedInterpolatedAnimationStrokes objectAtIndex:v16];
-          v18 = [v17 firstObject];
+          firstObject = [v17 firstObject];
 
-          if (v25 && v18)
+          if (lastObject && firstObject)
           {
             v19 = arc4random_uniform(0x14u) + 10;
             do
             {
               v20 = self->_computedAnimationFrames;
-              v21 = [MEMORY[0x277CBEA60] array];
-              [(NSMutableArray *)v20 addObject:v21];
+              array2 = [MEMORY[0x277CBEA60] array];
+              [(NSMutableArray *)v20 addObject:array2];
 
               --v19;
             }
@@ -1603,7 +1603,7 @@ void __54__DKInkView__setDrawingOnRendererWithReplayAnimation___block_invoke(uin
   }
 }
 
-- (void)_replayAnimationTick:(id)a3
+- (void)_replayAnimationTick:(id)tick
 {
   v20 = *MEMORY[0x277D85DE8];
   [(NSMutableArray *)self->_computedAnimationFrames firstObject];
@@ -1633,11 +1633,11 @@ void __54__DKInkView__setDrawingOnRendererWithReplayAnimation___block_invoke(uin
           [v8 dk_renderPointValue];
         }
 
-        v9 = [(DKInkView *)self renderer];
+        renderer = [(DKInkView *)self renderer];
         v10[0] = v12;
         v10[1] = v13;
         v11 = v14;
-        [v9 addPoint:v10];
+        [renderer addPoint:v10];
       }
 
       v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -1649,9 +1649,9 @@ void __54__DKInkView__setDrawingOnRendererWithReplayAnimation___block_invoke(uin
   [(NSMutableArray *)self->_computedAnimationFrames removeObjectAtIndex:0];
 }
 
-- (void)inkDidRender:(id)a3
+- (void)inkDidRender:(id)render
 {
-  v5 = a3;
+  renderCopy = render;
   renderPreviewMode = self->_renderPreviewMode;
   if (renderPreviewMode == 1 || renderPreviewMode == 2 && ![(DKInkView *)self countOfCurrentStroke])
   {
@@ -1659,12 +1659,12 @@ void __54__DKInkView__setDrawingOnRendererWithReplayAnimation___block_invoke(uin
   }
 }
 
-- (void)inkDidCompleteRender:(id)a3
+- (void)inkDidCompleteRender:(id)render
 {
   animationCompletionHandler = self->_animationCompletionHandler;
   if (animationCompletionHandler)
   {
-    animationCompletionHandler[2](animationCompletionHandler, a2, a3);
+    animationCompletionHandler[2](animationCompletionHandler, a2, render);
     v5 = self->_animationCompletionHandler;
     self->_animationCompletionHandler = 0;
   }
@@ -1685,12 +1685,12 @@ void __54__DKInkView__setDrawingOnRendererWithReplayAnimation___block_invoke(uin
   }
 }
 
-- (void)_undoLastStroke:(id)a3
+- (void)_undoLastStroke:(id)stroke
 {
-  [a3 getValue:v10 size:104];
-  v4 = [(DKDrawing *)self->_currentDrawing mutableStrokes];
-  [v4 count];
-  [v4 removeLastObject];
+  [stroke getValue:v10 size:104];
+  mutableStrokes = [(DKDrawing *)self->_currentDrawing mutableStrokes];
+  [mutableStrokes count];
+  [mutableStrokes removeLastObject];
   [(DKDrawing *)self->_currentDrawing setStrokesFrame:v10[0], v10[1], v10[2], v10[3]];
   self->_totalPointsAdded = v13;
   [(NSMutableArray *)self->_cachedInterpolatedBrushStrokes removeLastObject];
@@ -1701,13 +1701,13 @@ void __54__DKInkView__setDrawingOnRendererWithReplayAnimation___block_invoke(uin
   v9[0] = v14;
   v9[1] = v5;
   [(DKInkView *)self setLastVectorPoint:v9];
-  v6 = [(DKInkView *)self renderer];
-  [v6 removeLastStroke];
+  renderer = [(DKInkView *)self renderer];
+  [renderer removeLastStroke];
 
-  v7 = [(DKInkView *)self renderer];
-  v8 = [(DKInkView *)self renderer];
-  [v8 bounds];
-  [v7 setNeedsDisplayInRect:?];
+  renderer2 = [(DKInkView *)self renderer];
+  renderer3 = [(DKInkView *)self renderer];
+  [renderer3 bounds];
+  [renderer2 setNeedsDisplayInRect:?];
 
   [(DKInkView *)self _notifyRenderDelegate];
 }
@@ -1715,12 +1715,12 @@ void __54__DKInkView__setDrawingOnRendererWithReplayAnimation___block_invoke(uin
 - (void)startStroke:(DKInkView *)self
 {
   v21 = v2;
-  v4 = [(DKInkView *)self currentDrawing];
-  v5 = [v4 strokes];
-  v26 = [v5 count];
+  currentDrawing = [(DKInkView *)self currentDrawing];
+  strokes = [currentDrawing strokes];
+  v26 = [strokes count];
 
-  v6 = [(DKInkView *)self currentDrawing];
-  [v6 strokesFrame];
+  currentDrawing2 = [(DKInkView *)self currentDrawing];
+  [currentDrawing2 strokesFrame];
   v23[0] = v7;
   v23[1] = v8;
   v23[2] = v9;
@@ -1733,8 +1733,8 @@ void __54__DKInkView__setDrawingOnRendererWithReplayAnimation___block_invoke(uin
   v28 = *self->_lastVectorPoint;
   v29 = *&self->_lastVectorPoint[16];
   v12 = [MEMORY[0x277CCAE60] valueWithBytes:v23 objCType:"{?={CGRect={CGPoint=dd}{CGSize=dd}}{CGRect={CGPoint=dd}{CGSize=dd}}qQfffff}"];
-  v13 = [(DKInkView *)self strokeUndoManager];
-  [v13 registerUndoWithTarget:self selector:sel__undoLastStroke_ object:v12];
+  strokeUndoManager = [(DKInkView *)self strokeUndoManager];
+  [strokeUndoManager registerUndoWithTarget:self selector:sel__undoLastStroke_ object:v12];
 
   [(DKInkView *)self setStrokeStartTime:CFAbsoluteTimeGetCurrent()];
   [(DKInkView *)self setStrokeLastLocation:vcvtq_f64_f32(v21)];
@@ -1745,9 +1745,9 @@ void __54__DKInkView__setDrawingOnRendererWithReplayAnimation___block_invoke(uin
   [(DKInkView *)self setLastVectorPoint:v22];
   if (!self->_cachedInterpolatedBrushStrokes)
   {
-    v14 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     cachedInterpolatedBrushStrokes = self->_cachedInterpolatedBrushStrokes;
-    self->_cachedInterpolatedBrushStrokes = v14;
+    self->_cachedInterpolatedBrushStrokes = array;
   }
 
   v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:2000];
@@ -1759,8 +1759,8 @@ void __54__DKInkView__setDrawingOnRendererWithReplayAnimation___block_invoke(uin
   self->_currentBrushStroke = v18;
 
   [(DKPointSmoothing *)self->_inputFIFO clear];
-  v20 = [(DKInkView *)self renderer];
-  [v20 beginStroke];
+  renderer = [(DKInkView *)self renderer];
+  [renderer beginStroke];
 }
 
 - (void)continueStroke:(DKInkView *)self
@@ -1775,8 +1775,8 @@ void __54__DKInkView__setDrawingOnRendererWithReplayAnimation___block_invoke(uin
 - (void)continueStrokeWithoutSmoothing:(DKInkView *)self
 {
   [(DKInkView *)self setIsAddingPointWithoutSmoothing:1, v2];
-  v4 = [(DKPointSmoothing *)self->_inputFIFO emissionHandler];
-  (v4)[2](v4, &v5, 1, 0, 0);
+  emissionHandler = [(DKPointSmoothing *)self->_inputFIFO emissionHandler];
+  (emissionHandler)[2](emissionHandler, &v5, 1, 0, 0);
 
   [(DKInkView *)self setIsAddingPointWithoutSmoothing:0];
 }
@@ -1845,11 +1845,11 @@ void __54__DKInkView__setDrawingOnRendererWithReplayAnimation___block_invoke(uin
   currentInterpolatedBrushStroke = self->_currentInterpolatedBrushStroke;
   self->_currentInterpolatedBrushStroke = 0;
 
-  v26 = [(DKInkView *)self renderer];
-  [v26 endStroke];
+  renderer = [(DKInkView *)self renderer];
+  [renderer endStroke];
 }
 
-- (double)weightForValue:(double)a3
+- (double)weightForValue:(double)value
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -1861,8 +1861,8 @@ void __54__DKInkView__setDrawingOnRendererWithReplayAnimation___block_invoke(uin
     dispatch_once(&[DKInkView weightForValue:]::onceToken, block);
   }
 
-  v4 = a3;
-  v5 = fminf(fmaxf((v4 + -0.3) + (v4 + -0.3), 0.0), 1.0);
+  valueCopy = value;
+  v5 = fminf(fmaxf((valueCopy + -0.3) + (valueCopy + -0.3), 0.0), 1.0);
   v6 = (v5 * v5) * ((v5 * -2.0) + 3.0);
   v7 = *&[DKInkView weightForValue:]::MIN_PRESSURE;
   v8 = *&[DKInkView weightForValue:]::MAX_PRESSURE;
@@ -1888,15 +1888,15 @@ uint64_t __28__DKInkView_weightForValue___block_invoke(uint64_t a1)
   return result;
 }
 
-- (double)weightForTouch:(id)a3
+- (double)weightForTouch:(id)touch
 {
-  v4 = a3;
+  touchCopy = touch;
   v5 = 0.0;
-  if ([(DKInkView *)self ak_forceAvailableForTouch:v4])
+  if ([(DKInkView *)self ak_forceAvailableForTouch:touchCopy])
   {
-    [v4 force];
+    [touchCopy force];
     v7 = v6;
-    [v4 maximumPossibleForce];
+    [touchCopy maximumPossibleForce];
     [(DKInkView *)self weightForValue:v7 / v8];
     v5 = v9;
   }
@@ -1904,16 +1904,16 @@ uint64_t __28__DKInkView_weightForValue___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (CGPoint)_velocityForTouch:(id)a3
+- (CGPoint)_velocityForTouch:(id)touch
 {
-  v4 = a3;
-  [v4 previousLocationInView:0];
+  touchCopy = touch;
+  [touchCopy previousLocationInView:0];
   v6 = v5;
   v8 = v7;
-  [v4 locationInView:0];
+  [touchCopy locationInView:0];
   v10 = v9;
   v12 = v11;
-  [v4 timestamp];
+  [touchCopy timestamp];
   v14 = v13 - self->_lastTouchTime;
   if (v14 >= 0.001)
   {
@@ -1934,18 +1934,18 @@ uint64_t __28__DKInkView_weightForValue___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   if (self->_allowInput)
   {
     self->_lastTouchTime = 0.0;
     self->_trackingTouches = 1;
-    v8 = [v6 anyObject];
-    [(DKInkView *)self _vector4ForTouchSettingWeightAndVelocity:v8 average:0];
+    anyObject = [beganCopy anyObject];
+    [(DKInkView *)self _vector4ForTouchSettingWeightAndVelocity:anyObject average:0];
     [(DKInkView *)self startStroke:?];
-    [v8 locationInView:self];
+    [anyObject locationInView:self];
     [(DKInkView *)self _postTouchesBeganNotification:?];
   }
 
@@ -1953,27 +1953,27 @@ uint64_t __28__DKInkView_weightForValue___block_invoke(uint64_t a1)
   {
     v9.receiver = self;
     v9.super_class = DKInkView;
-    [(DKInkView *)&v9 touchesBegan:v6 withEvent:v7];
+    [(DKInkView *)&v9 touchesBegan:beganCopy withEvent:eventCopy];
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  movedCopy = moved;
+  eventCopy = event;
   if (self->_allowInput)
   {
     self->_trackingTouches = 1;
-    v8 = [v6 anyObject];
+    anyObject = [movedCopy anyObject];
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v7 coalescedTouchesForTouch:v8];
-      [(DKInkView *)self handleCoalescedTouches:v9 forTouch:v8 average:1];
+      v9 = [eventCopy coalescedTouchesForTouch:anyObject];
+      [(DKInkView *)self handleCoalescedTouches:v9 forTouch:anyObject average:1];
     }
 
     else
     {
-      [(DKInkView *)self _vector4ForTouchSettingWeightAndVelocity:v8 average:0];
+      [(DKInkView *)self _vector4ForTouchSettingWeightAndVelocity:anyObject average:0];
       [(DKInkView *)self continueStroke:?];
     }
   }
@@ -1982,22 +1982,22 @@ uint64_t __28__DKInkView_weightForValue___block_invoke(uint64_t a1)
   {
     v10.receiver = self;
     v10.super_class = DKInkView;
-    [(DKInkView *)&v10 touchesMoved:v6 withEvent:v7];
+    [(DKInkView *)&v10 touchesMoved:movedCopy withEvent:eventCopy];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   if (self->_allowInput)
   {
-    v8 = [v6 anyObject];
-    [(DKInkView *)self _vector4ForTouchSettingWeightAndVelocity:v8 average:1];
+    anyObject = [endedCopy anyObject];
+    [(DKInkView *)self _vector4ForTouchSettingWeightAndVelocity:anyObject average:1];
     [(DKInkView *)self continueStroke:?];
     [(DKInkView *)self terminateStroke];
     self->_trackingTouches = 0;
-    [v8 locationInView:self];
+    [anyObject locationInView:self];
     [(DKInkView *)self _postTouchesEndedNotification:?];
   }
 
@@ -2005,18 +2005,18 @@ uint64_t __28__DKInkView_weightForValue___block_invoke(uint64_t a1)
   {
     v9.receiver = self;
     v9.super_class = DKInkView;
-    [(DKInkView *)&v9 touchesEnded:v6 withEvent:v7];
+    [(DKInkView *)&v9 touchesEnded:endedCopy withEvent:eventCopy];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  cancelledCopy = cancelled;
+  eventCopy = event;
   if (self->_allowInput)
   {
-    v8 = [(DKDrawingStroke *)self->_currentBrushStroke strokePoints];
-    v9 = [v8 count];
+    strokePoints = [(DKDrawingStroke *)self->_currentBrushStroke strokePoints];
+    v9 = [strokePoints count];
 
     [(DKInkView *)self terminateStroke];
     if (v9 <= 4)
@@ -2031,20 +2031,20 @@ uint64_t __28__DKInkView_weightForValue___block_invoke(uint64_t a1)
   {
     v10.receiver = self;
     v10.super_class = DKInkView;
-    [(DKInkView *)&v10 touchesCancelled:v6 withEvent:v7];
+    [(DKInkView *)&v10 touchesCancelled:cancelledCopy withEvent:eventCopy];
   }
 }
 
-- (void)handleCoalescedTouches:(id)a3 forTouch:(id)a4 average:(BOOL)a5
+- (void)handleCoalescedTouches:(id)touches forTouch:(id)touch average:(BOOL)average
 {
-  v5 = a5;
+  averageCopy = average;
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = a3;
-  v8 = [v7 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  touchesCopy = touches;
+  v8 = [touchesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v8)
   {
     v9 = *v12;
@@ -2055,36 +2055,36 @@ uint64_t __28__DKInkView_weightForValue___block_invoke(uint64_t a1)
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(touchesCopy);
         }
 
-        [(DKInkView *)self _vector4ForTouchSettingWeightAndVelocity:*(*(&v11 + 1) + 8 * v10) average:v5, v11];
+        [(DKInkView *)self _vector4ForTouchSettingWeightAndVelocity:*(*(&v11 + 1) + 8 * v10) average:averageCopy, v11];
         [(DKInkView *)self continueStroke:?];
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v7 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [touchesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (__n128)_vector4ForTouchSettingWeightAndVelocity:(void *)a3 average:(uint64_t)a4
+- (__n128)_vector4ForTouchSettingWeightAndVelocity:(void *)velocity average:(uint64_t)average
 {
-  v6 = a3;
-  [v6 locationInView:a1];
+  velocityCopy = velocity;
+  [velocityCopy locationInView:self];
   v25 = v8;
   v26 = v7;
-  [a1 weightForTouch:v6];
+  [self weightForTouch:velocityCopy];
   v10 = v9;
-  [a1 setCurrentWeight:?];
-  [a1 _updateVelocityWithTouch:v6 average:a4];
-  v24 = *(a1 + 440);
-  [a1 minThickness];
+  [self setCurrentWeight:?];
+  [self _updateVelocityWithTouch:velocityCopy average:average];
+  v24 = *(self + 440);
+  [self minThickness];
   v12 = v11;
-  [a1 maxThickness];
+  [self maxThickness];
   v14 = vcvt_f32_f64(v24);
   v15 = sqrtf(vaddv_f32(vmul_f32(v14, v14)));
   if (v15 >= *&MaxVelocityValue)
@@ -2118,15 +2118,15 @@ uint64_t __28__DKInkView_weightForValue___block_invoke(uint64_t a1)
   return v27;
 }
 
-- (void)_updateVelocityWithTouch:(id)a3 average:(BOOL)a4
+- (void)_updateVelocityWithTouch:(id)touch average:(BOOL)average
 {
-  v4 = a4;
-  v6 = a3;
+  averageCopy = average;
+  touchCopy = touch;
   x = self->_velocityInWindow.x;
   y = self->_velocityInWindow.y;
-  v12 = v6;
+  v12 = touchCopy;
   [(DKInkView *)self _velocityForTouch:?];
-  if (v4)
+  if (averageCopy)
   {
     v10 = y * 0.15 + v10 * 0.85;
     v9 = x * 0.15 + v9 * 0.85;
@@ -2138,11 +2138,11 @@ uint64_t __28__DKInkView_weightForValue___block_invoke(uint64_t a1)
   self->_lastTouchTime = v11;
 }
 
-+ (CGVector)normalizeVector:(CGVector)a3
++ (CGVector)normalizeVector:(CGVector)vector
 {
-  dy = a3.dy;
-  dx = a3.dx;
-  [a1 lengthOfVector:?];
+  dy = vector.dy;
+  dx = vector.dx;
+  [self lengthOfVector:?];
   v6 = dy / v5;
   v7 = dx / v5;
   result.dy = v6;
@@ -2172,8 +2172,8 @@ uint64_t __28__DKInkView_weightForValue___block_invoke(uint64_t a1)
 
 - (__n128)lastVectorPoint
 {
-  result = *(a1 + 704);
-  v3 = *(a1 + 720);
+  result = *(self + 704);
+  v3 = *(self + 720);
   *a2 = result;
   *(a2 + 16) = v3;
   return result;

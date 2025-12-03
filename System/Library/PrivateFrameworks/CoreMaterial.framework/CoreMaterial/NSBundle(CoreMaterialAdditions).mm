@@ -11,26 +11,26 @@
   v1 = __coreMaterialOverrideRecipeBundle;
   if (!__coreMaterialOverrideRecipeBundle)
   {
-    v2 = [a1 coreMaterialOverrideRecipeBundleURL];
-    if (v2)
+    coreMaterialOverrideRecipeBundleURL = [self coreMaterialOverrideRecipeBundleURL];
+    if (coreMaterialOverrideRecipeBundleURL)
     {
-      v3 = [MEMORY[0x1E696AAE8] bundleWithURL:v2];
+      v3 = [MEMORY[0x1E696AAE8] bundleWithURL:coreMaterialOverrideRecipeBundleURL];
       v4 = __coreMaterialOverrideRecipeBundle;
       __coreMaterialOverrideRecipeBundle = v3;
     }
 
     if (!__coreMaterialOverrideRecipeBundle)
     {
-      v5 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       v6 = __coreMaterialOverrideRecipeBundle;
-      __coreMaterialOverrideRecipeBundle = v5;
+      __coreMaterialOverrideRecipeBundle = null;
     }
 
     v1 = __coreMaterialOverrideRecipeBundle;
   }
 
-  v7 = [MEMORY[0x1E695DFB0] null];
-  if (v1 == v7)
+  null2 = [MEMORY[0x1E695DFB0] null];
+  if (v1 == null2)
   {
     v8 = 0;
   }
@@ -48,9 +48,9 @@
 + (id)coreMaterialOverrideRecipeBundleURL
 {
   v0 = _MTGetCoreMaterialPlatformConfiguration();
-  v1 = [v0 overrideRecipeBundleURL];
+  overrideRecipeBundleURL = [v0 overrideRecipeBundleURL];
 
-  return v1;
+  return overrideRecipeBundleURL;
 }
 
 + (void)_setCoreMaterialOverrideRecipeBundleURL:()CoreMaterialAdditions
@@ -59,8 +59,8 @@
   v3 = a3;
   MTRegisterCoreMaterialLogging();
   v4 = _MTGetCoreMaterialPlatformConfiguration();
-  v5 = [v4 overrideRecipeBundleURL];
-  if (v3 | v5 && ([v3 isEqual:v5] & 1) == 0)
+  overrideRecipeBundleURL = [v4 overrideRecipeBundleURL];
+  if (v3 | overrideRecipeBundleURL && ([v3 isEqual:overrideRecipeBundleURL] & 1) == 0)
   {
     v6 = objc_opt_respondsToSelector();
     v7 = MTLogConfiguration;

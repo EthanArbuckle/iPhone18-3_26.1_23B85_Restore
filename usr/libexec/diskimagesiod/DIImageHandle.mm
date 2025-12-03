@@ -1,12 +1,12 @@
 @interface DIImageHandle
-- (DIImageHandle)initWithDiskImage:(void *)a3 lockableResources:(const void *)a4;
+- (DIImageHandle)initWithDiskImage:(void *)image lockableResources:(const void *)resources;
 - (expected<std::unique_ptr<diskimage_uio::diskimage>,)moveDiskImage;
 - (id).cxx_construct;
 @end
 
 @implementation DIImageHandle
 
-- (DIImageHandle)initWithDiskImage:(void *)a3 lockableResources:(const void *)a4
+- (DIImageHandle)initWithDiskImage:(void *)image lockableResources:(const void *)resources
 {
   v10.receiver = self;
   v10.super_class = DIImageHandle;
@@ -14,12 +14,12 @@
   v7 = v6;
   if (v6)
   {
-    v8 = *a3;
-    *a3 = 0;
+    v8 = *image;
+    *image = 0;
     sub_1000BB45C(v6 + 1, v8);
-    if (v7 + 2 != a4)
+    if (v7 + 2 != resources)
     {
-      sub_1000BB4A8(v7 + 2, *a4, *(a4 + 1), (*(a4 + 1) - *a4) >> 4);
+      sub_1000BB4A8(v7 + 2, *resources, *(resources + 1), (*(resources + 1) - *resources) >> 4);
     }
   }
 

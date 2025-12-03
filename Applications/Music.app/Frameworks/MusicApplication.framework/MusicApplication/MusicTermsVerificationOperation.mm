@@ -3,18 +3,18 @@
 - (BOOL)isExecuting;
 - (BOOL)isFinished;
 - (MusicTermsVerificationOperation)init;
-- (MusicTermsVerificationOperation)initWithAdditionalPresentationHandler:(id)a3;
+- (MusicTermsVerificationOperation)initWithAdditionalPresentationHandler:(id)handler;
 - (NSError)error;
 - (SSVFairPlaySAPSession)SAPSession;
-- (id)_newTermsUpdateOperationWithAcceptedStoreTermsVersion:(unint64_t)a3;
-- (void)_dismissTermsAgreementViewControllerWithCompletionHandler:(id)a3;
-- (void)_finishWithError:(id)a3;
+- (id)_newTermsUpdateOperationWithAcceptedStoreTermsVersion:(unint64_t)version;
+- (void)_dismissTermsAgreementViewControllerWithCompletionHandler:(id)handler;
+- (void)_finishWithError:(id)error;
 - (void)_updateSubscriptionStatus;
-- (void)setSAPSession:(id)a3;
+- (void)setSAPSession:(id)session;
 - (void)start;
-- (void)termsAgreementViewController:(id)a3 didRequestSendByEmailToEmailAddress:(id)a4;
-- (void)termsAgreementViewControllerDidAcceptTerms:(id)a3;
-- (void)termsAgreementViewControllerDidCancel:(id)a3;
+- (void)termsAgreementViewController:(id)controller didRequestSendByEmailToEmailAddress:(id)address;
+- (void)termsAgreementViewControllerDidAcceptTerms:(id)terms;
+- (void)termsAgreementViewControllerDidCancel:(id)cancel;
 @end
 
 @implementation MusicTermsVerificationOperation
@@ -34,13 +34,13 @@
   return v2;
 }
 
-- (MusicTermsVerificationOperation)initWithAdditionalPresentationHandler:(id)a3
+- (MusicTermsVerificationOperation)initWithAdditionalPresentationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(MusicTermsVerificationOperation *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [handlerCopy copy];
     additionalPresentationHandler = v5->_additionalPresentationHandler;
     v5->_additionalPresentationHandler = v6;
   }
@@ -283,10 +283,10 @@ id __40__MusicTermsVerificationOperation_start__block_invoke_9(uint64_t a1)
   return [v2 _finishWithError:v3];
 }
 
-- (void)termsAgreementViewControllerDidAcceptTerms:(id)a3
+- (void)termsAgreementViewControllerDidAcceptTerms:(id)terms
 {
-  v4 = a3;
-  [v4 setAccepting:1];
+  termsCopy = terms;
+  [termsCopy setAccepting:1];
   v5 = [(MusicTermsVerificationOperation *)self _newTermsUpdateOperationWithAcceptedStoreTermsVersion:self->_acceptingTermsVersion];
   objc_initWeak(&location, v5);
   v11[0] = _NSConcreteStackBlock;
@@ -295,7 +295,7 @@ id __40__MusicTermsVerificationOperation_start__block_invoke_9(uint64_t a1)
   v11[3] = &unk_CEF4C0;
   objc_copyWeak(&v13, &location);
   v11[4] = self;
-  v6 = v4;
+  v6 = termsCopy;
   v12 = v6;
   [v5 setCompletionBlock:v11];
   v7 = dispatch_get_global_queue(0, 0);
@@ -414,7 +414,7 @@ void __78__MusicTermsVerificationOperation_termsAgreementViewControllerDidAccept
   }
 }
 
-- (void)termsAgreementViewControllerDidCancel:(id)a3
+- (void)termsAgreementViewControllerDidCancel:(id)cancel
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -431,16 +431,16 @@ void __73__MusicTermsVerificationOperation_termsAgreementViewControllerDidCancel
   [v1 _finishWithError:v2];
 }
 
-- (void)termsAgreementViewController:(id)a3 didRequestSendByEmailToEmailAddress:(id)a4
+- (void)termsAgreementViewController:(id)controller didRequestSendByEmailToEmailAddress:(id)address
 {
-  v5 = a4;
-  if ([v5 length])
+  addressCopy = address;
+  if ([addressCopy length])
   {
-    v6 = [[MusicTermsSendByEmailOperation alloc] initWithEmailAddress:v5];
-    v7 = [(MusicTermsVerificationOperation *)self SAPSession];
-    if (v7)
+    v6 = [[MusicTermsSendByEmailOperation alloc] initWithEmailAddress:addressCopy];
+    sAPSession = [(MusicTermsVerificationOperation *)self SAPSession];
+    if (sAPSession)
     {
-      [(MusicTermsSendByEmailOperation *)v6 setSAPSession:v7];
+      [(MusicTermsSendByEmailOperation *)v6 setSAPSession:sAPSession];
     }
 
     v8 = dispatch_get_global_queue(0, 0);
@@ -498,25 +498,25 @@ void __73__MusicTermsVerificationOperation_termsAgreementViewControllerDidCancel
   return v3;
 }
 
-- (void)setSAPSession:(id)a3
+- (void)setSAPSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   accessQueue = self->_accessQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __49__MusicTermsVerificationOperation_setSAPSession___block_invoke;
   v7[3] = &unk_CEF420;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sessionCopy;
+  v6 = sessionCopy;
   dispatch_barrier_async(accessQueue, v7);
 }
 
 + (BOOL)requiresTermsVerification
 {
   v2 = +[MPCloudServiceStatusController sharedController];
-  v3 = [v2 musicSubscriptionStatus];
-  [v3 termsStatusList];
+  musicSubscriptionStatus = [v2 musicSubscriptionStatus];
+  [musicSubscriptionStatus termsStatusList];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -554,33 +554,33 @@ void __73__MusicTermsVerificationOperation_termsAgreementViewControllerDidCancel
 
 LABEL_11:
 
-  v9 = [v5 currentVersion];
-  v10 = [v5 acceptedVersion];
-  v12 = v9 > 0 && v10 < v9;
+  currentVersion = [v5 currentVersion];
+  acceptedVersion = [v5 acceptedVersion];
+  v12 = currentVersion > 0 && acceptedVersion < currentVersion;
 
   return v12;
 }
 
-- (void)_dismissTermsAgreementViewControllerWithCompletionHandler:(id)a3
+- (void)_dismissTermsAgreementViewControllerWithCompletionHandler:(id)handler
 {
-  v9 = a3;
-  v4 = [(MusicTermsAgreementViewController *)self->_termsAgreementViewController navigationController];
-  v5 = v4;
-  if (v4 && ([v4 presentingViewController], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "presentedViewController"), v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7 == v5))
+  handlerCopy = handler;
+  navigationController = [(MusicTermsAgreementViewController *)self->_termsAgreementViewController navigationController];
+  v5 = navigationController;
+  if (navigationController && ([navigationController presentingViewController], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "presentedViewController"), v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7 == v5))
   {
-    v8 = [v5 presentingViewController];
-    [v8 dismissViewControllerAnimated:1 completion:v9];
+    presentingViewController = [v5 presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:handlerCopy];
   }
 
-  else if (v9)
+  else if (handlerCopy)
   {
-    v9[2]();
+    handlerCopy[2]();
   }
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __52__MusicTermsVerificationOperation__finishWithError___block_invoke;
@@ -595,8 +595,8 @@ LABEL_11:
   v7[2] = __52__MusicTermsVerificationOperation__finishWithError___block_invoke_2;
   v7[3] = &unk_CEF420;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_barrier_async(accessQueue, v7);
   [(MusicTermsVerificationOperation *)self didChangeValueForKey:@"isExecuting"];
   [(MusicTermsVerificationOperation *)self didChangeValueForKey:@"isFinished"];
@@ -617,13 +617,13 @@ void __52__MusicTermsVerificationOperation__finishWithError___block_invoke_2(uin
   *(*(a1 + 32) + 32) = 0;
 }
 
-- (id)_newTermsUpdateOperationWithAcceptedStoreTermsVersion:(unint64_t)a3
+- (id)_newTermsUpdateOperationWithAcceptedStoreTermsVersion:(unint64_t)version
 {
-  v4 = [[MusicTermsUpdateOperation alloc] initWithAcceptedStoreTermsVersion:a3 termsContext:@"subscription"];
-  v5 = [(MusicTermsVerificationOperation *)self SAPSession];
-  if (v5)
+  v4 = [[MusicTermsUpdateOperation alloc] initWithAcceptedStoreTermsVersion:version termsContext:@"subscription"];
+  sAPSession = [(MusicTermsVerificationOperation *)self SAPSession];
+  if (sAPSession)
   {
-    [(MusicTermsUpdateOperation *)v4 setSAPSession:v5];
+    [(MusicTermsUpdateOperation *)v4 setSAPSession:sAPSession];
   }
 
   return v4;

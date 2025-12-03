@@ -1,48 +1,48 @@
 @interface ComAppleProactiveOrgApacheLuceneUtilOpenBitSet
-+ (int)bits2wordsWithLong:(int64_t)a3;
++ (int)bits2wordsWithLong:(int64_t)long;
 + (void)initialize;
-- (BOOL)fastGetWithInt:(int)a3;
-- (BOOL)fastGetWithLong:(int64_t)a3;
-- (BOOL)flipAndGetWithInt:(int)a3;
-- (BOOL)flipAndGetWithLong:(int64_t)a3;
-- (BOOL)getAndSetWithInt:(int)a3;
-- (BOOL)getAndSetWithLong:(int64_t)a3;
-- (BOOL)getWithInt:(int)a3;
-- (BOOL)getWithLong:(int64_t)a3;
-- (BOOL)intersectsWithComAppleProactiveOrgApacheLuceneUtilOpenBitSet:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (ComAppleProactiveOrgApacheLuceneUtilOpenBitSet)setWithLong:(int64_t)a3;
-- (ComAppleProactiveOrgApacheLuceneUtilOpenBitSet)setWithLong:(int64_t)a3 withLong:(int64_t)a4;
+- (BOOL)fastGetWithInt:(int)int;
+- (BOOL)fastGetWithLong:(int64_t)long;
+- (BOOL)flipAndGetWithInt:(int)int;
+- (BOOL)flipAndGetWithLong:(int64_t)long;
+- (BOOL)getAndSetWithInt:(int)int;
+- (BOOL)getAndSetWithLong:(int64_t)long;
+- (BOOL)getWithInt:(int)int;
+- (BOOL)getWithLong:(int64_t)long;
+- (BOOL)intersectsWithComAppleProactiveOrgApacheLuceneUtilOpenBitSet:(id)set;
+- (BOOL)isEqual:(id)equal;
+- (ComAppleProactiveOrgApacheLuceneUtilOpenBitSet)setWithLong:(int64_t)long;
+- (ComAppleProactiveOrgApacheLuceneUtilOpenBitSet)setWithLong:(int64_t)long withLong:(int64_t)withLong;
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)iterator;
-- (int)expandingWordNumWithLong:(int64_t)a3;
-- (int)getBitWithInt:(int)a3;
+- (int)expandingWordNumWithLong:(int64_t)long;
+- (int)getBitWithInt:(int)int;
 - (int)length;
-- (int)nextSetBitWithInt:(int)a3;
-- (int)prevSetBitWithInt:(int)a3;
+- (int)nextSetBitWithInt:(int)int;
+- (int)prevSetBitWithInt:(int)int;
 - (int64_t)capacity;
-- (int64_t)nextSetBitWithLong:(int64_t)a3;
-- (int64_t)prevSetBitWithLong:(int64_t)a3;
+- (int64_t)nextSetBitWithLong:(int64_t)long;
+- (int64_t)prevSetBitWithLong:(int64_t)long;
 - (unint64_t)hash;
-- (void)clearWithInt:(int)a3 withInt:(int)a4;
-- (void)clearWithLong:(int64_t)a3;
-- (void)clearWithLong:(int64_t)a3 withLong:(int64_t)a4;
+- (void)clearWithInt:(int)int withInt:(int)withInt;
+- (void)clearWithLong:(int64_t)long;
+- (void)clearWithLong:(int64_t)long withLong:(int64_t)withLong;
 - (void)dealloc;
-- (void)ensureCapacityWithLong:(int64_t)a3;
-- (void)fastClearWithInt:(int)a3;
-- (void)fastClearWithLong:(int64_t)a3;
-- (void)fastFlipWithInt:(int)a3;
-- (void)fastFlipWithLong:(int64_t)a3;
-- (void)fastSetWithInt:(int)a3;
-- (void)fastSetWithLong:(int64_t)a3;
-- (void)flipWithLong:(int64_t)a3;
-- (void)flipWithLong:(int64_t)a3 withLong:(int64_t)a4;
-- (void)intersectWithComAppleProactiveOrgApacheLuceneUtilOpenBitSet:(id)a3;
-- (void)removeWithComAppleProactiveOrgApacheLuceneUtilOpenBitSet:(id)a3;
+- (void)ensureCapacityWithLong:(int64_t)long;
+- (void)fastClearWithInt:(int)int;
+- (void)fastClearWithLong:(int64_t)long;
+- (void)fastFlipWithInt:(int)int;
+- (void)fastFlipWithLong:(int64_t)long;
+- (void)fastSetWithInt:(int)int;
+- (void)fastSetWithLong:(int64_t)long;
+- (void)flipWithLong:(int64_t)long;
+- (void)flipWithLong:(int64_t)long withLong:(int64_t)withLong;
+- (void)intersectWithComAppleProactiveOrgApacheLuceneUtilOpenBitSet:(id)set;
+- (void)removeWithComAppleProactiveOrgApacheLuceneUtilOpenBitSet:(id)set;
 - (void)trimTrailingZeros;
-- (void)union__WithComAppleProactiveOrgApacheLuceneUtilOpenBitSet:(id)a3;
-- (void)xor__WithComAppleProactiveOrgApacheLuceneUtilOpenBitSet:(id)a3;
+- (void)union__WithComAppleProactiveOrgApacheLuceneUtilOpenBitSet:(id)set;
+- (void)xor__WithComAppleProactiveOrgApacheLuceneUtilOpenBitSet:(id)set;
 @end
 
 @implementation ComAppleProactiveOrgApacheLuceneUtilOpenBitSet
@@ -76,7 +76,7 @@
   return bits->super.size_ << 6;
 }
 
-- (BOOL)getWithInt:(int)a3
+- (BOOL)getWithInt:(int)int
 {
   bits = self->bits_;
   if (!bits)
@@ -84,22 +84,22 @@
     JreThrowNullPointerException();
   }
 
-  v4 = a3 >> 6;
+  v4 = int >> 6;
   size = bits->super.size_;
-  if (a3 >> 6 >= size)
+  if (int >> 6 >= size)
   {
     return 0;
   }
 
   if (v4 < 0)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, (a3 >> 6));
+    IOSArray_throwOutOfBoundsWithMsg(size, (int >> 6));
   }
 
-  return (bits->buffer_[v4] & (1 << a3)) != 0;
+  return (bits->buffer_[v4] & (1 << int)) != 0;
 }
 
-- (BOOL)fastGetWithInt:(int)a3
+- (BOOL)fastGetWithInt:(int)int
 {
   bits = self->bits_;
   if (!bits)
@@ -107,17 +107,17 @@
     JreThrowNullPointerException();
   }
 
-  v4 = a3 >> 6;
+  v4 = int >> 6;
   size = bits->super.size_;
-  if (a3 >> 6 < 0 || v4 >= size)
+  if (int >> 6 < 0 || v4 >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, (a3 >> 6));
+    IOSArray_throwOutOfBoundsWithMsg(size, (int >> 6));
   }
 
-  return (bits->buffer_[v4] >> a3) & 1;
+  return (bits->buffer_[v4] >> int) & 1;
 }
 
-- (BOOL)getWithLong:(int64_t)a3
+- (BOOL)getWithLong:(int64_t)long
 {
   bits = self->bits_;
   if (!bits)
@@ -125,9 +125,9 @@
     JreThrowNullPointerException();
   }
 
-  v4 = a3 >> 6;
+  v4 = long >> 6;
   size = bits->super.size_;
-  if (size <= (a3 >> 6))
+  if (size <= (long >> 6))
   {
     return 0;
   }
@@ -137,10 +137,10 @@
     IOSArray_throwOutOfBoundsWithMsg(size, v4);
   }
 
-  return (bits->buffer_[(a3 >> 6)] & (1 << a3)) != 0;
+  return (bits->buffer_[(long >> 6)] & (1 << long)) != 0;
 }
 
-- (BOOL)fastGetWithLong:(int64_t)a3
+- (BOOL)fastGetWithLong:(int64_t)long
 {
   bits = self->bits_;
   if (!bits)
@@ -148,17 +148,17 @@
     JreThrowNullPointerException();
   }
 
-  v4 = a3 >> 6;
+  v4 = long >> 6;
   size = bits->super.size_;
-  if (((a3 >> 6) & 0x80000000) != 0 || size <= v4)
+  if (((long >> 6) & 0x80000000) != 0 || size <= v4)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v4);
   }
 
-  return (bits->buffer_[(a3 >> 6)] >> a3) & 1;
+  return (bits->buffer_[(long >> 6)] >> long) & 1;
 }
 
-- (int)getBitWithInt:(int)a3
+- (int)getBitWithInt:(int)int
 {
   bits = self->bits_;
   if (!bits)
@@ -166,19 +166,19 @@
     JreThrowNullPointerException();
   }
 
-  v4 = a3 >> 6;
+  v4 = int >> 6;
   size = bits->super.size_;
-  if (a3 >> 6 < 0 || v4 >= size)
+  if (int >> 6 < 0 || v4 >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, (a3 >> 6));
+    IOSArray_throwOutOfBoundsWithMsg(size, (int >> 6));
   }
 
-  return (bits->buffer_[v4] >> a3) & 1;
+  return (bits->buffer_[v4] >> int) & 1;
 }
 
-- (ComAppleProactiveOrgApacheLuceneUtilOpenBitSet)setWithLong:(int64_t)a3
+- (ComAppleProactiveOrgApacheLuceneUtilOpenBitSet)setWithLong:(int64_t)long
 {
-  v3 = a3;
+  longCopy = long;
   v5 = [(ComAppleProactiveOrgApacheLuceneUtilOpenBitSet *)self expandingWordNumWithLong:?];
   bits = self->bits_;
   if (!bits)
@@ -193,11 +193,11 @@
     IOSArray_throwOutOfBoundsWithMsg(result, v7);
   }
 
-  bits->buffer_[v7] |= 1 << v3;
+  bits->buffer_[v7] |= 1 << longCopy;
   return result;
 }
 
-- (void)fastSetWithInt:(int)a3
+- (void)fastSetWithInt:(int)int
 {
   bits = self->bits_;
   if (!bits)
@@ -205,17 +205,17 @@
     JreThrowNullPointerException();
   }
 
-  v4 = a3 >> 6;
+  v4 = int >> 6;
   size = bits->super.size_;
-  if (a3 >> 6 < 0 || v4 >= size)
+  if (int >> 6 < 0 || v4 >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, (a3 >> 6));
+    IOSArray_throwOutOfBoundsWithMsg(size, (int >> 6));
   }
 
-  bits->buffer_[v4] |= 1 << a3;
+  bits->buffer_[v4] |= 1 << int;
 }
 
-- (void)fastSetWithLong:(int64_t)a3
+- (void)fastSetWithLong:(int64_t)long
 {
   bits = self->bits_;
   if (!bits)
@@ -223,30 +223,30 @@
     JreThrowNullPointerException();
   }
 
-  v4 = a3 >> 6;
+  v4 = long >> 6;
   size = bits->super.size_;
-  if (((a3 >> 6) & 0x80000000) != 0 || size <= v4)
+  if (((long >> 6) & 0x80000000) != 0 || size <= v4)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v4);
   }
 
-  bits->buffer_[(a3 >> 6)] |= 1 << a3;
+  bits->buffer_[(long >> 6)] |= 1 << long;
 }
 
-- (ComAppleProactiveOrgApacheLuceneUtilOpenBitSet)setWithLong:(int64_t)a3 withLong:(int64_t)a4
+- (ComAppleProactiveOrgApacheLuceneUtilOpenBitSet)setWithLong:(int64_t)long withLong:(int64_t)withLong
 {
-  if (a4 > a3)
+  if (withLong > long)
   {
-    v4 = a4;
-    v5 = a3;
-    v6 = self;
-    v7 = a3 >> 6;
-    v8 = [(ComAppleProactiveOrgApacheLuceneUtilOpenBitSet *)self expandingWordNumWithLong:a4 - 1];
-    v13 = -1 << v5;
-    v14 = 0xFFFFFFFFFFFFFFFFLL >> -v4;
+    withLongCopy = withLong;
+    longCopy = long;
+    selfCopy = self;
+    v7 = long >> 6;
+    v8 = [(ComAppleProactiveOrgApacheLuceneUtilOpenBitSet *)self expandingWordNumWithLong:withLong - 1];
+    v13 = -1 << longCopy;
+    v14 = 0xFFFFFFFFFFFFFFFFLL >> -withLongCopy;
     if (v8 == v7)
     {
-      bits = v6->bits_;
+      bits = selfCopy->bits_;
       if (bits)
       {
         v14 &= v13;
@@ -266,20 +266,20 @@ LABEL_12:
 
     else
     {
-      v18 = v6->bits_;
+      v18 = selfCopy->bits_;
       if (v18)
       {
         v19 = v8;
         size = v18->super.size_;
         if ((v7 & 0x80000000) != 0 || size <= v7)
         {
-          v21 = v6->bits_;
+          v21 = selfCopy->bits_;
           IOSArray_throwOutOfBoundsWithMsg(size, v7);
         }
 
         v18->buffer_[v7] |= v13;
-        JavaUtilArrays_fillWithLongArray_withInt_withInt_withLong_(v6->bits_, (v7 + 1), v19, -1, v9, v10, v11, v12);
-        bits = v6->bits_;
+        JavaUtilArrays_fillWithLongArray_withInt_withInt_withLong_(selfCopy->bits_, (v7 + 1), v19, -1, v9, v10, v11, v12);
+        bits = selfCopy->bits_;
         v16 = v19;
         self = bits->super.size_;
         if ((v19 & 0x80000000) != 0 || v19 >= self)
@@ -299,18 +299,18 @@ LABEL_17:
   return self;
 }
 
-- (int)expandingWordNumWithLong:(int64_t)a3
+- (int)expandingWordNumWithLong:(int64_t)long
 {
-  v3 = a3 >> 6;
-  if (self->wlen_ <= (a3 >> 6))
+  v3 = long >> 6;
+  if (self->wlen_ <= (long >> 6))
   {
-    [(ComAppleProactiveOrgApacheLuceneUtilOpenBitSet *)self ensureCapacityWithLong:a3 + 1];
+    [(ComAppleProactiveOrgApacheLuceneUtilOpenBitSet *)self ensureCapacityWithLong:long + 1];
   }
 
   return v3;
 }
 
-- (void)fastClearWithInt:(int)a3
+- (void)fastClearWithInt:(int)int
 {
   bits = self->bits_;
   if (!bits)
@@ -318,17 +318,17 @@ LABEL_17:
     JreThrowNullPointerException();
   }
 
-  v4 = a3 >> 6;
+  v4 = int >> 6;
   size = bits->super.size_;
-  if (a3 >> 6 < 0 || v4 >= size)
+  if (int >> 6 < 0 || v4 >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, (a3 >> 6));
+    IOSArray_throwOutOfBoundsWithMsg(size, (int >> 6));
   }
 
-  bits->buffer_[v4] &= ~(1 << a3);
+  bits->buffer_[v4] &= ~(1 << int);
 }
 
-- (void)fastClearWithLong:(int64_t)a3
+- (void)fastClearWithLong:(int64_t)long
 {
   bits = self->bits_;
   if (!bits)
@@ -336,20 +336,20 @@ LABEL_17:
     JreThrowNullPointerException();
   }
 
-  v4 = a3 >> 6;
+  v4 = long >> 6;
   size = bits->super.size_;
-  if (((a3 >> 6) & 0x80000000) != 0 || size <= v4)
+  if (((long >> 6) & 0x80000000) != 0 || size <= v4)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v4);
   }
 
-  bits->buffer_[(a3 >> 6)] &= ~(1 << a3);
+  bits->buffer_[(long >> 6)] &= ~(1 << long);
 }
 
-- (void)clearWithLong:(int64_t)a3
+- (void)clearWithLong:(int64_t)long
 {
-  v3 = a3 >> 6;
-  if (self->wlen_ > (a3 >> 6))
+  v3 = long >> 6;
+  if (self->wlen_ > (long >> 6))
   {
     bits = self->bits_;
     if (!bits)
@@ -360,24 +360,24 @@ LABEL_17:
     size = bits->super.size_;
     if ((v3 & 0x80000000) != 0 || size <= v3)
     {
-      IOSArray_throwOutOfBoundsWithMsg(size, a3 >> 6);
+      IOSArray_throwOutOfBoundsWithMsg(size, long >> 6);
     }
 
-    bits->buffer_[v3] &= ~(1 << a3);
+    bits->buffer_[v3] &= ~(1 << long);
   }
 }
 
-- (void)clearWithInt:(int)a3 withInt:(int)a4
+- (void)clearWithInt:(int)int withInt:(int)withInt
 {
-  if (a4 > a3)
+  if (withInt > int)
   {
-    v5 = a3 >> 6;
+    v5 = int >> 6;
     wlen = self->wlen_;
-    if (a3 >> 6 < wlen)
+    if (int >> 6 < wlen)
     {
-      v7 = ~(-1 << a3);
-      v8 = ~(0xFFFFFFFFFFFFFFFFLL >> -a4);
-      if (v5 == (a4 - 1) >> 6)
+      v7 = ~(-1 << int);
+      v8 = ~(0xFFFFFFFFFFFFFFFFLL >> -withInt);
+      if (v5 == (withInt - 1) >> 6)
       {
         bits = self->bits_;
         if (bits)
@@ -386,7 +386,7 @@ LABEL_17:
           size = bits->super.size_;
           if (v5 < 0 || v5 >= size)
           {
-            IOSArray_throwOutOfBoundsWithMsg(size, (a3 >> 6));
+            IOSArray_throwOutOfBoundsWithMsg(size, (int >> 6));
           }
 
 LABEL_15:
@@ -404,11 +404,11 @@ LABEL_17:
         goto LABEL_17;
       }
 
-      v12 = ((a4 - 1) >> 6);
+      v12 = ((withInt - 1) >> 6);
       if (v5 < 0 || v5 >= v11->super.size_)
       {
         v19 = self->bits_;
-        IOSArray_throwOutOfBoundsWithMsg(v11->super.size_, (a3 >> 6));
+        IOSArray_throwOutOfBoundsWithMsg(v11->super.size_, (int >> 6));
       }
 
       v11->buffer_[v5] &= v7;
@@ -430,17 +430,17 @@ LABEL_17:
   }
 }
 
-- (void)clearWithLong:(int64_t)a3 withLong:(int64_t)a4
+- (void)clearWithLong:(int64_t)long withLong:(int64_t)withLong
 {
-  if (a4 > a3)
+  if (withLong > long)
   {
-    v5 = a3 >> 6;
+    v5 = long >> 6;
     wlen = self->wlen_;
-    if (wlen > (a3 >> 6))
+    if (wlen > (long >> 6))
     {
-      v7 = (a4 - 1) >> 6;
-      v8 = ~(-1 << a3);
-      v9 = ~(0xFFFFFFFFFFFFFFFFLL >> -a4);
+      v7 = (withLong - 1) >> 6;
+      v8 = ~(-1 << long);
+      v9 = ~(0xFFFFFFFFFFFFFFFFLL >> -withLong);
       if (v5 == v7)
       {
         bits = self->bits_;
@@ -450,7 +450,7 @@ LABEL_17:
           size = bits->super.size_;
           if ((v5 & 0x80000000) != 0 || size <= v5)
           {
-            IOSArray_throwOutOfBoundsWithMsg(size, a3 >> 6);
+            IOSArray_throwOutOfBoundsWithMsg(size, long >> 6);
           }
 
 LABEL_15:
@@ -471,11 +471,11 @@ LABEL_17:
       if ((v5 & 0x80000000) != 0 || v12->super.size_ <= v5)
       {
         v19 = self->bits_;
-        IOSArray_throwOutOfBoundsWithMsg(v12->super.size_, a3 >> 6);
+        IOSArray_throwOutOfBoundsWithMsg(v12->super.size_, long >> 6);
       }
 
       v12->buffer_[v5] &= v8;
-      v13 = JavaLangMath_minWithInt_withInt_(wlen, (a4 - 1) >> 6);
+      v13 = JavaLangMath_minWithInt_withInt_(wlen, (withLong - 1) >> 6);
       JavaUtilArrays_fillWithLongArray_withInt_withInt_withLong_(self->bits_, (v5 + 1), v13, 0, v14, v15, v16, v17);
       if (self->wlen_ > v7)
       {
@@ -493,7 +493,7 @@ LABEL_17:
   }
 }
 
-- (BOOL)getAndSetWithInt:(int)a3
+- (BOOL)getAndSetWithInt:(int)int
 {
   bits = self->bits_;
   if (!bits)
@@ -501,26 +501,26 @@ LABEL_17:
     JreThrowNullPointerException();
   }
 
-  v4 = a3 >> 6;
+  v4 = int >> 6;
   size = bits->super.size_;
-  if (a3 >> 6 < 0 || v4 >= size)
+  if (int >> 6 < 0 || v4 >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, (a3 >> 6));
+    IOSArray_throwOutOfBoundsWithMsg(size, (int >> 6));
   }
 
   v6 = bits;
   v7 = bits->buffer_[v4];
   if (v4 < 0 || v4 >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, (a3 >> 6));
+    IOSArray_throwOutOfBoundsWithMsg(size, (int >> 6));
   }
 
-  result = (v7 & (1 << a3)) != 0;
-  v6->buffer_[v4] |= 1 << a3;
+  result = (v7 & (1 << int)) != 0;
+  v6->buffer_[v4] |= 1 << int;
   return result;
 }
 
-- (BOOL)getAndSetWithLong:(int64_t)a3
+- (BOOL)getAndSetWithLong:(int64_t)long
 {
   bits = self->bits_;
   if (!bits)
@@ -528,27 +528,27 @@ LABEL_17:
     JreThrowNullPointerException();
   }
 
-  v4 = (a3 >> 6);
-  v5 = a3 >> 6;
+  v4 = (long >> 6);
+  v5 = long >> 6;
   size = bits->super.size_;
-  if (((a3 >> 6) & 0x80000000) != 0 || size <= v5)
+  if (((long >> 6) & 0x80000000) != 0 || size <= v5)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, a3 >> 6);
+    IOSArray_throwOutOfBoundsWithMsg(size, long >> 6);
   }
 
   v7 = bits;
   v8 = bits->buffer_[v4];
   if (v4 < 0 || size <= v5)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, a3 >> 6);
+    IOSArray_throwOutOfBoundsWithMsg(size, long >> 6);
   }
 
-  result = (v8 & (1 << a3)) != 0;
-  v7->buffer_[v4] |= 1 << a3;
+  result = (v8 & (1 << long)) != 0;
+  v7->buffer_[v4] |= 1 << long;
   return result;
 }
 
-- (void)fastFlipWithInt:(int)a3
+- (void)fastFlipWithInt:(int)int
 {
   bits = self->bits_;
   if (!bits)
@@ -556,17 +556,17 @@ LABEL_17:
     JreThrowNullPointerException();
   }
 
-  v4 = a3 >> 6;
+  v4 = int >> 6;
   size = bits->super.size_;
-  if (a3 >> 6 < 0 || v4 >= size)
+  if (int >> 6 < 0 || v4 >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, (a3 >> 6));
+    IOSArray_throwOutOfBoundsWithMsg(size, (int >> 6));
   }
 
-  bits->buffer_[v4] ^= 1 << a3;
+  bits->buffer_[v4] ^= 1 << int;
 }
 
-- (void)fastFlipWithLong:(int64_t)a3
+- (void)fastFlipWithLong:(int64_t)long
 {
   bits = self->bits_;
   if (!bits)
@@ -574,19 +574,19 @@ LABEL_17:
     JreThrowNullPointerException();
   }
 
-  v4 = a3 >> 6;
+  v4 = long >> 6;
   size = bits->super.size_;
-  if (((a3 >> 6) & 0x80000000) != 0 || size <= v4)
+  if (((long >> 6) & 0x80000000) != 0 || size <= v4)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v4);
   }
 
-  bits->buffer_[(a3 >> 6)] ^= 1 << a3;
+  bits->buffer_[(long >> 6)] ^= 1 << long;
 }
 
-- (void)flipWithLong:(int64_t)a3
+- (void)flipWithLong:(int64_t)long
 {
-  v3 = a3;
+  longCopy = long;
   v5 = [(ComAppleProactiveOrgApacheLuceneUtilOpenBitSet *)self expandingWordNumWithLong:?];
   bits = self->bits_;
   if (!bits)
@@ -601,10 +601,10 @@ LABEL_17:
     IOSArray_throwOutOfBoundsWithMsg(size, v7);
   }
 
-  bits->buffer_[v7] ^= 1 << v3;
+  bits->buffer_[v7] ^= 1 << longCopy;
 }
 
-- (BOOL)flipAndGetWithInt:(int)a3
+- (BOOL)flipAndGetWithInt:(int)int
 {
   bits = self->bits_;
   if (!bits)
@@ -612,12 +612,12 @@ LABEL_17:
     JreThrowNullPointerException();
   }
 
-  v5 = a3 >> 6;
-  v6 = 1 << a3;
+  v5 = int >> 6;
+  v6 = 1 << int;
   size = bits->super.size_;
-  if (a3 >> 6 < 0 || v5 >= size)
+  if (int >> 6 < 0 || v5 >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, (a3 >> 6));
+    IOSArray_throwOutOfBoundsWithMsg(size, (int >> 6));
   }
 
   bits->buffer_[v5] ^= v6;
@@ -625,13 +625,13 @@ LABEL_17:
   v9 = v8->super.size_;
   if (v5 < 0 || v5 >= v9)
   {
-    IOSArray_throwOutOfBoundsWithMsg(v9, (a3 >> 6));
+    IOSArray_throwOutOfBoundsWithMsg(v9, (int >> 6));
   }
 
   return (v8->buffer_[v5] & v6) != 0;
 }
 
-- (BOOL)flipAndGetWithLong:(int64_t)a3
+- (BOOL)flipAndGetWithLong:(int64_t)long
 {
   bits = self->bits_;
   if (!bits)
@@ -639,13 +639,13 @@ LABEL_17:
     JreThrowNullPointerException();
   }
 
-  v5 = 1 << a3;
-  v6 = (a3 >> 6);
-  v7 = a3 >> 6;
+  v5 = 1 << long;
+  v6 = (long >> 6);
+  v7 = long >> 6;
   size = bits->super.size_;
-  if (((a3 >> 6) & 0x80000000) != 0 || size <= v7)
+  if (((long >> 6) & 0x80000000) != 0 || size <= v7)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, a3 >> 6);
+    IOSArray_throwOutOfBoundsWithMsg(size, long >> 6);
   }
 
   bits->buffer_[v6] ^= v5;
@@ -653,22 +653,22 @@ LABEL_17:
   v10 = v9->super.size_;
   if (v6 < 0 || v10 <= v7)
   {
-    IOSArray_throwOutOfBoundsWithMsg(v10, a3 >> 6);
+    IOSArray_throwOutOfBoundsWithMsg(v10, long >> 6);
   }
 
   return (v9->buffer_[v6] & v5) != 0;
 }
 
-- (void)flipWithLong:(int64_t)a3 withLong:(int64_t)a4
+- (void)flipWithLong:(int64_t)long withLong:(int64_t)withLong
 {
-  if (a4 > a3)
+  if (withLong > long)
   {
-    v4 = a4;
-    v5 = a3;
-    v7 = a3 >> 6;
-    v8 = [(ComAppleProactiveOrgApacheLuceneUtilOpenBitSet *)self expandingWordNumWithLong:a4 - 1];
-    v9 = -1 << v5;
-    v10 = 0xFFFFFFFFFFFFFFFFLL >> -v4;
+    withLongCopy = withLong;
+    longCopy = long;
+    v7 = long >> 6;
+    v8 = [(ComAppleProactiveOrgApacheLuceneUtilOpenBitSet *)self expandingWordNumWithLong:withLong - 1];
+    v9 = -1 << longCopy;
+    v10 = 0xFFFFFFFFFFFFFFFFLL >> -withLongCopy;
     if (v8 == v7)
     {
       bits = self->bits_;
@@ -744,10 +744,10 @@ LABEL_27:
   }
 }
 
-- (int)nextSetBitWithInt:(int)a3
+- (int)nextSetBitWithInt:(int)int
 {
-  v3 = a3 >> 6;
-  if (a3 >> 6 < self->wlen_)
+  v3 = int >> 6;
+  if (int >> 6 < self->wlen_)
   {
     bits = self->bits_;
     if (!bits)
@@ -755,21 +755,21 @@ LABEL_27:
       JreThrowNullPointerException();
     }
 
-    v6 = a3;
+    intCopy = int;
     size = bits->super.size_;
     if (v3 < 0 || v3 >= size)
     {
-      IOSArray_throwOutOfBoundsWithMsg(size, (a3 >> 6));
+      IOSArray_throwOutOfBoundsWithMsg(size, (int >> 6));
     }
 
-    v8 = bits->buffer_[v3] >> (a3 & 0x3F);
+    v8 = bits->buffer_[v3] >> (int & 0x3F);
     if (v8)
     {
-      return JavaLangLong_numberOfTrailingZerosWithLong_(v8) + v6;
+      return JavaLangLong_numberOfTrailingZerosWithLong_(v8) + intCopy;
     }
 
     v10 = v3 + 1;
-    v6 = v3 << 6;
+    intCopy = v3 << 6;
     while (v10 < self->wlen_)
     {
       v11 = self->bits_;
@@ -780,10 +780,10 @@ LABEL_27:
       }
 
       v8 = v11->buffer_[v10++];
-      v6 += 64;
+      intCopy += 64;
       if (v8)
       {
-        return JavaLangLong_numberOfTrailingZerosWithLong_(v8) + v6;
+        return JavaLangLong_numberOfTrailingZerosWithLong_(v8) + intCopy;
       }
     }
   }
@@ -791,10 +791,10 @@ LABEL_27:
   return -1;
 }
 
-- (int64_t)nextSetBitWithLong:(int64_t)a3
+- (int64_t)nextSetBitWithLong:(int64_t)long
 {
-  v3 = a3 >> 6;
-  if (self->wlen_ > (a3 >> 6))
+  v3 = long >> 6;
+  if (self->wlen_ > (long >> 6))
   {
     bits = self->bits_;
     if (!bits)
@@ -805,13 +805,13 @@ LABEL_27:
     size = bits->super.size_;
     if ((v3 & 0x80000000) != 0 || size <= v3)
     {
-      IOSArray_throwOutOfBoundsWithMsg(size, a3 >> 6);
+      IOSArray_throwOutOfBoundsWithMsg(size, long >> 6);
     }
 
-    v7 = bits->buffer_[v3] >> a3;
+    v7 = bits->buffer_[v3] >> long;
     if (v7)
     {
-      return (v3 << 6) + (JavaLangLong_numberOfTrailingZerosWithLong_(v7) + (a3 & 0x3F));
+      return (v3 << 6) + (JavaLangLong_numberOfTrailingZerosWithLong_(v7) + (long & 0x3F));
     }
 
     v9 = v3 + 1;
@@ -837,22 +837,22 @@ LABEL_27:
   return -1;
 }
 
-- (int)prevSetBitWithInt:(int)a3
+- (int)prevSetBitWithInt:(int)int
 {
-  LODWORD(v4) = a3 >> 6;
+  LODWORD(v4) = int >> 6;
   wlen = self->wlen_;
-  if (a3 >> 6 < wlen)
+  if (int >> 6 < wlen)
   {
     if ((v4 & 0x80000000) == 0)
     {
       bits = self->bits_;
       if (bits)
       {
-        v7 = a3 & 0x3F;
+        v7 = int & 0x3F;
         size = bits->super.size_;
         if (v4 >= size)
         {
-          IOSArray_throwOutOfBoundsWithMsg(size, (a3 >> 6));
+          IOSArray_throwOutOfBoundsWithMsg(size, (int >> 6));
         }
 
         v9 = bits->buffer_[v4] << (v7 ^ 0x3Fu);
@@ -930,11 +930,11 @@ LABEL_6:
   return (v7 | (v10 << 6)) - JavaLangLong_numberOfLeadingZerosWithLong_(v9);
 }
 
-- (int64_t)prevSetBitWithLong:(int64_t)a3
+- (int64_t)prevSetBitWithLong:(int64_t)long
 {
-  v4 = a3 >> 6;
+  v4 = long >> 6;
   wlen = self->wlen_;
-  if (wlen <= (a3 >> 6))
+  if (wlen <= (long >> 6))
   {
     v4 = (wlen - 1);
     if (wlen - 1 < 0)
@@ -971,14 +971,14 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v7 = a3 & 0x3F;
+  v7 = long & 0x3F;
   v8 = v6->super.size_;
   if (v8 <= v4)
   {
-    IOSArray_throwOutOfBoundsWithMsg(v8, a3 >> 6);
+    IOSArray_throwOutOfBoundsWithMsg(v8, long >> 6);
   }
 
-  v9 = v6->buffer_[(a3 >> 6) & 0x7FFFFFFF] << (v7 ^ 0x3Fu);
+  v9 = v6->buffer_[(long >> 6) & 0x7FFFFFFF] << (v7 ^ 0x3Fu);
 LABEL_10:
   v12 = v4;
   if (v9)
@@ -1018,9 +1018,9 @@ LABEL_10:
 {
   v5.receiver = self;
   v5.super_class = ComAppleProactiveOrgApacheLuceneUtilOpenBitSet;
-  v2 = [(ComAppleProactiveOrgApacheLuceneUtilOpenBitSet *)&v5 clone];
+  clone = [(ComAppleProactiveOrgApacheLuceneUtilOpenBitSet *)&v5 clone];
   objc_opt_class();
-  if (!v2)
+  if (!clone)
   {
     goto LABEL_5;
   }
@@ -1030,29 +1030,29 @@ LABEL_10:
     JreThrowClassCastException();
   }
 
-  v3 = v2[1];
+  v3 = clone[1];
   if (!v3)
   {
 LABEL_5:
     JreThrowNullPointerException();
   }
 
-  JreStrongAssign(v2 + 1, [v3 clone]);
-  return v2;
+  JreStrongAssign(clone + 1, [v3 clone]);
+  return clone;
 }
 
-- (void)intersectWithComAppleProactiveOrgApacheLuceneUtilOpenBitSet:(id)a3
+- (void)intersectWithComAppleProactiveOrgApacheLuceneUtilOpenBitSet:(id)set
 {
-  if (!a3)
+  if (!set)
   {
     goto LABEL_16;
   }
 
-  v9 = JavaLangMath_minWithInt_withInt_(self->wlen_, *(a3 + 4));
+  v9 = JavaLangMath_minWithInt_withInt_(self->wlen_, *(set + 4));
   v10 = (v9 - 1);
   if (v9 - 1 >= 0)
   {
-    v11 = *(a3 + 1);
+    v11 = *(set + 1);
     if (v11)
     {
       bits = self->bits_;
@@ -1097,18 +1097,18 @@ LABEL_13:
   self->wlen_ = v9;
 }
 
-- (void)union__WithComAppleProactiveOrgApacheLuceneUtilOpenBitSet:(id)a3
+- (void)union__WithComAppleProactiveOrgApacheLuceneUtilOpenBitSet:(id)set
 {
-  if (!a3)
+  if (!set)
   {
     goto LABEL_15;
   }
 
-  v5 = JavaLangMath_maxWithInt_withInt_(self->wlen_, *(a3 + 4));
+  v5 = JavaLangMath_maxWithInt_withInt_(self->wlen_, *(set + 4));
   [(ComAppleProactiveOrgApacheLuceneUtilOpenBitSet *)self ensureCapacityWordsWithInt:v5];
   bits = self->bits_;
-  v7 = *(a3 + 1);
-  v8 = JavaLangMath_minWithInt_withInt_(self->wlen_, *(a3 + 4));
+  v7 = *(set + 1);
+  v8 = JavaLangMath_minWithInt_withInt_(self->wlen_, *(set + 4));
   v9 = (v8 - 1);
   if (v8 - 1 >= 0)
   {
@@ -1155,18 +1155,18 @@ LABEL_12:
   self->wlen_ = v5;
 }
 
-- (void)removeWithComAppleProactiveOrgApacheLuceneUtilOpenBitSet:(id)a3
+- (void)removeWithComAppleProactiveOrgApacheLuceneUtilOpenBitSet:(id)set
 {
-  if (!a3)
+  if (!set)
   {
     goto LABEL_14;
   }
 
-  v5 = JavaLangMath_minWithInt_withInt_(self->wlen_, *(a3 + 4));
+  v5 = JavaLangMath_minWithInt_withInt_(self->wlen_, *(set + 4));
   v6 = (v5 - 1);
   if (v5 - 1 >= 0)
   {
-    v7 = *(a3 + 1);
+    v7 = *(set + 1);
     if (v7)
     {
       bits = self->bits_;
@@ -1202,18 +1202,18 @@ LABEL_14:
   }
 }
 
-- (void)xor__WithComAppleProactiveOrgApacheLuceneUtilOpenBitSet:(id)a3
+- (void)xor__WithComAppleProactiveOrgApacheLuceneUtilOpenBitSet:(id)set
 {
-  if (!a3)
+  if (!set)
   {
     goto LABEL_15;
   }
 
-  v5 = JavaLangMath_maxWithInt_withInt_(self->wlen_, *(a3 + 4));
+  v5 = JavaLangMath_maxWithInt_withInt_(self->wlen_, *(set + 4));
   [(ComAppleProactiveOrgApacheLuceneUtilOpenBitSet *)self ensureCapacityWordsWithInt:v5];
   bits = self->bits_;
-  v7 = *(a3 + 1);
-  v8 = JavaLangMath_minWithInt_withInt_(self->wlen_, *(a3 + 4));
+  v7 = *(set + 1);
+  v8 = JavaLangMath_minWithInt_withInt_(self->wlen_, *(set + 4));
   v9 = (v8 - 1);
   if (v8 - 1 >= 0)
   {
@@ -1260,17 +1260,17 @@ LABEL_12:
   self->wlen_ = v5;
 }
 
-- (BOOL)intersectsWithComAppleProactiveOrgApacheLuceneUtilOpenBitSet:(id)a3
+- (BOOL)intersectsWithComAppleProactiveOrgApacheLuceneUtilOpenBitSet:(id)set
 {
-  if (!a3)
+  if (!set)
   {
 LABEL_13:
     JreThrowNullPointerException();
   }
 
-  v5 = JavaLangMath_minWithInt_withInt_(self->wlen_, *(a3 + 4));
+  v5 = JavaLangMath_minWithInt_withInt_(self->wlen_, *(set + 4));
   bits = self->bits_;
-  v7 = *(a3 + 1);
+  v7 = *(set + 1);
   v8 = v5;
   do
   {
@@ -1306,14 +1306,14 @@ LABEL_13:
   return v8 >= 0;
 }
 
-- (void)ensureCapacityWithLong:(int64_t)a3
+- (void)ensureCapacityWithLong:(int64_t)long
 {
   if ((atomic_load_explicit(ComAppleProactiveOrgApacheLuceneUtilOpenBitSet__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10008E30C();
   }
 
-  [(ComAppleProactiveOrgApacheLuceneUtilOpenBitSet *)self ensureCapacityWordsWithInt:((a3 - 1) >> 6) + 1];
+  [(ComAppleProactiveOrgApacheLuceneUtilOpenBitSet *)self ensureCapacityWordsWithInt:((long - 1) >> 6) + 1];
 }
 
 - (void)trimTrailingZeros
@@ -1361,19 +1361,19 @@ LABEL_11:
   self->wlen_ = v5;
 }
 
-+ (int)bits2wordsWithLong:(int64_t)a3
++ (int)bits2wordsWithLong:(int64_t)long
 {
   if ((atomic_load_explicit(ComAppleProactiveOrgApacheLuceneUtilOpenBitSet__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10008E30C();
   }
 
-  return ((a3 - 1) >> 6) + 1;
+  return ((long - 1) >> 6) + 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v19) = 1;
   }
@@ -1384,7 +1384,7 @@ LABEL_11:
     if (objc_opt_isKindOfClass())
     {
       objc_opt_class();
-      if (!a3)
+      if (!equal)
       {
         goto LABEL_32;
       }
@@ -1394,10 +1394,10 @@ LABEL_11:
         JreThrowClassCastException();
       }
 
-      v5 = *(a3 + 4);
+      v5 = *(equal + 4);
       wlen = self->wlen_;
-      v7 = v5 <= wlen ? self : a3;
-      v8 = v5 <= wlen ? a3 : self;
+      v7 = v5 <= wlen ? self : equal;
+      v8 = v5 <= wlen ? equal : self;
       if (!v7)
       {
 LABEL_32:
@@ -1518,16 +1518,16 @@ LABEL_29:
   [(ComAppleProactiveOrgApacheLuceneUtilOpenBitSet *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(ComAppleProactiveOrgApacheLuceneUtilOpenBitSet *)self clone];
+  clone = [(ComAppleProactiveOrgApacheLuceneUtilOpenBitSet *)self clone];
 
-  return v3;
+  return clone;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = ComAppleProactiveOrgApacheLuceneUtilOpenBitSet_class_();
     qword_1005541D8 = OrgApacheLuceneUtilRamUsageEstimator_shallowSizeOfInstanceWithIOSClass_(v2);

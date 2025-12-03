@@ -1,33 +1,33 @@
 @interface AMSAuthenticateOptions
 - (ACAccountStore)ams_accountStore;
-- (AMSAuthenticateOptions)initWithLegacyOptionsDictionary:(id)a3;
+- (AMSAuthenticateOptions)initWithLegacyOptionsDictionary:(id)dictionary;
 @end
 
 @implementation AMSAuthenticateOptions
 
 - (ACAccountStore)ams_accountStore
 {
-  v2 = [(AMSAuthenticateOptions *)self clientInfo];
-  v3 = [v2 accountMediaType];
-  v4 = [ACAccountStore ams_sharedAccountStoreForMediaType:v3];
+  clientInfo = [(AMSAuthenticateOptions *)self clientInfo];
+  accountMediaType = [clientInfo accountMediaType];
+  v4 = [ACAccountStore ams_sharedAccountStoreForMediaType:accountMediaType];
 
   return v4;
 }
 
-- (AMSAuthenticateOptions)initWithLegacyOptionsDictionary:(id)a3
+- (AMSAuthenticateOptions)initWithLegacyOptionsDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(AMSAuthenticateOptions *)self initWithOptionsDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [(AMSAuthenticateOptions *)self initWithOptionsDictionary:dictionaryCopy];
   if (!v5)
   {
     goto LABEL_88;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitPreventSecondaryAccountPETLookup"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitPreventSecondaryAccountPETLookup"];
 
   if (v6)
   {
-    v7 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitPreventSecondaryAccountPETLookup"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitPreventSecondaryAccountPETLookup"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -42,28 +42,28 @@
     -[AMSAuthenticateOptions setAllowSecondaryCredentialSource:](v5, "setAllowSecondaryCredentialSource:", [v8 BOOLValue] ^ 1);
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"SSVerifyCredentialsAccountScope"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"SSVerifyCredentialsAccountScope"];
 
   if (v9)
   {
-    v10 = [v4 objectForKeyedSubscript:@"SSVerifyCredentialsAccountScope"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"SSVerifyCredentialsAccountScope"];
     objc_opt_class();
     v11 = (objc_opt_isKindOfClass() & 1) != 0 ? v10 : 0;
 
-    v12 = [v11 integerValue];
-    if (v12 == &dword_0 + 1)
+    integerValue = [v11 integerValue];
+    if (integerValue == &dword_0 + 1)
     {
       v13 = AMSAccountMediaTypeAppStoreSandbox;
-      v14 = [(AMSAuthenticateOptions *)v5 clientInfo];
-      [v14 setAccountMediaType:v13];
+      clientInfo = [(AMSAuthenticateOptions *)v5 clientInfo];
+      [clientInfo setAccountMediaType:v13];
     }
   }
 
-  v15 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitSuppressServerDialogs"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitSuppressServerDialogs"];
 
   if (v15)
   {
-    v16 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitSuppressServerDialogs"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitSuppressServerDialogs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -78,12 +78,12 @@
     -[AMSAuthenticateOptions setAllowServerDialogs:](v5, "setAllowServerDialogs:", [v17 BOOLValue] ^ 1);
   }
 
-  v18 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitAllowPasswordReuse"];
-  v19 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitAllowSilentAuth"];
-  v20 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitPreventPrompt"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitAllowPasswordReuse"];
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitAllowSilentAuth"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitPreventPrompt"];
   if (([v18 BOOLValue] & 1) != 0 || objc_msgSend(v19, "BOOLValue"))
   {
-    v21 = [v20 BOOLValue];
+    bOOLValue = [v20 BOOLValue];
   }
 
   else
@@ -93,16 +93,16 @@
       goto LABEL_22;
     }
 
-    v21 = 1;
+    bOOLValue = 1;
   }
 
-  [(AMSAuthenticateOptions *)v5 setAuthenticationType:v21];
+  [(AMSAuthenticateOptions *)v5 setAuthenticationType:bOOLValue];
 LABEL_22:
-  v22 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitCanSetActiveAccountKey"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitCanSetActiveAccountKey"];
 
   if (v22)
   {
-    v23 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitCanSetActiveAccountKey"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitCanSetActiveAccountKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -117,11 +117,11 @@ LABEL_22:
     -[AMSAuthenticateOptions setCanMakeAccountActive:](v5, "setCanMakeAccountActive:", [v24 BOOLValue]);
   }
 
-  v25 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitCreateAccountQueryParamsKey"];
+  v25 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitCreateAccountQueryParamsKey"];
 
   if (v25)
   {
-    v26 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitCreateAccountQueryParamsKey"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitCreateAccountQueryParamsKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -136,11 +136,11 @@ LABEL_22:
     [(AMSAuthenticateOptions *)v5 setCreateAccountQueryParams:v27];
   }
 
-  v28 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitOKButtonLabel"];
+  v28 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitOKButtonLabel"];
 
   if (v28)
   {
-    v29 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitOKButtonLabel"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitOKButtonLabel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -155,11 +155,11 @@ LABEL_22:
     [(AMSAuthenticateOptions *)v5 setDefaultButtonString:v30];
   }
 
-  v31 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitLogUUIDKey"];
+  v31 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitLogUUIDKey"];
 
   if (v31)
   {
-    v32 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitLogUUIDKey"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitLogUUIDKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -178,16 +178,16 @@ LABEL_22:
 
     else
     {
-      v34 = [(AMSAuthenticateOptions *)v5 logKey];
-      [(AMSAuthenticateOptions *)v5 setLogKey:v34];
+      logKey = [(AMSAuthenticateOptions *)v5 logKey];
+      [(AMSAuthenticateOptions *)v5 setLogKey:logKey];
     }
   }
 
-  v35 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitHTTPHeadersKey"];
+  v35 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitHTTPHeadersKey"];
 
   if (v35)
   {
-    v36 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitHTTPHeadersKey"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitHTTPHeadersKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -202,11 +202,11 @@ LABEL_22:
     [(AMSAuthenticateOptions *)v5 setHTTPHeaders:v37];
   }
 
-  v38 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitPromptTitle"];
+  v38 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitPromptTitle"];
 
   if (v38)
   {
-    v39 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitPromptTitle"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitPromptTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -221,11 +221,11 @@ LABEL_22:
     [(AMSAuthenticateOptions *)v5 setPromptTitle:v40];
   }
 
-  v41 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitProxiedAppBundleIDKey"];
+  v41 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitProxiedAppBundleIDKey"];
 
   if (v41)
   {
-    v42 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitProxiedAppBundleIDKey"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitProxiedAppBundleIDKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -240,11 +240,11 @@ LABEL_22:
     [(AMSAuthenticateOptions *)v5 setProxyAppBundleID:v43];
   }
 
-  v44 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitProxiedAppNameKey"];
+  v44 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitProxiedAppNameKey"];
 
   if (v44)
   {
-    v45 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitProxiedAppNameKey"];
+    v45 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitProxiedAppNameKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -259,11 +259,11 @@ LABEL_22:
     [(AMSAuthenticateOptions *)v5 setProxyAppName:v46];
   }
 
-  v47 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitReasonKey"];
+  v47 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitReasonKey"];
 
   if (v47)
   {
-    v48 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitReasonKey"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitReasonKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -278,11 +278,11 @@ LABEL_22:
     [(AMSAuthenticateOptions *)v5 setReason:v49];
   }
 
-  v50 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitUserAgentKey"];
+  v50 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitUserAgentKey"];
 
   if (v50)
   {
-    v51 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitUserAgentKey"];
+    v51 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitUserAgentKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -297,11 +297,11 @@ LABEL_22:
     [(AMSAuthenticateOptions *)v5 setUserAgent:v52];
   }
 
-  v53 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitUserAgentSuffixesKey"];
+  v53 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitUserAgentSuffixesKey"];
 
   if (v53)
   {
-    v54 = [v4 objectForKeyedSubscript:@"SSAccountStoreAuthKitUserAgentSuffixesKey"];
+    v54 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreAuthKitUserAgentSuffixesKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -317,14 +317,14 @@ LABEL_22:
     [(AMSAuthenticateOptions *)v5 setUserAgentSuffix:v56];
   }
 
-  v57 = [v4 objectForKeyedSubscript:@"SSAccountStoreIgnoreAccountConversionKey"];
+  v57 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreIgnoreAccountConversionKey"];
 
   if (v57)
   {
-    v58 = [v4 objectForKeyedSubscript:@"SSAccountStoreIgnoreAccountConversionKey"];
+    v58 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreIgnoreAccountConversionKey"];
     if (objc_opt_respondsToSelector())
     {
-      v59 = [v4 objectForKeyedSubscript:@"SSAccountStoreIgnoreAccountConversionKey"];
+      v59 = [dictionaryCopy objectForKeyedSubscript:@"SSAccountStoreIgnoreAccountConversionKey"];
       -[AMSAuthenticateOptions setIgnoreAccountConversion:](v5, "setIgnoreAccountConversion:", [v59 BOOLValue]);
     }
 

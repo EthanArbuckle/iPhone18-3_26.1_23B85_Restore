@@ -1,13 +1,13 @@
 @interface PSSGMessageSHRequestProcessMonitorEventLog
-+ (id)messageWithSessionName:(id)a3;
++ (id)messageWithSessionName:(id)name;
 @end
 
 @implementation PSSGMessageSHRequestProcessMonitorEventLog
 
-+ (id)messageWithSessionName:(id)a3
++ (id)messageWithSessionName:(id)name
 {
-  v3 = a3;
-  v4 = [(PSSGMessageBase *)[PSSGMessageSHRequestProcessMonitorEventLog alloc] initWithType:9 string1:v3];
+  nameCopy = name;
+  v4 = [(PSSGMessageBase *)[PSSGMessageSHRequestProcessMonitorEventLog alloc] initWithType:9 string1:nameCopy];
 
   return v4;
 }

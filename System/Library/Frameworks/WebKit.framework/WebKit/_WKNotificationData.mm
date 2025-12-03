@@ -11,20 +11,20 @@
 - (NSUUID)uuid;
 - (id).cxx_construct;
 - (id)_init;
-- (id)_initWithCoreData:(const void *)a3;
+- (id)_initWithCoreData:(const void *)data;
 - (unint64_t)alert;
 - (unint64_t)dir;
 - (void)dealloc;
-- (void)setAlert:(unint64_t)a3;
-- (void)setBody:(id)a3;
-- (void)setData:(id)a3;
-- (void)setDir:(unint64_t)a3;
-- (void)setLang:(id)a3;
-- (void)setSecurityOrigin:(id)a3;
-- (void)setServiceWorkerRegistrationURL:(id)a3;
-- (void)setTag:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setUuid:(id)a3;
+- (void)setAlert:(unint64_t)alert;
+- (void)setBody:(id)body;
+- (void)setData:(id)data;
+- (void)setDir:(unint64_t)dir;
+- (void)setLang:(id)lang;
+- (void)setSecurityOrigin:(id)origin;
+- (void)setServiceWorkerRegistrationURL:(id)l;
+- (void)setTag:(id)tag;
+- (void)setTitle:(id)title;
+- (void)setUuid:(id)uuid;
 @end
 
 @implementation _WKNotificationData
@@ -36,7 +36,7 @@
   return [(_WKNotificationData *)&v3 init];
 }
 
-- (id)_initWithCoreData:(const void *)a3
+- (id)_initWithCoreData:(const void *)data
 {
   v23.receiver = self;
   v23.super_class = _WKNotificationData;
@@ -44,8 +44,8 @@
   v5 = v4;
   if (v4)
   {
-    WTF::URL::operator=(&v4->_coreData, a3);
-    v7 = *(a3 + 5);
+    WTF::URL::operator=(&v4->_coreData, data);
+    v7 = *(data + 5);
     if (v7)
     {
       atomic_fetch_add_explicit(v7, 2u, memory_order_relaxed);
@@ -58,7 +58,7 @@
       WTF::StringImpl::destroy(m_ptr, v6);
     }
 
-    v9 = *(a3 + 6);
+    v9 = *(data + 6);
     if (v9)
     {
       atomic_fetch_add_explicit(v9, 2u, memory_order_relaxed);
@@ -71,7 +71,7 @@
       WTF::StringImpl::destroy(v10, v6);
     }
 
-    v11 = *(a3 + 7);
+    v11 = *(data + 7);
     if (v11)
     {
       atomic_fetch_add_explicit(v11, 2u, memory_order_relaxed);
@@ -84,7 +84,7 @@
       WTF::StringImpl::destroy(v12, v6);
     }
 
-    v13 = *(a3 + 8);
+    v13 = *(data + 8);
     if (v13)
     {
       atomic_fetch_add_explicit(v13, 2u, memory_order_relaxed);
@@ -97,7 +97,7 @@
       WTF::StringImpl::destroy(v14, v6);
     }
 
-    v15 = *(a3 + 9);
+    v15 = *(data + 9);
     if (v15)
     {
       atomic_fetch_add_explicit(v15, 2u, memory_order_relaxed);
@@ -110,8 +110,8 @@
       WTF::StringImpl::destroy(v16, v6);
     }
 
-    v5->_coreData.direction = *(a3 + 80);
-    v17 = *(a3 + 11);
+    v5->_coreData.direction = *(data + 80);
+    v17 = *(data + 11);
     if (v17)
     {
       atomic_fetch_add_explicit(v17, 2u, memory_order_relaxed);
@@ -124,25 +124,25 @@
       WTF::StringImpl::destroy(v18, v6);
     }
 
-    WTF::URL::operator=(&v5->_coreData.serviceWorkerRegistrationURL, a3 + 96);
-    *&v5->_coreData.notificationID[8] = *(a3 + 9);
-    v19 = *(a3 + 13);
-    v21 = *(a3 + 10);
-    v20 = *(a3 + 11);
-    *&v5->_anon_a8[40] = *(a3 + 12);
+    WTF::URL::operator=(&v5->_coreData.serviceWorkerRegistrationURL, data + 96);
+    *&v5->_coreData.notificationID[8] = *(data + 9);
+    v19 = *(data + 13);
+    v21 = *(data + 10);
+    v20 = *(data + 11);
+    *&v5->_anon_a8[40] = *(data + 12);
     *&v5->_anon_a8[56] = v19;
     *&v5->_anon_a8[8] = v21;
     *&v5->_anon_a8[24] = v20;
-    WTF::Vector<unsigned char,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::operator=(&v5->_anon_a8[72], a3 + 224);
-    *&v5->_anon_a8[88] = *(a3 + 120);
+    WTF::Vector<unsigned char,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::operator=(&v5->_anon_a8[72], data + 224);
+    *&v5->_anon_a8[88] = *(data + 120);
   }
 
   return v5;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, title);
   v5 = v8;
   v8 = 0;
   m_ptr = self->_coreData.title.m_impl.m_ptr;
@@ -202,11 +202,11 @@ LABEL_7:
   return &v4->isa;
 }
 
-- (void)setDir:(unint64_t)a3
+- (void)setDir:(unint64_t)dir
 {
-  if (a3 <= 2)
+  if (dir <= 2)
   {
-    self->_coreData.direction = a3;
+    self->_coreData.direction = dir;
   }
 }
 
@@ -224,9 +224,9 @@ LABEL_7:
   }
 }
 
-- (void)setLang:(id)a3
+- (void)setLang:(id)lang
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, lang);
   v5 = v8;
   v8 = 0;
   m_ptr = self->_coreData.language.m_impl.m_ptr;
@@ -286,9 +286,9 @@ LABEL_7:
   return &v4->isa;
 }
 
-- (void)setBody:(id)a3
+- (void)setBody:(id)body
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, body);
   v5 = v8;
   v8 = 0;
   m_ptr = self->_coreData.body.m_impl.m_ptr;
@@ -348,9 +348,9 @@ LABEL_7:
   return &v4->isa;
 }
 
-- (void)setTag:(id)a3
+- (void)setTag:(id)tag
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, tag);
   v5 = v8;
   v8 = 0;
   m_ptr = self->_coreData.tag.m_impl.m_ptr;
@@ -410,15 +410,15 @@ LABEL_7:
   return &v4->isa;
 }
 
-- (void)setAlert:(unint64_t)a3
+- (void)setAlert:(unint64_t)alert
 {
-  if (a3 == 2)
+  if (alert == 2)
   {
     v3 = 256;
     goto LABEL_8;
   }
 
-  if (a3 == 1)
+  if (alert == 1)
   {
     v3 = 257;
 LABEL_8:
@@ -426,7 +426,7 @@ LABEL_8:
     return;
   }
 
-  if (!a3 && self->_anon_a8[89] == 1)
+  if (!alert && self->_anon_a8[89] == 1)
   {
     self->_anon_a8[89] = 0;
   }
@@ -447,10 +447,10 @@ LABEL_8:
   return 2;
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
-  v3 = a3;
-  if (a3 && (v5 = [a3 bytes], v6 = objc_msgSend(v3, "length"), (v3 = v6) != 0))
+  dataCopy = data;
+  if (data && (v5 = [data bytes], v6 = objc_msgSend(dataCopy, "length"), (dataCopy = v6) != 0))
   {
     if (HIDWORD(v6))
     {
@@ -467,7 +467,7 @@ LABEL_8:
       ++v9;
     }
 
-    while (v3 != v9);
+    while (dataCopy != v9);
   }
 
   else
@@ -484,8 +484,8 @@ LABEL_8:
   }
 
   *&self->_anon_a8[72] = v8;
-  *&self->_anon_a8[80] = v3;
-  *&self->_anon_a8[84] = v3;
+  *&self->_anon_a8[80] = dataCopy;
+  *&self->_anon_a8[84] = dataCopy;
 }
 
 - (NSData)data
@@ -536,10 +536,10 @@ LABEL_7:
   return &v4->isa;
 }
 
-- (void)setSecurityOrigin:(id)a3
+- (void)setSecurityOrigin:(id)origin
 {
   v17 = *MEMORY[0x1E69E9840];
-  MEMORY[0x19EB01DE0](v12, a3);
+  MEMORY[0x19EB01DE0](v12, origin);
   WebCore::SecurityOriginData::fromURL(&v14, v12, v4);
   WebCore::SecurityOriginData::toString(&v13, &v14);
   v6 = v13;
@@ -616,9 +616,9 @@ LABEL_7:
   return v3;
 }
 
-- (void)setServiceWorkerRegistrationURL:(id)a3
+- (void)setServiceWorkerRegistrationURL:(id)l
 {
-  MEMORY[0x19EB01DE0](v6, a3);
+  MEMORY[0x19EB01DE0](v6, l);
   WTF::URL::operator=(&self->_coreData.serviceWorkerRegistrationURL, v6);
   v5 = v6[0];
   v6[0] = 0;
@@ -691,10 +691,10 @@ LABEL_7:
   return v5;
 }
 
-- (void)setUuid:(id)a3
+- (void)setUuid:(id)uuid
 {
   v6 = *MEMORY[0x1E69E9840];
-  WTF::UUID::fromNSUUID(&v4, a3, a2);
+  WTF::UUID::fromNSUUID(&v4, uuid, a2);
   if (v5 == 1)
   {
     *&self->_coreData.notificationID[8] = v4;

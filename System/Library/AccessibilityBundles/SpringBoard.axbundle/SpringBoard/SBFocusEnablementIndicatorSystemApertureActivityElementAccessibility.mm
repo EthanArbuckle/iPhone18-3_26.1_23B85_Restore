@@ -1,27 +1,27 @@
 @interface SBFocusEnablementIndicatorSystemApertureActivityElementAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (SBFocusEnablementIndicatorSystemApertureActivityElementAccessibility)initWithActivityDescription:(id)a3 enabled:(BOOL)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (SBFocusEnablementIndicatorSystemApertureActivityElementAccessibility)initWithActivityDescription:(id)description enabled:(BOOL)enabled;
 @end
 
 @implementation SBFocusEnablementIndicatorSystemApertureActivityElementAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBFocusEnablementIndicatorSystemApertureActivityElement" hasInstanceMethod:@"initWithActivityDescription:enabled:" withFullSignature:{"@", "B", 0}];
-  [v3 validateProtocol:@"FCActivityDescribing" hasMethod:@"activityDisplayName" isInstanceMethod:1 isRequired:1];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBFocusEnablementIndicatorSystemApertureActivityElement" hasInstanceMethod:@"initWithActivityDescription:enabled:" withFullSignature:{"@", "B", 0}];
+  [validationsCopy validateProtocol:@"FCActivityDescribing" hasMethod:@"activityDisplayName" isInstanceMethod:1 isRequired:1];
 }
 
-- (SBFocusEnablementIndicatorSystemApertureActivityElementAccessibility)initWithActivityDescription:(id)a3 enabled:(BOOL)a4
+- (SBFocusEnablementIndicatorSystemApertureActivityElementAccessibility)initWithActivityDescription:(id)description enabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v12.receiver = self;
   v12.super_class = SBFocusEnablementIndicatorSystemApertureActivityElementAccessibility;
-  v5 = a3;
-  v6 = [(SBFocusEnablementIndicatorSystemApertureActivityElementAccessibility *)&v12 initWithActivityDescription:v5 enabled:v4];
-  v7 = [v5 safeStringForKey:@"activityDisplayName"];
+  descriptionCopy = description;
+  v6 = [(SBFocusEnablementIndicatorSystemApertureActivityElementAccessibility *)&v12 initWithActivityDescription:descriptionCopy enabled:enabledCopy];
+  v7 = [descriptionCopy safeStringForKey:@"activityDisplayName"];
 
-  if (v4)
+  if (enabledCopy)
   {
     v8 = @"focus.off";
   }

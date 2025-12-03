@@ -1,5 +1,5 @@
 @interface CADSPThreadCounterProfiler
-- (CADSPThreadCounterProfiler)initWithGraph:(id)a3 secondsPerWindow:(double)a4;
+- (CADSPThreadCounterProfiler)initWithGraph:(id)graph secondsPerWindow:(double)window;
 - (NSDictionary)statistics;
 - (id).cxx_construct;
 @end
@@ -184,11 +184,11 @@
   return v28;
 }
 
-- (CADSPThreadCounterProfiler)initWithGraph:(id)a3 secondsPerWindow:(double)a4
+- (CADSPThreadCounterProfiler)initWithGraph:(id)graph secondsPerWindow:(double)window
 {
   v56 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  graphCopy = graph;
+  if (!graphCopy)
   {
     v53 = 0;
     memset(v54, 0, sizeof(v54));
@@ -213,8 +213,8 @@
       v9->_this.__engaged_ = 0;
     }
 
-    v10 = *(v7 + 8);
-    v11 = *(v7 + 2);
+    v10 = *(graphCopy + 8);
+    v11 = *(graphCopy + 2);
     if (v11)
     {
       atomic_fetch_add_explicit((v11 + 8), 1uLL, memory_order_relaxed);
@@ -222,7 +222,7 @@
 
     v51 = v10;
     *&v9->_this.var0.__null_state_ = v10;
-    v49 = v7;
+    v49 = graphCopy;
     v50 = v9;
     v12 = operator new(0x2C0uLL, 0x40uLL);
     *(v12 + 1) = 0;
@@ -230,7 +230,7 @@
     *v12 = &unk_1F48D3718;
     *(v12 + 8) = &unk_1F48D3750;
     *(v12 + 9) = &unk_1F48D3790;
-    AudioDSPGraph::Metrics::Metrics((v12 + 128), a4);
+    AudioDSPGraph::Metrics::Metrics((v12 + 128), window);
     v13 = (v12 + 640);
     *(v12 + 40) = 0u;
     *(v12 + 41) = 0u;
@@ -251,7 +251,7 @@ LABEL_8:
         *(&v54[0] + 1) = v12;
         atomic_fetch_add_explicit(v12 + 1, 1uLL, memory_order_relaxed);
         AudioDSPGraph::Graph::addEventHandler(ptr, v54);
-        v7 = v49;
+        graphCopy = v49;
         if (*(&v54[0] + 1))
         {
           std::__shared_weak_count::__release_shared[abi:ne200100](*(&v54[0] + 1));
@@ -380,7 +380,7 @@ LABEL_25:
         *(v25 + 4) = v27;
       }
 
-      AudioDSPGraph::Metrics::Metrics((v26 + 128), a4);
+      AudioDSPGraph::Metrics::Metrics((v26 + 128), window);
       v28 = (*(v12 + 83) + 1);
       v29 = *(v12 + 168);
       if (!v19 || (v29 * v19) < v28)

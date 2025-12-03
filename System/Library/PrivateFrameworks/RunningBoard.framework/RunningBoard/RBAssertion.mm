@@ -1,31 +1,31 @@
 @interface RBAssertion
-+ (RBAssertion)assertionWithDescriptor:(id)a3 target:(id)a4 originator:(id)a5 context:(id)a6;
-+ (RBAssertion)assertionWithDescriptor:(id)a3 target:(id)a4 originator:(id)a5 context:(id)a6 creationTime:(double)a7;
-+ (RBAssertion)assertionWithIdentifier:(id)a3 target:(id)a4 explanation:(id)a5 attributes:(id)a6 originator:(id)a7 context:(id)a8;
-- (BOOL)_lock_resolveStateWithContext:(uint64_t)a1;
++ (RBAssertion)assertionWithDescriptor:(id)descriptor target:(id)target originator:(id)originator context:(id)context;
++ (RBAssertion)assertionWithDescriptor:(id)descriptor target:(id)target originator:(id)originator context:(id)context creationTime:(double)time;
++ (RBAssertion)assertionWithIdentifier:(id)identifier target:(id)target explanation:(id)explanation attributes:(id)attributes originator:(id)originator context:(id)context;
+- (BOOL)_lock_resolveStateWithContext:(uint64_t)context;
 - (BOOL)isActive;
 - (BOOL)isSuspended;
 - (BOOL)isValid;
-- (BOOL)resolveStateWithContext:(id)a3;
+- (BOOL)resolveStateWithContext:(id)context;
 - (NSString)debugDescription;
 - (NSString)stateCaptureTitle;
 - (RBInheritanceCollection)inheritances;
 - (RBProcessState)processState;
-- (id)_initWithTarget:(void *)a3 identifier:(void *)a4 explanation:(void *)a5 attributes:(void *)a6 originator:(void *)a7 context:(double)a8 creationTime:;
+- (id)_initWithTarget:(void *)target identifier:(void *)identifier explanation:(void *)explanation attributes:(void *)attributes originator:(void *)originator context:(double)context creationTime:;
 - (id)lock_targetProcessForAbstract;
-- (id)terminationContextForTargetProcess:(id)a3 originatorProcessIsActive:(BOOL)a4;
-- (id)updateProcessStateWithAttributeContext:(id)a3;
+- (id)terminationContextForTargetProcess:(id)process originatorProcessIsActive:(BOOL)active;
+- (id)updateProcessStateWithAttributeContext:(id)context;
 - (uint64_t)_exceptionCodeForAssertionTimeout;
 - (unsigned)invalidationReason;
 - (void)activate;
-- (void)applyToAssertionTransientState:(id)a3 withAttributeContext:(id)a4;
-- (void)applyToProcessState:(id)a3 withAttributeContext:(id)a4;
-- (void)applyToSystemState:(id)a3 withAttributeContext:(id)a4;
+- (void)applyToAssertionTransientState:(id)state withAttributeContext:(id)context;
+- (void)applyToProcessState:(id)state withAttributeContext:(id)context;
+- (void)applyToSystemState:(id)state withAttributeContext:(id)context;
 - (void)deactivate;
 - (void)resume;
-- (void)setInvalidationReason:(unsigned __int8)a3;
-- (void)setLaunchAssertion:(BOOL)a3;
-- (void)setTargetProcessForAbstract:(id)a3;
+- (void)setInvalidationReason:(unsigned __int8)reason;
+- (void)setLaunchAssertion:(BOOL)assertion;
+- (void)setTargetProcessForAbstract:(id)abstract;
 - (void)suspend;
 @end
 
@@ -65,8 +65,8 @@ LABEL_5:
     else
     {
       v4 = [RBProcessState alloc];
-      v5 = [(RBConcreteTargeting *)self->_target identity];
-      v3 = [(RBProcessState *)v4 initWithIdentity:v5];
+      identity = [(RBConcreteTargeting *)self->_target identity];
+      v3 = [(RBProcessState *)v4 initWithIdentity:identity];
     }
   }
 
@@ -94,9 +94,9 @@ LABEL_5:
 - (NSString)debugDescription
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(RBConcreteTargeting *)self->_target isSystem];
+  isSystem = [(RBConcreteTargeting *)self->_target isSystem];
   targetState = self->_targetState;
-  if (v3)
+  if (isSystem)
   {
     v5 = 0;
   }
@@ -228,33 +228,33 @@ LABEL_5:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-+ (RBAssertion)assertionWithDescriptor:(id)a3 target:(id)a4 originator:(id)a5 context:(id)a6
++ (RBAssertion)assertionWithDescriptor:(id)descriptor target:(id)target originator:(id)originator context:(id)context
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v13 identifier];
-  v15 = [v13 explanation];
-  v16 = [v13 attributes];
+  contextCopy = context;
+  originatorCopy = originator;
+  targetCopy = target;
+  descriptorCopy = descriptor;
+  identifier = [descriptorCopy identifier];
+  explanation = [descriptorCopy explanation];
+  attributes = [descriptorCopy attributes];
 
-  v17 = [a1 assertionWithIdentifier:v14 target:v12 explanation:v15 attributes:v16 originator:v11 context:v10];
+  v17 = [self assertionWithIdentifier:identifier target:targetCopy explanation:explanation attributes:attributes originator:originatorCopy context:contextCopy];
 
   return v17;
 }
 
-+ (RBAssertion)assertionWithDescriptor:(id)a3 target:(id)a4 originator:(id)a5 context:(id)a6 creationTime:(double)a7
++ (RBAssertion)assertionWithDescriptor:(id)descriptor target:(id)target originator:(id)originator context:(id)context creationTime:(double)time
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  contextCopy = context;
+  originatorCopy = originator;
+  targetCopy = target;
+  descriptorCopy = descriptor;
   v15 = [RBAssertion alloc];
-  v16 = [v14 identifier];
-  v17 = [v14 explanation];
-  v18 = [v14 attributes];
+  identifier = [descriptorCopy identifier];
+  explanation = [descriptorCopy explanation];
+  attributes = [descriptorCopy attributes];
 
-  v19 = [(RBAssertion *)&v15->super.isa _initWithTarget:v13 identifier:v16 explanation:v17 attributes:v18 originator:v12 context:v11 creationTime:a7];
+  v19 = [(RBAssertion *)&v15->super.isa _initWithTarget:targetCopy identifier:identifier explanation:explanation attributes:attributes originator:originatorCopy context:contextCopy creationTime:time];
 
   return v19;
 }
@@ -268,7 +268,7 @@ LABEL_5:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 138543362;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_262485000, v3, OS_LOG_TYPE_DEFAULT, "Suspending assertion %{public}@", &v5, 0xCu);
     }
 
@@ -289,7 +289,7 @@ LABEL_5:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 138543362;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_262485000, v3, OS_LOG_TYPE_DEFAULT, "Resuming assertion %{public}@", &v5, 0xCu);
     }
 
@@ -309,15 +309,15 @@ LABEL_5:
   return suspended;
 }
 
-- (void)setInvalidationReason:(unsigned __int8)a3
+- (void)setInvalidationReason:(unsigned __int8)reason
 {
   os_unfair_lock_lock_with_options();
-  self->_invalidationReason = a3;
+  self->_invalidationReason = reason;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setLaunchAssertion:(BOOL)a3
+- (void)setLaunchAssertion:(BOOL)assertion
 {
   os_unfair_lock_lock_with_options();
   self->_launchAssertion = 1;
@@ -353,45 +353,45 @@ LABEL_5:
   return targetState;
 }
 
-- (BOOL)resolveStateWithContext:(id)a3
+- (BOOL)resolveStateWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   os_unfair_lock_lock_with_options();
-  v5 = [(RBAssertion *)self _lock_resolveStateWithContext:v4];
+  v5 = [(RBAssertion *)self _lock_resolveStateWithContext:contextCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   return v5;
 }
 
-- (id)updateProcessStateWithAttributeContext:(id)a3
+- (id)updateProcessStateWithAttributeContext:(id)context
 {
-  [(RBAssertion *)self resolveStateWithContext:a3];
+  [(RBAssertion *)self resolveStateWithContext:context];
 
   return [(RBAssertion *)self processState];
 }
 
-- (id)terminationContextForTargetProcess:(id)a3 originatorProcessIsActive:(BOOL)a4
+- (id)terminationContextForTargetProcess:(id)process originatorProcessIsActive:(BOOL)active
 {
-  v6 = a3;
-  v7 = [(RBAssertion *)self identifier];
-  v8 = [(RBAssertion *)self invalidationReason];
-  v9 = [(RBAssertion *)self originator];
-  v10 = [(RBAssertion *)self endPolicy];
-  if ([v6 isLifecycleManaged] && v8 == 4 && v10 == 2)
+  processCopy = process;
+  identifier = [(RBAssertion *)self identifier];
+  invalidationReason = [(RBAssertion *)self invalidationReason];
+  originator = [(RBAssertion *)self originator];
+  endPolicy = [(RBAssertion *)self endPolicy];
+  if ([processCopy isLifecycleManaged] && invalidationReason == 4 && endPolicy == 2)
   {
     v22 = MEMORY[0x277D47010];
     v23 = MEMORY[0x277CCACA8];
-    v24 = v9;
-    if (!v9)
+    originator2 = originator;
+    if (!originator)
     {
-      v24 = [(RBAssertion *)self originator];
+      originator2 = [(RBAssertion *)self originator];
     }
 
-    v25 = [(RBAssertion *)self explanation];
-    v26 = [v23 stringWithFormat:@"Timed-out waiting for process %@ to invalidate assertion with identifier %@ and explanation '%@'. Direct this report to owners of that process", v24, v7, v25];
+    explanation = [(RBAssertion *)self explanation];
+    v26 = [v23 stringWithFormat:@"Timed-out waiting for process %@ to invalidate assertion with identifier %@ and explanation '%@'. Direct this report to owners of that process", originator2, identifier, explanation];
     v15 = [v22 defaultContextWithExplanation:v26];
 
-    if (!v9)
+    if (!originator)
     {
     }
 
@@ -407,12 +407,12 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  if ([v6 isLifecycleManaged] && v8 == 8 && v10 == 2)
+  if ([processCopy isLifecycleManaged] && invalidationReason == 8 && endPolicy == 2)
   {
     v11 = MEMORY[0x277D47010];
     v12 = MEMORY[0x277CCACA8];
-    v13 = [(RBAssertion *)self explanation];
-    v14 = [v12 stringWithFormat:@"Conditions changed, forcing termination due to outstanding assertion with identifier %@ and explanation '%@'", v7, v13];
+    explanation2 = [(RBAssertion *)self explanation];
+    v14 = [v12 stringWithFormat:@"Conditions changed, forcing termination due to outstanding assertion with identifier %@ and explanation '%@'", identifier, explanation2];
     v15 = [v11 defaultContextWithExplanation:v14];
 
     [v15 setReportType:0];
@@ -430,20 +430,20 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (v8 == 1 && [(RBAssertion *)self terminateTargetOnOriginatorExit]&& (!v9 || !a4))
+  if (invalidationReason == 1 && [(RBAssertion *)self terminateTargetOnOriginatorExit]&& (!originator || !active))
   {
     v18 = MEMORY[0x277D47010];
     v19 = MEMORY[0x277CCACA8];
-    v20 = v9;
-    if (!v9)
+    originator3 = originator;
+    if (!originator)
     {
-      v20 = [(RBAssertion *)self originator];
+      originator3 = [(RBAssertion *)self originator];
     }
 
-    v21 = [v19 stringWithFormat:@"Terminating process %@ because the owner of this process %@ has exited (assertionID %@)", v6, v20, v7];
+    v21 = [v19 stringWithFormat:@"Terminating process %@ because the owner of this process %@ has exited (assertionID %@)", processCopy, originator3, identifier];
     v15 = [v18 defaultContextWithExplanation:v21];
 
-    if (!v9)
+    if (!originator)
     {
     }
 
@@ -472,13 +472,13 @@ LABEL_15:
   return v7;
 }
 
-- (void)setTargetProcessForAbstract:(id)a3
+- (void)setTargetProcessForAbstract:(id)abstract
 {
-  v4 = a3;
+  abstractCopy = abstract;
   os_unfair_lock_lock_with_options();
   targetProcessForAbstract = self->_targetProcessForAbstract;
-  self->_targetProcessForAbstract = v4;
-  v6 = v4;
+  self->_targetProcessForAbstract = abstractCopy;
+  v6 = abstractCopy;
 
   targetState = self->_targetState;
   self->_targetState = 0;
@@ -486,51 +486,51 @@ LABEL_15:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_initWithTarget:(void *)a3 identifier:(void *)a4 explanation:(void *)a5 attributes:(void *)a6 originator:(void *)a7 context:(double)a8 creationTime:
+- (id)_initWithTarget:(void *)target identifier:(void *)identifier explanation:(void *)explanation attributes:(void *)attributes originator:(void *)originator context:(double)context creationTime:
 {
   v62 = *MEMORY[0x277D85DE8];
   v16 = a2;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v53 = a6;
-  v20 = a7;
-  if (a1 && (v58.receiver = a1, v58.super_class = RBAssertion, v21 = objc_msgSendSuper2(&v58, sel_init), (a1 = v21) != 0))
+  targetCopy = target;
+  identifierCopy = identifier;
+  explanationCopy = explanation;
+  attributesCopy = attributes;
+  originatorCopy = originator;
+  if (self && (v58.receiver = self, v58.super_class = RBAssertion, v21 = objc_msgSendSuper2(&v58, sel_init), (self = v21) != 0))
   {
-    v49 = v19;
-    v51 = v17;
+    v49 = explanationCopy;
+    v51 = targetCopy;
     v52 = v16;
     *(v21 + 26) = 0;
     objc_storeStrong(v21 + 1, a2);
-    objc_storeStrong(a1 + 3, a3);
+    objc_storeStrong(self + 3, target);
     v22 = objc_alloc(MEMORY[0x277CCACA8]);
-    v23 = a1[3];
-    v24 = [v22 initWithFormat:@"%@ (target:%@)", v23, a1[1]];
-    v25 = a1[16];
-    a1[16] = v24;
+    v23 = self[3];
+    v24 = [v22 initWithFormat:@"%@ (target:%@)", v23, self[1]];
+    v25 = self[16];
+    self[16] = v24;
 
-    v50 = v18;
-    v26 = [v18 copy];
-    v27 = a1[4];
-    a1[4] = v26;
+    v50 = identifierCopy;
+    v26 = [identifierCopy copy];
+    v27 = self[4];
+    self[4] = v26;
 
-    *(a1 + 111) = 0;
-    objc_storeStrong(a1 + 5, a5);
-    objc_storeStrong(a1 + 15, a6);
-    *(a1 + 109) = 0;
-    *(a1 + 12) = a8;
+    *(self + 111) = 0;
+    objc_storeStrong(self + 5, explanation);
+    objc_storeStrong(self + 15, attributes);
+    *(self + 109) = 0;
+    *(self + 12) = context;
     v28 = objc_alloc_init(RBAssertionIntransientState);
-    v29 = a1[8];
-    a1[8] = v28;
+    v29 = self[8];
+    self[8] = v28;
 
-    *(a1 + 108) = 0;
-    *(a1 + 112) = 0;
-    [v20 setAssertion:a1];
+    *(self + 108) = 0;
+    *(self + 112) = 0;
+    [originatorCopy setAssertion:self];
     v56 = 0u;
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v30 = a1[5];
+    v30 = self[5];
     v31 = [v30 countByEnumeratingWithState:&v54 objects:v61 count:16];
     if (v31)
     {
@@ -549,7 +549,7 @@ LABEL_15:
           }
 
           v33 = v36 + 1;
-          [*(*(&v54 + 1) + 8 * v35++) applyToAssertionIntransientState:a1[8] attributePath:RBSAttributePathIncrement(0 context:{v36++), v20}];
+          [*(*(&v54 + 1) + 8 * v35++) applyToAssertionIntransientState:self[8] attributePath:RBSAttributePathIncrement(0 context:{v36++), originatorCopy}];
         }
 
         while (v32 != v35);
@@ -559,30 +559,30 @@ LABEL_15:
       while (v32);
     }
 
-    v18 = v50;
-    v37 = v53;
+    identifierCopy = v50;
+    v37 = attributesCopy;
     if (!v50)
     {
       v38 = rbs_assertion_log();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_FAULT))
       {
         *buf = 138543362;
-        v60 = a1;
+        selfCopy = self;
         _os_log_fault_impl(&dword_262485000, v38, OS_LOG_TYPE_FAULT, "Initializing assertion with null-proof explanation being null %{public}@", buf, 0xCu);
       }
     }
 
-    v39 = [a1[8] runningReason];
-    v40 = [a1[8] legacyReason];
-    if (v40)
+    runningReason = [self[8] runningReason];
+    legacyReason = [self[8] legacyReason];
+    if (legacyReason)
     {
-      v41 = v40;
+      v41 = legacyReason;
       v42 = 3;
     }
 
     else
     {
-      if ([a1[8] hasDomainAttribute])
+      if ([self[8] hasDomainAttribute])
       {
         v42 = 2;
       }
@@ -592,34 +592,34 @@ LABEL_15:
         v42 = 1;
       }
 
-      v41 = v39;
+      v41 = runningReason;
     }
 
-    v17 = v51;
-    v19 = v49;
+    targetCopy = v51;
+    explanationCopy = v49;
     v43 = [objc_alloc(MEMORY[0x277D46F10]) initWithType:v42];
-    v44 = a1[11];
-    a1[11] = v43;
+    v44 = self[11];
+    self[11] = v43;
 
     if (v50)
     {
-      [a1[11] setExplanation:v50];
+      [self[11] setExplanation:v50];
     }
 
     else
     {
-      [a1 description];
+      [self description];
       objc_claimAutoreleasedReturnValue();
       [OUTLINED_FUNCTION_0_8() setExplanation:?];
     }
 
-    [a1[11] setReason:v41];
-    v45 = a1[11];
-    [a1[8] domainAttributes];
+    [self[11] setReason:v41];
+    v45 = self[11];
+    [self[8] domainAttributes];
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_0_8() setDomain:?];
 
-    v46 = a1[11];
+    v46 = self[11];
     NSStringFromRBSLegacyReason();
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_0_8() setName:?];
@@ -629,55 +629,55 @@ LABEL_15:
 
   else
   {
-    v37 = v53;
+    v37 = attributesCopy;
   }
 
   v47 = *MEMORY[0x277D85DE8];
-  return a1;
+  return self;
 }
 
-+ (RBAssertion)assertionWithIdentifier:(id)a3 target:(id)a4 explanation:(id)a5 attributes:(id)a6 originator:(id)a7 context:(id)a8
++ (RBAssertion)assertionWithIdentifier:(id)identifier target:(id)target explanation:(id)explanation attributes:(id)attributes originator:(id)originator context:(id)context
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  contextCopy = context;
+  originatorCopy = originator;
+  attributesCopy = attributes;
+  explanationCopy = explanation;
+  targetCopy = target;
+  identifierCopy = identifier;
   v19 = [RBAssertion alloc];
   RBSMachAbsoluteTime();
-  v21 = [(RBAssertion *)&v19->super.isa _initWithTarget:v17 identifier:v18 explanation:v16 attributes:v15 originator:v14 context:v13 creationTime:v20];
+  v21 = [(RBAssertion *)&v19->super.isa _initWithTarget:targetCopy identifier:identifierCopy explanation:explanationCopy attributes:attributesCopy originator:originatorCopy context:contextCopy creationTime:v20];
 
   return v21;
 }
 
-- (BOOL)_lock_resolveStateWithContext:(uint64_t)a1
+- (BOOL)_lock_resolveStateWithContext:(uint64_t)context
 {
   v49 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (context)
   {
-    os_unfair_lock_assert_owner((a1 + 104));
-    if (*(a1 + 111) == 1 && *(a1 + 109) != 1)
+    os_unfair_lock_assert_owner((context + 104));
+    if (*(context + 111) == 1 && *(context + 109) != 1)
     {
-      v9 = [v3 availableInheritances];
-      v10 = [v9 allInheritances];
+      availableInheritances = [v3 availableInheritances];
+      allInheritances = [availableInheritances allInheritances];
 
-      v11 = [v3 systemState];
-      v12 = [v11 conditions];
+      systemState = [v3 systemState];
+      conditions = [systemState conditions];
 
-      if (*(a1 + 48) && ((v13 = *(a1 + 72), v10 == v13) || v10 && v13 && (Count = CFSetGetCount(v10), Count == CFSetGetCount(v13)) && -[__CFSet isEqualToSet:](v10, "isEqualToSet:", v13)) && ((v15 = *(a1 + 80), v12 == v15) || v12 && v15 && ([v12 isEqual:?] & 1) != 0))
+      if (*(context + 48) && ((v13 = *(context + 72), allInheritances == v13) || allInheritances && v13 && (Count = CFSetGetCount(allInheritances), Count == CFSetGetCount(v13)) && -[__CFSet isEqualToSet:](allInheritances, "isEqualToSet:", v13)) && ((v15 = *(context + 80), conditions == v15) || conditions && v15 && ([conditions isEqual:?] & 1) != 0))
       {
         v5 = 0;
       }
 
       else
       {
-        v16 = [*(a1 + 8) isSystem];
+        isSystem = [*(context + 8) isSystem];
         v17 = objc_alloc_init(RBAssertionTransientState);
-        v40 = v12;
-        v41 = v10;
-        if (v16)
+        v40 = conditions;
+        v41 = allInheritances;
+        if (isSystem)
         {
           v18 = objc_alloc_init(RBMutableSystemState);
           v19 = 0;
@@ -687,8 +687,8 @@ LABEL_15:
         else
         {
           v20 = [RBMutableProcessState alloc];
-          v21 = [*(a1 + 8) identity];
-          v19 = [(RBProcessState *)v20 initWithIdentity:v21];
+          identity = [*(context + 8) identity];
+          v19 = [(RBProcessState *)v20 initWithIdentity:identity];
 
           v18 = 0;
           v39 = v19;
@@ -698,8 +698,8 @@ LABEL_15:
         v47 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v42 = a1;
-        obj = *(a1 + 40);
+        contextCopy = context;
+        obj = *(context + 40);
         v22 = [obj countByEnumeratingWithState:&v44 objects:v48 count:16];
         if (v22)
         {
@@ -737,9 +737,9 @@ LABEL_15:
           while (v23);
         }
 
-        v29 = [*(v42 + 88) type];
-        v30 = *(v42 + 88);
-        if (v29 == 3)
+        type = [*(contextCopy + 88) type];
+        v30 = *(contextCopy + 88);
+        if (type == 3)
         {
           [(RBMutableProcessState *)v19 addLegacyAssertion:v30];
         }
@@ -749,39 +749,39 @@ LABEL_15:
           [(RBMutableProcessState *)v19 addRBAssertion:v30];
         }
 
-        v12 = v40;
-        v10 = v41;
+        conditions = v40;
+        allInheritances = v41;
         v31 = [(RBMutableSystemState *)v39 copy];
-        v32 = *(v42 + 48);
-        *(v42 + 48) = v31;
+        v32 = *(contextCopy + 48);
+        *(contextCopy + 48) = v31;
 
-        v33 = *(v42 + 56);
-        *(v42 + 56) = v17;
+        v33 = *(contextCopy + 56);
+        *(contextCopy + 56) = v17;
         v34 = v17;
 
         v35 = [(__CFSet *)v41 copy];
-        v36 = *(v42 + 72);
-        *(v42 + 72) = v35;
+        v36 = *(contextCopy + 72);
+        *(contextCopy + 72) = v35;
 
-        objc_storeStrong((v42 + 80), v40);
+        objc_storeStrong((contextCopy + 80), v40);
         v5 = 1;
       }
     }
 
     else
     {
-      v4 = *(a1 + 48);
+      v4 = *(context + 48);
       v5 = v4 != 0;
-      *(a1 + 48) = 0;
+      *(context + 48) = 0;
 
-      v6 = *(a1 + 56);
-      *(a1 + 56) = 0;
+      v6 = *(context + 56);
+      *(context + 56) = 0;
 
-      v7 = *(a1 + 72);
-      *(a1 + 72) = 0;
+      v7 = *(context + 72);
+      *(context + 72) = 0;
 
-      v8 = *(a1 + 80);
-      *(a1 + 80) = 0;
+      v8 = *(context + 80);
+      *(context + 80) = 0;
     }
   }
 
@@ -794,12 +794,12 @@ LABEL_15:
   return v5;
 }
 
-- (void)applyToProcessState:(id)a3 withAttributeContext:(id)a4
+- (void)applyToProcessState:(id)state withAttributeContext:(id)context
 {
-  v9 = a3;
-  v6 = a4;
+  stateCopy = state;
+  contextCopy = context;
   OUTLINED_FUNCTION_1_10();
-  [(RBAssertion *)self _lock_resolveStateWithContext:a4];
+  [(RBAssertion *)self _lock_resolveStateWithContext:context];
   if (([(RBConcreteTargeting *)self->_target isSystem]& 1) == 0 && self->_targetState)
   {
     objc_opt_class();
@@ -812,34 +812,34 @@ LABEL_15:
     if (v7)
     {
       v8 = v7;
-      [v9 unionState:v7];
+      [stateCopy unionState:v7];
     }
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)applyToAssertionTransientState:(id)a3 withAttributeContext:(id)a4
+- (void)applyToAssertionTransientState:(id)state withAttributeContext:(id)context
 {
-  v7 = a3;
-  v6 = a4;
+  stateCopy = state;
+  contextCopy = context;
   OUTLINED_FUNCTION_1_10();
-  [(RBAssertion *)self _lock_resolveStateWithContext:a4];
+  [(RBAssertion *)self _lock_resolveStateWithContext:context];
 
   if (self->_transientState)
   {
-    [v7 unionState:?];
+    [stateCopy unionState:?];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)applyToSystemState:(id)a3 withAttributeContext:(id)a4
+- (void)applyToSystemState:(id)state withAttributeContext:(id)context
 {
-  v7 = a3;
-  v6 = a4;
+  stateCopy = state;
+  contextCopy = context;
   OUTLINED_FUNCTION_1_10();
-  [(RBAssertion *)self _lock_resolveStateWithContext:a4];
+  [(RBAssertion *)self _lock_resolveStateWithContext:context];
   if ([(RBConcreteTargeting *)self->_target isSystem]&& self->_targetState)
   {
     objc_opt_class();
@@ -848,7 +848,7 @@ LABEL_15:
       __assert_rtn("[RBAssertion applyToSystemState:withAttributeContext:]", "RBAssertion.m", 302, "[_targetState isKindOfClass:[RBSystemState class]]");
     }
 
-    [v7 unionState:self->_targetState];
+    [stateCopy unionState:self->_targetState];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -856,21 +856,21 @@ LABEL_15:
 
 - (uint64_t)_exceptionCodeForAssertionTimeout
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v2 = 562215635;
-  v3 = [a1 explanation];
-  if ([v3 hasPrefix:@"Shared Background Assertion"])
+  explanation = [self explanation];
+  if ([explanation hasPrefix:@"Shared Background Assertion"])
   {
     v2 = 562215634;
   }
 
-  else if (([v3 hasPrefix:@"com.apple.nsurlsessiond.handlesession"] & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", @"com.apple.das.nsurlsessioncomplete") & 1) == 0)
+  else if (([explanation hasPrefix:@"com.apple.nsurlsessiond.handlesession"] & 1) == 0 && (objc_msgSend(explanation, "isEqualToString:", @"com.apple.das.nsurlsessioncomplete") & 1) == 0)
   {
-    if (([v3 isEqualToString:@"com.apple.das.backgroundFetch"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"com.apple.das.backgroundTasks") && objc_msgSend(a1, "runningReason") == 100)
+    if (([explanation isEqualToString:@"com.apple.das.backgroundFetch"] & 1) != 0 || objc_msgSend(explanation, "isEqualToString:", @"com.apple.das.backgroundTasks") && objc_msgSend(self, "runningReason") == 100)
     {
       v2 = 562215636;
     }

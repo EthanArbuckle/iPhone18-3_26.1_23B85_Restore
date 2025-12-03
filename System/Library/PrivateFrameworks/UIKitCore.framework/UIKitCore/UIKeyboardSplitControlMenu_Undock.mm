@@ -1,6 +1,6 @@
 @interface UIKeyboardSplitControlMenu_Undock
 - (BOOL)visible;
-- (void)actionForMenu:(id)a3;
+- (void)actionForMenu:(id)menu;
 @end
 
 @implementation UIKeyboardSplitControlMenu_Undock
@@ -21,9 +21,9 @@
   return v2;
 }
 
-- (void)actionForMenu:(id)a3
+- (void)actionForMenu:(id)menu
 {
-  [a3 setFinishSplitTransitionBlock:0];
+  [menu setFinishSplitTransitionBlock:0];
   UIKeyboardSetUndocked(1);
   v3 = +[UIKeyboardImpl activeInstance];
   [v3 setRivenSplitLock:1];

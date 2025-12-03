@@ -1,12 +1,12 @@
 @interface PXUpdater
 - (PXUpdater)init;
-- (PXUpdater)initWithTarget:(id)a3 needsUpdateSelector:(SEL)a4;
+- (PXUpdater)initWithTarget:(id)target needsUpdateSelector:(SEL)selector;
 - (id)target;
 - (void)_scheduleUpdatePassIfNeeded;
-- (void)addUpdateSelector:(SEL)a3 needsUpdate:(BOOL)a4;
+- (void)addUpdateSelector:(SEL)selector needsUpdate:(BOOL)update;
 - (void)dealloc;
-- (void)setNeedsUpdateOf:(SEL)a3;
-- (void)setNeedsUpdateSelector:(SEL)a3;
+- (void)setNeedsUpdateOf:(SEL)of;
+- (void)setNeedsUpdateSelector:(SEL)selector;
 - (void)updateIfNeeded;
 @end
 
@@ -16,13 +16,13 @@
 {
   if (![(PXUpdater *)self isUpdatePassScheduled])
   {
-    v3 = [(PXUpdater *)self needsUpdateSelector];
-    if (v3)
+    needsUpdateSelector = [(PXUpdater *)self needsUpdateSelector];
+    if (needsUpdateSelector)
     {
-      v4 = v3;
+      v4 = needsUpdateSelector;
       self->_hasUpdatedForCurrentPass = 0;
-      v5 = [(PXUpdater *)self target];
-      [v5 performSelector:v4 withObject:0];
+      target = [(PXUpdater *)self target];
+      [target performSelector:v4 withObject:0];
 
       if (!self->_hasUpdatedForCurrentPass)
       {
@@ -48,7 +48,7 @@
     isPerformingUpdates = self->_isPerformingUpdates;
     self->_isPerformingUpdates = 1;
     [(NSMutableIndexSet *)self->_updateSelectorsAlreadyUpdated removeAllIndexes];
-    v11 = [(PXUpdater *)self target];
+    target = [(PXUpdater *)self target];
     if (self->_orderedUpdateSelectorsCount)
     {
       v5 = 0;
@@ -59,7 +59,7 @@
         if ([(NSMutableIndexSet *)self->_updateSelectorsNeedingUpdate containsIndex:v6])
         {
           [(NSMutableIndexSet *)self->_updateSelectorsNeedingUpdate removeIndex:v6];
-          [v11 performSelector:v6 withObject:0];
+          [target performSelector:v6 withObject:0];
         }
 
         ++v5;
@@ -83,8 +83,8 @@
         v9 = v7;
         v12[4] = v9;
         [(NSMutableIndexSet *)updateSelectorsNeedingUpdate enumerateIndexesUsingBlock:v12];
-        v10 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v10 handleFailureInMethod:a2 object:self file:@"PXUpdater.m" lineNumber:178 description:{@"%@ still needing update after update pass: %@", self, v9}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXUpdater.m" lineNumber:178 description:{@"%@ still needing update after update pass: %@", self, v9}];
 
         abort();
       }
@@ -99,45 +99,45 @@ void __27__PXUpdater_updateIfNeeded__block_invoke(uint64_t a1, SEL aSelector)
   [v2 addObject:v3];
 }
 
-- (void)setNeedsUpdateSelector:(SEL)a3
+- (void)setNeedsUpdateSelector:(SEL)selector
 {
-  if (self->_needsUpdateSelector != a3)
+  if (self->_needsUpdateSelector != selector)
   {
-    self->_needsUpdateSelector = a3;
+    self->_needsUpdateSelector = selector;
     [(PXUpdater *)self setUpdatePassScheduled:0];
   }
 }
 
-- (void)setNeedsUpdateOf:(SEL)a3
+- (void)setNeedsUpdateOf:(SEL)of
 {
-  if (self->_isPerformingUpdates && [(NSMutableIndexSet *)self->_updateSelectorsAlreadyUpdated containsIndex:a3])
+  if (self->_isPerformingUpdates && [(NSMutableIndexSet *)self->_updateSelectorsAlreadyUpdated containsIndex:of])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    v7 = NSStringFromSelector(a3);
-    [v6 handleFailureInMethod:a2 object:self file:@"PXUpdater.m" lineNumber:98 description:{@"%@ marking %@ as needing update after it already has been updated", self, v7}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v7 = NSStringFromSelector(of);
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXUpdater.m" lineNumber:98 description:{@"%@ marking %@ as needing update after it already has been updated", self, v7}];
 
     abort();
   }
 
-  [(NSMutableIndexSet *)self->_updateSelectorsNeedingUpdate addIndex:a3];
+  [(NSMutableIndexSet *)self->_updateSelectorsNeedingUpdate addIndex:of];
 
   [(PXUpdater *)self _scheduleUpdatePassIfNeeded];
 }
 
-- (void)addUpdateSelector:(SEL)a3 needsUpdate:(BOOL)a4
+- (void)addUpdateSelector:(SEL)selector needsUpdate:(BOOL)update
 {
-  v4 = a4;
-  v8 = [(PXUpdater *)self extraChecksEnabled];
+  updateCopy = update;
+  extraChecksEnabled = [(PXUpdater *)self extraChecksEnabled];
   orderedUpdateSelectorsCount = self->_orderedUpdateSelectorsCount;
-  if (v8 && orderedUpdateSelectorsCount)
+  if (extraChecksEnabled && orderedUpdateSelectorsCount)
   {
     for (i = 0; i != orderedUpdateSelectorsCount; ++i)
     {
-      if (self->_orderedUpdateSelectors[i] == a3)
+      if (self->_orderedUpdateSelectors[i] == selector)
       {
-        v14 = [MEMORY[0x1E696AAA8] currentHandler];
-        v15 = NSStringFromSelector(a3);
-        [v14 handleFailureInMethod:a2 object:self file:@"PXUpdater.m" lineNumber:67 description:{@"%@ update selector %@ already added", self, v15}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        v15 = NSStringFromSelector(selector);
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXUpdater.m" lineNumber:67 description:{@"%@ update selector %@ already added", self, v15}];
 
         abort();
       }
@@ -163,12 +163,12 @@ void __27__PXUpdater_updateIfNeeded__block_invoke(uint64_t a1, SEL aSelector)
     j = self->_orderedUpdateSelectorsCapacity;
   }
 
-  *(orderedUpdateSelectors + orderedUpdateSelectorsCount) = a3;
+  *(orderedUpdateSelectors + orderedUpdateSelectorsCount) = selector;
   self->_orderedUpdateSelectorsCount = orderedUpdateSelectorsCount + 1;
-  if (v4)
+  if (updateCopy)
   {
 
-    [(PXUpdater *)self setNeedsUpdateOf:a3];
+    [(PXUpdater *)self setNeedsUpdateOf:selector];
   }
 }
 
@@ -185,17 +185,17 @@ void __27__PXUpdater_updateIfNeeded__block_invoke(uint64_t a1, SEL aSelector)
   [(PXUpdater *)&v4 dealloc];
 }
 
-- (PXUpdater)initWithTarget:(id)a3 needsUpdateSelector:(SEL)a4
+- (PXUpdater)initWithTarget:(id)target needsUpdateSelector:(SEL)selector
 {
-  v6 = a3;
+  targetCopy = target;
   v14.receiver = self;
   v14.super_class = PXUpdater;
   v7 = [(PXUpdater *)&v14 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_target, v6);
-    v8->_needsUpdateSelector = a4;
+    objc_storeWeak(&v7->_target, targetCopy);
+    v8->_needsUpdateSelector = selector;
     v8->_orderedUpdateSelectorsCapacity = 32;
     v8->_orderedUpdateSelectors = malloc_type_calloc(0x20uLL, 8uLL, 0x80040B8603338uLL);
     v9 = objc_alloc_init(MEMORY[0x1E696AD50]);
@@ -214,8 +214,8 @@ void __27__PXUpdater_updateIfNeeded__block_invoke(uint64_t a1, SEL aSelector)
 
 - (PXUpdater)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXUpdater.m" lineNumber:28 description:{@"%s is not available as initializer", "-[PXUpdater init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXUpdater.m" lineNumber:28 description:{@"%s is not available as initializer", "-[PXUpdater init]"}];
 
   abort();
 }

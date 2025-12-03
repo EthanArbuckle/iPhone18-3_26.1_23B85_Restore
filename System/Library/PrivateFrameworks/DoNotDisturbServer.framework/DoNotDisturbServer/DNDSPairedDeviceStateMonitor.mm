@@ -1,20 +1,20 @@
 @interface DNDSPairedDeviceStateMonitor
 - (DNDAccountFeatureSupport)accountFeatureSupport;
-- (DNDSPairedDeviceStateMonitor)initWithLocalIDSService:(id)a3 cloudIDSService:(id)a4;
+- (DNDSPairedDeviceStateMonitor)initWithLocalIDSService:(id)service cloudIDSService:(id)sService;
 - (DNDSPairedDeviceStateMonitorDelegate)delegate;
 - (id)_getCurrentPairedDevice;
-- (id)pairedDeviceForDeviceIdentifier:(id)a3;
+- (id)pairedDeviceForDeviceIdentifier:(id)identifier;
 - (void)_beginMonitoringForChanges;
 - (void)_endMonitoringForChanges;
 - (void)_getCurrentPairedDevice;
-- (void)_pairedDeviceStateChanged:(id)a3;
+- (void)_pairedDeviceStateChanged:(id)changed;
 - (void)_queue_informDelegatesOfPairedStateChange;
 - (void)_queue_updateCloudDevices;
 - (void)_queue_updatePairedState;
 - (void)dealloc;
 - (void)resume;
-- (void)service:(id)a3 devicesChanged:(id)a4;
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4;
+- (void)service:(id)service devicesChanged:(id)changed;
+- (void)service:(id)service nearbyDevicesChanged:(id)changed;
 @end
 
 @implementation DNDSPairedDeviceStateMonitor
@@ -23,15 +23,15 @@
 {
   v55 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  v41 = [(DNDSPairedDeviceStateMonitor *)self cloudDevices];
+  cloudDevices = [(DNDSPairedDeviceStateMonitor *)self cloudDevices];
   v42 = [MEMORY[0x277CBEB58] set];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v44 = self;
-  v3 = [(IDSService *)self->_cloudService devices];
-  v4 = [v3 countByEnumeratingWithState:&v46 objects:v54 count:16];
+  selfCopy = self;
+  devices = [(IDSService *)self->_cloudService devices];
+  v4 = [devices countByEnumeratingWithState:&v46 objects:v54 count:16];
   v5 = &DNDSLogPairedDeviceState;
   if (v4)
   {
@@ -46,7 +46,7 @@
       {
         if (*v47 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(devices);
         }
 
         v9 = *(*(&v46 + 1) + 8 * v8);
@@ -60,14 +60,14 @@
             _os_log_impl(&dword_24912E000, v10, OS_LOG_TYPE_INFO, "Ignoring paired device on cloud channel. %@", buf, 0xCu);
           }
 
-          v11 = [(DNDSPairedDeviceStateMonitor *)v44 pairedDevice];
-          [v11 setICloudEnabled:1];
+          pairedDevice = [(DNDSPairedDeviceStateMonitor *)selfCopy pairedDevice];
+          [pairedDevice setICloudEnabled:1];
         }
 
         else
         {
-          v12 = [v9 _dnds_pairedDeviceClass];
-          if (!v12)
+          _dnds_pairedDeviceClass = [v9 _dnds_pairedDeviceClass];
+          if (!_dnds_pairedDeviceClass)
           {
             v20 = *v5;
             if (!os_log_type_enabled(*v5, OS_LOG_TYPE_ERROR))
@@ -82,12 +82,12 @@
             goto LABEL_21;
           }
 
-          v13 = v12;
-          v14 = [v9 _dnds_assertionSyncProtocolVersion];
-          v15 = [v9 _dnds_configurationSyncProtocolVersion];
-          if (v14)
+          v13 = _dnds_pairedDeviceClass;
+          _dnds_assertionSyncProtocolVersion = [v9 _dnds_assertionSyncProtocolVersion];
+          _dnds_configurationSyncProtocolVersion = [v9 _dnds_configurationSyncProtocolVersion];
+          if (_dnds_assertionSyncProtocolVersion)
           {
-            v16 = v15 == 0;
+            v16 = _dnds_configurationSyncProtocolVersion == 0;
           }
 
           else
@@ -112,19 +112,19 @@ LABEL_21:
             goto LABEL_25;
           }
 
-          v21 = v15;
-          v22 = v3;
+          v21 = _dnds_configurationSyncProtocolVersion;
+          v22 = devices;
           v23 = v5;
-          v24 = [v9 _dnds_supportsSilenceLists];
+          _dnds_supportsSilenceLists = [v9 _dnds_supportsSilenceLists];
           v25 = [DNDSPairedDevice alloc];
-          v26 = [v9 uniqueIDOverride];
-          v27 = [(DNDSPairedDevice *)v25 initWithCloudDeviceIdentifier:v26 deviceClass:v13 assertionSyncProtocolVersion:v14 configurationSyncProtocolVersion:v21 supportsSilenceLists:v24];
+          uniqueIDOverride = [v9 uniqueIDOverride];
+          v27 = [(DNDSPairedDevice *)v25 initWithCloudDeviceIdentifier:uniqueIDOverride deviceClass:v13 assertionSyncProtocolVersion:_dnds_assertionSyncProtocolVersion configurationSyncProtocolVersion:v21 supportsSilenceLists:_dnds_supportsSilenceLists];
 
-          v28 = [v9 name];
-          [(DNDSPairedDevice *)v27 setDeviceName:v28];
+          name = [v9 name];
+          [(DNDSPairedDevice *)v27 setDeviceName:name];
 
-          v29 = [v9 productBuildVersion];
-          [(DNDSPairedDevice *)v27 setOsBuild:v29];
+          productBuildVersion = [v9 productBuildVersion];
+          [(DNDSPairedDevice *)v27 setOsBuild:productBuildVersion];
 
           if (v27)
           {
@@ -132,7 +132,7 @@ LABEL_21:
           }
 
           v5 = v23;
-          v3 = v22;
+          devices = v22;
           v7 = v43;
           v6 = v45;
         }
@@ -142,30 +142,30 @@ LABEL_25:
       }
 
       while (v6 != v8);
-      v6 = [v3 countByEnumeratingWithState:&v46 objects:v54 count:16];
+      v6 = [devices countByEnumeratingWithState:&v46 objects:v54 count:16];
     }
 
     while (v6);
   }
 
-  if ([v42 isEqualToSet:v41])
+  if ([v42 isEqualToSet:cloudDevices])
   {
     v30 = *v5;
     if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v51 = v41;
+      v51 = cloudDevices;
       _os_log_impl(&dword_24912E000, v30, OS_LOG_TYPE_DEFAULT, "No change in cloud devices.\n %@", buf, 0xCu);
     }
   }
 
   else
   {
-    if ([v41 count])
+    if ([cloudDevices count])
     {
       v31 = [MEMORY[0x277CBEB58] setWithSet:v42];
-      [v31 minusSet:v41];
-      v32 = [MEMORY[0x277CBEB58] setWithSet:v41];
+      [v31 minusSet:cloudDevices];
+      v32 = [MEMORY[0x277CBEB58] setWithSet:cloudDevices];
       [v32 minusSet:v42];
       if ([v31 count] || objc_msgSend(v32, "count"))
       {
@@ -173,12 +173,12 @@ LABEL_25:
         if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
         {
           v34 = v33;
-          v35 = [v31 allObjects];
-          v36 = [v32 allObjects];
+          allObjects = [v31 allObjects];
+          allObjects2 = [v32 allObjects];
           *buf = 138412546;
-          v51 = v35;
+          v51 = allObjects;
           v52 = 2112;
-          v53 = v36;
+          v53 = allObjects2;
           _os_log_impl(&dword_24912E000, v34, OS_LOG_TYPE_DEFAULT, "Cloud devices added: %@. Removed: %@", buf, 0x16u);
         }
       }
@@ -204,18 +204,18 @@ LABEL_25:
       }
     }
 
-    [(DNDSPairedDeviceStateMonitor *)v44 setCloudDevices:v42];
-    WeakRetained = objc_loadWeakRetained(&v44->_delegate);
-    [WeakRetained pairedDeviceStateMonitor:v44 cloudPairingChangedFromDevices:v41 toDevices:v42];
+    [(DNDSPairedDeviceStateMonitor *)selfCopy setCloudDevices:v42];
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+    [WeakRetained pairedDeviceStateMonitor:selfCopy cloudPairingChangedFromDevices:cloudDevices toDevices:v42];
   }
 
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (DNDSPairedDeviceStateMonitor)initWithLocalIDSService:(id)a3 cloudIDSService:(id)a4
+- (DNDSPairedDeviceStateMonitor)initWithLocalIDSService:(id)service cloudIDSService:(id)sService
 {
-  v7 = a3;
-  v8 = a4;
+  serviceCopy = service;
+  sServiceCopy = sService;
   v18.receiver = self;
   v18.super_class = DNDSPairedDeviceStateMonitor;
   v9 = [(DNDSPairedDeviceStateMonitor *)&v18 init];
@@ -230,8 +230,8 @@ LABEL_25:
     v14 = *(v9 + 1);
     *(v9 + 1) = v13;
 
-    objc_storeStrong(v9 + 3, a3);
-    objc_storeStrong(v9 + 4, a4);
+    objc_storeStrong(v9 + 3, service);
+    objc_storeStrong(v9 + 4, sService);
     v15 = [MEMORY[0x277CBEB98] set];
     v16 = *(v9 + 8);
     *(v9 + 8) = v15;
@@ -339,40 +339,40 @@ LABEL_14:
   pairedDevice = self->_pairedDevice;
   if (pairedDevice)
   {
-    v11 = [(DNDSPairedDevice *)pairedDevice supportsSilenceLists];
+    supportsSilenceLists = [(DNDSPairedDevice *)pairedDevice supportsSilenceLists];
   }
 
   else
   {
-    v11 = 1;
+    supportsSilenceLists = 1;
   }
 
-  v12 = [MEMORY[0x277D05890] accountFeaturesWithCloud:v8 hasCloudDevices:v3 != 0 paired:v11 hasPairedDevices:pairedDevice != 0];
+  v12 = [MEMORY[0x277D05890] accountFeaturesWithCloud:v8 hasCloudDevices:v3 != 0 paired:supportsSilenceLists hasPairedDevices:pairedDevice != 0];
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-- (id)pairedDeviceForDeviceIdentifier:(id)a3
+- (id)pairedDeviceForDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DNDSPairedDeviceStateMonitor *)self cloudDevices];
-  v6 = [v5 allObjects];
-  v7 = v6;
+  identifierCopy = identifier;
+  cloudDevices = [(DNDSPairedDeviceStateMonitor *)self cloudDevices];
+  allObjects = [cloudDevices allObjects];
+  v7 = allObjects;
   v8 = MEMORY[0x277CBEBF8];
-  if (v6)
+  if (allObjects)
   {
-    v8 = v6;
+    v8 = allObjects;
   }
 
   v9 = v8;
 
-  v10 = [(DNDSPairedDeviceStateMonitor *)self pairedDevice];
+  pairedDevice = [(DNDSPairedDeviceStateMonitor *)self pairedDevice];
 
-  if (v10)
+  if (pairedDevice)
   {
-    v11 = [(DNDSPairedDeviceStateMonitor *)self pairedDevice];
-    v12 = [v9 arrayByAddingObject:v11];
+    pairedDevice2 = [(DNDSPairedDeviceStateMonitor *)self pairedDevice];
+    v12 = [v9 arrayByAddingObject:pairedDevice2];
 
     v9 = v12;
   }
@@ -381,7 +381,7 @@ LABEL_14:
   v17[1] = 3221225472;
   v17[2] = __64__DNDSPairedDeviceStateMonitor_pairedDeviceForDeviceIdentifier___block_invoke;
   v17[3] = &unk_278F8B0A8;
-  v13 = v4;
+  v13 = identifierCopy;
   v18 = v13;
   v14 = [v9 bs_firstObjectPassingTest:v17];
   if (!v14)
@@ -408,30 +408,30 @@ uint64_t __64__DNDSPairedDeviceStateMonitor_pairedDeviceForDeviceIdentifier___bl
 {
   v30 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(DNDSPairedDeviceStateMonitor *)self pairedDevice];
-  v4 = [(DNDSPairedDeviceStateMonitor *)self _getCurrentPairedDevice];
-  v5 = v4;
-  if (v3 != v4 && (!v3 || !v4 || ([v3 isEqual:v4] & 1) == 0))
+  pairedDevice = [(DNDSPairedDeviceStateMonitor *)self pairedDevice];
+  _getCurrentPairedDevice = [(DNDSPairedDeviceStateMonitor *)self _getCurrentPairedDevice];
+  v5 = _getCurrentPairedDevice;
+  if (pairedDevice != _getCurrentPairedDevice && (!pairedDevice || !_getCurrentPairedDevice || ([pairedDevice isEqual:_getCurrentPairedDevice] & 1) == 0))
   {
     [(DNDSPairedDeviceStateMonitor *)self setPairedDevice:v5];
-    v7 = [(DNDSPairedDeviceStateMonitor *)self previousPairedDevice];
+    previousPairedDevice = [(DNDSPairedDeviceStateMonitor *)self previousPairedDevice];
 
-    if (!v7)
+    if (!previousPairedDevice)
     {
-      [(DNDSPairedDeviceStateMonitor *)self setPreviousPairedDevice:v3];
+      [(DNDSPairedDeviceStateMonitor *)self setPreviousPairedDevice:pairedDevice];
     }
 
-    v8 = [(DNDSPairedDeviceStateMonitor *)self previousPairedDevice];
-    v9 = v8;
-    if (v8 == v5)
+    previousPairedDevice2 = [(DNDSPairedDeviceStateMonitor *)self previousPairedDevice];
+    v9 = previousPairedDevice2;
+    if (previousPairedDevice2 == v5)
     {
     }
 
     else
     {
-      v10 = [(DNDSPairedDeviceStateMonitor *)self previousPairedDevice];
-      v11 = v10;
-      if (!v5 || !v10)
+      previousPairedDevice3 = [(DNDSPairedDeviceStateMonitor *)self previousPairedDevice];
+      v11 = previousPairedDevice3;
+      if (!v5 || !previousPairedDevice3)
       {
 
 LABEL_19:
@@ -442,7 +442,7 @@ LABEL_19:
           v20 = v18;
           v21 = [v19 numberWithLongLong:2];
           v24 = 138543874;
-          v25 = v3;
+          v25 = pairedDevice;
           v26 = 2114;
           v27 = v5;
           v28 = 2112;
@@ -459,8 +459,8 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      v12 = [(DNDSPairedDeviceStateMonitor *)self previousPairedDevice];
-      v13 = [v12 isEqual:v5];
+      previousPairedDevice4 = [(DNDSPairedDeviceStateMonitor *)self previousPairedDevice];
+      v13 = [previousPairedDevice4 isEqual:v5];
 
       if ((v13 & 1) == 0)
       {
@@ -487,7 +487,7 @@ LABEL_22:
   if (os_log_type_enabled(DNDSLogPairedDeviceState, OS_LOG_TYPE_DEFAULT))
   {
     v24 = 138543362;
-    v25 = v3;
+    v25 = pairedDevice;
     _os_log_impl(&dword_24912E000, v6, OS_LOG_TYPE_DEFAULT, "Paired device did not change: current=%{public}@", &v24, 0xCu);
   }
 
@@ -501,19 +501,19 @@ LABEL_23:
   v19 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
   dispatch_suspend(self->_coalescingTimer);
-  v3 = [(DNDSPairedDeviceStateMonitor *)self previousPairedDevice];
-  v4 = [(DNDSPairedDeviceStateMonitor *)self pairedDevice];
-  v5 = [(DNDSPairedDeviceStateMonitor *)self previousPairedDevice];
-  v6 = v5;
-  if (v5 == v4)
+  previousPairedDevice = [(DNDSPairedDeviceStateMonitor *)self previousPairedDevice];
+  pairedDevice = [(DNDSPairedDeviceStateMonitor *)self pairedDevice];
+  previousPairedDevice2 = [(DNDSPairedDeviceStateMonitor *)self previousPairedDevice];
+  v6 = previousPairedDevice2;
+  if (previousPairedDevice2 == pairedDevice)
   {
   }
 
   else
   {
-    v7 = [(DNDSPairedDeviceStateMonitor *)self previousPairedDevice];
-    v8 = v7;
-    if (!v7 || !v4)
+    previousPairedDevice3 = [(DNDSPairedDeviceStateMonitor *)self previousPairedDevice];
+    v8 = previousPairedDevice3;
+    if (!previousPairedDevice3 || !pairedDevice)
     {
 
 LABEL_10:
@@ -521,20 +521,20 @@ LABEL_10:
       if (os_log_type_enabled(DNDSLogPairedDeviceState, OS_LOG_TYPE_DEFAULT))
       {
         v15 = 138543618;
-        v16 = v3;
+        v16 = previousPairedDevice;
         v17 = 2114;
-        v18 = v4;
+        v18 = pairedDevice;
         _os_log_impl(&dword_24912E000, v12, OS_LOG_TYPE_DEFAULT, "Informing delegates of coalesced paired device state changed: from=%{public}@, to=%{public}@", &v15, 0x16u);
       }
 
-      v13 = [(DNDSPairedDeviceStateMonitor *)self delegate];
-      [v13 pairedDeviceStateMonitor:self pairingChangedFromDevice:v3 toDevice:v4];
+      delegate = [(DNDSPairedDeviceStateMonitor *)self delegate];
+      [delegate pairedDeviceStateMonitor:self pairingChangedFromDevice:previousPairedDevice toDevice:pairedDevice];
 
       goto LABEL_13;
     }
 
-    v9 = [(DNDSPairedDeviceStateMonitor *)self previousPairedDevice];
-    v10 = [v9 isEqual:v4];
+    previousPairedDevice4 = [(DNDSPairedDeviceStateMonitor *)self previousPairedDevice];
+    v10 = [previousPairedDevice4 isEqual:pairedDevice];
 
     if ((v10 & 1) == 0)
     {
@@ -546,7 +546,7 @@ LABEL_10:
   if (os_log_type_enabled(DNDSLogPairedDeviceState, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543362;
-    v16 = v4;
+    v16 = pairedDevice;
     _os_log_impl(&dword_24912E000, v11, OS_LOG_TYPE_DEFAULT, "Ignoring paired device state; coalesced back to the original device: %{public}@", &v15, 0xCu);
   }
 
@@ -560,17 +560,17 @@ LABEL_13:
 - (id)_getCurrentPairedDevice
 {
   v65 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D058F8] currentDevice];
-  v4 = [v3 deviceClass];
+  currentDevice = [MEMORY[0x277D058F8] currentDevice];
+  deviceClass = [currentDevice deviceClass];
 
-  if (v4 != 1)
+  if (deviceClass != 1)
   {
     v21 = 0;
     goto LABEL_54;
   }
 
-  v5 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v45 = self;
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  selfCopy = self;
   [(IDSService *)self->_localService devices];
   v55 = 0u;
   v56 = 0u;
@@ -579,7 +579,7 @@ LABEL_13:
   v6 = [obj countByEnumeratingWithState:&v55 objects:v64 count:16];
   if (v6)
   {
-    v47 = v5;
+    v47 = mEMORY[0x277D2BCF8];
     v7 = *v56;
 LABEL_4:
     v8 = 0;
@@ -603,15 +603,15 @@ LABEL_4:
       if (os_log_type_enabled(DNDSLogPairedDeviceState, OS_LOG_TYPE_DEFAULT))
       {
         v11 = v10;
-        v12 = [v9 isConnected];
-        v13 = [v9 isActive];
-        v14 = [v9 isCloudConnected];
+        isConnected = [v9 isConnected];
+        isActive = [v9 isActive];
+        isCloudConnected = [v9 isCloudConnected];
         *buf = 67109890;
-        *v60 = v12;
+        *v60 = isConnected;
         *&v60[4] = 1024;
-        *&v60[6] = v13;
+        *&v60[6] = isActive;
         LOWORD(v61) = 1024;
-        *(&v61 + 2) = v14;
+        *(&v61 + 2) = isCloudConnected;
         HIWORD(v61) = 2114;
         *v62 = 0;
         _os_log_impl(&dword_24912E000, v11, OS_LOG_TYPE_DEFAULT, "Ignoring device: isConnected=%{BOOL}d, isActive=%{BOOL}d, isCloudConnected:%{BOOL}d, device=%{public}@", buf, 0x1Eu);
@@ -625,19 +625,19 @@ LABEL_4:
           goto LABEL_4;
         }
 
-        v15 = 0;
-        v16 = 0;
-        v17 = 0;
-        v18 = 0;
-        v19 = 0;
-        v20 = 0;
-        v44 = 1;
-        v5 = v47;
+        _dnds_isIOS14EraOS = 0;
+        _dnds_configurationSyncProtocolVersion = 0;
+        _dnds_assertionSyncProtocolVersion = 0;
+        _dnds_pairedDeviceClass = 0;
+        productBuildVersion = 0;
+        uniqueIDOverride = 0;
+        _dnds_supportsSilenceLists = 1;
+        mEMORY[0x277D2BCF8] = v47;
         goto LABEL_28;
       }
     }
 
-    v5 = v47;
+    mEMORY[0x277D2BCF8] = v47;
     v22 = [v47 deviceForIDSDevice:v9];
     if (!v22)
     {
@@ -647,21 +647,21 @@ LABEL_4:
         [(DNDSPairedDeviceStateMonitor *)v9 _getCurrentPairedDevice];
       }
 
-      v15 = 0;
-      v16 = 0;
-      v17 = 0;
-      v18 = 0;
-      v19 = 0;
-      v20 = 0;
+      _dnds_isIOS14EraOS = 0;
+      _dnds_configurationSyncProtocolVersion = 0;
+      _dnds_assertionSyncProtocolVersion = 0;
+      _dnds_pairedDeviceClass = 0;
+      productBuildVersion = 0;
+      uniqueIDOverride = 0;
       v6 = 0;
       goto LABEL_27;
     }
 
     v6 = v22;
-    v23 = [v9 isConnected];
+    isConnected2 = [v9 isConnected];
     v24 = DNDSLogPairedDeviceState;
     v25 = os_log_type_enabled(DNDSLogPairedDeviceState, OS_LOG_TYPE_DEFAULT);
-    if (v23)
+    if (isConnected2)
     {
       if (v25)
       {
@@ -670,22 +670,22 @@ LABEL_4:
         _os_log_impl(&dword_24912E000, v24, OS_LOG_TYPE_DEFAULT, "Found active paired device: %@", buf, 0xCu);
       }
 
-      v17 = [v9 _dnds_assertionSyncProtocolVersion];
-      v16 = [v9 _dnds_configurationSyncProtocolVersion];
-      v19 = [v9 productBuildVersion];
-      v15 = [v9 _dnds_isIOS14EraOS];
-      if (v15)
+      _dnds_assertionSyncProtocolVersion = [v9 _dnds_assertionSyncProtocolVersion];
+      _dnds_configurationSyncProtocolVersion = [v9 _dnds_configurationSyncProtocolVersion];
+      productBuildVersion = [v9 productBuildVersion];
+      _dnds_isIOS14EraOS = [v9 _dnds_isIOS14EraOS];
+      if (_dnds_isIOS14EraOS)
       {
-        v44 = 0;
+        _dnds_supportsSilenceLists = 0;
       }
 
       else
       {
-        v44 = [v9 _dnds_supportsSilenceLists];
+        _dnds_supportsSilenceLists = [v9 _dnds_supportsSilenceLists];
       }
 
-      v20 = [v9 uniqueIDOverride];
-      v18 = [v9 _dnds_pairedDeviceClass];
+      uniqueIDOverride = [v9 uniqueIDOverride];
+      _dnds_pairedDeviceClass = [v9 _dnds_pairedDeviceClass];
       goto LABEL_28;
     }
 
@@ -697,37 +697,37 @@ LABEL_4:
     }
   }
 
-  v15 = 0;
-  v16 = 0;
-  v17 = 0;
-  v18 = 0;
-  v19 = 0;
-  v20 = 0;
+  _dnds_isIOS14EraOS = 0;
+  _dnds_configurationSyncProtocolVersion = 0;
+  _dnds_assertionSyncProtocolVersion = 0;
+  _dnds_pairedDeviceClass = 0;
+  productBuildVersion = 0;
+  uniqueIDOverride = 0;
 LABEL_27:
-  v44 = 1;
+  _dnds_supportsSilenceLists = 1;
 LABEL_28:
 
   v27 = [v6 valueForProperty:*MEMORY[0x277D2BBB8]];
   v28 = [v6 valueForProperty:*MEMORY[0x277D2BB60]];
   v49 = [v6 valueForProperty:*MEMORY[0x277D2BBA8]];
-  if (v18 && v17 && v16)
+  if (_dnds_pairedDeviceClass && _dnds_assertionSyncProtocolVersion && _dnds_configurationSyncProtocolVersion)
   {
     if (v27 && v28)
     {
-      v42 = v18;
-      v43 = v15;
+      v42 = _dnds_pairedDeviceClass;
+      v43 = _dnds_isIOS14EraOS;
       v53 = 0u;
       v54 = 0u;
       v51 = 0u;
       v52 = 0u;
-      v29 = [(IDSService *)v45->_cloudService devices];
-      v30 = [v29 countByEnumeratingWithState:&v51 objects:v63 count:16];
+      devices = [(IDSService *)selfCopy->_cloudService devices];
+      v30 = [devices countByEnumeratingWithState:&v51 objects:v63 count:16];
       if (v30)
       {
-        v40 = v16;
-        v41 = v17;
-        v46 = v19;
-        v48 = v5;
+        v40 = _dnds_configurationSyncProtocolVersion;
+        v41 = _dnds_assertionSyncProtocolVersion;
+        v46 = productBuildVersion;
+        v48 = mEMORY[0x277D2BCF8];
         v31 = *v52;
         while (2)
         {
@@ -735,11 +735,11 @@ LABEL_28:
           {
             if (*v52 != v31)
             {
-              objc_enumerationMutation(v29);
+              objc_enumerationMutation(devices);
             }
 
-            v33 = [*(*(&v51 + 1) + 8 * i) uniqueIDOverride];
-            v34 = [v33 isEqual:v20];
+            uniqueIDOverride2 = [*(*(&v51 + 1) + 8 * i) uniqueIDOverride];
+            v34 = [uniqueIDOverride2 isEqual:uniqueIDOverride];
 
             if (v34)
             {
@@ -748,7 +748,7 @@ LABEL_28:
             }
           }
 
-          v30 = [v29 countByEnumeratingWithState:&v51 objects:v63 count:16];
+          v30 = [devices countByEnumeratingWithState:&v51 objects:v63 count:16];
           if (v30)
           {
             continue;
@@ -758,17 +758,17 @@ LABEL_28:
         }
 
 LABEL_50:
-        v19 = v46;
-        v5 = v48;
-        v16 = v40;
-        v17 = v41;
+        productBuildVersion = v46;
+        mEMORY[0x277D2BCF8] = v48;
+        _dnds_configurationSyncProtocolVersion = v40;
+        _dnds_assertionSyncProtocolVersion = v41;
       }
 
-      v21 = [[DNDSPairedDevice alloc] initWithLocalDeviceIdentifier:v20 deviceClass:v42 assertionSyncProtocolVersion:v17 configurationSyncProtocolVersion:v16 iOS14EraOS:v43 supportsSilenceLists:v44 pairingIdentifier:v27 pairingDataStore:v28];
+      v21 = [[DNDSPairedDevice alloc] initWithLocalDeviceIdentifier:uniqueIDOverride deviceClass:v42 assertionSyncProtocolVersion:_dnds_assertionSyncProtocolVersion configurationSyncProtocolVersion:_dnds_configurationSyncProtocolVersion iOS14EraOS:v43 supportsSilenceLists:_dnds_supportsSilenceLists pairingIdentifier:v27 pairingDataStore:v28];
       v36 = v49;
       [(DNDSPairedDevice *)v21 setDeviceName:v49];
-      [(DNDSPairedDevice *)v21 setOsBuild:v19];
-      if (v17 >= 9)
+      [(DNDSPairedDevice *)v21 setOsBuild:productBuildVersion];
+      if (_dnds_assertionSyncProtocolVersion >= 9)
       {
         [(DNDSPairedDevice *)v21 setICloudEnabled:v30];
       }
@@ -817,14 +817,14 @@ LABEL_54:
   [(IDSService *)self->_localService addDelegate:self queue:self->_queue];
   [(IDSService *)self->_cloudService addDelegate:self queue:self->_queue];
   objc_initWeak(&location, self);
-  v3 = [*MEMORY[0x277D2BCA0] UTF8String];
+  uTF8String = [*MEMORY[0x277D2BCA0] UTF8String];
   queue = self->_queue;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __58__DNDSPairedDeviceStateMonitor__beginMonitoringForChanges__block_invoke;
   v5[3] = &unk_278F8B600;
   objc_copyWeak(&v6, &location);
-  notify_register_dispatch(v3, &self->_pairedDeviceDidChangeNotificationToken, queue, v5);
+  notify_register_dispatch(uTF8String, &self->_pairedDeviceDidChangeNotificationToken, queue, v5);
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
@@ -854,7 +854,7 @@ void __58__DNDSPairedDeviceStateMonitor__beginMonitoringForChanges__block_invoke
   }
 }
 
-- (void)_pairedDeviceStateChanged:(id)a3
+- (void)_pairedDeviceStateChanged:(id)changed
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -877,20 +877,20 @@ uint64_t __58__DNDSPairedDeviceStateMonitor__pairedDeviceStateChanged___block_in
   return [*(a1 + 32) _queue_updatePairedState];
 }
 
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4
+- (void)service:(id)service nearbyDevicesChanged:(id)changed
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  changedCopy = changed;
   v8 = DNDSLogPairedDeviceState;
   if (os_log_type_enabled(DNDSLogPairedDeviceState, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = v7;
+    v11 = changedCopy;
     _os_log_impl(&dword_24912E000, v8, OS_LOG_TYPE_DEFAULT, "Nearby devices changed, devices=%{public}@", &v10, 0xCu);
   }
 
-  if ([v6 isEqual:self->_localService])
+  if ([serviceCopy isEqual:self->_localService])
   {
     [(DNDSPairedDeviceStateMonitor *)self _queue_updatePairedState];
   }
@@ -898,25 +898,25 @@ uint64_t __58__DNDSPairedDeviceStateMonitor__pairedDeviceStateChanged___block_in
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  changedCopy = changed;
   v8 = DNDSLogPairedDeviceState;
   if (os_log_type_enabled(DNDSLogPairedDeviceState, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = v7;
+    v11 = changedCopy;
     _os_log_impl(&dword_24912E000, v8, OS_LOG_TYPE_DEFAULT, "Devices changed, devices=%{public}@", &v10, 0xCu);
   }
 
-  if ([v6 isEqual:self->_cloudService])
+  if ([serviceCopy isEqual:self->_cloudService])
   {
     [(DNDSPairedDeviceStateMonitor *)self _queue_updateCloudDevices];
   }
 
-  else if ([v6 isEqual:self->_localService])
+  else if ([serviceCopy isEqual:self->_localService])
   {
     [(DNDSPairedDeviceStateMonitor *)self _queue_updatePairedState];
   }
@@ -946,7 +946,7 @@ uint64_t __58__DNDSPairedDeviceStateMonitor__pairedDeviceStateChanged___block_in
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_24912E000, a2, OS_LOG_TYPE_ERROR, "Device class or sync protocol was invalid: device=%{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

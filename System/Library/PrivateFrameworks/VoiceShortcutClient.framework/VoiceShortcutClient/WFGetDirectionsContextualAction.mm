@@ -1,33 +1,33 @@
 @interface WFGetDirectionsContextualAction
-- (BOOL)isEqual:(id)a3;
-- (WFGetDirectionsContextualAction)initWithCoder:(id)a3;
-- (WFGetDirectionsContextualAction)initWithDestination:(id)a3 name:(id)a4 type:(unint64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (WFGetDirectionsContextualAction)initWithCoder:(id)coder;
+- (WFGetDirectionsContextualAction)initWithDestination:(id)destination name:(id)name type:(unint64_t)type;
 - (id)_staticDisplayStringForDecoding;
-- (id)readableTypeFromType:(unint64_t)a3;
+- (id)readableTypeFromType:(unint64_t)type;
 - (id)uniqueIdentifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFGetDirectionsContextualAction
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = WFGetDirectionsContextualAction;
-  v4 = a3;
-  [(WFContextualAction *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_destination forKey:{@"destination", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_destinationName forKey:@"destinationName"];
-  [v4 encodeInteger:self->_navigationType forKey:@"navigationType"];
+  coderCopy = coder;
+  [(WFContextualAction *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_destination forKey:{@"destination", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_destinationName forKey:@"destinationName"];
+  [coderCopy encodeInteger:self->_navigationType forKey:@"navigationType"];
 }
 
-- (WFGetDirectionsContextualAction)initWithCoder:(id)a3
+- (WFGetDirectionsContextualAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = WFGetDirectionsContextualAction;
-  v5 = [(WFContextualAction *)&v14 initWithCoder:v4];
+  v5 = [(WFContextualAction *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
     v16 = 0;
@@ -48,9 +48,9 @@
 
     v7 = v6;
     _Block_object_dispose(&v16, 8);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:@"destination"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"destinationName"];
-    v10 = [v4 decodeIntegerForKey:@"navigationType"];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:@"destination"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"destinationName"];
+    v10 = [coderCopy decodeIntegerForKey:@"navigationType"];
     v11 = 0;
     if (v8 && v9)
     {
@@ -75,32 +75,32 @@
   v3 = [(WFGetDirectionsContextualAction *)self readableTypeFromType:[(WFGetDirectionsContextualAction *)self navigationType]];
   v4 = MEMORY[0x1E696AEC0];
   v5 = WFLocalizedString(@"Get %@ directions to %@");
-  v6 = [(WFGetDirectionsContextualAction *)self destinationName];
-  v7 = [v4 stringWithFormat:v5, v3, v6];
+  destinationName = [(WFGetDirectionsContextualAction *)self destinationName];
+  v7 = [v4 stringWithFormat:v5, v3, destinationName];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v19.receiver = self;
   v19.super_class = WFGetDirectionsContextualAction;
-  if ([(WFContextualAction *)&v19 isEqual:v4])
+  if ([(WFContextualAction *)&v19 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      LOBYTE(v11) = 0;
+      LOBYTE(navigationType) = 0;
 LABEL_22:
 
       goto LABEL_23;
     }
 
-    v6 = [v5 destination];
-    v7 = [(WFGetDirectionsContextualAction *)self destination];
-    v8 = v6;
-    v9 = v7;
+    destination = [v5 destination];
+    destination2 = [(WFGetDirectionsContextualAction *)self destination];
+    v8 = destination;
+    v9 = destination2;
     v10 = v9;
     if (v8 == v9)
     {
@@ -108,7 +108,7 @@ LABEL_22:
 
     else
     {
-      LOBYTE(v11) = 0;
+      LOBYTE(navigationType) = 0;
       v12 = v9;
       v13 = v8;
       if (!v8 || !v9)
@@ -120,17 +120,17 @@ LABEL_22:
 
       if (!v14)
       {
-        LOBYTE(v11) = 0;
+        LOBYTE(navigationType) = 0;
 LABEL_21:
 
         goto LABEL_22;
       }
     }
 
-    v15 = [v5 destinationName];
-    v16 = [(WFGetDirectionsContextualAction *)self destinationName];
-    v13 = v15;
-    v17 = v16;
+    destinationName = [v5 destinationName];
+    destinationName2 = [(WFGetDirectionsContextualAction *)self destinationName];
+    v13 = destinationName;
+    v17 = destinationName2;
     v12 = v17;
     if (v13 == v17)
     {
@@ -141,29 +141,29 @@ LABEL_21:
       if (!v13 || !v17)
       {
 
-        LOBYTE(v11) = 0;
+        LOBYTE(navigationType) = 0;
         goto LABEL_20;
       }
 
-      LODWORD(v11) = [v13 isEqualToString:v17];
+      LODWORD(navigationType) = [v13 isEqualToString:v17];
 
-      if (!v11)
+      if (!navigationType)
       {
         goto LABEL_20;
       }
     }
 
-    v11 = [v5 navigationType];
-    LOBYTE(v11) = v11 == [(WFGetDirectionsContextualAction *)self navigationType];
+    navigationType = [v5 navigationType];
+    LOBYTE(navigationType) = navigationType == [(WFGetDirectionsContextualAction *)self navigationType];
 LABEL_20:
 
     goto LABEL_21;
   }
 
-  LOBYTE(v11) = 0;
+  LOBYTE(navigationType) = 0;
 LABEL_23:
 
-  return v11;
+  return navigationType;
 }
 
 - (unint64_t)hash
@@ -172,11 +172,11 @@ LABEL_23:
   v12.receiver = self;
   v12.super_class = WFGetDirectionsContextualAction;
   v4 = [v3 combineInteger:{-[WFContextualAction hash](&v12, sel_hash)}];
-  v5 = [(WFGetDirectionsContextualAction *)self destination];
-  v6 = [v3 combine:v5];
+  destination = [(WFGetDirectionsContextualAction *)self destination];
+  v6 = [v3 combine:destination];
 
-  v7 = [(WFGetDirectionsContextualAction *)self destinationName];
-  v8 = [v3 combineContentsOfPropertyListObject:v7];
+  destinationName = [(WFGetDirectionsContextualAction *)self destinationName];
+  v8 = [v3 combineContentsOfPropertyListObject:destinationName];
 
   v9 = [v3 combineInteger:{-[WFGetDirectionsContextualAction navigationType](self, "navigationType")}];
   v10 = [v3 finalize];
@@ -187,10 +187,10 @@ LABEL_23:
 - (id)uniqueIdentifier
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(WFContextualAction *)self identifier];
-  v9[0] = v3;
-  v4 = [(WFGetDirectionsContextualAction *)self destinationName];
-  v9[1] = v4;
+  identifier = [(WFContextualAction *)self identifier];
+  v9[0] = identifier;
+  destinationName = [(WFGetDirectionsContextualAction *)self destinationName];
+  v9[1] = destinationName;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
 
   v6 = [v5 componentsJoinedByString:@"."];
@@ -200,31 +200,31 @@ LABEL_23:
   return v6;
 }
 
-- (id)readableTypeFromType:(unint64_t)a3
+- (id)readableTypeFromType:(unint64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = WFLocalizedString(off_1E7B00F40[a3]);
+    v4 = WFLocalizedString(off_1E7B00F40[type]);
   }
 
   return v4;
 }
 
-- (WFGetDirectionsContextualAction)initWithDestination:(id)a3 name:(id)a4 type:(unint64_t)a5
+- (WFGetDirectionsContextualAction)initWithDestination:(id)destination name:(id)name type:(unint64_t)type
 {
   v39[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  v38 = v9;
-  if (v9)
+  destinationCopy = destination;
+  nameCopy = name;
+  v11 = nameCopy;
+  v38 = destinationCopy;
+  if (destinationCopy)
   {
-    if (v10)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -232,8 +232,8 @@ LABEL_23:
 
   else
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"WFGetDirectionsContextualAction.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"destination"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFGetDirectionsContextualAction.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"destination"}];
 
     if (v11)
     {
@@ -241,21 +241,21 @@ LABEL_23:
     }
   }
 
-  v34 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v34 handleFailureInMethod:a2 object:self file:@"WFGetDirectionsContextualAction.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"destinationName"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFGetDirectionsContextualAction.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"destinationName"}];
 
 LABEL_3:
-  v12 = [(WFGetDirectionsContextualAction *)self readableTypeFromType:a5];
-  v36 = a5;
-  v37 = self;
-  if (a5 > 3)
+  v12 = [(WFGetDirectionsContextualAction *)self readableTypeFromType:type];
+  typeCopy = type;
+  selfCopy = self;
+  if (type > 3)
   {
     v13 = 0;
   }
 
   else
   {
-    v13 = off_1E7B00F40[a5];
+    v13 = off_1E7B00F40[type];
   }
 
   v14 = MEMORY[0x1E696AEC0];
@@ -276,16 +276,16 @@ LABEL_3:
   v39[1] = v24;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:2];
   v26 = [WFContextualActionIcon iconWithApplicationBundleIdentifier:@"com.apple.Maps"];
-  v27 = [(WFContextualAction *)v37 initWithIdentifier:@"is.workflow.actions.getdirections" wfActionIdentifier:@"is.workflow.actions.getdirections" associatedAppBundleIdentifier:@"com.apple.Maps" parameters:v25 displayString:v16 title:v19 subtitle:v22 icon:v26];
+  v27 = [(WFContextualAction *)selfCopy initWithIdentifier:@"is.workflow.actions.getdirections" wfActionIdentifier:@"is.workflow.actions.getdirections" associatedAppBundleIdentifier:@"com.apple.Maps" parameters:v25 displayString:v16 title:v19 subtitle:v22 icon:v26];
 
   if (v27)
   {
-    objc_storeStrong(&v27->_destination, a3);
+    objc_storeStrong(&v27->_destination, destination);
     v28 = [v11 copy];
     destinationName = v27->_destinationName;
     v27->_destinationName = v28;
 
-    v27->_navigationType = v36;
+    v27->_navigationType = typeCopy;
     v30 = v27;
   }
 

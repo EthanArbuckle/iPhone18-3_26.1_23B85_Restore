@@ -1,8 +1,8 @@
 @interface _CNUIUserActionURLItem
-- (BOOL)isEqual:(id)a3;
-- (_CNUIUserActionURLItem)initWithType:(id)a3 contactProperty:(id)a4 bundleIdentifier:(id)a5 url:(id)a6 isSensitive:(BOOL)a7 group:(int64_t)a8 options:(unint64_t)a9;
+- (BOOL)isEqual:(id)equal;
+- (_CNUIUserActionURLItem)initWithType:(id)type contactProperty:(id)property bundleIdentifier:(id)identifier url:(id)url isSensitive:(BOOL)sensitive group:(int64_t)group options:(unint64_t)options;
 - (id)description;
-- (id)performActionWithContext:(id)a3 shouldCurateIfPerformed:(BOOL)a4;
+- (id)performActionWithContext:(id)context shouldCurateIfPerformed:(BOOL)performed;
 - (unint64_t)hash;
 @end
 
@@ -11,17 +11,17 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNUIUserActionItem *)self type];
-  v5 = [v3 appendObject:v4 withName:@"type"];
+  type = [(CNUIUserActionItem *)self type];
+  v5 = [v3 appendObject:type withName:@"type"];
 
-  v6 = [(CNUIUserActionItem *)self label];
-  v7 = [v3 appendObject:v6 withName:@"label"];
+  label = [(CNUIUserActionItem *)self label];
+  v7 = [v3 appendObject:label withName:@"label"];
 
-  v8 = [(CNUIUserActionItem *)self targetHandle];
-  v9 = [v3 appendObject:v8 withName:@"targetHandle"];
+  targetHandle = [(CNUIUserActionItem *)self targetHandle];
+  v9 = [v3 appendObject:targetHandle withName:@"targetHandle"];
 
-  v10 = [(CNUIUserActionItem *)self bundleIdentifier];
-  v11 = [v3 appendObject:v10 withName:@"bundleIdentifier"];
+  bundleIdentifier = [(CNUIUserActionItem *)self bundleIdentifier];
+  v11 = [v3 appendObject:bundleIdentifier withName:@"bundleIdentifier"];
 
   v12 = [(_CNUIUserActionURLItem *)self url];
   v13 = [v3 appendObject:v12 withName:@"url"];
@@ -29,32 +29,32 @@
   v14 = [v3 appendName:@"isSensitive" BOOLValue:{-[_CNUIUserActionURLItem isSensitive](self, "isSensitive")}];
   v15 = [v3 appendName:@"group" integerValue:{-[CNUIUserActionItem group](self, "group")}];
   v16 = [v3 appendName:@"options" unsignedInteger:{-[CNUIUserActionItem options](self, "options")}];
-  v17 = [v3 build];
+  build = [v3 build];
 
-  return v17;
+  return build;
 }
 
-- (_CNUIUserActionURLItem)initWithType:(id)a3 contactProperty:(id)a4 bundleIdentifier:(id)a5 url:(id)a6 isSensitive:(BOOL)a7 group:(int64_t)a8 options:(unint64_t)a9
+- (_CNUIUserActionURLItem)initWithType:(id)type contactProperty:(id)property bundleIdentifier:(id)identifier url:(id)url isSensitive:(BOOL)sensitive group:(int64_t)group options:(unint64_t)options
 {
-  v16 = a6;
+  urlCopy = url;
   v21.receiver = self;
   v21.super_class = _CNUIUserActionURLItem;
-  v17 = [(CNUIUserActionItem *)&v21 initWithType:a3 contactProperty:a4 bundleIdentifier:a5 group:a8 options:a9];
+  v17 = [(CNUIUserActionItem *)&v21 initWithType:type contactProperty:property bundleIdentifier:identifier group:group options:options];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_url, a6);
-    v18->_isSensitive = a7;
+    objc_storeStrong(&v17->_url, url);
+    v18->_isSensitive = sensitive;
     v19 = v18;
   }
 
   return v18;
 }
 
-- (id)performActionWithContext:(id)a3 shouldCurateIfPerformed:(BOOL)a4
+- (id)performActionWithContext:(id)context shouldCurateIfPerformed:(BOOL)performed
 {
-  v4 = a4;
-  v6 = a3;
+  performedCopy = performed;
+  contextCopy = context;
   v7 = [(_CNUIUserActionURLItem *)self url];
   v8 = v7;
   if (v7)
@@ -73,27 +73,27 @@
   v18[1] = 3221225472;
   v18[2] = __75___CNUIUserActionURLItem_performActionWithContext_shouldCurateIfPerformed___block_invoke;
   v18[3] = &unk_1E76E8390;
-  v12 = v6;
+  v12 = contextCopy;
   v19 = v12;
-  v20 = self;
+  selfCopy = self;
   v13 = [v9 flatMap:v18];
-  if (v4)
+  if (performedCopy)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __75___CNUIUserActionURLItem_performActionWithContext_shouldCurateIfPerformed___block_invoke_3;
     v15[3] = &unk_1E76E83B8;
     v16 = v12;
-    v17 = self;
+    selfCopy2 = self;
     [v13 addSuccessBlock:v15];
   }
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v6 = objc_opt_class();
   v24[0] = MEMORY[0x1E69E9820];
@@ -101,7 +101,7 @@
   v24[2] = __34___CNUIUserActionURLItem_isEqual___block_invoke;
   v24[3] = &unk_1E76E7A88;
   v24[4] = self;
-  v25 = v4;
+  v25 = equalCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __34___CNUIUserActionURLItem_isEqual___block_invoke_2;
@@ -122,11 +122,11 @@
   v15 = 3221225472;
   v16 = __34___CNUIUserActionURLItem_isEqual___block_invoke_4;
   v17 = &unk_1E76E7A88;
-  v18 = self;
+  selfCopy = self;
   v19 = v9;
   v11 = v9;
   v12 = _Block_copy(&v14);
-  LOBYTE(self) = [v5 isObject:v11 kindOfClass:v6 andEqualToObject:self withBlocks:{v24, v8, v10, v12, 0, v14, v15, v16, v17, v18}];
+  LOBYTE(self) = [v5 isObject:v11 kindOfClass:v6 andEqualToObject:self withBlocks:{v24, v8, v10, v12, 0, v14, v15, v16, v17, selfCopy}];
 
   return self;
 }

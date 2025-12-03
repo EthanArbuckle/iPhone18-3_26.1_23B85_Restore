@@ -11,7 +11,7 @@
 
 - (double)vcp_startTime
 {
-  [a1 timeRange];
+  [self timeRange];
   result = *&v4;
   *a2 = v4;
   *(a2 + 16) = v5;
@@ -20,10 +20,10 @@
 
 - (uint64_t)vcp_orientation
 {
-  [a1 naturalSize];
+  [self naturalSize];
   v3 = v2;
   v5 = v4;
-  [a1 preferredTransform];
+  [self preferredTransform];
   v6 = orientationForTransform(&v9) - 1;
   if (v3 < v5)
   {
@@ -51,7 +51,7 @@
 
 - (uint64_t)vcp_imageOrientation
 {
-  [a1 preferredTransform];
+  [self preferredTransform];
   v1 = angleForTransform(v4);
   switch(v1)
   {
@@ -76,10 +76,10 @@
 
 - (double)vcp_fullFrameSize
 {
-  v1 = [a1 formatDescriptions];
-  if ([v1 count])
+  formatDescriptions = [self formatDescriptions];
+  if ([formatDescriptions count])
   {
-    v2 = [v1 objectAtIndexedSubscript:0];
+    v2 = [formatDescriptions objectAtIndexedSubscript:0];
 
     *&v3 = *&CMVideoFormatDescriptionGetPresentationDimensions(v2, 0, 0);
   }
@@ -94,10 +94,10 @@
 
 - (double)vcp_cleanApertureRect
 {
-  v1 = [a1 formatDescriptions];
-  if ([v1 count])
+  formatDescriptions = [self formatDescriptions];
+  if ([formatDescriptions count])
   {
-    v2 = [v1 objectAtIndexedSubscript:0];
+    v2 = [formatDescriptions objectAtIndexedSubscript:0];
 
     *&v3 = CMVideoFormatDescriptionGetCleanAperture(v2, 1u);
   }
@@ -116,11 +116,11 @@
   *&range1.start.value = *a3;
   *&range1.start.epoch = v5;
   *&range1.duration.timescale = *(a3 + 32);
-  [a1 timeRange];
+  [self timeRange];
   if (CMTimeRangeEqual(&range1, &range2))
   {
-    v6 = [a1 makeSampleCursorAtFirstSampleInDecodeOrder];
-    v7 = [v6 stepInPresentationOrderByCount:0x7FFFFFFFFFFFFFFFLL] + 1;
+    makeSampleCursorAtFirstSampleInDecodeOrder = [self makeSampleCursorAtFirstSampleInDecodeOrder];
+    v7 = [makeSampleCursorAtFirstSampleInDecodeOrder stepInPresentationOrderByCount:0x7FFFFFFFFFFFFFFFLL] + 1;
   }
 
   else
@@ -133,13 +133,13 @@
     CMTimeRangeGetEnd(&v12, &range1);
     *&range1.start.value = *a3;
     range1.start.epoch = *(a3 + 16);
-    v6 = [a1 makeSampleCursorWithPresentationTimeStamp:&range1];
+    makeSampleCursorAtFirstSampleInDecodeOrder = [self makeSampleCursorWithPresentationTimeStamp:&range1];
     v7 = 0;
     do
     {
-      if (v6)
+      if (makeSampleCursorAtFirstSampleInDecodeOrder)
       {
-        [v6 presentationTimeStamp];
+        [makeSampleCursorAtFirstSampleInDecodeOrder presentationTimeStamp];
       }
 
       else
@@ -159,7 +159,7 @@
       ++v7;
     }
 
-    while ([v6 stepInPresentationOrderByCount:1] >= 1);
+    while ([makeSampleCursorAtFirstSampleInDecodeOrder stepInPresentationOrderByCount:1] >= 1);
   }
 
   return v7;

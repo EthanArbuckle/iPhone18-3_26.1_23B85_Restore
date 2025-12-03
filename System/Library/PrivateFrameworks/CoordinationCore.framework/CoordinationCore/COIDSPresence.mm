@@ -1,39 +1,39 @@
 @interface COIDSPresence
-+ (id)presenceForMesh:(id)a3;
-- (COIDSPresence)initWithPresenceProvider:(id)a3;
++ (id)presenceForMesh:(id)mesh;
+- (COIDSPresence)initWithPresenceProvider:(id)provider;
 - (NSString)identifier;
-- (id)_recordForDevice:(id)a3;
-- (void)_informObserver:(id)a3 aboutRecord:(id)a4 added:(BOOL)a5;
-- (void)_retrainSubscriptionWithRetryCounter:(unint64_t)a3;
+- (id)_recordForDevice:(id)device;
+- (void)_informObserver:(id)observer aboutRecord:(id)record added:(BOOL)added;
+- (void)_retrainSubscriptionWithRetryCounter:(unint64_t)counter;
 - (void)_start;
 - (void)_synchronizeInitiate;
-- (void)_synchronizePresence:(BOOL)a3;
-- (void)_usersChangedInHome:(id)a3;
-- (void)_usersChangedInHomeNotification:(id)a3;
-- (void)addObserver:(id)a3 queue:(id)a4;
-- (void)presentDevicesChangedForPresence:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setRetryTimer:(id)a3;
+- (void)_synchronizePresence:(BOOL)presence;
+- (void)_usersChangedInHome:(id)home;
+- (void)_usersChangedInHomeNotification:(id)notification;
+- (void)addObserver:(id)observer queue:(id)queue;
+- (void)presentDevicesChangedForPresence:(id)presence;
+- (void)removeObserver:(id)observer;
+- (void)setRetryTimer:(id)timer;
 @end
 
 @implementation COIDSPresence
 
-+ (id)presenceForMesh:(id)a3
++ (id)presenceForMesh:(id)mesh
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  meshCopy = mesh;
   os_unfair_lock_lock(&presenceForMesh__lock);
   v4 = presenceForMesh__registries;
   if (!presenceForMesh__registries)
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v6 = presenceForMesh__registries;
-    presenceForMesh__registries = v5;
+    presenceForMesh__registries = dictionary;
 
     v4 = presenceForMesh__registries;
   }
 
-  v7 = [v4 objectForKey:v3];
+  v7 = [v4 objectForKey:meshCopy];
   if (!v7)
   {
     v8 = [COIDSPresence alloc];
@@ -41,7 +41,7 @@
     v13[1] = 3221225472;
     v13[2] = __33__COIDSPresence_presenceForMesh___block_invoke;
     v13[3] = &unk_278E16970;
-    v9 = v3;
+    v9 = meshCopy;
     v14 = v9;
     v7 = [(COIDSPresence *)v8 initWithPresenceProvider:v13];
     [presenceForMesh__registries setObject:v7 forKey:v9];
@@ -53,7 +53,7 @@
     *buf = 138543618;
     v16 = v7;
     v17 = 2114;
-    v18 = v3;
+    v18 = meshCopy;
     _os_log_impl(&dword_244378000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ returned for mesh %{public}@", buf, 0x16u);
   }
 
@@ -77,9 +77,9 @@ id __33__COIDSPresence_presenceForMesh___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (COIDSPresence)initWithPresenceProvider:(id)a3
+- (COIDSPresence)initWithPresenceProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v20.receiver = self;
   v20.super_class = COIDSPresence;
   v5 = [(COIDSPresence *)&v20 init];
@@ -94,20 +94,20 @@ id __33__COIDSPresence_presenceForMesh___block_invoke(uint64_t a1)
     workQueue = v5->_workQueue;
     v5->_workQueue = v9;
 
-    v11 = v4[2](v4);
+    v11 = providerCopy[2](providerCopy);
     presenceChannel = v5->_presenceChannel;
     v5->_presenceChannel = v11;
 
-    v13 = [MEMORY[0x277CBEB38] dictionary];
-    v14 = [(SKPresence *)v5->_presenceChannel co_IDSIdentifier];
-    [v13 setObject:v14 forKey:@"ids"];
-    v15 = [objc_alloc(MEMORY[0x277D68110]) initWithDictionary:v13];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    co_IDSIdentifier = [(SKPresence *)v5->_presenceChannel co_IDSIdentifier];
+    [dictionary setObject:co_IDSIdentifier forKey:@"ids"];
+    v15 = [objc_alloc(MEMORY[0x277D68110]) initWithDictionary:dictionary];
     presencePayload = v5->_presencePayload;
     v5->_presencePayload = v15;
 
-    v17 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     observers = v5->_observers;
-    v5->_observers = v17;
+    v5->_observers = weakToStrongObjectsMapTable;
 
     [(COIDSPresence *)v5 _start];
   }
@@ -117,27 +117,27 @@ id __33__COIDSPresence_presenceForMesh___block_invoke(uint64_t a1)
 
 - (NSString)identifier
 {
-  v2 = [(COIDSPresence *)self presenceChannel];
-  v3 = [v2 presenceIdentifier];
+  presenceChannel = [(COIDSPresence *)self presenceChannel];
+  presenceIdentifier = [presenceChannel presenceIdentifier];
 
-  return v3;
+  return presenceIdentifier;
 }
 
-- (void)addObserver:(id)a3 queue:(id)a4
+- (void)addObserver:(id)observer queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COIDSPresence *)self workQueue];
+  observerCopy = observer;
+  queueCopy = queue;
+  workQueue = [(COIDSPresence *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__COIDSPresence_addObserver_queue___block_invoke;
   block[3] = &unk_278E15728;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = queueCopy;
+  v13 = observerCopy;
+  v9 = observerCopy;
+  v10 = queueCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __35__COIDSPresence_addObserver_queue___block_invoke(uint64_t a1)
@@ -205,18 +205,18 @@ void __35__COIDSPresence_addObserver_queue___block_invoke(uint64_t a1)
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(COIDSPresence *)self workQueue];
+  observerCopy = observer;
+  workQueue = [(COIDSPresence *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__COIDSPresence_removeObserver___block_invoke;
   v7[3] = &unk_278E156B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __32__COIDSPresence_removeObserver___block_invoke(uint64_t a1)
@@ -254,21 +254,21 @@ void __32__COIDSPresence_removeObserver___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setRetryTimer:(id)a3
+- (void)setRetryTimer:(id)timer
 {
-  v5 = a3;
+  timerCopy = timer;
   retryTimer = self->_retryTimer;
   p_retryTimer = &self->_retryTimer;
   v6 = retryTimer;
-  v9 = v5;
-  if (retryTimer != v5)
+  v9 = timerCopy;
+  if (retryTimer != timerCopy)
   {
     if (v6)
     {
       dispatch_source_cancel(v6);
     }
 
-    objc_storeStrong(p_retryTimer, a3);
+    objc_storeStrong(p_retryTimer, timer);
     if (*p_retryTimer)
     {
       dispatch_resume(*p_retryTimer);
@@ -285,51 +285,51 @@ void __32__COIDSPresence_removeObserver___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138543362;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_244378000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Registered notification for home user changes", &v14, 0xCu);
     }
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:self selector:sel__usersChangedInHomeNotification_ name:@"COHomeKitAdapterUsersChangedInHome" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__usersChangedInHomeNotification_ name:@"COHomeKitAdapterUsersChangedInHome" object:0];
 
     v5 = +[COHomeKitAdapter sharedInstance];
-    v6 = [v5 currentAccessory];
-    v7 = [v6 home];
-    [(COIDSPresence *)self _usersChangedInHome:v7];
+    currentAccessory = [v5 currentAccessory];
+    home = [currentAccessory home];
+    [(COIDSPresence *)self _usersChangedInHome:home];
   }
 
   v8 = COCoreLogForCategory(14);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(COIDSPresence *)self presenceChannel];
-    v10 = [v9 co_IDSIdentifier];
+    presenceChannel = [(COIDSPresence *)self presenceChannel];
+    co_IDSIdentifier = [presenceChannel co_IDSIdentifier];
     v14 = 138543618;
-    v15 = self;
+    selfCopy2 = self;
     v16 = 2114;
-    v17 = v10;
+    v17 = co_IDSIdentifier;
     _os_log_impl(&dword_244378000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ local IDS Identifier: %{public}@", &v14, 0x16u);
   }
 
-  v11 = [(COIDSPresence *)self presenceChannel];
-  v12 = [(COIDSPresence *)self workQueue];
-  [v11 addDelegate:self queue:v12];
+  presenceChannel2 = [(COIDSPresence *)self presenceChannel];
+  workQueue = [(COIDSPresence *)self workQueue];
+  [presenceChannel2 addDelegate:self queue:workQueue];
 
   [(COIDSPresence *)self _retrainSubscriptionWithRetryCounter:1];
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_recordForDevice:(id)a3
+- (id)_recordForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 presencePayload];
-  v5 = [v4 payloadDictionary];
+  deviceCopy = device;
+  presencePayload = [deviceCopy presencePayload];
+  payloadDictionary = [presencePayload payloadDictionary];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v3 deviceTokenURI];
-    v7 = [v5 objectForKey:@"ids"];
-    v8 = [[COIDSDiscoveryRecord alloc] initWithIdsIdentifier:v7 deviceTokenURI:v6];
+    deviceTokenURI = [deviceCopy deviceTokenURI];
+    v7 = [payloadDictionary objectForKey:@"ids"];
+    v8 = [[COIDSDiscoveryRecord alloc] initWithIdsIdentifier:v7 deviceTokenURI:deviceTokenURI];
   }
 
   else
@@ -346,25 +346,25 @@ void __32__COIDSPresence_removeObserver___block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)_informObserver:(id)a3 aboutRecord:(id)a4 added:(BOOL)a5
+- (void)_informObserver:(id)observer aboutRecord:(id)record added:(BOOL)added
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(COIDSPresence *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  observerCopy = observer;
+  recordCopy = record;
+  workQueue = [(COIDSPresence *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(COIDSPresence *)self observers];
-    v12 = [v11 objectForKey:v8];
+    observers = [(COIDSPresence *)self observers];
+    v12 = [observers objectForKey:observerCopy];
 
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __51__COIDSPresence__informObserver_aboutRecord_added___block_invoke;
     block[3] = &unk_278E16998;
-    v16 = a5;
-    v14 = v8;
-    v15 = v9;
+    addedCopy = added;
+    v14 = observerCopy;
+    v15 = recordCopy;
     dispatch_async(v12, block);
   }
 }
@@ -385,7 +385,7 @@ uint64_t __51__COIDSPresence__informObserver_aboutRecord_added___block_invoke(ui
   }
 }
 
-- (void)_retrainSubscriptionWithRetryCounter:(unint64_t)a3
+- (void)_retrainSubscriptionWithRetryCounter:(unint64_t)counter
 {
   objc_initWeak(&location, self);
   v15[0] = MEMORY[0x277D85DD0];
@@ -393,14 +393,14 @@ uint64_t __51__COIDSPresence__informObserver_aboutRecord_added___block_invoke(ui
   v15[2] = __54__COIDSPresence__retrainSubscriptionWithRetryCounter___block_invoke;
   v15[3] = &unk_278E169C0;
   objc_copyWeak(v16, &location);
-  v16[1] = a3;
+  v16[1] = counter;
   v5 = MEMORY[0x245D5FF10](v15);
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __54__COIDSPresence__retrainSubscriptionWithRetryCounter___block_invoke_2;
   v12 = &unk_278E169E8;
   objc_copyWeak(v14, &location);
-  v14[1] = a3;
+  v14[1] = counter;
   v6 = v5;
   v13 = v6;
   v7 = MEMORY[0x245D5FF10](&v9);
@@ -485,13 +485,13 @@ void __54__COIDSPresence__retrainSubscriptionWithRetryCounter___block_invoke_2(u
 - (void)_synchronizeInitiate
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(COIDSPresence *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(COIDSPresence *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if (![(COIDSPresence *)self retryAttempts])
   {
-    v4 = [(COIDSPresence *)self observers];
-    v5 = [v4 count];
+    observers = [(COIDSPresence *)self observers];
+    v5 = [observers count];
 
     v6 = COCoreLogForCategory(14);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -506,13 +506,13 @@ void __54__COIDSPresence__retrainSubscriptionWithRetryCounter___block_invoke_2(u
         v7 = "release";
       }
 
-      v8 = [(COIDSPresence *)self identifier];
+      identifier = [(COIDSPresence *)self identifier];
       v10 = 138543874;
-      v11 = self;
+      selfCopy = self;
       v12 = 2080;
       v13 = v7;
       v14 = 2114;
-      v15 = v8;
+      v15 = identifier;
       _os_log_impl(&dword_244378000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ synchronize initiated: target '%s', id: '%{public}@'", &v10, 0x20u);
     }
 
@@ -523,12 +523,12 @@ void __54__COIDSPresence__retrainSubscriptionWithRetryCounter___block_invoke_2(u
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_synchronizePresence:(BOOL)a3
+- (void)_synchronizePresence:(BOOL)presence
 {
-  v3 = a3;
+  presenceCopy = presence;
   v36 = *MEMORY[0x277D85DE8];
-  v5 = [(COIDSPresence *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  workQueue = [(COIDSPresence *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   objc_initWeak(&location, self);
   v27[0] = MEMORY[0x277D85DD0];
@@ -542,7 +542,7 @@ void __54__COIDSPresence__retrainSubscriptionWithRetryCounter___block_invoke_2(u
   v23[2] = __38__COIDSPresence__synchronizePresence___block_invoke_38;
   v23[3] = &unk_278E16A60;
   objc_copyWeak(&v25, &location);
-  v26 = v3;
+  v26 = presenceCopy;
   v23[4] = self;
   v7 = v6;
   v24 = v7;
@@ -561,8 +561,8 @@ void __54__COIDSPresence__retrainSubscriptionWithRetryCounter___block_invoke_2(u
   {
     v13 = "release";
     *buf = 138543874;
-    v31 = self;
-    if (v3)
+    selfCopy = self;
+    if (presenceCopy)
     {
       v13 = "assert";
     }
@@ -574,17 +574,17 @@ void __54__COIDSPresence__retrainSubscriptionWithRetryCounter___block_invoke_2(u
     _os_log_impl(&dword_244378000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ synchronize attempt: %llu, target '%s'", buf, 0x20u);
   }
 
-  if (v3)
+  if (presenceCopy)
   {
-    v14 = [(COIDSPresence *)self presencePayload];
-    v15 = [(COIDSPresence *)self presenceChannel];
-    [v15 assertPresenceWithPresencePayload:v14 completion:v10];
+    presencePayload = [(COIDSPresence *)self presencePayload];
+    presenceChannel = [(COIDSPresence *)self presenceChannel];
+    [presenceChannel assertPresenceWithPresencePayload:presencePayload completion:v10];
   }
 
   else
   {
-    v14 = [(COIDSPresence *)self presenceChannel];
-    [v14 releasePresenceWithCompletion:v10];
+    presencePayload = [(COIDSPresence *)self presenceChannel];
+    [presencePayload releasePresenceWithCompletion:v10];
   }
 
   objc_destroyWeak(&v22);
@@ -850,17 +850,17 @@ void __38__COIDSPresence__synchronizePresence___block_invoke_2(uint64_t a1, void
   }
 }
 
-- (void)_usersChangedInHome:(id)a3
+- (void)_usersChangedInHome:(id)home
 {
   v48 = *MEMORY[0x277D85DE8];
-  v27 = a3;
-  v4 = [v27 users];
+  homeCopy = home;
+  users = [homeCopy users];
   v5 = [MEMORY[0x277CBEB58] set];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v6 = v4;
+  v6 = users;
   v7 = [v6 countByEnumeratingWithState:&v34 objects:v47 count:16];
   if (v7)
   {
@@ -876,8 +876,8 @@ void __38__COIDSPresence__synchronizePresence___block_invoke_2(uint64_t a1, void
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v34 + 1) + 8 * v10) userID];
-        [v5 addObject:v11];
+        userID = [*(*(&v34 + 1) + 8 * v10) userID];
+        [v5 addObject:userID];
 
         ++v10;
       }
@@ -889,15 +889,15 @@ void __38__COIDSPresence__synchronizePresence___block_invoke_2(uint64_t a1, void
     while (v8);
   }
 
-  v12 = [(COIDSPresence *)self presenceChannel];
-  v13 = [v12 invitedHandles];
+  presenceChannel = [(COIDSPresence *)self presenceChannel];
+  invitedHandles = [presenceChannel invitedHandles];
 
   v14 = [MEMORY[0x277CBEB58] set];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v15 = v13;
+  v15 = invitedHandles;
   v16 = [v15 countByEnumeratingWithState:&v30 objects:v46 count:16];
   if (v16)
   {
@@ -913,8 +913,8 @@ void __38__COIDSPresence__synchronizePresence___block_invoke_2(uint64_t a1, void
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v30 + 1) + 8 * v19) handleString];
-        [v14 addObject:v20];
+        handleString = [*(*(&v30 + 1) + 8 * v19) handleString];
+        [v14 addObject:handleString];
 
         ++v19;
       }
@@ -933,12 +933,12 @@ void __38__COIDSPresence__synchronizePresence___block_invoke_2(uint64_t a1, void
   v23 = COCoreLogForCategory(14);
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = [v27 uniqueIdentifier];
+    uniqueIdentifier = [homeCopy uniqueIdentifier];
     v25 = [v5 count];
     *buf = 138544130;
-    v39 = self;
+    selfCopy = self;
     v40 = 2114;
-    v41 = v24;
+    v41 = uniqueIdentifier;
     v42 = 2048;
     v43 = v25;
     v44 = 2112;
@@ -1071,19 +1071,19 @@ void __37__COIDSPresence__usersChangedInHome___block_invoke_44(uint64_t a1, uint
   }
 }
 
-- (void)_usersChangedInHomeNotification:(id)a3
+- (void)_usersChangedInHomeNotification:(id)notification
 {
-  v4 = [a3 object];
+  object = [notification object];
   v5 = COCoreLogForCategory(14);
   v6 = v5;
-  if (v4)
+  if (object)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       [COIDSPresence _usersChangedInHomeNotification:];
     }
 
-    [(COIDSPresence *)self _usersChangedInHome:v4];
+    [(COIDSPresence *)self _usersChangedInHome:object];
   }
 
   else
@@ -1095,21 +1095,21 @@ void __37__COIDSPresence__usersChangedInHome___block_invoke_44(uint64_t a1, uint
   }
 }
 
-- (void)presentDevicesChangedForPresence:(id)a3
+- (void)presentDevicesChangedForPresence:(id)presence
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(COIDSPresence *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  presenceCopy = presence;
+  workQueue = [(COIDSPresence *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = COCoreLogForCategory(14);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(COIDSPresence *)self identifier];
+    identifier = [(COIDSPresence *)self identifier];
     *buf = 138543618;
-    v35 = self;
+    selfCopy = self;
     v36 = 2114;
-    v37 = v7;
+    v37 = identifier;
     _os_log_impl(&dword_244378000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ present devices changed for '%{public}@'", buf, 0x16u);
   }
 
@@ -1118,8 +1118,8 @@ void __37__COIDSPresence__usersChangedInHome___block_invoke_44(uint64_t a1, uint
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v9 = [v4 presentDevices];
-  v10 = [v9 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  presentDevices = [presenceCopy presentDevices];
+  v10 = [presentDevices countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1130,15 +1130,15 @@ void __37__COIDSPresence__usersChangedInHome___block_invoke_44(uint64_t a1, uint
       {
         if (*v29 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(presentDevices);
         }
 
         v14 = *(*(&v28 + 1) + 8 * i);
         if (([v14 isSelfDevice] & 1) == 0)
         {
           [v8 addObject:v14];
-          v15 = [(COIDSPresence *)self devices];
-          v16 = [v15 containsObject:v14];
+          devices = [(COIDSPresence *)self devices];
+          v16 = [devices containsObject:v14];
 
           if ((v16 & 1) == 0)
           {
@@ -1147,7 +1147,7 @@ void __37__COIDSPresence__usersChangedInHome___block_invoke_44(uint64_t a1, uint
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v11 = [presentDevices countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v11);
@@ -1157,8 +1157,8 @@ void __37__COIDSPresence__usersChangedInHome___block_invoke_44(uint64_t a1, uint
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v17 = [(COIDSPresence *)self devices];
-  v18 = [v17 countByEnumeratingWithState:&v24 objects:v32 count:16];
+  devices2 = [(COIDSPresence *)self devices];
+  v18 = [devices2 countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v18)
   {
     v19 = v18;
@@ -1169,7 +1169,7 @@ void __37__COIDSPresence__usersChangedInHome___block_invoke_44(uint64_t a1, uint
       {
         if (*v25 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(devices2);
         }
 
         v22 = *(*(&v24 + 1) + 8 * j);
@@ -1179,7 +1179,7 @@ void __37__COIDSPresence__usersChangedInHome___block_invoke_44(uint64_t a1, uint
         }
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      v19 = [devices2 countByEnumeratingWithState:&v24 objects:v32 count:16];
     }
 
     while (v19);

@@ -1,16 +1,16 @@
 @interface NNMKURLRequest
 + (id)_buildNumber;
 + (id)_hardwareModel;
-+ (id)_methodNameForType:(unint64_t)a3;
++ (id)_methodNameForType:(unint64_t)type;
 + (id)_osName;
 + (id)_osVersion;
 + (id)_systemVersionDictionary;
 + (id)mailNotificationURL;
 + (id)serverFriendlyDescription;
-+ (void)_formBodyRequestWithBaseURLString:(id)a3 path:(id)a4 body:(id)a5 method:(id)a6 token:(id)a7 errorParser:(id)a8 completion:(id)a9;
-+ (void)_getRequestWithBaseURLString:(id)a3 path:(id)a4 params:(id)a5 token:(id)a6 errorParser:(id)a7 completion:(id)a8;
-+ (void)_handleRequest:(id)a3 errorParser:(id)a4 completion:(id)a5;
-+ (void)_jsonBodyRequestWithBaseURLString:(id)a3 path:(id)a4 body:(id)a5 method:(id)a6 token:(id)a7 needsBAA:(BOOL)a8 errorParser:(id)a9 completion:(id)a10;
++ (void)_formBodyRequestWithBaseURLString:(id)string path:(id)path body:(id)body method:(id)method token:(id)token errorParser:(id)parser completion:(id)completion;
++ (void)_getRequestWithBaseURLString:(id)string path:(id)path params:(id)params token:(id)token errorParser:(id)parser completion:(id)completion;
++ (void)_handleRequest:(id)request errorParser:(id)parser completion:(id)completion;
++ (void)_jsonBodyRequestWithBaseURLString:(id)string path:(id)path body:(id)body method:(id)method token:(id)token needsBAA:(BOOL)a errorParser:(id)parser completion:(id)self0;
 @end
 
 @implementation NNMKURLRequest
@@ -26,28 +26,28 @@
   return v2;
 }
 
-+ (void)_getRequestWithBaseURLString:(id)a3 path:(id)a4 params:(id)a5 token:(id)a6 errorParser:(id)a7 completion:(id)a8
++ (void)_getRequestWithBaseURLString:(id)string path:(id)path params:(id)params token:(id)token errorParser:(id)parser completion:(id)completion
 {
-  v14 = a5;
-  v15 = a6;
+  paramsCopy = params;
+  tokenCopy = token;
   v16 = MEMORY[0x277CCACE0];
-  v17 = a8;
-  v18 = a7;
-  v19 = a4;
-  v20 = a3;
-  v21 = [[v16 alloc] initWithString:v20];
+  completionCopy = completion;
+  parserCopy = parser;
+  pathCopy = path;
+  stringCopy = string;
+  v21 = [[v16 alloc] initWithString:stringCopy];
 
-  [v21 setPath:v19];
-  if ([v14 count])
+  [v21 setPath:pathCopy];
+  if ([paramsCopy count])
   {
-    v22 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v14, "count")}];
+    v22 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(paramsCopy, "count")}];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __88__NNMKURLRequest__getRequestWithBaseURLString_path_params_token_errorParser_completion___block_invoke;
     v28[3] = &unk_279935D70;
     v29 = v22;
     v23 = v22;
-    [v14 enumerateKeysAndObjectsUsingBlock:v28];
+    [paramsCopy enumerateKeysAndObjectsUsingBlock:v28];
     [v21 setQueryItems:v23];
   }
 
@@ -55,14 +55,14 @@
   v25 = [v21 URL];
   v26 = [v24 requestWithURL:v25];
 
-  if (v15)
+  if (tokenCopy)
   {
-    v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bearer %@", v15];
-    [v26 addValue:v27 forHTTPHeaderField:@"Authorization"];
+    tokenCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Bearer %@", tokenCopy];
+    [v26 addValue:tokenCopy forHTTPHeaderField:@"Authorization"];
   }
 
   [v26 setHTTPMethod:@"GET"];
-  [a1 _handleRequest:v26 errorParser:v18 completion:v17];
+  [self _handleRequest:v26 errorParser:parserCopy completion:completionCopy];
 }
 
 void __88__NNMKURLRequest__getRequestWithBaseURLString_path_params_token_errorParser_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -76,21 +76,21 @@ void __88__NNMKURLRequest__getRequestWithBaseURLString_path_params_token_errorPa
   [v4 addObject:v8];
 }
 
-+ (void)_jsonBodyRequestWithBaseURLString:(id)a3 path:(id)a4 body:(id)a5 method:(id)a6 token:(id)a7 needsBAA:(BOOL)a8 errorParser:(id)a9 completion:(id)a10
++ (void)_jsonBodyRequestWithBaseURLString:(id)string path:(id)path body:(id)body method:(id)method token:(id)token needsBAA:(BOOL)a errorParser:(id)parser completion:(id)self0
 {
-  v10 = a8;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v33 = a9;
-  v18 = a10;
+  aCopy = a;
+  pathCopy = path;
+  bodyCopy = body;
+  tokenCopy = token;
+  parserCopy = parser;
+  completionCopy = completion;
   v19 = MEMORY[0x277CBEBC0];
-  v20 = a6;
-  v21 = [v19 URLWithString:a3];
+  methodCopy = method;
+  v21 = [v19 URLWithString:string];
   v22 = v21;
-  if (v15)
+  if (pathCopy)
   {
-    v23 = [v21 URLByAppendingPathComponent:v15];
+    v23 = [v21 URLByAppendingPathComponent:pathCopy];
   }
 
   else
@@ -100,24 +100,24 @@ void __88__NNMKURLRequest__getRequestWithBaseURLString_path_params_token_errorPa
 
   v24 = v23;
   v25 = [MEMORY[0x277CCAB70] requestWithURL:v23];
-  if (v17)
+  if (tokenCopy)
   {
-    v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bearer %@", v17];
-    [v25 addValue:v26 forHTTPHeaderField:@"Authorization"];
+    tokenCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Bearer %@", tokenCopy];
+    [v25 addValue:tokenCopy forHTTPHeaderField:@"Authorization"];
   }
 
   [v25 addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  [v25 setHTTPMethod:v20];
+  [v25 setHTTPMethod:methodCopy];
 
-  if (v10)
+  if (aCopy)
   {
     v27 = +[NNMKURLRequest serverFriendlyDescription];
     [v25 addValue:v27 forHTTPHeaderField:@"X-MMe-Client-Info"];
   }
 
-  if (v16)
+  if (bodyCopy)
   {
-    v28 = v16;
+    v28 = bodyCopy;
   }
 
   else
@@ -131,28 +131,28 @@ void __88__NNMKURLRequest__getRequestWithBaseURLString_path_params_token_errorPa
   [v25 setHTTPBody:v29];
   if (v30)
   {
-    v18[2](v18, 0, v30);
-    v31 = v33;
+    completionCopy[2](completionCopy, 0, v30);
+    v31 = parserCopy;
   }
 
-  else if (v10)
+  else if (aCopy)
   {
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __107__NNMKURLRequest__jsonBodyRequestWithBaseURLString_path_body_method_token_needsBAA_errorParser_completion___block_invoke;
     v34[3] = &unk_279935D98;
-    v36 = v18;
+    v36 = completionCopy;
     v35 = v25;
-    v31 = v33;
-    v38 = a1;
-    v37 = v33;
+    v31 = parserCopy;
+    selfCopy = self;
+    v37 = parserCopy;
     [NNMKBAAManager appleAuthHeaderFrom:v29 completion:v34];
   }
 
   else
   {
-    v31 = v33;
-    [a1 _handleRequest:v25 errorParser:v33 completion:v18];
+    v31 = parserCopy;
+    [self _handleRequest:v25 errorParser:parserCopy completion:completionCopy];
   }
 }
 
@@ -178,21 +178,21 @@ uint64_t __107__NNMKURLRequest__jsonBodyRequestWithBaseURLString_path_body_metho
   }
 }
 
-+ (void)_formBodyRequestWithBaseURLString:(id)a3 path:(id)a4 body:(id)a5 method:(id)a6 token:(id)a7 errorParser:(id)a8 completion:(id)a9
++ (void)_formBodyRequestWithBaseURLString:(id)string path:(id)path body:(id)body method:(id)method token:(id)token errorParser:(id)parser completion:(id)completion
 {
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  pathCopy = path;
+  methodCopy = method;
+  tokenCopy = token;
   v17 = MEMORY[0x277CBEBC0];
-  v32 = a9;
-  v18 = a8;
-  v19 = a5;
-  v20 = [v17 URLWithString:a3];
+  completionCopy = completion;
+  parserCopy = parser;
+  bodyCopy = body;
+  v20 = [v17 URLWithString:string];
   v21 = v20;
-  v34 = v14;
-  if (v14)
+  v34 = pathCopy;
+  if (pathCopy)
   {
-    v22 = [v20 URLByAppendingPathComponent:v14];
+    v22 = [v20 URLByAppendingPathComponent:pathCopy];
   }
 
   else
@@ -202,13 +202,13 @@ uint64_t __107__NNMKURLRequest__jsonBodyRequestWithBaseURLString_path_body_metho
 
   v23 = v22;
   v24 = [MEMORY[0x277CCAB70] requestWithURL:v22];
-  if (v16)
+  if (tokenCopy)
   {
-    v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bearer %@", v16];
-    [v24 addValue:v25 forHTTPHeaderField:@"Authorization"];
+    tokenCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Bearer %@", tokenCopy];
+    [v24 addValue:tokenCopy forHTTPHeaderField:@"Authorization"];
   }
 
-  [v24 setHTTPMethod:v15];
+  [v24 setHTTPMethod:methodCopy];
   v26 = objc_opt_new();
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
@@ -216,17 +216,17 @@ uint64_t __107__NNMKURLRequest__jsonBodyRequestWithBaseURLString_path_body_metho
   v35[3] = &unk_279935DC0;
   v36 = v26;
   v27 = v26;
-  [v19 enumerateKeysAndObjectsUsingBlock:v35];
+  [bodyCopy enumerateKeysAndObjectsUsingBlock:v35];
 
   v28 = [v27 dataUsingEncoding:1];
   [v24 setHTTPBody:v28];
   [v24 addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-  v29 = v15;
+  v29 = methodCopy;
   v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v28, "length")}];
-  v31 = [v30 stringValue];
-  [v24 setValue:v31 forHTTPHeaderField:@"Content-Length"];
+  stringValue = [v30 stringValue];
+  [v24 setValue:stringValue forHTTPHeaderField:@"Content-Length"];
 
-  [a1 _handleRequest:v24 errorParser:v18 completion:v32];
+  [self _handleRequest:v24 errorParser:parserCopy completion:completionCopy];
 }
 
 void __98__NNMKURLRequest__formBodyRequestWithBaseURLString_path_body_method_token_errorParser_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -247,23 +247,23 @@ void __98__NNMKURLRequest__formBodyRequestWithBaseURLString_path_body_method_tok
   [*(a1 + 32) appendFormat:v7, v8, v6];
 }
 
-+ (void)_handleRequest:(id)a3 errorParser:(id)a4 completion:(id)a5
++ (void)_handleRequest:(id)request errorParser:(id)parser completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CCAD30] sharedSession];
+  requestCopy = request;
+  parserCopy = parser;
+  completionCopy = completion;
+  mEMORY[0x277CCAD30] = [MEMORY[0x277CCAD30] sharedSession];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __56__NNMKURLRequest__handleRequest_errorParser_completion___block_invoke;
   v15[3] = &unk_279935DE8;
-  v16 = v7;
-  v17 = v9;
-  v18 = v8;
-  v11 = v8;
-  v12 = v9;
-  v13 = v7;
-  v14 = [v10 dataTaskWithRequest:v13 completionHandler:v15];
+  v16 = requestCopy;
+  v17 = completionCopy;
+  v18 = parserCopy;
+  v11 = parserCopy;
+  v12 = completionCopy;
+  v13 = requestCopy;
+  v14 = [mEMORY[0x277CCAD30] dataTaskWithRequest:v13 completionHandler:v15];
 
   [v14 resume];
 }
@@ -389,16 +389,16 @@ LABEL_24:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_methodNameForType:(unint64_t)a3
++ (id)_methodNameForType:(unint64_t)type
 {
-  if (a3 - 1 > 3)
+  if (type - 1 > 3)
   {
     return @"GET";
   }
 
   else
   {
-    return off_279935E28[a3 - 1];
+    return off_279935E28[type - 1];
   }
 }
 
@@ -408,7 +408,7 @@ LABEL_24:
   block[1] = 3221225472;
   block[2] = __43__NNMKURLRequest_serverFriendlyDescription__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (serverFriendlyDescription_onceToken != -1)
   {
     dispatch_once(&serverFriendlyDescription_onceToken, block);
@@ -514,8 +514,8 @@ uint64_t __42__NNMKURLRequest__systemVersionDictionary__block_invoke()
 
 + (id)_buildNumber
 {
-  v2 = [a1 _systemVersionDictionary];
-  v3 = [v2 objectForKey:*MEMORY[0x277CBEC70]];
+  _systemVersionDictionary = [self _systemVersionDictionary];
+  v3 = [_systemVersionDictionary objectForKey:*MEMORY[0x277CBEC70]];
 
   return v3;
 }

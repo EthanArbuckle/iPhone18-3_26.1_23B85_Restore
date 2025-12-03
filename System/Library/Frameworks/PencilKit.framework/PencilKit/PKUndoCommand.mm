@@ -1,46 +1,46 @@
 @interface PKUndoCommand
-- (PKUndoCommand)initWithDrawingUUID:(id)a3 actionName:(id)a4 changesVisibleStrokes:(BOOL)a5;
-- (id)applyToDrawingReturnInverted:(id)a3;
-- (void)registerWithUndoManager:(id)a3 target:(id)a4 selector:(SEL)a5;
+- (PKUndoCommand)initWithDrawingUUID:(id)d actionName:(id)name changesVisibleStrokes:(BOOL)strokes;
+- (id)applyToDrawingReturnInverted:(id)inverted;
+- (void)registerWithUndoManager:(id)manager target:(id)target selector:(SEL)selector;
 @end
 
 @implementation PKUndoCommand
 
-- (PKUndoCommand)initWithDrawingUUID:(id)a3 actionName:(id)a4 changesVisibleStrokes:(BOOL)a5
+- (PKUndoCommand)initWithDrawingUUID:(id)d actionName:(id)name changesVisibleStrokes:(BOOL)strokes
 {
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = PKUndoCommand;
   v11 = [(PKUndoCommand *)&v15 init];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [nameCopy copy];
     actionName = v11->_actionName;
     v11->_actionName = v12;
 
-    objc_storeStrong(&v11->_drawingUUID, a3);
-    v11->_changesVisibleStrokes = a5;
+    objc_storeStrong(&v11->_drawingUUID, d);
+    v11->_changesVisibleStrokes = strokes;
   }
 
   return v11;
 }
 
-- (void)registerWithUndoManager:(id)a3 target:(id)a4 selector:(SEL)a5
+- (void)registerWithUndoManager:(id)manager target:(id)target selector:(SEL)selector
 {
-  v8 = a4;
-  v10 = a3;
-  v9 = [(PKUndoCommand *)self actionName];
-  [v10 setActionName:v9];
+  targetCopy = target;
+  managerCopy = manager;
+  actionName = [(PKUndoCommand *)self actionName];
+  [managerCopy setActionName:actionName];
 
-  [v10 registerUndoWithTarget:v8 selector:a5 object:self];
+  [managerCopy registerUndoWithTarget:targetCopy selector:selector object:self];
 }
 
-- (id)applyToDrawingReturnInverted:(id)a3
+- (id)applyToDrawingReturnInverted:(id)inverted
 {
-  v4 = a3;
-  v5 = [(PKUndoCommand *)self invertedInDrawing:v4];
-  [(PKUndoCommand *)self applyToDrawing:v4];
+  invertedCopy = inverted;
+  v5 = [(PKUndoCommand *)self invertedInDrawing:invertedCopy];
+  [(PKUndoCommand *)self applyToDrawing:invertedCopy];
 
   return v5;
 }

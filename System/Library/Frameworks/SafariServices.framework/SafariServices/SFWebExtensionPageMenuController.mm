@@ -1,55 +1,55 @@
 @interface SFWebExtensionPageMenuController
-+ (id)_imageViewForWarningTriangleImage:(id)a3;
-+ (id)badgeViewForText:(id)a3;
-- (BOOL)_showPerSitePermissionsForTab:(id)a3 permissionGrantedHandler:(id)a4;
-- (BOOL)shouldShowWarningTriangleImageForTab:(id)a3;
++ (id)_imageViewForWarningTriangleImage:(id)image;
++ (id)badgeViewForText:(id)text;
+- (BOOL)_showPerSitePermissionsForTab:(id)tab permissionGrantedHandler:(id)handler;
+- (BOOL)shouldShowWarningTriangleImageForTab:(id)tab;
 - (BOOL)showingExtensionPopup;
-- (BOOL)wantsGrayscaleIconForTab:(id)a3;
-- (BOOL)wantsTemplateIconForTab:(id)a3;
-- (SFWebExtensionPageMenuController)initWithExtension:(id)a3;
-- (id)activityForTab:(id)a3;
-- (id)alertItemForTab:(id)a3;
-- (id)iconForTab:(id)a3;
-- (id)iconForTab:(id)a3 size:(CGSize)a4;
+- (BOOL)wantsGrayscaleIconForTab:(id)tab;
+- (BOOL)wantsTemplateIconForTab:(id)tab;
+- (SFWebExtensionPageMenuController)initWithExtension:(id)extension;
+- (id)activityForTab:(id)tab;
+- (id)alertItemForTab:(id)tab;
+- (id)iconForTab:(id)tab;
+- (id)iconForTab:(id)tab size:(CGSize)size;
 - (void)dismissPopupImmediatelyIfNecessary;
-- (void)performActionForTab:(id)a3 parentViewController:(id)a4 popoverSourceInfo:(id)a5;
-- (void)showPopupOrPerSitePermissionsForTab:(id)a3 parentViewController:(id)a4 popoverSourceInfo:(id)a5;
-- (void)webKitExtensionAction:(id)a3 didChangeForTab:(id)a4;
+- (void)performActionForTab:(id)tab parentViewController:(id)controller popoverSourceInfo:(id)info;
+- (void)showPopupOrPerSitePermissionsForTab:(id)tab parentViewController:(id)controller popoverSourceInfo:(id)info;
+- (void)webKitExtensionAction:(id)action didChangeForTab:(id)tab;
 @end
 
 @implementation SFWebExtensionPageMenuController
 
-- (SFWebExtensionPageMenuController)initWithExtension:(id)a3
+- (SFWebExtensionPageMenuController)initWithExtension:(id)extension
 {
-  v4 = a3;
-  v5 = [v4 extensionsController];
+  extensionCopy = extension;
+  extensionsController = [extensionCopy extensionsController];
   v8.receiver = self;
   v8.super_class = SFWebExtensionPageMenuController;
-  v6 = [(WBSWebExtensionToolbarItem *)&v8 initWithWebExtension:v4 extensionsController:v5];
+  v6 = [(WBSWebExtensionToolbarItem *)&v8 initWithWebExtension:extensionCopy extensionsController:extensionsController];
 
   return v6;
 }
 
-- (id)iconForTab:(id)a3
+- (id)iconForTab:(id)tab
 {
-  v4 = a3;
-  v5 = [(WBSWebExtensionToolbarItem *)self webExtension];
-  v6 = [v5 extensionsController];
-  v7 = [v6 toolbarItemIdealPointSize];
+  tabCopy = tab;
+  webExtension = [(WBSWebExtensionToolbarItem *)self webExtension];
+  extensionsController = [webExtension extensionsController];
+  toolbarItemIdealPointSize = [extensionsController toolbarItemIdealPointSize];
 
-  v8 = [(SFWebExtensionPageMenuController *)self iconForTab:v4 size:v7, v7];
+  v8 = [(SFWebExtensionPageMenuController *)self iconForTab:tabCopy size:toolbarItemIdealPointSize, toolbarItemIdealPointSize];
 
   return v8;
 }
 
-- (BOOL)wantsGrayscaleIconForTab:(id)a3
+- (BOOL)wantsGrayscaleIconForTab:(id)tab
 {
-  v4 = a3;
-  if ([(WBSWebExtensionToolbarItem *)self isEnabledForTab:v4])
+  tabCopy = tab;
+  if ([(WBSWebExtensionToolbarItem *)self isEnabledForTab:tabCopy])
   {
-    v5 = [(WBSWebExtensionToolbarItem *)self webExtension];
-    v6 = [v4 urlForExtensions];
-    v7 = [v5 hasPermissionToAccessURL:v6 inTab:v4] ^ 1;
+    webExtension = [(WBSWebExtensionToolbarItem *)self webExtension];
+    urlForExtensions = [tabCopy urlForExtensions];
+    v7 = [webExtension hasPermissionToAccessURL:urlForExtensions inTab:tabCopy] ^ 1;
   }
 
   else
@@ -60,12 +60,12 @@
   return v7;
 }
 
-- (BOOL)wantsTemplateIconForTab:(id)a3
+- (BOOL)wantsTemplateIconForTab:(id)tab
 {
-  v4 = a3;
-  if ([(SFWebExtensionPageMenuController *)self wantsGrayscaleIconForTab:v4])
+  tabCopy = tab;
+  if ([(SFWebExtensionPageMenuController *)self wantsGrayscaleIconForTab:tabCopy])
   {
-    v5 = [(SFWebExtensionPageMenuController *)self iconForTab:v4];
+    v5 = [(SFWebExtensionPageMenuController *)self iconForTab:tabCopy];
     [v5 safari_computeAverageLuminance];
     v7 = (v6 < 0.1) & [v5 safari_transparencyAnalysisResultIsNotOpaque];
   }
@@ -78,20 +78,20 @@
   return v7;
 }
 
-- (id)iconForTab:(id)a3 size:(CGSize)a4
+- (id)iconForTab:(id)tab size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   v24.receiver = self;
   v24.super_class = SFWebExtensionPageMenuController;
-  v7 = a3;
-  v8 = [(WBSWebExtensionToolbarItem *)&v24 iconForTab:v7];
+  tabCopy = tab;
+  v8 = [(WBSWebExtensionToolbarItem *)&v24 iconForTab:tabCopy];
   [v8 safari_computeAverageLuminance];
   v10 = v9;
-  v11 = [v8 safari_isGrayscale];
-  v12 = [v8 safari_transparencyAnalysisResultIsNotOpaque];
-  LOBYTE(v6) = [(SFWebExtensionPageMenuController *)v6 wantsGrayscaleIconForTab:v7];
+  safari_isGrayscale = [v8 safari_isGrayscale];
+  safari_transparencyAnalysisResultIsNotOpaque = [v8 safari_transparencyAnalysisResultIsNotOpaque];
+  LOBYTE(selfCopy) = [(SFWebExtensionPageMenuController *)selfCopy wantsGrayscaleIconForTab:tabCopy];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -105,11 +105,11 @@
   v17[1] = 3221225472;
   v17[2] = __52__SFWebExtensionPageMenuController_iconForTab_size___block_invoke_2;
   v17[3] = &unk_1E8495860;
-  v20 = v6;
+  v20 = selfCopy;
   v19 = v10;
-  v21 = v12;
+  v21 = safari_transparencyAnalysisResultIsNotOpaque;
   v18 = v13;
-  v22 = v11;
+  v22 = safari_isGrayscale;
   v14 = v13;
   v15 = [v8 safari_dynamicImageWithSize:v17 generator:{width, height}];
 
@@ -160,43 +160,43 @@ LABEL_10:
   return v11;
 }
 
-- (void)showPopupOrPerSitePermissionsForTab:(id)a3 parentViewController:(id)a4 popoverSourceInfo:(id)a5
+- (void)showPopupOrPerSitePermissionsForTab:(id)tab parentViewController:(id)controller popoverSourceInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![(SFWebExtensionPageMenuController *)self showingExtensionPopup]&& ![(SFWebExtensionPageMenuController *)self _showPerSitePermissionsForTab:v8 permissionGrantedHandler:0])
+  tabCopy = tab;
+  controllerCopy = controller;
+  infoCopy = info;
+  if (![(SFWebExtensionPageMenuController *)self showingExtensionPopup]&& ![(SFWebExtensionPageMenuController *)self _showPerSitePermissionsForTab:tabCopy permissionGrantedHandler:0])
   {
-    v11 = [(WBSWebExtensionToolbarItem *)self webExtension];
-    v12 = [v11 webKitContext];
-    v13 = [v12 actionForTab:v8];
+    webExtension = [(WBSWebExtensionToolbarItem *)self webExtension];
+    webKitContext = [webExtension webKitContext];
+    v13 = [webKitContext actionForTab:tabCopy];
 
     if ([v13 presentsPopup])
     {
       [(SFWebExtensionPageMenuController *)self dismissPopupImmediatelyIfNecessary];
-      objc_storeWeak(&self->_parentViewController, v9);
+      objc_storeWeak(&self->_parentViewController, controllerCopy);
       if (objc_opt_respondsToSelector())
       {
-        v14 = [v13 popupViewController];
-        objc_storeWeak(&self->_popupViewController, v14);
-        v15 = [v14 popoverPresentationController];
+        popupViewController = [v13 popupViewController];
+        objc_storeWeak(&self->_popupViewController, popupViewController);
+        popoverPresentationController = [popupViewController popoverPresentationController];
         if ([MEMORY[0x1E69C8880] isSolariumEnabled])
         {
-          [v15 _setCornerRadius:20.0];
+          [popoverPresentationController _setCornerRadius:20.0];
         }
 
-        if (v10)
+        if (infoCopy)
         {
-          v19 = [v9 view];
-          v16 = [v19 window];
-          v17 = [v16 windowScene];
+          view = [controllerCopy view];
+          window = [view window];
+          windowScene = [window windowScene];
           v18 = _SFContextInfoWithComment();
-          v21 = v15;
+          v21 = popoverPresentationController;
           v20 = v21;
           _SFPopoverSourceInfoUnwrap();
         }
 
-        [v9 presentViewController:v14 animated:1 completion:0];
+        [controllerCopy presentViewController:popupViewController animated:1 completion:0];
       }
     }
   }
@@ -210,24 +210,24 @@ uint64_t __111__SFWebExtensionPageMenuController_showPopupOrPerSitePermissionsFo
   return [v11 setSourceRect:{a3, a4, a5, a6}];
 }
 
-- (BOOL)_showPerSitePermissionsForTab:(id)a3 permissionGrantedHandler:(id)a4
+- (BOOL)_showPerSitePermissionsForTab:(id)tab permissionGrantedHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSWebExtensionToolbarItem *)self webExtension];
-  v9 = [v8 extensionsController];
-  v10 = [v8 hasPendingWebsiteRequests];
-  v11 = [(WBSWebExtensionToolbarItem *)self shouldRequestAccessForTab:v6]| v10;
+  tabCopy = tab;
+  handlerCopy = handler;
+  webExtension = [(WBSWebExtensionToolbarItem *)self webExtension];
+  extensionsController = [webExtension extensionsController];
+  hasPendingWebsiteRequests = [webExtension hasPendingWebsiteRequests];
+  v11 = [(WBSWebExtensionToolbarItem *)self shouldRequestAccessForTab:tabCopy]| hasPendingWebsiteRequests;
   if (v11)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __91__SFWebExtensionPageMenuController__showPerSitePermissionsForTab_permissionGrantedHandler___block_invoke;
     v14[3] = &unk_1E848FA50;
-    v15 = v7;
-    [v8 requestPermissionsFromToolbarItemInTab:v6 completionHandler:v14];
-    v12 = [v8 extension];
-    [v9 didShowPerSiteAccessPermissionForExtension:v12];
+    v15 = handlerCopy;
+    [webExtension requestPermissionsFromToolbarItemInTab:tabCopy completionHandler:v14];
+    extension = [webExtension extension];
+    [extensionsController didShowPerSiteAccessPermissionForExtension:extension];
   }
 
   return v11 & 1;
@@ -247,34 +247,34 @@ uint64_t __91__SFWebExtensionPageMenuController__showPerSitePermissionsForTab_pe
   return result;
 }
 
-- (void)performActionForTab:(id)a3 parentViewController:(id)a4 popoverSourceInfo:(id)a5
+- (void)performActionForTab:(id)tab parentViewController:(id)controller popoverSourceInfo:(id)info
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  objc_storeStrong(&self->_tab, a3);
+  tabCopy = tab;
+  controllerCopy = controller;
+  infoCopy = info;
+  objc_storeStrong(&self->_tab, tab);
   v21 = MEMORY[0x1E69E9820];
   v22 = 3221225472;
   v23 = __95__SFWebExtensionPageMenuController_performActionForTab_parentViewController_popoverSourceInfo___block_invoke;
   v24 = &unk_1E848F570;
-  v25 = self;
-  v12 = v9;
+  selfCopy = self;
+  v12 = tabCopy;
   v26 = v12;
-  v27 = v10;
-  v28 = v11;
-  v13 = v11;
-  v14 = v10;
+  v27 = controllerCopy;
+  v28 = infoCopy;
+  v13 = infoCopy;
+  v14 = controllerCopy;
   v15 = _Block_copy(&v21);
-  if (![(SFWebExtensionPageMenuController *)self _showPerSitePermissionsForTab:v12 permissionGrantedHandler:v15, v21, v22, v23, v24, v25])
+  if (![(SFWebExtensionPageMenuController *)self _showPerSitePermissionsForTab:v12 permissionGrantedHandler:v15, v21, v22, v23, v24, selfCopy])
   {
-    v16 = [(WBSWebExtensionToolbarItem *)self webExtension];
-    v17 = [v16 extensionsController];
-    v18 = [v17 analyticsEventCoalescer];
-    v19 = [v16 composedIdentifier];
-    [v18 didInvokeToolbarButtonForExtensionWithIdentifier:v19];
+    webExtension = [(WBSWebExtensionToolbarItem *)self webExtension];
+    extensionsController = [webExtension extensionsController];
+    analyticsEventCoalescer = [extensionsController analyticsEventCoalescer];
+    composedIdentifier = [webExtension composedIdentifier];
+    [analyticsEventCoalescer didInvokeToolbarButtonForExtensionWithIdentifier:composedIdentifier];
 
-    v20 = [v16 webKitContext];
-    [v20 performActionForTab:v12];
+    webKitContext = [webExtension webKitContext];
+    [webKitContext performActionForTab:v12];
   }
 }
 
@@ -304,13 +304,13 @@ void __95__SFWebExtensionPageMenuController_performActionForTab_parentViewContro
   objc_storeWeak(&self->_popupViewController, 0);
 }
 
-- (id)activityForTab:(id)a3
+- (id)activityForTab:(id)tab
 {
-  objc_storeStrong(&self->_tab, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_tab, tab);
+  tabCopy = tab;
   v6 = [_SFWebExtensionActivity alloc];
-  v7 = [(WBSWebExtensionToolbarItem *)self webExtension];
-  v8 = [(_SFWebExtensionActivity *)v6 initWithPageMenuController:self webExtension:v7 tab:v5];
+  webExtension = [(WBSWebExtensionToolbarItem *)self webExtension];
+  v8 = [(_SFWebExtensionActivity *)v6 initWithPageMenuController:self webExtension:webExtension tab:tabCopy];
   activityItem = self->_activityItem;
   self->_activityItem = v8;
 
@@ -320,26 +320,26 @@ void __95__SFWebExtensionPageMenuController_performActionForTab_parentViewContro
   return v10;
 }
 
-- (id)alertItemForTab:(id)a3
+- (id)alertItemForTab:(id)tab
 {
-  v5 = a3;
-  objc_storeStrong(&self->_tab, a3);
-  v6 = [(WBSWebExtensionToolbarItem *)self webExtension];
-  v7 = [v6 displayShortName];
+  tabCopy = tab;
+  objc_storeStrong(&self->_tab, tab);
+  webExtension = [(WBSWebExtensionToolbarItem *)self webExtension];
+  displayShortName = [webExtension displayShortName];
   v8 = *MEMORY[0x1E69DDCF8];
-  v9 = [(SFWebExtensionPageMenuController *)self iconForTab:v5];
+  v9 = [(SFWebExtensionPageMenuController *)self iconForTab:tabCopy];
   v22 = MEMORY[0x1E69E9820];
   v23 = 3221225472;
   v24 = __52__SFWebExtensionPageMenuController_alertItemForTab___block_invoke;
   v25 = &unk_1E8493BD8;
-  v26 = self;
-  v10 = v5;
+  selfCopy = self;
+  v10 = tabCopy;
   v27 = v10;
-  v11 = [_SFWebExtensionSettingsAlertItem buttonWithTitle:v7 textStyle:v8 icon:v9 extension:v6 handler:&v22];
+  v11 = [_SFWebExtensionSettingsAlertItem buttonWithTitle:displayShortName textStyle:v8 icon:v9 extension:webExtension handler:&v22];
   alertItem = self->_alertItem;
   self->_alertItem = v11;
 
-  [(_SFSettingsAlertItem *)self->_alertItem setEnabled:[(WBSWebExtensionToolbarItem *)self isEnabledForTab:self->_tab, v22, v23, v24, v25, v26]];
+  [(_SFSettingsAlertItem *)self->_alertItem setEnabled:[(WBSWebExtensionToolbarItem *)self isEnabledForTab:self->_tab, v22, v23, v24, v25, selfCopy]];
   v13 = [(WBSWebExtensionToolbarItem *)self badgeTextForTab:self->_tab];
   v14 = [objc_opt_class() badgeViewForText:v13];
   [(_SFSettingsAlertItem *)self->_alertItem setBadgeView:v14];
@@ -387,12 +387,12 @@ void __52__SFWebExtensionPageMenuController_alertItemForTab___block_invoke(uint6
   *(v9 + 96) = 0;
 }
 
-+ (id)badgeViewForText:(id)a3
++ (id)badgeViewForText:(id)text
 {
-  v3 = a3;
-  if ([v3 length])
+  textCopy = text;
+  if ([textCopy length])
   {
-    v4 = [[_SFPageFormatMenuBadgeView alloc] initWithText:v3];
+    v4 = [[_SFPageFormatMenuBadgeView alloc] initWithText:textCopy];
   }
 
   else
@@ -403,66 +403,66 @@ void __52__SFWebExtensionPageMenuController_alertItemForTab___block_invoke(uint6
   return v4;
 }
 
-+ (id)_imageViewForWarningTriangleImage:(id)a3
++ (id)_imageViewForWarningTriangleImage:(id)image
 {
   v3 = MEMORY[0x1E69DCAE0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithImage:v4];
+  imageCopy = image;
+  v5 = [[v3 alloc] initWithImage:imageCopy];
 
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [MEMORY[0x1E69DC888] systemOrangeColor];
-  [v5 setTintColor:v6];
+  systemOrangeColor = [MEMORY[0x1E69DC888] systemOrangeColor];
+  [v5 setTintColor:systemOrangeColor];
 
   return v5;
 }
 
-- (BOOL)shouldShowWarningTriangleImageForTab:(id)a3
+- (BOOL)shouldShowWarningTriangleImageForTab:(id)tab
 {
-  v4 = [(WBSWebExtensionToolbarItem *)self shouldRequestAccessForTab:a3];
-  v5 = [(WBSWebExtensionToolbarItem *)self webExtension];
-  v6 = [v5 extensionsController];
-  v7 = [v5 extension];
-  v8 = [v6 hasShownPerSiteAccessPermissionForExtension:v7];
+  v4 = [(WBSWebExtensionToolbarItem *)self shouldRequestAccessForTab:tab];
+  webExtension = [(WBSWebExtensionToolbarItem *)self webExtension];
+  extensionsController = [webExtension extensionsController];
+  extension = [webExtension extension];
+  v8 = [extensionsController hasShownPerSiteAccessPermissionForExtension:extension];
 
-  v9 = v4 & ~v8 | [v5 hasPendingWebsiteRequests];
+  v9 = v4 & ~v8 | [webExtension hasPendingWebsiteRequests];
   return v9 & 1;
 }
 
 - (BOOL)showingExtensionPopup
 {
   WeakRetained = objc_loadWeakRetained(&self->_popupViewController);
-  v3 = [WeakRetained presentingViewController];
-  v4 = v3 != 0;
+  presentingViewController = [WeakRetained presentingViewController];
+  v4 = presentingViewController != 0;
 
   return v4;
 }
 
-- (void)webKitExtensionAction:(id)a3 didChangeForTab:(id)a4
+- (void)webKitExtensionAction:(id)action didChangeForTab:(id)tab
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [(WBSWebExtensionToolbarItem *)self webExtension];
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 postNotificationName:@"activityContentsDidUpdate" object:v7];
+  actionCopy = action;
+  tabCopy = tab;
+  webExtension = [(WBSWebExtensionToolbarItem *)self webExtension];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"activityContentsDidUpdate" object:webExtension];
 
-  [v7 _validateToolbarItemInAllWindows];
+  [webExtension _validateToolbarItemInAllWindows];
   if (self->_alertItem)
   {
     tab = self->_tab;
-    if (!v6 || tab == v6)
+    if (!tabCopy || tab == tabCopy)
     {
       v10 = [(SFWebExtensionPageMenuController *)self iconForTab:tab];
       [(_SFSettingsAlertItem *)self->_alertItem setIcon:v10];
 
       v11 = objc_opt_class();
-      v12 = [v15 badgeText];
-      v13 = [v11 badgeViewForText:v12];
+      badgeText = [actionCopy badgeText];
+      v13 = [v11 badgeViewForText:badgeText];
       [(_SFSettingsAlertItem *)self->_alertItem setBadgeView:v13];
 
-      v14 = [v15 badgeText];
-      [(_SFSettingsAlertItem *)self->_alertItem setBadgeText:v14];
+      badgeText2 = [actionCopy badgeText];
+      [(_SFSettingsAlertItem *)self->_alertItem setBadgeText:badgeText2];
 
-      -[_SFSettingsAlertItem setEnabled:](self->_alertItem, "setEnabled:", [v15 isEnabled]);
+      -[_SFSettingsAlertItem setEnabled:](self->_alertItem, "setEnabled:", [actionCopy isEnabled]);
     }
   }
 }

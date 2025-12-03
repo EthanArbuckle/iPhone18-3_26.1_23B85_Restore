@@ -1,38 +1,38 @@
 @interface SBContinuousExposeAppToAppModifier
-- (BOOL)_shouldIgnoreTapsUntilDelay:(double *)a3;
+- (BOOL)_shouldIgnoreTapsUntilDelay:(double *)delay;
 - (BOOL)asyncRenderingDisabled;
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4;
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3;
-- (SBContinuousExposeAppToAppModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 fromInterfaceOrientation:(int64_t)a5 toAppLayout:(id)a6 toInterfaceOrientation:(int64_t)a7 fromDisplayItemLayoutAttributesMap:(id)a8 toDisplayItemLayoutAttributesMap:(id)a9;
-- (double)blurDelayForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout;
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index;
+- (SBContinuousExposeAppToAppModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout fromInterfaceOrientation:(int64_t)orientation toAppLayout:(id)appLayout toInterfaceOrientation:(int64_t)interfaceOrientation fromDisplayItemLayoutAttributesMap:(id)map toDisplayItemLayoutAttributesMap:(id)attributesMap;
+- (double)blurDelayForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (double)fadeInDelayForSplitViewHandles;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
 - (id)_layoutSettings;
-- (id)_topMostDisplayItemInDisplayItemLayoutAttributesMap:(id)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleSceneReadyEvent:(id)a3;
-- (id)handleTapAppLayoutEvent:(id)a3;
-- (id)handleTimerEvent:(id)a3;
+- (id)_topMostDisplayItemInDisplayItemLayoutAttributesMap:(id)map;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleSceneReadyEvent:(id)event;
+- (id)handleTapAppLayoutEvent:(id)event;
+- (id)handleTimerEvent:(id)event;
 - (id)topMostLayoutElements;
 - (id)transitionDidEnd;
 - (id)transitionWillBegin;
-- (unint64_t)maskedCornersForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withMaskedCorners:(unint64_t)a5;
-- (void)didMoveToParentModifier:(id)a3;
+- (unint64_t)maskedCornersForLayoutRole:(int64_t)role inAppLayout:(id)layout withMaskedCorners:(unint64_t)corners;
+- (void)didMoveToParentModifier:(id)modifier;
 @end
 
 @implementation SBContinuousExposeAppToAppModifier
 
-- (SBContinuousExposeAppToAppModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 fromInterfaceOrientation:(int64_t)a5 toAppLayout:(id)a6 toInterfaceOrientation:(int64_t)a7 fromDisplayItemLayoutAttributesMap:(id)a8 toDisplayItemLayoutAttributesMap:(id)a9
+- (SBContinuousExposeAppToAppModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout fromInterfaceOrientation:(int64_t)orientation toAppLayout:(id)appLayout toInterfaceOrientation:(int64_t)interfaceOrientation fromDisplayItemLayoutAttributesMap:(id)map toDisplayItemLayoutAttributesMap:(id)attributesMap
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v32 = a8;
-  v31 = a9;
-  if (v16)
+  dCopy = d;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
+  mapCopy = map;
+  attributesMapCopy = attributesMap;
+  if (layoutCopy)
   {
-    if (v17)
+    if (appLayoutCopy)
     {
       goto LABEL_3;
     }
@@ -41,7 +41,7 @@
   else
   {
     [SBContinuousExposeAppToAppModifier initWithTransitionID:a2 fromAppLayout:self fromInterfaceOrientation:? toAppLayout:? toInterfaceOrientation:? fromDisplayItemLayoutAttributesMap:? toDisplayItemLayoutAttributesMap:?];
-    if (v17)
+    if (appLayoutCopy)
     {
       goto LABEL_3;
     }
@@ -51,16 +51,16 @@
 LABEL_3:
   v33.receiver = self;
   v33.super_class = SBContinuousExposeAppToAppModifier;
-  v18 = [(SBTransitionSwitcherModifier *)&v33 initWithTransitionID:v15];
+  v18 = [(SBTransitionSwitcherModifier *)&v33 initWithTransitionID:dCopy];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_fromAppLayout, a4);
-    v19->_fromInterfaceOrientation = a5;
-    objc_storeStrong(&v19->_toAppLayout, a6);
-    v19->_toInterfaceOrientation = a7;
-    objc_storeStrong(&v19->_fromDisplayItemLayoutAttributesMap, a8);
-    objc_storeStrong(&v19->_toDisplayItemLayoutAttributesMap, a9);
+    objc_storeStrong(&v18->_fromAppLayout, layout);
+    v19->_fromInterfaceOrientation = orientation;
+    objc_storeStrong(&v19->_toAppLayout, appLayout);
+    v19->_toInterfaceOrientation = interfaceOrientation;
+    objc_storeStrong(&v19->_fromDisplayItemLayoutAttributesMap, map);
+    objc_storeStrong(&v19->_toDisplayItemLayoutAttributesMap, attributesMap);
     v20 = [MEMORY[0x277CBEB98] set];
     displayItemsChangingSize = v19->_displayItemsChangingSize;
     v19->_displayItemsChangingSize = v20;
@@ -74,22 +74,22 @@ LABEL_3:
     v19->_toTopMostDisplayItem = v24;
 
     v19->_ignoreTapsDuringMorphTransition = 1;
-    v26 = [MEMORY[0x277CCAD78] UUID];
-    v27 = [v26 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     uniqueAnimationIdentifier = v19->_uniqueAnimationIdentifier;
-    v19->_uniqueAnimationIdentifier = v27;
+    v19->_uniqueAnimationIdentifier = uUIDString;
   }
 
   return v19;
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v58 = *MEMORY[0x277D85DE8];
   v56.receiver = self;
   v56.super_class = SBContinuousExposeAppToAppModifier;
   [(SBChainableModifier *)&v56 didMoveToParentModifier:?];
-  if (!a3)
+  if (!modifier)
   {
     return;
   }
@@ -100,8 +100,8 @@ LABEL_3:
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v5 = [(SBAppLayout *)self->_toAppLayout allItems];
-  v6 = [v5 countByEnumeratingWithState:&v52 objects:v57 count:16];
+  allItems = [(SBAppLayout *)self->_toAppLayout allItems];
+  v6 = [allItems countByEnumeratingWithState:&v52 objects:v57 count:16];
   v7 = &OBJC_IVAR___SBAssistantSceneController__windowScene;
   if (!v6)
   {
@@ -111,7 +111,7 @@ LABEL_3:
   v8 = v6;
   v9 = *v53;
   v48 = *v53;
-  v49 = v5;
+  v49 = allItems;
   do
   {
     v10 = 0;
@@ -119,7 +119,7 @@ LABEL_3:
     {
       if (*v53 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allItems);
       }
 
       v11 = *(*(&v52 + 1) + 8 * v10);
@@ -135,9 +135,9 @@ LABEL_10:
 
         v12 = [(NSDictionary *)self->_fromDisplayItemLayoutAttributesMap objectForKey:v11];
         v13 = [(NSDictionary *)self->_toDisplayItemLayoutAttributesMap objectForKey:v11];
-        v14 = [(SBSwitcherModifier *)self windowingConfiguration];
-        v15 = [(SBContinuousExposeAppToAppModifier *)self displayItemLayoutAttributesCalculator];
-        v16 = v15;
+        windowingConfiguration = [(SBSwitcherModifier *)self windowingConfiguration];
+        displayItemLayoutAttributesCalculator = [(SBContinuousExposeAppToAppModifier *)self displayItemLayoutAttributesCalculator];
+        v16 = displayItemLayoutAttributesCalculator;
         if (v12 == v13)
         {
           v24 = 0;
@@ -146,16 +146,16 @@ LABEL_10:
 
         else
         {
-          [v15 sizeForLayoutAttributes:v12 windowingConfiguration:v14];
+          [displayItemLayoutAttributesCalculator sizeForLayoutAttributes:v12 windowingConfiguration:windowingConfiguration];
           v18 = v17;
           v20 = v19;
-          [v16 sizeForLayoutAttributes:v13 windowingConfiguration:v14];
+          [v16 sizeForLayoutAttributes:v13 windowingConfiguration:windowingConfiguration];
           if (v18 == v22 && v20 == v21)
           {
-            [v16 centerForLayoutAttributes:v12 windowingConfiguration:v14];
+            [v16 centerForLayoutAttributes:v12 windowingConfiguration:windowingConfiguration];
             v27 = v26;
             v29 = v28;
-            [v16 centerForLayoutAttributes:v13 windowingConfiguration:v14];
+            [v16 centerForLayoutAttributes:v13 windowingConfiguration:windowingConfiguration];
             v25 = 0;
             v24 = v29 != v31 || v27 != v30;
           }
@@ -172,7 +172,7 @@ LABEL_10:
           [obj addObject:v11];
           v7 = &OBJC_IVAR___SBAssistantSceneController__windowScene;
           v9 = v48;
-          v5 = v49;
+          allItems = v49;
           if (v24)
           {
             goto LABEL_10;
@@ -183,7 +183,7 @@ LABEL_10:
         {
           v7 = &OBJC_IVAR___SBAssistantSceneController__windowScene;
           v9 = v48;
-          v5 = v49;
+          allItems = v49;
           if (v24)
           {
             goto LABEL_10;
@@ -196,7 +196,7 @@ LABEL_11:
     }
 
     while (v8 != v10);
-    v32 = [v5 countByEnumeratingWithState:&v52 objects:v57 count:16];
+    v32 = [allItems countByEnumeratingWithState:&v52 objects:v57 count:16];
     v8 = v32;
   }
 
@@ -214,16 +214,16 @@ LABEL_29:
   {
     if (self->_toAppLayout)
     {
-      v36 = [(SBContinuousExposeAppToAppModifier *)self appLayouts];
-      v37 = [v36 containsObject:self->_toAppLayout];
+      appLayouts = [(SBContinuousExposeAppToAppModifier *)self appLayouts];
+      v37 = [appLayouts containsObject:self->_toAppLayout];
 
       if (v37)
       {
         if ([(SBContinuousExposeAppToAppModifier *)self prefersStripHiddenAndDisabled]&& ![(SBContinuousExposeAppToAppModifier *)self isTopAffordanceMenuTransition]|| [(SBContinuousExposeAppToAppModifier *)self isCommandTabTransition]|| [(SBContinuousExposeAppToAppModifier *)self isLaunchingFromDockTransition]|| [(SBContinuousExposeAppToAppModifier *)self isLaunchingFromSpotlightTransition])
         {
           v38 = [SBContinuousExposeFullScreenCrossblurTransitionSwitcherModifier alloc];
-          v39 = [(SBTransitionSwitcherModifier *)self transitionID];
-          v40 = [(SBContinuousExposeFullScreenCrossblurTransitionSwitcherModifier *)v38 initWithTransitionID:v39 toAppLayout:self->_toAppLayout fromAppLayout:*(&self->super.super.super.super.super.isa + v35)];
+          transitionID = [(SBTransitionSwitcherModifier *)self transitionID];
+          v40 = [(SBContinuousExposeFullScreenCrossblurTransitionSwitcherModifier *)v38 initWithTransitionID:transitionID toAppLayout:self->_toAppLayout fromAppLayout:*(&self->super.super.super.super.super.isa + v35)];
 LABEL_38:
           v41 = v40;
 
@@ -235,15 +235,15 @@ LABEL_38:
 
         else
         {
-          v44 = [(SBContinuousExposeAppToAppModifier *)self switcherSettings];
-          v45 = [v44 windowingSettings];
-          v46 = [v45 useLowFatigueStripAnimation];
+          switcherSettings = [(SBContinuousExposeAppToAppModifier *)self switcherSettings];
+          windowingSettings = [switcherSettings windowingSettings];
+          useLowFatigueStripAnimation = [windowingSettings useLowFatigueStripAnimation];
 
-          if (v46)
+          if (useLowFatigueStripAnimation)
           {
             v47 = [SBContinuousExposeFullScreenToStripTransitionSwitcherModifier alloc];
-            v39 = [(SBTransitionSwitcherModifier *)self transitionID];
-            v40 = [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)v47 initWithTransitionID:v39 outgoingAppLayout:*(&self->super.super.super.super.super.isa + v35)];
+            transitionID = [(SBTransitionSwitcherModifier *)self transitionID];
+            v40 = [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)v47 initWithTransitionID:transitionID outgoingAppLayout:*(&self->super.super.super.super.super.isa + v35)];
             goto LABEL_38;
           }
         }
@@ -263,8 +263,8 @@ LABEL_38:
   }
 
   self->_stripWasInitiallyPresented = IsOne;
-  v43 = [(SBContinuousExposeAppToAppModifier *)self peekingAppLayout];
-  self->_isFromPeek = v43 != 0;
+  peekingAppLayout = [(SBContinuousExposeAppToAppModifier *)self peekingAppLayout];
+  self->_isFromPeek = peekingAppLayout != 0;
 }
 
 - (BOOL)asyncRenderingDisabled
@@ -289,7 +289,7 @@ LABEL_38:
   v25 = __Block_byref_object_dispose__48;
   v20.receiver = self;
   v20.super_class = SBContinuousExposeAppToAppModifier;
-  v26 = [(SBTransitionSwitcherModifier *)&v20 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v20 transitionWillBegin];
   v3 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:2 updateMode:2];
   v4 = SBAppendSwitcherModifierResponse(v3, v22[5]);
   v5 = v22[5];
@@ -318,8 +318,8 @@ LABEL_38:
     v15[2] = __57__SBContinuousExposeAppToAppModifier_transitionWillBegin__block_invoke_2;
     v15[3] = &unk_2783AD4A0;
     objc_copyWeak(&v16, &location);
-    v9 = [(SBContinuousExposeAppToAppModifier *)self _ignoreTapsDuringMorphTransitionReason];
-    v10 = [(SBTimerEventSwitcherEventResponse *)v7 initWithDelay:v15 validator:v9 reason:v8];
+    _ignoreTapsDuringMorphTransitionReason = [(SBContinuousExposeAppToAppModifier *)self _ignoreTapsDuringMorphTransitionReason];
+    v10 = [(SBTimerEventSwitcherEventResponse *)v7 initWithDelay:v15 validator:_ignoreTapsDuringMorphTransitionReason reason:v8];
 
     v11 = SBAppendSwitcherModifierResponse(v10, v22[5]);
     v12 = v22[5];
@@ -374,32 +374,32 @@ BOOL __57__SBContinuousExposeAppToAppModifier_transitionWillBegin__block_invoke_
 {
   v7.receiver = self;
   v7.super_class = SBContinuousExposeAppToAppModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v7 transitionDidEnd];
+  transitionDidEnd = [(SBTransitionSwitcherModifier *)&v7 transitionDidEnd];
   if ([(SBTransitionSwitcherModifier *)self isInterrupted])
   {
     v4 = objc_alloc_init(SBCancelWindowMorphingSwitcherEventResponse);
-    v5 = SBAppendSwitcherModifierResponse(v4, v3);
+    v5 = SBAppendSwitcherModifierResponse(v4, transitionDidEnd);
 
-    v3 = v5;
+    transitionDidEnd = v5;
   }
 
-  return v3;
+  return transitionDidEnd;
 }
 
-- (id)handleSceneReadyEvent:(id)a3
+- (id)handleSceneReadyEvent:(id)event
 {
   v12.receiver = self;
   v12.super_class = SBContinuousExposeAppToAppModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v12 handleSceneReadyEvent:v4];
-  v6 = [v4 appLayout];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v12 handleSceneReadyEvent:eventCopy];
+  appLayout = [eventCopy appLayout];
 
-  v7 = [v6 itemForLayoutRole:1];
+  v7 = [appLayout itemForLayoutRole:1];
   if ([(NSMutableSet *)self->_pendingDisplayItemSceneUpdates containsObject:v7])
   {
     v11.receiver = self;
     v11.super_class = SBContinuousExposeAppToAppModifier;
-    if (-[SBContinuousExposeAppToAppModifier isLayoutRoleContentReady:inAppLayout:](&v11, sel_isLayoutRoleContentReady_inAppLayout_, [v6 layoutRoleForItem:v7], v6))
+    if (-[SBContinuousExposeAppToAppModifier isLayoutRoleContentReady:inAppLayout:](&v11, sel_isLayoutRoleContentReady_inAppLayout_, [appLayout layoutRoleForItem:v7], appLayout))
     {
       [(NSMutableSet *)self->_pendingDisplayItemSceneUpdates removeObject:v7];
     }
@@ -416,16 +416,16 @@ BOOL __57__SBContinuousExposeAppToAppModifier_transitionWillBegin__block_invoke_
   return v5;
 }
 
-- (id)handleTapAppLayoutEvent:(id)a3
+- (id)handleTapAppLayoutEvent:(id)event
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   if (![(SBContinuousExposeAppToAppModifier *)self isMorphFromInAppViewTransition])
   {
 LABEL_10:
     v21.receiver = self;
     v21.super_class = SBContinuousExposeAppToAppModifier;
-    v13 = [(SBSwitcherModifier *)&v21 handleTapAppLayoutEvent:v4];
+    v13 = [(SBSwitcherModifier *)&v21 handleTapAppLayoutEvent:eventCopy];
     goto LABEL_11;
   }
 
@@ -441,14 +441,14 @@ LABEL_10:
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] ignored tap event because of ignore tap assertion", buf, 0xCu);
     }
 
-    [v4 handleWithReason:@"Continuous Exposé App to App"];
+    [eventCopy handleWithReason:@"Continuous Exposé App to App"];
     goto LABEL_10;
   }
 
-  v8 = [v4 isHandled];
+  isHandled = [eventCopy isHandled];
   v9 = SBLogAppSwitcher();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (isHandled)
   {
     if (v10)
     {
@@ -466,19 +466,19 @@ LABEL_10:
   {
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    v17 = [v4 appLayout];
-    v18 = [v17 succinctDescription];
+    appLayout = [eventCopy appLayout];
+    succinctDescription = [appLayout succinctDescription];
     *buf = 138543618;
     v24 = v16;
     v25 = 2114;
-    v26 = v18;
+    v26 = succinctDescription;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] tap detected, cancelling any window morphing before transition completes: %{public}@", buf, 0x16u);
   }
 
   v19 = objc_alloc_init(SBCancelWindowMorphingSwitcherEventResponse);
   v22.receiver = self;
   v22.super_class = SBContinuousExposeAppToAppModifier;
-  v20 = [(SBSwitcherModifier *)&v22 handleTapAppLayoutEvent:v4];
+  v20 = [(SBSwitcherModifier *)&v22 handleTapAppLayoutEvent:eventCopy];
   v13 = SBAppendSwitcherModifierResponse(v19, v20);
 
 LABEL_11:
@@ -486,17 +486,17 @@ LABEL_11:
   return v13;
 }
 
-- (id)handleTimerEvent:(id)a3
+- (id)handleTimerEvent:(id)event
 {
   v16 = *MEMORY[0x277D85DE8];
   v13.receiver = self;
   v13.super_class = SBContinuousExposeAppToAppModifier;
-  v4 = a3;
-  v5 = [(SBTransitionSwitcherModifier *)&v13 handleTimerEvent:v4];
-  v6 = [v4 reason];
+  eventCopy = event;
+  v5 = [(SBTransitionSwitcherModifier *)&v13 handleTimerEvent:eventCopy];
+  reason = [eventCopy reason];
 
-  v7 = [(SBContinuousExposeAppToAppModifier *)self _ignoreTapsDuringMorphTransitionReason];
-  v8 = [v6 isEqualToString:v7];
+  _ignoreTapsDuringMorphTransitionReason = [(SBContinuousExposeAppToAppModifier *)self _ignoreTapsDuringMorphTransitionReason];
+  v8 = [reason isEqualToString:_ignoreTapsDuringMorphTransitionReason];
 
   if (v8)
   {
@@ -516,44 +516,44 @@ LABEL_11:
   return v5;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v18.receiver = self;
   v18.super_class = SBContinuousExposeAppToAppModifier;
-  v5 = [(SBTransitionSwitcherModifier *)&v18 animationAttributesForLayoutElement:v4];
+  v5 = [(SBTransitionSwitcherModifier *)&v18 animationAttributesForLayoutElement:elementCopy];
   v6 = [v5 mutableCopy];
 
-  if (![v4 switcherLayoutElementType] && BSEqualObjects() && (BSEqualObjects() & 1) == 0 && self->_fromAppLayout && (v7 = MEMORY[0x277CBEB98], -[SBAppLayout allItems](self->_toAppLayout, "allItems"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "setWithArray:", v8), v9 = objc_claimAutoreleasedReturnValue(), v10 = MEMORY[0x277CBEB98], -[SBAppLayout allItems](self->_fromAppLayout, "allItems"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "setWithArray:", v11), v12 = objc_claimAutoreleasedReturnValue(), v13 = BSEqualSets(), v12, v11, v9, v8, v13))
+  if (![elementCopy switcherLayoutElementType] && BSEqualObjects() && (BSEqualObjects() & 1) == 0 && self->_fromAppLayout && (v7 = MEMORY[0x277CBEB98], -[SBAppLayout allItems](self->_toAppLayout, "allItems"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "setWithArray:", v8), v9 = objc_claimAutoreleasedReturnValue(), v10 = MEMORY[0x277CBEB98], -[SBAppLayout allItems](self->_fromAppLayout, "allItems"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "setWithArray:", v11), v12 = objc_claimAutoreleasedReturnValue(), v13 = BSEqualSets(), v12, v11, v9, v8, v13))
   {
     [v6 setLayoutUpdateMode:3];
-    v14 = [(SBContinuousExposeAppToAppModifier *)self switcherSettings];
-    v15 = [v14 windowingSettings];
-    v16 = [v15 stageFocusChangeSettings];
-    [v6 setLayoutSettings:v16];
+    switcherSettings = [(SBContinuousExposeAppToAppModifier *)self switcherSettings];
+    windowingSettings = [switcherSettings windowingSettings];
+    stageFocusChangeSettings = [windowingSettings stageFocusChangeSettings];
+    [v6 setLayoutSettings:stageFocusChangeSettings];
   }
 
-  else if ([v4 switcherLayoutElementType] || (BSEqualObjects() & 1) != 0 || BSEqualObjects())
+  else if ([elementCopy switcherLayoutElementType] || (BSEqualObjects() & 1) != 0 || BSEqualObjects())
   {
     [v6 setLayoutUpdateMode:3];
-    v14 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-    [v14 setResponse:0.4];
-    [v14 setDampingRatio:1.0];
+    switcherSettings = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+    [switcherSettings setResponse:0.4];
+    [switcherSettings setDampingRatio:1.0];
     v20 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-    [v14 setFrameRateRange:1114113 highFrameRateReason:{*&v20.minimum, *&v20.maximum, *&v20.preferred}];
-    [v6 setLayoutSettings:v14];
+    [switcherSettings setFrameRateRange:1114113 highFrameRateReason:{*&v20.minimum, *&v20.maximum, *&v20.preferred}];
+    [v6 setLayoutSettings:switcherSettings];
   }
 
   else
   {
-    v14 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-    [v14 setResponse:0.54];
-    [v14 setDampingRatio:0.92];
+    switcherSettings = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+    [switcherSettings setResponse:0.54];
+    [switcherSettings setDampingRatio:0.92];
     v21 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-    [v14 setFrameRateRange:1114113 highFrameRateReason:{*&v21.minimum, *&v21.maximum, *&v21.preferred}];
-    [v6 setLayoutSettings:v14];
-    [v6 setPositionSettings:v14];
-    [v6 setOpacitySettings:v14];
+    [switcherSettings setFrameRateRange:1114113 highFrameRateReason:{*&v21.minimum, *&v21.maximum, *&v21.preferred}];
+    [v6 setLayoutSettings:switcherSettings];
+    [v6 setPositionSettings:switcherSettings];
+    [v6 setOpacitySettings:switcherSettings];
     [v6 setUpdateMode:3];
   }
 
@@ -564,7 +564,7 @@ LABEL_11:
 {
   v15.receiver = self;
   v15.super_class = SBContinuousExposeAppToAppModifier;
-  v3 = [(SBContinuousExposeAppToAppModifier *)&v15 topMostLayoutElements];
+  topMostLayoutElements = [(SBContinuousExposeAppToAppModifier *)&v15 topMostLayoutElements];
   v4 = [(SBAppLayout *)self->_fromAppLayout leafAppLayoutForRole:4];
   v5 = [(SBAppLayout *)self->_toAppLayout leafAppLayoutForRole:4];
   v6 = v5;
@@ -583,9 +583,9 @@ LABEL_11:
     v11 = [v4 isEqual:v5];
     if ((v11 & 1) == 0)
     {
-      v10 = [v3 sb_arrayByInsertingOrMovingObject:v4 toIndex:0];
+      windowManagementContext = [topMostLayoutElements sb_arrayByInsertingOrMovingObject:v4 toIndex:0];
 
-      v9 = [v10 sb_arrayByInsertingOrMovingObject:v6 toIndex:0];
+      v9 = [windowManagementContext sb_arrayByInsertingOrMovingObject:v6 toIndex:0];
       goto LABEL_19;
     }
 
@@ -605,55 +605,55 @@ LABEL_11:
   if (!v8)
   {
 LABEL_14:
-    v10 = [(SBContinuousExposeAppToAppModifier *)self windowManagementContext];
-    if (![v10 isFlexibleWindowingEnabled] || self->_stripWasInitiallyPresented)
+    windowManagementContext = [(SBContinuousExposeAppToAppModifier *)self windowManagementContext];
+    if (![windowManagementContext isFlexibleWindowingEnabled] || self->_stripWasInitiallyPresented)
     {
       goto LABEL_20;
     }
 
     v12 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:self->_toAppLayout];
-    v13 = [v12 isStripVisible];
+    isStripVisible = [v12 isStripVisible];
 
-    if (v13)
+    if (isStripVisible)
     {
       goto LABEL_21;
     }
 
-    v9 = [(SBSwitcherModifier *)self topMostLayoutElementsByAddingAppLayoutAndAccessories:self->_toAppLayout toTopMostLayoutElements:v3 orderFront:1];
+    v9 = [(SBSwitcherModifier *)self topMostLayoutElementsByAddingAppLayoutAndAccessories:self->_toAppLayout toTopMostLayoutElements:topMostLayoutElements orderFront:1];
     goto LABEL_12;
   }
 
-  v9 = [v3 sb_arrayByInsertingOrMovingObject:v4 toIndex:0];
+  v9 = [topMostLayoutElements sb_arrayByInsertingOrMovingObject:v4 toIndex:0];
 LABEL_12:
-  v10 = v3;
+  windowManagementContext = topMostLayoutElements;
 LABEL_19:
-  v3 = v9;
+  topMostLayoutElements = v9;
 LABEL_20:
 
 LABEL_21:
 
-  return v3;
+  return topMostLayoutElements;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
+  layoutCopy = layout;
   v9 = 0.0;
   if (![(SBTransitionSwitcherModifier *)self isPreparingLayout])
   {
     v12.receiver = self;
     v12.super_class = SBContinuousExposeAppToAppModifier;
-    [(SBContinuousExposeAppToAppModifier *)&v12 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+    [(SBContinuousExposeAppToAppModifier *)&v12 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
     v9 = v10;
   }
 
   return v9;
 }
 
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index
 {
-  v5 = [(SBContinuousExposeAppToAppModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBContinuousExposeAppToAppModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if ([v6 isEqual:self->_toAppLayout] && -[SBTransitionSwitcherModifier transitionPhase](self, "transitionPhase") == 1)
   {
@@ -665,7 +665,7 @@ LABEL_21:
   {
     v13.receiver = self;
     v13.super_class = SBContinuousExposeAppToAppModifier;
-    [(SBContinuousExposeAppToAppModifier *)&v13 perspectiveAngleForIndex:a3];
+    [(SBContinuousExposeAppToAppModifier *)&v13 perspectiveAngleForIndex:index];
     v7 = v9;
     v8 = v10;
   }
@@ -677,17 +677,17 @@ LABEL_21:
   return result;
 }
 
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v10.receiver = self;
   v10.super_class = SBContinuousExposeAppToAppModifier;
-  if ([(SBContinuousExposeAppToAppModifier *)&v10 isLayoutRoleMatchMovedToScene:a3 inAppLayout:v6])
+  if ([(SBContinuousExposeAppToAppModifier *)&v10 isLayoutRoleMatchMovedToScene:scene inAppLayout:layoutCopy])
   {
     goto LABEL_2;
   }
 
-  if (![v6 isEqual:self->_toAppLayout])
+  if (![layoutCopy isEqual:self->_toAppLayout])
   {
     v7 = 0;
     goto LABEL_7;
@@ -701,7 +701,7 @@ LABEL_2:
 
   else
   {
-    v8 = [v6 itemForLayoutRole:a3];
+    v8 = [layoutCopy itemForLayoutRole:scene];
     v7 = [(NSSet *)self->_displayItemsChangingSize containsObject:v8];
   }
 
@@ -710,39 +710,39 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout
 {
-  v6 = a4;
-  v7 = [v6 itemForLayoutRole:a3];
+  layoutCopy = layout;
+  v7 = [layoutCopy itemForLayoutRole:blurred];
   if ([(NSSet *)self->_displayItemsChangingSize containsObject:v7]&& [(NSMutableSet *)self->_pendingDisplayItemSceneUpdates containsObject:v7])
   {
-    LODWORD(a3) = ![(SBContinuousExposeAppToAppModifier *)self isMorphFromInAppViewTransition];
+    LODWORD(blurred) = ![(SBContinuousExposeAppToAppModifier *)self isMorphFromInAppViewTransition];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = SBContinuousExposeAppToAppModifier;
-    LOBYTE(a3) = [(SBContinuousExposeAppToAppModifier *)&v9 isLayoutRoleBlurred:a3 inAppLayout:v6];
+    LOBYTE(blurred) = [(SBContinuousExposeAppToAppModifier *)&v9 isLayoutRoleBlurred:blurred inAppLayout:layoutCopy];
   }
 
-  return a3;
+  return blurred;
 }
 
-- (double)blurDelayForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)blurDelayForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  v7 = [v6 itemForLayoutRole:a3];
+  layoutCopy = layout;
+  v7 = [layoutCopy itemForLayoutRole:role];
   v14.receiver = self;
   v14.super_class = SBContinuousExposeAppToAppModifier;
-  [(SBContinuousExposeAppToAppModifier *)&v14 blurDelayForLayoutRole:a3 inAppLayout:v6];
+  [(SBContinuousExposeAppToAppModifier *)&v14 blurDelayForLayoutRole:role inAppLayout:layoutCopy];
   v9 = v8;
 
   if ([(NSSet *)self->_displayItemsChangingSize containsObject:v7]&& ![(SBContinuousExposeAppToAppModifier *)self isMorphFromInAppViewTransition])
   {
-    v10 = [(SBContinuousExposeAppToAppModifier *)self switcherSettings];
-    v11 = [v10 animationSettings];
-    [v11 resizeBlurDelay];
+    switcherSettings = [(SBContinuousExposeAppToAppModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings resizeBlurDelay];
     v9 = v12;
   }
 
@@ -754,7 +754,7 @@ LABEL_7:
   if (BSEqualObjects() && ![(NSSet *)self->_displayItemsChangingPosition count])
   {
     isFromPeek = self->_isFromPeek;
-    v3 = [(SBContinuousExposeAppToAppModifier *)self switcherSettings];
+    switcherSettings = [(SBContinuousExposeAppToAppModifier *)self switcherSettings];
     v10 = 0.0;
     if (!isFromPeek)
     {
@@ -764,51 +764,51 @@ LABEL_7:
 
   else
   {
-    v3 = [(SBContinuousExposeAppToAppModifier *)self switcherSettings];
+    switcherSettings = [(SBContinuousExposeAppToAppModifier *)self switcherSettings];
   }
 
-  v4 = [v3 windowingSettings];
-  [v4 percentageOfTransitionForSplitViewHandleFadeInDelay];
+  windowingSettings = [switcherSettings windowingSettings];
+  [windowingSettings percentageOfTransitionForSplitViewHandleFadeInDelay];
   v6 = v5;
-  v7 = [v3 animationSettings];
-  v8 = [v7 layoutSettings];
-  [v8 settlingDuration];
+  animationSettings = [switcherSettings animationSettings];
+  layoutSettings = [animationSettings layoutSettings];
+  [layoutSettings settlingDuration];
   v10 = v6 * v9;
 
 LABEL_5:
   return v10;
 }
 
-- (unint64_t)maskedCornersForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withMaskedCorners:(unint64_t)a5
+- (unint64_t)maskedCornersForLayoutRole:(int64_t)role inAppLayout:(id)layout withMaskedCorners:(unint64_t)corners
 {
   v16.receiver = self;
   v16.super_class = SBContinuousExposeAppToAppModifier;
-  v8 = a4;
-  v9 = [(SBTransitionSwitcherModifier *)&v16 maskedCornersForLayoutRole:a3 inAppLayout:v8 withMaskedCorners:a5];
-  v10 = [v8 itemForLayoutRole:{a3, v16.receiver, v16.super_class}];
+  layoutCopy = layout;
+  v9 = [(SBTransitionSwitcherModifier *)&v16 maskedCornersForLayoutRole:role inAppLayout:layoutCopy withMaskedCorners:corners];
+  v10 = [layoutCopy itemForLayoutRole:{role, v16.receiver, v16.super_class}];
 
   if (v10 && [(SBAppLayout *)self->_toAppLayout containsItem:v10]&& [(SBAppLayout *)self->_fromAppLayout containsItem:v10]&& ![(NSSet *)self->_displayItemsChangingPosition containsObject:v10])
   {
     v11 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:self->_toAppLayout];
     v12 = [v11 flexibleAutoLayoutItemForDisplayItem:v10];
-    v13 = [v12 intersectedDisplayRectCorners];
+    intersectedDisplayRectCorners = [v12 intersectedDisplayRectCorners];
     v14 = v9 & 0xFFFFFFFFFFFFFFFELL;
-    if ((v13 & 1) == 0)
+    if ((intersectedDisplayRectCorners & 1) == 0)
     {
       v14 = v9;
     }
 
-    if ((v13 & 2) != 0)
+    if ((intersectedDisplayRectCorners & 2) != 0)
     {
       v14 &= ~2uLL;
     }
 
-    if ((v13 & 4) != 0)
+    if ((intersectedDisplayRectCorners & 4) != 0)
     {
       v14 &= ~4uLL;
     }
 
-    if ((v13 & 8) != 0)
+    if ((intersectedDisplayRectCorners & 8) != 0)
     {
       v9 = v14 & 0xFFFFFFFFFFFFFFF7;
     }
@@ -824,39 +824,39 @@ LABEL_5:
 
 - (id)_layoutSettings
 {
-  v2 = [(SBContinuousExposeAppToAppModifier *)self switcherSettings];
-  v3 = [v2 windowingSettings];
-  v4 = [v3 appToAppLayoutSettings];
+  switcherSettings = [(SBContinuousExposeAppToAppModifier *)self switcherSettings];
+  windowingSettings = [switcherSettings windowingSettings];
+  appToAppLayoutSettings = [windowingSettings appToAppLayoutSettings];
 
-  return v4;
+  return appToAppLayoutSettings;
 }
 
-- (BOOL)_shouldIgnoreTapsUntilDelay:(double *)a3
+- (BOOL)_shouldIgnoreTapsUntilDelay:(double *)delay
 {
-  v5 = [(SBContinuousExposeAppToAppModifier *)self isMorphFromInAppViewTransition];
-  if (v5)
+  isMorphFromInAppViewTransition = [(SBContinuousExposeAppToAppModifier *)self isMorphFromInAppViewTransition];
+  if (isMorphFromInAppViewTransition)
   {
-    v6 = [(SBContinuousExposeAppToAppModifier *)self switcherSettings];
-    v7 = [v6 animationSettings];
-    [v7 disableTapDuringMorphFromInAppViewTransitionDelay];
+    switcherSettings = [(SBContinuousExposeAppToAppModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings disableTapDuringMorphFromInAppViewTransitionDelay];
     v9 = v8;
     UIAnimationDragCoefficient();
-    *a3 = v9 * v10;
+    *delay = v9 * v10;
   }
 
-  return v5;
+  return isMorphFromInAppViewTransition;
 }
 
-- (id)_topMostDisplayItemInDisplayItemLayoutAttributesMap:(id)a3
+- (id)_topMostDisplayItemInDisplayItemLayoutAttributesMap:(id)map
 {
-  v3 = a3;
-  v4 = [v3 allKeys];
-  v5 = SBDisplayItemDescendingZOrderComparator(v3);
+  mapCopy = map;
+  allKeys = [mapCopy allKeys];
+  v5 = SBDisplayItemDescendingZOrderComparator(mapCopy);
 
-  v6 = [v4 sortedArrayUsingComparator:v5];
-  v7 = [v6 firstObject];
+  v6 = [allKeys sortedArrayUsingComparator:v5];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
 - (void)initWithTransitionID:(uint64_t)a1 fromAppLayout:(uint64_t)a2 fromInterfaceOrientation:toAppLayout:toInterfaceOrientation:fromDisplayItemLayoutAttributesMap:toDisplayItemLayoutAttributesMap:.cold.1(uint64_t a1, uint64_t a2)

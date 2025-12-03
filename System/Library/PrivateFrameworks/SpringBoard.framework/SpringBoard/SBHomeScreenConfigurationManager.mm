@@ -2,18 +2,18 @@
 - (SBHomeScreenConfigurationManager)init;
 - (id)focusModeManager;
 - (id)iconController;
-- (id)iconForApp:(void *)a3 iconModel:(void *)a4 rootFolder:;
-- (id)iconForItem:(void *)a3 iconModel:(void *)a4 rootFolder:;
+- (id)iconForApp:(void *)app iconModel:(void *)model rootFolder:;
+- (id)iconForItem:(void *)item iconModel:(void *)model rootFolder:;
 - (id)iconManager;
 - (id)rootFolder;
-- (void)applyDockItems:(void *)a3 toFocusMode:(void *)a4 iconModel:(void *)a5 rootFolder:;
-- (void)applyHomeScreenItems:(void *)a3 toFocusMode:(void *)a4 iconModel:(void *)a5 rootFolder:;
-- (void)configurationServer:(id)a3 didReceiveConfiguration:(id)a4 completion:(id)a5;
-- (void)configurationServerDidBeginConfigurationSession:(id)a3 completion:(id)a4;
-- (void)configurationServerDidEndConfigurationSession:(id)a3 completion:(id)a4;
-- (void)iconModelDidLayout:(uint64_t)a1;
-- (void)teardownFocusMode:(void *)a3 rootFolder:;
-- (void)updateHomeScreenWithConfiguration:(void *)a3 completion:;
+- (void)applyDockItems:(void *)items toFocusMode:(void *)mode iconModel:(void *)model rootFolder:;
+- (void)applyHomeScreenItems:(void *)items toFocusMode:(void *)mode iconModel:(void *)model rootFolder:;
+- (void)configurationServer:(id)server didReceiveConfiguration:(id)configuration completion:(id)completion;
+- (void)configurationServerDidBeginConfigurationSession:(id)session completion:(id)completion;
+- (void)configurationServerDidEndConfigurationSession:(id)session completion:(id)completion;
+- (void)iconModelDidLayout:(uint64_t)layout;
+- (void)teardownFocusMode:(void *)mode rootFolder:;
+- (void)updateHomeScreenWithConfiguration:(void *)configuration completion:;
 @end
 
 @implementation SBHomeScreenConfigurationManager
@@ -32,15 +32,15 @@
     [(SBHomeScreenConfigurationServer *)&v2->_server->super.isa setDelegate:v2];
     [(SBHomeScreenConfigurationServer *)v2->_server activate];
     objc_initWeak(&location, v2);
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    v6 = [MEMORY[0x277CCABD8] mainQueue];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v7 = *MEMORY[0x277D666F0];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __40__SBHomeScreenConfigurationManager_init__block_invoke;
     v10[3] = &unk_2783AFD98;
     objc_copyWeak(&v11, &location);
-    v8 = [v5 addObserverForName:v7 object:0 queue:v6 usingBlock:v10];
+    v8 = [defaultCenter addObserverForName:v7 object:0 queue:mainQueue usingBlock:v10];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -69,9 +69,9 @@ void __55__SBHomeScreenConfigurationManager_iconModelDidLayout___block_invoke(ui
   }
 }
 
-- (void)configurationServerDidBeginConfigurationSession:(id)a3 completion:(id)a4
+- (void)configurationServerDidBeginConfigurationSession:(id)session completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = SBLogHomeScreenConfiguration();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -79,31 +79,31 @@ void __55__SBHomeScreenConfigurationManager_iconModelDidLayout___block_invoke(ui
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Beginning configuration session", v6, 2u);
   }
 
-  v4[2](v4, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)configurationServer:(id)a3 didReceiveConfiguration:(id)a4 completion:(id)a5
+- (void)configurationServer:(id)server didReceiveConfiguration:(id)configuration completion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a5;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v8 = SBLogHomeScreenConfiguration();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = v6;
+    v13 = configurationCopy;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Received configuration %{public}@", buf, 0xCu);
   }
 
-  v11 = v6;
-  v9 = v7;
-  v10 = v6;
+  v11 = configurationCopy;
+  v9 = completionCopy;
+  v10 = configurationCopy;
   BSDispatchMain();
 }
 
-- (void)configurationServerDidEndConfigurationSession:(id)a3 completion:(id)a4
+- (void)configurationServerDidEndConfigurationSession:(id)session completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = SBLogHomeScreenConfiguration();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -111,13 +111,13 @@ void __55__SBHomeScreenConfigurationManager_iconModelDidLayout___block_invoke(ui
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Ending configuration session", buf, 2u);
   }
 
-  v6 = v4;
+  v6 = completionCopy;
   BSDispatchMain();
 }
 
-- (void)iconModelDidLayout:(uint64_t)a1
+- (void)iconModelDidLayout:(uint64_t)layout
 {
-  if (a1 && *(a1 + 16))
+  if (layout && *(layout + 16))
   {
     v2 = SBLogHomeScreenConfiguration();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
@@ -126,52 +126,52 @@ void __55__SBHomeScreenConfigurationManager_iconModelDidLayout___block_invoke(ui
       _os_log_impl(&dword_21ED4E000, v2, OS_LOG_TYPE_INFO, "Updating installed focus mode because icon model laid out", v3, 2u);
     }
 
-    [(SBHomeScreenConfigurationManager *)a1 updateHomeScreenWithConfiguration:&__block_literal_global_217 completion:?];
+    [(SBHomeScreenConfigurationManager *)layout updateHomeScreenWithConfiguration:&__block_literal_global_217 completion:?];
   }
 }
 
-- (void)updateHomeScreenWithConfiguration:(void *)a3 completion:
+- (void)updateHomeScreenWithConfiguration:(void *)configuration completion:
 {
   v31 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  configurationCopy = configuration;
+  if (self)
   {
     BSDispatchQueueAssertMain();
-    v7 = [(SBHomeScreenConfigurationManager *)a1 rootFolder];
-    v8 = [v7 model];
-    if (v8)
+    rootFolder = [(SBHomeScreenConfigurationManager *)self rootFolder];
+    model = [rootFolder model];
+    if (model)
     {
-      v12 = *(a1 + 24);
+      v12 = *(self + 24);
       if (v12)
       {
-        [(SBHomeScreenConfigurationManager *)a1 teardownFocusMode:v12 rootFolder:v7];
+        [(SBHomeScreenConfigurationManager *)self teardownFocusMode:v12 rootFolder:rootFolder];
       }
 
       if (v5)
       {
         v15 = MEMORY[0x277CCACA8];
-        v16 = [MEMORY[0x277CCAD78] UUID];
-        v17 = [v16 UUIDString];
-        v18 = [v15 stringWithFormat:@"com.apple.SpringBoard.HomeScreenConfigurationService.configuration.%@", v17];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        uUIDString = [uUID UUIDString];
+        v18 = [v15 stringWithFormat:@"com.apple.SpringBoard.HomeScreenConfigurationService.configuration.%@", uUIDString];
 
         v28 = v18;
-        v19 = [objc_alloc(MEMORY[0x277D66198]) initWithIdentifier:v18 folder:v7];
-        v20 = *(a1 + 24);
-        *(a1 + 24) = v19;
+        v19 = [objc_alloc(MEMORY[0x277D66198]) initWithIdentifier:v18 folder:rootFolder];
+        v20 = *(self + 24);
+        *(self + 24) = v19;
 
-        v21 = [v5 layout];
-        v22 = [v21 dockItems];
-        if (v22)
+        layout = [v5 layout];
+        dockItems = [layout dockItems];
+        if (dockItems)
         {
-          [(SBHomeScreenConfigurationManager *)a1 applyDockItems:v22 toFocusMode:v19 iconModel:v8 rootFolder:v7];
+          [(SBHomeScreenConfigurationManager *)self applyDockItems:dockItems toFocusMode:v19 iconModel:model rootFolder:rootFolder];
         }
 
-        v23 = [v21 items];
-        [(SBHomeScreenConfigurationManager *)a1 applyHomeScreenItems:v23 toFocusMode:v19 iconModel:v8 rootFolder:v7];
+        items = [layout items];
+        [(SBHomeScreenConfigurationManager *)self applyHomeScreenItems:items toFocusMode:v19 iconModel:model rootFolder:rootFolder];
 
-        v24 = [(SBHomeScreenConfigurationManager *)a1 focusModeManager];
-        [v24 donateFocusMode:v19 fromSource:2];
+        focusModeManager = [(SBHomeScreenConfigurationManager *)self focusModeManager];
+        [focusModeManager donateFocusMode:v19 fromSource:2];
 
         v25 = SBLogHomeScreenConfiguration();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -184,11 +184,11 @@ void __55__SBHomeScreenConfigurationManager_iconModelDidLayout___block_invoke(ui
 
       else
       {
-        v13 = [(SBHomeScreenConfigurationManager *)a1 focusModeManager];
-        [v13 donateFocusMode:0 fromSource:2];
+        focusModeManager2 = [(SBHomeScreenConfigurationManager *)self focusModeManager];
+        [focusModeManager2 donateFocusMode:0 fromSource:2];
 
-        v14 = *(a1 + 24);
-        *(a1 + 24) = 0;
+        v14 = *(self + 24);
+        *(self + 24) = 0;
       }
 
       v26 = OUTLINED_FUNCTION_0_35();
@@ -234,38 +234,38 @@ void __93__SBHomeScreenConfigurationManager_configurationServerDidEndConfigurati
 
 - (id)rootFolder
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(SBHomeScreenConfigurationManager *)a1 iconManager];
-    v2 = [v1 rootFolder];
+    iconManager = [(SBHomeScreenConfigurationManager *)self iconManager];
+    rootFolder = [iconManager rootFolder];
   }
 
   else
   {
-    v2 = 0;
+    rootFolder = 0;
   }
 
-  return v2;
+  return rootFolder;
 }
 
-- (void)teardownFocusMode:(void *)a3 rootFolder:
+- (void)teardownFocusMode:(void *)mode rootFolder:
 {
   v26 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  modeCopy = mode;
+  if (self)
   {
     v7 = SBLogHomeScreenConfiguration();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v5 identifier];
+      identifier = [v5 identifier];
       *buf = 138412290;
-      v25 = v8;
+      v25 = identifier;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Tearing down focus mode with ID: %@", buf, 0xCu);
     }
 
-    v9 = [v5 lists];
-    v10 = [v9 copy];
+    lists = [v5 lists];
+    v10 = [lists copy];
 
     v21 = 0u;
     v22 = 0u;
@@ -289,7 +289,7 @@ void __93__SBHomeScreenConfigurationManager_configurationServerDidEndConfigurati
           v16 = *(*(&v19 + 1) + 8 * i);
           [v16 removeAllIcons];
           [v5 removeFromList:v16];
-          [v6 removeList:v16];
+          [modeCopy removeList:v16];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -298,11 +298,11 @@ void __93__SBHomeScreenConfigurationManager_configurationServerDidEndConfigurati
       while (v13);
     }
 
-    v17 = [v5 dockList];
-    v18 = v17;
-    if (v17)
+    dockList = [v5 dockList];
+    v18 = dockList;
+    if (dockList)
     {
-      [v17 removeAllIcons];
+      [dockList removeAllIcons];
       [v5 setDockList:0];
     }
   }
@@ -310,77 +310,77 @@ void __93__SBHomeScreenConfigurationManager_configurationServerDidEndConfigurati
 
 - (id)focusModeManager
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(SBHomeScreenConfigurationManager *)a1 iconManager];
-    v2 = [v1 focusModeManager];
+    iconManager = [(SBHomeScreenConfigurationManager *)self iconManager];
+    focusModeManager = [iconManager focusModeManager];
   }
 
   else
   {
-    v2 = 0;
+    focusModeManager = 0;
   }
 
-  return v2;
+  return focusModeManager;
 }
 
-- (void)applyDockItems:(void *)a3 toFocusMode:(void *)a4 iconModel:(void *)a5 rootFolder:
+- (void)applyDockItems:(void *)items toFocusMode:(void *)mode iconModel:(void *)model rootFolder:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a1)
+  itemsCopy = items;
+  modeCopy = mode;
+  modelCopy = model;
+  if (self)
   {
-    v13 = [v10 dockList];
-    if (!v13)
+    dockList = [itemsCopy dockList];
+    if (!dockList)
     {
-      v13 = [objc_alloc(MEMORY[0x277D663C0]) initWithFolder:v12 maxIconCount:{objc_msgSend(v11, "maxIconCountForDock")}];
-      [v10 setDockList:v13];
+      dockList = [objc_alloc(MEMORY[0x277D663C0]) initWithFolder:modelCopy maxIconCount:{objc_msgSend(modeCopy, "maxIconCountForDock")}];
+      [itemsCopy setDockList:dockList];
     }
 
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __84__SBHomeScreenConfigurationManager_applyDockItems_toFocusMode_iconModel_rootFolder___block_invoke;
     v15[3] = &unk_2783B9FF8;
-    v15[4] = a1;
-    v16 = v11;
-    v17 = v12;
+    v15[4] = self;
+    v16 = modeCopy;
+    v17 = modelCopy;
     v14 = [v9 bs_compactMap:v15];
-    [v13 setIcons:v14];
+    [dockList setIcons:v14];
   }
 }
 
-- (void)applyHomeScreenItems:(void *)a3 toFocusMode:(void *)a4 iconModel:(void *)a5 rootFolder:
+- (void)applyHomeScreenItems:(void *)items toFocusMode:(void *)mode iconModel:(void *)model rootFolder:
 {
   v46 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a1)
+  itemsCopy = items;
+  modeCopy = mode;
+  modelCopy = model;
+  if (self)
   {
-    v32 = [v10 lists];
-    v13 = [v32 bs_reverse];
-    v14 = [v13 mutableCopy];
+    lists = [itemsCopy lists];
+    bs_reverse = [lists bs_reverse];
+    v14 = [bs_reverse mutableCopy];
 
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = __90__SBHomeScreenConfigurationManager_applyHomeScreenItems_toFocusMode_iconModel_rootFolder___block_invoke;
     v38[3] = &unk_2783B9FF8;
-    v38[4] = a1;
-    v39 = v11;
-    v15 = v12;
+    v38[4] = self;
+    v39 = modeCopy;
+    v15 = modelCopy;
     v40 = v15;
     v16 = [v9 bs_compactMap:v38];
     if ([v16 count])
     {
       do
       {
-        v17 = [v14 lastObject];
-        if (v17)
+        lastObject = [v14 lastObject];
+        if (lastObject)
         {
-          v18 = v17;
+          v18 = lastObject;
           [v14 removeLastObject];
         }
 
@@ -388,7 +388,7 @@ void __93__SBHomeScreenConfigurationManager_configurationServerDidEndConfigurati
         {
           v18 = [v15 insertEmptyListAtIndex:0];
           [v18 setHidden:1];
-          [v10 addToList:v18];
+          [itemsCopy addToList:v18];
         }
 
         v19 = [v18 setIcons:v16 gridCellInfoOptions:0];
@@ -404,13 +404,13 @@ void __93__SBHomeScreenConfigurationManager_configurationServerDidEndConfigurati
       v19 = v16;
     }
 
-    v33 = v12;
+    v33 = modelCopy;
     v20 = v9;
     v21 = SBLogHomeScreenConfiguration();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [v10 lists];
-      v23 = [v22 count];
+      lists2 = [itemsCopy lists];
+      v23 = [lists2 count];
       v24 = v23 - [v14 count];
       v25 = [v14 count];
       *buf = 134218240;
@@ -440,7 +440,7 @@ void __93__SBHomeScreenConfigurationManager_configurationServerDidEndConfigurati
           }
 
           v31 = *(*(&v34 + 1) + 8 * i);
-          [v10 removeFromList:v31];
+          [itemsCopy removeFromList:v31];
           [v15 removeList:v31];
         }
 
@@ -451,54 +451,54 @@ void __93__SBHomeScreenConfigurationManager_configurationServerDidEndConfigurati
     }
 
     v9 = v20;
-    v12 = v33;
+    modelCopy = v33;
   }
 }
 
 - (id)iconController
 {
-  if (a1)
+  if (self)
   {
-    v1 = [SBApp windowSceneManager];
-    v2 = [v1 embeddedDisplayWindowScene];
-    v3 = [v2 iconController];
+    windowSceneManager = [SBApp windowSceneManager];
+    embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
+    iconController = [embeddedDisplayWindowScene iconController];
   }
 
   else
   {
-    v3 = 0;
+    iconController = 0;
   }
 
-  return v3;
+  return iconController;
 }
 
 - (id)iconManager
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(SBHomeScreenConfigurationManager *)a1 iconController];
-    v2 = [v1 iconManager];
+    iconController = [(SBHomeScreenConfigurationManager *)self iconController];
+    iconManager = [iconController iconManager];
   }
 
   else
   {
-    v2 = 0;
+    iconManager = 0;
   }
 
-  return v2;
+  return iconManager;
 }
 
-- (id)iconForItem:(void *)a3 iconModel:(void *)a4 rootFolder:
+- (id)iconForItem:(void *)item iconModel:(void *)model rootFolder:
 {
   v14 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  itemCopy = item;
+  modelCopy = model;
+  if (self)
   {
     if ([v7 kind] == 1)
     {
-      a1 = [(SBHomeScreenConfigurationManager *)a1 iconForApp:v7 iconModel:v8 rootFolder:v9];
+      self = [(SBHomeScreenConfigurationManager *)self iconForApp:v7 iconModel:itemCopy rootFolder:modelCopy];
     }
 
     else
@@ -511,35 +511,35 @@ void __93__SBHomeScreenConfigurationManager_configurationServerDidEndConfigurati
         _os_log_error_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_ERROR, "Unsupported home screen item type: %{public}@", &v12, 0xCu);
       }
 
-      a1 = 0;
+      self = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)iconForApp:(void *)a3 iconModel:(void *)a4 rootFolder:
+- (id)iconForApp:(void *)app iconModel:(void *)model rootFolder:
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  appCopy = app;
+  modelCopy = model;
+  if (self)
   {
-    v9 = [a2 bundleIdentifier];
+    bundleIdentifier = [a2 bundleIdentifier];
     v10 = SBLogHomeScreenConfiguration();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138543362;
-      v17 = v9;
+      v17 = bundleIdentifier;
       _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "Creating icon for app with bundle identifier: %{public}@", &v16, 0xCu);
     }
 
-    v11 = [v7 applicationIconForBundleIdentifier:v9];
+    v11 = [appCopy applicationIconForBundleIdentifier:bundleIdentifier];
     if (v11)
     {
-      if ([v8 containsIcon:v11])
+      if ([modelCopy containsIcon:v11])
       {
-        v12 = [v7 addAdditionalIconMatchingIcon:v11];
+        v12 = [appCopy addAdditionalIconMatchingIcon:v11];
       }
 
       else
@@ -556,7 +556,7 @@ void __93__SBHomeScreenConfigurationManager_configurationServerDidEndConfigurati
       if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
       {
         v16 = 138543362;
-        v17 = v9;
+        v17 = bundleIdentifier;
         _os_log_fault_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_FAULT, "Unable to create app icon for suggested bundle identifier: %{public}@", &v16, 0xCu);
       }
 

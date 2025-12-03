@@ -1,24 +1,24 @@
 @interface SFTabOverview
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)isHidden;
-- (SFTabOverview)initWithFrame:(CGRect)a3;
-- (id)viewForItemAtIndex:(int64_t)a3;
-- (int64_t)indexInAllItemsForItemView:(id)a3;
+- (SFTabOverview)initWithFrame:(CGRect)frame;
+- (id)viewForItemAtIndex:(int64_t)index;
+- (int64_t)indexInAllItemsForItemView:(id)view;
 - (int64_t)totalItemCount;
 - (void)cancelKeyPressed;
 - (void)contentSizeCategoryDidChange;
 - (void)layoutSubviews;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setHidden:(BOOL)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation SFTabOverview
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v3 = *(&self->super.super.super.super.isa + OBJC_IVAR___SFTabOverview_closingItemsContainerView);
-  v15 = self;
+  selfCopy = self;
   v4 = sub_18B82FEA0();
   [v4 bounds];
   v6 = v5;
@@ -27,15 +27,15 @@
   v12 = v11;
 
   [v3 setBounds_];
-  [(SFTabOverview *)v15 setNeedsLayout];
-  v13 = *(&v15->super.super.super.super.isa + OBJC_IVAR___SFTabOverview_didScroll);
+  [(SFTabOverview *)selfCopy setNeedsLayout];
+  v13 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR___SFTabOverview_didScroll);
   v14 = sub_18BC1E1A8();
   v13(v14);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_18B8700D8();
 }
 
@@ -46,18 +46,18 @@
   return [(SFTabOverview *)&v3 isHidden];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v5 = type metadata accessor for TabOverview();
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(SFTabOverview *)&v9 isHidden];
-  v8.receiver = v6;
+  selfCopy = self;
+  isHidden = [(SFTabOverview *)&v9 isHidden];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(SFTabOverview *)&v8 setHidden:v3];
-  if ([(SFTabOverview *)v6 isHidden]&& (v7 & 1) == 0)
+  [(SFTabOverview *)&v8 setHidden:hiddenCopy];
+  if ([(SFTabOverview *)selfCopy isHidden]&& (isHidden & 1) == 0)
   {
     sub_18B9C3020();
   }
@@ -65,15 +65,15 @@
 
 - (void)contentSizeCategoryDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_18B9BC480();
 }
 
-- (int64_t)indexInAllItemsForItemView:(id)a3
+- (int64_t)indexInAllItemsForItemView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_18B9BD7FC(v4);
+  viewCopy = view;
+  selfCopy = self;
+  v6 = sub_18B9BD7FC(viewCopy);
 
   return v6;
 }
@@ -98,7 +98,7 @@
   v7 = *(&self->super.super._layerRetained + OBJC_IVAR___SFTabOverview_content);
   v13[2] = *(&self->super.super._swiftAnimationInfo + OBJC_IVAR___SFTabOverview_content);
   v13[3] = v7;
-  v8 = self;
+  selfCopy = self;
   sub_18B82B150(v13, &v12);
   v9 = sub_18B866D50();
 
@@ -108,19 +108,19 @@
   return v10;
 }
 
-- (id)viewForItemAtIndex:(int64_t)a3
+- (id)viewForItemAtIndex:(int64_t)index
 {
-  v4 = self;
-  v5 = sub_18B9BE0E0(a3);
+  selfCopy = self;
+  v5 = sub_18B9BE0E0(index);
 
   return v5;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18BC218B8();
     swift_unknownObjectRelease();
@@ -129,10 +129,10 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = sub_18B9BF64C(a3, v10);
+  v8 = sub_18B9BF64C(action, v10);
 
   sub_18B988BAC(v10, &qword_1EA9D5220);
   return v8;
@@ -140,21 +140,21 @@
 
 - (void)cancelKeyPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_18B9C19AC();
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  x = a5->x;
-  y = a5->y;
+  x = offset->x;
+  y = offset->y;
   v8 = *(**(&self->super.super.super.super.isa + OBJC_IVAR___SFTabOverview_gridLayout) + 1168);
-  v10 = self;
-  a5->x = v8(x, y);
-  a5->y = v9;
+  selfCopy = self;
+  offset->x = v8(x, y);
+  offset->y = v9;
 }
 
-- (SFTabOverview)initWithFrame:(CGRect)a3
+- (SFTabOverview)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

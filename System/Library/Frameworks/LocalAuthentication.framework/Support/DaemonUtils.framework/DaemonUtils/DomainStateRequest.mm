@@ -1,16 +1,16 @@
 @interface DomainStateRequest
-- (DomainStateRequest)initWithOptions:(id)a3 client:(id)a4 contextID:(id)a5;
+- (DomainStateRequest)initWithOptions:(id)options client:(id)client contextID:(id)d;
 - (LACXPCClient)client;
 - (NSNumber)userID;
 @end
 
 @implementation DomainStateRequest
 
-- (DomainStateRequest)initWithOptions:(id)a3 client:(id)a4 contextID:(id)a5
+- (DomainStateRequest)initWithOptions:(id)options client:(id)client contextID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  optionsCopy = options;
+  clientCopy = client;
+  dCopy = d;
   v12 = +[Caller current];
   v15.receiver = self;
   v15.super_class = DomainStateRequest;
@@ -18,9 +18,9 @@
 
   if (v13)
   {
-    objc_storeStrong(&v13->_contextID, a5);
-    objc_storeStrong(&v13->_options, a3);
-    objc_storeWeak(&v13->_client, v10);
+    objc_storeStrong(&v13->_contextID, d);
+    objc_storeStrong(&v13->_options, options);
+    objc_storeWeak(&v13->_client, clientCopy);
   }
 
   return v13;

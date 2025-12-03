@@ -1,7 +1,7 @@
 @interface ATXNotificationAdjacentSuggestionMetricsLogger
 - (ATXNotificationAdjacentSuggestionMetricsLogger)init;
-- (ATXNotificationAdjacentSuggestionMetricsLogger)initWithDatastore:(id)a3;
-- (void)logNotificationAdjacentSuggestionMetricsWithXPCActivity:(id)a3;
+- (ATXNotificationAdjacentSuggestionMetricsLogger)initWithDatastore:(id)datastore;
+- (void)logNotificationAdjacentSuggestionMetricsWithXPCActivity:(id)activity;
 @end
 
 @implementation ATXNotificationAdjacentSuggestionMetricsLogger
@@ -14,25 +14,25 @@
   return v4;
 }
 
-- (ATXNotificationAdjacentSuggestionMetricsLogger)initWithDatastore:(id)a3
+- (ATXNotificationAdjacentSuggestionMetricsLogger)initWithDatastore:(id)datastore
 {
-  v5 = a3;
+  datastoreCopy = datastore;
   v9.receiver = self;
   v9.super_class = ATXNotificationAdjacentSuggestionMetricsLogger;
   v6 = [(ATXNotificationAdjacentSuggestionMetricsLogger *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_datastore, a3);
+    objc_storeStrong(&v6->_datastore, datastore);
   }
 
   return v7;
 }
 
-- (void)logNotificationAdjacentSuggestionMetricsWithXPCActivity:(id)a3
+- (void)logNotificationAdjacentSuggestionMetricsWithXPCActivity:(id)activity
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activityCopy = activity;
   v5 = __atxlog_handle_metrics();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -44,7 +44,7 @@
   }
 
   [(ATXNotificationAndSuggestionDatastore *)self->_datastore updateDatabase];
-  if ([v4 didDefer])
+  if ([activityCopy didDefer])
   {
     v8 = __atxlog_handle_metrics();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -76,10 +76,10 @@
     }
 
     v17 = [(ATXNotificationAndSuggestionDatastore *)self->_datastore metricsForSuggestionsSinceCompletionTimestamp:v13];
-    v18 = [v4 didDefer];
+    didDefer = [activityCopy didDefer];
     v19 = __atxlog_handle_metrics();
     v20 = os_log_type_enabled(v19, OS_LOG_TYPE_INFO);
-    if (v18)
+    if (didDefer)
     {
       if (v20)
       {
@@ -136,7 +136,7 @@
             }
 
             [v32 logToCoreAnalytics];
-            if ([v4 didDefer])
+            if ([activityCopy didDefer])
             {
               v36 = __atxlog_handle_metrics();
               if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))

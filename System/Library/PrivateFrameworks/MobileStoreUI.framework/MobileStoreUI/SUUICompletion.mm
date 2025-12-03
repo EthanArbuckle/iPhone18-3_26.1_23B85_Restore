@@ -1,20 +1,20 @@
 @interface SUUICompletion
 - (NSMutableDictionary)cacheRepresentation;
-- (SUUICompletion)initWithCacheRepresentation:(id)a3;
-- (SUUICompletion)initWithCompletionDictionary:(id)a3;
+- (SUUICompletion)initWithCacheRepresentation:(id)representation;
+- (SUUICompletion)initWithCompletionDictionary:(id)dictionary;
 @end
 
 @implementation SUUICompletion
 
-- (SUUICompletion)initWithCompletionDictionary:(id)a3
+- (SUUICompletion)initWithCompletionDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = SUUICompletion;
   v5 = [(SUUICompletion *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"term"];
+    v6 = [dictionaryCopy objectForKey:@"term"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -23,7 +23,7 @@
       v5->_title = v7;
     }
 
-    v9 = [v4 objectForKey:@"search-field-term"];
+    v9 = [dictionaryCopy objectForKey:@"search-field-term"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -33,7 +33,7 @@
       v5->_alternateTitle = v10;
     }
 
-    v12 = [v4 objectForKey:@"url"];
+    v12 = [dictionaryCopy objectForKey:@"url"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -47,9 +47,9 @@
   return v5;
 }
 
-- (SUUICompletion)initWithCacheRepresentation:(id)a3
+- (SUUICompletion)initWithCacheRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -58,7 +58,7 @@
     v5 = [(SUUICompletion *)&v16 init];
     if (v5)
     {
-      v6 = [v4 objectForKey:@"title"];
+      v6 = [representationCopy objectForKey:@"title"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -67,7 +67,7 @@
         v5->_title = v7;
       }
 
-      v9 = [v4 objectForKey:@"alttitle"];
+      v9 = [representationCopy objectForKey:@"alttitle"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -77,7 +77,7 @@
         v5->_alternateTitle = v10;
       }
 
-      v12 = [v4 objectForKey:@"url"];
+      v12 = [representationCopy objectForKey:@"url"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -100,12 +100,12 @@
 
 - (NSMutableDictionary)cacheRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   title = self->_title;
   if (title)
   {
-    [v3 setObject:title forKey:@"title"];
+    [dictionary setObject:title forKey:@"title"];
   }
 
   alternateTitle = self->_alternateTitle;

@@ -6,10 +6,10 @@
 
 - (BOOL)bk_isStreamingAssetURL
 {
-  v2 = [(NSURL *)self pathExtension];
-  v3 = [v2 bk_isPlaylistExtension];
+  pathExtension = [(NSURL *)self pathExtension];
+  bk_isPlaylistExtension = [pathExtension bk_isPlaylistExtension];
 
-  return v3;
+  return bk_isPlaylistExtension;
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface SAItemSizeInfo
 - (SAItemSizeInfo)init;
-- (SAItemSizeInfo)initWithDataSize:(int64_t)a3 cloneSize:(int64_t)a4 purgeableSize:(int64_t)a5;
-- (id)generateDictionary:(id)a3;
-- (void)checkDirStatSizeInconsistency:(id)a3 path:(id)a4 diskCapacity:(int64_t)a5;
-- (void)updateWithSizeInfo:(id)a3;
+- (SAItemSizeInfo)initWithDataSize:(int64_t)size cloneSize:(int64_t)cloneSize purgeableSize:(int64_t)purgeableSize;
+- (id)generateDictionary:(id)dictionary;
+- (void)checkDirStatSizeInconsistency:(id)inconsistency path:(id)path diskCapacity:(int64_t)capacity;
+- (void)updateWithSizeInfo:(id)info;
 @end
 
 @implementation SAItemSizeInfo
@@ -28,7 +28,7 @@
   return v3;
 }
 
-- (SAItemSizeInfo)initWithDataSize:(int64_t)a3 cloneSize:(int64_t)a4 purgeableSize:(int64_t)a5
+- (SAItemSizeInfo)initWithDataSize:(int64_t)size cloneSize:(int64_t)cloneSize purgeableSize:(int64_t)purgeableSize
 {
   v12.receiver = self;
   v12.super_class = SAItemSizeInfo;
@@ -36,46 +36,46 @@
   v9 = v8;
   if (v8)
   {
-    v8->_cloneSize = a4;
-    v8->_dataSize = a3;
-    v8->_purgeableSize = a5;
+    v8->_cloneSize = cloneSize;
+    v8->_dataSize = size;
+    v8->_purgeableSize = purgeableSize;
     v10 = v8;
   }
 
   return v9;
 }
 
-- (void)updateWithSizeInfo:(id)a3
+- (void)updateWithSizeInfo:(id)info
 {
-  v4 = a3;
-  -[SAItemSizeInfo setDataSize:](self, "setDataSize:", [v4 dataSize] + -[SAItemSizeInfo dataSize](self, "dataSize"));
-  -[SAItemSizeInfo setCloneSize:](self, "setCloneSize:", [v4 cloneSize] + -[SAItemSizeInfo cloneSize](self, "cloneSize"));
-  -[SAItemSizeInfo setPhysicalSize:](self, "setPhysicalSize:", [v4 physicalSize] + -[SAItemSizeInfo physicalSize](self, "physicalSize"));
-  v5 = [v4 purgeableSize];
+  infoCopy = info;
+  -[SAItemSizeInfo setDataSize:](self, "setDataSize:", [infoCopy dataSize] + -[SAItemSizeInfo dataSize](self, "dataSize"));
+  -[SAItemSizeInfo setCloneSize:](self, "setCloneSize:", [infoCopy cloneSize] + -[SAItemSizeInfo cloneSize](self, "cloneSize"));
+  -[SAItemSizeInfo setPhysicalSize:](self, "setPhysicalSize:", [infoCopy physicalSize] + -[SAItemSizeInfo physicalSize](self, "physicalSize"));
+  purgeableSize = [infoCopy purgeableSize];
 
-  v6 = &v5[[(SAItemSizeInfo *)self purgeableSize]];
+  v6 = &purgeableSize[[(SAItemSizeInfo *)self purgeableSize]];
 
   [(SAItemSizeInfo *)self setPurgeableSize:v6];
 }
 
-- (id)generateDictionary:(id)a3
+- (id)generateDictionary:(id)dictionary
 {
   dataSize = self->_dataSize;
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = [NSNumber numberWithLongLong:dataSize];
   v7 = [NSNumber numberWithLongLong:self->_cloneSize];
   v8 = [NSNumber numberWithLongLong:self->_purgeableSize];
   v9 = [NSNumber numberWithLongLong:self->_physicalSize];
   v10 = [NSNumber numberWithUnsignedLongLong:self->_dirStatsID];
-  v11 = [NSDictionary dictionaryWithObjectsAndKeys:v5, @"bundles", v6, @"dataSize", v7, @"cloneSize", v8, @"purgeableSize", v9, @"physicalSize", v10, @"dirStatsID", 0];
+  v11 = [NSDictionary dictionaryWithObjectsAndKeys:dictionaryCopy, @"bundles", v6, @"dataSize", v7, @"cloneSize", v8, @"purgeableSize", v9, @"physicalSize", v10, @"dirStatsID", 0];
 
   return v11;
 }
 
-- (void)checkDirStatSizeInconsistency:(id)a3 path:(id)a4 diskCapacity:(int64_t)a5
+- (void)checkDirStatSizeInconsistency:(id)inconsistency path:(id)path diskCapacity:(int64_t)capacity
 {
-  v8 = a3;
-  v9 = a4;
+  inconsistencyCopy = inconsistency;
+  pathCopy = path;
   if ([(SAItemSizeInfo *)self usedDirStat])
   {
     if ([(SAItemSizeInfo *)self purgeableSize]< 0)
@@ -84,70 +84,70 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v22 = 138412802;
-        v23 = v9;
+        v23 = pathCopy;
         v24 = 2048;
-        v25 = [(SAItemSizeInfo *)self purgeableSize];
+        capacityCopy = [(SAItemSizeInfo *)self purgeableSize];
         v26 = 2112;
-        v27 = v8;
+        v27 = inconsistencyCopy;
         _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Path (%@) dir-stat purgeableSize: %lld < 0 for bundles set %@", &v22, 0x20u);
       }
     }
 
-    v11 = [(SAItemSizeInfo *)self physicalSize];
-    if (v11 < [(SAItemSizeInfo *)self purgeableSize])
+    physicalSize = [(SAItemSizeInfo *)self physicalSize];
+    if (physicalSize < [(SAItemSizeInfo *)self purgeableSize])
     {
       v12 = SALog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v16 = [(SAItemSizeInfo *)self purgeableSize];
-        v17 = [(SAItemSizeInfo *)self physicalSize];
+        purgeableSize = [(SAItemSizeInfo *)self purgeableSize];
+        physicalSize2 = [(SAItemSizeInfo *)self physicalSize];
         v22 = 138413058;
-        v23 = v8;
+        v23 = inconsistencyCopy;
         v24 = 2112;
-        v25 = v9;
+        capacityCopy = pathCopy;
         v26 = 2048;
-        v27 = v16;
+        v27 = purgeableSize;
         v28 = 2048;
-        v29 = v17;
+        v29 = physicalSize2;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%@: Path (%@) dir-stat purgeable size (%lld) is greater than dir-stat physical size (%lld)", &v22, 0x2Au);
       }
     }
 
-    v13 = [(SAItemSizeInfo *)self physicalSize];
-    if (v13 < [(SAItemSizeInfo *)self cloneSize])
+    physicalSize3 = [(SAItemSizeInfo *)self physicalSize];
+    if (physicalSize3 < [(SAItemSizeInfo *)self cloneSize])
     {
       v14 = SALog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v18 = [(SAItemSizeInfo *)self cloneSize];
-        v19 = [(SAItemSizeInfo *)self physicalSize];
+        cloneSize = [(SAItemSizeInfo *)self cloneSize];
+        physicalSize4 = [(SAItemSizeInfo *)self physicalSize];
         v22 = 138413058;
-        v23 = v8;
+        v23 = inconsistencyCopy;
         v24 = 2112;
-        v25 = v9;
+        capacityCopy = pathCopy;
         v26 = 2048;
-        v27 = v18;
+        v27 = cloneSize;
         v28 = 2048;
-        v29 = v19;
+        v29 = physicalSize4;
         _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%@: Path (%@) dir-stat clone size (%lld) is greater than dir-stat physical size (%lld)", &v22, 0x2Au);
       }
     }
 
-    if ([(SAItemSizeInfo *)self physicalSize]> a5)
+    if ([(SAItemSizeInfo *)self physicalSize]> capacity)
     {
       v15 = SALog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v20 = [(SAItemSizeInfo *)self physicalSize];
-        v21 = [(SAItemSizeInfo *)self dirStatsID];
+        physicalSize5 = [(SAItemSizeInfo *)self physicalSize];
+        dirStatsID = [(SAItemSizeInfo *)self dirStatsID];
         v22 = 134218754;
-        v23 = v20;
+        v23 = physicalSize5;
         v24 = 2048;
-        v25 = a5;
+        capacityCopy = capacity;
         v26 = 2048;
-        v27 = v21;
+        v27 = dirStatsID;
         v28 = 2112;
-        v29 = v8;
+        v29 = inconsistencyCopy;
         _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "dirStats physicalSize: %llu > diskCapacity: %llu for dirKey %llu bundleIDs %@", &v22, 0x2Au);
       }
     }

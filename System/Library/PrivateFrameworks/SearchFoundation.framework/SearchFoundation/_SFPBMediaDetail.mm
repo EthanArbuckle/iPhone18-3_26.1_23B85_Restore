@@ -1,37 +1,37 @@
 @interface _SFPBMediaDetail
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBMediaDetail)initWithDictionary:(id)a3;
-- (_SFPBMediaDetail)initWithFacade:(id)a3;
-- (_SFPBMediaDetail)initWithJSON:(id)a3;
+- (_SFPBMediaDetail)initWithDictionary:(id)dictionary;
+- (_SFPBMediaDetail)initWithFacade:(id)facade;
+- (_SFPBMediaDetail)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setTitle:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setTitle:(id)title;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBMediaDetail
 
-- (_SFPBMediaDetail)initWithFacade:(id)a3
+- (_SFPBMediaDetail)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBMediaDetail *)self init];
   if (v5)
   {
-    v6 = [v4 title];
+    title = [facadeCopy title];
 
-    if (v6)
+    if (title)
     {
-      v7 = [v4 title];
-      [(_SFPBMediaDetail *)v5 setTitle:v7];
+      title2 = [facadeCopy title];
+      [(_SFPBMediaDetail *)v5 setTitle:title2];
     }
 
-    v8 = [v4 content];
+    content = [facadeCopy content];
 
-    if (v8)
+    if (content)
     {
       v9 = [_SFPBText alloc];
-      v10 = [v4 content];
-      v11 = [(_SFPBText *)v9 initWithFacade:v10];
+      content2 = [facadeCopy content];
+      v11 = [(_SFPBText *)v9 initWithFacade:content2];
       [(_SFPBMediaDetail *)v5 setContent:v11];
     }
 
@@ -41,15 +41,15 @@
   return v5;
 }
 
-- (_SFPBMediaDetail)initWithDictionary:(id)a3
+- (_SFPBMediaDetail)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = _SFPBMediaDetail;
   v5 = [(_SFPBMediaDetail *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"title"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,7 +57,7 @@
       [(_SFPBMediaDetail *)v5 setTitle:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"content"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"content"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,30 +71,30 @@
   return v5;
 }
 
-- (_SFPBMediaDetail)initWithJSON:(id)a3
+- (_SFPBMediaDetail)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBMediaDetail *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBMediaDetail *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBMediaDetail *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -107,55 +107,55 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_content)
   {
-    v4 = [(_SFPBMediaDetail *)self content];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    content = [(_SFPBMediaDetail *)self content];
+    dictionaryRepresentation = [content dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"content"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"content"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"content"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"content"];
     }
   }
 
   if (self->_title)
   {
-    v7 = [(_SFPBMediaDetail *)self title];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"title"];
+    title = [(_SFPBMediaDetail *)self title];
+    v8 = [title copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"title"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBMediaDetail *)self title];
-  v6 = [v4 title];
-  if ((v5 != 0) == (v6 == 0))
+  title = [(_SFPBMediaDetail *)self title];
+  title2 = [equalCopy title];
+  if ((title != 0) == (title2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_SFPBMediaDetail *)self title];
-  if (v7)
+  title3 = [(_SFPBMediaDetail *)self title];
+  if (title3)
   {
-    v8 = v7;
-    v9 = [(_SFPBMediaDetail *)self title];
-    v10 = [v4 title];
-    v11 = [v9 isEqual:v10];
+    v8 = title3;
+    title4 = [(_SFPBMediaDetail *)self title];
+    title5 = [equalCopy title];
+    v11 = [title4 isEqual:title5];
 
     if (!v11)
     {
@@ -167,12 +167,12 @@
   {
   }
 
-  v5 = [(_SFPBMediaDetail *)self content];
-  v6 = [v4 content];
-  if ((v5 != 0) != (v6 == 0))
+  title = [(_SFPBMediaDetail *)self content];
+  title2 = [equalCopy content];
+  if ((title != 0) != (title2 == 0))
   {
-    v12 = [(_SFPBMediaDetail *)self content];
-    if (!v12)
+    content = [(_SFPBMediaDetail *)self content];
+    if (!content)
     {
 
 LABEL_15:
@@ -180,10 +180,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBMediaDetail *)self content];
-    v15 = [v4 content];
-    v16 = [v14 isEqual:v15];
+    v13 = content;
+    content2 = [(_SFPBMediaDetail *)self content];
+    content3 = [equalCopy content];
+    v16 = [content2 isEqual:content3];
 
     if (v16)
     {
@@ -203,25 +203,25 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_SFPBMediaDetail *)self title];
-  if (v4)
+  toCopy = to;
+  title = [(_SFPBMediaDetail *)self title];
+  if (title)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBMediaDetail *)self content];
-  if (v5)
+  content = [(_SFPBMediaDetail *)self content];
+  if (content)
   {
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   title = self->_title;
   self->_title = v4;
 

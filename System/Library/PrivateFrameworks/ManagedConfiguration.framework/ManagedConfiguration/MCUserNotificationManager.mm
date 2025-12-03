@@ -2,18 +2,18 @@
 + (id)sharedManager;
 - (BOOL)hasOutstandingNotifications;
 - (MCUserNotificationManager)init;
-- (id)_invalidTargetMessageForDevice:(unint64_t)a3;
-- (id)_purgatoryMessageForDevice:(unint64_t)a3;
-- (id)displayQueueProfileError:(id)a3 targetDevice:(unint64_t)a4;
-- (void)_updateTitle:(id *)a3 andMessage:(id *)a4 withTargetFailureInfoForDevice:(unint64_t)a5 fromError:(id)a6;
-- (void)_updateTitle:(id *)a3 andMessage:(id *)a4 withUnavailableTargetInfoForDevice:(unint64_t)a5;
-- (void)cancelNotificationEntriesMatchingPredicate:(id)a3 completionBlock:(id)a4;
-- (void)cancelNotificationsWithIdentifier:(id)a3 completionBlock:(id)a4;
+- (id)_invalidTargetMessageForDevice:(unint64_t)device;
+- (id)_purgatoryMessageForDevice:(unint64_t)device;
+- (id)displayQueueProfileError:(id)error targetDevice:(unint64_t)device;
+- (void)_updateTitle:(id *)title andMessage:(id *)message withTargetFailureInfoForDevice:(unint64_t)device fromError:(id)error;
+- (void)_updateTitle:(id *)title andMessage:(id *)message withUnavailableTargetInfoForDevice:(unint64_t)device;
+- (void)cancelNotificationEntriesMatchingPredicate:(id)predicate completionBlock:(id)block;
+- (void)cancelNotificationsWithIdentifier:(id)identifier completionBlock:(id)block;
 - (void)dealloc;
-- (void)displayUserNotificationWithIdentifier:(id)a3 title:(id)a4 message:(id)a5 defaultButtonText:(id)a6 alternateButtonText:(id)a7 otherButtonText:(id)a8 textfieldPlaceholder:(id)a9 displayOnLockScreen:(BOOL)a10 dismissOnLock:(BOOL)a11 displayInAppWhitelistModes:(BOOL)a12 dismissAfterTimeInterval:(double)a13 assertion:(id)a14 completionBlock:(id)a15;
-- (void)inviteUserToVPPWithTitle:(id)a3 message:(id)a4 assertion:(id)a5 completionBlock:(id)a6;
+- (void)displayUserNotificationWithIdentifier:(id)identifier title:(id)title message:(id)message defaultButtonText:(id)text alternateButtonText:(id)buttonText otherButtonText:(id)otherButtonText textfieldPlaceholder:(id)placeholder displayOnLockScreen:(BOOL)self0 dismissOnLock:(BOOL)self1 displayInAppWhitelistModes:(BOOL)self2 dismissAfterTimeInterval:(double)self3 assertion:(id)self4 completionBlock:(id)self5;
+- (void)inviteUserToVPPWithTitle:(id)title message:(id)message assertion:(id)assertion completionBlock:(id)block;
 - (void)mainQueueDidReceiveAppWhitelistChangedNotification;
-- (void)promptUserToLogIntoiTunesWithTitle:(id)a3 message:(id)a4 assertion:(id)a5 completionBlock:(id)a6;
+- (void)promptUserToLogIntoiTunesWithTitle:(id)title message:(id)message assertion:(id)assertion completionBlock:(id)block;
 @end
 
 @implementation MCUserNotificationManager
@@ -44,14 +44,14 @@ uint64_t __42__MCUserNotificationManager_sharedManager__block_invoke()
   v2 = [(MCUserNotificationManager *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v4 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __33__MCUserNotificationManager_init__block_invoke;
     v7[3] = &unk_1E77D2D00;
     v8 = v2;
-    v5 = [v3 addObserverForName:@"com.apple.managedconfiguration.appwhitelistdidchange" object:0 queue:v4 usingBlock:v7];
+    v5 = [defaultCenter addObserverForName:@"com.apple.managedconfiguration.appwhitelistdidchange" object:0 queue:v4 usingBlock:v7];
   }
 
   return v2;
@@ -69,8 +69,8 @@ void __33__MCUserNotificationManager_init__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(MCUserNotificationManager *)self cancelAllNotificationsCompletionBlock:0];
   v4.receiver = self;
@@ -97,12 +97,12 @@ void __33__MCUserNotificationManager_init__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)promptUserToLogIntoiTunesWithTitle:(id)a3 message:(id)a4 assertion:(id)a5 completionBlock:(id)a6
+- (void)promptUserToLogIntoiTunesWithTitle:(id)title message:(id)message assertion:(id)assertion completionBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  titleCopy = title;
+  messageCopy = message;
+  assertionCopy = assertion;
+  blockCopy = block;
   if (MCIsEffectivelyInAppWhitelistMode())
   {
     v13 = _MCLogObjects;
@@ -112,9 +112,9 @@ void __33__MCUserNotificationManager_init__block_invoke(uint64_t a1)
       _os_log_impl(&dword_1A795B000, v13, OS_LOG_TYPE_ERROR, "Device is in an explicit whitelist mode", buf, 2u);
     }
 
-    if (v12)
+    if (blockCopy)
     {
-      v12[2](v12, 3, 0);
+      blockCopy[2](blockCopy, 3, 0);
     }
   }
 
@@ -125,10 +125,10 @@ void __33__MCUserNotificationManager_init__block_invoke(uint64_t a1)
     v15[1] = 3221225472;
     v15[2] = __98__MCUserNotificationManager_promptUserToLogIntoiTunesWithTitle_message_assertion_completionBlock___block_invoke;
     v15[3] = &unk_1E77D2DA0;
-    v19 = v12;
-    v16 = v9;
-    v17 = v10;
-    v18 = v11;
+    v19 = blockCopy;
+    v16 = titleCopy;
+    v17 = messageCopy;
+    v18 = assertionCopy;
     dispatch_async(v14, v15);
   }
 }
@@ -270,25 +270,25 @@ void __98__MCUserNotificationManager_promptUserToLogIntoiTunesWithTitle_message_
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)inviteUserToVPPWithTitle:(id)a3 message:(id)a4 assertion:(id)a5 completionBlock:(id)a6
+- (void)inviteUserToVPPWithTitle:(id)title message:(id)message assertion:(id)assertion completionBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  titleCopy = title;
+  messageCopy = message;
+  assertionCopy = assertion;
+  blockCopy = block;
   v13 = syncQueue();
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __88__MCUserNotificationManager_inviteUserToVPPWithTitle_message_assertion_completionBlock___block_invoke;
   v18[3] = &unk_1E77D2DA0;
-  v19 = v9;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v14 = v11;
-  v15 = v10;
-  v16 = v9;
-  v17 = v12;
+  v19 = titleCopy;
+  v20 = messageCopy;
+  v21 = assertionCopy;
+  v22 = blockCopy;
+  v14 = assertionCopy;
+  v15 = messageCopy;
+  v16 = titleCopy;
+  v17 = blockCopy;
   dispatch_async(v13, v18);
 }
 
@@ -440,35 +440,35 @@ void __88__MCUserNotificationManager_inviteUserToVPPWithTitle_message_assertion_
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)displayQueueProfileError:(id)a3 targetDevice:(unint64_t)a4
+- (id)displayQueueProfileError:(id)error targetDevice:(unint64_t)device
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 userInfo];
+  errorCopy = error;
+  userInfo = [errorCopy userInfo];
   v8 = *MEMORY[0x1E696AA08];
-  v9 = [v7 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+  v9 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
   v10 = 0;
-  v11 = v6;
+  v11 = errorCopy;
   while (v9)
   {
     v12 = v11;
     v11 = v9;
 
-    v13 = [v11 localizedDescription];
+    localizedDescription = [v11 localizedDescription];
 
-    if (v13)
+    if (localizedDescription)
     {
-      v14 = [v11 localizedDescription];
+      localizedDescription2 = [v11 localizedDescription];
 
-      v10 = v14;
+      v10 = localizedDescription2;
     }
 
-    v15 = [v11 userInfo];
-    v9 = [v15 objectForKeyedSubscript:v8];
+    userInfo2 = [v11 userInfo];
+    v9 = [userInfo2 objectForKeyedSubscript:v8];
   }
 
-  if ([v6 MCContainsErrorDomain:@"MCProfileErrorDomain" code:1016])
+  if ([errorCopy MCContainsErrorDomain:@"MCProfileErrorDomain" code:1016])
   {
     v16 = MCLocalizedString(@"INSTALL_PROFILE_ERROR_INCOMPATIBLE_TITLE");
     v17 = @"INSTALL_PROFILE_ERROR_INCOMPATIBLE_MESSAGE";
@@ -482,15 +482,15 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v6 MCContainsErrorDomain:@"MCProfileErrorDomain" code:1017])
+  if ([errorCopy MCContainsErrorDomain:@"MCProfileErrorDomain" code:1017])
   {
     v16 = MCLocalizedString(@"INSTALL_PROFILE_ERROR_UNSUPPORTED_TITLE");
     v17 = @"INSTALL_PROFILE_ERROR_UNSUPPORTED_MESSAGE";
     goto LABEL_9;
   }
 
-  v26 = [v6 domain];
-  v27 = [v26 isEqualToString:@"MCInstallationErrorDomain"];
+  domain = [errorCopy domain];
+  v27 = [domain isEqualToString:@"MCInstallationErrorDomain"];
 
   if (!v27)
   {
@@ -499,13 +499,13 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v28 = [v6 code];
+  code = [errorCopy code];
   v19 = 0;
-  if (v28 > 4036)
+  if (code > 4036)
   {
-    if (v28 != 4037)
+    if (code != 4037)
     {
-      if (v28 == 4054)
+      if (code == 4054)
       {
         v16 = MCLocalizedString(@"INSTALL_PROFILE_DISABLED_TITLE");
         v30 = @"ERROR_PROFILE_DRIVEN_ENROLLMENT_BLOCKED";
@@ -513,7 +513,7 @@ LABEL_11:
 
       else
       {
-        if (v28 != 4055)
+        if (code != 4055)
         {
 LABEL_43:
           v16 = 0;
@@ -524,7 +524,7 @@ LABEL_12:
             if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_FAULT))
             {
               *buf = 138543362;
-              v43 = v6;
+              v43 = errorCopy;
               _os_log_impl(&dword_1A795B000, v20, OS_LOG_TYPE_FAULT, "Please file a radar to 'Remote Management - MDMv1 | All' to add a user notification for error: %{public}@", buf, 0xCu);
             }
 
@@ -584,8 +584,8 @@ LABEL_19:
       goto LABEL_47;
     }
 
-    v32 = [v6 userInfo];
-    v33 = [v32 objectForKeyedSubscript:@"RestrictionCause"];
+    userInfo3 = [errorCopy userInfo];
+    v33 = [userInfo3 objectForKeyedSubscript:@"RestrictionCause"];
 
     if ([v33 isEqualToString:@"Profile"])
     {
@@ -619,26 +619,26 @@ LABEL_50:
     goto LABEL_10;
   }
 
-  if (v28 != 4009)
+  if (code != 4009)
   {
-    if (v28 == 4035)
+    if (code == 4035)
     {
-      v36 = [v6 userInfo];
-      v37 = [v36 objectForKeyedSubscript:v8];
+      userInfo4 = [errorCopy userInfo];
+      v37 = [userInfo4 objectForKeyedSubscript:v8];
 
       v40 = v10;
       v41 = 0;
-      [(MCUserNotificationManager *)self _updateTitle:&v41 andMessage:&v40 withTargetFailureInfoForDevice:a4 fromError:v37];
+      [(MCUserNotificationManager *)self _updateTitle:&v41 andMessage:&v40 withTargetFailureInfoForDevice:device fromError:v37];
       v16 = v41;
       v18 = v40;
 
       goto LABEL_10;
     }
 
-    if (v28 == 4036)
+    if (code == 4036)
     {
       v16 = MCLocalizedString(@"INSTALL_PROFILE_TITLE");
-      v29 = [(MCUserNotificationManager *)self _purgatoryMessageForDevice:a4];
+      v29 = [(MCUserNotificationManager *)self _purgatoryMessageForDevice:device];
 LABEL_47:
       v18 = v29;
 
@@ -659,47 +659,47 @@ LABEL_21:
   return v11;
 }
 
-- (void)displayUserNotificationWithIdentifier:(id)a3 title:(id)a4 message:(id)a5 defaultButtonText:(id)a6 alternateButtonText:(id)a7 otherButtonText:(id)a8 textfieldPlaceholder:(id)a9 displayOnLockScreen:(BOOL)a10 dismissOnLock:(BOOL)a11 displayInAppWhitelistModes:(BOOL)a12 dismissAfterTimeInterval:(double)a13 assertion:(id)a14 completionBlock:(id)a15
+- (void)displayUserNotificationWithIdentifier:(id)identifier title:(id)title message:(id)message defaultButtonText:(id)text alternateButtonText:(id)buttonText otherButtonText:(id)otherButtonText textfieldPlaceholder:(id)placeholder displayOnLockScreen:(BOOL)self0 dismissOnLock:(BOOL)self1 displayInAppWhitelistModes:(BOOL)self2 dismissAfterTimeInterval:(double)self3 assertion:(id)self4 completionBlock:(id)self5
 {
-  v41 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = a6;
-  v24 = a7;
-  v40 = a8;
-  v25 = a9;
-  v39 = a14;
-  v38 = a15;
-  if (a12 || !MCIsEffectivelyInAppWhitelistMode())
+  identifierCopy = identifier;
+  titleCopy = title;
+  messageCopy = message;
+  textCopy = text;
+  buttonTextCopy = buttonText;
+  otherButtonTextCopy = otherButtonText;
+  placeholderCopy = placeholder;
+  assertionCopy = assertion;
+  blockCopy = block;
+  if (modes || !MCIsEffectivelyInAppWhitelistMode())
   {
-    v42 = v23;
-    v32 = v24;
-    v33 = v21;
-    v26 = v22;
+    v42 = textCopy;
+    v32 = buttonTextCopy;
+    v33 = titleCopy;
+    v26 = messageCopy;
     v34 = objc_alloc_init(MCUserNotificationQueueEntry);
-    [(MCUserNotificationQueueEntry *)v34 setTitle:v21];
-    [(MCUserNotificationQueueEntry *)v34 setMessage:v22];
+    [(MCUserNotificationQueueEntry *)v34 setTitle:titleCopy];
+    [(MCUserNotificationQueueEntry *)v34 setMessage:messageCopy];
     [(MCUserNotificationQueueEntry *)v34 setDefaultButtonText:v42];
     [(MCUserNotificationQueueEntry *)v34 setAlternateButtonText:v32];
-    v29 = v40;
-    [(MCUserNotificationQueueEntry *)v34 setOtherButtonText:v40];
-    [(MCUserNotificationQueueEntry *)v34 setTextfieldPlaceholder:v25];
-    [(MCUserNotificationQueueEntry *)v34 setDisplayOnLockScreen:a10];
-    [(MCUserNotificationQueueEntry *)v34 setDismissOnLock:a11];
-    [(MCUserNotificationQueueEntry *)v34 setDisplayInAppWhitelistModes:a12];
-    [(MCUserNotificationQueueEntry *)v34 setDismissAfterTimeInterval:a13];
+    v29 = otherButtonTextCopy;
+    [(MCUserNotificationQueueEntry *)v34 setOtherButtonText:otherButtonTextCopy];
+    [(MCUserNotificationQueueEntry *)v34 setTextfieldPlaceholder:placeholderCopy];
+    [(MCUserNotificationQueueEntry *)v34 setDisplayOnLockScreen:screen];
+    [(MCUserNotificationQueueEntry *)v34 setDismissOnLock:lock];
+    [(MCUserNotificationQueueEntry *)v34 setDisplayInAppWhitelistModes:modes];
+    [(MCUserNotificationQueueEntry *)v34 setDismissAfterTimeInterval:interval];
     v45[0] = MEMORY[0x1E69E9820];
     v45[1] = 3221225472;
     v45[2] = __268__MCUserNotificationManager_displayUserNotificationWithIdentifier_title_message_defaultButtonText_alternateButtonText_otherButtonText_textfieldPlaceholder_displayOnLockScreen_dismissOnLock_displayInAppWhitelistModes_dismissAfterTimeInterval_assertion_completionBlock___block_invoke;
     v45[3] = &unk_1E77D2DF0;
-    v31 = v39;
-    v35 = v39;
+    v31 = assertionCopy;
+    v35 = assertionCopy;
     v46 = v35;
-    v30 = v38;
-    v47 = v38;
+    v30 = blockCopy;
+    v47 = blockCopy;
     [(MCUserNotificationQueueEntry *)v34 setCompletionBlock:v45];
-    v28 = v41;
-    [(MCUserNotificationQueueEntry *)v34 setIdentifier:v41];
+    v28 = identifierCopy;
+    [(MCUserNotificationQueueEntry *)v34 setIdentifier:identifierCopy];
     [v35 park];
     v36 = syncQueue();
     block[0] = MEMORY[0x1E69E9820];
@@ -710,14 +710,14 @@ LABEL_21:
     v37 = v34;
     dispatch_barrier_async(v36, block);
 
-    v21 = v33;
-    v24 = v32;
-    v23 = v42;
+    titleCopy = v33;
+    buttonTextCopy = v32;
+    textCopy = v42;
   }
 
   else
   {
-    v26 = v22;
+    v26 = messageCopy;
     v27 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_DEFAULT))
     {
@@ -725,13 +725,13 @@ LABEL_21:
       _os_log_impl(&dword_1A795B000, v27, OS_LOG_TYPE_DEFAULT, "Not displaying notification in limited apps mode.", buf, 2u);
     }
 
-    v29 = v40;
-    v28 = v41;
-    v30 = v38;
-    v31 = v39;
-    if (v38)
+    v29 = otherButtonTextCopy;
+    v28 = identifierCopy;
+    v30 = blockCopy;
+    v31 = assertionCopy;
+    if (blockCopy)
     {
-      (*(v38 + 2))(v38, 3, 0);
+      (*(blockCopy + 2))(blockCopy, 3, 0);
     }
   }
 }
@@ -895,16 +895,16 @@ void __79__MCUserNotificationManager_mainQueueDidReceiveAppWhitelistChangedNotif
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cancelNotificationsWithIdentifier:(id)a3 completionBlock:(id)a4
+- (void)cancelNotificationsWithIdentifier:(id)identifier completionBlock:(id)block
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __79__MCUserNotificationManager_cancelNotificationsWithIdentifier_completionBlock___block_invoke;
   v8[3] = &unk_1E77D2E38;
-  v9 = v6;
-  v7 = v6;
-  [(MCUserNotificationManager *)self cancelNotificationEntriesMatchingPredicate:v8 completionBlock:a4];
+  v9 = identifierCopy;
+  v7 = identifierCopy;
+  [(MCUserNotificationManager *)self cancelNotificationEntriesMatchingPredicate:v8 completionBlock:block];
 }
 
 uint64_t __79__MCUserNotificationManager_cancelNotificationsWithIdentifier_completionBlock___block_invoke(uint64_t a1, void *a2)
@@ -925,18 +925,18 @@ uint64_t __79__MCUserNotificationManager_cancelNotificationsWithIdentifier_compl
   return v6;
 }
 
-- (void)cancelNotificationEntriesMatchingPredicate:(id)a3 completionBlock:(id)a4
+- (void)cancelNotificationEntriesMatchingPredicate:(id)predicate completionBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  predicateCopy = predicate;
+  blockCopy = block;
+  if (predicateCopy)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __88__MCUserNotificationManager_cancelNotificationEntriesMatchingPredicate_completionBlock___block_invoke;
     v7[3] = &unk_1E77D2EB0;
-    v8 = v5;
-    v9 = v6;
+    v8 = predicateCopy;
+    v9 = blockCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v7);
   }
 }
@@ -1037,58 +1037,58 @@ uint64_t __88__MCUserNotificationManager_cancelNotificationEntriesMatchingPredic
   return result;
 }
 
-- (void)_updateTitle:(id *)a3 andMessage:(id *)a4 withTargetFailureInfoForDevice:(unint64_t)a5 fromError:(id)a6
+- (void)_updateTitle:(id *)title andMessage:(id *)message withTargetFailureInfoForDevice:(unint64_t)device fromError:(id)error
 {
-  v10 = [a6 code];
-  if (v10 > 1013)
+  code = [error code];
+  if (code > 1013)
   {
-    if (v10 == 1014)
+    if (code == 1014)
     {
-      *a3 = MCLocalizedString(@"INSTALL_WARNING_TARGET_UNAVAILABLE_WATCH_TITLE");
+      *title = MCLocalizedString(@"INSTALL_WARNING_TARGET_UNAVAILABLE_WATCH_TITLE");
       v11 = MCLocalizedFormat(@"INSTALL_WARNING_TARGET_UNAVAILABLE_WATCH_ARCHIVED_MESSAGE", v12, v13, v14, v15, v16, v17, v18, v19);
     }
 
     else
     {
-      if (v10 != 1015)
+      if (code != 1015)
       {
         return;
       }
 
-      *a3 = MCLocalizedString(@"INSTALL_WARNING_TARGET_GENERAL_TITLE");
+      *title = MCLocalizedString(@"INSTALL_WARNING_TARGET_GENERAL_TITLE");
       v11 = MCLocalizedStringByDevice(@"INSTALL_WARNING_TARGET_MISMATCH_MESSAGE");
     }
 
     goto LABEL_12;
   }
 
-  if (v10 == 1011)
+  if (code == 1011)
   {
-    *a3 = MCLocalizedString(@"INSTALL_WARNING_TARGET_GENERAL_TITLE");
-    v11 = [(MCUserNotificationManager *)self _invalidTargetMessageForDevice:a5];
+    *title = MCLocalizedString(@"INSTALL_WARNING_TARGET_GENERAL_TITLE");
+    v11 = [(MCUserNotificationManager *)self _invalidTargetMessageForDevice:device];
 LABEL_12:
-    *a4 = v11;
+    *message = v11;
     return;
   }
 
-  if (v10 == 1012)
+  if (code == 1012)
   {
 
-    [(MCUserNotificationManager *)self _updateTitle:a3 andMessage:a4 withUnavailableTargetInfoForDevice:a5];
+    [(MCUserNotificationManager *)self _updateTitle:title andMessage:message withUnavailableTargetInfoForDevice:device];
   }
 }
 
-- (void)_updateTitle:(id *)a3 andMessage:(id *)a4 withUnavailableTargetInfoForDevice:(unint64_t)a5
+- (void)_updateTitle:(id *)title andMessage:(id *)message withUnavailableTargetInfoForDevice:(unint64_t)device
 {
-  if (a5 == 3)
+  if (device == 3)
   {
-    *a3 = MCLocalizedString(@"INSTALL_WARNING_TARGET_UNAVAILABLE_HOMEPOD_TITLE");
+    *title = MCLocalizedString(@"INSTALL_WARNING_TARGET_UNAVAILABLE_HOMEPOD_TITLE");
     v7 = @"INSTALL_WARNING_TARGET_UNAVAILABLE_HOMEPOD_MESSAGE";
   }
 
-  else if (a5 == 2)
+  else if (device == 2)
   {
-    *a3 = MCLocalizedString(@"INSTALL_WARNING_TARGET_UNAVAILABLE_WATCH_TITLE");
+    *title = MCLocalizedString(@"INSTALL_WARNING_TARGET_UNAVAILABLE_WATCH_TITLE");
     if (!MCGestaltIsPhone())
     {
       v8 = MCLocalizedStringByDevice(@"INSTALL_WARNING_TARGET_MISMATCH_MESSAGE");
@@ -1100,20 +1100,20 @@ LABEL_12:
 
   else
   {
-    *a3 = MCLocalizedString(@"INSTALL_WARNING_TARGET_UNAVAILABLE_TITLE");
+    *title = MCLocalizedString(@"INSTALL_WARNING_TARGET_UNAVAILABLE_TITLE");
     v7 = @"INSTALL_WARNING_TARGET_UNAVAILABLE_MESSAGE";
   }
 
   v8 = MCLocalizedString(v7);
 LABEL_8:
-  *a4 = v8;
+  *message = v8;
 }
 
-- (id)_purgatoryMessageForDevice:(unint64_t)a3
+- (id)_purgatoryMessageForDevice:(unint64_t)device
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3 - 1;
-  if (a3 - 1 < 6 && ((0x27u >> v4) & 1) != 0)
+  v4 = device - 1;
+  if (device - 1 < 6 && ((0x27u >> v4) & 1) != 0)
   {
     v5 = off_1E77D2F40[v4];
   }
@@ -1124,7 +1124,7 @@ LABEL_8:
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_ERROR))
     {
       v7 = v6;
-      v8 = [MCProfile stringForDeviceType:a3];
+      v8 = [MCProfile stringForDeviceType:device];
       v12 = 138543362;
       v13 = v8;
       _os_log_impl(&dword_1A795B000, v7, OS_LOG_TYPE_ERROR, "MCUserNotificationManager: No purgatory message for device of type %{public}@", &v12, 0xCu);
@@ -1139,16 +1139,16 @@ LABEL_8:
   return v9;
 }
 
-- (id)_invalidTargetMessageForDevice:(unint64_t)a3
+- (id)_invalidTargetMessageForDevice:(unint64_t)device
 {
-  if (a3 - 1 > 5)
+  if (device - 1 > 5)
   {
     v4 = @"INSTALL_WARNING_TARGET_INVALID_MESSAGE";
   }
 
   else
   {
-    v4 = off_1E77D2EF0[a3 - 1];
+    v4 = off_1E77D2EF0[device - 1];
   }
 
   v5 = MCLocalizedString(v4);

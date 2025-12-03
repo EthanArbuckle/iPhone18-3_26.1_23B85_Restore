@@ -1,30 +1,30 @@
 @interface VOTBrailleGestureTranslator
 - (BOOL)_isFullCellStrong;
-- (BOOL)isExistingInputContainedIn:(id)a3 withMode:(unint64_t)a4 isPrefix:(BOOL *)a5;
-- (BOOL)performBrailleBufferBackspace:(id *)a3;
+- (BOOL)isExistingInputContainedIn:(id)in withMode:(unint64_t)mode isPrefix:(BOOL *)prefix;
+- (BOOL)performBrailleBufferBackspace:(id *)backspace;
 - (BRLTTranslationService)translationService;
 - (CGSize)keyboardSize;
 - (VOTBrailleGestureTranslator)init;
 - (VOTBrailleGestureTranslatorDelegate)delegate;
-- (id)_outputForBefore:(id)a3 after:(id)a4 delete:(BOOL)a5;
-- (id)_trimCommonPrefixWithString:(id)a3 fromString:(id)a4;
-- (id)brailleForText:(id)a3 mode:(unint64_t)a4;
+- (id)_outputForBefore:(id)before after:(id)after delete:(BOOL)delete;
+- (id)_trimCommonPrefixWithString:(id)string fromString:(id)fromString;
+- (id)brailleForText:(id)text mode:(unint64_t)mode;
 - (id)outputForLatestInput;
 - (id)popLastBrailleCellFromBuffer;
-- (id)printBrailleForAllTouchPointsInInput:(id)a3 shouldLearn:(BOOL)a4 error:(id *)a5;
-- (id)printBrailleForInput:(id)a3 error:(id *)a4;
-- (id)textForBraille:(id)a3 mode:(unint64_t)a4;
-- (id)translateExistingInputWithMode:(unint64_t)a3;
-- (id)translatedTextForPrintBraille:(id)a3 mode:(unint64_t)a4 buffer:(id)a5;
+- (id)printBrailleForAllTouchPointsInInput:(id)input shouldLearn:(BOOL)learn error:(id *)error;
+- (id)printBrailleForInput:(id)input error:(id *)error;
+- (id)textForBraille:(id)braille mode:(unint64_t)mode;
+- (id)translateExistingInputWithMode:(unint64_t)mode;
+- (id)translatedTextForPrintBraille:(id)braille mode:(unint64_t)mode buffer:(id)buffer;
 - (void)_resetTranslator;
-- (void)addPrintBrailleToBuffer:(id)a3 language:(id)a4;
-- (void)calibrateWithTouchPoints:(id)a3;
+- (void)addPrintBrailleToBuffer:(id)buffer language:(id)language;
+- (void)calibrateWithTouchPoints:(id)points;
 - (void)clearBrailleBuffer;
 - (void)didInputBackspace;
 - (void)didInputSpace;
 - (void)didPressReturnKey;
-- (void)setActive:(BOOL)a3;
-- (void)setUnitTesting:(BOOL)a3;
+- (void)setActive:(BOOL)active;
+- (void)setUnitTesting:(BOOL)testing;
 @end
 
 @implementation VOTBrailleGestureTranslator
@@ -64,28 +64,28 @@
   return v3;
 }
 
-- (void)setUnitTesting:(BOOL)a3
+- (void)setUnitTesting:(BOOL)testing
 {
-  if (self->_unitTesting != a3)
+  if (self->_unitTesting != testing)
   {
-    self->_unitTesting = a3;
+    self->_unitTesting = testing;
     self->_translationService = 0;
     _objc_release_x1();
   }
 }
 
-- (id)printBrailleForAllTouchPointsInInput:(id)a3 shouldLearn:(BOOL)a4 error:(id *)a5
+- (id)printBrailleForAllTouchPointsInInput:(id)input shouldLearn:(BOOL)learn error:(id *)error
 {
-  v5 = a4;
-  v7 = a3;
+  learnCopy = learn;
+  inputCopy = input;
   v8 = +[NSMutableString string];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v24 = v7;
-  v9 = [v7 seriesOfTouchPoints];
-  v10 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v24 = inputCopy;
+  seriesOfTouchPoints = [inputCopy seriesOfTouchPoints];
+  v10 = [seriesOfTouchPoints countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v10)
   {
     v11 = v10;
@@ -96,13 +96,13 @@
       {
         if (*v27 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(seriesOfTouchPoints);
         }
 
         v14 = *(*(&v26 + 1) + 8 * i);
         recognitionEngine = self->_recognitionEngine;
         v25 = 0;
-        v16 = [(VOTBrailleGesturePatternRecognitionEngine *)recognitionEngine printBrailleForTouchPoints:v14 shouldLearn:v5 error:&v25];
+        v16 = [(VOTBrailleGesturePatternRecognitionEngine *)recognitionEngine printBrailleForTouchPoints:v14 shouldLearn:learnCopy error:&v25];
         v17 = v25;
         if (v17)
         {
@@ -113,10 +113,10 @@
             sub_100128A50(v19, v14, v20);
           }
 
-          if (a5)
+          if (error)
           {
             v21 = v19;
-            *a5 = v19;
+            *error = v19;
           }
 
           v18 = &stru_1001CBF90;
@@ -126,7 +126,7 @@
         [v8 appendString:v16];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v11 = [seriesOfTouchPoints countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (v11)
       {
         continue;
@@ -142,12 +142,12 @@ LABEL_15:
   return v18;
 }
 
-- (void)addPrintBrailleToBuffer:(id)a3 language:(id)a4
+- (void)addPrintBrailleToBuffer:(id)buffer language:(id)language
 {
-  v6 = a3;
-  v7 = a4;
+  bufferCopy = buffer;
+  languageCopy = language;
   v8 = [(NSMutableString *)self->_brailleBuffer copy];
-  [(NSMutableString *)self->_brailleBuffer appendString:v6];
+  [(NSMutableString *)self->_brailleBuffer appendString:bufferCopy];
   v9 = VOTLogBrailleGestures();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -155,9 +155,9 @@ LABEL_15:
     v13 = 138543874;
     v14 = brailleBuffer;
     v15 = 2114;
-    v16 = v6;
+    v16 = bufferCopy;
     v17 = 2114;
-    v18 = v7;
+    v18 = languageCopy;
     _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Braille buffer = %{public}@, added %{public}@ (language = %{public}@)", &v13, 0x20u);
   }
 
@@ -198,20 +198,20 @@ LABEL_15:
   return v11;
 }
 
-- (id)translatedTextForPrintBraille:(id)a3 mode:(unint64_t)a4 buffer:(id)a5
+- (id)translatedTextForPrintBraille:(id)braille mode:(unint64_t)mode buffer:(id)buffer
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(VOTBrailleGestureTranslator *)self textForBraille:@"⠿" mode:a4];
+  brailleCopy = braille;
+  bufferCopy = buffer;
+  v10 = [(VOTBrailleGestureTranslator *)self textForBraille:@"⠿" mode:mode];
   v11 = v10;
-  if (a4 == 4)
+  if (mode == 4)
   {
-    v18 = [(VOTBrailleGestureTranslator *)self textForBraille:v8 mode:4];
+    v18 = [(VOTBrailleGestureTranslator *)self textForBraille:brailleCopy mode:4];
   }
 
   else
   {
-    if (a4 == 3)
+    if (mode == 3)
     {
       if (!v10)
       {
@@ -225,9 +225,9 @@ LABEL_15:
       }
 
       v61 = v11;
-      if ([v9 length])
+      if ([bufferCopy length])
       {
-        v13 = [NSString stringWithFormat:@"%@%@%@", @"⠿", v8, @"⠿"];
+        v13 = [NSString stringWithFormat:@"%@%@%@", @"⠿", brailleCopy, @"⠿"];
         v14 = [(VOTBrailleGestureTranslator *)self textForBraille:v13 mode:3];
         v15 = [v14 rangeOfString:v11 options:0];
         if (v15 == 0x7FFFFFFFFFFFFFFFLL)
@@ -251,7 +251,7 @@ LABEL_15:
           v25 = [(__CFString *)v17 substringToIndex:v24];
         }
 
-        v26 = [@"⠿" stringByAppendingString:v8];
+        v26 = [@"⠿" stringByAppendingString:brailleCopy];
         v27 = [(VOTBrailleGestureTranslator *)self textForBraille:v26 mode:3];
         v28 = [v27 rangeOfString:v11];
         if (v28 == 0x7FFFFFFFFFFFFFFFLL)
@@ -280,8 +280,8 @@ LABEL_15:
 
       else
       {
-        v19 = [(VOTBrailleGestureTranslator *)self textForBraille:v8 mode:3];
-        v20 = [(__CFString *)v8 stringByAppendingString:@"⠿"];
+        v19 = [(VOTBrailleGestureTranslator *)self textForBraille:brailleCopy mode:3];
+        v20 = [(__CFString *)brailleCopy stringByAppendingString:@"⠿"];
         v21 = [(VOTBrailleGestureTranslator *)self textForBraille:v20 mode:3];
         v22 = [v21 rangeOfString:v11 options:4];
         if (v22 == 0x7FFFFFFFFFFFFFFFLL)
@@ -312,27 +312,27 @@ LABEL_15:
     else
     {
       v61 = v10;
-      v18 = [(VOTBrailleGestureTranslator *)self textForBraille:v8 mode:a4];
+      v18 = [(VOTBrailleGestureTranslator *)self textForBraille:brailleCopy mode:mode];
     }
 
-    v37 = [(__CFString *)v18 uppercaseString];
-    v38 = [(__CFString *)v18 capitalizedString];
-    v62 = v9;
-    v63 = v8;
-    v39 = [v9 stringByAppendingString:v8];
-    v40 = [(VOTBrailleGestureTranslator *)self translateExistingInputWithMode:a4];
-    v41 = [(VOTBrailleGestureTranslator *)self textForBraille:v39 mode:a4];
+    uppercaseString = [(__CFString *)v18 uppercaseString];
+    capitalizedString = [(__CFString *)v18 capitalizedString];
+    v62 = bufferCopy;
+    v63 = brailleCopy;
+    v39 = [bufferCopy stringByAppendingString:brailleCopy];
+    v40 = [(VOTBrailleGestureTranslator *)self translateExistingInputWithMode:mode];
+    v41 = [(VOTBrailleGestureTranslator *)self textForBraille:v39 mode:mode];
     v42 = [(VOTBrailleGestureTranslator *)self _trimCommonPrefixWithString:v40 fromString:v41];
-    v43 = [(VOTBrailleGestureTranslator *)self textForBraille:v39 mode:a4];
+    v43 = [(VOTBrailleGestureTranslator *)self textForBraille:v39 mode:mode];
     v44 = VOTLogBrailleGestures();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138544898;
       v65 = v18;
       v66 = 2114;
-      v67 = v38;
+      v67 = capitalizedString;
       v68 = 2114;
-      v69 = v37;
+      v69 = uppercaseString;
       v70 = 2114;
       v71 = v40;
       v72 = 2114;
@@ -344,26 +344,26 @@ LABEL_15:
       _os_log_debug_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEBUG, "Context translations:\n  translatedText = %{public}@, capitalized: %{public}@, uppercase: %{public}@\n  currentBufferTranslation = %{public}@\n  contextTranslation = %{public}@\n  contextSuffix = %{public}@\n  uncontractedTranslation = %{public}@", buf, 0x48u);
     }
 
-    v45 = [v41 isEqualToString:v37];
-    v46 = v37;
-    if (v45 & 1) != 0 || (v47 = [v41 isEqualToString:v38], v46 = v38, (v47) || v18 && ((v48 = -[__CFString length](v42, "length"), v49 = -[__CFString length](v18, "length"), v46 = v42, v48 == v49) || v38 && (v50 = objc_msgSend(v43, "hasSuffix:", v38), v46 = v38, (v50) || v37 && (v51 = -[__CFString hasPrefix:](v42, "hasPrefix:", v37), v46 = v37, (v51) || v38 && (v52 = -[__CFString hasPrefix:](v42, "hasPrefix:", v38), v46 = v38, v52)))
+    v45 = [v41 isEqualToString:uppercaseString];
+    v46 = uppercaseString;
+    if (v45 & 1) != 0 || (v47 = [v41 isEqualToString:capitalizedString], v46 = capitalizedString, (v47) || v18 && ((v48 = -[__CFString length](v42, "length"), v49 = -[__CFString length](v18, "length"), v46 = v42, v48 == v49) || capitalizedString && (v50 = objc_msgSend(v43, "hasSuffix:", capitalizedString), v46 = capitalizedString, (v50) || uppercaseString && (v51 = -[__CFString hasPrefix:](v42, "hasPrefix:", uppercaseString), v46 = uppercaseString, (v51) || capitalizedString && (v52 = -[__CFString hasPrefix:](v42, "hasPrefix:", capitalizedString), v46 = capitalizedString, v52)))
     {
       v53 = v46;
 
       v18 = v53;
     }
 
-    v9 = v62;
-    v8 = v63;
+    bufferCopy = v62;
+    brailleCopy = v63;
     v11 = v61;
   }
 
-  v54 = [(__CFString *)v8 length]!= 1 || [(__CFString *)v8 characterAtIndex:0]== 10240;
-  v55 = [(__CFString *)v18 stringByTrimmingEmptySpaceEdges];
-  v56 = [v55 length];
+  v54 = [(__CFString *)brailleCopy length]!= 1 || [(__CFString *)brailleCopy characterAtIndex:0]== 10240;
+  stringByTrimmingEmptySpaceEdges = [(__CFString *)v18 stringByTrimmingEmptySpaceEdges];
+  v56 = [stringByTrimmingEmptySpaceEdges length];
   if (!v54 && v56)
   {
-    v57 = v55;
+    v57 = stringByTrimmingEmptySpaceEdges;
 
     v18 = v57;
   }
@@ -373,7 +373,7 @@ LABEL_15:
   {
     v59 = BRLTModeDescription();
     *buf = 138543874;
-    v65 = v8;
+    v65 = brailleCopy;
     v66 = 2114;
     v67 = v18;
     v68 = 2112;
@@ -384,26 +384,26 @@ LABEL_15:
   return v18;
 }
 
-- (id)_trimCommonPrefixWithString:(id)a3 fromString:(id)a4
+- (id)_trimCommonPrefixWithString:(id)string fromString:(id)fromString
 {
-  v5 = a4;
-  v6 = [v5 commonPrefixWithString:a3 options:0];
-  v7 = [v5 substringFromIndex:{objc_msgSend(v6, "length")}];
+  fromStringCopy = fromString;
+  v6 = [fromStringCopy commonPrefixWithString:string options:0];
+  v7 = [fromStringCopy substringFromIndex:{objc_msgSend(v6, "length")}];
 
   return v7;
 }
 
-- (id)translateExistingInputWithMode:(unint64_t)a3
+- (id)translateExistingInputWithMode:(unint64_t)mode
 {
-  v4 = [(VOTBrailleGestureTranslator *)self textForBraille:self->_brailleBuffer mode:a3];
+  v4 = [(VOTBrailleGestureTranslator *)self textForBraille:self->_brailleBuffer mode:mode];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v5 = +[VOTBrailleManager manager];
-  v6 = [v5 textReplacementEntries];
+  textReplacementEntries = [v5 textReplacementEntries];
 
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  v7 = [textReplacementEntries countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -414,23 +414,23 @@ LABEL_15:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(textReplacementEntries);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 shortcut];
-        v13 = [v12 compare:v4 options:129];
+        shortcut = [v11 shortcut];
+        v13 = [shortcut compare:v4 options:129];
 
         if (!v13)
         {
-          v14 = [v11 phrase];
+          phrase = [v11 phrase];
 
-          v4 = v14;
+          v4 = phrase;
           goto LABEL_11;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v8 = [textReplacementEntries countByEnumeratingWithState:&v18 objects:v26 count:16];
       if (v8)
       {
         continue;
@@ -456,15 +456,15 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)isExistingInputContainedIn:(id)a3 withMode:(unint64_t)a4 isPrefix:(BOOL *)a5
+- (BOOL)isExistingInputContainedIn:(id)in withMode:(unint64_t)mode isPrefix:(BOOL *)prefix
 {
-  v8 = a3;
+  inCopy = in;
   brailleBuffer = self->_brailleBuffer;
   if (brailleBuffer && [(NSMutableString *)brailleBuffer length])
   {
-    v10 = [v8 lowercaseString];
-    v24[0] = v10;
-    v24[1] = v8;
+    lowercaseString = [inCopy lowercaseString];
+    v24[0] = lowercaseString;
+    v24[1] = inCopy;
     [NSArray arrayWithObjects:v24 count:2];
     v19 = 0u;
     v20 = 0u;
@@ -484,12 +484,12 @@ LABEL_11:
             objc_enumerationMutation(v11);
           }
 
-          v16 = [(VOTBrailleGestureTranslator *)self brailleForText:*(*(&v19 + 1) + 8 * i) mode:a4, v19];
+          v16 = [(VOTBrailleGestureTranslator *)self brailleForText:*(*(&v19 + 1) + 8 * i) mode:mode, v19];
           if ([v16 containsString:self->_brailleBuffer])
           {
-            if (a5)
+            if (prefix)
             {
-              *a5 = [v16 hasPrefix:self->_brailleBuffer];
+              *prefix = [v16 hasPrefix:self->_brailleBuffer];
             }
 
             v17 = 1;
@@ -508,9 +508,9 @@ LABEL_11:
     }
 
     v17 = 0;
-    if (a5)
+    if (prefix)
     {
-      *a5 = 0;
+      *prefix = 0;
     }
 
 LABEL_17:
@@ -534,15 +534,15 @@ LABEL_17:
   }
 }
 
-- (BOOL)performBrailleBufferBackspace:(id *)a3
+- (BOOL)performBrailleBufferBackspace:(id *)backspace
 {
   v5 = [(NSMutableString *)self->_brailleBuffer length];
   if (v5)
   {
     v6 = [(NSMutableString *)self->_brailleBuffer copy];
-    if (a3)
+    if (backspace)
     {
-      *a3 = [(NSMutableString *)self->_brailleBuffer substringFromIndex:[(NSMutableString *)self->_brailleBuffer length]- 1];
+      *backspace = [(NSMutableString *)self->_brailleBuffer substringFromIndex:[(NSMutableString *)self->_brailleBuffer length]- 1];
     }
 
     [(NSMutableString *)self->_brailleBuffer deleteCharactersInRange:[(NSMutableString *)self->_brailleBuffer length]- 1, 1];
@@ -589,17 +589,17 @@ LABEL_17:
   }
 }
 
-- (id)printBrailleForInput:(id)a3 error:(id *)a4
+- (id)printBrailleForInput:(id)input error:(id *)error
 {
-  v7 = a3;
-  v8 = [v7 seriesOfTouchPoints];
-  if ([v8 count] != 1)
+  inputCopy = input;
+  seriesOfTouchPoints = [inputCopy seriesOfTouchPoints];
+  if ([seriesOfTouchPoints count] != 1)
   {
     sub_100128CC8(a2, self);
   }
 
-  v9 = [v8 lastObject];
-  v10 = [(VOTBrailleGesturePatternRecognitionEngine *)self->_recognitionEngine printBrailleForTouchPoints:v9 shouldLearn:0 error:a4];
+  lastObject = [seriesOfTouchPoints lastObject];
+  v10 = [(VOTBrailleGesturePatternRecognitionEngine *)self->_recognitionEngine printBrailleForTouchPoints:lastObject shouldLearn:0 error:error];
   v11 = VOTLogBrailleGestures();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -609,31 +609,31 @@ LABEL_17:
   return v10;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
     v5 = VOTLogBrailleGestures();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      sub_100128DAC(a3, v5);
+      sub_100128DAC(active, v5);
     }
 
-    self->_active = a3;
+    self->_active = active;
     [(VOTBrailleGesturePatternRecognitionEngine *)self->_recognitionEngine resetLastGestures];
   }
 }
 
-- (void)calibrateWithTouchPoints:(id)a3
+- (void)calibrateWithTouchPoints:(id)points
 {
-  v4 = a3;
+  pointsCopy = points;
   v5 = VOTLogBrailleGestures();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_100128E50();
   }
 
-  [(VOTBrailleGesturePatternRecognitionEngine *)self->_recognitionEngine calibrateWithTouchPoints:v4];
+  [(VOTBrailleGesturePatternRecognitionEngine *)self->_recognitionEngine calibrateWithTouchPoints:pointsCopy];
 }
 
 - (id)outputForLatestInput
@@ -659,14 +659,14 @@ LABEL_17:
 
 - (BRLTTranslationService)translationService
 {
-  v3 = [VOTSharedWorkspace selectedBrailleGesturesInputTable];
-  v4 = v3;
-  if (v3)
+  selectedBrailleGesturesInputTable = [VOTSharedWorkspace selectedBrailleGesturesInputTable];
+  v4 = selectedBrailleGesturesInputTable;
+  if (selectedBrailleGesturesInputTable)
   {
-    if (!self->_translationService || ([v3 serviceIdentifier], v5 = objc_claimAutoreleasedReturnValue(), -[BRLTTranslationService serviceIdentifier](self->_translationService, "serviceIdentifier"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqualToString:", v6), v6, v5, (v7 & 1) == 0))
+    if (!self->_translationService || ([selectedBrailleGesturesInputTable serviceIdentifier], v5 = objc_claimAutoreleasedReturnValue(), -[BRLTTranslationService serviceIdentifier](self->_translationService, "serviceIdentifier"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqualToString:", v6), v6, v5, (v7 & 1) == 0))
     {
-      v8 = [v4 serviceIdentifier];
-      v9 = [BRLTTranslationService serviceForIdentifier:v8 input:0 loopback:[(VOTBrailleGestureTranslator *)self isUnitTesting]];
+      serviceIdentifier = [v4 serviceIdentifier];
+      v9 = [BRLTTranslationService serviceForIdentifier:serviceIdentifier input:0 loopback:[(VOTBrailleGestureTranslator *)self isUnitTesting]];
 
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
@@ -726,21 +726,21 @@ LABEL_17:
   return v8;
 }
 
-- (id)_outputForBefore:(id)a3 after:(id)a4 delete:(BOOL)a5
+- (id)_outputForBefore:(id)before after:(id)after delete:(BOOL)delete
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  deleteCopy = delete;
+  beforeCopy = before;
+  afterCopy = after;
   if ([(VOTBrailleGestureTranslator *)self _isFullCellStrong])
   {
-    v10 = [(VOTBrailleGestureTranslator *)self translatedTextForPrintBraille:v8 mode:3 buffer:&stru_1001CBF90];
-    [(VOTBrailleGestureTranslator *)self translatedTextForPrintBraille:v9 mode:3 buffer:&stru_1001CBF90];
+    v10 = [(VOTBrailleGestureTranslator *)self translatedTextForPrintBraille:beforeCopy mode:3 buffer:&stru_1001CBF90];
+    [(VOTBrailleGestureTranslator *)self translatedTextForPrintBraille:afterCopy mode:3 buffer:&stru_1001CBF90];
   }
 
   else
   {
-    v10 = [(VOTBrailleGestureTranslator *)self textForBraille:v8 mode:1];
-    [(VOTBrailleGestureTranslator *)self textForBraille:v9 mode:1];
+    v10 = [(VOTBrailleGestureTranslator *)self textForBraille:beforeCopy mode:1];
+    [(VOTBrailleGestureTranslator *)self textForBraille:afterCopy mode:1];
   }
   v11 = ;
   v12 = 0;
@@ -766,7 +766,7 @@ LABEL_17:
   }
 
   v14 = objc_opt_new();
-  if (v5)
+  if (deleteCopy)
   {
     v15 = [v10 substringFromIndex:v12];
     v16 = [[AXAttributedString alloc] initWithString:v15];
@@ -783,9 +783,9 @@ LABEL_17:
   return v14;
 }
 
-- (id)textForBraille:(id)a3 mode:(unint64_t)a4
+- (id)textForBraille:(id)braille mode:(unint64_t)mode
 {
-  v6 = a3;
+  brailleCopy = braille;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -794,20 +794,20 @@ LABEL_17:
   v28 = 0;
   v7 = dispatch_group_create();
   dispatch_group_enter(v7);
-  v8 = [VOTSharedWorkspace selectedBrailleGesturesInputTable];
-  v9 = [v8 tableIdentifier];
-  v10 = v9;
-  if (a4 == 4)
+  selectedBrailleGesturesInputTable = [VOTSharedWorkspace selectedBrailleGesturesInputTable];
+  tableIdentifier = [selectedBrailleGesturesInputTable tableIdentifier];
+  v10 = tableIdentifier;
+  if (mode == 4)
   {
 
     v10 = @"nemeth";
   }
 
   v11 = [BRLTTranslationParameters alloc];
-  v12 = [(__CFString *)v10 brl_languageAndVariant];
-  v13 = [v11 initWithLanguage:v12 mode:a4 partial:0 useTechnicalTable:a4 == 4 textPositionsRange:0x7FFFFFFFFFFFFFFFLL textFormattingRanges:{0, 0}];
+  brl_languageAndVariant = [(__CFString *)v10 brl_languageAndVariant];
+  v13 = [v11 initWithLanguage:brl_languageAndVariant mode:mode partial:0 useTechnicalTable:mode == 4 textPositionsRange:0x7FFFFFFFFFFFFFFFLL textFormattingRanges:{0, 0}];
 
-  v14 = [(VOTBrailleGestureTranslator *)self translationService];
+  translationService = [(VOTBrailleGestureTranslator *)self translationService];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10002A368;
@@ -815,7 +815,7 @@ LABEL_17:
   v22 = &v23;
   v15 = v7;
   v21 = v15;
-  [v14 textForBraille:v6 parameters:v13 withReply:v20];
+  [translationService textForBraille:brailleCopy parameters:v13 withReply:v20];
 
   v16 = dispatch_time(0, 1000000000);
   if (dispatch_group_wait(v15, v16))
@@ -834,9 +834,9 @@ LABEL_17:
   return v18;
 }
 
-- (id)brailleForText:(id)a3 mode:(unint64_t)a4
+- (id)brailleForText:(id)text mode:(unint64_t)mode
 {
-  v6 = a3;
+  textCopy = text;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -845,20 +845,20 @@ LABEL_17:
   v28 = 0;
   v7 = dispatch_group_create();
   dispatch_group_enter(v7);
-  v8 = [VOTSharedWorkspace selectedBrailleGesturesInputTable];
-  v9 = [v8 tableIdentifier];
-  v10 = v9;
-  if (a4 == 4)
+  selectedBrailleGesturesInputTable = [VOTSharedWorkspace selectedBrailleGesturesInputTable];
+  tableIdentifier = [selectedBrailleGesturesInputTable tableIdentifier];
+  v10 = tableIdentifier;
+  if (mode == 4)
   {
 
     v10 = @"nemeth";
   }
 
   v11 = [BRLTTranslationParameters alloc];
-  v12 = [(__CFString *)v10 brl_languageAndVariant];
-  v13 = [v11 initWithLanguage:v12 mode:a4 partial:0 useTechnicalTable:a4 == 4 textPositionsRange:0x7FFFFFFFFFFFFFFFLL textFormattingRanges:{0, 0}];
+  brl_languageAndVariant = [(__CFString *)v10 brl_languageAndVariant];
+  v13 = [v11 initWithLanguage:brl_languageAndVariant mode:mode partial:0 useTechnicalTable:mode == 4 textPositionsRange:0x7FFFFFFFFFFFFFFFLL textFormattingRanges:{0, 0}];
 
-  v14 = [(VOTBrailleGestureTranslator *)self translationService];
+  translationService = [(VOTBrailleGestureTranslator *)self translationService];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10002A62C;
@@ -866,7 +866,7 @@ LABEL_17:
   v22 = &v23;
   v15 = v7;
   v21 = v15;
-  [v14 brailleForText:v6 parameters:v13 withReply:v20];
+  [translationService brailleForText:textCopy parameters:v13 withReply:v20];
 
   v16 = dispatch_time(0, 1000000000);
   if (dispatch_group_wait(v15, v16))

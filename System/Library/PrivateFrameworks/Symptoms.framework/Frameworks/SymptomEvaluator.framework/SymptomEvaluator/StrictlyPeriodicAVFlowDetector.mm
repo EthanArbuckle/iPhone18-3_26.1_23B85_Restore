@@ -1,8 +1,8 @@
 @interface StrictlyPeriodicAVFlowDetector
 - (StrictlyPeriodicAVFlowDetector)init;
-- (id)getState:(BOOL)a3;
-- (int)possibleAVFlowScore:(id)a3 result:(AVFlowDetectionResult *)a4;
-- (int)setConfiguration:(id)a3;
+- (id)getState:(BOOL)state;
+- (int)possibleAVFlowScore:(id)score result:(AVFlowDetectionResult *)result;
+- (int)setConfiguration:(id)configuration;
 - (void)setDefaults;
 @end
 
@@ -42,34 +42,34 @@
   return v3;
 }
 
-- (int)setConfiguration:(id)a3
+- (int)setConfiguration:(id)configuration
 {
-  v4 = a3;
-  [v4 extractKey:@"PeriodicTCPMaxBusy" toDouble:&self->_maxPeriodicAVTCPFlowBusyInterval defaultTo:4.5];
-  [v4 extractKey:@"PeriodicTCPMinCycleTime" toDouble:&self->_minPeriodicAVTCPFlowCycleTime defaultTo:4.5];
-  [v4 extractKey:@"PeriodicTCPMaxCycleTime" toDouble:&self->_maxPeriodicAVTCPFlowCycleTime defaultTo:20.0];
-  [v4 extractKey:@"PeriodicTCPMaxCycleVariance" toDouble:&self->_maxPeriodicAVTCPFlowCycleVariance defaultTo:2.5];
-  [v4 extractKey:@"PeriodicTCPMinCyclesToConsider" toNSUInteger:&self->_minPeriodicAVTCPFlowCyclesToConsider defaultTo:4];
-  [v4 extractKey:@"PeriodicTCPMaxCyclesToConsider" toNSUInteger:&self->_maxPeriodicAVTCPFlowCyclesToConsider defaultTo:7];
-  [v4 extractKey:@"PeriodicUDPMaxBusy" toDouble:&self->_maxPeriodicAVUDPFlowBusyInterval defaultTo:4.5];
-  [v4 extractKey:@"PeriodicUDPMinCycleTime" toDouble:&self->_minPeriodicAVUDPFlowCycleTime defaultTo:4.5];
-  [v4 extractKey:@"PeriodicUDPMaxCycleTime" toDouble:&self->_maxPeriodicAVUDPFlowCycleTime defaultTo:20.0];
-  [v4 extractKey:@"PeriodicUDPMaxCycleVariance" toDouble:&self->_maxPeriodicAVUDPFlowCycleVariance defaultTo:2.5];
-  [v4 extractKey:@"PeriodicUDPMinCyclesToConsider" toNSUInteger:&self->_minPeriodicAVUDPFlowCyclesToConsider defaultTo:4];
-  [v4 extractKey:@"PeriodicUDPMaxCyclesToConsider" toNSUInteger:&self->_maxPeriodicAVUDPFlowCyclesToConsider defaultTo:10];
-  [v4 extractKey:@"PeriodicScoreBaseline" toUint32:&self->_scoreBaselinePass defaultTo:60];
-  [v4 extractKey:@"PeriodicScorePerCycleIncrement" toUint32:&self->_scorePerCycleIncrement defaultTo:2];
-  [v4 extractKey:@"PeriodicScoreTCIncrement" toUint32:&self->_scoreTCIncrement defaultTo:10];
-  [v4 extractKey:@"PeriodicScoreMax" toUint32:&self->_scoreTCIncrement defaultTo:80];
+  configurationCopy = configuration;
+  [configurationCopy extractKey:@"PeriodicTCPMaxBusy" toDouble:&self->_maxPeriodicAVTCPFlowBusyInterval defaultTo:4.5];
+  [configurationCopy extractKey:@"PeriodicTCPMinCycleTime" toDouble:&self->_minPeriodicAVTCPFlowCycleTime defaultTo:4.5];
+  [configurationCopy extractKey:@"PeriodicTCPMaxCycleTime" toDouble:&self->_maxPeriodicAVTCPFlowCycleTime defaultTo:20.0];
+  [configurationCopy extractKey:@"PeriodicTCPMaxCycleVariance" toDouble:&self->_maxPeriodicAVTCPFlowCycleVariance defaultTo:2.5];
+  [configurationCopy extractKey:@"PeriodicTCPMinCyclesToConsider" toNSUInteger:&self->_minPeriodicAVTCPFlowCyclesToConsider defaultTo:4];
+  [configurationCopy extractKey:@"PeriodicTCPMaxCyclesToConsider" toNSUInteger:&self->_maxPeriodicAVTCPFlowCyclesToConsider defaultTo:7];
+  [configurationCopy extractKey:@"PeriodicUDPMaxBusy" toDouble:&self->_maxPeriodicAVUDPFlowBusyInterval defaultTo:4.5];
+  [configurationCopy extractKey:@"PeriodicUDPMinCycleTime" toDouble:&self->_minPeriodicAVUDPFlowCycleTime defaultTo:4.5];
+  [configurationCopy extractKey:@"PeriodicUDPMaxCycleTime" toDouble:&self->_maxPeriodicAVUDPFlowCycleTime defaultTo:20.0];
+  [configurationCopy extractKey:@"PeriodicUDPMaxCycleVariance" toDouble:&self->_maxPeriodicAVUDPFlowCycleVariance defaultTo:2.5];
+  [configurationCopy extractKey:@"PeriodicUDPMinCyclesToConsider" toNSUInteger:&self->_minPeriodicAVUDPFlowCyclesToConsider defaultTo:4];
+  [configurationCopy extractKey:@"PeriodicUDPMaxCyclesToConsider" toNSUInteger:&self->_maxPeriodicAVUDPFlowCyclesToConsider defaultTo:10];
+  [configurationCopy extractKey:@"PeriodicScoreBaseline" toUint32:&self->_scoreBaselinePass defaultTo:60];
+  [configurationCopy extractKey:@"PeriodicScorePerCycleIncrement" toUint32:&self->_scorePerCycleIncrement defaultTo:2];
+  [configurationCopy extractKey:@"PeriodicScoreTCIncrement" toUint32:&self->_scoreTCIncrement defaultTo:10];
+  [configurationCopy extractKey:@"PeriodicScoreMax" toUint32:&self->_scoreTCIncrement defaultTo:80];
 
   return 0;
 }
 
-- (id)getState:(BOOL)a3
+- (id)getState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v3)
+  if (stateCopy)
   {
     maxPeriodicAVTCPFlowBusyInterval = self->_maxPeriodicAVTCPFlowBusyInterval;
     maxPeriodicAVTCPFlowCycleTime = self->_maxPeriodicAVTCPFlowCycleTime;
@@ -87,17 +87,17 @@
   return v5;
 }
 
-- (int)possibleAVFlowScore:(id)a3 result:(AVFlowDetectionResult *)a4
+- (int)possibleAVFlowScore:(id)score result:(AVFlowDetectionResult *)result
 {
   v109 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  scoreCopy = score;
   maxPeriodicAVUDPFlowBusyInterval = self->_maxPeriodicAVUDPFlowBusyInterval;
   minPeriodicAVUDPFlowCycleTime = self->_minPeriodicAVUDPFlowCycleTime;
   maxPeriodicAVUDPFlowCycleTime = self->_maxPeriodicAVUDPFlowCycleTime;
   maxPeriodicAVUDPFlowCycleVariance = self->_maxPeriodicAVUDPFlowCycleVariance;
   minPeriodicAVUDPFlowCyclesToConsider = self->_minPeriodicAVUDPFlowCyclesToConsider;
   maxPeriodicAVUDPFlowCyclesToConsider = self->_maxPeriodicAVUDPFlowCyclesToConsider;
-  if (([v7 flowIsTCP] & 1) != 0 || objc_msgSend(v7, "flowIsQUIC"))
+  if (([scoreCopy flowIsTCP] & 1) != 0 || objc_msgSend(scoreCopy, "flowIsQUIC"))
   {
     maxPeriodicAVUDPFlowBusyInterval = self->_maxPeriodicAVTCPFlowBusyInterval;
     minPeriodicAVUDPFlowCycleTime = self->_minPeriodicAVTCPFlowCycleTime;
@@ -107,11 +107,11 @@
     maxPeriodicAVUDPFlowCyclesToConsider = self->_maxPeriodicAVTCPFlowCyclesToConsider;
   }
 
-  v14 = [v7 alternatingIdleNonIdlePeriods];
-  if (v14)
+  alternatingIdleNonIdlePeriods = [scoreCopy alternatingIdleNonIdlePeriods];
+  if (alternatingIdleNonIdlePeriods)
   {
-    v15 = [v7 alternatingIdleNonIdlePeriods];
-    v16 = [v15 count];
+    alternatingIdleNonIdlePeriods2 = [scoreCopy alternatingIdleNonIdlePeriods];
+    v16 = [alternatingIdleNonIdlePeriods2 count];
   }
 
   else
@@ -119,14 +119,14 @@
     v16 = 0;
   }
 
-  v17 = [v7 nonIdleSamples];
-  if (v17)
+  nonIdleSamples = [scoreCopy nonIdleSamples];
+  if (nonIdleSamples)
   {
-    v18 = v17;
-    v19 = [v7 nonIdleSamples];
-    v4 = [v19 count];
+    v18 = nonIdleSamples;
+    nonIdleSamples2 = [scoreCopy nonIdleSamples];
+    nonIdleSamples4 = [nonIdleSamples2 count];
 
-    if (v4)
+    if (nonIdleSamples4)
     {
       ++v16;
     }
@@ -138,7 +138,7 @@
     if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      *v99 = v7;
+      *v99 = scoreCopy;
       v21 = "ContinuousAVFlowDetector screened out %@";
       v22 = v20;
       v23 = 12;
@@ -151,11 +151,11 @@
   v24 = flowScrutinyLogHandle;
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
   {
-    v25 = [v7 nonIdleSamples];
-    if (v25)
+    nonIdleSamples3 = [scoreCopy nonIdleSamples];
+    if (nonIdleSamples3)
     {
-      v4 = [v7 nonIdleSamples];
-      v26 = [v4 count] != 0;
+      nonIdleSamples4 = [scoreCopy nonIdleSamples];
+      v26 = [nonIdleSamples4 count] != 0;
     }
 
     else
@@ -172,25 +172,25 @@
     *&v99[16] = 1024;
     *&v99[18] = minPeriodicAVUDPFlowCyclesToConsider;
     *&v99[22] = 2112;
-    *&v99[24] = v7;
+    *&v99[24] = scoreCopy;
     _os_log_impl(&dword_23255B000, v24, OS_LOG_TYPE_DEBUG, "ContinuousAVFlowDetector considering periods %d with %d from current cycles %d limit %d %@", buf, 0x24u);
-    if (v25)
+    if (nonIdleSamples3)
     {
     }
   }
 
-  v27 = [v7 nonIdleSamples];
-  v93 = v7;
-  if (v27 && (v28 = v27, [v7 nonIdleSamples], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v29, "count"), v29, v28, v30))
+  nonIdleSamples5 = [scoreCopy nonIdleSamples];
+  v93 = scoreCopy;
+  if (nonIdleSamples5 && (v28 = nonIdleSamples5, [scoreCopy nonIdleSamples], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v29, "count"), v29, v28, v30))
   {
     v91 = maxPeriodicAVUDPFlowCyclesToConsider;
-    v89 = a4;
+    resultCopy2 = result;
     v96 = 0u;
     v97 = 0u;
     v94 = 0u;
     v95 = 0u;
-    v31 = [v7 nonIdleSamples];
-    v32 = [v31 countByEnumeratingWithState:&v94 objects:v108 count:16];
+    nonIdleSamples6 = [scoreCopy nonIdleSamples];
+    v32 = [nonIdleSamples6 countByEnumeratingWithState:&v94 objects:v108 count:16];
     if (v32)
     {
       v33 = v32;
@@ -204,7 +204,7 @@
         {
           if (*v95 != v36)
           {
-            objc_enumerationMutation(v31);
+            objc_enumerationMutation(nonIdleSamples6);
           }
 
           v39 = *(*(&v94 + 1) + 8 * i);
@@ -214,7 +214,7 @@
           v34 += [v39 totalObservedTxBytes];
         }
 
-        v33 = [v31 countByEnumeratingWithState:&v94 objects:v108 count:16];
+        v33 = [nonIdleSamples6 countByEnumeratingWithState:&v94 objects:v108 count:16];
       }
 
       while (v33);
@@ -231,7 +231,7 @@
     {
       v52 = flowScrutinyLogHandle;
       v48 = 0.0;
-      v7 = v93;
+      scoreCopy = v93;
       if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134218240;
@@ -245,16 +245,16 @@
       v49 = 0.0;
       v50 = 0.0;
       v51 = maxPeriodicAVUDPFlowCycleTime;
-      a4 = v89;
+      result = resultCopy2;
       goto LABEL_79;
     }
 
-    v7 = v93;
-    v53 = [v93 alternatingIdleNonIdlePeriods];
-    v42 = [v53 lastObject];
+    scoreCopy = v93;
+    alternatingIdleNonIdlePeriods3 = [v93 alternatingIdleNonIdlePeriods];
+    lastObject = [alternatingIdleNonIdlePeriods3 lastObject];
 
     v48 = mbpsThroughput(v35, v37);
-    [v42 elapsedTime];
+    [lastObject elapsedTime];
     v51 = v37 + v54;
     v55 = flowScrutinyLogHandle;
     if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEBUG))
@@ -270,17 +270,17 @@
 
   else
   {
-    v41 = [v7 alternatingIdleNonIdlePeriods];
-    v42 = [v41 lastObject];
+    alternatingIdleNonIdlePeriods4 = [scoreCopy alternatingIdleNonIdlePeriods];
+    lastObject = [alternatingIdleNonIdlePeriods4 lastObject];
 
-    [v42 elapsedTime];
+    [lastObject elapsedTime];
     if (v43 > maxPeriodicAVUDPFlowCycleTime)
     {
       v44 = flowScrutinyLogHandle;
       if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEBUG))
       {
         v45 = v44;
-        [v42 elapsedTime];
+        [lastObject elapsedTime];
         *buf = 134218240;
         *v99 = v46;
         *&v99[8] = 2048;
@@ -296,7 +296,7 @@
       goto LABEL_79;
     }
 
-    v89 = a4;
+    resultCopy2 = result;
     v47 = 0;
     v35 = 0;
     v34 = 0;
@@ -307,8 +307,8 @@
 
   v90 = minPeriodicAVUDPFlowCycleTime;
 
-  v56 = [v7 alternatingIdleNonIdlePeriods];
-  v57 = [v56 count];
+  alternatingIdleNonIdlePeriods5 = [scoreCopy alternatingIdleNonIdlePeriods];
+  v57 = [alternatingIdleNonIdlePeriods5 count];
 
   v49 = 0.0;
   if (v57 < 3)
@@ -332,14 +332,14 @@
   v60 = v50;
   while (1)
   {
-    v61 = [v7 alternatingIdleNonIdlePeriods];
-    v62 = [v61 objectAtIndexedSubscript:v59 - 4];
+    alternatingIdleNonIdlePeriods6 = [scoreCopy alternatingIdleNonIdlePeriods];
+    v62 = [alternatingIdleNonIdlePeriods6 objectAtIndexedSubscript:v59 - 4];
 
-    v63 = [v7 alternatingIdleNonIdlePeriods];
-    v64 = [v63 objectAtIndexedSubscript:v59 - 5];
+    alternatingIdleNonIdlePeriods7 = [scoreCopy alternatingIdleNonIdlePeriods];
+    v64 = [alternatingIdleNonIdlePeriods7 objectAtIndexedSubscript:v59 - 5];
 
-    v65 = [v62 totalObservedRxBytes];
-    v66 = [v62 totalObservedTxBytes];
+    totalObservedRxBytes = [v62 totalObservedRxBytes];
+    totalObservedTxBytes = [v62 totalObservedTxBytes];
     [v64 elapsedTime];
     v68 = v67;
     [v62 elapsedTime];
@@ -381,8 +381,8 @@ LABEL_68:
       goto LABEL_74;
     }
 
-    v35 += v65;
-    v34 += v66;
+    v35 += totalObservedRxBytes;
+    v34 += totalObservedTxBytes;
     if (v34)
     {
       if (v35 / v34 < 6)
@@ -399,7 +399,7 @@ LABEL_68:
 
     v59 -= 2;
     ++v47;
-    v7 = v93;
+    scoreCopy = v93;
     if (v59 <= 4)
     {
       goto LABEL_78;
@@ -429,10 +429,10 @@ LABEL_74:
   }
 
 LABEL_77:
-  v7 = v93;
+  scoreCopy = v93;
 
 LABEL_78:
-  a4 = v89;
+  result = resultCopy2;
   minPeriodicAVUDPFlowCycleTime = v90;
 LABEL_79:
   v81 = flowScrutinyLogHandle;
@@ -461,7 +461,7 @@ LABEL_79:
     }
 
     v86 = self->_scoreBaselinePass + self->_scorePerCycleIncrement * v47;
-    if ([v7 trafficClassIsAudioVideo])
+    if ([scoreCopy trafficClassIsAudioVideo])
     {
       v86 += self->_scoreTCIncrement;
     }
@@ -476,12 +476,12 @@ LABEL_79:
       scoreMax = v86;
     }
 
-    if (a4 && scoreMax > a4->var0)
+    if (result && scoreMax > result->var0)
     {
-      a4->var1 = v48;
-      a4->var0 = scoreMax;
-      var2 = a4->var2;
-      a4->var2 = @"PeriodicAVFlow";
+      result->var1 = v48;
+      result->var0 = scoreMax;
+      var2 = result->var2;
+      result->var2 = @"PeriodicAVFlow";
     }
   }
 

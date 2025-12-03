@@ -1,14 +1,14 @@
 @interface MFFileArchiveDirectory
-+ (BOOL)_hasZipSignature:(id)a3;
-+ (CentralDirectory)_centralDirectory:(id)a3;
-+ (CentralHeader)_centralHeader:(id)a3;
-+ (_NSRange)_rangeOfCentralDirectory:(int64_t)a3;
-+ (_NSRange)rangeOfCentralDirectoryInData:(id)a3;
-+ (id)_entriesFromCentralDictionary:(CentralDirectory *)a3 inData:(id)a4 archiveData:(id)a5;
++ (BOOL)_hasZipSignature:(id)signature;
++ (CentralDirectory)_centralDirectory:(id)directory;
++ (CentralHeader)_centralHeader:(id)header;
++ (_NSRange)_rangeOfCentralDirectory:(int64_t)directory;
++ (_NSRange)rangeOfCentralDirectoryInData:(id)data;
++ (id)_entriesFromCentralDictionary:(CentralDirectory *)dictionary inData:(id)data archiveData:(id)archiveData;
 + (id)archiveDirectory;
-- (BOOL)inputWithData:(id)a3;
-- (BOOL)inputWithURL:(id)a3;
-- (BOOL)setArchiveEntry:(id)a3;
+- (BOOL)inputWithData:(id)data;
+- (BOOL)inputWithURL:(id)l;
+- (BOOL)setArchiveEntry:(id)entry;
 - (id)description;
 - (id)mainEntry;
 - (id)scrubbedArchiveEntries;
@@ -32,16 +32,16 @@
   return [v3 stringWithFormat:@"Class:%@\nURL:%@\nEntries[%@]", v4, url, self->_entries];
 }
 
-+ (_NSRange)rangeOfCentralDirectoryInData:(id)a3
++ (_NSRange)rangeOfCentralDirectoryInData:(id)data
 {
-  v3 = a3;
-  if (![v3 length])
+  dataCopy = data;
+  if (![dataCopy length])
   {
     v4 = 0;
     goto LABEL_10;
   }
 
-  v4 = memmem([v3 bytes], objc_msgSend(v3, "length"), &centralDirectorySignatureString, 4uLL);
+  v4 = memmem([dataCopy bytes], objc_msgSend(dataCopy, "length"), &centralDirectorySignatureString, 4uLL);
   if (!v4)
   {
 LABEL_10:
@@ -49,12 +49,12 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v5 = [v3 bytes];
-  v6 = [v3 length];
-  v7 = v4 - v5 + 22;
+  bytes = [dataCopy bytes];
+  v6 = [dataCopy length];
+  v7 = v4 - bytes + 22;
   if (v7 <= v6)
   {
-    v8 = v4 - v5;
+    v8 = v4 - bytes;
   }
 
   else
@@ -81,10 +81,10 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)inputWithURL:(id)a3
+- (BOOL)inputWithURL:(id)l
 {
-  v5 = a3;
-  objc_storeStrong(&self->_url, a3);
+  lCopy = l;
+  objc_storeStrong(&self->_url, l);
   url = self->_url;
   v12 = 0;
   v7 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:url options:3 error:&v12];
@@ -100,18 +100,18 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)inputWithData:(id)a3
+- (BOOL)inputWithData:(id)data
 {
-  v5 = a3;
-  objc_storeStrong(&self->_contents, a3);
-  v6 = +[MFFileArchiveDirectory _rangeOfCentralDirectory:](MFFileArchiveDirectory, "_rangeOfCentralDirectory:", [v5 length]);
-  v8 = [v5 subdataWithRange:{v6, v7}];
+  dataCopy = data;
+  objc_storeStrong(&self->_contents, data);
+  v6 = +[MFFileArchiveDirectory _rangeOfCentralDirectory:](MFFileArchiveDirectory, "_rangeOfCentralDirectory:", [dataCopy length]);
+  v8 = [dataCopy subdataWithRange:{v6, v7}];
   v9 = [MFFileArchiveDirectory _centralDirectory:v8];
   v10 = v9;
   if (v9)
   {
-    v11 = [v5 subdataWithRange:{v9->var6, v9->var5}];
-    v12 = [MFFileArchiveDirectory _entriesFromCentralDictionary:v10 inData:v11 archiveData:v5];
+    v11 = [dataCopy subdataWithRange:{v9->var6, v9->var5}];
+    v12 = [MFFileArchiveDirectory _entriesFromCentralDictionary:v10 inData:v11 archiveData:dataCopy];
     v13 = [v12 mutableCopy];
     entries = self->_entries;
     self->_entries = v13;
@@ -123,30 +123,30 @@ LABEL_11:
   return v10 != 0;
 }
 
-+ (id)_entriesFromCentralDictionary:(CentralDirectory *)a3 inData:(id)a4 archiveData:(id)a5
++ (id)_entriesFromCentralDictionary:(CentralDirectory *)dictionary inData:(id)data archiveData:(id)archiveData
 {
-  v20 = a4;
-  v8 = a5;
-  v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:a3->var3];
-  var3 = a3->var3;
-  if (a3->var3)
+  dataCopy = data;
+  archiveDataCopy = archiveData;
+  v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:dictionary->var3];
+  var3 = dictionary->var3;
+  if (dictionary->var3)
   {
     v11 = 0;
     v12 = 0;
-    var5 = a3->var5;
+    var5 = dictionary->var5;
     do
     {
-      v14 = [v20 subdataWithRange:{v12, var5}];
+      v14 = [dataCopy subdataWithRange:{v12, var5}];
 
-      v15 = [a1 _centralHeader:v14];
+      v15 = [self _centralHeader:v14];
       if (!v15)
       {
         break;
       }
 
-      v16 = [MFFileArchiveEntry archiveEntryWithCentralHeader:v15 archiveData:v8];
-      v17 = [v16 path];
-      [v9 setObject:v16 forKey:v17];
+      v16 = [MFFileArchiveEntry archiveEntryWithCentralHeader:v15 archiveData:archiveDataCopy];
+      path = [v16 path];
+      [v9 setObject:v16 forKey:path];
 
       v18 = v15[14] + v15[15] + v15[16] + 46;
       v12 += v18;
@@ -166,68 +166,68 @@ LABEL_11:
 {
   v39 = *MEMORY[0x1E69E9840];
   p_mainEntry = &self->_mainEntry;
-  v4 = self->_mainEntry;
-  v5 = [(MFFileArchiveEntry *)*(p_mainEntry - 2) allValues];
-  v6 = v5;
-  if (!v4)
+  firstObject = self->_mainEntry;
+  allValues = [(MFFileArchiveEntry *)*(p_mainEntry - 2) allValues];
+  v6 = allValues;
+  if (!firstObject)
   {
-    if (![v5 count])
+    if (![allValues count])
     {
-      v4 = 0;
+      firstObject = 0;
       goto LABEL_9;
     }
 
     if ([v6 count] == 1)
     {
-      v4 = [v6 firstObject];
+      firstObject = [v6 firstObject];
     }
 
     else
     {
-      v4 = 0;
+      firstObject = 0;
     }
 
     [(MFFileArchiveDirectory *)self _scrubContentDirectory];
-    v7 = [(NSMutableDictionary *)self->_scrubbedEntries allValues];
-    v8 = v7;
-    if (v4)
+    allValues2 = [(NSMutableDictionary *)self->_scrubbedEntries allValues];
+    v8 = allValues2;
+    if (firstObject)
     {
       goto LABEL_8;
     }
 
-    if ([v7 count] == 1)
+    if ([allValues2 count] == 1)
     {
-      v4 = [v8 firstObject];
-      if (v4)
+      firstObject = [v8 firstObject];
+      if (firstObject)
       {
         goto LABEL_8;
       }
     }
 
-    v11 = [(NSURL *)self->_url path];
-    v12 = [v11 length];
+    path = [(NSURL *)self->_url path];
+    v12 = [path length];
 
     if (v12)
     {
-      v13 = [(NSURL *)self->_url path];
-      v14 = [v13 lastPathComponent];
-      v15 = [v14 lowercaseString];
+      path2 = [(NSURL *)self->_url path];
+      lastPathComponent = [path2 lastPathComponent];
+      lowercaseString = [lastPathComponent lowercaseString];
 
-      v16 = [v15 pathExtension];
-      LODWORD(v14) = [v16 isEqualToString:@"zip"];
+      pathExtension = [lowercaseString pathExtension];
+      LODWORD(lastPathComponent) = [pathExtension isEqualToString:@"zip"];
 
-      if (v14)
+      if (lastPathComponent)
       {
-        v17 = [v15 stringByDeletingPathExtension];
+        stringByDeletingPathExtension = [lowercaseString stringByDeletingPathExtension];
 
-        v15 = v17;
+        lowercaseString = stringByDeletingPathExtension;
       }
 
       v36[0] = MEMORY[0x1E69E9820];
       v36[1] = 3221225472;
       v36[2] = __35__MFFileArchiveDirectory_mainEntry__block_invoke;
       v36[3] = &unk_1E7AA5760;
-      v18 = v15;
+      v18 = lowercaseString;
       v37 = v18;
       v19 = [v8 indexOfObjectPassingTest:v36];
       if (v19 == 0x7FFFFFFFFFFFFFFFLL)
@@ -236,9 +236,9 @@ LABEL_11:
 
       else
       {
-        v4 = [v8 objectAtIndex:v19];
+        firstObject = [v8 objectAtIndex:v19];
 
-        if (v4)
+        if (firstObject)
         {
           goto LABEL_8;
         }
@@ -256,7 +256,7 @@ LABEL_11:
       v30 = v8;
       v31 = v6;
       v22 = 0;
-      v23 = 0;
+      uncompressedSize = 0;
       v24 = *v33;
       v25 = 0x7FFFFFFFFFFFFFFFLL;
       do
@@ -272,9 +272,9 @@ LABEL_11:
           }
 
           v28 = *(*(&v32 + 1) + 8 * v26);
-          if (v23 < [v28 uncompressedSize])
+          if (uncompressedSize < [v28 uncompressedSize])
           {
-            v23 = [v28 uncompressedSize];
+            uncompressedSize = [v28 uncompressedSize];
             v25 = v27;
           }
 
@@ -292,8 +292,8 @@ LABEL_11:
       v6 = v31;
       if (v25 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v4 = [v20 objectAtIndex:v25];
-        if (v4)
+        firstObject = [v20 objectAtIndex:v25];
+        if (firstObject)
         {
           goto LABEL_8;
         }
@@ -305,20 +305,20 @@ LABEL_11:
     }
 
     v29 = [v20 indexOfObjectPassingTest:&__block_literal_global_32];
-    if (v29 == 0x7FFFFFFFFFFFFFFFLL || ([v20 objectAtIndex:v29], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (v29 == 0x7FFFFFFFFFFFFFFFLL || ([v20 objectAtIndex:v29], (firstObject = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v4 = [v20 firstObject];
+      firstObject = [v20 firstObject];
     }
 
 LABEL_8:
-    objc_storeStrong(p_mainEntry, v4);
+    objc_storeStrong(p_mainEntry, firstObject);
   }
 
 LABEL_9:
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return firstObject;
 }
 
 uint64_t __35__MFFileArchiveDirectory_mainEntry__block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -385,9 +385,9 @@ BOOL __35__MFFileArchiveDirectory_mainEntry__block_invoke_2(uint64_t a1, void *a
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v17 = self;
-    v5 = [(NSMutableDictionary *)self->_entries allValues];
-    v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    selfCopy = self;
+    allValues = [(NSMutableDictionary *)self->_entries allValues];
+    v6 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (!v6)
     {
       goto LABEL_16;
@@ -400,37 +400,37 @@ BOOL __35__MFFileArchiveDirectory_mainEntry__block_invoke_2(uint64_t a1, void *a
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 fileName];
-        if ([v10 length] && objc_msgSend(v9, "uncompressedSize"))
+        fileName = [v9 fileName];
+        if ([fileName length] && objc_msgSend(v9, "uncompressedSize"))
         {
-          v11 = [v9 fileName];
-          v12 = [v9 fileName];
-          if ([v11 characterAtIndex:{objc_msgSend(v12, "length") - 1}] == 47)
+          fileName2 = [v9 fileName];
+          fileName3 = [v9 fileName];
+          if ([fileName2 characterAtIndex:{objc_msgSend(fileName3, "length") - 1}] == 47)
           {
           }
 
           else
           {
-            v13 = [v9 path];
-            v14 = [v13 hasPrefix:@"__MACOSX/"];
+            path = [v9 path];
+            v14 = [path hasPrefix:@"__MACOSX/"];
 
             if (v14)
             {
               continue;
             }
 
-            v15 = v17->_scrubbedEntries;
-            v10 = [v9 path];
-            [(NSMutableDictionary *)v15 setObject:v9 forKey:v10];
+            v15 = selfCopy->_scrubbedEntries;
+            fileName = [v9 path];
+            [(NSMutableDictionary *)v15 setObject:v9 forKey:fileName];
           }
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (!v6)
       {
 LABEL_16:
@@ -455,18 +455,18 @@ LABEL_16:
   return [(NSMutableDictionary *)scrubbedEntries allValues];
 }
 
-+ (CentralHeader)_centralHeader:(id)a3
++ (CentralHeader)_centralHeader:(id)header
 {
-  v3 = a3;
-  if ([v3 length] < 0x36)
+  headerCopy = header;
+  if ([headerCopy length] < 0x36)
   {
 LABEL_6:
-    v4 = 0;
+    bytes = 0;
     goto LABEL_7;
   }
 
-  v4 = [v3 bytes];
-  if (*v4->var0 != 33639248)
+  bytes = [headerCopy bytes];
+  if (*bytes->var0 != 33639248)
   {
     v5 = MFLogGeneral();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -480,21 +480,21 @@ LABEL_6:
 
 LABEL_7:
 
-  return v4;
+  return bytes;
 }
 
-+ (CentralDirectory)_centralDirectory:(id)a3
++ (CentralDirectory)_centralDirectory:(id)directory
 {
-  v3 = a3;
-  if ([v3 length] < 0x16)
+  directoryCopy = directory;
+  if ([directoryCopy length] < 0x16)
   {
 LABEL_6:
-    v4 = 0;
+    bytes = 0;
     goto LABEL_7;
   }
 
-  v4 = [v3 bytes];
-  if (*v4->var0 != 101010256)
+  bytes = [directoryCopy bytes];
+  if (*bytes->var0 != 101010256)
   {
     v5 = MFLogGeneral();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -508,19 +508,19 @@ LABEL_6:
 
 LABEL_7:
 
-  return v4;
+  return bytes;
 }
 
-+ (_NSRange)_rangeOfCentralDirectory:(int64_t)a3
++ (_NSRange)_rangeOfCentralDirectory:(int64_t)directory
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (directory == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v3 = a3 - 22;
+    v3 = directory - 22;
   }
 
   v4 = 22;
@@ -529,12 +529,12 @@ LABEL_7:
   return result;
 }
 
-+ (BOOL)_hasZipSignature:(id)a3
++ (BOOL)_hasZipSignature:(id)signature
 {
-  v3 = a3;
-  if ([v3 length])
+  signatureCopy = signature;
+  if ([signatureCopy length])
   {
-    v4 = memmem([v3 bytes], objc_msgSend(v3, "length"), &localHeaderSignatureString, 4uLL) != 0;
+    v4 = memmem([signatureCopy bytes], objc_msgSend(signatureCopy, "length"), &localHeaderSignatureString, 4uLL) != 0;
   }
 
   else
@@ -545,15 +545,15 @@ LABEL_7:
   return v4;
 }
 
-- (BOOL)setArchiveEntry:(id)a3
+- (BOOL)setArchiveEntry:(id)entry
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  entryCopy = entry;
+  v5 = entryCopy;
+  if (entryCopy)
   {
     entries = self->_entries;
-    v7 = [v4 path];
-    v8 = [(NSMutableDictionary *)entries objectForKey:v7];
+    path = [entryCopy path];
+    v8 = [(NSMutableDictionary *)entries objectForKey:path];
 
     if (v8)
     {
@@ -572,8 +572,8 @@ LABEL_7:
         v9 = self->_entries;
       }
 
-      v12 = [v5 path];
-      [(NSMutableDictionary *)v9 setObject:v5 forKey:v12];
+      path2 = [v5 path];
+      [(NSMutableDictionary *)v9 setObject:v5 forKey:path2];
     }
   }
 

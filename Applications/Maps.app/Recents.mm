@@ -1,21 +1,21 @@
 @interface Recents
 + (id)sharedRecents;
 - (Recents)init;
-- (id)_recentPlaceDisplayWithSupersededStorageIdentifier:(id)a3;
-- (id)_recentWithIdentifier:(id)a3;
-- (id)_recentsByMappingCuratedCollectionsForRecents:(id)a3;
+- (id)_recentPlaceDisplayWithSupersededStorageIdentifier:(id)identifier;
+- (id)_recentWithIdentifier:(id)identifier;
+- (id)_recentsByMappingCuratedCollectionsForRecents:(id)recents;
 - (id)_recentsFromHistoryQuery;
-- (id)cachedMapItemForContactID:(int64_t)a3;
+- (id)cachedMapItemForContactID:(int64_t)d;
 - (void)_combineRecents;
 - (void)_processRecents;
-- (void)addObserver:(id)a3;
-- (void)deleteAllRecentsWithCompletion:(id)a3;
-- (void)deleteCoreRecentContact:(id)a3;
-- (void)deleteRecents:(id)a3 completion:(id)a4;
-- (void)loadCoreRecentsOnQueue:(id)a3 withCompletion:(id)a4;
-- (void)recordCoreRecentContact:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)deleteAllRecentsWithCompletion:(id)completion;
+- (void)deleteCoreRecentContact:(id)contact;
+- (void)deleteRecents:(id)recents completion:(id)completion;
+- (void)loadCoreRecentsOnQueue:(id)queue withCompletion:(id)completion;
+- (void)recordCoreRecentContact:(id)contact;
 - (void)setNeedsCoreRecentsReload;
-- (void)storeDidChange:(id)a3;
+- (void)storeDidChange:(id)change;
 @end
 
 @implementation Recents
@@ -94,8 +94,8 @@
     curatedCollectionResolver = v2->_curatedCollectionResolver;
     v2->_curatedCollectionResolver = v15;
 
-    v17 = [(RecentCuratedCollectionResolver *)v2->_curatedCollectionResolver observers];
-    [v17 registerObserver:v2];
+    observers = [(RecentCuratedCollectionResolver *)v2->_curatedCollectionResolver observers];
+    [observers registerObserver:v2];
 
     [(Recents *)v2 storeDidChange:&__NSArray0__struct];
   }
@@ -124,11 +124,11 @@
 
 - (void)_combineRecents
 {
-  v3 = [(Recents *)self _recentsFromHistoryQuery];
-  v4 = [(Recents *)self systemRecents];
-  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v3, "count") + objc_msgSend(v4, "count")}];
-  [v5 addObjectsFromArray:v3];
-  [v5 addObjectsFromArray:v4];
+  _recentsFromHistoryQuery = [(Recents *)self _recentsFromHistoryQuery];
+  systemRecents = [(Recents *)self systemRecents];
+  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(_recentsFromHistoryQuery, "count") + objc_msgSend(systemRecents, "count")}];
+  [v5 addObjectsFromArray:_recentsFromHistoryQuery];
+  [v5 addObjectsFromArray:systemRecents];
   [v5 sortWithOptions:16 usingComparator:&stru_1016271A0];
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
@@ -136,10 +136,10 @@
   v8[2] = sub_100059A34;
   v8[3] = &unk_101661480;
   objc_copyWeak(&v11, &location);
-  v9 = v3;
+  v9 = _recentsFromHistoryQuery;
   v10 = v5;
   v6 = v5;
-  v7 = v3;
+  v7 = _recentsFromHistoryQuery;
   dispatch_async(&_dispatch_main_q, v8);
 
   objc_destroyWeak(&v11);
@@ -148,13 +148,13 @@
 
 - (id)_recentsFromHistoryQuery
 {
-  v2 = [(Recents *)self historyQueryContents];
-  v3 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v2 count]);
+  historyQueryContents = [(Recents *)self historyQueryContents];
+  v3 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [historyQueryContents count]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = v2;
+  v4 = historyQueryContents;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -193,21 +193,21 @@
   return v12;
 }
 
-- (id)_recentsByMappingCuratedCollectionsForRecents:(id)a3
+- (id)_recentsByMappingCuratedCollectionsForRecents:(id)recents
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1006FDE00;
   v5[3] = &unk_101627280;
   v5[4] = self;
-  v3 = sub_100021DB0(a3, v5);
+  v3 = sub_100021DB0(recents, v5);
 
   return v3;
 }
 
-- (void)storeDidChange:(id)a3
+- (void)storeDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_initWeak(&location, self);
   v5 = objc_alloc_init(MSHistoryItemRequest);
   v6[0] = _NSConcreteStackBlock;
@@ -221,24 +221,24 @@
   objc_destroyWeak(&location);
 }
 
-- (id)_recentPlaceDisplayWithSupersededStorageIdentifier:(id)a3
+- (id)_recentPlaceDisplayWithSupersededStorageIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_1006FE27C;
   v16 = sub_1006FE28C;
   v17 = 0;
-  v5 = [(Recents *)self recents];
+  recents = [(Recents *)self recents];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1006FE294;
   v9[3] = &unk_101627258;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [recents enumerateObjectsUsingBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -246,24 +246,24 @@
   return v7;
 }
 
-- (id)_recentWithIdentifier:(id)a3
+- (id)_recentWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_1006FE27C;
   v16 = sub_1006FE28C;
   v17 = 0;
-  v5 = [(Recents *)self recents];
+  recents = [(Recents *)self recents];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1006FE538;
   v9[3] = &unk_101627258;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [recents enumerateObjectsUsingBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -271,9 +271,9 @@
   return v7;
 }
 
-- (void)deleteAllRecentsWithCompletion:(id)a3
+- (void)deleteAllRecentsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -317,18 +317,18 @@
   v14[1] = 3221225472;
   v14[2] = sub_1006FE7B4;
   v14[3] = &unk_1016610B8;
-  v15 = v4;
-  v13 = v4;
+  v15 = completionCopy;
+  v13 = completionCopy;
   [v11 deleteWithObjects:historyQueryContents completionHandler:v14];
 }
 
-- (void)deleteRecents:(id)a3 completion:(id)a4
+- (void)deleteRecents:(id)recents completion:(id)completion
 {
-  v30 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  recentsCopy = recents;
   v32 = +[NSMutableArray array];
   v31 = +[NSMutableArray array];
-  v7 = [(Recents *)self _recentByUnmappingCuratedCollectionsForRecents:v6];
+  v7 = [(Recents *)self _recentByUnmappingCuratedCollectionsForRecents:recentsCopy];
 
   v47 = 0u;
   v48 = 0u;
@@ -354,15 +354,15 @@
         if (objc_opt_isKindOfClass())
         {
           v13 = v12;
-          v14 = [v13 linkedRecentRoute];
-          v15 = v14;
-          if (v14)
+          linkedRecentRoute = [v13 linkedRecentRoute];
+          v15 = linkedRecentRoute;
+          if (linkedRecentRoute)
           {
-            v16 = [v14 historyEntry];
-            [v32 addObject:v16];
+            historyEntry = [linkedRecentRoute historyEntry];
+            [v32 addObject:historyEntry];
           }
 
-          v17 = [v13 historyEntry];
+          historyEntry2 = [v13 historyEntry];
           v42[0] = _NSConcreteStackBlock;
           v42[1] = 3221225472;
           v42[2] = sub_1006FECC4;
@@ -378,10 +378,10 @@
           v18 = v44;
           v41 = v18;
           v19 = v13;
-          [v17 ifSearch:v42 ifRoute:0 ifPlaceDisplay:v40 ifTransitLineItem:0];
+          [historyEntry2 ifSearch:v42 ifRoute:0 ifPlaceDisplay:v40 ifTransitLineItem:0];
 
-          v20 = [v19 historyEntry];
-          [v18 addObject:v20];
+          historyEntry3 = [v19 historyEntry];
+          [v18 addObject:historyEntry3];
         }
 
         else
@@ -435,37 +435,37 @@
   v34[1] = 3221225472;
   v34[2] = sub_1006FEE24;
   v34[3] = &unk_1016610B8;
-  v35 = v30;
-  v29 = v30;
+  v35 = completionCopy;
+  v29 = completionCopy;
   [v28 deleteWithObjects:v32 completionHandler:v34];
 }
 
-- (void)recordCoreRecentContact:(id)a3
+- (void)recordCoreRecentContact:(id)contact
 {
-  if (a3)
+  if (contact)
   {
-    v3 = a3;
-    v4 = [v3 address];
-    v5 = [v3 displayName];
+    contactCopy = contact;
+    address = [contactCopy address];
+    displayName = [contactCopy displayName];
     v6 = CRAddressKindMapLocation;
     v7 = +[NSDate date];
-    v8 = [CRRecentContactsLibrary recentEventForAddress:v4 displayName:v5 kind:v6 date:v7 weight:0 metadata:0 options:1];
+    v8 = [CRRecentContactsLibrary recentEventForAddress:address displayName:displayName kind:v6 date:v7 weight:0 metadata:0 options:1];
 
     v9 = +[CRRecentContactsLibrary defaultInstance];
     v13 = v8;
     v10 = [NSArray arrayWithObjects:&v13 count:1];
     v11 = CRRecentsDomainMaps;
-    v12 = [v3 lastSendingAddress];
+    lastSendingAddress = [contactCopy lastSendingAddress];
 
-    [v9 recordContactEvents:v10 recentsDomain:v11 sendingAddress:v12 completion:0];
+    [v9 recordContactEvents:v10 recentsDomain:v11 sendingAddress:lastSendingAddress completion:0];
   }
 }
 
-- (void)deleteCoreRecentContact:(id)a3
+- (void)deleteCoreRecentContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   coreRecentsNoResultCacheIDs = self->_coreRecentsNoResultCacheIDs;
-  v6 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v4 contactID]);
+  v6 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [contactCopy contactID]);
   [(NSMutableArray *)coreRecentsNoResultCacheIDs addObject:v6];
 
   v7 = +[NSUserDefaults standardUserDefaults];
@@ -478,8 +478,8 @@
   v14 = 3221225472;
   v15 = sub_1006FF1CC;
   v16 = &unk_101661A90;
-  v17 = self;
-  v18 = v4;
+  selfCopy = self;
+  v18 = contactCopy;
   geo_isolate_sync();
   dataLoadingQueue = self->_dataLoadingQueue;
   v11[0] = _NSConcreteStackBlock;
@@ -492,10 +492,10 @@
   dispatch_sync(dataLoadingQueue, v11);
 }
 
-- (void)loadCoreRecentsOnQueue:(id)a3 withCompletion:(id)a4
+- (void)loadCoreRecentsOnQueue:(id)queue withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
   v7 = dispatch_group_create();
   v19 = +[CRRecentContactsLibrary defaultInstance];
   BOOL = GEOConfigGetBOOL();
@@ -518,17 +518,17 @@
   v20[2] = sub_1006FF5F0;
   v20[3] = &unk_101655AF8;
   v21 = v9;
-  v22 = self;
+  selfCopy = self;
   v25 = BOOL;
   v23 = v7;
-  v24 = v5;
-  v15 = v5;
+  v24 = completionCopy;
+  v15 = completionCopy;
   v16 = v7;
   v17 = v9;
-  [v19 performRecentsSearch:v10 queue:v6 completion:v20];
+  [v19 performRecentsSearch:v10 queue:queueCopy completion:v20];
 }
 
-- (id)cachedMapItemForContactID:(int64_t)a3
+- (id)cachedMapItemForContactID:(int64_t)d
 {
   v5 = 0;
   v6 = &v5;
@@ -543,22 +543,22 @@
   return v3;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
     v6 = [[GEOObserverHashTable alloc] initWithProtocol:&OBJC_PROTOCOL___RecentsObserver queue:&_dispatch_main_q];
     v7 = self->_observers;
     self->_observers = v6;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(GEOObserverHashTable *)observers registerObserver:v4];
+  [(GEOObserverHashTable *)observers registerObserver:observerCopy];
 }
 
 @end

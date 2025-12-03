@@ -1,17 +1,17 @@
 @interface SBDataPlanAlertItem
-- (void)didDeactivateForReason:(int)a3;
+- (void)didDeactivateForReason:(int)reason;
 @end
 
 @implementation SBDataPlanAlertItem
 
-- (void)didDeactivateForReason:(int)a3
+- (void)didDeactivateForReason:(int)reason
 {
-  v3 = *&a3;
+  v3 = *&reason;
   if (SBAlertItemIsUserDeactivate())
   {
-    v5 = [(SBAlertItem *)self alertController];
-    v6 = [v5 actions];
-    v7 = [v6 count];
+    alertController = [(SBAlertItem *)self alertController];
+    actions = [alertController actions];
+    v7 = [actions count];
 
     if (!v7)
     {

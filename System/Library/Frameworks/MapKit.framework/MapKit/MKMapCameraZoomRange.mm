@@ -1,22 +1,22 @@
 @interface MKMapCameraZoomRange
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMapCameraZoomRange:(id)a3;
-- (MKMapCameraZoomRange)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMapCameraZoomRange:(id)range;
+- (MKMapCameraZoomRange)initWithCoder:(id)coder;
 - (MKMapCameraZoomRange)initWithMinCenterCoordinateDistance:(CLLocationDistance)minDistance maxCenterCoordinateDistance:(CLLocationDistance)maxDistance;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MKMapCameraZoomRange
 
-- (MKMapCameraZoomRange)initWithCoder:(id)a3
+- (MKMapCameraZoomRange)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"MKMapCameraZoomRangeMinDistance"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"MKMapCameraZoomRangeMinDistance"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"MKMapCameraZoomRangeMaxDistance"];
+  [coderCopy decodeDoubleForKey:@"MKMapCameraZoomRangeMaxDistance"];
   v8 = v7;
-  v9 = [v4 decodeBoolForKey:@"MKMapCameraZoomRangeBouncesZoom"];
+  v9 = [coderCopy decodeBoolForKey:@"MKMapCameraZoomRangeBouncesZoom"];
 
   v10 = [(MKMapCameraZoomRange *)self initWithMinCenterCoordinateDistance:v6 maxCenterCoordinateDistance:v8];
   v11 = v10;
@@ -28,26 +28,26 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeDouble:@"MKMapCameraZoomRangeMinDistance" forKey:self->_minCenterCoordinateDistance];
-  [v4 encodeDouble:@"MKMapCameraZoomRangeMaxDistance" forKey:self->_maxCenterCoordinateDistance];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"MKMapCameraZoomRangeMinDistance" forKey:self->_minCenterCoordinateDistance];
+  [coderCopy encodeDouble:@"MKMapCameraZoomRangeMaxDistance" forKey:self->_maxCenterCoordinateDistance];
   if (self->_bouncesZoom)
   {
-    [v4 encodeBool:1 forKey:@"MKMapCameraZoomRangeBouncesZoom"];
+    [coderCopy encodeBool:1 forKey:@"MKMapCameraZoomRangeBouncesZoom"];
   }
 }
 
-- (BOOL)isEqualToMapCameraZoomRange:(id)a3
+- (BOOL)isEqualToMapCameraZoomRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   minCenterCoordinateDistance = self->_minCenterCoordinateDistance;
-  [v4 minCenterCoordinateDistance];
-  if (minCenterCoordinateDistance == v6 && (maxCenterCoordinateDistance = self->_maxCenterCoordinateDistance, [v4 maxCenterCoordinateDistance], maxCenterCoordinateDistance == v8))
+  [rangeCopy minCenterCoordinateDistance];
+  if (minCenterCoordinateDistance == v6 && (maxCenterCoordinateDistance = self->_maxCenterCoordinateDistance, [rangeCopy maxCenterCoordinateDistance], maxCenterCoordinateDistance == v8))
   {
     bouncesZoom = self->_bouncesZoom;
-    v10 = bouncesZoom == [v4 _bouncesZoom];
+    v10 = bouncesZoom == [rangeCopy _bouncesZoom];
   }
 
   else
@@ -58,16 +58,16 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(MKMapCameraZoomRange *)self isEqualToMapCameraZoomRange:v4]&& v4[8] == self->_bouncesZoom;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(MKMapCameraZoomRange *)self isEqualToMapCameraZoomRange:equalCopy]&& equalCopy[8] == self->_bouncesZoom;
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithMinCenterCoordinateDistance:self->_minCenterCoordinateDistance maxCenterCoordinateDistance:self->_maxCenterCoordinateDistance];
   v5 = v4;

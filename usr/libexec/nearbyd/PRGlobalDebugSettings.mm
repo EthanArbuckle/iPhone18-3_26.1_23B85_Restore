@@ -1,10 +1,10 @@
 @interface PRGlobalDebugSettings
 + (id)sharedSettings;
-- (BOOL)BOOLForKey:(id)a3;
+- (BOOL)BOOLForKey:(id)key;
 - (PRGlobalDebugSettings)init;
-- (id)objectForKey:(id)a3 ofClass:(Class)a4;
-- (int64_t)integerForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (id)objectForKey:(id)key ofClass:(Class)class;
+- (int64_t)integerForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation PRGlobalDebugSettings
@@ -36,19 +36,19 @@
   return v2;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v7 = a4;
-  v6 = a3;
-  [(PRGlobalDebugSettings *)self willChangeValueForKey:v7];
-  [(NSMutableDictionary *)self->_dict setObject:v6 forKey:v7];
+  keyCopy = key;
+  objectCopy = object;
+  [(PRGlobalDebugSettings *)self willChangeValueForKey:keyCopy];
+  [(NSMutableDictionary *)self->_dict setObject:objectCopy forKey:keyCopy];
 
-  [(PRGlobalDebugSettings *)self didChangeValueForKey:v7];
+  [(PRGlobalDebugSettings *)self didChangeValueForKey:keyCopy];
 }
 
-- (id)objectForKey:(id)a3 ofClass:(Class)a4
+- (id)objectForKey:(id)key ofClass:(Class)class
 {
-  v4 = [(NSMutableDictionary *)self->_dict objectForKey:a3];
+  v4 = [(NSMutableDictionary *)self->_dict objectForKey:key];
   if (v4 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v5 = v4;
@@ -62,40 +62,40 @@
   return v5;
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PRGlobalDebugSettings *)self objectForKey:v4 ofClass:objc_opt_class()];
+  keyCopy = key;
+  v5 = [(PRGlobalDebugSettings *)self objectForKey:keyCopy ofClass:objc_opt_class()];
 
   if (v5)
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (int64_t)integerForKey:(id)a3
+- (int64_t)integerForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PRGlobalDebugSettings *)self objectForKey:v4 ofClass:objc_opt_class()];
+  keyCopy = key;
+  v5 = [(PRGlobalDebugSettings *)self objectForKey:keyCopy ofClass:objc_opt_class()];
 
   if (v5)
   {
-    v6 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
   {
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
 @end

@@ -4,23 +4,23 @@
 - (double)outerCircleRadius;
 - (id)hourHandConfiguration;
 - (id)minuteHandConfiguration;
-- (void)_applyDesiredHandExtent:(double)a3 toConfiguration:(id)a4;
+- (void)_applyDesiredHandExtent:(double)extent toConfiguration:(id)configuration;
 @end
 
 @implementation NTKCrosswindAnalogHandsView
 
 - (double)innerCircleRadius
 {
-  v2 = [(NTKCrosswindAnalogHandsView *)self device];
-  v3 = sub_4248(v2, v2);
+  device = [(NTKCrosswindAnalogHandsView *)self device];
+  v3 = sub_4248(device, device);
 
   return v3;
 }
 
 - (double)middleCircleRadius
 {
-  v2 = [(NTKCrosswindAnalogHandsView *)self device];
-  sub_4248(v2, v2);
+  device = [(NTKCrosswindAnalogHandsView *)self device];
+  sub_4248(device, device);
   v4 = v3;
 
   return v4;
@@ -29,8 +29,8 @@
 - (double)outerCircleRadius
 {
   v3 = objc_opt_class();
-  v4 = [(NTKCrosswindAnalogHandsView *)self device];
-  [v3 outerCircleRadiusForDevice:v4];
+  device = [(NTKCrosswindAnalogHandsView *)self device];
+  [v3 outerCircleRadiusForDevice:device];
   v6 = v5;
 
   return v6;
@@ -40,39 +40,39 @@
 {
   v5.receiver = self;
   v5.super_class = NTKCrosswindAnalogHandsView;
-  v3 = [(NTKCrosswindAnalogHandsView *)&v5 hourHandConfiguration];
+  hourHandConfiguration = [(NTKCrosswindAnalogHandsView *)&v5 hourHandConfiguration];
   [(NTKCrosswindAnalogHandsView *)self middleCircleRadius];
-  [(NTKCrosswindAnalogHandsView *)self _applyDesiredHandExtent:v3 toConfiguration:?];
-  [v3 setDropShadowOpacity:0.0];
-  [v3 setRadialShadowOpacity:0.0];
+  [(NTKCrosswindAnalogHandsView *)self _applyDesiredHandExtent:hourHandConfiguration toConfiguration:?];
+  [hourHandConfiguration setDropShadowOpacity:0.0];
+  [hourHandConfiguration setRadialShadowOpacity:0.0];
 
-  return v3;
+  return hourHandConfiguration;
 }
 
 - (id)minuteHandConfiguration
 {
   v5.receiver = self;
   v5.super_class = NTKCrosswindAnalogHandsView;
-  v3 = [(NTKCrosswindAnalogHandsView *)&v5 minuteHandConfiguration];
+  minuteHandConfiguration = [(NTKCrosswindAnalogHandsView *)&v5 minuteHandConfiguration];
   [(NTKCrosswindAnalogHandsView *)self outerCircleRadius];
-  [(NTKCrosswindAnalogHandsView *)self _applyDesiredHandExtent:v3 toConfiguration:?];
-  [v3 setDropShadowOpacity:0.0];
-  [v3 setRadialShadowOpacity:0.0];
+  [(NTKCrosswindAnalogHandsView *)self _applyDesiredHandExtent:minuteHandConfiguration toConfiguration:?];
+  [minuteHandConfiguration setDropShadowOpacity:0.0];
+  [minuteHandConfiguration setRadialShadowOpacity:0.0];
 
-  return v3;
+  return minuteHandConfiguration;
 }
 
-- (void)_applyDesiredHandExtent:(double)a3 toConfiguration:(id)a4
+- (void)_applyDesiredHandExtent:(double)extent toConfiguration:(id)configuration
 {
-  v12 = a4;
-  [v12 handLength];
+  configurationCopy = configuration;
+  [configurationCopy handLength];
   v6 = v5;
-  [v12 armLength];
+  [configurationCopy armLength];
   v8 = v6 + v7;
-  [v12 pegRadius];
+  [configurationCopy pegRadius];
   v10 = v8 + v9;
-  [v12 pegStrokeWidth];
-  [v12 setHandLength:v6 + a3 - (v10 + v11)];
+  [configurationCopy pegStrokeWidth];
+  [configurationCopy setHandLength:v6 + extent - (v10 + v11)];
 }
 
 @end

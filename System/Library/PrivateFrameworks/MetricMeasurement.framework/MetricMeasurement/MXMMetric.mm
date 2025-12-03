@@ -1,19 +1,19 @@
 @interface MXMMetric
 - (BOOL)_shouldConstructProbe;
 - (BOOL)_shouldWrapInProxy;
-- (BOOL)harvestData:(id *)a3 error:(id *)a4;
-- (BOOL)prepareWithOptions:(id)a3 error:(id *)a4;
+- (BOOL)harvestData:(id *)data error:(id *)error;
+- (BOOL)prepareWithOptions:(id)options error:(id *)error;
 - (MXMInstrument)instrument;
-- (MXMMetric)initWithCoder:(id)a3;
-- (MXMMetric)initWithIdentifier:(id)a3 filter:(id)a4;
+- (MXMMetric)initWithCoder:(id)coder;
+- (MXMMetric)initWithIdentifier:(id)identifier filter:(id)filter;
 - (id)_constructProbe;
 - (id)_getProbe;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)didStopAtContinuousTime:(unint64_t)a3 absoluteTime:(unint64_t)a4 stopDate:(id)a5;
-- (void)didStopAtTime:(unint64_t)a3 stopDate:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)probeDidUpdate:(id)a3 data:(id)a4 stop:(BOOL *)a5;
-- (void)willStartAtEstimatedTime:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)didStopAtContinuousTime:(unint64_t)time absoluteTime:(unint64_t)absoluteTime stopDate:(id)date;
+- (void)didStopAtTime:(unint64_t)time stopDate:(id)date;
+- (void)encodeWithCoder:(id)coder;
+- (void)probeDidUpdate:(id)update data:(id)data stop:(BOOL *)stop;
+- (void)willStartAtEstimatedTime:(unint64_t)time;
 @end
 
 @implementation MXMMetric
@@ -37,14 +37,14 @@
     return 0;
   }
 
-  v3 = [(MXMMetric *)self _constructProbe];
-  if (!v3)
+  _constructProbe = [(MXMMetric *)self _constructProbe];
+  if (!_constructProbe)
   {
     return 0;
   }
 
-  v4 = v3;
-  [v3 setFilter:self->_filter];
+  v4 = _constructProbe;
+  [_constructProbe setFilter:self->_filter];
   v5 = [v4 sampleWithTimeout:60.0];
   v6 = [v5 numberOfSets] == 0;
 
@@ -71,9 +71,9 @@
     objc_sync_enter(v3);
     if (!self->_probe)
     {
-      v4 = [(MXMMetric *)self _constructProbe];
+      _constructProbe = [(MXMMetric *)self _constructProbe];
       probe = self->_probe;
-      self->_probe = v4;
+      self->_probe = _constructProbe;
 
       [(MXMProbe *)self->_probe setFilter:self->_filter];
       [(MXMProbe *)self->_probe setDelegate:self];
@@ -92,71 +92,71 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(MXMMetric *)self identifier];
-  v7 = [v6 copyWithZone:a3];
-  v8 = [(MXMMetric *)self filter];
-  v9 = [v8 copyWithZone:a3];
+  identifier = [(MXMMetric *)self identifier];
+  v7 = [identifier copyWithZone:zone];
+  filter = [(MXMMetric *)self filter];
+  v9 = [filter copyWithZone:zone];
   v10 = [v5 initWithIdentifier:v7 filter:v9];
 
   [v10 setPreferredSampleMode:{-[MXMMetric preferredSampleMode](self, "preferredSampleMode")}];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(MXMMetric *)self identifier];
-  [v8 encodeObject:v4 forKey:@"Identifier"];
+  coderCopy = coder;
+  identifier = [(MXMMetric *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"Identifier"];
 
-  v5 = [(MXMMetric *)self version];
-  [v8 encodeObject:v5 forKey:@"Version"];
+  version = [(MXMMetric *)self version];
+  [coderCopy encodeObject:version forKey:@"Version"];
 
-  v6 = [(MXMMetric *)self build];
-  [v8 encodeObject:v6 forKey:@"Build"];
+  build = [(MXMMetric *)self build];
+  [coderCopy encodeObject:build forKey:@"Build"];
 
-  v7 = [(MXMMetric *)self filter];
-  [v8 encodeObject:v7 forKey:@"Filter"];
+  filter = [(MXMMetric *)self filter];
+  [coderCopy encodeObject:filter forKey:@"Filter"];
 
-  [v8 encodeInteger:-[MXMMetric preferredSampleMode](self forKey:{"preferredSampleMode"), @"SuggestedPollMode"}];
+  [coderCopy encodeInteger:-[MXMMetric preferredSampleMode](self forKey:{"preferredSampleMode"), @"SuggestedPollMode"}];
 }
 
-- (MXMMetric)initWithCoder:(id)a3
+- (MXMMetric)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MXMMetric;
   v5 = [(MXMMetric *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Version"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Version"];
     version = v5->_version;
     v5->_version = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Build"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Build"];
     build = v5->_build;
     v5->_build = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Filter"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Filter"];
     filter = v5->_filter;
     v5->_filter = v12;
 
-    v5->_preferredSampleMode = [v4 decodeIntegerForKey:@"SuggestedPollMode"];
+    v5->_preferredSampleMode = [coderCopy decodeIntegerForKey:@"SuggestedPollMode"];
   }
 
   return v5;
 }
 
-- (MXMMetric)initWithIdentifier:(id)a3 filter:(id)a4
+- (MXMMetric)initWithIdentifier:(id)identifier filter:(id)filter
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  filterCopy = filter;
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   if (v8)
   {
@@ -167,39 +167,39 @@
     if (v9)
     {
       v9->_preferredSampleMode = -1;
-      v10 = [v6 copy];
+      v10 = [identifierCopy copy];
       identifier = self->_identifier;
       self->_identifier = v10;
 
-      v12 = [v8 infoDictionary];
-      v13 = [v12 objectForKeyedSubscript:@"CFBundleShortVersionString"];
+      infoDictionary = [v8 infoDictionary];
+      v13 = [infoDictionary objectForKeyedSubscript:@"CFBundleShortVersionString"];
       version = self->_version;
       self->_version = v13;
 
-      v15 = [v8 infoDictionary];
-      v16 = [v15 objectForKeyedSubscript:@"CFBundleVersion"];
+      infoDictionary2 = [v8 infoDictionary];
+      v16 = [infoDictionary2 objectForKeyedSubscript:@"CFBundleVersion"];
       build = self->_build;
       self->_build = v16;
 
-      objc_storeStrong(&self->_filter, a4);
+      objc_storeStrong(&self->_filter, filter);
     }
   }
 
   return self;
 }
 
-- (void)probeDidUpdate:(id)a3 data:(id)a4 stop:(BOOL *)a5
+- (void)probeDidUpdate:(id)update data:(id)data stop:(BOOL *)stop
 {
   data = self->_data;
   if (data)
   {
-    [(MXMMutableSampleData *)data appendData:a4];
+    [(MXMMutableSampleData *)data appendData:data];
   }
 }
 
-- (BOOL)prepareWithOptions:(id)a3 error:(id *)a4
+- (BOOL)prepareWithOptions:(id)options error:(id *)error
 {
-  if ([(MXMMetric *)self _shouldConstructProbe:a3])
+  if ([(MXMMetric *)self _shouldConstructProbe:options])
   {
     v5 = objc_alloc_init(MXMMutableSampleData);
   }
@@ -215,13 +215,13 @@
   return 0;
 }
 
-- (void)willStartAtEstimatedTime:(unint64_t)a3
+- (void)willStartAtEstimatedTime:(unint64_t)time
 {
   v16 = *MEMORY[0x277D85DE8];
   if ((([(MXMMetric *)self _sampleMode]& 1) != 0 || ([(MXMMetric *)self _sampleMode]& 4) != 0) && [(MXMMetric *)self _shouldConstructProbe])
   {
-    v4 = [(MXMMetric *)self _getProbe];
-    if (!v4)
+    _getProbe = [(MXMMetric *)self _getProbe];
+    if (!_getProbe)
     {
       [MXMMetric willStartAtEstimatedTime:];
     }
@@ -230,7 +230,7 @@
     {
       if (([(MXMMetric *)self _sampleMode]& 4) != 0)
       {
-        [v4 updateNowUntilStopped];
+        [_getProbe updateNowUntilStopped];
       }
 
       else
@@ -242,7 +242,7 @@
 
         else
         {
-          v5 = [v4 sampleWithTimeout:60.0];
+          v5 = [_getProbe sampleWithTimeout:60.0];
         }
 
         if (![v5 numberOfSets] && !-[MXMMetric _shouldNeverWrapInProxy](self, "_shouldNeverWrapInProxy"))
@@ -250,11 +250,11 @@
           v6 = _MXMGetLog();
           if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
           {
-            v7 = [(MXMMetric *)self identifier];
+            identifier = [(MXMMetric *)self identifier];
             v12 = 138412546;
-            v13 = v7;
+            v13 = identifier;
             v14 = 2048;
-            v15 = self;
+            selfCopy = self;
             _os_log_impl(&dword_258DAA000, v6, OS_LOG_TYPE_DEFAULT, "Metric: %@(%p) is being wrapped in a proxy in willStartAtEstimatedTime:", &v12, 0x16u);
           }
 
@@ -273,13 +273,13 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didStopAtTime:(unint64_t)a3 stopDate:(id)a4
+- (void)didStopAtTime:(unint64_t)time stopDate:(id)date
 {
   v27 = *MEMORY[0x277D85DE8];
-  if ((([(MXMMetric *)self _sampleMode:a3]& 2) != 0 || ([(MXMMetric *)self _sampleMode]& 4) != 0) && [(MXMMetric *)self _shouldConstructProbe])
+  if ((([(MXMMetric *)self _sampleMode:time]& 2) != 0 || ([(MXMMetric *)self _sampleMode]& 4) != 0) && [(MXMMetric *)self _shouldConstructProbe])
   {
-    v5 = [(MXMMetric *)self _getProbe];
-    if (!v5)
+    _getProbe = [(MXMMetric *)self _getProbe];
+    if (!_getProbe)
     {
       [MXMMetric didStopAtTime:stopDate:];
     }
@@ -288,9 +288,9 @@
     {
       if (([(MXMMetric *)self _sampleMode]& 4) != 0)
       {
-        [v5 updateNowUntilTimeout:60.0];
-        [v5 stopUpdates];
-        [v5 waitUntilStoppedWithTimeout:60.0];
+        [_getProbe updateNowUntilTimeout:60.0];
+        [_getProbe stopUpdates];
+        [_getProbe waitUntilStoppedWithTimeout:60.0];
       }
 
       else
@@ -302,7 +302,7 @@
 
         else
         {
-          v6 = [v5 sampleWithTimeout:60.0];
+          v6 = [_getProbe sampleWithTimeout:60.0];
         }
 
         if (![v6 numberOfSets] && !-[MXMMetric _shouldNeverWrapInProxy](self, "_shouldNeverWrapInProxy"))
@@ -310,11 +310,11 @@
           v7 = _MXMGetLog();
           if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
           {
-            v8 = [(MXMMetric *)self identifier];
+            identifier = [(MXMMetric *)self identifier];
             v23 = 138412546;
-            v24 = v8;
+            v24 = identifier;
             v25 = 2048;
-            v26 = self;
+            selfCopy = self;
             _os_log_impl(&dword_258DAA000, v7, OS_LOG_TYPE_DEFAULT, "Metric: %@(%p) is being wrapped in a proxy in didStopAtTime:stopDate:", &v23, 0x16u);
           }
 
@@ -328,11 +328,11 @@
         if (v6 && ([v6 samples], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, v13))
         {
           v14 = [MXMSampleAttributeFilter alloc];
-          v15 = [v6 samples];
-          v16 = [v15 lastObject];
-          v17 = [v16 attributeWithName:@"Process Identifier"];
-          v18 = [v17 numericValue];
-          v19 = [(MXMSampleAttributeFilter *)v14 initWithAttributeName:@"Process Identifier" numericValue:v18];
+          samples = [v6 samples];
+          lastObject = [samples lastObject];
+          v17 = [lastObject attributeWithName:@"Process Identifier"];
+          numericValue = [v17 numericValue];
+          v19 = [(MXMSampleAttributeFilter *)v14 initWithAttributeName:@"Process Identifier" numericValue:numericValue];
         }
 
         else
@@ -340,9 +340,9 @@
           v19 = [[MXMSampleAttributeFilter alloc] initWithAttributeName:@"Process Identifier" numericValue:&unk_286A26070];
         }
 
-        v20 = [(MXMMetric *)self filter];
+        filter = [(MXMMetric *)self filter];
         v21 = [MEMORY[0x277CBEB98] setWithObject:v19];
-        [v20 addAttributeFilters:v21];
+        [filter addAttributeFilters:v21];
 
         [(MXMMutableSampleData *)self->_data appendData:v6];
       }
@@ -352,13 +352,13 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didStopAtContinuousTime:(unint64_t)a3 absoluteTime:(unint64_t)a4 stopDate:(id)a5
+- (void)didStopAtContinuousTime:(unint64_t)time absoluteTime:(unint64_t)absoluteTime stopDate:(id)date
 {
   v18 = *MEMORY[0x277D85DE8];
-  if ((([(MXMMetric *)self _sampleMode:a3]& 2) != 0 || ([(MXMMetric *)self _sampleMode]& 4) != 0) && [(MXMMetric *)self _shouldConstructProbe])
+  if ((([(MXMMetric *)self _sampleMode:time]& 2) != 0 || ([(MXMMetric *)self _sampleMode]& 4) != 0) && [(MXMMetric *)self _shouldConstructProbe])
   {
-    v6 = [(MXMMetric *)self _getProbe];
-    if (!v6)
+    _getProbe = [(MXMMetric *)self _getProbe];
+    if (!_getProbe)
     {
       [MXMMetric didStopAtContinuousTime:absoluteTime:stopDate:];
     }
@@ -367,9 +367,9 @@
     {
       if (([(MXMMetric *)self _sampleMode]& 4) != 0)
       {
-        [v6 updateNowUntilTimeout:60.0];
-        [v6 stopUpdates];
-        [v6 waitUntilStoppedWithTimeout:60.0];
+        [_getProbe updateNowUntilTimeout:60.0];
+        [_getProbe stopUpdates];
+        [_getProbe waitUntilStoppedWithTimeout:60.0];
       }
 
       else
@@ -381,7 +381,7 @@
 
         else
         {
-          v7 = [v6 sampleWithTimeout:60.0];
+          v7 = [_getProbe sampleWithTimeout:60.0];
         }
 
         if (![v7 numberOfSets] && !-[MXMMetric _shouldNeverWrapInProxy](self, "_shouldNeverWrapInProxy"))
@@ -389,11 +389,11 @@
           v8 = _MXMGetLog();
           if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
           {
-            v9 = [(MXMMetric *)self identifier];
+            identifier = [(MXMMetric *)self identifier];
             v14 = 138412546;
-            v15 = v9;
+            v15 = identifier;
             v16 = 2048;
-            v17 = self;
+            selfCopy = self;
             _os_log_impl(&dword_258DAA000, v8, OS_LOG_TYPE_DEFAULT, "Metric: %@(%p) is being wrapped in a proxy in didStopAtTime:stopDate:", &v14, 0x16u);
           }
 
@@ -412,9 +412,9 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)harvestData:(id *)a3 error:(id *)a4
+- (BOOL)harvestData:(id *)data error:(id *)error
 {
-  if (![(MXMMetric *)self _shouldConstructProbe:a3])
+  if (![(MXMMetric *)self _shouldConstructProbe:data])
   {
     [MXMMetric harvestData:error:];
   }
@@ -424,11 +424,11 @@
     [MXMMetric harvestData:error:];
   }
 
-  v7 = [(MXMMetric *)self _getProbe];
+  _getProbe = [(MXMMetric *)self _getProbe];
 
-  if (v7)
+  if (_getProbe)
   {
-    if (a3)
+    if (data)
     {
       goto LABEL_7;
     }
@@ -437,7 +437,7 @@
   else
   {
     [MXMMetric harvestData:error:];
-    if (a3)
+    if (data)
     {
       goto LABEL_7;
     }
@@ -453,7 +453,7 @@ LABEL_7:
     data = v12;
   }
 
-  *a3 = data;
+  *data = data;
   v10 = *p_data;
   *p_data = 0;
 

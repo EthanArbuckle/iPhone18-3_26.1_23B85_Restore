@@ -1,15 +1,15 @@
 @interface BCLogger
-+ (void)logEventWithName:(id)a3 businessURI:(id)a4 callToActionText:(id)a5 bizItemReturnedAfterAction:(BOOL)a6 latency:(int64_t)a7;
-+ (void)logEventWithName:(id)a3 version:(int64_t)a4 authDomain:(id)a5 status:(id)a6;
-- (void)mt_log_icloud_messages_apps_businessframework:(id)a3 version:(int64_t)a4;
++ (void)logEventWithName:(id)name businessURI:(id)i callToActionText:(id)text bizItemReturnedAfterAction:(BOOL)action latency:(int64_t)latency;
++ (void)logEventWithName:(id)name version:(int64_t)version authDomain:(id)domain status:(id)status;
+- (void)mt_log_icloud_messages_apps_businessframework:(id)mt_log_icloud_messages_apps_businessframework version:(int64_t)version;
 @end
 
 @implementation BCLogger
 
-- (void)mt_log_icloud_messages_apps_businessframework:(id)a3 version:(int64_t)a4
+- (void)mt_log_icloud_messages_apps_businessframework:(id)mt_log_icloud_messages_apps_businessframework version:(int64_t)version
 {
-  v5 = a3;
-  v4 = v5;
+  mt_log_icloud_messages_apps_businessframeworkCopy = mt_log_icloud_messages_apps_businessframework;
+  v4 = mt_log_icloud_messages_apps_businessframeworkCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -30,15 +30,15 @@ id __66__BCLogger_mt_log_icloud_messages_apps_businessframework_version___block_
   return v4;
 }
 
-+ (void)logEventWithName:(id)a3 businessURI:(id)a4 callToActionText:(id)a5 bizItemReturnedAfterAction:(BOOL)a6 latency:(int64_t)a7
++ (void)logEventWithName:(id)name businessURI:(id)i callToActionText:(id)text bizItemReturnedAfterAction:(BOOL)action latency:(int64_t)latency
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v9 length] && objc_msgSend(v10, "length"))
+  nameCopy = name;
+  iCopy = i;
+  textCopy = text;
+  if ([nameCopy length] && objc_msgSend(iCopy, "length"))
   {
-    v12 = v10;
-    v13 = v11;
+    v12 = iCopy;
+    v13 = textCopy;
     AnalyticsSendEventLazy();
   }
 }
@@ -62,12 +62,12 @@ id __93__BCLogger_logEventWithName_businessURI_callToActionText_bizItemReturnedA
   return v5;
 }
 
-+ (void)logEventWithName:(id)a3 version:(int64_t)a4 authDomain:(id)a5 status:(id)a6
++ (void)logEventWithName:(id)name version:(int64_t)version authDomain:(id)domain status:(id)status
 {
-  v7 = a5;
-  v10 = a6;
-  v8 = v7;
-  v9 = v10;
+  domainCopy = domain;
+  statusCopy = status;
+  v8 = domainCopy;
+  v9 = statusCopy;
   AnalyticsSendEventLazy();
 }
 

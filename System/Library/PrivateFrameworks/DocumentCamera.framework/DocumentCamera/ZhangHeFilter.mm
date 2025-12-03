@@ -1,15 +1,15 @@
 @interface ZhangHeFilter
-+ (id)zhangHeFilter:(id)a3;
++ (id)zhangHeFilter:(id)filter;
 @end
 
 @implementation ZhangHeFilter
 
-+ (id)zhangHeFilter:(id)a3
++ (id)zhangHeFilter:(id)filter
 {
-  v3 = [a3 dc_CGImage];
-  Width = CGImageGetWidth(v3);
-  Height = CGImageGetHeight(v3);
-  BytesPerRow = CGImageGetBytesPerRow(v3);
+  dc_CGImage = [filter dc_CGImage];
+  Width = CGImageGetWidth(dc_CGImage);
+  Height = CGImageGetHeight(dc_CGImage);
+  BytesPerRow = CGImageGetBytesPerRow(dc_CGImage);
   DeviceGray = CGColorSpaceCreateDeviceGray();
   v8 = CGBitmapContextCreate(0, Width, Height, 8uLL, BytesPerRow, DeviceGray, 0);
   v9 = CGBitmapContextGetBytesPerRow(v8);

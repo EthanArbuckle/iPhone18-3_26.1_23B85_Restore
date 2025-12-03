@@ -1,35 +1,35 @@
 @interface CRLWPRangeMap
-- (CRLWPRangeMap)initWithSubRange:(_NSRange)a3 unmappedIndexes:(const void *)a4 affinity:(int)a5;
-- (CRLWPRangeMap)initWithSubRange:(_NSRange)a3 unmappedIndexes:(const void *)a4 isBackwardAffinities:(const void *)a5;
-- (CRLWPRangeMap)initWithSubRange:(_NSRange)a3 unmappedPairIndexes:(const void *)a4;
-- (_NSRange)mappedCharRange:(_NSRange)a3;
+- (CRLWPRangeMap)initWithSubRange:(_NSRange)range unmappedIndexes:(const void *)indexes affinity:(int)affinity;
+- (CRLWPRangeMap)initWithSubRange:(_NSRange)range unmappedIndexes:(const void *)indexes isBackwardAffinities:(const void *)affinities;
+- (CRLWPRangeMap)initWithSubRange:(_NSRange)range unmappedPairIndexes:(const void *)indexes;
+- (_NSRange)mappedCharRange:(_NSRange)range;
 - (_NSRange)subRange;
-- (_NSRange)unmappedCharRange:(_NSRange)a3;
+- (_NSRange)unmappedCharRange:(_NSRange)range;
 - (id).cxx_construct;
-- (unint64_t)mappedCharIndex:(unint64_t)a3;
-- (unint64_t)p_extendLeftMappedIndex:(unint64_t)a3;
-- (unint64_t)p_extendRightMappedIndex:(unint64_t)a3;
-- (unint64_t)unmappedCharIndex:(unint64_t)a3;
+- (unint64_t)mappedCharIndex:(unint64_t)index;
+- (unint64_t)p_extendLeftMappedIndex:(unint64_t)index;
+- (unint64_t)p_extendRightMappedIndex:(unint64_t)index;
+- (unint64_t)unmappedCharIndex:(unint64_t)index;
 - (vector<_CRLWPCharIndexAndAffinity,)mappedIndexes;
 - (vector<_CRLWPCharIndexAndAffinity,)unmappedIndexes;
-- (void)adjustByDelta:(int64_t)a3 startingAt:(unint64_t)a4;
+- (void)adjustByDelta:(int64_t)delta startingAt:(unint64_t)at;
 - (void)setMappedIndexes:()vector<_CRLWPCharIndexAndAffinity;
 - (void)setUnmappedIndexes:()vector<_CRLWPCharIndexAndAffinity;
 @end
 
 @implementation CRLWPRangeMap
 
-- (CRLWPRangeMap)initWithSubRange:(_NSRange)a3 unmappedPairIndexes:(const void *)a4
+- (CRLWPRangeMap)initWithSubRange:(_NSRange)range unmappedPairIndexes:(const void *)indexes
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = [(CRLWPRangeMap *)self initWithSubRange:a3.location unmappedIndexes:a3.length affinity:a4, 0];
+  length = range.length;
+  location = range.location;
+  v7 = [(CRLWPRangeMap *)self initWithSubRange:range.location unmappedIndexes:range.length affinity:indexes, 0];
   v8 = v7;
   if (v7)
   {
     v7->_subRange.location = location;
     v7->_subRange.length = length;
-    v9 = *(a4 + 1) - *a4;
+    v9 = *(indexes + 1) - *indexes;
     if ((v9 & 8) != 0)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -122,19 +122,19 @@
   return v8;
 }
 
-- (CRLWPRangeMap)initWithSubRange:(_NSRange)a3 unmappedIndexes:(const void *)a4 isBackwardAffinities:(const void *)a5
+- (CRLWPRangeMap)initWithSubRange:(_NSRange)range unmappedIndexes:(const void *)indexes isBackwardAffinities:(const void *)affinities
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = [(CRLWPRangeMap *)self initWithSubRange:a3.location unmappedIndexes:a3.length affinity:a4, 0];
+  length = range.length;
+  location = range.location;
+  v9 = [(CRLWPRangeMap *)self initWithSubRange:range.location unmappedIndexes:range.length affinity:indexes, 0];
   v10 = v9;
   if (v9)
   {
     v9->_subRange.location = location;
     v9->_subRange.length = length;
-    v12 = *a4;
-    v11 = *(a4 + 1);
-    v13 = (v11 - *a4) >> 3;
+    v12 = *indexes;
+    v11 = *(indexes + 1);
+    v13 = (v11 - *indexes) >> 3;
     if (v13 != (v9->_unmappedIndexes.__end_ - v9->_unmappedIndexes.__begin_) >> 4 || v13 != (v9->_mappedIndexes.__end_ - v9->_mappedIndexes.__begin_) >> 4)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -169,7 +169,7 @@
     if (v11 != v12)
     {
       v17 = 0;
-      v18 = *a5;
+      v18 = *affinities;
       if (v13 <= 1)
       {
         v19 = 1;
@@ -208,10 +208,10 @@
   return v10;
 }
 
-- (CRLWPRangeMap)initWithSubRange:(_NSRange)a3 unmappedIndexes:(const void *)a4 affinity:(int)a5
+- (CRLWPRangeMap)initWithSubRange:(_NSRange)range unmappedIndexes:(const void *)indexes affinity:(int)affinity
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v32.receiver = self;
   v32.super_class = CRLWPRangeMap;
   v9 = [(CRLWPRangeMap *)&v32 init];
@@ -220,9 +220,9 @@
   {
     v9->_subRange.location = location;
     v9->_subRange.length = length;
-    v12 = *a4;
-    v11 = *(a4 + 1);
-    v13 = (v11 - *a4) >> 3;
+    v12 = *indexes;
+    v11 = *(indexes + 1);
+    v13 = (v11 - *indexes) >> 3;
     sub_100393E1C(&v9->_unmappedIndexes.__begin_, v13);
     sub_100393E1C(&v10->_mappedIndexes.__begin_, v13);
     v30 = v13;
@@ -236,7 +236,7 @@
 
       do
       {
-        v15 = *(*a4 + 8 * v14);
+        v15 = *(*indexes + 8 * v14);
         v16 = v10->_subRange.location;
         v17 = v10->_subRange.length;
         v18 = v15 - v16 < v17 && v15 >= v16;
@@ -293,10 +293,10 @@
         }
 
         *buf = v15;
-        *v34 = a5;
+        *v34 = affinity;
         sub_100393F44(&v10->_unmappedIndexes, buf);
         *&v31 = v14 + v15 - v10->_subRange.location;
-        *(&v31 + 1) = a5;
+        *(&v31 + 1) = affinity;
         sub_100393F44(&v10->_mappedIndexes, &v31);
         ++v14;
       }
@@ -308,9 +308,9 @@
   return v10;
 }
 
-- (unint64_t)mappedCharIndex:(unint64_t)a3
+- (unint64_t)mappedCharIndex:(unint64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -341,9 +341,9 @@
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:98 isFatal:0 description:"shouldn't be trying to map NSNotFound"];
   }
 
-  v8 = [(CRLWPRangeMap *)self subRange];
+  subRange = [(CRLWPRangeMap *)self subRange];
   [(CRLWPRangeMap *)self subRange];
-  if (a3 - v8 > v9)
+  if (index - subRange > v9)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -361,7 +361,7 @@
       v17 = *v15;
       v16 = (v15 + 2);
       v13 += ~(v13 >> 1);
-      if (v17 > a3)
+      if (v17 > index)
       {
         v13 = v14;
       }
@@ -375,13 +375,13 @@
     while (v13);
   }
 
-  return a3 - [(CRLWPRangeMap *)self subRange]+ ((end - begin) >> 4);
+  return index - [(CRLWPRangeMap *)self subRange]+ ((end - begin) >> 4);
 }
 
-- (unint64_t)unmappedCharIndex:(unint64_t)a3
+- (unint64_t)unmappedCharIndex:(unint64_t)index
 {
-  v3 = a3;
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  indexCopy = index;
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -430,7 +430,7 @@
       v15 = *v13;
       v14 = (v13 + 2);
       v10 += ~(v10 >> 1);
-      if (v15 < v3)
+      if (v15 < indexCopy)
       {
         v11 = v14;
       }
@@ -444,20 +444,20 @@
     while (v10);
   }
 
-  if (end == v11 || *v11 != v3)
+  if (end == v11 || *v11 != indexCopy)
   {
-    return [(CRLWPRangeMap *)self subRange]+ v3 - ((v11 - begin) >> 4);
+    return [(CRLWPRangeMap *)self subRange]+ indexCopy - ((v11 - begin) >> 4);
   }
 
   v16 = *(v11 + 2);
   if (v16 == 2)
   {
-    ++v3;
+    ++indexCopy;
   }
 
   else if (v16 == 1)
   {
-    --v3;
+    --indexCopy;
   }
 
   else
@@ -491,18 +491,18 @@
     [CRLAssertionHandler handleFailureInFunction:v19 file:v20 lineNumber:131 isFatal:0 description:"bad affinity"];
   }
 
-  return [(CRLWPRangeMap *)self unmappedCharIndex:v3];
+  return [(CRLWPRangeMap *)self unmappedCharIndex:indexCopy];
 }
 
-- (unint64_t)p_extendLeftMappedIndex:(unint64_t)a3
+- (unint64_t)p_extendLeftMappedIndex:(unint64_t)index
 {
-  if (a3)
+  if (index)
   {
     begin = self->_mappedIndexes.__begin_;
     end = self->_mappedIndexes.__end_;
     if (end != begin)
     {
-      v5 = a3 - 1;
+      v5 = index - 1;
       v6 = (end - begin) >> 4;
       do
       {
@@ -525,21 +525,21 @@
       while (v6);
       if (begin != end && *begin == v5 && *(begin + 2) == 2)
       {
-        --a3;
+        --index;
       }
     }
   }
 
-  return a3;
+  return index;
 }
 
-- (unint64_t)p_extendRightMappedIndex:(unint64_t)a3
+- (unint64_t)p_extendRightMappedIndex:(unint64_t)index
 {
   begin = self->_mappedIndexes.__begin_;
   end = self->_mappedIndexes.__end_;
   if (end != begin)
   {
-    v5 = a3 + 1;
+    v5 = index + 1;
     v6 = (end - begin) >> 4;
     do
     {
@@ -562,27 +562,27 @@
     while (v6);
     if (begin != end && *begin == v5 && *(begin + 2) == 1)
     {
-      ++a3;
+      ++index;
     }
   }
 
-  return a3;
+  return index;
 }
 
-- (_NSRange)mappedCharRange:(_NSRange)a3
+- (_NSRange)mappedCharRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v44.location = [(CRLWPRangeMap *)self subRange];
   v44.length = v6;
   v38.location = location;
   v38.length = length;
   if (NSIntersectionRange(v38, v44).length)
   {
-    v7 = [(CRLWPRangeMap *)self subRange];
-    if (location <= v7)
+    subRange = [(CRLWPRangeMap *)self subRange];
+    if (location <= subRange)
     {
-      v8 = v7;
+      v8 = subRange;
     }
 
     else
@@ -591,9 +591,9 @@
     }
 
     v9 = [(CRLWPRangeMap *)self p_extendLeftMappedIndex:[(CRLWPRangeMap *)self mappedCharIndex:v8]];
-    v10 = [(CRLWPRangeMap *)self subRange];
-    v12 = &v10[v11];
-    if (&v10[v11] >= location + length)
+    subRange2 = [(CRLWPRangeMap *)self subRange];
+    v12 = &subRange2[v11];
+    if (&subRange2[v11] >= location + length)
     {
       v12 = (location + length);
     }
@@ -695,10 +695,10 @@
   return result;
 }
 
-- (_NSRange)unmappedCharRange:(_NSRange)a3
+- (_NSRange)unmappedCharRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = [(CRLWPRangeMap *)self unmappedCharIndex:?];
   v7 = v6;
   if (length)
@@ -737,20 +737,20 @@
   return result;
 }
 
-- (void)adjustByDelta:(int64_t)a3 startingAt:(unint64_t)a4
+- (void)adjustByDelta:(int64_t)delta startingAt:(unint64_t)at
 {
-  if ([(CRLWPRangeMap *)self subRange]>= a4)
+  if ([(CRLWPRangeMap *)self subRange]>= at)
   {
-    self->_subRange.location += a3;
+    self->_subRange.location += delta;
   }
 
   begin = self->_unmappedIndexes.__begin_;
   end = self->_unmappedIndexes.__end_;
   while (begin != end)
   {
-    if (*begin >= a4)
+    if (*begin >= at)
     {
-      *begin += a3;
+      *begin += delta;
     }
 
     begin = (begin + 16);

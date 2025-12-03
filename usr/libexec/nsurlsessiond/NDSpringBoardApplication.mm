@@ -3,19 +3,19 @@
 - (BOOL)backgroundUpdatesEnabled;
 - (BOOL)hasBackgroundTaskCompletion;
 - (BOOL)isForeground;
-- (BOOL)isHandlingBackgroundURLSessionWithIdentifier:(id)a3 withSessionUUID:(id)a4;
-- (BOOL)wakeForSessionIdentifier:(id)a3 withSessionUUID:(id)a4 wakeRequirement:(int64_t)a5;
-- (NDSpringBoardApplication)initWithIdentifier:(id)a3;
+- (BOOL)isHandlingBackgroundURLSessionWithIdentifier:(id)identifier withSessionUUID:(id)d;
+- (BOOL)wakeForSessionIdentifier:(id)identifier withSessionUUID:(id)d wakeRequirement:(int64_t)requirement;
+- (NDSpringBoardApplication)initWithIdentifier:(id)identifier;
 - (id)containerURL;
 - (void)_onqueue_resetRequestDelay;
-- (void)addObserver:(id)a3;
-- (void)applicationBackgroundUpdatesTurnedOff:(id)a3;
-- (void)applicationBackgroundUpdatesTurnedOn:(id)a3;
-- (void)applicationEnteredForeground:(id)a3;
-- (void)applicationNoLongerInForeground:(id)a3;
-- (void)applicationWasQuitFromAppSwitcher:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)applicationBackgroundUpdatesTurnedOff:(id)off;
+- (void)applicationBackgroundUpdatesTurnedOn:(id)on;
+- (void)applicationEnteredForeground:(id)foreground;
+- (void)applicationNoLongerInForeground:(id)foreground;
+- (void)applicationWasQuitFromAppSwitcher:(id)switcher;
 - (void)disableTransitionalDiscretionaryPeriodTimer;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)setupDelayTimer;
 - (void)setupTransitionalDiscretionaryPeriodTimer;
 - (void)startTransitionalDiscretionaryPeriodTimer;
@@ -76,69 +76,69 @@
 - (id)containerURL
 {
   v2 = [[LSApplicationRecord alloc] initWithBundleIdentifier:self->super._bundleIdentifier allowPlaceholder:0 error:0];
-  v3 = [v2 dataContainerURL];
+  dataContainerURL = [v2 dataContainerURL];
 
-  return v3;
+  return dataContainerURL;
 }
 
-- (void)applicationNoLongerInForeground:(id)a3
+- (void)applicationNoLongerInForeground:(id)foreground
 {
   v5.receiver = self;
   v5.super_class = NDSpringBoardApplication;
   [(NDApplication *)&v5 invokeSelectorForAllObservers:"applicationNoLongerInForeground:"];
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NDSpringBoardApplication *)v4 startTransitionalDiscretionaryPeriodTimer];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NDSpringBoardApplication *)selfCopy startTransitionalDiscretionaryPeriodTimer];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)applicationEnteredForeground:(id)a3
+- (void)applicationEnteredForeground:(id)foreground
 {
-  v4 = a3;
+  foregroundCopy = foreground;
   v5 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = foregroundCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Resetting request delay and clearing pending wake requests for %@ since it came into the foreground", buf, 0xCu);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7 = +[NDSpringBoardApplication requestDelayQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005A7D8;
   block[3] = &unk_1000D63D0;
-  block[4] = v6;
+  block[4] = selfCopy;
   dispatch_async(v7, block);
 
-  v9.receiver = v6;
+  v9.receiver = selfCopy;
   v9.super_class = NDSpringBoardApplication;
   [(NDApplication *)&v9 invokeSelectorForAllObservers:"applicationEnteredForeground:"];
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
-  v8 = v6;
+  v8 = selfCopy;
   objc_sync_enter(v8);
   [(NDSpringBoardApplication *)v8 disableTransitionalDiscretionaryPeriodTimer];
   objc_sync_exit(v8);
 }
 
-- (void)applicationBackgroundUpdatesTurnedOn:(id)a3
+- (void)applicationBackgroundUpdatesTurnedOn:(id)on
 {
   v3.receiver = self;
   v3.super_class = NDSpringBoardApplication;
   [(NDApplication *)&v3 invokeSelectorForAllObservers:"backgroundUpdatesEnabledForApplication:"];
 }
 
-- (void)applicationBackgroundUpdatesTurnedOff:(id)a3
+- (void)applicationBackgroundUpdatesTurnedOff:(id)off
 {
   v3.receiver = self;
   v3.super_class = NDSpringBoardApplication;
   [(NDApplication *)&v3 invokeSelectorForAllObservers:"backgroundUpdatesDisabledForApplication:"];
 }
 
-- (void)applicationWasQuitFromAppSwitcher:(id)a3
+- (void)applicationWasQuitFromAppSwitcher:(id)switcher
 {
   v3.receiver = self;
   v3.super_class = NDSpringBoardApplication;
@@ -176,53 +176,53 @@
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v10.receiver = v5;
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v10.receiver = selfCopy;
   v10.super_class = NDSpringBoardApplication;
-  [(NDApplication *)&v10 removeObserver:v4];
-  if (![(NSMutableArray *)v5->super._observers count])
+  [(NDApplication *)&v10 removeObserver:observerCopy];
+  if (![(NSMutableArray *)selfCopy->super._observers count])
   {
     v6 = +[NDSpringBoard sharedSpringBoard];
-    [v6 removeObserver:v5 forApplication:v5->super._bundleIdentifier];
+    [v6 removeObserver:selfCopy forApplication:selfCopy->super._bundleIdentifier];
 
     v7 = +[NDSpringBoard sharedSpringBoard];
-    [v7 stopMonitoringBundleID:v5->super._bundleIdentifier];
+    [v7 stopMonitoringBundleID:selfCopy->super._bundleIdentifier];
 
-    transitionalDiscretionaryStateTimer = v5->_transitionalDiscretionaryStateTimer;
+    transitionalDiscretionaryStateTimer = selfCopy->_transitionalDiscretionaryStateTimer;
     if (transitionalDiscretionaryStateTimer)
     {
       dispatch_source_cancel(transitionalDiscretionaryStateTimer);
-      v9 = v5->_transitionalDiscretionaryStateTimer;
-      v5->_transitionalDiscretionaryStateTimer = 0;
+      v9 = selfCopy->_transitionalDiscretionaryStateTimer;
+      selfCopy->_transitionalDiscretionaryStateTimer = 0;
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![(NSMutableArray *)v5->super._observers count])
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(NSMutableArray *)selfCopy->super._observers count])
   {
     v6 = +[NDSpringBoard sharedSpringBoard];
-    [v6 startMonitoringBundleID:v5->super._bundleIdentifier];
+    [v6 startMonitoringBundleID:selfCopy->super._bundleIdentifier];
 
     v7 = +[NDSpringBoard sharedSpringBoard];
-    [v7 addObserver:v5 forApplication:v5->super._bundleIdentifier];
+    [v7 addObserver:selfCopy forApplication:selfCopy->super._bundleIdentifier];
 
-    if (![(NDSpringBoardApplication *)v5 isHandlingBackgroundURLSessionWithIdentifier:0 withSessionUUID:0])
+    if (![(NDSpringBoardApplication *)selfCopy isHandlingBackgroundURLSessionWithIdentifier:0 withSessionUUID:0])
     {
       v8 = qword_1000EB210;
       if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEFAULT))
       {
-        bundleIdentifier = v5->super._bundleIdentifier;
+        bundleIdentifier = selfCopy->super._bundleIdentifier;
         *buf = 138412290;
         v14 = bundleIdentifier;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Resetting request delay and clearing pending wake requests for %@ since the first observer is being added", buf, 0xCu);
@@ -233,15 +233,15 @@
       block[1] = 3221225472;
       block[2] = sub_10005AE70;
       block[3] = &unk_1000D63D0;
-      block[4] = v5;
+      block[4] = selfCopy;
       dispatch_async(v10, block);
     }
   }
 
-  v11.receiver = v5;
+  v11.receiver = selfCopy;
   v11.super_class = NDSpringBoardApplication;
-  [(NDApplication *)&v11 addObserver:v4];
-  objc_sync_exit(v5);
+  [(NDApplication *)&v11 addObserver:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)backgroundUpdatesEnabled
@@ -260,20 +260,20 @@
   return self;
 }
 
-- (BOOL)isHandlingBackgroundURLSessionWithIdentifier:(id)a3 withSessionUUID:(id)a4
+- (BOOL)isHandlingBackgroundURLSessionWithIdentifier:(id)identifier withSessionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v8 = +[NDSpringBoard sharedSpringBoard];
-  LOBYTE(self) = [v8 application:self->super._bundleIdentifier isHandlingBackgroundSessionWithIdentifier:v6 withSessionUUID:v7];
+  LOBYTE(self) = [v8 application:self->super._bundleIdentifier isHandlingBackgroundSessionWithIdentifier:identifierCopy withSessionUUID:dCopy];
 
   return self;
 }
 
-- (BOOL)wakeForSessionIdentifier:(id)a3 withSessionUUID:(id)a4 wakeRequirement:(int64_t)a5
+- (BOOL)wakeForSessionIdentifier:(id)identifier withSessionUUID:(id)d wakeRequirement:(int64_t)requirement
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v9 = +[NDSpringBoardApplication requestDelayQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -283,7 +283,7 @@
   dispatch_async(v9, block);
 
   v10 = +[NDSpringBoard sharedSpringBoard];
-  LOBYTE(self) = [v10 wakeUpApp:self->super._bundleIdentifier forSession:v7 withSessionUUID:v8];
+  LOBYTE(self) = [v10 wakeUpApp:self->super._bundleIdentifier forSession:identifierCopy withSessionUUID:dCopy];
 
   return self;
 }
@@ -309,24 +309,24 @@
   }
 }
 
-- (NDSpringBoardApplication)initWithIdentifier:(id)a3
+- (NDSpringBoardApplication)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = NDSpringBoardApplication;
-  v5 = [(NDApplication *)&v13 initWithIdentifier:v4];
+  v5 = [(NDApplication *)&v13 initWithIdentifier:identifierCopy];
   if (v5)
   {
     v6 = [[LSApplicationExtensionRecord alloc] initWithBundleIdentifier:v5->super._bundleIdentifier error:0];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 containingBundleRecord];
-      v9 = [v8 bundleIdentifier];
+      containingBundleRecord = [v6 containingBundleRecord];
+      bundleIdentifier = [containingBundleRecord bundleIdentifier];
 
-      if (v9)
+      if (bundleIdentifier)
       {
-        v10 = [NDApplication springboardApplicationWithBundleIdentifier:v9];
+        v10 = [NDApplication springboardApplicationWithBundleIdentifier:bundleIdentifier];
         containingApplication = v5->_containingApplication;
         v5->_containingApplication = v10;
       }

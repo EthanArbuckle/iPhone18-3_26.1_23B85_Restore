@@ -1,6 +1,6 @@
 @interface PGGraphPersonPresentEdge
 + (id)filter;
-- (PGGraphPersonPresentEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7;
+- (PGGraphPersonPresentEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain properties:(id)properties;
 @end
 
 @implementation PGGraphPersonPresentEdge
@@ -12,19 +12,19 @@
   return v2;
 }
 
-- (PGGraphPersonPresentEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7
+- (PGGraphPersonPresentEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain properties:(id)properties
 {
-  v10 = a7;
-  v11 = a5;
-  v12 = a4;
-  v13 = [v10 objectForKeyedSubscript:@"importance"];
+  propertiesCopy = properties;
+  targetNodeCopy = targetNode;
+  nodeCopy = node;
+  v13 = [propertiesCopy objectForKeyedSubscript:@"importance"];
   [v13 doubleValue];
   v15 = v14;
 
-  v16 = [v10 objectForKeyedSubscript:@"numberOfAssets"];
+  v16 = [propertiesCopy objectForKeyedSubscript:@"numberOfAssets"];
 
-  v17 = [v16 unsignedIntegerValue];
-  v18 = [(PGGraphBasePresentEdge *)self initFromPersonNode:v12 toMomentNode:v11 importance:v17 numberOfAssets:v15];
+  unsignedIntegerValue = [v16 unsignedIntegerValue];
+  v18 = [(PGGraphBasePresentEdge *)self initFromPersonNode:nodeCopy toMomentNode:targetNodeCopy importance:unsignedIntegerValue numberOfAssets:v15];
 
   return v18;
 }

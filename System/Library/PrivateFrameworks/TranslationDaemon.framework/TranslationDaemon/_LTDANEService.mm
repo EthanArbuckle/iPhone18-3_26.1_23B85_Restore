@@ -1,6 +1,6 @@
 @interface _LTDANEService
 + (int64_t)capability;
-+ (int64_t)capabilityForSubType:(id)a3 error:(id *)a4;
++ (int64_t)capabilityForSubType:(id)type error:(id *)error;
 + (void)initialize;
 @end
 
@@ -19,14 +19,14 @@
 
 + (int64_t)capability
 {
-  if (![objc_msgSend(a1 "dataProvider")])
+  if (![objc_msgSend(self "dataProvider")])
   {
     return 0;
   }
 
-  v3 = [objc_msgSend(a1 "dataProvider")];
+  v3 = [objc_msgSend(self "dataProvider")];
   v7 = 0;
-  v4 = [a1 capabilityForSubType:v3 error:&v7];
+  v4 = [self capabilityForSubType:v3 error:&v7];
   v5 = v7;
 
   if (v5)
@@ -40,13 +40,13 @@
   }
 }
 
-+ (int64_t)capabilityForSubType:(id)a3 error:(id *)a4
++ (int64_t)capabilityForSubType:(id)type error:(id *)error
 {
-  v5 = a3;
-  if ([v5 length])
+  typeCopy = type;
+  if ([typeCopy length])
   {
     v6 = [_LTDConfigurationService aneConfigurationWithError:0];
-    v7 = [v6 capabilityForSubType:v5];
+    v7 = [v6 capabilityForSubType:typeCopy];
     if (v7)
     {
       v8 = v7;
@@ -57,9 +57,9 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v12 = [v5 substringToIndex:1];
-    v13 = [v6 subTypes];
-    v14 = [v13 count];
+    v12 = [typeCopy substringToIndex:1];
+    subTypes = [v6 subTypes];
+    v14 = [subTypes count];
     if (v14 - 1 < 0)
     {
 LABEL_12:
@@ -70,7 +70,7 @@ LABEL_12:
       v15 = v14;
       while (1)
       {
-        v16 = [v13 objectAtIndex:--v15];
+        v16 = [subTypes objectAtIndex:--v15];
         if ([v16 hasPrefix:v12])
         {
           break;
@@ -95,18 +95,18 @@ LABEL_12:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       +[_LTDANEService capabilityForSubType:error:];
-      if (a4)
+      if (error)
       {
         goto LABEL_15;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_15:
       v18 = v9;
       v8 = 0;
-      *a4 = v9;
+      *error = v9;
       goto LABEL_22;
     }
 
@@ -119,7 +119,7 @@ LABEL_15:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     +[_LTDANEService capabilityForSubType:error:];
-    if (a4)
+    if (error)
     {
       goto LABEL_7;
     }
@@ -129,7 +129,7 @@ LABEL_19:
     goto LABEL_23;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_19;
   }
@@ -137,7 +137,7 @@ LABEL_19:
 LABEL_7:
   v11 = v9;
   v8 = 0;
-  *a4 = v9;
+  *error = v9;
 LABEL_23:
 
   return v8;

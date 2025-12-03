@@ -6,10 +6,10 @@
 - (UIScrollView)pptTestScrollView;
 - (id)desiredCards;
 - (id)mapView;
-- (void)configureCard:(id)a3 forKey:(id)a4;
-- (void)destinationsCard:(id)a3 didSelectRecent:(id)a4;
-- (void)destinationsCard:(id)a3 didSelectSuggestion:(id)a4;
-- (void)destinationsCardDidSelectSavedPlaces:(id)a3;
+- (void)configureCard:(id)card forKey:(id)key;
+- (void)destinationsCard:(id)card didSelectRecent:(id)recent;
+- (void)destinationsCard:(id)card didSelectSuggestion:(id)suggestion;
+- (void)destinationsCardDidSelectSavedPlaces:(id)places;
 @end
 
 @implementation CarDestinationsModeController
@@ -23,19 +23,19 @@
 
 - (UIScrollView)pptTestScrollView
 {
-  v2 = [(CarDestinationsModeController *)self destinationsCard];
-  v3 = [v2 tableView];
+  destinationsCard = [(CarDestinationsModeController *)self destinationsCard];
+  tableView = [destinationsCard tableView];
 
-  return v3;
+  return tableView;
 }
 
 - (NSArray)carFocusOrderSequences
 {
-  v3 = [(CarDestinationsModeController *)self chromeViewController];
-  v4 = [v3 itemRepresentingStatusBanner];
-  v5 = [(CarDestinationsModeController *)self chromeViewController];
-  v6 = [v5 itemRepresentingOverlays];
-  v11[1] = v6;
+  chromeViewController = [(CarDestinationsModeController *)self chromeViewController];
+  itemRepresentingStatusBanner = [chromeViewController itemRepresentingStatusBanner];
+  chromeViewController2 = [(CarDestinationsModeController *)self chromeViewController];
+  itemRepresentingOverlays = [chromeViewController2 itemRepresentingOverlays];
+  v11[1] = itemRepresentingOverlays;
   v7 = [NSArray arrayWithObjects:v11 count:2];
   v8 = [CarFocusOrderSequence sequenceWithItems:v7 options:5];
   v12 = v8;
@@ -46,12 +46,12 @@
 
 - (NSArray)preferredCarFocusEnvironments
 {
-  v3 = [(CarDestinationsModeController *)self destinationsCard];
+  destinationsCard = [(CarDestinationsModeController *)self destinationsCard];
 
-  if (v3)
+  if (destinationsCard)
   {
-    v4 = [(CarDestinationsModeController *)self destinationsCard];
-    v5 = [CarFocusOrderEnvironment environmentWithFocusEnvironment:v4];
+    destinationsCard2 = [(CarDestinationsModeController *)self destinationsCard];
+    v5 = [CarFocusOrderEnvironment environmentWithFocusEnvironment:destinationsCard2];
     v8 = v5;
     v6 = [NSArray arrayWithObjects:&v8 count:1];
   }
@@ -64,15 +64,15 @@
   return v6;
 }
 
-- (void)destinationsCard:(id)a3 didSelectRecent:(id)a4
+- (void)destinationsCard:(id)card didSelectRecent:(id)recent
 {
-  v4 = a4;
+  recentCopy = recent;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = +[MSPSharedTripService sharedInstance];
-    v6 = [v5 receivedTrips];
-    v7 = [v6 count];
+    receivedTrips = [v5 receivedTrips];
+    v7 = [receivedTrips count];
 
     if (v7 != 1)
     {
@@ -82,28 +82,28 @@
     }
 
     v8 = +[MSPSharedTripService sharedInstance];
-    v9 = [v8 receivedTrips];
-    v10 = [v9 firstObject];
+    receivedTrips2 = [v8 receivedTrips];
+    firstObject = [receivedTrips2 firstObject];
 
-    v4 = v10;
+    recentCopy = firstObject;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v4;
-    v4 = v11;
+    v11 = recentCopy;
+    recentCopy = v11;
     if (v11)
     {
       if ([v11 disallowDetailsForChina])
       {
         v12 = +[CarDisplayController sharedInstance];
         v22[0] = @"kMapsInterruptionTitle";
-        v13 = [v4 alertTitleForDisallowedDetails];
+        alertTitleForDisallowedDetails = [recentCopy alertTitleForDisallowedDetails];
         v22[1] = @"kMapsInterruptionMessage";
-        v23[0] = v13;
-        v14 = [v4 alertMessageForChinaError];
-        v23[1] = v14;
+        v23[0] = alertTitleForDisallowedDetails;
+        alertMessageForChinaError = [recentCopy alertMessageForChinaError];
+        v23[1] = alertMessageForChinaError;
         v15 = v23;
         v16 = v22;
 LABEL_14:
@@ -114,15 +114,15 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      if (([v4 disallowDetailsForTransportType] & 1) != 0 || objc_msgSend(v4, "disallowDetailsForProtocolVersion"))
+      if (([recentCopy disallowDetailsForTransportType] & 1) != 0 || objc_msgSend(recentCopy, "disallowDetailsForProtocolVersion"))
       {
         v12 = +[CarDisplayController sharedInstance];
         v20[0] = @"kMapsInterruptionTitle";
-        v13 = [v4 alertTitleForDisallowedDetails];
+        alertTitleForDisallowedDetails = [recentCopy alertTitleForDisallowedDetails];
         v20[1] = @"kMapsInterruptionMessage";
-        v21[0] = v13;
-        v14 = [v4 alertMessageForTransportOrProtocolError];
-        v21[1] = v14;
+        v21[0] = alertTitleForDisallowedDetails;
+        alertMessageForChinaError = [recentCopy alertMessageForTransportOrProtocolError];
+        v21[1] = alertMessageForChinaError;
         v15 = v21;
         v16 = v20;
         goto LABEL_14;
@@ -130,41 +130,41 @@ LABEL_16:
     }
 
     v12 = +[CarChromeModeCoordinator sharedInstance];
-    [v12 displaySharedTrip:v4];
+    [v12 displaySharedTrip:recentCopy];
     goto LABEL_16;
   }
 
   v17 = +[CarChromeModeCoordinator sharedInstance];
-  [v17 displayRoutePlanningForDestination:v4];
+  [v17 displayRoutePlanningForDestination:recentCopy];
 LABEL_10:
 
 LABEL_17:
 }
 
-- (void)destinationsCard:(id)a3 didSelectSuggestion:(id)a4
+- (void)destinationsCard:(id)card didSelectSuggestion:(id)suggestion
 {
-  v4 = a4;
+  suggestionCopy = suggestion;
   v5 = +[CarChromeModeCoordinator sharedInstance];
-  [v5 displayRoutePlanningForDestination:v4];
+  [v5 displayRoutePlanningForDestination:suggestionCopy];
 }
 
-- (void)destinationsCardDidSelectSavedPlaces:(id)a3
+- (void)destinationsCardDidSelectSavedPlaces:(id)places
 {
   v3 = +[CarChromeModeCoordinator sharedInstance];
   [v3 displayCollectionList];
 }
 
-- (void)configureCard:(id)a3 forKey:(id)a4
+- (void)configureCard:(id)card forKey:(id)key
 {
-  v17 = a3;
-  if ([a4 isEqualToString:@"primary"])
+  cardCopy = card;
+  if ([key isEqualToString:@"primary"])
   {
-    v6 = [(CarDestinationsModeController *)self destinationsCard];
-    [v17 setContent:v6];
+    destinationsCard = [(CarDestinationsModeController *)self destinationsCard];
+    [cardCopy setContent:destinationsCard];
 
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"CarDestinations_Destinations_Title" value:@"localized string not found" table:0];
-    [v17 setTitle:v8];
+    [cardCopy setTitle:v8];
 
     v9 = objc_alloc_init(CarCardLayout);
     [(CarCardLayout *)v9 setEdgePosition:0];
@@ -180,11 +180,11 @@ LABEL_17:
     [(CarCardLayout *)v9 setMargins:*&qword_10193E338, *&qword_10193E338, *&qword_10193E338, *&qword_10193E338];
     [(CarCardLayout *)v9 setFlipForRightHandDrive:1];
     v12 = v9;
-    v13 = [(CarCardLayout *)v12 primaryAxis];
-    v14 = [(CarCardLayout *)v12 cornerPosition];
-    if (v13 == 1)
+    primaryAxis = [(CarCardLayout *)v12 primaryAxis];
+    cornerPosition = [(CarCardLayout *)v12 cornerPosition];
+    if (primaryAxis == 1)
     {
-      if (v14 == 4 || [(CarCardLayout *)v12 cornerPosition]== 1 || [(CarCardLayout *)v12 edgePosition]== 2)
+      if (cornerPosition == 4 || [(CarCardLayout *)v12 cornerPosition]== 1 || [(CarCardLayout *)v12 edgePosition]== 2)
       {
         v15 = 8;
       }
@@ -209,7 +209,7 @@ LABEL_17:
 
     else
     {
-      v16 = v14 == 4 || [(CarCardLayout *)v12 cornerPosition]== 8 || [(CarCardLayout *)v12 edgePosition]== 4;
+      v16 = cornerPosition == 4 || [(CarCardLayout *)v12 cornerPosition]== 8 || [(CarCardLayout *)v12 edgePosition]== 4;
       if ([(CarCardLayout *)v12 cornerPosition]== 1 || [(CarCardLayout *)v12 cornerPosition]== 2 || [(CarCardLayout *)v12 edgePosition]== 1)
       {
         v16 |= 4uLL;
@@ -228,9 +228,9 @@ LABEL_17:
 
     [(CarCardLayout *)v12 setEdgesAffectingMapInsets:v16];
     [(CarCardLayout *)v12 setHorizontallyCenterMapInsets:0];
-    [v17 setLayout:v12];
+    [cardCopy setLayout:v12];
 
-    [v17 setAccessoryType:1];
+    [cardCopy setAccessoryType:1];
   }
 }
 
@@ -244,10 +244,10 @@ LABEL_17:
 
 - (id)mapView
 {
-  v2 = [(CarDestinationsModeController *)self chromeViewController];
-  v3 = [v2 mapView];
+  chromeViewController = [(CarDestinationsModeController *)self chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  return v3;
+  return mapView;
 }
 
 - (CarDestinationsModeController)init

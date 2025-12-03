@@ -1,28 +1,28 @@
 @interface SCMLVideoDecoder
-- (BOOL)startDecodingVideoURL:(id)a3 error:(id *)a4;
+- (BOOL)startDecodingVideoURL:(id)l error:(id *)error;
 - (BOOL)useKeyFrame;
-- (SCMLVideoDecoder)initWithConfig:(id)a3;
-- (id)nextFrameWithError:(id *)a3;
+- (SCMLVideoDecoder)initWithConfig:(id)config;
+- (id)nextFrameWithError:(id *)error;
 - (unint64_t)maxNumFrames;
 - (void)reset;
 @end
 
 @implementation SCMLVideoDecoder
 
-- (SCMLVideoDecoder)initWithConfig:(id)a3
+- (SCMLVideoDecoder)initWithConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v10.receiver = self;
   v10.super_class = SCMLVideoDecoder;
   v6 = [(SCMLVideoDecoder *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_config, a3);
-    v8 = [v5 frameLimit];
-    v7->_frameLimit = [v8 unsignedIntValue];
+    objc_storeStrong(&v6->_config, config);
+    frameLimit = [configCopy frameLimit];
+    v7->_frameLimit = [frameLimit unsignedIntValue];
 
-    v7->_framesPerSync = [v5 framesPerSync];
+    v7->_framesPerSync = [configCopy framesPerSync];
   }
 
   return v7;
@@ -55,18 +55,18 @@
 
 - (BOOL)useKeyFrame
 {
-  v2 = [(SCMLVideoDecoder *)self config];
-  v3 = [v2 framesPerSync] != 0;
+  config = [(SCMLVideoDecoder *)self config];
+  v3 = [config framesPerSync] != 0;
 
   return v3;
 }
 
-- (BOOL)startDecodingVideoURL:(id)a3 error:(id *)a4
+- (BOOL)startDecodingVideoURL:(id)l error:(id *)error
 {
   v55[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   [(SCMLVideoDecoder *)self reset];
-  v7 = [objc_alloc(MEMORY[0x1E6988168]) initWithURL:v6 options:0];
+  v7 = [objc_alloc(MEMORY[0x1E6988168]) initWithURL:lCopy options:0];
   v8 = v7;
   if (v7)
   {
@@ -79,10 +79,10 @@
       [(SCMLVideoDecoder *)self setDurationInSeconds:CMTimeGetSeconds(&time)];
       v51 = 0;
       v10 = [MEMORY[0x1E6987E78] assetReaderWithAsset:v8 error:&v51];
-      v11 = v51;
-      if (v11)
+      lCopy = v51;
+      if (lCopy)
       {
-        if (!a4)
+        if (!error)
         {
           goto LABEL_28;
         }
@@ -101,14 +101,14 @@
       {
         if ([(SCMLVideoDecoder *)self frameLimit]>= 2)
         {
-          v20 = [(SCMLVideoDecoder *)self maxNumFrames];
+          maxNumFrames = [(SCMLVideoDecoder *)self maxNumFrames];
           if ([(SCMLVideoDecoder *)self framesPerSync]>= 2)
           {
-            v20 = vcvtpd_u64_f64(v20 / [(SCMLVideoDecoder *)self framesPerSync]);
+            maxNumFrames = vcvtpd_u64_f64(maxNumFrames / [(SCMLVideoDecoder *)self framesPerSync]);
           }
 
           [(SCMLVideoDecoder *)self durationInSeconds];
-          CMTimeMakeWithSeconds(&time, v21 / ((v20 - 1) + 0.1), preferredTimescale.timescale);
+          CMTimeMakeWithSeconds(&time, v21 / ((maxNumFrames - 1) + 0.1), preferredTimescale.timescale);
         }
       }
 
@@ -125,8 +125,8 @@
       if ([(SCMLVideoDecoder *)self useKeyFrame])
       {
         v25 = MEMORY[0x1E696AD98];
-        v26 = [(SCMLVideoDecoder *)self config];
-        v27 = [v25 numberWithUnsignedInteger:{objc_msgSend(v26, "framesPerSync")}];
+        config = [(SCMLVideoDecoder *)self config];
+        v27 = [v25 numberWithUnsignedInteger:{objc_msgSend(config, "framesPerSync")}];
         [v49 setObject:v27 forKeyedSubscript:*MEMORY[0x1E6987D38]];
 
         v24 = v49;
@@ -140,9 +140,9 @@
           goto LABEL_22;
         }
 
-        v29 = [(SCMLVideoDecoder *)self frameLimit];
+        frameLimit = [(SCMLVideoDecoder *)self frameLimit];
         [(SCMLVideoDecoder *)self totalFrames];
-        if (v30 <= v29)
+        if (v30 <= frameLimit)
         {
           goto LABEL_22;
         }
@@ -156,22 +156,22 @@ LABEL_22:
       v31 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:v16 outputSettings:v24];
       [(SCMLVideoDecoder *)self setAssetReaderTrack:v31];
 
-      v32 = [(SCMLVideoDecoder *)self assetReaderTrack];
-      [v32 setAlwaysCopiesSampleData:0];
+      assetReaderTrack = [(SCMLVideoDecoder *)self assetReaderTrack];
+      [assetReaderTrack setAlwaysCopiesSampleData:0];
 
-      v33 = [(SCMLVideoDecoder *)self assetReaderTrack];
-      [v33 setAppliesPreferredTrackTransform:1];
+      assetReaderTrack2 = [(SCMLVideoDecoder *)self assetReaderTrack];
+      [assetReaderTrack2 setAppliesPreferredTrackTransform:1];
 
-      v34 = [(SCMLVideoDecoder *)self assetReader];
-      v35 = [(SCMLVideoDecoder *)self assetReaderTrack];
-      [v34 addOutput:v35];
+      assetReader = [(SCMLVideoDecoder *)self assetReader];
+      assetReaderTrack3 = [(SCMLVideoDecoder *)self assetReaderTrack];
+      [assetReader addOutput:assetReaderTrack3];
 
-      v36 = [(SCMLVideoDecoder *)self assetReader];
-      LOBYTE(v35) = [v36 startReading];
+      assetReader2 = [(SCMLVideoDecoder *)self assetReader];
+      LOBYTE(assetReaderTrack3) = [assetReader2 startReading];
 
-      if (v35)
+      if (assetReaderTrack3)
       {
-        v11 = 0;
+        lCopy = 0;
       }
 
       else
@@ -184,7 +184,7 @@ LABEL_22:
         v39 = v48 = v10;
         [v39 userInfo];
         v41 = v40 = v23;
-        v11 = [v46 errorWithDomain:v37 code:13 userInfo:v41];
+        lCopy = [v46 errorWithDomain:v37 code:13 userInfo:v41];
 
         v23 = v40;
         v10 = v48;
@@ -192,32 +192,32 @@ LABEL_22:
         v16 = v47;
       }
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_28;
       }
 
 LABEL_26:
-      if (v11)
+      if (lCopy)
       {
-        v42 = v11;
+        v42 = lCopy;
         v15 = 0;
-        *a4 = v11;
+        *error = lCopy;
 LABEL_31:
 
         goto LABEL_32;
       }
 
 LABEL_28:
-      if (v11)
+      if (lCopy)
       {
         v15 = 0;
       }
 
       else
       {
-        v43 = [(SCMLVideoDecoder *)self assetReader];
-        v15 = v43 != 0;
+        assetReader3 = [(SCMLVideoDecoder *)self assetReader];
+        v15 = assetReader3 != 0;
       }
 
       goto LABEL_31;
@@ -229,15 +229,15 @@ LABEL_28:
     v9 = 0;
   }
 
-  if (a4)
+  if (error)
   {
     v12 = MEMORY[0x1E696ABC0];
     v13 = SCMLErrorDomain;
     v54 = *MEMORY[0x1E696A578];
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load video at %@", v6];
-    v55[0] = v11;
+    lCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load video at %@", lCopy];
+    v55[0] = lCopy;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:&v54 count:1];
-    *a4 = [v12 errorWithDomain:v13 code:13 userInfo:v14];
+    *error = [v12 errorWithDomain:v13 code:13 userInfo:v14];
 
     v15 = 0;
 LABEL_32:
@@ -252,48 +252,48 @@ LABEL_33:
   return v15;
 }
 
-- (id)nextFrameWithError:(id *)a3
+- (id)nextFrameWithError:(id *)error
 {
-  v5 = [(SCMLVideoDecoder *)self maxNumFrames];
-  if ([(SCMLVideoDecoder *)self currentFrameIndex]== v5)
+  maxNumFrames = [(SCMLVideoDecoder *)self maxNumFrames];
+  if ([(SCMLVideoDecoder *)self currentFrameIndex]== maxNumFrames)
   {
     goto LABEL_11;
   }
 
-  v6 = [(SCMLVideoDecoder *)self assetReaderTrack];
-  v7 = [v6 copyNextSampleBuffer];
+  assetReaderTrack = [(SCMLVideoDecoder *)self assetReaderTrack];
+  copyNextSampleBuffer = [assetReaderTrack copyNextSampleBuffer];
 
-  if (!v7)
+  if (!copyNextSampleBuffer)
   {
-    v9 = [(SCMLVideoDecoder *)self assetReader];
-    v10 = [v9 status];
+    assetReader = [(SCMLVideoDecoder *)self assetReader];
+    status = [assetReader status];
 
     v8 = 0;
-    if (v10 == 2 || !a3)
+    if (status == 2 || !error)
     {
       goto LABEL_12;
     }
 
     v11 = MEMORY[0x1E696ABC0];
     v12 = SCMLErrorDomain;
-    v13 = [(SCMLVideoDecoder *)self assetReader];
-    v14 = [v13 error];
-    v15 = [v14 userInfo];
-    *a3 = [v11 errorWithDomain:v12 code:13 userInfo:v15];
+    assetReader2 = [(SCMLVideoDecoder *)self assetReader];
+    error = [assetReader2 error];
+    userInfo = [error userInfo];
+    *error = [v11 errorWithDomain:v12 code:13 userInfo:userInfo];
 
 LABEL_11:
     v8 = 0;
     goto LABEL_12;
   }
 
-  if (!CMSampleBufferGetNumSamples(v7) || !CMSampleBufferGetImageBuffer(v7))
+  if (!CMSampleBufferGetNumSamples(copyNextSampleBuffer) || !CMSampleBufferGetImageBuffer(copyNextSampleBuffer))
   {
-    CFRelease(v7);
+    CFRelease(copyNextSampleBuffer);
     goto LABEL_11;
   }
 
-  v8 = [[SCMLVideoFrame alloc] initWithFrameBuffer:v7 frameIndex:[(SCMLVideoDecoder *)self currentFrameIndex]];
-  CFRelease(v7);
+  v8 = [[SCMLVideoFrame alloc] initWithFrameBuffer:copyNextSampleBuffer frameIndex:[(SCMLVideoDecoder *)self currentFrameIndex]];
+  CFRelease(copyNextSampleBuffer);
   if (v8)
   {
     [(SCMLVideoDecoder *)self setCurrentFrameIndex:[(SCMLVideoDecoder *)self currentFrameIndex]+ 1];

@@ -1,30 +1,30 @@
 @interface ATAudioSessionUtils
-+ (__CFString)getAudioSessionPortType:(id)a3 forInput:(BOOL)a4;
++ (__CFString)getAudioSessionPortType:(id)type forInput:(BOOL)input;
 + (id)categories;
-+ (id)getMappedObjectOf:(id)a3 inside:(id)a4 ofType:(int)a5;
-+ (id)getRouteDescriptionFromAVASRouteDescription:(id)a3;
-+ (id)getRouteStringFromAVASRouteDescription:(id)a3;
++ (id)getMappedObjectOf:(id)of inside:(id)inside ofType:(int)type;
++ (id)getRouteDescriptionFromAVASRouteDescription:(id)description;
++ (id)getRouteStringFromAVASRouteDescription:(id)description;
 + (id)inputPortTypes;
 + (id)modes;
 + (id)outputPortTypes;
-+ (unint64_t)getCategoryOptionFromPropertyID:(unsigned int)a3;
-+ (unsigned)getAudioSessionCategory:(id)a3;
-+ (unsigned)getAudioSessionMode:(id)a3;
-+ (unsigned)getAudioSessionProperty:(id)a3;
++ (unint64_t)getCategoryOptionFromPropertyID:(unsigned int)d;
++ (unsigned)getAudioSessionCategory:(id)category;
++ (unsigned)getAudioSessionMode:(id)mode;
++ (unsigned)getAudioSessionProperty:(id)property;
 @end
 
 @implementation ATAudioSessionUtils
 
-+ (id)getRouteStringFromAVASRouteDescription:(id)a3
++ (id)getRouteStringFromAVASRouteDescription:(id)description
 {
-  v4 = a3;
-  v5 = [v4 inputs];
-  v6 = [a1 getPorts:v5 forInput:1];
+  descriptionCopy = description;
+  inputs = [descriptionCopy inputs];
+  v6 = [self getPorts:inputs forInput:1];
 
   if ([v6 count])
   {
-    v7 = [v6 firstObject];
-    v8 = [v7 objectForKey:@"RouteDetailedDescription_PortType"];
+    firstObject = [v6 firstObject];
+    v8 = [firstObject objectForKey:@"RouteDetailedDescription_PortType"];
   }
 
   else
@@ -32,13 +32,13 @@
     v8 = &stru_1F37CAF70;
   }
 
-  v9 = [v4 outputs];
-  v10 = [a1 getPorts:v9 forInput:0];
+  outputs = [descriptionCopy outputs];
+  v10 = [self getPorts:outputs forInput:0];
 
   if ([v10 count])
   {
-    v11 = [v10 firstObject];
-    v12 = [v11 objectForKey:@"RouteDetailedDescription_PortType"];
+    firstObject2 = [v10 firstObject];
+    v12 = [firstObject2 objectForKey:@"RouteDetailedDescription_PortType"];
     if ([(__CFString *)v8 length])
     {
       v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@+%@", v8, v12];
@@ -57,20 +57,20 @@
   return v8;
 }
 
-+ (id)getRouteDescriptionFromAVASRouteDescription:(id)a3
++ (id)getRouteDescriptionFromAVASRouteDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [v4 inputs];
-  v7 = [a1 getPorts:v6 forInput:1];
+  inputs = [descriptionCopy inputs];
+  v7 = [self getPorts:inputs forInput:1];
 
   if (v7)
   {
     [v5 setObject:v7 forKeyedSubscript:@"RouteDetailedDescription_Inputs"];
   }
 
-  v8 = [v4 outputs];
-  v9 = [a1 getPorts:v8 forInput:0];
+  outputs = [descriptionCopy outputs];
+  v9 = [self getPorts:outputs forInput:0];
 
   if (v9)
   {
@@ -288,18 +288,18 @@
   return v14;
 }
 
-+ (id)getMappedObjectOf:(id)a3 inside:(id)a4 ofType:(int)a5
++ (id)getMappedObjectOf:(id)of inside:(id)inside ofType:(int)type
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF contains [c] %@", v7];
-  v10 = [v8 filteredArrayUsingPredicate:v9];
+  ofCopy = of;
+  insideCopy = inside;
+  ofCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF contains [c] %@", ofCopy];
+  v10 = [insideCopy filteredArrayUsingPredicate:ofCopy];
   v11 = v10;
   if (v10 && [v10 count])
   {
     v12 = [v11 objectAtIndexedSubscript:0];
-    v13 = [v12 objectAtIndexedSubscript:a5];
+    v13 = [v12 objectAtIndexedSubscript:type];
 
     goto LABEL_11;
   }
@@ -326,7 +326,7 @@
     v19 = 1024;
     v20 = 111;
     v21 = 2112;
-    v22 = v7;
+    v22 = ofCopy;
     _os_log_impl(&dword_1B9A08000, v13, OS_LOG_TYPE_ERROR, "%25s:%-5d Error: Invalid item requested %@", buf, 0x1Cu);
   }
 
@@ -338,21 +338,21 @@ LABEL_11:
   return v13;
 }
 
-+ (__CFString)getAudioSessionPortType:(id)a3 forInput:(BOOL)a4
++ (__CFString)getAudioSessionPortType:(id)type forInput:(BOOL)input
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  inputCopy = input;
+  typeCopy = type;
+  if (inputCopy)
   {
-    [a1 inputPortTypes];
+    [self inputPortTypes];
   }
 
   else
   {
-    [a1 outputPortTypes];
+    [self outputPortTypes];
   }
   v7 = ;
-  v8 = [a1 getMappedObjectOf:v6 inside:v7 ofType:0];
+  v8 = [self getMappedObjectOf:typeCopy inside:v7 ofType:0];
 
   if (v8)
   {
@@ -361,54 +361,54 @@ LABEL_11:
 
   else
   {
-    v9 = v6;
+    v9 = typeCopy;
   }
 
   return v9;
 }
 
-+ (unsigned)getAudioSessionMode:(id)a3
++ (unsigned)getAudioSessionMode:(id)mode
 {
-  v4 = a3;
-  v5 = [a1 modes];
-  v6 = [a1 getMappedObjectOf:v4 inside:v5 ofType:0];
-  v7 = [v6 unsignedIntValue];
+  modeCopy = mode;
+  modes = [self modes];
+  v6 = [self getMappedObjectOf:modeCopy inside:modes ofType:0];
+  unsignedIntValue = [v6 unsignedIntValue];
 
-  return v7;
+  return unsignedIntValue;
 }
 
-+ (unsigned)getAudioSessionCategory:(id)a3
++ (unsigned)getAudioSessionCategory:(id)category
 {
-  v4 = a3;
-  v5 = [a1 categories];
-  v6 = [a1 getMappedObjectOf:v4 inside:v5 ofType:0];
-  v7 = [v6 unsignedIntValue];
+  categoryCopy = category;
+  categories = [self categories];
+  v6 = [self getMappedObjectOf:categoryCopy inside:categories ofType:0];
+  unsignedIntValue = [v6 unsignedIntValue];
 
-  return v7;
+  return unsignedIntValue;
 }
 
-+ (unsigned)getAudioSessionProperty:(id)a3
++ (unsigned)getAudioSessionProperty:(id)property
 {
-  v4 = a3;
-  v5 = [a1 KVOProperties];
-  v6 = [a1 getMappedObjectOf:v4 inside:v5 ofType:0];
-  v7 = [v6 unsignedIntValue];
+  propertyCopy = property;
+  kVOProperties = [self KVOProperties];
+  v6 = [self getMappedObjectOf:propertyCopy inside:kVOProperties ofType:0];
+  unsignedIntValue = [v6 unsignedIntValue];
 
-  return v7;
+  return unsignedIntValue;
 }
 
-+ (unint64_t)getCategoryOptionFromPropertyID:(unsigned int)a3
++ (unint64_t)getCategoryOptionFromPropertyID:(unsigned int)d
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a3 > 1668509802)
+  if (d > 1668509802)
   {
-    if (a3 == 1668509803)
+    if (d == 1668509803)
     {
       result = 8;
       goto LABEL_17;
     }
 
-    if (a3 == 1685414763)
+    if (d == 1685414763)
     {
       result = 2;
       goto LABEL_17;
@@ -417,13 +417,13 @@ LABEL_11:
 
   else
   {
-    if (a3 == 1667394677)
+    if (d == 1667394677)
     {
       result = 4;
       goto LABEL_17;
     }
 
-    if (a3 == 1668114808)
+    if (d == 1668114808)
     {
       result = 1;
       goto LABEL_17;

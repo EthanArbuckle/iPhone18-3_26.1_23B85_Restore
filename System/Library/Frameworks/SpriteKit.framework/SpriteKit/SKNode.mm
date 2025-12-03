@@ -2,37 +2,37 @@
 + (SKNode)node;
 + (SKNode)nodeWithFileNamed:(NSString *)filename;
 + (SKNode)nodeWithFileNamed:(NSString *)filename securelyWithClasses:(NSSet *)classes andError:(NSError *)error;
-+ (id)debugHierarchyObjectsInGroupWithID:(id)a3 onObject:(id)a4 outOptions:(id *)a5;
++ (id)debugHierarchyObjectsInGroupWithID:(id)d onObject:(id)object outOptions:(id *)options;
 + (id)debugHierarchyPropertyDescriptions;
-+ (id)debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6;
-+ (id)nodeFromCaptureData:(id)a3;
++ (id)debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error;
++ (id)nodeFromCaptureData:(id)data;
 - (BOOL)_isEffectivelyHidden;
 - (BOOL)_isEligibleForFocus;
-- (BOOL)_pathFromPhysicsBodyToPoints:(SKNode *)self outSize:(SEL)a2;
-- (BOOL)containsPoint:(CGPoint)a3 withRadius:(double)a4;
+- (BOOL)_pathFromPhysicsBodyToPoints:(SKNode *)self outSize:(SEL)size;
 - (BOOL)containsPoint:(CGPoint)p;
+- (BOOL)containsPoint:(CGPoint)point withRadius:(double)radius;
 - (BOOL)inParentHierarchy:(SKNode *)parent;
-- (BOOL)intersectsNode:(id)a3 useAlphaTest:(BOOL)a4;
+- (BOOL)intersectsNode:(id)node useAlphaTest:(BOOL)test;
 - (BOOL)isEqualToNode:(SKNode *)node;
 - (CGPath)outline;
 - (CGPoint)_anchorPoint;
-- (CGPoint)convertPoint:(CGPoint)cgpoint fromCoordinateSpace:(id)a4;
-- (CGPoint)convertPoint:(CGPoint)cgpoint toCoordinateSpace:(id)a4;
+- (CGPoint)convertPoint:(CGPoint)cgpoint fromCoordinateSpace:(id)space;
+- (CGPoint)convertPoint:(CGPoint)cgpoint toCoordinateSpace:(id)space;
 - (CGPoint)convertPoint:(CGPoint)point fromNode:(SKNode *)node;
 - (CGPoint)convertPoint:(CGPoint)point toNode:(SKNode *)node;
-- (CGPoint)convertPointFromParent:(CGPoint)a3;
-- (CGPoint)convertPointToParent:(CGPoint)a3;
+- (CGPoint)convertPointFromParent:(CGPoint)parent;
+- (CGPoint)convertPointToParent:(CGPoint)parent;
 - (CGPoint)position;
-- (CGRect)_convertFrameToView:(id)a3;
+- (CGRect)_convertFrameToView:(id)view;
 - (CGRect)_untransformedBounds;
 - (CGRect)calculateAccumulatedFrame;
-- (CGRect)convertRect:(CGRect)a3 fromCoordinateSpace:(id)a4;
-- (CGRect)convertRect:(CGRect)a3 toCoordinateSpace:(id)a4;
+- (CGRect)convertRect:(CGRect)rect fromCoordinateSpace:(id)space;
+- (CGRect)convertRect:(CGRect)rect toCoordinateSpace:(id)space;
 - (CGRect)frame;
 - (CGSize)_size;
 - (CGSize)_untransformedSize;
 - (CGSize)size;
-- (Class)swiftClassFromString:(id)a3 moduleName:(id)a4;
+- (Class)swiftClassFromString:(id)string moduleName:(id)name;
 - (GKEntity)entity;
 - (NSArray)_allActions;
 - (NSArray)children;
@@ -54,40 +54,40 @@
 - (double)globalBoundingVerts;
 - (id)_copyImageData;
 - (id)_descendants;
-- (id)_descendantsWithPredicate:(id)a3;
-- (id)_subnodeFromIndexPath:(id)a3;
-- (id)allIntersectionsWithNode:(id)a3 useAlphaTest:(BOOL)a4;
-- (id)archiveToFile:(id)a3;
-- (id)childrenInRect:(CGRect)a3;
+- (id)_descendantsWithPredicate:(id)predicate;
+- (id)_subnodeFromIndexPath:(id)path;
+- (id)allIntersectionsWithNode:(id)node useAlphaTest:(BOOL)test;
+- (id)archiveToFile:(id)file;
+- (id)childrenInRect:(CGRect)rect;
 - (id)containingView;
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createDebugHierarchyVisualRepresentation;
 - (id)createFullCaptureData;
-- (id)nodeAtPoint:(CGPoint)a3 recursive:(BOOL)a4;
+- (id)nodeAtPoint:(CGPoint)point recursive:(BOOL)recursive;
 - (shared_ptr<PKCAether>)_aether;
-- (void)_debugPrint:(int)a3;
-- (void)_debugPrint:(int)a3 mask:(unint64_t)a4;
-- (void)_descendantsToMutableArray:(id)a3;
-- (void)_descendantsWithPredicate:(id)a3 toMutableArray:(id)a4;
-- (void)_enumerateChildNodesWithName:(id)a3 usingBlock:(id)a4 stopPointer:(BOOL *)a5;
-- (void)_getBasePhysicsScale:(float *)a3 yScale:(float *)a4;
-- (void)_getWorldTransform:(float *)a3 positionY:(float *)a4 rotation:(float *)a5 xScale:(float *)a6 yScale:(float *)a7;
-- (void)_processSearchTokens:()vector<Token visited:(std:(void *)a4 :(id)a5 allocator<Token>> *)a3 usingBlock:(BOOL *)a6 stopPointer:;
-- (void)_removeAction:(id)a3;
-- (void)_removeChild:(id)a3;
-- (void)_runAction:(id)a3;
+- (void)_debugPrint:(int)print;
+- (void)_debugPrint:(int)print mask:(unint64_t)mask;
+- (void)_descendantsToMutableArray:(id)array;
+- (void)_descendantsWithPredicate:(id)predicate toMutableArray:(id)array;
+- (void)_enumerateChildNodesWithName:(id)name usingBlock:(id)block stopPointer:(BOOL *)pointer;
+- (void)_getBasePhysicsScale:(float *)scale yScale:(float *)yScale;
+- (void)_getWorldTransform:(float *)transform positionY:(float *)y rotation:(float *)rotation xScale:(float *)scale yScale:(float *)yScale;
+- (void)_processSearchTokens:()vector<Token visited:(std:(void *)visited :(id)a5 allocator<Token>> *)a3 usingBlock:(BOOL *)block stopPointer:;
+- (void)_removeAction:(id)action;
+- (void)_removeChild:(id)child;
+- (void)_runAction:(id)action;
 - (void)addChild:(SKNode *)node;
-- (void)addChild:(id)a3 withKey:(id)a4;
+- (void)addChild:(id)child withKey:(id)key;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)insertChild:(SKNode *)node atIndex:(NSInteger)index;
 - (void)moveToParent:(SKNode *)parent;
 - (void)removeActionForKey:(NSString *)key;
 - (void)removeAllActions;
 - (void)removeAllChildren;
-- (void)removeChild:(id)a3;
-- (void)removeChildAtIndex:(int64_t)a3;
+- (void)removeChild:(id)child;
+- (void)removeChildAtIndex:(int64_t)index;
 - (void)removeChildrenInArray:(NSArray *)nodes;
 - (void)removeFromParent;
 - (void)runAction:(SKAction *)action;
@@ -97,38 +97,38 @@
 - (void)setAttributeValues:(NSDictionary *)attributeValues;
 - (void)setConstraints:(NSArray *)constraints;
 - (void)setNeedsFocusUpdate;
-- (void)setParent:(id)a3;
+- (void)setParent:(id)parent;
 - (void)setPaused:(BOOL)paused;
 - (void)setPhysicsBody:(SKPhysicsBody *)physicsBody;
 - (void)setPosition:(CGPoint)position;
 - (void)setScale:(CGFloat)scale;
 - (void)setSpeed:(CGFloat)speed;
 - (void)setValue:(SKAttributeValue *)value forAttributeNamed:(NSString *)key;
-- (void)setXRotation:(double)a3;
+- (void)setXRotation:(double)rotation;
 - (void)setXScale:(CGFloat)xScale;
-- (void)setYRotation:(double)a3;
+- (void)setYRotation:(double)rotation;
 - (void)setYScale:(CGFloat)yScale;
-- (void)set_anchorPoint:(CGPoint)a3;
+- (void)set_anchorPoint:(CGPoint)point;
 - (void)updateFocusIfNeeded;
 @end
 
 @implementation SKNode
 
-- (void)_removeAction:(id)a3
+- (void)_removeAction:(id)action
 {
-  v4 = a3;
-  if (v4)
+  actionCopy = action;
+  if (actionCopy)
   {
-    [(NSMutableArray *)self->_actions removeExactObject:v4];
+    [(NSMutableArray *)self->_actions removeExactObject:actionCopy];
   }
 }
 
-- (void)_removeChild:(id)a3
+- (void)_removeChild:(id)child
 {
-  v4 = a3;
-  if (v4)
+  childCopy = child;
+  if (childCopy)
   {
-    [(NSMutableArray *)self->_children removeExactObject:v4];
+    [(NSMutableArray *)self->_children removeExactObject:childCopy];
   }
 }
 
@@ -155,16 +155,16 @@
     if (objc_opt_isKindOfClass())
     {
       v5 = v4;
-      v6 = [(SKNode *)self name];
-      if (v6)
+      name = [(SKNode *)self name];
+      if (name)
       {
       }
 
       else
       {
-        v8 = [(SKNode *)v5 name];
+        name2 = [(SKNode *)v5 name];
 
-        if (!v8)
+        if (!name2)
         {
 LABEL_9:
           [(SKNode *)self frame];
@@ -203,8 +203,8 @@ LABEL_9:
 
               else
               {
-                v59 = [(SKNode *)self isPaused];
-                v7 = v59 ^ [(SKNode *)v5 isPaused]^ 1;
+                isPaused = [(SKNode *)self isPaused];
+                v7 = isPaused ^ [(SKNode *)v5 isPaused]^ 1;
               }
             }
 
@@ -219,9 +219,9 @@ LABEL_24:
         }
       }
 
-      v9 = [(SKNode *)self name];
-      v10 = [(SKNode *)v5 name];
-      v11 = [v9 isEqualToString:v10];
+      name3 = [(SKNode *)self name];
+      name4 = [(SKNode *)v5 name];
+      v11 = [name3 isEqualToString:name4];
 
       if ((v11 & 1) == 0)
       {
@@ -272,7 +272,7 @@ LABEL_25:
     v18 = 3221225472;
     v19 = __28__SKNode_nodeWithFileNamed___block_invoke;
     v20 = &unk_27830FEF8;
-    v22 = a1;
+    selfCopy = self;
     v13 = v9;
     v21 = v13;
     [v12 enumerateObjectsUsingBlock:&v17];
@@ -327,7 +327,7 @@ void __28__SKNode_nodeWithFileNamed___block_invoke(uint64_t a1, void *a2, uint64
     v20 = 3221225472;
     v21 = __57__SKNode_nodeWithFileNamed_securelyWithClasses_andError___block_invoke;
     v22 = &unk_27830FEF8;
-    v24 = a1;
+    selfCopy = self;
     v15 = v12;
     v23 = v15;
     [v14 enumerateObjectsUsingBlock:&v19];
@@ -367,9 +367,9 @@ void __57__SKNode_nodeWithFileNamed_securelyWithClasses_andError___block_invoke(
   v3 = v2;
   if (v2)
   {
-    v4 = [(SKNode *)v2 _makeBackingNode];
-    v3->_skcNode = v4;
-    *(v4 + 8) = v3;
+    _makeBackingNode = [(SKNode *)v2 _makeBackingNode];
+    v3->_skcNode = _makeBackingNode;
+    *(_makeBackingNode + 8) = v3;
     [(SKNode *)v3 _didMakeBackingNode];
     userData = v3->_userData;
     v3->_userData = 0;
@@ -390,20 +390,20 @@ void __57__SKNode_nodeWithFileNamed_securelyWithClasses_andError___block_invoke(
   return v3;
 }
 
-- (Class)swiftClassFromString:(id)a3 moduleName:(id)a4
+- (Class)swiftClassFromString:(id)string moduleName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6 && [v6 length])
+  stringCopy = string;
+  nameCopy = name;
+  v7 = nameCopy;
+  if (nameCopy && [nameCopy length])
   {
     v8 = v7;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CCA8D8] mainBundle];
-    v8 = [v9 objectForInfoDictionaryKey:@"CFBundleName"];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v8 = [mainBundle objectForInfoDictionaryKey:@"CFBundleName"];
   }
 
   v10 = [v8 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
@@ -422,8 +422,8 @@ void __57__SKNode_nodeWithFileNamed_securelyWithClasses_andError___block_invoke(
     v12 = v15;
   }
 
-  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"_TtC%lu%@%lu%@", objc_msgSend(v12, "length"), v12, objc_msgSend(v5, "length"), v5];
-  v17 = NSClassFromString(v16);
+  stringCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"_TtC%lu%@%lu%@", objc_msgSend(v12, "length"), v12, objc_msgSend(stringCopy, "length"), stringCopy];
+  v17 = NSClassFromString(stringCopy);
 
   return v17;
 }
@@ -445,8 +445,8 @@ void __57__SKNode_nodeWithFileNamed_securelyWithClasses_andError___block_invoke(
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v97 count:9];
   [v74 addObjectsFromArray:v5];
 
-  v6 = [(NSCoder *)v4 allowedClasses];
-  [v74 unionSet:v6];
+  allowedClasses = [(NSCoder *)v4 allowedClasses];
+  [v74 unionSet:allowedClasses];
 
   v7 = [(NSCoder *)v4 decodeObjectOfClasses:v74 forKey:@"_info"];
   objc_opt_class();
@@ -477,7 +477,7 @@ void __57__SKNode_nodeWithFileNamed_securelyWithClasses_andError___block_invoke(
 
   if (v8 != objc_opt_class() && [(objc_class *)v8 isSubclassOfClass:objc_opt_class()])
   {
-    v71 = self;
+    selfCopy = self;
     v10 = [[v8 alloc] initWithCoder:v4];
 
     goto LABEL_41;
@@ -490,9 +490,9 @@ LABEL_11:
   v10 = v11;
   if (v11)
   {
-    v12 = [(SKNode *)v11 _makeBackingNode];
-    v10->_skcNode = v12;
-    *(v12 + 8) = v10;
+    _makeBackingNode = [(SKNode *)v11 _makeBackingNode];
+    v10->_skcNode = _makeBackingNode;
+    *(_makeBackingNode + 8) = v10;
     [(SKNode *)v10 _didMakeBackingNode];
     v13 = MEMORY[0x277CBEB98];
     v96[0] = objc_opt_class();
@@ -747,93 +747,93 @@ void __24__SKNode_initWithCoder___block_invoke_2(uint64_t a1, void *a2, void *a3
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v36 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_version];
-  [v36 encodeObject:v4 forKey:@"_version"];
+  [coderCopy encodeObject:v4 forKey:@"_version"];
 
   v5 = MEMORY[0x277CCAE60];
   [(SKNode *)self position];
   v6 = [v5 valueWithCGPoint:?];
-  [v36 encodeObject:v6 forKey:@"_position"];
+  [coderCopy encodeObject:v6 forKey:@"_position"];
 
   v7 = MEMORY[0x277CCABB0];
   [(SKNode *)self alpha];
   v8 = [v7 numberWithDouble:?];
-  [v36 encodeObject:v8 forKey:@"_opacity"];
+  [coderCopy encodeObject:v8 forKey:@"_opacity"];
 
   v9 = MEMORY[0x277CCABB0];
   [(SKNode *)self xRotation];
   v10 = [v9 numberWithDouble:?];
-  [v36 encodeObject:v10 forKey:@"_xRotation"];
+  [coderCopy encodeObject:v10 forKey:@"_xRotation"];
 
   v11 = MEMORY[0x277CCABB0];
   [(SKNode *)self yRotation];
   v12 = [v11 numberWithDouble:?];
-  [v36 encodeObject:v12 forKey:@"_yRotation"];
+  [coderCopy encodeObject:v12 forKey:@"_yRotation"];
 
   v13 = MEMORY[0x277CCABB0];
   [(SKNode *)self zRotation];
   v14 = [v13 numberWithDouble:?];
-  [v36 encodeObject:v14 forKey:@"_zRotation"];
+  [coderCopy encodeObject:v14 forKey:@"_zRotation"];
 
   v15 = MEMORY[0x277CCABB0];
   [(SKNode *)self xScale];
   v16 = [v15 numberWithDouble:?];
-  [v36 encodeObject:v16 forKey:@"_xScale"];
+  [coderCopy encodeObject:v16 forKey:@"_xScale"];
 
   v17 = MEMORY[0x277CCABB0];
   [(SKNode *)self yScale];
   v18 = [v17 numberWithDouble:?];
-  [v36 encodeObject:v18 forKey:@"_yScale"];
+  [coderCopy encodeObject:v18 forKey:@"_yScale"];
 
-  v19 = [(SKNode *)self name];
-  [v36 encodeObject:v19 forKey:@"_name"];
+  name = [(SKNode *)self name];
+  [coderCopy encodeObject:name forKey:@"_name"];
 
-  v20 = [(SKNode *)self userData];
-  [v36 encodeObject:v20 forKey:@"_userData"];
+  userData = [(SKNode *)self userData];
+  [coderCopy encodeObject:userData forKey:@"_userData"];
 
-  v21 = [(SKNode *)self _info];
-  [v36 encodeObject:v21 forKey:@"_info"];
+  _info = [(SKNode *)self _info];
+  [coderCopy encodeObject:_info forKey:@"_info"];
 
-  v22 = [(SKNode *)self constraints];
-  v23 = [v22 mutableCopy];
-  [v36 encodeObject:v23 forKey:@"_constraints"];
+  constraints = [(SKNode *)self constraints];
+  v23 = [constraints mutableCopy];
+  [coderCopy encodeObject:v23 forKey:@"_constraints"];
 
-  v24 = [(SKNode *)self reachConstraints];
-  [v36 encodeObject:v24 forKey:@"_reachConstraints"];
+  reachConstraints = [(SKNode *)self reachConstraints];
+  [coderCopy encodeObject:reachConstraints forKey:@"_reachConstraints"];
 
-  v25 = [(SKNode *)self children];
-  v26 = [v25 mutableCopy];
-  [v36 encodeObject:v26 forKey:@"_children"];
+  children = [(SKNode *)self children];
+  v26 = [children mutableCopy];
+  [coderCopy encodeObject:v26 forKey:@"_children"];
 
   v27 = [MEMORY[0x277CCABB0] numberWithBool:{-[SKNode isHidden](self, "isHidden")}];
-  [v36 encodeObject:v27 forKey:@"_hidden"];
+  [coderCopy encodeObject:v27 forKey:@"_hidden"];
 
   v28 = [MEMORY[0x277CCABB0] numberWithBool:{-[SKNode isPaused](self, "isPaused")}];
-  [v36 encodeObject:v28 forKey:@"_paused"];
+  [coderCopy encodeObject:v28 forKey:@"_paused"];
 
   v29 = [MEMORY[0x277CCABB0] numberWithBool:*(self->_skcNode + 172)];
-  [v36 encodeObject:v29 forKey:@"_skcPaused"];
+  [coderCopy encodeObject:v29 forKey:@"_skcPaused"];
 
   v30 = MEMORY[0x277CCABB0];
   [(SKNode *)self zPosition];
   v31 = [v30 numberWithDouble:?];
-  [v36 encodeObject:v31 forKey:@"_zPosition"];
+  [coderCopy encodeObject:v31 forKey:@"_zPosition"];
 
-  [v36 encodeObject:self->_actions forKey:@"_actions"];
-  [v36 encodeObject:self->_keyedActions forKey:@"_keyedActions"];
-  [v36 encodeObject:self->_keyedSubSprites forKey:@"_keyedSubSprites"];
-  v32 = [(SKNode *)self physicsBody];
-  [v36 encodeObject:v32 forKey:@"_PKPhysicsBody"];
+  [coderCopy encodeObject:self->_actions forKey:@"_actions"];
+  [coderCopy encodeObject:self->_keyedActions forKey:@"_keyedActions"];
+  [coderCopy encodeObject:self->_keyedSubSprites forKey:@"_keyedSubSprites"];
+  physicsBody = [(SKNode *)self physicsBody];
+  [coderCopy encodeObject:physicsBody forKey:@"_PKPhysicsBody"];
 
-  v33 = [(SKNode *)self attributeValues];
-  [v36 encodeObject:v33 forKey:@"_attributeValues"];
+  attributeValues = [(SKNode *)self attributeValues];
+  [coderCopy encodeObject:attributeValues forKey:@"_attributeValues"];
 
   v34 = objc_opt_class();
   v35 = NSStringFromClass(v34);
-  [v36 encodeObject:v35 forKey:@"_originalClass"];
+  [coderCopy encodeObject:v35 forKey:@"_originalClass"];
 }
 
 - (id)copy
@@ -843,17 +843,17 @@ void __24__SKNode_initWithCoder___block_invoke_2(uint64_t a1, void *a2, void *a3
   return [(SKNode *)self copyWithZone:v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v65 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(objc_opt_class());
-  v47 = self;
+  selfCopy = self;
   if ([(NSMutableArray *)self->_children count]&& [(NSMutableDictionary *)self->_keyedSubSprites count])
   {
     v5 = [(NSMutableDictionary *)self->_keyedSubSprites copy];
     v6 = [(NSMutableArray *)self->_children copy];
-    v7 = [v5 allValues];
-    [v6 removeObjectsInArray:v7];
+    allValues = [v5 allValues];
+    [v6 removeObjectsInArray:allValues];
 
     v8 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v5 copyItems:1];
     v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v6 copyItems:1];
@@ -862,8 +862,8 @@ void __24__SKNode_initWithCoder___block_invoke_2(uint64_t a1, void *a2, void *a3
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v10 = [v8 allKeys];
-    v11 = [v10 countByEnumeratingWithState:&v57 objects:v64 count:16];
+    allKeys = [v8 allKeys];
+    v11 = [allKeys countByEnumeratingWithState:&v57 objects:v64 count:16];
     if (v11)
     {
       v12 = *v58;
@@ -873,7 +873,7 @@ void __24__SKNode_initWithCoder___block_invoke_2(uint64_t a1, void *a2, void *a3
         {
           if (*v58 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allKeys);
           }
 
           v14 = *(*(&v57 + 1) + 8 * i);
@@ -881,7 +881,7 @@ void __24__SKNode_initWithCoder___block_invoke_2(uint64_t a1, void *a2, void *a3
           [v4 addChild:v15 withKey:v14];
         }
 
-        v11 = [v10 countByEnumeratingWithState:&v57 objects:v64 count:16];
+        v11 = [allKeys countByEnumeratingWithState:&v57 objects:v64 count:16];
       }
 
       while (v11);
@@ -948,18 +948,18 @@ void __24__SKNode_initWithCoder___block_invoke_2(uint64_t a1, void *a2, void *a3
     v8 = v16;
   }
 
-  if ([(NSMutableArray *)v47->_actions count]|| [(NSMutableDictionary *)v47->_keyedActions count])
+  if ([(NSMutableArray *)selfCopy->_actions count]|| [(NSMutableDictionary *)selfCopy->_keyedActions count])
   {
-    v24 = [(NSMutableDictionary *)v47->_keyedActions copy];
-    v25 = [(NSMutableArray *)v47->_actions mutableCopy];
-    v26 = [v24 allValues];
-    [v25 removeObjectsInArray:v26];
+    v24 = [(NSMutableDictionary *)selfCopy->_keyedActions copy];
+    v25 = [(NSMutableArray *)selfCopy->_actions mutableCopy];
+    allValues2 = [v24 allValues];
+    [v25 removeObjectsInArray:allValues2];
 
     v27 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:v24 copyItems:1];
     obj = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v25 copyItems:1];
 
-    v28 = [v27 allValues];
-    [obj addObjectsFromArray:v28];
+    allValues3 = [v27 allValues];
+    [obj addObjectsFromArray:allValues3];
 
     objc_storeStrong(v4 + 5, obj);
     v29 = [v27 mutableCopy];
@@ -978,56 +978,56 @@ void __24__SKNode_initWithCoder___block_invoke_2(uint64_t a1, void *a2, void *a3
 
   else
   {
-    v45 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v47->_actions copyItems:1];
+    v45 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:selfCopy->_actions copyItems:1];
     v27 = v4[5];
     v4[5] = v45;
   }
 
-  [(SKNode *)v47 xScale];
+  [(SKNode *)selfCopy xScale];
   [v4 setXScale:?];
-  [(SKNode *)v47 yScale];
+  [(SKNode *)selfCopy yScale];
   [v4 setYScale:?];
-  [(SKNode *)v47 position];
+  [(SKNode *)selfCopy position];
   [v4 setPosition:?];
-  [(SKNode *)v47 zRotation];
+  [(SKNode *)selfCopy zRotation];
   [v4 setZRotation:?];
-  [(SKNode *)v47 zPosition];
+  [(SKNode *)selfCopy zPosition];
   [v4 setZPosition:?];
-  [(SKNode *)v47 speed];
+  [(SKNode *)selfCopy speed];
   [v4 setSpeed:?];
-  [v4 setPaused:{-[SKNode isPaused](v47, "isPaused")}];
-  [v4 setHidden:{-[SKNode isHidden](v47, "isHidden")}];
-  [v4 setUserInteractionEnabled:{-[SKNode isUserInteractionEnabled](v47, "isUserInteractionEnabled")}];
-  [v4 setFocusBehavior:{-[SKNode focusBehavior](v47, "focusBehavior")}];
-  [(SKNode *)v47 alpha];
+  [v4 setPaused:{-[SKNode isPaused](selfCopy, "isPaused")}];
+  [v4 setHidden:{-[SKNode isHidden](selfCopy, "isHidden")}];
+  [v4 setUserInteractionEnabled:{-[SKNode isUserInteractionEnabled](selfCopy, "isUserInteractionEnabled")}];
+  [v4 setFocusBehavior:{-[SKNode focusBehavior](selfCopy, "focusBehavior")}];
+  [(SKNode *)selfCopy alpha];
   [v4 setAlpha:?];
-  v32 = [(SKNode *)v47 physicsBody];
-  v33 = [v32 copy];
+  physicsBody = [(SKNode *)selfCopy physicsBody];
+  v33 = [physicsBody copy];
   [v4 setPhysicsBody:v33];
 
-  v34 = [(SKNode *)v47 name];
-  [v4 setName:v34];
+  name = [(SKNode *)selfCopy name];
+  [v4 setName:name];
 
-  v35 = [(SKNode *)v47 userData];
-  v36 = [v35 mutableCopy];
+  userData = [(SKNode *)selfCopy userData];
+  v36 = [userData mutableCopy];
   [v4 setUserData:v36];
 
-  v37 = [(SKNode *)v47 _info];
-  v38 = [v37 mutableCopy];
+  _info = [(SKNode *)selfCopy _info];
+  v38 = [_info mutableCopy];
   [v4 set_info:v38];
 
-  v39 = [(SKNode *)v47 reachConstraints];
-  v40 = [v39 copy];
+  reachConstraints = [(SKNode *)selfCopy reachConstraints];
+  v40 = [reachConstraints copy];
   [v4 setReachConstraints:v40];
 
-  v41 = [(SKNode *)v47 constraints];
-  v42 = [v41 copy];
+  constraints = [(SKNode *)selfCopy constraints];
+  v42 = [constraints copy];
   [v4 setConstraints:v42];
 
-  [(SKNode *)v47 _anchorPoint];
+  [(SKNode *)selfCopy _anchorPoint];
   [v4 set_anchorPoint:?];
-  v43 = [(SKNode *)v47 attributeValues];
-  [v4 setAttributeValues:v43];
+  attributeValues = [(SKNode *)selfCopy attributeValues];
+  [v4 setAttributeValues:attributeValues];
 
   return v4;
 }
@@ -1238,41 +1238,41 @@ LABEL_3:
     [(SKNode *)self willChangeValueForKey:@"children"];
     SKCNode::insertChildAtIndex(self->_skcNode, [p_isa _backingNode], index);
     [(NSMutableArray *)self->_children insertObject:p_isa atIndex:index];
-    v11 = [(SKNode *)self scene];
-    if (v11)
+    scene = [(SKNode *)self scene];
+    if (scene)
     {
-      v12 = [p_isa physicsBody];
+      physicsBody = [p_isa physicsBody];
 
-      if (v12)
+      if (physicsBody)
       {
-        v13 = [v11 physicsWorld];
-        v14 = [p_isa physicsBody];
-        [v13 addBody:v14];
+        physicsWorld = [scene physicsWorld];
+        physicsBody2 = [p_isa physicsBody];
+        [physicsWorld addBody:physicsBody2];
 
-        v15 = [p_isa _backingNode];
-        (*(*v15 + 200))(v15);
+        _backingNode = [p_isa _backingNode];
+        (*(*_backingNode + 200))(_backingNode);
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v16 = p_isa;
-        v17 = [v11 physicsWorld];
-        v18 = [v16 field];
-        [v17 addField:v18];
+        physicsWorld2 = [scene physicsWorld];
+        field = [v16 field];
+        [physicsWorld2 addField:field];
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [p_isa _connectToScene:v11];
+        [p_isa _connectToScene:scene];
       }
 
-      v19 = [p_isa constraints];
-      v20 = v19;
-      if (v19 && [v19 count])
+      constraints = [p_isa constraints];
+      v20 = constraints;
+      if (constraints && [constraints count])
       {
-        [v11 _registerConstraintsForNode:p_isa];
+        [scene _registerConstraintsForNode:p_isa];
       }
 
       if ([p_isa hasChildren])
@@ -1281,7 +1281,7 @@ LABEL_3:
         v21[1] = 3221225472;
         v21[2] = __30__SKNode_insertChild_atIndex___block_invoke;
         v21[3] = &unk_27830FEB0;
-        v22 = v11;
+        v22 = scene;
         [p_isa enumerateChildNodesWithName:@".//SKNode" usingBlock:v21];
       }
     }
@@ -1351,27 +1351,27 @@ void __30__SKNode_insertChild_atIndex___block_invoke(uint64_t a1, void *a2)
   return result;
 }
 
-- (void)removeChildAtIndex:(int64_t)a3
+- (void)removeChildAtIndex:(int64_t)index
 {
   [(SKNode *)self willChangeValueForKey:@"children"];
-  v6 = [(NSMutableArray *)self->_children objectAtIndex:a3];
-  v5 = [(SKNode *)self scene];
-  _removeChild(self, v6, v5);
+  v6 = [(NSMutableArray *)self->_children objectAtIndex:index];
+  scene = [(SKNode *)self scene];
+  _removeChild(self, v6, scene);
 
-  [(NSMutableArray *)self->_children removeObjectAtIndex:a3];
+  [(NSMutableArray *)self->_children removeObjectAtIndex:index];
   [(SKNode *)self didChangeValueForKey:@"children"];
 }
 
-- (void)removeChild:(id)a3
+- (void)removeChild:(id)child
 {
-  v5 = a3;
-  if (v5)
+  childCopy = child;
+  if (childCopy)
   {
     [(SKNode *)self willChangeValueForKey:@"children"];
-    v4 = [(SKNode *)self scene];
-    _removeChild(self, v5, v4);
+    scene = [(SKNode *)self scene];
+    _removeChild(self, childCopy, scene);
 
-    [(NSMutableArray *)self->_children removeExactObject:v5];
+    [(NSMutableArray *)self->_children removeExactObject:childCopy];
     [(SKNode *)self didChangeValueForKey:@"children"];
   }
 }
@@ -1384,11 +1384,11 @@ void __30__SKNode_insertChild_atIndex___block_invoke(uint64_t a1, void *a2)
   {
     v23 = v4;
     [(SKNode *)self willChangeValueForKey:@"children"];
-    v5 = [(SKNode *)self scene];
-    v6 = self;
+    scene = [(SKNode *)self scene];
+    selfCopy = self;
     v7 = v4;
-    v8 = v5;
-    v24 = [(SKScene *)v8 _pkPhysicsWorld];
+    v8 = scene;
+    _pkPhysicsWorld = [(SKScene *)v8 _pkPhysicsWorld];
     v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSArray count](v7, "count")}];
     v31 = 0u;
     v32 = 0u;
@@ -1409,13 +1409,13 @@ void __30__SKNode_insertChild_atIndex___block_invoke(uint64_t a1, void *a2)
           }
 
           v14 = *(*(&v29 + 1) + 8 * i);
-          v15 = [(SKNode *)v14 parent];
-          v16 = v15 == v6;
+          parent = [(SKNode *)v14 parent];
+          v16 = parent == selfCopy;
 
           if (v16)
           {
             [v9 addObject:v14];
-            _removeChild(v6, v14, v8);
+            _removeChild(selfCopy, v14, v8);
           }
         }
 
@@ -1425,7 +1425,7 @@ void __30__SKNode_insertChild_atIndex___block_invoke(uint64_t a1, void *a2)
       while (v11);
     }
 
-    if (([v24 hasBodies] & 1) != 0 || (objc_msgSend(v24, "hasFields") & 1) != 0 || -[SKScene _hasConstraints](v8, "_hasConstraints") || (-[SKScene avAudioEnvironmentNode](v8, "avAudioEnvironmentNode"), v17 = objc_claimAutoreleasedReturnValue(), v18 = v17 == 0, v17, !v18))
+    if (([_pkPhysicsWorld hasBodies] & 1) != 0 || (objc_msgSend(_pkPhysicsWorld, "hasFields") & 1) != 0 || -[SKScene _hasConstraints](v8, "_hasConstraints") || (-[SKScene avAudioEnvironmentNode](v8, "avAudioEnvironmentNode"), v17 = objc_claimAutoreleasedReturnValue(), v18 = v17 == 0, v17, !v18))
     {
       v27 = 0u;
       v28 = 0u;
@@ -1457,7 +1457,7 @@ void __30__SKNode_insertChild_atIndex___block_invoke(uint64_t a1, void *a2)
 
     v4 = v23;
     [(NSMutableArray *)self->_children removeExactObjectsInArray:v10];
-    [(SKNode *)v6 didChangeValueForKey:@"children"];
+    [(SKNode *)selfCopy didChangeValueForKey:@"children"];
   }
 }
 
@@ -1509,18 +1509,18 @@ void __30__SKNode_insertChild_atIndex___block_invoke(uint64_t a1, void *a2)
   v5 = self->_constraints;
   self->_constraints = v4;
 
-  v6 = [(SKNode *)self scene];
-  if (v6)
+  scene = [(SKNode *)self scene];
+  if (scene)
   {
     v7 = self->_constraints;
     if (v7 && [(NSArray *)v7 count])
     {
-      [v6 _registerConstraintsForNode:self];
+      [scene _registerConstraintsForNode:self];
     }
 
     else
     {
-      [v6 _removeConstraintsForNode:self];
+      [scene _removeConstraintsForNode:self];
     }
   }
 
@@ -1534,22 +1534,22 @@ void __30__SKNode_insertChild_atIndex___block_invoke(uint64_t a1, void *a2)
   return v2;
 }
 
-- (void)addChild:(id)a3 withKey:(id)a4
+- (void)addChild:(id)child withKey:(id)key
 {
-  v11 = a3;
-  v6 = a4;
-  if (v6)
+  childCopy = child;
+  keyCopy = key;
+  if (keyCopy)
   {
-    v7 = [(NSMutableDictionary *)self->_keyedSubSprites objectForKey:v6];
+    v7 = [(NSMutableDictionary *)self->_keyedSubSprites objectForKey:keyCopy];
     if (v7)
     {
-      [(NSMutableDictionary *)self->_keyedSubSprites removeObjectForKey:v6];
+      [(NSMutableDictionary *)self->_keyedSubSprites removeObjectForKey:keyCopy];
       [(SKNode *)self removeChild:v7];
     }
 
-    if (v11)
+    if (childCopy)
     {
-      [(SKNode *)self addChild:v11];
+      [(SKNode *)self addChild:childCopy];
       keyedSubSprites = self->_keyedSubSprites;
       if (!keyedSubSprites)
       {
@@ -1560,7 +1560,7 @@ void __30__SKNode_insertChild_atIndex___block_invoke(uint64_t a1, void *a2)
         keyedSubSprites = self->_keyedSubSprites;
       }
 
-      [(NSMutableDictionary *)keyedSubSprites setObject:v11 forKey:v6];
+      [(NSMutableDictionary *)keyedSubSprites setObject:childCopy forKey:keyCopy];
     }
   }
 }
@@ -1601,16 +1601,16 @@ void __30__SKNode_insertChild_atIndex___block_invoke(uint64_t a1, void *a2)
   return v6;
 }
 
-- (void)_enumerateChildNodesWithName:(id)a3 usingBlock:(id)a4 stopPointer:(BOOL *)a5
+- (void)_enumerateChildNodesWithName:(id)name usingBlock:(id)block stopPointer:(BOOL *)pointer
 {
   v33 = *MEMORY[0x277D85DE8];
-  v20 = a3;
-  v8 = a4;
-  if (!*a5)
+  nameCopy = name;
+  blockCopy = block;
+  if (!*pointer)
   {
-    v19 = a5;
-    v9 = self;
-    [v20 componentsSeparatedByString:@"/"];
+    pointerCopy = pointer;
+    selfCopy = self;
+    [nameCopy componentsSeparatedByString:@"/"];
     v28 = 0;
     v29 = 0;
     v30 = 0;
@@ -1663,17 +1663,17 @@ void __30__SKNode_insertChild_atIndex___block_invoke(uint64_t a1, void *a2)
           {
             while (1)
             {
-              v16 = [(SKNode *)v9 parent];
-              v17 = v16 == 0;
+              parent = [(SKNode *)selfCopy parent];
+              v17 = parent == 0;
 
               if (v17)
               {
                 break;
               }
 
-              v18 = [(SKNode *)v9 parent];
+              parent2 = [(SKNode *)selfCopy parent];
 
-              v9 = v18;
+              selfCopy = parent2;
             }
           }
 
@@ -1699,7 +1699,7 @@ void __30__SKNode_insertChild_atIndex___block_invoke(uint64_t a1, void *a2)
     v22 = v23;
     memset(v21, 0, sizeof(v21));
     std::vector<Token>::__init_with_size[abi:ne200100]<Token*,Token*>(v21, v28, v29, (v29 - v28) >> 4);
-    [(SKNode *)v9 _processSearchTokens:v21 visited:&v22 usingBlock:v8 stopPointer:v19];
+    [(SKNode *)selfCopy _processSearchTokens:v21 visited:&v22 usingBlock:blockCopy stopPointer:pointerCopy];
     v31 = v21;
     std::vector<Token>::__destroy_vector::operator()[abi:ne200100](&v31);
     std::__tree<SKNode * {__strong}>::destroy(&v22, v23[0]);
@@ -1708,13 +1708,13 @@ void __30__SKNode_insertChild_atIndex___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)_processSearchTokens:()vector<Token visited:(std:(void *)a4 :(id)a5 allocator<Token>> *)a3 usingBlock:(BOOL *)a6 stopPointer:
+- (void)_processSearchTokens:()vector<Token visited:(std:(void *)visited :(id)a5 allocator<Token>> *)a3 usingBlock:(BOOL *)block stopPointer:
 {
   v118 = *MEMORY[0x277D85DE8];
   v10 = a5;
-  v11 = self;
-  p_isa = &v11->super.super.isa;
-  v111 = &v11->super.super.isa;
+  selfCopy = self;
+  p_isa = &selfCopy->super.super.isa;
+  v111 = &selfCopy->super.super.isa;
   var0 = a3->var0;
   var1 = a3->var1;
   v16 = (a3->var0 + 16);
@@ -1730,24 +1730,24 @@ void __30__SKNode_insertChild_atIndex___block_invoke(uint64_t a1, void *a2)
           goto LABEL_125;
         }
 
-        v24 = [(SKNode *)v11 parent];
+        parent = [(SKNode *)selfCopy parent];
 
-        if (v24)
+        if (parent)
         {
-          v25 = [v111 parent];
+          parent2 = [v111 parent];
           v26 = v111;
-          v111 = v25;
+          v111 = parent2;
         }
 
-        if (*a6)
+        if (*block)
         {
           goto LABEL_125;
         }
 
-        v27 = *(a4 + 1);
+        v27 = *(visited + 1);
         if (v27)
         {
-          v28 = a4 + 8;
+          v28 = visited + 8;
           do
           {
             v29 = v27[4];
@@ -1762,7 +1762,7 @@ void __30__SKNode_insertChild_atIndex___block_invoke(uint64_t a1, void *a2)
           }
 
           while (v27);
-          if (v28 != (a4 + 8) && v111 >= v28[4])
+          if (v28 != (visited + 8) && v111 >= v28[4])
           {
             goto LABEL_125;
           }
@@ -1771,20 +1771,20 @@ void __30__SKNode_insertChild_atIndex___block_invoke(uint64_t a1, void *a2)
 
       else
       {
-        if (*a6)
+        if (*block)
         {
           goto LABEL_125;
         }
 
-        v65 = *(a4 + 1);
+        v65 = *(visited + 1);
         if (v65)
         {
-          v66 = a4 + 8;
+          v66 = visited + 8;
           do
           {
             v67 = v65[4];
-            v30 = v67 >= v11;
-            v68 = v67 < v11;
+            v30 = v67 >= selfCopy;
+            v68 = v67 < selfCopy;
             if (v30)
             {
               v66 = v65;
@@ -1794,21 +1794,21 @@ void __30__SKNode_insertChild_atIndex___block_invoke(uint64_t a1, void *a2)
           }
 
           while (v65);
-          if (v66 != (a4 + 8) && v66[4] <= v11)
+          if (v66 != (visited + 8) && v66[4] <= selfCopy)
           {
             goto LABEL_125;
           }
         }
       }
 
-      std::__tree<SKNode * {__strong}>::__emplace_unique_key_args<SKNode * {__strong},SKNode * const {__strong}&>(a4, &v111);
-      v10[2](v10, v111, a6);
+      std::__tree<SKNode * {__strong}>::__emplace_unique_key_args<SKNode * {__strong},SKNode * const {__strong}&>(visited, &v111);
+      v10[2](v10, v111, block);
       goto LABEL_125;
     }
 
     if (v15 == 3)
     {
-      if (v11->_children)
+      if (selfCopy->_children)
       {
         v69 = *(var0 + 1);
         v109 = 0;
@@ -1823,7 +1823,7 @@ void __30__SKNode_insertChild_atIndex___block_invoke(uint64_t a1, void *a2)
         if (v71)
         {
           v72 = *v105;
-          v73 = (a4 + 8);
+          v73 = (visited + 8);
           do
           {
             for (i = 0; i != v71; ++i)
@@ -1841,7 +1841,7 @@ void __30__SKNode_insertChild_atIndex___block_invoke(uint64_t a1, void *a2)
                 goto LABEL_128;
               }
 
-              v77 = (a4 + 8);
+              v77 = (visited + 8);
               do
               {
                 v78 = *(v76 + 4);
@@ -1861,7 +1861,7 @@ void __30__SKNode_insertChild_atIndex___block_invoke(uint64_t a1, void *a2)
 LABEL_128:
                 if (SKNodeNameMatches(v69, v75))
                 {
-                  std::__tree<SKNode * {__strong}>::__emplace_unique_key_args<SKNode * {__strong},SKNode * const {__strong}&>(a4, &v112);
+                  std::__tree<SKNode * {__strong}>::__emplace_unique_key_args<SKNode * {__strong},SKNode * const {__strong}&>(visited, &v112);
                   std::vector<SKNode * {__strong}>::push_back[abi:ne200100](&v108, &v112);
                 }
               }
@@ -1873,7 +1873,7 @@ LABEL_128:
           while (v71);
         }
 
-        if (!*a6)
+        if (!*block)
         {
           v80 = v108;
           do
@@ -1883,10 +1883,10 @@ LABEL_128:
               break;
             }
 
-            v10[2](v10, *v80++, a6);
+            v10[2](v10, *v80++, block);
           }
 
-          while (!*a6);
+          while (!*block);
         }
 
         v112 = &v108;
@@ -1894,7 +1894,7 @@ LABEL_128:
       }
     }
 
-    else if (v15 == 4 && v11->_children)
+    else if (v15 == 4 && selfCopy->_children)
     {
       v39 = *(var0 + 1);
       v81 = v10;
@@ -1911,7 +1911,7 @@ LABEL_128:
       if (v41)
       {
         v42 = *v101;
-        v43 = (a4 + 8);
+        v43 = (visited + 8);
         do
         {
           for (j = 0; j != v41; ++j)
@@ -1929,7 +1929,7 @@ LABEL_128:
               goto LABEL_66;
             }
 
-            v47 = (a4 + 8);
+            v47 = (visited + 8);
             do
             {
               v48 = *(v46 + 4);
@@ -1949,7 +1949,7 @@ LABEL_128:
 LABEL_66:
               if (SKNodeNameMatches(v39, v45) || (objc_opt_isKindOfClass() & 1) != 0)
               {
-                std::__tree<SKNode * {__strong}>::__emplace_unique_key_args<SKNode * {__strong},SKNode * const {__strong}&>(a4, &v112);
+                std::__tree<SKNode * {__strong}>::__emplace_unique_key_args<SKNode * {__strong},SKNode * const {__strong}&>(visited, &v112);
                 std::vector<SKNode * {__strong}>::push_back[abi:ne200100](&v108, &v112);
               }
             }
@@ -1962,7 +1962,7 @@ LABEL_66:
       }
 
       v10 = v81;
-      if (!*a6)
+      if (!*block)
       {
         v50 = v108;
         do
@@ -1972,10 +1972,10 @@ LABEL_66:
             break;
           }
 
-          v81[2](v81, *v50++, a6);
+          v81[2](v81, *v50++, block);
         }
 
-        while (!*a6);
+        while (!*block);
       }
 
       v112 = &v108;
@@ -1991,7 +1991,7 @@ LABEL_66:
       {
         if (v15 == 3)
         {
-          if (v11->_children)
+          if (selfCopy->_children)
           {
             v57 = *(var0 + 1);
             v58 = a3->var1;
@@ -2017,14 +2017,14 @@ LABEL_66:
                     objc_enumerationMutation(v59);
                   }
 
-                  if (!*a6)
+                  if (!*block)
                   {
                     v63 = *(*(&v88 + 1) + 8 * k);
                     if (SKNodeNameMatches(v57, v63))
                     {
                       memset(v87, 0, sizeof(v87));
                       std::vector<Token>::__init_with_size[abi:ne200100]<Token*,Token*>(v87, v108, v109, (v109 - v108) >> 4);
-                      [v63 _processSearchTokens:v87 visited:a4 usingBlock:v10 stopPointer:a6];
+                      [v63 _processSearchTokens:v87 visited:visited usingBlock:v10 stopPointer:block];
                       v112 = v87;
                       std::vector<Token>::__destroy_vector::operator()[abi:ne200100](&v112);
                     }
@@ -2042,7 +2042,7 @@ LABEL_66:
           }
         }
 
-        else if (v15 == 4 && v11->_children)
+        else if (v15 == 4 && selfCopy->_children)
         {
           v17 = *(var0 + 1);
           NSClassFromString(v17);
@@ -2069,14 +2069,14 @@ LABEL_66:
                   objc_enumerationMutation(v19);
                 }
 
-                if (!*a6)
+                if (!*block)
                 {
                   v23 = *(*(&v83 + 1) + 8 * m);
                   if (SKNodeNameMatches(v17, v23) || (objc_opt_isKindOfClass() & 1) != 0)
                   {
                     memset(v82, 0, sizeof(v82));
                     std::vector<Token>::__init_with_size[abi:ne200100]<Token*,Token*>(v82, v108, v109, (v109 - v108) >> 4);
-                    [v23 _processSearchTokens:v82 visited:a4 usingBlock:v10 stopPointer:a6];
+                    [v23 _processSearchTokens:v82 visited:visited usingBlock:v10 stopPointer:block];
                     v112 = v82;
                     std::vector<Token>::__destroy_vector::operator()[abi:ne200100](&v112);
                   }
@@ -2096,13 +2096,13 @@ LABEL_66:
         goto LABEL_125;
       }
 
-      v51 = [(SKNode *)v11 parent];
+      parent3 = [(SKNode *)selfCopy parent];
 
-      if (v51)
+      if (parent3)
       {
-        v52 = [v111 parent];
+        parent4 = [v111 parent];
         v53 = v111;
-        v111 = v52;
+        v111 = parent4;
       }
 
       v54 = a3->var1;
@@ -2114,7 +2114,7 @@ LABEL_66:
       memset(v98, 0, sizeof(v98));
       std::vector<Token>::__init_with_size[abi:ne200100]<Token*,Token*>(v98, v108, v109, (v109 - v108) >> 4);
       v56 = v98;
-      [v55 _processSearchTokens:v98 visited:a4 usingBlock:v10 stopPointer:a6];
+      [v55 _processSearchTokens:v98 visited:visited usingBlock:v10 stopPointer:block];
 LABEL_91:
       v112 = v56;
       std::vector<Token>::__destroy_vector::operator()[abi:ne200100](&v112);
@@ -2133,13 +2133,13 @@ LABEL_91:
       memset(v99, 0, sizeof(v99));
       std::vector<Token>::__init_with_size[abi:ne200100]<Token*,Token*>(v99, v108, v109, (v109 - v108) >> 4);
       v56 = v99;
-      [v64 _processSearchTokens:v99 visited:a4 usingBlock:v10 stopPointer:a6];
+      [v64 _processSearchTokens:v99 visited:visited usingBlock:v10 stopPointer:block];
       goto LABEL_91;
     }
 
     if (v15 == 1)
     {
-      if (!*a6)
+      if (!*block)
       {
         v109 = 0;
         v108 = 0;
@@ -2148,7 +2148,7 @@ LABEL_91:
         v32 = v111;
         memset(v97, 0, sizeof(v97));
         std::vector<Token>::__init_with_size[abi:ne200100]<Token*,Token*>(v97, v108, v109, (v109 - v108) >> 4);
-        [v32 _processSearchTokens:v97 visited:a4 usingBlock:v10 stopPointer:a6];
+        [v32 _processSearchTokens:v97 visited:visited usingBlock:v10 stopPointer:block];
         v112 = v97;
         std::vector<Token>::__destroy_vector::operator()[abi:ne200100](&v112);
         v112 = &v108;
@@ -2177,12 +2177,12 @@ LABEL_91:
                 objc_enumerationMutation(v34);
               }
 
-              if (!*a6)
+              if (!*block)
               {
                 v38 = *(*(&v93 + 1) + 8 * n);
                 memset(v92, 0, sizeof(v92));
                 std::vector<Token>::__init_with_size[abi:ne200100]<Token*,Token*>(v92, a3->var0, a3->var1, (a3->var1 - a3->var0) >> 4);
-                [v38 _processSearchTokens:v92 visited:a4 usingBlock:v10 stopPointer:a6];
+                [v38 _processSearchTokens:v92 visited:visited usingBlock:v10 stopPointer:block];
                 v108 = v92;
                 std::vector<Token>::__destroy_vector::operator()[abi:ne200100](&v108);
               }
@@ -2205,29 +2205,29 @@ LABEL_125:
   children = self->_children;
   if (children)
   {
-    v3 = [(NSMutableArray *)children copy];
+    array = [(NSMutableArray *)children copy];
   }
 
   else
   {
-    v3 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  return v3;
+  return array;
 }
 
 - (id)_descendants
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  [(SKNode *)self _descendantsToMutableArray:v3];
+  array = [MEMORY[0x277CBEB18] array];
+  [(SKNode *)self _descendantsToMutableArray:array];
 
-  return v3;
+  return array;
 }
 
-- (void)_descendantsToMutableArray:(id)a3
+- (void)_descendantsToMutableArray:(id)array
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -2247,8 +2247,8 @@ LABEL_125:
         }
 
         v9 = *(*(&v10 + 1) + 8 * i);
-        [v4 addObject:{v9, v10}];
-        [v9 _descendantsToMutableArray:v4];
+        [arrayCopy addObject:{v9, v10}];
+        [v9 _descendantsToMutableArray:arrayCopy];
       }
 
       v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -2258,20 +2258,20 @@ LABEL_125:
   }
 }
 
-- (id)_descendantsWithPredicate:(id)a3
+- (id)_descendantsWithPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  [(SKNode *)self _descendantsWithPredicate:v4 toMutableArray:v5];
+  predicateCopy = predicate;
+  array = [MEMORY[0x277CBEB18] array];
+  [(SKNode *)self _descendantsWithPredicate:predicateCopy toMutableArray:array];
 
-  return v5;
+  return array;
 }
 
-- (void)_descendantsWithPredicate:(id)a3 toMutableArray:(id)a4
+- (void)_descendantsWithPredicate:(id)predicate toMutableArray:(id)array
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  arrayCopy = array;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -2291,12 +2291,12 @@ LABEL_125:
         }
 
         v12 = *(*(&v13 + 1) + 8 * i);
-        if (v6[2](v6, v12))
+        if (predicateCopy[2](predicateCopy, v12))
         {
-          [v7 addObject:{v12, v13}];
+          [arrayCopy addObject:{v12, v13}];
         }
 
-        [v12 _descendantsWithPredicate:v6 toMutableArray:{v7, v13}];
+        [v12 _descendantsWithPredicate:predicateCopy toMutableArray:{arrayCopy, v13}];
       }
 
       v9 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -2319,11 +2319,11 @@ LABEL_125:
   }
 }
 
-- (void)_runAction:(id)a3
+- (void)_runAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   actions = self->_actions;
-  v9 = v4;
+  v9 = actionCopy;
   if (!actions)
   {
     v6 = objc_opt_new();
@@ -2331,12 +2331,12 @@ LABEL_125:
     self->_actions = v6;
 
     actions = self->_actions;
-    v4 = v9;
+    actionCopy = v9;
   }
 
-  [(NSMutableArray *)actions addObject:v4];
-  v8 = [v9 caction];
-  (*(*v8 + 40))(v8, *(self->_skcNode + 42));
+  [(NSMutableArray *)actions addObject:actionCopy];
+  caction = [v9 caction];
+  (*(*caction + 40))(caction, *(self->_skcNode + 42));
   operator new();
 }
 
@@ -2348,9 +2348,9 @@ LABEL_125:
   {
     v7 = [(SKAction *)v11 copy];
     v8 = MEMORY[0x21CF0AB10](v6);
-    v9 = [v7 caction];
-    v10 = *(v9 + 80);
-    *(v9 + 80) = v8;
+    caction = [v7 caction];
+    v10 = *(caction + 80);
+    *(caction + 80) = v8;
 
     [(SKNode *)self _runAction:v7];
   }
@@ -2475,10 +2475,10 @@ LABEL_5:
 
 - (id)containingView
 {
-  v2 = self;
-  if (v2)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v3 = v2;
+    v3 = selfCopy;
     while (1)
     {
       objc_opt_class();
@@ -2487,33 +2487,33 @@ LABEL_5:
         break;
       }
 
-      v4 = [(SKNode *)v3 parent];
+      parent = [(SKNode *)v3 parent];
 
-      v3 = v4;
-      if (!v4)
+      v3 = parent;
+      if (!parent)
       {
         goto LABEL_8;
       }
     }
 
-    v4 = [(SKNode *)v3 view];
+    parent = [(SKNode *)v3 view];
   }
 
   else
   {
-    v4 = 0;
+    parent = 0;
   }
 
 LABEL_8:
 
-  return v4;
+  return parent;
 }
 
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = [objc_opt_class() description];
-  v5 = [(SKNode *)self name];
+  name = [(SKNode *)self name];
   [(SKNode *)self position];
   v6 = NSStringFromCGPoint(v15);
   [(SKNode *)self xScale];
@@ -2522,7 +2522,7 @@ LABEL_8:
   v10 = v9;
   [(SKNode *)self calculateAccumulatedFrame];
   v11 = NSStringFromCGRect(v16);
-  v12 = [v3 stringWithFormat:@"<%@> name:'%@' position:%@ scale:{%.2f, %.2f} accumulatedFrame:%@", v4, v5, v6, v8, v10, v11];
+  v12 = [v3 stringWithFormat:@"<%@> name:'%@' position:%@ scale:{%.2f, %.2f} accumulatedFrame:%@", v4, name, v6, v8, v10, v11];
 
   return v12;
 }
@@ -2532,15 +2532,15 @@ LABEL_8:
   v9 = physicsBody;
   if (*(self->_skcNode + 29) != v9)
   {
-    v5 = [(SKNode *)self scene];
+    scene = [(SKNode *)self scene];
     v6 = *(self->_skcNode + 29);
     if (v6)
     {
       [v6 setRepresentedObject:0];
-      if (v5)
+      if (scene)
       {
-        v7 = [v5 physicsWorld];
-        [v7 removeBody:*(self->_skcNode + 29)];
+        physicsWorld = [scene physicsWorld];
+        [physicsWorld removeBody:*(self->_skcNode + 29)];
       }
     }
 
@@ -2551,10 +2551,10 @@ LABEL_8:
       [(SKPhysicsBody *)v9 setPostStepBlock:&__block_literal_global_5];
       *(self->_skcNode + 15) = SKCNode::getScale(self->_skcNode);
       (*(*self->_skcNode + 200))(self->_skcNode);
-      if (v5)
+      if (scene)
       {
-        v8 = [v5 physicsWorld];
-        [v8 addBody:v9];
+        physicsWorld2 = [scene physicsWorld];
+        [physicsWorld2 addBody:v9];
       }
     }
 
@@ -2598,21 +2598,21 @@ LABEL_8:
   return result;
 }
 
-- (void)setXRotation:(double)a3
+- (void)setXRotation:(double)rotation
 {
   Rotation = SKCNode::getRotation(self->_skcNode);
-  v5 = a3;
-  Rotation.n128_f32[0] = v5;
+  rotationCopy = rotation;
+  Rotation.n128_f32[0] = rotationCopy;
   skcNode = self->_skcNode;
 
   SKCNode::setRotation(skcNode, Rotation);
 }
 
-- (void)setYRotation:(double)a3
+- (void)setYRotation:(double)rotation
 {
   Rotation = SKCNode::getRotation(self->_skcNode);
-  v5 = a3;
-  Rotation.n128_f32[1] = v5;
+  rotationCopy = rotation;
+  Rotation.n128_f32[1] = rotationCopy;
   skcNode = self->_skcNode;
 
   SKCNode::setRotation(skcNode, Rotation);
@@ -2766,17 +2766,17 @@ LABEL_8:
   return CGRectContainsPoint(*&v5, *&v9);
 }
 
-- (BOOL)containsPoint:(CGPoint)a3 withRadius:(double)a4
+- (BOOL)containsPoint:(CGPoint)point withRadius:(double)radius
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(SKNode *)self calculateAccumulatedFrame];
   *&v9 = v9;
   *&v10 = v10;
   v11 = x;
   v12 = vabds_f32(v11, *&v9);
   v13 = *&v10 * 0.5;
-  if (v13 + a4 < v12)
+  if (v13 + radius < v12)
   {
     return 0;
   }
@@ -2786,36 +2786,36 @@ LABEL_8:
   v16 = y;
   v17 = vabds_f32(v16, v14);
   v18 = v15 * 0.5;
-  if (v18 + a4 < v17)
+  if (v18 + radius < v17)
   {
     return 0;
   }
 
-  return v12 <= v13 || v17 <= v18 || a4 * a4 >= (((v17 - v13) * (v17 - v13)) + ((v12 - v18) * (v12 - v18)));
+  return v12 <= v13 || v17 <= v18 || radius * radius >= (((v17 - v13) * (v17 - v13)) + ((v12 - v18) * (v12 - v18)));
 }
 
-- (id)nodeAtPoint:(CGPoint)a3 recursive:(BOOL)a4
+- (id)nodeAtPoint:(CGPoint)point recursive:(BOOL)recursive
 {
-  v4 = self;
-  v5.f32[0] = a3.x;
-  y = a3.y;
+  selfCopy = self;
+  v5.f32[0] = point.x;
+  y = point.y;
   v5.f32[1] = y;
   v5.i32[2] = 0;
   v5.i32[3] = 1.0;
   v7 = SKCNode::nodeAtPoint(self->_skcNode, v5);
   if (v7)
   {
-    v4 = *(v7 + 8);
+    selfCopy = *(v7 + 8);
   }
 
-  v8 = v4;
+  v8 = selfCopy;
 
   return v8;
 }
 
 - (SKNode)nodeAtPoint:(CGPoint)p
 {
-  v3 = self;
+  selfCopy = self;
   v4.f32[0] = p.x;
   y = p.y;
   v4.f32[1] = y;
@@ -2824,10 +2824,10 @@ LABEL_8:
   v6 = SKCNode::nodeAtPoint(self->_skcNode, v4);
   if (v6)
   {
-    v3 = *(v6 + 8);
+    selfCopy = *(v6 + 8);
   }
 
-  v7 = v3;
+  v7 = selfCopy;
 
   return v7;
 }
@@ -2844,22 +2844,22 @@ LABEL_8:
   v4.i32[2] = 0;
   v4.i32[3] = 1.0;
   SKCNode::sortedNodesAtPoint(skcNode, v4);
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   for (i = v10; i != &v9; i = i[1])
   {
-    [v6 addObject:*(i[2] + 8)];
+    [array addObject:*(i[2] + 8)];
   }
 
   std::__list_imp<SKCRenderSortInfo *>::clear(&v9);
 
-  return v6;
+  return array;
 }
 
-- (CGPoint)convertPointFromParent:(CGPoint)a3
+- (CGPoint)convertPointFromParent:(CGPoint)parent
 {
-  x = a3.x;
+  x = parent.x;
   v11 = x;
-  y = a3.y;
+  y = parent.y;
   v12 = y;
   *v5.i64 = (*(*self->_skcNode + 112))(self->_skcNode, a2);
   v9 = vcvtq_f64_f32(vadd_f32(v8, *&vmlaq_f32(vmlaq_n_f32(vmulq_n_f32(v5, v11), v6, v12), 0, v7)));
@@ -2869,11 +2869,11 @@ LABEL_8:
   return result;
 }
 
-- (CGPoint)convertPointToParent:(CGPoint)a3
+- (CGPoint)convertPointToParent:(CGPoint)parent
 {
-  x = a3.x;
+  x = parent.x;
   v11 = x;
-  y = a3.y;
+  y = parent.y;
   v12 = y;
   *v5.i64 = (*(*self->_skcNode + 104))(self->_skcNode, a2);
   v9 = vcvtq_f64_f32(vadd_f32(v8, *&vmlaq_f32(vmlaq_n_f32(vmulq_n_f32(v5, v11), v6, v12), 0, v7)));
@@ -2892,13 +2892,13 @@ LABEL_8:
   if (v7 && v7 != self)
   {
     skcNode = self->_skcNode;
-    v10 = [(SKNode *)v7 _backingNode];
+    _backingNode = [(SKNode *)v7 _backingNode];
     v11 = y;
     v12.f32[0] = x;
     v12.f32[1] = v11;
     v12.i32[2] = 0;
     v12.i32[3] = 1.0;
-    v13 = SKCNode::convertPointFromNode(skcNode, v10, v12);
+    v13 = SKCNode::convertPointFromNode(skcNode, _backingNode, v12);
     x = *&v13;
     y = *(&v13 + 1);
   }
@@ -2919,13 +2919,13 @@ LABEL_8:
   if (v7 && v7 != self)
   {
     skcNode = self->_skcNode;
-    v10 = [(SKNode *)v7 _backingNode];
+    _backingNode = [(SKNode *)v7 _backingNode];
     v11 = y;
     v12.f32[0] = x;
     v12.f32[1] = v11;
     v12.i32[2] = 0;
     v12.i32[3] = 1.0;
-    v13 = SKCNode::convertPointToNode(skcNode, v10, v12);
+    v13 = SKCNode::convertPointToNode(skcNode, _backingNode, v12);
     x = *&v13;
     y = *(&v13 + 1);
   }
@@ -2962,7 +2962,7 @@ LABEL_8:
 
 - (double)globalBoundingVerts
 {
-  *v1.i64 = SKCNode::getWorldBoundingBox(*(a1 + 16));
+  *v1.i64 = SKCNode::getWorldBoundingBox(*(self + 16));
   v6.columns[0] = v1;
   v6.columns[1] = v2;
   v6.columns[2] = v3;
@@ -2972,7 +2972,7 @@ LABEL_8:
 
 - (double)globalAccumulatedBoundingVerts
 {
-  *v1.i64 = SKCNode::getWorldAccumulatedBoundingBox(*(a1 + 16));
+  *v1.i64 = SKCNode::getWorldAccumulatedBoundingBox(*(self + 16));
   v6.columns[0] = v1;
   v6.columns[1] = v2;
   v6.columns[2] = v3;
@@ -2985,9 +2985,9 @@ LABEL_8:
   attributeValues = self->_attributeValues;
   if (!attributeValues)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v5 = self->_attributeValues;
-    self->_attributeValues = v4;
+    self->_attributeValues = dictionary;
 
     attributeValues = self->_attributeValues;
   }
@@ -3003,9 +3003,9 @@ LABEL_8:
   v10 = v4;
   if (!self->_attributeValues)
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v6 = self->_attributeValues;
-    self->_attributeValues = v5;
+    self->_attributeValues = dictionary;
 
     v4 = v10;
   }
@@ -3025,9 +3025,9 @@ LABEL_8:
   attributeValues = self->_attributeValues;
   if (!attributeValues)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v7 = self->_attributeValues;
-    self->_attributeValues = v6;
+    self->_attributeValues = dictionary;
 
     attributeValues = self->_attributeValues;
   }
@@ -3046,9 +3046,9 @@ LABEL_8:
   attributeValues = self->_attributeValues;
   if (!attributeValues)
   {
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v11 = self->_attributeValues;
-    self->_attributeValues = v10;
+    self->_attributeValues = dictionary;
 
     attributeValues = self->_attributeValues;
     v7 = v13;
@@ -3083,8 +3083,8 @@ LABEL_8:
 
 - (BOOL)_isEffectivelyHidden
 {
-  v3 = [(SKNode *)self parent];
-  if (([v3 _isEffectivelyHidden] & 1) != 0 || -[SKNode isHidden](self, "isHidden"))
+  parent = [(SKNode *)self parent];
+  if (([parent _isEffectivelyHidden] & 1) != 0 || -[SKNode isHidden](self, "isHidden"))
   {
     v4 = 1;
   }
@@ -3130,30 +3130,30 @@ LABEL_8:
   return v6 & 1;
 }
 
-- (CGPoint)convertPoint:(CGPoint)cgpoint toCoordinateSpace:(id)a4
+- (CGPoint)convertPoint:(CGPoint)cgpoint toCoordinateSpace:(id)space
 {
   y = cgpoint.y;
   x = cgpoint.x;
-  v7 = a4;
-  if (v7)
+  spaceCopy = space;
+  if (spaceCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(SKNode *)self convertPoint:v7 toNode:x, y];
+      [(SKNode *)self convertPoint:spaceCopy toNode:x, y];
       x = v8;
       y = v9;
     }
 
     else
     {
-      v10 = [(SKNode *)self scene];
-      v11 = [(SKScene *)v10 view];
-      v12 = v11;
-      if (v10 && v11)
+      scene = [(SKNode *)self scene];
+      view = [(SKScene *)scene view];
+      v12 = view;
+      if (scene && view)
       {
-        [(SKNode *)self convertPoint:v10 toNode:x, y];
-        [(SKView *)v12 convertPoint:v7 toCoordinateSpace:CGPointConvertFromSceneToView(v10, v12, v17).n128_f64[0]];
+        [(SKNode *)self convertPoint:scene toNode:x, y];
+        [(SKView *)v12 convertPoint:spaceCopy toCoordinateSpace:CGPointConvertFromSceneToView(scene, v12, v17).n128_f64[0]];
         x = v13;
         y = v14;
       }
@@ -3167,30 +3167,30 @@ LABEL_8:
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)cgpoint fromCoordinateSpace:(id)a4
+- (CGPoint)convertPoint:(CGPoint)cgpoint fromCoordinateSpace:(id)space
 {
   y = cgpoint.y;
   x = cgpoint.x;
-  v7 = a4;
-  if (v7)
+  spaceCopy = space;
+  if (spaceCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(SKNode *)self convertPoint:v7 fromNode:x, y];
+      [(SKNode *)self convertPoint:spaceCopy fromNode:x, y];
       x = v8;
       y = v9;
     }
 
     else
     {
-      v10 = [(SKNode *)self scene];
-      v11 = [(SKScene *)v10 view];
-      v12 = v11;
-      if (v10 && v11)
+      scene = [(SKNode *)self scene];
+      view = [(SKScene *)scene view];
+      v12 = view;
+      if (scene && view)
       {
-        [(SKView *)v11 convertPoint:v7 fromCoordinateSpace:x, y];
-        [(SKNode *)self convertPoint:v10 fromNode:CGPointConvertFromViewToScene(v12, v10, v17).n128_f64[0]];
+        [(SKView *)view convertPoint:spaceCopy fromCoordinateSpace:x, y];
+        [(SKNode *)self convertPoint:scene fromNode:CGPointConvertFromViewToScene(v12, scene, v17).n128_f64[0]];
         x = v13;
         y = v14;
       }
@@ -3204,13 +3204,13 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 toCoordinateSpace:(id)a4
+- (CGRect)convertRect:(CGRect)rect toCoordinateSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  spaceCopy = space;
   v25.origin.x = x;
   v25.origin.y = y;
   v25.size.width = width;
@@ -3220,7 +3220,7 @@ LABEL_8:
   v26.origin.y = y;
   v26.size.width = width;
   v26.size.height = height;
-  [(SKNode *)self convertPoint:v9 toCoordinateSpace:MinX, CGRectGetMinY(v26)];
+  [(SKNode *)self convertPoint:spaceCopy toCoordinateSpace:MinX, CGRectGetMinY(v26)];
   v12 = v11;
   v14 = v13;
   v27.origin.x = x;
@@ -3232,7 +3232,7 @@ LABEL_8:
   v28.origin.y = y;
   v28.size.width = width;
   v28.size.height = height;
-  [(SKNode *)self convertPoint:v9 toCoordinateSpace:MaxX, CGRectGetMaxY(v28)];
+  [(SKNode *)self convertPoint:spaceCopy toCoordinateSpace:MaxX, CGRectGetMaxY(v28)];
   v17 = v16;
   v19 = v18;
   objc_opt_class();
@@ -3257,13 +3257,13 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 fromCoordinateSpace:(id)a4
+- (CGRect)convertRect:(CGRect)rect fromCoordinateSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  spaceCopy = space;
   v25.origin.x = x;
   v25.origin.y = y;
   v25.size.width = width;
@@ -3273,7 +3273,7 @@ LABEL_8:
   v26.origin.y = y;
   v26.size.width = width;
   v26.size.height = height;
-  [(SKNode *)self convertPoint:v9 fromCoordinateSpace:MinX, CGRectGetMinY(v26)];
+  [(SKNode *)self convertPoint:spaceCopy fromCoordinateSpace:MinX, CGRectGetMinY(v26)];
   v12 = v11;
   v14 = v13;
   v27.origin.x = x;
@@ -3285,7 +3285,7 @@ LABEL_8:
   v28.origin.y = y;
   v28.size.width = width;
   v28.size.height = height;
-  [(SKNode *)self convertPoint:v9 fromCoordinateSpace:MaxX, CGRectGetMaxY(v28)];
+  [(SKNode *)self convertPoint:spaceCopy fromCoordinateSpace:MaxX, CGRectGetMaxY(v28)];
   v17 = v16;
   v19 = v18;
   objc_opt_class();
@@ -3310,26 +3310,26 @@ LABEL_8:
   return result;
 }
 
-+ (id)debugHierarchyObjectsInGroupWithID:(id)a3 onObject:(id)a4 outOptions:(id *)a5
++ (id)debugHierarchyObjectsInGroupWithID:(id)d onObject:(id)object outOptions:(id *)options
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"com.apple.SpriteKit.SKNode"])
+  dCopy = d;
+  objectCopy = object;
+  if ([dCopy isEqualToString:@"com.apple.SpriteKit.SKNode"])
   {
-    v8 = [v7 children];
+    children = [objectCopy children];
 
-    if (v8)
+    if (children)
     {
-      v8 = [v7 children];
+      children = [objectCopy children];
     }
   }
 
   else
   {
-    v8 = 0;
+    children = 0;
   }
 
-  return v8;
+  return children;
 }
 
 + (id)debugHierarchyPropertyDescriptions
@@ -3463,14 +3463,14 @@ LABEL_8:
   return v23;
 }
 
-+ (id)debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6
++ (id)debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isEqualToString:@"anchorPoint"])
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"anchorPoint"])
   {
-    [v9 _anchorPoint];
+    [objectCopy _anchorPoint];
     v41 = v10;
     v42 = v11;
     v12 = malloc_type_malloc(0x10uLL, 0x6004044C4A2DFuLL);
@@ -3487,16 +3487,16 @@ LABEL_8:
 
     while ((v15 & 1) != 0);
 LABEL_8:
-    a6 = CFArrayCreate(0, v12, 2, MEMORY[0x277CBF128]);
+    error = CFArrayCreate(0, v12, 2, MEMORY[0x277CBF128]);
     CFRelease(*v12);
     CFRelease(v12[1]);
     free(v12);
     goto LABEL_30;
   }
 
-  if ([v8 isEqualToString:@"untransformedSize"])
+  if ([nameCopy isEqualToString:@"untransformedSize"])
   {
-    [v9 _untransformedSize];
+    [objectCopy _untransformedSize];
     v41 = v17;
     v42 = v18;
     v12 = malloc_type_malloc(0x10uLL, 0x6004044C4A2DFuLL);
@@ -3515,8 +3515,8 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v39 = v9;
-  v23 = v8;
+  v39 = objectCopy;
+  v23 = nameCopy;
   if (![v23 length])
   {
     goto LABEL_20;
@@ -3527,18 +3527,18 @@ LABEL_8:
   {
     if ([v23 length] < 2)
     {
-      v28 = [v23 uppercaseString];
+      uppercaseString = [v23 uppercaseString];
     }
 
     else
     {
       v25 = [v23 substringToIndex:1];
-      v26 = [v25 uppercaseString];
+      uppercaseString2 = [v25 uppercaseString];
       v27 = [v23 substringFromIndex:1];
-      v28 = [v26 stringByAppendingString:v27];
+      uppercaseString = [uppercaseString2 stringByAppendingString:v27];
     }
 
-    v29 = [@"is" stringByAppendingString:v28];
+    v29 = [@"is" stringByAppendingString:uppercaseString];
     NSSelectorFromString(v29);
     if (objc_opt_respondsToSelector())
     {
@@ -3556,7 +3556,7 @@ LABEL_8:
     }
 
 LABEL_20:
-    if (a6)
+    if (error)
     {
       v30 = v39;
       v31 = v23;
@@ -3591,10 +3591,10 @@ LABEL_20:
       v36 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DebugHierarchyErrorDomain" code:100 userInfo:v35];
 
       v37 = v36;
-      *a6 = v36;
+      *error = v36;
 
       v24 = 0;
-      a6 = 0;
+      error = 0;
     }
 
     else
@@ -3612,12 +3612,12 @@ LABEL_20:
   }
 
 LABEL_12:
-  a6 = [v39 valueForKey:v24];
+  error = [v39 valueForKey:v24];
 LABEL_29:
 
 LABEL_30:
 
-  return a6;
+  return error;
 }
 
 - (GKEntity)entity
@@ -3627,12 +3627,12 @@ LABEL_30:
   return WeakRetained;
 }
 
-+ (id)nodeFromCaptureData:(id)a3
++ (id)nodeFromCaptureData:(id)data
 {
   v13[8] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dataCopy = data;
   v12 = 0;
-  v4 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v3 error:&v12];
+  v4 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:dataCopy error:&v12];
   v5 = v12;
   [v4 setRequiresSecureCoding:0];
   v6 = +[SKCaptureUnarchiverDelegate sharedInstance];
@@ -3668,33 +3668,33 @@ LABEL_30:
   [v4 setDelegate:v3];
   [v4 encodeObject:v2 forKey:*MEMORY[0x277CCA308]];
   [v4 finishEncoding];
-  v5 = [v4 encodedData];
+  encodedData = [v4 encodedData];
 
-  return v5;
+  return encodedData;
 }
 
-- (id)archiveToFile:(id)a3
+- (id)archiveToFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v5 = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, 1uLL, 1);
   v6 = [v5 objectAtIndex:0];
-  if (!v4)
+  if (!fileCopy)
   {
-    v7 = [MEMORY[0x277CBEAA8] date];
-    v4 = [v7 description];
+    date = [MEMORY[0x277CBEAA8] date];
+    fileCopy = [date description];
   }
 
-  v8 = [v4 pathExtension];
-  v9 = [v8 length];
+  pathExtension = [fileCopy pathExtension];
+  v9 = [pathExtension length];
 
   if (!v9)
   {
-    v10 = [v4 stringByAppendingPathExtension:@"sks"];
+    v10 = [fileCopy stringByAppendingPathExtension:@"sks"];
 
-    v4 = v10;
+    fileCopy = v10;
   }
 
-  v11 = [v6 stringByAppendingPathComponent:v4];
+  v11 = [v6 stringByAppendingPathComponent:fileCopy];
   v17 = 0;
   v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:&v17];
   v13 = v17;
@@ -3714,10 +3714,10 @@ LABEL_30:
   return v15;
 }
 
-- (void)_debugPrint:(int)a3
+- (void)_debugPrint:(int)print
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (a3 < 1)
+  if (print < 1)
   {
     v7 = &stru_282E190D8;
   }
@@ -3725,16 +3725,16 @@ LABEL_30:
   else
   {
     v5 = &stru_282E190D8;
-    v6 = a3;
+    printCopy = print;
     do
     {
       v7 = [(__CFString *)v5 stringByAppendingString:@"\t"];
 
       v5 = v7;
-      --v6;
+      --printCopy;
     }
 
-    while (v6);
+    while (printCopy);
   }
 
   NSLog(&cfstr_P_0.isa, v7, self, self);
@@ -3742,8 +3742,8 @@ LABEL_30:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v8 = [(SKNode *)self children];
-  v9 = [v8 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  children = [(SKNode *)self children];
+  v9 = [children countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v9)
   {
     v10 = *v13;
@@ -3754,23 +3754,23 @@ LABEL_30:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(children);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) _debugPrint:(a3 + 1)];
+        [*(*(&v12 + 1) + 8 * v11++) _debugPrint:(print + 1)];
       }
 
       while (v9 != v11);
-      v9 = [v8 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [children countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)_debugPrint:(int)a3 mask:(unint64_t)a4
+- (void)_debugPrint:(int)print mask:(unint64_t)mask
 {
-  if (a3 < 1)
+  if (print < 1)
   {
     v13 = &stru_282E190D8;
   }
@@ -3779,7 +3779,7 @@ LABEL_30:
   {
     v7 = 0;
     v8 = &stru_282E190D8;
-    v9 = a3;
+    printCopy = print;
     do
     {
       if (v7)
@@ -3789,7 +3789,7 @@ LABEL_30:
         v8 = v10;
       }
 
-      if (((1 << v7) & a4) != 0)
+      if (((1 << v7) & mask) != 0)
       {
         v11 = @"|";
       }
@@ -3799,7 +3799,7 @@ LABEL_30:
         v11 = @" ";
       }
 
-      if (v9 == 1)
+      if (printCopy == 1)
       {
         v12 = @"|";
       }
@@ -3814,22 +3814,22 @@ LABEL_30:
       ++v7;
       v13 = v20;
       v8 = v20;
-      --v9;
+      --printCopy;
     }
 
-    while (v9);
+    while (printCopy);
   }
 
   v21 = v13;
   NSLog(&cfstr_P_1.isa, v13, self, self);
-  v14 = [(SKNode *)self children];
-  v15 = [v14 count];
+  children = [(SKNode *)self children];
+  v15 = [children count];
   if (v15)
   {
     v16 = 0;
     do
     {
-      v17 = [v14 objectAtIndex:v16];
+      v17 = [children objectAtIndex:v16];
       v18 = v17;
       if (v15 == 1)
       {
@@ -3838,10 +3838,10 @@ LABEL_30:
 
       else
       {
-        v19 = 1 << a3;
+        v19 = 1 << print;
       }
 
-      [v17 _debugPrint:(a3 + 1) mask:v19 | a4];
+      [v17 _debugPrint:(print + 1) mask:v19 | mask];
 
       ++v16;
       --v15;
@@ -3851,58 +3851,58 @@ LABEL_30:
   }
 }
 
-- (void)_getWorldTransform:(float *)a3 positionY:(float *)a4 rotation:(float *)a5 xScale:(float *)a6 yScale:(float *)a7
+- (void)_getWorldTransform:(float *)transform positionY:(float *)y rotation:(float *)rotation xScale:(float *)scale yScale:(float *)yScale
 {
   v13 = 0u;
   v14 = 0u;
   v12 = 0u;
   SKCNode::resolveWorldPositionRotationAndScale(self->_skcNode, &v14, &v13, &v12);
-  if (a3)
+  if (transform)
   {
-    *a3 = v14;
+    *transform = v14;
   }
 
-  if (a4)
+  if (y)
   {
-    *a4 = *(&v14 + 1);
+    *y = *(&v14 + 1);
   }
 
-  if (a5)
+  if (rotation)
   {
-    *a5 = *(&v13 + 2);
+    *rotation = *(&v13 + 2);
   }
 
-  if (a6)
+  if (scale)
   {
-    *a6 = v12;
+    *scale = v12;
   }
 
-  if (a7)
+  if (yScale)
   {
-    *a7 = *(&v12 + 1);
+    *yScale = *(&v12 + 1);
   }
 }
 
-- (void)_getBasePhysicsScale:(float *)a3 yScale:(float *)a4
+- (void)_getBasePhysicsScale:(float *)scale yScale:(float *)yScale
 {
   v6 = SKCNode::getBasePhysicsScale(self->_skcNode).n128_u64[0];
-  if (a3)
+  if (scale)
   {
-    *a3 = v6;
+    *scale = v6;
   }
 
-  if (a4)
+  if (yScale)
   {
-    *a4 = *(&v6 + 1);
+    *yScale = *(&v6 + 1);
   }
 }
 
-- (id)childrenInRect:(CGRect)a3
+- (id)childrenInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  x = a3.origin.x;
-  y = a3.origin.y;
+  height = rect.size.height;
+  width = rect.size.width;
+  x = rect.origin.x;
+  y = rect.origin.y;
   v39 = *MEMORY[0x277D85DE8];
   v6 = objc_opt_new();
   v34 = 0u;
@@ -4011,11 +4011,11 @@ LABEL_30:
   return result;
 }
 
-- (void)set_anchorPoint:(CGPoint)a3
+- (void)set_anchorPoint:(CGPoint)point
 {
   skcNode = self->_skcNode;
-  *&v4 = a3.x;
-  *&v5 = a3.y;
+  *&v4 = point.x;
+  *&v5 = point.y;
   v6 = __PAIR64__(v5, v4);
   SKCNode::setAnchor(skcNode, &v6);
 }
@@ -4029,12 +4029,12 @@ LABEL_30:
   return result;
 }
 
-- (BOOL)intersectsNode:(id)a3 useAlphaTest:(BOOL)a4
+- (BOOL)intersectsNode:(id)node useAlphaTest:(BOOL)test
 {
-  v5 = a3;
-  if (v5)
+  nodeCopy = node;
+  if (nodeCopy)
   {
-    v6 = SKCNode::intersectsNode(-[SKNode _backingNode](self, "_backingNode"), [v5 _backingNode]);
+    v6 = SKCNode::intersectsNode(-[SKNode _backingNode](self, "_backingNode"), [nodeCopy _backingNode]);
   }
 
   else
@@ -4045,17 +4045,17 @@ LABEL_30:
   return v6;
 }
 
-- (id)allIntersectionsWithNode:(id)a3 useAlphaTest:(BOOL)a4
+- (id)allIntersectionsWithNode:(id)node useAlphaTest:(BOOL)test
 {
-  v4 = a4;
+  testCopy = test;
   v35 = *MEMORY[0x277D85DE8];
-  v19 = a3;
-  v20 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [(SKNode *)self children];
-  v18 = [v6 arrayByAddingObject:self];
+  nodeCopy = node;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  children = [(SKNode *)self children];
+  v18 = [children arrayByAddingObject:self];
 
-  v7 = [v19 children];
-  v24 = [v7 arrayByAddingObject:v19];
+  children2 = [nodeCopy children];
+  v24 = [children2 arrayByAddingObject:nodeCopy];
 
   v31 = 0u;
   v32 = 0u;
@@ -4086,7 +4086,7 @@ LABEL_30:
         v12 = [v11 countByEnumeratingWithState:&v25 objects:v33 count:16];
         if (v12)
         {
-          v13 = 0;
+          array = 0;
           v14 = *v26;
           do
           {
@@ -4098,14 +4098,14 @@ LABEL_30:
               }
 
               v16 = *(*(&v25 + 1) + 8 * i);
-              if ([v10 intersectsNode:v16 useAlphaTest:v4])
+              if ([v10 intersectsNode:v16 useAlphaTest:testCopy])
               {
-                if (!v13)
+                if (!array)
                 {
-                  v13 = [MEMORY[0x277CBEB18] array];
+                  array = [MEMORY[0x277CBEB18] array];
                 }
 
-                [v13 addObject:v16];
+                [array addObject:v16];
               }
             }
 
@@ -4115,16 +4115,16 @@ LABEL_30:
           while (v12);
 
           v8 = v22;
-          if (v13)
+          if (array)
           {
-            [v20 setObject:v13 forKey:v10];
+            [dictionary setObject:array forKey:v10];
           }
         }
 
         else
         {
 
-          v13 = 0;
+          array = 0;
         }
 
         ++v9;
@@ -4137,23 +4137,23 @@ LABEL_30:
     while (v8);
   }
 
-  return v20;
+  return dictionary;
 }
 
-- (id)_subnodeFromIndexPath:(id)a3
+- (id)_subnodeFromIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = self;
-  if (v4 && (v6 = [v4 length], v6 >= 1))
+  pathCopy = path;
+  selfCopy = self;
+  if (pathCopy && (v6 = [pathCopy length], v6 >= 1))
   {
     v7 = 0;
     do
     {
-      v8 = [(SKNode *)v5 children];
-      v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v4, "indexAtPosition:", v7)}];
+      children = [(SKNode *)selfCopy children];
+      v9 = [children objectAtIndexedSubscript:{objc_msgSend(pathCopy, "indexAtPosition:", v7)}];
       ++v7;
 
-      v5 = v9;
+      selfCopy = v9;
     }
 
     while (v6 != v7);
@@ -4161,13 +4161,13 @@ LABEL_30:
 
   else
   {
-    v9 = v5;
+    v9 = selfCopy;
   }
 
   return v9;
 }
 
-- (BOOL)_pathFromPhysicsBodyToPoints:(SKNode *)self outSize:(SEL)a2
+- (BOOL)_pathFromPhysicsBodyToPoints:(SKNode *)self outSize:(SEL)size
 {
   result = 0;
   if (v2)
@@ -4176,29 +4176,29 @@ LABEL_30:
     if (v3)
     {
       v7 = v2;
-      v8 = [(SKNode *)self physicsBody];
-      v9 = [v8 volume];
+      physicsBody = [(SKNode *)self physicsBody];
+      volume = [physicsBody volume];
 
-      if (v9)
+      if (volume)
       {
-        v10 = *(v9 + 16) - *(v9 + 8);
+        v10 = *(volume + 16) - *(volume + 8);
         *v6 = v10 >> 3;
         *v7 = malloc_type_malloc(v10, 0x100004000313F17uLL);
-        v11 = *(v9 + 8);
-        if (*(v9 + 16) != v11)
+        v11 = *(volume + 8);
+        if (*(volume + 16) != v11)
         {
           v12 = 0;
           do
           {
             *(*v7 + v12) = *(v11 + 8 * v12);
             ++v12;
-            v11 = *(v9 + 8);
+            v11 = *(volume + 8);
           }
 
-          while (v12 < (*(v9 + 16) - v11) >> 3);
+          while (v12 < (*(volume + 16) - v11) >> 3);
         }
 
-        PKPath::~PKPath(v9);
+        PKPath::~PKPath(volume);
         MEMORY[0x21CF0A160]();
         return 1;
       }
@@ -4216,8 +4216,8 @@ LABEL_30:
 - (NSArray)_allActions
 {
   actions = self->_actions;
-  v3 = [(NSMutableDictionary *)self->_keyedActions allValues];
-  v4 = [(NSMutableArray *)actions arrayByAddingObjectsFromArray:v3];
+  allValues = [(NSMutableDictionary *)self->_keyedActions allValues];
+  v4 = [(NSMutableArray *)actions arrayByAddingObjectsFromArray:allValues];
 
   return v4;
 }
@@ -4230,21 +4230,21 @@ LABEL_30:
   if (v4)
   {
     v6 = [(SKView *)v4 textureFromNode:self];
-    v7 = [v6 _copyImageData];
+    _copyImageData = [v6 _copyImageData];
   }
 
   else
   {
-    v7 = 0;
+    _copyImageData = 0;
   }
 
   objc_autoreleasePoolPop(v3);
-  return v7;
+  return _copyImageData;
 }
 
-- (CGRect)_convertFrameToView:(id)a3
+- (CGRect)_convertFrameToView:(id)view
 {
-  v3 = CGRectConvertFrameFromNodeToView(self, a3);
+  v3 = CGRectConvertFrameFromNodeToView(self, view);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -4255,18 +4255,18 @@ LABEL_30:
 - (id)createDebugHierarchyVisualRepresentation
 {
   keys[1] = *MEMORY[0x277D85DE8];
-  v2 = self;
-  v3 = [(SKNode *)v2 scene];
-  if (!v3 || (-[SKNode scene](v2, "scene"), v4 = objc_claimAutoreleasedReturnValue(), [v4 view], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v3, !v5))
+  selfCopy = self;
+  scene = [(SKNode *)selfCopy scene];
+  if (!scene || (-[SKNode scene](selfCopy, "scene"), v4 = objc_claimAutoreleasedReturnValue(), [v4 view], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, scene, !v5))
   {
-    v8 = v2;
+    v8 = selfCopy;
 LABEL_7:
     Mutable = 0;
     goto LABEL_49;
   }
 
-  v6 = [(SKNode *)v2 scene];
-  v44 = [v6 view];
+  scene2 = [(SKNode *)selfCopy scene];
+  view = [scene2 view];
 
   v45 = [[SKNodeVisualRepresentationArchiver alloc] initRequiringSecureCoding:0];
   objc_opt_class();
@@ -4380,12 +4380,12 @@ LABEL_31:
   }
 
 LABEL_32:
-  [v45 encodeObject:v2 forKey:@"node"];
+  [v45 encodeObject:selfCopy forKey:@"node"];
   [v45 finishEncoding];
   v21 = [SKNodeVisualRepresentationUnarchiver alloc];
-  v22 = [v45 encodedData];
+  encodedData = [v45 encodedData];
   v46 = 0;
-  v23 = [(SKNodeVisualRepresentationUnarchiver *)v21 initForReadingFromData:v22 error:&v46];
+  v23 = [(SKNodeVisualRepresentationUnarchiver *)v21 initForReadingFromData:encodedData error:&v46];
   v42 = v46;
 
   [v23 setRequiresSecureCoding:0];
@@ -4404,15 +4404,15 @@ LABEL_32:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v25 = [(SKNode *)v2 tileSet];
-    [v24 setTileSet:v25];
+    tileSet = [(SKNode *)selfCopy tileSet];
+    [v24 setTileSet:tileSet];
   }
 
   v8 = v24;
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  [v44 frame];
+  [view frame];
   v29 = isKindOfClass ^ 1;
   if (v27 < 1024.0 || v28 < 1024.0)
   {
@@ -4439,24 +4439,24 @@ LABEL_32:
   v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v30];
   v49[1] = v31;
   v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:2];
-  v33 = [v44 textureFromNode:v8 withOptions:v32];
+  v33 = [view textureFromNode:v8 withOptions:v32];
 
   if (v33)
   {
-    v34 = [v33 CGImage];
-    if (v34)
+    cGImage = [v33 CGImage];
+    if (cGImage)
     {
-      v35 = [*MEMORY[0x277CE1E10] identifier];
+      identifier = [*MEMORY[0x277CE1E10] identifier];
       valuePtr = 1065353216;
       Mutable = CFDataCreateMutable(0, 0);
-      v36 = CGImageDestinationCreateWithData(Mutable, v35, 1uLL, 0);
+      v36 = CGImageDestinationCreateWithData(Mutable, identifier, 1uLL, 0);
       v37 = *MEMORY[0x277CBECE8];
       v38 = CFNumberCreate(*MEMORY[0x277CBECE8], kCFNumberFloatType, &valuePtr);
       v39 = *MEMORY[0x277CD2D48];
       values = v38;
       keys[0] = v39;
       v40 = CFDictionaryCreate(v37, keys, &values, 1, 0, 0);
-      CGImageDestinationAddImage(v36, v34, v40);
+      CGImageDestinationAddImage(v36, cGImage, v40);
       CGImageDestinationFinalize(v36);
       CFRelease(v40);
       CFRelease(v38);
@@ -4468,7 +4468,7 @@ LABEL_32:
       Mutable = 0;
     }
 
-    CGImageRelease(v34);
+    CGImageRelease(cGImage);
   }
 
   if (!v33)
@@ -4481,9 +4481,9 @@ LABEL_49:
   return Mutable;
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  obj = a3;
+  obj = parent;
   if ([(SKNode *)obj inParentHierarchy:self])
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Setting this node as parent would create a loop: %@", self}];

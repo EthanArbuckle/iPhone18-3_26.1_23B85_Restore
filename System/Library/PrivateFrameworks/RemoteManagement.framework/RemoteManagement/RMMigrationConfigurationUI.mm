@@ -1,11 +1,11 @@
 @interface RMMigrationConfigurationUI
-- (BOOL)executeReturningError:(id *)a3;
+- (BOOL)executeReturningError:(id *)error;
 - (id)_context;
 @end
 
 @implementation RMMigrationConfigurationUI
 
-- (BOOL)executeReturningError:(id *)a3
+- (BOOL)executeReturningError:(id *)error
 {
   [(RMMigrationConfigurationUI *)self _context];
   v11 = 0;
@@ -21,12 +21,12 @@
   v9 = v4;
   v10 = &v11;
   [v4 performBlockAndWait:v8];
-  if (a3)
+  if (error)
   {
     v5 = v12[5];
     if (v5)
     {
-      *a3 = v5;
+      *error = v5;
     }
   }
 
@@ -39,11 +39,11 @@
 - (id)_context
 {
   v2 = +[RMPersistentController sharedController];
-  v3 = [v2 persistentContainer];
+  persistentContainer = [v2 persistentContainer];
 
-  v4 = [v3 newBackgroundContext];
+  newBackgroundContext = [persistentContainer newBackgroundContext];
 
-  return v4;
+  return newBackgroundContext;
 }
 
 @end

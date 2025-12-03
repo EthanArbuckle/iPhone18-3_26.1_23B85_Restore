@@ -41,7 +41,7 @@
 
 - (NSFileAccessIntent)canonicalIntent
 {
-  v2 = self;
+  selfCopy = self;
   v10 = *MEMORY[0x1E69E9840];
   v9 = 0;
   if (self->_isRead)
@@ -53,7 +53,7 @@
     {
       v5 = [NSFileAccessIntent readingIntentWithURL:v4 options:options];
 LABEL_6:
-      v2 = v5;
+      selfCopy = v5;
       v5->_removedResolveFlags = v9;
     }
   }
@@ -63,12 +63,12 @@ LABEL_6:
     v6 = [NSFileCoordinator _canonicalURLForURL:self->_url modifyingReadingOptions:0 removedResolveFlags:&v9];
     if (v9)
     {
-      v5 = [NSFileAccessIntent writingIntentWithURL:v6 options:v2->_options];
+      v5 = [NSFileAccessIntent writingIntentWithURL:v6 options:selfCopy->_options];
       goto LABEL_6;
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)description

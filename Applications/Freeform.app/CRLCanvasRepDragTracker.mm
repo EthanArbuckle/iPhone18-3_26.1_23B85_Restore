@@ -5,45 +5,45 @@
 - (BOOL)traceIfDesiredForBeginOperation;
 - (BOOL)traceIfDesiredForEndOperation;
 - (CGRect)p_selectedInfosRect;
-- (CRLCanvasRepDragTracker)initWithRep:(id)a3;
+- (CRLCanvasRepDragTracker)initWithRep:(id)rep;
 - (NSArray)decoratorOverlayRenderables;
-- (id)p_infosFromReps:(id)a3;
+- (id)p_infosFromReps:(id)reps;
 - (id)p_orderedDraggedReps;
 - (id)p_repsBeingHoveredAtCurrentDragPoint;
-- (id)p_repsForInfos:(id)a3 fromReps:(id)a4;
-- (id)repsForGuidesWhenManipulatingReps:(id)a3;
-- (id)selectionBehaviorForReps:(id)a3;
-- (void)addUnscaledDragDelta:(CGPoint)a3 roundDeltaToViewScale:(BOOL)a4;
-- (void)beginShowingDragUIForInitialDragPoint:(CGPoint)a3;
-- (void)changeDynamicLayoutsForReps:(id)a3;
-- (void)commitChangesForReps:(id)a3;
+- (id)p_repsForInfos:(id)infos fromReps:(id)reps;
+- (id)repsForGuidesWhenManipulatingReps:(id)reps;
+- (id)selectionBehaviorForReps:(id)reps;
+- (void)addUnscaledDragDelta:(CGPoint)delta roundDeltaToViewScale:(BOOL)scale;
+- (void)beginShowingDragUIForInitialDragPoint:(CGPoint)point;
+- (void)changeDynamicLayoutsForReps:(id)reps;
+- (void)commitChangesForReps:(id)reps;
 - (void)dealloc;
 - (void)didChangeCurrentlyTransformingReps;
 - (void)endPossibleRepDragGesture;
 - (void)p_didBeginDrag;
 - (void)p_hideHUD;
-- (void)p_makeSiblingRepsOfRep:(id)a3 performBlock:(id)a4;
+- (void)p_makeSiblingRepsOfRep:(id)rep performBlock:(id)block;
 - (void)p_updateGuides;
-- (void)p_updateHUDAtPoint:(CGPoint)a3;
+- (void)p_updateHUDAtPoint:(CGPoint)point;
 - (void)p_updateRepsBeingHoveredAtCurrentDragPoint;
-- (void)setActualDragPoint:(CGPoint)a3;
-- (void)setShouldConstrain:(BOOL)a3;
-- (void)setShouldShowGuides:(BOOL)a3;
-- (void)setSnapLevel:(double)a3;
-- (void)willBeginDynamicOperationForReps:(id)a3;
+- (void)setActualDragPoint:(CGPoint)point;
+- (void)setShouldConstrain:(BOOL)constrain;
+- (void)setShouldShowGuides:(BOOL)guides;
+- (void)setSnapLevel:(double)level;
+- (void)willBeginDynamicOperationForReps:(id)reps;
 @end
 
 @implementation CRLCanvasRepDragTracker
 
-- (CRLCanvasRepDragTracker)initWithRep:(id)a3
+- (CRLCanvasRepDragTracker)initWithRep:(id)rep
 {
-  v4 = a3;
+  repCopy = rep;
   v21.receiver = self;
   v21.super_class = CRLCanvasRepDragTracker;
   v5 = [(CRLCanvasRepDragTracker *)&v21 init];
   if (v5)
   {
-    if (!v4)
+    if (!repCopy)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -72,20 +72,20 @@
       [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:136 isFatal:0 description:"invalid nil value for '%{public}s'", "rep"];
     }
 
-    [(CRLCanvasRepDragTracker *)v5 setRep:v4];
+    [(CRLCanvasRepDragTracker *)v5 setRep:repCopy];
     v9 = [[NSMapTable alloc] initWithKeyOptions:512 valueOptions:0 capacity:0];
     mMapRepsToSnapOffsets = v5->mMapRepsToSnapOffsets;
     v5->mMapRepsToSnapOffsets = v9;
 
-    v11 = [v4 interactiveCanvasController];
+    interactiveCanvasController = [repCopy interactiveCanvasController];
     if (objc_opt_respondsToSelector())
     {
       v12 = [(CRLCanvasRepDragTracker *)v5 rep];
-      v13 = [v12 allowDragDelegate];
+      allowDragDelegate = [v12 allowDragDelegate];
 
-      if (v13)
+      if (allowDragDelegate)
       {
-        v14 = [v11 repDragTrackerDelegateForRep:v4];
+        v14 = [interactiveCanvasController repDragTrackerDelegateForRep:repCopy];
         mDelegate = v5->mDelegate;
         v5->mDelegate = v14;
       }
@@ -121,24 +121,24 @@
   [(CRLCanvasRepDragTracker *)&v3 dealloc];
 }
 
-- (void)beginShowingDragUIForInitialDragPoint:(CGPoint)a3
+- (void)beginShowingDragUIForInitialDragPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (![(CRLCanvasRepDragTracker *)self p_delegateIsHandlingDrag])
   {
-    v6 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
-    v7 = [v6 dynamicOperationController];
-    if ([v7 isInPossibleDynamicOperation])
+    interactiveCanvasController = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+    dynamicOperationController = [interactiveCanvasController dynamicOperationController];
+    if ([dynamicOperationController isInPossibleDynamicOperation])
     {
     }
 
     else
     {
-      v8 = [v6 dynamicOperationController];
-      v9 = [v8 isInOperation];
+      dynamicOperationController2 = [interactiveCanvasController dynamicOperationController];
+      isInOperation = [dynamicOperationController2 isInOperation];
 
-      if ((v9 & 1) == 0)
+      if ((isInOperation & 1) == 0)
       {
         +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
@@ -186,28 +186,28 @@
 
 - (void)endPossibleRepDragGesture
 {
-  v4 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+  interactiveCanvasController = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
   if (self->mDelegate && self->mDidBeginDrag && (objc_opt_respondsToSelector() & 1) != 0)
   {
     [(CRLCanvasRepDragTrackerDelegate *)self->mDelegate dragTrackerDidFinishDragging:self atPoint:self->mActualDragPoint.x, self->mActualDragPoint.y];
-    [v4 layoutIfNeeded];
+    [interactiveCanvasController layoutIfNeeded];
   }
 
   [(CRLCanvasRepDragTracker *)self p_hideHUD];
   [(CRLCanvasRepDragTracker *)self p_hideGuideRenderable];
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
-  v3 = [v4 guideController];
-  [v3 endAlignmentOperation];
+  guideController = [interactiveCanvasController guideController];
+  [guideController endAlignmentOperation];
 
   if (self->mGuideRenderable)
   {
-    [v4 removeDecorator:self];
+    [interactiveCanvasController removeDecorator:self];
   }
 }
 
 - (BOOL)insertInfosAndUpdateDragForDuplicatingDragIfAppropriate
 {
-  v2 = self;
+  selfCopy = self;
   if (self->mDidDuplicateWhenDragBegan)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -237,29 +237,29 @@
     [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:266 isFatal:0 description:"Should only call insertInfosAndUpdateDragForDuplicatingDragIfAppropriate once!"];
   }
 
-  if (![(CRLCanvasRepDragTracker *)v2 p_delegateIsHandlingDrag])
+  if (![(CRLCanvasRepDragTracker *)selfCopy p_delegateIsHandlingDrag])
   {
-    v6 = [(CRLCanvasRep *)v2->mRep interactiveCanvasController];
-    v7 = [v6 canvasEditor];
-    v8 = [(CRLCanvasRepDragTracker *)v2 rep];
-    v9 = [v6 selectionModelTranslator];
-    v10 = [v6 editorController];
-    v11 = [v10 selectionPath];
-    v12 = [v9 unlockedBoardItemsForSelectionPath:v11];
+    interactiveCanvasController = [(CRLCanvasRep *)selfCopy->mRep interactiveCanvasController];
+    canvasEditor = [interactiveCanvasController canvasEditor];
+    v8 = [(CRLCanvasRepDragTracker *)selfCopy rep];
+    selectionModelTranslator = [interactiveCanvasController selectionModelTranslator];
+    editorController = [interactiveCanvasController editorController];
+    selectionPath = [editorController selectionPath];
+    v12 = [selectionModelTranslator unlockedBoardItemsForSelectionPath:selectionPath];
 
-    if ([v7 canvasEditorCanOptionDragDuplicateWithSender:0] && objc_msgSend(v12, "count"))
+    if ([canvasEditor canvasEditorCanOptionDragDuplicateWithSender:0] && objc_msgSend(v12, "count"))
     {
-      v13 = [v6 commandController];
-      [v13 openGroup];
-      [v13 enableProgressiveEnqueuingInCurrentGroup];
-      v2->mDidDuplicateWhenDragBegan = 1;
-      v14 = [v7 canvasEditorHelper];
-      v15 = [v14 insertCopiesOfInfos:v12 forDuplicatingDragOnRep:v8];
+      commandController = [interactiveCanvasController commandController];
+      [commandController openGroup];
+      [commandController enableProgressiveEnqueuingInCurrentGroup];
+      selfCopy->mDidDuplicateWhenDragBegan = 1;
+      canvasEditorHelper = [canvasEditor canvasEditorHelper];
+      v15 = [canvasEditorHelper insertCopiesOfInfos:v12 forDuplicatingDragOnRep:v8];
 
-      [v6 layoutIfNeeded];
-      v16 = [v7 selectionPathWithInfos:v15];
-      v17 = [v6 editorController];
-      [v17 setSelectionPath:v16];
+      [interactiveCanvasController layoutIfNeeded];
+      v16 = [canvasEditor selectionPathWithInfos:v15];
+      editorController2 = [interactiveCanvasController editorController];
+      [editorController2 setSelectionPath:v16];
     }
 
     else
@@ -287,7 +287,7 @@
             objc_enumerationMutation(v18);
           }
 
-          v23 = [v6 repForInfo:*(*(&v59 + 1) + 8 * i)];
+          v23 = [interactiveCanvasController repForInfo:*(*(&v59 + 1) + 8 * i)];
           if (v23)
           {
             [v54 addObject:v23];
@@ -300,20 +300,20 @@
       while (v20);
     }
 
-    v24 = [v6 dynamicOperationController];
-    [v24 stopTransformingReps:v54];
+    dynamicOperationController = [interactiveCanvasController dynamicOperationController];
+    [dynamicOperationController stopTransformingReps:v54];
 
     v52 = v15;
     if ([v15 count])
     {
-      v50 = v7;
-      v51 = v2;
-      v25 = [v6 topLevelZOrderedSiblingsOfInfos:v18];
+      v50 = canvasEditor;
+      v51 = selfCopy;
+      v25 = [interactiveCanvasController topLevelZOrderedSiblingsOfInfos:v18];
       v26 = [v25 crl_arrayWithObjectsInSet:v18];
 
-      v27 = [v8 info];
+      info = [v8 info];
       v47 = v26;
-      v28 = [v26 indexOfObjectIdenticalTo:v27];
+      v28 = [v26 indexOfObjectIdenticalTo:info];
 
       v53 = v28;
       if (v28 == 0x7FFFFFFFFFFFFFFFLL)
@@ -347,7 +347,7 @@
 
       v48 = v18;
       v49 = v8;
-      v32 = [v6 topLevelZOrderedSiblingsOfInfos:v15];
+      v32 = [interactiveCanvasController topLevelZOrderedSiblingsOfInfos:v15];
       v33 = [v32 crl_arrayWithObjectsInSet:v15];
 
       v34 = objc_alloc_init(NSMutableSet);
@@ -372,7 +372,7 @@
             }
 
             v41 = *(*(&v55 + 1) + 8 * j);
-            v42 = [v6 repForInfo:v41 createIfNeeded:1];
+            v42 = [interactiveCanvasController repForInfo:v41 createIfNeeded:1];
             if (v42)
             {
               [v34 addObject:v42];
@@ -400,12 +400,12 @@
       v44 = v34;
       if ([v34 count])
       {
-        v45 = [v6 dynamicOperationController];
-        [v45 startTransformingReps:v34];
+        dynamicOperationController2 = [interactiveCanvasController dynamicOperationController];
+        [dynamicOperationController2 startTransformingReps:v34];
       }
 
-      v7 = v50;
-      v2 = v51;
+      canvasEditor = v50;
+      selfCopy = v51;
       v18 = v48;
       if (v38)
       {
@@ -421,39 +421,39 @@
     }
   }
 
-  return v2->mDidDuplicateWhenDragBegan;
+  return selfCopy->mDidDuplicateWhenDragBegan;
 }
 
-- (void)addUnscaledDragDelta:(CGPoint)a3 roundDeltaToViewScale:(BOOL)a4
+- (void)addUnscaledDragDelta:(CGPoint)delta roundDeltaToViewScale:(BOOL)scale
 {
-  self->mRoundDragDelta = a4;
-  self->mUnscaledDragDelta.x = sub_10011F334(self->mUnscaledDragDelta.x, self->mUnscaledDragDelta.y, a3.x);
+  self->mRoundDragDelta = scale;
+  self->mUnscaledDragDelta.x = sub_10011F334(self->mUnscaledDragDelta.x, self->mUnscaledDragDelta.y, delta.x);
   self->mUnscaledDragDelta.y = v5;
 }
 
-- (void)setActualDragPoint:(CGPoint)a3
+- (void)setActualDragPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (!self->mHaveSetPreviousActualDragPoint)
   {
     self->mPreviousActualDragPoint = self->mActualDragPoint;
   }
 
-  v8 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
-  [v8 convertBoundsToUnscaledPoint:{x, y}];
+  interactiveCanvasController = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+  [interactiveCanvasController convertBoundsToUnscaledPoint:{x, y}];
   self->mActualDragPoint.x = v6;
   self->mActualDragPoint.y = v7;
 }
 
-- (void)setShouldConstrain:(BOOL)a3
+- (void)setShouldConstrain:(BOOL)constrain
 {
-  if (self->mShouldConstrain != a3)
+  if (self->mShouldConstrain != constrain)
   {
-    self->mShouldConstrain = a3;
+    self->mShouldConstrain = constrain;
     if (!self->mDidBeginDrag)
     {
-      if (a3)
+      if (constrain)
       {
         if (!self->mConstraintGuidesShowing)
         {
@@ -469,9 +469,9 @@
   }
 }
 
-- (void)setSnapLevel:(double)a3
+- (void)setSnapLevel:(double)level
 {
-  if (a3 != 0.0 && !self->mShouldConstrain)
+  if (level != 0.0 && !self->mShouldConstrain)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -500,9 +500,9 @@
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:375 isFatal:0 description:"non-zero snap level when we aren't constraining the drag. that doesn't make sense."];
   }
 
-  if (self->mSnapLevel != a3)
+  if (self->mSnapLevel != level)
   {
-    self->mSnapLevel = a3;
+    self->mSnapLevel = level;
   }
 }
 
@@ -516,10 +516,10 @@
     self->mPreviousHoveredReps = v3;
 
     v5 = [(CRLCanvasRepDragTracker *)self rep];
-    v6 = [v5 interactiveCanvasController];
-    v7 = [v6 layerHost];
-    v8 = [v7 asiOSCVC];
-    [v8 hideEditMenu];
+    interactiveCanvasController = [v5 interactiveCanvasController];
+    layerHost = [interactiveCanvasController layerHost];
+    asiOSCVC = [layerHost asiOSCVC];
+    [asiOSCVC hideEditMenu];
 
     if (!self->mTrackerDidBeginDragging)
     {
@@ -536,10 +536,10 @@
   }
 }
 
-- (void)setShouldShowGuides:(BOOL)a3
+- (void)setShouldShowGuides:(BOOL)guides
 {
-  self->mShouldShowGuides = a3;
-  if (a3 && !self->mShowDragHUD && ![(CRLCanvasRepDragTracker *)self shouldSnapToGuides])
+  self->mShouldShowGuides = guides;
+  if (guides && !self->mShowDragHUD && ![(CRLCanvasRepDragTracker *)self shouldSnapToGuides])
   {
     self->mShowDragHUD = 1;
   }
@@ -547,9 +547,9 @@
 
 - (void)p_updateRepsBeingHoveredAtCurrentDragPoint
 {
-  v3 = [(CRLCanvasRepDragTracker *)self p_repsBeingHoveredAtCurrentDragPoint];
-  v4 = [(CRLCanvasRepDragTracker *)self p_orderedDraggedReps];
-  v5 = [v3 mutableCopy];
+  p_repsBeingHoveredAtCurrentDragPoint = [(CRLCanvasRepDragTracker *)self p_repsBeingHoveredAtCurrentDragPoint];
+  p_orderedDraggedReps = [(CRLCanvasRepDragTracker *)self p_orderedDraggedReps];
+  v5 = [p_repsBeingHoveredAtCurrentDragPoint mutableCopy];
   [v5 minusSet:self->mPreviousHoveredReps];
   v35 = 0u;
   v36 = 0u;
@@ -570,7 +570,7 @@
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v33 + 1) + 8 * i) dragTrackerEnteredAt:v4 withDraggedReps:{self->mActualDragPoint.x, self->mActualDragPoint.y}];
+        [*(*(&v33 + 1) + 8 * i) dragTrackerEnteredAt:p_orderedDraggedReps withDraggedReps:{self->mActualDragPoint.x, self->mActualDragPoint.y}];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v33 objects:v39 count:16];
@@ -583,7 +583,7 @@
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v11 = v3;
+  v11 = p_repsBeingHoveredAtCurrentDragPoint;
   v12 = [v11 countByEnumeratingWithState:&v29 objects:v38 count:16];
   if (v12)
   {
@@ -601,7 +601,7 @@
         v16 = *(*(&v29 + 1) + 8 * j);
         if ([(NSMutableSet *)self->mPreviousHoveredReps containsObject:v16])
         {
-          [v16 dragTrackerMovedAt:v4 withDraggedReps:{self->mActualDragPoint.x, self->mActualDragPoint.y}];
+          [v16 dragTrackerMovedAt:p_orderedDraggedReps withDraggedReps:{self->mActualDragPoint.x, self->mActualDragPoint.y}];
         }
       }
 
@@ -632,7 +632,7 @@
           objc_enumerationMutation(v18);
         }
 
-        [*(*(&v25 + 1) + 8 * k) dragTrackerExitedAt:v4 withDraggedReps:{self->mActualDragPoint.x, self->mActualDragPoint.y, v25}];
+        [*(*(&v25 + 1) + 8 * k) dragTrackerExitedAt:p_orderedDraggedReps withDraggedReps:{self->mActualDragPoint.x, self->mActualDragPoint.y, v25}];
       }
 
       v20 = [v18 countByEnumeratingWithState:&v25 objects:v37 count:16];
@@ -648,15 +648,15 @@
 
 - (id)p_repsBeingHoveredAtCurrentDragPoint
 {
-  v3 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
-  v4 = [v3 topLevelRepsForHitTesting];
+  interactiveCanvasController = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+  topLevelRepsForHitTesting = [interactiveCanvasController topLevelRepsForHitTesting];
 
   v5 = objc_alloc_init(NSMutableSet);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = topLevelRepsForHitTesting;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -695,14 +695,14 @@
 
 - (id)p_orderedDraggedReps
 {
-  v2 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
-  v3 = [v2 editorController];
-  v4 = [v3 selectionPath];
+  interactiveCanvasController = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+  editorController = [interactiveCanvasController editorController];
+  selectionPath = [editorController selectionPath];
 
-  v5 = [v2 selectionModelTranslator];
-  v6 = [v5 boardItemsForSelectionPath:v4];
+  selectionModelTranslator = [interactiveCanvasController selectionModelTranslator];
+  v6 = [selectionModelTranslator boardItemsForSelectionPath:selectionPath];
 
-  v7 = [v2 topLevelZOrderedSiblingsOfInfos:v6];
+  v7 = [interactiveCanvasController topLevelZOrderedSiblingsOfInfos:v6];
   v8 = [v7 crl_arrayWithObjectsInSet:v6];
   v9 = objc_alloc_init(NSMutableArray);
   v17 = 0u;
@@ -724,7 +724,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [v2 repForInfo:{*(*(&v17 + 1) + 8 * i), v17}];
+        v15 = [interactiveCanvasController repForInfo:{*(*(&v17 + 1) + 8 * i), v17}];
         [v9 crl_addNonNilObject:v15];
       }
 
@@ -737,28 +737,28 @@
   return v9;
 }
 
-- (void)willBeginDynamicOperationForReps:(id)a3
+- (void)willBeginDynamicOperationForReps:(id)reps
 {
-  v4 = a3;
+  repsCopy = reps;
   if (!self->mIsEnqueueingCommandsInRealTime)
   {
-    v5 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
-    if (![v5 shouldSupportedDynamicOperationsEnqueueCommandsInRealTime])
+    interactiveCanvasController = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+    if (![interactiveCanvasController shouldSupportedDynamicOperationsEnqueueCommandsInRealTime])
     {
 LABEL_5:
 
       goto LABEL_6;
     }
 
-    v6 = [(CRLCanvasRep *)self->mRep allowsSupportedDynamicOperationsToBeRealTime];
+    allowsSupportedDynamicOperationsToBeRealTime = [(CRLCanvasRep *)self->mRep allowsSupportedDynamicOperationsToBeRealTime];
 
-    if (v6)
+    if (allowsSupportedDynamicOperationsToBeRealTime)
     {
-      v7 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
-      v5 = [v7 commandController];
+      interactiveCanvasController2 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+      interactiveCanvasController = [interactiveCanvasController2 commandController];
 
-      [v5 openGroup];
-      [v5 enableRealTimeSyncProgressiveEnqueuingInCurrentGroup];
+      [interactiveCanvasController openGroup];
+      [interactiveCanvasController enableRealTimeSyncProgressiveEnqueuingInCurrentGroup];
       self->mIsEnqueueingCommandsInRealTime = 1;
       goto LABEL_5;
     }
@@ -769,33 +769,33 @@ LABEL_6:
   {
     self->mInWillBeginDynamicOperation = 1;
     [(CRLCanvasRepDragTracker *)self p_didBeginDrag];
-    v8 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
-    v9 = [(CRLCanvasRepDragTracker *)self p_infosFromReps:v4];
+    interactiveCanvasController3 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+    v9 = [(CRLCanvasRepDragTracker *)self p_infosFromReps:repsCopy];
     v10 = [(CRLCanvasRepDragTrackerDelegate *)self->mDelegate dragTracker:self drawablesToDrag:v9 hitRep:self->mRep];
-    v11 = [(CRLCanvasRepDragTracker *)self p_repsForInfos:v10 fromReps:v4];
+    v11 = [(CRLCanvasRepDragTracker *)self p_repsForInfos:v10 fromReps:repsCopy];
     v41 = v9;
-    v42 = v4;
+    v42 = repsCopy;
     v39 = v11;
     v40 = v10;
     if ([(CRLCanvasRepDragTrackerDelegate *)self->mDelegate dragTracker:self willBeginDraggingReps:v11 atPoint:self->mActualDragPoint.x, self->mActualDragPoint.y])
     {
-      [v8 layoutIfNeeded];
-      v12 = [(CRLCanvasRep *)self->mRep info];
-      v13 = [v8 repForInfo:v12];
+      [interactiveCanvasController3 layoutIfNeeded];
+      info = [(CRLCanvasRep *)self->mRep info];
+      v13 = [interactiveCanvasController3 repForInfo:info];
 
       if (v13 && v13 != self->mRep)
       {
         [(CRLCanvasRepDragTracker *)self setRep:v13];
       }
 
-      v38 = self;
+      selfCopy = self;
       v14 = +[NSMutableSet set];
       v43 = +[NSMutableSet set];
       v50 = 0u;
       v51 = 0u;
       v52 = 0u;
       v53 = 0u;
-      v15 = v4;
+      v15 = repsCopy;
       v16 = [v15 countByEnumeratingWithState:&v50 objects:v55 count:16];
       if (v16)
       {
@@ -813,8 +813,8 @@ LABEL_6:
             }
 
             v21 = *(*(&v50 + 1) + 8 * v19);
-            v22 = [(CRLCanvasRep *)v21 info];
-            v13 = [v8 repForInfo:v22];
+            info2 = [(CRLCanvasRep *)v21 info];
+            v13 = [interactiveCanvasController3 repForInfo:info2];
 
             if (v13)
             {
@@ -846,7 +846,7 @@ LABEL_6:
       v24 = v14;
       v25 = [v14 count];
       v26 = v43;
-      self = v38;
+      self = selfCopy;
       v11 = v39;
       if (v25 != [v43 count])
       {
@@ -879,14 +879,14 @@ LABEL_6:
         v26 = v43;
       }
 
-      v4 = v42;
+      repsCopy = v42;
       if ([v24 count])
       {
-        v30 = [v8 dynamicOperationController];
-        [v30 stopTransformingReps:v26];
+        dynamicOperationController = [interactiveCanvasController3 dynamicOperationController];
+        [dynamicOperationController stopTransformingReps:v26];
 
-        v31 = [v8 dynamicOperationController];
-        [v31 startTransformingReps:v24];
+        dynamicOperationController2 = [interactiveCanvasController3 dynamicOperationController];
+        [dynamicOperationController2 startTransformingReps:v24];
       }
 
       v10 = v40;
@@ -899,7 +899,7 @@ LABEL_6:
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v32 = v4;
+      v32 = repsCopy;
       v33 = [v32 countByEnumeratingWithState:&v46 objects:v54 count:16];
       if (v33)
       {
@@ -919,7 +919,7 @@ LABEL_6:
             v44[1] = 3221225472;
             v44[2] = sub_100590964;
             v44[3] = &unk_101870D98;
-            v45 = v8;
+            v45 = interactiveCanvasController3;
             [(CRLCanvasRepDragTracker *)self p_makeSiblingRepsOfRep:v37 performBlock:v44];
           }
 
@@ -930,7 +930,7 @@ LABEL_6:
       }
 
       v9 = v41;
-      v4 = v42;
+      repsCopy = v42;
       v11 = v39;
       v10 = v40;
     }
@@ -939,18 +939,18 @@ LABEL_6:
   }
 }
 
-- (void)changeDynamicLayoutsForReps:(id)a3
+- (void)changeDynamicLayoutsForReps:(id)reps
 {
-  v4 = a3;
+  repsCopy = reps;
   if (self->mDidBeginDrag || (self->mUnscaledDragDelta.x == CGPointZero.x ? (v5 = self->mUnscaledDragDelta.y == CGPointZero.y) : (v5 = 0), !v5))
   {
-    v205 = v4;
-    v219 = self;
-    v206 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
-    v6 = self;
+    v205 = repsCopy;
+    selfCopy = self;
+    interactiveCanvasController = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+    selfCopy2 = self;
     if (self->mRoundDragDelta)
     {
-      [v206 viewScale];
+      [interactiveCanvasController viewScale];
       x = self->mUnscaledDragDelta.x;
       y = self->mUnscaledDragDelta.y;
       v10 = sub_10012218C(x, y, v9);
@@ -971,37 +971,37 @@ LABEL_6:
     if ([(CRLCanvasRepDragTracker *)self p_delegateIsHandlingDrag])
     {
 LABEL_214:
-      [(CRLCanvasRepDragTracker *)v6 p_updateRepsBeingHoveredAtCurrentDragPoint];
-      v219->mPreviousActualDragPoint = v219->mActualDragPoint;
-      v219->mHaveSetPreviousActualDragPoint = 1;
+      [(CRLCanvasRepDragTracker *)selfCopy2 p_updateRepsBeingHoveredAtCurrentDragPoint];
+      selfCopy->mPreviousActualDragPoint = selfCopy->mActualDragPoint;
+      selfCopy->mHaveSetPreviousActualDragPoint = 1;
 
-      v4 = v205;
+      repsCopy = v205;
       goto LABEL_215;
     }
 
-    v14 = [(CRLCanvasRepDragTracker *)self shouldSnapToGuides];
-    if (v14)
+    shouldSnapToGuides = [(CRLCanvasRepDragTracker *)self shouldSnapToGuides];
+    if (shouldSnapToGuides)
     {
       v15 = fabs(v12);
       v16 = v205;
       if (fabs(v10) >= 6.0)
       {
-        v222 = [(CRLCanvasRepDragTracker *)v6 shouldShowGuides];
+        shouldShowGuides = [(CRLCanvasRepDragTracker *)selfCopy2 shouldShowGuides];
         v18 = 0;
-        v217 = 1;
+        shouldShowGuides2 = 1;
         v17 = v15 < 6.0;
       }
 
       else
       {
-        v222 = 1;
+        shouldShowGuides = 1;
         v17 = v15 < 6.0;
         v18 = 1;
-        v217 = 1;
+        shouldShowGuides2 = 1;
       }
 
       v19 = 1;
-      v223 = 1;
+      shouldShowGuides3 = 1;
       if (v17)
       {
 LABEL_17:
@@ -1024,10 +1024,10 @@ LABEL_17:
                 objc_enumerationMutation(v20);
               }
 
-              v24 = [(NSMapTable *)v219->mMapRepsToSnapOffsets objectForKey:*(*(&v261 + 1) + 8 * i)];
+              v24 = [(NSMapTable *)selfCopy->mMapRepsToSnapOffsets objectForKey:*(*(&v261 + 1) + 8 * i)];
               if (!v24)
               {
-                [(NSMapTable *)v219->mMapRepsToSnapOffsets removeAllObjects];
+                [(NSMapTable *)selfCopy->mMapRepsToSnapOffsets removeAllObjects];
                 goto LABEL_27;
               }
             }
@@ -1075,12 +1075,12 @@ LABEL_27:
           while (v26);
         }
 
-        v204 = [v206 commandController];
-        v30 = v219;
-        if (v219->mIsEnqueueingCommandsInRealTime)
+        commandController = [interactiveCanvasController commandController];
+        v30 = selfCopy;
+        if (selfCopy->mIsEnqueueingCommandsInRealTime)
         {
-          [v204 openGroup];
-          v30 = v219;
+          [commandController openGroup];
+          v30 = selfCopy;
         }
 
         v216 = [(CRLCanvasRepDragTracker *)v30 repsForGuidesWhenManipulatingReps:v25];
@@ -1107,8 +1107,8 @@ LABEL_27:
               }
 
               v37 = *(*(&v253 + 1) + 8 * k);
-              v38 = [v37 layout];
-              v39 = [(NSMapTable *)v219->mMapRepsToSnapOffsets objectForKey:v37];
+              layout = [v37 layout];
+              v39 = [(NSMapTable *)selfCopy->mMapRepsToSnapOffsets objectForKey:v37];
               v40 = v39;
               v41 = CGPointZero.x;
               if (v39)
@@ -1128,7 +1128,7 @@ LABEL_27:
                 rect = v52;
               }
 
-              [v38 dragByUnscaled:{v43, v45}];
+              [layout dragByUnscaled:{v43, v45}];
             }
 
             v32 = [v31 countByEnumeratingWithState:&v253 objects:v283 count:16];
@@ -1137,11 +1137,11 @@ LABEL_27:
           while (v32);
         }
 
-        v53 = v219;
-        if (v219->mIsEnqueueingCommandsInRealTime)
+        v53 = selfCopy;
+        if (selfCopy->mIsEnqueueingCommandsInRealTime)
         {
-          [v204 closeGroup];
-          v53 = v219;
+          [commandController closeGroup];
+          v53 = selfCopy;
         }
 
         v55 = CGPointZero.x;
@@ -1154,11 +1154,11 @@ LABEL_27:
           v59 = v58;
           v60 = sub_100120074(v56, v58);
           v61 = +[UIDevice crl_phoneUI];
-          [v206 viewScale];
+          [interactiveCanvasController viewScale];
           if (v60 == 0.0)
           {
-            v63 = v219;
-            v219->mConstraintAngle = -1.0;
+            v63 = selfCopy;
+            selfCopy->mConstraintAngle = -1.0;
             mConstraintAngle = -1.0;
           }
 
@@ -1170,8 +1170,8 @@ LABEL_27:
               v65 = 50.0;
             }
 
-            v63 = v219;
-            if (v60 > v65 / v62 || (mConstraintAngle = v219->mConstraintAngle, mConstraintAngle < 0.0))
+            v63 = selfCopy;
+            if (v60 > v65 / v62 || (mConstraintAngle = selfCopy->mConstraintAngle, mConstraintAngle < 0.0))
             {
               v66 = acos(v57 / v60);
               if (v59 < 0.0)
@@ -1180,7 +1180,7 @@ LABEL_27:
               }
 
               mConstraintAngle = round(v66 / 0.785398163) * 0.785398163;
-              v219->mConstraintAngle = mConstraintAngle;
+              selfCopy->mConstraintAngle = mConstraintAngle;
             }
           }
 
@@ -1204,38 +1204,38 @@ LABEL_27:
         v250 = &v249;
         v251 = 0x2020000000;
         v252 = 0;
-        v74 = [v31 allObjects];
+        allObjects = [v31 allObjects];
         v248[0] = _NSConcreteStackBlock;
         v248[1] = 3221225472;
         v248[2] = sub_1005920E0;
         v248[3] = &unk_101870DC0;
         v248[4] = &v249;
-        v75 = [v74 crl_allObjectsPassTest:v248];
+        v75 = [allObjects crl_allObjectsPassTest:v248];
 
         v77 = v212;
         v76 = CGPointZero.x;
-        v78 = v219;
-        if ((v14 & v75) == 1)
+        v78 = selfCopy;
+        if ((shouldSnapToGuides & v75) == 1)
         {
-          if (!v219->mShouldConstrain || v219->mSnapLevel == 0.0 || (v77 = v212, v76 = CGPointZero.x, [v206 isCanvasBackgroundAlignmentSnappingEnabled]))
+          if (!selfCopy->mShouldConstrain || selfCopy->mSnapLevel == 0.0 || (v77 = v212, v76 = CGPointZero.x, [interactiveCanvasController isCanvasBackgroundAlignmentSnappingEnabled]))
           {
-            v79 = [v206 guideController];
-            if ([v206 isCanvasBackgroundAlignmentSnappingEnabled] && objc_msgSend(v31, "count") == 1)
+            guideController = [interactiveCanvasController guideController];
+            if ([interactiveCanvasController isCanvasBackgroundAlignmentSnappingEnabled] && objc_msgSend(v31, "count") == 1)
             {
-              v80 = [v31 anyObject];
+              anyObject = [v31 anyObject];
               v81 = objc_opt_class();
-              v82 = [v80 layout];
-              v83 = sub_100014370(v81, v82);
+              layout2 = [anyObject layout];
+              v83 = sub_100014370(v81, layout2);
 
               if (v83 && [v83 pathIsLineSegment])
               {
                 v84 = objc_opt_class();
-                v85 = [v80 layout];
-                v86 = sub_100014370(v84, v85);
+                layout3 = [anyObject layout];
+                v86 = sub_100014370(v84, layout3);
 
                 if (v86 && ([v86 isStraightLine] & 1) == 0)
                 {
-                  [v79 snapRectToGuides:0 forKnobTag:1 snapSize:1 snapWithBackgroundAlignmentProvider:0 isLine:v34 startPoint:v33 endPoint:{width, rect, CGPointZero.x, v212, CGPointZero.x, v212}];
+                  [guideController snapRectToGuides:0 forKnobTag:1 snapSize:1 snapWithBackgroundAlignmentProvider:0 isLine:v34 startPoint:v33 endPoint:{width, rect, CGPointZero.x, v212, CGPointZero.x, v212}];
                 }
 
                 else
@@ -1246,7 +1246,7 @@ LABEL_27:
                   v90 = v89;
                   [v83 headPoint];
                   [v83 convertNaturalPointToUnscaledCanvas:?];
-                  [v79 snapRectToGuides:0 forKnobTag:1 snapSize:1 snapWithBackgroundAlignmentProvider:1 isLine:v34 startPoint:v33 endPoint:{width, rect, v88, v90, v91, v92}];
+                  [guideController snapRectToGuides:0 forKnobTag:1 snapSize:1 snapWithBackgroundAlignmentProvider:1 isLine:v34 startPoint:v33 endPoint:{width, rect, v88, v90, v91, v92}];
                 }
 
                 v76 = v93;
@@ -1256,7 +1256,7 @@ LABEL_27:
               else
               {
                 LOBYTE(v203) = *(v250 + 24) ^ 1;
-                [v79 snapRectToGuides:0 forKnobTag:1 snapSize:1 snapWithBackgroundAlignmentProvider:0 isLine:0 startPoint:0 endPoint:v34 hasHorizontalFlip:v33 hasVerticalFlip:width snapWithGuides:{rect, CGPointZero.x, v212, CGPointZero.x, v212, v203}];
+                [guideController snapRectToGuides:0 forKnobTag:1 snapSize:1 snapWithBackgroundAlignmentProvider:0 isLine:0 startPoint:0 endPoint:v34 hasHorizontalFlip:v33 hasVerticalFlip:width snapWithGuides:{rect, CGPointZero.x, v212, CGPointZero.x, v212, v203}];
                 v76 = v98;
                 v77 = v99;
               }
@@ -1264,9 +1264,9 @@ LABEL_27:
 
             else
             {
-              v95 = [v206 isCanvasBackgroundAlignmentSnappingEnabled];
+              isCanvasBackgroundAlignmentSnappingEnabled = [interactiveCanvasController isCanvasBackgroundAlignmentSnappingEnabled];
               LOBYTE(v203) = *(v250 + 24) ^ 1;
-              [v79 snapRectToGuides:0 forKnobTag:1 snapSize:v95 snapWithBackgroundAlignmentProvider:0 isLine:0 startPoint:0 endPoint:v34 hasHorizontalFlip:v33 hasVerticalFlip:width snapWithGuides:{rect, CGPointZero.x, v212, CGPointZero.x, v212, v203}];
+              [guideController snapRectToGuides:0 forKnobTag:1 snapSize:isCanvasBackgroundAlignmentSnappingEnabled snapWithBackgroundAlignmentProvider:0 isLine:0 startPoint:0 endPoint:v34 hasHorizontalFlip:v33 hasVerticalFlip:width snapWithGuides:{rect, CGPointZero.x, v212, CGPointZero.x, v212, v203}];
               v76 = v96;
               v77 = v97;
             }
@@ -1302,10 +1302,10 @@ LABEL_27:
 
             if ([v100 count])
             {
-              v106 = [v79 didJustSnapInX];
-              v107 = [v79 didJustSnapInY];
-              v108 = v107;
-              if (v106)
+              didJustSnapInX = [guideController didJustSnapInX];
+              didJustSnapInY = [guideController didJustSnapInY];
+              v108 = didJustSnapInY;
+              if (didJustSnapInX)
               {
                 v109 = v76;
               }
@@ -1317,7 +1317,7 @@ LABEL_27:
 
               v242 = 0u;
               v243 = 0u;
-              if (v107)
+              if (didJustSnapInY)
               {
                 v110 = v77;
               }
@@ -1345,20 +1345,20 @@ LABEL_27:
                     }
 
                     [*(*(&v240 + 1) + 8 * n) CGRectValue];
-                    [v79 snapRectToGuides:?];
+                    [guideController snapRectToGuides:?];
                     v116 = v115;
                     v118 = v117;
-                    v119 = [v79 didJustSnapInX];
-                    v120 = [v79 didJustSnapInY];
-                    v121 = v119 & (v116 < v109);
+                    didJustSnapInX2 = [guideController didJustSnapInX];
+                    didJustSnapInY2 = [guideController didJustSnapInY];
+                    v121 = didJustSnapInX2 & (v116 < v109);
                     if (v121)
                     {
                       v109 = v116;
                     }
 
-                    LOBYTE(v106) = v121 | v106;
-                    v108 |= v120 & (v118 < v110);
-                    if ((v120 & (v118 < v110)) != 0)
+                    LOBYTE(didJustSnapInX) = v121 | didJustSnapInX;
+                    v108 |= didJustSnapInY2 & (v118 < v110);
+                    if ((didJustSnapInY2 & (v118 < v110)) != 0)
                     {
                       v110 = v118;
                     }
@@ -1371,7 +1371,7 @@ LABEL_27:
               }
 
               v18 = v210;
-              [v79 setDidJustSnapInX:v106 & 1];
+              [guideController setDidJustSnapInX:didJustSnapInX & 1];
               if (v110 == 1.79769313e308)
               {
                 v77 = 0.0;
@@ -1392,12 +1392,12 @@ LABEL_27:
                 v76 = v109;
               }
 
-              [v79 setDidJustSnapInY:v108 & 1];
+              [guideController setDidJustSnapInY:v108 & 1];
             }
 
-            v122 = [v206 canvasBackground];
-            v123 = [v122 alignmentProvider];
-            v124 = [v206 isCanvasBackgroundAlignmentSnappingEnabled] & (v123 != 0);
+            canvasBackground = [interactiveCanvasController canvasBackground];
+            alignmentProvider = [canvasBackground alignmentProvider];
+            v124 = [interactiveCanvasController isCanvasBackgroundAlignmentSnappingEnabled] & (alignmentProvider != 0);
             if (!(v18 | v124))
             {
               v76 = 0.0;
@@ -1408,7 +1408,7 @@ LABEL_27:
               v77 = 0.0;
             }
 
-            v78 = v219;
+            v78 = selfCopy;
           }
         }
 
@@ -1490,7 +1490,7 @@ LABEL_161:
           [(NSMapTable *)v78->mMapRepsToSnapOffsets removeAllObjects];
           if (v78->mIsEnqueueingCommandsInRealTime)
           {
-            [v204 openGroup];
+            [commandController openGroup];
           }
 
           v238 = 0u;
@@ -1512,9 +1512,9 @@ LABEL_161:
                 }
 
                 v165 = *(*(&v236 + 1) + 8 * ii);
-                v166 = [v165 layout];
-                [v166 dragByUnscaled:{v76, v77}];
-                mMapRepsToSnapOffsets = v219->mMapRepsToSnapOffsets;
+                layout4 = [v165 layout];
+                [layout4 dragByUnscaled:{v76, v77}];
+                mMapRepsToSnapOffsets = selfCopy->mMapRepsToSnapOffsets;
                 v168 = [NSValue valueWithCGPoint:v76, v77];
                 [(NSMapTable *)mMapRepsToSnapOffsets setObject:v168 forKey:v165];
               }
@@ -1525,9 +1525,9 @@ LABEL_161:
             while (v162);
           }
 
-          if (v219->mIsEnqueueingCommandsInRealTime)
+          if (selfCopy->mIsEnqueueingCommandsInRealTime)
           {
-            [v204 closeGroup];
+            [commandController closeGroup];
           }
 
           v286.origin.x = v34;
@@ -1537,16 +1537,16 @@ LABEL_161:
           v287 = CGRectOffset(v286, v76, v77);
           v170 = v212;
           v169 = CGPointZero.x;
-          if (v217)
+          if (shouldShowGuides2)
           {
             v171 = v287.origin.x;
             v172 = v287.origin.y;
             v173 = v287.size.width;
             height = v287.size.height;
-            v175 = [v206 guideController];
-            [v175 showGuidesAlignedWithRect:v222 shouldRenderX:v223 shouldRenderY:{v171, v172, v173, height}];
-            [v175 setDoNotRemoveExistingGuidesWhenDisplaying:1];
-            recta = v175;
+            guideController2 = [interactiveCanvasController guideController];
+            [guideController2 showGuidesAlignedWithRect:shouldShowGuides shouldRenderX:shouldShowGuides3 shouldRenderY:{v171, v172, v173, height}];
+            [guideController2 setDoNotRemoveExistingGuidesWhenDisplaying:1];
+            recta = guideController2;
             v234 = 0u;
             v235 = 0u;
             v232 = 0u;
@@ -1649,7 +1649,7 @@ LABEL_161:
 
                         else
                         {
-                          [recta showGuidesAlignedWithRect:v222 shouldRenderX:v223 shouldRenderY:{v182, v183, v184, v185}];
+                          [recta showGuidesAlignedWithRect:shouldShowGuides shouldRenderX:shouldShowGuides3 shouldRenderY:{v182, v183, v184, v185}];
                         }
                       }
 
@@ -1669,34 +1669,34 @@ LABEL_161:
               while (v211);
             }
 
-            v198 = recta;
+            guideController3 = recta;
             [recta setDoNotRemoveExistingGuidesWhenDisplaying:0];
           }
 
           else
           {
-            v198 = [v206 guideController];
-            [v198 hideAlignmentGuides];
+            guideController3 = [interactiveCanvasController guideController];
+            [guideController3 hideAlignmentGuides];
           }
 
-          if (v219->mShouldConstrain)
+          if (selfCopy->mShouldConstrain)
           {
-            if (!v219->mConstraintGuidesShowing)
+            if (!selfCopy->mConstraintGuidesShowing)
             {
-              [(CRLCanvasRepDragTracker *)v219 p_showGuideRenderable];
+              [(CRLCanvasRepDragTracker *)selfCopy p_showGuideRenderable];
             }
           }
 
-          else if (v219->mConstraintGuidesShowing)
+          else if (selfCopy->mConstraintGuidesShowing)
           {
-            [(CRLCanvasRepDragTracker *)v219 p_hideGuideRenderable];
+            [(CRLCanvasRepDragTracker *)selfCopy p_hideGuideRenderable];
           }
 
           v226 = 0u;
           v227 = 0u;
           v224 = 0u;
           v225 = 0u;
-          v199 = v219->mParentLayoutsForInvalidatingForAncestorCollabCursors;
+          v199 = selfCopy->mParentLayoutsForInvalidatingForAncestorCollabCursors;
           v200 = [(NSMutableSet *)v199 countByEnumeratingWithState:&v224 objects:v265 count:16];
           if (v200)
           {
@@ -1719,10 +1719,10 @@ LABEL_161:
             while (v200);
           }
 
-          [(CRLCanvasRepDragTracker *)v219 p_updateHUDAtPoint:v219->mLogicalDragPoint.x, v219->mLogicalDragPoint.y];
+          [(CRLCanvasRepDragTracker *)selfCopy p_updateHUDAtPoint:selfCopy->mLogicalDragPoint.x, selfCopy->mLogicalDragPoint.y];
           _Block_object_dispose(&v249, 8);
 
-          v6 = v219;
+          selfCopy2 = selfCopy;
           goto LABEL_214;
         }
 
@@ -1812,20 +1812,20 @@ LABEL_158:
 
         v142 = obj;
         v144 = obj;
-        v78 = v219;
+        v78 = selfCopy;
         goto LABEL_158;
       }
     }
 
     else
     {
-      v217 = [(CRLCanvasRepDragTracker *)self shouldShowGuides];
-      v222 = [(CRLCanvasRepDragTracker *)self shouldShowGuides];
+      shouldShowGuides2 = [(CRLCanvasRepDragTracker *)self shouldShowGuides];
+      shouldShowGuides = [(CRLCanvasRepDragTracker *)self shouldShowGuides];
       v18 = 0;
       v16 = v205;
     }
 
-    v223 = [(CRLCanvasRepDragTracker *)v6 shouldShowGuides];
+    shouldShowGuides3 = [(CRLCanvasRepDragTracker *)selfCopy2 shouldShowGuides];
     v19 = 0;
     goto LABEL_17;
   }
@@ -1833,43 +1833,43 @@ LABEL_158:
 LABEL_215:
 }
 
-- (void)commitChangesForReps:(id)a3
+- (void)commitChangesForReps:(id)reps
 {
-  v4 = a3;
-  v5 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
-  v6 = [v5 commandController];
-  [v6 openGroup];
+  repsCopy = reps;
+  interactiveCanvasController = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+  commandController = [interactiveCanvasController commandController];
+  [commandController openGroup];
   if (self->mDidDuplicateWhenDragBegan)
   {
     v7 = +[NSBundle mainBundle];
-    v8 = v7;
+    anyObject = v7;
     v9 = @"Duplicate";
   }
 
   else
   {
-    if ([v4 count] == 1)
+    if ([repsCopy count] == 1)
     {
-      v8 = [v4 anyObject];
-      v10 = [v8 actionStringForDrag];
+      anyObject = [repsCopy anyObject];
+      actionStringForDrag = [anyObject actionStringForDrag];
       goto LABEL_7;
     }
 
     v7 = +[NSBundle mainBundle];
-    v8 = v7;
+    anyObject = v7;
     v9 = @"Move";
   }
 
-  v10 = [v7 localizedStringForKey:v9 value:0 table:@"UndoStrings"];
+  actionStringForDrag = [v7 localizedStringForKey:v9 value:0 table:@"UndoStrings"];
 LABEL_7:
-  v11 = v10;
-  [v6 setCurrentGroupActionString:v10];
+  v11 = actionStringForDrag;
+  [commandController setCurrentGroupActionString:actionStringForDrag];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v12 = v4;
+  v12 = repsCopy;
   v13 = [v12 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v13)
   {
@@ -1897,13 +1897,13 @@ LABEL_7:
     while (v14);
   }
 
-  v18 = [(CRLCanvasRepDragTracker *)self p_repsBeingHoveredAtCurrentDragPoint];
-  v19 = [(CRLCanvasRepDragTracker *)self p_orderedDraggedReps];
+  p_repsBeingHoveredAtCurrentDragPoint = [(CRLCanvasRepDragTracker *)self p_repsBeingHoveredAtCurrentDragPoint];
+  p_orderedDraggedReps = [(CRLCanvasRepDragTracker *)self p_orderedDraggedReps];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v20 = v18;
+  v20 = p_repsBeingHoveredAtCurrentDragPoint;
   v21 = [v20 countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v21)
   {
@@ -1918,7 +1918,7 @@ LABEL_7:
           objc_enumerationMutation(v20);
         }
 
-        [*(*(&v28 + 1) + 8 * j) performAdditionalWorkToCommitDragTrackerAt:v19 withDraggedReps:{self->mActualDragPoint.x, self->mActualDragPoint.y, v28}];
+        [*(*(&v28 + 1) + 8 * j) performAdditionalWorkToCommitDragTrackerAt:p_orderedDraggedReps withDraggedReps:{self->mActualDragPoint.x, self->mActualDragPoint.y, v28}];
       }
 
       v22 = [v20 countByEnumeratingWithState:&v28 objects:v36 count:16];
@@ -1928,20 +1928,20 @@ LABEL_7:
   }
 
   [(NSMutableSet *)self->mPreviousHoveredReps removeAllObjects];
-  [v6 closeGroup];
+  [commandController closeGroup];
   if (self->mIsEnqueueingCommandsInRealTime)
   {
     v25 = [CRLCanvasCommandSelectionBehavior alloc];
-    v26 = [v5 canvasEditor];
-    v27 = [(CRLCanvasCommandSelectionBehavior *)v25 initWithCanvasEditor:v26 type:2];
+    canvasEditor = [interactiveCanvasController canvasEditor];
+    v27 = [(CRLCanvasCommandSelectionBehavior *)v25 initWithCanvasEditor:canvasEditor type:2];
 
-    [v6 closeGroupWithSelectionBehavior:v27];
+    [commandController closeGroupWithSelectionBehavior:v27];
   }
 }
 
-- (id)repsForGuidesWhenManipulatingReps:(id)a3
+- (id)repsForGuidesWhenManipulatingReps:(id)reps
 {
-  v3 = [a3 mutableCopy];
+  v3 = [reps mutableCopy];
 
   return v3;
 }
@@ -1967,16 +1967,16 @@ LABEL_7:
   }
 
   byte_101A35520 = 1;
-  v48 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
-  v3 = [v48 dynamicOperationController];
+  interactiveCanvasController = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+  dynamicOperationController = [interactiveCanvasController dynamicOperationController];
   v4 = objc_alloc_init(NSMutableSet);
   v47 = objc_alloc_init(NSMutableSet);
-  v5 = [v3 currentlyTransformingReps];
+  currentlyTransformingReps = [dynamicOperationController currentlyTransformingReps];
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v60 objects:v66 count:16];
+  v6 = [currentlyTransformingReps countByEnumeratingWithState:&v60 objects:v66 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1987,7 +1987,7 @@ LABEL_7:
       {
         if (*v61 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(currentlyTransformingReps);
         }
 
         v10 = *(*(&v60 + 1) + 8 * i);
@@ -1995,8 +1995,8 @@ LABEL_7:
         {
           if ([v10 isSelected])
           {
-            v11 = [v10 additionalRepsForDragging];
-            [v4 unionSet:v11];
+            additionalRepsForDragging = [v10 additionalRepsForDragging];
+            [v4 unionSet:additionalRepsForDragging];
           }
         }
 
@@ -2006,30 +2006,30 @@ LABEL_7:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v60 objects:v66 count:16];
+      v7 = [currentlyTransformingReps countByEnumeratingWithState:&v60 objects:v66 count:16];
     }
 
     while (v7);
   }
 
   [v47 minusSet:v4];
-  [v4 minusSet:v5];
+  [v4 minusSet:currentlyTransformingReps];
   if ([v4 count])
   {
-    [v3 startTransformingReps:v4];
+    [dynamicOperationController startTransformingReps:v4];
   }
 
   if ([v47 count])
   {
-    [v3 stopTransformingReps:v47];
+    [dynamicOperationController stopTransformingReps:v47];
   }
 
-  v45 = v3;
+  v45 = dynamicOperationController;
   v58 = 0u;
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = v5;
+  obj = currentlyTransformingReps;
   v12 = [obj countByEnumeratingWithState:&v56 objects:v65 count:16];
   if (v12)
   {
@@ -2045,33 +2045,33 @@ LABEL_7:
         }
 
         v16 = *(*(&v56 + 1) + 8 * j);
-        v17 = [v16 layout];
-        v18 = [v17 connectedLayouts];
+        layout = [v16 layout];
+        connectedLayouts = [layout connectedLayouts];
 
-        if (v18)
+        if (connectedLayouts)
         {
-          [(NSMutableSet *)self->mConnectedLineLayouts unionSet:v18];
+          [(NSMutableSet *)self->mConnectedLineLayouts unionSet:connectedLayouts];
         }
 
-        v19 = [v16 parentRep];
-        if (v19)
+        parentRep = [v16 parentRep];
+        if (parentRep)
         {
-          v20 = v19;
+          v20 = parentRep;
           while (![v20 shouldShowCollaboratorCursorHighlight])
           {
-            v21 = [v20 parentRep];
+            parentRep2 = [v20 parentRep];
 
-            v20 = v21;
-            if (!v21)
+            v20 = parentRep2;
+            if (!parentRep2)
             {
               goto LABEL_31;
             }
           }
 
           mParentLayoutsForInvalidatingForAncestorCollabCursors = self->mParentLayoutsForInvalidatingForAncestorCollabCursors;
-          v23 = [v16 parentRep];
-          v24 = [v23 layout];
-          [(NSMutableSet *)mParentLayoutsForInvalidatingForAncestorCollabCursors addObject:v24];
+          parentRep3 = [v16 parentRep];
+          layout2 = [parentRep3 layout];
+          [(NSMutableSet *)mParentLayoutsForInvalidatingForAncestorCollabCursors addObject:layout2];
         }
 
 LABEL_31:
@@ -2092,7 +2092,7 @@ LABEL_31:
   v55 = 0u;
   v50 = self->mConnectedLineLayouts;
   v26 = [(NSMutableSet *)v50 countByEnumeratingWithState:&v52 objects:v64 count:16];
-  v27 = v48;
+  v27 = interactiveCanvasController;
   if (!v26)
   {
     goto LABEL_49;
@@ -2113,26 +2113,26 @@ LABEL_31:
 
       v31 = *(*(&v52 + 1) + 8 * v30);
       [v31 checkConnections];
-      v32 = [v31 connectedTo];
-      if (v32)
+      connectedTo = [v31 connectedTo];
+      if (connectedTo)
       {
-        v33 = v32;
-        v34 = [v31 connectedFrom];
+        v33 = connectedTo;
+        connectedFrom = [v31 connectedFrom];
 
-        if (v34)
+        if (connectedFrom)
         {
           v35 = v29;
-          v36 = [v31 connectedTo];
-          v37 = [v36 info];
-          v38 = [v27 repForInfo:v37];
+          connectedTo2 = [v31 connectedTo];
+          info = [connectedTo2 info];
+          v38 = [v27 repForInfo:info];
           if ([v25 containsObject:v38])
           {
-            v39 = [v31 connectedFrom];
-            v40 = [v39 info];
-            v41 = [v27 repForInfo:v40];
+            connectedFrom2 = [v31 connectedFrom];
+            info2 = [connectedFrom2 info];
+            v41 = [v27 repForInfo:info2];
             v42 = [obj containsObject:v41];
 
-            v27 = v48;
+            v27 = interactiveCanvasController;
             v25 = obj;
 
             v29 = v35;
@@ -2142,15 +2142,15 @@ LABEL_31:
               goto LABEL_47;
             }
 
-            v43 = [v31 info];
-            v36 = [v48 repForInfo:v43];
+            info3 = [v31 info];
+            connectedTo2 = [interactiveCanvasController repForInfo:info3];
 
-            if (v36)
+            if (connectedTo2)
             {
-              [v46 addObject:v36];
+              [v46 addObject:connectedTo2];
             }
 
-            v27 = v48;
+            v27 = interactiveCanvasController;
           }
 
           else
@@ -2200,9 +2200,9 @@ LABEL_49:
 
 - (BOOL)traceIfDesiredForEndOperation
 {
-  v3 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
-  v4 = [v3 dynamicOperationController];
-  v5 = [v4 allTransformedReps];
+  interactiveCanvasController = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+  dynamicOperationController = [interactiveCanvasController dynamicOperationController];
+  allTransformedReps = [dynamicOperationController allTransformedReps];
   [(CRLCanvasRep *)self->mRep i_dragOffset];
   v7 = v6;
   v9 = v8;
@@ -2216,7 +2216,7 @@ LABEL_49:
   {
     v11 = v10;
     v13 = 134218496;
-    v14 = [v5 count];
+    v14 = [allTransformedReps count];
     v15 = 2048;
     v16 = v7;
     v17 = 2048;
@@ -2227,15 +2227,15 @@ LABEL_49:
   return 1;
 }
 
-- (id)selectionBehaviorForReps:(id)a3
+- (id)selectionBehaviorForReps:(id)reps
 {
-  v4 = [(CRLCanvasRepDragTracker *)self p_repsBeingHoveredAtCurrentDragPoint];
-  v5 = [(CRLCanvasRepDragTracker *)self p_orderedDraggedReps];
+  p_repsBeingHoveredAtCurrentDragPoint = [(CRLCanvasRepDragTracker *)self p_repsBeingHoveredAtCurrentDragPoint];
+  p_orderedDraggedReps = [(CRLCanvasRepDragTracker *)self p_orderedDraggedReps];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = p_repsBeingHoveredAtCurrentDragPoint;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -2250,7 +2250,7 @@ LABEL_49:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) selectionBehaviorToCommitDragTrackerWithDraggedReps:{v5, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * i) selectionBehaviorToCommitDragTrackerWithDraggedReps:{p_orderedDraggedReps, v14}];
         if (v11)
         {
           v12 = v11;
@@ -2290,18 +2290,18 @@ LABEL_11:
   return v2;
 }
 
-- (void)p_updateHUDAtPoint:(CGPoint)a3
+- (void)p_updateHUDAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v38 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+  y = point.y;
+  x = point.x;
+  interactiveCanvasController = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
   if (self->mShowDragHUD)
   {
     if ([(CRLCanvasRep *)self->mRep shouldShowDragHUD])
     {
-      v6 = [v38 dynamicOperationController];
-      v7 = [v6 currentlyTransformingReps];
-      v8 = [v7 count];
+      dynamicOperationController = [interactiveCanvasController dynamicOperationController];
+      currentlyTransformingReps = [dynamicOperationController currentlyTransformingReps];
+      v8 = [currentlyTransformingReps count];
 
       if (v8 == 1)
       {
@@ -2310,10 +2310,10 @@ LABEL_11:
         MinY = v11;
         v14 = v13;
         v16 = v15;
-        v17 = [v38 canvas];
-        v18 = [v17 isAnchoredAtRight];
+        canvas = [interactiveCanvasController canvas];
+        isAnchoredAtRight = [canvas isAnchoredAtRight];
 
-        if (v18)
+        if (isAnchoredAtRight)
         {
           v40.origin.x = v10;
           v40.origin.y = MinY;
@@ -2328,11 +2328,11 @@ LABEL_11:
           v10 = -MaxX;
         }
 
-        v20 = [v38 unitStringForPoint:{v10, MinY}];
+        v20 = [interactiveCanvasController unitStringForPoint:{v10, MinY}];
         v21 = +[CRLCanvasHUDController sharedHUDController];
         [v21 setLabelText:v20];
-        v22 = [v38 canvasView];
-        [v21 showHUDForKey:self forTouchPoint:v22 inCanvasView:x withUpwardsNudge:{y, 75.0}];
+        canvasView = [interactiveCanvasController canvasView];
+        [v21 showHUDForKey:self forTouchPoint:canvasView inCanvasView:x withUpwardsNudge:{y, 75.0}];
 
         self->mHaveShownHUD = 1;
         goto LABEL_9;
@@ -2397,12 +2397,12 @@ LABEL_22:
 
         [(CRLCanvasHUDController *)self->mSecondHUDController setLabelText:v27];
         mSecondHUDController = self->mSecondHUDController;
-        v32 = [(CRLCanvasHUDController *)mSecondHUDController view];
-        [v32 frame];
+        view = [(CRLCanvasHUDController *)mSecondHUDController view];
+        [view frame];
         v34 = sub_10011F334(self->mConstrainingPoint.x, self->mConstrainingPoint.y, (v33 + v33) / 5.0);
         v36 = v35;
-        v37 = [v38 canvasView];
-        [(CRLCanvasHUDController *)mSecondHUDController showHUDForKey:self forTouchPoint:v37 inCanvasView:v34 withUpwardsNudge:v36, 75.0];
+        canvasView2 = [interactiveCanvasController canvasView];
+        [(CRLCanvasHUDController *)mSecondHUDController showHUDForKey:self forTouchPoint:canvasView2 inCanvasView:v34 withUpwardsNudge:v36, 75.0];
 
         self->mHaveShownSecondHUD = 1;
         goto LABEL_23;
@@ -2448,15 +2448,15 @@ LABEL_23:
 
 - (void)p_updateGuides
 {
-  v4 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
-  v3 = [v4 guideController];
+  interactiveCanvasController = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+  guideController = [interactiveCanvasController guideController];
   [(CRLCanvasRepDragTracker *)self p_selectedInfosRect];
-  [v3 showGuidesAlignedWithRect:1 shouldRenderX:1 shouldRenderY:?];
+  [guideController showGuidesAlignedWithRect:1 shouldRenderX:1 shouldRenderY:?];
 }
 
 - (CGRect)p_selectedInfosRect
 {
-  v2 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+  interactiveCanvasController = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
@@ -2465,10 +2465,10 @@ LABEL_23:
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = [v2 dynamicOperationController];
-  v8 = [v7 currentlyTransformingReps];
+  dynamicOperationController = [interactiveCanvasController dynamicOperationController];
+  currentlyTransformingReps = [dynamicOperationController currentlyTransformingReps];
 
-  v9 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v9 = [currentlyTransformingReps countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2480,7 +2480,7 @@ LABEL_23:
       {
         if (*v27 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(currentlyTransformingReps);
         }
 
         v14 = *(*(&v26 + 1) + 8 * i);
@@ -2494,7 +2494,7 @@ LABEL_23:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v10 = [currentlyTransformingReps countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v10);
@@ -2511,15 +2511,15 @@ LABEL_23:
   return result;
 }
 
-- (void)p_makeSiblingRepsOfRep:(id)a3 performBlock:(id)a4
+- (void)p_makeSiblingRepsOfRep:(id)rep performBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->mDelegate && (objc_opt_respondsToSelector() & 1) != 0 && [(CRLCanvasRepDragTrackerDelegate *)self->mDelegate dragTracker:self shouldApplyToSiblingRepsForRep:v6])
+  repCopy = rep;
+  blockCopy = block;
+  if (self->mDelegate && (objc_opt_respondsToSelector() & 1) != 0 && [(CRLCanvasRepDragTrackerDelegate *)self->mDelegate dragTracker:self shouldApplyToSiblingRepsForRep:repCopy])
   {
-    v8 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
-    v9 = [v6 info];
-    v10 = [v8 repsForInfo:v9];
+    interactiveCanvasController = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+    info = [repCopy info];
+    v10 = [interactiveCanvasController repsForInfo:info];
 
     v18 = 0u;
     v19 = 0u;
@@ -2541,9 +2541,9 @@ LABEL_23:
             objc_enumerationMutation(v11);
           }
 
-          if (*(*(&v16 + 1) + 8 * v15) != v6)
+          if (*(*(&v16 + 1) + 8 * v15) != repCopy)
           {
-            v7[2](v7);
+            blockCopy[2](blockCopy);
           }
 
           v15 = v15 + 1;
@@ -2570,15 +2570,15 @@ LABEL_23:
   return [(CRLCanvasRepDragTrackerDelegate *)mDelegate delegateDisplaysUIForRepDragTracker:self];
 }
 
-- (id)p_infosFromReps:(id)a3
+- (id)p_infosFromReps:(id)reps
 {
-  v3 = a3;
-  v4 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v3, "count")}];
+  repsCopy = reps;
+  v4 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(repsCopy, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = repsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -2593,8 +2593,8 @@ LABEL_23:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) info];
-        [v4 addObject:v10];
+        info = [*(*(&v12 + 1) + 8 * i) info];
+        [v4 addObject:info];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -2606,16 +2606,16 @@ LABEL_23:
   return v4;
 }
 
-- (id)p_repsForInfos:(id)a3 fromReps:(id)a4
+- (id)p_repsForInfos:(id)infos fromReps:(id)reps
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
+  infosCopy = infos;
+  repsCopy = reps;
+  v7 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(infosCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v6;
+  v8 = repsCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -2631,8 +2631,8 @@ LABEL_23:
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = [v13 info];
-        v15 = [v5 containsObject:v14];
+        info = [v13 info];
+        v15 = [infosCopy containsObject:info];
 
         if (v15)
         {

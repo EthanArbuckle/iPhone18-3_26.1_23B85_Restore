@@ -1,21 +1,21 @@
 @interface CSDAVAudioClient
-- (BOOL)setMuted:(BOOL)a3 error:(id *)a4;
-- (void)setAudioSessionPropertiesWithProperties:(id)a3 completion:(id)a4;
+- (BOOL)setMuted:(BOOL)muted error:(id *)error;
+- (void)setAudioSessionPropertiesWithProperties:(id)properties completion:(id)completion;
 @end
 
 @implementation CSDAVAudioClient
 
-- (BOOL)setMuted:(BOOL)a3 error:(id *)a4
+- (BOOL)setMuted:(BOOL)muted error:(id *)error
 {
 
-  sub_1002BB2C4(a3);
+  sub_1002BB2C4(muted);
 
   return 1;
 }
 
-- (void)setAudioSessionPropertiesWithProperties:(id)a3 completion:(id)a4
+- (void)setAudioSessionPropertiesWithProperties:(id)properties completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   sub_10026D814(&qword_1006A6660, &qword_10057E270);
   v6 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   _Block_copy(v5);

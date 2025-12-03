@@ -1,7 +1,7 @@
 @interface NFReaderOperation
-- (NFReaderOperation)initWithCoder:(id)a3;
+- (NFReaderOperation)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFReaderOperation
@@ -18,27 +18,27 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   date = self->_date;
-  v5 = a3;
-  [v5 encodeObject:date forKey:@"Date"];
-  [v5 encodeObject:self->_operation forKey:@"Operation"];
+  coderCopy = coder;
+  [coderCopy encodeObject:date forKey:@"Date"];
+  [coderCopy encodeObject:self->_operation forKey:@"Operation"];
 }
 
-- (NFReaderOperation)initWithCoder:(id)a3
+- (NFReaderOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = NFReaderOperation;
   v5 = [(NFReaderOperation *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Date"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Date"];
     date = v5->_date;
     v5->_date = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Operation"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Operation"];
     operation = v5->_operation;
     v5->_operation = v8;
   }

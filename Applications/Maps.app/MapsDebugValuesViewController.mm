@@ -1,6 +1,6 @@
 @interface MapsDebugValuesViewController
-- (BOOL)debugTableRow:(id)a3 matches:(id)a4;
-- (BOOL)debugTableSection:(id)a3 matches:(id)a4;
+- (BOOL)debugTableRow:(id)row matches:(id)matches;
+- (BOOL)debugTableSection:(id)section matches:(id)matches;
 - (MapsDebugNavigationTableRow)originNavigationRow;
 - (MapsDebugValuesViewController)init;
 - (MapsDebugViewControllerDelegate)delegate;
@@ -8,28 +8,28 @@
 - (NSString)description;
 - (id)_currentChromeViewController;
 - (id)_sections;
-- (id)addSectionWithTitle:(id)a3 content:(id)a4;
-- (id)indexPathForRow:(id)a3;
-- (id)rowAtIndexPath:(id)a3;
-- (id)rowForIndexPath:(id)a3;
-- (id)sectionAtIndex:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 itemIdentifier:(id)a5;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (void)_applySnapshotWithFilterText:(id)a3 animated:(BOOL)a4;
+- (id)addSectionWithTitle:(id)title content:(id)content;
+- (id)indexPathForRow:(id)row;
+- (id)rowAtIndexPath:(id)path;
+- (id)rowForIndexPath:(id)path;
+- (id)sectionAtIndex:(int64_t)index;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path itemIdentifier:(id)identifier;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
+- (void)_applySnapshotWithFilterText:(id)text animated:(BOOL)animated;
 - (void)_done;
-- (void)_performBlockAfterDismiss:(BOOL)a3 block:(id)a4;
+- (void)_performBlockAfterDismiss:(BOOL)dismiss block:(id)block;
 - (void)dealloc;
-- (void)loadContentNowIfNeeded:(BOOL)a3;
+- (void)loadContentNowIfNeeded:(BOOL)needed;
 - (void)prepareContent;
 - (void)rebuildSections;
 - (void)reloadData;
-- (void)segueToViewController:(id)a3;
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)segueToViewController:(id)controller;
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willNavigateToSubsequentController:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willNavigateToSubsequentController:(id)controller;
 @end
 
 @implementation MapsDebugValuesViewController
@@ -55,11 +55,11 @@
   return WeakRetained;
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v5 = [a3 searchBar];
-  v4 = [v5 text];
-  [(MapsDebugValuesViewController *)self _applySnapshotWithFilterText:v4 animated:1];
+  searchBar = [controller searchBar];
+  text = [searchBar text];
+  [(MapsDebugValuesViewController *)self _applySnapshotWithFilterText:text animated:1];
 }
 
 - (void)rebuildSections
@@ -74,68 +74,68 @@
 
 - (void)reloadData
 {
-  v2 = [(MapsDebugValuesViewController *)self tableView];
-  [v2 reloadData];
+  tableView = [(MapsDebugValuesViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(MapsDebugValuesViewController *)self rowAtIndexPath:v6];
-  v8 = [v7 selectionAction];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [(MapsDebugValuesViewController *)self rowAtIndexPath:pathCopy];
+  selectionAction = [v7 selectionAction];
 
-  if (v8)
+  if (selectionAction)
   {
-    v9 = [v7 selectionAction];
-    v9[2]();
+    selectionAction2 = [v7 selectionAction];
+    selectionAction2[2]();
   }
 
-  [v10 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v9 = [(MapsDebugValuesViewController *)self rowAtIndexPath:a5];
-  v8 = [v9 currentCell];
+  cellCopy = cell;
+  v9 = [(MapsDebugValuesViewController *)self rowAtIndexPath:path];
+  currentCell = [v9 currentCell];
 
-  if (v8 == v7)
+  if (currentCell == cellCopy)
   {
     [v9 setCurrentCell:0];
   }
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(MapsDebugValuesViewController *)self rowAtIndexPath:v8];
+  viewCopy = view;
+  pathCopy = path;
+  v9 = [(MapsDebugValuesViewController *)self rowAtIndexPath:pathCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v10 = +[NSMutableArray array];
-    [v10 addObject:v8];
-    v11 = [(MapsDebugValuesViewController *)self navigationController];
-    v12 = [v11 viewControllers];
-    v13 = [v12 count];
+    [v10 addObject:pathCopy];
+    navigationController = [(MapsDebugValuesViewController *)self navigationController];
+    viewControllers = [navigationController viewControllers];
+    v13 = [viewControllers count];
 
     v14 = v13 - 1;
     if (v13 == 1)
     {
 LABEL_7:
-      v25 = [v10 reverseObjectEnumerator];
-      v26 = [v25 allObjects];
-      v27 = [v26 mutableCopy];
+      reverseObjectEnumerator = [v10 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
+      v27 = [allObjects mutableCopy];
 
-      v28 = [v9 title];
+      title = [v9 title];
       objc_initWeak(&location, self);
       v32[0] = _NSConcreteStackBlock;
       v32[1] = 3221225472;
       v32[2] = sub_100739F50;
       v32[3] = &unk_101627D98;
       objc_copyWeak(&v35, &location);
-      v29 = v28;
+      v29 = title;
       v33 = v29;
       v10 = v27;
       v34 = v10;
@@ -149,13 +149,13 @@ LABEL_7:
     {
       while (1)
       {
-        v15 = [(MapsDebugValuesViewController *)self navigationController];
-        v16 = [v15 viewControllers];
-        v17 = [v16 objectAtIndex:v14];
+        navigationController2 = [(MapsDebugValuesViewController *)self navigationController];
+        viewControllers2 = [navigationController2 viewControllers];
+        v17 = [viewControllers2 objectAtIndex:v14];
 
-        v18 = [(MapsDebugValuesViewController *)self navigationController];
-        v19 = [v18 viewControllers];
-        v20 = [v19 objectAtIndex:v14 - 1];
+        navigationController3 = [(MapsDebugValuesViewController *)self navigationController];
+        viewControllers3 = [navigationController3 viewControllers];
+        v20 = [viewControllers3 objectAtIndex:v14 - 1];
 
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -170,17 +170,17 @@ LABEL_7:
         }
 
         v17 = v17;
-        v21 = [v17 originNavigationRow];
+        originNavigationRow = [v17 originNavigationRow];
 
-        if (!v21)
+        if (!originNavigationRow)
         {
 
           break;
         }
 
         v22 = v20;
-        v23 = [v17 originNavigationRow];
-        v24 = [v22 indexPathForRow:v23];
+        originNavigationRow2 = [v17 originNavigationRow];
+        v24 = [v22 indexPathForRow:originNavigationRow2];
 
         [v10 addObject:v24];
         if (!--v14)
@@ -201,32 +201,32 @@ LABEL_7:
   return v30;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 itemIdentifier:(id)a5
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path itemIdentifier:(id)identifier
 {
   rowIdentifierMap = self->_rowIdentifierMap;
-  v7 = a3;
-  v8 = [(NSDictionary *)rowIdentifierMap objectForKeyedSubscript:a5];
-  v9 = [v8 cellForTableView:v7];
+  viewCopy = view;
+  v8 = [(NSDictionary *)rowIdentifierMap objectForKeyedSubscript:identifier];
+  v9 = [v8 cellForTableView:viewCopy];
 
-  v10 = [v8 selectionAction];
-  [v9 setSelectionStyle:v10 != 0];
+  selectionAction = [v8 selectionAction];
+  [v9 setSelectionStyle:selectionAction != 0];
 
   [v8 setCurrentCell:v9];
 
   return v9;
 }
 
-- (id)rowAtIndexPath:(id)a3
+- (id)rowAtIndexPath:(id)path
 {
-  v4 = [(MapsDebugValuesViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:a3];
+  v4 = [(MapsDebugValuesViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:path];
   v5 = [(NSDictionary *)self->_rowIdentifierMap objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (id)sectionAtIndex:(int64_t)a3
+- (id)sectionAtIndex:(int64_t)index
 {
-  v4 = [(MapsDebugValuesViewDiffableDataSource *)self->_diffableDataSource sectionIdentifierForIndex:a3];
+  v4 = [(MapsDebugValuesViewDiffableDataSource *)self->_diffableDataSource sectionIdentifierForIndex:index];
   v5 = [(NSDictionary *)self->_sectionIdentifierMap objectForKeyedSubscript:v4];
 
   return v5;
@@ -234,43 +234,43 @@ LABEL_7:
 
 - (void)_done
 {
-  v3 = [(MapsDebugValuesViewController *)self delegate];
-  [v3 debugControllerDidFinish:self];
+  delegate = [(MapsDebugValuesViewController *)self delegate];
+  [delegate debugControllerDidFinish:self];
 }
 
-- (void)willNavigateToSubsequentController:(id)a3
+- (void)willNavigateToSubsequentController:(id)controller
 {
-  v4 = a3;
-  v5 = [(MapsDebugValuesViewController *)self delegate];
-  [v4 setDelegate:v5];
+  controllerCopy = controller;
+  delegate = [(MapsDebugValuesViewController *)self delegate];
+  [controllerCopy setDelegate:delegate];
 }
 
-- (void)segueToViewController:(id)a3
+- (void)segueToViewController:(id)controller
 {
-  v4 = a3;
-  [(MapsDebugValuesViewController *)self willNavigateToSubsequentController:v4];
-  v5 = [(MapsDebugValuesViewController *)self navigationDelegate];
+  controllerCopy = controller;
+  [(MapsDebugValuesViewController *)self willNavigateToSubsequentController:controllerCopy];
+  navigationDelegate = [(MapsDebugValuesViewController *)self navigationDelegate];
 
-  if (v5)
+  if (navigationDelegate)
   {
-    v6 = [(MapsDebugValuesViewController *)self navigationDelegate];
-    [v6 debugViewController:self segueToViewController:v4];
+    navigationDelegate2 = [(MapsDebugValuesViewController *)self navigationDelegate];
+    [navigationDelegate2 debugViewController:self segueToViewController:controllerCopy];
   }
 
   else
   {
-    v6 = [(MapsDebugValuesViewController *)self navigationController];
-    [v6 pushViewController:v4 animated:1];
+    navigationDelegate2 = [(MapsDebugValuesViewController *)self navigationController];
+    [navigationDelegate2 pushViewController:controllerCopy animated:1];
   }
 }
 
-- (void)_applySnapshotWithFilterText:(id)a3 animated:(BOOL)a4
+- (void)_applySnapshotWithFilterText:(id)text animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  textCopy = text;
   if (self->_searchController)
   {
-    v30 = v4;
+    v30 = animatedCopy;
     v33 = [NSMutableArray arrayWithCapacity:[(NSArray *)self->_sections count]];
     v47 = 0u;
     v48 = 0u;
@@ -318,7 +318,7 @@ LABEL_7:
     if (v35)
     {
       v34 = *v44;
-      v38 = v6;
+      v38 = textCopy;
       do
       {
         for (j = 0; j != v35; j = j + 1)
@@ -336,9 +336,9 @@ LABEL_7:
           {
             v36 = v17;
             v37 = j;
-            if ([v6 length])
+            if ([textCopy length])
             {
-              v19 = [(MapsDebugValuesViewController *)self debugTableSection:v16 matches:v6];
+              v19 = [(MapsDebugValuesViewController *)self debugTableSection:v16 matches:textCopy];
             }
 
             else
@@ -346,15 +346,15 @@ LABEL_7:
               v19 = 1;
             }
 
-            v20 = [v16 rows];
-            v21 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v20 count]);
+            rows = [v16 rows];
+            v21 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [rows count]);
 
             v41 = 0u;
             v42 = 0u;
             v39 = 0u;
             v40 = 0u;
-            v22 = [v16 rows];
-            v23 = [v22 countByEnumeratingWithState:&v39 objects:v51 count:16];
+            rows2 = [v16 rows];
+            v23 = [rows2 countByEnumeratingWithState:&v39 objects:v51 count:16];
             if (v23)
             {
               v24 = v23;
@@ -365,7 +365,7 @@ LABEL_7:
                 {
                   if (*v40 != v25)
                   {
-                    objc_enumerationMutation(v22);
+                    objc_enumerationMutation(rows2);
                   }
 
                   v27 = *(*(&v39 + 1) + 8 * k);
@@ -378,7 +378,7 @@ LABEL_7:
                   }
                 }
 
-                v24 = [v22 countByEnumeratingWithState:&v39 objects:v51 count:16];
+                v24 = [rows2 countByEnumeratingWithState:&v39 objects:v51 count:16];
               }
 
               while (v24);
@@ -388,7 +388,7 @@ LABEL_7:
             [v32 appendItemsWithIdentifiers:v21 intoSectionWithIdentifier:v36];
 
             j = v37;
-            v6 = v38;
+            textCopy = v38;
             v9 = &OBJC_IVAR___TransitNavigationTrayViewController__hasForcedInitialContaineeHeight;
           }
         }
@@ -403,61 +403,61 @@ LABEL_7:
   }
 }
 
-- (BOOL)debugTableRow:(id)a3 matches:(id)a4
+- (BOOL)debugTableRow:(id)row matches:(id)matches
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 title];
-  if ([v7 localizedCaseInsensitiveContainsString:v6])
+  rowCopy = row;
+  matchesCopy = matches;
+  title = [rowCopy title];
+  if ([title localizedCaseInsensitiveContainsString:matchesCopy])
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [v5 subtitle];
-    v8 = [v9 localizedCaseInsensitiveContainsString:v6];
+    subtitle = [rowCopy subtitle];
+    v8 = [subtitle localizedCaseInsensitiveContainsString:matchesCopy];
   }
 
   return v8;
 }
 
-- (BOOL)debugTableSection:(id)a3 matches:(id)a4
+- (BOOL)debugTableSection:(id)section matches:(id)matches
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 title];
-  if ([v7 localizedCaseInsensitiveContainsString:v6])
+  sectionCopy = section;
+  matchesCopy = matches;
+  title = [sectionCopy title];
+  if ([title localizedCaseInsensitiveContainsString:matchesCopy])
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [v5 footer];
-    v8 = [v9 localizedCaseInsensitiveContainsString:v6];
+    footer = [sectionCopy footer];
+    v8 = [footer localizedCaseInsensitiveContainsString:matchesCopy];
   }
 
   return v8;
 }
 
-- (void)loadContentNowIfNeeded:(BOOL)a3
+- (void)loadContentNowIfNeeded:(BOOL)needed
 {
   if (!self->_sections)
   {
-    v3 = self;
-    v34 = a3;
+    selfCopy = self;
+    neededCopy = needed;
     v4 = objc_alloc_init(NSMutableArray);
-    mutableSections = v3->_mutableSections;
-    v3->_mutableSections = v4;
+    mutableSections = selfCopy->_mutableSections;
+    selfCopy->_mutableSections = v4;
 
-    [(MapsDebugValuesViewController *)v3 prepareContent];
-    v6 = [(NSMutableArray *)v3->_mutableSections copy];
-    sections = v3->_sections;
-    v3->_sections = v6;
+    [(MapsDebugValuesViewController *)selfCopy prepareContent];
+    v6 = [(NSMutableArray *)selfCopy->_mutableSections copy];
+    sections = selfCopy->_sections;
+    selfCopy->_sections = v6;
 
-    v8 = v3->_mutableSections;
-    v3->_mutableSections = 0;
+    v8 = selfCopy->_mutableSections;
+    selfCopy->_mutableSections = 0;
 
     v36 = +[NSMutableDictionary dictionary];
     v9 = +[NSMutableDictionary dictionary];
@@ -465,9 +465,9 @@ LABEL_7:
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v10 = v3->_sections;
+    v10 = selfCopy->_sections;
     v11 = [(NSArray *)v10 countByEnumeratingWithState:&v47 objects:v53 count:16];
-    v35 = v3;
+    v35 = selfCopy;
     if (v11)
     {
       v12 = v11;
@@ -482,14 +482,14 @@ LABEL_7:
           }
 
           v15 = *(*(&v47 + 1) + 8 * i);
-          [v15 setDisplayingViewController:v3];
+          [v15 setDisplayingViewController:selfCopy];
           [v15 commit];
           if ([v15 visible])
           {
             v16 = [NSNumber numberWithUnsignedLong:v15];
             [v36 setObject:v15 forKeyedSubscript:v16];
 
-            v3 = v35;
+            selfCopy = v35;
           }
         }
 
@@ -500,14 +500,14 @@ LABEL_7:
     }
 
     v17 = [v36 copy];
-    sectionIdentifierMap = v3->_sectionIdentifierMap;
-    v3->_sectionIdentifierMap = v17;
+    sectionIdentifierMap = selfCopy->_sectionIdentifierMap;
+    selfCopy->_sectionIdentifierMap = v17;
 
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    obj = v3->_sections;
+    obj = selfCopy->_sections;
     v19 = [(NSArray *)obj countByEnumeratingWithState:&v43 objects:v52 count:16];
     if (v19)
     {
@@ -527,8 +527,8 @@ LABEL_7:
           v40 = 0u;
           v41 = 0u;
           v42 = 0u;
-          v23 = [v22 rows];
-          v24 = [v23 countByEnumeratingWithState:&v39 objects:v51 count:16];
+          rows = [v22 rows];
+          v24 = [rows countByEnumeratingWithState:&v39 objects:v51 count:16];
           if (v24)
           {
             v25 = v24;
@@ -539,7 +539,7 @@ LABEL_7:
               {
                 if (*v40 != v26)
                 {
-                  objc_enumerationMutation(v23);
+                  objc_enumerationMutation(rows);
                 }
 
                 v28 = *(*(&v39 + 1) + 8 * k);
@@ -550,7 +550,7 @@ LABEL_7:
                 }
               }
 
-              v25 = [v23 countByEnumeratingWithState:&v39 objects:v51 count:16];
+              v25 = [rows countByEnumeratingWithState:&v39 objects:v51 count:16];
             }
 
             while (v25);
@@ -569,16 +569,16 @@ LABEL_7:
 
     if ([(UISearchController *)v35->_searchController isActive])
     {
-      v32 = [(UISearchController *)v35->_searchController searchBar];
-      v33 = [v32 text];
+      searchBar = [(UISearchController *)v35->_searchController searchBar];
+      text = [searchBar text];
     }
 
     else
     {
-      v33 = 0;
+      text = 0;
     }
 
-    [(MapsDebugValuesViewController *)v35 _applySnapshotWithFilterText:v33 animated:v34];
+    [(MapsDebugValuesViewController *)v35 _applySnapshotWithFilterText:text animated:neededCopy];
   }
 }
 
@@ -590,28 +590,28 @@ LABEL_7:
   return sections;
 }
 
-- (id)addSectionWithTitle:(id)a3 content:(id)a4
+- (id)addSectionWithTitle:(id)title content:(id)content
 {
-  v6 = a4;
-  v7 = a3;
+  contentCopy = content;
+  titleCopy = title;
   v8 = objc_alloc_init(MapsDebugTableSection);
-  [(MapsDebugTableSection *)v8 setTitle:v7];
+  [(MapsDebugTableSection *)v8 setTitle:titleCopy];
 
-  v6[2](v6, v8);
+  contentCopy[2](contentCopy, v8);
   [(MapsDebugTableSection *)v8 commit];
   [(NSMutableArray *)self->_mutableSections addObject:v8];
 
   return v8;
 }
 
-- (id)indexPathForRow:(id)a3
+- (id)indexPathForRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   sections = self->_sections;
-  v6 = [v4 section];
-  v7 = [(NSArray *)sections indexOfObject:v6];
+  section = [rowCopy section];
+  v7 = [(NSArray *)sections indexOfObject:section];
 
-  if (v7 == 0x7FFFFFFFFFFFFFFFLL || ([v4 section], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "rows"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "indexOfObject:", v4), v9, v8, v10 == 0x7FFFFFFFFFFFFFFFLL))
+  if (v7 == 0x7FFFFFFFFFFFFFFFLL || ([rowCopy section], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "rows"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "indexOfObject:", rowCopy), v9, v8, v10 == 0x7FFFFFFFFFFFFFFFLL))
   {
     v11 = 0;
   }
@@ -624,21 +624,21 @@ LABEL_7:
   return v11;
 }
 
-- (id)rowForIndexPath:(id)a3
+- (id)rowForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  if (v5 >= [(NSArray *)self->_sections count])
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section >= [(NSArray *)self->_sections count])
   {
     v11 = 0;
   }
 
   else
   {
-    v6 = -[NSArray objectAtIndex:](self->_sections, "objectAtIndex:", [v4 section]);
-    v7 = [v4 row];
-    v8 = [v6 rows];
-    v9 = [v8 count];
+    v6 = -[NSArray objectAtIndex:](self->_sections, "objectAtIndex:", [pathCopy section]);
+    v7 = [pathCopy row];
+    rows = [v6 rows];
+    v9 = [rows count];
 
     if (v7 >= v9)
     {
@@ -647,8 +647,8 @@ LABEL_7:
 
     else
     {
-      v10 = [v6 rows];
-      v11 = [v10 objectAtIndex:{objc_msgSend(v4, "row")}];
+      rows2 = [v6 rows];
+      v11 = [rows2 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
     }
   }
 
@@ -674,18 +674,18 @@ LABEL_7:
 - (NSString)description
 {
   v3 = objc_opt_class();
-  v4 = [(MapsDebugValuesViewController *)self title];
-  v5 = [(MapsDebugValuesViewController *)self originNavigationRow];
-  v6 = [NSString stringWithFormat:@"<%@: %p title:%@ from:%@>", v3, self, v4, v5];
+  title = [(MapsDebugValuesViewController *)self title];
+  originNavigationRow = [(MapsDebugValuesViewController *)self originNavigationRow];
+  v6 = [NSString stringWithFormat:@"<%@: %p title:%@ from:%@>", v3, self, title, originNavigationRow];
 
   return v6;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MapsDebugValuesViewController;
-  [(MapsDebugValuesViewController *)&v4 viewWillAppear:a3];
+  [(MapsDebugValuesViewController *)&v4 viewWillAppear:appear];
   [(MapsDebugValuesViewController *)self loadContentNowIfNeeded:0];
 }
 
@@ -697,26 +697,26 @@ LABEL_7:
   if (self->_searchController)
   {
     v3 = [MapsDebugValuesViewDiffableDataSource alloc];
-    v4 = [(MapsDebugValuesViewController *)self tableView];
+    tableView = [(MapsDebugValuesViewController *)self tableView];
     v5 = sub_10009ACF0(self);
-    v6 = [(MapsDebugValuesViewDiffableDataSource *)v3 initWithTableView:v4 cellProvider:v5];
+    v6 = [(MapsDebugValuesViewDiffableDataSource *)v3 initWithTableView:tableView cellProvider:v5];
     diffableDataSource = self->_diffableDataSource;
     self->_diffableDataSource = v6;
 
     [(MapsDebugValuesViewDiffableDataSource *)self->_diffableDataSource setDefaultRowAnimation:0];
     objc_storeWeak(&self->_diffableDataSource->_debugVC, self);
-    v8 = [(UISearchController *)self->_searchController searchBar];
-    [v8 setDelegate:self];
+    searchBar = [(UISearchController *)self->_searchController searchBar];
+    [searchBar setDelegate:self];
 
     searchController = self->_searchController;
-    v10 = [(MapsDebugValuesViewController *)self navigationItem];
-    [v10 setSearchController:searchController];
+    navigationItem = [(MapsDebugValuesViewController *)self navigationItem];
+    [navigationItem setSearchController:searchController];
 
-    v11 = [(UISearchController *)self->_searchController searchBar];
-    [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+    searchBar2 = [(UISearchController *)self->_searchController searchBar];
+    [searchBar2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v12 = [(UISearchController *)self->_searchController searchBar];
-    [v12 setAutocorrectionType:1];
+    searchBar3 = [(UISearchController *)self->_searchController searchBar];
+    [searchBar3 setAutocorrectionType:1];
   }
 }
 
@@ -765,12 +765,12 @@ LABEL_7:
   v2 = [(MapsDebugValuesViewController *)&v9 initWithStyle:2];
   if (v2)
   {
-    v3 = [objc_opt_class() navigationDestinationTitle];
-    [(MapsDebugValuesViewController *)v2 setTitle:v3];
+    navigationDestinationTitle = [objc_opt_class() navigationDestinationTitle];
+    [(MapsDebugValuesViewController *)v2 setTitle:navigationDestinationTitle];
 
     v4 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:v2 action:"_done"];
-    v5 = [(MapsDebugValuesViewController *)v2 navigationItem];
-    [v5 setRightBarButtonItem:v4];
+    navigationItem = [(MapsDebugValuesViewController *)v2 navigationItem];
+    [navigationItem setRightBarButtonItem:v4];
 
     if ([objc_opt_class() isSearchable])
     {
@@ -788,39 +788,39 @@ LABEL_7:
   return v2;
 }
 
-- (void)_performBlockAfterDismiss:(BOOL)a3 block:(id)a4
+- (void)_performBlockAfterDismiss:(BOOL)dismiss block:(id)block
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(MapsDebugValuesViewController *)self presentingViewController];
-  v8 = [v7 _maps_mapsSceneDelegate];
+  dismissCopy = dismiss;
+  blockCopy = block;
+  presentingViewController = [(MapsDebugValuesViewController *)self presentingViewController];
+  _maps_mapsSceneDelegate = [presentingViewController _maps_mapsSceneDelegate];
 
-  v9 = [v8 chromeViewController];
-  if (v4)
+  chromeViewController = [_maps_mapsSceneDelegate chromeViewController];
+  if (dismissCopy)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100DA00A0;
     v10[3] = &unk_101661090;
-    v12 = v6;
-    v11 = v9;
+    v12 = blockCopy;
+    v11 = chromeViewController;
     [(MapsDebugValuesViewController *)self dismissViewControllerAnimated:1 completion:v10];
   }
 
   else
   {
-    (*(v6 + 2))(v6, v9);
+    (*(blockCopy + 2))(blockCopy, chromeViewController);
   }
 }
 
 - (id)_currentChromeViewController
 {
-  v2 = [(MapsDebugValuesViewController *)self presentingViewController];
-  v3 = [v2 _maps_mapsSceneDelegate];
+  presentingViewController = [(MapsDebugValuesViewController *)self presentingViewController];
+  _maps_mapsSceneDelegate = [presentingViewController _maps_mapsSceneDelegate];
 
-  v4 = [v3 chromeViewController];
+  chromeViewController = [_maps_mapsSceneDelegate chromeViewController];
 
-  return v4;
+  return chromeViewController;
 }
 
 @end

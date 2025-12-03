@@ -1,8 +1,8 @@
 @interface _CalendarEventsRow
 - (_CalendarEventsRow)init;
-- (id)occurrenceForDay:(unint64_t)a3;
-- (unint64_t)spaceGapFor:(id)a3;
-- (void)addOccurrenceBlock:(id)a3;
+- (id)occurrenceForDay:(unint64_t)day;
+- (unint64_t)spaceGapFor:(id)for;
+- (void)addOccurrenceBlock:(id)block;
 @end
 
 @implementation _CalendarEventsRow
@@ -24,18 +24,18 @@
   return v2;
 }
 
-- (void)addOccurrenceBlock:(id)a3
+- (void)addOccurrenceBlock:(id)block
 {
-  v19 = a3;
-  [(NSMutableArray *)self->_blocks addObject:v19];
-  v4 = [v19 startRange];
-  v5 = [v19 length];
-  v6 = self->_occupyingDays | (1 << v4);
+  blockCopy = block;
+  [(NSMutableArray *)self->_blocks addObject:blockCopy];
+  startRange = [blockCopy startRange];
+  v5 = [blockCopy length];
+  v6 = self->_occupyingDays | (1 << startRange);
   if (v5 != 1)
   {
-    v7 = vdupq_n_s64(v4);
+    v7 = vdupq_n_s64(startRange);
     v8 = vaddq_s64(v7, xmmword_1001F8260);
-    v9 = self->_occupyingDays | (1 << v4);
+    v9 = self->_occupyingDays | (1 << startRange);
     v10 = vaddq_s64(v7, xmmword_1001F8270);
     v11 = vdupq_n_s64(v5 - 2);
     v12.i64[0] = 0x100000001;
@@ -61,7 +61,7 @@
   self->_occupyingDays = v6;
 }
 
-- (id)occurrenceForDay:(unint64_t)a3
+- (id)occurrenceForDay:(unint64_t)day
 {
   v14 = 0u;
   v15 = 0u;
@@ -83,9 +83,9 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 startRange];
+        startRange = [v9 startRange];
         v11 = [v9 length];
-        if (v10 <= a3 && &v11[v10 - 1] >= a3)
+        if (startRange <= day && &v11[startRange - 1] >= day)
         {
           v12 = v9;
           goto LABEL_12;
@@ -108,9 +108,9 @@ LABEL_12:
   return v12;
 }
 
-- (unint64_t)spaceGapFor:(id)a3
+- (unint64_t)spaceGapFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -131,7 +131,7 @@ LABEL_12:
           objc_enumerationMutation(v5);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * i) gapBetweenBlock:{v4, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * i) gapBetweenBlock:{forCopy, v13}];
         if (v11 == -1)
         {
           v8 = -1;

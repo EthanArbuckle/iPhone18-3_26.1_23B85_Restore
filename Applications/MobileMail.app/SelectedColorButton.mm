@@ -1,20 +1,20 @@
 @interface SelectedColorButton
-+ (id)buttonWithType:(int64_t)a3 radius:(double)a4 color:(id)a5;
-+ (id)imageWithColor:(id)a3;
++ (id)buttonWithType:(int64_t)type radius:(double)radius color:(id)color;
++ (id)imageWithColor:(id)color;
 - (void)layoutSubviews;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation SelectedColorButton
 
-+ (id)imageWithColor:(id)a3
++ (id)imageWithColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v8.width = 1.0;
   v8.height = 1.0;
   UIGraphicsBeginImageContextWithOptions(v8, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
-  CGContextSetFillColorWithColor(CurrentContext, [v3 CGColor]);
+  CGContextSetFillColorWithColor(CurrentContext, [colorCopy CGColor]);
   v9.origin.x = 0.0;
   v9.origin.y = 0.0;
   v9.size.width = 1.0;
@@ -26,36 +26,36 @@
   return v5;
 }
 
-+ (id)buttonWithType:(int64_t)a3 radius:(double)a4 color:(id)a5
++ (id)buttonWithType:(int64_t)type radius:(double)radius color:(id)color
 {
-  v8 = a5;
-  v25.receiver = a1;
+  colorCopy = color;
+  v25.receiver = self;
   v25.super_class = &OBJC_METACLASS___SelectedColorButton;
-  v9 = objc_msgSendSuper2(&v25, "buttonWithType:", a3);
-  v10 = [a1 imageWithColor:v8];
+  v9 = objc_msgSendSuper2(&v25, "buttonWithType:", type);
+  v10 = [self imageWithColor:colorCopy];
   [v9 setImage:v10 forState:0];
 
   [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v9 setContentHorizontalAlignment:3];
   [v9 setContentVerticalAlignment:3];
-  v11 = [v9 layer];
-  [v11 setMasksToBounds:1];
+  layer = [v9 layer];
+  [layer setMasksToBounds:1];
 
-  v12 = [v9 layer];
-  [v12 setCornerRadius:a4];
+  layer2 = [v9 layer];
+  [layer2 setCornerRadius:radius];
 
-  v13 = [v9 widthAnchor];
-  v14 = [v13 constraintEqualToConstant:a4 + a4];
-  v26[0] = v14;
-  v15 = [v9 heightAnchor];
-  v16 = [v9 widthAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  widthAnchor = [v9 widthAnchor];
+  radius = [widthAnchor constraintEqualToConstant:radius + radius];
+  v26[0] = radius;
+  heightAnchor = [v9 heightAnchor];
+  widthAnchor2 = [v9 widthAnchor];
+  v17 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
   v26[1] = v17;
   v18 = [NSArray arrayWithObjects:v26 count:2];
 
   [NSLayoutConstraint activateConstraints:v18];
   v19 = +[CALayer layer];
-  v20 = a4 * 2.0 + -5.0;
+  v20 = radius * 2.0 + -5.0;
   [v19 setCornerRadius:v20 * 0.5];
   v21 = +[UIColor clearColor];
   v22 = v21;
@@ -64,8 +64,8 @@
   [v19 setBorderWidth:2.0];
   [v9 setDonut:v19];
   [v19 setFrame:{2.5, 2.5, v20, v20}];
-  v23 = [v9 layer];
-  [v23 addSublayer:v19];
+  layer3 = [v9 layer];
+  [layer3 addSublayer:v19];
 
   return v9;
 }
@@ -76,19 +76,19 @@
   v6.super_class = SelectedColorButton;
   [(SelectedColorButton *)&v6 layoutSubviews];
   v3 = +[UIColor systemBackgroundColor];
-  v4 = [v3 CGColor];
-  v5 = [(SelectedColorButton *)self donut];
-  [v5 setBorderColor:v4];
+  cGColor = [v3 CGColor];
+  donut = [(SelectedColorButton *)self donut];
+  [donut setBorderColor:cGColor];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v6.receiver = self;
   v6.super_class = SelectedColorButton;
   [(SelectedColorButton *)&v6 setSelected:?];
-  v5 = [(SelectedColorButton *)self donut];
-  [v5 setHidden:!v3];
+  donut = [(SelectedColorButton *)self donut];
+  [donut setHidden:!selectedCopy];
 }
 
 @end

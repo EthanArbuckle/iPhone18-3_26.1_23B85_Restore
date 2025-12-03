@@ -1,41 +1,41 @@
 @interface TUIImpressionData
-+ (id)newImpressionWithUUID:(id)a3 identifier:(id)a4 data:(id)a5;
-- (TUIImpressionData)initWithUUID:(id)a3 identifier:(id)a4 data:(id)a5;
++ (id)newImpressionWithUUID:(id)d identifier:(id)identifier data:(id)data;
+- (TUIImpressionData)initWithUUID:(id)d identifier:(id)identifier data:(id)data;
 @end
 
 @implementation TUIImpressionData
 
-- (TUIImpressionData)initWithUUID:(id)a3 identifier:(id)a4 data:(id)a5
+- (TUIImpressionData)initWithUUID:(id)d identifier:(id)identifier data:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  identifierCopy = identifier;
+  dataCopy = data;
   v15.receiver = self;
   v15.super_class = TUIImpressionData;
   v11 = [(TUIImpressionData *)&v15 init];
   if (v11)
   {
-    v12 = [v9 tui_identifierByPrependingUUID:v8];
+    v12 = [identifierCopy tui_identifierByPrependingUUID:dCopy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    objc_storeStrong(&v11->_data, a5);
+    objc_storeStrong(&v11->_data, data);
   }
 
   return v11;
 }
 
-+ (id)newImpressionWithUUID:(id)a3 identifier:(id)a4 data:(id)a5
++ (id)newImpressionWithUUID:(id)d identifier:(id)identifier data:(id)data
 {
-  if (!a3 || !a4 || !a5)
+  if (!d || !identifier || !data)
   {
     return 0;
   }
 
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithUUID:v10 identifier:v9 data:v8];
+  dataCopy = data;
+  identifierCopy = identifier;
+  dCopy = d;
+  v11 = [[self alloc] initWithUUID:dCopy identifier:identifierCopy data:dataCopy];
 
   return v11;
 }

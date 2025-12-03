@@ -1,21 +1,21 @@
 @interface Browse_CUPS
-- (Browse_CUPS)initWithQueue:(id)a3;
+- (Browse_CUPS)initWithQueue:(id)queue;
 - (void)cancel;
 - (void)start;
 @end
 
 @implementation Browse_CUPS
 
-- (Browse_CUPS)initWithQueue:(id)a3
+- (Browse_CUPS)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = Browse_CUPS;
   v6 = [(Browse_CUPS *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;

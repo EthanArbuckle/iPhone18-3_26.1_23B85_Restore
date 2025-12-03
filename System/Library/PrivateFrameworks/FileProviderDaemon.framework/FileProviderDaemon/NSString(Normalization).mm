@@ -6,33 +6,33 @@
 
 - (__CFString)getUnicodeNormalization
 {
-  v2 = [a1 UTF8String];
-  v3 = [a1 decomposedStringWithCanonicalMapping];
-  v4 = strcmp(v2, [v3 UTF8String]);
+  uTF8String = [self UTF8String];
+  decomposedStringWithCanonicalMapping = [self decomposedStringWithCanonicalMapping];
+  v4 = strcmp(uTF8String, [decomposedStringWithCanonicalMapping UTF8String]);
 
   if (!v4)
   {
     return @"D";
   }
 
-  v5 = [a1 precomposedStringWithCanonicalMapping];
-  v6 = strcmp(v2, [v5 UTF8String]);
+  precomposedStringWithCanonicalMapping = [self precomposedStringWithCanonicalMapping];
+  v6 = strcmp(uTF8String, [precomposedStringWithCanonicalMapping UTF8String]);
 
   if (!v6)
   {
     return @"C";
   }
 
-  v7 = [a1 decomposedStringWithCompatibilityMapping];
-  v8 = strcmp(v2, [v7 UTF8String]);
+  decomposedStringWithCompatibilityMapping = [self decomposedStringWithCompatibilityMapping];
+  v8 = strcmp(uTF8String, [decomposedStringWithCompatibilityMapping UTF8String]);
 
   if (!v8)
   {
     return @"KD";
   }
 
-  v9 = [a1 precomposedStringWithCompatibilityMapping];
-  v10 = strcmp(v2, [v9 UTF8String]);
+  precomposedStringWithCompatibilityMapping = [self precomposedStringWithCompatibilityMapping];
+  v10 = strcmp(uTF8String, [precomposedStringWithCompatibilityMapping UTF8String]);
 
   if (v10)
   {

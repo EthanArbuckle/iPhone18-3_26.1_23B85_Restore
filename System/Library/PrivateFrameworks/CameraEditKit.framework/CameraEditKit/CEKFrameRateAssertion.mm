@@ -1,15 +1,15 @@
 @interface CEKFrameRateAssertion
-- (CEKFrameRateAssertion)initWithFrameRateRange:(CAFrameRateRange)a3 highFrameRateReason:(unsigned int)a4;
+- (CEKFrameRateAssertion)initWithFrameRateRange:(CAFrameRateRange)range highFrameRateReason:(unsigned int)reason;
 @end
 
 @implementation CEKFrameRateAssertion
 
-- (CEKFrameRateAssertion)initWithFrameRateRange:(CAFrameRateRange)a3 highFrameRateReason:(unsigned int)a4
+- (CEKFrameRateAssertion)initWithFrameRateRange:(CAFrameRateRange)range highFrameRateReason:(unsigned int)reason
 {
-  v4 = *&a4;
-  preferred = a3.preferred;
-  maximum = a3.maximum;
-  minimum = a3.minimum;
+  v4 = *&reason;
+  preferred = range.preferred;
+  maximum = range.maximum;
+  minimum = range.minimum;
   v19.receiver = self;
   v19.super_class = CEKFrameRateAssertion;
   v8 = [(CEKFrameRateAssertion *)&v19 init];

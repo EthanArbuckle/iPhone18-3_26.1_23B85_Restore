@@ -1,8 +1,8 @@
 @interface ATXContextHeuristicsEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ATXContextHeuristicsEvent)initWithContextName:(id)a3 contextType:(id)a4 isStart:(BOOL)a5;
-- (ATXContextHeuristicsEvent)initWithProto:(id)a3;
-- (ATXContextHeuristicsEvent)initWithProtoData:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ATXContextHeuristicsEvent)initWithContextName:(id)name contextType:(id)type isStart:(BOOL)start;
+- (ATXContextHeuristicsEvent)initWithProto:(id)proto;
+- (ATXContextHeuristicsEvent)initWithProtoData:(id)data;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDictionary;
@@ -11,33 +11,33 @@
 
 @implementation ATXContextHeuristicsEvent
 
-- (ATXContextHeuristicsEvent)initWithContextName:(id)a3 contextType:(id)a4 isStart:(BOOL)a5
+- (ATXContextHeuristicsEvent)initWithContextName:(id)name contextType:(id)type isStart:(BOOL)start
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  typeCopy = type;
   v16.receiver = self;
   v16.super_class = ATXContextHeuristicsEvent;
   v10 = [(ATXContextHeuristicsEvent *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [nameCopy copy];
     contextName = v10->_contextName;
     v10->_contextName = v11;
 
-    v13 = [v9 copy];
+    v13 = [typeCopy copy];
     contextType = v10->_contextType;
     v10->_contextType = v13;
 
-    v10->_isStart = a5;
+    v10->_isStart = start;
   }
 
   return v10;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  v6 = [[a1 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[self alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
@@ -46,38 +46,38 @@
 {
   v13[3] = *MEMORY[0x277D85DE8];
   v12[0] = @"contextName";
-  v3 = [(ATXContextHeuristicsEvent *)self contextName];
-  v4 = v3;
-  if (!v3)
+  contextName = [(ATXContextHeuristicsEvent *)self contextName];
+  null = contextName;
+  if (!contextName)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v13[0] = v4;
+  v13[0] = null;
   v12[1] = @"contextType";
-  v5 = [(ATXContextHeuristicsEvent *)self contextType];
-  v6 = v5;
-  if (!v5)
+  contextType = [(ATXContextHeuristicsEvent *)self contextType];
+  null2 = contextType;
+  if (!contextType)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v13[1] = v6;
+  v13[1] = null2;
   v12[2] = @"isStart";
-  v7 = [(ATXContextHeuristicsEvent *)self isStart];
+  isStart = [(ATXContextHeuristicsEvent *)self isStart];
   v8 = &unk_283A55E38;
-  if (v7)
+  if (isStart)
   {
     v8 = &unk_283A55E20;
   }
 
   v13[2] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:3];
-  if (!v5)
+  if (!contextType)
   {
   }
 
-  if (!v3)
+  if (!contextName)
   {
   }
 
@@ -89,69 +89,69 @@
 - (id)json
 {
   v2 = MEMORY[0x277CCAAA0];
-  v3 = [(ATXContextHeuristicsEvent *)self jsonDictionary];
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:0];
+  jsonDictionary = [(ATXContextHeuristicsEvent *)self jsonDictionary];
+  v4 = [v2 dataWithJSONObject:jsonDictionary options:1 error:0];
 
   return v4;
 }
 
-- (ATXContextHeuristicsEvent)initWithProtoData:(id)a3
+- (ATXContextHeuristicsEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBContextHeuristicsEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBContextHeuristicsEvent alloc] initWithData:dataCopy];
 
     self = [(ATXContextHeuristicsEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXContextHeuristicsEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXContextHeuristicsEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXContextHeuristicsEvent)initWithProto:(id)a3
+- (ATXContextHeuristicsEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  protoCopy = proto;
+  if (protoCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [v5 contextName];
-    v7 = [v5 contextType];
-    v8 = [v5 isStart];
+    v5 = protoCopy;
+    contextName = [v5 contextName];
+    contextType = [v5 contextType];
+    isStart = [v5 isStart];
 
-    self = [(ATXContextHeuristicsEvent *)self initWithContextName:v6 contextType:v7 isStart:v8];
-    v9 = self;
+    self = [(ATXContextHeuristicsEvent *)self initWithContextName:contextName contextType:contextType isStart:isStart];
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(ATXContextHeuristicsEvent *)self contextName];
-  [v3 setContextName:v4];
+  contextName = [(ATXContextHeuristicsEvent *)self contextName];
+  [v3 setContextName:contextName];
 
-  v5 = [(ATXContextHeuristicsEvent *)self contextType];
-  [v3 setContextType:v5];
+  contextType = [(ATXContextHeuristicsEvent *)self contextType];
+  [v3 setContextType:contextType];
 
   [v3 setIsStart:{-[ATXContextHeuristicsEvent isStart](self, "isStart")}];
 

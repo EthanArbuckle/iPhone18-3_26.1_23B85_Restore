@@ -1,26 +1,26 @@
 @interface LPStreamingAudioPlayer
-+ (id)playerWithAudio:(id)a3;
-- (LPStreamingAudioPlayer)initWithAudio:(id)a3;
++ (id)playerWithAudio:(id)audio;
+- (LPStreamingAudioPlayer)initWithAudio:(id)audio;
 - (float)progress;
-- (void)addClient:(id)a3;
+- (void)addClient:(id)client;
 - (void)dealloc;
-- (void)dispatchDidChangeProgressToAllClients:(float)a3;
+- (void)dispatchDidChangeProgressToAllClients:(float)clients;
 - (void)dispatchDidFailToPlayToAllClients;
-- (void)dispatchDidTransitionToStateToAllClients:(unint64_t)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)dispatchDidTransitionToStateToAllClients:(unint64_t)clients;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)play;
 - (void)resetPlaybackState;
-- (void)setActive:(BOOL)a3;
-- (void)setPlaying:(BOOL)a3;
-- (void)transitionToState:(unint64_t)a3;
+- (void)setActive:(BOOL)active;
+- (void)setPlaying:(BOOL)playing;
+- (void)transitionToState:(unint64_t)state;
 @end
 
 @implementation LPStreamingAudioPlayer
 
-+ (id)playerWithAudio:(id)a3
++ (id)playerWithAudio:(id)audio
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  audioCopy = audio;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -40,21 +40,21 @@
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
-        v10 = [v9[1] streamingURL];
-        v11 = [v4 streamingURL];
-        v12 = [v10 isEqual:v11];
+        streamingURL = [v9[1] streamingURL];
+        streamingURL2 = [audioCopy streamingURL];
+        v12 = [streamingURL isEqual:streamingURL2];
 
         if ((v12 & 1) == 0)
         {
-          v13 = [v9[1] fileURL];
-          v14 = [v4 fileURL];
-          v15 = [v13 isEqual:v14];
+          fileURL = [v9[1] fileURL];
+          fileURL2 = [audioCopy fileURL];
+          v15 = [fileURL isEqual:fileURL2];
 
           if ((v15 & 1) == 0)
           {
-            v16 = [v9[1] _asset];
-            v17 = [v4 _asset];
-            v18 = v16 == v17;
+            _asset = [v9[1] _asset];
+            _asset2 = [audioCopy _asset];
+            v18 = _asset == _asset2;
 
             if (!v18)
             {
@@ -78,20 +78,20 @@
     }
   }
 
-  v19 = [[a1 alloc] initWithAudio:v4];
+  v19 = [[self alloc] initWithAudio:audioCopy];
 LABEL_13:
 
   return v19;
 }
 
-- (LPStreamingAudioPlayer)initWithAudio:(id)a3
+- (LPStreamingAudioPlayer)initWithAudio:(id)audio
 {
-  v5 = a3;
+  audioCopy = audio;
   v6 = [(LPStreamingAudioPlayer *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_audio, a3);
+    objc_storeStrong(&v6->_audio, audio);
     v7->_state = 0;
     v8 = +[LPMediaPlaybackManager shared];
     [v8 addMediaPlayer:v7];
@@ -114,8 +114,8 @@ LABEL_13:
 
   if (self->_endObserver)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self->_endObserver name:*MEMORY[0x1E6987A10] object:self->_item];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self->_endObserver name:*MEMORY[0x1E6987A10] object:self->_item];
   }
 
   player = self->_player;
@@ -142,8 +142,8 @@ LABEL_13:
   if (!player)
   {
     v4 = objc_alloc(MEMORY[0x1E69880B0]);
-    v5 = [(LPAudio *)self->_audio _asset];
-    v6 = [v4 initWithAsset:v5];
+    _asset = [(LPAudio *)self->_audio _asset];
+    v6 = [v4 initWithAsset:_asset];
     item = self->_item;
     self->_item = v6;
 
@@ -152,12 +152,12 @@ LABEL_13:
     self->_player = v8;
 
     v10 = +[LPMediaPlaybackManager shared];
-    v11 = [v10 audioSession];
-    [(AVPlayer *)self->_player setAudioSession:v11];
+    audioSession = [v10 audioSession];
+    [(AVPlayer *)self->_player setAudioSession:audioSession];
 
     [(AVPlayer *)self->_player addObserver:self forKeyPath:@"timeControlStatus" options:5 context:timeControlStatusKVOContext_0];
     objc_initWeak(&location, self);
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v13 = *MEMORY[0x1E6987A10];
     v14 = self->_item;
     v17 = MEMORY[0x1E69E9820];
@@ -165,7 +165,7 @@ LABEL_13:
     v19 = __30__LPStreamingAudioPlayer_play__block_invoke;
     v20 = &unk_1E7A36A98;
     objc_copyWeak(&v21, &location);
-    v15 = [v12 addObserverForName:v13 object:v14 queue:0 usingBlock:&v17];
+    v15 = [defaultCenter addObserverForName:v13 object:v14 queue:0 usingBlock:&v17];
     endObserver = self->_endObserver;
     self->_endObserver = v15;
 
@@ -229,25 +229,25 @@ void __30__LPStreamingAudioPlayer_play__block_invoke(uint64_t a1)
   return *&v4;
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   clients = self->_clients;
-  v8 = v4;
+  v8 = clientCopy;
   if (!clients)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_clients;
-    self->_clients = v6;
+    self->_clients = weakObjectsHashTable;
 
     clients = self->_clients;
-    v4 = v8;
+    clientCopy = v8;
   }
 
-  [(NSHashTable *)clients addObject:v4];
+  [(NSHashTable *)clients addObject:clientCopy];
 }
 
-- (void)dispatchDidChangeProgressToAllClients:(float)a3
+- (void)dispatchDidChangeProgressToAllClients:(float)clients
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
@@ -269,7 +269,7 @@ void __30__LPStreamingAudioPlayer_play__block_invoke(uint64_t a1)
           objc_enumerationMutation(v5);
         }
 
-        *&v7 = a3;
+        *&v7 = clients;
         [*(*(&v10 + 1) + 8 * v9++) audioPlayer:self didChangeProgress:{v7, v10}];
       }
 
@@ -281,7 +281,7 @@ void __30__LPStreamingAudioPlayer_play__block_invoke(uint64_t a1)
   }
 }
 
-- (void)dispatchDidTransitionToStateToAllClients:(unint64_t)a3
+- (void)dispatchDidTransitionToStateToAllClients:(unint64_t)clients
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
@@ -303,7 +303,7 @@ void __30__LPStreamingAudioPlayer_play__block_invoke(uint64_t a1)
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) audioPlayer:self didTransitionToState:{a3, v9}];
+        [*(*(&v9 + 1) + 8 * v8++) audioPlayer:self didTransitionToState:{clients, v9}];
       }
 
       while (v6 != v8);
@@ -347,10 +347,10 @@ void __30__LPStreamingAudioPlayer_play__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
   player = self->_player;
-  if (a3)
+  if (active)
   {
     [(AVPlayer *)player play];
   }
@@ -361,9 +361,9 @@ void __30__LPStreamingAudioPlayer_play__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setPlaying:(BOOL)a3
+- (void)setPlaying:(BOOL)playing
 {
-  if (a3)
+  if (playing)
   {
     [(LPStreamingAudioPlayer *)self play];
   }
@@ -384,11 +384,11 @@ void __30__LPStreamingAudioPlayer_play__block_invoke(uint64_t a1)
   [(LPStreamingAudioPlayer *)self transitionToState:0];
 }
 
-- (void)transitionToState:(unint64_t)a3
+- (void)transitionToState:(unint64_t)state
 {
   state = self->_state;
-  self->_state = a3;
-  switch(a3)
+  self->_state = state;
+  switch(state)
   {
     case 4uLL:
       if (self->_timeObserver)
@@ -447,7 +447,7 @@ LABEL_13:
       goto LABEL_17;
   }
 
-  if (a3 - 3 <= 0xFFFFFFFFFFFFFFFDLL)
+  if (state - 3 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v15 = currentlyPlayingPlayer;
     if (currentlyPlayingPlayer == self)
@@ -470,22 +470,22 @@ void __44__LPStreamingAudioPlayer_transitionToState___block_invoke(uint64_t a1)
   [WeakRetained dispatchDidChangeProgressToAllClients:?];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (timeControlStatusKVOContext_0 == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (timeControlStatusKVOContext_0 == context)
   {
-    v13 = [(AVPlayer *)self->_player timeControlStatus];
-    if (v13)
+    timeControlStatus = [(AVPlayer *)self->_player timeControlStatus];
+    if (timeControlStatus)
     {
-      if (v13 == AVPlayerTimeControlStatusWaitingToPlayAtSpecifiedRate)
+      if (timeControlStatus == AVPlayerTimeControlStatusWaitingToPlayAtSpecifiedRate)
       {
-        v15 = [(AVPlayer *)self->_player reasonForWaitingToPlay];
+        reasonForWaitingToPlay = [(AVPlayer *)self->_player reasonForWaitingToPlay];
         v16 = *MEMORY[0x1E6987AD0];
 
-        if (v15 != v16)
+        if (reasonForWaitingToPlay != v16)
         {
           goto LABEL_11;
         }
@@ -495,7 +495,7 @@ void __44__LPStreamingAudioPlayer_transitionToState___block_invoke(uint64_t a1)
 
       else
       {
-        if (v13 != AVPlayerTimeControlStatusPlaying)
+        if (timeControlStatus != AVPlayerTimeControlStatusPlaying)
         {
           goto LABEL_11;
         }
@@ -515,7 +515,7 @@ void __44__LPStreamingAudioPlayer_transitionToState___block_invoke(uint64_t a1)
 
   v17.receiver = self;
   v17.super_class = LPStreamingAudioPlayer;
-  [(LPStreamingAudioPlayer *)&v17 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+  [(LPStreamingAudioPlayer *)&v17 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 LABEL_11:
 }
 

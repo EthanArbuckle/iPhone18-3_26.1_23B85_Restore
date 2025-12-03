@@ -1,30 +1,30 @@
 @interface WLSQLController
-- (BOOL)_foundHandleIDs:(id)a3 representSameGroupMessageAsHandleIDs:(id)a4 handleIDsAreComplete:(BOOL)a5;
-- (BOOL)deleteAccountsAndSummariesForMigrator:(id)a3 device:(id)a4;
+- (BOOL)_foundHandleIDs:(id)ds representSameGroupMessageAsHandleIDs:(id)iDs handleIDsAreComplete:(BOOL)complete;
+- (BOOL)deleteAccountsAndSummariesForMigrator:(id)migrator device:(id)device;
 - (WLSQLController)init;
-- (id)_migratableAppsForDevice:(id)a3;
-- (id)_sqlite3_column_NSDateForStatement:(sqlite3_stmt *)a3 column:(int)a4;
-- (id)accountsForMigrator:(id)a3 device:(id)a4;
-- (id)dataForSummary:(id)a3;
-- (id)groupMessageInfoMatchingSortedHandleIDs:(id)a3 handleIDsAreComplete:(BOOL)a4 didMatchExactly:(BOOL *)a5;
-- (id)groupMessageInfoMatchingSourceThreadID:(id)a3;
-- (id)messagePhoneNumberIccForCcAcNumber:(id)a3;
+- (id)_migratableAppsForDevice:(id)device;
+- (id)_sqlite3_column_NSDateForStatement:(sqlite3_stmt *)statement column:(int)column;
+- (id)accountsForMigrator:(id)migrator device:(id)device;
+- (id)dataForSummary:(id)summary;
+- (id)groupMessageInfoMatchingSortedHandleIDs:(id)ds handleIDsAreComplete:(BOOL)complete didMatchExactly:(BOOL *)exactly;
+- (id)groupMessageInfoMatchingSourceThreadID:(id)d;
+- (id)messagePhoneNumberIccForCcAcNumber:(id)number;
 - (id)migrationErrors;
-- (id)migrationMetadataForSourceDevice:(id)a3 strictMatch:(BOOL)a4;
-- (id)statisticsForContentType:(id)a3;
-- (id)summariesForAccount:(id)a3;
-- (id)summariesForAccounts:(id)a3 sortedByModifiedDate:(BOOL)a4;
-- (int)_sqlite3_bind_NSDate:(id)a3 forStatement:(sqlite3_stmt *)a4 position:(int)a5;
-- (int64_t)_performQuery:(id)a3 rowHandler:(id)a4;
+- (id)migrationMetadataForSourceDevice:(id)device strictMatch:(BOOL)match;
+- (id)statisticsForContentType:(id)type;
+- (id)summariesForAccount:(id)account;
+- (id)summariesForAccounts:(id)accounts sortedByModifiedDate:(BOOL)date;
+- (int)_sqlite3_bind_NSDate:(id)date forStatement:(sqlite3_stmt *)statement position:(int)position;
+- (int64_t)_performQuery:(id)query rowHandler:(id)handler;
 - (int64_t)_schemaVersion;
-- (unint64_t)_totalSummarySegmentCountForAccounts:(id)a3 migrationStateComparisonOperator:(id)a4 migrationState:(int64_t)a5;
-- (unint64_t)insertAccount:(id)a3 migrator:(id)a4 device:(id)a5;
-- (unint64_t)insertRecordSummary:(id)a3 account:(id)a4;
+- (unint64_t)_totalSummarySegmentCountForAccounts:(id)accounts migrationStateComparisonOperator:(id)operator migrationState:(int64_t)state;
+- (unint64_t)insertAccount:(id)account migrator:(id)migrator device:(id)device;
+- (unint64_t)insertRecordSummary:(id)summary account:(id)account;
 - (void)_deleteAccounts;
 - (void)_deleteSummaries;
 - (void)_ensureCorrectSchema;
-- (void)_insertStatistics_onDatabaseQueue:(id)a3;
-- (void)_onDatabaseQueue_updateMigrationState:(int)a3 forSummary:(id)a4 removeData:(BOOL)a5;
+- (void)_insertStatistics_onDatabaseQueue:(id)queue;
+- (void)_onDatabaseQueue_updateMigrationState:(int)state forSummary:(id)summary removeData:(BOOL)data;
 - (void)_openDatabase;
 - (void)closeDatabase;
 - (void)dealloc;
@@ -36,20 +36,20 @@
 - (void)deleteStatisticsForAllDevices;
 - (void)deleteSuggestedAppBundleIDsForAllDevices;
 - (void)deleteSummaryDataForAllDevices;
-- (void)insertGroupMessageInfoWithSortedHandleIDs:(id)a3 handleIDsAreComplete:(BOOL)a4 roomName:(id)a5 groupID:(id)a6;
-- (void)insertGroupMessageInfoWithSourceThreadID:(id)a3 roomName:(id)a4 groupID:(id)a5;
-- (void)insertMessagePhoneNumberWithIcc:(id)a3 ccAcNumber:(id)a4;
-- (void)insertMetadata:(id)a3 forSourceDevice:(id)a4;
-- (void)insertMigratableApp:(id)a3 forDevice:(id)a4;
-- (void)removeDataAndSetDidImportForSummary:(id)a3;
-- (void)setData:(id)a3 forSummary:(id)a4;
-- (void)setDidDownloadForSummary:(id)a3 forSourceDevice:(id)a4;
-- (void)setMetadata:(id)a3 forSourceDevice:(id)a4;
-- (void)setMigrationError:(id)a3 forSummary:(id)a4;
-- (void)setWillImportForSummary:(id)a3;
-- (void)totalSummaryItemSizeForAccounts:(id)a3 addOverhead:(BOOL)a4 completion:(id)a5;
-- (void)updateModifiedDateForSummary:(id)a3;
-- (void)updateStatistics:(id)a3;
+- (void)insertGroupMessageInfoWithSortedHandleIDs:(id)ds handleIDsAreComplete:(BOOL)complete roomName:(id)name groupID:(id)d;
+- (void)insertGroupMessageInfoWithSourceThreadID:(id)d roomName:(id)name groupID:(id)iD;
+- (void)insertMessagePhoneNumberWithIcc:(id)icc ccAcNumber:(id)number;
+- (void)insertMetadata:(id)metadata forSourceDevice:(id)device;
+- (void)insertMigratableApp:(id)app forDevice:(id)device;
+- (void)removeDataAndSetDidImportForSummary:(id)summary;
+- (void)setData:(id)data forSummary:(id)summary;
+- (void)setDidDownloadForSummary:(id)summary forSourceDevice:(id)device;
+- (void)setMetadata:(id)metadata forSourceDevice:(id)device;
+- (void)setMigrationError:(id)error forSummary:(id)summary;
+- (void)setWillImportForSummary:(id)summary;
+- (void)totalSummaryItemSizeForAccounts:(id)accounts addOverhead:(BOOL)overhead completion:(id)completion;
+- (void)updateModifiedDateForSummary:(id)summary;
+- (void)updateStatistics:(id)statistics;
 @end
 
 @implementation WLSQLController
@@ -294,11 +294,11 @@ uint64_t __49__WLSQLController_deleteSummaryDataForAllDevices__block_invoke(uint
   }
 }
 
-- (unint64_t)insertAccount:(id)a3 migrator:(id)a4 device:(id)a5
+- (unint64_t)insertAccount:(id)account migrator:(id)migrator device:(id)device
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  migratorCopy = migrator;
+  deviceCopy = device;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -309,13 +309,13 @@ uint64_t __49__WLSQLController_deleteSummaryDataForAllDevices__block_invoke(uint
   block[2] = __49__WLSQLController_insertAccount_migrator_device___block_invoke;
   block[3] = &unk_279EB6008;
   block[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
+  v18 = accountCopy;
+  v19 = migratorCopy;
+  v20 = deviceCopy;
   v21 = &v22;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v12 = deviceCopy;
+  v13 = migratorCopy;
+  v14 = accountCopy;
   dispatch_sync(databaseQueue, block);
   v15 = v23[3];
 
@@ -369,10 +369,10 @@ uint64_t __49__WLSQLController_insertAccount_migrator_device___block_invoke(uint
   }
 }
 
-- (id)accountsForMigrator:(id)a3 device:(id)a4
+- (id)accountsForMigrator:(id)migrator device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  migratorCopy = migrator;
+  deviceCopy = device;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -384,10 +384,10 @@ uint64_t __49__WLSQLController_insertAccount_migrator_device___block_invoke(uint
   v14 = 3221225472;
   v15 = __46__WLSQLController_accountsForMigrator_device___block_invoke;
   v16 = &unk_279EB6030;
-  v17 = self;
-  v9 = v7;
+  selfCopy = self;
+  v9 = deviceCopy;
   v18 = v9;
-  v10 = v6;
+  v10 = migratorCopy;
   v19 = v10;
   v20 = &v21;
   dispatch_sync(databaseQueue, &v13);
@@ -454,10 +454,10 @@ uint64_t __46__WLSQLController_accountsForMigrator_device___block_invoke(uint64_
   }
 }
 
-- (BOOL)deleteAccountsAndSummariesForMigrator:(id)a3 device:(id)a4
+- (BOOL)deleteAccountsAndSummariesForMigrator:(id)migrator device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  migratorCopy = migrator;
+  deviceCopy = device;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -468,16 +468,16 @@ uint64_t __46__WLSQLController_accountsForMigrator_device___block_invoke(uint64_
   v12[2] = __64__WLSQLController_deleteAccountsAndSummariesForMigrator_device___block_invoke;
   v12[3] = &unk_279EB6030;
   v12[4] = self;
-  v13 = v7;
-  v14 = v6;
+  v13 = deviceCopy;
+  v14 = migratorCopy;
   v15 = &v16;
-  v9 = v6;
-  v10 = v7;
+  v9 = migratorCopy;
+  v10 = deviceCopy;
   dispatch_sync(databaseQueue, v12);
-  LOBYTE(v6) = *(v17 + 24);
+  LOBYTE(migratorCopy) = *(v17 + 24);
 
   _Block_object_dispose(&v16, 8);
-  return v6;
+  return migratorCopy;
 }
 
 uint64_t __64__WLSQLController_deleteAccountsAndSummariesForMigrator_device___block_invoke(uint64_t a1)
@@ -556,10 +556,10 @@ uint64_t __64__WLSQLController_deleteAccountsAndSummariesForMigrator_device___bl
   return result;
 }
 
-- (unint64_t)insertRecordSummary:(id)a3 account:(id)a4
+- (unint64_t)insertRecordSummary:(id)summary account:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  summaryCopy = summary;
+  accountCopy = account;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -570,11 +570,11 @@ uint64_t __64__WLSQLController_deleteAccountsAndSummariesForMigrator_device___bl
   v13[2] = __47__WLSQLController_insertRecordSummary_account___block_invoke;
   v13[3] = &unk_279EB6030;
   v13[4] = self;
-  v14 = v7;
-  v15 = v6;
+  v14 = accountCopy;
+  v15 = summaryCopy;
   v16 = &v17;
-  v9 = v6;
-  v10 = v7;
+  v9 = summaryCopy;
+  v10 = accountCopy;
   dispatch_sync(databaseQueue, v13);
   v11 = v18[3];
 
@@ -684,10 +684,10 @@ uint64_t __47__WLSQLController_insertRecordSummary_account___block_invoke(uint64
   }
 }
 
-- (unint64_t)_totalSummarySegmentCountForAccounts:(id)a3 migrationStateComparisonOperator:(id)a4 migrationState:(int64_t)a5
+- (unint64_t)_totalSummarySegmentCountForAccounts:(id)accounts migrationStateComparisonOperator:(id)operator migrationState:(int64_t)state
 {
-  v8 = a3;
-  v9 = a4;
+  accountsCopy = accounts;
+  operatorCopy = operator;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -697,13 +697,13 @@ uint64_t __47__WLSQLController_insertRecordSummary_account___block_invoke(uint64
   block[1] = 3221225472;
   block[2] = __104__WLSQLController__totalSummarySegmentCountForAccounts_migrationStateComparisonOperator_migrationState___block_invoke;
   block[3] = &unk_279EB6058;
-  v16 = v8;
-  v17 = v9;
+  v16 = accountsCopy;
+  v17 = operatorCopy;
   v19 = &v21;
-  v20 = a5;
-  v18 = self;
-  v11 = v9;
-  v12 = v8;
+  stateCopy = state;
+  selfCopy = self;
+  v11 = operatorCopy;
+  v12 = accountsCopy;
   dispatch_sync(databaseQueue, block);
   v13 = v22[3];
 
@@ -814,10 +814,10 @@ void __104__WLSQLController__totalSummarySegmentCountForAccounts_migrationStateC
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)totalSummaryItemSizeForAccounts:(id)a3 addOverhead:(BOOL)a4 completion:(id)a5
+- (void)totalSummaryItemSizeForAccounts:(id)accounts addOverhead:(BOOL)overhead completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  accountsCopy = accounts;
+  completionCopy = completion;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -827,15 +827,15 @@ void __104__WLSQLController__totalSummarySegmentCountForAccounts_migrationStateC
   v12[1] = 3221225472;
   v12[2] = __74__WLSQLController_totalSummaryItemSizeForAccounts_addOverhead_completion___block_invoke;
   v12[3] = &unk_279EB6080;
-  v11 = v8;
-  v16 = a4;
+  v11 = accountsCopy;
+  overheadCopy = overhead;
   v13 = v11;
-  v14 = self;
+  selfCopy = self;
   v15 = &v17;
   dispatch_sync(databaseQueue, v12);
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9, v18[3], 0);
+    completionCopy[2](completionCopy, v18[3], 0);
   }
 
   _Block_object_dispose(&v17, 8);
@@ -957,20 +957,20 @@ void __74__WLSQLController_totalSummaryItemSizeForAccounts_addOverhead_completio
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setData:(id)a3 forSummary:(id)a4
+- (void)setData:(id)data forSummary:(id)summary
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  summaryCopy = summary;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__WLSQLController_setData_forSummary___block_invoke;
   block[3] = &unk_279EB60A8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dataCopy;
+  v13 = summaryCopy;
+  v9 = summaryCopy;
+  v10 = dataCopy;
   dispatch_sync(databaseQueue, block);
 }
 
@@ -1009,9 +1009,9 @@ uint64_t __38__WLSQLController_setData_forSummary___block_invoke(uint64_t a1)
   }
 }
 
-- (id)dataForSummary:(id)a3
+- (id)dataForSummary:(id)summary
 {
-  v4 = a3;
+  summaryCopy = summary;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1024,9 +1024,9 @@ uint64_t __38__WLSQLController_setData_forSummary___block_invoke(uint64_t a1)
   block[2] = __34__WLSQLController_dataForSummary___block_invoke;
   block[3] = &unk_279EB60D0;
   block[4] = self;
-  v10 = v4;
+  v10 = summaryCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = summaryCopy;
   dispatch_sync(databaseQueue, block);
   v7 = v13[5];
 
@@ -1071,54 +1071,54 @@ uint64_t __34__WLSQLController_dataForSummary___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setDidDownloadForSummary:(id)a3 forSourceDevice:(id)a4
+- (void)setDidDownloadForSummary:(id)summary forSourceDevice:(id)device
 {
-  v5 = a3;
+  summaryCopy = summary;
   databaseQueue = self->_databaseQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __60__WLSQLController_setDidDownloadForSummary_forSourceDevice___block_invoke;
   v8[3] = &unk_279EB60F8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = summaryCopy;
+  v7 = summaryCopy;
   dispatch_sync(databaseQueue, v8);
 }
 
-- (void)setWillImportForSummary:(id)a3
+- (void)setWillImportForSummary:(id)summary
 {
-  v4 = a3;
+  summaryCopy = summary;
   databaseQueue = self->_databaseQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__WLSQLController_setWillImportForSummary___block_invoke;
   v7[3] = &unk_279EB60F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = summaryCopy;
+  v6 = summaryCopy;
   dispatch_sync(databaseQueue, v7);
 }
 
-- (void)removeDataAndSetDidImportForSummary:(id)a3
+- (void)removeDataAndSetDidImportForSummary:(id)summary
 {
-  v4 = a3;
+  summaryCopy = summary;
   databaseQueue = self->_databaseQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__WLSQLController_removeDataAndSetDidImportForSummary___block_invoke;
   v7[3] = &unk_279EB60F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = summaryCopy;
+  v6 = summaryCopy;
   dispatch_sync(databaseQueue, v7);
 }
 
-- (void)_onDatabaseQueue_updateMigrationState:(int)a3 forSummary:(id)a4 removeData:(BOOL)a5
+- (void)_onDatabaseQueue_updateMigrationState:(int)state forSummary:(id)summary removeData:(BOOL)data
 {
-  v5 = a5;
-  v8 = a4;
+  dataCopy = data;
+  summaryCopy = summary;
   dispatch_assert_queue_V2(self->_databaseQueue);
-  if (v5)
+  if (dataCopy)
   {
     v9 = "UPDATE summaries SET data=NULL, migrationState=? WHERE rowID=?";
   }
@@ -1138,8 +1138,8 @@ uint64_t __34__WLSQLController_dataForSummary___block_invoke(uint64_t a1)
 
   else
   {
-    sqlite3_bind_int(ppStmt, 1, a3);
-    sqlite3_bind_int64(ppStmt, 2, [v8 sqlID]);
+    sqlite3_bind_int(ppStmt, 1, state);
+    sqlite3_bind_int64(ppStmt, 2, [summaryCopy sqlID]);
     if (sqlite3_step(ppStmt) != 101)
     {
       sqlite3_errcode(self->_database);
@@ -1151,12 +1151,12 @@ uint64_t __34__WLSQLController_dataForSummary___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setMigrationError:(id)a3 forSummary:(id)a4
+- (void)setMigrationError:(id)error forSummary:(id)summary
 {
-  v6 = a4;
-  v7 = [a3 wl_encodableError];
+  summaryCopy = summary;
+  wl_encodableError = [error wl_encodableError];
   v14 = 0;
-  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v14];
+  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:wl_encodableError requiringSecureCoding:1 error:&v14];
   v9 = v14;
   if (v8)
   {
@@ -1167,7 +1167,7 @@ uint64_t __34__WLSQLController_dataForSummary___block_invoke(uint64_t a1)
     block[3] = &unk_279EB60A8;
     block[4] = self;
     v12 = v8;
-    v13 = v6;
+    v13 = summaryCopy;
     dispatch_sync(databaseQueue, block);
   }
 
@@ -1210,7 +1210,7 @@ uint64_t __48__WLSQLController_setMigrationError_forSummary___block_invoke(uint6
   v10 = 3221225472;
   v11 = __34__WLSQLController_migrationErrors__block_invoke;
   v12 = &unk_279EB60F8;
-  v13 = self;
+  selfCopy = self;
   v14 = v3;
   v5 = v3;
   dispatch_sync(databaseQueue, &v9);
@@ -1296,17 +1296,17 @@ uint64_t __34__WLSQLController_migrationErrors__block_invoke(uint64_t a1)
   }
 }
 
-- (void)updateModifiedDateForSummary:(id)a3
+- (void)updateModifiedDateForSummary:(id)summary
 {
-  v4 = a3;
+  summaryCopy = summary;
   databaseQueue = self->_databaseQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__WLSQLController_updateModifiedDateForSummary___block_invoke;
   v7[3] = &unk_279EB60F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = summaryCopy;
+  v6 = summaryCopy;
   dispatch_sync(databaseQueue, v7);
 }
 
@@ -1338,37 +1338,37 @@ uint64_t __48__WLSQLController_updateModifiedDateForSummary___block_invoke(uint6
   }
 }
 
-- (id)summariesForAccount:(id)a3
+- (id)summariesForAccount:(id)account
 {
   v11 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  accountCopy = account;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v10 count:1];
+  accountCopy2 = account;
+  v6 = [v4 arrayWithObjects:&accountCopy count:1];
 
-  v7 = [(WLSQLController *)self summariesForAccounts:v6 sortedByModifiedDate:0, v10, v11];
+  v7 = [(WLSQLController *)self summariesForAccounts:v6 sortedByModifiedDate:0, accountCopy, v11];
 
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-- (id)summariesForAccounts:(id)a3 sortedByModifiedDate:(BOOL)a4
+- (id)summariesForAccounts:(id)accounts sortedByModifiedDate:(BOOL)date
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  accountsCopy = accounts;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
   v33 = __Block_byref_object_copy__3;
   v34 = __Block_byref_object_dispose__3;
   v35 = 0;
-  v7 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  v7 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(accountsCopy, "count")}];
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = v6;
+  v8 = accountsCopy;
   v9 = [v8 countByEnumeratingWithState:&v26 objects:v36 count:16];
   if (v9)
   {
@@ -1399,9 +1399,9 @@ uint64_t __48__WLSQLController_updateModifiedDateForSummary___block_invoke(uint6
   block[2] = __61__WLSQLController_summariesForAccounts_sortedByModifiedDate___block_invoke;
   block[3] = &unk_279EB6120;
   v15 = v8;
-  v25 = a4;
+  dateCopy = date;
   v21 = v15;
-  v22 = self;
+  selfCopy = self;
   v24 = &v30;
   v16 = v7;
   v23 = v16;
@@ -1601,15 +1601,15 @@ void __61__WLSQLController_summariesForAccounts_sortedByModifiedDate___block_inv
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (id)migrationMetadataForSourceDevice:(id)a3 strictMatch:(BOOL)a4
+- (id)migrationMetadataForSourceDevice:(id)device strictMatch:(BOOL)match
 {
-  v5 = a3;
+  deviceCopy = device;
   v6 = objc_alloc_init(WLSourceDeviceMigrationMetadata);
-  v7 = [v5 osAPIVersion];
-  v8 = v7;
-  if (v7)
+  osAPIVersion = [deviceCopy osAPIVersion];
+  v8 = osAPIVersion;
+  if (osAPIVersion)
   {
-    v9 = v7;
+    v9 = osAPIVersion;
   }
 
   else
@@ -1620,33 +1620,33 @@ void __61__WLSQLController_summariesForAccounts_sortedByModifiedDate___block_inv
   [(WLSourceDeviceMigrationMetadata *)v6 setDeviceOSVersion:v9];
 
   v10 = MEMORY[0x277CCACA8];
-  v11 = [v5 hardwareBrand];
-  v12 = [v5 hardwareModel];
-  v13 = [v5 hardwareDesign];
-  v14 = [v5 hardwareMaker];
-  v15 = [v5 hardwareProduct];
-  v16 = [v10 stringWithFormat:@"%@/%@/%@/%@/%@", v11, v12, v13, v14, v15];
+  hardwareBrand = [deviceCopy hardwareBrand];
+  hardwareModel = [deviceCopy hardwareModel];
+  hardwareDesign = [deviceCopy hardwareDesign];
+  hardwareMaker = [deviceCopy hardwareMaker];
+  hardwareProduct = [deviceCopy hardwareProduct];
+  v16 = [v10 stringWithFormat:@"%@/%@/%@/%@/%@", hardwareBrand, hardwareModel, hardwareDesign, hardwareMaker, hardwareProduct];
   [(WLSourceDeviceMigrationMetadata *)v6 setDeviceType:v16];
 
   v17 = MEMORY[0x277CCACA8];
-  v18 = [v5 hardwareModel];
-  v19 = [v17 stringWithFormat:@"%@", v18];
+  hardwareModel2 = [deviceCopy hardwareModel];
+  v19 = [v17 stringWithFormat:@"%@", hardwareModel2];
   [(WLSourceDeviceMigrationMetadata *)v6 setDeviceModel:v19];
 
-  v20 = [v5 clientVersion];
-  [(WLSourceDeviceMigrationMetadata *)v6 setClientVersion:v20];
+  clientVersion = [deviceCopy clientVersion];
+  [(WLSourceDeviceMigrationMetadata *)v6 setClientVersion:clientVersion];
 
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__WLSQLController_migrationMetadataForSourceDevice_strictMatch___block_invoke;
   block[3] = &unk_279EB6148;
-  v31 = a4;
+  matchCopy = match;
   block[4] = self;
-  v29 = v5;
+  v29 = deviceCopy;
   v22 = v6;
   v30 = v22;
-  v23 = v5;
+  v23 = deviceCopy;
   dispatch_sync(databaseQueue, block);
   v24 = v30;
   v25 = v22;
@@ -1710,20 +1710,20 @@ uint64_t __64__WLSQLController_migrationMetadataForSourceDevice_strictMatch___bl
   }
 }
 
-- (void)insertMetadata:(id)a3 forSourceDevice:(id)a4
+- (void)insertMetadata:(id)metadata forSourceDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  deviceCopy = device;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__WLSQLController_insertMetadata_forSourceDevice___block_invoke;
   block[3] = &unk_279EB60A8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = deviceCopy;
+  v13 = metadataCopy;
+  v9 = metadataCopy;
+  v10 = deviceCopy;
   dispatch_sync(databaseQueue, block);
 }
 
@@ -1767,20 +1767,20 @@ uint64_t __50__WLSQLController_insertMetadata_forSourceDevice___block_invoke(uin
   }
 }
 
-- (void)setMetadata:(id)a3 forSourceDevice:(id)a4
+- (void)setMetadata:(id)metadata forSourceDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  deviceCopy = device;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__WLSQLController_setMetadata_forSourceDevice___block_invoke;
   block[3] = &unk_279EB60A8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = metadataCopy;
+  v13 = deviceCopy;
+  v9 = deviceCopy;
+  v10 = metadataCopy;
   dispatch_sync(databaseQueue, block);
 }
 
@@ -1824,12 +1824,12 @@ uint64_t __47__WLSQLController_setMetadata_forSourceDevice___block_invoke(uint64
   }
 }
 
-- (void)insertMigratableApp:(id)a3 forDevice:(id)a4
+- (void)insertMigratableApp:(id)app forDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  appCopy = app;
+  deviceCopy = device;
   v14 = 0;
-  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v14];
+  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:appCopy requiringSecureCoding:1 error:&v14];
   v9 = v14;
   if (v8)
   {
@@ -1839,7 +1839,7 @@ uint64_t __47__WLSQLController_setMetadata_forSourceDevice___block_invoke(uint64
     block[2] = __49__WLSQLController_insertMigratableApp_forDevice___block_invoke;
     block[3] = &unk_279EB60A8;
     block[4] = self;
-    v12 = v7;
+    v12 = deviceCopy;
     v13 = v8;
     dispatch_sync(databaseQueue, block);
   }
@@ -1884,20 +1884,20 @@ uint64_t __49__WLSQLController_insertMigratableApp_forDevice___block_invoke(uint
   }
 }
 
-- (id)_migratableAppsForDevice:(id)a3
+- (id)_migratableAppsForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  deviceCopy = device;
+  array = [MEMORY[0x277CBEB18] array];
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__WLSQLController__migratableAppsForDevice___block_invoke;
   block[3] = &unk_279EB60A8;
-  v12 = v4;
-  v13 = self;
-  v14 = v5;
-  v7 = v5;
-  v8 = v4;
+  v12 = deviceCopy;
+  selfCopy = self;
+  v14 = array;
+  v7 = array;
+  v8 = deviceCopy;
   dispatch_sync(databaseQueue, block);
   v9 = [v7 copy];
 
@@ -1998,20 +1998,20 @@ uint64_t __44__WLSQLController__migratableAppsForDevice___block_invoke(uint64_t 
   }
 }
 
-- (void)insertMessagePhoneNumberWithIcc:(id)a3 ccAcNumber:(id)a4
+- (void)insertMessagePhoneNumberWithIcc:(id)icc ccAcNumber:(id)number
 {
-  v6 = a3;
-  v7 = a4;
+  iccCopy = icc;
+  numberCopy = number;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__WLSQLController_insertMessagePhoneNumberWithIcc_ccAcNumber___block_invoke;
   block[3] = &unk_279EB60A8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = iccCopy;
+  v13 = numberCopy;
+  v9 = numberCopy;
+  v10 = iccCopy;
   dispatch_sync(databaseQueue, block);
 }
 
@@ -2040,9 +2040,9 @@ uint64_t __62__WLSQLController_insertMessagePhoneNumberWithIcc_ccAcNumber___bloc
   }
 }
 
-- (id)messagePhoneNumberIccForCcAcNumber:(id)a3
+- (id)messagePhoneNumberIccForCcAcNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -2055,9 +2055,9 @@ uint64_t __62__WLSQLController_insertMessagePhoneNumberWithIcc_ccAcNumber___bloc
   block[2] = __54__WLSQLController_messagePhoneNumberIccForCcAcNumber___block_invoke;
   block[3] = &unk_279EB60D0;
   block[4] = self;
-  v10 = v4;
+  v10 = numberCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = numberCopy;
   dispatch_sync(databaseQueue, block);
   v7 = v13[5];
 
@@ -2132,9 +2132,9 @@ uint64_t __57__WLSQLController_deleteMessagePhoneNumbersForAllDevices__block_inv
   }
 }
 
-- (id)groupMessageInfoMatchingSourceThreadID:(id)a3
+- (id)groupMessageInfoMatchingSourceThreadID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -2147,9 +2147,9 @@ uint64_t __57__WLSQLController_deleteMessagePhoneNumbersForAllDevices__block_inv
   block[2] = __58__WLSQLController_groupMessageInfoMatchingSourceThreadID___block_invoke;
   block[3] = &unk_279EB60D0;
   block[4] = self;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(databaseQueue, block);
   v7 = v13[5];
 
@@ -2192,9 +2192,9 @@ uint64_t __58__WLSQLController_groupMessageInfoMatchingSourceThreadID___block_in
   }
 }
 
-- (id)groupMessageInfoMatchingSortedHandleIDs:(id)a3 handleIDsAreComplete:(BOOL)a4 didMatchExactly:(BOOL *)a5
+- (id)groupMessageInfoMatchingSortedHandleIDs:(id)ds handleIDsAreComplete:(BOOL)complete didMatchExactly:(BOOL *)exactly
 {
-  v8 = a3;
+  dsCopy = ds;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -2207,11 +2207,11 @@ uint64_t __58__WLSQLController_groupMessageInfoMatchingSourceThreadID___block_in
   block[2] = __96__WLSQLController_groupMessageInfoMatchingSortedHandleIDs_handleIDsAreComplete_didMatchExactly___block_invoke;
   block[3] = &unk_279EB6170;
   block[4] = self;
-  v10 = v8;
-  v24 = a4;
+  v10 = dsCopy;
+  completeCopy = complete;
   v21 = v10;
   v22 = &v25;
-  v23 = a5;
+  exactlyCopy = exactly;
   dispatch_sync(databaseQueue, block);
   v11 = v26[5];
   if (!v11)
@@ -2222,10 +2222,10 @@ uint64_t __58__WLSQLController_groupMessageInfoMatchingSourceThreadID___block_in
     v15[2] = __96__WLSQLController_groupMessageInfoMatchingSortedHandleIDs_handleIDsAreComplete_didMatchExactly___block_invoke_2;
     v15[3] = &unk_279EB6170;
     v15[4] = self;
-    v19 = a4;
+    completeCopy2 = complete;
     v16 = v10;
     v17 = &v25;
-    v18 = a5;
+    exactlyCopy2 = exactly;
     dispatch_sync(v12, v15);
 
     v11 = v26[5];
@@ -2351,21 +2351,21 @@ LABEL_14:
   }
 }
 
-- (BOOL)_foundHandleIDs:(id)a3 representSameGroupMessageAsHandleIDs:(id)a4 handleIDsAreComplete:(BOOL)a5
+- (BOOL)_foundHandleIDs:(id)ds representSameGroupMessageAsHandleIDs:(id)iDs handleIDsAreComplete:(BOOL)complete
 {
-  v5 = a5;
+  completeCopy = complete;
   v7 = MEMORY[0x277CBEB98];
-  v8 = a4;
-  v9 = [v7 setWithArray:a3];
+  iDsCopy = iDs;
+  v9 = [v7 setWithArray:ds];
   v10 = v9;
-  if (v5)
+  if (completeCopy)
   {
-    v11 = v8;
+    v11 = iDsCopy;
   }
 
   else
   {
-    v9 = v8;
+    v9 = iDsCopy;
     v11 = v10;
   }
 
@@ -2374,23 +2374,23 @@ LABEL_14:
   return v12;
 }
 
-- (void)insertGroupMessageInfoWithSourceThreadID:(id)a3 roomName:(id)a4 groupID:(id)a5
+- (void)insertGroupMessageInfoWithSourceThreadID:(id)d roomName:(id)name groupID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  nameCopy = name;
+  iDCopy = iD;
   databaseQueue = self->_databaseQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __77__WLSQLController_insertGroupMessageInfoWithSourceThreadID_roomName_groupID___block_invoke;
   v15[3] = &unk_279EB6198;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = dCopy;
+  v17 = nameCopy;
+  v18 = iDCopy;
+  v12 = iDCopy;
+  v13 = nameCopy;
+  v14 = dCopy;
   dispatch_sync(databaseQueue, v15);
 }
 
@@ -2420,24 +2420,24 @@ uint64_t __77__WLSQLController_insertGroupMessageInfoWithSourceThreadID_roomName
   }
 }
 
-- (void)insertGroupMessageInfoWithSortedHandleIDs:(id)a3 handleIDsAreComplete:(BOOL)a4 roomName:(id)a5 groupID:(id)a6
+- (void)insertGroupMessageInfoWithSortedHandleIDs:(id)ds handleIDsAreComplete:(BOOL)complete roomName:(id)name groupID:(id)d
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dsCopy = ds;
+  nameCopy = name;
+  dCopy = d;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __99__WLSQLController_insertGroupMessageInfoWithSortedHandleIDs_handleIDsAreComplete_roomName_groupID___block_invoke;
   block[3] = &unk_279EB61C0;
   block[4] = self;
-  v18 = v10;
-  v21 = a4;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = dsCopy;
+  completeCopy = complete;
+  v19 = nameCopy;
+  v20 = dCopy;
+  v14 = dCopy;
+  v15 = nameCopy;
+  v16 = dsCopy;
   dispatch_sync(databaseQueue, block);
 }
 
@@ -2504,20 +2504,20 @@ uint64_t __54__WLSQLController_deleteGroupMessageInfoForAllDevices__block_invoke
   }
 }
 
-- (id)statisticsForContentType:(id)a3
+- (id)statisticsForContentType:(id)type
 {
-  v4 = a3;
-  v5 = [WLStatistics _statisticsWithContentType:v4];
+  typeCopy = type;
+  v5 = [WLStatistics _statisticsWithContentType:typeCopy];
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__WLSQLController_statisticsForContentType___block_invoke;
   block[3] = &unk_279EB60A8;
   block[4] = self;
-  v13 = v4;
+  v13 = typeCopy;
   v7 = v5;
   v14 = v7;
-  v8 = v4;
+  v8 = typeCopy;
   dispatch_sync(databaseQueue, block);
   v9 = v14;
   v10 = v7;
@@ -2575,17 +2575,17 @@ uint64_t __44__WLSQLController_statisticsForContentType___block_invoke(id *a1)
   return result;
 }
 
-- (void)updateStatistics:(id)a3
+- (void)updateStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   databaseQueue = self->_databaseQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__WLSQLController_updateStatistics___block_invoke;
   v7[3] = &unk_279EB60F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = statisticsCopy;
+  v6 = statisticsCopy;
   dispatch_sync(databaseQueue, v7);
 }
 
@@ -2631,9 +2631,9 @@ uint64_t __36__WLSQLController_updateStatistics___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_insertStatistics_onDatabaseQueue:(id)a3
+- (void)_insertStatistics_onDatabaseQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   ppStmt = 0;
   if (sqlite3_prepare(self->_database, "INSERT INTO statistics (contentType, selectedForMigration, downloadDuration, downloadByteCount, importStartDate, importEndDate, importStartBytesFree, importEndBytesFree, importRecordCount, importFailedRecordCount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", -1, &ppStmt, 0))
   {
@@ -2645,22 +2645,22 @@ uint64_t __36__WLSQLController_updateStatistics___block_invoke(uint64_t a1)
   else
   {
     v5 = ppStmt;
-    v6 = [v4 contentType];
-    sqlite3_bind_text(v5, 1, [v6 UTF8String], -1, 0);
+    contentType = [queueCopy contentType];
+    sqlite3_bind_text(v5, 1, [contentType UTF8String], -1, 0);
 
-    sqlite3_bind_int(ppStmt, 2, [v4 selectedForMigration]);
-    sqlite3_bind_int64(ppStmt, 3, [v4 downloadDuration]);
-    sqlite3_bind_int64(ppStmt, 4, [v4 downloadByteCount]);
-    v7 = [v4 importStartDate];
-    [(WLSQLController *)self _sqlite3_bind_NSDate:v7 forStatement:ppStmt position:5];
+    sqlite3_bind_int(ppStmt, 2, [queueCopy selectedForMigration]);
+    sqlite3_bind_int64(ppStmt, 3, [queueCopy downloadDuration]);
+    sqlite3_bind_int64(ppStmt, 4, [queueCopy downloadByteCount]);
+    importStartDate = [queueCopy importStartDate];
+    [(WLSQLController *)self _sqlite3_bind_NSDate:importStartDate forStatement:ppStmt position:5];
 
-    v8 = [v4 importEndDate];
-    [(WLSQLController *)self _sqlite3_bind_NSDate:v8 forStatement:ppStmt position:6];
+    importEndDate = [queueCopy importEndDate];
+    [(WLSQLController *)self _sqlite3_bind_NSDate:importEndDate forStatement:ppStmt position:6];
 
-    sqlite3_bind_int64(ppStmt, 7, [v4 importStartBytesFree]);
-    sqlite3_bind_int64(ppStmt, 8, [v4 importEndBytesFree]);
-    sqlite3_bind_int64(ppStmt, 9, [v4 importRecordCount]);
-    sqlite3_bind_int64(ppStmt, 10, [v4 importFailedRecordCount]);
+    sqlite3_bind_int64(ppStmt, 7, [queueCopy importStartBytesFree]);
+    sqlite3_bind_int64(ppStmt, 8, [queueCopy importEndBytesFree]);
+    sqlite3_bind_int64(ppStmt, 9, [queueCopy importRecordCount]);
+    sqlite3_bind_int64(ppStmt, 10, [queueCopy importFailedRecordCount]);
     if (sqlite3_step(ppStmt) != 101)
     {
       sqlite3_errcode(self->_database);
@@ -2708,27 +2708,27 @@ uint64_t __48__WLSQLController_deleteStatisticsForAllDevices__block_invoke(uint6
 
 - (void)_openDatabase
 {
-  v8 = [(NSString *)self->_databasePath stringByDeletingLastPathComponent];
-  if (v8)
+  stringByDeletingLastPathComponent = [(NSString *)self->_databasePath stringByDeletingLastPathComponent];
+  if (stringByDeletingLastPathComponent)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
-    v4 = [v3 fileExistsAtPath:v8];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v4 = [defaultManager fileExistsAtPath:stringByDeletingLastPathComponent];
 
     if ((v4 & 1) == 0)
     {
-      v5 = [MEMORY[0x277CCAA00] defaultManager];
-      [v5 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:0];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager2 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
     }
   }
 
   if (sqlite3_open([(NSString *)self->_databasePath UTF8String], &self->_database))
   {
-    v6 = self;
+    selfCopy = self;
     databasePath = self->_databasePath;
     _WLLog();
   }
 
-  [(WLSQLController *)self _performQuery:@"pragma foreign_keys=on" rowHandler:0, v6, databasePath];
+  [(WLSQLController *)self _performQuery:@"pragma foreign_keys=on" rowHandler:0, selfCopy, databasePath];
   [(WLSQLController *)self _ensureCorrectSchema];
 }
 
@@ -2811,10 +2811,10 @@ void __33__WLSQLController__schemaVersion__block_invoke(uint64_t a1, sqlite3_stm
   }
 }
 
-- (int64_t)_performQuery:(id)a3 rowHandler:(id)a4
+- (int64_t)_performQuery:(id)query rowHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  handlerCopy = handler;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -2825,11 +2825,11 @@ void __33__WLSQLController__schemaVersion__block_invoke(uint64_t a1, sqlite3_stm
   v13[2] = __44__WLSQLController__performQuery_rowHandler___block_invoke;
   v13[3] = &unk_279EB6210;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = queryCopy;
+  v15 = handlerCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = handlerCopy;
+  v10 = queryCopy;
   dispatch_sync(databaseQueue, v13);
   v11 = *(v18 + 6);
 
@@ -2917,9 +2917,9 @@ void __44__WLSQLController__performQuery_rowHandler___block_invoke(uint64_t a1)
   }
 }
 
-- (id)_sqlite3_column_NSDateForStatement:(sqlite3_stmt *)a3 column:(int)a4
+- (id)_sqlite3_column_NSDateForStatement:(sqlite3_stmt *)statement column:(int)column
 {
-  v4 = sqlite3_column_int64(a3, a4);
+  v4 = sqlite3_column_int64(statement, column);
   if (v4)
   {
     v4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v4];
@@ -2928,11 +2928,11 @@ void __44__WLSQLController__performQuery_rowHandler___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (int)_sqlite3_bind_NSDate:(id)a3 forStatement:(sqlite3_stmt *)a4 position:(int)a5
+- (int)_sqlite3_bind_NSDate:(id)date forStatement:(sqlite3_stmt *)statement position:(int)position
 {
-  v7 = [WLSQLController persistentValueForDate:a3];
+  v7 = [WLSQLController persistentValueForDate:date];
 
-  return sqlite3_bind_int64(a4, a5, v7);
+  return sqlite3_bind_int64(statement, position, v7);
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface UIUScreenShot
-- (UIUScreenShot)initWithContents:(id)a3;
+- (UIUScreenShot)initWithContents:(id)contents;
 @end
 
 @implementation UIUScreenShot
 
-- (UIUScreenShot)initWithContents:(id)a3
+- (UIUScreenShot)initWithContents:(id)contents
 {
-  v4 = a3;
+  contentsCopy = contents;
   v8.receiver = self;
   v8.super_class = UIUScreenShot;
   v5 = [(UIUScreenShot *)&v8 init];
   underlyingObject = v5->_underlyingObject;
-  v5->_underlyingObject = v4;
+  v5->_underlyingObject = contentsCopy;
 
   return v5;
 }

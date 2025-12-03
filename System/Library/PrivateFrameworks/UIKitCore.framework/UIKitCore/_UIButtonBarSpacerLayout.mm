@@ -1,33 +1,33 @@
 @interface _UIButtonBarSpacerLayout
-+ (id)_updateSpacer:(id)a3 layoutMetrics:(id)a4 spacerType:(int64_t)a5;
-+ (id)spacerForLayoutMetrics:(id)a3 betweenLayout:(id)a4 andLayout:(id)a5;
-- (_UIButtonBarSpacerLayout)initWithLayoutMetrics:(id)a3 barButtonItem:(id)a4;
-- (double)minimumLayoutWidthGivenMinimumSpaceWidth:(double)a3;
++ (id)_updateSpacer:(id)spacer layoutMetrics:(id)metrics spacerType:(int64_t)type;
++ (id)spacerForLayoutMetrics:(id)metrics betweenLayout:(id)layout andLayout:(id)andLayout;
+- (_UIButtonBarSpacerLayout)initWithLayoutMetrics:(id)metrics barButtonItem:(id)item;
+- (double)minimumLayoutWidthGivenMinimumSpaceWidth:(double)width;
 - (id)description;
-- (void)_addConstraintsToActivate:(id)a3 toDeactivate:(id)a4;
+- (void)_addConstraintsToActivate:(id)activate toDeactivate:(id)deactivate;
 - (void)_configure;
 @end
 
 @implementation _UIButtonBarSpacerLayout
 
-- (_UIButtonBarSpacerLayout)initWithLayoutMetrics:(id)a3 barButtonItem:(id)a4
+- (_UIButtonBarSpacerLayout)initWithLayoutMetrics:(id)metrics barButtonItem:(id)item
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8 && ([v8 isSpaceItem] & 1) == 0)
+  metricsCopy = metrics;
+  itemCopy = item;
+  v9 = itemCopy;
+  if (itemCopy && ([itemCopy isSpaceItem] & 1) == 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_UIButtonBarLayout.m" lineNumber:260 description:{@"Spacer layouts can only manage nil bar button items, or a system item that is a spacer type"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIButtonBarLayout.m" lineNumber:260 description:{@"Spacer layouts can only manage nil bar button items, or a system item that is a spacer type"}];
   }
 
   v14.receiver = self;
   v14.super_class = _UIButtonBarSpacerLayout;
-  v10 = [(_UIButtonBarLayout *)&v14 initWithLayoutMetrics:v7];
+  v10 = [(_UIButtonBarLayout *)&v14 initWithLayoutMetrics:metricsCopy];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_item, a4);
+    objc_storeStrong(&v10->_item, item);
     v11->_flexible = [v9 systemItem] == 5;
     v11->_spacerType = 1;
   }
@@ -35,27 +35,27 @@
   return v11;
 }
 
-+ (id)_updateSpacer:(id)a3 layoutMetrics:(id)a4 spacerType:(int64_t)a5
++ (id)_updateSpacer:(id)spacer layoutMetrics:(id)metrics spacerType:(int64_t)type
 {
-  v8 = a3;
-  v9 = v8;
-  if (!v8)
+  spacerCopy = spacer;
+  v9 = spacerCopy;
+  if (!spacerCopy)
   {
-    v10 = a4;
-    v9 = [[a1 alloc] initWithLayoutMetrics:v10];
+    metricsCopy = metrics;
+    v9 = [[self alloc] initWithLayoutMetrics:metricsCopy];
   }
 
-  v9[9] = a5;
+  v9[9] = type;
 
   return v9;
 }
 
-+ (id)spacerForLayoutMetrics:(id)a3 betweenLayout:(id)a4 andLayout:(id)a5
++ (id)spacerForLayoutMetrics:(id)metrics betweenLayout:(id)layout andLayout:(id)andLayout
 {
-  v8 = a3;
-  if (_UIButtonBarLayoutSpacerTypeForLayouts(a4, a5))
+  metricsCopy = metrics;
+  if (_UIButtonBarLayoutSpacerTypeForLayouts(layout, andLayout))
   {
-    v9 = [[a1 alloc] initWithLayoutMetrics:v8 barButtonItem:0];
+    v9 = [[self alloc] initWithLayoutMetrics:metricsCopy barButtonItem:0];
     v9[9] = 1;
   }
 
@@ -67,7 +67,7 @@
   return v9;
 }
 
-- (double)minimumLayoutWidthGivenMinimumSpaceWidth:(double)a3
+- (double)minimumLayoutWidthGivenMinimumSpaceWidth:(double)width
 {
   item = self->_item;
   if (item)
@@ -80,9 +80,9 @@
     result = 0.0;
   }
 
-  if (result < a3)
+  if (result < width)
   {
-    return a3;
+    return width;
   }
 
   return result;
@@ -101,7 +101,7 @@
     spacer = self->_spacer;
   }
 
-  v23 = [(UIView *)spacer widthAnchor];
+  widthAnchor = [(UIView *)spacer widthAnchor];
   if (self->_flexible)
   {
     p_equalSize = &self->_equalSize;
@@ -111,8 +111,8 @@
       goto LABEL_15;
     }
 
-    v14 = [(_UIButtonBarLayoutMetricsData *)self->super._layoutMetrics flexibleSpaceGuide];
-    v16 = [v23 constraintEqualToAnchor:v14];
+    flexibleSpaceGuide = [(_UIButtonBarLayoutMetricsData *)self->super._layoutMetrics flexibleSpaceGuide];
+    v16 = [widthAnchor constraintEqualToAnchor:flexibleSpaceGuide];
     v17 = *p_equalSize;
     *p_equalSize = v16;
 
@@ -148,8 +148,8 @@
     }
 
     [*p_equalSize setActive:0];
-    v13 = [v23 constraintEqualToConstant:v9];
-    v14 = *p_equalSize;
+    v13 = [widthAnchor constraintEqualToConstant:v9];
+    flexibleSpaceGuide = *p_equalSize;
     *p_equalSize = v13;
     v15 = 1143930880;
   }
@@ -159,15 +159,15 @@
 LABEL_15:
   if (!self->_minimumSize)
   {
-    v19 = [(_UIButtonBarLayoutMetricsData *)self->super._layoutMetrics minimumSpaceGuide];
+    minimumSpaceGuide = [(_UIButtonBarLayoutMetricsData *)self->super._layoutMetrics minimumSpaceGuide];
     if (v7)
     {
-      [v23 constraintEqualToAnchor:v19 multiplier:1.0];
+      [widthAnchor constraintEqualToAnchor:minimumSpaceGuide multiplier:1.0];
     }
 
     else
     {
-      [v23 constraintGreaterThanOrEqualToAnchor:v19 multiplier:1.0];
+      [widthAnchor constraintGreaterThanOrEqualToAnchor:minimumSpaceGuide multiplier:1.0];
     }
     v20 = ;
     v21 = self->_minimumSize;
@@ -182,22 +182,22 @@ LABEL_15:
   [(NSLayoutConstraint *)self->_minimumSize setIdentifier:@"UIButtonBar.minimumSize"];
 }
 
-- (void)_addConstraintsToActivate:(id)a3 toDeactivate:(id)a4
+- (void)_addConstraintsToActivate:(id)activate toDeactivate:(id)deactivate
 {
-  v14 = a3;
-  v6 = a4;
+  activateCopy = activate;
+  deactivateCopy = deactivate;
   item = self->_item;
   if (self->_flexible)
   {
-    v8 = [(UIBarButtonItem *)item _wantsThreeUp];
-    v9 = v14;
-    if (v8)
+    _wantsThreeUp = [(UIBarButtonItem *)item _wantsThreeUp];
+    v9 = activateCopy;
+    if (_wantsThreeUp)
     {
       goto LABEL_11;
     }
 
     equalSize = self->_equalSize;
-    v11 = v14;
+    v11 = activateCopy;
   }
 
   else
@@ -217,17 +217,17 @@ LABEL_15:
     equalSize = self->_requestedSize;
     if (v13 <= 0.0)
     {
-      v11 = v6;
+      v11 = deactivateCopy;
     }
 
     else
     {
-      v11 = v14;
+      v11 = activateCopy;
     }
   }
 
   [v11 addObject:equalSize];
-  v9 = v14;
+  v9 = activateCopy;
 LABEL_11:
   [v9 addObject:self->_minimumSize];
 }

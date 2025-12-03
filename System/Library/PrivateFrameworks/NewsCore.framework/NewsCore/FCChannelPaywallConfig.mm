@@ -1,24 +1,24 @@
 @interface FCChannelPaywallConfig
-- (FCChannelPaywallConfig)initWithChannelID:(id)a3 configDictionary:(id)a4;
+- (FCChannelPaywallConfig)initWithChannelID:(id)d configDictionary:(id)dictionary;
 @end
 
 @implementation FCChannelPaywallConfig
 
-- (FCChannelPaywallConfig)initWithChannelID:(id)a3 configDictionary:(id)a4
+- (FCChannelPaywallConfig)initWithChannelID:(id)d configDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = FCChannelPaywallConfig;
   v8 = [(FCChannelPaywallConfig *)&v16 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     channelID = v8->_channelID;
     v8->_channelID = v9;
 
-    v8->_filterALaCartePaidArticlesForPaidBundleSubscribers = FCAppConfigurationBoolValue(v7, @"filterALaCartePaidArticlesForPaidBundleSubscribers", 0);
-    v11 = FCAppConfigurationStringValue(v7, @"articleSoftPaywallPosition", @"bottom");
+    v8->_filterALaCartePaidArticlesForPaidBundleSubscribers = FCAppConfigurationBoolValue(dictionaryCopy, @"filterALaCartePaidArticlesForPaidBundleSubscribers", 0);
+    v11 = FCAppConfigurationStringValue(dictionaryCopy, @"articleSoftPaywallPosition", @"bottom");
     if ([v11 isEqualToString:@"top"])
     {
       v12 = 2;
@@ -35,7 +35,7 @@
     }
 
     v8->_articleSoftPaywallPosition = v12;
-    v13 = FCAppConfigurationStringValue(v7, @"articleSoftPaywallPositionForPaidBundleSubscribers", @"none");
+    v13 = FCAppConfigurationStringValue(dictionaryCopy, @"articleSoftPaywallPositionForPaidBundleSubscribers", @"none");
 
     if ([v13 isEqualToString:@"top"])
     {

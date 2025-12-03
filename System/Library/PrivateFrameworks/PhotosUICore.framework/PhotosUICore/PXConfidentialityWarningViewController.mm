@@ -1,36 +1,36 @@
 @interface PXConfidentialityWarningViewController
-- (void)_handleButton:(id)a3;
-- (void)presentAsOverlayInWindowScene:(id)a3;
+- (void)_handleButton:(id)button;
+- (void)presentAsOverlayInWindowScene:(id)scene;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PXConfidentialityWarningViewController
 
-- (void)_handleButton:(id)a3
+- (void)_handleButton:(id)button
 {
-  v10 = a3;
-  if ([v10 tag] == 2)
+  buttonCopy = button;
+  if ([buttonCopy tag] == 2)
   {
-    v4 = [(PXConfidentialityWarningViewController *)self cancellationHandler];
-    if (!v4)
+    cancellationHandler = [(PXConfidentialityWarningViewController *)self cancellationHandler];
+    if (!cancellationHandler)
     {
       exit(1);
     }
 
-    v5 = v4;
+    v5 = cancellationHandler;
     [(PXConfidentialityWarningViewController *)self setCancellationHandler:0];
     v5[2](v5);
   }
 
-  v6 = [overlayWindow rootViewController];
+  rootViewController = [overlayWindow rootViewController];
 
-  if (v6 == self)
+  if (rootViewController == self)
   {
-    v7 = [MEMORY[0x1E69DC668] sharedApplication];
-    v8 = [v7 windows];
-    v9 = [v8 firstObject];
-    [v9 makeKeyAndVisible];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    windows = [mEMORY[0x1E69DC668] windows];
+    firstObject = [windows firstObject];
+    [firstObject makeKeyAndVisible];
 
     [overlayWindow setHidden:1];
     [overlayWindow setRootViewController:0];
@@ -42,14 +42,14 @@
   }
 }
 
-- (void)presentAsOverlayInWindowScene:(id)a3
+- (void)presentAsOverlayInWindowScene:(id)scene
 {
   v4 = overlayWindow;
   if (!overlayWindow)
   {
     v5 = MEMORY[0x1E69DD2E8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithWindowScene:v6];
+    sceneCopy = scene;
+    v7 = [[v5 alloc] initWithWindowScene:sceneCopy];
 
     v8 = overlayWindow;
     overlayWindow = v7;
@@ -70,8 +70,8 @@
   v37.receiver = self;
   v37.super_class = PXConfidentialityWarningViewController;
   [(PXConfidentialityWarningViewController *)&v37 viewWillLayoutSubviews];
-  v3 = [(PXConfidentialityWarningViewController *)self view];
-  [v3 bounds];
+  view = [(PXConfidentialityWarningViewController *)self view];
+  [view bounds];
   v5 = v4;
   v33 = v6;
   v34 = v4;
@@ -96,11 +96,11 @@
   aBlock[3] = &__block_descriptor_64_e18_d16__0__UIButton_8l;
   v36 = v39;
   v16 = _Block_copy(aBlock);
-  v17 = [(PXConfidentialityWarningViewController *)self confirmButton];
-  v18 = v16[2](v16, v17);
+  confirmButton = [(PXConfidentialityWarningViewController *)self confirmButton];
+  v18 = v16[2](v16, confirmButton);
 
-  v19 = [(PXConfidentialityWarningViewController *)self cancelButton];
-  v20 = v16[2](v16, v19);
+  cancelButton = [(PXConfidentialityWarningViewController *)self cancelButton];
+  v20 = v16[2](v16, cancelButton);
 
   if (v18 >= v20)
   {
@@ -137,17 +137,17 @@
   v45.size.width = width;
   v45.size.height = height;
   v26 = v25 - CGRectGetMinY(v45);
-  v27 = [(PXConfidentialityWarningViewController *)self effectView];
-  [v27 setFrame:{v34, v33, v32, v31}];
+  effectView = [(PXConfidentialityWarningViewController *)self effectView];
+  [effectView setFrame:{v34, v33, v32, v31}];
 
-  v28 = [(PXConfidentialityWarningViewController *)self messageLabel];
-  [v28 setFrame:{x, y, width, v26}];
+  messageLabel = [(PXConfidentialityWarningViewController *)self messageLabel];
+  [messageLabel setFrame:{x, y, width, v26}];
 
-  v29 = [(PXConfidentialityWarningViewController *)self confirmButton];
-  [v29 setFrame:{x, v24, width, v20}];
+  confirmButton2 = [(PXConfidentialityWarningViewController *)self confirmButton];
+  [confirmButton2 setFrame:{x, v24, width, v20}];
 
-  v30 = [(PXConfidentialityWarningViewController *)self cancelButton];
-  [v30 setFrame:{x, v22, width, v20}];
+  cancelButton2 = [(PXConfidentialityWarningViewController *)self cancelButton];
+  [cancelButton2 setFrame:{x, v22, width, v20}];
 }
 
 - (void)viewDidLoad
@@ -155,14 +155,14 @@
   v19.receiver = self;
   v19.super_class = PXConfidentialityWarningViewController;
   [(PXConfidentialityWarningViewController *)&v19 viewDidLoad];
-  v3 = [(PXConfidentialityWarningViewController *)self view];
+  view = [(PXConfidentialityWarningViewController *)self view];
   v4 = objc_alloc(MEMORY[0x1E69DD298]);
   v5 = [MEMORY[0x1E69DC730] effectWithStyle:0];
   v6 = [v4 initWithEffect:v5];
   effectView = self->_effectView;
   self->_effectView = v6;
 
-  [v3 addSubview:self->_effectView];
+  [view addSubview:self->_effectView];
   v8 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   messageLabel = self->_messageLabel;
   self->_messageLabel = v8;
@@ -173,14 +173,14 @@
   [(UILabel *)self->_messageLabel setText:@"Confidential UI Warning\n\nMake sure that every person around you is appropriately disclosed."];
   [(UILabel *)self->_messageLabel setNumberOfLines:0];
   [(UILabel *)self->_messageLabel setTextAlignment:1];
-  [v3 addSubview:self->_messageLabel];
+  [view addSubview:self->_messageLabel];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __53__PXConfidentialityWarningViewController_viewDidLoad__block_invoke;
   v17[3] = &unk_1E773E998;
   v17[4] = self;
-  v18 = v3;
-  v11 = v3;
+  v18 = view;
+  v11 = view;
   v12 = _Block_copy(v17);
   v13 = v12[2](v12, @"Continue with Confidential UI", 1);
   confirmButton = self->_confirmButton;

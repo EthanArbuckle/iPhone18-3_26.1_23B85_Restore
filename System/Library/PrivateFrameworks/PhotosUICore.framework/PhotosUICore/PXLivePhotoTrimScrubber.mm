@@ -1,35 +1,35 @@
 @interface PXLivePhotoTrimScrubber
-+ (id)_createSnappingControllersForKeytimes:(id)a3;
-+ (id)createSnappingControllerWithSnappingTarget:(double)a3;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_clampTimeToViewportIfZoomed:(SEL)a3;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_timeAtLocation:(SEL)a3 forElement:(CGPoint)a4;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeAtPoint:(SEL)a3;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeForElement:(SEL)a3;
++ (id)_createSnappingControllersForKeytimes:(id)keytimes;
++ (id)createSnappingControllerWithSnappingTarget:(double)target;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_clampTimeToViewportIfZoomed:(SEL)zoomed;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_timeAtLocation:(SEL)location forElement:(CGPoint)element;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeAtPoint:(SEL)point;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeForElement:(SEL)element;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)viewportMaxTime;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)viewportMinTime;
-- (BOOL)isValidKeyTime:(id *)a3;
-- (BOOL)tryZoomAtTime:(id *)a3;
+- (BOOL)isValidKeyTime:(id *)time;
+- (BOOL)tryZoomAtTime:(id *)time;
 - (CGRect)_disabledOverlayFrame;
 - (CGRect)_keyHandleRect;
 - (CGRect)loupeRect;
-- (PXLivePhotoTrimScrubber)initWithFilmStripViewClass:(Class)a3 spec:(id)a4 traitCollection:(id)a5;
+- (PXLivePhotoTrimScrubber)initWithFilmStripViewClass:(Class)class spec:(id)spec traitCollection:(id)collection;
 - (PXLivePhotoTrimScrubberDelegate)delegate;
-- (double)_offsetForTime:(id *)a3;
-- (double)horizontalOffsetForTime:(id *)a3;
-- (double)offsetForTime:(id *)a3;
-- (id)_snapTimesForElement:(int64_t)a3;
-- (id)_snappingControllersForElement:(int64_t)a3;
+- (double)_offsetForTime:(id *)time;
+- (double)horizontalOffsetForTime:(id *)time;
+- (double)offsetForTime:(id *)time;
+- (id)_snapTimesForElement:(int64_t)element;
+- (id)_snappingControllersForElement:(int64_t)element;
 - (int64_t)trimStatus;
 - (void)_PXLivePhotoTrimScrubber_commonInit;
-- (void)_animateChanges:(id)a3;
+- (void)_animateChanges:(id)changes;
 - (void)_assetDidLoadValues;
 - (void)_newScrubberLayoutSubviews;
 - (void)_presentControlsIfNeeded;
 - (void)_releaseAVObjects;
-- (void)_setContentAspectRatio:(double)a3;
-- (void)_setKeyTime:(id *)a3 canHaveImpact:(BOOL)a4 forElement:(int64_t)a5;
-- (void)_setTrackingElement:(int64_t)a3;
-- (void)_setUntrimmedDuration:(id *)a3;
+- (void)_setContentAspectRatio:(double)ratio;
+- (void)_setKeyTime:(id *)time canHaveImpact:(BOOL)impact forElement:(int64_t)element;
+- (void)_setTrackingElement:(int64_t)element;
+- (void)_setUntrimmedDuration:(id *)duration;
 - (void)_setupZoom;
 - (void)_updateContentAspectRatio;
 - (void)_updateEndTimeSnappingControllers;
@@ -38,45 +38,45 @@
 - (void)_updateSpecDependentUI;
 - (void)_updateStartTimeSnappingControllers;
 - (void)_updateTrimHandles;
-- (void)_updateZoomState:(BOOL)a3;
-- (void)_zoomAtTime:(id *)a3;
+- (void)_updateZoomState:(BOOL)state;
+- (void)_zoomAtTime:(id *)time;
 - (void)_zoomAtTrackedElement;
 - (void)_zoomDelayed;
-- (void)handleBeginTrackingAtLocation:(CGPoint)a3;
-- (void)handleChangeTrackingAtLocation:(CGPoint)a3 withVelocity:(CGPoint)a4;
-- (void)handleEndTracking:(BOOL)a3;
-- (void)handleLongPressWithElement:(int64_t)a3;
-- (void)handleSetKeyTime:(id *)a3;
-- (void)handleTapWithElement:(int64_t)a3;
+- (void)handleBeginTrackingAtLocation:(CGPoint)location;
+- (void)handleChangeTrackingAtLocation:(CGPoint)location withVelocity:(CGPoint)velocity;
+- (void)handleEndTracking:(BOOL)tracking;
+- (void)handleLongPressWithElement:(int64_t)element;
+- (void)handleSetKeyTime:(id *)time;
+- (void)handleTapWithElement:(int64_t)element;
 - (void)layoutSubviews;
-- (void)performAnimatedChanges:(id)a3;
-- (void)setAsset:(id)a3 videoComposition:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setDisabled:(BOOL)a3 useTransparency:(BOOL)a4;
-- (void)setFocusEventTimes:(id)a3;
-- (void)setMinimumTrimLength:(id *)a3;
-- (void)setOriginalEndTime:(id *)a3;
-- (void)setOriginalStartTime:(id *)a3;
-- (void)setPlaceholderImage:(id)a3;
-- (void)setPlayheadStyle:(unint64_t)a3 animate:(BOOL)a4;
-- (void)setShowVideoScrubberDebugOverlay:(BOOL)a3;
-- (void)setSnapKeyTimes:(id)a3;
-- (void)setSnapTrimEndTimes:(id)a3;
-- (void)setSnapTrimStartTimes:(id)a3;
-- (void)setSuggestedKeyTime:(id *)a3;
-- (void)setTrimEndTime:(id *)a3;
-- (void)setTrimStartTime:(id *)a3;
-- (void)setUseMiniScrubber:(BOOL)a3;
+- (void)performAnimatedChanges:(id)changes;
+- (void)setAsset:(id)asset videoComposition:(id)composition;
+- (void)setDelegate:(id)delegate;
+- (void)setDisabled:(BOOL)disabled useTransparency:(BOOL)transparency;
+- (void)setFocusEventTimes:(id)times;
+- (void)setMinimumTrimLength:(id *)length;
+- (void)setOriginalEndTime:(id *)time;
+- (void)setOriginalStartTime:(id *)time;
+- (void)setPlaceholderImage:(id)image;
+- (void)setPlayheadStyle:(unint64_t)style animate:(BOOL)animate;
+- (void)setShowVideoScrubberDebugOverlay:(BOOL)overlay;
+- (void)setSnapKeyTimes:(id)times;
+- (void)setSnapTrimEndTimes:(id)times;
+- (void)setSnapTrimStartTimes:(id)times;
+- (void)setSuggestedKeyTime:(id *)time;
+- (void)setTrimEndTime:(id *)time;
+- (void)setTrimStartTime:(id *)time;
+- (void)setUseMiniScrubber:(BOOL)scrubber;
 - (void)unzoom;
-- (void)updateTraitCollection:(id)a3;
+- (void)updateTraitCollection:(id)collection;
 @end
 
 @implementation PXLivePhotoTrimScrubber
 
-- (void)setMinimumTrimLength:(id *)a3
+- (void)setMinimumTrimLength:(id *)length
 {
-  var3 = a3->var3;
-  *&self->_minimumTrimLength.value = *&a3->var0;
+  var3 = length->var3;
+  *&self->_minimumTrimLength.value = *&length->var0;
   self->_minimumTrimLength.epoch = var3;
 }
 
@@ -87,17 +87,17 @@
   return WeakRetained;
 }
 
-- (void)setOriginalEndTime:(id *)a3
+- (void)setOriginalEndTime:(id *)time
 {
-  var3 = a3->var3;
-  *&self->_originalEndTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_originalEndTime.value = *&time->var0;
   self->_originalEndTime.epoch = var3;
 }
 
-- (void)setOriginalStartTime:(id *)a3
+- (void)setOriginalStartTime:(id *)time
 {
-  var3 = a3->var3;
-  *&self->_originalStartTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_originalStartTime.value = *&time->var0;
   self->_originalStartTime.epoch = var3;
 }
 
@@ -113,8 +113,8 @@
 
 - (CGRect)_disabledOverlayFrame
 {
-  v3 = [(PXLivePhotoTrimScrubber *)self trimStartHandle];
-  [v3 frame];
+  trimStartHandle = [(PXLivePhotoTrimScrubber *)self trimStartHandle];
+  [trimStartHandle frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -134,8 +134,8 @@
   width = v35.size.width;
   height = v35.size.height;
 
-  v20 = [(PXLivePhotoTrimScrubber *)self trimEndHandle];
-  [v20 frame];
+  trimEndHandle = [(PXLivePhotoTrimScrubber *)self trimEndHandle];
+  [trimEndHandle frame];
   v40.origin.x = v21;
   v40.origin.y = v22;
   v40.size.width = v23;
@@ -179,13 +179,13 @@
   }
 }
 
-- (id)_snapTimesForElement:(int64_t)a3
+- (id)_snapTimesForElement:(int64_t)element
 {
-  if ((a3 - 3) < 2)
+  if ((element - 3) < 2)
   {
     v5 = objc_opt_new();
-    v6 = [(PXLivePhotoTrimScrubber *)self snapKeyTimes];
-    [v5 addObjectsFromArray:v6];
+    snapKeyTimes = [(PXLivePhotoTrimScrubber *)self snapKeyTimes];
+    [v5 addObjectsFromArray:snapKeyTimes];
 
     [(PXLivePhotoTrimScrubber *)self suggestedKeyTime];
     if (v10[36])
@@ -201,17 +201,17 @@
 
   else
   {
-    if (a3 == 1)
+    if (element == 1)
     {
-      v4 = [(PXLivePhotoTrimScrubber *)self snapTrimStartTimes];
+      snapTrimStartTimes = [(PXLivePhotoTrimScrubber *)self snapTrimStartTimes];
       goto LABEL_9;
     }
 
-    if (a3 == 2)
+    if (element == 2)
     {
-      v4 = [(PXLivePhotoTrimScrubber *)self snapTrimEndTimes];
+      snapTrimStartTimes = [(PXLivePhotoTrimScrubber *)self snapTrimEndTimes];
 LABEL_9:
-      v5 = v4;
+      v5 = snapTrimStartTimes;
       goto LABEL_11;
     }
 
@@ -223,9 +223,9 @@ LABEL_11:
   return v5;
 }
 
-- (id)_snappingControllersForElement:(int64_t)a3
+- (id)_snappingControllersForElement:(int64_t)element
 {
-  if ((a3 - 3) < 2)
+  if ((element - 3) < 2)
   {
     v5 = objc_opt_new();
     [v5 addObjectsFromArray:self->_keyTimeSnappingControllers];
@@ -233,13 +233,13 @@ LABEL_11:
     goto LABEL_9;
   }
 
-  if (a3 == 1)
+  if (element == 1)
   {
     v4 = 464;
     goto LABEL_7;
   }
 
-  if (a3 == 2)
+  if (element == 2)
   {
     v4 = 472;
 LABEL_7:
@@ -263,45 +263,45 @@ LABEL_9:
 
 - (void)_updateEndTimeSnappingControllers
 {
-  v5 = [(PXLivePhotoTrimScrubber *)self snapTrimEndTimes];
-  v3 = [objc_opt_class() _createSnappingControllersForKeytimes:v5];
+  snapTrimEndTimes = [(PXLivePhotoTrimScrubber *)self snapTrimEndTimes];
+  v3 = [objc_opt_class() _createSnappingControllersForKeytimes:snapTrimEndTimes];
   endTimeSnappingControllers = self->_endTimeSnappingControllers;
   self->_endTimeSnappingControllers = v3;
 }
 
 - (void)_updateStartTimeSnappingControllers
 {
-  v5 = [(PXLivePhotoTrimScrubber *)self snapTrimStartTimes];
-  v3 = [objc_opt_class() _createSnappingControllersForKeytimes:v5];
+  snapTrimStartTimes = [(PXLivePhotoTrimScrubber *)self snapTrimStartTimes];
+  v3 = [objc_opt_class() _createSnappingControllersForKeytimes:snapTrimStartTimes];
   startTimeSnappingControllers = self->_startTimeSnappingControllers;
   self->_startTimeSnappingControllers = v3;
 }
 
 - (void)_updateKeyTimeSnappingControllers
 {
-  v3 = [(PXLivePhotoTrimScrubber *)self snapKeyTimes];
+  snapKeyTimes = [(PXLivePhotoTrimScrubber *)self snapKeyTimes];
   [(PXLivePhotoTrimScrubber *)self suggestedKeyTime];
   if (v9[36])
   {
     v4 = MEMORY[0x1E696B098];
     [(PXLivePhotoTrimScrubber *)self suggestedKeyTime];
     v5 = [v4 valueWithCMTime:v9];
-    v6 = [v3 arrayByAddingObject:v5];
+    v6 = [snapKeyTimes arrayByAddingObject:v5];
 
-    v3 = v6;
+    snapKeyTimes = v6;
   }
 
-  v7 = [objc_opt_class() _createSnappingControllersForKeytimes:v3];
+  v7 = [objc_opt_class() _createSnappingControllersForKeytimes:snapKeyTimes];
   keyTimeSnappingControllers = self->_keyTimeSnappingControllers;
   self->_keyTimeSnappingControllers = v7;
 }
 
-- (void)_setContentAspectRatio:(double)a3
+- (void)_setContentAspectRatio:(double)ratio
 {
-  if (self->__contentAspectRatio != a3 || ([(PXLivePhotoTrimScrubberLoupeView *)self->_photoLoupe aspectRatio], v5 != a3))
+  if (self->__contentAspectRatio != ratio || ([(PXLivePhotoTrimScrubberLoupeView *)self->_photoLoupe aspectRatio], v5 != ratio))
   {
-    self->__contentAspectRatio = a3;
-    [(PXLivePhotoTrimScrubberLoupeView *)self->_photoLoupe setAspectRatio:a3];
+    self->__contentAspectRatio = ratio;
+    [(PXLivePhotoTrimScrubberLoupeView *)self->_photoLoupe setAspectRatio:ratio];
 
     [(PXLivePhotoTrimScrubber *)self setNeedsLayout];
   }
@@ -309,12 +309,12 @@ LABEL_9:
 
 - (void)_updateContentAspectRatio
 {
-  v3 = [(PXLivePhotoTrimScrubber *)self videoComposition];
-  v4 = [(PXLivePhotoTrimScrubber *)self asset];
-  v5 = v4;
-  if (v3)
+  videoComposition = [(PXLivePhotoTrimScrubber *)self videoComposition];
+  asset = [(PXLivePhotoTrimScrubber *)self asset];
+  v5 = asset;
+  if (videoComposition)
   {
-    [v3 renderSize];
+    [videoComposition renderSize];
     v8 = v6 / v7;
     v9 = v7 == 0.0;
 LABEL_3:
@@ -331,20 +331,20 @@ LABEL_3:
     goto LABEL_17;
   }
 
-  v11 = [v4 tracks];
+  tracks = [asset tracks];
 
-  if (!v11)
+  if (!tracks)
   {
-    v18 = [(PXLivePhotoTrimScrubber *)self placeholderImage];
+    placeholderImage = [(PXLivePhotoTrimScrubber *)self placeholderImage];
 
-    if (!v18)
+    if (!placeholderImage)
     {
       v10 = 1.0;
       goto LABEL_17;
     }
 
-    v19 = [(PXLivePhotoTrimScrubber *)self placeholderImage];
-    [v19 size];
+    placeholderImage2 = [(PXLivePhotoTrimScrubber *)self placeholderImage];
+    [placeholderImage2 size];
     v21 = v20;
     v23 = v22;
 
@@ -354,15 +354,15 @@ LABEL_3:
   }
 
   v12 = [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:v5];
-  v13 = [v12 firstObject];
+  firstObject = [v12 firstObject];
 
-  if (v13)
+  if (firstObject)
   {
-    [v13 naturalSize];
+    [firstObject naturalSize];
     v15 = v14;
     v17 = v16;
     memset(v25, 0, sizeof(v25));
-    [v13 preferredTransform];
+    [firstObject preferredTransform];
     v26.size.width = v17 * 0.0 + 0.0 * v15;
     v26.size.height = v26.size.width;
     v26.origin.x = 0.0;
@@ -395,23 +395,23 @@ LABEL_17:
   [(PXLivePhotoTrimScrubber *)self _setContentAspectRatio:v10];
 }
 
-- (void)_setUntrimmedDuration:(id *)a3
+- (void)_setUntrimmedDuration:(id *)duration
 {
   p_untrimmedDuration = &self->_untrimmedDuration;
-  time1 = *a3;
+  time1 = *duration;
   time2 = self->_untrimmedDuration;
   if (CMTimeCompare(&time1, &time2))
   {
-    v6 = *&a3->var0;
-    p_untrimmedDuration->epoch = a3->var3;
+    v6 = *&duration->var0;
+    p_untrimmedDuration->epoch = duration->var3;
     *&p_untrimmedDuration->value = v6;
-    *&v9.value = *&a3->var0;
-    v9.epoch = a3->var3;
-    v7 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+    *&v9.value = *&duration->var0;
+    v9.epoch = duration->var3;
+    layoutHelper = [(PXLivePhotoTrimScrubber *)self layoutHelper];
     time1 = v9;
-    [v7 setDuration:&time1];
+    [layoutHelper setDuration:&time1];
 
-    if ((a3->var2 & 1) == 0)
+    if ((duration->var2 & 1) == 0)
     {
       [(PXLivePhotoTrimScrubber *)self _setPhotoLoupeHidden:1 animated:0];
       [(PXLivePhotoTrimScrubber *)self _setTrimControlsHidden:1 animated:0];
@@ -421,8 +421,8 @@ LABEL_17:
     [(PXLivePhotoTrimScrubber *)self setNeedsLayout];
     if (self->_delegateFlags.respondsToAssetDurationDidChange)
     {
-      v8 = [(PXLivePhotoTrimScrubber *)self delegate];
-      [v8 trimScrubberAssetDurationDidChange:self];
+      delegate = [(PXLivePhotoTrimScrubber *)self delegate];
+      [delegate trimScrubberAssetDurationDidChange:self];
     }
 
     [(PXLivePhotoTrimScrubber *)self _presentControlsIfNeeded];
@@ -438,13 +438,13 @@ LABEL_17:
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEFAULT, "Trim Scrubber - _assetDidLoadValues", buf, 2u);
   }
 
-  v4 = [(PXLivePhotoTrimScrubber *)self asset];
-  v5 = v4;
+  asset = [(PXLivePhotoTrimScrubber *)self asset];
+  v5 = asset;
   memset(buf, 0, sizeof(buf));
   v9 = 0;
-  if (v4)
+  if (asset)
   {
-    [v4 duration];
+    [asset duration];
   }
 
   v6 = *buf;
@@ -453,15 +453,15 @@ LABEL_17:
   [(PXLivePhotoTrimScrubber *)self _updateContentAspectRatio];
 }
 
-- (void)handleEndTracking:(BOOL)a3
+- (void)handleEndTracking:(BOOL)tracking
 {
-  v3 = a3;
+  trackingCopy = tracking;
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [(PXLivePhotoTrimScrubber *)self _trackingElement];
+  _trackingElement = [(PXLivePhotoTrimScrubber *)self _trackingElement];
   [(PXLivePhotoTrimScrubber *)self _setTrackingElement:0];
-  if (v5)
+  if (_trackingElement)
   {
-    if (v5 == 3)
+    if (_trackingElement == 3)
     {
       photoLoupe = self->_photoLoupe;
       [(PXLivePhotoTrimScrubber *)self keyTime];
@@ -470,12 +470,12 @@ LABEL_17:
 
     if (self->_delegateFlags.respondsToDidEndInteractivelyEditingElement)
     {
-      v7 = [(PXLivePhotoTrimScrubber *)self delegate];
-      [v7 trimScrubber:self didEndInteractivelyEditingElement:v5 successful:v3];
+      delegate = [(PXLivePhotoTrimScrubber *)self delegate];
+      [delegate trimScrubber:self didEndInteractivelyEditingElement:_trackingElement successful:trackingCopy];
     }
   }
 
-  v8 = [(PXLivePhotoTrimScrubber *)self _snappingControllersForElement:v5];
+  v8 = [(PXLivePhotoTrimScrubber *)self _snappingControllersForElement:_trackingElement];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -512,12 +512,12 @@ LABEL_17:
   }
 }
 
-- (void)handleChangeTrackingAtLocation:(CGPoint)a3 withVelocity:(CGPoint)a4
+- (void)handleChangeTrackingAtLocation:(CGPoint)location withVelocity:(CGPoint)velocity
 {
-  x = a4.x;
-  y = a3.y;
-  v6 = a3.x;
-  v8 = [(PXLivePhotoTrimScrubber *)self _trackingElement:a3.x];
+  x = velocity.x;
+  y = location.y;
+  v6 = location.x;
+  v8 = [(PXLivePhotoTrimScrubber *)self _trackingElement:location.x];
   memset(&v25[4], 0, 24);
   [(PXLivePhotoTrimScrubber *)self _timeAtLocation:v8 forElement:v6, y];
   v9 = [(PXLivePhotoTrimScrubber *)self _snappingControllersForElement:v8];
@@ -603,7 +603,7 @@ void __71__PXLivePhotoTrimScrubber_handleChangeTrackingAtLocation_withVelocity__
   }
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_clampTimeToViewportIfZoomed:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_clampTimeToViewportIfZoomed:(SEL)zoomed
 {
   *retstr = *a4;
   result = [(PXLivePhotoTrimScrubber *)self state];
@@ -625,13 +625,13 @@ void __71__PXLivePhotoTrimScrubber_handleChangeTrackingAtLocation_withVelocity__
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)viewportMaxTime
 {
-  v8 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
-  v5 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
-  [v5 viewportFrame];
+  layoutHelper = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+  layoutHelper2 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+  [layoutHelper2 viewportFrame];
   MaxX = CGRectGetMaxX(v10);
-  if (v8)
+  if (layoutHelper)
   {
-    [v8 timeForOffsetInScrubberSpace:MaxX];
+    [layoutHelper timeForOffsetInScrubberSpace:MaxX];
   }
 
   else
@@ -646,13 +646,13 @@ void __71__PXLivePhotoTrimScrubber_handleChangeTrackingAtLocation_withVelocity__
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)viewportMinTime
 {
-  v8 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
-  v5 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
-  [v5 viewportFrame];
+  layoutHelper = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+  layoutHelper2 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+  [layoutHelper2 viewportFrame];
   MinX = CGRectGetMinX(v10);
-  if (v8)
+  if (layoutHelper)
   {
-    [v8 timeForOffsetInScrubberSpace:MinX];
+    [layoutHelper timeForOffsetInScrubberSpace:MinX];
   }
 
   else
@@ -665,17 +665,17 @@ void __71__PXLivePhotoTrimScrubber_handleChangeTrackingAtLocation_withVelocity__
   return result;
 }
 
-- (void)handleBeginTrackingAtLocation:(CGPoint)a3
+- (void)handleBeginTrackingAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v43 = *MEMORY[0x1E69E9840];
-  v6 = [(PXLivePhotoTrimScrubber *)self spec];
-  [v6 handleWidth];
+  spec = [(PXLivePhotoTrimScrubber *)self spec];
+  [spec handleWidth];
   v8 = v7;
-  [v6 handleAnchorX];
+  [spec handleAnchorX];
   v10 = v8 * v9;
-  [v6 handleTouchDistance];
+  [spec handleTouchDistance];
   v12 = v11;
   [(PXLivePhotoTrimScrubberLoupeView *)self->_photoLoupe center];
   v14 = vabdd_f64(x, v13);
@@ -722,11 +722,11 @@ void __71__PXLivePhotoTrimScrubber_handleChangeTrackingAtLocation_withVelocity__
   }
 
   [(PXLivePhotoTrimScrubber *)self _setPhotoLoupeHidden:(v16 < v14 && v19) | (v15 < v12 && v15 < v14) animated:1];
-  v21 = 0;
+  fallbackToKeyTimeTracking = 0;
   if ([(PXLivePhotoTrimScrubber *)self playheadStyle]== 2 && !v20)
   {
-    v21 = [v6 fallbackToKeyTimeTracking];
-    if (v21)
+    fallbackToKeyTimeTracking = [spec fallbackToKeyTimeTracking];
+    if (fallbackToKeyTimeTracking)
     {
       v20 = 3;
     }
@@ -737,7 +737,7 @@ void __71__PXLivePhotoTrimScrubber_handleChangeTrackingAtLocation_withVelocity__
     }
   }
 
-  v22 = [(PXLivePhotoTrimScrubber *)self playheadStyle];
+  playheadStyle = [(PXLivePhotoTrimScrubber *)self playheadStyle];
   if (v20)
   {
     v23 = 0;
@@ -745,13 +745,13 @@ void __71__PXLivePhotoTrimScrubber_handleChangeTrackingAtLocation_withVelocity__
 
   else
   {
-    v23 = v22 == 1;
+    v23 = playheadStyle == 1;
   }
 
   if (v23)
   {
-    v24 = [v6 fallbackToPlayheadTracking];
-    if (v24)
+    fallbackToPlayheadTracking = [spec fallbackToPlayheadTracking];
+    if (fallbackToPlayheadTracking)
     {
       v20 = 4;
     }
@@ -764,7 +764,7 @@ void __71__PXLivePhotoTrimScrubber_handleChangeTrackingAtLocation_withVelocity__
 
   else
   {
-    v24 = 0;
+    fallbackToPlayheadTracking = 0;
   }
 
   if (!self->_delegateFlags.respondsToCanBeginInteractivelyEditingElement || (-[PXLivePhotoTrimScrubber delegate](self, "delegate"), v25 = objc_claimAutoreleasedReturnValue(), v26 = [v25 trimScrubber:self canBeginInteractivelyEditingElement:v20], v25, v26))
@@ -798,7 +798,7 @@ void __71__PXLivePhotoTrimScrubber_handleChangeTrackingAtLocation_withVelocity__
       while (v29);
     }
 
-    if ((v21 | v24) == 1)
+    if ((fallbackToKeyTimeTracking | fallbackToPlayheadTracking) == 1)
     {
       v36 = 0uLL;
       v37 = 0;
@@ -816,8 +816,8 @@ void __71__PXLivePhotoTrimScrubber_handleChangeTrackingAtLocation_withVelocity__
 
     if (v20 && self->_delegateFlags.respondsToDidBeginInteractivelyEditingElement)
     {
-      v32 = [(PXLivePhotoTrimScrubber *)self delegate];
-      [v32 trimScrubber:self didBeginInteractivelyEditingElement:v20];
+      delegate = [(PXLivePhotoTrimScrubber *)self delegate];
+      [delegate trimScrubber:self didBeginInteractivelyEditingElement:v20];
     }
 
     [(PXLivePhotoTrimScrubber *)self _setupZoom];
@@ -838,27 +838,27 @@ uint64_t __57__PXLivePhotoTrimScrubber_handleBeginTrackingAtLocation___block_inv
   return [v4 setFrameTime:&v6];
 }
 
-- (void)_setTrackingElement:(int64_t)a3
+- (void)_setTrackingElement:(int64_t)element
 {
-  if (self->__trackingElement != a3)
+  if (self->__trackingElement != element)
   {
-    self->__trackingElement = a3;
-    if (a3 == 3)
+    self->__trackingElement = element;
+    if (element == 3)
     {
       [(PXLivePhotoTrimScrubberLoupeView *)self->_photoLoupe setShowLoupePlayerAnimate:0];
     }
   }
 }
 
-- (void)handleLongPressWithElement:(int64_t)a3
+- (void)handleLongPressWithElement:(int64_t)element
 {
-  v5 = [(PXLivePhotoTrimScrubber *)self allowZoom];
-  if (a3 == 4 && v5)
+  allowZoom = [(PXLivePhotoTrimScrubber *)self allowZoom];
+  if (element == 4 && allowZoom)
   {
     if (self->_delegateFlags.respondsToPausePlayer)
     {
-      v6 = [(PXLivePhotoTrimScrubber *)self delegate];
-      [v6 trimScrubberPausePlayer:self];
+      delegate = [(PXLivePhotoTrimScrubber *)self delegate];
+      [delegate trimScrubberPausePlayer:self];
     }
 
     [(PXLivePhotoTrimScrubber *)self keyTime];
@@ -866,32 +866,32 @@ uint64_t __57__PXLivePhotoTrimScrubber_handleBeginTrackingAtLocation___block_inv
   }
 }
 
-- (void)handleTapWithElement:(int64_t)a3
+- (void)handleTapWithElement:(int64_t)element
 {
   if (self->_delegateFlags.respondsToDidBeginInteractivelyEditingElement)
   {
-    v6 = [(PXLivePhotoTrimScrubber *)self delegate];
-    [v6 trimScrubber:self didTapElement:a3];
+    delegate = [(PXLivePhotoTrimScrubber *)self delegate];
+    [delegate trimScrubber:self didTapElement:element];
   }
 }
 
-- (void)handleSetKeyTime:(id *)a3
+- (void)handleSetKeyTime:(id *)time
 {
   if ([(PXLivePhotoTrimScrubber *)self playheadStyle]== 2)
   {
     if (self->_delegateFlags.respondsToDidBeginInteractivelyEditingElement)
     {
-      v5 = [(PXLivePhotoTrimScrubber *)self delegate];
-      [v5 trimScrubber:self didBeginInteractivelyEditingElement:3];
+      delegate = [(PXLivePhotoTrimScrubber *)self delegate];
+      [delegate trimScrubber:self didBeginInteractivelyEditingElement:3];
     }
 
     [(PXLivePhotoTrimScrubber *)self _setTrackingElement:3];
     time1 = self->_trimStartTime;
-    time2 = *a3;
+    time2 = *time;
     if (CMTimeCompare(&time1, &time2) < 0)
     {
       time1 = self->_trimEndTime;
-      time2 = *a3;
+      time2 = *time;
       if (CMTimeCompare(&time1, &time2) >= 1)
       {
         v7[0] = MEMORY[0x1E69E9820];
@@ -899,8 +899,8 @@ uint64_t __57__PXLivePhotoTrimScrubber_handleBeginTrackingAtLocation___block_inv
         v7[2] = __44__PXLivePhotoTrimScrubber_handleSetKeyTime___block_invoke;
         v7[3] = &unk_1E7749770;
         v7[4] = self;
-        v8 = *&a3->var0;
-        var3 = a3->var3;
+        v8 = *&time->var0;
+        var3 = time->var3;
         [(PXLivePhotoTrimScrubber *)self performAnimatedChanges:v7];
       }
     }
@@ -908,8 +908,8 @@ uint64_t __57__PXLivePhotoTrimScrubber_handleBeginTrackingAtLocation___block_inv
     [(PXLivePhotoTrimScrubber *)self _setTrackingElement:0];
     if (self->_delegateFlags.respondsToDidEndInteractivelyEditingElement)
     {
-      v6 = [(PXLivePhotoTrimScrubber *)self delegate];
-      [v6 trimScrubber:self didEndInteractivelyEditingElement:3 successful:1];
+      delegate2 = [(PXLivePhotoTrimScrubber *)self delegate];
+      [delegate2 trimScrubber:self didEndInteractivelyEditingElement:3 successful:1];
     }
   }
 }
@@ -921,14 +921,14 @@ uint64_t __44__PXLivePhotoTrimScrubber_handleSetKeyTime___block_invoke(uint64_t 
   return [*(a1 + 32) setKeyTime:&v2];
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_timeAtLocation:(SEL)a3 forElement:(CGPoint)a4
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_timeAtLocation:(SEL)location forElement:(CGPoint)element
 {
-  y = a4.y;
-  x = a4.x;
-  v16 = [(PXLivePhotoTrimScrubber *)self spec];
-  [v16 handleWidth];
+  y = element.y;
+  x = element.x;
+  spec = [(PXLivePhotoTrimScrubber *)self spec];
+  [spec handleWidth];
   v11 = v10;
-  [v16 handleAnchorX];
+  [spec handleAnchorX];
   v13 = v11 * (1.0 - v12);
   if (a5 == 2)
   {
@@ -952,7 +952,7 @@ uint64_t __44__PXLivePhotoTrimScrubber_handleSetKeyTime___block_invoke(uint64_t 
   return result;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeAtPoint:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeAtPoint:(SEL)point
 {
   x = a4.x;
   retstr->var0 = 0;
@@ -976,47 +976,47 @@ uint64_t __44__PXLivePhotoTrimScrubber_handleSetKeyTime___block_invoke(uint64_t 
   return result;
 }
 
-- (double)offsetForTime:(id *)a3
+- (double)offsetForTime:(id *)time
 {
-  v4 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
-  v8 = *a3;
-  [v4 offsetInScrubberSpaceForTime:&v8];
+  layoutHelper = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+  v8 = *time;
+  [layoutHelper offsetInScrubberSpaceForTime:&v8];
   v6 = v5;
 
   return v6;
 }
 
-- (double)_offsetForTime:(id *)a3
+- (double)_offsetForTime:(id *)time
 {
   memset(&v20, 0, sizeof(v20));
   [(PXLivePhotoTrimScrubber *)self untrimmedDuration];
   v5 = 0.0;
-  if (0 >> 96 == 1 && (a3->var2 & 0x1D) == 1)
+  if (0 >> 96 == 1 && (time->var2 & 0x1D) == 1)
   {
     time1 = v20;
     v6 = MEMORY[0x1E6960CC0];
     time2 = **&MEMORY[0x1E6960CC0];
     if (CMTimeCompare(&time1, &time2) >= 1)
     {
-      time2 = *a3;
+      time2 = *time;
       v17 = v20;
       CMTimeMinimum(&time1, &time2, &v17);
       epoch = time1.epoch;
-      *a3 = time1;
-      *&time2.value = *&a3->var0;
+      *time = time1;
+      *&time2.value = *&time->var0;
       time2.epoch = epoch;
       v17 = *v6;
       CMTimeMaximum(&time1, &time2, &v17);
-      *a3 = time1;
+      *time = time1;
       [(PXLivePhotoTrimScrubber *)self bounds];
       Width = CGRectGetWidth(v21);
       [(PXLivePhotoTrimScrubber *)self horizontalInset];
       v10 = v9;
-      v11 = [(PXLivePhotoTrimScrubber *)self spec];
-      [v11 handleWidth];
+      spec = [(PXLivePhotoTrimScrubber *)self spec];
+      [spec handleWidth];
       v13 = v10 + v12;
       v14 = Width + v13 * -2.0;
-      time1 = *a3;
+      time1 = *time;
       Seconds = CMTimeGetSeconds(&time1);
       time1 = v20;
       v5 = v13 + Seconds / CMTimeGetSeconds(&time1) * v14;
@@ -1026,20 +1026,20 @@ uint64_t __44__PXLivePhotoTrimScrubber_handleSetKeyTime___block_invoke(uint64_t 
   return v5;
 }
 
-- (void)setShowVideoScrubberDebugOverlay:(BOOL)a3
+- (void)setShowVideoScrubberDebugOverlay:(BOOL)overlay
 {
-  if (self->_showVideoScrubberDebugOverlay != a3)
+  if (self->_showVideoScrubberDebugOverlay != overlay)
   {
-    self->_showVideoScrubberDebugOverlay = a3;
-    if (a3)
+    self->_showVideoScrubberDebugOverlay = overlay;
+    if (overlay)
     {
       v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
       debugStartTimeView = self->_debugStartTimeView;
       self->_debugStartTimeView = v4;
 
       [(UIView *)self->_debugStartTimeView setUserInteractionEnabled:0];
-      v6 = [MEMORY[0x1E69DC888] redColor];
-      [(UIView *)self->_debugStartTimeView setBackgroundColor:v6];
+      redColor = [MEMORY[0x1E69DC888] redColor];
+      [(UIView *)self->_debugStartTimeView setBackgroundColor:redColor];
 
       [(PXLivePhotoTrimScrubber *)self addSubview:self->_debugStartTimeView];
       v7 = objc_alloc_init(MEMORY[0x1E69DD250]);
@@ -1047,8 +1047,8 @@ uint64_t __44__PXLivePhotoTrimScrubber_handleSetKeyTime___block_invoke(uint64_t 
       self->_debugLoupeTimeView = v7;
 
       [(UIView *)self->_debugLoupeTimeView setUserInteractionEnabled:0];
-      v9 = [MEMORY[0x1E69DC888] greenColor];
-      [(UIView *)self->_debugLoupeTimeView setBackgroundColor:v9];
+      greenColor = [MEMORY[0x1E69DC888] greenColor];
+      [(UIView *)self->_debugLoupeTimeView setBackgroundColor:greenColor];
 
       [(PXLivePhotoTrimScrubber *)self addSubview:self->_debugLoupeTimeView];
       v10 = objc_alloc_init(MEMORY[0x1E69DD250]);
@@ -1056,8 +1056,8 @@ uint64_t __44__PXLivePhotoTrimScrubber_handleSetKeyTime___block_invoke(uint64_t 
       self->_debugEndTimeView = v10;
 
       [(UIView *)self->_debugEndTimeView setUserInteractionEnabled:0];
-      v12 = [MEMORY[0x1E69DC888] blueColor];
-      [(UIView *)self->_debugEndTimeView setBackgroundColor:v12];
+      blueColor = [MEMORY[0x1E69DC888] blueColor];
+      [(UIView *)self->_debugEndTimeView setBackgroundColor:blueColor];
 
       v13 = self->_debugEndTimeView;
 
@@ -1086,8 +1086,8 @@ uint64_t __44__PXLivePhotoTrimScrubber_handleSetKeyTime___block_invoke(uint64_t 
   [(PXLivePhotoTrimScrubber *)self invalidateIntrinsicContentSize];
   [(PXLivePhotoTrimScrubberSpec *)self->_spec filmstripCornerRadius];
   v4 = v3;
-  v5 = [(UIView *)self->_filmstripContainerView layer];
-  [v5 setCornerRadius:v4];
+  layer = [(UIView *)self->_filmstripContainerView layer];
+  [layer setCornerRadius:v4];
 
   [(PXLivePhotoTrimScrubberSpec *)self->_spec loupeOuterCornerRadius];
   [(PXLivePhotoTrimScrubberLoupeView *)self->_photoLoupe setOuterCornerRadius:?];
@@ -1095,25 +1095,25 @@ uint64_t __44__PXLivePhotoTrimScrubber_handleSetKeyTime___block_invoke(uint64_t 
   [(PXLivePhotoTrimScrubberLoupeView *)self->_photoLoupe setInnerCornerRadius:?];
   [(PXLivePhotoTrimScrubberSpec *)self->_spec loupeVerticalInset];
   [(PXLivePhotoTrimScrubberLoupeView *)self->_photoLoupe setVerticalInset:?];
-  v6 = [(PXLivePhotoTrimScrubberSpec *)self->_spec filmstripBorderColor];
+  filmstripBorderColor = [(PXLivePhotoTrimScrubberSpec *)self->_spec filmstripBorderColor];
 
-  if (v6)
+  if (filmstripBorderColor)
   {
-    v7 = [(PXLivePhotoTrimScrubberSpec *)self->_spec filmstripBorderColor];
-    v8 = [v7 CGColor];
-    v9 = [(UIView *)self->_filmstripContainerView layer];
-    [v9 setBorderColor:v8];
+    filmstripBorderColor2 = [(PXLivePhotoTrimScrubberSpec *)self->_spec filmstripBorderColor];
+    cGColor = [filmstripBorderColor2 CGColor];
+    layer2 = [(UIView *)self->_filmstripContainerView layer];
+    [layer2 setBorderColor:cGColor];
 
-    v10 = [(UIView *)self->_filmstripContainerView layer];
-    [v10 setBorderWidth:1.0];
+    layer3 = [(UIView *)self->_filmstripContainerView layer];
+    [layer3 setBorderWidth:1.0];
   }
 }
 
 - (void)_PXLivePhotoTrimScrubber_commonInit
 {
   [(PXLivePhotoTrimScrubber *)self setClipsToBounds:1];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  [(PXLivePhotoTrimScrubber *)self setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(PXLivePhotoTrimScrubber *)self setBackgroundColor:clearColor];
 
   self->_state = 0;
   self->__contentAspectRatio = 1.0;
@@ -1183,17 +1183,17 @@ uint64_t __44__PXLivePhotoTrimScrubber_handleSetKeyTime___block_invoke(uint64_t 
   [(UIView *)self->_postTrimOverlayView setBackgroundColor:v21];
 
   [(UIView *)self->_filmstripContainerView addSubview:self->_postTrimOverlayView];
-  v22 = [objc_opt_class() trimStartImage];
-  v23 = [objc_opt_class() trimStartHighlightedImage];
-  v24 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v22 highlightedImage:v23];
+  trimStartImage = [objc_opt_class() trimStartImage];
+  trimStartHighlightedImage = [objc_opt_class() trimStartHighlightedImage];
+  v24 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:trimStartImage highlightedImage:trimStartHighlightedImage];
   trimStartHandle = self->_trimStartHandle;
   self->_trimStartHandle = v24;
 
   [(UIImageView *)self->_trimStartHandle setContentMode:0];
   [(PXLivePhotoTrimScrubber *)self addSubview:self->_trimStartHandle];
-  v26 = [objc_opt_class() trimEndImage];
-  v27 = [objc_opt_class() trimEndHighlightedImage];
-  v28 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v26 highlightedImage:v27];
+  trimEndImage = [objc_opt_class() trimEndImage];
+  trimEndHighlightedImage = [objc_opt_class() trimEndHighlightedImage];
+  v28 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:trimEndImage highlightedImage:trimEndHighlightedImage];
   trimEndHandle = self->_trimEndHandle;
   self->_trimEndHandle = v28;
 
@@ -1283,19 +1283,19 @@ void __62__PXLivePhotoTrimScrubber__PXLivePhotoTrimScrubber_commonInit__block_in
   objc_destroyWeak(&to);
 }
 
-- (void)_zoomAtTime:(id *)a3
+- (void)_zoomAtTime:(id *)time
 {
   [(PXLivePhotoTrimScrubber *)self setState:2];
-  v5 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
-  [v5 setFilmstripScale:5.0];
+  layoutHelper = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+  [layoutHelper setFilmstripScale:5.0];
 
-  time = *a3;
+  time = *time;
   Seconds = CMTimeGetSeconds(&time);
-  v7 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
-  v8 = v7;
-  if (v7)
+  layoutHelper2 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+  v8 = layoutHelper2;
+  if (layoutHelper2)
   {
-    [v7 duration];
+    [layoutHelper2 duration];
   }
 
   else
@@ -1304,8 +1304,8 @@ void __62__PXLivePhotoTrimScrubber__PXLivePhotoTrimScrubber_commonInit__block_in
   }
 
   v9 = Seconds / CMTimeGetSeconds(&time);
-  v10 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
-  [v10 setPivotAnchor:v9];
+  layoutHelper3 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+  [layoutHelper3 setPivotAnchor:v9];
 
   [(PXLivePhotoTrimScrubber *)self impactOccured];
   [(PXLivePhotoTrimScrubber *)self setNeedsLayout];
@@ -1353,12 +1353,12 @@ void __39__PXLivePhotoTrimScrubber__zoomAtTime___block_invoke(uint64_t a1)
 
 - (void)_zoomAtTrackedElement
 {
-  v3 = [(PXLivePhotoTrimScrubber *)self _trackingElement];
-  if (v3)
+  _trackingElement = [(PXLivePhotoTrimScrubber *)self _trackingElement];
+  if (_trackingElement)
   {
     v6 = 0uLL;
     v7 = 0;
-    [(PXLivePhotoTrimScrubber *)self timeForElement:v3];
+    [(PXLivePhotoTrimScrubber *)self timeForElement:_trackingElement];
     v4 = v6;
     v5 = v7;
     [(PXLivePhotoTrimScrubber *)self _zoomAtTime:&v4];
@@ -1374,15 +1374,15 @@ void __39__PXLivePhotoTrimScrubber__zoomAtTime___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_updateZoomState:(BOOL)a3
+- (void)_updateZoomState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   if ([(PXLivePhotoTrimScrubber *)self allowZoom])
   {
-    v5 = [(PXLivePhotoTrimScrubber *)self state];
-    if (v3)
+    state = [(PXLivePhotoTrimScrubber *)self state];
+    if (stateCopy)
     {
-      if (v5 == 1)
+      if (state == 1)
       {
         [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__zoomDelayed object:0];
 
@@ -1390,7 +1390,7 @@ void __39__PXLivePhotoTrimScrubber__zoomAtTime___block_invoke(uint64_t a1)
       }
     }
 
-    else if (v5 == 1 || [(PXLivePhotoTrimScrubber *)self state]== 2)
+    else if (state == 1 || [(PXLivePhotoTrimScrubber *)self state]== 2)
     {
       [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__zoomDelayed object:0];
 
@@ -1409,24 +1409,24 @@ void __39__PXLivePhotoTrimScrubber__zoomAtTime___block_invoke(uint64_t a1)
   }
 }
 
-- (void)updateTraitCollection:(id)a3
+- (void)updateTraitCollection:(id)collection
 {
-  objc_storeStrong(&self->_traitCollection, a3);
+  objc_storeStrong(&self->_traitCollection, collection);
 
   [(PXLivePhotoTrimScrubber *)self _updateTrimHandles];
 }
 
 - (void)unzoom
 {
-  v3 = [(PXLivePhotoTrimScrubber *)self state];
+  state = [(PXLivePhotoTrimScrubber *)self state];
   [(PXLivePhotoTrimScrubber *)self setState:0];
-  if (v3 == 2)
+  if (state == 2)
   {
-    v4 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
-    [v4 setFilmstripScale:1.0];
+    layoutHelper = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+    [layoutHelper setFilmstripScale:1.0];
 
-    v5 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
-    [v5 setPivotAnchor:0.5];
+    layoutHelper2 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+    [layoutHelper2 setPivotAnchor:0.5];
 
     [(PXLivePhotoTrimScrubber *)self impactOccured];
     [(PXLivePhotoTrimScrubber *)self setNeedsLayout];
@@ -1450,31 +1450,31 @@ void __33__PXLivePhotoTrimScrubber_unzoom__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)tryZoomAtTime:(id *)a3
+- (BOOL)tryZoomAtTime:(id *)time
 {
-  v5 = [(PXLivePhotoTrimScrubber *)self allowZoom];
-  if (v5)
+  allowZoom = [(PXLivePhotoTrimScrubber *)self allowZoom];
+  if (allowZoom)
   {
     if ([(PXLivePhotoTrimScrubber *)self state]== 1)
     {
-      LOBYTE(v5) = 0;
+      LOBYTE(allowZoom) = 0;
     }
 
     else
     {
-      v7 = *&a3->var0;
-      var3 = a3->var3;
+      v7 = *&time->var0;
+      var3 = time->var3;
       [(PXLivePhotoTrimScrubber *)self _zoomAtTime:&v7];
-      LOBYTE(v5) = 1;
+      LOBYTE(allowZoom) = 1;
     }
   }
 
-  return v5;
+  return allowZoom;
 }
 
-- (void)setDisabled:(BOOL)a3 useTransparency:(BOOL)a4
+- (void)setDisabled:(BOOL)disabled useTransparency:(BOOL)transparency
 {
-  if (self->_disabled != a3)
+  if (self->_disabled != disabled)
   {
     v40[5] = v9;
     v40[6] = v8;
@@ -1482,13 +1482,13 @@ void __33__PXLivePhotoTrimScrubber_unzoom__block_invoke(uint64_t a1)
     v40[8] = v6;
     v40[15] = v4;
     v40[16] = v5;
-    v10 = a4;
-    v11 = a3;
-    self->_disabled = a3;
-    [(PXLivePhotoTrimScrubber *)self setUserInteractionEnabled:!a3];
-    if (v10)
+    transparencyCopy = transparency;
+    disabledCopy = disabled;
+    self->_disabled = disabled;
+    [(PXLivePhotoTrimScrubber *)self setUserInteractionEnabled:!disabled];
+    if (transparencyCopy)
     {
-      if (v11)
+      if (disabledCopy)
       {
         v40[0] = MEMORY[0x1E69E9820];
         v40[1] = 3221225472;
@@ -1515,19 +1515,19 @@ void __33__PXLivePhotoTrimScrubber_unzoom__block_invoke(uint64_t a1)
 
     else
     {
-      if (v11)
+      if (disabledCopy)
       {
-        v15 = [(PXLivePhotoTrimScrubber *)self spec];
+        spec = [(PXLivePhotoTrimScrubber *)self spec];
         [(PXLivePhotoTrimScrubber *)self _disabledOverlayFrame];
         v20 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v16, v17, v18, v19}];
-        v21 = [(UIView *)v15 disabledOverlayColor];
-        [v20 setBackgroundColor:v21];
+        disabledOverlayColor = [(UIView *)spec disabledOverlayColor];
+        [v20 setBackgroundColor:disabledOverlayColor];
 
         [v20 setAlpha:0.0];
-        [(UIView *)v15 filmstripCornerRadius];
+        [(UIView *)spec filmstripCornerRadius];
         v23 = v22;
-        v24 = [v20 layer];
-        [v24 setCornerRadius:v23];
+        layer = [v20 layer];
+        [layer setCornerRadius:v23];
 
         [(PXLivePhotoTrimScrubber *)self addSubview:v20];
         v25 = MEMORY[0x1E69DD250];
@@ -1566,7 +1566,7 @@ void __33__PXLivePhotoTrimScrubber_unzoom__block_invoke(uint64_t a1)
         v33[2] = __55__PXLivePhotoTrimScrubber_setDisabled_useTransparency___block_invoke_5;
         v33[3] = &unk_1E774B308;
         v34 = v36;
-        v15 = v36;
+        spec = v36;
         [v32 animateWithDuration:v35 animations:v33 completion:0.25];
       }
     }
@@ -1583,17 +1583,17 @@ void __33__PXLivePhotoTrimScrubber_unzoom__block_invoke(uint64_t a1)
   return result;
 }
 
-- (double)horizontalOffsetForTime:(id *)a3
+- (double)horizontalOffsetForTime:(id *)time
 {
-  v4 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
-  v8 = *a3;
-  [v4 offsetInScrubberSpaceForTime:&v8];
+  layoutHelper = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+  v8 = *time;
+  [layoutHelper offsetInScrubberSpaceForTime:&v8];
   v6 = v5;
 
   return v6;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeForElement:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeForElement:(SEL)element
 {
   *retstr = **&MEMORY[0x1E6960C70];
   if (a4 > 2)
@@ -1627,10 +1627,10 @@ void __33__PXLivePhotoTrimScrubber_unzoom__block_invoke(uint64_t a1)
   return 0;
 }
 
-- (void)performAnimatedChanges:(id)a3
+- (void)performAnimatedChanges:(id)changes
 {
   ++self->_changeDepth;
-  (*(a3 + 2))(a3, a2);
+  (*(changes + 2))(changes, a2);
   v4 = self->_changeDepth - 1;
   self->_changeDepth = v4;
   if (!v4)
@@ -1644,25 +1644,25 @@ void __33__PXLivePhotoTrimScrubber_unzoom__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_animateChanges:(id)a3
+- (void)_animateChanges:(id)changes
 {
-  if (a3)
+  if (changes)
   {
-    [MEMORY[0x1E69DD250] _animateUsingDefaultTimingWithOptions:0 animations:a3 completion:0];
+    [MEMORY[0x1E69DD250] _animateUsingDefaultTimingWithOptions:0 animations:changes completion:0];
   }
 }
 
 - (void)_updateTrimHandles
 {
-  v3 = [(PXLivePhotoTrimScrubber *)self useMiniScrubber];
-  v4 = [(PXLivePhotoTrimScrubber *)self spec];
-  [v4 setUseMiniScrubberHeight:v3];
+  useMiniScrubber = [(PXLivePhotoTrimScrubber *)self useMiniScrubber];
+  spec = [(PXLivePhotoTrimScrubber *)self spec];
+  [spec setUseMiniScrubberHeight:useMiniScrubber];
 
   if (self->_trimStartHandle && self->_trimEndHandle)
   {
-    v5 = [(PXLivePhotoTrimScrubber *)self useMiniScrubber];
+    useMiniScrubber2 = [(PXLivePhotoTrimScrubber *)self useMiniScrubber];
     v6 = objc_opt_class();
-    if (v5)
+    if (useMiniScrubber2)
     {
       [v6 trimStartImageMini];
     }
@@ -1672,9 +1672,9 @@ void __33__PXLivePhotoTrimScrubber_unzoom__block_invoke(uint64_t a1)
       [v6 trimStartImage];
     }
     v7 = ;
-    v8 = [(PXLivePhotoTrimScrubber *)self useMiniScrubber];
+    useMiniScrubber3 = [(PXLivePhotoTrimScrubber *)self useMiniScrubber];
     v9 = objc_opt_class();
-    if (v8)
+    if (useMiniScrubber3)
     {
       [v9 trimStartHighlightedImageMini];
     }
@@ -1686,9 +1686,9 @@ void __33__PXLivePhotoTrimScrubber_unzoom__block_invoke(uint64_t a1)
     v10 = ;
     [(UIImageView *)self->_trimStartHandle setImage:v7];
     [(UIImageView *)self->_trimStartHandle setHighlightedImage:v10];
-    v11 = [(PXLivePhotoTrimScrubber *)self useMiniScrubber];
+    useMiniScrubber4 = [(PXLivePhotoTrimScrubber *)self useMiniScrubber];
     v12 = objc_opt_class();
-    if (v11)
+    if (useMiniScrubber4)
     {
       [v12 trimEndImageMini];
     }
@@ -1698,9 +1698,9 @@ void __33__PXLivePhotoTrimScrubber_unzoom__block_invoke(uint64_t a1)
       [v12 trimEndImage];
     }
     v13 = ;
-    v14 = [(PXLivePhotoTrimScrubber *)self useMiniScrubber];
+    useMiniScrubber5 = [(PXLivePhotoTrimScrubber *)self useMiniScrubber];
     v15 = objc_opt_class();
-    if (v14)
+    if (useMiniScrubber5)
     {
       [v15 trimEndHighlightedImageMini];
     }
@@ -1717,41 +1717,41 @@ void __33__PXLivePhotoTrimScrubber_unzoom__block_invoke(uint64_t a1)
   [(PXLivePhotoTrimScrubber *)self setNeedsLayout];
 }
 
-- (void)setUseMiniScrubber:(BOOL)a3
+- (void)setUseMiniScrubber:(BOOL)scrubber
 {
-  if (self->_useMiniScrubber != a3)
+  if (self->_useMiniScrubber != scrubber)
   {
-    self->_useMiniScrubber = a3;
+    self->_useMiniScrubber = scrubber;
     [(PXLivePhotoTrimScrubber *)self _updateTrimHandles];
 
     [(PXLivePhotoTrimScrubber *)self _updateSpecDependentUI];
   }
 }
 
-- (void)setPlayheadStyle:(unint64_t)a3 animate:(BOOL)a4
+- (void)setPlayheadStyle:(unint64_t)style animate:(BOOL)animate
 {
-  v4 = a4;
-  if (![(PXLivePhotoTrimScrubber *)self currentlyInteractingElement]&& self->_playheadStyle != a3)
+  animateCopy = animate;
+  if (![(PXLivePhotoTrimScrubber *)self currentlyInteractingElement]&& self->_playheadStyle != style)
   {
-    self->_playheadStyle = a3;
-    switch(a3)
+    self->_playheadStyle = style;
+    switch(style)
     {
       case 2uLL:
-        [(PXLivePhotoTrimScrubber *)self _setPhotoLoupeHidden:0 animated:v4];
+        [(PXLivePhotoTrimScrubber *)self _setPhotoLoupeHidden:0 animated:animateCopy];
         photoLoupe = self->_photoLoupe;
         [(PXLivePhotoTrimScrubber *)self keyTime];
-        [(PXLivePhotoTrimScrubberLoupeView *)photoLoupe setShowLoupeThumbnailWithFrameTime:v19 animate:v4];
+        [(PXLivePhotoTrimScrubberLoupeView *)photoLoupe setShowLoupeThumbnailWithFrameTime:v19 animate:animateCopy];
         break;
       case 1uLL:
-        [(PXLivePhotoTrimScrubber *)self _setPhotoLoupeHidden:0 animated:v4];
+        [(PXLivePhotoTrimScrubber *)self _setPhotoLoupeHidden:0 animated:animateCopy];
         v7 = self->_photoLoupe;
-        v8 = [(PXLivePhotoTrimScrubber *)self spec];
-        [v8 playheadWidth];
-        [(PXLivePhotoTrimScrubberLoupeView *)v7 setShowNeedleWithWidth:v4 animate:?];
+        spec = [(PXLivePhotoTrimScrubber *)self spec];
+        [spec playheadWidth];
+        [(PXLivePhotoTrimScrubberLoupeView *)v7 setShowNeedleWithWidth:animateCopy animate:?];
 
         break;
       case 0uLL:
-        [(PXLivePhotoTrimScrubber *)self _setPhotoLoupeHidden:1 animated:v4];
+        [(PXLivePhotoTrimScrubber *)self _setPhotoLoupeHidden:1 animated:animateCopy];
         break;
     }
 
@@ -1760,7 +1760,7 @@ void __33__PXLivePhotoTrimScrubber_unzoom__block_invoke(uint64_t a1)
     v15 = v11;
     v16 = v12;
     v17 = v13;
-    if (v4)
+    if (animateCopy)
     {
       [MEMORY[0x1E6979518] animationDuration];
       v18[0] = MEMORY[0x1E69E9820];
@@ -1793,18 +1793,18 @@ uint64_t __52__PXLivePhotoTrimScrubber_setPlayheadStyle_animate___block_invoke(u
 
 - (CGRect)_keyHandleRect
 {
-  v3 = [(PXLivePhotoTrimScrubber *)self spec];
-  [v3 handleHeight];
+  spec = [(PXLivePhotoTrimScrubber *)self spec];
+  [spec handleHeight];
   v5 = v4;
 
-  v6 = [(PXLivePhotoTrimScrubber *)self spec];
-  [v6 playheadWidth];
+  spec2 = [(PXLivePhotoTrimScrubber *)self spec];
+  [spec2 playheadWidth];
   v8 = v7;
 
   [(PXLivePhotoTrimScrubber *)self _contentAspectRatio];
   v10 = v9;
-  v11 = [(PXLivePhotoTrimScrubber *)self spec];
-  [v11 handleHeight];
+  spec3 = [(PXLivePhotoTrimScrubber *)self spec];
+  [spec3 handleHeight];
   v13 = v10 * v12;
 
   if ([(PXLivePhotoTrimScrubber *)self playheadStyle]!= 1)
@@ -1831,16 +1831,16 @@ uint64_t __52__PXLivePhotoTrimScrubber_setPlayheadStyle_animate___block_invoke(u
   v33 = 0uLL;
   v34 = 0;
   [(PXLivePhotoTrimScrubber *)self trimEndTime];
-  v18 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+  layoutHelper = [(PXLivePhotoTrimScrubber *)self layoutHelper];
   v31 = v35;
   v32 = v36;
-  [v18 offsetInScrubberSpaceForTime:&v31 fallbackAnchor:0.0];
+  [layoutHelper offsetInScrubberSpaceForTime:&v31 fallbackAnchor:0.0];
   v20 = v19;
 
-  v21 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+  layoutHelper2 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
   v31 = v33;
   v32 = v34;
-  [v21 offsetInScrubberSpaceForTime:&v31 fallbackAnchor:1.0];
+  [layoutHelper2 offsetInScrubberSpaceForTime:&v31 fallbackAnchor:1.0];
   v23 = v22;
 
   v42.origin.x = x;
@@ -1848,20 +1848,20 @@ uint64_t __52__PXLivePhotoTrimScrubber_setPlayheadStyle_animate___block_invoke(u
   v42.size.width = width;
   v42.size.height = height;
   v24 = CGRectGetWidth(v42);
-  v25 = [(PXLivePhotoTrimScrubber *)self playheadStyle];
+  playheadStyle = [(PXLivePhotoTrimScrubber *)self playheadStyle];
   if (v24 > v23 - v20)
   {
-    v26 = v25;
+    v26 = playheadStyle;
     if ([(PXLivePhotoTrimScrubber *)self _trackingElement]== 2 && v26 == 2)
     {
 LABEL_10:
-      v29 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+      layoutHelper3 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
       v31 = *MEMORY[0x1E6960CC0];
       v32 = *(MEMORY[0x1E6960CC0] + 16);
-      [v29 offsetInScrubberSpaceForTime:&v31 fallbackAnchor:0.0];
-      v30 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+      [layoutHelper3 offsetInScrubberSpaceForTime:&v31 fallbackAnchor:0.0];
+      layoutHelper4 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
       [(PXLivePhotoTrimScrubber *)self untrimmedDuration];
-      [v30 offsetInScrubberSpaceForTime:&v31 fallbackAnchor:1.0];
+      [layoutHelper4 offsetInScrubberSpaceForTime:&v31 fallbackAnchor:1.0];
       v46.origin.x = x;
       v46.origin.y = y;
       v46.size.width = width;
@@ -1881,10 +1881,10 @@ LABEL_10:
     }
   }
 
-  v28 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+  layoutHelper5 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
   v31 = v37;
   v32 = v38;
-  [v28 offsetInScrubberSpaceForTime:&v31 fallbackAnchor:0.5];
+  [layoutHelper5 offsetInScrubberSpaceForTime:&v31 fallbackAnchor:0.5];
 
   v44.origin.x = x;
   v44.origin.y = y;
@@ -1899,7 +1899,7 @@ LABEL_10:
   goto LABEL_10;
 }
 
-- (void)setTrimEndTime:(id *)a3
+- (void)setTrimEndTime:(id *)time
 {
   memset(&v12, 0, sizeof(v12));
   p_trimStartTime = &self->_trimStartTime;
@@ -1909,7 +1909,7 @@ LABEL_10:
   CMTimeMinimum(&rhs, &v9, &time2);
   time2 = *p_trimStartTime;
   CMTimeAdd(&v12, &time2, &rhs);
-  rhs = *a3;
+  rhs = *time;
   time2 = v12;
   if (CMTimeCompare(&rhs, &time2) < 0)
   {
@@ -1920,20 +1920,20 @@ LABEL_10:
       [(PXLivePhotoTrimScrubber *)self _trimHandleDidReachBounds];
     }
 
-    *a3 = v12;
+    *time = v12;
   }
 
-  rhs = *a3;
+  rhs = *time;
   time2 = self->_trimEndTime;
   if (CMTimeCompare(&rhs, &time2))
   {
-    v7 = *&a3->var0;
-    self->_trimEndTime.epoch = a3->var3;
+    v7 = *&time->var0;
+    self->_trimEndTime.epoch = time->var3;
     *&self->_trimEndTime.value = v7;
     if (self->_delegateFlags.respondsToDidChangeTimeForElement)
     {
-      v8 = [(PXLivePhotoTrimScrubber *)self delegate];
-      [v8 trimScrubber:self didChangeTimeForElement:2];
+      delegate = [(PXLivePhotoTrimScrubber *)self delegate];
+      [delegate trimScrubber:self didChangeTimeForElement:2];
 
       [(PXLivePhotoTrimScrubber *)self _updateZoomState:1];
     }
@@ -1942,7 +1942,7 @@ LABEL_10:
   }
 }
 
-- (void)setTrimStartTime:(id *)a3
+- (void)setTrimStartTime:(id *)time
 {
   memset(&v12, 0, sizeof(v12));
   p_trimEndTime = &self->_trimEndTime;
@@ -1952,7 +1952,7 @@ LABEL_10:
   CMTimeMinimum(&rhs, &v9, &time2);
   time2 = *p_trimEndTime;
   CMTimeSubtract(&v12, &time2, &rhs);
-  rhs = *a3;
+  rhs = *time;
   time2 = v12;
   if (CMTimeCompare(&rhs, &time2) >= 1)
   {
@@ -1963,20 +1963,20 @@ LABEL_10:
       [(PXLivePhotoTrimScrubber *)self _trimHandleDidReachBounds];
     }
 
-    *a3 = v12;
+    *time = v12;
   }
 
-  rhs = *a3;
+  rhs = *time;
   time2 = self->_trimStartTime;
   if (CMTimeCompare(&rhs, &time2))
   {
-    v7 = *&a3->var0;
-    self->_trimStartTime.epoch = a3->var3;
+    v7 = *&time->var0;
+    self->_trimStartTime.epoch = time->var3;
     *&self->_trimStartTime.value = v7;
     if (self->_delegateFlags.respondsToDidChangeTimeForElement)
     {
-      v8 = [(PXLivePhotoTrimScrubber *)self delegate];
-      [v8 trimScrubber:self didChangeTimeForElement:1];
+      delegate = [(PXLivePhotoTrimScrubber *)self delegate];
+      [delegate trimScrubber:self didChangeTimeForElement:1];
 
       [(PXLivePhotoTrimScrubber *)self _updateZoomState:1];
     }
@@ -1985,15 +1985,15 @@ LABEL_10:
   }
 }
 
-- (void)setFocusEventTimes:(id)a3
+- (void)setFocusEventTimes:(id)times
 {
-  v4 = a3;
+  timesCopy = times;
   focusEventTimes = self->_focusEventTimes;
-  if (focusEventTimes != v4)
+  if (focusEventTimes != timesCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)focusEventTimes isEqual:v4];
-    v4 = v9;
+    v9 = timesCopy;
+    v6 = [(NSArray *)focusEventTimes isEqual:timesCopy];
+    timesCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSArray *)v9 copy];
@@ -2001,20 +2001,20 @@ LABEL_10:
       self->_focusEventTimes = v7;
 
       [(PXLivePhotoTrimScrubber *)self _updateFocusEventSnappingControllers];
-      v4 = v9;
+      timesCopy = v9;
     }
   }
 }
 
-- (void)setSnapTrimEndTimes:(id)a3
+- (void)setSnapTrimEndTimes:(id)times
 {
-  v4 = a3;
+  timesCopy = times;
   snapTrimEndTimes = self->_snapTrimEndTimes;
-  if (snapTrimEndTimes != v4)
+  if (snapTrimEndTimes != timesCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)snapTrimEndTimes isEqual:v4];
-    v4 = v9;
+    v9 = timesCopy;
+    v6 = [(NSArray *)snapTrimEndTimes isEqual:timesCopy];
+    timesCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSArray *)v9 copy];
@@ -2022,20 +2022,20 @@ LABEL_10:
       self->_snapTrimEndTimes = v7;
 
       [(PXLivePhotoTrimScrubber *)self _updateEndTimeSnappingControllers];
-      v4 = v9;
+      timesCopy = v9;
     }
   }
 }
 
-- (void)setSnapTrimStartTimes:(id)a3
+- (void)setSnapTrimStartTimes:(id)times
 {
-  v4 = a3;
+  timesCopy = times;
   snapTrimStartTimes = self->_snapTrimStartTimes;
-  if (snapTrimStartTimes != v4)
+  if (snapTrimStartTimes != timesCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)snapTrimStartTimes isEqual:v4];
-    v4 = v9;
+    v9 = timesCopy;
+    v6 = [(NSArray *)snapTrimStartTimes isEqual:timesCopy];
+    timesCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSArray *)v9 copy];
@@ -2043,33 +2043,33 @@ LABEL_10:
       self->_snapTrimStartTimes = v7;
 
       [(PXLivePhotoTrimScrubber *)self _updateStartTimeSnappingControllers];
-      v4 = v9;
+      timesCopy = v9;
     }
   }
 }
 
-- (void)setSuggestedKeyTime:(id *)a3
+- (void)setSuggestedKeyTime:(id *)time
 {
   p_suggestedKeyTime = &self->_suggestedKeyTime;
-  time1 = *a3;
+  time1 = *time;
   suggestedKeyTime = self->_suggestedKeyTime;
   if (CMTimeCompare(&time1, &suggestedKeyTime))
   {
-    v6 = *&a3->var0;
-    p_suggestedKeyTime->epoch = a3->var3;
+    v6 = *&time->var0;
+    p_suggestedKeyTime->epoch = time->var3;
     *&p_suggestedKeyTime->value = v6;
     [(PXLivePhotoTrimScrubber *)self _updateKeyTimeSnappingControllers];
   }
 }
 
-- (void)setSnapKeyTimes:(id)a3
+- (void)setSnapKeyTimes:(id)times
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_snapKeyTimes != v4)
+  timesCopy = times;
+  v5 = timesCopy;
+  if (self->_snapKeyTimes != timesCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = timesCopy;
+    v6 = [(NSArray *)timesCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -2083,14 +2083,14 @@ LABEL_10:
   }
 }
 
-- (BOOL)isValidKeyTime:(id *)a3
+- (BOOL)isValidKeyTime:(id *)time
 {
   v11 = 0uLL;
   v12 = 0;
   [(PXLivePhotoTrimScrubber *)self trimStartTime];
   memset(&v10, 0, sizeof(v10));
   [(PXLivePhotoTrimScrubber *)self trimEndTime];
-  if ((a3->var2 & 1) == 0)
+  if ((time->var2 & 1) == 0)
   {
     return 0;
   }
@@ -2102,10 +2102,10 @@ LABEL_10:
   CMTimeRangeFromTimeToTime(&v9, &v7.start, &end);
   *&v7.start.value = *&v9.start.value;
   *&v7.start.epoch = *&v9.start.epoch;
-  v6 = *&a3->var0;
+  v6 = *&time->var0;
   *&v7.duration.timescale = *&v9.duration.timescale;
   *&end.value = v6;
-  end.epoch = a3->var3;
+  end.epoch = time->var3;
   if (CMTimeRangeContainsTime(&v7, &end))
   {
     return 1;
@@ -2113,25 +2113,25 @@ LABEL_10:
 
   *&v7.start.value = v11;
   v7.start.epoch = v12;
-  end = *a3;
+  end = *time;
   if (!CMTimeCompare(&v7.start, &end))
   {
     return 1;
   }
 
   v7.start = v10;
-  end = *a3;
+  end = *time;
   return CMTimeCompare(&v7.start, &end) == 0;
 }
 
-- (void)_setKeyTime:(id *)a3 canHaveImpact:(BOOL)a4 forElement:(int64_t)a5
+- (void)_setKeyTime:(id *)time canHaveImpact:(BOOL)impact forElement:(int64_t)element
 {
-  v6 = a4;
-  if (a3->var2 & 0x1D) == 1 && (p_trimEndTime = &self->_trimEndTime, time1 = *a3, trimEndTime = self->_trimEndTime, CMTimeCompare(&time1, &trimEndTime) >= 1) && (self->_trimEndTime.flags)
+  impactCopy = impact;
+  if (time->var2 & 0x1D) == 1 && (p_trimEndTime = &self->_trimEndTime, time1 = *time, trimEndTime = self->_trimEndTime, CMTimeCompare(&time1, &trimEndTime) >= 1) && (self->_trimEndTime.flags)
   {
     v16 = *&p_trimEndTime->value;
-    a3->var3 = self->_trimEndTime.epoch;
-    *&a3->var0 = v16;
+    time->var3 = self->_trimEndTime.epoch;
+    *&time->var0 = v16;
     v10 = 1;
   }
 
@@ -2140,86 +2140,86 @@ LABEL_10:
     v10 = 0;
   }
 
-  if ((a3->var2 & 0x1D) == 1)
+  if ((time->var2 & 0x1D) == 1)
   {
-    time1 = *a3;
+    time1 = *time;
     trimEndTime = self->_trimStartTime;
     if (CMTimeCompare(&time1, &trimEndTime) < 0 && (self->_trimStartTime.flags & 1) != 0)
     {
       v11 = *&self->_trimStartTime.value;
-      a3->var3 = self->_trimStartTime.epoch;
-      *&a3->var0 = v11;
+      time->var3 = self->_trimStartTime.epoch;
+      *&time->var0 = v11;
       v10 = 1;
     }
   }
 
   time1 = self->_keyTime;
-  trimEndTime = *a3;
+  trimEndTime = *time;
   if (CMTimeCompare(&time1, &trimEndTime))
   {
-    v12 = *&a3->var0;
-    self->_keyTime.epoch = a3->var3;
+    v12 = *&time->var0;
+    self->_keyTime.epoch = time->var3;
     *&self->_keyTime.value = v12;
-    v13 = [(PXLivePhotoTrimScrubber *)self playheadStyle];
-    if ((v10 & v6) == 1 && (a3->var2 & 0x1D) == 1 && v13)
+    playheadStyle = [(PXLivePhotoTrimScrubber *)self playheadStyle];
+    if ((v10 & impactCopy) == 1 && (time->var2 & 0x1D) == 1 && playheadStyle)
     {
       [(PXLivePhotoTrimScrubber *)self _trimHandleDidReachBounds];
     }
 
     if (self->_delegateFlags.respondsToDidChangeTimeForElement)
     {
-      v14 = [(PXLivePhotoTrimScrubber *)self delegate];
-      [v14 trimScrubber:self didChangeTimeForElement:a5];
+      delegate = [(PXLivePhotoTrimScrubber *)self delegate];
+      [delegate trimScrubber:self didChangeTimeForElement:element];
 
       [(PXLivePhotoTrimScrubber *)self _updateZoomState:1];
     }
 
     [(PXLivePhotoTrimScrubber *)self setNeedsLayout];
     photoLoupe = self->_photoLoupe;
-    time1 = *a3;
+    time1 = *time;
     [(PXLivePhotoTrimScrubberLoupeView *)photoLoupe setFrameTime:&time1];
     [(PXLivePhotoTrimScrubber *)self _presentControlsIfNeeded];
   }
 }
 
-- (void)setPlaceholderImage:(id)a3
+- (void)setPlaceholderImage:(id)image
 {
-  objc_storeStrong(&self->_placeholderImage, a3);
-  v5 = a3;
-  [(PXLivePhotoTrimScrubberFilmStripView *)self->_filmstripView setLivePhotoTrimScrubberThumbnail:v5];
+  objc_storeStrong(&self->_placeholderImage, image);
+  imageCopy = image;
+  [(PXLivePhotoTrimScrubberFilmStripView *)self->_filmstripView setLivePhotoTrimScrubberThumbnail:imageCopy];
 
   [(PXLivePhotoTrimScrubber *)self _updateContentAspectRatio];
 }
 
-- (void)setAsset:(id)a3 videoComposition:(id)a4
+- (void)setAsset:(id)asset videoComposition:(id)composition
 {
-  v7 = a3;
-  v8 = a4;
-  if (self->_asset == v7)
+  assetCopy = asset;
+  compositionCopy = composition;
+  if (self->_asset == assetCopy)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [(AVAsset *)v7 isEqual:?]^ 1;
+    v9 = [(AVAsset *)assetCopy isEqual:?]^ 1;
   }
 
-  if (self->_videoComposition == v8)
+  if (self->_videoComposition == compositionCopy)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = [(AVVideoComposition *)v8 isEqual:?]^ 1;
+    v10 = [(AVVideoComposition *)compositionCopy isEqual:?]^ 1;
   }
 
   if ((v9 | v10))
   {
-    objc_storeStrong(&self->_asset, a3);
-    objc_storeStrong(&self->_videoComposition, a4);
-    v11 = v8;
+    objc_storeStrong(&self->_asset, asset);
+    objc_storeStrong(&self->_videoComposition, composition);
+    v11 = compositionCopy;
     if (v11)
     {
       v12 = v11;
@@ -2233,13 +2233,13 @@ LABEL_10:
       v15 = [(AVVideoComposition *)v12 mutableCopy];
       [v15 setSourceVideoTrackWindowsForTrackIDs:0];
       [v15 setSourceSampleDataTrackWindowsForTrackIDs:0];
-      v16 = [v15 instructions];
+      instructions = [v15 instructions];
       v34 = MEMORY[0x1E69E9820];
       v35 = 3221225472;
       v36 = __53__PXLivePhotoTrimScrubber_setAsset_videoComposition___block_invoke;
       v37 = &unk_1E7747140;
       v38 = v15;
-      v39 = self;
+      selfCopy = self;
       v17 = v15;
       v18 = PFMap();
 
@@ -2255,23 +2255,23 @@ LABEL_10:
     }
 
     [(PXLivePhotoTrimScrubberFilmStripView *)self->_filmstripView setAsset:self->_asset videoComposition:v20];
-    v21 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v22 = [v21 dictionaryForKey:@"IPXRootSettings"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v22 = [standardUserDefaults dictionaryForKey:@"IPXRootSettings"];
 
     v23 = [v22 objectForKeyedSubscript:@"PXSettingsArchiveKey"];
     v24 = [v23 objectForKeyedSubscript:@"editSettings"];
     v25 = [v24 objectForKeyedSubscript:@"disableScrubberLoupe"];
-    v26 = [v25 BOOLValue];
+    bOOLValue = [v25 BOOLValue];
 
-    if ((v26 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       [(PXLivePhotoTrimScrubberLoupeView *)self->_photoLoupe setAsset:self->_asset videoComposition:v20];
     }
 
     [(PXLivePhotoTrimScrubber *)self _updateContentAspectRatio];
-    if (v7)
+    if (assetCopy)
     {
-      [(AVAsset *)v7 duration];
+      [(AVAsset *)assetCopy duration];
     }
 
     else
@@ -2283,18 +2283,18 @@ LABEL_10:
     *location = v32;
     v31 = v33;
     [(PXLivePhotoTrimScrubber *)self _setUntrimmedDuration:location];
-    v27 = [MEMORY[0x1E695DF70] array];
-    if ([(AVAsset *)v7 statusOfValueForKey:@"duration" error:0]!= 2)
+    array = [MEMORY[0x1E695DF70] array];
+    if ([(AVAsset *)assetCopy statusOfValueForKey:@"duration" error:0]!= 2)
     {
-      [v27 addObject:@"duration"];
+      [array addObject:@"duration"];
     }
 
-    if ([(AVAsset *)v7 statusOfValueForKey:@"tracks" error:0]!= 2)
+    if ([(AVAsset *)assetCopy statusOfValueForKey:@"tracks" error:0]!= 2)
     {
-      [v27 addObject:@"tracks"];
+      [array addObject:@"tracks"];
     }
 
-    if ([v27 count])
+    if ([array count])
     {
       objc_initWeak(location, self);
       v28[0] = MEMORY[0x1E69E9820];
@@ -2302,7 +2302,7 @@ LABEL_10:
       v28[2] = __53__PXLivePhotoTrimScrubber_setAsset_videoComposition___block_invoke_2;
       v28[3] = &unk_1E774C318;
       objc_copyWeak(&v29, location);
-      [(AVAsset *)v7 loadValuesAsynchronouslyForKeys:v27 completionHandler:v28];
+      [(AVAsset *)assetCopy loadValuesAsynchronouslyForKeys:array completionHandler:v28];
       objc_destroyWeak(&v29);
       objc_destroyWeak(location);
     }
@@ -2338,9 +2338,9 @@ void __53__PXLivePhotoTrimScrubber_setAsset_videoComposition___block_invoke_3(ui
   [WeakRetained _assetDidLoadValues];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -2377,23 +2377,23 @@ void __53__PXLivePhotoTrimScrubber_setAsset_videoComposition___block_invoke_3(ui
   [(PXLivePhotoTrimScrubber *)self _newScrubberLayoutSubviews];
   if ([(PXLivePhotoTrimScrubber *)self showVideoScrubberDebugOverlay])
   {
-    v3 = [(PXLivePhotoTrimScrubber *)self spec];
-    [v3 scrubberHeight];
+    spec = [(PXLivePhotoTrimScrubber *)self spec];
+    [spec scrubberHeight];
     v5 = v4;
 
-    v6 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+    layoutHelper = [(PXLivePhotoTrimScrubber *)self layoutHelper];
     [(PXLivePhotoTrimScrubber *)self trimStartTime];
-    [v6 offsetInScrubberSpaceForTime:v26];
+    [layoutHelper offsetInScrubberSpaceForTime:v26];
     v8 = v7;
 
-    v9 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+    layoutHelper2 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
     [(PXLivePhotoTrimScrubber *)self keyTime];
-    [v9 offsetInScrubberSpaceForTime:v26];
+    [layoutHelper2 offsetInScrubberSpaceForTime:v26];
     v11 = v10;
 
-    v12 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+    layoutHelper3 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
     [(PXLivePhotoTrimScrubber *)self trimEndTime];
-    [v12 offsetInScrubberSpaceForTime:v26];
+    [layoutHelper3 offsetInScrubberSpaceForTime:v26];
     v14 = v13;
 
     [(UIView *)self->_debugStartTimeView setFrame:v8, 0.0, 1.0, v5];
@@ -2406,8 +2406,8 @@ void __53__PXLivePhotoTrimScrubber_setAsset_videoComposition___block_invoke_3(ui
       width = v28.size.width;
       height = v28.size.height;
       v18 = v28.origin.y - CGRectGetHeight(v28);
-      v19 = [(PXLivePhotoTrimScrubber *)self delegate];
-      [v19 trimScrubber:self debugStartOffset:{x, v18, width, height}];
+      delegate = [(PXLivePhotoTrimScrubber *)self delegate];
+      [delegate trimScrubber:self debugStartOffset:{x, v18, width, height}];
     }
 
     if (self->_delegateFlags.respondsToDebugEndOffset)
@@ -2417,33 +2417,33 @@ void __53__PXLivePhotoTrimScrubber_setAsset_videoComposition___block_invoke_3(ui
       v21 = v29.size.width;
       v22 = v29.size.height;
       v23 = v29.origin.y - CGRectGetHeight(v29);
-      v24 = [(PXLivePhotoTrimScrubber *)self delegate];
-      [v24 trimScrubber:self debugEndOffset:{v20, v23, v21, v22}];
+      delegate2 = [(PXLivePhotoTrimScrubber *)self delegate];
+      [delegate2 trimScrubber:self debugEndOffset:{v20, v23, v21, v22}];
     }
   }
 
   if (self->_delegateFlags.respondsToDidLayoutSubviews)
   {
-    v25 = [(PXLivePhotoTrimScrubber *)self delegate];
-    [v25 trimScrubberDidLayoutSubviews:self];
+    delegate3 = [(PXLivePhotoTrimScrubber *)self delegate];
+    [delegate3 trimScrubberDidLayoutSubviews:self];
   }
 }
 
 - (void)_newScrubberLayoutSubviews
 {
   v94 = *MEMORY[0x1E69E9840];
-  v3 = [(PXLivePhotoTrimScrubber *)self spec];
-  [v3 scrubberHeight];
+  spec = [(PXLivePhotoTrimScrubber *)self spec];
+  [spec scrubberHeight];
   v5 = v4;
   [(PXLivePhotoTrimScrubber *)self horizontalInset];
   v7 = v6;
-  [v3 handleWidth];
+  [spec handleWidth];
   v80 = v8;
-  [v3 handleHeight];
+  [spec handleHeight];
   v85 = v9;
   [(PXLivePhotoTrimScrubber *)self bounds];
   v10 = (CGRectGetHeight(v95) - v5) * 0.5;
-  [v3 filmstripViewInsets];
+  [spec filmstripViewInsets];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -2460,11 +2460,11 @@ void __53__PXLivePhotoTrimScrubber_setAsset_videoComposition___block_invoke_3(ui
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  v27 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
-  [v27 setViewportFrame:{v20, v22, v24, v26}];
+  layoutHelper = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+  [layoutHelper setViewportFrame:{v20, v22, v24, v26}];
 
-  v28 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
-  [v28 filmstripFrameInScrubberSpace];
+  layoutHelper2 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+  [layoutHelper2 filmstripFrameInScrubberSpace];
   v30 = v29;
   v83 = v32;
   v84 = v31;
@@ -2484,26 +2484,26 @@ void __53__PXLivePhotoTrimScrubber_setAsset_videoComposition___block_invoke_3(ui
   time = v92;
   CMTimeMultiplyByRatio(&v90, &time, 1, 2);
   CMTimeAdd(&rhs, &lhs, &v90);
-  v42 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+  layoutHelper3 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
   lhs = rhs;
-  [v42 offsetInScrubberSpaceForTime:&lhs fallbackAnchor:0.5];
+  [layoutHelper3 offsetInScrubberSpaceForTime:&lhs fallbackAnchor:0.5];
   v44 = v43;
 
   v87 = floor(v44);
   v79 = *(MEMORY[0x1E695F058] + 8);
-  v45 = [(PXLivePhotoTrimScrubber *)self playheadStyle];
+  playheadStyle = [(PXLivePhotoTrimScrubber *)self playheadStyle];
   memset(&v90, 0, sizeof(v90));
   [(PXLivePhotoTrimScrubber *)self trimStartTime];
-  v46 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+  layoutHelper4 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
   lhs = v90;
-  [v46 offsetInScrubberSpaceForTime:&lhs fallbackAnchor:0.0];
+  [layoutHelper4 offsetInScrubberSpaceForTime:&lhs fallbackAnchor:0.0];
   v48 = v47;
 
   memset(&time, 0, sizeof(time));
   [(PXLivePhotoTrimScrubber *)self trimEndTime];
-  v49 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+  layoutHelper5 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
   lhs = time;
-  [v49 offsetInScrubberSpaceForTime:&lhs fallbackAnchor:1.0];
+  [layoutHelper5 offsetInScrubberSpaceForTime:&lhs fallbackAnchor:1.0];
   v51 = v50;
 
   v52 = v51 - v48;
@@ -2520,7 +2520,7 @@ void __53__PXLivePhotoTrimScrubber_setAsset_videoComposition___block_invoke_3(ui
   v98.size.height = rect;
   v55 = Width <= v52;
   v56 = CGRectGetMinX(v98) - v77;
-  v57 = !v55 && v45 == 2;
+  v57 = !v55 && playheadStyle == 2;
   v58 = !v57;
   v75 = v41;
   if (v57)
@@ -2565,11 +2565,11 @@ void __53__PXLivePhotoTrimScrubber_setAsset_videoComposition___block_invoke_3(ui
   v66 = v79;
   v67 = CGRectGetMinX(*(&v63 - 3));
   v88 = 0uLL;
-  v68 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
-  v69 = v68;
-  if (v68)
+  layoutHelper6 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+  v69 = layoutHelper6;
+  if (layoutHelper6)
   {
-    [v68 timeForOffsetInScrubberSpace:v80 * 0.5 + v67];
+    [layoutHelper6 timeForOffsetInScrubberSpace:v80 * 0.5 + v67];
   }
 
   else
@@ -2577,14 +2577,14 @@ void __53__PXLivePhotoTrimScrubber_setAsset_videoComposition___block_invoke_3(ui
     v88 = 0uLL;
   }
 
-  v70 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+  layoutHelper7 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
   *&lhs.value = v88;
   lhs.epoch = 0;
-  [v70 offsetInViewportSpaceForTime:&lhs];
+  [layoutHelper7 offsetInViewportSpaceForTime:&lhs];
   v72 = v71;
 
-  v73 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
-  [v73 filmstripFrame];
+  layoutHelper8 = [(PXLivePhotoTrimScrubber *)self layoutHelper];
+  [layoutHelper8 filmstripFrame];
   v74 = CGRectGetMinX(v100);
 
   [(PXLivePhotoTrimScrubber *)self backingAlignedRectForRect:v74, v79, v72 - v74, v81];
@@ -2617,29 +2617,29 @@ void __53__PXLivePhotoTrimScrubber__newScrubberLayoutSubviews__block_invoke(uint
   [*(*(a1 + 32) + 424) setVisibleRect:?];
 }
 
-- (PXLivePhotoTrimScrubber)initWithFilmStripViewClass:(Class)a3 spec:(id)a4 traitCollection:(id)a5
+- (PXLivePhotoTrimScrubber)initWithFilmStripViewClass:(Class)class spec:(id)spec traitCollection:(id)collection
 {
-  v8 = a4;
-  v9 = a5;
+  specCopy = spec;
+  collectionCopy = collection;
   v16.receiver = self;
   v16.super_class = PXLivePhotoTrimScrubber;
   v10 = [(PXLivePhotoTrimScrubber *)&v16 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_filmStripViewClass, a3);
-    v12 = v8;
-    if (!v8)
+    objc_storeStrong(&v10->_filmStripViewClass, class);
+    v12 = specCopy;
+    if (!specCopy)
     {
       v12 = objc_opt_new();
     }
 
     objc_storeStrong(&v11->_spec, v12);
-    if (!v8)
+    if (!specCopy)
     {
     }
 
-    objc_storeStrong(&v11->_traitCollection, a5);
+    objc_storeStrong(&v11->_traitCollection, collection);
     v13 = objc_alloc_init(PXTrimScrubberLayoutHelper);
     layoutHelper = v11->_layoutHelper;
     v11->_layoutHelper = v13;
@@ -2650,23 +2650,23 @@ void __53__PXLivePhotoTrimScrubber__newScrubberLayoutSubviews__block_invoke(uint
   return v11;
 }
 
-+ (id)createSnappingControllerWithSnappingTarget:(double)a3
++ (id)createSnappingControllerWithSnappingTarget:(double)target
 {
-  v3 = [[PXSnappingController alloc] initWithSnappingTarget:a3];
+  v3 = [[PXSnappingController alloc] initWithSnappingTarget:target];
 
   return v3;
 }
 
-+ (id)_createSnappingControllersForKeytimes:(id)a3
++ (id)_createSnappingControllersForKeytimes:(id)keytimes
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  keytimesCopy = keytimes;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(keytimesCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = keytimesCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {

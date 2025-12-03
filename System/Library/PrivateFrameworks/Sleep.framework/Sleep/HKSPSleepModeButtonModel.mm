@@ -1,43 +1,43 @@
 @interface HKSPSleepModeButtonModel
 - (BOOL)isSelected;
-- (HKSPSleepModeButtonModel)initWithDelegate:(id)a3;
-- (HKSPSleepModeButtonModel)initWithSleepStore:(id)a3 delegate:(id)a4 behavior:(id)a5;
+- (HKSPSleepModeButtonModel)initWithDelegate:(id)delegate;
+- (HKSPSleepModeButtonModel)initWithSleepStore:(id)store delegate:(id)delegate behavior:(id)behavior;
 - (HKSPSleepModeButtonModelDelegate)delegate;
 - (void)_checkSleepModeState;
 - (void)_launchAppForOnboarding;
-- (void)_queue_updateStateWithSleepMode:(int64_t)a3;
-- (void)_updateStateWithSleepMode:(int64_t)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)_queue_updateStateWithSleepMode:(int64_t)mode;
+- (void)_updateStateWithSleepMode:(int64_t)mode;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation HKSPSleepModeButtonModel
 
-- (HKSPSleepModeButtonModel)initWithDelegate:(id)a3
+- (HKSPSleepModeButtonModel)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [HKSPSleepStore alloc];
   v6 = HKSPGenerateSleepStoreIdentifier(@"sleepModeButton");
   v7 = [(HKSPSleepStore *)v5 initWithIdentifier:v6];
-  v8 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v9 = [(HKSPSleepModeButtonModel *)self initWithSleepStore:v7 delegate:v4 behavior:v8];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  v9 = [(HKSPSleepModeButtonModel *)self initWithSleepStore:v7 delegate:delegateCopy behavior:mEMORY[0x277CCDD30]];
 
   return v9;
 }
 
-- (HKSPSleepModeButtonModel)initWithSleepStore:(id)a3 delegate:(id)a4 behavior:(id)a5
+- (HKSPSleepModeButtonModel)initWithSleepStore:(id)store delegate:(id)delegate behavior:(id)behavior
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  delegateCopy = delegate;
+  behaviorCopy = behavior;
   v16.receiver = self;
   v16.super_class = HKSPSleepModeButtonModel;
   v12 = [(HKSPSleepModeButtonModel *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_sleepStore, a3);
-    objc_storeWeak(&v13->_delegate, v10);
-    objc_storeStrong(&v13->_behavior, a5);
+    objc_storeStrong(&v12->_sleepStore, store);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    objc_storeStrong(&v13->_behavior, behavior);
     [(HKSPSleepStore *)v13->_sleepStore addObserver:v13];
     [(HKSPSleepModeButtonModel *)v13 _checkSleepModeState];
     v14 = v13;
@@ -48,13 +48,13 @@
 
 - (void)_checkSleepModeState
 {
-  v3 = [(HKSPSleepStore *)self->_sleepStore sleepModeFuture];
+  sleepModeFuture = [(HKSPSleepStore *)self->_sleepStore sleepModeFuture];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __48__HKSPSleepModeButtonModel__checkSleepModeState__block_invoke;
   v5[3] = &unk_279C73FF0;
   v5[4] = self;
-  v4 = [v3 addSuccessBlock:v5];
+  v4 = [sleepModeFuture addSuccessBlock:v5];
 }
 
 uint64_t __48__HKSPSleepModeButtonModel__checkSleepModeState__block_invoke(uint64_t a1, void *a2)
@@ -67,11 +67,11 @@ uint64_t __48__HKSPSleepModeButtonModel__checkSleepModeState__block_invoke(uint6
 
 - (BOOL)isSelected
 {
-  v3 = [(_HKBehavior *)self->_behavior isAppleWatch];
+  isAppleWatch = [(_HKBehavior *)self->_behavior isAppleWatch];
   sleepMode = self->_sleepMode;
   v5 = sleepMode == 2;
   v6 = sleepMode != 0;
-  if (v3)
+  if (isAppleWatch)
   {
     return v5;
   }
@@ -82,18 +82,18 @@ uint64_t __48__HKSPSleepModeButtonModel__checkSleepModeState__block_invoke(uint6
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __40__HKSPSleepModeButtonModel_setSelected___block_invoke;
   v10[3] = &unk_279C74040;
   v10[4] = self;
-  v11 = a3;
+  selectedCopy2 = selected;
   v5 = MEMORY[0x26D64AA30](v10, a2);
   v6 = v5;
-  if (v3)
+  if (selectedCopy)
   {
     sleepStore = self->_sleepStore;
     v8[0] = MEMORY[0x277D85DD0];
@@ -248,22 +248,22 @@ LABEL_10:
 - (void)_launchAppForOnboarding
 {
   v4 = HKSPSleepURLWithOptionsFromSource(@"onboardSleepCoaching", 0, @"SleepModeButton", 0);
-  v3 = [(HKSPSleepModeButtonModel *)self delegate];
-  [v3 sleepModeButtonModel:self launchURL:v4];
+  delegate = [(HKSPSleepModeButtonModel *)self delegate];
+  [delegate sleepModeButtonModel:self launchURL:v4];
 }
 
-- (void)_updateStateWithSleepMode:(int64_t)a3
+- (void)_updateStateWithSleepMode:(int64_t)mode
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __54__HKSPSleepModeButtonModel__updateStateWithSleepMode___block_invoke;
   v3[3] = &unk_279C740B8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = mode;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
-- (void)_queue_updateStateWithSleepMode:(int64_t)a3
+- (void)_queue_updateStateWithSleepMode:(int64_t)mode
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = HKSPLogForCategory(7uLL);
@@ -271,7 +271,7 @@ LABEL_10:
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = NSStringFromHKSPSleepMode(a3);
+    v8 = NSStringFromHKSPSleepMode(mode);
     v11 = 138543618;
     v12 = v6;
     v13 = 2114;
@@ -279,9 +279,9 @@ LABEL_10:
     _os_log_impl(&dword_269A84000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] updating sleep mode state: %{public}@", &v11, 0x16u);
   }
 
-  self->_sleepMode = a3;
-  v9 = [(HKSPSleepModeButtonModel *)self delegate];
-  [v9 sleepModeButtonModelChanged:self];
+  self->_sleepMode = mode;
+  delegate = [(HKSPSleepModeButtonModel *)self delegate];
+  [delegate sleepModeButtonModelChanged:self];
 
   v10 = *MEMORY[0x277D85DE8];
 }

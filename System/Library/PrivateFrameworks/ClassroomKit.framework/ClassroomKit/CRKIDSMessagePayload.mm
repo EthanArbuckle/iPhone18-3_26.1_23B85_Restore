@@ -1,25 +1,25 @@
 @interface CRKIDSMessagePayload
-+ (id)instanceWithDictionary:(id)a3;
-- (CRKIDSMessagePayload)initWithMessageContent:(id)a3 messageMetadata:(id)a4;
++ (id)instanceWithDictionary:(id)dictionary;
+- (CRKIDSMessagePayload)initWithMessageContent:(id)content messageMetadata:(id)metadata;
 - (NSDictionary)dictionaryValue;
 @end
 
 @implementation CRKIDSMessagePayload
 
-- (CRKIDSMessagePayload)initWithMessageContent:(id)a3 messageMetadata:(id)a4
+- (CRKIDSMessagePayload)initWithMessageContent:(id)content messageMetadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
+  contentCopy = content;
+  metadataCopy = metadata;
   v12.receiver = self;
   v12.super_class = CRKIDSMessagePayload;
   v8 = [(CRKIDSMessagePayload *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [contentCopy copy];
     messageContent = v8->_messageContent;
     v8->_messageContent = v9;
 
-    objc_storeStrong(&v8->_messageMetadata, a4);
+    objc_storeStrong(&v8->_messageMetadata, metadata);
   }
 
   return v8;
@@ -29,21 +29,21 @@
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v8[0] = @"MessageContent";
-  v3 = [(CRKIDSMessagePayload *)self messageContent];
+  messageContent = [(CRKIDSMessagePayload *)self messageContent];
   v8[1] = @"MessageMetadata";
-  v9[0] = v3;
-  v4 = [(CRKIDSMessagePayload *)self messageMetadata];
-  v5 = [v4 dictionaryValue];
-  v9[1] = v5;
+  v9[0] = messageContent;
+  messageMetadata = [(CRKIDSMessagePayload *)self messageMetadata];
+  dictionaryValue = [messageMetadata dictionaryValue];
+  v9[1] = dictionaryValue;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   return v6;
 }
 
-+ (id)instanceWithDictionary:(id)a3
++ (id)instanceWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"MessageContent"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"MessageContent"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -57,7 +57,7 @@
 
   v6 = v5;
 
-  v7 = [v3 objectForKeyedSubscript:@"MessageMetadata"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"MessageMetadata"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

@@ -1,6 +1,6 @@
 @interface SSPlayInfoRequestContext
-- (SSPlayInfoRequestContext)initWithXPCEncoding:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SSPlayInfoRequestContext)initWithXPCEncoding:(id)encoding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 - (void)dealloc;
 @end
@@ -14,15 +14,15 @@
   [(SSPlayInfoRequestContext *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v5[1] = [(NSNumber *)self->_accountIdentifier copyWithZone:a3];
-  v5[2] = [(NSNumber *)self->_contentIdentifier copyWithZone:a3];
-  v5[6] = [(NSString *)self->_playbackType copyWithZone:a3];
-  v5[3] = [(NSString *)self->_playerGUID copyWithZone:a3];
-  v5[4] = [(NSData *)self->_sic copyWithZone:a3];
-  v5[5] = [(NSArray *)self->_sinfs copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v5[1] = [(NSNumber *)self->_accountIdentifier copyWithZone:zone];
+  v5[2] = [(NSNumber *)self->_contentIdentifier copyWithZone:zone];
+  v5[6] = [(NSString *)self->_playbackType copyWithZone:zone];
+  v5[3] = [(NSString *)self->_playerGUID copyWithZone:zone];
+  v5[4] = [(NSData *)self->_sic copyWithZone:zone];
+  v5[5] = [(NSArray *)self->_sinfs copyWithZone:zone];
   return v5;
 }
 
@@ -38,9 +38,9 @@
   return v3;
 }
 
-- (SSPlayInfoRequestContext)initWithXPCEncoding:(id)a3
+- (SSPlayInfoRequestContext)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
     v8.receiver = self;
     v8.super_class = SSPlayInfoRequestContext;
@@ -48,17 +48,17 @@
     if (v5)
     {
       objc_opt_class();
-      v5->_accountIdentifier = SSXPCDictionaryCopyCFObjectWithClass(a3, "0");
+      v5->_accountIdentifier = SSXPCDictionaryCopyCFObjectWithClass(encoding, "0");
       objc_opt_class();
-      v5->_contentIdentifier = SSXPCDictionaryCopyCFObjectWithClass(a3, "1");
+      v5->_contentIdentifier = SSXPCDictionaryCopyCFObjectWithClass(encoding, "1");
       v7 = objc_opt_class();
-      v5->_playbackType = SSXPCDictionaryCopyObjectWithClass(a3, "5", v7);
+      v5->_playbackType = SSXPCDictionaryCopyObjectWithClass(encoding, "5", v7);
       objc_opt_class();
-      v5->_playerGUID = SSXPCDictionaryCopyCFObjectWithClass(a3, "2");
+      v5->_playerGUID = SSXPCDictionaryCopyCFObjectWithClass(encoding, "2");
       objc_opt_class();
-      v5->_sic = SSXPCDictionaryCopyCFObjectWithClass(a3, "3");
+      v5->_sic = SSXPCDictionaryCopyCFObjectWithClass(encoding, "3");
       objc_opt_class();
-      v5->_sinfs = SSXPCDictionaryCopyCFObjectWithClass(a3, "4");
+      v5->_sinfs = SSXPCDictionaryCopyCFObjectWithClass(encoding, "4");
     }
   }
 

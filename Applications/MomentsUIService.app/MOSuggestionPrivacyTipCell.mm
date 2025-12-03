@@ -1,11 +1,11 @@
 @interface MOSuggestionPrivacyTipCell
-- (_TtC16MomentsUIService26MOSuggestionPrivacyTipCell)initWithCoder:(id)a3;
-- (_TtC16MomentsUIService26MOSuggestionPrivacyTipCell)initWithFrame:(CGRect)a3;
+- (_TtC16MomentsUIService26MOSuggestionPrivacyTipCell)initWithCoder:(id)coder;
+- (_TtC16MomentsUIService26MOSuggestionPrivacyTipCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MOSuggestionPrivacyTipCell
 
-- (_TtC16MomentsUIService26MOSuggestionPrivacyTipCell)initWithCoder:(id)a3
+- (_TtC16MomentsUIService26MOSuggestionPrivacyTipCell)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC16MomentsUIService26MOSuggestionPrivacyTipCell_tipModel) = 0;
@@ -17,7 +17,7 @@
   return result;
 }
 
-- (_TtC16MomentsUIService26MOSuggestionPrivacyTipCell)initWithFrame:(CGRect)a3
+- (_TtC16MomentsUIService26MOSuggestionPrivacyTipCell)initWithFrame:(CGRect)frame
 {
   swift_unknownObjectWeakInit();
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC16MomentsUIService26MOSuggestionPrivacyTipCell_tipModel) = 0;
@@ -29,9 +29,9 @@
   height = CGRectZero.size.height;
   v12.receiver = self;
   v12.super_class = type metadata accessor for MOSuggestionPrivacyTipCell();
-  v8 = [(MOSuggestionPrivacyTipCell *)&v12 initWithFrame:CGRectZero.origin.x, y, width, height];
-  v9 = *((swift_isaMask & v8->super.super.super.super.isa) + 0xB0);
-  v10 = v8;
+  height = [(MOSuggestionPrivacyTipCell *)&v12 initWithFrame:CGRectZero.origin.x, y, width, height];
+  v9 = *((swift_isaMask & height->super.super.super.super.isa) + 0xB0);
+  v10 = height;
   v9();
 
   return v10;

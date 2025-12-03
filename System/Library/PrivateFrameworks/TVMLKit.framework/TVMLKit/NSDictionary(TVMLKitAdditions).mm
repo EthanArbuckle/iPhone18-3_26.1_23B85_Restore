@@ -11,7 +11,7 @@
 
 - (id)tv_lookupValueForKey:()TVMLKitAdditions expectedClass:
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (v1 && (objc_opt_isKindOfClass() & 1) == 0)
   {
 
@@ -24,7 +24,7 @@
 - (id)tv_stringForKey:()TVMLKitAdditions
 {
   v4 = a3;
-  v5 = [a1 tv_lookupValueForKey:v4 expectedClass:objc_opt_class()];
+  v5 = [self tv_lookupValueForKey:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }
@@ -32,7 +32,7 @@
 - (id)tv_dictionaryForKey:()TVMLKitAdditions
 {
   v4 = a3;
-  v5 = [a1 tv_lookupValueForKey:v4 expectedClass:objc_opt_class()];
+  v5 = [self tv_lookupValueForKey:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }
@@ -40,7 +40,7 @@
 - (id)tv_arrayForKey:()TVMLKitAdditions
 {
   v4 = a3;
-  v5 = [a1 tv_lookupValueForKey:v4 expectedClass:objc_opt_class()];
+  v5 = [self tv_lookupValueForKey:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }
@@ -48,14 +48,14 @@
 - (id)tv_numberForKey:()TVMLKitAdditions
 {
   v4 = a3;
-  v5 = [a1 tv_lookupValueForKey:v4 expectedClass:objc_opt_class()];
+  v5 = [self tv_lookupValueForKey:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }
 
 - (uint64_t)tv_BOOLForKey:()TVMLKitAdditions defaultValue:
 {
-  v5 = [a1 objectForKey:?];
+  v5 = [self objectForKey:?];
   if (objc_opt_respondsToSelector())
   {
     a4 = [v5 BOOLValue];

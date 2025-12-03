@@ -1,51 +1,51 @@
 @interface MapsSuggestionsPortraitSource
-- (MapsSuggestionsPortraitSource)initWithPortrait:(id)a3 delegate:(id)a4 name:(id)a5;
-- (double)updateSuggestionEntriesWithHandler:(id)a3;
-- (id)initFromResourceDepot:(id)a3 name:(id)a4;
-- (void)feedbackForContact:(id)a3 action:(int64_t)a4;
-- (void)feedbackForEntry:(id)a3 action:(int64_t)a4;
-- (void)feedbackForMapItem:(id)a3 action:(int64_t)a4;
+- (MapsSuggestionsPortraitSource)initWithPortrait:(id)portrait delegate:(id)delegate name:(id)name;
+- (double)updateSuggestionEntriesWithHandler:(id)handler;
+- (id)initFromResourceDepot:(id)depot name:(id)name;
+- (void)feedbackForContact:(id)contact action:(int64_t)action;
+- (void)feedbackForEntry:(id)entry action:(int64_t)action;
+- (void)feedbackForMapItem:(id)item action:(int64_t)action;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation MapsSuggestionsPortraitSource
 
-- (void)feedbackForContact:(id)a3 action:(int64_t)a4
+- (void)feedbackForContact:(id)contact action:(int64_t)action
 {
-  v6 = a3;
+  contactCopy = contact;
   v7 = +[MapsSuggestionsSiri isEnabled];
-  if ((a4 - 1) <= 3 && v7)
+  if ((action - 1) <= 3 && v7)
   {
     portrait = self->_portrait;
-    v9 = [v6 identifier];
-    v11 = v9;
+    identifier = [contactCopy identifier];
+    v11 = identifier;
     v10 = [NSArray arrayWithObjects:&v11 count:1];
     [(MapsSuggestionsPortrait *)portrait sendFeedbackforClientID:@"mapssearch" storeType:0 explicitlyEngagedStrings:0 explicitlyRejectedStrings:0 implicitlyEngagedStrings:v10 implicitlyRejectedStrings:0];
   }
 }
 
-- (void)feedbackForMapItem:(id)a3 action:(int64_t)a4
+- (void)feedbackForMapItem:(id)item action:(int64_t)action
 {
-  v6 = a3;
+  itemCopy = item;
   v7 = +[MapsSuggestionsSiri isEnabled];
-  if ((a4 - 1) <= 3 && v7)
+  if ((action - 1) <= 3 && v7)
   {
     v8 = [[NSMutableArray alloc] initWithCapacity:2];
-    v9 = [v6 name];
+    name = [itemCopy name];
 
-    if (v9)
+    if (name)
     {
-      v10 = [v6 name];
-      [v8 addObject:v10];
+      name2 = [itemCopy name];
+      [v8 addObject:name2];
     }
 
-    v11 = [v6 shortAddress];
+    shortAddress = [itemCopy shortAddress];
 
-    if (v11)
+    if (shortAddress)
     {
-      v12 = [v6 shortAddress];
-      [v8 addObject:v12];
+      shortAddress2 = [itemCopy shortAddress];
+      [v8 addObject:shortAddress2];
     }
 
     if ([v8 count])
@@ -65,14 +65,14 @@
   }
 }
 
-- (void)feedbackForEntry:(id)a3 action:(int64_t)a4
+- (void)feedbackForEntry:(id)entry action:(int64_t)action
 {
-  v6 = a3;
+  entryCopy = entry;
   if (+[MapsSuggestionsSiri isEnabled])
   {
-    if ([v6 containsKey:@"MapsSuggestionsPortraitClientIdentifier"])
+    if ([entryCopy containsKey:@"MapsSuggestionsPortraitClientIdentifier"])
     {
-      v7 = [v6 stringForKey:@"MapsSuggestionsPortraitClientIdentifier"];
+      v7 = [entryCopy stringForKey:@"MapsSuggestionsPortraitClientIdentifier"];
     }
 
     else
@@ -80,23 +80,23 @@
       v7 = @"maps";
     }
 
-    v8 = [v6 undecoratedTitle];
-    if ([v6 containsKey:@"MapsSuggestionsEntryTitleNameKey"])
+    undecoratedTitle = [entryCopy undecoratedTitle];
+    if ([entryCopy containsKey:@"MapsSuggestionsEntryTitleNameKey"])
     {
-      v9 = [v6 stringForKey:@"MapsSuggestionsEntryTitleNameKey"];
+      v9 = [entryCopy stringForKey:@"MapsSuggestionsEntryTitleNameKey"];
 
-      v8 = v9;
+      undecoratedTitle = v9;
     }
 
-    if (v8)
+    if (undecoratedTitle)
     {
-      if (a4 > 1)
+      if (action > 1)
       {
-        if ((a4 - 2) < 3)
+        if ((action - 2) < 3)
         {
           portrait = self->_portrait;
-          v25 = v8;
-          v11 = v8;
+          v25 = undecoratedTitle;
+          v11 = undecoratedTitle;
           v12 = [NSArray arrayWithObjects:&v25 count:1];
           v13 = portrait;
           v14 = v7;
@@ -107,11 +107,11 @@ LABEL_23:
           goto LABEL_24;
         }
 
-        if (a4 == 5)
+        if (action == 5)
         {
           v21 = self->_portrait;
-          v24 = v8;
-          v11 = v8;
+          v24 = undecoratedTitle;
+          v11 = undecoratedTitle;
           v12 = [NSArray arrayWithObjects:&v24 count:1];
           v13 = v21;
           v14 = v7;
@@ -120,7 +120,7 @@ LABEL_23:
           goto LABEL_23;
         }
 
-        if (a4 != 6)
+        if (action != 6)
         {
           goto LABEL_21;
         }
@@ -130,13 +130,13 @@ LABEL_25:
         goto LABEL_26;
       }
 
-      if (a4)
+      if (action)
       {
-        if (a4 == 1)
+        if (action == 1)
         {
           v19 = self->_portrait;
-          v23 = v8;
-          v11 = v8;
+          v23 = undecoratedTitle;
+          v11 = undecoratedTitle;
           v12 = [NSArray arrayWithObjects:&v23 count:1];
           v13 = v19;
           v14 = v7;
@@ -181,15 +181,15 @@ LABEL_13:
 LABEL_26:
 }
 
-- (double)updateSuggestionEntriesWithHandler:(id)a3
+- (double)updateSuggestionEntriesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(MapsSuggestionsPortraitSource *)self uniqueName];
+    uniqueName = [(MapsSuggestionsPortraitSource *)self uniqueName];
     *buf = 138412546;
-    v23 = v6;
+    v23 = uniqueName;
     v24 = 2080;
     v25 = "updateSuggestionEntriesWithHandler";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -213,8 +213,8 @@ LABEL_26:
     v17[3] = &unk_101660C70;
     objc_copyWeak(&v21, buf);
     v18 = v8;
-    v19 = self;
-    v20 = v4;
+    selfCopy = self;
+    v20 = handlerCopy;
     dispatch_async(queue, v17);
     GEOConfigGetDouble();
     v11 = v10;
@@ -225,17 +225,17 @@ LABEL_26:
 
   else
   {
-    if (v4)
+    if (handlerCopy)
     {
-      v4[2](v4);
+      handlerCopy[2](handlerCopy);
     }
 
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [(MapsSuggestionsPortraitSource *)self uniqueName];
+      uniqueName2 = [(MapsSuggestionsPortraitSource *)self uniqueName];
       *buf = 138412546;
-      v23 = v13;
+      v23 = uniqueName2;
       v24 = 2080;
       v25 = "updateSuggestionEntriesWithHandler";
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s FAIL", buf, 0x16u);
@@ -275,11 +275,11 @@ LABEL_26:
   }
 }
 
-- (id)initFromResourceDepot:(id)a3 name:(id)a4
+- (id)initFromResourceDepot:(id)depot name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  depotCopy = depot;
+  nameCopy = name;
+  if (!depotCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -301,9 +301,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v8 = [v6 oneSourceDelegate];
+  oneSourceDelegate = [depotCopy oneSourceDelegate];
 
-  if (!v8)
+  if (!oneSourceDelegate)
   {
     v13 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -323,9 +323,9 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v9 = [v6 onePortrait];
+  onePortrait = [depotCopy onePortrait];
 
-  if (!v9)
+  if (!onePortrait)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -344,26 +344,26 @@ LABEL_11:
 
 LABEL_12:
 
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
-  v10 = [v6 onePortrait];
-  v11 = [v6 oneSourceDelegate];
-  self = [(MapsSuggestionsPortraitSource *)self initWithPortrait:v10 delegate:v11 name:v7];
+  onePortrait2 = [depotCopy onePortrait];
+  oneSourceDelegate2 = [depotCopy oneSourceDelegate];
+  self = [(MapsSuggestionsPortraitSource *)self initWithPortrait:onePortrait2 delegate:oneSourceDelegate2 name:nameCopy];
 
-  v12 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v12;
+  return selfCopy;
 }
 
-- (MapsSuggestionsPortraitSource)initWithPortrait:(id)a3 delegate:(id)a4 name:(id)a5
+- (MapsSuggestionsPortraitSource)initWithPortrait:(id)portrait delegate:(id)delegate name:(id)name
 {
-  v9 = a3;
+  portraitCopy = portrait;
   v15.receiver = self;
   v15.super_class = MapsSuggestionsPortraitSource;
-  v10 = [(MapsSuggestionsPortraitSource *)&v15 initWithDelegate:a4 name:a5];
+  v10 = [(MapsSuggestionsPortraitSource *)&v15 initWithDelegate:delegate name:name];
   if (v10)
   {
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -371,7 +371,7 @@ LABEL_13:
     queue = v10->_queue;
     v10->_queue = v12;
 
-    objc_storeStrong(&v10->_portrait, a3);
+    objc_storeStrong(&v10->_portrait, portrait);
   }
 
   return v10;

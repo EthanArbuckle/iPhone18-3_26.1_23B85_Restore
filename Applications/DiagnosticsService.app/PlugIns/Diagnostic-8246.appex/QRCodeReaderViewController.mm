@@ -1,18 +1,18 @@
 @interface QRCodeReaderViewController
-- (BOOL)setActiveCamera:(int64_t)a3;
-- (BOOL)setFlash:(BOOL)a3;
+- (BOOL)setActiveCamera:(int64_t)camera;
+- (BOOL)setFlash:(BOOL)flash;
 - (QRCodeReaderViewController)init;
 - (void)cancelTapped;
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 fromConnection:(id)a5;
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects fromConnection:(id)connection;
 - (void)cleanup;
-- (void)finishWithStatusCode:(id)a3 metadata:(id)a4;
+- (void)finishWithStatusCode:(id)code metadata:(id)metadata;
 - (void)flashTapped;
 - (void)flipTapped;
 - (void)setupCamera;
 - (void)setupCodeRecognition;
 - (void)setupUI;
 - (void)start;
-- (void)takePictureWithHandler:(id)a3;
+- (void)takePictureWithHandler:(id)handler;
 @end
 
 @implementation QRCodeReaderViewController
@@ -59,34 +59,34 @@
   {
 LABEL_5:
     v5 = +[NSNotificationCenter defaultCenter];
-    v6 = [(QRCodeReaderViewController *)self captureSession];
+    captureSession = [(QRCodeReaderViewController *)self captureSession];
     v7 = +[NSOperationQueue mainQueue];
-    v8 = [v5 addObserverForName:AVCaptureSessionRuntimeErrorNotification object:v6 queue:v7 usingBlock:&stru_10000C3D8];
+    v8 = [v5 addObserverForName:AVCaptureSessionRuntimeErrorNotification object:captureSession queue:v7 usingBlock:&stru_10000C3D8];
 
     v9 = +[NSNotificationCenter defaultCenter];
-    v10 = [(QRCodeReaderViewController *)self captureSession];
+    captureSession2 = [(QRCodeReaderViewController *)self captureSession];
     v11 = +[NSOperationQueue mainQueue];
     v26 = _NSConcreteStackBlock;
     v27 = 3221225472;
     v28 = sub_1000030EC;
     v29 = &unk_10000C400;
     objc_copyWeak(&v30, &location);
-    v12 = [v9 addObserverForName:AVCaptureSessionDidStartRunningNotification object:v10 queue:v11 usingBlock:&v26];
+    v12 = [v9 addObserverForName:AVCaptureSessionDidStartRunningNotification object:captureSession2 queue:v11 usingBlock:&v26];
 
     v13 = [NSNotificationCenter defaultCenter:v26];
-    v14 = [(QRCodeReaderViewController *)self captureSession];
+    captureSession3 = [(QRCodeReaderViewController *)self captureSession];
     v15 = +[NSOperationQueue mainQueue];
-    v16 = [v13 addObserverForName:AVCaptureSessionDidStopRunningNotification object:v14 queue:v15 usingBlock:&stru_10000C420];
+    v16 = [v13 addObserverForName:AVCaptureSessionDidStopRunningNotification object:captureSession3 queue:v15 usingBlock:&stru_10000C420];
 
     v17 = +[NSNotificationCenter defaultCenter];
-    v18 = [(QRCodeReaderViewController *)self captureSession];
+    captureSession4 = [(QRCodeReaderViewController *)self captureSession];
     v19 = +[NSOperationQueue mainQueue];
-    v20 = [v17 addObserverForName:AVCaptureSessionWasInterruptedNotification object:v18 queue:v19 usingBlock:&stru_10000C440];
+    v20 = [v17 addObserverForName:AVCaptureSessionWasInterruptedNotification object:captureSession4 queue:v19 usingBlock:&stru_10000C440];
 
     v21 = +[NSNotificationCenter defaultCenter];
-    v22 = [(QRCodeReaderViewController *)self captureSession];
+    captureSession5 = [(QRCodeReaderViewController *)self captureSession];
     v23 = +[NSOperationQueue mainQueue];
-    v24 = [v21 addObserverForName:AVCaptureSessionInterruptionEndedNotification object:v22 queue:v23 usingBlock:&stru_10000C460];
+    v24 = [v21 addObserverForName:AVCaptureSessionInterruptionEndedNotification object:captureSession5 queue:v23 usingBlock:&stru_10000C460];
 
     objc_destroyWeak(&v30);
   }
@@ -108,30 +108,30 @@ LABEL_5:
 - (void)setupCodeRecognition
 {
   v6 = objc_alloc_init(AVCaptureMetadataOutput);
-  v3 = [(QRCodeReaderViewController *)self captureSession];
-  [v3 addOutput:v6];
+  captureSession = [(QRCodeReaderViewController *)self captureSession];
+  [captureSession addOutput:v6];
 
   [v6 setMetadataObjectsDelegate:self queue:&_dispatch_main_q];
-  v4 = [(QRCodeReaderViewController *)self inputs];
-  v5 = [v4 codeTypes];
-  [v6 setMetadataObjectTypes:v5];
+  inputs = [(QRCodeReaderViewController *)self inputs];
+  codeTypes = [inputs codeTypes];
+  [v6 setMetadataObjectTypes:codeTypes];
 }
 
 - (void)setupUI
 {
   v3 = +[UIColor blackColor];
-  v4 = [(QRCodeReaderViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(QRCodeReaderViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = [UIView alloc];
-  v6 = [(QRCodeReaderViewController *)self view];
-  [v6 bounds];
+  view2 = [(QRCodeReaderViewController *)self view];
+  [view2 bounds];
   v7 = [v5 initWithFrame:?];
   [(QRCodeReaderViewController *)self setPreviewView:v7];
 
   v8 = [AVCaptureVideoPreviewLayer alloc];
-  v9 = [(QRCodeReaderViewController *)self captureSession];
-  v10 = [v8 initWithSession:v9];
+  captureSession = [(QRCodeReaderViewController *)self captureSession];
+  v10 = [v8 initWithSession:captureSession];
 
   if (v10)
   {
@@ -146,39 +146,39 @@ LABEL_5:
       v11 = 90.0;
     }
 
-    v13 = [v10 connection];
-    [v13 setVideoRotationAngle:v11];
+    connection = [v10 connection];
+    [connection setVideoRotationAngle:v11];
 
-    v14 = [(QRCodeReaderViewController *)self previewView];
-    [v14 bounds];
+    previewView = [(QRCodeReaderViewController *)self previewView];
+    [previewView bounds];
     [v10 setFrame:?];
 
     v15 = [CameraTargetView alloc];
-    v16 = [(QRCodeReaderViewController *)self previewView];
-    [v16 bounds];
+    previewView2 = [(QRCodeReaderViewController *)self previewView];
+    [previewView2 bounds];
     v18 = v17;
     v20 = v19;
     v22 = v21;
     v24 = v23;
-    v25 = [(QRCodeReaderViewController *)self inputs];
-    v26 = [v25 viewfinderInstruction];
-    v27 = [(CameraTargetView *)v15 initWithFrame:v26 instructionText:12 presentationOptions:v18, v20, v22, v24];
+    inputs = [(QRCodeReaderViewController *)self inputs];
+    viewfinderInstruction = [inputs viewfinderInstruction];
+    v27 = [(CameraTargetView *)v15 initWithFrame:viewfinderInstruction instructionText:12 presentationOptions:v18, v20, v22, v24];
     [(QRCodeReaderViewController *)self setOverlayView:v27];
 
-    v28 = [(QRCodeReaderViewController *)self overlayView];
-    [v28 setDelegate:self];
+    overlayView = [(QRCodeReaderViewController *)self overlayView];
+    [overlayView setDelegate:self];
 
-    v29 = [(QRCodeReaderViewController *)self previewView];
-    v30 = [v29 layer];
-    [v30 addSublayer:v10];
+    previewView3 = [(QRCodeReaderViewController *)self previewView];
+    layer = [previewView3 layer];
+    [layer addSublayer:v10];
 
-    v31 = [(QRCodeReaderViewController *)self previewView];
-    v32 = [(QRCodeReaderViewController *)self overlayView];
-    [v31 addSubview:v32];
+    previewView4 = [(QRCodeReaderViewController *)self previewView];
+    overlayView2 = [(QRCodeReaderViewController *)self overlayView];
+    [previewView4 addSubview:overlayView2];
 
-    v33 = [(QRCodeReaderViewController *)self view];
-    v34 = [(QRCodeReaderViewController *)self previewView];
-    [v33 addSubview:v34];
+    view3 = [(QRCodeReaderViewController *)self view];
+    previewView5 = [(QRCodeReaderViewController *)self previewView];
+    [view3 addSubview:previewView5];
   }
 
   else
@@ -195,88 +195,88 @@ LABEL_5:
 
 - (void)cleanup
 {
-  v3 = [(QRCodeReaderViewController *)self timeoutTimer];
+  timeoutTimer = [(QRCodeReaderViewController *)self timeoutTimer];
 
-  if (v3)
+  if (timeoutTimer)
   {
-    v4 = [(QRCodeReaderViewController *)self timeoutTimer];
-    [v4 invalidate];
+    timeoutTimer2 = [(QRCodeReaderViewController *)self timeoutTimer];
+    [timeoutTimer2 invalidate];
   }
 
-  v5 = [(QRCodeReaderViewController *)self cameraDevice];
-  if (v5)
+  cameraDevice = [(QRCodeReaderViewController *)self cameraDevice];
+  if (cameraDevice)
   {
-    v6 = v5;
-    v7 = [(QRCodeReaderViewController *)self cameraDevice];
-    v8 = [v7 isTorchActive];
+    v6 = cameraDevice;
+    cameraDevice2 = [(QRCodeReaderViewController *)self cameraDevice];
+    isTorchActive = [cameraDevice2 isTorchActive];
 
-    if (v8)
+    if (isTorchActive)
     {
       [(QRCodeReaderViewController *)self setFlash:0];
     }
   }
 
-  v9 = [(QRCodeReaderViewController *)self captureSession];
-  if (v9)
+  captureSession = [(QRCodeReaderViewController *)self captureSession];
+  if (captureSession)
   {
-    v10 = v9;
-    v11 = [(QRCodeReaderViewController *)self captureSession];
-    v12 = [v11 isRunning];
+    v10 = captureSession;
+    captureSession2 = [(QRCodeReaderViewController *)self captureSession];
+    isRunning = [captureSession2 isRunning];
 
-    if (v12)
+    if (isRunning)
     {
-      v13 = [(QRCodeReaderViewController *)self captureSession];
-      [v13 stopRunning];
+      captureSession3 = [(QRCodeReaderViewController *)self captureSession];
+      [captureSession3 stopRunning];
 
       [(QRCodeReaderViewController *)self setCaptureSession:0];
     }
   }
 }
 
-- (void)finishWithStatusCode:(id)a3 metadata:(id)a4
+- (void)finishWithStatusCode:(id)code metadata:(id)metadata
 {
-  v16 = a4;
-  v6 = a3;
+  metadataCopy = metadata;
+  codeCopy = code;
   v7 = objc_alloc_init(NSMutableDictionary);
   v8 = v7;
-  if (v16)
+  if (metadataCopy)
   {
-    [v7 addEntriesFromDictionary:v16];
+    [v7 addEntriesFromDictionary:metadataCopy];
   }
 
-  v9 = [(QRCodeReaderViewController *)self exclavesStatus];
+  exclavesStatus = [(QRCodeReaderViewController *)self exclavesStatus];
 
-  if (v9)
+  if (exclavesStatus)
   {
-    v10 = [(QRCodeReaderViewController *)self exclavesStatus];
-    [v8 addEntriesFromDictionary:v10];
+    exclavesStatus2 = [(QRCodeReaderViewController *)self exclavesStatus];
+    [v8 addEntriesFromDictionary:exclavesStatus2];
   }
 
   if ([v8 count])
   {
     v11 = [v8 copy];
-    v12 = [(QRCodeReaderViewController *)self result];
-    [v12 setData:v11];
+    result = [(QRCodeReaderViewController *)self result];
+    [result setData:v11];
   }
 
   [(QRCodeReaderViewController *)self cleanup];
-  v13 = [(QRCodeReaderViewController *)self exclavesStatus];
-  v14 = [DAExclavesSupport testResultOverrideForExclavesStatus:v13 originalResult:v6];
+  exclavesStatus3 = [(QRCodeReaderViewController *)self exclavesStatus];
+  v14 = [DAExclavesSupport testResultOverrideForExclavesStatus:exclavesStatus3 originalResult:codeCopy];
 
-  v15 = [(QRCodeReaderViewController *)self result];
-  [v15 setStatusCode:v14];
+  result2 = [(QRCodeReaderViewController *)self result];
+  [result2 setStatusCode:v14];
 
   [(QRCodeReaderViewController *)self setFinished:1];
 }
 
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects fromConnection:(id)connection
 {
-  v5 = a4;
+  objectsCopy = objects;
   v6 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v31 = [v5 count];
+    v31 = [objectsCopy count];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "captureOutput called for %ld objects", buf, 0xCu);
   }
 
@@ -285,7 +285,7 @@ LABEL_5:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = v5;
+  v8 = objectsCopy;
   v9 = [v8 countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v9)
   {
@@ -308,14 +308,14 @@ LABEL_5:
           v15 = DiagnosticLogHandleForCategory();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
-            v16 = [v14 stringValue];
+            stringValue = [v14 stringValue];
             *buf = 138412290;
-            v31 = v16;
+            v31 = stringValue;
             _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Decoded QR Code: %@", buf, 0xCu);
           }
 
-          v17 = [v14 stringValue];
-          [v7 addObject:v17];
+          stringValue2 = [v14 stringValue];
+          [v7 addObject:stringValue2];
         }
       }
 
@@ -329,9 +329,9 @@ LABEL_5:
   {
     v18 = objc_alloc_init(NSMutableDictionary);
     v27[0] = @"camera";
-    v19 = [(QRCodeReaderViewController *)self cameraPosition];
+    cameraPosition = [(QRCodeReaderViewController *)self cameraPosition];
     v20 = @"back";
-    if (v19 == 2)
+    if (cameraPosition == 2)
     {
       v20 = @"front";
     }
@@ -370,17 +370,17 @@ LABEL_5:
   [(QRCodeReaderViewController *)self setFlashState:[(QRCodeReaderViewController *)self flashState]^ 1];
   if ([(QRCodeReaderViewController *)self setFlash:[(QRCodeReaderViewController *)self flashState]])
   {
-    v4 = [(QRCodeReaderViewController *)self overlayView];
-    [v4 setFlashState:{-[QRCodeReaderViewController flashState](self, "flashState")}];
+    overlayView = [(QRCodeReaderViewController *)self overlayView];
+    [overlayView setFlashState:{-[QRCodeReaderViewController flashState](self, "flashState")}];
   }
 }
 
-- (BOOL)setFlash:(BOOL)a3
+- (BOOL)setFlash:(BOOL)flash
 {
-  v3 = a3;
-  v5 = [(QRCodeReaderViewController *)self cameraDevice];
+  flashCopy = flash;
+  cameraDevice = [(QRCodeReaderViewController *)self cameraDevice];
 
-  if (!v5)
+  if (!cameraDevice)
   {
     v9 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -392,17 +392,17 @@ LABEL_5:
     goto LABEL_13;
   }
 
-  v6 = [(QRCodeReaderViewController *)self cameraDevice];
-  if (([v6 isTorchModeSupported:1] & 1) == 0)
+  cameraDevice2 = [(QRCodeReaderViewController *)self cameraDevice];
+  if (([cameraDevice2 isTorchModeSupported:1] & 1) == 0)
   {
 
     v9 = 0;
     goto LABEL_10;
   }
 
-  v7 = [(QRCodeReaderViewController *)self cameraDevice];
+  cameraDevice3 = [(QRCodeReaderViewController *)self cameraDevice];
   v17 = 0;
-  v8 = [v7 lockForConfiguration:&v17];
+  v8 = [cameraDevice3 lockForConfiguration:&v17];
   v9 = v17;
 
   if (!v8)
@@ -411,7 +411,7 @@ LABEL_10:
     v15 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      sub_100005434(v3, v9, v15);
+      sub_100005434(flashCopy, v9, v15);
     }
 
 LABEL_13:
@@ -423,16 +423,16 @@ LABEL_13:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v19 = v3;
+    v19 = flashCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Setting torch state to %d", buf, 8u);
   }
 
-  v11 = [(QRCodeReaderViewController *)self flashState];
-  v12 = [(QRCodeReaderViewController *)self cameraDevice];
-  [v12 setTorchMode:v11];
+  flashState = [(QRCodeReaderViewController *)self flashState];
+  cameraDevice4 = [(QRCodeReaderViewController *)self cameraDevice];
+  [cameraDevice4 setTorchMode:flashState];
 
-  v13 = [(QRCodeReaderViewController *)self cameraDevice];
-  [v13 unlockForConfiguration];
+  cameraDevice5 = [(QRCodeReaderViewController *)self cameraDevice];
+  [cameraDevice5 unlockForConfiguration];
 
   v14 = 1;
 LABEL_14:
@@ -449,7 +449,7 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Flip button tapped.", &v10, 2u);
   }
 
-  v4 = [(QRCodeReaderViewController *)self cameraPosition];
+  cameraPosition = [(QRCodeReaderViewController *)self cameraPosition];
   if ([(QRCodeReaderViewController *)self cameraPosition]== 1)
   {
     v5 = 2;
@@ -480,7 +480,7 @@ LABEL_14:
       sub_1000054C0();
     }
 
-    if (![(QRCodeReaderViewController *)self setActiveCamera:v4])
+    if (![(QRCodeReaderViewController *)self setActiveCamera:cameraPosition])
     {
       v9 = DiagnosticLogHandleForCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -493,7 +493,7 @@ LABEL_14:
   }
 }
 
-- (void)takePictureWithHandler:(id)a3
+- (void)takePictureWithHandler:(id)handler
 {
   v3 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -503,10 +503,10 @@ LABEL_14:
   }
 }
 
-- (BOOL)setActiveCamera:(int64_t)a3
+- (BOOL)setActiveCamera:(int64_t)camera
 {
   [(QRCodeReaderViewController *)self setFlash:0];
-  v5 = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWideAngleCamera mediaType:AVMediaTypeVideo position:a3];
+  v5 = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWideAngleCamera mediaType:AVMediaTypeVideo position:camera];
   if (v5)
   {
     v18 = 0;
@@ -515,35 +515,35 @@ LABEL_14:
     v8 = v6 != 0;
     if (v6)
     {
-      v9 = [(QRCodeReaderViewController *)self captureSession];
-      [v9 beginConfiguration];
+      captureSession = [(QRCodeReaderViewController *)self captureSession];
+      [captureSession beginConfiguration];
 
-      v10 = [(QRCodeReaderViewController *)self cameraInput];
+      cameraInput = [(QRCodeReaderViewController *)self cameraInput];
 
-      if (v10)
+      if (cameraInput)
       {
-        v11 = [(QRCodeReaderViewController *)self captureSession];
-        v12 = [(QRCodeReaderViewController *)self cameraInput];
-        [v11 removeInput:v12];
+        captureSession2 = [(QRCodeReaderViewController *)self captureSession];
+        cameraInput2 = [(QRCodeReaderViewController *)self cameraInput];
+        [captureSession2 removeInput:cameraInput2];
       }
 
-      v13 = [(QRCodeReaderViewController *)self captureSession];
-      [v13 addInput:v6];
+      captureSession3 = [(QRCodeReaderViewController *)self captureSession];
+      [captureSession3 addInput:v6];
 
-      v14 = [(QRCodeReaderViewController *)self captureSession];
-      [v14 commitConfiguration];
+      captureSession4 = [(QRCodeReaderViewController *)self captureSession];
+      [captureSession4 commitConfiguration];
 
       [(QRCodeReaderViewController *)self setCameraDevice:v5];
       [(QRCodeReaderViewController *)self setCameraInput:v6];
-      [(QRCodeReaderViewController *)self setCameraPosition:a3];
-      v15 = [(QRCodeReaderViewController *)self overlayView];
-      [v15 setFlashUIEnabled:a3 == 1];
+      [(QRCodeReaderViewController *)self setCameraPosition:camera];
+      overlayView = [(QRCodeReaderViewController *)self overlayView];
+      [overlayView setFlashUIEnabled:camera == 1];
 
       v16 = DiagnosticLogHandleForCategory();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v20 = a3;
+        cameraCopy = camera;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Successfully set active camera to position %ld", buf, 0xCu);
       }
     }

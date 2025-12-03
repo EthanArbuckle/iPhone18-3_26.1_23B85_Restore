@@ -1,16 +1,16 @@
 @interface ASPCarryLogStateMachine
-- (ASPCarryLogStateMachine)initWithStateManager:(id)a3 TaskingManager:(id)a4 NANDDriver:(id)a5 UploadDriver:(id)a6 WorkDirectory:(id)a7;
+- (ASPCarryLogStateMachine)initWithStateManager:(id)manager TaskingManager:(id)taskingManager NANDDriver:(id)driver UploadDriver:(id)uploadDriver WorkDirectory:(id)directory;
 - (BOOL)_DATaskingNotInHist;
 - (BOOL)_activeLegacyTaskingDisabled;
 - (BOOL)_activeTaskingExpired;
 - (BOOL)_canInspectNewDATasking;
-- (BOOL)_canJoinTaskingPerStatsDriver:(id)a3;
+- (BOOL)_canJoinTaskingPerStatsDriver:(id)driver;
 - (BOOL)_checkSnBuildVariantMatch;
 - (BOOL)_curTaskingisActiveOnServer;
 - (BOOL)_hasActiveTasking;
 - (BOOL)_hasPendingDSReplyTasking;
 - (BOOL)_isAfterTaskingInspectionCoolDown;
-- (BOOL)_passDATaskingCriteria:(id)a3;
+- (BOOL)_passDATaskingCriteria:(id)criteria;
 - (id)_genUniqueDeviceId;
 - (id)_getDeviceId;
 - (void)_addDATaskingToHist;
@@ -25,18 +25,18 @@
 - (void)_tryActivateTasking;
 - (void)_unmarkCurrentTasking;
 - (void)bootCheck;
-- (void)dailyCheckWithStatsProvider:(id)a3;
+- (void)dailyCheckWithStatsProvider:(id)provider;
 @end
 
 @implementation ASPCarryLogStateMachine
 
-- (ASPCarryLogStateMachine)initWithStateManager:(id)a3 TaskingManager:(id)a4 NANDDriver:(id)a5 UploadDriver:(id)a6 WorkDirectory:(id)a7
+- (ASPCarryLogStateMachine)initWithStateManager:(id)manager TaskingManager:(id)taskingManager NANDDriver:(id)driver UploadDriver:(id)uploadDriver WorkDirectory:(id)directory
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v30 = a6;
-  v29 = a7;
+  managerCopy = manager;
+  taskingManagerCopy = taskingManager;
+  driverCopy = driver;
+  uploadDriverCopy = uploadDriver;
+  directoryCopy = directory;
   v32.receiver = self;
   v32.super_class = ASPCarryLogStateMachine;
   v16 = [(ASPCarryLogStateMachine *)&v32 init];
@@ -45,15 +45,15 @@
     goto LABEL_20;
   }
 
-  v28 = v15;
-  v17 = [v13 getValueForKey:@"tasking_id_history" expectedType:3];
-  v18 = [v13 getValueForKey:@"current_tasking_info" expectedType:2];
-  v16->_isInternal = checkInternalBuild(v13);
-  objc_storeStrong(&v16->_stateMgr, a3);
+  v28 = driverCopy;
+  v17 = [managerCopy getValueForKey:@"tasking_id_history" expectedType:3];
+  v18 = [managerCopy getValueForKey:@"current_tasking_info" expectedType:2];
+  v16->_isInternal = checkInternalBuild(managerCopy);
+  objc_storeStrong(&v16->_stateMgr, manager);
   if ((validateCurTaskingInfo(v18) & 1) == 0)
   {
 
-    [v13 deleteKey:@"current_tasking_info"];
+    [managerCopy deleteKey:@"current_tasking_info"];
     v18 = 0;
   }
 
@@ -85,7 +85,7 @@
   taskingIdHistory = v16->_taskingIdHistory;
   v16->_taskingIdHistory = v21;
 
-  objc_storeStrong(&v16->_DATaskingMgr, a4);
+  objc_storeStrong(&v16->_DATaskingMgr, taskingManager);
   if (v16->_isLegacyUI_TaskingDisabled)
   {
     v16->_taskingDuration = -1;
@@ -102,13 +102,13 @@
       goto LABEL_17;
     }
 
-    v16->_taskingDuration = [v14 getTaskingDurationInSeconds];
-    v16->_taskingSizeLimit = [v14 getTaskingSizeLimitInBytes];
+    v16->_taskingDuration = [taskingManagerCopy getTaskingDurationInSeconds];
+    v16->_taskingSizeLimit = [taskingManagerCopy getTaskingSizeLimitInBytes];
     if ((v16->_taskingDuration & 0x8000000000000000) == 0)
     {
-      v24 = [v14 getTaskingID];
+      getTaskingID = [taskingManagerCopy getTaskingID];
       DATaskingID = v16->_DATaskingID;
-      v16->_DATaskingID = v24;
+      v16->_DATaskingID = getTaskingID;
       goto LABEL_17;
     }
   }
@@ -117,9 +117,9 @@
   v16->_DATaskingID = 0;
 LABEL_17:
 
-  objc_storeStrong(&v16->_nandDriver, a5);
-  objc_storeStrong(&v16->_uploadDriver, a6);
-  objc_storeStrong(&v16->_workDir, a7);
+  objc_storeStrong(&v16->_nandDriver, driver);
+  objc_storeStrong(&v16->_uploadDriver, uploadDriver);
+  objc_storeStrong(&v16->_workDir, directory);
   v25 = oslog;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -129,7 +129,7 @@ LABEL_17:
 
   v26 = v16;
 
-  v15 = v28;
+  driverCopy = v28;
 LABEL_20:
 
   return v16;
@@ -139,11 +139,11 @@ LABEL_20:
 {
   if ([(ASPCarryLogStateMachine *)self isInternalBuild])
   {
-    v3 = [(ASPCarryLogStateMachine *)self stateMgr];
-    v8 = [v3 getValueForKey:@"enable_iolog_collection" inDomain:@"/var/mobile/Library/Preferences/com.apple.nandCarryLogs.plist" expectedType:1];
+    stateMgr = [(ASPCarryLogStateMachine *)self stateMgr];
+    v8 = [stateMgr getValueForKey:@"enable_iolog_collection" inDomain:@"/var/mobile/Library/Preferences/com.apple.nandCarryLogs.plist" expectedType:1];
 
-    v4 = [(ASPCarryLogStateMachine *)self stateMgr];
-    v5 = [v4 getValueForKey:@"enable_iolog_tasking" inDomain:@"/var/mobile/Library/Preferences/com.apple.nandCarryLogs.plist" expectedType:1];
+    stateMgr2 = [(ASPCarryLogStateMachine *)self stateMgr];
+    v5 = [stateMgr2 getValueForKey:@"enable_iolog_tasking" inDomain:@"/var/mobile/Library/Preferences/com.apple.nandCarryLogs.plist" expectedType:1];
 
     if (v8)
     {
@@ -180,12 +180,12 @@ LABEL_20:
 - (id)_genUniqueDeviceId
 {
   v3 = +[NSUUID UUID];
-  v4 = [v3 UUIDString];
+  uUIDString = [v3 UUIDString];
   v5 = +[NSDate date];
-  v6 = [(ASPCarryLogStateMachine *)self DATaskingID];
+  dATaskingID = [(ASPCarryLogStateMachine *)self DATaskingID];
   v7 = +[NSUUID UUID];
-  v8 = [v7 UUIDString];
-  v9 = [NSString stringWithFormat:@"%@%@%@%@", v4, v5, v6, v8];
+  uUIDString2 = [v7 UUIDString];
+  v9 = [NSString stringWithFormat:@"%@%@%@%@", uUIDString, v5, dATaskingID, uUIDString2];
 
   v10 = [NSMutableString stringWithCapacity:40];
   CC_SHA1([v9 UTF8String], objc_msgSend(v9, "length"), md);
@@ -198,11 +198,11 @@ LABEL_20:
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     v13 = v12;
-    v14 = [(ASPCarryLogStateMachine *)self DATaskingID];
+    dATaskingID2 = [(ASPCarryLogStateMachine *)self DATaskingID];
     *buf = 136315394;
-    v17 = [v14 UTF8String];
+    uTF8String = [dATaskingID2 UTF8String];
     v18 = 2080;
-    v19 = [v10 UTF8String];
+    uTF8String2 = [v10 UTF8String];
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "TaskingId: %s, Generated unique deviceId: %s", buf, 0x16u);
   }
 
@@ -211,18 +211,18 @@ LABEL_20:
 
 - (id)_getDeviceId
 {
-  if (![(ASPCarryLogStateMachine *)self isInternalBuild]|| (getDeviceSerialNumber(), (v3 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (![(ASPCarryLogStateMachine *)self isInternalBuild]|| (getDeviceSerialNumber(), (_genUniqueDeviceId = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v3 = [(ASPCarryLogStateMachine *)self _genUniqueDeviceId];
+    _genUniqueDeviceId = [(ASPCarryLogStateMachine *)self _genUniqueDeviceId];
   }
 
-  return v3;
+  return _genUniqueDeviceId;
 }
 
 - (BOOL)_hasActiveTasking
 {
-  v2 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-  v3 = [v2 objectForKeyedSubscript:@"dsreply_pending"];
+  currentTaskingInfo = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+  v3 = [currentTaskingInfo objectForKeyedSubscript:@"dsreply_pending"];
   v4 = [v3 isEqualToString:@"no"];
 
   return v4;
@@ -230,8 +230,8 @@ LABEL_20:
 
 - (BOOL)_hasPendingDSReplyTasking
 {
-  v2 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-  v3 = [v2 objectForKeyedSubscript:@"dsreply_pending"];
+  currentTaskingInfo = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+  v3 = [currentTaskingInfo objectForKeyedSubscript:@"dsreply_pending"];
   v4 = [v3 isEqualToString:@"yes"];
 
   return v4;
@@ -239,24 +239,24 @@ LABEL_20:
 
 - (void)_markDATaskingDSReply_Pending
 {
-  v3 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-  v4 = [(ASPCarryLogStateMachine *)self DATaskingID];
-  [v3 setValue:v4 forKey:@"id"];
+  currentTaskingInfo = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+  dATaskingID = [(ASPCarryLogStateMachine *)self DATaskingID];
+  [currentTaskingInfo setValue:dATaskingID forKey:@"id"];
 
-  v5 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+  currentTaskingInfo2 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
   v6 = [NSNumber numberWithLongLong:[(ASPCarryLogStateMachine *)self taskingSizeLimit]];
-  [v5 setValue:v6 forKey:@"upload_size_limit_bytes"];
+  [currentTaskingInfo2 setValue:v6 forKey:@"upload_size_limit_bytes"];
 
-  v7 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-  [v7 setValue:@"yes" forKey:@"dsreply_pending"];
+  currentTaskingInfo3 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+  [currentTaskingInfo3 setValue:@"yes" forKey:@"dsreply_pending"];
 
-  v8 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-  v9 = [(ASPCarryLogStateMachine *)self _getDeviceId];
-  [v8 setValue:v9 forKey:@"device_id"];
+  currentTaskingInfo4 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+  _getDeviceId = [(ASPCarryLogStateMachine *)self _getDeviceId];
+  [currentTaskingInfo4 setValue:_getDeviceId forKey:@"device_id"];
 
-  v11 = [(ASPCarryLogStateMachine *)self stateMgr];
-  v10 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-  [v11 setValue:v10 forKey:@"current_tasking_info"];
+  stateMgr = [(ASPCarryLogStateMachine *)self stateMgr];
+  currentTaskingInfo5 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+  [stateMgr setValue:currentTaskingInfo5 forKey:@"current_tasking_info"];
 }
 
 - (void)_markTaskingActive
@@ -264,52 +264,52 @@ LABEL_20:
   v3 = [NSDate dateWithTimeIntervalSinceNow:[(ASPCarryLogStateMachine *)self taskingDuration]];
   v17 = DateTimeToStr(v3);
 
-  v4 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-  v5 = [v4 objectForKeyedSubscript:@"id"];
+  currentTaskingInfo = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+  v5 = [currentTaskingInfo objectForKeyedSubscript:@"id"];
 
   v6 = uploadInfoKeyFromTaskingId(v5);
-  v7 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-  [v7 setValue:v17 forKey:@"endtime"];
+  currentTaskingInfo2 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+  [currentTaskingInfo2 setValue:v17 forKey:@"endtime"];
 
-  v8 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-  [v8 setValue:@"no" forKey:@"dsreply_pending"];
+  currentTaskingInfo3 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+  [currentTaskingInfo3 setValue:@"no" forKey:@"dsreply_pending"];
 
-  v9 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+  currentTaskingInfo4 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
   v10 = [NSNumber numberWithLongLong:[(ASPCarryLogStateMachine *)self taskingSizeLimit]];
-  [v9 setValue:v10 forKey:@"upload_size_limit_bytes"];
+  [currentTaskingInfo4 setValue:v10 forKey:@"upload_size_limit_bytes"];
 
-  v11 = [(ASPCarryLogStateMachine *)self stateMgr];
-  [v11 setValue:&off_1000D2D70 forKey:v6];
+  stateMgr = [(ASPCarryLogStateMachine *)self stateMgr];
+  [stateMgr setValue:&off_1000D2D70 forKey:v6];
 
-  v12 = [(ASPCarryLogStateMachine *)self stateMgr];
-  v13 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-  [v12 setValue:v13 forKey:@"current_tasking_info"];
+  stateMgr2 = [(ASPCarryLogStateMachine *)self stateMgr];
+  currentTaskingInfo5 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+  [stateMgr2 setValue:currentTaskingInfo5 forKey:@"current_tasking_info"];
 
-  v14 = [(ASPCarryLogStateMachine *)self stateMgr];
+  stateMgr3 = [(ASPCarryLogStateMachine *)self stateMgr];
   v15 = currentDateTimeStr();
-  [v14 setValue:v15 forKey:@"last_extract_time"];
+  [stateMgr3 setValue:v15 forKey:@"last_extract_time"];
 
-  v16 = [(ASPCarryLogStateMachine *)self stateMgr];
-  setTaskingInfoToLegacyUIDomain(v16, v5, v17, 0, @"None", [(ASPCarryLogStateMachine *)self isInternalBuild]);
+  stateMgr4 = [(ASPCarryLogStateMachine *)self stateMgr];
+  setTaskingInfoToLegacyUIDomain(stateMgr4, v5, v17, 0, @"None", [(ASPCarryLogStateMachine *)self isInternalBuild]);
 }
 
 - (void)_unmarkCurrentTasking
 {
-  v3 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-  v4 = [v3 objectForKeyedSubscript:@"id"];
+  currentTaskingInfo = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+  v4 = [currentTaskingInfo objectForKeyedSubscript:@"id"];
   v9 = uploadInfoKeyFromTaskingId(v4);
 
-  v5 = [(ASPCarryLogStateMachine *)self stateMgr];
-  [v5 deleteKey:v9];
+  stateMgr = [(ASPCarryLogStateMachine *)self stateMgr];
+  [stateMgr deleteKey:v9];
 
-  v6 = [(ASPCarryLogStateMachine *)self stateMgr];
-  [v6 deleteKey:@"current_tasking_info"];
+  stateMgr2 = [(ASPCarryLogStateMachine *)self stateMgr];
+  [stateMgr2 deleteKey:@"current_tasking_info"];
 
-  v7 = [(ASPCarryLogStateMachine *)self stateMgr];
-  [v7 deleteKey:@"last_extract_time"];
+  stateMgr3 = [(ASPCarryLogStateMachine *)self stateMgr];
+  [stateMgr3 deleteKey:@"last_extract_time"];
 
-  v8 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-  [v8 removeAllObjects];
+  currentTaskingInfo2 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+  [currentTaskingInfo2 removeAllObjects];
 }
 
 - (BOOL)_activeTaskingExpired
@@ -317,19 +317,19 @@ LABEL_20:
   if (![(ASPCarryLogStateMachine *)self isLegacyUI_TaskingDisabled]&& ![(ASPCarryLogStateMachine *)self _activeLegacyTaskingDisabled])
   {
     v4 = +[NSDate date];
-    v5 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-    v6 = [v5 objectForKeyedSubscript:@"endtime"];
+    currentTaskingInfo = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+    v6 = [currentTaskingInfo objectForKeyedSubscript:@"endtime"];
     v7 = StringToDateTime(v6);
 
-    v8 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-    v9 = [v8 objectForKeyedSubscript:@"upload_size_limit_bytes"];
+    currentTaskingInfo2 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+    v9 = [currentTaskingInfo2 objectForKeyedSubscript:@"upload_size_limit_bytes"];
 
-    v10 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-    v11 = [v10 objectForKeyedSubscript:@"id"];
+    currentTaskingInfo3 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+    v11 = [currentTaskingInfo3 objectForKeyedSubscript:@"id"];
     v12 = uploadInfoKeyFromTaskingId(v11);
 
-    v13 = [(ASPCarryLogStateMachine *)self stateMgr];
-    v14 = [v13 getValueForKey:v12 expectedType:2];
+    stateMgr = [(ASPCarryLogStateMachine *)self stateMgr];
+    v14 = [stateMgr getValueForKey:v12 expectedType:2];
 
     v15 = [v14 objectForKeyedSubscript:@"total_upload_size"];
     v16 = [v14 objectForKeyedSubscript:@"enough_disk_space"];
@@ -345,8 +345,8 @@ LABEL_20:
       goto LABEL_7;
     }
 
-    v18 = [v15 longLongValue];
-    if (v18 < [v9 longLongValue] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && objc_msgSend(v16, "BOOLValue"))
+    longLongValue = [v15 longLongValue];
+    if (longLongValue < [v9 longLongValue] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && objc_msgSend(v16, "BOOLValue"))
     {
       v3 = ![(ASPCarryLogStateMachine *)self _curTaskingisActiveOnServer];
     }
@@ -368,26 +368,26 @@ LABEL_7:
 
 - (BOOL)_curTaskingisActiveOnServer
 {
-  v3 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-  v4 = [v3 objectForKeyedSubscript:@"id"];
+  currentTaskingInfo = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+  v4 = [currentTaskingInfo objectForKeyedSubscript:@"id"];
 
-  v5 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-  v6 = [v5 objectForKeyedSubscript:@"device_id"];
+  currentTaskingInfo2 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+  v6 = [currentTaskingInfo2 objectForKeyedSubscript:@"device_id"];
 
   v7 = 0;
   if (v4 && v6)
   {
     if (os_variant_has_internal_content())
     {
-      v8 = [(ASPCarryLogStateMachine *)self stateMgr];
-      v9 = [v8 getValueForKey:@"test_force_ds_reply_tasking_continue" expectedType:0];
+      stateMgr = [(ASPCarryLogStateMachine *)self stateMgr];
+      v9 = [stateMgr getValueForKey:@"test_force_ds_reply_tasking_continue" expectedType:0];
 
       if (v9 && ([&off_1000D2D98 objectForKey:v9], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
       {
         v11 = [&off_1000D2D98 objectForKeyedSubscript:v9];
-        v12 = [v11 unsignedIntValue];
+        unsignedIntValue = [v11 unsignedIntValue];
 
-        if (v12 != 3)
+        if (unsignedIntValue != 3)
         {
           goto LABEL_10;
         }
@@ -398,11 +398,11 @@ LABEL_7:
       }
     }
 
-    v13 = [(ASPCarryLogStateMachine *)self uploadDriver];
-    v12 = [v13 allowToContinueTaskingId:v4 DeviceId:v6];
+    uploadDriver = [(ASPCarryLogStateMachine *)self uploadDriver];
+    unsignedIntValue = [uploadDriver allowToContinueTaskingId:v4 DeviceId:v6];
 
 LABEL_10:
-    v7 = v12 != 0;
+    v7 = unsignedIntValue != 0;
   }
 
   return v7;
@@ -412,8 +412,8 @@ LABEL_10:
 {
   if ([(ASPCarryLogStateMachine *)self isInternalBuild])
   {
-    v3 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-    v4 = [v3 objectForKeyedSubscript:@"id"];
+    currentTaskingInfo = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+    v4 = [currentTaskingInfo objectForKeyedSubscript:@"id"];
 
     if ([v4 isEqualToString:@"TASKING_LEGACY_INT_IOS"])
     {
@@ -436,13 +436,13 @@ LABEL_10:
 
 - (BOOL)_DATaskingNotInHist
 {
-  v3 = [(ASPCarryLogStateMachine *)self DATaskingID];
+  dATaskingID = [(ASPCarryLogStateMachine *)self DATaskingID];
 
-  if (v3)
+  if (dATaskingID)
   {
-    v4 = [(ASPCarryLogStateMachine *)self taskingIdHistory];
-    v5 = [(ASPCarryLogStateMachine *)self DATaskingID];
-    v6 = [v4 containsObject:v5] ^ 1;
+    taskingIdHistory = [(ASPCarryLogStateMachine *)self taskingIdHistory];
+    dATaskingID2 = [(ASPCarryLogStateMachine *)self DATaskingID];
+    v6 = [taskingIdHistory containsObject:dATaskingID2] ^ 1;
   }
 
   else
@@ -453,7 +453,7 @@ LABEL_10:
   v7 = oslog;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
-    sub_100049F7C(v3 == 0, v6, v7);
+    sub_100049F7C(dATaskingID == 0, v6, v7);
   }
 
   return v6;
@@ -461,8 +461,8 @@ LABEL_10:
 
 - (BOOL)_isAfterTaskingInspectionCoolDown
 {
-  v2 = [(ASPCarryLogStateMachine *)self stateMgr];
-  v3 = [v2 getValueForKey:@"next_tasking_inspection_time" expectedType:0];
+  stateMgr = [(ASPCarryLogStateMachine *)self stateMgr];
+  v3 = [stateMgr getValueForKey:@"next_tasking_inspection_time" expectedType:0];
 
   if (v3)
   {
@@ -482,9 +482,9 @@ LABEL_10:
 - (void)_setNextTaskingInspectionMinTime
 {
   v5 = [NSDate dateWithTimeIntervalSinceNow:2592000.0];
-  v3 = [(ASPCarryLogStateMachine *)self stateMgr];
+  stateMgr = [(ASPCarryLogStateMachine *)self stateMgr];
   v4 = DateTimeToStr(v5);
-  [v3 setValue:v4 forKey:@"next_tasking_inspection_time"];
+  [stateMgr setValue:v4 forKey:@"next_tasking_inspection_time"];
 }
 
 - (BOOL)_canInspectNewDATasking
@@ -494,20 +494,20 @@ LABEL_10:
     goto LABEL_4;
   }
 
-  v3 = [(ASPCarryLogStateMachine *)self _isAfterTaskingInspectionCoolDown];
-  if (v3)
+  _isAfterTaskingInspectionCoolDown = [(ASPCarryLogStateMachine *)self _isAfterTaskingInspectionCoolDown];
+  if (_isAfterTaskingInspectionCoolDown)
   {
     [(ASPCarryLogStateMachine *)self _setNextTaskingInspectionMinTime];
 LABEL_4:
-    LOBYTE(v3) = 1;
+    LOBYTE(_isAfterTaskingInspectionCoolDown) = 1;
   }
 
-  return v3;
+  return _isAfterTaskingInspectionCoolDown;
 }
 
-- (BOOL)_passDATaskingCriteria:(id)a3
+- (BOOL)_passDATaskingCriteria:(id)criteria
 {
-  v4 = a3;
+  criteriaCopy = criteria;
   if ([(ASPCarryLogStateMachine *)self isLegacyUI_IOLogEnabled])
   {
     v5 = 1;
@@ -515,11 +515,11 @@ LABEL_4:
 
   else
   {
-    v6 = [(ASPCarryLogStateMachine *)self DATaskingMgr];
-    if (v6)
+    dATaskingMgr = [(ASPCarryLogStateMachine *)self DATaskingMgr];
+    if (dATaskingMgr)
     {
-      v7 = [(ASPCarryLogStateMachine *)self DATaskingMgr];
-      v5 = [v7 evaluateTaskingCriteria:v4 doWhiteListCheck:{-[ASPCarryLogStateMachine isInternalBuild](self, "isInternalBuild") ^ 1}];
+      dATaskingMgr2 = [(ASPCarryLogStateMachine *)self DATaskingMgr];
+      v5 = [dATaskingMgr2 evaluateTaskingCriteria:criteriaCopy doWhiteListCheck:{-[ASPCarryLogStateMachine isInternalBuild](self, "isInternalBuild") ^ 1}];
     }
 
     else
@@ -542,12 +542,12 @@ LABEL_4:
     }
 
     v10 = v8;
-    v11 = [(ASPCarryLogStateMachine *)self DATaskingMgr];
-    v12 = [v11 getTaskingID];
+    dATaskingMgr3 = [(ASPCarryLogStateMachine *)self DATaskingMgr];
+    getTaskingID = [dATaskingMgr3 getTaskingID];
     v14 = 136315394;
     v15 = v9;
     v16 = 2080;
-    v17 = [v12 UTF8String];
+    uTF8String = [getTaskingID UTF8String];
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s criteria for tasking id %s", &v14, 0x16u);
   }
 
@@ -558,36 +558,36 @@ LABEL_4:
 {
   if (![(ASPCarryLogStateMachine *)self isLegacyUI_IOLogEnabled])
   {
-    v3 = [(ASPCarryLogStateMachine *)self taskingIdHistory];
-    v4 = [(ASPCarryLogStateMachine *)self DATaskingID];
-    [v3 addObject:v4];
+    taskingIdHistory = [(ASPCarryLogStateMachine *)self taskingIdHistory];
+    dATaskingID = [(ASPCarryLogStateMachine *)self DATaskingID];
+    [taskingIdHistory addObject:dATaskingID];
 
-    v5 = [(ASPCarryLogStateMachine *)self taskingIdHistory];
-    v6 = [v5 count];
+    taskingIdHistory2 = [(ASPCarryLogStateMachine *)self taskingIdHistory];
+    v6 = [taskingIdHistory2 count];
 
     if (v6 >= 0xD)
     {
       do
       {
-        v7 = [(ASPCarryLogStateMachine *)self taskingIdHistory];
-        [v7 removeObjectAtIndex:0];
+        taskingIdHistory3 = [(ASPCarryLogStateMachine *)self taskingIdHistory];
+        [taskingIdHistory3 removeObjectAtIndex:0];
 
-        v8 = [(ASPCarryLogStateMachine *)self taskingIdHistory];
-        v9 = [v8 count];
+        taskingIdHistory4 = [(ASPCarryLogStateMachine *)self taskingIdHistory];
+        v9 = [taskingIdHistory4 count];
       }
 
       while (v9 > 0xC);
     }
 
-    v11 = [(ASPCarryLogStateMachine *)self stateMgr];
-    v10 = [(ASPCarryLogStateMachine *)self taskingIdHistory];
-    [v11 setValue:v10 forKey:@"tasking_id_history"];
+    stateMgr = [(ASPCarryLogStateMachine *)self stateMgr];
+    taskingIdHistory5 = [(ASPCarryLogStateMachine *)self taskingIdHistory];
+    [stateMgr setValue:taskingIdHistory5 forKey:@"tasking_id_history"];
   }
 }
 
-- (BOOL)_canJoinTaskingPerStatsDriver:(id)a3
+- (BOOL)_canJoinTaskingPerStatsDriver:(id)driver
 {
-  v4 = a3;
+  driverCopy = driver;
   v5 = [(ASPCarryLogStateMachine *)self isInternalBuild]|| !diskFreeSpaceBelowLimit(0x80000000uLL);
   if (![(ASPCarryLogStateMachine *)self _DATaskingNotInHist])
   {
@@ -602,7 +602,7 @@ LABEL_4:
       goto LABEL_13;
     }
 
-    if ([(ASPCarryLogStateMachine *)self _passDATaskingCriteria:v4])
+    if ([(ASPCarryLogStateMachine *)self _passDATaskingCriteria:driverCopy])
     {
       [(ASPCarryLogStateMachine *)self _markDATaskingDSReply_Pending];
       LOBYTE(v5) = 1;
@@ -627,10 +627,10 @@ LABEL_13:
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [(ASPCarryLogStateMachine *)self DATaskingID];
-    v10 = [v9 UTF8String];
+    dATaskingID = [(ASPCarryLogStateMachine *)self DATaskingID];
+    uTF8String = [dATaskingID UTF8String];
     v12 = 136315138;
-    v13 = v10;
+    v13 = uTF8String;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "TaskingId %s added to history.\n", &v12, 0xCu);
   }
 
@@ -641,17 +641,17 @@ LABEL_15:
 
 - (void)_tryActivateTasking
 {
-  v3 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-  v4 = [v3 objectForKeyedSubscript:@"id"];
-  v5 = [v4 UTF8String];
+  currentTaskingInfo = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+  v4 = [currentTaskingInfo objectForKeyedSubscript:@"id"];
+  uTF8String = [v4 UTF8String];
 
   if (!os_variant_has_internal_content())
   {
     goto LABEL_7;
   }
 
-  v6 = [(ASPCarryLogStateMachine *)self stateMgr];
-  v7 = [v6 getValueForKey:@"test_force_ds_reply" expectedType:0];
+  stateMgr = [(ASPCarryLogStateMachine *)self stateMgr];
+  v7 = [stateMgr getValueForKey:@"test_force_ds_reply" expectedType:0];
 
   if (!v7 || ([&off_1000D2DC0 objectForKey:v7], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
   {
@@ -660,38 +660,38 @@ LABEL_15:
   }
 
   v9 = [&off_1000D2DC0 objectForKeyedSubscript:v7];
-  v10 = [v9 unsignedIntValue];
+  unsignedIntValue = [v9 unsignedIntValue];
 
-  if (v10 == 3)
+  if (unsignedIntValue == 3)
   {
 LABEL_7:
-    v11 = [(ASPCarryLogStateMachine *)self uploadDriver];
-    v12 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-    v13 = [v12 objectForKeyedSubscript:@"id"];
-    v14 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-    v15 = [v14 objectForKeyedSubscript:@"device_id"];
-    v10 = [v11 allowToParticipateTaskingId:v13 DeviceId:v15];
+    uploadDriver = [(ASPCarryLogStateMachine *)self uploadDriver];
+    currentTaskingInfo2 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+    v13 = [currentTaskingInfo2 objectForKeyedSubscript:@"id"];
+    currentTaskingInfo3 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+    v15 = [currentTaskingInfo3 objectForKeyedSubscript:@"device_id"];
+    unsignedIntValue = [uploadDriver allowToParticipateTaskingId:v13 DeviceId:v15];
   }
 
   v16 = oslog;
-  if (v10)
+  if (unsignedIntValue)
   {
-    if (v10 == 2)
+    if (unsignedIntValue == 2)
     {
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 136315138;
-        v18 = v5;
+        v18 = uTF8String;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "DA taskingId %s pending decision server reply", &v17, 0xCu);
       }
     }
 
-    else if (v10 == 1)
+    else if (unsignedIntValue == 1)
     {
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 136315138;
-        v18 = v5;
+        v18 = uTF8String;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "DA taskingId %s permitted by decision server", &v17, 0xCu);
       }
 
@@ -701,7 +701,7 @@ LABEL_7:
 
     else if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      sub_10004A024(v5, v10, v16);
+      sub_10004A024(uTF8String, unsignedIntValue, v16);
     }
   }
 
@@ -710,7 +710,7 @@ LABEL_7:
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 136315138;
-      v18 = v5;
+      v18 = uTF8String;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "DA taskingId %s denied by decision server", &v17, 0xCu);
     }
 
@@ -720,25 +720,25 @@ LABEL_7:
 
 - (void)_cleanUpAfterTasking
 {
-  v3 = [(ASPCarryLogStateMachine *)self workDir];
-  v7 = [v3 stringByAppendingPathComponent:@"iolog.iolog"];
+  workDir = [(ASPCarryLogStateMachine *)self workDir];
+  v7 = [workDir stringByAppendingPathComponent:@"iolog.iolog"];
 
-  v4 = [(ASPCarryLogStateMachine *)self nandDriver];
-  [v4 iolog_disable];
+  nandDriver = [(ASPCarryLogStateMachine *)self nandDriver];
+  [nandDriver iolog_disable];
 
-  v5 = [(ASPCarryLogStateMachine *)self nandDriver];
-  [v5 iolog_export:v7 max_export_size:0];
+  nandDriver2 = [(ASPCarryLogStateMachine *)self nandDriver];
+  [nandDriver2 iolog_export:v7 max_export_size:0];
 
   [(ASPCarryLogStateMachine *)self _cleanUpWorkDir];
   [(ASPCarryLogStateMachine *)self _deleteUploadInfo];
-  v6 = [(ASPCarryLogStateMachine *)self stateMgr];
-  [v6 deleteKey:@"extractupload_pendingfile"];
+  stateMgr = [(ASPCarryLogStateMachine *)self stateMgr];
+  [stateMgr deleteKey:@"extractupload_pendingfile"];
 }
 
 - (void)_cleanUpWorkDir
 {
-  v3 = [(ASPCarryLogStateMachine *)self workDir];
-  v4 = [v3 stringByAppendingPathComponent:@"tar_in_process"];
+  workDir = [(ASPCarryLogStateMachine *)self workDir];
+  v4 = [workDir stringByAppendingPathComponent:@"tar_in_process"];
 
   v5 = +[NSFileManager defaultManager];
   if ([v5 fileExistsAtPath:v4])
@@ -790,8 +790,8 @@ LABEL_7:
     v9 = 0;
   }
 
-  v13 = [(ASPCarryLogStateMachine *)self workDir];
-  v14 = [v5 fileExistsAtPath:v13];
+  workDir2 = [(ASPCarryLogStateMachine *)self workDir];
+  v14 = [v5 fileExistsAtPath:workDir2];
 
   if (v14)
   {
@@ -799,36 +799,36 @@ LABEL_7:
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v15 = [(ASPCarryLogStateMachine *)self workDir];
-    v16 = [v5 contentsOfDirectoryAtPath:v15 error:0];
+    workDir3 = [(ASPCarryLogStateMachine *)self workDir];
+    v16 = [v5 contentsOfDirectoryAtPath:workDir3 error:0];
 
     obj = v16;
     v17 = [v16 countByEnumeratingWithState:&v29 objects:v37 count:16];
     if (v17)
     {
       v18 = v17;
-      v19 = self;
+      selfCopy = self;
       v27 = v4;
-      v20 = 0;
+      lastPathComponent = 0;
       v21 = *v30;
       do
       {
         for (i = 0; i != v18; i = i + 1)
         {
           v23 = v9;
-          v24 = v20;
+          v24 = lastPathComponent;
           if (*v30 != v21)
           {
             objc_enumerationMutation(obj);
           }
 
           v25 = *(*(&v29 + 1) + 8 * i);
-          v26 = [(ASPCarryLogStateMachine *)v19 workDir];
-          v9 = [v26 stringByAppendingPathComponent:v25];
+          workDir4 = [(ASPCarryLogStateMachine *)selfCopy workDir];
+          v9 = [workDir4 stringByAppendingPathComponent:v25];
 
-          v20 = [v9 lastPathComponent];
+          lastPathComponent = [v9 lastPathComponent];
 
-          if (([v20 isEqualToString:@"tar_in_process"] & 1) == 0 && (objc_msgSend(v20, "isEqualToString:", @"dp_tasking_payload.plist") & 1) == 0)
+          if (([lastPathComponent isEqualToString:@"tar_in_process"] & 1) == 0 && (objc_msgSend(lastPathComponent, "isEqualToString:", @"dp_tasking_payload.plist") & 1) == 0)
           {
             [v5 removeItemAtPath:v9 error:0];
           }
@@ -846,14 +846,14 @@ LABEL_7:
 
 - (void)_deleteUploadInfo
 {
-  v3 = [(ASPCarryLogStateMachine *)self stateMgr];
-  v4 = [v3 getAllKeys];
+  stateMgr = [(ASPCarryLogStateMachine *)self stateMgr];
+  getAllKeys = [stateMgr getAllKeys];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v4;
+  v5 = getAllKeys;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -873,8 +873,8 @@ LABEL_7:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && [v10 hasPrefix:{@"aspcarry_uploadinfo", v12}])
         {
-          v11 = [(ASPCarryLogStateMachine *)self stateMgr];
-          [v11 deleteKey:v10];
+          stateMgr2 = [(ASPCarryLogStateMachine *)self stateMgr];
+          [stateMgr2 deleteKey:v10];
         }
 
         v9 = v9 + 1;
@@ -911,13 +911,13 @@ LABEL_7:
         }
 
         v7 = *(*(&v11 + 1) + 8 * v6);
-        v8 = [(ASPCarryLogStateMachine *)self stateMgr];
-        v9 = [v8 getValueForKey:v7 expectedType:4];
+        stateMgr = [(ASPCarryLogStateMachine *)self stateMgr];
+        v9 = [stateMgr getValueForKey:v7 expectedType:4];
 
         if (v9)
         {
-          v10 = [(ASPCarryLogStateMachine *)self stateMgr];
-          [v10 deleteKey:v7];
+          stateMgr2 = [(ASPCarryLogStateMachine *)self stateMgr];
+          [stateMgr2 deleteKey:v7];
         }
 
         v6 = v6 + 1;
@@ -933,11 +933,11 @@ LABEL_7:
 
 - (BOOL)_checkSnBuildVariantMatch
 {
-  v3 = [(ASPCarryLogStateMachine *)self stateMgr];
-  v4 = [v3 getValueForKey:@"device_serialnumber" expectedType:0];
+  stateMgr = [(ASPCarryLogStateMachine *)self stateMgr];
+  v4 = [stateMgr getValueForKey:@"device_serialnumber" expectedType:0];
 
-  v5 = [(ASPCarryLogStateMachine *)self stateMgr];
-  v6 = [v5 getValueForKey:@"device_is_internal_build" expectedType:0];
+  stateMgr2 = [(ASPCarryLogStateMachine *)self stateMgr];
+  v6 = [stateMgr2 getValueForKey:@"device_is_internal_build" expectedType:0];
   v7 = [v6 isEqualToString:@"yes"];
 
   v8 = getDeviceSerialNumber();
@@ -952,11 +952,11 @@ LABEL_7:
     }
 
     [(ASPCarryLogStateMachine *)self _resetDaemonUserDefaults];
-    v12 = [(ASPCarryLogStateMachine *)self stateMgr];
-    v13 = v12;
+    stateMgr3 = [(ASPCarryLogStateMachine *)self stateMgr];
+    v13 = stateMgr3;
     if (has_internal_content)
     {
-      [v12 setValue:@"No active tasking and no iolog collection ongoing" forKey:@"aspcarrylog_tasking_info" inDomain:@"/var/mobile/Library/Preferences/com.apple.nandCarryLogs.plist"];
+      [stateMgr3 setValue:@"No active tasking and no iolog collection ongoing" forKey:@"aspcarrylog_tasking_info" inDomain:@"/var/mobile/Library/Preferences/com.apple.nandCarryLogs.plist"];
     }
 
     v10 = 0;
@@ -967,33 +967,33 @@ LABEL_7:
     v10 = 1;
   }
 
-  v14 = [(ASPCarryLogStateMachine *)self stateMgr];
-  v15 = [v14 getValueForKey:@"device_serialnumber" expectedType:0];
+  stateMgr4 = [(ASPCarryLogStateMachine *)self stateMgr];
+  v15 = [stateMgr4 getValueForKey:@"device_serialnumber" expectedType:0];
 
   if (!v15)
   {
-    v16 = [(ASPCarryLogStateMachine *)self stateMgr];
-    [v16 setValue:v8 forKey:@"device_serialnumber"];
+    stateMgr5 = [(ASPCarryLogStateMachine *)self stateMgr];
+    [stateMgr5 setValue:v8 forKey:@"device_serialnumber"];
   }
 
-  v17 = [(ASPCarryLogStateMachine *)self stateMgr];
-  v18 = [v17 getValueForKey:@"device_is_internal_build" expectedType:0];
+  stateMgr6 = [(ASPCarryLogStateMachine *)self stateMgr];
+  v18 = [stateMgr6 getValueForKey:@"device_is_internal_build" expectedType:0];
   v19 = (v18 == 0) & has_internal_content;
 
   if (v19 == 1)
   {
-    v20 = [(ASPCarryLogStateMachine *)self stateMgr];
-    [v20 setValue:@"yes" forKey:@"device_is_internal_build"];
+    stateMgr7 = [(ASPCarryLogStateMachine *)self stateMgr];
+    [stateMgr7 setValue:@"yes" forKey:@"device_is_internal_build"];
   }
 
   return v10;
 }
 
-- (void)dailyCheckWithStatsProvider:(id)a3
+- (void)dailyCheckWithStatsProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(ASPCarryLogStateMachine *)self stateMgr];
-  v6 = [v5 getValueForKey:@"daily_check_tasking_status" expectedType:0];
+  providerCopy = provider;
+  stateMgr = [(ASPCarryLogStateMachine *)self stateMgr];
+  v6 = [stateMgr getValueForKey:@"daily_check_tasking_status" expectedType:0];
 
   if (v6)
   {
@@ -1015,28 +1015,28 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  v8 = [(ASPCarryLogStateMachine *)self _activeTaskingExpired];
+  _activeTaskingExpired = [(ASPCarryLogStateMachine *)self _activeTaskingExpired];
   v9 = oslog;
   v10 = os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (_activeTaskingExpired)
   {
     if (v10)
     {
       v11 = v9;
-      v12 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-      v13 = [v12 objectForKeyedSubscript:@"id"];
+      currentTaskingInfo = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+      v13 = [currentTaskingInfo objectForKeyedSubscript:@"id"];
       v20 = 136315138;
-      v21 = [v13 UTF8String];
+      uTF8String = [v13 UTF8String];
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "TaskingId %s Ending.\n", &v20, 0xCu);
     }
 
-    v14 = [(ASPCarryLogStateMachine *)self nandDriver];
-    [v14 iolog_disable];
+    nandDriver = [(ASPCarryLogStateMachine *)self nandDriver];
+    [nandDriver iolog_disable];
 
     [(ASPCarryLogStateMachine *)self unregisterIOLoggingXPC];
     [(ASPCarryLogStateMachine *)self _unmarkCurrentTasking];
 LABEL_10:
-    if (![(ASPCarryLogStateMachine *)self _canJoinTaskingPerStatsDriver:v4])
+    if (![(ASPCarryLogStateMachine *)self _canJoinTaskingPerStatsDriver:providerCopy])
     {
 LABEL_12:
       if ([(ASPCarryLogStateMachine *)self _hasActiveTasking])
@@ -1062,15 +1062,15 @@ LABEL_12:
           v15 = @"inactive";
         }
 
-        v19 = [(ASPCarryLogStateMachine *)self stateMgr];
+        stateMgr2 = [(ASPCarryLogStateMachine *)self stateMgr];
         if ([(ASPCarryLogStateMachine *)self isInternalBuild])
         {
-          [v19 setValue:@"No active tasking and no iolog collection ongoing" forKey:@"aspcarrylog_tasking_info" inDomain:@"/var/mobile/Library/Preferences/com.apple.nandCarryLogs.plist"];
+          [stateMgr2 setValue:@"No active tasking and no iolog collection ongoing" forKey:@"aspcarrylog_tasking_info" inDomain:@"/var/mobile/Library/Preferences/com.apple.nandCarryLogs.plist"];
         }
       }
 
-      v17 = [(ASPCarryLogStateMachine *)self stateMgr];
-      [v17 setValue:v15 forKey:@"daily_check_tasking_status"];
+      stateMgr3 = [(ASPCarryLogStateMachine *)self stateMgr];
+      [stateMgr3 setValue:v15 forKey:@"daily_check_tasking_status"];
       goto LABEL_25;
     }
 
@@ -1082,10 +1082,10 @@ LABEL_11:
   if (v10)
   {
     v16 = v9;
-    v17 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-    v18 = [v17 objectForKeyedSubscript:@"id"];
+    stateMgr3 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+    v18 = [stateMgr3 objectForKeyedSubscript:@"id"];
     v20 = 136315138;
-    v21 = [v18 UTF8String];
+    uTF8String = [v18 UTF8String];
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "TaskingId %s continue.\n", &v20, 0xCu);
 
 LABEL_25:
@@ -1102,32 +1102,32 @@ LABEL_25:
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         v4 = v3;
-        v5 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-        v6 = [v5 objectForKeyedSubscript:@"id"];
+        currentTaskingInfo = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+        v6 = [currentTaskingInfo objectForKeyedSubscript:@"id"];
         v20 = 136315138;
-        v21 = [v6 UTF8String];
+        uTF8String = [v6 UTF8String];
         _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "TaskingId %s Ending.\n", &v20, 0xCu);
       }
 
-      v7 = [(ASPCarryLogStateMachine *)self nandDriver];
-      [v7 iolog_disable];
+      nandDriver = [(ASPCarryLogStateMachine *)self nandDriver];
+      [nandDriver iolog_disable];
 
       [(ASPCarryLogStateMachine *)self _unmarkCurrentTasking];
-      v8 = [(ASPCarryLogStateMachine *)self stateMgr];
+      stateMgr = [(ASPCarryLogStateMachine *)self stateMgr];
       if ([(ASPCarryLogStateMachine *)self isInternalBuild])
       {
-        [v8 setValue:@"No active tasking and no iolog collection ongoing" forKey:@"aspcarrylog_tasking_info" inDomain:@"/var/mobile/Library/Preferences/com.apple.nandCarryLogs.plist"];
+        [stateMgr setValue:@"No active tasking and no iolog collection ongoing" forKey:@"aspcarrylog_tasking_info" inDomain:@"/var/mobile/Library/Preferences/com.apple.nandCarryLogs.plist"];
       }
     }
 
     else
     {
-      v10 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-      v8 = [v10 objectForKeyedSubscript:@"id"];
+      currentTaskingInfo2 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+      stateMgr = [currentTaskingInfo2 objectForKeyedSubscript:@"id"];
 
-      v11 = [(ASPCarryLogStateMachine *)self stateMgr];
-      v12 = uploadInfoKeyFromTaskingId(v8);
-      v13 = [v11 getValueForKey:v12 expectedType:2];
+      stateMgr2 = [(ASPCarryLogStateMachine *)self stateMgr];
+      v12 = uploadInfoKeyFromTaskingId(stateMgr);
+      v13 = [stateMgr2 getValueForKey:v12 expectedType:2];
 
       if (v13)
       {
@@ -1135,8 +1135,8 @@ LABEL_25:
 
         if (!v14)
         {
-          v15 = [(ASPCarryLogStateMachine *)self nandDriver];
-          [v15 iolog_enable];
+          nandDriver2 = [(ASPCarryLogStateMachine *)self nandDriver];
+          [nandDriver2 iolog_enable];
         }
       }
 
@@ -1145,10 +1145,10 @@ LABEL_25:
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         v17 = v16;
-        v18 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
-        v19 = [v18 objectForKeyedSubscript:@"id"];
+        currentTaskingInfo3 = [(ASPCarryLogStateMachine *)self currentTaskingInfo];
+        v19 = [currentTaskingInfo3 objectForKeyedSubscript:@"id"];
         v20 = 136315138;
-        v21 = [v19 UTF8String];
+        uTF8String = [v19 UTF8String];
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "TaskingId %s running.\n", &v20, 0xCu);
       }
     }

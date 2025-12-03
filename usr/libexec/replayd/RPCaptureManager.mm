@@ -6,20 +6,20 @@
 - (void)dealloc;
 - (void)deregisterForProxySessionNotifications;
 - (void)enableMicrophone;
-- (void)processCameraSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (void)processCameraSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (void)registerForProxySessionNotifications;
-- (void)restartAppAudioCaptureForProcessID:(int)a3;
-- (void)screenCaptureDidFailWithError:(id)a3;
+- (void)restartAppAudioCaptureForProcessID:(int)d;
+- (void)screenCaptureDidFailWithError:(id)error;
 - (void)setAVAudioSessionCategory;
 - (void)setAVAudioSessionCategoryForHQLR;
-- (void)setSystemBroadcastHostBundleId:(id)a3;
-- (void)startCaptureForDelegate:(id)a3 forProcessID:(int)a4 shouldStartMicrophoneCapture:(BOOL)a5 windowSize:(CGSize)a6 captureType:(int)a7 contextIDs:(id)a8 mixedRealityCamera:(BOOL)a9 systemCapture:(BOOL)a10 didStartHandler:(id)a11;
-- (void)startHQLRCaptureForDelegate:(id)a3 micDeviceID:(id)a4 cameraDeviceID:(id)a5 windowSize:(CGSize)a6 audioOnly:(BOOL)a7 didStartHandler:(id)a8;
-- (void)startHQLRMicrophoneCaptureWithDispatchGroup:(id)a3;
-- (void)startMicrophoneCaptureWithDispatchGroup:(id)a3;
+- (void)setSystemBroadcastHostBundleId:(id)id;
+- (void)startCaptureForDelegate:(id)delegate forProcessID:(int)d shouldStartMicrophoneCapture:(BOOL)capture windowSize:(CGSize)size captureType:(int)type contextIDs:(id)ds mixedRealityCamera:(BOOL)camera systemCapture:(BOOL)self0 didStartHandler:(id)self1;
+- (void)startHQLRCaptureForDelegate:(id)delegate micDeviceID:(id)d cameraDeviceID:(id)iD windowSize:(CGSize)size audioOnly:(BOOL)only didStartHandler:(id)handler;
+- (void)startHQLRMicrophoneCaptureWithDispatchGroup:(id)group;
+- (void)startMicrophoneCaptureWithDispatchGroup:(id)group;
 - (void)stopAllCapture;
-- (void)stopCaptureForDelegate:(id)a3;
-- (void)updateContextIDs:(id)a3 forProcessID:(int)a4 systemRecording:(BOOL)a5;
+- (void)stopCaptureForDelegate:(id)delegate;
+- (void)updateContextIDs:(id)ds forProcessID:(int)d systemRecording:(BOOL)recording;
 @end
 
 @implementation RPCaptureManager
@@ -95,7 +95,7 @@
     v6 = 1024;
     v7 = 89;
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
@@ -104,16 +104,16 @@
   [(RPDelegateBase *)&v3 dealloc];
 }
 
-- (void)setSystemBroadcastHostBundleId:(id)a3
+- (void)setSystemBroadcastHostBundleId:(id)id
 {
-  objc_storeStrong(&self->_systemBroadcastHostBundleId, a3);
-  v5 = a3;
-  [(RPScreenCaptureManager *)self->_screenCaptureManager setSystemBroadcastHostBundleId:v5];
+  objc_storeStrong(&self->_systemBroadcastHostBundleId, id);
+  idCopy = id;
+  [(RPScreenCaptureManager *)self->_screenCaptureManager setSystemBroadcastHostBundleId:idCopy];
 }
 
-- (void)startMicrophoneCaptureWithDispatchGroup:(id)a3
+- (void)startMicrophoneCaptureWithDispatchGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -123,7 +123,7 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d ", buf, 0x12u);
   }
 
-  dispatch_group_enter(v4);
+  dispatch_group_enter(groupCopy);
   micAudioCaptureManager = self->_micAudioCaptureManager;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -134,14 +134,14 @@
   v7[1] = 3221225472;
   v7[2] = sub_1000596AC;
   v7[3] = &unk_1000A1088;
-  v8 = v4;
-  v6 = v4;
+  v8 = groupCopy;
+  v6 = groupCopy;
   [(RPMicAudioCaptureManager *)micAudioCaptureManager startMicrophoneCaptureWithOutput:v9 didStartHandler:v7];
 }
 
-- (void)startHQLRMicrophoneCaptureWithDispatchGroup:(id)a3
+- (void)startHQLRMicrophoneCaptureWithDispatchGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -151,7 +151,7 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d ", buf, 0x12u);
   }
 
-  dispatch_group_enter(v4);
+  dispatch_group_enter(groupCopy);
   micAudioCaptureManager = self->_micAudioCaptureManager;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -162,12 +162,12 @@
   v7[1] = 3221225472;
   v7[2] = sub_1000599B4;
   v7[3] = &unk_1000A1088;
-  v8 = v4;
-  v6 = v4;
+  v8 = groupCopy;
+  v6 = groupCopy;
   [(RPMicAudioCaptureManager *)micAudioCaptureManager startHQLRMicrophoneCaptureWithOutput:v9 didStartHandler:v7];
 }
 
-- (void)restartAppAudioCaptureForProcessID:(int)a3
+- (void)restartAppAudioCaptureForProcessID:(int)d
 {
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -176,7 +176,7 @@
     v10 = 1024;
     v11 = 147;
     v12 = 1024;
-    v13 = a3;
+    dCopy = d;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d pid %d", buf, 0x18u);
   }
 
@@ -186,7 +186,7 @@
   v6[2] = sub_100059D6C;
   v6[3] = &unk_1000A1F50;
   v6[4] = self;
-  v7 = a3;
+  dCopy2 = d;
   dispatch_async(captureProcessQueue, v6);
 }
 
@@ -218,9 +218,9 @@
   [(RPDelegateBase *)self removeAllDelegates];
 }
 
-- (void)stopCaptureForDelegate:(id)a3
+- (void)stopCaptureForDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
@@ -228,7 +228,7 @@
     v12 = 1024;
     v13 = 209;
     v14 = 2048;
-    v15 = v4;
+    v15 = delegateCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d delegate %p", buf, 0x1Cu);
   }
 
@@ -241,18 +241,18 @@
   v8[2] = sub_10005A128;
   v8[3] = &unk_1000A1128;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = delegateCopy;
+  v7 = delegateCopy;
   dispatch_sync(captureProcessQueue, v8);
 }
 
-- (void)startCaptureForDelegate:(id)a3 forProcessID:(int)a4 shouldStartMicrophoneCapture:(BOOL)a5 windowSize:(CGSize)a6 captureType:(int)a7 contextIDs:(id)a8 mixedRealityCamera:(BOOL)a9 systemCapture:(BOOL)a10 didStartHandler:(id)a11
+- (void)startCaptureForDelegate:(id)delegate forProcessID:(int)d shouldStartMicrophoneCapture:(BOOL)capture windowSize:(CGSize)size captureType:(int)type contextIDs:(id)ds mixedRealityCamera:(BOOL)camera systemCapture:(BOOL)self0 didStartHandler:(id)self1
 {
-  height = a6.height;
-  width = a6.width;
-  v17 = a3;
-  v18 = a8;
-  v19 = a11;
+  height = size.height;
+  width = size.width;
+  delegateCopy = delegate;
+  dsCopy = ds;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
@@ -260,7 +260,7 @@
     *&buf[12] = 1024;
     *&buf[14] = 234;
     *&buf[18] = 2048;
-    *&buf[20] = v17;
+    *&buf[20] = delegateCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d delegate %p", buf, 0x1Cu);
   }
 
@@ -277,48 +277,48 @@
   block[2] = sub_10005A5B4;
   block[3] = &unk_1000A28A8;
   block[4] = self;
-  v22 = v18;
+  v22 = dsCopy;
   v28 = v22;
-  v33 = a4;
-  v35 = a10;
-  v23 = v17;
+  dCopy = d;
+  systemCaptureCopy = systemCapture;
+  v23 = delegateCopy;
   v31 = width;
   v32 = height;
-  v34 = a7;
-  v36 = a9;
-  v37 = a5;
+  typeCopy = type;
+  cameraCopy = camera;
+  captureCopy = capture;
   v29 = v23;
   v30 = buf;
   dispatch_sync(captureProcessQueue, block);
-  if (v19)
+  if (handlerCopy)
   {
     if (*(*&buf[8] + 24) == 1)
     {
-      v19[2](v19, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     else if (self->_failedToStartError)
     {
-      (v19[2])(v19);
+      (handlerCopy[2])(handlerCopy);
     }
 
     else
     {
       v24 = [NSError _rpUserErrorForCode:-5833 userInfo:0];
-      (v19)[2](v19, v24);
+      (handlerCopy)[2](handlerCopy, v24);
     }
   }
 
   _Block_object_dispose(buf, 8);
 }
 
-- (void)updateContextIDs:(id)a3 forProcessID:(int)a4 systemRecording:(BOOL)a5
+- (void)updateContextIDs:(id)ds forProcessID:(int)d systemRecording:(BOOL)recording
 {
-  v8 = a3;
-  v9 = v8;
-  if (v8)
+  dsCopy = ds;
+  v9 = dsCopy;
+  if (dsCopy)
   {
-    v10 = [v8 firstObject];
+    firstObject = [dsCopy firstObject];
   }
 
   else
@@ -328,13 +328,13 @@
       sub_100067770();
     }
 
-    v10 = 0;
+    firstObject = 0;
   }
 
   currentProcessID = self->_currentProcessID;
   if (currentProcessID)
   {
-    v12 = currentProcessID == a4;
+    v12 = currentProcessID == d;
   }
 
   else
@@ -342,7 +342,7 @@
     v12 = 1;
   }
 
-  if (!v12 || self->_currentContextID && ([v10 isEqualToString:?] & 1) == 0)
+  if (!v12 || self->_currentContextID && ([firstObject isEqualToString:?] & 1) == 0)
   {
     if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -355,11 +355,11 @@
       v21 = 1024;
       v22 = v13;
       v23 = 1024;
-      v24 = a4;
+      dCopy = d;
       v25 = 2112;
       v26 = currentContextID;
       v27 = 2112;
-      v28 = v10;
+      v28 = firstObject;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d current capture stopped by interruption process changed %d to %d context changed %@ to %@", buf, 0x32u);
     }
 
@@ -372,11 +372,11 @@
     [(RPCaptureManager *)self stopAllCapture];
   }
 
-  self->_currentProcessID = a4;
+  self->_currentProcessID = d;
   v15 = self->_currentContextID;
-  self->_currentContextID = v10;
+  self->_currentContextID = firstObject;
 
-  self->_isSystemRecording = a5;
+  self->_isSystemRecording = recording;
 }
 
 - (void)enableMicrophone
@@ -518,15 +518,15 @@ LABEL_21:
   if (v3)
   {
     v4 = [v3 objectForKey:AVSystemController_ActiveCallInfo_AudioSessionID];
-    v5 = [v4 unsignedIntValue];
+    unsignedIntValue = [v4 unsignedIntValue];
   }
 
   else
   {
-    v5 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v5;
+  return unsignedIntValue;
 }
 
 - (void)registerForProxySessionNotifications
@@ -538,7 +538,7 @@ LABEL_21:
     v13 = 1024;
     v14 = 461;
     v15 = 1024;
-    v16 = [(RPCaptureManager *)self getActiveCallSessionID];
+    getActiveCallSessionID = [(RPCaptureManager *)self getActiveCallSessionID];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d registering for mute notifications on proxy session with id: %d", buf, 0x18u);
   }
 
@@ -563,17 +563,17 @@ LABEL_21:
 
 - (void)deregisterForProxySessionNotifications
 {
-  v3 = [(RPCaptureManager *)self observer];
+  observer = [(RPCaptureManager *)self observer];
 
-  if (v3)
+  if (observer)
   {
     v5 = +[NSNotificationCenter defaultCenter];
-    v4 = [(RPCaptureManager *)self observer];
-    [v5 removeObserver:v4];
+    observer2 = [(RPCaptureManager *)self observer];
+    [v5 removeObserver:observer2];
   }
 }
 
-- (void)processCameraSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)processCameraSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   if (self->_captureState)
   {
@@ -581,18 +581,18 @@ LABEL_21:
     v3[1] = 3221225472;
     v3[2] = sub_10005BEEC;
     v3[3] = &unk_1000A2858;
-    v3[4] = a3;
+    v3[4] = buffer;
     [(RPDelegateBase *)self callDelegate:v3];
   }
 }
 
-- (void)startHQLRCaptureForDelegate:(id)a3 micDeviceID:(id)a4 cameraDeviceID:(id)a5 windowSize:(CGSize)a6 audioOnly:(BOOL)a7 didStartHandler:(id)a8
+- (void)startHQLRCaptureForDelegate:(id)delegate micDeviceID:(id)d cameraDeviceID:(id)iD windowSize:(CGSize)size audioOnly:(BOOL)only didStartHandler:(id)handler
 {
-  v9 = a7;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a8;
+  onlyCopy = only;
+  delegateCopy = delegate;
+  dCopy = d;
+  iDCopy = iD;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136447490;
@@ -600,13 +600,13 @@ LABEL_21:
     *&buf[12] = 1024;
     *&buf[14] = 526;
     *&buf[18] = 2112;
-    *&buf[20] = v13;
+    *&buf[20] = delegateCopy;
     v28 = 2112;
-    v29 = v14;
+    v29 = dCopy;
     v30 = 2112;
-    v31 = v15;
+    v31 = iDCopy;
     v32 = 1024;
-    v33 = v9;
+    v33 = onlyCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d delegate=%@, micDeviceID=%@, cameraDeviceID=%@, audioOnly=%d", buf, 0x36u);
   }
 
@@ -623,29 +623,29 @@ LABEL_21:
   block[2] = sub_10005C1BC;
   block[3] = &unk_1000A2968;
   block[4] = self;
-  v19 = v13;
-  v24 = v9;
-  v25 = v15 != 0;
-  v26 = v14 != 0;
+  v19 = delegateCopy;
+  v24 = onlyCopy;
+  v25 = iDCopy != 0;
+  v26 = dCopy != 0;
   v22 = v19;
   v23 = buf;
   dispatch_sync(captureProcessQueue, block);
-  if (v16)
+  if (handlerCopy)
   {
     if (*(*&buf[8] + 24) == 1)
     {
-      v16[2](v16, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     else if (self->_failedToStartError)
     {
-      (v16[2])(v16);
+      (handlerCopy[2])(handlerCopy);
     }
 
     else
     {
       v20 = [NSError _rpUserErrorForCode:-5833 userInfo:0];
-      (v16)[2](v16, v20);
+      (handlerCopy)[2](handlerCopy, v20);
     }
   }
 
@@ -666,9 +666,9 @@ LABEL_21:
   return result;
 }
 
-- (void)screenCaptureDidFailWithError:(id)a3
+- (void)screenCaptureDidFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
@@ -676,7 +676,7 @@ LABEL_21:
     v12 = 1024;
     v13 = 592;
     v14 = 2112;
-    v15 = v4;
+    v15 = errorCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d error %@", buf, 0x1Cu);
   }
 
@@ -684,8 +684,8 @@ LABEL_21:
   v8[1] = 3221225472;
   v8[2] = sub_10005C74C;
   v8[3] = &unk_1000A2918;
-  v9 = v4;
-  v5 = v4;
+  v9 = errorCopy;
+  v5 = errorCopy;
   [(RPDelegateBase *)self callDelegate:v8];
   captureProcessQueue = self->_captureProcessQueue;
   v7[0] = _NSConcreteStackBlock;

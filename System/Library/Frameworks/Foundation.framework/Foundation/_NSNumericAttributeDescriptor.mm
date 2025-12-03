@@ -1,14 +1,14 @@
 @interface _NSNumericAttributeDescriptor
-- (id)attributeValueFromValue:(id)a3;
+- (id)attributeValueFromValue:(id)value;
 @end
 
 @implementation _NSNumericAttributeDescriptor
 
-- (id)attributeValueFromValue:(id)a3
+- (id)attributeValueFromValue:(id)value
 {
   if (_NSIsNSNumber())
   {
-    return a3;
+    return value;
   }
 
   else

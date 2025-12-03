@@ -1,36 +1,36 @@
 @interface SRAcousticSettingsAccessibilityHeadphoneAccommodations
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SRAcousticSettingsAccessibilityHeadphoneAccommodations)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (SRAcousticSettingsAccessibilityHeadphoneAccommodations)initWithCoder:(id)a3;
-- (SRAcousticSettingsAccessibilityHeadphoneAccommodations)initWithHeadphoneAccommodationsEnabled:(BOOL)a3 mediaEnhanceTuning:(int64_t)a4 mediaEnhanceBoosting:(int64_t)a5 mediaEnhanceApplication:(int64_t)a6;
+- (SRAcousticSettingsAccessibilityHeadphoneAccommodations)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (SRAcousticSettingsAccessibilityHeadphoneAccommodations)initWithCoder:(id)coder;
+- (SRAcousticSettingsAccessibilityHeadphoneAccommodations)initWithHeadphoneAccommodationsEnabled:(BOOL)enabled mediaEnhanceTuning:(int64_t)tuning mediaEnhanceBoosting:(int64_t)boosting mediaEnhanceApplication:(int64_t)application;
 - (id)binarySampleRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRAcousticSettingsAccessibilityHeadphoneAccommodations
 
-- (SRAcousticSettingsAccessibilityHeadphoneAccommodations)initWithHeadphoneAccommodationsEnabled:(BOOL)a3 mediaEnhanceTuning:(int64_t)a4 mediaEnhanceBoosting:(int64_t)a5 mediaEnhanceApplication:(int64_t)a6
+- (SRAcousticSettingsAccessibilityHeadphoneAccommodations)initWithHeadphoneAccommodationsEnabled:(BOOL)enabled mediaEnhanceTuning:(int64_t)tuning mediaEnhanceBoosting:(int64_t)boosting mediaEnhanceApplication:(int64_t)application
 {
   v11.receiver = self;
   v11.super_class = SRAcousticSettingsAccessibilityHeadphoneAccommodations;
   result = [(SRAcousticSettingsAccessibilityHeadphoneAccommodations *)&v11 init];
   if (result)
   {
-    result->_enabled = a3;
-    result->_mediaEnhanceTuning = a4;
-    result->_mediaEnhanceBoosting = a5;
-    result->_mediaEnhanceApplication = a6;
+    result->_enabled = enabled;
+    result->_mediaEnhanceTuning = tuning;
+    result->_mediaEnhanceBoosting = boosting;
+    result->_mediaEnhanceApplication = application;
   }
 
   return result;
 }
 
-- (SRAcousticSettingsAccessibilityHeadphoneAccommodations)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (SRAcousticSettingsAccessibilityHeadphoneAccommodations)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (![a3 length])
+  if (![representation length])
   {
     goto LABEL_7;
   }
@@ -42,7 +42,7 @@
   {
     self = result;
     v12 = 0;
-    v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:a3 error:&v12];
+    v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:representation error:&v12];
     if (v8)
     {
       v9 = v8;
@@ -100,9 +100,9 @@ LABEL_8:
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -114,25 +114,25 @@ LABEL_8:
   }
 
   enabled = self->_enabled;
-  if (enabled != [a3 isEnabled])
+  if (enabled != [equal isEnabled])
   {
     return 0;
   }
 
   mediaEnhanceTuning = self->_mediaEnhanceTuning;
-  if (mediaEnhanceTuning != [a3 mediaEnhanceTuning])
+  if (mediaEnhanceTuning != [equal mediaEnhanceTuning])
   {
     return 0;
   }
 
   mediaEnhanceBoosting = self->_mediaEnhanceBoosting;
-  if (mediaEnhanceBoosting != [a3 mediaEnhanceBoosting])
+  if (mediaEnhanceBoosting != [equal mediaEnhanceBoosting])
   {
     return 0;
   }
 
   mediaEnhanceApplication = self->_mediaEnhanceApplication;
-  return mediaEnhanceApplication == [a3 mediaEnhanceApplication];
+  return mediaEnhanceApplication == [equal mediaEnhanceApplication];
 }
 
 - (unint64_t)hash
@@ -150,33 +150,33 @@ LABEL_8:
   return [v3 stringWithFormat:@"%@ (%p) {Accessibility Headphone Accommodations Settings headphoneAccommodationsIsEnabled: %d, mediaEnhanceTuning: %ld, mediaEnhanceBoosting: %ld, mediaEnhanceApplication: %ld}", NSStringFromClass(v4), self, -[SRAcousticSettingsAccessibilityHeadphoneAccommodations isEnabled](self, "isEnabled"), -[SRAcousticSettingsAccessibilityHeadphoneAccommodations mediaEnhanceTuning](self, "mediaEnhanceTuning"), -[SRAcousticSettingsAccessibilityHeadphoneAccommodations mediaEnhanceBoosting](self, "mediaEnhanceBoosting"), -[SRAcousticSettingsAccessibilityHeadphoneAccommodations mediaEnhanceApplication](self, "mediaEnhanceApplication")];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeBool:-[SRAcousticSettingsAccessibilityHeadphoneAccommodations isEnabled](self forKey:{"isEnabled"), @"headphoneAccommodationsEnabled"}];
-  [a3 encodeInteger:-[SRAcousticSettingsAccessibilityHeadphoneAccommodations mediaEnhanceTuning](self forKey:{"mediaEnhanceTuning"), @"headphoneAccommodationsMediaEnhanceTuning"}];
-  [a3 encodeInteger:-[SRAcousticSettingsAccessibilityHeadphoneAccommodations mediaEnhanceBoosting](self forKey:{"mediaEnhanceBoosting"), @"headphoneAccommodationsMediaEnhanceBoosting"}];
-  v6 = [(SRAcousticSettingsAccessibilityHeadphoneAccommodations *)self mediaEnhanceApplication];
+  [coder encodeBool:-[SRAcousticSettingsAccessibilityHeadphoneAccommodations isEnabled](self forKey:{"isEnabled"), @"headphoneAccommodationsEnabled"}];
+  [coder encodeInteger:-[SRAcousticSettingsAccessibilityHeadphoneAccommodations mediaEnhanceTuning](self forKey:{"mediaEnhanceTuning"), @"headphoneAccommodationsMediaEnhanceTuning"}];
+  [coder encodeInteger:-[SRAcousticSettingsAccessibilityHeadphoneAccommodations mediaEnhanceBoosting](self forKey:{"mediaEnhanceBoosting"), @"headphoneAccommodationsMediaEnhanceBoosting"}];
+  mediaEnhanceApplication = [(SRAcousticSettingsAccessibilityHeadphoneAccommodations *)self mediaEnhanceApplication];
 
-  [a3 encodeInteger:v6 forKey:@"headphoneAccommodationsMediaEnhanceApplication"];
+  [coder encodeInteger:mediaEnhanceApplication forKey:@"headphoneAccommodationsMediaEnhanceApplication"];
 }
 
-- (SRAcousticSettingsAccessibilityHeadphoneAccommodations)initWithCoder:(id)a3
+- (SRAcousticSettingsAccessibilityHeadphoneAccommodations)initWithCoder:(id)coder
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v6 = [a3 decodeBoolForKey:@"headphoneAccommodationsEnabled"];
-  v7 = [a3 decodeIntegerForKey:@"headphoneAccommodationsMediaEnhanceTuning"];
-  v8 = [a3 decodeIntegerForKey:@"headphoneAccommodationsMediaEnhanceBoosting"];
-  v9 = [a3 decodeIntegerForKey:@"headphoneAccommodationsMediaEnhanceApplication"];
+  v6 = [coder decodeBoolForKey:@"headphoneAccommodationsEnabled"];
+  v7 = [coder decodeIntegerForKey:@"headphoneAccommodationsMediaEnhanceTuning"];
+  v8 = [coder decodeIntegerForKey:@"headphoneAccommodationsMediaEnhanceBoosting"];
+  v9 = [coder decodeIntegerForKey:@"headphoneAccommodationsMediaEnhanceApplication"];
   if ((v7 - 4) <= 0xFFFFFFFFFFFFFFFCLL)
   {
     v10 = SRLogAcousticSettings;

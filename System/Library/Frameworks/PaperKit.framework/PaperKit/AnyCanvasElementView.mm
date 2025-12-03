@@ -1,37 +1,37 @@
 @interface AnyCanvasElementView
-- (CGRect)textBoxViewActiveTextBoxFrame:(id)a3;
-- (_TtC8PaperKit20AnyCanvasElementView)initWithFrame:(CGRect)a3;
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4;
+- (CGRect)textBoxViewActiveTextBoxFrame:(id)frame;
+- (_TtC8PaperKit20AnyCanvasElementView)initWithFrame:(CGRect)frame;
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration;
 @end
 
 @implementation AnyCanvasElementView
 
-- (_TtC8PaperKit20AnyCanvasElementView)initWithFrame:(CGRect)a3
+- (_TtC8PaperKit20AnyCanvasElementView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration
 {
-  v4 = self;
-  v5 = [(AnyCanvasElementView *)v4 window];
-  if (v5)
+  selfCopy = self;
+  window = [(AnyCanvasElementView *)selfCopy window];
+  if (window)
   {
 
-    v6 = [objc_allocWithZone(MEMORY[0x1E69DD070]) initWithView_];
+    initWithView_ = [objc_allocWithZone(MEMORY[0x1E69DD070]) initWithView_];
   }
 
   else
   {
-    v6 = 0;
+    initWithView_ = 0;
   }
 
-  return v6;
+  return initWithView_;
 }
 
-- (CGRect)textBoxViewActiveTextBoxFrame:(id)a3
+- (CGRect)textBoxViewActiveTextBoxFrame:(id)frame
 {
   v3 = 0.0;
   v4 = 0.0;

@@ -1,31 +1,31 @@
 @interface TUIOBWelcomeController
-- (TUIOBWelcomeController)initWithViewModel:(id)a3;
-- (void)_addContentViewWithViewModel:(id)a3;
-- (void)_addHelpLinkButtonWithViewModel:(id)a3;
-- (void)_addPrimaryButtonWithViewModel:(id)a3;
-- (void)_addSecondaryButtonWithViewModel:(id)a3;
+- (TUIOBWelcomeController)initWithViewModel:(id)model;
+- (void)_addContentViewWithViewModel:(id)model;
+- (void)_addHelpLinkButtonWithViewModel:(id)model;
+- (void)_addPrimaryButtonWithViewModel:(id)model;
+- (void)_addSecondaryButtonWithViewModel:(id)model;
 - (void)_openHelpLink;
 - (void)viewDidLoad;
 @end
 
 @implementation TUIOBWelcomeController
 
-- (TUIOBWelcomeController)initWithViewModel:(id)a3
+- (TUIOBWelcomeController)initWithViewModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 title];
-  v6 = [v4 detailText];
-  v7 = [v4 symbolName];
+  modelCopy = model;
+  title = [modelCopy title];
+  detailText = [modelCopy detailText];
+  symbolName = [modelCopy symbolName];
   v10.receiver = self;
   v10.super_class = TUIOBWelcomeController;
-  v8 = -[TUIOBWelcomeController initWithTitle:detailText:symbolName:contentLayout:](&v10, sel_initWithTitle_detailText_symbolName_contentLayout_, v5, v6, v7, [v4 contentViewLayout]);
+  v8 = -[TUIOBWelcomeController initWithTitle:detailText:symbolName:contentLayout:](&v10, sel_initWithTitle_detailText_symbolName_contentLayout_, title, detailText, symbolName, [modelCopy contentViewLayout]);
 
   if (v8)
   {
-    [(TUIOBWelcomeController *)v8 _addContentViewWithViewModel:v4];
-    [(TUIOBWelcomeController *)v8 _addPrimaryButtonWithViewModel:v4];
-    [(TUIOBWelcomeController *)v8 _addSecondaryButtonWithViewModel:v4];
-    [(TUIOBWelcomeController *)v8 _addHelpLinkButtonWithViewModel:v4];
+    [(TUIOBWelcomeController *)v8 _addContentViewWithViewModel:modelCopy];
+    [(TUIOBWelcomeController *)v8 _addPrimaryButtonWithViewModel:modelCopy];
+    [(TUIOBWelcomeController *)v8 _addSecondaryButtonWithViewModel:modelCopy];
+    [(TUIOBWelcomeController *)v8 _addHelpLinkButtonWithViewModel:modelCopy];
   }
 
   return v8;
@@ -39,115 +39,115 @@
   [(TUIOBWelcomeController *)self setModalInPresentation:1];
 }
 
-- (void)_addContentViewWithViewModel:(id)a3
+- (void)_addContentViewWithViewModel:(id)model
 {
   v31[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 contentViewController];
+  modelCopy = model;
+  contentViewController = [modelCopy contentViewController];
 
-  if (v5)
+  if (contentViewController)
   {
-    v6 = [v4 contentViewController];
-    [(TUIOBWelcomeController *)self addChildViewController:v6];
+    contentViewController2 = [modelCopy contentViewController];
+    [(TUIOBWelcomeController *)self addChildViewController:contentViewController2];
 
-    [v4 contentViewController];
-    v7 = v30 = v4;
-    v8 = [v7 view];
+    [modelCopy contentViewController];
+    v7 = v30 = modelCopy;
+    view = [v7 view];
 
-    [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [(TUIOBWelcomeController *)self contentView];
-    [v9 addSubview:v8];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
+    contentView = [(TUIOBWelcomeController *)self contentView];
+    [contentView addSubview:view];
 
     v22 = MEMORY[0x277CCAAD0];
-    v28 = [v8 leadingAnchor];
-    v29 = [(TUIOBWelcomeController *)self contentView];
-    v27 = [v29 leadingAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    leadingAnchor = [view leadingAnchor];
+    contentView2 = [(TUIOBWelcomeController *)self contentView];
+    leadingAnchor2 = [contentView2 leadingAnchor];
+    v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v31[0] = v26;
-    v24 = [v8 trailingAnchor];
-    v25 = [(TUIOBWelcomeController *)self contentView];
-    v23 = [v25 trailingAnchor];
-    v21 = [v24 constraintEqualToAnchor:v23];
+    trailingAnchor = [view trailingAnchor];
+    contentView3 = [(TUIOBWelcomeController *)self contentView];
+    trailingAnchor2 = [contentView3 trailingAnchor];
+    v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v31[1] = v21;
-    v20 = [v8 topAnchor];
-    v10 = [(TUIOBWelcomeController *)self contentView];
-    v11 = [v10 topAnchor];
-    v12 = [v20 constraintEqualToAnchor:v11];
+    topAnchor = [view topAnchor];
+    contentView4 = [(TUIOBWelcomeController *)self contentView];
+    topAnchor2 = [contentView4 topAnchor];
+    v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v31[2] = v12;
-    v13 = [v8 bottomAnchor];
-    v14 = [(TUIOBWelcomeController *)self contentView];
-    v15 = [v14 bottomAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15];
+    bottomAnchor = [view bottomAnchor];
+    contentView5 = [(TUIOBWelcomeController *)self contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v31[3] = v16;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:4];
     [v22 activateConstraints:v17];
 
-    v4 = v30;
-    v18 = [v30 contentViewController];
-    [v18 didMoveToParentViewController:self];
+    modelCopy = v30;
+    contentViewController3 = [v30 contentViewController];
+    [contentViewController3 didMoveToParentViewController:self];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addPrimaryButtonWithViewModel:(id)a3
+- (void)_addPrimaryButtonWithViewModel:(id)model
 {
-  v10 = a3;
-  v4 = [v10 primaryButton];
+  modelCopy = model;
+  primaryButton = [modelCopy primaryButton];
 
-  if (v4)
+  if (primaryButton)
   {
-    v5 = [MEMORY[0x277D37618] boldButton];
+    boldButton = [MEMORY[0x277D37618] boldButton];
     primaryButton = self->_primaryButton;
-    self->_primaryButton = v5;
+    self->_primaryButton = boldButton;
 
     v7 = self->_primaryButton;
-    v8 = [v10 primaryButton];
-    [(OBTrayButton *)v7 setTitle:v8 forState:0];
+    primaryButton2 = [modelCopy primaryButton];
+    [(OBTrayButton *)v7 setTitle:primaryButton2 forState:0];
 
-    v9 = [(TUIOBWelcomeController *)self buttonTray];
-    [v9 addButton:self->_primaryButton];
+    buttonTray = [(TUIOBWelcomeController *)self buttonTray];
+    [buttonTray addButton:self->_primaryButton];
   }
 }
 
-- (void)_addSecondaryButtonWithViewModel:(id)a3
+- (void)_addSecondaryButtonWithViewModel:(id)model
 {
-  v10 = a3;
-  v4 = [v10 secondaryButton];
+  modelCopy = model;
+  secondaryButton = [modelCopy secondaryButton];
 
-  if (v4)
+  if (secondaryButton)
   {
-    v5 = [MEMORY[0x277D37650] linkButton];
+    linkButton = [MEMORY[0x277D37650] linkButton];
     secondaryButton = self->_secondaryButton;
-    self->_secondaryButton = v5;
+    self->_secondaryButton = linkButton;
 
     v7 = self->_secondaryButton;
-    v8 = [v10 secondaryButton];
-    [(OBTrayButton *)v7 setTitle:v8 forState:0];
+    secondaryButton2 = [modelCopy secondaryButton];
+    [(OBTrayButton *)v7 setTitle:secondaryButton2 forState:0];
 
-    v9 = [(TUIOBWelcomeController *)self buttonTray];
-    [v9 addButton:self->_secondaryButton];
+    buttonTray = [(TUIOBWelcomeController *)self buttonTray];
+    [buttonTray addButton:self->_secondaryButton];
   }
 }
 
-- (void)_addHelpLinkButtonWithViewModel:(id)a3
+- (void)_addHelpLinkButtonWithViewModel:(id)model
 {
-  v10 = a3;
-  v4 = [v10 helpLinkTitle];
+  modelCopy = model;
+  helpLinkTitle = [modelCopy helpLinkTitle];
 
-  if (v4)
+  if (helpLinkTitle)
   {
-    v5 = [v10 helpLinkURL];
+    helpLinkURL = [modelCopy helpLinkURL];
     helpLinkURL = self->_helpLinkURL;
-    self->_helpLinkURL = v5;
+    self->_helpLinkURL = helpLinkURL;
 
-    v7 = [MEMORY[0x277D37638] accessoryButton];
-    v8 = [v10 helpLinkTitle];
-    [v7 setTitle:v8 forState:0];
+    accessoryButton = [MEMORY[0x277D37638] accessoryButton];
+    helpLinkTitle2 = [modelCopy helpLinkTitle];
+    [accessoryButton setTitle:helpLinkTitle2 forState:0];
 
-    [v7 addTarget:self action:sel__openHelpLink forControlEvents:64];
-    v9 = [(TUIOBWelcomeController *)self headerView];
-    [v9 addAccessoryButton:v7];
+    [accessoryButton addTarget:self action:sel__openHelpLink forControlEvents:64];
+    headerView = [(TUIOBWelcomeController *)self headerView];
+    [headerView addAccessoryButton:accessoryButton];
   }
 }
 

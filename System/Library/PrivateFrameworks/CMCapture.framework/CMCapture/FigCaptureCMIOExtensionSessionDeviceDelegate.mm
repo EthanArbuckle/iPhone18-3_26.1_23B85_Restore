@@ -1,5 +1,5 @@
 @interface FigCaptureCMIOExtensionSessionDeviceDelegate
-- (void)device:(id)a3 propertiesChanged:(id)a4;
+- (void)device:(id)device propertiesChanged:(id)changed;
 @end
 
 @implementation FigCaptureCMIOExtensionSessionDeviceDelegate
@@ -80,7 +80,7 @@ LABEL_12:
   return result;
 }
 
-- (void)device:(id)a3 propertiesChanged:(id)a4
+- (void)device:(id)device propertiesChanged:(id)changed
 {
   DerivedStorage = CMBaseObjectGetDerivedStorage();
   os_unfair_lock_lock((DerivedStorage + 28));
@@ -101,7 +101,7 @@ LABEL_12:
       block[1] = 3221225472;
       block[2] = __73__FigCaptureCMIOExtensionSessionDeviceDelegate_device_propertiesChanged___block_invoke;
       block[3] = &unk_1E798FD58;
-      block[4] = a4;
+      block[4] = changed;
       block[5] = v7;
       block[6] = self;
       dispatch_async(global_queue, block);

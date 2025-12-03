@@ -3,10 +3,10 @@
 - (void)_updateEnabledValue;
 - (void)_updateSpecifiersForConnectToFamily;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)presentAppleAccountSignInController:(id)a3;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)setCoordinator:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)presentAppleAccountSignInController:(id)controller;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)setCoordinator:(id)coordinator;
 @end
 
 @implementation STSignInToiCloudGroupSpecifierProvider
@@ -22,8 +22,8 @@
     [(STGroupSpecifierProvider *)v2 setIsHidden:1];
     v4 = +[STScreenTimeSettingsUIBundle bundle];
     v5 = [v4 localizedStringForKey:@"SignInToiCloudFooterText" value:&stru_28766E5A8 table:0];
-    v6 = [(STGroupSpecifierProvider *)v3 groupSpecifier];
-    [v6 setObject:v5 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+    groupSpecifier = [(STGroupSpecifierProvider *)v3 groupSpecifier];
+    [groupSpecifier setObject:v5 forKeyedSubscript:*MEMORY[0x277D3FF88]];
 
     v7 = [v4 localizedStringForKey:@"SignInToiCloudButtonName" value:&stru_28766E5A8 table:0];
     v8 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v7 target:v3 set:0 get:0 detail:0 cell:13 edit:0];
@@ -31,10 +31,10 @@
     v3->_signInSpecifier = v8;
 
     [(PSSpecifier *)v3->_signInSpecifier setButtonAction:sel_presentAppleAccountSignInController_];
-    v10 = [(STGroupSpecifierProvider *)v3 mutableSpecifiers];
-    [v10 addObject:v3->_signInSpecifier];
-    v11 = [MEMORY[0x277D262A0] sharedConnection];
-    [v11 registerObserver:v3];
+    mutableSpecifiers = [(STGroupSpecifierProvider *)v3 mutableSpecifiers];
+    [mutableSpecifiers addObject:v3->_signInSpecifier];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0] registerObserver:v3];
 
     [(STSignInToiCloudGroupSpecifierProvider *)v3 _updateEnabledValue];
   }
@@ -44,58 +44,58 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  [v3 unregisterObserver:self];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] unregisterObserver:self];
 
   v4.receiver = self;
   v4.super_class = STSignInToiCloudGroupSpecifierProvider;
   [(STGroupSpecifierProvider *)&v4 dealloc];
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STRootGroupSpecifierProvider *)self coordinator];
-  [v5 removeObserver:self forKeyPath:@"viewModel.canSignIn" context:@"STSignInToiCloudGroupSpecifierProviderObservationContext"];
+  coordinatorCopy = coordinator;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"viewModel.canSignIn" context:@"STSignInToiCloudGroupSpecifierProviderObservationContext"];
   v6.receiver = self;
   v6.super_class = STSignInToiCloudGroupSpecifierProvider;
-  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:v4];
-  if ([v4 shouldShowConnectToFamilyForSignIn])
+  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:coordinatorCopy];
+  if ([coordinatorCopy shouldShowConnectToFamilyForSignIn])
   {
     [(STSignInToiCloudGroupSpecifierProvider *)self _updateSpecifiersForConnectToFamily];
   }
 
-  [v4 addObserver:self forKeyPath:@"viewModel.canSignIn" options:4 context:@"STSignInToiCloudGroupSpecifierProviderObservationContext"];
+  [coordinatorCopy addObserver:self forKeyPath:@"viewModel.canSignIn" options:4 context:@"STSignInToiCloudGroupSpecifierProviderObservationContext"];
 }
 
 - (void)_updateSpecifiersForConnectToFamily
 {
   v7 = +[STScreenTimeSettingsUIBundle bundle];
   v3 = [v7 localizedStringForKey:@"SignInToiCloudFooterTextConnectToFamily" value:&stru_28766E5A8 table:0];
-  v4 = [(STGroupSpecifierProvider *)self groupSpecifier];
-  [v4 setObject:v3 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+  groupSpecifier = [(STGroupSpecifierProvider *)self groupSpecifier];
+  [groupSpecifier setObject:v3 forKeyedSubscript:*MEMORY[0x277D3FF88]];
 
   v5 = [v7 localizedStringForKey:@"SignInToiCloudButtonNameConnectToFamily" value:&stru_28766E5A8 table:0];
-  v6 = [(STSignInToiCloudGroupSpecifierProvider *)self signInSpecifier];
-  [v6 setName:v5];
+  signInSpecifier = [(STSignInToiCloudGroupSpecifierProvider *)self signInSpecifier];
+  [signInSpecifier setName:v5];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == @"STSignInToiCloudGroupSpecifierProviderObservationContext")
+  if (context == @"STSignInToiCloudGroupSpecifierProviderObservationContext")
   {
-    v11 = a3;
+    pathCopy = path;
     [(STRootGroupSpecifierProvider *)self coordinator];
 
-    v12 = [v11 isEqualToString:@"viewModel.canSignIn"];
+    v12 = [pathCopy isEqualToString:@"viewModel.canSignIn"];
     if (v12)
     {
-      v13 = [MEMORY[0x277D262A0] sharedConnection];
-      v14 = [v13 effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
+      mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+      v14 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
 
-      v18 = [(STRootGroupSpecifierProvider *)self coordinator];
-      v15 = [v18 viewModel];
-      v16 = [v15 canSignIn] ^ 1;
+      coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+      viewModel = [coordinator viewModel];
+      v16 = [viewModel canSignIn] ^ 1;
       if (v14 == 2)
       {
         v17 = 1;
@@ -114,12 +114,12 @@
   {
     v19.receiver = self;
     v19.super_class = STSignInToiCloudGroupSpecifierProvider;
-    v10 = a3;
-    [(STSignInToiCloudGroupSpecifierProvider *)&v19 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+    pathCopy2 = path;
+    [(STSignInToiCloudGroupSpecifierProvider *)&v19 observeValueForKeyPath:pathCopy2 ofObject:object change:change context:context];
   }
 }
 
-- (void)presentAppleAccountSignInController:(id)a3
+- (void)presentAppleAccountSignInController:(id)controller
 {
   v17 = *MEMORY[0x277D85DE8];
   address = xmmword_264CD1B10;
@@ -155,10 +155,10 @@ LABEL_9:
 
   v7 = objc_opt_new();
   [v7 setDelegate:self];
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  v9 = [v8 sf_isiPad];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isiPad = [currentDevice sf_isiPad];
 
-  if (v9)
+  if (sf_isiPad)
   {
     [v7 setModalPresentationStyle:2];
     [v7 setModalTransitionStyle:0];
@@ -170,26 +170,26 @@ LABEL_10:
 
 - (void)_updateEnabledValue
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = [v3 effectiveBoolValueForSetting:*MEMORY[0x277D25CD0]] != 2;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v4 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25CD0]] != 2;
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:v4];
-  v5 = [(STSignInToiCloudGroupSpecifierProvider *)self signInSpecifier];
-  [v5 setObject:v6 forKeyedSubscript:*MEMORY[0x277D3FF38]];
+  signInSpecifier = [(STSignInToiCloudGroupSpecifierProvider *)self signInSpecifier];
+  [signInSpecifier setObject:v6 forKeyedSubscript:*MEMORY[0x277D3FF38]];
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
-  [(STSignInToiCloudGroupSpecifierProvider *)self _updateEnabledValue:a3];
-  v5 = [(STSignInToiCloudGroupSpecifierProvider *)self signInSpecifier];
-  [(STGroupSpecifierProvider *)self reloadSpecifier:v5 animated:1];
+  [(STSignInToiCloudGroupSpecifierProvider *)self _updateEnabledValue:notification];
+  signInSpecifier = [(STSignInToiCloudGroupSpecifierProvider *)self signInSpecifier];
+  [(STGroupSpecifierProvider *)self reloadSpecifier:signInSpecifier animated:1];
 
-  v6 = [MEMORY[0x277D262A0] sharedConnection];
-  v7 = [v6 effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v7 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
 
-  v11 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v8 = [v11 viewModel];
-  v9 = [v8 canSignIn] ^ 1;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v9 = [viewModel canSignIn] ^ 1;
   if (v7 == 2)
   {
     v10 = 1;

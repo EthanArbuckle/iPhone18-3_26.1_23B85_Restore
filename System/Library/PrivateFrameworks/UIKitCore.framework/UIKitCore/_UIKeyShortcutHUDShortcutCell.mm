@@ -1,18 +1,18 @@
 @interface _UIKeyShortcutHUDShortcutCell
 - (_UIKeyShortcutHUDShortcut)shortcut;
-- (_UIKeyShortcutHUDShortcutCell)initWithFrame:(CGRect)a3;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
-- (void)configureWithShortcut:(id)a3;
+- (_UIKeyShortcutHUDShortcutCell)initWithFrame:(CGRect)frame;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
+- (void)configureWithShortcut:(id)shortcut;
 @end
 
 @implementation _UIKeyShortcutHUDShortcutCell
 
-- (_UIKeyShortcutHUDShortcutCell)initWithFrame:(CGRect)a3
+- (_UIKeyShortcutHUDShortcutCell)initWithFrame:(CGRect)frame
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = _UIKeyShortcutHUDShortcutCell;
-  v3 = [(_UIKeyShortcutHUDCell *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_UIKeyShortcutHUDCell *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -29,34 +29,34 @@
   return v3;
 }
 
-- (void)configureWithShortcut:(id)a3
+- (void)configureWithShortcut:(id)shortcut
 {
-  v4 = a3;
-  [(_UIKeyShortcutHUDShortcutCell *)self setShortcut:v4];
-  v12 = [(_UIKeyShortcutHUDCell *)self defaultContentConfiguration];
-  v5 = [v4 hudTitle];
-  [v12 setText:v5];
+  shortcutCopy = shortcut;
+  [(_UIKeyShortcutHUDShortcutCell *)self setShortcut:shortcutCopy];
+  defaultContentConfiguration = [(_UIKeyShortcutHUDCell *)self defaultContentConfiguration];
+  hudTitle = [shortcutCopy hudTitle];
+  [defaultContentConfiguration setText:hudTitle];
 
-  v6 = [v4 subtitle];
-  [v12 setSecondaryText:v6];
+  subtitle = [shortcutCopy subtitle];
+  [defaultContentConfiguration setSecondaryText:subtitle];
 
-  v7 = [v4 modifierFlags];
-  v8 = [v4 input];
+  modifierFlags = [shortcutCopy modifierFlags];
+  input = [shortcutCopy input];
 
-  v9 = [_UIMenuLeafKeyCombination combinationWithModifierFlags:v7 keyEquivalent:v8];
+  v9 = [_UIMenuLeafKeyCombination combinationWithModifierFlags:modifierFlags keyEquivalent:input];
 
   v10 = [_UIMenuLeafKeyboardShortcut shortcutWithBaseKeyCombination:v9];
-  v11 = [(_UIKeyShortcutHUDShortcutInputAccessoryView *)self->_shortcutInputAccessoryView shortcutInputView];
-  [v11 setShortcut:v10];
+  shortcutInputView = [(_UIKeyShortcutHUDShortcutInputAccessoryView *)self->_shortcutInputAccessoryView shortcutInputView];
+  [shortcutInputView setShortcut:v10];
 
-  [(UICollectionViewCell *)self setContentConfiguration:v12];
+  [(UICollectionViewCell *)self setContentConfiguration:defaultContentConfiguration];
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
   v18.receiver = self;
   v18.super_class = _UIKeyShortcutHUDShortcutCell;
-  v4 = [(UICollectionReusableView *)&v18 preferredLayoutAttributesFittingAttributes:a3];
+  v4 = [(UICollectionReusableView *)&v18 preferredLayoutAttributesFittingAttributes:attributes];
   v5 = +[UIKeyShortcutHUDMetrics currentMetrics];
   [v4 size];
   v7 = v6;
@@ -67,13 +67,13 @@
   [v4 setSize:{v10, v7}];
   if ([v5 shouldAlignShortcutModifiersAndInputInColumn])
   {
-    v11 = [(_UIKeyShortcutHUDShortcutInputAccessoryView *)self->_shortcutInputAccessoryView shortcutInputView];
+    shortcutInputView = [(_UIKeyShortcutHUDShortcutInputAccessoryView *)self->_shortcutInputAccessoryView shortcutInputView];
     v12 = objc_loadWeakRetained(&self->_shortcut);
     [v5 modifiersWidthForShortcut:v12];
     v14 = v13;
     v15 = objc_loadWeakRetained(&self->_shortcut);
     [v5 inputWidthForShortcut:v15];
-    [v11 setModifiersWidth:v14 inputWidth:v16];
+    [shortcutInputView setModifiersWidth:v14 inputWidth:v16];
   }
 
   return v4;

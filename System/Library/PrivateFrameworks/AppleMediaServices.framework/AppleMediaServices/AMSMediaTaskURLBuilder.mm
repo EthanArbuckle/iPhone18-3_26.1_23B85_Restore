@@ -1,28 +1,28 @@
 @interface AMSMediaTaskURLBuilder
-- (AMSMediaTaskURLBuilder)initWithConfig:(id)a3 clientVersion:(id)a4 bag:(id)a5;
+- (AMSMediaTaskURLBuilder)initWithConfig:(id)config clientVersion:(id)version bag:(id)bag;
 - (id)_devicePlatform;
 - (id)_hostPromise;
 - (id)_languagePromise;
 - (id)_languagePromiseAppDistribution;
 - (id)_languagePromiseForType;
 - (id)_pathPromise;
-- (id)_queryItemsWithLanguage:(id)a3;
+- (id)_queryItemsWithLanguage:(id)language;
 - (id)_verifyConfiguration;
 - (id)build;
-- (void)_addBundleIdentifiers:(id)a3;
-- (void)_addCharts:(id)a3;
-- (void)_addItemIdentifiers:(id)a3;
-- (void)_addSearchTerm:(id)a3;
+- (void)_addBundleIdentifiers:(id)identifiers;
+- (void)_addCharts:(id)charts;
+- (void)_addItemIdentifiers:(id)identifiers;
+- (void)_addSearchTerm:(id)term;
 @end
 
 @implementation AMSMediaTaskURLBuilder
 
 - (id)_languagePromiseForType
 {
-  v3 = [(AMSMediaTaskURLBuilder *)self config];
-  v4 = [v3 type];
+  config = [(AMSMediaTaskURLBuilder *)self config];
+  type = [config type];
 
-  if (v4 == 7)
+  if (type == 7)
   {
     [(AMSMediaTaskURLBuilder *)self _languagePromiseAppDistribution];
   }
@@ -39,15 +39,15 @@
 - (id)_languagePromise
 {
   v3 = +[AMSProcessInfo currentProcess];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.appstorecomponentsd"];
+  bundleIdentifier = [v3 bundleIdentifier];
+  v5 = [bundleIdentifier isEqualToString:@"com.apple.appstorecomponentsd"];
 
   if (v5)
   {
     v6 = objc_alloc_init(AMSMutablePromise);
     v7 = [(AMSMediaTaskURLBuilder *)self bag];
     v8 = [v7 stringForKey:@"language-tag"];
-    v9 = [v8 valuePromise];
+    valuePromise = [v8 valuePromise];
 
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
@@ -55,7 +55,7 @@
     v17[3] = &unk_1E73B4DF8;
     v10 = v6;
     v18 = v10;
-    [v9 addSuccessBlock:v17];
+    [valuePromise addSuccessBlock:v17];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __42__AMSMediaTaskURLBuilder__languagePromise__block_invoke_2;
@@ -63,15 +63,15 @@
     v15[4] = self;
     v11 = v10;
     v16 = v11;
-    [v9 addErrorBlock:v15];
+    [valuePromise addErrorBlock:v15];
     v12 = v16;
     v13 = v11;
   }
 
   else
   {
-    v9 = +[AMSDevice language];
-    v13 = [AMSPromise promiseWithResult:v9];
+    valuePromise = +[AMSDevice language];
+    v13 = [AMSPromise promiseWithResult:valuePromise];
   }
 
   return v13;
@@ -79,18 +79,18 @@
 
 - (id)_pathPromise
 {
-  v3 = [(AMSMediaTaskURLBuilder *)self appDistributionCountryCodeOverride];
-  if (v3 && (v4 = v3, -[AMSMediaTaskURLBuilder config](self, "config"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 type], v5, v4, v6 == 7))
+  appDistributionCountryCodeOverride = [(AMSMediaTaskURLBuilder *)self appDistributionCountryCodeOverride];
+  if (appDistributionCountryCodeOverride && (v4 = appDistributionCountryCodeOverride, -[AMSMediaTaskURLBuilder config](self, "config"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 type], v5, v4, v6 == 7))
   {
-    v7 = [(AMSMediaTaskURLBuilder *)self appDistributionCountryCodeOverride];
-    v8 = [AMSPromise promiseWithResult:v7];
+    appDistributionCountryCodeOverride2 = [(AMSMediaTaskURLBuilder *)self appDistributionCountryCodeOverride];
+    valuePromise = [AMSPromise promiseWithResult:appDistributionCountryCodeOverride2];
   }
 
   else
   {
-    v7 = [(AMSMediaTaskURLBuilder *)self bag];
-    v9 = [v7 stringForKey:@"countryCode"];
-    v8 = [v9 valuePromise];
+    appDistributionCountryCodeOverride2 = [(AMSMediaTaskURLBuilder *)self bag];
+    v9 = [appDistributionCountryCodeOverride2 stringForKey:@"countryCode"];
+    valuePromise = [v9 valuePromise];
   }
 
   v12[0] = MEMORY[0x1E69E9820];
@@ -98,7 +98,7 @@
   v12[2] = __38__AMSMediaTaskURLBuilder__pathPromise__block_invoke;
   v12[3] = &unk_1E73B4E20;
   v12[4] = self;
-  v10 = [v8 thenWithBlock:v12];
+  v10 = [valuePromise thenWithBlock:v12];
 
   return v10;
 }
@@ -106,20 +106,20 @@
 - (id)build
 {
   v12[3] = *MEMORY[0x1E69E9840];
-  v3 = [(AMSMediaTaskURLBuilder *)self _verifyConfiguration];
-  if (v3)
+  _verifyConfiguration = [(AMSMediaTaskURLBuilder *)self _verifyConfiguration];
+  if (_verifyConfiguration)
   {
-    v4 = [AMSPromise promiseWithError:v3];
+    v4 = [AMSPromise promiseWithError:_verifyConfiguration];
   }
 
   else
   {
-    v5 = [(AMSMediaTaskURLBuilder *)self _hostPromise];
-    v6 = [(AMSMediaTaskURLBuilder *)self _languagePromiseForType];
-    v7 = [(AMSMediaTaskURLBuilder *)self _pathPromise];
-    v12[0] = v5;
-    v12[1] = v6;
-    v12[2] = v7;
+    _hostPromise = [(AMSMediaTaskURLBuilder *)self _hostPromise];
+    _languagePromiseForType = [(AMSMediaTaskURLBuilder *)self _languagePromiseForType];
+    _pathPromise = [(AMSMediaTaskURLBuilder *)self _pathPromise];
+    v12[0] = _hostPromise;
+    v12[1] = _languagePromiseForType;
+    v12[2] = _pathPromise;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:3];
     v9 = [AMSPromise promiseWithAll:v8];
 
@@ -136,17 +136,17 @@
 
 - (id)_verifyConfiguration
 {
-  v3 = [(AMSMediaTaskURLBuilder *)self bundleIdentifiers];
-  v4 = [v3 count];
+  bundleIdentifiers = [(AMSMediaTaskURLBuilder *)self bundleIdentifiers];
+  v4 = [bundleIdentifiers count];
 
-  v5 = [(AMSMediaTaskURLBuilder *)self charts];
+  charts = [(AMSMediaTaskURLBuilder *)self charts];
   v6 = 1;
   if (v4)
   {
     v6 = 2;
   }
 
-  if (v5)
+  if (charts)
   {
     v7 = v6;
   }
@@ -156,8 +156,8 @@
     v7 = v4 != 0;
   }
 
-  v8 = [(AMSMediaTaskURLBuilder *)self itemIdentifiers];
-  v9 = [v8 count];
+  itemIdentifiers = [(AMSMediaTaskURLBuilder *)self itemIdentifiers];
+  v9 = [itemIdentifiers count];
 
   if (v9)
   {
@@ -169,9 +169,9 @@
     v10 = v7;
   }
 
-  v11 = [(AMSMediaTaskURLBuilder *)self searchTerm];
+  searchTerm = [(AMSMediaTaskURLBuilder *)self searchTerm];
 
-  if (v11)
+  if (searchTerm)
   {
     v12 = v10 + 1;
   }
@@ -191,16 +191,16 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v14 = [(AMSMediaTaskURLBuilder *)self config];
-  if ([v14 type] == 3)
+  config = [(AMSMediaTaskURLBuilder *)self config];
+  if ([config type] == 3)
   {
     v15 = 1;
   }
 
   else
   {
-    v17 = [(AMSMediaTaskURLBuilder *)self config];
-    v15 = [v17 type] == 4;
+    config2 = [(AMSMediaTaskURLBuilder *)self config];
+    v15 = [config2 type] == 4;
   }
 
   if (v15 && v12)
@@ -230,8 +230,8 @@ LABEL_20:
 
   else
   {
-    v21 = [(AMSMediaTaskURLBuilder *)self filters];
-    v22 = [v21 count];
+    filters = [(AMSMediaTaskURLBuilder *)self filters];
+    v22 = [filters count];
 
     if (!v22)
     {
@@ -240,14 +240,14 @@ LABEL_20:
     }
   }
 
-  v23 = [(AMSMediaTaskURLBuilder *)self bundleIdentifiers];
-  if (![v23 count])
+  bundleIdentifiers2 = [(AMSMediaTaskURLBuilder *)self bundleIdentifiers];
+  if (![bundleIdentifiers2 count])
   {
     goto LABEL_38;
   }
 
-  v24 = [(AMSMediaTaskURLBuilder *)self config];
-  if (![v24 type])
+  config3 = [(AMSMediaTaskURLBuilder *)self config];
+  if (![config3 type])
   {
 LABEL_37:
 
@@ -255,25 +255,25 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  v25 = [(AMSMediaTaskURLBuilder *)self config];
-  if ([v25 type] == 7)
+  config4 = [(AMSMediaTaskURLBuilder *)self config];
+  if ([config4 type] == 7)
   {
 LABEL_36:
 
     goto LABEL_37;
   }
 
-  v26 = [(AMSMediaTaskURLBuilder *)self config];
-  if ([v26 type] == 1)
+  config5 = [(AMSMediaTaskURLBuilder *)self config];
+  if ([config5 type] == 1)
   {
 
     goto LABEL_36;
   }
 
-  v27 = [(AMSMediaTaskURLBuilder *)self config];
-  v28 = [v27 type];
+  config6 = [(AMSMediaTaskURLBuilder *)self config];
+  type = [config6 type];
 
-  if (v28 != 2)
+  if (type != 2)
   {
     v16 = @"Bundle identifiers only availble for AMSMediaTaskTypeApp, AMSMediaTaskTypeAppBundle, and AMSMediaTaskTypeInApp.";
     goto LABEL_20;
@@ -288,15 +288,15 @@ LABEL_21:
 
 - (id)_hostPromise
 {
-  v3 = [(AMSMediaTaskURLBuilder *)self config];
-  v4 = [v3 hostBagKey];
+  config = [(AMSMediaTaskURLBuilder *)self config];
+  hostBagKey = [config hostBagKey];
 
   v5 = [(AMSMediaTaskURLBuilder *)self bag];
-  v6 = [v5 URLForKey:v4];
+  v6 = [v5 URLForKey:hostBagKey];
 
-  v7 = [v6 valuePromise];
+  valuePromise = [v6 valuePromise];
 
-  return v7;
+  return valuePromise;
 }
 
 id __38__AMSMediaTaskURLBuilder__pathPromise__block_invoke(uint64_t a1, void *a2)
@@ -476,17 +476,17 @@ LABEL_15:
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v8 = objc_opt_class();
     v9 = v8;
-    v10 = [(AMSMediaTaskURLBuilder *)self logKey];
+    logKey = [(AMSMediaTaskURLBuilder *)self logKey];
     v11 = 138543618;
     v12 = v8;
     v13 = 2114;
-    v14 = v10;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unknown device platform", &v11, 0x16u);
+    v14 = logKey;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unknown device platform", &v11, 0x16u);
   }
 
   v4 = 0;
@@ -495,20 +495,20 @@ LABEL_16:
   return v4;
 }
 
-- (AMSMediaTaskURLBuilder)initWithConfig:(id)a3 clientVersion:(id)a4 bag:(id)a5
+- (AMSMediaTaskURLBuilder)initWithConfig:(id)config clientVersion:(id)version bag:(id)bag
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  configCopy = config;
+  versionCopy = version;
+  bagCopy = bag;
   v17.receiver = self;
   v17.super_class = AMSMediaTaskURLBuilder;
   v12 = [(AMSMediaTaskURLBuilder *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_config, a3);
-    objc_storeStrong(&v13->_clientVersion, a4);
-    objc_storeStrong(&v13->_bag, a5);
+    objc_storeStrong(&v12->_config, config);
+    objc_storeStrong(&v13->_clientVersion, version);
+    objc_storeStrong(&v13->_bag, bag);
     v14 = AMSGenerateLogCorrelationKey();
     logKey = v13->_logKey;
     v13->_logKey = v14;
@@ -548,8 +548,8 @@ void __42__AMSMediaTaskURLBuilder__languagePromise__block_invoke_4(uint64_t a1)
 {
   v2 = [(AMSMediaTaskURLBuilder *)self bag];
   v3 = [v2 stringForKey:@"app-distribution-language-tag"];
-  v4 = [v3 valuePromise];
-  v5 = [v4 continueWithBlock:&__block_literal_global_83];
+  valuePromise = [v3 valuePromise];
+  v5 = [valuePromise continueWithBlock:&__block_literal_global_83];
 
   return v5;
 }
@@ -570,29 +570,29 @@ id __57__AMSMediaTaskURLBuilder__languagePromiseAppDistribution__block_invoke(ui
   return v2;
 }
 
-- (id)_queryItemsWithLanguage:(id)a3
+- (id)_queryItemsWithLanguage:(id)language
 {
   v55 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  languageCopy = language;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v43 = v4;
-  v6 = [MEMORY[0x1E696AF60] queryItemWithName:@"l" value:v4];
+  v43 = languageCopy;
+  v6 = [MEMORY[0x1E696AF60] queryItemWithName:@"l" value:languageCopy];
   [v5 addObject:v6];
 
-  v7 = [(AMSMediaTaskURLBuilder *)self config];
-  v8 = [v7 includePlatform];
+  config = [(AMSMediaTaskURLBuilder *)self config];
+  includePlatform = [config includePlatform];
 
-  if (v8)
+  if (includePlatform)
   {
-    v9 = [(AMSMediaTaskURLBuilder *)self _devicePlatform];
-    if (v9)
+    _devicePlatform = [(AMSMediaTaskURLBuilder *)self _devicePlatform];
+    if (_devicePlatform)
     {
-      v10 = [MEMORY[0x1E696AF60] queryItemWithName:@"platform" value:v9];
+      v10 = [MEMORY[0x1E696AF60] queryItemWithName:@"platform" value:_devicePlatform];
       [v5 addObject:v10];
     }
 
-    v11 = [(AMSMediaTaskURLBuilder *)self additionalPlatforms];
-    v12 = [v11 componentsJoinedByString:{@", "}];
+    additionalPlatforms = [(AMSMediaTaskURLBuilder *)self additionalPlatforms];
+    v12 = [additionalPlatforms componentsJoinedByString:{@", "}];
 
     if (v12)
     {
@@ -601,15 +601,15 @@ id __57__AMSMediaTaskURLBuilder__languagePromiseAppDistribution__block_invoke(ui
     }
   }
 
-  v14 = [(AMSMediaTaskURLBuilder *)self includedResultKeys];
+  includedResultKeys = [(AMSMediaTaskURLBuilder *)self includedResultKeys];
 
-  if (v14)
+  if (includedResultKeys)
   {
     if ([(AMSMediaTaskURLBuilder *)self charts]|| ([(AMSMediaTaskURLBuilder *)self searchTerm], v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
     {
-      v16 = [(AMSMediaTaskURLBuilder *)self config];
-      v17 = [v16 typeString];
-      v18 = [@"include[{type}]" stringByReplacingOccurrencesOfString:@"{type}" withString:v17];
+      config2 = [(AMSMediaTaskURLBuilder *)self config];
+      typeString = [config2 typeString];
+      v18 = [@"include[{type}]" stringByReplacingOccurrencesOfString:@"{type}" withString:typeString];
     }
 
     else
@@ -617,8 +617,8 @@ id __57__AMSMediaTaskURLBuilder__languagePromiseAppDistribution__block_invoke(ui
       v18 = @"include";
     }
 
-    v19 = [(AMSMediaTaskURLBuilder *)self includedResultKeys];
-    v20 = [v19 componentsJoinedByString:{@", "}];
+    includedResultKeys2 = [(AMSMediaTaskURLBuilder *)self includedResultKeys];
+    v20 = [includedResultKeys2 componentsJoinedByString:{@", "}];
 
     v21 = [MEMORY[0x1E696AF60] queryItemWithName:v18 value:v20];
     [v5 addObject:v21];
@@ -645,8 +645,8 @@ id __57__AMSMediaTaskURLBuilder__languagePromiseAppDistribution__block_invoke(ui
 
         v26 = *(*(&v49 + 1) + 8 * i);
         v27 = [@"filter[{filter}]" stringByReplacingOccurrencesOfString:@"{filter}" withString:v26];
-        v28 = [(AMSMediaTaskURLBuilder *)self filters];
-        v29 = [v28 objectForKeyedSubscript:v26];
+        filters = [(AMSMediaTaskURLBuilder *)self filters];
+        v29 = [filters objectForKeyedSubscript:v26];
 
         v30 = [MEMORY[0x1E696AF60] queryItemWithName:v27 value:v29];
         [v5 addObject:v30];
@@ -662,8 +662,8 @@ id __57__AMSMediaTaskURLBuilder__languagePromiseAppDistribution__block_invoke(ui
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v31 = [(AMSMediaTaskURLBuilder *)self additionalQueryParams];
-  v32 = [v31 countByEnumeratingWithState:&v45 objects:v53 count:16];
+  additionalQueryParams = [(AMSMediaTaskURLBuilder *)self additionalQueryParams];
+  v32 = [additionalQueryParams countByEnumeratingWithState:&v45 objects:v53 count:16];
   if (v32)
   {
     v33 = v32;
@@ -674,18 +674,18 @@ id __57__AMSMediaTaskURLBuilder__languagePromiseAppDistribution__block_invoke(ui
       {
         if (*v46 != v34)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(additionalQueryParams);
         }
 
         v36 = *(*(&v45 + 1) + 8 * j);
         v37 = MEMORY[0x1E696AF60];
-        v38 = [(AMSMediaTaskURLBuilder *)self additionalQueryParams];
-        v39 = [v38 objectForKeyedSubscript:v36];
+        additionalQueryParams2 = [(AMSMediaTaskURLBuilder *)self additionalQueryParams];
+        v39 = [additionalQueryParams2 objectForKeyedSubscript:v36];
         v40 = [v37 queryItemWithName:v36 value:v39];
         [v5 addObject:v40];
       }
 
-      v33 = [v31 countByEnumeratingWithState:&v45 objects:v53 count:16];
+      v33 = [additionalQueryParams countByEnumeratingWithState:&v45 objects:v53 count:16];
     }
 
     while (v33);
@@ -706,104 +706,104 @@ uint64_t __50__AMSMediaTaskURLBuilder__queryItemsWithLanguage___block_invoke(uin
   return v7;
 }
 
-- (void)_addBundleIdentifiers:(id)a3
+- (void)_addBundleIdentifiers:(id)identifiers
 {
-  v13 = a3;
-  v4 = [(AMSMediaTaskURLBuilder *)self bundleIdentifiers];
-  v5 = [v4 count];
+  identifiersCopy = identifiers;
+  bundleIdentifiers = [(AMSMediaTaskURLBuilder *)self bundleIdentifiers];
+  v5 = [bundleIdentifiers count];
 
   if (v5)
   {
-    v6 = [(AMSMediaTaskURLBuilder *)self bundleIdentifiers];
-    v7 = [v6 sortedArrayUsingSelector:sel_compare_];
+    bundleIdentifiers2 = [(AMSMediaTaskURLBuilder *)self bundleIdentifiers];
+    v7 = [bundleIdentifiers2 sortedArrayUsingSelector:sel_compare_];
 
     v8 = [v7 componentsJoinedByString:{@", "}];
     v9 = [@"filter[{filter}]" stringByReplacingOccurrencesOfString:@"{filter}" withString:@"bundleId"];
     v10 = [MEMORY[0x1E696AF60] queryItemWithName:v9 value:v8];
-    v11 = [v13 queryItems];
-    v12 = [v11 arrayByAddingObject:v10];
-    [v13 setQueryItems:v12];
+    queryItems = [identifiersCopy queryItems];
+    v12 = [queryItems arrayByAddingObject:v10];
+    [identifiersCopy setQueryItems:v12];
   }
 }
 
-- (void)_addCharts:(id)a3
+- (void)_addCharts:(id)charts
 {
-  v10 = a3;
+  chartsCopy = charts;
   if ([(AMSMediaTaskURLBuilder *)self charts])
   {
     v4 = MEMORY[0x1E696AF60];
-    v5 = [(AMSMediaTaskURLBuilder *)self config];
-    v6 = [v5 typeString];
-    v7 = [v4 queryItemWithName:@"types" value:v6];
+    config = [(AMSMediaTaskURLBuilder *)self config];
+    typeString = [config typeString];
+    v7 = [v4 queryItemWithName:@"types" value:typeString];
 
-    v8 = [v10 queryItems];
-    v9 = [v8 arrayByAddingObject:v7];
-    [v10 setQueryItems:v9];
+    queryItems = [chartsCopy queryItems];
+    v9 = [queryItems arrayByAddingObject:v7];
+    [chartsCopy setQueryItems:v9];
   }
 }
 
-- (void)_addItemIdentifiers:(id)a3
+- (void)_addItemIdentifiers:(id)identifiers
 {
-  v15 = a3;
-  v4 = [(AMSMediaTaskURLBuilder *)self itemIdentifiers];
-  v5 = [v4 count];
+  identifiersCopy = identifiers;
+  itemIdentifiers = [(AMSMediaTaskURLBuilder *)self itemIdentifiers];
+  v5 = [itemIdentifiers count];
 
-  v6 = [(AMSMediaTaskURLBuilder *)self itemIdentifiers];
-  v7 = v6;
+  itemIdentifiers2 = [(AMSMediaTaskURLBuilder *)self itemIdentifiers];
+  v7 = itemIdentifiers2;
   if (v5 == 1)
   {
-    v8 = [v6 firstObject];
+    firstObject = [itemIdentifiers2 firstObject];
 
-    v9 = [v15 path];
-    v10 = [v9 stringByAppendingPathComponent:v8];
-    [v15 setPath:v10];
+    path = [identifiersCopy path];
+    v10 = [path stringByAppendingPathComponent:firstObject];
+    [identifiersCopy setPath:v10];
   }
 
   else
   {
-    v11 = [v6 count];
+    v11 = [itemIdentifiers2 count];
 
     if (v11 < 2)
     {
       goto LABEL_6;
     }
 
-    v12 = [(AMSMediaTaskURLBuilder *)self itemIdentifiers];
-    v8 = [v12 sortedArrayUsingSelector:sel_compare_];
+    itemIdentifiers3 = [(AMSMediaTaskURLBuilder *)self itemIdentifiers];
+    firstObject = [itemIdentifiers3 sortedArrayUsingSelector:sel_compare_];
 
-    v9 = [v8 componentsJoinedByString:{@", "}];
-    v10 = [MEMORY[0x1E696AF60] queryItemWithName:@"ids" value:v9];
-    v13 = [v15 queryItems];
-    v14 = [v13 arrayByAddingObject:v10];
-    [v15 setQueryItems:v14];
+    path = [firstObject componentsJoinedByString:{@", "}];
+    v10 = [MEMORY[0x1E696AF60] queryItemWithName:@"ids" value:path];
+    queryItems = [identifiersCopy queryItems];
+    v14 = [queryItems arrayByAddingObject:v10];
+    [identifiersCopy setQueryItems:v14];
   }
 
 LABEL_6:
 }
 
-- (void)_addSearchTerm:(id)a3
+- (void)_addSearchTerm:(id)term
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AMSMediaTaskURLBuilder *)self searchTerm];
+  termCopy = term;
+  searchTerm = [(AMSMediaTaskURLBuilder *)self searchTerm];
 
-  if (v5)
+  if (searchTerm)
   {
     v6 = MEMORY[0x1E696AF60];
-    v7 = [(AMSMediaTaskURLBuilder *)self searchTerm];
-    v8 = [v6 queryItemWithName:@"term" value:v7];
+    searchTerm2 = [(AMSMediaTaskURLBuilder *)self searchTerm];
+    v8 = [v6 queryItemWithName:@"term" value:searchTerm2];
 
     v9 = MEMORY[0x1E696AF60];
-    v10 = [(AMSMediaTaskURLBuilder *)self config];
-    v11 = [v10 typeString];
-    v12 = [v9 queryItemWithName:@"types" value:v11];
+    config = [(AMSMediaTaskURLBuilder *)self config];
+    typeString = [config typeString];
+    v12 = [v9 queryItemWithName:@"types" value:typeString];
 
-    v13 = [v4 queryItems];
+    queryItems = [termCopy queryItems];
     v16[0] = v8;
     v16[1] = v12;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
-    v15 = [v13 arrayByAddingObjectsFromArray:v14];
-    [v4 setQueryItems:v15];
+    v15 = [queryItems arrayByAddingObjectsFromArray:v14];
+    [termCopy setQueryItems:v15];
   }
 }
 

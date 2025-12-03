@@ -1,13 +1,13 @@
 @interface OKActionBindingDynamicPan
 + (id)supportedSettings;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (OKActionBindingDynamicPan)init;
-- (OKActionBindingDynamicPan)initWithSettings:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (OKActionBindingDynamicPan)initWithSettings:(id)settings;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)handlePan:(id)a3;
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4;
-- (void)performActionWithState:(unint64_t)a3 location:(CGPoint)a4 touchCount:(unint64_t)a5 translation:(CGPoint)a6 velocity:(CGPoint)a7 direction:(unint64_t)a8 context:(id)a9;
+- (void)handlePan:(id)pan;
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope;
+- (void)performActionWithState:(unint64_t)state location:(CGPoint)location touchCount:(unint64_t)count translation:(CGPoint)translation velocity:(CGPoint)velocity direction:(unint64_t)direction context:(id)context;
 - (void)unload;
 @end
 
@@ -28,28 +28,28 @@
   return result;
 }
 
-- (OKActionBindingDynamicPan)initWithSettings:(id)a3
+- (OKActionBindingDynamicPan)initWithSettings:(id)settings
 {
   v12.receiver = self;
   v12.super_class = OKActionBindingDynamicPan;
   v4 = [(OKActionBindingPan *)&v12 initWithSettings:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"length"];
+    v5 = [settings objectForKey:@"length"];
     if (v5)
     {
       [v5 doubleValue];
       v4->_length = v6;
     }
 
-    v7 = [a3 objectForKey:@"damping"];
+    v7 = [settings objectForKey:@"damping"];
     if (v7)
     {
       [v7 doubleValue];
       v4->_damping = v8;
     }
 
-    v9 = [a3 objectForKey:@"frequency"];
+    v9 = [settings objectForKey:@"frequency"];
     if (v9)
     {
       [v9 doubleValue];
@@ -74,11 +74,11 @@
   [(OKActionBindingPan *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = OKActionBindingDynamicPan;
-  v4 = [(OKActionBindingPan *)&v7 copyWithZone:a3];
+  v4 = [(OKActionBindingPan *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -93,7 +93,7 @@
 + (id)supportedSettings
 {
   v12[3] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKActionBindingDynamicPan;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v11[0] = @"length";
@@ -118,14 +118,14 @@
   return v2;
 }
 
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope
 {
   v6.receiver = self;
   v6.super_class = OKActionBindingDynamicPan;
-  [(OKActionBindingPan *)&v6 loadForResponder:a3 scope:a4];
+  [(OKActionBindingPan *)&v6 loadForResponder:responder scope:scope];
   if (([(OKActionBindingProxy *)self scope]& 1) != 0)
   {
-    [a3 actionView];
+    [responder actionView];
   }
 }
 
@@ -136,30 +136,30 @@
   [(OKActionBindingPan *)&v2 unload];
 }
 
-- (void)performActionWithState:(unint64_t)a3 location:(CGPoint)a4 touchCount:(unint64_t)a5 translation:(CGPoint)a6 velocity:(CGPoint)a7 direction:(unint64_t)a8 context:(id)a9
+- (void)performActionWithState:(unint64_t)state location:(CGPoint)location touchCount:(unint64_t)count translation:(CGPoint)translation velocity:(CGPoint)velocity direction:(unint64_t)direction context:(id)context
 {
-  v10 = [(OKActionPan *)OKActionDynamicPan panActionWithState:a3 location:a5 touchCount:a8 translation:a9 velocity:a4.x direction:a4.y context:a6.x, a6.y, a7.x, a7.y];
+  v10 = [(OKActionPan *)OKActionDynamicPan panActionWithState:state location:count touchCount:direction translation:context velocity:location.x direction:location.y context:translation.x, translation.y, velocity.x, velocity.y];
 
   [(OKActionBindingProxy *)self performAction:v10];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  [a3 view];
+  [recognizer view];
   objc_opt_class();
   return (objc_opt_isKindOfClass() & 1) != 0 && ([(OKActionResponder *)[(OKActionBindingProxy *)self actionResponder] interactivityEnabled]& 1) != 0;
 }
 
-- (void)handlePan:(id)a3
+- (void)handlePan:(id)pan
 {
-  v5 = [a3 view];
-  [a3 locationInView:{objc_msgSend(v5, "superview")}];
+  view = [pan view];
+  [pan locationInView:{objc_msgSend(view, "superview")}];
   v7 = v6;
   v9 = v8;
-  if ([a3 state] == 1)
+  if ([pan state] == 1)
   {
-    [v5 dynamicsRemoveSnapping];
-    [a3 locationInView:v5];
+    [view dynamicsRemoveSnapping];
+    [pan locationInView:view];
     v11 = v10;
     v13 = v12;
     draggingBehavior = self->_draggingBehavior;
@@ -170,24 +170,24 @@
       self->_draggingBehavior = 0;
     }
 
-    [objc_msgSend(a3 "view")];
+    [objc_msgSend(pan "view")];
     v16 = v11 - v15 * 0.5;
-    [objc_msgSend(a3 "view")];
-    self->_draggingBehavior = [objc_alloc(MEMORY[0x277D751A8]) initWithItem:objc_msgSend(v5 offsetFromCenter:"dynamicProxy") attachedToAnchor:{v16, v13 - v17 * 0.5, v7, v9}];
+    [objc_msgSend(pan "view")];
+    self->_draggingBehavior = [objc_alloc(MEMORY[0x277D751A8]) initWithItem:objc_msgSend(view offsetFromCenter:"dynamicProxy") attachedToAnchor:{v16, v13 - v17 * 0.5, v7, v9}];
     [(OKActionBindingDynamicPan *)self length];
     [(UIAttachmentBehavior *)self->_draggingBehavior setLength:?];
     [(OKActionBindingDynamicPan *)self frequency];
     [(UIAttachmentBehavior *)self->_draggingBehavior setFrequency:?];
     [(OKActionBindingDynamicPan *)self damping];
     [(UIAttachmentBehavior *)self->_draggingBehavior setDamping:?];
-    [objc_msgSend(objc_msgSend(v5 "pageViewController")];
+    [objc_msgSend(objc_msgSend(view "pageViewController")];
   }
 
   else
   {
-    v18 = [a3 state];
+    state = [pan state];
     v19 = self->_draggingBehavior;
-    if (v18 == 2)
+    if (state == 2)
     {
       [(UIAttachmentBehavior *)v19 setAnchorPoint:v7, v9];
     }
@@ -202,7 +202,7 @@
 
   v20.receiver = self;
   v20.super_class = OKActionBindingDynamicPan;
-  [(OKActionBindingPan *)&v20 handlePan:a3];
+  [(OKActionBindingPan *)&v20 handlePan:pan];
 }
 
 @end

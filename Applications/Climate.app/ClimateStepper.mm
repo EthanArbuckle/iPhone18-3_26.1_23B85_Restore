@@ -1,9 +1,9 @@
 @interface ClimateStepper
 - (NSArray)preferredFocusEnvironments;
 - (NSUUID)id;
-- (_TtC7Climate14ClimateStepper)initWithFrame:(CGRect)a3;
+- (_TtC7Climate14ClimateStepper)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)longPressTriggered:(id)a3;
+- (void)longPressTriggered:(id)triggered;
 @end
 
 @implementation ClimateStepper
@@ -40,18 +40,18 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   ClimateStepper.layoutSubviews()();
 }
 
-- (void)longPressTriggered:(id)a3
+- (void)longPressTriggered:(id)triggered
 {
-  v4 = a3;
-  v5 = self;
-  ClimateStepper.longPressTriggered(_:)(v4);
+  triggeredCopy = triggered;
+  selfCopy = self;
+  ClimateStepper.longPressTriggered(_:)(triggeredCopy);
 }
 
-- (_TtC7Climate14ClimateStepper)initWithFrame:(CGRect)a3
+- (_TtC7Climate14ClimateStepper)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

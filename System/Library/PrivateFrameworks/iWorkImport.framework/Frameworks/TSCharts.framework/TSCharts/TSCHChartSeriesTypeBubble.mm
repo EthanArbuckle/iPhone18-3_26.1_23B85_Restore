@@ -6,7 +6,7 @@
 - (id)inspectorLocalizedValueLabelsTabName;
 - (id)propertiesForReferenceColors;
 - (id)userInterfaceName;
-- (unsigned)filterChartLabelPosition:(unsigned int)a3;
+- (unsigned)filterChartLabelPosition:(unsigned int)position;
 @end
 
 @implementation TSCHChartSeriesTypeBubble
@@ -31,11 +31,11 @@
   return v2;
 }
 
-- (unsigned)filterChartLabelPosition:(unsigned int)a3
+- (unsigned)filterChartLabelPosition:(unsigned int)position
 {
   v5.receiver = self;
   v5.super_class = TSCHChartSeriesTypeBubble;
-  v3 = [(TSCHChartSeriesTypeScatter *)&v5 filterChartLabelPosition:*&a3];
+  v3 = [(TSCHChartSeriesTypeScatter *)&v5 filterChartLabelPosition:*&position];
   if ((v3 & 0xFFFFFFBC) != 0)
   {
     return v3 & 0xFFFFFFBC | 2;

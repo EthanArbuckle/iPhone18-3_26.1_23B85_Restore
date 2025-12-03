@@ -1,65 +1,65 @@
 @interface CAFTestComplexNestedItems
-+ (id)testComplexNestedItemsWithArray:(id)a3;
-+ (id)testComplexNestedItemsWithTestComplexNestedItems:(id)a3;
-- (CAFTestComplexNestedItems)initWithArray:(id)a3;
-- (CAFTestComplexNestedItems)initWithTestComplexNestedItems:(id)a3;
++ (id)testComplexNestedItemsWithArray:(id)array;
++ (id)testComplexNestedItemsWithTestComplexNestedItems:(id)items;
+- (CAFTestComplexNestedItems)initWithArray:(id)array;
+- (CAFTestComplexNestedItems)initWithTestComplexNestedItems:(id)items;
 - (NSArray)arrayRepresentation;
 - (NSString)formattedValue;
-- (id)objectAtIndex:(unint64_t)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (id)objectAtIndex:(unint64_t)index;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 @end
 
 @implementation CAFTestComplexNestedItems
 
-+ (id)testComplexNestedItemsWithArray:(id)a3
++ (id)testComplexNestedItemsWithArray:(id)array
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithArray:v4];
+  arrayCopy = array;
+  v5 = [[self alloc] initWithArray:arrayCopy];
 
   return v5;
 }
 
-+ (id)testComplexNestedItemsWithTestComplexNestedItems:(id)a3
++ (id)testComplexNestedItemsWithTestComplexNestedItems:(id)items
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithTestComplexNestedItems:v4];
+  itemsCopy = items;
+  v5 = [[self alloc] initWithTestComplexNestedItems:itemsCopy];
 
   return v5;
 }
 
-- (CAFTestComplexNestedItems)initWithTestComplexNestedItems:(id)a3
+- (CAFTestComplexNestedItems)initWithTestComplexNestedItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   v9.receiver = self;
   v9.super_class = CAFTestComplexNestedItems;
   v6 = [(CAFTestComplexNestedItems *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_testComplexNestedItems, a3);
+    objc_storeStrong(&v6->_testComplexNestedItems, items);
   }
 
   return v7;
 }
 
-- (CAFTestComplexNestedItems)initWithArray:(id)a3
+- (CAFTestComplexNestedItems)initWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v18.receiver = self;
   v18.super_class = CAFTestComplexNestedItems;
   v5 = [(CAFTestComplexNestedItems *)&v18 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __43__CAFTestComplexNestedItems_initWithArray___block_invoke;
     v15 = &unk_27890DA70;
-    v16 = v6;
+    v16 = array;
     v7 = v5;
     v17 = v7;
-    v8 = v6;
-    [v4 enumerateObjectsUsingBlock:&v12];
+    v8 = array;
+    [arrayCopy enumerateObjectsUsingBlock:&v12];
     v9 = [v8 copy];
     testComplexNestedItems = v7->_testComplexNestedItems;
     v7->_testComplexNestedItems = v9;
@@ -96,12 +96,12 @@ void __43__CAFTestComplexNestedItems_initWithArray___block_invoke(uint64_t a1, v
 
 - (NSString)formattedValue
 {
-  v3 = [(CAFTestComplexNestedItems *)self testComplexNestedItems];
-  if ([v3 count])
+  testComplexNestedItems = [(CAFTestComplexNestedItems *)self testComplexNestedItems];
+  if ([testComplexNestedItems count])
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(CAFTestComplexNestedItems *)self testComplexNestedItems];
-    v6 = [v5 componentsJoinedByString:{@", "}];
+    testComplexNestedItems2 = [(CAFTestComplexNestedItems *)self testComplexNestedItems];
+    v6 = [testComplexNestedItems2 componentsJoinedByString:{@", "}];
     v7 = [v4 stringWithFormat:@"[ %@ ]", v6];
   }
 
@@ -121,8 +121,8 @@ void __43__CAFTestComplexNestedItems_initWithArray___block_invoke(uint64_t a1, v
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CAFTestComplexNestedItems *)self testComplexNestedItems];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  testComplexNestedItems = [(CAFTestComplexNestedItems *)self testComplexNestedItems];
+  v5 = [testComplexNestedItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -133,14 +133,14 @@ void __43__CAFTestComplexNestedItems_initWithArray___block_invoke(uint64_t a1, v
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(testComplexNestedItems);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
-        [v3 addObject:v9];
+        dictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
+        [v3 addObject:dictionaryRepresentation];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [testComplexNestedItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -151,18 +151,18 @@ void __43__CAFTestComplexNestedItems_initWithArray___block_invoke(uint64_t a1, v
   return v3;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  v4 = [(CAFTestComplexNestedItems *)self testComplexNestedItems];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  testComplexNestedItems = [(CAFTestComplexNestedItems *)self testComplexNestedItems];
+  v5 = [testComplexNestedItems objectAtIndexedSubscript:index];
 
   return v5;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v8 = [(CAFTestComplexNestedItems *)self testComplexNestedItems];
-  v9 = [v8 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  testComplexNestedItems = [(CAFTestComplexNestedItems *)self testComplexNestedItems];
+  v9 = [testComplexNestedItems countByEnumeratingWithState:state objects:objects count:count];
 
   return v9;
 }

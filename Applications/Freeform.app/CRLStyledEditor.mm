@@ -8,44 +8,44 @@
 - (NSString)strokeColorPickerTitle;
 - (_TtC8Freeform13CRLStyledItem)anyStyledItem;
 - (double)strokeWidth;
-- (int64_t)canPerformEditorAction:(SEL)a3 withSender:(id)a4;
-- (void)applyStroke:(id)a3;
-- (void)applyStrokeColor:(id)a3;
-- (void)applyStrokePattern:(id)a3;
-- (void)applyStrokeWidth:(double)a3;
-- (void)beginChangingStrokeWidth:(double)a3;
-- (void)copyStyle:(id)a3;
-- (void)didChangeStrokeWidth:(double)a3;
-- (void)endChangingStrokeWidth:(double)a3;
-- (void)p_enqueueCommandsToAdjustCustomMagnetsForInfo:(id)a3;
-- (void)pasteStyle:(id)a3;
-- (void)takePatternFromStroke:(id)a3 withDefaultStroke:(id)a4;
+- (int64_t)canPerformEditorAction:(SEL)action withSender:(id)sender;
+- (void)applyStroke:(id)stroke;
+- (void)applyStrokeColor:(id)color;
+- (void)applyStrokePattern:(id)pattern;
+- (void)applyStrokeWidth:(double)width;
+- (void)beginChangingStrokeWidth:(double)width;
+- (void)copyStyle:(id)style;
+- (void)didChangeStrokeWidth:(double)width;
+- (void)endChangingStrokeWidth:(double)width;
+- (void)p_enqueueCommandsToAdjustCustomMagnetsForInfo:(id)info;
+- (void)pasteStyle:(id)style;
+- (void)takePatternFromStroke:(id)stroke withDefaultStroke:(id)defaultStroke;
 @end
 
 @implementation CRLStyledEditor
 
 - (_TtC8Freeform13CRLStyledItem)anyStyledItem
 {
-  v2 = [(CRLStyledEditor *)self styledItems];
-  v3 = [v2 anyObject];
+  styledItems = [(CRLStyledEditor *)self styledItems];
+  anyObject = [styledItems anyObject];
 
-  return v3;
+  return anyObject;
 }
 
 - (BOOL)p_canPasteStyle
 {
-  v3 = [(CRLBoardItemEditor *)self editorController];
-  v4 = [v3 mostSpecificCurrentEditorOfClass:objc_opt_class()];
+  editorController = [(CRLBoardItemEditor *)self editorController];
+  v4 = [editorController mostSpecificCurrentEditorOfClass:objc_opt_class()];
 
   if (v4 == self)
   {
-    v6 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    v7 = [v6 canvasEditor];
-    v8 = [v7 pasteboardController];
+    interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    canvasEditor = [interactiveCanvasController canvasEditor];
+    pasteboardController = [canvasEditor pasteboardController];
 
-    v9 = [(CRLStyledEditor *)self styledItems];
+    styledItems = [(CRLStyledEditor *)self styledItems];
     v10 = +[CRLPasteboard stylePasteboard];
-    v11 = [v8 containsStylesRelevantTo:v9 on:v10];
+    v11 = [pasteboardController containsStylesRelevantTo:styledItems on:v10];
 
     if (v11)
     {
@@ -53,8 +53,8 @@
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v12 = [(CRLStyledEditor *)self styledItems];
-      v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      styledItems2 = [(CRLStyledEditor *)self styledItems];
+      v13 = [styledItems2 countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v13)
       {
         v14 = v13;
@@ -65,10 +65,10 @@
           {
             if (*v22 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(styledItems2);
             }
 
-            v17 = [*(*(&v21 + 1) + 8 * i) parentInfo];
+            parentInfo = [*(*(&v21 + 1) + 8 * i) parentInfo];
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
 
@@ -79,7 +79,7 @@
             }
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+          v14 = [styledItems2 countByEnumeratingWithState:&v21 objects:v25 count:16];
           if (v14)
           {
             continue;
@@ -111,38 +111,38 @@ LABEL_15:
 
 - (BOOL)p_canCopyStyle
 {
-  v3 = [(CRLBoardItemEditor *)self editorController];
-  v4 = [v3 mostSpecificCurrentEditorOfClass:objc_opt_class()];
+  editorController = [(CRLBoardItemEditor *)self editorController];
+  v4 = [editorController mostSpecificCurrentEditorOfClass:objc_opt_class()];
 
   if (v4 == self && (-[CRLStyledEditor styledItems](self, "styledItems"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 == 1))
   {
-    v7 = [(CRLStyledEditor *)self styledItems];
-    v8 = [v7 anyObject];
+    styledItems = [(CRLStyledEditor *)self styledItems];
+    anyObject = [styledItems anyObject];
 
-    if (v8)
+    if (anyObject)
     {
-      v9 = [v8 canCopyStyle];
+      canCopyStyle = [anyObject canCopyStyle];
     }
 
     else
     {
-      v9 = 0;
+      canCopyStyle = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    canCopyStyle = 0;
   }
 
-  return v9;
+  return canCopyStyle;
 }
 
-- (int64_t)canPerformEditorAction:(SEL)a3 withSender:(id)a4
+- (int64_t)canPerformEditorAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v10 = "applyStroke:" == a3 || "takePatternFromStroke:withDefaultStroke:" == a3 || "applyStrokeColor:" == a3 || "applyStrokeWidth:" == a3 || "applyStrokePattern:" == a3;
-  if (v10 || "copyStyle:" == a3 && [(CRLStyledEditor *)self p_canCopyStyle]|| sel_isEqual(a3, "pasteStyle:") && [(CRLStyledEditor *)self p_canPasteStyle])
+  senderCopy = sender;
+  v10 = "applyStroke:" == action || "takePatternFromStroke:withDefaultStroke:" == action || "applyStrokeColor:" == action || "applyStrokeWidth:" == action || "applyStrokePattern:" == action;
+  if (v10 || "copyStyle:" == action && [(CRLStyledEditor *)self p_canCopyStyle]|| sel_isEqual(action, "pasteStyle:") && [(CRLStyledEditor *)self p_canPasteStyle])
   {
     v11 = 1;
   }
@@ -151,21 +151,21 @@ LABEL_15:
   {
     v13.receiver = self;
     v13.super_class = CRLStyledEditor;
-    v11 = [(CRLBoardItemEditor *)&v13 canPerformEditorAction:a3 withSender:v6];
+    v11 = [(CRLBoardItemEditor *)&v13 canPerformEditorAction:action withSender:senderCopy];
   }
 
   return v11;
 }
 
-- (void)copyStyle:(id)a3
+- (void)copyStyle:(id)style
 {
   v4 = +[CRLPasteboard stylePasteboard];
-  v5 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v6 = [v5 canvasEditor];
-  v7 = [v6 pasteboardController];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  pasteboardController = [canvasEditor pasteboardController];
 
-  v8 = [(CRLStyledEditor *)self styledItems];
-  v9 = [v8 count];
+  styledItems = [(CRLStyledEditor *)self styledItems];
+  v9 = [styledItems count];
 
   if (v9 != 1)
   {
@@ -197,71 +197,71 @@ LABEL_15:
     [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:160 isFatal:0 description:"Should only copy style with a single object selected"];
   }
 
-  v15 = [(CRLStyledEditor *)self styledItems];
-  v16 = [v15 anyObject];
+  styledItems2 = [(CRLStyledEditor *)self styledItems];
+  anyObject = [styledItems2 anyObject];
 
-  [v7 copyStyleFromItem:v16 to:v4];
-  v17 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v18 = [v17 canvasEditor];
-  [v18 hideLassoSelectionEditMenuInDrawingModeIfLassoToolIsSelected];
+  [pasteboardController copyStyleFromItem:anyObject to:v4];
+  interactiveCanvasController2 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  canvasEditor2 = [interactiveCanvasController2 canvasEditor];
+  [canvasEditor2 hideLassoSelectionEditMenuInDrawingModeIfLassoToolIsSelected];
 }
 
-- (void)pasteStyle:(id)a3
+- (void)pasteStyle:(id)style
 {
   v20 = +[CRLPasteboard stylePasteboard];
-  v4 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v5 = [v4 canvasEditor];
-  v6 = [v5 pasteboardController];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  pasteboardController = [canvasEditor pasteboardController];
 
-  v7 = [(CRLStyledEditor *)self styledItems];
-  v8 = [v6 commandsToPasteStyleTo:v7 from:v20];
+  styledItems = [(CRLStyledEditor *)self styledItems];
+  v8 = [pasteboardController commandsToPasteStyleTo:styledItems from:v20];
 
   if ([v8 count])
   {
-    v9 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    v10 = [v9 commandController];
+    interactiveCanvasController2 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    commandController = [interactiveCanvasController2 commandController];
 
     v11 = [CRLCanvasCommandSelectionBehavior alloc];
-    v12 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    v13 = [v12 canvasEditor];
-    v14 = [(CRLCanvasCommandSelectionBehavior *)v11 initWithCanvasEditor:v13];
+    interactiveCanvasController3 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    canvasEditor2 = [interactiveCanvasController3 canvasEditor];
+    v14 = [(CRLCanvasCommandSelectionBehavior *)v11 initWithCanvasEditor:canvasEditor2];
 
-    [v10 openGroupWithSelectionBehavior:v14];
+    [commandController openGroupWithSelectionBehavior:v14];
     v15 = +[NSBundle mainBundle];
     v16 = [v15 localizedStringForKey:@"Paste Style" value:0 table:@"UndoStrings"];
-    [v10 setCurrentGroupActionString:v16];
+    [commandController setCurrentGroupActionString:v16];
 
     v17 = [[_TtC8Freeform15CRLCommandGroup alloc] initWithCommands:v8];
-    [v10 enqueueCommand:v17];
+    [commandController enqueueCommand:v17];
 
-    [v10 closeGroup];
+    [commandController closeGroup];
   }
 
-  v18 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v19 = [v18 canvasEditor];
-  [v19 hideLassoSelectionEditMenuInDrawingModeIfLassoToolIsSelected];
+  interactiveCanvasController4 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  canvasEditor3 = [interactiveCanvasController4 canvasEditor];
+  [canvasEditor3 hideLassoSelectionEditMenuInDrawingModeIfLassoToolIsSelected];
 }
 
 - (CRLStroke)stroke
 {
-  v2 = [(CRLStyledEditor *)self anyStyledItem];
-  v3 = [v2 stroke];
+  anyStyledItem = [(CRLStyledEditor *)self anyStyledItem];
+  stroke = [anyStyledItem stroke];
 
-  return v3;
+  return stroke;
 }
 
 - (CRLColor)strokeColor
 {
-  v2 = [(CRLStyledEditor *)self stroke];
-  v3 = [v2 color];
+  stroke = [(CRLStyledEditor *)self stroke];
+  color = [stroke color];
 
-  return v3;
+  return color;
 }
 
 - (double)strokeWidth
 {
-  v2 = [(CRLStyledEditor *)self stroke];
-  [v2 width];
+  stroke = [(CRLStyledEditor *)self stroke];
+  [stroke width];
   v4 = v3;
 
   return v4;
@@ -283,30 +283,30 @@ LABEL_15:
   return v3;
 }
 
-- (void)applyStroke:(id)a3
+- (void)applyStroke:(id)stroke
 {
-  v4 = a3;
-  v5 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v6 = [v5 commandController];
+  strokeCopy = stroke;
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  commandController = [interactiveCanvasController commandController];
   v7 = [CRLCanvasCommandSelectionBehavior alloc];
-  v8 = [v5 canvasEditor];
-  v9 = [(CRLCanvasCommandSelectionBehavior *)v7 initWithCanvasEditor:v8 type:2];
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  v9 = [(CRLCanvasCommandSelectionBehavior *)v7 initWithCanvasEditor:canvasEditor type:2];
 
   v24 = v9;
-  [v6 openGroupWithSelectionBehavior:v9];
-  [v6 enableProgressiveEnqueuingInCurrentGroup];
-  v10 = [(CRLStyledEditor *)self currentGroupActionStringForStrokeSetting];
-  [v6 setCurrentGroupActionString:v10];
+  [commandController openGroupWithSelectionBehavior:v9];
+  [commandController enableProgressiveEnqueuingInCurrentGroup];
+  currentGroupActionStringForStrokeSetting = [(CRLStyledEditor *)self currentGroupActionStringForStrokeSetting];
+  [commandController setCurrentGroupActionString:currentGroupActionStringForStrokeSetting];
 
-  v11 = [(CRLStyledEditor *)self styledItems];
-  v12 = [v11 allObjects];
+  styledItems = [(CRLStyledEditor *)self styledItems];
+  allObjects = [styledItems allObjects];
 
-  [v6 openGroup];
+  [commandController openGroup];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v13 = v12;
+  v13 = allObjects;
   v14 = [v13 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v14)
   {
@@ -322,8 +322,8 @@ LABEL_15:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [[_TtC8Freeform19CRLCommandSetStroke alloc] initWithStyledItem:*(*(&v29 + 1) + 8 * v17) stroke:v4];
-        [v6 enqueueCommand:v18];
+        v18 = [[_TtC8Freeform19CRLCommandSetStroke alloc] initWithStyledItem:*(*(&v29 + 1) + 8 * v17) stroke:strokeCopy];
+        [commandController enqueueCommand:v18];
 
         v17 = v17 + 1;
       }
@@ -335,8 +335,8 @@ LABEL_15:
     while (v15);
   }
 
-  [v6 closeGroup];
-  [v6 openGroup];
+  [commandController closeGroup];
+  [commandController openGroup];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
@@ -368,31 +368,31 @@ LABEL_15:
     while (v21);
   }
 
-  [v6 closeGroup];
-  [v6 closeGroup];
+  [commandController closeGroup];
+  [commandController closeGroup];
 }
 
-- (void)applyStrokeColor:(id)a3
+- (void)applyStrokeColor:(id)color
 {
-  v4 = a3;
-  v5 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v6 = [v5 commandController];
+  colorCopy = color;
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  commandController = [interactiveCanvasController commandController];
   v7 = [CRLCanvasCommandSelectionBehavior alloc];
-  v28 = v5;
-  v8 = [v5 canvasEditor];
-  v9 = [(CRLCanvasCommandSelectionBehavior *)v7 initWithCanvasEditor:v8 type:2];
+  v28 = interactiveCanvasController;
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  v9 = [(CRLCanvasCommandSelectionBehavior *)v7 initWithCanvasEditor:canvasEditor type:2];
 
   v27 = v9;
-  [v6 openGroupWithSelectionBehavior:v9];
-  v10 = [(CRLStyledEditor *)self currentGroupActionStringForStrokeSetting];
-  v30 = v6;
-  [v6 setCurrentGroupActionString:v10];
+  [commandController openGroupWithSelectionBehavior:v9];
+  currentGroupActionStringForStrokeSetting = [(CRLStyledEditor *)self currentGroupActionStringForStrokeSetting];
+  v30 = commandController;
+  [commandController setCurrentGroupActionString:currentGroupActionStringForStrokeSetting];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v31 = self;
+  selfCopy = self;
   obj = [(CRLStyledEditor *)self styledItems];
   v11 = [obj countByEnumeratingWithState:&v32 objects:v46 count:16];
   if (v11)
@@ -410,12 +410,12 @@ LABEL_15:
         }
 
         v15 = *(*(&v32 + 1) + 8 * v14);
-        v16 = [v15 stroke];
-        v17 = v16;
-        if (v16 && ![v16 isNullStroke])
+        stroke = [v15 stroke];
+        v17 = stroke;
+        if (stroke && ![stroke isNullStroke])
         {
           v19 = [v17 mutableCopy];
-          [v19 setColor:v4];
+          [v19 setColor:colorCopy];
           if (v19)
           {
 LABEL_9:
@@ -427,8 +427,8 @@ LABEL_9:
 
         else
         {
-          [(CRLStyledEditor *)v31 defaultStrokeWidth];
-          v18 = [CRLStroke strokeWithColor:v4 width:?];
+          [(CRLStyledEditor *)selfCopy defaultStrokeWidth];
+          v18 = [CRLStroke strokeWithColor:colorCopy width:?];
           v19 = [v18 mutableCopy];
 
           if (v19)
@@ -494,31 +494,31 @@ LABEL_20:
   [v30 closeGroup];
 }
 
-- (void)applyStrokeWidth:(double)a3
+- (void)applyStrokeWidth:(double)width
 {
-  v5 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v6 = [v5 commandController];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  commandController = [interactiveCanvasController commandController];
   v7 = [CRLCanvasCommandSelectionBehavior alloc];
-  v37 = v5;
-  v8 = [v5 canvasEditor];
-  v9 = [(CRLCanvasCommandSelectionBehavior *)v7 initWithCanvasEditor:v8 type:2];
+  v37 = interactiveCanvasController;
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  v9 = [(CRLCanvasCommandSelectionBehavior *)v7 initWithCanvasEditor:canvasEditor type:2];
 
   v36 = v9;
-  [v6 openGroupWithSelectionBehavior:v9];
-  [v6 enableProgressiveEnqueuingInCurrentGroup];
-  v10 = [(CRLStyledEditor *)self currentGroupActionStringForStrokeSetting];
-  [v6 setCurrentGroupActionString:v10];
+  [commandController openGroupWithSelectionBehavior:v9];
+  [commandController enableProgressiveEnqueuingInCurrentGroup];
+  currentGroupActionStringForStrokeSetting = [(CRLStyledEditor *)self currentGroupActionStringForStrokeSetting];
+  [commandController setCurrentGroupActionString:currentGroupActionStringForStrokeSetting];
 
-  v11 = [(CRLStyledEditor *)self styledItems];
-  v12 = [v11 allObjects];
+  styledItems = [(CRLStyledEditor *)self styledItems];
+  allObjects = [styledItems allObjects];
 
-  v38 = v6;
-  [v6 openGroup];
+  v38 = commandController;
+  [commandController openGroup];
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v13 = v12;
+  v13 = allObjects;
   v14 = [v13 countByEnumeratingWithState:&v43 objects:v58 count:16];
   if (v14)
   {
@@ -535,12 +535,12 @@ LABEL_20:
         }
 
         v18 = *(*(&v43 + 1) + 8 * v17);
-        v19 = [v18 stroke];
-        v20 = v19;
-        if (v19 && ![v19 isNullStroke])
+        stroke = [v18 stroke];
+        v20 = stroke;
+        if (stroke && ![stroke isNullStroke])
         {
           v23 = [v20 mutableCopy];
-          [v23 setWidth:a3];
+          [v23 setWidth:width];
           if (v23)
           {
 LABEL_9:
@@ -552,8 +552,8 @@ LABEL_9:
 
         else
         {
-          v21 = [(CRLStyledEditor *)self defaultStrokeColor];
-          v22 = [CRLStroke strokeWithColor:v21 width:a3];
+          defaultStrokeColor = [(CRLStyledEditor *)self defaultStrokeColor];
+          v22 = [CRLStroke strokeWithColor:defaultStrokeColor width:width];
           v23 = [v22 mutableCopy];
 
           if (v23)
@@ -650,21 +650,21 @@ LABEL_20:
   [v38 closeGroup];
 }
 
-- (void)p_enqueueCommandsToAdjustCustomMagnetsForInfo:(id)a3
+- (void)p_enqueueCommandsToAdjustCustomMagnetsForInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v6 = [v5 layoutForInfo:v4];
+  infoCopy = info;
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  v6 = [interactiveCanvasController layoutForInfo:infoCopy];
   v7 = v6;
   if (v6)
   {
     [v6 adjustCustomMagnetPositions];
-    v8 = [v7 commandsForAdjustingMagnetsFromClineLayouts];
+    commandsForAdjustingMagnetsFromClineLayouts = [v7 commandsForAdjustingMagnetsFromClineLayouts];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v9 = [commandsForAdjustingMagnetsFromClineLayouts countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
       v10 = v9;
@@ -676,18 +676,18 @@ LABEL_20:
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(commandsForAdjustingMagnetsFromClineLayouts);
           }
 
           v13 = *(*(&v15 + 1) + 8 * v12);
-          v14 = [v5 commandController];
-          [v14 enqueueCommand:v13];
+          commandController = [interactiveCanvasController commandController];
+          [commandController enqueueCommand:v13];
 
           v12 = v12 + 1;
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v10 = [commandsForAdjustingMagnetsFromClineLayouts countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v10);
@@ -695,17 +695,17 @@ LABEL_20:
   }
 }
 
-- (void)beginChangingStrokeWidth:(double)a3
+- (void)beginChangingStrokeWidth:(double)width
 {
-  v4 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
   self->mIsChangingStrokeWidth = 1;
-  [v4 beginDynamicOperation];
+  [interactiveCanvasController beginDynamicOperation];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(CRLStyledEditor *)self styledItems];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  styledItems = [(CRLStyledEditor *)self styledItems];
+  v6 = [styledItems countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -717,32 +717,32 @@ LABEL_20:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(styledItems);
         }
 
-        v10 = [v4 layoutForInfo:*(*(&v11 + 1) + 8 * v9)];
+        v10 = [interactiveCanvasController layoutForInfo:*(*(&v11 + 1) + 8 * v9)];
         [v10 dynamicStrokeWidthChangeDidBegin];
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [styledItems countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)didChangeStrokeWidth:(double)a3
+- (void)didChangeStrokeWidth:(double)width
 {
-  v5 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(CRLStyledEditor *)self styledItems];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  styledItems = [(CRLStyledEditor *)self styledItems];
+  v7 = [styledItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -754,32 +754,32 @@ LABEL_20:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(styledItems);
         }
 
-        v11 = [v5 layoutForInfo:*(*(&v12 + 1) + 8 * v10)];
-        [v11 dynamicStrokeWidthUpdateToValue:a3];
+        v11 = [interactiveCanvasController layoutForInfo:*(*(&v12 + 1) + 8 * v10)];
+        [v11 dynamicStrokeWidthUpdateToValue:width];
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [styledItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)endChangingStrokeWidth:(double)a3
+- (void)endChangingStrokeWidth:(double)width
 {
-  v5 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(CRLStyledEditor *)self styledItems];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  styledItems = [(CRLStyledEditor *)self styledItems];
+  v7 = [styledItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -791,42 +791,42 @@ LABEL_20:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(styledItems);
         }
 
-        v11 = [v5 layoutForInfo:*(*(&v12 + 1) + 8 * v10)];
+        v11 = [interactiveCanvasController layoutForInfo:*(*(&v12 + 1) + 8 * v10)];
         [v11 dynamicStrokeWidthChangeDidEnd];
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [styledItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
   }
 
-  [v5 willEndDynamicOperation];
-  [v5 endDynamicOperation];
+  [interactiveCanvasController willEndDynamicOperation];
+  [interactiveCanvasController endDynamicOperation];
   self->mIsChangingStrokeWidth = 0;
-  [(CRLStyledEditor *)self applyStrokeWidth:a3];
+  [(CRLStyledEditor *)self applyStrokeWidth:width];
 }
 
-- (void)takePatternFromStroke:(id)a3 withDefaultStroke:(id)a4
+- (void)takePatternFromStroke:(id)stroke withDefaultStroke:(id)defaultStroke
 {
-  v6 = a3;
-  v26 = a4;
-  v7 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v8 = [v7 commandController];
+  strokeCopy = stroke;
+  defaultStrokeCopy = defaultStroke;
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  commandController = [interactiveCanvasController commandController];
   v9 = [CRLCanvasCommandSelectionBehavior alloc];
-  v24 = v7;
-  v10 = [v7 canvasEditor];
-  v11 = [(CRLCanvasCommandSelectionBehavior *)v9 initWithCanvasEditor:v10 type:2];
+  v24 = interactiveCanvasController;
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  v11 = [(CRLCanvasCommandSelectionBehavior *)v9 initWithCanvasEditor:canvasEditor type:2];
 
-  [v8 openGroupWithSelectionBehavior:v11];
-  v12 = [(CRLStyledEditor *)self currentGroupActionStringForStrokeSetting];
-  [v8 setCurrentGroupActionString:v12];
+  [commandController openGroupWithSelectionBehavior:v11];
+  currentGroupActionStringForStrokeSetting = [(CRLStyledEditor *)self currentGroupActionStringForStrokeSetting];
+  [commandController setCurrentGroupActionString:currentGroupActionStringForStrokeSetting];
 
   v29 = 0u;
   v30 = 0u;
@@ -848,27 +848,27 @@ LABEL_20:
         }
 
         v17 = *(*(&v27 + 1) + 8 * i);
-        v18 = [v17 stroke];
-        v19 = [v6 mutableCopy];
-        if (v18 && ([v18 isNullStroke] & 1) == 0)
+        stroke = [v17 stroke];
+        v19 = [strokeCopy mutableCopy];
+        if (stroke && ([stroke isNullStroke] & 1) == 0)
         {
           v20 = v19;
-          v21 = v18;
+          v21 = stroke;
         }
 
         else
         {
           v20 = v19;
-          v21 = v26;
+          v21 = defaultStrokeCopy;
         }
 
         [v20 setPropertiesFromStroke:v21];
-        v22 = [v6 pattern];
-        [v19 setPattern:v22];
+        pattern = [strokeCopy pattern];
+        [v19 setPattern:pattern];
 
-        [v19 setCap:{objc_msgSend(v6, "cap")}];
+        [v19 setCap:{objc_msgSend(strokeCopy, "cap")}];
         v23 = [[_TtC8Freeform19CRLCommandSetStroke alloc] initWithStyledItem:v17 stroke:v19];
-        [v8 enqueueCommand:v23];
+        [commandController enqueueCommand:v23];
       }
 
       v14 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -877,24 +877,24 @@ LABEL_20:
     while (v14);
   }
 
-  [v8 closeGroup];
+  [commandController closeGroup];
 }
 
-- (void)applyStrokePattern:(id)a3
+- (void)applyStrokePattern:(id)pattern
 {
-  v4 = a3;
-  v5 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v6 = [v5 commandController];
+  patternCopy = pattern;
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  commandController = [interactiveCanvasController commandController];
   v7 = [CRLCanvasCommandSelectionBehavior alloc];
-  v28 = v5;
-  v8 = [v5 canvasEditor];
-  v9 = [(CRLCanvasCommandSelectionBehavior *)v7 initWithCanvasEditor:v8 type:2];
+  v28 = interactiveCanvasController;
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  v9 = [(CRLCanvasCommandSelectionBehavior *)v7 initWithCanvasEditor:canvasEditor type:2];
 
   v27 = v9;
-  [v6 openGroupWithSelectionBehavior:v9];
-  v10 = [(CRLStyledEditor *)self currentGroupActionStringForStrokeSetting];
-  v30 = v6;
-  [v6 setCurrentGroupActionString:v10];
+  [commandController openGroupWithSelectionBehavior:v9];
+  currentGroupActionStringForStrokeSetting = [(CRLStyledEditor *)self currentGroupActionStringForStrokeSetting];
+  v30 = commandController;
+  [commandController setCurrentGroupActionString:currentGroupActionStringForStrokeSetting];
 
   v33 = 0u;
   v34 = 0u;
@@ -917,9 +917,9 @@ LABEL_20:
         }
 
         v15 = *(*(&v31 + 1) + 8 * v14);
-        v16 = [v15 stroke];
-        v17 = v16;
-        if (v16 && ![v16 isNullStroke])
+        stroke = [v15 stroke];
+        v17 = stroke;
+        if (stroke && ![stroke isNullStroke])
         {
           v19 = [v17 mutableCopy];
         }
@@ -930,7 +930,7 @@ LABEL_20:
           v19 = [(CRLStroke *)v18 mutableCopy];
         }
 
-        [v19 setPattern:v4];
+        [v19 setPattern:patternCopy];
         if (v19)
         {
           v20 = [[_TtC8Freeform19CRLCommandSetStroke alloc] initWithStyledItem:v15 stroke:v19];
@@ -1002,8 +1002,8 @@ LABEL_20:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(CRLStyledEditor *)self styledItems];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  styledItems = [(CRLStyledEditor *)self styledItems];
+  v3 = [styledItems countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -1013,12 +1013,12 @@ LABEL_20:
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(styledItems);
         }
 
-        v6 = [*(*(&v9 + 1) + 8 * i) stroke];
-        v7 = v6;
-        if (v6 && ![v6 isNullStroke])
+        stroke = [*(*(&v9 + 1) + 8 * i) stroke];
+        v7 = stroke;
+        if (stroke && ![stroke isNullStroke])
         {
 
           LOBYTE(v3) = 1;
@@ -1026,7 +1026,7 @@ LABEL_20:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [styledItems countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;

@@ -2,22 +2,22 @@
 - (id)_init;
 - (id)allFields;
 - (id)description;
-- (id)generateDatums:(id)a3;
+- (id)generateDatums:(id)datums;
 @end
 
 @implementation HDCrossTrainerData
 
-- (id)generateDatums:(id)a3
+- (id)generateDatums:(id)datums
 {
-  v4 = a3;
+  datumsCopy = datums;
   v5 = objc_alloc_init(NSMutableDictionary);
   v6 = +[NSUserDefaults standardUserDefaults];
   v7 = [v6 persistentDomainForName:kHKConnectedGymPreferencesDomain];
 
   v8 = [v7 objectForKeyedSubscript:@"ConnectedGymLegacySpeed"];
-  v9 = [v8 BOOLValue];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
     if ([(HDCrossTrainerData *)self instantaneousSpeedIsSet])
     {
@@ -27,7 +27,7 @@
 
       v12 = [HDQuantityDatum alloc];
       v13 = +[NSUUID UUID];
-      v14 = [v12 initWithIdentifier:v13 dateInterval:v4 resumeContext:0 quantity:v11];
+      v14 = [v12 initWithIdentifier:v13 dateInterval:datumsCopy resumeContext:0 quantity:v11];
 
       [v5 setObject:v14 forKeyedSubscript:&off_5F7C0];
     }
@@ -40,7 +40,7 @@
 
       v17 = [HDQuantityDatum alloc];
       v18 = +[NSUUID UUID];
-      v19 = [v17 initWithIdentifier:v18 dateInterval:v4 resumeContext:0 quantity:v16];
+      v19 = [v17 initWithIdentifier:v18 dateInterval:datumsCopy resumeContext:0 quantity:v16];
 
       [v5 setObject:v19 forKeyedSubscript:&off_5F7D8];
     }
@@ -53,7 +53,7 @@
 
     v22 = [HDQuantityDatum alloc];
     v23 = +[NSUUID UUID];
-    v24 = [v22 initWithIdentifier:v23 dateInterval:v4 resumeContext:0 quantity:v21];
+    v24 = [v22 initWithIdentifier:v23 dateInterval:datumsCopy resumeContext:0 quantity:v21];
 
     [v5 setObject:v24 forKeyedSubscript:&off_5F7F0];
   }
@@ -66,7 +66,7 @@
 
     v27 = [HDQuantityDatum alloc];
     v28 = +[NSUUID UUID];
-    v29 = [v27 initWithIdentifier:v28 dateInterval:v4 resumeContext:0 quantity:v26];
+    v29 = [v27 initWithIdentifier:v28 dateInterval:datumsCopy resumeContext:0 quantity:v26];
 
     [v5 setObject:v29 forKeyedSubscript:&off_5F808];
   }
@@ -78,7 +78,7 @@
 
     v32 = [HDQuantityDatum alloc];
     v33 = +[NSUUID UUID];
-    v34 = [v32 initWithIdentifier:v33 dateInterval:v4 resumeContext:0 quantity:v31];
+    v34 = [v32 initWithIdentifier:v33 dateInterval:datumsCopy resumeContext:0 quantity:v31];
 
     [v5 setObject:v34 forKeyedSubscript:&off_5F820];
   }
@@ -91,7 +91,7 @@
 
     v37 = [HDQuantityDatum alloc];
     v38 = +[NSUUID UUID];
-    v39 = [v37 initWithIdentifier:v38 dateInterval:v4 resumeContext:0 quantity:v36];
+    v39 = [v37 initWithIdentifier:v38 dateInterval:datumsCopy resumeContext:0 quantity:v36];
 
     [v5 setObject:v39 forKeyedSubscript:&off_5F838];
   }
@@ -104,7 +104,7 @@
 
     v42 = [HDQuantityDatum alloc];
     v43 = +[NSUUID UUID];
-    v44 = [v42 initWithIdentifier:v43 dateInterval:v4 resumeContext:0 quantity:v41];
+    v44 = [v42 initWithIdentifier:v43 dateInterval:datumsCopy resumeContext:0 quantity:v41];
 
     [v5 setObject:v44 forKeyedSubscript:&off_5F850];
   }
@@ -116,7 +116,7 @@
 
     v47 = [HDQuantityDatum alloc];
     v48 = +[NSUUID UUID];
-    v49 = [v47 initWithIdentifier:v48 dateInterval:v4 resumeContext:0 quantity:v46];
+    v49 = [v47 initWithIdentifier:v48 dateInterval:datumsCopy resumeContext:0 quantity:v46];
 
     [v5 setObject:v49 forKeyedSubscript:&off_5F868];
   }
@@ -128,7 +128,7 @@
 
     v52 = [HDQuantityDatum alloc];
     v53 = +[NSUUID UUID];
-    v54 = [v52 initWithIdentifier:v53 dateInterval:v4 resumeContext:0 quantity:v51];
+    v54 = [v52 initWithIdentifier:v53 dateInterval:datumsCopy resumeContext:0 quantity:v51];
 
     [v5 setObject:v54 forKeyedSubscript:&off_5F880];
   }
@@ -140,7 +140,7 @@
 
     v57 = [HDQuantityDatum alloc];
     v58 = +[NSUUID UUID];
-    v59 = [v57 initWithIdentifier:v58 dateInterval:v4 resumeContext:0 quantity:v56];
+    v59 = [v57 initWithIdentifier:v58 dateInterval:datumsCopy resumeContext:0 quantity:v56];
 
     [v5 setObject:v59 forKeyedSubscript:&off_5F898];
   }
@@ -152,7 +152,7 @@
 
     v62 = [HDQuantityDatum alloc];
     v63 = +[NSUUID UUID];
-    v64 = [v62 initWithIdentifier:v63 dateInterval:v4 resumeContext:0 quantity:v61];
+    v64 = [v62 initWithIdentifier:v63 dateInterval:datumsCopy resumeContext:0 quantity:v61];
 
     [v5 setObject:v64 forKeyedSubscript:&off_5F8B0];
   }
@@ -201,101 +201,101 @@
 {
   v44.receiver = self;
   v44.super_class = HDCrossTrainerData;
-  v2 = [(HDHealthServiceCharacteristic *)&v44 _init];
-  if (v2)
+  _init = [(HDHealthServiceCharacteristic *)&v44 _init];
+  if (_init)
   {
     v3 = [(HDFitnessMachineCharacteristicField *)[HDFitnessMachineCharacteristicDoubleField alloc] initWithCorrespondingFlagBit:0 fieldLength:2 factor:100];
-    v4 = *(v2 + 2);
-    *(v2 + 2) = v3;
+    v4 = *(_init + 2);
+    *(_init + 2) = v3;
 
-    [*(v2 + 2) setFlagFieldFlipped:1];
+    [*(_init + 2) setFlagFieldFlipped:1];
     v5 = [(HDFitnessMachineCharacteristicField *)[HDFitnessMachineCharacteristicDoubleField alloc] initWithCorrespondingFlagBit:1 fieldLength:2 factor:100];
-    v6 = *(v2 + 3);
-    *(v2 + 3) = v5;
+    v6 = *(_init + 3);
+    *(_init + 3) = v5;
 
     v7 = [(HDFitnessMachineCharacteristicField *)[HDFitnessMachineCharacteristicUInt24Field alloc] initWithCorrespondingFlagBit:2 fieldLength:3 factor:1];
-    v8 = *(v2 + 4);
-    *(v2 + 4) = v7;
+    v8 = *(_init + 4);
+    *(_init + 4) = v7;
 
     v9 = [(HDFitnessMachineCharacteristicField *)[HDFitnessMachineCharacteristicUInt16Field alloc] initWithCorrespondingFlagBit:3 fieldLength:2 factor:1];
-    v10 = *(v2 + 5);
-    *(v2 + 5) = v9;
+    v10 = *(_init + 5);
+    *(_init + 5) = v9;
 
     v11 = [(HDFitnessMachineCharacteristicField *)[HDFitnessMachineCharacteristicUInt16Field alloc] initWithCorrespondingFlagBit:3 fieldLength:2 factor:1];
-    v12 = *(v2 + 6);
-    *(v2 + 6) = v11;
+    v12 = *(_init + 6);
+    *(_init + 6) = v11;
 
     v13 = [(HDFitnessMachineCharacteristicField *)[HDFitnessMachineCharacteristicDoubleField alloc] initWithCorrespondingFlagBit:4 fieldLength:2 factor:10];
-    v14 = *(v2 + 7);
-    *(v2 + 7) = v13;
+    v14 = *(_init + 7);
+    *(_init + 7) = v13;
 
     v15 = [(HDFitnessMachineCharacteristicField *)[HDFitnessMachineCharacteristicUInt16Field alloc] initWithCorrespondingFlagBit:5 fieldLength:2 factor:1];
-    v16 = *(v2 + 8);
-    *(v2 + 8) = v15;
+    v16 = *(_init + 8);
+    *(_init + 8) = v15;
 
     v17 = [(HDFitnessMachineCharacteristicField *)[HDFitnessMachineCharacteristicUInt16Field alloc] initWithCorrespondingFlagBit:5 fieldLength:2 factor:1];
-    v18 = *(v2 + 9);
-    *(v2 + 9) = v17;
+    v18 = *(_init + 9);
+    *(_init + 9) = v17;
 
     v19 = [(HDFitnessMachineCharacteristicField *)[HDFitnessMachineCharacteristicDoubleField alloc] initWithCorrespondingFlagBit:6 fieldLength:2 factor:10];
-    v20 = *(v2 + 10);
-    *(v2 + 10) = v19;
+    v20 = *(_init + 10);
+    *(_init + 10) = v19;
 
-    [*(v2 + 10) setIsSigned:1];
+    [*(_init + 10) setIsSigned:1];
     v21 = [(HDFitnessMachineCharacteristicField *)[HDFitnessMachineCharacteristicDoubleField alloc] initWithCorrespondingFlagBit:6 fieldLength:2 factor:10];
-    v22 = *(v2 + 11);
-    *(v2 + 11) = v21;
+    v22 = *(_init + 11);
+    *(_init + 11) = v21;
 
-    [*(v2 + 11) setIsSigned:1];
+    [*(_init + 11) setIsSigned:1];
     v23 = [(HDFitnessMachineCharacteristicField *)[HDFitnessMachineCharacteristicDoubleField alloc] initWithCorrespondingFlagBit:7 fieldLength:2 factor:10];
-    v24 = *(v2 + 12);
-    *(v2 + 12) = v23;
+    v24 = *(_init + 12);
+    *(_init + 12) = v23;
 
-    [*(v2 + 12) setIsSigned:1];
+    [*(_init + 12) setIsSigned:1];
     v25 = [(HDFitnessMachineCharacteristicField *)[HDFitnessMachineCharacteristicInt16Field alloc] initWithCorrespondingFlagBit:8 fieldLength:2 factor:1];
-    v26 = *(v2 + 13);
-    *(v2 + 13) = v25;
+    v26 = *(_init + 13);
+    *(_init + 13) = v25;
 
     v27 = [(HDFitnessMachineCharacteristicField *)[HDFitnessMachineCharacteristicInt16Field alloc] initWithCorrespondingFlagBit:9 fieldLength:2 factor:1];
-    v28 = *(v2 + 14);
-    *(v2 + 14) = v27;
+    v28 = *(_init + 14);
+    *(_init + 14) = v27;
 
     v29 = [(HDFitnessMachineCharacteristicField *)[HDFitnessMachineCharacteristicUInt16Field alloc] initWithCorrespondingFlagBit:10 fieldLength:2 factor:1];
-    v30 = *(v2 + 15);
-    *(v2 + 15) = v29;
+    v30 = *(_init + 15);
+    *(_init + 15) = v29;
 
     v31 = [(HDFitnessMachineCharacteristicField *)[HDFitnessMachineCharacteristicUInt16Field alloc] initWithCorrespondingFlagBit:10 fieldLength:2 factor:1];
-    v32 = *(v2 + 16);
-    *(v2 + 16) = v31;
+    v32 = *(_init + 16);
+    *(_init + 16) = v31;
 
     v33 = [(HDFitnessMachineCharacteristicField *)[HDFitnessMachineCharacteristicUInt8Field alloc] initWithCorrespondingFlagBit:10 fieldLength:1 factor:1];
-    v34 = *(v2 + 17);
-    *(v2 + 17) = v33;
+    v34 = *(_init + 17);
+    *(_init + 17) = v33;
 
     v35 = [(HDFitnessMachineCharacteristicField *)[HDFitnessMachineCharacteristicUInt8Field alloc] initWithCorrespondingFlagBit:11 fieldLength:1 factor:1];
-    v36 = *(v2 + 18);
-    *(v2 + 18) = v35;
+    v36 = *(_init + 18);
+    *(_init + 18) = v35;
 
     v37 = [(HDFitnessMachineCharacteristicField *)[HDFitnessMachineCharacteristicUInt8Field alloc] initWithCorrespondingFlagBit:12 fieldLength:1 factor:1];
-    v38 = *(v2 + 19);
-    *(v2 + 19) = v37;
+    v38 = *(_init + 19);
+    *(_init + 19) = v37;
 
     v39 = [(HDFitnessMachineCharacteristicField *)[HDFitnessMachineCharacteristicUInt16Field alloc] initWithCorrespondingFlagBit:13 fieldLength:2 factor:1];
-    v40 = *(v2 + 20);
-    *(v2 + 20) = v39;
+    v40 = *(_init + 20);
+    *(_init + 20) = v39;
 
     v41 = [(HDFitnessMachineCharacteristicField *)[HDFitnessMachineCharacteristicUInt16Field alloc] initWithCorrespondingFlagBit:14 fieldLength:2 factor:1];
-    v42 = *(v2 + 21);
-    *(v2 + 21) = v41;
+    v42 = *(_init + 21);
+    *(_init + 21) = v41;
   }
 
-  return v2;
+  return _init;
 }
 
 - (id)description
 {
-  v29 = [(HDFitnessMachineCharacteristicField *)self->_instantaneousSpeedField isSet];
-  if (v29)
+  isSet = [(HDFitnessMachineCharacteristicField *)self->_instantaneousSpeedField isSet];
+  if (isSet)
   {
     [(HDFitnessMachineCharacteristicDoubleField *)self->_instantaneousSpeedField value];
     v3 = [NSNumber numberWithDouble:?];
@@ -306,8 +306,8 @@
     v3 = @"(null)";
   }
 
-  v28 = [(HDFitnessMachineCharacteristicField *)self->_averageSpeedField isSet];
-  if (v28)
+  isSet2 = [(HDFitnessMachineCharacteristicField *)self->_averageSpeedField isSet];
+  if (isSet2)
   {
     [(HDFitnessMachineCharacteristicDoubleField *)self->_averageSpeedField value];
     v44 = [NSNumber numberWithDouble:?];
@@ -318,8 +318,8 @@
     v44 = @"(null)";
   }
 
-  v27 = [(HDFitnessMachineCharacteristicField *)self->_totalDistanceField isSet];
-  if (v27)
+  isSet3 = [(HDFitnessMachineCharacteristicField *)self->_totalDistanceField isSet];
+  if (isSet3)
   {
     v43 = [NSNumber numberWithUnsignedInt:[(HDFitnessMachineCharacteristicUInt24Field *)self->_totalDistanceField value]];
   }
@@ -329,8 +329,8 @@
     v43 = @"(null)";
   }
 
-  v26 = [(HDFitnessMachineCharacteristicField *)self->_stepPerMinuteField isSet];
-  if (v26)
+  isSet4 = [(HDFitnessMachineCharacteristicField *)self->_stepPerMinuteField isSet];
+  if (isSet4)
   {
     v42 = [NSNumber numberWithUnsignedShort:[(HDFitnessMachineCharacteristicUInt16Field *)self->_stepPerMinuteField value]];
   }
@@ -340,8 +340,8 @@
     v42 = @"(null)";
   }
 
-  v25 = [(HDFitnessMachineCharacteristicField *)self->_averageStepRateField isSet];
-  if (v25)
+  isSet5 = [(HDFitnessMachineCharacteristicField *)self->_averageStepRateField isSet];
+  if (isSet5)
   {
     v41 = [NSNumber numberWithUnsignedShort:[(HDFitnessMachineCharacteristicUInt16Field *)self->_averageStepRateField value]];
   }
@@ -351,8 +351,8 @@
     v41 = @"(null)";
   }
 
-  v24 = [(HDFitnessMachineCharacteristicField *)self->_strideCountField isSet];
-  if (v24)
+  isSet6 = [(HDFitnessMachineCharacteristicField *)self->_strideCountField isSet];
+  if (isSet6)
   {
     [(HDFitnessMachineCharacteristicDoubleField *)self->_strideCountField value];
     v40 = [NSNumber numberWithDouble:?];
@@ -363,8 +363,8 @@
     v40 = @"(null)";
   }
 
-  v23 = [(HDFitnessMachineCharacteristicField *)self->_positiveElevationGainField isSet];
-  if (v23)
+  isSet7 = [(HDFitnessMachineCharacteristicField *)self->_positiveElevationGainField isSet];
+  if (isSet7)
   {
     v22 = [NSNumber numberWithUnsignedShort:[(HDFitnessMachineCharacteristicUInt16Field *)self->_positiveElevationGainField value]];
   }
@@ -374,8 +374,8 @@
     v22 = @"(null)";
   }
 
-  v21 = [(HDFitnessMachineCharacteristicField *)self->_negativeElevationGainField isSet];
-  if (v21)
+  isSet8 = [(HDFitnessMachineCharacteristicField *)self->_negativeElevationGainField isSet];
+  if (isSet8)
   {
     v39 = [NSNumber numberWithUnsignedShort:[(HDFitnessMachineCharacteristicUInt16Field *)self->_negativeElevationGainField value]];
   }
@@ -385,8 +385,8 @@
     v39 = @"(null)";
   }
 
-  v20 = [(HDFitnessMachineCharacteristicField *)self->_inclinationField isSet];
-  if (v20)
+  isSet9 = [(HDFitnessMachineCharacteristicField *)self->_inclinationField isSet];
+  if (isSet9)
   {
     [(HDFitnessMachineCharacteristicDoubleField *)self->_inclinationField value];
     v38 = [NSNumber numberWithDouble:?];
@@ -397,8 +397,8 @@
     v38 = @"(null)";
   }
 
-  v19 = [(HDFitnessMachineCharacteristicField *)self->_rampSettingField isSet];
-  if (v19)
+  isSet10 = [(HDFitnessMachineCharacteristicField *)self->_rampSettingField isSet];
+  if (isSet10)
   {
     [(HDFitnessMachineCharacteristicDoubleField *)self->_rampSettingField value];
     v37 = [NSNumber numberWithDouble:?];
@@ -409,8 +409,8 @@
     v37 = @"(null)";
   }
 
-  v18 = [(HDFitnessMachineCharacteristicField *)self->_resistanceLevelField isSet];
-  if (v18)
+  isSet11 = [(HDFitnessMachineCharacteristicField *)self->_resistanceLevelField isSet];
+  if (isSet11)
   {
     [(HDFitnessMachineCharacteristicDoubleField *)self->_resistanceLevelField value];
     v36 = [NSNumber numberWithDouble:?];
@@ -421,8 +421,8 @@
     v36 = @"(null)";
   }
 
-  v17 = [(HDFitnessMachineCharacteristicField *)self->_instantaneousPowerField isSet];
-  if (v17)
+  isSet12 = [(HDFitnessMachineCharacteristicField *)self->_instantaneousPowerField isSet];
+  if (isSet12)
   {
     v35 = [NSNumber numberWithShort:[(HDFitnessMachineCharacteristicInt16Field *)self->_instantaneousPowerField value]];
   }
@@ -432,8 +432,8 @@
     v35 = @"(null)";
   }
 
-  v16 = [(HDFitnessMachineCharacteristicField *)self->_averagePowerField isSet];
-  if (v16)
+  isSet13 = [(HDFitnessMachineCharacteristicField *)self->_averagePowerField isSet];
+  if (isSet13)
   {
     v34 = [NSNumber numberWithShort:[(HDFitnessMachineCharacteristicInt16Field *)self->_averagePowerField value]];
   }
@@ -443,8 +443,8 @@
     v34 = @"(null)";
   }
 
-  v15 = [(HDFitnessMachineCharacteristicField *)self->_totalEnergyField isSet];
-  if (v15)
+  isSet14 = [(HDFitnessMachineCharacteristicField *)self->_totalEnergyField isSet];
+  if (isSet14)
   {
     v33 = [NSNumber numberWithUnsignedShort:[(HDFitnessMachineCharacteristicUInt16Field *)self->_totalEnergyField value]];
   }
@@ -454,8 +454,8 @@
     v33 = @"(null)";
   }
 
-  v14 = [(HDFitnessMachineCharacteristicField *)self->_energyPerHourField isSet];
-  if (v14)
+  isSet15 = [(HDFitnessMachineCharacteristicField *)self->_energyPerHourField isSet];
+  if (isSet15)
   {
     v32 = [NSNumber numberWithUnsignedShort:[(HDFitnessMachineCharacteristicUInt16Field *)self->_energyPerHourField value]];
   }
@@ -465,8 +465,8 @@
     v32 = @"(null)";
   }
 
-  v13 = [(HDFitnessMachineCharacteristicField *)self->_energyPerMinuteField isSet];
-  if (v13)
+  isSet16 = [(HDFitnessMachineCharacteristicField *)self->_energyPerMinuteField isSet];
+  if (isSet16)
   {
     v31 = [NSNumber numberWithUnsignedChar:[(HDFitnessMachineCharacteristicUInt8Field *)self->_energyPerMinuteField value]];
   }
@@ -476,8 +476,8 @@
     v31 = @"(null)";
   }
 
-  v4 = [(HDFitnessMachineCharacteristicField *)self->_heartRateField isSet];
-  if (v4)
+  isSet17 = [(HDFitnessMachineCharacteristicField *)self->_heartRateField isSet];
+  if (isSet17)
   {
     v30 = [NSNumber numberWithUnsignedChar:[(HDFitnessMachineCharacteristicUInt8Field *)self->_heartRateField value]];
   }
@@ -487,8 +487,8 @@
     v30 = @"(null)";
   }
 
-  v5 = [(HDFitnessMachineCharacteristicField *)self->_metabolicEquivalentField isSet];
-  if (v5)
+  isSet18 = [(HDFitnessMachineCharacteristicField *)self->_metabolicEquivalentField isSet];
+  if (isSet18)
   {
     v6 = [NSNumber numberWithUnsignedChar:[(HDFitnessMachineCharacteristicUInt8Field *)self->_metabolicEquivalentField value]];
   }
@@ -498,8 +498,8 @@
     v6 = @"(null)";
   }
 
-  v7 = [(HDFitnessMachineCharacteristicField *)self->_elapsedTimeField isSet];
-  if (v7)
+  isSet19 = [(HDFitnessMachineCharacteristicField *)self->_elapsedTimeField isSet];
+  if (isSet19)
   {
     v8 = [NSNumber numberWithUnsignedShort:[(HDFitnessMachineCharacteristicUInt16Field *)self->_elapsedTimeField value]];
   }
@@ -513,7 +513,7 @@
   {
     v10 = v22;
     v11 = [NSString stringWithFormat:@"Cross Trainer Data: instantaneousSpeed = %@, averageSpeed = %@, totalDistance = %@, stepPerMinute = %@, averageStepRate = %@, strideCount = %@, positiveElevationGain = %@, negativeElevationGain = %@, inclination = %@, rampSetting = %@, resistanceLevel = %@, instantaneousPower = %@, averagePower = %@, totalEnergy = %@, energyPerHour = %@, energyPerMinute = %@, heartRate = %@, metabolicEquivalent = %@, elapsedTime = %@, remainingTime = %@", v3, v44, v43, v42, v41, v40, v22, v39, v38, v37, v36, v35, v34, v33, v32, v31, v30, v6, v8, @"(null)"];
-    if (!v7)
+    if (!isSet19)
     {
       goto LABEL_63;
     }
@@ -525,15 +525,15 @@
   v10 = v22;
   v11 = [NSString stringWithFormat:@"Cross Trainer Data: instantaneousSpeed = %@, averageSpeed = %@, totalDistance = %@, stepPerMinute = %@, averageStepRate = %@, strideCount = %@, positiveElevationGain = %@, negativeElevationGain = %@, inclination = %@, rampSetting = %@, resistanceLevel = %@, instantaneousPower = %@, averagePower = %@, totalEnergy = %@, energyPerHour = %@, energyPerMinute = %@, heartRate = %@, metabolicEquivalent = %@, elapsedTime = %@, remainingTime = %@", v3, v44, v43, v42, v41, v40, v22, v39, v38, v37, v36, v35, v34, v33, v32, v31, v30, v6, v8, v9];
 
-  if (v7)
+  if (isSet19)
   {
 LABEL_62:
   }
 
 LABEL_63:
-  if (!v5)
+  if (!isSet18)
   {
-    if (!v4)
+    if (!isSet17)
     {
       goto LABEL_66;
     }
@@ -541,73 +541,73 @@ LABEL_63:
     goto LABEL_65;
   }
 
-  if (v4)
+  if (isSet17)
   {
 LABEL_65:
   }
 
 LABEL_66:
-  if (v13)
+  if (isSet16)
   {
   }
 
-  if (v14)
+  if (isSet15)
   {
   }
 
-  if (v15)
+  if (isSet14)
   {
   }
 
-  if (v16)
+  if (isSet13)
   {
   }
 
-  if (v17)
+  if (isSet12)
   {
   }
 
-  if (v18)
+  if (isSet11)
   {
   }
 
-  if (v19)
+  if (isSet10)
   {
   }
 
-  if (v20)
+  if (isSet9)
   {
   }
 
-  if (v21)
+  if (isSet8)
   {
   }
 
-  if (v23)
+  if (isSet7)
   {
   }
 
-  if (v24)
+  if (isSet6)
   {
   }
 
-  if (v25)
+  if (isSet5)
   {
   }
 
-  if (v26)
+  if (isSet4)
   {
   }
 
-  if (v27)
+  if (isSet3)
   {
   }
 
-  if (v28)
+  if (isSet2)
   {
   }
 
-  if (v29)
+  if (isSet)
   {
   }
 

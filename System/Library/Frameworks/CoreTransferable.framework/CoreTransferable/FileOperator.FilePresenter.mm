@@ -2,8 +2,8 @@
 - (NSURL)presentedItemURL;
 - (_TtCC16CoreTransferableP33_2053C576535AE8DF09A03B43713BFB7612FileOperator13FilePresenter)init;
 - (void)dealloc;
-- (void)setPresentedItemOperationQueue:(id)a3;
-- (void)setPresentedItemURL:(id)a3;
+- (void)setPresentedItemOperationQueue:(id)queue;
+- (void)setPresentedItemURL:(id)l;
 @end
 
 @implementation FileOperator.FilePresenter
@@ -32,13 +32,13 @@
   return v11;
 }
 
-- (void)setPresentedItemURL:(id)a3
+- (void)setPresentedItemURL:(id)l
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation3URLVSgMd, &_s10Foundation3URLVSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v13 - v7;
-  if (a3)
+  if (l)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = type metadata accessor for URL();
@@ -53,25 +53,25 @@
 
   v11 = OBJC_IVAR____TtCC16CoreTransferableP33_2053C576535AE8DF09A03B43713BFB7612FileOperator13FilePresenter_presentedItemURL;
   swift_beginAccess();
-  v12 = self;
+  selfCopy = self;
   outlined assign with take of URL?(v8, self + v11);
   swift_endAccess();
 }
 
-- (void)setPresentedItemOperationQueue:(id)a3
+- (void)setPresentedItemOperationQueue:(id)queue
 {
   v4 = *(self + OBJC_IVAR____TtCC16CoreTransferableP33_2053C576535AE8DF09A03B43713BFB7612FileOperator13FilePresenter_presentedItemOperationQueue);
-  *(self + OBJC_IVAR____TtCC16CoreTransferableP33_2053C576535AE8DF09A03B43713BFB7612FileOperator13FilePresenter_presentedItemOperationQueue) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtCC16CoreTransferableP33_2053C576535AE8DF09A03B43713BFB7612FileOperator13FilePresenter_presentedItemOperationQueue) = queue;
+  queueCopy = queue;
 }
 
 - (void)dealloc
 {
   ObjectType = swift_getObjectType();
   v4 = objc_opt_self();
-  v5 = self;
+  selfCopy = self;
   [v4 removeFilePresenter_];
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(FileOperator.FilePresenter *)&v6 dealloc];
 }

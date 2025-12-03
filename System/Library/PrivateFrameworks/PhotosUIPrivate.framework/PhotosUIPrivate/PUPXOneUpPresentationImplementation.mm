@@ -1,42 +1,42 @@
 @interface PUPXOneUpPresentationImplementation
-+ (id)implementationForOneUpPresentation:(id)a3;
-- (BOOL)canStartAnimated:(BOOL)a3;
++ (id)implementationForOneUpPresentation:(id)presentation;
+- (BOOL)canStartAnimated:(BOOL)animated;
 - (BOOL)canStop;
-- (BOOL)handlePresentingPinchGestureRecognizer:(id)a3;
-- (BOOL)oneUpPresentationHelperPreventRevealInMomentAction:(id)a3;
-- (BOOL)oneUpPresentationHelperShouldAutoPlay:(id)a3;
-- (BOOL)oneUpPresentationHelperShouldDisableAutoPlayback:(id)a3;
-- (BOOL)oneUpPresentationHelperWantsShowInLibraryButton:(id)a3;
-- (BOOL)startWithConfigurationHandler:(id)a3;
+- (BOOL)handlePresentingPinchGestureRecognizer:(id)recognizer;
+- (BOOL)oneUpPresentationHelperPreventRevealInMomentAction:(id)action;
+- (BOOL)oneUpPresentationHelperShouldAutoPlay:(id)play;
+- (BOOL)oneUpPresentationHelperShouldDisableAutoPlayback:(id)playback;
+- (BOOL)oneUpPresentationHelperWantsShowInLibraryButton:(id)button;
+- (BOOL)startWithConfigurationHandler:(id)handler;
 - (PXAssetReference)lastViewedAssetReference;
 - (PXOneUpPresentation)_oneUpPresentation;
-- (id)_initWithOneUpPresentation:(id)a3;
-- (id)oneUpPresentationHelper:(id)a3 currentImageForAssetReference:(id)a4;
-- (id)oneUpPresentationHelper:(id)a3 presentingScrollViewForAssetReference:(id)a4;
-- (id)oneUpPresentationHelper:(id)a3 regionOfInterestForAssetReference:(id)a4 cropInsets:(UIEdgeInsets *)a5;
-- (id)oneUpPresentationHelperContextualVideoThumbnailIdentifier:(id)a3;
-- (id)oneUpPresentationHelperOriginalViewController:(id)a3;
-- (id)oneUpPresentationHelperSearchQueryMatchInfo:(id)a3;
-- (id)oneUpPresentationHelperViewController:(id)a3;
-- (id)oneUpPresentationHelperViewHostingTilingView:(id)a3;
-- (id)previewViewControllerAllowingActions:(BOOL)a3;
-- (id)regionOfInterestForAssetReference:(id)a3;
-- (int64_t)oneUpPresentationOrigin:(id)a3;
-- (unint64_t)oneUpPresentationHelperAdditionalOptions:(id)a3;
-- (void)commitPreviewViewController:(id)a3;
-- (void)didDismissPreviewViewController:(id)a3 committing:(BOOL)a4;
+- (id)_initWithOneUpPresentation:(id)presentation;
+- (id)oneUpPresentationHelper:(id)helper currentImageForAssetReference:(id)reference;
+- (id)oneUpPresentationHelper:(id)helper presentingScrollViewForAssetReference:(id)reference;
+- (id)oneUpPresentationHelper:(id)helper regionOfInterestForAssetReference:(id)reference cropInsets:(UIEdgeInsets *)insets;
+- (id)oneUpPresentationHelperContextualVideoThumbnailIdentifier:(id)identifier;
+- (id)oneUpPresentationHelperOriginalViewController:(id)controller;
+- (id)oneUpPresentationHelperSearchQueryMatchInfo:(id)info;
+- (id)oneUpPresentationHelperViewController:(id)controller;
+- (id)oneUpPresentationHelperViewHostingTilingView:(id)view;
+- (id)previewViewControllerAllowingActions:(BOOL)actions;
+- (id)regionOfInterestForAssetReference:(id)reference;
+- (int64_t)oneUpPresentationOrigin:(id)origin;
+- (unint64_t)oneUpPresentationHelperAdditionalOptions:(id)options;
+- (void)commitPreviewViewController:(id)controller;
+- (void)didDismissPreviewViewController:(id)controller committing:(BOOL)committing;
 - (void)invalidatePresentingGeometry;
-- (void)oneUpPresentationHelper:(id)a3 didDismissOneUpViewController:(id)a4;
-- (void)oneUpPresentationHelper:(id)a3 scrollAssetReferenceToVisible:(id)a4;
-- (void)oneUpPresentationHelper:(id)a3 shouldHideAssetReferences:(id)a4;
-- (void)oneUpPresentationHelperStateDidChange:(id)a3;
-- (void)presentingViewControllerViewDidAppear:(BOOL)a3;
-- (void)presentingViewControllerViewDidDisappear:(BOOL)a3;
-- (void)presentingViewControllerViewIsAppearing:(BOOL)a3;
-- (void)presentingViewControllerViewWillAppear:(BOOL)a3;
-- (void)presentingViewControllerViewWillDisappear:(BOOL)a3;
-- (void)registerStateChangeHandler:(id)a3;
-- (void)stopAnimated:(BOOL)a3;
+- (void)oneUpPresentationHelper:(id)helper didDismissOneUpViewController:(id)controller;
+- (void)oneUpPresentationHelper:(id)helper scrollAssetReferenceToVisible:(id)visible;
+- (void)oneUpPresentationHelper:(id)helper shouldHideAssetReferences:(id)references;
+- (void)oneUpPresentationHelperStateDidChange:(id)change;
+- (void)presentingViewControllerViewDidAppear:(BOOL)appear;
+- (void)presentingViewControllerViewDidDisappear:(BOOL)disappear;
+- (void)presentingViewControllerViewIsAppearing:(BOOL)appearing;
+- (void)presentingViewControllerViewWillAppear:(BOOL)appear;
+- (void)presentingViewControllerViewWillDisappear:(BOOL)disappear;
+- (void)registerStateChangeHandler:(id)handler;
+- (void)stopAnimated:(BOOL)animated;
 @end
 
 @implementation PUPXOneUpPresentationImplementation
@@ -50,20 +50,20 @@
 
 - (void)invalidatePresentingGeometry
 {
-  v2 = [(PUPXOneUpPresentationImplementation *)self _helper];
-  [v2 presentingViewControllerScrollViewDidScroll:0];
+  _helper = [(PUPXOneUpPresentationImplementation *)self _helper];
+  [_helper presentingViewControllerScrollViewDidScroll:0];
 }
 
-- (void)oneUpPresentationHelper:(id)a3 shouldHideAssetReferences:(id)a4
+- (void)oneUpPresentationHelper:(id)helper shouldHideAssetReferences:(id)references
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v5, "count")}];
+  referencesCopy = references;
+  v6 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(referencesCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v5;
+  v7 = referencesCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -79,8 +79,8 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v11) pxAssetReference];
-        [v6 addObject:v12];
+        pxAssetReference = [*(*(&v14 + 1) + 8 * v11) pxAssetReference];
+        [v6 addObject:pxAssetReference];
 
         ++v11;
       }
@@ -92,121 +92,121 @@
     while (v9);
   }
 
-  v13 = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
-  [v13 setHiddenAssetReferences:v6];
+  _oneUpPresentation = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
+  [_oneUpPresentation setHiddenAssetReferences:v6];
 }
 
-- (void)oneUpPresentationHelper:(id)a3 scrollAssetReferenceToVisible:(id)a4
+- (void)oneUpPresentationHelper:(id)helper scrollAssetReferenceToVisible:(id)visible
 {
-  v6 = [a4 pxAssetReference];
-  v5 = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
-  [v5 scrollAssetReferenceToVisible:v6];
+  pxAssetReference = [visible pxAssetReference];
+  _oneUpPresentation = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
+  [_oneUpPresentation scrollAssetReferenceToVisible:pxAssetReference];
 }
 
-- (id)oneUpPresentationHelper:(id)a3 currentImageForAssetReference:(id)a4
+- (id)oneUpPresentationHelper:(id)helper currentImageForAssetReference:(id)reference
 {
-  v5 = a4;
-  v6 = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
-  v7 = [v5 pxAssetReference];
+  referenceCopy = reference;
+  _oneUpPresentation = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
+  pxAssetReference = [referenceCopy pxAssetReference];
 
-  v8 = [v6 currentImageForAssetReference:v7];
+  v8 = [_oneUpPresentation currentImageForAssetReference:pxAssetReference];
 
   return v8;
 }
 
-- (id)oneUpPresentationHelper:(id)a3 regionOfInterestForAssetReference:(id)a4 cropInsets:(UIEdgeInsets *)a5
+- (id)oneUpPresentationHelper:(id)helper regionOfInterestForAssetReference:(id)reference cropInsets:(UIEdgeInsets *)insets
 {
-  v6 = [a4 pxAssetReference];
-  v7 = [(PUPXOneUpPresentationImplementation *)self regionOfInterestForAssetReference:v6];
+  pxAssetReference = [reference pxAssetReference];
+  v7 = [(PUPXOneUpPresentationImplementation *)self regionOfInterestForAssetReference:pxAssetReference];
 
   return v7;
 }
 
-- (void)oneUpPresentationHelper:(id)a3 didDismissOneUpViewController:(id)a4
+- (void)oneUpPresentationHelper:(id)helper didDismissOneUpViewController:(id)controller
 {
-  v4 = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation:a3];
+  v4 = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation:helper];
   [v4 cleanUp];
 }
 
-- (id)oneUpPresentationHelperContextualVideoThumbnailIdentifier:(id)a3
+- (id)oneUpPresentationHelperContextualVideoThumbnailIdentifier:(id)identifier
 {
-  v3 = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
-  v4 = [v3 searchContextualVideoThumbnailIdentifier];
+  _oneUpPresentation = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
+  searchContextualVideoThumbnailIdentifier = [_oneUpPresentation searchContextualVideoThumbnailIdentifier];
 
-  return v4;
+  return searchContextualVideoThumbnailIdentifier;
 }
 
-- (id)oneUpPresentationHelperSearchQueryMatchInfo:(id)a3
+- (id)oneUpPresentationHelperSearchQueryMatchInfo:(id)info
 {
-  v3 = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
-  v4 = [v3 searchQueryMatchInfo];
+  _oneUpPresentation = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
+  searchQueryMatchInfo = [_oneUpPresentation searchQueryMatchInfo];
 
-  return v4;
+  return searchQueryMatchInfo;
 }
 
-- (BOOL)oneUpPresentationHelperShouldDisableAutoPlayback:(id)a3
+- (BOOL)oneUpPresentationHelperShouldDisableAutoPlayback:(id)playback
 {
-  v3 = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
-  v4 = [v3 shouldDisableAutoPlayback];
+  _oneUpPresentation = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
+  shouldDisableAutoPlayback = [_oneUpPresentation shouldDisableAutoPlayback];
 
-  return v4;
+  return shouldDisableAutoPlayback;
 }
 
-- (id)oneUpPresentationHelper:(id)a3 presentingScrollViewForAssetReference:(id)a4
+- (id)oneUpPresentationHelper:(id)helper presentingScrollViewForAssetReference:(id)reference
 {
-  v5 = a4;
-  v6 = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
-  v7 = [v5 pxAssetReference];
+  referenceCopy = reference;
+  _oneUpPresentation = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
+  pxAssetReference = [referenceCopy pxAssetReference];
 
-  v8 = [v6 presentingScrollViewForAssetReference:v7];
+  v8 = [_oneUpPresentation presentingScrollViewForAssetReference:pxAssetReference];
 
   return v8;
 }
 
-- (id)oneUpPresentationHelperViewHostingTilingView:(id)a3
+- (id)oneUpPresentationHelperViewHostingTilingView:(id)view
 {
-  v3 = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
-  v4 = [v3 originalPresentingViewController];
-  v5 = [v4 viewIfLoaded];
+  _oneUpPresentation = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
+  originalPresentingViewController = [_oneUpPresentation originalPresentingViewController];
+  viewIfLoaded = [originalPresentingViewController viewIfLoaded];
 
-  return v5;
+  return viewIfLoaded;
 }
 
-- (void)oneUpPresentationHelperStateDidChange:(id)a3
+- (void)oneUpPresentationHelperStateDidChange:(id)change
 {
-  v7 = a3;
-  v4 = [(PUPXOneUpPresentationImplementation *)self stateChangeHandler];
-  if (v4)
+  changeCopy = change;
+  stateChangeHandler = [(PUPXOneUpPresentationImplementation *)self stateChangeHandler];
+  if (stateChangeHandler)
   {
-    v5 = [v7 state];
-    if ((v5 - 1) >= 7)
+    state = [changeCopy state];
+    if ((state - 1) >= 7)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = v5;
+      v6 = state;
     }
 
-    v4[2](v4, v6);
+    stateChangeHandler[2](stateChangeHandler, v6);
   }
 }
 
-- (unint64_t)oneUpPresentationHelperAdditionalOptions:(id)a3
+- (unint64_t)oneUpPresentationHelperAdditionalOptions:(id)options
 {
-  v3 = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
-  v4 = [v3 actionContext];
+  _oneUpPresentation = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
+  actionContext = [_oneUpPresentation actionContext];
 
-  if (v4 > 3)
+  if (actionContext > 3)
   {
     v8 = 65728;
-    if (v4 != 0xFFFF)
+    if (actionContext != 0xFFFF)
     {
       v8 = 0;
     }
 
-    if (v4 == 4)
+    if (actionContext == 4)
     {
       return 133312;
     }
@@ -217,9 +217,9 @@
     }
   }
 
-  else if ((v4 - 1) >= 2)
+  else if ((actionContext - 1) >= 2)
   {
-    if (v4 == 3)
+    if (actionContext == 3)
     {
       return 224;
     }
@@ -232,10 +232,10 @@
 
   else
   {
-    v5 = [MEMORY[0x1E69C33D8] sharedInstance];
-    v6 = [v5 disableDetailView];
+    mEMORY[0x1E69C33D8] = [MEMORY[0x1E69C33D8] sharedInstance];
+    disableDetailView = [mEMORY[0x1E69C33D8] disableDetailView];
 
-    if (v6)
+    if (disableDetailView)
     {
       return 192;
     }
@@ -247,121 +247,121 @@
   }
 }
 
-- (BOOL)oneUpPresentationHelperWantsShowInLibraryButton:(id)a3
+- (BOOL)oneUpPresentationHelperWantsShowInLibraryButton:(id)button
 {
-  v3 = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
-  v4 = [v3 wantsShowInLibraryButton];
+  _oneUpPresentation = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
+  wantsShowInLibraryButton = [_oneUpPresentation wantsShowInLibraryButton];
 
-  return v4;
+  return wantsShowInLibraryButton;
 }
 
-- (BOOL)oneUpPresentationHelperPreventRevealInMomentAction:(id)a3
+- (BOOL)oneUpPresentationHelperPreventRevealInMomentAction:(id)action
 {
-  v3 = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
-  v4 = [v3 preventShowInAllPhotosAction];
+  _oneUpPresentation = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
+  preventShowInAllPhotosAction = [_oneUpPresentation preventShowInAllPhotosAction];
 
-  return v4;
+  return preventShowInAllPhotosAction;
 }
 
-- (BOOL)oneUpPresentationHelperShouldAutoPlay:(id)a3
+- (BOOL)oneUpPresentationHelperShouldAutoPlay:(id)play
 {
-  v3 = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
-  v4 = [v3 shouldAutoPlay];
+  _oneUpPresentation = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
+  shouldAutoPlay = [_oneUpPresentation shouldAutoPlay];
 
-  return v4;
+  return shouldAutoPlay;
 }
 
-- (int64_t)oneUpPresentationOrigin:(id)a3
+- (int64_t)oneUpPresentationOrigin:(id)origin
 {
-  v3 = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
-  v4 = [v3 origin];
+  _oneUpPresentation = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
+  origin = [_oneUpPresentation origin];
 
-  return v4;
+  return origin;
 }
 
-- (id)oneUpPresentationHelperOriginalViewController:(id)a3
+- (id)oneUpPresentationHelperOriginalViewController:(id)controller
 {
-  v3 = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
-  v4 = [v3 originalPresentingViewController];
+  _oneUpPresentation = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
+  originalPresentingViewController = [_oneUpPresentation originalPresentingViewController];
 
-  return v4;
+  return originalPresentingViewController;
 }
 
-- (id)oneUpPresentationHelperViewController:(id)a3
+- (id)oneUpPresentationHelperViewController:(id)controller
 {
-  v3 = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
-  v4 = [v3 presentingViewController];
+  _oneUpPresentation = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
+  presentingViewController = [_oneUpPresentation presentingViewController];
 
-  return v4;
+  return presentingViewController;
 }
 
-- (id)regionOfInterestForAssetReference:(id)a3
+- (id)regionOfInterestForAssetReference:(id)reference
 {
-  v4 = a3;
-  v5 = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
-  v6 = [v5 regionOfInterestForAssetReference:v4];
+  referenceCopy = reference;
+  _oneUpPresentation = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
+  v6 = [_oneUpPresentation regionOfInterestForAssetReference:referenceCopy];
 
   return v6;
 }
 
-- (BOOL)handlePresentingPinchGestureRecognizer:(id)a3
+- (BOOL)handlePresentingPinchGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [(PUPXOneUpPresentationImplementation *)self _helper];
-  v6 = [v5 handlePresentingPinchGestureRecognizer:v4];
+  recognizerCopy = recognizer;
+  _helper = [(PUPXOneUpPresentationImplementation *)self _helper];
+  v6 = [_helper handlePresentingPinchGestureRecognizer:recognizerCopy];
 
   return v6;
 }
 
-- (void)stopAnimated:(BOOL)a3
+- (void)stopAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PUPXOneUpPresentationImplementation *)self canStop];
-  v6 = [(PUPXOneUpPresentationImplementation *)self _helper];
-  [v6 dismissOneUpViewControllerForced:!v5 animated:v3];
+  animatedCopy = animated;
+  canStop = [(PUPXOneUpPresentationImplementation *)self canStop];
+  _helper = [(PUPXOneUpPresentationImplementation *)self _helper];
+  [_helper dismissOneUpViewControllerForced:!canStop animated:animatedCopy];
 }
 
 - (BOOL)canStop
 {
-  v2 = [(PUPXOneUpPresentationImplementation *)self _helper];
-  v3 = [v2 canDismissOneUpViewController];
+  _helper = [(PUPXOneUpPresentationImplementation *)self _helper];
+  canDismissOneUpViewController = [_helper canDismissOneUpViewController];
 
-  return v3;
+  return canDismissOneUpViewController;
 }
 
-- (void)commitPreviewViewController:(id)a3
+- (void)commitPreviewViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(PUPXOneUpPresentationImplementation *)self _helper];
-  [v5 commitPreviewViewController:v4];
+  controllerCopy = controller;
+  _helper = [(PUPXOneUpPresentationImplementation *)self _helper];
+  [_helper commitPreviewViewController:controllerCopy];
 }
 
-- (void)didDismissPreviewViewController:(id)a3 committing:(BOOL)a4
+- (void)didDismissPreviewViewController:(id)controller committing:(BOOL)committing
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PUPXOneUpPresentationImplementation *)self _helper];
-  [v7 didDismissPreviewViewController:v6 committing:v4];
+  committingCopy = committing;
+  controllerCopy = controller;
+  _helper = [(PUPXOneUpPresentationImplementation *)self _helper];
+  [_helper didDismissPreviewViewController:controllerCopy committing:committingCopy];
 }
 
-- (id)previewViewControllerAllowingActions:(BOOL)a3
+- (id)previewViewControllerAllowingActions:(BOOL)actions
 {
-  v3 = a3;
-  v5 = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
-  v6 = [v5 initialAssetReference];
-  if (!v6)
+  actionsCopy = actions;
+  _oneUpPresentation = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
+  initialAssetReference = [_oneUpPresentation initialAssetReference];
+  if (!initialAssetReference)
   {
     goto LABEL_6;
   }
 
   v18 = 0u;
   v19 = 0u;
-  v7 = [v5 dataSourceManager];
-  v8 = [v7 dataSource];
-  v9 = v8;
-  if (v8)
+  dataSourceManager = [_oneUpPresentation dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
+  v9 = dataSource;
+  if (dataSource)
   {
-    [v8 indexPathForAssetReference:v6];
+    [dataSource indexPathForAssetReference:initialAssetReference];
   }
 
   else
@@ -384,74 +384,74 @@ LABEL_6:
   }
 
   v11 = [(PUPXOneUpPresentationImplementation *)self _helper:v16];
-  v12 = [v11 previewViewControllerForItemAtIndexPath:v10 allowingActions:v3];
-  v13 = [v5 actionManagerForPreviewing];
-  v14 = [v11 topmostPresentedViewController];
-  [v12 createMenuActionControllerForManagerIfNeeded:v13 withPresentingViewController:v14 regionOfInterestProvider:self];
+  v12 = [v11 previewViewControllerForItemAtIndexPath:v10 allowingActions:actionsCopy];
+  actionManagerForPreviewing = [_oneUpPresentation actionManagerForPreviewing];
+  topmostPresentedViewController = [v11 topmostPresentedViewController];
+  [v12 createMenuActionControllerForManagerIfNeeded:actionManagerForPreviewing withPresentingViewController:topmostPresentedViewController regionOfInterestProvider:self];
 
   return v12;
 }
 
-- (BOOL)startWithConfigurationHandler:(id)a3
+- (BOOL)startWithConfigurationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_opt_new();
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, v5);
+    handlerCopy[2](handlerCopy, v5);
   }
 
   LODWORD(v6) = -[PUPXOneUpPresentationImplementation canStartAnimated:](self, "canStartAnimated:", [v5 isAnimated]);
   if (v6)
   {
-    v7 = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
-    v8 = [v7 initialAssetReference];
-    v39 = v8;
+    _oneUpPresentation = [(PUPXOneUpPresentationImplementation *)self _oneUpPresentation];
+    initialAssetReference = [_oneUpPresentation initialAssetReference];
+    v39 = initialAssetReference;
     v38 = v6;
-    if (!v8)
+    if (!initialAssetReference)
     {
-      v6 = v7;
+      v6 = _oneUpPresentation;
       v13 = 0;
 LABEL_17:
-      v27 = [(PUPXOneUpPresentationImplementation *)self _helper];
-      v28 = [v5 isAnimated];
-      v29 = [v5 pu_interactiveMode];
-      v30 = [v5 pu_activity];
-      v31 = [v5 isNavigationSourceWidget];
-      v32 = [v5 activityCompletion];
-      [v27 presentOneUpViewControllerFromAssetAtIndexPath:v13 animated:v28 interactiveMode:v29 activity:v30 isNavigationSourceWidget:v31 editActivityCompletion:v32];
+      _helper = [(PUPXOneUpPresentationImplementation *)self _helper];
+      isAnimated = [v5 isAnimated];
+      pu_interactiveMode = [v5 pu_interactiveMode];
+      pu_activity = [v5 pu_activity];
+      isNavigationSourceWidget = [v5 isNavigationSourceWidget];
+      activityCompletion = [v5 activityCompletion];
+      [_helper presentOneUpViewControllerFromAssetAtIndexPath:v13 animated:isAnimated interactiveMode:pu_interactiveMode activity:pu_activity isNavigationSourceWidget:isNavigationSourceWidget editActivityCompletion:activityCompletion];
 
       LOBYTE(v6) = v38;
       goto LABEL_18;
     }
 
-    v9 = v8;
-    v10 = [v7 dataSourceManager];
-    v11 = [v10 dataSource];
-    v12 = v11;
-    if (v11)
+    v9 = initialAssetReference;
+    dataSourceManager = [_oneUpPresentation dataSourceManager];
+    dataSource = [dataSourceManager dataSource];
+    v12 = dataSource;
+    if (dataSource)
     {
-      [v11 indexPathForAssetReference:v9];
+      [dataSource indexPathForAssetReference:v9];
     }
 
     if (!*MEMORY[0x1E69C4880])
     {
       v13 = 0;
 LABEL_16:
-      v6 = v7;
+      v6 = _oneUpPresentation;
       goto LABEL_17;
     }
 
     v14 = PXIndexPathFromSimpleIndexPath();
-    v15 = [(PUPXOneUpPresentationImplementation *)self _helper];
-    v16 = [v15 browsingSession];
-    v17 = [v16 viewModel];
-    v18 = [v17 assetsDataSource];
+    _helper2 = [(PUPXOneUpPresentationImplementation *)self _helper];
+    browsingSession = [_helper2 browsingSession];
+    viewModel = [browsingSession viewModel];
+    assetsDataSource = [viewModel assetsDataSource];
 
-    v19 = [v14 section];
-    v20 = [MEMORY[0x1E696AC88] pu_rootIndexPath];
-    v37 = v18;
-    if (v19 >= [v18 numberOfSubItemsAtIndexPath:v20])
+    section = [v14 section];
+    pu_rootIndexPath = [MEMORY[0x1E696AC88] pu_rootIndexPath];
+    v37 = assetsDataSource;
+    if (section >= [assetsDataSource numberOfSubItemsAtIndexPath:pu_rootIndexPath])
     {
 
       v13 = v14;
@@ -459,23 +459,23 @@ LABEL_16:
 
     else
     {
-      v35 = [v14 item];
+      item = [v14 item];
       v21 = [MEMORY[0x1E696AC88] indexPathWithIndex:{objc_msgSend(v14, "section")}];
-      v22 = [v18 numberOfSubItemsAtIndexPath:v21];
+      v22 = [assetsDataSource numberOfSubItemsAtIndexPath:v21];
 
       v13 = v14;
-      if (v35 < v22)
+      if (item < v22)
       {
         goto LABEL_15;
       }
     }
 
     v23 = [[PUPXAssetReference alloc] initWithPXAssetReference:v39 dataSourceIdentifier:0];
-    v36 = [(PUPXOneUpPresentationImplementation *)self _helper];
-    v24 = [v36 browsingSession];
-    v25 = [v24 viewModel];
-    v26 = [v25 assetsDataSource];
-    v34 = [v26 indexPathForAssetReference:v23];
+    _helper3 = [(PUPXOneUpPresentationImplementation *)self _helper];
+    browsingSession2 = [_helper3 browsingSession];
+    viewModel2 = [browsingSession2 viewModel];
+    assetsDataSource2 = [viewModel2 assetsDataSource];
+    v34 = [assetsDataSource2 indexPathForAssetReference:v23];
 
     v13 = v34;
 LABEL_15:
@@ -490,33 +490,33 @@ LABEL_18:
 
 - (PXAssetReference)lastViewedAssetReference
 {
-  v2 = [(PUPXOneUpPresentationImplementation *)self _helper];
-  v3 = [v2 lastViewedAssetReference];
+  _helper = [(PUPXOneUpPresentationImplementation *)self _helper];
+  lastViewedAssetReference = [_helper lastViewedAssetReference];
 
-  return v3;
+  return lastViewedAssetReference;
 }
 
-- (BOOL)canStartAnimated:(BOOL)a3
+- (BOOL)canStartAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(PUPXOneUpPresentationImplementation *)self _helper];
-  LOBYTE(v3) = [v4 canPresentOneUpViewControllerAnimated:v3];
+  animatedCopy = animated;
+  _helper = [(PUPXOneUpPresentationImplementation *)self _helper];
+  LOBYTE(animatedCopy) = [_helper canPresentOneUpViewControllerAnimated:animatedCopy];
 
-  return v3;
+  return animatedCopy;
 }
 
-- (void)registerStateChangeHandler:(id)a3
+- (void)registerStateChangeHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PUPXOneUpPresentationImplementation *)self stateChangeHandler];
+  handlerCopy = handler;
+  stateChangeHandler = [(PUPXOneUpPresentationImplementation *)self stateChangeHandler];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __66__PUPXOneUpPresentationImplementation_registerStateChangeHandler___block_invoke;
   v8[3] = &unk_1E7B7A738;
-  v9 = v5;
-  v10 = v4;
-  v6 = v4;
-  v7 = v5;
+  v9 = stateChangeHandler;
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = stateChangeHandler;
   [(PUPXOneUpPresentationImplementation *)self setStateChangeHandler:v8];
 }
 
@@ -533,52 +533,52 @@ uint64_t __66__PUPXOneUpPresentationImplementation_registerStateChangeHandler___
   return v4();
 }
 
-- (void)presentingViewControllerViewDidDisappear:(BOOL)a3
+- (void)presentingViewControllerViewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v4 = [(PUPXOneUpPresentationImplementation *)self _helper];
-  [v4 presentingViewControllerViewDidDisappear:v3];
+  disappearCopy = disappear;
+  _helper = [(PUPXOneUpPresentationImplementation *)self _helper];
+  [_helper presentingViewControllerViewDidDisappear:disappearCopy];
 }
 
-- (void)presentingViewControllerViewWillDisappear:(BOOL)a3
+- (void)presentingViewControllerViewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v4 = [(PUPXOneUpPresentationImplementation *)self _helper];
-  [v4 presentingViewControllerViewWillDisappear:v3];
+  disappearCopy = disappear;
+  _helper = [(PUPXOneUpPresentationImplementation *)self _helper];
+  [_helper presentingViewControllerViewWillDisappear:disappearCopy];
 }
 
-- (void)presentingViewControllerViewDidAppear:(BOOL)a3
+- (void)presentingViewControllerViewDidAppear:(BOOL)appear
 {
-  v3 = a3;
-  v4 = [(PUPXOneUpPresentationImplementation *)self _helper];
-  [v4 presentingViewControllerViewDidAppear:v3];
+  appearCopy = appear;
+  _helper = [(PUPXOneUpPresentationImplementation *)self _helper];
+  [_helper presentingViewControllerViewDidAppear:appearCopy];
 }
 
-- (void)presentingViewControllerViewIsAppearing:(BOOL)a3
+- (void)presentingViewControllerViewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
-  v4 = [(PUPXOneUpPresentationImplementation *)self _helper];
-  [v4 presentingViewControllerViewIsAppearing:v3];
+  appearingCopy = appearing;
+  _helper = [(PUPXOneUpPresentationImplementation *)self _helper];
+  [_helper presentingViewControllerViewIsAppearing:appearingCopy];
 }
 
-- (void)presentingViewControllerViewWillAppear:(BOOL)a3
+- (void)presentingViewControllerViewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v4 = [(PUPXOneUpPresentationImplementation *)self _helper];
-  [v4 presentingViewControllerViewWillAppear:v3];
+  appearCopy = appear;
+  _helper = [(PUPXOneUpPresentationImplementation *)self _helper];
+  [_helper presentingViewControllerViewWillAppear:appearCopy];
 }
 
-- (id)_initWithOneUpPresentation:(id)a3
+- (id)_initWithOneUpPresentation:(id)presentation
 {
-  v4 = a3;
+  presentationCopy = presentation;
   v17.receiver = self;
   v17.super_class = PUPXOneUpPresentationImplementation;
   v5 = [(PUPXOneUpPresentationImplementation *)&v17 init];
   p_isa = &v5->super.isa;
   if (v5)
   {
-    objc_storeWeak(&v5->__oneUpPresentation, v4);
-    objc_initWeak(&location, v4);
+    objc_storeWeak(&v5->__oneUpPresentation, presentationCopy);
+    objc_initWeak(&location, presentationCopy);
     v7 = [PUOneUpPresentationHelper alloc];
     v11 = MEMORY[0x1E69E9820];
     v12 = 3221225472;
@@ -699,14 +699,14 @@ LABEL_27:
   return v6;
 }
 
-+ (id)implementationForOneUpPresentation:(id)a3
++ (id)implementationForOneUpPresentation:(id)presentation
 {
-  v3 = a3;
-  v4 = objc_getAssociatedObject(v3, PUImplementationAssociationKey);
+  presentationCopy = presentation;
+  v4 = objc_getAssociatedObject(presentationCopy, PUImplementationAssociationKey);
   if (!v4)
   {
-    v4 = [[PUPXOneUpPresentationImplementation alloc] _initWithOneUpPresentation:v3];
-    objc_setAssociatedObject(v3, PUImplementationAssociationKey, v4, 1);
+    v4 = [[PUPXOneUpPresentationImplementation alloc] _initWithOneUpPresentation:presentationCopy];
+    objc_setAssociatedObject(presentationCopy, PUImplementationAssociationKey, v4, 1);
   }
 
   return v4;

@@ -1,44 +1,44 @@
 @interface AnalyticsReporter
-- (AnalyticsReporter)initWithDelegate:(id)a3;
-- (void)reportBootPerformanceStats:(id)a3 mode:(id)a4;
-- (void)reportCrashlogProcessedFromSubsystem:(id)a3 hostReason:(id)a4 firmwareReason:(id)a5;
-- (void)reportEndToEndRecoveryTime:(unint64_t)a3;
-- (void)reportFLROutcome:(id)a3 forSubsystem:(id)a4;
-- (void)reportFatalError:(id)a3;
-- (void)reportOTAPowerTableEvaluationOutcome:(id)a3 reason:(id)a4 attempts:(unint64_t)a5 assetVersionsUnderEvaluation:(id)a6 previousKnownGoodAssetVersions:(id)a7;
-- (void)reportPMUError:(id)a3;
-- (void)sendEvent:(id)a3 payload:(id)a4;
+- (AnalyticsReporter)initWithDelegate:(id)delegate;
+- (void)reportBootPerformanceStats:(id)stats mode:(id)mode;
+- (void)reportCrashlogProcessedFromSubsystem:(id)subsystem hostReason:(id)reason firmwareReason:(id)firmwareReason;
+- (void)reportEndToEndRecoveryTime:(unint64_t)time;
+- (void)reportFLROutcome:(id)outcome forSubsystem:(id)subsystem;
+- (void)reportFatalError:(id)error;
+- (void)reportOTAPowerTableEvaluationOutcome:(id)outcome reason:(id)reason attempts:(unint64_t)attempts assetVersionsUnderEvaluation:(id)evaluation previousKnownGoodAssetVersions:(id)versions;
+- (void)reportPMUError:(id)error;
+- (void)sendEvent:(id)event payload:(id)payload;
 @end
 
 @implementation AnalyticsReporter
 
-- (AnalyticsReporter)initWithDelegate:(id)a3
+- (AnalyticsReporter)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = AnalyticsReporter;
   v5 = [(AnalyticsReporter *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (void)sendEvent:(id)a3 payload:(id)a4
+- (void)sendEvent:(id)event payload:(id)payload
 {
-  v5 = a4;
-  v4 = v5;
+  payloadCopy = payload;
+  v4 = payloadCopy;
   AnalyticsSendEventLazy();
 }
 
-- (void)reportBootPerformanceStats:(id)a3 mode:(id)a4
+- (void)reportBootPerformanceStats:(id)stats mode:(id)mode
 {
-  v17 = self;
-  v5 = a3;
-  v6 = a4;
+  selfCopy = self;
+  statsCopy = stats;
+  modeCopy = mode;
   v24[0] = @"prepareChipForResetDuration";
   v24[1] = @"crashlogCollectionDuration";
   v24[2] = @"coreDumpCollectionDuration";
@@ -66,8 +66,8 @@
   v24[24] = @"firmwareFLRSetupDuration";
   v7 = [NSArray arrayWithObjects:v24 count:25];
   v8 = objc_alloc_init(NSMutableDictionary);
-  v18 = v6;
-  [v8 setObject:v6 forKey:@"bootMode"];
+  v18 = modeCopy;
+  [v8 setObject:modeCopy forKey:@"bootMode"];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
@@ -88,7 +88,7 @@
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
-        v15 = [v5 objectForKeyedSubscript:{v14, v17}];
+        v15 = [statsCopy objectForKeyedSubscript:{v14, selfCopy}];
         if (v15)
         {
           [v8 setObject:v15 forKey:v14];
@@ -107,33 +107,33 @@
     while (v11);
   }
 
-  [(AnalyticsReporter *)v17 sendEvent:@"com.apple.ConnectivityDaemon.BootPerformanceStats" payload:v8];
+  [(AnalyticsReporter *)selfCopy sendEvent:@"com.apple.ConnectivityDaemon.BootPerformanceStats" payload:v8];
 }
 
-- (void)reportCrashlogProcessedFromSubsystem:(id)a3 hostReason:(id)a4 firmwareReason:(id)a5
+- (void)reportCrashlogProcessedFromSubsystem:(id)subsystem hostReason:(id)reason firmwareReason:(id)firmwareReason
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  subsystemCopy = subsystem;
+  reasonCopy = reason;
+  firmwareReasonCopy = firmwareReason;
   v15[0] = @"subsystem";
-  v11 = v8;
-  if (!v8)
+  v11 = subsystemCopy;
+  if (!subsystemCopy)
   {
     v11 = +[NSNull null];
   }
 
   v16[0] = v11;
   v15[1] = @"hostReason";
-  v12 = v9;
-  if (!v9)
+  v12 = reasonCopy;
+  if (!reasonCopy)
   {
     v12 = +[NSNull null];
   }
 
   v16[1] = v12;
   v15[2] = @"firmwareReason";
-  v13 = v10;
-  if (!v10)
+  v13 = firmwareReasonCopy;
+  if (!firmwareReasonCopy)
   {
     v13 = +[NSNull null];
   }
@@ -142,16 +142,16 @@
   v14 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:3];
   [(AnalyticsReporter *)self sendEvent:@"com.apple.ConnectivityDaemon.CrashlogProcessed" payload:v14];
 
-  if (v10)
+  if (firmwareReasonCopy)
   {
-    if (v9)
+    if (reasonCopy)
     {
       goto LABEL_9;
     }
 
 LABEL_12:
 
-    if (v8)
+    if (subsystemCopy)
     {
       goto LABEL_10;
     }
@@ -161,13 +161,13 @@ LABEL_13:
     goto LABEL_10;
   }
 
-  if (!v9)
+  if (!reasonCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_9:
-  if (!v8)
+  if (!subsystemCopy)
   {
     goto LABEL_13;
   }
@@ -175,21 +175,21 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)reportEndToEndRecoveryTime:(unint64_t)a3
+- (void)reportEndToEndRecoveryTime:(unint64_t)time
 {
   v6 = @"milliseconds";
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:time];
   v7 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
   [(AnalyticsReporter *)self sendEvent:@"com.apple.ConnectivityDaemon.EndToEndRecoveryTime" payload:v5];
 }
 
-- (void)reportFatalError:(id)a3
+- (void)reportFatalError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v7 = @"reason";
-  v5 = v4;
-  if (!v4)
+  v5 = errorCopy;
+  if (!errorCopy)
   {
     v5 = +[NSNull null];
   }
@@ -198,26 +198,26 @@ LABEL_10:
   v6 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
   [(AnalyticsReporter *)self sendEvent:@"com.apple.ConnectivityDaemon.FatalError" payload:v6];
 
-  if (!v4)
+  if (!errorCopy)
   {
   }
 }
 
-- (void)reportFLROutcome:(id)a3 forSubsystem:(id)a4
+- (void)reportFLROutcome:(id)outcome forSubsystem:(id)subsystem
 {
-  v6 = a3;
-  v7 = a4;
+  outcomeCopy = outcome;
+  subsystemCopy = subsystem;
   v11[0] = @"outcome";
-  v8 = v6;
-  if (!v6)
+  v8 = outcomeCopy;
+  if (!outcomeCopy)
   {
     v8 = +[NSNull null];
   }
 
   v11[1] = @"subsystem";
   v12[0] = v8;
-  v9 = v7;
-  if (!v7)
+  v9 = subsystemCopy;
+  if (!subsystemCopy)
   {
     v9 = +[NSNull null];
   }
@@ -226,10 +226,10 @@ LABEL_10:
   v10 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:2];
   [(AnalyticsReporter *)self sendEvent:@"com.apple.ConnectivityDaemon.FunctionLevelResetOutcome" payload:v10];
 
-  if (!v7)
+  if (!subsystemCopy)
   {
 
-    if (v6)
+    if (outcomeCopy)
     {
       goto LABEL_7;
     }
@@ -239,7 +239,7 @@ LABEL_9:
     goto LABEL_7;
   }
 
-  if (!v6)
+  if (!outcomeCopy)
   {
     goto LABEL_9;
   }
@@ -247,16 +247,16 @@ LABEL_9:
 LABEL_7:
 }
 
-- (void)reportOTAPowerTableEvaluationOutcome:(id)a3 reason:(id)a4 attempts:(unint64_t)a5 assetVersionsUnderEvaluation:(id)a6 previousKnownGoodAssetVersions:(id)a7
+- (void)reportOTAPowerTableEvaluationOutcome:(id)outcome reason:(id)reason attempts:(unint64_t)attempts assetVersionsUnderEvaluation:(id)evaluation previousKnownGoodAssetVersions:(id)versions
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  outcomeCopy = outcome;
+  reasonCopy = reason;
+  evaluationCopy = evaluation;
+  versionsCopy = versions;
   v34[0] = @"outcome";
-  v15 = v11;
-  v32 = v11;
-  if (!v11)
+  v15 = outcomeCopy;
+  v32 = outcomeCopy;
+  if (!outcomeCopy)
   {
     v15 = +[NSNull null];
   }
@@ -264,8 +264,8 @@ LABEL_7:
   v29 = v15;
   v35[0] = v15;
   v34[1] = @"reason";
-  v16 = v12;
-  if (!v12)
+  v16 = reasonCopy;
+  if (!reasonCopy)
   {
     v16 = +[NSNull null];
   }
@@ -273,10 +273,10 @@ LABEL_7:
   v28 = v16;
   v35[1] = v16;
   v34[2] = @"attempts";
-  v30 = [NSNumber numberWithUnsignedInteger:a5];
+  v30 = [NSNumber numberWithUnsignedInteger:attempts];
   v35[2] = v30;
   v34[3] = @"wifiAssetVersion";
-  v17 = [v13 objectAtIndexedSubscript:0];
+  v17 = [evaluationCopy objectAtIndexedSubscript:0];
   v18 = v17;
   if (!v17)
   {
@@ -286,8 +286,8 @@ LABEL_7:
   v27 = v17;
   v35[3] = v17;
   v34[4] = @"btAssetVersion";
-  v33 = v13;
-  v19 = [v13 objectAtIndexedSubscript:1];
+  v33 = evaluationCopy;
+  v19 = [evaluationCopy objectAtIndexedSubscript:1];
   v20 = v19;
   if (!v19)
   {
@@ -296,7 +296,7 @@ LABEL_7:
 
   v35[4] = v20;
   v34[5] = @"previousKnownGoodWifiAssetVersion";
-  v21 = [v14 objectAtIndexedSubscript:0];
+  v21 = [versionsCopy objectAtIndexedSubscript:0];
   v22 = v21;
   if (!v21)
   {
@@ -305,8 +305,8 @@ LABEL_7:
 
   v35[5] = v22;
   v34[6] = @"previousKnownGoodBTAssetVersion";
-  v23 = v14;
-  v24 = [v14 objectAtIndexedSubscript:1];
+  v23 = versionsCopy;
+  v24 = [versionsCopy objectAtIndexedSubscript:1];
   v25 = v24;
   if (!v24)
   {
@@ -333,7 +333,7 @@ LABEL_7:
   {
   }
 
-  if (!v12)
+  if (!reasonCopy)
   {
 
     if (v32)
@@ -354,12 +354,12 @@ LABEL_25:
 LABEL_23:
 }
 
-- (void)reportPMUError:(id)a3
+- (void)reportPMUError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v7 = @"faultInfo";
-  v5 = v4;
-  if (!v4)
+  v5 = errorCopy;
+  if (!errorCopy)
   {
     v5 = +[NSNull null];
   }
@@ -368,7 +368,7 @@ LABEL_23:
   v6 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
   [(AnalyticsReporter *)self sendEvent:@"com.apple.ConnectivityDaemon.PMUError" payload:v6];
 
-  if (!v4)
+  if (!errorCopy)
   {
   }
 }

@@ -1,29 +1,29 @@
 @interface AWDLBClientConnectionReport
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBytesSent:(BOOL)a3;
-- (void)setHasConnectionDuration:(BOOL)a3;
-- (void)setHasConnectionJoiningFailure:(BOOL)a3;
-- (void)setHasConnectionJoiningLbConnectionMigration:(BOOL)a3;
-- (void)setHasConnectionJoiningLbConnectionState:(BOOL)a3;
-- (void)setHasConnectionServiceId:(BOOL)a3;
-- (void)setHasDataPathResult:(BOOL)a3;
-- (void)setHasTimeToConnectionFailure:(BOOL)a3;
-- (void)setHasTimeToFirstResponse:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBytesSent:(BOOL)sent;
+- (void)setHasConnectionDuration:(BOOL)duration;
+- (void)setHasConnectionJoiningFailure:(BOOL)failure;
+- (void)setHasConnectionJoiningLbConnectionMigration:(BOOL)migration;
+- (void)setHasConnectionJoiningLbConnectionState:(BOOL)state;
+- (void)setHasConnectionServiceId:(BOOL)id;
+- (void)setHasDataPathResult:(BOOL)result;
+- (void)setHasTimeToConnectionFailure:(BOOL)failure;
+- (void)setHasTimeToFirstResponse:(BOOL)response;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDLBClientConnectionReport
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 64;
   }
@@ -36,9 +36,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasConnectionJoiningFailure:(BOOL)a3
+- (void)setHasConnectionJoiningFailure:(BOOL)failure
 {
-  if (a3)
+  if (failure)
   {
     v3 = 128;
   }
@@ -51,9 +51,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasConnectionJoiningLbConnectionState:(BOOL)a3
+- (void)setHasConnectionJoiningLbConnectionState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 512;
   }
@@ -66,9 +66,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasConnectionJoiningLbConnectionMigration:(BOOL)a3
+- (void)setHasConnectionJoiningLbConnectionMigration:(BOOL)migration
 {
-  if (a3)
+  if (migration)
   {
     v3 = 256;
   }
@@ -81,9 +81,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasConnectionServiceId:(BOOL)a3
+- (void)setHasConnectionServiceId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 8;
   }
@@ -96,9 +96,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasConnectionDuration:(BOOL)a3
+- (void)setHasConnectionDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 4;
   }
@@ -111,9 +111,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasDataPathResult:(BOOL)a3
+- (void)setHasDataPathResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 1024;
   }
@@ -126,9 +126,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasBytesSent:(BOOL)a3
+- (void)setHasBytesSent:(BOOL)sent
 {
-  if (a3)
+  if (sent)
   {
     v3 = 2;
   }
@@ -141,9 +141,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasTimeToFirstResponse:(BOOL)a3
+- (void)setHasTimeToFirstResponse:(BOOL)response
 {
-  if (a3)
+  if (response)
   {
     v3 = 32;
   }
@@ -156,9 +156,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasTimeToConnectionFailure:(BOOL)a3
+- (void)setHasTimeToConnectionFailure:(BOOL)failure
 {
-  if (a3)
+  if (failure)
   {
     v3 = 16;
   }
@@ -180,11 +180,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 0x40) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 0x80) == 0)
     {
@@ -203,7 +203,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_connectionJoiningFailure), @"connection_joining_failure"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_connectionJoiningFailure), @"connection_joining_failure"}];
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -217,7 +217,7 @@ LABEL_4:
   }
 
 LABEL_16:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_connectionJoiningLbConnectionState), @"connection_joining_lb_connection_state"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_connectionJoiningLbConnectionState), @"connection_joining_lb_connection_state"}];
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -231,7 +231,7 @@ LABEL_5:
   }
 
 LABEL_17:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_connectionJoiningLbConnectionMigration), @"connection_joining_lb_connection_migration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_connectionJoiningLbConnectionMigration), @"connection_joining_lb_connection_migration"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -245,7 +245,7 @@ LABEL_6:
   }
 
 LABEL_18:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_connectionServiceId), @"connection_service_id"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_connectionServiceId), @"connection_service_id"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -259,7 +259,7 @@ LABEL_7:
   }
 
 LABEL_19:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_connectionDuration), @"connection_duration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_connectionDuration), @"connection_duration"}];
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -273,7 +273,7 @@ LABEL_8:
   }
 
 LABEL_20:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_dataPathResult), @"data_path_result"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_dataPathResult), @"data_path_result"}];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -287,7 +287,7 @@ LABEL_9:
   }
 
 LABEL_21:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_bytesSent), @"bytes_sent"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_bytesSent), @"bytes_sent"}];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -298,17 +298,17 @@ LABEL_10:
     }
 
 LABEL_23:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_timeToFirstResponse), @"time_to_first_response"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_timeToFirstResponse), @"time_to_first_response"}];
     if ((*&self->_has & 0x10) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_12;
   }
 
 LABEL_22:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_bytesReceived), @"bytes_received"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_bytesReceived), @"bytes_received"}];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
@@ -319,13 +319,13 @@ LABEL_11:
   if ((has & 0x10) != 0)
   {
 LABEL_12:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_timeToConnectionFailure), @"time_to_connection_failure"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_timeToConnectionFailure), @"time_to_connection_failure"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 0x40) != 0)
@@ -483,13 +483,13 @@ LABEL_23:
   PBDataWriterWriteInt64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 0x40) != 0)
   {
-    *(a3 + 7) = self->_timestamp;
-    *(a3 + 40) |= 0x40u;
+    *(to + 7) = self->_timestamp;
+    *(to + 40) |= 0x40u;
     has = self->_has;
     if ((has & 0x80) == 0)
     {
@@ -508,8 +508,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 16) = self->_connectionJoiningFailure;
-  *(a3 + 40) |= 0x80u;
+  *(to + 16) = self->_connectionJoiningFailure;
+  *(to + 40) |= 0x80u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -523,8 +523,8 @@ LABEL_4:
   }
 
 LABEL_15:
-  *(a3 + 18) = self->_connectionJoiningLbConnectionState;
-  *(a3 + 40) |= 0x200u;
+  *(to + 18) = self->_connectionJoiningLbConnectionState;
+  *(to + 40) |= 0x200u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -538,8 +538,8 @@ LABEL_5:
   }
 
 LABEL_16:
-  *(a3 + 17) = self->_connectionJoiningLbConnectionMigration;
-  *(a3 + 40) |= 0x100u;
+  *(to + 17) = self->_connectionJoiningLbConnectionMigration;
+  *(to + 40) |= 0x100u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -553,8 +553,8 @@ LABEL_6:
   }
 
 LABEL_17:
-  *(a3 + 4) = self->_connectionServiceId;
-  *(a3 + 40) |= 8u;
+  *(to + 4) = self->_connectionServiceId;
+  *(to + 40) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -568,8 +568,8 @@ LABEL_7:
   }
 
 LABEL_18:
-  *(a3 + 3) = self->_connectionDuration;
-  *(a3 + 40) |= 4u;
+  *(to + 3) = self->_connectionDuration;
+  *(to + 40) |= 4u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -583,8 +583,8 @@ LABEL_8:
   }
 
 LABEL_19:
-  *(a3 + 19) = self->_dataPathResult;
-  *(a3 + 40) |= 0x400u;
+  *(to + 19) = self->_dataPathResult;
+  *(to + 40) |= 0x400u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -598,8 +598,8 @@ LABEL_9:
   }
 
 LABEL_20:
-  *(a3 + 2) = self->_bytesSent;
-  *(a3 + 40) |= 2u;
+  *(to + 2) = self->_bytesSent;
+  *(to + 40) |= 2u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -613,8 +613,8 @@ LABEL_10:
   }
 
 LABEL_21:
-  *(a3 + 1) = self->_bytesReceived;
-  *(a3 + 40) |= 1u;
+  *(to + 1) = self->_bytesReceived;
+  *(to + 40) |= 1u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -625,23 +625,23 @@ LABEL_11:
     }
 
 LABEL_23:
-    *(a3 + 5) = self->_timeToConnectionFailure;
-    *(a3 + 40) |= 0x10u;
+    *(to + 5) = self->_timeToConnectionFailure;
+    *(to + 40) |= 0x10u;
     return;
   }
 
 LABEL_22:
-  *(a3 + 6) = self->_timeToFirstResponse;
-  *(a3 + 40) |= 0x20u;
+  *(to + 6) = self->_timeToFirstResponse;
+  *(to + 40) |= 0x20u;
   if ((*&self->_has & 0x10) != 0)
   {
     goto LABEL_23;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x40) != 0)
   {
@@ -798,16 +798,16 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 40);
+    v7 = *(equal + 40);
     if ((has & 0x40) != 0)
     {
-      if ((v7 & 0x40) == 0 || self->_timestamp != *(a3 + 7))
+      if ((v7 & 0x40) == 0 || self->_timestamp != *(equal + 7))
       {
         goto LABEL_56;
       }
@@ -822,7 +822,7 @@ LABEL_56:
 
     if ((has & 0x80) != 0)
     {
-      if ((v7 & 0x80) == 0 || self->_connectionJoiningFailure != *(a3 + 16))
+      if ((v7 & 0x80) == 0 || self->_connectionJoiningFailure != *(equal + 16))
       {
         goto LABEL_56;
       }
@@ -835,33 +835,33 @@ LABEL_56:
 
     if ((*&self->_has & 0x200) != 0)
     {
-      if ((*(a3 + 40) & 0x200) == 0 || self->_connectionJoiningLbConnectionState != *(a3 + 18))
+      if ((*(equal + 40) & 0x200) == 0 || self->_connectionJoiningLbConnectionState != *(equal + 18))
       {
         goto LABEL_56;
       }
     }
 
-    else if ((*(a3 + 40) & 0x200) != 0)
+    else if ((*(equal + 40) & 0x200) != 0)
     {
       goto LABEL_56;
     }
 
     if ((*&self->_has & 0x100) != 0)
     {
-      if ((*(a3 + 40) & 0x100) == 0 || self->_connectionJoiningLbConnectionMigration != *(a3 + 17))
+      if ((*(equal + 40) & 0x100) == 0 || self->_connectionJoiningLbConnectionMigration != *(equal + 17))
       {
         goto LABEL_56;
       }
     }
 
-    else if ((*(a3 + 40) & 0x100) != 0)
+    else if ((*(equal + 40) & 0x100) != 0)
     {
       goto LABEL_56;
     }
 
     if ((has & 8) != 0)
     {
-      if ((v7 & 8) == 0 || self->_connectionServiceId != *(a3 + 4))
+      if ((v7 & 8) == 0 || self->_connectionServiceId != *(equal + 4))
       {
         goto LABEL_56;
       }
@@ -874,7 +874,7 @@ LABEL_56:
 
     if ((has & 4) != 0)
     {
-      if ((v7 & 4) == 0 || self->_connectionDuration != *(a3 + 3))
+      if ((v7 & 4) == 0 || self->_connectionDuration != *(equal + 3))
       {
         goto LABEL_56;
       }
@@ -887,20 +887,20 @@ LABEL_56:
 
     if ((*&self->_has & 0x400) != 0)
     {
-      if ((*(a3 + 40) & 0x400) == 0 || self->_dataPathResult != *(a3 + 19))
+      if ((*(equal + 40) & 0x400) == 0 || self->_dataPathResult != *(equal + 19))
       {
         goto LABEL_56;
       }
     }
 
-    else if ((*(a3 + 40) & 0x400) != 0)
+    else if ((*(equal + 40) & 0x400) != 0)
     {
       goto LABEL_56;
     }
 
     if ((has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_bytesSent != *(a3 + 2))
+      if ((v7 & 2) == 0 || self->_bytesSent != *(equal + 2))
       {
         goto LABEL_56;
       }
@@ -913,7 +913,7 @@ LABEL_56:
 
     if (has)
     {
-      if ((v7 & 1) == 0 || self->_bytesReceived != *(a3 + 1))
+      if ((v7 & 1) == 0 || self->_bytesReceived != *(equal + 1))
       {
         goto LABEL_56;
       }
@@ -926,7 +926,7 @@ LABEL_56:
 
     if ((has & 0x20) != 0)
     {
-      if ((v7 & 0x20) == 0 || self->_timeToFirstResponse != *(a3 + 6))
+      if ((v7 & 0x20) == 0 || self->_timeToFirstResponse != *(equal + 6))
       {
         goto LABEL_56;
       }
@@ -940,7 +940,7 @@ LABEL_56:
     LOBYTE(v5) = (v7 & 0x10) == 0;
     if ((has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_timeToConnectionFailure != *(a3 + 5))
+      if ((v7 & 0x10) == 0 || self->_timeToConnectionFailure != *(equal + 5))
       {
         goto LABEL_56;
       }
@@ -1105,14 +1105,14 @@ LABEL_12:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 40);
+  v3 = *(from + 40);
   if ((v3 & 0x40) != 0)
   {
-    self->_timestamp = *(a3 + 7);
+    self->_timestamp = *(from + 7);
     *&self->_has |= 0x40u;
-    v3 = *(a3 + 40);
+    v3 = *(from + 40);
     if ((v3 & 0x80) == 0)
     {
 LABEL_3:
@@ -1130,9 +1130,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_connectionJoiningFailure = *(a3 + 16);
+  self->_connectionJoiningFailure = *(from + 16);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 40);
+  v3 = *(from + 40);
   if ((v3 & 0x200) == 0)
   {
 LABEL_4:
@@ -1145,9 +1145,9 @@ LABEL_4:
   }
 
 LABEL_15:
-  self->_connectionJoiningLbConnectionState = *(a3 + 18);
+  self->_connectionJoiningLbConnectionState = *(from + 18);
   *&self->_has |= 0x200u;
-  v3 = *(a3 + 40);
+  v3 = *(from + 40);
   if ((v3 & 0x100) == 0)
   {
 LABEL_5:
@@ -1160,9 +1160,9 @@ LABEL_5:
   }
 
 LABEL_16:
-  self->_connectionJoiningLbConnectionMigration = *(a3 + 17);
+  self->_connectionJoiningLbConnectionMigration = *(from + 17);
   *&self->_has |= 0x100u;
-  v3 = *(a3 + 40);
+  v3 = *(from + 40);
   if ((v3 & 8) == 0)
   {
 LABEL_6:
@@ -1175,9 +1175,9 @@ LABEL_6:
   }
 
 LABEL_17:
-  self->_connectionServiceId = *(a3 + 4);
+  self->_connectionServiceId = *(from + 4);
   *&self->_has |= 8u;
-  v3 = *(a3 + 40);
+  v3 = *(from + 40);
   if ((v3 & 4) == 0)
   {
 LABEL_7:
@@ -1190,9 +1190,9 @@ LABEL_7:
   }
 
 LABEL_18:
-  self->_connectionDuration = *(a3 + 3);
+  self->_connectionDuration = *(from + 3);
   *&self->_has |= 4u;
-  v3 = *(a3 + 40);
+  v3 = *(from + 40);
   if ((v3 & 0x400) == 0)
   {
 LABEL_8:
@@ -1205,9 +1205,9 @@ LABEL_8:
   }
 
 LABEL_19:
-  self->_dataPathResult = *(a3 + 19);
+  self->_dataPathResult = *(from + 19);
   *&self->_has |= 0x400u;
-  v3 = *(a3 + 40);
+  v3 = *(from + 40);
   if ((v3 & 2) == 0)
   {
 LABEL_9:
@@ -1220,9 +1220,9 @@ LABEL_9:
   }
 
 LABEL_20:
-  self->_bytesSent = *(a3 + 2);
+  self->_bytesSent = *(from + 2);
   *&self->_has |= 2u;
-  v3 = *(a3 + 40);
+  v3 = *(from + 40);
   if ((v3 & 1) == 0)
   {
 LABEL_10:
@@ -1235,9 +1235,9 @@ LABEL_10:
   }
 
 LABEL_21:
-  self->_bytesReceived = *(a3 + 1);
+  self->_bytesReceived = *(from + 1);
   *&self->_has |= 1u;
-  v3 = *(a3 + 40);
+  v3 = *(from + 40);
   if ((v3 & 0x20) == 0)
   {
 LABEL_11:
@@ -1247,15 +1247,15 @@ LABEL_11:
     }
 
 LABEL_23:
-    self->_timeToConnectionFailure = *(a3 + 5);
+    self->_timeToConnectionFailure = *(from + 5);
     *&self->_has |= 0x10u;
     return;
   }
 
 LABEL_22:
-  self->_timeToFirstResponse = *(a3 + 6);
+  self->_timeToFirstResponse = *(from + 6);
   *&self->_has |= 0x20u;
-  if ((*(a3 + 40) & 0x10) != 0)
+  if ((*(from + 40) & 0x10) != 0)
   {
     goto LABEL_23;
   }

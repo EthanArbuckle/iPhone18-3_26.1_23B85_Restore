@@ -1,16 +1,16 @@
 @interface MFEmailSnippetMailProvider
-- (BOOL)search:(id)a3 didFindResults:(id)a4;
-- (MFEmailSnippetMailProvider)initWithAceObject:(id)a3;
-- (id)stringForExpression:(id)a3;
-- (id)stringForExpression:(id)a3 containsPrivacySensitiveContents:(BOOL *)a4;
-- (void)search:(id)a3 didFinishWithError:(id)a4;
+- (BOOL)search:(id)search didFindResults:(id)results;
+- (MFEmailSnippetMailProvider)initWithAceObject:(id)object;
+- (id)stringForExpression:(id)expression;
+- (id)stringForExpression:(id)expression containsPrivacySensitiveContents:(BOOL *)contents;
+- (void)search:(id)search didFinishWithError:(id)error;
 @end
 
 @implementation MFEmailSnippetMailProvider
 
-- (MFEmailSnippetMailProvider)initWithAceObject:(id)a3
+- (MFEmailSnippetMailProvider)initWithAceObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v23.receiver = self;
   v23.super_class = MFEmailSnippetMailProvider;
   v5 = [(MFEmailSnippetMailProvider *)&v23 init];
@@ -26,8 +26,8 @@
   }
 
   v6 = [MFAssistantEmail alloc];
-  v7 = [v4 dictionary];
-  v8 = [(MFAssistantEmail *)v6 initWithDictionary:v7];
+  dictionary = [objectCopy dictionary];
+  v8 = [(MFAssistantEmail *)v6 initWithDictionary:dictionary];
   email = v5->_email;
   v5->_email = v8;
 
@@ -35,14 +35,14 @@
   emailContentPromise = v5->_emailContentPromise;
   v5->_emailContentPromise = v10;
 
-  v12 = [(MFAssistantEmail *)v5->_email identifier];
-  v28 = v12;
+  identifier = [(MFAssistantEmail *)v5->_email identifier];
+  v28 = identifier;
   v13 = [NSArray arrayWithObjects:&v28 count:1];
   v14 = [MFAssistant loadEmailContentForEmails:v13 delegate:v5];
 
-  v15 = [(EFPromise *)v5->_emailContentPromise future];
+  future = [(EFPromise *)v5->_emailContentPromise future];
   v22 = 0;
-  v16 = [v15 resultWithTimeout:&v22 error:5.0];
+  v16 = [future resultWithTimeout:&v22 error:5.0];
   v17 = v22;
 
   if (v16)
@@ -71,87 +71,87 @@ LABEL_6:
   return v18;
 }
 
-- (id)stringForExpression:(id)a3
+- (id)stringForExpression:(id)expression
 {
-  v3 = [(MFEmailSnippetMailProvider *)self stringForExpression:a3 containsPrivacySensitiveContents:0];
+  v3 = [(MFEmailSnippetMailProvider *)self stringForExpression:expression containsPrivacySensitiveContents:0];
 
   return v3;
 }
 
-- (id)stringForExpression:(id)a3 containsPrivacySensitiveContents:(BOOL *)a4
+- (id)stringForExpression:(id)expression containsPrivacySensitiveContents:(BOOL *)contents
 {
-  v6 = a3;
-  if (![v6 isEqualToString:SAEmailEmailFromEmailPListKey])
+  expressionCopy = expression;
+  if (![expressionCopy isEqualToString:SAEmailEmailFromEmailPListKey])
   {
-    if ([v6 isEqualToString:SAEmailEmailSubjectPListKey])
+    if ([expressionCopy isEqualToString:SAEmailEmailSubjectPListKey])
     {
-      if (a4)
+      if (contents)
       {
-        *a4 = 1;
+        *contents = 1;
       }
 
-      v16 = [(MFAssistantEmail *)self->_email subject];
+      subject = [(MFAssistantEmail *)self->_email subject];
     }
 
     else
     {
-      if (![v6 isEqualToString:SAEmailEmailMessagePreviewPListKey])
+      if (![expressionCopy isEqualToString:SAEmailEmailMessagePreviewPListKey])
       {
-        if (a4)
+        if (contents)
         {
-          *a4 = 0;
+          *contents = 0;
         }
 
         v8 = MFLogGeneral();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
           v19 = 138412290;
-          v20 = v6;
+          v20 = expressionCopy;
           _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "#Warning Unknown expression: %@", &v19, 0xCu);
         }
 
         goto LABEL_20;
       }
 
-      if (a4)
+      if (contents)
       {
-        *a4 = 1;
+        *contents = 1;
       }
 
-      v16 = [(MFAssistantEmail *)self->_email message];
+      subject = [(MFAssistantEmail *)self->_email message];
     }
 
-    v17 = v16;
+    v17 = subject;
     goto LABEL_24;
   }
 
-  v7 = [(MFAssistantEmail *)self->_email fromEmail];
-  v8 = v7;
-  if (v7)
+  fromEmail = [(MFAssistantEmail *)self->_email fromEmail];
+  v8 = fromEmail;
+  if (fromEmail)
   {
-    if (a4)
+    if (contents)
     {
-      *a4 = 1;
+      *contents = 1;
     }
 
-    v21 = v7;
+    v21 = fromEmail;
     v9 = [NSArray arrayWithObjects:&v21 count:1];
     v10 = MFCommentedEmailsFromSAPersonAttributes(v9);
-    v11 = [v10 lastObject];
-    v12 = [v11 emailAddressValue];
-    v13 = [v12 displayName];
-    v14 = v13;
-    if (v13)
+    lastObject = [v10 lastObject];
+    emailAddressValue = [lastObject emailAddressValue];
+    displayName = [emailAddressValue displayName];
+    v14 = displayName;
+    if (displayName)
     {
-      v15 = v13;
+      stringValue = displayName;
     }
 
     else
     {
-      v15 = [v11 stringValue];
+      stringValue = [lastObject stringValue];
     }
 
-    v17 = v15;
+    v17 = stringValue;
 
     goto LABEL_23;
   }
@@ -165,19 +165,19 @@ LABEL_24:
   return v17;
 }
 
-- (BOOL)search:(id)a3 didFindResults:(id)a4
+- (BOOL)search:(id)search didFindResults:(id)results
 {
-  v5 = [a4 lastObject];
-  [MFAssistant permuteEmail:self->_email withResults:v5];
+  lastObject = [results lastObject];
+  [MFAssistant permuteEmail:self->_email withResults:lastObject];
 
   return 1;
 }
 
-- (void)search:(id)a3 didFinishWithError:(id)a4
+- (void)search:(id)search didFinishWithError:(id)error
 {
-  v6 = a4;
-  v5 = [(EFPromise *)self->_emailContentPromise errorOnlyCompletionHandlerAdapter];
-  (v5)[2](v5, v6);
+  errorCopy = error;
+  errorOnlyCompletionHandlerAdapter = [(EFPromise *)self->_emailContentPromise errorOnlyCompletionHandlerAdapter];
+  (errorOnlyCompletionHandlerAdapter)[2](errorOnlyCompletionHandlerAdapter, errorCopy);
 }
 
 @end

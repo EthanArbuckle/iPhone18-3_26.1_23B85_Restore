@@ -1,50 +1,50 @@
 @interface VNGenerateInstanceMaskDetector
 + (id)configurationOptionKeysForDetectorKey;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-+ (void)fullyPopulateConfigurationOptions:(id)a3;
-+ (void)recordDefaultConfigurationOptionsInDictionary:(id)a3;
-- (BOOL)_createLowResMaskFromLowResImage:(__CVBuffer *)a3 outMaskPixelBuffer:(__CVBuffer *)a4 outInstanceMaskPixelBuffer:(__CVBuffer *)a5 outNumComponents:(unint64_t *)a6 outConfidenceScore:(float *)a7 error:(id *)a8;
-- (BOOL)_filterUsingConnectedComponentsFromSegmentation:(id *)a3 outInstanceMask:(__CVBuffer *)a4 numComponents:(unint64_t *)a5;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
++ (void)fullyPopulateConfigurationOptions:(id)options;
++ (void)recordDefaultConfigurationOptionsInDictionary:(id)dictionary;
+- (BOOL)_createLowResMaskFromLowResImage:(__CVBuffer *)image outMaskPixelBuffer:(__CVBuffer *)buffer outInstanceMaskPixelBuffer:(__CVBuffer *)pixelBuffer outNumComponents:(unint64_t *)components outConfidenceScore:(float *)score error:(id *)error;
+- (BOOL)_filterUsingConnectedComponentsFromSegmentation:(id *)segmentation outInstanceMask:(__CVBuffer *)mask numComponents:(unint64_t *)components;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 @end
 
 @implementation VNGenerateInstanceMaskDetector
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities allGPUAndNeuralEngineComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities allGPUAndNeuralEngineComputeDevices:options];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   return v5;
 }
 
-+ (void)recordDefaultConfigurationOptionsInDictionary:(id)a3
++ (void)recordDefaultConfigurationOptionsInDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5.receiver = a1;
+  dictionaryCopy = dictionary;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___VNGenerateInstanceMaskDetector;
-  objc_msgSendSuper2(&v5, sel_recordDefaultConfigurationOptionsInDictionary_, v4);
-  [v4 setObject:&unk_1F19C1F48 forKeyedSubscript:@"VNEspressoModelFileBasedDetectorOption_InputBlobNames"];
-  [v4 setObject:&unk_1F19C1F60 forKeyedSubscript:@"VNEspressoModelFileBasedDetectorOption_OutputBlobNames"];
+  objc_msgSendSuper2(&v5, sel_recordDefaultConfigurationOptionsInDictionary_, dictionaryCopy);
+  [dictionaryCopy setObject:&unk_1F19C1F48 forKeyedSubscript:@"VNEspressoModelFileBasedDetectorOption_InputBlobNames"];
+  [dictionaryCopy setObject:&unk_1F19C1F60 forKeyedSubscript:@"VNEspressoModelFileBasedDetectorOption_OutputBlobNames"];
 }
 
-+ (void)fullyPopulateConfigurationOptions:(id)a3
++ (void)fullyPopulateConfigurationOptions:(id)options
 {
-  v4 = a3;
-  v7.receiver = a1;
+  optionsCopy = options;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___VNGenerateInstanceMaskDetector;
-  objc_msgSendSuper2(&v7, sel_fullyPopulateConfigurationOptions_, v4);
-  v5 = [v4 objectForKeyedSubscript:@"VNGenerateInstanceMaskDetectorCreationOptionGatingOnly"];
-  v6 = [v5 BOOLValue];
+  objc_msgSendSuper2(&v7, sel_fullyPopulateConfigurationOptions_, optionsCopy);
+  v5 = [optionsCopy objectForKeyedSubscript:@"VNGenerateInstanceMaskDetectorCreationOptionGatingOnly"];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
-    [v4 setObject:&unk_1F19C1F30 forKeyedSubscript:@"VNEspressoModelFileBasedDetectorOption_OutputBlobNames"];
+    [optionsCopy setObject:&unk_1F19C1F30 forKeyedSubscript:@"VNEspressoModelFileBasedDetectorOption_OutputBlobNames"];
   }
 }
 
@@ -54,7 +54,7 @@
   block[1] = 3221225472;
   block[2] = __71__VNGenerateInstanceMaskDetector_configurationOptionKeysForDetectorKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNGenerateInstanceMaskDetector configurationOptionKeysForDetectorKey]::onceToken != -1)
   {
     dispatch_once(&+[VNGenerateInstanceMaskDetector configurationOptionKeysForDetectorKey]::onceToken, block);
@@ -78,16 +78,16 @@ void __71__VNGenerateInstanceMaskDetector_configurationOptionKeysForDetectorKey_
   +[VNGenerateInstanceMaskDetector configurationOptionKeysForDetectorKey]::configurationOptionKeys = v3;
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v51[1] = *MEMORY[0x1E69E9840];
-  v18 = a5;
-  v19 = a7;
-  v20 = a9;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
   v47 = 0;
   v48 = &v47;
   v49 = 0x2020000000;
@@ -113,9 +113,9 @@ void __71__VNGenerateInstanceMaskDetector_configurationOptionKeysForDetectorKey_
   aBlock[6] = &v43;
   aBlock[7] = &v39;
   aBlock[8] = &v35;
-  aBlock[9] = a4;
+  aBlock[9] = buffer;
   v21 = _Block_copy(aBlock);
-  if (VNExecuteBlock(v21, a8))
+  if (VNExecuteBlock(v21, error))
   {
     if (!self->_gatingOnly && (v36[6] < 0.16 || v40[3] < 2))
     {
@@ -127,7 +127,7 @@ void __71__VNGenerateInstanceMaskDetector_configurationOptionKeysForDetectorKey_
       goto LABEL_15;
     }
 
-    v22 = [VNValidationUtilities originatingRequestSpecifierInOptions:v18 error:a8];
+    v22 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
     v23 = v22 != 0;
     if (v22)
     {
@@ -136,21 +136,21 @@ void __71__VNGenerateInstanceMaskDetector_configurationOptionKeysForDetectorKey_
         v24 = [VNClassificationObservation alloc];
         v25 = 0;
         *&v26 = v36[6];
-        v27 = [(VNClassificationObservation *)v24 initWithOriginatingRequestSpecifier:v22 identifier:@"VNGenerateInstanceMaskGate" confidence:v26];
-        v28 = v27;
+        height = [(VNClassificationObservation *)v24 initWithOriginatingRequestSpecifier:v22 identifier:@"VNGenerateInstanceMaskGate" confidence:v26];
+        v28 = height;
       }
 
       else
       {
         v31 = [VNInstanceMaskObservation alloc];
-        v27 = [(VNInstanceMaskObservation *)v31 initWithOriginatingRequestSpecifier:v22 lowResMask:v48[3] instanceMask:v44[3] numComponents:v40[3] regionOfInterest:x, y, width, height];
+        height = [(VNInstanceMaskObservation *)v31 initWithOriginatingRequestSpecifier:v22 lowResMask:v48[3] instanceMask:v44[3] numComponents:v40[3] regionOfInterest:x, y, width, height];
         *&v32 = v36[6];
-        [(VNObservation *)v27 setConfidence:v32];
+        [(VNObservation *)height setConfidence:v32];
         v28 = 0;
-        v25 = v27;
+        v25 = height;
       }
 
-      v29 = v27;
+      v29 = height;
     }
 
     else
@@ -189,17 +189,17 @@ LABEL_15:
   return v30;
 }
 
-- (BOOL)_createLowResMaskFromLowResImage:(__CVBuffer *)a3 outMaskPixelBuffer:(__CVBuffer *)a4 outInstanceMaskPixelBuffer:(__CVBuffer *)a5 outNumComponents:(unint64_t *)a6 outConfidenceScore:(float *)a7 error:(id *)a8
+- (BOOL)_createLowResMaskFromLowResImage:(__CVBuffer *)image outMaskPixelBuffer:(__CVBuffer *)buffer outInstanceMaskPixelBuffer:(__CVBuffer *)pixelBuffer outNumComponents:(unint64_t *)components outConfidenceScore:(float *)score error:(id *)error
 {
-  LODWORD(v14) = [(VNEspressoModelFileBasedDetector *)self bindLockedPixelBuffer:a3 toNetworkInputBlobName:@"input_image" error:a8];
+  LODWORD(v14) = [(VNEspressoModelFileBasedDetector *)self bindLockedPixelBuffer:image toNetworkInputBlobName:@"input_image" error:error];
   if (v14)
   {
-    LODWORD(v14) = [(VNEspressoModelFileBasedDetector *)self executePlanAndReturnError:a8];
+    LODWORD(v14) = [(VNEspressoModelFileBasedDetector *)self executePlanAndReturnError:error];
     if (v14)
     {
       v15 = *self->_outputConfidenceEspressoBuffer.data;
-      *a7 = v15;
-      if (v15 < 0.16 || self->_gatingOnly || (LODWORD(v14) = [(VNGenerateInstanceMaskDetector *)self _filterUsingConnectedComponentsFromSegmentation:&self->_outputMaskEspressoBuffer outInstanceMask:a5 numComponents:a6], v14) && (*a6 < 2 || (v14 = [VNEspressoHelpers createCVPixelBufferWithPixelFormat:1278226534 fromImageInEspressoBuffer:&self->_outputMaskEspressoBuffer error:a8], (*a4 = v14) != 0)))
+      *score = v15;
+      if (v15 < 0.16 || self->_gatingOnly || (LODWORD(v14) = [(VNGenerateInstanceMaskDetector *)self _filterUsingConnectedComponentsFromSegmentation:&self->_outputMaskEspressoBuffer outInstanceMask:pixelBuffer numComponents:components], v14) && (*components < 2 || (v14 = [VNEspressoHelpers createCVPixelBufferWithPixelFormat:1278226534 fromImageInEspressoBuffer:&self->_outputMaskEspressoBuffer error:error], (*buffer = v14) != 0)))
       {
         LOBYTE(v14) = 1;
       }
@@ -209,35 +209,35 @@ LABEL_15:
   return v14;
 }
 
-- (BOOL)_filterUsingConnectedComponentsFromSegmentation:(id *)a3 outInstanceMask:(__CVBuffer *)a4 numComponents:(unint64_t *)a5
+- (BOOL)_filterUsingConnectedComponentsFromSegmentation:(id *)segmentation outInstanceMask:(__CVBuffer *)mask numComponents:(unint64_t *)components
 {
   v5 = 0;
-  if (!a4)
+  if (!mask)
   {
     return v5;
   }
 
-  if (!a5)
+  if (!components)
   {
     return v5;
   }
 
   pixelBuffer = 0;
-  v9 = VNCVPixelBufferCreateUsingIOSurface(a3->var4, a3->var5, 0x4C303038u, 0, &pixelBuffer);
+  v9 = VNCVPixelBufferCreateUsingIOSurface(segmentation->var4, segmentation->var5, 0x4C303038u, 0, &pixelBuffer);
   v5 = v9 == 0;
   if (v9)
   {
     return v5;
   }
 
-  v57 = a4;
-  v58 = a5;
+  maskCopy = mask;
+  componentsCopy = components;
   CVPixelBufferLockBaseAddress(pixelBuffer, 0);
   BaseAddress = CVPixelBufferGetBaseAddress(pixelBuffer);
   Height = CVPixelBufferGetHeight(pixelBuffer);
   Width = CVPixelBufferGetWidth(pixelBuffer);
   BytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer);
-  if (Width != a3->var4 || Height != a3->var5)
+  if (Width != segmentation->var4 || Height != segmentation->var5)
   {
     exception = __cxa_allocate_exception(0x10uLL);
     MEMORY[0x1AC556740](exception, "Image and label dimensions must match.");
@@ -245,8 +245,8 @@ LABEL_15:
   }
 
   v14 = BytesPerRow;
-  var0 = a3->var0;
-  v16 = 4 * a3->var10;
+  var0 = segmentation->var0;
+  v16 = 4 * segmentation->var10;
   bzero(BaseAddress, BytesPerRow * Height);
   v81 = 0;
   v82 = 0;
@@ -482,8 +482,8 @@ LABEL_59:
 
 LABEL_66:
   CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
-  *v57 = pixelBuffer;
-  *v58 = v48;
+  *maskCopy = pixelBuffer;
+  *componentsCopy = v48;
   if (v81)
   {
     v82 = v81;
@@ -499,38 +499,38 @@ LABEL_66:
   return 1;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  v13 = *&a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v19 = a4;
-  v20 = a6;
-  v21 = a9;
-  [v19 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
+  v13 = *&class;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
+  [optionsCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
   v23.receiver = self;
   v23.super_class = VNGenerateInstanceMaskDetector;
-  LOBYTE(a8) = [(VNEspressoModelFileBasedDetector *)&v23 createRegionOfInterestCrop:v19 options:v13 qosClass:v20 warningRecorder:a7 pixelBuffer:a8 error:v21 progressHandler:x, y, width, height];
+  LOBYTE(error) = [(VNEspressoModelFileBasedDetector *)&v23 createRegionOfInterestCrop:optionsCopy options:v13 qosClass:recorderCopy warningRecorder:buffer pixelBuffer:error error:handlerCopy progressHandler:x, y, width, height];
 
-  return a8;
+  return error;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
   v10.receiver = self;
   v10.super_class = VNGenerateInstanceMaskDetector;
-  if (![(VNEspressoModelFileBasedDetector *)&v10 completeInitializationForSession:a3 error:?])
+  if (![(VNEspressoModelFileBasedDetector *)&v10 completeInitializationForSession:session error:?])
   {
     return 0;
   }
 
-  v6 = [(VNDetector *)self configurationOptions];
-  v7 = [v6 objectForKeyedSubscript:@"VNGenerateInstanceMaskDetectorCreationOptionGatingOnly"];
+  configurationOptions = [(VNDetector *)self configurationOptions];
+  v7 = [configurationOptions objectForKeyedSubscript:@"VNGenerateInstanceMaskDetectorCreationOptionGatingOnly"];
   self->_gatingOnly = [v7 BOOLValue];
 
-  v8 = (self->_gatingOnly || [(VNEspressoModelFileBasedDetector *)self bindBuffer:&self->_outputMaskEspressoBuffer toNetworkOutputBlobName:@"saliency" error:a4]) && [(VNEspressoModelFileBasedDetector *)self bindBuffer:&self->_outputConfidenceEspressoBuffer toNetworkOutputBlobName:@"gating_confidence" error:a4];
+  v8 = (self->_gatingOnly || [(VNEspressoModelFileBasedDetector *)self bindBuffer:&self->_outputMaskEspressoBuffer toNetworkOutputBlobName:@"saliency" error:error]) && [(VNEspressoModelFileBasedDetector *)self bindBuffer:&self->_outputConfidenceEspressoBuffer toNetworkOutputBlobName:@"gating_confidence" error:error];
   return v8;
 }
 

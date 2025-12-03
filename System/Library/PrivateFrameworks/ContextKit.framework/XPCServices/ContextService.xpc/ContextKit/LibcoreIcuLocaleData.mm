@@ -1,43 +1,43 @@
 @interface LibcoreIcuLocaleData
-+ (BOOL)initLocaleDataImplWithNSString:(id)a3 withLibcoreIcuLocaleData:(id)a4;
++ (BOOL)initLocaleDataImplWithNSString:(id)string withLibcoreIcuLocaleData:(id)data;
 + (void)initialize;
-- (id)getDateFormatWithInt:(int)a3;
-- (id)getTimeFormatWithInt:(int)a3;
+- (id)getDateFormatWithInt:(int)int;
+- (id)getTimeFormatWithInt:(int)int;
 - (void)dealloc;
 @end
 
 @implementation LibcoreIcuLocaleData
 
-- (id)getDateFormatWithInt:(int)a3
+- (id)getDateFormatWithInt:(int)int
 {
-  if (a3 >= 4)
+  if (int >= 4)
   {
     v4 = new_JavaLangAssertionError_init();
     objc_exception_throw(v4);
   }
 
-  return *(&self->fullDateFormat_ + (8 * a3));
+  return *(&self->fullDateFormat_ + (8 * int));
 }
 
-- (id)getTimeFormatWithInt:(int)a3
+- (id)getTimeFormatWithInt:(int)int
 {
-  if (a3 >= 4)
+  if (int >= 4)
   {
     v4 = new_JavaLangAssertionError_init();
     objc_exception_throw(v4);
   }
 
-  return *(&self->fullTimeFormat_ + (8 * a3));
+  return *(&self->fullTimeFormat_ + (8 * int));
 }
 
-+ (BOOL)initLocaleDataImplWithNSString:(id)a3 withLibcoreIcuLocaleData:(id)a4
++ (BOOL)initLocaleDataImplWithNSString:(id)string withLibcoreIcuLocaleData:(id)data
 {
   if ((atomic_load_explicit(LibcoreIcuLocaleData__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001792E0();
   }
 
-  [IOSLocaleData initLocaleDataImplWithNSString:a3 withLibcoreIcuLocaleData:a4];
+  [IOSLocaleData initLocaleDataImplWithNSString:string withLibcoreIcuLocaleData:data];
   return 1;
 }
 
@@ -50,7 +50,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = new_JavaUtilHashMap_init();
     JreStrongAssignAndConsume(&qword_100554B40, v2);

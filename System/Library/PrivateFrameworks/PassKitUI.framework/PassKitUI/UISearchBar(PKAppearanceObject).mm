@@ -7,19 +7,19 @@
 - (void)pk_applyAppearance:()PKAppearanceObject
 {
   v4 = a3;
-  v5 = [v4 tintColor];
-  [a1 setTintColor:v5];
+  tintColor = [v4 tintColor];
+  [self setTintColor:tintColor];
 
-  v6 = [v4 searchBarTintcolor];
-  [a1 setBarTintColor:v6];
+  searchBarTintcolor = [v4 searchBarTintcolor];
+  [self setBarTintColor:searchBarTintcolor];
 
-  v7 = [a1 searchField];
-  [v7 setBackground:0];
+  searchField = [self searchField];
+  [searchField setBackground:0];
 
-  v9 = [a1 searchField];
-  v8 = [v4 backgroundColor];
+  searchField2 = [self searchField];
+  backgroundColor = [v4 backgroundColor];
 
-  [v9 setBackgroundColor:v8];
+  [searchField2 setBackgroundColor:backgroundColor];
 }
 
 @end

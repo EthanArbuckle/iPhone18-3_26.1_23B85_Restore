@@ -1,21 +1,21 @@
 @interface AEBookRenderingCallbackTarget
-- (AEBookRenderingCallbackTarget)initWithCallbackBlock:(id)a3;
+- (AEBookRenderingCallbackTarget)initWithCallbackBlock:(id)block;
 @end
 
 @implementation AEBookRenderingCallbackTarget
 
-- (AEBookRenderingCallbackTarget)initWithCallbackBlock:(id)a3
+- (AEBookRenderingCallbackTarget)initWithCallbackBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10.receiver = self;
   v10.super_class = AEBookRenderingCallbackTarget;
   v5 = [(AEBookRenderingCallbackTarget *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (blockCopy)
     {
-      v7 = [v4 copy];
+      v7 = [blockCopy copy];
       callbackBlock = v6->_callbackBlock;
       v6->_callbackBlock = v7;
     }

@@ -1,30 +1,30 @@
 @interface CAMAnimationDelegate
-- (void)animationDidStart:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStart:(id)start;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 @end
 
 @implementation CAMAnimationDelegate
 
-- (void)animationDidStart:(id)a3
+- (void)animationDidStart:(id)start
 {
-  v4 = [(CAMAnimationDelegate *)self start];
+  start = [(CAMAnimationDelegate *)self start];
 
-  if (v4)
+  if (start)
   {
-    v5 = [(CAMAnimationDelegate *)self start];
-    v5[2]();
+    start2 = [(CAMAnimationDelegate *)self start];
+    start2[2]();
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
-  v6 = [(CAMAnimationDelegate *)self completion];
+  finishedCopy = finished;
+  completion = [(CAMAnimationDelegate *)self completion];
 
-  if (v6)
+  if (completion)
   {
-    v7 = [(CAMAnimationDelegate *)self completion];
-    v7[2](v7, v4);
+    completion2 = [(CAMAnimationDelegate *)self completion];
+    completion2[2](completion2, finishedCopy);
   }
 }
 

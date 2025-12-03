@@ -1,19 +1,19 @@
 @interface ZoomUI_SBReachabilityGestureRecognizer
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation ZoomUI_SBReachabilityGestureRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 anyObject];
-  [v8 setAccessibilityIdentifier:@"AXSBReachabilityTouch"];
+  eventCopy = event;
+  beganCopy = began;
+  anyObject = [beganCopy anyObject];
+  [anyObject setAccessibilityIdentifier:@"AXSBReachabilityTouch"];
 
   v9.receiver = self;
   v9.super_class = ZoomUI_SBReachabilityGestureRecognizer;
-  [(ZoomUI_SBReachabilityGestureRecognizer *)&v9 touchesBegan:v7 withEvent:v6];
+  [(ZoomUI_SBReachabilityGestureRecognizer *)&v9 touchesBegan:beganCopy withEvent:eventCopy];
 }
 
 @end

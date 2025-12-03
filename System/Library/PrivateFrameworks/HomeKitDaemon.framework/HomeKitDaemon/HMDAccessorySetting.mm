@@ -1,75 +1,75 @@
 @interface HMDAccessorySetting
-+ (id)decodedValue:(id)a3 error:(id *)a4;
++ (id)decodedValue:(id)value error:(id *)error;
 + (id)logCategory;
 + (id)supportedConstraintClasses;
 + (id)supportedValueClasses;
-- (BOOL)canAddConstraint:(id)a3 error:(id *)a4;
-- (BOOL)canRemoveConstraint:(id)a3;
-- (BOOL)compareConstraints:(id)a3;
+- (BOOL)canAddConstraint:(id)constraint error:(id *)error;
+- (BOOL)canRemoveConstraint:(id)constraint;
+- (BOOL)compareConstraints:(id)constraints;
 - (BOOL)isConstraintMergeStrategyReflection;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isValid:(id *)a3;
-- (BOOL)shouldBlockSettingUpdateFromVersion:(id)a3 isMultiUserEnabled:(BOOL)a4;
-- (BOOL)shouldTurnOffPersonalRequestsOnLanguageChangeTo:(id)a3 supportedMultiUserLanguageCodes:(id)a4 isMultiUserEnabled:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isValid:(id *)valid;
+- (BOOL)shouldBlockSettingUpdateFromVersion:(id)version isMultiUserEnabled:(BOOL)enabled;
+- (BOOL)shouldTurnOffPersonalRequestsOnLanguageChangeTo:(id)to supportedMultiUserLanguageCodes:(id)codes isMultiUserEnabled:(BOOL)enabled;
 - (HMDAccessorySetting)init;
-- (HMDAccessorySetting)initWithCoder:(id)a3;
-- (HMDAccessorySetting)initWithIdentifier:(id)a3 name:(id)a4;
-- (HMDAccessorySetting)initWithModel:(id)a3;
+- (HMDAccessorySetting)initWithCoder:(id)coder;
+- (HMDAccessorySetting)initWithIdentifier:(id)identifier name:(id)name;
+- (HMDAccessorySetting)initWithModel:(id)model;
 - (NSArray)constraints;
 - (NSString)description;
-- (id)_initWithCoder:(id)a3;
-- (id)_modelsForMergeStrategyConstraintsUpdate:(id)a3;
-- (id)constraintWithIdentifier:(id)a3;
+- (id)_initWithCoder:(id)coder;
+- (id)_modelsForMergeStrategyConstraintsUpdate:(id)update;
+- (id)constraintWithIdentifier:(id)identifier;
 - (id)constraintsForCodingXPC;
 - (id)copyIdentical;
 - (id)copyReplica;
-- (id)counterpartConstraintFor:(id)a3;
-- (id)inMemoryConstraintWithIdentifier:(id)a3;
+- (id)counterpartConstraintFor:(id)for;
+- (id)inMemoryConstraintWithIdentifier:(id)identifier;
 - (id)logIdentifier;
-- (id)modelsForConstraintsUpdate:(id)a3;
-- (id)replicatedMissingConstraintsFrom:(id)a3;
+- (id)modelsForConstraintsUpdate:(id)update;
+- (id)replicatedMissingConstraintsFrom:(id)from;
 - (id)value;
 - (int64_t)type;
 - (unint64_t)configurationVersion;
 - (unint64_t)hash;
-- (void)_encodeWithCoder:(id)a3;
-- (void)_mergeConstraintsLocallyWithAdditions:(id)a3 removals:(id)a4;
-- (void)_setType:(int64_t)a3;
-- (void)addConstraint:(id)a3;
-- (void)addConstraintsInMemory:(id)a3;
-- (void)description:(id)a3 indent:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)mergeConstraintsFromOther:(id)a3;
-- (void)removeConstraint:(id)a3;
-- (void)removeConstraintsInMemory:(id)a3;
-- (void)setConfigurationVersion:(unint64_t)a3;
-- (void)setConstraints:(id)a3;
-- (void)setGroup:(id)a3;
-- (void)setValue:(id)a3;
+- (void)_encodeWithCoder:(id)coder;
+- (void)_mergeConstraintsLocallyWithAdditions:(id)additions removals:(id)removals;
+- (void)_setType:(int64_t)type;
+- (void)addConstraint:(id)constraint;
+- (void)addConstraintsInMemory:(id)memory;
+- (void)description:(id)description indent:(id)indent;
+- (void)encodeWithCoder:(id)coder;
+- (void)mergeConstraintsFromOther:(id)other;
+- (void)removeConstraint:(id)constraint;
+- (void)removeConstraintsInMemory:(id)memory;
+- (void)setConfigurationVersion:(unint64_t)version;
+- (void)setConstraints:(id)constraints;
+- (void)setGroup:(id)group;
+- (void)setValue:(id)value;
 @end
 
 @implementation HMDAccessorySetting
 
-- (void)_encodeWithCoder:(id)a3
+- (void)_encodeWithCoder:(id)coder
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 hmd_isForXPCTransport];
-  v6 = [v4 hmd_isForRemoteTransport];
-  v7 = [(HMDAccessorySetting *)self identifier];
-  [v4 encodeObject:v7 forKey:*MEMORY[0x277CCED58]];
+  coderCopy = coder;
+  hmd_isForXPCTransport = [coderCopy hmd_isForXPCTransport];
+  hmd_isForRemoteTransport = [coderCopy hmd_isForRemoteTransport];
+  identifier = [(HMDAccessorySetting *)self identifier];
+  [coderCopy encodeObject:identifier forKey:*MEMORY[0x277CCED58]];
 
-  v8 = [(HMDAccessorySetting *)self properties];
-  [v4 encodeInteger:v8 forKey:*MEMORY[0x277CCED68]];
-  v9 = [(HMDAccessorySetting *)self name];
-  [v4 encodeObject:v9 forKey:*MEMORY[0x277CCED60]];
+  properties = [(HMDAccessorySetting *)self properties];
+  [coderCopy encodeInteger:properties forKey:*MEMORY[0x277CCED68]];
+  name = [(HMDAccessorySetting *)self name];
+  [coderCopy encodeObject:name forKey:*MEMORY[0x277CCED60]];
 
-  v10 = [(HMDAccessorySetting *)self value];
-  [v4 encodeObject:v10 forKey:*MEMORY[0x277CCEDA0]];
+  value = [(HMDAccessorySetting *)self value];
+  [coderCopy encodeObject:value forKey:*MEMORY[0x277CCEDA0]];
 
-  if ((v6 & 1) == 0)
+  if ((hmd_isForRemoteTransport & 1) == 0)
   {
-    if (v5)
+    if (hmd_isForXPCTransport)
     {
       [(HMDAccessorySetting *)self constraintsForCodingXPC];
     }
@@ -79,28 +79,28 @@
       [(HMDAccessorySetting *)self constraints];
     }
     v24 = ;
-    [v4 encodeObject:v24 forKey:*MEMORY[0x277CCED30]];
+    [coderCopy encodeObject:v24 forKey:*MEMORY[0x277CCED30]];
 
-    if (v5)
+    if (hmd_isForXPCTransport)
     {
       goto LABEL_21;
     }
 
 LABEL_20:
-    [v4 encodeInteger:-[HMDAccessorySetting configurationVersion](self forKey:{"configurationVersion"), @"HM.version"}];
+    [coderCopy encodeInteger:-[HMDAccessorySetting configurationVersion](self forKey:{"configurationVersion"), @"HM.version"}];
     goto LABEL_21;
   }
 
-  v28 = v5;
-  v29 = v4;
-  v11 = [MEMORY[0x277CBEB18] array];
-  v12 = [MEMORY[0x277CBEB18] array];
+  v28 = hmd_isForXPCTransport;
+  v29 = coderCopy;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v13 = [(HMDAccessorySetting *)self constraints];
-  v14 = [v13 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  constraints = [(HMDAccessorySetting *)self constraints];
+  v14 = [constraints countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v14)
   {
     v15 = v14;
@@ -111,57 +111,57 @@ LABEL_20:
       {
         if (*v31 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(constraints);
         }
 
         v18 = *(*(&v30 + 1) + 8 * i);
-        v19 = [v18 value];
+        value2 = [v18 value];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v21 = v12;
+          v21 = array2;
         }
 
         else
         {
-          v21 = v11;
+          v21 = array;
         }
 
         [v21 addObject:v18];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v15 = [constraints countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v15);
   }
 
-  v22 = [v11 copy];
-  v4 = v29;
+  v22 = [array copy];
+  coderCopy = v29;
   [v29 encodeObject:v22 forKey:*MEMORY[0x277CCED30]];
 
-  if ([v12 count])
+  if ([array2 count])
   {
-    v23 = [v12 copy];
+    v23 = [array2 copy];
     [v29 encodeObject:v23 forKey:@"HM.constraintsV1"];
   }
 
-  v5 = v28;
+  hmd_isForXPCTransport = v28;
   if ((v28 & 1) == 0)
   {
     goto LABEL_20;
   }
 
 LABEL_21:
-  if ([v4 hmd_isForXPCTransport])
+  if ([coderCopy hmd_isForXPCTransport])
   {
-    v25 = [(HMDAccessorySetting *)self isReflected];
-    [v4 encodeBool:v25 forKey:*MEMORY[0x277CCED70]];
+    isReflected = [(HMDAccessorySetting *)self isReflected];
+    [coderCopy encodeBool:isReflected forKey:*MEMORY[0x277CCED70]];
   }
 
-  if (v5)
+  if (hmd_isForXPCTransport)
   {
     Type = [(HMDAccessorySetting *)self type];
   }
@@ -171,16 +171,16 @@ LABEL_21:
     Type = __getType(self);
   }
 
-  [v4 encodeInteger:Type forKey:*MEMORY[0x277CCED88]];
+  [coderCopy encodeInteger:Type forKey:*MEMORY[0x277CCED88]];
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  [(HMDAccessorySetting *)self _encodeWithCoder:v5];
+  [(HMDAccessorySetting *)self _encodeWithCoder:coderCopy];
   objc_autoreleasePoolPop(v4);
 }
 
@@ -222,24 +222,24 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
   return v2 ^ 1;
 }
 
-- (id)_initWithCoder:(id)a3
+- (id)_initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CCED58]];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CCED60]];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CCED58]];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CCED60]];
   v7 = [(HMDAccessorySetting *)self initWithIdentifier:v5 name:v6];
   if (v7)
   {
-    v7->_type = [v4 decodeIntegerForKey:*MEMORY[0x277CCED88]];
-    v7->_properties = [v4 decodeIntegerForKey:*MEMORY[0x277CCED68]];
-    v8 = [objc_opt_class() supportedConstraintClasses];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:*MEMORY[0x277CCED30]];
+    v7->_type = [coderCopy decodeIntegerForKey:*MEMORY[0x277CCED88]];
+    v7->_properties = [coderCopy decodeIntegerForKey:*MEMORY[0x277CCED68]];
+    supportedConstraintClasses = [objc_opt_class() supportedConstraintClasses];
+    v9 = [coderCopy decodeObjectOfClasses:supportedConstraintClasses forKey:*MEMORY[0x277CCED30]];
     v10 = [v9 mutableCopy];
 
     if (v10)
     {
-      v11 = [objc_opt_class() supportedConstraintClasses];
-      v12 = [v4 decodeObjectOfClasses:v11 forKey:@"HM.constraintsV1"];
+      supportedConstraintClasses2 = [objc_opt_class() supportedConstraintClasses];
+      v12 = [coderCopy decodeObjectOfClasses:supportedConstraintClasses2 forKey:@"HM.constraintsV1"];
 
       if (v12)
       {
@@ -249,42 +249,42 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
       objc_storeStrong(&v7->_constraints, v10);
     }
 
-    v13 = [objc_opt_class() supportedValueClasses];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:*MEMORY[0x277CCEDA0]];
+    supportedValueClasses = [objc_opt_class() supportedValueClasses];
+    v14 = [coderCopy decodeObjectOfClasses:supportedValueClasses forKey:*MEMORY[0x277CCEDA0]];
     value = v7->_value;
     v7->_value = v14;
 
-    v7->_configurationVersion = [v4 decodeIntegerForKey:@"HM.version"];
+    v7->_configurationVersion = [coderCopy decodeIntegerForKey:@"HM.version"];
   }
 
   return v7;
 }
 
-- (HMDAccessorySetting)initWithCoder:(id)a3
+- (HMDAccessorySetting)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(HMDAccessorySetting *)self _initWithCoder:v4];
+  v6 = [(HMDAccessorySetting *)self _initWithCoder:coderCopy];
   objc_autoreleasePoolPop(v5);
 
   return v6;
 }
 
-- (id)_modelsForMergeStrategyConstraintsUpdate:(id)a3
+- (id)_modelsForMergeStrategyConstraintsUpdate:(id)update
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [(HMDAccessorySetting *)self constraints];
-  v7 = __missingElementsFromLeftNotInRight(v6, v4);
+  updateCopy = update;
+  array = [MEMORY[0x277CBEB18] array];
+  constraints = [(HMDAccessorySetting *)self constraints];
+  v7 = __missingElementsFromLeftNotInRight(constraints, updateCopy);
 
-  v46 = v4;
-  v47 = v5;
+  v46 = updateCopy;
+  v47 = array;
   v45 = v7;
   if (([v7 hmf_isEmpty] & 1) == 0)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -294,14 +294,14 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
       v54 = 2112;
       v55 = v7;
       v56 = 2112;
-      v57 = v9;
+      v57 = selfCopy;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@will remove %@ from %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v8);
-    v12 = [(HMDAccessorySetting *)v9 identifier];
+    identifier = [(HMDAccessorySetting *)selfCopy identifier];
     v13 = v7;
-    v14 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
@@ -323,10 +323,10 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
 
           v20 = *(*(&v48 + 1) + 8 * i);
           v21 = [HMDAccessorySettingConstraintModel alloc];
-          v22 = [v20 identifier];
-          v23 = [(HMDBackingStoreModelObject *)v21 initWithObjectChangeType:3 uuid:v22 parentUUID:v12];
+          identifier2 = [v20 identifier];
+          v23 = [(HMDBackingStoreModelObject *)v21 initWithObjectChangeType:3 uuid:identifier2 parentUUID:identifier];
 
-          [v14 addObject:v23];
+          [array2 addObject:v23];
         }
 
         v17 = [v15 countByEnumeratingWithState:&v48 objects:buf count:16];
@@ -335,19 +335,19 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
       while (v17);
     }
 
-    v5 = v47;
-    [v47 addObjectsFromArray:v14];
+    array = v47;
+    [v47 addObjectsFromArray:array2];
 
     v7 = v45;
   }
 
-  v24 = [(HMDAccessorySetting *)self constraints];
-  v25 = __missingElementsFromLeftNotInRight(v4, v24);
+  constraints2 = [(HMDAccessorySetting *)self constraints];
+  v25 = __missingElementsFromLeftNotInRight(updateCopy, constraints2);
 
   if (([v25 hmf_isEmpty] & 1) == 0)
   {
     v26 = objc_autoreleasePoolPush();
-    v27 = self;
+    selfCopy2 = self;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
@@ -357,14 +357,14 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
       v54 = 2112;
       v55 = v25;
       v56 = 2112;
-      v57 = v27;
+      v57 = selfCopy2;
       _os_log_impl(&dword_229538000, v28, OS_LOG_TYPE_INFO, "%{public}@will add %@ to %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v26);
-    v30 = [(HMDAccessorySetting *)v27 identifier];
+    identifier3 = [(HMDAccessorySetting *)selfCopy2 identifier];
     v31 = v25;
-    v32 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     v33 = __deepCopiedConstraints(v31);
     v48 = 0u;
     v49 = 0u;
@@ -384,9 +384,9 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
             objc_enumerationMutation(v33);
           }
 
-          v38 = [*(*(&v48 + 1) + 8 * j) modelWithParentIdentifier:v30];
+          v38 = [*(*(&v48 + 1) + 8 * j) modelWithParentIdentifier:identifier3];
           [v38 setObjectChangeType:1];
-          [v32 addObject:v38];
+          [array3 addObject:v38];
         }
 
         v35 = [v33 countByEnumeratingWithState:&v48 objects:buf count:16];
@@ -395,17 +395,17 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
       while (v35);
     }
 
-    v5 = v47;
-    [v47 addObjectsFromArray:v32];
+    array = v47;
+    [v47 addObjectsFromArray:array3];
 
     v7 = v45;
-    v4 = v46;
+    updateCopy = v46;
   }
 
-  if ([v5 count])
+  if ([array count])
   {
     v39 = objc_autoreleasePoolPush();
-    v40 = self;
+    selfCopy3 = self;
     v41 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
     {
@@ -413,7 +413,7 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
       *buf = 138543618;
       v53 = v42;
       v54 = 2112;
-      v55 = v5;
+      v55 = array;
       _os_log_impl(&dword_229538000, v41, OS_LOG_TYPE_DEBUG, "%{public}@fixing up accessory constraints %@", buf, 0x16u);
     }
 
@@ -422,26 +422,26 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
 
   v43 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
 - (id)logIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDAccessorySetting *)self identifier];
-  v5 = [v4 UUIDString];
-  v6 = [(HMDAccessorySetting *)self name];
-  v7 = [v3 stringWithFormat:@"%@/%@", v5, v6];
+  identifier = [(HMDAccessorySetting *)self identifier];
+  uUIDString = [identifier UUIDString];
+  name = [(HMDAccessorySetting *)self name];
+  v7 = [v3 stringWithFormat:@"%@/%@", uUIDString, name];
 
   return v7;
 }
 
-- (void)setConfigurationVersion:(unint64_t)a3
+- (void)setConfigurationVersion:(unint64_t)version
 {
   os_unfair_lock_lock_with_options();
-  if (self->_configurationVersion < a3)
+  if (self->_configurationVersion < version)
   {
-    self->_configurationVersion = a3;
+    self->_configurationVersion = version;
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -455,16 +455,16 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
   return configurationVersion;
 }
 
-- (BOOL)shouldTurnOffPersonalRequestsOnLanguageChangeTo:(id)a3 supportedMultiUserLanguageCodes:(id)a4 isMultiUserEnabled:(BOOL)a5
+- (BOOL)shouldTurnOffPersonalRequestsOnLanguageChangeTo:(id)to supportedMultiUserLanguageCodes:(id)codes isMultiUserEnabled:(BOOL)enabled
 {
-  v5 = a5;
+  enabledCopy = enabled;
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HMDAccessorySetting *)self value];
-  if (v5 && (-[HMDAccessorySetting keyPath](self, "keyPath"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isEqual:@"root.siri.language"], v11, v12))
+  toCopy = to;
+  codesCopy = codes;
+  value = [(HMDAccessorySetting *)self value];
+  if (enabledCopy && (-[HMDAccessorySetting keyPath](self, "keyPath"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isEqual:@"root.siri.language"], v11, v12))
   {
-    v13 = v10;
+    v13 = value;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -478,7 +478,7 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
 
     v15 = v14;
 
-    v16 = v8;
+    v16 = toCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -493,16 +493,16 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
     v18 = v17;
 
     v43 = v15;
-    v19 = [v15 title];
-    v20 = [v18 title];
-    v21 = [v19 componentsSeparatedByString:{@", "}];
-    v44 = v20;
-    v22 = [v20 componentsSeparatedByString:{@", "}];
+    title = [v15 title];
+    title2 = [v18 title];
+    v21 = [title componentsSeparatedByString:{@", "}];
+    v44 = title2;
+    v22 = [title2 componentsSeparatedByString:{@", "}];
     if ([v21 count] < 4)
     {
       v30 = v22;
       v31 = objc_autoreleasePoolPush();
-      v32 = self;
+      selfCopy = self;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
@@ -523,13 +523,13 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
     else
     {
       v23 = [v21 objectAtIndexedSubscript:0];
-      if ([v9 containsObject:v23])
+      if ([codesCopy containsObject:v23])
       {
         v42 = v22;
-        if ([v22 count] >= 4 && (objc_msgSend(v22, "objectAtIndexedSubscript:", 0), v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v9, "containsObject:", v24), v24, v25))
+        if ([v22 count] >= 4 && (objc_msgSend(v22, "objectAtIndexedSubscript:", 0), v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(codesCopy, "containsObject:", v24), v24, v25))
         {
           context = objc_autoreleasePoolPush();
-          v26 = self;
+          selfCopy2 = self;
           log = HMFGetOSLogHandle();
           if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
           {
@@ -550,7 +550,7 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
         else
         {
           context = objc_autoreleasePoolPush();
-          v35 = self;
+          selfCopy3 = self;
           HMFGetOSLogHandle();
           log = v29 = 1;
           if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -584,21 +584,21 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
   return v29;
 }
 
-- (BOOL)shouldBlockSettingUpdateFromVersion:(id)a3 isMultiUserEnabled:(BOOL)a4
+- (BOOL)shouldBlockSettingUpdateFromVersion:(id)version isMultiUserEnabled:(BOOL)enabled
 {
-  LODWORD(v4) = a4;
+  LODWORD(v4) = enabled;
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  versionCopy = version;
   v7 = +[HMDHomeKitVersion version6];
-  v8 = [(HMDAccessorySetting *)self keyPath];
-  v9 = [v8 isEqual:@"root.siri.language"];
-  if (v6 && v9 && [v6 compare:v7] == -1)
+  keyPath = [(HMDAccessorySetting *)self keyPath];
+  v9 = [keyPath isEqual:@"root.siri.language"];
+  if (versionCopy && v9 && [versionCopy compare:v7] == -1)
   {
 
     if (v4)
     {
       v4 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
@@ -606,7 +606,7 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
         v15 = 138543618;
         v16 = v14;
         v17 = 2112;
-        v18 = v6;
+        v18 = versionCopy;
         _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@Settings update blocked due to attempting language setting update with homekit version: %@", &v15, 0x16u);
       }
 
@@ -625,14 +625,14 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
   return v4;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v6 = a3;
+  valueCopy = value;
   os_unfair_lock_lock_with_options();
   value = self->_value;
   if ((HMFEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_value, a3);
+    objc_storeStrong(&self->_value, value);
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -647,20 +647,20 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
   return v3;
 }
 
-- (id)modelsForConstraintsUpdate:(id)a3
+- (id)modelsForConstraintsUpdate:(id)update
 {
   v62 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   if ([(HMDAccessorySetting *)self isConstraintMergeStrategyReflection])
   {
-    v5 = [(HMDAccessorySetting *)self _modelsForMergeStrategyConstraintsUpdate:v4];
+    v5 = [(HMDAccessorySetting *)self _modelsForMergeStrategyConstraintsUpdate:updateCopy];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -668,23 +668,23 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
       *buf = 138543618;
       v59 = v10;
       v60 = 2112;
-      v61 = v4;
+      v61 = updateCopy;
       _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@Updating constraints: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v7);
     v11 = MEMORY[0x277CBEB98];
-    v12 = [(HMDAccessorySetting *)v8 constraints];
-    v13 = [v11 setWithArray:v12];
+    constraints = [(HMDAccessorySetting *)selfCopy constraints];
+    v13 = [v11 setWithArray:constraints];
 
-    v46 = v4;
-    v14 = [MEMORY[0x277CBEB98] setWithArray:v4];
+    v46 = updateCopy;
+    v14 = [MEMORY[0x277CBEB98] setWithArray:updateCopy];
     v47 = v13;
     v15 = [v13 mutableCopy];
     v45 = v14;
     [v15 minusSet:v14];
     v16 = objc_autoreleasePoolPush();
-    v17 = v8;
+    v17 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
@@ -718,11 +718,11 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
 
           v25 = *(*(&v52 + 1) + 8 * i);
           v26 = [HMDAccessorySettingConstraintModel alloc];
-          v27 = [v25 identifier];
-          v28 = [(HMDAccessorySetting *)v17 identifier];
-          v29 = [(HMDBackingStoreModelObject *)v26 initWithObjectChangeType:3 uuid:v27 parentUUID:v28];
+          identifier = [v25 identifier];
+          identifier2 = [(HMDAccessorySetting *)v17 identifier];
+          v29 = [(HMDBackingStoreModelObject *)v26 initWithObjectChangeType:3 uuid:identifier parentUUID:identifier2];
 
-          [v6 addObject:v29];
+          [array addObject:v29];
         }
 
         v22 = [v20 countByEnumeratingWithState:&v52 objects:v57 count:16];
@@ -767,11 +767,11 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
           }
 
           v40 = *(*(&v48 + 1) + 8 * j);
-          v41 = [(HMDAccessorySetting *)v32 identifier];
-          v42 = [v40 modelWithParentIdentifier:v41];
+          identifier3 = [(HMDAccessorySetting *)v32 identifier];
+          v42 = [v40 modelWithParentIdentifier:identifier3];
 
           [v42 setObjectChangeType:1];
-          [v6 addObject:v42];
+          [array addObject:v42];
         }
 
         v37 = [v35 countByEnumeratingWithState:&v48 objects:v56 count:16];
@@ -780,8 +780,8 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
       while (v37);
     }
 
-    v5 = [v6 copy];
-    v4 = v46;
+    v5 = [array copy];
+    updateCopy = v46;
   }
 
   v43 = *MEMORY[0x277D85DE8];
@@ -791,22 +791,22 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
 
 - (BOOL)isConstraintMergeStrategyReflection
 {
-  v2 = [(HMDAccessorySetting *)self name];
-  v3 = [v2 isEqualToString:@"alarms"];
+  name = [(HMDAccessorySetting *)self name];
+  v3 = [name isEqualToString:@"alarms"];
 
   return v3;
 }
 
-- (void)_mergeConstraintsLocallyWithAdditions:(id)a3 removals:(id)a4
+- (void)_mergeConstraintsLocallyWithAdditions:(id)additions removals:(id)removals
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  additionsCopy = additions;
+  removalsCopy = removals;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v8 = [removalsCopy countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v8)
   {
     v9 = v8;
@@ -818,14 +818,14 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(removalsCopy);
         }
 
         [(HMDAccessorySetting *)self removeConstraint:*(*(&v22 + 1) + 8 * v11++)];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v9 = [removalsCopy countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v9);
@@ -835,7 +835,7 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = v6;
+  v12 = additionsCopy;
   v13 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v13)
   {
@@ -864,17 +864,17 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeConstraintsInMemory:(id)a3
+- (void)removeConstraintsInMemory:(id)memory
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  memoryCopy = memory;
   v18 = 8;
   os_unfair_lock_lock_with_options();
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v4;
+  obj = memoryCopy;
   v5 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
@@ -892,29 +892,29 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
         if ([(NSMutableArray *)self->_constraints containsObject:v8, v18])
         {
           inMemoryCachedConstraintRemovals = self->_inMemoryCachedConstraintRemovals;
-          v10 = [v8 identifier];
-          LOBYTE(inMemoryCachedConstraintRemovals) = [(NSMutableSet *)inMemoryCachedConstraintRemovals containsObject:v10];
+          identifier = [v8 identifier];
+          LOBYTE(inMemoryCachedConstraintRemovals) = [(NSMutableSet *)inMemoryCachedConstraintRemovals containsObject:identifier];
 
           if ((inMemoryCachedConstraintRemovals & 1) == 0)
           {
             v11 = self->_inMemoryCachedConstraintRemovals;
-            v12 = [v8 identifier];
-            [(NSMutableSet *)v11 addObject:v12];
+            identifier2 = [v8 identifier];
+            [(NSMutableSet *)v11 addObject:identifier2];
           }
         }
 
         if ([(NSMutableArray *)self->_inMemoryCachedConstraints containsObject:v8])
         {
           v13 = self->_inMemoryCachedConstraintRemovals;
-          v14 = [v8 identifier];
-          LOBYTE(v13) = [(NSMutableSet *)v13 containsObject:v14];
+          identifier3 = [v8 identifier];
+          LOBYTE(v13) = [(NSMutableSet *)v13 containsObject:identifier3];
 
           if ((v13 & 1) == 0)
           {
             [(NSMutableArray *)self->_inMemoryCachedConstraints removeObject:v8];
             v15 = self->_inMemoryCachedConstraintRemovals;
-            v16 = [v8 identifier];
-            [(NSMutableSet *)v15 addObject:v16];
+            identifier4 = [v8 identifier];
+            [(NSMutableSet *)v15 addObject:identifier4];
           }
         }
       }
@@ -929,16 +929,16 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addConstraintsInMemory:(id)a3
+- (void)addConstraintsInMemory:(id)memory
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  memoryCopy = memory;
   os_unfair_lock_lock_with_options();
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = v4;
+  v5 = memoryCopy;
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -969,22 +969,22 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeConstraint:(id)a3
+- (void)removeConstraint:(id)constraint
 {
-  v4 = a3;
-  if (v4)
+  constraintCopy = constraint;
+  if (constraintCopy)
   {
-    v9 = v4;
+    v9 = constraintCopy;
     os_unfair_lock_lock_with_options();
     inMemoryCachedConstraintRemovals = self->_inMemoryCachedConstraintRemovals;
-    v6 = [v9 identifier];
-    LODWORD(inMemoryCachedConstraintRemovals) = [(NSMutableSet *)inMemoryCachedConstraintRemovals containsObject:v6];
+    identifier = [v9 identifier];
+    LODWORD(inMemoryCachedConstraintRemovals) = [(NSMutableSet *)inMemoryCachedConstraintRemovals containsObject:identifier];
 
     if (inMemoryCachedConstraintRemovals)
     {
       v7 = self->_inMemoryCachedConstraintRemovals;
-      v8 = [v9 identifier];
-      [(NSMutableSet *)v7 removeObject:v8];
+      identifier2 = [v9 identifier];
+      [(NSMutableSet *)v7 removeObject:identifier2];
     }
 
     if ([(NSMutableArray *)self->_constraints containsObject:v9])
@@ -993,16 +993,16 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
     }
 
     os_unfair_lock_unlock(&self->_lock);
-    v4 = v9;
+    constraintCopy = v9;
   }
 }
 
-- (void)addConstraint:(id)a3
+- (void)addConstraint:(id)constraint
 {
-  v4 = a3;
-  if (v4)
+  constraintCopy = constraint;
+  if (constraintCopy)
   {
-    v5 = v4;
+    v5 = constraintCopy;
     os_unfair_lock_lock_with_options();
     if (([(NSMutableArray *)self->_constraints containsObject:v5]& 1) == 0)
     {
@@ -1020,17 +1020,17 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
   MEMORY[0x2821F9730]();
 }
 
-- (void)mergeConstraintsFromOther:(id)a3
+- (void)mergeConstraintsFromOther:(id)other
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessorySetting *)self constraints];
-  v6 = __missingElementsFromLeftNotInRight(v4, v5);
+  otherCopy = other;
+  constraints = [(HMDAccessorySetting *)self constraints];
+  v6 = __missingElementsFromLeftNotInRight(otherCopy, constraints);
 
   if (([v6 hmf_isEmpty] & 1) == 0)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -1063,7 +1063,7 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
             objc_enumerationMutation(v11);
           }
 
-          [(HMDAccessorySetting *)v8 addConstraint:*(*(&v17 + 1) + 8 * v15++), v17];
+          [(HMDAccessorySetting *)selfCopy addConstraint:*(*(&v17 + 1) + 8 * v15++), v17];
         }
 
         while (v13 != v15);
@@ -1077,12 +1077,12 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)replicatedMissingConstraintsFrom:(id)a3
+- (id)replicatedMissingConstraintsFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessorySetting *)self constraints];
-  v6 = __missingElementsFromLeftNotInRight(v4, v5);
+  fromCopy = from;
+  constraints = [(HMDAccessorySetting *)self constraints];
+  v6 = __missingElementsFromLeftNotInRight(fromCopy, constraints);
 
   if ([v6 hmf_isEmpty])
   {
@@ -1092,7 +1092,7 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -1113,21 +1113,21 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
   return v7;
 }
 
-- (void)setConstraints:(id)a3
+- (void)setConstraints:(id)constraints
 {
-  v6 = a3;
+  constraintsCopy = constraints;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 mutableCopy];
+  v4 = [constraintsCopy mutableCopy];
   constraints = self->_constraints;
   self->_constraints = v4;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)inMemoryConstraintWithIdentifier:(id)a3
+- (id)inMemoryConstraintWithIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
   v16 = 0u;
   v17 = 0u;
@@ -1148,8 +1148,8 @@ uint64_t __46__HMDAccessorySetting_constraintsForCodingXPC__block_invoke(uint64_
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 hmf_isEqualToUUID:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier hmf_isEqualToUUID:identifierCopy];
 
         if (v11)
         {
@@ -1176,10 +1176,10 @@ LABEL_11:
   return v6;
 }
 
-- (id)constraintWithIdentifier:(id)a3
+- (id)constraintWithIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
   v16 = 0u;
   v17 = 0u;
@@ -1200,8 +1200,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 hmf_isEqualToUUID:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier hmf_isEqualToUUID:identifierCopy];
 
         if (v11)
         {
@@ -1228,19 +1228,19 @@ LABEL_11:
   return v6;
 }
 
-- (id)counterpartConstraintFor:(id)a3
+- (id)counterpartConstraintFor:(id)for
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = __itemFromConstraint(v4);
+  forCopy = for;
+  v5 = __itemFromConstraint(forCopy);
   if (v5)
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v6 = [(HMDAccessorySetting *)self constraints];
-    v7 = [v6 countByEnumeratingWithState:&v24 objects:v34 count:16];
+    constraints = [(HMDAccessorySetting *)self constraints];
+    v7 = [constraints countByEnumeratingWithState:&v24 objects:v34 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1251,7 +1251,7 @@ LABEL_11:
         {
           if (*v25 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(constraints);
           }
 
           v11 = *(*(&v24 + 1) + 8 * i);
@@ -1259,7 +1259,7 @@ LABEL_11:
           if (v12 && [v5 isEqual:v12])
           {
             v18 = objc_autoreleasePoolPush();
-            v19 = self;
+            selfCopy = self;
             v20 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
             {
@@ -1269,7 +1269,7 @@ LABEL_11:
               v30 = 2112;
               v31 = v11;
               v32 = 2112;
-              v33 = v4;
+              v33 = forCopy;
               _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_DEBUG, "%{public}@Found counterpart constraint %@ for %@", buf, 0x20u);
             }
 
@@ -1280,7 +1280,7 @@ LABEL_11:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v24 objects:v34 count:16];
+        v8 = [constraints countByEnumeratingWithState:&v24 objects:v34 count:16];
         if (v8)
         {
           continue;
@@ -1297,7 +1297,7 @@ LABEL_18:
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy2 = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
@@ -1305,7 +1305,7 @@ LABEL_18:
       *buf = 138543618;
       v29 = v17;
       v30 = 2112;
-      v31 = v4;
+      v31 = forCopy;
       _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_DEBUG, "%{public}@Can't decode constraint %@", buf, 0x16u);
     }
 
@@ -1327,17 +1327,17 @@ LABEL_18:
   return v3;
 }
 
-- (BOOL)canRemoveConstraint:(id)a3
+- (BOOL)canRemoveConstraint:(id)constraint
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessorySetting *)self constraints];
-  v6 = [v5 containsObject:v4];
+  constraintCopy = constraint;
+  constraints = [(HMDAccessorySetting *)self constraints];
+  v6 = [constraints containsObject:constraintCopy];
 
   if ((v6 & 1) == 0)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -1345,7 +1345,7 @@ LABEL_18:
       v13 = 138543618;
       v14 = v10;
       v15 = 2112;
-      v16 = v4;
+      v16 = constraintCopy;
       _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@Missing Constraint: %@", &v13, 0x16u);
     }
 
@@ -1356,32 +1356,32 @@ LABEL_18:
   return v6;
 }
 
-- (BOOL)canAddConstraint:(id)a3 error:(id *)a4
+- (BOOL)canAddConstraint:(id)constraint error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HMDAccessorySetting *)self constraints];
-  v8 = [v7 containsObject:v6];
+  constraintCopy = constraint;
+  constraints = [(HMDAccessorySetting *)self constraints];
+  v8 = [constraints containsObject:constraintCopy];
 
   if (!v8)
   {
-    if (__isConstraintValid(self, v6, a4))
+    if (__isConstraintValid(self, constraintCopy, error))
     {
       v13 = 1;
       goto LABEL_12;
     }
 
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v17 = HMFGetLogIdentifier();
-      v18 = *a4;
+      v18 = *error;
       v21 = 138543874;
       v22 = v17;
       v23 = 2112;
-      v24 = v6;
+      v24 = constraintCopy;
       v25 = 2112;
       v26 = v18;
       _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_INFO, "%{public}@Invalid constraint, %@, with error: %@", &v21, 0x20u);
@@ -1394,7 +1394,7 @@ LABEL_11:
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy2 = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -1402,33 +1402,33 @@ LABEL_11:
     v21 = 138543618;
     v22 = v12;
     v23 = 2112;
-    v24 = v6;
+    v24 = constraintCopy;
     _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@Duplicate constraint: %@", &v21, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
-  if (!a4)
+  if (!error)
   {
     goto LABEL_11;
   }
 
   [MEMORY[0x277CCA9B8] hmErrorWithCode:1];
-  *a4 = v13 = 0;
+  *error = v13 = 0;
 LABEL_12:
 
   v19 = *MEMORY[0x277D85DE8];
   return v13;
 }
 
-- (BOOL)isValid:(id *)a3
+- (BOOL)isValid:(id *)valid
 {
   v108 = *MEMORY[0x277D85DE8];
   if (![(HMDAccessorySetting *)self type])
   {
-    if (a3)
+    if (valid)
     {
       [MEMORY[0x277CCA9B8] hmErrorWithCode:43];
-      *a3 = v14 = 0;
+      *valid = v14 = 0;
       goto LABEL_99;
     }
 
@@ -1441,8 +1441,8 @@ LABEL_65:
   v90 = 0u;
   v87 = 0u;
   v88 = 0u;
-  v5 = [(HMDAccessorySetting *)self constraints];
-  v6 = [v5 countByEnumeratingWithState:&v87 objects:v95 count:16];
+  constraints = [(HMDAccessorySetting *)self constraints];
+  v6 = [constraints countByEnumeratingWithState:&v87 objects:v95 count:16];
   if (!v6)
   {
     goto LABEL_10;
@@ -1456,41 +1456,41 @@ LABEL_65:
     {
       if (*v88 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(constraints);
       }
 
-      if (!__isConstraintValid(self, *(*(&v87 + 1) + 8 * i), a3))
+      if (!__isConstraintValid(self, *(*(&v87 + 1) + 8 * i), valid))
       {
 
         goto LABEL_65;
       }
     }
 
-    v7 = [v5 countByEnumeratingWithState:&v87 objects:v95 count:16];
+    v7 = [constraints countByEnumeratingWithState:&v87 objects:v95 count:16];
   }
 
   while (v7);
 LABEL_10:
 
-  v10 = [(HMDAccessorySetting *)self value];
-  v11 = self;
-  v12 = v10;
+  value = [(HMDAccessorySetting *)self value];
+  selfCopy = self;
+  v12 = value;
   if (!v12)
   {
     goto LABEL_75;
   }
 
-  v13 = [(HMDAccessorySetting *)v11 type];
+  type = [(HMDAccessorySetting *)selfCopy type];
   v14 = 0;
-  if (v13 > 2)
+  if (type > 2)
   {
-    if (v13 == 3)
+    if (type == 3)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v53 = objc_autoreleasePoolPush();
-        v54 = v11;
+        v54 = selfCopy;
         v55 = HMFGetOSLogHandle();
         if (!os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
         {
@@ -1503,7 +1503,7 @@ LABEL_10:
 
     else
     {
-      if (v13 != 4)
+      if (type != 4)
       {
         goto LABEL_98;
       }
@@ -1512,7 +1512,7 @@ LABEL_10:
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v53 = objc_autoreleasePoolPush();
-        v54 = v11;
+        v54 = selfCopy;
         v55 = HMFGetOSLogHandle();
         if (!os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
         {
@@ -1531,10 +1531,10 @@ LABEL_79:
 
 LABEL_80:
         objc_autoreleasePoolPop(v53);
-        if (a3)
+        if (valid)
         {
           [MEMORY[0x277CCA9B8] hmErrorWithCode:22];
-          *a3 = v14 = 0;
+          *valid = v14 = 0;
         }
 
         else
@@ -1552,13 +1552,13 @@ LABEL_75:
     goto LABEL_98;
   }
 
-  if (v13 == 1)
+  if (type == 1)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v53 = objc_autoreleasePoolPush();
-      v54 = v11;
+      v54 = selfCopy;
       v55 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
       {
@@ -1571,7 +1571,7 @@ LABEL_75:
     goto LABEL_75;
   }
 
-  if (v13 != 2)
+  if (type != 2)
   {
     goto LABEL_98;
   }
@@ -1594,7 +1594,7 @@ LABEL_75:
   if (!v16)
   {
     v53 = objc_autoreleasePoolPush();
-    v54 = v11;
+    v54 = selfCopy;
     v55 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
     {
@@ -1610,7 +1610,7 @@ LABEL_75:
   v94 = 0u;
   v91 = 0u;
   v92 = 0u;
-  obj = [(HMDAccessorySetting *)v11 constraints];
+  obj = [(HMDAccessorySetting *)selfCopy constraints];
   v82 = [obj countByEnumeratingWithState:&v91 objects:v96 count:16];
   if (!v82)
   {
@@ -1618,7 +1618,7 @@ LABEL_75:
   }
 
   v81 = *v92;
-  v79 = v11;
+  v79 = selfCopy;
   while (2)
   {
     v18 = 0;
@@ -1630,14 +1630,14 @@ LABEL_75:
       }
 
       v19 = *(*(&v91 + 1) + 8 * v18);
-      v20 = v11;
+      v20 = selfCopy;
       v21 = v83;
       v22 = v19;
-      v23 = [(HMDAccessorySetting *)v20 value];
+      value2 = [(HMDAccessorySetting *)v20 value];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v24 = v23;
+        v24 = value2;
       }
 
       else
@@ -1647,15 +1647,15 @@ LABEL_75:
 
       v25 = v24;
 
-      v26 = [v22 type];
-      switch(v26)
+      type2 = [v22 type];
+      switch(type2)
       {
         case 3:
-          v27 = [v22 value];
+          value3 = [v22 value];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v32 = v27;
+            v32 = value3;
           }
 
           else
@@ -1699,20 +1699,20 @@ LABEL_75:
                 }
 
                 objc_autoreleasePoolPop(v70);
-                if (a3)
+                if (valid)
                 {
                   v64 = 43;
 LABEL_94:
-                  v11 = v79;
+                  selfCopy = v79;
                   v12 = v78;
-                  *a3 = [MEMORY[0x277CCA9B8] hmErrorWithCode:v64];
+                  *valid = [MEMORY[0x277CCA9B8] hmErrorWithCode:v64];
 LABEL_96:
 
                   goto LABEL_97;
                 }
 
 LABEL_95:
-                v11 = v79;
+                selfCopy = v79;
                 v12 = v78;
                 goto LABEL_96;
               }
@@ -1722,14 +1722,14 @@ LABEL_95:
           }
 
 LABEL_57:
-          v27 = 0;
+          value3 = 0;
           goto LABEL_58;
         case 2:
-          v27 = [v22 value];
+          value3 = [v22 value];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v30 = v27;
+            v30 = value3;
           }
 
           else
@@ -1762,7 +1762,7 @@ LABEL_57:
               }
 
               objc_autoreleasePoolPop(v59);
-              if (a3)
+              if (valid)
               {
                 v64 = 45;
                 goto LABEL_94;
@@ -1782,11 +1782,11 @@ LABEL_58:
           if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
           {
             v48 = HMFGetLogIdentifier();
-            v49 = [v22 value];
+            value4 = [v22 value];
             *buf = 138543618;
             v101 = v48;
             v102 = 2112;
-            v103 = v49;
+            v103 = value4;
             v50 = v47;
             v51 = "%{public}@Invalid maximum constraint value: %@";
             goto LABEL_55;
@@ -1797,11 +1797,11 @@ LABEL_56:
           objc_autoreleasePoolPop(v45);
           goto LABEL_57;
         case 1:
-          v27 = [v22 value];
+          value3 = [v22 value];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v28 = v27;
+            v28 = value3;
           }
 
           else
@@ -1834,7 +1834,7 @@ LABEL_56:
               }
 
               objc_autoreleasePoolPop(v65);
-              if (a3)
+              if (valid)
               {
                 v64 = 44;
                 goto LABEL_94;
@@ -1852,17 +1852,17 @@ LABEL_56:
           if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
           {
             v48 = HMFGetLogIdentifier();
-            v49 = [v22 value];
+            value4 = [v22 value];
             *buf = 138543618;
             v101 = v48;
             v102 = 2112;
-            v103 = v49;
+            v103 = value4;
             v50 = v47;
             v51 = "%{public}@Invalid minimum constraint value: %@";
 LABEL_55:
             _os_log_impl(&dword_229538000, v50, OS_LOG_TYPE_DEFAULT, v51, buf, 0x16u);
 
-            v11 = v79;
+            selfCopy = v79;
           }
 
           goto LABEL_56;
@@ -1880,7 +1880,7 @@ LABEL_55:
         v103 = v22;
         _os_log_impl(&dword_229538000, v43, OS_LOG_TYPE_DEFAULT, "%{public}@Ignoring numeric constraint: %@", buf, 0x16u);
 
-        v11 = v79;
+        selfCopy = v79;
       }
 
       objc_autoreleasePoolPop(v41);
@@ -1914,13 +1914,13 @@ LABEL_99:
   return v14;
 }
 
-- (void)_setType:(int64_t)a3
+- (void)_setType:(int64_t)type
 {
   if (self)
   {
-    v5 = self;
+    selfCopy = self;
     os_unfair_lock_lock_with_options();
-    v5->_type = a3;
+    selfCopy->_type = type;
     os_unfair_lock_unlock(&self->_lock);
   }
 }
@@ -1936,19 +1936,19 @@ LABEL_99:
   return result;
 }
 
-- (void)setGroup:(id)a3
+- (void)setGroup:(id)group
 {
-  v4 = a3;
-  v5 = [v4 identifier];
+  groupCopy = group;
+  identifier = [groupCopy identifier];
   parentIdentifier = self->_parentIdentifier;
-  self->_parentIdentifier = v5;
+  self->_parentIdentifier = identifier;
 
-  v11 = [v4 keyPath];
+  keyPath = [groupCopy keyPath];
 
-  v7 = [(HMDAccessorySetting *)self name];
-  if (v11)
+  name = [(HMDAccessorySetting *)self name];
+  if (keyPath)
   {
-    v8 = [v11 stringByAppendingFormat:@".%@", v7];
+    v8 = [keyPath stringByAppendingFormat:@".%@", name];
     keyPath = self->_keyPath;
     self->_keyPath = v8;
   }
@@ -1956,29 +1956,29 @@ LABEL_99:
   else
   {
     v10 = self->_keyPath;
-    self->_keyPath = v7;
-    v7 = v10;
+    self->_keyPath = name;
+    name = v10;
   }
 }
 
 - (id)copyReplica
 {
   v3 = [HMDAccessorySetting alloc];
-  v4 = [MEMORY[0x277CCAD78] UUID];
-  v5 = [(HMDAccessorySetting *)self name];
-  v6 = [(HMDAccessorySetting *)v3 initWithIdentifier:v4 name:v5];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  name = [(HMDAccessorySetting *)self name];
+  v6 = [(HMDAccessorySetting *)v3 initWithIdentifier:uUID name:name];
 
   v6->_type = [(HMDAccessorySetting *)self type];
   v6->_properties = [(HMDAccessorySetting *)self properties];
-  v7 = [(HMDAccessorySetting *)self constraints];
-  v8 = __deepCopiedConstraints(v7);
+  constraints = [(HMDAccessorySetting *)self constraints];
+  v8 = __deepCopiedConstraints(constraints);
   v9 = [v8 mutableCopy];
   constraints = v6->_constraints;
   v6->_constraints = v9;
 
-  v11 = [(HMDAccessorySetting *)self value];
+  value = [(HMDAccessorySetting *)self value];
   value = v6->_value;
-  v6->_value = v11;
+  v6->_value = value;
 
   return v6;
 }
@@ -1986,28 +1986,28 @@ LABEL_99:
 - (id)copyIdentical
 {
   v3 = [HMDAccessorySetting alloc];
-  v4 = [(HMDAccessorySetting *)self identifier];
-  v5 = [(HMDAccessorySetting *)self name];
-  v6 = [(HMDAccessorySetting *)v3 initWithIdentifier:v4 name:v5];
+  identifier = [(HMDAccessorySetting *)self identifier];
+  name = [(HMDAccessorySetting *)self name];
+  v6 = [(HMDAccessorySetting *)v3 initWithIdentifier:identifier name:name];
 
   v6->_type = [(HMDAccessorySetting *)self type];
   v6->_properties = [(HMDAccessorySetting *)self properties];
-  v7 = [(HMDAccessorySetting *)self constraints];
-  v8 = [v7 mutableCopy];
+  constraints = [(HMDAccessorySetting *)self constraints];
+  v8 = [constraints mutableCopy];
   constraints = v6->_constraints;
   v6->_constraints = v8;
 
-  v10 = [(HMDAccessorySetting *)self value];
+  value = [(HMDAccessorySetting *)self value];
   value = v6->_value;
-  v6->_value = v10;
+  v6->_value = value;
 
   return v6;
 }
 
-- (BOOL)compareConstraints:(id)a3
+- (BOOL)compareConstraints:(id)constraints
 {
-  v4 = a3;
-  if (self == v4)
+  constraintsCopy = constraints;
+  if (self == constraintsCopy)
   {
     v14 = 1;
   }
@@ -2017,7 +2017,7 @@ LABEL_99:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = constraintsCopy;
     }
 
     else
@@ -2028,15 +2028,15 @@ LABEL_99:
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDAccessorySetting *)self type];
-      if (v7 == 4 || v7 == 2)
+      type = [(HMDAccessorySetting *)self type];
+      if (type == 4 || type == 2)
       {
         v8 = MEMORY[0x277CBEB98];
-        v9 = [(HMDAccessorySetting *)self constraints];
-        v10 = [v8 setWithArray:v9];
+        constraints = [(HMDAccessorySetting *)self constraints];
+        v10 = [v8 setWithArray:constraints];
         v11 = MEMORY[0x277CBEB98];
-        v12 = [(HMDAccessorySetting *)v6 constraints];
-        v13 = [v11 setWithArray:v12];
+        constraints2 = [(HMDAccessorySetting *)v6 constraints];
+        v13 = [v11 setWithArray:constraints2];
         v14 = [v10 isEqualToSet:v13];
       }
 
@@ -2055,10 +2055,10 @@ LABEL_99:
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -2068,7 +2068,7 @@ LABEL_99:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -2079,9 +2079,9 @@ LABEL_99:
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDAccessorySetting *)self name];
-      v8 = [(HMDAccessorySetting *)v6 name];
-      v9 = [v7 isEqualToString:v8];
+      name = [(HMDAccessorySetting *)self name];
+      name2 = [(HMDAccessorySetting *)v6 name];
+      v9 = [name isEqualToString:name2];
     }
 
     else
@@ -2095,27 +2095,27 @@ LABEL_99:
 
 - (unint64_t)hash
 {
-  v2 = [(HMDAccessorySetting *)self name];
-  v3 = [v2 hash];
+  name = [(HMDAccessorySetting *)self name];
+  v3 = [name hash];
 
   return v3;
 }
 
-- (void)description:(id)a3 indent:(id)a4
+- (void)description:(id)description indent:(id)indent
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDAccessorySetting *)self name];
-  v9 = [(HMDAccessorySetting *)self identifier];
-  [v6 appendFormat:@"\r %@ name = %@, identifier = %@\n", v7, v8, v9];
+  descriptionCopy = description;
+  indentCopy = indent;
+  name = [(HMDAccessorySetting *)self name];
+  identifier = [(HMDAccessorySetting *)self identifier];
+  [descriptionCopy appendFormat:@"\r %@ name = %@, identifier = %@\n", indentCopy, name, identifier];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = [(HMDAccessorySetting *)self constraints];
-  v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  constraints = [(HMDAccessorySetting *)self constraints];
+  v11 = [constraints countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
     v12 = v11;
@@ -2127,14 +2127,14 @@ LABEL_99:
       {
         if (*v17 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(constraints);
         }
 
-        [v6 appendFormat:@"\r     %@ %@\n", v7, *(*(&v16 + 1) + 8 * v14++)];
+        [descriptionCopy appendFormat:@"\r     %@ %@\n", indentCopy, *(*(&v16 + 1) + 8 * v14++)];
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v12 = [constraints countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v12);
@@ -2146,19 +2146,19 @@ LABEL_99:
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDAccessorySetting *)self keyPath];
-  v5 = [(HMDAccessorySetting *)self identifier];
-  v6 = [(HMDAccessorySetting *)self value];
-  v7 = [v3 stringWithFormat:@"[HMD-Accessory-Setting: %@/%@ - %@]", v4, v5, v6];
+  keyPath = [(HMDAccessorySetting *)self keyPath];
+  identifier = [(HMDAccessorySetting *)self identifier];
+  value = [(HMDAccessorySetting *)self value];
+  v7 = [v3 stringWithFormat:@"[HMD-Accessory-Setting: %@/%@ - %@]", keyPath, identifier, value];
 
   return v7;
 }
 
-- (HMDAccessorySetting)initWithIdentifier:(id)a3 name:(id)a4
+- (HMDAccessorySetting)initWithIdentifier:(id)identifier name:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  identifierCopy = identifier;
+  nameCopy = name;
+  if (nameCopy)
   {
     v19.receiver = self;
     v19.super_class = HMDAccessorySetting;
@@ -2167,15 +2167,15 @@ LABEL_99:
     if (v9)
     {
       v9->_lock._os_unfair_lock_opaque = 0;
-      objc_storeStrong(&v9->_identifier, a3);
-      objc_storeStrong(&v10->_name, a4);
-      v11 = [MEMORY[0x277CBEB18] array];
+      objc_storeStrong(&v9->_identifier, identifier);
+      objc_storeStrong(&v10->_name, name);
+      array = [MEMORY[0x277CBEB18] array];
       constraints = v10->_constraints;
-      v10->_constraints = v11;
+      v10->_constraints = array;
 
-      v13 = [MEMORY[0x277CBEB18] array];
+      array2 = [MEMORY[0x277CBEB18] array];
       inMemoryCachedConstraints = v10->_inMemoryCachedConstraints;
-      v10->_inMemoryCachedConstraints = v13;
+      v10->_inMemoryCachedConstraints = array2;
 
       v15 = [MEMORY[0x277CBEB58] set];
       inMemoryCachedConstraintRemovals = v10->_inMemoryCachedConstraintRemovals;
@@ -2183,43 +2183,43 @@ LABEL_99:
     }
 
     self = v10;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (HMDAccessorySetting)initWithModel:(id)a3
+- (HMDAccessorySetting)initWithModel:(id)model
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 uuid];
-  v6 = [v5 copy];
-  v7 = [v4 name];
-  v8 = [v7 copy];
+  modelCopy = model;
+  uuid = [modelCopy uuid];
+  v6 = [uuid copy];
+  name = [modelCopy name];
+  v8 = [name copy];
   v9 = [(HMDAccessorySetting *)self initWithIdentifier:v6 name:v8];
 
   if (v9)
   {
-    v10 = [v4 type];
-    v9->_type = [v10 integerValue];
+    type = [modelCopy type];
+    v9->_type = [type integerValue];
 
-    v11 = [v4 properties];
-    v9->_properties = [v11 unsignedIntegerValue];
+    properties = [modelCopy properties];
+    v9->_properties = [properties unsignedIntegerValue];
 
-    v12 = [v4 configurationVersion];
-    v9->_configurationVersion = [v12 unsignedIntegerValue];
+    configurationVersion = [modelCopy configurationVersion];
+    v9->_configurationVersion = [configurationVersion unsignedIntegerValue];
 
     v13 = MEMORY[0x277CCAAC8];
-    v14 = [objc_opt_class() supportedValueClasses];
-    v15 = [v4 value];
+    supportedValueClasses = [objc_opt_class() supportedValueClasses];
+    value = [modelCopy value];
     v25 = 0;
-    v16 = [v13 unarchivedObjectOfClasses:v14 fromData:v15 error:&v25];
+    v16 = [v13 unarchivedObjectOfClasses:supportedValueClasses fromData:value error:&v25];
     v17 = v25;
     value = v9->_value;
     v9->_value = v16;
@@ -2334,12 +2334,12 @@ void __34__HMDAccessorySetting_logCategory__block_invoke()
   logCategory__hmf_once_v59_262499 = v1;
 }
 
-+ (id)decodedValue:(id)a3 error:(id *)a4
++ (id)decodedValue:(id)value error:(id *)error
 {
   v5 = MEMORY[0x277CCAAC8];
-  v6 = a3;
+  valueCopy = value;
   v7 = +[HMDAccessorySetting supportedValueClasses];
-  v8 = [v5 unarchivedObjectOfClasses:v7 fromData:v6 error:a4];
+  v8 = [v5 unarchivedObjectOfClasses:v7 fromData:valueCopy error:error];
 
   return v8;
 }

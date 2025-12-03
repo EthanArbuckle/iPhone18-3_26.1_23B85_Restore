@@ -1,21 +1,21 @@
 @interface ADConfiguration
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsTest:(BOOL)a3;
-- (void)setHasRequestType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsTest:(BOOL)test;
+- (void)setHasRequestType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ADConfiguration
 
-- (void)setHasRequestType:(BOOL)a3
+- (void)setHasRequestType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIsTest:(BOOL)a3
+- (void)setHasIsTest:(BOOL)test
 {
-  if (a3)
+  if (test)
   {
     v3 = 4;
   }
@@ -49,20 +49,20 @@
   v8.receiver = self;
   v8.super_class = ADConfiguration;
   v4 = [(ADConfiguration *)&v8 description];
-  v5 = [(ADConfiguration *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ADConfiguration *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   bundleId = self->_bundleId;
   if (bundleId)
   {
-    [v3 setObject:bundleId forKey:@"bundleId"];
+    [dictionary setObject:bundleId forKey:@"bundleId"];
   }
 
   has = self->_has;
@@ -95,14 +95,14 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_bundleId)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -110,7 +110,7 @@
   {
     requestType = self->_requestType;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
   }
 
@@ -118,64 +118,64 @@
   {
     isTest = self->_isTest;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_baseUrl)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (*&self->_has)
   {
     expirationDate = self->_expirationDate;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_bundleId)
   {
-    [v4 setBundleId:?];
-    v4 = v6;
+    [toCopy setBundleId:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 8) = self->_requestType;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 8) = self->_requestType;
+    *(toCopy + 40) |= 2u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(v4 + 36) = self->_isTest;
-    *(v4 + 40) |= 4u;
+    *(toCopy + 36) = self->_isTest;
+    *(toCopy + 40) |= 4u;
   }
 
   if (self->_baseUrl)
   {
     [v6 setBaseUrl:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_expirationDate;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = *&self->_expirationDate;
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_bundleId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_bundleId copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -193,7 +193,7 @@
     *(v5 + 40) |= 4u;
   }
 
-  v9 = [(NSString *)self->_baseUrl copyWithZone:a3];
+  v9 = [(NSString *)self->_baseUrl copyWithZone:zone];
   v10 = *(v5 + 16);
   *(v5 + 16) = v9;
 
@@ -206,16 +206,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   bundleId = self->_bundleId;
-  if (bundleId | *(v4 + 3))
+  if (bundleId | *(equalCopy + 3))
   {
     if (![(NSString *)bundleId isEqual:?])
     {
@@ -224,49 +224,49 @@
   }
 
   has = self->_has;
-  v7 = *(v4 + 40);
+  v7 = *(equalCopy + 40);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_requestType != *(v4 + 8))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_requestType != *(equalCopy + 8))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0)
+    if ((*(equalCopy + 40) & 4) == 0)
     {
       goto LABEL_19;
     }
 
-    v11 = *(v4 + 36);
+    v11 = *(equalCopy + 36);
     if (self->_isTest)
     {
-      if ((*(v4 + 36) & 1) == 0)
+      if ((*(equalCopy + 36) & 1) == 0)
       {
         goto LABEL_19;
       }
     }
 
-    else if (*(v4 + 36))
+    else if (*(equalCopy + 36))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
     goto LABEL_19;
   }
 
   baseUrl = self->_baseUrl;
-  if (!(baseUrl | *(v4 + 2)))
+  if (!(baseUrl | *(equalCopy + 2)))
   {
     goto LABEL_14;
   }
@@ -280,10 +280,10 @@ LABEL_19:
 
   has = self->_has;
 LABEL_14:
-  v9 = (*(v4 + 40) & 1) == 0;
+  v9 = (*(equalCopy + 40) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_expirationDate != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_expirationDate != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
@@ -358,39 +358,39 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(ADConfiguration *)self setBundleId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 2) != 0)
   {
-    self->_requestType = *(v4 + 8);
+    self->_requestType = *(fromCopy + 8);
     *&self->_has |= 2u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
   }
 
   if ((v5 & 4) != 0)
   {
-    self->_isTest = *(v4 + 36);
+    self->_isTest = *(fromCopy + 36);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(ADConfiguration *)self setBaseUrl:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
-    self->_expirationDate = *(v4 + 1);
+    self->_expirationDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }

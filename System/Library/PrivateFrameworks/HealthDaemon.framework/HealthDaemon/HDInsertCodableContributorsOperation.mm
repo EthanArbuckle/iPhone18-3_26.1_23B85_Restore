@@ -1,9 +1,9 @@
 @interface HDInsertCodableContributorsOperation
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5;
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error;
 - (HDInsertCodableContributorsOperation)init;
-- (HDInsertCodableContributorsOperation)initWithCoder:(id)a3;
-- (HDInsertCodableContributorsOperation)initWithContributors:(id)a3 provenance:(int64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (HDInsertCodableContributorsOperation)initWithCoder:(id)coder;
+- (HDInsertCodableContributorsOperation)initWithContributors:(id)contributors provenance:(int64_t)provenance;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDInsertCodableContributorsOperation
@@ -18,43 +18,43 @@
   return 0;
 }
 
-- (HDInsertCodableContributorsOperation)initWithContributors:(id)a3 provenance:(int64_t)a4
+- (HDInsertCodableContributorsOperation)initWithContributors:(id)contributors provenance:(int64_t)provenance
 {
-  v6 = a3;
+  contributorsCopy = contributors;
   v11.receiver = self;
   v11.super_class = HDInsertCodableContributorsOperation;
   v7 = [(HDInsertCodableContributorsOperation *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [contributorsCopy copy];
     contributors = v7->_contributors;
     v7->_contributors = v8;
 
-    v7->_provenance = a4;
+    v7->_provenance = provenance;
   }
 
   return v7;
 }
 
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v39 = a4;
+  profileCopy = profile;
+  transactionCopy = transaction;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v37 = self;
+  selfCopy = self;
   obj = self->_contributors;
   v9 = [(NSArray *)obj countByEnumeratingWithState:&v42 objects:v48 count:16];
   if (v9)
   {
     v10 = v9;
     v11 = *v43;
-    v36 = v8;
+    v36 = profileCopy;
     v38 = *v43;
-    v41 = a5;
+    errorCopy = error;
 LABEL_3:
     v12 = 0;
     while (1)
@@ -66,12 +66,12 @@ LABEL_3:
 
       v13 = *(*(&v42 + 1) + 8 * v12);
       v14 = MEMORY[0x277CCAD78];
-      v15 = [v13 uuid];
-      v16 = [v14 hk_UUIDWithData:v15];
+      uuid = [v13 uuid];
+      v16 = [v14 hk_UUIDWithData:uuid];
 
       if ([v13 deleted])
       {
-        if (![HDContributorEntity deleteContributorWithUUID:v16 profile:v8 error:a5])
+        if (![HDContributorEntity deleteContributorWithUUID:v16 profile:profileCopy error:error])
         {
           goto LABEL_25;
         }
@@ -79,46 +79,46 @@ LABEL_3:
         goto LABEL_21;
       }
 
-      v17 = [v8 syncIdentityManager];
-      v18 = [v17 legacySyncIdentity];
+      syncIdentityManager = [profileCopy syncIdentityManager];
+      legacySyncIdentity = [syncIdentityManager legacySyncIdentity];
 
       if (![v13 hasSyncIdentity])
       {
         goto LABEL_13;
       }
 
-      v19 = [v13 syncIdentity];
-      [HDSyncIdentity syncIdentityWithCodable:v19 error:a5];
-      v21 = v20 = a5;
+      syncIdentity = [v13 syncIdentity];
+      [HDSyncIdentity syncIdentityWithCodable:syncIdentity error:error];
+      v21 = v20 = error;
 
       if (v21)
       {
-        v22 = [v8 syncIdentityManager];
-        v23 = [v22 concreteIdentityForIdentity:v21 shouldCreate:1 transaction:v39 error:v20];
+        syncIdentityManager2 = [profileCopy syncIdentityManager];
+        v23 = [syncIdentityManager2 concreteIdentityForIdentity:v21 shouldCreate:1 transaction:transactionCopy error:v20];
 
         if (v23)
         {
 
-          v18 = v23;
+          legacySyncIdentity = v23;
 LABEL_13:
-          v24 = [v13 appleID];
-          v25 = [v13 callerID];
-          provenance = v37->_provenance;
-          v27 = [v18 entity];
-          v28 = +[HDContributorEntity insertWithUUID:appleID:callerID:primaryUser:syncProvenance:syncIdentity:transaction:error:](HDContributorEntity, "insertWithUUID:appleID:callerID:primaryUser:syncProvenance:syncIdentity:transaction:error:", v16, v24, v25, 0, provenance, [v27 persistentID], v39, v41);
+          appleID = [v13 appleID];
+          callerID = [v13 callerID];
+          provenance = selfCopy->_provenance;
+          entity = [legacySyncIdentity entity];
+          v28 = +[HDContributorEntity insertWithUUID:appleID:callerID:primaryUser:syncProvenance:syncIdentity:transaction:error:](HDContributorEntity, "insertWithUUID:appleID:callerID:primaryUser:syncProvenance:syncIdentity:transaction:error:", v16, appleID, callerID, 0, provenance, [entity persistentID], transactionCopy, errorCopy);
 
           if (!v28)
           {
 
-            v8 = v36;
+            profileCopy = v36;
 LABEL_25:
 
             v33 = 0;
             goto LABEL_26;
           }
 
-          v21 = v18;
-          v8 = v36;
+          v21 = legacySyncIdentity;
+          profileCopy = v36;
           goto LABEL_20;
         }
 
@@ -126,7 +126,7 @@ LABEL_25:
         v30 = *MEMORY[0x277CCC2A0];
         if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_FAULT))
         {
-          v32 = *v41;
+          v32 = *errorCopy;
           *buf = 138543362;
           v47 = v32;
           _os_log_fault_impl(&dword_228986000, v30, OS_LOG_TYPE_FAULT, "ConcreteSyncIdentity from received codable is nil %{public}@", buf, 0xCu);
@@ -139,7 +139,7 @@ LABEL_25:
         v29 = *MEMORY[0x277CCC2A0];
         if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_FAULT))
         {
-          v31 = *v41;
+          v31 = *errorCopy;
           *buf = 138543362;
           v47 = v31;
           _os_log_fault_impl(&dword_228986000, v29, OS_LOG_TYPE_FAULT, "SyncIdentity from received codable is nil %{public}@", buf, 0xCu);
@@ -151,7 +151,7 @@ LABEL_25:
 LABEL_20:
       v11 = v38;
 
-      a5 = v41;
+      error = errorCopy;
 LABEL_21:
 
       if (v10 == ++v12)
@@ -174,30 +174,30 @@ LABEL_26:
   return v33;
 }
 
-- (HDInsertCodableContributorsOperation)initWithCoder:(id)a3
+- (HDInsertCodableContributorsOperation)initWithCoder:(id)coder
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v13[0] = objc_opt_class();
   v13[1] = objc_opt_class();
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
   v7 = [v4 setWithArray:v6];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"contributors"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"contributors"];
 
-  v9 = [v5 decodeInt64ForKey:@"provenance"];
+  v9 = [coderCopy decodeInt64ForKey:@"provenance"];
   v10 = [(HDInsertCodableContributorsOperation *)self initWithContributors:v8 provenance:v9];
 
   v11 = *MEMORY[0x277D85DE8];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contributors = self->_contributors;
-  v5 = a3;
-  [v5 encodeObject:contributors forKey:@"contributors"];
-  [v5 encodeInt64:self->_provenance forKey:@"provenance"];
+  coderCopy = coder;
+  [coderCopy encodeObject:contributors forKey:@"contributors"];
+  [coderCopy encodeInt64:self->_provenance forKey:@"provenance"];
 }
 
 @end

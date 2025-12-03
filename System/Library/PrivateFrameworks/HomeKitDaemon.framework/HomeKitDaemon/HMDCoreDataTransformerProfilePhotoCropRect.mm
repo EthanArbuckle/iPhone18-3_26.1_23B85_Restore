@@ -1,17 +1,17 @@
 @interface HMDCoreDataTransformerProfilePhotoCropRect
-+ (id)OPACKFromValue:(id)a3 error:(id *)a4;
-+ (id)valueFromOPACK:(id)a3 error:(id *)a4;
++ (id)OPACKFromValue:(id)value error:(id *)error;
++ (id)valueFromOPACK:(id)k error:(id *)error;
 @end
 
 @implementation HMDCoreDataTransformerProfilePhotoCropRect
 
-+ (id)valueFromOPACK:(id)a3 error:(id *)a4
++ (id)valueFromOPACK:(id)k error:(id *)error
 {
-  v5 = a3;
+  kCopy = k;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = kCopy;
   }
 
   else
@@ -36,29 +36,29 @@
     [v18 floatValue];
     v20 = v19;
 
-    a4 = [MEMORY[0x277CCAE60] valueWithRect:{v11, v14, v17, v20}];
+    error = [MEMORY[0x277CCAE60] valueWithRect:{v11, v14, v17, v20}];
   }
 
-  else if (a4)
+  else if (error)
   {
     v21 = MEMORY[0x277CCA9B8];
-    v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected NSDictionary value to create crop rect value: %@", v5];
-    *a4 = [v21 hmfErrorWithCode:3 reason:v22];
+    kCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected NSDictionary value to create crop rect value: %@", kCopy];
+    *error = [v21 hmfErrorWithCode:3 reason:kCopy];
 
-    a4 = 0;
+    error = 0;
   }
 
-  return a4;
+  return error;
 }
 
-+ (id)OPACKFromValue:(id)a3 error:(id *)a4
++ (id)OPACKFromValue:(id)value error:(id *)error
 {
   v27[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  valueCopy = value;
+  v6 = valueCopy;
+  if (valueCopy)
   {
-    [v5 rectValue];
+    [valueCopy rectValue];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -83,11 +83,11 @@
 
   else
   {
-    if (a4)
+    if (error)
     {
       v22 = MEMORY[0x277CCA9B8];
       v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid crop rect value: %@", 0];
-      *a4 = [v22 hmfErrorWithCode:3 reason:v23];
+      *error = [v22 hmfErrorWithCode:3 reason:v23];
     }
 
     v21 = 0;

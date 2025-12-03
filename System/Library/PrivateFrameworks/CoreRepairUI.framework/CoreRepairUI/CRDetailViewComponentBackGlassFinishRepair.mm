@@ -33,30 +33,30 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(CRUDetailViewComponent *)v2 locale];
-    v5 = [v4 localizedStringWithKey:@"NEW_BACK_GLASS" defaultString:@"NEW_BACK_GLASS"];
+    locale = [(CRUDetailViewComponent *)v2 locale];
+    v5 = [locale localizedStringWithKey:@"NEW_BACK_GLASS" defaultString:@"NEW_BACK_GLASS"];
     [(CRUDetailViewComponent *)v3 setTitleText:v5];
 
     v6 = MEMORY[0x277CBEBC0];
-    v7 = [(CRUDetailViewComponent *)v3 locale];
-    v8 = [v7 localizedStringWithKey:@"FINISH_REPAIR_KB_URL" defaultString:@"FINISH_REPAIR_KB_URL"];
+    locale2 = [(CRUDetailViewComponent *)v3 locale];
+    v8 = [locale2 localizedStringWithKey:@"FINISH_REPAIR_KB_URL" defaultString:@"FINISH_REPAIR_KB_URL"];
     v9 = [v6 URLWithString:v8];
     [(CRUDetailViewComponent *)v3 setKbArticleURL:v9];
 
-    v10 = [(CRUDetailViewComponent *)v3 locale];
-    v11 = [v10 localizedStringWithKey:@"FINISH_BACKGLASS_DESC" defaultString:@"FINISH_BACKGLASS_DESC"];
+    locale3 = [(CRUDetailViewComponent *)v3 locale];
+    v11 = [locale3 localizedStringWithKey:@"FINISH_BACKGLASS_DESC" defaultString:@"FINISH_BACKGLASS_DESC"];
 
-    v12 = [(CRUDetailViewComponent *)v3 locale];
-    v13 = [v12 localizedStringWithKey:@"RESTART_FINISH_REPAIR" defaultString:@"RESTART_FINISH_REPAIR"];
+    locale4 = [(CRUDetailViewComponent *)v3 locale];
+    v13 = [locale4 localizedStringWithKey:@"RESTART_FINISH_REPAIR" defaultString:@"RESTART_FINISH_REPAIR"];
     [(CRUDetailViewComponent *)v3 setButtonTitle:v13];
 
     [(CRUDetailViewComponent *)v3 setInformativeText:v11];
-    v14 = [(CRUDetailViewComponent *)v3 locale];
-    v15 = [v14 localizedStringWithKey:@"BACK_GLASS" defaultString:@"BACK_GLASS"];
+    locale5 = [(CRUDetailViewComponent *)v3 locale];
+    v15 = [locale5 localizedStringWithKey:@"BACK_GLASS" defaultString:@"BACK_GLASS"];
     [(CRUDetailViewComponent *)v3 setComponentName:v15];
 
-    v16 = [(CRUDetailViewComponent *)v3 locale];
-    v17 = [v16 localizedStringWithKey:@"BACK_GLASS_FOOTER_LEARN_MORE" defaultString:@"BACK_GLASS_FOOTER_LEARN_MORE"];
+    locale6 = [(CRUDetailViewComponent *)v3 locale];
+    v17 = [locale6 localizedStringWithKey:@"BACK_GLASS_FOOTER_LEARN_MORE" defaultString:@"BACK_GLASS_FOOTER_LEARN_MORE"];
     [(CRUDetailViewComponent *)v3 setFooterText:v17];
   }
 

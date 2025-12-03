@@ -6,13 +6,13 @@
 
 - (uint64_t)kgPropertyType
 {
-  v1 = a1;
-  if (CFNumberIsFloatType(v1))
+  selfCopy = self;
+  if (CFNumberIsFloatType(selfCopy))
   {
     v2 = 2;
   }
 
-  else if ([v1 compare:&unk_2867B4E28] == 1)
+  else if ([selfCopy compare:&unk_2867B4E28] == 1)
   {
     v2 = 4;
   }

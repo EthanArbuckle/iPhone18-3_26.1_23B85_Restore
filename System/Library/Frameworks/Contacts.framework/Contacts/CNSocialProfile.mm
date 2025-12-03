@@ -1,15 +1,15 @@
 @interface CNSocialProfile
-+ (CNSocialProfile)socialProfileWithDictionaryRepresentation:(id)a3;
++ (CNSocialProfile)socialProfileWithDictionaryRepresentation:(id)representation;
 + (NSString)localizedStringForService:(NSString *)service;
-- (BOOL)isEqual:(id)a3 ignoreURLs:(BOOL)a4;
-- (BOOL)isValid:(id *)a3;
-- (CNSocialProfile)initWithCoder:(id)a3;
-- (CNSocialProfile)initWithUrlString:(id)a3 username:(id)a4 userIdentifier:(id)a5 service:(id)a6 displayname:(id)a7 teamIdentifier:(id)a8 bundleIdentifiers:(id)a9;
+- (BOOL)isEqual:(id)equal ignoreURLs:(BOOL)ls;
+- (BOOL)isValid:(id *)valid;
+- (CNSocialProfile)initWithCoder:(id)coder;
+- (CNSocialProfile)initWithUrlString:(id)string username:(id)username userIdentifier:(id)identifier service:(id)service displayname:(id)displayname teamIdentifier:(id)teamIdentifier bundleIdentifiers:(id)identifiers;
 - (NSString)description;
 - (id)dictionaryRepresentation;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNSocialProfile
@@ -19,17 +19,17 @@
   v4 = MEMORY[0x1E6996750];
   v5 = MEMORY[0x1E696AAE8];
   v6 = service;
-  v7 = [v5 bundleForClass:a1];
+  v7 = [v5 bundleForClass:self];
   v8 = [v4 localizedStringForString:v6 bundle:v7 table:@"SocialServices" returningNilIfNotFound:0];
 
   return v8;
 }
 
-+ (CNSocialProfile)socialProfileWithDictionaryRepresentation:(id)a3
++ (CNSocialProfile)socialProfileWithDictionaryRepresentation:(id)representation
 {
-  v3 = a3;
+  representationCopy = representation;
   v4 = +[CN socialProfileFromDictionaryTransform];
-  v5 = (v4)[2](v4, v3);
+  v5 = (v4)[2](v4, representationCopy);
 
   return v5;
 }
@@ -42,45 +42,45 @@
   return v4;
 }
 
-- (CNSocialProfile)initWithUrlString:(id)a3 username:(id)a4 userIdentifier:(id)a5 service:(id)a6 displayname:(id)a7 teamIdentifier:(id)a8 bundleIdentifiers:(id)a9
+- (CNSocialProfile)initWithUrlString:(id)string username:(id)username userIdentifier:(id)identifier service:(id)service displayname:(id)displayname teamIdentifier:(id)teamIdentifier bundleIdentifiers:(id)identifiers
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  stringCopy = string;
+  usernameCopy = username;
+  identifierCopy = identifier;
+  serviceCopy = service;
+  displaynameCopy = displayname;
+  teamIdentifierCopy = teamIdentifier;
+  identifiersCopy = identifiers;
   v39.receiver = self;
   v39.super_class = CNSocialProfile;
   v22 = [(CNSocialProfile *)&v39 init];
   if (v22)
   {
-    v23 = [v15 copy];
+    v23 = [stringCopy copy];
     urlString = v22->_urlString;
     v22->_urlString = v23;
 
-    v25 = [v16 copy];
+    v25 = [usernameCopy copy];
     username = v22->_username;
     v22->_username = v25;
 
-    v27 = [v17 copy];
+    v27 = [identifierCopy copy];
     userIdentifier = v22->_userIdentifier;
     v22->_userIdentifier = v27;
 
-    v29 = [v18 copy];
+    v29 = [serviceCopy copy];
     service = v22->_service;
     v22->_service = v29;
 
-    v31 = [v19 copy];
+    v31 = [displaynameCopy copy];
     displayname = v22->_displayname;
     v22->_displayname = v31;
 
-    v33 = [v20 copy];
+    v33 = [teamIdentifierCopy copy];
     teamIdentifier = v22->_teamIdentifier;
     v22->_teamIdentifier = v33;
 
-    v35 = [v21 copy];
+    v35 = [identifiersCopy copy];
     bundleIdentifiers = v22->_bundleIdentifiers;
     v22->_bundleIdentifiers = v35;
 
@@ -90,55 +90,55 @@
   return v22;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CNMutableSocialProfile alloc];
-  v5 = [(CNSocialProfile *)self urlString];
-  v6 = [(CNSocialProfile *)self username];
-  v7 = [(CNSocialProfile *)self userIdentifier];
-  v8 = [(CNSocialProfile *)self service];
-  v9 = [(CNSocialProfile *)self displayname];
-  v10 = [(CNSocialProfile *)self teamIdentifier];
-  v11 = [(CNSocialProfile *)self bundleIdentifiers];
-  v12 = [(CNSocialProfile *)v4 initWithUrlString:v5 username:v6 userIdentifier:v7 service:v8 displayname:v9 teamIdentifier:v10 bundleIdentifiers:v11];
+  urlString = [(CNSocialProfile *)self urlString];
+  username = [(CNSocialProfile *)self username];
+  userIdentifier = [(CNSocialProfile *)self userIdentifier];
+  service = [(CNSocialProfile *)self service];
+  displayname = [(CNSocialProfile *)self displayname];
+  teamIdentifier = [(CNSocialProfile *)self teamIdentifier];
+  bundleIdentifiers = [(CNSocialProfile *)self bundleIdentifiers];
+  v12 = [(CNSocialProfile *)v4 initWithUrlString:urlString username:username userIdentifier:userIdentifier service:service displayname:displayname teamIdentifier:teamIdentifier bundleIdentifiers:bundleIdentifiers];
 
   return v12;
 }
 
-- (CNSocialProfile)initWithCoder:(id)a3
+- (CNSocialProfile)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = CNSocialProfile;
   v5 = [(CNSocialProfile *)&v32 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_urlString"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_urlString"];
     v7 = [v6 copy];
     urlString = v5->_urlString;
     v5->_urlString = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_username"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_username"];
     v10 = [v9 copy];
     username = v5->_username;
     v5->_username = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_userIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_userIdentifier"];
     v13 = [v12 copy];
     userIdentifier = v5->_userIdentifier;
     v5->_userIdentifier = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_service"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_service"];
     v16 = [v15 copy];
     service = v5->_service;
     v5->_service = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_displayname"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_displayname"];
     v19 = [v18 copy];
     displayname = v5->_displayname;
     v5->_displayname = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_teamIdentifier"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_teamIdentifier"];
     v22 = [v21 copy];
     teamIdentifier = v5->_teamIdentifier;
     v5->_teamIdentifier = v22;
@@ -146,7 +146,7 @@
     v24 = MEMORY[0x1E695DFD8];
     v25 = objc_opt_class();
     v26 = [v24 setWithObjects:{v25, objc_opt_class(), 0}];
-    v27 = [v4 decodeObjectOfClasses:v26 forKey:@"_bundleIdentifiers"];
+    v27 = [coderCopy decodeObjectOfClasses:v26 forKey:@"_bundleIdentifiers"];
     v28 = [v27 copy];
     bundleIdentifiers = v5->_bundleIdentifiers;
     v5->_bundleIdentifiers = v28;
@@ -157,31 +157,31 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   urlString = self->_urlString;
-  v5 = a3;
-  [v5 encodeObject:urlString forKey:@"_urlString"];
-  [v5 encodeObject:self->_username forKey:@"_username"];
-  [v5 encodeObject:self->_userIdentifier forKey:@"_userIdentifier"];
-  [v5 encodeObject:self->_service forKey:@"_service"];
-  [v5 encodeObject:self->_displayname forKey:@"_displayname"];
-  [v5 encodeObject:self->_teamIdentifier forKey:@"_teamIdentifier"];
-  [v5 encodeObject:self->_bundleIdentifiers forKey:@"_bundleIdentifiers"];
+  coderCopy = coder;
+  [coderCopy encodeObject:urlString forKey:@"_urlString"];
+  [coderCopy encodeObject:self->_username forKey:@"_username"];
+  [coderCopy encodeObject:self->_userIdentifier forKey:@"_userIdentifier"];
+  [coderCopy encodeObject:self->_service forKey:@"_service"];
+  [coderCopy encodeObject:self->_displayname forKey:@"_displayname"];
+  [coderCopy encodeObject:self->_teamIdentifier forKey:@"_teamIdentifier"];
+  [coderCopy encodeObject:self->_bundleIdentifiers forKey:@"_bundleIdentifiers"];
 }
 
 - (NSString)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v4 = [v3 appendNamesAndObjects:{@"urlString", self->_urlString, @"username", self->_username, @"userIdentifier", self->_userIdentifier, @"service", self->_service, @"displayname", self->_displayname, @"teamIdentifier", self->_teamIdentifier, @"bundleIdentifiers", self->_bundleIdentifiers, 0}];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3 ignoreURLs:(BOOL)a4
+- (BOOL)isEqual:(id)equal ignoreURLs:(BOOL)ls
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v15) = 1;
   }
@@ -195,31 +195,31 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [(CNSocialProfile *)self teamIdentifier];
-      v14 = [a3 teamIdentifier];
-      if (!(v13 | v14) || (v15 = [v13 isEqual:v14]) != 0)
+      teamIdentifier = [(CNSocialProfile *)self teamIdentifier];
+      teamIdentifier2 = [equal teamIdentifier];
+      if (!(teamIdentifier | teamIdentifier2) || (v15 = [teamIdentifier isEqual:teamIdentifier2]) != 0)
       {
         v16 = [(CNSocialProfile *)self bundleIdentifiers:v29];
-        v17 = [a3 bundleIdentifiers];
-        if (!(v16 | v17) || (v15 = [v16 isEqual:v17]) != 0)
+        bundleIdentifiers = [equal bundleIdentifiers];
+        if (!(v16 | bundleIdentifiers) || (v15 = [v16 isEqual:bundleIdentifiers]) != 0)
         {
-          if (a4 || (v18 = -[CNSocialProfile urlString](self, "urlString"), v19 = [a3 urlString], !(v18 | v19)) || (v15 = objc_msgSend(v18, "isEqual:", v19)) != 0)
+          if (ls || (v18 = -[CNSocialProfile urlString](self, "urlString"), v19 = [equal urlString], !(v18 | v19)) || (v15 = objc_msgSend(v18, "isEqual:", v19)) != 0)
           {
-            v20 = [(CNSocialProfile *)self username];
-            v21 = [a3 username];
-            if (!(v20 | v21) || (v15 = [v20 isEqual:v21]) != 0)
+            username = [(CNSocialProfile *)self username];
+            username2 = [equal username];
+            if (!(username | username2) || (v15 = [username isEqual:username2]) != 0)
             {
-              v22 = [(CNSocialProfile *)self userIdentifier];
-              v23 = [a3 userIdentifier];
-              if (!(v22 | v23) || (v15 = [v22 isEqual:v23]) != 0)
+              userIdentifier = [(CNSocialProfile *)self userIdentifier];
+              userIdentifier2 = [equal userIdentifier];
+              if (!(userIdentifier | userIdentifier2) || (v15 = [userIdentifier isEqual:userIdentifier2]) != 0)
               {
-                v24 = [(CNSocialProfile *)self service];
-                v25 = [a3 service];
-                if (!(v24 | v25) || (v15 = [v24 isEqual:v25]) != 0)
+                service = [(CNSocialProfile *)self service];
+                service2 = [equal service];
+                if (!(service | service2) || (v15 = [service isEqual:service2]) != 0)
                 {
-                  v26 = [(CNSocialProfile *)self displayname];
-                  v27 = [a3 displayname];
-                  if (!(v26 | v27) || (v15 = [v26 isEqual:v27]) != 0)
+                  displayname = [(CNSocialProfile *)self displayname];
+                  displayname2 = [equal displayname];
+                  if (!(displayname | displayname2) || (v15 = [displayname isEqual:displayname2]) != 0)
                   {
                     LOBYTE(v15) = 1;
                   }
@@ -243,37 +243,37 @@
 - (unint64_t)hash
 {
   v3 = MEMORY[0x1E6996730];
-  v4 = [(CNSocialProfile *)self urlString];
-  v5 = [v3 objectHash:v4];
+  urlString = [(CNSocialProfile *)self urlString];
+  v5 = [v3 objectHash:urlString];
 
   v6 = MEMORY[0x1E6996730];
-  v7 = [(CNSocialProfile *)self username];
-  v8 = [v6 objectHash:v7] - v5 + 32 * v5;
+  username = [(CNSocialProfile *)self username];
+  v8 = [v6 objectHash:username] - v5 + 32 * v5;
 
   v9 = MEMORY[0x1E6996730];
-  v10 = [(CNSocialProfile *)self userIdentifier];
-  v11 = [v9 objectHash:v10] - v8 + 32 * v8;
+  userIdentifier = [(CNSocialProfile *)self userIdentifier];
+  v11 = [v9 objectHash:userIdentifier] - v8 + 32 * v8;
 
   v12 = MEMORY[0x1E6996730];
-  v13 = [(CNSocialProfile *)self service];
-  v14 = [v12 objectHash:v13] - v11 + 32 * v11;
+  service = [(CNSocialProfile *)self service];
+  v14 = [v12 objectHash:service] - v11 + 32 * v11;
 
   v15 = MEMORY[0x1E6996730];
-  v16 = [(CNSocialProfile *)self displayname];
-  v17 = [v15 objectHash:v16] - v14 + 32 * v14;
+  displayname = [(CNSocialProfile *)self displayname];
+  v17 = [v15 objectHash:displayname] - v14 + 32 * v14;
 
   v18 = MEMORY[0x1E6996730];
-  v19 = [(CNSocialProfile *)self teamIdentifier];
-  v20 = [v18 objectHash:v19] - v17 + 32 * v17;
+  teamIdentifier = [(CNSocialProfile *)self teamIdentifier];
+  v20 = [v18 objectHash:teamIdentifier] - v17 + 32 * v17;
 
   v21 = MEMORY[0x1E6996730];
-  v22 = [(CNSocialProfile *)self bundleIdentifiers];
-  v23 = [v21 objectHash:v22] - v20 + 32 * v20;
+  bundleIdentifiers = [(CNSocialProfile *)self bundleIdentifiers];
+  v23 = [v21 objectHash:bundleIdentifiers] - v20 + 32 * v20;
 
   return v23 + 0x6CE5F3FACFLL;
 }
 
-- (BOOL)isValid:(id *)a3
+- (BOOL)isValid:(id *)valid
 {
   if (isValid__cn_once_token_0_2 != -1)
   {
@@ -293,7 +293,7 @@
     [CNSocialProfile isValid:];
   }
 
-  v8 = [CN areValidKeyPaths:v5 forObject:self expectedClasses:v7 allowNil:isValid__cn_once_object_2_2 error:a3];
+  v8 = [CN areValidKeyPaths:v5 forObject:self expectedClasses:v7 allowNil:isValid__cn_once_object_2_2 error:valid];
 
   return v8;
 }

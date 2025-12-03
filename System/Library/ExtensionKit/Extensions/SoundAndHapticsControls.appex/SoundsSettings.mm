@@ -4,9 +4,9 @@
 - (BOOL)silentMode;
 - (_TtC23SoundAndHapticsControls14SoundsSettings)init;
 - (int64_t)hapticsOption;
-- (void)setHapticsOption:(int64_t)a3;
-- (void)setShowInStatusBar:(BOOL)a3;
-- (void)setSilentMode:(BOOL)a3;
+- (void)setHapticsOption:(int64_t)option;
+- (void)setShowInStatusBar:(BOOL)bar;
+- (void)setSilentMode:(BOOL)mode;
 @end
 
 @implementation SoundsSettings
@@ -27,16 +27,16 @@
 {
   swift_getKeyPath();
   sub_100007DD0();
-  v3 = self;
+  selfCopy = self;
   sub_100012418();
 
-  v4 = [objc_opt_self() sharedInstance];
-  if (v4)
+  sharedInstance = [objc_opt_self() sharedInstance];
+  if (sharedInstance)
   {
-    v5 = v4;
-    v6 = [v4 getSilentMode];
+    v5 = sharedInstance;
+    getSilentMode = [sharedInstance getSilentMode];
 
-    LOBYTE(v4) = v6;
+    LOBYTE(sharedInstance) = getSilentMode;
   }
 
   else
@@ -44,48 +44,48 @@
     __break(1u);
   }
 
-  return v4;
+  return sharedInstance;
 }
 
-- (void)setSilentMode:(BOOL)a3
+- (void)setSilentMode:(BOOL)mode
 {
   swift_getKeyPath();
   sub_100007DD0();
-  v4 = self;
+  selfCopy = self;
   sub_100012408();
 }
 
 - (BOOL)showInStatusBar
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100010F78();
 
   return v3;
 }
 
-- (void)setShowInStatusBar:(BOOL)a3
+- (void)setShowInStatusBar:(BOOL)bar
 {
   swift_getObjectType();
   swift_getKeyPath();
   sub_100007DD0();
-  v4 = self;
+  selfCopy = self;
   sub_100012408();
 }
 
 - (int64_t)hapticsOption
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100010D9C();
 
   return v3;
 }
 
-- (void)setHapticsOption:(int64_t)a3
+- (void)setHapticsOption:(int64_t)option
 {
   swift_getObjectType();
   swift_getKeyPath();
   sub_100007DD0();
-  v4 = self;
+  selfCopy = self;
   sub_100012408();
 }
 

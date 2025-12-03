@@ -1,34 +1,34 @@
 @interface _HDRollingBaselineRelativeDataSourceBaselineCompatibilityMap
-+ (id)_canonicalSleepingWristTemperatureBundleIDByBundleIDWithProfile:(id)a3;
-- (_HDRollingBaselineRelativeDataSourceBaselineCompatibilityMap)initWithProfile:(id)a3 quantityType:(id)a4;
-- (id)_bundleIDForSourceID:(int64_t)a3 error:(id *)a4;
-- (id)baselineCompatibilityIDForSourceID:(int64_t)a3;
-- (id)predicateForDataEntitiesWithSourceIDsCompatibleWithSourceID:(int64_t)a3;
++ (id)_canonicalSleepingWristTemperatureBundleIDByBundleIDWithProfile:(id)profile;
+- (_HDRollingBaselineRelativeDataSourceBaselineCompatibilityMap)initWithProfile:(id)profile quantityType:(id)type;
+- (id)_bundleIDForSourceID:(int64_t)d error:(id *)error;
+- (id)baselineCompatibilityIDForSourceID:(int64_t)d;
+- (id)predicateForDataEntitiesWithSourceIDsCompatibleWithSourceID:(int64_t)d;
 @end
 
 @implementation _HDRollingBaselineRelativeDataSourceBaselineCompatibilityMap
 
-- (_HDRollingBaselineRelativeDataSourceBaselineCompatibilityMap)initWithProfile:(id)a3 quantityType:(id)a4
+- (_HDRollingBaselineRelativeDataSourceBaselineCompatibilityMap)initWithProfile:(id)profile quantityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  typeCopy = type;
   v17.receiver = self;
   v17.super_class = _HDRollingBaselineRelativeDataSourceBaselineCompatibilityMap;
   v8 = [(_HDRollingBaselineRelativeDataSourceBaselineCompatibilityMap *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_profile, v6);
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeWeak(&v8->_profile, profileCopy);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     bundleIDBySourceID = v9->_bundleIDBySourceID;
-    v9->_bundleIDBySourceID = v10;
+    v9->_bundleIDBySourceID = dictionary;
 
-    v12 = [v7 identifier];
-    v13 = [v12 isEqualToString:*MEMORY[0x277CCC938]];
+    identifier = [typeCopy identifier];
+    v13 = [identifier isEqualToString:*MEMORY[0x277CCC938]];
 
     if (v13)
     {
-      v14 = [objc_opt_class() _canonicalSleepingWristTemperatureBundleIDByBundleIDWithProfile:v6];
+      v14 = [objc_opt_class() _canonicalSleepingWristTemperatureBundleIDByBundleIDWithProfile:profileCopy];
     }
 
     else
@@ -43,81 +43,81 @@
   return v9;
 }
 
-+ (id)_canonicalSleepingWristTemperatureBundleIDByBundleIDWithProfile:(id)a3
++ (id)_canonicalSleepingWristTemperatureBundleIDByBundleIDWithProfile:(id)profile
 {
-  v3 = [HDKeyValueDomain _wristTemperatureIdentifierDomainWithProfile:a3];
-  v4 = [v3 _wristTemperatureResolvedSourceIdentifiersBySourceIdentifier];
+  v3 = [HDKeyValueDomain _wristTemperatureIdentifierDomainWithProfile:profile];
+  _wristTemperatureResolvedSourceIdentifiersBySourceIdentifier = [v3 _wristTemperatureResolvedSourceIdentifiersBySourceIdentifier];
 
-  return v4;
+  return _wristTemperatureResolvedSourceIdentifiersBySourceIdentifier;
 }
 
-- (id)baselineCompatibilityIDForSourceID:(int64_t)a3
+- (id)baselineCompatibilityIDForSourceID:(int64_t)d
 {
-  v5 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v6 = [v5 isAppleInternalInstall];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isAppleInternalInstall = [mEMORY[0x277CCDD30] isAppleInternalInstall];
 
-  if ((v6 & 1) == 0)
+  if ((isAppleInternalInstall & 1) == 0)
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
-    v12 = [v8 stringValue];
+    v8 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
+    stringValue = [v8 stringValue];
     goto LABEL_10;
   }
 
   v15 = 0;
-  v7 = [(_HDRollingBaselineRelativeDataSourceBaselineCompatibilityMap *)self _bundleIDForSourceID:a3 error:&v15];
+  v7 = [(_HDRollingBaselineRelativeDataSourceBaselineCompatibilityMap *)self _bundleIDForSourceID:d error:&v15];
   v8 = v15;
   if (v7)
   {
     v9 = [(NSDictionary *)self->_canonicalBundleIDByBundleID objectForKeyedSubscript:v7];
     if (!v9)
     {
-      v13 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
-      v12 = [v13 stringValue];
+      v13 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
+      stringValue = [v13 stringValue];
 
       v11 = 0;
       goto LABEL_9;
     }
 
-    v10 = v9;
-    v11 = v10;
+    stringValue2 = v9;
+    v11 = stringValue2;
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
-    v10 = [v11 stringValue];
+    v11 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
+    stringValue2 = [v11 stringValue];
   }
 
-  v12 = v10;
+  stringValue = stringValue2;
 LABEL_9:
 
 LABEL_10:
 
-  return v12;
+  return stringValue;
 }
 
-- (id)_bundleIDForSourceID:(int64_t)a3 error:(id *)a4
+- (id)_bundleIDForSourceID:(int64_t)d error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
   bundleIDBySourceID = self->_bundleIDBySourceID;
   v8 = [MEMORY[0x277CCABB0] numberWithLongLong:?];
-  v9 = [(NSMutableDictionary *)bundleIDBySourceID objectForKeyedSubscript:v8];
+  bundleIdentifier = [(NSMutableDictionary *)bundleIDBySourceID objectForKeyedSubscript:v8];
 
-  if (!v9)
+  if (!bundleIdentifier)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v11 = [WeakRetained sourceManager];
-    v12 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+    sourceManager = [WeakRetained sourceManager];
+    v12 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
     v24 = 0;
-    v13 = [v11 clientSourceForPersistentID:v12 error:&v24];
+    v13 = [sourceManager clientSourceForPersistentID:v12 error:&v24];
     v14 = v24;
 
     if (v13)
     {
-      v9 = [v13 bundleIdentifier];
+      bundleIdentifier = [v13 bundleIdentifier];
       v15 = self->_bundleIDBySourceID;
-      v16 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
-      [(NSMutableDictionary *)v15 setObject:v9 forKeyedSubscript:v16];
+      v16 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
+      [(NSMutableDictionary *)v15 setObject:bundleIdentifier forKeyedSubscript:v16];
 
       v17 = v13;
 LABEL_11:
@@ -129,9 +129,9 @@ LABEL_11:
     v18 = *MEMORY[0x277CCC308];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v23 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+      v23 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
       *buf = 138543874;
-      v26 = self;
+      selfCopy = self;
       v27 = 2114;
       v28 = v23;
       v29 = 2114;
@@ -143,43 +143,43 @@ LABEL_11:
     v17 = v19;
     if (v19)
     {
-      if (a4)
+      if (error)
       {
         v20 = v19;
-        v9 = 0;
-        *a4 = v17;
+        bundleIdentifier = 0;
+        *error = v17;
         goto LABEL_11;
       }
 
       _HKLogDroppedError();
     }
 
-    v9 = 0;
+    bundleIdentifier = 0;
     goto LABEL_11;
   }
 
 LABEL_12:
   v21 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return bundleIdentifier;
 }
 
-- (id)predicateForDataEntitiesWithSourceIDsCompatibleWithSourceID:(int64_t)a3
+- (id)predicateForDataEntitiesWithSourceIDsCompatibleWithSourceID:(int64_t)d
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v4 = [v3 isAppleInternalInstall];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isAppleInternalInstall = [mEMORY[0x277CCDD30] isAppleInternalInstall];
 
-  if ((v4 & 1) == 0)
+  if ((isAppleInternalInstall & 1) == 0)
   {
-    v15 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+    v15 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
     v16 = HDDataEntityPredicateForSourceIdentifier(v15);
 
     goto LABEL_29;
   }
 
   v34 = 0;
-  v23 = [(_HDRollingBaselineRelativeDataSourceBaselineCompatibilityMap *)self _bundleIDForSourceID:a3 error:&v34];
+  v23 = [(_HDRollingBaselineRelativeDataSourceBaselineCompatibilityMap *)self _bundleIDForSourceID:d error:&v34];
   v5 = v34;
   if (v23)
   {
@@ -210,9 +210,9 @@ LABEL_12:
             if ([v10 isEqual:v27])
             {
               WeakRetained = objc_loadWeakRetained(&self->_profile);
-              v12 = [WeakRetained sourceManager];
+              sourceManager = [WeakRetained sourceManager];
               v29 = v5;
-              v13 = [v12 allSourcesForBundleIdentifier:v9 error:&v29];
+              v13 = [sourceManager allSourcesForBundleIdentifier:v9 error:&v29];
               v14 = v29;
 
               if (!v13)
@@ -222,7 +222,7 @@ LABEL_12:
                 if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138543874;
-                  v36 = self;
+                  selfCopy2 = self;
                   v37 = 2114;
                   v38 = v9;
                   v39 = 2114;
@@ -259,13 +259,13 @@ LABEL_21:
         if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v36 = self;
+          selfCopy2 = self;
           v37 = 2114;
           v38 = v27;
           _os_log_error_impl(&dword_228986000, v19, OS_LOG_TYPE_ERROR, "[%{public}@] No source entities found for canonical bundle ID %{public}@", buf, 0x16u);
         }
 
-        v20 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+        v20 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
         v16 = HDDataEntityPredicateForSourceIdentifier(v20);
 
         goto LABEL_27;
@@ -276,7 +276,7 @@ LABEL_21:
 
     else
     {
-      v26 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+      v26 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
       v17 = HDDataEntityPredicateForSourceIdentifier(v26);
     }
 
@@ -286,7 +286,7 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v27 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v27 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
   v16 = HDDataEntityPredicateForSourceIdentifier(v27);
 LABEL_28:
 

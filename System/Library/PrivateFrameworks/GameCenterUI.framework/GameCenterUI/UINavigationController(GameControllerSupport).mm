@@ -10,7 +10,7 @@
 {
   v6 = a3;
   v7 = a4;
-  [a1 logOnceGameControllerUsedInGameLayer];
+  [self logOnceGameControllerUsedInGameLayer];
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -19,12 +19,12 @@
   v9[1] = 3221225472;
   v9[2] = __72__UINavigationController_GameControllerSupport__pressesEnded_withEvent___block_invoke;
   v9[3] = &unk_27966DB70;
-  v9[4] = a1;
+  v9[4] = self;
   v9[5] = &v10;
   [v6 enumerateObjectsUsingBlock:v9];
   if ((v11[3] & 1) == 0)
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = UINavigationController_0;
     objc_msgSendSuper2(&v8, sel_pressesEnded_withEvent_, v6, v7);
   }
@@ -42,7 +42,7 @@
 
 - (void)returnToPreviousScreen
 {
-  v2 = [a1 popViewControllerAnimated:1];
+  v2 = [self popViewControllerAnimated:1];
   if (v2)
   {
     if (!*MEMORY[0x277D0C2A0])
@@ -60,11 +60,11 @@
 
   else
   {
-    v5 = [a1 presentingViewController];
-    v6 = v5;
-    if (v5)
+    presentingViewController = [self presentingViewController];
+    v6 = presentingViewController;
+    if (presentingViewController)
     {
-      [v5 dismissViewControllerAnimated:1 completion:0];
+      [presentingViewController dismissViewControllerAnimated:1 completion:0];
       if (!*MEMORY[0x277D0C2A0])
       {
         v7 = GKOSLoggers();
@@ -80,13 +80,13 @@
 
     else
     {
-      v9 = [a1 _gkExtensionViewController];
+      _gkExtensionViewController = [self _gkExtensionViewController];
       v10 = objc_opt_respondsToSelector();
 
       if (v10)
       {
-        v11 = [a1 _gkExtensionViewController];
-        [v11 dismissWithGameController];
+        _gkExtensionViewController2 = [self _gkExtensionViewController];
+        [_gkExtensionViewController2 dismissWithGameController];
       }
     }
   }

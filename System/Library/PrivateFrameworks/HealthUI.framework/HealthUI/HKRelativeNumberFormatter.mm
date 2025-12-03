@@ -1,24 +1,24 @@
 @interface HKRelativeNumberFormatter
-- (id)stringFromNumber:(id)a3 displayType:(id)a4 unitController:(id)a5;
+- (id)stringFromNumber:(id)number displayType:(id)type unitController:(id)controller;
 @end
 
 @implementation HKRelativeNumberFormatter
 
-- (id)stringFromNumber:(id)a3 displayType:(id)a4 unitController:(id)a5
+- (id)stringFromNumber:(id)number displayType:(id)type unitController:(id)controller
 {
-  v6 = a3;
-  v7 = HKNumberFormatterWithDecimalPrecisionAndStyle(2, [a4 roundingMode], 1);
+  numberCopy = number;
+  v7 = HKNumberFormatterWithDecimalPrecisionAndStyle(2, [type roundingMode], 1);
   v8 = [v7 copy];
 
-  v9 = [v8 plusSign];
-  [v8 setPositivePrefix:v9];
+  plusSign = [v8 plusSign];
+  [v8 setPositivePrefix:plusSign];
 
-  v10 = [MEMORY[0x1E695DF58] hk_testableCurrentLocale];
-  [v8 setLocale:v10];
+  hk_testableCurrentLocale = [MEMORY[0x1E695DF58] hk_testableCurrentLocale];
+  [v8 setLocale:hk_testableCurrentLocale];
 
   v11 = [v8 stringFromNumber:&unk_1F43848B0];
   v12 = [v8 stringFromNumber:&unk_1F43848C0];
-  v13 = [v8 stringFromNumber:v6];
+  v13 = [v8 stringFromNumber:numberCopy];
 
   if (([v13 isEqualToString:v11] & 1) != 0 || objc_msgSend(v13, "isEqualToString:", v12))
   {

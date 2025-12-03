@@ -9,53 +9,53 @@
 - (HDCodableFitnessFriendActivitySnapshot)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableFitnessFriendActivitySnapshot);
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = &off_283D419E8;
   v3 = objc_msgSendSuper2(&v12, sel_codableRepresentationForSync);
   [(HDCodableFitnessFriendActivitySnapshot *)v2 setSample:v3];
-  v4 = [a1 friendUUID];
-  v5 = [v4 hk_dataForUUIDBytes];
-  [(HDCodableFitnessFriendActivitySnapshot *)v2 setFriendUUID:v5];
+  friendUUID = [self friendUUID];
+  hk_dataForUUIDBytes = [friendUUID hk_dataForUUIDBytes];
+  [(HDCodableFitnessFriendActivitySnapshot *)v2 setFriendUUID:hk_dataForUUIDBytes];
 
-  v6 = [a1 sourceUUID];
-  v7 = [v6 hk_dataForUUIDBytes];
-  [(HDCodableFitnessFriendActivitySnapshot *)v2 setSourceUUID:v7];
+  sourceUUID = [self sourceUUID];
+  hk_dataForUUIDBytes2 = [sourceUUID hk_dataForUUIDBytes];
+  [(HDCodableFitnessFriendActivitySnapshot *)v2 setSourceUUID:hk_dataForUUIDBytes2];
 
-  [a1 activeHours];
+  [self activeHours];
   [(HDCodableFitnessFriendActivitySnapshot *)v2 setActiveHours:?];
-  [a1 activeHoursGoal];
+  [self activeHoursGoal];
   [(HDCodableFitnessFriendActivitySnapshot *)v2 setActiveHoursGoal:?];
-  [a1 briskMinutes];
+  [self briskMinutes];
   [(HDCodableFitnessFriendActivitySnapshot *)v2 setBriskMinutes:?];
-  [a1 briskMinutesGoal];
+  [self briskMinutesGoal];
   [(HDCodableFitnessFriendActivitySnapshot *)v2 setBriskMinutesGoal:?];
-  [a1 energyBurned];
+  [self energyBurned];
   [(HDCodableFitnessFriendActivitySnapshot *)v2 setEnergyBurned:?];
-  [a1 energyBurnedGoal];
+  [self energyBurnedGoal];
   [(HDCodableFitnessFriendActivitySnapshot *)v2 setEnergyBurnedGoal:?];
-  [a1 mmv];
+  [self mmv];
   [(HDCodableFitnessFriendActivitySnapshot *)v2 setMmv:?];
-  [a1 mmg];
+  [self mmg];
   [(HDCodableFitnessFriendActivitySnapshot *)v2 setMmg:?];
-  -[HDCodableFitnessFriendActivitySnapshot setAmm:](v2, "setAmm:", [a1 amm]);
-  [a1 walkingAndRunningDistance];
+  -[HDCodableFitnessFriendActivitySnapshot setAmm:](v2, "setAmm:", [self amm]);
+  [self walkingAndRunningDistance];
   [(HDCodableFitnessFriendActivitySnapshot *)v2 setWalkingAndRunningDistance:?];
-  [a1 stepCount];
+  [self stepCount];
   [(HDCodableFitnessFriendActivitySnapshot *)v2 setStepCount:?];
-  -[HDCodableFitnessFriendActivitySnapshot setSnapshotIndex:](v2, "setSnapshotIndex:", [a1 snapshotIndex]);
-  v8 = [a1 snapshotUploadedDate];
-  [v8 timeIntervalSinceReferenceDate];
+  -[HDCodableFitnessFriendActivitySnapshot setSnapshotIndex:](v2, "setSnapshotIndex:", [self snapshotIndex]);
+  snapshotUploadedDate = [self snapshotUploadedDate];
+  [snapshotUploadedDate timeIntervalSinceReferenceDate];
   [(HDCodableFitnessFriendActivitySnapshot *)v2 setUploadedDate:?];
 
-  [a1 pushCount];
+  [self pushCount];
   [(HDCodableFitnessFriendActivitySnapshot *)v2 setPushCount:?];
-  -[HDCodableFitnessFriendActivitySnapshot setWheelchairUse:](v2, "setWheelchairUse:", [a1 wheelchairUse]);
-  v9 = [a1 timeZoneOffsetFromUTCForNoon];
+  -[HDCodableFitnessFriendActivitySnapshot setWheelchairUse:](v2, "setWheelchairUse:", [self wheelchairUse]);
+  timeZoneOffsetFromUTCForNoon = [self timeZoneOffsetFromUTCForNoon];
 
-  if (v9)
+  if (timeZoneOffsetFromUTCForNoon)
   {
-    v10 = [a1 timeZoneOffsetFromUTCForNoon];
-    -[HDCodableFitnessFriendActivitySnapshot setTimeZoneOffsetFromUTCForNoon:](v2, "setTimeZoneOffsetFromUTCForNoon:", [v10 integerValue]);
+    timeZoneOffsetFromUTCForNoon2 = [self timeZoneOffsetFromUTCForNoon];
+    -[HDCodableFitnessFriendActivitySnapshot setTimeZoneOffsetFromUTCForNoon:](v2, "setTimeZoneOffsetFromUTCForNoon:", [timeZoneOffsetFromUTCForNoon2 integerValue]);
   }
 
   return v2;
@@ -64,13 +64,13 @@
 - (BOOL)addCodableRepresentationToCollection:()HDCodingSupport
 {
   v4 = a3;
-  v5 = [a1 codableRepresentationForSync];
-  if (v5)
+  codableRepresentationForSync = [self codableRepresentationForSync];
+  if (codableRepresentationForSync)
   {
-    [v4 addFitnessFriendActivitySnapshots:v5];
+    [v4 addFitnessFriendActivitySnapshots:codableRepresentationForSync];
   }
 
-  return v5 != 0;
+  return codableRepresentationForSync != 0;
 }
 
 + (id)createWithCodable:()HDCodingSupport
@@ -80,11 +80,11 @@
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
-    v6 = [[a1 alloc] _init];
-    if ([v5 applyToObject:v6])
+    _init = [[self alloc] _init];
+    if ([v5 applyToObject:_init])
     {
       v7 = HKDefaultObjectValidationConfigurationIgnoringAllOptions();
-      v9 = [v6 _validateWithConfiguration:{v7, v8}];
+      v9 = [_init _validateWithConfiguration:{v7, v8}];
       if (v9)
       {
         v10 = 0;
@@ -92,7 +92,7 @@
 
       else
       {
-        v10 = v6;
+        v10 = _init;
       }
 
       v11 = v10;

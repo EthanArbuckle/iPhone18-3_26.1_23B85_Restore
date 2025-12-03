@@ -1,9 +1,9 @@
 @interface WBSOnDeviceSearchSuggestionsModelDownloader
 - (WBSOnDeviceSearchSuggestionsModelDownloader)init;
-- (void)_callCompletionHandlerWithError:(id)a3;
+- (void)_callCompletionHandlerWithError:(id)error;
 - (void)_cancelPendingDownload;
-- (void)_downloadModelAtEndpoint:(id)a3 forLocale:(id)a4;
-- (void)downloadOnDeviceSearchSuggestionsModelForLocale:(id)a3 withCompletionHandler:(id)a4;
+- (void)_downloadModelAtEndpoint:(id)endpoint forLocale:(id)locale;
+- (void)downloadOnDeviceSearchSuggestionsModelForLocale:(id)locale withCompletionHandler:(id)handler;
 @end
 
 @implementation WBSOnDeviceSearchSuggestionsModelDownloader
@@ -19,9 +19,9 @@
     endpointFetcher = v2->_endpointFetcher;
     v2->_endpointFetcher = v3;
 
-    v5 = [MEMORY[0x1E695AC80] safari_ephemeralSessionConfiguration];
-    [v5 setURLCache:0];
-    v6 = [MEMORY[0x1E695AC78] sessionWithConfiguration:v5];
+    safari_ephemeralSessionConfiguration = [MEMORY[0x1E695AC80] safari_ephemeralSessionConfiguration];
+    [safari_ephemeralSessionConfiguration setURLCache:0];
+    v6 = [MEMORY[0x1E695AC78] sessionWithConfiguration:safari_ephemeralSessionConfiguration];
     urlSession = v2->_urlSession;
     v2->_urlSession = v6;
 
@@ -41,12 +41,12 @@
   [(WBSOnDeviceSearchSuggestionsModelDownloader *)self _callCompletionHandlerWithError:v4];
 }
 
-- (void)_callCompletionHandlerWithError:(id)a3
+- (void)_callCompletionHandlerWithError:(id)error
 {
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, a3);
+    completionHandler[2](completionHandler, error);
     v5 = self->_completionHandler;
     self->_completionHandler = 0;
 
@@ -55,12 +55,12 @@
   }
 }
 
-- (void)downloadOnDeviceSearchSuggestionsModelForLocale:(id)a3 withCompletionHandler:(id)a4
+- (void)downloadOnDeviceSearchSuggestionsModelForLocale:(id)locale withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  localeCopy = locale;
+  handlerCopy = handler;
   [(WBSOnDeviceSearchSuggestionsModelDownloader *)self _cancelPendingDownload];
-  v8 = [v7 copy];
+  v8 = [handlerCopy copy];
   completionHandler = self->_completionHandler;
   self->_completionHandler = v8;
 
@@ -72,7 +72,7 @@
   v14[2] = __117__WBSOnDeviceSearchSuggestionsModelDownloader_downloadOnDeviceSearchSuggestionsModelForLocale_withCompletionHandler___block_invoke;
   v14[3] = &unk_1E7FC88E8;
   objc_copyWeak(&v17, &location);
-  v12 = v6;
+  v12 = localeCopy;
   v15 = v12;
   v13 = v10;
   v16 = v13;
@@ -161,13 +161,13 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)_downloadModelAtEndpoint:(id)a3 forLocale:(id)a4
+- (void)_downloadModelAtEndpoint:(id)endpoint forLocale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
+  endpointCopy = endpoint;
+  localeCopy = locale;
   v8 = MEMORY[0x1E695AC18];
-  v9 = [v6 endpointURL];
-  v10 = [v8 requestWithURL:v9 cachePolicy:1 timeoutInterval:10.0];
+  endpointURL = [endpointCopy endpointURL];
+  v10 = [v8 requestWithURL:endpointURL cachePolicy:1 timeoutInterval:10.0];
 
   v22 = 0;
   v23 = &v22;
@@ -183,9 +183,9 @@ LABEL_19:
   v16[3] = &unk_1E7FC8910;
   objc_copyWeak(&v20, &location);
   v19 = &v22;
-  v12 = v7;
+  v12 = localeCopy;
   v17 = v12;
-  v13 = v6;
+  v13 = endpointCopy;
   v18 = v13;
   v14 = [(NSURLSession *)urlSession downloadTaskWithRequest:v10 completionHandler:v16];
   downloadTask = self->_downloadTask;

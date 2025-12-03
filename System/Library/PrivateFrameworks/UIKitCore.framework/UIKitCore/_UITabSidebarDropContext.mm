@@ -1,21 +1,21 @@
 @interface _UITabSidebarDropContext
-+ (id)contextWithGroup:(id)a3 proposedIndexPath:(id)a4 insertionIndex:(int64_t)a5;
++ (id)contextWithGroup:(id)group proposedIndexPath:(id)path insertionIndex:(int64_t)index;
 - (UITabGroup)activeTabGroup;
 @end
 
 @implementation _UITabSidebarDropContext
 
-+ (id)contextWithGroup:(id)a3 proposedIndexPath:(id)a4 insertionIndex:(int64_t)a5
++ (id)contextWithGroup:(id)group proposedIndexPath:(id)path insertionIndex:(int64_t)index
 {
-  v7 = a4;
-  v8 = a3;
+  pathCopy = path;
+  groupCopy = group;
   v9 = objc_opt_new();
-  objc_storeWeak((v9 + 8), v8);
+  objc_storeWeak((v9 + 8), groupCopy);
 
   v10 = *(v9 + 16);
-  *(v9 + 16) = v7;
+  *(v9 + 16) = pathCopy;
 
-  *(v9 + 24) = a5;
+  *(v9 + 24) = index;
 
   return v9;
 }

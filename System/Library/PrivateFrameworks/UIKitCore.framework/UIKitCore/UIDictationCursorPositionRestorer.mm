@@ -1,25 +1,25 @@
 @interface UIDictationCursorPositionRestorer
-- (void)_restoreCursorLocationWithCompletion:(id)a3;
-- (void)_withCurrentSelectionOffsets:(id)a3;
-- (void)saveCursorLocationAndRestoreAfterPerforming:(id)a3 completion:(id)a4;
-- (void)setCursorToOffset:(unint64_t)a3 completion:(id)a4;
+- (void)_restoreCursorLocationWithCompletion:(id)completion;
+- (void)_withCurrentSelectionOffsets:(id)offsets;
+- (void)saveCursorLocationAndRestoreAfterPerforming:(id)performing completion:(id)completion;
+- (void)setCursorToOffset:(unint64_t)offset completion:(id)completion;
 @end
 
 @implementation UIDictationCursorPositionRestorer
 
-- (void)saveCursorLocationAndRestoreAfterPerforming:(id)a3 completion:(id)a4
+- (void)saveCursorLocationAndRestoreAfterPerforming:(id)performing completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  performingCopy = performing;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __92__UIDictationCursorPositionRestorer_saveCursorLocationAndRestoreAfterPerforming_completion___block_invoke;
   v10[3] = &unk_1E7117B18;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = performingCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = performingCopy;
   [(UIDictationCursorPositionRestorer *)self _withCurrentSelectionOffsets:v10];
 }
 
@@ -50,33 +50,33 @@ uint64_t __92__UIDictationCursorPositionRestorer_saveCursorLocationAndRestoreAft
   return [*(a1 + 32) _restoreCursorLocationWithCompletion:*(a1 + 48)];
 }
 
-- (void)setCursorToOffset:(unint64_t)a3 completion:(id)a4
+- (void)setCursorToOffset:(unint64_t)offset completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  completionCopy = completion;
   v6 = +[UIKeyboardImpl activeInstance];
-  v7 = [v6 inputDelegateManager];
+  inputDelegateManager = [v6 inputDelegateManager];
 
-  if ([v7 hasAsyncCapableInputDelegate])
+  if ([inputDelegateManager hasAsyncCapableInputDelegate])
   {
     v8 = objc_alloc_init(UIWKDocumentRequest);
     [(UIWKDocumentRequest *)v8 setFlags:1];
     [(UIWKDocumentRequest *)v8 setSurroundingGranularity:3];
     [(UIWKDocumentRequest *)v8 setGranularityCount:3];
-    v9 = [v7 textInputView];
-    [v9 visibleBounds];
+    textInputView = [inputDelegateManager textInputView];
+    [textInputView visibleBounds];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [v7 textInteractionAssistant];
-    v19 = [v18 view];
-    v20 = [v19 isEditing];
+    textInteractionAssistant = [inputDelegateManager textInteractionAssistant];
+    view = [textInteractionAssistant view];
+    isEditing = [view isEditing];
 
-    if (v20)
+    if (isEditing)
     {
       v21 = +[UIKeyboardImpl activeInstance];
-      [v21 subtractKeyboardFrameFromRect:v9 inView:{v11, v13, v15, v17}];
+      [v21 subtractKeyboardFrameFromRect:textInputView inView:{v11, v13, v15, v17}];
       v11 = v22;
       v13 = v23;
       v15 = v24;
@@ -88,32 +88,32 @@ uint64_t __92__UIDictationCursorPositionRestorer_saveCursorLocationAndRestoreAft
     v28[1] = 3221225472;
     v28[2] = __66__UIDictationCursorPositionRestorer_setCursorToOffset_completion___block_invoke;
     v28[3] = &unk_1E7117B40;
-    v31 = a3;
-    v29 = v7;
-    v30 = v5;
+    offsetCopy = offset;
+    v29 = inputDelegateManager;
+    v30 = completionCopy;
     [v29 requestDocumentContext:v8 completionHandler:v28];
   }
 
   else
   {
-    v26 = [v7 beginningOfDocument];
-    v8 = [v7 positionFromPosition:v26 offset:a3];
+    beginningOfDocument = [inputDelegateManager beginningOfDocument];
+    v8 = [inputDelegateManager positionFromPosition:beginningOfDocument offset:offset];
 
-    v9 = [v7 textRangeFromPosition:v8 toPosition:v8];
+    textInputView = [inputDelegateManager textRangeFromPosition:v8 toPosition:v8];
     v27 = _UIDictationControllerLog();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
       v33 = "[UIDictationCursorPositionRestorer setCursorToOffset:completion:]";
       v34 = 2048;
-      v35 = a3;
+      offsetCopy2 = offset;
       _os_log_impl(&dword_188A29000, v27, OS_LOG_TYPE_DEFAULT, "%s Moving selection to index %ld", buf, 0x16u);
     }
 
-    [v7 setSelectedTextRange:v9];
-    if (v5)
+    [inputDelegateManager setSelectedTextRange:textInputView];
+    if (completionCopy)
     {
-      v5[2](v5);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -167,22 +167,22 @@ uint64_t __66__UIDictationCursorPositionRestorer_setCursorToOffset_completion___
   return result;
 }
 
-- (void)_withCurrentSelectionOffsets:(id)a3
+- (void)_withCurrentSelectionOffsets:(id)offsets
 {
-  v3 = a3;
+  offsetsCopy = offsets;
   v4 = objc_alloc_init(MEMORY[0x1E69C6F30]);
   [v4 setFlags:9];
   [v4 setTextGranularity:3];
   [v4 setSurroundingGranularityCount:3];
   v5 = +[UIKeyboardImpl activeInstance];
-  v6 = [v5 remoteTextInputPartnerPrivate];
+  remoteTextInputPartnerPrivate = [v5 remoteTextInputPartnerPrivate];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __66__UIDictationCursorPositionRestorer__withCurrentSelectionOffsets___block_invoke;
   v8[3] = &unk_1E71150D8;
-  v9 = v3;
-  v7 = v3;
-  [v6 _performDocumentRequest:v4 completion:v8];
+  v9 = offsetsCopy;
+  v7 = offsetsCopy;
+  [remoteTextInputPartnerPrivate _performDocumentRequest:v4 completion:v8];
 }
 
 void __66__UIDictationCursorPositionRestorer__withCurrentSelectionOffsets___block_invoke(uint64_t a1, void *a2)
@@ -274,16 +274,16 @@ void __66__UIDictationCursorPositionRestorer__withCurrentSelectionOffsets___bloc
   }
 }
 
-- (void)_restoreCursorLocationWithCompletion:(id)a3
+- (void)_restoreCursorLocationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __74__UIDictationCursorPositionRestorer__restoreCursorLocationWithCompletion___block_invoke;
   v6[3] = &unk_1E7117B68;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(UIDictationCursorPositionRestorer *)self _withCurrentSelectionOffsets:v6];
 }
 

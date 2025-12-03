@@ -1,37 +1,37 @@
 @interface MXDeliveryPathUtil
-- (BOOL)_createDiagnosticDirectoryForDeliveryAtPath:(id)a3 forClient:(id)a4 withError:(id *)a5;
-- (BOOL)_createMetricDirectoryForDeliveryAtPath:(id)a3 forClient:(id)a4 withError:(id *)a5;
-- (BOOL)createDiagnosticDirectoryAtPath:(id)a3 forClient:(id)a4 withError:(id *)a5;
-- (BOOL)createMetricDirectoryAtPath:(id)a3 forClient:(id)a4 withError:(id *)a5;
-- (MXDeliveryPathUtil)initWithStorageUtil:(id)a3 andBundleUtil:(id)a4;
+- (BOOL)_createDiagnosticDirectoryForDeliveryAtPath:(id)path forClient:(id)client withError:(id *)error;
+- (BOOL)_createMetricDirectoryForDeliveryAtPath:(id)path forClient:(id)client withError:(id *)error;
+- (BOOL)createDiagnosticDirectoryAtPath:(id)path forClient:(id)client withError:(id *)error;
+- (BOOL)createMetricDirectoryAtPath:(id)path forClient:(id)client withError:(id *)error;
+- (MXDeliveryPathUtil)initWithStorageUtil:(id)util andBundleUtil:(id)bundleUtil;
 - (id)_applicationContainerPath;
-- (id)_diagnosticDeliveryDirectoryForAppContainerPath:(id)a3 forClient:(id)a4;
-- (id)_filepathsFromDirectory:(id)a3 withError:(id *)a4;
-- (id)_metricDeliveryDirectoryForAppContainerPath:(id)a3 forClient:(id)a4;
-- (id)applicationContainerPathForBundleID:(id)a3;
-- (id)diagnosticReportFilepathsFromClient:(id)a3 withError:(id *)a4;
-- (id)filepathOfDiagnosticForDeliveryFromAppContainerPath:(id)a3 forClient:(id)a4 atDate:(id)a5;
-- (id)filepathOfMetricForDeliveryFromAppContainerPath:(id)a3 forClient:(id)a4 atDate:(id)a5;
-- (id)metricReportFilepathsFromClient:(id)a3 withError:(id *)a4;
+- (id)_diagnosticDeliveryDirectoryForAppContainerPath:(id)path forClient:(id)client;
+- (id)_filepathsFromDirectory:(id)directory withError:(id *)error;
+- (id)_metricDeliveryDirectoryForAppContainerPath:(id)path forClient:(id)client;
+- (id)applicationContainerPathForBundleID:(id)d;
+- (id)diagnosticReportFilepathsFromClient:(id)client withError:(id *)error;
+- (id)filepathOfDiagnosticForDeliveryFromAppContainerPath:(id)path forClient:(id)client atDate:(id)date;
+- (id)filepathOfMetricForDeliveryFromAppContainerPath:(id)path forClient:(id)client atDate:(id)date;
+- (id)metricReportFilepathsFromClient:(id)client withError:(id *)error;
 - (void)_applicationContainerPath;
-- (void)_protectDiagnosticUntilFirstUserAuthForPath:(id)a3 forClient:(id)a4 withError:(id *)a5;
-- (void)_protectMetricUntilFirstUserAuthForPath:(id)a3 withError:(id *)a4;
+- (void)_protectDiagnosticUntilFirstUserAuthForPath:(id)path forClient:(id)client withError:(id *)error;
+- (void)_protectMetricUntilFirstUserAuthForPath:(id)path withError:(id *)error;
 @end
 
 @implementation MXDeliveryPathUtil
 
-- (MXDeliveryPathUtil)initWithStorageUtil:(id)a3 andBundleUtil:(id)a4
+- (MXDeliveryPathUtil)initWithStorageUtil:(id)util andBundleUtil:(id)bundleUtil
 {
-  v7 = a3;
-  v8 = a4;
+  utilCopy = util;
+  bundleUtilCopy = bundleUtil;
   v14.receiver = self;
   v14.super_class = MXDeliveryPathUtil;
   v9 = [(MXDeliveryPathUtil *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_storageUtil, a3);
-    objc_storeStrong(&v10->_bundleUtil, a4);
+    objc_storeStrong(&v9->_storageUtil, util);
+    objc_storeStrong(&v10->_bundleUtil, bundleUtil);
     v11 = os_log_create("com.apple.metrickit", "delivery.filepath.utility");
     logHandle = v10->_logHandle;
     v10->_logHandle = v11;
@@ -45,11 +45,11 @@
   return v10;
 }
 
-- (id)filepathOfMetricForDeliveryFromAppContainerPath:(id)a3 forClient:(id)a4 atDate:(id)a5
+- (id)filepathOfMetricForDeliveryFromAppContainerPath:(id)path forClient:(id)client atDate:(id)date
 {
-  v8 = a5;
-  v9 = [(MXDeliveryPathUtil *)self _metricDeliveryDirectoryForAppContainerPath:a3 forClient:a4];
-  v10 = [v8 description];
+  dateCopy = date;
+  v9 = [(MXDeliveryPathUtil *)self _metricDeliveryDirectoryForAppContainerPath:path forClient:client];
+  v10 = [dateCopy description];
 
   v11 = [@"report_" stringByAppendingString:v10];
 
@@ -58,11 +58,11 @@
   return v12;
 }
 
-- (id)filepathOfDiagnosticForDeliveryFromAppContainerPath:(id)a3 forClient:(id)a4 atDate:(id)a5
+- (id)filepathOfDiagnosticForDeliveryFromAppContainerPath:(id)path forClient:(id)client atDate:(id)date
 {
-  v8 = a5;
-  v9 = [(MXDeliveryPathUtil *)self _diagnosticDeliveryDirectoryForAppContainerPath:a3 forClient:a4];
-  v10 = [v8 description];
+  dateCopy = date;
+  v9 = [(MXDeliveryPathUtil *)self _diagnosticDeliveryDirectoryForAppContainerPath:path forClient:client];
+  v10 = [dateCopy description];
 
   v11 = [@"diagnostic_report_" stringByAppendingString:v10];
 
@@ -71,34 +71,34 @@
   return v12;
 }
 
-- (id)metricReportFilepathsFromClient:(id)a3 withError:(id *)a4
+- (id)metricReportFilepathsFromClient:(id)client withError:(id *)error
 {
-  v6 = a3;
-  v7 = [(MXDeliveryPathUtil *)self _applicationContainerPath];
-  v8 = [(MXDeliveryPathUtil *)self _metricDeliveryDirectoryForAppContainerPath:v7 forClient:v6];
+  clientCopy = client;
+  _applicationContainerPath = [(MXDeliveryPathUtil *)self _applicationContainerPath];
+  v8 = [(MXDeliveryPathUtil *)self _metricDeliveryDirectoryForAppContainerPath:_applicationContainerPath forClient:clientCopy];
 
-  v9 = [(MXDeliveryPathUtil *)self _filepathsFromDirectory:v8 withError:a4];
+  v9 = [(MXDeliveryPathUtil *)self _filepathsFromDirectory:v8 withError:error];
 
   return v9;
 }
 
-- (id)diagnosticReportFilepathsFromClient:(id)a3 withError:(id *)a4
+- (id)diagnosticReportFilepathsFromClient:(id)client withError:(id *)error
 {
-  v6 = a3;
-  v7 = [(MXDeliveryPathUtil *)self _applicationContainerPath];
-  v8 = [(MXDeliveryPathUtil *)self _diagnosticDeliveryDirectoryForAppContainerPath:v7 forClient:v6];
+  clientCopy = client;
+  _applicationContainerPath = [(MXDeliveryPathUtil *)self _applicationContainerPath];
+  v8 = [(MXDeliveryPathUtil *)self _diagnosticDeliveryDirectoryForAppContainerPath:_applicationContainerPath forClient:clientCopy];
 
-  v9 = [(MXDeliveryPathUtil *)self _filepathsFromDirectory:v8 withError:a4];
+  v9 = [(MXDeliveryPathUtil *)self _filepathsFromDirectory:v8 withError:error];
 
   return v9;
 }
 
-- (id)_filepathsFromDirectory:(id)a3 withError:(id *)a4
+- (id)_filepathsFromDirectory:(id)directory withError:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  directoryCopy = directory;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v8 = [(MXStorageUtilProtocol *)self->_storageUtil filesFromDirectory:v6 error:a4];
+  v8 = [(MXStorageUtilProtocol *)self->_storageUtil filesFromDirectory:directoryCopy error:error];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -117,7 +117,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [v6 stringByAppendingPathComponent:*(*(&v17 + 1) + 8 * i)];
+        v13 = [directoryCopy stringByAppendingPathComponent:*(*(&v17 + 1) + 8 * i)];
         [v7 addObject:v13];
       }
 
@@ -134,28 +134,28 @@
   return v14;
 }
 
-- (id)_metricDeliveryDirectoryForAppContainerPath:(id)a3 forClient:(id)a4
+- (id)_metricDeliveryDirectoryForAppContainerPath:(id)path forClient:(id)client
 {
-  v5 = a4;
-  v6 = [a3 stringByAppendingPathComponent:@"Reports"];
-  v7 = [v6 stringByAppendingPathComponent:v5];
+  clientCopy = client;
+  v6 = [path stringByAppendingPathComponent:@"Reports"];
+  v7 = [v6 stringByAppendingPathComponent:clientCopy];
 
   return v7;
 }
 
-- (id)_diagnosticDeliveryDirectoryForAppContainerPath:(id)a3 forClient:(id)a4
+- (id)_diagnosticDeliveryDirectoryForAppContainerPath:(id)path forClient:(id)client
 {
-  v5 = a4;
-  v6 = [a3 stringByAppendingPathComponent:@"Diagnostics"];
-  v7 = [v6 stringByAppendingPathComponent:v5];
+  clientCopy = client;
+  v6 = [path stringByAppendingPathComponent:@"Diagnostics"];
+  v7 = [v6 stringByAppendingPathComponent:clientCopy];
 
   return v7;
 }
 
-- (id)applicationContainerPathForBundleID:(id)a3
+- (id)applicationContainerPathForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(MXBundleUtilProtocol *)self->_bundleUtil isAppInstalledForBundleID:v4];
+  dCopy = d;
+  v5 = [(MXBundleUtilProtocol *)self->_bundleUtil isAppInstalledForBundleID:dCopy];
   logHandle = self->_logHandle;
   v7 = os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG);
   if (v5)
@@ -165,7 +165,7 @@
       [MXDeliveryPathUtil applicationContainerPathForBundleID:?];
     }
 
-    v8 = [(MXDeliveryPathUtil *)self _applicationContainerPath];
+    _applicationContainerPath = [(MXDeliveryPathUtil *)self _applicationContainerPath];
   }
 
   else
@@ -175,16 +175,16 @@
       [MXDeliveryPathUtil applicationContainerPathForBundleID:];
     }
 
-    v8 = 0;
+    _applicationContainerPath = 0;
   }
 
-  return v8;
+  return _applicationContainerPath;
 }
 
 - (id)_applicationContainerPath
 {
-  v3 = [MEMORY[0x277D28708] containerPath];
-  v4 = [v3 stringByAppendingPathComponent:@"Library/Caches/MetricKit"];
+  containerPath = [MEMORY[0x277D28708] containerPath];
+  v4 = [containerPath stringByAppendingPathComponent:@"Library/Caches/MetricKit"];
 
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -194,14 +194,14 @@
   return v4;
 }
 
-- (BOOL)createMetricDirectoryAtPath:(id)a3 forClient:(id)a4 withError:(id *)a5
+- (BOOL)createMetricDirectoryAtPath:(id)path forClient:(id)client withError:(id *)error
 {
-  v8 = a4;
-  v9 = [a3 stringByAppendingPathComponent:@"Reports"];
-  v10 = [v9 stringByAppendingPathComponent:v8];
+  clientCopy = client;
+  v9 = [path stringByAppendingPathComponent:@"Reports"];
+  v10 = [v9 stringByAppendingPathComponent:clientCopy];
 
   v18 = 0;
-  v11 = [(MXDeliveryPathUtil *)self _createMetricDirectoryForDeliveryAtPath:v10 forClient:v8 withError:&v18];
+  v11 = [(MXDeliveryPathUtil *)self _createMetricDirectoryForDeliveryAtPath:v10 forClient:clientCopy withError:&v18];
 
   v12 = v18;
   v13 = v12;
@@ -214,46 +214,46 @@
     v13 = v14;
   }
 
-  else if (a5)
+  else if (error)
   {
     v15 = v12;
-    *a5 = v13;
+    *error = v13;
   }
 
   return v11;
 }
 
-- (BOOL)createDiagnosticDirectoryAtPath:(id)a3 forClient:(id)a4 withError:(id *)a5
+- (BOOL)createDiagnosticDirectoryAtPath:(id)path forClient:(id)client withError:(id *)error
 {
-  v8 = a4;
-  v9 = [a3 stringByAppendingPathComponent:@"Diagnostics"];
-  v10 = [v9 stringByAppendingPathComponent:v8];
+  clientCopy = client;
+  v9 = [path stringByAppendingPathComponent:@"Diagnostics"];
+  v10 = [v9 stringByAppendingPathComponent:clientCopy];
 
   v18 = 0;
-  v11 = [(MXDeliveryPathUtil *)self _createDiagnosticDirectoryForDeliveryAtPath:v10 forClient:v8 withError:&v18];
+  v11 = [(MXDeliveryPathUtil *)self _createDiagnosticDirectoryForDeliveryAtPath:v10 forClient:clientCopy withError:&v18];
   v12 = v18;
   v13 = v12;
   if (v11)
   {
     v17 = v12;
-    [(MXDeliveryPathUtil *)self _protectDiagnosticUntilFirstUserAuthForPath:v10 forClient:v8 withError:&v17];
+    [(MXDeliveryPathUtil *)self _protectDiagnosticUntilFirstUserAuthForPath:v10 forClient:clientCopy withError:&v17];
     v14 = v17;
 
     v13 = v14;
   }
 
-  else if (a5)
+  else if (error)
   {
     v15 = v12;
-    *a5 = v13;
+    *error = v13;
   }
 
   return v11;
 }
 
-- (BOOL)_createMetricDirectoryForDeliveryAtPath:(id)a3 forClient:(id)a4 withError:(id *)a5
+- (BOOL)_createMetricDirectoryForDeliveryAtPath:(id)path forClient:(id)client withError:(id *)error
 {
-  if (([(MXStorageUtilProtocol *)self->_storageUtil createDirectory:a3 error:a5]& 1) != 0)
+  if (([(MXStorageUtilProtocol *)self->_storageUtil createDirectory:path error:error]& 1) != 0)
   {
     return 1;
   }
@@ -261,15 +261,15 @@
   logHandle = self->_logHandle;
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
   {
-    [(MXDeliveryPathUtil *)a5 _createMetricDirectoryForDeliveryAtPath:v9 forClient:v10 withError:v11, v12, v13, v14];
+    [(MXDeliveryPathUtil *)error _createMetricDirectoryForDeliveryAtPath:v9 forClient:v10 withError:v11, v12, v13, v14];
   }
 
-  v15 = [*a5 domain];
-  if ([v15 isEqualToString:*MEMORY[0x277CCA050]])
+  domain = [*error domain];
+  if ([domain isEqualToString:*MEMORY[0x277CCA050]])
   {
-    v16 = [*a5 code];
+    code = [*error code];
 
-    if (v16 == 516)
+    if (code == 516)
     {
       return 1;
     }
@@ -282,22 +282,22 @@
   return 0;
 }
 
-- (BOOL)_createDiagnosticDirectoryForDeliveryAtPath:(id)a3 forClient:(id)a4 withError:(id *)a5
+- (BOOL)_createDiagnosticDirectoryForDeliveryAtPath:(id)path forClient:(id)client withError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([MEMORY[0x277D28708] verifySDKVersionForClient:v9])
+  pathCopy = path;
+  clientCopy = client;
+  if ([MEMORY[0x277D28708] verifySDKVersionForClient:clientCopy])
   {
-    if (([(MXStorageUtilProtocol *)self->_storageUtil createDirectory:v8 error:a5]& 1) == 0)
+    if (([(MXStorageUtilProtocol *)self->_storageUtil createDirectory:pathCopy error:error]& 1) == 0)
     {
       logHandle = self->_logHandle;
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
       {
-        [(MXDeliveryPathUtil *)a5 _createDiagnosticDirectoryForDeliveryAtPath:v11 forClient:v12 withError:v13, v14, v15, v16];
+        [(MXDeliveryPathUtil *)error _createDiagnosticDirectoryForDeliveryAtPath:v11 forClient:v12 withError:v13, v14, v15, v16];
       }
 
-      v17 = [*a5 domain];
-      if (![v17 isEqualToString:*MEMORY[0x277CCA050]])
+      domain = [*error domain];
+      if (![domain isEqualToString:*MEMORY[0x277CCA050]])
       {
 
 LABEL_13:
@@ -305,9 +305,9 @@ LABEL_13:
         goto LABEL_11;
       }
 
-      v18 = [*a5 code];
+      code = [*error code];
 
-      if (v18 != 516)
+      if (code != 516)
       {
         goto LABEL_13;
       }
@@ -325,25 +325,25 @@ LABEL_11:
   return v19;
 }
 
-- (void)_protectMetricUntilFirstUserAuthForPath:(id)a3 withError:(id *)a4
+- (void)_protectMetricUntilFirstUserAuthForPath:(id)path withError:(id *)error
 {
   storageUtil = self->_storageUtil;
-  v7 = a3;
-  v8 = [(MXStorageUtilProtocol *)storageUtil attributesOfItemAtPath:v7 error:a4];
-  [(MXStorageUtilProtocol *)self->_storageUtil setAuthProtectionForPath:v7 fromAttributes:v8];
+  pathCopy = path;
+  v8 = [(MXStorageUtilProtocol *)storageUtil attributesOfItemAtPath:pathCopy error:error];
+  [(MXStorageUtilProtocol *)self->_storageUtil setAuthProtectionForPath:pathCopy fromAttributes:v8];
 }
 
-- (void)_protectDiagnosticUntilFirstUserAuthForPath:(id)a3 forClient:(id)a4 withError:(id *)a5
+- (void)_protectDiagnosticUntilFirstUserAuthForPath:(id)path forClient:(id)client withError:(id *)error
 {
-  v11 = a3;
+  pathCopy = path;
   storageUtil = self->_storageUtil;
-  v9 = a4;
-  v10 = [(MXStorageUtilProtocol *)storageUtil attributesOfItemAtPath:v11 error:a5];
-  LODWORD(storageUtil) = [MEMORY[0x277D28708] verifySDKVersionForClient:v9];
+  clientCopy = client;
+  v10 = [(MXStorageUtilProtocol *)storageUtil attributesOfItemAtPath:pathCopy error:error];
+  LODWORD(storageUtil) = [MEMORY[0x277D28708] verifySDKVersionForClient:clientCopy];
 
   if (storageUtil)
   {
-    [(MXStorageUtilProtocol *)self->_storageUtil setAuthProtectionForPath:v11 fromAttributes:v10];
+    [(MXStorageUtilProtocol *)self->_storageUtil setAuthProtectionForPath:pathCopy fromAttributes:v10];
   }
 }
 

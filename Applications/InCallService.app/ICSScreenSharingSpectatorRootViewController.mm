@@ -1,14 +1,14 @@
 @interface ICSScreenSharingSpectatorRootViewController
-- (ICSScreenSharingSpectatorRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (ICSScreenSharingSpectatorRootViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (PHPIPController)pipController;
 - (id)parentViewControllerForRestoringPiP;
 - (id)pipSourceProvider;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)handlePIPViewControllerRestoredAfterPIPStopped:(id)a3;
+- (void)handlePIPViewControllerRestoredAfterPIPStopped:(id)stopped;
 - (void)loadView;
-- (void)pipStateDidChangeNotification:(id)a3;
-- (void)setPipController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)pipStateDidChangeNotification:(id)notification;
+- (void)setPipController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -21,16 +21,16 @@
   return v2;
 }
 
-- (void)setPipController:(id)a3
+- (void)setPipController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_10021E230(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_10021E230(controller);
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10021E278();
 
   return v3;
@@ -38,30 +38,30 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_10021E5DC();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10021E9D8();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10021EA94(a3);
+  selfCopy = self;
+  sub_10021EA94(appear);
 }
 
-- (void)pipStateDidChangeNotification:(id)a3
+- (void)pipStateDidChangeNotification:(id)notification
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4, v6);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   sub_10021EB54();
 
   (*(v5 + 8))(v8, v4);
@@ -69,7 +69,7 @@
 
 - (id)pipSourceProvider
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10021ED60();
 
   return v3;
@@ -77,27 +77,27 @@
 
 - (id)parentViewControllerForRestoringPiP
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10021EDD0();
 
   return v3;
 }
 
-- (void)handlePIPViewControllerRestoredAfterPIPStopped:(id)a3
+- (void)handlePIPViewControllerRestoredAfterPIPStopped:(id)stopped
 {
-  v4 = a3;
-  v5 = self;
+  stoppedCopy = stopped;
+  selfCopy = self;
   sub_10021EE40();
 }
 
-- (ICSScreenSharingSpectatorRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ICSScreenSharingSpectatorRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_10021EECC();
 }
 

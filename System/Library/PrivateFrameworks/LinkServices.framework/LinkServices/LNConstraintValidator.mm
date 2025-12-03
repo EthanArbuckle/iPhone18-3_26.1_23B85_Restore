@@ -1,14 +1,14 @@
 @interface LNConstraintValidator
 - (LNConstraintValidator)init;
-- (int64_t)validateAction:(id)a3 error:(id *)a4;
+- (int64_t)validateAction:(id)action error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation LNConstraintValidator
 
-- (int64_t)validateAction:(id)a3 error:(id *)a4
+- (int64_t)validateAction:(id)action error:(id *)error
 {
-  v6 = a3;
+  actionCopy = action;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -33,11 +33,11 @@
   v11[3] = &unk_1E74B0910;
   v11[4] = &v13;
   v11[5] = &v17;
-  [v8 validateAction:v6 reply:v11];
+  [v8 validateAction:actionCopy reply:v11];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v18[5];
+    *error = v18[5];
   }
 
   v9 = v14[3];

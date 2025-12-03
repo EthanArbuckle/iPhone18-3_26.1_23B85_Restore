@@ -1,6 +1,6 @@
 @interface ATXMediaApplications
 - (ATXMediaApplications)init;
-- (BOOL)appSupportsMedia:(id)a3;
+- (BOOL)appSupportsMedia:(id)media;
 - (void)_updateMediaApps;
 @end
 
@@ -57,10 +57,10 @@ void __40__ATXMediaApplications__updateMediaApps__block_invoke(uint64_t a1, uint
   dispatch_resume(*(*(a1 + 32) + 8));
 }
 
-- (BOOL)appSupportsMedia:(id)a3
+- (BOOL)appSupportsMedia:(id)media
 {
-  v5 = a3;
-  if (!v5)
+  mediaCopy = media;
+  if (!mediaCopy)
   {
     [(ATXMediaApplications *)a2 appSupportsMedia:?];
   }
@@ -74,10 +74,10 @@ void __40__ATXMediaApplications__updateMediaApps__block_invoke(uint64_t a1, uint
   block[1] = 3221225472;
   block[2] = __41__ATXMediaApplications_appSupportsMedia___block_invoke;
   block[3] = &unk_27859A8B0;
-  v11 = v5;
+  v11 = mediaCopy;
   v12 = &v13;
   block[4] = self;
-  v7 = v5;
+  v7 = mediaCopy;
   dispatch_sync(queue, block);
   v8 = *(v14 + 24);
 

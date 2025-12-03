@@ -1,23 +1,23 @@
 @interface HMDPresenceEventModel
-+ (id)eventModelWithDictionary:(id)a3 home:(id)a4 eventTriggerUUID:(id)a5 message:(id)a6;
++ (id)eventModelWithDictionary:(id)dictionary home:(id)home eventTriggerUUID:(id)d message:(id)message;
 + (id)properties;
 @end
 
 @implementation HMDPresenceEventModel
 
-+ (id)eventModelWithDictionary:(id)a3 home:(id)a4 eventTriggerUUID:(id)a5 message:(id)a6
++ (id)eventModelWithDictionary:(id)dictionary home:(id)home eventTriggerUUID:(id)d message:(id)message
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [HMDEventModel eventModelWithDictionary:v10 home:v11 eventTriggerUUID:v12 className:objc_opt_class() message:v13];
-  v15 = [v10 hmf_stringForKey:*MEMORY[0x277CD24C8]];
+  dictionaryCopy = dictionary;
+  homeCopy = home;
+  dCopy = d;
+  messageCopy = message;
+  v14 = [HMDEventModel eventModelWithDictionary:dictionaryCopy home:homeCopy eventTriggerUUID:dCopy className:objc_opt_class() message:messageCopy];
+  v15 = [dictionaryCopy hmf_stringForKey:*MEMORY[0x277CD24C8]];
   [v14 setPresenceType:v15];
 
-  v16 = [v14 presenceType];
-  v17 = [v16 isEqualToString:*MEMORY[0x277CD0C50]];
+  presenceType = [v14 presenceType];
+  v17 = [presenceType isEqualToString:*MEMORY[0x277CD0C50]];
 
   if (v17)
   {
@@ -26,12 +26,12 @@
 
   else
   {
-    v19 = [v14 presenceType];
-    v20 = [v19 isEqualToString:*MEMORY[0x277CD0C58]];
+    presenceType2 = [v14 presenceType];
+    v20 = [presenceType2 isEqualToString:*MEMORY[0x277CD0C58]];
 
     if ((v20 & 1) == 0)
     {
-      v31 = [v10 hmf_arrayForKey:*MEMORY[0x277CD24D0]];
+      v31 = [dictionaryCopy hmf_arrayForKey:*MEMORY[0x277CD24D0]];
       [v14 setUsers:v31];
 
       goto LABEL_14;
@@ -41,47 +41,47 @@
   }
 
   [v14 setPresenceType:*v18];
-  v36 = v12;
-  if (v13)
+  v36 = dCopy;
+  if (messageCopy)
   {
-    [v13 userForHome:v11];
+    [messageCopy userForHome:homeCopy];
   }
 
   else
   {
-    [v11 currentUser];
+    [homeCopy currentUser];
   }
   v21 = ;
   v22 = v21;
   if (v21)
   {
-    v23 = [v21 uuid];
-    v24 = [v23 UUIDString];
-    v41[0] = v24;
+    uuid = [v21 uuid];
+    uUIDString = [uuid UUIDString];
+    v41[0] = uUIDString;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:1];
     [v14 setUsers:v25];
   }
 
   v26 = objc_autoreleasePoolPush();
-  v27 = a1;
+  selfCopy = self;
   v28 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
   {
     v29 = HMFGetLogIdentifier();
-    v30 = [v14 users];
+    users = [v14 users];
     *buf = 138543618;
     v38 = v29;
     v39 = 2112;
-    v40 = v30;
+    v40 = users;
     _os_log_impl(&dword_2531F8000, v28, OS_LOG_TYPE_INFO, "%{public}@Populated tracked users %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v26);
-  v12 = v36;
+  dCopy = v36;
 LABEL_14:
-  v32 = [MEMORY[0x277CD1D28] activationGranularityWithDict:v10];
-  v33 = [v32 number];
-  [v14 setActivation:v33];
+  v32 = [MEMORY[0x277CD1D28] activationGranularityWithDict:dictionaryCopy];
+  number = [v32 number];
+  [v14 setActivation:number];
 
   v34 = *MEMORY[0x277D85DE8];
 
@@ -94,7 +94,7 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = __35__HMDPresenceEventModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_30765 != -1)
   {
     dispatch_once(&properties_onceToken_30765, block);

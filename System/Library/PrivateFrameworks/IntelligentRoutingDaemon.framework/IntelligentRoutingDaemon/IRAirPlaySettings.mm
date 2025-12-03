@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __27__IRAirPlaySettings_shared__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (shared_onceToken != -1)
   {
     dispatch_once(&shared_onceToken, block);

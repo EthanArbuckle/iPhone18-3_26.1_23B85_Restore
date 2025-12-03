@@ -1,13 +1,13 @@
 @interface OKActionBindingEdgePan
 + (id)supportedSettings;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)respondsToAction:(id)a3 isTouchCountAgnostic:(BOOL)a4;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)respondsToAction:(id)action isTouchCountAgnostic:(BOOL)agnostic;
 - (OKActionBindingEdgePan)init;
-- (OKActionBindingEdgePan)initWithSettings:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (OKActionBindingEdgePan)initWithSettings:(id)settings;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4;
-- (void)performActionWithState:(unint64_t)a3 location:(CGPoint)a4 touchCount:(unint64_t)a5 translation:(CGPoint)a6 velocity:(CGPoint)a7 direction:(unint64_t)a8 context:(id)a9;
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope;
+- (void)performActionWithState:(unint64_t)state location:(CGPoint)location touchCount:(unint64_t)count translation:(CGPoint)translation velocity:(CGPoint)velocity direction:(unint64_t)direction context:(id)context;
 - (void)unload;
 @end
 
@@ -26,14 +26,14 @@
   return result;
 }
 
-- (OKActionBindingEdgePan)initWithSettings:(id)a3
+- (OKActionBindingEdgePan)initWithSettings:(id)settings
 {
   v7.receiver = self;
   v7.super_class = OKActionBindingEdgePan;
   v4 = [(OKActionBindingPan *)&v7 initWithSettings:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"edges"];
+    v5 = [settings objectForKey:@"edges"];
     if (v5)
     {
       v4->_edges = [v5 unsignedIntegerValue];
@@ -50,11 +50,11 @@
   [(OKActionBindingPan *)&v2 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = OKActionBindingEdgePan;
-  v4 = [(OKActionBindingPan *)&v7 copyWithZone:a3];
+  v4 = [(OKActionBindingPan *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -67,7 +67,7 @@
 + (id)supportedSettings
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKActionBindingEdgePan;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v7 = @"edges";
@@ -82,17 +82,17 @@
   return v2;
 }
 
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope
 {
   v9.receiver = self;
   v9.super_class = OKActionBindingEdgePan;
-  [(OKActionBindingPan *)&v9 loadForResponder:a3 scope:a4];
+  [(OKActionBindingPan *)&v9 loadForResponder:responder scope:scope];
   if (([(OKActionBindingProxy *)self scope]& 1) != 0)
   {
-    v6 = [a3 actionView];
-    if (v6)
+    actionView = [responder actionView];
+    if (actionView)
     {
-      v7 = v6;
+      v7 = actionView;
       v8 = [objc_alloc(MEMORY[0x277D759A8]) initWithTarget:self action:sel_handlePan_];
       self->_edgePanGestureRecognizer = v8;
       [(UIScreenEdgePanGestureRecognizer *)v8 setDelegate:self];
@@ -119,25 +119,25 @@
   [(OKActionBindingPan *)&v4 unload];
 }
 
-- (BOOL)respondsToAction:(id)a3 isTouchCountAgnostic:(BOOL)a4
+- (BOOL)respondsToAction:(id)action isTouchCountAgnostic:(BOOL)agnostic
 {
-  v7 = [(OKActionBindingProxy *)self scope];
+  scope = [(OKActionBindingProxy *)self scope];
   result = 0;
-  if (([a3 scope] & v7) != 0)
+  if (([action scope] & scope) != 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (a4)
+      if (agnostic)
       {
         return 1;
       }
 
-      v9 = [a3 touchCount];
-      if (v9 >= [(OKActionBindingPan *)self minimumNumberOfTouches])
+      touchCount = [action touchCount];
+      if (touchCount >= [(OKActionBindingPan *)self minimumNumberOfTouches])
       {
-        v10 = [a3 touchCount];
-        if (v10 <= [(OKActionBindingPan *)self maximumNumberOfTouches])
+        touchCount2 = [action touchCount];
+        if (touchCount2 <= [(OKActionBindingPan *)self maximumNumberOfTouches])
         {
           return 1;
         }
@@ -148,22 +148,22 @@
   return result;
 }
 
-- (void)performActionWithState:(unint64_t)a3 location:(CGPoint)a4 touchCount:(unint64_t)a5 translation:(CGPoint)a6 velocity:(CGPoint)a7 direction:(unint64_t)a8 context:(id)a9
+- (void)performActionWithState:(unint64_t)state location:(CGPoint)location touchCount:(unint64_t)count translation:(CGPoint)translation velocity:(CGPoint)velocity direction:(unint64_t)direction context:(id)context
 {
-  v10 = [(OKActionPan *)OKActionEdgePan panActionWithState:a3 location:a5 touchCount:a8 translation:a9 velocity:a4.x direction:a4.y context:a6.x, a6.y, a7.x, a7.y];
+  v10 = [(OKActionPan *)OKActionEdgePan panActionWithState:state location:count touchCount:direction translation:context velocity:location.x direction:location.y context:translation.x, translation.y, velocity.x, velocity.y];
 
   [(OKActionBindingProxy *)self performAction:v10];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   edgePanGestureRecognizer = self->_edgePanGestureRecognizer;
-  if (edgePanGestureRecognizer != a3)
+  if (edgePanGestureRecognizer != begin)
   {
     return 0;
   }
 
-  -[UIScreenEdgePanGestureRecognizer translationInView:](edgePanGestureRecognizer, "translationInView:", [objc_msgSend(a3 "view")]);
+  -[UIScreenEdgePanGestureRecognizer translationInView:](edgePanGestureRecognizer, "translationInView:", [objc_msgSend(begin "view")]);
   if (fabs(v6) <= fabs(v7))
   {
 

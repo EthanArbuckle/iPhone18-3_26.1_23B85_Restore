@@ -1,46 +1,46 @@
 @interface SXComponentInsertionLayoutProcessor
-- (SXComponentInsertionLayoutProcessor)initWithComponentInsertionManager:(id)a3;
-- (void)processLayoutTask:(id)a3 layoutBlueprint:(id)a4 DOMObjectProvider:(id)a5;
+- (SXComponentInsertionLayoutProcessor)initWithComponentInsertionManager:(id)manager;
+- (void)processLayoutTask:(id)task layoutBlueprint:(id)blueprint DOMObjectProvider:(id)provider;
 @end
 
 @implementation SXComponentInsertionLayoutProcessor
 
-- (SXComponentInsertionLayoutProcessor)initWithComponentInsertionManager:(id)a3
+- (SXComponentInsertionLayoutProcessor)initWithComponentInsertionManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = SXComponentInsertionLayoutProcessor;
   v6 = [(SXComponentInsertionLayoutProcessor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_componentInsertionManager, a3);
+    objc_storeStrong(&v6->_componentInsertionManager, manager);
   }
 
   return v7;
 }
 
-- (void)processLayoutTask:(id)a3 layoutBlueprint:(id)a4 DOMObjectProvider:(id)a5
+- (void)processLayoutTask:(id)task layoutBlueprint:(id)blueprint DOMObjectProvider:(id)provider
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  taskCopy = task;
+  blueprintCopy = blueprint;
+  providerCopy = provider;
+  if (blueprintCopy)
   {
-    if ([v8 isComplete])
+    if ([blueprintCopy isComplete])
     {
-      v10 = [(SXComponentInsertionLayoutProcessor *)self layoutOptions];
-      v11 = [v16 options];
-      v12 = [v10 isEqual:v11];
+      layoutOptions = [(SXComponentInsertionLayoutProcessor *)self layoutOptions];
+      options = [taskCopy options];
+      v12 = [layoutOptions isEqual:options];
 
       if ((v12 & 1) == 0)
       {
-        v13 = [(SXComponentInsertionLayoutProcessor *)self componentInsertionManager];
-        v14 = [v13 insertComponentsForBlueprint:v8 DOMObjectProvider:v9];
+        componentInsertionManager = [(SXComponentInsertionLayoutProcessor *)self componentInsertionManager];
+        v14 = [componentInsertionManager insertComponentsForBlueprint:blueprintCopy DOMObjectProvider:providerCopy];
 
-        [v9 setDOM:v14];
-        v15 = [v16 options];
-        [(SXComponentInsertionLayoutProcessor *)self setLayoutOptions:v15];
+        [providerCopy setDOM:v14];
+        options2 = [taskCopy options];
+        [(SXComponentInsertionLayoutProcessor *)self setLayoutOptions:options2];
       }
     }
   }

@@ -1,5 +1,5 @@
 @interface PXPhotosDetailsSpec
-- (PXPhotosDetailsSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 detailsOptions:(unint64_t)a5;
+- (PXPhotosDetailsSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options detailsOptions:(unint64_t)detailsOptions;
 - (UIColor)backgroundColor;
 @end
 
@@ -11,52 +11,52 @@
   {
     v3 = MEMORY[0x1E69DC888];
 LABEL_4:
-    v4 = [v3 clearColor];
+    clearColor = [v3 clearColor];
     goto LABEL_5;
   }
 
-  v6 = [(PXPhotosDetailsSpec *)self widgetSpec];
-  v7 = [v6 sizeClass];
+  widgetSpec = [(PXPhotosDetailsSpec *)self widgetSpec];
+  sizeClass = [widgetSpec sizeClass];
 
-  v8 = [(PXPhotosDetailsSpec *)self detailsOptions];
+  detailsOptions = [(PXPhotosDetailsSpec *)self detailsOptions];
   v3 = MEMORY[0x1E69DC888];
-  if ((v8 & 2) != 0 && v7 == 2)
+  if ((detailsOptions & 2) != 0 && sizeClass == 2)
   {
     goto LABEL_4;
   }
 
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  clearColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
 LABEL_5:
 
-  return v4;
+  return clearColor;
 }
 
-- (PXPhotosDetailsSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 detailsOptions:(unint64_t)a5
+- (PXPhotosDetailsSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options detailsOptions:(unint64_t)detailsOptions
 {
-  v8 = a3;
+  collectionCopy = collection;
   v20.receiver = self;
   v20.super_class = PXPhotosDetailsSpec;
-  v9 = [(PXPhotosDetailsSpec *)&v20 initWithExtendedTraitCollection:v8 options:a4];
+  v9 = [(PXPhotosDetailsSpec *)&v20 initWithExtendedTraitCollection:collectionCopy options:options];
   v10 = v9;
   if (v9)
   {
-    v9->_detailsOptions = a5;
-    v11 = [[PXWidgetSpec alloc] initWithExtendedTraitCollection:v8 options:a4 detailsOptions:a5];
+    v9->_detailsOptions = detailsOptions;
+    v11 = [[PXWidgetSpec alloc] initWithExtendedTraitCollection:collectionCopy options:options detailsOptions:detailsOptions];
     widgetSpec = v10->_widgetSpec;
     v10->_widgetSpec = v11;
 
-    v13 = [[PXWidgetCompositionSpec alloc] initWithExtendedTraitCollection:v8 widgetSpec:v10->_widgetSpec];
+    v13 = [[PXWidgetCompositionSpec alloc] initWithExtendedTraitCollection:collectionCopy widgetSpec:v10->_widgetSpec];
     compositionSpec = v10->_compositionSpec;
     v10->_compositionSpec = v13;
 
-    v15 = [[PXPhotosDetailsBarSpec alloc] initWithExtendedTraitCollection:v8];
+    v15 = [[PXPhotosDetailsBarSpec alloc] initWithExtendedTraitCollection:collectionCopy];
     barSpec = v10->_barSpec;
     v10->_barSpec = v15;
 
-    [(PXPhotosDetailsBarSpec *)v10->_barSpec setDetailsOptions:a5];
-    v17 = [(PXPhotosDetailsSpec *)v10 backgroundColor];
+    [(PXPhotosDetailsBarSpec *)v10->_barSpec setDetailsOptions:detailsOptions];
+    backgroundColor = [(PXPhotosDetailsSpec *)v10 backgroundColor];
     dimmingColor = v10->_dimmingColor;
-    v10->_dimmingColor = v17;
+    v10->_dimmingColor = backgroundColor;
 
     v10->_dimmingAlpha = 0.75;
   }

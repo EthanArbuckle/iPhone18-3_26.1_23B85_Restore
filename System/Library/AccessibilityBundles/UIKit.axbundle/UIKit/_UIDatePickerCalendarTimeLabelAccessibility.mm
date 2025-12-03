@@ -1,9 +1,9 @@
 @interface _UIDatePickerCalendarTimeLabelAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axSelfIsFirstResponder;
 - (CGRect)accessibilityFrame;
 - (_NSRange)_accessibilitySelectedTextRange;
-- (_UIDatePickerCalendarTimeLabelAccessibility)initWithTimeFormat:(id)a3 minuteInterval:(int64_t)a4;
+- (_UIDatePickerCalendarTimeLabelAccessibility)initWithTimeFormat:(id)format minuteInterval:(int64_t)interval;
 - (id)_accessibilityHourElement;
 - (id)_accessibilityInternalData;
 - (id)_accessibilityMinuteElement;
@@ -12,23 +12,23 @@
 - (id)accessibilityLabel;
 - (uint64_t)_accessibilityInternalSelectedTextRange;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilityFocusChanged:(id)a3;
-- (void)_accessibilitySetInternalSelectedTextRange:(uint64_t)a3;
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3;
+- (void)_accessibilityFocusChanged:(id)changed;
+- (void)_accessibilitySetInternalSelectedTextRange:(uint64_t)range;
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range;
 - (void)dealloc;
 - (void)pushCurrentStateIntoUIAndNotify;
 @end
 
 @implementation _UIDatePickerCalendarTimeLabelAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v10 = location;
   v9 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"_UIDatePickerCalendarTimeView";
   [location[0] validateClass:?];
   v6 = @"_UIDatePickerCalendarTimeLabel";
@@ -57,12 +57,12 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   if (AXDoesRequestingClientDeserveAutomation())
   {
     v4 = *MEMORY[0x29EDC7598];
-    if ([(_UIDatePickerCalendarTimeLabelAccessibility *)v6 _axSelfIsFirstResponder])
+    if ([(_UIDatePickerCalendarTimeLabelAccessibility *)selfCopy _axSelfIsFirstResponder])
     {
       v4 |= *MEMORY[0x29EDC7528];
     }
@@ -72,7 +72,7 @@
 
   else
   {
-    v3.receiver = v6;
+    v3.receiver = selfCopy;
     v3.super_class = _UIDatePickerCalendarTimeLabelAccessibility;
     return [(_UIDatePickerCalendarTimeLabelAccessibility *)&v3 accessibilityTraits];
   }
@@ -80,47 +80,47 @@
 
 - (BOOL)_axSelfIsFirstResponder
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v6 = 0;
   objc_opt_class();
   v5 = __UIAccessibilityCastAsClass();
   v4 = MEMORY[0x29EDC9748](v5);
   objc_storeStrong(&v5, 0);
-  v3 = [v4 isFirstResponder];
+  isFirstResponder = [v4 isFirstResponder];
   MEMORY[0x29EDC9740](v4);
-  return v3;
+  return isFirstResponder;
 }
 
 - (id)_accessibilityResponderElement
 {
-  v7 = self;
+  selfCopy = self;
   v6[1] = a2;
-  v4 = [(_UIDatePickerCalendarTimeLabelAccessibility *)self accessibilityElements];
-  v6[0] = MEMORY[0x29EDC9748](v7);
-  v3 = [v4 ax_filteredArrayUsingBlock:?];
-  v5 = [v3 firstObject];
+  accessibilityElements = [(_UIDatePickerCalendarTimeLabelAccessibility *)self accessibilityElements];
+  v6[0] = MEMORY[0x29EDC9748](selfCopy);
+  v3 = [accessibilityElements ax_filteredArrayUsingBlock:?];
+  firstObject = [v3 firstObject];
   MEMORY[0x29EDC9740](v3);
   objc_storeStrong(v6, 0);
-  MEMORY[0x29EDC9740](v4);
+  MEMORY[0x29EDC9740](accessibilityElements);
 
-  return v5;
+  return firstObject;
 }
 
 - (id)accessibilityElements
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(_UIDatePickerCalendarTimeLabelAccessibility *)self _accessibilityValueForKey:@"accessibilityElements"];
   if (!location[0])
   {
     location[0] = [MEMORY[0x29EDB8DE8] array];
-    [(_UIDatePickerCalendarTimeLabelAccessibility *)v7 _accessibilitySetRetainedValue:location[0] forKey:@"accessibilityElements", MEMORY[0x29EDC9740](0).n128_f64[0]];
-    v4 = [(_UIDatePickerCalendarTimeLabelAccessibility *)v7 _accessibilityHourElement];
+    [(_UIDatePickerCalendarTimeLabelAccessibility *)selfCopy _accessibilitySetRetainedValue:location[0] forKey:@"accessibilityElements", MEMORY[0x29EDC9740](0).n128_f64[0]];
+    _accessibilityHourElement = [(_UIDatePickerCalendarTimeLabelAccessibility *)selfCopy _accessibilityHourElement];
     [location[0] addObject:?];
-    v5 = [(_UIDatePickerCalendarTimeLabelAccessibility *)v7 _accessibilityMinuteElement];
+    _accessibilityMinuteElement = [(_UIDatePickerCalendarTimeLabelAccessibility *)selfCopy _accessibilityMinuteElement];
     [location[0] addObject:?];
-    MEMORY[0x29EDC9740](v5);
+    MEMORY[0x29EDC9740](_accessibilityMinuteElement);
   }
 
   v8 = MEMORY[0x29EDC9748](location[0]);
@@ -132,13 +132,13 @@
 
 - (id)_accessibilityHourElement
 {
-  v65 = self;
+  selfCopy = self;
   v64[1] = a2;
   v64[0] = [objc_alloc(MEMORY[0x29EDC78F8]) initWithAccessibilityContainer:self];
   v21 = accessibilityUIKitLocalizedString();
   [v64[0] setAccessibilityLabel:?];
   [v64[0] setAccessibilityIdentifier:{@"Hours", MEMORY[0x29EDC9740](v21).n128_f64[0]}];
-  objc_initWeak(&location, v65);
+  objc_initWeak(&location, selfCopy);
   v22 = v64[0];
   v57 = MEMORY[0x29EDCA5F8];
   v58 = -1073741824;
@@ -149,7 +149,7 @@
   [v22 _setAccessibilityTraitsBlock:&v57];
   v56 = 1;
   v55 = 12;
-  v19 = [(_UIDatePickerCalendarTimeLabelAccessibility *)v65 safeValueForKey:@"timeFormat"];
+  v19 = [(_UIDatePickerCalendarTimeLabelAccessibility *)selfCopy safeValueForKey:@"timeFormat"];
   v20 = [v19 safeIntegerForKey:@"clock"];
   MEMORY[0x29EDC9740](v19);
   if (v20)
@@ -205,13 +205,13 @@
   v41 = &unk_29F30C9E8;
   objc_copyWeak(&v42, &location);
   [v16 _setAccessibilityValueBlock:&v37];
-  v15 = v65;
-  [(_UIDatePickerCalendarTimeLabelAccessibility *)v65 safeCGRectForKey:@"hourRect"];
+  v15 = selfCopy;
+  [(_UIDatePickerCalendarTimeLabelAccessibility *)selfCopy safeCGRectForKey:@"hourRect"];
   v31 = v2;
   v32 = v3;
   v33 = v4;
   v34 = v5;
-  [(_UIDatePickerCalendarTimeLabelAccessibility *)v15 convertRect:v65 fromView:v2, v3, v4, v5];
+  [(_UIDatePickerCalendarTimeLabelAccessibility *)v15 convertRect:selfCopy fromView:v2, v3, v4, v5];
   *&v13 = v6;
   *(&v13 + 1) = v7;
   *&v14 = v8;
@@ -243,13 +243,13 @@
 
 - (id)_accessibilityMinuteElement
 {
-  v63 = self;
+  selfCopy = self;
   v62[1] = a2;
   v62[0] = [objc_alloc(MEMORY[0x29EDC78F8]) initWithAccessibilityContainer:self];
   v19 = accessibilityUIKitLocalizedString();
   [v62[0] setAccessibilityLabel:?];
   [v62[0] setAccessibilityIdentifier:{@"Minutes", MEMORY[0x29EDC9740](v19).n128_f64[0]}];
-  objc_initWeak(&location, v63);
+  objc_initWeak(&location, selfCopy);
   v20 = v62[0];
   v55 = MEMORY[0x29EDCA5F8];
   v56 = -1073741824;
@@ -287,13 +287,13 @@
   v39 = &unk_29F30C9E8;
   objc_copyWeak(&v40, &location);
   [v16 _setAccessibilityValueBlock:&v35];
-  v15 = v63;
-  [(_UIDatePickerCalendarTimeLabelAccessibility *)v63 safeCGRectForKey:@"minuteRect"];
+  v15 = selfCopy;
+  [(_UIDatePickerCalendarTimeLabelAccessibility *)selfCopy safeCGRectForKey:@"minuteRect"];
   v29 = v2;
   v30 = v3;
   v31 = v4;
   v32 = v5;
-  [(_UIDatePickerCalendarTimeLabelAccessibility *)v15 convertRect:v63 fromView:v2, v3, v4, v5];
+  [(_UIDatePickerCalendarTimeLabelAccessibility *)v15 convertRect:selfCopy fromView:v2, v3, v4, v5];
   *&v13 = v6;
   *(&v13 + 1) = v7;
   *&v14 = v8;
@@ -331,29 +331,29 @@
   if (location[0])
   {
     v4 = [location[0] safeUIViewForKey:@"timeLabel"];
-    v6 = [v4 accessibilityLabel];
+    accessibilityLabel = [v4 accessibilityLabel];
     MEMORY[0x29EDC9740](v4);
   }
 
   else
   {
-    v6 = accessibilityLocalizedString(@"calendar.time");
+    accessibilityLabel = accessibilityLocalizedString(@"calendar.time");
   }
 
   objc_storeStrong(location, 0);
-  v2 = v6;
+  v2 = accessibilityLabel;
 
   return v2;
 }
 
 - (CGRect)accessibilityFrame
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(_UIDatePickerCalendarTimeLabelAccessibility *)self _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Uidatepickerca_2.isa)];
   if (location[0])
   {
-    v22.receiver = v25;
+    v22.receiver = selfCopy;
     v22.super_class = _UIDatePickerCalendarTimeLabelAccessibility;
     [(_UIDatePickerCalendarTimeLabelAccessibility *)&v22 accessibilityFrame];
     v23.origin.x = v2;
@@ -372,7 +372,7 @@
 
   else
   {
-    v19.receiver = v25;
+    v19.receiver = selfCopy;
     v19.super_class = _UIDatePickerCalendarTimeLabelAccessibility;
     [(_UIDatePickerCalendarTimeLabelAccessibility *)&v19 accessibilityFrame];
     v26.origin.x = v10;
@@ -396,10 +396,10 @@
 
 - (id)_accessibilityInternalData
 {
-  v5 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v4 = [v5 _accessibilityValueForKey:@"AXInternalData"];
+    v4 = [selfCopy _accessibilityValueForKey:@"AXInternalData"];
     if (!v4)
     {
       v4 = objc_opt_new();
@@ -409,7 +409,7 @@
       v10 = 0;
       v3 = [MEMORY[0x29EDBA168] valueWithRange:{0, 0, MEMORY[0x29EDC9740](0).n128_f64[0]}];
       [v4 setValue:? forKey:?];
-      [v5 _accessibilitySetRetainedValue:v4 forKey:{@"AXInternalData", MEMORY[0x29EDC9740](v3).n128_f64[0]}];
+      [selfCopy _accessibilitySetRetainedValue:v4 forKey:{@"AXInternalData", MEMORY[0x29EDC9740](v3).n128_f64[0]}];
     }
 
     v6 = MEMORY[0x29EDC9748](v4);
@@ -428,148 +428,148 @@
 
 - (uint64_t)_accessibilityInternalSelectedTextRange
 {
-  v5 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v4 = [(_UIDatePickerCalendarTimeLabelAccessibility *)v5 _accessibilityInternalData];
-    v3 = [v4 objectForKey:@"AXInternalRange"];
-    v6 = [v3 rangeValue];
+    _accessibilityInternalData = [(_UIDatePickerCalendarTimeLabelAccessibility *)selfCopy _accessibilityInternalData];
+    v3 = [_accessibilityInternalData objectForKey:@"AXInternalRange"];
+    rangeValue = [v3 rangeValue];
     v7 = v1;
     objc_storeStrong(&v3, 0);
-    objc_storeStrong(&v4, 0);
+    objc_storeStrong(&_accessibilityInternalData, 0);
   }
 
   else
   {
-    v6 = 0;
+    rangeValue = 0;
     v7 = 0;
   }
 
-  return v6;
+  return rangeValue;
 }
 
-- (void)_accessibilitySetInternalSelectedTextRange:(uint64_t)a3
+- (void)_accessibilitySetInternalSelectedTextRange:(uint64_t)range
 {
   v7 = a2;
-  v8 = a3;
-  v6 = a1;
-  if (a1)
+  rangeCopy = range;
+  selfCopy = self;
+  if (self)
   {
-    v5 = [(_UIDatePickerCalendarTimeLabelAccessibility *)v6 _accessibilityInternalData];
-    v3 = v5;
-    v4 = [MEMORY[0x29EDBA168] valueWithRange:{v7, v8}];
+    _accessibilityInternalData = [(_UIDatePickerCalendarTimeLabelAccessibility *)selfCopy _accessibilityInternalData];
+    v3 = _accessibilityInternalData;
+    v4 = [MEMORY[0x29EDBA168] valueWithRange:{v7, rangeCopy}];
     [v3 setObject:? forKey:?];
     MEMORY[0x29EDC9740](v4);
-    objc_storeStrong(&v5, 0);
+    objc_storeStrong(&_accessibilityInternalData, 0);
   }
 }
 
 - (_NSRange)_accessibilitySelectedTextRange
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(_UIDatePickerCalendarTimeLabelAccessibility *)self safeStringForKey:@"text"];
   if ([location[0] length])
   {
-    v9 = [(_UIDatePickerCalendarTimeLabelAccessibility *)v8 _accessibilityInternalSelectedTextRange];
+    _accessibilityInternalSelectedTextRange = [(_UIDatePickerCalendarTimeLabelAccessibility *)selfCopy _accessibilityInternalSelectedTextRange];
   }
 
   else
   {
-    v5.receiver = v8;
+    v5.receiver = selfCopy;
     v5.super_class = _UIDatePickerCalendarTimeLabelAccessibility;
-    v9 = [(_UIDatePickerCalendarTimeLabelAccessibility *)&v5 _accessibilitySelectedTextRange];
+    _accessibilityInternalSelectedTextRange = [(_UIDatePickerCalendarTimeLabelAccessibility *)&v5 _accessibilitySelectedTextRange];
   }
 
   v10 = v2;
   v6 = 1;
   objc_storeStrong(location, 0);
-  v3 = v9;
+  v3 = _accessibilityInternalSelectedTextRange;
   v4 = v10;
   result.length = v4;
   result.location = v3;
   return result;
 }
 
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range
 {
-  v6 = a3;
-  v5 = self;
+  rangeCopy = range;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(_UIDatePickerCalendarTimeLabelAccessibility *)self safeStringForKey:@"text"];
   if ([location[0] length])
   {
-    [(_UIDatePickerCalendarTimeLabelAccessibility *)v5 _accessibilitySetInternalSelectedTextRange:v6.length];
+    [(_UIDatePickerCalendarTimeLabelAccessibility *)selfCopy _accessibilitySetInternalSelectedTextRange:rangeCopy.length];
     UIAccessibilityPostNotification(*MEMORY[0x29EDC74D0], 0);
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = _UIDatePickerCalendarTimeLabelAccessibility;
-  [(_UIDatePickerCalendarTimeLabelAccessibility *)&v3 _accessibilitySetSelectedTextRange:v6.location, v6.length];
+  [(_UIDatePickerCalendarTimeLabelAccessibility *)&v3 _accessibilitySetSelectedTextRange:rangeCopy.location, rangeCopy.length];
   objc_storeStrong(location, 0);
 }
 
-- (void)_accessibilityFocusChanged:(id)a3
+- (void)_accessibilityFocusChanged:(id)changed
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, changed);
   v6 = 0;
   v5 = 0;
   v7 = 0;
   v8 = 0;
-  [(_UIDatePickerCalendarTimeLabelAccessibility *)v4 _accessibilitySetInternalSelectedTextRange:0];
+  [(_UIDatePickerCalendarTimeLabelAccessibility *)selfCopy _accessibilitySetInternalSelectedTextRange:0];
   objc_storeStrong(location, 0);
 }
 
-- (_UIDatePickerCalendarTimeLabelAccessibility)initWithTimeFormat:(id)a3 minuteInterval:(int64_t)a4
+- (_UIDatePickerCalendarTimeLabelAccessibility)initWithTimeFormat:(id)format minuteInterval:(int64_t)interval
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10 = a4;
-  v4 = v12;
-  v12 = 0;
+  objc_storeStrong(location, format);
+  intervalCopy = interval;
+  v4 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v4;
   v9.super_class = _UIDatePickerCalendarTimeLabelAccessibility;
-  v12 = [(_UIDatePickerCalendarTimeLabelAccessibility *)&v9 initWithTimeFormat:location[0] minuteInterval:a4];
-  objc_storeStrong(&v12, v12);
-  if (v12)
+  selfCopy = [(_UIDatePickerCalendarTimeLabelAccessibility *)&v9 initWithTimeFormat:location[0] minuteInterval:interval];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    v7 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v7 addObserver:v12 selector:sel__accessibilityFocusChanged_ name:*MEMORY[0x29EDC7EB8] object:0];
-    MEMORY[0x29EDC9740](v7);
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:selfCopy selector:sel__accessibilityFocusChanged_ name:*MEMORY[0x29EDC7EB8] object:0];
+    MEMORY[0x29EDC9740](defaultCenter);
   }
 
-  v6 = MEMORY[0x29EDC9748](v12);
+  v6 = MEMORY[0x29EDC9748](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
 - (void)dealloc
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   [(_UIDatePickerCalendarTimeLabelAccessibility *)self _accessibilityRemoveValueForKey:@"AXInternalData"];
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:v6 name:*MEMORY[0x29EDC7EB8] object:0];
-  *&v2 = MEMORY[0x29EDC9740](v3).n128_u64[0];
-  v4.receiver = v6;
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:selfCopy name:*MEMORY[0x29EDC7EB8] object:0];
+  *&v2 = MEMORY[0x29EDC9740](defaultCenter).n128_u64[0];
+  v4.receiver = selfCopy;
   v4.super_class = _UIDatePickerCalendarTimeLabelAccessibility;
   [(_UIDatePickerCalendarTimeLabelAccessibility *)&v4 dealloc];
 }
 
 - (void)pushCurrentStateIntoUIAndNotify
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = _UIDatePickerCalendarTimeLabelAccessibility;
   [(_UIDatePickerCalendarTimeLabelAccessibility *)&v2 pushCurrentStateIntoUIAndNotify];
-  [(_UIDatePickerCalendarTimeLabelAccessibility *)v4 _accessibilityPostValueChangedNotificationWithChangeType:*MEMORY[0x29EDBDCE0]];
+  [(_UIDatePickerCalendarTimeLabelAccessibility *)selfCopy _accessibilityPostValueChangedNotificationWithChangeType:*MEMORY[0x29EDBDCE0]];
 }
 
 @end

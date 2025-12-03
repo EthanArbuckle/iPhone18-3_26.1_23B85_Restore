@@ -1,21 +1,21 @@
 @interface APDevicePipelinesHousekeepingAdapter
-+ (void)clearAttributionsFrom:(id)a3;
-+ (void)removeObsoleteAttributionDataFrom:(id)a3;
++ (void)clearAttributionsFrom:(id)from;
++ (void)removeObsoleteAttributionDataFrom:(id)from;
 - (APDevicePipelinesHousekeepingAdapter)init;
 @end
 
 @implementation APDevicePipelinesHousekeepingAdapter
 
-+ (void)removeObsoleteAttributionDataFrom:(id)a3
++ (void)removeObsoleteAttributionDataFrom:(id)from
 {
-  v3 = a3;
-  static DevicePipelinesHousekeeping.removeObsoleteAttributionData(from:)(v3);
+  fromCopy = from;
+  static DevicePipelinesHousekeeping.removeObsoleteAttributionData(from:)(fromCopy);
 }
 
-+ (void)clearAttributionsFrom:(id)a3
++ (void)clearAttributionsFrom:(id)from
 {
-  v3 = a3;
-  static DevicePipelinesHousekeeping.clearAttributionCache(from:)(v3);
+  fromCopy = from;
+  static DevicePipelinesHousekeeping.clearAttributionCache(from:)(fromCopy);
 }
 
 - (APDevicePipelinesHousekeepingAdapter)init

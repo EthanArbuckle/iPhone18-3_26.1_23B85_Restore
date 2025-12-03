@@ -1,8 +1,8 @@
 @interface VOTUIElementVisualizationViewController
 - (void)_updateFramesForView;
 - (void)didReceiveMemoryWarning;
-- (void)setElementFrames:(id)a3 labels:(id)a4 uiClasses:(id)a5;
-- (void)setFramesHidden:(BOOL)a3;
+- (void)setElementFrames:(id)frames labels:(id)labels uiClasses:(id)classes;
+- (void)setFramesHidden:(BOOL)hidden;
 - (void)viewDidLoad;
 @end
 
@@ -15,21 +15,21 @@
   [(VOTUIElementVisualizationViewController *)&v2 didReceiveMemoryWarning];
 }
 
-- (void)setElementFrames:(id)a3 labels:(id)a4 uiClasses:(id)a5
+- (void)setElementFrames:(id)frames labels:(id)labels uiClasses:(id)classes
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  framesCopy = frames;
+  labelsCopy = labels;
+  classesCopy = classes;
   frames = self->_frames;
-  self->_frames = v8;
-  v12 = v8;
+  self->_frames = framesCopy;
+  v12 = framesCopy;
 
   labels = self->_labels;
-  self->_labels = v9;
-  v14 = v9;
+  self->_labels = labelsCopy;
+  v14 = labelsCopy;
 
   uiClasses = self->_uiClasses;
-  self->_uiClasses = v10;
+  self->_uiClasses = classesCopy;
 
   [(VOTUIElementVisualizationViewController *)self _updateFramesForView];
 }
@@ -62,16 +62,16 @@
         y = v39.origin.y;
         width = v39.size.width;
         height = v39.size.height;
-        v13 = [(VOTUIElementVisualizationViewController *)self view];
-        v14 = [v13 window];
-        [v14 _convertRectFromSceneReferenceSpace:{x, y, width, height}];
+        view = [(VOTUIElementVisualizationViewController *)self view];
+        window = [view window];
+        [window _convertRectFromSceneReferenceSpace:{x, y, width, height}];
         v16 = v15;
         v18 = v17;
         v20 = v19;
         v22 = v21;
 
-        v23 = [(VOTUIElementVisualizationViewController *)self view];
-        [v23 convertRect:0 fromView:{v16, v18, v20, v22}];
+        view2 = [(VOTUIElementVisualizationViewController *)self view];
+        [view2 convertRect:0 fromView:{v16, v18, v20, v22}];
         v25 = v24;
         v27 = v26;
         v29 = v28;
@@ -94,8 +94,8 @@
     while (v6);
   }
 
-  v33 = [(VOTUIElementVisualizationViewController *)self view];
-  [v33 setElementFrames:v3 labels:self->_labels uiClasses:self->_uiClasses];
+  view3 = [(VOTUIElementVisualizationViewController *)self view];
+  [view3 setElementFrames:v3 labels:self->_labels uiClasses:self->_uiClasses];
 }
 
 - (void)viewDidLoad
@@ -108,11 +108,11 @@
   [(VOTUIElementVisualizationViewController *)&v4 viewDidLoad];
 }
 
-- (void)setFramesHidden:(BOOL)a3
+- (void)setFramesHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(VOTUIElementVisualizationViewController *)self view];
-  [v4 setHidden:v3];
+  hiddenCopy = hidden;
+  view = [(VOTUIElementVisualizationViewController *)self view];
+  [view setHidden:hiddenCopy];
 }
 
 @end

@@ -1,54 +1,54 @@
 @interface FrequentlyVisitedSitesController
 + (FrequentlyVisitedSitesController)sharedController;
-- (FrequentlyVisitedSitesController)initWithBookmarkCollection:(id)a3 history:(id)a4 bannedURLStore:(id)a5 tabCollection:(id)a6 profileIdentifier:(id)a7;
+- (FrequentlyVisitedSitesController)initWithBookmarkCollection:(id)collection history:(id)history bannedURLStore:(id)store tabCollection:(id)tabCollection profileIdentifier:(id)identifier;
 - (id)_canonicalizedFavoritesURLStringSet;
 - (id)_frequentlyVisitedSitesURLStringSet;
 - (id)frequentlyVisitedSites;
 - (void)_associateHistoryToFrequentlyVisitedSites;
-- (void)_deleteFrequentlyVisistedSiteInCurrentPofile:(id)a3;
-- (void)_historyWasLoaded:(id)a3;
-- (void)_saveFrequentlyVisitedSites:(id)a3 completionHandler:(id)a4;
-- (void)_updateCachedFrequentlyVisitedSitesIfNecessary:(id)a3;
-- (void)banFrequentlyVisitedSite:(id)a3 inMemoryBookmarkChangeTrackingAvailable:(BOOL)a4;
+- (void)_deleteFrequentlyVisistedSiteInCurrentPofile:(id)pofile;
+- (void)_historyWasLoaded:(id)loaded;
+- (void)_saveFrequentlyVisitedSites:(id)sites completionHandler:(id)handler;
+- (void)_updateCachedFrequentlyVisitedSitesIfNecessary:(id)necessary;
+- (void)banFrequentlyVisitedSite:(id)site inMemoryBookmarkChangeTrackingAvailable:(BOOL)available;
 - (void)clearFrequentlyVisitedSites;
 - (void)dealloc;
-- (void)openNewRadarProblemURLForFrequentlyVisitedSite:(id)a3;
-- (void)promoteFrequentlyVisitedSite:(id)a3 toFavoriteAtIndex:(unint64_t)a4;
-- (void)saveFrequentlyVisitedSitesToBookmarksDBWithCompletion:(id)a3;
+- (void)openNewRadarProblemURLForFrequentlyVisitedSite:(id)site;
+- (void)promoteFrequentlyVisitedSite:(id)site toFavoriteAtIndex:(unint64_t)index;
+- (void)saveFrequentlyVisitedSitesToBookmarksDBWithCompletion:(id)completion;
 @end
 
 @implementation FrequentlyVisitedSitesController
 
 + (FrequentlyVisitedSitesController)sharedController
 {
-  v2 = [NSClassFromString(@"Application") sharedApplication];
-  v3 = [v2 historyController];
+  nSClassFromString(@"Application") = [NSClassFromString(@"Application") sharedApplication];
+  historyController = [nSClassFromString(@"Application") historyController];
 
-  v4 = [v3 frequentlyVisitedSitesControllerForProfileIdentifier:WBSDefaultProfileIdentifier loadIfNeeded:1];
+  v4 = [historyController frequentlyVisitedSitesControllerForProfileIdentifier:WBSDefaultProfileIdentifier loadIfNeeded:1];
 
   return v4;
 }
 
-- (FrequentlyVisitedSitesController)initWithBookmarkCollection:(id)a3 history:(id)a4 bannedURLStore:(id)a5 tabCollection:(id)a6 profileIdentifier:(id)a7
+- (FrequentlyVisitedSitesController)initWithBookmarkCollection:(id)collection history:(id)history bannedURLStore:(id)store tabCollection:(id)tabCollection profileIdentifier:(id)identifier
 {
-  v13 = a3;
-  v14 = a6;
+  collectionCopy = collection;
+  tabCollectionCopy = tabCollection;
   v25.receiver = self;
   v25.super_class = FrequentlyVisitedSitesController;
-  v15 = [(FrequentlyVisitedSitesController *)&v25 initWithHistory:a4 bannedURLStore:a5 profileIdentifier:a7];
+  v15 = [(FrequentlyVisitedSitesController *)&v25 initWithHistory:history bannedURLStore:store profileIdentifier:identifier];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_bookmarkCollection, a3);
-    objc_storeStrong(&v16->_tabCollection, a6);
+    objc_storeStrong(&v15->_bookmarkCollection, collection);
+    objc_storeStrong(&v16->_tabCollection, tabCollection);
     if ([*&v16->WBSFrequentlyVisitedSitesController_opaque[OBJC_IVAR___WBSFrequentlyVisitedSitesController__profileIdentifier] isEqualToString:WBSDefaultProfileIdentifier])
     {
-      v17 = [(WebBookmarkCollection *)v16->_bookmarkCollection frequentlyVisitedSitesList];
-      v18 = v17;
-      if (v17)
+      frequentlyVisitedSitesList = [(WebBookmarkCollection *)v16->_bookmarkCollection frequentlyVisitedSitesList];
+      v18 = frequentlyVisitedSitesList;
+      if (frequentlyVisitedSitesList)
       {
-        v19 = [v17 bookmarkArray];
-        v20 = [v19 mutableCopy];
+        bookmarkArray = [frequentlyVisitedSitesList bookmarkArray];
+        v20 = [bookmarkArray mutableCopy];
         cachedFrequentlyVisitedBookmarks = v16->_cachedFrequentlyVisitedBookmarks;
         v16->_cachedFrequentlyVisitedBookmarks = v20;
 
@@ -108,19 +108,19 @@ void __43__FrequentlyVisitedSitesController_dealloc__block_invoke(uint64_t a1, v
   return cachedFrequentlyVisitedBookmarks;
 }
 
-- (void)_updateCachedFrequentlyVisitedSitesIfNecessary:(id)a3
+- (void)_updateCachedFrequentlyVisitedSitesIfNecessary:(id)necessary
 {
-  if (a3)
+  if (necessary)
   {
-    v4 = a3;
+    necessaryCopy = necessary;
   }
 
   else
   {
-    v4 = &__block_literal_global_4;
+    necessaryCopy = &__block_literal_global_4;
   }
 
-  v5 = objc_retainBlock(v4);
+  v5 = objc_retainBlock(necessaryCopy);
   v6 = v5;
   if (self->_cachedFrequentlyVisitedBookmarks)
   {
@@ -192,66 +192,66 @@ id __83__FrequentlyVisitedSitesController__updateCachedFrequentlyVisitedSitesIfN
   [(FrequentlyVisitedSitesController *)&v4 clearFrequentlyVisitedSites];
 }
 
-- (void)promoteFrequentlyVisitedSite:(id)a3 toFavoriteAtIndex:(unint64_t)a4
+- (void)promoteFrequentlyVisitedSite:(id)site toFavoriteAtIndex:(unint64_t)index
 {
-  v6 = a3;
+  siteCopy = site;
   v7 = [WebBookmark alloc];
-  v8 = [v6 title];
-  v9 = [v6 address];
-  v10 = [(WebBookmarkCollection *)self->_bookmarkCollection configuration];
-  v14 = [v7 initWithTitle:v8 address:v9 collectionType:{objc_msgSend(v10, "collectionType")}];
+  title = [siteCopy title];
+  address = [siteCopy address];
+  configuration = [(WebBookmarkCollection *)self->_bookmarkCollection configuration];
+  v14 = [v7 initWithTitle:title address:address collectionType:{objc_msgSend(configuration, "collectionType")}];
 
-  v11 = [v6 iconData];
-  [v14 setIconData:v11];
+  iconData = [siteCopy iconData];
+  [v14 setIconData:iconData];
 
-  [v14 setFetchedIconData:{objc_msgSend(v6, "fetchedIconData")}];
-  [(FrequentlyVisitedSitesController *)self _deleteFrequentlyVisistedSiteInCurrentPofile:v6];
+  [v14 setFetchedIconData:{objc_msgSend(siteCopy, "fetchedIconData")}];
+  [(FrequentlyVisitedSitesController *)self _deleteFrequentlyVisistedSiteInCurrentPofile:siteCopy];
   bookmarkCollection = self->_bookmarkCollection;
-  v13 = [(WebBookmarkCollection *)bookmarkCollection favoritesFolder];
-  -[WebBookmarkCollection moveBookmark:toFolderWithID:](bookmarkCollection, "moveBookmark:toFolderWithID:", v14, [v13 identifier]);
+  favoritesFolder = [(WebBookmarkCollection *)bookmarkCollection favoritesFolder];
+  -[WebBookmarkCollection moveBookmark:toFolderWithID:](bookmarkCollection, "moveBookmark:toFolderWithID:", v14, [favoritesFolder identifier]);
 
   [(WebBookmarkCollection *)self->_bookmarkCollection saveBookmark:v14];
-  [(WebBookmarkCollection *)self->_bookmarkCollection reorderBookmark:v14 toIndex:a4];
-  LOBYTE(a4) = [v6 isInserted];
+  [(WebBookmarkCollection *)self->_bookmarkCollection reorderBookmark:v14 toIndex:index];
+  LOBYTE(index) = [siteCopy isInserted];
 
-  if ((a4 & 1) == 0)
+  if ((index & 1) == 0)
   {
     [(FrequentlyVisitedSitesController *)self _postFrequentlyVisitedSitesDidChangeNotification];
   }
 }
 
-- (void)_deleteFrequentlyVisistedSiteInCurrentPofile:(id)a3
+- (void)_deleteFrequentlyVisistedSiteInCurrentPofile:(id)pofile
 {
-  [(NSMutableArray *)self->_cachedFrequentlyVisitedBookmarks removeObject:a3];
+  [(NSMutableArray *)self->_cachedFrequentlyVisitedBookmarks removeObject:pofile];
   [(WBTabCollection *)self->_tabCollection setFrequentlyVisitedSites:self->_cachedFrequentlyVisitedBookmarks forProfileWithIdentifier:*&self->WBSFrequentlyVisitedSitesController_opaque[OBJC_IVAR___WBSFrequentlyVisitedSitesController__profileIdentifier] completionHandler:0];
 
   [(FrequentlyVisitedSitesController *)self _postFrequentlyVisitedSitesDidChangeNotification];
 }
 
-- (void)banFrequentlyVisitedSite:(id)a3 inMemoryBookmarkChangeTrackingAvailable:(BOOL)a4
+- (void)banFrequentlyVisitedSite:(id)site inMemoryBookmarkChangeTrackingAvailable:(BOOL)available
 {
   v5 = *&self->WBSFrequentlyVisitedSitesController_opaque[OBJC_IVAR___WBSFrequentlyVisitedSitesController__bannedURLStore];
-  v7 = a3;
-  v6 = [v7 address];
-  [v5 addURLString:v6];
+  siteCopy = site;
+  address = [siteCopy address];
+  [v5 addURLString:address];
 
-  [(FrequentlyVisitedSitesController *)self _deleteFrequentlyVisistedSiteInCurrentPofile:v7];
+  [(FrequentlyVisitedSitesController *)self _deleteFrequentlyVisistedSiteInCurrentPofile:siteCopy];
 }
 
 - (id)_canonicalizedFavoritesURLStringSet
 {
-  v2 = [(WebBookmarkCollection *)self->_bookmarkCollection bookmarksInFavoritesList];
-  v3 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v2, "count")}];
+  bookmarksInFavoritesList = [(WebBookmarkCollection *)self->_bookmarkCollection bookmarksInFavoritesList];
+  v3 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(bookmarksInFavoritesList, "count")}];
   v4 = +[WBSTrialManager shared];
-  v5 = [v4 isAllowFavoritesInFrequentlyVisitedEnabled];
+  isAllowFavoritesInFrequentlyVisitedEnabled = [v4 isAllowFavoritesInFrequentlyVisitedEnabled];
 
-  if ((v5 & 1) == 0)
+  if ((isAllowFavoritesInFrequentlyVisitedEnabled & 1) == 0)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v2;
+    v6 = bookmarksInFavoritesList;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -266,12 +266,12 @@ id __83__FrequentlyVisitedSitesController__updateCachedFrequentlyVisitedSitesIfN
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * i) address];
-          v12 = [v11 safari_canonicalURLStringForFrequentlyVisitedSites];
+          address = [*(*(&v14 + 1) + 8 * i) address];
+          safari_canonicalURLStringForFrequentlyVisitedSites = [address safari_canonicalURLStringForFrequentlyVisitedSites];
 
-          if ([v12 length])
+          if ([safari_canonicalURLStringForFrequentlyVisitedSites length])
           {
-            [v3 addObject:v12];
+            [v3 addObject:safari_canonicalURLStringForFrequentlyVisitedSites];
           }
         }
 
@@ -287,16 +287,16 @@ id __83__FrequentlyVisitedSitesController__updateCachedFrequentlyVisitedSitesIfN
 
 - (id)_frequentlyVisitedSitesURLStringSet
 {
-  v2 = [(FrequentlyVisitedSitesController *)self frequentlyVisitedSites];
-  v3 = [v2 safari_setByApplyingBlock:&__block_literal_global_17];
+  frequentlyVisitedSites = [(FrequentlyVisitedSitesController *)self frequentlyVisitedSites];
+  v3 = [frequentlyVisitedSites safari_setByApplyingBlock:&__block_literal_global_17];
 
   return v3;
 }
 
-- (void)saveFrequentlyVisitedSitesToBookmarksDBWithCompletion:(id)a3
+- (void)saveFrequentlyVisitedSitesToBookmarksDBWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_bookmarksNeedToSave)
   {
     tabCollection = self->_tabCollection;
@@ -306,32 +306,32 @@ id __83__FrequentlyVisitedSitesController__updateCachedFrequentlyVisitedSitesIfN
     v9[1] = 3221225472;
     v9[2] = __90__FrequentlyVisitedSitesController_saveFrequentlyVisitedSitesToBookmarksDBWithCompletion___block_invoke;
     v9[3] = &unk_89DF8;
-    v10 = v4;
+    v10 = completionCopy;
     [(WBTabCollection *)tabCollection setFrequentlyVisitedSites:cachedFrequentlyVisitedBookmarks forProfileWithIdentifier:v8 completionHandler:v9];
     self->_bookmarksNeedToSave = 0;
   }
 
   else
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)_saveFrequentlyVisitedSites:(id)a3 completionHandler:(id)a4
+- (void)_saveFrequentlyVisitedSites:(id)sites completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  sitesCopy = sites;
+  handlerCopy = handler;
   v8 = [(WBTabCollection *)self->_tabCollection frequentlyVisitedSitesFolderIDForProfileWithIdentifier:*&self->WBSFrequentlyVisitedSitesController_opaque[OBJC_IVAR___WBSFrequentlyVisitedSitesController__profileIdentifier]];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __82__FrequentlyVisitedSitesController__saveFrequentlyVisitedSites_completionHandler___block_invoke;
   v11[3] = &unk_89E20;
-  v12 = v6;
-  v13 = self;
+  v12 = sitesCopy;
+  selfCopy = self;
   v15 = v8;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = sitesCopy;
   dispatch_async(&_dispatch_main_q, v11);
 }
 
@@ -447,7 +447,7 @@ void __82__FrequentlyVisitedSitesController__saveFrequentlyVisitedSites_completi
   (*(*(v10 + 48) + 16))();
 }
 
-- (void)_historyWasLoaded:(id)a3
+- (void)_historyWasLoaded:(id)loaded
 {
   [(FrequentlyVisitedSitesController *)self _associateHistoryToFrequentlyVisitedSites];
 
@@ -475,15 +475,15 @@ void __77__FrequentlyVisitedSitesController__associateHistoryToFrequentlyVisited
   [v3 setHistoryItem:v5];
 }
 
-- (void)openNewRadarProblemURLForFrequentlyVisitedSite:(id)a3
+- (void)openNewRadarProblemURLForFrequentlyVisitedSite:(id)site
 {
-  v4 = [a3 address];
+  address = [site address];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = __83__FrequentlyVisitedSitesController_openNewRadarProblemURLForFrequentlyVisitedSite___block_invoke;
   v5[3] = &unk_89E48;
   v5[4] = self;
-  [(FrequentlyVisitedSitesController *)self descriptionOfAllFrequentlyVisitedSitesForProblematicSiteURLString:v4 completionHandler:v5];
+  [(FrequentlyVisitedSitesController *)self descriptionOfAllFrequentlyVisitedSitesForProblematicSiteURLString:address completionHandler:v5];
 }
 
 void __83__FrequentlyVisitedSitesController_openNewRadarProblemURLForFrequentlyVisitedSite___block_invoke(uint64_t a1, void *a2, void *a3)

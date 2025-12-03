@@ -1,26 +1,26 @@
 @interface ICReachability
 + (id)reachabilityForInternetConnection;
 + (id)reachabilityForLocalWiFi;
-+ (id)reachabilityWithAddress:(const sockaddr_in *)a3;
-+ (id)reachabilityWithHostName:(id)a3;
++ (id)reachabilityWithAddress:(const sockaddr_in *)address;
++ (id)reachabilityWithHostName:(id)name;
 + (id)sharedReachabilityForInternetConnection;
 - (BOOL)startNotifier;
 - (int64_t)currentReachabilityStatus;
-- (int64_t)networkStatusForFlags:(unsigned int)a3;
+- (int64_t)networkStatusForFlags:(unsigned int)flags;
 - (void)dealloc;
 - (void)stopNotifier;
 @end
 
 @implementation ICReachability
 
-+ (id)reachabilityWithHostName:(id)a3
++ (id)reachabilityWithHostName:(id)name
 {
-  v5 = a3;
-  v6 = SCNetworkReachabilityCreateWithName(0, [a3 UTF8String]);
+  nameCopy = name;
+  v6 = SCNetworkReachabilityCreateWithName(0, [name UTF8String]);
   if (v6)
   {
     v7 = v6;
-    v8 = objc_alloc_init(a1);
+    v8 = objc_alloc_init(self);
     if (v8)
     {
       v8[2] = CFRetain(v7);
@@ -38,13 +38,13 @@
   return v8;
 }
 
-+ (id)reachabilityWithAddress:(const sockaddr_in *)a3
++ (id)reachabilityWithAddress:(const sockaddr_in *)address
 {
-  v4 = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, a3);
+  v4 = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, address);
   if (v4)
   {
     v5 = v4;
-    v6 = objc_alloc_init(a1);
+    v6 = objc_alloc_init(self);
     if (v6)
     {
       v6[2] = CFRetain(v5);
@@ -66,7 +66,7 @@
 {
   v4[1] = 0;
   v4[0] = 528;
-  v2 = [a1 reachabilityWithAddress:v4];
+  v2 = [self reachabilityWithAddress:v4];
 
   return v2;
 }
@@ -90,7 +90,7 @@
 {
   v4[1] = 0;
   v4[0] = 0xFEA900000210;
-  v2 = [a1 reachabilityWithAddress:v4];
+  v2 = [self reachabilityWithAddress:v4];
   if (v2)
   {
     v2[8] = 1;
@@ -141,20 +141,20 @@
   [(ICReachability *)&v4 dealloc];
 }
 
-- (int64_t)networkStatusForFlags:(unsigned int)a3
+- (int64_t)networkStatusForFlags:(unsigned int)flags
 {
-  if ((a3 & 2) == 0)
+  if ((flags & 2) == 0)
   {
     return 0;
   }
 
-  LODWORD(v4) = (a3 & 0x28) != 0;
-  if ((a3 & 0x10) != 0)
+  LODWORD(v4) = (flags & 0x28) != 0;
+  if ((flags & 0x10) != 0)
   {
     LODWORD(v4) = 0;
   }
 
-  if ((a3 & 4) != 0)
+  if ((flags & 4) != 0)
   {
     v4 = v4;
   }
@@ -164,7 +164,7 @@
     v4 = 1;
   }
 
-  if ((a3 & 0x40000) != 0)
+  if ((flags & 0x40000) != 0)
   {
     return 2;
   }

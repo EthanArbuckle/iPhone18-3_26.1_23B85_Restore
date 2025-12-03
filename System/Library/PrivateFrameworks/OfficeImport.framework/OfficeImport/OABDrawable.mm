@@ -1,21 +1,21 @@
 @interface OABDrawable
-+ (id)readDrawableFromObject:(id)a3 state:(id)a4;
-+ (id)readDrawableFromZipPackageData:(const CsData *)a3 foundInObject:(id)a4 state:(id)a5;
-+ (id)readDrawablesFromContainer:(id)a3 state:(id)a4;
-+ (void)setUpXmlDrawingState:(id)a3 withBinaryReaderState:(id)a4 targetDocument:(id)a5 colorMap:(id)a6;
++ (id)readDrawableFromObject:(id)object state:(id)state;
++ (id)readDrawableFromZipPackageData:(const CsData *)data foundInObject:(id)object state:(id)state;
++ (id)readDrawablesFromContainer:(id)container state:(id)state;
++ (void)setUpXmlDrawingState:(id)state withBinaryReaderState:(id)readerState targetDocument:(id)document colorMap:(id)map;
 @end
 
 @implementation OABDrawable
 
-+ (id)readDrawableFromObject:(id)a3 state:(id)a4
++ (id)readDrawableFromObject:(id)object state:(id)state
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 eshObject];
-  v8 = (*(*v7 + 16))(v7);
+  objectCopy = object;
+  stateCopy = state;
+  eshObject = [objectCopy eshObject];
+  v8 = (*(*eshObject + 16))(eshObject);
   if (v8 == 7)
   {
-    v15 = [OABShape readShape:v5 state:v6];
+    v15 = [OABShape readShape:objectCopy state:stateCopy];
 LABEL_13:
     v14 = v15;
     goto LABEL_14;
@@ -27,18 +27,18 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (![objc_msgSend(v6 "client")])
+  if (![objc_msgSend(stateCopy "client")])
   {
 LABEL_12:
-    v15 = [OABGroup readGroup:v5 state:v6];
+    v15 = [OABGroup readGroup:objectCopy state:stateCopy];
     goto LABEL_13;
   }
 
   v9 = objc_opt_class();
-  v10 = TSUDynamicCast(v9, v5);
-  v11 = [v10 eshGroup];
-  v12 = v11;
-  if (!v11 || !EshGroupProperties::isTablePropertiesSet((v11 + 288)))
+  v10 = TSUDynamicCast(v9, objectCopy);
+  eshGroup = [v10 eshGroup];
+  v12 = eshGroup;
+  if (!eshGroup || !EshGroupProperties::isTablePropertiesSet((eshGroup + 288)))
   {
 
     goto LABEL_12;
@@ -51,7 +51,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v14 = [OABTable readTable:v5 state:v6];
+  v14 = [OABTable readTable:objectCopy state:stateCopy];
   if (!v14)
   {
     goto LABEL_12;
@@ -62,65 +62,65 @@ LABEL_14:
   return v14;
 }
 
-+ (id)readDrawablesFromContainer:(id)a3 state:(id)a4
++ (id)readDrawablesFromContainer:(id)container state:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [v6 childCount];
-  if (v9)
+  containerCopy = container;
+  stateCopy = state;
+  array = [MEMORY[0x277CBEB18] array];
+  childCount = [containerCopy childCount];
+  if (childCount)
   {
-    for (i = 0; i != v9; ++i)
+    for (i = 0; i != childCount; ++i)
     {
-      v11 = [v6 childAt:i];
-      v12 = [a1 readDrawableFromObject:v11 state:v7];
+      v11 = [containerCopy childAt:i];
+      v12 = [self readDrawableFromObject:v11 state:stateCopy];
 
       if (v12)
       {
-        [v8 addObject:v12];
+        [array addObject:v12];
       }
     }
   }
 
-  return v8;
+  return array;
 }
 
-+ (void)setUpXmlDrawingState:(id)a3 withBinaryReaderState:(id)a4 targetDocument:(id)a5 colorMap:(id)a6
++ (void)setUpXmlDrawingState:(id)state withBinaryReaderState:(id)readerState targetDocument:(id)document colorMap:(id)map
 {
-  v21 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v10 theme];
-  v13 = [v12 baseStyles];
-  v14 = [v13 styleMatrix];
-  [v21 setStyleMatrix:v14];
+  stateCopy = state;
+  readerStateCopy = readerState;
+  documentCopy = document;
+  mapCopy = map;
+  theme = [documentCopy theme];
+  baseStyles = [theme baseStyles];
+  styleMatrix = [baseStyles styleMatrix];
+  [stateCopy setStyleMatrix:styleMatrix];
 
-  v15 = [v12 baseStyles];
-  v16 = [v15 colorScheme];
-  [v21 setColorScheme:v16];
+  baseStyles2 = [theme baseStyles];
+  colorScheme = [baseStyles2 colorScheme];
+  [stateCopy setColorScheme:colorScheme];
 
-  [v21 setColorMap:v11];
-  v17 = [v12 baseStyles];
-  v18 = [v17 fontScheme];
-  [v21 setFontScheme:v18];
+  [stateCopy setColorMap:mapCopy];
+  baseStyles3 = [theme baseStyles];
+  fontScheme = [baseStyles3 fontScheme];
+  [stateCopy setFontScheme:fontScheme];
 
-  v19 = [v10 blips];
-  [v21 setTargetBlipCollection:v19];
+  blips = [documentCopy blips];
+  [stateCopy setTargetBlipCollection:blips];
 
-  v20 = [v9 groupStackReference];
-  [v21 replaceGroupStack:v20];
+  groupStackReference = [readerStateCopy groupStackReference];
+  [stateCopy replaceGroupStack:groupStackReference];
 }
 
-+ (id)readDrawableFromZipPackageData:(const CsData *)a3 foundInObject:(id)a4 state:(id)a5
++ (id)readDrawableFromZipPackageData:(const CsData *)data foundInObject:(id)object state:(id)state
 {
   v29[5] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 useXmlBlobs];
-  if (a3)
+  objectCopy = object;
+  stateCopy = state;
+  useXmlBlobs = [stateCopy useXmlBlobs];
+  if (data)
   {
-    v10 = v9;
+    v10 = useXmlBlobs;
   }
 
   else
@@ -128,7 +128,7 @@ LABEL_14:
     v10 = 0;
   }
 
-  if ((v10 & 1) != 0 && a3->var1 && (OCPNewZipPackageWithCsData(a3), (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+  if ((v10 & 1) != 0 && data->var1 && (OCPNewZipPackageWithCsData(data), (v11 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v29[0] = @"http://schemas.microsoft.com/office/2006/relationships/shapeXml";
     v29[1] = @"http://schemas.microsoft.com/office/2006/relationships/connectorXml";
@@ -159,14 +159,14 @@ LABEL_14:
           {
             objc_opt_class();
             v21 = [v11 partByRelationshipType:v16];
-            v22 = [objc_msgSend(v8 "client")];
+            v22 = [objc_msgSend(stateCopy "client")];
             v18 = v22;
             if (v22)
             {
               [v22 setAltId:{objc_msgSend(v22, "id")}];
-              v23 = [v7 shapeID];
-              [v18 setId:v23];
-              [v8 setDrawable:v18 forShapeId:v23];
+              shapeID = [objectCopy shapeID];
+              [v18 setId:shapeID];
+              [stateCopy setDrawable:v18 forShapeId:shapeID];
             }
 
             goto LABEL_23;

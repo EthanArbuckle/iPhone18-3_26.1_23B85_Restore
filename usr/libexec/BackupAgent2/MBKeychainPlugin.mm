@@ -1,22 +1,22 @@
 @interface MBKeychainPlugin
-+ (BOOL)_exportKeychainForCKBackupEngine:(id)a3 error:(id *)a4;
-+ (BOOL)exportKeychainForCKBackupEngine:(id)a3 error:(id *)a4;
++ (BOOL)_exportKeychainForCKBackupEngine:(id)engine error:(id *)error;
++ (BOOL)exportKeychainForCKBackupEngine:(id)engine error:(id *)error;
 + (void)removeServiceKeychainBackup;
-- (id)_endingRestoreWithDriveEngine:(id)a3;
-- (id)_preparingBackupWithCKEngine:(id)a3;
-- (id)_preparingBackupWithDriveEngine:(id)a3;
-- (id)endingBackupWithEngine:(id)a3;
-- (id)endingRestoreWithPolicy:(id)a3 engine:(id)a4;
-- (id)preparingBackupWithEngine:(id)a3;
-- (void)_endingRestoreWithServicePolicy:(id)a3 engine:(id)a4;
-- (void)_restoreKeychainBackupAtPath:(id)a3 withEngine:(id)a4;
+- (id)_endingRestoreWithDriveEngine:(id)engine;
+- (id)_preparingBackupWithCKEngine:(id)engine;
+- (id)_preparingBackupWithDriveEngine:(id)engine;
+- (id)endingBackupWithEngine:(id)engine;
+- (id)endingRestoreWithPolicy:(id)policy engine:(id)engine;
+- (id)preparingBackupWithEngine:(id)engine;
+- (void)_endingRestoreWithServicePolicy:(id)policy engine:(id)engine;
+- (void)_restoreKeychainBackupAtPath:(id)path withEngine:(id)engine;
 @end
 
 @implementation MBKeychainPlugin
 
-- (id)_preparingBackupWithDriveEngine:(id)a3
+- (id)_preparingBackupWithDriveEngine:(id)engine
 {
-  v3 = a3;
+  engineCopy = engine;
   v4 = objc_autoreleasePoolPush();
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -28,10 +28,10 @@
     _MBLog();
   }
 
-  v6 = [v3 settingsContext];
-  v7 = [v6 keybag];
+  settingsContext = [engineCopy settingsContext];
+  keybag = [settingsContext keybag];
   v21 = 0;
-  v8 = [v7 dataWithError:&v21];
+  v8 = [keybag dataWithError:&v21];
   v9 = v21;
 
   if (v8)
@@ -115,9 +115,9 @@ LABEL_18:
   return v9;
 }
 
-- (id)_preparingBackupWithCKEngine:(id)a3
+- (id)_preparingBackupWithCKEngine:(id)engine
 {
-  v3 = a3;
+  engineCopy = engine;
   v4 = objc_opt_class();
   Name = class_getName(v4);
   v6 = dispatch_queue_create(Name, 0);
@@ -132,7 +132,7 @@ LABEL_18:
   block[1] = 3221225472;
   block[2] = sub_10003E8EC;
   block[3] = &unk_1000FDB78;
-  v8 = v3;
+  v8 = engineCopy;
   v24 = v8;
   v26 = &v27;
   v9 = v7;
@@ -198,9 +198,9 @@ LABEL_16:
   return v20;
 }
 
-+ (BOOL)_exportKeychainForCKBackupEngine:(id)a3 error:(id *)a4
++ (BOOL)_exportKeychainForCKBackupEngine:(id)engine error:(id *)error
 {
-  v5 = a3;
+  engineCopy = engine;
   v6 = +[NSFileManager defaultManager];
   v57 = 0;
   v7 = [v6 attributesOfItemAtPath:@"/var/Keychains/keychain-2.db-wal" error:&v57];
@@ -214,16 +214,16 @@ LABEL_16:
 
     if (v10)
     {
-      v12 = [v10 fileModificationDate];
-      v13 = [v7 fileModificationDate];
-      [v12 timeIntervalSinceReferenceDate];
+      fileModificationDate = [v10 fileModificationDate];
+      fileModificationDate2 = [v7 fileModificationDate];
+      [fileModificationDate timeIntervalSinceReferenceDate];
       v15 = v14 * 1000.0;
-      [v13 timeIntervalSinceReferenceDate];
+      [fileModificationDate2 timeIntervalSinceReferenceDate];
       v17 = v16 * 1000.0;
       if (v15 > 1.84467441e19 || v17 > 1.84467441e19)
       {
-        v21 = [v12 isEqualToDate:v13, v17]^ 1;
-        if (!v5)
+        v21 = [fileModificationDate isEqualToDate:fileModificationDate2, v17]^ 1;
+        if (!engineCopy)
         {
           goto LABEL_16;
         }
@@ -232,7 +232,7 @@ LABEL_16:
       else
       {
         v21 = *&v15 != *&v17;
-        if (!v5)
+        if (!engineCopy)
         {
 LABEL_16:
           if (v21)
@@ -241,10 +241,10 @@ LABEL_16:
             [v22 keychainExportFrequency];
             v24 = v23;
 
-            [v13 timeIntervalSinceDate:v12];
+            [fileModificationDate2 timeIntervalSinceDate:fileModificationDate];
             v26 = v25;
             v27 = +[NSDate now];
-            [v27 timeIntervalSinceDate:v13];
+            [v27 timeIntervalSinceDate:fileModificationDate2];
             v29 = v28;
 
             if (v29 >= 0.0 && v29 < v24 && v26 >= 0.0 && v26 < v24)
@@ -253,11 +253,11 @@ LABEL_16:
               if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
               {
                 *buf = 138413058;
-                v61 = v12;
+                v61 = fileModificationDate;
                 v62 = 2048;
                 v63 = v26;
                 v64 = 2112;
-                v65 = v13;
+                v65 = fileModificationDate2;
                 v66 = 2048;
                 v67 = v29;
                 _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_INFO, "Not exporting keychain database during unlock - last export:%@ (%.2fs) last modified:%@ (%.2fs)", buf, 0x2Au);
@@ -284,17 +284,17 @@ LABEL_64:
       v30 = MBGetDefaultLog();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
-        [v12 timeIntervalSince1970];
+        [fileModificationDate timeIntervalSince1970];
         v32 = v31;
-        [v13 timeIntervalSince1970];
+        [fileModificationDate2 timeIntervalSince1970];
         *buf = 134218240;
         v61 = v32;
         v62 = 2048;
         v63 = v33;
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "Keychain database was modified since the last export (%.6f, %.6f)", buf, 0x16u);
-        [v12 timeIntervalSince1970];
+        [fileModificationDate timeIntervalSince1970];
         v35 = v34;
-        [v13 timeIntervalSince1970];
+        [fileModificationDate2 timeIntervalSince1970];
         v50 = v35;
         v51 = v36;
         _MBLog();
@@ -309,7 +309,7 @@ LABEL_36:
 
         if (v40)
         {
-          if (v5)
+          if (engineCopy)
           {
             v42 = open_dprotected_np([@"/var/Keychains/keychain-ota-backup.plist" fileSystemRepresentation], 0, 1, 0, 256);
             if (v42 < 0)
@@ -331,7 +331,7 @@ LABEL_36:
               {
                 v44 = [NSData mb_dataFromHexadecimalString:v43];
                 v45 = [v44 base64EncodedStringWithOptions:0];
-                if (([v5 checkIfBackupHasKeybagWithUUID:v45] & 1) == 0)
+                if (([engineCopy checkIfBackupHasKeybagWithUUID:v45] & 1) == 0)
                 {
                   log = MBGetDefaultLog();
                   if (os_log_type_enabled(log, OS_LOG_TYPE_FAULT))
@@ -366,8 +366,8 @@ LABEL_36:
           }
 
           v58 = NSFileModificationDate;
-          v47 = [v7 fileModificationDate];
-          v59 = v47;
+          fileModificationDate3 = [v7 fileModificationDate];
+          v59 = fileModificationDate3;
           v48 = [NSDictionary dictionaryWithObjects:&v59 forKeys:&v58 count:1];
 
           v53 = v41;
@@ -377,20 +377,20 @@ LABEL_36:
           if ((v19 & 1) == 0)
           {
             [v6 removeItemAtPath:@"/var/Keychains/keychain-ota-backup.plist" error:0];
-            if (a4)
+            if (error)
             {
-              *a4 = [MBError errorWithCode:100 error:v11 path:@"/var/Keychains/keychain-ota-backup.plist" format:@"Error setting keychain backup modification date"];
+              *error = [MBError errorWithCode:100 error:v11 path:@"/var/Keychains/keychain-ota-backup.plist" format:@"Error setting keychain backup modification date"];
             }
           }
         }
 
         else
         {
-          if (a4)
+          if (error)
           {
             v46 = v41;
             v19 = 0;
-            *a4 = v41;
+            *error = v41;
           }
 
           else
@@ -404,7 +404,7 @@ LABEL_36:
         goto LABEL_64;
       }
 
-      if (a4)
+      if (error)
       {
         v37 = [MBError errorWithCode:208 format:@"Can't export modified keychain because the device is locked"];
         goto LABEL_39;
@@ -413,8 +413,8 @@ LABEL_36:
       goto LABEL_49;
     }
 
-    v20 = [v11 domain];
-    if ([v20 isEqualToString:NSCocoaErrorDomain])
+    domain = [v11 domain];
+    if ([domain isEqualToString:NSCocoaErrorDomain])
     {
       if ([v11 code] == 4)
       {
@@ -422,16 +422,16 @@ LABEL_36:
         goto LABEL_34;
       }
 
-      v39 = [v11 code];
+      code = [v11 code];
 
-      if (v39 == 260)
+      if (code == 260)
       {
 LABEL_34:
-        v12 = MBGetDefaultLog();
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+        fileModificationDate = MBGetDefaultLog();
+        if (os_log_type_enabled(fileModificationDate, OS_LOG_TYPE_INFO))
         {
           *buf = 0;
-          _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Keychain backup not found", buf, 2u);
+          _os_log_impl(&_mh_execute_header, fileModificationDate, OS_LOG_TYPE_INFO, "Keychain backup not found", buf, 2u);
           _MBLog();
         }
 
@@ -443,12 +443,12 @@ LABEL_34:
     {
     }
 
-    if (a4)
+    if (error)
     {
       v37 = [MBError errorWithCode:100 error:v11 path:@"/var/Keychains/keychain-ota-backup.plist" format:@"Error getting keychain backup attributes"];
 LABEL_39:
       v19 = 0;
-      *a4 = v37;
+      *error = v37;
       goto LABEL_64;
     }
 
@@ -457,10 +457,10 @@ LABEL_49:
     goto LABEL_64;
   }
 
-  if (a4)
+  if (error)
   {
     [MBError errorWithCode:100 error:v8 path:@"/var/Keychains/keychain-2.db-wal" format:@"Error getting keychain database attributes"];
-    *a4 = v19 = 0;
+    *error = v19 = 0;
   }
 
   else
@@ -473,18 +473,18 @@ LABEL_65:
   return v19;
 }
 
-+ (BOOL)exportKeychainForCKBackupEngine:(id)a3 error:(id *)a4
++ (BOOL)exportKeychainForCKBackupEngine:(id)engine error:(id *)error
 {
-  v5 = a3;
+  engineCopy = engine;
   v6 = objc_autoreleasePoolPush();
   v11 = 0;
-  v7 = [objc_opt_class() _exportKeychainForCKBackupEngine:v5 error:&v11];
+  v7 = [objc_opt_class() _exportKeychainForCKBackupEngine:engineCopy error:&v11];
   v8 = v11;
   objc_autoreleasePoolPop(v6);
-  if (a4 && (v7 & 1) == 0)
+  if (error && (v7 & 1) == 0)
   {
     v9 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v7;
@@ -505,21 +505,21 @@ LABEL_65:
   [v3 removeItemAtPath:@"/var/Keychains/keychain-ota-backup.plist" error:0];
 }
 
-- (id)preparingBackupWithEngine:(id)a3
+- (id)preparingBackupWithEngine:(id)engine
 {
-  v4 = a3;
-  if (![v4 backsUpPrimaryAccount] || (objc_msgSend(v4, "isDeviceTransferEngine") & 1) != 0)
+  engineCopy = engine;
+  if (![engineCopy backsUpPrimaryAccount] || (objc_msgSend(engineCopy, "isDeviceTransferEngine") & 1) != 0)
   {
 LABEL_3:
     v5 = 0;
     goto LABEL_4;
   }
 
-  if (![v4 isDriveEngine])
+  if (![engineCopy isDriveEngine])
   {
-    if ([v4 isCloudKitEngine])
+    if ([engineCopy isCloudKitEngine])
     {
-      v7 = [(MBKeychainPlugin *)self _preparingBackupWithCKEngine:v4];
+      v7 = [(MBKeychainPlugin *)self _preparingBackupWithCKEngine:engineCopy];
       if (v7)
       {
         v8 = MBGetDefaultLog();
@@ -536,24 +536,24 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v5 = [(MBKeychainPlugin *)self _preparingBackupWithDriveEngine:v4];
+  v5 = [(MBKeychainPlugin *)self _preparingBackupWithDriveEngine:engineCopy];
 LABEL_4:
 
   return v5;
 }
 
-- (id)endingBackupWithEngine:(id)a3
+- (id)endingBackupWithEngine:(id)engine
 {
-  v3 = a3;
-  if ([v3 backsUpPrimaryAccount] && (objc_msgSend(v3, "isDeviceTransferEngine") & 1) == 0 && objc_msgSend(v3, "isDriveEngine"))
+  engineCopy = engine;
+  if ([engineCopy backsUpPrimaryAccount] && (objc_msgSend(engineCopy, "isDeviceTransferEngine") & 1) == 0 && objc_msgSend(engineCopy, "isDriveEngine"))
   {
     v4 = +[NSFileManager defaultManager];
     [v4 removeItemAtPath:@"/var/Keychains/keychain-backup.plist" error:0];
 
-    v5 = [v3 settingsContext];
-    v6 = [v5 encryptionManager];
+    settingsContext = [engineCopy settingsContext];
+    encryptionManager = [settingsContext encryptionManager];
     v11 = 0;
-    v7 = [v6 makeLockdownAndKeychainConsistentWithError:&v11];
+    v7 = [encryptionManager makeLockdownAndKeychainConsistentWithError:&v11];
     v8 = v11;
 
     v9 = 0;
@@ -571,22 +571,22 @@ LABEL_4:
   return v9;
 }
 
-- (id)_endingRestoreWithDriveEngine:(id)a3
+- (id)_endingRestoreWithDriveEngine:(id)engine
 {
-  v3 = a3;
+  engineCopy = engine;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 persona];
-  v6 = [v5 sharedIncompleteRestoreDirectory];
-  v7 = [v6 stringByAppendingPathComponent:@"/var/Keychains/keychain-backup.plist"];
+  persona = [engineCopy persona];
+  sharedIncompleteRestoreDirectory = [persona sharedIncompleteRestoreDirectory];
+  v7 = [sharedIncompleteRestoreDirectory stringByAppendingPathComponent:@"/var/Keychains/keychain-backup.plist"];
 
-  v8 = [v3 settingsContext];
-  v9 = [v8 password];
+  settingsContext = [engineCopy settingsContext];
+  password = [settingsContext password];
 
   if ([MBRestoreDirectoryAnnotator isRestoredPath:v7])
   {
-    v10 = [v3 keybag];
+    keybag = [engineCopy keybag];
     v30 = 0;
-    v11 = [v10 dataWithError:&v30];
+    v11 = [keybag dataWithError:&v30];
     v12 = v30;
 
     if (!v11)
@@ -596,7 +596,7 @@ LABEL_4:
       goto LABEL_18;
     }
 
-    v13 = [v9 dataUsingEncoding:4];
+    v13 = [password dataUsingEncoding:4];
     v29 = v12;
     v14 = sub_10003DCCC(v7, v11, v13, &v29);
     v15 = v29;
@@ -634,17 +634,17 @@ LABEL_4:
     _MBLog();
   }
 
-  v18 = [v3 settingsContext];
-  v19 = [v18 encryptionManager];
+  settingsContext2 = [engineCopy settingsContext];
+  encryptionManager = [settingsContext2 encryptionManager];
 
   v27 = v15;
-  v20 = [v19 setPasswordInKeychain:v9 error:&v27];
+  v20 = [encryptionManager setPasswordInKeychain:password error:&v27];
   v21 = v27;
 
   if (v20)
   {
     v26 = v21;
-    v22 = [v19 setWillEncryptInLockdown:v9 != 0 error:&v26];
+    v22 = [encryptionManager setWillEncryptInLockdown:password != 0 error:&v26];
     v23 = v26;
 
     if (v22)
@@ -671,21 +671,21 @@ LABEL_18:
   return v24;
 }
 
-- (void)_restoreKeychainBackupAtPath:(id)a3 withEngine:(id)a4
+- (void)_restoreKeychainBackupAtPath:(id)path withEngine:(id)engine
 {
-  v5 = a3;
-  v6 = a4;
+  pathCopy = path;
+  engineCopy = engine;
   v7 = MBGetDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    *v31 = v5;
+    *v31 = pathCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Restoring keychain backup at %{public}@", buf, 0xCu);
     _MBLog();
   }
 
   v29 = 0;
-  v8 = [MBProtectionClassUtils getWithPath:v5 error:&v29];
+  v8 = [MBProtectionClassUtils getWithPath:pathCopy error:&v29];
   v9 = v29;
   if (v8 == 255)
   {
@@ -693,7 +693,7 @@ LABEL_18:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      *v31 = v5;
+      *v31 = pathCopy;
       *&v31[8] = 2114;
       *&v31[10] = v9;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Failed to fetch the keychain backup protection class at %{public}@: %{public}@", buf, 0x16u);
@@ -707,7 +707,7 @@ LABEL_9:
 
   if (v8 - 3 > 0xFFFFFFFD)
   {
-    v10 = [NSURL fileURLWithPath:v5 isDirectory:0];
+    v10 = [NSURL fileURLWithPath:pathCopy isDirectory:0];
     v28 = v9;
     v11 = [NSFileHandle fileHandleForReadingFromURL:v10 error:&v28];
     v12 = v28;
@@ -718,7 +718,7 @@ LABEL_9:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        *v31 = v5;
+        *v31 = pathCopy;
         *&v31[8] = 2114;
         *&v31[10] = v12;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Failed to open the keychain backup at %{public}@: %{public}@", buf, 0x16u);
@@ -744,7 +744,7 @@ LABEL_9:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        *v31 = v5;
+        *v31 = pathCopy;
         *&v31[8] = 2114;
         *&v31[10] = v27;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Failed to copy the UUID from the keybag at %{public}@: %{public}@", buf, 0x16u);
@@ -758,7 +758,7 @@ LABEL_9:
 
     v14 = v13;
     v15 = [NSData mb_dataFromHexadecimalString:v13];
-    v16 = [v6 keyBagForUUID:v15];
+    v16 = [engineCopy keyBagForUUID:v15];
     v17 = v16;
     if (v16)
     {
@@ -769,7 +769,7 @@ LABEL_9:
       if (v18)
       {
         v25 = v15;
-        v20 = [v6 secretForUUID:v15];
+        v20 = [engineCopy secretForUUID:v15];
         v21 = MBGetDefaultLog();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
@@ -795,7 +795,7 @@ LABEL_9:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          *v31 = v5;
+          *v31 = pathCopy;
           *&v31[8] = 2114;
           *&v31[10] = v23;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "_SecKeychainRestoreBackupFromFileDescriptor failed for the keychain backup at %{public}@: %{public}@", buf, 0x16u);
@@ -854,7 +854,7 @@ LABEL_33:
     *buf = 67109378;
     *v31 = v8;
     *&v31[4] = 2114;
-    *&v31[6] = v5;
+    *&v31[6] = pathCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Found an unexpected protection class (%d) for the keychain backup at %{public}@", buf, 0x12u);
     goto LABEL_9;
   }
@@ -862,17 +862,17 @@ LABEL_33:
 LABEL_34:
 }
 
-- (void)_endingRestoreWithServicePolicy:(id)a3 engine:(id)a4
+- (void)_endingRestoreWithServicePolicy:(id)policy engine:(id)engine
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 persona];
-  v9 = [v8 sharedIncompleteRestoreDirectory];
-  v10 = [v9 stringByAppendingPathComponent:@"/var/Keychains/keychain-ota-backup.plist"];
+  policyCopy = policy;
+  engineCopy = engine;
+  persona = [engineCopy persona];
+  sharedIncompleteRestoreDirectory = [persona sharedIncompleteRestoreDirectory];
+  v10 = [sharedIncompleteRestoreDirectory stringByAppendingPathComponent:@"/var/Keychains/keychain-ota-backup.plist"];
 
   if ([MBRestoreDirectoryAnnotator isRestoredPath:v10])
   {
-    if ([v6 isRestoringToSameDevice])
+    if ([policyCopy isRestoringToSameDevice])
     {
       v28 = 0;
       v11 = [MBKeychain allPasswordItemsForServices:&off_100109558 error:&v28];
@@ -905,7 +905,7 @@ LABEL_34:
         _MBLog();
       }
 
-      [(MBKeychainPlugin *)self _restoreKeychainBackupAtPath:v10 withEngine:v7];
+      [(MBKeychainPlugin *)self _restoreKeychainBackupAtPath:v10 withEngine:engineCopy];
       v17 = MBGetDefaultLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
@@ -980,19 +980,19 @@ LABEL_21:
 LABEL_23:
 }
 
-- (id)endingRestoreWithPolicy:(id)a3 engine:(id)a4
+- (id)endingRestoreWithPolicy:(id)policy engine:(id)engine
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 restoresPrimaryAccount] && (objc_msgSend(v7, "isDeviceTransferEngine") & 1) == 0)
+  policyCopy = policy;
+  engineCopy = engine;
+  if ([engineCopy restoresPrimaryAccount] && (objc_msgSend(engineCopy, "isDeviceTransferEngine") & 1) == 0)
   {
-    if ([v7 isDriveEngine])
+    if ([engineCopy isDriveEngine])
     {
-      v8 = [(MBKeychainPlugin *)self _endingRestoreWithDriveEngine:v7];
+      v8 = [(MBKeychainPlugin *)self _endingRestoreWithDriveEngine:engineCopy];
       goto LABEL_7;
     }
 
-    [(MBKeychainPlugin *)self _endingRestoreWithServicePolicy:v6 engine:v7];
+    [(MBKeychainPlugin *)self _endingRestoreWithServicePolicy:policyCopy engine:engineCopy];
   }
 
   v8 = 0;

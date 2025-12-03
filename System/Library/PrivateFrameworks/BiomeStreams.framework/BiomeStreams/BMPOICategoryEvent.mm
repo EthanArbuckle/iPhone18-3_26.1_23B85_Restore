@@ -1,9 +1,9 @@
 @interface BMPOICategoryEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMPOICategoryEvent)initWithPOICategory:(id)a3 rank:(unint64_t)a4 timeIntervalSince1970:(double)a5;
-- (BMPOICategoryEvent)initWithProto:(id)a3;
-- (BMPOICategoryEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMPOICategoryEvent)initWithPOICategory:(id)category rank:(unint64_t)rank timeIntervalSince1970:(double)since1970;
+- (BMPOICategoryEvent)initWithProto:(id)proto;
+- (BMPOICategoryEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
@@ -12,27 +12,27 @@
 
 @implementation BMPOICategoryEvent
 
-- (BMPOICategoryEvent)initWithPOICategory:(id)a3 rank:(unint64_t)a4 timeIntervalSince1970:(double)a5
+- (BMPOICategoryEvent)initWithPOICategory:(id)category rank:(unint64_t)rank timeIntervalSince1970:(double)since1970
 {
-  v9 = a3;
+  categoryCopy = category;
   v13.receiver = self;
   v13.super_class = BMPOICategoryEvent;
   v10 = [(BMEventBase *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_poiCategory, a3);
-    v11->_rank = a4;
-    v11->_timeIntervalSince1970 = a5;
+    objc_storeStrong(&v10->_poiCategory, category);
+    v11->_rank = rank;
+    v11->_timeIntervalSince1970 = since1970;
   }
 
   return v11;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  v6 = [[a1 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[self alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
@@ -41,8 +41,8 @@
 {
   v11[3] = *MEMORY[0x1E69E9840];
   v10[0] = @"poiCategory";
-  v3 = [(BMPOICategoryEvent *)self poiCategory];
-  v11[0] = v3;
+  poiCategory = [(BMPOICategoryEvent *)self poiCategory];
+  v11[0] = poiCategory;
   v10[1] = @"rank";
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[BMPOICategoryEvent rank](self, "rank")}];
   v11[1] = v4;
@@ -61,9 +61,9 @@
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMPOICategoryEvent *)self jsonDict];
+  jsonDict = [(BMPOICategoryEvent *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (v5)
@@ -80,19 +80,19 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(BMPOICategoryEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMPOICategoryEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMPOICategoryEvent)initWithProto:(id)a3
+- (BMPOICategoryEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v10 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -108,43 +108,43 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v6 = [v5 poiCategory];
-  v7 = [v5 rank];
+  v5 = protoCopy;
+  poiCategory = [v5 poiCategory];
+  rank = [v5 rank];
   [v5 timeIntervalSince1970];
   v9 = v8;
 
-  self = [(BMPOICategoryEvent *)self initWithPOICategory:v6 rank:v7 timeIntervalSince1970:v9];
-  v10 = self;
+  self = [(BMPOICategoryEvent *)self initWithPOICategory:poiCategory rank:rank timeIntervalSince1970:v9];
+  selfCopy = self;
 LABEL_8:
 
-  return v10;
+  return selfCopy;
 }
 
-- (BMPOICategoryEvent)initWithProtoData:(id)a3
+- (BMPOICategoryEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBPOICategoryEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBPOICategoryEvent alloc] initWithData:dataCopy];
 
     self = [(BMPOICategoryEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMPOICategoryEvent *)self poiCategory];
-  [v3 setPoiCategory:v4];
+  poiCategory = [(BMPOICategoryEvent *)self poiCategory];
+  [v3 setPoiCategory:poiCategory];
 
   [v3 setRank:{-[BMPOICategoryEvent rank](self, "rank")}];
   [(BMPOICategoryEvent *)self timeIntervalSince1970];
@@ -153,9 +153,9 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -163,18 +163,18 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  v6 = v5;
-  v7 = [(BMPOICategoryEvent *)self rank];
-  v8 = [v6 rank];
+  v6 = equalCopy;
+  rank = [(BMPOICategoryEvent *)self rank];
+  rank2 = [v6 rank];
   [(BMPOICategoryEvent *)self timeIntervalSince1970];
   v10 = v9;
   [v6 timeIntervalSince1970];
   v12 = v11;
-  v13 = [(BMPOICategoryEvent *)self poiCategory];
-  if (!v13)
+  poiCategory = [(BMPOICategoryEvent *)self poiCategory];
+  if (!poiCategory)
   {
-    v3 = [v6 poiCategory];
-    if (!v3)
+    poiCategory2 = [v6 poiCategory];
+    if (!poiCategory2)
     {
       v16 = 1;
 LABEL_8:
@@ -183,11 +183,11 @@ LABEL_8:
     }
   }
 
-  v14 = [(BMPOICategoryEvent *)self poiCategory];
-  v15 = [v6 poiCategory];
-  v16 = [v14 isEqual:v15];
+  poiCategory3 = [(BMPOICategoryEvent *)self poiCategory];
+  poiCategory4 = [v6 poiCategory];
+  v16 = [poiCategory3 isEqual:poiCategory4];
 
-  if (!v13)
+  if (!poiCategory)
   {
     goto LABEL_8;
   }
@@ -196,7 +196,7 @@ LABEL_9:
 
   if (v10 == v12)
   {
-    v17 = (v7 == v8) & v16;
+    v17 = (rank == rank2) & v16;
   }
 
   else

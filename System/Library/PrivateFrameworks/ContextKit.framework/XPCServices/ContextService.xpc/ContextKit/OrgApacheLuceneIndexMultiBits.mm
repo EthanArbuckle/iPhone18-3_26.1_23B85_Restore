@@ -1,25 +1,25 @@
 @interface OrgApacheLuceneIndexMultiBits
-- (BOOL)getWithInt:(int)a3;
+- (BOOL)getWithInt:(int)int;
 - (NSString)description;
-- (OrgApacheLuceneIndexMultiBits)initWithOrgApacheLuceneUtilBitsArray:(id)a3 withIntArray:(id)a4 withBoolean:(BOOL)a5;
-- (id)getMatchingSubWithOrgApacheLuceneIndexReaderSlice:(id)a3;
+- (OrgApacheLuceneIndexMultiBits)initWithOrgApacheLuceneUtilBitsArray:(id)array withIntArray:(id)intArray withBoolean:(BOOL)boolean;
+- (id)getMatchingSubWithOrgApacheLuceneIndexReaderSlice:(id)slice;
 - (int)length;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneIndexMultiBits
 
-- (OrgApacheLuceneIndexMultiBits)initWithOrgApacheLuceneUtilBitsArray:(id)a3 withIntArray:(id)a4 withBoolean:(BOOL)a5
+- (OrgApacheLuceneIndexMultiBits)initWithOrgApacheLuceneUtilBitsArray:(id)array withIntArray:(id)intArray withBoolean:(BOOL)boolean
 {
-  JreStrongAssign(&self->subs_, a3);
-  JreStrongAssign(&self->starts_, a4);
-  self->defaultValue_ = a5;
+  JreStrongAssign(&self->subs_, array);
+  JreStrongAssign(&self->starts_, intArray);
+  self->defaultValue_ = boolean;
   return self;
 }
 
-- (BOOL)getWithInt:(int)a3
+- (BOOL)getWithInt:(int)int
 {
-  v5 = OrgApacheLuceneIndexReaderUtil_subIndexWithInt_withIntArray_(a3, self->starts_);
+  v5 = OrgApacheLuceneIndexReaderUtil_subIndexWithInt_withIntArray_(int, self->starts_);
   subs = self->subs_;
   if (!subs)
   {
@@ -52,7 +52,7 @@ LABEL_12:
     IOSArray_throwOutOfBoundsWithMsg(v11, v7);
   }
 
-  v12 = (a3 - *(&starts->super.size_ + v7 + 1));
+  v12 = (int - *(&starts->super.size_ + v7 + 1));
 
   return [(IOSClass *)v9 getWithInt:v12];
 }
@@ -169,14 +169,14 @@ LABEL_30:
   return [(JavaLangStringBuilder *)v12 description];
 }
 
-- (id)getMatchingSubWithOrgApacheLuceneIndexReaderSlice:(id)a3
+- (id)getMatchingSubWithOrgApacheLuceneIndexReaderSlice:(id)slice
 {
-  if (!a3)
+  if (!slice)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = OrgApacheLuceneIndexReaderUtil_subIndexWithInt_withIntArray_(*(a3 + 2), self->starts_);
+  v5 = OrgApacheLuceneIndexReaderUtil_subIndexWithInt_withIntArray_(*(slice + 2), self->starts_);
   v6 = [OrgApacheLuceneIndexMultiBits_SubResult alloc];
   starts = self->starts_;
   size = starts->super.size_;
@@ -186,7 +186,7 @@ LABEL_30:
   }
 
   v9 = *(&starts->super.size_ + v5 + 1);
-  if (v9 != *(a3 + 2))
+  if (v9 != *(slice + 2))
   {
     goto LABEL_11;
   }
@@ -199,7 +199,7 @@ LABEL_30:
     IOSArray_throwOutOfBoundsWithMsg(v11, v12);
   }
 
-  if (*(&v10->super.size_ + v12 + 1) == *(a3 + 3) + v9)
+  if (*(&v10->super.size_ + v12 + 1) == *(slice + 3) + v9)
   {
     v6->matches_ = 1;
     subs = self->subs_;

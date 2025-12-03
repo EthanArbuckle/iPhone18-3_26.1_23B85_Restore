@@ -1,7 +1,7 @@
 @interface _UIWindowHostingSceneSafeAreaInsetsSettingsDiffAction
 - (id)sceneSettingsSafeAreaInsetsDiffInspector;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
-- (void)_updateSafeAreaInsetsWithSettingsObserverContext:(id)a3 windowHostingScene:(id)a4 transitionContext:(id)a5;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
+- (void)_updateSafeAreaInsetsWithSettingsObserverContext:(id)context windowHostingScene:(id)scene transitionContext:(id)transitionContext;
 @end
 
 @implementation _UIWindowHostingSceneSafeAreaInsetsSettingsDiffAction
@@ -25,40 +25,40 @@
   return sceneSettingsSafeAreaInsetsDiffInspector;
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v12 = a3;
-  v13 = a7;
-  v14 = a5;
-  if (([v12 _hostsWindows] & 1) == 0)
+  sceneCopy = scene;
+  contextCopy = context;
+  diffCopy = diff;
+  if (([sceneCopy _hostsWindows] & 1) == 0)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"_UIWindowHostingSceneSafeAreaInsetsSettingsDiffAction.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"[uiScene _hostsWindows]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIWindowHostingSceneSafeAreaInsetsSettingsDiffAction.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"[uiScene _hostsWindows]"}];
   }
 
   v18 = 0;
-  v15 = v12;
-  v16 = [(_UIWindowHostingSceneSafeAreaInsetsSettingsDiffAction *)self sceneSettingsSafeAreaInsetsDiffInspector];
-  [v16 inspectDiff:v14 withContext:&v18];
+  v15 = sceneCopy;
+  sceneSettingsSafeAreaInsetsDiffInspector = [(_UIWindowHostingSceneSafeAreaInsetsSettingsDiffAction *)self sceneSettingsSafeAreaInsetsDiffInspector];
+  [sceneSettingsSafeAreaInsetsDiffInspector inspectDiff:diffCopy withContext:&v18];
 
-  [(_UIWindowHostingSceneSafeAreaInsetsSettingsDiffAction *)self _updateSafeAreaInsetsWithSettingsObserverContext:v18 windowHostingScene:v15 transitionContext:v13];
+  [(_UIWindowHostingSceneSafeAreaInsetsSettingsDiffAction *)self _updateSafeAreaInsetsWithSettingsObserverContext:v18 windowHostingScene:v15 transitionContext:contextCopy];
 }
 
-- (void)_updateSafeAreaInsetsWithSettingsObserverContext:(id)a3 windowHostingScene:(id)a4 transitionContext:(id)a5
+- (void)_updateSafeAreaInsetsWithSettingsObserverContext:(id)context windowHostingScene:(id)scene transitionContext:(id)transitionContext
 {
-  if (a3.var0)
+  if (context.var0)
   {
     v13 = v5;
     v14 = v6;
-    v8 = a5;
-    v9 = [a4 _allWindows];
+    transitionContextCopy = transitionContext;
+    _allWindows = [scene _allWindows];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __143___UIWindowHostingSceneSafeAreaInsetsSettingsDiffAction__updateSafeAreaInsetsWithSettingsObserverContext_windowHostingScene_transitionContext___block_invoke;
     v11[3] = &unk_1E70F5AC0;
-    v12 = v9;
-    v10 = v9;
-    _UISceneSettingsDiffActionPerformChangesWithTransitionContextAndCompletion(v8, v11, 0);
+    v12 = _allWindows;
+    v10 = _allWindows;
+    _UISceneSettingsDiffActionPerformChangesWithTransitionContextAndCompletion(transitionContextCopy, v11, 0);
   }
 }
 

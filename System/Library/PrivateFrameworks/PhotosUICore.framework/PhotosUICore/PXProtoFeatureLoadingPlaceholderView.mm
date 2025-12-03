@@ -1,6 +1,6 @@
 @interface PXProtoFeatureLoadingPlaceholderView
 - (CGSize)intrinsicContentSize;
-- (PXProtoFeatureLoadingPlaceholderView)initWithFrame:(CGRect)a3;
+- (PXProtoFeatureLoadingPlaceholderView)initWithFrame:(CGRect)frame;
 - (void)_updateLabelText;
 - (void)layoutSubviews;
 - (void)statusDescriptionDidChange;
@@ -10,11 +10,11 @@
 
 - (void)_updateLabelText
 {
-  v3 = [(PXProtoFeaturePlaceholderView *)self statusDescription];
-  v5 = v3;
-  if (v3)
+  statusDescription = [(PXProtoFeaturePlaceholderView *)self statusDescription];
+  v5 = statusDescription;
+  if (statusDescription)
   {
-    v4 = v3;
+    v4 = statusDescription;
   }
 
   else
@@ -61,11 +61,11 @@
   return result;
 }
 
-- (PXProtoFeatureLoadingPlaceholderView)initWithFrame:(CGRect)a3
+- (PXProtoFeatureLoadingPlaceholderView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = PXProtoFeatureLoadingPlaceholderView;
-  v3 = [(PXProtoFeaturePlaceholderView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXProtoFeaturePlaceholderView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];

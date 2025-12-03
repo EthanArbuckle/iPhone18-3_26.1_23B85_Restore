@@ -1,23 +1,23 @@
 @interface RMConfigurationsLocalDataProvider
-- (RMConfigurationsLocalDataProvider)initWithRMUIConfigurationInterface:(id)a3;
+- (RMConfigurationsLocalDataProvider)initWithRMUIConfigurationInterface:(id)interface;
 - (id)pluginSectionViewModels;
 - (id)pluginViewModels;
 - (id)profileViewModels;
-- (void)setConfigurationActivated:(BOOL)a3 forViewModel:(id)a4 completionHandler:(id)a5;
+- (void)setConfigurationActivated:(BOOL)activated forViewModel:(id)model completionHandler:(id)handler;
 @end
 
 @implementation RMConfigurationsLocalDataProvider
 
-- (RMConfigurationsLocalDataProvider)initWithRMUIConfigurationInterface:(id)a3
+- (RMConfigurationsLocalDataProvider)initWithRMUIConfigurationInterface:(id)interface
 {
-  v5 = a3;
+  interfaceCopy = interface;
   v9.receiver = self;
   v9.super_class = RMConfigurationsLocalDataProvider;
   v6 = [(RMConfigurationsLocalDataProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rmuiConfigInterface, a3);
+    objc_storeStrong(&v6->_rmuiConfigInterface, interface);
   }
 
   return v7;
@@ -25,35 +25,35 @@
 
 - (id)profileViewModels
 {
-  v2 = [(RMConfigurationsLocalDataProvider *)self rmuiConfigInterface];
-  v3 = [v2 profileViewModels];
+  rmuiConfigInterface = [(RMConfigurationsLocalDataProvider *)self rmuiConfigInterface];
+  profileViewModels = [rmuiConfigInterface profileViewModels];
 
-  return v3;
+  return profileViewModels;
 }
 
 - (id)pluginSectionViewModels
 {
-  v2 = [(RMConfigurationsLocalDataProvider *)self rmuiConfigInterface];
-  v3 = [v2 pluginSectionViewModels];
+  rmuiConfigInterface = [(RMConfigurationsLocalDataProvider *)self rmuiConfigInterface];
+  pluginSectionViewModels = [rmuiConfigInterface pluginSectionViewModels];
 
-  return v3;
+  return pluginSectionViewModels;
 }
 
 - (id)pluginViewModels
 {
-  v2 = [(RMConfigurationsLocalDataProvider *)self rmuiConfigInterface];
-  v3 = [v2 pluginViewModels];
+  rmuiConfigInterface = [(RMConfigurationsLocalDataProvider *)self rmuiConfigInterface];
+  pluginViewModels = [rmuiConfigInterface pluginViewModels];
 
-  return v3;
+  return pluginViewModels;
 }
 
-- (void)setConfigurationActivated:(BOOL)a3 forViewModel:(id)a4 completionHandler:(id)a5
+- (void)setConfigurationActivated:(BOOL)activated forViewModel:(id)model completionHandler:(id)handler
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [(RMConfigurationsLocalDataProvider *)self rmuiConfigInterface];
-  [v10 setConfigurationActivated:v6 forViewModel:v9 completionHandler:v8];
+  activatedCopy = activated;
+  handlerCopy = handler;
+  modelCopy = model;
+  rmuiConfigInterface = [(RMConfigurationsLocalDataProvider *)self rmuiConfigInterface];
+  [rmuiConfigInterface setConfigurationActivated:activatedCopy forViewModel:modelCopy completionHandler:handlerCopy];
 }
 
 @end

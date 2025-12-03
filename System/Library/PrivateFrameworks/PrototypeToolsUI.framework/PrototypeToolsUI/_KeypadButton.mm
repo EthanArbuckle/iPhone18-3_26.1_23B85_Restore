@@ -1,22 +1,22 @@
 @interface _KeypadButton
-- (_KeypadButton)initWithKeyType:(int64_t)a3 digit:(unint64_t)a4 target:(id)a5;
+- (_KeypadButton)initWithKeyType:(int64_t)type digit:(unint64_t)digit target:(id)target;
 - (void)_updateBackgroundColor;
 @end
 
 @implementation _KeypadButton
 
-- (_KeypadButton)initWithKeyType:(int64_t)a3 digit:(unint64_t)a4 target:(id)a5
+- (_KeypadButton)initWithKeyType:(int64_t)type digit:(unint64_t)digit target:(id)target
 {
-  v8 = a5;
+  targetCopy = target;
   v23.receiver = self;
   v23.super_class = _KeypadButton;
   v9 = [(_KeypadButton *)&v23 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v10 = v9;
   if (v9)
   {
-    v9->_keyType = a3;
-    v9->_digit = a4;
-    [(_KeypadButton *)v9 addTarget:v8 action:sel_keyPress_ forControlEvents:64];
+    v9->_keyType = type;
+    v9->_digit = digit;
+    [(_KeypadButton *)v9 addTarget:targetCopy action:sel_keyPress_ forControlEvents:64];
     keyType = v10->_keyType;
     if (keyType <= 1)
     {
@@ -70,19 +70,19 @@
     v15 = _KeypadBackgroundColor();
     [(_KeypadButton *)v10 setTitleColor:v15 forState:1];
 
-    v16 = [(_KeypadButton *)v10 titleLabel];
+    titleLabel = [(_KeypadButton *)v10 titleLabel];
     v17 = [MEMORY[0x277D74300] systemFontOfSize:16.0 weight:*MEMORY[0x277D74420]];
-    [v16 setFont:v17];
+    [titleLabel setFont:v17];
 
-    v18 = [(_KeypadButton *)v10 layer];
-    [v18 setCornerRadius:6.0];
+    layer = [(_KeypadButton *)v10 layer];
+    [layer setCornerRadius:6.0];
 
-    v19 = [(_KeypadButton *)v10 layer];
-    [v19 setBorderWidth:1.0];
+    layer2 = [(_KeypadButton *)v10 layer];
+    [layer2 setBorderWidth:1.0];
 
-    v20 = [(_KeypadButton *)v10 layer];
+    layer3 = [(_KeypadButton *)v10 layer];
     v21 = _KeypadForegroundColor();
-    [v20 setBorderColor:{objc_msgSend(v21, "CGColor")}];
+    [layer3 setBorderColor:{objc_msgSend(v21, "CGColor")}];
 
     [(_KeypadButton *)v10 _updateBackgroundColor];
   }

@@ -5,7 +5,7 @@
 - (id)automaticPeriod;
 - (id)automaticSpellingCorrection;
 - (id)capsLockSwitch;
-- (id)deviceSettingsForKeys:(id)a3;
+- (id)deviceSettingsForKeys:(id)keys;
 - (id)dictationLanguages;
 - (id)dictationShortcut;
 - (id)doubleQuoteOption;
@@ -25,26 +25,26 @@
 - (id)spaceConfirmation;
 - (id)textInputMenu;
 - (void)registerKeys;
-- (void)setAutomaticCapitalization:(id)a3;
-- (void)setAutomaticPeriod:(id)a3;
-- (void)setAutomaticSpellingCorrection:(id)a3;
-- (void)setCapsLockSwitch:(id)a3;
-- (void)setDictationLanguages:(id)a3;
-- (void)setDictationShortcut:(id)a3;
-- (void)setFnKeyFunction:(id)a3;
-- (void)setKeyboardAllowPaddle:(id)a3;
-- (void)setKeyboardAutocapitalization:(id)a3;
-- (void)setKeyboardAutocorrection:(id)a3;
-- (void)setKeyboardCapsLock:(id)a3;
-- (void)setKeyboardCheckSpelling:(id)a3;
-- (void)setKeyboardContinuousPathDeleteWholeWord:(id)a3;
-- (void)setKeyboardContinuousPathEnabled:(id)a3;
-- (void)setKeyboardPeriodShortcut:(id)a3;
-- (void)setKeyboardPrediction:(id)a3;
-- (void)setSmartDashesEnabled:(id)a3;
-- (void)setSmartQuotesEnabled:(id)a3;
-- (void)setSpaceConfirmation:(id)a3;
-- (void)setTextInputMenu:(id)a3;
+- (void)setAutomaticCapitalization:(id)capitalization;
+- (void)setAutomaticPeriod:(id)period;
+- (void)setAutomaticSpellingCorrection:(id)correction;
+- (void)setCapsLockSwitch:(id)switch;
+- (void)setDictationLanguages:(id)languages;
+- (void)setDictationShortcut:(id)shortcut;
+- (void)setFnKeyFunction:(id)function;
+- (void)setKeyboardAllowPaddle:(id)paddle;
+- (void)setKeyboardAutocapitalization:(id)autocapitalization;
+- (void)setKeyboardAutocorrection:(id)autocorrection;
+- (void)setKeyboardCapsLock:(id)lock;
+- (void)setKeyboardCheckSpelling:(id)spelling;
+- (void)setKeyboardContinuousPathDeleteWholeWord:(id)word;
+- (void)setKeyboardContinuousPathEnabled:(id)enabled;
+- (void)setKeyboardPeriodShortcut:(id)shortcut;
+- (void)setKeyboardPrediction:(id)prediction;
+- (void)setSmartDashesEnabled:(id)enabled;
+- (void)setSmartQuotesEnabled:(id)enabled;
+- (void)setSpaceConfirmation:(id)confirmation;
+- (void)setTextInputMenu:(id)menu;
 @end
 
 @implementation KeyboardSettingsMediator
@@ -104,21 +104,21 @@
   return v3;
 }
 
-- (id)deviceSettingsForKeys:(id)a3
+- (id)deviceSettingsForKeys:(id)keys
 {
-  v4 = a3;
-  if (v4)
+  keysCopy = keys;
+  if (keysCopy)
   {
-    v5 = v4;
-    v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
-    v7 = [objc_opt_class() cloudSettingKeyFromTextInputUIKey];
+    v5 = keysCopy;
+    v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [keysCopy count]);
+    cloudSettingKeyFromTextInputUIKey = [objc_opt_class() cloudSettingKeyFromTextInputUIKey];
     if ([v5 count])
     {
       v8 = 0;
       do
       {
         v9 = [v5 objectAtIndexedSubscript:v8];
-        v10 = [v7 objectForKeyedSubscript:v9];
+        v10 = [cloudSettingKeyFromTextInputUIKey objectForKeyedSubscript:v9];
         v11 = v10;
         if (v10)
         {
@@ -151,31 +151,31 @@
   return v13;
 }
 
-- (void)setFnKeyFunction:(id)a3
+- (void)setFnKeyFunction:(id)function
 {
-  v3 = a3;
+  functionCopy = function;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v7 = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "XPCSERVICE - Update FnKeyFunction", v7, 2u);
   }
 
-  v4 = [v3 intValue] == 1;
+  v4 = [functionCopy intValue] == 1;
   v5 = +[TIPreferencesController sharedPreferencesController];
   v6 = [NSNumber numberWithBool:v4];
   [v5 setValue:v6 forPreferenceKey:TIHWKeyboardGlobeAsEmojiKeyPreference];
 }
 
-- (void)setTextInputMenu:(id)a3
+- (void)setTextInputMenu:(id)menu
 {
-  v3 = a3;
+  menuCopy = menu;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "XPCSERVICE - Text input menu", v5, 2u);
   }
 
-  if (v3)
+  if (menuCopy)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
@@ -183,36 +183,36 @@
     }
 
     v4 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.TextInputMenu"];
-    [v4 setBool:objc_msgSend(v3 forKey:{"BOOLValue"), @"visible"}];
+    [v4 setBool:objc_msgSend(menuCopy forKey:{"BOOLValue"), @"visible"}];
   }
 }
 
-- (void)setCapsLockSwitch:(id)a3
+- (void)setCapsLockSwitch:(id)switch
 {
-  v3 = a3;
+  switchCopy = switch;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "XPCSERVICE - CapsLock switch", v5, 2u);
   }
 
-  if (v3)
+  if (switchCopy)
   {
     v4 = +[TIPreferencesController sharedPreferencesController];
-    [v4 setValue:v3 forPreferenceKey:TIHWKeyboardCapsLockRomanSwitchPreference];
+    [v4 setValue:switchCopy forPreferenceKey:TIHWKeyboardCapsLockRomanSwitchPreference];
   }
 }
 
-- (void)setAutomaticSpellingCorrection:(id)a3
+- (void)setAutomaticSpellingCorrection:(id)correction
 {
-  v3 = a3;
+  correctionCopy = correction;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "XPCSERVICE - Automatic spelling correction", v5, 2u);
   }
 
-  if (v3)
+  if (correctionCopy)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
@@ -220,21 +220,21 @@
     }
 
     v4 = +[TIPreferencesController sharedPreferencesController];
-    [v4 setValue:v3 forPreferenceKey:TIHWKeyboardAutocorrectionPreference];
+    [v4 setValue:correctionCopy forPreferenceKey:TIHWKeyboardAutocorrectionPreference];
   }
 }
 
-- (void)setDictationLanguages:(id)a3
+- (void)setDictationLanguages:(id)languages
 {
-  v3 = a3;
+  languagesCopy = languages;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v7 = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "XPCSERVICE - Dictation languages", v7, 2u);
   }
 
-  v4 = [v3 firstObject];
-  if (v4)
+  firstObject = [languagesCopy firstObject];
+  if (firstObject)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
@@ -242,82 +242,82 @@
     }
 
     v5 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v6 = [v5 preferencesActions];
-    [v6 setEnabledDictationLanguages:v4];
+    preferencesActions = [v5 preferencesActions];
+    [preferencesActions setEnabledDictationLanguages:firstObject];
   }
 }
 
-- (void)setDictationShortcut:(id)a3
+- (void)setDictationShortcut:(id)shortcut
 {
-  v3 = a3;
+  shortcutCopy = shortcut;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v9 = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "XPCSERVICE - Dictation shortcut", v9, 2u);
   }
 
-  v4 = [v3 firstObject];
-  if (v4)
+  firstObject = [shortcutCopy firstObject];
+  if (firstObject)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
       sub_1000037B8();
     }
 
-    v5 = [v4 objectForKeyedSubscript:@"KB_Dictation_ShortcutType"];
-    v6 = [v5 integerValue];
+    v5 = [firstObject objectForKeyedSubscript:@"KB_Dictation_ShortcutType"];
+    integerValue = [v5 integerValue];
 
-    if (v6 <= 6 && ((0x75u >> v6) & 1) != 0)
+    if (integerValue <= 6 && ((0x75u >> integerValue) & 1) != 0)
     {
-      v7 = (&off_100008200)[v6 & 7];
+      v7 = (&off_100008200)[integerValue & 7];
       v8 = +[TIPreferencesController sharedPreferencesController];
       [v8 setValue:v7 forPreferenceKey:TIHWKeyboardDictationShortcutPreference];
     }
   }
 }
 
-- (void)setKeyboardAutocorrection:(id)a3
+- (void)setKeyboardAutocorrection:(id)autocorrection
 {
-  v3 = a3;
+  autocorrectionCopy = autocorrection;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "XPCSERVICE - TIKeyboardAutocorrectionPreference", v5, 2u);
   }
 
-  if (v3)
+  if (autocorrectionCopy)
   {
     v4 = +[TIPreferencesController sharedPreferencesController];
-    [v4 setValue:v3 forPreferenceKey:TIKeyboardAutocorrectionPreference];
+    [v4 setValue:autocorrectionCopy forPreferenceKey:TIKeyboardAutocorrectionPreference];
   }
 }
 
-- (void)setKeyboardAutocapitalization:(id)a3
+- (void)setKeyboardAutocapitalization:(id)autocapitalization
 {
-  v3 = a3;
+  autocapitalizationCopy = autocapitalization;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "XPCSERVICE - TIKeyboardAutocapitalizationPreference", v5, 2u);
   }
 
-  if (v3)
+  if (autocapitalizationCopy)
   {
     v4 = +[TIPreferencesController sharedPreferencesController];
-    [v4 setValue:v3 forPreferenceKey:TIKeyboardAutocapitalizationPreference];
+    [v4 setValue:autocapitalizationCopy forPreferenceKey:TIKeyboardAutocapitalizationPreference];
   }
 }
 
-- (void)setAutomaticCapitalization:(id)a3
+- (void)setAutomaticCapitalization:(id)capitalization
 {
-  v3 = a3;
+  capitalizationCopy = capitalization;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "XPCSERVICE - Automatic capitalization", v5, 2u);
   }
 
-  if (v3)
+  if (capitalizationCopy)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
@@ -325,183 +325,183 @@
     }
 
     v4 = +[TIPreferencesController sharedPreferencesController];
-    [v4 setValue:v3 forPreferenceKey:TIHWKeyboardAutocapitalizationPreference];
+    [v4 setValue:capitalizationCopy forPreferenceKey:TIHWKeyboardAutocapitalizationPreference];
   }
 }
 
-- (void)setAutomaticPeriod:(id)a3
+- (void)setAutomaticPeriod:(id)period
 {
-  v3 = a3;
+  periodCopy = period;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "XPCSERVICE - Automatic period", v5, 2u);
   }
 
-  if (v3)
+  if (periodCopy)
   {
     v4 = +[TIPreferencesController sharedPreferencesController];
-    [v4 setValue:v3 forPreferenceKey:TIHWKeyboardPeriodShortcutPreference];
+    [v4 setValue:periodCopy forPreferenceKey:TIHWKeyboardPeriodShortcutPreference];
   }
 }
 
-- (void)setKeyboardCheckSpelling:(id)a3
+- (void)setKeyboardCheckSpelling:(id)spelling
 {
-  v3 = a3;
+  spellingCopy = spelling;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "XPCSERVICE - KeyboardCheckSpellingPreference", v5, 2u);
   }
 
-  if (v3)
+  if (spellingCopy)
   {
     v4 = +[TIPreferencesController sharedPreferencesController];
-    [v4 setValue:v3 forPreferenceKey:TIKeyboardCheckSpellingPreference];
+    [v4 setValue:spellingCopy forPreferenceKey:TIKeyboardCheckSpellingPreference];
   }
 }
 
-- (void)setSmartQuotesEnabled:(id)a3
+- (void)setSmartQuotesEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "XPCSERVICE - SmartQuotesEnabledPreference", v5, 2u);
   }
 
-  if (v3)
+  if (enabledCopy)
   {
     v4 = +[TIPreferencesController sharedPreferencesController];
-    [v4 setValue:v3 forPreferenceKey:TISmartQuotesEnabledPreference];
+    [v4 setValue:enabledCopy forPreferenceKey:TISmartQuotesEnabledPreference];
   }
 }
 
-- (void)setSmartDashesEnabled:(id)a3
+- (void)setSmartDashesEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "XPCSERVICE - SmartDashesEnabledPreference", v5, 2u);
   }
 
-  if (v3)
+  if (enabledCopy)
   {
     v4 = +[TIPreferencesController sharedPreferencesController];
-    [v4 setValue:v3 forPreferenceKey:TISmartDashesEnabledPreference];
+    [v4 setValue:enabledCopy forPreferenceKey:TISmartDashesEnabledPreference];
   }
 }
 
-- (void)setKeyboardCapsLock:(id)a3
+- (void)setKeyboardCapsLock:(id)lock
 {
-  v3 = a3;
+  lockCopy = lock;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "XPCSERVICE - KeyboardCapsLockPreference", v5, 2u);
   }
 
-  if (v3)
+  if (lockCopy)
   {
     v4 = +[TIPreferencesController sharedPreferencesController];
-    [v4 setValue:v3 forPreferenceKey:TIKeyboardCapsLockPreference];
+    [v4 setValue:lockCopy forPreferenceKey:TIKeyboardCapsLockPreference];
   }
 }
 
-- (void)setKeyboardContinuousPathEnabled:(id)a3
+- (void)setKeyboardContinuousPathEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "XPCSERVICE - KeyboardContinuousPathEnabledPreference", v5, 2u);
   }
 
-  if (v3)
+  if (enabledCopy)
   {
     v4 = +[TIPreferencesController sharedPreferencesController];
-    [v4 setValue:v3 forPreferenceKey:TIKeyboardContinuousPathEnabledPreference];
+    [v4 setValue:enabledCopy forPreferenceKey:TIKeyboardContinuousPathEnabledPreference];
   }
 }
 
-- (void)setKeyboardContinuousPathDeleteWholeWord:(id)a3
+- (void)setKeyboardContinuousPathDeleteWholeWord:(id)word
 {
-  v3 = a3;
+  wordCopy = word;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "XPCSERVICE - KeyboardContinuousPathDeleteWholeWordPreference", v5, 2u);
   }
 
-  if (v3)
+  if (wordCopy)
   {
     v4 = +[TIPreferencesController sharedPreferencesController];
-    [v4 setValue:v3 forPreferenceKey:TIKeyboardContinuousPathDeleteWholeWordPreference];
+    [v4 setValue:wordCopy forPreferenceKey:TIKeyboardContinuousPathDeleteWholeWordPreference];
   }
 }
 
-- (void)setKeyboardAllowPaddle:(id)a3
+- (void)setKeyboardAllowPaddle:(id)paddle
 {
-  v3 = a3;
+  paddleCopy = paddle;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "XPCSERVICE - KeyboardAllowPaddlePreference", v5, 2u);
   }
 
-  if (v3)
+  if (paddleCopy)
   {
     v4 = +[TIPreferencesController sharedPreferencesController];
-    [v4 setValue:v3 forPreferenceKey:TIKeyboardAllowPaddlePreference];
+    [v4 setValue:paddleCopy forPreferenceKey:TIKeyboardAllowPaddlePreference];
   }
 }
 
-- (void)setKeyboardPeriodShortcut:(id)a3
+- (void)setKeyboardPeriodShortcut:(id)shortcut
 {
-  v3 = a3;
+  shortcutCopy = shortcut;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "XPCSERVICE - KeyboardPeriodShortcutPreference", v5, 2u);
   }
 
-  if (v3)
+  if (shortcutCopy)
   {
     v4 = +[TIPreferencesController sharedPreferencesController];
-    [v4 setValue:v3 forPreferenceKey:TIKeyboardPeriodShortcutPreference];
+    [v4 setValue:shortcutCopy forPreferenceKey:TIKeyboardPeriodShortcutPreference];
   }
 }
 
-- (void)setKeyboardPrediction:(id)a3
+- (void)setKeyboardPrediction:(id)prediction
 {
-  v3 = a3;
+  predictionCopy = prediction;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "XPCSERVICE - KeyboardPredictionPreference", v5, 2u);
   }
 
-  if (v3)
+  if (predictionCopy)
   {
     v4 = +[TIPreferencesController sharedPreferencesController];
-    [v4 setValue:v3 forPreferenceKey:TIKeyboardPredictionPreference];
+    [v4 setValue:predictionCopy forPreferenceKey:TIKeyboardPredictionPreference];
   }
 }
 
-- (void)setSpaceConfirmation:(id)a3
+- (void)setSpaceConfirmation:(id)confirmation
 {
-  v3 = a3;
+  confirmationCopy = confirmation;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "XPCSERVICE - SpaceConfirmationPreference", v5, 2u);
   }
 
-  if (v3)
+  if (confirmationCopy)
   {
     v4 = +[TIPreferencesController sharedPreferencesController];
-    [v4 setValue:v3 forPreferenceKey:TISpaceConfirmationPreference];
+    [v4 setValue:confirmationCopy forPreferenceKey:TISpaceConfirmationPreference];
   }
 }
 
@@ -521,8 +521,8 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "IN SERVICE - HWKeyboardGlobeAsEmojiKey", v8, 2u);
   }
 
-  v3 = [(KeyboardSettingsMediator *)self preferencesController];
-  v4 = [v3 BOOLForPreferenceKey:TIHWKeyboardGlobeAsEmojiKeyPreference];
+  preferencesController = [(KeyboardSettingsMediator *)self preferencesController];
+  v4 = [preferencesController BOOLForPreferenceKey:TIHWKeyboardGlobeAsEmojiKeyPreference];
 
   if (v4)
   {
@@ -568,8 +568,8 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "IN SERVICE - HWKeyboardCapsLockRomanSwitch", v7, 2u);
   }
 
-  v3 = [(KeyboardSettingsMediator *)self preferencesController];
-  v4 = [v3 BOOLForPreferenceKey:TIHWKeyboardCapsLockRomanSwitchPreference];
+  preferencesController = [(KeyboardSettingsMediator *)self preferencesController];
+  v4 = [preferencesController BOOLForPreferenceKey:TIHWKeyboardCapsLockRomanSwitchPreference];
 
   v5 = [NSNumber numberWithBool:v4];
 
@@ -584,8 +584,8 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "IN SERVICE - HWKeyboardAutocorrection", v7, 2u);
   }
 
-  v3 = [(KeyboardSettingsMediator *)self preferencesController];
-  v4 = [v3 BOOLForPreferenceKey:TIHWKeyboardAutocorrectionPreference];
+  preferencesController = [(KeyboardSettingsMediator *)self preferencesController];
+  v4 = [preferencesController BOOLForPreferenceKey:TIHWKeyboardAutocorrectionPreference];
 
   v5 = [NSNumber numberWithBool:v4];
 
@@ -600,8 +600,8 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "IN SERVICE - HWKeyboardAutocapitalization", v7, 2u);
   }
 
-  v3 = [(KeyboardSettingsMediator *)self preferencesController];
-  v4 = [v3 BOOLForPreferenceKey:TIHWKeyboardAutocapitalizationPreference];
+  preferencesController = [(KeyboardSettingsMediator *)self preferencesController];
+  v4 = [preferencesController BOOLForPreferenceKey:TIHWKeyboardAutocapitalizationPreference];
 
   v5 = [NSNumber numberWithBool:v4];
 
@@ -616,8 +616,8 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "IN SERVICE - HWKeyboardPeriodShortcut", v7, 2u);
   }
 
-  v3 = [(KeyboardSettingsMediator *)self preferencesController];
-  v4 = [v3 BOOLForPreferenceKey:TIHWKeyboardPeriodShortcutPreference];
+  preferencesController = [(KeyboardSettingsMediator *)self preferencesController];
+  v4 = [preferencesController BOOLForPreferenceKey:TIHWKeyboardPeriodShortcutPreference];
 
   v5 = [NSNumber numberWithBool:v4];
 
@@ -669,8 +669,8 @@
   }
 
   v2 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v3 = [v2 preferencesActions];
-  v4 = [v3 valueForPreferenceKey:UIDictationLanguagesEnabled];
+  preferencesActions = [v2 preferencesActions];
+  v4 = [preferencesActions valueForPreferenceKey:UIDictationLanguagesEnabled];
 
   v8 = v4;
   v5 = [NSArray arrayWithObjects:&v8 count:1];
@@ -686,18 +686,18 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "IN SERVICE - Dictation shortcut", v8, 2u);
   }
 
-  v3 = [(KeyboardSettingsMediator *)self preferencesController];
-  v4 = [v3 valueForPreferenceKey:TIHWKeyboardDictationShortcutPreference];
-  v5 = [v4 integerValue];
+  preferencesController = [(KeyboardSettingsMediator *)self preferencesController];
+  v4 = [preferencesController valueForPreferenceKey:TIHWKeyboardDictationShortcutPreference];
+  integerValue = [v4 integerValue];
 
-  if (v5 + 1 > 2)
+  if (integerValue + 1 > 2)
   {
     v6 = 0;
   }
 
   else
   {
-    v9 = (&off_100008238)[v5 + 1];
+    v9 = (&off_100008238)[integerValue + 1];
     v6 = [NSArray arrayWithObjects:&v9 count:1];
   }
 
@@ -712,8 +712,8 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "IN SERVICE - TIKeyboardAutocorrectionPreference", v7, 2u);
   }
 
-  v3 = [(KeyboardSettingsMediator *)self preferencesController];
-  v4 = [v3 BOOLForPreferenceKey:TIKeyboardAutocorrectionPreference];
+  preferencesController = [(KeyboardSettingsMediator *)self preferencesController];
+  v4 = [preferencesController BOOLForPreferenceKey:TIKeyboardAutocorrectionPreference];
 
   v5 = [NSNumber numberWithBool:v4];
 
@@ -728,8 +728,8 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "IN SERVICE - TIKeyboardAutocapitalizationPreference", v7, 2u);
   }
 
-  v3 = [(KeyboardSettingsMediator *)self preferencesController];
-  v4 = [v3 BOOLForPreferenceKey:TIKeyboardAutocapitalizationPreference];
+  preferencesController = [(KeyboardSettingsMediator *)self preferencesController];
+  v4 = [preferencesController BOOLForPreferenceKey:TIKeyboardAutocapitalizationPreference];
 
   v5 = [NSNumber numberWithBool:v4];
 
@@ -744,8 +744,8 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "IN SERVICE - KeyboardCheckSpelling", v7, 2u);
   }
 
-  v3 = [(KeyboardSettingsMediator *)self preferencesController];
-  v4 = [v3 BOOLForPreferenceKey:TIKeyboardCheckSpellingPreference];
+  preferencesController = [(KeyboardSettingsMediator *)self preferencesController];
+  v4 = [preferencesController BOOLForPreferenceKey:TIKeyboardCheckSpellingPreference];
 
   v5 = [NSNumber numberWithBool:v4];
 
@@ -760,8 +760,8 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "IN SERVICE - SmartQuotesEnabled", v7, 2u);
   }
 
-  v3 = [(KeyboardSettingsMediator *)self preferencesController];
-  v4 = [v3 BOOLForPreferenceKey:TISmartQuotesEnabledPreference];
+  preferencesController = [(KeyboardSettingsMediator *)self preferencesController];
+  v4 = [preferencesController BOOLForPreferenceKey:TISmartQuotesEnabledPreference];
 
   v5 = [NSNumber numberWithBool:v4];
 
@@ -776,8 +776,8 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "IN SERVICE - SmartQuotesEnabled", v7, 2u);
   }
 
-  v3 = [(KeyboardSettingsMediator *)self preferencesController];
-  v4 = [v3 BOOLForPreferenceKey:TISmartDashesEnabledPreference];
+  preferencesController = [(KeyboardSettingsMediator *)self preferencesController];
+  v4 = [preferencesController BOOLForPreferenceKey:TISmartDashesEnabledPreference];
 
   v5 = [NSNumber numberWithBool:v4];
 
@@ -792,8 +792,8 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "IN SERVICE - KeyboardCapsLock", v7, 2u);
   }
 
-  v3 = [(KeyboardSettingsMediator *)self preferencesController];
-  v4 = [v3 BOOLForPreferenceKey:TIKeyboardCapsLockPreference];
+  preferencesController = [(KeyboardSettingsMediator *)self preferencesController];
+  v4 = [preferencesController BOOLForPreferenceKey:TIKeyboardCapsLockPreference];
 
   v5 = [NSNumber numberWithBool:v4];
 
@@ -808,8 +808,8 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "IN SERVICE - KeyboardContinuousPathEnabled", v7, 2u);
   }
 
-  v3 = [(KeyboardSettingsMediator *)self preferencesController];
-  v4 = [v3 BOOLForPreferenceKey:TIKeyboardContinuousPathEnabledPreference];
+  preferencesController = [(KeyboardSettingsMediator *)self preferencesController];
+  v4 = [preferencesController BOOLForPreferenceKey:TIKeyboardContinuousPathEnabledPreference];
 
   v5 = [NSNumber numberWithBool:v4];
 
@@ -824,8 +824,8 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "IN SERVICE - KeyboardContinuousPathDeleteWholeWord", v7, 2u);
   }
 
-  v3 = [(KeyboardSettingsMediator *)self preferencesController];
-  v4 = [v3 BOOLForPreferenceKey:TIKeyboardContinuousPathDeleteWholeWordPreference];
+  preferencesController = [(KeyboardSettingsMediator *)self preferencesController];
+  v4 = [preferencesController BOOLForPreferenceKey:TIKeyboardContinuousPathDeleteWholeWordPreference];
 
   v5 = [NSNumber numberWithBool:v4];
 
@@ -840,8 +840,8 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "IN SERVICE - KeyboardAllowPaddle", v7, 2u);
   }
 
-  v3 = [(KeyboardSettingsMediator *)self preferencesController];
-  v4 = [v3 BOOLForPreferenceKey:TIKeyboardAllowPaddlePreference];
+  preferencesController = [(KeyboardSettingsMediator *)self preferencesController];
+  v4 = [preferencesController BOOLForPreferenceKey:TIKeyboardAllowPaddlePreference];
 
   v5 = [NSNumber numberWithBool:v4];
 
@@ -856,8 +856,8 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "IN SERVICE - KeyboardPeriodShortcut", v7, 2u);
   }
 
-  v3 = [(KeyboardSettingsMediator *)self preferencesController];
-  v4 = [v3 BOOLForPreferenceKey:TIKeyboardPeriodShortcutPreference];
+  preferencesController = [(KeyboardSettingsMediator *)self preferencesController];
+  v4 = [preferencesController BOOLForPreferenceKey:TIKeyboardPeriodShortcutPreference];
 
   v5 = [NSNumber numberWithBool:v4];
 
@@ -872,8 +872,8 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "IN SERVICE - KeyboardPrediction", v7, 2u);
   }
 
-  v3 = [(KeyboardSettingsMediator *)self preferencesController];
-  v4 = [v3 BOOLForPreferenceKey:TIKeyboardPredictionPreference];
+  preferencesController = [(KeyboardSettingsMediator *)self preferencesController];
+  v4 = [preferencesController BOOLForPreferenceKey:TIKeyboardPredictionPreference];
 
   v5 = [NSNumber numberWithBool:v4];
 
@@ -888,8 +888,8 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "IN SERVICE - SpaceConfirmation", v7, 2u);
   }
 
-  v3 = [(KeyboardSettingsMediator *)self preferencesController];
-  v4 = [v3 BOOLForPreferenceKey:TISpaceConfirmationPreference];
+  preferencesController = [(KeyboardSettingsMediator *)self preferencesController];
+  v4 = [preferencesController BOOLForPreferenceKey:TISpaceConfirmationPreference];
 
   v5 = [NSNumber numberWithBool:v4];
 

@@ -1,17 +1,17 @@
 @interface HKStateOfMindChartFormatter
 - (HKStateOfMindChartFormatter)init;
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4;
-- (id)unitStringFromUnit:(id)a3 number:(id)a4;
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context;
+- (id)unitStringFromUnit:(id)unit number:(id)number;
 @end
 
 @implementation HKStateOfMindChartFormatter
 
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context
 {
   sub_1C3C82884();
   v6 = sub_1C3D202B4();
-  v7 = self;
-  sub_1C3CDD504(v6, a4);
+  selfCopy = self;
+  sub_1C3CDD504(v6, context);
 
   sub_1C3C27CB4(0, &qword_1EC0866B0);
   v8 = sub_1C3D202A4();
@@ -19,12 +19,12 @@
   return v8;
 }
 
-- (id)unitStringFromUnit:(id)a3 number:(id)a4
+- (id)unitStringFromUnit:(id)unit number:(id)number
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1C3CDF5CC(v7);
+  unitCopy = unit;
+  numberCopy = number;
+  selfCopy = self;
+  sub_1C3CDF5CC(numberCopy);
 
   v9 = sub_1C3D200C4();
 

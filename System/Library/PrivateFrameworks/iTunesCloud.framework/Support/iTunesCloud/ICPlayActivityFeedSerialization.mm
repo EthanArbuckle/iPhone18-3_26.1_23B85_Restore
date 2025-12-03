@@ -1,6 +1,6 @@
 @interface ICPlayActivityFeedSerialization
 + (id)defaultOverrideHTTPHeaderFields;
-- (id)propertyListObjectWithPlayActivityEvent:(id)a3;
+- (id)propertyListObjectWithPlayActivityEvent:(id)event;
 @end
 
 @implementation ICPlayActivityFeedSerialization
@@ -15,34 +15,34 @@
   return v2;
 }
 
-- (id)propertyListObjectWithPlayActivityEvent:(id)a3
+- (id)propertyListObjectWithPlayActivityEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (!eventCopy)
   {
     v70 = 0;
     goto LABEL_220;
   }
 
-  v195 = self;
-  v192 = [v4 eventType];
+  selfCopy = self;
+  eventType = [eventCopy eventType];
   v6 = [[NSMutableDictionary alloc] initWithCapacity:50];
-  v7 = [v5 targetedAudioQuality];
-  if (v7)
+  targetedAudioQuality = [v5 targetedAudioQuality];
+  if (targetedAudioQuality)
   {
     v8 = [[NSMutableDictionary alloc] initWithCapacity:6];
-    v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v7 bitDepth]);
+    v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [targetedAudioQuality bitDepth]);
     [v8 setObject:v9 forKey:@"audio-bit-depth"];
 
-    v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v7 bitRate]);
+    v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [targetedAudioQuality bitRate]);
     [v8 setObject:v10 forKey:@"bit-rate-in-bps"];
 
-    v11 = [v7 channelLayoutDescription];
-    v12 = v11;
-    if (v11)
+    channelLayoutDescription = [targetedAudioQuality channelLayoutDescription];
+    v12 = channelLayoutDescription;
+    if (channelLayoutDescription)
     {
-      v13 = v11;
+      v13 = channelLayoutDescription;
     }
 
     else
@@ -51,11 +51,11 @@
     }
 
     [v8 setObject:v13 forKey:@"audio-channel-type"];
-    v14 = [v7 codecString];
-    v15 = v14;
-    if (v14)
+    codecString = [targetedAudioQuality codecString];
+    v15 = codecString;
+    if (codecString)
     {
-      v16 = v14;
+      v16 = codecString;
     }
 
     else
@@ -64,10 +64,10 @@
     }
 
     [v8 setObject:v16 forKey:@"codec"];
-    v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v7 sampleRate]);
+    v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [targetedAudioQuality sampleRate]);
     [v8 setObject:v17 forKey:@"audio-sample-rate-in-hz"];
 
-    if ([v7 isSpatialized])
+    if ([targetedAudioQuality isSpatialized])
     {
       v18 = &off_1001ED4B0;
     }
@@ -81,11 +81,11 @@
     [v6 setObject:v8 forKey:@"audio-quality-targeted"];
   }
 
-  v19 = [v5 providedAudioQuality];
-  v200 = v19;
-  if (v19)
+  providedAudioQuality = [v5 providedAudioQuality];
+  v200 = providedAudioQuality;
+  if (providedAudioQuality)
   {
-    v20 = v19;
+    v20 = providedAudioQuality;
     v21 = [[NSMutableDictionary alloc] initWithCapacity:6];
     v22 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v20 bitDepth]);
     [v21 setObject:v22 forKey:@"audio-bit-depth"];
@@ -93,11 +93,11 @@
     v23 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v200 bitRate]);
     [v21 setObject:v23 forKey:@"bit-rate-in-bps"];
 
-    v24 = [v200 channelLayoutDescription];
-    v25 = v24;
-    if (v24)
+    channelLayoutDescription2 = [v200 channelLayoutDescription];
+    v25 = channelLayoutDescription2;
+    if (channelLayoutDescription2)
     {
-      v26 = v24;
+      v26 = channelLayoutDescription2;
     }
 
     else
@@ -106,11 +106,11 @@
     }
 
     [v21 setObject:v26 forKey:@"audio-channel-type"];
-    v27 = [v200 codecString];
-    v28 = v27;
-    if (v27)
+    codecString2 = [v200 codecString];
+    v28 = codecString2;
+    if (codecString2)
     {
-      v29 = v27;
+      v29 = codecString2;
     }
 
     else
@@ -136,68 +136,68 @@
     [v6 setObject:v21 forKey:@"audio-quality-provided"];
   }
 
-  v32 = [v5 audioQualityPreference];
-  if (v32)
+  audioQualityPreference = [v5 audioQualityPreference];
+  if (audioQualityPreference)
   {
-    if (v32 >= 5)
+    if (audioQualityPreference >= 5)
     {
       v33 = 0;
     }
 
     else
     {
-      v33 = v32;
+      v33 = audioQualityPreference;
     }
 
     v34 = [NSNumber numberWithInteger:v33];
     [v6 setObject:v34 forKey:@"user-preference-audio-quality"];
   }
 
-  v35 = [v5 playbackFormatPreference];
-  if (v35)
+  playbackFormatPreference = [v5 playbackFormatPreference];
+  if (playbackFormatPreference)
   {
-    if (v35 == 2)
+    if (playbackFormatPreference == 2)
     {
       v36 = 2;
     }
 
     else
     {
-      v36 = v35 == 1;
+      v36 = playbackFormatPreference == 1;
     }
 
     v37 = [NSNumber numberWithInteger:v36];
     [v6 setObject:v37 forKey:@"user-preference-playback-format"];
   }
 
-  v38 = [v5 userTransitionTypePreference];
-  if (v38)
+  userTransitionTypePreference = [v5 userTransitionTypePreference];
+  if (userTransitionTypePreference)
   {
-    if (v38 >= 4)
+    if (userTransitionTypePreference >= 4)
     {
       v39 = 0;
     }
 
     else
     {
-      v39 = v38;
+      v39 = userTransitionTypePreference;
     }
 
     v40 = [NSNumber numberWithInteger:v39];
     [v6 setObject:v40 forKey:@"user-preference-transition-type"];
   }
 
-  v41 = [v5 transitionTypeProvided];
-  if (v41)
+  transitionTypeProvided = [v5 transitionTypeProvided];
+  if (transitionTypeProvided)
   {
-    if (v41 >= 6)
+    if (transitionTypeProvided >= 6)
     {
       v42 = 0;
     }
 
     else
     {
-      v42 = v41;
+      v42 = transitionTypeProvided;
     }
 
     v43 = [NSNumber numberWithInteger:v42];
@@ -205,8 +205,8 @@
   }
 
   v44 = [NSMutableArray alloc];
-  v45 = [v5 buildFeatures];
-  v46 = [v44 initWithArray:v45];
+  buildFeatures = [v5 buildFeatures];
+  v46 = [v44 initWithArray:buildFeatures];
 
   if (v46 && [v46 count])
   {
@@ -214,95 +214,95 @@
   }
 
   v194 = v46;
-  v47 = [v5 enqueuerProperties];
+  enqueuerProperties = [v5 enqueuerProperties];
   v48 = v6;
   v49 = v48;
-  if (v47)
+  if (enqueuerProperties)
   {
     v198 = [[NSMutableDictionary alloc] initWithCapacity:8];
 
     v50 = [[NSMutableDictionary alloc] initWithCapacity:10];
-    v51 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v47 isSBEnabled]);
+    v51 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [enqueuerProperties isSBEnabled]);
     [v50 setObject:v51 forKey:@"sb-enabled"];
 
-    v52 = [v47 deviceName];
-    if ([v52 length])
+    deviceName = [enqueuerProperties deviceName];
+    if ([deviceName length])
     {
-      [v50 setObject:v52 forKey:@"device-name"];
+      [v50 setObject:deviceName forKey:@"device-name"];
     }
 
-    v53 = [v47 storeFrontID];
-    if ([v53 length])
+    storeFrontID = [enqueuerProperties storeFrontID];
+    if ([storeFrontID length])
     {
-      [v50 setObject:v53 forKey:@"store-front"];
+      [v50 setObject:storeFrontID forKey:@"store-front"];
     }
 
-    v189 = [v47 timeZone];
-    v54 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v189 secondsFromGMT]);
+    timeZone = [enqueuerProperties timeZone];
+    v54 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [timeZone secondsFromGMT]);
     [v50 setObject:v54 forKey:@"utc-offset-in-seconds"];
 
-    v55 = [v47 buildVersion];
-    if ([v55 length])
+    buildVersion = [enqueuerProperties buildVersion];
+    if ([buildVersion length])
     {
-      [v50 setObject:v55 forKey:@"build-version"];
+      [v50 setObject:buildVersion forKey:@"build-version"];
     }
 
-    v178 = v7;
-    v56 = [v47 deviceGUID];
-    if ([v56 length])
+    v178 = targetedAudioQuality;
+    deviceGUID = [enqueuerProperties deviceGUID];
+    if ([deviceGUID length])
     {
-      [v50 setObject:v56 forKey:@"guid"];
+      [v50 setObject:deviceGUID forKey:@"guid"];
     }
 
-    v57 = [v47 isPrivateListeningEnabled];
-    if (v57)
+    isPrivateListeningEnabled = [enqueuerProperties isPrivateListeningEnabled];
+    if (isPrivateListeningEnabled)
     {
-      [v50 setObject:v57 forKey:@"private-enabled"];
+      [v50 setObject:isPrivateListeningEnabled forKey:@"private-enabled"];
     }
 
-    if ([v47 systemReleaseType] == 4)
+    if ([enqueuerProperties systemReleaseType] == 4)
     {
       [v50 setObject:&__kCFBooleanTrue forKey:@"internal-build"];
     }
 
-    v58 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v47 storeAccountID]);
+    v58 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [enqueuerProperties storeAccountID]);
     [v50 setObject:v58 forKey:@"dsid"];
 
     [v48 setObject:v50 forKey:@"enqueuer"];
-    v7 = v178;
+    targetedAudioQuality = v178;
     v49 = v198;
   }
 
-  v197 = v47;
+  v197 = enqueuerProperties;
   v59 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 isSBEnabled]);
   [v49 setObject:v59 forKey:@"sb-enabled"];
 
-  v60 = [v5 deviceName];
+  deviceName2 = [v5 deviceName];
   v61 = v49;
-  if ([v60 length])
+  if ([deviceName2 length])
   {
-    [v49 setObject:v60 forKey:@"device-name"];
+    [v49 setObject:deviceName2 forKey:@"device-name"];
   }
 
-  v62 = [v5 storeFrontID];
-  if (!v62)
+  storeFrontID2 = [v5 storeFrontID];
+  if (!storeFrontID2)
   {
-    v62 = v195->_currentStoreFrontID;
+    storeFrontID2 = selfCopy->_currentStoreFrontID;
   }
 
-  if ([(NSString *)v62 length])
+  if ([(NSString *)storeFrontID2 length])
   {
-    [v61 setObject:v62 forKey:@"store-front"];
+    [v61 setObject:storeFrontID2 forKey:@"store-front"];
   }
 
-  v63 = [v5 eventTimeZone];
-  v64 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v63 secondsFromGMT]);
+  eventTimeZone = [v5 eventTimeZone];
+  v64 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [eventTimeZone secondsFromGMT]);
   [v61 setObject:v64 forKey:@"utc-offset-in-seconds"];
 
-  v65 = [v5 buildVersion];
-  if ([v65 length])
+  buildVersion2 = [v5 buildVersion];
+  if ([buildVersion2 length])
   {
-    [v61 setObject:v65 forKey:@"build-version"];
+    [v61 setObject:buildVersion2 forKey:@"build-version"];
   }
 
   if ([v5 systemReleaseType] == 4)
@@ -311,10 +311,10 @@
   }
 
   v199 = v61;
-  v66 = [v5 isPrivateListeningEnabled];
-  if (v66)
+  isPrivateListeningEnabled2 = [v5 isPrivateListeningEnabled];
+  if (isPrivateListeningEnabled2)
   {
-    [v199 setObject:v66 forKey:@"private-enabled"];
+    [v199 setObject:isPrivateListeningEnabled2 forKey:@"private-enabled"];
   }
 
   v67 = v199;
@@ -323,28 +323,28 @@
     [v48 setObject:v199 forKey:@"player"];
   }
 
-  v68 = [v5 containerType];
-  v188 = v68;
-  if ((v68 - 1) > 5)
+  containerType = [v5 containerType];
+  v188 = containerType;
+  if ((containerType - 1) > 5)
   {
     v69 = 0;
   }
 
   else
   {
-    v69 = qword_10016AE78[(v68 - 1)];
+    v69 = qword_10016AE78[(containerType - 1)];
   }
 
   v71 = [NSNumber numberWithInteger:v69];
   [v48 setObject:v71 forKey:@"container-type"];
 
-  if (v192 != 1)
+  if (eventType != 1)
   {
     [v5 itemEndTime];
     v73 = [NSNumber numberWithLongLong:(v72 * 1000.0)];
     [v48 setObject:v73 forKey:@"end-position-in-milliseconds"];
 
-    if (v192 == 2)
+    if (eventType == 2)
     {
       v76 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v5 displayType]);
       [v48 setObject:v76 forKey:@"display-type"];
@@ -352,10 +352,10 @@
       v77 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v5 lyricsDisplayedCharacterCount]);
       [v48 setObject:v77 forKey:@"character-displayed-count"];
 
-      v78 = [v5 lyricsLanguage];
-      if ([v78 length])
+      lyricsLanguage = [v5 lyricsLanguage];
+      if ([lyricsLanguage length])
       {
-        [v48 setObject:v78 forKey:@"lyric-language"];
+        [v48 setObject:lyricsLanguage forKey:@"lyric-language"];
       }
 
       v79 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 isDisplayTranslationEnabled]);
@@ -367,15 +367,15 @@
       goto LABEL_94;
     }
 
-    if (!v192)
+    if (!eventType)
     {
       v74 = [v5 endReasonType] - 1;
       v75 = v74 > 0xE ? 0 : qword_10016AEA8[v74];
       v81 = [NSNumber numberWithInteger:v75];
       [v48 setObject:v81 forKey:@"end-reason-type"];
 
-      v82 = [v5 vocalAttenuationAvailability];
-      v83 = v82 == 2 ? 2 : v82 == 1;
+      vocalAttenuationAvailability = [v5 vocalAttenuationAvailability];
+      v83 = vocalAttenuationAvailability == 2 ? 2 : vocalAttenuationAvailability == 1;
       v84 = [NSNumber numberWithInteger:v83];
       [v48 setObject:v84 forKey:@"attenuation-available"];
 
@@ -386,20 +386,20 @@
       if ([v5 itemType] != 7)
       {
         [v5 wallClockPlayDuration];
-        v78 = [NSNumber numberWithLongLong:(v87 * 1000.0)];
-        [v48 setObject:v78 forKey:@"play-duration-milliseconds"];
+        lyricsLanguage = [NSNumber numberWithLongLong:(v87 * 1000.0)];
+        [v48 setObject:lyricsLanguage forKey:@"play-duration-milliseconds"];
 LABEL_94:
       }
     }
   }
 
-  v88 = [v5 featureName];
-  if ([v88 length])
+  featureName = [v5 featureName];
+  if ([featureName length])
   {
-    [v48 setObject:v88 forKey:@"feature-name"];
+    [v48 setObject:featureName forKey:@"feature-name"];
   }
 
-  v191 = v88;
+  v191 = featureName;
   [v5 itemDuration];
   v90 = [NSNumber numberWithLongLong:(v89 * 1000.0)];
   [v48 setObject:v90 forKey:@"media-duration-in-milliseconds"];
@@ -411,43 +411,43 @@ LABEL_94:
   [v48 setObject:v92 forKey:@"offline"];
 
   v93 = [[NSMutableDictionary alloc] initWithCapacity:3];
-  v94 = [v5 repeatPlayMode];
-  if ((v94 - 1) >= 3)
+  repeatPlayMode = [v5 repeatPlayMode];
+  if ((repeatPlayMode - 1) >= 3)
   {
     v95 = 0;
   }
 
   else
   {
-    v95 = v94;
+    v95 = repeatPlayMode;
   }
 
   v96 = [NSNumber numberWithInteger:v95];
   [v93 setObject:v96 forKey:@"repeat-play-mode"];
 
-  v97 = [v5 shufflePlayMode];
-  if (v97 == 2)
+  shufflePlayMode = [v5 shufflePlayMode];
+  if (shufflePlayMode == 2)
   {
     v98 = 2;
   }
 
   else
   {
-    v98 = v97 == 1;
+    v98 = shufflePlayMode == 1;
   }
 
   v99 = [NSNumber numberWithInteger:v98];
   [v93 setObject:v99 forKey:@"shuffle-play-mode"];
 
-  v100 = [v5 autoPlayMode];
-  if ((v100 - 1) >= 3)
+  autoPlayMode = [v5 autoPlayMode];
+  if ((autoPlayMode - 1) >= 3)
   {
     v101 = 0;
   }
 
   else
   {
-    v101 = v100;
+    v101 = autoPlayMode;
   }
 
   v102 = [NSNumber numberWithInteger:v101];
@@ -493,17 +493,17 @@ LABEL_94:
     [v48 setObject:v109 forKey:@"persistent-id"];
   }
 
-  v110 = [v5 queueGroupingID];
-  if ([v110 length])
+  queueGroupingID = [v5 queueGroupingID];
+  if ([queueGroupingID length])
   {
-    [v48 setObject:v110 forKey:@"queue-grouping-id"];
+    [v48 setObject:queueGroupingID forKey:@"queue-grouping-id"];
   }
 
-  v187 = v110;
-  v111 = [v5 sharedActivityGroupSizeCurrent];
-  if (v111)
+  v187 = queueGroupingID;
+  sharedActivityGroupSizeCurrent = [v5 sharedActivityGroupSizeCurrent];
+  if (sharedActivityGroupSizeCurrent)
   {
-    v112 = sub_10007E664(v111);
+    v112 = sub_10007E664(sharedActivityGroupSizeCurrent);
     [v48 setObject:v112 forKey:@"shared-activity-devices-current"];
 
     v113 = sub_10007E664([v5 sharedActivityGroupSizeMax]);
@@ -515,13 +515,13 @@ LABEL_94:
     [v5 sharedActivityGroupSizeMax];
   }
 
-  v114 = [v5 sharedActivityType];
-  if (v114 <= 6)
+  sharedActivityType = [v5 sharedActivityType];
+  if (sharedActivityType <= 6)
   {
-    v115 = v114;
-    if (((1 << v114) & 0x72) != 0)
+    v115 = sharedActivityType;
+    if (((1 << sharedActivityType) & 0x72) != 0)
     {
-      v116 = [NSNumber numberWithInteger:v114];
+      v116 = [NSNumber numberWithInteger:sharedActivityType];
       [v48 setObject:v116 forKey:@"shared-activity-type"];
     }
   }
@@ -532,31 +532,31 @@ LABEL_94:
     [v48 setObject:v117 forKey:@"is-collaborative"];
   }
 
-  v118 = [v5 eventDate];
-  v119 = v118;
-  if (v118)
+  eventDate = [v5 eventDate];
+  v119 = eventDate;
+  if (eventDate)
   {
-    [v118 timeIntervalSinceNow];
+    [eventDate timeIntervalSinceNow];
     v121 = [NSNumber numberWithLongLong:(v120 * -1000.0) & ~((v120 * -1000.0) >> 63)];
     [v48 setObject:v121 forKey:@"milliseconds-since-play"];
   }
 
   v186 = v119;
-  v122 = [v5 recommendationData];
-  if ([v122 length])
+  recommendationData = [v5 recommendationData];
+  if ([recommendationData length])
   {
-    [v48 setObject:v122 forKey:@"reco-data"];
+    [v48 setObject:recommendationData forKey:@"reco-data"];
   }
 
-  v123 = [v5 sourceType];
-  if (v123 == 2)
+  sourceType = [v5 sourceType];
+  if (sourceType == 2)
   {
     v124 = 7;
   }
 
   else
   {
-    v124 = v123 == 1;
+    v124 = sourceType == 1;
   }
 
   v125 = [NSNumber numberWithInteger:v124];
@@ -566,109 +566,109 @@ LABEL_94:
   v127 = [NSNumber numberWithLongLong:(v126 * 1000.0)];
   [v48 setObject:v127 forKey:@"start-position-in-milliseconds"];
 
-  v128 = [v5 timedMetadata];
-  if ([v128 length])
+  timedMetadata = [v5 timedMetadata];
+  if ([timedMetadata length])
   {
-    [v48 setObject:v128 forKey:@"timed-metadata"];
+    [v48 setObject:timedMetadata forKey:@"timed-metadata"];
   }
 
-  v184 = v128;
-  v196 = [v5 trackInfo];
-  if ([v196 length])
+  v184 = timedMetadata;
+  trackInfo = [v5 trackInfo];
+  if ([trackInfo length])
   {
-    v129 = [NSPropertyListSerialization propertyListWithData:v196 options:0 format:0 error:0];
+    v129 = [NSPropertyListSerialization propertyListWithData:trackInfo options:0 format:0 error:0];
     if (v129)
     {
       [v48 setObject:v129 forKey:@"track-info"];
     }
   }
 
-  v130 = [v5 itemType];
-  v185 = v122;
-  v131 = v7;
-  if ((v130 - 1) > 8)
+  itemType = [v5 itemType];
+  v185 = recommendationData;
+  v131 = targetedAudioQuality;
+  if ((itemType - 1) > 8)
   {
     v132 = 0;
   }
 
   else
   {
-    v132 = qword_10016AF20[(v130 - 1)];
+    v132 = qword_10016AF20[(itemType - 1)];
   }
 
   v133 = [NSNumber numberWithInteger:v132];
   [v48 setObject:v133 forKey:@"type"];
 
-  v134 = [v5 requestingBundleIdentifier];
-  if (v134)
+  requestingBundleIdentifier = [v5 requestingBundleIdentifier];
+  if (requestingBundleIdentifier)
   {
-    [v48 setObject:v134 forKey:@"bundle-id"];
+    [v48 setObject:requestingBundleIdentifier forKey:@"bundle-id"];
   }
 
-  v135 = [v5 requestingBundleVersion];
-  if (v135)
+  requestingBundleVersion = [v5 requestingBundleVersion];
+  if (requestingBundleVersion)
   {
-    [v48 setObject:v135 forKey:@"bundle-version"];
+    [v48 setObject:requestingBundleVersion forKey:@"bundle-version"];
   }
 
-  v182 = v135;
-  v136 = [v5 householdID];
-  if ([v136 length])
+  v182 = requestingBundleVersion;
+  householdID = [v5 householdID];
+  if ([householdID length])
   {
-    [v48 setObject:v136 forKey:@"household-id"];
+    [v48 setObject:householdID forKey:@"household-id"];
   }
 
-  v181 = v136;
-  v137 = [v5 isSiriInitiated];
-  if (v137)
+  v181 = householdID;
+  isSiriInitiated = [v5 isSiriInitiated];
+  if (isSiriInitiated)
   {
-    [v48 setObject:v137 forKey:@"siri-initiated"];
+    [v48 setObject:isSiriInitiated forKey:@"siri-initiated"];
   }
 
-  v180 = v137;
+  v180 = isSiriInitiated;
   v190 = v93;
   v138 = v131;
-  v183 = v134;
+  v183 = requestingBundleIdentifier;
   if ([v5 version] > 1)
   {
     v145 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v5 reasonHintType] == 1);
     [v48 setObject:v145 forKey:@"event-reason-hint-type"];
 
-    if (v192 == 2)
+    if (eventType == 2)
     {
       v146 = 2;
     }
 
     else
     {
-      v146 = v192 == 1;
+      v146 = eventType == 1;
     }
 
     v147 = [NSNumber numberWithInteger:v146];
     [v48 setObject:v147 forKey:@"event-type"];
 
-    v139 = [[NSMutableDictionary alloc] initWithCapacity:8];
-    v148 = [v5 itemIDs];
-    v140 = v148;
+    containerID = [[NSMutableDictionary alloc] initWithCapacity:8];
+    itemIDs = [v5 itemIDs];
+    externalID = itemIDs;
     if (v188 == 1)
     {
-      v149 = [v148 radioAdamID];
-      if (!v149)
+      radioAdamID = [itemIDs radioAdamID];
+      if (!radioAdamID)
       {
         goto LABEL_180;
       }
 
-      v150 = v149;
+      v150 = radioAdamID;
       v151 = @"radio-adam-id";
     }
 
     else
     {
-      v152 = [v148 subscriptionAdamID];
-      v150 = v152;
-      if (v130 == 6)
+      subscriptionAdamID = [itemIDs subscriptionAdamID];
+      v150 = subscriptionAdamID;
+      if (itemType == 6)
       {
-        if (!v152)
+        if (!subscriptionAdamID)
         {
           goto LABEL_180;
         }
@@ -678,74 +678,74 @@ LABEL_94:
 
       else
       {
-        if (v152)
+        if (subscriptionAdamID)
         {
-          v153 = [NSNumber numberWithLongLong:v152];
-          [v139 setObject:v153 forKey:@"subscription-adam-id"];
+          v153 = [NSNumber numberWithLongLong:subscriptionAdamID];
+          [containerID setObject:v153 forKey:@"subscription-adam-id"];
         }
 
-        v154 = [v140 equivalencySourceAdamID];
-        if (v154)
+        equivalencySourceAdamID = [externalID equivalencySourceAdamID];
+        if (equivalencySourceAdamID)
         {
-          v155 = [NSNumber numberWithLongLong:v154];
-          [v139 setObject:v155 forKey:@"orig-sf-adam-id"];
+          v155 = [NSNumber numberWithLongLong:equivalencySourceAdamID];
+          [containerID setObject:v155 forKey:@"orig-sf-adam-id"];
         }
 
-        v156 = [v140 purchasedAdamID];
-        if (v156)
+        purchasedAdamID = [externalID purchasedAdamID];
+        if (purchasedAdamID)
         {
-          v157 = [NSNumber numberWithLongLong:v156];
-          [v139 setObject:v157 forKey:@"purchased-adam-id"];
+          v157 = [NSNumber numberWithLongLong:purchasedAdamID];
+          [containerID setObject:v157 forKey:@"purchased-adam-id"];
         }
 
-        v158 = [v140 cloudID];
-        if (v158)
+        cloudID = [externalID cloudID];
+        if (cloudID)
         {
-          v159 = [NSNumber numberWithLongLong:v158];
-          [v139 setObject:v159 forKey:@"cloud-id"];
+          v159 = [NSNumber numberWithLongLong:cloudID];
+          [containerID setObject:v159 forKey:@"cloud-id"];
         }
 
-        v160 = [v140 reportingAdamID];
-        if (!v160)
+        reportingAdamID = [externalID reportingAdamID];
+        if (!reportingAdamID)
         {
 LABEL_180:
-          v143 = [v140 lyricsID];
-          if ([v143 length])
+          lyricsID = [externalID lyricsID];
+          if ([lyricsID length])
           {
-            [v139 setObject:v143 forKey:@"lyric-id"];
+            [containerID setObject:lyricsID forKey:@"lyric-id"];
           }
 
-          if ([v139 count])
+          if ([containerID count])
           {
-            [v48 setObject:v139 forKey:@"ids"];
+            [v48 setObject:containerID forKey:@"ids"];
           }
 
-          v144 = [v5 containerIDs];
+          containerIDs = [v5 containerIDs];
           v162 = [[NSMutableDictionary alloc] initWithCapacity:4];
           if (v188 <= 2)
           {
             if (v188 == 1)
             {
-              v163 = [v144 stationHash];
-              if ([v163 length])
+              stationHash = [containerIDs stationHash];
+              if ([stationHash length])
               {
-                [v162 setObject:v163 forKey:@"station-hash"];
+                [v162 setObject:stationHash forKey:@"station-hash"];
               }
 
-              v164 = [v144 stationStringID];
-              if ([v164 length])
+              stationStringID = [containerIDs stationStringID];
+              if ([stationStringID length])
               {
-                [v162 setObject:v164 forKey:@"station-id"];
+                [v162 setObject:stationStringID forKey:@"station-id"];
               }
 
-              v173 = [v144 stationID];
-              if (v173)
+              stationID = [containerIDs stationID];
+              if (stationID)
               {
-                [NSNumber numberWithLongLong:v173];
-                v174 = v193 = v164;
+                [NSNumber numberWithLongLong:stationID];
+                v174 = v193 = stationStringID;
                 [v162 setObject:v174 forKey:@"station-personalized-id"];
 
-                v164 = v193;
+                stationStringID = v193;
               }
 
               goto LABEL_212;
@@ -754,32 +754,32 @@ LABEL_180:
             if (v188 == 2)
             {
 LABEL_191:
-              v163 = [v144 globalPlaylistID];
-              if ([v163 length])
+              stationHash = [containerIDs globalPlaylistID];
+              if ([stationHash length])
               {
-                [v162 setObject:v163 forKey:@"global-playlist-id"];
+                [v162 setObject:stationHash forKey:@"global-playlist-id"];
               }
 
-              v164 = [v144 playlistVersionHash];
-              if ([v164 length])
+              stationStringID = [containerIDs playlistVersionHash];
+              if ([stationStringID length])
               {
-                [v162 setObject:v164 forKey:@"playlist-version-hash"];
+                [v162 setObject:stationStringID forKey:@"playlist-version-hash"];
               }
 
-              v165 = [v144 cloudPlaylistID];
+              cloudPlaylistID = [containerIDs cloudPlaylistID];
               v179 = v138;
-              if (v165)
+              if (cloudPlaylistID)
               {
-                v166 = [NSNumber numberWithLongLong:v165];
+                v166 = [NSNumber numberWithLongLong:cloudPlaylistID];
                 [v162 setObject:v166 forKey:@"cloud-playlist-id"];
 
                 v138 = v179;
               }
 
-              v167 = [v144 cloudPlaylistFolderID];
-              if (v167)
+              cloudPlaylistFolderID = [containerIDs cloudPlaylistFolderID];
+              if (cloudPlaylistFolderID)
               {
-                v168 = [NSNumber numberWithLongLong:v167];
+                v168 = [NSNumber numberWithLongLong:cloudPlaylistFolderID];
                 [v162 setObject:v168 forKey:@"cloud-playlist-folder-id"];
 
                 v138 = v179;
@@ -805,31 +805,31 @@ LABEL_212:
                 goto LABEL_191;
               }
 
-              v171 = [v144 adamID];
-              if (v171)
+              adamID = [containerIDs adamID];
+              if (adamID)
               {
-                v172 = [NSNumber numberWithLongLong:v171];
+                v172 = [NSNumber numberWithLongLong:adamID];
                 [v162 setObject:v172 forKey:@"album-adam-id"];
               }
 
-              v163 = [v144 cloudAlbumID];
-              if (![v163 length])
+              stationHash = [containerIDs cloudAlbumID];
+              if (![stationHash length])
               {
                 goto LABEL_213;
               }
 
               v170 = @"cloud-album-id";
 LABEL_205:
-              [v162 setObject:v163 forKey:v170];
+              [v162 setObject:stationHash forKey:v170];
 LABEL_213:
 
               goto LABEL_214;
             }
 
-            v169 = [v144 adamID];
-            if (v169)
+            adamID2 = [containerIDs adamID];
+            if (adamID2)
             {
-              v163 = [NSNumber numberWithLongLong:v169];
+              stationHash = [NSNumber numberWithLongLong:adamID2];
               v170 = @"artist-adam-id";
               goto LABEL_205;
             }
@@ -846,41 +846,41 @@ LABEL_214:
           goto LABEL_217;
         }
 
-        v150 = v160;
+        v150 = reportingAdamID;
         v151 = @"reporting-adam-id";
       }
     }
 
     v161 = [NSNumber numberWithLongLong:v150];
-    [v139 setObject:v161 forKey:v151];
+    [containerID setObject:v161 forKey:v151];
 
     goto LABEL_180;
   }
 
-  v139 = [v5 containerID];
-  if (v139)
+  containerID = [v5 containerID];
+  if (containerID)
   {
-    [v48 setObject:v139 forKey:@"container-id"];
+    [v48 setObject:containerID forKey:@"container-id"];
   }
 
-  v140 = [v5 externalID];
+  externalID = [v5 externalID];
   v141 = v186;
   v142 = v182;
-  if (v140)
+  if (externalID)
   {
-    [v48 setObject:v140 forKey:@"external-identifier"];
+    [v48 setObject:externalID forKey:@"external-identifier"];
   }
 
-  v143 = [v5 personalizedContainerID];
-  if ([v143 length])
+  lyricsID = [v5 personalizedContainerID];
+  if ([lyricsID length])
   {
-    [v48 setObject:v143 forKey:@"personalized-container-id"];
+    [v48 setObject:lyricsID forKey:@"personalized-container-id"];
   }
 
-  v144 = [v5 storeID];
-  if ([v144 length])
+  containerIDs = [v5 storeID];
+  if ([containerIDs length])
   {
-    [v48 setObject:v144 forKey:@"id"];
+    [v48 setObject:containerIDs forKey:@"id"];
   }
 
 LABEL_217:

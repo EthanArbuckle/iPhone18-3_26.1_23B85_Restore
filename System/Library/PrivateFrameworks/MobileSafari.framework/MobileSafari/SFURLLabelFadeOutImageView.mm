@@ -1,22 +1,22 @@
 @interface SFURLLabelFadeOutImageView
-- (BOOL)_shouldAnimatePropertyAdditivelyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyAdditivelyWithKey:(id)key;
 @end
 
 @implementation SFURLLabelFadeOutImageView
 
-- (BOOL)_shouldAnimatePropertyAdditivelyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyAdditivelyWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7.receiver = self;
   v7.super_class = SFURLLabelFadeOutImageView;
-  if ([(SFURLLabelFadeOutImageView *)&v7 _shouldAnimatePropertyAdditivelyWithKey:v4])
+  if ([(SFURLLabelFadeOutImageView *)&v7 _shouldAnimatePropertyAdditivelyWithKey:keyCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"contentsTransform"];
+    v5 = [keyCopy isEqualToString:@"contentsTransform"];
   }
 
   return v5;

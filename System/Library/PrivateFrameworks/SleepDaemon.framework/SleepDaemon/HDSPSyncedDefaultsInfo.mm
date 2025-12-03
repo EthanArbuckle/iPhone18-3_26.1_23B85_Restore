@@ -1,28 +1,28 @@
 @interface HDSPSyncedDefaultsInfo
-- (HDSPSyncedDefaultsInfo)initWithDataVersionKey:(id)a3 currentDataVersion:(unint64_t)a4 cloudDataVersionKey:(id)a5 currentCloudDataVersion:(unint64_t)a6 cloudSyncEnabledKey:(id)a7 localDataVersionKey:(id)a8 currentLocalDataVersion:(unint64_t)a9;
+- (HDSPSyncedDefaultsInfo)initWithDataVersionKey:(id)key currentDataVersion:(unint64_t)version cloudDataVersionKey:(id)versionKey currentCloudDataVersion:(unint64_t)dataVersion cloudSyncEnabledKey:(id)enabledKey localDataVersionKey:(id)dataVersionKey currentLocalDataVersion:(unint64_t)localDataVersion;
 @end
 
 @implementation HDSPSyncedDefaultsInfo
 
-- (HDSPSyncedDefaultsInfo)initWithDataVersionKey:(id)a3 currentDataVersion:(unint64_t)a4 cloudDataVersionKey:(id)a5 currentCloudDataVersion:(unint64_t)a6 cloudSyncEnabledKey:(id)a7 localDataVersionKey:(id)a8 currentLocalDataVersion:(unint64_t)a9
+- (HDSPSyncedDefaultsInfo)initWithDataVersionKey:(id)key currentDataVersion:(unint64_t)version cloudDataVersionKey:(id)versionKey currentCloudDataVersion:(unint64_t)dataVersion cloudSyncEnabledKey:(id)enabledKey localDataVersionKey:(id)dataVersionKey currentLocalDataVersion:(unint64_t)localDataVersion
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  keyCopy = key;
+  versionKeyCopy = versionKey;
+  enabledKeyCopy = enabledKey;
+  dataVersionKeyCopy = dataVersionKey;
   v24.receiver = self;
   v24.super_class = HDSPSyncedDefaultsInfo;
   v19 = [(HDSPSyncedDefaultsInfo *)&v24 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_dataVersionKey, a3);
-    v20->_currentDataVersion = a4;
-    objc_storeStrong(&v20->_cloudDataVersionKey, a5);
-    v20->_currentCloudDataVersion = a6;
-    objc_storeStrong(&v20->_cloudSyncEnabledKey, a7);
-    objc_storeStrong(&v20->_localDataVersionKey, a8);
-    v20->_currentLocalDataVersion = a9;
+    objc_storeStrong(&v19->_dataVersionKey, key);
+    v20->_currentDataVersion = version;
+    objc_storeStrong(&v20->_cloudDataVersionKey, versionKey);
+    v20->_currentCloudDataVersion = dataVersion;
+    objc_storeStrong(&v20->_cloudSyncEnabledKey, enabledKey);
+    objc_storeStrong(&v20->_localDataVersionKey, dataVersionKey);
+    v20->_currentLocalDataVersion = localDataVersion;
     v21 = v20;
   }
 

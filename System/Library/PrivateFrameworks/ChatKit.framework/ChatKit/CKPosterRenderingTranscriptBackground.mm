@@ -4,60 +4,60 @@
 - (BOOL)_isRenderingVFXExtension;
 - (BOOL)_shouldBeSendingEventsToBackground;
 - (CGRect)didChangeKeyboardFrame;
-- (CKPosterRenderingTranscriptBackground)initWithChannel:(id)a3 environment:(id)a4;
+- (CKPosterRenderingTranscriptBackground)initWithChannel:(id)channel environment:(id)environment;
 - (CKPosterRenderingTranscriptBackgroundBackgroundDelegate)backgroundDelegate;
-- (UIEdgeInsets)posterRenderingTranscriptBackgroundView:(id)a3 preferredSafeAreaInsetsForProposedSafeAreaInsets:(UIEdgeInsets)a4;
+- (UIEdgeInsets)posterRenderingTranscriptBackgroundView:(id)view preferredSafeAreaInsetsForProposedSafeAreaInsets:(UIEdgeInsets)insets;
 - (double)luminance;
 - (id)snapshotView;
 - (int64_t)contentDerivedUserInterfaceStyle;
-- (void)_requestVFXExtensionTransitionToActiveState:(BOOL)a3;
-- (void)_sendEvent:(id)a3 metadata:(id)a4;
+- (void)_requestVFXExtensionTransitionToActiveState:(BOOL)state;
+- (void)_sendEvent:(id)event metadata:(id)metadata;
 - (void)_updateSaliencyAndOcclusionRects;
-- (void)backgroundIsScrolling:(BOOL)a3;
+- (void)backgroundIsScrolling:(BOOL)scrolling;
 - (void)channelControllerWillUpdate;
-- (void)didAddTapbackToChatItemWithGUID:(id)a3;
-- (void)didRemoveTapbackFromChatItemWithGUID:(id)a3;
-- (void)keyboardFrameDidChange:(CGRect)a3 accountingForSalientRectFrame:(CGRect)a4 duration:(float)a5 curve:(int64_t)a6 isVisible:(BOOL)a7;
-- (void)keyboardWillHideFromFrame:(CGRect)a3 toFrame:(CGRect)a4 duration:(float)a5 curve:(int64_t)a6 isVisible:(BOOL)a7;
-- (void)keyboardWillShowFromFrame:(CGRect)a3 toFrame:(CGRect)a4 duration:(float)a5 curve:(int64_t)a6 isVisible:(BOOL)a7;
+- (void)didAddTapbackToChatItemWithGUID:(id)d;
+- (void)didRemoveTapbackFromChatItemWithGUID:(id)d;
+- (void)keyboardFrameDidChange:(CGRect)change accountingForSalientRectFrame:(CGRect)frame duration:(float)duration curve:(int64_t)curve isVisible:(BOOL)visible;
+- (void)keyboardWillHideFromFrame:(CGRect)frame toFrame:(CGRect)toFrame duration:(float)duration curve:(int64_t)curve isVisible:(BOOL)visible;
+- (void)keyboardWillShowFromFrame:(CGRect)frame toFrame:(CGRect)toFrame duration:(float)duration curve:(int64_t)curve isVisible:(BOOL)visible;
 - (void)loadView;
 - (void)setNeedsPosterSaliencyAndOcclusionRectUpdate;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)transcriptDockingStateDidChange:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)transcriptDockingStateDidChange:(BOOL)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation CKPosterRenderingTranscriptBackground
 
-- (CKPosterRenderingTranscriptBackground)initWithChannel:(id)a3 environment:(id)a4
+- (CKPosterRenderingTranscriptBackground)initWithChannel:(id)channel environment:(id)environment
 {
-  v6 = a3;
-  v7 = a4;
+  channelCopy = channel;
+  environmentCopy = environment;
   v21.receiver = self;
   v21.super_class = CKPosterRenderingTranscriptBackground;
   v8 = [(CKPosterRenderingTranscriptBackground *)&v21 init];
   if (v8)
   {
     v9 = objc_alloc_init(_TtC7ChatKit24CKPosterRenderingContext);
-    [(CKPosterRenderingTranscriptBackground *)v8 setLayoutEnvironment:v7];
+    [(CKPosterRenderingTranscriptBackground *)v8 setLayoutEnvironment:environmentCopy];
     gotLoadHelper_x8__OBJC_CLASS___PRUISPosterChannelViewController(v10);
-    v12 = [objc_alloc(*(v11 + 168)) initWithChannel:v6 purpose:@"MessagesTranscriptBackground" context:v9];
+    v12 = [objc_alloc(*(v11 + 168)) initWithChannel:channelCopy purpose:@"MessagesTranscriptBackground" context:v9];
     [(CKPosterRenderingTranscriptBackground *)v8 setChannelViewController:v12];
 
     v13 = objc_alloc_init(MEMORY[0x1E698E6D8]);
     [v13 setDuration:1.0];
     [v13 setDelay:2.0];
-    v14 = [(CKPosterRenderingTranscriptBackground *)v8 channelViewController];
-    [v14 setPosterTransitionAnimationSettings:v13];
+    channelViewController = [(CKPosterRenderingTranscriptBackground *)v8 channelViewController];
+    [channelViewController setPosterTransitionAnimationSettings:v13];
 
     v15 = [_TtC7ChatKit31CKBackgroundMotionEventsManager alloc];
-    v16 = [(CKPosterRenderingTranscriptBackground *)v8 channelViewController];
-    v17 = [v16 motionEventsGenerator];
-    v18 = [(CKPosterRenderingTranscriptBackground *)v8 channelViewController];
-    v19 = [(CKBackgroundMotionEventsManager *)v15 initWithManagedMotionEventsGenerator:v17 viewController:v18 delegate:v8];
+    channelViewController2 = [(CKPosterRenderingTranscriptBackground *)v8 channelViewController];
+    motionEventsGenerator = [channelViewController2 motionEventsGenerator];
+    channelViewController3 = [(CKPosterRenderingTranscriptBackground *)v8 channelViewController];
+    v19 = [(CKBackgroundMotionEventsManager *)v15 initWithManagedMotionEventsGenerator:motionEventsGenerator viewController:channelViewController3 delegate:v8];
     [(CKPosterRenderingTranscriptBackground *)v8 setMotionEventsManager:v19];
   }
 
@@ -71,27 +71,27 @@
   [(CKPosterRenderingTranscriptBackground *)self setView:v3];
 }
 
-- (void)_sendEvent:(id)a3 metadata:(id)a4
+- (void)_sendEvent:(id)event metadata:(id)metadata
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  eventCopy = event;
   gotLoadHelper_x8__OBJC_CLASS___PRRenderingEvent(v7);
   v9 = *(v8 + 848);
-  v10 = a4;
-  v11 = [[v9 alloc] initWithType:v6 metadata:v10];
+  metadataCopy = metadata;
+  v11 = [[v9 alloc] initWithType:eventCopy metadata:metadataCopy];
 
   channelViewController = self->_channelViewController;
   v16 = 0;
-  LOBYTE(v10) = [(PRUISPosterChannelViewController *)channelViewController addEvent:v11 outError:&v16];
+  LOBYTE(metadataCopy) = [(PRUISPosterChannelViewController *)channelViewController addEvent:v11 outError:&v16];
   v13 = v16;
-  if ((v10 & 1) == 0)
+  if ((metadataCopy & 1) == 0)
   {
     v14 = IMLogHandleForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v15 = self->_channelViewController;
       *buf = 138412802;
-      v18 = v6;
+      v18 = eventCopy;
       v19 = 2048;
       v20 = v15;
       v21 = 2112;
@@ -101,16 +101,16 @@
   }
 }
 
-- (void)transcriptDockingStateDidChange:(BOOL)a3
+- (void)transcriptDockingStateDidChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   v15[2] = *MEMORY[0x1E69E9840];
   if ([(CKPosterRenderingTranscriptBackground *)self _shouldBeSendingEventsToBackground])
   {
     v14[0] = @"type";
     v14[1] = @"state";
     v15[0] = @"DockStateChanged";
-    v5 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+    v5 = [MEMORY[0x1E696AD98] numberWithBool:changeCopy];
     v15[1] = v5;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
 
@@ -120,7 +120,7 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v9 = @"NO";
-        if (v3)
+        if (changeCopy)
         {
           v9 = @"YES";
         }
@@ -136,11 +136,11 @@
   }
 }
 
-- (void)didAddTapbackToChatItemWithGUID:(id)a3
+- (void)didAddTapbackToChatItemWithGUID:(id)d
 {
   v33[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     v6 = IMLogHandleForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -153,27 +153,27 @@
 
   if ([(CKPosterRenderingTranscriptBackground *)self _shouldBeSendingEventsToBackground])
   {
-    v5 = [(CKTranscriptBackgroundEnvironment *)self->_layoutEnvironment transcriptLayoutDelegate];
-    v6 = [v5 transcriptBackground:self balloonAttributesForChatItemGuid:v4];
+    transcriptLayoutDelegate = [(CKTranscriptBackgroundEnvironment *)self->_layoutEnvironment transcriptLayoutDelegate];
+    v6 = [transcriptLayoutDelegate transcriptBackground:self balloonAttributesForChatItemGuid:dCopy];
 
     v7 = MEMORY[0x1E696ACC8];
-    v8 = [v6 bubblePath];
-    v9 = [v7 archivedDataWithRootObject:v8 requiringSecureCoding:1 error:0];
+    bubblePath = [v6 bubblePath];
+    v9 = [v7 archivedDataWithRootObject:bubblePath requiringSecureCoding:1 error:0];
 
     v32[0] = @"type";
     v32[1] = @"id";
     v33[0] = @"TapbackAdded";
-    v33[1] = v4;
+    v33[1] = dCopy;
     v32[2] = @"frame";
     v10 = MEMORY[0x1E696B098];
-    v11 = [(CKTranscriptBackgroundEnvironment *)self->_layoutEnvironment transcriptLayoutDelegate];
+    transcriptLayoutDelegate2 = [(CKTranscriptBackgroundEnvironment *)self->_layoutEnvironment transcriptLayoutDelegate];
     [v6 frame];
     v13 = v12;
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    v20 = [(CKPosterRenderingTranscriptBackground *)self view];
-    [v11 transcriptBackground:self convertRect:v20 toView:{v13, v15, v17, v19}];
+    view = [(CKPosterRenderingTranscriptBackground *)self view];
+    [transcriptLayoutDelegate2 transcriptBackground:self convertRect:view toView:{v13, v15, v17, v19}];
     v31[0] = v21;
     v31[1] = v22;
     v31[2] = v23;
@@ -194,11 +194,11 @@ LABEL_6:
   }
 }
 
-- (void)didRemoveTapbackFromChatItemWithGUID:(id)a3
+- (void)didRemoveTapbackFromChatItemWithGUID:(id)d
 {
   v33[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     v6 = IMLogHandleForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -211,27 +211,27 @@ LABEL_6:
 
   if ([(CKPosterRenderingTranscriptBackground *)self _shouldBeSendingEventsToBackground])
   {
-    v5 = [(CKTranscriptBackgroundEnvironment *)self->_layoutEnvironment transcriptLayoutDelegate];
-    v6 = [v5 transcriptBackground:self balloonAttributesForChatItemGuid:v4];
+    transcriptLayoutDelegate = [(CKTranscriptBackgroundEnvironment *)self->_layoutEnvironment transcriptLayoutDelegate];
+    v6 = [transcriptLayoutDelegate transcriptBackground:self balloonAttributesForChatItemGuid:dCopy];
 
     v7 = MEMORY[0x1E696ACC8];
-    v8 = [v6 bubblePath];
-    v9 = [v7 archivedDataWithRootObject:v8 requiringSecureCoding:1 error:0];
+    bubblePath = [v6 bubblePath];
+    v9 = [v7 archivedDataWithRootObject:bubblePath requiringSecureCoding:1 error:0];
 
     v32[0] = @"type";
     v32[1] = @"id";
     v33[0] = @"TapbackRemoved";
-    v33[1] = v4;
+    v33[1] = dCopy;
     v32[2] = @"frame";
     v10 = MEMORY[0x1E696B098];
-    v11 = [(CKTranscriptBackgroundEnvironment *)self->_layoutEnvironment transcriptLayoutDelegate];
+    transcriptLayoutDelegate2 = [(CKTranscriptBackgroundEnvironment *)self->_layoutEnvironment transcriptLayoutDelegate];
     [v6 frame];
     v13 = v12;
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    v20 = [(CKPosterRenderingTranscriptBackground *)self view];
-    [v11 transcriptBackground:self convertRect:v20 toView:{v13, v15, v17, v19}];
+    view = [(CKPosterRenderingTranscriptBackground *)self view];
+    [transcriptLayoutDelegate2 transcriptBackground:self convertRect:view toView:{v13, v15, v17, v19}];
     v31[0] = v21;
     v31[1] = v22;
     v31[2] = v23;
@@ -252,9 +252,9 @@ LABEL_6:
   }
 }
 
-- (void)_requestVFXExtensionTransitionToActiveState:(BOOL)a3
+- (void)_requestVFXExtensionTransitionToActiveState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v11[2] = *MEMORY[0x1E69E9840];
   if ([(CKPosterRenderingTranscriptBackground *)self _isRenderingVFXExtension])
   {
@@ -263,7 +263,7 @@ LABEL_6:
       v10[0] = @"type";
       v10[1] = @"active";
       v11[0] = @"UpdateActiveState";
-      v5 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+      v5 = [MEMORY[0x1E696AD98] numberWithBool:stateCopy];
       v11[1] = v5;
       v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
 
@@ -273,17 +273,17 @@ LABEL_6:
   }
 }
 
-- (void)keyboardFrameDidChange:(CGRect)a3 accountingForSalientRectFrame:(CGRect)a4 duration:(float)a5 curve:(int64_t)a6 isVisible:(BOOL)a7
+- (void)keyboardFrameDidChange:(CGRect)change accountingForSalientRectFrame:(CGRect)frame duration:(float)duration curve:(int64_t)curve isVisible:(BOOL)visible
 {
-  v7 = a7;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3.size.height;
-  v14 = a3.size.width;
-  v15 = a3.origin.y;
-  v16 = a3.origin.x;
+  visibleCopy = visible;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v13 = change.size.height;
+  v14 = change.size.width;
+  v15 = change.origin.y;
+  v16 = change.origin.x;
   v45[8] = *MEMORY[0x1E69E9840];
   if ([(CKPosterRenderingTranscriptBackground *)self _shouldBeSendingEventsToBackground])
   {
@@ -295,8 +295,8 @@ LABEL_6:
       v46.size.height = v13;
       if (!CGRectEqualToRect(self->_didChangeKeyboardFrame, v46))
       {
-        v20 = [(PRUISPosterChannelViewController *)self->_channelViewController view];
-        [v20 convertRect:0 fromView:{x, y, width, height}];
+        view = [(PRUISPosterChannelViewController *)self->_channelViewController view];
+        [view convertRect:0 fromView:{x, y, width, height}];
         v22 = v21;
         v24 = v23;
         v26 = v25;
@@ -305,7 +305,7 @@ LABEL_6:
         v45[0] = @"KeyboardFrameDidChange";
         v44[0] = @"type";
         v44[1] = @"isVisible";
-        v29 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+        v29 = [MEMORY[0x1E696AD98] numberWithBool:visibleCopy];
         v45[1] = v29;
         v44[2] = @"frame";
         v43[0] = v22;
@@ -329,11 +329,11 @@ LABEL_6:
         v32 = [MEMORY[0x1E696B098] valueWithBytes:v41 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
         v45[4] = v32;
         v44[5] = @"duration";
-        *&v33 = a5;
+        *&v33 = duration;
         v34 = [MEMORY[0x1E696AD98] numberWithFloat:v33];
         v45[5] = v34;
         v44[6] = @"curve";
-        v35 = [MEMORY[0x1E696AD98] numberWithInteger:a6];
+        v35 = [MEMORY[0x1E696AD98] numberWithInteger:curve];
         v45[6] = v35;
         v44[7] = @"fromTapbackContext";
         v36 = [MEMORY[0x1E696AD98] numberWithBool:self->_keyboardWasUpBeforeTapbackContext];
@@ -351,17 +351,17 @@ LABEL_6:
   }
 }
 
-- (void)keyboardWillShowFromFrame:(CGRect)a3 toFrame:(CGRect)a4 duration:(float)a5 curve:(int64_t)a6 isVisible:(BOOL)a7
+- (void)keyboardWillShowFromFrame:(CGRect)frame toFrame:(CGRect)toFrame duration:(float)duration curve:(int64_t)curve isVisible:(BOOL)visible
 {
-  v7 = a7;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3.size.height;
-  v14 = a3.size.width;
-  v15 = a3.origin.y;
-  v16 = a3.origin.x;
+  visibleCopy = visible;
+  height = toFrame.size.height;
+  width = toFrame.size.width;
+  y = toFrame.origin.y;
+  x = toFrame.origin.x;
+  v13 = frame.size.height;
+  v14 = frame.size.width;
+  v15 = frame.origin.y;
+  v16 = frame.origin.x;
   v46[7] = *MEMORY[0x1E69E9840];
   if ([(CKPosterRenderingTranscriptBackground *)self _shouldBeSendingEventsToBackground])
   {
@@ -370,12 +370,12 @@ LABEL_6:
       v46[0] = @"KeyboardWillShow";
       v45[0] = @"type";
       v45[1] = @"isVisible";
-      v42 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+      v42 = [MEMORY[0x1E696AD98] numberWithBool:visibleCopy];
       v46[1] = v42;
       v45[2] = @"fromFrame";
       v20 = MEMORY[0x1E696B098];
-      v21 = [(PRUISPosterChannelViewController *)self->_channelViewController view];
-      [v21 convertRect:0 fromView:{v16, v15, v14, v13}];
+      view = [(PRUISPosterChannelViewController *)self->_channelViewController view];
+      [view convertRect:0 fromView:{v16, v15, v14, v13}];
       v44[0] = v22;
       v44[1] = v23;
       v44[2] = v24;
@@ -384,8 +384,8 @@ LABEL_6:
       v46[2] = v26;
       v45[3] = @"toFrame";
       v27 = MEMORY[0x1E696B098];
-      v28 = [(PRUISPosterChannelViewController *)self->_channelViewController view];
-      [v28 convertRect:0 fromView:{x, y, width, height}];
+      view2 = [(PRUISPosterChannelViewController *)self->_channelViewController view];
+      [view2 convertRect:0 fromView:{x, y, width, height}];
       v43[0] = v29;
       v43[1] = v30;
       v43[2] = v31;
@@ -393,11 +393,11 @@ LABEL_6:
       v33 = [v27 valueWithBytes:v43 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
       v46[3] = v33;
       v45[4] = @"duration";
-      *&v34 = a5;
+      *&v34 = duration;
       v35 = [MEMORY[0x1E696AD98] numberWithFloat:v34];
       v46[4] = v35;
       v45[5] = @"curve";
-      v36 = [MEMORY[0x1E696AD98] numberWithInteger:a6];
+      v36 = [MEMORY[0x1E696AD98] numberWithInteger:curve];
       v46[5] = v36;
       v45[6] = @"fromTapbackContext";
       v37 = [MEMORY[0x1E696AD98] numberWithBool:self->_keyboardWasUpBeforeTapbackContext];
@@ -411,17 +411,17 @@ LABEL_6:
   }
 }
 
-- (void)keyboardWillHideFromFrame:(CGRect)a3 toFrame:(CGRect)a4 duration:(float)a5 curve:(int64_t)a6 isVisible:(BOOL)a7
+- (void)keyboardWillHideFromFrame:(CGRect)frame toFrame:(CGRect)toFrame duration:(float)duration curve:(int64_t)curve isVisible:(BOOL)visible
 {
-  v7 = a7;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3.size.height;
-  v14 = a3.size.width;
-  v15 = a3.origin.y;
-  v16 = a3.origin.x;
+  visibleCopy = visible;
+  height = toFrame.size.height;
+  width = toFrame.size.width;
+  y = toFrame.origin.y;
+  x = toFrame.origin.x;
+  v13 = frame.size.height;
+  v14 = frame.size.width;
+  v15 = frame.origin.y;
+  v16 = frame.origin.x;
   v46[7] = *MEMORY[0x1E69E9840];
   if ([(CKPosterRenderingTranscriptBackground *)self _shouldBeSendingEventsToBackground])
   {
@@ -430,12 +430,12 @@ LABEL_6:
       v46[0] = @"KeyboardWillHide";
       v45[0] = @"type";
       v45[1] = @"isVisible";
-      v20 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+      v20 = [MEMORY[0x1E696AD98] numberWithBool:visibleCopy];
       v46[1] = v20;
       v45[2] = @"fromFrame";
       v21 = MEMORY[0x1E696B098];
-      v22 = [(PRUISPosterChannelViewController *)self->_channelViewController view];
-      [v22 convertRect:0 fromView:{v16, v15, v14, v13}];
+      view = [(PRUISPosterChannelViewController *)self->_channelViewController view];
+      [view convertRect:0 fromView:{v16, v15, v14, v13}];
       v44[0] = v23;
       v44[1] = v24;
       v44[2] = v25;
@@ -444,8 +444,8 @@ LABEL_6:
       v46[2] = v27;
       v45[3] = @"toFrame";
       v28 = MEMORY[0x1E696B098];
-      v29 = [(PRUISPosterChannelViewController *)self->_channelViewController view];
-      [v29 convertRect:0 fromView:{x, y, width, height}];
+      view2 = [(PRUISPosterChannelViewController *)self->_channelViewController view];
+      [view2 convertRect:0 fromView:{x, y, width, height}];
       v43[0] = v30;
       v43[1] = v31;
       v43[2] = v32;
@@ -453,11 +453,11 @@ LABEL_6:
       v34 = [v28 valueWithBytes:v43 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
       v46[3] = v34;
       v45[4] = @"duration";
-      *&v35 = a5;
+      *&v35 = duration;
       v36 = [MEMORY[0x1E696AD98] numberWithFloat:v35];
       v46[4] = v36;
       v45[5] = @"curve";
-      v37 = [MEMORY[0x1E696AD98] numberWithInteger:a6];
+      v37 = [MEMORY[0x1E696AD98] numberWithInteger:curve];
       v46[5] = v37;
       v45[6] = @"fromTapbackContext";
       v38 = [MEMORY[0x1E696AD98] numberWithBool:self->_keyboardWasUpBeforeTapbackContext];
@@ -470,13 +470,13 @@ LABEL_6:
   }
 }
 
-- (void)backgroundIsScrolling:(BOOL)a3
+- (void)backgroundIsScrolling:(BOOL)scrolling
 {
   v10[2] = *MEMORY[0x1E69E9840];
   v9[0] = @"type";
   v9[1] = @"isScrolling";
   v10[0] = @"IsScrolling";
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:scrolling];
   v10[1] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
 
@@ -490,21 +490,21 @@ LABEL_6:
   v20.super_class = CKPosterRenderingTranscriptBackground;
   [(CKPosterRenderingTranscriptBackground *)&v20 viewDidLayoutSubviews];
   [(CKPosterRenderingTranscriptBackground *)self _updateSaliencyAndOcclusionRects];
-  v3 = [(CKPosterRenderingTranscriptBackground *)self view];
-  [v3 bounds];
+  view = [(CKPosterRenderingTranscriptBackground *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CKPosterRenderingTranscriptBackground *)self backgroundExtensionView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  backgroundExtensionView = [(CKPosterRenderingTranscriptBackground *)self backgroundExtensionView];
+  [backgroundExtensionView setFrame:{v5, v7, v9, v11}];
 
-  v13 = [(CKPosterRenderingTranscriptBackground *)self channelViewController];
-  v14 = [v13 view];
-  v15 = [(CKPosterRenderingTranscriptBackground *)self backgroundExtensionContainerView];
-  [v15 bounds];
-  [v14 setFrame:?];
+  channelViewController = [(CKPosterRenderingTranscriptBackground *)self channelViewController];
+  view2 = [channelViewController view];
+  backgroundExtensionContainerView = [(CKPosterRenderingTranscriptBackground *)self backgroundExtensionContainerView];
+  [backgroundExtensionContainerView bounds];
+  [view2 setFrame:?];
 
   if ([objc_opt_class() shouldShowSalientContentRectangleDebugView])
   {
@@ -515,21 +515,21 @@ LABEL_6:
       self->_salientContentRectangleDebugView = v16;
 
       [(CKSalientContentRectangleDebugView *)self->_salientContentRectangleDebugView setUserInteractionEnabled:0];
-      v18 = [(CKPosterRenderingTranscriptBackground *)self view];
-      [v18 addSubview:self->_salientContentRectangleDebugView];
+      view3 = [(CKPosterRenderingTranscriptBackground *)self view];
+      [view3 addSubview:self->_salientContentRectangleDebugView];
     }
 
-    v19 = [(CKPosterRenderingTranscriptBackground *)self view];
-    [v19 bounds];
+    view4 = [(CKPosterRenderingTranscriptBackground *)self view];
+    [view4 bounds];
     [(CKSalientContentRectangleDebugView *)self->_salientContentRectangleDebugView setFrame:?];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = CKPosterRenderingTranscriptBackground;
-  [(CKPosterRenderingTranscriptBackground *)&v4 traitCollectionDidChange:a3];
+  [(CKPosterRenderingTranscriptBackground *)&v4 traitCollectionDidChange:change];
   [(CKPosterRenderingTranscriptBackground *)self setNeedsPosterSaliencyAndOcclusionRectUpdate];
 }
 
@@ -538,62 +538,62 @@ LABEL_6:
   v19.receiver = self;
   v19.super_class = CKPosterRenderingTranscriptBackground;
   [(CKPosterRenderingTranscriptBackground *)&v19 viewDidLoad];
-  v3 = [(CKPosterRenderingTranscriptBackground *)self channelViewController];
-  [(CKPosterRenderingTranscriptBackground *)self addChildViewController:v3];
+  channelViewController = [(CKPosterRenderingTranscriptBackground *)self channelViewController];
+  [(CKPosterRenderingTranscriptBackground *)self addChildViewController:channelViewController];
 
   v4 = objc_alloc(MEMORY[0x1E69DC6F0]);
-  v5 = [(CKPosterRenderingTranscriptBackground *)self view];
-  [v5 bounds];
+  view = [(CKPosterRenderingTranscriptBackground *)self view];
+  [view bounds];
   v6 = [v4 initWithFrame:?];
   [(CKPosterRenderingTranscriptBackground *)self setBackgroundExtensionView:v6];
 
   v7 = objc_alloc(MEMORY[0x1E69DD250]);
-  v8 = [(CKPosterRenderingTranscriptBackground *)self view];
-  [v8 bounds];
+  view2 = [(CKPosterRenderingTranscriptBackground *)self view];
+  [view2 bounds];
   v9 = [v7 initWithFrame:?];
   [(CKPosterRenderingTranscriptBackground *)self setBackgroundExtensionContainerView:v9];
 
-  v10 = [(CKPosterRenderingTranscriptBackground *)self backgroundExtensionContainerView];
-  v11 = [(CKPosterRenderingTranscriptBackground *)self channelViewController];
-  v12 = [v11 view];
-  [v10 addSubview:v12];
+  backgroundExtensionContainerView = [(CKPosterRenderingTranscriptBackground *)self backgroundExtensionContainerView];
+  channelViewController2 = [(CKPosterRenderingTranscriptBackground *)self channelViewController];
+  view3 = [channelViewController2 view];
+  [backgroundExtensionContainerView addSubview:view3];
 
-  v13 = [(CKPosterRenderingTranscriptBackground *)self backgroundExtensionContainerView];
-  v14 = [(CKPosterRenderingTranscriptBackground *)self backgroundExtensionView];
-  [v14 setContentView:v13];
+  backgroundExtensionContainerView2 = [(CKPosterRenderingTranscriptBackground *)self backgroundExtensionContainerView];
+  backgroundExtensionView = [(CKPosterRenderingTranscriptBackground *)self backgroundExtensionView];
+  [backgroundExtensionView setContentView:backgroundExtensionContainerView2];
 
-  v15 = [(CKPosterRenderingTranscriptBackground *)self backgroundExtensionContainerView];
-  [v15 setClipsToBounds:1];
+  backgroundExtensionContainerView3 = [(CKPosterRenderingTranscriptBackground *)self backgroundExtensionContainerView];
+  [backgroundExtensionContainerView3 setClipsToBounds:1];
 
-  v16 = [(CKPosterRenderingTranscriptBackground *)self view];
-  v17 = [(CKPosterRenderingTranscriptBackground *)self backgroundExtensionView];
-  [v16 addSubview:v17];
+  view4 = [(CKPosterRenderingTranscriptBackground *)self view];
+  backgroundExtensionView2 = [(CKPosterRenderingTranscriptBackground *)self backgroundExtensionView];
+  [view4 addSubview:backgroundExtensionView2];
 
-  v18 = [(CKPosterRenderingTranscriptBackground *)self channelViewController];
-  [v18 didMoveToParentViewController:self];
+  channelViewController3 = [(CKPosterRenderingTranscriptBackground *)self channelViewController];
+  [channelViewController3 didMoveToParentViewController:self];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CKPosterRenderingTranscriptBackground;
-  [(CKPosterRenderingTranscriptBackground *)&v4 viewDidAppear:a3];
+  [(CKPosterRenderingTranscriptBackground *)&v4 viewDidAppear:appear];
   [(CKBackgroundMotionEventsManager *)self->_motionEventsManager configureIfNeeded];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CKPosterRenderingTranscriptBackground;
-  [(CKPosterRenderingTranscriptBackground *)&v4 viewDidDisappear:a3];
+  [(CKPosterRenderingTranscriptBackground *)&v4 viewDidDisappear:disappear];
   [(CKBackgroundMotionEventsManager *)self->_motionEventsManager stopSendingMotionEvents];
 }
 
 - (id)snapshotView
 {
   [(CKPosterRenderingTranscriptBackground *)self pauseBackgroundAnimationsIfNeeded];
-  v3 = [(CKPosterRenderingTranscriptBackground *)self view];
-  v4 = [v3 snapshotViewAfterScreenUpdates:0];
+  view = [(CKPosterRenderingTranscriptBackground *)self view];
+  v4 = [view snapshotViewAfterScreenUpdates:0];
 
   [(CKPosterRenderingTranscriptBackground *)self resumeBackgroundAnimationsIfNeeded];
 
@@ -602,10 +602,10 @@ LABEL_6:
 
 - (double)luminance
 {
-  v2 = [(PRUISPosterChannelViewController *)self->_channelViewController channel];
-  v3 = [v2 posterConfiguration];
+  channel = [(PRUISPosterChannelViewController *)self->_channelViewController channel];
+  posterConfiguration = [channel posterConfiguration];
 
-  [CKPRSPosterConfiguration ck_luminanceInConfiguration:v3];
+  [CKPRSPosterConfiguration ck_luminanceInConfiguration:posterConfiguration];
   v5 = v4;
 
   return v5;
@@ -655,9 +655,9 @@ void __83__CKPosterRenderingTranscriptBackground_shouldShowSalientContentRectang
       [(CKSalientContentRectangleDebugView *)self->_salientContentRectangleDebugView setSalientContentRectangle:v6, v8, v10, v12];
     }
 
-    v13 = [(CKPosterRenderingTranscriptBackground *)self view];
-    v14 = [(CKPosterRenderingTranscriptBackground *)self backgroundExtensionContainerView];
-    [v13 convertRect:v14 toView:{v6, v8, v10, v12}];
+    view = [(CKPosterRenderingTranscriptBackground *)self view];
+    backgroundExtensionContainerView = [(CKPosterRenderingTranscriptBackground *)self backgroundExtensionContainerView];
+    [view convertRect:backgroundExtensionContainerView toView:{v6, v8, v10, v12}];
     v16 = v15;
     v18 = v17;
     v20 = v19;
@@ -676,26 +676,26 @@ void __83__CKPosterRenderingTranscriptBackground_shouldShowSalientContentRectang
 
 - (void)setNeedsPosterSaliencyAndOcclusionRectUpdate
 {
-  v2 = [(CKPosterRenderingTranscriptBackground *)self view];
-  [v2 setNeedsLayout];
+  view = [(CKPosterRenderingTranscriptBackground *)self view];
+  [view setNeedsLayout];
 }
 
 - (BOOL)_isRenderingVFXExtension
 {
-  v2 = [(PRUISPosterChannelViewController *)self->_channelViewController channel];
-  v3 = [v2 posterConfiguration];
+  channel = [(PRUISPosterChannelViewController *)self->_channelViewController channel];
+  posterConfiguration = [channel posterConfiguration];
 
-  if (v3)
+  if (posterConfiguration)
   {
-    v4 = [v3 providerBundleIdentifier];
-    if ([v4 isEqualToString:@"com.apple.transcriptBackgroundPoster.DynamicExtension"])
+    providerBundleIdentifier = [posterConfiguration providerBundleIdentifier];
+    if ([providerBundleIdentifier isEqualToString:@"com.apple.transcriptBackgroundPoster.DynamicExtension"])
     {
       v5 = 1;
     }
 
     else
     {
-      v5 = [v4 isEqualToString:@"com.apple.transcriptBackgroundPoster.GradientExtension"];
+      v5 = [providerBundleIdentifier isEqualToString:@"com.apple.transcriptBackgroundPoster.GradientExtension"];
     }
   }
 
@@ -716,20 +716,20 @@ void __83__CKPosterRenderingTranscriptBackground_shouldShowSalientContentRectang
 
   else
   {
-    v4 = [(CKPosterRenderingTranscriptBackground *)self traitCollection];
-    v5 = v4;
-    if (v4 && ((v6 = [v4 activeAppearance], v6 == 1) || v6 == -1))
+    traitCollection = [(CKPosterRenderingTranscriptBackground *)self traitCollection];
+    v5 = traitCollection;
+    if (traitCollection && ((v6 = [traitCollection activeAppearance], v6 == 1) || v6 == -1))
     {
-      v7 = [(CKPosterRenderingTranscriptBackground *)self view];
-      v8 = [v7 window];
-      v9 = [v8 windowScene];
+      view = [(CKPosterRenderingTranscriptBackground *)self view];
+      window = [view window];
+      windowScene = [window windowScene];
 
-      if (v9)
+      if (windowScene)
       {
-        v10 = [v9 activationState];
-        if ((v10 + 1) <= 3)
+        activationState = [windowScene activationState];
+        if ((activationState + 1) <= 3)
         {
-          v3 = 2u >> ((v10 + 1) & 0xF);
+          v3 = 2u >> ((activationState + 1) & 0xF);
         }
 
         else
@@ -755,35 +755,35 @@ void __83__CKPosterRenderingTranscriptBackground_shouldShowSalientContentRectang
 
 - (BOOL)_currentBackgroundIsPhotos
 {
-  v3 = [(CKPosterRenderingTranscriptBackground *)self channelViewController];
+  channelViewController = [(CKPosterRenderingTranscriptBackground *)self channelViewController];
 
-  if (!v3)
+  if (!channelViewController)
   {
     return 0;
   }
 
-  v4 = [(CKPosterRenderingTranscriptBackground *)self channelViewController];
-  v5 = [v4 channel];
-  v6 = [v5 posterConfiguration];
-  v7 = [v6 providerBundleIdentifier];
+  channelViewController2 = [(CKPosterRenderingTranscriptBackground *)self channelViewController];
+  channel = [channelViewController2 channel];
+  posterConfiguration = [channel posterConfiguration];
+  providerBundleIdentifier = [posterConfiguration providerBundleIdentifier];
 
-  LOBYTE(v4) = [v7 isEqualToString:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"];
-  return v4;
+  LOBYTE(channelViewController2) = [providerBundleIdentifier isEqualToString:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"];
+  return channelViewController2;
 }
 
 - (void)channelControllerWillUpdate
 {
-  v3 = [(CKPosterRenderingTranscriptBackground *)self _currentBackgroundIsPhotos];
+  _currentBackgroundIsPhotos = [(CKPosterRenderingTranscriptBackground *)self _currentBackgroundIsPhotos];
 
-  [(CKPosterRenderingTranscriptBackground *)self setPreviousBackgroundWasPhotos:v3];
+  [(CKPosterRenderingTranscriptBackground *)self setPreviousBackgroundWasPhotos:_currentBackgroundIsPhotos];
 }
 
-- (UIEdgeInsets)posterRenderingTranscriptBackgroundView:(id)a3 preferredSafeAreaInsetsForProposedSafeAreaInsets:(UIEdgeInsets)a4
+- (UIEdgeInsets)posterRenderingTranscriptBackgroundView:(id)view preferredSafeAreaInsetsForProposedSafeAreaInsets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   if (![(CKPosterRenderingTranscriptBackground *)self _currentBackgroundIsPhotos]&& ![(CKPosterRenderingTranscriptBackground *)self previousBackgroundWasPhotos])
   {
     top = *MEMORY[0x1E69DDCE0];

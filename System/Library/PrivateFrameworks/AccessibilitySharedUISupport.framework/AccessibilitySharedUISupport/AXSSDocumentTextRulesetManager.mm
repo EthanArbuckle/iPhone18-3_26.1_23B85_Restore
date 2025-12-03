@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __47__AXSSDocumentTextRulesetManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_once != -1)
   {
     dispatch_once(&sharedManager_once, block);
@@ -62,8 +62,8 @@ uint64_t __47__AXSSDocumentTextRulesetManager_sharedManager__block_invoke(uint64
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(AXSSDocumentTextRulesetManager *)self _rulesets];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  _rulesets = [(AXSSDocumentTextRulesetManager *)self _rulesets];
+  v6 = [_rulesets countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -75,14 +75,14 @@ uint64_t __47__AXSSDocumentTextRulesetManager_sharedManager__block_invoke(uint64
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_rulesets);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) allRules];
-        v8 += [v11 count];
+        allRules = [*(*(&v15 + 1) + 8 * i) allRules];
+        v8 += [allRules count];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      v7 = [_rulesets countByEnumeratingWithState:&v15 objects:v20 count:16];
     }
 
     while (v7);
@@ -93,8 +93,8 @@ uint64_t __47__AXSSDocumentTextRulesetManager_sharedManager__block_invoke(uint64
     v8 = 0;
   }
 
-  v12 = [(AXSSDocumentTextRulesetManager *)self _rulesets];
-  [v3 appendFormat:@" RuleSets:%li Rules:%li", objc_msgSend(v12, "count"), v8];
+  _rulesets2 = [(AXSSDocumentTextRulesetManager *)self _rulesets];
+  [v3 appendFormat:@" RuleSets:%li Rules:%li", objc_msgSend(_rulesets2, "count"), v8];
 
   v13 = *MEMORY[0x277D85DE8];
 
@@ -103,8 +103,8 @@ uint64_t __47__AXSSDocumentTextRulesetManager_sharedManager__block_invoke(uint64
 
 - (NSArray)rulesets
 {
-  v2 = [(AXSSDocumentTextRulesetManager *)self _rulesets];
-  v3 = [v2 copy];
+  _rulesets = [(AXSSDocumentTextRulesetManager *)self _rulesets];
+  v3 = [_rulesets copy];
 
   return v3;
 }
@@ -153,13 +153,13 @@ uint64_t __47__AXSSDocumentTextRulesetManager_sharedManager__block_invoke(uint64
     while (v6);
   }
 
-  v10 = [(AXSSDocumentTextRuleset *)v3 allRules];
-  v11 = [v10 count];
+  allRules = [(AXSSDocumentTextRuleset *)v3 allRules];
+  v11 = [allRules count];
 
   if (v11)
   {
-    v12 = [(AXSSDocumentTextRulesetManager *)self _rulesets];
-    [v12 addObject:v3];
+    _rulesets = [(AXSSDocumentTextRulesetManager *)self _rulesets];
+    [_rulesets addObject:v3];
   }
 
   v13 = *MEMORY[0x277D85DE8];

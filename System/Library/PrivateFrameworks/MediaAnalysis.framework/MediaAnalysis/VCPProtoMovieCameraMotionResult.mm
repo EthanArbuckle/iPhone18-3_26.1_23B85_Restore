@@ -1,23 +1,23 @@
 @interface VCPProtoMovieCameraMotionResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoMovieCameraMotionResult
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   memset(&v14, 0, sizeof(v14));
-  CMTimeRangeMakeFromDictionary(&v14, v3);
-  v4 = [(__CFDictionary *)v3 objectForKeyedSubscript:@"flags"];
+  CMTimeRangeMakeFromDictionary(&v14, dictionaryCopy);
+  v4 = [(__CFDictionary *)dictionaryCopy objectForKeyedSubscript:@"flags"];
   v5 = v4;
   if ((v14.start.flags & 1) == 0)
   {
@@ -38,9 +38,9 @@
         v8 = [VCPProtoTimeRange timeRangeWithCMTimeRange:&v13];
         [(VCPProtoMovieCameraMotionResult *)v6 setTimeRange:v8];
 
-        v9 = [v5 unsignedIntegerValue];
-        v10 = v9;
-        [(VCPProtoMovieCameraMotionResult *)v6 setIsFast:(v9 >> 16) & 1];
+        unsignedIntegerValue = [v5 unsignedIntegerValue];
+        v10 = unsignedIntegerValue;
+        [(VCPProtoMovieCameraMotionResult *)v6 setIsFast:(unsignedIntegerValue >> 16) & 1];
         v11 = v10 & 0xFFC0;
         if (v11 <= 0x3FF)
         {
@@ -142,11 +142,11 @@ LABEL_3:
     v5 = qword_1C9F62DA8[v4];
   }
 
-  v6 = [(VCPProtoMovieCameraMotionResult *)self timeRange];
-  v7 = v6;
-  if (v6)
+  timeRange = [(VCPProtoMovieCameraMotionResult *)self timeRange];
+  v7 = timeRange;
+  if (timeRange)
   {
-    [v6 timeRangeValue];
+    [timeRange timeRangeValue];
   }
 
   else
@@ -170,52 +170,52 @@ LABEL_3:
   v8.receiver = self;
   v8.super_class = VCPProtoMovieCameraMotionResult;
   v4 = [(VCPProtoMovieCameraMotionResult *)&v8 description];
-  v5 = [(VCPProtoMovieCameraMotionResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoMovieCameraMotionResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   timeRange = self->_timeRange;
   if (timeRange)
   {
-    v5 = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"timeRange"];
+    dictionaryRepresentation = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"timeRange"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithInt:self->_motionType];
-  [v3 setObject:v6 forKey:@"motionType"];
+  [dictionary setObject:v6 forKey:@"motionType"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_isFast];
-  [v3 setObject:v7 forKey:@"isFast"];
+  [dictionary setObject:v7 forKey:@"isFast"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteSubmessage();
   PBDataWriterWriteInt32Field();
   PBDataWriterWriteBOOLField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   timeRange = self->_timeRange;
-  v5 = a3;
-  [v5 setTimeRange:timeRange];
-  *(v5 + 2) = self->_motionType;
-  *(v5 + 24) = self->_isFast;
+  toCopy = to;
+  [toCopy setTimeRange:timeRange];
+  *(toCopy + 2) = self->_motionType;
+  *(toCopy + 24) = self->_isFast;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -224,19 +224,19 @@ LABEL_3:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v6 = [v4 isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | *(v4 + 2))) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")) && self->_motionType == *(v4 + 2) && self->_isFast == v4[24];
+  equalCopy = equal;
+  v6 = [equalCopy isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | *(equalCopy + 2))) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")) && self->_motionType == *(equalCopy + 2) && self->_isFast == equalCopy[24];
 
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   timeRange = self->_timeRange;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (timeRange)
   {
     if (!v6)
@@ -244,7 +244,7 @@ LABEL_3:
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(VCPProtoTimeRange *)timeRange mergeFrom:?];
   }
 
@@ -255,14 +255,14 @@ LABEL_3:
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(VCPProtoMovieCameraMotionResult *)self setTimeRange:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  self->_motionType = *(v4 + 2);
-  self->_isFast = *(v4 + 24);
+  self->_motionType = *(fromCopy + 2);
+  self->_isFast = *(fromCopy + 24);
 }
 
 @end

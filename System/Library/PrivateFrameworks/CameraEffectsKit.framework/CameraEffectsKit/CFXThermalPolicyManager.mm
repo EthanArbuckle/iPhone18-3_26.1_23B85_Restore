@@ -1,20 +1,20 @@
 @interface CFXThermalPolicyManager
 - (CFXThermalPolicyManager)init;
 - (void)CFX_notifyPolicyChanged;
-- (void)cameraFPSForThermalLevel:(int)a3 deviceType:(id)a4 minRate:(int *)a5 maxRate:(int *)a6;
-- (void)setRecordingPolicy:(BOOL)a3;
+- (void)cameraFPSForThermalLevel:(int)level deviceType:(id)type minRate:(int *)rate maxRate:(int *)maxRate;
+- (void)setRecordingPolicy:(BOOL)policy;
 @end
 
 @implementation CFXThermalPolicyManager
 
-- (void)setRecordingPolicy:(BOOL)a3
+- (void)setRecordingPolicy:(BOOL)policy
 {
-  if (self->_recordingPolicy != a3)
+  if (self->_recordingPolicy != policy)
   {
-    v4 = a3;
-    self->_recordingPolicy = a3;
-    v6 = [(CFXThermalPolicyManager *)self policyManager];
-    [v6 setPolicyType:objc_opt_class() active:v4];
+    policyCopy = policy;
+    self->_recordingPolicy = policy;
+    policyManager = [(CFXThermalPolicyManager *)self policyManager];
+    [policyManager setPolicyType:objc_opt_class() active:policyCopy];
 
     [(CFXThermalPolicyManager *)self CFX_notifyPolicyChanged];
   }
@@ -33,14 +33,14 @@
   return v2;
 }
 
-- (void)cameraFPSForThermalLevel:(int)a3 deviceType:(id)a4 minRate:(int *)a5 maxRate:(int *)a6
+- (void)cameraFPSForThermalLevel:(int)level deviceType:(id)type minRate:(int *)rate maxRate:(int *)maxRate
 {
-  v8 = *&a3;
-  v10 = a4;
-  v11 = [(CFXThermalPolicyManager *)self policyManager];
-  v12 = [v11 highestPriorityPolicy];
+  v8 = *&level;
+  typeCopy = type;
+  policyManager = [(CFXThermalPolicyManager *)self policyManager];
+  highestPriorityPolicy = [policyManager highestPriorityPolicy];
 
-  [v12 cameraFPSForThermalLevel:v8 deviceType:v10 minRate:a5 maxRate:a6];
+  [highestPriorityPolicy cameraFPSForThermalLevel:v8 deviceType:typeCopy minRate:rate maxRate:maxRate];
 }
 
 - (void)CFX_notifyPolicyChanged
@@ -49,10 +49,10 @@
   v3 = JFXLog_thermals();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CFXThermalPolicyManager *)self policyManager];
-    v5 = [v4 highestPriorityPolicy];
+    policyManager = [(CFXThermalPolicyManager *)self policyManager];
+    highestPriorityPolicy = [policyManager highestPriorityPolicy];
     *buf = 138412290;
-    v8 = v5;
+    v8 = highestPriorityPolicy;
     _os_log_impl(&dword_242A3B000, v3, OS_LOG_TYPE_DEFAULT, "Thermal Policy Changed:\n\t%@", buf, 0xCu);
   }
 

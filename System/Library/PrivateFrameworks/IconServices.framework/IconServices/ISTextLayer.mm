@@ -16,9 +16,9 @@
     v2->_color = v3;
 
     v5 = +[ISDefaults sharedInstance];
-    v6 = [v5 isSolariumEnabled];
+    isSolariumEnabled = [v5 isSolariumEnabled];
 
-    if (v6)
+    if (isSolariumEnabled)
     {
       v7 = [MEMORY[0x1E6999378] colorWithName:17 designSystem:0 palette:0 colorScheme:0 contrast:0 styling:0 displayGamut:0 error:0];
       v8 = [objc_alloc(MEMORY[0x1E69A8968]) initWithCGColor:{objc_msgSend(v7, "cgColor")}];

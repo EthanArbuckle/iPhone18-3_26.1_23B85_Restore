@@ -1,38 +1,38 @@
 @interface _SFPBMediaInfoCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBMediaInfoCardSection)initWithDictionary:(id)a3;
-- (_SFPBMediaInfoCardSection)initWithFacade:(id)a3;
-- (_SFPBMediaInfoCardSection)initWithJSON:(id)a3;
+- (_SFPBMediaInfoCardSection)initWithDictionary:(id)dictionary;
+- (_SFPBMediaInfoCardSection)initWithFacade:(id)facade;
+- (_SFPBMediaInfoCardSection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addDetails:(id)a3;
-- (void)addOffers:(id)a3;
-- (void)addPunchoutOptions:(id)a3;
-- (void)setDetails:(id)a3;
-- (void)setOffers:(id)a3;
-- (void)setPunchoutOptions:(id)a3;
-- (void)setPunchoutPickerDismissText:(id)a3;
-- (void)setPunchoutPickerTitle:(id)a3;
-- (void)setType:(id)a3;
-- (void)setWatchListButtonLabel:(id)a3;
-- (void)setWatchListConfirmationText:(id)a3;
-- (void)setWatchListContinuationText:(id)a3;
-- (void)setWatchListIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDetails:(id)details;
+- (void)addOffers:(id)offers;
+- (void)addPunchoutOptions:(id)options;
+- (void)setDetails:(id)details;
+- (void)setOffers:(id)offers;
+- (void)setPunchoutOptions:(id)options;
+- (void)setPunchoutPickerDismissText:(id)text;
+- (void)setPunchoutPickerTitle:(id)title;
+- (void)setType:(id)type;
+- (void)setWatchListButtonLabel:(id)label;
+- (void)setWatchListConfirmationText:(id)text;
+- (void)setWatchListContinuationText:(id)text;
+- (void)setWatchListIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBMediaInfoCardSection
 
-- (_SFPBMediaInfoCardSection)initWithFacade:(id)a3
+- (_SFPBMediaInfoCardSection)initWithFacade:(id)facade
 {
   v79 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBMediaInfoCardSection *)self init];
   if (v5)
   {
-    v6 = [v4 punchoutOptions];
-    if (v6)
+    punchoutOptions = [facadeCopy punchoutOptions];
+    if (punchoutOptions)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -46,8 +46,8 @@
     v75 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v8 = [v4 punchoutOptions];
-    v9 = [v8 countByEnumeratingWithState:&v72 objects:v78 count:16];
+    punchoutOptions2 = [facadeCopy punchoutOptions];
+    v9 = [punchoutOptions2 countByEnumeratingWithState:&v72 objects:v78 count:16];
     if (v9)
     {
       v10 = v9;
@@ -58,7 +58,7 @@
         {
           if (*v73 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(punchoutOptions2);
           }
 
           v13 = [[_SFPBPunchout alloc] initWithFacade:*(*(&v72 + 1) + 8 * i)];
@@ -68,79 +68,79 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v72 objects:v78 count:16];
+        v10 = [punchoutOptions2 countByEnumeratingWithState:&v72 objects:v78 count:16];
       }
 
       while (v10);
     }
 
     [(_SFPBMediaInfoCardSection *)v5 setPunchoutOptions:v7];
-    v14 = [v4 punchoutPickerTitle];
+    punchoutPickerTitle = [facadeCopy punchoutPickerTitle];
 
-    if (v14)
+    if (punchoutPickerTitle)
     {
-      v15 = [v4 punchoutPickerTitle];
-      [(_SFPBMediaInfoCardSection *)v5 setPunchoutPickerTitle:v15];
+      punchoutPickerTitle2 = [facadeCopy punchoutPickerTitle];
+      [(_SFPBMediaInfoCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle2];
     }
 
-    v16 = [v4 punchoutPickerDismissText];
+    punchoutPickerDismissText = [facadeCopy punchoutPickerDismissText];
 
-    if (v16)
+    if (punchoutPickerDismissText)
     {
-      v17 = [v4 punchoutPickerDismissText];
-      [(_SFPBMediaInfoCardSection *)v5 setPunchoutPickerDismissText:v17];
+      punchoutPickerDismissText2 = [facadeCopy punchoutPickerDismissText];
+      [(_SFPBMediaInfoCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText2];
     }
 
-    if ([v4 hasCanBeHidden])
+    if ([facadeCopy hasCanBeHidden])
     {
-      -[_SFPBMediaInfoCardSection setCanBeHidden:](v5, "setCanBeHidden:", [v4 canBeHidden]);
+      -[_SFPBMediaInfoCardSection setCanBeHidden:](v5, "setCanBeHidden:", [facadeCopy canBeHidden]);
     }
 
-    if ([v4 hasHasTopPadding])
+    if ([facadeCopy hasHasTopPadding])
     {
-      -[_SFPBMediaInfoCardSection setHasTopPadding:](v5, "setHasTopPadding:", [v4 hasTopPadding]);
+      -[_SFPBMediaInfoCardSection setHasTopPadding:](v5, "setHasTopPadding:", [facadeCopy hasTopPadding]);
     }
 
-    if ([v4 hasHasBottomPadding])
+    if ([facadeCopy hasHasBottomPadding])
     {
-      -[_SFPBMediaInfoCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [v4 hasBottomPadding]);
+      -[_SFPBMediaInfoCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [facadeCopy hasBottomPadding]);
     }
 
-    v18 = [v4 type];
+    type = [facadeCopy type];
 
-    if (v18)
+    if (type)
     {
-      v19 = [v4 type];
-      [(_SFPBMediaInfoCardSection *)v5 setType:v19];
+      type2 = [facadeCopy type];
+      [(_SFPBMediaInfoCardSection *)v5 setType:type2];
     }
 
-    if ([v4 hasSeparatorStyle])
+    if ([facadeCopy hasSeparatorStyle])
     {
-      -[_SFPBMediaInfoCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [v4 separatorStyle]);
+      -[_SFPBMediaInfoCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [facadeCopy separatorStyle]);
     }
 
-    v20 = [v4 backgroundColor];
+    backgroundColor = [facadeCopy backgroundColor];
 
-    if (v20)
+    if (backgroundColor)
     {
       v21 = [_SFPBColor alloc];
-      v22 = [v4 backgroundColor];
-      v23 = [(_SFPBColor *)v21 initWithFacade:v22];
+      backgroundColor2 = [facadeCopy backgroundColor];
+      v23 = [(_SFPBColor *)v21 initWithFacade:backgroundColor2];
       [(_SFPBMediaInfoCardSection *)v5 setBackgroundColor:v23];
     }
 
-    v24 = [v4 mediaItem];
+    mediaItem = [facadeCopy mediaItem];
 
-    if (v24)
+    if (mediaItem)
     {
       v25 = [_SFPBMediaItem alloc];
-      v26 = [v4 mediaItem];
-      v27 = [(_SFPBMediaItem *)v25 initWithFacade:v26];
+      mediaItem2 = [facadeCopy mediaItem];
+      v27 = [(_SFPBMediaItem *)v25 initWithFacade:mediaItem2];
       [(_SFPBMediaInfoCardSection *)v5 setMediaItem:v27];
     }
 
-    v28 = [v4 details];
-    if (v28)
+    details = [facadeCopy details];
+    if (details)
     {
       v29 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -154,8 +154,8 @@
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v30 = [v4 details];
-    v31 = [v30 countByEnumeratingWithState:&v68 objects:v77 count:16];
+    details2 = [facadeCopy details];
+    v31 = [details2 countByEnumeratingWithState:&v68 objects:v77 count:16];
     if (v31)
     {
       v32 = v31;
@@ -166,7 +166,7 @@
         {
           if (*v69 != v33)
           {
-            objc_enumerationMutation(v30);
+            objc_enumerationMutation(details2);
           }
 
           v35 = [[_SFPBMediaDetail alloc] initWithFacade:*(*(&v68 + 1) + 8 * j)];
@@ -176,26 +176,26 @@
           }
         }
 
-        v32 = [v30 countByEnumeratingWithState:&v68 objects:v77 count:16];
+        v32 = [details2 countByEnumeratingWithState:&v68 objects:v77 count:16];
       }
 
       while (v32);
     }
 
     [(_SFPBMediaInfoCardSection *)v5 setDetails:v29];
-    v36 = [v4 playAction];
+    playAction = [facadeCopy playAction];
 
-    if (v36)
+    if (playAction)
     {
       v37 = [_SFPBActionItem alloc];
-      v38 = [v4 playAction];
-      v39 = [(_SFPBActionItem *)v37 initWithFacade:v38];
+      playAction2 = [facadeCopy playAction];
+      v39 = [(_SFPBActionItem *)v37 initWithFacade:playAction2];
       [(_SFPBMediaInfoCardSection *)v5 setPlayAction:v39];
     }
 
-    v40 = [v4 offers];
+    offers = [facadeCopy offers];
     v63 = v5;
-    if (v40)
+    if (offers)
     {
       v41 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -209,8 +209,8 @@
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v42 = [v4 offers];
-    v43 = [v42 countByEnumeratingWithState:&v64 objects:v76 count:16];
+    offers2 = [facadeCopy offers];
+    v43 = [offers2 countByEnumeratingWithState:&v64 objects:v76 count:16];
     if (v43)
     {
       v44 = v43;
@@ -221,7 +221,7 @@
         {
           if (*v65 != v45)
           {
-            objc_enumerationMutation(v42);
+            objc_enumerationMutation(offers2);
           }
 
           v47 = [[_SFPBMediaOffer alloc] initWithFacade:*(*(&v64 + 1) + 8 * k)];
@@ -231,7 +231,7 @@
           }
         }
 
-        v44 = [v42 countByEnumeratingWithState:&v64 objects:v76 count:16];
+        v44 = [offers2 countByEnumeratingWithState:&v64 objects:v76 count:16];
       }
 
       while (v44);
@@ -239,56 +239,56 @@
 
     v5 = v63;
     [(_SFPBMediaInfoCardSection *)v63 setOffers:v41];
-    v48 = [v4 watchListIdentifier];
+    watchListIdentifier = [facadeCopy watchListIdentifier];
 
-    if (v48)
+    if (watchListIdentifier)
     {
-      v49 = [v4 watchListIdentifier];
-      [(_SFPBMediaInfoCardSection *)v63 setWatchListIdentifier:v49];
+      watchListIdentifier2 = [facadeCopy watchListIdentifier];
+      [(_SFPBMediaInfoCardSection *)v63 setWatchListIdentifier:watchListIdentifier2];
     }
 
-    v50 = [v4 watchListButtonLabel];
+    watchListButtonLabel = [facadeCopy watchListButtonLabel];
 
-    if (v50)
+    if (watchListButtonLabel)
     {
-      v51 = [v4 watchListButtonLabel];
-      [(_SFPBMediaInfoCardSection *)v63 setWatchListButtonLabel:v51];
+      watchListButtonLabel2 = [facadeCopy watchListButtonLabel];
+      [(_SFPBMediaInfoCardSection *)v63 setWatchListButtonLabel:watchListButtonLabel2];
     }
 
-    v52 = [v4 watchListContinuationText];
+    watchListContinuationText = [facadeCopy watchListContinuationText];
 
-    if (v52)
+    if (watchListContinuationText)
     {
-      v53 = [v4 watchListContinuationText];
-      [(_SFPBMediaInfoCardSection *)v63 setWatchListContinuationText:v53];
+      watchListContinuationText2 = [facadeCopy watchListContinuationText];
+      [(_SFPBMediaInfoCardSection *)v63 setWatchListContinuationText:watchListContinuationText2];
     }
 
-    v54 = [v4 watchListConfirmationText];
+    watchListConfirmationText = [facadeCopy watchListConfirmationText];
 
-    if (v54)
+    if (watchListConfirmationText)
     {
-      v55 = [v4 watchListConfirmationText];
-      [(_SFPBMediaInfoCardSection *)v63 setWatchListConfirmationText:v55];
+      watchListConfirmationText2 = [facadeCopy watchListConfirmationText];
+      [(_SFPBMediaInfoCardSection *)v63 setWatchListConfirmationText:watchListConfirmationText2];
     }
 
-    if ([v4 hasIsMediaContainer])
+    if ([facadeCopy hasIsMediaContainer])
     {
-      -[_SFPBMediaInfoCardSection setIsMediaContainer:](v63, "setIsMediaContainer:", [v4 isMediaContainer]);
+      -[_SFPBMediaInfoCardSection setIsMediaContainer:](v63, "setIsMediaContainer:", [facadeCopy isMediaContainer]);
     }
 
-    v56 = [v4 specialOfferButtonLabel];
+    specialOfferButtonLabel = [facadeCopy specialOfferButtonLabel];
 
-    if (v56)
+    if (specialOfferButtonLabel)
     {
       v57 = [_SFPBRichText alloc];
-      v58 = [v4 specialOfferButtonLabel];
-      v59 = [(_SFPBRichText *)v57 initWithFacade:v58];
+      specialOfferButtonLabel2 = [facadeCopy specialOfferButtonLabel];
+      v59 = [(_SFPBRichText *)v57 initWithFacade:specialOfferButtonLabel2];
       [(_SFPBMediaInfoCardSection *)v63 setSpecialOfferButtonLabel:v59];
     }
 
-    if ([v4 hasWatchListItemType])
+    if ([facadeCopy hasWatchListItemType])
     {
-      -[_SFPBMediaInfoCardSection setWatchListItemType:](v63, "setWatchListItemType:", [v4 watchListItemType]);
+      -[_SFPBMediaInfoCardSection setWatchListItemType:](v63, "setWatchListItemType:", [facadeCopy watchListItemType]);
     }
 
     v60 = v63;
@@ -298,16 +298,16 @@
   return v5;
 }
 
-- (_SFPBMediaInfoCardSection)initWithDictionary:(id)a3
+- (_SFPBMediaInfoCardSection)initWithDictionary:(id)dictionary
 {
   v89 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v85.receiver = self;
   v85.super_class = _SFPBMediaInfoCardSection;
   v5 = [(_SFPBMediaInfoCardSection *)&v85 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"punchoutOptions"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"punchoutOptions"];
     objc_opt_class();
     v72 = v6;
     if (objc_opt_isKindOfClass())
@@ -347,7 +347,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"punchoutPickerTitle"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"punchoutPickerTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -355,7 +355,7 @@
       [(_SFPBMediaInfoCardSection *)v5 setPunchoutPickerTitle:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"punchoutPickerDismissText"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"punchoutPickerDismissText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -363,21 +363,21 @@
       [(_SFPBMediaInfoCardSection *)v5 setPunchoutPickerDismissText:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"canBeHidden"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"canBeHidden"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBMediaInfoCardSection setCanBeHidden:](v5, "setCanBeHidden:", [v18 BOOLValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"hasTopPadding"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"hasTopPadding"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBMediaInfoCardSection setHasTopPadding:](v5, "setHasTopPadding:", [v19 BOOLValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"hasBottomPadding"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"hasBottomPadding"];
     objc_opt_class();
     v71 = v20;
     if (objc_opt_isKindOfClass())
@@ -386,7 +386,7 @@
     }
 
     v64 = v18;
-    v21 = [v4 objectForKeyedSubscript:@"type"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     objc_opt_class();
     v70 = v21;
     if (objc_opt_isKindOfClass())
@@ -395,7 +395,7 @@
       [(_SFPBMediaInfoCardSection *)v5 setType:v22];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"separatorStyle"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"separatorStyle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -403,7 +403,7 @@
     }
 
     v62 = v23;
-    v24 = [v4 objectForKeyedSubscript:@"backgroundColor"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"backgroundColor"];
     objc_opt_class();
     v69 = v24;
     if (objc_opt_isKindOfClass())
@@ -412,7 +412,7 @@
       [(_SFPBMediaInfoCardSection *)v5 setBackgroundColor:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"mediaItem"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"mediaItem"];
     objc_opt_class();
     v68 = v26;
     if (objc_opt_isKindOfClass())
@@ -424,7 +424,7 @@
     v63 = v19;
     v65 = v16;
     v66 = v14;
-    v28 = [v4 objectForKeyedSubscript:@"details"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"details"];
     objc_opt_class();
     v67 = v28;
     if (objc_opt_isKindOfClass())
@@ -464,7 +464,7 @@
       }
     }
 
-    v36 = [v4 objectForKeyedSubscript:@"playAction"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"playAction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -472,7 +472,7 @@
       [(_SFPBMediaInfoCardSection *)v5 setPlayAction:v37];
     }
 
-    v38 = [v4 objectForKeyedSubscript:{@"offers", v36}];
+    v38 = [dictionaryCopy objectForKeyedSubscript:{@"offers", v36}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -511,7 +511,7 @@
       }
     }
 
-    v46 = [v4 objectForKeyedSubscript:@"watchListIdentifier"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"watchListIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -519,7 +519,7 @@
       [(_SFPBMediaInfoCardSection *)v5 setWatchListIdentifier:v47];
     }
 
-    v48 = [v4 objectForKeyedSubscript:@"watchListButtonLabel"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"watchListButtonLabel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -527,7 +527,7 @@
       [(_SFPBMediaInfoCardSection *)v5 setWatchListButtonLabel:v49];
     }
 
-    v50 = [v4 objectForKeyedSubscript:@"watchListContinuationText"];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"watchListContinuationText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -535,7 +535,7 @@
       [(_SFPBMediaInfoCardSection *)v5 setWatchListContinuationText:v51];
     }
 
-    v52 = [v4 objectForKeyedSubscript:@"watchListConfirmationText"];
+    v52 = [dictionaryCopy objectForKeyedSubscript:@"watchListConfirmationText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -543,14 +543,14 @@
       [(_SFPBMediaInfoCardSection *)v5 setWatchListConfirmationText:v53];
     }
 
-    v54 = [v4 objectForKeyedSubscript:@"isMediaContainer"];
+    v54 = [dictionaryCopy objectForKeyedSubscript:@"isMediaContainer"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBMediaInfoCardSection setIsMediaContainer:](v5, "setIsMediaContainer:", [v54 BOOLValue]);
     }
 
-    v55 = [v4 objectForKeyedSubscript:@"specialOfferButtonLabel"];
+    v55 = [dictionaryCopy objectForKeyedSubscript:@"specialOfferButtonLabel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -558,7 +558,7 @@
       [(_SFPBMediaInfoCardSection *)v5 setSpecialOfferButtonLabel:v56];
     }
 
-    v57 = [v4 objectForKeyedSubscript:@"watchListItemType"];
+    v57 = [dictionaryCopy objectForKeyedSubscript:@"watchListItemType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -572,30 +572,30 @@
   return v5;
 }
 
-- (_SFPBMediaInfoCardSection)initWithJSON:(id)a3
+- (_SFPBMediaInfoCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBMediaInfoCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBMediaInfoCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBMediaInfoCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -609,32 +609,32 @@
 - (id)dictionaryRepresentation
 {
   v79 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_backgroundColor)
   {
-    v4 = [(_SFPBMediaInfoCardSection *)self backgroundColor];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    backgroundColor = [(_SFPBMediaInfoCardSection *)self backgroundColor];
+    dictionaryRepresentation = [backgroundColor dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"backgroundColor"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"backgroundColor"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"backgroundColor"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"backgroundColor"];
     }
   }
 
   if (self->_canBeHidden)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBMediaInfoCardSection canBeHidden](self, "canBeHidden")}];
-    [v3 setObject:v7 forKeyedSubscript:@"canBeHidden"];
+    [dictionary setObject:v7 forKeyedSubscript:@"canBeHidden"];
   }
 
   if ([(NSArray *)self->_details count])
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v72 = 0u;
     v73 = 0u;
     v74 = 0u;
@@ -654,16 +654,16 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v72 + 1) + 8 * i) dictionaryRepresentation];
-          if (v14)
+          dictionaryRepresentation2 = [*(*(&v72 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v8 addObject:v14];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v15 = [MEMORY[0x1E695DFB0] null];
-            [v8 addObject:v15];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -673,46 +673,46 @@
       while (v11);
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"details"];
+    [dictionary setObject:array forKeyedSubscript:@"details"];
   }
 
   if (self->_hasBottomPadding)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBMediaInfoCardSection hasBottomPadding](self, "hasBottomPadding")}];
-    [v3 setObject:v16 forKeyedSubscript:@"hasBottomPadding"];
+    [dictionary setObject:v16 forKeyedSubscript:@"hasBottomPadding"];
   }
 
   if (self->_hasTopPadding)
   {
     v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBMediaInfoCardSection hasTopPadding](self, "hasTopPadding")}];
-    [v3 setObject:v17 forKeyedSubscript:@"hasTopPadding"];
+    [dictionary setObject:v17 forKeyedSubscript:@"hasTopPadding"];
   }
 
   if (self->_isMediaContainer)
   {
     v18 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBMediaInfoCardSection isMediaContainer](self, "isMediaContainer")}];
-    [v3 setObject:v18 forKeyedSubscript:@"isMediaContainer"];
+    [dictionary setObject:v18 forKeyedSubscript:@"isMediaContainer"];
   }
 
   if (self->_mediaItem)
   {
-    v19 = [(_SFPBMediaInfoCardSection *)self mediaItem];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    mediaItem = [(_SFPBMediaInfoCardSection *)self mediaItem];
+    dictionaryRepresentation3 = [mediaItem dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"mediaItem"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"mediaItem"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"mediaItem"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"mediaItem"];
     }
   }
 
   if ([(NSArray *)self->_offers count])
   {
-    v22 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v68 = 0u;
     v69 = 0u;
     v70 = 0u;
@@ -732,16 +732,16 @@
             objc_enumerationMutation(v23);
           }
 
-          v28 = [*(*(&v68 + 1) + 8 * j) dictionaryRepresentation];
-          if (v28)
+          dictionaryRepresentation4 = [*(*(&v68 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation4)
           {
-            [v22 addObject:v28];
+            [array2 addObject:dictionaryRepresentation4];
           }
 
           else
           {
-            v29 = [MEMORY[0x1E695DFB0] null];
-            [v22 addObject:v29];
+            null4 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null4];
           }
         }
 
@@ -751,28 +751,28 @@
       while (v25);
     }
 
-    [v3 setObject:v22 forKeyedSubscript:@"offers"];
+    [dictionary setObject:array2 forKeyedSubscript:@"offers"];
   }
 
   if (self->_playAction)
   {
-    v30 = [(_SFPBMediaInfoCardSection *)self playAction];
-    v31 = [v30 dictionaryRepresentation];
-    if (v31)
+    playAction = [(_SFPBMediaInfoCardSection *)self playAction];
+    dictionaryRepresentation5 = [playAction dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v31 forKeyedSubscript:@"playAction"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"playAction"];
     }
 
     else
     {
-      v32 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v32 forKeyedSubscript:@"playAction"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"playAction"];
     }
   }
 
   if ([(NSArray *)self->_punchoutOptions count])
   {
-    v33 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
@@ -792,16 +792,16 @@
             objc_enumerationMutation(v34);
           }
 
-          v39 = [*(*(&v64 + 1) + 8 * k) dictionaryRepresentation];
-          if (v39)
+          dictionaryRepresentation6 = [*(*(&v64 + 1) + 8 * k) dictionaryRepresentation];
+          if (dictionaryRepresentation6)
           {
-            [v33 addObject:v39];
+            [array3 addObject:dictionaryRepresentation6];
           }
 
           else
           {
-            v40 = [MEMORY[0x1E695DFB0] null];
-            [v33 addObject:v40];
+            null6 = [MEMORY[0x1E695DFB0] null];
+            [array3 addObject:null6];
           }
         }
 
@@ -811,109 +811,109 @@
       while (v36);
     }
 
-    [v3 setObject:v33 forKeyedSubscript:@"punchoutOptions"];
+    [dictionary setObject:array3 forKeyedSubscript:@"punchoutOptions"];
   }
 
   if (self->_punchoutPickerDismissText)
   {
-    v41 = [(_SFPBMediaInfoCardSection *)self punchoutPickerDismissText];
-    v42 = [v41 copy];
-    [v3 setObject:v42 forKeyedSubscript:@"punchoutPickerDismissText"];
+    punchoutPickerDismissText = [(_SFPBMediaInfoCardSection *)self punchoutPickerDismissText];
+    v42 = [punchoutPickerDismissText copy];
+    [dictionary setObject:v42 forKeyedSubscript:@"punchoutPickerDismissText"];
   }
 
   if (self->_punchoutPickerTitle)
   {
-    v43 = [(_SFPBMediaInfoCardSection *)self punchoutPickerTitle];
-    v44 = [v43 copy];
-    [v3 setObject:v44 forKeyedSubscript:@"punchoutPickerTitle"];
+    punchoutPickerTitle = [(_SFPBMediaInfoCardSection *)self punchoutPickerTitle];
+    v44 = [punchoutPickerTitle copy];
+    [dictionary setObject:v44 forKeyedSubscript:@"punchoutPickerTitle"];
   }
 
   if (self->_separatorStyle)
   {
-    v45 = [(_SFPBMediaInfoCardSection *)self separatorStyle];
-    if (v45 >= 6)
+    separatorStyle = [(_SFPBMediaInfoCardSection *)self separatorStyle];
+    if (separatorStyle >= 6)
     {
-      v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v45];
+      v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", separatorStyle];
     }
 
     else
     {
-      v46 = off_1E7ACE580[v45];
+      v46 = off_1E7ACE580[separatorStyle];
     }
 
-    [v3 setObject:v46 forKeyedSubscript:@"separatorStyle"];
+    [dictionary setObject:v46 forKeyedSubscript:@"separatorStyle"];
   }
 
   if (self->_specialOfferButtonLabel)
   {
-    v47 = [(_SFPBMediaInfoCardSection *)self specialOfferButtonLabel];
-    v48 = [v47 dictionaryRepresentation];
-    if (v48)
+    specialOfferButtonLabel = [(_SFPBMediaInfoCardSection *)self specialOfferButtonLabel];
+    dictionaryRepresentation7 = [specialOfferButtonLabel dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v48 forKeyedSubscript:@"specialOfferButtonLabel"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"specialOfferButtonLabel"];
     }
 
     else
     {
-      v49 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v49 forKeyedSubscript:@"specialOfferButtonLabel"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"specialOfferButtonLabel"];
     }
   }
 
   if (self->_type)
   {
-    v50 = [(_SFPBMediaInfoCardSection *)self type];
-    v51 = [v50 copy];
-    [v3 setObject:v51 forKeyedSubscript:@"type"];
+    type = [(_SFPBMediaInfoCardSection *)self type];
+    v51 = [type copy];
+    [dictionary setObject:v51 forKeyedSubscript:@"type"];
   }
 
   if (self->_watchListButtonLabel)
   {
-    v52 = [(_SFPBMediaInfoCardSection *)self watchListButtonLabel];
-    v53 = [v52 copy];
-    [v3 setObject:v53 forKeyedSubscript:@"watchListButtonLabel"];
+    watchListButtonLabel = [(_SFPBMediaInfoCardSection *)self watchListButtonLabel];
+    v53 = [watchListButtonLabel copy];
+    [dictionary setObject:v53 forKeyedSubscript:@"watchListButtonLabel"];
   }
 
   if (self->_watchListConfirmationText)
   {
-    v54 = [(_SFPBMediaInfoCardSection *)self watchListConfirmationText];
-    v55 = [v54 copy];
-    [v3 setObject:v55 forKeyedSubscript:@"watchListConfirmationText"];
+    watchListConfirmationText = [(_SFPBMediaInfoCardSection *)self watchListConfirmationText];
+    v55 = [watchListConfirmationText copy];
+    [dictionary setObject:v55 forKeyedSubscript:@"watchListConfirmationText"];
   }
 
   if (self->_watchListContinuationText)
   {
-    v56 = [(_SFPBMediaInfoCardSection *)self watchListContinuationText];
-    v57 = [v56 copy];
-    [v3 setObject:v57 forKeyedSubscript:@"watchListContinuationText"];
+    watchListContinuationText = [(_SFPBMediaInfoCardSection *)self watchListContinuationText];
+    v57 = [watchListContinuationText copy];
+    [dictionary setObject:v57 forKeyedSubscript:@"watchListContinuationText"];
   }
 
   if (self->_watchListIdentifier)
   {
-    v58 = [(_SFPBMediaInfoCardSection *)self watchListIdentifier];
-    v59 = [v58 copy];
-    [v3 setObject:v59 forKeyedSubscript:@"watchListIdentifier"];
+    watchListIdentifier = [(_SFPBMediaInfoCardSection *)self watchListIdentifier];
+    v59 = [watchListIdentifier copy];
+    [dictionary setObject:v59 forKeyedSubscript:@"watchListIdentifier"];
   }
 
   if (self->_watchListItemType)
   {
-    v60 = [(_SFPBMediaInfoCardSection *)self watchListItemType];
-    if (v60 >= 6)
+    watchListItemType = [(_SFPBMediaInfoCardSection *)self watchListItemType];
+    if (watchListItemType >= 6)
     {
-      v61 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v60];
+      v61 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", watchListItemType];
     }
 
     else
     {
-      v61 = off_1E7ACE580[v60];
+      v61 = off_1E7ACE580[watchListItemType];
     }
 
-    [v3 setObject:v61 forKeyedSubscript:@"watchListItemType"];
+    [dictionary setObject:v61 forKeyedSubscript:@"watchListItemType"];
   }
 
   v62 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -980,28 +980,28 @@
   return v25 ^ v26 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v19 ^ v18 ^ v17 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ [(_SFPBRichText *)self->_specialOfferButtonLabel hash]^ (2654435761 * self->_watchListItemType);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_77;
   }
 
-  v5 = [(_SFPBMediaInfoCardSection *)self punchoutOptions];
-  v6 = [v4 punchoutOptions];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBMediaInfoCardSection *)self punchoutOptions];
+  punchoutOptions2 = [equalCopy punchoutOptions];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_76;
   }
 
-  v7 = [(_SFPBMediaInfoCardSection *)self punchoutOptions];
-  if (v7)
+  punchoutOptions3 = [(_SFPBMediaInfoCardSection *)self punchoutOptions];
+  if (punchoutOptions3)
   {
-    v8 = v7;
-    v9 = [(_SFPBMediaInfoCardSection *)self punchoutOptions];
-    v10 = [v4 punchoutOptions];
-    v11 = [v9 isEqual:v10];
+    v8 = punchoutOptions3;
+    punchoutOptions4 = [(_SFPBMediaInfoCardSection *)self punchoutOptions];
+    punchoutOptions5 = [equalCopy punchoutOptions];
+    v11 = [punchoutOptions4 isEqual:punchoutOptions5];
 
     if (!v11)
     {
@@ -1013,20 +1013,20 @@
   {
   }
 
-  v5 = [(_SFPBMediaInfoCardSection *)self punchoutPickerTitle];
-  v6 = [v4 punchoutPickerTitle];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBMediaInfoCardSection *)self punchoutPickerTitle];
+  punchoutOptions2 = [equalCopy punchoutPickerTitle];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_76;
   }
 
-  v12 = [(_SFPBMediaInfoCardSection *)self punchoutPickerTitle];
-  if (v12)
+  punchoutPickerTitle = [(_SFPBMediaInfoCardSection *)self punchoutPickerTitle];
+  if (punchoutPickerTitle)
   {
-    v13 = v12;
-    v14 = [(_SFPBMediaInfoCardSection *)self punchoutPickerTitle];
-    v15 = [v4 punchoutPickerTitle];
-    v16 = [v14 isEqual:v15];
+    v13 = punchoutPickerTitle;
+    punchoutPickerTitle2 = [(_SFPBMediaInfoCardSection *)self punchoutPickerTitle];
+    punchoutPickerTitle3 = [equalCopy punchoutPickerTitle];
+    v16 = [punchoutPickerTitle2 isEqual:punchoutPickerTitle3];
 
     if (!v16)
     {
@@ -1038,20 +1038,20 @@
   {
   }
 
-  v5 = [(_SFPBMediaInfoCardSection *)self punchoutPickerDismissText];
-  v6 = [v4 punchoutPickerDismissText];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBMediaInfoCardSection *)self punchoutPickerDismissText];
+  punchoutOptions2 = [equalCopy punchoutPickerDismissText];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_76;
   }
 
-  v17 = [(_SFPBMediaInfoCardSection *)self punchoutPickerDismissText];
-  if (v17)
+  punchoutPickerDismissText = [(_SFPBMediaInfoCardSection *)self punchoutPickerDismissText];
+  if (punchoutPickerDismissText)
   {
-    v18 = v17;
-    v19 = [(_SFPBMediaInfoCardSection *)self punchoutPickerDismissText];
-    v20 = [v4 punchoutPickerDismissText];
-    v21 = [v19 isEqual:v20];
+    v18 = punchoutPickerDismissText;
+    punchoutPickerDismissText2 = [(_SFPBMediaInfoCardSection *)self punchoutPickerDismissText];
+    punchoutPickerDismissText3 = [equalCopy punchoutPickerDismissText];
+    v21 = [punchoutPickerDismissText2 isEqual:punchoutPickerDismissText3];
 
     if (!v21)
     {
@@ -1064,37 +1064,37 @@
   }
 
   canBeHidden = self->_canBeHidden;
-  if (canBeHidden != [v4 canBeHidden])
+  if (canBeHidden != [equalCopy canBeHidden])
   {
     goto LABEL_77;
   }
 
   hasTopPadding = self->_hasTopPadding;
-  if (hasTopPadding != [v4 hasTopPadding])
+  if (hasTopPadding != [equalCopy hasTopPadding])
   {
     goto LABEL_77;
   }
 
   hasBottomPadding = self->_hasBottomPadding;
-  if (hasBottomPadding != [v4 hasBottomPadding])
+  if (hasBottomPadding != [equalCopy hasBottomPadding])
   {
     goto LABEL_77;
   }
 
-  v5 = [(_SFPBMediaInfoCardSection *)self type];
-  v6 = [v4 type];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBMediaInfoCardSection *)self type];
+  punchoutOptions2 = [equalCopy type];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_76;
   }
 
-  v25 = [(_SFPBMediaInfoCardSection *)self type];
-  if (v25)
+  type = [(_SFPBMediaInfoCardSection *)self type];
+  if (type)
   {
-    v26 = v25;
-    v27 = [(_SFPBMediaInfoCardSection *)self type];
-    v28 = [v4 type];
-    v29 = [v27 isEqual:v28];
+    v26 = type;
+    type2 = [(_SFPBMediaInfoCardSection *)self type];
+    type3 = [equalCopy type];
+    v29 = [type2 isEqual:type3];
 
     if (!v29)
     {
@@ -1107,25 +1107,25 @@
   }
 
   separatorStyle = self->_separatorStyle;
-  if (separatorStyle != [v4 separatorStyle])
+  if (separatorStyle != [equalCopy separatorStyle])
   {
     goto LABEL_77;
   }
 
-  v5 = [(_SFPBMediaInfoCardSection *)self backgroundColor];
-  v6 = [v4 backgroundColor];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBMediaInfoCardSection *)self backgroundColor];
+  punchoutOptions2 = [equalCopy backgroundColor];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_76;
   }
 
-  v31 = [(_SFPBMediaInfoCardSection *)self backgroundColor];
-  if (v31)
+  backgroundColor = [(_SFPBMediaInfoCardSection *)self backgroundColor];
+  if (backgroundColor)
   {
-    v32 = v31;
-    v33 = [(_SFPBMediaInfoCardSection *)self backgroundColor];
-    v34 = [v4 backgroundColor];
-    v35 = [v33 isEqual:v34];
+    v32 = backgroundColor;
+    backgroundColor2 = [(_SFPBMediaInfoCardSection *)self backgroundColor];
+    backgroundColor3 = [equalCopy backgroundColor];
+    v35 = [backgroundColor2 isEqual:backgroundColor3];
 
     if (!v35)
     {
@@ -1137,20 +1137,20 @@
   {
   }
 
-  v5 = [(_SFPBMediaInfoCardSection *)self mediaItem];
-  v6 = [v4 mediaItem];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBMediaInfoCardSection *)self mediaItem];
+  punchoutOptions2 = [equalCopy mediaItem];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_76;
   }
 
-  v36 = [(_SFPBMediaInfoCardSection *)self mediaItem];
-  if (v36)
+  mediaItem = [(_SFPBMediaInfoCardSection *)self mediaItem];
+  if (mediaItem)
   {
-    v37 = v36;
-    v38 = [(_SFPBMediaInfoCardSection *)self mediaItem];
-    v39 = [v4 mediaItem];
-    v40 = [v38 isEqual:v39];
+    v37 = mediaItem;
+    mediaItem2 = [(_SFPBMediaInfoCardSection *)self mediaItem];
+    mediaItem3 = [equalCopy mediaItem];
+    v40 = [mediaItem2 isEqual:mediaItem3];
 
     if (!v40)
     {
@@ -1162,20 +1162,20 @@
   {
   }
 
-  v5 = [(_SFPBMediaInfoCardSection *)self details];
-  v6 = [v4 details];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBMediaInfoCardSection *)self details];
+  punchoutOptions2 = [equalCopy details];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_76;
   }
 
-  v41 = [(_SFPBMediaInfoCardSection *)self details];
-  if (v41)
+  details = [(_SFPBMediaInfoCardSection *)self details];
+  if (details)
   {
-    v42 = v41;
-    v43 = [(_SFPBMediaInfoCardSection *)self details];
-    v44 = [v4 details];
-    v45 = [v43 isEqual:v44];
+    v42 = details;
+    details2 = [(_SFPBMediaInfoCardSection *)self details];
+    details3 = [equalCopy details];
+    v45 = [details2 isEqual:details3];
 
     if (!v45)
     {
@@ -1187,20 +1187,20 @@
   {
   }
 
-  v5 = [(_SFPBMediaInfoCardSection *)self playAction];
-  v6 = [v4 playAction];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBMediaInfoCardSection *)self playAction];
+  punchoutOptions2 = [equalCopy playAction];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_76;
   }
 
-  v46 = [(_SFPBMediaInfoCardSection *)self playAction];
-  if (v46)
+  playAction = [(_SFPBMediaInfoCardSection *)self playAction];
+  if (playAction)
   {
-    v47 = v46;
-    v48 = [(_SFPBMediaInfoCardSection *)self playAction];
-    v49 = [v4 playAction];
-    v50 = [v48 isEqual:v49];
+    v47 = playAction;
+    playAction2 = [(_SFPBMediaInfoCardSection *)self playAction];
+    playAction3 = [equalCopy playAction];
+    v50 = [playAction2 isEqual:playAction3];
 
     if (!v50)
     {
@@ -1212,20 +1212,20 @@
   {
   }
 
-  v5 = [(_SFPBMediaInfoCardSection *)self offers];
-  v6 = [v4 offers];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBMediaInfoCardSection *)self offers];
+  punchoutOptions2 = [equalCopy offers];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_76;
   }
 
-  v51 = [(_SFPBMediaInfoCardSection *)self offers];
-  if (v51)
+  offers = [(_SFPBMediaInfoCardSection *)self offers];
+  if (offers)
   {
-    v52 = v51;
-    v53 = [(_SFPBMediaInfoCardSection *)self offers];
-    v54 = [v4 offers];
-    v55 = [v53 isEqual:v54];
+    v52 = offers;
+    offers2 = [(_SFPBMediaInfoCardSection *)self offers];
+    offers3 = [equalCopy offers];
+    v55 = [offers2 isEqual:offers3];
 
     if (!v55)
     {
@@ -1237,20 +1237,20 @@
   {
   }
 
-  v5 = [(_SFPBMediaInfoCardSection *)self watchListIdentifier];
-  v6 = [v4 watchListIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBMediaInfoCardSection *)self watchListIdentifier];
+  punchoutOptions2 = [equalCopy watchListIdentifier];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_76;
   }
 
-  v56 = [(_SFPBMediaInfoCardSection *)self watchListIdentifier];
-  if (v56)
+  watchListIdentifier = [(_SFPBMediaInfoCardSection *)self watchListIdentifier];
+  if (watchListIdentifier)
   {
-    v57 = v56;
-    v58 = [(_SFPBMediaInfoCardSection *)self watchListIdentifier];
-    v59 = [v4 watchListIdentifier];
-    v60 = [v58 isEqual:v59];
+    v57 = watchListIdentifier;
+    watchListIdentifier2 = [(_SFPBMediaInfoCardSection *)self watchListIdentifier];
+    watchListIdentifier3 = [equalCopy watchListIdentifier];
+    v60 = [watchListIdentifier2 isEqual:watchListIdentifier3];
 
     if (!v60)
     {
@@ -1262,20 +1262,20 @@
   {
   }
 
-  v5 = [(_SFPBMediaInfoCardSection *)self watchListButtonLabel];
-  v6 = [v4 watchListButtonLabel];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBMediaInfoCardSection *)self watchListButtonLabel];
+  punchoutOptions2 = [equalCopy watchListButtonLabel];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_76;
   }
 
-  v61 = [(_SFPBMediaInfoCardSection *)self watchListButtonLabel];
-  if (v61)
+  watchListButtonLabel = [(_SFPBMediaInfoCardSection *)self watchListButtonLabel];
+  if (watchListButtonLabel)
   {
-    v62 = v61;
-    v63 = [(_SFPBMediaInfoCardSection *)self watchListButtonLabel];
-    v64 = [v4 watchListButtonLabel];
-    v65 = [v63 isEqual:v64];
+    v62 = watchListButtonLabel;
+    watchListButtonLabel2 = [(_SFPBMediaInfoCardSection *)self watchListButtonLabel];
+    watchListButtonLabel3 = [equalCopy watchListButtonLabel];
+    v65 = [watchListButtonLabel2 isEqual:watchListButtonLabel3];
 
     if (!v65)
     {
@@ -1287,20 +1287,20 @@
   {
   }
 
-  v5 = [(_SFPBMediaInfoCardSection *)self watchListContinuationText];
-  v6 = [v4 watchListContinuationText];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBMediaInfoCardSection *)self watchListContinuationText];
+  punchoutOptions2 = [equalCopy watchListContinuationText];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_76;
   }
 
-  v66 = [(_SFPBMediaInfoCardSection *)self watchListContinuationText];
-  if (v66)
+  watchListContinuationText = [(_SFPBMediaInfoCardSection *)self watchListContinuationText];
+  if (watchListContinuationText)
   {
-    v67 = v66;
-    v68 = [(_SFPBMediaInfoCardSection *)self watchListContinuationText];
-    v69 = [v4 watchListContinuationText];
-    v70 = [v68 isEqual:v69];
+    v67 = watchListContinuationText;
+    watchListContinuationText2 = [(_SFPBMediaInfoCardSection *)self watchListContinuationText];
+    watchListContinuationText3 = [equalCopy watchListContinuationText];
+    v70 = [watchListContinuationText2 isEqual:watchListContinuationText3];
 
     if (!v70)
     {
@@ -1312,20 +1312,20 @@
   {
   }
 
-  v5 = [(_SFPBMediaInfoCardSection *)self watchListConfirmationText];
-  v6 = [v4 watchListConfirmationText];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBMediaInfoCardSection *)self watchListConfirmationText];
+  punchoutOptions2 = [equalCopy watchListConfirmationText];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_76;
   }
 
-  v71 = [(_SFPBMediaInfoCardSection *)self watchListConfirmationText];
-  if (v71)
+  watchListConfirmationText = [(_SFPBMediaInfoCardSection *)self watchListConfirmationText];
+  if (watchListConfirmationText)
   {
-    v72 = v71;
-    v73 = [(_SFPBMediaInfoCardSection *)self watchListConfirmationText];
-    v74 = [v4 watchListConfirmationText];
-    v75 = [v73 isEqual:v74];
+    v72 = watchListConfirmationText;
+    watchListConfirmationText2 = [(_SFPBMediaInfoCardSection *)self watchListConfirmationText];
+    watchListConfirmationText3 = [equalCopy watchListConfirmationText];
+    v75 = [watchListConfirmationText2 isEqual:watchListConfirmationText3];
 
     if (!v75)
     {
@@ -1338,34 +1338,34 @@
   }
 
   isMediaContainer = self->_isMediaContainer;
-  if (isMediaContainer != [v4 isMediaContainer])
+  if (isMediaContainer != [equalCopy isMediaContainer])
   {
     goto LABEL_77;
   }
 
-  v5 = [(_SFPBMediaInfoCardSection *)self specialOfferButtonLabel];
-  v6 = [v4 specialOfferButtonLabel];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBMediaInfoCardSection *)self specialOfferButtonLabel];
+  punchoutOptions2 = [equalCopy specialOfferButtonLabel];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
 LABEL_76:
 
     goto LABEL_77;
   }
 
-  v77 = [(_SFPBMediaInfoCardSection *)self specialOfferButtonLabel];
-  if (!v77)
+  specialOfferButtonLabel = [(_SFPBMediaInfoCardSection *)self specialOfferButtonLabel];
+  if (!specialOfferButtonLabel)
   {
 
 LABEL_80:
     watchListItemType = self->_watchListItemType;
-    v82 = watchListItemType == [v4 watchListItemType];
+    v82 = watchListItemType == [equalCopy watchListItemType];
     goto LABEL_78;
   }
 
-  v78 = v77;
-  v79 = [(_SFPBMediaInfoCardSection *)self specialOfferButtonLabel];
-  v80 = [v4 specialOfferButtonLabel];
-  v81 = [v79 isEqual:v80];
+  v78 = specialOfferButtonLabel;
+  specialOfferButtonLabel2 = [(_SFPBMediaInfoCardSection *)self specialOfferButtonLabel];
+  specialOfferButtonLabel3 = [equalCopy specialOfferButtonLabel];
+  v81 = [specialOfferButtonLabel2 isEqual:specialOfferButtonLabel3];
 
   if (v81)
   {
@@ -1379,16 +1379,16 @@ LABEL_78:
   return v82;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBMediaInfoCardSection *)self punchoutOptions];
+  toCopy = to;
+  punchoutOptions = [(_SFPBMediaInfoCardSection *)self punchoutOptions];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v43 objects:v49 count:16];
+  v6 = [punchoutOptions countByEnumeratingWithState:&v43 objects:v49 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1400,7 +1400,7 @@ LABEL_78:
       {
         if (*v44 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(punchoutOptions);
         }
 
         v10 = *(*(&v43 + 1) + 8 * v9);
@@ -1409,20 +1409,20 @@ LABEL_78:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v43 objects:v49 count:16];
+      v7 = [punchoutOptions countByEnumeratingWithState:&v43 objects:v49 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(_SFPBMediaInfoCardSection *)self punchoutPickerTitle];
-  if (v11)
+  punchoutPickerTitle = [(_SFPBMediaInfoCardSection *)self punchoutPickerTitle];
+  if (punchoutPickerTitle)
   {
     PBDataWriterWriteStringField();
   }
 
-  v12 = [(_SFPBMediaInfoCardSection *)self punchoutPickerDismissText];
-  if (v12)
+  punchoutPickerDismissText = [(_SFPBMediaInfoCardSection *)self punchoutPickerDismissText];
+  if (punchoutPickerDismissText)
   {
     PBDataWriterWriteStringField();
   }
@@ -1442,8 +1442,8 @@ LABEL_78:
     PBDataWriterWriteBOOLField();
   }
 
-  v13 = [(_SFPBMediaInfoCardSection *)self type];
-  if (v13)
+  type = [(_SFPBMediaInfoCardSection *)self type];
+  if (type)
   {
     PBDataWriterWriteStringField();
   }
@@ -1453,24 +1453,24 @@ LABEL_78:
     PBDataWriterWriteInt32Field();
   }
 
-  v14 = [(_SFPBMediaInfoCardSection *)self backgroundColor];
-  if (v14)
+  backgroundColor = [(_SFPBMediaInfoCardSection *)self backgroundColor];
+  if (backgroundColor)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(_SFPBMediaInfoCardSection *)self mediaItem];
-  if (v15)
+  mediaItem = [(_SFPBMediaInfoCardSection *)self mediaItem];
+  if (mediaItem)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(_SFPBMediaInfoCardSection *)self details];
+  details = [(_SFPBMediaInfoCardSection *)self details];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v17 = [v16 countByEnumeratingWithState:&v39 objects:v48 count:16];
+  v17 = [details countByEnumeratingWithState:&v39 objects:v48 count:16];
   if (v17)
   {
     v18 = v17;
@@ -1482,7 +1482,7 @@ LABEL_78:
       {
         if (*v40 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(details);
         }
 
         v21 = *(*(&v39 + 1) + 8 * v20);
@@ -1491,24 +1491,24 @@ LABEL_78:
       }
 
       while (v18 != v20);
-      v18 = [v16 countByEnumeratingWithState:&v39 objects:v48 count:16];
+      v18 = [details countByEnumeratingWithState:&v39 objects:v48 count:16];
     }
 
     while (v18);
   }
 
-  v22 = [(_SFPBMediaInfoCardSection *)self playAction];
-  if (v22)
+  playAction = [(_SFPBMediaInfoCardSection *)self playAction];
+  if (playAction)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v23 = [(_SFPBMediaInfoCardSection *)self offers];
+  offers = [(_SFPBMediaInfoCardSection *)self offers];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v24 = [v23 countByEnumeratingWithState:&v35 objects:v47 count:16];
+  v24 = [offers countByEnumeratingWithState:&v35 objects:v47 count:16];
   if (v24)
   {
     v25 = v24;
@@ -1520,7 +1520,7 @@ LABEL_78:
       {
         if (*v36 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(offers);
         }
 
         v28 = *(*(&v35 + 1) + 8 * v27);
@@ -1529,32 +1529,32 @@ LABEL_78:
       }
 
       while (v25 != v27);
-      v25 = [v23 countByEnumeratingWithState:&v35 objects:v47 count:16];
+      v25 = [offers countByEnumeratingWithState:&v35 objects:v47 count:16];
     }
 
     while (v25);
   }
 
-  v29 = [(_SFPBMediaInfoCardSection *)self watchListIdentifier];
-  if (v29)
+  watchListIdentifier = [(_SFPBMediaInfoCardSection *)self watchListIdentifier];
+  if (watchListIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v30 = [(_SFPBMediaInfoCardSection *)self watchListButtonLabel];
-  if (v30)
+  watchListButtonLabel = [(_SFPBMediaInfoCardSection *)self watchListButtonLabel];
+  if (watchListButtonLabel)
   {
     PBDataWriterWriteStringField();
   }
 
-  v31 = [(_SFPBMediaInfoCardSection *)self watchListContinuationText];
-  if (v31)
+  watchListContinuationText = [(_SFPBMediaInfoCardSection *)self watchListContinuationText];
+  if (watchListContinuationText)
   {
     PBDataWriterWriteStringField();
   }
 
-  v32 = [(_SFPBMediaInfoCardSection *)self watchListConfirmationText];
-  if (v32)
+  watchListConfirmationText = [(_SFPBMediaInfoCardSection *)self watchListConfirmationText];
+  if (watchListConfirmationText)
   {
     PBDataWriterWriteStringField();
   }
@@ -1564,8 +1564,8 @@ LABEL_78:
     PBDataWriterWriteBOOLField();
   }
 
-  v33 = [(_SFPBMediaInfoCardSection *)self specialOfferButtonLabel];
-  if (v33)
+  specialOfferButtonLabel = [(_SFPBMediaInfoCardSection *)self specialOfferButtonLabel];
+  if (specialOfferButtonLabel)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -1578,144 +1578,144 @@ LABEL_78:
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setWatchListConfirmationText:(id)a3
+- (void)setWatchListConfirmationText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   watchListConfirmationText = self->_watchListConfirmationText;
   self->_watchListConfirmationText = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setWatchListContinuationText:(id)a3
+- (void)setWatchListContinuationText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   watchListContinuationText = self->_watchListContinuationText;
   self->_watchListContinuationText = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setWatchListButtonLabel:(id)a3
+- (void)setWatchListButtonLabel:(id)label
 {
-  v4 = [a3 copy];
+  v4 = [label copy];
   watchListButtonLabel = self->_watchListButtonLabel;
   self->_watchListButtonLabel = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setWatchListIdentifier:(id)a3
+- (void)setWatchListIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   watchListIdentifier = self->_watchListIdentifier;
   self->_watchListIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addOffers:(id)a3
+- (void)addOffers:(id)offers
 {
-  v4 = a3;
+  offersCopy = offers;
   offers = self->_offers;
-  v8 = v4;
+  v8 = offersCopy;
   if (!offers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_offers;
-    self->_offers = v6;
+    self->_offers = array;
 
-    v4 = v8;
+    offersCopy = v8;
     offers = self->_offers;
   }
 
-  [(NSArray *)offers addObject:v4];
+  [(NSArray *)offers addObject:offersCopy];
 }
 
-- (void)setOffers:(id)a3
+- (void)setOffers:(id)offers
 {
-  v4 = [a3 copy];
+  v4 = [offers copy];
   offers = self->_offers;
   self->_offers = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addDetails:(id)a3
+- (void)addDetails:(id)details
 {
-  v4 = a3;
+  detailsCopy = details;
   details = self->_details;
-  v8 = v4;
+  v8 = detailsCopy;
   if (!details)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_details;
-    self->_details = v6;
+    self->_details = array;
 
-    v4 = v8;
+    detailsCopy = v8;
     details = self->_details;
   }
 
-  [(NSArray *)details addObject:v4];
+  [(NSArray *)details addObject:detailsCopy];
 }
 
-- (void)setDetails:(id)a3
+- (void)setDetails:(id)details
 {
-  v4 = [a3 copy];
+  v4 = [details copy];
   details = self->_details;
   self->_details = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setType:(id)a3
+- (void)setType:(id)type
 {
-  v4 = [a3 copy];
+  v4 = [type copy];
   type = self->_type;
   self->_type = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPunchoutPickerDismissText:(id)a3
+- (void)setPunchoutPickerDismissText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   punchoutPickerDismissText = self->_punchoutPickerDismissText;
   self->_punchoutPickerDismissText = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPunchoutPickerTitle:(id)a3
+- (void)setPunchoutPickerTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   punchoutPickerTitle = self->_punchoutPickerTitle;
   self->_punchoutPickerTitle = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addPunchoutOptions:(id)a3
+- (void)addPunchoutOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   punchoutOptions = self->_punchoutOptions;
-  v8 = v4;
+  v8 = optionsCopy;
   if (!punchoutOptions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_punchoutOptions;
-    self->_punchoutOptions = v6;
+    self->_punchoutOptions = array;
 
-    v4 = v8;
+    optionsCopy = v8;
     punchoutOptions = self->_punchoutOptions;
   }
 
-  [(NSArray *)punchoutOptions addObject:v4];
+  [(NSArray *)punchoutOptions addObject:optionsCopy];
 }
 
-- (void)setPunchoutOptions:(id)a3
+- (void)setPunchoutOptions:(id)options
 {
-  v4 = [a3 copy];
+  v4 = [options copy];
   punchoutOptions = self->_punchoutOptions;
   self->_punchoutOptions = v4;
 

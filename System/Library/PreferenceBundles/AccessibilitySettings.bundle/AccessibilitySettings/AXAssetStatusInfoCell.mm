@@ -1,23 +1,23 @@
 @interface AXAssetStatusInfoCell
-- (AXAssetStatusInfoCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_deleteButtonTapped:(id)a3;
-- (void)_downloadButtonTapped:(id)a3;
+- (AXAssetStatusInfoCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_deleteButtonTapped:(id)tapped;
+- (void)_downloadButtonTapped:(id)tapped;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 - (void)updateConstraints;
 @end
 
 @implementation AXAssetStatusInfoCell
 
-- (AXAssetStatusInfoCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AXAssetStatusInfoCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v13.receiver = self;
   v13.super_class = AXAssetStatusInfoCell;
-  v4 = [(AXAssetStatusInfoCell *)&v13 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(AXAssetStatusInfoCell *)&v13 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(AXAssetStatusInfoCell *)v4 contentView];
+    contentView = [(AXAssetStatusInfoCell *)v4 contentView];
     v7 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     infoLabel = v5->_infoLabel;
     v5->_infoLabel = v7;
@@ -30,7 +30,7 @@
     [(UILabel *)v5->_infoLabel setNumberOfLines:0];
     [(UILabel *)v5->_infoLabel setLineBreakMode:0];
     [(UILabel *)v5->_infoLabel setAccessibilityIdentifier:@"AX_ASSET_STATUS_INFO_CELL"];
-    [v6 addSubview:v5->_infoLabel];
+    [contentView addSubview:v5->_infoLabel];
     v10 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
     spinner = v5->_spinner;
     v5->_spinner = v10;
@@ -39,7 +39,7 @@
     [(UIActivityIndicatorView *)v5->_spinner setAccessibilityIdentifier:@"Spinner"];
     [(UIActivityIndicatorView *)v5->_spinner setHidesWhenStopped:1];
     [(UIActivityIndicatorView *)v5->_spinner sizeToFit];
-    [v6 addSubview:v5->_spinner];
+    [contentView addSubview:v5->_spinner];
     [(AXAssetStatusInfoCell *)v5 setSeparatorInset:0.0, 58.0, 0.0, 0.0];
   }
 
@@ -48,7 +48,7 @@
 
 - (void)updateConstraints
 {
-  v3 = [(AXAssetStatusInfoCell *)self contentView];
+  contentView = [(AXAssetStatusInfoCell *)self contentView];
   v4 = _NSDictionaryOfVariableBindings(@"_infoLabel, _spinner", self->_infoLabel, self->_spinner, 0);
   if ([(NSMutableArray *)self->_constraints count])
   {
@@ -69,14 +69,14 @@
   [(NSMutableArray *)v9 addObjectsFromArray:v10];
 
   v11 = self->_constraints;
-  v12 = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
-  v13 = [v3 centerXAnchor];
-  [v12 constraintEqualToAnchor:v13];
-  v14 = v19 = v3;
+  centerXAnchor = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
+  centerXAnchor2 = [contentView centerXAnchor];
+  [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+  v14 = v19 = contentView;
   v22[0] = v14;
-  v15 = [(UIActivityIndicatorView *)self->_spinner centerYAnchor];
-  v16 = [v3 centerYAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  centerYAnchor = [(UIActivityIndicatorView *)self->_spinner centerYAnchor];
+  centerYAnchor2 = [contentView centerYAnchor];
+  v17 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v22[1] = v17;
   v18 = [NSArray arrayWithObjects:v22 count:2];
   [(NSMutableArray *)v11 addObjectsFromArray:v18];
@@ -96,48 +96,48 @@
   [(UIActivityIndicatorView *)self->_spinner stopAnimating];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v30.receiver = self;
   v30.super_class = AXAssetStatusInfoCell;
-  [(AXAssetStatusInfoCell *)&v30 refreshCellContentsWithSpecifier:v4];
+  [(AXAssetStatusInfoCell *)&v30 refreshCellContentsWithSpecifier:specifierCopy];
   [(AXAssetStatusInfoCell *)self setUserInteractionEnabled:1];
-  v5 = [v4 ax_assetState];
-  v6 = [v4 ax_asset];
+  ax_assetState = [specifierCopy ax_assetState];
+  ax_asset = [specifierCopy ax_asset];
   spinner = self->_spinner;
-  if (!v5)
+  if (!ax_assetState)
   {
     [(UIActivityIndicatorView *)spinner startAnimating];
     [(UILabel *)self->_infoLabel setAlpha:0.0];
-    v8 = AXAssetLocalizedString();
+    ax_assetError = AXAssetLocalizedString();
     infoLabel = self->_infoLabel;
     goto LABEL_11;
   }
 
   [(UIActivityIndicatorView *)spinner stopAnimating];
   [(UILabel *)self->_infoLabel setAlpha:1.0];
-  if (v5 <= 2)
+  if (ax_assetState <= 2)
   {
-    if (v5 == (&dword_0 + 1))
+    if (ax_assetState == (&dword_0 + 1))
     {
-      if (v6)
+      if (ax_asset)
       {
-        v22 = [v6 downloadSize];
-        v23 = [v22 longLongValue];
+        downloadSize = [ax_asset downloadSize];
+        longLongValue = [downloadSize longLongValue];
       }
 
       else
       {
-        v23 = [v4 ax_assetDownloadBytesExpected];
+        longLongValue = [specifierCopy ax_assetDownloadBytesExpected];
       }
 
-      v8 = [NSByteCountFormatter stringFromByteCount:v23 countStyle:0];
+      ax_assetError = [NSByteCountFormatter stringFromByteCount:longLongValue countStyle:0];
       v27 = AXAssetLocalizedString();
-      v28 = [NSString localizedStringWithFormat:v27, v8];
+      v28 = [NSString localizedStringWithFormat:v27, ax_assetError];
       [(UILabel *)self->_infoLabel setText:v28];
 
-      if ([v4 ax_assetDownloadButtonHidden])
+      if ([specifierCopy ax_assetDownloadButtonHidden])
       {
         goto LABEL_32;
       }
@@ -150,64 +150,64 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    if (v5 != (&dword_0 + 2))
+    if (ax_assetState != (&dword_0 + 2))
     {
       goto LABEL_33;
     }
 
-    v14 = [v4 ax_assetDownloadBytesReceived];
-    v15 = [v4 ax_assetDownloadBytesExpected];
-    if (v15)
+    ax_assetDownloadBytesReceived = [specifierCopy ax_assetDownloadBytesReceived];
+    ax_assetDownloadBytesExpected = [specifierCopy ax_assetDownloadBytesExpected];
+    if (ax_assetDownloadBytesExpected)
     {
-      v16 = [NSNumber numberWithDouble:v14 / v15];
-      v8 = [NSNumberFormatter localizedStringFromNumber:v16 numberStyle:3];
+      v16 = [NSNumber numberWithDouble:ax_assetDownloadBytesReceived / ax_assetDownloadBytesExpected];
+      ax_assetError = [NSNumberFormatter localizedStringFromNumber:v16 numberStyle:3];
 
       v17 = AXAssetLocalizedString();
-      [NSString localizedStringWithFormat:v17, v8, v29];
+      [NSString localizedStringWithFormat:v17, ax_assetError, v29];
       v19 = LABEL_17:;
       [(UILabel *)self->_infoLabel setText:v19];
 
       goto LABEL_32;
     }
 
-    v8 = AXAssetLocalizedString();
+    ax_assetError = AXAssetLocalizedString();
     infoLabel = self->_infoLabel;
 LABEL_11:
-    [(UILabel *)infoLabel setText:v8];
+    [(UILabel *)infoLabel setText:ax_assetError];
 LABEL_32:
 
     goto LABEL_33;
   }
 
-  if (v5 == (&dword_0 + 3))
+  if (ax_assetState == (&dword_0 + 3))
   {
-    v18 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", [v4 ax_assetDownloadBytesReceived] / objc_msgSend(v4, "ax_assetDownloadBytesExpected"));
-    v8 = [NSNumberFormatter localizedStringFromNumber:v18 numberStyle:3];
+    v18 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", [specifierCopy ax_assetDownloadBytesReceived] / objc_msgSend(specifierCopy, "ax_assetDownloadBytesExpected"));
+    ax_assetError = [NSNumberFormatter localizedStringFromNumber:v18 numberStyle:3];
 
     v17 = AXAssetLocalizedString();
-    [NSString localizedStringWithFormat:@"%@ (%@)", v17, v8];
+    [NSString localizedStringWithFormat:@"%@ (%@)", v17, ax_assetError];
     goto LABEL_17;
   }
 
-  if (v5 == &dword_4)
+  if (ax_assetState == &dword_4)
   {
-    if (v6)
+    if (ax_asset)
     {
-      v20 = [v6 unarchivedFileSize];
-      v21 = [v20 longLongValue];
+      unarchivedFileSize = [ax_asset unarchivedFileSize];
+      longLongValue2 = [unarchivedFileSize longLongValue];
     }
 
     else
     {
-      v21 = [v4 ax_assetUnarchivedFileSize];
+      longLongValue2 = [specifierCopy ax_assetUnarchivedFileSize];
     }
 
-    v8 = [NSByteCountFormatter stringFromByteCount:v21 countStyle:0];
+    ax_assetError = [NSByteCountFormatter stringFromByteCount:longLongValue2 countStyle:0];
     v24 = AXAssetLocalizedString();
-    v25 = [NSString localizedStringWithFormat:v24, v8];
+    v25 = [NSString localizedStringWithFormat:v24, ax_assetError];
     [(UILabel *)self->_infoLabel setText:v25];
 
-    if ([v4 ax_assetDeleteButtonHidden])
+    if ([specifierCopy ax_assetDeleteButtonHidden])
     {
       goto LABEL_32;
     }
@@ -217,26 +217,26 @@ LABEL_32:
     goto LABEL_29;
   }
 
-  if (v5 == (&dword_4 + 1))
+  if (ax_assetState == (&dword_4 + 1))
   {
-    v8 = [v4 ax_assetError];
-    if (!v8)
+    ax_assetError = [specifierCopy ax_assetError];
+    if (!ax_assetError)
     {
-      v8 = _AXAssetMakeError();
+      ax_assetError = _AXAssetMakeError();
     }
 
     v9 = AXIsInternalInstall();
-    v10 = [v8 localizedDescription];
-    v11 = v10;
+    localizedDescription = [ax_assetError localizedDescription];
+    v11 = localizedDescription;
     if (!v9)
     {
-      [(UILabel *)self->_infoLabel setText:v10];
+      [(UILabel *)self->_infoLabel setText:localizedDescription];
 LABEL_31:
 
       goto LABEL_32;
     }
 
-    v12 = [v10 stringByAppendingString:@"\nInternal Only: Are you on the internal network?"];
+    v12 = [localizedDescription stringByAppendingString:@"\nInternal Only: Are you on the internal network?"];
     [(UILabel *)self->_infoLabel setText:v12];
 LABEL_30:
 
@@ -248,27 +248,27 @@ LABEL_33:
   [(AXAssetStatusInfoCell *)self setNeedsDisplay];
 }
 
-- (void)_downloadButtonTapped:(id)a3
+- (void)_downloadButtonTapped:(id)tapped
 {
-  v4 = [(AXAssetStatusInfoCell *)self specifier];
-  v6 = [v4 ax_assetDownloadButtonTapHandler];
+  specifier = [(AXAssetStatusInfoCell *)self specifier];
+  ax_assetDownloadButtonTapHandler = [specifier ax_assetDownloadButtonTapHandler];
 
-  if (v6)
+  if (ax_assetDownloadButtonTapHandler)
   {
-    v5 = [(AXAssetStatusInfoCell *)self specifier];
-    v6[2](v6, v5);
+    specifier2 = [(AXAssetStatusInfoCell *)self specifier];
+    ax_assetDownloadButtonTapHandler[2](ax_assetDownloadButtonTapHandler, specifier2);
   }
 }
 
-- (void)_deleteButtonTapped:(id)a3
+- (void)_deleteButtonTapped:(id)tapped
 {
-  v4 = [(AXAssetStatusInfoCell *)self specifier];
-  v6 = [v4 ax_assetDeleteButtonTapHandler];
+  specifier = [(AXAssetStatusInfoCell *)self specifier];
+  ax_assetDeleteButtonTapHandler = [specifier ax_assetDeleteButtonTapHandler];
 
-  if (v6)
+  if (ax_assetDeleteButtonTapHandler)
   {
-    v5 = [(AXAssetStatusInfoCell *)self specifier];
-    v6[2](v6, v5);
+    specifier2 = [(AXAssetStatusInfoCell *)self specifier];
+    ax_assetDeleteButtonTapHandler[2](ax_assetDeleteButtonTapHandler, specifier2);
   }
 }
 

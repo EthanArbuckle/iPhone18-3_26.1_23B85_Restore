@@ -1,23 +1,23 @@
 @interface LPAppleNewsMetadataProviderSpecialization
-+ (BOOL)generateSpecializedMetadataForCompleteMetadata:(id)a3 withContext:(id)a4 completionHandler:(id)a5;
++ (BOOL)generateSpecializedMetadataForCompleteMetadata:(id)metadata withContext:(id)context completionHandler:(id)handler;
 @end
 
 @implementation LPAppleNewsMetadataProviderSpecialization
 
-+ (BOOL)generateSpecializedMetadataForCompleteMetadata:(id)a3 withContext:(id)a4 completionHandler:(id)a5
++ (BOOL)generateSpecializedMetadataForCompleteMetadata:(id)metadata withContext:(id)context completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 postRedirectURL];
-  if ([LPPresentationSpecializations isAppleNewsURL:v10])
+  metadataCopy = metadata;
+  contextCopy = context;
+  handlerCopy = handler;
+  postRedirectURL = [contextCopy postRedirectURL];
+  if ([LPPresentationSpecializations isAppleNewsURL:postRedirectURL])
   {
   }
 
   else
   {
-    v11 = [v8 postRedirectURL];
-    v12 = [LPPresentationSpecializations isStocksNewsURL:v11];
+    postRedirectURL2 = [contextCopy postRedirectURL];
+    v12 = [LPPresentationSpecializations isStocksNewsURL:postRedirectURL2];
 
     if (!v12)
     {
@@ -26,7 +26,7 @@
     }
   }
 
-  v13 = [v7 copy];
+  v13 = [metadataCopy copy];
   v14 = objc_alloc_init(LPAppleNewsMetadata);
   [v13 setSpecialization:v14];
 
@@ -35,7 +35,7 @@
   v18[2] = __122__LPAppleNewsMetadataProviderSpecialization_generateSpecializedMetadataForCompleteMetadata_withContext_completionHandler___block_invoke;
   v18[3] = &unk_1E7A35428;
   v19 = v13;
-  v20 = v9;
+  v20 = handlerCopy;
   v15 = v13;
   dispatch_async(MEMORY[0x1E69E96A0], v18);
 

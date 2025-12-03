@@ -1,8 +1,8 @@
 @interface HMDNetworkRouterFirewallRuleAccessoryIdentifier
-+ (id)createWithProductData:(id)a3 firmwareVersion:(id)a4;
-+ (id)identifierFromRecordID:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HMDNetworkRouterFirewallRuleAccessoryIdentifier)initWithProductGroup:(id)a3 productNumber:(id)a4 firmwareVersion:(id)a5;
++ (id)createWithProductData:(id)data firmwareVersion:(id)version;
++ (id)identifierFromRecordID:(id)d;
+- (BOOL)isEqual:(id)equal;
+- (HMDNetworkRouterFirewallRuleAccessoryIdentifier)initWithProductGroup:(id)group productNumber:(id)number firmwareVersion:(id)version;
 - (id)attributeDescriptions;
 - (id)cloudKitRecordID;
 - (unint64_t)hash;
@@ -14,15 +14,15 @@
 {
   v15[3] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)self productGroup];
-  v5 = [v3 initWithName:@"ProductGroup" value:v4];
+  productGroup = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)self productGroup];
+  v5 = [v3 initWithName:@"ProductGroup" value:productGroup];
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)self productNumber];
-  v8 = [v6 initWithName:@"ProductNumber" value:v7];
+  productNumber = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)self productNumber];
+  v8 = [v6 initWithName:@"ProductNumber" value:productNumber];
   v15[1] = v8;
   v9 = objc_alloc(MEMORY[0x277D0F778]);
-  v10 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)self firmwareVersion];
-  v11 = [v9 initWithName:@"FirmwareVersion" value:v10];
+  firmwareVersion = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)self firmwareVersion];
+  v11 = [v9 initWithName:@"FirmwareVersion" value:firmwareVersion];
   v15[2] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:3];
 
@@ -33,32 +33,32 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)self productGroup];
-  v4 = [v3 hash];
+  productGroup = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)self productGroup];
+  v4 = [productGroup hash];
 
-  v5 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)self productNumber];
-  v6 = [v5 hash] ^ v4;
+  productNumber = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)self productNumber];
+  v6 = [productNumber hash] ^ v4;
 
-  v7 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)self firmwareVersion];
+  firmwareVersion = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)self firmwareVersion];
 
-  if (v7)
+  if (firmwareVersion)
   {
-    v8 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)self firmwareVersion];
-    v6 ^= [v8 hash];
+    firmwareVersion2 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)self firmwareVersion];
+    v6 ^= [firmwareVersion2 hash];
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self != v4)
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -72,16 +72,16 @@
       goto LABEL_13;
     }
 
-    v7 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)self productGroup];
-    v8 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v6 productGroup];
-    if ([v7 isEqualToString:v8])
+    productGroup = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)self productGroup];
+    productGroup2 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v6 productGroup];
+    if ([productGroup isEqualToString:productGroup2])
     {
-      v9 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)self productNumber];
-      v10 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v6 productNumber];
-      if ([v9 isEqualToString:v10])
+      productNumber = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)self productNumber];
+      productNumber2 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v6 productNumber];
+      if ([productNumber isEqualToString:productNumber2])
       {
-        v11 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)self firmwareVersion];
-        v12 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v6 firmwareVersion];
+        firmwareVersion = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)self firmwareVersion];
+        firmwareVersion2 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v6 firmwareVersion];
         v13 = HMFEqualObjects();
 
         if (v13)
@@ -107,43 +107,43 @@ LABEL_15:
   return v14;
 }
 
-- (HMDNetworkRouterFirewallRuleAccessoryIdentifier)initWithProductGroup:(id)a3 productNumber:(id)a4 firmwareVersion:(id)a5
+- (HMDNetworkRouterFirewallRuleAccessoryIdentifier)initWithProductGroup:(id)group productNumber:(id)number firmwareVersion:(id)version
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  groupCopy = group;
+  numberCopy = number;
+  versionCopy = version;
   v18.receiver = self;
   v18.super_class = HMDNetworkRouterFirewallRuleAccessoryIdentifier;
   v11 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)&v18 init];
   if (v11)
   {
-    v12 = [v8 lowercaseString];
+    lowercaseString = [groupCopy lowercaseString];
     productGroup = v11->_productGroup;
-    v11->_productGroup = v12;
+    v11->_productGroup = lowercaseString;
 
-    v14 = [v9 lowercaseString];
+    lowercaseString2 = [numberCopy lowercaseString];
     productNumber = v11->_productNumber;
-    v11->_productNumber = v14;
+    v11->_productNumber = lowercaseString2;
 
-    objc_storeStrong(&v11->_firmwareVersion, a5);
+    objc_storeStrong(&v11->_firmwareVersion, version);
     v16 = v11;
   }
 
   return v11;
 }
 
-+ (id)createWithProductData:(id)a3 firmwareVersion:(id)a4
++ (id)createWithProductData:(id)data firmwareVersion:(id)version
 {
-  v6 = a4;
+  versionCopy = version;
   v12 = 0;
   v13 = 0;
-  v7 = [HMDAccessory splitProductDataIntoProductGroupAndProductNumber:a3 productGroup:&v13 productNumber:&v12];
+  v7 = [HMDAccessory splitProductDataIntoProductGroupAndProductNumber:data productGroup:&v13 productNumber:&v12];
   v8 = v13;
   v9 = v12;
   v10 = 0;
   if (v7)
   {
-    v10 = [[a1 alloc] initWithProductGroup:v8 productNumber:v9 firmwareVersion:v6];
+    v10 = [[self alloc] initWithProductGroup:v8 productNumber:v9 firmwareVersion:versionCopy];
   }
 
   return v10;
@@ -152,25 +152,25 @@ LABEL_15:
 - (id)cloudKitRecordID
 {
   v3 = objc_alloc(MEMORY[0x277CBC5F8]);
-  v4 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)self cloudKitZoneName];
-  v5 = [v3 initWithZoneName:v4 ownerName:*MEMORY[0x277CBBF28]];
+  cloudKitZoneName = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)self cloudKitZoneName];
+  v5 = [v3 initWithZoneName:cloudKitZoneName ownerName:*MEMORY[0x277CBBF28]];
 
   v6 = objc_alloc(MEMORY[0x277CBC5D0]);
-  v7 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)self cloudKitRecordName];
-  v8 = [v6 initWithRecordName:v7 zoneID:v5];
+  cloudKitRecordName = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)self cloudKitRecordName];
+  v8 = [v6 initWithRecordName:cloudKitRecordName zoneID:v5];
 
   return v8;
 }
 
-+ (id)identifierFromRecordID:(id)a3
++ (id)identifierFromRecordID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 zoneID];
-  v7 = [v6 zoneName];
-  v8 = [v4 recordName];
+  dCopy = d;
+  v5 = [self alloc];
+  zoneID = [dCopy zoneID];
+  zoneName = [zoneID zoneName];
+  recordName = [dCopy recordName];
 
-  v9 = [v5 initWithProductGroup:v7 productNumber:v8 firmwareVersion:0];
+  v9 = [v5 initWithProductGroup:zoneName productNumber:recordName firmwareVersion:0];
 
   return v9;
 }

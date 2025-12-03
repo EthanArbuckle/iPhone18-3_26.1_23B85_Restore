@@ -1,12 +1,12 @@
 @interface ClimateZoneCard
 - (NSArray)preferredFocusEnvironments;
-- (_TtC7Climate15ClimateZoneCard)initWithCoder:(id)a3;
-- (_TtC7Climate15ClimateZoneCard)initWithFrame:(CGRect)a3;
+- (_TtC7Climate15ClimateZoneCard)initWithCoder:(id)coder;
+- (_TtC7Climate15ClimateZoneCard)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ClimateZoneCard
 
-- (_TtC7Climate15ClimateZoneCard)initWithCoder:(id)a3
+- (_TtC7Climate15ClimateZoneCard)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Climate15ClimateZoneCard_background) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -14,7 +14,7 @@
   return result;
 }
 
-- (_TtC7Climate15ClimateZoneCard)initWithFrame:(CGRect)a3
+- (_TtC7Climate15ClimateZoneCard)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

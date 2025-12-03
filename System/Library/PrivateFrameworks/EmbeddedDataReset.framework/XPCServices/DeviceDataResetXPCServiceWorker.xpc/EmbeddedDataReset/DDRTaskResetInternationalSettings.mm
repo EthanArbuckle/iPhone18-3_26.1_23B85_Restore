@@ -34,15 +34,15 @@
   v13 = DDRLogForCategory(0);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(DDRTaskResetInternationalSettings *)self locale];
-    v15 = [(DDRTaskResetInternationalSettings *)self languages];
-    v16 = [(DDRTaskResetInternationalSettings *)self keyboards];
+    locale = [(DDRTaskResetInternationalSettings *)self locale];
+    languages = [(DDRTaskResetInternationalSettings *)self languages];
+    keyboards = [(DDRTaskResetInternationalSettings *)self keyboards];
     v17 = 138412802;
-    v18 = v14;
+    v18 = locale;
     v19 = 2112;
-    v20 = v15;
+    v20 = languages;
     v21 = 2112;
-    v22 = v16;
+    v22 = keyboards;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Assigning to self property, locale: %@, languages: %@, keyboards: %@", &v17, 0x20u);
   }
 }
@@ -52,24 +52,24 @@
   v3 = DDRLogForCategory(0);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(DDRTaskResetInternationalSettings *)self locale];
-    v5 = [(DDRTaskResetInternationalSettings *)self languages];
-    v6 = [(DDRTaskResetInternationalSettings *)self keyboards];
+    locale = [(DDRTaskResetInternationalSettings *)self locale];
+    languages = [(DDRTaskResetInternationalSettings *)self languages];
+    keyboards = [(DDRTaskResetInternationalSettings *)self keyboards];
     *buf = 138412802;
-    v41 = v4;
+    v41 = locale;
     v42 = 2112;
-    v43 = v5;
+    v43 = languages;
     v44 = 2112;
-    v45 = v6;
+    v45 = keyboards;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Restoring previously saved international settings, locale: %@, languages: %@, keyboards: %@", buf, 0x20u);
   }
 
-  v7 = [(DDRTaskResetInternationalSettings *)self locale];
-  v8 = [(DDRTaskResetInternationalSettings *)self languages];
-  v9 = [(DDRTaskResetInternationalSettings *)self keyboards];
-  v10 = v7;
-  v11 = v8;
-  v12 = v9;
+  locale2 = [(DDRTaskResetInternationalSettings *)self locale];
+  languages2 = [(DDRTaskResetInternationalSettings *)self languages];
+  keyboards2 = [(DDRTaskResetInternationalSettings *)self keyboards];
+  v10 = locale2;
+  v11 = languages2;
+  v12 = keyboards2;
   v13 = _locale();
   v14 = _languages();
   v15 = _keyboards();
@@ -115,13 +115,13 @@
   }
 
   v21 = [[NSDictionary alloc] initWithContentsOfFile:v19];
-  v22 = [@"~/Library/Preferences/.GlobalPreferences.plist" stringByExpandingTildeInPath];
-  [v21 writeToFile:v22 atomically:0];
+  stringByExpandingTildeInPath = [@"~/Library/Preferences/.GlobalPreferences.plist" stringByExpandingTildeInPath];
+  [v21 writeToFile:stringByExpandingTildeInPath atomically:0];
   v23 = +[NSFileManager defaultManager];
   v38 = NSFileProtectionKey;
   v39 = NSFileProtectionNone;
   v24 = [NSDictionary dictionaryWithObjects:&v39 forKeys:&v38 count:1];
-  [v23 setAttributes:v24 ofItemAtPath:v22 error:0];
+  [v23 setAttributes:v24 ofItemAtPath:stringByExpandingTildeInPath error:0];
 
   sub_100004BFC();
   v25 = DDRLogForCategory(0);

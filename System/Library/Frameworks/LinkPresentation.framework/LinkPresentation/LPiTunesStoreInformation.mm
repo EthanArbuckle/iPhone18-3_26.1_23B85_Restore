@@ -1,15 +1,15 @@
 @interface LPiTunesStoreInformation
-+ (id)_convertNewStorefrontIdentifier:(id)a3;
++ (id)_convertNewStorefrontIdentifier:(id)identifier;
 + (id)shared;
 - (LPiTunesStoreInformation)init;
-- (unint64_t)userStateForMediaStorefrontIdentifier:(id)a3;
+- (unint64_t)userStateForMediaStorefrontIdentifier:(id)identifier;
 - (void)_capabilitiesDidChangeNotification;
 - (void)_notifyChangeHandlers;
-- (void)_setCapabilities:(unint64_t)a3;
-- (void)_setStorefrontIdentifier:(id)a3;
+- (void)_setCapabilities:(unint64_t)capabilities;
+- (void)_setStorefrontIdentifier:(id)identifier;
 - (void)_setupCloudServiceController;
 - (void)_storefrontDidChangeNotification;
-- (void)registerForStoreAvailablityChangesWithToken:(id)a3 handler:(id)a4;
+- (void)registerForStoreAvailablityChangesWithToken:(id)token handler:(id)handler;
 @end
 
 @implementation LPiTunesStoreInformation
@@ -36,9 +36,9 @@
   v2 = [(LPiTunesStoreInformation *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     changeHandlers = v2->_changeHandlers;
-    v2->_changeHandlers = v3;
+    v2->_changeHandlers = weakToStrongObjectsMapTable;
 
     v2->_capabilities = 0;
     [(LPiTunesStoreInformation *)v2 _setupCloudServiceController];
@@ -208,13 +208,13 @@ void __56__LPiTunesStoreInformation__setupCloudServiceController__block_invoke_5
   }
 }
 
-- (unint64_t)userStateForMediaStorefrontIdentifier:(id)a3
+- (unint64_t)userStateForMediaStorefrontIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   storefrontIdentifier = self->_storefrontIdentifier;
   if (storefrontIdentifier && self->_hasUpdatedCapabilities)
   {
-    if ([(NSString *)storefrontIdentifier isEqualToString:v4])
+    if ([(NSString *)storefrontIdentifier isEqualToString:identifierCopy])
     {
       if (self->_capabilities)
       {
@@ -241,10 +241,10 @@ void __56__LPiTunesStoreInformation__setupCloudServiceController__block_invoke_5
   return v6;
 }
 
-- (void)_setCapabilities:(unint64_t)a3
+- (void)_setCapabilities:(unint64_t)capabilities
 {
   self->_hasUpdatedCapabilities = 1;
-  v4 = [objc_opt_class() _convertCapabilities:a3];
+  v4 = [objc_opt_class() _convertCapabilities:capabilities];
   if (self->_capabilities != v4)
   {
     self->_capabilities = v4;
@@ -253,12 +253,12 @@ void __56__LPiTunesStoreInformation__setupCloudServiceController__block_invoke_5
   }
 }
 
-+ (id)_convertNewStorefrontIdentifier:(id)a3
++ (id)_convertNewStorefrontIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 length] >= 6)
+  identifierCopy = identifier;
+  if ([identifierCopy length] >= 6)
   {
-    v4 = [v3 substringToIndex:6];
+    v4 = [identifierCopy substringToIndex:6];
   }
 
   else
@@ -269,10 +269,10 @@ void __56__LPiTunesStoreInformation__setupCloudServiceController__block_invoke_5
   return v4;
 }
 
-- (void)_setStorefrontIdentifier:(id)a3
+- (void)_setStorefrontIdentifier:(id)identifier
 {
-  v5 = a3;
-  v4 = [objc_opt_class() _convertNewStorefrontIdentifier:v5];
+  identifierCopy = identifier;
+  v4 = [objc_opt_class() _convertNewStorefrontIdentifier:identifierCopy];
   if (![(NSString *)self->_storefrontIdentifier isEqualToString:v4])
   {
     objc_storeStrong(&self->_storefrontIdentifier, v4);
@@ -384,8 +384,8 @@ _BYTE *__60__LPiTunesStoreInformation__storefrontDidChangeNotification__block_in
   v7 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v2 = [(NSMapTable *)self->_changeHandlers objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v6 objects:v10 count:16];
+  objectEnumerator = [(NSMapTable *)self->_changeHandlers objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v6 objects:v10 count:16];
   if (v3)
   {
     v4 = *v7;
@@ -396,25 +396,25 @@ _BYTE *__60__LPiTunesStoreInformation__storefrontDidChangeNotification__block_in
       {
         if (*v7 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         (*(*(*(&v6 + 1) + 8 * v5++) + 16))();
       }
 
       while (v3 != v5);
-      v3 = [v2 countByEnumeratingWithState:&v6 objects:v10 count:16];
+      v3 = [objectEnumerator countByEnumeratingWithState:&v6 objects:v10 count:16];
     }
 
     while (v3);
   }
 }
 
-- (void)registerForStoreAvailablityChangesWithToken:(id)a3 handler:(id)a4
+- (void)registerForStoreAvailablityChangesWithToken:(id)token handler:(id)handler
 {
   changeHandlers = self->_changeHandlers;
-  v6 = a3;
-  v7 = _Block_copy(a4);
+  tokenCopy = token;
+  v7 = _Block_copy(handler);
   [NSMapTable setObject:"setObject:forKey:" forKey:?];
 }
 

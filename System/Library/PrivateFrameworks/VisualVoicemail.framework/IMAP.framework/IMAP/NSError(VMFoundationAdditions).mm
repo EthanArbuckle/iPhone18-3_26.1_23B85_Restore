@@ -8,12 +8,12 @@
 - (BOOL)vm_match:()VMFoundationAdditions code:
 {
   v6 = a3;
-  v7 = [a1 domain];
-  v8 = [v7 isEqualToString:v6];
+  domain = [self domain];
+  v8 = [domain isEqualToString:v6];
 
   if (v8)
   {
-    v9 = [a1 code] == a4;
+    v9 = [self code] == a4;
   }
 
   else
@@ -26,8 +26,8 @@
 
 - (id)vm_underlyingError
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
   return v2;
 }

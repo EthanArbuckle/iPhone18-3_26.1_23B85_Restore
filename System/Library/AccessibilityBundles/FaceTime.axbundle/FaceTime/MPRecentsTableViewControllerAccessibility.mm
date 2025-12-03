@@ -1,25 +1,25 @@
 @interface MPRecentsTableViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation MPRecentsTableViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CHRecentCall"];
-  [v3 validateClass:@"MPLegacyRecentsTableViewCell" isKindOfClass:@"PHTableViewCell"];
-  [v3 validateClass:@"PHTableViewCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHTableViewCell" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MPRecentsTableViewController" conformsToProtocol:@"UITableViewDataSource"];
-  [v3 validateClass:@"MPRecentsTableViewController" hasInstanceMethod:@"tableView:cellForRowAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"MPRecentsTableViewController" hasInstanceMethod:@"recentCallAtTableViewIndex:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"MPRecentsTableViewController" hasInstanceMethod:@"setEditing:animated:" withFullSignature:{"v", "B", "B", 0}];
-  [v3 validateClass:@"MPRecentsTableViewController" hasInstanceMethod:@"reloadDataSource" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CHRecentCall" hasInstanceMethod:@"ph_supportsLocalParticipantBadge" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MPRecentsTableViewController" hasInstanceMethod:@"showRecentCallDetailsViewControllerForRecentCall:animated:" withFullSignature:{"v", "@", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CHRecentCall"];
+  [validationsCopy validateClass:@"MPLegacyRecentsTableViewCell" isKindOfClass:@"PHTableViewCell"];
+  [validationsCopy validateClass:@"PHTableViewCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHTableViewCell" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MPRecentsTableViewController" conformsToProtocol:@"UITableViewDataSource"];
+  [validationsCopy validateClass:@"MPRecentsTableViewController" hasInstanceMethod:@"tableView:cellForRowAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"MPRecentsTableViewController" hasInstanceMethod:@"recentCallAtTableViewIndex:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"MPRecentsTableViewController" hasInstanceMethod:@"setEditing:animated:" withFullSignature:{"v", "B", "B", 0}];
+  [validationsCopy validateClass:@"MPRecentsTableViewController" hasInstanceMethod:@"reloadDataSource" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CHRecentCall" hasInstanceMethod:@"ph_supportsLocalParticipantBadge" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MPRecentsTableViewController" hasInstanceMethod:@"showRecentCallDetailsViewControllerForRecentCall:animated:" withFullSignature:{"v", "@", "B", 0}];
 }
 
 uint64_t __102__MPRecentsTableViewControllerAccessibility__accessibilityTableView_endRowActionHandlingForIndexPath___block_invoke_2(uint64_t a1)
@@ -30,13 +30,13 @@ uint64_t __102__MPRecentsTableViewControllerAccessibility__accessibilityTableVie
   return [v1 setEditing:v2 animated:0];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v69.receiver = self;
   v69.super_class = MPRecentsTableViewControllerAccessibility;
-  v8 = [(MPRecentsTableViewControllerAccessibility *)&v69 tableView:v6 cellForRowAtIndexPath:v7];
+  v8 = [(MPRecentsTableViewControllerAccessibility *)&v69 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
   v68 = 0;
   objc_opt_class();
   v62 = 0;
@@ -45,7 +45,7 @@ uint64_t __102__MPRecentsTableViewControllerAccessibility__accessibilityTableVie
   v65 = __Block_byref_object_copy_;
   v66 = __Block_byref_object_dispose_;
   v67 = 0;
-  v9 = v7;
+  v9 = pathCopy;
   AXPerformSafeBlock();
   v10 = v63[5];
 
@@ -67,7 +67,7 @@ uint64_t __102__MPRecentsTableViewControllerAccessibility__accessibilityTableVie
     goto LABEL_43;
   }
 
-  v14 = [v13 accessibilityLabel];
+  accessibilityLabel = [v13 accessibilityLabel];
 
   LOBYTE(v62) = 0;
   objc_opt_class();
@@ -80,28 +80,28 @@ LABEL_43:
     abort();
   }
 
-  v17 = [v16 accessibilityLabel];
+  accessibilityLabel2 = [v16 accessibilityLabel];
 
-  v59 = v6;
-  if (v14)
+  v59 = viewCopy;
+  if (accessibilityLabel)
   {
-    v18 = [MEMORY[0x29EDB9F50] decimalDigitCharacterSet];
-    v19 = [v14 rangeOfCharacterFromSet:v18];
+    decimalDigitCharacterSet = [MEMORY[0x29EDB9F50] decimalDigitCharacterSet];
+    v19 = [accessibilityLabel rangeOfCharacterFromSet:decimalDigitCharacterSet];
 
     if (v19 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v20 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v14];
+      v20 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:accessibilityLabel];
       [v20 setAttribute:*MEMORY[0x29EDB8F00] forKey:*MEMORY[0x29EDBD968]];
 
-      v14 = v20;
+      accessibilityLabel = v20;
     }
   }
 
-  v21 = [v11 callStatus];
-  v22 = v21;
+  callStatus = [v11 callStatus];
+  v22 = callStatus;
   v23 = MEMORY[0x29EDC0B00];
   v58 = v9;
-  if ((*MEMORY[0x29EDC0AF0] & v21) != 0 || (*MEMORY[0x29EDC0B00] & v21) != 0)
+  if ((*MEMORY[0x29EDC0AF0] & callStatus) != 0 || (*MEMORY[0x29EDC0B00] & callStatus) != 0)
   {
     v51 = accessibilityLocalizedString(@"call.incoming");
     v52 = @"__AXStringForVariablesSentinel";
@@ -141,24 +141,24 @@ LABEL_43:
     v24 = v28;
   }
 
-  v61 = v17;
-  v29 = [v11 mediaType];
-  v30 = [v11 serviceProvider];
+  v61 = accessibilityLabel2;
+  mediaType = [v11 mediaType];
+  serviceProvider = [v11 serviceProvider];
   v57 = v8;
-  v55 = v14;
-  if (![v30 isEqualToString:*MEMORY[0x29EDC0B08]])
+  v55 = accessibilityLabel;
+  if (![serviceProvider isEqualToString:*MEMORY[0x29EDC0B08]])
   {
     v32 = 0;
     goto LABEL_27;
   }
 
-  if (v29 == 1)
+  if (mediaType == 1)
   {
     v31 = TUFaceTimeAudioServiceName();
     goto LABEL_23;
   }
 
-  if (v29 == 2)
+  if (mediaType == 2)
   {
     v31 = accessibilityLocalizedString(@"application.name.facetime");
 LABEL_23:
@@ -176,15 +176,15 @@ LABEL_25:
   }
 
 LABEL_27:
-  v33 = [v11 ttyType];
-  v54 = v30;
-  if (v33 == 1)
+  ttyType = [v11 ttyType];
+  v54 = serviceProvider;
+  if (ttyType == 1)
   {
     v34 = @"call.type.tty";
     goto LABEL_31;
   }
 
-  if (v33 == 2)
+  if (ttyType == 2)
   {
     v34 = @"call.type.tty.relay";
 LABEL_31:
@@ -194,8 +194,8 @@ LABEL_31:
 
   v53 = 0;
 LABEL_33:
-  v35 = [v11 callOccurrences];
-  v36 = [v35 count];
+  callOccurrences = [v11 callOccurrences];
+  v36 = [callOccurrences count];
 
   if (v36)
   {
@@ -209,27 +209,27 @@ LABEL_33:
     v39 = 0;
   }
 
-  v40 = [v11 date];
-  v41 = [MEMORY[0x29EDB9F78] localizedStringFromDate:v40 dateStyle:3 timeStyle:1];
-  v42 = [MEMORY[0x29EDC6F78] sharedInstance];
-  v43 = [v42 providerManager];
-  v44 = [v43 telephonyProvider];
+  date = [v11 date];
+  v41 = [MEMORY[0x29EDB9F78] localizedStringFromDate:date dateStyle:3 timeStyle:1];
+  mEMORY[0x29EDC6F78] = [MEMORY[0x29EDC6F78] sharedInstance];
+  providerManager = [mEMORY[0x29EDC6F78] providerManager];
+  telephonyProvider = [providerManager telephonyProvider];
 
-  v45 = [v44 prioritizedSenderIdentities];
-  v46 = [v45 count];
+  prioritizedSenderIdentities = [telephonyProvider prioritizedSenderIdentities];
+  v46 = [prioritizedSenderIdentities count];
 
-  v47 = [v11 localParticipantUUID];
-  v60 = [v44 senderIdentityForAccountUUID:v47];
+  localParticipantUUID = [v11 localParticipantUUID];
+  v60 = [telephonyProvider senderIdentityForAccountUUID:localParticipantUUID];
 
   v56 = v11;
-  v48 = 0;
+  localizedName = 0;
   if ([v11 safeBoolForKey:@"ph_supportsLocalParticipantBadge"] && v46 >= 2)
   {
-    v48 = [v60 localizedName];
+    localizedName = [v60 localizedName];
   }
 
   v49 = __UIAXStringForVariables();
-  [v57 setAccessibilityLabel:{v49, v24, v48, v53, v32, v39, v61, v41, @"__AXStringForVariablesSentinel"}];
+  [v57 setAccessibilityLabel:{v49, v24, localizedName, v53, v32, v39, v61, v41, @"__AXStringForVariablesSentinel"}];
   [v57 setIsAccessibilityElement:1];
 
   return v57;

@@ -1,21 +1,21 @@
 @interface ServiceCardContainerViewController
 - (CardControllerDismissalDelegate)dismissalDelegate;
-- (ServiceCardContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (ServiceCardContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dealloc;
 - (void)loadView;
-- (void)setChildViewController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setChildViewController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation ServiceCardContainerViewController
 
-- (ServiceCardContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ServiceCardContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = ServiceCardContainerViewController;
-  result = [(ServiceCardContainerViewController *)&v5 initWithNibName:a3 bundle:a4];
+  result = [(ServiceCardContainerViewController *)&v5 initWithNibName:name bundle:bundle];
   if (result)
   {
     result->_didDisappear = 0;
@@ -33,27 +33,27 @@
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%{public}@: Start.", buf, 0xCu);
   }
 
   self->_didDisappear = 0;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = ServiceCardContainerViewController;
-  [(ServiceCardContainerViewController *)&v4 viewDidAppear:a3];
+  [(ServiceCardContainerViewController *)&v4 viewDidAppear:appear];
   self->_didDisappear = 0;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v10 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = ServiceCardContainerViewController;
-  [(ServiceCardContainerViewController *)&v7 viewDidDisappear:a3];
+  [(ServiceCardContainerViewController *)&v7 viewDidDisappear:disappear];
   self->_didDisappear = 1;
   WeakRetained = objc_loadWeakRetained(&self->_dismissalDelegate);
   v5 = objc_opt_respondsToSelector();
@@ -63,7 +63,7 @@
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%{public}@: Notifying dismissal.", buf, 0xCu);
     }
 
@@ -80,48 +80,48 @@
 - (void)loadView
 {
   v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v4 setBackgroundColor:clearColor];
 
   [v4 setAutoresizingMask:40];
   [(ServiceCardContainerViewController *)self setView:v4];
 }
 
-- (void)setChildViewController:(id)a3
+- (void)setChildViewController:(id)controller
 {
-  v12 = a3;
-  v5 = [(ServiceCardContainerViewController *)self childViewController];
+  controllerCopy = controller;
+  childViewController = [(ServiceCardContainerViewController *)self childViewController];
 
-  v6 = v12;
-  if (v5 != v12)
+  v6 = controllerCopy;
+  if (childViewController != controllerCopy)
   {
-    v7 = [(ServiceCardContainerViewController *)self childViewController];
-    objc_storeStrong(&self->_childViewController, a3);
-    if (v7)
+    childViewController2 = [(ServiceCardContainerViewController *)self childViewController];
+    objc_storeStrong(&self->_childViewController, controller);
+    if (childViewController2)
     {
-      [v7 willMoveToParentViewController:0];
-      v8 = [v7 view];
-      [v8 removeFromSuperview];
+      [childViewController2 willMoveToParentViewController:0];
+      view = [childViewController2 view];
+      [view removeFromSuperview];
 
-      [v7 removeFromParentViewController];
+      [childViewController2 removeFromParentViewController];
     }
 
-    if (v12)
+    if (controllerCopy)
     {
-      [(ServiceCardContainerViewController *)self addChildViewController:v12];
-      v9 = [v12 view];
-      v10 = [(ServiceCardContainerViewController *)self view];
-      [v10 bounds];
-      [v9 setFrame:?];
+      [(ServiceCardContainerViewController *)self addChildViewController:controllerCopy];
+      view2 = [controllerCopy view];
+      view3 = [(ServiceCardContainerViewController *)self view];
+      [view3 bounds];
+      [view2 setFrame:?];
 
-      [v9 setAutoresizingMask:18];
-      v11 = [(ServiceCardContainerViewController *)self view];
-      [v11 addSubview:v9];
+      [view2 setAutoresizingMask:18];
+      view4 = [(ServiceCardContainerViewController *)self view];
+      [view4 addSubview:view2];
 
-      [v12 didMoveToParentViewController:self];
+      [controllerCopy didMoveToParentViewController:self];
     }
 
-    v6 = v12;
+    v6 = controllerCopy;
   }
 }
 
@@ -131,7 +131,7 @@
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%{public}@: Dealloc.", buf, 0xCu);
   }
 

@@ -1,19 +1,19 @@
 @interface WKKeyboardScrollViewAnimator
-- (BOOL)beginWithEvent:(id)a3 scrollView:(id)a4;
+- (BOOL)beginWithEvent:(id)event scrollView:(id)view;
 - (BOOL)isKeyboardScrollable;
-- (CGPoint)boundedContentOffset:(CGPoint)a3;
+- (CGPoint)boundedContentOffset:(CGPoint)offset;
 - (CGPoint)contentOffset;
 - (CGSize)interactiveScrollVelocity;
 - (RectEdges<BOOL>)rubberbandableDirections;
-- (RectEdges<BOOL>)scrollableDirectionsFromOffset:(CGPoint)a3;
+- (RectEdges<BOOL>)scrollableDirectionsFromOffset:(CGPoint)offset;
 - (WKKeyboardScrollViewAnimator)init;
-- (double)distanceForIncrement:(unsigned __int8)a3 inDirection:(unsigned __int8)a4;
+- (double)distanceForIncrement:(unsigned __int8)increment inDirection:(unsigned __int8)direction;
 - (void)dealloc;
 - (void)didFinishScrolling;
 - (void)invalidate;
-- (void)scrollToContentOffset:(FloatPoint)a3 animated:(BOOL)a4;
-- (void)setDelegate:(id)a3;
-- (void)willBeginScrollingToExtentWithAnimationInTrackingView:(id)a3;
+- (void)scrollToContentOffset:(FloatPoint)offset animated:(BOOL)animated;
+- (void)setDelegate:(id)delegate;
+- (void)willBeginScrollingToExtentWithAnimationInTrackingView:(id)view;
 @end
 
 @implementation WKKeyboardScrollViewAnimator
@@ -55,9 +55,9 @@
   [(WKKeyboardScrollViewAnimator *)&v3 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
   objc_loadWeak(&self->_delegate);
   self->_delegateRespondsToIsKeyboardScrollable = objc_opt_respondsToSelector() & 1;
   objc_loadWeak(&self->_delegate);
@@ -68,21 +68,21 @@
   self->_delegateRespondsToDidFinishScrolling = objc_opt_respondsToSelector() & 1;
 }
 
-- (BOOL)beginWithEvent:(id)a3 scrollView:(id)a4
+- (BOOL)beginWithEvent:(id)event scrollView:(id)view
 {
   if (!objc_loadWeak(&self->_scrollView))
   {
-    objc_storeWeak(&self->_scrollView, a4);
+    objc_storeWeak(&self->_scrollView, view);
   }
 
-  if (objc_loadWeak(&self->_scrollView) != a4)
+  if (objc_loadWeak(&self->_scrollView) != view)
   {
     return 0;
   }
 
   m_ptr = self->_animator.m_ptr;
 
-  return [(WKKeyboardScrollingAnimator *)m_ptr beginWithEvent:a3];
+  return [(WKKeyboardScrollingAnimator *)m_ptr beginWithEvent:event];
 }
 
 - (BOOL)isKeyboardScrollable
@@ -97,10 +97,10 @@
   return [Weak isScrollableForKeyboardScrollViewAnimator:self];
 }
 
-- (double)distanceForIncrement:(unsigned __int8)a3 inDirection:(unsigned __int8)a4
+- (double)distanceForIncrement:(unsigned __int8)increment inDirection:(unsigned __int8)direction
 {
-  v4 = a4;
-  v5 = a3;
+  directionCopy = direction;
+  incrementCopy = increment;
   Weak = objc_loadWeak(&self->_scrollView);
   result = 0.0;
   if (!Weak)
@@ -112,19 +112,19 @@
   {
     v9 = objc_loadWeak(&self->_delegate);
 
-    [v9 keyboardScrollViewAnimator:self distanceForIncrement:v5 inDirection:v4];
+    [v9 keyboardScrollViewAnimator:self distanceForIncrement:incrementCopy inDirection:directionCopy];
     return result;
   }
 
-  if (!v5)
+  if (!incrementCopy)
   {
     [objc_loadWeak(&self->_scrollView) zoomScale];
     v15 = 40.0;
     return v14 * v15;
   }
 
-  v10 = v4 & 0xFE;
-  if (v5 == 1)
+  v10 = directionCopy & 0xFE;
+  if (incrementCopy == 1)
   {
     [objc_loadWeak(&self->_scrollView) frame];
     if (v10 == 2)
@@ -141,7 +141,7 @@
     return v14 * v15;
   }
 
-  if (v5 == 2)
+  if (incrementCopy == 2)
   {
     [objc_loadWeak(&self->_scrollView) contentSize];
     if (v10 != 2)
@@ -153,9 +153,9 @@
   return result;
 }
 
-- (void)scrollToContentOffset:(FloatPoint)a3 animated:(BOOL)a4
+- (void)scrollToContentOffset:(FloatPoint)offset animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   if (objc_loadWeak(&self->_scrollView))
   {
     if (self->_delegateRespondsToWillScroll)
@@ -165,13 +165,13 @@
 
     Weak = objc_loadWeak(&self->_scrollView);
     WebCore::FloatPoint::operator CGPoint();
-    [Weak _wk_setContentOffsetAndShowScrollIndicators:v4 animated:?];
+    [Weak _wk_setContentOffsetAndShowScrollIndicators:animatedCopy animated:?];
   }
 }
 
-- (void)willBeginScrollingToExtentWithAnimationInTrackingView:(id)a3
+- (void)willBeginScrollingToExtentWithAnimationInTrackingView:(id)view
 {
-  [objc_loadWeak(&self->_scrollView) addSubview:a3];
+  [objc_loadWeak(&self->_scrollView) addSubview:view];
   Weak = objc_loadWeak(&self->_scrollView);
 
   [Weak flashScrollIndicators];
@@ -195,10 +195,10 @@
   return result;
 }
 
-- (CGPoint)boundedContentOffset:(CGPoint)a3
+- (CGPoint)boundedContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   Weak = objc_loadWeak(&self->_scrollView);
 
   [Weak _wk_clampToScrollExtents:{x, y}];
@@ -217,10 +217,10 @@
   return result;
 }
 
-- (RectEdges<BOOL>)scrollableDirectionsFromOffset:(CGPoint)a3
+- (RectEdges<BOOL>)scrollableDirectionsFromOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   Weak = objc_loadWeak(&self->_scrollView);
   if (Weak)
   {
@@ -256,16 +256,16 @@
   Weak = objc_loadWeak(&self->_scrollView);
   if (Weak)
   {
-    v4 = [objc_loadWeak(&self->_scrollView) _wk_canScrollVerticallyWithoutBouncing];
+    _wk_canScrollVerticallyWithoutBouncing = [objc_loadWeak(&self->_scrollView) _wk_canScrollVerticallyWithoutBouncing];
     LODWORD(Weak) = [objc_loadWeak(&self->_scrollView) _wk_canScrollHorizontallyWithoutBouncing];
   }
 
   else
   {
-    v4 = 0;
+    _wk_canScrollVerticallyWithoutBouncing = 0;
   }
 
-  return ((Weak << 24) | (v4 << 16) | (Weak << 8) | v4);
+  return ((Weak << 24) | (_wk_canScrollVerticallyWithoutBouncing << 16) | (Weak << 8) | _wk_canScrollVerticallyWithoutBouncing);
 }
 
 - (void)didFinishScrolling

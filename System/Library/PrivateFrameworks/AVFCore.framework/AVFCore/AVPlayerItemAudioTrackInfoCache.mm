@@ -1,9 +1,9 @@
 @interface AVPlayerItemAudioTrackInfoCache
 - (AVPlayerItemAudioTrackInfoCache)init;
-- (BOOL)contains:(id)a3;
-- (int)channelCountForTrack:(id)a3;
+- (BOOL)contains:(id)contains;
+- (int)channelCountForTrack:(id)track;
 - (void)dealloc;
-- (void)store:(id)a3;
+- (void)store:(id)store;
 @end
 
 @implementation AVPlayerItemAudioTrackInfoCache
@@ -30,56 +30,56 @@
   [(AVPlayerItemAudioTrackInfoCache *)&v3 dealloc];
 }
 
-- (BOOL)contains:(id)a3
+- (BOOL)contains:(id)contains
 {
-  if (!a3)
+  if (!contains)
   {
     return 0;
   }
 
-  v3 = a3;
+  containsCopy = contains;
   FigSimpleMutexLock();
-  LOBYTE(v3) = [(NSMutableSet *)self->availableTracks containsObject:v3];
+  LOBYTE(containsCopy) = [(NSMutableSet *)self->availableTracks containsObject:containsCopy];
   FigSimpleMutexUnlock();
-  return v3;
+  return containsCopy;
 }
 
-- (void)store:(id)a3
+- (void)store:(id)store
 {
   FigSimpleMutexLock();
-  [(NSMutableSet *)self->availableTracks addObject:a3];
+  [(NSMutableSet *)self->availableTracks addObject:store];
 
   FigSimpleMutexUnlock();
 }
 
-- (int)channelCountForTrack:(id)a3
+- (int)channelCountForTrack:(id)track
 {
-  v4 = [a3 trackID];
-  if (v4)
+  trackID = [track trackID];
+  if (trackID)
   {
     FigSimpleMutexLock();
-    v5 = [(NSMutableSet *)self->availableTracks objectEnumerator];
+    objectEnumerator = [(NSMutableSet *)self->availableTracks objectEnumerator];
     while (1)
     {
-      v6 = [v5 nextObject];
-      if (!v6)
+      nextObject = [objectEnumerator nextObject];
+      if (!nextObject)
       {
         break;
       }
 
-      if (*(v6 + 8) == v4)
+      if (*(nextObject + 8) == trackID)
       {
-        v4 = *(v6 + 12);
+        trackID = *(nextObject + 12);
         goto LABEL_7;
       }
     }
 
-    v4 = 0;
+    trackID = 0;
 LABEL_7:
     FigSimpleMutexUnlock();
   }
 
-  return v4;
+  return trackID;
 }
 
 @end

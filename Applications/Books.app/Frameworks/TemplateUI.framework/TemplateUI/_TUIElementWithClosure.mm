@@ -1,14 +1,14 @@
 @interface _TUIElementWithClosure
 - (Ref<TUI::Evaluation::Variables::_NamedElement>)ref;
-- (_TUIElementWithClosure)initWithParsedElement:(id)a3 closureAndCapture:()pair<TUIClosure;
-- (_TUIElementWithClosure)initWithRef:(Ref<TUI:(void *)a4 :Evaluation::Variables::_NamedElement>)a3 context:;
+- (_TUIElementWithClosure)initWithParsedElement:(id)element closureAndCapture:()pair<TUIClosure;
+- (_TUIElementWithClosure)initWithRef:(Ref<TUI:(void *)ref :Evaluation::Variables::_NamedElement>)a3 context:;
 - (id).cxx_construct;
 - (pair<TUIClosure,)closureAndCapture;
 @end
 
 @implementation _TUIElementWithClosure
 
-- (_TUIElementWithClosure)initWithRef:(Ref<TUI:(void *)a4 :Evaluation::Variables::_NamedElement>)a3 context:
+- (_TUIElementWithClosure)initWithRef:(Ref<TUI:(void *)ref :Evaluation::Variables::_NamedElement>)a3 context:
 {
   index = a3._index;
   resolver = a3._resolver;
@@ -42,9 +42,9 @@
   return v7;
 }
 
-- (_TUIElementWithClosure)initWithParsedElement:(id)a3 closureAndCapture:()pair<TUIClosure
+- (_TUIElementWithClosure)initWithParsedElement:(id)element closureAndCapture:()pair<TUIClosure
 {
-  v7 = a3;
+  elementCopy = element;
   v12.receiver = self;
   v12.super_class = _TUIElementWithClosure;
   v8 = [(_TUIElementWithClosure *)&v12 init];
@@ -52,7 +52,7 @@
   if (v8)
   {
     v10 = TUIElementNodeNil;
-    objc_storeStrong(&v8->_element._parsedElement, a3);
+    objc_storeStrong(&v8->_element._parsedElement, element);
     v9->_element.var0.index = v10;
     sub_42610(&v9->_closureAndCapture, a4);
   }

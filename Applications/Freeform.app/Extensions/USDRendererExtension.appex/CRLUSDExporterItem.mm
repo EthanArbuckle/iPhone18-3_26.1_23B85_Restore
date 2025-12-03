@@ -1,20 +1,20 @@
 @interface CRLUSDExporterItem
 - (CGSize)size;
-- (CRLUSDExporterItem)initWithURL:(id)a3;
+- (CRLUSDExporterItem)initWithURL:(id)l;
 @end
 
 @implementation CRLUSDExporterItem
 
-- (CRLUSDExporterItem)initWithURL:(id)a3
+- (CRLUSDExporterItem)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = CRLUSDExporterItem;
   v6 = [(CRLUSDExporterItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
     v7->_type = 0;
     v7->_size = CGSizeZero;
     *v7->_scale = 0u;

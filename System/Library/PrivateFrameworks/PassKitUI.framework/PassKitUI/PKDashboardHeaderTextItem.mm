@@ -1,16 +1,16 @@
 @interface PKDashboardHeaderTextItem
-+ (id)itemWithHeaderText:(id)a3 style:(unint64_t)a4;
++ (id)itemWithHeaderText:(id)text style:(unint64_t)style;
 @end
 
 @implementation PKDashboardHeaderTextItem
 
-+ (id)itemWithHeaderText:(id)a3 style:(unint64_t)a4
++ (id)itemWithHeaderText:(id)text style:(unint64_t)style
 {
-  v5 = a3;
+  textCopy = text;
   v6 = objc_alloc_init(PKDashboardHeaderTextItem);
-  [(PKDashboardHeaderTextItem *)v6 setTitle:v5];
+  [(PKDashboardHeaderTextItem *)v6 setTitle:textCopy];
 
-  [(PKDashboardHeaderTextItem *)v6 setStyle:a4];
+  [(PKDashboardHeaderTextItem *)v6 setStyle:style];
 
   return v6;
 }

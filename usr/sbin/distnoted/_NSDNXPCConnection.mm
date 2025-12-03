@@ -1,19 +1,19 @@
 @interface _NSDNXPCConnection
 - (NSString)serviceName;
-- (_NSDNXPCConnection)initWithEndpoint:(id)a3;
-- (_NSDNXPCConnection)initWithServiceName:(id)a3 privileged:(BOOL)a4;
-- (_NSDNXPCConnection)initWithXPCConnection:(id)a3 type:(int)a4;
+- (_NSDNXPCConnection)initWithEndpoint:(id)endpoint;
+- (_NSDNXPCConnection)initWithServiceName:(id)name privileged:(BOOL)privileged;
+- (_NSDNXPCConnection)initWithXPCConnection:(id)connection type:(int)type;
 - (id)__invalidate;
 - (id)handleMessage;
 - (void)__terminationImminent;
-- (void)addInvalidationHandler:(id)a3;
-- (void)addTerminationImminentHandler:(id)a3;
+- (void)addInvalidationHandler:(id)handler;
+- (void)addTerminationImminentHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
-- (void)sendMessage:(id)a3;
-- (void)sendMessage:(id)a3 waitForAck:(BOOL)a4;
-- (void)setHandleMessage:(id)a3;
-- (void)start:(id)a3;
+- (void)sendMessage:(id)message;
+- (void)sendMessage:(id)message waitForAck:(BOOL)ack;
+- (void)setHandleMessage:(id)message;
+- (void)start:(id)start;
 @end
 
 @implementation _NSDNXPCConnection
@@ -96,25 +96,25 @@
   [(_NSDNXPCConnection *)&v4 dealloc];
 }
 
-- (_NSDNXPCConnection)initWithXPCConnection:(id)a3 type:(int)a4
+- (_NSDNXPCConnection)initWithXPCConnection:(id)connection type:(int)type
 {
-  v4 = self;
-  if (a3)
+  selfCopy = self;
+  if (connection)
   {
     self->_invalidHandlers = objc_opt_new();
-    v4->_termImminentHandlers = objc_opt_new();
-    v4->_flavor = a4;
-    v7 = xpc_retain(a3);
-    v4->_conn = v7;
+    selfCopy->_termImminentHandlers = objc_opt_new();
+    selfCopy->_flavor = type;
+    v7 = xpc_retain(connection);
+    selfCopy->_conn = v7;
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100001004;
     handler[3] = &unk_100008650;
     handler[4] = v7;
-    handler[5] = v4;
-    v11 = a4;
+    handler[5] = selfCopy;
+    typeCopy = type;
     xpc_connection_set_event_handler(v7, handler);
-    v8 = v4;
+    v8 = selfCopy;
   }
 
   else
@@ -123,24 +123,24 @@
     return 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (_NSDNXPCConnection)initWithServiceName:(id)a3 privileged:(BOOL)a4
+- (_NSDNXPCConnection)initWithServiceName:(id)name privileged:(BOOL)privileged
 {
-  if (a3)
+  if (name)
   {
-    v5 = a4;
+    privilegedCopy = privileged;
     maxBufLen = 0;
-    v14.length = CFStringGetLength(a3);
+    v14.length = CFStringGetLength(name);
     v14.location = 0;
-    CFStringGetBytes(a3, v14, 0x8000100u, 0, 0, 0, 0, &maxBufLen);
+    CFStringGetBytes(name, v14, 0x8000100u, 0, 0, 0, 0, &maxBufLen);
     v7 = malloc_type_malloc(maxBufLen + 1, 0x100004077774924uLL);
-    v15.length = CFStringGetLength(a3);
+    v15.length = CFStringGetLength(name);
     v15.location = 0;
-    CFStringGetBytes(a3, v15, 0x8000100u, 0, 0, v7, maxBufLen, 0);
+    CFStringGetBytes(name, v15, 0x8000100u, 0, 0, v7, maxBufLen, 0);
     v7[maxBufLen] = 0;
-    if (v5)
+    if (privilegedCopy)
     {
       v8 = 2;
     }
@@ -168,9 +168,9 @@
   }
 }
 
-- (_NSDNXPCConnection)initWithEndpoint:(id)a3
+- (_NSDNXPCConnection)initWithEndpoint:(id)endpoint
 {
-  v4 = xpc_connection_create_from_endpoint(a3);
+  v4 = xpc_connection_create_from_endpoint(endpoint);
   v5 = [(_NSDNXPCConnection *)self initWithXPCConnection:v4 type:4];
   xpc_release(v4);
   return v5;
@@ -190,7 +190,7 @@
   return v2;
 }
 
-- (void)setHandleMessage:(id)a3
+- (void)setHandleMessage:(id)message
 {
   if (self->_started || self->_invalid)
   {
@@ -199,7 +199,7 @@
 
   else
   {
-    v4 = [a3 copy];
+    v4 = [message copy];
     handleMessage = self->_handleMessage;
     self->_handleMessage = v4;
   }
@@ -242,25 +242,25 @@
   }
 }
 
-- (void)addInvalidationHandler:(id)a3
+- (void)addInvalidationHandler:(id)handler
 {
-  v5 = [a3 copy];
+  v5 = [handler copy];
   invalidHandlers = self->_invalidHandlers;
   v7 = v5;
   [(NSMutableArray *)invalidHandlers addObject:?];
   if (!invalidHandlers)
   {
-    (*(a3 + 2))(a3);
+    (*(handler + 2))(handler);
   }
 }
 
-- (void)addTerminationImminentHandler:(id)a3
+- (void)addTerminationImminentHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   [(NSMutableArray *)self->_termImminentHandlers addObject:v4];
 }
 
-- (void)start:(id)a3
+- (void)start:(id)start
 {
   if (!self->_invalid)
   {
@@ -268,9 +268,9 @@
     self->_started = started + 1;
     if (!started)
     {
-      if (a3)
+      if (start)
       {
-        xpc_connection_set_target_queue(self->_conn, a3);
+        xpc_connection_set_target_queue(self->_conn, start);
       }
 
       conn = self->_conn;
@@ -280,18 +280,18 @@
   }
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
-  if (a3 && xpc_get_type(a3) == &_xpc_type_dictionary)
+  if (message && xpc_get_type(message) == &_xpc_type_dictionary)
   {
-    v4 = self;
-    v5 = self;
+    selfCopy = self;
+    selfCopy3 = self;
     if (self->_conn)
     {
       xpc_transaction_begin();
-      xpc_connection_send_message(self->_conn, a3);
+      xpc_connection_send_message(self->_conn, message);
       xpc_connection_send_barrier(self->_conn, &stru_100008628);
-      v5 = self;
+      selfCopy3 = self;
     }
   }
 
@@ -301,12 +301,12 @@
   }
 }
 
-- (void)sendMessage:(id)a3 waitForAck:(BOOL)a4
+- (void)sendMessage:(id)message waitForAck:(BOOL)ack
 {
-  if (a3 && (v4 = a4, xpc_get_type(a3) == &_xpc_type_dictionary))
+  if (message && (v4 = ack, xpc_get_type(message) == &_xpc_type_dictionary))
   {
-    xpc_dictionary_set_BOOL(a3, "com.apple.NSXPC.msg_needs_ack", 1);
-    v6 = self;
+    xpc_dictionary_set_BOOL(message, "com.apple.NSXPC.msg_needs_ack", 1);
+    selfCopy = self;
     conn = self->_conn;
     if (conn)
     {
@@ -314,7 +314,7 @@
       xpc_transaction_begin();
       if (v4)
       {
-        v8 = xpc_connection_send_message_with_reply_sync(conn, a3);
+        v8 = xpc_connection_send_message_with_reply_sync(conn, message);
         if (v8)
         {
           xpc_release(v8);
@@ -323,14 +323,14 @@
 
       else
       {
-        xpc_connection_send_message(conn, a3);
+        xpc_connection_send_message(conn, message);
       }
 
       xpc_transaction_end();
       xpc_release(conn);
     }
 
-    xpc_dictionary_set_value(a3, "com.apple.NSXPC.msg_needs_ack", 0);
+    xpc_dictionary_set_value(message, "com.apple.NSXPC.msg_needs_ack", 0);
   }
 
   else

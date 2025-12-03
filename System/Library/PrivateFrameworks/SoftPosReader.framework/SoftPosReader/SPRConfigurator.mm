@@ -1,19 +1,19 @@
 @interface SPRConfigurator
-- (SPRConfigurator)initWithConnector:(id)a3;
-- (id)installWithToken:(id)a3 force:(BOOL)a4 error:(id *)a5;
-- (id)prepare:(id *)a3;
-- (id)prepareAndReturnError:(id *)a3;
-- (id)statusWithToken:(id)a3 options:(int64_t)a4 error:(id *)a5;
-- (void)installAsyncWithToken:(id)a3 force:(BOOL)a4 seStorageSheetBundleID:(id)a5 seStorageSheetSceneID:(id)a6 callback:(id)a7;
+- (SPRConfigurator)initWithConnector:(id)connector;
+- (id)installWithToken:(id)token force:(BOOL)force error:(id *)error;
+- (id)prepare:(id *)prepare;
+- (id)prepareAndReturnError:(id *)error;
+- (id)statusWithToken:(id)token options:(int64_t)options error:(id *)error;
+- (void)installAsyncWithToken:(id)token force:(BOOL)force seStorageSheetBundleID:(id)d seStorageSheetSceneID:(id)iD callback:(id)callback;
 @end
 
 @implementation SPRConfigurator
 
-- (SPRConfigurator)initWithConnector:(id)a3
+- (SPRConfigurator)initWithConnector:(id)connector
 {
   v8.receiver = self;
   v8.super_class = SPRConfigurator;
-  v3 = [(SPRObject *)&v8 initWithConnector:a3];
+  v3 = [(SPRObject *)&v8 initWithConnector:connector];
   if (v3)
   {
     v4 = dispatch_get_global_queue(25, 0);
@@ -27,9 +27,9 @@
   return v3;
 }
 
-- (id)prepare:(id *)a3
+- (id)prepare:(id *)prepare
 {
-  v6 = objc_msgSend_prepareAndWarnAndReturnError_(self, a2, a3, v3, v4);
+  v6 = objc_msgSend_prepareAndWarnAndReturnError_(self, a2, prepare, v3, v4);
   v10 = v6;
   if (v6)
   {
@@ -44,9 +44,9 @@
   return v11;
 }
 
-- (id)prepareAndReturnError:(id *)a3
+- (id)prepareAndReturnError:(id *)error
 {
-  v6 = objc_msgSend_prepareAndWarnAndReturnError_(self, a2, a3, v3, v4);
+  v6 = objc_msgSend_prepareAndWarnAndReturnError_(self, a2, error, v3, v4);
   v10 = v6;
   if (v6)
   {
@@ -61,9 +61,9 @@
   return v11;
 }
 
-- (id)installWithToken:(id)a3 force:(BOOL)a4 error:(id *)a5
+- (id)installWithToken:(id)token force:(BOOL)force error:(id *)error
 {
-  v7 = a3;
+  tokenCopy = token;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -88,14 +88,14 @@
   v16[3] = &unk_279CA5768;
   v16[4] = &v18;
   v16[5] = &v24;
-  objc_msgSend_installWithToken_launchSEStorageSheet_seStorageSheetBundleID_seStorageSheetSceneID_delegate_reply_(v11, v12, v7, 0, 0, 0, 0, v16);
+  objc_msgSend_installWithToken_launchSEStorageSheet_seStorageSheetBundleID_seStorageSheetSceneID_delegate_reply_(v11, v12, tokenCopy, 0, 0, 0, 0, v16);
 
-  if (a5)
+  if (error)
   {
     v13 = v25[5];
     if (v13)
     {
-      *a5 = v13;
+      *error = v13;
     }
   }
 
@@ -107,20 +107,20 @@
   return v14;
 }
 
-- (void)installAsyncWithToken:(id)a3 force:(BOOL)a4 seStorageSheetBundleID:(id)a5 seStorageSheetSceneID:(id)a6 callback:(id)a7
+- (void)installAsyncWithToken:(id)token force:(BOOL)force seStorageSheetBundleID:(id)d seStorageSheetSceneID:(id)iD callback:(id)callback
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a3;
+  callbackCopy = callback;
+  iDCopy = iD;
+  dCopy = d;
+  tokenCopy = token;
   v15 = [SPRInstallRelay alloc];
-  v18 = objc_msgSend_initWithBase_queue_(v15, v16, v11, self->_relayQueue, v17);
+  v18 = objc_msgSend_initWithBase_queue_(v15, v16, callbackCopy, self->_relayQueue, v17);
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = sub_26A945394;
   v28[3] = &unk_279CA5858;
   v28[4] = self;
-  v19 = v11;
+  v19 = callbackCopy;
   v29 = v19;
   v23 = objc_msgSend_asyncProxyWithErrorHandler_(self, v20, v28, v21, v22);
   v26[0] = MEMORY[0x277D85DD0];
@@ -130,12 +130,12 @@
   v26[4] = self;
   v27 = v19;
   v24 = v19;
-  objc_msgSend_installWithToken_launchSEStorageSheet_seStorageSheetBundleID_seStorageSheetSceneID_delegate_reply_(v23, v25, v14, 0, v13, v12, v18, v26);
+  objc_msgSend_installWithToken_launchSEStorageSheet_seStorageSheetBundleID_seStorageSheetSceneID_delegate_reply_(v23, v25, tokenCopy, 0, dCopy, iDCopy, v18, v26);
 }
 
-- (id)statusWithToken:(id)a3 options:(int64_t)a4 error:(id *)a5
+- (id)statusWithToken:(id)token options:(int64_t)options error:(id *)error
 {
-  v8 = a3;
+  tokenCopy = token;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -160,14 +160,14 @@
   v17[3] = &unk_279CA5740;
   v17[4] = &v25;
   v17[5] = &v19;
-  objc_msgSend_statusWithToken_options_reply_(v12, v13, v8, a4, v17);
+  objc_msgSend_statusWithToken_options_reply_(v12, v13, tokenCopy, options, v17);
 
-  if (a5)
+  if (error)
   {
     v14 = v20[5];
     if (v14)
     {
-      *a5 = v14;
+      *error = v14;
     }
   }
 

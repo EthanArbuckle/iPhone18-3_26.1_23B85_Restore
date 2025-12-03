@@ -1,25 +1,25 @@
 @interface IDSPayloadVerificationResult
-- (IDSPayloadVerificationResult)initWithCoder:(id)a3;
-- (IDSPayloadVerificationResult)initWithURI:(id)a3 verified:(BOOL)a4 error:(id)a5;
+- (IDSPayloadVerificationResult)initWithCoder:(id)coder;
+- (IDSPayloadVerificationResult)initWithURI:(id)i verified:(BOOL)verified error:(id)error;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSPayloadVerificationResult
 
-- (IDSPayloadVerificationResult)initWithURI:(id)a3 verified:(BOOL)a4 error:(id)a5
+- (IDSPayloadVerificationResult)initWithURI:(id)i verified:(BOOL)verified error:(id)error
 {
-  v9 = a3;
-  v10 = a5;
+  iCopy = i;
+  errorCopy = error;
   v14.receiver = self;
   v14.super_class = IDSPayloadVerificationResult;
   v11 = [(IDSPayloadVerificationResult *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_uri, a3);
-    v12->_verified = a4;
-    objc_storeStrong(&v12->_error, a5);
+    objc_storeStrong(&v11->_uri, i);
+    v12->_verified = verified;
+    objc_storeStrong(&v12->_error, error);
   }
 
   return v12;
@@ -40,29 +40,29 @@
     v6 = @"NO";
   }
 
-  v7 = [(IDSPayloadVerificationResult *)self error];
-  v8 = [v3 stringWithFormat:@"<%@ : %p URI: %@, verified: %@, error: %@>", v4, self, v5, v6, v7];
+  error = [(IDSPayloadVerificationResult *)self error];
+  v8 = [v3 stringWithFormat:@"<%@ : %p URI: %@, verified: %@, error: %@>", v4, self, v5, v6, error];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(IDSPayloadVerificationResult *)self uri];
-  [v4 encodeObject:v5 forKey:@"uri"];
+  [coderCopy encodeObject:v5 forKey:@"uri"];
 
-  [v4 encodeBool:-[IDSPayloadVerificationResult verified](self forKey:{"verified"), @"verified"}];
-  v6 = [(IDSPayloadVerificationResult *)self error];
-  [v4 encodeObject:v6 forKey:@"error"];
+  [coderCopy encodeBool:-[IDSPayloadVerificationResult verified](self forKey:{"verified"), @"verified"}];
+  error = [(IDSPayloadVerificationResult *)self error];
+  [coderCopy encodeObject:error forKey:@"error"];
 }
 
-- (IDSPayloadVerificationResult)initWithCoder:(id)a3
+- (IDSPayloadVerificationResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uri"];
-  v6 = [v4 decodeBoolForKey:@"verified"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uri"];
+  v6 = [coderCopy decodeBoolForKey:@"verified"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
 
   v8 = [(IDSPayloadVerificationResult *)self initWithURI:v5 verified:v6 error:v7];
   return v8;

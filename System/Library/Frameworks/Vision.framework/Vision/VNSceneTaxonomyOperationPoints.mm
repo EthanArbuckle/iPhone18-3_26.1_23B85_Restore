@@ -1,32 +1,32 @@
 @interface VNSceneTaxonomyOperationPoints
-+ (id)URLForIdentifier:(id)a3 error:(id *)a4;
-+ (id)loadFromIdentifier:(id)a3 error:(id *)a4;
-+ (id)loadFromPropertyList:(id)a3 error:(id *)a4;
-+ (id)loadFromURL:(id)a3 error:(id *)a4;
-- (BOOL)getClassificationMetrics:(id *)a3 forClassificationIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)getConfidence:(float *)a3 forClassificationIdentifier:(id)a4 withPrecision:(float)a5 error:(id *)a6;
-- (BOOL)getConfidence:(float *)a3 forClassificationIdentifier:(id)a4 withRecall:(float)a5 error:(id *)a6;
-- (BOOL)getDefaultConfidence:(float *)a3 forClassificationIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)getPrecision:(float *)a3 forClassificationIdentifier:(id)a4 confidence:(float)a5 error:(id *)a6;
-- (BOOL)getRecall:(float *)a3 forClassificationIdentifier:(id)a4 confidence:(float)a5 error:(id *)a6;
-- (BOOL)isEqual:(id)a3;
-- (VNSceneTaxonomyOperationPoints)initWithCoder:(id)a3;
-- (VNSceneTaxonomyOperationPoints)initWithLabelToOperationPointsDataIndexMap:(id)a3 operationPointsDataArray:(id *)a4;
-- (const)_operationPointsDataForClassificationIdentifier:(id)a3 error:(id *)a4;
++ (id)URLForIdentifier:(id)identifier error:(id *)error;
++ (id)loadFromIdentifier:(id)identifier error:(id *)error;
++ (id)loadFromPropertyList:(id)list error:(id *)error;
++ (id)loadFromURL:(id)l error:(id *)error;
+- (BOOL)getClassificationMetrics:(id *)metrics forClassificationIdentifier:(id)identifier error:(id *)error;
+- (BOOL)getConfidence:(float *)confidence forClassificationIdentifier:(id)identifier withPrecision:(float)precision error:(id *)error;
+- (BOOL)getConfidence:(float *)confidence forClassificationIdentifier:(id)identifier withRecall:(float)recall error:(id *)error;
+- (BOOL)getDefaultConfidence:(float *)confidence forClassificationIdentifier:(id)identifier error:(id *)error;
+- (BOOL)getPrecision:(float *)precision forClassificationIdentifier:(id)identifier confidence:(float)confidence error:(id *)error;
+- (BOOL)getRecall:(float *)recall forClassificationIdentifier:(id)identifier confidence:(float)confidence error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (VNSceneTaxonomyOperationPoints)initWithCoder:(id)coder;
+- (VNSceneTaxonomyOperationPoints)initWithLabelToOperationPointsDataIndexMap:(id)map operationPointsDataArray:(id *)array;
+- (const)_operationPointsDataForClassificationIdentifier:(id)identifier error:(id *)error;
 - (id)_propertyListRepresentation;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNSceneTaxonomyOperationPoints
 
-- (VNSceneTaxonomyOperationPoints)initWithCoder:(id)a3
+- (VNSceneTaxonomyOperationPoints)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"Identifier"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"Identifier"])
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
     v20 = 0;
     v6 = [objc_opt_class() loadFromIdentifier:v5 error:&v20];
     v7 = v20;
@@ -39,25 +39,25 @@ LABEL_5:
 
     else
     {
-      [v4 failWithError:v8];
+      [coderCopy failWithError:v8];
     }
 
     goto LABEL_9;
   }
 
-  if ([v4 containsValueForKey:@"URL"])
+  if ([coderCopy containsValueForKey:@"URL"])
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
     v19 = 0;
     v6 = [objc_opt_class() loadFromURL:v5 error:&v19];
     v7 = v19;
     goto LABEL_5;
   }
 
-  if (![v4 containsValueForKey:@"plist"])
+  if (![coderCopy containsValueForKey:@"plist"])
   {
     v17 = [VNError errorForInvalidModelWithLocalizedDescription:@"no data source available"];
-    [v4 failWithError:v17];
+    [coderCopy failWithError:v17];
 
     v6 = 0;
     goto LABEL_10;
@@ -68,7 +68,7 @@ LABEL_5:
   v13 = objc_opt_class();
   v14 = objc_opt_class();
   v5 = [v11 initWithObjects:{v12, v13, v14, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v5 forKey:@"plist"];
+  v8 = [coderCopy decodeObjectOfClasses:v5 forKey:@"plist"];
   v18 = 0;
   v6 = [objc_opt_class() loadFromPropertyList:v8 error:&v18];
   v15 = v18;
@@ -79,7 +79,7 @@ LABEL_5:
 
   else
   {
-    [v4 failWithError:v15];
+    [coderCopy failWithError:v15];
   }
 
 LABEL_9:
@@ -88,27 +88,27 @@ LABEL_10:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = v4;
+  coderCopy = coder;
+  v6 = coderCopy;
   if (*&self->_frameworkOperationPointsIdentifier == 0)
   {
-    v5 = [(VNSceneTaxonomyOperationPoints *)self _propertyListRepresentation];
-    [v6 encodeObject:v5 forKey:@"plist"];
+    _propertyListRepresentation = [(VNSceneTaxonomyOperationPoints *)self _propertyListRepresentation];
+    [v6 encodeObject:_propertyListRepresentation forKey:@"plist"];
   }
 
   else
   {
-    [v4 encodeObject:? forKey:?];
+    [coderCopy encodeObject:? forKey:?];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v19) = 1;
   }
@@ -118,15 +118,15 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = objc_autoreleasePoolPush();
       v7 = objc_alloc(MEMORY[0x1E695DFD8]);
-      v8 = [(VNSceneTaxonomyOperationPoints *)self _allClassificationIdentifiers];
-      v9 = [v7 initWithArray:v8];
+      _allClassificationIdentifiers = [(VNSceneTaxonomyOperationPoints *)self _allClassificationIdentifiers];
+      v9 = [v7 initWithArray:_allClassificationIdentifiers];
 
       v10 = objc_alloc(MEMORY[0x1E695DFD8]);
-      v11 = [(VNSceneTaxonomyOperationPoints *)v5 _allClassificationIdentifiers];
-      v12 = [v10 initWithArray:v11];
+      _allClassificationIdentifiers2 = [(VNSceneTaxonomyOperationPoints *)v5 _allClassificationIdentifiers];
+      v12 = [v10 initWithArray:_allClassificationIdentifiers2];
 
       if ([v9 isEqualToSet:v12])
       {
@@ -238,8 +238,8 @@ LABEL_20:
   if (!cachedHashValue)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = [(VNSceneTaxonomyOperationPoints *)self _allClassificationIdentifiers];
-    v6 = [v5 sortedArrayUsingSelector:sel_compare_];
+    _allClassificationIdentifiers = [(VNSceneTaxonomyOperationPoints *)self _allClassificationIdentifiers];
+    v6 = [_allClassificationIdentifiers sortedArrayUsingSelector:sel_compare_];
 
     v34 = 0u;
     v35 = 0u;
@@ -346,9 +346,9 @@ LABEL_20:
   return cachedHashValue;
 }
 
-- (BOOL)getClassificationMetrics:(id *)a3 forClassificationIdentifier:(id)a4 error:(id *)a5
+- (BOOL)getClassificationMetrics:(id *)metrics forClassificationIdentifier:(id)identifier error:(id *)error
 {
-  v7 = [(VNSceneTaxonomyOperationPoints *)self _operationPointsDataForClassificationIdentifier:a4 error:0];
+  v7 = [(VNSceneTaxonomyOperationPoints *)self _operationPointsDataForClassificationIdentifier:identifier error:0];
   if (!v7)
   {
     v12 = 0;
@@ -357,7 +357,7 @@ LABEL_20:
 
   v8 = v7;
   v20 = 0;
-  valid = _createValueConfidenceCurveForValidPairData(v7->var2, &v20, a5);
+  valid = _createValueConfidenceCurveForValidPairData(v7->var2, &v20, error);
   v10 = v20;
   v11 = v10;
   v12 = 0;
@@ -366,7 +366,7 @@ LABEL_20:
     if (v10)
     {
       v19 = 0;
-      v13 = _createValueConfidenceCurveForValidPairData(v8->var3, &v19, a5);
+      v13 = _createValueConfidenceCurveForValidPairData(v8->var3, &v19, error);
       v14 = v19;
       v15 = v14;
       v12 = 0;
@@ -388,7 +388,7 @@ LABEL_20:
 
 LABEL_12:
     v17 = v12;
-    *a3 = v12;
+    *metrics = v12;
     v16 = 1;
     goto LABEL_13;
   }
@@ -401,18 +401,18 @@ LABEL_13:
   return v16;
 }
 
-- (BOOL)getRecall:(float *)a3 forClassificationIdentifier:(id)a4 confidence:(float)a5 error:(id *)a6
+- (BOOL)getRecall:(float *)recall forClassificationIdentifier:(id)identifier confidence:(float)confidence error:(id *)error
 {
-  v9 = [(VNSceneTaxonomyOperationPoints *)self _operationPointsDataForClassificationIdentifier:a4 error:a6];
+  v9 = [(VNSceneTaxonomyOperationPoints *)self _operationPointsDataForClassificationIdentifier:identifier error:error];
   if (v9)
   {
     v11 = 0;
-    LODWORD(v9) = _getValueForConfidence(@"recall", v9->var3, 0, &v11, a6, a5);
-    if (a3)
+    LODWORD(v9) = _getValueForConfidence(@"recall", v9->var3, 0, &v11, error, confidence);
+    if (recall)
     {
       if (v9)
       {
-        *a3 = v11;
+        *recall = v11;
       }
     }
   }
@@ -420,18 +420,18 @@ LABEL_13:
   return v9;
 }
 
-- (BOOL)getConfidence:(float *)a3 forClassificationIdentifier:(id)a4 withRecall:(float)a5 error:(id *)a6
+- (BOOL)getConfidence:(float *)confidence forClassificationIdentifier:(id)identifier withRecall:(float)recall error:(id *)error
 {
-  v9 = [(VNSceneTaxonomyOperationPoints *)self _operationPointsDataForClassificationIdentifier:a4 error:a6];
+  v9 = [(VNSceneTaxonomyOperationPoints *)self _operationPointsDataForClassificationIdentifier:identifier error:error];
   if (v9)
   {
     v11 = 0;
-    LODWORD(v9) = _getConfidenceForValue(@"recall", v9->var3, 0, &v11, a6, a5);
-    if (a3)
+    LODWORD(v9) = _getConfidenceForValue(@"recall", v9->var3, 0, &v11, error, recall);
+    if (confidence)
     {
       if (v9)
       {
-        *a3 = v11;
+        *confidence = v11;
       }
     }
   }
@@ -439,18 +439,18 @@ LABEL_13:
   return v9;
 }
 
-- (BOOL)getPrecision:(float *)a3 forClassificationIdentifier:(id)a4 confidence:(float)a5 error:(id *)a6
+- (BOOL)getPrecision:(float *)precision forClassificationIdentifier:(id)identifier confidence:(float)confidence error:(id *)error
 {
-  v9 = [(VNSceneTaxonomyOperationPoints *)self _operationPointsDataForClassificationIdentifier:a4 error:a6];
+  v9 = [(VNSceneTaxonomyOperationPoints *)self _operationPointsDataForClassificationIdentifier:identifier error:error];
   if (v9)
   {
     v11 = 0;
-    LODWORD(v9) = _getValueForConfidence(@"precision", v9->var2, 1, &v11, a6, a5);
-    if (a3)
+    LODWORD(v9) = _getValueForConfidence(@"precision", v9->var2, 1, &v11, error, confidence);
+    if (precision)
     {
       if (v9)
       {
-        *a3 = v11;
+        *precision = v11;
       }
     }
   }
@@ -458,18 +458,18 @@ LABEL_13:
   return v9;
 }
 
-- (BOOL)getConfidence:(float *)a3 forClassificationIdentifier:(id)a4 withPrecision:(float)a5 error:(id *)a6
+- (BOOL)getConfidence:(float *)confidence forClassificationIdentifier:(id)identifier withPrecision:(float)precision error:(id *)error
 {
-  v9 = [(VNSceneTaxonomyOperationPoints *)self _operationPointsDataForClassificationIdentifier:a4 error:a6];
+  v9 = [(VNSceneTaxonomyOperationPoints *)self _operationPointsDataForClassificationIdentifier:identifier error:error];
   if (v9)
   {
     v11 = 0;
-    LODWORD(v9) = _getConfidenceForValue(@"precision", v9->var2, 1, &v11, a6, a5);
-    if (a3)
+    LODWORD(v9) = _getConfidenceForValue(@"precision", v9->var2, 1, &v11, error, precision);
+    if (confidence)
     {
       if (v9)
       {
-        *a3 = v11;
+        *confidence = v11;
       }
     }
   }
@@ -477,18 +477,18 @@ LABEL_13:
   return v9;
 }
 
-- (BOOL)getDefaultConfidence:(float *)a3 forClassificationIdentifier:(id)a4 error:(id *)a5
+- (BOOL)getDefaultConfidence:(float *)confidence forClassificationIdentifier:(id)identifier error:(id *)error
 {
-  v7 = [(VNSceneTaxonomyOperationPoints *)self _operationPointsDataForClassificationIdentifier:a4 error:a5];
+  v7 = [(VNSceneTaxonomyOperationPoints *)self _operationPointsDataForClassificationIdentifier:identifier error:error];
   if (v7)
   {
     v9 = 0;
-    LODWORD(v7) = _getConfidenceForValue(@"precision", v7->var2, 1, &v9, a5, v7->var0);
-    if (a3)
+    LODWORD(v7) = _getConfidenceForValue(@"precision", v7->var2, 1, &v9, error, v7->var0);
+    if (confidence)
     {
       if (v7)
       {
-        *a3 = v9;
+        *confidence = v9;
       }
     }
   }
@@ -499,14 +499,14 @@ LABEL_13:
 - (id)_propertyListRepresentation
 {
   v36[4] = *MEMORY[0x1E69E9840];
-  v2 = [(VNSceneTaxonomyOperationPoints *)self _allClassificationIdentifiers];
-  v27 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v2, "count")}];
+  _allClassificationIdentifiers = [(VNSceneTaxonomyOperationPoints *)self _allClassificationIdentifiers];
+  v27 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(_allClassificationIdentifiers, "count")}];
   context = objc_autoreleasePoolPush();
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v2;
+  obj = _allClassificationIdentifiers;
   v3 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v3)
   {
@@ -580,16 +580,16 @@ LABEL_13:
   return v27;
 }
 
-- (const)_operationPointsDataForClassificationIdentifier:(id)a3 error:(id *)a4
+- (const)_operationPointsDataForClassificationIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   value = -1;
-  if (!NSMapMember(self->_labelToOperationPointsDataIndexMap, v6, 0, &value))
+  if (!NSMapMember(self->_labelToOperationPointsDataIndexMap, identifierCopy, 0, &value))
   {
-    if (a4)
+    if (error)
     {
-      [objc_opt_class() errorForUnknownClassificationIdentifier:v6];
-      *a4 = v8 = 0;
+      [objc_opt_class() errorForUnknownClassificationIdentifier:identifierCopy];
+      *error = v8 = 0;
       goto LABEL_10;
     }
 
@@ -601,10 +601,10 @@ LABEL_9:
   v7 = value - 1;
   if (value < 1 || v7 >= NSCountMapTable(self->_labelToOperationPointsDataIndexMap))
   {
-    if (a4)
+    if (error)
     {
-      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"operation point map data for %@ is corrupt", v6];
-      *a4 = [VNError errorForInternalErrorWithLocalizedDescription:v9];
+      identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"operation point map data for %@ is corrupt", identifierCopy];
+      *error = [VNError errorForInternalErrorWithLocalizedDescription:identifierCopy];
     }
 
     goto LABEL_9;
@@ -624,42 +624,42 @@ LABEL_10:
   [(VNSceneTaxonomyOperationPoints *)&v3 dealloc];
 }
 
-- (VNSceneTaxonomyOperationPoints)initWithLabelToOperationPointsDataIndexMap:(id)a3 operationPointsDataArray:(id *)a4
+- (VNSceneTaxonomyOperationPoints)initWithLabelToOperationPointsDataIndexMap:(id)map operationPointsDataArray:(id *)array
 {
-  v7 = a3;
+  mapCopy = map;
   v11.receiver = self;
   v11.super_class = VNSceneTaxonomyOperationPoints;
   v8 = [(VNSceneTaxonomyOperationPoints *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_labelToOperationPointsDataIndexMap, a3);
-    v9->_operationPointsDataArray = a4;
+    objc_storeStrong(&v8->_labelToOperationPointsDataIndexMap, map);
+    v9->_operationPointsDataArray = array;
   }
 
   return v9;
 }
 
-+ (id)loadFromURL:(id)a3 error:(id *)a4
++ (id)loadFromURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF48] inputStreamWithURL:v6];
+  lCopy = l;
+  v7 = [MEMORY[0x1E695DF48] inputStreamWithURL:lCopy];
   v8 = v7;
   if (v7)
   {
     [v7 open];
-    v9 = [MEMORY[0x1E696AE40] propertyListWithStream:v8 options:0 format:0 error:a4];
+    lCopy = [MEMORY[0x1E696AE40] propertyListWithStream:v8 options:0 format:0 error:error];
     [v8 close];
-    if (v9)
+    if (lCopy)
     {
-      v10 = [a1 loadFromPropertyList:v9 error:a4];
+      v10 = [self loadFromPropertyList:lCopy error:error];
       v11 = v10;
       if (v10)
       {
         v12 = *(v10 + 8);
         *(v10 + 8) = 0;
 
-        v13 = [v6 copy];
+        v13 = [lCopy copy];
         v14 = v11[2];
         v11[2] = v13;
 
@@ -675,11 +675,11 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  if (a4)
+  if (error)
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unable to open %@", v6];
-    [VNError errorForInternalErrorWithLocalizedDescription:v9];
-    *a4 = v11 = 0;
+    lCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"unable to open %@", lCopy];
+    [VNError errorForInternalErrorWithLocalizedDescription:lCopy];
+    *error = v11 = 0;
 LABEL_9:
 
     goto LABEL_10;
@@ -691,18 +691,18 @@ LABEL_10:
   return v11;
 }
 
-+ (id)loadFromPropertyList:(id)a3 error:(id *)a4
++ (id)loadFromPropertyList:(id)list error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v38 = a3;
-  v5 = [v38 count];
+  listCopy = list;
+  v5 = [listCopy count];
   v36 = malloc_type_calloc(v5, 0x98uLL, 0x10000401CC6BE04uLL);
   if (!v36)
   {
-    if (a4)
+    if (error)
     {
       +[VNError errorForMemoryAllocationFailure];
-      *a4 = v26 = 0;
+      *error = v26 = 0;
     }
 
     else
@@ -714,14 +714,14 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  v34 = a4;
+  errorCopy = error;
   v6 = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:0 valueOptions:1282 capacity:v5];
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v7 = [v38 keyEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v40 objects:v44 count:16];
+  keyEnumerator = [listCopy keyEnumerator];
+  v8 = [keyEnumerator countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (!v8)
   {
     goto LABEL_15;
@@ -730,7 +730,7 @@ LABEL_39:
   v9 = 0;
   v10 = v36 + 80;
   v37 = *v41;
-  obj = v7;
+  obj = keyEnumerator;
   table = v6;
   while (2)
   {
@@ -746,12 +746,12 @@ LABEL_39:
 
       v14 = *(*(&v40 + 1) + 8 * v11);
       NSMapInsertKnownAbsent(table, v14, ++v9);
-      v15 = [v38 objectForKey:v14];
+      v15 = [listCopy objectForKey:v14];
       v16 = [v15 objectForKey:@"threshold"];
       v17 = v16;
       if (!v16)
       {
-        if (!v34)
+        if (!errorCopy)
         {
 LABEL_38:
 
@@ -760,7 +760,7 @@ LABEL_38:
         }
 
         v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"missing threshold for %@", v14];
-        *v34 = [VNError errorForInvalidModelWithLocalizedDescription:v17];
+        *errorCopy = [VNError errorForInvalidModelWithLocalizedDescription:v17];
         goto LABEL_37;
       }
 
@@ -770,10 +770,10 @@ LABEL_38:
       v20 = v19;
       if (!v19)
       {
-        if (v34)
+        if (errorCopy)
         {
           v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"missing F2 for %@", v14];
-          *v34 = [VNError errorForInvalidModelWithLocalizedDescription:v27];
+          *errorCopy = [VNError errorForInvalidModelWithLocalizedDescription:v27];
         }
 
         goto LABEL_37;
@@ -785,7 +785,7 @@ LABEL_38:
       v23 = v22;
       if (!v22)
       {
-        if (v34)
+        if (errorCopy)
         {
           v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"missing precision table for %@", v14];
           v29 = [VNError errorForInvalidModelWithLocalizedDescription:v28];
@@ -801,12 +801,12 @@ LABEL_34:
 
       if ((_parseValueConfidenceArrayWithIncreasingConfidences(v22, v12 - 72, 1) & 1) == 0)
       {
-        if (v34)
+        if (errorCopy)
         {
           v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid precision table for %@", v14];
           v29 = [VNError errorForInvalidModelWithLocalizedDescription:v28];
 LABEL_27:
-          *v34 = v29;
+          *errorCopy = v29;
         }
 
         goto LABEL_34;
@@ -816,7 +816,7 @@ LABEL_27:
       v25 = v24;
       if (!v24)
       {
-        if (v34)
+        if (errorCopy)
         {
           v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"missing recall table for %@", v14];
           v31 = [VNError errorForInvalidModelWithLocalizedDescription:v30];
@@ -833,12 +833,12 @@ LABEL_37:
 
       if ((_parseValueConfidenceArrayWithIncreasingConfidences(v24, v12, 0) & 1) == 0)
       {
-        if (v34)
+        if (errorCopy)
         {
           v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid recall table for %@", v14];
           v31 = [VNError errorForInvalidModelWithLocalizedDescription:v30];
 LABEL_32:
-          *v34 = v31;
+          *errorCopy = v31;
         }
 
         goto LABEL_36;
@@ -851,7 +851,7 @@ LABEL_32:
     }
 
     while (v13 != v11);
-    v7 = obj;
+    keyEnumerator = obj;
     v8 = [obj countByEnumeratingWithState:&v40 objects:v44 count:16];
     v10 = v36 + 80;
     if (v8)
@@ -864,7 +864,7 @@ LABEL_32:
 
 LABEL_15:
 
-  v26 = [[a1 alloc] initWithLabelToOperationPointsDataIndexMap:v6 operationPointsDataArray:v36];
+  v26 = [[self alloc] initWithLabelToOperationPointsDataIndexMap:v6 operationPointsDataArray:v36];
   if (!v26)
   {
     free(v36);
@@ -875,59 +875,59 @@ LABEL_40:
   return v26;
 }
 
-+ (id)URLForIdentifier:(id)a3 error:(id *)a4
++ (id)URLForIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"VNImageAnalyzerMultiDetectorSceneNetV3R8"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"VNImageAnalyzerMultiDetectorSceneNetV3R8"])
   {
-    v6 = [MEMORY[0x1E69DF978] sceneNetV3AndReturnError:a4];
+    v6 = [MEMORY[0x1E69DF978] sceneNetV3AndReturnError:error];
     if (v6)
     {
       v7 = v6;
-      v8 = [v6 sceneOperatingPointsFileURL];
+      sceneOperatingPointsFileURL = [v6 sceneOperatingPointsFileURL];
 
-      if (v8)
+      if (sceneOperatingPointsFileURL)
       {
         goto LABEL_10;
       }
 
-      if (a4)
+      if (error)
       {
-        v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"operation points not available for identifier %@", v5];
-        v10 = [VNError errorForDataUnavailableWithLocalizedDescription:v9];
+        identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"operation points not available for identifier %@", identifierCopy];
+        v10 = [VNError errorForDataUnavailableWithLocalizedDescription:identifierCopy];
 LABEL_8:
-        *a4 = v10;
+        *error = v10;
       }
     }
   }
 
-  else if (a4)
+  else if (error)
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown operation points identifier %@", v5];
-    v10 = [VNError errorForInvalidArgumentWithLocalizedDescription:v9];
+    identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown operation points identifier %@", identifierCopy];
+    v10 = [VNError errorForInvalidArgumentWithLocalizedDescription:identifierCopy];
     goto LABEL_8;
   }
 
-  v8 = 0;
+  sceneOperatingPointsFileURL = 0;
 LABEL_10:
 
-  return v8;
+  return sceneOperatingPointsFileURL;
 }
 
-+ (id)loadFromIdentifier:(id)a3 error:(id *)a4
++ (id)loadFromIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 URLForIdentifier:v6 error:a4];
+  identifierCopy = identifier;
+  v7 = [self URLForIdentifier:identifierCopy error:error];
   if (v7)
   {
-    v8 = [a1 loadFromURL:v7 error:a4];
+    v8 = [self loadFromURL:v7 error:error];
     v9 = v8;
     if (v8)
     {
       v10 = *(v8 + 16);
       *(v8 + 16) = 0;
 
-      v11 = [v6 copy];
+      v11 = [identifierCopy copy];
       v12 = v9[1];
       v9[1] = v11;
 

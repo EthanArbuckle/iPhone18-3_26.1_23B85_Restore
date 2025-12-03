@@ -1,17 +1,17 @@
 @interface RCWaveformColorCalculator
-- (RCWaveformColorCalculator)initWithDataProvider:(id)a3;
-- (id)_color:(id)a3 adjustedForDisplayMode:(int64_t)a4 traitCollection:(id)a5;
-- (id)_dynamicLiveWaveformColorForDisplayMode:(int64_t)a3 traitCollection:(id)a4;
-- (id)resolvedColorWithLiveWaveform:(BOOL)a3 selected:(BOOL)a4 muted:(BOOL)a5 trimMode:(BOOL)a6;
-- (void)_resolveAndCacheColorsWithTraitCollection:(id)a3;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (RCWaveformColorCalculator)initWithDataProvider:(id)provider;
+- (id)_color:(id)_color adjustedForDisplayMode:(int64_t)mode traitCollection:(id)collection;
+- (id)_dynamicLiveWaveformColorForDisplayMode:(int64_t)mode traitCollection:(id)collection;
+- (id)resolvedColorWithLiveWaveform:(BOOL)waveform selected:(BOOL)selected muted:(BOOL)muted trimMode:(BOOL)mode;
+- (void)_resolveAndCacheColorsWithTraitCollection:(id)collection;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
 @end
 
 @implementation RCWaveformColorCalculator
 
-- (RCWaveformColorCalculator)initWithDataProvider:(id)a3
+- (RCWaveformColorCalculator)initWithDataProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v16.receiver = self;
   v16.super_class = RCWaveformColorCalculator;
   v5 = [(RCWaveformColorCalculator *)&v16 init];
@@ -21,24 +21,24 @@
     resolvedColors = v5->_resolvedColors;
     v5->_resolvedColors = v6;
 
-    v8 = objc_storeWeak(&v5->_dataProvider, v4);
-    v9 = [v4 traitChangeObservable];
+    v8 = objc_storeWeak(&v5->_dataProvider, providerCopy);
+    traitChangeObservable = [providerCopy traitChangeObservable];
     v10 = objc_opt_self();
     v17 = v10;
     v11 = [NSArray arrayWithObjects:&v17 count:1];
-    v12 = [v9 registerForTraitChanges:v11 withTarget:v5 action:"_traitCollectionDidChange:previousTraitCollection:"];
+    v12 = [traitChangeObservable registerForTraitChanges:v11 withTarget:v5 action:"_traitCollectionDidChange:previousTraitCollection:"];
 
-    v13 = [v4 traitEnvironment];
-    v14 = [v13 traitCollection];
-    [(RCWaveformColorCalculator *)v5 _resolveAndCacheColorsWithTraitCollection:v14];
+    traitEnvironment = [providerCopy traitEnvironment];
+    traitCollection = [traitEnvironment traitCollection];
+    [(RCWaveformColorCalculator *)v5 _resolveAndCacheColorsWithTraitCollection:traitCollection];
   }
 
   return v5;
 }
 
-- (id)resolvedColorWithLiveWaveform:(BOOL)a3 selected:(BOOL)a4 muted:(BOOL)a5 trimMode:(BOOL)a6
+- (id)resolvedColorWithLiveWaveform:(BOOL)waveform selected:(BOOL)selected muted:(BOOL)muted trimMode:(BOOL)mode
 {
-  if (a3)
+  if (waveform)
   {
     v7 = self->_resolvedLiveWaveformColor;
   }
@@ -46,14 +46,14 @@
   else
   {
     v8 = 2;
-    if (!a5)
+    if (!muted)
     {
       v8 = 0;
     }
 
-    v9 = v8 | a4;
+    v9 = v8 | selected;
     v10 = 4;
-    if (!a6)
+    if (!mode)
     {
       v10 = 0;
     }
@@ -79,45 +79,45 @@
   return v7;
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v5 = [a3 traitCollection];
+  traitCollection = [change traitCollection];
   [(RCWaveformColorCalculator *)self _resolveAndCacheColorsWithTraitCollection:?];
 }
 
-- (void)_resolveAndCacheColorsWithTraitCollection:(id)a3
+- (void)_resolveAndCacheColorsWithTraitCollection:(id)collection
 {
-  v15 = a3;
+  collectionCopy = collection;
   v4 = +[RCRecorderStyleProvider sharedStyleProvider];
   [(NSMutableArray *)self->_resolvedColors removeAllObjects];
   for (i = 0; i != 8; ++i)
   {
     v6 = [v4 waveformColorForSelected:i & 1 muted:(i >> 1) & 1 trimMode:i > 3];
     WeakRetained = objc_loadWeakRetained(&self->_dataProvider);
-    v8 = -[RCWaveformColorCalculator _color:adjustedForDisplayMode:traitCollection:](self, "_color:adjustedForDisplayMode:traitCollection:", v6, [WeakRetained waveformDisplayMode], v15);
+    v8 = -[RCWaveformColorCalculator _color:adjustedForDisplayMode:traitCollection:](self, "_color:adjustedForDisplayMode:traitCollection:", v6, [WeakRetained waveformDisplayMode], collectionCopy);
 
     resolvedColors = self->_resolvedColors;
-    v10 = [v8 resolvedColorWithTraitCollection:v15];
+    v10 = [v8 resolvedColorWithTraitCollection:collectionCopy];
     [(NSMutableArray *)resolvedColors addObject:v10];
   }
 
   v11 = objc_loadWeakRetained(&self->_dataProvider);
-  v12 = -[RCWaveformColorCalculator _dynamicLiveWaveformColorForDisplayMode:traitCollection:](self, "_dynamicLiveWaveformColorForDisplayMode:traitCollection:", [v11 waveformDisplayMode], v15);
+  v12 = -[RCWaveformColorCalculator _dynamicLiveWaveformColorForDisplayMode:traitCollection:](self, "_dynamicLiveWaveformColorForDisplayMode:traitCollection:", [v11 waveformDisplayMode], collectionCopy);
 
-  v13 = [v12 resolvedColorWithTraitCollection:v15];
+  v13 = [v12 resolvedColorWithTraitCollection:collectionCopy];
   resolvedLiveWaveformColor = self->_resolvedLiveWaveformColor;
   self->_resolvedLiveWaveformColor = v13;
 }
 
-- (id)_color:(id)a3 adjustedForDisplayMode:(int64_t)a4 traitCollection:(id)a5
+- (id)_color:(id)_color adjustedForDisplayMode:(int64_t)mode traitCollection:(id)collection
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = v7;
+  _colorCopy = _color;
+  collectionCopy = collection;
+  v9 = _colorCopy;
   v10 = v9;
-  if (!a4)
+  if (!mode)
   {
-    if ([v8 isUserInterfaceStyleDark])
+    if ([collectionCopy isUserInterfaceStyleDark])
     {
       +[UIColor blackColor];
     }
@@ -143,12 +143,12 @@
   return v10;
 }
 
-- (id)_dynamicLiveWaveformColorForDisplayMode:(int64_t)a3 traitCollection:(id)a4
+- (id)_dynamicLiveWaveformColorForDisplayMode:(int64_t)mode traitCollection:(id)collection
 {
-  v6 = a4;
+  collectionCopy = collection;
   v7 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v8 = [v7 waveformRecordingColor];
-  v9 = [(RCWaveformColorCalculator *)self _color:v8 adjustedForDisplayMode:a3 traitCollection:v6];
+  waveformRecordingColor = [v7 waveformRecordingColor];
+  v9 = [(RCWaveformColorCalculator *)self _color:waveformRecordingColor adjustedForDisplayMode:mode traitCollection:collectionCopy];
 
   return v9;
 }

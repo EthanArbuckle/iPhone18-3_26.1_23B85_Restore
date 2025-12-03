@@ -14,9 +14,9 @@
     v7 = v4;
     v8 = v5;
     v9 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-."];
-    v10 = [v9 invertedSet];
+    invertedSet = [v9 invertedSet];
 
-    if ([v3 rangeOfCharacterFromSet:v10 options:2 range:{0, v7}] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([v3 rangeOfCharacterFromSet:invertedSet options:2 range:{0, v7}] == 0x7FFFFFFFFFFFFFFFLL)
     {
       v11 = [v3 length];
       v12 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"/?#"];

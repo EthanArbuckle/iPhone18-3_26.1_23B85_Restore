@@ -1,14 +1,14 @@
 @interface RouteRecommendationLocalOutputContextSuppressor
-- (id)suppressionPolicyWithContext:(id)a3;
+- (id)suppressionPolicyWithContext:(id)context;
 @end
 
 @implementation RouteRecommendationLocalOutputContextSuppressor
 
-- (id)suppressionPolicyWithContext:(id)a3
+- (id)suppressionPolicyWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
 
-  v4 = sub_10034E364(v3);
+  v4 = sub_10034E364(contextCopy);
 
   return v4;
 }

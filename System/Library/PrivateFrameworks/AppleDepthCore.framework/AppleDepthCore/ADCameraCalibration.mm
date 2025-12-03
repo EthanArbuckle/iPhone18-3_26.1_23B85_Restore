@@ -1,21 +1,21 @@
 @interface ADCameraCalibration
-+ (id)cameraCalibrationFromFile:(id)a3;
-+ (uint64_t)createIntrinsicsMatrixWithEFL:(double)a3 principalPointX:(double)a4 principalPointY:(double)a5;
-+ (void)transform:(unint64_t)a3 points:with:outPoints:;
-- (ADCameraCalibration)initWithDictionary:(id)a3;
-- (ADCameraCalibration)initWithFile:(id)a3;
-- (ADNilDistortionModel)initWithIntrinsics:(__n128)a3 cameraToPlatformTransform:(__n128)a4 pixelSize:(__n128)a5 referenceDimensions:(__n128)a6 distortionModel:(__n128)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)writeToFile:(id)a3 atomically:(BOOL)a4;
++ (id)cameraCalibrationFromFile:(id)file;
++ (uint64_t)createIntrinsicsMatrixWithEFL:(double)l principalPointX:(double)x principalPointY:(double)y;
++ (void)transform:(unint64_t)transform points:with:outPoints:;
+- (ADCameraCalibration)initWithDictionary:(id)dictionary;
+- (ADCameraCalibration)initWithFile:(id)file;
+- (ADNilDistortionModel)initWithIntrinsics:(__n128)intrinsics cameraToPlatformTransform:(__n128)transform pixelSize:(__n128)size referenceDimensions:(__n128)dimensions distortionModel:(__n128)model;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)writeToFile:(id)file atomically:(BOOL)atomically;
 - (CGSize)referenceDimensions;
-- (double)getTransformationTo:(int32x4_t *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)createDictionaryRepresentationWithHumanReadable:(BOOL)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (double)getTransformationTo:(int32x4_t *)to;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)createDictionaryRepresentationWithHumanReadable:(BOOL)readable;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)backProject:(unint64_t)a3 undistortedPixels:(const CGPoint *)a4 withR:(const float *)a5 outPoints:;
-- (void)project:(unint64_t)a3 points:outUndistortedPixels:outR:;
-- (void)transform:(unint64_t)a3 points:toCamera:outPoints:;
+- (void)backProject:(unint64_t)project undistortedPixels:(const CGPoint *)pixels withR:(const float *)r outPoints:;
+- (void)project:(unint64_t)project points:outUndistortedPixels:outR:;
+- (void)transform:(unint64_t)transform points:toCamera:outPoints:;
 @end
 
 @implementation ADCameraCalibration
@@ -29,14 +29,14 @@
   return result;
 }
 
-- (BOOL)writeToFile:(id)a3 atomically:(BOOL)a4
+- (BOOL)writeToFile:(id)file atomically:(BOOL)atomically
 {
-  v4 = a4;
+  atomicallyCopy = atomically;
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  fileCopy = file;
   v7 = [(ADCameraCalibration *)self createDictionaryRepresentationWithHumanReadable:1];
-  v8 = [v6 lowercaseString];
-  v9 = [v8 hasSuffix:@".json"];
+  lowercaseString = [fileCopy lowercaseString];
+  v9 = [lowercaseString hasSuffix:@".json"];
 
   if (v9)
   {
@@ -58,27 +58,27 @@
 
     else
     {
-      v12 = [v10 writeToFile:v6 atomically:v4];
+      v12 = [v10 writeToFile:fileCopy atomically:atomicallyCopy];
     }
   }
 
   else
   {
-    v12 = [v7 writeToFile:v6 atomically:v4];
+    v12 = [v7 writeToFile:fileCopy atomically:atomicallyCopy];
   }
 
   return v12;
 }
 
-- (ADCameraCalibration)initWithFile:(id)a3
+- (ADCameraCalibration)initWithFile:(id)file
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  fileCopy = file;
+  v5 = fileCopy;
+  if (fileCopy)
   {
-    v6 = [v4 lowercaseString];
-    v7 = [v6 hasSuffix:@".json"];
+    lowercaseString = [fileCopy lowercaseString];
+    v7 = [lowercaseString hasSuffix:@".json"];
 
     if (v7)
     {
@@ -104,7 +104,7 @@ LABEL_5:
             _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failed create camera calibration with error:%@", buf, 0xCu);
           }
 
-          v13 = 0;
+          selfCopy = 0;
           goto LABEL_13;
         }
       }
@@ -125,21 +125,21 @@ LABEL_5:
     }
 
     self = [(ADCameraCalibration *)self initWithDictionary:v11];
-    v13 = self;
+    selfCopy = self;
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v13 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v13;
+  return selfCopy;
 }
 
-- (id)createDictionaryRepresentationWithHumanReadable:(BOOL)a3
+- (id)createDictionaryRepresentationWithHumanReadable:(BOOL)readable
 {
-  v48 = a3;
+  readableCopy = readable;
   v59[9] = *MEMORY[0x277D85DE8];
   v56 = objc_opt_new();
   [v56 setObject:&unk_2852520E8 forKeyedSubscript:@"Version"];
@@ -225,7 +225,7 @@ LABEL_14:
     v45 = NSStringFromClass(v44);
     [v56 setObject:v45 forKeyedSubscript:@"distortionType"];
 
-    v46 = [(ADLensDistortionModel *)self->_distortionModel dictionaryRepresentation:v48];
+    v46 = [(ADLensDistortionModel *)self->_distortionModel dictionaryRepresentation:readableCopy];
     [v56 addEntriesFromDictionary:v46];
   }
 
@@ -243,15 +243,15 @@ LABEL_14:
   return v56;
 }
 
-- (ADCameraCalibration)initWithDictionary:(id)a3
+- (ADCameraCalibration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v39.receiver = self;
   v39.super_class = ADCameraCalibration;
   v5 = [(ADCameraCalibration *)&v39 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"intrinsicMatrix"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"intrinsicMatrix"];
     v7 = v6;
     if (v6 && [v6 count] == 9)
     {
@@ -284,12 +284,12 @@ LABEL_14:
         while (v9 != 3);
       }
 
-      v15 = [v4 objectForKeyedSubscript:@"referenceDimensions"];
+      v15 = [dictionaryCopy objectForKeyedSubscript:@"referenceDimensions"];
       v37 = v15;
       if (v15 && CGSizeMakeWithDictionaryRepresentation(v15, &v5->_referenceDimensions))
       {
-        v16 = [v4 objectForKeyedSubscript:@"cameraToPlatformTransform"];
-        if (v16 || ([v4 objectForKeyedSubscript:@"extrinsicMatrix"], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
+        v16 = [dictionaryCopy objectForKeyedSubscript:@"cameraToPlatformTransform"];
+        if (v16 || ([dictionaryCopy objectForKeyedSubscript:@"extrinsicMatrix"], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
         {
           if ([v16 count] == 12)
           {
@@ -334,7 +334,7 @@ LABEL_14:
               break;
             }
 
-            v26 = [v4 objectForKeyedSubscript:@"pixelSize"];
+            v26 = [dictionaryCopy objectForKeyedSubscript:@"pixelSize"];
             v27 = v26;
             if (!v26)
             {
@@ -344,14 +344,14 @@ LABEL_14:
 
             [v26 floatValue];
             v5->_pixelSize = v28;
-            v29 = [v4 objectForKeyedSubscript:@"distortionType"];
+            v29 = [dictionaryCopy objectForKeyedSubscript:@"distortionType"];
             v30 = allocateDistortionModelWithName(v29);
             distortionModel = v5->_distortionModel;
             v5->_distortionModel = v30;
 
             if (v5->_distortionModel && (objc_opt_respondsToSelector() & 1) != 0)
             {
-              v32 = [(ADLensDistortionModel *)v5->_distortionModel initWithDictionary:v4];
+              v32 = [(ADLensDistortionModel *)v5->_distortionModel initWithDictionary:dictionaryCopy];
               v33 = v5->_distortionModel;
               v5->_distortionModel = v32;
 
@@ -402,9 +402,9 @@ LABEL_28:
   return v34;
 }
 
-- (void)backProject:(unint64_t)a3 undistortedPixels:(const CGPoint *)a4 withR:(const float *)a5 outPoints:
+- (void)backProject:(unint64_t)project undistortedPixels:(const CGPoint *)pixels withR:(const float *)r outPoints:
 {
-  if (a3)
+  if (project)
   {
     v6.i32[0] = LODWORD(self->_pixelSize);
     v7 = *self->_anon_10;
@@ -413,7 +413,7 @@ LABEL_28:
     v10 = COERCE_FLOAT(HIDWORD(*&self->_anon_10[32]));
     v6.f32[1] = v7 / *&self->_anon_10[20];
     v11 = vcvtq_f64_f32(v6);
-    p_y = &a4->y;
+    p_y = &pixels->y;
     do
     {
       v13.f64[0] = *(p_y - 1) - v9;
@@ -421,22 +421,22 @@ LABEL_28:
       v14 = vmulq_f64(v13, v11);
       v15 = vcvt_f32_f64(v14);
       v16 = vmul_f32(v15, v15);
-      v17 = *a5++;
+      v17 = *r++;
       v16.f32[0] = v17 / sqrtf(((v8 * v8) + v16.f32[0]) + v16.f32[1]);
       v5[1].f32[0] = v8 * v16.f32[0];
       *v5 = vcvt_f32_f64(vmulq_n_f64(v14, v16.f32[0]));
       v5 += 2;
       p_y += 2;
-      --a3;
+      --project;
     }
 
-    while (a3);
+    while (project);
   }
 }
 
-- (void)project:(unint64_t)a3 points:outUndistortedPixels:outR:
+- (void)project:(unint64_t)project points:outUndistortedPixels:outR:
 {
-  for (; a3; --a3)
+  for (; project; --project)
   {
     v6 = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(*self->_anon_10, COERCE_FLOAT(*v3->f32)), *&self->_anon_10[16], *v3, 1), *&self->_anon_10[32], *v3->f32, 2);
     if (*&v6.i32[2] <= 0.0)
@@ -459,27 +459,27 @@ LABEL_28:
   }
 }
 
-- (void)transform:(unint64_t)a3 points:toCamera:outPoints:
+- (void)transform:(unint64_t)transform points:toCamera:outPoints:
 {
   v6 = v5;
   v7 = v3;
   v10 = v4;
   [(ADCameraCalibration *)self getTransformationTo:?];
-  [ADCameraCalibration transform:a3 points:v7 with:v6 outPoints:?];
+  [ADCameraCalibration transform:transform points:v7 with:v6 outPoints:?];
 }
 
-- (double)getTransformationTo:(int32x4_t *)a3
+- (double)getTransformationTo:(int32x4_t *)to
 {
   v3 = 0;
-  v4 = a3[5];
-  v5 = a3[6];
+  v4 = to[5];
+  v5 = to[6];
   v6 = vdupq_lane_s32(*v5.i8, 1);
   v7 = vzip1q_s32(v4, v5);
-  v7.i32[2] = a3[7];
+  v7.i32[2] = to[7];
   v8 = vzip2q_s32(v4, v5);
-  v8.i32[2] = a3[7].i64[1];
-  v9 = vzip2q_s32(vzip1q_s32(v4, a3[7]), v6);
-  v11[2] = *(a1 + 112);
+  v8.i32[2] = to[7].i64[1];
+  v9 = vzip2q_s32(vzip1q_s32(v4, to[7]), v6);
+  v11[2] = *(self + 112);
   do
   {
     *(&v12 + v3 * 16) = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v7, COERCE_FLOAT(v11[v3])), v9, *&v11[v3], 1), v8, v11[v3], 2);
@@ -490,7 +490,7 @@ LABEL_28:
   return *&v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc(objc_opt_class());
   pixelSize = self->_pixelSize;
@@ -503,19 +503,19 @@ LABEL_28:
   v17 = *&self->_anon_50[32];
   v15 = *&self->_anon_50[16];
   v13 = *self->_anon_50;
-  v9 = [(ADLensDistortionModel *)self->_distortionModel copyWithZone:a3];
+  v9 = [(ADLensDistortionModel *)self->_distortionModel copyWithZone:zone];
   *&v10 = pixelSize;
   v11 = [v5 initWithIntrinsics:v9 cameraToPlatformTransform:*&v14 pixelSize:*&v16 referenceDimensions:*&v18 distortionModel:{*&v13, *&v15, *&v17, *&v19, v10, *&width, *&height}];
 
   return v11;
 }
 
-- (ADNilDistortionModel)initWithIntrinsics:(__n128)a3 cameraToPlatformTransform:(__n128)a4 pixelSize:(__n128)a5 referenceDimensions:(__n128)a6 distortionModel:(__n128)a7
+- (ADNilDistortionModel)initWithIntrinsics:(__n128)intrinsics cameraToPlatformTransform:(__n128)transform pixelSize:(__n128)size referenceDimensions:(__n128)dimensions distortionModel:(__n128)model
 {
-  v20 = a11;
-  if (v20 || (v20 = objc_alloc_init(ADNilDistortionModel)) != 0)
+  selfCopy = a11;
+  if (selfCopy || (selfCopy = objc_alloc_init(ADNilDistortionModel)) != 0)
   {
-    v38.receiver = a1;
+    v38.receiver = self;
     v38.super_class = ADCameraCalibration;
     v21 = [(ADCameraCalibration *)&v38 init:*&a2];
     v22 = v21;
@@ -531,18 +531,18 @@ LABEL_28:
       v21->_pixelSize = a9;
       v21->_referenceDimensions.width = a12;
       v21->_referenceDimensions.height = a13;
-      objc_storeStrong(&v21->_distortionModel, v20);
+      objc_storeStrong(&v21->_distortionModel, selfCopy);
     }
 
-    a1 = v22;
+    self = v22;
 
-    v20 = a1;
+    selfCopy = self;
   }
 
-  return v20;
+  return selfCopy;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = [ADMutableCameraCalibration alloc];
   pixelSize = self->_pixelSize;
@@ -555,24 +555,24 @@ LABEL_28:
   v17 = *&self->_anon_50[32];
   v15 = *&self->_anon_50[16];
   v13 = *self->_anon_50;
-  v9 = [(ADLensDistortionModel *)self->_distortionModel copyWithZone:a3];
+  v9 = [(ADLensDistortionModel *)self->_distortionModel copyWithZone:zone];
   *&v10 = pixelSize;
   v11 = [(ADCameraCalibration *)v5 initWithIntrinsics:v9 cameraToPlatformTransform:*&v14 pixelSize:*&v16 referenceDimensions:*&v18 distortionModel:*&v13, *&v15, *&v17, *&v19, v10, *&width, *&height];
 
   return v11;
 }
 
-+ (id)cameraCalibrationFromFile:(id)a3
++ (id)cameraCalibrationFromFile:(id)file
 {
-  v3 = a3;
-  v4 = [[ADCameraCalibration alloc] initWithFile:v3];
+  fileCopy = file;
+  v4 = [[ADCameraCalibration alloc] initWithFile:fileCopy];
 
   return v4;
 }
 
-+ (void)transform:(unint64_t)a3 points:with:outPoints:
++ (void)transform:(unint64_t)transform points:with:outPoints:
 {
-  if (a3)
+  if (transform)
   {
     v9 = (v3 + 8);
     v10.i64[0] = 0x3F0000003FLL;
@@ -588,19 +588,19 @@ LABEL_28:
 
       *v4++ = v12;
       v9 += 4;
-      --a3;
+      --transform;
     }
 
-    while (a3);
+    while (transform);
   }
 }
 
-+ (uint64_t)createIntrinsicsMatrixWithEFL:(double)a3 principalPointX:(double)a4 principalPointY:(double)a5
++ (uint64_t)createIntrinsicsMatrixWithEFL:(double)l principalPointX:(double)x principalPointY:(double)y
 {
-  LODWORD(a6) = LODWORD(a5);
-  LODWORD(a5) = LODWORD(a4);
-  LODWORD(a4) = LODWORD(a3);
-  return [a1 createIntrinsicsMatrixWithEflX:a3 eflY:a4 principalPointX:a5 principalPointY:a6];
+  LODWORD(a6) = LODWORD(y);
+  LODWORD(y) = LODWORD(x);
+  LODWORD(x) = LODWORD(l);
+  return [self createIntrinsicsMatrixWithEflX:l eflY:x principalPointX:y principalPointY:a6];
 }
 
 - (unint64_t)hash
@@ -645,16 +645,16 @@ LABEL_28:
   return v24 ^ (6 * [(ADLensDistortionModel *)self->_distortionModel hash]);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_8;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v16 = 1;
     goto LABEL_10;
@@ -706,8 +706,8 @@ LABEL_8:
   if (pixelSize == v23)
   {
     distortionModel = self->_distortionModel;
-    v25 = [(ADCameraCalibration *)v6 distortionModel];
-    v16 = [(ADLensDistortionModel *)distortionModel isEqual:v25];
+    distortionModel = [(ADCameraCalibration *)v6 distortionModel];
+    v16 = [(ADLensDistortionModel *)distortionModel isEqual:distortionModel];
   }
 
   else

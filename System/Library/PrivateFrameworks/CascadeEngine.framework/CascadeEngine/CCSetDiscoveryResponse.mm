@@ -1,23 +1,23 @@
 @interface CCSetDiscoveryResponse
 - (id)dictionaryRepresentation;
-- (id)initFromDictionary:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
 @end
 
 @implementation CCSetDiscoveryResponse
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = CCSetDiscoveryResponse;
-  v5 = [(CCPeerToPeerMessage *)&v27 initFromDictionary:v4];
+  v5 = [(CCPeerToPeerMessage *)&v27 initFromDictionary:dictionaryCopy];
   v6 = v5;
   if (v5)
   {
     v21 = v5;
-    v22 = v4;
-    v7 = [v4 objectForKeyedSubscript:@"discoveredSets"];
+    v22 = dictionaryCopy;
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"discoveredSets"];
     v8 = objc_opt_new();
     v23 = 0u;
     v24 = 0u;
@@ -71,7 +71,7 @@
     v17 = *(v21 + 6);
     *(v21 + 6) = v8;
 
-    v4 = v22;
+    dictionaryCopy = v22;
     v18 = [v22 objectForKeyedSubscript:@"setDiscoveryResponseOptions"];
     *(v21 + 20) = [v18 unsignedIntValue];
   }
@@ -103,8 +103,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-        [v3 addObject:v9];
+        dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+        [v3 addObject:dictionaryRepresentation];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v17 objects:v23 count:16];
@@ -126,8 +126,8 @@
 
   v16.receiver = self;
   v16.super_class = CCSetDiscoveryResponse;
-  v13 = [(CCPeerToPeerMessage *)&v16 dictionaryRepresentation];
-  [v11 addEntriesFromDictionary:v13];
+  dictionaryRepresentation2 = [(CCPeerToPeerMessage *)&v16 dictionaryRepresentation];
+  [v11 addEntriesFromDictionary:dictionaryRepresentation2];
 
   v14 = *MEMORY[0x1E69E9840];
 

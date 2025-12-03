@@ -1,33 +1,33 @@
 @interface _ICProactiveTrigger
-+ (BOOL)isEquivalentDictionary:(id)a3 second:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToProactiveTrigger:(id)a3;
-- (_ICProactiveTrigger)initWithCoder:(id)a3;
-- (_ICProactiveTrigger)initWithContext:(id)a3 inputContextHistory:(id)a4 contentType:(id)a5;
-- (_ICProactiveTrigger)initWithSource:(unsigned __int8)a3 attributes:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (BOOL)isEquivalentDictionary:(id)dictionary second:(id)second;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToProactiveTrigger:(id)trigger;
+- (_ICProactiveTrigger)initWithCoder:(id)coder;
+- (_ICProactiveTrigger)initWithContext:(id)context inputContextHistory:(id)history contentType:(id)type;
+- (_ICProactiveTrigger)initWithSource:(unsigned __int8)source attributes:(id)attributes;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _ICProactiveTrigger
 
-- (_ICProactiveTrigger)initWithSource:(unsigned __int8)a3 attributes:(id)a4
+- (_ICProactiveTrigger)initWithSource:(unsigned __int8)source attributes:(id)attributes
 {
-  v7 = a4;
+  attributesCopy = attributes;
   v14.receiver = self;
   v14.super_class = _ICProactiveTrigger;
   v8 = [(_ICProactiveTrigger *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    v8->_triggerSourceType = a3;
-    objc_storeStrong(&v8->_attributedString, a4);
-    v10 = [v7 objectForKey:@"textContentTypeTag"];
+    v8->_triggerSourceType = source;
+    objc_storeStrong(&v8->_attributedString, attributes);
+    v10 = [attributesCopy objectForKey:@"textContentTypeTag"];
 
     if (v10)
     {
-      v11 = [v7 objectForKey:@"textContentTypeTag"];
+      v11 = [attributesCopy objectForKey:@"textContentTypeTag"];
       contentType = v9->_contentType;
       v9->_contentType = v11;
     }
@@ -36,11 +36,11 @@
   return v9;
 }
 
-- (_ICProactiveTrigger)initWithContext:(id)a3 inputContextHistory:(id)a4 contentType:(id)a5
+- (_ICProactiveTrigger)initWithContext:(id)context inputContextHistory:(id)history contentType:(id)type
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  historyCopy = history;
+  typeCopy = type;
   v15.receiver = self;
   v15.super_class = _ICProactiveTrigger;
   v12 = [(_ICProactiveTrigger *)&v15 init];
@@ -48,9 +48,9 @@
   if (v12)
   {
     v12->_triggerSourceType = 3;
-    objc_storeStrong(&v12->_contentType, a5);
-    objc_storeStrong(&v13->_context, a3);
-    objc_storeStrong(&v13->_inputContextHistory, a4);
+    objc_storeStrong(&v12->_contentType, type);
+    objc_storeStrong(&v13->_context, context);
+    objc_storeStrong(&v13->_inputContextHistory, history);
   }
 
   return v13;
@@ -65,9 +65,9 @@
   return [(NSString *)self->_contentType hash]- v6 + 32 * v6;
 }
 
-- (_ICProactiveTrigger)initWithCoder:(id)a3
+- (_ICProactiveTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = _ICProactiveTrigger;
   v5 = [(_ICProactiveTrigger *)&v21 init];
@@ -76,13 +76,13 @@
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"attributedString"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"attributedString"];
     v10 = [v9 copy];
     attributedString = v5->_attributedString;
     v5->_attributedString = v10;
 
-    v5->_triggerSourceType = [v4 decodeInt64ForKey:@"triggerSourceType"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"context"];
+    v5->_triggerSourceType = [coderCopy decodeInt64ForKey:@"triggerSourceType"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"context"];
     context = v5->_context;
     v5->_context = v12;
 
@@ -104,11 +104,11 @@
 
     v15 = v14;
     _Block_object_dispose(&v23, 8);
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inputContextHistory"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inputContextHistory"];
     inputContextHistory = v5->_inputContextHistory;
     v5->_inputContextHistory = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentType"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentType"];
     contentType = v5->_contentType;
     v5->_contentType = v18;
   }
@@ -116,23 +116,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   attributedString = self->_attributedString;
-  v5 = a3;
-  [v5 encodeObject:attributedString forKey:@"attributedString"];
-  [v5 encodeInt64:self->_triggerSourceType forKey:@"triggerSourceType"];
-  [v5 encodeObject:self->_context forKey:@"context"];
-  [v5 encodeObject:self->_inputContextHistory forKey:@"inputContextHistory"];
-  [v5 encodeObject:self->_contentType forKey:@"contentType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:attributedString forKey:@"attributedString"];
+  [coderCopy encodeInt64:self->_triggerSourceType forKey:@"triggerSourceType"];
+  [coderCopy encodeObject:self->_context forKey:@"context"];
+  [coderCopy encodeObject:self->_inputContextHistory forKey:@"inputContextHistory"];
+  [coderCopy encodeObject:self->_contentType forKey:@"contentType"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
   if (v5)
   {
-    v6 = [(NSDictionary *)self->_attributedString copyWithZone:a3];
+    v6 = [(NSDictionary *)self->_attributedString copyWithZone:zone];
     v7 = *(v5 + 3);
     *(v5 + 3) = v6;
 
@@ -145,36 +145,36 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(_ICProactiveTrigger *)self isEqualToProactiveTrigger:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(_ICProactiveTrigger *)self isEqualToProactiveTrigger:v5];
   }
 
   return v6;
 }
 
-+ (BOOL)isEquivalentDictionary:(id)a3 second:(id)a4
++ (BOOL)isEquivalentDictionary:(id)dictionary second:(id)second
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
-  if (v7 == [v6 count])
+  dictionaryCopy = dictionary;
+  secondCopy = second;
+  v7 = [dictionaryCopy count];
+  if (v7 == [secondCopy count])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = v5;
+    v8 = dictionaryCopy;
     v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
@@ -191,7 +191,7 @@
 
           v13 = *(*(&v19 + 1) + 8 * i);
           v14 = [v8 objectForKey:{v13, v19}];
-          v15 = [v6 objectForKey:v13];
+          v15 = [secondCopy objectForKey:v13];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -243,24 +243,24 @@ LABEL_20:
   return v16;
 }
 
-- (BOOL)isEqualToProactiveTrigger:(id)a3
+- (BOOL)isEqualToProactiveTrigger:(id)trigger
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  triggerCopy = trigger;
+  v5 = triggerCopy;
+  if (!triggerCopy)
   {
     goto LABEL_10;
   }
 
-  v6 = [v4 triggerSourceType];
-  if (v6 != [(_ICProactiveTrigger *)self triggerSourceType])
+  triggerSourceType = [triggerCopy triggerSourceType];
+  if (triggerSourceType != [(_ICProactiveTrigger *)self triggerSourceType])
   {
     goto LABEL_10;
   }
 
-  v7 = [(_ICProactiveTrigger *)self attributedString];
-  v8 = [v5 attributedString];
-  v9 = [_ICProactiveTrigger isEquivalentDictionary:v7 second:v8];
+  attributedString = [(_ICProactiveTrigger *)self attributedString];
+  attributedString2 = [v5 attributedString];
+  v9 = [_ICProactiveTrigger isEquivalentDictionary:attributedString second:attributedString2];
 
   if (!v9)
   {
@@ -269,9 +269,9 @@ LABEL_20:
 
   if (self->_context != *(v5 + 4))
   {
-    v10 = [(_ICProactiveTrigger *)self context];
-    v11 = [v5 context];
-    v12 = [v10 isEqualToString:v11];
+    context = [(_ICProactiveTrigger *)self context];
+    context2 = [v5 context];
+    v12 = [context isEqualToString:context2];
 
     if (!v12)
     {
@@ -288,9 +288,9 @@ LABEL_20:
 
     else
     {
-      v16 = [(_ICProactiveTrigger *)self contentType];
-      v17 = [v5 contentType];
-      v18 = [v16 isEqualToString:v17];
+      contentType = [(_ICProactiveTrigger *)self contentType];
+      contentType2 = [v5 contentType];
+      v18 = [contentType isEqualToString:contentType2];
     }
   }
 

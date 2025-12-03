@@ -1,19 +1,19 @@
 @interface NTKFaceSupportNotificationActionEventRecorder
 - (NSString)filePath;
-- (NTKFaceSupportNotificationActionEventRecorder)initWithFilePath:(id)a3;
-- (id)_validateIdentifier:(id)a3;
-- (void)_queue_beginPresentationForIdentifier:(id)a3 completion:(id)a4;
-- (void)_queue_endPresentationForIdentifier:(id)a3 withAction:(int64_t)a4 completion:(id)a5;
-- (void)beginPresentationForIdentifier:(id)a3 completion:(id)a4;
-- (void)endPresentationForIdentifier:(id)a3 withAction:(int64_t)a4 completion:(id)a5;
+- (NTKFaceSupportNotificationActionEventRecorder)initWithFilePath:(id)path;
+- (id)_validateIdentifier:(id)identifier;
+- (void)_queue_beginPresentationForIdentifier:(id)identifier completion:(id)completion;
+- (void)_queue_endPresentationForIdentifier:(id)identifier withAction:(int64_t)action completion:(id)completion;
+- (void)beginPresentationForIdentifier:(id)identifier completion:(id)completion;
+- (void)endPresentationForIdentifier:(id)identifier withAction:(int64_t)action completion:(id)completion;
 @end
 
 @implementation NTKFaceSupportNotificationActionEventRecorder
 
-- (NTKFaceSupportNotificationActionEventRecorder)initWithFilePath:(id)a3
+- (NTKFaceSupportNotificationActionEventRecorder)initWithFilePath:(id)path
 {
-  v4 = a3;
-  v5 = [[NTKFaceSupportDateDatabase alloc] initWithFileAtPath:v4];
+  pathCopy = path;
+  v5 = [[NTKFaceSupportDateDatabase alloc] initWithFileAtPath:pathCopy];
 
   if (v5)
   {
@@ -30,112 +30,112 @@
     }
 
     self = v7;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (NSString)filePath
 {
-  v2 = [(NTKFaceSupportNotificationActionEventRecorder *)self database];
-  v3 = [v2 filePath];
+  database = [(NTKFaceSupportNotificationActionEventRecorder *)self database];
+  filePath = [database filePath];
 
-  return v3;
+  return filePath;
 }
 
-- (void)beginPresentationForIdentifier:(id)a3 completion:(id)a4
+- (void)beginPresentationForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
 
-    v9 = [(NTKFaceSupportNotificationActionEventRecorder *)self queue];
+    queue = [(NTKFaceSupportNotificationActionEventRecorder *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __91__NTKFaceSupportNotificationActionEventRecorder_beginPresentationForIdentifier_completion___block_invoke;
     block[3] = &unk_27877DC88;
     block[4] = self;
-    v6 = v8;
-    v11 = v6;
-    v12 = v7;
-    dispatch_async(v9, block);
+    identifierCopy = v8;
+    v11 = identifierCopy;
+    v12 = completionCopy;
+    dispatch_async(queue, block);
   }
 }
 
-- (void)endPresentationForIdentifier:(id)a3 withAction:(int64_t)a4 completion:(id)a5
+- (void)endPresentationForIdentifier:(id)identifier withAction:(int64_t)action completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v10 = [v8 copy];
+    v10 = [identifierCopy copy];
 
-    v11 = [(NTKFaceSupportNotificationActionEventRecorder *)self queue];
+    queue = [(NTKFaceSupportNotificationActionEventRecorder *)self queue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __100__NTKFaceSupportNotificationActionEventRecorder_endPresentationForIdentifier_withAction_completion___block_invoke;
     v12[3] = &unk_27877FF10;
     v12[4] = self;
-    v8 = v10;
-    v13 = v8;
-    v15 = a4;
-    v14 = v9;
-    dispatch_async(v11, v12);
+    identifierCopy = v10;
+    v13 = identifierCopy;
+    actionCopy = action;
+    v14 = completionCopy;
+    dispatch_async(queue, v12);
   }
 }
 
-- (void)_queue_beginPresentationForIdentifier:(id)a3 completion:(id)a4
+- (void)_queue_beginPresentationForIdentifier:(id)identifier completion:(id)completion
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(NTKFaceSupportNotificationActionEventRecorder *)self queue];
-  dispatch_assert_queue_V2(v7);
-  v8 = [(NTKFaceSupportNotificationActionEventRecorder *)self _validateIdentifier:v11];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  queue = [(NTKFaceSupportNotificationActionEventRecorder *)self queue];
+  dispatch_assert_queue_V2(queue);
+  v8 = [(NTKFaceSupportNotificationActionEventRecorder *)self _validateIdentifier:identifierCopy];
   if (v8)
   {
-    v6[2](v6, v8);
+    completionCopy[2](completionCopy, v8);
   }
 
   else
   {
-    v9 = [MEMORY[0x277CBEAA8] date];
-    v10 = [(NTKFaceSupportNotificationActionEventRecorder *)self database];
-    [v10 recordDate:v9 bundleIdentifier:v11 completion:v6];
+    date = [MEMORY[0x277CBEAA8] date];
+    database = [(NTKFaceSupportNotificationActionEventRecorder *)self database];
+    [database recordDate:date bundleIdentifier:identifierCopy completion:completionCopy];
   }
 }
 
-- (void)_queue_endPresentationForIdentifier:(id)a3 withAction:(int64_t)a4 completion:(id)a5
+- (void)_queue_endPresentationForIdentifier:(id)identifier withAction:(int64_t)action completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(NTKFaceSupportNotificationActionEventRecorder *)self queue];
-  dispatch_assert_queue_V2(v10);
-  v11 = [(NTKFaceSupportNotificationActionEventRecorder *)self _validateIdentifier:v8];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  queue = [(NTKFaceSupportNotificationActionEventRecorder *)self queue];
+  dispatch_assert_queue_V2(queue);
+  v11 = [(NTKFaceSupportNotificationActionEventRecorder *)self _validateIdentifier:identifierCopy];
   if (v11)
   {
-    v9[2](v9, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
   }
 
   else
   {
-    v12 = [(NTKFaceSupportNotificationActionEventRecorder *)self database];
+    database = [(NTKFaceSupportNotificationActionEventRecorder *)self database];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __107__NTKFaceSupportNotificationActionEventRecorder__queue_endPresentationForIdentifier_withAction_completion___block_invoke;
     v14[3] = &unk_2787888E8;
-    v17 = v9;
-    v18 = a4;
-    v15 = v8;
-    v16 = v12;
-    v13 = v12;
+    v17 = completionCopy;
+    actionCopy = action;
+    v15 = identifierCopy;
+    v16 = database;
+    v13 = database;
     [v13 retreiveDateForBundleIdentifier:v15 completion:v14];
   }
 }
@@ -188,9 +188,9 @@ uint64_t __107__NTKFaceSupportNotificationActionEventRecorder__queue_endPresenta
   }
 }
 
-- (id)_validateIdentifier:(id)a3
+- (id)_validateIdentifier:(id)identifier
 {
-  if ([a3 length])
+  if ([identifier length])
   {
     v3 = 0;
   }

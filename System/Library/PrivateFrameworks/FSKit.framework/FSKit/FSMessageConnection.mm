@@ -1,34 +1,34 @@
 @interface FSMessageConnection
-- (FSMessageConnection)initWithCoder:(id)a3;
-- (FSMessageConnection)initWithEndpoint:(id)a3;
-- (id)localizedMessage:(id)a3 table:(id)a4 bundle:(id)a5;
-- (id)localizedMessage:(id)a3 table:(id)a4 bundle:(id)a5 arguments:(char *)a6;
-- (id)localizedMessage:(id)a3 table:(id)a4 bundle:(id)a5 array:(id)a6;
-- (void)completed:(id)a3 replyHandler:(id)a4;
-- (void)completedLocked:(id)a3 replyHandler:(id)a4;
-- (void)connect:(id)a3;
-- (void)didCompleteWithError:(id)a3 completionHandler:(id)a4;
+- (FSMessageConnection)initWithCoder:(id)coder;
+- (FSMessageConnection)initWithEndpoint:(id)endpoint;
+- (id)localizedMessage:(id)message table:(id)table bundle:(id)bundle;
+- (id)localizedMessage:(id)message table:(id)table bundle:(id)bundle arguments:(char *)arguments;
+- (id)localizedMessage:(id)message table:(id)table bundle:(id)bundle array:(id)array;
+- (void)completed:(id)completed replyHandler:(id)handler;
+- (void)completedLocked:(id)locked replyHandler:(id)handler;
+- (void)connect:(id)connect;
+- (void)didCompleteWithError:(id)error completionHandler:(id)handler;
 - (void)didStart;
-- (void)encodeWithCoder:(id)a3;
-- (void)getLocalizationSetup:(id)a3;
-- (void)logLocalizedMessage:(id)a3 table:(id)a4 bundle:(id)a5 arguments:(char *)a6;
-- (void)logLocalizedMessage:(id)a3 table:(id)a4 bundle:(id)a5 array:(id)a6;
-- (void)logMessage:(id)a3;
-- (void)prompt:(id)a3 replyHandler:(id)a4;
-- (void)promptTrueFalse:(id)a3 replyHandler:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)getLocalizationSetup:(id)setup;
+- (void)logLocalizedMessage:(id)message table:(id)table bundle:(id)bundle arguments:(char *)arguments;
+- (void)logLocalizedMessage:(id)message table:(id)table bundle:(id)bundle array:(id)array;
+- (void)logMessage:(id)message;
+- (void)prompt:(id)prompt replyHandler:(id)handler;
+- (void)promptTrueFalse:(id)false replyHandler:(id)handler;
 @end
 
 @implementation FSMessageConnection
 
-- (void)logMessage:(id)a3
+- (void)logMessage:(id)message
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSXPCConnection *)v4->_connection remoteObjectProxyWithErrorHandler:&__block_literal_global_12];
-  [v5 logMessage:v6];
+  messageCopy = message;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSXPCConnection *)selfCopy->_connection remoteObjectProxyWithErrorHandler:&__block_literal_global_12];
+  [v5 logMessage:messageCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 void __34__FSMessageConnection_logMessage___block_invoke(uint64_t a1, void *a2)
@@ -41,16 +41,16 @@ void __34__FSMessageConnection_logMessage___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)didCompleteWithError:(id)a3 completionHandler:(id)a4
+- (void)didCompleteWithError:(id)error completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __62__FSMessageConnection_didCompleteWithError_completionHandler___block_invoke;
   v8[3] = &unk_278FED5F0;
-  v9 = v6;
-  v7 = v6;
-  [(FSMessageConnection *)self completed:a3 replyHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(FSMessageConnection *)self completed:error replyHandler:v8];
 }
 
 uint64_t __62__FSMessageConnection_didCompleteWithError_completionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -64,17 +64,17 @@ uint64_t __62__FSMessageConnection_didCompleteWithError_completionHandler___bloc
   return result;
 }
 
-- (void)getLocalizationSetup:(id)a3
+- (void)getLocalizationSetup:(id)setup
 {
-  v4 = a3;
+  setupCopy = setup;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__FSMessageConnection_getLocalizationSetup___block_invoke;
   v7[3] = &unk_278FED618;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = setupCopy;
+  v6 = setupCopy;
   dispatch_async(queue, v7);
 }
 
@@ -112,9 +112,9 @@ void __44__FSMessageConnection_getLocalizationSetup___block_invoke_2(uint64_t a1
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -122,12 +122,12 @@ void __44__FSMessageConnection_getLocalizationSetup___block_invoke_2(uint64_t a1
     objc_exception_throw(v4);
   }
 
-  [v5 encodeObject:self->_endpoint forKey:@"FSMessageConnection.Endpoint"];
+  [coderCopy encodeObject:self->_endpoint forKey:@"FSMessageConnection.Endpoint"];
 }
 
-- (FSMessageConnection)initWithCoder:(id)a3
+- (FSMessageConnection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -135,25 +135,25 @@ void __44__FSMessageConnection_getLocalizationSetup___block_invoke_2(uint64_t a1
     objc_exception_throw(v8);
   }
 
-  if ([v4 containsValueForKey:@"FSMessageConnection.Endpoint"])
+  if ([coderCopy containsValueForKey:@"FSMessageConnection.Endpoint"])
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSMessageConnection.Endpoint"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSMessageConnection.Endpoint"];
     self = [(FSMessageConnection *)self initWithEndpoint:v5];
 
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)connect:(id)a3
+- (void)connect:(id)connect
 {
-  v4 = a3;
+  connectCopy = connect;
   v5 = fskit_std_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -169,7 +169,7 @@ void __44__FSMessageConnection_getLocalizationSetup___block_invoke_2(uint64_t a1
     }
 
     v21 = fs_errorForPOSIXError(17);
-    v4[2](v4, v21);
+    connectCopy[2](connectCopy, v21);
   }
 
   else
@@ -227,7 +227,7 @@ void __44__FSMessageConnection_getLocalizationSetup___block_invoke_2(uint64_t a1
       }
 
       v30 = fs_errorForPOSIXError(57);
-      v4[2](v4, v30);
+      connectCopy[2](connectCopy, v30);
     }
 
     else
@@ -240,7 +240,7 @@ void __44__FSMessageConnection_getLocalizationSetup___block_invoke_2(uint64_t a1
         [(FSMessageConnection(Private) *)v31 connect:v32, v33, v34, v35, v36, v37, v38];
       }
 
-      v4[2](v4, 0);
+      connectCopy[2](connectCopy, 0);
     }
 
     _Block_object_dispose(&v43, 8);
@@ -298,22 +298,22 @@ void __40__FSMessageConnection_Private__connect___block_invoke_78(uint64_t a1, v
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)logLocalizedMessage:(id)a3 table:(id)a4 bundle:(id)a5 array:(id)a6
+- (void)logLocalizedMessage:(id)message table:(id)table bundle:(id)bundle array:(id)array
 {
-  v7 = [(FSMessageConnection *)self localizedMessage:a3 table:a4 bundle:a5 array:a6];
+  v7 = [(FSMessageConnection *)self localizedMessage:message table:table bundle:bundle array:array];
   [(FSMessageConnection *)self logMessage:v7];
 }
 
-- (void)logLocalizedMessage:(id)a3 table:(id)a4 bundle:(id)a5 arguments:(char *)a6
+- (void)logLocalizedMessage:(id)message table:(id)table bundle:(id)bundle arguments:(char *)arguments
 {
-  v7 = [(FSMessageConnection *)self localizedMessage:a3 table:a4 bundle:a5 arguments:a6];
+  v7 = [(FSMessageConnection *)self localizedMessage:message table:table bundle:bundle arguments:arguments];
   [(FSMessageConnection *)self logMessage:v7];
 }
 
-- (void)completedLocked:(id)a3 replyHandler:(id)a4
+- (void)completedLocked:(id)locked replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lockedCopy = locked;
+  handlerCopy = handler;
   hasCompleted = self->_hasCompleted;
   v9 = _Block_copy(self->_earlyCompletedBlock);
   earlyCompletedBlock = self->_earlyCompletedBlock;
@@ -330,14 +330,14 @@ void __40__FSMessageConnection_Private__connect___block_invoke_78(uint64_t a1, v
 
   if (hasCompleted)
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   else
   {
     if (v9)
     {
-      v9[2](v9, v6);
+      v9[2](v9, lockedCopy);
     }
 
     connection = self->_connection;
@@ -347,7 +347,7 @@ void __40__FSMessageConnection_Private__connect___block_invoke_78(uint64_t a1, v
       v21[1] = 3221225472;
       v21[2] = __61__FSMessageConnection_Private__completedLocked_replyHandler___block_invoke;
       v21[3] = &unk_278FECE20;
-      v14 = v7;
+      v14 = handlerCopy;
       v22 = v14;
       v15 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v21];
       v17[0] = MEMORY[0x277D85DD0];
@@ -356,14 +356,14 @@ void __40__FSMessageConnection_Private__connect___block_invoke_78(uint64_t a1, v
       v17[3] = &unk_278FED668;
       v19 = v14;
       v20 = v11;
-      v18 = v6;
+      v18 = lockedCopy;
       [v15 completed:v18 replyHandler:v17];
     }
 
     else
     {
       v16 = fs_errorForPOSIXError(57);
-      (*(v7 + 2))(v7, 0, v16);
+      (*(handlerCopy + 2))(handlerCopy, 0, v16);
     }
   }
 }
@@ -405,37 +405,37 @@ LABEL_5:
   }
 }
 
-- (void)completed:(id)a3 replyHandler:(id)a4
+- (void)completed:(id)completed replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  completedCopy = completed;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__FSMessageConnection_Private__completed_replyHandler___block_invoke;
   block[3] = &unk_278FED690;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = completedCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = completedCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)prompt:(id)a3 replyHandler:(id)a4
+- (void)prompt:(id)prompt replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  promptCopy = prompt;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__FSMessageConnection_Private__prompt_replyHandler___block_invoke;
   block[3] = &unk_278FED6B8;
-  v12 = v6;
-  v13 = v7;
+  v12 = promptCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = promptCopy;
+  v10 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -473,20 +473,20 @@ void __52__FSMessageConnection_Private__prompt_replyHandler___block_invoke_2(uin
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)promptTrueFalse:(id)a3 replyHandler:(id)a4
+- (void)promptTrueFalse:(id)false replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  falseCopy = false;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__FSMessageConnection_Private__promptTrueFalse_replyHandler___block_invoke;
   block[3] = &unk_278FED6B8;
-  v12 = v6;
-  v13 = v7;
+  v12 = falseCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = falseCopy;
+  v10 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -524,25 +524,25 @@ void __61__FSMessageConnection_Private__promptTrueFalse_replyHandler___block_inv
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)localizedMessage:(id)a3 table:(id)a4 bundle:(id)a5
+- (id)localizedMessage:(id)message table:(id)table bundle:(id)bundle
 {
-  v5 = [(FSMessageConnection *)self localizedMessage:a3 table:a4 bundle:a5 arguments:&v8];
+  v5 = [(FSMessageConnection *)self localizedMessage:message table:table bundle:bundle arguments:&v8];
 
   return v5;
 }
 
-- (id)localizedMessage:(id)a3 table:(id)a4 bundle:(id)a5 arguments:(char *)a6
+- (id)localizedMessage:(id)message table:(id)table bundle:(id)bundle arguments:(char *)arguments
 {
-  v10 = a3;
+  messageCopy = message;
   locale = self->_locale;
-  v12 = a5;
-  v13 = a4;
-  v14 = [(NSLocale *)locale languageCode];
-  v15 = [v12 localizedStringForKey:v10 value:0 table:v13 localization:v14];
+  bundleCopy = bundle;
+  tableCopy = table;
+  languageCode = [(NSLocale *)locale languageCode];
+  v15 = [bundleCopy localizedStringForKey:messageCopy value:0 table:tableCopy localization:languageCode];
 
   if (v15)
   {
-    v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v15 locale:self->_locale arguments:a6];
+    v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v15 locale:self->_locale arguments:arguments];
   }
 
   else
@@ -559,27 +559,27 @@ void __61__FSMessageConnection_Private__promptTrueFalse_replyHandler___block_inv
   return v16;
 }
 
-- (FSMessageConnection)initWithEndpoint:(id)a3
+- (FSMessageConnection)initWithEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v17.receiver = self;
   v17.super_class = FSMessageConnection;
   v6 = [(FSMessageConnection *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_endpoint, a3);
+    objc_storeStrong(&v6->_endpoint, endpoint);
     connection = v7->_connection;
     v7->_connection = 0;
 
     v7->_hasCompleted = 0;
-    v9 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
     locale = v7->_locale;
-    v7->_locale = v9;
+    v7->_locale = currentLocale;
 
-    v11 = [MEMORY[0x277CBEAF8] preferredLanguages];
+    preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
     preferredLanguages = v7->_preferredLanguages;
-    v7->_preferredLanguages = v11;
+    v7->_preferredLanguages = preferredLanguages;
 
     receiver = v7->_receiver;
     v7->_receiver = 0;
@@ -601,17 +601,17 @@ void __61__FSMessageConnection_Private__promptTrueFalse_replyHandler___block_inv
   }
 }
 
-- (id)localizedMessage:(id)a3 table:(id)a4 bundle:(id)a5 array:(id)a6
+- (id)localizedMessage:(id)message table:(id)table bundle:(id)bundle array:(id)array
 {
   locale = self->_locale;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(NSLocale *)locale languageCode];
-  v16 = [v12 localizedStringForKey:v14 value:0 table:v13 localization:v15];
+  arrayCopy = array;
+  bundleCopy = bundle;
+  tableCopy = table;
+  messageCopy = message;
+  languageCode = [(NSLocale *)locale languageCode];
+  v16 = [bundleCopy localizedStringForKey:messageCopy value:0 table:tableCopy localization:languageCode];
 
-  v17 = [FSKitUtils stringWithFormatString:v16 locale:self->_locale arguments:v11];
+  v17 = [FSKitUtils stringWithFormatString:v16 locale:self->_locale arguments:arrayCopy];
 
   return v17;
 }

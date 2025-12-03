@@ -1,17 +1,17 @@
 @interface SMInitiatorContactMO
-+ (id)getLocationMOFromLocation:(id)a3 context:(id)a4;
-+ (id)managedObjectWithInitiatorContact:(id)a3 managedObject:(id)a4 inManagedObjectContext:(id)a5;
++ (id)getLocationMOFromLocation:(id)location context:(id)context;
++ (id)managedObjectWithInitiatorContact:(id)contact managedObject:(id)object inManagedObjectContext:(id)context;
 @end
 
 @implementation SMInitiatorContactMO
 
-+ (id)managedObjectWithInitiatorContact:(id)a3 managedObject:(id)a4 inManagedObjectContext:(id)a5
++ (id)managedObjectWithInitiatorContact:(id)contact managedObject:(id)object inManagedObjectContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v7)
+  contactCopy = contact;
+  objectCopy = object;
+  contextCopy = context;
+  v10 = contextCopy;
+  if (!contactCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -26,7 +26,7 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v9)
+  if (contextCopy)
   {
     *buf = 0;
     v21 = buf;
@@ -39,9 +39,9 @@ LABEL_12:
     v15[2] = __95__SMInitiatorContactMO_managedObjectWithInitiatorContact_managedObject_inManagedObjectContext___block_invoke;
     v15[3] = &unk_2788C5DA0;
     v19 = buf;
-    v16 = v8;
+    v16 = objectCopy;
     v17 = v10;
-    v18 = v7;
+    v18 = contactCopy;
     [v17 performBlockAndWait:v15];
     v11 = *(v21 + 5);
 
@@ -283,22 +283,22 @@ void __95__SMInitiatorContactMO_managedObjectWithInitiatorContact_managedObject_
   [*(*(*(a1 + 56) + 8) + 40) setWorkoutEvents:v64];
 }
 
-+ (id)getLocationMOFromLocation:(id)a3 context:(id)a4
++ (id)getLocationMOFromLocation:(id)location context:(id)context
 {
-  if (a3)
+  if (location)
   {
-    v5 = a4;
-    v6 = a3;
+    contextCopy = context;
+    locationCopy = location;
     v7 = +[SMLocationMO fetchRequest];
     v8 = MEMORY[0x277CCAC30];
-    v9 = [v6 identifier];
-    v10 = [v8 predicateWithFormat:@"%K == %@", @"identifier", v9];
+    identifier = [locationCopy identifier];
+    v10 = [v8 predicateWithFormat:@"%K == %@", @"identifier", identifier];
     [v7 setPredicate:v10];
 
     v15 = 0;
-    v11 = [v5 executeFetchRequest:v7 error:&v15];
-    v12 = [v11 firstObject];
-    v13 = [SMLocationMO managedObjectWithLocation:v6 managedObject:v12 inManagedObjectContext:v5];
+    v11 = [contextCopy executeFetchRequest:v7 error:&v15];
+    firstObject = [v11 firstObject];
+    v13 = [SMLocationMO managedObjectWithLocation:locationCopy managedObject:firstObject inManagedObjectContext:contextCopy];
   }
 
   else

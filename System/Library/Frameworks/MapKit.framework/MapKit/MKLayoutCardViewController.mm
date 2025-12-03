@@ -1,35 +1,35 @@
 @interface MKLayoutCardViewController
 - (BOOL)isLayoutDynamic;
 - (BOOL)isTransitItem;
-- (id)_cachedViewControllerForModule:(int)a3;
+- (id)_cachedViewControllerForModule:(int)module;
 - (id)_layoutModuleForMapItem;
-- (void)_createModuleLayout:(id)a3;
+- (void)_createModuleLayout:(id)layout;
 @end
 
 @implementation MKLayoutCardViewController
 
-- (id)_cachedViewControllerForModule:(int)a3
+- (id)_cachedViewControllerForModule:(int)module
 {
-  v3 = *&a3;
-  v4 = [(MKLayoutCardViewController *)self cacheVC];
+  v3 = *&module;
+  cacheVC = [(MKLayoutCardViewController *)self cacheVC];
   v5 = [MEMORY[0x1E696AD98] numberWithInt:v3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  v6 = [cacheVC objectForKeyedSubscript:v5];
 
   return v6;
 }
 
-- (void)_createModuleLayout:(id)a3
+- (void)_createModuleLayout:(id)layout
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  [(MKLayoutCardViewController *)self setCacheVC:v5];
+  layoutCopy = layout;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [(MKLayoutCardViewController *)self setCacheVC:dictionary];
 
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  [(MKLayoutCardViewController *)self setCacheModuleType:v6];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  [(MKLayoutCardViewController *)self setCacheModuleType:dictionary2];
 
-  v18 = [(MKLayoutCardViewController *)self _layoutModuleForMapItem];
-  [v18 modules];
+  _layoutModuleForMapItem = [(MKLayoutCardViewController *)self _layoutModuleForMapItem];
+  [_layoutModuleForMapItem modules];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -52,25 +52,25 @@
         v12 = [(MKLayoutCardViewController *)self _createViewControllerForModule:v11];
         if (v12)
         {
-          v13 = [(MKLayoutCardViewController *)self cacheVC];
+          cacheVC = [(MKLayoutCardViewController *)self cacheVC];
           v14 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v11, "type")}];
-          [v13 setObject:v12 forKeyedSubscript:v14];
+          [cacheVC setObject:v12 forKeyedSubscript:v14];
 
-          v15 = [(MKLayoutCardViewController *)self cacheModuleType];
+          cacheModuleType = [(MKLayoutCardViewController *)self cacheModuleType];
           v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v12, "hash")}];
-          [v15 setObject:v11 forKeyedSubscript:v16];
+          [cacheModuleType setObject:v11 forKeyedSubscript:v16];
 
           if ([v11 type] == 5)
           {
-            v17 = [v4 lastObject];
+            lastObject = [layoutCopy lastObject];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [v17 setBottomHairlineHidden:1];
+              [lastObject setBottomHairlineHidden:1];
             }
           }
 
-          [v4 addObject:v12];
+          [layoutCopy addObject:v12];
         }
       }
 
@@ -86,43 +86,43 @@
   if (GEOConfigGetBOOL())
   {
     v3 = GEOConfigGetArray();
-    if (!v3 || ([MEMORY[0x1E69A2250] moduleLayoutEntryFromArray:v3], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!v3 || ([MEMORY[0x1E69A2250] moduleLayoutEntryFromArray:v3], (_placecardLayout = objc_claimAutoreleasedReturnValue()) == 0))
     {
       if (GEOConfigGetBOOL())
       {
-        v4 = 0;
+        _placecardLayout = 0;
       }
 
       else
       {
-        v5 = [(MKLayoutCardViewController *)self mapItem];
-        v4 = [v5 _placecardLayout];
+        mapItem = [(MKLayoutCardViewController *)self mapItem];
+        _placecardLayout = [mapItem _placecardLayout];
       }
     }
   }
 
   else
   {
-    v4 = 0;
+    _placecardLayout = 0;
   }
 
-  return v4;
+  return _placecardLayout;
 }
 
 - (BOOL)isLayoutDynamic
 {
-  v2 = [(MKLayoutCardViewController *)self _layoutModuleForMapItem];
-  v3 = v2 != 0;
+  _layoutModuleForMapItem = [(MKLayoutCardViewController *)self _layoutModuleForMapItem];
+  v3 = _layoutModuleForMapItem != 0;
 
   return v3;
 }
 
 - (BOOL)isTransitItem
 {
-  v2 = [(MKLayoutCardViewController *)self mapItem];
-  v3 = [v2 _isMapItemTypeTransit];
+  mapItem = [(MKLayoutCardViewController *)self mapItem];
+  _isMapItemTypeTransit = [mapItem _isMapItemTypeTransit];
 
-  return v3;
+  return _isMapItemTypeTransit;
 }
 
 @end

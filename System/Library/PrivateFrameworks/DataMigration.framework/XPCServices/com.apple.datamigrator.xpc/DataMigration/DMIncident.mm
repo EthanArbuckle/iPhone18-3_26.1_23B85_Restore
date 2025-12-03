@@ -1,18 +1,18 @@
 @interface DMIncident
-+ (id)incidentWithKind:(unsigned int)a3 responsiblePluginRep:(id)a4 userDataDisposition:(id)a5 details:(id)a6;
++ (id)incidentWithKind:(unsigned int)kind responsiblePluginRep:(id)rep userDataDisposition:(id)disposition details:(id)details;
 @end
 
 @implementation DMIncident
 
-+ (id)incidentWithKind:(unsigned int)a3 responsiblePluginRep:(id)a4 userDataDisposition:(id)a5 details:(id)a6
++ (id)incidentWithKind:(unsigned int)kind responsiblePluginRep:(id)rep userDataDisposition:(id)disposition details:(id)details
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  repCopy = rep;
+  dispositionCopy = disposition;
+  detailsCopy = details;
   v13 = objc_alloc_init(DMIncident);
-  v13->_kind = a3;
-  objc_storeStrong(&v13->_responsiblePluginRep, a4);
-  v14 = [v12 copy];
+  v13->_kind = kind;
+  objc_storeStrong(&v13->_responsiblePluginRep, rep);
+  v14 = [detailsCopy copy];
   details = v13->_details;
   v13->_details = v14;
 
@@ -22,21 +22,21 @@
 
   v18 = objc_alloc_init(NSMutableArray);
   v19 = v18;
-  if (v12)
+  if (detailsCopy)
   {
-    [v18 addObject:v12];
+    [v18 addObject:detailsCopy];
   }
 
-  if (v11)
+  if (dispositionCopy)
   {
-    v20 = [DMUserDataDispositionManager descriptionFromDispositionFlags:[DMUserDataDispositionManager dispositionFlagsFromDispositionDict:v11]];
+    v20 = [DMUserDataDispositionManager descriptionFromDispositionFlags:[DMUserDataDispositionManager dispositionFlagsFromDispositionDict:dispositionCopy]];
     if (v20)
     {
       v21 = [NSString stringWithFormat:@"(%@)", v20];
       [v19 addObject:v21];
     }
 
-    v22 = [v11 objectForKeyedSubscript:@"previousBuildVersion"];
+    v22 = [dispositionCopy objectForKeyedSubscript:@"previousBuildVersion"];
     if (v22)
     {
       v23 = [NSString stringWithFormat:@"(prev build %@)", v22];

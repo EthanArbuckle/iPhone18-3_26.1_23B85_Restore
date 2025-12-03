@@ -1,8 +1,8 @@
 @interface PARReply
 - (NSArray)rawResponse;
-- (PARReply)initWithCoder:(id)a3;
+- (PARReply)initWithCoder:(id)coder;
 - (PARTask)task;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PARReply
@@ -39,40 +39,40 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   httpRequest = self->_httpRequest;
-  v5 = a3;
-  [v5 encodeObject:httpRequest forKey:@"_httpRequest"];
-  [v5 encodeObject:self->_httpResponse forKey:@"_httpResponse"];
-  [v5 encodeObject:self->_data forKey:@"_data"];
-  [v5 encodeDouble:@"_scale" forKey:self->_scale];
-  [v5 encodeInt32:self->_replyType forKey:@"_replyType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:httpRequest forKey:@"_httpRequest"];
+  [coderCopy encodeObject:self->_httpResponse forKey:@"_httpResponse"];
+  [coderCopy encodeObject:self->_data forKey:@"_data"];
+  [coderCopy encodeDouble:@"_scale" forKey:self->_scale];
+  [coderCopy encodeInt32:self->_replyType forKey:@"_replyType"];
 }
 
-- (PARReply)initWithCoder:(id)a3
+- (PARReply)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PARReply;
   v5 = [(PARReply *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_httpRequest"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_httpRequest"];
     httpRequest = v5->_httpRequest;
     v5->_httpRequest = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_httpResponse"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_httpResponse"];
     httpResponse = v5->_httpResponse;
     v5->_httpResponse = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_data"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_data"];
     data = v5->_data;
     v5->_data = v10;
 
-    [v4 decodeDoubleForKey:@"_scale"];
+    [coderCopy decodeDoubleForKey:@"_scale"];
     v5->_scale = v12;
-    v5->_replyType = [v4 decodeInt32ForKey:@"_replyType"];
+    v5->_replyType = [coderCopy decodeInt32ForKey:@"_replyType"];
   }
 
   return v5;

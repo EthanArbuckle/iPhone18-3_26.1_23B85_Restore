@@ -1,23 +1,23 @@
 @interface FRCFaceHandLegRectangle
-+ (id)animalFaceRectangleWithBoundingBox:(CGRect)a3;
-+ (id)bodyRectangleWithCenter:(CGPoint)a3 tip:(CGPoint)a4 category:(unint64_t)a5 frameAspectRatio:(float)a6;
-+ (id)faceRectangleWithBoundingBox:(CGRect)a3 roll:(id)a4 yaw:(id)a5;
-+ (id)handRectangleWithObservation:(id)a3;
-+ (id)humanRectangleWithBoundingBox:(CGRect)a3;
++ (id)animalFaceRectangleWithBoundingBox:(CGRect)box;
++ (id)bodyRectangleWithCenter:(CGPoint)center tip:(CGPoint)tip category:(unint64_t)category frameAspectRatio:(float)ratio;
++ (id)faceRectangleWithBoundingBox:(CGRect)box roll:(id)roll yaw:(id)yaw;
++ (id)handRectangleWithObservation:(id)observation;
++ (id)humanRectangleWithBoundingBox:(CGRect)box;
 - (CGRect)boundingBox;
 @end
 
 @implementation FRCFaceHandLegRectangle
 
-+ (id)faceRectangleWithBoundingBox:(CGRect)a3 roll:(id)a4 yaw:(id)a5
++ (id)faceRectangleWithBoundingBox:(CGRect)box roll:(id)roll yaw:(id)yaw
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  v12 = a5;
-  v17.receiver = a1;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  rollCopy = roll;
+  yawCopy = yaw;
+  v17.receiver = self;
   v17.super_class = &OBJC_METACLASS___FRCFaceHandLegRectangle;
   v13 = [objc_msgSendSuper2(&v17 alloc)];
   v14 = v13;
@@ -25,14 +25,14 @@
   {
     [v13 setCategory:0];
     [v14 setBoundingBox:{x, y, width, height}];
-    if (v11)
+    if (rollCopy)
     {
-      [v14 setRoll:v11];
+      [v14 setRoll:rollCopy];
     }
 
-    if (v12)
+    if (yawCopy)
     {
-      [v14 setYaw:v12];
+      [v14 setYaw:yawCopy];
     }
 
     v15 = v14;
@@ -41,10 +41,10 @@
   return v14;
 }
 
-+ (id)handRectangleWithObservation:(id)a3
++ (id)handRectangleWithObservation:(id)observation
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  observationCopy = observation;
   v4 = objc_alloc_init(FRCFaceHandLegRectangle);
   v5 = v4;
   if (v4)
@@ -52,7 +52,7 @@
     [(FRCFaceHandLegRectangle *)v4 setCategory:1];
     v6 = *MEMORY[0x277CE3068];
     v34 = 0;
-    v7 = [v3 recognizedPointsForGroupKey:v6 error:&v34];
+    v7 = [observationCopy recognizedPointsForGroupKey:v6 error:&v34];
     v8 = v34;
     v30 = 0u;
     v31 = 0u;
@@ -119,13 +119,13 @@
   return v5;
 }
 
-+ (id)humanRectangleWithBoundingBox:(CGRect)a3
++ (id)humanRectangleWithBoundingBox:(CGRect)box
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11.receiver = a1;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS___FRCFaceHandLegRectangle;
   v7 = [objc_msgSendSuper2(&v11 alloc)];
   v8 = v7;
@@ -139,13 +139,13 @@
   return v8;
 }
 
-+ (id)bodyRectangleWithCenter:(CGPoint)a3 tip:(CGPoint)a4 category:(unint64_t)a5 frameAspectRatio:(float)a6
++ (id)bodyRectangleWithCenter:(CGPoint)center tip:(CGPoint)tip category:(unint64_t)category frameAspectRatio:(float)ratio
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = a3.y;
-  v11 = a3.x;
-  v19.receiver = a1;
+  y = tip.y;
+  x = tip.x;
+  v10 = center.y;
+  v11 = center.x;
+  v19.receiver = self;
   v19.super_class = &OBJC_METACLASS___FRCFaceHandLegRectangle;
   v12 = [objc_msgSendSuper2(&v19 alloc)];
   v13 = v12;
@@ -153,32 +153,32 @@
   v15 = v14 + v14;
   v16 = vabdd_f64(y, v10);
   v17 = v16 + v16;
-  if ((v15 * a6) >= v17)
+  if ((v15 * ratio) >= v17)
   {
-    if ((v15 * a6) > v17)
+    if ((v15 * ratio) > v17)
     {
-      v17 = fmaxf(v17, (v15 * a6) * 0.5);
+      v17 = fmaxf(v17, (v15 * ratio) * 0.5);
     }
   }
 
   else
   {
-    v15 = fmaxf(v15, (v17 / a6) * 0.5);
+    v15 = fmaxf(v15, (v17 / ratio) * 0.5);
   }
 
   [v12 setBoundingBox:{v11 - (v15 * 0.5), v10 - (v17 * 0.5), v15, v17}];
-  [v13 setCategory:a5];
+  [v13 setCategory:category];
 
   return v13;
 }
 
-+ (id)animalFaceRectangleWithBoundingBox:(CGRect)a3
++ (id)animalFaceRectangleWithBoundingBox:(CGRect)box
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11.receiver = a1;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS___FRCFaceHandLegRectangle;
   v7 = [objc_msgSendSuper2(&v11 alloc)];
   v8 = v7;

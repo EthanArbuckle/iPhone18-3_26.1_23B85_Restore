@@ -1,53 +1,53 @@
 @interface HMCHIPVendorMetadataStore
 + (id)logCategory;
 - (HMCHIPVendorMetadataStore)init;
-- (HMCHIPVendorMetadataStore)initWithContext:(id)a3;
-- (void)fetchProductDataWithVendorID:(id)a3 productID:(id)a4 completion:(id)a5;
-- (void)fetchVendorDataWithID:(id)a3 completion:(id)a4;
+- (HMCHIPVendorMetadataStore)initWithContext:(id)context;
+- (void)fetchProductDataWithVendorID:(id)d productID:(id)iD completion:(id)completion;
+- (void)fetchVendorDataWithID:(id)d completion:(id)completion;
 @end
 
 @implementation HMCHIPVendorMetadataStore
 
-- (HMCHIPVendorMetadataStore)initWithContext:(id)a3
+- (HMCHIPVendorMetadataStore)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v6 = [(HMCHIPVendorMetadataStore *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;
 }
 
-- (void)fetchProductDataWithVendorID:(id)a3 productID:(id)a4 completion:(id)a5
+- (void)fetchProductDataWithVendorID:(id)d productID:(id)iD completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMCHIPVendorMetadataStore *)self context];
-  if (v11)
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
+  context = [(HMCHIPVendorMetadataStore *)self context];
+  if (context)
   {
-    v12 = [MEMORY[0x1E695DF90] dictionary];
-    [v12 setObject:v8 forKeyedSubscript:@"kVendorIDKey"];
-    [v12 setObject:v9 forKeyedSubscript:@"kProductIDKey"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:dCopy forKeyedSubscript:@"kVendorIDKey"];
+    [dictionary setObject:iDCopy forKeyedSubscript:@"kProductIDKey"];
     v13 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v14 = [(HMCHIPVendorMetadataStore *)self uuid];
-    v15 = [v13 initWithTarget:v14];
+    uuid = [(HMCHIPVendorMetadataStore *)self uuid];
+    v15 = [v13 initWithTarget:uuid];
 
-    v16 = [MEMORY[0x1E69A2A10] messageWithName:@"kFetchVendorMetadataProductDataRequestKey" destination:v15 payload:v12];
+    v16 = [MEMORY[0x1E69A2A10] messageWithName:@"kFetchVendorMetadataProductDataRequestKey" destination:v15 payload:dictionary];
     objc_initWeak(location, self);
     v23 = MEMORY[0x1E69E9820];
     v24 = 3221225472;
     v25 = __79__HMCHIPVendorMetadataStore_fetchProductDataWithVendorID_productID_completion___block_invoke;
     v26 = &unk_1E754CFF8;
     objc_copyWeak(&v28, location);
-    v27 = v10;
+    v27 = completionCopy;
     [v16 setResponseHandler:&v23];
-    v17 = [v11 messageDispatcher];
-    [v17 sendMessage:v16];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v16];
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(location);
@@ -56,7 +56,7 @@
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -206,21 +206,21 @@ LABEL_29:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchVendorDataWithID:(id)a3 completion:(id)a4
+- (void)fetchVendorDataWithID:(id)d completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMCHIPVendorMetadataStore *)self context];
-  if (v8)
+  dCopy = d;
+  completionCopy = completion;
+  context = [(HMCHIPVendorMetadataStore *)self context];
+  if (context)
   {
-    v9 = [MEMORY[0x1E695DF90] dictionary];
-    [v9 setObject:v6 forKeyedSubscript:@"kVendorIDKey"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:dCopy forKeyedSubscript:@"kVendorIDKey"];
     v10 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v11 = [(HMCHIPVendorMetadataStore *)self uuid];
-    v12 = [v10 initWithTarget:v11];
+    uuid = [(HMCHIPVendorMetadataStore *)self uuid];
+    v12 = [v10 initWithTarget:uuid];
 
-    v13 = [MEMORY[0x1E69A2A10] messageWithName:@"kFetchVendorMetadataVendorDataRequestKey" destination:v12 payload:v9];
+    v13 = [MEMORY[0x1E69A2A10] messageWithName:@"kFetchVendorMetadataVendorDataRequestKey" destination:v12 payload:dictionary];
     objc_initWeak(location, self);
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
@@ -228,10 +228,10 @@ LABEL_29:
     v20[3] = &unk_1E754D058;
     v20[4] = self;
     objc_copyWeak(&v22, location);
-    v21 = v7;
+    v21 = completionCopy;
     [v13 setResponseHandler:v20];
-    v14 = [v8 messageDispatcher];
-    [v14 sendMessage:v13];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v13];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(location);
@@ -240,7 +240,7 @@ LABEL_29:
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {

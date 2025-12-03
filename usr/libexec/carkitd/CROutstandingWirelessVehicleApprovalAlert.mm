@@ -1,5 +1,5 @@
 @interface CROutstandingWirelessVehicleApprovalAlert
-- (BOOL)presentAlertWithCompletion:(id)a3;
+- (BOOL)presentAlertWithCompletion:(id)completion;
 - (id)alertAcceptButtonTitle;
 - (id)alertTitle;
 @end
@@ -8,13 +8,13 @@
 
 - (id)alertTitle
 {
-  v2 = [(CRMessagingVehicleAlert *)self messagingVehicle];
-  v3 = [v2 vehicleName];
+  messagingVehicle = [(CRMessagingVehicleAlert *)self messagingVehicle];
+  vehicleName = [messagingVehicle vehicleName];
 
   CRLocalizedStringForKey();
-  if (v3)
+  if (vehicleName)
     v4 = {;
-    v5 = [NSString stringWithFormat:v4, v3];
+    v5 = [NSString stringWithFormat:v4, vehicleName];
   }
 
   else
@@ -40,9 +40,9 @@
   return v3;
 }
 
-- (BOOL)presentAlertWithCompletion:(id)a3
+- (BOOL)presentAlertWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(CRWiFiCarManager);
   v6 = [(CRWiFiCarManager *)v5 isPowered]^ 1;
   [(CROutstandingWirelessVehicleApprovalAlert *)self setShouldEnableWiFi:v6];
@@ -52,10 +52,10 @@
   v11[3] = &unk_1000DE948;
   v14 = v6;
   v12 = v5;
-  v13 = v4;
+  v13 = completionCopy;
   v10.receiver = self;
   v10.super_class = CROutstandingWirelessVehicleApprovalAlert;
-  v7 = v4;
+  v7 = completionCopy;
   v8 = v5;
   LOBYTE(self) = [(CRMessagingVehicleAlert *)&v10 presentAlertWithCompletion:v11];
 

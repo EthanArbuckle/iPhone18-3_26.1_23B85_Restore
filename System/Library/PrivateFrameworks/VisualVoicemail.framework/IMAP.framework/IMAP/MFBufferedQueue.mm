@@ -1,22 +1,22 @@
 @interface MFBufferedQueue
 - (BOOL)_flush;
-- (BOOL)addItem:(id)a3;
-- (MFBufferedQueue)initWithCapacity:(unsigned int)a3;
+- (BOOL)addItem:(id)item;
+- (MFBufferedQueue)initWithCapacity:(unsigned int)capacity;
 - (void)dealloc;
 @end
 
 @implementation MFBufferedQueue
 
-- (MFBufferedQueue)initWithCapacity:(unsigned int)a3
+- (MFBufferedQueue)initWithCapacity:(unsigned int)capacity
 {
   v8.receiver = self;
   v8.super_class = MFBufferedQueue;
   v4 = [(MFBufferedQueue *)&v8 init];
   if (v4)
   {
-    if (a3)
+    if (capacity)
     {
-      v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:a3];
+      v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:capacity];
     }
 
     else
@@ -40,11 +40,11 @@
   [(MFBufferedQueue *)&v2 dealloc];
 }
 
-- (BOOL)addItem:(id)a3
+- (BOOL)addItem:(id)item
 {
-  v4 = a3;
-  self->_currentSize += [(MFBufferedQueue *)self sizeForItem:v4];
-  [(NSMutableArray *)self->_queue addObject:v4];
+  itemCopy = item;
+  self->_currentSize += [(MFBufferedQueue *)self sizeForItem:itemCopy];
+  [(NSMutableArray *)self->_queue addObject:itemCopy];
 
   return 1;
 }

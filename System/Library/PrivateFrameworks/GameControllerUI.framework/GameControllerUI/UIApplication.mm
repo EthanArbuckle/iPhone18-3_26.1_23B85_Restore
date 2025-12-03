@@ -6,18 +6,18 @@
 
 - (id)_gameControllerApplicationComponent
 {
-  if (a1)
+  if (self)
   {
     if (qword_27C8CEA90 != -1)
     {
       dispatch_once(&qword_27C8CEA90, &__block_literal_global_4);
     }
 
-    a1 = _MergedGlobals;
+    self = _MergedGlobals;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 void __88__UIApplication_GameControllerApplicationComponent___gameControllerApplicationComponent__block_invoke()

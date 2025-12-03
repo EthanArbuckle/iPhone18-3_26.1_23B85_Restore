@@ -1,34 +1,34 @@
 @interface PGSceneCompleteEnrichmentProfile
-- (BOOL)canEnrichHighlight:(id)a3 withOptions:(unint64_t)a4;
+- (BOOL)canEnrichHighlight:(id)highlight withOptions:(unint64_t)options;
 - (id)curationOptions;
 @end
 
 @implementation PGSceneCompleteEnrichmentProfile
 
-- (BOOL)canEnrichHighlight:(id)a3 withOptions:(unint64_t)a4
+- (BOOL)canEnrichHighlight:(id)highlight withOptions:(unint64_t)options
 {
-  v6 = a3;
+  highlightCopy = highlight;
   v19.receiver = self;
   v19.super_class = PGSceneCompleteEnrichmentProfile;
-  if ([(PGDefaultEnrichmentProfile *)&v19 canEnrichHighlight:v6 withOptions:a4])
+  if ([(PGDefaultEnrichmentProfile *)&v19 canEnrichHighlight:highlightCopy withOptions:options])
   {
-    if (a4 >> 31)
+    if (options >> 31)
     {
       v17 = 1;
     }
 
     else
     {
-      v7 = [(PGDefaultEnrichmentProfile *)self curationManager];
-      v8 = [v7 photoLibrary];
-      [v6 sceneAnalysisProgressForPhotoLibrary:v8];
+      curationManager = [(PGDefaultEnrichmentProfile *)self curationManager];
+      photoLibrary = [curationManager photoLibrary];
+      [highlightCopy sceneAnalysisProgressForPhotoLibrary:photoLibrary];
       v10 = v9;
 
-      v11 = [v6 assetCollection];
-      v12 = [v11 estimatedAssetCount];
+      assetCollection = [highlightCopy assetCollection];
+      estimatedAssetCount = [assetCollection estimatedAssetCount];
 
-      v13 = llround(v10 * v12);
-      v16 = v12 < 0xA && v12 - v13 < 3 && v13 != 0;
+      v13 = llround(v10 * estimatedAssetCount);
+      v16 = estimatedAssetCount < 0xA && estimatedAssetCount - v13 < 3 && v13 != 0;
       v17 = v10 >= 0.9 || v16;
     }
   }

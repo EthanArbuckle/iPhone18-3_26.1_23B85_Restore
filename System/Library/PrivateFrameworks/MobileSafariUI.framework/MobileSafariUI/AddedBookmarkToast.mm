@@ -1,7 +1,7 @@
 @interface AddedBookmarkToast
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC14MobileSafariUI18AddedBookmarkToast)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC14MobileSafariUI18AddedBookmarkToast)initWithFrame:(CGRect)frame;
 - (void)didTapToast;
 @end
 
@@ -9,7 +9,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_215A0868C(0.0, 0.0);
   v5 = v4;
 
@@ -20,11 +20,11 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_215A0868C(width, height);
   v8 = v7;
 
@@ -38,11 +38,11 @@
 - (void)didTapToast
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC14MobileSafariUI18AddedBookmarkToast_onTapHandler);
-  v3 = self;
+  selfCopy = self;
   v2();
 }
 
-- (_TtC14MobileSafariUI18AddedBookmarkToast)initWithFrame:(CGRect)a3
+- (_TtC14MobileSafariUI18AddedBookmarkToast)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

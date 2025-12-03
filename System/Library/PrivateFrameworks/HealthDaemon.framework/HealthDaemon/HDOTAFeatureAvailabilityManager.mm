@@ -1,32 +1,32 @@
 @interface HDOTAFeatureAvailabilityManager
-- (BOOL)downloadImmediatelyWithError:(id *)a3;
-- (HDOTAFeatureAvailabilityManager)initWithDaemon:(id)a3;
+- (BOOL)downloadImmediatelyWithError:(id *)error;
+- (HDOTAFeatureAvailabilityManager)initWithDaemon:(id)daemon;
 - (NSDictionary)unitTest_factorFileCache;
 - (NSString)factorPackID;
-- (id)_fileURLForFileNamed:(id)a3 factorPath:(id)a4;
-- (id)_infoDictionaryRepresentationForFileNamed:(void *)a3 error:;
-- (id)disableAndExpiryConditionsDictionaryWithError:(id *)a3;
-- (id)featureAvailabilityInfoForFeature:(id)a3 error:(id *)a4;
+- (id)_fileURLForFileNamed:(id)named factorPath:(id)path;
+- (id)_infoDictionaryRepresentationForFileNamed:(void *)named error:;
+- (id)disableAndExpiryConditionsDictionaryWithError:(id *)error;
+- (id)featureAvailabilityInfoForFeature:(id)feature error:(id *)error;
 - (uint64_t)_queue_refreshClientAndNotifyObservers;
 - (void)_queue_syncDisableAndExpiryConditionsToLegacyPairedWatches;
 - (void)_unitTest_refreshClientAndNotifyObservers;
-- (void)daemonReady:(id)a3;
+- (void)daemonReady:(id)ready;
 - (void)dealloc;
-- (void)downloadWithCompletion:(id)a3;
+- (void)downloadWithCompletion:(id)completion;
 @end
 
 @implementation HDOTAFeatureAvailabilityManager
 
-- (HDOTAFeatureAvailabilityManager)initWithDaemon:(id)a3
+- (HDOTAFeatureAvailabilityManager)initWithDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v21.receiver = self;
   v21.super_class = HDOTAFeatureAvailabilityManager;
   v5 = [(HDOTAFeatureAvailabilityManager *)&v21 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_daemon, v4);
+    objc_storeWeak(&v5->_daemon, daemonCopy);
     v7 = [MEMORY[0x277D73660] clientWithIdentifier:275];
     trialClient = v6->_trialClient;
     v6->_trialClient = v7;
@@ -65,17 +65,17 @@
   [(HDOTAFeatureAvailabilityManager *)&v3 dealloc];
 }
 
-- (void)downloadWithCompletion:(id)a3
+- (void)downloadWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__HDOTAFeatureAvailabilityManager_downloadWithCompletion___block_invoke;
   v7[3] = &unk_278614E28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -88,7 +88,7 @@ void __58__HDOTAFeatureAvailabilityManager_downloadWithCompletion___block_invoke
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)downloadImmediatelyWithError:(id *)a3
+- (BOOL)downloadImmediatelyWithError:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -112,10 +112,10 @@ void __58__HDOTAFeatureAvailabilityManager_downloadWithCompletion___block_invoke
     v11 = v10;
     if (v11)
     {
-      if (a3)
+      if (error)
       {
         v12 = v11;
-        *a3 = v11;
+        *error = v11;
       }
 
       else
@@ -140,9 +140,9 @@ void __58__HDOTAFeatureAvailabilityManager_downloadWithCompletion___block_invoke
   return v9;
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
-  v4 = a3;
+  readyCopy = ready;
   dispatch_assert_queue_V2(self->_queue);
   objc_initWeak(&location, self);
   trialClient = self->_trialClient;
@@ -158,13 +158,13 @@ void __58__HDOTAFeatureAvailabilityManager_downloadWithCompletion___block_invoke
   self->_trialToken = v8;
 
   WeakRetained = objc_loadWeakRetained(&self->_daemon);
-  v11 = [WeakRetained behavior];
-  LODWORD(queue) = [v11 isCompanionCapable];
+  behavior = [WeakRetained behavior];
+  LODWORD(queue) = [behavior isCompanionCapable];
 
   if (queue)
   {
     v12 = objc_loadWeakRetained(&self->_daemon);
-    v13 = [v12 maintenanceWorkCoordinator];
+    maintenanceWorkCoordinator = [v12 maintenanceWorkCoordinator];
     v14 = self->_queue;
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
@@ -172,7 +172,7 @@ void __58__HDOTAFeatureAvailabilityManager_downloadWithCompletion___block_invoke
     v17[3] = &unk_278616F38;
     objc_copyWeak(&v18, &location);
     v15 = [HDMaintenanceOperation maintenanceOperationWithName:@"HDOTAFeatureAvailabilityManager:syncDisableAndExpiryConditionsToLegacyPairedWatches" queue:v14 synchronousBlock:v17];
-    [v13 enqueueMaintenanceOperation:v15];
+    [maintenanceWorkCoordinator enqueueMaintenanceOperation:v15];
 
     objc_destroyWeak(&v18);
   }
@@ -201,10 +201,10 @@ void __47__HDOTAFeatureAvailabilityManager_daemonReady___block_invoke(uint64_t a
     v1 = result;
     [*(result + 16) refresh];
     WeakRetained = objc_loadWeakRetained((v1 + 8));
-    v3 = [WeakRetained behavior];
-    v4 = [v3 isCompanionCapable];
+    behavior = [WeakRetained behavior];
+    isCompanionCapable = [behavior isCompanionCapable];
 
-    if (v4)
+    if (isCompanionCapable)
     {
       [(HDOTAFeatureAvailabilityManager *)v1 _queue_syncDisableAndExpiryConditionsToLegacyPairedWatches];
     }
@@ -245,32 +245,32 @@ void __47__HDOTAFeatureAvailabilityManager_daemonReady___block_invoke_2(uint64_t
 - (void)_queue_syncDisableAndExpiryConditionsToLegacyPairedWatches
 {
   v36 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 40));
-    v2 = *(a1 + 80);
+    dispatch_assert_queue_V2(*(self + 40));
+    v2 = *(self + 80);
     if (v2)
     {
-      v3 = v2;
+      hk_remoteFeatureAvailabilityUserDefaults = v2;
     }
 
     else
     {
-      v3 = [MEMORY[0x277CBEBD0] hk_remoteFeatureAvailabilityUserDefaults];
+      hk_remoteFeatureAvailabilityUserDefaults = [MEMORY[0x277CBEBD0] hk_remoteFeatureAvailabilityUserDefaults];
     }
 
-    v4 = v3;
+    v4 = hk_remoteFeatureAvailabilityUserDefaults;
     v30 = 0;
-    v5 = [a1 disableAndExpiryConditionsDictionaryWithError:&v30];
+    v5 = [self disableAndExpiryConditionsDictionaryWithError:&v30];
     v6 = v30;
     if (v5)
     {
-      v7 = [v4 dictionaryRepresentation];
-      v8 = [v7 allKeys];
-      v9 = [v8 hk_filter:&__block_literal_global_83];
+      dictionaryRepresentation = [v4 dictionaryRepresentation];
+      allKeys = [dictionaryRepresentation allKeys];
+      v9 = [allKeys hk_filter:&__block_literal_global_83];
 
-      v10 = [v5 allKeys];
-      v11 = [v9 arrayByAddingObjectsFromArray:v10];
+      allKeys2 = [v5 allKeys];
+      v11 = [v9 arrayByAddingObjectsFromArray:allKeys2];
 
       v28 = 0u;
       v29 = 0u;
@@ -356,59 +356,59 @@ LABEL_19:
 - (NSString)factorPackID
 {
   v2 = [(TRIClient *)self->_trialClient rolloutIdentifiersWithNamespaceName:*MEMORY[0x277CCC5B0]];
-  v3 = [v2 factorPackId];
-  v4 = [v3 copy];
+  factorPackId = [v2 factorPackId];
+  v4 = [factorPackId copy];
 
   return v4;
 }
 
-- (id)_fileURLForFileNamed:(id)a3 factorPath:(id)a4
+- (id)_fileURLForFileNamed:(id)named factorPath:(id)path
 {
   v5 = MEMORY[0x277CBEBC0];
   v6 = MEMORY[0x277CCACA8];
-  v7 = a4;
-  v8 = [v6 stringWithFormat:@"%@.plist", a3];
-  v9 = [MEMORY[0x277CBEBC0] fileURLWithPath:v7 isDirectory:1];
+  pathCopy = path;
+  named = [v6 stringWithFormat:@"%@.plist", named];
+  v9 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy isDirectory:1];
 
-  v10 = [v5 fileURLWithPath:v8 isDirectory:0 relativeToURL:v9];
+  v10 = [v5 fileURLWithPath:named isDirectory:0 relativeToURL:v9];
 
   return v10;
 }
 
-- (id)_infoDictionaryRepresentationForFileNamed:(void *)a3 error:
+- (id)_infoDictionaryRepresentationForFileNamed:(void *)named error:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = *(a1 + 72);
+    v6 = *(self + 72);
     if (v6)
     {
-      v7 = v6;
+      path = v6;
     }
 
     else
     {
-      v8 = [*(a1 + 16) levelForFactor:@"Feature Availability" withNamespaceName:*MEMORY[0x277CCC5B0]];
-      v9 = [v8 directoryValue];
-      if ([v9 hasPath])
+      v8 = [*(self + 16) levelForFactor:@"Feature Availability" withNamespaceName:*MEMORY[0x277CCC5B0]];
+      directoryValue = [v8 directoryValue];
+      if ([directoryValue hasPath])
       {
-        v7 = [v9 path];
+        path = [directoryValue path];
       }
 
       else
       {
-        v7 = 0;
+        path = 0;
       }
 
-      if (!v7)
+      if (!path)
       {
         v13 = [MEMORY[0x277CCA9B8] hk_error:11 description:@"Asset factor not downloaded"];
         if (v13)
         {
-          if (a3)
+          if (named)
           {
             v14 = v13;
-            *a3 = v13;
+            *named = v13;
           }
 
           else
@@ -417,19 +417,19 @@ LABEL_19:
           }
         }
 
-        v7 = 0;
+        path = 0;
         v11 = 0;
         goto LABEL_23;
       }
     }
 
-    v10 = [a1 _fileURLForFileNamed:v5 factorPath:v7];
-    os_unfair_lock_lock((a1 + 56));
-    v11 = [*(a1 + 64) objectForKey:v10];
+    v10 = [self _fileURLForFileNamed:v5 factorPath:path];
+    os_unfair_lock_lock((self + 56));
+    v11 = [*(self + 64) objectForKey:v10];
     if (v11)
     {
 LABEL_22:
-      os_unfair_lock_unlock((a1 + 56));
+      os_unfair_lock_unlock((self + 56));
 
 LABEL_23:
       goto LABEL_24;
@@ -438,17 +438,17 @@ LABEL_23:
     v20 = 0;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:v10 error:&v20];
     v12 = v20;
-    [*(a1 + 64) setObject:v11 forKeyedSubscript:v10];
+    [*(self + 64) setObject:v11 forKeyedSubscript:v10];
     if (!v11)
     {
       if (([v12 hk_isCocoaNoSuchFileError] & 1) == 0 && v12)
       {
         v12 = v12;
 LABEL_17:
-        if (a3)
+        if (named)
         {
           v18 = v12;
-          *a3 = v12;
+          *named = v12;
         }
 
         else
@@ -481,23 +481,23 @@ LABEL_24:
   return v11;
 }
 
-- (id)disableAndExpiryConditionsDictionaryWithError:(id *)a3
+- (id)disableAndExpiryConditionsDictionaryWithError:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCDD30] sharedBehavior];
-  if (([v5 isAppleInternalInstall] & 1) == 0)
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  if (([mEMORY[0x277CCDD30] isAppleInternalInstall] & 1) == 0)
   {
 
     goto LABEL_7;
   }
 
-  v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v7 = [v6 BOOLForKey:@"HDFeatureAvailabilityAssetManagerTestMode"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v7 = [standardUserDefaults BOOLForKey:@"HDFeatureAvailabilityAssetManagerTestMode"];
 
   if (!v7)
   {
 LABEL_7:
-    v12 = [(HDOTAFeatureAvailabilityManager *)self _infoDictionaryRepresentationForFileNamed:a3 error:?];
+    v12 = [(HDOTAFeatureAvailabilityManager *)self _infoDictionaryRepresentationForFileNamed:error error:?];
     goto LABEL_8;
   }
 
@@ -515,7 +515,7 @@ LABEL_7:
     _os_log_error_impl(&dword_228986000, v10, OS_LOG_TYPE_ERROR, "[%{public}@] Running in HXMobileAssetTester test mode, looking for asset in %@", &v16, 0x16u);
   }
 
-  v11 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:v9 error:a3];
+  v11 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:v9 error:error];
   v12 = [v11 hk_dictionaryByAddingEntriesFromDictionary:&unk_283CB4680];
 
 LABEL_8:
@@ -524,11 +524,11 @@ LABEL_8:
   return v12;
 }
 
-- (id)featureAvailabilityInfoForFeature:(id)a3 error:(id *)a4
+- (id)featureAvailabilityInfoForFeature:(id)feature error:(id *)error
 {
-  v6 = a3;
+  featureCopy = feature;
   v15 = 0;
-  v7 = [(HDOTAFeatureAvailabilityManager *)self _infoDictionaryRepresentationForFileNamed:v6 error:&v15];
+  v7 = [(HDOTAFeatureAvailabilityManager *)self _infoDictionaryRepresentationForFileNamed:featureCopy error:&v15];
   v8 = v15;
   v9 = v8;
   if (v7)
@@ -541,7 +541,7 @@ LABEL_8:
       goto LABEL_10;
     }
 
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:100 format:{@"Could not decode info %@ for feature %@", v7, v6}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:{@"Could not decode info %@ for feature %@", v7, featureCopy}];
     v11 = 0;
   }
 
@@ -550,11 +550,11 @@ LABEL_8:
     v11 = v8;
     if (v11)
     {
-      if (a4)
+      if (error)
       {
         v13 = v11;
         v12 = 0;
-        *a4 = v11;
+        *error = v11;
         goto LABEL_10;
       }
 

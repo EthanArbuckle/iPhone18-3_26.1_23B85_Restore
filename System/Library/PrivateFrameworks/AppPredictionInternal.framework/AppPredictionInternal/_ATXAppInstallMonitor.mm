@@ -1,59 +1,59 @@
 @interface _ATXAppInstallMonitor
-+ (id)appInfoDictWithBackDate:(BOOL)a3 assetData:(id)a4 newPreInstalledAppSet:(id)a5 isFromNotification:(BOOL)a6 newApps:(id)a7;
++ (id)appInfoDictWithBackDate:(BOOL)date assetData:(id)data newPreInstalledAppSet:(id)set isFromNotification:(BOOL)notification newApps:(id)apps;
 + (id)newPreInstalledAppSet;
-+ (id)removeIntersectionBetweenSet:(id)a3 set:(id)a4;
++ (id)removeIntersectionBetweenSet:(id)set set:(id)a4;
 - (BOOL)restoreInProgress;
-- (_ATXAppInstallMonitor)initWithAppInfoManager:(id)a3;
-- (_ATXAppInstallMonitor)initWithAppInfoManager:(id)a3 histogramBundleIdTable:(id)a4 appIconState:(id)a5 webClipDataStore:(id)a6 shouldSynchronousUpdate:(BOOL)a7;
+- (_ATXAppInstallMonitor)initWithAppInfoManager:(id)manager;
+- (_ATXAppInstallMonitor)initWithAppInfoManager:(id)manager histogramBundleIdTable:(id)table appIconState:(id)state webClipDataStore:(id)store shouldSynchronousUpdate:(BOOL)update;
 - (id)_fetchAllAppsFromDatastore;
 - (id)_fetchAllAppsWithInstallDateFromDatastore;
-- (id)webClipsForRemovedApps:(id)a3;
-- (void)_receivedInstallNotificationWithApps:(id)a3 placeholderInstallNotification:(BOOL)a4;
-- (void)_receivedUninstallNotificationWithApps:(id)a3 placeholderUninstallNotification:(BOOL)a4;
+- (id)webClipsForRemovedApps:(id)apps;
+- (void)_receivedInstallNotificationWithApps:(id)apps placeholderInstallNotification:(BOOL)notification;
+- (void)_receivedUninstallNotificationWithApps:(id)apps placeholderUninstallNotification:(BOOL)notification;
 - (void)dealloc;
-- (void)handleUninstallationOfApps:(id)a3;
-- (void)notifyInstallationOfAppsWithInstallDictionary:(id)a3;
-- (void)notifyUninstallationOfAppsWithBundleIdsToRemoveSet:(id)a3;
-- (void)receivedInstallNotification:(id)a3;
-- (void)receivedStateChangeNotification:(id)a3;
-- (void)receivedUninstallNotification:(id)a3;
-- (void)setUpdateCompletionBlock:(id)a3;
+- (void)handleUninstallationOfApps:(id)apps;
+- (void)notifyInstallationOfAppsWithInstallDictionary:(id)dictionary;
+- (void)notifyUninstallationOfAppsWithBundleIdsToRemoveSet:(id)set;
+- (void)receivedInstallNotification:(id)notification;
+- (void)receivedStateChangeNotification:(id)notification;
+- (void)receivedUninstallNotification:(id)notification;
+- (void)setUpdateCompletionBlock:(id)block;
 - (void)start;
 - (void)stop;
-- (void)synchronousUpdateWithUninstallWaitTime:(unint64_t)a3 andBackdate:(BOOL)a4;
+- (void)synchronousUpdateWithUninstallWaitTime:(unint64_t)time andBackdate:(BOOL)backdate;
 - (void)train;
 @end
 
 @implementation _ATXAppInstallMonitor
 
-- (_ATXAppInstallMonitor)initWithAppInfoManager:(id)a3
+- (_ATXAppInstallMonitor)initWithAppInfoManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = +[ATXHistogramBundleIdTable sharedInstance];
   v6 = +[_ATXAppIconState sharedInstance];
   v7 = objc_opt_new();
-  v8 = [(_ATXAppInstallMonitor *)self initWithAppInfoManager:v4 histogramBundleIdTable:v5 appIconState:v6 webClipDataStore:v7 shouldSynchronousUpdate:1];
+  v8 = [(_ATXAppInstallMonitor *)self initWithAppInfoManager:managerCopy histogramBundleIdTable:v5 appIconState:v6 webClipDataStore:v7 shouldSynchronousUpdate:1];
 
   return v8;
 }
 
-- (_ATXAppInstallMonitor)initWithAppInfoManager:(id)a3 histogramBundleIdTable:(id)a4 appIconState:(id)a5 webClipDataStore:(id)a6 shouldSynchronousUpdate:(BOOL)a7
+- (_ATXAppInstallMonitor)initWithAppInfoManager:(id)manager histogramBundleIdTable:(id)table appIconState:(id)state webClipDataStore:(id)store shouldSynchronousUpdate:(BOOL)update
 {
-  v7 = a7;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  updateCopy = update;
+  managerCopy = manager;
+  tableCopy = table;
+  stateCopy = state;
+  storeCopy = store;
   v29.receiver = self;
   v29.super_class = _ATXAppInstallMonitor;
   v17 = [(_ATXAppInstallMonitor *)&v29 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_appInfoManager, a3);
-    objc_storeStrong(&v18->_histogramBundleIdTable, a4);
-    objc_storeStrong(&v18->_appIconState, a5);
-    objc_storeStrong(&v18->_webClipDataStore, a6);
+    objc_storeStrong(&v17->_appInfoManager, manager);
+    objc_storeStrong(&v18->_histogramBundleIdTable, table);
+    objc_storeStrong(&v18->_appIconState, state);
+    objc_storeStrong(&v18->_webClipDataStore, store);
     v19 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v20 = dispatch_queue_create("com.apple.duetexpertd._ATXAppInstallMonitor.installQueue", v19);
     installQueue = v18->_installQueue;
@@ -63,12 +63,12 @@
     assetData = v18->_assetData;
     v18->_assetData = v22;
 
-    v24 = [objc_opt_class() newPreInstalledAppSet];
+    newPreInstalledAppSet = [objc_opt_class() newPreInstalledAppSet];
     preInstalledNewSystemApps = v18->_preInstalledNewSystemApps;
-    v18->_preInstalledNewSystemApps = v24;
+    v18->_preInstalledNewSystemApps = newPreInstalledAppSet;
 
-    v26 = [v13 allAppsWithInstallDate];
-    if (![v26 count] && v7)
+    allAppsWithInstallDate = [managerCopy allAppsWithInstallDate];
+    if (![allAppsWithInstallDate count] && updateCopy)
     {
       [(_ATXAppInstallMonitor *)v18 synchronousUpdateAndBackdate:1];
     }
@@ -85,20 +85,20 @@
 
 - (void)start
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_receivedInstallNotification_ name:@"com.apple.LaunchServices.applicationRegistered" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_receivedInstallNotification_ name:@"com.apple.LaunchServices.applicationRegistered" object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel_receivedUninstallNotification_ name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_receivedUninstallNotification_ name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
 }
 
 - (void)stop
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"com.apple.LaunchServices.applicationRegistered" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"com.apple.LaunchServices.applicationRegistered" object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
 }
 
 - (void)dealloc
@@ -159,7 +159,7 @@
   return v3 != 0;
 }
 
-- (void)synchronousUpdateWithUninstallWaitTime:(unint64_t)a3 andBackdate:(BOOL)a4
+- (void)synchronousUpdateWithUninstallWaitTime:(unint64_t)time andBackdate:(BOOL)backdate
 {
   installQueue = self->_installQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -167,12 +167,12 @@
   block[2] = __76___ATXAppInstallMonitor_synchronousUpdateWithUninstallWaitTime_andBackdate___block_invoke;
   block[3] = &unk_278598C48;
   block[4] = self;
-  block[5] = a3;
-  v6 = a4;
+  block[5] = time;
+  backdateCopy = backdate;
   dispatch_sync(installQueue, block);
 }
 
-- (void)receivedStateChangeNotification:(id)a3
+- (void)receivedStateChangeNotification:(id)notification
 {
   v3 = __atxlog_handle_default();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -184,18 +184,18 @@
   ATXUpdatePredictionsImmediatelyWithReason(17);
 }
 
-- (void)receivedInstallNotification:(id)a3
+- (void)receivedInstallNotification:(id)notification
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"bundleIDs"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"bundleIDs"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = [v6 copy];
-    v8 = [v5 objectForKeyedSubscript:@"isPlaceholder"];
-    v9 = [v8 BOOLValue];
+    v8 = [userInfo objectForKeyedSubscript:@"isPlaceholder"];
+    bOOLValue = [v8 BOOLValue];
 
     if ([v7 count])
     {
@@ -207,7 +207,7 @@
         _os_log_impl(&dword_2263AA000, v10, OS_LOG_TYPE_DEFAULT, "applications installed: %@", &v12, 0xCu);
       }
 
-      [(_ATXAppInstallMonitor *)self _receivedInstallNotificationWithApps:v7 placeholderInstallNotification:v9];
+      [(_ATXAppInstallMonitor *)self _receivedInstallNotificationWithApps:v7 placeholderInstallNotification:bOOLValue];
     }
   }
 
@@ -216,28 +216,28 @@
     v7 = __atxlog_handle_default();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
-      [(_ATXAppInstallMonitor *)v4 receivedInstallNotification:v7];
+      [(_ATXAppInstallMonitor *)notificationCopy receivedInstallNotification:v7];
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_receivedInstallNotificationWithApps:(id)a3 placeholderInstallNotification:(BOOL)a4
+- (void)_receivedInstallNotificationWithApps:(id)apps placeholderInstallNotification:(BOOL)notification
 {
-  v4 = a4;
+  notificationCopy = notification;
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  [ATXInternalAppRegistrationNotification postNotificationWithInstallDictionary:v6];
-  v7 = [MEMORY[0x277CBEB58] setWithArray:v6];
-  v8 = [(_ATXAppInstallMonitor *)self _fetchAllAppsWithInstallDateFromDatastore];
-  [v7 minusSet:v8];
+  appsCopy = apps;
+  [ATXInternalAppRegistrationNotification postNotificationWithInstallDictionary:appsCopy];
+  v7 = [MEMORY[0x277CBEB58] setWithArray:appsCopy];
+  _fetchAllAppsWithInstallDateFromDatastore = [(_ATXAppInstallMonitor *)self _fetchAllAppsWithInstallDateFromDatastore];
+  [v7 minusSet:_fetchAllAppsWithInstallDateFromDatastore];
   v9 = [v7 count];
-  if (v4)
+  if (notificationCopy)
   {
     if (v9)
     {
-      v29 = v8;
+      v29 = _fetchAllAppsWithInstallDateFromDatastore;
       v10 = __atxlog_handle_default();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -248,12 +248,12 @@
         _os_log_impl(&dword_2263AA000, v10, OS_LOG_TYPE_DEFAULT, "Applications Installed: %@; isPlaceholder: %{BOOL}u", buf, 0x12u);
       }
 
-      v11 = objc_opt_new();
+      allObjects2 = objc_opt_new();
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v12 = v6;
+      v12 = appsCopy;
       v13 = [v12 countByEnumeratingWithState:&v30 objects:v38 count:16];
       if (v13)
       {
@@ -271,7 +271,7 @@
             v17 = *(*(&v30 + 1) + 8 * i);
             if ([MEMORY[0x277CEB3B8] isInstallingForBundle:v17])
             {
-              [v11 addObject:v17];
+              [allObjects2 addObject:v17];
             }
           }
 
@@ -281,25 +281,25 @@
         while (v14);
       }
 
-      if ([v11 count])
+      if ([allObjects2 count])
       {
-        v18 = [v7 allObjects];
-        v19 = [(_ATXAppInstallMonitor *)self _appInfoDictWithBackDate:0 isFromNotification:1 newApps:v18];
+        allObjects = [v7 allObjects];
+        v19 = [(_ATXAppInstallMonitor *)self _appInfoDictWithBackDate:0 isFromNotification:1 newApps:allObjects];
 
         [ATXInternalAppsInstallStartNotification postNotificationWithInstallStartDictionary:v19];
       }
 
-      v8 = v29;
+      _fetchAllAppsWithInstallDateFromDatastore = v29;
     }
 
     else
     {
-      v11 = objc_opt_new();
+      allObjects2 = objc_opt_new();
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v21 = v6;
+      v21 = appsCopy;
       v22 = [v21 countByEnumeratingWithState:&v34 objects:v43 count:16];
       if (v22)
       {
@@ -317,7 +317,7 @@
             v26 = *(*(&v34 + 1) + 8 * j);
             if ([MEMORY[0x277CEB3B8] isOffloadedForBundle:v26])
             {
-              [v11 addObject:v26];
+              [allObjects2 addObject:v26];
             }
           }
 
@@ -327,9 +327,9 @@
         while (v23);
       }
 
-      if ([v11 count])
+      if ([allObjects2 count])
       {
-        [ATXInternalOffloadAppsNotification postNotificationWithOffloadSet:v11];
+        [ATXInternalOffloadAppsNotification postNotificationWithOffloadSet:allObjects2];
         v27 = __atxlog_handle_default();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
@@ -356,8 +356,8 @@ LABEL_34:
       _os_log_impl(&dword_2263AA000, v20, OS_LOG_TYPE_DEFAULT, "Applications Installed: %@; isPlaceholder: %{BOOL}u", buf, 0x12u);
     }
 
-    v11 = [v7 allObjects];
-    [(_ATXAppInstallMonitor *)self handleInstallationOfApps:v11 isFromNotification:1 andBackdate:0];
+    allObjects2 = [v7 allObjects];
+    [(_ATXAppInstallMonitor *)self handleInstallationOfApps:allObjects2 isFromNotification:1 andBackdate:0];
     goto LABEL_34;
   }
 
@@ -366,15 +366,15 @@ LABEL_35:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedUninstallNotification:(id)a3
+- (void)receivedUninstallNotification:(id)notification
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"bundleIDs"];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"bundleIDs"];
   v6 = [v5 copy];
 
-  v7 = [v4 objectForKeyedSubscript:@"isPlaceholder"];
-  v8 = [v7 BOOLValue];
+  v7 = [userInfo objectForKeyedSubscript:@"isPlaceholder"];
+  bOOLValue = [v7 BOOLValue];
 
   if (v6)
   {
@@ -386,26 +386,26 @@ LABEL_35:
       _os_log_impl(&dword_2263AA000, v9, OS_LOG_TYPE_DEFAULT, "applications uninstalled: %@", &v11, 0xCu);
     }
 
-    [(_ATXAppInstallMonitor *)self _receivedUninstallNotificationWithApps:v6 placeholderUninstallNotification:v8];
+    [(_ATXAppInstallMonitor *)self _receivedUninstallNotificationWithApps:v6 placeholderUninstallNotification:bOOLValue];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_receivedUninstallNotificationWithApps:(id)a3 placeholderUninstallNotification:(BOOL)a4
+- (void)_receivedUninstallNotificationWithApps:(id)apps placeholderUninstallNotification:(BOOL)notification
 {
-  if (!a4)
+  if (!notification)
   {
-    [(_ATXAppInstallMonitor *)self handleUninstallationOfApps:a3];
+    [(_ATXAppInstallMonitor *)self handleUninstallationOfApps:apps];
   }
 }
 
 + (id)newPreInstalledAppSet
 {
-  v2 = [MEMORY[0x277D42590] isiPad];
+  isiPad = [MEMORY[0x277D42590] isiPad];
   v3 = objc_autoreleasePoolPush();
   v4 = objc_alloc(MEMORY[0x277CBEB98]);
-  if (v2)
+  if (isiPad)
   {
     v5 = [v4 initWithObjects:{@"com.apple.games", @"com.apple.Preview", @"com.apple.mobilephone", @"com.apple.journal", 0}];
   }
@@ -420,19 +420,19 @@ LABEL_35:
   return v6;
 }
 
-+ (id)appInfoDictWithBackDate:(BOOL)a3 assetData:(id)a4 newPreInstalledAppSet:(id)a5 isFromNotification:(BOOL)a6 newApps:(id)a7
++ (id)appInfoDictWithBackDate:(BOOL)date assetData:(id)data newPreInstalledAppSet:(id)set isFromNotification:(BOOL)notification newApps:(id)apps
 {
-  v48 = a6;
+  notificationCopy = notification;
   v61 = *MEMORY[0x277D85DE8];
-  v44 = a4;
-  v47 = a5;
-  v9 = a7;
+  dataCopy = data;
+  setCopy = set;
+  appsCopy = apps;
   v46 = objc_opt_new();
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v10 = v9;
+  v10 = appsCopy;
   v11 = [v10 countByEnumeratingWithState:&v52 objects:v60 count:16];
   if (v11)
   {
@@ -504,7 +504,7 @@ LABEL_14:
           _os_log_impl(&dword_2263AA000, v23, OS_LOG_TYPE_DEFAULT, "ATXAppInstallMonitor: LS install date: %{public}@ for: %@", buf, 0x16u);
         }
 
-        if (!v22 && v48)
+        if (!v22 && notificationCopy)
         {
           v24 = __atxlog_handle_app_install();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
@@ -515,10 +515,10 @@ LABEL_14:
           v22 = objc_opt_new();
         }
 
-        if (a3 || [*(v14 + 952) isRestoreInstallTypeForBundle:v16])
+        if (date || [*(v14 + 952) isRestoreInstallTypeForBundle:v16])
         {
-          v25 = [v44 objectForKeyedSubscript:{@"Backdate time for backup restore apps", v43}];
-          if (v44 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+          v25 = [dataCopy objectForKeyedSubscript:{@"Backdate time for backup restore apps", v43}];
+          if (dataCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
             v26 = -[NSObject dateByAddingTimeInterval:](v22, "dateByAddingTimeInterval:", -[v25 integerValue]);
           }
@@ -547,13 +547,13 @@ LABEL_14:
         }
 
         v28 = v10;
-        v29 = [objc_opt_class() appDirectoryAppCategoryMappings];
-        v30 = [v29 count];
+        appDirectoryAppCategoryMappings = [objc_opt_class() appDirectoryAppCategoryMappings];
+        v30 = [appDirectoryAppCategoryMappings count];
         v31 = MEMORY[0x277CBEB98];
         if (v30)
         {
-          v32 = [v29 allKeys];
-          v33 = [v31 setWithArray:v32];
+          allKeys = [appDirectoryAppCategoryMappings allKeys];
+          v33 = [v31 setWithArray:allKeys];
         }
 
         else
@@ -561,10 +561,10 @@ LABEL_14:
           v33 = objc_opt_new();
         }
 
-        v34 = [v47 containsObject:{v16, v43}];
+        v34 = [setCopy containsObject:{v16, v43}];
         v35 = [v33 containsObject:v16];
         v36 = [MEMORY[0x277CEB3B8] isAppleOwnedIncludingInternalOrSystemAppForBundleId:v16] ^ 1 | v34;
-        if (!v48)
+        if (!notificationCopy)
         {
           v10 = v28;
           if (v36)
@@ -631,24 +631,24 @@ LABEL_46:
   return v46;
 }
 
-- (void)handleUninstallationOfApps:(id)a3
+- (void)handleUninstallationOfApps:(id)apps
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_ATXAppInstallMonitor *)self webClipsForRemovedApps:v4];
+  appsCopy = apps;
+  v5 = [(_ATXAppInstallMonitor *)self webClipsForRemovedApps:appsCopy];
   v6 = __atxlog_handle_default();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v4;
+    v11 = appsCopy;
     v12 = 2112;
     v13 = v5;
     _os_log_impl(&dword_2263AA000, v6, OS_LOG_TYPE_DEFAULT, "Removing data for uninstalled app(s): %@ and app clip(s): %@", &v10, 0x16u);
   }
 
-  v7 = [v4 arrayByAddingObjectsFromArray:v5];
+  v7 = [appsCopy arrayByAddingObjectsFromArray:v5];
   v8 = [MEMORY[0x277CBEB98] setWithArray:v7];
-  if ([v4 count])
+  if ([appsCopy count])
   {
     [(_ATXAppInstallMonitor *)self notifyUninstallationOfAppsWithBundleIdsToRemoveSet:v8];
   }
@@ -656,31 +656,31 @@ LABEL_46:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyInstallationOfAppsWithInstallDictionary:(id)a3
+- (void)notifyInstallationOfAppsWithInstallDictionary:(id)dictionary
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = __atxlog_handle_app_install();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = dictionaryCopy;
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_DEFAULT, "ATXAppInstallMonitor: Received app install notification: %@", &v7, 0xCu);
   }
 
-  [_ATXInternalInstallNotification postNotificationWithInstallDictionary:v4];
-  [(_ATXAppInfoManager *)self->_appInfoManager handleAppInstallWithInstallDict:v4];
+  [_ATXInternalInstallNotification postNotificationWithInstallDictionary:dictionaryCopy];
+  [(_ATXAppInfoManager *)self->_appInfoManager handleAppInstallWithInstallDict:dictionaryCopy];
   ATXUpdatePredictionsImmediatelyWithReason(16);
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyUninstallationOfAppsWithBundleIdsToRemoveSet:(id)a3
+- (void)notifyUninstallationOfAppsWithBundleIdsToRemoveSet:(id)set
 {
   histogramBundleIdTable = self->_histogramBundleIdTable;
-  v5 = a3;
-  [_ATXInternalUninstallNotification postNotificationWithUninstallSet:v5 histogramBundleIdTable:histogramBundleIdTable];
-  [(_ATXAppInfoManager *)self->_appInfoManager handleAppUninstallWithUninstalledAppSet:v5];
+  setCopy = set;
+  [_ATXInternalUninstallNotification postNotificationWithUninstallSet:setCopy histogramBundleIdTable:histogramBundleIdTable];
+  [(_ATXAppInfoManager *)self->_appInfoManager handleAppUninstallWithUninstalledAppSet:setCopy];
 
   v6 = __atxlog_handle_default();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -692,16 +692,16 @@ LABEL_46:
   ATXUpdatePredictionsImmediatelyWithReason(16);
 }
 
-- (id)webClipsForRemovedApps:(id)a3
+- (id)webClipsForRemovedApps:(id)apps
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  appsCopy = apps;
   v5 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = appsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -734,25 +734,25 @@ LABEL_46:
 
 - (id)_fetchAllAppsFromDatastore
 {
-  v2 = [(_ATXAppInfoManager *)self->_appInfoManager allApps];
-  v3 = [v2 mutableCopy];
+  allApps = [(_ATXAppInfoManager *)self->_appInfoManager allApps];
+  v3 = [allApps mutableCopy];
 
   return v3;
 }
 
 - (id)_fetchAllAppsWithInstallDateFromDatastore
 {
-  v2 = [(_ATXAppInfoManager *)self->_appInfoManager allAppsWithInstallDate];
-  v3 = [v2 mutableCopy];
+  allAppsWithInstallDate = [(_ATXAppInfoManager *)self->_appInfoManager allAppsWithInstallDate];
+  v3 = [allAppsWithInstallDate mutableCopy];
 
   return v3;
 }
 
-+ (id)removeIntersectionBetweenSet:(id)a3 set:(id)a4
++ (id)removeIntersectionBetweenSet:(id)set set:(id)a4
 {
-  v5 = a3;
+  setCopy = set;
   v6 = a4;
-  v7 = v5;
+  v7 = setCopy;
   v8 = v6;
   v9 = [v8 count];
   v10 = v8;
@@ -772,9 +772,9 @@ LABEL_46:
   return v12;
 }
 
-- (void)setUpdateCompletionBlock:(id)a3
+- (void)setUpdateCompletionBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   updateCompletionBlock = self->_updateCompletionBlock;
   self->_updateCompletionBlock = v4;
 

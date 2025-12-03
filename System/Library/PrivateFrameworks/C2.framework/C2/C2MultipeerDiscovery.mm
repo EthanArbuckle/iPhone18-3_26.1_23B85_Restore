@@ -1,6 +1,6 @@
 @interface C2MultipeerDiscovery
 - (C2Multipeer)parent;
-- (C2MultipeerDiscovery)initWithParent:(id)a3;
+- (C2MultipeerDiscovery)initWithParent:(id)parent;
 - (id)_browser;
 - (id)_listener;
 - (id)_peerToPeerParameters;
@@ -11,24 +11,24 @@
 
 @implementation C2MultipeerDiscovery
 
-- (C2MultipeerDiscovery)initWithParent:(id)a3
+- (C2MultipeerDiscovery)initWithParent:(id)parent
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  parentCopy = parent;
   v19.receiver = self;
   v19.super_class = C2MultipeerDiscovery;
   v5 = [(C2MultipeerDiscovery *)&v19 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_parent, v4);
-    v7 = [MEMORY[0x277CCAD78] UUID];
+    objc_storeWeak(&v5->_parent, parentCopy);
+    uUID = [MEMORY[0x277CCAD78] UUID];
     myPeerID = v6->_myPeerID;
-    v6->_myPeerID = v7;
+    v6->_myPeerID = uUID;
 
-    v9 = [(C2MultipeerDiscovery *)v6 _listener];
+    _listener = [(C2MultipeerDiscovery *)v6 _listener];
     listener = v6->_listener;
-    v6->_listener = v9;
+    v6->_listener = _listener;
   }
 
   if (C2_MULTIPEER_LOG_BLOCK_1 != -1)
@@ -44,15 +44,15 @@
     _os_log_impl(&dword_242158000, v11, OS_LOG_TYPE_DEFAULT, "[%@ init]", buf, 0xCu);
   }
 
-  v12 = [(C2MultipeerDiscovery *)v6 parent];
-  v13 = [v12 queue];
+  parent = [(C2MultipeerDiscovery *)v6 parent];
+  queue = [parent queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__C2MultipeerDiscovery_initWithParent___block_invoke_4;
   block[3] = &unk_278D400A0;
   v14 = v6;
   v18 = v14;
-  dispatch_async(v13, block);
+  dispatch_async(queue, block);
 
   v15 = *MEMORY[0x277D85DE8];
   return v14;
@@ -67,9 +67,9 @@ uint64_t __39__C2MultipeerDiscovery_initWithParent___block_invoke()
 
 - (void)touch
 {
-  v3 = [(C2MultipeerDiscovery *)self parent];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  parent = [(C2MultipeerDiscovery *)self parent];
+  queue = [parent queue];
+  dispatch_assert_queue_V2(queue);
 
   if (self->_browser)
   {
@@ -83,9 +83,9 @@ uint64_t __39__C2MultipeerDiscovery_initWithParent___block_invoke()
 
   else
   {
-    v5 = [(C2MultipeerDiscovery *)self _browser];
+    _browser = [(C2MultipeerDiscovery *)self _browser];
     browser = self->_browser;
-    self->_browser = v5;
+    self->_browser = _browser;
 
     [(C2MultipeerDiscovery *)self startTimer];
   }
@@ -93,17 +93,17 @@ uint64_t __39__C2MultipeerDiscovery_initWithParent___block_invoke()
 
 - (void)startTimer
 {
-  v3 = [(C2MultipeerDiscovery *)self parent];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  parent = [(C2MultipeerDiscovery *)self parent];
+  queue = [parent queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(C2MultipeerDiscovery *)self parent];
-  v6 = [v5 queue];
-  v7 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v6);
+  parent2 = [(C2MultipeerDiscovery *)self parent];
+  queue2 = [parent2 queue];
+  v7 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue2);
   browserTimer = self->_browserTimer;
   self->_browserTimer = v7;
 
-  v9 = [(C2MultipeerDiscovery *)self browser];
+  browser = [(C2MultipeerDiscovery *)self browser];
   objc_initWeak(&location, self);
   v10 = self->_browserTimer;
   v14[0] = MEMORY[0x277D85DD0];
@@ -112,8 +112,8 @@ uint64_t __39__C2MultipeerDiscovery_initWithParent___block_invoke()
   v14[3] = &unk_278D402D8;
   v14[4] = self;
   objc_copyWeak(&v16, &location);
-  v15 = v9;
-  v11 = v9;
+  v15 = browser;
+  v11 = browser;
   dispatch_source_set_event_handler(v10, v14);
   v12 = self->_browserTimer;
   v13 = dispatch_time(0, 30000000000);
@@ -167,9 +167,9 @@ uint64_t __34__C2MultipeerDiscovery_startTimer__block_invoke_2()
 
 - (void)resetTimer
 {
-  v3 = [(C2MultipeerDiscovery *)self parent];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  parent = [(C2MultipeerDiscovery *)self parent];
+  queue = [parent queue];
+  dispatch_assert_queue_V2(queue);
 
   browserTimer = self->_browserTimer;
   v6 = dispatch_time(0, 30000000000);
@@ -241,9 +241,9 @@ void __45__C2MultipeerDiscovery__peerToPeerParameters__block_invoke_2(uint64_t a
   handler[3] = &unk_278D40340;
   handler[4] = self;
   nw_browser_set_browse_results_changed_handler(v6, handler);
-  v7 = [(C2MultipeerDiscovery *)self parent];
-  v8 = [v7 queue];
-  nw_browser_set_queue(v6, v8);
+  parent = [(C2MultipeerDiscovery *)self parent];
+  queue = [parent queue];
+  nw_browser_set_queue(v6, queue);
 
   nw_browser_start(v6);
 
@@ -614,11 +614,11 @@ uint64_t __32__C2MultipeerDiscovery__browser__block_invoke_63()
 
 - (id)_listener
 {
-  v3 = [(C2MultipeerDiscovery *)self _peerToPeerParameters];
-  v4 = nw_listener_create(v3);
+  _peerToPeerParameters = [(C2MultipeerDiscovery *)self _peerToPeerParameters];
+  v4 = nw_listener_create(_peerToPeerParameters);
 
-  v5 = [(NSUUID *)self->_myPeerID UUIDString];
-  bonjour_service = nw_advertise_descriptor_create_bonjour_service([v5 UTF8String], "_chunkdiscovery._tcp", 0);
+  uUIDString = [(NSUUID *)self->_myPeerID UUIDString];
+  bonjour_service = nw_advertise_descriptor_create_bonjour_service([uUIDString UTF8String], "_chunkdiscovery._tcp", 0);
   nw_advertise_descriptor_set_no_auto_rename(bonjour_service, 1);
   nw_listener_set_advertise_descriptor(v4, bonjour_service);
   nw_listener_set_state_changed_handler(v4, &__block_literal_global_68);
@@ -628,9 +628,9 @@ uint64_t __32__C2MultipeerDiscovery__browser__block_invoke_63()
   handler[3] = &unk_278D40368;
   handler[4] = self;
   nw_listener_set_new_connection_handler(v4, handler);
-  v7 = [(C2MultipeerDiscovery *)self parent];
-  v8 = [v7 queue];
-  nw_listener_set_queue(v4, v8);
+  parent = [(C2MultipeerDiscovery *)self parent];
+  queue = [parent queue];
+  nw_listener_set_queue(v4, queue);
 
   nw_listener_start(v4);
 

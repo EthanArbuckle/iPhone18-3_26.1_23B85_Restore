@@ -1,15 +1,15 @@
 @interface _GCNintendoN64ControllerProfile
-+ (id)logicalDevice:(id)a3 makeControllerInputDescriptionWithIdentifier:(id)a4 bindings:(id)a5;
-+ (id)logicalDevice:(id)a3 makeControllerPhysicalInputProfileDescriptionWithIdentifier:(id)a4 bindings:(id)a5;
++ (id)logicalDevice:(id)device makeControllerInputDescriptionWithIdentifier:(id)identifier bindings:(id)bindings;
++ (id)logicalDevice:(id)device makeControllerPhysicalInputProfileDescriptionWithIdentifier:(id)identifier bindings:(id)bindings;
 @end
 
 @implementation _GCNintendoN64ControllerProfile
 
-+ (id)logicalDevice:(id)a3 makeControllerPhysicalInputProfileDescriptionWithIdentifier:(id)a4 bindings:(id)a5
++ (id)logicalDevice:(id)device makeControllerPhysicalInputProfileDescriptionWithIdentifier:(id)identifier bindings:(id)bindings
 {
   v49[12] = *MEMORY[0x1E69E9840];
-  v44 = a5;
-  v43 = a4;
+  bindingsCopy = bindings;
+  identifierCopy = identifier;
   v6 = [GCDeviceButtonInputDescription alloc];
   v7 = [*MEMORY[0x1E69A0530] key];
   v47 = [(GCDeviceButtonInputDescription *)v6 initWithName:@"Button A" additionalAliases:0 attributes:2 nameLocalizationKey:v7 symbolName:@"a.circle" sourceAttributes:1 sourceExtendedEventField:4];
@@ -72,19 +72,19 @@
   v49[10] = v38;
   v49[11] = v32;
   v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:12];
-  v35 = [(_GCDevicePhysicalInputComponentDescription *)v33 initWithIdentifier:v43 elements:v34 bindings:v44];
+  v35 = [(_GCDevicePhysicalInputComponentDescription *)v33 initWithIdentifier:identifierCopy elements:v34 bindings:bindingsCopy];
 
   v36 = *MEMORY[0x1E69E9840];
 
   return v35;
 }
 
-+ (id)logicalDevice:(id)a3 makeControllerInputDescriptionWithIdentifier:(id)a4 bindings:(id)a5
++ (id)logicalDevice:(id)device makeControllerInputDescriptionWithIdentifier:(id)identifier bindings:(id)bindings
 {
   v141[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E69A0690];
-  v122 = a5;
-  v121 = a4;
+  bindingsCopy = bindings;
+  identifierCopy = identifier;
   v128 = [v6 descriptionWithIdentifier:@"button.a"];
   v7 = [MEMORY[0x1E695DFD8] setWithObject:@"Button A"];
   [v128 setAliases:v7];
@@ -197,8 +197,8 @@
   v32 = [MEMORY[0x1E695DFD8] setWithObject:@"Right Thumbstick"];
   v33 = objc_alloc(MEMORY[0x1E69A06C8]);
   v34 = [v33 initWithFormat:*MEMORY[0x1E69A03E0] arg:v29];
-  v35 = [v27 symbol];
-  v36 = [v31 sourceWithElementAliases:v32 localizedName:v34 symbol:v35 direction:10];
+  symbol = [v27 symbol];
+  v36 = [v31 sourceWithElementAliases:v32 localizedName:v34 symbol:symbol direction:10];
   v141[0] = v36;
   v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v141 count:1];
   [v27 setXSources:v37];
@@ -207,8 +207,8 @@
   v39 = [MEMORY[0x1E695DFD8] setWithObject:@"Right Thumbstick"];
   v40 = objc_alloc(MEMORY[0x1E69A06C8]);
   v41 = [v40 initWithFormat:*MEMORY[0x1E69A03E8] arg:v29];
-  v42 = [v27 symbol];
-  v43 = [v38 sourceWithElementAliases:v39 localizedName:v41 symbol:v42 direction:5];
+  symbol2 = [v27 symbol];
+  v43 = [v38 sourceWithElementAliases:v39 localizedName:v41 symbol:symbol2 direction:5];
   v140 = v43;
   v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v140 count:1];
   [v27 setYSources:v44];
@@ -268,54 +268,54 @@
   [v73 setEventRightValueField:13];
   v76 = MEMORY[0x1E69A06B8];
   v77 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick"];
-  v78 = [v73 localizedName];
-  v79 = [v73 symbol];
-  v80 = [v76 sourceWithElementAliases:v77 localizedName:v78 symbol:v79 direction:10];
+  localizedName = [v73 localizedName];
+  symbol3 = [v73 symbol];
+  v80 = [v76 sourceWithElementAliases:v77 localizedName:localizedName symbol:symbol3 direction:10];
   v135 = v80;
   v81 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v135 count:1];
   [v73 setXSources:v81];
 
   v82 = MEMORY[0x1E69A06B8];
   v83 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick"];
-  v84 = [v73 localizedName];
-  v85 = [v73 symbol];
-  v86 = [v82 sourceWithElementAliases:v83 localizedName:v84 symbol:v85 direction:5];
+  localizedName2 = [v73 localizedName];
+  symbol4 = [v73 symbol];
+  v86 = [v82 sourceWithElementAliases:v83 localizedName:localizedName2 symbol:symbol4 direction:5];
   v134 = v86;
   v87 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v134 count:1];
   [v73 setYSources:v87];
 
   v88 = MEMORY[0x1E69A06B8];
   v89 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick"];
-  v90 = [v73 localizedName];
-  v91 = [v73 symbol];
-  v92 = [v88 sourceWithElementAliases:v89 localizedName:v90 symbol:v91 direction:1];
+  localizedName3 = [v73 localizedName];
+  symbol5 = [v73 symbol];
+  v92 = [v88 sourceWithElementAliases:v89 localizedName:localizedName3 symbol:symbol5 direction:1];
   v133 = v92;
   v93 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v133 count:1];
   [v73 setUpSources:v93];
 
   v94 = MEMORY[0x1E69A06B8];
   v95 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick"];
-  v96 = [v73 localizedName];
-  v97 = [v73 symbol];
-  v98 = [v94 sourceWithElementAliases:v95 localizedName:v96 symbol:v97 direction:2];
+  localizedName4 = [v73 localizedName];
+  symbol6 = [v73 symbol];
+  v98 = [v94 sourceWithElementAliases:v95 localizedName:localizedName4 symbol:symbol6 direction:2];
   v132 = v98;
   v99 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v132 count:1];
   [v73 setRightSources:v99];
 
   v100 = MEMORY[0x1E69A06B8];
   v101 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick"];
-  v102 = [v73 localizedName];
-  v103 = [v73 symbol];
-  v104 = [v100 sourceWithElementAliases:v101 localizedName:v102 symbol:v103 direction:4];
+  localizedName5 = [v73 localizedName];
+  symbol7 = [v73 symbol];
+  v104 = [v100 sourceWithElementAliases:v101 localizedName:localizedName5 symbol:symbol7 direction:4];
   v131 = v104;
   v105 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v131 count:1];
   [v73 setDownSources:v105];
 
   v106 = MEMORY[0x1E69A06B8];
   v107 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick"];
-  v108 = [v73 localizedName];
-  v109 = [v73 symbol];
-  v110 = [v106 sourceWithElementAliases:v107 localizedName:v108 symbol:v109 direction:8];
+  localizedName6 = [v73 localizedName];
+  symbol8 = [v73 symbol];
+  v110 = [v106 sourceWithElementAliases:v107 localizedName:localizedName6 symbol:symbol8 direction:8];
   v130 = v110;
   v111 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v130 count:1];
   [v73 setLeftSources:v111];
@@ -336,7 +336,7 @@
   v113 = [MEMORY[0x1E695DEC8] arrayWithObjects:v129 count:12];
   [v112 setElements:v113];
 
-  v114 = [[_GCControllerInputComponentDescription alloc] initWithIdentifier:v121 controllerInputs:v112 bindings:v122];
+  v114 = [[_GCControllerInputComponentDescription alloc] initWithIdentifier:identifierCopy controllerInputs:v112 bindings:bindingsCopy];
   v115 = *MEMORY[0x1E69E9840];
 
   return v114;

@@ -1,5 +1,5 @@
 @interface MediaControlsHapticPlayer
-- (void)checkError:(id)a3;
+- (void)checkError:(id)error;
 - (void)dealloc;
 - (void)expandedButtonChanged;
 - (void)prepare;
@@ -63,17 +63,17 @@
   [(MediaControlsHapticPlayer *)self checkError:v6];
 }
 
-- (void)checkError:(id)a3
+- (void)checkError:(id)error
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  errorCopy = error;
+  if (errorCopy)
   {
     v4 = MCLogCategoryDefault();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       v5 = 138543362;
-      v6 = v3;
+      v6 = errorCopy;
       _os_log_impl(&dword_1A20FC000, v4, OS_LOG_TYPE_ERROR, "[MediaControlsHapticPlayer] Error: %{public}@", &v5, 0xCu);
     }
   }

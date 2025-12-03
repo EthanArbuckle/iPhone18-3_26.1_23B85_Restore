@@ -1,44 +1,44 @@
 @interface PKAutomaticReloadPaymentRequest
-+ (PKAutomaticReloadPaymentRequest)automaticReloadPaymentRequestWithProtobuf:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAutomaticReloadPaymentRequest:(id)a3;
-- (PKAutomaticReloadPaymentRequest)initWithCoder:(id)a3;
-- (PKAutomaticReloadPaymentRequest)initWithDictionary:(id)a3 error:(id *)a4;
++ (PKAutomaticReloadPaymentRequest)automaticReloadPaymentRequestWithProtobuf:(id)protobuf;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAutomaticReloadPaymentRequest:(id)request;
+- (PKAutomaticReloadPaymentRequest)initWithCoder:(id)coder;
+- (PKAutomaticReloadPaymentRequest)initWithDictionary:(id)dictionary error:(id *)error;
 - (PKAutomaticReloadPaymentRequest)initWithPaymentDescription:(NSString *)paymentDescription automaticReloadBilling:(PKAutomaticReloadPaymentSummaryItem *)automaticReloadBilling managementURL:(NSURL *)managementURL;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)protobuf;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)sanitize;
 @end
 
 @implementation PKAutomaticReloadPaymentRequest
 
-+ (PKAutomaticReloadPaymentRequest)automaticReloadPaymentRequestWithProtobuf:(id)a3
++ (PKAutomaticReloadPaymentRequest)automaticReloadPaymentRequestWithProtobuf:(id)protobuf
 {
-  v3 = a3;
-  v4 = [v3 paymentDescription];
+  protobufCopy = protobuf;
+  paymentDescription = [protobufCopy paymentDescription];
   v5 = MEMORY[0x1E695DFF8];
-  v6 = [v3 managementURL];
-  v7 = [v5 URLWithString:v6];
+  managementURL = [protobufCopy managementURL];
+  v7 = [v5 URLWithString:managementURL];
 
-  v8 = [v3 automaticPaymentBilling];
-  v9 = [PKPaymentSummaryItem itemWithProtobuf:v8];
+  automaticPaymentBilling = [protobufCopy automaticPaymentBilling];
+  v9 = [PKPaymentSummaryItem itemWithProtobuf:automaticPaymentBilling];
 
-  v10 = [[PKAutomaticReloadPaymentRequest alloc] initWithPaymentDescription:v4 automaticReloadBilling:v9 managementURL:v7];
-  if ([v3 hasBillingAgreement])
+  v10 = [[PKAutomaticReloadPaymentRequest alloc] initWithPaymentDescription:paymentDescription automaticReloadBilling:v9 managementURL:v7];
+  if ([protobufCopy hasBillingAgreement])
   {
-    v11 = [v3 billingAgreement];
-    [(PKAutomaticReloadPaymentRequest *)v10 setBillingAgreement:v11];
+    billingAgreement = [protobufCopy billingAgreement];
+    [(PKAutomaticReloadPaymentRequest *)v10 setBillingAgreement:billingAgreement];
   }
 
-  if ([v3 hasTokenNotificationURL])
+  if ([protobufCopy hasTokenNotificationURL])
   {
     v12 = MEMORY[0x1E695DFF8];
-    v13 = [v3 tokenNotificationURL];
-    v14 = [v12 URLWithString:v13];
+    tokenNotificationURL = [protobufCopy tokenNotificationURL];
+    v14 = [v12 URLWithString:tokenNotificationURL];
     [(PKAutomaticReloadPaymentRequest *)v10 setTokenNotificationURL:v14];
   }
 
@@ -48,32 +48,32 @@
 - (id)protobuf
 {
   v3 = objc_alloc_init(PKProtobufAutomaticReloadPaymentRequest);
-  v4 = [(PKAutomaticReloadPaymentRequest *)self paymentDescription];
-  [(PKProtobufAutomaticReloadPaymentRequest *)v3 setPaymentDescription:v4];
+  paymentDescription = [(PKAutomaticReloadPaymentRequest *)self paymentDescription];
+  [(PKProtobufAutomaticReloadPaymentRequest *)v3 setPaymentDescription:paymentDescription];
 
-  v5 = [(PKAutomaticReloadPaymentRequest *)self automaticReloadBilling];
-  v6 = [v5 summaryItemProtobuf];
-  [(PKProtobufAutomaticReloadPaymentRequest *)v3 setAutomaticPaymentBilling:v6];
+  automaticReloadBilling = [(PKAutomaticReloadPaymentRequest *)self automaticReloadBilling];
+  summaryItemProtobuf = [automaticReloadBilling summaryItemProtobuf];
+  [(PKProtobufAutomaticReloadPaymentRequest *)v3 setAutomaticPaymentBilling:summaryItemProtobuf];
 
-  v7 = [(PKAutomaticReloadPaymentRequest *)self managementURL];
-  v8 = [v7 absoluteString];
-  [(PKProtobufAutomaticReloadPaymentRequest *)v3 setManagementURL:v8];
+  managementURL = [(PKAutomaticReloadPaymentRequest *)self managementURL];
+  absoluteString = [managementURL absoluteString];
+  [(PKProtobufAutomaticReloadPaymentRequest *)v3 setManagementURL:absoluteString];
 
-  v9 = [(PKAutomaticReloadPaymentRequest *)self billingAgreement];
+  billingAgreement = [(PKAutomaticReloadPaymentRequest *)self billingAgreement];
 
-  if (v9)
+  if (billingAgreement)
   {
-    v10 = [(PKAutomaticReloadPaymentRequest *)self billingAgreement];
-    [(PKProtobufAutomaticReloadPaymentRequest *)v3 setBillingAgreement:v10];
+    billingAgreement2 = [(PKAutomaticReloadPaymentRequest *)self billingAgreement];
+    [(PKProtobufAutomaticReloadPaymentRequest *)v3 setBillingAgreement:billingAgreement2];
   }
 
-  v11 = [(PKAutomaticReloadPaymentRequest *)self tokenNotificationURL];
+  tokenNotificationURL = [(PKAutomaticReloadPaymentRequest *)self tokenNotificationURL];
 
-  if (v11)
+  if (tokenNotificationURL)
   {
-    v12 = [(PKAutomaticReloadPaymentRequest *)self tokenNotificationURL];
-    v13 = [v12 absoluteString];
-    [(PKProtobufAutomaticReloadPaymentRequest *)v3 setManagementURL:v13];
+    tokenNotificationURL2 = [(PKAutomaticReloadPaymentRequest *)self tokenNotificationURL];
+    absoluteString2 = [tokenNotificationURL2 absoluteString];
+    [(PKProtobufAutomaticReloadPaymentRequest *)v3 setManagementURL:absoluteString2];
   }
 
   return v3;
@@ -105,57 +105,57 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
-  v6 = [(NSString *)self->_paymentDescription copyWithZone:a3];
+  v6 = [(NSString *)self->_paymentDescription copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(PKAutomaticReloadPaymentSummaryItem *)self->_automaticReloadBilling copyWithZone:a3];
+  v8 = [(PKAutomaticReloadPaymentSummaryItem *)self->_automaticReloadBilling copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_billingAgreement copyWithZone:a3];
+  v10 = [(NSString *)self->_billingAgreement copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(NSURL *)self->_managementURL copyWithZone:a3];
+  v12 = [(NSURL *)self->_managementURL copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
-  v14 = [(NSURL *)self->_tokenNotificationURL copyWithZone:a3];
+  v14 = [(NSURL *)self->_tokenNotificationURL copyWithZone:zone];
   v15 = v5[5];
   v5[5] = v14;
 
   return v5;
 }
 
-- (PKAutomaticReloadPaymentRequest)initWithCoder:(id)a3
+- (PKAutomaticReloadPaymentRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PKAutomaticReloadPaymentRequest;
   v5 = [(PKAutomaticReloadPaymentRequest *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentDescription"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentDescription"];
     paymentDescription = v5->_paymentDescription;
     v5->_paymentDescription = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"automaticReloadBilling"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"automaticReloadBilling"];
     automaticReloadBilling = v5->_automaticReloadBilling;
     v5->_automaticReloadBilling = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"billingAgreement"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"billingAgreement"];
     billingAgreement = v5->_billingAgreement;
     v5->_billingAgreement = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"managementURL"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"managementURL"];
     managementURL = v5->_managementURL;
     v5->_managementURL = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tokenNotificationURL"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tokenNotificationURL"];
     tokenNotificationURL = v5->_tokenNotificationURL;
     v5->_tokenNotificationURL = v14;
   }
@@ -163,15 +163,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   paymentDescription = self->_paymentDescription;
-  v5 = a3;
-  [v5 encodeObject:paymentDescription forKey:@"paymentDescription"];
-  [v5 encodeObject:self->_automaticReloadBilling forKey:@"automaticReloadBilling"];
-  [v5 encodeObject:self->_billingAgreement forKey:@"billingAgreement"];
-  [v5 encodeObject:self->_managementURL forKey:@"managementURL"];
-  [v5 encodeObject:self->_tokenNotificationURL forKey:@"tokenNotificationURL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:paymentDescription forKey:@"paymentDescription"];
+  [coderCopy encodeObject:self->_automaticReloadBilling forKey:@"automaticReloadBilling"];
+  [coderCopy encodeObject:self->_billingAgreement forKey:@"billingAgreement"];
+  [coderCopy encodeObject:self->_managementURL forKey:@"managementURL"];
+  [coderCopy encodeObject:self->_tokenNotificationURL forKey:@"tokenNotificationURL"];
 }
 
 - (id)description
@@ -209,27 +209,27 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAutomaticReloadPaymentRequest *)self isEqualToAutomaticReloadPaymentRequest:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAutomaticReloadPaymentRequest *)self isEqualToAutomaticReloadPaymentRequest:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToAutomaticReloadPaymentRequest:(id)a3
+- (BOOL)isEqualToAutomaticReloadPaymentRequest:(id)request
 {
-  v4 = a3;
-  v5 = v4[1];
+  requestCopy = request;
+  v5 = requestCopy[1];
   v6 = self->_paymentDescription;
   v7 = v5;
   v8 = v7;
@@ -263,7 +263,7 @@
   }
 
   automaticReloadBilling = self->_automaticReloadBilling;
-  v12 = v4[2];
+  v12 = requestCopy[2];
   if (automaticReloadBilling && v12)
   {
     if (![(PKAutomaticReloadPaymentSummaryItem *)automaticReloadBilling isEqual:?])
@@ -277,7 +277,7 @@
     goto LABEL_15;
   }
 
-  v15 = v4[3];
+  v15 = requestCopy[3];
   v6 = self->_billingAgreement;
   v16 = v15;
   v8 = v16;
@@ -303,7 +303,7 @@ LABEL_7:
 
 LABEL_23:
   managementURL = self->_managementURL;
-  v19 = v4[4];
+  v19 = requestCopy[4];
   if (managementURL && v19)
   {
     if (([(NSURL *)managementURL isEqual:?]& 1) != 0)
@@ -323,7 +323,7 @@ LABEL_15:
 
 LABEL_28:
   tokenNotificationURL = self->_tokenNotificationURL;
-  v21 = v4[5];
+  v21 = requestCopy[5];
   if (tokenNotificationURL && v21)
   {
     v13 = [(NSURL *)tokenNotificationURL isEqual:?];
@@ -341,22 +341,22 @@ LABEL_16:
 
 - (void)sanitize
 {
-  v3 = [(NSString *)self->_billingAgreement pk_merchantTokensSanitizedBillingAgreement];
+  pk_merchantTokensSanitizedBillingAgreement = [(NSString *)self->_billingAgreement pk_merchantTokensSanitizedBillingAgreement];
   billingAgreement = self->_billingAgreement;
-  self->_billingAgreement = v3;
+  self->_billingAgreement = pk_merchantTokensSanitizedBillingAgreement;
 }
 
-- (PKAutomaticReloadPaymentRequest)initWithDictionary:(id)a3 error:(id *)a4
+- (PKAutomaticReloadPaymentRequest)initWithDictionary:(id)dictionary error:(id *)error
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = [(PKAutomaticReloadPaymentRequest *)self init];
   if (v6)
   {
-    v7 = [v5 PKStringForKey:@"paymentDescription"];
+    v7 = [dictionaryCopy PKStringForKey:@"paymentDescription"];
     paymentDescription = v6->_paymentDescription;
     v6->_paymentDescription = v7;
 
-    v9 = [v5 PKDictionaryForKey:@"automaticReloadBilling"];
+    v9 = [dictionaryCopy PKDictionaryForKey:@"automaticReloadBilling"];
     if (v9)
     {
       v10 = [[PKAutomaticReloadPaymentSummaryItem alloc] initWithDictionary:v9 error:0];
@@ -364,15 +364,15 @@ LABEL_16:
       v6->_automaticReloadBilling = v10;
     }
 
-    v12 = [v5 PKStringForKey:@"billingAgreement"];
+    v12 = [dictionaryCopy PKStringForKey:@"billingAgreement"];
     billingAgreement = v6->_billingAgreement;
     v6->_billingAgreement = v12;
 
-    v14 = [v5 PKURLForKey:@"managementURL"];
+    v14 = [dictionaryCopy PKURLForKey:@"managementURL"];
     managementURL = v6->_managementURL;
     v6->_managementURL = v14;
 
-    v16 = [v5 PKURLForKey:@"tokenNotificationURL"];
+    v16 = [dictionaryCopy PKURLForKey:@"tokenNotificationURL"];
     tokenNotificationURL = v6->_tokenNotificationURL;
     v6->_tokenNotificationURL = v16;
   }
@@ -393,8 +393,8 @@ LABEL_16:
   automaticReloadBilling = self->_automaticReloadBilling;
   if (automaticReloadBilling)
   {
-    v7 = [(PKAutomaticReloadPaymentSummaryItem *)automaticReloadBilling dictionaryRepresentation];
-    [v4 setObject:v7 forKeyedSubscript:@"automaticReloadBilling"];
+    dictionaryRepresentation = [(PKAutomaticReloadPaymentSummaryItem *)automaticReloadBilling dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKeyedSubscript:@"automaticReloadBilling"];
   }
 
   billingAgreement = self->_billingAgreement;
@@ -406,15 +406,15 @@ LABEL_16:
   managementURL = self->_managementURL;
   if (managementURL)
   {
-    v10 = [(NSURL *)managementURL absoluteString];
-    [v4 setObject:v10 forKeyedSubscript:@"managementURL"];
+    absoluteString = [(NSURL *)managementURL absoluteString];
+    [v4 setObject:absoluteString forKeyedSubscript:@"managementURL"];
   }
 
   tokenNotificationURL = self->_tokenNotificationURL;
   if (tokenNotificationURL)
   {
-    v12 = [(NSURL *)tokenNotificationURL absoluteString];
-    [v4 setObject:v12 forKeyedSubscript:@"tokenNotificationURL"];
+    absoluteString2 = [(NSURL *)tokenNotificationURL absoluteString];
+    [v4 setObject:absoluteString2 forKeyedSubscript:@"tokenNotificationURL"];
   }
 
   v13 = [v4 copy];

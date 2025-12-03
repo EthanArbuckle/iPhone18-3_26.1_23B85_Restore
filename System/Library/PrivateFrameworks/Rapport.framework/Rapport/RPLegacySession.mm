@@ -2,23 +2,23 @@
 - (RPLegacySession)init;
 - (int)_runMobileDeviceStart;
 - (int)_runPairVerify;
-- (void)_activateWithCompletion:(id)a3;
+- (void)_activateWithCompletion:(id)completion;
 - (void)_cleanup;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_pairSetupTryPIN:(id)a3;
+- (void)_pairSetupTryPIN:(id)n;
 - (void)_run;
 - (void)_sendQueuedMessages;
-- (void)_unpairWithCompletion:(id)a3;
-- (void)activateWithCompletion:(id)a3;
+- (void)_unpairWithCompletion:(id)completion;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)pairSetupTryPIN:(id)a3;
-- (void)pairSetupWithFlags:(unsigned int)a3 completion:(id)a4;
-- (void)pairVerifyWithFlags:(unsigned int)a3 completion:(id)a4;
-- (void)requestSystemInfoWithCompletion:(id)a3;
-- (void)sendRequestID:(id)a3 options:(id)a4 request:(id)a5 responseHandler:(id)a6;
-- (void)unpairWithCompletion:(id)a3;
+- (void)pairSetupTryPIN:(id)n;
+- (void)pairSetupWithFlags:(unsigned int)flags completion:(id)completion;
+- (void)pairVerifyWithFlags:(unsigned int)flags completion:(id)completion;
+- (void)requestSystemInfoWithCompletion:(id)completion;
+- (void)sendRequestID:(id)d options:(id)options request:(id)request responseHandler:(id)handler;
+- (void)unpairWithCompletion:(id)completion;
 @end
 
 @implementation RPLegacySession
@@ -60,23 +60,23 @@
   self->_promptForPINHandler = 0;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__RPLegacySession_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E7C92E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
-  v15 = a3;
+  completionCopy = completion;
   if (gLogCategory_RPLegacySupport <= 30 && (gLogCategory_RPLegacySupport != -1 || _LogCategory_Initialize()))
   {
     [RPLegacySession _activateWithCompletion:];
@@ -90,17 +90,17 @@
       self->_activateCalled = 1;
       if ([(NSString *)serviceType isEqual:@"RPLegacyServiceTypeMobileDevice"])
       {
-        v5 = [(RPDevice *)self->_peerDevice mobileDevice];
-        if (v5)
+        mobileDevice = [(RPDevice *)self->_peerDevice mobileDevice];
+        if (mobileDevice)
         {
-          v6 = v5;
+          pairedPeer = mobileDevice;
         }
 
         else
         {
-          v6 = [(RPDevice *)self->_peerDevice pairedPeer];
-          v11 = [v6 info];
-          v12 = [v11 objectForKeyedSubscript:@"udid"];
+          pairedPeer = [(RPDevice *)self->_peerDevice pairedPeer];
+          info = [pairedPeer info];
+          v12 = [info objectForKeyedSubscript:@"udid"];
 
           if (!v12)
           {
@@ -116,7 +116,7 @@
             goto LABEL_12;
           }
 
-          v6 = v13;
+          pairedPeer = v13;
         }
 
         self->_mdEnabled = 1;
@@ -126,7 +126,7 @@ LABEL_12:
         [(RPLegacySession *)self _run];
         v7 = 0;
 LABEL_20:
-        v8 = v15;
+        v8 = completionCopy;
         goto LABEL_21;
       }
 
@@ -135,15 +135,15 @@ LABEL_20:
   }
 
   v7 = RPErrorF();
-  v8 = v15;
+  v8 = completionCopy;
   if (v7)
   {
     if (gLogCategory_RPLegacySupport <= 60)
     {
-      if (gLogCategory_RPLegacySupport != -1 || (v9 = _LogCategory_Initialize(), v8 = v15, v9))
+      if (gLogCategory_RPLegacySupport != -1 || (v9 = _LogCategory_Initialize(), v8 = completionCopy, v9))
       {
         [RPLegacySession _activateWithCompletion:];
-        v8 = v15;
+        v8 = completionCopy;
       }
     }
 
@@ -158,7 +158,7 @@ LABEL_20:
 LABEL_21:
   if (v8)
   {
-    v15[2](v15, v7);
+    completionCopy[2](completionCopy, v7);
   }
 }
 
@@ -245,8 +245,8 @@ LABEL_21:
       self->_mdSession = v5;
 
       [(CUMobileDeviceSession *)self->_mdSession setDispatchQueue:self->_dispatchQueue];
-      v7 = [(RPDevice *)self->_peerDevice mobileDevice];
-      [(CUMobileDeviceSession *)self->_mdSession setPeerDevice:v7];
+      mobileDevice = [(RPDevice *)self->_peerDevice mobileDevice];
+      [(CUMobileDeviceSession *)self->_mdSession setPeerDevice:mobileDevice];
 
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
@@ -358,18 +358,18 @@ LABEL_11:
   }
 }
 
-- (void)pairSetupWithFlags:(unsigned int)a3 completion:(id)a4
+- (void)pairSetupWithFlags:(unsigned int)flags completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__RPLegacySession_pairSetupWithFlags_completion___block_invoke;
   block[3] = &unk_1E7C92EC0;
-  v11 = a3;
+  flagsCopy = flags;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -383,40 +383,40 @@ uint64_t __50__RPLegacySession__pairSetupWithFlags_completion___block_invoke(uin
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)pairSetupTryPIN:(id)a3
+- (void)pairSetupTryPIN:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__RPLegacySession_pairSetupTryPIN___block_invoke;
   v7[3] = &unk_1E7C92D80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nCopy;
+  v6 = nCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_pairSetupTryPIN:(id)a3
+- (void)_pairSetupTryPIN:(id)n
 {
   if (self->_mdEnabled)
   {
-    [(CUMobileDeviceSession *)self->_mdSession pairSetupTryPIN:a3];
+    [(CUMobileDeviceSession *)self->_mdSession pairSetupTryPIN:n];
   }
 }
 
-- (void)pairVerifyWithFlags:(unsigned int)a3 completion:(id)a4
+- (void)pairVerifyWithFlags:(unsigned int)flags completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__RPLegacySession_pairVerifyWithFlags_completion___block_invoke;
   block[3] = &unk_1E7C92EC0;
-  v11 = a3;
+  flagsCopy = flags;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -430,31 +430,31 @@ uint64_t __51__RPLegacySession__pairVerifyWithFlags_completion___block_invoke(ui
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)unpairWithCompletion:(id)a3
+- (void)unpairWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__RPLegacySession_unpairWithCompletion___block_invoke;
   v7[3] = &unk_1E7C92E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_unpairWithCompletion:(id)a3
+- (void)_unpairWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_mdEnabled && (mdSession = self->_mdSession) != 0)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __41__RPLegacySession__unpairWithCompletion___block_invoke;
     v8[3] = &unk_1E7C92DA8;
-    v9 = v4;
+    v9 = completionCopy;
     [(CUMobileDeviceSession *)mdSession unpairWithCompletion:v8];
   }
 
@@ -465,26 +465,26 @@ uint64_t __51__RPLegacySession__pairVerifyWithFlags_completion___block_invoke(ui
   }
 }
 
-- (void)sendRequestID:(id)a3 options:(id)a4 request:(id)a5 responseHandler:(id)a6
+- (void)sendRequestID:(id)d options:(id)options request:(id)request responseHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  optionsCopy = options;
+  requestCopy = request;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__RPLegacySession_sendRequestID_options_request_responseHandler___block_invoke;
   block[3] = &unk_1E7C94AA8;
-  v20 = v12;
-  v21 = v11;
-  v23 = self;
-  v24 = v13;
-  v22 = v10;
-  v15 = v13;
-  v16 = v10;
-  v17 = v11;
-  v18 = v12;
+  v20 = requestCopy;
+  v21 = optionsCopy;
+  selfCopy = self;
+  v24 = handlerCopy;
+  v22 = dCopy;
+  v15 = handlerCopy;
+  v16 = dCopy;
+  v17 = optionsCopy;
+  v18 = requestCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -514,32 +514,32 @@ void __65__RPLegacySession_sendRequestID_options_request_responseHandler___block
 {
   if (self->_messagingReady)
   {
-    v3 = [(NSMutableArray *)self->_messageSendQueue firstObject];
-    if (v3)
+    firstObject = [(NSMutableArray *)self->_messageSendQueue firstObject];
+    if (firstObject)
     {
-      v4 = v3;
+      firstObject2 = firstObject;
       do
       {
         [(NSMutableArray *)self->_messageSendQueue removeObjectAtIndex:0];
-        [(RPLegacySession *)self _sendMessage:v4];
+        [(RPLegacySession *)self _sendMessage:firstObject2];
 
-        v4 = [(NSMutableArray *)self->_messageSendQueue firstObject];
+        firstObject2 = [(NSMutableArray *)self->_messageSendQueue firstObject];
       }
 
-      while (v4);
+      while (firstObject2);
     }
   }
 }
 
-- (void)requestSystemInfoWithCompletion:(id)a3
+- (void)requestSystemInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__RPLegacySession_requestSystemInfoWithCompletion___block_invoke;
   v6[3] = &unk_1E7C93780;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(RPLegacySession *)self sendRequestID:@"_systemInfo" options:&unk_1F2EEC9B8 request:MEMORY[0x1E695E0F8] responseHandler:v6];
 }
 

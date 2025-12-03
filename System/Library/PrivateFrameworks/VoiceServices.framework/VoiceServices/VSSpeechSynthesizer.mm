@@ -1,89 +1,89 @@
 @interface VSSpeechSynthesizer
-+ (BOOL)playVoicePreviewForLanguageCode:(id)a3 voiceName:(id)a4 previewType:(int64_t)a5 completion:(id)a6;
++ (BOOL)playVoicePreviewForLanguageCode:(id)code voiceName:(id)name previewType:(int64_t)type completion:(id)completion;
 + (VSSpeechSynthesizer)sharedInstance;
-+ (id)characterClassCountForUtterance:(id)a3 language:(id)a4;
-+ (id)errorWithReason:(id)a3;
-+ (id)validateAudioCachingRequest:(id)a3;
-+ (id)validateAudioRequest:(id)a3;
-+ (id)validatePrewarmRequest:(id)a3;
-+ (id)validateRequest:(id)a3;
++ (id)characterClassCountForUtterance:(id)utterance language:(id)language;
++ (id)errorWithReason:(id)reason;
++ (id)validateAudioCachingRequest:(id)request;
++ (id)validateAudioRequest:(id)request;
++ (id)validatePrewarmRequest:(id)request;
++ (id)validateRequest:(id)request;
 + (void)stopPlayingVoicePreview;
 - (BOOL)STS_isSpeaking;
-- (BOOL)continueSpeakingWithError:(id *)a3;
-- (BOOL)getAveragePower:(float *)a3 andPeakPower:(float *)a4;
+- (BOOL)continueSpeakingWithError:(id *)error;
+- (BOOL)getAveragePower:(float *)power andPeakPower:(float *)peakPower;
 - (BOOL)isSpeaking;
 - (BOOL)isSystemSpeaking;
 - (BOOL)keepActive;
-- (BOOL)pauseSpeakingAtNextBoundary:(int64_t)a3 synchronously:(BOOL)a4 error:(id *)a5;
-- (BOOL)queryPhaticCapability:(id)a3;
-- (BOOL)stopSpeakingAtNextBoundary:(int64_t)a3 synchronously:(BOOL)a4 error:(id *)a5;
-- (BOOL)stopSpeakingPresynthesizedAudioSynchronously:(BOOL)a3 error:(id *)a4;
-- (VSSpeechSynthesizer)initWithAccessoryID:(id)a3;
+- (BOOL)pauseSpeakingAtNextBoundary:(int64_t)boundary synchronously:(BOOL)synchronously error:(id *)error;
+- (BOOL)queryPhaticCapability:(id)capability;
+- (BOOL)stopSpeakingAtNextBoundary:(int64_t)boundary synchronously:(BOOL)synchronously error:(id *)error;
+- (BOOL)stopSpeakingPresynthesizedAudioSynchronously:(BOOL)synchronously error:(id *)error;
+- (VSSpeechSynthesizer)initWithAccessoryID:(id)d;
 - (VSSpeechSynthesizerDelegate)delegate;
-- (double)STS_estimateDurationOfRequest:(id)a3;
-- (double)estimateDurationOfRequest:(id)a3;
-- (id)STS_prewarmRequest:(id)a3;
-- (id)STS_signalInlineStreaming:(id)a3;
-- (id)STS_startSpeakingAudioRequest:(id)a3;
-- (id)STS_startSpeakingRequest:(id)a3;
-- (id)STS_startSynthesizingRequest:(id)a3;
+- (double)STS_estimateDurationOfRequest:(id)request;
+- (double)estimateDurationOfRequest:(id)request;
+- (id)STS_prewarmRequest:(id)request;
+- (id)STS_signalInlineStreaming:(id)streaming;
+- (id)STS_startSpeakingAudioRequest:(id)request;
+- (id)STS_startSpeakingRequest:(id)request;
+- (id)STS_startSynthesizingRequest:(id)request;
 - (id)_continueSpeakingRequest;
-- (id)_pauseSpeakingRequestAtNextBoundary:(int64_t)a3 synchronously:(BOOL)a4;
-- (id)_stopSpeakingPresynthesizedAudioRequest:(id)a3 synchronously:(BOOL)a4;
-- (id)_stopSpeakingRequest:(id)a3 atNextBoundary:(int64_t)a4 synchronously:(BOOL)a5;
+- (id)_pauseSpeakingRequestAtNextBoundary:(int64_t)boundary synchronously:(BOOL)synchronously;
+- (id)_stopSpeakingPresynthesizedAudioRequest:(id)request synchronously:(BOOL)synchronously;
+- (id)_stopSpeakingRequest:(id)request atNextBoundary:(int64_t)boundary synchronously:(BOOL)synchronously;
 - (id)availableLanguageCodes;
-- (id)availableVoicesForLanguageCode:(id)a3;
-- (id)cachePresynthesizedAudioRequest:(id)a3;
-- (id)errorFromSTSError:(id)a3;
+- (id)availableVoicesForLanguageCode:(id)code;
+- (id)cachePresynthesizedAudioRequest:(id)request;
+- (id)errorFromSTSError:(id)error;
 - (id)initForInputFeedback;
-- (id)prewarmIfNeededWithRequest:(id)a3;
+- (id)prewarmIfNeededWithRequest:(id)request;
 - (id)speechString;
-- (id)startSpeakingPresynthesizedAudioRequest:(id)a3;
-- (id)startSpeakingRequest:(id)a3;
-- (id)startSynthesizingRequest:(id)a3;
-- (void)STS_cancelAudioRequest:(id)a3;
-- (void)STS_cancelRequest:(id)a3;
-- (void)STS_downloadedVoicesMatching:(id)a3 reply:(id)a4;
-- (void)STS_estimateDurationOfRequest:(id)a3 completion:(id)a4;
-- (void)STS_getSynthesisVoiceMatching:(id)a3 reply:(id)a4;
-- (void)STS_queryPhaticCapabilityWithRequest:(id)a3 reply:(id)a4;
-- (void)STS_subscribeVoices:(id)a3;
-- (void)STS_subscribedVoices:(id)a3;
-- (void)STS_subscribedVoicesWithClientID:(id)a3 reply:(id)a4;
-- (void)STS_textToPhonemesWithRequest:(id)a3 phonemeSystem:(int64_t)a4 completion:(id)a5;
-- (void)_setDelegate:(id)a3;
-- (void)beginAudioPowerUpdateWithReply:(id)a3;
-- (void)cancelAudioRequest:(id)a3;
-- (void)cancelRequest:(id)a3;
-- (void)cleanUnusedAssets:(id)a3;
-- (void)connection:(id)a3 invalidatedWithError:(id)a4;
-- (void)connection:(id)a3 presynthesizedAudioRequest:(id)a4 didStopAtEnd:(BOOL)a5 error:(id)a6;
-- (void)connection:(id)a3 presynthesizedAudioRequest:(id)a4 successWithInstrumentMetrics:(id)a5 error:(id)a6;
-- (void)connection:(id)a3 presynthesizedAudioRequestDidStart:(id)a4;
-- (void)connection:(id)a3 speechRequest:(id)a4 didGenerateAudioChunk:(id)a5;
-- (void)connection:(id)a3 speechRequest:(id)a4 didReceiveTimingInfo:(id)a5;
-- (void)connection:(id)a3 speechRequest:(id)a4 didStopAtEnd:(BOOL)a5 phonemesSpoken:(id)a6 error:(id)a7;
-- (void)connection:(id)a3 speechRequest:(id)a4 successWithInstrumentMetrics:(id)a5;
-- (void)connection:(id)a3 speechRequest:(id)a4 willSpeakMark:(int64_t)a5 inRange:(_NSRange)a6;
-- (void)connection:(id)a3 speechRequestDidContinue:(id)a4;
-- (void)connection:(id)a3 speechRequestDidPause:(id)a4;
-- (void)connection:(id)a3 speechRequestDidStart:(id)a4;
-- (void)connection:(id)a3 synthesisRequest:(id)a4 didFinishWithInstrumentMetrics:(id)a5 error:(id)a6;
+- (id)startSpeakingPresynthesizedAudioRequest:(id)request;
+- (id)startSpeakingRequest:(id)request;
+- (id)startSynthesizingRequest:(id)request;
+- (void)STS_cancelAudioRequest:(id)request;
+- (void)STS_cancelRequest:(id)request;
+- (void)STS_downloadedVoicesMatching:(id)matching reply:(id)reply;
+- (void)STS_estimateDurationOfRequest:(id)request completion:(id)completion;
+- (void)STS_getSynthesisVoiceMatching:(id)matching reply:(id)reply;
+- (void)STS_queryPhaticCapabilityWithRequest:(id)request reply:(id)reply;
+- (void)STS_subscribeVoices:(id)voices;
+- (void)STS_subscribedVoices:(id)voices;
+- (void)STS_subscribedVoicesWithClientID:(id)d reply:(id)reply;
+- (void)STS_textToPhonemesWithRequest:(id)request phonemeSystem:(int64_t)system completion:(id)completion;
+- (void)_setDelegate:(id)delegate;
+- (void)beginAudioPowerUpdateWithReply:(id)reply;
+- (void)cancelAudioRequest:(id)request;
+- (void)cancelRequest:(id)request;
+- (void)cleanUnusedAssets:(id)assets;
+- (void)connection:(id)connection invalidatedWithError:(id)error;
+- (void)connection:(id)connection presynthesizedAudioRequest:(id)request didStopAtEnd:(BOOL)end error:(id)error;
+- (void)connection:(id)connection presynthesizedAudioRequest:(id)request successWithInstrumentMetrics:(id)metrics error:(id)error;
+- (void)connection:(id)connection presynthesizedAudioRequestDidStart:(id)start;
+- (void)connection:(id)connection speechRequest:(id)request didGenerateAudioChunk:(id)chunk;
+- (void)connection:(id)connection speechRequest:(id)request didReceiveTimingInfo:(id)info;
+- (void)connection:(id)connection speechRequest:(id)request didStopAtEnd:(BOOL)end phonemesSpoken:(id)spoken error:(id)error;
+- (void)connection:(id)connection speechRequest:(id)request successWithInstrumentMetrics:(id)metrics;
+- (void)connection:(id)connection speechRequest:(id)request willSpeakMark:(int64_t)mark inRange:(_NSRange)range;
+- (void)connection:(id)connection speechRequestDidContinue:(id)continue;
+- (void)connection:(id)connection speechRequestDidPause:(id)pause;
+- (void)connection:(id)connection speechRequestDidStart:(id)start;
+- (void)connection:(id)connection synthesisRequest:(id)request didFinishWithInstrumentMetrics:(id)metrics error:(id)error;
 - (void)endAudioPowerUpdate;
-- (void)estimateDurationOfRequest:(id)a3 completion:(id)a4;
-- (void)forwardStreamObject:(id)a3;
-- (void)getAllAutoDownloadedVoiceAssets:(id)a3;
-- (void)getAutoDownloadedVoiceAssets:(id)a3;
-- (void)getLocalVoiceAssets:(id)a3;
-- (void)getLocalVoiceAssetsForLanguage:(id)a3 reply:(id)a4;
-- (void)getVoiceInfoForLanguageCode:(id)a3 name:(id)a4 footprint:(int64_t)a5 gender:(int64_t)a6 type:(int64_t)a7 reply:(id)a8;
-- (void)getVoiceInfoForLanguageCode:(id)a3 name:(id)a4 type:(int64_t)a5 footprint:(int64_t)a6 reply:(id)a7;
-- (void)playVoicePreviewForLanguageCode:(id)a3 voiceName:(id)a4 previewType:(int64_t)a5 completion:(id)a6;
-- (void)setAutoDownloadedVoiceAssets:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)estimateDurationOfRequest:(id)request completion:(id)completion;
+- (void)forwardStreamObject:(id)object;
+- (void)getAllAutoDownloadedVoiceAssets:(id)assets;
+- (void)getAutoDownloadedVoiceAssets:(id)assets;
+- (void)getLocalVoiceAssets:(id)assets;
+- (void)getLocalVoiceAssetsForLanguage:(id)language reply:(id)reply;
+- (void)getVoiceInfoForLanguageCode:(id)code name:(id)name footprint:(int64_t)footprint gender:(int64_t)gender type:(int64_t)type reply:(id)reply;
+- (void)getVoiceInfoForLanguageCode:(id)code name:(id)name type:(int64_t)type footprint:(int64_t)footprint reply:(id)reply;
+- (void)playVoicePreviewForLanguageCode:(id)code voiceName:(id)name previewType:(int64_t)type completion:(id)completion;
+- (void)setAutoDownloadedVoiceAssets:(id)assets;
+- (void)setDelegate:(id)delegate;
 - (void)stopPlayingVoicePreview;
-- (void)textToPhonemesWithRequest:(id)a3 phonemeSystem:(int64_t)a4 completion:(id)a5;
-- (void)triggerCellularDownloadedVoiceAssets:(id)a3;
+- (void)textToPhonemesWithRequest:(id)request phonemeSystem:(int64_t)system completion:(id)completion;
+- (void)triggerCellularDownloadedVoiceAssets:(id)assets;
 @end
 
 @implementation VSSpeechSynthesizer
@@ -99,33 +99,33 @@
 {
   if (+[VSFeatureFlags useSiriTTSServiceV2])
   {
-    v2 = [MEMORY[0x277D61428] availableLanguages];
+    availableLanguages = [MEMORY[0x277D61428] availableLanguages];
   }
 
   else
   {
-    v2 = VSPreferencesCopyAvailableOutputLanguageIdentifiers();
+    availableLanguages = VSPreferencesCopyAvailableOutputLanguageIdentifiers();
   }
 
-  v3 = v2;
-  v4 = [v2 allObjects];
+  v3 = availableLanguages;
+  allObjects = [availableLanguages allObjects];
 
-  return v4;
+  return allObjects;
 }
 
-- (id)availableVoicesForLanguageCode:(id)a3
+- (id)availableVoicesForLanguageCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   if (+[VSFeatureFlags useSiriTTSServiceV2])
   {
     v5 = dispatch_semaphore_create(0);
-    v6 = [objc_alloc(MEMORY[0x277D61470]) initWithLanguage:v4 name:0];
-    v7 = [MEMORY[0x277CBEB18] array];
+    v6 = [objc_alloc(MEMORY[0x277D61470]) initWithLanguage:codeCopy name:0];
+    array = [MEMORY[0x277CBEB18] array];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __54__VSSpeechSynthesizer_availableVoicesForLanguageCode___block_invoke;
     v13[3] = &unk_279E4F708;
-    v8 = v7;
+    v8 = array;
     v14 = v8;
     v15 = v5;
     v9 = v5;
@@ -137,7 +137,7 @@
 
   else
   {
-    v11 = [(VSSpeechConnection *)self->_xpcConnection availableVoicesForLanguageCode:v4];
+    v11 = [(VSSpeechConnection *)self->_xpcConnection availableVoicesForLanguageCode:codeCopy];
   }
 
   return v11;
@@ -185,41 +185,41 @@ void __54__VSSpeechSynthesizer_availableVoicesForLanguageCode___block_invoke(uin
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getVoiceInfoForLanguageCode:(id)a3 name:(id)a4 type:(int64_t)a5 footprint:(int64_t)a6 reply:(id)a7
+- (void)getVoiceInfoForLanguageCode:(id)code name:(id)name type:(int64_t)type footprint:(int64_t)footprint reply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  codeCopy = code;
+  nameCopy = name;
+  replyCopy = reply;
   if (+[VSFeatureFlags useSiriTTSServiceV2])
   {
-    v15 = [objc_alloc(MEMORY[0x277D61470]) initWithLanguage:v12 name:v13];
-    [v15 setFootprint:a6];
-    [v15 setType:a5];
+    v15 = [objc_alloc(MEMORY[0x277D61470]) initWithLanguage:codeCopy name:nameCopy];
+    [v15 setFootprint:footprint];
+    [v15 setType:type];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __77__VSSpeechSynthesizer_getVoiceInfoForLanguageCode_name_type_footprint_reply___block_invoke;
     v16[3] = &unk_279E4F6E0;
-    v17 = v14;
+    v17 = replyCopy;
     [(VSSpeechSynthesizer *)self STS_getSynthesisVoiceMatching:v15 reply:v16];
   }
 
   else
   {
-    [(VSSpeechConnection *)self->_xpcConnection getVoiceInfoForLanguageCode:v12 name:v13 footprint:a6 gender:0 type:a5 reply:v14];
+    [(VSSpeechConnection *)self->_xpcConnection getVoiceInfoForLanguageCode:codeCopy name:nameCopy footprint:footprint gender:0 type:type reply:replyCopy];
   }
 }
 
-- (void)getVoiceInfoForLanguageCode:(id)a3 name:(id)a4 footprint:(int64_t)a5 gender:(int64_t)a6 type:(int64_t)a7 reply:(id)a8
+- (void)getVoiceInfoForLanguageCode:(id)code name:(id)name footprint:(int64_t)footprint gender:(int64_t)gender type:(int64_t)type reply:(id)reply
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
+  codeCopy = code;
+  nameCopy = name;
+  replyCopy = reply;
   if (+[VSFeatureFlags useSiriTTSServiceV2])
   {
-    v17 = [objc_alloc(MEMORY[0x277D61470]) initWithLanguage:v14 name:v15];
-    [v17 setFootprint:a5];
-    [v17 setType:a7];
-    [(VSSpeechSynthesizer *)self STS_getSynthesisVoiceMatching:v17 reply:v16];
+    v17 = [objc_alloc(MEMORY[0x277D61470]) initWithLanguage:codeCopy name:nameCopy];
+    [v17 setFootprint:footprint];
+    [v17 setType:type];
+    [(VSSpeechSynthesizer *)self STS_getSynthesisVoiceMatching:v17 reply:replyCopy];
   }
 
   else
@@ -229,31 +229,31 @@ void __54__VSSpeechSynthesizer_availableVoicesForLanguageCode___block_invoke(uin
     v19[1] = 3221225472;
     v19[2] = __84__VSSpeechSynthesizer_getVoiceInfoForLanguageCode_name_footprint_gender_type_reply___block_invoke;
     v19[3] = &unk_279E4F6B8;
-    v20 = v16;
-    [(VSSpeechConnection *)xpcConnection getVoiceInfoForLanguageCode:v14 name:v15 footprint:a5 gender:a6 type:a7 reply:v19];
+    v20 = replyCopy;
+    [(VSSpeechConnection *)xpcConnection getVoiceInfoForLanguageCode:codeCopy name:nameCopy footprint:footprint gender:gender type:type reply:v19];
   }
 }
 
-- (void)getAllAutoDownloadedVoiceAssets:(id)a3
+- (void)getAllAutoDownloadedVoiceAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   if (+[VSFeatureFlags useSiriTTSServiceV2])
   {
-    [(VSSpeechSynthesizer *)self STS_subscribedVoicesWithClientID:0 reply:v4];
+    [(VSSpeechSynthesizer *)self STS_subscribedVoicesWithClientID:0 reply:assetsCopy];
   }
 
   else
   {
-    [(VSSpeechConnection *)self->_xpcConnection getAllVoiceSubscriptionsWithReply:v4];
+    [(VSSpeechConnection *)self->_xpcConnection getAllVoiceSubscriptionsWithReply:assetsCopy];
   }
 }
 
-- (void)getAutoDownloadedVoiceAssets:(id)a3
+- (void)getAutoDownloadedVoiceAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   if (+[VSFeatureFlags useSiriTTSServiceV2])
   {
-    [(VSSpeechSynthesizer *)self STS_subscribedVoices:v4];
+    [(VSSpeechSynthesizer *)self STS_subscribedVoices:assetsCopy];
   }
 
   else
@@ -261,7 +261,7 @@ void __54__VSSpeechSynthesizer_availableVoicesForLanguageCode___block_invoke(uin
     clientBundleIdentifier = self->_clientBundleIdentifier;
     if (clientBundleIdentifier)
     {
-      [(VSSpeechConnection *)self->_xpcConnection getSubscribedVoiceAssetsWithClientID:clientBundleIdentifier forAccessoryID:self->_accessoryID reply:v4];
+      [(VSSpeechConnection *)self->_xpcConnection getSubscribedVoiceAssetsWithClientID:clientBundleIdentifier forAccessoryID:self->_accessoryID reply:assetsCopy];
     }
 
     else
@@ -273,19 +273,19 @@ void __54__VSSpeechSynthesizer_availableVoicesForLanguageCode___block_invoke(uin
         _os_log_error_impl(&dword_272850000, v6, OS_LOG_TYPE_ERROR, "Ignore get voice subscription due to null clientId.", v7, 2u);
       }
 
-      v4[2](v4, 0);
+      assetsCopy[2](assetsCopy, 0);
     }
   }
 }
 
-- (void)triggerCellularDownloadedVoiceAssets:(id)a3
+- (void)triggerCellularDownloadedVoiceAssets:(id)assets
 {
   v40 = *MEMORY[0x277D85DE8];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = a3;
+  obj = assets;
   v3 = [obj countByEnumeratingWithState:&v23 objects:v39 count:16];
   if (v3)
   {
@@ -310,26 +310,26 @@ void __54__VSSpeechSynthesizer_availableVoicesForLanguageCode___block_invoke(uin
         {
           v10 = v6;
           clientBundleIdentifier = self->_clientBundleIdentifier;
-          v12 = [v8 languages];
-          v13 = [v12 firstObject];
-          v14 = [v8 gender];
-          v15 = [v8 type];
-          v16 = [v8 footprint];
-          v17 = [v8 name];
+          languages = [v8 languages];
+          firstObject = [languages firstObject];
+          gender = [v8 gender];
+          type = [v8 type];
+          footprint = [v8 footprint];
+          name = [v8 name];
           *buf = v19;
           v28 = clientBundleIdentifier;
           v6 = v10;
           v5 = v21;
           v29 = 2114;
-          v30 = v13;
+          v30 = firstObject;
           v31 = 2048;
-          v32 = v14;
+          v32 = gender;
           v33 = 2048;
-          v34 = v15;
+          v34 = type;
           v35 = 2048;
-          v36 = v16;
+          v36 = footprint;
           v37 = 2114;
-          v38 = v17;
+          v38 = name;
           _os_log_impl(&dword_272850000, v9, OS_LOG_TYPE_DEFAULT, "Request to download with cellular, client: %{public}@, language: %{public}@, gender: %ld, type: %ld, footprint: %ld, name: %{public}@", buf, 0x3Eu);
         }
 
@@ -348,13 +348,13 @@ void __54__VSSpeechSynthesizer_availableVoicesForLanguageCode___block_invoke(uin
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAutoDownloadedVoiceAssets:(id)a3
+- (void)setAutoDownloadedVoiceAssets:(id)assets
 {
   v68 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetsCopy = assets;
   if (+[VSFeatureFlags useSiriTTSServiceV2])
   {
-    [(VSSpeechSynthesizer *)self STS_subscribeVoices:v4];
+    [(VSSpeechSynthesizer *)self STS_subscribeVoices:assetsCopy];
     goto LABEL_42;
   }
 
@@ -363,7 +363,7 @@ void __54__VSSpeechSynthesizer_availableVoicesForLanguageCode___block_invoke(uin
   {
     clientBundleIdentifier = self->_clientBundleIdentifier;
     accessoryID = self->_accessoryID;
-    v8 = __52__VSSpeechSynthesizer_setAutoDownloadedVoiceAssets___block_invoke(v4);
+    v8 = __52__VSSpeechSynthesizer_setAutoDownloadedVoiceAssets___block_invoke(assetsCopy);
     *buf = 138543874;
     v63 = clientBundleIdentifier;
     v64 = 2112;
@@ -375,21 +375,21 @@ void __54__VSSpeechSynthesizer_availableVoicesForLanguageCode___block_invoke(uin
 
   if (self->_clientBundleIdentifier)
   {
-    v41 = self;
-    v9 = [MEMORY[0x277CBEB18] array];
+    selfCopy = self;
+    array = [MEMORY[0x277CBEB18] array];
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v42 = v4;
-    v10 = v4;
+    v42 = assetsCopy;
+    v10 = assetsCopy;
     v46 = [v10 countByEnumeratingWithState:&v56 objects:v61 count:16];
     if (!v46)
     {
       goto LABEL_36;
     }
 
-    v44 = v9;
+    v44 = array;
     v45 = *v57;
     v43 = v10;
     while (1)
@@ -412,7 +412,7 @@ void __54__VSSpeechSynthesizer_availableVoicesForLanguageCode___block_invoke(uin
         {
 
 LABEL_33:
-          [v9 addObject:v12];
+          [array addObject:v12];
           continue;
         }
 
@@ -434,20 +434,20 @@ LABEL_33:
             v18 = *(*(&v52 + 1) + 8 * v17);
             if (v18 != v12)
             {
-              v19 = [v12 languages];
-              v20 = [v19 firstObject];
+              languages = [v12 languages];
+              firstObject = [languages firstObject];
               v51 = v18;
-              if (v20)
+              if (firstObject)
               {
-                v21 = v20;
-                v22 = [v18 languages];
-                v23 = [v22 firstObject];
+                v21 = firstObject;
+                languages2 = [v18 languages];
+                firstObject2 = [languages2 firstObject];
                 [v12 languages];
                 v24 = v16;
                 v25 = v12;
                 v27 = v26 = v13;
-                v28 = [v27 firstObject];
-                v50 = [v23 isEqualToString:v28];
+                firstObject3 = [v27 firstObject];
+                v50 = [firstObject2 isEqualToString:firstObject3];
 
                 v13 = v26;
                 v12 = v25;
@@ -464,16 +464,16 @@ LABEL_33:
               {
               }
 
-              v29 = [v12 name];
-              if (!v29)
+              name = [v12 name];
+              if (!name)
               {
                 goto LABEL_45;
               }
 
-              v30 = v29;
-              v31 = [v51 name];
-              v32 = [v12 name];
-              v33 = [v31 isEqualToString:v32];
+              v30 = name;
+              name2 = [v51 name];
+              name3 = [v12 name];
+              v33 = [name2 isEqualToString:name3];
 
               if (v33)
               {
@@ -499,7 +499,7 @@ LABEL_28:
         while (v15);
 
         v10 = v43;
-        v9 = v44;
+        array = v44;
         i = v47;
         if ((v48 & 1) == 0)
         {
@@ -515,9 +515,9 @@ LABEL_36:
         v36 = VSGetLogEvent();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
         {
-          v37 = v41->_clientBundleIdentifier;
-          v38 = v41->_accessoryID;
-          v39 = __52__VSSpeechSynthesizer_setAutoDownloadedVoiceAssets___block_invoke(v9);
+          v37 = selfCopy->_clientBundleIdentifier;
+          v38 = selfCopy->_accessoryID;
+          v39 = __52__VSSpeechSynthesizer_setAutoDownloadedVoiceAssets___block_invoke(array);
           *buf = 138543874;
           v63 = v37;
           v64 = 2112;
@@ -527,18 +527,18 @@ LABEL_36:
           _os_log_impl(&dword_272850000, v36, OS_LOG_TYPE_DEFAULT, "#VoiceSubscription, client: %{public}@, accessory: %@, deduped voices: %@", buf, 0x20u);
         }
 
-        [(VSSpeechConnection *)v41->_xpcConnection setSubscribedVoiceAssets:v9 withClientID:v41->_clientBundleIdentifier forAccessoryID:v41->_accessoryID];
-        v4 = v42;
+        [(VSSpeechConnection *)selfCopy->_xpcConnection setSubscribedVoiceAssets:array withClientID:selfCopy->_clientBundleIdentifier forAccessoryID:selfCopy->_accessoryID];
+        assetsCopy = v42;
         goto LABEL_41;
       }
     }
   }
 
-  v9 = VSGetLogDefault();
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  array = VSGetLogDefault();
+  if (os_log_type_enabled(array, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
-    _os_log_error_impl(&dword_272850000, v9, OS_LOG_TYPE_ERROR, "Ignore voice subscription due to null clientId.", buf, 2u);
+    _os_log_error_impl(&dword_272850000, array, OS_LOG_TYPE_ERROR, "Ignore voice subscription due to null clientId.", buf, 2u);
   }
 
 LABEL_41:
@@ -593,50 +593,50 @@ id __52__VSSpeechSynthesizer_setAutoDownloadedVoiceAssets___block_invoke(void *a
   return v17;
 }
 
-- (void)getLocalVoiceAssetsForLanguage:(id)a3 reply:(id)a4
+- (void)getLocalVoiceAssetsForLanguage:(id)language reply:(id)reply
 {
-  v8 = a3;
-  v6 = a4;
+  languageCopy = language;
+  replyCopy = reply;
   if (+[VSFeatureFlags useSiriTTSServiceV2])
   {
-    v7 = [objc_alloc(MEMORY[0x277D61470]) initWithLanguage:v8 name:0];
-    [(VSSpeechSynthesizer *)self STS_downloadedVoicesMatching:v7 reply:v6];
+    v7 = [objc_alloc(MEMORY[0x277D61470]) initWithLanguage:languageCopy name:0];
+    [(VSSpeechSynthesizer *)self STS_downloadedVoicesMatching:v7 reply:replyCopy];
   }
 
   else
   {
-    [(VSSpeechConnection *)self->_xpcConnection getLocalVoiceAssetsForLanguage:v8 reply:v6];
+    [(VSSpeechConnection *)self->_xpcConnection getLocalVoiceAssetsForLanguage:languageCopy reply:replyCopy];
   }
 }
 
-- (void)getLocalVoiceAssets:(id)a3
+- (void)getLocalVoiceAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   if (+[VSFeatureFlags useSiriTTSServiceV2])
   {
-    [(VSSpeechSynthesizer *)self STS_downloadedVoicesMatching:0 reply:v4];
+    [(VSSpeechSynthesizer *)self STS_downloadedVoicesMatching:0 reply:assetsCopy];
   }
 
   else
   {
-    [(VSSpeechConnection *)self->_xpcConnection getLocalVoiceAssetsForLanguage:0 reply:v4];
+    [(VSSpeechConnection *)self->_xpcConnection getLocalVoiceAssetsForLanguage:0 reply:assetsCopy];
   }
 }
 
-- (void)cleanUnusedAssets:(id)a3
+- (void)cleanUnusedAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   if (!+[VSFeatureFlags useSiriTTSServiceV2])
   {
-    [(VSSpeechConnection *)self->_xpcConnection cleanUnusedAssets:v4];
+    [(VSSpeechConnection *)self->_xpcConnection cleanUnusedAssets:assetsCopy];
   }
 }
 
-- (BOOL)getAveragePower:(float *)a3 andPeakPower:(float *)a4
+- (BOOL)getAveragePower:(float *)power andPeakPower:(float *)peakPower
 {
-  v7 = [(VSSpeechSynthesizer *)self isPlayingPreview];
+  isPlayingPreview = [(VSSpeechSynthesizer *)self isPlayingPreview];
 
-  if (v7)
+  if (isPlayingPreview)
   {
     return 0;
   }
@@ -662,8 +662,8 @@ id __52__VSSpeechSynthesizer_setAutoDownloadedVoiceAssets___block_invoke(void *a
   [(SiriTTSDaemonSession *)proxySession getAudioPower:v15];
   v12 = dispatch_time(0, 500000000);
   v13 = dispatch_semaphore_wait(v11, v12);
-  *a3 = v24[6];
-  *a4 = v20[6];
+  *power = v24[6];
+  *peakPower = v20[6];
   v8 = v13 == 0;
 
   _Block_object_dispose(&v19, 8);
@@ -688,9 +688,9 @@ intptr_t __52__VSSpeechSynthesizer_getAveragePower_andPeakPower___block_invoke(u
   self->_audioPowerUpdater = 0;
 }
 
-- (void)beginAudioPowerUpdateWithReply:(id)a3
+- (void)beginAudioPowerUpdateWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
   v6 = dispatch_queue_create("VSAudioPowerUpdateQueue", v5);
   audioPowerUpdaterQueue = self->_audioPowerUpdaterQueue;
@@ -724,29 +724,29 @@ intptr_t __52__VSSpeechSynthesizer_getAveragePower_andPeakPower___block_invoke(u
   v14[1] = 3221225472;
   v14[2] = __54__VSSpeechSynthesizer_beginAudioPowerUpdateWithReply___block_invoke;
   v14[3] = &unk_279E4F668;
-  v15 = v4;
-  v13 = v4;
+  v15 = replyCopy;
+  v13 = replyCopy;
   [(AFAudioPowerUpdater *)v12 createNewXPCWrapperWithCompletion:v14];
 }
 
-- (void)forwardStreamObject:(id)a3
+- (void)forwardStreamObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   if (+[VSFeatureFlags useSiriTTSService])
   {
-    [(VSSpeechSynthesizer *)self STS_forwardStreamObject:v4];
+    [(VSSpeechSynthesizer *)self STS_forwardStreamObject:objectCopy];
   }
 
   else
   {
-    [(VSSpeechConnection *)self->_xpcConnection forwardStreamObject:v4];
+    [(VSSpeechConnection *)self->_xpcConnection forwardStreamObject:objectCopy];
   }
 }
 
-- (void)connection:(id)a3 invalidatedWithError:(id)a4
+- (void)connection:(id)connection invalidatedWithError:(id)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 
@@ -762,17 +762,17 @@ intptr_t __52__VSSpeechSynthesizer_getAveragePower_andPeakPower___block_invoke(u
     }
 
     v10 = objc_loadWeakRetained(&self->_delegate);
-    [v10 speechSynthesizer:self daemonDidCrashWithError:v5];
+    [v10 speechSynthesizer:self daemonDidCrashWithError:errorCopy];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connection:(id)a3 presynthesizedAudioRequest:(id)a4 successWithInstrumentMetrics:(id)a5 error:(id)a6
+- (void)connection:(id)connection presynthesizedAudioRequest:(id)request successWithInstrumentMetrics:(id)metrics error:(id)error
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  requestCopy = request;
+  metricsCopy = metrics;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v13 = objc_opt_respondsToSelector();
 
@@ -784,9 +784,9 @@ intptr_t __52__VSSpeechSynthesizer_getAveragePower_andPeakPower___block_invoke(u
     v15[2] = __96__VSSpeechSynthesizer_connection_presynthesizedAudioRequest_successWithInstrumentMetrics_error___block_invoke;
     v15[3] = &unk_279E4F5A0;
     v15[4] = self;
-    v16 = v9;
-    v17 = v10;
-    v18 = v11;
+    v16 = requestCopy;
+    v17 = metricsCopy;
+    v18 = errorCopy;
     dispatch_async(callbackQueue, v15);
   }
 }
@@ -797,16 +797,16 @@ void __96__VSSpeechSynthesizer_connection_presynthesizedAudioRequest_successWith
   [WeakRetained speechSynthesizer:a1[4] didFinishPresynthesizedAudioRequest:a1[5] withInstrumentMetrics:a1[6] error:a1[7]];
 }
 
-- (void)connection:(id)a3 presynthesizedAudioRequest:(id)a4 didStopAtEnd:(BOOL)a5 error:(id)a6
+- (void)connection:(id)connection presynthesizedAudioRequest:(id)request didStopAtEnd:(BOOL)end error:(id)error
 {
-  v9 = a4;
-  v10 = a6;
-  v11 = [v9 stopHandler];
-  v12 = v11;
-  if (v11)
+  requestCopy = request;
+  errorCopy = error;
+  stopHandler = [requestCopy stopHandler];
+  v12 = stopHandler;
+  if (stopHandler)
   {
-    (*(v11 + 16))(v11);
-    [v9 setStopHandler:0];
+    (*(stopHandler + 16))(stopHandler);
+    [requestCopy setStopHandler:0];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -820,9 +820,9 @@ void __96__VSSpeechSynthesizer_connection_presynthesizedAudioRequest_successWith
     v16[2] = __80__VSSpeechSynthesizer_connection_presynthesizedAudioRequest_didStopAtEnd_error___block_invoke;
     v16[3] = &unk_279E4F640;
     v16[4] = self;
-    v17 = v9;
-    v19 = a5;
-    v18 = v10;
+    v17 = requestCopy;
+    endCopy = end;
+    v18 = errorCopy;
     dispatch_async(callbackQueue, v16);
   }
 }
@@ -833,9 +833,9 @@ void __80__VSSpeechSynthesizer_connection_presynthesizedAudioRequest_didStopAtEn
   [WeakRetained speechSynthesizer:*(a1 + 32) didStopPresynthesizedAudioRequest:*(a1 + 40) atEnd:*(a1 + 56) error:*(a1 + 48)];
 }
 
-- (void)connection:(id)a3 presynthesizedAudioRequestDidStart:(id)a4
+- (void)connection:(id)connection presynthesizedAudioRequestDidStart:(id)start
 {
-  v5 = a4;
+  startCopy = start;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 
@@ -847,7 +847,7 @@ void __80__VSSpeechSynthesizer_connection_presynthesizedAudioRequest_didStopAtEn
     v9[2] = __69__VSSpeechSynthesizer_connection_presynthesizedAudioRequestDidStart___block_invoke;
     v9[3] = &unk_279E4F808;
     v9[4] = self;
-    v10 = v5;
+    v10 = startCopy;
     dispatch_async(callbackQueue, v9);
   }
 }
@@ -858,23 +858,23 @@ void __69__VSSpeechSynthesizer_connection_presynthesizedAudioRequestDidStart___b
   [WeakRetained speechSynthesizer:*(a1 + 32) didStartPresynthesizedAudioRequest:*(a1 + 40)];
 }
 
-- (void)connection:(id)a3 synthesisRequest:(id)a4 didFinishWithInstrumentMetrics:(id)a5 error:(id)a6
+- (void)connection:(id)connection synthesisRequest:(id)request didFinishWithInstrumentMetrics:(id)metrics error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:v11];
-  v15 = [(VSSpeechSynthesizer *)self durationRequests];
-  v16 = [v15 objectForKey:v14];
+  connectionCopy = connection;
+  requestCopy = request;
+  metricsCopy = metrics;
+  errorCopy = error;
+  v14 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:requestCopy];
+  durationRequests = [(VSSpeechSynthesizer *)self durationRequests];
+  v16 = [durationRequests objectForKey:v14];
 
   if (v16)
   {
-    v17 = [v16 completion];
-    (v17)[2](v17, v11, v12, v13);
+    completion = [v16 completion];
+    (completion)[2](completion, requestCopy, metricsCopy, errorCopy);
 
-    v18 = [(VSSpeechSynthesizer *)self durationRequests];
-    [v18 removeObjectForKey:v14];
+    durationRequests2 = [(VSSpeechSynthesizer *)self durationRequests];
+    [durationRequests2 removeObjectForKey:v14];
   }
 
   else
@@ -884,11 +884,11 @@ void __69__VSSpeechSynthesizer_connection_presynthesizedAudioRequestDidStart___b
     block[1] = 3221225472;
     block[2] = __88__VSSpeechSynthesizer_connection_synthesisRequest_didFinishWithInstrumentMetrics_error___block_invoke;
     block[3] = &unk_279E4F618;
-    v21 = v10;
-    v22 = self;
-    v23 = v11;
-    v24 = v12;
-    v25 = v13;
+    v21 = connectionCopy;
+    selfCopy = self;
+    v23 = requestCopy;
+    v24 = metricsCopy;
+    v25 = errorCopy;
     dispatch_async(queue, block);
   }
 }
@@ -956,23 +956,23 @@ void __88__VSSpeechSynthesizer_connection_synthesisRequest_didFinishWithInstrume
   [WeakRetained speechSynthesizer:a1[4] didFinishSynthesisRequest:a1[5] withInstrumentMetrics:a1[6] error:a1[7]];
 }
 
-- (void)connection:(id)a3 speechRequest:(id)a4 didGenerateAudioChunk:(id)a5
+- (void)connection:(id)connection speechRequest:(id)request didGenerateAudioChunk:(id)chunk
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  connectionCopy = connection;
+  requestCopy = request;
+  chunkCopy = chunk;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __70__VSSpeechSynthesizer_connection_speechRequest_didGenerateAudioChunk___block_invoke;
   v15[3] = &unk_279E4F5A0;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = connectionCopy;
+  selfCopy = self;
+  v18 = requestCopy;
+  v19 = chunkCopy;
+  v12 = chunkCopy;
+  v13 = requestCopy;
+  v14 = connectionCopy;
   dispatch_async(queue, v15);
 }
 
@@ -1001,24 +1001,24 @@ void __70__VSSpeechSynthesizer_connection_speechRequest_didGenerateAudioChunk___
   [WeakRetained speechSynthesizer:a1[4] withSynthesisRequest:a1[5] didGenerateAudioChunk:a1[6]];
 }
 
-- (void)connection:(id)a3 speechRequest:(id)a4 willSpeakMark:(int64_t)a5 inRange:(_NSRange)a6
+- (void)connection:(id)connection speechRequest:(id)request willSpeakMark:(int64_t)mark inRange:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
-  v10 = a3;
-  v11 = a4;
+  length = range.length;
+  location = range.location;
+  connectionCopy = connection;
+  requestCopy = request;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__VSSpeechSynthesizer_connection_speechRequest_willSpeakMark_inRange___block_invoke;
   block[3] = &unk_279E4F5F0;
-  v16 = v10;
-  v17 = self;
+  v16 = connectionCopy;
+  selfCopy = self;
   v19 = location;
   v20 = length;
-  v18 = v11;
-  v13 = v11;
-  v14 = v10;
+  v18 = requestCopy;
+  v13 = requestCopy;
+  v14 = connectionCopy;
   dispatch_async(queue, block);
 }
 
@@ -1047,23 +1047,23 @@ void __70__VSSpeechSynthesizer_connection_speechRequest_willSpeakMark_inRange___
   [WeakRetained speechSynthesizer:a1[4] willSpeakRangeOfSpeechString:a1[6] forRequest:{a1[7], a1[5]}];
 }
 
-- (void)connection:(id)a3 speechRequest:(id)a4 didReceiveTimingInfo:(id)a5
+- (void)connection:(id)connection speechRequest:(id)request didReceiveTimingInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  connectionCopy = connection;
+  requestCopy = request;
+  infoCopy = info;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __69__VSSpeechSynthesizer_connection_speechRequest_didReceiveTimingInfo___block_invoke;
   v15[3] = &unk_279E4F5A0;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = connectionCopy;
+  selfCopy = self;
+  v18 = requestCopy;
+  v19 = infoCopy;
+  v12 = infoCopy;
+  v13 = requestCopy;
+  v14 = connectionCopy;
   dispatch_async(queue, v15);
 }
 
@@ -1098,23 +1098,23 @@ void __69__VSSpeechSynthesizer_connection_speechRequest_didReceiveTimingInfo___b
   [WeakRetained speechSynthesizer:a1[4] withRequest:a1[5] didReceiveTimingInfo:a1[6]];
 }
 
-- (void)connection:(id)a3 speechRequest:(id)a4 successWithInstrumentMetrics:(id)a5
+- (void)connection:(id)connection speechRequest:(id)request successWithInstrumentMetrics:(id)metrics
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  connectionCopy = connection;
+  requestCopy = request;
+  metricsCopy = metrics;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __77__VSSpeechSynthesizer_connection_speechRequest_successWithInstrumentMetrics___block_invoke;
   v15[3] = &unk_279E4F5A0;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = connectionCopy;
+  selfCopy = self;
+  v18 = requestCopy;
+  v19 = metricsCopy;
+  v12 = metricsCopy;
+  v13 = requestCopy;
+  v14 = connectionCopy;
   dispatch_async(queue, v15);
 }
 
@@ -1143,18 +1143,18 @@ void __77__VSSpeechSynthesizer_connection_speechRequest_successWithInstrumentMet
   [WeakRetained speechSynthesizer:a1[4] didFinishSpeakingRequest:a1[5] withInstrumentMetrics:a1[6]];
 }
 
-- (void)connection:(id)a3 speechRequest:(id)a4 didStopAtEnd:(BOOL)a5 phonemesSpoken:(id)a6 error:(id)a7
+- (void)connection:(id)connection speechRequest:(id)request didStopAtEnd:(BOOL)end phonemesSpoken:(id)spoken error:(id)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v13 stopHandler];
-  v17 = v16;
-  if (v16)
+  connectionCopy = connection;
+  requestCopy = request;
+  spokenCopy = spoken;
+  errorCopy = error;
+  stopHandler = [requestCopy stopHandler];
+  v17 = stopHandler;
+  if (stopHandler)
   {
-    (*(v16 + 16))(v16);
-    [v13 setStopHandler:0];
+    (*(stopHandler + 16))(stopHandler);
+    [requestCopy setStopHandler:0];
   }
 
   queue = self->_queue;
@@ -1162,16 +1162,16 @@ void __77__VSSpeechSynthesizer_connection_speechRequest_successWithInstrumentMet
   v23[1] = 3221225472;
   v23[2] = __82__VSSpeechSynthesizer_connection_speechRequest_didStopAtEnd_phonemesSpoken_error___block_invoke;
   v23[3] = &unk_279E4F578;
-  v24 = v12;
-  v25 = self;
-  v29 = a5;
-  v26 = v13;
-  v27 = v14;
-  v28 = v15;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
+  v24 = connectionCopy;
+  selfCopy = self;
+  endCopy = end;
+  v26 = requestCopy;
+  v27 = spokenCopy;
+  v28 = errorCopy;
+  v19 = errorCopy;
+  v20 = spokenCopy;
+  v21 = requestCopy;
+  v22 = connectionCopy;
   dispatch_async(queue, v23);
 }
 
@@ -1232,20 +1232,20 @@ void __82__VSSpeechSynthesizer_connection_speechRequest_didStopAtEnd_phonemesSpo
   [WeakRetained speechSynthesizer:*(a1 + 32) didFinishSpeakingRequest:*(a1 + 40) successfully:*(a1 + 64) phonemesSpoken:*(a1 + 48) withError:*(a1 + 56)];
 }
 
-- (void)connection:(id)a3 speechRequestDidContinue:(id)a4
+- (void)connection:(id)connection speechRequestDidContinue:(id)continue
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  continueCopy = continue;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__VSSpeechSynthesizer_connection_speechRequestDidContinue___block_invoke;
   block[3] = &unk_279E4F528;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = connectionCopy;
+  selfCopy = self;
+  v14 = continueCopy;
+  v9 = continueCopy;
+  v10 = connectionCopy;
   dispatch_async(queue, block);
 }
 
@@ -1273,16 +1273,16 @@ void __59__VSSpeechSynthesizer_connection_speechRequestDidContinue___block_invok
   [WeakRetained speechSynthesizer:*(a1 + 32) didContinueSpeakingRequest:*(a1 + 40)];
 }
 
-- (void)connection:(id)a3 speechRequestDidPause:(id)a4
+- (void)connection:(id)connection speechRequestDidPause:(id)pause
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 pauseHandler];
-  v9 = v8;
-  if (v8)
+  connectionCopy = connection;
+  pauseCopy = pause;
+  pauseHandler = [pauseCopy pauseHandler];
+  v9 = pauseHandler;
+  if (pauseHandler)
   {
-    (*(v8 + 16))(v8);
-    [v7 setPauseHandler:0];
+    (*(pauseHandler + 16))(pauseHandler);
+    [pauseCopy setPauseHandler:0];
   }
 
   queue = self->_queue;
@@ -1290,11 +1290,11 @@ void __59__VSSpeechSynthesizer_connection_speechRequestDidContinue___block_invok
   block[1] = 3221225472;
   block[2] = __56__VSSpeechSynthesizer_connection_speechRequestDidPause___block_invoke;
   block[3] = &unk_279E4F528;
-  v14 = v6;
-  v15 = self;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = connectionCopy;
+  selfCopy = self;
+  v16 = pauseCopy;
+  v11 = pauseCopy;
+  v12 = connectionCopy;
   dispatch_async(queue, block);
 }
 
@@ -1322,20 +1322,20 @@ void __56__VSSpeechSynthesizer_connection_speechRequestDidPause___block_invoke_2
   [WeakRetained speechSynthesizer:*(a1 + 32) didPauseSpeakingRequest:*(a1 + 40)];
 }
 
-- (void)connection:(id)a3 speechRequestDidStart:(id)a4
+- (void)connection:(id)connection speechRequestDidStart:(id)start
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  startCopy = start;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__VSSpeechSynthesizer_connection_speechRequestDidStart___block_invoke;
   block[3] = &unk_279E4F528;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = connectionCopy;
+  selfCopy = self;
+  v14 = startCopy;
+  v9 = startCopy;
+  v10 = connectionCopy;
   dispatch_async(queue, block);
 }
 
@@ -1363,19 +1363,19 @@ void __56__VSSpeechSynthesizer_connection_speechRequestDidStart___block_invoke_2
   [WeakRetained speechSynthesizer:*(a1 + 32) didStartSpeakingRequest:*(a1 + 40)];
 }
 
-- (void)textToPhonemesWithRequest:(id)a3 phonemeSystem:(int64_t)a4 completion:(id)a5
+- (void)textToPhonemesWithRequest:(id)request phonemeSystem:(int64_t)system completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  requestCopy = request;
+  completionCopy = completion;
   if (+[VSFeatureFlags useSiriTTSService])
   {
-    [(VSSpeechSynthesizer *)self STS_textToPhonemesWithRequest:v8 phonemeSystem:a4 completion:v9];
+    [(VSSpeechSynthesizer *)self STS_textToPhonemesWithRequest:requestCopy phonemeSystem:system completion:completionCopy];
   }
 
   else
   {
-    v10 = [VSSpeechSynthesizer validateRequest:v8];
+    v10 = [VSSpeechSynthesizer validateRequest:requestCopy];
     if (v10)
     {
       v11 = VSGetLogDefault();
@@ -1385,15 +1385,15 @@ void __56__VSSpeechSynthesizer_connection_speechRequestDidStart___block_invoke_2
         *buf = 138543874;
         v21 = clientBundleIdentifier;
         v22 = 2112;
-        v23 = v8;
+        v23 = requestCopy;
         v24 = 2112;
         v25 = v10;
         _os_log_error_impl(&dword_272850000, v11, OS_LOG_TYPE_ERROR, "Invalid #TTPRequest from client %{public}@: %@, error: %@", buf, 0x20u);
       }
 
-      if (v9)
+      if (completionCopy)
       {
-        v9[2](v9, &stru_2881D71A8, v10);
+        completionCopy[2](completionCopy, &stru_2881D71A8, v10);
       }
     }
 
@@ -1404,10 +1404,10 @@ void __56__VSSpeechSynthesizer_connection_speechRequestDidStart___block_invoke_2
       v15[1] = 3221225472;
       v15[2] = __74__VSSpeechSynthesizer_textToPhonemesWithRequest_phonemeSystem_completion___block_invoke;
       v15[3] = &unk_279E4F500;
-      v16 = v8;
-      v17 = self;
-      v19 = a4;
-      v18 = v9;
+      v16 = requestCopy;
+      selfCopy = self;
+      systemCopy = system;
+      v18 = completionCopy;
       dispatch_async(queue, v15);
     }
   }
@@ -1484,13 +1484,13 @@ void __74__VSSpeechSynthesizer_textToPhonemesWithRequest_phonemeSystem_completio
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)estimateDurationOfRequest:(id)a3 completion:(id)a4
+- (void)estimateDurationOfRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   if (+[VSFeatureFlags useSiriTTSServiceV2])
   {
-    [(VSSpeechSynthesizer *)self STS_estimateDurationOfRequest:v6 completion:v7];
+    [(VSSpeechSynthesizer *)self STS_estimateDurationOfRequest:requestCopy completion:completionCopy];
   }
 
   else
@@ -1500,9 +1500,9 @@ void __74__VSSpeechSynthesizer_textToPhonemesWithRequest_phonemeSystem_completio
     block[1] = 3221225472;
     block[2] = __60__VSSpeechSynthesizer_estimateDurationOfRequest_completion___block_invoke;
     block[3] = &unk_279E4FA90;
-    v10 = v6;
-    v11 = self;
-    v12 = v7;
+    v10 = requestCopy;
+    selfCopy = self;
+    v12 = completionCopy;
     dispatch_sync(queue, block);
   }
 }
@@ -1571,13 +1571,13 @@ void __60__VSSpeechSynthesizer_estimateDurationOfRequest_completion___block_invo
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (double)estimateDurationOfRequest:(id)a3
+- (double)estimateDurationOfRequest:(id)request
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   if (+[VSFeatureFlags useSiriTTSServiceV2])
   {
-    [(VSSpeechSynthesizer *)self STS_estimateDurationOfRequest:v4];
+    [(VSSpeechSynthesizer *)self STS_estimateDurationOfRequest:requestCopy];
     v6 = v5;
   }
 
@@ -1586,27 +1586,27 @@ void __60__VSSpeechSynthesizer_estimateDurationOfRequest_completion___block_invo
     v7 = VSGetLogDefault();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 logText];
+      logText = [requestCopy logText];
       v27 = 138412290;
-      v28 = *&v8;
+      v28 = *&logText;
       _os_log_impl(&dword_272850000, v7, OS_LOG_TYPE_DEFAULT, "#RoughEstimateDuration Request utterance: %@", &v27, 0xCu);
     }
 
-    v9 = [v4 languageCode];
-    v10 = [&unk_2881E1288 objectForKeyedSubscript:v9];
+    languageCode = [requestCopy languageCode];
+    v10 = [&unk_2881E1288 objectForKeyedSubscript:languageCode];
     if (v10)
     {
       goto LABEL_9;
     }
 
-    if ([(__CFString *)v9 length]>= 3)
+    if ([(__CFString *)languageCode length]>= 3)
     {
-      v11 = [(__CFString *)v9 substringWithRange:0, 2];
+      v11 = [(__CFString *)languageCode substringWithRange:0, 2];
 
-      v9 = v11;
+      languageCode = v11;
     }
 
-    v10 = [&unk_2881E1288 objectForKeyedSubscript:v9];
+    v10 = [&unk_2881E1288 objectForKeyedSubscript:languageCode];
     if (v10)
     {
 LABEL_9:
@@ -1616,16 +1616,16 @@ LABEL_9:
     else
     {
 
-      v9 = @"generic";
+      languageCode = @"generic";
       v12 = &unk_2881E0DD0;
     }
 
-    v13 = [v4 text];
-    v14 = [v4 languageCode];
-    v15 = [VSSpeechSynthesizer characterClassCountForUtterance:v13 language:v14];
+    text = [requestCopy text];
+    languageCode2 = [requestCopy languageCode];
+    v15 = [VSSpeechSynthesizer characterClassCountForUtterance:text language:languageCode2];
 
-    v16 = [v15 firstObject];
-    [v16 doubleValue];
+    firstObject = [v15 firstObject];
+    [firstObject doubleValue];
     v6 = v17 / 1000.0;
     if ([v15 count] >= 2)
     {
@@ -1633,10 +1633,10 @@ LABEL_9:
       do
       {
         v19 = [v15 objectAtIndexedSubscript:v18];
-        v20 = [v19 unsignedIntegerValue];
+        unsignedIntegerValue = [v19 unsignedIntegerValue];
         v21 = [v12 objectAtIndexedSubscript:v18 - 1];
         [v21 doubleValue];
-        v6 = v6 + v20 * v22;
+        v6 = v6 + unsignedIntegerValue * v22;
 
         ++v18;
       }
@@ -1647,13 +1647,13 @@ LABEL_9:
     v23 = VSGetLogDefault();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [v4 logText];
+      logText2 = [requestCopy logText];
       v27 = 134218498;
       v28 = v6;
       v29 = 2112;
-      v30 = v9;
+      v30 = languageCode;
       v31 = 2112;
-      v32 = v24;
+      v32 = logText2;
       _os_log_impl(&dword_272850000, v23, OS_LOG_TYPE_DEFAULT, "#RoughEstimateDuration calculated duration: %.2f, using %@ locale, for text: %@", &v27, 0x20u);
     }
   }
@@ -1665,23 +1665,23 @@ LABEL_9:
 - (id)_continueSpeakingRequest
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(VSSpeechConnection *)self->_xpcConnection currentRequest];
+  currentRequest = [(VSSpeechConnection *)self->_xpcConnection currentRequest];
   v4 = VSGetLogDefault();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (currentRequest)
   {
     if (v5)
     {
-      v6 = [v3 requestCreatedTimestamp];
+      requestCreatedTimestamp = [currentRequest requestCreatedTimestamp];
       clientBundleIdentifier = self->_clientBundleIdentifier;
       v11 = 134218242;
-      v12 = v6;
+      v12 = requestCreatedTimestamp;
       v13 = 2114;
       v14 = clientBundleIdentifier;
       _os_log_impl(&dword_272850000, v4, OS_LOG_TYPE_DEFAULT, "Resume #SpeechRequest %llu from client %{public}@", &v11, 0x16u);
     }
 
-    [(VSSpeechConnection *)self->_xpcConnection continueSpeechRequest:v3];
+    [(VSSpeechConnection *)self->_xpcConnection continueSpeechRequest:currentRequest];
   }
 
   else
@@ -1808,7 +1808,7 @@ uint64_t __33__VSSpeechSynthesizer_isSpeaking__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)continueSpeakingWithError:(id *)a3
+- (BOOL)continueSpeakingWithError:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -1824,9 +1824,9 @@ uint64_t __33__VSSpeechSynthesizer_isSpeaking__block_invoke(uint64_t a1)
   v7[4] = self;
   v7[5] = &v8;
   dispatch_sync(queue, v7);
-  if (a3)
+  if (error)
   {
-    *a3 = v9[5];
+    *error = v9[5];
   }
 
   v5 = v9[5] == 0;
@@ -1843,7 +1843,7 @@ void __49__VSSpeechSynthesizer_continueSpeakingWithError___block_invoke(uint64_t
   *(v3 + 40) = v2;
 }
 
-- (BOOL)pauseSpeakingAtNextBoundary:(int64_t)a3 synchronously:(BOOL)a4 error:(id *)a5
+- (BOOL)pauseSpeakingAtNextBoundary:(int64_t)boundary synchronously:(BOOL)synchronously error:(id *)error
 {
   v11 = 0;
   v12 = &v11;
@@ -1858,12 +1858,12 @@ void __49__VSSpeechSynthesizer_continueSpeakingWithError___block_invoke(uint64_t
   v9[3] = &unk_279E4F438;
   v9[4] = self;
   v9[5] = &v11;
-  v9[6] = a3;
-  v10 = a4;
+  v9[6] = boundary;
+  synchronouslyCopy = synchronously;
   dispatch_sync(queue, v9);
-  if (a5)
+  if (error)
   {
-    *a5 = v12[5];
+    *error = v12[5];
   }
 
   v7 = v12[5] == 0;
@@ -1880,7 +1880,7 @@ void __71__VSSpeechSynthesizer_pauseSpeakingAtNextBoundary_synchronously_error__
   *(v3 + 40) = v2;
 }
 
-- (BOOL)stopSpeakingPresynthesizedAudioSynchronously:(BOOL)a3 error:(id *)a4
+- (BOOL)stopSpeakingPresynthesizedAudioSynchronously:(BOOL)synchronously error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
   if (+[VSFeatureFlags useSiriTTSService])
@@ -1889,8 +1889,8 @@ void __71__VSSpeechSynthesizer_pauseSpeakingAtNextBoundary_synchronously_error__
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v7 = [(NSMutableDictionary *)self->_stsRequestMapping allValues];
-    v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    allValues = [(NSMutableDictionary *)self->_stsRequestMapping allValues];
+    v8 = [allValues countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1901,13 +1901,13 @@ void __71__VSSpeechSynthesizer_pauseSpeakingAtNextBoundary_synchronously_error__
         {
           if (*v25 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
           [(SiriTTSDaemonSession *)self->_proxySession cancelWithRequest:*(*(&v24 + 1) + 8 * i)];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v9);
@@ -1931,11 +1931,11 @@ void __71__VSSpeechSynthesizer_pauseSpeakingAtNextBoundary_synchronously_error__
     block[3] = &unk_279E4F460;
     block[4] = self;
     block[5] = &v18;
-    v17 = a3;
+    synchronouslyCopy = synchronously;
     dispatch_sync(queue, block);
-    if (a4)
+    if (error)
     {
-      *a4 = v19[5];
+      *error = v19[5];
     }
 
     v12 = v19[5] == 0;
@@ -1971,7 +1971,7 @@ void __74__VSSpeechSynthesizer_stopSpeakingPresynthesizedAudioSynchronously_erro
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)stopSpeakingAtNextBoundary:(int64_t)a3 synchronously:(BOOL)a4 error:(id *)a5
+- (BOOL)stopSpeakingAtNextBoundary:(int64_t)boundary synchronously:(BOOL)synchronously error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
   if (+[VSFeatureFlags useSiriTTSService])
@@ -1980,8 +1980,8 @@ void __74__VSSpeechSynthesizer_stopSpeakingPresynthesizedAudioSynchronously_erro
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v9 = [(NSMutableDictionary *)self->_stsRequestMapping allValues];
-    v10 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    allValues = [(NSMutableDictionary *)self->_stsRequestMapping allValues];
+    v10 = [allValues countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1992,13 +1992,13 @@ void __74__VSSpeechSynthesizer_stopSpeakingPresynthesizedAudioSynchronously_erro
         {
           if (*v27 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allValues);
           }
 
           [(SiriTTSDaemonSession *)self->_proxySession cancelWithRequest:*(*(&v26 + 1) + 8 * i)];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v11 = [allValues countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v11);
@@ -2022,12 +2022,12 @@ void __74__VSSpeechSynthesizer_stopSpeakingPresynthesizedAudioSynchronously_erro
     v18[3] = &unk_279E4F438;
     v18[4] = self;
     v18[5] = &v20;
-    v18[6] = a3;
-    v19 = a4;
+    v18[6] = boundary;
+    synchronouslyCopy = synchronously;
     dispatch_sync(queue, v18);
-    if (a5)
+    if (error)
     {
-      *a5 = v21[5];
+      *error = v21[5];
     }
 
     v14 = v21[5] == 0;
@@ -2063,24 +2063,24 @@ void __70__VSSpeechSynthesizer_stopSpeakingAtNextBoundary_synchronously_error___
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelAudioRequest:(id)a3
+- (void)cancelAudioRequest:(id)request
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   if (+[VSFeatureFlags useSiriTTSService])
   {
-    [(VSSpeechSynthesizer *)self STS_cancelAudioRequest:v4];
+    [(VSSpeechSynthesizer *)self STS_cancelAudioRequest:requestCopy];
   }
 
-  else if (v4)
+  else if (requestCopy)
   {
     queue = self->_queue;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __42__VSSpeechSynthesizer_cancelAudioRequest___block_invoke;
     v9[3] = &unk_279E4F808;
-    v10 = v4;
-    v11 = self;
+    v10 = requestCopy;
+    selfCopy = self;
     dispatch_sync(queue, v9);
   }
 
@@ -2119,24 +2119,24 @@ uint64_t __42__VSSpeechSynthesizer_cancelAudioRequest___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)cancelRequest:(id)a3
+- (void)cancelRequest:(id)request
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   if (+[VSFeatureFlags useSiriTTSService])
   {
-    [(VSSpeechSynthesizer *)self STS_cancelRequest:v4];
+    [(VSSpeechSynthesizer *)self STS_cancelRequest:requestCopy];
   }
 
-  else if (v4)
+  else if (requestCopy)
   {
     queue = self->_queue;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __37__VSSpeechSynthesizer_cancelRequest___block_invoke;
     v9[3] = &unk_279E4F808;
-    v10 = v4;
-    v11 = self;
+    v10 = requestCopy;
+    selfCopy = self;
     dispatch_sync(queue, v9);
   }
 
@@ -2175,25 +2175,25 @@ uint64_t __37__VSSpeechSynthesizer_cancelRequest___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)cachePresynthesizedAudioRequest:(id)a3
+- (id)cachePresynthesizedAudioRequest:(id)request
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   if (+[VSFeatureFlags useSiriTTSService])
   {
-    v5 = [(VSSpeechSynthesizer *)self STS_signalInlineStreaming:v4];
+    v5 = [(VSSpeechSynthesizer *)self STS_signalInlineStreaming:requestCopy];
   }
 
   else
   {
-    v5 = [VSSpeechSynthesizer validateAudioCachingRequest:v4];
+    v5 = [VSSpeechSynthesizer validateAudioCachingRequest:requestCopy];
     if (v5)
     {
       v6 = VSGetLogDefault();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v15 = v4;
+        v15 = requestCopy;
         v16 = 2112;
         v17 = v5;
         _os_log_error_impl(&dword_272850000, v6, OS_LOG_TYPE_ERROR, "Invalid #AudioCachingRequest: %@, error: %@", buf, 0x16u);
@@ -2209,8 +2209,8 @@ uint64_t __37__VSSpeechSynthesizer_cancelRequest___block_invoke(uint64_t a1)
       v11[1] = 3221225472;
       v11[2] = __55__VSSpeechSynthesizer_cachePresynthesizedAudioRequest___block_invoke;
       v11[3] = &unk_279E4F808;
-      v12 = v4;
-      v13 = self;
+      v12 = requestCopy;
+      selfCopy = self;
       dispatch_sync(queue, v11);
     }
   }
@@ -2243,25 +2243,25 @@ uint64_t __55__VSSpeechSynthesizer_cachePresynthesizedAudioRequest___block_invok
   return result;
 }
 
-- (id)startSpeakingPresynthesizedAudioRequest:(id)a3
+- (id)startSpeakingPresynthesizedAudioRequest:(id)request
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   if (+[VSFeatureFlags useSiriTTSService])
   {
-    v5 = [(VSSpeechSynthesizer *)self STS_startSpeakingAudioRequest:v4];
+    v5 = [(VSSpeechSynthesizer *)self STS_startSpeakingAudioRequest:requestCopy];
   }
 
   else
   {
-    v5 = [VSSpeechSynthesizer validateAudioRequest:v4];
+    v5 = [VSSpeechSynthesizer validateAudioRequest:requestCopy];
     if (v5)
     {
       v6 = VSGetLogDefault();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v15 = v4;
+        v15 = requestCopy;
         v16 = 2112;
         v17 = v5;
         _os_log_error_impl(&dword_272850000, v6, OS_LOG_TYPE_ERROR, "Invalid #PresynthesizedAudioRequest: %@, error: %@", buf, 0x16u);
@@ -2277,8 +2277,8 @@ uint64_t __55__VSSpeechSynthesizer_cachePresynthesizedAudioRequest___block_invok
       v11[1] = 3221225472;
       v11[2] = __63__VSSpeechSynthesizer_startSpeakingPresynthesizedAudioRequest___block_invoke;
       v11[3] = &unk_279E4F808;
-      v12 = v4;
-      v13 = self;
+      v12 = requestCopy;
+      selfCopy = self;
       dispatch_sync(queue, v11);
     }
   }
@@ -2323,25 +2323,25 @@ uint64_t __63__VSSpeechSynthesizer_startSpeakingPresynthesizedAudioRequest___blo
   return result;
 }
 
-- (id)startSpeakingRequest:(id)a3
+- (id)startSpeakingRequest:(id)request
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   if (+[VSFeatureFlags useSiriTTSService])
   {
-    v5 = [(VSSpeechSynthesizer *)self STS_startSpeakingRequest:v4];
+    v5 = [(VSSpeechSynthesizer *)self STS_startSpeakingRequest:requestCopy];
   }
 
   else
   {
-    v5 = [VSSpeechSynthesizer validateRequest:v4];
+    v5 = [VSSpeechSynthesizer validateRequest:requestCopy];
     if (v5)
     {
       v6 = VSGetLogDefault();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v15 = v4;
+        v15 = requestCopy;
         v16 = 2112;
         v17 = v5;
         _os_log_error_impl(&dword_272850000, v6, OS_LOG_TYPE_ERROR, "Invalid #SpeechRequest: %@, error: %@", buf, 0x16u);
@@ -2357,8 +2357,8 @@ uint64_t __63__VSSpeechSynthesizer_startSpeakingPresynthesizedAudioRequest___blo
       v11[1] = 3221225472;
       v11[2] = __44__VSSpeechSynthesizer_startSpeakingRequest___block_invoke;
       v11[3] = &unk_279E4F808;
-      v12 = v4;
-      v13 = self;
+      v12 = requestCopy;
+      selfCopy = self;
       dispatch_sync(queue, v11);
     }
   }
@@ -2407,25 +2407,25 @@ uint64_t __44__VSSpeechSynthesizer_startSpeakingRequest___block_invoke(uint64_t 
   return result;
 }
 
-- (id)startSynthesizingRequest:(id)a3
+- (id)startSynthesizingRequest:(id)request
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   if (+[VSFeatureFlags useSiriTTSService])
   {
-    v5 = [(VSSpeechSynthesizer *)self STS_startSynthesizingRequest:v4];
+    v5 = [(VSSpeechSynthesizer *)self STS_startSynthesizingRequest:requestCopy];
   }
 
   else
   {
-    v5 = [VSSpeechSynthesizer validateRequest:v4];
+    v5 = [VSSpeechSynthesizer validateRequest:requestCopy];
     if (v5)
     {
       v6 = VSGetLogDefault();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v15 = v4;
+        v15 = requestCopy;
         v16 = 2112;
         v17 = v5;
         _os_log_error_impl(&dword_272850000, v6, OS_LOG_TYPE_ERROR, "Invalid #SynthesisRequest: %@, error: %@", buf, 0x16u);
@@ -2441,8 +2441,8 @@ uint64_t __44__VSSpeechSynthesizer_startSpeakingRequest___block_invoke(uint64_t 
       v11[1] = 3221225472;
       v11[2] = __48__VSSpeechSynthesizer_startSynthesizingRequest___block_invoke;
       v11[3] = &unk_279E4F808;
-      v12 = v4;
-      v13 = self;
+      v12 = requestCopy;
+      selfCopy = self;
       dispatch_sync(queue, v11);
     }
   }
@@ -2494,46 +2494,46 @@ uint64_t __48__VSSpeechSynthesizer_startSynthesizingRequest___block_invoke(uint6
   return [v5 keepActive];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__VSSpeechSynthesizer_setDelegate___block_invoke;
   v7[3] = &unk_279E4F808;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_sync(queue, v7);
 }
 
-- (id)_pauseSpeakingRequestAtNextBoundary:(int64_t)a3 synchronously:(BOOL)a4
+- (id)_pauseSpeakingRequestAtNextBoundary:(int64_t)boundary synchronously:(BOOL)synchronously
 {
-  v4 = a4;
+  synchronouslyCopy = synchronously;
   userInfoValues[1] = *MEMORY[0x277D85DE8];
-  v7 = [(VSSpeechConnection *)self->_xpcConnection currentRequest];
+  currentRequest = [(VSSpeechConnection *)self->_xpcConnection currentRequest];
   v8 = VSGetLogDefault();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (currentRequest)
   {
     if (v9)
     {
-      v10 = [v7 requestCreatedTimestamp];
+      requestCreatedTimestamp = [currentRequest requestCreatedTimestamp];
       clientBundleIdentifier = self->_clientBundleIdentifier;
-      v12 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+      v12 = [MEMORY[0x277CCABB0] numberWithInteger:boundary];
       *buf = 134218754;
-      *&buf[4] = v10;
+      *&buf[4] = requestCreatedTimestamp;
       v22 = 2114;
       v23 = clientBundleIdentifier;
       v24 = 2112;
       v25 = v12;
       v26 = 1024;
-      v27 = v4;
+      v27 = synchronouslyCopy;
       _os_log_impl(&dword_272850000, v8, OS_LOG_TYPE_DEFAULT, "Pause #SpeechRequest %llu from client %{public}@, boundary: %@, synchronously: %{BOOL}d", buf, 0x26u);
     }
 
-    if (v4)
+    if (synchronouslyCopy)
     {
       v13 = dispatch_semaphore_create(0);
       v19[0] = MEMORY[0x277D85DD0];
@@ -2542,7 +2542,7 @@ uint64_t __48__VSSpeechSynthesizer_startSynthesizingRequest___block_invoke(uint6
       v19[3] = &unk_279E4F7E0;
       v8 = v13;
       v20 = v8;
-      [v7 setPauseHandler:v19];
+      [currentRequest setPauseHandler:v19];
     }
 
     else
@@ -2550,7 +2550,7 @@ uint64_t __48__VSSpeechSynthesizer_startSynthesizingRequest___block_invoke(uint6
       v8 = 0;
     }
 
-    [(VSSpeechConnection *)self->_xpcConnection pauseSpeechRequest:v7 atMark:a3 == 1];
+    [(VSSpeechConnection *)self->_xpcConnection pauseSpeechRequest:currentRequest atMark:boundary == 1];
     if (v8)
     {
       v15 = dispatch_time(0, 1000000000);
@@ -2580,32 +2580,32 @@ LABEL_13:
   return v16;
 }
 
-- (id)_stopSpeakingRequest:(id)a3 atNextBoundary:(int64_t)a4 synchronously:(BOOL)a5
+- (id)_stopSpeakingRequest:(id)request atNextBoundary:(int64_t)boundary synchronously:(BOOL)synchronously
 {
-  v5 = a5;
+  synchronouslyCopy = synchronously;
   userInfoValues[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  requestCopy = request;
   v9 = VSGetLogDefault();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (requestCopy)
   {
     if (v10)
     {
-      v11 = [v8 requestCreatedTimestamp];
+      requestCreatedTimestamp = [requestCopy requestCreatedTimestamp];
       clientBundleIdentifier = self->_clientBundleIdentifier;
-      v13 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+      v13 = [MEMORY[0x277CCABB0] numberWithInteger:boundary];
       *buf = 134218754;
-      *&buf[4] = v11;
+      *&buf[4] = requestCreatedTimestamp;
       v23 = 2114;
       v24 = clientBundleIdentifier;
       v25 = 2112;
       v26 = v13;
       v27 = 1024;
-      v28 = v5;
+      v28 = synchronouslyCopy;
       _os_log_impl(&dword_272850000, v9, OS_LOG_TYPE_DEFAULT, "Stop #SpeechRequest %llu from client %{public}@, boundary: %@, synchronously: %{BOOL}d", buf, 0x26u);
     }
 
-    if (v5)
+    if (synchronouslyCopy)
     {
       v14 = dispatch_semaphore_create(0);
       v20[0] = MEMORY[0x277D85DD0];
@@ -2614,7 +2614,7 @@ LABEL_13:
       v20[3] = &unk_279E4F7E0;
       v9 = v14;
       v21 = v9;
-      [v8 setStopHandler:v20];
+      [requestCopy setStopHandler:v20];
     }
 
     else
@@ -2622,7 +2622,7 @@ LABEL_13:
       v9 = 0;
     }
 
-    [(VSSpeechConnection *)self->_xpcConnection stopSpeechRequest:v8 atMark:a4 == 1];
+    [(VSSpeechConnection *)self->_xpcConnection stopSpeechRequest:requestCopy atMark:boundary == 1];
     if (v9)
     {
       v16 = dispatch_time(0, 1000000000);
@@ -2652,29 +2652,29 @@ LABEL_13:
   return v17;
 }
 
-- (id)_stopSpeakingPresynthesizedAudioRequest:(id)a3 synchronously:(BOOL)a4
+- (id)_stopSpeakingPresynthesizedAudioRequest:(id)request synchronously:(BOOL)synchronously
 {
-  v4 = a4;
+  synchronouslyCopy = synchronously;
   userInfoValues[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  requestCopy = request;
   v7 = VSGetLogDefault();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (requestCopy)
   {
     if (v8)
     {
-      v9 = [v6 requestCreatedTimestamp];
+      requestCreatedTimestamp = [requestCopy requestCreatedTimestamp];
       clientBundleIdentifier = self->_clientBundleIdentifier;
       *buf = 134218498;
-      *&buf[4] = v9;
+      *&buf[4] = requestCreatedTimestamp;
       v20 = 2114;
       v21 = clientBundleIdentifier;
       v22 = 1024;
-      v23 = v4;
+      v23 = synchronouslyCopy;
       _os_log_impl(&dword_272850000, v7, OS_LOG_TYPE_DEFAULT, "Stop #SpeechPresynthesizedAudioRequest %llu from client %{public}@, synchronously: %{BOOL}d", buf, 0x1Cu);
     }
 
-    if (v4)
+    if (synchronouslyCopy)
     {
       v11 = dispatch_semaphore_create(0);
       v17[0] = MEMORY[0x277D85DD0];
@@ -2683,9 +2683,9 @@ LABEL_13:
       v17[3] = &unk_279E4F7E0;
       v7 = v11;
       v18 = v7;
-      [v6 setStopHandler:v17];
+      [requestCopy setStopHandler:v17];
 
-      [(VSSpeechConnection *)self->_xpcConnection stopPresynthesizedAudioRequest:v6];
+      [(VSSpeechConnection *)self->_xpcConnection stopPresynthesizedAudioRequest:requestCopy];
       if (v7)
       {
         v12 = dispatch_time(0, 1000000000);
@@ -2701,7 +2701,7 @@ LABEL_13:
 
     else
     {
-      [(VSSpeechConnection *)self->_xpcConnection stopPresynthesizedAudioRequest:v6];
+      [(VSSpeechConnection *)self->_xpcConnection stopPresynthesizedAudioRequest:requestCopy];
       v7 = 0;
     }
   }
@@ -2722,9 +2722,9 @@ LABEL_12:
   return v13;
 }
 
-- (void)_setDelegate:(id)a3
+- (void)_setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -2800,9 +2800,9 @@ LABEL_12:
   }
 }
 
-- (BOOL)queryPhaticCapability:(id)a3
+- (BOOL)queryPhaticCapability:(id)capability
 {
-  v4 = a3;
+  capabilityCopy = capability;
   if (+[VSFeatureFlags useSiriTTSServiceV2])
   {
     v5 = dispatch_semaphore_create(0);
@@ -2817,7 +2817,7 @@ LABEL_12:
     v11 = &v12;
     v6 = v5;
     v10 = v6;
-    [(VSSpeechSynthesizer *)self STS_queryPhaticCapabilityWithRequest:v4 reply:v9];
+    [(VSSpeechSynthesizer *)self STS_queryPhaticCapabilityWithRequest:capabilityCopy reply:v9];
     dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
     v7 = *(v13 + 24);
 
@@ -2826,19 +2826,19 @@ LABEL_12:
 
   else
   {
-    v7 = [(VSSpeechConnection *)self->_xpcConnection queryPhaticCapabilityWithRequest:v4];
+    v7 = [(VSSpeechConnection *)self->_xpcConnection queryPhaticCapabilityWithRequest:capabilityCopy];
   }
 
   return v7 & 1;
 }
 
-- (id)prewarmIfNeededWithRequest:(id)a3
+- (id)prewarmIfNeededWithRequest:(id)request
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   if (+[VSFeatureFlags useSiriTTSService])
   {
-    v5 = [(VSSpeechSynthesizer *)self STS_prewarmRequest:v4];
+    v5 = [(VSSpeechSynthesizer *)self STS_prewarmRequest:requestCopy];
   }
 
   else
@@ -2853,14 +2853,14 @@ LABEL_12:
       }
     }
 
-    v5 = [VSSpeechSynthesizer validatePrewarmRequest:v4];
+    v5 = [VSSpeechSynthesizer validatePrewarmRequest:requestCopy];
     if (v5)
     {
       v7 = VSGetLogDefault();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v16 = v4;
+        v16 = requestCopy;
         v17 = 2112;
         v18 = v5;
         _os_log_error_impl(&dword_272850000, v7, OS_LOG_TYPE_ERROR, "Invalid #PrewarmRequest: %@, error: %@", buf, 0x16u);
@@ -2876,8 +2876,8 @@ LABEL_12:
       v12[1] = 3221225472;
       v12[2] = __50__VSSpeechSynthesizer_prewarmIfNeededWithRequest___block_invoke;
       v12[3] = &unk_279E4F808;
-      v13 = v4;
-      v14 = self;
+      v13 = requestCopy;
+      selfCopy = self;
       dispatch_sync(queue, v12);
     }
   }
@@ -2958,17 +2958,17 @@ void __50__VSSpeechSynthesizer_prewarmIfNeededWithRequest___block_invoke_135(uin
   return result;
 }
 
-- (void)STS_getSynthesisVoiceMatching:(id)a3 reply:(id)a4
+- (void)STS_getSynthesisVoiceMatching:(id)matching reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   proxySession = self->_proxySession;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__VSSpeechSynthesizer_STS_getSynthesisVoiceMatching_reply___block_invoke;
   v9[3] = &unk_279E4F3E0;
-  v10 = v6;
-  v8 = v6;
-  [(SiriTTSDaemonSession *)proxySession getSynthesisVoiceMatching:a3 reply:v9];
+  v10 = replyCopy;
+  v8 = replyCopy;
+  [(SiriTTSDaemonSession *)proxySession getSynthesisVoiceMatching:matching reply:v9];
 }
 
 void __59__VSSpeechSynthesizer_STS_getSynthesisVoiceMatching_reply___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3009,17 +3009,17 @@ void __59__VSSpeechSynthesizer_STS_getSynthesisVoiceMatching_reply___block_invok
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)STS_downloadedVoicesMatching:(id)a3 reply:(id)a4
+- (void)STS_downloadedVoicesMatching:(id)matching reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   proxySession = self->_proxySession;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __58__VSSpeechSynthesizer_STS_downloadedVoicesMatching_reply___block_invoke;
   v9[3] = &unk_279E4F3B8;
-  v10 = v6;
-  v8 = v6;
-  [(SiriTTSDaemonSession *)proxySession downloadedVoicesMatching:a3 reply:v9];
+  v10 = replyCopy;
+  v8 = replyCopy;
+  [(SiriTTSDaemonSession *)proxySession downloadedVoicesMatching:matching reply:v9];
 }
 
 void __58__VSSpeechSynthesizer_STS_downloadedVoicesMatching_reply___block_invoke(uint64_t a1, void *a2)
@@ -3077,17 +3077,17 @@ void __58__VSSpeechSynthesizer_STS_downloadedVoicesMatching_reply___block_invoke
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)STS_subscribedVoicesWithClientID:(id)a3 reply:(id)a4
+- (void)STS_subscribedVoicesWithClientID:(id)d reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   proxySession = self->_proxySession;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __62__VSSpeechSynthesizer_STS_subscribedVoicesWithClientID_reply___block_invoke;
   v9[3] = &unk_279E4F3B8;
-  v10 = v6;
-  v8 = v6;
-  [(SiriTTSDaemonSession *)proxySession subscribedVoicesWithClientId:a3 reply:v9];
+  v10 = replyCopy;
+  v8 = replyCopy;
+  [(SiriTTSDaemonSession *)proxySession subscribedVoicesWithClientId:d reply:v9];
 }
 
 void __62__VSSpeechSynthesizer_STS_subscribedVoicesWithClientID_reply___block_invoke(uint64_t a1, void *a2)
@@ -3156,16 +3156,16 @@ void __62__VSSpeechSynthesizer_STS_subscribedVoicesWithClientID_reply___block_in
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)STS_subscribedVoices:(id)a3
+- (void)STS_subscribedVoices:(id)voices
 {
-  v4 = a3;
+  voicesCopy = voices;
   proxySession = self->_proxySession;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__VSSpeechSynthesizer_STS_subscribedVoices___block_invoke;
   v7[3] = &unk_279E4F3B8;
-  v8 = v4;
-  v6 = v4;
+  v8 = voicesCopy;
+  v6 = voicesCopy;
   [(SiriTTSDaemonSession *)proxySession subscribedVoicesWithReply:v7];
 }
 
@@ -3227,16 +3227,16 @@ void __44__VSSpeechSynthesizer_STS_subscribedVoices___block_invoke(uint64_t a1, 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)STS_subscribeVoices:(id)a3
+- (void)STS_subscribeVoices:(id)voices
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  voicesCopy = voices;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(voicesCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v3;
+  obj = voicesCopy;
   v5 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
@@ -3254,10 +3254,10 @@ void __44__VSSpeechSynthesizer_STS_subscribedVoices___block_invoke(uint64_t a1, 
 
         v9 = *(*(&v18 + 1) + 8 * v8);
         v10 = objc_alloc(MEMORY[0x277D61470]);
-        v11 = [v9 languages];
-        v12 = [v11 firstObject];
-        v13 = [v9 name];
-        v14 = [v10 initWithLanguage:v12 name:v13];
+        languages = [v9 languages];
+        firstObject = [languages firstObject];
+        name = [v9 name];
+        v14 = [v10 initWithLanguage:firstObject name:name];
 
         [v14 setType:{objc_msgSend(v9, "type")}];
         [v14 setFootprint:{objc_msgSend(v9, "footprint")}];
@@ -3295,27 +3295,27 @@ void __43__VSSpeechSynthesizer_STS_subscribeVoices___block_invoke(uint64_t a1, v
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)STS_queryPhaticCapabilityWithRequest:(id)a3 reply:(id)a4
+- (void)STS_queryPhaticCapabilityWithRequest:(id)request reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = MEMORY[0x277D61470];
-  v8 = a3;
+  requestCopy = request;
   v9 = [v7 alloc];
-  v10 = [v8 languageCode];
-  v11 = [v8 voiceName];
-  v12 = [v9 initWithLanguage:v10 name:v11];
+  languageCode = [requestCopy languageCode];
+  voiceName = [requestCopy voiceName];
+  v12 = [v9 initWithLanguage:languageCode name:voiceName];
 
-  [v12 setType:{objc_msgSend(v8, "voiceType")}];
-  v13 = [v8 footprint];
+  [v12 setType:{objc_msgSend(requestCopy, "voiceType")}];
+  footprint = [requestCopy footprint];
 
-  [v12 setFootprint:v13];
+  [v12 setFootprint:footprint];
   proxySession = self->_proxySession;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __66__VSSpeechSynthesizer_STS_queryPhaticCapabilityWithRequest_reply___block_invoke;
   v16[3] = &unk_279E4F390;
-  v17 = v6;
-  v15 = v6;
+  v17 = replyCopy;
+  v15 = replyCopy;
   [(SiriTTSDaemonSession *)proxySession queryPhaticCapabilityWithVoice:v12 reply:v16];
 }
 
@@ -3349,11 +3349,11 @@ uint64_t __37__VSSpeechSynthesizer_STS_isSpeaking__block_invoke(uint64_t a1)
   return [v1 isSpeaking:v3];
 }
 
-- (void)STS_cancelAudioRequest:(id)a3
+- (void)STS_cancelAudioRequest:(id)request
 {
   v12 = *MEMORY[0x277D85DE8];
   stsRequestMapping = self->_stsRequestMapping;
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(a3, "requestCreatedTimestamp")}];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(request, "requestCreatedTimestamp")}];
   v6 = [(NSMutableDictionary *)stsRequestMapping objectForKeyedSubscript:v5];
 
   if (v6)
@@ -3376,10 +3376,10 @@ uint64_t __37__VSSpeechSynthesizer_STS_isSpeaking__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)STS_cancelRequest:(id)a3
+- (void)STS_cancelRequest:(id)request
 {
   stsRequestMapping = self->_stsRequestMapping;
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(a3, "requestCreatedTimestamp")}];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(request, "requestCreatedTimestamp")}];
   v7 = [(NSMutableDictionary *)stsRequestMapping objectForKeyedSubscript:v5];
 
   v6 = v7;
@@ -3390,44 +3390,44 @@ uint64_t __37__VSSpeechSynthesizer_STS_isSpeaking__block_invoke(uint64_t a1)
   }
 }
 
-- (id)STS_signalInlineStreaming:(id)a3
+- (id)STS_signalInlineStreaming:(id)streaming
 {
   v4 = MEMORY[0x277D61418];
-  v5 = a3;
+  streamingCopy = streaming;
   v6 = [v4 alloc];
-  v7 = [v5 text];
-  v8 = [v5 identifier];
+  text = [streamingCopy text];
+  identifier = [streamingCopy identifier];
 
-  v9 = [v6 initWithText:v7 identifier:v8];
+  v9 = [v6 initWithText:text identifier:identifier];
   [(SiriTTSDaemonSession *)self->_proxySession signalWithInlineStreaming:v9];
 
   return 0;
 }
 
-- (void)STS_textToPhonemesWithRequest:(id)a3 phonemeSystem:(int64_t)a4 completion:(id)a5
+- (void)STS_textToPhonemesWithRequest:(id)request phonemeSystem:(int64_t)system completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = MEMORY[0x277D61470];
-  v10 = a3;
+  requestCopy = request;
   v11 = [v9 alloc];
-  v12 = [v10 languageCode];
-  v13 = [v10 voiceName];
-  v14 = [v11 initWithLanguage:v12 name:v13];
+  languageCode = [requestCopy languageCode];
+  voiceName = [requestCopy voiceName];
+  v14 = [v11 initWithLanguage:languageCode name:voiceName];
 
-  [v14 setType:{objc_msgSend(v10, "voiceType")}];
-  [v14 setFootprint:{objc_msgSend(v10, "footprint")}];
-  [v14 setGender:{objc_msgSend(v10, "gender")}];
+  [v14 setType:{objc_msgSend(requestCopy, "voiceType")}];
+  [v14 setFootprint:{objc_msgSend(requestCopy, "footprint")}];
+  [v14 setGender:{objc_msgSend(requestCopy, "gender")}];
   v15 = objc_alloc(MEMORY[0x277D61430]);
-  v16 = [v10 text];
+  text = [requestCopy text];
 
-  v17 = [v15 initWithText:v16 voice:v14 phonemeSystem:a4];
+  v17 = [v15 initWithText:text voice:v14 phonemeSystem:system];
   proxySession = self->_proxySession;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __78__VSSpeechSynthesizer_STS_textToPhonemesWithRequest_phonemeSystem_completion___block_invoke;
   v20[3] = &unk_279E4F368;
-  v21 = v8;
-  v19 = v8;
+  v21 = completionCopy;
+  v19 = completionCopy;
   [(SiriTTSDaemonSession *)proxySession textToPhonemeWithRequest:v17 didFinish:v20];
 }
 
@@ -3442,52 +3442,52 @@ uint64_t __78__VSSpeechSynthesizer_STS_textToPhonemesWithRequest_phonemeSystem_c
   return result;
 }
 
-- (void)STS_estimateDurationOfRequest:(id)a3 completion:(id)a4
+- (void)STS_estimateDurationOfRequest:(id)request completion:(id)completion
 {
   v6 = MEMORY[0x277D61470];
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  requestCopy = request;
   v9 = [v6 alloc];
-  v10 = [v8 languageCode];
-  v11 = [v8 voiceName];
-  v15 = [v9 initWithLanguage:v10 name:v11];
+  languageCode = [requestCopy languageCode];
+  voiceName = [requestCopy voiceName];
+  v15 = [v9 initWithLanguage:languageCode name:voiceName];
 
   v12 = objc_alloc(MEMORY[0x277D61460]);
-  v13 = [v8 text];
+  text = [requestCopy text];
 
-  v14 = [v12 initWithText:v13 voice:v15];
-  [(SiriTTSDaemonSession *)self->_proxySession estimateDurationWithRequest:v14 didFinish:v7];
+  v14 = [v12 initWithText:text voice:v15];
+  [(SiriTTSDaemonSession *)self->_proxySession estimateDurationWithRequest:v14 didFinish:completionCopy];
 }
 
-- (double)STS_estimateDurationOfRequest:(id)a3
+- (double)STS_estimateDurationOfRequest:(id)request
 {
   v3 = MEMORY[0x277D61470];
-  v4 = a3;
+  requestCopy = request;
   v5 = [v3 alloc];
-  v6 = [v4 languageCode];
-  v7 = [v4 voiceName];
-  v8 = [v5 initWithLanguage:v6 name:v7];
+  languageCode = [requestCopy languageCode];
+  voiceName = [requestCopy voiceName];
+  v8 = [v5 initWithLanguage:languageCode name:voiceName];
 
   v9 = objc_alloc(MEMORY[0x277D61460]);
-  v10 = [v4 text];
+  text = [requestCopy text];
 
-  v11 = [v9 initWithText:v10 voice:v8];
+  v11 = [v9 initWithText:text voice:v8];
   [MEMORY[0x277D61408] roughEstimationWithRequest:v11];
   v13 = v12;
 
   return v13;
 }
 
-- (id)STS_startSpeakingAudioRequest:(id)a3
+- (id)STS_startSpeakingAudioRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc_init(MEMORY[0x277D613D8]);
-  v6 = [v4 audioData];
-  [v5 setAudioData:v6];
+  audioData = [requestCopy audioData];
+  [v5 setAudioData:audioData];
 
-  if (v4)
+  if (requestCopy)
   {
-    [v4 decoderStreamDescription];
+    [requestCopy decoderStreamDescription];
   }
 
   else
@@ -3502,17 +3502,17 @@ uint64_t __78__VSSpeechSynthesizer_STS_textToPhonemesWithRequest_phonemeSystem_c
   v27 = v30;
   [v5 setAsbd:v26];
   v7 = [objc_alloc(MEMORY[0x277D613F0]) initWithAudio:v5];
-  [v7 setAudioSessionId:{objc_msgSend(v4, "audioSessionID")}];
-  [v7 setImmediate:{objc_msgSend(v4, "enqueue") ^ 1}];
-  v8 = [v4 siriRequestId];
-  [v7 setSiriRequestId:v8];
+  [v7 setAudioSessionId:{objc_msgSend(requestCopy, "audioSessionID")}];
+  [v7 setImmediate:{objc_msgSend(requestCopy, "enqueue") ^ 1}];
+  siriRequestId = [requestCopy siriRequestId];
+  [v7 setSiriRequestId:siriRequestId];
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __53__VSSpeechSynthesizer_STS_startSpeakingAudioRequest___block_invoke;
   v24[3] = &unk_279E4F808;
   v24[4] = self;
-  v9 = v4;
+  v9 = requestCopy;
   v25 = v9;
   [v7 setDidStartSpeaking:v24];
   v22[0] = MEMORY[0x277D85DD0];
@@ -3528,11 +3528,11 @@ uint64_t __78__VSSpeechSynthesizer_STS_textToPhonemesWithRequest_phonemeSystem_c
   v17 = 3221225472;
   v18 = __53__VSSpeechSynthesizer_STS_startSpeakingAudioRequest___block_invoke_4;
   v19 = &unk_279E4F278;
-  v20 = self;
+  selfCopy = self;
   v21 = v10;
   v12 = v10;
   [(SiriTTSDaemonSession *)proxySession speakWithAudioRequest:v7 didFinish:&v16];
-  [v12 setRequestCreatedTimestamp:{mach_absolute_time(), v16, v17, v18, v19, v20}];
+  [v12 setRequestCreatedTimestamp:{mach_absolute_time(), v16, v17, v18, v19, selfCopy}];
   stsRequestMapping = self->_stsRequestMapping;
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v12, "requestCreatedTimestamp")}];
   [(NSMutableDictionary *)stsRequestMapping setObject:v7 forKeyedSubscript:v14];
@@ -3600,50 +3600,50 @@ void __53__VSSpeechSynthesizer_STS_startSpeakingAudioRequest___block_invoke_2(ui
   [v2 speechSynthesizer:*(a1 + 32) didStartPresynthesizedAudioRequest:*(a1 + 40)];
 }
 
-- (id)STS_startSpeakingRequest:(id)a3
+- (id)STS_startSpeakingRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc(MEMORY[0x277D61470]);
-  v6 = [v4 languageCode];
-  v7 = [v4 voiceName];
-  v8 = [v5 initWithLanguage:v6 name:v7];
+  languageCode = [requestCopy languageCode];
+  voiceName = [requestCopy voiceName];
+  v8 = [v5 initWithLanguage:languageCode name:voiceName];
 
-  [v8 setType:{objc_msgSend(v4, "voiceType")}];
-  [v8 setFootprint:{objc_msgSend(v4, "footprint")}];
-  [v8 setGender:{objc_msgSend(v4, "gender")}];
+  [v8 setType:{objc_msgSend(requestCopy, "voiceType")}];
+  [v8 setFootprint:{objc_msgSend(requestCopy, "footprint")}];
+  [v8 setGender:{objc_msgSend(requestCopy, "gender")}];
   v9 = objc_alloc(MEMORY[0x277D61450]);
-  v10 = [v4 text];
-  v11 = [v9 initWithText:v10 voice:v8];
+  text = [requestCopy text];
+  v11 = [v9 initWithText:text voice:v8];
 
-  [v11 setPrivacySensitive:{objc_msgSend(v4, "canUseServerTTS") ^ 1}];
-  v12 = [v4 siriRequestId];
-  [v11 setSiriRequestId:v12];
+  [v11 setPrivacySensitive:{objc_msgSend(requestCopy, "canUseServerTTS") ^ 1}];
+  siriRequestId = [requestCopy siriRequestId];
+  [v11 setSiriRequestId:siriRequestId];
 
-  [v11 setImmediate:{objc_msgSend(v4, "shouldWaitCurrentSpeaking") ^ 1}];
-  [v11 setAudioSessionId:{objc_msgSend(v4, "audioSessionID")}];
-  v13 = [v4 contextInfo];
-  [v11 setContextInfo:v13];
+  [v11 setImmediate:{objc_msgSend(requestCopy, "shouldWaitCurrentSpeaking") ^ 1}];
+  [v11 setAudioSessionId:{objc_msgSend(requestCopy, "audioSessionID")}];
+  contextInfo = [requestCopy contextInfo];
+  [v11 setContextInfo:contextInfo];
 
-  [v4 rate];
+  [requestCopy rate];
   *&v14 = v14;
   [v11 setRate:v14];
-  [v4 volume];
+  [requestCopy volume];
   *&v15 = v15;
   [v11 setVolume:v15];
-  [v4 pitch];
+  [requestCopy pitch];
   *&v16 = v16;
   [v11 setPitch:v16];
-  [v11 setDisableCompactVoice:{objc_msgSend(v4, "disableCompactVoiceFallback")}];
-  [v11 setSynthesisProfile:{objc_msgSend(v4, "powerProfile")}];
-  v17 = [v4 outputPath];
-  [v11 setOutputPath:v17];
+  [v11 setDisableCompactVoice:{objc_msgSend(requestCopy, "disableCompactVoiceFallback")}];
+  [v11 setSynthesisProfile:{objc_msgSend(requestCopy, "powerProfile")}];
+  outputPath = [requestCopy outputPath];
+  [v11 setOutputPath:outputPath];
 
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __48__VSSpeechSynthesizer_STS_startSpeakingRequest___block_invoke;
   v36[3] = &unk_279E4F808;
   v36[4] = self;
-  v18 = v4;
+  v18 = requestCopy;
   v37 = v18;
   [v11 setDidStartSpeaking:v36];
   v34[0] = MEMORY[0x277D85DD0];
@@ -3667,11 +3667,11 @@ void __53__VSSpeechSynthesizer_STS_startSpeakingAudioRequest___block_invoke_2(ui
   v27 = 3221225472;
   v28 = __48__VSSpeechSynthesizer_STS_startSpeakingRequest___block_invoke_4;
   v29 = &unk_279E4F278;
-  v30 = self;
+  selfCopy = self;
   v31 = v20;
   v22 = v20;
   [(SiriTTSDaemonSession *)proxySession speakWithSpeechRequest:v11 didFinish:&v26];
-  [v22 setRequestCreatedTimestamp:{mach_absolute_time(), v26, v27, v28, v29, v30}];
+  [v22 setRequestCreatedTimestamp:{mach_absolute_time(), v26, v27, v28, v29, selfCopy}];
   stsRequestMapping = self->_stsRequestMapping;
   v24 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v22, "requestCreatedTimestamp")}];
   [(NSMutableDictionary *)stsRequestMapping setObject:v11 forKeyedSubscript:v24];
@@ -3781,38 +3781,38 @@ void __48__VSSpeechSynthesizer_STS_startSpeakingRequest___block_invoke_4(uint64_
   [v9 setObject:0 forKeyedSubscript:v10];
 }
 
-- (id)STS_startSynthesizingRequest:(id)a3
+- (id)STS_startSynthesizingRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc(MEMORY[0x277D61470]);
-  v6 = [v4 languageCode];
-  v7 = [v4 voiceName];
-  v8 = [v5 initWithLanguage:v6 name:v7];
+  languageCode = [requestCopy languageCode];
+  voiceName = [requestCopy voiceName];
+  v8 = [v5 initWithLanguage:languageCode name:voiceName];
 
-  [v8 setType:{objc_msgSend(v4, "voiceType")}];
-  [v8 setFootprint:{objc_msgSend(v4, "footprint")}];
-  [v8 setGender:{objc_msgSend(v4, "gender")}];
+  [v8 setType:{objc_msgSend(requestCopy, "voiceType")}];
+  [v8 setFootprint:{objc_msgSend(requestCopy, "footprint")}];
+  [v8 setGender:{objc_msgSend(requestCopy, "gender")}];
   v9 = objc_alloc(MEMORY[0x277D61460]);
-  v10 = [v4 text];
-  v11 = [v9 initWithText:v10 voice:v8];
+  text = [requestCopy text];
+  v11 = [v9 initWithText:text voice:v8];
 
-  [v11 setPrivacySensitive:{objc_msgSend(v4, "canUseServerTTS") ^ 1}];
-  v12 = [v4 contextInfo];
-  [v11 setContextInfo:v12];
+  [v11 setPrivacySensitive:{objc_msgSend(requestCopy, "canUseServerTTS") ^ 1}];
+  contextInfo = [requestCopy contextInfo];
+  [v11 setContextInfo:contextInfo];
 
-  [v4 rate];
+  [requestCopy rate];
   *&v13 = v13;
   [v11 setRate:v13];
-  [v4 volume];
+  [requestCopy volume];
   *&v14 = v14;
   [v11 setVolume:v14];
-  [v4 pitch];
+  [requestCopy pitch];
   *&v15 = v15;
   [v11 setPitch:v15];
-  [v11 setDisableCompactVoice:{objc_msgSend(v4, "disableCompactVoiceFallback")}];
-  [v11 setSynthesisProfile:{objc_msgSend(v4, "powerProfile")}];
-  v16 = [v4 outputPath];
-  [v11 setOutputPath:v16];
+  [v11 setDisableCompactVoice:{objc_msgSend(requestCopy, "disableCompactVoiceFallback")}];
+  [v11 setSynthesisProfile:{objc_msgSend(requestCopy, "powerProfile")}];
+  outputPath = [requestCopy outputPath];
+  [v11 setOutputPath:outputPath];
 
   v36[0] = 0;
   v36[1] = v36;
@@ -3831,7 +3831,7 @@ void __48__VSSpeechSynthesizer_STS_startSpeakingRequest___block_invoke_4(uint64_
   v33[2] = __52__VSSpeechSynthesizer_STS_startSynthesizingRequest___block_invoke_2;
   v33[3] = &unk_279E4F2C8;
   v33[4] = self;
-  v17 = v4;
+  v17 = requestCopy;
   v34 = v17;
   [v11 setDidGenerateAudio:v33];
   v31[0] = MEMORY[0x277D85DD0];
@@ -3847,12 +3847,12 @@ void __48__VSSpeechSynthesizer_STS_startSpeakingRequest___block_invoke_4(uint64_
   v25 = 3221225472;
   v26 = __52__VSSpeechSynthesizer_STS_startSynthesizingRequest___block_invoke_4;
   v27 = &unk_279E4F318;
-  v28 = self;
+  selfCopy = self;
   v20 = v18;
   v29 = v20;
   v30 = v36;
   [(SiriTTSDaemonSession *)proxySession synthesizeWithRequest:v11 didFinish:&v24];
-  [v20 setRequestCreatedTimestamp:{mach_absolute_time(), v24, v25, v26, v27, v28}];
+  [v20 setRequestCreatedTimestamp:{mach_absolute_time(), v24, v25, v26, v27, selfCopy}];
   stsRequestMapping = self->_stsRequestMapping;
   v22 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v20, "requestCreatedTimestamp")}];
   [(NSMutableDictionary *)stsRequestMapping setObject:v11 forKeyedSubscript:v22];
@@ -3982,32 +3982,32 @@ void __52__VSSpeechSynthesizer_STS_startSynthesizingRequest___block_invoke_4(uin
   [v10 setObject:0 forKeyedSubscript:v11];
 }
 
-- (id)STS_prewarmRequest:(id)a3
+- (id)STS_prewarmRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc(MEMORY[0x277D61470]);
-  v6 = [v4 languageCode];
-  v7 = [v4 voiceName];
-  v8 = [v5 initWithLanguage:v6 name:v7];
+  languageCode = [requestCopy languageCode];
+  voiceName = [requestCopy voiceName];
+  v8 = [v5 initWithLanguage:languageCode name:voiceName];
 
-  [v8 setType:{objc_msgSend(v4, "voiceType")}];
-  [v8 setFootprint:{objc_msgSend(v4, "footprint")}];
-  [v8 setGender:{objc_msgSend(v4, "gender")}];
+  [v8 setType:{objc_msgSend(requestCopy, "voiceType")}];
+  [v8 setFootprint:{objc_msgSend(requestCopy, "footprint")}];
+  [v8 setGender:{objc_msgSend(requestCopy, "gender")}];
   v9 = objc_alloc(MEMORY[0x277D61460]);
-  v10 = [v4 text];
-  v11 = [v9 initWithText:v10 voice:v8];
+  text = [requestCopy text];
+  v11 = [v9 initWithText:text voice:v8];
 
-  [v11 setPrivacySensitive:{objc_msgSend(v4, "canUseServerTTS") ^ 1}];
-  [v11 setDisableCompactVoice:{objc_msgSend(v4, "disableCompactVoiceFallback")}];
-  [v11 setSynthesisProfile:{objc_msgSend(v4, "powerProfile")}];
+  [v11 setPrivacySensitive:{objc_msgSend(requestCopy, "canUseServerTTS") ^ 1}];
+  [v11 setDisableCompactVoice:{objc_msgSend(requestCopy, "disableCompactVoiceFallback")}];
+  [v11 setSynthesisProfile:{objc_msgSend(requestCopy, "powerProfile")}];
   proxySession = self->_proxySession;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __42__VSSpeechSynthesizer_STS_prewarmRequest___block_invoke;
   v15[3] = &unk_279E4F278;
   v15[4] = self;
-  v16 = v4;
-  v13 = v4;
+  v16 = requestCopy;
+  v13 = requestCopy;
   [(SiriTTSDaemonSession *)proxySession prewarmWithRequest:v11 didFinish:v15];
 
   return 0;
@@ -4026,23 +4026,23 @@ void __42__VSSpeechSynthesizer_STS_prewarmRequest___block_invoke(uint64_t a1, vo
   }
 }
 
-- (id)errorFromSTSError:(id)a3
+- (id)errorFromSTSError:(id)error
 {
-  if (!a3)
+  if (!error)
   {
     v7 = 0;
     goto LABEL_31;
   }
 
   v3 = MEMORY[0x277CCA9B8];
-  v4 = a3;
-  v5 = [v4 code];
-  v6 = v5;
-  if (v5 > 299)
+  errorCopy = error;
+  code = [errorCopy code];
+  v6 = code;
+  if (code > 299)
   {
-    if (v5 > 399)
+    if (code > 399)
     {
-      switch(v5)
+      switch(code)
       {
         case 400:
           v6 = 700;
@@ -4058,7 +4058,7 @@ void __42__VSSpeechSynthesizer_STS_prewarmRequest___block_invoke(uint64_t a1, vo
 
     else
     {
-      switch(v5)
+      switch(code)
       {
         case 300:
           v6 = 601;
@@ -4075,9 +4075,9 @@ void __42__VSSpeechSynthesizer_STS_prewarmRequest___block_invoke(uint64_t a1, vo
     goto LABEL_29;
   }
 
-  if (v5 > 100)
+  if (code > 100)
   {
-    switch(v5)
+    switch(code)
     {
       case 101:
         v6 = 402;
@@ -4093,15 +4093,15 @@ void __42__VSSpeechSynthesizer_STS_prewarmRequest___block_invoke(uint64_t a1, vo
     goto LABEL_29;
   }
 
-  if ((v5 + 1) >= 2)
+  if ((code + 1) >= 2)
   {
-    if (v5 == 1)
+    if (code == 1)
     {
       v6 = 400;
       goto LABEL_30;
     }
 
-    if (v5 == 100)
+    if (code == 100)
     {
       v6 = 401;
       goto LABEL_30;
@@ -4112,19 +4112,19 @@ LABEL_29:
   }
 
 LABEL_30:
-  v8 = [v4 userInfo];
+  userInfo = [errorCopy userInfo];
 
-  v7 = [v3 errorWithDomain:@"VoiceServicesErrorDomain" code:v6 userInfo:v8];
+  v7 = [v3 errorWithDomain:@"VoiceServicesErrorDomain" code:v6 userInfo:userInfo];
 
 LABEL_31:
 
   return v7;
 }
 
-- (VSSpeechSynthesizer)initWithAccessoryID:(id)a3
+- (VSSpeechSynthesizer)initWithAccessoryID:(id)d
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v44.receiver = self;
   v44.super_class = VSSpeechSynthesizer;
   v5 = [(VSSpeechSynthesizer *)&v44 init];
@@ -4146,13 +4146,13 @@ LABEL_31:
 
   *(v5 + 52) = _D0;
   *(v5 + 15) = 1061997773;
-  v15 = [MEMORY[0x277CCA8D8] mainBundle];
-  v16 = [v15 preferredLocalizations];
-  v17 = [v16 firstObject];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  preferredLocalizations = [mainBundle preferredLocalizations];
+  firstObject = [preferredLocalizations firstObject];
 
-  if (v17)
+  if (firstObject)
   {
-    v18 = v17;
+    v18 = firstObject;
   }
 
   else
@@ -4161,13 +4161,13 @@ LABEL_31:
   }
 
   v19 = [VSSpeechSynthesizerPreference fallbackLanguageForLanguage:v18];
-  if (([(__CFString *)v17 isEqualToString:v19]& 1) == 0)
+  if (([(__CFString *)firstObject isEqualToString:v19]& 1) == 0)
   {
     v20 = VSGetLogDefault();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v46 = v17;
+      v46 = firstObject;
       v47 = 2114;
       v48 = v19;
       _os_log_impl(&dword_272850000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ is not TTS language, VSSpeechSynthesizer fallback to %{public}@", buf, 0x16u);
@@ -4175,10 +4175,10 @@ LABEL_31:
   }
 
   objc_storeStrong(v5 + 10, v19);
-  v21 = [MEMORY[0x277CCA8D8] mainBundle];
-  v22 = [v21 bundleIdentifier];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle2 bundleIdentifier];
   v23 = *(v5 + 1);
-  *(v5 + 1) = v22;
+  *(v5 + 1) = bundleIdentifier;
 
   v24 = [*(v5 + 1) isEqualToString:@"com.apple.assistantd"];
   v25 = *(v5 + 1);
@@ -4199,14 +4199,14 @@ LABEL_13:
   }
 
 LABEL_14:
-  v27 = [v4 copy];
+  v27 = [dCopy copy];
   v28 = *(v5 + 11);
   *(v5 + 11) = v27;
 
-  v29 = [MEMORY[0x277CCAC38] processInfo];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
   v30 = MEMORY[0x277CCACA8];
-  v31 = [v29 processName];
-  v32 = [v30 stringWithFormat:@"VSSpeechSynthesizer_%p@%@_%d", v5, v31, objc_msgSend(v29, "processIdentifier")];
+  processName = [processInfo processName];
+  v32 = [v30 stringWithFormat:@"VSSpeechSynthesizer_%p@%@_%d", v5, processName, objc_msgSend(processInfo, "processIdentifier")];
   v33 = *(v5 + 5);
   *(v5 + 5) = v32;
 
@@ -4224,7 +4224,7 @@ LABEL_14:
   {
     if (*(v5 + 11))
     {
-      v38 = [objc_alloc(MEMORY[0x277D61400]) initWithAccessoryId:v4];
+      v38 = [objc_alloc(MEMORY[0x277D61400]) initWithAccessoryId:dCopy];
     }
 
     else
@@ -4235,9 +4235,9 @@ LABEL_14:
     v39 = *(v5 + 13);
     *(v5 + 13) = v38;
 
-    v40 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v41 = *(v5 + 14);
-    *(v5 + 14) = v40;
+    *(v5 + 14) = dictionary;
   }
 
 LABEL_20:
@@ -4248,19 +4248,19 @@ LABEL_20:
 - (void)stopPlayingVoicePreview
 {
   proxySession = self->_proxySession;
-  v3 = [(VSSpeechSynthesizer *)self isPlayingPreview];
-  [(SiriTTSDaemonSession *)proxySession cancelWithRequest:v3];
+  isPlayingPreview = [(VSSpeechSynthesizer *)self isPlayingPreview];
+  [(SiriTTSDaemonSession *)proxySession cancelWithRequest:isPlayingPreview];
 }
 
-- (void)playVoicePreviewForLanguageCode:(id)a3 voiceName:(id)a4 previewType:(int64_t)a5 completion:(id)a6
+- (void)playVoicePreviewForLanguageCode:(id)code voiceName:(id)name previewType:(int64_t)type completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v11 = MEMORY[0x277D61470];
-  v12 = a4;
-  v13 = a3;
-  v14 = [[v11 alloc] initWithLanguage:v13 name:v12];
+  nameCopy = name;
+  codeCopy = code;
+  v14 = [[v11 alloc] initWithLanguage:codeCopy name:nameCopy];
 
-  v15 = [objc_alloc(MEMORY[0x277D61440]) initWithVoice:v14 previewType:a5];
+  v15 = [objc_alloc(MEMORY[0x277D61440]) initWithVoice:v14 previewType:type];
   [(VSSpeechSynthesizer *)self setIsPlayingPreview:v15];
   proxySession = self->_proxySession;
   v18[0] = MEMORY[0x277D85DD0];
@@ -4268,8 +4268,8 @@ LABEL_20:
   v18[2] = __88__VSSpeechSynthesizer_playVoicePreviewForLanguageCode_voiceName_previewType_completion___block_invoke;
   v18[3] = &unk_279E4F250;
   v18[4] = self;
-  v19 = v10;
-  v17 = v10;
+  v19 = completionCopy;
+  v17 = completionCopy;
   [(SiriTTSDaemonSession *)proxySession speakWithPreviewRequest:v15 didFinish:v18];
 }
 
@@ -4282,28 +4282,18 @@ uint64_t __88__VSSpeechSynthesizer_playVoicePreviewForLanguageCode_voiceName_pre
   return v2(v3);
 }
 
-{
-  result = *(a1 + 32);
-  if (result)
-  {
-    return (*(result + 16))();
-  }
-
-  return result;
-}
-
-+ (id)characterClassCountForUtterance:(id)a3 language:(id)a4
++ (id)characterClassCountForUtterance:(id)utterance language:(id)language
 {
   v33[6] = *MEMORY[0x277D85DE8];
-  v4 = [a3 vs_textifyEmojiWithLanguage:a4];
+  v4 = [utterance vs_textifyEmojiWithLanguage:language];
   [v4 vs_measurePauses];
   v6 = v5;
-  v31 = [v4 vs_countPhoneticSyllables];
-  v7 = [v4 vs_removePhonetics];
+  vs_countPhoneticSyllables = [v4 vs_countPhoneticSyllables];
+  vs_removePhonetics = [v4 vs_removePhonetics];
 
-  v8 = [v7 vs_removeSpeechTags];
+  vs_removeSpeechTags = [vs_removePhonetics vs_removeSpeechTags];
 
-  v9 = [v8 length];
+  v9 = [vs_removeSpeechTags length];
   if (v9)
   {
     v10 = v9;
@@ -4314,14 +4304,14 @@ uint64_t __88__VSSpeechSynthesizer_playVoicePreviewForLanguageCode_voiceName_pre
     v14 = 0;
     do
     {
-      v15 = [v8 characterAtIndex:v11];
-      v16 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-      v17 = [v16 characterIsMember:v15];
+      v15 = [vs_removeSpeechTags characterAtIndex:v11];
+      whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+      v17 = [whitespaceCharacterSet characterIsMember:v15];
 
       if ((v17 & 1) == 0)
       {
-        v18 = [MEMORY[0x277CCA900] punctuationCharacterSet];
-        v19 = [v18 characterIsMember:v15];
+        punctuationCharacterSet = [MEMORY[0x277CCA900] punctuationCharacterSet];
+        v19 = [punctuationCharacterSet characterIsMember:v15];
 
         if (v19)
         {
@@ -4330,8 +4320,8 @@ uint64_t __88__VSSpeechSynthesizer_playVoicePreviewForLanguageCode_voiceName_pre
 
         else
         {
-          v20 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-          v21 = [v20 characterIsMember:v15];
+          decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+          v21 = [decimalDigitCharacterSet characterIsMember:v15];
 
           if (v21)
           {
@@ -4366,7 +4356,7 @@ uint64_t __88__VSSpeechSynthesizer_playVoicePreviewForLanguageCode_voiceName_pre
 
   v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:(v6 * 1000.0)];
   v33[0] = v22;
-  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v31];
+  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:vs_countPhoneticSyllables];
   v33[1] = v23;
   v24 = [MEMORY[0x277CCABB0] numberWithInt:v12];
   v33[2] = v24;
@@ -4404,33 +4394,33 @@ void __37__VSSpeechSynthesizer_sharedInstance__block_invoke()
 
 + (void)stopPlayingVoicePreview
 {
-  v2 = [a1 sharedInstance];
-  [v2 stopPlayingVoicePreview];
+  sharedInstance = [self sharedInstance];
+  [sharedInstance stopPlayingVoicePreview];
 }
 
-+ (BOOL)playVoicePreviewForLanguageCode:(id)a3 voiceName:(id)a4 previewType:(int64_t)a5 completion:(id)a6
++ (BOOL)playVoicePreviewForLanguageCode:(id)code voiceName:(id)name previewType:(int64_t)type completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [a1 sharedInstance];
+  completionCopy = completion;
+  nameCopy = name;
+  codeCopy = code;
+  sharedInstance = [self sharedInstance];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __88__VSSpeechSynthesizer_playVoicePreviewForLanguageCode_voiceName_previewType_completion___block_invoke;
   v16[3] = &unk_279E4F228;
-  v17 = v10;
-  v14 = v10;
-  [v13 playVoicePreviewForLanguageCode:v12 voiceName:v11 previewType:a5 completion:v16];
+  v17 = completionCopy;
+  v14 = completionCopy;
+  [sharedInstance playVoicePreviewForLanguageCode:codeCopy voiceName:nameCopy previewType:type completion:v16];
 
   return 1;
 }
 
-+ (id)validateAudioCachingRequest:(id)a3
++ (id)validateAudioCachingRequest:(id)request
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  requestCopy = request;
+  v4 = requestCopy;
+  if (!requestCopy)
   {
     v9 = MEMORY[0x277CCA9B8];
     v29 = *MEMORY[0x277CCA450];
@@ -4445,7 +4435,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([v3 requestCreatedTimestamp])
+  if ([requestCopy requestCreatedTimestamp])
   {
     v5 = MEMORY[0x277CCA9B8];
     v27 = *MEMORY[0x277CCA450];
@@ -4459,12 +4449,12 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v16 = [v4 identifier];
+  identifier = [v4 identifier];
 
-  if (v16)
+  if (identifier)
   {
-    v17 = [v4 text];
-    v18 = [v17 length];
+    text = [v4 text];
+    v18 = [text length];
 
     if (!v18)
     {
@@ -4480,8 +4470,8 @@ LABEL_6:
 
   else
   {
-    v19 = [v4 audioData];
-    v20 = [v19 length];
+    audioData = [v4 audioData];
+    v20 = [audioData length];
 
     if (!v20)
     {
@@ -4514,12 +4504,12 @@ LABEL_7:
   return v13;
 }
 
-+ (id)validateAudioRequest:(id)a3
++ (id)validateAudioRequest:(id)request
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  requestCopy = request;
+  v4 = requestCopy;
+  if (!requestCopy)
   {
     v9 = MEMORY[0x277CCA9B8];
     v20 = *MEMORY[0x277CCA450];
@@ -4534,7 +4524,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (![v3 requestCreatedTimestamp])
+  if (![requestCopy requestCreatedTimestamp])
   {
     if ([v4 hasValidAudio])
     {
@@ -4566,11 +4556,11 @@ LABEL_10:
   return v13;
 }
 
-+ (id)validateRequest:(id)a3
++ (id)validateRequest:(id)request
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 validatePrewarmRequest:v4];
+  requestCopy = request;
+  v5 = [self validatePrewarmRequest:requestCopy];
   v6 = v5;
   if (v5)
   {
@@ -4579,9 +4569,9 @@ LABEL_10:
 
   else
   {
-    v8 = [v4 text];
+    text = [requestCopy text];
 
-    if (v8)
+    if (text)
     {
       v7 = 0;
     }
@@ -4601,12 +4591,12 @@ LABEL_10:
   return v7;
 }
 
-+ (id)validatePrewarmRequest:(id)a3
++ (id)validatePrewarmRequest:(id)request
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  requestCopy = request;
+  v4 = requestCopy;
+  if (!requestCopy)
   {
     v10 = MEMORY[0x277CCA9B8];
     v21 = *MEMORY[0x277CCA450];
@@ -4621,9 +4611,9 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v5 = [v3 languageCode];
+  languageCode = [requestCopy languageCode];
 
-  if (!v5)
+  if (!languageCode)
   {
     v10 = MEMORY[0x277CCA9B8];
     v19 = *MEMORY[0x277CCA450];
@@ -4656,14 +4646,14 @@ LABEL_9:
   return v14;
 }
 
-+ (id)errorWithReason:(id)a3
++ (id)errorWithReason:(id)reason
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCA9B8];
   v10 = *MEMORY[0x277CCA470];
-  v11[0] = a3;
+  v11[0] = reason;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  reasonCopy = reason;
   v6 = [v4 dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v7 = [v3 errorWithDomain:@"VSSpeechSynthesizer" code:0 userInfo:v6];
 

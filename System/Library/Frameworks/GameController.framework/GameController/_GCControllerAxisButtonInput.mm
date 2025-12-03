@@ -1,53 +1,53 @@
 @interface _GCControllerAxisButtonInput
-- (BOOL)_commitPendingValueOnQueue:(id)a3;
-- (BOOL)_setValueFromAxisButton:(float)a3 queue:(id)a4;
+- (BOOL)_commitPendingValueOnQueue:(id)queue;
+- (BOOL)_setValueFromAxisButton:(float)button queue:(id)queue;
 - (BOOL)isAnalog;
 - (GCControllerAxisInput)axis;
-- (_GCControllerAxisButtonInput)initWithAxis:(id)a3 positive:(BOOL)a4;
+- (_GCControllerAxisButtonInput)initWithAxis:(id)axis positive:(BOOL)positive;
 - (float)value;
 - (id)collection;
 - (id)localizedName;
 - (id)unmappedLocalizedName;
-- (void)_setPendingValue:(float)a3;
+- (void)_setPendingValue:(float)value;
 @end
 
 @implementation _GCControllerAxisButtonInput
 
-- (_GCControllerAxisButtonInput)initWithAxis:(id)a3 positive:(BOOL)a4
+- (_GCControllerAxisButtonInput)initWithAxis:(id)axis positive:(BOOL)positive
 {
-  v4 = a4;
-  v6 = a3;
+  positiveCopy = positive;
+  axisCopy = axis;
   v17.receiver = self;
   v17.super_class = _GCControllerAxisButtonInput;
   v7 = [(GCControllerElement *)&v17 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_axis, v6);
-    v8->_positive = v4;
-    v9 = [v6 collection];
-    v10 = [v9 primaryAlias];
+    objc_storeWeak(&v7->_axis, axisCopy);
+    v8->_positive = positiveCopy;
+    collection = [axisCopy collection];
+    primaryAlias = [collection primaryAlias];
 
-    v11 = [v6 isHorizontal];
+    isHorizontal = [axisCopy isHorizontal];
     v12 = @"Down";
-    if (v4)
+    if (positiveCopy)
     {
       v12 = @"Up";
     }
 
     v13 = @"Right";
-    if (!v4)
+    if (!positiveCopy)
     {
       v13 = @"Left";
     }
 
-    if (v11)
+    if (isHorizontal)
     {
       v12 = v13;
     }
 
     v14 = v12;
-    v15 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:v10];
+    v15 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:primaryAlias];
     [v15 appendString:@" "];
     [v15 appendString:v14];
     [(GCControllerElement *)v8 setPrimaryAlias:v15];
@@ -59,72 +59,72 @@
 - (id)collection
 {
   WeakRetained = objc_loadWeakRetained(&self->_axis);
-  v3 = [WeakRetained collection];
+  collection = [WeakRetained collection];
 
-  return v3;
+  return collection;
 }
 
 - (BOOL)isAnalog
 {
   WeakRetained = objc_loadWeakRetained(&self->_axis);
-  v3 = [WeakRetained isAnalog];
+  isAnalog = [WeakRetained isAnalog];
 
-  return v3;
+  return isAnalog;
 }
 
-- (BOOL)_setValueFromAxisButton:(float)a3 queue:(id)a4
+- (BOOL)_setValueFromAxisButton:(float)button queue:(id)queue
 {
   positive = self->_positive;
-  v7 = a4;
+  queueCopy = queue;
   WeakRetained = objc_loadWeakRetained(&self->_axis);
   v9 = WeakRetained;
-  *&v10 = -a3;
+  *&v10 = -button;
   if (positive)
   {
-    *&v10 = a3;
+    *&v10 = button;
   }
 
-  v11 = [WeakRetained _setValue:v7 queue:v10];
+  v11 = [WeakRetained _setValue:queueCopy queue:v10];
 
   return v11;
 }
 
-- (void)_setPendingValue:(float)a3
+- (void)_setPendingValue:(float)value
 {
-  v5 = -a3;
+  v5 = -value;
   if (self->_positive)
   {
-    v6 = a3;
+    valueCopy = value;
   }
 
   else
   {
-    v6 = v5;
+    valueCopy = v5;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_axis);
-  v8 = [WeakRetained updatePending];
+  updatePending = [WeakRetained updatePending];
 
-  if (v8)
+  if (updatePending)
   {
     v9 = objc_loadWeakRetained(&self->_axis);
     [v9 pendingValue];
     v11 = fabsf(v10);
 
-    if (fabsf(a3) <= v11)
+    if (fabsf(value) <= v11)
     {
       return;
     }
 
     v15 = objc_loadWeakRetained(&self->_axis);
-    *&v12 = v6;
+    *&v12 = valueCopy;
     [v15 setPendingValue:v12];
   }
 
   else
   {
     v13 = objc_loadWeakRetained(&self->_axis);
-    *&v14 = v6;
+    *&v14 = valueCopy;
     [v13 setPendingValue:v14];
 
     v15 = objc_loadWeakRetained(&self->_axis);
@@ -132,11 +132,11 @@
   }
 }
 
-- (BOOL)_commitPendingValueOnQueue:(id)a3
+- (BOOL)_commitPendingValueOnQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   WeakRetained = objc_loadWeakRetained(&self->_axis);
-  v6 = [WeakRetained _commitPendingValueOnQueue:v4];
+  v6 = [WeakRetained _commitPendingValueOnQueue:queueCopy];
 
   return v6;
 }
@@ -161,50 +161,50 @@
 
 - (id)localizedName
 {
-  v3 = [(GCControllerElement *)self nameLocalizationKey];
+  nameLocalizationKey = [(GCControllerElement *)self nameLocalizationKey];
 
-  if (v3)
+  if (nameLocalizationKey)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [(GCControllerElement *)self nameLocalizationKey];
+    nameLocalizationKey2 = [(GCControllerElement *)self nameLocalizationKey];
     v6 = _GCFConvertStringToLocalizedString();
-    v7 = [(_GCControllerAxisButtonInput *)self collection];
-    v8 = [v7 localizedName];
-    v9 = [v4 stringWithFormat:v6, v8];
+    collection = [(_GCControllerAxisButtonInput *)self collection];
+    localizedName = [collection localizedName];
+    localizedName2 = [v4 stringWithFormat:v6, localizedName];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = _GCControllerAxisButtonInput;
-    v9 = [(GCControllerElement *)&v11 localizedName];
+    localizedName2 = [(GCControllerElement *)&v11 localizedName];
   }
 
-  return v9;
+  return localizedName2;
 }
 
 - (id)unmappedLocalizedName
 {
-  v3 = [(GCControllerElement *)self unmappedNameLocalizationKey];
+  unmappedNameLocalizationKey = [(GCControllerElement *)self unmappedNameLocalizationKey];
 
-  if (v3)
+  if (unmappedNameLocalizationKey)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [(GCControllerElement *)self unmappedNameLocalizationKey];
+    unmappedNameLocalizationKey2 = [(GCControllerElement *)self unmappedNameLocalizationKey];
     v6 = _GCFConvertStringToLocalizedString();
-    v7 = [(_GCControllerAxisButtonInput *)self collection];
-    v8 = [v7 unmappedLocalizedName];
-    v9 = [v4 stringWithFormat:v6, v8];
+    collection = [(_GCControllerAxisButtonInput *)self collection];
+    unmappedLocalizedName = [collection unmappedLocalizedName];
+    unmappedLocalizedName2 = [v4 stringWithFormat:v6, unmappedLocalizedName];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = _GCControllerAxisButtonInput;
-    v9 = [(GCControllerElement *)&v11 unmappedLocalizedName];
+    unmappedLocalizedName2 = [(GCControllerElement *)&v11 unmappedLocalizedName];
   }
 
-  return v9;
+  return unmappedLocalizedName2;
 }
 
 - (GCControllerAxisInput)axis

@@ -1,14 +1,14 @@
 @interface NWStatsEntityMapper
-- (id)identifierForUUID:(id)a3 derivation:(int *)a4;
+- (id)identifierForUUID:(id)d derivation:(int *)derivation;
 @end
 
 @implementation NWStatsEntityMapper
 
-- (id)identifierForUUID:(id)a3 derivation:(int *)a4
+- (id)identifierForUUID:(id)d derivation:(int *)derivation
 {
-  if (a4)
+  if (derivation)
   {
-    *a4 = 0;
+    *derivation = 0;
   }
 
   return 0;

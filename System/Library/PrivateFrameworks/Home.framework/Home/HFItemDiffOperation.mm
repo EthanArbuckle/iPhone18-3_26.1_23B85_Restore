@@ -1,78 +1,78 @@
 @interface HFItemDiffOperation
-+ (id)deleteOperationWithItem:(id)a3 atIndexPath:(id)a4;
-+ (id)insertOperationWithItem:(id)a3 atIndexPath:(id)a4;
-+ (id)moveOperationWithItem:(id)a3 fromIndexPath:(id)a4 toIndexPath:(id)a5;
-+ (id)reloadOperationWithItem:(id)a3 atIndexPath:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (HFItemDiffOperation)initWithOperationType:(unint64_t)a3 item:(id)a4 fromIndexPath:(id)a5 toIndexPath:(id)a6;
++ (id)deleteOperationWithItem:(id)item atIndexPath:(id)path;
++ (id)insertOperationWithItem:(id)item atIndexPath:(id)path;
++ (id)moveOperationWithItem:(id)item fromIndexPath:(id)path toIndexPath:(id)indexPath;
++ (id)reloadOperationWithItem:(id)item atIndexPath:(id)path;
+- (BOOL)isEqual:(id)equal;
+- (HFItemDiffOperation)initWithOperationType:(unint64_t)type item:(id)item fromIndexPath:(id)path toIndexPath:(id)indexPath;
 - (NSString)description;
-- (id)_operationDescriptionWithVerboseType:(BOOL)a3;
+- (id)_operationDescriptionWithVerboseType:(BOOL)type;
 - (unint64_t)hash;
 @end
 
 @implementation HFItemDiffOperation
 
-- (HFItemDiffOperation)initWithOperationType:(unint64_t)a3 item:(id)a4 fromIndexPath:(id)a5 toIndexPath:(id)a6
+- (HFItemDiffOperation)initWithOperationType:(unint64_t)type item:(id)item fromIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemCopy = item;
+  pathCopy = path;
+  indexPathCopy = indexPath;
   v17.receiver = self;
   v17.super_class = HFItemDiffOperation;
   v14 = [(HFItemDiffOperation *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_type = a3;
-    objc_storeStrong(&v14->_item, a4);
-    objc_storeStrong(&v15->_fromIndexPath, a5);
-    objc_storeStrong(&v15->_toIndexPath, a6);
+    v14->_type = type;
+    objc_storeStrong(&v14->_item, item);
+    objc_storeStrong(&v15->_fromIndexPath, path);
+    objc_storeStrong(&v15->_toIndexPath, indexPath);
   }
 
   return v15;
 }
 
-+ (id)insertOperationWithItem:(id)a3 atIndexPath:(id)a4
++ (id)insertOperationWithItem:(id)item atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithOperationType:1 item:v7 fromIndexPath:0 toIndexPath:v6];
+  pathCopy = path;
+  itemCopy = item;
+  v8 = [[self alloc] initWithOperationType:1 item:itemCopy fromIndexPath:0 toIndexPath:pathCopy];
 
   return v8;
 }
 
-+ (id)deleteOperationWithItem:(id)a3 atIndexPath:(id)a4
++ (id)deleteOperationWithItem:(id)item atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithOperationType:2 item:v7 fromIndexPath:v6 toIndexPath:0];
+  pathCopy = path;
+  itemCopy = item;
+  v8 = [[self alloc] initWithOperationType:2 item:itemCopy fromIndexPath:pathCopy toIndexPath:0];
 
   return v8;
 }
 
-+ (id)moveOperationWithItem:(id)a3 fromIndexPath:(id)a4 toIndexPath:(id)a5
++ (id)moveOperationWithItem:(id)item fromIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithOperationType:3 item:v10 fromIndexPath:v9 toIndexPath:v8];
+  indexPathCopy = indexPath;
+  pathCopy = path;
+  itemCopy = item;
+  v11 = [[self alloc] initWithOperationType:3 item:itemCopy fromIndexPath:pathCopy toIndexPath:indexPathCopy];
 
   return v11;
 }
 
-+ (id)reloadOperationWithItem:(id)a3 atIndexPath:(id)a4
++ (id)reloadOperationWithItem:(id)item atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithOperationType:0 item:v7 fromIndexPath:v6 toIndexPath:v6];
+  pathCopy = path;
+  itemCopy = item;
+  v8 = [[self alloc] initWithOperationType:0 item:itemCopy fromIndexPath:pathCopy toIndexPath:pathCopy];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -82,9 +82,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HFItemDiffOperation *)self type];
-      if (v6 != [(HFItemDiffOperation *)v5 type])
+      v5 = equalCopy;
+      type = [(HFItemDiffOperation *)self type];
+      if (type != [(HFItemDiffOperation *)v5 type])
       {
         v15 = 0;
 LABEL_24:
@@ -92,9 +92,9 @@ LABEL_24:
         goto LABEL_25;
       }
 
-      v7 = [(HFItemDiffOperation *)self item];
-      v8 = [(HFItemDiffOperation *)v5 item];
-      if (![v7 isEqual:v8])
+      item = [(HFItemDiffOperation *)self item];
+      item2 = [(HFItemDiffOperation *)v5 item];
+      if (![item isEqual:item2])
       {
         v15 = 0;
 LABEL_23:
@@ -102,10 +102,10 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v9 = [(HFItemDiffOperation *)self fromIndexPath];
-      v10 = [(HFItemDiffOperation *)v5 fromIndexPath];
-      v11 = v9;
-      v12 = v10;
+      fromIndexPath = [(HFItemDiffOperation *)self fromIndexPath];
+      fromIndexPath2 = [(HFItemDiffOperation *)v5 fromIndexPath];
+      v11 = fromIndexPath;
+      v12 = fromIndexPath2;
       v13 = v12;
       if (v11 == v12)
       {
@@ -133,10 +133,10 @@ LABEL_22:
         }
       }
 
-      v16 = [(HFItemDiffOperation *)self toIndexPath];
-      v17 = [(HFItemDiffOperation *)v5 toIndexPath];
-      v18 = v16;
-      v19 = v17;
+      toIndexPath = [(HFItemDiffOperation *)self toIndexPath];
+      toIndexPath2 = [(HFItemDiffOperation *)v5 toIndexPath];
+      v18 = toIndexPath;
+      v19 = toIndexPath2;
       if (v18 == v19)
       {
         v15 = 1;
@@ -165,15 +165,15 @@ LABEL_25:
 
 - (unint64_t)hash
 {
-  v3 = [(HFItemDiffOperation *)self type];
-  v4 = [(HFItemDiffOperation *)self item];
-  v5 = [v4 hash];
-  v6 = [(HFItemDiffOperation *)self fromIndexPath];
-  v7 = [v6 hash];
-  v8 = [(HFItemDiffOperation *)self toIndexPath];
-  v9 = (v7 << 8) ^ (v5 << 16) ^ [v8 hash];
+  type = [(HFItemDiffOperation *)self type];
+  item = [(HFItemDiffOperation *)self item];
+  v5 = [item hash];
+  fromIndexPath = [(HFItemDiffOperation *)self fromIndexPath];
+  v7 = [fromIndexPath hash];
+  toIndexPath = [(HFItemDiffOperation *)self toIndexPath];
+  v9 = (v7 << 8) ^ (v5 << 16) ^ [toIndexPath hash];
 
-  return v9 + v3;
+  return v9 + type;
 }
 
 - (NSString)description
@@ -186,20 +186,20 @@ LABEL_25:
   return v6;
 }
 
-- (id)_operationDescriptionWithVerboseType:(BOOL)a3
+- (id)_operationDescriptionWithVerboseType:(BOOL)type
 {
-  v3 = a3;
+  typeCopy = type;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __60__HFItemDiffOperation__operationDescriptionWithVerboseType___block_invoke;
   v12[3] = &unk_277DF3568;
   v12[4] = self;
   v5 = __60__HFItemDiffOperation__operationDescriptionWithVerboseType___block_invoke(v12);
-  v6 = [(HFItemDiffOperation *)self type];
-  if (v6 > 3)
+  type = [(HFItemDiffOperation *)self type];
+  if (type > 3)
   {
     v7 = @"(unknown operation type)";
-    if (!v3)
+    if (!typeCopy)
     {
       goto LABEL_6;
     }
@@ -207,8 +207,8 @@ LABEL_25:
     goto LABEL_5;
   }
 
-  v7 = off_277DFAAD0[v6];
-  if (v3)
+  v7 = off_277DFAAD0[type];
+  if (typeCopy)
   {
 LABEL_5:
     v7 = [(__CFString *)v7 stringByAppendingString:@" item"];
@@ -216,8 +216,8 @@ LABEL_5:
 
 LABEL_6:
   v8 = MEMORY[0x277CCACA8];
-  v9 = [(HFItemDiffOperation *)self item];
-  v10 = [v8 stringWithFormat:@"%@ %@ %@", v7, v5, v9];
+  item = [(HFItemDiffOperation *)self item];
+  v10 = [v8 stringWithFormat:@"%@ %@ %@", v7, v5, item];
 
   return v10;
 }

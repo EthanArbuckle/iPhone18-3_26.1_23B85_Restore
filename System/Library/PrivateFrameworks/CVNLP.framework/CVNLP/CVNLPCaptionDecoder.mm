@@ -1,12 +1,12 @@
 @interface CVNLPCaptionDecoder
-- (id)computeCaptionForImageWithInputs:(id)a3 genderOption:(int)a4;
+- (id)computeCaptionForImageWithInputs:(id)inputs genderOption:(int)option;
 @end
 
 @implementation CVNLPCaptionDecoder
 
-- (id)computeCaptionForImageWithInputs:(id)a3 genderOption:(int)a4
+- (id)computeCaptionForImageWithInputs:(id)inputs genderOption:(int)option
 {
-  v5 = a3;
+  inputsCopy = inputs;
   v6 = MEMORY[0x1E695DF30];
   v7 = MEMORY[0x1E696AEC0];
   v8 = NSStringFromSelector(a2);

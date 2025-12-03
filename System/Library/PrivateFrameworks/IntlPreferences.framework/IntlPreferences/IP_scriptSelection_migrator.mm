@@ -1,21 +1,21 @@
 @interface IP_scriptSelection_migrator
-- (id)performMigrationForPreferences:(id)a3;
+- (id)performMigrationForPreferences:(id)preferences;
 @end
 
 @implementation IP_scriptSelection_migrator
 
-- (id)performMigrationForPreferences:(id)a3
+- (id)performMigrationForPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   if ([(ISMigrator *)self previousSchemaVersion]>= 0x1518)
   {
-    v23 = v4;
+    v23 = preferencesCopy;
   }
 
   else
   {
-    v5 = [v4 mutableCopy];
-    v6 = [v4 objectForKeyedSubscript:@"AppleLanguages"];
+    v5 = [preferencesCopy mutableCopy];
+    v6 = [preferencesCopy objectForKeyedSubscript:@"AppleLanguages"];
     v7 = [v6 mutableCopy];
 
     v25[0] = MEMORY[0x277D85DD0];
@@ -30,10 +30,10 @@
     v29 = v9;
     [v9 enumerateObjectsUsingBlock:v25];
     v10 = [MEMORY[0x277CBEB70] orderedSetWithArray:v9];
-    v11 = [v10 array];
-    [v8 setObject:v11 forKeyedSubscript:@"AppleLanguages"];
+    array = [v10 array];
+    [v8 setObject:array forKeyedSubscript:@"AppleLanguages"];
 
-    v12 = [v4 objectForKeyedSubscript:?];
+    v12 = [preferencesCopy objectForKeyedSubscript:?];
     v13 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:v12];
     v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277CBE6C8]];
     v15 = [v13 objectForKeyedSubscript:*MEMORY[0x277CBE6F8]];

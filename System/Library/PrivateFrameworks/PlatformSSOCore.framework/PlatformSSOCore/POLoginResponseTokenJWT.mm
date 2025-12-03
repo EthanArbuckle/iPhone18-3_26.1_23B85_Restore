@@ -1,5 +1,5 @@
 @interface POLoginResponseTokenJWT
-- (POLoginResponseTokenJWT)initWithString:(id)a3;
+- (POLoginResponseTokenJWT)initWithString:(id)string;
 - (id)description;
 - (id)mutableCopy;
 - (void)updateDecodedBody;
@@ -7,21 +7,21 @@
 
 @implementation POLoginResponseTokenJWT
 
-- (POLoginResponseTokenJWT)initWithString:(id)a3
+- (POLoginResponseTokenJWT)initWithString:(id)string
 {
   v11.receiver = self;
   v11.super_class = POLoginResponseTokenJWT;
-  v3 = [(POJWT *)&v11 initWithString:a3];
+  v3 = [(POJWT *)&v11 initWithString:string];
   v4 = v3;
   if (v3)
   {
-    v5 = [(POJWT *)v3 rawBody];
+    rawBody = [(POJWT *)v3 rawBody];
 
-    if (v5)
+    if (rawBody)
     {
       v6 = objc_alloc(MEMORY[0x277CBEA90]);
-      v7 = [(POJWT *)v4 rawBody];
-      v8 = [v6 psso_initWithBase64URLEncodedString:v7];
+      rawBody2 = [(POJWT *)v4 rawBody];
+      v8 = [v6 psso_initWithBase64URLEncodedString:rawBody2];
 
       if (v8)
       {
@@ -37,22 +37,22 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(POJWT *)self decodedHeader];
-  v5 = [(POLoginResponseTokenJWT *)self decodedBody];
-  v6 = [(POJWT *)self stringRepresentation];
-  v7 = [v3 stringWithFormat:@"%@.%@\n%@", v4, v5, v6];
+  decodedHeader = [(POJWT *)self decodedHeader];
+  decodedBody = [(POLoginResponseTokenJWT *)self decodedBody];
+  stringRepresentation = [(POJWT *)self stringRepresentation];
+  v7 = [v3 stringWithFormat:@"%@.%@\n%@", decodedHeader, decodedBody, stringRepresentation];
 
   return v7;
 }
 
 - (void)updateDecodedBody
 {
-  v3 = [(POJWT *)self rawBody];
-  if (v3)
+  rawBody = [(POJWT *)self rawBody];
+  if (rawBody)
   {
-    v4 = v3;
-    v5 = [(POJWT *)self decodedHeader];
-    v6 = [v5 cty];
+    v4 = rawBody;
+    decodedHeader = [(POJWT *)self decodedHeader];
+    v6 = [decodedHeader cty];
 
     if (!v6)
     {
@@ -60,8 +60,8 @@
       v8 = SecCFAllocatorZeroize();
       CFAllocatorSetDefault(v8);
       v9 = objc_alloc(MEMORY[0x277CBEA90]);
-      v10 = [(POJWT *)self rawBody];
-      v12 = [v9 psso_initWithBase64URLEncodedString:v10];
+      rawBody2 = [(POJWT *)self rawBody];
+      v12 = [v9 psso_initWithBase64URLEncodedString:rawBody2];
 
       if (v12)
       {
@@ -77,12 +77,12 @@
 - (id)mutableCopy
 {
   v3 = objc_alloc_init(POMutableLoginResponseTokenJWT);
-  v4 = [(POLoginResponseTokenJWT *)self decodedBody];
-  v5 = [v4 mutableCopy];
+  decodedBody = [(POLoginResponseTokenJWT *)self decodedBody];
+  v5 = [decodedBody mutableCopy];
   [(POMutableLoginResponseTokenJWT *)v3 setBody:v5];
 
-  v6 = [(POJWT *)self decodedHeader];
-  v7 = [v6 mutableCopy];
+  decodedHeader = [(POJWT *)self decodedHeader];
+  v7 = [decodedHeader mutableCopy];
   [(POMutableJWT *)v3 setHeader:v7];
 
   return v3;

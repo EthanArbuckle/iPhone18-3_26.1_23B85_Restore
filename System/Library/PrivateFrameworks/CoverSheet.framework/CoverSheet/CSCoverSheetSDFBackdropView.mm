@@ -1,13 +1,13 @@
 @interface CSCoverSheetSDFBackdropView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 @end
 
 @implementation CSCoverSheetSDFBackdropView
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"filters.glassForeground.inputRefractionAmount"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"filters.glassForeground.inputAberrationAmount"))
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"filters.glassForeground.inputRefractionAmount"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"filters.glassForeground.inputAberrationAmount"))
   {
     v5 = 1;
   }
@@ -16,7 +16,7 @@
   {
     v7.receiver = self;
     v7.super_class = CSCoverSheetSDFBackdropView;
-    v5 = [(CSCoverSheetSDFBackdropView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(CSCoverSheetSDFBackdropView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;

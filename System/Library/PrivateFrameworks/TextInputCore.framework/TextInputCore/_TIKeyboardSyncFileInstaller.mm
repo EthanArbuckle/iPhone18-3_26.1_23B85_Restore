@@ -1,5 +1,5 @@
 @interface _TIKeyboardSyncFileInstaller
-- (_TIKeyboardSyncFileInstaller)initWithEntry:(id)a3;
+- (_TIKeyboardSyncFileInstaller)initWithEntry:(id)entry;
 - (void)dealloc;
 - (void)execute;
 - (void)invalidate;
@@ -55,16 +55,16 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (_TIKeyboardSyncFileInstaller)initWithEntry:(id)a3
+- (_TIKeyboardSyncFileInstaller)initWithEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   v9.receiver = self;
   v9.super_class = _TIKeyboardSyncFileInstaller;
   v6 = [(_TIKeyboardSyncFileInstaller *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_entry, a3);
+    objc_storeStrong(&v6->_entry, entry);
   }
 
   return v7;

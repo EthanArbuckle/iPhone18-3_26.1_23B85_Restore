@@ -1,42 +1,42 @@
 @interface MBDomain
-- (BOOL)adjustNodeOwnershipAndPermissionsForDataMigratorPlugIn:(id *)a3 path:(id)a4;
+- (BOOL)adjustNodeOwnershipAndPermissionsForDataMigratorPlugIn:(id *)in path:(id)path;
 @end
 
 @implementation MBDomain
 
-- (BOOL)adjustNodeOwnershipAndPermissionsForDataMigratorPlugIn:(id *)a3 path:(id)a4
+- (BOOL)adjustNodeOwnershipAndPermissionsForDataMigratorPlugIn:(id *)in path:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v7 = MBMobileUID();
   if (([(MBDomain *)self isSystemContainerDomain]& 1) != 0 || ([(MBDomain *)self isSystemSharedContainerDomain]& 1) != 0 || [(MBDomain *)self isLegacyPerAppPlaceholderDomain])
   {
-    a3->var1 = v7;
-    a3->var2 = v7;
-    if (sub_10008E5E0(a3))
+    in->var1 = v7;
+    in->var2 = v7;
+    if (sub_10008E5E0(in))
     {
-      v8 = a3;
+      inCopy2 = in;
       v9 = 493;
     }
 
     else
     {
-      v8 = a3;
+      inCopy2 = in;
       v9 = 420;
     }
 
-    sub_10008E628(v8, v9);
+    sub_10008E628(inCopy2, v9);
   }
 
   else
   {
-    if (a3->var1 || sub_10008E608(a3) || !-[MBDomain isCameraRollDomain](self, "isCameraRollDomain") || !sub_10008E5F4(a3) && (-[MBDomain rootPath](self, "rootPath"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 isEqualToString:v6], v12, (v13 & 1) != 0))
+    if (in->var1 || sub_10008E608(in) || !-[MBDomain isCameraRollDomain](self, "isCameraRollDomain") || !sub_10008E5F4(in) && (-[MBDomain rootPath](self, "rootPath"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 isEqualToString:pathCopy], v12, (v13 & 1) != 0))
     {
       v10 = 0;
       goto LABEL_9;
     }
 
-    a3->var1 = v7;
-    a3->var2 = v7;
+    in->var1 = v7;
+    in->var2 = v7;
   }
 
   v10 = 1;

@@ -1,38 +1,38 @@
 @interface PlayIntentControlsReusableView
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PlayIntentControlsReusableView
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_414770(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  v6 = sub_414770(attributesCopy);
 
   return v6;
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_41376C();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_413844();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_413D48(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_413D48(change);
 }
 
 @end

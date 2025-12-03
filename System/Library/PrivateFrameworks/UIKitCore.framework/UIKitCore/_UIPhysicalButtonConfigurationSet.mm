@@ -1,29 +1,29 @@
 @interface _UIPhysicalButtonConfigurationSet
-+ (id)_configurationSetFromNSSet:(uint64_t)a1;
++ (id)_configurationSetFromNSSet:(uint64_t)set;
 - (BOOL)_isFull;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_UIPhysicalButtonConfigurationSet)init;
-- (_UIPhysicalButtonConfigurationSet)initWithBSXPCCoder:(id)a3;
-- (_UIPhysicalButtonConfigurationSet)initWithCoder:(id)a3;
-- (_UIPhysicalButtonConfigurationSet)initWithXPCDictionary:(id)a3;
-- (id)_configurationForButton:(unint64_t)a3;
-- (id)_configurationPassingTest:(id)a3;
+- (_UIPhysicalButtonConfigurationSet)initWithBSXPCCoder:(id)coder;
+- (_UIPhysicalButtonConfigurationSet)initWithCoder:(id)coder;
+- (_UIPhysicalButtonConfigurationSet)initWithXPCDictionary:(id)dictionary;
+- (id)_configurationForButton:(unint64_t)button;
+- (id)_configurationPassingTest:(id)test;
 - (id)_nsSetRepresentation;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (uint64_t)_validateRequirementsForCandidateButton:(void *)a3 andConfiguration:(char)a4 allowingNilRequiredConfiguration:(void *)a5 withOutErrorMessage:;
-- (unint64_t)_countByEnumeratingWithState:(unint64_t)a3 objects:(unint64_t)a4 count:(unint64_t)a5 mutationPointer:;
+- (uint64_t)_validateRequirementsForCandidateButton:(void *)button andConfiguration:(char)configuration allowingNilRequiredConfiguration:(void *)requiredConfiguration withOutErrorMessage:;
+- (unint64_t)_countByEnumeratingWithState:(unint64_t)state objects:(unint64_t)objects count:(unint64_t)count mutationPointer:;
 - (unint64_t)hash;
-- (void)_enumerateConfigurationsWithBlock:(id)a3;
-- (void)_initWithConfigurationsDictionary:(void *)a1;
+- (void)_enumerateConfigurationsWithBlock:(id)block;
+- (void)_initWithConfigurationsDictionary:(void *)dictionary;
 - (void)_validateButtonRequirements;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation _UIPhysicalButtonConfigurationSet
@@ -31,14 +31,14 @@
 - (void)_validateButtonRequirements
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v1 = a1;
-    v2 = [v1 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    selfCopy = self;
+    v2 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v2)
     {
       v3 = v2;
@@ -52,21 +52,21 @@
         {
           if (*v14 != v5)
           {
-            objc_enumerationMutation(v1);
+            objc_enumerationMutation(selfCopy);
           }
 
           v8 = *(*(&v13 + 1) + 8 * v6);
-          v9 = [v8 _button];
+          _button = [v8 _button];
           v12 = v7;
-          v10 = [(_UIPhysicalButtonConfigurationSet *)v1 _validateRequirementsForCandidateButton:v9 andConfiguration:v8 allowingNilRequiredConfiguration:0 withOutErrorMessage:&v12];
+          v10 = [(_UIPhysicalButtonConfigurationSet *)selfCopy _validateRequirementsForCandidateButton:_button andConfiguration:v8 allowingNilRequiredConfiguration:0 withOutErrorMessage:&v12];
           v4 = v12;
 
           if (!v10)
           {
 
-            v11 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v11 handleFailureInMethod:sel__validateButtonRequirements object:v1 file:@"_UIPhysicalButtonConfiguration.m" lineNumber:943 description:{@"Invalid for reason: %@", v4}];
-            v1 = v11;
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:sel__validateButtonRequirements object:selfCopy file:@"_UIPhysicalButtonConfiguration.m" lineNumber:943 description:{@"Invalid for reason: %@", v4}];
+            selfCopy = currentHandler;
             goto LABEL_12;
           }
 
@@ -75,7 +75,7 @@
         }
 
         while (v3 != v6);
-        v3 = [v1 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v3 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v3)
         {
           continue;
@@ -89,26 +89,26 @@ LABEL_12:
 
     else
     {
-      v4 = v1;
+      v4 = selfCopy;
     }
   }
 }
 
 - (BOOL)_isFull
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [*(a1 + 8) count];
+  v1 = [*(self + 8) count];
   v2 = _UIPhysicalButtonAllAvailableButtons();
   v3 = v1 == [v2 count];
 
   return v3;
 }
 
-+ (id)_configurationSetFromNSSet:(uint64_t)a1
++ (id)_configurationSetFromNSSet:(uint64_t)set
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_self();
@@ -118,7 +118,7 @@ LABEL_12:
   if (IsMostlyValid)
   {
     v6 = objc_opt_new();
-    v7 = v6;
+    currentHandler = v6;
     if (v6)
     {
       *(v6 + 16) = 1;
@@ -143,7 +143,7 @@ LABEL_12:
             objc_enumerationMutation(v8);
           }
 
-          [v7 _setConfiguration:*(*(&v15 + 1) + 8 * i) forButton:{objc_msgSend(*(*(&v15 + 1) + 8 * i), "_button")}];
+          [currentHandler _setConfiguration:*(*(&v15 + 1) + 8 * i) forButton:{objc_msgSend(*(*(&v15 + 1) + 8 * i), "_button")}];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
@@ -152,19 +152,19 @@ LABEL_12:
       while (v10);
     }
 
-    if (v7)
+    if (currentHandler)
     {
-      v7[16] = 0;
+      currentHandler[16] = 0;
     }
 
-    [(_UIPhysicalButtonConfigurationSet *)v7 _validateButtonRequirements];
-    v13 = [v7 copy];
+    [(_UIPhysicalButtonConfigurationSet *)currentHandler _validateButtonRequirements];
+    v13 = [currentHandler copy];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:sel__configurationSetFromNSSet_ object:v3 file:@"_UIPhysicalButtonConfiguration.m" lineNumber:793 description:{@"Invalid configurations set for reason: %@; set: %@", v5, a2}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__configurationSetFromNSSet_ object:v3 file:@"_UIPhysicalButtonConfiguration.m" lineNumber:793 description:{@"Invalid configurations set for reason: %@; set: %@", v5, a2}];
     v13 = 0;
   }
 
@@ -173,21 +173,21 @@ LABEL_12:
 
 - (_UIPhysicalButtonConfigurationSet)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonConfiguration.m" lineNumber:819 description:{@"%s: init is not allowed on %@", "-[_UIPhysicalButtonConfigurationSet init]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonConfiguration.m" lineNumber:819 description:{@"%s: init is not allowed on %@", "-[_UIPhysicalButtonConfigurationSet init]", objc_opt_class()}];
 
   return 0;
 }
 
-- (void)_initWithConfigurationsDictionary:(void *)a1
+- (void)_initWithConfigurationsDictionary:(void *)dictionary
 {
   v49 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!dictionary)
   {
     return 0;
   }
 
-  v3 = a1;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_class();
   if (v4 == objc_opt_class() || v4 == objc_opt_class())
   {
@@ -204,7 +204,7 @@ LABEL_5:
       {
         v6 = 0;
         v39 = *v45;
-        v36 = v3;
+        v36 = dictionaryCopy;
         v37 = a2;
         while (2)
         {
@@ -216,30 +216,30 @@ LABEL_5:
             }
 
             v8 = *(*(&v44 + 1) + 8 * i);
-            v9 = [v8 unsignedIntegerValue];
+            unsignedIntegerValue = [v8 unsignedIntegerValue];
             v10 = [v5 objectForKey:v8];
-            if ((_UIPhysicalButtonIsValid(v9) & 1) == 0)
+            if ((_UIPhysicalButtonIsValid(unsignedIntegerValue) & 1) == 0)
             {
-              v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid dictionary key button value: %lu configuration: %@", v9, v10];;
+              v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid dictionary key button value: %lu configuration: %@", unsignedIntegerValue, v10];;
               v22 = v21;
               goto LABEL_27;
             }
 
-            IsValid = _UIPhysicalButtonIsValid(v9);
+            IsValid = _UIPhysicalButtonIsValid(unsignedIntegerValue);
             if (v10)
             {
-              v40 = [v10 _button] == v9;
+              v40 = [v10 _button] == unsignedIntegerValue;
               v12 = v5;
-              v13 = [v10 _button];
-              v14 = [v10 _behavior];
-              v15 = _UIPhysicalButtonIsValid(v13);
-              LODWORD(v13) = _UIPhysicalButtonBehaviorIsValidForButton(v14, v13);
-              v16 = [v10 _behaviorOptions];
-              LODWORD(v14) = _UIPhysicalButtonBehaviorOptionsIsValidForBehavior(v16, v14);
+              _button = [v10 _button];
+              _behavior = [v10 _behavior];
+              v15 = _UIPhysicalButtonIsValid(_button);
+              LODWORD(_button) = _UIPhysicalButtonBehaviorIsValidForButton(_behavior, _button);
+              _behaviorOptions = [v10 _behaviorOptions];
+              LODWORD(_behavior) = _UIPhysicalButtonBehaviorOptionsIsValidForBehavior(_behaviorOptions, _behavior);
 
-              v17 = v15 & v13;
+              v17 = v15 & _button;
               v5 = v12;
-              v18 = v40 & v17 & v14;
+              v18 = v40 & v17 & _behavior;
             }
 
             else
@@ -250,34 +250,34 @@ LABEL_5:
             if ((IsValid & v18 & 1) == 0)
             {
               v23 = MEMORY[0x1E696AEC0];
-              v24 = _NSStringFromUIPhysicalButton(v9);
+              v24 = _NSStringFromUIPhysicalButton(unsignedIntegerValue);
               [v23 stringWithFormat:@"Invalid configuration for %@: %@", v24, v10];
               goto LABEL_26;
             }
 
-            if ((v9 - 1) >= 7)
+            if ((unsignedIntegerValue - 1) >= 7)
             {
               v19 = 0;
             }
 
             else
             {
-              v19 = 1 << v9;
+              v19 = 1 << unsignedIntegerValue;
             }
 
             if ((v19 & ~v6) == 0)
             {
               v25 = MEMORY[0x1E696AEC0];
-              v24 = _NSStringFromUIPhysicalButton(v9);
+              v24 = _NSStringFromUIPhysicalButton(unsignedIntegerValue);
               [v25 stringWithFormat:@"Configuration dictionary contains more than one %@ button", v24, v35];
               v21 = LABEL_26:;
               v26 = v21;
 
 LABEL_27:
               v20 = v21;
-              v27 = [MEMORY[0x1E696AAA8] currentHandler];
-              v3 = v36;
-              [v27 handleFailureInMethod:sel__initWithConfigurationsDictionary_ object:v36 file:@"_UIPhysicalButtonConfiguration.m" lineNumber:830 description:{@"Invalid configurations dictionary for reason: %@; dictionary: %@", v20, v5}];
+              currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+              dictionaryCopy = v36;
+              [currentHandler handleFailureInMethod:sel__initWithConfigurationsDictionary_ object:v36 file:@"_UIPhysicalButtonConfiguration.m" lineNumber:830 description:{@"Invalid configurations dictionary for reason: %@; dictionary: %@", v20, v5}];
 
               a2 = v37;
               goto LABEL_28;
@@ -286,7 +286,7 @@ LABEL_27:
             v6 |= v19;
           }
 
-          v3 = v36;
+          dictionaryCopy = v36;
           a2 = v37;
           v38 = [v5 countByEnumeratingWithState:&v44 objects:v48 count:16];
           if (v38)
@@ -302,8 +302,8 @@ LABEL_27:
 
   else
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:sel__initWithConfigurationsDictionary_ object:v3 file:@"_UIPhysicalButtonConfiguration.m" lineNumber:826 description:@"_UIPhysicalButtonConfigurationSet cannot be subclassed"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:sel__initWithConfigurationsDictionary_ object:dictionaryCopy file:@"_UIPhysicalButtonConfiguration.m" lineNumber:826 description:@"_UIPhysicalButtonConfigurationSet cannot be subclassed"];
 
     if (a2)
     {
@@ -313,7 +313,7 @@ LABEL_27:
 
   v20 = 0;
 LABEL_28:
-  v43.receiver = v3;
+  v43.receiver = dictionaryCopy;
   v43.super_class = _UIPhysicalButtonConfigurationSet;
   v28 = objc_msgSendSuper2(&v43, sel_init);
   if (v28)
@@ -344,33 +344,33 @@ LABEL_28:
   return v32;
 }
 
-- (uint64_t)_validateRequirementsForCandidateButton:(void *)a3 andConfiguration:(char)a4 allowingNilRequiredConfiguration:(void *)a5 withOutErrorMessage:
+- (uint64_t)_validateRequirementsForCandidateButton:(void *)button andConfiguration:(char)configuration allowingNilRequiredConfiguration:(void *)requiredConfiguration withOutErrorMessage:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v9 = a1;
+  selfCopy = self;
   IsValid = _UIPhysicalButtonIsValid(a2);
   v11 = a2;
-  if (a3)
+  if (button)
   {
-    v32 = v9;
-    v12 = a4;
-    v13 = a5;
-    v14 = [a3 _button] == a2;
-    v15 = [a3 _button];
-    v16 = [a3 _behavior];
-    v17 = _UIPhysicalButtonIsValid(v15);
-    LODWORD(v15) = _UIPhysicalButtonBehaviorIsValidForButton(v16, v15);
-    v18 = [a3 _behaviorOptions];
-    LODWORD(v16) = _UIPhysicalButtonBehaviorOptionsIsValidForBehavior(v18, v16);
+    v32 = selfCopy;
+    configurationCopy = configuration;
+    requiredConfigurationCopy = requiredConfiguration;
+    v14 = [button _button] == a2;
+    _button = [button _button];
+    _behavior = [button _behavior];
+    v17 = _UIPhysicalButtonIsValid(_button);
+    LODWORD(_button) = _UIPhysicalButtonBehaviorIsValidForButton(_behavior, _button);
+    _behaviorOptions = [button _behaviorOptions];
+    LODWORD(_behavior) = _UIPhysicalButtonBehaviorOptionsIsValidForBehavior(_behaviorOptions, _behavior);
 
-    a5 = v13;
-    a4 = v12;
-    v9 = v32;
-    v19 = v14 & v17 & v15 & v16;
+    requiredConfiguration = requiredConfigurationCopy;
+    configuration = configurationCopy;
+    selfCopy = v32;
+    v19 = v14 & v17 & _button & _behavior;
   }
 
   else
@@ -380,17 +380,17 @@ LABEL_28:
 
   if ((IsValid & v19 & 1) == 0)
   {
-    if (a5)
+    if (requiredConfiguration)
     {
       v21 = MEMORY[0x1E696AEC0];
       v22 = _NSStringFromUIPhysicalButton(v11);
-      *a5 = [v21 stringWithFormat:@"Invalid configuration for %@: %@", v22, a3];
+      *requiredConfiguration = [v21 stringWithFormat:@"Invalid configuration for %@: %@", v22, button];
     }
 
     return 0;
   }
 
-  if (v9[16])
+  if (selfCopy[16])
   {
     return 1;
   }
@@ -406,16 +406,16 @@ LABEL_28:
   aBlock[1] = 3221225472;
   aBlock[2] = __147___UIPhysicalButtonConfigurationSet__validateRequirementsForCandidateButton_andConfiguration_allowingNilRequiredConfiguration_withOutErrorMessage___block_invoke;
   aBlock[3] = &unk_1E712C590;
-  v34 = a4;
-  aBlock[4] = v9;
-  aBlock[5] = a3;
+  configurationCopy2 = configuration;
+  aBlock[4] = selfCopy;
+  aBlock[5] = button;
   aBlock[6] = &v35;
   aBlock[7] = v11;
   v24 = _Block_copy(aBlock);
   if ([v23 count])
   {
     v20 = v24[2](v24, v23) ^ 1;
-    if (a5)
+    if (requiredConfiguration)
     {
       v25 = v20;
     }
@@ -428,11 +428,11 @@ LABEL_28:
     if ((v25 & 1) == 0)
     {
       v26 = MEMORY[0x1E696AEC0];
-      v27 = [v9 succinctDescription];
+      succinctDescription = [selfCopy succinctDescription];
       v28 = _NSStringFromUIPhysicalButton(v11);
-      v29 = [a3 succinctDescription];
-      v30 = [v36[5] succinctDescription];
-      *a5 = [v26 stringWithFormat:@"The candidate button configuration is not valid as its behavior differs from an existing configuration of a required button: self: %@ candidateButton: %@; candidateConfiguration: %@; configurationWithFailingRequirement: %@", v27, v28, v29, v30];;
+      succinctDescription2 = [button succinctDescription];
+      succinctDescription3 = [v36[5] succinctDescription];
+      *requiredConfiguration = [v26 stringWithFormat:@"The candidate button configuration is not valid as its behavior differs from an existing configuration of a required button: self: %@ candidateButton: %@; candidateConfiguration: %@; configurationWithFailingRequirement: %@", succinctDescription, v28, succinctDescription2, succinctDescription3];;
     }
   }
 
@@ -447,10 +447,10 @@ LABEL_28:
 
 - (id)_nsSetRepresentation
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = a1[1];
+    v2 = self[1];
     if (v2 && [v2 count])
     {
       v3 = objc_opt_new();
@@ -460,29 +460,29 @@ LABEL_28:
       v6[3] = &unk_1E712C5B8;
       v7 = v3;
       v4 = v3;
-      [v1 _enumerateConfigurationsWithBlock:v6];
-      v1 = [v4 copy];
+      [selfCopy _enumerateConfigurationsWithBlock:v6];
+      selfCopy = [v4 copy];
     }
 
     else
     {
-      v1 = objc_opt_new();
+      selfCopy = objc_opt_new();
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (id)_configurationForButton:(unint64_t)a3
+- (id)_configurationForButton:(unint64_t)button
 {
   configurationsByButton = self->_configurationsByButton;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:button];
   v5 = [(NSMutableDictionary *)configurationsByButton objectForKey:v4];
 
   return v5;
 }
 
-- (void)_enumerateConfigurationsWithBlock:(id)a3
+- (void)_enumerateConfigurationsWithBlock:(id)block
 {
   v4[0] = 0;
   v4[1] = v4;
@@ -493,13 +493,13 @@ LABEL_28:
   v3[2] = __71___UIPhysicalButtonConfigurationSet__enumerateConfigurationsWithBlock___block_invoke;
   v3[3] = &unk_1E712C5E0;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = block;
   v3[6] = v4;
   _UIPhysicalButtonEnumerateAllButtonsWithBlock(v3);
   _Block_object_dispose(v4, 8);
 }
 
-- (id)_configurationPassingTest:(id)a3
+- (id)_configurationPassingTest:(id)test
 {
   v6 = 0;
   v7 = &v6;
@@ -511,7 +511,7 @@ LABEL_28:
   v5[1] = 3221225472;
   v5[2] = __63___UIPhysicalButtonConfigurationSet__configurationPassingTest___block_invoke;
   v5[3] = &unk_1E712C608;
-  v5[4] = a3;
+  v5[4] = test;
   v5[5] = &v6;
   [(_UIPhysicalButtonConfigurationSet *)self _enumerateConfigurationsWithBlock:v5];
   v3 = v7[5];
@@ -520,9 +520,9 @@ LABEL_28:
   return v3;
 }
 
-- (unint64_t)_countByEnumeratingWithState:(unint64_t)a3 objects:(unint64_t)a4 count:(unint64_t)a5 mutationPointer:
+- (unint64_t)_countByEnumeratingWithState:(unint64_t)state objects:(unint64_t)objects count:(unint64_t)count mutationPointer:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -530,7 +530,7 @@ LABEL_28:
   v9 = *a2;
   if (!*a2)
   {
-    a2[2] = a5;
+    a2[2] = count;
   }
 
   v10 = _UIPhysicalButtonAllAvailableButtons();
@@ -543,8 +543,8 @@ LABEL_28:
   else
   {
     v19 = a2;
-    a2[1] = a3;
-    if (a4)
+    a2[1] = state;
+    if (objects)
     {
       v12 = v11;
       v13 = 0;
@@ -552,18 +552,18 @@ LABEL_28:
       do
       {
         v15 = [v10 objectAtIndexedSubscript:v14];
-        v16 = [v15 unsignedIntegerValue];
+        unsignedIntegerValue = [v15 unsignedIntegerValue];
 
-        v17 = [a1 _configurationForButton:v16];
+        v17 = [self _configurationForButton:unsignedIntegerValue];
         if (v17)
         {
-          *(a3 + 8 * v13++) = v17;
+          *(state + 8 * v13++) = v17;
         }
 
         ++v14;
       }
 
-      while (v14 < v12 && v13 < a4);
+      while (v14 < v12 && v13 < objects);
     }
 
     else
@@ -577,24 +577,24 @@ LABEL_28:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3 || !_NSIsNSObject())
+  if (!equal || !_NSIsNSObject())
   {
     return 0;
   }
 
-  v5 = a3;
+  equalCopy = equal;
   v6 = objc_opt_class();
-  if ((v6 == objc_opt_class() || (v7 = objc_opt_class(), v7 == objc_opt_class())) && (v8 = -[_UIPhysicalButtonConfigurationSet hash](self, "hash"), v8 == [v5 hash]))
+  if ((v6 == objc_opt_class() || (v7 = objc_opt_class(), v7 == objc_opt_class())) && (v8 = -[_UIPhysicalButtonConfigurationSet hash](self, "hash"), v8 == [equalCopy hash]))
   {
     configurationsByButton = self->_configurationsByButton;
-    v10 = v5[1];
+    v10 = equalCopy[1];
     v11 = configurationsByButton;
     v12 = v10;
     v13 = v12;
@@ -623,19 +623,19 @@ LABEL_28:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendObject:self->_configurationsByButton];
-  v5 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendObject:self->_configurationsByButton];
+  v5 = [builder hash];
 
   return v5;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(_UIPhysicalButtonConfigurationSet *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_UIPhysicalButtonConfigurationSet *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -647,47 +647,47 @@ LABEL_28:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIPhysicalButtonConfigurationSet *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIPhysicalButtonConfigurationSet *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIPhysicalButtonConfigurationSet *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIPhysicalButtonConfigurationSet *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   if (!self || (configurationsByButton = self->_configurationsByButton) != 0 && [(NSMutableDictionary *)configurationsByButton count])
   {
     v6 = [MEMORY[0x1E698E680] builderWithObject:self];
-    [v6 setActiveMultilinePrefix:a3];
+    [v6 setActiveMultilinePrefix:prefix];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __75___UIPhysicalButtonConfigurationSet_descriptionBuilderWithMultilinePrefix___block_invoke;
     v10[3] = &unk_1E70F35B8;
-    v7 = v6;
-    v11 = v7;
-    v12 = self;
-    v8 = [v7 modifyBody:v10];
+    succinctDescriptionBuilder = v6;
+    v11 = succinctDescriptionBuilder;
+    selfCopy = self;
+    v8 = [succinctDescriptionBuilder modifyBody:v10];
   }
 
   else
   {
-    v7 = [(_UIPhysicalButtonConfigurationSet *)self succinctDescriptionBuilder];
+    succinctDescriptionBuilder = [(_UIPhysicalButtonConfigurationSet *)self succinctDescriptionBuilder];
   }
 
-  return v7;
+  return succinctDescriptionBuilder;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [_UIPhysicalButtonMutableConfigurationSet alloc];
   v5 = [(NSMutableDictionary *)self->_configurationsByButton copy];
@@ -696,17 +696,17 @@ LABEL_28:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __53___UIPhysicalButtonConfigurationSet_encodeWithCoder___block_invoke;
   v3[3] = &unk_1E712C5B8;
-  v3[4] = a3;
+  v3[4] = coder;
   [(_UIPhysicalButtonConfigurationSet *)self _enumerateConfigurationsWithBlock:v3];
 }
 
-- (_UIPhysicalButtonConfigurationSet)initWithCoder:(id)a3
+- (_UIPhysicalButtonConfigurationSet)initWithCoder:(id)coder
 {
   v5 = objc_opt_class();
   v9 = 0;
@@ -721,7 +721,7 @@ LABEL_28:
   v8[3] = &unk_1E712C630;
   v8[5] = &v9;
   v8[6] = v5;
-  v8[4] = a3;
+  v8[4] = coder;
   _UIPhysicalButtonEnumerateAllButtonsWithBlock(v8);
   v6 = [(_UIPhysicalButtonConfigurationSet *)self _initWithConfigurationsDictionary:?];
   _Block_object_dispose(&v9, 8);
@@ -729,17 +729,17 @@ LABEL_28:
   return v6;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __61___UIPhysicalButtonConfigurationSet_encodeWithXPCDictionary___block_invoke;
   v3[3] = &unk_1E712C5B8;
-  v3[4] = a3;
+  v3[4] = dictionary;
   [(_UIPhysicalButtonConfigurationSet *)self _enumerateConfigurationsWithBlock:v3];
 }
 
-- (_UIPhysicalButtonConfigurationSet)initWithXPCDictionary:(id)a3
+- (_UIPhysicalButtonConfigurationSet)initWithXPCDictionary:(id)dictionary
 {
   objc_opt_class();
   v8 = 0;
@@ -752,7 +752,7 @@ LABEL_28:
   v7[1] = 3221225472;
   v7[2] = __59___UIPhysicalButtonConfigurationSet_initWithXPCDictionary___block_invoke;
   v7[3] = &unk_1E70FA4A0;
-  v7[4] = a3;
+  v7[4] = dictionary;
   v7[5] = &v8;
   _UIPhysicalButtonEnumerateAllButtonsWithBlock(v7);
   v5 = [(_UIPhysicalButtonConfigurationSet *)self _initWithConfigurationsDictionary:?];
@@ -761,17 +761,17 @@ LABEL_28:
   return v5;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __58___UIPhysicalButtonConfigurationSet_encodeWithBSXPCCoder___block_invoke;
   v3[3] = &unk_1E712C5B8;
-  v3[4] = a3;
+  v3[4] = coder;
   [(_UIPhysicalButtonConfigurationSet *)self _enumerateConfigurationsWithBlock:v3];
 }
 
-- (_UIPhysicalButtonConfigurationSet)initWithBSXPCCoder:(id)a3
+- (_UIPhysicalButtonConfigurationSet)initWithBSXPCCoder:(id)coder
 {
   v5 = objc_opt_class();
   v9 = 0;
@@ -786,7 +786,7 @@ LABEL_28:
   v8[3] = &unk_1E712C630;
   v8[5] = &v9;
   v8[6] = v5;
-  v8[4] = a3;
+  v8[4] = coder;
   _UIPhysicalButtonEnumerateAllButtonsWithBlock(v8);
   v6 = [(_UIPhysicalButtonConfigurationSet *)self _initWithConfigurationsDictionary:?];
   _Block_object_dispose(&v9, 8);

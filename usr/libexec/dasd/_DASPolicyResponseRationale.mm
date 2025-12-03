@@ -1,8 +1,8 @@
 @interface _DASPolicyResponseRationale
-- (_DASPolicyResponseRationale)initWithPolicyName:(id)a3;
+- (_DASPolicyResponseRationale)initWithPolicyName:(id)name;
 - (id)description;
-- (void)addRationaleForCondition:(id)a3 withRequiredValue:(double)a4 withCurrentValue:(double)a5;
-- (void)addRationaleWithCondition:(id)a3;
+- (void)addRationaleForCondition:(id)condition withRequiredValue:(double)value withCurrentValue:(double)currentValue;
+- (void)addRationaleWithCondition:(id)condition;
 @end
 
 @implementation _DASPolicyResponseRationale
@@ -60,16 +60,16 @@
   return v3;
 }
 
-- (_DASPolicyResponseRationale)initWithPolicyName:(id)a3
+- (_DASPolicyResponseRationale)initWithPolicyName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = _DASPolicyResponseRationale;
   v6 = [(_DASPolicyResponseRationale *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_policyName, a3);
+    objc_storeStrong(&v6->_policyName, name);
     v8 = +[NSMutableArray array];
     reasons = v7->_reasons;
     v7->_reasons = v8;
@@ -78,25 +78,25 @@
   return v7;
 }
 
-- (void)addRationaleForCondition:(id)a3 withRequiredValue:(double)a4 withCurrentValue:(double)a5
+- (void)addRationaleForCondition:(id)condition withRequiredValue:(double)value withCurrentValue:(double)currentValue
 {
-  v8 = a3;
-  v9 = [[_DASPolicyRequiredValueRationale alloc] initWithCondition:v8 withRequiredValue:a4 withCurrentValue:a5];
+  conditionCopy = condition;
+  v9 = [[_DASPolicyRequiredValueRationale alloc] initWithCondition:conditionCopy withRequiredValue:value withCurrentValue:currentValue];
 
   [(NSMutableArray *)self->_reasons addObject:v9];
 }
 
-- (void)addRationaleWithCondition:(id)a3
+- (void)addRationaleWithCondition:(id)condition
 {
-  v5 = a3;
-  v6 = v5;
+  conditionCopy = condition;
+  v6 = conditionCopy;
   condition = self->_condition;
   p_condition = &self->_condition;
-  v7 = condition;
+  conditionCopy2 = condition;
   if (condition)
   {
-    v13[0] = v7;
-    v13[1] = v5;
+    v13[0] = conditionCopy2;
+    v13[1] = conditionCopy;
     v10 = [NSArray arrayWithObjects:v13 count:2];
     v11 = [NSCompoundPredicate andPredicateWithSubpredicates:v10];
     v12 = *p_condition;
@@ -105,7 +105,7 @@
 
   else
   {
-    objc_storeStrong(p_condition, a3);
+    objc_storeStrong(p_condition, condition);
   }
 }
 

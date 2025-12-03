@@ -1,28 +1,28 @@
 @interface PKPaymentSetupDismissibleNavigationController
-- (PKPaymentSetupDismissibleNavigationController)initWithContext:(int64_t)a3;
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6;
+- (PKPaymentSetupDismissibleNavigationController)initWithContext:(int64_t)context;
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_configureRootViewController;
-- (void)cancelButtonPressed:(id)a3;
+- (void)cancelButtonPressed:(id)pressed;
 - (void)dealloc;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
 - (void)useStandardPlatformPresentationStyle;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PKPaymentSetupDismissibleNavigationController
 
-- (PKPaymentSetupDismissibleNavigationController)initWithContext:(int64_t)a3
+- (PKPaymentSetupDismissibleNavigationController)initWithContext:(int64_t)context
 {
   v5.receiver = self;
   v5.super_class = PKPaymentSetupDismissibleNavigationController;
   result = [(PKNavigationController *)&v5 init];
   if (result)
   {
-    result->_context = a3;
+    result->_context = context;
   }
 
   return result;
@@ -62,18 +62,18 @@
   PKPaymentSetupApplyContextAppearance(self->_context, self);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = PKPaymentSetupDismissibleNavigationController;
-  [(PKPaymentSetupDismissibleNavigationController *)&v3 viewWillAppear:a3];
+  [(PKPaymentSetupDismissibleNavigationController *)&v3 viewWillAppear:appear];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = PKPaymentSetupDismissibleNavigationController;
-  [(PKPaymentSetupDismissibleNavigationController *)&v6 viewDidDisappear:a3];
+  [(PKPaymentSetupDismissibleNavigationController *)&v6 viewDidDisappear:disappear];
   if ([(PKPaymentSetupDismissibleNavigationController *)self isBeingDismissed])
   {
     onDismiss = self->_onDismiss;
@@ -92,44 +92,44 @@
   if (!self->_configureRootViewController)
   {
     self->_configureRootViewController = 1;
-    v3 = [(PKPaymentSetupDismissibleNavigationController *)self viewControllers];
-    v4 = [v3 firstObject];
+    viewControllers = [(PKPaymentSetupDismissibleNavigationController *)self viewControllers];
+    firstObject = [viewControllers firstObject];
 
-    v5 = [v4 navigationItem];
+    navigationItem = [firstObject navigationItem];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v4 pkui_navigationCloseButtonBehavior];
-      if (v6 != 3)
+      pkui_navigationCloseButtonBehavior = [firstObject pkui_navigationCloseButtonBehavior];
+      if (pkui_navigationCloseButtonBehavior != 3)
       {
-        if (v6 == 2)
+        if (pkui_navigationCloseButtonBehavior == 2)
         {
-          [v5 setHidesBackButton:1];
+          [navigationItem setHidesBackButton:1];
           v7 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:24 target:self action:sel_cancelButtonPressed_];
-          if (![v4 conformsToProtocol:&unk_1F3CE83F8])
+          if (![firstObject conformsToProtocol:&unk_1F3CE83F8])
           {
-            [v5 setLeftBarButtonItem:v7];
+            [navigationItem setLeftBarButtonItem:v7];
             goto LABEL_16;
           }
 
           v16 = v7;
           v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
-          [v4 _setLeftBarButtonItems:v8 animated:0];
+          [firstObject _setLeftBarButtonItems:v8 animated:0];
           goto LABEL_15;
         }
 
-        if (v6 == 1)
+        if (pkui_navigationCloseButtonBehavior == 1)
         {
-          [v5 setHidesBackButton:1];
+          [navigationItem setHidesBackButton:1];
           v7 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:24 target:self action:sel_cancelButtonPressed_];
-          if (![v4 conformsToProtocol:&unk_1F3CE83F8])
+          if (![firstObject conformsToProtocol:&unk_1F3CE83F8])
           {
-            [v5 setRightBarButtonItem:v7];
+            [navigationItem setRightBarButtonItem:v7];
             goto LABEL_16;
           }
 
           v17[0] = v7;
           v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-          [v4 _setRightBarButtonItems:v8 animated:0];
+          [firstObject _setRightBarButtonItems:v8 animated:0];
           goto LABEL_15;
         }
 
@@ -144,10 +144,10 @@ LABEL_17:
       goto LABEL_17;
     }
 
-    [v5 setHidesBackButton:1];
-    v9 = [v5 leftBarButtonItems];
-    v10 = [v5 rightBarButtonItems];
-    v7 = [v9 arrayByAddingObjectsFromArray:v10];
+    [navigationItem setHidesBackButton:1];
+    leftBarButtonItems = [navigationItem leftBarButtonItems];
+    rightBarButtonItems = [navigationItem rightBarButtonItems];
+    v7 = [leftBarButtonItems arrayByAddingObjectsFromArray:rightBarButtonItems];
 
     v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"systemItem == %d", 1];
     v12 = [v7 filteredArrayUsingPredicate:v11];
@@ -161,16 +161,16 @@ LABEL_16:
     }
 
     v8 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_cancelButtonPressed_];
-    if ([v4 conformsToProtocol:&unk_1F3CE83F8])
+    if ([firstObject conformsToProtocol:&unk_1F3CE83F8])
     {
       v15 = v8;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
-      [v4 _setLeftBarButtonItems:v14 animated:0];
+      [firstObject _setLeftBarButtonItems:v14 animated:0];
     }
 
     else
     {
-      [v5 setLeftBarButtonItem:v8];
+      [navigationItem setLeftBarButtonItem:v8];
     }
 
 LABEL_15:
@@ -194,12 +194,12 @@ LABEL_15:
   }
 }
 
-- (void)cancelButtonPressed:(id)a3
+- (void)cancelButtonPressed:(id)pressed
 {
   onDismiss = self->_onDismiss;
   if (onDismiss)
   {
-    onDismiss[2](onDismiss, a2, a3);
+    onDismiss[2](onDismiss, a2, pressed);
     v5 = self->_onDismiss;
     self->_onDismiss = 0;
   }
@@ -220,43 +220,43 @@ LABEL_15:
   }
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
+  animatedCopy = animated;
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
   [(PKPaymentSetupDismissibleNavigationController *)self _configureRootViewController];
-  PKPaymentSetupApplyContextAppearance(self->_context, v8);
+  PKPaymentSetupApplyContextAppearance(self->_context, viewControllerCopy);
   v14.receiver = self;
   v14.super_class = PKPaymentSetupDismissibleNavigationController;
-  [(PKNavigationController *)&v14 navigationController:v9 willShowViewController:v8 animated:v5];
+  [(PKNavigationController *)&v14 navigationController:controllerCopy willShowViewController:viewControllerCopy animated:animatedCopy];
 
-  v10 = [(PKPaymentSetupDismissibleNavigationController *)self isModalInPresentation];
-  v11 = [(PKPaymentSetupDismissibleNavigationController *)self viewControllers];
-  v12 = [v11 count];
+  isModalInPresentation = [(PKPaymentSetupDismissibleNavigationController *)self isModalInPresentation];
+  viewControllers = [(PKPaymentSetupDismissibleNavigationController *)self viewControllers];
+  v12 = [viewControllers count];
 
   v13 = v12 > 1;
-  if (v10)
+  if (isModalInPresentation)
   {
     v13 = v12 == 1;
   }
 
   if (v13)
   {
-    [(PKPaymentSetupDismissibleNavigationController *)self setModalInPresentation:(v12 > 1) & ~v10];
+    [(PKPaymentSetupDismissibleNavigationController *)self setModalInPresentation:(v12 > 1) & ~isModalInPresentation];
   }
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(PKPaymentSetupDismissibleNavigationController *)self topViewController];
-  v8 = [v7 conformsToProtocol:&unk_1F3D0D108];
+  animatedCopy = animated;
+  completionCopy = completion;
+  topViewController = [(PKPaymentSetupDismissibleNavigationController *)self topViewController];
+  v8 = [topViewController conformsToProtocol:&unk_1F3D0D108];
   v9 = v8;
   if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v7 viewWillDismissModalView];
+    [topViewController viewWillDismissModalView];
   }
 
   v13[0] = MEMORY[0x1E69E9820];
@@ -264,13 +264,13 @@ LABEL_15:
   v13[2] = __90__PKPaymentSetupDismissibleNavigationController_dismissViewControllerAnimated_completion___block_invoke;
   v13[3] = &unk_1E80150A8;
   v16 = v9;
-  v14 = v7;
-  v15 = v6;
+  v14 = topViewController;
+  v15 = completionCopy;
   v12.receiver = self;
   v12.super_class = PKPaymentSetupDismissibleNavigationController;
-  v10 = v6;
-  v11 = v7;
-  [(PKPaymentSetupDismissibleNavigationController *)&v12 dismissViewControllerAnimated:v4 completion:v13];
+  v10 = completionCopy;
+  v11 = topViewController;
+  [(PKPaymentSetupDismissibleNavigationController *)&v12 dismissViewControllerAnimated:animatedCopy completion:v13];
 }
 
 uint64_t __90__PKPaymentSetupDismissibleNavigationController_dismissViewControllerAnimated_completion___block_invoke(uint64_t a1)
@@ -291,14 +291,14 @@ uint64_t __90__PKPaymentSetupDismissibleNavigationController_dismissViewControll
   return result;
 }
 
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  if ([v10 conformsToProtocol:&unk_1F3CDF988] && (v12 = objc_opt_respondsToSelector(), v13 = v10, (v12 & 1) != 0) || objc_msgSend(v11, "conformsToProtocol:", &unk_1F3CDF988) && (v14 = objc_opt_respondsToSelector(), v13 = v11, (v14 & 1) != 0))
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  toViewControllerCopy = toViewController;
+  if ([viewControllerCopy conformsToProtocol:&unk_1F3CDF988] && (v12 = objc_opt_respondsToSelector(), v13 = viewControllerCopy, (v12 & 1) != 0) || objc_msgSend(toViewControllerCopy, "conformsToProtocol:", &unk_1F3CDF988) && (v14 = objc_opt_respondsToSelector(), v13 = toViewControllerCopy, (v14 & 1) != 0))
   {
-    v15 = [v13 navigationController:v9 animationControllerForOperation:a4 fromViewController:v10 toViewController:v11];
+    v15 = [v13 navigationController:controllerCopy animationControllerForOperation:operation fromViewController:viewControllerCopy toViewController:toViewControllerCopy];
   }
 
   else

@@ -1,25 +1,25 @@
 @interface DUSchemaDUContent
-- (BOOL)isEqual:(id)a3;
-- (DUSchemaDUContent)initWithDictionary:(id)a3;
-- (DUSchemaDUContent)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DUSchemaDUContent)initWithDictionary:(id)dictionary;
+- (DUSchemaDUContent)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DUSchemaDUContent
 
-- (DUSchemaDUContent)initWithDictionary:(id)a3
+- (DUSchemaDUContent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = DUSchemaDUContent;
   v5 = [(DUSchemaDUContent *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"dataPayload"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"dataPayload"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,30 +33,30 @@
   return v5;
 }
 
-- (DUSchemaDUContent)initWithJSON:(id)a3
+- (DUSchemaDUContent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DUSchemaDUContent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DUSchemaDUContent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DUSchemaDUContent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -69,40 +69,40 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_dataPayload)
   {
-    v4 = [(DUSchemaDUContent *)self dataPayload];
-    v5 = [v4 base64EncodedStringWithOptions:0];
+    dataPayload = [(DUSchemaDUContent *)self dataPayload];
+    v5 = [dataPayload base64EncodedStringWithOptions:0];
     if (v5)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"dataPayload"];
+      [dictionary setObject:v5 forKeyedSubscript:@"dataPayload"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"dataPayload"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"dataPayload"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(DUSchemaDUContent *)self dataPayload];
-    v6 = [v4 dataPayload];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    dataPayload = [(DUSchemaDUContent *)self dataPayload];
+    dataPayload2 = [equalCopy dataPayload];
+    v7 = dataPayload2;
+    if ((dataPayload != 0) != (dataPayload2 == 0))
     {
-      v8 = [(DUSchemaDUContent *)self dataPayload];
-      if (!v8)
+      dataPayload3 = [(DUSchemaDUContent *)self dataPayload];
+      if (!dataPayload3)
       {
 
 LABEL_10:
@@ -110,10 +110,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(DUSchemaDUContent *)self dataPayload];
-      v11 = [v4 dataPayload];
-      v12 = [v10 isEqual:v11];
+      v9 = dataPayload3;
+      dataPayload4 = [(DUSchemaDUContent *)self dataPayload];
+      dataPayload5 = [equalCopy dataPayload];
+      v12 = [dataPayload4 isEqual:dataPayload5];
 
       if (v12)
       {
@@ -132,44 +132,44 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(DUSchemaDUContent *)self dataPayload];
+  toCopy = to;
+  dataPayload = [(DUSchemaDUContent *)self dataPayload];
 
-  if (v4)
+  if (dataPayload)
   {
     PBDataWriterWriteDataField();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v7.receiver = self;
   v7.super_class = DUSchemaDUContent;
-  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(DUSchemaDUContent *)self deleteDataPayload];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(DUSchemaDUContent *)self deleteDataPayload];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(DUSchemaDUContent *)self deleteDataPayload];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(DUSchemaDUContent *)self deleteDataPayload];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(DUSchemaDUContent *)self deleteDataPayload];
   }

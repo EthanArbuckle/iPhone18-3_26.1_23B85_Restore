@@ -1,18 +1,18 @@
 @interface WKMouseInteraction
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (CGPoint)locationInView:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (CGPoint)locationInView:(id)view;
 - (UITouch)mouseTouch;
-- (WKMouseInteraction)initWithDelegate:(id)a3;
+- (WKMouseInteraction)initWithDelegate:(id)delegate;
 - (id).cxx_construct;
 - (id)_activeGesture;
 - (optional<WebKit::NativeWebMouseEvent>)createMouseEventWithType:(optional<WebKit:(optional<WebKit::NativeWebMouseEvent> *)self :NativeWebMouseEvent> *__return_ptr)retstr wasCancelled:;
-- (void)_forEachGesture:(id)a3;
-- (void)_hoverGestureRecognized:(id)a3;
+- (void)_forEachGesture:(id)gesture;
+- (void)_hoverGestureRecognized:(id)recognized;
 - (void)_resetCachedState;
-- (void)_updateMouseTouches:(id)a3;
-- (void)didMoveToView:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)willMoveToView:(id)a3;
+- (void)_updateMouseTouches:(id)touches;
+- (void)didMoveToView:(id)view;
+- (void)setEnabled:(BOOL)enabled;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation WKMouseInteraction
@@ -49,7 +49,7 @@
   }
 }
 
-- (WKMouseInteraction)initWithDelegate:(id)a3
+- (WKMouseInteraction)initWithDelegate:(id)delegate
 {
   v13.receiver = self;
   v13.super_class = WKMouseInteraction;
@@ -95,7 +95,7 @@
     [(UIHoverGestureRecognizer *)v4->_pencilHoverGestureRecognizer.m_ptr setAllowedTouchTypes:&unk_1F1184CB0];
     [(WKMouseTouchGestureRecognizer *)v4->_mouseTouchGestureRecognizer.m_ptr setAllowedTouchTypes:&unk_1F1184CC8];
     [(UIHoverGestureRecognizer *)v4->_mouseHoverGestureRecognizer.m_ptr setAllowedTouchTypes:&unk_1F1184CE0];
-    objc_storeWeak(&v4->_delegate, a3);
+    objc_storeWeak(&v4->_delegate, delegate);
     v4->_enabled = 1;
     v4->_cancelledOrExited = 1;
   }
@@ -103,31 +103,31 @@
   return v4;
 }
 
-- (void)_forEachGesture:(id)a3
+- (void)_forEachGesture:(id)gesture
 {
-  v7 = (a3 + 16);
-  (*(a3 + 2))(a3, self->_mouseTouchGestureRecognizer.m_ptr);
-  (*v7)(a3, self->_mouseHoverGestureRecognizer.m_ptr);
+  v7 = (gesture + 16);
+  (*(gesture + 2))(gesture, self->_mouseTouchGestureRecognizer.m_ptr);
+  (*v7)(gesture, self->_mouseHoverGestureRecognizer.m_ptr);
   m_ptr = self->_pencilHoverGestureRecognizer.m_ptr;
   v6 = *v7;
 
-  v6(a3, m_ptr);
+  v6(gesture, m_ptr);
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
     v9 = v3;
     v10 = v4;
-    self->_enabled = a3;
+    self->_enabled = enabled;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __33__WKMouseInteraction_setEnabled___block_invoke;
     v7[3] = &__block_descriptor_33_e29_v16__0__UIGestureRecognizer_8l;
-    v8 = a3;
+    enabledCopy = enabled;
     [(WKMouseInteraction *)self _forEachGesture:v7];
-    if (!a3)
+    if (!enabled)
     {
       [(WKMouseInteraction *)self _resetCachedState];
     }
@@ -154,9 +154,9 @@
 
   else
   {
-    v4 = [(UITouch *)self->_currentHoverTouch.m_ptr type];
+    type = [(UITouch *)self->_currentHoverTouch.m_ptr type];
     v3 = 16;
-    if (v4 == UITouchTypePencil)
+    if (type == UITouchTypePencil)
     {
       v3 = 24;
     }
@@ -176,28 +176,28 @@
     return self;
   }
 
-  v6 = self;
+  selfCopy = self;
   v36 = v3;
   v35 = [unk_1F1222E08(self "_activeGesture")];
   if ((v35 & 0x40000) != 0)
   {
-    v8 = *(&v6[2].var0.var16 + 17);
+    v8 = *(&selfCopy[2].var0.var16 + 17);
     v9 = v4 == 1;
     v10 = 2;
   }
 
   else
   {
-    if ((*(&v6[2].var0.var7 + 2) & 1) == 0)
+    if ((*(&selfCopy[2].var0.var7 + 2) & 1) == 0)
     {
       v10 = 0;
-      v8 = *(&v6[2].var0.var16 + 17);
+      v8 = *(&selfCopy[2].var0.var16 + 17);
       v9 = v4 == 1;
       goto LABEL_10;
     }
 
-    var0 = v6[2].var0.var1.var0;
-    v8 = *(&v6[2].var0.var16 + 17);
+    var0 = selfCopy[2].var0.var1.var0;
+    v8 = *(&selfCopy[2].var0.var16 + 17);
     v9 = v4 == 1;
     if ((var0 & 2) == 0)
     {
@@ -228,12 +228,12 @@ LABEL_11:
     v12 = v11;
   }
 
-  v13 = unk_1F1222E10(v6, "mouseTouch");
-  unk_1F1222E18(v6, "locationInView:", unk_1F1222E20(v6, "view"));
+  v13 = unk_1F1222E10(selfCopy, "mouseTouch");
+  unk_1F1222E18(selfCopy, "locationInView:", unk_1F1222E20(selfCopy, "view"));
   v40.x = v14;
   v40.y = v15;
   WebCore::IntPoint::IntPoint(&v39, &v40);
-  [v13 previousLocationInView:{unk_1F1222E28(v6, "view")}];
+  [v13 previousLocationInView:{unk_1F1222E28(selfCopy, "view")}];
   v40.x = v16;
   v40.y = v17;
   WebCore::IntPoint::IntPoint(&v38, &v40);
@@ -251,20 +251,20 @@ LABEL_11:
     v22 = 0;
   }
 
-  v23 = [v13 tapCount];
+  tapCount = [v13 tapCount];
   [v13 timestamp];
   v38 = v24;
   WTF::MonotonicTime::approximateWallTime(&v38);
   v26 = v25;
-  v27 = [v13 type];
-  if (v27 == 2)
+  type = [v13 type];
+  if (type == 2)
   {
     v28 = WebCore::penPointerEventType(2);
   }
 
   else
   {
-    v28 = WebCore::mousePointerEventType(v27);
+    v28 = WebCore::mousePointerEventType(type);
   }
 
   v29 = *v28;
@@ -274,7 +274,7 @@ LABEL_11:
   }
 
   v37 = v29;
-  WebKit::NativeWebMouseEvent::NativeWebMouseEvent(&v40, v4, v34, v22, &v39, &v39, v23, (v35 >> 12) & 0x10 | (v35 >> 17) & 0xF, (v18 - v21), (v19 - v20), 0.0, v26, 0.0, v36, &v37);
+  WebKit::NativeWebMouseEvent::NativeWebMouseEvent(&v40, v4, v34, v22, &v39, &v39, tapCount, (v35 >> 12) & 0x10 | (v35 >> 17) & 0xF, (v18 - v21), (v19 - v20), 0.0, v26, 0.0, v36, &v37);
   WebKit::WebMouseEvent::WebMouseEvent(retstr, &v40);
   retstr->var0.var1.var0 = &unk_1F10F2AC0;
   retstr[4].var0.var1.var0 = v44;
@@ -303,9 +303,9 @@ LABEL_11:
   return self;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  if (objc_loadWeak(&self->_view) != a3)
+  if (objc_loadWeak(&self->_view) != view)
   {
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
@@ -324,33 +324,33 @@ uint64_t __37__WKMouseInteraction_willMoveToView___block_invoke(uint64_t a1, uin
   return [Weak removeGestureRecognizer:a2];
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  if (objc_loadWeak(&self->_view) != a3)
+  if (objc_loadWeak(&self->_view) != view)
   {
-    objc_storeWeak(&self->_view, a3);
+    objc_storeWeak(&self->_view, view);
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __36__WKMouseInteraction_didMoveToView___block_invoke;
     v5[3] = &unk_1E76338D0;
-    v5[4] = a3;
+    v5[4] = view;
     [(WKMouseInteraction *)self _forEachGesture:v5];
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  if (self->_pencilHoverGestureRecognizer.m_ptr == a3 || (v7 = [a4 _isPointerTouch]) != 0)
+  if (self->_pencilHoverGestureRecognizer.m_ptr == recognizer || (v7 = [touch _isPointerTouch]) != 0)
   {
-    if (self->_mouseHoverGestureRecognizer.m_ptr == a3 || self->_pencilHoverGestureRecognizer.m_ptr == a3)
+    if (self->_mouseHoverGestureRecognizer.m_ptr == recognizer || self->_pencilHoverGestureRecognizer.m_ptr == recognizer)
     {
-      if (a4)
+      if (touch)
       {
-        v8 = a4;
+        touchCopy = touch;
       }
 
       m_ptr = self->_currentHoverTouch.m_ptr;
-      self->_currentHoverTouch.m_ptr = a4;
+      self->_currentHoverTouch.m_ptr = touch;
       if (m_ptr)
       {
       }
@@ -362,29 +362,29 @@ uint64_t __37__WKMouseInteraction_willMoveToView___block_invoke(uint64_t a1, uin
   return v7;
 }
 
-- (void)_hoverGestureRecognized:(id)a3
+- (void)_hoverGestureRecognized:(id)recognized
 {
   v21 = *MEMORY[0x1E69E9840];
   if (self->_currentHoverTouch.m_ptr)
   {
-    v5 = [a3 state];
-    if ((v5 - 1) <= 4)
+    state = [recognized state];
+    if ((state - 1) <= 4)
     {
-      self->_cancelledOrExited = 0x101010000uLL >> (8 * (v5 - 1));
+      self->_cancelledOrExited = 0x101010000uLL >> (8 * (state - 1));
     }
 
-    if (![a3 buttonMask])
+    if (![recognized buttonMask])
     {
-      [a3 locationInView:{-[WKMouseInteraction view](self, "view")}];
+      [recognized locationInView:{-[WKMouseInteraction view](self, "view")}];
       engaged = self->_lastLocation.__engaged_;
-      if (v5 == 4)
+      if (state == 4)
       {
         self->_lastLocation.var0.__val_.x = v6;
         self->_lastLocation.var0.__val_.y = v7;
         if (engaged)
         {
 LABEL_14:
-          [(WKMouseInteraction *)self createMouseEventWithType:258 wasCancelled:v5 == 4];
+          [(WKMouseInteraction *)self createMouseEventWithType:258 wasCancelled:state == 4];
           if (v20 == 1)
           {
             Weak = objc_loadWeak(&self->_delegate);
@@ -446,14 +446,14 @@ LABEL_14:
   }
 }
 
-- (void)_updateMouseTouches:(id)a3
+- (void)_updateMouseTouches:(id)touches
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = [a3 anyObject];
-  v5 = v4;
-  if (v4)
+  anyObject = [touches anyObject];
+  v5 = anyObject;
+  if (anyObject)
   {
-    v6 = v4;
+    v6 = anyObject;
   }
 
   m_ptr = self->_currentMouseTouch.m_ptr;
@@ -471,16 +471,16 @@ LABEL_14:
     self->_lastLocation.__engaged_ = 1;
   }
 
-  v11 = [(UITouch *)self->_currentMouseTouch.m_ptr phase];
-  v12 = v11;
-  if ((v11 - 3) < 2)
+  phase = [(UITouch *)self->_currentMouseTouch.m_ptr phase];
+  v12 = phase;
+  if ((phase - 3) < 2)
   {
     v15 = 1;
     v16 = 1;
     v13 = 1;
   }
 
-  else if (v11 == UITouchPhaseMoved)
+  else if (phase == UITouchPhaseMoved)
   {
     v13 = 1;
     self->_touching = 1;
@@ -490,7 +490,7 @@ LABEL_14:
     v16 = 2;
   }
 
-  else if (v11)
+  else if (phase)
   {
     v15 = 0;
     v16 = 0;
@@ -501,10 +501,10 @@ LABEL_14:
   {
     v13 = 1;
     self->_touching = 1;
-    v14 = [(WKMouseTouchGestureRecognizer *)self->_mouseTouchGestureRecognizer.m_ptr buttonMask];
+    buttonMask = [(WKMouseTouchGestureRecognizer *)self->_mouseTouchGestureRecognizer.m_ptr buttonMask];
     v15 = 0;
     v16 = 0;
-    self->_pressedButtonMask.var0.__val_ = v14;
+    self->_pressedButtonMask.var0.__val_ = buttonMask;
     self->_pressedButtonMask.__engaged_ = 1;
   }
 
@@ -552,13 +552,13 @@ LABEL_14:
   }
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  v5 = [(WKMouseInteraction *)self mouseTouch];
-  if (v5 && !self->_cancelledOrExited)
+  mouseTouch = [(WKMouseInteraction *)self mouseTouch];
+  if (mouseTouch && !self->_cancelledOrExited)
   {
 
-    [(UITouch *)v5 locationInView:a3];
+    [(UITouch *)mouseTouch locationInView:view];
   }
 
   else

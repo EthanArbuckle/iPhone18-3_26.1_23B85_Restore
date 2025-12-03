@@ -1,14 +1,14 @@
 @interface BCSLinkItemPersistentStore
 - (BCSLinkItemPersistentStore)init;
 - (id)databasePath;
-- (id)itemMatching:(id)a3;
+- (id)itemMatching:(id)matching;
 - (void)_executeDeleteSQLQuery:(void *)result;
-- (void)deleteExpiredItemsOfType:(int64_t)a3;
-- (void)deleteItemMatching:(id)a3;
-- (void)deleteItemsOfType:(int64_t)a3;
-- (void)deleteLinkItemsWithBundleID:(id)a3;
-- (void)schemaVersionWillChangeForDatabase:(sqlite3 *)a3 fromSchemaVersion:(int64_t)a4 toSchemaVersion:(int64_t)a5;
-- (void)updateItem:(id)a3 withItemIdentifier:(id)a4;
+- (void)deleteExpiredItemsOfType:(int64_t)type;
+- (void)deleteItemMatching:(id)matching;
+- (void)deleteItemsOfType:(int64_t)type;
+- (void)deleteLinkItemsWithBundleID:(id)d;
+- (void)schemaVersionWillChangeForDatabase:(sqlite3 *)database fromSchemaVersion:(int64_t)version toSchemaVersion:(int64_t)schemaVersion;
+- (void)updateItem:(id)item withItemIdentifier:(id)identifier;
 @end
 
 @implementation BCSLinkItemPersistentStore
@@ -34,10 +34,10 @@
   if (![databasePath_databasePath length])
   {
     v2 = +[BCSPathProvider sharedInstance];
-    v3 = [v2 documentsURL];
-    v4 = [v3 path];
+    documentsURL = [v2 documentsURL];
+    path = [documentsURL path];
 
-    v5 = [v4 stringByAppendingPathComponent:@"link_items.db"];
+    v5 = [path stringByAppendingPathComponent:@"link_items.db"];
     v6 = databasePath_databasePath;
     databasePath_databasePath = v5;
   }
@@ -47,7 +47,7 @@
   return v7;
 }
 
-- (void)schemaVersionWillChangeForDatabase:(sqlite3 *)a3 fromSchemaVersion:(int64_t)a4 toSchemaVersion:(int64_t)a5
+- (void)schemaVersionWillChangeForDatabase:(sqlite3 *)database fromSchemaVersion:(int64_t)version toSchemaVersion:(int64_t)schemaVersion
 {
   v19 = *MEMORY[0x277D85DE8];
   v8 = ABSLogCommon();
@@ -56,21 +56,21 @@
     *buf = 136315650;
     v14 = "[BCSLinkItemPersistentStore schemaVersionWillChangeForDatabase:fromSchemaVersion:toSchemaVersion:]";
     v15 = 2048;
-    v16 = a4;
+    versionCopy = version;
     v17 = 2048;
-    v18 = a5;
+    schemaVersionCopy = schemaVersion;
     _os_log_impl(&dword_242072000, v8, OS_LOG_TYPE_DEFAULT, "%s schema version will change from '%ld' to '%ld', dropping link_items table", buf, 0x20u);
   }
 
   ppStmt = 0;
-  if (!sqlite3_prepare_v2(a3, "DROP TABLE IF EXISTS link_items", -1, &ppStmt, 0))
+  if (!sqlite3_prepare_v2(database, "DROP TABLE IF EXISTS link_items", -1, &ppStmt, 0))
   {
     if (sqlite3_step(ppStmt) != 101)
     {
       v9 = ABSLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v11 = sqlite3_errmsg(a3);
+        v11 = sqlite3_errmsg(database);
         *buf = 136315138;
         v14 = v11;
         _os_log_error_impl(&dword_242072000, v9, OS_LOG_TYPE_ERROR, "error while dropping link_items table: %s", buf, 0xCu);
@@ -83,11 +83,11 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)itemMatching:(id)a3
+- (id)itemMatching:(id)matching
 {
   v61[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 type] != 2 || self == 0)
+  matchingCopy = matching;
+  if ([matchingCopy type] != 2 || self == 0)
   {
     v6 = 0;
   }
@@ -95,9 +95,9 @@
   else
   {
     v7 = MEMORY[0x277CCACA8];
-    if (v4)
+    if (matchingCopy)
     {
-      v8 = [v4[1] copy];
+      v8 = [matchingCopy[1] copy];
     }
 
     else
@@ -106,12 +106,12 @@
     }
 
     v9 = [v7 stringWithFormat:@"SELECT link_url_string, bundle_id_string, hero_image_url_string, icon_image_url_string, redirect_url_string, action, expiration_date, content_item_models, is_powered_by, map_icon_style_attributes, map_item_muid FROM link_items WHERE full_hash_string = %@", v8];
-    v10 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
 
     [(BCSPersistentStore *)self beginBatch];
     ppStmt = 0;
     v6 = 0;
-    if (!sqlite3_prepare_v2([(BCSPersistentStore *)self openedDatabase], v10, -1, &ppStmt, 0))
+    if (!sqlite3_prepare_v2([(BCSPersistentStore *)self openedDatabase], uTF8String, -1, &ppStmt, 0))
     {
       if (sqlite3_step(ppStmt) == 100)
       {
@@ -223,17 +223,17 @@
   return v6;
 }
 
-- (void)updateItem:(id)a3 withItemIdentifier:(id)a4
+- (void)updateItem:(id)item withItemIdentifier:(id)identifier
 {
   v68 = *MEMORY[0x277D85DE8];
-  v62 = a3;
-  v6 = a4;
+  itemCopy = item;
+  identifierCopy = identifier;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (self && (isKindOfClass & 1) != 0)
   {
-    v8 = v6;
-    v9 = v62;
+    v8 = identifierCopy;
+    v9 = itemCopy;
     [(BCSPersistentStore *)self beginBatch];
     [(BCSLinkItemPersistentStore *)self deleteItemMatching:v8];
     v10 = v9;
@@ -241,11 +241,11 @@
     [(BCSPersistentStore *)self beginBatch];
     ppStmt = 0;
     v11 = MEMORY[0x277CCAAB0];
-    v12 = [v10 model];
-    v13 = v12;
-    if (v12)
+    model = [v10 model];
+    v13 = model;
+    if (model)
     {
-      v14 = *(v12 + 88);
+      v14 = *(model + 88);
     }
 
     else
@@ -256,14 +256,14 @@
     v15 = v14;
     v61 = [v11 archivedDataWithRootObject:v15 requiringSecureCoding:1 error:0];
 
-    v16 = [v10 model];
-    v17 = [v16 mapIconStyleAttributes];
-    if (v17)
+    model2 = [v10 model];
+    mapIconStyleAttributes = [model2 mapIconStyleAttributes];
+    if (mapIconStyleAttributes)
     {
       v18 = MEMORY[0x277CCAAB0];
-      v19 = [v10 model];
-      v20 = [v19 mapIconStyleAttributes];
-      v21 = [v18 archivedDataWithRootObject:v20 requiringSecureCoding:1 error:0];
+      model3 = [v10 model];
+      mapIconStyleAttributes2 = [model3 mapIconStyleAttributes];
+      v21 = [v18 archivedDataWithRootObject:mapIconStyleAttributes2 requiringSecureCoding:1 error:0];
     }
 
     else
@@ -271,14 +271,14 @@
       v21 = 0;
     }
 
-    v22 = [v10 model];
-    v23 = [v22 mapItemMUID];
-    if (v23)
+    model4 = [v10 model];
+    mapItemMUID = [model4 mapItemMUID];
+    if (mapItemMUID)
     {
       v24 = MEMORY[0x277CCAAB0];
-      v25 = [v10 model];
-      v26 = [v25 mapItemMUID];
-      v27 = [v24 archivedDataWithRootObject:v26 requiringSecureCoding:1 error:0];
+      model5 = [v10 model];
+      mapItemMUID2 = [model5 mapItemMUID];
+      v27 = [v24 archivedDataWithRootObject:mapItemMUID2 requiringSecureCoding:1 error:0];
     }
 
     else
@@ -290,53 +290,53 @@
 
     if (!sqlite3_prepare_v2(-[BCSPersistentStore openedDatabase](self, "openedDatabase"), [@"INSERT INTO link_items (full_hash_string link:bundle_id_string url:{hero_image_url_string, icon_image_url_string, redirect_url_string, action, expiration_date, content_item_models, is_powered_by, map_icon_style_attributes, map_item_muid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", "UTF8String"}string], -1, &ppStmt, 0))
     {
-      v29 = [v60 itemIdentifier];
+      itemIdentifier = [v60 itemIdentifier];
       objc_opt_class();
       v30 = objc_opt_isKindOfClass();
 
       if (v30)
       {
-        v31 = [v60 itemIdentifier];
+        itemIdentifier2 = [v60 itemIdentifier];
         v32 = ppStmt;
-        v59 = v31;
+        v59 = itemIdentifier2;
         sqlite3_bind_text(v32, 1, [v59 UTF8String], -1, 0);
         v33 = ppStmt;
-        v34 = [v10 model];
-        v35 = [v34 linkURL];
-        v36 = [v35 absoluteString];
-        sqlite3_bind_text(v33, 2, [v36 UTF8String], -1, 0);
+        model6 = [v10 model];
+        linkURL = [model6 linkURL];
+        absoluteString = [linkURL absoluteString];
+        sqlite3_bind_text(v33, 2, [absoluteString UTF8String], -1, 0);
 
         v37 = ppStmt;
-        v38 = [v10 model];
-        v39 = [v38 bundleID];
-        sqlite3_bind_text(v37, 3, [v39 UTF8String], -1, 0);
+        model7 = [v10 model];
+        bundleID = [model7 bundleID];
+        sqlite3_bind_text(v37, 3, [bundleID UTF8String], -1, 0);
 
         v40 = ppStmt;
-        v41 = [v10 model];
-        v42 = [v41 heroImageURLString];
-        sqlite3_bind_text(v40, 4, [v42 UTF8String], -1, 0);
+        model8 = [v10 model];
+        heroImageURLString = [model8 heroImageURLString];
+        sqlite3_bind_text(v40, 4, [heroImageURLString UTF8String], -1, 0);
 
         v43 = ppStmt;
-        v44 = [v10 model];
-        v45 = [v44 iconImageURLString];
-        sqlite3_bind_text(v43, 5, [v45 UTF8String], -1, 0);
+        model9 = [v10 model];
+        iconImageURLString = [model9 iconImageURLString];
+        sqlite3_bind_text(v43, 5, [iconImageURLString UTF8String], -1, 0);
 
         v46 = ppStmt;
-        v47 = [v10 model];
-        v48 = [v47 redirectURL];
-        v49 = [v48 absoluteString];
-        sqlite3_bind_text(v46, 6, [v49 UTF8String], -1, 0);
+        model10 = [v10 model];
+        redirectURL = [model10 redirectURL];
+        absoluteString2 = [redirectURL absoluteString];
+        sqlite3_bind_text(v46, 6, [absoluteString2 UTF8String], -1, 0);
 
         sqlite3_bind_int(ppStmt, 7, [v10 action]);
         v50 = ppStmt;
-        v51 = [v10 expirationDate];
-        [v51 timeIntervalSince1970];
+        expirationDate = [v10 expirationDate];
+        [expirationDate timeIntervalSince1970];
         sqlite3_bind_double(v50, 8, v52);
 
         sqlite3_bind_blob(ppStmt, 9, [v61 bytes], objc_msgSend(v61, "length"), 0xFFFFFFFFFFFFFFFFLL);
         v53 = ppStmt;
-        v54 = [v10 model];
-        sqlite3_bind_int(v53, 10, [v54 isPoweredBy]);
+        model11 = [v10 model];
+        sqlite3_bind_int(v53, 10, [model11 isPoweredBy]);
 
         sqlite3_bind_blob(ppStmt, 11, [v21 bytes], objc_msgSend(v21, "length"), 0xFFFFFFFFFFFFFFFFLL);
         sqlite3_bind_blob(ppStmt, 12, [v27 bytes], objc_msgSend(v27, "length"), 0xFFFFFFFFFFFFFFFFLL);
@@ -367,42 +367,42 @@
   v57 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteItemMatching:(id)a3
+- (void)deleteItemMatching:(id)matching
 {
-  v9 = a3;
-  v4 = [v9 type];
-  if (self && v4 == 2)
+  matchingCopy = matching;
+  type = [matchingCopy type];
+  if (self && type == 2)
   {
     v5 = MEMORY[0x277CCACA8];
-    v6 = [v9 itemIdentifier];
-    v7 = [v5 stringWithFormat:@"DELETE FROM link_items WHERE full_hash_string = %@", v6];
-    v8 = [v7 UTF8String];
+    itemIdentifier = [matchingCopy itemIdentifier];
+    v7 = [v5 stringWithFormat:@"DELETE FROM link_items WHERE full_hash_string = %@", itemIdentifier];
+    uTF8String = [v7 UTF8String];
 
-    [(BCSLinkItemPersistentStore *)self _executeDeleteSQLQuery:v8];
+    [(BCSLinkItemPersistentStore *)self _executeDeleteSQLQuery:uTF8String];
   }
 }
 
-- (void)deleteItemsOfType:(int64_t)a3
+- (void)deleteItemsOfType:(int64_t)type
 {
-  if (self && a3 == 2)
+  if (self && type == 2)
   {
-    v5 = [@"DELETE FROM link_items" UTF8String];
+    uTF8String = [@"DELETE FROM link_items" UTF8String];
 
-    [(BCSLinkItemPersistentStore *)self _executeDeleteSQLQuery:v5];
+    [(BCSLinkItemPersistentStore *)self _executeDeleteSQLQuery:uTF8String];
   }
 }
 
-- (void)deleteExpiredItemsOfType:(int64_t)a3
+- (void)deleteExpiredItemsOfType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     v5 = MEMORY[0x277CCACA8];
-    v6 = [MEMORY[0x277CBEAA8] date];
-    [v6 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v8 = [v5 stringWithFormat:@"DELETE FROM link_items WHERE expiration_date <= %f", v7];
-    v9 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
 
-    [(BCSLinkItemPersistentStore *)self _executeDeleteSQLQuery:v9];
+    [(BCSLinkItemPersistentStore *)self _executeDeleteSQLQuery:uTF8String];
   }
 }
 
@@ -425,12 +425,12 @@
   return result;
 }
 
-- (void)deleteLinkItemsWithBundleID:(id)a3
+- (void)deleteLinkItemsWithBundleID:(id)d
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"DELETE FROM link_items WHERE bundle_id_string = %@", a3];
-  v5 = [v4 UTF8String];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"DELETE FROM link_items WHERE bundle_id_string = %@", d];
+  uTF8String = [v4 UTF8String];
 
-  [(BCSLinkItemPersistentStore *)self _executeDeleteSQLQuery:v5];
+  [(BCSLinkItemPersistentStore *)self _executeDeleteSQLQuery:uTF8String];
 }
 
 unsigned __int8 *__60__BCSLinkItemPersistentStore__extractLinkItemFromStatement___block_invoke(uint64_t a1, int a2)

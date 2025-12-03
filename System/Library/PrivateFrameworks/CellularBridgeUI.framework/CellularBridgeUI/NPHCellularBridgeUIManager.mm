@@ -1,14 +1,14 @@
 @interface NPHCellularBridgeUIManager
-+ (BOOL)_isSubscriptionInUse:(id)a3;
++ (BOOL)_isSubscriptionInUse:(id)use;
 + (id)sharedInstance;
-+ (void)_presentAirplaneModeOnAlertOnViewController:(id)a3;
-+ (void)_presentCellularRequiredModeAlertOnViewController:(id)a3;
-+ (void)_presentErrorTitle:(id)a3 onViewController:(id)a4 withActionTitle:(id)a5 actionHandler:(id)a6;
-+ (void)_presentErrorTitled:(id)a3 withMessage:(id)a4 onViewController:(id)a5;
-+ (void)presentCellularError:(id)a3 onViewController:(id)a4;
-- (BOOL)_isCarrierSetupFlowUnsupportedForServiceSubscription:(id)a3;
-- (BOOL)_isPersistentError:(id)a3;
-- (BOOL)_isSetupBlockingError:(id)a3;
++ (void)_presentAirplaneModeOnAlertOnViewController:(id)controller;
++ (void)_presentCellularRequiredModeAlertOnViewController:(id)controller;
++ (void)_presentErrorTitle:(id)title onViewController:(id)controller withActionTitle:(id)actionTitle actionHandler:(id)handler;
++ (void)_presentErrorTitled:(id)titled withMessage:(id)message onViewController:(id)controller;
++ (void)presentCellularError:(id)error onViewController:(id)controller;
+- (BOOL)_isCarrierSetupFlowUnsupportedForServiceSubscription:(id)subscription;
+- (BOOL)_isPersistentError:(id)error;
+- (BOOL)_isSetupBlockingError:(id)error;
 - (BOOL)allCompanionSIMsMissing;
 - (BOOL)cellularPlanIsSetUp;
 - (BOOL)isAnyCellularPlanActivating;
@@ -16,7 +16,7 @@
 - (BOOL)isGeminiSetup;
 - (BOOL)isTinkerCrossCarrierSetup;
 - (BOOL)shouldAllowUserToAddOrSetUpPlan;
-- (BOOL)shouldAllowUserToTransferPlanFromDeviceWithCSN:(id)a3;
+- (BOOL)shouldAllowUserToTransferPlanFromDeviceWithCSN:(id)n;
 - (BOOL)shouldOfferRemotePlan;
 - (BOOL)shouldOfferTrialPlan;
 - (NPHCellularBridgeUIManager)init;
@@ -28,49 +28,49 @@
 - (NSString)trialPlanType;
 - (id)_activeDeviceCSNList;
 - (id)_currentDeviceCSN;
-- (id)_serviceSubscriptionInfoForSubscriptionContext:(id)a3;
-- (id)_trialPlanTypeForContext:(id)a3;
-- (id)carrierNameForSubscription:(id)a3;
-- (id)carrierPhoneNumberForSubscription:(id)a3;
+- (id)_serviceSubscriptionInfoForSubscriptionContext:(id)context;
+- (id)_trialPlanTypeForContext:(id)context;
+- (id)carrierNameForSubscription:(id)subscription;
+- (id)carrierPhoneNumberForSubscription:(id)subscription;
 - (id)cellularPlanRequiringPreInstallConsent;
 - (id)cellularPlans;
 - (id)cellularUseErrors;
-- (id)displayNameForCellularPlan:(id)a3;
-- (id)formattedPhoneNumberForSubscription:(id)a3;
-- (id)lteOverrideForSubscription:(id)a3;
-- (id)simLabelForSubscription:(id)a3;
-- (id)subscriptionContextForCellularPlanItem:(id)a3;
-- (id)userConsentMessageForConsentType:(int64_t)a3 relevantPlanItem:(id)a4;
-- (int64_t)_minMajorWatchOSVersionForSubscription:(id)a3;
-- (int64_t)consentRequiredRelevantCellularPlanItem:(id *)a3;
-- (void)_ctCellularPlanInfoDidChange:(id)a3;
-- (void)_ctCellularRemoteProvisioningDidBecomeAvailable:(id)a3;
-- (void)_localPlanInfoDidChange:(id)a3;
+- (id)displayNameForCellularPlan:(id)plan;
+- (id)formattedPhoneNumberForSubscription:(id)subscription;
+- (id)lteOverrideForSubscription:(id)subscription;
+- (id)simLabelForSubscription:(id)subscription;
+- (id)subscriptionContextForCellularPlanItem:(id)item;
+- (id)userConsentMessageForConsentType:(int64_t)type relevantPlanItem:(id)item;
+- (int64_t)_minMajorWatchOSVersionForSubscription:(id)subscription;
+- (int64_t)consentRequiredRelevantCellularPlanItem:(id *)item;
+- (void)_ctCellularPlanInfoDidChange:(id)change;
+- (void)_ctCellularRemoteProvisioningDidBecomeAvailable:(id)available;
+- (void)_localPlanInfoDidChange:(id)change;
 - (void)_nrPairedWatchDidBecomeActive;
-- (void)_prePromptForUserConsentIfNecessary:(id)a3;
-- (void)_prePromptUserForConsentTextType:(int64_t)a3 relevantPlanItem:(id)a4 completionBlock:(id)a5;
-- (void)_promptForUserConsentForCarrierWebsiteIfNecessary:(id)a3 withCompletion:(id)a4;
-- (void)_setUpCellularPlanDirectWithContext:(id)a3 onViewController:(id)a4 withCompletion:(id)a5;
-- (void)_setUpCellularPlanWithActivationCodeOnViewController:(id)a3 withContext:(id)a4 withCompletion:(id)a5 codelessActivationBlock:(id)a6;
+- (void)_prePromptForUserConsentIfNecessary:(id)necessary;
+- (void)_prePromptUserForConsentTextType:(int64_t)type relevantPlanItem:(id)item completionBlock:(id)block;
+- (void)_promptForUserConsentForCarrierWebsiteIfNecessary:(id)necessary withCompletion:(id)completion;
+- (void)_setUpCellularPlanDirectWithContext:(id)context onViewController:(id)controller withCompletion:(id)completion;
+- (void)_setUpCellularPlanWithActivationCodeOnViewController:(id)controller withContext:(id)context withCompletion:(id)completion codelessActivationBlock:(id)block;
 - (void)_updateCoreTelephonyClientInfo;
 - (void)_updateIsRemotePlanCapable;
 - (void)_updateSIMStatusForAllSubscriptionContexts;
-- (void)_updateSIMStatusForSubscriptionContext:(id)a3 withStatus:(id)a4;
-- (void)_updateServiceSubscriptionInfo:(id)a3;
+- (void)_updateSIMStatusForSubscriptionContext:(id)context withStatus:(id)status;
+- (void)_updateServiceSubscriptionInfo:(id)info;
 - (void)_updateShouldShowAddNewRemotePlan;
 - (void)_updateShouldWarnAboutLTEMayImpactService;
-- (void)_updateTransferableCellularPlanFromDeviceWithCSN:(id)a3;
+- (void)_updateTransferableCellularPlanFromDeviceWithCSN:(id)n;
 - (void)activeSubscriptionsDidChange;
 - (void)dealloc;
 - (void)fetchTinkerFamilyMember;
 - (void)finishRemoteProvisioning;
-- (void)installPendingCellularPlan:(id)a3 withCompletion:(id)a4;
-- (void)setUpCellularPlanOnViewController:(id)a3 withContext:(id)a4 withCompletion:(id)a5;
-- (void)simSetupFlowCompleted:(unint64_t)a3;
-- (void)simStatusDidChange:(id)a3 status:(id)a4;
+- (void)installPendingCellularPlan:(id)plan withCompletion:(id)completion;
+- (void)setUpCellularPlanOnViewController:(id)controller withContext:(id)context withCompletion:(id)completion;
+- (void)simSetupFlowCompleted:(unint64_t)completed;
+- (void)simStatusDidChange:(id)change status:(id)status;
 - (void)startRemoteProvisioning;
 - (void)subscriptionInfoDidChange;
-- (void)transferCellularPlanOnViewController:(id)a3 withCompletion:(id)a4;
+- (void)transferCellularPlanOnViewController:(id)controller withCompletion:(id)completion;
 @end
 
 @implementation NPHCellularBridgeUIManager
@@ -153,10 +153,10 @@ void __44__NPHCellularBridgeUIManager_sharedInstance__block_invoke()
     _os_log_impl(&dword_243333000, v3, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v4 = [MEMORY[0x277CF3468] sharedInstance];
-  v5 = [v4 cachedTinkerFamilyMemeber];
+  mEMORY[0x277CF3468] = [MEMORY[0x277CF3468] sharedInstance];
+  cachedTinkerFamilyMemeber = [mEMORY[0x277CF3468] cachedTinkerFamilyMemeber];
 
-  if (v5)
+  if (cachedTinkerFamilyMemeber)
   {
     v6 = nph_general_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -164,25 +164,25 @@ void __44__NPHCellularBridgeUIManager_sharedInstance__block_invoke()
       *buf = 136315394;
       v14 = "[NPHCellularBridgeUIManager fetchTinkerFamilyMember]";
       v15 = 2112;
-      v16 = v5;
+      v16 = cachedTinkerFamilyMemeber;
       _os_log_impl(&dword_243333000, v6, OS_LOG_TYPE_DEFAULT, "%s: %@", buf, 0x16u);
     }
 
-    v7 = [v5 firstName];
-    v8 = [v7 localizedCapitalizedString];
-    [(NPHCellularBridgeUIManager *)self setTinkerFamilyMemberFirstName:v8];
+    firstName = [cachedTinkerFamilyMemeber firstName];
+    localizedCapitalizedString = [firstName localizedCapitalizedString];
+    [(NPHCellularBridgeUIManager *)self setTinkerFamilyMemberFirstName:localizedCapitalizedString];
   }
 
   else
   {
     objc_initWeak(buf, self);
-    v9 = [MEMORY[0x277CF3468] sharedInstance];
+    mEMORY[0x277CF3468]2 = [MEMORY[0x277CF3468] sharedInstance];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __53__NPHCellularBridgeUIManager_fetchTinkerFamilyMember__block_invoke;
     v11[3] = &unk_278DACD40;
     objc_copyWeak(&v12, buf);
-    [v9 getActiveTinkerFamilyMemberWithCompletion:v11];
+    [mEMORY[0x277CF3468]2 getActiveTinkerFamilyMemberWithCompletion:v11];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(buf);
@@ -291,8 +291,8 @@ void __53__NPHCellularBridgeUIManager_fetchTinkerFamilyMember__block_invoke_cold
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(CTXPCServiceSubscriptionInfo *)self->_serviceSubscriptionInfo subscriptions];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  subscriptions = [(CTXPCServiceSubscriptionInfo *)self->_serviceSubscriptionInfo subscriptions];
+  v4 = [subscriptions countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -304,14 +304,14 @@ void __53__NPHCellularBridgeUIManager_fetchTinkerFamilyMember__block_invoke_cold
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subscriptions);
         }
 
         [(CoreTelephonyClient *)self->_coreTelephonyClient getSIMStatus:MEMORY[0x277D85DD0] completion:3221225472, __72__NPHCellularBridgeUIManager__updateSIMStatusForAllSubscriptionContexts__block_invoke, &unk_278DACA68, self, *(*(&v9 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [subscriptions countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -324,8 +324,8 @@ void __53__NPHCellularBridgeUIManager_fetchTinkerFamilyMember__block_invoke_cold
 {
   v27 = *MEMORY[0x277D85DE8];
   v2 = objc_opt_new();
-  v3 = [MEMORY[0x277D37B50] sharedInstance];
-  v4 = [v3 getDevicesExcluding:4];
+  mEMORY[0x277D37B50] = [MEMORY[0x277D37B50] sharedInstance];
+  v4 = [mEMORY[0x277D37B50] getDevicesExcluding:4];
 
   v20 = 0u;
   v21 = 0u;
@@ -431,20 +431,20 @@ uint64_t __72__NPHCellularBridgeUIManager__updateSIMStatusForAllSubscriptionCont
   [(NPHCellularBridgeUIManager *)&v4 dealloc];
 }
 
-- (void)simStatusDidChange:(id)a3 status:(id)a4
+- (void)simStatusDidChange:(id)change status:(id)status
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  statusCopy = status;
   v8 = nph_general_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v16 = "[NPHCellularBridgeUIManager simStatusDidChange:status:]";
     v17 = 2112;
-    v18 = v6;
+    v18 = changeCopy;
     v19 = 2112;
-    v20 = v7;
+    v20 = statusCopy;
     _os_log_impl(&dword_243333000, v8, OS_LOG_TYPE_DEFAULT, "%s context:%@ status:%@", buf, 0x20u);
   }
 
@@ -453,10 +453,10 @@ uint64_t __72__NPHCellularBridgeUIManager__updateSIMStatusForAllSubscriptionCont
   v12[2] = __56__NPHCellularBridgeUIManager_simStatusDidChange_status___block_invoke;
   v12[3] = &unk_278DAC8E8;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = changeCopy;
+  v14 = statusCopy;
+  v9 = statusCopy;
+  v10 = changeCopy;
   nph_ensure_on_main_queue(v12);
 
   v11 = *MEMORY[0x277D85DE8];
@@ -492,24 +492,24 @@ uint64_t __72__NPHCellularBridgeUIManager__updateSIMStatusForAllSubscriptionCont
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateSIMStatusForSubscriptionContext:(id)a3 withStatus:(id)a4
+- (void)_updateSIMStatusForSubscriptionContext:(id)context withStatus:(id)status
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  statusCopy = status;
   v8 = nph_general_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 136315650;
     v20 = "[NPHCellularBridgeUIManager _updateSIMStatusForSubscriptionContext:withStatus:]";
     v21 = 2112;
-    v22 = v6;
+    v22 = contextCopy;
     v23 = 2112;
-    v24 = v7;
+    v24 = statusCopy;
     _os_log_impl(&dword_243333000, v8, OS_LOG_TYPE_DEFAULT, "%s context:%@ status:%@", &v19, 0x20u);
   }
 
-  if (!v6)
+  if (!contextCopy)
   {
     v9 = nph_general_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -518,23 +518,23 @@ uint64_t __72__NPHCellularBridgeUIManager__updateSIMStatusForAllSubscriptionCont
     }
   }
 
-  v10 = [(NPHCellularBridgeUIManager *)self _serviceSubscriptionInfoForSubscriptionContext:v6];
-  v11 = [v10 SIMStatus];
-  v12 = [v11 isEqualToString:v7];
+  v10 = [(NPHCellularBridgeUIManager *)self _serviceSubscriptionInfoForSubscriptionContext:contextCopy];
+  sIMStatus = [v10 SIMStatus];
+  v12 = [sIMStatus isEqualToString:statusCopy];
 
   if ((v12 & 1) == 0)
   {
-    v13 = [v7 copy];
+    v13 = [statusCopy copy];
     [v10 setSIMStatus:v13];
 
     v14 = nph_general_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v10 SIMStatus];
+      sIMStatus2 = [v10 SIMStatus];
       v19 = 136315394;
       v20 = "[NPHCellularBridgeUIManager _updateSIMStatusForSubscriptionContext:withStatus:]";
       v21 = 2112;
-      v22 = v15;
+      v22 = sIMStatus2;
       _os_log_impl(&dword_243333000, v14, OS_LOG_TYPE_DEFAULT, "%s - serviceSubscriptionInfo.SIMStatus:%@", &v19, 0x16u);
     }
 
@@ -546,24 +546,24 @@ uint64_t __72__NPHCellularBridgeUIManager__updateSIMStatusForAllSubscriptionCont
       _os_log_impl(&dword_243333000, v16, OS_LOG_TYPE_DEFAULT, "%s - posting NPHCellularPlanInfoDidChangeNotification 4", &v19, 0xCu);
     }
 
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 postNotificationName:NPHCellularPlanInfoDidChangeNotification object:self userInfo:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:NPHCellularPlanInfoDidChangeNotification object:self userInfo:0];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_localPlanInfoDidChange:(id)a3
+- (void)_localPlanInfoDidChange:(id)change
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = nph_general_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[NPHCellularBridgeUIManager _localPlanInfoDidChange:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = changeCopy;
     _os_log_impl(&dword_243333000, v5, OS_LOG_TYPE_DEFAULT, "%s: %@", &v7, 0x16u);
   }
 
@@ -574,18 +574,18 @@ uint64_t __72__NPHCellularBridgeUIManager__updateSIMStatusForAllSubscriptionCont
 - (id)_currentDeviceCSN
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D37B48] activeDevice];
+  activeDevice = [MEMORY[0x277D37B48] activeDevice];
   v3 = nph_general_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[NPHCellularBridgeUIManager _currentDeviceCSN]";
     v10 = 2112;
-    v11 = v2;
+    v11 = activeDevice;
     _os_log_impl(&dword_243333000, v3, OS_LOG_TYPE_DEFAULT, "%s device:%@", &v8, 0x16u);
   }
 
-  v4 = [v2 valueForProperty:*MEMORY[0x277D37B60]];
+  v4 = [activeDevice valueForProperty:*MEMORY[0x277D37B60]];
   v5 = nph_general_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -601,12 +601,12 @@ uint64_t __72__NPHCellularBridgeUIManager__updateSIMStatusForAllSubscriptionCont
   return v4;
 }
 
-- (void)_setUpCellularPlanDirectWithContext:(id)a3 onViewController:(id)a4 withCompletion:(id)a5
+- (void)_setUpCellularPlanDirectWithContext:(id)context onViewController:(id)controller withCompletion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  controllerCopy = controller;
+  completionCopy = completion;
   v11 = nph_general_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -621,12 +621,12 @@ uint64_t __72__NPHCellularBridgeUIManager__updateSIMStatusForAllSubscriptionCont
   v16[2] = __98__NPHCellularBridgeUIManager__setUpCellularPlanDirectWithContext_onViewController_withCompletion___block_invoke;
   v16[3] = &unk_278DACAE0;
   objc_copyWeak(&v21, buf);
-  v12 = v8;
+  v12 = contextCopy;
   v17 = v12;
-  v13 = v9;
+  v13 = controllerCopy;
   v18 = v13;
-  v14 = v10;
-  v19 = self;
+  v14 = completionCopy;
+  selfCopy = self;
   v20 = v14;
   [(NPHCellularBridgeUIManager *)self _prePromptForUserConsentIfNecessary:v16];
 
@@ -712,7 +712,7 @@ void __98__NPHCellularBridgeUIManager__setUpCellularPlanDirectWithContext_onView
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)simSetupFlowCompleted:(unint64_t)a3
+- (void)simSetupFlowCompleted:(unint64_t)completed
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = nph_general_log();
@@ -721,39 +721,39 @@ void __98__NPHCellularBridgeUIManager__setUpCellularPlanDirectWithContext_onView
     v8 = 136315394;
     v9 = "[NPHCellularBridgeUIManager simSetupFlowCompleted:]";
     v10 = 2048;
-    v11 = a3;
+    completedCopy = completed;
     _os_log_impl(&dword_243333000, v5, OS_LOG_TYPE_DEFAULT, "%s: %lu", &v8, 0x16u);
   }
 
   if ((IsCurrentDevicePairing() & 1) == 0)
   {
-    v6 = [(NPHCellularBridgeUIManager *)self hostViewController];
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    hostViewController = [(NPHCellularBridgeUIManager *)self hostViewController];
+    [hostViewController dismissViewControllerAnimated:1 completion:0];
   }
 
   [(NPHCellularBridgeUIManager *)self setFlow:0];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setUpCellularPlanWithActivationCodeOnViewController:(id)a3 withContext:(id)a4 withCompletion:(id)a5 codelessActivationBlock:(id)a6
+- (void)_setUpCellularPlanWithActivationCodeOnViewController:(id)controller withContext:(id)context withCompletion:(id)completion codelessActivationBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  controllerCopy = controller;
+  contextCopy = context;
+  completionCopy = completion;
+  blockCopy = block;
   v13 = +[NPHCellularBridgeUIManager sharedInstance];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __134__NPHCellularBridgeUIManager__setUpCellularPlanWithActivationCodeOnViewController_withContext_withCompletion_codelessActivationBlock___block_invoke;
   v18[3] = &unk_278DACB08;
-  v21 = v11;
-  v22 = v12;
-  v19 = v10;
-  v20 = v9;
-  v14 = v9;
-  v15 = v10;
-  v16 = v12;
-  v17 = v11;
+  v21 = completionCopy;
+  v22 = blockCopy;
+  v19 = contextCopy;
+  v20 = controllerCopy;
+  v14 = controllerCopy;
+  v15 = contextCopy;
+  v16 = blockCopy;
+  v17 = completionCopy;
   [v13 _prePromptForUserConsentIfNecessary:v18];
 }
 
@@ -781,19 +781,19 @@ void __134__NPHCellularBridgeUIManager__setUpCellularPlanWithActivationCodeOnVie
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)installPendingCellularPlan:(id)a3 withCompletion:(id)a4
+- (void)installPendingCellularPlan:(id)plan withCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = MEMORY[0x277CF96D8];
-  v7 = a3;
-  v8 = [v6 sharedManager];
+  planCopy = plan;
+  sharedManager = [v6 sharedManager];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __72__NPHCellularBridgeUIManager_installPendingCellularPlan_withCompletion___block_invoke;
   v10[3] = &unk_278DACB58;
-  v11 = v5;
-  v9 = v5;
-  [v8 installPendingRemotePlan:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [sharedManager installPendingRemotePlan:planCopy completion:v10];
 }
 
 void __72__NPHCellularBridgeUIManager_installPendingCellularPlan_withCompletion___block_invoke(uint64_t a1, void *a2)
@@ -830,10 +830,10 @@ uint64_t __72__NPHCellularBridgeUIManager_installPendingCellularPlan_withComplet
   return result;
 }
 
-- (BOOL)shouldAllowUserToTransferPlanFromDeviceWithCSN:(id)a3
+- (BOOL)shouldAllowUserToTransferPlanFromDeviceWithCSN:(id)n
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nCopy = n;
   v5 = nph_general_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -842,12 +842,12 @@ uint64_t __72__NPHCellularBridgeUIManager_installPendingCellularPlan_withComplet
     _os_log_impl(&dword_243333000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v14, 0xCu);
   }
 
-  [(NPHCellularBridgeUIManager *)self _updateTransferableCellularPlanFromDeviceWithCSN:v4];
-  v6 = [(NPHCellularBridgeUIManager *)self transferableRemoteDeviceID];
-  if (v6)
+  [(NPHCellularBridgeUIManager *)self _updateTransferableCellularPlanFromDeviceWithCSN:nCopy];
+  transferableRemoteDeviceID = [(NPHCellularBridgeUIManager *)self transferableRemoteDeviceID];
+  if (transferableRemoteDeviceID)
   {
-    v7 = [(NPHCellularBridgeUIManager *)self transferableRemotePlan];
-    v8 = v7 != 0;
+    transferableRemotePlan = [(NPHCellularBridgeUIManager *)self transferableRemotePlan];
+    v8 = transferableRemotePlan != 0;
   }
 
   else
@@ -859,11 +859,11 @@ uint64_t __72__NPHCellularBridgeUIManager_installPendingCellularPlan_withComplet
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = [MEMORY[0x277CCABB0] numberWithBool:v8];
-    v11 = [v10 integerValue];
+    integerValue = [v10 integerValue];
     v14 = 136315394;
     v15 = "[NPHCellularBridgeUIManager shouldAllowUserToTransferPlanFromDeviceWithCSN:]";
     v16 = 2048;
-    v17 = v11;
+    v17 = integerValue;
     _os_log_impl(&dword_243333000, v9, OS_LOG_TYPE_DEFAULT, "%s: %ld", &v14, 0x16u);
   }
 
@@ -871,24 +871,24 @@ uint64_t __72__NPHCellularBridgeUIManager_installPendingCellularPlan_withComplet
   return v8;
 }
 
-- (void)_updateTransferableCellularPlanFromDeviceWithCSN:(id)a3
+- (void)_updateTransferableCellularPlanFromDeviceWithCSN:(id)n
 {
   v62[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nCopy = n;
   v5 = nph_general_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v53 = "[NPHCellularBridgeUIManager _updateTransferableCellularPlanFromDeviceWithCSN:]";
     v54 = 2112;
-    v55 = v4;
+    v55 = nCopy;
     _os_log_impl(&dword_243333000, v5, OS_LOG_TYPE_DEFAULT, "%s CSN: %@", buf, 0x16u);
   }
 
-  if ([v4 length])
+  if ([nCopy length])
   {
-    v6 = [(NPHCellularBridgeUIManager *)self _currentDeviceCSN];
-    v7 = [v4 isEqualToString:v6];
+    _currentDeviceCSN = [(NPHCellularBridgeUIManager *)self _currentDeviceCSN];
+    v7 = [nCopy isEqualToString:_currentDeviceCSN];
 
     if (v7)
     {
@@ -904,12 +904,12 @@ uint64_t __72__NPHCellularBridgeUIManager_installPendingCellularPlan_withComplet
 
     coreTelephonyClient = self->_coreTelephonyClient;
     v51 = 0;
-    v8 = [(CoreTelephonyClient *)coreTelephonyClient getRemoteDeviceForTransferWithEID:v4 error:&v51];
+    v8 = [(CoreTelephonyClient *)coreTelephonyClient getRemoteDeviceForTransferWithEID:nCopy error:&v51];
     v9 = v51;
     if (v8)
     {
       v62[0] = v8;
-      v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v62 count:1];
+      devices = [MEMORY[0x277CBEA60] arrayWithObjects:v62 count:1];
       goto LABEL_12;
     }
 
@@ -927,9 +927,9 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v11 = [v8 devices];
+  devices = [v8 devices];
 LABEL_12:
-  v13 = v11;
+  v13 = devices;
 LABEL_14:
 
   v14 = nph_general_log();
@@ -962,7 +962,7 @@ LABEL_20:
     goto LABEL_52;
   }
 
-  v36 = v4;
+  v36 = nCopy;
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
@@ -993,8 +993,8 @@ LABEL_20:
       v43 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v41 = [v19 remotePlans];
-      v20 = [v41 countByEnumeratingWithState:&v42 objects:v60 count:16];
+      remotePlans = [v19 remotePlans];
+      v20 = [remotePlans countByEnumeratingWithState:&v42 objects:v60 count:16];
       if (!v20)
       {
         goto LABEL_47;
@@ -1008,30 +1008,30 @@ LABEL_20:
         {
           if (*v43 != v22)
           {
-            objc_enumerationMutation(v41);
+            objc_enumerationMutation(remotePlans);
           }
 
           v24 = *(*(&v42 + 1) + 8 * i);
-          v25 = [v24 transferAttributes];
-          if ([v25 transferCapability] == 2)
+          transferAttributes = [v24 transferAttributes];
+          if ([transferAttributes transferCapability] == 2)
           {
           }
 
           else
           {
-            v26 = [v24 transferAttributes];
-            v27 = [v26 transferCapability];
+            transferAttributes2 = [v24 transferAttributes];
+            transferCapability = [transferAttributes2 transferCapability];
 
-            if (v27 != 4)
+            if (transferCapability != 4)
             {
-              v29 = nph_general_log();
-              if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+              deviceID = nph_general_log();
+              if (os_log_type_enabled(deviceID, OS_LOG_TYPE_ERROR))
               {
                 *buf = 136315394;
                 v53 = "[NPHCellularBridgeUIManager _updateTransferableCellularPlanFromDeviceWithCSN:]";
                 v54 = 2112;
                 v55 = v24;
-                _os_log_error_impl(&dword_243333000, v29, OS_LOG_TYPE_ERROR, "%s - Non-Transferable Plan:%@", buf, 0x16u);
+                _os_log_error_impl(&dword_243333000, deviceID, OS_LOG_TYPE_ERROR, "%s - Non-Transferable Plan:%@", buf, 0x16u);
               }
 
               goto LABEL_41;
@@ -1063,13 +1063,13 @@ LABEL_20:
           }
 
           [(NPHCellularBridgeUIManager *)self setTransferableRemotePlan:v24];
-          v29 = [v19 deviceID];
-          [(NPHCellularBridgeUIManager *)self setTransferableRemoteDeviceID:v29];
+          deviceID = [v19 deviceID];
+          [(NPHCellularBridgeUIManager *)self setTransferableRemoteDeviceID:deviceID];
           ++v17;
 LABEL_41:
         }
 
-        v21 = [v41 countByEnumeratingWithState:&v42 objects:v60 count:16];
+        v21 = [remotePlans countByEnumeratingWithState:&v42 objects:v60 count:16];
         if (v21)
         {
           continue;
@@ -1093,31 +1093,31 @@ LABEL_49:
   v31 = nph_general_log();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
-    v32 = [(NPHCellularBridgeUIManager *)self transferableRemotePlan];
-    v33 = [(NPHCellularBridgeUIManager *)self transferableRemoteDeviceID];
+    transferableRemotePlan = [(NPHCellularBridgeUIManager *)self transferableRemotePlan];
+    transferableRemoteDeviceID = [(NPHCellularBridgeUIManager *)self transferableRemoteDeviceID];
     *buf = 136315650;
     v53 = "[NPHCellularBridgeUIManager _updateTransferableCellularPlanFromDeviceWithCSN:]";
     v54 = 2112;
-    v55 = v32;
+    v55 = transferableRemotePlan;
     v56 = 2112;
-    v57 = v33;
+    v57 = transferableRemoteDeviceID;
     _os_log_impl(&dword_243333000, v31, OS_LOG_TYPE_DEFAULT, "%s - TransferableRemote Plan: %@ DeviceID: %@", buf, 0x20u);
   }
 
   v9 = 0;
-  v4 = v36;
+  nCopy = v36;
   v13 = v35;
 LABEL_52:
 
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setUpCellularPlanOnViewController:(id)a3 withContext:(id)a4 withCompletion:(id)a5
+- (void)setUpCellularPlanOnViewController:(id)controller withContext:(id)context withCompletion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  contextCopy = context;
+  completionCopy = completion;
   v12 = nph_general_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -1126,31 +1126,31 @@ LABEL_52:
     _os_log_impl(&dword_243333000, v12, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  objc_storeStrong(&self->_hostViewController, a3);
-  self->_hostCompletionBlock = v11;
-  if (v10)
+  objc_storeStrong(&self->_hostViewController, controller);
+  self->_hostCompletionBlock = completionCopy;
+  if (contextCopy)
   {
-    v13 = [(NPHCellularBridgeUIManager *)self _serviceSubscriptionInfoForSubscriptionContext:v10];
+    v13 = [(NPHCellularBridgeUIManager *)self _serviceSubscriptionInfoForSubscriptionContext:contextCopy];
     if ([(NPHCellularBridgeUIManager *)self allCompanionSIMsMissing])
     {
-      v14 = [MEMORY[0x277CCA9B8] NPHCellularErrorWithCode:2 forSubscriptionContext:v10];
-      [objc_opt_class() presentCellularError:v14 onViewController:v9];
+      v14 = [MEMORY[0x277CCA9B8] NPHCellularErrorWithCode:2 forSubscriptionContext:contextCopy];
+      [objc_opt_class() presentCellularError:v14 onViewController:controllerCopy];
     }
 
     else if ([(NPHCellularBridgeUIManager *)self _isCarrierSetupFlowUnsupportedForServiceSubscription:v13])
     {
-      v15 = [MEMORY[0x277CCA9B8] NPHCellularErrorWithCode:3 forSubscriptionContext:v10];
-      [objc_opt_class() presentCellularError:v15 onViewController:v9];
+      v15 = [MEMORY[0x277CCA9B8] NPHCellularErrorWithCode:3 forSubscriptionContext:contextCopy];
+      [objc_opt_class() presentCellularError:v15 onViewController:controllerCopy];
     }
 
     else if (([v13 planFlows]& 1) != 0)
     {
-      [(NPHCellularBridgeUIManager *)self _setUpCellularPlanDirectWithContext:v10 onViewController:v9 withCompletion:v11];
+      [(NPHCellularBridgeUIManager *)self _setUpCellularPlanDirectWithContext:contextCopy onViewController:controllerCopy withCompletion:completionCopy];
     }
 
     else if (([v13 planFlows]& 2) != 0)
     {
-      [(NPHCellularBridgeUIManager *)self _setUpCellularPlanWithActivationCodeOnViewController:v9 withContext:v10 withCompletion:v11 codelessActivationBlock:0];
+      [(NPHCellularBridgeUIManager *)self _setUpCellularPlanWithActivationCodeOnViewController:controllerCopy withContext:contextCopy withCompletion:completionCopy codelessActivationBlock:0];
     }
 
     else
@@ -1161,9 +1161,9 @@ LABEL_52:
       v17[2] = __91__NPHCellularBridgeUIManager_setUpCellularPlanOnViewController_withContext_withCompletion___block_invoke;
       v17[3] = &unk_278DACB80;
       objc_copyWeak(&v21, buf);
-      v18 = v10;
-      v19 = v9;
-      v20 = v11;
+      v18 = contextCopy;
+      v19 = controllerCopy;
+      v20 = completionCopy;
       [(NPHCellularBridgeUIManager *)self _setUpCellularPlanWithActivationCodeOnViewController:v19 withContext:v18 withCompletion:v20 codelessActivationBlock:v17];
 
       objc_destroyWeak(&v21);
@@ -1194,11 +1194,11 @@ void __91__NPHCellularBridgeUIManager_setUpCellularPlanOnViewController_withCont
   }
 }
 
-- (void)transferCellularPlanOnViewController:(id)a3 withCompletion:(id)a4
+- (void)transferCellularPlanOnViewController:(id)controller withCompletion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   v9 = nph_general_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -1207,22 +1207,22 @@ void __91__NPHCellularBridgeUIManager_setUpCellularPlanOnViewController_withCont
     _os_log_impl(&dword_243333000, v9, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  objc_storeStrong(&self->_hostViewController, a3);
-  self->_hostCompletionBlock = v8;
-  v10 = [(NPHCellularBridgeUIManager *)self transferableRemotePlan];
-  if (v10 && (v11 = v10, [(NPHCellularBridgeUIManager *)self transferableRemoteDeviceID], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v12))
+  objc_storeStrong(&self->_hostViewController, controller);
+  self->_hostCompletionBlock = completionCopy;
+  transferableRemotePlan = [(NPHCellularBridgeUIManager *)self transferableRemotePlan];
+  if (transferableRemotePlan && (v11 = transferableRemotePlan, [(NPHCellularBridgeUIManager *)self transferableRemoteDeviceID], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v12))
   {
     coreTelephonyClient = self->_coreTelephonyClient;
-    v14 = [(NPHCellularBridgeUIManager *)self transferableRemotePlan];
-    v15 = [v14 planID];
-    v16 = [(NPHCellularBridgeUIManager *)self transferableRemoteDeviceID];
+    transferableRemotePlan2 = [(NPHCellularBridgeUIManager *)self transferableRemotePlan];
+    planID = [transferableRemotePlan2 planID];
+    transferableRemoteDeviceID = [(NPHCellularBridgeUIManager *)self transferableRemoteDeviceID];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __82__NPHCellularBridgeUIManager_transferCellularPlanOnViewController_withCompletion___block_invoke;
     v19[3] = &unk_278DACBA8;
     v19[4] = self;
-    v20 = v8;
-    [(CoreTelephonyClient *)coreTelephonyClient transferRemotePlan:v15 fromDevice:v16 completion:v19];
+    v20 = completionCopy;
+    [(CoreTelephonyClient *)coreTelephonyClient transferRemotePlan:planID fromDevice:transferableRemoteDeviceID completion:v19];
 
     v17 = v20;
   }
@@ -1256,10 +1256,10 @@ void __82__NPHCellularBridgeUIManager_transferCellularPlanOnViewController_withC
   }
 }
 
-- (void)_prePromptForUserConsentIfNecessary:(id)a3
+- (void)_prePromptForUserConsentIfNecessary:(id)necessary
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  necessaryCopy = necessary;
   v5 = [MEMORY[0x277CF96D8] calculateInstallConsentTextTypeFor:self->_proxyPlanItems];
   v6 = nph_general_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1278,31 +1278,31 @@ void __82__NPHCellularBridgeUIManager_transferCellularPlanOnViewController_withC
       goto LABEL_5;
     }
 
-    v7 = self;
+    selfCopy2 = self;
     v8 = 5;
 LABEL_9:
-    [(NPHCellularBridgeUIManager *)v7 _prePromptUserForConsentTextType:v8 relevantPlanItem:0 completionBlock:v4];
+    [(NPHCellularBridgeUIManager *)selfCopy2 _prePromptUserForConsentTextType:v8 relevantPlanItem:0 completionBlock:necessaryCopy];
     goto LABEL_10;
   }
 
   if (v5 == 4)
   {
-    v7 = self;
+    selfCopy2 = self;
     v8 = 4;
     goto LABEL_9;
   }
 
 LABEL_5:
-  v4[2](v4, 0);
+  necessaryCopy[2](necessaryCopy, 0);
 LABEL_10:
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_prePromptUserForConsentTextType:(int64_t)a3 relevantPlanItem:(id)a4 completionBlock:(id)a5
+- (void)_prePromptUserForConsentTextType:(int64_t)type relevantPlanItem:(id)item completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = [(NPHCellularBridgeUIManager *)self userConsentMessageForConsentType:a3 relevantPlanItem:a4];
+  blockCopy = block;
+  v9 = [(NPHCellularBridgeUIManager *)self userConsentMessageForConsentType:type relevantPlanItem:item];
   v10 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:v9 preferredStyle:0];
   [v10 setModalPresentationStyle:2];
   v11 = MEMORY[0x277D750F8];
@@ -1312,12 +1312,12 @@ LABEL_10:
   v29[1] = 3221225472;
   v29[2] = __96__NPHCellularBridgeUIManager__prePromptUserForConsentTextType_relevantPlanItem_completionBlock___block_invoke;
   v29[3] = &unk_278DACBD0;
-  v14 = v8;
+  v14 = blockCopy;
   v30 = v14;
   v15 = [v11 actionWithTitle:v13 style:2 handler:v29];
 
   [v10 addAction:v15];
-  if (a3 == 5)
+  if (type == 5)
   {
     v16 = MEMORY[0x277D750F8];
     v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -1341,15 +1341,15 @@ LABEL_10:
   [(UIViewController *)self->_hostViewController presentViewController:v10 animated:1 completion:0];
 }
 
-- (id)userConsentMessageForConsentType:(int64_t)a3 relevantPlanItem:(id)a4
+- (id)userConsentMessageForConsentType:(int64_t)type relevantPlanItem:(id)item
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  itemCopy = item;
   v7 = 0;
   v8 = 1;
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 == 4)
+    if (type == 4)
     {
       v8 = 0;
       v9 = 0;
@@ -1357,7 +1357,7 @@ LABEL_10:
       goto LABEL_14;
     }
 
-    if (a3 == 5)
+    if (type == 5)
     {
       v9 = 0;
       v7 = @"CONSENT_CURRENT_PLAN_CANNOT_BE_DELETED";
@@ -1365,7 +1365,7 @@ LABEL_10:
     }
 
     v9 = 1;
-    if (a3 != 7)
+    if (type != 7)
     {
       goto LABEL_14;
     }
@@ -1376,14 +1376,14 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v9 = 0;
     v7 = @"CONSENT_NEW_PLAN_CANNOT_BE_DISABLED";
     goto LABEL_14;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v9 = 0;
     v7 = @"CONSENT_NEW_PLAN_CANNOT_BE_DELETED";
@@ -1391,7 +1391,7 @@ LABEL_9:
   }
 
   v9 = 1;
-  if (a3 == 3)
+  if (type == 3)
   {
     goto LABEL_9;
   }
@@ -1403,7 +1403,7 @@ LABEL_14:
     *buf = 136315650;
     v41 = "[NPHCellularBridgeUIManager userConsentMessageForConsentType:relevantPlanItem:]";
     v42 = 2048;
-    v43 = a3;
+    typeCopy = type;
     v44 = 2112;
     v45 = v7;
     _os_log_impl(&dword_243333000, v10, OS_LOG_TYPE_DEFAULT, "%s - consentType:%ld consentMessageKey:%@", buf, 0x20u);
@@ -1429,10 +1429,10 @@ LABEL_14:
     v15 = MEMORY[0x277CCACA8];
     v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v17 = [v16 localizedStringForKey:v14 value:&stru_285611AE0 table:0];
-    v18 = [(NPHCellularBridgeUIManager *)self tinkerFamilyMemberFirstName];
-    v11 = [v15 stringWithFormat:v17, v18];
+    tinkerFamilyMemberFirstName = [(NPHCellularBridgeUIManager *)self tinkerFamilyMemberFirstName];
+    v11 = [v15 stringWithFormat:v17, tinkerFamilyMemberFirstName];
 
-    if (a3 != 7)
+    if (type != 7)
     {
       goto LABEL_39;
     }
@@ -1447,12 +1447,12 @@ LABEL_14:
 
   else
   {
-    v23 = [v6 plan];
-    v24 = [v23 carrierName];
+    plan = [itemCopy plan];
+    carrierName = [plan carrierName];
 
-    if (v24)
+    if (carrierName)
     {
-      v25 = v24;
+      v25 = carrierName;
     }
 
     else
@@ -1462,13 +1462,13 @@ LABEL_14:
 
     v14 = v25;
 
-    v26 = [(NPHCellularBridgeUIManager *)self selectedCellularPlan];
-    v27 = [v26 plan];
-    v28 = [v27 carrierName];
+    selectedCellularPlan = [(NPHCellularBridgeUIManager *)self selectedCellularPlan];
+    plan2 = [selectedCellularPlan plan];
+    carrierName2 = [plan2 carrierName];
 
-    if (v28)
+    if (carrierName2)
     {
-      v29 = v28;
+      v29 = carrierName2;
     }
 
     else
@@ -1628,24 +1628,24 @@ uint64_t __67__NPHCellularBridgeUIManager__updateCellularPlansWithFetch_forCSN__
   return v7;
 }
 
-- (id)_serviceSubscriptionInfoForSubscriptionContext:(id)a3
+- (id)_serviceSubscriptionInfoForSubscriptionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   serviceSubscriptionInfoList = self->_serviceSubscriptionInfoList;
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "slotID")}];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(contextCopy, "slotID")}];
   v7 = [(NSMutableDictionary *)serviceSubscriptionInfoList objectForKeyedSubscript:v6];
 
-  v8 = [v7 serviceSubscriptionContext];
-  v9 = [v8 isEqual:v4];
+  serviceSubscriptionContext = [v7 serviceSubscriptionContext];
+  v9 = [serviceSubscriptionContext isEqual:contextCopy];
 
   if ((v9 & 1) == 0)
   {
     v10 = objc_opt_new();
 
     [v10 setShouldOfferRemotePlan:1];
-    [v10 setServiceSubscriptionContext:v4];
+    [v10 setServiceSubscriptionContext:contextCopy];
     v11 = self->_serviceSubscriptionInfoList;
-    v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "slotID")}];
+    v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(contextCopy, "slotID")}];
     [(NSMutableDictionary *)v11 setObject:v10 forKeyedSubscript:v12];
 
     v7 = v10;
@@ -1684,14 +1684,14 @@ uint64_t __67__NPHCellularBridgeUIManager__updateCellularPlansWithFetch_forCSN__
 
         v7 = *(*(&v12 + 1) + 8 * v6);
         ++self->_outstandingPlanFlowsIdentified;
-        v8 = [MEMORY[0x277CF96D8] sharedManager];
+        mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
         v11[0] = MEMORY[0x277D85DD0];
         v11[1] = 3221225472;
         v11[2] = __63__NPHCellularBridgeUIManager__updateShouldShowAddNewRemotePlan__block_invoke;
         v11[3] = &unk_278DACC88;
         v11[4] = self;
         v11[5] = v7;
-        [v8 shouldShowAddNewRemotePlanWithContext:v7 completion:v11];
+        [mEMORY[0x277CF96D8] shouldShowAddNewRemotePlanWithContext:v7 completion:v11];
 
         ++v6;
       }
@@ -1910,14 +1910,14 @@ LABEL_35:
         }
 
         v8 = *(*(&v13 + 1) + 8 * v7);
-        v9 = [MEMORY[0x277CF96D8] sharedManager];
+        mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
         v12[0] = MEMORY[0x277D85DD0];
         v12[1] = 3221225472;
         v12[2] = __56__NPHCellularBridgeUIManager__updateIsRemotePlanCapable__block_invoke;
         v12[3] = &unk_278DACCD8;
         v12[4] = v8;
         v12[5] = self;
-        [v9 isRemotePlanCapableWithContext:v8 completion:v12];
+        [mEMORY[0x277CF96D8] isRemotePlanCapableWithContext:v8 completion:v12];
 
         ++v7;
       }
@@ -2030,8 +2030,8 @@ void __56__NPHCellularBridgeUIManager__updateIsRemotePlanCapable__block_invoke_2
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = [(NSMutableDictionary *)self->_serviceSubscriptionInfoList allValues];
-  v6 = [v5 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  allValues = [(NSMutableDictionary *)self->_serviceSubscriptionInfoList allValues];
+  v6 = [allValues countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2042,7 +2042,7 @@ void __56__NPHCellularBridgeUIManager__updateIsRemotePlanCapable__block_invoke_2
       {
         if (*v29 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v28 + 1) + 8 * i);
@@ -2058,8 +2058,8 @@ void __56__NPHCellularBridgeUIManager__updateIsRemotePlanCapable__block_invoke_2
 
         if ([(NSMutableDictionary *)v10 shouldShowAddNewRemotePlan])
         {
-          v12 = [(NSMutableDictionary *)v10 persistentError];
-          if ([(NPHCellularBridgeUIManager *)self _isSetupBlockingError:v12])
+          persistentError = [(NSMutableDictionary *)v10 persistentError];
+          if ([(NPHCellularBridgeUIManager *)self _isSetupBlockingError:persistentError])
           {
           }
 
@@ -2079,8 +2079,8 @@ LABEL_27:
                 _os_log_impl(&dword_243333000, v22, OS_LOG_TYPE_DEFAULT, "%s - offer:%@", buf, 0x16u);
               }
 
-              v19 = [(NSMutableDictionary *)v10 serviceSubscriptionContext];
-              [(NSMutableDictionary *)v27 addObject:v19];
+              serviceSubscriptionContext = [(NSMutableDictionary *)v10 serviceSubscriptionContext];
+              [(NSMutableDictionary *)v27 addObject:serviceSubscriptionContext];
 LABEL_30:
 
               continue;
@@ -2100,50 +2100,50 @@ LABEL_30:
           v13 = nph_general_log();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
-            v14 = [(NSMutableDictionary *)v10 shouldShowAddNewRemotePlan];
+            shouldShowAddNewRemotePlan = [(NSMutableDictionary *)v10 shouldShowAddNewRemotePlan];
             *buf = 136315394;
             v34 = "[NPHCellularBridgeUIManager serviceSubscriptionsToOfferUser]";
             v35 = 1024;
-            LODWORD(v36) = v14;
+            LODWORD(v36) = shouldShowAddNewRemotePlan;
             _os_log_impl(&dword_243333000, v13, OS_LOG_TYPE_DEFAULT, "%s - REJECTED: shouldShowAddNewRemotePlan:%d", buf, 0x12u);
           }
         }
 
-        v15 = [(NSMutableDictionary *)v10 persistentError];
-        v16 = [(NPHCellularBridgeUIManager *)self _isSetupBlockingError:v15];
+        persistentError2 = [(NSMutableDictionary *)v10 persistentError];
+        v16 = [(NPHCellularBridgeUIManager *)self _isSetupBlockingError:persistentError2];
 
         if (v16)
         {
           v17 = nph_general_log();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
-            v18 = [(NSMutableDictionary *)v10 persistentError];
+            persistentError3 = [(NSMutableDictionary *)v10 persistentError];
             *buf = 136315394;
             v34 = "[NPHCellularBridgeUIManager serviceSubscriptionsToOfferUser]";
             v35 = 2112;
-            v36 = v18;
+            v36 = persistentError3;
             _os_log_impl(&dword_243333000, v17, OS_LOG_TYPE_DEFAULT, "%s - REJECTED: persistent error:%@", buf, 0x16u);
           }
         }
 
         if (([objc_opt_class() _isSubscriptionInUse:v10] & 1) == 0)
         {
-          v19 = nph_general_log();
-          if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+          serviceSubscriptionContext = nph_general_log();
+          if (os_log_type_enabled(serviceSubscriptionContext, OS_LOG_TYPE_DEFAULT))
           {
-            v20 = [(NSMutableDictionary *)v10 SIMStatus];
+            sIMStatus = [(NSMutableDictionary *)v10 SIMStatus];
             *buf = 136315394;
             v34 = "[NPHCellularBridgeUIManager serviceSubscriptionsToOfferUser]";
             v35 = 2112;
-            v36 = v20;
-            _os_log_impl(&dword_243333000, v19, OS_LOG_TYPE_DEFAULT, "%s - REJECTED: not in use:%@", buf, 0x16u);
+            v36 = sIMStatus;
+            _os_log_impl(&dword_243333000, serviceSubscriptionContext, OS_LOG_TYPE_DEFAULT, "%s - REJECTED: not in use:%@", buf, 0x16u);
           }
 
           goto LABEL_30;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v7);
@@ -2167,8 +2167,8 @@ LABEL_30:
 
 - (BOOL)isGeminiSetup
 {
-  v2 = [(NPHCellularBridgeUIManager *)self serviceSubscriptionsInUse];
-  v3 = [v2 count] > 1;
+  serviceSubscriptionsInUse = [(NPHCellularBridgeUIManager *)self serviceSubscriptionsInUse];
+  v3 = [serviceSubscriptionsInUse count] > 1;
 
   return v3;
 }
@@ -2178,8 +2178,8 @@ LABEL_30:
   v12 = *MEMORY[0x277D85DE8];
   if (+[NPHSharedUtilities isActiveDeviceTinker])
   {
-    v3 = [(NPHCellularBridgeUIManager *)self cellularPlanRequiringPreInstallConsent];
-    v4 = v3 != 0;
+    cellularPlanRequiringPreInstallConsent = [(NPHCellularBridgeUIManager *)self cellularPlanRequiringPreInstallConsent];
+    v4 = cellularPlanRequiringPreInstallConsent != 0;
   }
 
   else
@@ -2201,11 +2201,11 @@ LABEL_30:
   return v4;
 }
 
-+ (BOOL)_isSubscriptionInUse:(id)a3
++ (BOOL)_isSubscriptionInUse:(id)use
 {
-  v3 = a3;
-  v4 = [v3 SIMStatus];
-  if ([v4 isEqualToString:*MEMORY[0x277CC3F00]])
+  useCopy = use;
+  sIMStatus = [useCopy SIMStatus];
+  if ([sIMStatus isEqualToString:*MEMORY[0x277CC3F00]])
   {
     v5 = 1;
   }
@@ -2215,8 +2215,8 @@ LABEL_30:
     v6 = +[NPHCellularBridgeUIManager sharedInstance];
     if ([v6 isTinkerCrossCarrierSetup])
     {
-      v7 = [v3 SIMStatus];
-      v5 = [v7 isEqualToString:*MEMORY[0x277CC3ED8]];
+      sIMStatus2 = [useCopy SIMStatus];
+      v5 = [sIMStatus2 isEqualToString:*MEMORY[0x277CC3ED8]];
     }
 
     else
@@ -2236,8 +2236,8 @@ LABEL_30:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(NSMutableDictionary *)self->_serviceSubscriptionInfoList allValues];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v23 count:16];
+  allValues = [(NSMutableDictionary *)self->_serviceSubscriptionInfoList allValues];
+  v5 = [allValues countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2248,18 +2248,18 @@ LABEL_30:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
         if ([objc_opt_class() _isSubscriptionInUse:v9])
         {
-          v10 = [v9 serviceSubscriptionContext];
-          [v3 addObject:v10];
+          serviceSubscriptionContext = [v9 serviceSubscriptionContext];
+          [v3 addObject:serviceSubscriptionContext];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v23 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v15 objects:v23 count:16];
     }
 
     while (v6);
@@ -2289,8 +2289,8 @@ LABEL_30:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(NSMutableDictionary *)self->_serviceSubscriptionInfoList allValues];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v23 count:16];
+  allValues = [(NSMutableDictionary *)self->_serviceSubscriptionInfoList allValues];
+  v5 = [allValues countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2301,18 +2301,18 @@ LABEL_30:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
         if ([v9 shouldShowAddNewRemotePlan] && objc_msgSend(objc_opt_class(), "_isSubscriptionInUse:", v9))
         {
-          v10 = [v9 serviceSubscriptionContext];
-          [v3 addObject:v10];
+          serviceSubscriptionContext = [v9 serviceSubscriptionContext];
+          [v3 addObject:serviceSubscriptionContext];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v23 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v15 objects:v23 count:16];
     }
 
     while (v6);
@@ -2353,8 +2353,8 @@ LABEL_30:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(NSMutableDictionary *)self->_serviceSubscriptionInfoList allValues];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allValues = [(NSMutableDictionary *)self->_serviceSubscriptionInfoList allValues];
+  v7 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2365,18 +2365,18 @@ LABEL_30:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
         if ([objc_opt_class() _isSubscriptionInUse:v11] && objc_msgSend(v11, "shouldOfferRemotePlan"))
         {
-          v12 = [v11 serviceSubscriptionContext];
-          [(NSMutableDictionary *)v3 addObject:v12];
+          serviceSubscriptionContext = [v11 serviceSubscriptionContext];
+          [(NSMutableDictionary *)v3 addObject:serviceSubscriptionContext];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -2405,8 +2405,8 @@ LABEL_30:
     return 1;
   }
 
-  v3 = [(NPHCellularBridgeUIManager *)self serviceSubscriptionsOfferingRemotePlan];
-  v4 = [v3 count] != 0;
+  serviceSubscriptionsOfferingRemotePlan = [(NPHCellularBridgeUIManager *)self serviceSubscriptionsOfferingRemotePlan];
+  v4 = [serviceSubscriptionsOfferingRemotePlan count] != 0;
 
   return v4;
 }
@@ -2419,8 +2419,8 @@ LABEL_30:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(NSMutableDictionary *)self->_serviceSubscriptionInfoList allValues];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v23 count:16];
+  allValues = [(NSMutableDictionary *)self->_serviceSubscriptionInfoList allValues];
+  v5 = [allValues countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2431,18 +2431,18 @@ LABEL_30:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
         if ([objc_opt_class() _isSubscriptionInUse:v9] && objc_msgSend(v9, "shouldOfferTrialPlan"))
         {
-          v10 = [v9 serviceSubscriptionContext];
-          [v3 addObject:v10];
+          serviceSubscriptionContext = [v9 serviceSubscriptionContext];
+          [v3 addObject:serviceSubscriptionContext];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v23 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v15 objects:v23 count:16];
     }
 
     while (v6);
@@ -2466,8 +2466,8 @@ LABEL_30:
 
 - (BOOL)shouldOfferTrialPlan
 {
-  v2 = [(NPHCellularBridgeUIManager *)self serviceSubscriptionsOfferingTrialPlan];
-  v3 = [v2 count] != 0;
+  serviceSubscriptionsOfferingTrialPlan = [(NPHCellularBridgeUIManager *)self serviceSubscriptionsOfferingTrialPlan];
+  v3 = [serviceSubscriptionsOfferingTrialPlan count] != 0;
 
   return v3;
 }
@@ -2553,11 +2553,11 @@ BOOL __68__NPHCellularBridgeUIManager_cellularPlanRequiringPreInstallConsent__bl
         v7 = nph_general_log();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
-          v8 = [v6 isSelected];
+          isSelected = [v6 isSelected];
           *buf = 136315650;
           v16 = "[NPHCellularBridgeUIManager cellularPlanIsSetUp]";
           v17 = 1024;
-          v18 = v8;
+          v18 = isSelected;
           v19 = 2112;
           v20 = v6;
           _os_log_impl(&dword_243333000, v7, OS_LOG_TYPE_DEFAULT, "%s planItem.isSelected:%d planItem:%@", buf, 0x1Cu);
@@ -2612,43 +2612,43 @@ LABEL_13:
         v7 = nph_general_log();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
-          v8 = [v6 plan];
-          v9 = [v8 status];
+          plan = [v6 plan];
+          status = [plan status];
           *buf = 136315650;
           v26 = "[NPHCellularBridgeUIManager isAnyCellularPlanActivating]";
           v27 = 1024;
-          v28 = v9;
+          v28 = status;
           v29 = 2112;
           v30 = v6;
           _os_log_impl(&dword_243333000, v7, OS_LOG_TYPE_DEFAULT, "%s planItem.status:%d planItem:%@", buf, 0x1Cu);
         }
 
-        v10 = [v6 plan];
-        if ([v10 status] == 2)
+        plan2 = [v6 plan];
+        if ([plan2 status] == 2)
         {
           goto LABEL_22;
         }
 
-        v11 = [v6 plan];
-        if ([v11 status] == 11)
+        plan3 = [v6 plan];
+        if ([plan3 status] == 11)
         {
           goto LABEL_21;
         }
 
-        v12 = [v6 plan];
-        if ([v12 status] == 6)
+        plan4 = [v6 plan];
+        if ([plan4 status] == 6)
         {
           goto LABEL_20;
         }
 
-        v13 = [v6 plan];
-        if ([v13 status] == 7)
+        plan5 = [v6 plan];
+        if ([plan5 status] == 7)
         {
           goto LABEL_19;
         }
 
-        v14 = [v6 plan];
-        if ([v14 status] == 9)
+        plan6 = [v6 plan];
+        if ([plan6 status] == 9)
         {
 
 LABEL_19:
@@ -2662,10 +2662,10 @@ LABEL_23:
           goto LABEL_24;
         }
 
-        v15 = [v6 plan];
-        v16 = [v15 status];
+        plan7 = [v6 plan];
+        status2 = [plan7 status];
 
-        if (v16 == 13)
+        if (status2 == 13)
         {
           goto LABEL_23;
         }
@@ -2693,7 +2693,7 @@ LABEL_24:
   return v17;
 }
 
-- (int64_t)consentRequiredRelevantCellularPlanItem:(id *)a3
+- (int64_t)consentRequiredRelevantCellularPlanItem:(id *)item
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = [(NSArray *)self->_proxyPlanItems firstObjectPassingTest:&__block_literal_global_215];
@@ -2740,10 +2740,10 @@ LABEL_24:
 
   v12 = v13;
 LABEL_13:
-  if (a3)
+  if (item)
   {
     v12 = v12;
-    *a3 = v12;
+    *item = v12;
   }
 
 LABEL_16:
@@ -2777,7 +2777,7 @@ uint64_t __70__NPHCellularBridgeUIManager_consentRequiredRelevantCellularPlanIte
   return v3;
 }
 
-- (void)_ctCellularPlanInfoDidChange:(id)a3
+- (void)_ctCellularPlanInfoDidChange:(id)change
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = nph_general_log();
@@ -2792,7 +2792,7 @@ uint64_t __70__NPHCellularBridgeUIManager_consentRequiredRelevantCellularPlanIte
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_ctCellularRemoteProvisioningDidBecomeAvailable:(id)a3
+- (void)_ctCellularRemoteProvisioningDidBecomeAvailable:(id)available
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = nph_general_log();
@@ -2823,22 +2823,22 @@ uint64_t __70__NPHCellularBridgeUIManager_consentRequiredRelevantCellularPlanIte
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateServiceSubscriptionInfo:(id)a3
+- (void)_updateServiceSubscriptionInfo:(id)info
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v5 = nph_general_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[NPHCellularBridgeUIManager _updateServiceSubscriptionInfo:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = infoCopy;
     _os_log_impl(&dword_243333000, v5, OS_LOG_TYPE_DEFAULT, "%s info:%@", &v8, 0x16u);
   }
 
   serviceSubscriptionInfo = self->_serviceSubscriptionInfo;
-  self->_serviceSubscriptionInfo = v4;
+  self->_serviceSubscriptionInfo = infoCopy;
 
   [(NPHCellularBridgeUIManager *)self _updateSIMStatusForAllSubscriptionContexts];
   [(NPHCellularBridgeUIManager *)self updateCellularPlansWithFetch:0];
@@ -2848,12 +2848,12 @@ uint64_t __70__NPHCellularBridgeUIManager_consentRequiredRelevantCellularPlanIte
 - (void)startRemoteProvisioning
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [(NPHCellularBridgeUIManager *)self _activeDeviceCSNList];
+  _activeDeviceCSNList = [(NPHCellularBridgeUIManager *)self _activeDeviceCSNList];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v3 = [_activeDeviceCSNList countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -2865,18 +2865,18 @@ uint64_t __70__NPHCellularBridgeUIManager_consentRequiredRelevantCellularPlanIte
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_activeDeviceCSNList);
         }
 
         v7 = *(*(&v10 + 1) + 8 * v6);
-        v8 = [MEMORY[0x277CF96D8] sharedManager];
-        [v8 startRemoteProvisioningForCSN:v7 completion:&__block_literal_global_221];
+        mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+        [mEMORY[0x277CF96D8] startRemoteProvisioningForCSN:v7 completion:&__block_literal_global_221];
 
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [_activeDeviceCSNList countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -2904,12 +2904,12 @@ void __53__NPHCellularBridgeUIManager_startRemoteProvisioning__block_invoke(uint
 - (void)finishRemoteProvisioning
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [(NPHCellularBridgeUIManager *)self _activeDeviceCSNList];
+  _activeDeviceCSNList = [(NPHCellularBridgeUIManager *)self _activeDeviceCSNList];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v3 = [_activeDeviceCSNList countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -2921,18 +2921,18 @@ void __53__NPHCellularBridgeUIManager_startRemoteProvisioning__block_invoke(uint
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_activeDeviceCSNList);
         }
 
         v7 = *(*(&v10 + 1) + 8 * v6);
-        v8 = [MEMORY[0x277CF96D8] sharedManager];
-        [v8 finishRemoteProvisioningForCSN:v7 completion:&__block_literal_global_223];
+        mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+        [mEMORY[0x277CF96D8] finishRemoteProvisioningForCSN:v7 completion:&__block_literal_global_223];
 
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [_activeDeviceCSNList countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -2957,16 +2957,16 @@ void __54__NPHCellularBridgeUIManager_finishRemoteProvisioning__block_invoke(uin
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)subscriptionContextForCellularPlanItem:(id)a3
+- (id)subscriptionContextForCellularPlanItem:(id)item
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(CTXPCServiceSubscriptionInfo *)self->_serviceSubscriptionInfo subscriptions];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  subscriptions = [(CTXPCServiceSubscriptionInfo *)self->_serviceSubscriptionInfo subscriptions];
+  v6 = [subscriptions countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = *v16;
@@ -2976,13 +2976,13 @@ void __54__NPHCellularBridgeUIManager_finishRemoteProvisioning__block_invoke(uin
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subscriptions);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v4 companionSlotUuid];
-        v11 = [v9 uuid];
-        v12 = [v10 isEqual:v11];
+        companionSlotUuid = [itemCopy companionSlotUuid];
+        uuid = [v9 uuid];
+        v12 = [companionSlotUuid isEqual:uuid];
 
         if (v12)
         {
@@ -2991,7 +2991,7 @@ void __54__NPHCellularBridgeUIManager_finishRemoteProvisioning__block_invoke(uin
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [subscriptions countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -3008,18 +3008,18 @@ LABEL_11:
   return v6;
 }
 
-- (id)displayNameForCellularPlan:(id)a3
+- (id)displayNameForCellularPlan:(id)plan
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  planCopy = plan;
   if ([(NPHCellularBridgeUIManager *)self isGeminiSetup])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = [(NPHCellularBridgeUIManager *)self serviceSubscriptionsInUse];
-    v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    serviceSubscriptionsInUse = [(NPHCellularBridgeUIManager *)self serviceSubscriptionsInUse];
+    v6 = [serviceSubscriptionsInUse countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v6)
     {
       v7 = v6;
@@ -3030,13 +3030,13 @@ LABEL_11:
         {
           if (*v20 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(serviceSubscriptionsInUse);
           }
 
           v10 = *(*(&v19 + 1) + 8 * i);
-          v11 = [v4 companionSlotUuid];
-          v12 = [v10 uuid];
-          v13 = [v11 isEqual:v12];
+          companionSlotUuid = [planCopy companionSlotUuid];
+          uuid = [v10 uuid];
+          v13 = [companionSlotUuid isEqual:uuid];
 
           if (v13)
           {
@@ -3045,7 +3045,7 @@ LABEL_11:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v7 = [serviceSubscriptionsInUse countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v7)
         {
           continue;
@@ -3066,10 +3066,10 @@ LABEL_13:
 
   if (![v14 length])
   {
-    v15 = [v4 plan];
-    v16 = [v15 carrierName];
+    plan = [planCopy plan];
+    carrierName = [plan carrierName];
 
-    v14 = v16;
+    v14 = carrierName;
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -3077,14 +3077,14 @@ LABEL_13:
   return v14;
 }
 
-- (id)carrierNameForSubscription:(id)a3
+- (id)carrierNameForSubscription:(id)subscription
 {
   v4 = MEMORY[0x277CC3620];
-  v5 = a3;
+  subscriptionCopy = subscription;
   v6 = [[v4 alloc] initWithBundleType:1];
   coreTelephonyClient = self->_coreTelephonyClient;
   v12 = 0;
-  v8 = [(CoreTelephonyClient *)coreTelephonyClient copyCarrierBundleValue:v5 key:@"CarrierName" bundleType:v6 error:&v12];
+  v8 = [(CoreTelephonyClient *)coreTelephonyClient copyCarrierBundleValue:subscriptionCopy key:@"CarrierName" bundleType:v6 error:&v12];
 
   v9 = v12;
   if (v9)
@@ -3099,15 +3099,15 @@ LABEL_13:
   return v8;
 }
 
-- (id)carrierPhoneNumberForSubscription:(id)a3
+- (id)carrierPhoneNumberForSubscription:(id)subscription
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CC3620];
-  v5 = a3;
+  subscriptionCopy = subscription;
   v6 = [[v4 alloc] initWithBundleType:1];
   coreTelephonyClient = self->_coreTelephonyClient;
   v15 = 0;
-  v8 = [(CoreTelephonyClient *)coreTelephonyClient copyCarrierBundleValue:v5 key:@"WatchCustomerServicePhoneNumber" bundleType:v6 error:&v15];
+  v8 = [(CoreTelephonyClient *)coreTelephonyClient copyCarrierBundleValue:subscriptionCopy key:@"WatchCustomerServicePhoneNumber" bundleType:v6 error:&v15];
 
   v9 = v15;
   v10 = nph_general_log();
@@ -3142,16 +3142,16 @@ LABEL_13:
   return v8;
 }
 
-- (id)formattedPhoneNumberForSubscription:(id)a3
+- (id)formattedPhoneNumberForSubscription:(id)subscription
 {
   coreTelephonyClient = self->_coreTelephonyClient;
   v10 = 0;
-  v4 = [(CoreTelephonyClient *)coreTelephonyClient getPhoneNumber:a3 error:&v10];
+  v4 = [(CoreTelephonyClient *)coreTelephonyClient getPhoneNumber:subscription error:&v10];
   v5 = v10;
   if (v5)
   {
-    v6 = nph_general_log();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    number = nph_general_log();
+    if (os_log_type_enabled(number, OS_LOG_TYPE_ERROR))
     {
       [NPHCellularBridgeUIManager formattedPhoneNumberForSubscription:];
     }
@@ -3161,7 +3161,7 @@ LABEL_13:
 
   else
   {
-    v6 = [v4 number];
+    number = [v4 number];
     v8 = TUHomeCountryCode();
     v7 = TUFormattedPhoneNumber();
   }
@@ -3169,14 +3169,14 @@ LABEL_13:
   return v7;
 }
 
-- (id)lteOverrideForSubscription:(id)a3
+- (id)lteOverrideForSubscription:(id)subscription
 {
   v4 = MEMORY[0x277CC3620];
-  v5 = a3;
+  subscriptionCopy = subscription;
   v6 = [[v4 alloc] initWithBundleType:1];
   coreTelephonyClient = self->_coreTelephonyClient;
   v12 = 0;
-  v8 = [(CoreTelephonyClient *)coreTelephonyClient copyCarrierBundleValueWithDefault:v5 key:@"DataIndicatorOverrideForLTE" bundleType:v6 error:&v12];
+  v8 = [(CoreTelephonyClient *)coreTelephonyClient copyCarrierBundleValueWithDefault:subscriptionCopy key:@"DataIndicatorOverrideForLTE" bundleType:v6 error:&v12];
 
   v9 = v12;
   if (v9)
@@ -3197,14 +3197,14 @@ LABEL_13:
   return v8;
 }
 
-- (id)simLabelForSubscription:(id)a3
+- (id)simLabelForSubscription:(id)subscription
 {
   v17 = *MEMORY[0x277D85DE8];
   coreTelephonyClient = self->_coreTelephonyClient;
   v10 = 0;
-  v4 = [(CoreTelephonyClient *)coreTelephonyClient getSimLabel:a3 error:&v10];
+  v4 = [(CoreTelephonyClient *)coreTelephonyClient getSimLabel:subscription error:&v10];
   v5 = v10;
-  v6 = [v4 text];
+  text = [v4 text];
 
   v7 = nph_general_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -3212,7 +3212,7 @@ LABEL_13:
     *buf = 136315650;
     v12 = "[NPHCellularBridgeUIManager simLabelForSubscription:]";
     v13 = 2112;
-    v14 = v6;
+    v14 = text;
     v15 = 2112;
     v16 = v5;
     _os_log_impl(&dword_243333000, v7, OS_LOG_TYPE_DEFAULT, "%s - Label: %@ Error: %@", buf, 0x20u);
@@ -3220,33 +3220,33 @@ LABEL_13:
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return text;
 }
 
 - (NSString)trialPlanType
 {
-  v3 = [(NPHCellularBridgeUIManager *)self serviceSubscriptionsInUse];
-  v4 = [v3 firstObject];
-  v5 = [(NPHCellularBridgeUIManager *)self _trialPlanTypeForContext:v4];
+  serviceSubscriptionsInUse = [(NPHCellularBridgeUIManager *)self serviceSubscriptionsInUse];
+  firstObject = [serviceSubscriptionsInUse firstObject];
+  v5 = [(NPHCellularBridgeUIManager *)self _trialPlanTypeForContext:firstObject];
 
   return v5;
 }
 
-- (id)_trialPlanTypeForContext:(id)a3
+- (id)_trialPlanTypeForContext:(id)context
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = nph_general_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 136315394;
     v13 = "[NPHCellularBridgeUIManager _trialPlanTypeForContext:]";
     v14 = 2112;
-    v15 = v4;
+    v15 = contextCopy;
     _os_log_impl(&dword_243333000, v5, OS_LOG_TYPE_DEFAULT, "%s - subscriptionContext: %@", &v12, 0x16u);
   }
 
-  v6 = [(NPHCellularBridgeUIManager *)self _serviceSubscriptionInfoForSubscriptionContext:v4];
+  v6 = [(NPHCellularBridgeUIManager *)self _serviceSubscriptionInfoForSubscriptionContext:contextCopy];
   v7 = nph_general_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -3257,31 +3257,31 @@ LABEL_13:
     _os_log_impl(&dword_243333000, v7, OS_LOG_TYPE_DEFAULT, "%s - serviceSubscriptionInfo: %@", &v12, 0x16u);
   }
 
-  v8 = [v6 trialPlanType];
+  trialPlanType = [v6 trialPlanType];
   v9 = nph_general_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 136315394;
     v13 = "[NPHCellularBridgeUIManager _trialPlanTypeForContext:]";
     v14 = 2112;
-    v15 = v8;
+    v15 = trialPlanType;
     _os_log_impl(&dword_243333000, v9, OS_LOG_TYPE_DEFAULT, "%s - trialPlanType: %@", &v12, 0x16u);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return trialPlanType;
 }
 
-- (int64_t)_minMajorWatchOSVersionForSubscription:(id)a3
+- (int64_t)_minMajorWatchOSVersionForSubscription:(id)subscription
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CC3620];
-  v5 = a3;
+  subscriptionCopy = subscription;
   v6 = [[v4 alloc] initWithBundleType:1];
   coreTelephonyClient = self->_coreTelephonyClient;
   v18 = 0;
-  v8 = [(CoreTelephonyClient *)coreTelephonyClient copyCarrierBundleValueWithDefault:v5 key:@"RemoteCardProvisioningSettings" bundleType:v6 error:&v18];
+  v8 = [(CoreTelephonyClient *)coreTelephonyClient copyCarrierBundleValueWithDefault:subscriptionCopy key:@"RemoteCardProvisioningSettings" bundleType:v6 error:&v18];
 
   v9 = v18;
   NSLog(&stru_285612000.isa, v8);
@@ -3304,36 +3304,36 @@ LABEL_13:
     v13 = [v10 componentsSeparatedByCharactersInSet:v12];
 
     v14 = [v13 objectAtIndexedSubscript:0];
-    v15 = [v14 integerValue];
+    integerValue = [v14 integerValue];
   }
 
   else
   {
-    v15 = -1;
+    integerValue = -1;
   }
 
   v16 = *MEMORY[0x277D85DE8];
-  return v15;
+  return integerValue;
 }
 
 - (BOOL)shouldAllowUserToAddOrSetUpPlan
 {
-  v2 = [(NPHCellularBridgeUIManager *)self serviceSubscriptionsToOfferUser];
-  v3 = [v2 count] != 0;
+  serviceSubscriptionsToOfferUser = [(NPHCellularBridgeUIManager *)self serviceSubscriptionsToOfferUser];
+  v3 = [serviceSubscriptionsToOfferUser count] != 0;
 
   return v3;
 }
 
-- (BOOL)_isSetupBlockingError:(id)a3
+- (BOOL)_isSetupBlockingError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:NPHCellularErrorDomain];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:NPHCellularErrorDomain];
 
   if (!v5)
   {
-    v8 = [v3 domain];
-    v9 = [v8 isEqualToString:*MEMORY[0x277CF9680]];
+    domain2 = [errorCopy domain];
+    v9 = [domain2 isEqualToString:*MEMORY[0x277CF9680]];
 
     if (!v9)
     {
@@ -3341,7 +3341,7 @@ LABEL_13:
       goto LABEL_11;
     }
 
-    if ([v3 code] != 21 && objc_msgSend(v3, "code") != 27 && objc_msgSend(v3, "code") != 14)
+    if ([errorCopy code] != 21 && objc_msgSend(errorCopy, "code") != 27 && objc_msgSend(errorCopy, "code") != 14)
     {
       v6 = 32;
       goto LABEL_4;
@@ -3352,14 +3352,14 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if ([v3 code] == 3)
+  if ([errorCopy code] == 3)
   {
     goto LABEL_9;
   }
 
   v6 = 2;
 LABEL_4:
-  v7 = [v3 code] == v6;
+  v7 = [errorCopy code] == v6;
 LABEL_11:
 
   return v7;
@@ -3381,8 +3381,8 @@ LABEL_11:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v4 = [(NSMutableDictionary *)self->_serviceSubscriptionInfoList allValues];
-    v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    allValues = [(NSMutableDictionary *)self->_serviceSubscriptionInfoList allValues];
+    v5 = [allValues countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v5)
     {
       v6 = v5;
@@ -3394,14 +3394,14 @@ LABEL_11:
         {
           if (*v21 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           v9 = *(*(&v20 + 1) + 8 * v8);
-          v10 = [v9 persistentError];
-          if (v10)
+          persistentError = [v9 persistentError];
+          if (persistentError)
           {
-            [v3 addObject:v10];
+            [v3 addObject:persistentError];
           }
 
           else
@@ -3410,8 +3410,8 @@ LABEL_11:
             if (proxyPlanItems && ![(NSArray *)proxyPlanItems count]&& [(NPHCellularBridgeUIManager *)self _isCarrierSetupFlowUnsupportedForServiceSubscription:v9])
             {
               v12 = MEMORY[0x277CCA9B8];
-              v13 = [v9 serviceSubscriptionContext];
-              v14 = [v12 NPHCellularErrorWithCode:3 forSubscriptionContext:v13];
+              serviceSubscriptionContext = [v9 serviceSubscriptionContext];
+              v14 = [v12 NPHCellularErrorWithCode:3 forSubscriptionContext:serviceSubscriptionContext];
               [v3 addObject:v14];
             }
           }
@@ -3420,7 +3420,7 @@ LABEL_11:
         }
 
         while (v6 != v8);
-        v15 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v15 = [allValues countByEnumeratingWithState:&v20 objects:v24 count:16];
         v6 = v15;
       }
 
@@ -3435,13 +3435,13 @@ LABEL_11:
   return v17;
 }
 
-- (BOOL)_isPersistentError:(id)a3
+- (BOOL)_isPersistentError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x277CF9680]])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CF9680]])
   {
-    v5 = [v3 code] == 14 || objc_msgSend(v3, "code") == 20 || objc_msgSend(v3, "code") == 27 || objc_msgSend(v3, "code") == 21 || objc_msgSend(v3, "code") == 32 || objc_msgSend(v3, "code") == 22;
+    v5 = [errorCopy code] == 14 || objc_msgSend(errorCopy, "code") == 20 || objc_msgSend(errorCopy, "code") == 27 || objc_msgSend(errorCopy, "code") == 21 || objc_msgSend(errorCopy, "code") == 32 || objc_msgSend(errorCopy, "code") == 22;
   }
 
   else
@@ -3454,8 +3454,8 @@ LABEL_11:
 
 - (BOOL)allCompanionSIMsMissing
 {
-  v2 = [(NSMutableDictionary *)self->_serviceSubscriptionInfoList allValues];
-  v3 = [v2 hasObjectPassingTest:&__block_literal_global_254];
+  allValues = [(NSMutableDictionary *)self->_serviceSubscriptionInfoList allValues];
+  v3 = [allValues hasObjectPassingTest:&__block_literal_global_254];
 
   return v3 ^ 1;
 }
@@ -3480,49 +3480,49 @@ uint64_t __53__NPHCellularBridgeUIManager_allCompanionSIMsMissing__block_invoke(
   return v6;
 }
 
-- (BOOL)_isCarrierSetupFlowUnsupportedForServiceSubscription:(id)a3
+- (BOOL)_isCarrierSetupFlowUnsupportedForServiceSubscription:(id)subscription
 {
   outstandingPlanFlowsIdentified = self->_outstandingPlanFlowsIdentified;
-  v4 = a3;
-  v5 = outstandingPlanFlowsIdentified | [v4 planFlows];
-  v6 = [v4 SIMStatus];
+  subscriptionCopy = subscription;
+  v5 = outstandingPlanFlowsIdentified | [subscriptionCopy planFlows];
+  sIMStatus = [subscriptionCopy SIMStatus];
 
-  LOBYTE(v4) = [v6 isEqualToString:*MEMORY[0x277CC3F00]];
-  return (v5 == 0) & v4;
+  LOBYTE(subscriptionCopy) = [sIMStatus isEqualToString:*MEMORY[0x277CC3F00]];
+  return (v5 == 0) & subscriptionCopy;
 }
 
 - (BOOL)isCarrierSetupFlowUnsupported
 {
-  v3 = [(NSMutableDictionary *)self->_serviceSubscriptionInfoList allValues];
+  allValues = [(NSMutableDictionary *)self->_serviceSubscriptionInfoList allValues];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__NPHCellularBridgeUIManager_isCarrierSetupFlowUnsupported__block_invoke;
   v6[3] = &unk_278DACD88;
   v6[4] = self;
-  v4 = [v3 firstObjectPassingTest:v6];
+  v4 = [allValues firstObjectPassingTest:v6];
 
   return v4 == 0;
 }
 
-+ (void)_presentErrorTitled:(id)a3 withMessage:(id)a4 onViewController:(id)a5
++ (void)_presentErrorTitled:(id)titled withMessage:(id)message onViewController:(id)controller
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  titledCopy = titled;
+  messageCopy = message;
+  controllerCopy = controller;
   v10 = nph_general_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 136315650;
     v18 = "+[NPHCellularBridgeUIManager _presentErrorTitled:withMessage:onViewController:]";
     v19 = 2112;
-    v20 = v7;
+    v20 = titledCopy;
     v21 = 2112;
-    v22 = v8;
+    v22 = messageCopy;
     _os_log_impl(&dword_243333000, v10, OS_LOG_TYPE_DEFAULT, "%s - title: %@  message: %@", &v17, 0x20u);
   }
 
-  v11 = [MEMORY[0x277D75110] alertControllerWithTitle:v7 message:v8 preferredStyle:1];
+  v11 = [MEMORY[0x277D75110] alertControllerWithTitle:titledCopy message:messageCopy preferredStyle:1];
   [v11 setModalPresentationStyle:2];
   v12 = MEMORY[0x277D750F8];
   v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -3530,30 +3530,30 @@ uint64_t __53__NPHCellularBridgeUIManager_allCompanionSIMsMissing__block_invoke(
   v15 = [v12 actionWithTitle:v14 style:0 handler:0];
 
   [v11 addAction:v15];
-  [v9 presentViewController:v11 animated:1 completion:0];
+  [controllerCopy presentViewController:v11 animated:1 completion:0];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)presentCellularError:(id)a3 onViewController:(id)a4
++ (void)presentCellularError:(id)error onViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  controllerCopy = controller;
   v8 = nph_general_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     +[NPHCellularBridgeUIManager presentCellularError:onViewController:];
   }
 
-  v9 = [v6 domain];
+  domain = [errorCopy domain];
   v10 = *MEMORY[0x277CF9680];
-  if ([v9 isEqualToString:*MEMORY[0x277CF9680]])
+  if ([domain isEqualToString:*MEMORY[0x277CF9680]])
   {
-    v11 = [v6 code];
+    code = [errorCopy code];
 
-    if (v11 == 16)
+    if (code == 16)
     {
-      v12 = [v6 description];
+      v12 = [errorCopy description];
       BPSPresentGizmoUnreachableServiceAlertWithDismissalHandler();
 
       goto LABEL_23;
@@ -3564,14 +3564,14 @@ uint64_t __53__NPHCellularBridgeUIManager_allCompanionSIMsMissing__block_invoke(
   {
   }
 
-  v13 = [v6 domain];
-  if ([v13 isEqualToString:v10])
+  domain2 = [errorCopy domain];
+  if ([domain2 isEqualToString:v10])
   {
-    v14 = [v6 code];
+    code2 = [errorCopy code];
 
-    if (v14 == 28)
+    if (code2 == 28)
     {
-      [a1 _presentAirplaneModeOnAlertOnViewController:v7];
+      [self _presentAirplaneModeOnAlertOnViewController:controllerCopy];
       goto LABEL_23;
     }
   }
@@ -3580,14 +3580,14 @@ uint64_t __53__NPHCellularBridgeUIManager_allCompanionSIMsMissing__block_invoke(
   {
   }
 
-  v15 = [v6 domain];
-  if ([v15 isEqualToString:v10])
+  domain3 = [errorCopy domain];
+  if ([domain3 isEqualToString:v10])
   {
-    v16 = [v6 code];
+    code3 = [errorCopy code];
 
-    if (v16 == 29)
+    if (code3 == 29)
     {
-      [a1 _presentCellularRequiredModeAlertOnViewController:v7];
+      [self _presentCellularRequiredModeAlertOnViewController:controllerCopy];
       goto LABEL_23;
     }
   }
@@ -3596,18 +3596,18 @@ uint64_t __53__NPHCellularBridgeUIManager_allCompanionSIMsMissing__block_invoke(
   {
   }
 
-  v17 = [v6 domain];
-  if ([v17 isEqualToString:@"NPHCellularDataUsageErrorDomain"])
+  domain4 = [errorCopy domain];
+  if ([domain4 isEqualToString:@"NPHCellularDataUsageErrorDomain"])
   {
-    v18 = [v6 code];
+    code4 = [errorCopy code];
 
-    if (v18 == 35)
+    if (code4 == 35)
     {
       v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v20 = [v19 localizedStringForKey:@"ERROR_TRY_AGAIN_TITLE" value:&stru_285611AE0 table:0];
       v21 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v22 = [v21 localizedStringForKey:@"ERROR_TRY_AGAIN_MESSAGE" value:&stru_285611AE0 table:0];
-      [a1 _presentErrorTitled:v20 withMessage:v22 onViewController:v7];
+      [self _presentErrorTitled:v20 withMessage:v22 onViewController:controllerCopy];
 
       goto LABEL_23;
     }
@@ -3617,8 +3617,8 @@ uint64_t __53__NPHCellularBridgeUIManager_allCompanionSIMsMissing__block_invoke(
   {
   }
 
-  v23 = [v6 userInfo];
-  v24 = [v23 objectForKeyedSubscript:NPHCellularErrorTitleKey];
+  userInfo = [errorCopy userInfo];
+  v24 = [userInfo objectForKeyedSubscript:NPHCellularErrorTitleKey];
   v25 = v24;
   if (v24)
   {
@@ -3631,17 +3631,17 @@ uint64_t __53__NPHCellularBridgeUIManager_allCompanionSIMsMissing__block_invoke(
     v26 = [v27 localizedStringForKey:@"ERROR_GENERIC_TITLE" value:&stru_285611AE0 table:0];
   }
 
-  v28 = [v6 userInfo];
-  v29 = [v28 objectForKeyedSubscript:*MEMORY[0x277CCA450]];
+  userInfo2 = [errorCopy userInfo];
+  v29 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277CCA450]];
 
-  [a1 _presentErrorTitled:v26 withMessage:v29 onViewController:v7];
+  [self _presentErrorTitled:v26 withMessage:v29 onViewController:controllerCopy];
 LABEL_23:
 }
 
-+ (void)_presentAirplaneModeOnAlertOnViewController:(id)a3
++ (void)_presentAirplaneModeOnAlertOnViewController:(id)controller
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = nph_general_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3650,11 +3650,11 @@ LABEL_23:
     _os_log_impl(&dword_243333000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v11, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CCA8D8] bundleForClass:a1];
+  v6 = [MEMORY[0x277CCA8D8] bundleForClass:self];
   v7 = [v6 localizedStringForKey:@"AIRPLANE_MODE_ERROR_TITLE" value:&stru_285611AE0 table:0];
-  v8 = [MEMORY[0x277CCA8D8] bundleForClass:a1];
+  v8 = [MEMORY[0x277CCA8D8] bundleForClass:self];
   v9 = [v8 localizedStringForKey:@"AIRPLANE_MODE_TURN_OFF_ACTION" value:&stru_285611AE0 table:0];
-  [a1 _presentErrorTitle:v7 onViewController:v4 withActionTitle:v9 actionHandler:&__block_literal_global_274];
+  [self _presentErrorTitle:v7 onViewController:controllerCopy withActionTitle:v9 actionHandler:&__block_literal_global_274];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -3676,10 +3676,10 @@ void __74__NPHCellularBridgeUIManager__presentAirplaneModeOnAlertOnViewControlle
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_presentCellularRequiredModeAlertOnViewController:(id)a3
++ (void)_presentCellularRequiredModeAlertOnViewController:(id)controller
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = nph_general_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3688,11 +3688,11 @@ void __74__NPHCellularBridgeUIManager__presentAirplaneModeOnAlertOnViewControlle
     _os_log_impl(&dword_243333000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v11, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CCA8D8] bundleForClass:a1];
+  v6 = [MEMORY[0x277CCA8D8] bundleForClass:self];
   v7 = [v6 localizedStringForKey:@"CELLULAR_DATA_ERROR_TITLE" value:&stru_285611AE0 table:0];
-  v8 = [MEMORY[0x277CCA8D8] bundleForClass:a1];
+  v8 = [MEMORY[0x277CCA8D8] bundleForClass:self];
   v9 = [v8 localizedStringForKey:@"CELLULAR_DATA_TURN_ON_ACTION" value:&stru_285611AE0 table:0];
-  [a1 _presentErrorTitle:v7 onViewController:v4 withActionTitle:v9 actionHandler:&__block_literal_global_283];
+  [self _presentErrorTitle:v7 onViewController:controllerCopy withActionTitle:v9 actionHandler:&__block_literal_global_283];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -3714,44 +3714,44 @@ uint64_t __80__NPHCellularBridgeUIManager__presentCellularRequiredModeAlertOnVie
   return result;
 }
 
-+ (void)_presentErrorTitle:(id)a3 onViewController:(id)a4 withActionTitle:(id)a5 actionHandler:(id)a6
++ (void)_presentErrorTitle:(id)title onViewController:(id)controller withActionTitle:(id)actionTitle actionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  handlerCopy = handler;
+  actionTitleCopy = actionTitle;
+  controllerCopy = controller;
+  titleCopy = title;
   v14 = nph_general_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
     +[NPHCellularBridgeUIManager _presentErrorTitle:onViewController:withActionTitle:actionHandler:];
   }
 
-  v15 = [MEMORY[0x277D75110] alertControllerWithTitle:v13 message:0 preferredStyle:1];
+  v15 = [MEMORY[0x277D75110] alertControllerWithTitle:titleCopy message:0 preferredStyle:1];
 
   [v15 setModalPresentationStyle:2];
-  v16 = [MEMORY[0x277D750F8] actionWithTitle:v11 style:0 handler:v10];
+  v16 = [MEMORY[0x277D750F8] actionWithTitle:actionTitleCopy style:0 handler:handlerCopy];
 
   [v15 addAction:v16];
   v17 = MEMORY[0x277D750F8];
-  v18 = [MEMORY[0x277CCA8D8] bundleForClass:a1];
+  v18 = [MEMORY[0x277CCA8D8] bundleForClass:self];
   v19 = [v18 localizedStringForKey:@"CELLULAR_ERROR_CLOSE_ACTION" value:&stru_285611AE0 table:0];
   v20 = [v17 actionWithTitle:v19 style:1 handler:0];
 
   [v15 addAction:v20];
-  [v12 presentViewController:v15 animated:1 completion:0];
+  [controllerCopy presentViewController:v15 animated:1 completion:0];
 }
 
-- (void)_promptForUserConsentForCarrierWebsiteIfNecessary:(id)a3 withCompletion:(id)a4
+- (void)_promptForUserConsentForCarrierWebsiteIfNecessary:(id)necessary withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NPHCellularBridgeUIManager *)self _serviceSubscriptionInfoForSubscriptionContext:v6];
+  necessaryCopy = necessary;
+  completionCopy = completion;
+  v8 = [(NPHCellularBridgeUIManager *)self _serviceSubscriptionInfoForSubscriptionContext:necessaryCopy];
   if (([v8 planFlows] & 0x40) != 0)
   {
     v9 = MEMORY[0x277CCACA8];
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v11 = [v10 localizedStringForKey:@"WEB_CONSENT_TITLE" value:&stru_285611AE0 table:0];
-    v12 = [(NPHCellularBridgeUIManager *)self carrierNameForSubscription:v6];
+    v12 = [(NPHCellularBridgeUIManager *)self carrierNameForSubscription:necessaryCopy];
     v26 = [v9 stringWithFormat:v11, v12];
 
     v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -3765,7 +3765,7 @@ uint64_t __80__NPHCellularBridgeUIManager__presentCellularRequiredModeAlertOnVie
     v31[1] = 3221225472;
     v31[2] = __95__NPHCellularBridgeUIManager__promptForUserConsentForCarrierWebsiteIfNecessary_withCompletion___block_invoke;
     v31[3] = &unk_278DACBD0;
-    v18 = v7;
+    v18 = completionCopy;
     v32 = v18;
     v19 = [v15 actionWithTitle:v17 style:0 handler:v31];
 
@@ -3793,7 +3793,7 @@ uint64_t __80__NPHCellularBridgeUIManager__presentCellularRequiredModeAlertOnVie
 
   else
   {
-    (*(v7 + 2))(v7, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 

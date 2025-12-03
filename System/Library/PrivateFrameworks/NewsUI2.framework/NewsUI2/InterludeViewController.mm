@@ -1,14 +1,14 @@
 @interface InterludeViewController
-- (_TtC7NewsUI223InterludeViewController)initWithCoder:(id)a3;
-- (_TtC7NewsUI223InterludeViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC7NewsUI223InterludeViewController)initWithCoder:(id)coder;
+- (_TtC7NewsUI223InterludeViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation InterludeViewController
 
-- (_TtC7NewsUI223InterludeViewController)initWithCoder:(id)a3
+- (_TtC7NewsUI223InterludeViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7NewsUI223InterludeViewController_contentView;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(type metadata accessor for InterludeContentView()) initWithFrame_];
@@ -21,7 +21,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2199E9940();
 }
 
@@ -34,13 +34,13 @@
   sub_218D485D4(*&v2[OBJC_IVAR____TtC7NewsUI223InterludeViewController_contentView]);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_2199E9BA0(a3);
+  selfCopy = self;
+  sub_2199E9BA0(appear);
 }
 
-- (_TtC7NewsUI223InterludeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7NewsUI223InterludeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

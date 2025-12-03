@@ -1,15 +1,15 @@
 @interface LNSuggestionsProvider
 - (LNSuggestionsProvider)init;
-- (id)suggestedActionsForSuggestionsRequests:(id)a3 error:(id *)a4;
+- (id)suggestedActionsForSuggestionsRequests:(id)requests error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation LNSuggestionsProvider
 
-- (id)suggestedActionsForSuggestionsRequests:(id)a3 error:(id *)a4
+- (id)suggestedActionsForSuggestionsRequests:(id)requests error:(id *)error
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  requestsCopy = requests;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -35,7 +35,7 @@
   v19[3] = &unk_1E74B1330;
   v19[4] = &v21;
   v19[5] = &v27;
-  [v8 suggestedActionsForSuggestionsRequests:v6 reply:v19];
+  [v8 suggestedActionsForSuggestionsRequests:requestsCopy reply:v19];
 
   v9 = v22[5];
   if (v9)
@@ -43,26 +43,26 @@
     v10 = v9;
   }
 
-  else if (a4)
+  else if (error)
   {
     v13 = v28[5];
     if (v13)
     {
-      *a4 = v13;
+      *error = v13;
     }
 
     else
     {
       v33 = *MEMORY[0x1E696A578];
-      v14 = [MEMORY[0x1E696AAE8] mainBundle];
-      v15 = [v14 localizedStringForKey:@"Empty result" value:&stru_1F0BBC770 table:0];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      v15 = [mainBundle localizedStringForKey:@"Empty result" value:&stru_1F0BBC770 table:0];
       v34[0] = v15;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:1];
 
       v17 = [MEMORY[0x1E696ABC0] errorWithDomain:@"LNSuggestionsProviderErrorDomain" code:9003 userInfo:v16];
 
       v18 = v17;
-      *a4 = v17;
+      *error = v17;
     }
   }
 

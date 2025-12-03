@@ -1,21 +1,21 @@
 @interface HXUIPickerLabelView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (HXUIPickerLabelView)initWithFrame:(CGRect)a3;
-- (void)getLabelFramesForSize:(CGSize)a3 titleFrame:(CGRect *)a4 detailFrame:(CGRect *)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (HXUIPickerLabelView)initWithFrame:(CGRect)frame;
+- (void)getLabelFramesForSize:(CGSize)size titleFrame:(CGRect *)frame detailFrame:(CGRect *)detailFrame;
 - (void)layoutSubviews;
-- (void)setDetailText:(id)a3;
-- (void)setText:(id)a3;
+- (void)setDetailText:(id)text;
+- (void)setText:(id)text;
 @end
 
 @implementation HXUIPickerLabelView
 
-- (HXUIPickerLabelView)initWithFrame:(CGRect)a3
+- (HXUIPickerLabelView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v22.receiver = self;
   v22.super_class = HXUIPickerLabelView;
-  v5 = [(HXUIPickerLabelView *)&v22 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(HXUIPickerLabelView *)&v22 initWithFrame:frame.origin.x, frame.origin.y];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -31,8 +31,8 @@
     [(UILabel *)v5->_titleLabel setFont:v13];
 
     [(UILabel *)v5->_titleLabel setAdjustsFontForContentSizeCategory:1];
-    v14 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v5->_titleLabel setTextColor:v14];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v5->_titleLabel setTextColor:secondaryLabelColor];
 
     [(UILabel *)v5->_titleLabel setNumberOfLines:0];
     [(HXUIPickerLabelView *)v5 addSubview:v5->_titleLabel];
@@ -54,10 +54,10 @@
   return v5;
 }
 
-- (void)getLabelFramesForSize:(CGSize)a3 titleFrame:(CGRect *)a4 detailFrame:(CGRect *)a5
+- (void)getLabelFramesForSize:(CGSize)size titleFrame:(CGRect *)frame detailFrame:(CGRect *)detailFrame
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(UILabel *)self->_titleLabel sizeThatFits:?];
   v11 = v10;
   v13 = v12;
@@ -100,14 +100,14 @@
     v15 = v13;
   }
 
-  a4->origin.x = 0.0;
-  a4->origin.y = 0.0;
-  a4->size.width = v11;
-  a4->size.height = v15;
-  a5->origin.x = width - v14;
-  a5->origin.y = 0.0;
-  a5->size.width = v14;
-  a5->size.height = v15;
+  frame->origin.x = 0.0;
+  frame->origin.y = 0.0;
+  frame->size.width = v11;
+  frame->size.height = v15;
+  detailFrame->origin.x = width - v14;
+  detailFrame->origin.y = 0.0;
+  detailFrame->size.width = v14;
+  detailFrame->size.height = v15;
 }
 
 - (void)layoutSubviews
@@ -145,31 +145,31 @@
   [(HXUILabelWithBackgroundView *)self->_detailLabel setFrame:v11, v8, v9, v10];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  [(UILabel *)self->_titleLabel setText:a3];
+  [(UILabel *)self->_titleLabel setText:text];
 
   [(HXUIPickerLabelView *)self setNeedsLayout];
 }
 
-- (void)setDetailText:(id)a3
+- (void)setDetailText:(id)text
 {
-  [(HXUILabelWithBackgroundView *)self->_detailLabel setText:a3];
+  [(HXUILabelWithBackgroundView *)self->_detailLabel setText:text];
 
   [(HXUIPickerLabelView *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   memset(&v9, 0, sizeof(v9));
-  if (a3.width <= 0.0)
+  if (fits.width <= 0.0)
   {
     width = 10000.0;
   }
 
   else
   {
-    width = a3.width;
+    width = fits.width;
   }
 
   memset(&v8, 0, sizeof(v8));

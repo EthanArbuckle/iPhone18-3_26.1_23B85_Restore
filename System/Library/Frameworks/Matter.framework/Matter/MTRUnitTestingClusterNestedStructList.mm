@@ -1,6 +1,6 @@
 @interface MTRUnitTestingClusterNestedStructList
 - (MTRUnitTestingClusterNestedStructList)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,27 +24,27 @@
     c = v3->_c;
     v3->_c = v6;
 
-    v8 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     d = v3->_d;
-    v3->_d = v8;
+    v3->_d = array;
 
-    v10 = [MEMORY[0x277CBEA60] array];
+    array2 = [MEMORY[0x277CBEA60] array];
     e = v3->_e;
-    v3->_e = v10;
+    v3->_e = array2;
 
-    v12 = [MEMORY[0x277CBEA60] array];
+    array3 = [MEMORY[0x277CBEA60] array];
     f = v3->_f;
-    v3->_f = v12;
+    v3->_f = array3;
 
-    v14 = [MEMORY[0x277CBEA60] array];
+    array4 = [MEMORY[0x277CBEA60] array];
     g = v3->_g;
-    v3->_g = v14;
+    v3->_g = array4;
   }
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUnitTestingClusterNestedStructList);
   v5 = [(MTRUnitTestingClusterNestedStructList *)self a];

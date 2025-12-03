@@ -1,25 +1,25 @@
 @interface TRDeviceSetupServer
 + (void)initialize;
-- (BOOL)_sendAction:(id)a3 sendDataHandler:(id)a4 shouldSendNilOnFailure:(BOOL)a5 error:(id *)a6;
+- (BOOL)_sendAction:(id)action sendDataHandler:(id)handler shouldSendNilOnFailure:(BOOL)failure error:(id *)error;
 - (TRDeviceSetupServer)init;
 - (TRDeviceSetupServerDelegate)delegate;
-- (void)_authenticateAccount:(unint64_t)a3 withAuthInfo:(id)a4 completion:(id)a5;
-- (void)_authenticateWithAction:(id)a3 replyHandler:(id)a4;
+- (void)_authenticateAccount:(unint64_t)account withAuthInfo:(id)info completion:(id)completion;
+- (void)_authenticateWithAction:(id)action replyHandler:(id)handler;
 - (void)_cancelTransferConnection;
-- (void)_cancelWithAction:(id)a3 replyHandler:(id)a4;
-- (void)_connectWithAction:(id)a3 replyHandler:(id)a4;
-- (void)_finishSetupWithError:(id)a3 replyHandler:(id)a4;
-- (void)_finishWithAction:(id)a3 replyHandler:(id)a4;
-- (void)_requestAuthenticationForAccount:(unint64_t)a3 replyHandler:(id)a4;
-- (void)_requestAuthenticationForNextAccountWithReplyHandler:(id)a3;
-- (void)_requestAuthenticationFromPeripheralForAccount:(unint64_t)a3 lastAttemptAction:(id)a4 lastAttemptError:(id)a5 replyHandler:(id)a6;
-- (void)_requestGeneralSetupWithReplyHandler:(id)a3;
-- (void)_setUpWithAction:(id)a3 replyHandler:(id)a4;
+- (void)_cancelWithAction:(id)action replyHandler:(id)handler;
+- (void)_connectWithAction:(id)action replyHandler:(id)handler;
+- (void)_finishSetupWithError:(id)error replyHandler:(id)handler;
+- (void)_finishWithAction:(id)action replyHandler:(id)handler;
+- (void)_requestAuthenticationForAccount:(unint64_t)account replyHandler:(id)handler;
+- (void)_requestAuthenticationForNextAccountWithReplyHandler:(id)handler;
+- (void)_requestAuthenticationFromPeripheralForAccount:(unint64_t)account lastAttemptAction:(id)action lastAttemptError:(id)error replyHandler:(id)handler;
+- (void)_requestGeneralSetupWithReplyHandler:(id)handler;
+- (void)_setUpWithAction:(id)action replyHandler:(id)handler;
 - (void)cancelActiveSetup;
 - (void)dealloc;
-- (void)server:(id)a3 didFailToReceiveData:(id)a4;
-- (void)server:(id)a3 didReceiveData:(id)a4 replyHandler:(id)a5;
-- (void)serverWillReceiveData:(id)a3;
+- (void)server:(id)server didFailToReceiveData:(id)data;
+- (void)server:(id)server didReceiveData:(id)data replyHandler:(id)handler;
+- (void)serverWillReceiveData:(id)data;
 - (void)start;
 - (void)stop;
 @end
@@ -67,7 +67,7 @@
   [(TRDeviceSetupServer *)&v3 dealloc];
 }
 
-- (void)serverWillReceiveData:(id)a3
+- (void)serverWillReceiveData:(id)data
 {
   self->_setupInProgress = 1;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -80,19 +80,19 @@
   }
 }
 
-- (void)server:(id)a3 didReceiveData:(id)a4 replyHandler:(id)a5
+- (void)server:(id)server didReceiveData:(id)data replyHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serverCopy = server;
+  dataCopy = data;
+  handlerCopy = handler;
   if (_TRLogEnabled == 1)
   {
     v11 = TRLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v22 = [v9 length];
+      v22 = [dataCopy length];
       _os_log_impl(&dword_26F2A2000, v11, OS_LOG_TYPE_DEFAULT, "[TRDeviceSetupServer] Server got data of length %li", buf, 0xCu);
     }
   }
@@ -100,18 +100,18 @@
   if (self->_cancelledSetupInProgress)
   {
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"TRDeviceSetupErrorDomain" code:-8104 userInfo:0];
-    [(TRDeviceSetupServer *)self _finishSetupWithError:v12 replyHandler:v10];
+    [(TRDeviceSetupServer *)self _finishSetupWithError:v12 replyHandler:handlerCopy];
   }
 
   else
   {
     v20 = 0;
-    v13 = [TRDeviceSetupAction actionWithData:v9 error:&v20 supportsLegacy:0];
+    v13 = [TRDeviceSetupAction actionWithData:dataCopy error:&v20 supportsLegacy:0];
     v12 = v20;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(TRDeviceSetupServer *)self _connectWithAction:v13 replyHandler:v10];
+      [(TRDeviceSetupServer *)self _connectWithAction:v13 replyHandler:handlerCopy];
     }
 
     else
@@ -119,7 +119,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(TRDeviceSetupServer *)self _authenticateWithAction:v13 replyHandler:v10];
+        [(TRDeviceSetupServer *)self _authenticateWithAction:v13 replyHandler:handlerCopy];
       }
 
       else
@@ -127,7 +127,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(TRDeviceSetupServer *)self _setUpWithAction:v13 replyHandler:v10];
+          [(TRDeviceSetupServer *)self _setUpWithAction:v13 replyHandler:handlerCopy];
         }
 
         else
@@ -135,7 +135,7 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [(TRDeviceSetupServer *)self _finishWithAction:v13 replyHandler:v10];
+            [(TRDeviceSetupServer *)self _finishWithAction:v13 replyHandler:handlerCopy];
           }
 
           else
@@ -143,7 +143,7 @@
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [(TRDeviceSetupServer *)self _cancelWithAction:v13 replyHandler:v10];
+              [(TRDeviceSetupServer *)self _cancelWithAction:v13 replyHandler:handlerCopy];
             }
 
             else
@@ -162,14 +162,14 @@
               }
 
               v15 = [MEMORY[0x277CCA9B8] errorWithDomain:@"TRDeviceSetupErrorDomain" code:-8101 userInfo:0];
-              [(TRDeviceSetupServer *)self _finishSetupWithError:v15 replyHandler:v10];
-              v16 = [(TRDeviceSetupServer *)self delegate];
+              [(TRDeviceSetupServer *)self _finishSetupWithError:v15 replyHandler:handlerCopy];
+              delegate = [(TRDeviceSetupServer *)self delegate];
               v17 = objc_opt_respondsToSelector();
 
               if (v17)
               {
-                v18 = [(TRDeviceSetupServer *)self delegate];
-                [v18 deviceSetupServer:self didFailSetupWithError:v15];
+                delegate2 = [(TRDeviceSetupServer *)self delegate];
+                [delegate2 deviceSetupServer:self didFailSetupWithError:v15];
               }
             }
           }
@@ -181,19 +181,19 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)server:(id)a3 didFailToReceiveData:(id)a4
+- (void)server:(id)server didFailToReceiveData:(id)data
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  serverCopy = server;
+  dataCopy = data;
+  v8 = dataCopy;
   if (self->_setupInProgress)
   {
     v9 = MEMORY[0x277CCA9B8];
-    if (v7)
+    if (dataCopy)
     {
       v13 = *MEMORY[0x277CCA7E8];
-      v14[0] = v7;
+      v14[0] = dataCopy;
       v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
       v11 = [v9 errorWithDomain:@"TRDeviceSetupErrorDomain" code:-8100 userInfo:v10];
     }
@@ -264,11 +264,11 @@
   }
 }
 
-- (void)_connectWithAction:(id)a3 replyHandler:(id)a4
+- (void)_connectWithAction:(id)action replyHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  handlerCopy = handler;
   if (_TRLogEnabled == 1)
   {
     v8 = TRLogHandle();
@@ -279,14 +279,14 @@
     }
   }
 
-  v9 = [(TRDeviceSetupServer *)self delegate];
+  delegate = [(TRDeviceSetupServer *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(TRDeviceSetupServer *)self delegate];
-    v12 = [v6 deviceName];
-    [v11 deviceSetupServer:self didBeginSetupWithDeviceName:v12];
+    delegate2 = [(TRDeviceSetupServer *)self delegate];
+    deviceName = [actionCopy deviceName];
+    [delegate2 deviceSetupServer:self didBeginSetupWithDeviceName:deviceName];
   }
 
   if (_TRLogEnabled == 1)
@@ -294,25 +294,25 @@
     v13 = TRLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v6 networkSSID];
+      networkSSID = [actionCopy networkSSID];
       *buf = 138412290;
-      v24 = v14;
+      v24 = networkSSID;
       _os_log_impl(&dword_26F2A2000, v13, OS_LOG_TYPE_DEFAULT, "[TRDeviceSetupServer] Asking delegate to connect to a network. Recommended network SSID = %@.", buf, 0xCu);
     }
   }
 
   objc_initWeak(buf, self);
-  v15 = [(TRDeviceSetupServer *)self delegate];
-  v16 = [v6 networkSSID];
-  v17 = [v6 networkPassword];
+  delegate3 = [(TRDeviceSetupServer *)self delegate];
+  networkSSID2 = [actionCopy networkSSID];
+  networkPassword = [actionCopy networkPassword];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __55__TRDeviceSetupServer__connectWithAction_replyHandler___block_invoke;
   v20[3] = &unk_279DCF110;
   objc_copyWeak(&v22, buf);
-  v18 = v7;
+  v18 = handlerCopy;
   v21 = v18;
-  [v15 deviceSetupServer:self connectToNetworkWithRecommendedSSID:v16 password:v17 completionHandler:v20];
+  [delegate3 deviceSetupServer:self connectToNetworkWithRecommendedSSID:networkSSID2 password:networkPassword completionHandler:v20];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(buf);
@@ -375,47 +375,47 @@ LABEL_12:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_requestAuthenticationForNextAccountWithReplyHandler:(id)a3
+- (void)_requestAuthenticationForNextAccountWithReplyHandler:(id)handler
 {
-  v13 = a3;
-  v4 = [(TRDeviceSetupServer *)self accountsToAuthenticate];
-  v5 = [v4 count];
+  handlerCopy = handler;
+  accountsToAuthenticate = [(TRDeviceSetupServer *)self accountsToAuthenticate];
+  v5 = [accountsToAuthenticate count];
 
   if (v5)
   {
-    v6 = [(TRDeviceSetupServer *)self accountsToAuthenticate];
-    v7 = [v6 firstObject];
-    v8 = [v7 unsignedIntegerValue];
+    accountsToAuthenticate2 = [(TRDeviceSetupServer *)self accountsToAuthenticate];
+    firstObject = [accountsToAuthenticate2 firstObject];
+    unsignedIntegerValue = [firstObject unsignedIntegerValue];
 
-    v9 = [(TRDeviceSetupServer *)self accountsToAuthenticate];
-    [v9 removeObjectAtIndex:0];
+    accountsToAuthenticate3 = [(TRDeviceSetupServer *)self accountsToAuthenticate];
+    [accountsToAuthenticate3 removeObjectAtIndex:0];
   }
 
   else
   {
-    v8 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  v10 = [(TRDeviceSetupServer *)self delegate];
+  delegate = [(TRDeviceSetupServer *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(TRDeviceSetupServer *)self delegate];
-    [v12 deviceSetupServer:self willRequestAuthenticationForAccount:v8];
+    delegate2 = [(TRDeviceSetupServer *)self delegate];
+    [delegate2 deviceSetupServer:self willRequestAuthenticationForAccount:unsignedIntegerValue];
   }
 
-  [(TRDeviceSetupServer *)self _requestAuthenticationForAccount:v8 replyHandler:v13];
+  [(TRDeviceSetupServer *)self _requestAuthenticationForAccount:unsignedIntegerValue replyHandler:handlerCopy];
 }
 
-- (void)_requestAuthenticationForAccount:(unint64_t)a3 replyHandler:(id)a4
+- (void)_requestAuthenticationForAccount:(unint64_t)account replyHandler:(id)handler
 {
-  v6 = a4;
-  if (a3)
+  handlerCopy = handler;
+  if (account)
   {
-    v7 = [(TRDeviceSetupServer *)self cachedAuthInfo];
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    cachedAuthInfo = [(TRDeviceSetupServer *)self cachedAuthInfo];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:account];
+    v9 = [cachedAuthInfo objectForKeyedSubscript:v8];
 
     objc_initWeak(&location, self);
     if (v9)
@@ -425,16 +425,16 @@ LABEL_12:
       v10[2] = __69__TRDeviceSetupServer__requestAuthenticationForAccount_replyHandler___block_invoke;
       v10[3] = &unk_279DCF138;
       objc_copyWeak(v12, &location);
-      v11 = v6;
-      v12[1] = a3;
-      [(TRDeviceSetupServer *)self _authenticateAccount:a3 withAuthInfo:v9 completion:v10];
+      v11 = handlerCopy;
+      v12[1] = account;
+      [(TRDeviceSetupServer *)self _authenticateAccount:account withAuthInfo:v9 completion:v10];
 
       objc_destroyWeak(v12);
     }
 
     else
     {
-      [(TRDeviceSetupServer *)self _requestAuthenticationFromPeripheralForAccount:a3 lastAttemptAction:0 lastAttemptError:0 replyHandler:v6];
+      [(TRDeviceSetupServer *)self _requestAuthenticationFromPeripheralForAccount:account lastAttemptAction:0 lastAttemptError:0 replyHandler:handlerCopy];
     }
 
     objc_destroyWeak(&location);
@@ -442,7 +442,7 @@ LABEL_12:
 
   else
   {
-    [(TRDeviceSetupServer *)self _requestGeneralSetupWithReplyHandler:v6];
+    [(TRDeviceSetupServer *)self _requestGeneralSetupWithReplyHandler:handlerCopy];
   }
 }
 
@@ -466,21 +466,21 @@ void __69__TRDeviceSetupServer__requestAuthenticationForAccount_replyHandler___b
   }
 }
 
-- (void)_requestAuthenticationFromPeripheralForAccount:(unint64_t)a3 lastAttemptAction:(id)a4 lastAttemptError:(id)a5 replyHandler:(id)a6
+- (void)_requestAuthenticationFromPeripheralForAccount:(unint64_t)account lastAttemptAction:(id)action lastAttemptError:(id)error replyHandler:(id)handler
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(TRDeviceSetupServer *)self delegate];
+  actionCopy = action;
+  errorCopy = error;
+  handlerCopy = handler;
+  delegate = [(TRDeviceSetupServer *)self delegate];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [(TRDeviceSetupServer *)self delegate];
-    v16 = [v15 deviceSetupServer:self localizedAuthenticationMessageForAccount:a3];
+    delegate2 = [(TRDeviceSetupServer *)self delegate];
+    v16 = [delegate2 deviceSetupServer:self localizedAuthenticationMessageForAccount:account];
 
-    if (!v11)
+    if (!errorCopy)
     {
       goto LABEL_7;
     }
@@ -489,36 +489,36 @@ void __69__TRDeviceSetupServer__requestAuthenticationForAccount_replyHandler___b
   else
   {
     v16 = 0;
-    if (!v11)
+    if (!errorCopy)
     {
       goto LABEL_7;
     }
   }
 
-  v17 = [v11 domain];
-  v18 = [v17 isEqualToString:@"TRDeviceSetupErrorDomain"];
+  domain = [errorCopy domain];
+  v18 = [domain isEqualToString:@"TRDeviceSetupErrorDomain"];
 
   if (v18)
   {
-    v19 = [v11 localizedDescription];
+    localizedDescription = [errorCopy localizedDescription];
     goto LABEL_8;
   }
 
 LABEL_7:
-  v19 = 0;
+  localizedDescription = 0;
 LABEL_8:
-  if (v10)
+  if (actionCopy)
   {
-    [TRDeviceSetupAuthenticateAction actionForFailedAttemptWithOriginalAction:v10 requestMessage:v16 failureMessage:v19];
+    [TRDeviceSetupAuthenticateAction actionForFailedAttemptWithOriginalAction:actionCopy requestMessage:v16 failureMessage:localizedDescription];
   }
 
   else
   {
-    [TRDeviceSetupAuthenticateAction actionForInitialAttemptWithAccountType:a3 requestMessage:v16];
+    [TRDeviceSetupAuthenticateAction actionForInitialAttemptWithAccountType:account requestMessage:v16];
   }
   v20 = ;
   v25 = 0;
-  v21 = [(TRDeviceSetupServer *)self _sendAction:v20 sendDataHandler:v12 shouldSendNilOnFailure:0 error:&v25];
+  v21 = [(TRDeviceSetupServer *)self _sendAction:v20 sendDataHandler:handlerCopy shouldSendNilOnFailure:0 error:&v25];
   v22 = v25;
   if (!v21)
   {
@@ -535,41 +535,41 @@ LABEL_8:
       }
     }
 
-    [(TRDeviceSetupServer *)self _requestGeneralSetupWithReplyHandler:v12];
+    [(TRDeviceSetupServer *)self _requestGeneralSetupWithReplyHandler:handlerCopy];
   }
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_authenticateAccount:(unint64_t)a3 withAuthInfo:(id)a4 completion:(id)a5
+- (void)_authenticateAccount:(unint64_t)account withAuthInfo:(id)info completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 objectForKeyedSubscript:@"TRDeviceSetupAuthenticationKeyAccountID"];
-  v11 = [v8 objectForKeyedSubscript:@"TRDeviceSetupAuthenticationKeyAccountPassword"];
-  if (a3 && [v10 length] && objc_msgSend(v11, "length") && (-[TRDeviceSetupServer delegate](self, "delegate"), v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+  infoCopy = info;
+  completionCopy = completion;
+  v10 = [infoCopy objectForKeyedSubscript:@"TRDeviceSetupAuthenticationKeyAccountID"];
+  v11 = [infoCopy objectForKeyedSubscript:@"TRDeviceSetupAuthenticationKeyAccountPassword"];
+  if (account && [v10 length] && objc_msgSend(v11, "length") && (-[TRDeviceSetupServer delegate](self, "delegate"), v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
   {
     if (_TRLogEnabled == 1)
     {
       v13 = TRLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = TRStringFromSetupAccountType(a3);
+        v14 = TRStringFromSetupAccountType(account);
         *buf = 138412290;
         v25 = v14;
         _os_log_impl(&dword_26F2A2000, v13, OS_LOG_TYPE_DEFAULT, "[TRDeviceSetupServer] Asking delegate to authenticate account %@.", buf, 0xCu);
       }
     }
 
-    v15 = [(TRDeviceSetupServer *)self delegate];
+    delegate = [(TRDeviceSetupServer *)self delegate];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __68__TRDeviceSetupServer__authenticateAccount_withAuthInfo_completion___block_invoke;
     v21[3] = &unk_279DCF160;
-    v23 = a3;
-    v22 = v9;
-    [v15 deviceSetupServer:self authenticateAccount:a3 withInfo:v8 completionHandler:v21];
+    accountCopy = account;
+    v22 = completionCopy;
+    [delegate deviceSetupServer:self authenticateAccount:account withInfo:infoCopy completionHandler:v21];
   }
 
   else
@@ -579,10 +579,10 @@ LABEL_8:
       v16 = TRLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = TRStringFromSetupAccountType(a3);
-        v18 = [(TRDeviceSetupServer *)self delegate];
+        v17 = TRStringFromSetupAccountType(account);
+        delegate2 = [(TRDeviceSetupServer *)self delegate];
         v19 = &stru_287F58968;
-        if (!v18)
+        if (!delegate2)
         {
           v19 = @" (No delegate)";
         }
@@ -595,9 +595,9 @@ LABEL_8:
       }
     }
 
-    if (v9)
+    if (completionCopy)
     {
-      (*(v9 + 2))(v9, 2, 0);
+      (*(completionCopy + 2))(completionCopy, 2, 0);
     }
   }
 
@@ -641,17 +641,17 @@ void __68__TRDeviceSetupServer__authenticateAccount_withAuthInfo_completion___bl
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_authenticateWithAction:(id)a3 replyHandler:(id)a4
+- (void)_authenticateWithAction:(id)action replyHandler:(id)handler
 {
   v28[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  handlerCopy = handler;
   v27[0] = @"TRDeviceSetupAuthenticationKeyAccountID";
-  v8 = [v6 accountID];
-  v9 = v8;
-  if (v8)
+  accountID = [actionCopy accountID];
+  v9 = accountID;
+  if (accountID)
   {
-    v10 = v8;
+    v10 = accountID;
   }
 
   else
@@ -661,11 +661,11 @@ void __68__TRDeviceSetupServer__authenticateAccount_withAuthInfo_completion___bl
 
   v28[0] = v10;
   v27[1] = @"TRDeviceSetupAuthenticationKeyAccountPassword";
-  v11 = [v6 accountPassword];
-  v12 = v11;
-  if (v11)
+  accountPassword = [actionCopy accountPassword];
+  v12 = accountPassword;
+  if (accountPassword)
   {
-    v13 = v11;
+    v13 = accountPassword;
   }
 
   else
@@ -675,24 +675,24 @@ void __68__TRDeviceSetupServer__authenticateAccount_withAuthInfo_completion___bl
 
   v28[1] = v13;
   v27[2] = @"TRDeviceSetupAuthenticationKeyAttemptCount";
-  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "attemptCount")}];
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(actionCopy, "attemptCount")}];
   v28[2] = v14;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:3];
 
   objc_initWeak(&location, self);
-  v16 = [v6 accountType];
+  accountType = [actionCopy accountType];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __60__TRDeviceSetupServer__authenticateWithAction_replyHandler___block_invoke;
   v21[3] = &unk_279DCF188;
-  v17 = v6;
+  v17 = actionCopy;
   v22 = v17;
   objc_copyWeak(&v25, &location);
   v18 = v15;
   v23 = v18;
-  v19 = v7;
+  v19 = handlerCopy;
   v24 = v19;
-  [(TRDeviceSetupServer *)self _authenticateAccount:v16 withAuthInfo:v18 completion:v21];
+  [(TRDeviceSetupServer *)self _authenticateAccount:accountType withAuthInfo:v18 completion:v21];
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(&location);
@@ -776,121 +776,121 @@ LABEL_16:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_requestGeneralSetupWithReplyHandler:(id)a3
+- (void)_requestGeneralSetupWithReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(TRDeviceSetupServer *)self setAccountsToAuthenticate:0];
   v5 = objc_alloc_init(TRDeviceSetupGeneralSetupAction);
-  [(TRDeviceSetupServer *)self _sendAction:v5 sendDataHandler:v4 shouldSendNilOnFailure:1 error:0];
+  [(TRDeviceSetupServer *)self _sendAction:v5 sendDataHandler:handlerCopy shouldSendNilOnFailure:1 error:0];
 }
 
-- (void)_setUpWithAction:(id)a3 replyHandler:(id)a4
+- (void)_setUpWithAction:(id)action replyHandler:(id)handler
 {
-  v22 = a3;
-  v6 = a4;
+  actionCopy = action;
+  handlerCopy = handler;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v8 = [v22 countryCode];
+  countryCode = [actionCopy countryCode];
 
-  if (v8)
+  if (countryCode)
   {
-    v9 = [v22 countryCode];
-    [v7 setObject:v9 forKeyedSubscript:@"TRDeviceSetupInfoKeyCountryCode"];
+    countryCode2 = [actionCopy countryCode];
+    [v7 setObject:countryCode2 forKeyedSubscript:@"TRDeviceSetupInfoKeyCountryCode"];
   }
 
-  v10 = [v22 language];
+  language = [actionCopy language];
 
-  if (v10)
+  if (language)
   {
-    v11 = [v22 language];
-    [v7 setObject:v11 forKeyedSubscript:@"TRDeviceSetupInfoKeyLanguage"];
+    language2 = [actionCopy language];
+    [v7 setObject:language2 forKeyedSubscript:@"TRDeviceSetupInfoKeyLanguage"];
   }
 
-  v12 = [v22 homeSharingID];
+  homeSharingID = [actionCopy homeSharingID];
 
-  if (v12)
+  if (homeSharingID)
   {
-    v13 = [v22 homeSharingID];
-    [v7 setObject:v13 forKeyedSubscript:@"TRDeviceSetupInfoKeyHomeSharingAppleID"];
+    homeSharingID2 = [actionCopy homeSharingID];
+    [v7 setObject:homeSharingID2 forKeyedSubscript:@"TRDeviceSetupInfoKeyHomeSharingAppleID"];
   }
 
-  v14 = [v22 homeSharingGroupID];
+  homeSharingGroupID = [actionCopy homeSharingGroupID];
 
-  if (v14)
+  if (homeSharingGroupID)
   {
-    v15 = [v22 homeSharingGroupID];
-    [v7 setObject:v15 forKeyedSubscript:@"TRDeviceSetupInfoKeyHomeSharingGroupID"];
+    homeSharingGroupID2 = [actionCopy homeSharingGroupID];
+    [v7 setObject:homeSharingGroupID2 forKeyedSubscript:@"TRDeviceSetupInfoKeyHomeSharingGroupID"];
   }
 
-  v16 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v22, "isDiagnosticsEnabled")}];
+  v16 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(actionCopy, "isDiagnosticsEnabled")}];
   [v7 setObject:v16 forKeyedSubscript:@"TRDeviceSetupInfoKeyDiagnosticsEnabled"];
 
-  v17 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v22, "rememberPassword")}];
+  v17 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(actionCopy, "rememberPassword")}];
   [v7 setObject:v17 forKeyedSubscript:@"TRDeviceSetupInfoKeyRememberPasswordEnabled"];
 
-  v18 = [(TRDeviceSetupServer *)self delegate];
+  delegate = [(TRDeviceSetupServer *)self delegate];
   v19 = objc_opt_respondsToSelector();
 
   if (v19)
   {
-    v20 = [(TRDeviceSetupServer *)self delegate];
+    delegate2 = [(TRDeviceSetupServer *)self delegate];
     v21 = [v7 copy];
-    [v20 deviceSetupServer:self didReceiveSetupInfo:v21];
+    [delegate2 deviceSetupServer:self didReceiveSetupInfo:v21];
   }
 
-  [(TRDeviceSetupServer *)self _finishSetupWithError:0 replyHandler:v6];
+  [(TRDeviceSetupServer *)self _finishSetupWithError:0 replyHandler:handlerCopy];
 }
 
-- (void)_finishWithAction:(id)a3 replyHandler:(id)a4
+- (void)_finishWithAction:(id)action replyHandler:(id)handler
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  actionCopy = action;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
   self->_setupInProgress = 0;
   self->_cancelledSetupInProgress = 0;
-  v8 = [(TRDeviceSetupServer *)self delegate];
+  delegate = [(TRDeviceSetupServer *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(TRDeviceSetupServer *)self delegate];
-    [v10 deviceSetupServerDidFinishSetup:self];
+    delegate2 = [(TRDeviceSetupServer *)self delegate];
+    [delegate2 deviceSetupServerDidFinishSetup:self];
   }
 }
 
-- (void)_cancelWithAction:(id)a3 replyHandler:(id)a4
+- (void)_cancelWithAction:(id)action replyHandler:(id)handler
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  actionCopy = action;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
   self->_setupInProgress = 0;
   self->_cancelledSetupInProgress = 0;
-  v8 = [(TRDeviceSetupServer *)self delegate];
+  delegate = [(TRDeviceSetupServer *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(TRDeviceSetupServer *)self delegate];
-    v11 = [v12 error];
-    [v10 deviceSetupServer:self didFailSetupWithError:v11];
+    delegate2 = [(TRDeviceSetupServer *)self delegate];
+    error = [actionCopy error];
+    [delegate2 deviceSetupServer:self didFailSetupWithError:error];
   }
 }
 
-- (void)_finishSetupWithError:(id)a3 replyHandler:(id)a4
+- (void)_finishSetupWithError:(id)error replyHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  errorCopy = error;
+  handlerCopy = handler;
+  if (errorCopy)
   {
     if (_TRLogEnabled == 1)
     {
@@ -898,20 +898,20 @@ LABEL_16:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v15 = 138412290;
-        v16 = v6;
+        v16 = errorCopy;
         _os_log_impl(&dword_26F2A2000, v8, OS_LOG_TYPE_DEFAULT, "[TRDeviceSetupServer] Setup failed. Error: %@", &v15, 0xCu);
       }
     }
 
-    v9 = [[TRDeviceSetupCancelAction alloc] initWithError:v6];
-    [(TRDeviceSetupServer *)self _sendAction:v9 sendDataHandler:v7 shouldSendNilOnFailure:1 error:0];
-    v10 = [(TRDeviceSetupServer *)self delegate];
+    v9 = [[TRDeviceSetupCancelAction alloc] initWithError:errorCopy];
+    [(TRDeviceSetupServer *)self _sendAction:v9 sendDataHandler:handlerCopy shouldSendNilOnFailure:1 error:0];
+    delegate = [(TRDeviceSetupServer *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(TRDeviceSetupServer *)self delegate];
-      [v12 deviceSetupServer:self didFailSetupWithError:v6];
+      delegate2 = [(TRDeviceSetupServer *)self delegate];
+      [delegate2 deviceSetupServer:self didFailSetupWithError:errorCopy];
     }
   }
 
@@ -928,20 +928,20 @@ LABEL_16:
     }
 
     v9 = objc_alloc_init(TRDeviceSetupFinishAction);
-    [(TRDeviceSetupServer *)self _sendAction:v9 sendDataHandler:v7 shouldSendNilOnFailure:1 error:0];
+    [(TRDeviceSetupServer *)self _sendAction:v9 sendDataHandler:handlerCopy shouldSendNilOnFailure:1 error:0];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_sendAction:(id)a3 sendDataHandler:(id)a4 shouldSendNilOnFailure:(BOOL)a5 error:(id *)a6
+- (BOOL)_sendAction:(id)action sendDataHandler:(id)handler shouldSendNilOnFailure:(BOOL)failure error:(id *)error
 {
-  v7 = a5;
+  failureCopy = failure;
   v17 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  if (v9)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v10 = [a3 dataRepresentationWithError:a6];
+    v10 = [action dataRepresentationWithError:error];
     v11 = v10 != 0;
     if (v10)
     {
@@ -956,12 +956,12 @@ LABEL_16:
         }
       }
 
-      v9[2](v9, v10);
+      handlerCopy[2](handlerCopy, v10);
     }
 
-    else if (v7)
+    else if (failureCopy)
     {
-      v9[2](v9, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 

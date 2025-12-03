@@ -1,5 +1,5 @@
 @interface HMDTransientRuleManagerClient
-- (HMDTransientRuleManagerClient)initWithDescription:(id)a3;
+- (HMDTransientRuleManagerClient)initWithDescription:(id)description;
 - (NSString)description;
 @end
 
@@ -25,16 +25,16 @@
   return v6;
 }
 
-- (HMDTransientRuleManagerClient)initWithDescription:(id)a3
+- (HMDTransientRuleManagerClient)initWithDescription:(id)description
 {
-  v5 = a3;
+  descriptionCopy = description;
   v9.receiver = self;
   v9.super_class = HMDTransientRuleManagerClient;
   v6 = [(HMDTransientRuleManagerClient *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_description, a3);
+    objc_storeStrong(&v6->_description, description);
   }
 
   return v7;

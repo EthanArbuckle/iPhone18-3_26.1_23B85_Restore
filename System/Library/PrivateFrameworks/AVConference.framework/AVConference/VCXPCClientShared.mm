@@ -2,8 +2,8 @@
 - (VCXPCClientShared)init;
 - (void)dealloc;
 - (void)deregisterFromNotifications;
-- (void)deregisterWithUUID:(id)a3 service:(char *)a4;
-- (void)registerBlockWithUUID:(id)a3 service:(char *)a4 block:(id)a5;
+- (void)deregisterWithUUID:(id)d service:(char *)service;
+- (void)registerBlockWithUUID:(id)d service:(char *)service block:(id)block;
 @end
 
 @implementation VCXPCClientShared
@@ -57,8 +57,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSMutableDictionary *)self->_registeredUUIDServiceBlocks allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v8 count:16];
+  allKeys = [(NSMutableDictionary *)self->_registeredUUIDServiceBlocks allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v9 objects:v8 count:16];
   if (v4)
   {
     v5 = v4;
@@ -70,21 +70,21 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         -[AVConferenceXPCClient deregisterFromService:](self, "deregisterFromService:", [*(*(&v9 + 1) + 8 * v7++) UTF8String]);
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v8 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v9 objects:v8 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)registerBlockWithUUID:(id)a3 service:(char *)a4 block:(id)a5
+- (void)registerBlockWithUUID:(id)d service:(char *)service block:(id)block
 {
   block[8] = *MEMORY[0x1E69E9840];
   registeredBlocksQueue = self->_registeredBlocksQueue;
@@ -92,10 +92,10 @@
   block[1] = 3221225472;
   block[2] = __57__VCXPCClientShared_registerBlockWithUUID_service_block___block_invoke;
   block[3] = &unk_1E85F88F8;
-  block[4] = a3;
+  block[4] = d;
   block[5] = self;
-  block[6] = a5;
-  block[7] = a4;
+  block[6] = block;
+  block[7] = service;
   dispatch_async(registeredBlocksQueue, block);
 }
 
@@ -367,7 +367,7 @@ void __57__VCXPCClientShared_registerBlockWithUUID_service_block___block_invoke_
   v3 = a1[6];
 }
 
-- (void)deregisterWithUUID:(id)a3 service:(char *)a4
+- (void)deregisterWithUUID:(id)d service:(char *)service
 {
   v5[7] = *MEMORY[0x1E69E9840];
   registeredBlocksQueue = self->_registeredBlocksQueue;
@@ -375,8 +375,8 @@ void __57__VCXPCClientShared_registerBlockWithUUID_service_block___block_invoke_
   v5[1] = 3221225472;
   v5[2] = __48__VCXPCClientShared_deregisterWithUUID_service___block_invoke;
   v5[3] = &unk_1E85F50D8;
-  v5[5] = a3;
-  v5[6] = a4;
+  v5[5] = d;
+  v5[6] = service;
   v5[4] = self;
   dispatch_async(registeredBlocksQueue, v5);
 }

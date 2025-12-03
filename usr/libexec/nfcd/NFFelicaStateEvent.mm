@@ -1,22 +1,22 @@
 @interface NFFelicaStateEvent
-+ (id)decodeEvent:(id)a3 reverse:(BOOL)a4;
-+ (id)decodeLogEvent:(id)a3;
-+ (id)decodeProvider:(id)a3 service:(id)a4 blocks:(id)a5;
++ (id)decodeEvent:(id)event reverse:(BOOL)reverse;
++ (id)decodeLogEvent:(id)event;
++ (id)decodeProvider:(id)provider service:(id)service blocks:(id)blocks;
 - (NFFelicaStateEvent)init;
-- (void)addStateInfo:(id)a3 appletAID:(id)a4;
+- (void)addStateInfo:(id)info appletAID:(id)d;
 @end
 
 @implementation NFFelicaStateEvent
 
-+ (id)decodeEvent:(id)a3 reverse:(BOOL)a4
++ (id)decodeEvent:(id)event reverse:(BOOL)reverse
 {
-  v130 = a4;
-  v4 = a3;
+  reverseCopy = reverse;
+  eventCopy = event;
   v5 = objc_opt_new();
   v136 = objc_opt_new();
   v146 = objc_opt_new();
-  v131 = v4;
-  [NFTLV simpleTLVsWithTag:225 fromData:v4];
+  v131 = eventCopy;
+  [NFTLV simpleTLVsWithTag:225 fromData:eventCopy];
   v162 = 0u;
   v163 = 0u;
   v164 = 0u;
@@ -47,8 +47,8 @@
         v159 = 0u;
         v160 = 0u;
         v161 = 0u;
-        v137 = [v10 children];
-        v139 = [v137 countByEnumeratingWithState:&v158 objects:v168 count:16];
+        children = [v10 children];
+        v139 = [children countByEnumeratingWithState:&v158 objects:v168 count:16];
         if (v139)
         {
           v138 = *v159;
@@ -60,7 +60,7 @@
               if (*v159 != v138)
               {
                 v12 = v11;
-                objc_enumerationMutation(v137);
+                objc_enumerationMutation(children);
                 v11 = v12;
               }
 
@@ -68,28 +68,28 @@
               v13 = *(*(&v158 + 1) + 8 * v11);
               if ([v13 tag] == 209)
               {
-                v14 = [v13 value];
-                v15 = [v14 bytes];
+                value = [v13 value];
+                bytes = [value bytes];
 
-                v16 = [NSNumber numberWithUnsignedChar:*v15];
+                v16 = [NSNumber numberWithUnsignedChar:*bytes];
                 [v5 setObject:v16 forKeyedSubscript:@"NFServiceProviderID"];
               }
 
               if ([v13 tag] == 210)
               {
-                v17 = [v13 value];
-                v18 = [v17 NF_asHexString];
-                [v5 setObject:v18 forKeyedSubscript:@"NFDPAN"];
+                value2 = [v13 value];
+                nF_asHexString = [value2 NF_asHexString];
+                [v5 setObject:nF_asHexString forKeyedSubscript:@"NFDPAN"];
               }
 
               v147 = v13;
               if ([v13 tag] == 219)
               {
-                v19 = [v13 valueAsUnsignedShort];
-                v20 = [NSNumber numberWithInt:v19 & 1];
+                valueAsUnsignedShort = [v13 valueAsUnsignedShort];
+                v20 = [NSNumber numberWithInt:valueAsUnsignedShort & 1];
                 [v5 setObject:v20 forKeyedSubscript:@"NFInStation"];
 
-                v21 = [NSNumber numberWithInt:(v19 >> 1) & 1];
+                v21 = [NSNumber numberWithInt:(valueAsUnsignedShort >> 1) & 1];
                 [v5 setObject:v21 forKeyedSubscript:@"NFInStationShinkansen"];
               }
 
@@ -125,31 +125,31 @@
 
               if ([v13 tag] == 212)
               {
-                v27 = [v13 value];
-                v28 = [v27 length];
+                value3 = [v13 value];
+                v28 = [value3 length];
 
                 if (v28 >= 4)
                 {
-                  v31 = [v13 value];
-                  v29 = [v31 bytes];
+                  value4 = [v13 value];
+                  bytes2 = [value4 bytes];
 
                   v30 = 0;
-                  LODWORD(v31) = 0;
+                  LODWORD(value4) = 0;
                   do
                   {
-                    v31 = (v29[v30] & 0xF) + 100 * v31 + 10 * (v29[v30] >> 4);
+                    value4 = (bytes2[v30] & 0xF) + 100 * value4 + 10 * (bytes2[v30] >> 4);
                     ++v30;
                   }
 
                   while (v30 != 2);
-                  v32 = v29[2];
-                  v33 = v29[3];
+                  v32 = bytes2[2];
+                  v33 = bytes2[3];
                   if (!v6)
                   {
                     v6 = objc_opt_new();
                   }
 
-                  [v6 setYear:v31];
+                  [v6 setYear:value4];
                   [v6 setMonth:(v32 & 0xF) + 10 * (v32 >> 4)];
                   [v6 setDay:(v33 & 0xF) + 10 * (v33 >> 4)];
                   [v7 setObject:v6 forKeyedSubscript:@"NFTransactionDate"];
@@ -159,8 +159,8 @@
 
               if ([v13 tag] == 213)
               {
-                v34 = [v13 value];
-                v35 = [v34 length];
+                value5 = [v13 value];
+                v35 = [value5 length];
 
                 if (v35 >= 2)
                 {
@@ -169,11 +169,11 @@
                     v6 = objc_opt_new();
                   }
 
-                  v36 = [v13 value];
-                  v37 = [v36 bytes];
+                  value6 = [v13 value];
+                  bytes3 = [value6 bytes];
 
-                  v38 = (v37[1] & 0xF) + 10 * (v37[1] >> 4);
-                  [v6 setHour:(*v37 & 0xF) + 10 * (*v37 >> 4)];
+                  v38 = (bytes3[1] & 0xF) + 10 * (bytes3[1] >> 4);
+                  [v6 setHour:(*bytes3 & 0xF) + 10 * (*bytes3 >> 4)];
                   [v6 setMinute:v38];
                   [v7 setObject:v6 forKeyedSubscript:@"NFTransactionDate"];
                 }
@@ -181,15 +181,15 @@
 
               if ([v13 tag] == 214)
               {
-                v39 = [v13 value];
-                v40 = [v39 length];
+                value7 = [v13 value];
+                v40 = [value7 length];
 
                 if (v40 >= 5)
                 {
-                  v41 = [v13 value];
-                  v42 = [v41 bytes];
+                  value8 = [v13 value];
+                  bytes4 = [value8 bytes];
 
-                  v43 = *(v42 + 4);
+                  v43 = *(bytes4 + 4);
                   if (v43 == 1)
                   {
                     v44 = @"NFBalance";
@@ -200,7 +200,7 @@
                   {
                     v44 = @"NFLoyaltyBalance";
 LABEL_45:
-                    v45 = [NSNumber numberWithUnsignedInt:bswap32(*v42)];
+                    v45 = [NSNumber numberWithUnsignedInt:bswap32(*bytes4)];
                     [v7 setObject:v45 forKeyedSubscript:v44];
                   }
                 }
@@ -208,16 +208,16 @@ LABEL_45:
 
               if ([v13 tag] == 215)
               {
-                v46 = [v13 value];
-                v47 = [v46 length];
+                value9 = [v13 value];
+                v47 = [value9 length];
 
                 if (v47 >= 5)
                 {
-                  v48 = [v13 value];
-                  v49 = [v48 bytes];
+                  value10 = [v13 value];
+                  bytes5 = [value10 bytes];
 
-                  v50 = *v49;
-                  v51 = (v49[1] << 16) & 0x80FFFFFF | ((v50 & 0x7F) << 24) | (v49[2] << 8) | v49[3];
+                  v50 = *bytes5;
+                  v51 = (bytes5[1] << 16) & 0x80FFFFFF | ((v50 & 0x7F) << 24) | (bytes5[2] << 8) | bytes5[3];
                   if (v50 >= 0)
                   {
                     v52 = v51;
@@ -228,7 +228,7 @@ LABEL_45:
                     v52 = -v51;
                   }
 
-                  v53 = v49[4];
+                  v53 = bytes5[4];
                   v54 = [NSNumber numberWithInt:v52];
                   [v7 setObject:v54 forKeyedSubscript:@"NFAmount"];
 
@@ -241,20 +241,20 @@ LABEL_45:
               v144 = v6;
               if ([v13 tag] == 216)
               {
-                v56 = [v13 value];
-                v57 = [v56 bytes];
+                value11 = [v13 value];
+                bytes6 = [value11 bytes];
 
-                v58 = [NSNumber numberWithUnsignedChar:*v57];
+                v58 = [NSNumber numberWithUnsignedChar:*bytes6];
                 [v7 setObject:v58 forKeyedSubscript:@"NFTransactionType"];
 
                 v13 = v147;
-                v59 = [NSNumber numberWithUnsignedChar:v57[1]];
+                v59 = [NSNumber numberWithUnsignedChar:bytes6[1]];
                 [v7 setObject:v59 forKeyedSubscript:@"NFSectorCombination"];
 
                 v60 = [v5 objectForKeyedSubscript:@"NFServiceProviderID"];
-                LODWORD(v57) = [&off_100332238 isEqualToNumber:v60];
+                LODWORD(bytes6) = [&off_100332238 isEqualToNumber:v60];
 
-                if (v57)
+                if (bytes6)
                 {
                   v156 = 0u;
                   v157 = 0u;
@@ -298,15 +298,15 @@ LABEL_45:
                       v70 = [v66 objectForKeyedSubscript:@"NFBlockData"];
                       if ([v70 length] >= 3)
                       {
-                        v71 = [v70 bytes];
-                        v72 = [NSNumber numberWithUnsignedLongLong:v71[1] >> 7];
+                        bytes7 = [v70 bytes];
+                        v72 = [NSNumber numberWithUnsignedLongLong:bytes7[1] >> 7];
                         [v7 setObject:v72 forKeyedSubscript:@"NFSFBreakdown"];
 
-                        v73 = [NSNumber numberWithUnsignedLongLong:*v71 & 0x7F];
-                        [v7 setObject:v73 forKeyedSubscript:@"NFDeviceCode"];
+                        0x7F = [NSNumber numberWithUnsignedLongLong:*bytes7 & 0x7F];
+                        [v7 setObject:0x7F forKeyedSubscript:@"NFDeviceCode"];
 
-                        v74 = [NSNumber numberWithUnsignedLongLong:v71[2] & 0x7F];
-                        [v7 setObject:v74 forKeyedSubscript:@"NFPaymentType"];
+                        0x7F2 = [NSNumber numberWithUnsignedLongLong:bytes7[2] & 0x7F];
+                        [v7 setObject:0x7F2 forKeyedSubscript:@"NFPaymentType"];
                       }
                     }
 
@@ -325,21 +325,21 @@ LABEL_67:
 
               if ([v13 tag] == 217)
               {
-                v75 = [v13 value];
-                v76 = [v75 length];
+                value12 = [v13 value];
+                v76 = [value12 length];
 
                 if (v76 >= 3)
                 {
-                  v77 = [v13 value];
-                  v78 = [v77 bytes];
+                  value13 = [v13 value];
+                  bytes8 = [value13 bytes];
 
-                  v79 = bswap32(*v78) >> 16;
-                  v80 = *(v78 + 2);
+                  v79 = bswap32(*bytes8) >> 16;
+                  v80 = *(bytes8 + 2);
                   v13 = v147;
                   if (v79 || v80)
                   {
-                    v81 = [v147 value];
-                    [v7 setObject:v81 forKeyedSubscript:@"NFStartStationData"];
+                    value14 = [v147 value];
+                    [v7 setObject:value14 forKeyedSubscript:@"NFStartStationData"];
 
                     v82 = [NSNumber numberWithUnsignedShort:v79];
                     [v7 setObject:v82 forKeyedSubscript:@"NFStartStation"];
@@ -353,21 +353,21 @@ LABEL_67:
 
               if ([v13 tag] == 218)
               {
-                v84 = [v13 value];
-                v85 = [v84 length];
+                value15 = [v13 value];
+                v85 = [value15 length];
 
                 if (v85 >= 3)
                 {
-                  v86 = [v13 value];
-                  v87 = [v86 bytes];
+                  value16 = [v13 value];
+                  bytes9 = [value16 bytes];
 
-                  v88 = bswap32(*v87) >> 16;
-                  v89 = *(v87 + 2);
+                  v88 = bswap32(*bytes9) >> 16;
+                  v89 = *(bytes9 + 2);
                   v13 = v147;
                   if (v88 || v89)
                   {
-                    v90 = [v147 value];
-                    [v7 setObject:v90 forKeyedSubscript:@"NFEndStationData"];
+                    value17 = [v147 value];
+                    [v7 setObject:value17 forKeyedSubscript:@"NFEndStationData"];
 
                     v91 = [NSNumber numberWithUnsignedShort:v88];
                     [v7 setObject:v91 forKeyedSubscript:@"NFEndStation"];
@@ -381,8 +381,8 @@ LABEL_67:
 
               if ([v13 tag] == 222)
               {
-                v93 = [v13 value];
-                v94 = [v93 mutableCopy];
+                value18 = [v13 value];
+                v94 = [value18 mutableCopy];
 
                 if ([v94 length] <= 31)
                 {
@@ -392,8 +392,8 @@ LABEL_67:
                 v95 = [v5 objectForKeyedSubscript:@"NFServiceProviderID"];
                 if (([v95 isEqualToNumber:&off_100332250] & 1) == 0)
                 {
-                  v96 = [v94 NF_asHexString];
-                  [v7 setObject:v96 forKeyedSubscript:@"NFTransactionID"];
+                  nF_asHexString2 = [v94 NF_asHexString];
+                  [v7 setObject:nF_asHexString2 forKeyedSubscript:@"NFTransactionID"];
 
                   v13 = v147;
                 }
@@ -407,18 +407,18 @@ LABEL_67:
 
               if ([v13 tag] == 208)
               {
-                v98 = [v13 value];
-                v148 = [v98 length];
+                value19 = [v13 value];
+                v148 = [value19 length];
 
-                v99 = [v13 value];
-                v100 = [v99 bytes];
+                value20 = [v13 value];
+                bytes10 = [value20 bytes];
 
-                v101 = *v100;
-                if (*v100)
+                v101 = *bytes10;
+                if (*bytes10)
                 {
                   if (v148)
                   {
-                    v102 = (v100 + 1);
+                    v102 = (bytes10 + 1);
                     v103 = 20;
                     v104 = 1;
                     do
@@ -456,7 +456,7 @@ LABEL_67:
             }
 
             while ((v142 + 1) != v139);
-            v139 = [v137 countByEnumeratingWithState:&v158 objects:v168 count:16];
+            v139 = [children countByEnumeratingWithState:&v158 objects:v168 count:16];
           }
 
           while (v139);
@@ -527,11 +527,11 @@ LABEL_67:
       v120 = [v116 objectForKeyedSubscript:@"NFBlockData"];
       if ([v120 length] >= 0xD)
       {
-        v121 = [v120 bytes];
-        v122 = [NSNumber numberWithInt:*(v121 + 11) | (v121[13] << 16)];
+        bytes11 = [v120 bytes];
+        v122 = [NSNumber numberWithInt:*(bytes11 + 11) | (bytes11[13] << 16)];
         [v140 setObject:v122 forKeyedSubscript:@"NFBalance"];
 
-        LODWORD(v122) = v121[8];
+        LODWORD(v122) = bytes11[8];
         v123 = [NSNumber numberWithInt:(v122 >> 4) & 1];
         [v140 setObject:v123 forKeyedSubscript:@"NFNotifyOnLowBalance"];
 
@@ -556,11 +556,11 @@ LABEL_112:
   v5 = v140;
   v110 = v143;
 LABEL_113:
-  if (v130)
+  if (reverseCopy)
   {
-    v126 = [v136 reverseObjectEnumerator];
-    v127 = [v126 allObjects];
-    [v5 setObject:v127 forKeyedSubscript:@"NFHistoryRecords"];
+    reverseObjectEnumerator = [v136 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
+    [v5 setObject:allObjects forKeyedSubscript:@"NFHistoryRecords"];
   }
 
   else
@@ -578,21 +578,21 @@ LABEL_113:
   return v5;
 }
 
-+ (id)decodeProvider:(id)a3 service:(id)a4 blocks:(id)a5
++ (id)decodeProvider:(id)provider service:(id)service blocks:(id)blocks
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (([v9 isEqualToNumber:&off_100332238] & 1) == 0)
+  providerCopy = provider;
+  serviceCopy = service;
+  blocksCopy = blocks;
+  if (([providerCopy isEqualToNumber:&off_100332238] & 1) == 0)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
     if (Logger)
     {
       v27 = Logger;
-      Class = object_getClass(a1);
+      Class = object_getClass(self);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(a1);
+      ClassName = object_getClassName(self);
       Name = sel_getName(a2);
       v31 = 45;
       if (isMetaClass)
@@ -610,7 +610,7 @@ LABEL_113:
       goto LABEL_36;
     }
 
-    v32 = object_getClass(a1);
+    v32 = object_getClass(self);
     if (class_isMetaClass(v32))
     {
       v33 = 43;
@@ -624,7 +624,7 @@ LABEL_113:
     *buf = 67109890;
     v77 = v33;
     v78 = 2082;
-    v79 = object_getClassName(a1);
+    v79 = object_getClassName(self);
     v80 = 2082;
     v81 = sel_getName(a2);
     v82 = 1024;
@@ -633,16 +633,16 @@ LABEL_113:
     goto LABEL_35;
   }
 
-  if (!v11)
+  if (!blocksCopy)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v34 = NFLogGetLogger();
     if (v34)
     {
       v35 = v34;
-      v36 = object_getClass(a1);
+      v36 = object_getClass(self);
       v37 = class_isMetaClass(v36);
-      v38 = object_getClassName(a1);
+      v38 = object_getClassName(self);
       v72 = sel_getName(a2);
       v39 = 45;
       if (v37)
@@ -660,7 +660,7 @@ LABEL_113:
       goto LABEL_36;
     }
 
-    v40 = object_getClass(a1);
+    v40 = object_getClass(self);
     if (class_isMetaClass(v40))
     {
       v41 = 43;
@@ -674,7 +674,7 @@ LABEL_113:
     *buf = 67109890;
     v77 = v41;
     v78 = 2082;
-    v79 = object_getClassName(a1);
+    v79 = object_getClassName(self);
     v80 = 2082;
     v81 = sel_getName(a2);
     v82 = 1024;
@@ -683,7 +683,7 @@ LABEL_113:
     goto LABEL_35;
   }
 
-  v12 = [v11 objectAtIndexedSubscript:0];
+  v12 = [blocksCopy objectAtIndexedSubscript:0];
   v13 = v12;
   if (!v12 || (v14 = [v12 bytes], !objc_msgSend(v13, "length")))
   {
@@ -694,9 +694,9 @@ LABEL_8:
     if (v16)
     {
       v17 = v16;
-      v18 = object_getClass(a1);
+      v18 = object_getClass(self);
       v19 = class_isMetaClass(v18);
-      v20 = object_getClassName(a1);
+      v20 = object_getClassName(self);
       v70 = sel_getName(a2);
       v21 = 45;
       if (v19)
@@ -714,7 +714,7 @@ LABEL_8:
       goto LABEL_36;
     }
 
-    v23 = object_getClass(a1);
+    v23 = object_getClass(self);
     if (class_isMetaClass(v23))
     {
       v24 = 43;
@@ -728,7 +728,7 @@ LABEL_8:
     *buf = 67109890;
     v77 = v24;
     v78 = 2082;
-    v79 = object_getClassName(a1);
+    v79 = object_getClassName(self);
     v80 = 2082;
     v81 = sel_getName(a2);
     v82 = 1024;
@@ -752,7 +752,7 @@ LABEL_37:
     }
   }
 
-  if ([v10 isEqualToNumber:&off_100332268])
+  if ([serviceCopy isEqualToNumber:&off_100332268])
   {
     v22 = objc_opt_new();
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -760,9 +760,9 @@ LABEL_37:
     if (v44)
     {
       v45 = v44;
-      v46 = object_getClass(a1);
+      v46 = object_getClass(self);
       v47 = class_isMetaClass(v46);
-      v48 = object_getClassName(a1);
+      v48 = object_getClassName(self);
       v73 = sel_getName(a2);
       v49 = 45;
       if (v47)
@@ -777,7 +777,7 @@ LABEL_37:
     v50 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
     {
-      v51 = object_getClass(a1);
+      v51 = object_getClass(self);
       if (class_isMetaClass(v51))
       {
         v52 = 43;
@@ -791,7 +791,7 @@ LABEL_37:
       *buf = 67109890;
       v77 = v52;
       v78 = 2082;
-      v79 = object_getClassName(a1);
+      v79 = object_getClassName(self);
       v80 = 2082;
       v81 = sel_getName(a2);
       v82 = 1024;
@@ -799,15 +799,15 @@ LABEL_37:
       _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Decoding green car block", buf, 0x22u);
     }
 
-    v75 = [v11 objectAtIndexedSubscript:0];
-    v53 = [v75 bytes];
-    v54 = [[NSData alloc] initWithBytes:v53 length:2];
+    v75 = [blocksCopy objectAtIndexedSubscript:0];
+    bytes = [v75 bytes];
+    v54 = [[NSData alloc] initWithBytes:bytes length:2];
     if (([v54 NF_isZeroed] & 1) == 0)
     {
       [v22 setObject:v54 forKeyedSubscript:@"NFStartStationData"];
     }
 
-    v55 = [[NSData alloc] initWithBytes:v53 + 2 length:2];
+    v55 = [[NSData alloc] initWithBytes:bytes + 2 length:2];
 
     if (([v55 NF_isZeroed] & 1) == 0)
     {
@@ -815,8 +815,8 @@ LABEL_37:
     }
 
     v74 = v55;
-    v59 = v53[4];
-    v56 = v53[5];
+    v59 = bytes[4];
+    v56 = bytes[5];
     v57 = objc_opt_new();
     [v57 setYear:(v59 >> 1) + 2000];
     [v57 setMonth:((v56 | (v59 << 8)) >> 5) & 0xF];
@@ -826,30 +826,30 @@ LABEL_37:
     LODWORD(v59) = 0;
     do
     {
-      v59 = v53[v58++ + 6] | (v59 << 8);
+      v59 = bytes[v58++ + 6] | (v59 << 8);
     }
 
     while (v58 != 3);
-    v60 = [NSNumber numberWithUnsignedLongLong:(v59 >> 13) & 0x3F];
-    [v22 setObject:v60 forKeyedSubscript:@"NFMinuteSold"];
+    0x3F = [NSNumber numberWithUnsignedLongLong:(v59 >> 13) & 0x3F];
+    [v22 setObject:0x3F forKeyedSubscript:@"NFMinuteSold"];
 
-    v61 = [NSNumber numberWithUnsignedLongLong:(v59 >> 19) & 0x1F];
-    [v22 setObject:v61 forKeyedSubscript:@"NFHourSold"];
+    0x1F = [NSNumber numberWithUnsignedLongLong:(v59 >> 19) & 0x1F];
+    [v22 setObject:0x1F forKeyedSubscript:@"NFHourSold"];
 
-    v62 = [NSNumber numberWithUnsignedShort:10 * v53[9]];
+    v62 = [NSNumber numberWithUnsignedShort:10 * bytes[9]];
     [v22 setObject:v62 forKeyedSubscript:@"NFFare"];
 
-    v63 = [[NSData alloc] initWithBytes:v53 + 12 length:2];
+    v63 = [[NSData alloc] initWithBytes:bytes + 12 length:2];
     [v22 setObject:v63 forKeyedSubscript:@"NFRefundStation"];
 
-    v64 = v53[14];
-    v65 = v53[15];
+    v64 = bytes[14];
+    v65 = bytes[15];
     v66 = v65 | (v64 << 8);
     v67 = [NSNumber numberWithUnsignedLongLong:v65 & 1];
     [v22 setObject:v67 forKeyedSubscript:@"NFTicketUsed"];
 
-    v68 = [NSNumber numberWithUnsignedLongLong:(v66 >> 5) & 0x3F];
-    [v22 setObject:v68 forKeyedSubscript:@"NFRefundDay"];
+    0x3F2 = [NSNumber numberWithUnsignedLongLong:(v66 >> 5) & 0x3F];
+    [v22 setObject:0x3F2 forKeyedSubscript:@"NFRefundDay"];
 
     v69 = [NSNumber numberWithUnsignedLongLong:v64 >> 3];
     [v22 setObject:v69 forKeyedSubscript:@"NFRefundMonth"];
@@ -864,12 +864,12 @@ LABEL_38:
   return v42;
 }
 
-+ (id)decodeLogEvent:(id)a3
++ (id)decodeLogEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = objc_opt_new();
-  v85 = v3;
-  [NFTLV simpleTLVsWithTag:225 fromData:v3];
+  v85 = eventCopy;
+  [NFTLV simpleTLVsWithTag:225 fromData:eventCopy];
   v102 = 0u;
   v103 = 0u;
   v104 = 0u;
@@ -912,42 +912,42 @@ LABEL_38:
               }
 
               v12 = *(*(&v98 + 1) + 8 * i);
-              v13 = [v12 value];
-              if (v13)
+              value = [v12 value];
+              if (value)
               {
-                v14 = v13;
-                v15 = [v12 value];
-                v16 = [v15 length];
+                v14 = value;
+                value2 = [v12 value];
+                v16 = [value2 length];
 
                 if (v16)
                 {
                   v17 = [[NSString alloc] initWithFormat:@"%02x", objc_msgSend(v12, "tag")];
-                  v18 = [v12 value];
-                  [v4 setObject:v18 forKeyedSubscript:v17];
+                  value3 = [v12 value];
+                  [v4 setObject:value3 forKeyedSubscript:v17];
 
-                  v19 = [v12 value];
-                  v20 = [v19 bytes];
+                  value4 = [v12 value];
+                  bytes = [value4 bytes];
 
                   if ([v12 tag] == 216)
                   {
-                    v21 = [v12 value];
-                    v22 = [v21 length];
+                    value5 = [v12 value];
+                    v22 = [value5 length];
 
                     if (v22 >= 0xE && ([v12 value], v23 = objc_claimAutoreleasedReturnValue(), v24 = (objc_msgSend(v23, "length") << 32) - 0x900000000, v23, v24))
                     {
-                      v25 = [[NSData alloc] initWithBytes:v20 length:v24 >> 32];
-                      v26 = [v25 NF_asHexString];
-                      [v92 setObject:v26 forKeyedSubscript:@"AID"];
+                      v25 = [[NSData alloc] initWithBytes:bytes length:v24 >> 32];
+                      nF_asHexString = [v25 NF_asHexString];
+                      [v92 setObject:nF_asHexString forKeyedSubscript:@"AID"];
 
-                      v27 = &v20[v24 >> 32];
+                      v27 = &bytes[v24 >> 32];
                       v28 = [[NSData alloc] initWithBytes:v27 length:8];
-                      v29 = [v28 NF_asHexString];
-                      [v92 setObject:v29 forKeyedSubscript:@"IDM"];
+                      nF_asHexString2 = [v28 NF_asHexString];
+                      [v92 setObject:nF_asHexString2 forKeyedSubscript:@"IDM"];
 
                       v4 = v92;
                       v30 = [NSString alloc];
                       v31 = v27[8];
-                      v20 = v27 + 8;
+                      bytes = v27 + 8;
                       v32 = [v30 initWithFormat:@"%02x", v31];
                       [v92 setObject:v32 forKeyedSubscript:@"Command Code"];
                     }
@@ -960,32 +960,32 @@ LABEL_38:
 
                   if ([v12 tag] == 217)
                   {
-                    v33 = [[NSString alloc] initWithFormat:@"%02x", *v20];
+                    v33 = [[NSString alloc] initWithFormat:@"%02x", *bytes];
                     [v4 setObject:v33 forKeyedSubscript:@"Success Response Code"];
                   }
 
                   if ([v12 tag] == 218)
                   {
-                    v34 = [[NSString alloc] initWithFormat:@"%02x", *v20];
+                    v34 = [[NSString alloc] initWithFormat:@"%02x", *bytes];
                     [v4 setObject:v34 forKeyedSubscript:@"External error no response"];
                   }
 
                   if ([v12 tag] == 219)
                   {
-                    v35 = [[NSString alloc] initWithFormat:@"%02x", *v20];
+                    v35 = [[NSString alloc] initWithFormat:@"%02x", *bytes];
                     [v4 setObject:v35 forKeyedSubscript:@"External error"];
                   }
 
                   if ([v12 tag] == 220)
                   {
-                    v36 = [v12 value];
-                    v37 = [v36 length];
+                    value6 = [v12 value];
+                    v37 = [value6 length];
 
                     v38 = v37 >= 9;
                     v4 = v92;
                     if (v38)
                     {
-                      v39 = [[NSData alloc] initWithBytes:v20 + 1 length:8];
+                      v39 = [[NSData alloc] initWithBytes:bytes + 1 length:8];
                       [v92 setObject:v39 forKeyedSubscript:@"Additional Debug Info"];
                     }
                   }
@@ -1040,36 +1040,36 @@ LABEL_38:
         v46 = *(*(&v94 + 1) + 8 * j);
         if ([v46 tag] == 129)
         {
-          v47 = [v46 asData];
-          v48 = [v47 NF_asHexString];
-          [v4 setObject:v48 forKeyedSubscript:@"AID"];
+          asData = [v46 asData];
+          nF_asHexString3 = [asData NF_asHexString];
+          [v4 setObject:nF_asHexString3 forKeyedSubscript:@"AID"];
         }
 
         if ([v46 tag] == 130)
         {
-          v49 = [v46 children];
-          if (v49)
+          children = [v46 children];
+          if (children)
           {
-            v50 = v49;
-            v51 = [v46 children];
-            v52 = [v51 count];
+            v50 = children;
+            children2 = [v46 children];
+            v52 = [children2 count];
 
             if (v52)
             {
-              v53 = [v46 children];
-              v54 = [v53 objectAtIndexedSubscript:0];
+              children3 = [v46 children];
+              v54 = [children3 objectAtIndexedSubscript:0];
 
-              v55 = [v54 asData];
-              v56 = [v55 NF_asHexString];
+              asData2 = [v54 asData];
+              nF_asHexString4 = [asData2 NF_asHexString];
               v4 = v92;
-              [v92 setObject:v56 forKeyedSubscript:@"Command Code"];
+              [v92 setObject:nF_asHexString4 forKeyedSubscript:@"Command Code"];
               goto LABEL_57;
             }
           }
 
           v57 = v40[435];
-          v58 = [v46 asData];
-          v54 = [v57 simpleTLVsWithData:v58];
+          asData3 = [v46 asData];
+          v54 = [v57 simpleTLVsWithData:asData3];
 
           if (v54 && [v54 count])
           {
@@ -1078,9 +1078,9 @@ LABEL_38:
             if (Logger)
             {
               v60 = Logger;
-              Class = object_getClass(a1);
+              Class = object_getClass(self);
               isMetaClass = class_isMetaClass(Class);
-              ClassName = object_getClassName(a1);
+              ClassName = object_getClassName(self);
               Name = sel_getName(a2);
               v64 = 45;
               if (isMetaClass)
@@ -1095,7 +1095,7 @@ LABEL_38:
             v65 = NFSharedLogGetLogger();
             if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
             {
-              v66 = object_getClass(a1);
+              v66 = object_getClass(self);
               if (class_isMetaClass(v66))
               {
                 v67 = 43;
@@ -1106,7 +1106,7 @@ LABEL_38:
                 v67 = 45;
               }
 
-              v68 = object_getClassName(a1);
+              v68 = object_getClassName(self);
               v69 = sel_getName(a2);
               *buf = 67109890;
               v107 = v67;
@@ -1119,10 +1119,10 @@ LABEL_38:
               _os_log_impl(&_mh_execute_header, v65, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Found parameter event in sub data", buf, 0x22u);
             }
 
-            v55 = [v54 objectAtIndexedSubscript:0];
-            v56 = [v55 asData];
-            v70 = [v56 NF_asHexString];
-            [v92 setObject:v70 forKeyedSubscript:@"Command Code"];
+            asData2 = [v54 objectAtIndexedSubscript:0];
+            nF_asHexString4 = [asData2 asData];
+            v56NF_asHexString = [nF_asHexString4 NF_asHexString];
+            [v92 setObject:v56NF_asHexString forKeyedSubscript:@"Command Code"];
 
             v4 = v92;
             v40 = &GetElapsedTimeInMillisecondsFromMachTime_ptr;
@@ -1148,9 +1148,9 @@ LABEL_62:
         if (v71)
         {
           v72 = v71;
-          v73 = object_getClass(a1);
+          v73 = object_getClass(self);
           v74 = class_isMetaClass(v73);
-          v82 = object_getClassName(a1);
+          v82 = object_getClassName(self);
           v84 = sel_getName(a2);
           v75 = 45;
           if (v74)
@@ -1166,7 +1166,7 @@ LABEL_62:
         v76 = NFSharedLogGetLogger();
         if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
         {
-          v77 = object_getClass(a1);
+          v77 = object_getClass(self);
           if (class_isMetaClass(v77))
           {
             v78 = 43;
@@ -1177,7 +1177,7 @@ LABEL_62:
             v78 = 45;
           }
 
-          v79 = object_getClassName(a1);
+          v79 = object_getClassName(self);
           v80 = sel_getName(a2);
           *buf = 67110146;
           v107 = v78;
@@ -1215,17 +1215,17 @@ LABEL_62:
   return v2;
 }
 
-- (void)addStateInfo:(id)a3 appletAID:(id)a4
+- (void)addStateInfo:(id)info appletAID:(id)d
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [[NSMutableDictionary alloc] initWithDictionary:v14];
-  [v7 setObject:v6 forKey:@"NFAppletAID"];
-  v8 = [(NSMutableDictionary *)self->_stateEvents valueForKey:v6];
+  infoCopy = info;
+  dCopy = d;
+  v7 = [[NSMutableDictionary alloc] initWithDictionary:infoCopy];
+  [v7 setObject:dCopy forKey:@"NFAppletAID"];
+  v8 = [(NSMutableDictionary *)self->_stateEvents valueForKey:dCopy];
   if (!v8)
   {
     v9 = objc_opt_new();
-    [(NSMutableDictionary *)self->_stateEvents setObject:v9 forKey:v6];
+    [(NSMutableDictionary *)self->_stateEvents setObject:v9 forKey:dCopy];
     [v9 addEntriesFromDictionary:v7];
     goto LABEL_11;
   }
@@ -1234,7 +1234,7 @@ LABEL_62:
   [v7 removeObjectForKey:@"NFHistoryRecords"];
   [v9 addEntriesFromDictionary:v7];
   v10 = [v9 objectForKey:@"NFHistoryRecords"];
-  v11 = [v14 objectForKey:@"NFHistoryRecords"];
+  v11 = [infoCopy objectForKey:@"NFHistoryRecords"];
   v12 = v11;
   if (v10 && v11)
   {

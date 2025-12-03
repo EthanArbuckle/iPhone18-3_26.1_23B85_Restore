@@ -3,61 +3,61 @@
 - (BOOL)policyPreventsBackup;
 - (BYBuddyDaemonCloudSyncClient)cloudSyncClient;
 - (ICQBackupController)init;
-- (ICQBackupController)initWithAccount:(id)a3;
-- (id)_backgroundRestoreInfoText:(id)a3;
+- (ICQBackupController)initWithAccount:(id)account;
+- (id)_backgroundRestoreInfoText:(id)text;
 - (id)_buildHeaderCardSpecifier;
 - (id)cachedIsBackupEnabledNumber;
 - (id)dateStringOfLatestBackup;
 - (id)isBackupOverCellularEnabled;
 - (id)manageStorageAction;
 - (id)specifiers;
-- (void)_backupEnabledSwitchCancelled:(id)a3;
+- (void)_backupEnabledSwitchCancelled:(id)cancelled;
 - (void)_checkSupportForManualAndAutoBackupOnCellular;
-- (void)_persistBackupEnablementState:(BOOL)a3 passcode:(id)a4;
-- (void)_setBackupEnabled:(BOOL)a3 passcode:(id)a4;
+- (void)_persistBackupEnablementState:(BOOL)state passcode:(id)passcode;
+- (void)_setBackupEnabled:(BOOL)enabled passcode:(id)passcode;
 - (void)_showAlertForExpensiveCellular;
-- (void)_updateToBackupState:(id)a3 restoreState:(id)a4 backgroundRestoreState:(id)a5 backupEnabled:(BOOL)a6;
-- (void)_updateToBackupState:(int)a3 backupError:(id)a4 progress:(float)a5 timeRemaining:(unint64_t)a6 restoreStateInfo:(id)a7 backgroundRestoreInfo:(id)a8 backupEnabled:(BOOL)a9;
-- (void)beginBackup:(id)a3;
-- (void)cancelBackup:(id)a3;
-- (void)cancelRestore:(id)a3;
+- (void)_updateToBackupState:(id)state restoreState:(id)restoreState backgroundRestoreState:(id)backgroundRestoreState backupEnabled:(BOOL)enabled;
+- (void)_updateToBackupState:(int)state backupError:(id)error progress:(float)progress timeRemaining:(unint64_t)remaining restoreStateInfo:(id)info backgroundRestoreInfo:(id)restoreInfo backupEnabled:(BOOL)enabled;
+- (void)beginBackup:(id)backup;
+- (void)cancelBackup:(id)backup;
+- (void)cancelRestore:(id)restore;
 - (void)checkIfNetworkSupportsBackup;
 - (void)checkIfThermalSupportsBackup;
 - (void)dealloc;
 - (void)didCancelEnteringPIN;
 - (void)fetchIsBackupEnabled;
-- (void)manager:(id)a3 didFailBackupWithError:(id)a4;
-- (void)manager:(id)a3 didFailRestoreWithError:(id)a4;
-- (void)manager:(id)a3 didSetBackupEnabled:(BOOL)a4;
-- (void)manager:(id)a3 didUpdateProgress:(float)a4 estimatedTimeRemaining:(unint64_t)a5;
-- (void)managerDidCancelRestore:(id)a3;
-- (void)managerDidFinishBackup:(id)a3;
-- (void)managerDidFinishRestore:(id)a3;
-- (void)managerDidLoseConnectionToService:(id)a3;
-- (void)managerDidUpdateBackgroundRestoreProgress:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)openBackupHelpPage:(id)a3;
-- (void)prepareAlertForBackupDisabledDomainAndShow:(BOOL)a3;
+- (void)manager:(id)manager didFailBackupWithError:(id)error;
+- (void)manager:(id)manager didFailRestoreWithError:(id)error;
+- (void)manager:(id)manager didSetBackupEnabled:(BOOL)enabled;
+- (void)manager:(id)manager didUpdateProgress:(float)progress estimatedTimeRemaining:(unint64_t)remaining;
+- (void)managerDidCancelRestore:(id)restore;
+- (void)managerDidFinishBackup:(id)backup;
+- (void)managerDidFinishRestore:(id)restore;
+- (void)managerDidLoseConnectionToService:(id)service;
+- (void)managerDidUpdateBackgroundRestoreProgress:(id)progress;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)openBackupHelpPage:(id)page;
+- (void)prepareAlertForBackupDisabledDomainAndShow:(BOOL)show;
 - (void)proceedWithBackup;
 - (void)reloadSpecifiers;
-- (void)reloadSpecifiersForProvider:(id)a3 oldSpecifiers:(id)a4 animated:(BOOL)a5;
-- (void)setBackupEnabled:(id)a3 specifier:(id)a4;
-- (void)setBackupOverCellularEnabled:(id)a3;
-- (void)setLastBackupDateString:(id)a3;
-- (void)setNetworkSupportsBackup:(BOOL)a3;
-- (void)showAlertForBackupDisabledItemsWithTitle:(id)a3 andMessage:(id)a4;
+- (void)reloadSpecifiersForProvider:(id)provider oldSpecifiers:(id)specifiers animated:(BOOL)animated;
+- (void)setBackupEnabled:(id)enabled specifier:(id)specifier;
+- (void)setBackupOverCellularEnabled:(id)enabled;
+- (void)setLastBackupDateString:(id)string;
+- (void)setNetworkSupportsBackup:(BOOL)backup;
+- (void)showAlertForBackupDisabledItemsWithTitle:(id)title andMessage:(id)message;
 - (void)showPopUpAlertForBackupDisabledApps;
 - (void)startBackup;
 - (void)startListeningForThermalChanges;
-- (void)syncCompletedWithErrors:(id)a3;
-- (void)syncProgress:(double)a3;
+- (void)syncCompletedWithErrors:(id)errors;
+- (void)syncProgress:(double)progress;
 - (void)updateBackupFinishState;
 - (void)updateBusyState;
-- (void)updateLastBackupDateInvalidatePrevious:(BOOL)a3;
-- (void)updateiCloudBackupAndSyncProgressWithAllowDecrease:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)updateLastBackupDateInvalidatePrevious:(BOOL)previous;
+- (void)updateiCloudBackupAndSyncProgressWithAllowDecrease:(BOOL)decrease;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)willUnlock;
 @end
 
@@ -65,26 +65,26 @@
 
 - (ICQBackupController)init
 {
-  v3 = [MEMORY[0x277CB8F48] defaultStore];
-  v4 = [v3 aa_primaryAppleAccount];
-  v5 = [(ICQBackupController *)self initWithAccount:v4];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+  v5 = [(ICQBackupController *)self initWithAccount:aa_primaryAppleAccount];
 
   return v5;
 }
 
-- (ICQBackupController)initWithAccount:(id)a3
+- (ICQBackupController)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v18.receiver = self;
   v18.super_class = ICQBackupController;
   v6 = [(ICQBackupController *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
     v8 = objc_alloc(MEMORY[0x277D28A40]);
-    v9 = [(ACAccount *)v7->_account personaIdentifier];
-    v10 = [v8 initWithDelegate:v7 eventQueue:0 personaIdentifier:v9];
+    personaIdentifier = [(ACAccount *)v7->_account personaIdentifier];
+    v10 = [v8 initWithDelegate:v7 eventQueue:0 personaIdentifier:personaIdentifier];
     backupManager = v7->_backupManager;
     v7->_backupManager = v10;
 
@@ -122,11 +122,11 @@
   [(ICQBackupController *)self updateLastBackupDate];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = ICQBackupController;
-  [(ICQBackupController *)&v7 viewWillAppear:a3];
+  [(ICQBackupController *)&v7 viewWillAppear:appear];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"BACKUPS_NAV_TITLE" value:&stru_28844FC60 table:@"Backup"];
   [(ICQBackupController *)self setTitle:v5];
@@ -137,11 +137,11 @@
   [(ICQBackupController *)self prepareAlertForBackupDisabledDomainAndShow:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = ICQBackupController;
-  [(ICQBackupController *)&v7 viewDidAppear:a3];
+  [(ICQBackupController *)&v7 viewDidAppear:appear];
   if (([(ICQBackupController *)self isMovingToParentViewController]& 1) == 0)
   {
     v4 = +[ICQQuotaRequestManager sharedManager];
@@ -161,11 +161,11 @@
   [(ICQBackupController *)self checkIfThermalSupportsBackup];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = ICQBackupController;
-  [(ICQBackupController *)&v4 viewWillDisappear:a3];
+  [(ICQBackupController *)&v4 viewWillDisappear:disappear];
   [(ICQBackupController *)self stopListeningForThermalChanges];
   self->_needToShowPopupAlertForBackup = 0;
 }
@@ -199,9 +199,9 @@
   return cloudSyncClient;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:{@"path", a4, a5, a6}])
+  if ([path isEqualToString:{@"path", object, change, context}])
   {
     objc_initWeak(&location, self);
     v7[0] = MEMORY[0x277D85DD0];
@@ -221,13 +221,13 @@ void __70__ICQBackupController_observeValueForKeyPath_ofObject_change_context___
   [WeakRetained checkIfNetworkSupportsBackup];
 }
 
-- (void)setNetworkSupportsBackup:(BOOL)a3
+- (void)setNetworkSupportsBackup:(BOOL)backup
 {
-  v3 = a3;
+  backupCopy = backup;
   networkSupportsBackup = self->_networkSupportsBackup;
-  if (!networkSupportsBackup || [(NSNumber *)networkSupportsBackup BOOLValue]!= a3)
+  if (!networkSupportsBackup || [(NSNumber *)networkSupportsBackup BOOLValue]!= backup)
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+    v6 = [MEMORY[0x277CCABB0] numberWithBool:backupCopy];
     v7 = self->_networkSupportsBackup;
     self->_networkSupportsBackup = v6;
 
@@ -240,12 +240,12 @@ void __70__ICQBackupController_observeValueForKeyPath_ofObject_change_context___
 - (void)checkIfNetworkSupportsBackup
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(ICQBackupController *)self pathEvaluator];
-  v4 = [v3 path];
+  pathEvaluator = [(ICQBackupController *)self pathEvaluator];
+  path = [pathEvaluator path];
 
-  v5 = [v4 status] & 0xFFFFFFFFFFFFFFFDLL;
-  v6 = [v4 interface];
-  v7 = [v6 type];
+  v5 = [path status] & 0xFFFFFFFFFFFFFFFDLL;
+  interface = [path interface];
+  type = [interface type];
 
   isExpensiveCellular = self->_isExpensiveCellular;
   self->_isExpensiveCellular = 0;
@@ -255,20 +255,20 @@ void __70__ICQBackupController_observeValueForKeyPath_ofObject_change_context___
     goto LABEL_7;
   }
 
-  if ([v4 usesInterfaceType:1])
+  if ([path usesInterfaceType:1])
   {
     goto LABEL_8;
   }
 
-  if ([v4 usesInterfaceType:3])
+  if ([path usesInterfaceType:3])
   {
     LOBYTE(v5) = 1;
     goto LABEL_8;
   }
 
-  if ([v4 usesInterfaceType:2])
+  if ([path usesInterfaceType:2])
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "isExpensive")}];
+    v9 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(path, "isExpensive")}];
     v10 = self->_isExpensiveCellular;
     self->_isExpensiveCellular = v9;
 
@@ -288,7 +288,7 @@ LABEL_8:
   {
     v12 = self->_isExpensiveCellular;
     v13 = 134218498;
-    v14 = v7;
+    v14 = type;
     v15 = 2112;
     v16 = v12;
     v17 = 1024;
@@ -511,7 +511,7 @@ LABEL_6:
 
       v13 = v12;
       [v12 setName:0];
-      v14 = [(ICQBackupController *)self _buildHeaderCardSpecifier];
+      _buildHeaderCardSpecifier = [(ICQBackupController *)self _buildHeaderCardSpecifier];
       if ([v6 count] >= 2)
       {
         v15 = _ICQGetLogSystem();
@@ -522,7 +522,7 @@ LABEL_6:
           _os_log_impl(&dword_275623000, v15, OS_LOG_TYPE_DEFAULT, "Inserting header specifier for backup controller at index: %d", buf, 8u);
         }
 
-        [v6 insertObject:v14 atIndex:1];
+        [v6 insertObject:_buildHeaderCardSpecifier atIndex:1];
       }
 
       if (!self->_backupOverCellularSpecifiers)
@@ -562,20 +562,20 @@ LABEL_6:
       if (!self->_backupNowSpecifiers)
       {
         v56 = v11;
-        v29 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+        emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
         v54 = *MEMORY[0x277D3FFB8];
-        [v29 setProperty:@"BACKUP_NOW_GROUP" forKey:?];
+        [emptyGroupSpecifier setProperty:@"BACKUP_NOW_GROUP" forKey:?];
         if (!self->_backupStatusView)
         {
-          v30 = [[ICQBackupStatusView alloc] initWithSpecifier:v29];
+          v30 = [[ICQBackupStatusView alloc] initWithSpecifier:emptyGroupSpecifier];
           backupStatusView = self->_backupStatusView;
           self->_backupStatusView = v30;
         }
 
         v32 = [objc_opt_class() description];
-        [v29 setProperty:v32 forKey:*MEMORY[0x277D3FF48]];
+        [emptyGroupSpecifier setProperty:v32 forKey:*MEMORY[0x277D3FF48]];
 
-        [v29 setProperty:self->_backupStatusView forKey:*MEMORY[0x277D3FF90]];
+        [emptyGroupSpecifier setProperty:self->_backupStatusView forKey:*MEMORY[0x277D3FF90]];
         if (!self->_backupNowButton)
         {
           v52 = MEMORY[0x277D3FAD8];
@@ -599,7 +599,7 @@ LABEL_6:
           [(PSSpecifier *)self->_backupNowButton setButtonAction:sel_beginBackup_];
         }
 
-        v41 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{v29, self->_backupNowButton, 0}];
+        v41 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{emptyGroupSpecifier, self->_backupNowButton, 0}];
         backupNowSpecifiers = self->_backupNowSpecifiers;
         self->_backupNowSpecifiers = v41;
       }
@@ -614,13 +614,13 @@ LABEL_6:
         backupSpecifierProvider = self->_backupSpecifierProvider;
       }
 
-      v46 = [(AAUISpecifierProvider *)backupSpecifierProvider specifiers];
-      v47 = [v46 count];
+      specifiers = [(AAUISpecifierProvider *)backupSpecifierProvider specifiers];
+      v47 = [specifiers count];
 
       if (v47)
       {
-        v48 = [(AAUISpecifierProvider *)self->_backupSpecifierProvider specifiers];
-        [v6 addObjectsFromArray:v48];
+        specifiers2 = [(AAUISpecifierProvider *)self->_backupSpecifierProvider specifiers];
+        [v6 addObjectsFromArray:specifiers2];
       }
 
       v49 = *(&self->super.super.super.super.super.isa + v3);
@@ -634,9 +634,9 @@ LABEL_6:
   return v4;
 }
 
-- (void)prepareAlertForBackupDisabledDomainAndShow:(BOOL)a3
+- (void)prepareAlertForBackupDisabledDomainAndShow:(BOOL)show
 {
-  self->_needToShowPopupAlertForBackup = a3;
+  self->_needToShowPopupAlertForBackup = show;
   if (!self->_isFetchingDomainInfo)
   {
     self->_isFetchingDomainInfo = 1;
@@ -666,8 +666,8 @@ void __66__ICQBackupController_prepareAlertForBackupDisabledDomainAndShow___bloc
 
 - (BOOL)policyPreventsBackup
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x277D25E30]] == 2;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25E30]] == 2;
 
   return v3;
 }
@@ -726,12 +726,12 @@ uint64_t __43__ICQBackupController_fetchIsBackupEnabled__block_invoke_2(uint64_t
       _os_log_impl(&dword_275623000, v3, OS_LOG_TYPE_DEFAULT, "Backup not enabled because policy prevents backup", &v7, 2u);
     }
 
-    LOBYTE(v4) = 0;
+    LOBYTE(isBackupEnabled) = 0;
   }
 
   else
   {
-    v4 = [(MBManager *)self->_backupManager isBackupEnabled];
+    isBackupEnabled = [(MBManager *)self->_backupManager isBackupEnabled];
     v3 = _ICQGetLogSystem();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
@@ -739,14 +739,14 @@ uint64_t __43__ICQBackupController_fetchIsBackupEnabled__block_invoke_2(uint64_t
       v7 = 136315650;
       v8 = "[ICQBackupController isBackupEnabled]";
       v9 = 1024;
-      v10 = v4;
+      v10 = isBackupEnabled;
       v11 = 2112;
       v12 = backupManager;
       _os_log_impl(&dword_275623000, v3, OS_LOG_TYPE_DEFAULT, "%s, returning: %d, backup manager: %@", &v7, 0x1Cu);
     }
   }
 
-  return v4;
+  return isBackupEnabled;
 }
 
 - (id)cachedIsBackupEnabledNumber
@@ -768,24 +768,24 @@ uint64_t __43__ICQBackupController_fetchIsBackupEnabled__block_invoke_2(uint64_t
   return v5;
 }
 
-- (void)_setBackupEnabled:(BOOL)a3 passcode:(id)a4
+- (void)_setBackupEnabled:(BOOL)enabled passcode:(id)passcode
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  passcodeCopy = passcode;
   v7 = _ICQGetLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v26 = "[ICQBackupController _setBackupEnabled:passcode:]";
     v27 = 1024;
-    v28 = v4;
+    v28 = enabledCopy;
     _os_log_impl(&dword_275623000, v7, OS_LOG_TYPE_DEFAULT, "%s, enabled: %d", buf, 0x12u);
   }
 
-  if (v4)
+  if (enabledCopy)
   {
-    [(ICQBackupController *)self _persistBackupEnablementState:1 passcode:v6];
+    [(ICQBackupController *)self _persistBackupEnablementState:1 passcode:passcodeCopy];
   }
 
   else
@@ -805,7 +805,7 @@ uint64_t __43__ICQBackupController_fetchIsBackupEnabled__block_invoke_2(uint64_t
     v22[3] = &unk_27A65B8D8;
     v22[4] = self;
     v24 = 0;
-    v23 = v6;
+    v23 = passcodeCopy;
     v16 = [v13 actionWithTitle:v15 style:2 handler:v22];
     [v12 addAction:v16];
 
@@ -858,24 +858,24 @@ void __50__ICQBackupController__setBackupEnabled_passcode___block_invoke_580()
   }
 }
 
-- (void)_persistBackupEnablementState:(BOOL)a3 passcode:(id)a4
+- (void)_persistBackupEnablementState:(BOOL)state passcode:(id)passcode
 {
-  v4 = a3;
+  stateCopy = state;
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  passcodeCopy = passcode;
   v7 = _ICQGetLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     *&buf[4] = "[ICQBackupController _persistBackupEnablementState:passcode:]";
     *&buf[12] = 1024;
-    *&buf[14] = v4;
+    *&buf[14] = stateCopy;
     _os_log_impl(&dword_275623000, v7, OS_LOG_TYPE_DEFAULT, "%s, enabled: %d", buf, 0x12u);
   }
 
   [(ICQBackupStatusView *)self->_backupStatusView setFooterText:0];
   [(ICQBackupStatusView *)self->_backupStatusView setBackupError:0];
-  if (!v4)
+  if (!stateCopy)
   {
     backupNowButton = self->_backupNowButton;
     v9 = [MEMORY[0x277CCABB0] numberWithBool:0];
@@ -887,9 +887,9 @@ void __50__ICQBackupController__setBackupEnabled_passcode___block_invoke_580()
     [(ICQBackupController *)self reloadSpecifier:self->_backupOverCellularSwitch];
   }
 
-  v11 = [(ICQBackupController *)self view];
-  v12 = [v11 window];
-  [v12 setUserInteractionEnabled:0];
+  view = [(ICQBackupController *)self view];
+  window = [view window];
+  [window setUserInteractionEnabled:0];
 
   *buf = 0;
   *&buf[8] = buf;
@@ -901,7 +901,7 @@ void __50__ICQBackupController__setBackupEnabled_passcode___block_invoke_580()
   [*(*&buf[8] + 40) setFontSize:16];
   v13 = *(*&buf[8] + 40);
   v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  if (v4)
+  if (stateCopy)
   {
     [v14 localizedStringForKey:@"TURNING_ON_BACKUP" value:&stru_28844FC60 table:@"Backup"];
   }
@@ -926,11 +926,11 @@ void __50__ICQBackupController__setBackupEnabled_passcode___block_invoke_580()
   v19[1] = 3221225472;
   v19[2] = __62__ICQBackupController__persistBackupEnablementState_passcode___block_invoke_2;
   v19[3] = &unk_27A65B928;
-  v22 = v4;
+  v22 = stateCopy;
   v19[4] = self;
-  v20 = v6;
+  v20 = passcodeCopy;
   v21 = buf;
-  v18 = v6;
+  v18 = passcodeCopy;
   dispatch_async(backup_state_queue, v19);
 
   _Block_object_dispose(buf, 8);
@@ -1195,13 +1195,13 @@ void __62__ICQBackupController__persistBackupEnablementState_passcode___block_in
   return v7;
 }
 
-- (void)setBackupOverCellularEnabled:(id)a3
+- (void)setBackupOverCellularEnabled:(id)enabled
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  enabledCopy = enabled;
   backupManager = self->_backupManager;
   v13 = 0;
-  v6 = -[MBManager setBackupOnCellularEnabled:error:](backupManager, "setBackupOnCellularEnabled:error:", [v4 BOOLValue], &v13);
+  v6 = -[MBManager setBackupOnCellularEnabled:error:](backupManager, "setBackupOnCellularEnabled:error:", [enabledCopy BOOLValue], &v13);
   v7 = v13;
   v8 = _ICQGetLogSystem();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
@@ -1210,7 +1210,7 @@ void __62__ICQBackupController__persistBackupEnablementState_passcode___block_in
     if (v9)
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = enabledCopy;
       v10 = "Successfully set BackupOnCellularEnabled: %@";
       v11 = v8;
       v12 = 12;
@@ -1222,7 +1222,7 @@ LABEL_6:
   else if (v9)
   {
     *buf = 138412546;
-    v15 = v4;
+    v15 = enabledCopy;
     v16 = 2112;
     v17 = v7;
     v10 = "Failed to set BackupOnCellularEnabled: %@: %@";
@@ -1249,10 +1249,10 @@ LABEL_6:
   [(ICQBackupController *)self reloadSpecifier:v4 animated:1];
 }
 
-- (void)_backupEnabledSwitchCancelled:(id)a3
+- (void)_backupEnabledSwitchCancelled:(id)cancelled
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cancelledCopy = cancelled;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1261,21 +1261,21 @@ LABEL_6:
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v6, 0xCu);
   }
 
-  [(ICQBackupController *)self reloadSpecifier:v4 animated:1];
+  [(ICQBackupController *)self reloadSpecifier:cancelledCopy animated:1];
 }
 
-- (void)setBackupEnabled:(id)a3 specifier:(id)a4
+- (void)setBackupEnabled:(id)enabled specifier:(id)specifier
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[ICQBackupController setBackupEnabled:specifier:]";
     v11 = 2112;
-    v12 = v6;
+    v12 = enabledCopy;
     _os_log_impl(&dword_275623000, v8, OS_LOG_TYPE_DEFAULT, "%s, enabled: %@", &v9, 0x16u);
   }
 
@@ -1285,28 +1285,28 @@ LABEL_6:
     [ICQBackupController setBackupEnabled:specifier:];
   }
 
-  if ([v6 BOOLValue])
+  if ([enabledCopy BOOLValue])
   {
-    [(ICQBackupController *)self _enableBackupWithSpecifier:v7];
+    [(ICQBackupController *)self _enableBackupWithSpecifier:specifierCopy];
   }
 
   else
   {
-    [(ICQBackupController *)self _disableBackupWithSpecifier:v7];
+    [(ICQBackupController *)self _disableBackupWithSpecifier:specifierCopy];
   }
 }
 
-- (void)openBackupHelpPage:(id)a3
+- (void)openBackupHelpPage:(id)page
 {
-  v7 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v3 = MEMORY[0x277CBEBC0];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"BACKUP_HELP_PAGE_URL" value:&stru_28844FC60 table:@"Backup"];
   v6 = [v3 URLWithString:v5];
-  [v7 openURL:v6 options:MEMORY[0x277CBEC10] completionHandler:0];
+  [mEMORY[0x277D75128] openURL:v6 options:MEMORY[0x277CBEC10] completionHandler:0];
 }
 
-- (void)updateiCloudBackupAndSyncProgressWithAllowDecrease:(BOOL)a3
+- (void)updateiCloudBackupAndSyncProgressWithAllowDecrease:(BOOL)decrease
 {
   if (self->_icloudBackupProgress >= 0.0199999996)
   {
@@ -1318,7 +1318,7 @@ LABEL_6:
     icloudBackupProgress = 0.0199999996;
   }
 
-  if (a3 || ([(ICQBackupStatusView *)self->_backupStatusView progress], icloudBackupProgress >= v5))
+  if (decrease || ([(ICQBackupStatusView *)self->_backupStatusView progress], icloudBackupProgress >= v5))
   {
     backupStatusView = self->_backupStatusView;
     v7 = (60 * self->_estimateTimeRemaining);
@@ -1327,9 +1327,9 @@ LABEL_6:
   }
 }
 
-- (void)setLastBackupDateString:(id)a3
+- (void)setLastBackupDateString:(id)string
 {
-  [(ICQBackupStatusView *)self->_backupStatusView setLastBackupText:a3];
+  [(ICQBackupStatusView *)self->_backupStatusView setLastBackupText:string];
   [(ICQBackupController *)self beginUpdates];
 
   [(ICQBackupController *)self endUpdates];
@@ -1342,16 +1342,16 @@ LABEL_6:
   v5 = [v3 localizedStringForKey:v4 value:&stru_28844FC60 table:@"Backup"];
 
   v6 = MEMORY[0x277CCA968];
-  v7 = [MEMORY[0x277CBEAF8] currentLocale];
-  v8 = [v6 dateFormatFromTemplate:@"j" options:0 locale:v7];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v8 = [v6 dateFormatFromTemplate:@"j" options:0 locale:currentLocale];
 
   v9 = [v8 rangeOfString:@"H"];
-  v10 = [(MBManager *)self->_backupManager dateOfLastBackup];
-  if (v10)
+  dateOfLastBackup = [(MBManager *)self->_backupManager dateOfLastBackup];
+  if (dateOfLastBackup)
   {
     v11 = objc_alloc_init(MEMORY[0x277CCA968]);
-    v12 = [MEMORY[0x277CBEA80] currentCalendar];
-    v13 = [v10 isTodayWithCalendar:v12];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v13 = [dateOfLastBackup isTodayWithCalendar:currentCalendar];
 
     if (v13 && v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -1361,9 +1361,9 @@ LABEL_6:
 
     else
     {
-      v14 = [MEMORY[0x277CBEAF8] currentLocale];
-      v15 = [v14 localeIdentifier];
-      v16 = [v15 isEqualToString:@"en_US"];
+      currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+      localeIdentifier = [currentLocale2 localeIdentifier];
+      v16 = [localeIdentifier isEqualToString:@"en_US"];
 
       [v11 setDoesRelativeDateFormatting:1];
       if (v16)
@@ -1374,8 +1374,8 @@ LABEL_6:
         v18 = MEMORY[0x277CCACA8];
         v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v20 = [v19 localizedStringForKey:@"LAST_BACKUP_DATE_AT_TIME" value:&stru_28844FC60 table:@"Backup"];
-        v21 = [v11 stringFromDate:v10];
-        v22 = [v17 stringFromDate:v10];
+        v21 = [v11 stringFromDate:dateOfLastBackup];
+        v22 = [v17 stringFromDate:dateOfLastBackup];
         v23 = [v18 localizedStringWithFormat:v20, v21, v22];
 
         v5 = v21;
@@ -1393,7 +1393,7 @@ LABEL_9:
     v24 = MEMORY[0x277CCACA8];
     v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v19 = [v17 localizedStringForKey:@"LAST_BACKUP_DATE_OR_TIME" value:&stru_28844FC60 table:@"Backup"];
-    v20 = [v11 stringFromDate:v10];
+    v20 = [v11 stringFromDate:dateOfLastBackup];
     v23 = [v24 localizedStringWithFormat:v19, v20];
     goto LABEL_9;
   }
@@ -1403,9 +1403,9 @@ LABEL_10:
   return v5;
 }
 
-- (void)updateLastBackupDateInvalidatePrevious:(BOOL)a3
+- (void)updateLastBackupDateInvalidatePrevious:(BOOL)previous
 {
-  if (a3)
+  if (previous)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -1445,22 +1445,22 @@ void __62__ICQBackupController_updateLastBackupDateInvalidatePrevious___block_in
   dispatch_async(MEMORY[0x277D85CD0], v4);
 }
 
-- (id)_backgroundRestoreInfoText:(id)a3
+- (id)_backgroundRestoreInfoText:(id)text
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  textCopy = text;
+  v4 = textCopy;
+  if (!textCopy)
   {
     v19 = 0;
     goto LABEL_41;
   }
 
-  v5 = [MEMORY[0x277CCA8E8] stringFromByteCount:objc_msgSend(v3 countStyle:{"bytesRemaining"), 1}];
+  v5 = [MEMORY[0x277CCA8E8] stringFromByteCount:objc_msgSend(textCopy countStyle:{"bytesRemaining"), 1}];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [v4 dataClassesRemaining];
-  v8 = (v7 >> 5) & 1;
-  if ((v7 & 0x20) != 0)
+  dataClassesRemaining = [v4 dataClassesRemaining];
+  v8 = (dataClassesRemaining >> 5) & 1;
+  if ((dataClassesRemaining & 0x20) != 0)
   {
     [v6 addObject:@"APPDATA"];
   }
@@ -1618,45 +1618,45 @@ LABEL_41:
   return v19;
 }
 
-- (void)_updateToBackupState:(int)a3 backupError:(id)a4 progress:(float)a5 timeRemaining:(unint64_t)a6 restoreStateInfo:(id)a7 backgroundRestoreInfo:(id)a8 backupEnabled:(BOOL)a9
+- (void)_updateToBackupState:(int)state backupError:(id)error progress:(float)progress timeRemaining:(unint64_t)remaining restoreStateInfo:(id)info backgroundRestoreInfo:(id)restoreInfo backupEnabled:(BOOL)enabled
 {
-  v9 = a9;
+  enabledCopy = enabled;
   v86 = *MEMORY[0x277D85DE8];
-  v16 = a4;
-  v83 = a7;
-  v82 = a8;
-  v17 = [(ICQBackupStatusView *)self->_backupStatusView backupError];
-  if (!v16 || v17)
+  errorCopy = error;
+  infoCopy = info;
+  restoreInfoCopy = restoreInfo;
+  backupError = [(ICQBackupStatusView *)self->_backupStatusView backupError];
+  if (!errorCopy || backupError)
   {
   }
 
-  else if ([v16 code] != 202)
+  else if ([errorCopy code] != 202)
   {
     v18 = _ICQGetLogSystem();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v85 = v16;
+      v85 = errorCopy;
       _os_log_impl(&dword_275623000, v18, OS_LOG_TYPE_DEFAULT, "Setting error from backup state: %@", buf, 0xCu);
     }
 
-    [(ICQBackupStatusView *)self->_backupStatusView setBackupError:v16];
+    [(ICQBackupStatusView *)self->_backupStatusView setBackupError:errorCopy];
   }
 
-  self->_backupState = a3;
-  self->_backupEnabled = v9;
+  self->_backupState = state;
+  self->_backupEnabled = enabledCopy;
   v19 = [(ICQBackupController *)self specifierForID:@"BACKUP_ENABLED_SWITCH"];
   v20 = MEMORY[0x277D3FF38];
-  v79 = v16;
+  v79 = errorCopy;
   v80 = v19;
-  v78 = v9;
-  if (a3 > 6)
+  v78 = enabledCopy;
+  if (state > 6)
   {
     v32 = _ICQGetLogSystem();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v85) = a3;
+      LODWORD(v85) = state;
       _os_log_impl(&dword_275623000, v32, OS_LOG_TYPE_DEFAULT, "Got an unknown state from backup manager: %i", buf, 8u);
     }
 
@@ -1664,25 +1664,25 @@ LABEL_41:
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v85) = a3;
+      LODWORD(v85) = state;
       _os_log_impl(&dword_275623000, v33, OS_LOG_TYPE_DEFAULT, "Got an unknown state from backup manager: %i", buf, 8u);
     }
 
-    v77 = a3;
+    stateCopy3 = state;
 
     v34 = *v20;
     v35 = [(PSSpecifier *)self->_backupNowButton propertyForKey:*v20];
-    v26 = [v35 BOOLValue];
+    bOOLValue = [v35 BOOLValue];
 
     v36 = [v80 propertyForKey:v34];
-    v25 = [v36 BOOLValue];
+    bOOLValue2 = [v36 BOOLValue];
   }
 
   else
   {
-    if (((1 << a3) & 0x39) != 0)
+    if (((1 << state) & 0x39) != 0)
     {
-      v77 = a3;
+      stateCopy3 = state;
 LABEL_11:
       if (self->_backupNowButton)
       {
@@ -1703,8 +1703,8 @@ LABEL_11:
 
       if ([(NSNumber *)self->_networkSupportsBackup BOOLValue])
       {
-        v25 = 1;
-        v26 = v9;
+        bOOLValue2 = 1;
+        bOOLValue = enabledCopy;
       }
 
       else
@@ -1716,30 +1716,30 @@ LABEL_11:
           _os_log_impl(&dword_275623000, v31, OS_LOG_TYPE_DEFAULT, "Network does not support backup - backup button disabled", buf, 2u);
         }
 
-        v26 = 0;
-        v25 = 1;
+        bOOLValue = 0;
+        bOOLValue2 = 1;
       }
 
       goto LABEL_33;
     }
 
-    if (((1 << a3) & 6) == 0)
+    if (((1 << state) & 6) == 0)
     {
       if (self->_backupCancelled)
       {
         [(ICQBackupStatusView *)self->_backupStatusView setBackupError:0];
-        v77 = 0;
+        stateCopy3 = 0;
       }
 
       else
       {
-        v77 = 6;
+        stateCopy3 = 6;
       }
 
       goto LABEL_11;
     }
 
-    v77 = a3;
+    stateCopy3 = state;
     if (self->_backupNowButton)
     {
       v27 = _ICQGetLogSystem();
@@ -1757,17 +1757,17 @@ LABEL_11:
       [(PSSpecifier *)self->_backupNowButton setButtonAction:sel_cancelBackup_];
     }
 
-    self->_estimateTimeRemaining = a6;
-    self->_icloudBackupProgress = a5;
-    v25 = 1;
+    self->_estimateTimeRemaining = remaining;
+    self->_icloudBackupProgress = progress;
+    bOOLValue2 = 1;
     [(ICQBackupController *)self updateiCloudBackupAndSyncProgressWithAllowDecrease:1];
-    v26 = 1;
+    bOOLValue = 1;
   }
 
 LABEL_33:
-  v81 = [v83 state];
-  v37 = v81 - 1;
-  if (v81 - 1 > 1)
+  state = [infoCopy state];
+  v37 = state - 1;
+  if (state - 1 > 1)
   {
     if ([(NSNumber *)self->_networkSupportsBackup BOOLValue])
     {
@@ -1801,7 +1801,7 @@ LABEL_33:
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v85) = v81 == 1;
+      LODWORD(v85) = state == 1;
       _os_log_impl(&dword_275623000, v40, OS_LOG_TYPE_DEFAULT, "restoreState starting: %d", buf, 8u);
     }
 
@@ -1809,7 +1809,7 @@ LABEL_33:
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v85) = v81 == 2;
+      LODWORD(v85) = state == 2;
       _os_log_impl(&dword_275623000, v41, OS_LOG_TYPE_DEFAULT, "restoreState running: %d", buf, 8u);
     }
 
@@ -1856,12 +1856,12 @@ LABEL_33:
       v48 = SFLocalizableWAPIStringKeyForKey();
     }
 
-    v26 = !backupCancelled;
+    bOOLValue = !backupCancelled;
     v49 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v50 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:v48];
     v51 = [v49 localizedStringForKey:v50 value:&stru_28844FC60 table:@"Backup"];
 
-    v52 = [(ICQBackupController *)self _backgroundRestoreInfoText:v82];
+    v52 = [(ICQBackupController *)self _backgroundRestoreInfoText:restoreInfoCopy];
     if (v52)
     {
       v53 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n\n%@", v51, v52];
@@ -1871,19 +1871,19 @@ LABEL_33:
 
     [(ICQBackupStatusView *)self->_backupStatusView setFooterText:v51];
 
-    v25 = 0;
+    bOOLValue2 = 0;
   }
 
-  v58 = [MEMORY[0x277D75128] isRunningInStoreDemoMode];
-  v59 = [(ICQBackupController *)self policyPreventsBackup];
-  v60 = v59;
-  if ((v58 & 1) != 0 || v59)
+  isRunningInStoreDemoMode = [MEMORY[0x277D75128] isRunningInStoreDemoMode];
+  policyPreventsBackup = [(ICQBackupController *)self policyPreventsBackup];
+  v60 = policyPreventsBackup;
+  if ((isRunningInStoreDemoMode & 1) != 0 || policyPreventsBackup)
   {
     v61 = ICQUSLogForCategory(0);
     if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v85) = v58;
+      LODWORD(v85) = isRunningInStoreDemoMode;
       _os_log_impl(&dword_275623000, v61, OS_LOG_TYPE_DEFAULT, "Store Demo Mode Enabled: %d", buf, 8u);
     }
 
@@ -1895,12 +1895,12 @@ LABEL_33:
       _os_log_impl(&dword_275623000, v62, OS_LOG_TYPE_DEFAULT, "Policy Prevents Backup: %d", buf, 8u);
     }
 
-    v25 = 0;
-    v26 = 0;
+    bOOLValue2 = 0;
+    bOOLValue = 0;
   }
 
   v63 = self->_backupNowButton;
-  v64 = [MEMORY[0x277CCABB0] numberWithBool:v26];
+  v64 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
   v65 = *MEMORY[0x277D3FF38];
   [(PSSpecifier *)v63 setProperty:v64 forKey:*MEMORY[0x277D3FF38]];
 
@@ -1908,29 +1908,29 @@ LABEL_33:
   if (os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v85) = v26;
+    LODWORD(v85) = bOOLValue;
     _os_log_impl(&dword_275623000, v66, OS_LOG_TYPE_DEFAULT, "Backup Button Enabled: %d", buf, 8u);
   }
 
-  v67 = [MEMORY[0x277CCABB0] numberWithBool:v25];
+  v67 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue2];
   [(PSSpecifier *)self->_backupOverCellularSwitch setObject:v67 forKeyedSubscript:v65];
 
   v68 = ICQUSLogForCategory(0);
   if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v85) = v25;
+    LODWORD(v85) = bOOLValue2;
     _os_log_impl(&dword_275623000, v68, OS_LOG_TYPE_DEFAULT, "BackupOverCellular Switch Enabled: %d", buf, 8u);
   }
 
-  v69 = [MEMORY[0x277CCABB0] numberWithBool:v25];
+  v69 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue2];
   [v80 setProperty:v69 forKey:v65];
 
   v70 = ICQUSLogForCategory(0);
   if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v85) = v25;
+    LODWORD(v85) = bOOLValue2;
     _os_log_impl(&dword_275623000, v70, OS_LOG_TYPE_DEFAULT, "Backup Switch Enabled: %d", buf, 8u);
   }
 
@@ -1945,19 +1945,19 @@ LABEL_33:
         [(ICQBackupController *)self insertContiguousSpecifiers:self->_backupOverCellularSpecifiers afterSpecifier:v80 animated:1];
         backupNowSpecifiers = self->_backupNowSpecifiers;
         backupOverCellularSwitch = self->_backupOverCellularSwitch;
-        v76 = self;
+        selfCopy2 = self;
       }
 
       else
       {
         backupNowSpecifiers = self->_backupNowSpecifiers;
-        v76 = self;
+        selfCopy2 = self;
         backupOverCellularSwitch = v80;
       }
 
-      [(ICQBackupController *)v76 insertContiguousSpecifiers:backupNowSpecifiers afterSpecifier:backupOverCellularSwitch animated:1];
+      [(ICQBackupController *)selfCopy2 insertContiguousSpecifiers:backupNowSpecifiers afterSpecifier:backupOverCellularSwitch animated:1];
       v72 = v79;
-      v73 = v77;
+      v73 = stateCopy3;
       [(ICQBackupStatusView *)self->_backupStatusView setAlpha:1.0];
     }
 
@@ -1966,7 +1966,7 @@ LABEL_33:
       [(ICQBackupController *)self reloadSpecifier:self->_backupOverCellularSwitch animated:1];
       [(ICQBackupController *)self reloadSpecifier:self->_backupNowButton animated:1];
       v72 = v79;
-      v73 = v77;
+      v73 = stateCopy3;
     }
   }
 
@@ -1974,7 +1974,7 @@ LABEL_33:
   {
     [(ICQBackupController *)self removeContiguousSpecifiers:self->_backupNowSpecifiers animated:1];
     v72 = v79;
-    v73 = v77;
+    v73 = stateCopy3;
     if (self->_isAutoBackupOnCellularAllowed)
     {
       [(ICQBackupController *)self removeContiguousSpecifiers:self->_backupOverCellularSpecifiers animated:1];
@@ -1982,24 +1982,24 @@ LABEL_33:
   }
 
   [(ICQBackupController *)self reloadSpecifier:v80 animated:1];
-  [(ICQBackupStatusView *)self->_backupStatusView updateViewsForBackupState:v73 restoreState:v81 enabled:v78];
+  [(ICQBackupStatusView *)self->_backupStatusView updateViewsForBackupState:v73 restoreState:state enabled:v78];
   [(ICQBackupController *)self endUpdates];
 }
 
-- (void)_updateToBackupState:(id)a3 restoreState:(id)a4 backgroundRestoreState:(id)a5 backupEnabled:(BOOL)a6
+- (void)_updateToBackupState:(id)state restoreState:(id)restoreState backgroundRestoreState:(id)backgroundRestoreState backupEnabled:(BOOL)enabled
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v12 state];
-  v18 = [v12 error];
-  [v12 progress];
+  enabledCopy = enabled;
+  backgroundRestoreStateCopy = backgroundRestoreState;
+  restoreStateCopy = restoreState;
+  stateCopy = state;
+  state = [stateCopy state];
+  error = [stateCopy error];
+  [stateCopy progress];
   v15 = v14;
-  v16 = [v12 estimatedTimeRemaining];
+  estimatedTimeRemaining = [stateCopy estimatedTimeRemaining];
 
   LODWORD(v17) = v15;
-  [(ICQBackupController *)self _updateToBackupState:v13 backupError:v18 progress:v16 timeRemaining:v11 restoreStateInfo:v10 backgroundRestoreInfo:v6 backupEnabled:v17];
+  [(ICQBackupController *)self _updateToBackupState:state backupError:error progress:estimatedTimeRemaining timeRemaining:restoreStateCopy restoreStateInfo:backgroundRestoreStateCopy backgroundRestoreInfo:enabledCopy backupEnabled:v17];
 }
 
 - (void)updateBusyState
@@ -2091,7 +2091,7 @@ void __38__ICQBackupController_updateBusyState__block_invoke_711(uint64_t a1)
   }
 }
 
-- (void)cancelRestore:(id)a3
+- (void)cancelRestore:(id)restore
 {
   v24 = *MEMORY[0x277D85DE8];
   v4 = _ICQGetLogSystem();
@@ -2166,7 +2166,7 @@ void __37__ICQBackupController_cancelRestore___block_invoke_3(uint64_t a1)
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)cancelBackup:(id)a3
+- (void)cancelBackup:(id)backup
 {
   v4 = ICQUSLogForCategory(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2227,8 +2227,8 @@ uint64_t __36__ICQBackupController_cancelBackup___block_invoke(uint64_t a1)
     _os_log_impl(&dword_275623000, v4, OS_LOG_TYPE_DEFAULT, "Starting iMessage periodic sync", buf, 2u);
   }
 
-  v5 = [MEMORY[0x277D18D50] sharedInstance];
-  [v5 startPeriodicSync];
+  mEMORY[0x277D18D50] = [MEMORY[0x277D18D50] sharedInstance];
+  [mEMORY[0x277D18D50] startPeriodicSync];
 
   v15 = 0;
   v16 = &v15;
@@ -2411,10 +2411,10 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)beginBackup:(id)a3
+- (void)beginBackup:(id)backup
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  backupCopy = backup;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2423,7 +2423,7 @@ LABEL_14:
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v7, 0xCu);
   }
 
-  v6 = [v4 propertyForKey:*MEMORY[0x277D40148]];
+  v6 = [backupCopy propertyForKey:*MEMORY[0x277D40148]];
 
   [v6 setCellEnabled:0];
   [(ICQBackupController *)self prepareAlertForBackupDisabledDomainAndShow:1];
@@ -2449,16 +2449,16 @@ LABEL_14:
   }
 }
 
-- (void)syncCompletedWithErrors:(id)a3
+- (void)syncCompletedWithErrors:(id)errors
 {
-  v4 = a3;
+  errorsCopy = errors;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__ICQBackupController_syncCompletedWithErrors___block_invoke;
   v6[3] = &unk_27A65A708;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = errorsCopy;
+  v5 = errorsCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -2516,14 +2516,14 @@ void __47__ICQBackupController_syncCompletedWithErrors___block_invoke(uint64_t a
   }
 }
 
-- (void)syncProgress:(double)a3
+- (void)syncProgress:(double)progress
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __36__ICQBackupController_syncProgress___block_invoke;
   v3[3] = &unk_27A65B1C8;
   v3[4] = self;
-  *&v3[5] = a3;
+  *&v3[5] = progress;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
@@ -2574,21 +2574,21 @@ uint64_t __58__ICQBackupController_showPopUpAlertForBackupDisabledApps__block_in
   }
 }
 
-- (void)showAlertForBackupDisabledItemsWithTitle:(id)a3 andMessage:(id)a4
+- (void)showAlertForBackupDisabledItemsWithTitle:(id)title andMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICQBackupController *)self view];
-  v9 = [v8 window];
+  titleCopy = title;
+  messageCopy = message;
+  view = [(ICQBackupController *)self view];
+  window = [view window];
 
-  if (v9)
+  if (window)
   {
     v10 = [(PSSpecifier *)self->_backupNowButton propertyForKey:*MEMORY[0x277D40148]];
     [v10 setCellEnabled:1];
 
-    v11 = [MEMORY[0x277D75110] alertControllerWithTitle:v6 message:v7 preferredStyle:1];
-    v12 = [(ICQBackupController *)self manageStorageAction];
-    [v11 addAction:v12];
+    v11 = [MEMORY[0x277D75110] alertControllerWithTitle:titleCopy message:messageCopy preferredStyle:1];
+    manageStorageAction = [(ICQBackupController *)self manageStorageAction];
+    [v11 addAction:manageStorageAction];
 
     v13 = MEMORY[0x277D750F8];
     v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -2638,7 +2638,7 @@ void __42__ICQBackupController_manageStorageAction__block_invoke(uint64_t a1)
   [v3 openSensitiveURL:v2 withOptions:0];
 }
 
-- (void)managerDidFinishBackup:(id)a3
+- (void)managerDidFinishBackup:(id)backup
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = _ICQGetLogSystem();
@@ -2675,13 +2675,13 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v10 postNotificationName:@"BackupInfoDidChange" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"BackupInfoDidChange" object:0];
 }
 
-- (void)manager:(id)a3 didFailRestoreWithError:(id)a4
+- (void)manager:(id)manager didFailRestoreWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = _ICQGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
@@ -2692,7 +2692,7 @@ LABEL_8:
   [(ICQBackupController *)self updateLastBackupDate];
 }
 
-- (void)managerDidFinishRestore:(id)a3
+- (void)managerDidFinishRestore:(id)restore
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2705,7 +2705,7 @@ LABEL_8:
   [(ICQBackupController *)self updateLastBackupDate];
 }
 
-- (void)managerDidCancelRestore:(id)a3
+- (void)managerDidCancelRestore:(id)restore
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2718,39 +2718,39 @@ LABEL_8:
   [(ICQBackupController *)self updateLastBackupDate];
 }
 
-- (void)manager:(id)a3 didFailBackupWithError:(id)a4
+- (void)manager:(id)manager didFailBackupWithError:(id)error
 {
   v9 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v6 = ICQUSLogForCategory(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = errorCopy;
     _os_log_impl(&dword_275623000, v6, OS_LOG_TYPE_DEFAULT, "Failed backup: %@", &v7, 0xCu);
   }
 
   self->_currentSyncState = 3;
   self->_finishBackupExecuted = 1;
   self->_updateBackupState = 0;
-  [(ICQBackupStatusView *)self->_backupStatusView setBackupError:v5];
+  [(ICQBackupStatusView *)self->_backupStatusView setBackupError:errorCopy];
   [(ICQBackupController *)self updateBusyState];
 }
 
-- (void)manager:(id)a3 didUpdateProgress:(float)a4 estimatedTimeRemaining:(unint64_t)a5
+- (void)manager:(id)manager didUpdateProgress:(float)progress estimatedTimeRemaining:(unint64_t)remaining
 {
   v12 = *MEMORY[0x277D85DE8];
   v8 = ICQUSLogForCategory(0);
-  v9 = a4;
+  progressCopy = progress;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134217984;
-    v11 = v9;
+    v11 = progressCopy;
     _os_log_impl(&dword_275623000, v8, OS_LOG_TYPE_DEFAULT, "Backup progress: %f", &v10, 0xCu);
   }
 
-  self->_icloudBackupProgress = v9;
-  self->_estimateTimeRemaining = a5;
+  self->_icloudBackupProgress = progressCopy;
+  self->_estimateTimeRemaining = remaining;
   [(ICQBackupController *)self updateiCloudBackupAndSyncProgressWithAllowDecrease:0];
   if ((self->_backupState - 1) >= 2)
   {
@@ -2758,7 +2758,7 @@ LABEL_8:
   }
 }
 
-- (void)managerDidUpdateBackgroundRestoreProgress:(id)a3
+- (void)managerDidUpdateBackgroundRestoreProgress:(id)progress
 {
   v7 = *MEMORY[0x277D85DE8];
   v4 = _ICQGetLogSystem();
@@ -2772,9 +2772,9 @@ LABEL_8:
   [(ICQBackupController *)self updateBusyState];
 }
 
-- (void)manager:(id)a3 didSetBackupEnabled:(BOOL)a4
+- (void)manager:(id)manager didSetBackupEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v11 = *MEMORY[0x277D85DE8];
   v6 = _ICQGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2782,7 +2782,7 @@ LABEL_8:
     v7 = 136315394;
     v8 = "[ICQBackupController manager:didSetBackupEnabled:]";
     v9 = 1024;
-    v10 = v4;
+    v10 = enabledCopy;
     _os_log_impl(&dword_275623000, v6, OS_LOG_TYPE_DEFAULT, "%s, enabled: %d", &v7, 0x12u);
   }
 
@@ -2790,7 +2790,7 @@ LABEL_8:
   [(ICQBackupController *)self updateLastBackupDate];
 }
 
-- (void)managerDidLoseConnectionToService:(id)a3
+- (void)managerDidLoseConnectionToService:(id)service
 {
   if ((self->_backupState - 1) <= 1)
   {
@@ -2844,40 +2844,40 @@ LABEL_8:
   }
 }
 
-- (void)reloadSpecifiersForProvider:(id)a3 oldSpecifiers:(id)a4 animated:(BOOL)a5
+- (void)reloadSpecifiersForProvider:(id)provider oldSpecifiers:(id)specifiers animated:(BOOL)animated
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  specifiersCopy = specifiers;
   v9 = _ICQGetLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
-    v15 = v7;
+    v15 = providerCopy;
     _os_log_impl(&dword_275623000, v9, OS_LOG_TYPE_DEFAULT, "Reloading specifiers for provider %@", &v14, 0xCu);
   }
 
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v10 = [v8 count];
-  v11 = [v7 specifiers];
-  v12 = v11;
+  v10 = [specifiersCopy count];
+  specifiers = [providerCopy specifiers];
+  specifiers2 = specifiers;
   if (v10)
   {
-    v13 = [v11 count];
+    v13 = [specifiers count];
 
     if (!v13)
     {
-      [(ICQBackupController *)self removeContiguousSpecifiers:v8 animated:1];
+      [(ICQBackupController *)self removeContiguousSpecifiers:specifiersCopy animated:1];
       goto LABEL_9;
     }
 
-    v12 = [v7 specifiers];
-    [(ICQBackupController *)self replaceContiguousSpecifiers:v8 withSpecifiers:v12 animated:1];
+    specifiers2 = [providerCopy specifiers];
+    [(ICQBackupController *)self replaceContiguousSpecifiers:specifiersCopy withSpecifiers:specifiers2 animated:1];
   }
 
   else
   {
-    [(ICQBackupController *)self addSpecifiersFromArray:v11];
+    [(ICQBackupController *)self addSpecifiersFromArray:specifiers];
   }
 
 LABEL_9:

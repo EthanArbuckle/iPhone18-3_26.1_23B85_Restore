@@ -1,21 +1,21 @@
 @interface UICollectionViewTableLayoutSwipeAction
-+ (id)actionWithStyle:(int64_t)a3 title:(id)a4 handler:(id)a5;
++ (id)actionWithStyle:(int64_t)style title:(id)title handler:(id)handler;
 @end
 
 @implementation UICollectionViewTableLayoutSwipeAction
 
-+ (id)actionWithStyle:(int64_t)a3 title:(id)a4 handler:(id)a5
++ (id)actionWithStyle:(int64_t)style title:(id)title handler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __72__UICollectionViewTableLayoutSwipeAction_actionWithStyle_title_handler___block_invoke;
   v13[3] = &unk_1E70FEB88;
-  v14 = v8;
-  v12.receiver = a1;
+  v14 = handlerCopy;
+  v12.receiver = self;
   v12.super_class = &OBJC_METACLASS___UICollectionViewTableLayoutSwipeAction;
-  v9 = v8;
-  v10 = objc_msgSendSuper2(&v12, sel_contextualActionWithStyle_title_handler_, a3, a4, v13);
+  v9 = handlerCopy;
+  v10 = objc_msgSendSuper2(&v12, sel_contextualActionWithStyle_title_handler_, style, title, v13);
 
   return v10;
 }

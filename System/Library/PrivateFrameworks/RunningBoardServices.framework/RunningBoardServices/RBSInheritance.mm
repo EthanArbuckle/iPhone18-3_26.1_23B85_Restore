@@ -1,10 +1,10 @@
 @interface RBSInheritance
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (RBSInheritance)init;
-- (RBSInheritance)initWithRBSXPCCoder:(id)a3;
-- (id)_initWithNamespace:(id)a3 environment:(id)a4 encodedEndowment:(id)a5 originatingIdentifier:(id)a6 attributePath:(unint64_t)a7;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (RBSInheritance)initWithRBSXPCCoder:(id)coder;
+- (id)_initWithNamespace:(id)namespace environment:(id)environment encodedEndowment:(id)endowment originatingIdentifier:(id)identifier attributePath:(unint64_t)path;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSInheritance
@@ -33,19 +33,19 @@
 
 - (RBSInheritance)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"RBSInheritance.m" lineNumber:41 description:@"cannot call -init on RBSInheritance"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"RBSInheritance.m" lineNumber:41 description:@"cannot call -init on RBSInheritance"];
 
   return 0;
 }
 
-- (id)_initWithNamespace:(id)a3 environment:(id)a4 encodedEndowment:(id)a5 originatingIdentifier:(id)a6 attributePath:(unint64_t)a7
+- (id)_initWithNamespace:(id)namespace environment:(id)environment encodedEndowment:(id)endowment originatingIdentifier:(id)identifier attributePath:(unint64_t)path
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  if (!v13)
+  namespaceCopy = namespace;
+  environmentCopy = environment;
+  endowmentCopy = endowment;
+  identifierCopy = identifier;
+  if (!namespaceCopy)
   {
     [RBSInheritance _initWithNamespace:a2 environment:self encodedEndowment:? originatingIdentifier:? attributePath:?];
   }
@@ -55,20 +55,20 @@
   v17 = [(RBSInheritance *)&v30 init];
   if (v17)
   {
-    v18 = [v13 copy];
+    v18 = [namespaceCopy copy];
     endowmentNamespace = v17->_endowmentNamespace;
     v17->_endowmentNamespace = v18;
 
-    v20 = [v14 copy];
+    v20 = [environmentCopy copy];
     environment = v17->_environment;
     v17->_environment = v20;
 
-    objc_storeStrong(&v17->_encodedEndowment, a5);
-    v22 = [v16 copy];
+    objc_storeStrong(&v17->_encodedEndowment, endowment);
+    v22 = [identifierCopy copy];
     originatingIdentifier = v17->_originatingIdentifier;
     v17->_originatingIdentifier = v22;
 
-    v17->_originatingAttributePath = a7;
+    v17->_originatingAttributePath = path;
     v24 = [(RBSAssertionIdentifier *)v17->_originatingIdentifier hash];
     v25 = 0xBF58476D1CE4E5B9 * (v17->_originatingAttributePath ^ (v17->_originatingAttributePath >> 30));
     v26 = 0x94D049BB133111EBLL * (v25 ^ (v25 >> 27));
@@ -81,37 +81,37 @@
   return v17;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   endowmentNamespace = self->_endowmentNamespace;
-  v6 = a3;
-  [v6 encodeObject:endowmentNamespace forKey:@"namespace"];
-  [v6 encodeObject:self->_environment forKey:@"environment"];
+  coderCopy = coder;
+  [coderCopy encodeObject:endowmentNamespace forKey:@"namespace"];
+  [coderCopy encodeObject:self->_environment forKey:@"environment"];
   v5 = RBSXPCPackObject(self->_encodedEndowment);
-  [v6 encodeXPCObject:v5 forKey:@"encodedEndowment"];
+  [coderCopy encodeXPCObject:v5 forKey:@"encodedEndowment"];
 
-  [v6 encodeObject:self->_originatingIdentifier forKey:@"originatingIdentifier"];
-  [v6 encodeUInt64:self->_originatingAttributePath forKey:@"originatingAttributePath"];
+  [coderCopy encodeObject:self->_originatingIdentifier forKey:@"originatingIdentifier"];
+  [coderCopy encodeUInt64:self->_originatingAttributePath forKey:@"originatingAttributePath"];
 }
 
-- (RBSInheritance)initWithRBSXPCCoder:(id)a3
+- (RBSInheritance)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"namespace"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"environment"];
-  v7 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"encodedEndowment"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"namespace"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"environment"];
+  v7 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"encodedEndowment"];
   v8 = RBSXPCUnpackObject(v7);
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originatingIdentifier"];
-  v10 = [v4 decodeUInt64ForKey:@"originatingAttributePath"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originatingIdentifier"];
+  v10 = [coderCopy decodeUInt64ForKey:@"originatingAttributePath"];
 
   v11 = [(RBSInheritance *)self _initWithNamespace:v5 environment:v6 encodedEndowment:v8 originatingIdentifier:v9 attributePath:v10];
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_21;
   }
@@ -122,22 +122,22 @@
     goto LABEL_20;
   }
 
-  if (self->_hash != v4->_hash)
+  if (self->_hash != equalCopy->_hash)
   {
     goto LABEL_20;
   }
 
-  if (self->_originatingAttributePath != v4->_originatingAttributePath)
+  if (self->_originatingAttributePath != equalCopy->_originatingAttributePath)
   {
     goto LABEL_20;
   }
 
   if (self->_encodedEndowment)
   {
-    if (v4->_encodedEndowment)
+    if (equalCopy->_encodedEndowment)
     {
       v6 = MEMORY[0x193AD5A20]();
-      if (v6 != MEMORY[0x193AD5A20](v4->_encodedEndowment))
+      if (v6 != MEMORY[0x193AD5A20](equalCopy->_encodedEndowment))
       {
         goto LABEL_20;
       }
@@ -145,7 +145,7 @@
   }
 
   originatingIdentifier = self->_originatingIdentifier;
-  v8 = v4->_originatingIdentifier;
+  v8 = equalCopy->_originatingIdentifier;
   if (originatingIdentifier != v8)
   {
     v9 = 0;
@@ -161,7 +161,7 @@
   }
 
   environment = self->_environment;
-  v11 = v4->_environment;
+  v11 = equalCopy->_environment;
   if (environment != v11)
   {
     v9 = 0;
@@ -179,7 +179,7 @@ LABEL_20:
   }
 
   endowmentNamespace = self->_endowmentNamespace;
-  v13 = v4->_endowmentNamespace;
+  v13 = equalCopy->_endowmentNamespace;
   if (endowmentNamespace == v13)
   {
 LABEL_21:

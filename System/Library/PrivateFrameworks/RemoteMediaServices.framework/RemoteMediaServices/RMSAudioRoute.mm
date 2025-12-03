@@ -1,28 +1,28 @@
 @interface RMSAudioRoute
-+ (id)audioRoutesFromProtobufs:(id)a3;
-+ (id)protobufsFromAudioRoutes:(id)a3;
-- (BOOL)isEqualToAudioRoute:(id)a3;
-- (RMSAudioRoute)initWithProtobuf:(id)a3;
++ (id)audioRoutesFromProtobufs:(id)protobufs;
++ (id)protobufsFromAudioRoutes:(id)routes;
+- (BOOL)isEqualToAudioRoute:(id)route;
+- (RMSAudioRoute)initWithProtobuf:(id)protobuf;
 - (id)protobuf;
 @end
 
 @implementation RMSAudioRoute
 
-- (RMSAudioRoute)initWithProtobuf:(id)a3
+- (RMSAudioRoute)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v9.receiver = self;
   v9.super_class = RMSAudioRoute;
   v5 = [(RMSAudioRoute *)&v9 init];
   if (v5)
   {
-    v6 = [v4 displayName];
+    displayName = [protobufCopy displayName];
     displayName = v5->_displayName;
-    v5->_displayName = v6;
+    v5->_displayName = displayName;
 
-    v5->_macAddress = [v4 macAddress];
-    v5->_supportsVideo = [v4 supportsVideo];
-    v5->_selected = [v4 selected];
+    v5->_macAddress = [protobufCopy macAddress];
+    v5->_supportsVideo = [protobufCopy supportsVideo];
+    v5->_selected = [protobufCopy selected];
   }
 
   return v5;
@@ -39,15 +39,15 @@
   return v3;
 }
 
-- (BOOL)isEqualToAudioRoute:(id)a3
+- (BOOL)isEqualToAudioRoute:(id)route
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (macAddress = self->_macAddress, macAddress == [v4 macAddress]) && (selected = self->_selected, selected == objc_msgSend(v5, "isSelected")))
+  routeCopy = route;
+  v5 = routeCopy;
+  if (routeCopy && (macAddress = self->_macAddress, macAddress == [routeCopy macAddress]) && (selected = self->_selected, selected == objc_msgSend(v5, "isSelected")))
   {
     displayName = self->_displayName;
-    v9 = [v5 displayName];
-    v10 = [(NSString *)displayName isEqualToString:v9];
+    displayName = [v5 displayName];
+    v10 = [(NSString *)displayName isEqualToString:displayName];
   }
 
   else
@@ -58,16 +58,16 @@
   return v10;
 }
 
-+ (id)audioRoutesFromProtobufs:(id)a3
++ (id)audioRoutesFromProtobufs:(id)protobufs
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  protobufsCopy = protobufs;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = protobufsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -97,16 +97,16 @@
   return v4;
 }
 
-+ (id)protobufsFromAudioRoutes:(id)a3
++ (id)protobufsFromAudioRoutes:(id)routes
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  routesCopy = routes;
   v4 = objc_opt_new();
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = routesCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -121,8 +121,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) protobuf];
-        [v4 addObject:v10];
+        protobuf = [*(*(&v12 + 1) + 8 * i) protobuf];
+        [v4 addObject:protobuf];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];

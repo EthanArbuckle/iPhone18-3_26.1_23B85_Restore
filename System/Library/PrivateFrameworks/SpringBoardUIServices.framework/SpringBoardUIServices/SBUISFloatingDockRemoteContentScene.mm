@@ -1,31 +1,31 @@
 @interface SBUISFloatingDockRemoteContentScene
-- (void)completeContextRequestUpdateFromHost:(id)a3 withError:(id)a4;
-- (void)requestActionForFloatingDockRemoteContentScene:(id)a3;
-- (void)requestUpdateContentForFloatingDockRemoteContentSceneWithContext:(id)a3;
+- (void)completeContextRequestUpdateFromHost:(id)host withError:(id)error;
+- (void)requestActionForFloatingDockRemoteContentScene:(id)scene;
+- (void)requestUpdateContentForFloatingDockRemoteContentSceneWithContext:(id)context;
 @end
 
 @implementation SBUISFloatingDockRemoteContentScene
 
-- (void)requestUpdateContentForFloatingDockRemoteContentSceneWithContext:(id)a3
+- (void)requestUpdateContentForFloatingDockRemoteContentSceneWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(UIScene *)self floatingDockRemoteContentClientComponent];
-  [v5 requestToUpdateContentForFloatingDockRemoteContentSceneWithContext:v4];
+  contextCopy = context;
+  floatingDockRemoteContentClientComponent = [(UIScene *)self floatingDockRemoteContentClientComponent];
+  [floatingDockRemoteContentClientComponent requestToUpdateContentForFloatingDockRemoteContentSceneWithContext:contextCopy];
 }
 
-- (void)completeContextRequestUpdateFromHost:(id)a3 withError:(id)a4
+- (void)completeContextRequestUpdateFromHost:(id)host withError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIScene *)self floatingDockRemoteContentClientComponent];
-  [v8 completeContextRequestUpdateFromHost:v7 withError:v6];
+  errorCopy = error;
+  hostCopy = host;
+  floatingDockRemoteContentClientComponent = [(UIScene *)self floatingDockRemoteContentClientComponent];
+  [floatingDockRemoteContentClientComponent completeContextRequestUpdateFromHost:hostCopy withError:errorCopy];
 }
 
-- (void)requestActionForFloatingDockRemoteContentScene:(id)a3
+- (void)requestActionForFloatingDockRemoteContentScene:(id)scene
 {
-  v4 = a3;
-  v5 = [(UIScene *)self floatingDockRemoteContentClientComponent];
-  [v5 requestActionForFloatingDockRemoteContentScene:v4];
+  sceneCopy = scene;
+  floatingDockRemoteContentClientComponent = [(UIScene *)self floatingDockRemoteContentClientComponent];
+  [floatingDockRemoteContentClientComponent requestActionForFloatingDockRemoteContentScene:sceneCopy];
 }
 
 @end

@@ -1,52 +1,52 @@
 @interface BWAggdDataReporter
 + (id)sharedInstance;
 - (BWAggdDataReporter)init;
-- (__CFString)_captureTypeStringWithPrimaryCaptureType:(unsigned int)a3 secondaryCaptureType:(int)a4 captureFlags:(char)a5 sceneFlags:;
-- (id)_aggdCameraStreamingTimeStringFromDeviceType:(int)a3 devicePosition:(int)a4;
-- (id)_aggdGNRProcessingStatusStringFromProcessingStatus:(int)a3;
-- (id)_aggdPearlInfraredProjectorUptimeStringFromCurrent:(int)a3 pattern:(int)a4 applicationID:(id)a5;
-- (id)_aggdSDOFProcessingStatusStringFromProcessingStatus:(int)a3;
-- (id)_aggdStereoFusionProcessingStatusStringFromProcessingStatus:(int)a3;
-- (id)_aggdStereoFusionProcessingTypeStringForCaptureType:(int)a3 isStereoFusionCapture:(BOOL)a4 wideSubCaptureType:(int)a5 teleSubCaptureType:(int)a6 isOriginalImage:(BOOL)a7;
-- (id)_aggdStringForPrefix:(id)a3 primaryCaptureType:(int)a4 secondaryCaptureType:(int)a5 captureFlags:(unint64_t)a6 sceneFlags:(unint64_t)a7 stillDuringVideo:(BOOL)a8 frontCamera:(BOOL)a9;
+- (__CFString)_captureTypeStringWithPrimaryCaptureType:(unsigned int)type secondaryCaptureType:(int)captureType captureFlags:(char)flags sceneFlags:;
+- (id)_aggdCameraStreamingTimeStringFromDeviceType:(int)type devicePosition:(int)position;
+- (id)_aggdGNRProcessingStatusStringFromProcessingStatus:(int)status;
+- (id)_aggdPearlInfraredProjectorUptimeStringFromCurrent:(int)current pattern:(int)pattern applicationID:(id)d;
+- (id)_aggdSDOFProcessingStatusStringFromProcessingStatus:(int)status;
+- (id)_aggdStereoFusionProcessingStatusStringFromProcessingStatus:(int)status;
+- (id)_aggdStereoFusionProcessingTypeStringForCaptureType:(int)type isStereoFusionCapture:(BOOL)capture wideSubCaptureType:(int)captureType teleSubCaptureType:(int)subCaptureType isOriginalImage:(BOOL)image;
+- (id)_aggdStringForPrefix:(id)prefix primaryCaptureType:(int)type secondaryCaptureType:(int)captureType captureFlags:(unint64_t)flags sceneFlags:(unint64_t)sceneFlags stillDuringVideo:(BOOL)video frontCamera:(BOOL)camera;
 - (void)dealloc;
-- (void)reportAPSOffsetEstimatorForPortType:(id)a3 accelMotion:(float)a4 gyroMotion:(float)a5 inSessionOffset:(float)a6 deltaOffsetFC:(float)a7 deltaOffsetMI:(float)a8 deltaOffsetFATP:(float)a9 deltaOffsetLastSession:(float)a10 errorHeadroomViolated:(BOOL)a11 errorConvergenceFailed:(BOOL)a12 errorMotionTooLarge:(BOOL)a13 errorConfidenceTooLow:(BOOL)a14 errorOffsetTooLarge:(BOOL)a15 errorDeltaTooLarge:(BOOL)a16 errorSaturated:(BOOL)a17 errorCouldNotRun:(BOOL)a18 successRun:(BOOL)a19 startAPSVoltage:(int)a20 modeGCOL:(BOOL)a21 modeOL:(BOOL)a22;
-- (void)reportAPSSphereInteractionCalibrationForPosition:(int)a3 residualErrorNeutral:(float)a4 calibrationZHeightNeutral:(float)a5 residualErrorMacro:(float)a6 calibrationZHeightMacro:(float)a7 calibrationStatus:(unsigned int)a8 isValid:(BOOL)a9;
-- (void)reportAutoFocusCalibrationForPosition:(int)a3 freqZ:(int)a4 deltaFreqZ:(int)a5 qZ:(int)a6 deltaQZ:(int)a7 gainZ:(int)a8 calibrationStatus:(unsigned int)a9 gelModelCoefficientD1:(int *)a10 gelModelCoefficientD2:(int *)a11 gelModelCoefficientP1:(int *)a12 gelModelCoefficientP2:(int *)a13 isValid:(BOOL)a14;
-- (void)reportAutoFocusPositionSensorCalibrationForPosition:(int)a3 iStopZEstimate:(int)a4 eSensorOutput:(signed __int16)a5 wSensorOutput:(signed __int16)a6 gravityZ:(int)a7 calibrationStatus:(unsigned int)a8 sensorTemp:(signed __int16)a9 successfulInfinityEndStopDelta:(int)a10 currentInfinityEndStopDelta:(int)a11 previousInfinityEndStopDelta:(int)a12 currentAngleDelta:(int)a13 previousAngleDelta:(int)a14 factoryCalibrationOffset:(int *)a15 estimatedNeutralZ:(int *)a16 deltaNeutralZFromNVM:(int *)a17 estimatedSagZ:(int *)a18 combinedSensorOutput:(int *)a19 deltaSagFromNVM:(int *)a20 isValid:(BOOL)a21 dataWasRejectedByHistory:(BOOL)a22;
-- (void)reportAutoFocusPositionSensorMode:(int)a3 portType:(id)a4;
-- (void)reportCalibrationStatisticsWithTime:(id)a3 timeValue:(double)a4 attemptsField:(id)a5 attemptsValue:(int64_t)a6 successField:(id)a7 successValue:(int64_t)a8 magneticFieldMagnitudeField:(id)a9 magneticFieldMagnitudeValue:(double)a10;
-- (void)reportCameraAppCaptureForNonCameraAppLoggingWithFrontCamera:(BOOL)a3;
-- (void)reportCameraLaunchWithPrewarm:(int)a3 reason:(id)a4;
-- (void)reportCameraLaunchWithoutPrewarm:(int)a3;
-- (void)reportCameraStreamingTimeInMilliseconds:(unint64_t)a3 deviceType:(int)a4 devicePosition:(int)a5;
-- (void)reportCriticalFocusErrorOccurredForPortType:(id)a3;
-- (void)reportFaceCount:(unsigned int)a3 frontCamera:(BOOL)a4;
-- (void)reportGNRSampleBufferProcessorProcessingStatus:(int)a3;
-- (void)reportISPCreateDuration:(int)a3;
-- (void)reportLockScreenCameraLaunchCancelledWithPrewarming:(BOOL)a3 ispStreamingStarted:(BOOL)a4;
-- (void)reportLockScreenCameraLaunchCompletedWithPrewarming:(BOOL)a3 restartedSessionDueToError:(int)a4;
-- (void)reportLuxLevel:(unsigned int)a3 primaryCaptureType:(int)a4 secondaryCaptureType:(int)a5 captureFlags:(unint64_t)a6 sceneFlags:(unint64_t)a7 stillDuringVideo:(BOOL)a8 frontCamera:(BOOL)a9;
-- (void)reportNonCameraAppCaptureWithPrimaryCaptureType:(int)a3 secondaryCaptureType:(int)a4 captureFlags:(unint64_t)a5 sceneFlags:(unint64_t)a6 stillDuringVideo:(BOOL)a7 frontCamera:(BOOL)a8;
-- (void)reportPearlInfraredProjectorUptime:(unint64_t)a3 current:(int)a4 pattern:(int)a5 applicationID:(id)a6;
-- (void)reportSDOFSampleBufferProcessorProcessingStatus:(int)a3;
-- (void)reportSensorTemperature:(unsigned int)a3 frontCamera:(BOOL)a4;
-- (void)reportShutterLag:(id *)a3 primaryCaptureType:(int)a4 secondaryCaptureType:(int)a5 captureFlags:(unint64_t)a6 sceneFlags:(unint64_t)a7 stillDuringVideo:(BOOL)a8 frontCamera:(BOOL)a9;
-- (void)reportSphereCalibrationForPosition:(int)a3 freqX:(float)a4 deltaFreqX:(float)a5 qX:(float)a6 deltaQX:(float)a7 gainX:(float)a8 freqY:(float)a9 deltaFreqY:(float)a10 qY:(float)a11 deltaQY:(float)a12 gainY:(float)a13 calibrationStatus:(unsigned int)a14 isValid:(BOOL)a15;
-- (void)reportSphereEndStopCalibrationForPosition:(int)a3 oisPositiveX:(int)a4 oisNegativeX:(int)a5 oisPositiveY:(int)a6 oisNegativeY:(int)a7 maxPositiveXDriftFromNVM:(int)a8 maxNegativeXDriftFromNVM:(int)a9 maxPositiveYDriftFromNVM:(int)a10 maxNegativeYDriftFromNVM:(int)a11 sphereStrokeX:(int)a12 sphereStrokeY:(int)a13 calibrationStatus:(unsigned int)a14 isValid:(BOOL)a15;
-- (void)reportSphereJitterDetectionsForPortType:(id)a3 detectionAttemps:(int)a4 successfulDetections:(int)a5;
-- (void)reportStereoFusionProcessingTypeForCaptureType:(int)a3 isStereoFusionCapture:(BOOL)a4 wideSubCaptureType:(int)a5 teleSubCaptureType:(int)a6 isOriginalImage:(BOOL)a7;
-- (void)reportStereoFusionSampleBufferProcessorProcessingStatus:(int)a3;
-- (void)reportStillImageAPSStatisticsForPortType:(id)a3 logicalFocusPosition:(int)a4 apsMotion:(float)a5 sphereMotion:(float)a6 accelMotion:(float)a7 gyroMotion:(float)a8 subjectDistance:(float)a9 luxLevel:(int)a10;
-- (void)reportVideoRecordingAPSStatistics:(float)a3 stdDataFromAPSForTele:(float)a4 stdDataFromSphereForWide:(float)a5 stdDataFromSphereForTele:(float)a6 stdDataFromAccel:(float)a7 stdDataFromGyro:(float)a8 maxDataFromAPSForWide:(float)a9 maxDataFromAPSForTele:(float)a10 minDataFromAPSForWide:(float)a11 minDataFromAPSForTele:(float)a12 maxDataFromSphereForWide:(float)a13 maxDataFromSphereForTele:(float)a14 minDataFromSphereForWide:(float)a15 minDataFromSphereForTele:(float)a16 maxDataFromAccel:(float)a17 minDataFromAccel:(float)a18 maxDataFromGyro:(float)a19 minDataFromGyro:(float)a20;
+- (void)reportAPSOffsetEstimatorForPortType:(id)type accelMotion:(float)motion gyroMotion:(float)gyroMotion inSessionOffset:(float)offset deltaOffsetFC:(float)c deltaOffsetMI:(float)i deltaOffsetFATP:(float)p deltaOffsetLastSession:(float)self0 errorHeadroomViolated:(BOOL)self1 errorConvergenceFailed:(BOOL)self2 errorMotionTooLarge:(BOOL)self3 errorConfidenceTooLow:(BOOL)self4 errorOffsetTooLarge:(BOOL)self5 errorDeltaTooLarge:(BOOL)self6 errorSaturated:(BOOL)self7 errorCouldNotRun:(BOOL)self8 successRun:(BOOL)self9 startAPSVoltage:(int)voltage modeGCOL:(BOOL)l modeOL:(BOOL)oL;
+- (void)reportAPSSphereInteractionCalibrationForPosition:(int)position residualErrorNeutral:(float)neutral calibrationZHeightNeutral:(float)heightNeutral residualErrorMacro:(float)macro calibrationZHeightMacro:(float)heightMacro calibrationStatus:(unsigned int)status isValid:(BOOL)valid;
+- (void)reportAutoFocusCalibrationForPosition:(int)position freqZ:(int)z deltaFreqZ:(int)freqZ qZ:(int)qZ deltaQZ:(int)deltaQZ gainZ:(int)gainZ calibrationStatus:(unsigned int)status gelModelCoefficientD1:(int *)self0 gelModelCoefficientD2:(int *)self1 gelModelCoefficientP1:(int *)self2 gelModelCoefficientP2:(int *)self3 isValid:(BOOL)self4;
+- (void)reportAutoFocusPositionSensorCalibrationForPosition:(int)position iStopZEstimate:(int)estimate eSensorOutput:(signed __int16)output wSensorOutput:(signed __int16)sensorOutput gravityZ:(int)z calibrationStatus:(unsigned int)status sensorTemp:(signed __int16)temp successfulInfinityEndStopDelta:(int)self0 currentInfinityEndStopDelta:(int)self1 previousInfinityEndStopDelta:(int)self2 currentAngleDelta:(int)self3 previousAngleDelta:(int)self4 factoryCalibrationOffset:(int *)self5 estimatedNeutralZ:(int *)self6 deltaNeutralZFromNVM:(int *)self7 estimatedSagZ:(int *)self8 combinedSensorOutput:(int *)self9 deltaSagFromNVM:(int *)vM isValid:(BOOL)valid dataWasRejectedByHistory:(BOOL)history;
+- (void)reportAutoFocusPositionSensorMode:(int)mode portType:(id)type;
+- (void)reportCalibrationStatisticsWithTime:(id)time timeValue:(double)value attemptsField:(id)field attemptsValue:(int64_t)attemptsValue successField:(id)successField successValue:(int64_t)successValue magneticFieldMagnitudeField:(id)magnitudeField magneticFieldMagnitudeValue:(double)self0;
+- (void)reportCameraAppCaptureForNonCameraAppLoggingWithFrontCamera:(BOOL)camera;
+- (void)reportCameraLaunchWithPrewarm:(int)prewarm reason:(id)reason;
+- (void)reportCameraLaunchWithoutPrewarm:(int)prewarm;
+- (void)reportCameraStreamingTimeInMilliseconds:(unint64_t)milliseconds deviceType:(int)type devicePosition:(int)position;
+- (void)reportCriticalFocusErrorOccurredForPortType:(id)type;
+- (void)reportFaceCount:(unsigned int)count frontCamera:(BOOL)camera;
+- (void)reportGNRSampleBufferProcessorProcessingStatus:(int)status;
+- (void)reportISPCreateDuration:(int)duration;
+- (void)reportLockScreenCameraLaunchCancelledWithPrewarming:(BOOL)prewarming ispStreamingStarted:(BOOL)started;
+- (void)reportLockScreenCameraLaunchCompletedWithPrewarming:(BOOL)prewarming restartedSessionDueToError:(int)error;
+- (void)reportLuxLevel:(unsigned int)level primaryCaptureType:(int)type secondaryCaptureType:(int)captureType captureFlags:(unint64_t)flags sceneFlags:(unint64_t)sceneFlags stillDuringVideo:(BOOL)video frontCamera:(BOOL)camera;
+- (void)reportNonCameraAppCaptureWithPrimaryCaptureType:(int)type secondaryCaptureType:(int)captureType captureFlags:(unint64_t)flags sceneFlags:(unint64_t)sceneFlags stillDuringVideo:(BOOL)video frontCamera:(BOOL)camera;
+- (void)reportPearlInfraredProjectorUptime:(unint64_t)uptime current:(int)current pattern:(int)pattern applicationID:(id)d;
+- (void)reportSDOFSampleBufferProcessorProcessingStatus:(int)status;
+- (void)reportSensorTemperature:(unsigned int)temperature frontCamera:(BOOL)camera;
+- (void)reportShutterLag:(id *)lag primaryCaptureType:(int)type secondaryCaptureType:(int)captureType captureFlags:(unint64_t)flags sceneFlags:(unint64_t)sceneFlags stillDuringVideo:(BOOL)video frontCamera:(BOOL)camera;
+- (void)reportSphereCalibrationForPosition:(int)position freqX:(float)x deltaFreqX:(float)freqX qX:(float)qX deltaQX:(float)deltaQX gainX:(float)gainX freqY:(float)y deltaFreqY:(float)self0 qY:(float)self1 deltaQY:(float)self2 gainY:(float)self3 calibrationStatus:(unsigned int)self4 isValid:(BOOL)self5;
+- (void)reportSphereEndStopCalibrationForPosition:(int)position oisPositiveX:(int)x oisNegativeX:(int)negativeX oisPositiveY:(int)y oisNegativeY:(int)negativeY maxPositiveXDriftFromNVM:(int)m maxNegativeXDriftFromNVM:(int)vM maxPositiveYDriftFromNVM:(int)self0 maxNegativeYDriftFromNVM:(int)self1 sphereStrokeX:(int)self2 sphereStrokeY:(int)self3 calibrationStatus:(unsigned int)self4 isValid:(BOOL)self5;
+- (void)reportSphereJitterDetectionsForPortType:(id)type detectionAttemps:(int)attemps successfulDetections:(int)detections;
+- (void)reportStereoFusionProcessingTypeForCaptureType:(int)type isStereoFusionCapture:(BOOL)capture wideSubCaptureType:(int)captureType teleSubCaptureType:(int)subCaptureType isOriginalImage:(BOOL)image;
+- (void)reportStereoFusionSampleBufferProcessorProcessingStatus:(int)status;
+- (void)reportStillImageAPSStatisticsForPortType:(id)type logicalFocusPosition:(int)position apsMotion:(float)motion sphereMotion:(float)sphereMotion accelMotion:(float)accelMotion gyroMotion:(float)gyroMotion subjectDistance:(float)distance luxLevel:(int)self0;
+- (void)reportVideoRecordingAPSStatistics:(float)statistics stdDataFromAPSForTele:(float)tele stdDataFromSphereForWide:(float)wide stdDataFromSphereForTele:(float)forTele stdDataFromAccel:(float)accel stdDataFromGyro:(float)gyro maxDataFromAPSForWide:(float)forWide maxDataFromAPSForTele:(float)self0 minDataFromAPSForWide:(float)self1 minDataFromAPSForTele:(float)self2 maxDataFromSphereForWide:(float)self3 maxDataFromSphereForTele:(float)self4 minDataFromSphereForWide:(float)self5 minDataFromSphereForTele:(float)self6 maxDataFromAccel:(float)self7 minDataFromAccel:(float)self8 maxDataFromGyro:(float)self9 minDataFromGyro:(float)dataFromGyro;
 - (void)reportZeroShutterLagFirmwareTimeMachineInitFailure;
 - (void)reportZeroShutterLagInitSuccess;
-- (void)reportZeroShutterLagMetadataInitFailureWithReasons:(unsigned int)a3;
+- (void)reportZeroShutterLagMetadataInitFailureWithReasons:(unsigned int)reasons;
 - (void)reportZeroShutterLagPreviewTimeMachineInitFailure;
-- (void)reportZeroShutterLagReferenceFrameSelectionFailureForCaptureType:(int)a3;
+- (void)reportZeroShutterLagReferenceFrameSelectionFailureForCaptureType:(int)type;
 - (void)reportZeroShutterLagSphereInitFailure;
 - (void)reportZeroShutterLagSuccess;
-- (void)reportZoomFactor:(float)a3 primaryCaptureType:(int)a4 secondaryCaptureType:(int)a5 captureFlags:(unint64_t)a6 sceneFlags:(unint64_t)a7 stillDuringVideo:(BOOL)a8 frontCamera:(BOOL)a9;
+- (void)reportZoomFactor:(float)factor primaryCaptureType:(int)type secondaryCaptureType:(int)captureType captureFlags:(unint64_t)flags sceneFlags:(unint64_t)sceneFlags stillDuringVideo:(BOOL)video frontCamera:(BOOL)camera;
 @end
 
 @implementation BWAggdDataReporter
@@ -88,17 +88,17 @@ BWAggdDataReporter *__36__BWAggdDataReporter_sharedInstance__block_invoke()
   [(BWAggdDataReporter *)&v3 dealloc];
 }
 
-- (void)reportCameraStreamingTimeInMilliseconds:(unint64_t)a3 deviceType:(int)a4 devicePosition:(int)a5
+- (void)reportCameraStreamingTimeInMilliseconds:(unint64_t)milliseconds deviceType:(int)type devicePosition:(int)position
 {
   aggdDispatchQueue = self->_aggdDispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __88__BWAggdDataReporter_reportCameraStreamingTimeInMilliseconds_deviceType_devicePosition___block_invoke;
   block[3] = &unk_1E7991EF8;
-  v7 = a4;
-  v8 = a5;
+  typeCopy = type;
+  positionCopy = position;
   block[4] = self;
-  block[5] = a3;
+  block[5] = milliseconds;
   dispatch_async(aggdDispatchQueue, block);
 }
 
@@ -124,18 +124,18 @@ uint64_t __88__BWAggdDataReporter_reportCameraStreamingTimeInMilliseconds_device
   return result;
 }
 
-- (void)reportPearlInfraredProjectorUptime:(unint64_t)a3 current:(int)a4 pattern:(int)a5 applicationID:(id)a6
+- (void)reportPearlInfraredProjectorUptime:(unint64_t)uptime current:(int)current pattern:(int)pattern applicationID:(id)d
 {
   aggdDispatchQueue = self->_aggdDispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __87__BWAggdDataReporter_reportPearlInfraredProjectorUptime_current_pattern_applicationID___block_invoke;
   v7[3] = &unk_1E7998380;
-  v8 = a4;
-  v9 = a5;
+  currentCopy = current;
+  patternCopy = pattern;
   v7[4] = self;
-  v7[5] = a6;
-  v7[6] = a3;
+  v7[5] = d;
+  v7[6] = uptime;
   dispatch_async(aggdDispatchQueue, v7);
 }
 
@@ -161,7 +161,7 @@ uint64_t __87__BWAggdDataReporter_reportPearlInfraredProjectorUptime_current_pat
   return result;
 }
 
-- (void)reportISPCreateDuration:(int)a3
+- (void)reportISPCreateDuration:(int)duration
 {
   aggdDispatchQueue = self->_aggdDispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -169,7 +169,7 @@ uint64_t __87__BWAggdDataReporter_reportPearlInfraredProjectorUptime_current_pat
   v4[2] = __46__BWAggdDataReporter_reportISPCreateDuration___block_invoke;
   v4[3] = &unk_1E7991CF0;
   v4[4] = self;
-  v5 = a3;
+  durationCopy = duration;
   dispatch_async(aggdDispatchQueue, v4);
 }
 
@@ -183,7 +183,7 @@ uint64_t __46__BWAggdDataReporter_reportISPCreateDuration___block_invoke(uint64_
   return result;
 }
 
-- (void)reportGNRSampleBufferProcessorProcessingStatus:(int)a3
+- (void)reportGNRSampleBufferProcessorProcessingStatus:(int)status
 {
   aggdDispatchQueue = self->_aggdDispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -191,7 +191,7 @@ uint64_t __46__BWAggdDataReporter_reportISPCreateDuration___block_invoke(uint64_
   v4[2] = __69__BWAggdDataReporter_reportGNRSampleBufferProcessorProcessingStatus___block_invoke;
   v4[3] = &unk_1E7991CF0;
   v4[4] = self;
-  v5 = a3;
+  statusCopy = status;
   dispatch_async(aggdDispatchQueue, v4);
 }
 
@@ -217,7 +217,7 @@ uint64_t __69__BWAggdDataReporter_reportGNRSampleBufferProcessorProcessingStatus
   return result;
 }
 
-- (void)reportStereoFusionProcessingTypeForCaptureType:(int)a3 isStereoFusionCapture:(BOOL)a4 wideSubCaptureType:(int)a5 teleSubCaptureType:(int)a6 isOriginalImage:(BOOL)a7
+- (void)reportStereoFusionProcessingTypeForCaptureType:(int)type isStereoFusionCapture:(BOOL)capture wideSubCaptureType:(int)captureType teleSubCaptureType:(int)subCaptureType isOriginalImage:(BOOL)image
 {
   aggdDispatchQueue = self->_aggdDispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -225,11 +225,11 @@ uint64_t __69__BWAggdDataReporter_reportGNRSampleBufferProcessorProcessingStatus
   block[2] = __145__BWAggdDataReporter_reportStereoFusionProcessingTypeForCaptureType_isStereoFusionCapture_wideSubCaptureType_teleSubCaptureType_isOriginalImage___block_invoke;
   block[3] = &unk_1E79983A8;
   block[4] = self;
-  v12 = a4;
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v13 = a7;
+  captureCopy = capture;
+  typeCopy = type;
+  captureTypeCopy = captureType;
+  subCaptureTypeCopy = subCaptureType;
+  imageCopy = image;
   dispatch_async(aggdDispatchQueue, block);
 }
 
@@ -255,7 +255,7 @@ uint64_t __145__BWAggdDataReporter_reportStereoFusionProcessingTypeForCaptureTyp
   return result;
 }
 
-- (void)reportStereoFusionSampleBufferProcessorProcessingStatus:(int)a3
+- (void)reportStereoFusionSampleBufferProcessorProcessingStatus:(int)status
 {
   aggdDispatchQueue = self->_aggdDispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -263,7 +263,7 @@ uint64_t __145__BWAggdDataReporter_reportStereoFusionProcessingTypeForCaptureTyp
   v4[2] = __78__BWAggdDataReporter_reportStereoFusionSampleBufferProcessorProcessingStatus___block_invoke;
   v4[3] = &unk_1E7991CF0;
   v4[4] = self;
-  v5 = a3;
+  statusCopy = status;
   dispatch_async(aggdDispatchQueue, v4);
 }
 
@@ -289,7 +289,7 @@ uint64_t __78__BWAggdDataReporter_reportStereoFusionSampleBufferProcessorProcess
   return result;
 }
 
-- (void)reportSDOFSampleBufferProcessorProcessingStatus:(int)a3
+- (void)reportSDOFSampleBufferProcessorProcessingStatus:(int)status
 {
   aggdDispatchQueue = self->_aggdDispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -297,7 +297,7 @@ uint64_t __78__BWAggdDataReporter_reportStereoFusionSampleBufferProcessorProcess
   v4[2] = __70__BWAggdDataReporter_reportSDOFSampleBufferProcessorProcessingStatus___block_invoke;
   v4[3] = &unk_1E7991CF0;
   v4[4] = self;
-  v5 = a3;
+  statusCopy = status;
   dispatch_async(aggdDispatchQueue, v4);
 }
 
@@ -323,21 +323,21 @@ uint64_t __70__BWAggdDataReporter_reportSDOFSampleBufferProcessorProcessingStatu
   return result;
 }
 
-- (void)reportLuxLevel:(unsigned int)a3 primaryCaptureType:(int)a4 secondaryCaptureType:(int)a5 captureFlags:(unint64_t)a6 sceneFlags:(unint64_t)a7 stillDuringVideo:(BOOL)a8 frontCamera:(BOOL)a9
+- (void)reportLuxLevel:(unsigned int)level primaryCaptureType:(int)type secondaryCaptureType:(int)captureType captureFlags:(unint64_t)flags sceneFlags:(unint64_t)sceneFlags stillDuringVideo:(BOOL)video frontCamera:(BOOL)camera
 {
   aggdDispatchQueue = self->_aggdDispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __130__BWAggdDataReporter_reportLuxLevel_primaryCaptureType_secondaryCaptureType_captureFlags_sceneFlags_stillDuringVideo_frontCamera___block_invoke;
   block[3] = &unk_1E79983D0;
-  v11 = a4;
-  v12 = a5;
+  typeCopy = type;
+  captureTypeCopy = captureType;
   block[4] = self;
-  block[5] = a6;
-  block[6] = a7;
-  v14 = a8;
-  v15 = a9;
-  v13 = a3;
+  block[5] = flags;
+  block[6] = sceneFlags;
+  videoCopy = video;
+  cameraCopy = camera;
+  levelCopy = level;
   dispatch_async(aggdDispatchQueue, block);
 }
 
@@ -364,21 +364,21 @@ uint64_t __130__BWAggdDataReporter_reportLuxLevel_primaryCaptureType_secondaryCa
   return result;
 }
 
-- (void)reportZoomFactor:(float)a3 primaryCaptureType:(int)a4 secondaryCaptureType:(int)a5 captureFlags:(unint64_t)a6 sceneFlags:(unint64_t)a7 stillDuringVideo:(BOOL)a8 frontCamera:(BOOL)a9
+- (void)reportZoomFactor:(float)factor primaryCaptureType:(int)type secondaryCaptureType:(int)captureType captureFlags:(unint64_t)flags sceneFlags:(unint64_t)sceneFlags stillDuringVideo:(BOOL)video frontCamera:(BOOL)camera
 {
   aggdDispatchQueue = self->_aggdDispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __132__BWAggdDataReporter_reportZoomFactor_primaryCaptureType_secondaryCaptureType_captureFlags_sceneFlags_stillDuringVideo_frontCamera___block_invoke;
   block[3] = &unk_1E79983D0;
-  v11 = a4;
-  v12 = a5;
+  typeCopy = type;
+  captureTypeCopy = captureType;
   block[4] = self;
-  block[5] = a6;
-  block[6] = a7;
-  v14 = a8;
-  v15 = a9;
-  v13 = a3;
+  block[5] = flags;
+  block[6] = sceneFlags;
+  videoCopy = video;
+  cameraCopy = camera;
+  factorCopy = factor;
   dispatch_async(aggdDispatchQueue, block);
 }
 
@@ -405,20 +405,20 @@ uint64_t __132__BWAggdDataReporter_reportZoomFactor_primaryCaptureType_secondary
   return result;
 }
 
-- (void)reportNonCameraAppCaptureWithPrimaryCaptureType:(int)a3 secondaryCaptureType:(int)a4 captureFlags:(unint64_t)a5 sceneFlags:(unint64_t)a6 stillDuringVideo:(BOOL)a7 frontCamera:(BOOL)a8
+- (void)reportNonCameraAppCaptureWithPrimaryCaptureType:(int)type secondaryCaptureType:(int)captureType captureFlags:(unint64_t)flags sceneFlags:(unint64_t)sceneFlags stillDuringVideo:(BOOL)video frontCamera:(BOOL)camera
 {
   aggdDispatchQueue = self->_aggdDispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __144__BWAggdDataReporter_reportNonCameraAppCaptureWithPrimaryCaptureType_secondaryCaptureType_captureFlags_sceneFlags_stillDuringVideo_frontCamera___block_invoke;
   block[3] = &unk_1E79983F8;
-  v10 = a3;
-  v11 = a4;
+  typeCopy = type;
+  captureTypeCopy = captureType;
   block[4] = self;
-  block[5] = a5;
-  block[6] = a6;
-  v12 = a7;
-  v13 = a8;
+  block[5] = flags;
+  block[6] = sceneFlags;
+  videoCopy = video;
+  cameraCopy = camera;
   dispatch_async(aggdDispatchQueue, block);
 }
 
@@ -445,14 +445,14 @@ uint64_t __144__BWAggdDataReporter_reportNonCameraAppCaptureWithPrimaryCaptureTy
   return result;
 }
 
-- (void)reportCameraAppCaptureForNonCameraAppLoggingWithFrontCamera:(BOOL)a3
+- (void)reportCameraAppCaptureForNonCameraAppLoggingWithFrontCamera:(BOOL)camera
 {
   aggdDispatchQueue = self->_aggdDispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __82__BWAggdDataReporter_reportCameraAppCaptureForNonCameraAppLoggingWithFrontCamera___block_invoke;
   v4[3] = &unk_1E7990078;
-  v5 = a3;
+  cameraCopy = camera;
   v4[4] = self;
   dispatch_async(aggdDispatchQueue, v4);
 }
@@ -467,16 +467,16 @@ uint64_t __82__BWAggdDataReporter_reportCameraAppCaptureForNonCameraAppLoggingWi
   return result;
 }
 
-- (void)reportFaceCount:(unsigned int)a3 frontCamera:(BOOL)a4
+- (void)reportFaceCount:(unsigned int)count frontCamera:(BOOL)camera
 {
   aggdDispatchQueue = self->_aggdDispatchQueue;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __50__BWAggdDataReporter_reportFaceCount_frontCamera___block_invoke;
   v5[3] = &unk_1E7998420;
-  v7 = a4;
+  cameraCopy = camera;
   v5[4] = self;
-  v6 = a3;
+  countCopy = count;
   dispatch_async(aggdDispatchQueue, v5);
 }
 
@@ -493,16 +493,16 @@ uint64_t __50__BWAggdDataReporter_reportFaceCount_frontCamera___block_invoke(uin
   return result;
 }
 
-- (void)reportSensorTemperature:(unsigned int)a3 frontCamera:(BOOL)a4
+- (void)reportSensorTemperature:(unsigned int)temperature frontCamera:(BOOL)camera
 {
   aggdDispatchQueue = self->_aggdDispatchQueue;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __58__BWAggdDataReporter_reportSensorTemperature_frontCamera___block_invoke;
   v5[3] = &unk_1E7998420;
-  v7 = a4;
+  cameraCopy = camera;
   v5[4] = self;
-  v6 = a3;
+  temperatureCopy = temperature;
   dispatch_async(aggdDispatchQueue, v5);
 }
 
@@ -519,21 +519,21 @@ uint64_t __58__BWAggdDataReporter_reportSensorTemperature_frontCamera___block_in
   return result;
 }
 
-- (void)reportShutterLag:(id *)a3 primaryCaptureType:(int)a4 secondaryCaptureType:(int)a5 captureFlags:(unint64_t)a6 sceneFlags:(unint64_t)a7 stillDuringVideo:(BOOL)a8 frontCamera:(BOOL)a9
+- (void)reportShutterLag:(id *)lag primaryCaptureType:(int)type secondaryCaptureType:(int)captureType captureFlags:(unint64_t)flags sceneFlags:(unint64_t)sceneFlags stillDuringVideo:(BOOL)video frontCamera:(BOOL)camera
 {
   aggdDispatchQueue = self->_aggdDispatchQueue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __132__BWAggdDataReporter_reportShutterLag_primaryCaptureType_secondaryCaptureType_captureFlags_sceneFlags_stillDuringVideo_frontCamera___block_invoke;
   v10[3] = &unk_1E7998448;
-  v11 = a4;
-  v12 = a5;
+  typeCopy = type;
+  captureTypeCopy = captureType;
   v10[4] = self;
-  v10[5] = a6;
-  v10[6] = a7;
-  v14 = a8;
-  v15 = a9;
-  v13 = *a3;
+  v10[5] = flags;
+  v10[6] = sceneFlags;
+  videoCopy = video;
+  cameraCopy = camera;
+  v13 = *lag;
   dispatch_async(aggdDispatchQueue, v10);
 }
 
@@ -588,7 +588,7 @@ void __132__BWAggdDataReporter_reportShutterLag_primaryCaptureType_secondaryCapt
   dispatch_async(aggdDispatchQueue, block);
 }
 
-- (void)reportZeroShutterLagMetadataInitFailureWithReasons:(unsigned int)a3
+- (void)reportZeroShutterLagMetadataInitFailureWithReasons:(unsigned int)reasons
 {
   aggdDispatchQueue = self->_aggdDispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -596,7 +596,7 @@ void __132__BWAggdDataReporter_reportShutterLag_primaryCaptureType_secondaryCapt
   v4[2] = __73__BWAggdDataReporter_reportZeroShutterLagMetadataInitFailureWithReasons___block_invoke;
   v4[3] = &unk_1E7991CF0;
   v4[4] = self;
-  v5 = a3;
+  reasonsCopy = reasons;
   dispatch_async(aggdDispatchQueue, v4);
 }
 
@@ -621,14 +621,14 @@ uint64_t __53__BWAggdDataReporter_reportZeroShutterLagInitSuccess__block_invoke(
   return result;
 }
 
-- (void)reportZeroShutterLagReferenceFrameSelectionFailureForCaptureType:(int)a3
+- (void)reportZeroShutterLagReferenceFrameSelectionFailureForCaptureType:(int)type
 {
   aggdDispatchQueue = self->_aggdDispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __87__BWAggdDataReporter_reportZeroShutterLagReferenceFrameSelectionFailureForCaptureType___block_invoke;
   v4[3] = &unk_1E7991CF0;
-  v5 = a3;
+  typeCopy = type;
   v4[4] = self;
   dispatch_async(aggdDispatchQueue, v4);
 }
@@ -695,7 +695,7 @@ uint64_t __49__BWAggdDataReporter_reportZeroShutterLagSuccess__block_invoke(uint
   return result;
 }
 
-- (void)reportCameraLaunchWithoutPrewarm:(int)a3
+- (void)reportCameraLaunchWithoutPrewarm:(int)prewarm
 {
   aggdDispatchQueue = self->_aggdDispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -703,7 +703,7 @@ uint64_t __49__BWAggdDataReporter_reportZeroShutterLagSuccess__block_invoke(uint
   v4[2] = __55__BWAggdDataReporter_reportCameraLaunchWithoutPrewarm___block_invoke;
   v4[3] = &unk_1E7991CF0;
   v4[4] = self;
-  v5 = a3;
+  prewarmCopy = prewarm;
   dispatch_async(aggdDispatchQueue, v4);
 }
 
@@ -717,16 +717,16 @@ uint64_t __55__BWAggdDataReporter_reportCameraLaunchWithoutPrewarm___block_invok
   return result;
 }
 
-- (void)reportCameraLaunchWithPrewarm:(int)a3 reason:(id)a4
+- (void)reportCameraLaunchWithPrewarm:(int)prewarm reason:(id)reason
 {
   aggdDispatchQueue = self->_aggdDispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__BWAggdDataReporter_reportCameraLaunchWithPrewarm_reason___block_invoke;
   block[3] = &unk_1E7997358;
-  v6 = a3;
+  prewarmCopy = prewarm;
   block[4] = self;
-  block[5] = a4;
+  block[5] = reason;
   dispatch_async(aggdDispatchQueue, block);
 }
 
@@ -763,21 +763,21 @@ uint64_t __59__BWAggdDataReporter_reportCameraLaunchWithPrewarm_reason___block_i
   return result;
 }
 
-- (void)reportLockScreenCameraLaunchCompletedWithPrewarming:(BOOL)a3 restartedSessionDueToError:(int)a4
+- (void)reportLockScreenCameraLaunchCompletedWithPrewarming:(BOOL)prewarming restartedSessionDueToError:(int)error
 {
   v5 = @"unknown";
-  if (a4 == 1)
+  if (error == 1)
   {
     v5 = @"cameraInUseByOtherClient";
   }
 
-  if (!a4)
+  if (!error)
   {
     v5 = @"none";
   }
 
   v6 = @"nonPrewarmed";
-  if (a3)
+  if (prewarming)
   {
     v6 = @"prewarmed";
   }
@@ -815,16 +815,16 @@ uint64_t __101__BWAggdDataReporter_reportLockScreenCameraLaunchCompletedWithPrew
   return result;
 }
 
-- (void)reportLockScreenCameraLaunchCancelledWithPrewarming:(BOOL)a3 ispStreamingStarted:(BOOL)a4
+- (void)reportLockScreenCameraLaunchCancelledWithPrewarming:(BOOL)prewarming ispStreamingStarted:(BOOL)started
 {
   v5 = @"nonPrewarmed";
-  if (a3)
+  if (prewarming)
   {
     v5 = @"prewarmed";
   }
 
   v6 = @"ispStreamingNotStarted";
-  if (a4)
+  if (started)
   {
     v6 = @"ispStreamingStarted";
   }
@@ -862,7 +862,7 @@ uint64_t __94__BWAggdDataReporter_reportLockScreenCameraLaunchCancelledWithPrewa
   return result;
 }
 
-- (void)reportCalibrationStatisticsWithTime:(id)a3 timeValue:(double)a4 attemptsField:(id)a5 attemptsValue:(int64_t)a6 successField:(id)a7 successValue:(int64_t)a8 magneticFieldMagnitudeField:(id)a9 magneticFieldMagnitudeValue:(double)a10
+- (void)reportCalibrationStatisticsWithTime:(id)time timeValue:(double)value attemptsField:(id)field attemptsValue:(int64_t)attemptsValue successField:(id)successField successValue:(int64_t)successValue magneticFieldMagnitudeField:(id)magnitudeField magneticFieldMagnitudeValue:(double)self0
 {
   aggdDispatchQueue = self->_aggdDispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -870,14 +870,14 @@ uint64_t __94__BWAggdDataReporter_reportLockScreenCameraLaunchCancelledWithPrewa
   block[2] = __178__BWAggdDataReporter_reportCalibrationStatisticsWithTime_timeValue_attemptsField_attemptsValue_successField_successValue_magneticFieldMagnitudeField_magneticFieldMagnitudeValue___block_invoke;
   block[3] = &unk_1E7998470;
   block[4] = self;
-  block[5] = a3;
-  *&block[9] = a4;
-  block[6] = a5;
-  block[7] = a7;
-  block[10] = a6;
-  block[11] = a8;
-  block[8] = a9;
-  *&block[12] = a10;
+  block[5] = time;
+  *&block[9] = value;
+  block[6] = field;
+  block[7] = successField;
+  block[10] = attemptsValue;
+  block[11] = successValue;
+  block[8] = magnitudeField;
+  *&block[12] = magnitudeValue;
   dispatch_async(aggdDispatchQueue, block);
 }
 
@@ -942,11 +942,11 @@ uint64_t __178__BWAggdDataReporter_reportCalibrationStatisticsWithTime_timeValue
   return result;
 }
 
-- (void)reportAutoFocusPositionSensorCalibrationForPosition:(int)a3 iStopZEstimate:(int)a4 eSensorOutput:(signed __int16)a5 wSensorOutput:(signed __int16)a6 gravityZ:(int)a7 calibrationStatus:(unsigned int)a8 sensorTemp:(signed __int16)a9 successfulInfinityEndStopDelta:(int)a10 currentInfinityEndStopDelta:(int)a11 previousInfinityEndStopDelta:(int)a12 currentAngleDelta:(int)a13 previousAngleDelta:(int)a14 factoryCalibrationOffset:(int *)a15 estimatedNeutralZ:(int *)a16 deltaNeutralZFromNVM:(int *)a17 estimatedSagZ:(int *)a18 combinedSensorOutput:(int *)a19 deltaSagFromNVM:(int *)a20 isValid:(BOOL)a21 dataWasRejectedByHistory:(BOOL)a22
+- (void)reportAutoFocusPositionSensorCalibrationForPosition:(int)position iStopZEstimate:(int)estimate eSensorOutput:(signed __int16)output wSensorOutput:(signed __int16)sensorOutput gravityZ:(int)z calibrationStatus:(unsigned int)status sensorTemp:(signed __int16)temp successfulInfinityEndStopDelta:(int)self0 currentInfinityEndStopDelta:(int)self1 previousInfinityEndStopDelta:(int)self2 currentAngleDelta:(int)self3 previousAngleDelta:(int)self4 factoryCalibrationOffset:(int *)self5 estimatedNeutralZ:(int *)self6 deltaNeutralZFromNVM:(int *)self7 estimatedSagZ:(int *)self8 combinedSensorOutput:(int *)self9 deltaSagFromNVM:(int *)vM isValid:(BOOL)valid dataWasRejectedByHistory:(BOOL)history
 {
-  if (a15)
+  if (offset)
   {
-    v22 = *a15;
+    v22 = *offset;
   }
 
   else
@@ -954,9 +954,9 @@ uint64_t __178__BWAggdDataReporter_reportCalibrationStatisticsWithTime_timeValue
     v22 = 0;
   }
 
-  if (a16)
+  if (neutralZ)
   {
-    v23 = *a16;
+    v23 = *neutralZ;
   }
 
   else
@@ -964,9 +964,9 @@ uint64_t __178__BWAggdDataReporter_reportCalibrationStatisticsWithTime_timeValue
     v23 = 0;
   }
 
-  if (a17)
+  if (m)
   {
-    v24 = *a17;
+    v24 = *m;
   }
 
   else
@@ -974,13 +974,13 @@ uint64_t __178__BWAggdDataReporter_reportCalibrationStatisticsWithTime_timeValue
     v24 = 0;
   }
 
-  if (a18)
+  if (sagZ)
   {
-    v25 = *a18;
-    if (a19)
+    v25 = *sagZ;
+    if (combinedSensorOutput)
     {
 LABEL_12:
-      v26 = *a19;
+      v26 = *combinedSensorOutput;
       goto LABEL_15;
     }
   }
@@ -988,7 +988,7 @@ LABEL_12:
   else
   {
     v25 = 0;
-    if (a19)
+    if (combinedSensorOutput)
     {
       goto LABEL_12;
     }
@@ -996,9 +996,9 @@ LABEL_12:
 
   v26 = 0;
 LABEL_15:
-  if (a20)
+  if (vM)
   {
-    v27 = *a20;
+    v27 = *vM;
   }
 
   else
@@ -1012,40 +1012,40 @@ LABEL_15:
   block[2] = __428__BWAggdDataReporter_reportAutoFocusPositionSensorCalibrationForPosition_iStopZEstimate_eSensorOutput_wSensorOutput_gravityZ_calibrationStatus_sensorTemp_successfulInfinityEndStopDelta_currentInfinityEndStopDelta_previousInfinityEndStopDelta_currentAngleDelta_previousAngleDelta_factoryCalibrationOffset_estimatedNeutralZ_deltaNeutralZFromNVM_estimatedSagZ_combinedSensorOutput_deltaSagFromNVM_isValid_dataWasRejectedByHistory___block_invoke;
   block[3] = &unk_1E7998498;
   block[4] = self;
-  v31 = a3;
-  v32 = a8;
-  v49 = a22;
-  v50 = a21;
-  v33 = a11;
-  v34 = a12;
-  v35 = a13;
-  v36 = a14;
-  v46 = a5;
-  v47 = a6;
-  v48 = a9;
-  v37 = a4;
-  v38 = a10;
-  v51 = a15 != 0;
-  v39 = a7;
+  positionCopy = position;
+  statusCopy = status;
+  historyCopy = history;
+  validCopy = valid;
+  stopDeltaCopy = stopDelta;
+  endStopDeltaCopy = endStopDelta;
+  angleDeltaCopy = angleDelta;
+  previousAngleDeltaCopy = previousAngleDelta;
+  outputCopy = output;
+  sensorOutputCopy = sensorOutput;
+  tempCopy = temp;
+  estimateCopy = estimate;
+  deltaCopy = delta;
+  v51 = offset != 0;
+  zCopy = z;
   v40 = v22;
-  v52 = a16 != 0;
-  v53 = a17 != 0;
+  v52 = neutralZ != 0;
+  v53 = m != 0;
   v41 = v23;
   v42 = v24;
-  v54 = a18 != 0;
-  v55 = a19 != 0;
+  v54 = sagZ != 0;
+  v55 = combinedSensorOutput != 0;
   v43 = v25;
   v44 = v26;
-  v56 = a20 != 0;
+  v56 = vM != 0;
   v45 = v27;
   dispatch_async(aggdDispatchQueue, block);
 }
 
-- (void)reportAutoFocusCalibrationForPosition:(int)a3 freqZ:(int)a4 deltaFreqZ:(int)a5 qZ:(int)a6 deltaQZ:(int)a7 gainZ:(int)a8 calibrationStatus:(unsigned int)a9 gelModelCoefficientD1:(int *)a10 gelModelCoefficientD2:(int *)a11 gelModelCoefficientP1:(int *)a12 gelModelCoefficientP2:(int *)a13 isValid:(BOOL)a14
+- (void)reportAutoFocusCalibrationForPosition:(int)position freqZ:(int)z deltaFreqZ:(int)freqZ qZ:(int)qZ deltaQZ:(int)deltaQZ gainZ:(int)gainZ calibrationStatus:(unsigned int)status gelModelCoefficientD1:(int *)self0 gelModelCoefficientD2:(int *)self1 gelModelCoefficientP1:(int *)self2 gelModelCoefficientP2:(int *)self3 isValid:(BOOL)self4
 {
-  if (a10)
+  if (d1)
   {
-    v14 = *a10;
+    v14 = *d1;
   }
 
   else
@@ -1053,13 +1053,13 @@ LABEL_15:
     v14 = 0;
   }
 
-  if (a11)
+  if (d2)
   {
-    v15 = *a11;
-    if (a12)
+    v15 = *d2;
+    if (p1)
     {
 LABEL_6:
-      v16 = *a12;
+      v16 = *p1;
       goto LABEL_9;
     }
   }
@@ -1067,7 +1067,7 @@ LABEL_6:
   else
   {
     v15 = 0;
-    if (a12)
+    if (p1)
     {
       goto LABEL_6;
     }
@@ -1075,9 +1075,9 @@ LABEL_6:
 
   v16 = 0;
 LABEL_9:
-  if (a13)
+  if (p2)
   {
-    v17 = *a13;
+    v17 = *p2;
   }
 
   else
@@ -1091,21 +1091,21 @@ LABEL_9:
   v19[2] = __208__BWAggdDataReporter_reportAutoFocusCalibrationForPosition_freqZ_deltaFreqZ_qZ_deltaQZ_gainZ_calibrationStatus_gelModelCoefficientD1_gelModelCoefficientD2_gelModelCoefficientP1_gelModelCoefficientP2_isValid___block_invoke;
   v19[3] = &unk_1E79984C0;
   v19[4] = self;
-  v20 = a3;
-  v21 = a9;
-  v31 = a14;
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
-  v25 = a7;
-  v32 = a10 != 0;
-  v26 = a8;
+  positionCopy = position;
+  statusCopy = status;
+  validCopy = valid;
+  zCopy = z;
+  freqZCopy = freqZ;
+  qZCopy = qZ;
+  deltaQZCopy = deltaQZ;
+  v32 = d1 != 0;
+  gainZCopy = gainZ;
   v27 = v14;
-  v33 = a11 != 0;
-  v34 = a12 != 0;
+  v33 = d2 != 0;
+  v34 = p1 != 0;
   v28 = v15;
   v29 = v16;
-  v35 = a13 != 0;
+  v35 = p2 != 0;
   v30 = v17;
   dispatch_async(aggdDispatchQueue, v19);
 }
@@ -1223,7 +1223,7 @@ uint64_t __208__BWAggdDataReporter_reportAutoFocusCalibrationForPosition_freqZ_d
   return result;
 }
 
-- (void)reportSphereCalibrationForPosition:(int)a3 freqX:(float)a4 deltaFreqX:(float)a5 qX:(float)a6 deltaQX:(float)a7 gainX:(float)a8 freqY:(float)a9 deltaFreqY:(float)a10 qY:(float)a11 deltaQY:(float)a12 gainY:(float)a13 calibrationStatus:(unsigned int)a14 isValid:(BOOL)a15
+- (void)reportSphereCalibrationForPosition:(int)position freqX:(float)x deltaFreqX:(float)freqX qX:(float)qX deltaQX:(float)deltaQX gainX:(float)gainX freqY:(float)y deltaFreqY:(float)self0 qY:(float)self1 deltaQY:(float)self2 gainY:(float)self3 calibrationStatus:(unsigned int)self4 isValid:(BOOL)self5
 {
   aggdDispatchQueue = self->_aggdDispatchQueue;
   v16[0] = MEMORY[0x1E69E9820];
@@ -1231,19 +1231,19 @@ uint64_t __208__BWAggdDataReporter_reportAutoFocusCalibrationForPosition_freqZ_d
   v16[2] = __151__BWAggdDataReporter_reportSphereCalibrationForPosition_freqX_deltaFreqX_qX_deltaQX_gainX_freqY_deltaFreqY_qY_deltaQY_gainY_calibrationStatus_isValid___block_invoke;
   v16[3] = &unk_1E79984C0;
   v16[4] = self;
-  v17 = a3;
-  v18 = a14;
-  v29 = a15;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v24 = a9;
-  v25 = a10;
-  v26 = a11;
-  v27 = a12;
-  v28 = a13;
+  positionCopy = position;
+  statusCopy = status;
+  validCopy = valid;
+  xCopy = x;
+  freqXCopy = freqX;
+  qXCopy = qX;
+  deltaQXCopy = deltaQX;
+  gainXCopy = gainX;
+  yCopy = y;
+  freqYCopy = freqY;
+  qYCopy = qY;
+  deltaQYCopy = deltaQY;
+  gainYCopy = gainY;
   dispatch_async(aggdDispatchQueue, v16);
 }
 
@@ -1343,7 +1343,7 @@ uint64_t __151__BWAggdDataReporter_reportSphereCalibrationForPosition_freqX_delt
   return result;
 }
 
-- (void)reportAPSSphereInteractionCalibrationForPosition:(int)a3 residualErrorNeutral:(float)a4 calibrationZHeightNeutral:(float)a5 residualErrorMacro:(float)a6 calibrationZHeightMacro:(float)a7 calibrationStatus:(unsigned int)a8 isValid:(BOOL)a9
+- (void)reportAPSSphereInteractionCalibrationForPosition:(int)position residualErrorNeutral:(float)neutral calibrationZHeightNeutral:(float)heightNeutral residualErrorMacro:(float)macro calibrationZHeightMacro:(float)heightMacro calibrationStatus:(unsigned int)status isValid:(BOOL)valid
 {
   aggdDispatchQueue = self->_aggdDispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1351,13 +1351,13 @@ uint64_t __151__BWAggdDataReporter_reportSphereCalibrationForPosition_freqX_delt
   block[2] = __187__BWAggdDataReporter_reportAPSSphereInteractionCalibrationForPosition_residualErrorNeutral_calibrationZHeightNeutral_residualErrorMacro_calibrationZHeightMacro_calibrationStatus_isValid___block_invoke;
   block[3] = &unk_1E79984E8;
   block[4] = self;
-  v11 = a3;
-  v12 = a8;
-  v17 = a9;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  positionCopy = position;
+  statusCopy = status;
+  validCopy = valid;
+  neutralCopy = neutral;
+  heightNeutralCopy = heightNeutral;
+  macroCopy = macro;
+  heightMacroCopy = heightMacro;
   dispatch_async(aggdDispatchQueue, block);
 }
 
@@ -1415,7 +1415,7 @@ uint64_t __187__BWAggdDataReporter_reportAPSSphereInteractionCalibrationForPosit
   return result;
 }
 
-- (void)reportSphereEndStopCalibrationForPosition:(int)a3 oisPositiveX:(int)a4 oisNegativeX:(int)a5 oisPositiveY:(int)a6 oisNegativeY:(int)a7 maxPositiveXDriftFromNVM:(int)a8 maxNegativeXDriftFromNVM:(int)a9 maxPositiveYDriftFromNVM:(int)a10 maxNegativeYDriftFromNVM:(int)a11 sphereStrokeX:(int)a12 sphereStrokeY:(int)a13 calibrationStatus:(unsigned int)a14 isValid:(BOOL)a15
+- (void)reportSphereEndStopCalibrationForPosition:(int)position oisPositiveX:(int)x oisNegativeX:(int)negativeX oisPositiveY:(int)y oisNegativeY:(int)negativeY maxPositiveXDriftFromNVM:(int)m maxNegativeXDriftFromNVM:(int)vM maxPositiveYDriftFromNVM:(int)self0 maxNegativeYDriftFromNVM:(int)self1 sphereStrokeX:(int)self2 sphereStrokeY:(int)self3 calibrationStatus:(unsigned int)self4 isValid:(BOOL)self5
 {
   aggdDispatchQueue = self->_aggdDispatchQueue;
   v16[0] = MEMORY[0x1E69E9820];
@@ -1423,16 +1423,16 @@ uint64_t __187__BWAggdDataReporter_reportAPSSphereInteractionCalibrationForPosit
   v16[2] = __270__BWAggdDataReporter_reportSphereEndStopCalibrationForPosition_oisPositiveX_oisNegativeX_oisPositiveY_oisNegativeY_maxPositiveXDriftFromNVM_maxNegativeXDriftFromNVM_maxPositiveYDriftFromNVM_maxNegativeYDriftFromNVM_sphereStrokeX_sphereStrokeY_calibrationStatus_isValid___block_invoke;
   v16[3] = &unk_1E79984C0;
   v16[4] = self;
-  v17 = a3;
-  v18 = a14;
-  v26 = a15;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v24 = *&a9;
-  v25 = a13;
+  positionCopy = position;
+  statusCopy = status;
+  validCopy = valid;
+  xCopy = x;
+  negativeXCopy = negativeX;
+  yCopy = y;
+  negativeYCopy = negativeY;
+  mCopy = m;
+  v24 = *&vM;
+  strokeYCopy = strokeY;
   dispatch_async(aggdDispatchQueue, v16);
 }
 
@@ -1532,16 +1532,16 @@ uint64_t __270__BWAggdDataReporter_reportSphereEndStopCalibrationForPosition_ois
   return result;
 }
 
-- (void)reportAutoFocusPositionSensorMode:(int)a3 portType:(id)a4
+- (void)reportAutoFocusPositionSensorMode:(int)mode portType:(id)type
 {
   aggdDispatchQueue = self->_aggdDispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__BWAggdDataReporter_reportAutoFocusPositionSensorMode_portType___block_invoke;
   block[3] = &unk_1E7997358;
-  block[4] = a4;
+  block[4] = type;
   block[5] = self;
-  v6 = a3;
+  modeCopy = mode;
   dispatch_async(aggdDispatchQueue, block);
 }
 
@@ -1584,16 +1584,16 @@ uint64_t __65__BWAggdDataReporter_reportAutoFocusPositionSensorMode_portType___b
   return result;
 }
 
-- (void)reportAPSOffsetEstimatorForPortType:(id)a3 accelMotion:(float)a4 gyroMotion:(float)a5 inSessionOffset:(float)a6 deltaOffsetFC:(float)a7 deltaOffsetMI:(float)a8 deltaOffsetFATP:(float)a9 deltaOffsetLastSession:(float)a10 errorHeadroomViolated:(BOOL)a11 errorConvergenceFailed:(BOOL)a12 errorMotionTooLarge:(BOOL)a13 errorConfidenceTooLow:(BOOL)a14 errorOffsetTooLarge:(BOOL)a15 errorDeltaTooLarge:(BOOL)a16 errorSaturated:(BOOL)a17 errorCouldNotRun:(BOOL)a18 successRun:(BOOL)a19 startAPSVoltage:(int)a20 modeGCOL:(BOOL)a21 modeOL:(BOOL)a22
+- (void)reportAPSOffsetEstimatorForPortType:(id)type accelMotion:(float)motion gyroMotion:(float)gyroMotion inSessionOffset:(float)offset deltaOffsetFC:(float)c deltaOffsetMI:(float)i deltaOffsetFATP:(float)p deltaOffsetLastSession:(float)self0 errorHeadroomViolated:(BOOL)self1 errorConvergenceFailed:(BOOL)self2 errorMotionTooLarge:(BOOL)self3 errorConfidenceTooLow:(BOOL)self4 errorOffsetTooLarge:(BOOL)self5 errorDeltaTooLarge:(BOOL)self6 errorSaturated:(BOOL)self7 errorCouldNotRun:(BOOL)self8 successRun:(BOOL)self9 startAPSVoltage:(int)voltage modeGCOL:(BOOL)l modeOL:(BOOL)oL
 {
-  if ([a3 isEqualToString:*off_1E798A0C0])
+  if ([type isEqualToString:*off_1E798A0C0])
   {
     v36 = 1;
   }
 
   else
   {
-    if (![a3 isEqualToString:*off_1E798A0D8])
+    if (![type isEqualToString:*off_1E798A0D8])
     {
       return;
     }
@@ -1607,39 +1607,39 @@ uint64_t __65__BWAggdDataReporter_reportAutoFocusPositionSensorMode_portType___b
   block[2] = __365__BWAggdDataReporter_reportAPSOffsetEstimatorForPortType_accelMotion_gyroMotion_inSessionOffset_deltaOffsetFC_deltaOffsetMI_deltaOffsetFATP_deltaOffsetLastSession_errorHeadroomViolated_errorConvergenceFailed_errorMotionTooLarge_errorConfidenceTooLow_errorOffsetTooLarge_errorDeltaTooLarge_errorSaturated_errorCouldNotRun_successRun_startAPSVoltage_modeGCOL_modeOL___block_invoke;
   block[3] = &unk_1E7998510;
   block[4] = self;
-  v39 = a4;
-  v40 = a5;
-  v41 = a7;
+  motionCopy = motion;
+  gyroMotionCopy = gyroMotion;
+  cCopy = c;
   v42 = v36;
-  v43 = a8;
-  v44 = a9;
-  v48 = a11;
-  v49 = a12;
-  v50 = a13;
-  v51 = a14;
-  v52 = a15;
-  v53 = a16;
-  v54 = a17;
-  v55 = a18;
-  v56 = a19;
-  v45 = a10;
-  v46 = a6;
-  v47 = a20;
-  v57 = a21;
-  v58 = a22;
+  iCopy = i;
+  pCopy = p;
+  violatedCopy = violated;
+  failedCopy = failed;
+  largeCopy = large;
+  lowCopy = low;
+  tooLargeCopy = tooLarge;
+  deltaTooLargeCopy = deltaTooLarge;
+  saturatedCopy = saturated;
+  runCopy = run;
+  successRunCopy = successRun;
+  sessionCopy = session;
+  offsetCopy = offset;
+  voltageCopy = voltage;
+  lCopy = l;
+  oLCopy = oL;
   dispatch_async(aggdDispatchQueue, block);
 }
 
-- (void)reportStillImageAPSStatisticsForPortType:(id)a3 logicalFocusPosition:(int)a4 apsMotion:(float)a5 sphereMotion:(float)a6 accelMotion:(float)a7 gyroMotion:(float)a8 subjectDistance:(float)a9 luxLevel:(int)a10
+- (void)reportStillImageAPSStatisticsForPortType:(id)type logicalFocusPosition:(int)position apsMotion:(float)motion sphereMotion:(float)sphereMotion accelMotion:(float)accelMotion gyroMotion:(float)gyroMotion subjectDistance:(float)distance luxLevel:(int)self0
 {
-  if ([a3 isEqualToString:*off_1E798A0C0])
+  if ([type isEqualToString:*off_1E798A0C0])
   {
     v19 = 1;
   }
 
   else
   {
-    if (![a3 isEqualToString:*off_1E798A0D8])
+    if (![type isEqualToString:*off_1E798A0D8])
     {
       return;
     }
@@ -1653,18 +1653,18 @@ uint64_t __65__BWAggdDataReporter_reportAutoFocusPositionSensorMode_portType___b
   block[2] = __155__BWAggdDataReporter_reportStillImageAPSStatisticsForPortType_logicalFocusPosition_apsMotion_sphereMotion_accelMotion_gyroMotion_subjectDistance_luxLevel___block_invoke;
   block[3] = &unk_1E79914E0;
   block[4] = self;
-  v22 = a4;
+  positionCopy = position;
   v23 = v19;
-  v24 = a5;
-  v25 = a6;
-  v26 = a7;
-  v27 = a8;
-  v28 = a9;
-  v29 = a10;
+  motionCopy = motion;
+  sphereMotionCopy = sphereMotion;
+  accelMotionCopy = accelMotion;
+  gyroMotionCopy = gyroMotion;
+  distanceCopy = distance;
+  levelCopy = level;
   dispatch_async(aggdDispatchQueue, block);
 }
 
-- (void)reportVideoRecordingAPSStatistics:(float)a3 stdDataFromAPSForTele:(float)a4 stdDataFromSphereForWide:(float)a5 stdDataFromSphereForTele:(float)a6 stdDataFromAccel:(float)a7 stdDataFromGyro:(float)a8 maxDataFromAPSForWide:(float)a9 maxDataFromAPSForTele:(float)a10 minDataFromAPSForWide:(float)a11 minDataFromAPSForTele:(float)a12 maxDataFromSphereForWide:(float)a13 maxDataFromSphereForTele:(float)a14 minDataFromSphereForWide:(float)a15 minDataFromSphereForTele:(float)a16 maxDataFromAccel:(float)a17 minDataFromAccel:(float)a18 maxDataFromGyro:(float)a19 minDataFromGyro:(float)a20
+- (void)reportVideoRecordingAPSStatistics:(float)statistics stdDataFromAPSForTele:(float)tele stdDataFromSphereForWide:(float)wide stdDataFromSphereForTele:(float)forTele stdDataFromAccel:(float)accel stdDataFromGyro:(float)gyro maxDataFromAPSForWide:(float)forWide maxDataFromAPSForTele:(float)self0 minDataFromAPSForWide:(float)self1 minDataFromAPSForTele:(float)self2 maxDataFromSphereForWide:(float)self3 maxDataFromSphereForTele:(float)self4 minDataFromSphereForWide:(float)self5 minDataFromSphereForTele:(float)self6 maxDataFromAccel:(float)self7 minDataFromAccel:(float)self8 maxDataFromGyro:(float)self9 minDataFromGyro:(float)dataFromGyro
 {
   aggdDispatchQueue = self->_aggdDispatchQueue;
   v21[0] = MEMORY[0x1E69E9820];
@@ -1672,31 +1672,31 @@ uint64_t __65__BWAggdDataReporter_reportAutoFocusPositionSensorMode_portType___b
   v21[2] = __415__BWAggdDataReporter_reportVideoRecordingAPSStatistics_stdDataFromAPSForTele_stdDataFromSphereForWide_stdDataFromSphereForTele_stdDataFromAccel_stdDataFromGyro_maxDataFromAPSForWide_maxDataFromAPSForTele_minDataFromAPSForWide_minDataFromAPSForTele_maxDataFromSphereForWide_maxDataFromSphereForTele_minDataFromSphereForWide_minDataFromSphereForTele_maxDataFromAccel_minDataFromAccel_maxDataFromGyro_minDataFromGyro___block_invoke;
   v21[3] = &unk_1E7998538;
   v21[4] = self;
-  v22 = a3;
-  v23 = a4;
-  v24 = a5;
-  v25 = a6;
-  v26 = a7;
-  v27 = a8;
-  v28 = a9;
-  v29 = a10;
-  v30 = *&a11;
-  v31 = *&a15;
-  v32 = a19;
-  v33 = a20;
+  statisticsCopy = statistics;
+  teleCopy = tele;
+  wideCopy = wide;
+  forTeleCopy = forTele;
+  accelCopy = accel;
+  gyroCopy = gyro;
+  forWideCopy = forWide;
+  sForTeleCopy = sForTele;
+  v30 = *&sForWide;
+  v31 = *&fromSphereForWide;
+  fromGyroCopy = fromGyro;
+  dataFromGyroCopy = dataFromGyro;
   dispatch_async(aggdDispatchQueue, v21);
 }
 
-- (void)reportCriticalFocusErrorOccurredForPortType:(id)a3
+- (void)reportCriticalFocusErrorOccurredForPortType:(id)type
 {
-  if ([a3 isEqualToString:*off_1E798A0C0])
+  if ([type isEqualToString:*off_1E798A0C0])
   {
     v5 = 1;
   }
 
   else
   {
-    if (![a3 isEqualToString:*off_1E798A0D8])
+    if (![type isEqualToString:*off_1E798A0D8])
     {
       return;
     }
@@ -1737,9 +1737,9 @@ uint64_t __66__BWAggdDataReporter_reportCriticalFocusErrorOccurredForPortType___
   return result;
 }
 
-- (void)reportSphereJitterDetectionsForPortType:(id)a3 detectionAttemps:(int)a4 successfulDetections:(int)a5
+- (void)reportSphereJitterDetectionsForPortType:(id)type detectionAttemps:(int)attemps successfulDetections:(int)detections
 {
-  if ([a3 isEqualToString:*off_1E798A0C0])
+  if ([type isEqualToString:*off_1E798A0C0])
   {
     v9 = @"BackAccumulatedSuccessfulDetections";
     v10 = 1;
@@ -1748,7 +1748,7 @@ uint64_t __66__BWAggdDataReporter_reportCriticalFocusErrorOccurredForPortType___
 
   else
   {
-    if (![a3 isEqualToString:*off_1E798A0D8])
+    if (![type isEqualToString:*off_1E798A0D8])
     {
       return;
     }
@@ -1765,8 +1765,8 @@ uint64_t __66__BWAggdDataReporter_reportCriticalFocusErrorOccurredForPortType___
   block[3] = &unk_1E7998560;
   block[4] = v11;
   block[5] = v9;
-  v14 = a4;
-  v15 = a5;
+  attempsCopy = attemps;
+  detectionsCopy = detections;
   block[6] = self;
   v16 = v10;
   dispatch_async(aggdDispatchQueue, block);
@@ -1835,22 +1835,22 @@ uint64_t __100__BWAggdDataReporter_reportSphereJitterDetectionsForPortType_detec
   return result;
 }
 
-- (id)_aggdCameraStreamingTimeStringFromDeviceType:(int)a3 devicePosition:(int)a4
+- (id)_aggdCameraStreamingTimeStringFromDeviceType:(int)type devicePosition:(int)position
 {
-  if (a4 == 2)
+  if (position == 2)
   {
-    v4 = a3 - 2;
-    if ((a3 - 2) < 5)
+    v4 = type - 2;
+    if ((type - 2) < 5)
     {
       v5 = &off_1E79985C8;
       return v5[v4];
     }
   }
 
-  else if (a4 == 1)
+  else if (position == 1)
   {
-    v4 = a3 - 2;
-    if ((a3 - 2) < 9)
+    v4 = type - 2;
+    if ((type - 2) < 9)
     {
       v5 = off_1E7998580;
       return v5[v4];
@@ -1860,20 +1860,20 @@ uint64_t __100__BWAggdDataReporter_reportSphereJitterDetectionsForPortType_detec
   return 0;
 }
 
-- (id)_aggdPearlInfraredProjectorUptimeStringFromCurrent:(int)a3 pattern:(int)a4 applicationID:(id)a5
+- (id)_aggdPearlInfraredProjectorUptimeStringFromCurrent:(int)current pattern:(int)pattern applicationID:(id)d
 {
-  if (a3 != 1 || a4)
+  if (current != 1 || pattern)
   {
-    if (a3 == 1 && a4 == 1)
+    if (current == 1 && pattern == 1)
     {
       v6 = 0;
       v7 = @"lowpowerdense";
     }
 
-    else if (a3 != 2 || a4)
+    else if (current != 2 || pattern)
     {
-      v6 = a3 != 2 || a4 != 1;
-      if (a3 == 2 && a4 == 1)
+      v6 = current != 2 || pattern != 1;
+      if (current == 2 && pattern == 1)
       {
         v7 = @"highpowerdense";
       }
@@ -1897,19 +1897,19 @@ uint64_t __100__BWAggdDataReporter_reportSphereJitterDetectionsForPortType_detec
     v7 = @"lowpowersparse";
   }
 
-  if ([a5 isEqualToString:0x1F216ED50] & 1) != 0 || (objc_msgSend(a5, "isEqualToString:", 0x1F2185210))
+  if ([d isEqualToString:0x1F216ED50] & 1) != 0 || (objc_msgSend(d, "isEqualToString:", 0x1F2185210))
   {
     v8 = @"cameraapp";
   }
 
-  else if ([a5 isEqualToString:0x1F2185130])
+  else if ([d isEqualToString:0x1F2185130])
   {
     v8 = @"jellyfish";
   }
 
   else
   {
-    v10 = [a5 isEqualToString:0x1F2185490];
+    v10 = [d isEqualToString:0x1F2185490];
     v8 = @"3rdparty";
     if (v10)
     {
@@ -1928,21 +1928,21 @@ uint64_t __100__BWAggdDataReporter_reportSphereJitterDetectionsForPortType_detec
   }
 }
 
-- (id)_aggdGNRProcessingStatusStringFromProcessingStatus:(int)a3
+- (id)_aggdGNRProcessingStatusStringFromProcessingStatus:(int)status
 {
   v3 = @"success";
   v4 = @"other-failure";
-  if (a3 == -17401)
+  if (status == -17401)
   {
     v4 = @"reg-failure";
   }
 
-  if (a3)
+  if (status)
   {
     v3 = v4;
   }
 
-  if (a3 == -17402)
+  if (status == -17402)
   {
     v3 = @"fusion-failure";
   }
@@ -1950,29 +1950,29 @@ uint64_t __100__BWAggdDataReporter_reportSphereJitterDetectionsForPortType_detec
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.coremedia.camera.still.processing.gnr.status.%@", v3];
 }
 
-- (id)_aggdStereoFusionProcessingTypeStringForCaptureType:(int)a3 isStereoFusionCapture:(BOOL)a4 wideSubCaptureType:(int)a5 teleSubCaptureType:(int)a6 isOriginalImage:(BOOL)a7
+- (id)_aggdStereoFusionProcessingTypeStringForCaptureType:(int)type isStereoFusionCapture:(BOOL)capture wideSubCaptureType:(int)captureType teleSubCaptureType:(int)subCaptureType isOriginalImage:(BOOL)image
 {
-  if (!a4)
+  if (!capture)
   {
     v10 = @"not-processed";
     return [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.coremedia.camera.still.processing.stereofusion.type.%@", v10];
   }
 
-  v7 = *&a6;
-  v8 = *&a5;
-  v9 = *&a3;
-  if (a3 <= 2)
+  v7 = *&subCaptureType;
+  v8 = *&captureType;
+  v9 = *&type;
+  if (type <= 2)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
-      if (a5 == 1 && a6 == 1)
+      if (captureType == 1 && subCaptureType == 1)
       {
         v10 = @"wysiwyg";
         return [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.coremedia.camera.still.processing.stereofusion.type.%@", v10];
       }
     }
 
-    else if (a3 == 2 && a5 == 2 && a6 == 2)
+    else if (type == 2 && captureType == 2 && subCaptureType == 2)
     {
       v10 = @"flash";
       return [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.coremedia.camera.still.processing.stereofusion.type.%@", v10];
@@ -1981,23 +1981,23 @@ uint64_t __100__BWAggdDataReporter_reportSphereJitterDetectionsForPortType_detec
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 3:
         v10 = @"hdr";
-        if (a7)
+        if (image)
         {
           v10 = @"wysiwyg";
         }
 
-        if (a5 == 3 && a6 == 3)
+        if (captureType == 3 && subCaptureType == 3)
         {
           return [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.coremedia.camera.still.processing.stereofusion.type.%@", v10];
         }
 
         break;
       case 4:
-        if (a5 == 4 && a6 == 4)
+        if (captureType == 4 && subCaptureType == 4)
         {
           v10 = @"sis";
           return [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.coremedia.camera.still.processing.stereofusion.type.%@", v10];
@@ -2005,13 +2005,13 @@ uint64_t __100__BWAggdDataReporter_reportSphereJitterDetectionsForPortType_detec
 
         break;
       case 5:
-        if (a5 == 5 && a6 == 5)
+        if (captureType == 5 && subCaptureType == 5)
         {
           v10 = @"ois";
           return [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.coremedia.camera.still.processing.stereofusion.type.%@", v10];
         }
 
-        if (a5 == 5 && a6 == 4)
+        if (captureType == 5 && subCaptureType == 4)
         {
           v10 = @"ois-sis";
           return [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.coremedia.camera.still.processing.stereofusion.type.%@", v10];
@@ -2034,15 +2034,15 @@ uint64_t __100__BWAggdDataReporter_reportSphereJitterDetectionsForPortType_detec
   return 0;
 }
 
-- (id)_aggdStereoFusionProcessingStatusStringFromProcessingStatus:(int)a3
+- (id)_aggdStereoFusionProcessingStatusStringFromProcessingStatus:(int)status
 {
   v3 = @"other-failure";
-  if (a3 == -17411)
+  if (status == -17411)
   {
     v3 = @"adc-failure";
   }
 
-  if (!a3)
+  if (!status)
   {
     v3 = @"success";
   }
@@ -2050,15 +2050,15 @@ uint64_t __100__BWAggdDataReporter_reportSphereJitterDetectionsForPortType_detec
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.coremedia.camera.still.processing.stereofusion.status.%@", v3];
 }
 
-- (id)_aggdSDOFProcessingStatusStringFromProcessingStatus:(int)a3
+- (id)_aggdSDOFProcessingStatusStringFromProcessingStatus:(int)status
 {
   v3 = @"other-failure";
-  if (a3 == -17411)
+  if (status == -17411)
   {
     v3 = @"adc-failure";
   }
 
-  if (!a3)
+  if (!status)
   {
     v3 = @"success";
   }
@@ -2832,12 +2832,12 @@ uint64_t __415__BWAggdDataReporter_reportVideoRecordingAPSStatistics_stdDataFrom
   return result;
 }
 
-- (id)_aggdStringForPrefix:(id)a3 primaryCaptureType:(int)a4 secondaryCaptureType:(int)a5 captureFlags:(unint64_t)a6 sceneFlags:(unint64_t)a7 stillDuringVideo:(BOOL)a8 frontCamera:(BOOL)a9
+- (id)_aggdStringForPrefix:(id)prefix primaryCaptureType:(int)type secondaryCaptureType:(int)captureType captureFlags:(unint64_t)flags sceneFlags:(unint64_t)sceneFlags stillDuringVideo:(BOOL)video frontCamera:(BOOL)camera
 {
-  if (a3)
+  if (prefix)
   {
-    v9 = a6;
-    if (a9)
+    flagsCopy = flags;
+    if (camera)
     {
       v11 = @"ffc";
     }
@@ -2847,7 +2847,7 @@ uint64_t __415__BWAggdDataReporter_reportVideoRecordingAPSStatistics_stdDataFrom
       v11 = @"rfc";
     }
 
-    if ((a6 & 0x400) != 0)
+    if ((flags & 0x400) != 0)
     {
       v12 = @".stereofusion";
     }
@@ -2857,21 +2857,21 @@ uint64_t __415__BWAggdDataReporter_reportVideoRecordingAPSStatistics_stdDataFrom
       v12 = &stru_1F216A3D0;
     }
 
-    if (a8)
+    if (video)
     {
       v13 = @"stillduringvideo";
     }
 
     else
     {
-      v13 = [(BWAggdDataReporter *)self _captureTypeStringWithPrimaryCaptureType:a4 secondaryCaptureType:a5 captureFlags:a6 sceneFlags:a7];
+      v13 = [(BWAggdDataReporter *)self _captureTypeStringWithPrimaryCaptureType:type secondaryCaptureType:captureType captureFlags:flags sceneFlags:sceneFlags];
       if (!v13)
       {
         return 0;
       }
     }
 
-    if ((v9 & 0x800) != 0)
+    if ((flagsCopy & 0x800) != 0)
     {
       v14 = @".depth";
     }
@@ -2881,10 +2881,10 @@ uint64_t __415__BWAggdDataReporter_reportVideoRecordingAPSStatistics_stdDataFrom
       v14 = &stru_1F216A3D0;
     }
 
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@.%@%@", *&a4, *&a5, v11, v12, v13, v14];
+    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@.%@%@", *&type, *&captureType, v11, v12, v13, v14];
     if (v15)
     {
-      return [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.coremedia.camera.%@.%@", a3, v15];
+      return [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.coremedia.camera.%@.%@", prefix, v15];
     }
   }
 
@@ -2902,7 +2902,7 @@ uint64_t __415__BWAggdDataReporter_reportVideoRecordingAPSStatistics_stdDataFrom
   return 0;
 }
 
-- (__CFString)_captureTypeStringWithPrimaryCaptureType:(unsigned int)a3 secondaryCaptureType:(int)a4 captureFlags:(char)a5 sceneFlags:
+- (__CFString)_captureTypeStringWithPrimaryCaptureType:(unsigned int)type secondaryCaptureType:(int)captureType captureFlags:(char)flags sceneFlags:
 {
   if (result)
   {
@@ -2919,12 +2919,12 @@ uint64_t __415__BWAggdDataReporter_reportVideoRecordingAPSStatistics_stdDataFrom
         break;
       case 4:
         v5 = @"SIS";
-        if (a3)
+        if (type)
         {
           v5 = 0;
         }
 
-        if (a3 == 4)
+        if (type == 4)
         {
           result = @"SIS+SIS";
         }
@@ -2936,12 +2936,12 @@ uint64_t __415__BWAggdDataReporter_reportVideoRecordingAPSStatistics_stdDataFrom
 
         break;
       case 5:
-        if (a3 >= 6)
+        if (type >= 6)
         {
           goto LABEL_8;
         }
 
-        result = *(&off_1E79985F0 + a3);
+        result = *(&off_1E79985F0 + type);
         break;
       case 6:
         result = @"nightmode";
@@ -2952,17 +2952,17 @@ uint64_t __415__BWAggdDataReporter_reportVideoRecordingAPSStatistics_stdDataFrom
       case 10:
         v6 = @"HDR";
         v7 = @"NR.HR";
-        if ((a5 & 0x80) == 0)
+        if ((flags & 0x80) == 0)
         {
           v7 = @"NR";
         }
 
-        if ((a5 & 0xC) == 0)
+        if ((flags & 0xC) == 0)
         {
           v7 = @"wysiwyg";
         }
 
-        if ((a4 & 0x100000) == 0)
+        if ((captureType & 0x100000) == 0)
         {
           v6 = v7;
         }

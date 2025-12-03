@@ -3,26 +3,26 @@
 + (id)constraintBasis;
 + (id)ruleOriginatorBasis;
 - (BKSHIDEventDeferringChangeBasis)init;
-- (BKSHIDEventDeferringChangeBasis)initWithCoder:(id)a3;
-- (BKSHIDEventDeferringChangeBasis)initWithEventProvenance:(id)a3;
-- (id)_initWithIdentifier:(void *)a3 provenance:;
-- (void)encodeWithCoder:(id)a3;
+- (BKSHIDEventDeferringChangeBasis)initWithCoder:(id)coder;
+- (BKSHIDEventDeferringChangeBasis)initWithEventProvenance:(id)provenance;
+- (id)_initWithIdentifier:(void *)identifier provenance:;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKSHIDEventDeferringChangeBasis
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_eventProvenance forKey:@"provenance"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_eventProvenance forKey:@"provenance"];
 }
 
-- (BKSHIDEventDeferringChangeBasis)initWithCoder:(id)a3
+- (BKSHIDEventDeferringChangeBasis)initWithCoder:(id)coder
 {
   v44 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   if (v6 != objc_opt_class())
   {
@@ -37,7 +37,7 @@
       v34 = 2114;
       v35 = v28;
       v36 = 2048;
-      v37 = self;
+      selfCopy = self;
       v38 = 2114;
       v39 = @"BKSHIDEventDeferringChangeBasis.m";
       v40 = 1024;
@@ -53,7 +53,7 @@
     JUMPOUT(0x186381998);
   }
 
-  v7 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   if ([v7 isEqualToString:@"hostOverride"])
   {
     v8 = +[BKSHIDEventDeferringChangeBasis ruleOriginatorBasis];
@@ -70,7 +70,7 @@
       v31 = v20;
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
       v22 = [v18 errorWithDomain:v19 code:4866 userInfo:v21];
-      [v5 failWithError:v22];
+      [coderCopy failWithError:v22];
 
       v17 = 0;
       goto LABEL_10;
@@ -81,14 +81,14 @@
     v9 = [(BKSHIDEventDeferringChangeBasis *)&v29 init];
     if (v9)
     {
-      v10 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
       identifier = v9->_identifier;
       v9->_identifier = v10;
 
       v12 = MEMORY[0x1E695DFD8];
       v13 = objc_opt_class();
       v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-      v15 = [v5 decodeObjectOfClasses:v14 forKey:@"provenance"];
+      v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"provenance"];
       eventProvenance = v9->_eventProvenance;
       v9->_eventProvenance = v15;
     }
@@ -104,13 +104,13 @@ LABEL_10:
   return v17;
 }
 
-- (BKSHIDEventDeferringChangeBasis)initWithEventProvenance:(id)a3
+- (BKSHIDEventDeferringChangeBasis)initWithEventProvenance:(id)provenance
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (provenance)
   {
-    v4 = [(BKSHIDEventDeferringChangeBasis *)&self->super.isa _initWithIdentifier:a3 provenance:?];
-    v3 = v4;
+    v4 = [(BKSHIDEventDeferringChangeBasis *)&self->super.isa _initWithIdentifier:provenance provenance:?];
+    selfCopy = v4;
   }
 
   else
@@ -123,12 +123,12 @@ LABEL_10:
   return v5;
 }
 
-- (id)_initWithIdentifier:(void *)a3 provenance:
+- (id)_initWithIdentifier:(void *)identifier provenance:
 {
   v46 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  identifierCopy = identifier;
+  if (self)
   {
     v8 = v6;
     v9 = MEMORY[0x1E696AEC0];
@@ -149,7 +149,7 @@ LABEL_10:
         v36 = 2114;
         v37 = v19;
         v38 = 2048;
-        v39 = a1;
+        selfCopy3 = self;
         v40 = 2114;
         v41 = @"BKSHIDEventDeferringChangeBasis.m";
         v42 = 1024;
@@ -168,13 +168,13 @@ LABEL_10:
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v20 = MEMORY[0x1E696AEC0];
-      v21 = [v8 classForCoder];
-      if (!v21)
+      classForCoder = [v8 classForCoder];
+      if (!classForCoder)
       {
-        v21 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v22 = NSStringFromClass(v21);
+      v22 = NSStringFromClass(classForCoder);
       objc_opt_class();
       v23 = objc_opt_class();
       v24 = NSStringFromClass(v23);
@@ -190,7 +190,7 @@ LABEL_10:
         v36 = 2114;
         v37 = v28;
         v38 = 2048;
-        v39 = a1;
+        selfCopy3 = self;
         v40 = 2114;
         v41 = @"BKSHIDEventDeferringChangeBasis.m";
         v42 = 1024;
@@ -220,7 +220,7 @@ LABEL_10:
         v36 = 2114;
         v37 = v32;
         v38 = 2048;
-        v39 = a1;
+        selfCopy3 = self;
         v40 = 2114;
         v41 = @"BKSHIDEventDeferringChangeBasis.m";
         v42 = 1024;
@@ -236,19 +236,19 @@ LABEL_10:
       JUMPOUT(0x186381E58);
     }
 
-    v33.receiver = a1;
+    v33.receiver = self;
     v33.super_class = BKSHIDEventDeferringChangeBasis;
     v12 = objc_msgSendSuper2(&v33, sel_init);
-    a1 = v12;
+    self = v12;
     if (v12)
     {
       objc_storeStrong(v12 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
+      objc_storeStrong(self + 2, identifier);
     }
   }
 
   v13 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
 - (BKSHIDEventDeferringChangeBasis)init
@@ -264,7 +264,7 @@ LABEL_10:
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDEventDeferringChangeBasis.m";
     v17 = 1024;
@@ -293,7 +293,7 @@ LABEL_10:
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = a1;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDEventDeferringChangeBasis.m";
     v17 = 1024;

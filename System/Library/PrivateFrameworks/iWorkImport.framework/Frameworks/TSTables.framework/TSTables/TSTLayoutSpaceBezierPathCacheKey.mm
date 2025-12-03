@@ -1,16 +1,16 @@
 @interface TSTLayoutSpaceBezierPathCacheKey
 - ($D854FC4CDD8DDEA9B2859E823A7C8A75)gridRange;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)transform;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation TSTLayoutSpaceBezierPathCacheKey
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUCheckedDynamicCast();
 
@@ -41,7 +41,7 @@
   return v45;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TSTLayoutSpaceBezierPathCacheKey);
   v9 = objc_msgSend_gridRange(self, v5, v6, v7, v8);
@@ -76,11 +76,11 @@
   return self;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_transform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_transform.tx = *&transform->tx;
   *&self->_transform.c = v4;
   *&self->_transform.a = v3;
 }

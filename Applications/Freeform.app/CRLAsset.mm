@@ -1,7 +1,7 @@
 @interface CRLAsset
 + (_TtC8Freeform8CRLAsset)null;
 - (BOOL)hasOwners;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)needsDownload;
 - (CGDataProvider)newCGDataProvider;
 - (CGImage)newCGImage;
@@ -10,16 +10,16 @@
 - (NSUUID)assetUUID;
 - (UTType)type;
 - (_TtC8Freeform8CRLAsset)init;
-- (id)AVAssetAndReturnError:(id *)a3;
-- (id)AVAssetWithOptions:(id)a3 error:(id *)a4;
+- (id)AVAssetAndReturnError:(id *)error;
+- (id)AVAssetWithOptions:(id)options error:(id *)error;
 - (id)newData;
 - (int64_t)hash;
 - (unint64_t)length;
-- (void)addDownloadObserverWithIdentifier:(id)a3 options:(unint64_t)a4 handler:(id)a5;
+- (void)addDownloadObserverWithIdentifier:(id)identifier options:(unint64_t)options handler:(id)handler;
 - (void)cancelDownload;
 - (void)downloadIfNeeded;
-- (void)performInputStreamReadWithAccessor:(id)a3;
-- (void)removeDownloadObserverWithIdentifier:(id)a3;
+- (void)performInputStreamReadWithAccessor:(id)accessor;
+- (void)removeDownloadObserverWithIdentifier:(id)identifier;
 @end
 
 @implementation CRLAsset
@@ -38,7 +38,7 @@
 
 - (BOOL)hasOwners
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100C7D2A8();
 
   return v3 & 1;
@@ -53,13 +53,13 @@
   v7 = *&self->storage[OBJC_IVAR____TtC8Freeform8CRLAsset_storage + 24];
   sub_100020E58((&self->super.isa + OBJC_IVAR____TtC8Freeform8CRLAsset_storage), v6);
   v8 = *(v7 + 16);
-  v9 = self;
+  selfCopy = self;
   v8(v6, v7);
   v10 = String._bridgeToObjectiveC()();
 
-  v11 = [v10 crl_pathUTI];
+  crl_pathUTI = [v10 crl_pathUTI];
 
-  if (v11)
+  if (crl_pathUTI)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -93,7 +93,7 @@
   v5 = v3[4];
   sub_100020E58(v3, v4);
   v6 = *(v5 + 8);
-  v7 = self;
+  selfCopy = self;
   v8 = v6(v4, v5);
 
   return v8;
@@ -109,7 +109,7 @@
   v8 = *&self->storage[OBJC_IVAR____TtC8Freeform8CRLAsset_storage + 24];
   sub_100020E58((&self->super.isa + OBJC_IVAR____TtC8Freeform8CRLAsset_storage), v7);
   v9 = *(v8 + 24);
-  v10 = self;
+  selfCopy = self;
   v9(v7, v8);
 
   v11.super.isa = UUID._bridgeToObjectiveC()().super.isa;
@@ -125,7 +125,7 @@
   v5 = v3[4];
   sub_100020E58(v3, v4);
   v6 = *(v5 + 16);
-  v7 = self;
+  selfCopy = self;
   v6(v4, v5);
 
   v8 = String._bridgeToObjectiveC()();
@@ -133,11 +133,11 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -146,7 +146,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_100C7D944(v8);
@@ -166,7 +166,7 @@
   v8 = *&self->storage[OBJC_IVAR____TtC8Freeform8CRLAsset_storage + 24];
   sub_100020E58((&self->super.isa + OBJC_IVAR____TtC8Freeform8CRLAsset_storage), v7);
   v9 = *(v8 + 24);
-  v10 = self;
+  selfCopy = self;
   v9(v7, v8);
   sub_10006849C(&qword_1019FB870, &type metadata accessor for UUID);
   dispatch thunk of Hashable.hash(into:)();
@@ -183,7 +183,7 @@
   v5 = v3[4];
   sub_100020E58(v3, v4);
   v6 = *(v5 + 32);
-  v7 = self;
+  selfCopy = self;
   v8 = v6(v4, v5);
   v10 = v9;
 
@@ -204,7 +204,7 @@
   v5 = v3[4];
   sub_100020E58(v3, v4);
   v6 = *(v5 + 40);
-  v7 = self;
+  selfCopy = self;
   v8 = v6(v4, v5);
 
   return v8;
@@ -217,7 +217,7 @@
   v5 = v3[4];
   sub_100020E58(v3, v4);
   v6 = *(v5 + 40);
-  v7 = self;
+  selfCopy = self;
   v8 = v6(v4, v5);
   if (v8)
   {
@@ -240,7 +240,7 @@
   v5 = v3[4];
   sub_100020E58(v3, v4);
   v6 = *(v5 + 40);
-  v7 = self;
+  selfCopy = self;
   v8 = v6(v4, v5);
   if (v8 && (v9 = v8, v10 = CGImageSourceCreateWithDataProvider(v8, 0), v9, v10))
   {
@@ -255,41 +255,41 @@
   return ImageAtIndex;
 }
 
-- (void)performInputStreamReadWithAccessor:(id)a3
+- (void)performInputStreamReadWithAccessor:(id)accessor
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(accessor);
   v9[2] = v4;
   v5 = *&self->storage[OBJC_IVAR____TtC8Freeform8CRLAsset_storage + 16];
   v6 = *&self->storage[OBJC_IVAR____TtC8Freeform8CRLAsset_storage + 24];
   sub_100020E58((&self->super.isa + OBJC_IVAR____TtC8Freeform8CRLAsset_storage), v5);
   v7 = *(v6 + 48);
-  v8 = self;
+  selfCopy = self;
   v7(sub_1009C3294, v9, v5, v6);
 
   _Block_release(v4);
 }
 
-- (id)AVAssetAndReturnError:(id *)a3
+- (id)AVAssetAndReturnError:(id *)error
 {
   v4 = (&self->super.isa + OBJC_IVAR____TtC8Freeform8CRLAsset_storage);
   v5 = v4[3];
   v6 = v4[4];
   sub_100020E58(v4, v5);
   v7 = *(v6 + 56);
-  v8 = self;
+  selfCopy = self;
   v9 = v7(_swiftEmptyDictionarySingleton, v5, v6);
 
   return v9;
 }
 
-- (id)AVAssetWithOptions:(id)a3 error:(id *)a4
+- (id)AVAssetWithOptions:(id)options error:(id *)error
 {
   v5 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = *&self->storage[OBJC_IVAR____TtC8Freeform8CRLAsset_storage + 16];
   v7 = *&self->storage[OBJC_IVAR____TtC8Freeform8CRLAsset_storage + 24];
   sub_100020E58((&self->super.isa + OBJC_IVAR____TtC8Freeform8CRLAsset_storage), v6);
   v8 = *(v7 + 56);
-  v9 = self;
+  selfCopy = self;
   v10 = v8(v5, v6, v7);
 
   return v10;
@@ -302,19 +302,19 @@
   v5 = v3[4];
   sub_100020E58(v3, v4);
   v6 = *(v5 + 64);
-  v7 = self;
+  selfCopy = self;
   v8 = v6(v4, v5);
 
   return v8 & 1;
 }
 
-- (void)addDownloadObserverWithIdentifier:(id)a3 options:(unint64_t)a4 handler:(id)a5
+- (void)addDownloadObserverWithIdentifier:(id)identifier options:(unint64_t)options handler:(id)handler
 {
   v18 = type metadata accessor for UUID();
   v8 = *(v18 - 8);
   __chkstk_darwin(v18);
   v10 = &v17 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v11 = _Block_copy(a5);
+  v11 = _Block_copy(handler);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = swift_allocObject();
   *(v12 + 16) = v11;
@@ -322,13 +322,13 @@
   v14 = *&self->storage[OBJC_IVAR____TtC8Freeform8CRLAsset_storage + 24];
   sub_100020E58((&self->super.isa + OBJC_IVAR____TtC8Freeform8CRLAsset_storage), v13);
   v15 = *(v14 + 72);
-  v16 = self;
-  v15(v10, a4, sub_100C82B60, v12, v13, v14);
+  selfCopy = self;
+  v15(v10, options, sub_100C82B60, v12, v13, v14);
 
   (*(v8 + 8))(v10, v18);
 }
 
-- (void)removeDownloadObserverWithIdentifier:(id)a3
+- (void)removeDownloadObserverWithIdentifier:(id)identifier
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
@@ -339,7 +339,7 @@
   v9 = *&self->storage[OBJC_IVAR____TtC8Freeform8CRLAsset_storage + 24];
   sub_100020E58((&self->super.isa + OBJC_IVAR____TtC8Freeform8CRLAsset_storage), v8);
   v10 = *(v9 + 80);
-  v11 = self;
+  selfCopy = self;
   v10(v7, v8, v9);
 
   (*(v5 + 8))(v7, v4);
@@ -352,7 +352,7 @@
   v5 = *&self->storage[OBJC_IVAR____TtC8Freeform8CRLAsset_storage + 24];
   sub_100020E58((&self->super.isa + OBJC_IVAR____TtC8Freeform8CRLAsset_storage), v4);
   v6 = *(v5 + 64);
-  v9 = self;
+  selfCopy = self;
   if (v6(v4, v5))
   {
     v7 = v3[3];
@@ -369,7 +369,7 @@
   v5 = v3[4];
   sub_100020E58(v3, v4);
   v6 = *(v5 + 96);
-  v7 = self;
+  selfCopy = self;
   v6(v4, v5);
 }
 

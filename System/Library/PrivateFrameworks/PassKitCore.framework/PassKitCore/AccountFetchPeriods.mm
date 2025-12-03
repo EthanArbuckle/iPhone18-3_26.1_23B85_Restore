@@ -8,18 +8,18 @@
 - (id)accountFetchPeriods
 {
   v3 = objc_alloc_init(PKAccountFetchPeriods);
-  v4 = [objc_opt_class() _propertyValuesForAccountFetchPeriods];
-  v5 = [v4 allKeys];
+  _propertyValuesForAccountFetchPeriods = [objc_opt_class() _propertyValuesForAccountFetchPeriods];
+  allKeys = [_propertyValuesForAccountFetchPeriods allKeys];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100007728;
   v11[3] = &unk_10083BEE0;
   v11[4] = self;
-  v12 = v4;
+  v12 = _propertyValuesForAccountFetchPeriods;
   v6 = v3;
   v13 = v6;
-  v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v11];
+  v7 = _propertyValuesForAccountFetchPeriods;
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v11];
 
   v8 = v13;
   v9 = v6;

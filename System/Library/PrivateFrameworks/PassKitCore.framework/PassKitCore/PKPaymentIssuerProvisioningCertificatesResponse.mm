@@ -1,27 +1,27 @@
 @interface PKPaymentIssuerProvisioningCertificatesResponse
-- (PKPaymentIssuerProvisioningCertificatesResponse)initWithData:(id)a3;
+- (PKPaymentIssuerProvisioningCertificatesResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentIssuerProvisioningCertificatesResponse
 
-- (PKPaymentIssuerProvisioningCertificatesResponse)initWithData:(id)a3
+- (PKPaymentIssuerProvisioningCertificatesResponse)initWithData:(id)data
 {
   v33 = *MEMORY[0x1E69E9840];
   v29.receiver = self;
   v29.super_class = PKPaymentIssuerProvisioningCertificatesResponse;
-  v3 = [(PKWebServiceResponse *)&v29 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v29 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 objectForKeyedSubscript:@"certificates"];
+      v6 = [jSONObject objectForKeyedSubscript:@"certificates"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [v5 objectForKeyedSubscript:@"nonce"];
+        v7 = [jSONObject objectForKeyedSubscript:@"nonce"];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 || !v7)
         {
@@ -76,8 +76,8 @@
           }
 
           v7 = v24;
-          v17 = [v24 pk_decodeHexadecimal];
-          v18 = [v17 copy];
+          pk_decodeHexadecimal = [v24 pk_decodeHexadecimal];
+          v18 = [pk_decodeHexadecimal copy];
           nonce = v4->_nonce;
           v4->_nonce = v18;
         }

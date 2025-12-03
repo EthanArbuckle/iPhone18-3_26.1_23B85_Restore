@@ -1,21 +1,21 @@
 @interface CHPrefixQuery
-+ (id)hashtagQueryForRecognitionSession:(id)a3;
-+ (id)mentionQueryForRecognitionSession:(id)a3;
-+ (id)prefixQueryWithPrefix:(id)a3 forRecognitionSession:(id)a4;
-- (BOOL)_isTokenStringMatchingQuery:(id)a3 allowPartialMatching:(BOOL)a4;
++ (id)hashtagQueryForRecognitionSession:(id)session;
++ (id)mentionQueryForRecognitionSession:(id)session;
++ (id)prefixQueryWithPrefix:(id)prefix forRecognitionSession:(id)session;
+- (BOOL)_isTokenStringMatchingQuery:(id)query allowPartialMatching:(BOOL)matching;
 - (NSArray)foundItems;
 - (NSSet)validSuffixes;
-- (id)_prefixQueryResultsForSessionResult:(id)a3;
+- (id)_prefixQueryResultsForSessionResult:(id)result;
 - (id)debugName;
 - (void)q_updateQueryResult;
-- (void)setValidSuffixes:(id)a3;
+- (void)setValidSuffixes:(id)suffixes;
 @end
 
 @implementation CHPrefixQuery
 
-+ (id)hashtagQueryForRecognitionSession:(id)a3
++ (id)hashtagQueryForRecognitionSession:(id)session
 {
-  v3 = a3;
+  sessionCopy = session;
   v4 = [CHPrefixQuery alloc];
   objc_opt_self();
   if (qword_1EA84CAF0 != -1)
@@ -23,29 +23,29 @@
     dispatch_once(&qword_1EA84CAF0, &unk_1EF1BEBB0);
   }
 
-  v5 = sub_18388B5C0(&v4->super.super.isa, v3, @"#", 0, qword_1EA84CAF8);
+  v5 = sub_18388B5C0(&v4->super.super.isa, sessionCopy, @"#", 0, qword_1EA84CAF8);
 
   return v5;
 }
 
-+ (id)mentionQueryForRecognitionSession:(id)a3
++ (id)mentionQueryForRecognitionSession:(id)session
 {
-  v3 = a3;
+  sessionCopy = session;
   v4 = [CHPrefixQuery alloc];
   v10 = objc_msgSend_set(MEMORY[0x1E695DFD8], v5, v6, v7, v8, v9);
   v16 = objc_msgSend_whitespaceCharacterSet(MEMORY[0x1E696AB08], v11, v12, v13, v14, v15);
-  v17 = sub_18388B5C0(&v4->super.super.isa, v3, @"@", v10, v16);
+  v17 = sub_18388B5C0(&v4->super.super.isa, sessionCopy, @"@", v10, v16);
 
   return v17;
 }
 
-+ (id)prefixQueryWithPrefix:(id)a3 forRecognitionSession:(id)a4
++ (id)prefixQueryWithPrefix:(id)prefix forRecognitionSession:(id)session
 {
-  v5 = a3;
-  v6 = a4;
+  prefixCopy = prefix;
+  sessionCopy = session;
   v7 = [CHPrefixQuery alloc];
   v13 = objc_msgSend_whitespaceCharacterSet(MEMORY[0x1E696AB08], v8, v9, v10, v11, v12);
-  v14 = sub_18388B5C0(&v7->super.super.isa, v6, v5, 0, v13);
+  v14 = sub_18388B5C0(&v7->super.super.isa, sessionCopy, prefixCopy, 0, v13);
 
   return v14;
 }
@@ -166,14 +166,14 @@ LABEL_20:
 LABEL_21:
 }
 
-- (BOOL)_isTokenStringMatchingQuery:(id)a3 allowPartialMatching:(BOOL)a4
+- (BOOL)_isTokenStringMatchingQuery:(id)query allowPartialMatching:(BOOL)matching
 {
-  v4 = a4;
-  v6 = a3;
+  matchingCopy = matching;
+  queryCopy = query;
   v7 = self->_prefix;
   v11 = objc_msgSend_stringByFoldingWithOptions_locale_(v7, v8, 385, 0, v9, v10);
 
-  v15 = objc_msgSend_stringByFoldingWithOptions_locale_(v6, v12, 385, 0, v13, v14);
+  v15 = objc_msgSend_stringByFoldingWithOptions_locale_(queryCopy, v12, 385, 0, v13, v14);
   v20 = objc_msgSend_componentsSeparatedByString_(v15, v16, v11, v17, v18, v19);
   v26 = objc_msgSend_count(v20, v21, v22, v23, v24, v25) - 1;
 
@@ -187,12 +187,12 @@ LABEL_21:
     if (objc_msgSend_hasPrefix_(v15, v27, v11, v28, v29, v30))
     {
       v37 = objc_msgSend_length(v11, v32, v33, v34, v35, v36);
-      v42 = objc_msgSend_substringFromIndex_(v6, v38, v37, v39, v40, v41);
+      v42 = objc_msgSend_substringFromIndex_(queryCopy, v38, v37, v39, v40, v41);
       v47 = objc_msgSend_rangeOfCharacterFromSet_(v42, v43, self->_queryDelimiters, v44, v45, v46);
 
       if (v47 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        if (v4)
+        if (matchingCopy)
         {
           v53 = objc_msgSend_length(v15, v48, v49, v50, v51, v52);
           if (v53 == objc_msgSend_length(v11, v54, v55, v56, v57, v58) || (validSuffixes = self->_validSuffixes) == 0)
@@ -252,17 +252,17 @@ LABEL_21:
   return v31 & 1;
 }
 
-- (id)_prefixQueryResultsForSessionResult:(id)a3
+- (id)_prefixQueryResultsForSessionResult:(id)result
 {
   v145 = *MEMORY[0x1E69E9840];
-  v121 = a3;
+  resultCopy = result;
   v116 = objc_msgSend_array(MEMORY[0x1E695DF70], v4, v5, v6, v7, v8);
   validSuffixes = self->_validSuffixes;
   if (!validSuffixes || objc_msgSend_count(validSuffixes, v9, v10, v11, v12, v13))
   {
-    v15 = objc_msgSend_strokeGroupingResult(v121, v9, v10, v11, v12, v13);
+    v15 = objc_msgSend_strokeGroupingResult(resultCopy, v9, v10, v11, v12, v13);
     v21 = objc_msgSend_strokeGroups(v15, v16, v17, v18, v19, v20);
-    v118 = self;
+    selfCopy = self;
 
     v140 = 0u;
     v141 = 0u;
@@ -285,11 +285,11 @@ LABEL_21:
 
           v31 = *(*(&v138 + 1) + 8 * i);
           v32 = objc_msgSend_uniqueIdentifier(v31, v25, v26, v27, v28, v29);
-          v37 = objc_msgSend_recognitionResultForStrokeGroupIdentifier_(v121, v33, v32, v34, v35, v36);
+          v37 = objc_msgSend_recognitionResultForStrokeGroupIdentifier_(resultCopy, v33, v32, v34, v35, v36);
           v122 = objc_msgSend_preferredLocale(v37, v38, v39, v40, v41, v42);
           v43 = objc_opt_class();
           v49 = objc_msgSend_recognitionResultsByLocale(v37, v44, v45, v46, v47, v48);
-          v55 = objc_msgSend_locales(v121, v50, v51, v52, v53, v54);
+          v55 = objc_msgSend_locales(resultCopy, v50, v51, v52, v53, v54);
           v61 = objc_msgSend_languageFitnessByLocale(v37, v56, v57, v58, v59, v60);
           v63 = objc_msgSend_filteredResultsByLocale_orderedLocales_usingLanguageFitness_outSortedLocales_(v43, v62, v49, v55, v61, 0);
 
@@ -309,7 +309,7 @@ LABEL_21:
               v127[3] = &unk_1E6DDF518;
               v117 = v78;
               v128 = v117;
-              v129 = v118;
+              v129 = selfCopy;
               v133 = &v134;
               v79 = v37;
               v130 = v79;
@@ -330,9 +330,9 @@ LABEL_21:
                 objc_msgSend_enumerateObjectsUsingBlock_(v85, v93, v142, v94, v95, v96);
                 v101 = objc_msgSend_stringWithString_(MEMORY[0x1E696AEC0], v97, v92, v98, v99, v100);
 
-                if (objc_msgSend__isTokenStringMatchingQuery_allowPartialMatching_(v118, v102, v101, 0, v103, v104))
+                if (objc_msgSend__isTokenStringMatchingQuery_allowPartialMatching_(selfCopy, v102, v101, 0, v103, v104))
                 {
-                  v109 = sub_18388C1C0(&v118->super.super.isa, v85, v79, v31);
+                  v109 = sub_18388C1C0(&selfCopy->super.super.isa, v85, v79, v31);
                   if (v109)
                   {
                     objc_msgSend_addObject_(v80, v105, v109, v106, v107, v108);
@@ -349,7 +349,7 @@ LABEL_21:
               v123[1] = 3221225472;
               v123[2] = sub_18388D584;
               v123[3] = &unk_1E6DDF540;
-              v123[4] = v118;
+              v123[4] = selfCopy;
               v124 = v37;
               v125 = v31;
               v126 = v116;
@@ -414,17 +414,17 @@ LABEL_21:
   return v8;
 }
 
-- (void)setValidSuffixes:(id)a3
+- (void)setValidSuffixes:(id)suffixes
 {
-  v4 = a3;
+  suffixesCopy = suffixes;
   v10 = objc_msgSend_processingQueue(self, v5, v6, v7, v8, v9);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = sub_18388DA08;
   v12[3] = &unk_1E6DDC818;
   v12[4] = self;
-  v13 = v4;
-  v11 = v4;
+  v13 = suffixesCopy;
+  v11 = suffixesCopy;
   dispatch_sync(v10, v12);
 }
 

@@ -1,19 +1,19 @@
 @interface TTRComplicationDataSource
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4;
-+ (BOOL)hasMigratedToWidgetForFamily:(int64_t)a3 device:(id)a4;
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device;
++ (BOOL)hasMigratedToWidgetForFamily:(int64_t)family device:(id)device;
 + (id)localizedAppName;
 - (CLKComplicationTimelineEntry)currentTimelineEntry;
-- (TTRComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
+- (TTRComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
 - (TTRComplicationPresenting)presenter;
 - (TTRComplicationViewModel)viewModel;
 - (id)currentSwitcherTemplate;
 - (id)lockedTemplate;
 - (id)privacyTemplate;
-- (void)complicationPresenterDidUpdateViewModel:(id)a3;
-- (void)fetchWidgetMigrationForDescriptor:(id)a3 completion:(id)a4;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5;
-- (void)getTimelineEntriesAfterDate:(id)a3 limit:(unint64_t)a4 withHandler:(id)a5;
+- (void)complicationPresenterDidUpdateViewModel:(id)model;
+- (void)fetchWidgetMigrationForDescriptor:(id)descriptor completion:(id)completion;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler;
+- (void)getTimelineEntriesAfterDate:(id)date limit:(unint64_t)limit withHandler:(id)handler;
 - (void)pause;
 - (void)resume;
 @end
@@ -28,12 +28,12 @@
   return v3;
 }
 
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device
 {
-  v5 = a4;
-  if ([v5 isRunningGraceOrLater])
+  deviceCopy = device;
+  if ([deviceCopy isRunningGraceOrLater])
   {
-    v6 = TTRComplicationModuleAcceptsFamilyForDevice(a3);
+    v6 = TTRComplicationModuleAcceptsFamilyForDevice(family);
   }
 
   else
@@ -44,33 +44,33 @@
   return v6;
 }
 
-- (TTRComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (TTRComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
-  v8 = a3;
-  v9 = a5;
+  complicationCopy = complication;
+  deviceCopy = device;
   v10 = +[REMLog ui];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v18 = v8;
+    v18 = complicationCopy;
     v19 = 2048;
-    v20 = a4;
+    familyCopy = family;
     v21 = 2112;
-    v22 = v9;
+    v22 = deviceCopy;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_INFO, "TTRComplicationDataSource is being initialized {compliation: %@, family: %ld, device: %@}", buf, 0x20u);
   }
 
   v16.receiver = self;
   v16.super_class = TTRComplicationDataSource;
-  v11 = [(TTRComplicationDataSource *)&v16 initWithComplication:v8 family:a4 forDevice:v9];
+  v11 = [(TTRComplicationDataSource *)&v16 initWithComplication:complicationCopy family:family forDevice:deviceCopy];
   if (v11)
   {
-    v12 = [TTRComplicationAssembly assembleModuleForComplicationFamily:a4 isRunningInClockFace:0];
+    v12 = [TTRComplicationAssembly assembleModuleForComplicationFamily:family isRunningInClockFace:0];
     module = v11->_module;
     v11->_module = v12;
 
-    v14 = [(TTRComplicationModule *)v11->_module presenter];
-    [v14 setDelegate:v11];
+    presenter = [(TTRComplicationModule *)v11->_module presenter];
+    [presenter setDelegate:v11];
   }
 
   return v11;
@@ -85,8 +85,8 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "[TTRComplicationDataSource pause]", buf, 2u);
   }
 
-  v4 = [(TTRComplicationDataSource *)self presenter];
-  [v4 pauseViewModelUpdates];
+  presenter = [(TTRComplicationDataSource *)self presenter];
+  [presenter pauseViewModelUpdates];
 
   v5.receiver = self;
   v5.super_class = TTRComplicationDataSource;
@@ -102,8 +102,8 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "[TTRComplicationDataSource resume]", buf, 2u);
   }
 
-  v4 = [(TTRComplicationDataSource *)self presenter];
-  [v4 resumeViewModelUpdates];
+  presenter = [(TTRComplicationDataSource *)self presenter];
+  [presenter resumeViewModelUpdates];
 
   v5.receiver = self;
   v5.super_class = TTRComplicationDataSource;
@@ -112,91 +112,91 @@
 
 - (id)currentSwitcherTemplate
 {
-  v2 = [(TTRComplicationDataSource *)self currentTimelineEntry];
-  v3 = [v2 complicationTemplate];
+  currentTimelineEntry = [(TTRComplicationDataSource *)self currentTimelineEntry];
+  complicationTemplate = [currentTimelineEntry complicationTemplate];
 
-  return v3;
+  return complicationTemplate;
 }
 
 - (id)lockedTemplate
 {
-  v2 = [(TTRComplicationDataSource *)self viewModel];
-  v3 = [v2 lockedTemplate];
+  viewModel = [(TTRComplicationDataSource *)self viewModel];
+  lockedTemplate = [viewModel lockedTemplate];
 
-  return v3;
+  return lockedTemplate;
 }
 
 - (id)privacyTemplate
 {
-  v2 = [(TTRComplicationDataSource *)self viewModel];
-  v3 = [v2 privacyTemplate];
+  viewModel = [(TTRComplicationDataSource *)self viewModel];
+  privacyTemplate = [viewModel privacyTemplate];
 
-  return v3;
+  return privacyTemplate;
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(TTRComplicationDataSource *)self currentTimelineEntry];
-  (*(a3 + 2))(v5, v6);
+  handlerCopy = handler;
+  currentTimelineEntry = [(TTRComplicationDataSource *)self currentTimelineEntry];
+  (*(handler + 2))(handlerCopy, currentTimelineEntry);
 }
 
-- (void)getTimelineEntriesAfterDate:(id)a3 limit:(unint64_t)a4 withHandler:(id)a5
+- (void)getTimelineEntriesAfterDate:(id)date limit:(unint64_t)limit withHandler:(id)handler
 {
-  v9 = a5;
-  v10 = a3;
-  v12 = [(TTRComplicationDataSource *)self viewModel];
-  v11 = [v12 entriesAfterDate:v10 limit:a4];
+  handlerCopy = handler;
+  dateCopy = date;
+  viewModel = [(TTRComplicationDataSource *)self viewModel];
+  v11 = [viewModel entriesAfterDate:dateCopy limit:limit];
 
-  (*(a5 + 2))(v9, v11);
+  (*(handler + 2))(handlerCopy, v11);
 }
 
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler
 {
-  v6 = a5;
-  v7 = [(TTRComplicationDataSource *)self presenter];
-  v8 = [v7 launchURLForTimelineEntries];
+  handlerCopy = handler;
+  presenter = [(TTRComplicationDataSource *)self presenter];
+  launchURLForTimelineEntries = [presenter launchURLForTimelineEntries];
 
   v9 = +[REMLog ui];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = 138412290;
-    v11 = v8;
+    v11 = launchURLForTimelineEntries;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_INFO, "Returning launch URL {URL: %@}", &v10, 0xCu);
   }
 
-  v6[2](v6, v8);
+  handlerCopy[2](handlerCopy, launchURLForTimelineEntries);
 }
 
-- (void)complicationPresenterDidUpdateViewModel:(id)a3
+- (void)complicationPresenterDidUpdateViewModel:(id)model
 {
-  v3 = [(TTRComplicationDataSource *)self delegate];
-  [v3 invalidateEntries];
+  delegate = [(TTRComplicationDataSource *)self delegate];
+  [delegate invalidateEntries];
 }
 
-- (void)fetchWidgetMigrationForDescriptor:(id)a3 completion:(id)a4
+- (void)fetchWidgetMigrationForDescriptor:(id)descriptor completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  descriptorCopy = descriptor;
+  completionCopy = completion;
   v7 = [[CLKWidgetComplicationDescriptor alloc] initWithExtensionBundleIdentifier:@"com.apple.NanoReminders.WidgetExtension" containerBundleIdentifier:@"com.apple.NanoReminders" kind:@"com.apple.reminders.widget.today" intent:0];
   v8 = +[REMLog ui];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = 138412546;
-    v10 = v5;
+    v10 = descriptorCopy;
     v11 = 2112;
     v12 = v7;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "TTRComplicationDataSource fetched widget migration {descriptor: %@, widgetDescriptor %@}", &v9, 0x16u);
   }
 
-  v6[2](v6, v7);
+  completionCopy[2](completionCopy, v7);
 }
 
-+ (BOOL)hasMigratedToWidgetForFamily:(int64_t)a3 device:(id)a4
++ (BOOL)hasMigratedToWidgetForFamily:(int64_t)family device:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   v6 = [[NSUUID alloc] initWithUUIDString:@"A14F53B9-2C95-4293-B688-2D8D34A4239E"];
-  v7 = [v5 supportsCapability:v6];
+  v7 = [deviceCopy supportsCapability:v6];
 
   v8 = +[REMLog ui];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -210,9 +210,9 @@
 
     v12 = v9;
     v13 = 2048;
-    v14 = a3;
+    familyCopy = family;
     v15 = 2112;
-    v16 = v5;
+    v16 = deviceCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "TTRComplicationDataSource hasMigratedToWidgetForFamily returning %@ for {family: %ld, device %@}", &v11, 0x20u);
   }
 
@@ -221,26 +221,26 @@
 
 - (TTRComplicationPresenting)presenter
 {
-  v2 = [(TTRComplicationDataSource *)self module];
-  v3 = [v2 presenter];
+  module = [(TTRComplicationDataSource *)self module];
+  presenter = [module presenter];
 
-  return v3;
+  return presenter;
 }
 
 - (TTRComplicationViewModel)viewModel
 {
-  v2 = [(TTRComplicationDataSource *)self presenter];
-  v3 = [v2 viewModel];
+  presenter = [(TTRComplicationDataSource *)self presenter];
+  viewModel = [presenter viewModel];
 
-  return v3;
+  return viewModel;
 }
 
 - (CLKComplicationTimelineEntry)currentTimelineEntry
 {
-  v2 = [(TTRComplicationDataSource *)self viewModel];
-  v3 = [v2 currentEntry];
+  viewModel = [(TTRComplicationDataSource *)self viewModel];
+  currentEntry = [viewModel currentEntry];
 
-  return v3;
+  return currentEntry;
 }
 
 @end

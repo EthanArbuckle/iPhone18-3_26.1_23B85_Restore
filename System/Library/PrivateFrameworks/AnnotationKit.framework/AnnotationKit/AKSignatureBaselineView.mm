@@ -1,21 +1,21 @@
 @interface AKSignatureBaselineView
-- (AKSignatureBaselineView)initWithCoder:(id)a3;
-- (AKSignatureBaselineView)initWithFrame:(CGRect)a3;
+- (AKSignatureBaselineView)initWithCoder:(id)coder;
+- (AKSignatureBaselineView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)lastSafeAreaInsets;
 - (double)scaleFactor;
 - (void)_commonInit;
-- (void)_drawBaselineInContext:(CGContext *)a3;
-- (void)drawRect:(CGRect)a3;
+- (void)_drawBaselineInContext:(CGContext *)context;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
 @end
 
 @implementation AKSignatureBaselineView
 
-- (AKSignatureBaselineView)initWithFrame:(CGRect)a3
+- (AKSignatureBaselineView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AKSignatureBaselineView;
-  v3 = [(AKSignatureBaselineView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AKSignatureBaselineView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -25,11 +25,11 @@
   return v4;
 }
 
-- (AKSignatureBaselineView)initWithCoder:(id)a3
+- (AKSignatureBaselineView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AKSignatureBaselineView;
-  v3 = [(AKSignatureBaselineView *)&v6 initWithCoder:a3];
+  v3 = [(AKSignatureBaselineView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -43,39 +43,39 @@
 {
   [(AKSignatureBaselineView *)self setOpaque:0];
   [(AKSignatureBaselineView *)self setUserInteractionEnabled:0];
-  v3 = [MEMORY[0x277D75348] clearColor];
-  [(AKSignatureBaselineView *)self setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(AKSignatureBaselineView *)self setBackgroundColor:clearColor];
 
   [(AKSignatureBaselineView *)self setContentMode:3];
   [(AKSignatureBaselineView *)self setBaselinePercent:0.187];
-  v4 = [(AKSignatureBaselineView *)self layer];
-  [v4 setOpaque:0];
+  layer = [(AKSignatureBaselineView *)self layer];
+  [layer setOpaque:0];
 }
 
 - (double)scaleFactor
 {
-  v3 = [(AKSignatureBaselineView *)self window];
-  v4 = [v3 screen];
+  window = [(AKSignatureBaselineView *)self window];
+  screen = [window screen];
 
-  if (v4)
+  if (screen)
   {
-    v5 = [(AKSignatureBaselineView *)self window];
-    v6 = [v5 screen];
-    [v6 scale];
+    window2 = [(AKSignatureBaselineView *)self window];
+    screen2 = [window2 screen];
+    [screen2 scale];
     v8 = v7;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D759A0] mainScreen];
-    [v5 scale];
+    window2 = [MEMORY[0x277D759A0] mainScreen];
+    [window2 scale];
     v8 = v9;
   }
 
   return v8;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
@@ -101,13 +101,13 @@
   }
 }
 
-- (void)_drawBaselineInContext:(CGContext *)a3
+- (void)_drawBaselineInContext:(CGContext *)context
 {
-  if (a3)
+  if (context)
   {
-    CGContextSaveGState(a3);
+    CGContextSaveGState(context);
     Mutable = CGPathCreateMutable();
-    ClipBoundingBox = CGContextGetClipBoundingBox(a3);
+    ClipBoundingBox = CGContextGetClipBoundingBox(context);
     width = ClipBoundingBox.size.width;
     height = ClipBoundingBox.size.height;
     v8 = *&qword_27E399020;
@@ -154,12 +154,12 @@
     CGPathMoveToPoint(Mutable, 0, v16, v17 + -16.0);
     CGPathAddLineToPoint(Mutable, 0, v16 + 16.0, v17);
     v18 = [MEMORY[0x277D75348] akColorWithWhite:0.6 alpha:0.7];
-    CGContextSetStrokeColorWithColor(a3, [v18 CGColor]);
+    CGContextSetStrokeColorWithColor(context, [v18 CGColor]);
 
-    CGContextSetLineWidth(a3, 1.0);
-    CGContextAddPath(a3, Mutable);
-    CGContextStrokePath(a3);
-    CGContextRestoreGState(a3);
+    CGContextSetLineWidth(context, 1.0);
+    CGContextAddPath(context, Mutable);
+    CGContextStrokePath(context);
+    CGContextRestoreGState(context);
 
     CGPathRelease(Mutable);
   }

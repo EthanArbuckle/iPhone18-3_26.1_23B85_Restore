@@ -1,19 +1,19 @@
 @interface VCPImageEmbeddingRequest
-- (BOOL)cleanupWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)updateWithOptions:(id)a3 error:(id *)a4;
-- (CGSize)preferredInputSizeWithOptions:(id)a3 error:(id *)a4;
-- (VCPImageEmbeddingRequest)initWithOptions:(id)a3;
-- (id)processImage:(__CVBuffer *)a3 withOptions:(id)a4 error:(id *)a5;
+- (BOOL)cleanupWithOptions:(id)options error:(id *)error;
+- (BOOL)updateWithOptions:(id)options error:(id *)error;
+- (CGSize)preferredInputSizeWithOptions:(id)options error:(id *)error;
+- (VCPImageEmbeddingRequest)initWithOptions:(id)options;
+- (id)processImage:(__CVBuffer *)image withOptions:(id)options error:(id *)error;
 @end
 
 @implementation VCPImageEmbeddingRequest
 
-- (VCPImageEmbeddingRequest)initWithOptions:(id)a3
+- (VCPImageEmbeddingRequest)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v20.receiver = self;
   v20.super_class = VCPImageEmbeddingRequest;
-  v5 = [(VCPRequest *)&v20 initWithOptions:v4];
+  v5 = [(VCPRequest *)&v20 initWithOptions:optionsCopy];
   v6 = v5;
   if (!v5)
   {
@@ -88,19 +88,19 @@ LABEL_17:
   return v17;
 }
 
-- (id)processImage:(__CVBuffer *)a3 withOptions:(id)a4 error:(id *)a5
+- (id)processImage:(__CVBuffer *)image withOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  imageCopy = image;
   v33[1] = *MEMORY[0x1E69E9840];
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   analyzer = self->_analyzer;
   v28 = 0;
-  LODWORD(v6) = [(VCPImageBackboneAnalyzer *)analyzer analyzePixelBuffer:v6 flags:0 results:&v28 cancel:&__block_literal_global_7];
+  LODWORD(imageCopy) = [(VCPImageBackboneAnalyzer *)analyzer analyzePixelBuffer:imageCopy flags:0 results:&v28 cancel:&__block_literal_global_7];
   v10 = v28;
   v11 = v10;
-  if (v6)
+  if (imageCopy)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -110,7 +110,7 @@ LABEL_17:
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"VCPImageEmbeddingRequest image embedding analysis failed"];
     v33[0] = v13;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:&v32 count:1];
-    *a5 = [v12 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v14];
+    *error = [v12 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v14];
   }
 
   else
@@ -148,14 +148,14 @@ LABEL_17:
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "VCPImageEmbeddingRequest unexpected image embedding version", buf, 2u);
         }
 
-        if (a5)
+        if (error)
         {
           v20 = MEMORY[0x1E696ABC0];
           v30 = *MEMORY[0x1E696A578];
           v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"VCPImageEmbeddingRequest unexpected image embedding version. Expect %d, got %d", self->super._revision, objc_msgSend(v19, "intValue")];
           v31 = v21;
           v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-          *a5 = [v20 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v22];
+          *error = [v20 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v22];
         }
       }
     }
@@ -178,23 +178,23 @@ LABEL_17:
 
     if (v23)
     {
-      [v8 addObject:v23];
+      [array addObject:v23];
     }
   }
 
 LABEL_22:
 LABEL_23:
 
-  return v8;
+  return array;
 }
 
-- (BOOL)updateWithOptions:(id)a3 error:(id *)a4
+- (BOOL)updateWithOptions:(id)options error:(id *)error
 {
   width = self->super._width;
   height = self->super._height;
   v11.receiver = self;
   v11.super_class = VCPImageEmbeddingRequest;
-  [(VCPRequest *)&v11 updateWithOptions:a3 error:a4];
+  [(VCPRequest *)&v11 updateWithOptions:options error:error];
   v7 = self->super._width;
   if (width != v7)
   {
@@ -222,7 +222,7 @@ LABEL_10:
   return 1;
 }
 
-- (CGSize)preferredInputSizeWithOptions:(id)a3 error:(id *)a4
+- (CGSize)preferredInputSizeWithOptions:(id)options error:(id *)error
 {
   preferredWidth = self->_preferredWidth;
   preferredHeight = self->_preferredHeight;
@@ -231,7 +231,7 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)cleanupWithOptions:(id)a3 error:(id *)a4
+- (BOOL)cleanupWithOptions:(id)options error:(id *)error
 {
   analyzer = self->_analyzer;
   self->_analyzer = 0;

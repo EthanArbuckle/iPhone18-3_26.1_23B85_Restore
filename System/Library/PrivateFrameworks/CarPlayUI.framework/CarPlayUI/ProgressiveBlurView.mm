@@ -1,12 +1,12 @@
 @interface ProgressiveBlurView
-- (_TtC9CarPlayUI19ProgressiveBlurView)initWithCoder:(id)a3;
-- (_TtC9CarPlayUI19ProgressiveBlurView)initWithEffect:(id)a3;
+- (_TtC9CarPlayUI19ProgressiveBlurView)initWithCoder:(id)coder;
+- (_TtC9CarPlayUI19ProgressiveBlurView)initWithEffect:(id)effect;
 - (void)layoutSubviews;
 @end
 
 @implementation ProgressiveBlurView
 
-- (_TtC9CarPlayUI19ProgressiveBlurView)initWithCoder:(id)a3
+- (_TtC9CarPlayUI19ProgressiveBlurView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -22,7 +22,7 @@
   ProgressiveBlurView.updateEffect()();
 }
 
-- (_TtC9CarPlayUI19ProgressiveBlurView)initWithEffect:(id)a3
+- (_TtC9CarPlayUI19ProgressiveBlurView)initWithEffect:(id)effect
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,22 +1,22 @@
 @interface CEGraphicIcon
-- (CEGraphicIcon)initWithCoder:(id)a3;
-- (CEGraphicIcon)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CEGraphicIcon)initWithCoder:(id)coder;
+- (CEGraphicIcon)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CEGraphicIcon
 
-- (CEGraphicIcon)initWithDictionary:(id)a3
+- (CEGraphicIcon)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = CEGraphicIcon;
-  v5 = [(CEIcon *)&v10 initWithDictionary:v4];
+  v5 = [(CEIcon *)&v10 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"id"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"id"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,15 +38,15 @@
   return v5;
 }
 
-- (CEGraphicIcon)initWithCoder:(id)a3
+- (CEGraphicIcon)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CEGraphicIcon;
-  v5 = [(CEIcon *)&v9 initWithCoder:v4];
+  v5 = [(CEIcon *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"id"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"id"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -54,22 +54,22 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CEGraphicIcon;
-  v4 = [(CEIcon *)&v6 copyWithZone:a3];
+  v4 = [(CEIcon *)&v6 copyWithZone:zone];
   [v4 setIdentifier:self->_identifier];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CEGraphicIcon;
-  v4 = a3;
-  [(CEIcon *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_identifier forKey:{@"id", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CEIcon *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_identifier forKey:{@"id", v5.receiver, v5.super_class}];
 }
 
 - (id)description

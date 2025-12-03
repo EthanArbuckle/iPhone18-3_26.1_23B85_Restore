@@ -1,39 +1,39 @@
 @interface SecKeyRSAPublic
-- (SecKeyRSAPublic)initWithData:(id)a3 error:(id *)a4;
-- (SecKeyRSAPublic)initWithSecKeyRef:(id)a3;
+- (SecKeyRSAPublic)initWithData:(id)data error:(id *)error;
+- (SecKeyRSAPublic)initWithSecKeyRef:(id)ref;
 - (id)dataRepresentation;
-- (id)encryptData:(id)a3 error:(id *)a4;
+- (id)encryptData:(id)data error:(id *)error;
 @end
 
 @implementation SecKeyRSAPublic
 
 - (id)dataRepresentation
 {
-  v2 = [(SecKeyRSAPublic *)self secKeyRef];
-  v3 = SecKeyCopyExternalRepresentation(v2, 0);
+  secKeyRef = [(SecKeyRSAPublic *)self secKeyRef];
+  v3 = SecKeyCopyExternalRepresentation(secKeyRef, 0);
 
   return v3;
 }
 
-- (SecKeyRSAPublic)initWithSecKeyRef:(id)a3
+- (SecKeyRSAPublic)initWithSecKeyRef:(id)ref
 {
-  v4 = a3;
+  refCopy = ref;
   v8.receiver = self;
   v8.super_class = SecKeyRSAPublic;
   v5 = [(SecKeyRSAPublic *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SecKeyRSAPublic *)v5 setSecKeyRef:v4];
+    [(SecKeyRSAPublic *)v5 setSecKeyRef:refCopy];
   }
 
   return v6;
 }
 
-- (SecKeyRSAPublic)initWithData:(id)a3 error:(id *)a4
+- (SecKeyRSAPublic)initWithData:(id)data error:(id *)error
 {
   v21[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dataCopy = data;
   v18.receiver = self;
   v18.super_class = SecKeyRSAPublic;
   error = 0;
@@ -49,14 +49,14 @@
     v21[1] = v10;
     v20[2] = *MEMORY[0x277CDC018];
     v21[2] = &unk_283F13B20;
-    v11 = SecKeyCreateWithData(v6, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:3], &error);
+    v11 = SecKeyCreateWithData(dataCopy, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:3], &error);
     secKeyRef = v7->_secKeyRef;
     v7->_secKeyRef = v11;
   }
 
-  v13 = [(SecKeyRSAPublic *)v7 secKeyRef];
+  secKeyRef = [(SecKeyRSAPublic *)v7 secKeyRef];
 
-  if (v13)
+  if (secKeyRef)
   {
     v14 = v7;
   }
@@ -70,9 +70,9 @@
     }
 
     v14 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = error;
+      *error = error;
     }
   }
 
@@ -80,12 +80,12 @@
   return v14;
 }
 
-- (id)encryptData:(id)a3 error:(id *)a4
+- (id)encryptData:(id)data error:(id *)error
 {
   error = 0;
-  v6 = a3;
-  v7 = [(SecKeyRSAPublic *)self secKeyRef];
-  v8 = SecKeyCreateEncryptedData(v7, *MEMORY[0x277CDC358], v6, &error);
+  dataCopy = data;
+  secKeyRef = [(SecKeyRSAPublic *)self secKeyRef];
+  v8 = SecKeyCreateEncryptedData(secKeyRef, *MEMORY[0x277CDC358], dataCopy, &error);
 
   if (v8)
   {
@@ -100,9 +100,9 @@
       [SecKeyRSAPublic encryptData:? error:?];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = error;
+      *error = error;
     }
   }
 

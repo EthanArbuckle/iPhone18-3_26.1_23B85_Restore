@@ -27,7 +27,7 @@
     v7 = v6;
   }
 
-  v8 = [[a1 alloc] initWithDomain:@"EFSQLiteErrorDomain" code:a3 userInfo:v7];
+  v8 = [[self alloc] initWithDomain:@"EFSQLiteErrorDomain" code:a3 userInfo:v7];
 
   v9 = *MEMORY[0x1E69E9840];
 

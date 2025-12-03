@@ -1,11 +1,11 @@
 @interface VLFSessionAnalyticsCapturer
 - (VLFSessionAnalyticsCapturer)init;
 - (void)_submitAnalytics;
-- (void)recordAttempt:(id)a3;
-- (void)recordGeoTrackingStatusIfNecessary:(id)a3;
-- (void)recordPocketState:(int64_t)a3;
-- (void)sessionEndedWithResult:(int64_t)a3 initializationFailureDetails:(id)a4 arFailureTypes:(id)a5;
-- (void)sessionStartedWithEntryPoint:(int64_t)a3;
+- (void)recordAttempt:(id)attempt;
+- (void)recordGeoTrackingStatusIfNecessary:(id)necessary;
+- (void)recordPocketState:(int64_t)state;
+- (void)sessionEndedWithResult:(int64_t)result initializationFailureDetails:(id)details arFailureTypes:(id)types;
+- (void)sessionStartedWithEntryPoint:(int64_t)point;
 @end
 
 @implementation VLFSessionAnalyticsCapturer
@@ -68,8 +68,8 @@
 
   [v8 setAccessPoint:entryPoint_low];
   v11 = self->_originalLocation;
-  v12 = [(CLLocation *)v11 positionContextState];
-  if (v12 > 2)
+  positionContextState = [(CLLocation *)v11 positionContextState];
+  if (positionContextState > 2)
   {
     v13 = 0;
     v14 = 3;
@@ -77,7 +77,7 @@
 
   else
   {
-    v13 = dword_101213448[v12];
+    v13 = dword_101213448[positionContextState];
     v14 = 7;
   }
 
@@ -207,13 +207,13 @@ LABEL_36:
   [GEOAPPortal captureVlfUsageWithEntryPoint:v9 sessionTimeMs:v31 timeRoundedToHour:v32 localizationDetails:localizationDetails finalState:result_low postFusionCorrection:v19 initialPositionContextClassification:buf initialLocation:v21 initializationFailureDetails:initializationFailureDetails arStates:arStates deviceOrientations:deviceOrientations crowdsourcingDetails:v29 arFailureTypes:arFailureTypes];
 }
 
-- (void)recordPocketState:(int64_t)a3
+- (void)recordPocketState:(int64_t)state
 {
-  if (self->_lastPocketState != a3)
+  if (self->_lastPocketState != state)
   {
     block[9] = v3;
     block[10] = v4;
-    self->_lastPocketState = a3;
+    self->_lastPocketState = state;
     GEOGetMonotonicTime();
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -222,27 +222,27 @@ LABEL_36:
     block[3] = &unk_1016575B0;
     block[4] = self;
     block[5] = v8;
-    block[6] = a3;
+    block[6] = state;
     dispatch_async(queue, block);
   }
 }
 
-- (void)recordGeoTrackingStatusIfNecessary:(id)a3
+- (void)recordGeoTrackingStatusIfNecessary:(id)necessary
 {
-  v5 = a3;
-  v6 = v5;
+  necessaryCopy = necessary;
+  v6 = necessaryCopy;
   p_lastGeoTrackingStatus = &self->_lastGeoTrackingStatus;
-  if (self->_lastGeoTrackingStatus != v5)
+  if (self->_lastGeoTrackingStatus != necessaryCopy)
   {
-    v8 = [(ARGeoTrackingStatus *)v5 state];
-    if (v8 == [(ARGeoTrackingStatus *)*p_lastGeoTrackingStatus state]&& (v9 = [(ARGeoTrackingStatus *)v6 stateReason], v9 == [(ARGeoTrackingStatus *)*p_lastGeoTrackingStatus stateReason]))
+    state = [(ARGeoTrackingStatus *)necessaryCopy state];
+    if (state == [(ARGeoTrackingStatus *)*p_lastGeoTrackingStatus state]&& (v9 = [(ARGeoTrackingStatus *)v6 stateReason], v9 == [(ARGeoTrackingStatus *)*p_lastGeoTrackingStatus stateReason]))
     {
-      objc_storeStrong(&self->_lastGeoTrackingStatus, a3);
+      objc_storeStrong(&self->_lastGeoTrackingStatus, necessary);
     }
 
     else
     {
-      objc_storeStrong(&self->_lastGeoTrackingStatus, a3);
+      objc_storeStrong(&self->_lastGeoTrackingStatus, necessary);
       GEOGetMonotonicTime();
       queue = self->_queue;
       block[0] = _NSConcreteStackBlock;
@@ -257,33 +257,33 @@ LABEL_36:
   }
 }
 
-- (void)recordAttempt:(id)a3
+- (void)recordAttempt:(id)attempt
 {
-  v4 = a3;
+  attemptCopy = attempt;
   v5 = +[MKLocationManager sharedLocationManager];
-  v6 = [v5 lastLocation];
+  lastLocation = [v5 lastLocation];
 
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100769E88;
   block[3] = &unk_101661A40;
-  v11 = v4;
-  v12 = self;
-  v13 = v6;
-  v8 = v6;
-  v9 = v4;
+  v11 = attemptCopy;
+  selfCopy = self;
+  v13 = lastLocation;
+  v8 = lastLocation;
+  v9 = attemptCopy;
   dispatch_async(queue, block);
 }
 
-- (void)sessionEndedWithResult:(int64_t)a3 initializationFailureDetails:(id)a4 arFailureTypes:(id)a5
+- (void)sessionEndedWithResult:(int64_t)result initializationFailureDetails:(id)details arFailureTypes:(id)types
 {
-  v8 = a4;
-  v9 = a5;
+  detailsCopy = details;
+  typesCopy = types;
   GEOMachAbsoluteTimeGetCurrent();
   v11 = v10;
   v12 = +[MKLocationManager sharedLocationManager];
-  v13 = [v12 lastLocation];
+  lastLocation = [v12 lastLocation];
 
   queue = self->_queue;
   v18[0] = _NSConcreteStackBlock;
@@ -292,17 +292,17 @@ LABEL_36:
   v18[3] = &unk_101628630;
   v22 = v11;
   v18[4] = self;
-  v19 = v13;
-  v23 = a3;
-  v20 = v8;
-  v21 = v9;
-  v15 = v9;
-  v16 = v8;
-  v17 = v13;
+  v19 = lastLocation;
+  resultCopy = result;
+  v20 = detailsCopy;
+  v21 = typesCopy;
+  v15 = typesCopy;
+  v16 = detailsCopy;
+  v17 = lastLocation;
   dispatch_async(queue, v18);
 }
 
-- (void)sessionStartedWithEntryPoint:(int64_t)a3
+- (void)sessionStartedWithEntryPoint:(int64_t)point
 {
   GEOMachAbsoluteTimeGetCurrent();
   v6 = v5;
@@ -310,7 +310,7 @@ LABEL_36:
   GEOGetMonotonicTime();
   v9 = v8;
   v10 = +[MKLocationManager sharedLocationManager];
-  v11 = [v10 lastLocation];
+  lastLocation = [v10 lastLocation];
 
   queue = self->_queue;
   v14[0] = _NSConcreteStackBlock;
@@ -321,9 +321,9 @@ LABEL_36:
   v17 = v9;
   v18 = v7;
   v14[4] = self;
-  v15 = v11;
-  v19 = a3;
-  v13 = v11;
+  v15 = lastLocation;
+  pointCopy = point;
+  v13 = lastLocation;
   dispatch_async(queue, v14);
 }
 

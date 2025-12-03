@@ -1,29 +1,29 @@
 @interface _ASCredentialListViewController
-- (_ASCredentialListViewController)initWithExtension:(id)a3 serviceIdentifiers:(id)a4 requestParameters:(id)a5;
+- (_ASCredentialListViewController)initWithExtension:(id)extension serviceIdentifiers:(id)identifiers requestParameters:(id)parameters;
 - (_ASCredentialListViewControllerDelegate)delegate;
-- (id)initForTextSelectingWithExtension:(id)a3 serviceIdentifiers:(id)a4;
-- (id)initOneTimeCodeCredentialListWithExtension:(id)a3 serviceIdentifiers:(id)a4;
-- (void)_finishWithCredential:(id)a3 completion:(id)a4;
-- (void)prepareToCompleteOneTimeCodeRequestWithHostContext:(id)a3 credential:(id)a4 completion:(id)a5;
-- (void)prepareToCompleteRequestWithHostContext:(id)a3 credential:(id)a4 completion:(id)a5;
-- (void)prepareToCompleteRequestWithHostContext:(id)a3 passkeyAssertionCredential:(id)a4 completion:(id)a5;
-- (void)prepareToCompleteSelectionRequestWithHostContext:(id)a3 text:(id)a4 completion:(id)a5;
+- (id)initForTextSelectingWithExtension:(id)extension serviceIdentifiers:(id)identifiers;
+- (id)initOneTimeCodeCredentialListWithExtension:(id)extension serviceIdentifiers:(id)identifiers;
+- (void)_finishWithCredential:(id)credential completion:(id)completion;
+- (void)prepareToCompleteOneTimeCodeRequestWithHostContext:(id)context credential:(id)credential completion:(id)completion;
+- (void)prepareToCompleteRequestWithHostContext:(id)context credential:(id)credential completion:(id)completion;
+- (void)prepareToCompleteRequestWithHostContext:(id)context passkeyAssertionCredential:(id)credential completion:(id)completion;
+- (void)prepareToCompleteSelectionRequestWithHostContext:(id)context text:(id)text completion:(id)completion;
 @end
 
 @implementation _ASCredentialListViewController
 
-- (_ASCredentialListViewController)initWithExtension:(id)a3 serviceIdentifiers:(id)a4 requestParameters:(id)a5
+- (_ASCredentialListViewController)initWithExtension:(id)extension serviceIdentifiers:(id)identifiers requestParameters:(id)parameters
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  extensionCopy = extension;
+  identifiersCopy = identifiers;
+  parametersCopy = parameters;
   v28.receiver = self;
   v28.super_class = _ASCredentialListViewController;
-  v11 = [(_ASExtensionViewController *)&v28 initWithExtension:v8];
+  v11 = [(_ASExtensionViewController *)&v28 initWithExtension:extensionCopy];
   if (v11)
   {
     objc_initWeak(&location, v11);
-    v12 = [v9 copy];
+    v12 = [identifiersCopy copy];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -35,9 +35,9 @@
     v21[1] = 3221225472;
     v21[2] = __90___ASCredentialListViewController_initWithExtension_serviceIdentifiers_requestParameters___block_invoke_3;
     v21[3] = &unk_1E7AF7EF0;
-    v22 = v10;
-    v9 = v12;
-    v23 = v9;
+    v22 = parametersCopy;
+    identifiersCopy = v12;
+    v23 = identifiersCopy;
     v14 = v13;
     v24 = v14;
     [(_ASExtensionViewController *)v11 _beginRequestWithConnectionHandler:v21];
@@ -60,13 +60,13 @@
   return v11;
 }
 
-- (id)initOneTimeCodeCredentialListWithExtension:(id)a3 serviceIdentifiers:(id)a4
+- (id)initOneTimeCodeCredentialListWithExtension:(id)extension serviceIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  extensionCopy = extension;
+  identifiersCopy = identifiers;
   v19.receiver = self;
   v19.super_class = _ASCredentialListViewController;
-  v8 = [(_ASExtensionViewController *)&v19 initWithExtension:v6];
+  v8 = [(_ASExtensionViewController *)&v19 initWithExtension:extensionCopy];
   if (v8)
   {
     objc_initWeak(&location, v8);
@@ -74,7 +74,7 @@
     v15[1] = 3221225472;
     v15[2] = __97___ASCredentialListViewController_initOneTimeCodeCredentialListWithExtension_serviceIdentifiers___block_invoke;
     v15[3] = &unk_1E7AF7F18;
-    v16 = v7;
+    v16 = identifiersCopy;
     objc_copyWeak(&v17, &location);
     [(_ASExtensionViewController *)v8 _beginRequestWithConnectionHandler:v15];
     v13[0] = MEMORY[0x1E69E9820];
@@ -96,13 +96,13 @@
   return v8;
 }
 
-- (id)initForTextSelectingWithExtension:(id)a3 serviceIdentifiers:(id)a4
+- (id)initForTextSelectingWithExtension:(id)extension serviceIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  extensionCopy = extension;
+  identifiersCopy = identifiers;
   v17.receiver = self;
   v17.super_class = _ASCredentialListViewController;
-  v8 = [(_ASExtensionViewController *)&v17 initWithExtension:v6];
+  v8 = [(_ASExtensionViewController *)&v17 initWithExtension:extensionCopy];
   v9 = v8;
   if (v8)
   {
@@ -125,24 +125,24 @@
   return v9;
 }
 
-- (void)_finishWithCredential:(id)a3 completion:(id)a4
+- (void)_finishWithCredential:(id)credential completion:(id)completion
 {
-  v9 = a3;
-  if (a4)
+  credentialCopy = credential;
+  if (completion)
   {
-    v6 = a4;
+    completionCopy = completion;
   }
 
   else
   {
-    v6 = &__block_literal_global_5;
+    completionCopy = &__block_literal_global_5;
   }
 
-  v7 = _Block_copy(v6);
+  v7 = _Block_copy(completionCopy);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained credentialListViewController:self didFinishWithCredential:v9 completion:v7];
+    [WeakRetained credentialListViewController:self didFinishWithCredential:credentialCopy completion:v7];
   }
 
   else
@@ -151,40 +151,40 @@
   }
 }
 
-- (void)prepareToCompleteRequestWithHostContext:(id)a3 credential:(id)a4 completion:(id)a5
+- (void)prepareToCompleteRequestWithHostContext:(id)context credential:(id)credential completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  credentialCopy = credential;
+  completionCopy = completion;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __97___ASCredentialListViewController_prepareToCompleteRequestWithHostContext_credential_completion___block_invoke;
   block[3] = &unk_1E7AF7790;
   block[4] = self;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = credentialCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = credentialCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)prepareToCompleteRequestWithHostContext:(id)a3 passkeyAssertionCredential:(id)a4 completion:(id)a5
+- (void)prepareToCompleteRequestWithHostContext:(id)context passkeyAssertionCredential:(id)credential completion:(id)completion
 {
-  v10 = a4;
-  if (a5)
+  credentialCopy = credential;
+  if (completion)
   {
-    v7 = a5;
+    completionCopy = completion;
   }
 
   else
   {
-    v7 = &__block_literal_global_9;
+    completionCopy = &__block_literal_global_9;
   }
 
-  v8 = _Block_copy(v7);
+  v8 = _Block_copy(completionCopy);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained credentialListViewController:self didFinishWithPasskeyAssertionCredential:v10 completion:v8];
+    [WeakRetained credentialListViewController:self didFinishWithPasskeyAssertionCredential:credentialCopy completion:v8];
   }
 
   else
@@ -193,24 +193,24 @@
   }
 }
 
-- (void)prepareToCompleteOneTimeCodeRequestWithHostContext:(id)a3 credential:(id)a4 completion:(id)a5
+- (void)prepareToCompleteOneTimeCodeRequestWithHostContext:(id)context credential:(id)credential completion:(id)completion
 {
-  v10 = a4;
-  if (a5)
+  credentialCopy = credential;
+  if (completion)
   {
-    v7 = a5;
+    completionCopy = completion;
   }
 
   else
   {
-    v7 = &__block_literal_global_13;
+    completionCopy = &__block_literal_global_13;
   }
 
-  v8 = _Block_copy(v7);
+  v8 = _Block_copy(completionCopy);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained credentialListViewController:self didFinishWithOneTimeCodeCredential:v10 completion:v8];
+    [WeakRetained credentialListViewController:self didFinishWithOneTimeCodeCredential:credentialCopy completion:v8];
   }
 
   else
@@ -219,20 +219,20 @@
   }
 }
 
-- (void)prepareToCompleteSelectionRequestWithHostContext:(id)a3 text:(id)a4 completion:(id)a5
+- (void)prepareToCompleteSelectionRequestWithHostContext:(id)context text:(id)text completion:(id)completion
 {
-  v7 = a4;
-  if (a5)
+  textCopy = text;
+  if (completion)
   {
-    v8 = a5;
+    completionCopy = completion;
   }
 
   else
   {
-    v8 = &__block_literal_global_17;
+    completionCopy = &__block_literal_global_17;
   }
 
-  v9 = _Block_copy(v8);
+  v9 = _Block_copy(completionCopy);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
@@ -241,8 +241,8 @@
     v11[2] = __100___ASCredentialListViewController_prepareToCompleteSelectionRequestWithHostContext_text_completion___block_invoke_2;
     v11[3] = &unk_1E7AF76D0;
     v12 = WeakRetained;
-    v13 = self;
-    v14 = v7;
+    selfCopy = self;
+    v14 = textCopy;
     v15 = v9;
     dispatch_async(MEMORY[0x1E69E96A0], v11);
   }

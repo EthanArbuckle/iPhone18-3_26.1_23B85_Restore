@@ -1,22 +1,22 @@
 @interface GCSpatialAccessory
-+ (BOOL)isKindOfClass:(Class)a3;
-+ (BOOL)isSubclassOfClass:(Class)a3;
++ (BOOL)isKindOfClass:(Class)class;
++ (BOOL)isSubclassOfClass:(Class)class;
 + (NSSet)accessories;
-- (BOOL)conformsToDeviceType:(id)a3;
-- (BOOL)isKindOfClass:(Class)a3;
+- (BOOL)conformsToDeviceType:(id)type;
+- (BOOL)isKindOfClass:(Class)class;
 @end
 
 @implementation GCSpatialAccessory
 
-- (BOOL)conformsToDeviceType:(id)a3
+- (BOOL)conformsToDeviceType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   info = self->super._info;
   if ((objc_opt_respondsToSelector() & 1) != 0 && ([(GCControllerProductInfo *)self->super._info uniformTypeIdentifier], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
     v8 = [GCDeviceType deviceTypeWithIdentifier:v6];
-    v9 = [v8 conformsToDeviceType:v4];
+    v9 = [v8 conformsToDeviceType:typeCopy];
   }
 
   else
@@ -27,51 +27,51 @@
   return v9;
 }
 
-+ (BOOL)isSubclassOfClass:(Class)a3
++ (BOOL)isSubclassOfClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___GCSpatialAccessory;
-  return objc_msgSendSuper2(&v6, sel_isSubclassOfClass_, a3);
+  return objc_msgSendSuper2(&v6, sel_isSubclassOfClass_, class);
 }
 
-+ (BOOL)isKindOfClass:(Class)a3
++ (BOOL)isKindOfClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___GCSpatialAccessory;
-  return objc_msgSendSuper2(&v6, sel_isKindOfClass_, a3);
+  return objc_msgSendSuper2(&v6, sel_isKindOfClass_, class);
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return 0;
   }
 
   v6.receiver = self;
   v6.super_class = GCSpatialAccessory;
-  return [(GCSpatialAccessory *)&v6 isKindOfClass:a3];
+  return [(GCSpatialAccessory *)&v6 isKindOfClass:class];
 }
 
 + (NSSet)accessories
 {
   v2 = +[_GCLegacyDeviceSession sharedInstance];
-  v3 = [v2 spatialAccessories];
-  v4 = [(GCDeviceCollection *)v3 orderedCollection];
-  v5 = v4;
-  if (v4)
+  spatialAccessories = [v2 spatialAccessories];
+  orderedCollection = [(GCDeviceCollection *)spatialAccessories orderedCollection];
+  v5 = orderedCollection;
+  if (orderedCollection)
   {
-    v6 = v4;
+    v6 = orderedCollection;
   }
 
   else

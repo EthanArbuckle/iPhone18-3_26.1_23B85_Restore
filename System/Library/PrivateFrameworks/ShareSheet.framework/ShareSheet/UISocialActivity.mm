@@ -1,43 +1,43 @@
 @interface UISocialActivity
-+ (id)_activityExtensionItemsForActivityItemValues:(id)a3 extensionItemDataRequest:(id)a4;
-- (BOOL)_canBeExcludeWhenMatchingWithContext:(id)a3;
++ (id)_activityExtensionItemsForActivityItemValues:(id)values extensionItemDataRequest:(id)request;
+- (BOOL)_canBeExcludeWhenMatchingWithContext:(id)context;
 - (BOOL)_wantsAttachmentURLItemData;
 - (BOOL)_wantsThumbnailItemData;
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (CGSize)_thumbnailSize;
-- (UISocialActivity)initWithActivityType:(id)a3;
-- (UISocialActivity)initWithApplicationExtension:(id)a3;
+- (UISocialActivity)initWithActivityType:(id)type;
+- (UISocialActivity)initWithApplicationExtension:(id)extension;
 - (id)activityType;
 - (id)debugDescription;
 - (void)_cleanup;
-- (void)_prepareComposeViewController:(id)a3 withActivityExtensionItems:(id)a4;
-- (void)_prepareComposeViewController:(id)a3 withInjectedExtensionItems:(id)a4;
+- (void)_prepareComposeViewController:(id)controller withActivityExtensionItems:(id)items;
+- (void)_prepareComposeViewController:(id)controller withInjectedExtensionItems:(id)items;
 - (void)_willBePerformedOrPresented;
-- (void)prepareWithActivityExtensionItemData:(id)a3;
-- (void)setInitialText:(id)a3;
+- (void)prepareWithActivityExtensionItemData:(id)data;
+- (void)setInitialText:(id)text;
 @end
 
 @implementation UISocialActivity
 
-- (UISocialActivity)initWithApplicationExtension:(id)a3
+- (UISocialActivity)initWithApplicationExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v13.receiver = self;
   v13.super_class = UISocialActivity;
-  v5 = [(UIApplicationExtensionActivity *)&v13 initWithApplicationExtension:v4];
+  v5 = [(UIApplicationExtensionActivity *)&v13 initWithApplicationExtension:extensionCopy];
   if (v5)
   {
     v6 = _UISocialActivityGetActivityTypeForApplicationExtension_once;
-    v7 = v4;
+    v7 = extensionCopy;
     if (v6 != -1)
     {
       [UISocialActivity initWithApplicationExtension:];
     }
 
     v8 = _UISocialActivityGetActivityTypeForApplicationExtension___activityTypesByApplicationExtensionIdentifiers;
-    v9 = [v7 identifier];
+    identifier = [v7 identifier];
 
-    v10 = [v8 objectForKeyedSubscript:v9];
+    v10 = [v8 objectForKeyedSubscript:identifier];
 
     if (v10)
     {
@@ -50,10 +50,10 @@
   return v5;
 }
 
-- (UISocialActivity)initWithActivityType:(id)a3
+- (UISocialActivity)initWithActivityType:(id)type
 {
-  v4 = a3;
-  v5 = [(objc_class *)getSLComposeViewControllerClass() extensionIdentifierForActivityType:v4];
+  typeCopy = type;
+  v5 = [(objc_class *)getSLComposeViewControllerClass() extensionIdentifierForActivityType:typeCopy];
   v13 = 0;
   v6 = [MEMORY[0x1E696ABD0] extensionWithIdentifier:v5 error:&v13];
   v7 = v13;
@@ -62,7 +62,7 @@
     v8 = share_sheet_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(UISocialActivity *)v4 initWithActivityType:v7, v8];
+      [(UISocialActivity *)typeCopy initWithActivityType:v7, v8];
     }
   }
 
@@ -76,29 +76,29 @@
   return v10;
 }
 
-- (void)setInitialText:(id)a3
+- (void)setInitialText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   if (![(NSString *)self->_initialText isEqualToString:?])
   {
-    objc_storeStrong(&self->_initialText, a3);
-    v5 = [(UISocialActivity *)self socialComposeViewController];
-    [v5 setInitialText:v6];
+    objc_storeStrong(&self->_initialText, text);
+    socialComposeViewController = [(UISocialActivity *)self socialComposeViewController];
+    [socialComposeViewController setInitialText:textCopy];
   }
 }
 
 - (id)debugDescription
 {
-  v3 = [(UISocialActivity *)self builtinActivityType];
+  builtinActivityType = [(UISocialActivity *)self builtinActivityType];
 
-  if (v3)
+  if (builtinActivityType)
   {
     v4 = MEMORY[0x1E696AEC0];
     v9.receiver = self;
     v9.super_class = UISocialActivity;
     v5 = [(UIActivity *)&v9 description];
-    v6 = [(UISocialActivity *)self activityType];
-    v7 = [v4 stringWithFormat:@"%@ {type = %@}", v5, v6];
+    activityType = [(UISocialActivity *)self activityType];
+    v7 = [v4 stringWithFormat:@"%@ {type = %@}", v5, activityType];
   }
 
   else
@@ -113,22 +113,22 @@
 
 - (id)activityType
 {
-  v3 = [(UISocialActivity *)self builtinActivityType];
-  if (!v3)
+  builtinActivityType = [(UISocialActivity *)self builtinActivityType];
+  if (!builtinActivityType)
   {
-    v4 = [(UIApplicationExtensionActivity *)self applicationExtension];
-    v3 = [v4 identifier];
+    applicationExtension = [(UIApplicationExtensionActivity *)self applicationExtension];
+    builtinActivityType = [applicationExtension identifier];
   }
 
-  return v3;
+  return builtinActivityType;
 }
 
-- (BOOL)_canBeExcludeWhenMatchingWithContext:(id)a3
+- (BOOL)_canBeExcludeWhenMatchingWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(UISocialActivity *)self builtinActivityType];
+  contextCopy = context;
+  builtinActivityType = [(UISocialActivity *)self builtinActivityType];
 
-  if (v5)
+  if (builtinActivityType)
   {
     v6 = 1;
   }
@@ -137,53 +137,53 @@
   {
     v8.receiver = self;
     v8.super_class = UISocialActivity;
-    v6 = [(UIApplicationExtensionActivity *)&v8 _canBeExcludeWhenMatchingWithContext:v4];
+    v6 = [(UIApplicationExtensionActivity *)&v8 _canBeExcludeWhenMatchingWithContext:contextCopy];
   }
 
   return v6;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v4 = a3;
-  v5 = [(UISocialActivity *)self sourceApplicationBundleID];
-  v6 = v5;
-  if (v5)
+  itemsCopy = items;
+  sourceApplicationBundleID = [(UISocialActivity *)self sourceApplicationBundleID];
+  v6 = sourceApplicationBundleID;
+  if (sourceApplicationBundleID)
   {
-    v7 = v5;
+    bundleIdentifier = sourceApplicationBundleID;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AAE8] mainBundle];
-    v7 = [v8 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
   }
 
-  v9 = [(UIApplicationExtensionActivity *)self applicationExtension];
-  v10 = v7;
+  applicationExtension = [(UIApplicationExtensionActivity *)self applicationExtension];
+  v10 = bundleIdentifier;
   if (_UIComposeViewControllerIsAvailable_once != -1)
   {
     [UISocialActivity canPerformWithActivityItems:];
   }
 
-  v11 = [v9 _plugIn];
-  v12 = [v11 supersededBy];
+  _plugIn = [applicationExtension _plugIn];
+  supersededBy = [_plugIn supersededBy];
 
-  if (v12)
+  if (supersededBy)
   {
     goto LABEL_7;
   }
 
-  v15 = [v9 identifier];
-  if ([_UIComposeViewControllerIsAvailable_legacySocialActivityTypes containsObject:v15])
+  identifier = [applicationExtension identifier];
+  if ([_UIComposeViewControllerIsAvailable_legacySocialActivityTypes containsObject:identifier])
   {
-    v16 = [(objc_class *)getSLComposeViewControllerClass() isAvailableForExtension:v9 inHostApplicationBundleID:v10];
+    v16 = [(objc_class *)getSLComposeViewControllerClass() isAvailableForExtension:applicationExtension inHostApplicationBundleID:v10];
   }
 
   else
   {
-    v17 = [_UIComposeViewControllerIsAvailable_mediaShareExtension extensionIdentifier];
-    v18 = [v15 isEqualToString:v17];
+    extensionIdentifier = [_UIComposeViewControllerIsAvailable_mediaShareExtension extensionIdentifier];
+    v18 = [identifier isEqualToString:extensionIdentifier];
 
     if (!v18)
     {
@@ -221,26 +221,26 @@ LABEL_7:
 LABEL_8:
   v22.receiver = self;
   v22.super_class = UISocialActivity;
-  v13 = [(UIApplicationExtensionActivity *)&v22 canPerformWithActivityItems:v4];
+  v13 = [(UIApplicationExtensionActivity *)&v22 canPerformWithActivityItems:itemsCopy];
 LABEL_9:
 
   return v13;
 }
 
-- (void)prepareWithActivityExtensionItemData:(id)a3
+- (void)prepareWithActivityExtensionItemData:(id)data
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   SLComposeViewControllerClass = getSLComposeViewControllerClass();
-  v6 = [(UIApplicationExtensionActivity *)self applicationExtension];
-  v7 = [(objc_class *)SLComposeViewControllerClass composeViewControllerForExtension:v6];
+  applicationExtension = [(UIApplicationExtensionActivity *)self applicationExtension];
+  v7 = [(objc_class *)SLComposeViewControllerClass composeViewControllerForExtension:applicationExtension];
 
-  v8 = [(UISocialActivity *)self initialText];
+  initialText = [(UISocialActivity *)self initialText];
 
-  if (v8)
+  if (initialText)
   {
-    v9 = [(UISocialActivity *)self initialText];
-    [v7 setInitialText:v9];
+    initialText2 = [(UISocialActivity *)self initialText];
+    [v7 setInitialText:initialText2];
   }
 
   v13[0] = MEMORY[0x1E69E9820];
@@ -249,20 +249,20 @@ LABEL_9:
   v13[3] = &unk_1E71FB618;
   v13[4] = self;
   [v7 setCompletionHandler:v13];
-  v10 = [(UIApplicationExtensionActivity *)self _injectedExtensionItem];
+  _injectedExtensionItem = [(UIApplicationExtensionActivity *)self _injectedExtensionItem];
 
-  if (v10)
+  if (_injectedExtensionItem)
   {
-    v11 = [(UIApplicationExtensionActivity *)self _injectedExtensionItem];
-    v14[0] = v11;
+    _injectedExtensionItem2 = [(UIApplicationExtensionActivity *)self _injectedExtensionItem];
+    v14[0] = _injectedExtensionItem2;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
     [(UISocialActivity *)self _prepareComposeViewController:v7 withInjectedExtensionItems:v12];
   }
 
   else
   {
-    v11 = [v4 extensionItems];
-    [(UISocialActivity *)self _prepareComposeViewController:v7 withActivityExtensionItems:v11];
+    _injectedExtensionItem2 = [dataCopy extensionItems];
+    [(UISocialActivity *)self _prepareComposeViewController:v7 withActivityExtensionItems:_injectedExtensionItem2];
   }
 
   [(UISocialActivity *)self setSocialComposeViewController:v7];
@@ -270,23 +270,23 @@ LABEL_9:
 
 - (void)_willBePerformedOrPresented
 {
-  v3 = [(UISocialActivity *)self socialComposeViewController];
-  [v3 _instantiateAndBeginExtensionIfNeeded];
+  socialComposeViewController = [(UISocialActivity *)self socialComposeViewController];
+  [socialComposeViewController _instantiateAndBeginExtensionIfNeeded];
 
-  v4 = [(UIApplicationExtensionActivity *)self applicationExtension];
-  v5 = [v4 infoDictionary];
-  v22 = [v5 objectForKeyedSubscript:@"NSExtension"];
+  applicationExtension = [(UIApplicationExtensionActivity *)self applicationExtension];
+  infoDictionary = [applicationExtension infoDictionary];
+  v22 = [infoDictionary objectForKeyedSubscript:@"NSExtension"];
 
-  v6 = [(UIApplicationExtensionActivity *)self applicationExtension];
-  v7 = [_UIActivityBundleHelper activityBundleHelperForExtension:v6];
+  applicationExtension2 = [(UIApplicationExtensionActivity *)self applicationExtension];
+  v7 = [_UIActivityBundleHelper activityBundleHelperForExtension:applicationExtension2];
 
-  v8 = [v7 bundleProxy];
-  v9 = [v8 sdkVersion];
-  v10 = v9;
+  bundleProxy = [v7 bundleProxy];
+  sdkVersion = [bundleProxy sdkVersion];
+  v10 = sdkVersion;
   v11 = @"1.0";
-  if (v9)
+  if (sdkVersion)
   {
-    v11 = v9;
+    v11 = sdkVersion;
   }
 
   v12 = v11;
@@ -309,8 +309,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v20 = [MEMORY[0x1E6963608] defaultWorkspace];
-  v21 = [v20 isVersion:v12 greaterThanOrEqualToVersion:@"13.0"];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  v21 = [defaultWorkspace isVersion:v12 greaterThanOrEqualToVersion:@"13.0"];
 
   if ((v21 & 1) == 0)
   {
@@ -320,23 +320,23 @@ LABEL_7:
   v16 = 0;
   v17 = -2;
 LABEL_8:
-  v18 = [(UISocialActivity *)self socialComposeViewController];
-  [v18 setModalPresentationStyle:v17];
+  socialComposeViewController2 = [(UISocialActivity *)self socialComposeViewController];
+  [socialComposeViewController2 setModalPresentationStyle:v17];
 
-  v19 = [(UISocialActivity *)self socialComposeViewController];
-  [v19 setShouldForceNonAnimatedTransition:v16];
+  socialComposeViewController3 = [(UISocialActivity *)self socialComposeViewController];
+  [socialComposeViewController3 setShouldForceNonAnimatedTransition:v16];
 }
 
-- (void)_prepareComposeViewController:(id)a3 withInjectedExtensionItems:(id)a4
+- (void)_prepareComposeViewController:(id)controller withInjectedExtensionItems:(id)items
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  itemsCopy = items;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  v7 = [itemsCopy countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -348,7 +348,7 @@ LABEL_8:
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v11 = *(*(&v21 + 1) + 8 * v10);
@@ -356,8 +356,8 @@ LABEL_8:
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v12 = [v11 attachments];
-        v13 = [v12 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        attachments = [v11 attachments];
+        v13 = [attachments countByEnumeratingWithState:&v17 objects:v25 count:16];
         if (v13)
         {
           v14 = v13;
@@ -369,14 +369,14 @@ LABEL_8:
             {
               if (*v18 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(attachments);
               }
 
-              [v5 addItemProvider:*(*(&v17 + 1) + 8 * v16++)];
+              [controllerCopy addItemProvider:*(*(&v17 + 1) + 8 * v16++)];
             }
 
             while (v14 != v16);
-            v14 = [v12 countByEnumeratingWithState:&v17 objects:v25 count:16];
+            v14 = [attachments countByEnumeratingWithState:&v17 objects:v25 count:16];
           }
 
           while (v14);
@@ -386,23 +386,23 @@ LABEL_8:
       }
 
       while (v10 != v8);
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v8 = [itemsCopy countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)_prepareComposeViewController:(id)a3 withActivityExtensionItems:(id)a4
+- (void)_prepareComposeViewController:(id)controller withActivityExtensionItems:(id)items
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  itemsCopy = items;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [itemsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -414,14 +414,14 @@ LABEL_8:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(itemsCopy);
         }
 
-        [v5 addExtensionItem:*(*(&v11 + 1) + 8 * v10++)];
+        [controllerCopy addExtensionItem:*(*(&v11 + 1) + 8 * v10++)];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [itemsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -447,24 +447,24 @@ LABEL_8:
 
 - (BOOL)_wantsThumbnailItemData
 {
-  v3 = [(UISocialActivity *)self activityType];
-  if ([v3 isEqualToString:@"com.apple.UIKit.activity.PostToFacebook"])
+  activityType = [(UISocialActivity *)self activityType];
+  if ([activityType isEqualToString:@"com.apple.UIKit.activity.PostToFacebook"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(UISocialActivity *)self activityType];
-    if ([v5 isEqualToString:@"com.apple.UIKit.activity.PostToTwitter"])
+    activityType2 = [(UISocialActivity *)self activityType];
+    if ([activityType2 isEqualToString:@"com.apple.UIKit.activity.PostToTwitter"])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(UISocialActivity *)self activityType];
-      v4 = [v6 isEqualToString:@"com.apple.UIKit.activity.PostToWeibo"];
+      activityType3 = [(UISocialActivity *)self activityType];
+      v4 = [activityType3 isEqualToString:@"com.apple.UIKit.activity.PostToWeibo"];
     }
   }
 
@@ -473,40 +473,40 @@ LABEL_8:
 
 - (BOOL)_wantsAttachmentURLItemData
 {
-  v3 = [(UISocialActivity *)self activityType];
-  if ([v3 isEqualToString:@"com.apple.UIKit.activity.PostToFacebook"])
+  activityType = [(UISocialActivity *)self activityType];
+  if ([activityType isEqualToString:@"com.apple.UIKit.activity.PostToFacebook"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(UISocialActivity *)self activityType];
-    if ([v5 isEqualToString:@"com.apple.UIKit.activity.PostToTwitter"])
+    activityType2 = [(UISocialActivity *)self activityType];
+    if ([activityType2 isEqualToString:@"com.apple.UIKit.activity.PostToTwitter"])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(UISocialActivity *)self activityType];
-      v4 = [v6 isEqualToString:@"com.apple.UIKit.activity.PostToWeibo"];
+      activityType3 = [(UISocialActivity *)self activityType];
+      v4 = [activityType3 isEqualToString:@"com.apple.UIKit.activity.PostToWeibo"];
     }
   }
 
   return v4;
 }
 
-+ (id)_activityExtensionItemsForActivityItemValues:(id)a3 extensionItemDataRequest:(id)a4
++ (id)_activityExtensionItemsForActivityItemValues:(id)values extensionItemDataRequest:(id)request
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v25 = a4;
+  valuesCopy = values;
+  requestCopy = request;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  v6 = [valuesCopy countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (!v6)
   {
     v8 = 0;
@@ -522,7 +522,7 @@ LABEL_8:
     {
       if (*v31 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(valuesCopy);
       }
 
       v11 = *(*(&v30 + 1) + 8 * i);
@@ -564,12 +564,12 @@ LABEL_10:
       [v8 appendAttributedString:v11];
     }
 
-    v7 = [v5 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    v7 = [valuesCopy countByEnumeratingWithState:&v30 objects:v35 count:16];
   }
 
   while (v7);
 LABEL_17:
-  v15 = _NSExtensionItemsFromActivityItemValuesForExtensionItemDataRequest(v5, v25);
+  v15 = _NSExtensionItemsFromActivityItemValuesForExtensionItemDataRequest(valuesCopy, requestCopy);
   v16 = v15;
   if (v8)
   {
@@ -593,7 +593,7 @@ LABEL_17:
           }
 
           v22 = *(*(&v26 + 1) + 8 * j);
-          if (([v5 containsObject:v22] & 1) == 0)
+          if (([valuesCopy containsObject:v22] & 1) == 0)
           {
             [v22 setAttributedContentText:v8];
             v16 = v17;

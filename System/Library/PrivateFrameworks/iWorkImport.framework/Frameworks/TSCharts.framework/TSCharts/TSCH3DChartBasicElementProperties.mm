@@ -1,12 +1,12 @@
 @interface TSCH3DChartBasicElementProperties
-- (id)boundsGeometryForSeries:(id)a3 index:(void *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)geometryForSeries:(id)a3 index:(void *)a4;
-- (id)normalsForSeries:(id)a3 index:(void *)a4;
-- (id)texcoordsForSeries:(id)a3 index:(void *)a4;
+- (id)boundsGeometryForSeries:(id)series index:(void *)index;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)geometryForSeries:(id)series index:(void *)index;
+- (id)normalsForSeries:(id)series index:(void *)index;
+- (id)texcoordsForSeries:(id)series index:(void *)index;
 - (void)createResources;
 - (void)dealloc;
-- (void)resetWithEnumerator:(id)a3 layoutSettings:(id *)a4;
+- (void)resetWithEnumerator:(id)enumerator layoutSettings:(id *)settings;
 @end
 
 @implementation TSCH3DChartBasicElementProperties
@@ -30,11 +30,11 @@
   [(TSCH3DChartBasicElementProperties *)&v23 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = TSCH3DChartBasicElementProperties;
-  result = [(TSCH3DChartMutableElementProperties *)&v5 copyWithZone:a3];
+  result = [(TSCH3DChartMutableElementProperties *)&v5 copyWithZone:zone];
   if (result)
   {
     *(result + 14) = self->_size.var0.var0;
@@ -44,13 +44,13 @@
   return result;
 }
 
-- (void)resetWithEnumerator:(id)a3 layoutSettings:(id *)a4
+- (void)resetWithEnumerator:(id)enumerator layoutSettings:(id *)settings
 {
-  v5 = a3;
-  v6 = objc_storeWeak(&self->_enumerator, v5);
-  if (v5)
+  enumeratorCopy = enumerator;
+  v6 = objc_storeWeak(&self->_enumerator, enumeratorCopy);
+  if (enumeratorCopy)
   {
-    objc_msgSend_size(v5, v7, v8, v9, v10);
+    objc_msgSend_size(enumeratorCopy, v7, v8, v9, v10);
     v11 = v16;
   }
 
@@ -77,9 +77,9 @@
   objc_msgSend_setLightingModels_(self, v17, v18, v19, v20, v16);
 }
 
-- (id)geometryForSeries:(id)a3 index:(void *)a4
+- (id)geometryForSeries:(id)series index:(void *)index
 {
-  v8 = objc_msgSend_seriesStorage(a3, a2, v4, v5, v6);
+  v8 = objc_msgSend_seriesStorage(series, a2, v4, v5, v6);
   if (!v8)
   {
     v12 = MEMORY[0x277D81150];
@@ -95,26 +95,26 @@
   return v27;
 }
 
-- (id)boundsGeometryForSeries:(id)a3 index:(void *)a4
+- (id)boundsGeometryForSeries:(id)series index:(void *)index
 {
-  v7 = objc_msgSend_seriesStorage(a3, a2, v4, v5, v6);
+  v7 = objc_msgSend_seriesStorage(series, a2, v4, v5, v6);
   v12 = objc_msgSend_bounds(v7, v8, v9, v10, v11);
   v17 = objc_msgSend_resourceWithType_resource_(TSCH3DGeometryResource, v13, v14, v15, v16, 1, v12);
 
   return v17;
 }
 
-- (id)normalsForSeries:(id)a3 index:(void *)a4
+- (id)normalsForSeries:(id)series index:(void *)index
 {
-  v7 = objc_msgSend_seriesStorage(a3, a2, v4, v5, v6);
+  v7 = objc_msgSend_seriesStorage(series, a2, v4, v5, v6);
   v12 = objc_msgSend_normal(v7, v8, v9, v10, v11);
 
   return v12;
 }
 
-- (id)texcoordsForSeries:(id)a3 index:(void *)a4
+- (id)texcoordsForSeries:(id)series index:(void *)index
 {
-  v7 = objc_msgSend_seriesStorage(a3, a2, v4, v5, v6);
+  v7 = objc_msgSend_seriesStorage(series, a2, v4, v5, v6);
   v12 = objc_msgSend_texcoord(v7, v8, v9, v10, v11);
 
   return v12;

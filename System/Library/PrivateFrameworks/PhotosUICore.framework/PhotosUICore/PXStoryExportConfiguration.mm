@@ -1,9 +1,9 @@
 @interface PXStoryExportConfiguration
 - (PXExtendedTraitCollection)extendedTraitCollection;
 - (PXStoryErrorReporter)errorReporter;
-- (PXStoryExportConfiguration)initWithConfiguration:(id)a3 videoOptions:(id)a4;
-- (PXStoryExportConfiguration)initWithConfiguration:(id)a3 videoOptions:(id)a4 builder:(id)a5;
-- (void)copyOptionalPropertiesFromOtherExportConfiguration:(id)a3;
+- (PXStoryExportConfiguration)initWithConfiguration:(id)configuration videoOptions:(id)options;
+- (PXStoryExportConfiguration)initWithConfiguration:(id)configuration videoOptions:(id)options builder:(id)builder;
+- (void)copyOptionalPropertiesFromOtherExportConfiguration:(id)configuration;
 @end
 
 @implementation PXStoryExportConfiguration
@@ -17,76 +17,76 @@
 
 - (PXExtendedTraitCollection)extendedTraitCollection
 {
-  v3 = [(PXStoryExportConfiguration *)self videoOptions];
-  v4 = [v3 fullSizePlayerExtendedTraitCollectionSnapshot];
+  videoOptions = [(PXStoryExportConfiguration *)self videoOptions];
+  fullSizePlayerExtendedTraitCollectionSnapshot = [videoOptions fullSizePlayerExtendedTraitCollectionSnapshot];
 
-  v5 = [(PXStoryExportConfiguration *)self videoOptions];
-  v6 = [v5 prefersExportLayoutMatchesPlayback];
+  videoOptions2 = [(PXStoryExportConfiguration *)self videoOptions];
+  prefersExportLayoutMatchesPlayback = [videoOptions2 prefersExportLayoutMatchesPlayback];
 
   v7 = [PXStoryExportExtendedTraitCollection alloc];
-  if (v6 && v4)
+  if (prefersExportLayoutMatchesPlayback && fullSizePlayerExtendedTraitCollectionSnapshot)
   {
-    [v4 layoutReferenceSize];
+    [fullSizePlayerExtendedTraitCollectionSnapshot layoutReferenceSize];
     v9 = v8;
     v11 = v10;
-    [v4 displayScale];
+    [fullSizePlayerExtendedTraitCollectionSnapshot displayScale];
     v13 = v12;
-    [v4 fullScreenReferenceRect];
+    [fullSizePlayerExtendedTraitCollectionSnapshot fullScreenReferenceRect];
     v18 = [(PXStoryExportExtendedTraitCollection *)v7 initWithLayoutReferenceSize:v9 displayScale:v11 overrideFullScreenReferenceRect:v13, v14, v15, v16, v17];
   }
 
   else
   {
-    v19 = [(PXStoryExportConfiguration *)self videoOptions];
-    [v19 resolution];
+    videoOptions3 = [(PXStoryExportConfiguration *)self videoOptions];
+    [videoOptions3 resolution];
     v21 = v20;
     v23 = v22;
-    v24 = [(PXStoryExportConfiguration *)self videoOptions];
-    [v24 scale];
+    videoOptions4 = [(PXStoryExportConfiguration *)self videoOptions];
+    [videoOptions4 scale];
     v18 = [(PXStoryExportExtendedTraitCollection *)v7 initWithLayoutReferenceSize:v21 displayScale:v23 overrideFullScreenReferenceRect:v25, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
   }
 
   return v18;
 }
 
-- (void)copyOptionalPropertiesFromOtherExportConfiguration:(id)a3
+- (void)copyOptionalPropertiesFromOtherExportConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 activityType];
-  [(PXStoryExportConfiguration *)self setActivityType:v5];
+  configurationCopy = configuration;
+  activityType = [configurationCopy activityType];
+  [(PXStoryExportConfiguration *)self setActivityType:activityType];
 
-  v6 = [v4 activityCategory];
-  [(PXStoryExportConfiguration *)self setActivityCategory:v6];
+  activityCategory = [configurationCopy activityCategory];
+  [(PXStoryExportConfiguration *)self setActivityCategory:activityCategory];
 
-  v7 = [v4 errorReporter];
+  errorReporter = [configurationCopy errorReporter];
 
-  [(PXStoryExportConfiguration *)self setErrorReporter:v7];
+  [(PXStoryExportConfiguration *)self setErrorReporter:errorReporter];
 }
 
-- (PXStoryExportConfiguration)initWithConfiguration:(id)a3 videoOptions:(id)a4 builder:(id)a5
+- (PXStoryExportConfiguration)initWithConfiguration:(id)configuration videoOptions:(id)options builder:(id)builder
 {
-  v8 = a5;
-  v9 = [(PXStoryExportConfiguration *)self initWithConfiguration:a3 videoOptions:a4];
+  builderCopy = builder;
+  v9 = [(PXStoryExportConfiguration *)self initWithConfiguration:configuration videoOptions:options];
   if (v9)
   {
-    v8[2](v8, v9);
+    builderCopy[2](builderCopy, v9);
   }
 
   return v9;
 }
 
-- (PXStoryExportConfiguration)initWithConfiguration:(id)a3 videoOptions:(id)a4
+- (PXStoryExportConfiguration)initWithConfiguration:(id)configuration videoOptions:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  optionsCopy = options;
   v14.receiver = self;
   v14.super_class = PXStoryExportConfiguration;
   v9 = [(PXStoryExportConfiguration *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_storyConfiguration, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_storyConfiguration, configuration);
+    v11 = [optionsCopy copy];
     videoOptions = v10->_videoOptions;
     v10->_videoOptions = v11;
   }

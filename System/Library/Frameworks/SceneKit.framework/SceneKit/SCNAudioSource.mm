@@ -1,19 +1,19 @@
 @interface SCNAudioSource
 + (SCNAudioSource)audioSourceNamed:(NSString *)fileName;
-+ (SCNAudioSource)audioSourceWithAVAudioPCMBuffer:(id)a3;
-- (SCNAudioSource)initWithAVAudioPCMBuffer:(id)a3;
-- (SCNAudioSource)initWithCoder:(id)a3;
++ (SCNAudioSource)audioSourceWithAVAudioPCMBuffer:(id)buffer;
+- (SCNAudioSource)initWithAVAudioPCMBuffer:(id)buffer;
+- (SCNAudioSource)initWithCoder:(id)coder;
 - (SCNAudioSource)initWithFileNamed:(NSString *)name;
-- (SCNAudioSource)initWithFileNamed:(id)a3 inBundle:(id)a4;
+- (SCNAudioSource)initWithFileNamed:(id)named inBundle:(id)bundle;
 - (SCNAudioSource)initWithURL:(NSURL *)url;
 - (double)duration;
 - (id)audioBufferFormat;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)renderingAlgorithm;
-- (void)_customDecodingOfSCNAudioSource:(id)a3;
-- (void)_customEncodingOfSCNAudioSource:(id)a3;
+- (void)_customDecodingOfSCNAudioSource:(id)source;
+- (void)_customEncodingOfSCNAudioSource:(id)source;
 - (void)_load;
-- (void)_loadURLWithBundle:(id)a3;
+- (void)_loadURLWithBundle:(id)bundle;
 - (void)dealloc;
 - (void)load;
 - (void)loadIfNeeded;
@@ -21,19 +21,19 @@
 
 @implementation SCNAudioSource
 
-+ (SCNAudioSource)audioSourceWithAVAudioPCMBuffer:(id)a3
++ (SCNAudioSource)audioSourceWithAVAudioPCMBuffer:(id)buffer
 {
-  v3 = [[a1 alloc] initWithAVAudioPCMBuffer:a3];
+  v3 = [[self alloc] initWithAVAudioPCMBuffer:buffer];
 
   return v3;
 }
 
-- (SCNAudioSource)initWithAVAudioPCMBuffer:(id)a3
+- (SCNAudioSource)initWithAVAudioPCMBuffer:(id)buffer
 {
   v4 = [(SCNAudioSource *)self init];
   if (v4)
   {
-    v4->_audioBuffer = a3;
+    v4->_audioBuffer = buffer;
     [(SCNAudioSource *)v4 setPositional:1];
     LODWORD(v5) = 1.0;
     [(SCNAudioSource *)v4 setVolume:v5];
@@ -57,36 +57,36 @@
   }
 }
 
-- (void)_loadURLWithBundle:(id)a3
+- (void)_loadURLWithBundle:(id)bundle
 {
   p_audioName = &self->_audioName;
   audioName = self->_audioName;
   if (audioName)
   {
-    v7 = [(NSString *)audioName pathExtension];
-    if (v7 && (v8 = v7, [(NSString *)v7 length]))
+    pathExtension = [(NSString *)audioName pathExtension];
+    if (pathExtension && (v8 = pathExtension, [(NSString *)pathExtension length]))
     {
-      v9 = [(NSString *)*p_audioName stringByDeletingPathExtension];
-      v10 = a3;
+      stringByDeletingPathExtension = [(NSString *)*p_audioName stringByDeletingPathExtension];
+      bundleCopy2 = bundle;
       v11 = v8;
     }
 
     else
     {
-      v12 = [a3 URLForResource:*p_audioName withExtension:@"caf"];
-      if (v12 || (v12 = [a3 URLForResource:*p_audioName withExtension:@"caff"]) != 0)
+      v12 = [bundle URLForResource:*p_audioName withExtension:@"caf"];
+      if (v12 || (v12 = [bundle URLForResource:*p_audioName withExtension:@"caff"]) != 0)
       {
 LABEL_11:
         self->_audioURL = v12;
         return;
       }
 
-      v9 = *p_audioName;
+      stringByDeletingPathExtension = *p_audioName;
       v11 = @"aiff";
-      v10 = a3;
+      bundleCopy2 = bundle;
     }
 
-    v12 = [v10 URLForResource:v9 withExtension:v11];
+    v12 = [bundleCopy2 URLForResource:stringByDeletingPathExtension withExtension:v11];
     if (!v12)
     {
       v13 = scn_default_log();
@@ -102,18 +102,18 @@ LABEL_11:
   }
 }
 
-- (SCNAudioSource)initWithFileNamed:(id)a3 inBundle:(id)a4
+- (SCNAudioSource)initWithFileNamed:(id)named inBundle:(id)bundle
 {
   v6 = [(SCNAudioSource *)self init];
   if (v6)
   {
-    v6->_audioName = a3;
+    v6->_audioName = named;
     [(SCNAudioSource *)v6 setPositional:1];
     LODWORD(v7) = 1.0;
     [(SCNAudioSource *)v6 setVolume:v7];
     LODWORD(v8) = 1.0;
     [(SCNAudioSource *)v6 setRate:v8];
-    [(SCNAudioSource *)v6 _loadURLWithBundle:a4];
+    [(SCNAudioSource *)v6 _loadURLWithBundle:bundle];
   }
 
   return v6;
@@ -121,9 +121,9 @@ LABEL_11:
 
 - (SCNAudioSource)initWithFileNamed:(NSString *)name
 {
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
 
-  return [(SCNAudioSource *)self initWithFileNamed:name inBundle:v5];
+  return [(SCNAudioSource *)self initWithFileNamed:name inBundle:mainBundle];
 }
 
 - (SCNAudioSource)initWithURL:(NSURL *)url
@@ -193,9 +193,9 @@ id __35__SCNAudioSource_audioSourceNamed___block_invoke()
 - (void)_load
 {
   v6 = *MEMORY[0x277D85DE8];
-  v3 = [*a1 localizedDescription];
+  localizedDescription = [*self localizedDescription];
   v4 = 138412290;
-  v5 = v3;
+  v5 = localizedDescription;
   _os_log_error_impl(&dword_21BEF7000, a2, OS_LOG_TYPE_ERROR, "Error: Error reading file into buffer: %@", &v4, 0xCu);
 }
 
@@ -231,19 +231,19 @@ id __35__SCNAudioSource_audioSourceNamed___block_invoke()
 
   if (self->_audioBuffer)
   {
-    v5 = [(AVAudioPCMBuffer *)self->_audioBuffer frameLength];
+    frameLength = [(AVAudioPCMBuffer *)self->_audioBuffer frameLength];
   }
 
   else
   {
-    v5 = [(AVAudioFile *)audioFile length];
+    frameLength = [(AVAudioFile *)audioFile length];
   }
 
   [(AVAudioFormat *)[(AVAudioFile *)self->_audioFile fileFormat] sampleRate];
-  return v5 / v6;
+  return frameLength / v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (self->_audioName)
   {
@@ -281,22 +281,22 @@ LABEL_7:
   return v6;
 }
 
-- (void)_customEncodingOfSCNAudioSource:(id)a3
+- (void)_customEncodingOfSCNAudioSource:(id)source
 {
   audioName = self->_audioName;
   if (audioName)
   {
     v6 = @"name";
-    v7 = a3;
+    sourceCopy2 = source;
 LABEL_5:
-    [v7 encodeObject:audioName forKey:v6];
+    [sourceCopy2 encodeObject:audioName forKey:v6];
     goto LABEL_6;
   }
 
   if (self->_audioURL)
   {
     v6 = @"url";
-    v7 = a3;
+    sourceCopy2 = source;
     audioName = 0;
     goto LABEL_5;
   }
@@ -309,17 +309,17 @@ LABEL_5:
 
 LABEL_6:
   [(SCNAudioSource *)self volume];
-  [a3 encodeFloat:@"volume" forKey:?];
+  [source encodeFloat:@"volume" forKey:?];
   [(SCNAudioSource *)self rate];
-  [a3 encodeFloat:@"rate" forKey:?];
+  [source encodeFloat:@"rate" forKey:?];
   [(SCNAudioSource *)self reverbBlend];
-  [a3 encodeFloat:@"reverbBlend" forKey:?];
-  [a3 encodeBool:-[SCNAudioSource isPositional](self forKey:{"isPositional"), @"positional"}];
-  [a3 encodeBool:-[SCNAudioSource loops](self forKey:{"loops"), @"loops"}];
-  [a3 encodeBool:-[SCNAudioSource shouldStream](self forKey:{"shouldStream"), @"shouldStream"}];
+  [source encodeFloat:@"reverbBlend" forKey:?];
+  [source encodeBool:-[SCNAudioSource isPositional](self forKey:{"isPositional"), @"positional"}];
+  [source encodeBool:-[SCNAudioSource loops](self forKey:{"loops"), @"loops"}];
+  [source encodeBool:-[SCNAudioSource shouldStream](self forKey:{"shouldStream"), @"shouldStream"}];
 }
 
-- (void)_customDecodingOfSCNAudioSource:(id)a3
+- (void)_customDecodingOfSCNAudioSource:(id)source
 {
   p_audioName = &self->_audioName;
   if (self->_audioName)
@@ -338,28 +338,28 @@ LABEL_6:
     v6 = @"url";
   }
 
-  *p_audioName = [a3 decodeObjectOfClass:objc_opt_class() forKey:v6];
+  *p_audioName = [source decodeObjectOfClass:objc_opt_class() forKey:v6];
 LABEL_6:
-  [a3 decodeFloatForKey:@"volume"];
+  [source decodeFloatForKey:@"volume"];
   [(SCNAudioSource *)self setVolume:?];
-  [a3 decodeFloatForKey:@"rate"];
+  [source decodeFloatForKey:@"rate"];
   [(SCNAudioSource *)self setRate:?];
-  [a3 decodeFloatForKey:@"reverbBlend"];
+  [source decodeFloatForKey:@"reverbBlend"];
   [(SCNAudioSource *)self setReverbBlend:?];
-  -[SCNAudioSource setPositional:](self, "setPositional:", [a3 decodeBoolForKey:@"positional"]);
-  -[SCNAudioSource setLoops:](self, "setLoops:", [a3 decodeBoolForKey:@"loops"]);
-  -[SCNAudioSource setShouldStream:](self, "setShouldStream:", [a3 decodeBoolForKey:@"shouldStream"]);
+  -[SCNAudioSource setPositional:](self, "setPositional:", [source decodeBoolForKey:@"positional"]);
+  -[SCNAudioSource setLoops:](self, "setLoops:", [source decodeBoolForKey:@"loops"]);
+  -[SCNAudioSource setShouldStream:](self, "setShouldStream:", [source decodeBoolForKey:@"shouldStream"]);
 
   [(SCNAudioSource *)self loadIfNeeded];
 }
 
-- (SCNAudioSource)initWithCoder:(id)a3
+- (SCNAudioSource)initWithCoder:(id)coder
 {
   v4 = [(SCNAudioSource *)self init];
   v5 = v4;
   if (v4)
   {
-    [(SCNAudioSource *)v4 _customDecodingOfSCNAudioSource:a3];
+    [(SCNAudioSource *)v4 _customDecodingOfSCNAudioSource:coder];
   }
 
   return v5;

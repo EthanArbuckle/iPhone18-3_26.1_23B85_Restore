@@ -1,14 +1,14 @@
 @interface SiriLongPressButtonConfigurationUpdateManager
 - (SiriLongPressButtonConfigurationUpdateManager)init;
 - (id)userDefaults;
-- (void)_addDelegate:(id)a3 forSource:(id)a4;
+- (void)_addDelegate:(id)delegate forSource:(id)source;
 - (void)_setupKVOMonitoring;
 - (void)_stopKVOMonitoring;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)startManagingConfigurationFromSource:(id)a3 withDelegate:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)startManagingConfigurationFromSource:(id)source withDelegate:(id)delegate;
 - (void)stopManagingAllConfigurations;
-- (void)stopManagingConfigurationFromSource:(id)a3;
+- (void)stopManagingConfigurationFromSource:(id)source;
 @end
 
 @implementation SiriLongPressButtonConfigurationUpdateManager
@@ -20,9 +20,9 @@
   v2 = [(SiriLongPressButtonConfigurationUpdateManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
     delegatesBySource = v2->_delegatesBySource;
-    v2->_delegatesBySource = v3;
+    v2->_delegatesBySource = weakToWeakObjectsMapTable;
 
     v2->_currentLongPressBehavior = 0;
   }
@@ -43,36 +43,36 @@
   [(SiriLongPressButtonConfigurationUpdateManager *)&v4 dealloc];
 }
 
-- (void)startManagingConfigurationFromSource:(id)a3 withDelegate:(id)a4
+- (void)startManagingConfigurationFromSource:(id)source withDelegate:(id)delegate
 {
-  v9 = a3;
-  v6 = a4;
+  sourceCopy = source;
+  delegateCopy = delegate;
   if (!self->_monitoringForUpdates)
   {
     [(SiriLongPressButtonConfigurationUpdateManager *)self _setupKVOMonitoring];
   }
 
-  [(SiriLongPressButtonConfigurationUpdateManager *)self _addDelegate:v6 forSource:v9];
-  v7 = [v9 configuration];
-  NSLog(&cfstr_Configurationu.isa, self->_currentLongPressBehavior, [v7 longPressBehavior]);
-  if (v7)
+  [(SiriLongPressButtonConfigurationUpdateManager *)self _addDelegate:delegateCopy forSource:sourceCopy];
+  configuration = [sourceCopy configuration];
+  NSLog(&cfstr_Configurationu.isa, self->_currentLongPressBehavior, [configuration longPressBehavior]);
+  if (configuration)
   {
     currentLongPressBehavior = self->_currentLongPressBehavior;
-    if (currentLongPressBehavior != [v7 longPressBehavior])
+    if (currentLongPressBehavior != [configuration longPressBehavior])
     {
-      [v7 setLongPressBehavior:self->_currentLongPressBehavior];
-      [v9 setConfiguration:v7];
-      [v6 configurationUpdateManager:self configurationDidUpdateForLongPressSource:v9];
+      [configuration setLongPressBehavior:self->_currentLongPressBehavior];
+      [sourceCopy setConfiguration:configuration];
+      [delegateCopy configurationUpdateManager:self configurationDidUpdateForLongPressSource:sourceCopy];
     }
   }
 }
 
-- (void)stopManagingConfigurationFromSource:(id)a3
+- (void)stopManagingConfigurationFromSource:(id)source
 {
-  v4 = a3;
-  if (v4)
+  sourceCopy = source;
+  if (sourceCopy)
   {
-    [(NSMapTable *)self->_delegatesBySource removeObjectForKey:v4];
+    [(NSMapTable *)self->_delegatesBySource removeObjectForKey:sourceCopy];
     if (![(NSMapTable *)self->_delegatesBySource count])
     {
       [(SiriLongPressButtonConfigurationUpdateManager *)self _stopKVOMonitoring];
@@ -105,38 +105,38 @@
   return internalUserDefaults;
 }
 
-- (void)_addDelegate:(id)a3 forSource:(id)a4
+- (void)_addDelegate:(id)delegate forSource:(id)source
 {
-  if (a4)
+  if (source)
   {
-    [(NSMapTable *)self->_delegatesBySource setObject:a3 forKey:?];
+    [(NSMapTable *)self->_delegatesBySource setObject:delegate forKey:?];
   }
 }
 
 - (void)_setupKVOMonitoring
 {
   self->_monitoringForUpdates = 1;
-  v3 = [(SiriLongPressButtonConfigurationUpdateManager *)self userDefaults];
-  [v3 addObserver:self forKeyPath:@"SiriHardwareButtonLongPressBehavior" options:1 context:0];
+  userDefaults = [(SiriLongPressButtonConfigurationUpdateManager *)self userDefaults];
+  [userDefaults addObserver:self forKeyPath:@"SiriHardwareButtonLongPressBehavior" options:1 context:0];
 
-  v5 = [(SiriLongPressButtonConfigurationUpdateManager *)self userDefaults];
-  v4 = [v5 objectForKey:@"SiriHardwareButtonLongPressBehavior"];
+  userDefaults2 = [(SiriLongPressButtonConfigurationUpdateManager *)self userDefaults];
+  v4 = [userDefaults2 objectForKey:@"SiriHardwareButtonLongPressBehavior"];
   self->_currentLongPressBehavior = [v4 integerValue];
 }
 
 - (void)_stopKVOMonitoring
 {
   self->_monitoringForUpdates = 0;
-  v3 = [(SiriLongPressButtonConfigurationUpdateManager *)self userDefaults];
-  [v3 removeObserver:self forKeyPath:@"SiriHardwareButtonLongPressBehavior"];
+  userDefaults = [(SiriLongPressButtonConfigurationUpdateManager *)self userDefaults];
+  [userDefaults removeObserver:self forKeyPath:@"SiriHardwareButtonLongPressBehavior"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"SiriHardwareButtonLongPressBehavior"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"SiriHardwareButtonLongPressBehavior"])
   {
     objc_initWeak(&location, self);
     block[0] = MEMORY[0x1E69E9820];
@@ -144,8 +144,8 @@
     block[2] = __96__SiriLongPressButtonConfigurationUpdateManager_observeValueForKeyPath_ofObject_change_context___block_invoke;
     block[3] = &unk_1E82F3C90;
     objc_copyWeak(&v17, &location);
-    v15 = v12;
-    v16 = v10;
+    v15 = changeCopy;
+    v16 = pathCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
 
     objc_destroyWeak(&v17);
@@ -156,7 +156,7 @@
   {
     v13.receiver = self;
     v13.super_class = SiriLongPressButtonConfigurationUpdateManager;
-    [(SiriLongPressButtonConfigurationUpdateManager *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(SiriLongPressButtonConfigurationUpdateManager *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 

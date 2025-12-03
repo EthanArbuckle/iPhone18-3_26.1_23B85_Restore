@@ -1,17 +1,17 @@
 @interface SCLHistoryItemViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axAddPausesToNewLineInLabel:(id)a3;
-- (void)setHistoryGroup:(id)a3;
+- (void)_axAddPausesToNewLineInLabel:(id)label;
+- (void)setHistoryGroup:(id)group;
 @end
 
 @implementation SCLHistoryItemViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SCLHistoryItemView" hasInstanceVariable:@"_label" withType:"UILabel"];
-  [v3 validateClass:@"SCLHistoryItemView" hasInstanceVariable:@"_intervalLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SCLHistoryItemView" hasInstanceVariable:@"_label" withType:"UILabel"];
+  [validationsCopy validateClass:@"SCLHistoryItemView" hasInstanceVariable:@"_intervalLabel" withType:"UILabel"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -31,30 +31,30 @@
   [(SCLHistoryItemViewAccessibility *)self _axAddPausesToNewLineInLabel:v6];
 }
 
-- (void)setHistoryGroup:(id)a3
+- (void)setHistoryGroup:(id)group
 {
   v4.receiver = self;
   v4.super_class = SCLHistoryItemViewAccessibility;
-  [(SCLHistoryItemViewAccessibility *)&v4 setHistoryGroup:a3];
+  [(SCLHistoryItemViewAccessibility *)&v4 setHistoryGroup:group];
   [(SCLHistoryItemViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)_axAddPausesToNewLineInLabel:(id)a3
+- (void)_axAddPausesToNewLineInLabel:(id)label
 {
-  v3 = a3;
-  objc_initWeak(&location, v3);
+  labelCopy = label;
+  objc_initWeak(&location, labelCopy);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __64__SCLHistoryItemViewAccessibility__axAddPausesToNewLineInLabel___block_invoke;
   v6[3] = &unk_41E0;
   objc_copyWeak(&v7, &location);
-  [v3 _setAccessibilityLabelBlock:v6];
+  [labelCopy _setAccessibilityLabelBlock:v6];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = __64__SCLHistoryItemViewAccessibility__axAddPausesToNewLineInLabel___block_invoke_2;
   v4[3] = &unk_41E0;
   objc_copyWeak(&v5, &location);
-  [v3 _setAccessibilityValueBlock:v4];
+  [labelCopy _setAccessibilityValueBlock:v4];
   objc_destroyWeak(&v5);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);

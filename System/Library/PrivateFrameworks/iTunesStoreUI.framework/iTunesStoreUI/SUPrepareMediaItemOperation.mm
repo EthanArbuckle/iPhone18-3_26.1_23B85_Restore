@@ -1,15 +1,15 @@
 @interface SUPrepareMediaItemOperation
-- (BOOL)_runHEADRequest:(id *)a3;
-- (SUPrepareMediaItemOperation)initWithMediaPlayerItem:(id)a3;
+- (BOOL)_runHEADRequest:(id *)request;
+- (SUPrepareMediaItemOperation)initWithMediaPlayerItem:(id)item;
 - (void)dealloc;
 - (void)run;
 @end
 
 @implementation SUPrepareMediaItemOperation
 
-- (SUPrepareMediaItemOperation)initWithMediaPlayerItem:(id)a3
+- (SUPrepareMediaItemOperation)initWithMediaPlayerItem:(id)item
 {
-  if (![a3 URL])
+  if (![item URL])
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Must have a URL to prepare a media item"];
   }
@@ -19,7 +19,7 @@
   v5 = [(SUPrepareMediaItemOperation *)&v7 init];
   if (v5)
   {
-    v5->_mediaItem = [a3 copy];
+    v5->_mediaItem = [item copy];
   }
 
   return v5;
@@ -40,7 +40,7 @@
   [(SUPrepareMediaItemOperation *)self setSuccess:v3];
 }
 
-- (BOOL)_runHEADRequest:(id *)a3
+- (BOOL)_runHEADRequest:(id *)request
 {
   v22 = *MEMORY[0x1E69E9840];
   v17 = 0;
@@ -49,19 +49,19 @@
   [v6 setAllowedRetryCount:0];
   [v6 setHTTPMethod:@"HEAD"];
   [v5 setRequestProperties:v6];
-  v7 = [MEMORY[0x1E69D4938] sharedConfig];
-  v8 = [v7 shouldLog];
-  if ([v7 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
-  if (!os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_DEBUG))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
   {
     v9 &= 2u;
   }
@@ -87,9 +87,9 @@
 
   v13 = [(SUPrepareMediaItemOperation *)self runSubOperation:v5 returningError:&v17, v15];
 
-  if (a3)
+  if (request)
   {
-    *a3 = v17;
+    *request = v17;
   }
 
   return v13;

@@ -1,26 +1,26 @@
 @interface PSUICarrierSpaceUsageController
 - (BOOL)hasMultipleDevicesOfTheSameType;
-- (BOOL)hasMultiplePlansOfSameTypeForNetworkUsageLabel:(id)a3;
+- (BOOL)hasMultiplePlansOfSameTypeForNetworkUsageLabel:(id)label;
 - (BOOL)hasMultiplePlansOfTheSameTypeInTheSameSectionCategory;
-- (BOOL)shouldShowCalls:(id)a3;
-- (BOOL)shouldShowData:(id)a3;
-- (BOOL)shouldShowMessages:(id)a3;
-- (BOOL)shouldShowOnlyRemainingCalls:(id)a3;
-- (BOOL)shouldShowOnlyRemainingData:(id)a3;
-- (BOOL)shouldShowOnlyRemainingMessages:(id)a3;
-- (BOOL)shouldShowPlanSection:(id)a3;
-- (BOOL)shouldShowRemainingCredit:(id)a3;
-- (PSUICarrierSpaceUsageController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)shouldShowCalls:(id)calls;
+- (BOOL)shouldShowData:(id)data;
+- (BOOL)shouldShowMessages:(id)messages;
+- (BOOL)shouldShowOnlyRemainingCalls:(id)calls;
+- (BOOL)shouldShowOnlyRemainingData:(id)data;
+- (BOOL)shouldShowOnlyRemainingMessages:(id)messages;
+- (BOOL)shouldShowPlanSection:(id)section;
+- (BOOL)shouldShowRemainingCredit:(id)credit;
+- (PSUICarrierSpaceUsageController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)barGraphColors;
-- (id)callsDescription:(id)a3;
-- (id)dataUsageDescription:(id)a3;
-- (id)deviceTypeSectionLabelForAccountMetrics:(id)a3;
-- (id)messagesDescription:(id)a3;
-- (id)planCategorySectionLabelForPlanMetrics:(id)a3;
-- (id)remainingCreditDescription:(id)a3;
+- (id)callsDescription:(id)description;
+- (id)dataUsageDescription:(id)description;
+- (id)deviceTypeSectionLabelForAccountMetrics:(id)metrics;
+- (id)messagesDescription:(id)description;
+- (id)planCategorySectionLabelForPlanMetrics:(id)metrics;
+- (id)remainingCreditDescription:(id)description;
 - (id)specifiers;
 - (id)usageCategories;
-- (id)usageGraphSpecifierForSection:(id)a3;
+- (id)usageGraphSpecifierForSection:(id)section;
 - (id)usageSections;
 - (void)carrierSpaceChanged;
 - (void)simStatusChanged;
@@ -31,20 +31,20 @@
 - (void)simStatusChanged
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICarrierSpaceUsageController *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICarrierSpaceUsageController *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[PSUICarrierSpaceUsageController simStatusChanged]";
     v11 = 2112;
     v12 = 0x287737BB8;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s received notification %@", &v9, 0x16u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s received notification %@", &v9, 0x16u);
   }
 
-  v4 = [MEMORY[0x277D4D868] sharedInstance];
-  v5 = [v4 isSIMMissing];
+  mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
+  isSIMMissing = [mEMORY[0x277D4D868] isSIMMissing];
 
-  if (v5)
+  if (isSIMMissing)
   {
     WeakRetained = objc_loadWeakRetained((&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD10]));
     v7 = [WeakRetained popViewControllerAnimated:1];
@@ -56,32 +56,32 @@
 - (void)carrierSpaceChanged
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICarrierSpaceUsageController *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICarrierSpaceUsageController *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136315394;
     v6 = "[PSUICarrierSpaceUsageController carrierSpaceChanged]";
     v7 = 2112;
     v8 = 0x287737B98;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s received notification: %@", &v5, 0x16u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s received notification: %@", &v5, 0x16u);
   }
 
   [(PSUICarrierSpaceUsageController *)self reloadSpecifiers];
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (PSUICarrierSpaceUsageController)initWithNibName:(id)a3 bundle:(id)a4
+- (PSUICarrierSpaceUsageController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = PSUICarrierSpaceUsageController;
-  v4 = [(PSUICarrierSpaceUsageController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(PSUICarrierSpaceUsageController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v4 selector:sel_simStatusChanged name:0x287737BB8 object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_simStatusChanged name:0x287737BB8 object:0];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v4 selector:sel_carrierSpaceChanged name:0x287737B98 object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v4 selector:sel_carrierSpaceChanged name:0x287737B98 object:0];
   }
 
   return v4;
@@ -172,9 +172,9 @@ LABEL_18:
 
             v10 = *(*(&v24 + 1) + 8 * j);
             v11 = [v10 objectAtIndexedSubscript:0];
-            v12 = [v11 accountMetrics];
-            v13 = [v4 accountMetrics];
-            v14 = [v12 isEqual:v13];
+            accountMetrics = [v11 accountMetrics];
+            accountMetrics2 = [v4 accountMetrics];
+            v14 = [accountMetrics isEqual:accountMetrics2];
 
             if (v14)
             {
@@ -215,11 +215,11 @@ LABEL_18:
   v83 = 0u;
   v84 = 0u;
   v55 = v85 = 0u;
-  v2 = [v55 usageInfo];
-  v3 = [v2 accountMetrics];
+  usageInfo = [v55 usageInfo];
+  accountMetrics = [usageInfo accountMetrics];
 
-  obj = v3;
-  v58 = [v3 countByEnumeratingWithState:&v82 objects:v91 count:16];
+  obj = accountMetrics;
+  v58 = [accountMetrics countByEnumeratingWithState:&v82 objects:v91 count:16];
   if (v58)
   {
     v57 = *v83;
@@ -240,8 +240,8 @@ LABEL_18:
         v80 = 0u;
         v81 = 0u;
         v69 = v5;
-        v60 = [v5 applicablePlans];
-        v63 = [v60 countByEnumeratingWithState:&v78 objects:v90 count:16];
+        applicablePlans = [v5 applicablePlans];
+        v63 = [applicablePlans countByEnumeratingWithState:&v78 objects:v90 count:16];
         if (v63)
         {
           v62 = *v79;
@@ -251,25 +251,25 @@ LABEL_18:
             {
               if (*v79 != v62)
               {
-                objc_enumerationMutation(v60);
+                objc_enumerationMutation(applicablePlans);
               }
 
               v7 = *(*(&v78 + 1) + 8 * i);
-              v8 = [v7 dataUsage];
-              v9 = [v8 sharedPlanIdentifier];
+              dataUsage = [v7 dataUsage];
+              sharedPlanIdentifier = [dataUsage sharedPlanIdentifier];
 
-              v10 = [v7 dataUsage];
-              v11 = [v10 thisDeviceDataUsed];
+              dataUsage2 = [v7 dataUsage];
+              thisDeviceDataUsed = [dataUsage2 thisDeviceDataUsed];
               v68 = v7;
-              v12 = [v7 dataUsage];
-              v13 = +[PSUICarrierSpaceManager bytesFromString:carrierSpaceUnits:](PSUICarrierSpaceManager, "bytesFromString:carrierSpaceUnits:", v11, [v12 units]);
+              dataUsage3 = [v7 dataUsage];
+              v13 = +[PSUICarrierSpaceManager bytesFromString:carrierSpaceUnits:](PSUICarrierSpaceManager, "bytesFromString:carrierSpaceUnits:", thisDeviceDataUsed, [dataUsage3 units]);
 
-              v14 = [v69 networkUsageLabel];
+              networkUsageLabel = [v69 networkUsageLabel];
               v15 = objc_alloc(MEMORY[0x277D3F998]);
-              v16 = [v69 networkUsageLabel];
-              v17 = [MEMORY[0x277D75348] greenColor];
-              v66 = v14;
-              v65 = [v15 initWithIdentifier:v16 title:v14 color:v17 bytes:v13];
+              networkUsageLabel2 = [v69 networkUsageLabel];
+              greenColor = [MEMORY[0x277D75348] greenColor];
+              v66 = networkUsageLabel;
+              v65 = [v15 initWithIdentifier:networkUsageLabel2 title:networkUsageLabel color:greenColor bytes:v13];
 
               v76 = 0u;
               v77 = 0u;
@@ -287,22 +287,22 @@ LABEL_32:
 
                 if ([v69 localDevice])
                 {
-                  [v22 setSharedPlanIdentifier:v9];
+                  [v22 setSharedPlanIdentifier:sharedPlanIdentifier];
                   [v22 setPrimaryMetrics:v68];
                 }
 
                 else
                 {
-                  v35 = [v22 otherMetrics];
+                  otherMetrics = [v22 otherMetrics];
 
-                  if (!v35)
+                  if (!otherMetrics)
                   {
                     v36 = objc_opt_new();
                     [v22 setOtherMetrics:v36];
                   }
 
-                  v37 = [v22 otherMetrics];
-                  [v37 addObject:v68];
+                  otherMetrics2 = [v22 otherMetrics];
+                  [otherMetrics2 addObject:v68];
                 }
 
                 [v22 setAccountMetrics:v69];
@@ -325,8 +325,8 @@ LABEL_32:
                   }
 
                   v25 = *(*(&v74 + 1) + 8 * j);
-                  v26 = [v25 sharedPlanIdentifier];
-                  v27 = [v9 isEqualToString:v26];
+                  sharedPlanIdentifier2 = [v25 sharedPlanIdentifier];
+                  v27 = [sharedPlanIdentifier isEqualToString:sharedPlanIdentifier2];
 
                   if (v27)
                   {
@@ -334,16 +334,16 @@ LABEL_32:
 
                     if ([v69 localDevice])
                     {
-                      v29 = [v28 primaryMetrics];
+                      primaryMetrics = [v28 primaryMetrics];
 
-                      if (v29)
+                      if (primaryMetrics)
                       {
-                        v30 = [(PSUICarrierSpaceUsageController *)self getLogger];
-                        if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+                        getLogger = [(PSUICarrierSpaceUsageController *)self getLogger];
+                        if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
                         {
                           *buf = 138412290;
-                          v88 = v9;
-                          _os_log_error_impl(&dword_2658DE000, v30, OS_LOG_TYPE_ERROR, "More than one primary plan for shared plan identifier: %@", buf, 0xCu);
+                          v88 = sharedPlanIdentifier;
+                          _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "More than one primary plan for shared plan identifier: %@", buf, 0xCu);
                         }
                       }
 
@@ -353,16 +353,16 @@ LABEL_32:
 
                     else
                     {
-                      v31 = [v28 otherMetrics];
+                      otherMetrics3 = [v28 otherMetrics];
 
-                      if (!v31)
+                      if (!otherMetrics3)
                       {
                         v32 = objc_opt_new();
                         [v28 setOtherMetrics:v32];
                       }
 
-                      v33 = [v28 otherMetrics];
-                      [v33 addObject:v68];
+                      otherMetrics4 = [v28 otherMetrics];
+                      [otherMetrics4 addObject:v68];
                     }
 
                     v21 = 1;
@@ -382,19 +382,19 @@ LABEL_32:
               }
 
 LABEL_38:
-              v38 = [v22 barCategories];
+              barCategories = [v22 barCategories];
 
-              if (!v38)
+              if (!barCategories)
               {
                 v39 = objc_opt_new();
                 [v22 setBarCategories:v39];
               }
 
-              v40 = [v22 barCategories];
-              [v40 addObject:v65];
+              barCategories2 = [v22 barCategories];
+              [barCategories2 addObject:v65];
             }
 
-            v63 = [v60 countByEnumeratingWithState:&v78 objects:v90 count:16];
+            v63 = [applicablePlans countByEnumeratingWithState:&v78 objects:v90 count:16];
           }
 
           while (v63);
@@ -430,20 +430,20 @@ LABEL_38:
         }
 
         v46 = *(*(&v70 + 1) + 8 * k);
-        v47 = [v46 primaryMetrics];
-        if (v47)
+        primaryMetrics2 = [v46 primaryMetrics];
+        if (primaryMetrics2)
         {
         }
 
         else
         {
-          v48 = [v46 otherMetrics];
-          v49 = [v48 count];
+          otherMetrics5 = [v46 otherMetrics];
+          v49 = [otherMetrics5 count];
 
           if (v49 == 1)
           {
-            v50 = [v46 otherMetrics];
-            v51 = [v50 objectAtIndexedSubscript:0];
+            otherMetrics6 = [v46 otherMetrics];
+            v51 = [otherMetrics6 objectAtIndexedSubscript:0];
             [v46 setPrimaryMetrics:v51];
 
             [v46 setOtherMetrics:0];
@@ -463,11 +463,11 @@ LABEL_38:
   return v52;
 }
 
-- (id)deviceTypeSectionLabelForAccountMetrics:(id)a3
+- (id)deviceTypeSectionLabelForAccountMetrics:(id)metrics
 {
-  v4 = a3;
-  v5 = [v4 deviceType];
-  switch(v5)
+  metricsCopy = metrics;
+  deviceType = [metricsCopy deviceType];
+  switch(deviceType)
   {
     case 3:
       v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -484,29 +484,29 @@ LABEL_38:
       v7 = v6;
       v8 = @"DEVICE_TYPE_IPHONE";
 LABEL_7:
-      v9 = [v6 localizedStringForKey:v8 value:&stru_287733598 table:@"CarrierSpaceUsage"];
+      networkUsageLabel = [v6 localizedStringForKey:v8 value:&stru_287733598 table:@"CarrierSpaceUsage"];
 
       goto LABEL_11;
   }
 
-  v10 = [(PSUICarrierSpaceUsageController *)self getLogger];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICarrierSpaceUsageController *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v12 = 0;
-    _os_log_impl(&dword_2658DE000, v10, OS_LOG_TYPE_DEFAULT, "Using network usage label", v12, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Using network usage label", v12, 2u);
   }
 
-  v9 = [v4 networkUsageLabel];
+  networkUsageLabel = [metricsCopy networkUsageLabel];
 LABEL_11:
 
-  return v9;
+  return networkUsageLabel;
 }
 
-- (id)planCategorySectionLabelForPlanMetrics:(id)a3
+- (id)planCategorySectionLabelForPlanMetrics:(id)metrics
 {
-  v3 = a3;
-  v4 = [v3 planCategory];
-  switch(v4)
+  metricsCopy = metrics;
+  planCategory = [metricsCopy planCategory];
+  switch(planCategory)
   {
     case 3:
       v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -523,15 +523,15 @@ LABEL_11:
       v6 = v5;
       v7 = @"PLAN_CATEGORY_DOMESTIC";
 LABEL_7:
-      v8 = [v5 localizedStringForKey:v7 value:&stru_287733598 table:@"CarrierSpaceUsage"];
+      planLabel = [v5 localizedStringForKey:v7 value:&stru_287733598 table:@"CarrierSpaceUsage"];
 
       goto LABEL_9;
   }
 
-  v8 = [v3 planLabel];
+  planLabel = [metricsCopy planLabel];
 LABEL_9:
 
-  return v8;
+  return planLabel;
 }
 
 - (BOOL)hasMultipleDevicesOfTheSameType
@@ -581,25 +581,25 @@ LABEL_9:
               }
 
               v11 = *(*(&v30 + 1) + 8 * i);
-              v12 = [v11 accountMetrics];
-              v13 = [v12 networkUsageLabel];
+              accountMetrics = [v11 accountMetrics];
+              networkUsageLabel = [accountMetrics networkUsageLabel];
 
               v14 = v4;
               v15 = *(v4 + 2992);
-              v16 = [v11 accountMetrics];
-              v17 = [v15 numberWithInteger:{objc_msgSend(v16, "deviceType")}];
+              accountMetrics2 = [v11 accountMetrics];
+              v17 = [v15 numberWithInteger:{objc_msgSend(accountMetrics2, "deviceType")}];
               v18 = [v3 objectForKeyedSubscript:v17];
 
               if (v18)
               {
-                v29 |= [v18 isEqualToString:v13] ^ 1;
+                v29 |= [v18 isEqualToString:networkUsageLabel] ^ 1;
               }
 
               v4 = v14;
               v19 = *(v14 + 2992);
-              v20 = [v11 accountMetrics];
-              v21 = [v19 numberWithInteger:{objc_msgSend(v20, "deviceType")}];
-              [v3 setObject:v13 forKeyedSubscript:v21];
+              accountMetrics3 = [v11 accountMetrics];
+              v21 = [v19 numberWithInteger:{objc_msgSend(accountMetrics3, "deviceType")}];
+              [v3 setObject:networkUsageLabel forKeyedSubscript:v21];
             }
 
             v8 = [v28 countByEnumeratingWithState:&v30 objects:v38 count:16];
@@ -674,25 +674,25 @@ LABEL_9:
               }
 
               v10 = *(*(&v29 + 1) + 8 * i);
-              v11 = [v10 primaryMetrics];
-              v12 = [v11 planLabel];
+              primaryMetrics = [v10 primaryMetrics];
+              planLabel = [primaryMetrics planLabel];
 
               v13 = v2;
               v14 = *(v2 + 2992);
-              v15 = [v10 primaryMetrics];
-              v16 = [v14 numberWithInteger:{objc_msgSend(v15, "planCategory")}];
+              primaryMetrics2 = [v10 primaryMetrics];
+              v16 = [v14 numberWithInteger:{objc_msgSend(primaryMetrics2, "planCategory")}];
               v17 = [v5 objectForKeyedSubscript:v16];
 
               if (v17)
               {
-                v28 |= [v17 isEqualToString:v12] ^ 1;
+                v28 |= [v17 isEqualToString:planLabel] ^ 1;
               }
 
               v2 = v13;
               v18 = *(v13 + 2992);
-              v19 = [v10 primaryMetrics];
-              v20 = [v18 numberWithInteger:{objc_msgSend(v19, "planCategory")}];
-              [v5 setObject:v12 forKeyedSubscript:v20];
+              primaryMetrics3 = [v10 primaryMetrics];
+              v20 = [v18 numberWithInteger:{objc_msgSend(primaryMetrics3, "planCategory")}];
+              [v5 setObject:planLabel forKeyedSubscript:v20];
             }
 
             v7 = [v27 countByEnumeratingWithState:&v29 objects:v37 count:16];
@@ -720,11 +720,11 @@ LABEL_9:
   return v28 & 1;
 }
 
-- (BOOL)hasMultiplePlansOfSameTypeForNetworkUsageLabel:(id)a3
+- (BOOL)hasMultiplePlansOfSameTypeForNetworkUsageLabel:(id)label
 {
   v43 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  labelCopy = label;
+  if (labelCopy)
   {
     v4 = objc_opt_new();
     +[PSUICarrierSpaceManager sharedManager];
@@ -732,17 +732,17 @@ LABEL_9:
     v38 = 0u;
     v39 = 0u;
     v27 = v40 = 0u;
-    v5 = [v27 usageInfo];
-    v6 = [v5 accountMetrics];
+    usageInfo = [v27 usageInfo];
+    accountMetrics = [usageInfo accountMetrics];
 
-    v7 = [v6 countByEnumeratingWithState:&v37 objects:v42 count:16];
+    v7 = [accountMetrics countByEnumeratingWithState:&v37 objects:v42 count:16];
     if (v7)
     {
       v8 = v7;
       v9 = 0;
       v10 = *v38;
       v28 = *v38;
-      v29 = v3;
+      v29 = labelCopy;
       do
       {
         v11 = 0;
@@ -751,12 +751,12 @@ LABEL_9:
         {
           if (*v38 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(accountMetrics);
           }
 
           v12 = *(*(&v37 + 1) + 8 * v11);
-          v13 = [v12 networkUsageLabel];
-          v14 = [v13 isEqualToString:v3];
+          networkUsageLabel = [v12 networkUsageLabel];
+          v14 = [networkUsageLabel isEqualToString:labelCopy];
 
           if (v14)
           {
@@ -765,8 +765,8 @@ LABEL_9:
             v36 = 0u;
             v33 = 0u;
             v34 = 0u;
-            v32 = [v12 applicablePlans];
-            v15 = [v32 countByEnumeratingWithState:&v33 objects:v41 count:16];
+            applicablePlans = [v12 applicablePlans];
+            v15 = [applicablePlans countByEnumeratingWithState:&v33 objects:v41 count:16];
             if (v15)
             {
               v16 = v15;
@@ -777,32 +777,32 @@ LABEL_9:
                 {
                   if (*v34 != v17)
                   {
-                    objc_enumerationMutation(v32);
+                    objc_enumerationMutation(applicablePlans);
                   }
 
                   v19 = *(*(&v33 + 1) + 8 * i);
-                  v20 = [v19 planCategory];
-                  v21 = [v19 planLabel];
-                  v22 = [MEMORY[0x277CCABB0] numberWithInteger:v20];
+                  planCategory = [v19 planCategory];
+                  planLabel = [v19 planLabel];
+                  v22 = [MEMORY[0x277CCABB0] numberWithInteger:planCategory];
                   v23 = [v4 objectForKeyedSubscript:v22];
 
                   if (v23)
                   {
-                    v9 |= [v23 isEqualToString:v21] ^ 1;
+                    v9 |= [v23 isEqualToString:planLabel] ^ 1;
                   }
 
-                  v24 = [MEMORY[0x277CCABB0] numberWithInteger:v20];
-                  [v4 setObject:v21 forKeyedSubscript:v24];
+                  v24 = [MEMORY[0x277CCABB0] numberWithInteger:planCategory];
+                  [v4 setObject:planLabel forKeyedSubscript:v24];
                 }
 
-                v16 = [v32 countByEnumeratingWithState:&v33 objects:v41 count:16];
+                v16 = [applicablePlans countByEnumeratingWithState:&v33 objects:v41 count:16];
               }
 
               while (v16);
             }
 
             v10 = v28;
-            v3 = v29;
+            labelCopy = v29;
             v8 = v30;
             v11 = v31;
           }
@@ -811,7 +811,7 @@ LABEL_9:
         }
 
         while (v11 != v8);
-        v8 = [v6 countByEnumeratingWithState:&v37 objects:v42 count:16];
+        v8 = [accountMetrics countByEnumeratingWithState:&v37 objects:v42 count:16];
       }
 
       while (v8);
@@ -834,7 +834,7 @@ LABEL_9:
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v124 = *MEMORY[0x277D85DE8];
   v3 = *(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]);
   if (!v3)
@@ -842,15 +842,15 @@ LABEL_9:
     v96 = *MEMORY[0x277D3FC48];
     v110 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v4 = +[PSUICoreTelephonyCarrierBundleCache sharedInstance];
-    v102 = [v4 activeDataCarrierName];
+    activeDataCarrierName = [v4 activeDataCarrierName];
 
-    v101 = [(PSUICarrierSpaceUsageController *)v2 hasMultipleDevicesOfTheSameType];
-    v103 = [(PSUICarrierSpaceUsageController *)v2 hasMultiplePlansOfTheSameTypeInTheSameSectionCategory];
+    hasMultipleDevicesOfTheSameType = [(PSUICarrierSpaceUsageController *)selfCopy hasMultipleDevicesOfTheSameType];
+    hasMultiplePlansOfTheSameTypeInTheSameSectionCategory = [(PSUICarrierSpaceUsageController *)selfCopy hasMultiplePlansOfTheSameTypeInTheSameSectionCategory];
     v116 = 0u;
     v117 = 0u;
     v118 = 0u;
     v119 = 0u;
-    obj = [(PSUICarrierSpaceUsageController *)v2 usageCategories];
+    obj = [(PSUICarrierSpaceUsageController *)selfCopy usageCategories];
     v99 = [obj countByEnumeratingWithState:&v116 objects:v123 count:16];
     if (!v99)
     {
@@ -859,7 +859,7 @@ LABEL_9:
 
     v98 = *v117;
     v107 = *MEMORY[0x277D3FF88];
-    v108 = v2;
+    v108 = selfCopy;
     while (1)
     {
       v5 = 0;
@@ -893,33 +893,33 @@ LABEL_9:
               }
 
               v10 = *(*(&v112 + 1) + 8 * i);
-              v11 = [v10 primaryMetrics];
-              v12 = [v10 accountMetrics];
-              if ([(PSUICarrierSpaceUsageController *)v2 shouldShowPlanSection:v11])
+              primaryMetrics = [v10 primaryMetrics];
+              accountMetrics = [v10 accountMetrics];
+              if ([(PSUICarrierSpaceUsageController *)selfCopy shouldShowPlanSection:primaryMetrics])
               {
-                v13 = [(PSUICarrierSpaceUsageController *)v2 getLogger];
-                if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+                getLogger = [(PSUICarrierSpaceUsageController *)selfCopy getLogger];
+                if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412290;
                   v121 = v10;
-                  _os_log_impl(&dword_2658DE000, v13, OS_LOG_TYPE_DEFAULT, "Next Section: %@", buf, 0xCu);
+                  _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Next Section: %@", buf, 0xCu);
                 }
 
                 v106 = v10;
                 if (v8)
                 {
-                  v14 = [v12 networkUsageLabel];
-                  v15 = [(PSUICarrierSpaceUsageController *)v2 hasMultiplePlansOfSameTypeForNetworkUsageLabel:v14];
+                  networkUsageLabel = [accountMetrics networkUsageLabel];
+                  v15 = [(PSUICarrierSpaceUsageController *)selfCopy hasMultiplePlansOfSameTypeForNetworkUsageLabel:networkUsageLabel];
 
                   if (v15)
                   {
-                    v16 = [(PSUICarrierSpaceUsageController *)v2 getLogger];
-                    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+                    getLogger2 = [(PSUICarrierSpaceUsageController *)selfCopy getLogger];
+                    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
                     {
-                      v17 = [v12 networkUsageLabel];
+                      networkUsageLabel2 = [accountMetrics networkUsageLabel];
                       *buf = 138412290;
-                      v121 = v17;
-                      _os_log_impl(&dword_2658DE000, v16, OS_LOG_TYPE_DEFAULT, "Multiple plans of same type for network usage label:%@, using plan label", buf, 0xCu);
+                      v121 = networkUsageLabel2;
+                      _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "Multiple plans of same type for network usage label:%@, using plan label", buf, 0xCu);
                     }
 
                     goto LABEL_20;
@@ -928,13 +928,13 @@ LABEL_9:
                   if ([v10 isSharedPlan])
                   {
                     v25 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-                    v18 = [v25 localizedStringForKey:@"DEVICE_TYPE_SHARED" value:&stru_287733598 table:@"CarrierSpaceUsage"];
+                    networkUsageLabel3 = [v25 localizedStringForKey:@"DEVICE_TYPE_SHARED" value:&stru_287733598 table:@"CarrierSpaceUsage"];
 
-                    v19 = [(PSUICarrierSpaceUsageController *)v2 getLogger];
-                    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+                    getLogger3 = [(PSUICarrierSpaceUsageController *)selfCopy getLogger];
+                    if (os_log_type_enabled(getLogger3, OS_LOG_TYPE_DEFAULT))
                     {
                       *buf = 0;
-                      v20 = v19;
+                      v20 = getLogger3;
                       v21 = "Section is shared plan";
                       goto LABEL_39;
                     }
@@ -942,49 +942,49 @@ LABEL_9:
                     goto LABEL_41;
                   }
 
-                  if ([v12 localDevice])
+                  if ([accountMetrics localDevice])
                   {
                     v26 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
                     v27 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"THIS_DEVICE"];
-                    v18 = [v26 localizedStringForKey:v27 value:&stru_287733598 table:@"CarrierSpaceUsage"];
+                    networkUsageLabel3 = [v26 localizedStringForKey:v27 value:&stru_287733598 table:@"CarrierSpaceUsage"];
 
-                    v19 = [(PSUICarrierSpaceUsageController *)v2 getLogger];
-                    if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+                    getLogger3 = [(PSUICarrierSpaceUsageController *)selfCopy getLogger];
+                    if (!os_log_type_enabled(getLogger3, OS_LOG_TYPE_DEFAULT))
                     {
                       goto LABEL_41;
                     }
 
                     *buf = 0;
-                    v20 = v19;
+                    v20 = getLogger3;
                     v21 = "Using THIS_DEVICE name";
                     goto LABEL_39;
                   }
 
-                  if (!v101)
+                  if (!hasMultipleDevicesOfTheSameType)
                   {
-                    v18 = [(PSUICarrierSpaceUsageController *)v2 deviceTypeSectionLabelForAccountMetrics:v12];
-                    v19 = [(PSUICarrierSpaceUsageController *)v2 getLogger];
-                    if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+                    networkUsageLabel3 = [(PSUICarrierSpaceUsageController *)selfCopy deviceTypeSectionLabelForAccountMetrics:accountMetrics];
+                    getLogger3 = [(PSUICarrierSpaceUsageController *)selfCopy getLogger];
+                    if (!os_log_type_enabled(getLogger3, OS_LOG_TYPE_DEFAULT))
                     {
                       goto LABEL_41;
                     }
 
                     *buf = 0;
-                    v20 = v19;
+                    v20 = getLogger3;
                     v21 = "Device type is not ambiguous, using device type";
                     goto LABEL_39;
                   }
 
-                  v18 = [v12 networkUsageLabel];
-                  v19 = [(PSUICarrierSpaceUsageController *)v2 getLogger];
-                  if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+                  networkUsageLabel3 = [accountMetrics networkUsageLabel];
+                  getLogger3 = [(PSUICarrierSpaceUsageController *)selfCopy getLogger];
+                  if (!os_log_type_enabled(getLogger3, OS_LOG_TYPE_DEFAULT))
                   {
                     goto LABEL_41;
                   }
 
                   *buf = 138412290;
-                  v121 = v12;
-                  v20 = v19;
+                  v121 = accountMetrics;
+                  v20 = getLogger3;
                   v21 = "Device type is ambiguous, using network usage label, account metrics: %@";
                   v28 = 12;
                 }
@@ -992,14 +992,14 @@ LABEL_9:
                 else
                 {
 LABEL_20:
-                  if (v103)
+                  if (hasMultiplePlansOfTheSameTypeInTheSameSectionCategory)
                   {
-                    v18 = [v11 planLabel];
-                    v19 = [(PSUICarrierSpaceUsageController *)v2 getLogger];
-                    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+                    networkUsageLabel3 = [primaryMetrics planLabel];
+                    getLogger3 = [(PSUICarrierSpaceUsageController *)selfCopy getLogger];
+                    if (os_log_type_enabled(getLogger3, OS_LOG_TYPE_DEFAULT))
                     {
                       *buf = 0;
-                      v20 = v19;
+                      v20 = getLogger3;
                       v21 = "Plan type is ambiguous, using plan name";
                       goto LABEL_39;
                     }
@@ -1007,50 +1007,50 @@ LABEL_20:
                     goto LABEL_41;
                   }
 
-                  v22 = [v12 networkUsageLabel];
-                  v23 = [(PSUICarrierSpaceUsageController *)v2 hasMultiplePlansOfSameTypeForNetworkUsageLabel:v22];
+                  networkUsageLabel4 = [accountMetrics networkUsageLabel];
+                  v23 = [(PSUICarrierSpaceUsageController *)selfCopy hasMultiplePlansOfSameTypeForNetworkUsageLabel:networkUsageLabel4];
 
                   if (v23)
                   {
-                    v18 = [v11 planLabel];
-                    v19 = [(PSUICarrierSpaceUsageController *)v2 getLogger];
-                    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+                    networkUsageLabel3 = [primaryMetrics planLabel];
+                    getLogger3 = [(PSUICarrierSpaceUsageController *)selfCopy getLogger];
+                    if (os_log_type_enabled(getLogger3, OS_LOG_TYPE_DEFAULT))
                     {
-                      v24 = [v12 networkUsageLabel];
+                      networkUsageLabel5 = [accountMetrics networkUsageLabel];
                       *buf = 138412290;
-                      v121 = v24;
-                      _os_log_impl(&dword_2658DE000, v19, OS_LOG_TYPE_DEFAULT, "Multiple same type plans for network usage label:%@, using plan name", buf, 0xCu);
+                      v121 = networkUsageLabel5;
+                      _os_log_impl(&dword_2658DE000, getLogger3, OS_LOG_TYPE_DEFAULT, "Multiple same type plans for network usage label:%@, using plan name", buf, 0xCu);
                     }
 
                     goto LABEL_41;
                   }
 
-                  v18 = [(PSUICarrierSpaceUsageController *)v2 planCategorySectionLabelForPlanMetrics:v11];
-                  v19 = [(PSUICarrierSpaceUsageController *)v2 getLogger];
-                  if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+                  networkUsageLabel3 = [(PSUICarrierSpaceUsageController *)selfCopy planCategorySectionLabelForPlanMetrics:primaryMetrics];
+                  getLogger3 = [(PSUICarrierSpaceUsageController *)selfCopy getLogger];
+                  if (!os_log_type_enabled(getLogger3, OS_LOG_TYPE_DEFAULT))
                   {
 LABEL_41:
 
-                    v29 = [(PSUICarrierSpaceUsageController *)v2 getLogger];
-                    if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+                    getLogger4 = [(PSUICarrierSpaceUsageController *)selfCopy getLogger];
+                    if (os_log_type_enabled(getLogger4, OS_LOG_TYPE_DEFAULT))
                     {
                       *buf = 138412290;
-                      v121 = v18;
-                      _os_log_impl(&dword_2658DE000, v29, OS_LOG_TYPE_DEFAULT, "Resolved group title: %@", buf, 0xCu);
+                      v121 = networkUsageLabel3;
+                      _os_log_impl(&dword_2658DE000, getLogger4, OS_LOG_TYPE_DEFAULT, "Resolved group title: %@", buf, 0xCu);
                     }
 
-                    v30 = [MEMORY[0x277D3FAD8] groupSpecifierWithName:v18];
+                    v30 = [MEMORY[0x277D3FAD8] groupSpecifierWithName:networkUsageLabel3];
                     v31 = objc_alloc_init(MEMORY[0x277CCA968]);
                     [v31 setDoesRelativeDateFormatting:0];
                     [v31 setTimeStyle:1];
-                    v32 = [v11 lastUpdatedAt];
+                    lastUpdatedAt = [primaryMetrics lastUpdatedAt];
 
-                    if (v32)
+                    if (lastUpdatedAt)
                     {
-                      v33 = [MEMORY[0x277CBEA80] currentCalendar];
-                      [v11 lastUpdatedAt];
+                      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+                      [primaryMetrics lastUpdatedAt];
                       v35 = v34 = v30;
-                      v36 = [v33 isDateInToday:v35];
+                      v36 = [currentCalendar isDateInToday:v35];
 
                       if (v36)
                       {
@@ -1073,8 +1073,8 @@ LABEL_41:
                       }
 
                       [v31 setDateStyle:v37];
-                      v39 = [v11 lastUpdatedAt];
-                      v40 = [v31 stringFromDate:v39];
+                      lastUpdatedAt2 = [primaryMetrics lastUpdatedAt];
+                      v40 = [v31 stringFromDate:lastUpdatedAt2];
 
                       v41 = MEMORY[0x277CCACA8];
                       v42 = MEMORY[0x277CCA8D8];
@@ -1083,7 +1083,7 @@ LABEL_41:
                       v30 = v34;
                       v45 = [v44 bundleForClass:v43];
                       v46 = [v45 localizedStringForKey:v38 value:&stru_287733598 table:@"CarrierSpaceUsage"];
-                      v47 = [v41 stringWithFormat:v46, v102, v40];
+                      v47 = [v41 stringWithFormat:v46, activeDataCarrierName, v40];
 
                       v111 = v47;
                       [v30 setProperty:v47 forKey:v107];
@@ -1094,13 +1094,13 @@ LABEL_41:
                       v111 = 0;
                     }
 
-                    v48 = [v12 billingCycleEndDate];
+                    billingCycleEndDate = [accountMetrics billingCycleEndDate];
 
-                    if (v48)
+                    if (billingCycleEndDate)
                     {
-                      v49 = [MEMORY[0x277CBEA80] currentCalendar];
-                      v50 = [v12 billingCycleEndDate];
-                      v51 = [v49 isDateInToday:v50];
+                      currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+                      billingCycleEndDate2 = [accountMetrics billingCycleEndDate];
+                      v51 = [currentCalendar2 isDateInToday:billingCycleEndDate2];
 
                       if (v51)
                       {
@@ -1123,8 +1123,8 @@ LABEL_41:
                       }
 
                       [v31 setDateStyle:v52];
-                      v54 = [v12 billingCycleEndDate];
-                      v55 = [v31 stringFromDate:v54];
+                      billingCycleEndDate3 = [accountMetrics billingCycleEndDate];
+                      v55 = [v31 stringFromDate:billingCycleEndDate3];
 
                       v56 = MEMORY[0x277CCACA8];
                       v57 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -1141,41 +1141,41 @@ LABEL_41:
                         v60 = v59;
                       }
 
-                      v2 = v108;
+                      selfCopy = v108;
                       v111 = v60;
                       [v30 setProperty:v60 forKey:v107];
                     }
 
                     else
                     {
-                      v2 = v108;
+                      selfCopy = v108;
                     }
 
                     [v110 addObject:v30];
-                    if ([(PSUICarrierSpaceUsageController *)v2 shouldShowData:v11])
+                    if ([(PSUICarrierSpaceUsageController *)selfCopy shouldShowData:primaryMetrics])
                     {
-                      v61 = [v11 dataUsage];
-                      v62 = [v61 thisDeviceDataUsed];
-                      v63 = [PSUICarrierSpaceManager carrierMetricTypeForString:v62];
+                      dataUsage = [primaryMetrics dataUsage];
+                      thisDeviceDataUsed = [dataUsage thisDeviceDataUsed];
+                      v63 = [PSUICarrierSpaceManager carrierMetricTypeForString:thisDeviceDataUsed];
 
-                      v64 = [v11 dataUsage];
-                      v65 = [v64 capacity];
-                      v66 = [PSUICarrierSpaceManager carrierMetricTypeForString:v65];
+                      dataUsage2 = [primaryMetrics dataUsage];
+                      capacity = [dataUsage2 capacity];
+                      v66 = [PSUICarrierSpaceManager carrierMetricTypeForString:capacity];
 
                       if (v63 == 1 && v66 == 1)
                       {
-                        v2 = v108;
+                        selfCopy = v108;
                         v67 = [(PSUICarrierSpaceUsageController *)v108 usageGraphSpecifierForSection:v106];
                         [v110 addObject:v67];
                       }
 
                       else
                       {
-                        v2 = v108;
-                        v68 = [(PSUICarrierSpaceUsageController *)v108 shouldShowOnlyRemainingData:v11];
+                        selfCopy = v108;
+                        v68 = [(PSUICarrierSpaceUsageController *)v108 shouldShowOnlyRemainingData:primaryMetrics];
                         v69 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-                        v70 = v18;
-                        v71 = v12;
+                        v70 = networkUsageLabel3;
+                        v71 = accountMetrics;
                         v72 = v69;
                         if (v68)
                         {
@@ -1189,17 +1189,17 @@ LABEL_41:
 
                         v67 = [v69 localizedStringForKey:v73 value:&stru_287733598 table:@"CarrierSpaceUsage"];
 
-                        v12 = v71;
-                        v18 = v70;
+                        accountMetrics = v71;
+                        networkUsageLabel3 = v70;
                         v74 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v67 target:v108 set:0 get:sel_dataUsageDescription_ detail:0 cell:4 edit:0];
-                        [v74 setProperty:v11 forKey:@"PSUICarrierSpaceMetricsKey"];
+                        [v74 setProperty:primaryMetrics forKey:@"PSUICarrierSpaceMetricsKey"];
                         [v110 addObject:v74];
                       }
                     }
 
-                    if ([(PSUICarrierSpaceUsageController *)v2 shouldShowCalls:v11])
+                    if ([(PSUICarrierSpaceUsageController *)selfCopy shouldShowCalls:primaryMetrics])
                     {
-                      v75 = [(PSUICarrierSpaceUsageController *)v2 shouldShowOnlyRemainingCalls:v11];
+                      v75 = [(PSUICarrierSpaceUsageController *)selfCopy shouldShowOnlyRemainingCalls:primaryMetrics];
                       v76 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
                       v77 = v76;
                       if (v75)
@@ -1214,14 +1214,14 @@ LABEL_41:
 
                       v79 = [v76 localizedStringForKey:v78 value:&stru_287733598 table:@"CarrierSpaceUsage"];
 
-                      v80 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v79 target:v2 set:0 get:sel_callsDescription_ detail:0 cell:4 edit:0];
-                      [v80 setProperty:v11 forKey:@"PSUICarrierSpaceMetricsKey"];
+                      v80 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v79 target:selfCopy set:0 get:sel_callsDescription_ detail:0 cell:4 edit:0];
+                      [v80 setProperty:primaryMetrics forKey:@"PSUICarrierSpaceMetricsKey"];
                       [v110 addObject:v80];
                     }
 
-                    if ([(PSUICarrierSpaceUsageController *)v2 shouldShowMessages:v11])
+                    if ([(PSUICarrierSpaceUsageController *)selfCopy shouldShowMessages:primaryMetrics])
                     {
-                      v81 = [(PSUICarrierSpaceUsageController *)v2 shouldShowOnlyRemainingMessages:v11];
+                      v81 = [(PSUICarrierSpaceUsageController *)selfCopy shouldShowOnlyRemainingMessages:primaryMetrics];
                       v82 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
                       v83 = v82;
                       if (v81)
@@ -1236,24 +1236,24 @@ LABEL_41:
 
                       v85 = [v82 localizedStringForKey:v84 value:&stru_287733598 table:@"CarrierSpaceUsage"];
 
-                      v86 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v85 target:v2 set:0 get:sel_messagesDescription_ detail:0 cell:4 edit:0];
-                      [v86 setProperty:v11 forKey:@"PSUICarrierSpaceMetricsKey"];
+                      v86 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v85 target:selfCopy set:0 get:sel_messagesDescription_ detail:0 cell:4 edit:0];
+                      [v86 setProperty:primaryMetrics forKey:@"PSUICarrierSpaceMetricsKey"];
                       [v110 addObject:v86];
                     }
 
-                    if ([(PSUICarrierSpaceUsageController *)v2 shouldShowRemainingCredit:v11])
+                    if ([(PSUICarrierSpaceUsageController *)selfCopy shouldShowRemainingCredit:primaryMetrics])
                     {
                       v87 = MEMORY[0x277D3FAD8];
                       v88 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
                       [v88 localizedStringForKey:@"REMAINING_CREDIT" value:&stru_287733598 table:@"CarrierSpaceUsage"];
-                      v89 = v18;
-                      v91 = v90 = v12;
-                      v92 = [v87 preferenceSpecifierNamed:v91 target:v2 set:0 get:sel_remainingCreditDescription_ detail:0 cell:4 edit:0];
+                      v89 = networkUsageLabel3;
+                      v91 = v90 = accountMetrics;
+                      v92 = [v87 preferenceSpecifierNamed:v91 target:selfCopy set:0 get:sel_remainingCreditDescription_ detail:0 cell:4 edit:0];
 
-                      v12 = v90;
-                      v18 = v89;
+                      accountMetrics = v90;
+                      networkUsageLabel3 = v89;
 
-                      [v92 setProperty:v11 forKey:@"PSUICarrierSpaceMetricsKey"];
+                      [v92 setProperty:primaryMetrics forKey:@"PSUICarrierSpaceMetricsKey"];
                       [v110 addObject:v92];
                     }
 
@@ -1263,7 +1263,7 @@ LABEL_41:
                   }
 
                   *buf = 0;
-                  v20 = v19;
+                  v20 = getLogger3;
                   v21 = "Plan type is not ambiguous, using plan type";
 LABEL_39:
                   v28 = 2;
@@ -1292,10 +1292,10 @@ LABEL_86:
 LABEL_90:
 
         [MEMORY[0x277D4D878] logSpecifiers:v110 origin:@"[PSUICarrierSpaceUsageController specifiers] end"];
-        v93 = *(&v2->super.super.super.super.super.isa + v96);
-        *(&v2->super.super.super.super.super.isa + v96) = v110;
+        v93 = *(&selfCopy->super.super.super.super.super.isa + v96);
+        *(&selfCopy->super.super.super.super.super.isa + v96) = v110;
 
-        v3 = *(&v2->super.super.super.super.super.isa + v96);
+        v3 = *(&selfCopy->super.super.super.super.super.isa + v96);
         break;
       }
     }
@@ -1306,35 +1306,35 @@ LABEL_90:
   return v3;
 }
 
-- (id)usageGraphSpecifierForSection:(id)a3
+- (id)usageGraphSpecifierForSection:(id)section
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 primaryMetrics];
+  sectionCopy = section;
+  primaryMetrics = [sectionCopy primaryMetrics];
   v59 = objc_opt_new();
-  v55 = self;
-  v6 = [(PSUICarrierSpaceUsageController *)self barGraphColors];
-  v7 = [v6 count];
+  selfCopy = self;
+  barGraphColors = [(PSUICarrierSpaceUsageController *)self barGraphColors];
+  v7 = [barGraphColors count];
 
-  v8 = [v5 dataUsage];
-  v9 = [v8 thisDeviceDataUsed];
-  v10 = [v5 dataUsage];
-  v11 = +[PSUICarrierSpaceManager bytesFromString:carrierSpaceUnits:](PSUICarrierSpaceManager, "bytesFromString:carrierSpaceUnits:", v9, [v10 units]);
+  dataUsage = [primaryMetrics dataUsage];
+  thisDeviceDataUsed = [dataUsage thisDeviceDataUsed];
+  dataUsage2 = [primaryMetrics dataUsage];
+  v11 = +[PSUICarrierSpaceManager bytesFromString:carrierSpaceUnits:](PSUICarrierSpaceManager, "bytesFromString:carrierSpaceUnits:", thisDeviceDataUsed, [dataUsage2 units]);
 
-  v12 = [v5 dataUsage];
-  v13 = [v12 sharedDataUsed];
-  v14 = [v5 dataUsage];
-  v15 = +[PSUICarrierSpaceManager bytesFromString:carrierSpaceUnits:](PSUICarrierSpaceManager, "bytesFromString:carrierSpaceUnits:", v13, [v14 units]);
+  dataUsage3 = [primaryMetrics dataUsage];
+  sharedDataUsed = [dataUsage3 sharedDataUsed];
+  dataUsage4 = [primaryMetrics dataUsage];
+  v15 = +[PSUICarrierSpaceManager bytesFromString:carrierSpaceUnits:](PSUICarrierSpaceManager, "bytesFromString:carrierSpaceUnits:", sharedDataUsed, [dataUsage4 units]);
 
-  v16 = [v5 dataUsage];
-  v17 = [v16 capacity];
-  v18 = [v5 dataUsage];
-  v58 = +[PSUICarrierSpaceManager bytesFromString:carrierSpaceUnits:](PSUICarrierSpaceManager, "bytesFromString:carrierSpaceUnits:", v17, [v18 units]);
+  dataUsage5 = [primaryMetrics dataUsage];
+  capacity = [dataUsage5 capacity];
+  dataUsage6 = [primaryMetrics dataUsage];
+  v58 = +[PSUICarrierSpaceManager bytesFromString:carrierSpaceUnits:](PSUICarrierSpaceManager, "bytesFromString:carrierSpaceUnits:", capacity, [dataUsage6 units]);
 
-  v52 = v5;
-  v19 = [v5 dataUsage];
-  v20 = [v19 sharedDataUsed];
-  if ([v20 length])
+  v52 = primaryMetrics;
+  dataUsage7 = [primaryMetrics dataUsage];
+  sharedDataUsed2 = [dataUsage7 sharedDataUsed];
+  if ([sharedDataUsed2 length])
   {
     v21 = v15;
   }
@@ -1345,12 +1345,12 @@ LABEL_90:
   }
 
   [MEMORY[0x277D75348] systemRedColor];
-  v54 = v53 = v4;
+  v54 = v53 = sectionCopy;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = [v4 barCategories];
+  obj = [sectionCopy barCategories];
   v22 = [obj countByEnumeratingWithState:&v60 objects:v64 count:16];
   if (v22)
   {
@@ -1370,7 +1370,7 @@ LABEL_90:
         v28 = *(*(&v60 + 1) + 8 * i);
         if (v21 <= v58)
         {
-          [(PSUICarrierSpaceUsageController *)v55 barGraphColors];
+          [(PSUICarrierSpaceUsageController *)selfCopy barGraphColors];
           v30 = v29 = v21;
           v31 = [v30 objectAtIndexedSubscript:v25];
           [v28 setColor:v31];
@@ -1420,8 +1420,8 @@ LABEL_90:
   v39 = [v36 specifierWithTitle:v38 useStandardFontSizeForSizeLabel:1];
 
   [v39 setProperty:v52 forKey:@"PSUICarrierSpaceMetricsKey"];
-  v40 = [MEMORY[0x277D75348] clearColor];
-  [v39 setProperty:v40 forKey:*MEMORY[0x277D3FE40]];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v39 setProperty:clearColor forKey:*MEMORY[0x277D3FE40]];
 
   v41 = [MEMORY[0x277CCABB0] numberWithBool:v34];
   [v39 setProperty:v41 forKey:*MEMORY[0x277D3FE48]];
@@ -1431,9 +1431,9 @@ LABEL_90:
 
   if (v35 <= v58)
   {
-    v44 = v55;
-    v45 = [(PSUICarrierSpaceUsageController *)v55 barGraphColors];
-    v46 = [v45 objectAtIndexedSubscript:v25];
+    v44 = selfCopy;
+    barGraphColors2 = [(PSUICarrierSpaceUsageController *)selfCopy barGraphColors];
+    v46 = [barGraphColors2 objectAtIndexedSubscript:v25];
     [v39 setProperty:v46 forKey:*MEMORY[0x277D3FE30]];
 
     v43 = v54;
@@ -1443,7 +1443,7 @@ LABEL_90:
   {
     v43 = v54;
     [v39 setProperty:v54 forKey:*MEMORY[0x277D3FE30]];
-    v44 = v55;
+    v44 = selfCopy;
   }
 
   v47 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -1459,25 +1459,25 @@ LABEL_90:
   return v39;
 }
 
-- (BOOL)shouldShowPlanSection:(id)a3
+- (BOOL)shouldShowPlanSection:(id)section
 {
-  v4 = a3;
-  v5 = [(PSUICarrierSpaceUsageController *)self shouldShowData:v4]|| [(PSUICarrierSpaceUsageController *)self shouldShowCalls:v4]|| [(PSUICarrierSpaceUsageController *)self shouldShowMessages:v4]|| [(PSUICarrierSpaceUsageController *)self shouldShowRemainingCredit:v4];
+  sectionCopy = section;
+  v5 = [(PSUICarrierSpaceUsageController *)self shouldShowData:sectionCopy]|| [(PSUICarrierSpaceUsageController *)self shouldShowCalls:sectionCopy]|| [(PSUICarrierSpaceUsageController *)self shouldShowMessages:sectionCopy]|| [(PSUICarrierSpaceUsageController *)self shouldShowRemainingCredit:sectionCopy];
 
   return v5;
 }
 
-- (BOOL)shouldShowData:(id)a3
+- (BOOL)shouldShowData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 dataUsage];
-  v5 = [v4 thisDeviceDataUsed];
-  v6 = [PSUICarrierSpaceManager carrierMetricTypeForString:v5];
+  dataCopy = data;
+  dataUsage = [dataCopy dataUsage];
+  thisDeviceDataUsed = [dataUsage thisDeviceDataUsed];
+  v6 = [PSUICarrierSpaceManager carrierMetricTypeForString:thisDeviceDataUsed];
 
-  v7 = [v3 dataUsage];
+  dataUsage2 = [dataCopy dataUsage];
 
-  v8 = [v7 capacity];
-  v9 = [PSUICarrierSpaceManager carrierMetricTypeForString:v8];
+  capacity = [dataUsage2 capacity];
+  v9 = [PSUICarrierSpaceManager carrierMetricTypeForString:capacity];
 
   if ([PSUICarrierSpaceManager isCarrierMetricTypeValid:v6])
   {
@@ -1487,41 +1487,41 @@ LABEL_90:
   return [PSUICarrierSpaceManager isCarrierMetricTypeValid:v9];
 }
 
-- (BOOL)shouldShowOnlyRemainingData:(id)a3
+- (BOOL)shouldShowOnlyRemainingData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 dataUsage];
-  v5 = [v4 thisDeviceDataUsed];
-  v6 = [PSUICarrierSpaceManager carrierMetricTypeForString:v5];
+  dataCopy = data;
+  dataUsage = [dataCopy dataUsage];
+  thisDeviceDataUsed = [dataUsage thisDeviceDataUsed];
+  v6 = [PSUICarrierSpaceManager carrierMetricTypeForString:thisDeviceDataUsed];
 
-  v7 = [v3 dataUsage];
+  dataUsage2 = [dataCopy dataUsage];
 
-  v8 = [v7 capacity];
-  v9 = [PSUICarrierSpaceManager carrierMetricTypeForString:v8];
+  capacity = [dataUsage2 capacity];
+  v9 = [PSUICarrierSpaceManager carrierMetricTypeForString:capacity];
 
   return !v6 && v9 == 1;
 }
 
-- (id)dataUsageDescription:(id)a3
+- (id)dataUsageDescription:(id)description
 {
-  v3 = [a3 propertyForKey:@"PSUICarrierSpaceMetricsKey"];
+  v3 = [description propertyForKey:@"PSUICarrierSpaceMetricsKey"];
   v4 = +[PSUICarrierSpaceManager sharedManager];
   v5 = [v4 descriptionForPlanMetrics:v3];
 
   return v5;
 }
 
-- (BOOL)shouldShowCalls:(id)a3
+- (BOOL)shouldShowCalls:(id)calls
 {
-  v3 = a3;
-  v4 = [v3 voice];
-  v5 = [v4 minutesUsed];
-  v6 = [PSUICarrierSpaceManager carrierMetricTypeForString:v5];
+  callsCopy = calls;
+  voice = [callsCopy voice];
+  minutesUsed = [voice minutesUsed];
+  v6 = [PSUICarrierSpaceManager carrierMetricTypeForString:minutesUsed];
 
-  v7 = [v3 voice];
+  voice2 = [callsCopy voice];
 
-  v8 = [v7 minutesCapacity];
-  v9 = [PSUICarrierSpaceManager carrierMetricTypeForString:v8];
+  minutesCapacity = [voice2 minutesCapacity];
+  v9 = [PSUICarrierSpaceManager carrierMetricTypeForString:minutesCapacity];
 
   if ([PSUICarrierSpaceManager isCarrierMetricTypeValid:v6])
   {
@@ -1531,31 +1531,31 @@ LABEL_90:
   return [PSUICarrierSpaceManager isCarrierMetricTypeValid:v9];
 }
 
-- (BOOL)shouldShowOnlyRemainingCalls:(id)a3
+- (BOOL)shouldShowOnlyRemainingCalls:(id)calls
 {
-  v3 = a3;
-  v4 = [v3 voice];
-  v5 = [v4 minutesUsed];
-  v6 = [PSUICarrierSpaceManager carrierMetricTypeForString:v5];
+  callsCopy = calls;
+  voice = [callsCopy voice];
+  minutesUsed = [voice minutesUsed];
+  v6 = [PSUICarrierSpaceManager carrierMetricTypeForString:minutesUsed];
 
-  v7 = [v3 voice];
+  voice2 = [callsCopy voice];
 
-  v8 = [v7 minutesCapacity];
-  v9 = [PSUICarrierSpaceManager carrierMetricTypeForString:v8];
+  minutesCapacity = [voice2 minutesCapacity];
+  v9 = [PSUICarrierSpaceManager carrierMetricTypeForString:minutesCapacity];
 
   return !v6 && v9 == 1;
 }
 
-- (id)callsDescription:(id)a3
+- (id)callsDescription:(id)description
 {
-  v3 = [a3 propertyForKey:@"PSUICarrierSpaceMetricsKey"];
-  v4 = [v3 voice];
-  v5 = [v4 minutesCapacity];
-  v6 = [PSUICarrierSpaceManager carrierMetricTypeForString:v5];
+  v3 = [description propertyForKey:@"PSUICarrierSpaceMetricsKey"];
+  voice = [v3 voice];
+  minutesCapacity = [voice minutesCapacity];
+  v6 = [PSUICarrierSpaceManager carrierMetricTypeForString:minutesCapacity];
 
-  v7 = [v3 voice];
-  v8 = [v7 minutesUsed];
-  v9 = [PSUICarrierSpaceManager carrierMetricTypeForString:v8];
+  voice2 = [v3 voice];
+  minutesUsed = [voice2 minutesUsed];
+  v9 = [PSUICarrierSpaceManager carrierMetricTypeForString:minutesUsed];
 
   if (v6 != 1)
   {
@@ -1569,8 +1569,8 @@ LABEL_90:
     v12 = MEMORY[0x277CCACA8];
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v14 = [v10 localizedStringForKey:@"%@_MINUTES" value:&stru_287733598 table:@"CarrierSpaceUsage"];
-    v15 = [v3 voice];
-    v19 = [v15 minutesUsed];
+    voice3 = [v3 voice];
+    minutesUsed2 = [voice3 minutesUsed];
     goto LABEL_8;
   }
 
@@ -1580,20 +1580,20 @@ LABEL_90:
   if (v9 != 1)
   {
     v14 = [v13 localizedStringForKey:@"%@_MINUTES" value:&stru_287733598 table:@"CarrierSpaceUsage"];
-    v15 = [v3 voice];
-    v19 = [v15 minutesCapacity];
+    voice3 = [v3 voice];
+    minutesUsed2 = [voice3 minutesCapacity];
 LABEL_8:
-    v16 = v19;
-    v11 = [v12 stringWithFormat:v14, v19];
+    minutesUsed3 = minutesUsed2;
+    v11 = [v12 stringWithFormat:v14, minutesUsed2];
     goto LABEL_9;
   }
 
   v14 = [v13 localizedStringForKey:@"USED_%@_OF_%@_MINUTES" value:&stru_287733598 table:@"CarrierSpaceUsage"];
-  v15 = [v3 voice];
-  v16 = [v15 minutesUsed];
-  v17 = [v3 voice];
-  v18 = [v17 minutesCapacity];
-  v11 = [v12 stringWithFormat:v14, v16, v18];
+  voice3 = [v3 voice];
+  minutesUsed3 = [voice3 minutesUsed];
+  voice4 = [v3 voice];
+  minutesCapacity2 = [voice4 minutesCapacity];
+  v11 = [v12 stringWithFormat:v14, minutesUsed3, minutesCapacity2];
 
 LABEL_9:
 LABEL_10:
@@ -1601,17 +1601,17 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)shouldShowMessages:(id)a3
+- (BOOL)shouldShowMessages:(id)messages
 {
-  v3 = a3;
-  v4 = [v3 messages];
-  v5 = [v4 used];
-  v6 = [PSUICarrierSpaceManager carrierMetricTypeForString:v5];
+  messagesCopy = messages;
+  messages = [messagesCopy messages];
+  used = [messages used];
+  v6 = [PSUICarrierSpaceManager carrierMetricTypeForString:used];
 
-  v7 = [v3 messages];
+  messages2 = [messagesCopy messages];
 
-  v8 = [v7 capacity];
-  v9 = [PSUICarrierSpaceManager carrierMetricTypeForString:v8];
+  capacity = [messages2 capacity];
+  v9 = [PSUICarrierSpaceManager carrierMetricTypeForString:capacity];
 
   if ([PSUICarrierSpaceManager isCarrierMetricTypeValid:v6])
   {
@@ -1621,31 +1621,31 @@ LABEL_10:
   return [PSUICarrierSpaceManager isCarrierMetricTypeValid:v9];
 }
 
-- (BOOL)shouldShowOnlyRemainingMessages:(id)a3
+- (BOOL)shouldShowOnlyRemainingMessages:(id)messages
 {
-  v3 = a3;
-  v4 = [v3 messages];
-  v5 = [v4 used];
-  v6 = [PSUICarrierSpaceManager carrierMetricTypeForString:v5];
+  messagesCopy = messages;
+  messages = [messagesCopy messages];
+  used = [messages used];
+  v6 = [PSUICarrierSpaceManager carrierMetricTypeForString:used];
 
-  v7 = [v3 messages];
+  messages2 = [messagesCopy messages];
 
-  v8 = [v7 capacity];
-  v9 = [PSUICarrierSpaceManager carrierMetricTypeForString:v8];
+  capacity = [messages2 capacity];
+  v9 = [PSUICarrierSpaceManager carrierMetricTypeForString:capacity];
 
   return !v6 && v9 == 1;
 }
 
-- (id)messagesDescription:(id)a3
+- (id)messagesDescription:(id)description
 {
-  v3 = [a3 propertyForKey:@"PSUICarrierSpaceMetricsKey"];
-  v4 = [v3 messages];
-  v5 = [v4 capacity];
-  v6 = [PSUICarrierSpaceManager carrierMetricTypeForString:v5];
+  v3 = [description propertyForKey:@"PSUICarrierSpaceMetricsKey"];
+  messages = [v3 messages];
+  capacity = [messages capacity];
+  v6 = [PSUICarrierSpaceManager carrierMetricTypeForString:capacity];
 
-  v7 = [v3 messages];
-  v8 = [v7 used];
-  v9 = [PSUICarrierSpaceManager carrierMetricTypeForString:v8];
+  messages2 = [v3 messages];
+  used = [messages2 used];
+  v9 = [PSUICarrierSpaceManager carrierMetricTypeForString:used];
 
   if (v6 != 1)
   {
@@ -1659,8 +1659,8 @@ LABEL_10:
     v12 = MEMORY[0x277CCACA8];
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v14 = [v10 localizedStringForKey:@"%@_MESSAGES" value:&stru_287733598 table:@"CarrierSpaceUsage"];
-    v15 = [v3 messages];
-    v19 = [v15 used];
+    messages3 = [v3 messages];
+    used2 = [messages3 used];
     goto LABEL_8;
   }
 
@@ -1670,20 +1670,20 @@ LABEL_10:
   if (v9 != 1)
   {
     v14 = [v13 localizedStringForKey:@"%@_MESSAGES" value:&stru_287733598 table:@"CarrierSpaceUsage"];
-    v15 = [v3 messages];
-    v19 = [v15 capacity];
+    messages3 = [v3 messages];
+    used2 = [messages3 capacity];
 LABEL_8:
-    v16 = v19;
-    v11 = [v12 stringWithFormat:v14, v19];
+    used3 = used2;
+    v11 = [v12 stringWithFormat:v14, used2];
     goto LABEL_9;
   }
 
   v14 = [v13 localizedStringForKey:@"USED_%@_OF_%@_MESSAGES" value:&stru_287733598 table:@"CarrierSpaceUsage"];
-  v15 = [v3 messages];
-  v16 = [v15 used];
-  v17 = [v3 messages];
-  v18 = [v17 capacity];
-  v11 = [v12 stringWithFormat:v14, v16, v18];
+  messages3 = [v3 messages];
+  used3 = [messages3 used];
+  messages4 = [v3 messages];
+  capacity2 = [messages4 capacity];
+  v11 = [v12 stringWithFormat:v14, used3, capacity2];
 
 LABEL_9:
 LABEL_10:
@@ -1691,20 +1691,20 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)shouldShowRemainingCredit:(id)a3
+- (BOOL)shouldShowRemainingCredit:(id)credit
 {
-  v3 = [a3 remainingBalance];
-  v4 = [v3 length] != 0;
+  remainingBalance = [credit remainingBalance];
+  v4 = [remainingBalance length] != 0;
 
   return v4;
 }
 
-- (id)remainingCreditDescription:(id)a3
+- (id)remainingCreditDescription:(id)description
 {
-  v3 = [a3 propertyForKey:@"PSUICarrierSpaceMetricsKey"];
-  v4 = [v3 remainingBalance];
+  v3 = [description propertyForKey:@"PSUICarrierSpaceMetricsKey"];
+  remainingBalance = [v3 remainingBalance];
 
-  return v4;
+  return remainingBalance;
 }
 
 @end

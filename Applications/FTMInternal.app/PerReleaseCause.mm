@@ -1,23 +1,23 @@
 @interface PerReleaseCause
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsMrab:(id)a3;
+- (int)StringAsMrab:(id)mrab;
 - (int)mrab;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNumCalls:(BOOL)a3;
-- (void)setHasReleaseCause:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNumCalls:(BOOL)calls;
+- (void)setHasReleaseCause:(BOOL)cause;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PerReleaseCause
 
-- (void)setHasReleaseCause:(BOOL)a3
+- (void)setHasReleaseCause:(BOOL)cause
 {
-  if (a3)
+  if (cause)
   {
     v3 = 4;
   }
@@ -43,20 +43,20 @@
   }
 }
 
-- (int)StringAsMrab:(id)a3
+- (int)StringAsMrab:(id)mrab
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"MRAB_NONE"])
+  mrabCopy = mrab;
+  if ([mrabCopy isEqualToString:@"MRAB_NONE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"MRAB_EVER"])
+  else if ([mrabCopy isEqualToString:@"MRAB_EVER"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"MRAB_END"])
+  else if ([mrabCopy isEqualToString:@"MRAB_END"])
   {
     v4 = 2;
   }
@@ -69,9 +69,9 @@
   return v4;
 }
 
-- (void)setHasNumCalls:(BOOL)a3
+- (void)setHasNumCalls:(BOOL)calls
 {
-  if (a3)
+  if (calls)
   {
     v3 = 2;
   }
@@ -89,8 +89,8 @@
   v7.receiver = self;
   v7.super_class = PerReleaseCause;
   v3 = [(PerReleaseCause *)&v7 description];
-  v4 = [(PerReleaseCause *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PerReleaseCause *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -149,16 +149,16 @@ LABEL_5:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if ((has & 4) != 0)
   {
     releaseCause = self->_releaseCause;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -179,26 +179,26 @@ LABEL_3:
 
   mrab = self->_mrab;
   PBDataWriterWriteInt32Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
     numCalls = self->_numCalls;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[4] = self->_releaseCause;
-    *(v4 + 20) |= 4u;
+    toCopy[4] = self->_releaseCause;
+    *(toCopy + 20) |= 4u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -217,21 +217,21 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[2] = self->_mrab;
-  *(v4 + 20) |= 1u;
+  toCopy[2] = self->_mrab;
+  *(toCopy + 20) |= 1u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
-    v4[3] = self->_numCalls;
-    *(v4 + 20) |= 2u;
+    toCopy[3] = self->_numCalls;
+    *(toCopy + 20) |= 2u;
   }
 
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -268,23 +268,23 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 20) & 4) == 0 || self->_releaseCause != *(v4 + 4))
+    if ((*(equalCopy + 20) & 4) == 0 || self->_releaseCause != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 20) & 4) != 0)
+  else if ((*(equalCopy + 20) & 4) != 0)
   {
 LABEL_16:
     v5 = 0;
@@ -293,21 +293,21 @@ LABEL_16:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_mrab != *(v4 + 2))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_mrab != *(equalCopy + 2))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
     goto LABEL_16;
   }
 
-  v5 = (*(v4 + 20) & 2) == 0;
+  v5 = (*(equalCopy + 20) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 20) & 2) == 0 || self->_numCalls != *(v4 + 3))
+    if ((*(equalCopy + 20) & 2) == 0 || self->_numCalls != *(equalCopy + 3))
     {
       goto LABEL_16;
     }
@@ -360,15 +360,15 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 20);
+  fromCopy = from;
+  v5 = *(fromCopy + 20);
   if ((v5 & 4) != 0)
   {
-    self->_releaseCause = *(v4 + 4);
+    self->_releaseCause = *(fromCopy + 4);
     *&self->_has |= 4u;
-    v5 = *(v4 + 20);
+    v5 = *(fromCopy + 20);
     if ((v5 & 1) == 0)
     {
 LABEL_3:
@@ -381,17 +381,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 20) & 1) == 0)
+  else if ((*(fromCopy + 20) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_mrab = *(v4 + 2);
+  self->_mrab = *(fromCopy + 2);
   *&self->_has |= 1u;
-  if ((*(v4 + 20) & 2) != 0)
+  if ((*(fromCopy + 20) & 2) != 0)
   {
 LABEL_4:
-    self->_numCalls = *(v4 + 3);
+    self->_numCalls = *(fromCopy + 3);
     *&self->_has |= 2u;
   }
 

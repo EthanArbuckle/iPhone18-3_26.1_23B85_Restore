@@ -1,14 +1,14 @@
 @interface TMCache
-- (BOOL)readValidCache:(id)a3 clock:(id)a4;
+- (BOOL)readValidCache:(id)cache clock:(id)clock;
 - (NSUUID)hostUUID;
-- (TMCache)initWithDictionary:(id)a3 clock:(id)a4;
-- (TMCache)initWithPath:(id)a3 clock:(id)a4;
-- (id)filesystemTimestampOfPath:(id)a3;
+- (TMCache)initWithDictionary:(id)dictionary clock:(id)clock;
+- (TMCache)initWithPath:(id)path clock:(id)clock;
+- (id)filesystemTimestampOfPath:(id)path;
 - (void)dealloc;
-- (void)emptyPath:(id)a3;
-- (void)saveDict:(id)a3 toPath:(id)a4;
-- (void)savePath:(id)a3;
-- (void)touchPath:(id)a3 tv:(timeval *)a4;
+- (void)emptyPath:(id)path;
+- (void)saveDict:(id)dict toPath:(id)path;
+- (void)savePath:(id)path;
+- (void)touchPath:(id)path tv:(timeval *)tv;
 @end
 
 @implementation TMCache
@@ -29,7 +29,7 @@
   return result;
 }
 
-- (TMCache)initWithPath:(id)a3 clock:(id)a4
+- (TMCache)initWithPath:(id)path clock:(id)clock
 {
   v7 = qword_100033218;
   if (os_log_type_enabled(qword_100033218, OS_LOG_TYPE_INFO))
@@ -46,13 +46,13 @@
   }
 
   v13 = 0;
-  v8 = [[NSDictionary alloc] initWithContentsOfURL:+[NSURL fileURLWithPath:](NSURL error:{"fileURLWithPath:", a3), &v13}];
+  v8 = [[NSDictionary alloc] initWithContentsOfURL:+[NSURL fileURLWithPath:](NSURL error:{"fileURLWithPath:", path), &v13}];
   v9 = qword_100033218;
   if (!v8 && os_log_type_enabled(qword_100033218, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v13 userInfo];
+    userInfo = [v13 userInfo];
     *buf = 138412290;
-    v15 = v10;
+    v15 = userInfo;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Failed to read cache: %@", buf, 0xCu);
     v9 = qword_100033218;
   }
@@ -64,26 +64,26 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "read cache: %@", buf, 0xCu);
   }
 
-  v11 = [(TMCache *)self initWithDictionary:v8 clock:a4];
+  v11 = [(TMCache *)self initWithDictionary:v8 clock:clock];
 
   return v11;
 }
 
-- (TMCache)initWithDictionary:(id)a3 clock:(id)a4
+- (TMCache)initWithDictionary:(id)dictionary clock:(id)clock
 {
   v6 = [(TMCache *)self init];
   if (v6)
   {
-    -[TMCache setSystemTimeSet:](v6, "setSystemTimeSet:", [objc_msgSend(a3 objectForKeyedSubscript:{@"TMSystemTimeSet", "BOOLValue"}]);
-    v6->_clock = a4;
-    if ([(TMCache *)v6 readValidCache:a3 clock:a4])
+    -[TMCache setSystemTimeSet:](v6, "setSystemTimeSet:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"TMSystemTimeSet", "BOOLValue"}]);
+    v6->_clock = clock;
+    if ([(TMCache *)v6 readValidCache:dictionary clock:clock])
     {
-      [objc_msgSend(a3 objectForKeyedSubscript:{@"TMLastRtcTime", "doubleValue"}];
+      [objc_msgSend(dictionary objectForKeyedSubscript:{@"TMLastRtcTime", "doubleValue"}];
       [(TMCache *)v6 setLastRtcTime:?];
-      [objc_msgSend(a3 objectForKeyedSubscript:{@"TMLastNtpFetchAttempt", "doubleValue"}];
+      [objc_msgSend(dictionary objectForKeyedSubscript:{@"TMLastNtpFetchAttempt", "doubleValue"}];
       [(TMCache *)v6 setLastNTPFetchAttempt:?];
-      -[TMCache setRtcResetCount:](v6, "setRtcResetCount:", [objc_msgSend(a3 objectForKeyedSubscript:{@"RTCResetCount", "unsignedIntValue"}]);
-      v7 = [a3 objectForKeyedSubscript:@"TMAccessoryUnc_s"];
+      -[TMCache setRtcResetCount:](v6, "setRtcResetCount:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"RTCResetCount", "unsignedIntValue"}]);
+      v7 = [dictionary objectForKeyedSubscript:@"TMAccessoryUnc_s"];
       if (!v7)
       {
         v7 = &off_10002C090;
@@ -91,19 +91,19 @@
 
       [v7 doubleValue];
       [(TMCache *)v6 setAccessoryUnc_s:?];
-      if ([a3 objectForKeyedSubscript:@"BootUUID"])
+      if ([dictionary objectForKeyedSubscript:@"BootUUID"])
       {
-        v6->_bootUUID = [[NSUUID alloc] initWithUUIDString:{objc_msgSend(a3, "objectForKeyedSubscript:", @"BootUUID"}];
+        v6->_bootUUID = [[NSUUID alloc] initWithUUIDString:{objc_msgSend(dictionary, "objectForKeyedSubscript:", @"BootUUID"}];
       }
 
-      if ([a3 objectForKeyedSubscript:@"TDTF"])
+      if ([dictionary objectForKeyedSubscript:@"TDTF"])
       {
-        -[TMCache setTDTF:](v6, "setTDTF:", [a3 objectForKeyedSubscript:@"TDTF"]);
+        -[TMCache setTDTF:](v6, "setTDTF:", [dictionary objectForKeyedSubscript:@"TDTF"]);
       }
 
-      if ([a3 objectForKeyedSubscript:@"STF"])
+      if ([dictionary objectForKeyedSubscript:@"STF"])
       {
-        -[TMCache setSTF:](v6, "setSTF:", [a3 objectForKeyedSubscript:@"STF"]);
+        -[TMCache setSTF:](v6, "setSTF:", [dictionary objectForKeyedSubscript:@"STF"]);
       }
 
       v6->_valid = 1;
@@ -125,9 +125,9 @@
   [(TMCache *)&v3 dealloc];
 }
 
-- (void)touchPath:(id)a3 tv:(timeval *)a4
+- (void)touchPath:(id)path tv:(timeval *)tv
 {
-  if (utimes([a3 UTF8String], &v4))
+  if (utimes([path UTF8String], &v4))
   {
     if (os_log_type_enabled(qword_100033218, OS_LOG_TYPE_ERROR))
     {
@@ -136,7 +136,7 @@
   }
 }
 
-- (void)emptyPath:(id)a3
+- (void)emptyPath:(id)path
 {
   [(TMCache *)self setSystemTimeSet:0];
   [(TMCache *)self setLastRtcTime:0.0];
@@ -148,7 +148,7 @@
   [(TMCache *)self setSTF:0];
   [(TMCache *)self setTDTF:0];
   self->_valid = 0;
-  v5 = [[NSURL alloc] initFileURLWithPath:a3];
+  v5 = [[NSURL alloc] initFileURLWithPath:path];
   if (v5)
   {
     v13 = 0;
@@ -163,7 +163,7 @@
   }
 }
 
-- (void)savePath:(id)a3
+- (void)savePath:(id)path
 {
   v5 = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithBool:[(TMCache *)self systemTimeSet]] forKey:@"TMSystemTimeSet"];
   [(TMCache *)self lastRtcTime];
@@ -179,12 +179,12 @@
   [(NSMutableDictionary *)v5 setObject:[(TMCache *)self STF] forKeyedSubscript:@"STF"];
   [(NSMutableDictionary *)v5 setObject:[(TMCache *)self TDTF] forKeyedSubscript:@"TDTF"];
 
-  [(TMCache *)self saveDict:v5 toPath:a3];
+  [(TMCache *)self saveDict:v5 toPath:path];
 }
 
-- (id)filesystemTimestampOfPath:(id)a3
+- (id)filesystemTimestampOfPath:(id)path
 {
-  result = [[NSURL alloc] initFileURLWithPath:a3];
+  result = [[NSURL alloc] initFileURLWithPath:path];
   if (!result)
   {
     return result;
@@ -211,9 +211,9 @@ LABEL_15:
     return 0;
   }
 
-  v7 = [(NSDictionary *)v6 fileModificationDate];
+  fileModificationDate = [(NSDictionary *)v6 fileModificationDate];
   v8 = qword_100033218;
-  if (!v7)
+  if (!fileModificationDate)
   {
     if (os_log_type_enabled(qword_100033218, OS_LOG_TYPE_DEFAULT))
     {
@@ -227,7 +227,7 @@ LABEL_15:
     return 0;
   }
 
-  v9 = v7;
+  v9 = fileModificationDate;
   if (os_log_type_enabled(qword_100033218, OS_LOG_TYPE_INFO))
   {
     *buf = 0;
@@ -270,9 +270,9 @@ LABEL_15:
   return [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:8];
 }
 
-- (BOOL)readValidCache:(id)a3 clock:(id)a4
+- (BOOL)readValidCache:(id)cache clock:(id)clock
 {
-  if (![a3 count])
+  if (![cache count])
   {
     v15 = qword_100033218;
     if (os_log_type_enabled(qword_100033218, OS_LOG_TYPE_DEFAULT))
@@ -284,7 +284,7 @@ LABEL_15:
     goto LABEL_11;
   }
 
-  v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"TMVersionKey", "integerValue"}];
+  v7 = [objc_msgSend(cache objectForKeyedSubscript:{@"TMVersionKey", "integerValue"}];
   if (v7 != 18)
   {
     v16 = *&v7;
@@ -303,9 +303,9 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"TMLastRtcTime", "doubleValue"}];
+  [objc_msgSend(cache objectForKeyedSubscript:{@"TMLastRtcTime", "doubleValue"}];
   v9 = v8;
-  [a4 coarseMonotonicTime];
+  [clock coarseMonotonicTime];
   v11 = v10;
   v12 = qword_100033218;
   if (os_log_type_enabled(qword_100033218, OS_LOG_TYPE_INFO))
@@ -323,9 +323,9 @@ LABEL_15:
     {
       if (sub_100005F84())
       {
-        v21 = COERCE_DOUBLE([a3 objectForKeyedSubscript:@"HostUUID"]);
-        v22 = [(NSUUID *)[(TMCache *)self hostUUID] UUIDString];
-        if (([*&v21 isEqual:v22] & 1) == 0)
+        v21 = COERCE_DOUBLE([cache objectForKeyedSubscript:@"HostUUID"]);
+        uUIDString = [(NSUUID *)[(TMCache *)self hostUUID] UUIDString];
+        if (([*&v21 isEqual:uUIDString] & 1) == 0)
         {
           v17 = qword_100033218;
           v14 = os_log_type_enabled(qword_100033218, OS_LOG_TYPE_DEFAULT);
@@ -337,7 +337,7 @@ LABEL_15:
           v25 = 138412546;
           v26 = v21;
           v27 = 2112;
-          v28 = v22;
+          v28 = uUIDString;
           v18 = "Host UUID has changed. Cache Invalid. Cached:%@ Host:%@";
 LABEL_14:
           v19 = v17;
@@ -394,10 +394,10 @@ LABEL_11:
   return v14;
 }
 
-- (void)saveDict:(id)a3 toPath:(id)a4
+- (void)saveDict:(id)dict toPath:(id)path
 {
   v19 = 0;
-  v5 = [NSPropertyListSerialization dataWithPropertyList:a3 format:200 options:0 error:&v19];
+  v5 = [NSPropertyListSerialization dataWithPropertyList:dict format:200 options:0 error:&v19];
   if (v19)
   {
     if (os_log_type_enabled(qword_100033218, OS_LOG_TYPE_ERROR))
@@ -409,7 +409,7 @@ LABEL_11:
   else
   {
     v6 = v5;
-    v7 = [[NSURL alloc] initFileURLWithPath:a4];
+    v7 = [[NSURL alloc] initFileURLWithPath:path];
     if (v7)
     {
       v18 = 0;

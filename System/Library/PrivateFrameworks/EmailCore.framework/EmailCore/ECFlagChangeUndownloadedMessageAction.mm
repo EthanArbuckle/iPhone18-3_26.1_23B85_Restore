@@ -1,18 +1,18 @@
 @interface ECFlagChangeUndownloadedMessageAction
-- (ECFlagChangeUndownloadedMessageAction)initWithBuilder:(id)a3;
+- (ECFlagChangeUndownloadedMessageAction)initWithBuilder:(id)builder;
 @end
 
 @implementation ECFlagChangeUndownloadedMessageAction
 
-- (ECFlagChangeUndownloadedMessageAction)initWithBuilder:(id)a3
+- (ECFlagChangeUndownloadedMessageAction)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v7.receiver = self;
   v7.super_class = ECFlagChangeUndownloadedMessageAction;
   v5 = [(ECFlagChangeUndownloadedMessageAction *)&v7 init];
   if (v5)
   {
-    v4[2](v4, v5);
+    builderCopy[2](builderCopy, v5);
   }
 
   return v5;

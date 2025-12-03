@@ -1,14 +1,14 @@
 @interface ChartSonificationContainerView
 - (NSAttributedString)accessibilityAttributedLabel;
-- (_TtC28AccessibilitySharedUISupport30ChartSonificationContainerView)initWithCoder:(id)a3;
-- (_TtC28AccessibilitySharedUISupport30ChartSonificationContainerView)initWithFrame:(CGRect)a3;
-- (void)_accessibilitySonificationPlaybackStatusChanged:(unint64_t)a3;
-- (void)updatePlayhead:(void *)a1;
+- (_TtC28AccessibilitySharedUISupport30ChartSonificationContainerView)initWithCoder:(id)coder;
+- (_TtC28AccessibilitySharedUISupport30ChartSonificationContainerView)initWithFrame:(CGRect)frame;
+- (void)_accessibilitySonificationPlaybackStatusChanged:(unint64_t)changed;
+- (void)updatePlayhead:(void *)playhead;
 @end
 
 @implementation ChartSonificationContainerView
 
-- (_TtC28AccessibilitySharedUISupport30ChartSonificationContainerView)initWithCoder:(id)a3
+- (_TtC28AccessibilitySharedUISupport30ChartSonificationContainerView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC28AccessibilitySharedUISupport30ChartSonificationContainerView_playheadTimer) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC28AccessibilitySharedUISupport30ChartSonificationContainerView_displayLink) = 0;
@@ -18,26 +18,26 @@
   return result;
 }
 
-- (void)updatePlayhead:(void *)a1
+- (void)updatePlayhead:(void *)playhead
 {
-  v3 = a1;
+  playheadCopy = playhead;
   sub_23DAB912C(a2);
 }
 
-- (void)_accessibilitySonificationPlaybackStatusChanged:(unint64_t)a3
+- (void)_accessibilitySonificationPlaybackStatusChanged:(unint64_t)changed
 {
-  v4 = self;
-  sub_23DAB8F20(a3);
+  selfCopy = self;
+  sub_23DAB8F20(changed);
 }
 
 - (NSAttributedString)accessibilityAttributedLabel
 {
-  v2 = [*(&self->super.super.super.isa + OBJC_IVAR____TtC28AccessibilitySharedUISupport30ChartSonificationContainerView_chartDescriptor) attributedTitle];
+  attributedTitle = [*(&self->super.super.super.isa + OBJC_IVAR____TtC28AccessibilitySharedUISupport30ChartSonificationContainerView_chartDescriptor) attributedTitle];
 
-  return v2;
+  return attributedTitle;
 }
 
-- (_TtC28AccessibilitySharedUISupport30ChartSonificationContainerView)initWithFrame:(CGRect)a3
+- (_TtC28AccessibilitySharedUISupport30ChartSonificationContainerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

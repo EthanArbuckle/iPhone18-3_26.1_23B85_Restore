@@ -1,38 +1,38 @@
 @interface WeatherMapCachingViewController
-- (_TtC11WeatherMaps31WeatherMapCachingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC11WeatherMaps31WeatherMapCachingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation WeatherMapCachingViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_220F8E12C();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  sub_220F8E1C0(a3);
+  selfCopy = self;
+  sub_220F8E1C0(appearing);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_220F8E280(a3);
+  selfCopy = self;
+  sub_220F8E280(disappear);
 }
 
-- (_TtC11WeatherMaps31WeatherMapCachingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11WeatherMaps31WeatherMapCachingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_220FC2700();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   WeatherMapCachingViewController.init(nibName:bundle:)();
 }
 

@@ -1,32 +1,32 @@
 @interface PRUpdater
-- (BOOL)shouldAcceptConnection:(id)a3;
-- (PRUpdater)initWithDelegate:(id)a3;
+- (BOOL)shouldAcceptConnection:(id)connection;
+- (PRUpdater)initWithDelegate:(id)delegate;
 - (void)_dequeueNextCallOutIfPossible;
-- (void)_disconnect:(id)a3;
-- (void)_enqueueCallOut:(id)a3;
-- (void)updateConfiguration:(id)a3 sessionInfo:(id)a4 completion:(id)a5;
-- (void)updateDescriptors:(id)a3 sessionInfo:(id)a4 completion:(id)a5;
-- (void)updateSuggestionDescriptors:(id)a3 forConfiguration:(id)a4 sessionInfo:(id)a5 completion:(id)a6;
+- (void)_disconnect:(id)_disconnect;
+- (void)_enqueueCallOut:(id)out;
+- (void)updateConfiguration:(id)configuration sessionInfo:(id)info completion:(id)completion;
+- (void)updateDescriptors:(id)descriptors sessionInfo:(id)info completion:(id)completion;
+- (void)updateSuggestionDescriptors:(id)descriptors forConfiguration:(id)configuration sessionInfo:(id)info completion:(id)completion;
 @end
 
 @implementation PRUpdater
 
-- (PRUpdater)initWithDelegate:(id)a3
+- (PRUpdater)initWithDelegate:(id)delegate
 {
-  v6 = a3;
-  if (!v6)
+  delegateCopy = delegate;
+  if (!delegateCopy)
   {
     [PRUpdater initWithDelegate:a2];
   }
 
-  v7 = v6;
+  v7 = delegateCopy;
   v17.receiver = self;
   v17.super_class = PRUpdater;
   v8 = [(PRUpdater *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_delegate, a3);
+    objc_storeStrong(&v8->_delegate, delegate);
     Serial = BSDispatchQueueCreateSerial();
     queue = v9->_queue;
     v9->_queue = Serial;
@@ -35,39 +35,39 @@
     lock_connections = v9->_lock_connections;
     v9->_lock_connections = v12;
 
-    v14 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     lock_callOutBlocks = v9->_lock_callOutBlocks;
-    v9->_lock_callOutBlocks = v14;
+    v9->_lock_callOutBlocks = array;
   }
 
   return v9;
 }
 
-- (BOOL)shouldAcceptConnection:(id)a3
+- (BOOL)shouldAcceptConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_lock);
-  if ([(NSMutableSet *)self->_lock_connections containsObject:v5])
+  if ([(NSMutableSet *)self->_lock_connections containsObject:connectionCopy])
   {
     [PRUpdater shouldAcceptConnection:a2];
   }
 
-  [(NSMutableSet *)self->_lock_connections addObject:v5];
+  [(NSMutableSet *)self->_lock_connections addObject:connectionCopy];
   os_unfair_lock_unlock(&self->_lock);
-  objc_initWeak(&location, v5);
-  [v5 _setQueue:self->_queue];
+  objc_initWeak(&location, connectionCopy);
+  [connectionCopy _setQueue:self->_queue];
   v6 = +[PRUpdatingService interfaceToExtension];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v5 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __36__PRUpdater_shouldAcceptConnection___block_invoke;
   v8[3] = &unk_1E7843AD0;
   objc_copyWeak(&v9, &location);
   v8[4] = self;
-  [v5 setInvalidationHandler:v8];
-  [v5 activate];
+  [connectionCopy setInvalidationHandler:v8];
+  [connectionCopy activate];
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 
@@ -86,29 +86,29 @@ void __36__PRUpdater_shouldAcceptConnection___block_invoke(uint64_t a1)
   [*(a1 + 32) _disconnect:WeakRetained];
 }
 
-- (void)updateDescriptors:(id)a3 sessionInfo:(id)a4 completion:(id)a5
+- (void)updateDescriptors:(id)descriptors sessionInfo:(id)info completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  descriptorsCopy = descriptors;
+  infoCopy = info;
+  completionCopy = completion;
   v12 = MEMORY[0x1E698E620];
-  v13 = [MEMORY[0x1E696B0B8] currentConnection];
-  v14 = [v12 tokenFromNSXPCConnection:v13];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v14 = [v12 tokenFromNSXPCConnection:currentConnection];
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __54__PRUpdater_updateDescriptors_sessionInfo_completion___block_invoke;
   v19[3] = &unk_1E78459C8;
-  v23 = v11;
+  v23 = completionCopy;
   v24 = a2;
   v19[4] = self;
-  v20 = v9;
+  v20 = descriptorsCopy;
   v21 = v14;
-  v22 = v10;
-  v15 = v10;
+  v22 = infoCopy;
+  v15 = infoCopy;
   v16 = v14;
-  v17 = v9;
-  v18 = v11;
+  v17 = descriptorsCopy;
+  v18 = completionCopy;
   [(PRUpdater *)self _enqueueCallOut:v19];
 }
 
@@ -539,29 +539,29 @@ void __54__PRUpdater_updateDescriptors_sessionInfo_completion___block_invoke_2_5
   }
 }
 
-- (void)updateConfiguration:(id)a3 sessionInfo:(id)a4 completion:(id)a5
+- (void)updateConfiguration:(id)configuration sessionInfo:(id)info completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  configurationCopy = configuration;
+  infoCopy = info;
+  completionCopy = completion;
   v12 = MEMORY[0x1E698E620];
-  v13 = [MEMORY[0x1E696B0B8] currentConnection];
-  v14 = [v12 tokenFromNSXPCConnection:v13];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v14 = [v12 tokenFromNSXPCConnection:currentConnection];
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __56__PRUpdater_updateConfiguration_sessionInfo_completion___block_invoke;
   v19[3] = &unk_1E78459C8;
-  v23 = v11;
+  v23 = completionCopy;
   v24 = a2;
   v19[4] = self;
-  v20 = v9;
+  v20 = configurationCopy;
   v21 = v14;
-  v22 = v10;
-  v15 = v10;
+  v22 = infoCopy;
+  v15 = infoCopy;
   v16 = v14;
-  v17 = v9;
-  v18 = v11;
+  v17 = configurationCopy;
+  v18 = completionCopy;
   [(PRUpdater *)self _enqueueCallOut:v19];
 }
 
@@ -822,32 +822,32 @@ void __56__PRUpdater_updateConfiguration_sessionInfo_completion___block_invoke_2
   }
 }
 
-- (void)updateSuggestionDescriptors:(id)a3 forConfiguration:(id)a4 sessionInfo:(id)a5 completion:(id)a6
+- (void)updateSuggestionDescriptors:(id)descriptors forConfiguration:(id)configuration sessionInfo:(id)info completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  descriptorsCopy = descriptors;
+  configurationCopy = configuration;
+  infoCopy = info;
+  completionCopy = completion;
   v15 = MEMORY[0x1E698E620];
-  v16 = [MEMORY[0x1E696B0B8] currentConnection];
-  v17 = [v15 tokenFromNSXPCConnection:v16];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v17 = [v15 tokenFromNSXPCConnection:currentConnection];
 
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __81__PRUpdater_updateSuggestionDescriptors_forConfiguration_sessionInfo_completion___block_invoke;
   v23[3] = &unk_1E7845A60;
-  v28 = v14;
+  v28 = completionCopy;
   v29 = a2;
   v23[4] = self;
-  v24 = v11;
+  v24 = descriptorsCopy;
   v25 = v17;
-  v26 = v12;
-  v27 = v13;
-  v18 = v13;
-  v19 = v12;
+  v26 = configurationCopy;
+  v27 = infoCopy;
+  v18 = infoCopy;
+  v19 = configurationCopy;
   v20 = v17;
-  v21 = v11;
-  v22 = v14;
+  v21 = descriptorsCopy;
+  v22 = completionCopy;
   [(PRUpdater *)self _enqueueCallOut:v23];
 }
 
@@ -1243,11 +1243,11 @@ id __81__PRUpdater_updateSuggestionDescriptors_forConfiguration_sessionInfo_comp
   return v3;
 }
 
-- (void)_enqueueCallOut:(id)a3
+- (void)_enqueueCallOut:(id)out
 {
-  v4 = a3;
+  outCopy = out;
   v5 = objc_autoreleasePoolPush();
-  v6 = [v4 copy];
+  v6 = [outCopy copy];
   os_unfair_lock_lock(&self->_lock);
   lock_callOutBlocks = self->_lock_callOutBlocks;
   v8 = MEMORY[0x1AC574C60](v6);
@@ -1267,11 +1267,11 @@ id __81__PRUpdater_updateSuggestionDescriptors_forConfiguration_sessionInfo_comp
 - (void)_dequeueNextCallOutIfPossible
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E696AAE8] mainBundle];
-  v5 = [v4 bundleIdentifier];
-  v6 = MEMORY[0x1AC574C60](a1);
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v6 = MEMORY[0x1AC574C60](self);
   v7 = 138412546;
-  v8 = v5;
+  v8 = bundleIdentifier;
   v9 = 2112;
   v10 = v6;
   _os_log_debug_impl(&dword_1A8AA7000, a2, OS_LOG_TYPE_DEBUG, "PRUpdater %@: calling dequeued delegate block %@", &v7, 0x16u);
@@ -1300,16 +1300,16 @@ void __42__PRUpdater__dequeueNextCallOutIfPossible__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_disconnect:(id)a3
+- (void)_disconnect:(id)_disconnect
 {
-  v5 = a3;
+  _disconnectCopy = _disconnect;
   os_unfair_lock_lock(&self->_lock);
-  if (([(NSMutableSet *)self->_lock_connections containsObject:v5]& 1) == 0)
+  if (([(NSMutableSet *)self->_lock_connections containsObject:_disconnectCopy]& 1) == 0)
   {
     [PRUpdater _disconnect:a2];
   }
 
-  [(NSMutableSet *)self->_lock_connections removeObject:v5];
+  [(NSMutableSet *)self->_lock_connections removeObject:_disconnectCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 

@@ -1,37 +1,37 @@
 @interface RTRelabelerMetrics
 + (id)supportedMetricKeys;
-- (BOOL)submitMetricsWithError:(id *)a3;
-- (RTRelabelerMetrics)initWithLoggingEnabled:(BOOL)a3;
-- (RTRelabelerMetrics)initWithRelabeler:(id)a3;
-- (double)calculateEntropyOfProbVector:(id)a3;
-- (double)logMax2ConfidenceRatioOfRelabeledProbVector:(id)a3;
-- (id)getUUIDForPotentialRelabelingItemUsingInputCandidate:(id)a3 relabeledProbVector:(id)a4;
-- (id)maxUUIDOfProbVector:(id)a3;
+- (BOOL)submitMetricsWithError:(id *)error;
+- (RTRelabelerMetrics)initWithLoggingEnabled:(BOOL)enabled;
+- (RTRelabelerMetrics)initWithRelabeler:(id)relabeler;
+- (double)calculateEntropyOfProbVector:(id)vector;
+- (double)logMax2ConfidenceRatioOfRelabeledProbVector:(id)vector;
+- (id)getUUIDForPotentialRelabelingItemUsingInputCandidate:(id)candidate relabeledProbVector:(id)vector;
+- (id)maxUUIDOfProbVector:(id)vector;
 - (void)setDerivedMetrics;
-- (void)setErrorMetrics:(id)a3;
-- (void)setFilteredInputMetricsUsingContextCandidates:(id)a3;
-- (void)setNonRevGeoCandidates:(id)a3 revGeoCandidates:(id)a4;
-- (void)setNumberOfUniqueMapItems:(id)a3;
-- (void)setOutputMetricsUsingInputCandidate:(id)a3 priorVector:(id)a4 observationVector:(id)a5 posteriorVector:(id)a6 relabeledProbVector:(id)a7 relabeledInferredMapItem:(id)a8;
-- (void)setPreprocessedMetricsUsingInputCandidate:(id)a3 contextCandidates:(id)a4;
+- (void)setErrorMetrics:(id)metrics;
+- (void)setFilteredInputMetricsUsingContextCandidates:(id)candidates;
+- (void)setNonRevGeoCandidates:(id)candidates revGeoCandidates:(id)geoCandidates;
+- (void)setNumberOfUniqueMapItems:(id)items;
+- (void)setOutputMetricsUsingInputCandidate:(id)candidate priorVector:(id)vector observationVector:(id)observationVector posteriorVector:(id)posteriorVector relabeledProbVector:(id)probVector relabeledInferredMapItem:(id)item;
+- (void)setPreprocessedMetricsUsingInputCandidate:(id)candidate contextCandidates:(id)candidates;
 @end
 
 @implementation RTRelabelerMetrics
 
-- (RTRelabelerMetrics)initWithLoggingEnabled:(BOOL)a3
+- (RTRelabelerMetrics)initWithLoggingEnabled:(BOOL)enabled
 {
   v67 = *MEMORY[0x277D85DE8];
   v61.receiver = self;
   v61.super_class = RTRelabelerMetrics;
-  v3 = [(RTMetric *)&v61 initWithLoggingEnabled:a3];
+  v3 = [(RTMetric *)&v61 initWithLoggingEnabled:enabled];
   if (v3)
   {
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v4 = [objc_opt_class() BOOLeanKeys];
-    v5 = [v4 countByEnumeratingWithState:&v57 objects:v66 count:16];
+    bOOLeanKeys = [objc_opt_class() BOOLeanKeys];
+    v5 = [bOOLeanKeys countByEnumeratingWithState:&v57 objects:v66 count:16];
     if (v5)
     {
       v6 = v5;
@@ -44,18 +44,18 @@
         {
           if (*v58 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(bOOLeanKeys);
           }
 
           v10 = *(*(&v57 + 1) + 8 * v9);
-          v11 = [(RTMetric *)v3 metrics];
-          [v11 setObject:v8 forKeyedSubscript:v10];
+          metrics = [(RTMetric *)v3 metrics];
+          [metrics setObject:v8 forKeyedSubscript:v10];
 
           ++v9;
         }
 
         while (v6 != v9);
-        v6 = [v4 countByEnumeratingWithState:&v57 objects:v66 count:16];
+        v6 = [bOOLeanKeys countByEnumeratingWithState:&v57 objects:v66 count:16];
       }
 
       while (v6);
@@ -65,8 +65,8 @@
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v12 = [objc_opt_class() unsignedIntegerKeys];
-    v13 = [v12 countByEnumeratingWithState:&v53 objects:v65 count:16];
+    unsignedIntegerKeys = [objc_opt_class() unsignedIntegerKeys];
+    v13 = [unsignedIntegerKeys countByEnumeratingWithState:&v53 objects:v65 count:16];
     if (v13)
     {
       v14 = v13;
@@ -78,18 +78,18 @@
         {
           if (*v54 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(unsignedIntegerKeys);
           }
 
           v17 = *(*(&v53 + 1) + 8 * v16);
-          v18 = [(RTMetric *)v3 metrics];
-          [v18 setObject:&unk_28459F378 forKeyedSubscript:v17];
+          metrics2 = [(RTMetric *)v3 metrics];
+          [metrics2 setObject:&unk_28459F378 forKeyedSubscript:v17];
 
           ++v16;
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v53 objects:v65 count:16];
+        v14 = [unsignedIntegerKeys countByEnumeratingWithState:&v53 objects:v65 count:16];
       }
 
       while (v14);
@@ -99,8 +99,8 @@
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v19 = [objc_opt_class() integerKeys];
-    v20 = [v19 countByEnumeratingWithState:&v49 objects:v64 count:16];
+    integerKeys = [objc_opt_class() integerKeys];
+    v20 = [integerKeys countByEnumeratingWithState:&v49 objects:v64 count:16];
     if (v20)
     {
       v21 = v20;
@@ -112,18 +112,18 @@
         {
           if (*v50 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(integerKeys);
           }
 
           v24 = *(*(&v49 + 1) + 8 * v23);
-          v25 = [(RTMetric *)v3 metrics];
-          [v25 setObject:&unk_28459F390 forKeyedSubscript:v24];
+          metrics3 = [(RTMetric *)v3 metrics];
+          [metrics3 setObject:&unk_28459F390 forKeyedSubscript:v24];
 
           ++v23;
         }
 
         while (v21 != v23);
-        v21 = [v19 countByEnumeratingWithState:&v49 objects:v64 count:16];
+        v21 = [integerKeys countByEnumeratingWithState:&v49 objects:v64 count:16];
       }
 
       while (v21);
@@ -133,8 +133,8 @@
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v26 = [objc_opt_class() doubleKeys];
-    v27 = [v26 countByEnumeratingWithState:&v45 objects:v63 count:16];
+    doubleKeys = [objc_opt_class() doubleKeys];
+    v27 = [doubleKeys countByEnumeratingWithState:&v45 objects:v63 count:16];
     if (v27)
     {
       v28 = v27;
@@ -146,18 +146,18 @@
         {
           if (*v46 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(doubleKeys);
           }
 
           v31 = *(*(&v45 + 1) + 8 * v30);
-          v32 = [(RTMetric *)v3 metrics];
-          [v32 setObject:&unk_2845A1E98 forKeyedSubscript:v31];
+          metrics4 = [(RTMetric *)v3 metrics];
+          [metrics4 setObject:&unk_2845A1E98 forKeyedSubscript:v31];
 
           ++v30;
         }
 
         while (v28 != v30);
-        v28 = [v26 countByEnumeratingWithState:&v45 objects:v63 count:16];
+        v28 = [doubleKeys countByEnumeratingWithState:&v45 objects:v63 count:16];
       }
 
       while (v28);
@@ -167,8 +167,8 @@
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v33 = [objc_opt_class() bucketedKeys];
-    v34 = [v33 countByEnumeratingWithState:&v41 objects:v62 count:16];
+    bucketedKeys = [objc_opt_class() bucketedKeys];
+    v34 = [bucketedKeys countByEnumeratingWithState:&v41 objects:v62 count:16];
     if (v34)
     {
       v35 = v34;
@@ -180,18 +180,18 @@
         {
           if (*v42 != v36)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(bucketedKeys);
           }
 
           v38 = *(*(&v41 + 1) + 8 * v37);
-          v39 = [(RTMetric *)v3 metrics];
-          [v39 setObject:&unk_28459F378 forKeyedSubscript:v38];
+          metrics5 = [(RTMetric *)v3 metrics];
+          [metrics5 setObject:&unk_28459F378 forKeyedSubscript:v38];
 
           ++v37;
         }
 
         while (v35 != v37);
-        v35 = [v33 countByEnumeratingWithState:&v41 objects:v62 count:16];
+        v35 = [bucketedKeys countByEnumeratingWithState:&v41 objects:v62 count:16];
       }
 
       while (v35);
@@ -201,14 +201,14 @@
   return v3;
 }
 
-- (RTRelabelerMetrics)initWithRelabeler:(id)a3
+- (RTRelabelerMetrics)initWithRelabeler:(id)relabeler
 {
-  v5 = a3;
-  if (v5)
+  relabelerCopy = relabeler;
+  if (relabelerCopy)
   {
-    objc_storeStrong(&self->_relabeler, a3);
+    objc_storeStrong(&self->_relabeler, relabeler);
     self = [(RTRelabelerMetrics *)self initWithLoggingEnabled:0];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
@@ -220,69 +220,69 @@
       _os_log_error_impl(&dword_2304B3000, v7, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: relabeler", v9, 2u);
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 + (id)supportedMetricKeys
 {
   v2 = MEMORY[0x277CBEB58];
-  v3 = [objc_opt_class() BOOLeanKeys];
-  v4 = [v2 setWithSet:v3];
+  bOOLeanKeys = [objc_opt_class() BOOLeanKeys];
+  v4 = [v2 setWithSet:bOOLeanKeys];
 
-  v5 = [objc_opt_class() unsignedIntegerKeys];
-  v6 = [v5 allObjects];
-  [v4 addObjectsFromArray:v6];
+  unsignedIntegerKeys = [objc_opt_class() unsignedIntegerKeys];
+  allObjects = [unsignedIntegerKeys allObjects];
+  [v4 addObjectsFromArray:allObjects];
 
-  v7 = [objc_opt_class() integerKeys];
-  v8 = [v7 allObjects];
-  [v4 addObjectsFromArray:v8];
+  integerKeys = [objc_opt_class() integerKeys];
+  allObjects2 = [integerKeys allObjects];
+  [v4 addObjectsFromArray:allObjects2];
 
-  v9 = [objc_opt_class() doubleKeys];
-  v10 = [v9 allObjects];
-  [v4 addObjectsFromArray:v10];
+  doubleKeys = [objc_opt_class() doubleKeys];
+  allObjects3 = [doubleKeys allObjects];
+  [v4 addObjectsFromArray:allObjects3];
 
-  v11 = [objc_opt_class() bucketedKeys];
-  v12 = [v11 allObjects];
-  [v4 addObjectsFromArray:v12];
+  bucketedKeys = [objc_opt_class() bucketedKeys];
+  allObjects4 = [bucketedKeys allObjects];
+  [v4 addObjectsFromArray:allObjects4];
 
   return v4;
 }
 
-- (void)setPreprocessedMetricsUsingInputCandidate:(id)a3 contextCandidates:(id)a4
+- (void)setPreprocessedMetricsUsingInputCandidate:(id)candidate contextCandidates:(id)candidates
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  candidateCopy = candidate;
+  candidatesCopy = candidates;
+  if (candidateCopy)
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTRelabeler placeholderCandidate:](self->_relabeler, "placeholderCandidate:", v6)}];
-    v9 = [(RTMetric *)self metrics];
-    [v9 setObject:v8 forKeyedSubscript:@"relabelingCandidateIsPlaceholder"];
+    v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[RTRelabeler placeholderCandidate:](self->_relabeler, "placeholderCandidate:", candidateCopy)}];
+    metrics = [(RTMetric *)self metrics];
+    [metrics setObject:v8 forKeyedSubscript:@"relabelingCandidateIsPlaceholder"];
 
     v10 = MEMORY[0x277CCABB0];
-    v11 = [v6 firstObject];
-    [v11 placeConfidence];
+    firstObject = [candidateCopy firstObject];
+    [firstObject placeConfidence];
     v12 = [v10 numberWithDouble:?];
-    v13 = [(RTMetric *)self metrics];
-    [v13 setObject:v12 forKeyedSubscript:@"confidenceOfRelabelingCandidate"];
+    metrics2 = [(RTMetric *)self metrics];
+    [metrics2 setObject:v12 forKeyedSubscript:@"confidenceOfRelabelingCandidate"];
 
-    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "count")}];
-    v15 = [(RTMetric *)self metrics];
-    [v15 setObject:v14 forKeyedSubscript:@"numberOfPreFilteredContextCandidates"];
+    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(candidatesCopy, "count")}];
+    metrics3 = [(RTMetric *)self metrics];
+    [metrics3 setObject:v14 forKeyedSubscript:@"numberOfPreFilteredContextCandidates"];
 
-    v16 = [v6 secondObject];
-    v17 = [v16 mapItemPlaceType];
+    secondObject = [candidateCopy secondObject];
+    mapItemPlaceType = [secondObject mapItemPlaceType];
 
-    v18 = [(RTMetric *)self metrics];
-    v19 = v18;
-    if (v17 == 1)
+    metrics4 = [(RTMetric *)self metrics];
+    v19 = metrics4;
+    if (mapItemPlaceType == 1)
     {
       v20 = &unk_28459F3C0;
     }
 
-    else if (v17 == 2)
+    else if (mapItemPlaceType == 2)
     {
       v20 = &unk_28459F3A8;
     }
@@ -292,7 +292,7 @@
       v20 = &unk_28459F3D8;
     }
 
-    [v18 setObject:v20 forKeyedSubscript:@"relabelingCandidateMapItemType"];
+    [metrics4 setObject:v20 forKeyedSubscript:@"relabelingCandidateMapItemType"];
   }
 
   else
@@ -306,39 +306,39 @@
   }
 }
 
-- (void)setFilteredInputMetricsUsingContextCandidates:(id)a3
+- (void)setFilteredInputMetricsUsingContextCandidates:(id)candidates
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a3, "count")}];
-  v4 = [(RTMetric *)self metrics];
-  [v4 setObject:v5 forKeyedSubscript:@"numberOfFilteredContextCandidates"];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(candidates, "count")}];
+  metrics = [(RTMetric *)self metrics];
+  [metrics setObject:v5 forKeyedSubscript:@"numberOfFilteredContextCandidates"];
 }
 
-- (void)setNonRevGeoCandidates:(id)a3 revGeoCandidates:(id)a4
+- (void)setNonRevGeoCandidates:(id)candidates revGeoCandidates:(id)geoCandidates
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(a3, "count")}];
-  v9 = [(RTMetric *)self metrics];
-  [v9 setObject:v8 forKeyedSubscript:@"numberOfNonPlaceholderCandidates"];
+  geoCandidatesCopy = geoCandidates;
+  v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(candidates, "count")}];
+  metrics = [(RTMetric *)self metrics];
+  [metrics setObject:v8 forKeyedSubscript:@"numberOfNonPlaceholderCandidates"];
 
   v10 = MEMORY[0x277CCABB0];
-  v11 = [v7 count];
+  v11 = [geoCandidatesCopy count];
 
   v13 = [v10 numberWithUnsignedInteger:v11];
-  v12 = [(RTMetric *)self metrics];
-  [v12 setObject:v13 forKeyedSubscript:@"numberOfPlaceholderCandidates"];
+  metrics2 = [(RTMetric *)self metrics];
+  [metrics2 setObject:v13 forKeyedSubscript:@"numberOfPlaceholderCandidates"];
 }
 
-- (void)setNumberOfUniqueMapItems:(id)a3
+- (void)setNumberOfUniqueMapItems:(id)items
 {
-  if (a3)
+  if (items)
   {
     v4 = MEMORY[0x277CCABB0];
     v8 = 0;
-    v5 = [a3 allUniqueMapItemsWithError:&v8];
+    v5 = [items allUniqueMapItemsWithError:&v8];
     v6 = [v4 numberWithUnsignedInteger:{-[NSObject count](v5, "count")}];
-    v7 = [(RTMetric *)self metrics];
-    [v7 setObject:v6 forKeyedSubscript:@"numberOfUniqueNonPlaceholderMapItems"];
+    metrics = [(RTMetric *)self metrics];
+    [metrics setObject:v6 forKeyedSubscript:@"numberOfUniqueNonPlaceholderMapItems"];
   }
 
   else
@@ -352,16 +352,16 @@
   }
 }
 
-- (double)calculateEntropyOfProbVector:(id)a3
+- (double)calculateEntropyOfProbVector:(id)vector
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  vectorCopy = vector;
+  v4 = vectorCopy;
+  if (!vectorCopy)
   {
-    v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    allValues = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     v9 = -1.0;
-    if (!os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(allValues, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_17;
     }
@@ -369,15 +369,15 @@
     *buf = 0;
     v15 = "Invalid parameter not satisfying: probVector";
 LABEL_15:
-    _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, v15, buf, 2u);
+    _os_log_error_impl(&dword_2304B3000, allValues, OS_LOG_TYPE_ERROR, v15, buf, 2u);
     goto LABEL_17;
   }
 
-  if (![v3 count])
+  if (![vectorCopy count])
   {
-    v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    allValues = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     v9 = -1.0;
-    if (!os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(allValues, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_17;
     }
@@ -391,8 +391,8 @@ LABEL_15:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 allValues];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  allValues = [v4 allValues];
+  v6 = [allValues countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -404,7 +404,7 @@ LABEL_15:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
@@ -414,7 +414,7 @@ LABEL_15:
         v9 = v9 - v13 * log(v14);
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v17 objects:v22 count:16];
     }
 
     while (v7);
@@ -430,14 +430,14 @@ LABEL_17:
   return v9;
 }
 
-- (id)getUUIDForPotentialRelabelingItemUsingInputCandidate:(id)a3 relabeledProbVector:(id)a4
+- (id)getUUIDForPotentialRelabelingItemUsingInputCandidate:(id)candidate relabeledProbVector:(id)vector
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v28 = v6;
-  if (!v6)
+  candidateCopy = candidate;
+  vectorCopy = vector;
+  v8 = vectorCopy;
+  v28 = candidateCopy;
+  if (!candidateCopy)
   {
     obj = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(obj, OS_LOG_TYPE_ERROR))
@@ -452,7 +452,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (!v7)
+  if (!vectorCopy)
   {
     obj = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(obj, OS_LOG_TYPE_ERROR))
@@ -465,7 +465,7 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if (![v7 count])
+  if (![vectorCopy count])
   {
     obj = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(obj, OS_LOG_TYPE_ERROR))
@@ -478,7 +478,7 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v9 = [(RTRelabeler *)self->_relabeler placeholderCandidate:v6];
+  v9 = [(RTRelabeler *)self->_relabeler placeholderCandidate:candidateCopy];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -488,7 +488,7 @@ LABEL_23:
   if (!v10)
   {
 LABEL_24:
-    v22 = 0;
+    identifier4 = 0;
     goto LABEL_25;
   }
 
@@ -507,11 +507,11 @@ LABEL_24:
       v14 = *(*(&v29 + 1) + 8 * i);
       if (!v9)
       {
-        v15 = [*(*(&v29 + 1) + 8 * i) mapItem];
-        v16 = [v15 identifier];
-        v17 = [v28 secondObject];
-        v18 = [v17 identifier];
-        v19 = [v16 isEqual:v18];
+        mapItem = [*(*(&v29 + 1) + 8 * i) mapItem];
+        identifier = [mapItem identifier];
+        secondObject = [v28 secondObject];
+        identifier2 = [secondObject identifier];
+        v19 = [identifier isEqual:identifier2];
 
         if (v19)
         {
@@ -519,13 +519,13 @@ LABEL_24:
         }
       }
 
-      v20 = [v14 mapItem];
-      v21 = [v20 identifier];
+      mapItem2 = [v14 mapItem];
+      identifier3 = [mapItem2 identifier];
 
-      if (v21)
+      if (identifier3)
       {
-        v24 = [v14 mapItem];
-        v22 = [v24 identifier];
+        mapItem3 = [v14 mapItem];
+        identifier4 = [mapItem3 identifier];
 
         goto LABEL_20;
       }
@@ -540,19 +540,19 @@ LABEL_24:
     break;
   }
 
-  v22 = 0;
+  identifier4 = 0;
 LABEL_20:
   v8 = v26;
 LABEL_25:
 
-  return v22;
+  return identifier4;
 }
 
-- (double)logMax2ConfidenceRatioOfRelabeledProbVector:(id)a3
+- (double)logMax2ConfidenceRatioOfRelabeledProbVector:(id)vector
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  vectorCopy = vector;
+  v4 = vectorCopy;
+  if (!vectorCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -571,7 +571,7 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  if ([v3 count] <= 1)
+  if ([vectorCopy count] <= 1)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -596,12 +596,12 @@ LABEL_8:
   return v10;
 }
 
-- (id)maxUUIDOfProbVector:(id)a3
+- (id)maxUUIDOfProbVector:(id)vector
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  vectorCopy = vector;
+  v4 = vectorCopy;
+  if (!vectorCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -616,7 +616,7 @@ LABEL_21:
     goto LABEL_16;
   }
 
-  if (![v3 count])
+  if (![vectorCopy count])
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -681,15 +681,15 @@ LABEL_17:
   return v8;
 }
 
-- (void)setOutputMetricsUsingInputCandidate:(id)a3 priorVector:(id)a4 observationVector:(id)a5 posteriorVector:(id)a6 relabeledProbVector:(id)a7 relabeledInferredMapItem:(id)a8
+- (void)setOutputMetricsUsingInputCandidate:(id)candidate priorVector:(id)vector observationVector:(id)observationVector posteriorVector:(id)posteriorVector relabeledProbVector:(id)probVector relabeledInferredMapItem:(id)item
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (!v14)
+  candidateCopy = candidate;
+  vectorCopy = vector;
+  observationVectorCopy = observationVector;
+  posteriorVectorCopy = posteriorVector;
+  probVectorCopy = probVector;
+  itemCopy = item;
+  if (!candidateCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -704,7 +704,7 @@ LABEL_40:
     goto LABEL_52;
   }
 
-  if (!v15)
+  if (!vectorCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -717,7 +717,7 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  if (!v16)
+  if (!observationVectorCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -730,7 +730,7 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  if (!v17)
+  if (!posteriorVectorCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -743,7 +743,7 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  if (!v18)
+  if (!probVectorCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -756,7 +756,7 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  if (![v18 count])
+  if (![probVectorCopy count])
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -769,20 +769,20 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  if (v19)
+  if (itemCopy)
   {
-    v128 = self;
+    selfCopy = self;
     v20 = MEMORY[0x277CBEB98];
-    v21 = [v15 allKeys];
-    v22 = [v20 setWithArray:v21];
+    allKeys = [vectorCopy allKeys];
+    v22 = [v20 setWithArray:allKeys];
 
     v23 = MEMORY[0x277CBEB98];
-    v24 = [v16 allKeys];
-    v25 = [v23 setWithArray:v24];
+    allKeys2 = [observationVectorCopy allKeys];
+    v25 = [v23 setWithArray:allKeys2];
 
     v26 = MEMORY[0x277CBEB98];
-    v27 = [v17 allKeys];
-    v28 = [v26 setWithArray:v27];
+    allKeys3 = [posteriorVectorCopy allKeys];
+    v28 = [v26 setWithArray:allKeys3];
 
     v129 = v25;
     v130 = v28;
@@ -790,18 +790,18 @@ LABEL_40:
     {
       if (([v22 isEqualToSet:v28]& 1) != 0)
       {
-        v29 = v128;
-        v126 = [(RTRelabeler *)v128->_relabeler placeholderCandidate:v14];
-        if (v126 || ([v14 secondObject], v30 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v30, "identifier"), v31 = objc_claimAutoreleasedReturnValue(), v123 = -[NSObject containsObject:](v22, "containsObject:", v31), v31, v29 = v128, v30, (v123 & 1) != 0))
+        v29 = selfCopy;
+        v126 = [(RTRelabeler *)selfCopy->_relabeler placeholderCandidate:candidateCopy];
+        if (v126 || ([candidateCopy secondObject], v30 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v30, "identifier"), v31 = objc_claimAutoreleasedReturnValue(), v123 = -[NSObject containsObject:](v22, "containsObject:", v31), v31, v29 = selfCopy, v30, (v123 & 1) != 0))
         {
-          v32 = [(RTRelabeler *)v29->_relabeler placeholderUUID];
-          v33 = [v22 containsObject:v32];
+          placeholderUUID = [(RTRelabeler *)v29->_relabeler placeholderUUID];
+          v33 = [v22 containsObject:placeholderUUID];
 
           if (v33)
           {
-            v34 = [v19 mapItem];
+            mapItem = [itemCopy mapItem];
 
-            if (v34)
+            if (mapItem)
             {
               v35 = 1;
             }
@@ -813,7 +813,7 @@ LABEL_40:
 
             if (v35)
             {
-              if (v34)
+              if (mapItem)
               {
                 v36 = v126;
               }
@@ -825,7 +825,7 @@ LABEL_40:
 
               if (v36)
               {
-                if (v34)
+                if (mapItem)
                 {
                   v37 = 0;
                 }
@@ -835,8 +835,8 @@ LABEL_40:
                   v37 = v126;
                 }
 
-                v38 = [(RTMetric *)v128 metrics];
-                v39 = v38;
+                metrics = [(RTMetric *)selfCopy metrics];
+                v39 = metrics;
                 if (v37)
                 {
                   v40 = &unk_28459F408;
@@ -847,18 +847,18 @@ LABEL_40:
                   v40 = &unk_28459F420;
                 }
 
-                [v38 setObject:v40 forKeyedSubscript:@"relabelerAction"];
-                v44 = v128;
+                [metrics setObject:v40 forKeyedSubscript:@"relabelerAction"];
+                v44 = selfCopy;
                 goto LABEL_60;
               }
 
-              v47 = [v14 secondObject];
-              v48 = [v19 mapItem];
-              v124 = [v47 isEqualToMapItem:v48];
+              secondObject = [candidateCopy secondObject];
+              mapItem2 = [itemCopy mapItem];
+              v124 = [secondObject isEqualToMapItem:mapItem2];
 
-              v44 = v128;
-              v45 = [(RTMetric *)v128 metrics];
-              v39 = v45;
+              v44 = selfCopy;
+              metrics2 = [(RTMetric *)selfCopy metrics];
+              v39 = metrics2;
               if (v124)
               {
                 v46 = &unk_28459F3F0;
@@ -872,17 +872,17 @@ LABEL_40:
 
             else
             {
-              v44 = v128;
-              v45 = [(RTMetric *)v128 metrics];
-              v39 = v45;
+              v44 = selfCopy;
+              metrics2 = [(RTMetric *)selfCopy metrics];
+              v39 = metrics2;
               v46 = &unk_28459F3A8;
             }
 
-            [v45 setObject:v46 forKeyedSubscript:@"relabelerAction"];
+            [metrics2 setObject:v46 forKeyedSubscript:@"relabelerAction"];
 LABEL_60:
 
             v49 = MEMORY[0x277CCABB0];
-            [v19 confidence];
+            [itemCopy confidence];
             v50 = [v49 numberWithDouble:?];
             [(RTMetric *)v44 metrics];
             v52 = p_isa = &v44->super.super.isa;
@@ -890,61 +890,61 @@ LABEL_60:
 
             if (v126)
             {
-              v127 = [p_isa[3] placeholderUUID];
+              placeholderUUID2 = [p_isa[3] placeholderUUID];
             }
 
             else
             {
-              v53 = [v14 secondObject];
-              v127 = [v53 identifier];
+              secondObject2 = [candidateCopy secondObject];
+              placeholderUUID2 = [secondObject2 identifier];
             }
 
             v54 = p_isa;
-            v125 = [p_isa getUUIDForPotentialRelabelingItemUsingInputCandidate:v14 relabeledProbVector:v18];
+            v125 = [p_isa getUUIDForPotentialRelabelingItemUsingInputCandidate:candidateCopy relabeledProbVector:probVectorCopy];
             if (v125)
             {
-              v55 = [p_isa metrics];
-              [v55 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"hasSomethingToRelabelTo"];
+              metrics3 = [p_isa metrics];
+              [metrics3 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"hasSomethingToRelabelTo"];
 
               v56 = MEMORY[0x277CCABB0];
-              v117 = [v16 objectForKeyedSubscript:v127];
+              v117 = [observationVectorCopy objectForKeyedSubscript:placeholderUUID2];
               [v117 doubleValue];
               v58 = log(v57);
-              v59 = [v16 objectForKeyedSubscript:v125];
+              v59 = [observationVectorCopy objectForKeyedSubscript:v125];
               [v59 doubleValue];
               v61 = [v56 numberWithDouble:(v58 - log(v60))];
-              v62 = [v54 metrics];
-              [v62 setObject:v61 forKeyedSubscript:@"logObservationNonPlaceholderRatio"];
+              metrics4 = [v54 metrics];
+              [metrics4 setObject:v61 forKeyedSubscript:@"logObservationNonPlaceholderRatio"];
 
               v63 = MEMORY[0x277CCABB0];
-              v118 = [v15 objectForKeyedSubscript:v127];
+              v118 = [vectorCopy objectForKeyedSubscript:placeholderUUID2];
               [v118 doubleValue];
               v65 = log(v64);
-              v112 = [v15 objectForKeyedSubscript:v125];
+              v112 = [vectorCopy objectForKeyedSubscript:v125];
               [v112 doubleValue];
               v67 = [v63 numberWithDouble:(v65 - log(v66))];
-              v68 = [(RTMetric *)v128 metrics];
-              [v68 setObject:v67 forKeyedSubscript:@"logPriorNonPlaceholderRatio"];
+              metrics5 = [(RTMetric *)selfCopy metrics];
+              [metrics5 setObject:v67 forKeyedSubscript:@"logPriorNonPlaceholderRatio"];
 
               v69 = MEMORY[0x277CCABB0];
-              v119 = [v17 objectForKeyedSubscript:v127];
+              v119 = [posteriorVectorCopy objectForKeyedSubscript:placeholderUUID2];
               [v119 doubleValue];
               v71 = log(v70);
-              v113 = [v17 objectForKeyedSubscript:v125];
+              v113 = [posteriorVectorCopy objectForKeyedSubscript:v125];
               [v113 doubleValue];
               v73 = [v69 numberWithDouble:(v71 - log(v72))];
-              v74 = [(RTMetric *)v128 metrics];
-              [v74 setObject:v73 forKeyedSubscript:@"logPosteriorNonPlaceholderRatio"];
+              metrics6 = [(RTMetric *)selfCopy metrics];
+              [metrics6 setObject:v73 forKeyedSubscript:@"logPosteriorNonPlaceholderRatio"];
 
-              v54 = &v128->super.super.isa;
+              v54 = &selfCopy->super.super.isa;
             }
 
             v75 = MEMORY[0x277CCABB0];
-            v120 = [v16 objectForKeyedSubscript:v127];
+            v120 = [observationVectorCopy objectForKeyedSubscript:placeholderUUID2];
             [v120 doubleValue];
             v77 = log(v76);
-            v114 = [v54[3] placeholderUUID];
-            v109 = [v16 objectForKeyedSubscript:v114];
+            placeholderUUID3 = [v54[3] placeholderUUID];
+            v109 = [observationVectorCopy objectForKeyedSubscript:placeholderUUID3];
             [v109 doubleValue];
             v79 = [v75 numberWithDouble:(v77 - log(v78))];
             [v54 metrics];
@@ -952,59 +952,59 @@ LABEL_60:
             [v81 setObject:v79 forKeyedSubscript:@"logObservationPlaceholderRatio"];
 
             v82 = MEMORY[0x277CCABB0];
-            v121 = [v15 objectForKeyedSubscript:v127];
+            v121 = [vectorCopy objectForKeyedSubscript:placeholderUUID2];
             [v121 doubleValue];
             v84 = log(v83);
-            v115 = [v80[3] placeholderUUID];
-            v110 = [v15 objectForKeyedSubscript:v115];
+            placeholderUUID4 = [v80[3] placeholderUUID];
+            v110 = [vectorCopy objectForKeyedSubscript:placeholderUUID4];
             [v110 doubleValue];
             v86 = [v82 numberWithDouble:(v84 - log(v85))];
-            v87 = [v80 metrics];
-            [v87 setObject:v86 forKeyedSubscript:@"logPriorPlaceholderRatio"];
+            metrics7 = [v80 metrics];
+            [metrics7 setObject:v86 forKeyedSubscript:@"logPriorPlaceholderRatio"];
 
             v88 = MEMORY[0x277CCABB0];
-            v122 = [v17 objectForKeyedSubscript:v127];
+            v122 = [posteriorVectorCopy objectForKeyedSubscript:placeholderUUID2];
             [v122 doubleValue];
             v90 = log(v89);
-            v116 = [v80[3] placeholderUUID];
-            v111 = [v17 objectForKeyedSubscript:v116];
+            placeholderUUID5 = [v80[3] placeholderUUID];
+            v111 = [posteriorVectorCopy objectForKeyedSubscript:placeholderUUID5];
             [v111 doubleValue];
             v92 = [v88 numberWithDouble:(v90 - log(v91))];
-            v93 = [v80 metrics];
-            [v93 setObject:v92 forKeyedSubscript:@"logPosteriorPlaceholderRatio"];
+            metrics8 = [v80 metrics];
+            [metrics8 setObject:v92 forKeyedSubscript:@"logPosteriorPlaceholderRatio"];
 
-            if ([v18 count] >= 2)
+            if ([probVectorCopy count] >= 2)
             {
-              [(RTRelabelerMetrics *)v128 logMax2ConfidenceRatioOfRelabeledProbVector:v18];
+              [(RTRelabelerMetrics *)selfCopy logMax2ConfidenceRatioOfRelabeledProbVector:probVectorCopy];
               v95 = v94;
               v96 = [MEMORY[0x277CCABB0] numberWithDouble:?];
-              v97 = [(RTMetric *)v128 metrics];
-              [v97 setObject:v96 forKeyedSubscript:@"logMax2ConfidenceRatio"];
+              metrics9 = [(RTMetric *)selfCopy metrics];
+              [metrics9 setObject:v96 forKeyedSubscript:@"logMax2ConfidenceRatio"];
 
-              v98 = [(RTRelabeler *)v128->_relabeler parameters];
-              [v98 minimumConfidenceRatio];
+              parameters = [(RTRelabeler *)selfCopy->_relabeler parameters];
+              [parameters minimumConfidenceRatio];
               v100 = log(v99);
 
-              v101 = v128;
+              v101 = selfCopy;
               if (v95 <= v100)
               {
-                v102 = [(RTRelabelerMetrics *)v128 maxUUIDOfProbVector:v17];
-                v103 = [(RTRelabeler *)v128->_relabeler placeholderUUID];
-                v104 = [v102 isEqual:v103];
+                v102 = [(RTRelabelerMetrics *)selfCopy maxUUIDOfProbVector:posteriorVectorCopy];
+                placeholderUUID6 = [(RTRelabeler *)selfCopy->_relabeler placeholderUUID];
+                v104 = [v102 isEqual:placeholderUUID6];
 
-                v101 = v128;
+                v101 = selfCopy;
                 if ((v104 & 1) == 0)
                 {
-                  v105 = [(RTMetric *)v128 metrics];
-                  [v105 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"madePlaceholderBecauseOfConfidenceRatioThreshold"];
+                  metrics10 = [(RTMetric *)selfCopy metrics];
+                  [metrics10 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"madePlaceholderBecauseOfConfidenceRatioThreshold"];
                 }
               }
 
               v106 = MEMORY[0x277CCABB0];
-              [(RTRelabelerMetrics *)v101 calculateEntropyOfProbVector:v17];
+              [(RTRelabelerMetrics *)v101 calculateEntropyOfProbVector:posteriorVectorCopy];
               v107 = [v106 numberWithDouble:?];
-              v108 = [(RTMetric *)v101 metrics];
-              [v108 setObject:v107 forKeyedSubscript:@"predictionEntropy"];
+              metrics11 = [(RTMetric *)v101 metrics];
+              [metrics11 setObject:v107 forKeyedSubscript:@"predictionEntropy"];
             }
 
             goto LABEL_51;
@@ -1074,32 +1074,32 @@ LABEL_49:
 LABEL_52:
 }
 
-- (void)setErrorMetrics:(id)a3
+- (void)setErrorMetrics:(id)metrics
 {
-  v4 = a3;
-  if (v4)
+  metricsCopy = metrics;
+  if (metricsCopy)
   {
-    v15 = v4;
-    v5 = [(RTMetric *)self metrics];
-    [v5 setObject:&unk_28459F3D8 forKeyedSubscript:@"relabelerAction"];
+    v15 = metricsCopy;
+    metrics = [(RTMetric *)self metrics];
+    [metrics setObject:&unk_28459F3D8 forKeyedSubscript:@"relabelerAction"];
 
-    v6 = [v15 domain];
-    v7 = [v6 isEqualToString:*MEMORY[0x277D01448]];
+    domain = [v15 domain];
+    v7 = [domain isEqualToString:*MEMORY[0x277D01448]];
 
     if (v7)
     {
-      v8 = [(RTMetric *)self metrics];
-      v9 = v8;
+      metrics2 = [(RTMetric *)self metrics];
+      v9 = metrics2;
       v10 = &unk_28459F3A8;
     }
 
     else
     {
-      v11 = [v15 domain];
-      v12 = [v11 isEqualToString:@"RTRelabelerErrorDomain"];
+      domain2 = [v15 domain];
+      v12 = [domain2 isEqualToString:@"RTRelabelerErrorDomain"];
 
-      v8 = [(RTMetric *)self metrics];
-      v9 = v8;
+      metrics2 = [(RTMetric *)self metrics];
+      v9 = metrics2;
       if (v12)
       {
         v10 = &unk_28459F3C0;
@@ -1111,68 +1111,68 @@ LABEL_52:
       }
     }
 
-    [v8 setObject:v10 forKeyedSubscript:@"errorDomain"];
+    [metrics2 setObject:v10 forKeyedSubscript:@"errorDomain"];
 
     v13 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v15, "code")}];
-    v14 = [(RTMetric *)self metrics];
-    [v14 setObject:v13 forKeyedSubscript:@"errorCode"];
+    metrics3 = [(RTMetric *)self metrics];
+    [metrics3 setObject:v13 forKeyedSubscript:@"errorCode"];
 
-    v4 = v15;
+    metricsCopy = v15;
   }
 }
 
 - (void)setDerivedMetrics
 {
   v31 = [RTMetric binsFromStart:&unk_2845A1EA8 toEnd:&unk_2845A1EB8 gap:&unk_2845A1EC8];
-  v3 = [(RTMetric *)self metrics];
-  v4 = [v3 objectForKeyedSubscript:@"confidenceOfRelabelingCandidate"];
+  metrics = [(RTMetric *)self metrics];
+  v4 = [metrics objectForKeyedSubscript:@"confidenceOfRelabelingCandidate"];
   v5 = [RTMetric binForNumber:v4 bins:v31];
-  v6 = [(RTMetric *)self metrics];
-  [v6 setObject:v5 forKeyedSubscript:@"bucketedConfidenceOfRelabelingCandidate"];
+  metrics2 = [(RTMetric *)self metrics];
+  [metrics2 setObject:v5 forKeyedSubscript:@"bucketedConfidenceOfRelabelingCandidate"];
 
-  v7 = [(RTMetric *)self metrics];
-  v8 = [v7 objectForKeyedSubscript:@"numberOfNonPlaceholderCandidates"];
+  metrics3 = [(RTMetric *)self metrics];
+  v8 = [metrics3 objectForKeyedSubscript:@"numberOfNonPlaceholderCandidates"];
   v9 = [RTMetric binForNumber:v8 bins:&unk_2845A1568];
-  v10 = [(RTMetric *)self metrics];
-  [v10 setObject:v9 forKeyedSubscript:@"bucketedNumberOfNonPlaceholderCandidates"];
+  metrics4 = [(RTMetric *)self metrics];
+  [metrics4 setObject:v9 forKeyedSubscript:@"bucketedNumberOfNonPlaceholderCandidates"];
 
-  v11 = [(RTMetric *)self metrics];
-  v12 = [v11 objectForKeyedSubscript:@"numberOfPlaceholderCandidates"];
+  metrics5 = [(RTMetric *)self metrics];
+  v12 = [metrics5 objectForKeyedSubscript:@"numberOfPlaceholderCandidates"];
   v13 = [RTMetric binForNumber:v12 bins:&unk_2845A1568];
-  v14 = [(RTMetric *)self metrics];
-  [v14 setObject:v13 forKeyedSubscript:@"bucketedNumberOfPlaceholderCandidates"];
+  metrics6 = [(RTMetric *)self metrics];
+  [metrics6 setObject:v13 forKeyedSubscript:@"bucketedNumberOfPlaceholderCandidates"];
 
-  v15 = [(RTMetric *)self metrics];
-  v16 = [v15 objectForKeyedSubscript:@"numberOfUniqueNonPlaceholderMapItems"];
+  metrics7 = [(RTMetric *)self metrics];
+  v16 = [metrics7 objectForKeyedSubscript:@"numberOfUniqueNonPlaceholderMapItems"];
   v17 = [RTMetric binForNumber:v16 bins:&unk_2845A1568];
-  v18 = [(RTMetric *)self metrics];
-  [v18 setObject:v17 forKeyedSubscript:@"bucketedNumberOfUniqueNonPlaceholderMapItems"];
+  metrics8 = [(RTMetric *)self metrics];
+  [metrics8 setObject:v17 forKeyedSubscript:@"bucketedNumberOfUniqueNonPlaceholderMapItems"];
 
-  v19 = [(RTMetric *)self metrics];
-  v20 = [v19 objectForKeyedSubscript:@"relabeledConfidence"];
+  metrics9 = [(RTMetric *)self metrics];
+  v20 = [metrics9 objectForKeyedSubscript:@"relabeledConfidence"];
   v21 = [RTMetric binForNumber:v20 bins:v31];
-  v22 = [(RTMetric *)self metrics];
-  [v22 setObject:v21 forKeyedSubscript:@"bucketedRelabeledConfidence"];
+  metrics10 = [(RTMetric *)self metrics];
+  [metrics10 setObject:v21 forKeyedSubscript:@"bucketedRelabeledConfidence"];
 
-  v23 = [(RTMetric *)self metrics];
-  v24 = [v23 objectForKeyedSubscript:@"logPriorNonPlaceholderRatio"];
+  metrics11 = [(RTMetric *)self metrics];
+  v24 = [metrics11 objectForKeyedSubscript:@"logPriorNonPlaceholderRatio"];
   v25 = [RTMetric binForNumber:v24 bins:&unk_2845A1580];
-  v26 = [(RTMetric *)self metrics];
-  [v26 setObject:v25 forKeyedSubscript:@"bucketedLogPriorNonPlaceholderRatio"];
+  metrics12 = [(RTMetric *)self metrics];
+  [metrics12 setObject:v25 forKeyedSubscript:@"bucketedLogPriorNonPlaceholderRatio"];
 
-  v27 = [(RTMetric *)self metrics];
-  v28 = [v27 objectForKeyedSubscript:@"logPriorPlaceholderRatio"];
+  metrics13 = [(RTMetric *)self metrics];
+  v28 = [metrics13 objectForKeyedSubscript:@"logPriorPlaceholderRatio"];
   v29 = [RTMetric binForNumber:v28 bins:&unk_2845A1580];
-  v30 = [(RTMetric *)self metrics];
-  [v30 setObject:v29 forKeyedSubscript:@"bucketedLogPriorPlaceholderRatio"];
+  metrics14 = [(RTMetric *)self metrics];
+  [metrics14 setObject:v29 forKeyedSubscript:@"bucketedLogPriorPlaceholderRatio"];
 }
 
-- (BOOL)submitMetricsWithError:(id *)a3
+- (BOOL)submitMetricsWithError:(id *)error
 {
   [(RTRelabelerMetrics *)self setDerivedMetrics];
   v6.receiver = self;
   v6.super_class = RTRelabelerMetrics;
-  return [(RTMetric *)&v6 submitMetricsWithError:a3];
+  return [(RTMetric *)&v6 submitMetricsWithError:error];
 }
 
 @end

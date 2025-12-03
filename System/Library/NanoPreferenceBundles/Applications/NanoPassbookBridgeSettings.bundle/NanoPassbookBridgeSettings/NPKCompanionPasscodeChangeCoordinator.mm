@@ -5,15 +5,15 @@
 - (PUConnection)passcodeConnection;
 - (id)flowController;
 - (void)_cancelRemoteAction;
-- (void)_checkDeviceLockStateIfNeededWithCompletion:(id)a3;
-- (void)_displayInstructionViewControllerOnNavigationController:(id)a3;
-- (void)_endPasscodeChangeWithPasscodeChanged:(BOOL)a3 error:(id)a4;
+- (void)_checkDeviceLockStateIfNeededWithCompletion:(id)completion;
+- (void)_displayInstructionViewControllerOnNavigationController:(id)controller;
+- (void)_endPasscodeChangeWithPasscodeChanged:(BOOL)changed error:(id)error;
 - (void)_startPasscodeChange;
-- (void)_startRemoteAction:(int64_t)a3 type:(int64_t)a4;
+- (void)_startRemoteAction:(int64_t)action type:(int64_t)type;
 - (void)_tellGizmoToPromptForPasscodeChange;
-- (void)changePasscodeCompanionInstructionViewController:(id)a3 didChangeVisibilityWithIsVisible:(BOOL)a4;
-- (void)handleGizmoPasscodeChangeWithVisibleViewController:(id)a3 completion:(id)a4;
-- (void)setFlowController:(id)a3;
+- (void)changePasscodeCompanionInstructionViewController:(id)controller didChangeVisibilityWithIsVisible:(BOOL)visible;
+- (void)handleGizmoPasscodeChangeWithVisibleViewController:(id)controller completion:(id)completion;
+- (void)setFlowController:(id)controller;
 @end
 
 @implementation NPKCompanionPasscodeChangeCoordinator
@@ -60,10 +60,10 @@
     self->_instructionViewController = v3;
 
     [(NPKChangePasscodeCompanionInstructionViewController *)self->_instructionViewController setDelegate:self];
-    v5 = [(NPKCompanionPasscodeChangeCoordinator *)self flowController];
-    v6 = [v5 context];
+    flowController = [(NPKCompanionPasscodeChangeCoordinator *)self flowController];
+    context = [flowController context];
 
-    if ((v6 & 0xFFFFFFFFFFFFFFFELL) != 4)
+    if ((context & 0xFFFFFFFFFFFFFFFELL) != 4)
     {
       v7 = +[UIColor darkTextColor];
       [(NPKBridgeInstructionViewController *)self->_instructionViewController setInstructionLabelTextColor:v7];
@@ -75,10 +75,10 @@
   return v8;
 }
 
-- (void)handleGizmoPasscodeChangeWithVisibleViewController:(id)a3 completion:(id)a4
+- (void)handleGizmoPasscodeChangeWithVisibleViewController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -97,7 +97,7 @@
         v19 = 2048;
         v20 = 63;
         v21 = 2112;
-        v22 = v6;
+        v22 = controllerCopy;
         _os_log_impl(&dword_0, v10, OS_LOG_TYPE_ERROR, "Error: *** NPKAssertion failure in %{public}s, %{public}s:%ld (reason: Expected to have a view controller, but got %@)", &v15, 0x2Au);
       }
     }
@@ -105,8 +105,8 @@
     _NPKAssertAbort();
   }
 
-  v11 = [v6 navigationController];
-  if (!v11)
+  navigationController = [controllerCopy navigationController];
+  if (!navigationController)
   {
     v12 = pk_General_log();
     v13 = os_log_type_enabled(v12, OS_LOG_TYPE_ERROR);
@@ -129,15 +129,15 @@
     _NPKAssertAbort();
   }
 
-  [(NPKCompanionPasscodeChangeCoordinator *)self setPasscodeChangeCompletion:v7];
-  [(NPKCompanionPasscodeChangeCoordinator *)self _displayInstructionViewControllerOnNavigationController:v11];
+  [(NPKCompanionPasscodeChangeCoordinator *)self setPasscodeChangeCompletion:completionCopy];
+  [(NPKCompanionPasscodeChangeCoordinator *)self _displayInstructionViewControllerOnNavigationController:navigationController];
   [(NPKCompanionPasscodeChangeCoordinator *)self _tellGizmoToPromptForPasscodeChange];
 }
 
-- (void)setFlowController:(id)a3
+- (void)setFlowController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -167,15 +167,15 @@
     }
   }
 
-  objc_storeWeak(&self->_flowController, v4);
+  objc_storeWeak(&self->_flowController, controllerCopy);
 }
 
-- (void)_displayInstructionViewControllerOnNavigationController:(id)a3
+- (void)_displayInstructionViewControllerOnNavigationController:(id)controller
 {
-  v4 = a3;
-  v5 = [(NPKCompanionPasscodeChangeCoordinator *)self instructionViewController];
+  controllerCopy = controller;
+  instructionViewController = [(NPKCompanionPasscodeChangeCoordinator *)self instructionViewController];
 
-  if (v5)
+  if (instructionViewController)
   {
     [(NPKCompanionPasscodeChangeCoordinator *)self setInstructionViewController:0];
   }
@@ -185,8 +185,8 @@
   v6 = [(NPKCompanionPasscodeChangeCoordinator *)self instructionViewController:_NSConcreteStackBlock];
   [v6 setCancellationHandler:&v8];
 
-  v7 = [(NPKCompanionPasscodeChangeCoordinator *)self instructionViewController];
-  [v4 pushViewController:v7 animated:1];
+  instructionViewController2 = [(NPKCompanionPasscodeChangeCoordinator *)self instructionViewController];
+  [controllerCopy pushViewController:instructionViewController2 animated:1];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -205,24 +205,24 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_checkDeviceLockStateIfNeededWithCompletion:(id)a3
+- (void)_checkDeviceLockStateIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(NPKCompanionPasscodeChangeCoordinator *)self _shouldUsePasscodeConnection])
   {
-    v5 = [(NPKCompanionPasscodeChangeCoordinator *)self passcodeConnection];
+    passcodeConnection = [(NPKCompanionPasscodeChangeCoordinator *)self passcodeConnection];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_11140;
     v7[3] = &unk_2CF40;
-    v8 = v4;
-    [v5 getRemoteDeviceState:v7];
+    v8 = completionCopy;
+    [passcodeConnection getRemoteDeviceState:v7];
   }
 
   else
   {
-    v6 = [(NPKCompanionPasscodeChangeCoordinator *)self delegate];
-    [v6 passcodeChangeCoordinator:self checkRemoteDeviceLockStateWithCompletion:v4];
+    delegate = [(NPKCompanionPasscodeChangeCoordinator *)self delegate];
+    [delegate passcodeChangeCoordinator:self checkRemoteDeviceLockStateWithCompletion:completionCopy];
   }
 }
 
@@ -237,42 +237,42 @@
   else
   {
     objc_initWeak(&location, self);
-    v3 = [(NPKCompanionPasscodeChangeCoordinator *)self delegate];
+    delegate = [(NPKCompanionPasscodeChangeCoordinator *)self delegate];
     v4[0] = _NSConcreteStackBlock;
     v4[1] = 3221225472;
     v4[2] = sub_11280;
     v4[3] = &unk_2CF18;
     objc_copyWeak(&v5, &location);
-    [v3 passcodeChangeCoordinator:self remoteDeviceShouldInitiatePasscodeChangeForType:1 completion:v4];
+    [delegate passcodeChangeCoordinator:self remoteDeviceShouldInitiatePasscodeChangeForType:1 completion:v4];
 
     objc_destroyWeak(&v5);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)_endPasscodeChangeWithPasscodeChanged:(BOOL)a3 error:(id)a4
+- (void)_endPasscodeChangeWithPasscodeChanged:(BOOL)changed error:(id)error
 {
-  v4 = a3;
-  v6 = a4;
-  if (v4)
+  changedCopy = changed;
+  errorCopy = error;
+  if (changedCopy)
   {
-    [(NPKCompanionPasscodeChangeCoordinator *)self _invokePasscodeChangeCompletionWithPasscodeChanged:1 error:v6];
-    v7 = [(NPKCompanionPasscodeChangeCoordinator *)self instructionViewController];
-    [v7 showNavigationBarSpinner:1];
+    [(NPKCompanionPasscodeChangeCoordinator *)self _invokePasscodeChangeCompletionWithPasscodeChanged:1 error:errorCopy];
+    instructionViewController = [(NPKCompanionPasscodeChangeCoordinator *)self instructionViewController];
+    [instructionViewController showNavigationBarSpinner:1];
   }
 
   else
   {
-    v8 = [(NPKCompanionPasscodeChangeCoordinator *)self instructionViewController];
-    v7 = [v8 navigationController];
+    instructionViewController2 = [(NPKCompanionPasscodeChangeCoordinator *)self instructionViewController];
+    instructionViewController = [instructionViewController2 navigationController];
 
-    v9 = [v7 topViewController];
-    v10 = [(NPKCompanionPasscodeChangeCoordinator *)self instructionViewController];
-    v11 = [v9 isEqual:v10];
+    topViewController = [instructionViewController topViewController];
+    instructionViewController3 = [(NPKCompanionPasscodeChangeCoordinator *)self instructionViewController];
+    v11 = [topViewController isEqual:instructionViewController3];
 
     if (v11)
     {
-      v12 = [v7 popViewControllerAnimated:1];
+      v12 = [instructionViewController popViewControllerAnimated:1];
     }
   }
 
@@ -284,23 +284,23 @@
   else
   {
     objc_initWeak(&location, self);
-    v13 = [(NPKCompanionPasscodeChangeCoordinator *)self delegate];
+    delegate = [(NPKCompanionPasscodeChangeCoordinator *)self delegate];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_11640;
     v14[3] = &unk_2CF18;
     objc_copyWeak(&v15, &location);
-    [v13 passcodeChangeCoordinator:self remoteDeviceShouldCancelPasscodeChangeWithCompletion:v14];
+    [delegate passcodeChangeCoordinator:self remoteDeviceShouldCancelPasscodeChangeWithCompletion:v14];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)changePasscodeCompanionInstructionViewController:(id)a3 didChangeVisibilityWithIsVisible:(BOOL)a4
+- (void)changePasscodeCompanionInstructionViewController:(id)controller didChangeVisibilityWithIsVisible:(BOOL)visible
 {
-  v4 = a4;
-  v6 = a3;
+  visibleCopy = visible;
+  controllerCopy = controller;
   v7 = pk_Payment_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
@@ -316,13 +316,13 @@
       *&v15[14] = "[NPKCompanionPasscodeChangeCoordinator changePasscodeCompanionInstructionViewController:didChangeVisibilityWithIsVisible:]";
       *v15 = 138544130;
       *&v15[4] = v11;
-      if (v4)
+      if (visibleCopy)
       {
         v12 = @"YES";
       }
 
       *&v15[22] = 2112;
-      v16 = v6;
+      v16 = controllerCopy;
       v17 = 2112;
       v18 = v12;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Notice: %{public}@: %s instructionViewController: %@ isVisible: %@", v15, 0x2Au);
@@ -331,7 +331,7 @@
 
   v13 = [(NPKCompanionPasscodeChangeCoordinator *)self flowController:*v15];
   v14 = v13;
-  if (v4)
+  if (visibleCopy)
   {
     [v13 beginShowingViewController];
   }
@@ -356,7 +356,7 @@
   return v5 ^ 1;
 }
 
-- (void)_startRemoteAction:(int64_t)a3 type:(int64_t)a4
+- (void)_startRemoteAction:(int64_t)action type:(int64_t)type
 {
   v7 = pk_Payment_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -371,14 +371,14 @@
       v13 = 138543618;
       v14 = v11;
       v15 = 2048;
-      v16 = a3;
+      actionCopy = action;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Notice: %{public}@: Starting remote action %ld", &v13, 0x16u);
     }
   }
 
-  [(NPKCompanionPasscodeChangeCoordinator *)self setPendingAction:a3];
-  v12 = [(NPKCompanionPasscodeChangeCoordinator *)self passcodeConnection];
-  [v12 requestRemoteDeviceRemoteAction:a3 type:a4];
+  [(NPKCompanionPasscodeChangeCoordinator *)self setPendingAction:action];
+  passcodeConnection = [(NPKCompanionPasscodeChangeCoordinator *)self passcodeConnection];
+  [passcodeConnection requestRemoteDeviceRemoteAction:action type:type];
 }
 
 - (void)_cancelRemoteAction
@@ -399,8 +399,8 @@
     }
   }
 
-  v8 = [(NPKCompanionPasscodeChangeCoordinator *)self passcodeConnection];
-  [v8 requestRemoteDeviceRemoteAction:0 type:0];
+  passcodeConnection = [(NPKCompanionPasscodeChangeCoordinator *)self passcodeConnection];
+  [passcodeConnection requestRemoteDeviceRemoteAction:0 type:0];
 
   [(NPKCompanionPasscodeChangeCoordinator *)self _finishRemoteAction:0];
 }

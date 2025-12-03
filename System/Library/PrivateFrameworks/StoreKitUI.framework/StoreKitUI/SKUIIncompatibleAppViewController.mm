@@ -1,21 +1,21 @@
 @interface SKUIIncompatibleAppViewController
-- (SKUIIncompatibleAppViewController)initWithIncompatibleItem:(id)a3;
+- (SKUIIncompatibleAppViewController)initWithIncompatibleItem:(id)item;
 - (SKUIProductPageChildViewControllerDelegate)delegate;
 - (id)_artworkContext;
-- (void)_learnMoreAboutApp:(id)a3;
-- (void)_learnMoreAboutIPad:(id)a3;
-- (void)_setArtworkWithImage:(id)a3 error:(id)a4;
+- (void)_learnMoreAboutApp:(id)app;
+- (void)_learnMoreAboutIPad:(id)pad;
+- (void)_setArtworkWithImage:(id)image error:(id)error;
 - (void)dealloc;
 - (void)loadView;
 - (void)reloadData;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SKUIIncompatibleAppViewController
 
-- (SKUIIncompatibleAppViewController)initWithIncompatibleItem:(id)a3
+- (SKUIIncompatibleAppViewController)initWithIncompatibleItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIIncompatibleAppViewController initWithIncompatibleItem:];
@@ -27,9 +27,9 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_incompatibleItem, a3);
-    v8 = [(SKUIItem *)v7->_incompatibleItem title];
-    [(SKUIIncompatibleAppViewController *)v7 setTitle:v8];
+    objc_storeStrong(&v6->_incompatibleItem, item);
+    title = [(SKUIItem *)v7->_incompatibleItem title];
+    [(SKUIIncompatibleAppViewController *)v7 setTitle:title];
   }
 
   return v7;
@@ -47,8 +47,8 @@
 {
   if (!self->_iconImage && !self->_loadIconOperation)
   {
-    v3 = [(SKUIIncompatibleAppViewController *)self _artworkContext];
-    v4 = [v3 URLForItem:self->_incompatibleItem];
+    _artworkContext = [(SKUIIncompatibleAppViewController *)self _artworkContext];
+    v4 = [_artworkContext URLForItem:self->_incompatibleItem];
     if (v4)
     {
       v5 = [objc_alloc(MEMORY[0x277D69CD8]) initWithURL:v4];
@@ -56,7 +56,7 @@
       self->_loadIconOperation = v5;
 
       v7 = self->_loadIconOperation;
-      v8 = [v3 dataConsumerForItem:self->_incompatibleItem];
+      v8 = [_artworkContext dataConsumerForItem:self->_incompatibleItem];
       [(SSVLoadURLOperation *)v7 setDataConsumer:v8];
 
       [(SSVLoadURLOperation *)self->_loadIconOperation setITunesStoreRequest:0];
@@ -107,14 +107,14 @@ void __47__SKUIIncompatibleAppViewController_reloadData__block_invoke_2(uint64_t
   incompatibleView = self->_incompatibleView;
   if (!incompatibleView)
   {
-    v4 = [(SKUIViewController *)self clientContext];
+    clientContext = [(SKUIViewController *)self clientContext];
     v5 = objc_alloc_init(SKUIIncompatibleAppView);
     v6 = self->_incompatibleView;
     self->_incompatibleView = v5;
 
     v7 = self->_incompatibleView;
-    v8 = [MEMORY[0x277D75348] whiteColor];
-    [(SKUIIncompatibleAppView *)v7 setBackgroundColor:v8];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(SKUIIncompatibleAppView *)v7 setBackgroundColor:whiteColor];
 
     incompatibleItem = self->_incompatibleItem;
     if (!incompatibleItem)
@@ -125,13 +125,13 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v35 = [(SKUIItem *)incompatibleItem itemKind];
-    v36 = v4;
-    if (v35 == 5)
+    itemKind = [(SKUIItem *)incompatibleItem itemKind];
+    v36 = clientContext;
+    if (itemKind == 5)
     {
-      if (v4)
+      if (clientContext)
       {
-        [v4 localizedStringForKey:@"INCOMPATIBLE_MAC_APP_TITLE" inTable:@"ProductPage"];
+        [clientContext localizedStringForKey:@"INCOMPATIBLE_MAC_APP_TITLE" inTable:@"ProductPage"];
       }
 
       else
@@ -139,33 +139,33 @@ LABEL_29:
         [SKUIClientContext localizedStringForKey:@"INCOMPATIBLE_MAC_APP_TITLE" inBundles:0 inTable:@"ProductPage"];
       }
       v37 = ;
-      if (v4)
+      if (clientContext)
       {
         v12 = @"INCOMPATIBLE_MAC_APP_MESSAGE";
 LABEL_14:
-        v13 = [v4 localizedStringForKey:v12 inTable:@"ProductPage"];
+        v13 = [clientContext localizedStringForKey:v12 inTable:@"ProductPage"];
 LABEL_18:
         v15 = v13;
         v16 = self->_incompatibleView;
         v17 = MEMORY[0x277CCACA8];
-        v18 = [(SKUIIncompatibleAppViewController *)self title];
-        v19 = [v17 stringWithValidatedFormat:v37 validFormatSpecifiers:@"%@" error:0, v18];
+        title = [(SKUIIncompatibleAppViewController *)self title];
+        v19 = [v17 stringWithValidatedFormat:v37 validFormatSpecifiers:@"%@" error:0, title];
         [(SKUIIncompatibleAppView *)v16 setTitle:v19];
 
         v20 = self->_incompatibleView;
         v21 = MEMORY[0x277CCACA8];
-        v22 = [(SKUIIncompatibleAppViewController *)self title];
-        v23 = [v21 stringWithValidatedFormat:v15 validFormatSpecifiers:@"%@" error:0, v22];
+        title2 = [(SKUIIncompatibleAppViewController *)self title];
+        v23 = [v21 stringWithValidatedFormat:v15 validFormatSpecifiers:@"%@" error:0, title2];
         [(SKUIIncompatibleAppView *)v20 setMessage:v23];
 
         v24 = self->_incompatibleView;
-        v25 = [(SKUIIncompatibleAppViewController *)self _artworkContext];
-        v26 = [v25 placeholderImageForItem:self->_incompatibleItem];
+        _artworkContext = [(SKUIIncompatibleAppViewController *)self _artworkContext];
+        v26 = [_artworkContext placeholderImageForItem:self->_incompatibleItem];
         [(SKUIIncompatibleAppView *)v24 setIconImage:v26];
 
-        v4 = v36;
+        clientContext = v36;
         v27 = v15;
-        if (v35 != 5)
+        if (itemKind != 5)
         {
           v28 = self->_incompatibleView;
           if (v36)
@@ -183,9 +183,9 @@ LABEL_18:
           [v30 addTarget:self action:sel__learnMoreAboutIPad_ forControlEvents:64];
         }
 
-        v31 = [(SKUIProductPageItem *)self->_incompatibleItem supportURLString];
+        supportURLString = [(SKUIProductPageItem *)self->_incompatibleItem supportURLString];
 
-        if (v31)
+        if (supportURLString)
         {
           v32 = self->_incompatibleView;
           if (v36)
@@ -211,11 +211,11 @@ LABEL_18:
 
     else
     {
-      v10 = [(SKUIViewController *)self clientContext];
-      v11 = v10;
-      if (v10)
+      clientContext2 = [(SKUIViewController *)self clientContext];
+      v11 = clientContext2;
+      if (clientContext2)
       {
-        [v10 localizedStringForKey:@"INCOMPATIBLE_IPAD_APP_TITLE" inTable:@"ProductPage"];
+        [clientContext2 localizedStringForKey:@"INCOMPATIBLE_IPAD_APP_TITLE" inTable:@"ProductPage"];
       }
 
       else
@@ -224,7 +224,7 @@ LABEL_18:
       }
       v37 = ;
 
-      if (v4)
+      if (clientContext)
       {
         v12 = @"INCOMPATIBLE_IPAD_APP_MESSAGE";
         goto LABEL_14;
@@ -242,33 +242,33 @@ LABEL_30:
   [(SKUIIncompatibleAppViewController *)self setView:incompatibleView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SKUIIncompatibleAppViewController *)self reloadData];
   v5.receiver = self;
   v5.super_class = SKUIIncompatibleAppViewController;
-  [(SKUIViewController *)&v5 viewWillAppear:v3];
+  [(SKUIViewController *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)_learnMoreAboutApp:(id)a3
+- (void)_learnMoreAboutApp:(id)app
 {
-  v3 = [(SKUIProductPageItem *)self->_incompatibleItem supportURLString];
-  if (v3)
+  supportURLString = [(SKUIProductPageItem *)self->_incompatibleItem supportURLString];
+  if (supportURLString)
   {
-    v6 = v3;
-    v4 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v3];
+    v6 = supportURLString;
+    v4 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:supportURLString];
     v5 = v4;
     if (v4)
     {
       SKUIMetricsOpenURL(v4);
     }
 
-    v3 = v6;
+    supportURLString = v6;
   }
 }
 
-- (void)_learnMoreAboutIPad:(id)a3
+- (void)_learnMoreAboutIPad:(id)pad
 {
   v3 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:@"http://apple.com/ipad"];
   SKUIMetricsOpenURL(v3);
@@ -289,12 +289,12 @@ LABEL_30:
   return artworkContext;
 }
 
-- (void)_setArtworkWithImage:(id)a3 error:(id)a4
+- (void)_setArtworkWithImage:(id)image error:(id)error
 {
-  v7 = a3;
-  if (v7)
+  imageCopy = image;
+  if (imageCopy)
   {
-    objc_storeStrong(&self->_iconImage, a3);
+    objc_storeStrong(&self->_iconImage, image);
     [(SKUIIncompatibleAppView *)self->_incompatibleView setIconImage:self->_iconImage];
   }
 

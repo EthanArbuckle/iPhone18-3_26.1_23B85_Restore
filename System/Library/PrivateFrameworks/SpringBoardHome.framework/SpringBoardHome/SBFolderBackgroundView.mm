@@ -1,17 +1,17 @@
 @interface SBFolderBackgroundView
-- (SBFolderBackgroundView)initWithFrame:(CGRect)a3;
+- (SBFolderBackgroundView)initWithFrame:(CGRect)frame;
 - (SBFolderBackgroundViewDelegate)delegate;
-- (void)setUsesGlass:(BOOL)a3;
+- (void)setUsesGlass:(BOOL)glass;
 - (void)updateGlass;
 @end
 
 @implementation SBFolderBackgroundView
 
-- (SBFolderBackgroundView)initWithFrame:(CGRect)a3
+- (SBFolderBackgroundView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SBFolderBackgroundView;
-  v3 = [(SBFolderBackgroundView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBFolderBackgroundView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -22,11 +22,11 @@
   return v4;
 }
 
-- (void)setUsesGlass:(BOOL)a3
+- (void)setUsesGlass:(BOOL)glass
 {
-  if (self->_usesGlass != a3)
+  if (self->_usesGlass != glass)
   {
-    self->_usesGlass = a3;
+    self->_usesGlass = glass;
     [(SBFolderBackgroundView *)self updateGlass];
   }
 }

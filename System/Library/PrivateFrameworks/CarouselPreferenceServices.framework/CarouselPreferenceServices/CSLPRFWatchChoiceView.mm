@@ -1,21 +1,21 @@
 @interface CSLPRFWatchChoiceView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (CSLPRFWatchChoiceView)initWithChoice:(id)a3 delegate:(id)a4 horizontalOffset:(double)a5 selectionHandler:(id)a6;
-- (id)_createWatchViewForChoice:(id)a3;
-- (void)_addWatchScreenImageIfNecessary:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (CSLPRFWatchChoiceView)initWithChoice:(id)choice delegate:(id)delegate horizontalOffset:(double)offset selectionHandler:(id)handler;
+- (id)_createWatchViewForChoice:(id)choice;
+- (void)_addWatchScreenImageIfNecessary:(id)necessary;
 - (void)_updateWatchViewPreferredWidth;
-- (void)selectedByTap:(id)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)selectedByTap:(id)tap;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation CSLPRFWatchChoiceView
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   [(CSLPRFAppViewChoiceButton *)self->_button setSelected:?];
   button = self->_button;
-  if (a3)
+  if (selected)
   {
     [MEMORY[0x277D75348] systemOrangeColor];
   }
@@ -28,7 +28,7 @@
   [(CSLPRFAppViewChoiceButton *)button setTintColor:v6];
 }
 
-- (void)selectedByTap:(id)a3
+- (void)selectedByTap:(id)tap
 {
   selectionHandler = self->_selectionHandler;
   if (selectionHandler)
@@ -37,23 +37,23 @@
   }
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(BPSIllustratedWatchView *)self->_watchView setNeedsLayout];
   [(BPSIllustratedWatchView *)self->_watchView layoutIfNeeded];
   v14.receiver = self;
   v14.super_class = CSLPRFWatchChoiceView;
-  *&v10 = a4;
-  *&v11 = a5;
+  *&v10 = priority;
+  *&v11 = fittingPriority;
   [(CSLPRFWatchChoiceView *)&v14 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v10, v11];
   result.height = v13;
   result.width = v12;
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   [(CSLPRFWatchChoiceView *)self systemLayoutSizeFittingSize:*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)];
   result.height = v4;
@@ -61,24 +61,24 @@
   return result;
 }
 
-- (CSLPRFWatchChoiceView)initWithChoice:(id)a3 delegate:(id)a4 horizontalOffset:(double)a5 selectionHandler:(id)a6
+- (CSLPRFWatchChoiceView)initWithChoice:(id)choice delegate:(id)delegate horizontalOffset:(double)offset selectionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  choiceCopy = choice;
+  delegateCopy = delegate;
+  handlerCopy = handler;
   v37.receiver = self;
   v37.super_class = CSLPRFWatchChoiceView;
   v13 = [(CSLPRFWatchChoiceView *)&v37 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_delegate, v11);
-    v14->_choice = [v10 choice];
-    v15 = MEMORY[0x2318C26B0](v12);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    v14->_choice = [choiceCopy choice];
+    v15 = MEMORY[0x2318C26B0](handlerCopy);
     selectionHandler = v14->_selectionHandler;
     v14->_selectionHandler = v15;
 
-    v14->_horizontalOffset = a5;
+    v14->_horizontalOffset = offset;
     [(CSLPRFWatchChoiceView *)v14 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(CSLPRFWatchChoiceView *)v14 setAxis:1];
     [(CSLPRFWatchChoiceView *)v14 setAlignment:3];
@@ -87,7 +87,7 @@
     [(CSLPRFWatchChoiceView *)v14 setContentCompressionResistancePriority:1 forAxis:v17];
     LODWORD(v18) = 1148846080;
     [(CSLPRFWatchChoiceView *)v14 setContentHuggingPriority:1 forAxis:v18];
-    v19 = [(CSLPRFWatchChoiceView *)v14 _createWatchViewForChoice:v10];
+    v19 = [(CSLPRFWatchChoiceView *)v14 _createWatchViewForChoice:choiceCopy];
     watchView = v14->_watchView;
     v14->_watchView = v19;
 
@@ -95,11 +95,11 @@
     [(BPSIllustratedWatchView *)v14->_watchView setContentCompressionResistancePriority:1 forAxis:v21];
     [(CSLPRFWatchChoiceView *)v14 addArrangedSubview:v14->_watchView];
     [(CSLPRFWatchChoiceView *)v14 setCustomSpacing:v14->_watchView afterView:28.0];
-    [(CSLPRFWatchChoiceView *)v14 _addWatchScreenImageIfNecessary:v10];
+    [(CSLPRFWatchChoiceView *)v14 _addWatchScreenImageIfNecessary:choiceCopy];
     v22 = objc_alloc_init(MEMORY[0x277D756B8]);
     WeakRetained = objc_loadWeakRetained(&v14->_delegate);
-    v24 = [v10 label];
-    v25 = [WeakRetained localize:v24];
+    label = [choiceCopy label];
+    v25 = [WeakRetained localize:label];
 
     [v22 setText:v25];
     [v22 setNumberOfLines:0];
@@ -135,31 +135,31 @@
   return v14;
 }
 
-- (void)_addWatchScreenImageIfNecessary:(id)a3
+- (void)_addWatchScreenImageIfNecessary:(id)necessary
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(BPSIllustratedWatchView *)self->_watchView watchScreenImageView];
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 scale];
+  necessaryCopy = necessary;
+  watchScreenImageView = [(BPSIllustratedWatchView *)self->_watchView watchScreenImageView];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v8 = v7;
 
-  v9 = [MEMORY[0x277D37B50] sharedInstance];
-  v10 = [v9 getDevicesExcluding:53];
-  v11 = [v10 firstObject];
+  mEMORY[0x277D37B50] = [MEMORY[0x277D37B50] sharedInstance];
+  v10 = [mEMORY[0x277D37B50] getDevicesExcluding:53];
+  firstObject = [v10 firstObject];
 
-  v12 = [MEMORY[0x277CF3448] shared];
-  LOBYTE(v10) = [v12 inWatchSetupFlow];
+  mEMORY[0x277CF3448] = [MEMORY[0x277CF3448] shared];
+  LOBYTE(v10) = [mEMORY[0x277CF3448] inWatchSetupFlow];
 
-  if ((v10 & 1) != 0 || !v11)
+  if ((v10 & 1) != 0 || !firstObject)
   {
-    v14 = [MEMORY[0x277D37A78] sharedDeviceController];
-    v13 = [v14 size];
+    mEMORY[0x277D37A78] = [MEMORY[0x277D37A78] sharedDeviceController];
+    v13 = [mEMORY[0x277D37A78] size];
   }
 
   else
   {
-    v13 = [MEMORY[0x277D37A78] sizeFromPdrDevice:v11];
+    v13 = [MEMORY[0x277D37A78] sizeFromPdrDevice:firstObject];
   }
 
   if (v13 == 19)
@@ -180,31 +180,31 @@
     v16 = 103.5;
   }
 
-  v17 = [v4 screenImage];
+  screenImage = [necessaryCopy screenImage];
 
-  if (v17)
+  if (screenImage)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
-      v18 = [v4 screenImage];
+      screenImage2 = [necessaryCopy screenImage];
       *buf = 138412546;
-      v38 = v18;
+      v38 = screenImage2;
       v39 = 2112;
-      v40 = v5;
+      v40 = watchScreenImageView;
       _os_log_impl(&dword_22CE92000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, ">>>> adding provided %@ to view %@", buf, 0x16u);
     }
 
-    v19 = [v4 screenImage];
-    [v5 setImage:v19];
+    screenImage3 = [necessaryCopy screenImage];
+    [watchScreenImageView setImage:screenImage3];
   }
 
-  v20 = [v4 imageProvider];
+  imageProvider = [necessaryCopy imageProvider];
 
-  if (v20)
+  if (imageProvider)
   {
-    v21 = [v5 image];
+    image = [watchScreenImageView image];
 
-    if (v21)
+    if (image)
     {
       v22 = 0;
     }
@@ -213,7 +213,7 @@
     {
       v22 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
       [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [v5 addSubview:v22];
+      [watchScreenImageView addSubview:v22];
       watchView = self->_watchView;
       v24 = [MEMORY[0x277CCAAD0] constraintWithItem:v22 attribute:10 relatedBy:0 toItem:watchView attribute:10 multiplier:1.0 constant:1.0];
       [(BPSIllustratedWatchView *)watchView addConstraint:v24];
@@ -226,19 +226,19 @@
     }
 
     v27 = self->_watchView;
-    v28 = [v4 imageProvider];
-    v29 = [v4 choice];
+    imageProvider2 = [necessaryCopy imageProvider];
+    choice = [necessaryCopy choice];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __57__CSLPRFWatchChoiceView__addWatchScreenImageIfNecessary___block_invoke;
     v33[3] = &unk_278744DE8;
     v33[4] = self;
-    v34 = v5;
+    v34 = watchScreenImageView;
     v35 = v27;
     v36 = v22;
     v30 = v22;
     v31 = v27;
-    [v28 retrieveImageForLauncherViewMode:v29 size:v33 completion:{v16, v15}];
+    [imageProvider2 retrieveImageForLauncherViewMode:choice size:v33 completion:{v16, v15}];
   }
 
   v32 = *MEMORY[0x277D85DE8];
@@ -292,27 +292,27 @@ void __57__CSLPRFWatchChoiceView__addWatchScreenImageIfNecessary___block_invoke(
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createWatchViewForChoice:(id)a3
+- (id)_createWatchViewForChoice:(id)choice
 {
-  v4 = a3;
+  choiceCopy = choice;
   v5 = objc_alloc_init(MEMORY[0x277CF3458]);
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v8 = v7 * 0.5 - self->_horizontalOffset;
 
   v9 = [MEMORY[0x277CCAE60] valueWithCGSize:{v8, 0.0}];
   [v5 setPreferredCGSizeValue:v9];
 
-  v10 = [v4 imageProvider];
+  imageProvider = [choiceCopy imageProvider];
 
-  if (!v10)
+  if (!imageProvider)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v12 = [WeakRetained bundleID];
-    [v5 setScreenImageSearchBundleIdentifier:v12];
+    bundleID = [WeakRetained bundleID];
+    [v5 setScreenImageSearchBundleIdentifier:bundleID];
 
-    v13 = [v4 screenImageName];
-    [v5 setScreenImageName:v13];
+    screenImageName = [choiceCopy screenImageName];
+    [v5 setScreenImageName:screenImageName];
   }
 
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -322,8 +322,8 @@ void __57__CSLPRFWatchChoiceView__addWatchScreenImageIfNecessary___block_invoke(
 
 - (void)_updateWatchViewPreferredWidth
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = v4 * 0.5 - self->_horizontalOffset;
 
   v6 = [MEMORY[0x277CCAE60] valueWithCGSize:{v5, 0.0}];

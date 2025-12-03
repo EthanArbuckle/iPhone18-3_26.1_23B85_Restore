@@ -1,49 +1,49 @@
 @interface PRSPosterUpdateColorPayload
-- (PRSPosterUpdateColorPayload)initWithCoder:(id)a3;
-- (PRSPosterUpdateColorPayload)initWithColor:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PRSPosterUpdateColorPayload)initWithCoder:(id)coder;
+- (PRSPosterUpdateColorPayload)initWithColor:(id)color;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)rawValue;
 @end
 
 @implementation PRSPosterUpdateColorPayload
 
-- (PRSPosterUpdateColorPayload)initWithColor:(id)a3
+- (PRSPosterUpdateColorPayload)initWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v9.receiver = self;
   v9.super_class = PRSPosterUpdateColorPayload;
-  v5 = [(PRSPosterUpdatePayload *)&v9 _init];
-  if (v5)
+  _init = [(PRSPosterUpdatePayload *)&v9 _init];
+  if (_init)
   {
-    v6 = [v4 copy];
-    color = v5->_color;
-    v5->_color = v6;
+    v6 = [colorCopy copy];
+    color = _init->_color;
+    _init->_color = v6;
   }
 
-  return v5;
+  return _init;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   color = self->_color;
 
   return [v4 initWithColor:color];
 }
 
-- (PRSPosterUpdateColorPayload)initWithCoder:(id)a3
+- (PRSPosterUpdateColorPayload)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PRSPosterUpdatePayload *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(PRSPosterUpdatePayload *)self _init];
+  if (_init)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"_color"];
-    color = v5->_color;
-    v5->_color = v7;
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"_color"];
+    color = _init->_color;
+    _init->_color = v7;
   }
 
-  return v5;
+  return _init;
 }
 
 - (id)rawValue

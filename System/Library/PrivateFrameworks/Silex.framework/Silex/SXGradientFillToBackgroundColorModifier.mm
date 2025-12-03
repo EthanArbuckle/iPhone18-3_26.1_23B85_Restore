@@ -1,22 +1,22 @@
 @interface SXGradientFillToBackgroundColorModifier
-- (id)convertGradientFillToBackgroundColorForComponentStyle:(id)a3;
-- (void)modifyDOM:(id)a3 context:(id)a4;
+- (id)convertGradientFillToBackgroundColorForComponentStyle:(id)style;
+- (void)modifyDOM:(id)m context:(id)context;
 @end
 
 @implementation SXGradientFillToBackgroundColorModifier
 
-- (void)modifyDOM:(id)a3 context:(id)a4
+- (void)modifyDOM:(id)m context:(id)context
 {
-  v5 = a3;
-  v6 = [v5 componentStyles];
-  v7 = [v6 copy];
+  mCopy = m;
+  componentStyles = [mCopy componentStyles];
+  v7 = [componentStyles copy];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__SXGradientFillToBackgroundColorModifier_modifyDOM_context___block_invoke;
   v9[3] = &unk_1E84FF830;
-  v10 = v5;
-  v11 = self;
-  v8 = v5;
+  v10 = mCopy;
+  selfCopy = self;
+  v8 = mCopy;
   [v7 enumerateKeysAndObjectsUsingBlock:v9];
 }
 
@@ -120,30 +120,30 @@ LABEL_18:
   }
 }
 
-- (id)convertGradientFillToBackgroundColorForComponentStyle:(id)a3
+- (id)convertGradientFillToBackgroundColorForComponentStyle:(id)style
 {
-  v3 = a3;
-  v4 = [v3 JSONRepresentation];
-  v5 = [v4 mutableCopy];
+  styleCopy = style;
+  jSONRepresentation = [styleCopy JSONRepresentation];
+  v5 = [jSONRepresentation mutableCopy];
 
-  v6 = [v3 fill];
-  v7 = [v6 colorStops];
-  v8 = [v7 firstObject];
+  fill = [styleCopy fill];
+  colorStops = [fill colorStops];
+  firstObject = [colorStops firstObject];
 
-  v9 = [v8 color];
+  color = [firstObject color];
 
-  if (v9)
+  if (color)
   {
-    v10 = [v8 color];
-    v11 = [v10 hex];
+    color2 = [firstObject color];
+    v11 = [color2 hex];
     [v5 setObject:v11 forKeyedSubscript:@"backgroundColor"];
 
     [v5 setObject:0 forKeyedSubscript:@"fill"];
   }
 
   v12 = [SXComponentStyle alloc];
-  v13 = [v3 specificationVersion];
-  v14 = [(SXJSONObject *)v12 initWithJSONObject:v5 andVersion:v13];
+  specificationVersion = [styleCopy specificationVersion];
+  v14 = [(SXJSONObject *)v12 initWithJSONObject:v5 andVersion:specificationVersion];
 
   return v14;
 }

@@ -1,30 +1,30 @@
 @interface CalAccumulatingQueue
-- (id)_initWithQueue:(id)a3 andBlock:(id)a4 delay:(double)a5 throttle:(id)a6;
+- (id)_initWithQueue:(id)queue andBlock:(id)block delay:(double)delay throttle:(id)throttle;
 - (void)_callTargetBlockAndReset;
 - (void)_cancelPendingTimer;
 - (void)_executeBlockWithThrottleBlock;
 - (void)_executeBlockWithoutThrottleBlock;
-- (void)_scheduleTimerWithDelay:(double)a3;
+- (void)_scheduleTimerWithDelay:(double)delay;
 - (void)executeBlock;
-- (void)updateTags:(id)a3 withContext:(id)a4;
-- (void)updateTagsAndExecuteBlock:(id)a3 withContext:(id)a4;
+- (void)updateTags:(id)tags withContext:(id)context;
+- (void)updateTagsAndExecuteBlock:(id)block withContext:(id)context;
 @end
 
 @implementation CalAccumulatingQueue
 
-- (id)_initWithQueue:(id)a3 andBlock:(id)a4 delay:(double)a5 throttle:(id)a6
+- (id)_initWithQueue:(id)queue andBlock:(id)block delay:(double)delay throttle:(id)throttle
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  queueCopy = queue;
+  blockCopy = block;
+  throttleCopy = throttle;
   v25.receiver = self;
   v25.super_class = CalAccumulatingQueue;
   v13 = [(CalAccumulatingQueue *)&v25 init];
   if (v13)
   {
-    if (v10)
+    if (queueCopy)
     {
-      v14 = v10;
+      v14 = queueCopy;
     }
 
     else
@@ -35,11 +35,11 @@
     queue = v13->_queue;
     v13->_queue = v14;
 
-    v16 = [v11 copy];
+    v16 = [blockCopy copy];
     block = v13->_block;
     v13->_block = v16;
 
-    v18 = [v12 copy];
+    v18 = [throttleCopy copy];
     throttleBlock = v13->_throttleBlock;
     v13->_throttleBlock = v18;
 
@@ -47,11 +47,11 @@
     tags = v13->_tags;
     v13->_tags = v20;
 
-    v22 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     context = v13->_context;
-    v13->_context = v22;
+    v13->_context = dictionary;
 
-    v13->_delay = a5;
+    v13->_delay = delay;
     v13->_executionPending = 0;
   }
 
@@ -72,10 +72,10 @@
   }
 }
 
-- (void)_scheduleTimerWithDelay:(double)a3
+- (void)_scheduleTimerWithDelay:(double)delay
 {
   dispatch_assert_queue_V2(self->_queue);
-  if (a3 <= 0.0)
+  if (delay <= 0.0)
   {
     [(CalAccumulatingQueue *)self _cancelPendingTimer];
 
@@ -84,7 +84,7 @@
 
   else
   {
-    v5 = dispatch_time(0, (a3 * 1000000000.0));
+    v5 = dispatch_time(0, (delay * 1000000000.0));
     if (self->_pendingPopTime - 1 >= v5)
     {
       v6 = v5;
@@ -118,18 +118,18 @@ uint64_t __48__CalAccumulatingQueue__scheduleTimerWithDelay___block_invoke(uint6
 - (void)_callTargetBlockAndReset
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = self;
-  objc_sync_enter(v3);
-  v5 = [(NSMutableSet *)v3->_tags allObjects];
-  v4 = [(NSMutableDictionary *)v3->_context copy];
-  [(NSMutableSet *)v3->_tags removeAllObjects];
-  [(NSMutableDictionary *)v3->_context removeAllObjects];
-  v3->_executionPending = 0;
-  objc_sync_exit(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allObjects = [(NSMutableSet *)selfCopy->_tags allObjects];
+  v4 = [(NSMutableDictionary *)selfCopy->_context copy];
+  [(NSMutableSet *)selfCopy->_tags removeAllObjects];
+  [(NSMutableDictionary *)selfCopy->_context removeAllObjects];
+  selfCopy->_executionPending = 0;
+  objc_sync_exit(selfCopy);
 
-  if ([v5 count] || objc_msgSend(v4, "count"))
+  if ([allObjects count] || objc_msgSend(v4, "count"))
   {
-    (*(v3->_block + 2))();
+    (*(selfCopy->_block + 2))();
   }
 }
 
@@ -198,27 +198,27 @@ void __54__CalAccumulatingQueue__executeBlockWithThrottleBlock__block_invoke(uin
   }
 }
 
-- (void)updateTags:(id)a3 withContext:(id)a4
+- (void)updateTags:(id)tags withContext:(id)context
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v18 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  if (v6)
+  tagsCopy = tags;
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (tagsCopy)
   {
-    [(NSMutableSet *)v7->_tags addObjectsFromArray:v6];
+    [(NSMutableSet *)selfCopy->_tags addObjectsFromArray:tagsCopy];
   }
 
-  v17 = v6;
-  if (v18)
+  v17 = tagsCopy;
+  if (contextCopy)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = v18;
-    v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:{16, v6}];
+    v8 = contextCopy;
+    v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:{16, tagsCopy}];
     if (!v9)
     {
       goto LABEL_20;
@@ -235,7 +235,7 @@ void __54__CalAccumulatingQueue__executeBlockWithThrottleBlock__block_invoke(uin
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [(NSMutableDictionary *)v7->_context objectForKeyedSubscript:v12];
+        v13 = [(NSMutableDictionary *)selfCopy->_context objectForKeyedSubscript:v12];
         v14 = [v8 objectForKeyedSubscript:v12];
         if (v13)
         {
@@ -246,7 +246,7 @@ void __54__CalAccumulatingQueue__executeBlockWithThrottleBlock__block_invoke(uin
             if (objc_opt_isKindOfClass())
             {
               v15 = [v13 arrayByAddingObjectsFromArray:v14];
-              [(NSMutableDictionary *)v7->_context setObject:v15 forKeyedSubscript:v12];
+              [(NSMutableDictionary *)selfCopy->_context setObject:v15 forKeyedSubscript:v12];
 LABEL_16:
 
               goto LABEL_18;
@@ -260,13 +260,13 @@ LABEL_16:
             if (objc_opt_isKindOfClass())
             {
               v15 = [v13 setByAddingObjectsFromSet:v14];
-              [(NSMutableDictionary *)v7->_context setObject:v15 forKeyedSubscript:v12];
+              [(NSMutableDictionary *)selfCopy->_context setObject:v15 forKeyedSubscript:v12];
               goto LABEL_16;
             }
           }
         }
 
-        [(NSMutableDictionary *)v7->_context setObject:v14 forKeyedSubscript:v12];
+        [(NSMutableDictionary *)selfCopy->_context setObject:v14 forKeyedSubscript:v12];
 LABEL_18:
       }
 
@@ -280,14 +280,14 @@ LABEL_20:
     }
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateTagsAndExecuteBlock:(id)a3 withContext:(id)a4
+- (void)updateTagsAndExecuteBlock:(id)block withContext:(id)context
 {
-  [(CalAccumulatingQueue *)self updateTags:a3 withContext:a4];
+  [(CalAccumulatingQueue *)self updateTags:block withContext:context];
 
   [(CalAccumulatingQueue *)self executeBlock];
 }

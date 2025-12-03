@@ -1,6 +1,6 @@
 @interface PHBackgroundGradientBlurView
 - (UIImage)image;
-- (void)setImage:(id)a3;
+- (void)setImage:(id)image;
 @end
 
 @implementation PHBackgroundGradientBlurView
@@ -12,11 +12,11 @@
   return v2;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = self;
-  sub_100235B44(v4);
+  imageCopy = image;
+  selfCopy = self;
+  sub_100235B44(imageCopy);
 }
 
 @end

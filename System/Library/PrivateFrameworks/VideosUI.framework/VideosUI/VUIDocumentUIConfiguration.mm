@@ -1,33 +1,33 @@
 @interface VUIDocumentUIConfiguration
-+ (CGSize)_preferredSizeFromConfig:(id)a3;
-+ (VUIDocumentUIConfiguration)uiConfigurationWithDict:(id)a3;
-+ (id)_detentsFromDictionary:(id)a3 inConfig:(id)a4;
-+ (int64_t)_presentationTypeFromString:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (CGSize)_preferredSizeFromConfig:(id)config;
++ (VUIDocumentUIConfiguration)uiConfigurationWithDict:(id)dict;
++ (id)_detentsFromDictionary:(id)dictionary inConfig:(id)config;
++ (int64_t)_presentationTypeFromString:(id)string;
+- (BOOL)isEqual:(id)equal;
 - (VUIDocumentUIConfiguration)init;
 @end
 
 @implementation VUIDocumentUIConfiguration
 
-+ (VUIDocumentUIConfiguration)uiConfigurationWithDict:(id)a3
++ (VUIDocumentUIConfiguration)uiConfigurationWithDict:(id)dict
 {
-  v3 = a3;
+  dictCopy = dict;
   v4 = objc_opt_class();
-  v5 = [v3 vui_stringForKey:@"transitionType"];
+  v5 = [dictCopy vui_stringForKey:@"transitionType"];
   v6 = [v4 _presentationTypeFromString:v5];
 
-  v7 = [v3 vui_stringForKey:@"viewControllerId"];
-  v8 = [v3 vui_stringForKey:@"viewControllerDocumentId"];
-  v9 = [v3 vui_stringForKey:@"loadingViewText"];
-  v10 = [v3 vui_stringForKey:@"navigationTitle"];
-  v11 = [v3 vui_BOOLForKey:@"animated" defaultValue:1];
-  v12 = [v3 vui_BOOLForKey:@"navBarHidden" defaultValue:0];
-  v22 = [v3 vui_BOOLForKey:@"navBarAdjustedToSizeClass" defaultValue:0];
-  v21 = [v3 vui_BOOLForKey:@"interactivePopGestureAllowed" defaultValue:1];
-  HIDWORD(v20) = [v3 vui_BOOLForKey:@"modalOverModalAllowed" defaultValue:0];
-  v23 = [v3 vui_BOOLForKey:@"prefersLargeTitle" defaultValue:1];
-  v13 = [v3 vui_BOOLForKey:@"isComingFromExtras" defaultValue:0];
-  v25 = [v3 vui_stringForKey:@"documentType"];
+  v7 = [dictCopy vui_stringForKey:@"viewControllerId"];
+  v8 = [dictCopy vui_stringForKey:@"viewControllerDocumentId"];
+  v9 = [dictCopy vui_stringForKey:@"loadingViewText"];
+  v10 = [dictCopy vui_stringForKey:@"navigationTitle"];
+  v11 = [dictCopy vui_BOOLForKey:@"animated" defaultValue:1];
+  v12 = [dictCopy vui_BOOLForKey:@"navBarHidden" defaultValue:0];
+  v22 = [dictCopy vui_BOOLForKey:@"navBarAdjustedToSizeClass" defaultValue:0];
+  v21 = [dictCopy vui_BOOLForKey:@"interactivePopGestureAllowed" defaultValue:1];
+  HIDWORD(v20) = [dictCopy vui_BOOLForKey:@"modalOverModalAllowed" defaultValue:0];
+  v23 = [dictCopy vui_BOOLForKey:@"prefersLargeTitle" defaultValue:1];
+  v13 = [dictCopy vui_BOOLForKey:@"isComingFromExtras" defaultValue:0];
+  v25 = [dictCopy vui_stringForKey:@"documentType"];
   v24 = v13;
   if (v6 <= 5)
   {
@@ -49,8 +49,8 @@ LABEL_11:
         v14 = v8;
         v15 = v7;
         v16 = objc_alloc_init(VUIDocumentUIConfigurationPopover);
-        LODWORD(v20) = [v3 vui_BOOLForKey:@"presentationAdjustedToSizeClass" defaultValue:0];
-        [objc_opt_class() _preferredSizeFromConfig:v3];
+        LODWORD(v20) = [dictCopy vui_BOOLForKey:@"presentationAdjustedToSizeClass" defaultValue:0];
+        [objc_opt_class() _preferredSizeFromConfig:dictCopy];
         [(VUIDocumentUIConfigurationPopover *)v16 setPreferredSize:?];
         [(VUIDocumentUIConfigurationModal *)v16 setModalOverModalAllowed:HIDWORD(v20)];
         [(VUIDocumentUIConfigurationPopover *)v16 setPopOverArrowDirection:15];
@@ -64,12 +64,12 @@ LABEL_11:
     v14 = v8;
     v15 = v7;
     v16 = objc_alloc_init(VUIDocumentUIConfigurationFormSheet);
-    LODWORD(v20) = [v3 vui_BOOLForKey:@"tapDismissable" defaultValue:1];
-    [objc_opt_class() _preferredSizeFromConfig:v3];
+    LODWORD(v20) = [dictCopy vui_BOOLForKey:@"tapDismissable" defaultValue:1];
+    [objc_opt_class() _preferredSizeFromConfig:dictCopy];
     [(VUIDocumentUIConfigurationPopover *)v16 setPreferredSize:?];
     [(VUIDocumentUIConfigurationPopover *)v16 setTapDismissable:v20];
-    -[VUIDocumentUIConfigurationPopover setPrefersGrabberVisible:](v16, "setPrefersGrabberVisible:", [v3 vui_BOOLForKey:@"prefersGrabberVisible" defaultValue:0]);
-    v18 = [objc_opt_class() _detentsFromDictionary:v3 inConfig:v16];
+    -[VUIDocumentUIConfigurationPopover setPrefersGrabberVisible:](v16, "setPrefersGrabberVisible:", [dictCopy vui_BOOLForKey:@"prefersGrabberVisible" defaultValue:0]);
+    v18 = [objc_opt_class() _detentsFromDictionary:dictCopy inConfig:v16];
     [(VUIDocumentUIConfigurationPopover *)v16 setDetents:v18];
 
     v17 = v16;
@@ -134,10 +134,10 @@ LABEL_15:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v9) = 1;
   }
@@ -147,20 +147,20 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VUIDocumentUIConfiguration *)self type];
-      if (v6 == [(VUIDocumentUIConfiguration *)v5 type])
+      v5 = equalCopy;
+      type = [(VUIDocumentUIConfiguration *)self type];
+      if (type == [(VUIDocumentUIConfiguration *)v5 type])
       {
-        v7 = [(VUIDocumentUIConfiguration *)self viewControllerIdentifier];
-        v8 = [(VUIDocumentUIConfiguration *)v5 viewControllerIdentifier];
-        if (v7 == v8)
+        viewControllerIdentifier = [(VUIDocumentUIConfiguration *)self viewControllerIdentifier];
+        viewControllerIdentifier2 = [(VUIDocumentUIConfiguration *)v5 viewControllerIdentifier];
+        if (viewControllerIdentifier == viewControllerIdentifier2)
         {
-          v10 = [(VUIDocumentUIConfiguration *)self viewControllerDocumentIdentifier];
-          v11 = [(VUIDocumentUIConfiguration *)v5 viewControllerDocumentIdentifier];
-          if (v10 == v11 && (v12 = [(VUIDocumentUIConfiguration *)self isAnimated], v12 == [(VUIDocumentUIConfiguration *)v5 isAnimated]) && (v13 = [(VUIDocumentUIConfiguration *)self isNavigationBarHidden], v13 == [(VUIDocumentUIConfiguration *)v5 isNavigationBarHidden]) && (v14 = [(VUIDocumentUIConfiguration *)self isNavigationBarAdjustedToSizeClass], v14 == [(VUIDocumentUIConfiguration *)v5 isNavigationBarAdjustedToSizeClass]) && (v15 = [(VUIDocumentUIConfiguration *)self isInteractivePopGestureAllowed], v15 == [(VUIDocumentUIConfiguration *)v5 isInteractivePopGestureAllowed]))
+          viewControllerDocumentIdentifier = [(VUIDocumentUIConfiguration *)self viewControllerDocumentIdentifier];
+          viewControllerDocumentIdentifier2 = [(VUIDocumentUIConfiguration *)v5 viewControllerDocumentIdentifier];
+          if (viewControllerDocumentIdentifier == viewControllerDocumentIdentifier2 && (v12 = [(VUIDocumentUIConfiguration *)self isAnimated], v12 == [(VUIDocumentUIConfiguration *)v5 isAnimated]) && (v13 = [(VUIDocumentUIConfiguration *)self isNavigationBarHidden], v13 == [(VUIDocumentUIConfiguration *)v5 isNavigationBarHidden]) && (v14 = [(VUIDocumentUIConfiguration *)self isNavigationBarAdjustedToSizeClass], v14 == [(VUIDocumentUIConfiguration *)v5 isNavigationBarAdjustedToSizeClass]) && (v15 = [(VUIDocumentUIConfiguration *)self isInteractivePopGestureAllowed], v15 == [(VUIDocumentUIConfiguration *)v5 isInteractivePopGestureAllowed]))
           {
-            v17 = [(VUIDocumentUIConfiguration *)self shouldWrapModalInNavigationController];
-            v9 = v17 ^ [(VUIDocumentUIConfiguration *)v5 shouldWrapModalInNavigationController]^ 1;
+            shouldWrapModalInNavigationController = [(VUIDocumentUIConfiguration *)self shouldWrapModalInNavigationController];
+            v9 = shouldWrapModalInNavigationController ^ [(VUIDocumentUIConfiguration *)v5 shouldWrapModalInNavigationController]^ 1;
           }
 
           else
@@ -190,14 +190,14 @@ LABEL_15:
   return v9;
 }
 
-+ (CGSize)_preferredSizeFromConfig:(id)a3
++ (CGSize)_preferredSizeFromConfig:(id)config
 {
-  v3 = a3;
-  v4 = [v3 vui_numberForKey:@"preferredWidth"];
+  configCopy = config;
+  v4 = [configCopy vui_numberForKey:@"preferredWidth"];
   [v4 doubleValue];
   v6 = v5;
 
-  v7 = [v3 vui_numberForKey:@"preferredHeight"];
+  v7 = [configCopy vui_numberForKey:@"preferredHeight"];
 
   [v7 doubleValue];
   v9 = v8;
@@ -209,72 +209,72 @@ LABEL_15:
   return result;
 }
 
-+ (int64_t)_presentationTypeFromString:(id)a3
++ (int64_t)_presentationTypeFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 length] && (objc_msgSend(v3, "isEqualToString:", @"Push") & 1) == 0)
+  stringCopy = string;
+  if ([stringCopy length] && (objc_msgSend(stringCopy, "isEqualToString:", @"Push") & 1) == 0)
   {
-    if ([v3 isEqualToString:@"Zoom"])
+    if ([stringCopy isEqualToString:@"Zoom"])
     {
       v4 = 15;
     }
 
-    else if ([v3 isEqualToString:@"FullScreen"])
+    else if ([stringCopy isEqualToString:@"FullScreen"])
     {
       v4 = 2;
     }
 
-    else if ([v3 isEqualToString:@"OverFullScreen"])
+    else if ([stringCopy isEqualToString:@"OverFullScreen"])
     {
       v4 = 14;
     }
 
-    else if ([v3 isEqualToString:@"BlurOverFullScreen"])
+    else if ([stringCopy isEqualToString:@"BlurOverFullScreen"])
     {
       v4 = 3;
     }
 
-    else if ([v3 isEqualToString:@"Pop"])
+    else if ([stringCopy isEqualToString:@"Pop"])
     {
       v4 = 6;
     }
 
-    else if ([v3 isEqualToString:@"Dismiss"])
+    else if ([stringCopy isEqualToString:@"Dismiss"])
     {
       v4 = 7;
     }
 
-    else if ([v3 isEqualToString:@"PopOrDismiss"])
+    else if ([stringCopy isEqualToString:@"PopOrDismiss"])
     {
       v4 = 8;
     }
 
-    else if ([v3 isEqualToString:@"DismissAndPush"])
+    else if ([stringCopy isEqualToString:@"DismissAndPush"])
     {
       v4 = 12;
     }
 
-    else if ([v3 isEqualToString:@"DismissAndZoom"])
+    else if ([stringCopy isEqualToString:@"DismissAndZoom"])
     {
       v4 = 16;
     }
 
-    else if ([v3 isEqualToString:@"Popover"])
+    else if ([stringCopy isEqualToString:@"Popover"])
     {
       v4 = 5;
     }
 
-    else if ([v3 isEqualToString:@"FormSheet"])
+    else if ([stringCopy isEqualToString:@"FormSheet"])
     {
       v4 = 4;
     }
 
-    else if ([v3 isEqualToString:@"FormSheetFullscreen"])
+    else if ([stringCopy isEqualToString:@"FormSheetFullscreen"])
     {
       v4 = 9;
     }
 
-    else if ([v3 isEqualToString:@"Replace"])
+    else if ([stringCopy isEqualToString:@"Replace"])
     {
       v4 = 17;
     }
@@ -293,17 +293,17 @@ LABEL_15:
   return v4;
 }
 
-+ (id)_detentsFromDictionary:(id)a3 inConfig:(id)a4
++ (id)_detentsFromDictionary:(id)dictionary inConfig:(id)config
 {
   v28 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  val = a4;
-  v5 = [MEMORY[0x1E695DF70] array];
+  dictionaryCopy = dictionary;
+  val = config;
+  array = [MEMORY[0x1E695DF70] array];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [v18 vui_arrayForKey:@"detents"];
+  v6 = [dictionaryCopy vui_arrayForKey:@"detents"];
   v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
   {
@@ -318,16 +318,16 @@ LABEL_15:
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
-        if ([v10 isEqualToString:{@"medium", v18}])
+        if ([v10 isEqualToString:{@"medium", dictionaryCopy}])
         {
-          v11 = [MEMORY[0x1E69DCF58] mediumDetent];
-          [v5 addObject:v11];
+          mediumDetent = [MEMORY[0x1E69DCF58] mediumDetent];
+          [array addObject:mediumDetent];
         }
 
         else if ([v10 isEqualToString:@"large"])
         {
-          v12 = [MEMORY[0x1E69DCF58] largeDetent];
-          [v5 addObject:v12];
+          largeDetent = [MEMORY[0x1E69DCF58] largeDetent];
+          [array addObject:largeDetent];
         }
 
         else if ([v10 isEqualToString:@"custom"])
@@ -340,7 +340,7 @@ LABEL_15:
           v20[3] = &unk_1E8735FB0;
           objc_copyWeak(&v21, &location);
           v14 = [v13 customDetentWithIdentifier:@"custom" resolver:v20];
-          [v5 addObject:v14];
+          [array addObject:v14];
 
           objc_destroyWeak(&v21);
           objc_destroyWeak(&location);
@@ -353,9 +353,9 @@ LABEL_15:
     while (v7);
   }
 
-  if ([v5 count])
+  if ([array count])
   {
-    v15 = v5;
+    v15 = array;
   }
 
   else

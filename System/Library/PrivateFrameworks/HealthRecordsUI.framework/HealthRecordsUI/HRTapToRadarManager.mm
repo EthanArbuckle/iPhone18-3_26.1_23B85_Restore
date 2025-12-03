@@ -1,15 +1,15 @@
 @interface HRTapToRadarManager
-+ (void)presentTapToRadarDialogueFromViewController:(id)a3;
++ (void)presentTapToRadarDialogueFromViewController:(id)controller;
 - (HRTapToRadarManager)init;
 @end
 
 @implementation HRTapToRadarManager
 
-+ (void)presentTapToRadarDialogueFromViewController:(id)a3
++ (void)presentTapToRadarDialogueFromViewController:(id)controller
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  static TapToRadarManager.presentTapToRadarDialogue(from:)(v4);
+  controllerCopy = controller;
+  static TapToRadarManager.presentTapToRadarDialogue(from:)(controllerCopy);
 }
 
 - (HRTapToRadarManager)init

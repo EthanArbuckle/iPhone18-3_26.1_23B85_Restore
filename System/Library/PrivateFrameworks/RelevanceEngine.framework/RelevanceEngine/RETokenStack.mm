@@ -1,6 +1,6 @@
 @interface RETokenStack
 - (BOOL)isEmpty;
-- (RETokenStack)initWithTokenBuffer:(id)a3;
+- (RETokenStack)initWithTokenBuffer:(id)buffer;
 - (void)consume;
 - (void)next;
 - (void)pop;
@@ -9,30 +9,30 @@
 
 @implementation RETokenStack
 
-- (RETokenStack)initWithTokenBuffer:(id)a3
+- (RETokenStack)initWithTokenBuffer:(id)buffer
 {
-  v5 = a3;
+  bufferCopy = buffer;
   v15.receiver = self;
   v15.super_class = RETokenStack;
   v6 = [(RETokenStack *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_buffer, a3);
+    objc_storeStrong(&v6->_buffer, buffer);
     v7->_position = 0;
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     tokenStack = v7->_tokenStack;
-    v7->_tokenStack = v8;
+    v7->_tokenStack = array;
 
-    v10 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     positionStack = v7->_positionStack;
-    v7->_positionStack = v10;
+    v7->_positionStack = array2;
 
     if (([(RETokenBuffer *)v7->_buffer isEmpty]& 1) == 0)
     {
       v12 = v7->_tokenStack;
-      v13 = [(RETokenBuffer *)v7->_buffer currentToken];
-      [(NSMutableArray *)v12 addObject:v13];
+      currentToken = [(RETokenBuffer *)v7->_buffer currentToken];
+      [(NSMutableArray *)v12 addObject:currentToken];
     }
   }
 
@@ -60,8 +60,8 @@
     {
       [(RETokenBuffer *)self->_buffer next];
       tokenStack = self->_tokenStack;
-      v5 = [(RETokenBuffer *)self->_buffer currentToken];
-      [(NSMutableArray *)tokenStack addObject:v5];
+      currentToken = [(RETokenBuffer *)self->_buffer currentToken];
+      [(NSMutableArray *)tokenStack addObject:currentToken];
     }
 
     ++self->_position;
@@ -82,8 +82,8 @@
 {
   if ([(NSMutableArray *)self->_positionStack count])
   {
-    v3 = [(NSMutableArray *)self->_positionStack lastObject];
-    self->_position = [v3 unsignedIntegerValue];
+    lastObject = [(NSMutableArray *)self->_positionStack lastObject];
+    self->_position = [lastObject unsignedIntegerValue];
 
     positionStack = self->_positionStack;
 

@@ -1,10 +1,10 @@
 @interface PGSeasonFeatureExtractor
-- (PGSeasonFeatureExtractor)initWithError:(id *)a3;
+- (PGSeasonFeatureExtractor)initWithError:(id *)error;
 @end
 
 @implementation PGSeasonFeatureExtractor
 
-- (PGSeasonFeatureExtractor)initWithError:(id *)a3
+- (PGSeasonFeatureExtractor)initWithError:(id *)error
 {
   v17[4] = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D275F8];

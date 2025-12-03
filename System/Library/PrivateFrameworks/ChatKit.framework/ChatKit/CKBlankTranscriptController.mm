@@ -1,5 +1,5 @@
 @interface CKBlankTranscriptController
-- (CKBlankTranscriptController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CKBlankTranscriptController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)loadView;
 - (void)viewDidUnload;
@@ -7,11 +7,11 @@
 
 @implementation CKBlankTranscriptController
 
-- (CKBlankTranscriptController)initWithNibName:(id)a3 bundle:(id)a4
+- (CKBlankTranscriptController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = CKBlankTranscriptController;
-  return [(CKBlankTranscriptController *)&v5 initWithNibName:a3 bundle:a4];
+  return [(CKBlankTranscriptController *)&v5 initWithNibName:name bundle:bundle];
 }
 
 - (void)loadView
@@ -20,9 +20,9 @@
   v7 = [v3 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [v7 setAutoresizingMask:18];
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 theme];
-  v6 = [v5 transcriptBackgroundColor];
-  [v7 setBackgroundColor:v6];
+  theme = [v4 theme];
+  transcriptBackgroundColor = [theme transcriptBackgroundColor];
+  [v7 setBackgroundColor:transcriptBackgroundColor];
 
   [(CKBlankTranscriptController *)self setView:v7];
 }
@@ -37,9 +37,9 @@
 - (unint64_t)supportedInterfaceOrientations
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 supportedInterfaceOrientations];
+  supportedInterfaceOrientations = [v2 supportedInterfaceOrientations];
 
-  return v3;
+  return supportedInterfaceOrientations;
 }
 
 @end

@@ -1,56 +1,56 @@
 @interface SBIconBadgeView
 + (UIColor)badgeBackgroundColor;
-+ (id)_checkoutImageForText:(id)a3 font:(id)a4 imageAppearance:(id)a5 style:(int64_t)a6 highlighted:(BOOL)a7;
-+ (id)_createImageForText:(id)a3 font:(id)a4 color:(id)a5 highlighted:(BOOL)a6;
-+ (id)badgeBackgroundColorForImageAppearance:(id)a3;
-+ (id)badgeBackgroundFiltersForImageAppearance:(id)a3;
-+ (id)badgeTextColorForImageAppearance:(id)a3 style:(int64_t)a4;
-+ (id)badgeTextCompositingFilterForImageAppearance:(id)a3 style:(int64_t)a4;
-- (CGPoint)accessoryCenterForIconBounds:(CGRect)a3;
++ (id)_checkoutImageForText:(id)text font:(id)font imageAppearance:(id)appearance style:(int64_t)style highlighted:(BOOL)highlighted;
++ (id)_createImageForText:(id)text font:(id)font color:(id)color highlighted:(BOOL)highlighted;
++ (id)badgeBackgroundColorForImageAppearance:(id)appearance;
++ (id)badgeBackgroundFiltersForImageAppearance:(id)appearance;
++ (id)badgeTextColorForImageAppearance:(id)appearance style:(int64_t)style;
++ (id)badgeTextCompositingFilterForImageAppearance:(id)appearance style:(int64_t)style;
+- (CGPoint)accessoryCenterForIconBounds:(CGRect)bounds;
 - (CGPoint)layoutOffset;
 - (CGSize)badgeSize;
 - (CGSize)intrinsicContentSize;
-- (CGSize)intrinsicContentSizeForTextImage:(id)a3;
+- (CGSize)intrinsicContentSizeForTextImage:(id)image;
 - (SBHIconImageAppearance)effectiveIconImageAppearance;
 - (SBIconBadgeView)init;
 - (UIColor)badgeBackgroundColor;
 - (UIFont)font;
 - (double)badgeContentScale;
-- (id)_checkoutImageForText:(id)a3 highlighted:(BOOL)a4;
-- (id)accessoryTextForIcon:(id)a3 infoProvider:(id)a4;
+- (id)_checkoutImageForText:(id)text highlighted:(BOOL)highlighted;
+- (id)accessoryTextForIcon:(id)icon infoProvider:(id)provider;
 - (void)_applyParallaxSettings;
 - (void)_clearText;
 - (void)_configureAfterIconImageAppearanceChange;
-- (void)_configureAnimatedForText:(id)a3 highlighted:(BOOL)a4 animator:(id)a5;
+- (void)_configureAnimatedForText:(id)text highlighted:(BOOL)highlighted animator:(id)animator;
 - (void)_configureAnimatedWithoutIcon;
 - (void)_configureBackgroundAfterIconImageAppearanceChange;
-- (void)_configureForText:(id)a3 highlighted:(BOOL)a4;
+- (void)_configureForText:(id)text highlighted:(BOOL)highlighted;
 - (void)_configureForegroundAfterIconImageAppearanceChange;
-- (void)_configureTextView:(id)a3 forImageAppearance:(id)a4;
+- (void)_configureTextView:(id)view forImageAppearance:(id)appearance;
 - (void)_configureWithoutIcon;
-- (void)_crossfadeToTextImage:(id)a3 animator:(id)a4;
-- (void)_layOutTextImageView:(id)a3;
-- (void)_resizeForTextImage:(id)a3;
-- (void)_transitionAnimatedToTextImage:(id)a3 wasDisplayingAccessory:(BOOL)a4 willDisplayAccessory:(BOOL)a5 animator:(id)a6;
-- (void)_zoomInWithTextImage:(id)a3 animator:(id)a4;
-- (void)configureAnimatedForIcon:(id)a3 infoProvider:(id)a4 animator:(id)a5;
-- (void)configureForIcon:(id)a3 infoProvider:(id)a4;
+- (void)_crossfadeToTextImage:(id)image animator:(id)animator;
+- (void)_layOutTextImageView:(id)view;
+- (void)_resizeForTextImage:(id)image;
+- (void)_transitionAnimatedToTextImage:(id)image wasDisplayingAccessory:(BOOL)accessory willDisplayAccessory:(BOOL)displayAccessory animator:(id)animator;
+- (void)_zoomInWithTextImage:(id)image animator:(id)animator;
+- (void)configureAnimatedForIcon:(id)icon infoProvider:(id)provider animator:(id)animator;
+- (void)configureForIcon:(id)icon infoProvider:(id)provider;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAccessoryBrightness:(double)a3;
-- (void)setListLayout:(id)a3;
-- (void)setOverrideBadgeBackgroundColor:(id)a3;
-- (void)setOverrideFont:(id)a3;
-- (void)setOverrideIconImageAppearance:(id)a3;
-- (void)setOverridePaddingFactor:(double)a3;
-- (void)setOverrideText:(id)a3;
-- (void)setParallaxSettings:(id)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
-- (void)updateShadowWithRadius:(double)a3 alpha:(double)a4 imageOutset:(double)a5;
+- (void)setAccessoryBrightness:(double)brightness;
+- (void)setListLayout:(id)layout;
+- (void)setOverrideBadgeBackgroundColor:(id)color;
+- (void)setOverrideFont:(id)font;
+- (void)setOverrideIconImageAppearance:(id)appearance;
+- (void)setOverridePaddingFactor:(double)factor;
+- (void)setOverrideText:(id)text;
+- (void)setParallaxSettings:(id)settings;
+- (void)setStyle:(int64_t)style;
+- (void)settings:(id)settings changedValueForKey:(id)key;
+- (void)updateShadowWithRadius:(double)radius alpha:(double)alpha imageOutset:(double)outset;
 - (void)updateTopLevelLayerProperties;
-- (void)updateTopLevelLayerPropertiesWithImageAppearance:(id)a3 style:(int64_t)a4;
+- (void)updateTopLevelLayerPropertiesWithImageAppearance:(id)appearance style:(int64_t)style;
 @end
 
 @implementation SBIconBadgeView
@@ -64,8 +64,8 @@
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v3 = [(SBIconBadgeView *)self _motionEffects];
-    v4 = [v3 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    _motionEffects = [(SBIconBadgeView *)self _motionEffects];
+    v4 = [_motionEffects countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v4)
     {
       v5 = v4;
@@ -77,14 +77,14 @@
         {
           if (*v27 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(_motionEffects);
           }
 
           [(SBIconBadgeView *)self _removeMotionEffect:*(*(&v26 + 1) + 8 * v7++)];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v5 = [_motionEffects countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v5);
@@ -131,8 +131,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(SBHIconAccessoryCountedMapImageTuple *)self->_textImageTuple image];
-  [(SBIconBadgeView *)self intrinsicContentSizeForTextImage:v3];
+  image = [(SBHIconAccessoryCountedMapImageTuple *)self->_textImageTuple image];
+  [(SBIconBadgeView *)self intrinsicContentSizeForTextImage:image];
   v5 = v4;
   v7 = v6;
 
@@ -145,8 +145,8 @@
 
 - (CGSize)badgeSize
 {
-  v2 = [(SBIconBadgeView *)self listLayout];
-  v3 = SBHIconListLayoutIconAccessorySize(v2);
+  listLayout = [(SBIconBadgeView *)self listLayout];
+  v3 = SBHIconListLayoutIconAccessorySize(listLayout);
   v5 = v4;
 
   v6 = v3;
@@ -165,10 +165,10 @@
 
 - (void)_configureBackgroundAfterIconImageAppearanceChange
 {
-  v37 = [(SBIconBadgeView *)self effectiveIconImageAppearance];
-  HasTintColor = SBHIconImageAppearanceTypeHasTintColor([v37 appearanceType]);
+  effectiveIconImageAppearance = [(SBIconBadgeView *)self effectiveIconImageAppearance];
+  HasTintColor = SBHIconImageAppearanceTypeHasTintColor([effectiveIconImageAppearance appearanceType]);
   style = self->_style;
-  v5 = self->_backgroundView;
+  layer2 = self->_backgroundView;
   if (style == 1)
   {
     v6 = objc_opt_self();
@@ -176,7 +176,7 @@
 
     if (isKindOfClass)
     {
-      v8 = v5;
+      v8 = layer2;
     }
 
     else
@@ -207,10 +207,10 @@
 
     [(UIView *)v8 setRecipe:v17];
     [(UIView *)v16 setOverrideUserInterfaceStyle:v18];
-    v19 = [(SBIconBadgeView *)self materialGroupNameBase];
-    if (v19)
+    materialGroupNameBase = [(SBIconBadgeView *)self materialGroupNameBase];
+    if (materialGroupNameBase)
     {
-      [(UIView *)v16 setGroupNameBase:v19];
+      [(UIView *)v16 setGroupNameBase:materialGroupNameBase];
     }
 
     else
@@ -246,7 +246,7 @@
       [v22 stopAutomaticallyUpdatingView:self->_borderView];
     }
 
-    v26 = [(UIView *)self->_borderView layer];
+    layer = [(UIView *)self->_borderView layer];
     v27 = 0.0;
     if (self->_style == 1)
     {
@@ -254,69 +254,69 @@
       v27 = 1.0 / v28;
     }
 
-    [v26 setBorderWidth:v27];
-    [v26 borderWidth];
-    [v26 setBorderOffset:?];
+    [layer setBorderWidth:v27];
+    [layer borderWidth];
+    [layer setBorderOffset:?];
     goto LABEL_29;
   }
 
-  v9 = [(SBIconBadgeView *)self displayedBackgroundImageAppearance];
+  displayedBackgroundImageAppearance = [(SBIconBadgeView *)self displayedBackgroundImageAppearance];
   v10 = BSEqualObjects();
 
   if ((v10 & 1) == 0)
   {
 
-    v5 = 0;
+    layer2 = 0;
   }
 
   v11 = objc_opt_self();
-  v12 = [(UIView *)v5 isMemberOfClass:v11];
+  v12 = [(UIView *)layer2 isMemberOfClass:v11];
 
   if ((v12 & 1) == 0)
   {
-    v13 = [(SBIconBadgeView *)self overrideBadgeBackgroundColor];
-    v14 = v13;
-    if (v13)
+    overrideBadgeBackgroundColor = [(SBIconBadgeView *)self overrideBadgeBackgroundColor];
+    v14 = overrideBadgeBackgroundColor;
+    if (overrideBadgeBackgroundColor)
     {
-      v15 = v13;
+      v15 = overrideBadgeBackgroundColor;
     }
 
     else
     {
-      v15 = [objc_opt_class() badgeBackgroundColorForImageAppearance:v37];
+      v15 = [objc_opt_class() badgeBackgroundColorForImageAppearance:effectiveIconImageAppearance];
     }
 
     v22 = v15;
 
     v16 = objc_alloc_init(MEMORY[0x1E69DD250]);
     [(UIView *)v16 setBackgroundColor:v22];
-    v26 = [objc_opt_class() badgeBackgroundFiltersForImageAppearance:v37];
-    v5 = [(UIView *)v16 layer];
-    [(UIView *)v5 setFilters:v26];
+    layer = [objc_opt_class() badgeBackgroundFiltersForImageAppearance:effectiveIconImageAppearance];
+    layer2 = [(UIView *)v16 layer];
+    [(UIView *)layer2 setFilters:layer];
 LABEL_29:
 
-    v5 = v16;
+    layer2 = v16;
   }
 
   backgroundView = self->_backgroundView;
-  if (v5 != backgroundView)
+  if (layer2 != backgroundView)
   {
     [(UIView *)backgroundView removeFromSuperview];
-    [(SBIconBadgeView *)self insertSubview:v5 atIndex:0];
-    [(UIView *)v5 addSubview:self->_textView];
-    v30 = [(UIView *)v5 sbh_darkener];
+    [(SBIconBadgeView *)self insertSubview:layer2 atIndex:0];
+    [(UIView *)layer2 addSubview:self->_textView];
+    sbh_darkener = [(UIView *)layer2 sbh_darkener];
     [(SBIconBadgeView *)self brightness];
-    [v30 setBrightness:?];
+    [sbh_darkener setBrightness:?];
 
-    v31 = [(UIView *)self->_backgroundView layer];
-    objc_storeStrong(&self->_backgroundView, v5);
-    [v31 shadowRadius];
+    layer3 = [(UIView *)self->_backgroundView layer];
+    objc_storeStrong(&self->_backgroundView, layer2);
+    [layer3 shadowRadius];
     v33 = v32;
-    [v31 shadowOpacity];
+    [layer3 shadowOpacity];
     v35 = v34;
-    [v31 shadowOffset];
+    [layer3 shadowOffset];
     [(SBIconBadgeView *)self updateShadowWithRadius:v33 alpha:v35 imageOutset:v36];
-    [(SBIconBadgeView *)self setDisplayedBackgroundImageAppearance:v37];
+    [(SBIconBadgeView *)self setDisplayedBackgroundImageAppearance:effectiveIconImageAppearance];
   }
 
   [(SBIconBadgeView *)self updateTopLevelLayerProperties];
@@ -324,40 +324,40 @@ LABEL_29:
 
 - (SBHIconImageAppearance)effectiveIconImageAppearance
 {
-  v3 = [(SBIconBadgeView *)self overrideIconImageAppearance];
-  v4 = [(SBIconBadgeView *)self traitCollection];
-  v5 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:v4 overrideIconImageAppearance:v3];
+  overrideIconImageAppearance = [(SBIconBadgeView *)self overrideIconImageAppearance];
+  traitCollection = [(SBIconBadgeView *)self traitCollection];
+  v5 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:traitCollection overrideIconImageAppearance:overrideIconImageAppearance];
 
   return v5;
 }
 
 - (void)updateTopLevelLayerProperties
 {
-  v3 = [(SBIconBadgeView *)self effectiveIconImageAppearance];
-  [(SBIconBadgeView *)self updateTopLevelLayerPropertiesWithImageAppearance:v3 style:[(SBIconBadgeView *)self style]];
+  effectiveIconImageAppearance = [(SBIconBadgeView *)self effectiveIconImageAppearance];
+  [(SBIconBadgeView *)self updateTopLevelLayerPropertiesWithImageAppearance:effectiveIconImageAppearance style:[(SBIconBadgeView *)self style]];
 }
 
 - (void)_configureForegroundAfterIconImageAppearanceChange
 {
-  v3 = [(SBIconBadgeView *)self isHighlighted];
+  isHighlighted = [(SBIconBadgeView *)self isHighlighted];
   text = self->_text;
 
-  [(SBIconBadgeView *)self _configureForText:text highlighted:v3];
+  [(SBIconBadgeView *)self _configureForText:text highlighted:isHighlighted];
 }
 
 - (UIFont)font
 {
-  v3 = [(SBIconBadgeView *)self listLayout];
-  v4 = [(SBIconBadgeView *)self overrideFont];
-  if (!v4)
+  listLayout = [(SBIconBadgeView *)self listLayout];
+  overrideFont = [(SBIconBadgeView *)self overrideFont];
+  if (!overrideFont)
   {
-    if ((objc_opt_respondsToSelector() & 1) == 0 || ([v3 accessoryFontForContentSizeCategory:*MEMORY[0x1E69DDC90] options:UIAccessibilityIsBoldTextEnabled()], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+    if ((objc_opt_respondsToSelector() & 1) == 0 || ([listLayout accessoryFontForContentSizeCategory:*MEMORY[0x1E69DDC90] options:UIAccessibilityIsBoldTextEnabled()], (overrideFont = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v4 = [MEMORY[0x1E69DB878] systemFontOfSize:16.0];
+      overrideFont = [MEMORY[0x1E69DB878] systemFontOfSize:16.0];
     }
   }
 
-  v5 = v4;
+  v5 = overrideFont;
 
   return v5;
 }
@@ -370,9 +370,9 @@ LABEL_29:
     v3 = SBLogIcon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(SBHIconAccessoryCountedMapImageTuple *)self->_textImageTuple sbh_countedMapKey];
+      sbh_countedMapKey = [(SBHIconAccessoryCountedMapImageTuple *)self->_textImageTuple sbh_countedMapKey];
       v7 = 138412290;
-      v8 = v4;
+      v8 = sbh_countedMapKey;
       _os_log_impl(&dword_1BEB18000, v3, OS_LOG_TYPE_INFO, "<----\tChecking in badge _textImageTuple w/ mapkey %@", &v7, 0xCu);
     }
 
@@ -386,8 +386,8 @@ LABEL_29:
 
 - (CGPoint)layoutOffset
 {
-  v2 = [(SBIconBadgeView *)self listLayout];
-  v3 = SBHIconListLayoutIconAccessoryOffset(v2);
+  listLayout = [(SBIconBadgeView *)self listLayout];
+  v3 = SBHIconListLayoutIconAccessoryOffset(listLayout);
   v5 = v4;
 
   v6 = v3;
@@ -449,18 +449,18 @@ LABEL_29:
 
 - (double)badgeContentScale
 {
-  v3 = [(SBIconBadgeView *)self listLayout];
-  if (v3)
+  listLayout = [(SBIconBadgeView *)self listLayout];
+  if (listLayout)
   {
-    v4 = [(SBIconBadgeView *)self listLayout];
-    [v4 iconImageInfo];
+    listLayout2 = [(SBIconBadgeView *)self listLayout];
+    [listLayout2 iconImageInfo];
     v6 = v5;
   }
 
   else
   {
-    v4 = [(SBIconBadgeView *)self traitCollection];
-    [v4 displayScale];
+    listLayout2 = [(SBIconBadgeView *)self traitCollection];
+    [listLayout2 displayScale];
     v6 = v7;
   }
 
@@ -470,24 +470,24 @@ LABEL_29:
 + (UIColor)badgeBackgroundColor
 {
   v3 = +[SBHIconImageAppearance defaultAppearance];
-  v4 = [a1 badgeBackgroundColorForImageAppearance:v3];
+  v4 = [self badgeBackgroundColorForImageAppearance:v3];
 
   return v4;
 }
 
-+ (id)badgeBackgroundColorForImageAppearance:(id)a3
++ (id)badgeBackgroundColorForImageAppearance:(id)appearance
 {
-  v3 = a3;
-  v4 = [v3 appearanceType];
+  appearanceCopy = appearance;
+  appearanceType = [appearanceCopy appearanceType];
   v5 = 0;
-  if (v4 > 3)
+  if (appearanceType > 3)
   {
-    if (v4 == 4)
+    if (appearanceType == 4)
     {
-      v7 = [v3 opaqueTintColor];
+      opaqueTintColor = [appearanceCopy opaqueTintColor];
       CAColorMatrixMakeBrightness();
       memset(v14, 0, sizeof(v14));
-      v8 = [v7 sbh_colorByApplyingColorMatrix:v14];
+      v8 = [opaqueTintColor sbh_colorByApplyingColorMatrix:v14];
 
       v9 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.9];
       v5 = [v8 _colorBlendedWithColor:v9];
@@ -495,32 +495,32 @@ LABEL_29:
       goto LABEL_12;
     }
 
-    if (v4 == 5)
+    if (appearanceType == 5)
     {
-      v6 = [v3 opaqueTintColor];
+      opaqueTintColor2 = [appearanceCopy opaqueTintColor];
       goto LABEL_11;
     }
 
-    if (v4 != 6)
+    if (appearanceType != 6)
     {
       goto LABEL_12;
     }
   }
 
-  else if (v4 >= 2)
+  else if (appearanceType >= 2)
   {
-    if ((v4 - 2) >= 2)
+    if ((appearanceType - 2) >= 2)
     {
       goto LABEL_12;
     }
 
-    v6 = [MEMORY[0x1E69DC888] whiteColor];
+    opaqueTintColor2 = [MEMORY[0x1E69DC888] whiteColor];
     goto LABEL_11;
   }
 
-  v6 = [MEMORY[0x1E69DC888] systemRedColor];
+  opaqueTintColor2 = [MEMORY[0x1E69DC888] systemRedColor];
 LABEL_11:
-  v5 = v6;
+  v5 = opaqueTintColor2;
 LABEL_12:
   v10 = objc_alloc_init(MEMORY[0x1E69DD1B8]);
   v11 = [v10 traitCollectionByModifyingTraits:&__block_literal_global_70];
@@ -537,10 +537,10 @@ void __58__SBIconBadgeView_badgeBackgroundColorForImageAppearance___block_invoke
   [v2 setAccessibilityContrast:0];
 }
 
-+ (id)badgeBackgroundFiltersForImageAppearance:(id)a3
++ (id)badgeBackgroundFiltersForImageAppearance:(id)appearance
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  if ([a3 appearanceType] == 5)
+  if ([appearance appearanceType] == 5)
   {
     v3 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979848]];
     [v3 setValue:&unk_1F3DB2B48 forKeyPath:*MEMORY[0x1E6979990]];
@@ -556,49 +556,49 @@ void __58__SBIconBadgeView_badgeBackgroundColorForImageAppearance___block_invoke
   return v4;
 }
 
-+ (id)badgeTextColorForImageAppearance:(id)a3 style:(int64_t)a4
++ (id)badgeTextColorForImageAppearance:(id)appearance style:(int64_t)style
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 != 1)
+  appearanceCopy = appearance;
+  v6 = appearanceCopy;
+  if (style != 1)
   {
-    if (a4)
+    if (style)
     {
-      a4 = 0;
+      style = 0;
       goto LABEL_16;
     }
 
-    v7 = [v5 appearanceType];
-    if (v7 > 3)
+    appearanceType = [appearanceCopy appearanceType];
+    if (appearanceType > 3)
     {
-      if (v7 == 4)
+      if (appearanceType == 4)
       {
-        v11 = [v6 opaqueTintColor];
+        opaqueTintColor = [v6 opaqueTintColor];
         CAColorMatrixMakeBrightness();
         memset(v13, 0, sizeof(v13));
-        a4 = [v11 sbh_colorByApplyingColorMatrix:v13];
+        style = [opaqueTintColor sbh_colorByApplyingColorMatrix:v13];
 
         goto LABEL_16;
       }
 
-      if (v7 == 5)
+      if (appearanceType == 5)
       {
         v8 = MEMORY[0x1E69DC888];
         v9 = 0.55;
 LABEL_14:
-        v10 = [v8 colorWithWhite:0.0 alpha:v9];
+        whiteColor = [v8 colorWithWhite:0.0 alpha:v9];
         goto LABEL_15;
       }
 
-      if (v7 != 6)
+      if (appearanceType != 6)
       {
         goto LABEL_16;
       }
     }
 
-    else if (v7 >= 2)
+    else if (appearanceType >= 2)
     {
-      if ((v7 - 2) >= 2)
+      if ((appearanceType - 2) >= 2)
       {
         goto LABEL_16;
       }
@@ -609,24 +609,24 @@ LABEL_14:
     }
   }
 
-  v10 = [MEMORY[0x1E69DC888] whiteColor];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
 LABEL_15:
-  a4 = v10;
+  style = whiteColor;
 LABEL_16:
 
-  return a4;
+  return style;
 }
 
-+ (id)badgeTextCompositingFilterForImageAppearance:(id)a3 style:(int64_t)a4
++ (id)badgeTextCompositingFilterForImageAppearance:(id)appearance style:(int64_t)style
 {
-  if (a4)
+  if (style)
   {
     v6 = 0;
   }
 
   else
   {
-    if ([a3 appearanceType] == 5)
+    if ([appearance appearanceType] == 5)
     {
       v6 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CE8]];
     }
@@ -654,8 +654,8 @@ LABEL_16:
     backgroundView = v3->_backgroundView;
     v3->_backgroundView = v4;
 
-    v6 = [objc_opt_class() badgeBackgroundColor];
-    [(UIView *)v3->_backgroundView setBackgroundColor:v6];
+    badgeBackgroundColor = [objc_opt_class() badgeBackgroundColor];
+    [(UIView *)v3->_backgroundView setBackgroundColor:badgeBackgroundColor];
     [(SBIconBadgeView *)v3 addSubview:v3->_backgroundView];
     v7 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     textView = v3->_textView;
@@ -687,23 +687,23 @@ LABEL_16:
   [(SBIconBadgeView *)&v3 dealloc];
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(SBIconBadgeView *)self setDisplayedBackgroundImageAppearance:0];
 
     [(SBIconBadgeView *)self _configureAfterIconImageAppearanceChange];
   }
 }
 
-- (void)setOverrideFont:(id)a3
+- (void)setOverrideFont:(id)font
 {
-  v7 = a3;
+  fontCopy = font;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v7 copy];
+    v4 = [fontCopy copy];
     overrideFont = self->_overrideFont;
     self->_overrideFont = v4;
 
@@ -714,12 +714,12 @@ LABEL_16:
   }
 }
 
-- (void)setOverrideText:(id)a3
+- (void)setOverrideText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [textCopy copy];
     overrideText = self->_overrideText;
     self->_overrideText = v4;
 
@@ -727,11 +727,11 @@ LABEL_16:
   }
 }
 
-- (void)setOverridePaddingFactor:(double)a3
+- (void)setOverridePaddingFactor:(double)factor
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_overridePaddingFactor = a3;
+    self->_overridePaddingFactor = factor;
     text = self->_text;
     self->_text = 0;
 
@@ -739,27 +739,27 @@ LABEL_16:
   }
 }
 
-- (void)setOverrideBadgeBackgroundColor:(id)a3
+- (void)setOverrideBadgeBackgroundColor:(id)color
 {
-  v7 = a3;
+  colorCopy = color;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_overrideBadgeBackgroundColor, a3);
+    objc_storeStrong(&self->_overrideBadgeBackgroundColor, color);
     if (!self->_style)
     {
       backgroundView = self->_backgroundView;
-      v6 = [(SBIconBadgeView *)self badgeBackgroundColor];
-      [(UIView *)backgroundView setBackgroundColor:v6];
+      badgeBackgroundColor = [(SBIconBadgeView *)self badgeBackgroundColor];
+      [(UIView *)backgroundView setBackgroundColor:badgeBackgroundColor];
     }
   }
 }
 
-- (void)setOverrideIconImageAppearance:(id)a3
+- (void)setOverrideIconImageAppearance:(id)appearance
 {
-  v6 = a3;
+  appearanceCopy = appearance;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [appearanceCopy copy];
     overrideIconImageAppearance = self->_overrideIconImageAppearance;
     self->_overrideIconImageAppearance = v4;
 
@@ -767,40 +767,40 @@ LABEL_16:
   }
 }
 
-- (void)updateShadowWithRadius:(double)a3 alpha:(double)a4 imageOutset:(double)a5
+- (void)updateShadowWithRadius:(double)radius alpha:(double)alpha imageOutset:(double)outset
 {
-  v9 = [(UIView *)self->_backgroundView layer];
-  [v9 setShadowRadius:a3];
-  *&v8 = a4;
-  [v9 setShadowOpacity:v8];
-  [v9 setShadowOffset:{0.0, a5}];
-  [v9 setShadowPathIsBounds:1];
+  layer = [(UIView *)self->_backgroundView layer];
+  [layer setShadowRadius:radius];
+  *&v8 = alpha;
+  [layer setShadowOpacity:v8];
+  [layer setShadowOffset:{0.0, outset}];
+  [layer setShadowPathIsBounds:1];
 }
 
-- (void)_layOutTextImageView:(id)a3
+- (void)_layOutTextImageView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(SBIconBadgeView *)self badgeContentScale];
-  v7 = [v4 image];
-  [v7 size];
-  [v7 alignmentRectInsets];
+  image = [viewCopy image];
+  [image size];
+  [image alignmentRectInsets];
   v6 = v5;
   [(UIView *)self->_backgroundView bounds];
   UIRectCenteredRect();
   SBHEdgeInsetsInvert(v6);
   UIRectIntegralWithScale();
-  [v4 setFrame:?];
+  [viewCopy setFrame:?];
 }
 
-- (id)accessoryTextForIcon:(id)a3 infoProvider:(id)a4
+- (id)accessoryTextForIcon:(id)icon infoProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBIconBadgeView *)self overrideText];
-  v9 = [v7 overrideBadgeNumberOrString];
-  if (v8)
+  iconCopy = icon;
+  providerCopy = provider;
+  overrideText = [(SBIconBadgeView *)self overrideText];
+  overrideBadgeNumberOrString = [providerCopy overrideBadgeNumberOrString];
+  if (overrideText)
   {
-    v10 = v8;
+    v10 = overrideText;
   }
 
   else
@@ -815,16 +815,16 @@ LABEL_16:
 
       if (v17)
       {
-        v18 = v9;
-        if ([v18 integerValue] < 1)
+        location = overrideBadgeNumberOrString;
+        if ([location integerValue] < 1)
         {
           v13 = 0;
         }
 
         else
         {
-          v19 = [MEMORY[0x1E696ADA0] sbf_cachedDecimalNumberFormatter];
-          v13 = [v19 stringFromNumber:v18];
+          sbf_cachedDecimalNumberFormatter = [MEMORY[0x1E696ADA0] sbf_cachedDecimalNumberFormatter];
+          v13 = [sbf_cachedDecimalNumberFormatter stringFromNumber:location];
         }
       }
 
@@ -839,14 +839,14 @@ LABEL_16:
           goto LABEL_6;
         }
 
-        v18 = [v7 location];
-        v13 = [v6 accessoryTextForLocation:v18];
+        location = [providerCopy location];
+        v13 = [iconCopy accessoryTextForLocation:location];
       }
 
       goto LABEL_6;
     }
 
-    v10 = v9;
+    v10 = overrideBadgeNumberOrString;
   }
 
   v13 = v10;
@@ -856,65 +856,65 @@ LABEL_6:
   return v13;
 }
 
-- (void)configureAnimatedForIcon:(id)a3 infoProvider:(id)a4 animator:(id)a5
+- (void)configureAnimatedForIcon:(id)icon infoProvider:(id)provider animator:(id)animator
 {
-  v8 = a5;
-  v9 = a4;
-  v11 = [(SBIconBadgeView *)self accessoryTextForIcon:a3 infoProvider:v9];
-  v10 = [v9 isHighlighted];
+  animatorCopy = animator;
+  providerCopy = provider;
+  v11 = [(SBIconBadgeView *)self accessoryTextForIcon:icon infoProvider:providerCopy];
+  isHighlighted = [providerCopy isHighlighted];
 
-  [(SBIconBadgeView *)self _configureAnimatedForText:v11 highlighted:v10 animator:v8];
+  [(SBIconBadgeView *)self _configureAnimatedForText:v11 highlighted:isHighlighted animator:animatorCopy];
 }
 
-- (void)configureForIcon:(id)a3 infoProvider:(id)a4
+- (void)configureForIcon:(id)icon infoProvider:(id)provider
 {
-  v6 = a4;
-  v8 = [(SBIconBadgeView *)self accessoryTextForIcon:a3 infoProvider:v6];
-  v7 = [v6 isHighlighted];
+  providerCopy = provider;
+  v8 = [(SBIconBadgeView *)self accessoryTextForIcon:icon infoProvider:providerCopy];
+  isHighlighted = [providerCopy isHighlighted];
 
-  [(SBIconBadgeView *)self _configureForText:v8 highlighted:v7];
+  [(SBIconBadgeView *)self _configureForText:v8 highlighted:isHighlighted];
 }
 
-- (void)_configureForText:(id)a3 highlighted:(BOOL)a4
+- (void)_configureForText:(id)text highlighted:(BOOL)highlighted
 {
-  v4 = a4;
-  v6 = a3;
-  v13 = [(SBIconBadgeView *)self _checkoutImageForText:v6 highlighted:v4];
-  v7 = [v13 imageAppearance];
+  highlightedCopy = highlighted;
+  textCopy = text;
+  v13 = [(SBIconBadgeView *)self _checkoutImageForText:textCopy highlighted:highlightedCopy];
+  imageAppearance = [v13 imageAppearance];
   [(SBIconBadgeView *)self _clearText];
   text = self->_text;
-  self->_text = v6;
-  v9 = v6;
+  self->_text = textCopy;
+  v9 = textCopy;
 
   [(SBIconBadgeView *)self setTextImageTuple:v13];
   textView = self->_textView;
-  v11 = [(SBHIconAccessoryCountedMapImageTuple *)self->_textImageTuple image];
-  [(UIImageView *)textView setImage:v11];
+  image = [(SBHIconAccessoryCountedMapImageTuple *)self->_textImageTuple image];
+  [(UIImageView *)textView setImage:image];
 
   [(UIImageView *)self->_textView setAlpha:1.0];
-  [(SBIconBadgeView *)self _configureTextView:self->_textView forImageAppearance:v7];
-  v12 = [(SBHIconAccessoryCountedMapImageTuple *)self->_textImageTuple image];
+  [(SBIconBadgeView *)self _configureTextView:self->_textView forImageAppearance:imageAppearance];
+  image2 = [(SBHIconAccessoryCountedMapImageTuple *)self->_textImageTuple image];
 
-  [(SBIconBadgeView *)self _resizeForTextImage:v12];
+  [(SBIconBadgeView *)self _resizeForTextImage:image2];
   self->_displayingAccessory = self->_textImageTuple != 0;
-  [(SBIconBadgeView *)self setHighlighted:v4];
+  [(SBIconBadgeView *)self setHighlighted:highlightedCopy];
 }
 
-- (void)updateTopLevelLayerPropertiesWithImageAppearance:(id)a3 style:(int64_t)a4
+- (void)updateTopLevelLayerPropertiesWithImageAppearance:(id)appearance style:(int64_t)style
 {
-  if (a4)
+  if (style)
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [a3 appearanceType] != 5;
+    v5 = [appearance appearanceType] != 5;
   }
 
-  v6 = [(SBIconBadgeView *)self layer];
-  [v6 setAllowsGroupOpacity:v5];
-  [v6 setAllowsGroupBlending:v5];
+  layer = [(SBIconBadgeView *)self layer];
+  [layer setAllowsGroupOpacity:v5];
+  [layer setAllowsGroupBlending:v5];
 }
 
 - (void)prepareForReuse
@@ -935,12 +935,12 @@ LABEL_6:
   [(SBIconBadgeView *)self setOverrideIconImageAppearance:0];
 }
 
-- (CGPoint)accessoryCenterForIconBounds:(CGRect)a3
+- (CGPoint)accessoryCenterForIconBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(SBIconBadgeView *)self layoutOffset];
   v9 = v8;
   v11 = v10;
@@ -955,13 +955,13 @@ LABEL_6:
   return result;
 }
 
-- (CGSize)intrinsicContentSizeForTextImage:(id)a3
+- (CGSize)intrinsicContentSizeForTextImage:(id)image
 {
-  v4 = a3;
-  v5 = [(SBIconBadgeView *)self listLayout];
-  if (v4)
+  imageCopy = image;
+  listLayout = [(SBIconBadgeView *)self listLayout];
+  if (imageCopy)
   {
-    [v4 size];
+    [imageCopy size];
     v7 = v6;
   }
 
@@ -972,7 +972,7 @@ LABEL_6:
 
   [objc_opt_class() _textPadding];
   v9 = v8;
-  if (v5)
+  if (listLayout)
   {
     [(SBIconBadgeView *)self badgeSize];
     v12 = v11;
@@ -989,10 +989,10 @@ LABEL_6:
 
   else
   {
-    v14 = [(SBIconBadgeView *)self font];
-    [v14 pointSize];
-    v15 = [(SBIconBadgeView *)self traitCollection];
-    [v15 displayScale];
+    font = [(SBIconBadgeView *)self font];
+    [font pointSize];
+    traitCollection = [(SBIconBadgeView *)self traitCollection];
+    [traitCollection displayScale];
 
     BSSizeCeilForScale();
     v13 = v16;
@@ -1006,24 +1006,24 @@ LABEL_6:
   return result;
 }
 
-- (void)setAccessoryBrightness:(double)a3
+- (void)setAccessoryBrightness:(double)brightness
 {
   [(SBIconBadgeView *)self setBrightness:?];
-  v5 = [(UIView *)self->_backgroundView sbh_darkener];
-  [v5 setBrightness:a3];
+  sbh_darkener = [(UIView *)self->_backgroundView sbh_darkener];
+  [sbh_darkener setBrightness:brightness];
 }
 
-- (void)setListLayout:(id)a3
+- (void)setListLayout:(id)layout
 {
-  v5 = a3;
-  if (self->_listLayout != v5)
+  layoutCopy = layout;
+  if (self->_listLayout != layoutCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_listLayout, a3);
+    v6 = layoutCopy;
+    objc_storeStrong(&self->_listLayout, layout);
     [(SBIconBadgeView *)self _clearText];
     [(SBIconBadgeView *)self setNeedsLayout];
     [(SBIconBadgeView *)self layoutIfNeeded];
-    v5 = v6;
+    layoutCopy = v6;
   }
 }
 
@@ -1035,11 +1035,11 @@ LABEL_6:
   [v3 startAnimation];
 }
 
-- (void)_configureAnimatedForText:(id)a3 highlighted:(BOOL)a4 animator:(id)a5
+- (void)_configureAnimatedForText:(id)text highlighted:(BOOL)highlighted animator:(id)animator
 {
-  v6 = a4;
-  v13 = a3;
-  v9 = a5;
+  highlightedCopy = highlighted;
+  textCopy = text;
+  animatorCopy = animator;
   if (SBFEqualStrings())
   {
     [(SBIconBadgeView *)self layoutIfNeeded];
@@ -1047,51 +1047,51 @@ LABEL_6:
 
   else
   {
-    v10 = [(SBIconBadgeView *)self _checkoutImageForText:v13 highlighted:v6];
+    v10 = [(SBIconBadgeView *)self _checkoutImageForText:textCopy highlighted:highlightedCopy];
     v11 = v10 != 0;
     displayingAccessory = self->_displayingAccessory;
     [(SBIconBadgeView *)self _clearText];
-    objc_storeStrong(&self->_text, a3);
+    objc_storeStrong(&self->_text, text);
     [(SBIconBadgeView *)self setTextImageTuple:v10];
     self->_displayingAccessory = v11;
-    [(SBIconBadgeView *)self setHighlighted:v6];
-    [(SBIconBadgeView *)self _transitionAnimatedToTextImage:v10 wasDisplayingAccessory:displayingAccessory willDisplayAccessory:v11 animator:v9];
+    [(SBIconBadgeView *)self setHighlighted:highlightedCopy];
+    [(SBIconBadgeView *)self _transitionAnimatedToTextImage:v10 wasDisplayingAccessory:displayingAccessory willDisplayAccessory:v11 animator:animatorCopy];
   }
 }
 
-- (void)_transitionAnimatedToTextImage:(id)a3 wasDisplayingAccessory:(BOOL)a4 willDisplayAccessory:(BOOL)a5 animator:(id)a6
+- (void)_transitionAnimatedToTextImage:(id)image wasDisplayingAccessory:(BOOL)accessory willDisplayAccessory:(BOOL)displayAccessory animator:(id)animator
 {
-  v7 = a5;
-  v8 = a4;
-  v11 = a3;
-  v10 = a6;
-  if (v8 && v7)
+  displayAccessoryCopy = displayAccessory;
+  accessoryCopy = accessory;
+  imageCopy = image;
+  animatorCopy = animator;
+  if (accessoryCopy && displayAccessoryCopy)
   {
-    [(SBIconBadgeView *)self _crossfadeToTextImage:v11 animator:v10];
+    [(SBIconBadgeView *)self _crossfadeToTextImage:imageCopy animator:animatorCopy];
   }
 
-  else if (v7)
+  else if (displayAccessoryCopy)
   {
-    [(SBIconBadgeView *)self _zoomInWithTextImage:v11 animator:v10];
+    [(SBIconBadgeView *)self _zoomInWithTextImage:imageCopy animator:animatorCopy];
   }
 
-  else if (v8)
+  else if (accessoryCopy)
   {
-    [(SBIconBadgeView *)self _zoomOutWithAnimator:v10];
+    [(SBIconBadgeView *)self _zoomOutWithAnimator:animatorCopy];
   }
 }
 
-- (void)_crossfadeToTextImage:(id)a3 animator:(id)a4
+- (void)_crossfadeToTextImage:(id)image animator:(id)animator
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 image];
-  v9 = [v7 imageAppearance];
+  animatorCopy = animator;
+  imageCopy = image;
+  image = [imageCopy image];
+  imageAppearance = [imageCopy imageAppearance];
 
   v10 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
-  [v10 setImage:v8];
+  [v10 setImage:image];
   [v10 setAlpha:0.0];
-  [(SBIconBadgeView *)self _configureTextView:v10 forImageAppearance:v9];
+  [(SBIconBadgeView *)self _configureTextView:v10 forImageAppearance:imageAppearance];
   [(UIView *)self->_backgroundView addSubview:v10];
   objc_storeStrong(&self->_incomingTextView, v10);
   [(SBIconBadgeView *)self setNeedsLayout];
@@ -1101,19 +1101,19 @@ LABEL_6:
   v17[2] = __50__SBIconBadgeView__crossfadeToTextImage_animator___block_invoke;
   v17[3] = &unk_1E8088F88;
   v17[4] = self;
-  v18 = v8;
+  v18 = image;
   v11 = v10;
   v19 = v11;
-  v12 = v8;
-  [v6 addAnimations:v17];
+  v12 = image;
+  [animatorCopy addAnimations:v17];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __50__SBIconBadgeView__crossfadeToTextImage_animator___block_invoke_2;
   v14[3] = &unk_1E808A040;
   v15 = v11;
-  v16 = self;
+  selfCopy = self;
   v13 = v11;
-  [v6 addCompletion:v14];
+  [animatorCopy addCompletion:v14];
 }
 
 uint64_t __50__SBIconBadgeView__crossfadeToTextImage_animator___block_invoke(uint64_t a1)
@@ -1146,79 +1146,79 @@ void __50__SBIconBadgeView__crossfadeToTextImage_animator___block_invoke_2(uint6
   }
 }
 
-- (void)_zoomInWithTextImage:(id)a3 animator:(id)a4
+- (void)_zoomInWithTextImage:(id)image animator:(id)animator
 {
-  v5 = a3;
-  v7 = [v5 image];
-  v6 = [v5 imageAppearance];
+  imageCopy = image;
+  image = [imageCopy image];
+  imageAppearance = [imageCopy imageAppearance];
 
-  [(UIImageView *)self->_textView setImage:v7];
+  [(UIImageView *)self->_textView setImage:image];
   [(UIImageView *)self->_textView setAlpha:1.0];
-  [(SBIconBadgeView *)self _configureTextView:self->_textView forImageAppearance:v6];
-  [(SBIconBadgeView *)self _resizeForTextImage:v7];
+  [(SBIconBadgeView *)self _configureTextView:self->_textView forImageAppearance:imageAppearance];
+  [(SBIconBadgeView *)self _resizeForTextImage:image];
   [(SBIconBadgeView *)self setNeedsLayout];
   [(SBIconBadgeView *)self layoutIfNeeded];
 }
 
-- (void)_configureTextView:(id)a3 forImageAppearance:(id)a4
+- (void)_configureTextView:(id)view forImageAppearance:(id)appearance
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [objc_opt_class() badgeTextCompositingFilterForImageAppearance:v6 style:{-[SBIconBadgeView style](self, "style")}];
+  appearanceCopy = appearance;
+  viewCopy = view;
+  v9 = [objc_opt_class() badgeTextCompositingFilterForImageAppearance:appearanceCopy style:{-[SBIconBadgeView style](self, "style")}];
 
-  v8 = [v7 layer];
+  layer = [viewCopy layer];
 
-  [v8 setCompositingFilter:v9];
+  [layer setCompositingFilter:v9];
 }
 
 - (UIColor)badgeBackgroundColor
 {
-  v3 = [(SBIconBadgeView *)self overrideBadgeBackgroundColor];
-  v4 = v3;
-  if (v3)
+  overrideBadgeBackgroundColor = [(SBIconBadgeView *)self overrideBadgeBackgroundColor];
+  v4 = overrideBadgeBackgroundColor;
+  if (overrideBadgeBackgroundColor)
   {
-    v5 = v3;
+    v5 = overrideBadgeBackgroundColor;
   }
 
   else
   {
-    v6 = [(SBIconBadgeView *)self effectiveIconImageAppearance];
-    v5 = [objc_opt_class() badgeBackgroundColorForImageAppearance:v6];
+    effectiveIconImageAppearance = [(SBIconBadgeView *)self effectiveIconImageAppearance];
+    v5 = [objc_opt_class() badgeBackgroundColorForImageAppearance:effectiveIconImageAppearance];
   }
 
   return v5;
 }
 
-- (id)_checkoutImageForText:(id)a3 highlighted:(BOOL)a4
+- (id)_checkoutImageForText:(id)text highlighted:(BOOL)highlighted
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SBIconBadgeView *)self effectiveIconImageAppearance];
-  v8 = [(SBIconBadgeView *)self font];
-  v9 = [objc_opt_class() _checkoutImageForText:v6 font:v8 imageAppearance:v7 style:-[SBIconBadgeView style](self highlighted:{"style"), v4}];
+  highlightedCopy = highlighted;
+  textCopy = text;
+  effectiveIconImageAppearance = [(SBIconBadgeView *)self effectiveIconImageAppearance];
+  font = [(SBIconBadgeView *)self font];
+  v9 = [objc_opt_class() _checkoutImageForText:textCopy font:font imageAppearance:effectiveIconImageAppearance style:-[SBIconBadgeView style](self highlighted:{"style"), highlightedCopy}];
 
   return v9;
 }
 
-+ (id)_checkoutImageForText:(id)a3 font:(id)a4 imageAppearance:(id)a5 style:(int64_t)a6 highlighted:(BOOL)a7
++ (id)_checkoutImageForText:(id)text font:(id)font imageAppearance:(id)appearance style:(int64_t)style highlighted:(BOOL)highlighted
 {
-  v7 = a7;
+  highlightedCopy = highlighted;
   v46 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (v12)
+  textCopy = text;
+  fontCopy = font;
+  appearanceCopy = appearance;
+  if (textCopy)
   {
-    v15 = [objc_opt_class() badgeTextColorForImageAppearance:v14 style:a6];
+    v15 = [objc_opt_class() badgeTextColorForImageAppearance:appearanceCopy style:style];
     v35 = 0;
     v33 = 0;
     v34 = 0;
     v32 = 0;
     [v15 getRed:&v35 green:&v34 blue:&v33 alpha:&v32];
     v16 = MEMORY[0x1E696AEC0];
-    v17 = [v13 fontName];
-    [v13 pointSize];
-    v19 = [v16 stringWithFormat:@"%@:%@:%.1f:%u:%.2f/%.2f/%.2f/%.2f", v12, v17, v18, v7, v35, v34, v33, v32];
+    fontName = [fontCopy fontName];
+    [fontCopy pointSize];
+    v19 = [v16 stringWithFormat:@"%@:%@:%.1f:%u:%.2f/%.2f/%.2f/%.2f", textCopy, fontName, v18, highlightedCopy, v35, v34, v33, v32];
 
     v20 = SBLogIcon();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
@@ -1226,11 +1226,11 @@ void __50__SBIconBadgeView__crossfadeToTextImage_animator___block_invoke_2(uint6
       *buf = 138413314;
       v37 = v19;
       v38 = 2112;
-      v39 = v12;
+      v39 = textCopy;
       v40 = 1024;
-      v41 = v7;
+      v41 = highlightedCopy;
       v42 = 2112;
-      v43 = v13;
+      v43 = fontCopy;
       v44 = 2112;
       v45 = v15;
       _os_log_impl(&dword_1BEB18000, v20, OS_LOG_TYPE_INFO, "---->\tChecking out text asset w/ mapkey of '%@', text '%@' isHighlighted:%{BOOL}u, font %@, color %@", buf, 0x30u);
@@ -1241,12 +1241,12 @@ void __50__SBIconBadgeView__crossfadeToTextImage_animator___block_invoke_2(uint6
     v25[1] = 3221225472;
     v25[2] = __80__SBIconBadgeView__checkoutImageForText_font_imageAppearance_style_highlighted___block_invoke;
     v25[3] = &unk_1E8090D50;
-    v30 = a1;
-    v26 = v12;
-    v27 = v13;
+    selfCopy = self;
+    v26 = textCopy;
+    v27 = fontCopy;
     v28 = v15;
-    v31 = v7;
-    v29 = v14;
+    v31 = highlightedCopy;
+    v29 = appearanceCopy;
     v22 = v15;
     v23 = [v21 checkoutValueForKey:v19 creationBlock:v25];
   }
@@ -1273,21 +1273,21 @@ SBHIconAccessoryCountedMapImageTuple *__80__SBIconBadgeView__checkoutImageForTex
   return v6;
 }
 
-+ (id)_createImageForText:(id)a3 font:(id)a4 color:(id)a5 highlighted:(BOOL)a6
++ (id)_createImageForText:(id)text font:(id)font color:(id)color highlighted:(BOOL)highlighted
 {
   v66[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (a6 || ![v9 length] || (objc_msgSend(v9, "isEqualToString:", @"*") & 1) != 0)
+  textCopy = text;
+  fontCopy = font;
+  colorCopy = color;
+  if (highlighted || ![textCopy length] || (objc_msgSend(textCopy, "isEqualToString:", @"*") & 1) != 0)
   {
     v12 = 0;
   }
 
   else
   {
-    v14 = [v9 length] != 1;
-    v15 = [v10 fontDescriptor];
+    v14 = [textCopy length] != 1;
+    fontDescriptor = [fontCopy fontDescriptor];
     v65 = *MEMORY[0x1E69DB8B0];
     v16 = *MEMORY[0x1E69DB900];
     v62[0] = *MEMORY[0x1E69DB908];
@@ -1300,30 +1300,30 @@ SBHIconAccessoryCountedMapImageTuple *__80__SBIconBadgeView__checkoutImageForTex
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v64 count:1];
     v66[0] = v19;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v66 forKeys:&v65 count:1];
-    v21 = [v15 fontDescriptorByAddingAttributes:v20];
+    v21 = [fontDescriptor fontDescriptorByAddingAttributes:v20];
 
     v22 = [MEMORY[0x1E69DB878] fontWithDescriptor:v21 size:0.0];
 
-    v23 = [MEMORY[0x1E69DB7C8] defaultParagraphStyle];
-    v24 = [v23 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7C8] defaultParagraphStyle];
+    v24 = [defaultParagraphStyle mutableCopy];
 
     [v24 setLineBreakMode:5];
     v25 = *MEMORY[0x1E69DB650];
     v60[0] = *MEMORY[0x1E69DB648];
     v60[1] = v25;
     v61[0] = v22;
-    v61[1] = v11;
+    v61[1] = colorCopy;
     v60[2] = *MEMORY[0x1E69DB688];
     v61[2] = v24;
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v61 forKeys:v60 count:3];
     [v22 pointSize];
     v28 = dbl_1BEE887A0[v27 > 16.0];
-    [v9 boundingRectWithSize:1 options:v26 attributes:0 context:{v28, 1.79769313e308}];
+    [textCopy boundingRectWithSize:1 options:v26 attributes:0 context:{v28, 1.79769313e308}];
     v30 = v29;
     v32 = v31;
     v34 = v33;
     v36 = v35;
-    [v9 boundingRectWithSize:0 options:v26 attributes:0 context:{v28, 1.79769313e308}];
+    [textCopy boundingRectWithSize:0 options:v26 attributes:0 context:{v28, 1.79769313e308}];
     v51 = v38;
     v52 = v37;
     v40 = v39;
@@ -1347,7 +1347,7 @@ SBHIconAccessoryCountedMapImageTuple *__80__SBIconBadgeView__checkoutImageForTex
     v57 = v32;
     v58 = v34;
     v59 = v36;
-    v54 = v9;
+    v54 = textCopy;
     v55 = v26;
     v46 = v26;
     v47 = [v45 imageWithActions:v53];
@@ -1361,15 +1361,15 @@ SBHIconAccessoryCountedMapImageTuple *__80__SBIconBadgeView__checkoutImageForTex
     [v22 capHeight];
     v12 = [v49 imageWithAlignmentRectInsets:{v44 - v48 - v50, 0.0, v48, 0.0}];
 
-    v10 = v22;
+    fontCopy = v22;
   }
 
   return v12;
 }
 
-- (void)_resizeForTextImage:(id)a3
+- (void)_resizeForTextImage:(id)image
 {
-  [(SBIconBadgeView *)self intrinsicContentSizeForTextImage:a3];
+  [(SBIconBadgeView *)self intrinsicContentSizeForTextImage:image];
   [(SBIconBadgeView *)self setBounds:0.0, 0.0, v4, v5];
 
   [(SBIconBadgeView *)self setNeedsLayout];
@@ -1381,26 +1381,26 @@ SBHIconAccessoryCountedMapImageTuple *__80__SBIconBadgeView__checkoutImageForTex
   [(SBIconBadgeView *)self _configureForText:v3 highlighted:0];
 }
 
-- (void)setParallaxSettings:(id)a3
+- (void)setParallaxSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   parallaxSettings = self->_parallaxSettings;
-  if (parallaxSettings != v5)
+  if (parallaxSettings != settingsCopy)
   {
-    v7 = v5;
+    v7 = settingsCopy;
     [(SBFParallaxSettings *)parallaxSettings removeKeyObserver:self];
-    objc_storeStrong(&self->_parallaxSettings, a3);
+    objc_storeStrong(&self->_parallaxSettings, settings);
     [(SBFParallaxSettings *)self->_parallaxSettings addKeyObserver:self];
     parallaxSettings = [(SBIconBadgeView *)self _applyParallaxSettings];
-    v5 = v7;
+    settingsCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](parallaxSettings, v5);
+  MEMORY[0x1EEE66BB8](parallaxSettings, settingsCopy);
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if (self->_parallaxSettings == a3)
+  if (self->_parallaxSettings == settings)
   {
     [(SBIconBadgeView *)self _applyParallaxSettings];
   }

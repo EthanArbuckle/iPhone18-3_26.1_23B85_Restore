@@ -1,52 +1,52 @@
 @interface GKAppendSuggestionsModifier
-- (GKAppendSuggestionsModifier)initWithSettings:(id)a3 suggestionsProvider:(id)a4;
-- (id)modifySuggestions:(id)a3;
+- (GKAppendSuggestionsModifier)initWithSettings:(id)settings suggestionsProvider:(id)provider;
+- (id)modifySuggestions:(id)suggestions;
 @end
 
 @implementation GKAppendSuggestionsModifier
 
-- (GKAppendSuggestionsModifier)initWithSettings:(id)a3 suggestionsProvider:(id)a4
+- (GKAppendSuggestionsModifier)initWithSettings:(id)settings suggestionsProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  settingsCopy = settings;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = GKAppendSuggestionsModifier;
   v9 = [(GKAppendSuggestionsModifier *)&v13 init];
   if (v9)
   {
-    v10 = objc_retainBlock(v8);
+    v10 = objc_retainBlock(providerCopy);
     suggestionsProvider = v9->_suggestionsProvider;
     v9->_suggestionsProvider = v10;
 
-    objc_storeStrong(&v9->_settings, a3);
+    objc_storeStrong(&v9->_settings, settings);
   }
 
   return v9;
 }
 
-- (id)modifySuggestions:(id)a3
+- (id)modifySuggestions:(id)suggestions
 {
-  v4 = a3;
-  v5 = [v4 count];
-  v6 = [(GKAppendSuggestionsModifier *)self settings];
-  v7 = [v6 mininumIDsForContactAssociationIDsOnly];
+  suggestionsCopy = suggestions;
+  v5 = [suggestionsCopy count];
+  settings = [(GKAppendSuggestionsModifier *)self settings];
+  mininumIDsForContactAssociationIDsOnly = [settings mininumIDsForContactAssociationIDsOnly];
 
-  if (v5 >= v7)
+  if (v5 >= mininumIDsForContactAssociationIDsOnly)
   {
-    v23 = v4;
+    v23 = suggestionsCopy;
   }
 
   else
   {
-    v8 = [(GKAppendSuggestionsModifier *)self settings];
-    v9 = [v8 suggestionsLimit];
-    v10 = v9 - [v4 count];
+    settings2 = [(GKAppendSuggestionsModifier *)self settings];
+    suggestionsLimit = [settings2 suggestionsLimit];
+    v10 = suggestionsLimit - [suggestionsCopy count];
 
-    v11 = [(GKAppendSuggestionsModifier *)self suggestionsProvider];
-    v12 = v11[2](v11, v10);
+    suggestionsProvider = [(GKAppendSuggestionsModifier *)self suggestionsProvider];
+    v12 = suggestionsProvider[2](suggestionsProvider, v10);
 
-    v13 = [v4 _gkDistinctValuesForKeyPath:@"contactID"];
-    v14 = [v4 mutableCopy];
+    v13 = [suggestionsCopy _gkDistinctValuesForKeyPath:@"contactID"];
+    v14 = [suggestionsCopy mutableCopy];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -67,8 +67,8 @@
           }
 
           v20 = *(*(&v25 + 1) + 8 * i);
-          v21 = [v20 contactID];
-          v22 = [v13 containsObject:v21];
+          contactID = [v20 contactID];
+          v22 = [v13 containsObject:contactID];
 
           if ((v22 & 1) == 0)
           {

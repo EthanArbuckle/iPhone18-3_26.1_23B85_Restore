@@ -2,49 +2,49 @@
 + (id)roundedButton;
 - (UIEdgeInsets)_signInButtonEdgeInsets;
 - (void)_updateColor;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation AKRoundedButton
 
 + (id)roundedButton
 {
-  v21[2] = a1;
+  v21[2] = self;
   v21[1] = a2;
   v21[0] = [AKRoundedButton buttonWithType:0];
   v15 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76920] weight:*MEMORY[0x277D74420]];
-  v14 = [v21[0] titleLabel];
-  [v14 setFont:v15];
-  MEMORY[0x277D82BD8](v14);
-  v16 = [v21[0] titleLabel];
-  [v16 setAdjustsFontForContentSizeCategory:1];
-  v17 = [MEMORY[0x277CF0228] sharedManager];
-  v18 = [v17 isAuthKitSolariumFeatureEnabled];
-  *&v2 = MEMORY[0x277D82BD8](v17).n128_u64[0];
-  if (v18)
+  titleLabel = [v21[0] titleLabel];
+  [titleLabel setFont:v15];
+  MEMORY[0x277D82BD8](titleLabel);
+  titleLabel2 = [v21[0] titleLabel];
+  [titleLabel2 setAdjustsFontForContentSizeCategory:1];
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isAuthKitSolariumFeatureEnabled = [mEMORY[0x277CF0228] isAuthKitSolariumFeatureEnabled];
+  *&v2 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
+  if (isAuthKitSolariumFeatureEnabled)
   {
-    v20 = [MEMORY[0x277D75230] filledButtonConfiguration];
-    [v20 setCornerStyle:4];
-    [v21[0] setConfiguration:v20];
-    objc_storeStrong(&v20, 0);
+    filledButtonConfiguration = [MEMORY[0x277D75230] filledButtonConfiguration];
+    [filledButtonConfiguration setCornerStyle:4];
+    [v21[0] setConfiguration:filledButtonConfiguration];
+    objc_storeStrong(&filledButtonConfiguration, 0);
   }
 
   else
   {
-    v11 = [MEMORY[0x277D75348] whiteColor];
-    v19 = [v11 colorWithAlphaComponent:0.75];
-    *&v3 = MEMORY[0x277D82BD8](v11).n128_u64[0];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    v19 = [whiteColor colorWithAlphaComponent:0.75];
+    *&v3 = MEMORY[0x277D82BD8](whiteColor).n128_u64[0];
     [v21[0] setTitleColor:v19 forState:{4, v3}];
     [v21[0] setTitleColor:v19 forState:1];
     [v21[0] setTitleColor:v19 forState:5];
     [v21[0] _signInButtonEdgeInsets];
     [v21[0] setContentEdgeInsets:{v4, v5, v6, v7}];
-    v12 = [v21[0] layer];
-    [v12 setCornerRadius:10.0];
-    *&v8 = MEMORY[0x277D82BD8](v12).n128_u64[0];
-    v13 = [v21[0] layer];
-    [v13 setMasksToBounds:1];
-    MEMORY[0x277D82BD8](v13);
+    layer = [v21[0] layer];
+    [layer setCornerRadius:10.0];
+    *&v8 = MEMORY[0x277D82BD8](layer).n128_u64[0];
+    layer2 = [v21[0] layer];
+    [layer2 setMasksToBounds:1];
+    MEMORY[0x277D82BD8](layer2);
     objc_storeStrong(&v19, 0);
   }
 
@@ -65,15 +65,15 @@
   return result;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  highlightedCopy = highlighted;
   v3.receiver = self;
   v3.super_class = AKRoundedButton;
-  [(AKRoundedButton *)&v3 setHighlighted:a3];
-  [(AKRoundedButton *)v6 _updateColor];
+  [(AKRoundedButton *)&v3 setHighlighted:highlighted];
+  [(AKRoundedButton *)selfCopy _updateColor];
 }
 
 - (void)_updateColor

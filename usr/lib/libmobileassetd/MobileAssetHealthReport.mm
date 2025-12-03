@@ -1,5 +1,5 @@
 @interface MobileAssetHealthReport
-+ (id)bucketedDays:(id)a3;
++ (id)bucketedDays:(id)days;
 + (id)sharedInstance;
 - (MobileAssetHealthReport)init;
 - (id)appleIntelligenceRelatedSetIdentifiers;
@@ -8,10 +8,10 @@
 - (id)getPreviousOTAStatus;
 - (id)getSystemInformation;
 - (void)_collectAndSubmitReport;
-- (void)_submitReportToCoreAnalytics:(id)a3 commonFields:(id)a4 sessionId:(id)a5;
-- (void)_submitReportToSplunk:(id)a3 commonFields:(id)a4 sessionId:(id)a5;
+- (void)_submitReportToCoreAnalytics:(id)analytics commonFields:(id)fields sessionId:(id)id;
+- (void)_submitReportToSplunk:(id)splunk commonFields:(id)fields sessionId:(id)id;
 - (void)scheduleReport;
-- (void)setLastReportDate:(id)a3;
+- (void)setLastReportDate:(id)date;
 @end
 
 @implementation MobileAssetHealthReport
@@ -24,14 +24,14 @@
   v10 = __Block_byref_object_copy__8;
   v11 = __Block_byref_object_dispose__8;
   v12 = 0;
-  v3 = [(MobileAssetHealthReport *)self persistedStateDispatchQueue];
+  persistedStateDispatchQueue = [(MobileAssetHealthReport *)self persistedStateDispatchQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __44__MobileAssetHealthReport_getLastReportDate__block_invoke;
   v6[3] = &unk_4B2AC8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(persistedStateDispatchQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -48,18 +48,18 @@ void __44__MobileAssetHealthReport_getLastReportDate__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)setLastReportDate:(id)a3
+- (void)setLastReportDate:(id)date
 {
-  v4 = a3;
-  v5 = [(MobileAssetHealthReport *)self persistedStateDispatchQueue];
+  dateCopy = date;
+  persistedStateDispatchQueue = [(MobileAssetHealthReport *)self persistedStateDispatchQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __45__MobileAssetHealthReport_setLastReportDate___block_invoke;
   v7[3] = &unk_4B2B18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = dateCopy;
+  v6 = dateCopy;
+  dispatch_sync(persistedStateDispatchQueue, v7);
 }
 
 void __45__MobileAssetHealthReport_setLastReportDate___block_invoke(uint64_t a1)
@@ -233,13 +233,13 @@ void __41__MobileAssetHealthReport_sharedInstance__block_invoke(id a1)
   xpc_activity_register("com.apple.mobileassetd.health-report", XPC_ACTIVITY_CHECK_IN, handler);
   if (+[MADAutoAssetControlManager preferenceForceStartupHealthReport])
   {
-    v3 = [(MobileAssetHealthReport *)self reportQueue];
+    reportQueue = [(MobileAssetHealthReport *)self reportQueue];
     v4[0] = _NSConcreteStackBlock;
     v4[1] = 3221225472;
     v4[2] = __41__MobileAssetHealthReport_scheduleReport__block_invoke_1146;
     v4[3] = &unk_4B2AA0;
     v4[4] = self;
-    dispatch_async(v3, v4);
+    dispatch_async(reportQueue, v4);
   }
 }
 
@@ -477,18 +477,18 @@ void __47__MobileAssetHealthReport_getSystemInformation__block_invoke(id a1)
   return v2;
 }
 
-- (void)_submitReportToSplunk:(id)a3 commonFields:(id)a4 sessionId:(id)a5
+- (void)_submitReportToSplunk:(id)splunk commonFields:(id)fields sessionId:(id)id
 {
-  v8 = a3;
-  v25 = a4;
-  v9 = a5;
+  splunkCopy = splunk;
+  fieldsCopy = fields;
+  idCopy = id;
   v10 = +[NSMutableArray array];
-  v11 = [(MobileAssetHealthReport *)self appleIntelligenceRelatedSetIdentifiers];
+  appleIntelligenceRelatedSetIdentifiers = [(MobileAssetHealthReport *)self appleIntelligenceRelatedSetIdentifiers];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v12 = v8;
+  v12 = splunkCopy;
   v13 = [v12 countByEnumeratingWithState:&v26 objects:v36 count:16];
   if (v13)
   {
@@ -504,13 +504,13 @@ void __47__MobileAssetHealthReport_getSystemInformation__block_invoke(id a1)
         }
 
         v17 = *(*(&v26 + 1) + 8 * i);
-        v18 = [v17 setIdentifier];
-        v19 = [v11 containsObject:v18];
+        setIdentifier = [v17 setIdentifier];
+        v19 = [appleIntelligenceRelatedSetIdentifiers containsObject:setIdentifier];
 
         if (v19)
         {
-          v20 = [v17 eventPayloadForSplunk];
-          [v10 addObject:v20];
+          eventPayloadForSplunk = [v17 eventPayloadForSplunk];
+          [v10 addObject:eventPayloadForSplunk];
         }
       }
 
@@ -526,11 +526,11 @@ void __47__MobileAssetHealthReport_getSystemInformation__block_invoke(id a1)
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v31 = v9;
+      v31 = idCopy;
       v32 = 2114;
       v33 = v10;
       v34 = 2114;
-      v35 = v25;
+      v35 = fieldsCopy;
       _os_log_impl(&dword_0, v21, OS_LOG_TYPE_DEFAULT, "[MobileAssetHealthReport] Submitting to Splunk:\nID: %{public}@\nReports: %{public}@\nCommonFields: %{public}@", buf, 0x20u);
     }
   }
@@ -560,24 +560,24 @@ void __47__MobileAssetHealthReport_getSystemInformation__block_invoke(id a1)
   }
 
   v24 = getDownloadManager();
-  [v24 sendMobileAssetHealthReport:v10 commonFields:v25 sessionId:v9];
+  [v24 sendMobileAssetHealthReport:v10 commonFields:fieldsCopy sessionId:idCopy];
 
   v22 = _MADLog(@"Analytics");
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v31 = v9;
+    v31 = idCopy;
     _os_log_impl(&dword_0, v22, OS_LOG_TYPE_DEFAULT, "[MobileAssetHealthReport] Report %@ submitted to Splunk", buf, 0xCu);
   }
 
 LABEL_24:
 }
 
-+ (id)bucketedDays:(id)a3
++ (id)bucketedDays:(id)days
 {
-  v3 = [a3 longLongValue];
-  v4 = v3 / 86400;
-  if (v3 > 5183999)
+  longLongValue = [days longLongValue];
+  v4 = longLongValue / 86400;
+  if (longLongValue > 5183999)
   {
     v14 = 0u;
     v15 = 0u;
@@ -600,7 +600,7 @@ LABEL_24:
           v10 = *(*(&v12 + 1) + 8 * i);
           if (v4 >= [v10 longLongValue])
           {
-            v5 = v10;
+            lastObject = v10;
             goto LABEL_13;
           }
         }
@@ -615,30 +615,30 @@ LABEL_24:
       }
     }
 
-    v5 = [&off_4F6E48 lastObject];
+    lastObject = [&off_4F6E48 lastObject];
   }
 
   else
   {
-    v5 = [NSNumber numberWithLongLong:v4];
+    lastObject = [NSNumber numberWithLongLong:v4];
   }
 
 LABEL_13:
 
-  return v5;
+  return lastObject;
 }
 
-- (void)_submitReportToCoreAnalytics:(id)a3 commonFields:(id)a4 sessionId:(id)a5
+- (void)_submitReportToCoreAnalytics:(id)analytics commonFields:(id)fields sessionId:(id)id
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
+  analyticsCopy = analytics;
+  fieldsCopy = fields;
+  idCopy = id;
+  v10 = idCopy;
   if (&_AnalyticsSendEventLazy)
   {
-    v51 = v9;
-    v52 = v8;
-    v11 = [v8 mutableCopy];
+    v51 = idCopy;
+    v52 = fieldsCopy;
+    v11 = [fieldsCopy mutableCopy];
     v12 = [v11 safeObjectForKey:@"TimeSinceOTA" ofClass:objc_opt_class()];
     if (v12)
     {
@@ -653,8 +653,8 @@ LABEL_13:
     v76 = 0u;
     v77 = 0u;
     v78 = 0u;
-    v53 = v7;
-    v14 = v7;
+    v53 = analyticsCopy;
+    v14 = analyticsCopy;
     v15 = [v14 countByEnumeratingWithState:&v75 objects:v84 count:16];
     if (v15)
     {
@@ -672,17 +672,17 @@ LABEL_13:
 
           v20 = *(*(&v75 + 1) + 8 * i);
           v21 = objc_autoreleasePoolPush();
-          v22 = [v20 eventPayloadForCoreAnalytics];
+          eventPayloadForCoreAnalytics = [v20 eventPayloadForCoreAnalytics];
           v23 = v11;
-          [v22 addEntriesFromDictionary:v11];
-          [v56 addObject:v22];
-          v24 = [(MobileAssetHealthReport *)self appleIntelligenceRelatedSetIdentifiers];
-          v25 = [v20 setIdentifier];
-          v26 = [v24 containsObject:v25];
+          [eventPayloadForCoreAnalytics addEntriesFromDictionary:v11];
+          [v56 addObject:eventPayloadForCoreAnalytics];
+          appleIntelligenceRelatedSetIdentifiers = [(MobileAssetHealthReport *)self appleIntelligenceRelatedSetIdentifiers];
+          setIdentifier = [v20 setIdentifier];
+          v26 = [appleIntelligenceRelatedSetIdentifiers containsObject:setIdentifier];
 
           if (v26)
           {
-            [v54 addObject:v22];
+            [v54 addObject:eventPayloadForCoreAnalytics];
           }
 
           objc_autoreleasePoolPop(v21);
@@ -833,16 +833,16 @@ LABEL_13:
       v10 = v51;
       v82 = v51;
       _os_log_impl(&dword_0, v36, OS_LOG_TYPE_DEFAULT, "[MobileAssetHealthReport] Report %@ submitted to CoreAnalytics", buf, 0xCu);
-      v8 = v52;
-      v7 = v53;
+      fieldsCopy = v52;
+      analyticsCopy = v53;
 LABEL_51:
 
       goto LABEL_52;
     }
 
 LABEL_50:
-    v8 = v52;
-    v7 = v53;
+    fieldsCopy = v52;
+    analyticsCopy = v53;
     v10 = v51;
     goto LABEL_51;
   }
@@ -897,8 +897,8 @@ id __79__MobileAssetHealthReport__submitReportToCoreAnalytics_commonFields_sessi
 
 - (void)_collectAndSubmitReport
 {
-  v3 = [(MobileAssetHealthReport *)self reportQueue];
-  dispatch_assert_queue_V2(v3);
+  reportQueue = [(MobileAssetHealthReport *)self reportQueue];
+  dispatch_assert_queue_V2(reportQueue);
 
   v4 = objc_autoreleasePoolPush();
   v5 = _MADLog(@"Analytics");
@@ -910,14 +910,14 @@ id __79__MobileAssetHealthReport__submitReportToCoreAnalytics_commonFields_sessi
 
   v6 = +[NSMutableDictionary dictionary];
   v7 = +[NSUUID UUID];
-  v8 = [v7 UUIDString];
+  uUIDString = [v7 UUIDString];
 
   [v6 setSafeObject:@"MAHR" forKey:@"event"];
-  [v6 setSafeObject:v8 forKey:@"UUID"];
-  v9 = [(MobileAssetHealthReport *)self getSystemInformation];
-  if (v9)
+  [v6 setSafeObject:uUIDString forKey:@"UUID"];
+  getSystemInformation = [(MobileAssetHealthReport *)self getSystemInformation];
+  if (getSystemInformation)
   {
-    [v6 addEntriesFromDictionary:v9];
+    [v6 addEntriesFromDictionary:getSystemInformation];
   }
 
   else
@@ -930,13 +930,13 @@ id __79__MobileAssetHealthReport__submitReportToCoreAnalytics_commonFields_sessi
     }
   }
 
-  v11 = [(MobileAssetHealthReport *)self dateOfFirstRunInCurrentOS];
+  dateOfFirstRunInCurrentOS = [(MobileAssetHealthReport *)self dateOfFirstRunInCurrentOS];
 
-  if (v11)
+  if (dateOfFirstRunInCurrentOS)
   {
     v12 = +[NSDate date];
-    v13 = [(MobileAssetHealthReport *)self dateOfFirstRunInCurrentOS];
-    [v12 timeIntervalSinceDate:v13];
+    dateOfFirstRunInCurrentOS2 = [(MobileAssetHealthReport *)self dateOfFirstRunInCurrentOS];
+    [v12 timeIntervalSinceDate:dateOfFirstRunInCurrentOS2];
     v15 = v14;
 
     v16 = [NSNumber numberWithLongLong:v15];
@@ -961,22 +961,22 @@ id __79__MobileAssetHealthReport__submitReportToCoreAnalytics_commonFields_sessi
     [v6 setSafeObject:v18 forKey:@"Audience"];
   }
 
-  v19 = [(MobileAssetHealthReport *)self getGreymatterStatus];
-  [v6 addEntriesFromDictionary:v19];
+  getGreymatterStatus = [(MobileAssetHealthReport *)self getGreymatterStatus];
+  [v6 addEntriesFromDictionary:getGreymatterStatus];
 
-  v20 = [(MobileAssetHealthReport *)self getPreviousOTAStatus];
-  [v6 addEntriesFromDictionary:v20];
+  getPreviousOTAStatus = [(MobileAssetHealthReport *)self getPreviousOTAStatus];
+  [v6 addEntriesFromDictionary:getPreviousOTAStatus];
 
-  v21 = [(MobileAssetHealthReport *)self getHealthReports];
-  [(MobileAssetHealthReport *)self _submitReportToSplunk:v21 commonFields:v6 sessionId:v8];
-  [(MobileAssetHealthReport *)self _submitReportToCoreAnalytics:v21 commonFields:v6 sessionId:v8];
+  getHealthReports = [(MobileAssetHealthReport *)self getHealthReports];
+  [(MobileAssetHealthReport *)self _submitReportToSplunk:getHealthReports commonFields:v6 sessionId:uUIDString];
+  [(MobileAssetHealthReport *)self _submitReportToCoreAnalytics:getHealthReports commonFields:v6 sessionId:uUIDString];
   v22 = _MADLog(@"Analytics");
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 138543874;
-    v24 = v8;
+    v24 = uUIDString;
     v25 = 2114;
-    v26 = v21;
+    v26 = getHealthReports;
     v27 = 2114;
     v28 = v6;
     _os_log_impl(&dword_0, v22, OS_LOG_TYPE_DEFAULT, "[MobileAssetHealthReport]: Submitted health reports | UUID:%{public}@\nMAHR reports:\n%{public}@\nMAHR commonFields:\n%{public}@", &v23, 0x20u);

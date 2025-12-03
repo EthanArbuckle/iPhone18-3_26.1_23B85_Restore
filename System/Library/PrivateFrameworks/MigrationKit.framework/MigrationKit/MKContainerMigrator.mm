@@ -1,7 +1,7 @@
 @interface MKContainerMigrator
 - (MKContainerMigrator)init;
-- (void)import:(id)a3 signature:(id)a4 chunk:(id)a5 filename:(id)a6 offset:(unint64_t)a7 length:(unint64_t)a8 total:(unint64_t)a9 required:(BOOL)a10 excludedFromBackup:(BOOL)a11 complete:(BOOL)a12;
-- (void)importContainer:(id)a3 signature:(id)a4 chunk:(id)a5 filename:(id)a6 offset:(unint64_t)a7 length:(unint64_t)a8 total:(unint64_t)a9 required:(BOOL)a10 excludedFromBackup:(BOOL)a11 complete:(BOOL)a12;
+- (void)import:(id)import signature:(id)signature chunk:(id)chunk filename:(id)filename offset:(unint64_t)offset length:(unint64_t)length total:(unint64_t)total required:(BOOL)self0 excludedFromBackup:(BOOL)self1 complete:(BOOL)self2;
+- (void)importContainer:(id)container signature:(id)signature chunk:(id)chunk filename:(id)filename offset:(unint64_t)offset length:(unint64_t)length total:(unint64_t)total required:(BOOL)self0 excludedFromBackup:(BOOL)self1 complete:(BOOL)self2;
 @end
 
 @implementation MKContainerMigrator
@@ -47,80 +47,80 @@
   return v2;
 }
 
-- (void)importContainer:(id)a3 signature:(id)a4 chunk:(id)a5 filename:(id)a6 offset:(unint64_t)a7 length:(unint64_t)a8 total:(unint64_t)a9 required:(BOOL)a10 excludedFromBackup:(BOOL)a11 complete:(BOOL)a12
+- (void)importContainer:(id)container signature:(id)signature chunk:(id)chunk filename:(id)filename offset:(unint64_t)offset length:(unint64_t)length total:(unint64_t)total required:(BOOL)self0 excludedFromBackup:(BOOL)self1 complete:(BOOL)self2
 {
-  v24 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = self;
-  objc_sync_enter(v20);
+  containerCopy = container;
+  signatureCopy = signature;
+  chunkCopy = chunk;
+  filenameCopy = filename;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v21 = objc_autoreleasePoolPush();
-  BYTE2(v22) = a12;
-  LOWORD(v22) = __PAIR16__(a11, a10);
-  [MKContainerMigrator import:v20 signature:"import:signature:chunk:filename:offset:length:total:required:excludedFromBackup:complete:" chunk:v24 filename:v17 offset:v18 length:v19 total:a7 required:a8 excludedFromBackup:a9 complete:v22];
+  BYTE2(v22) = complete;
+  LOWORD(v22) = __PAIR16__(backup, required);
+  [MKContainerMigrator import:selfCopy signature:"import:signature:chunk:filename:offset:length:total:required:excludedFromBackup:complete:" chunk:containerCopy filename:signatureCopy offset:chunkCopy length:filenameCopy total:offset required:length excludedFromBackup:total complete:v22];
   objc_autoreleasePoolPop(v21);
-  objc_sync_exit(v20);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)import:(id)a3 signature:(id)a4 chunk:(id)a5 filename:(id)a6 offset:(unint64_t)a7 length:(unint64_t)a8 total:(unint64_t)a9 required:(BOOL)a10 excludedFromBackup:(BOOL)a11 complete:(BOOL)a12
+- (void)import:(id)import signature:(id)signature chunk:(id)chunk filename:(id)filename offset:(unint64_t)offset length:(unint64_t)length total:(unint64_t)total required:(BOOL)self0 excludedFromBackup:(BOOL)self1 complete:(BOOL)self2
 {
   v77 = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  if ([v21 length])
+  importCopy = import;
+  signatureCopy = signature;
+  chunkCopy = chunk;
+  filenameCopy = filename;
+  if ([filenameCopy length])
   {
-    if (v18)
+    if (importCopy)
     {
-      if (v19)
+      if (signatureCopy)
       {
-        v22 = [MEMORY[0x277CBEAA8] date];
-        v66 = [(NSDictionary *)self->_signatures objectForKey:v18];
-        if ([v66 containsObject:v19])
+        date = [MEMORY[0x277CBEAA8] date];
+        v66 = [(NSDictionary *)self->_signatures objectForKey:importCopy];
+        if ([v66 containsObject:signatureCopy])
         {
-          v23 = [(NSMutableDictionary *)self->_containers objectForKey:v18];
+          v23 = [(NSMutableDictionary *)self->_containers objectForKey:importCopy];
           if (v23)
           {
             goto LABEL_6;
           }
 
-          v34 = [[MKPlaceholder alloc] initWithBundleIdentifier:v18];
+          v34 = [[MKPlaceholder alloc] initWithBundleIdentifier:importCopy];
           if ([(MKPlaceholder *)v34 enabled])
           {
-            v35 = [(MKPlaceholder *)v34 container];
-            [(NSMutableDictionary *)self->_containers setObject:v35 forKey:v18];
+            container = [(MKPlaceholder *)v34 container];
+            [(NSMutableDictionary *)self->_containers setObject:container forKey:importCopy];
 
-            v23 = v35;
-            if (v35)
+            v23 = container;
+            if (container)
             {
 LABEL_6:
-              v65 = [v23 stringByAppendingPathComponent:{v21, v23}];
-              v63 = [v65 stringByDeletingLastPathComponent];
+              v65 = [v23 stringByAppendingPathComponent:{filenameCopy, v23}];
+              stringByDeletingLastPathComponent = [v65 stringByDeletingLastPathComponent];
               v24 = +[MKLog log];
               if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
               {
                 *buf = 138413058;
                 v72 = v65;
                 v73 = 2048;
-                *v74 = a7;
+                *v74 = offset;
                 *&v74[8] = 2048;
-                *&v74[10] = a8;
+                *&v74[10] = length;
                 v75 = 2048;
-                v76 = a9;
+                totalCopy = total;
                 _os_log_impl(&dword_2592D2000, v24, OS_LOG_TYPE_INFO, "file=%@, offset=%lld, length=%lld, total=%lld", buf, 0x2Au);
               }
 
-              v64 = [MEMORY[0x277CCAA00] defaultManager];
-              if (([v64 fileExistsAtPath:v63] & 1) != 0 || (v70 = 0, objc_msgSend(v64, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", v63, 1, 0, &v70), (v62 = v70) == 0))
+              defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+              if (([defaultManager fileExistsAtPath:stringByDeletingLastPathComponent] & 1) != 0 || (v70 = 0, objc_msgSend(defaultManager, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", stringByDeletingLastPathComponent, 1, 0, &v70), (v62 = v70) == 0))
               {
                 v62 = 0;
-                if (a7)
+                if (offset)
                 {
 LABEL_13:
                   v67 = 0;
-                  v26 = [v64 attributesOfItemAtPath:v65 error:&v67];
+                  v26 = [defaultManager attributesOfItemAtPath:v65 error:&v67];
                   v27 = v67;
                   if (v27)
                   {
@@ -136,19 +136,19 @@ LABEL_13:
                   }
 
                   v36 = [v26 objectForKey:*MEMORY[0x277CCA1C0]];
-                  v37 = [v36 unsignedLongLongValue];
+                  unsignedLongLongValue = [v36 unsignedLongLongValue];
 
-                  if (v37 == a7)
+                  if (unsignedLongLongValue == offset)
                   {
                     v38 = [MEMORY[0x277CCA9F8] fileHandleForWritingAtPath:v65];
                     [v38 seekToEndOfFile];
-                    [v38 writeData:v20];
+                    [v38 writeData:chunkCopy];
                     [v38 synchronizeFile];
                     [v38 closeFile];
                     v39 = +[MKLog log];
                     if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
                     {
-                      v40 = [v20 length];
+                      v40 = [chunkCopy length];
                       *buf = 134217984;
                       v72 = v40;
                       _os_log_impl(&dword_2592D2000, v39, OS_LOG_TYPE_INFO, "appended some bytes to a file. bytes=%ld", buf, 0xCu);
@@ -157,21 +157,21 @@ LABEL_13:
 
 LABEL_58:
 
-                  -[MKMigrator migratorDidAppendDataSize:](self, "migratorDidAppendDataSize:", [v20 length]);
+                  -[MKMigrator migratorDidAppendDataSize:](self, "migratorDidAppendDataSize:", [chunkCopy length]);
                   v50 = +[MKAnalytics sharedInstance];
                   objc_sync_enter(v50);
                   v26 = v50;
-                  v51 = [v50 payload];
-                  v52 = [v51 whatsapp];
+                  payload = [v50 payload];
+                  whatsapp = [payload whatsapp];
 
-                  v53 = [MEMORY[0x277CBEAA8] date];
-                  [v53 timeIntervalSinceDate:v22];
+                  date2 = [MEMORY[0x277CBEAA8] date];
+                  [date2 timeIntervalSinceDate:date];
                   v55 = v54;
 
                   v56 = [objc_alloc(MEMORY[0x277CCA980]) initWithDouble:v55];
-                  v57 = [v52 importElapsedTime];
-                  v58 = [v57 decimalNumberByAdding:v56];
-                  [v52 setImportElapsedTime:v58];
+                  importElapsedTime = [whatsapp importElapsedTime];
+                  v58 = [importElapsedTime decimalNumberByAdding:v56];
+                  [whatsapp setImportElapsedTime:v58];
 
                   objc_sync_exit(v26);
 LABEL_59:
@@ -189,15 +189,15 @@ LABEL_59:
                   [MKContainerMigrator import:signature:chunk:filename:offset:length:total:required:excludedFromBackup:complete:];
                 }
 
-                if (a7)
+                if (offset)
                 {
                   goto LABEL_13;
                 }
               }
 
-              if ([v64 fileExistsAtPath:v65])
+              if ([defaultManager fileExistsAtPath:v65])
               {
-                if (![v64 isDeletableFileAtPath:v65])
+                if (![defaultManager isDeletableFileAtPath:v65])
                 {
                   v49 = +[MKLog log];
                   v26 = v49;
@@ -211,7 +211,7 @@ LABEL_59:
                 }
 
                 v69 = 0;
-                [v64 removeItemAtPath:v65 error:&v69];
+                [defaultManager removeItemAtPath:v65 error:&v69];
                 v32 = v69;
                 if (v32)
                 {
@@ -226,7 +226,7 @@ LABEL_59:
                 }
               }
 
-              v41 = [v20 writeToFile:v65 atomically:1];
+              v41 = [chunkCopy writeToFile:v65 atomically:1];
               v42 = +[MKLog log];
               v43 = os_log_type_enabled(v42, OS_LOG_TYPE_INFO);
               if (v41)
@@ -239,7 +239,7 @@ LABEL_59:
                 }
 
                 v26 = [MEMORY[0x277CBEBC0] fileURLWithPath:v65];
-                v44 = [MEMORY[0x277CCABB0] numberWithBool:a11];
+                v44 = [MEMORY[0x277CCABB0] numberWithBool:backup];
                 v45 = *MEMORY[0x277CBE878];
                 v68 = v62;
                 [v26 setResourceValue:v44 forKey:v45 error:&v68];
@@ -254,7 +254,7 @@ LABEL_59:
                     *buf = 138412802;
                     v72 = v65;
                     v73 = 1024;
-                    *v74 = a11;
+                    *v74 = backup;
                     *&v74[4] = 2112;
                     *&v74[6] = v60;
                     _os_log_error_impl(&dword_2592D2000, v47, OS_LOG_TYPE_ERROR, "could not set a resource value. file=%@, is_excluded_from_backup=%d, error=%@", buf, 0x1Cu);
@@ -277,13 +277,13 @@ LABEL_59:
                   _os_log_impl(&dword_2592D2000, v42, OS_LOG_TYPE_INFO, "could not create a file. file=%@", buf, 0xCu);
                 }
 
-                v48 = [v21 mk_validatePath];
-                if (!v48)
+                mk_validatePath = [filenameCopy mk_validatePath];
+                if (!mk_validatePath)
                 {
-                  v48 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MKContainerError" code:1 userInfo:0];
+                  mk_validatePath = [MEMORY[0x277CCA9B8] errorWithDomain:@"MKContainerError" code:1 userInfo:0];
                 }
 
-                v26 = v48;
+                v26 = mk_validatePath;
                 [(MKMigrator *)self migratorDidFailWithImportError:?];
               }
 
@@ -321,8 +321,8 @@ LABEL_60:
         goto LABEL_61;
       }
 
-      v22 = +[MKLog log];
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+      date = +[MKLog log];
+      if (os_log_type_enabled(date, OS_LOG_TYPE_ERROR))
       {
         [MKContainerMigrator import:signature:chunk:filename:offset:length:total:required:excludedFromBackup:complete:];
       }
@@ -330,8 +330,8 @@ LABEL_60:
 
     else
     {
-      v22 = +[MKLog log];
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+      date = +[MKLog log];
+      if (os_log_type_enabled(date, OS_LOG_TYPE_ERROR))
       {
         [MKContainerMigrator import:signature:chunk:filename:offset:length:total:required:excludedFromBackup:complete:];
       }
@@ -340,8 +340,8 @@ LABEL_60:
 
   else
   {
-    v22 = +[MKLog log];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    date = +[MKLog log];
+    if (os_log_type_enabled(date, OS_LOG_TYPE_ERROR))
     {
       [MKContainerMigrator import:signature:chunk:filename:offset:length:total:required:excludedFromBackup:complete:];
     }

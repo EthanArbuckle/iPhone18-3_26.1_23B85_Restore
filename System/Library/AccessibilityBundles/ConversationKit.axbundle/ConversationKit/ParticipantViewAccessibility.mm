@@ -1,5 +1,5 @@
 @interface ParticipantViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsLocalParticipantExpanded;
 - (BOOL)_accessibilityIsLocalParticipantFullScreen;
 - (BOOL)_axHandleKickMemberAction;
@@ -18,26 +18,26 @@
 
 @implementation ParticipantViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ConversationKit.ParticipantViewLabelContainerView"];
-  [v3 validateClass:@"ConversationKit.ParticipantMonogramView"];
-  [v3 validateClass:@"ConversationKit.ParticipantVideoView"];
-  [v3 validateClass:@"ConversationKit.ParticipantVideoOverlayView"];
-  [v3 validateClass:@"ConversationKit.ParticipantView" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"ConversationKit.ParticipantView" hasInstanceMethod:@"isInRoster" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"ConversationKit.ParticipantView" hasInstanceMethod:@"infoView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationKit.TapInteraction" hasInstanceMethod:@"numberOfTapsRequired" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"ConversationKit.TapInteraction" hasInstanceMethod:@"handleRecognizer:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"ConversationKit.ParticipantInfoView" hasInstanceMethod:@"isMomentsAvailable" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"accessibilityConstraintController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNKFaceTimeConstraintsController" hasInstanceMethod:@"localParticipantState" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"ConversationKit.ParticipantInfoView" hasInstanceMethod:@"didTapShutterButton" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ConversationKit.MultiwayViewController"];
-  [v3 validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"mediaPipFrameInWindowScene" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"ConversationKit.ParticipantView" hasInstanceMethod:@"kickMemberButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationKit.ParticipantView" hasInstanceMethod:@"monogramView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ConversationKit.ParticipantViewLabelContainerView"];
+  [validationsCopy validateClass:@"ConversationKit.ParticipantMonogramView"];
+  [validationsCopy validateClass:@"ConversationKit.ParticipantVideoView"];
+  [validationsCopy validateClass:@"ConversationKit.ParticipantVideoOverlayView"];
+  [validationsCopy validateClass:@"ConversationKit.ParticipantView" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"ConversationKit.ParticipantView" hasInstanceMethod:@"isInRoster" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"ConversationKit.ParticipantView" hasInstanceMethod:@"infoView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationKit.TapInteraction" hasInstanceMethod:@"numberOfTapsRequired" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"ConversationKit.TapInteraction" hasInstanceMethod:@"handleRecognizer:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"ConversationKit.ParticipantInfoView" hasInstanceMethod:@"isMomentsAvailable" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"accessibilityConstraintController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNKFaceTimeConstraintsController" hasInstanceMethod:@"localParticipantState" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"ConversationKit.ParticipantInfoView" hasInstanceMethod:@"didTapShutterButton" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ConversationKit.MultiwayViewController"];
+  [validationsCopy validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"mediaPipFrameInWindowScene" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"ConversationKit.ParticipantView" hasInstanceMethod:@"kickMemberButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationKit.ParticipantView" hasInstanceMethod:@"monogramView" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)accessibilityElementsHidden
@@ -52,32 +52,32 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(ParticipantViewAccessibility *)self _accessibilityMonogramView];
-  v4 = [v3 isHidden];
+  _accessibilityMonogramView = [(ParticipantViewAccessibility *)self _accessibilityMonogramView];
+  isHidden = [_accessibilityMonogramView isHidden];
 
-  if (v4)
+  if (isHidden)
   {
-    v5 = 0;
+    accessibilityLabel = 0;
   }
 
   else
   {
-    v6 = [(ParticipantViewAccessibility *)self _accessibilityMonogramView];
-    v5 = [v6 accessibilityLabel];
+    _accessibilityMonogramView2 = [(ParticipantViewAccessibility *)self _accessibilityMonogramView];
+    accessibilityLabel = [_accessibilityMonogramView2 accessibilityLabel];
   }
 
-  if ([v5 length])
+  if ([accessibilityLabel length])
   {
-    v7 = v5;
+    accessibilityLabel2 = accessibilityLabel;
   }
 
   else
   {
     v8 = [(ParticipantViewAccessibility *)self safeValueForKey:@"infoView"];
-    v7 = [v8 accessibilityLabel];
+    accessibilityLabel2 = [v8 accessibilityLabel];
   }
 
-  return v7;
+  return accessibilityLabel2;
 }
 
 - (id)accessibilityValue
@@ -92,15 +92,15 @@
     v3 = 0;
   }
 
-  v4 = [(ParticipantViewAccessibility *)self _accessibilityVideoOverlayView];
-  if ([v4 isHidden])
+  _accessibilityVideoOverlayView = [(ParticipantViewAccessibility *)self _accessibilityVideoOverlayView];
+  if ([_accessibilityVideoOverlayView isHidden])
   {
-    v5 = 0;
+    accessibilityLabel = 0;
   }
 
   else
   {
-    v5 = [v4 accessibilityLabel];
+    accessibilityLabel = [_accessibilityVideoOverlayView accessibilityLabel];
   }
 
   v6 = __UIAXStringForVariables();
@@ -110,8 +110,8 @@
 
 - (id)accessibilityCustomActions
 {
-  v3 = [(ParticipantViewAccessibility *)self _accessibilityMultiwayViewController];
-  [v3 safeCGRectForKey:@"mediaPipFrameInWindowScene"];
+  _accessibilityMultiwayViewController = [(ParticipantViewAccessibility *)self _accessibilityMultiwayViewController];
+  [_accessibilityMultiwayViewController safeCGRectForKey:@"mediaPipFrameInWindowScene"];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -123,8 +123,8 @@
   v33.size.height = v11;
   if (CGRectEqualToRect(v33, *MEMORY[0x29EDB90E0]))
   {
-    v13 = [(ParticipantViewAccessibility *)self _accessibilityVideoView];
-    if (([v13 isHidden] & 1) == 0)
+    _accessibilityVideoView = [(ParticipantViewAccessibility *)self _accessibilityVideoView];
+    if (([_accessibilityVideoView isHidden] & 1) == 0)
     {
       v14 = [(ParticipantViewAccessibility *)self safeBoolForKey:@"isInRoster"];
 
@@ -159,8 +159,8 @@
         [v12 addObject:v28];
       }
 
-      v13 = [(ParticipantViewAccessibility *)self safeUIViewForKey:@"kickMemberButton"];
-      if ([v13 _accessibilityViewIsVisible])
+      _accessibilityVideoView = [(ParticipantViewAccessibility *)self safeUIViewForKey:@"kickMemberButton"];
+      if ([_accessibilityVideoView _accessibilityViewIsVisible])
       {
         v29 = objc_alloc(MEMORY[0x29EDC78E0]);
         v30 = accessibilityLocalizedString(@"kick.member");
@@ -171,8 +171,8 @@
 
 LABEL_5:
     v15 = [(ParticipantViewAccessibility *)self safeValueForKey:@"monogramView"];
-    v16 = [v15 accessibilityCustomActions];
-    [v12 addObjectsFromArray:v16];
+    accessibilityCustomActions = [v15 accessibilityCustomActions];
+    [v12 addObjectsFromArray:accessibilityCustomActions];
   }
 
   return v12;
@@ -234,16 +234,16 @@ void __60__ParticipantViewAccessibility__axHandleTakeLivePhotoAction__block_invo
 
 - (BOOL)_accessibilityIsLocalParticipantExpanded
 {
-  v2 = [(ParticipantViewAccessibility *)self _axConstraintsController];
-  v3 = [v2 safeIntegerForKey:@"localParticipantState"] == 2;
+  _axConstraintsController = [(ParticipantViewAccessibility *)self _axConstraintsController];
+  v3 = [_axConstraintsController safeIntegerForKey:@"localParticipantState"] == 2;
 
   return v3;
 }
 
 - (BOOL)_accessibilityIsLocalParticipantFullScreen
 {
-  v2 = [(ParticipantViewAccessibility *)self _axConstraintsController];
-  v3 = [v2 safeIntegerForKey:@"localParticipantState"] == 3;
+  _axConstraintsController = [(ParticipantViewAccessibility *)self _axConstraintsController];
+  v3 = [_axConstraintsController safeIntegerForKey:@"localParticipantState"] == 3;
 
   return v3;
 }
@@ -251,8 +251,8 @@ void __60__ParticipantViewAccessibility__axHandleTakeLivePhotoAction__block_invo
 - (id)_axConstraintsController
 {
   v2 = [(ParticipantViewAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_389 startWithSelf:1];
-  v3 = [v2 _accessibilityViewController];
-  v4 = [v3 safeValueForKey:@"accessibilityConstraintController"];
+  _accessibilityViewController = [v2 _accessibilityViewController];
+  v4 = [_accessibilityViewController safeValueForKey:@"accessibilityConstraintController"];
 
   return v4;
 }
@@ -296,9 +296,9 @@ uint64_t __56__ParticipantViewAccessibility__axConstraintsController__block_invo
 - (id)_accessibilityMultiwayViewController
 {
   v2 = [(ParticipantViewAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_391 startWithSelf:0];
-  v3 = [v2 _accessibilityViewController];
+  _accessibilityViewController = [v2 _accessibilityViewController];
 
-  return v3;
+  return _accessibilityViewController;
 }
 
 uint64_t __68__ParticipantViewAccessibility__accessibilityMultiwayViewController__block_invoke(uint64_t a1, void *a2)

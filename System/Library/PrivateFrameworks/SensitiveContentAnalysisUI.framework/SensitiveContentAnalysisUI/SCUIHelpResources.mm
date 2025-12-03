@@ -1,5 +1,5 @@
 @interface SCUIHelpResources
-+ (void)obtainChatWithParentsURL:(id)a3;
++ (void)obtainChatWithParentsURL:(id)l;
 + (void)openChatWithParents;
 @end
 
@@ -12,10 +12,10 @@
   [SCUIContactParentsHelper openChatWithParentsForInterventionType:v2];
 }
 
-+ (void)obtainChatWithParentsURL:(id)a3
++ (void)obtainChatWithParentsURL:(id)l
 {
-  v3 = a3;
-  +[SCUIContactParentsHelper obtainChatWithParentsURLForInterventionType:completionHandler:](SCUIContactParentsHelper, "obtainChatWithParentsURLForInterventionType:completionHandler:", +[SCUIHelpResources getCurrentInterventionType], v3);
+  lCopy = l;
+  +[SCUIContactParentsHelper obtainChatWithParentsURLForInterventionType:completionHandler:](SCUIContactParentsHelper, "obtainChatWithParentsURLForInterventionType:completionHandler:", +[SCUIHelpResources getCurrentInterventionType], lCopy);
 }
 
 @end

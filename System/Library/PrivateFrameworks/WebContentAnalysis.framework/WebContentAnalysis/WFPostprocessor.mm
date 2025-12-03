@@ -1,25 +1,25 @@
 @interface WFPostprocessor
-+ (_NSRange)rangeOfFirstHTMLTag:(id)a3 searchRange:(_NSRange)a4;
-+ (id)adultWebSiteTagging:(id)a3;
-+ (id)lightweightStripHTMLTags:(id)a3;
-+ (id)lightweightStripHTMLTagsForLine:(id)a3;
-+ (id)normalizeStrippedHTML:(id)a3;
-+ (id)postprocessPlainTextWebPage:(id)a3;
++ (_NSRange)rangeOfFirstHTMLTag:(id)tag searchRange:(_NSRange)range;
++ (id)adultWebSiteTagging:(id)tagging;
++ (id)lightweightStripHTMLTags:(id)tags;
++ (id)lightweightStripHTMLTagsForLine:(id)line;
++ (id)normalizeStrippedHTML:(id)l;
++ (id)postprocessPlainTextWebPage:(id)page;
 @end
 
 @implementation WFPostprocessor
 
-+ (_NSRange)rangeOfFirstHTMLTag:(id)a3 searchRange:(_NSRange)a4
++ (_NSRange)rangeOfFirstHTMLTag:(id)tag searchRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = [a3 length];
-  v8 = [a3 rangeOfString:@"<" options:0 range:{location, length}];
+  length = range.length;
+  location = range.location;
+  v7 = [tag length];
+  v8 = [tag rangeOfString:@"<" options:0 range:{location, length}];
   v10 = 0x7FFFFFFFFFFFFFFFLL;
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = v8;
-    v12 = [a3 rangeOfString:@">" options:0 range:{v8 + v9, v7 - (v8 + v9)}];
+    v12 = [tag rangeOfString:@">" options:0 range:{v8 + v9, v7 - (v8 + v9)}];
     v14 = v12 - v11;
     if (v12 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -44,18 +44,18 @@
   return result;
 }
 
-+ (id)postprocessPlainTextWebPage:(id)a3
++ (id)postprocessPlainTextWebPage:(id)page
 {
-  v3 = [WFPostprocessor normalizeStrippedHTML:[WFPostprocessor lightweightStripHTMLTags:a3]];
+  v3 = [WFPostprocessor normalizeStrippedHTML:[WFPostprocessor lightweightStripHTMLTags:page]];
   v4 = [v3 componentsSeparatedByCharactersInSet:{objc_msgSend(MEMORY[0x277CCA900], "punctuationCharacterSet")}];
 
   return [v4 componentsJoinedByString:&stru_28826CB10];
 }
 
-+ (id)lightweightStripHTMLTagsForLine:(id)a3
++ (id)lightweightStripHTMLTagsForLine:(id)line
 {
   v5 = objc_opt_new();
-  v6 = [a3 length];
+  v6 = [line length];
   if (v6 >= 2)
   {
     v7 = v6;
@@ -63,7 +63,7 @@
     v9 = v6;
     while (1)
     {
-      v10 = [a1 rangeOfFirstHTMLTag:a3 searchRange:{v8, v9}];
+      v10 = [self rangeOfFirstHTMLTag:line searchRange:{v8, v9}];
       if (v10 == 0x7FFFFFFFFFFFFFFFLL)
       {
         break;
@@ -71,7 +71,7 @@
 
       v12 = v10;
       v13 = v11;
-      [v5 appendString:{objc_msgSend(a3, "substringWithRange:", v8, v10 - v8)}];
+      [v5 appendString:{objc_msgSend(line, "substringWithRange:", v8, v10 - v8)}];
       [v5 appendString:@" "];
       v8 = v12 + v13;
       v9 = v7 - (v12 + v13);
@@ -81,7 +81,7 @@
       }
     }
 
-    [v5 appendString:{objc_msgSend(a3, "substringWithRange:", v8, v9)}];
+    [v5 appendString:{objc_msgSend(line, "substringWithRange:", v8, v9)}];
   }
 
 LABEL_7:
@@ -89,17 +89,17 @@ LABEL_7:
   return v5;
 }
 
-+ (id)lightweightStripHTMLTags:(id)a3
++ (id)lightweightStripHTMLTags:(id)tags
 {
   v5 = objc_opt_new();
-  v6 = [a3 componentsSeparatedByString:@"\n"];
+  v6 = [tags componentsSeparatedByString:@"\n"];
   v7 = [v6 count];
   if (v7)
   {
     v8 = v7;
     for (i = 0; i != v8; ++i)
     {
-      [v5 appendString:{objc_msgSend(a1, "lightweightStripHTMLTagsForLine:", objc_msgSend(v6, "objectAtIndex:", i))}];
+      [v5 appendString:{objc_msgSend(self, "lightweightStripHTMLTagsForLine:", objc_msgSend(v6, "objectAtIndex:", i))}];
       [v5 appendString:@"\n"];
     }
   }
@@ -107,16 +107,16 @@ LABEL_7:
   return v5;
 }
 
-+ (id)normalizeStrippedHTML:(id)a3
++ (id)normalizeStrippedHTML:(id)l
 {
-  v3 = [objc_msgSend(objc_msgSend(a3 WF_stringByReplacingString:@"_" withString:{@" ", "WF_stringByReplacingString:withString:", @"-", @" ", "WF_stringByReplacingString:withString:", @"<", @" "}];
+  v3 = [objc_msgSend(objc_msgSend(l WF_stringByReplacingString:@"_" withString:{@" ", "WF_stringByReplacingString:withString:", @"-", @" ", "WF_stringByReplacingString:withString:", @"<", @" "}];
 
   return [v3 WF_stringByReplacingString:@">" withString:@" "];
 }
 
-+ (id)adultWebSiteTagging:(id)a3
++ (id)adultWebSiteTagging:(id)tagging
 {
-  v3 = [objc_msgSend(objc_msgSend(a3 WF_stringByReplacingString:@"2257" withString:{@"TwoTwoFiveSeven (2257)", "WF_stringByReplacingString:withString:", @"U.S.C", @"UnitedStatesCode(U S C)", "WF_stringByReplacingString:withString:", @"USC", @"UnitedStatesCode (U S C)"}];
+  v3 = [objc_msgSend(objc_msgSend(tagging WF_stringByReplacingString:@"2257" withString:{@"TwoTwoFiveSeven (2257)", "WF_stringByReplacingString:withString:", @"U.S.C", @"UnitedStatesCode(U S C)", "WF_stringByReplacingString:withString:", @"USC", @"UnitedStatesCode (U S C)"}];
 
   return [v3 WF_stringByReplacingString:@"18" withString:@"OneEight"];
 }

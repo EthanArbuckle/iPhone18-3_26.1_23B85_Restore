@@ -1,5 +1,5 @@
 @interface MPModelLibrarySearchEntityResultContainer
-- (MPModelLibrarySearchEntityResultContainer)initWithEntityQueryResult:(shared_ptr<mlcore:(id)a4 :(id)a5 EntityQueryResult>)a3 forScope:entityTranslationContext:;
+- (MPModelLibrarySearchEntityResultContainer)initWithEntityQueryResult:(shared_ptr<mlcore:(id)result :(id)a5 EntityQueryResult>)a3 forScope:entityTranslationContext:;
 - (id).cxx_construct;
 - (shared_ptr<mlcore::EntityQueryResult>)entityQueryResult;
 @end
@@ -28,12 +28,12 @@
   return result;
 }
 
-- (MPModelLibrarySearchEntityResultContainer)initWithEntityQueryResult:(shared_ptr<mlcore:(id)a4 :(id)a5 EntityQueryResult>)a3 forScope:entityTranslationContext:
+- (MPModelLibrarySearchEntityResultContainer)initWithEntityQueryResult:(shared_ptr<mlcore:(id)result :(id)a5 EntityQueryResult>)a3 forScope:entityTranslationContext:
 {
   cntrl = a3.__cntrl_;
   ptr = a3.__ptr_;
   v9 = a3.__cntrl_;
-  v10 = a4;
+  resultCopy = result;
   v17.receiver = self;
   v17.super_class = MPModelLibrarySearchEntityResultContainer;
   v11 = [(MPModelLibrarySearchEntityResultContainer *)&v17 init];
@@ -56,7 +56,7 @@
     }
 
     objc_storeStrong(&v12->_scope, cntrl);
-    objc_storeStrong(&v12->_entityTranslationContext, a4);
+    objc_storeStrong(&v12->_entityTranslationContext, result);
   }
 
   return v12;

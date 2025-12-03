@@ -1,12 +1,12 @@
 @interface MAHandleNavigationPromptRerouteSuggestion
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper;
 @end
 
 @implementation MAHandleNavigationPromptRerouteSuggestion
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [SACommandFailed alloc];
   v6 = [v5 initWithErrorCode:SALocalSearchNavigationNotRunningErrorCode];
   v7 = +[MKMapService sharedService];
@@ -20,14 +20,14 @@
     v10[1] = 3221225472;
     v10[2] = sub_F3DC;
     v10[3] = &unk_34B30;
-    v11 = v4;
+    v11 = completionCopy;
     [v8 repeatLastReroutePromptWithCompletion:v10];
   }
 
   else
   {
-    v9 = [v6 dictionary];
-    (*(v4 + 2))(v4, v9);
+    dictionary = [v6 dictionary];
+    (*(completionCopy + 2))(completionCopy, dictionary);
   }
 }
 

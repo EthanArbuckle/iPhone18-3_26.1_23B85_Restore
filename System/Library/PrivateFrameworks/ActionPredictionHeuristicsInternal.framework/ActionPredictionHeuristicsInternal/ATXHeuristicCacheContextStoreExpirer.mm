@@ -1,11 +1,11 @@
 @interface ATXHeuristicCacheContextStoreExpirer
-- (ATXHeuristicCacheContextStoreExpirer)initWithCDContextualKeyPath:(id)a3;
-- (ATXHeuristicCacheContextStoreExpirer)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ATXHeuristicCacheContextStoreExpirer)initWithCDContextualKeyPath:(id)path;
+- (ATXHeuristicCacheContextStoreExpirer)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (void)_start;
 - (void)_stop;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXHeuristicCacheContextStoreExpirer
@@ -14,25 +14,25 @@
 {
   if (self->_registration)
   {
-    v3 = [MEMORY[0x277CFE318] userContext];
-    [v3 deregisterCallback:self->_registration];
+    userContext = [MEMORY[0x277CFE318] userContext];
+    [userContext deregisterCallback:self->_registration];
 
     registration = self->_registration;
     self->_registration = 0;
   }
 }
 
-- (ATXHeuristicCacheContextStoreExpirer)initWithCDContextualKeyPath:(id)a3
+- (ATXHeuristicCacheContextStoreExpirer)initWithCDContextualKeyPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = ATXHeuristicCacheContextStoreExpirer;
   v6 = [(ATXHeuristicCacheExpirer *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contextKeyPath, a3);
-    v8 = [MEMORY[0x277CFE360] predicateForChangeAtKeyPath:v5];
+    objc_storeStrong(&v6->_contextKeyPath, path);
+    v8 = [MEMORY[0x277CFE360] predicateForChangeAtKeyPath:pathCopy];
     predicate = v7->_predicate;
     v7->_predicate = v8;
   }
@@ -59,8 +59,8 @@
     registration = self->_registration;
     self->_registration = v7;
 
-    v9 = [MEMORY[0x277CFE318] userContext];
-    [v9 registerCallback:self->_registration];
+    userContext = [MEMORY[0x277CFE318] userContext];
+    [userContext registerCallback:self->_registration];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -105,10 +105,10 @@ void __46__ATXHeuristicCacheContextStoreExpirer__start__block_invoke(uint64_t a1
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -118,7 +118,7 @@ void __46__ATXHeuristicCacheContextStoreExpirer__start__block_invoke(uint64_t a1
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       contextKeyPath = self->_contextKeyPath;
       if (contextKeyPath == v5->_contextKeyPath || [(_CDContextualKeyPath *)contextKeyPath isEqual:?])
       {
@@ -158,35 +158,35 @@ void __46__ATXHeuristicCacheContextStoreExpirer__start__block_invoke(uint64_t a1
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = ATXHeuristicCacheContextStoreExpirer;
-  v4 = a3;
-  [(ATXHeuristicCacheExpirer *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_contextKeyPath forKey:{@"contextKeyPath", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_predicate forKey:@"predicate"];
+  coderCopy = coder;
+  [(ATXHeuristicCacheExpirer *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_contextKeyPath forKey:{@"contextKeyPath", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_predicate forKey:@"predicate"];
 }
 
-- (ATXHeuristicCacheContextStoreExpirer)initWithCoder:(id)a3
+- (ATXHeuristicCacheContextStoreExpirer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = ATXHeuristicCacheContextStoreExpirer;
-  v5 = [(ATXHeuristicCacheExpirer *)&v15 initWithCoder:v4];
+  v5 = [(ATXHeuristicCacheExpirer *)&v15 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_3;
   }
 
-  v6 = [v4 error];
+  error = [coderCopy error];
 
-  if (v6)
+  if (error)
   {
     goto LABEL_3;
   }
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contextKeyPath"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contextKeyPath"];
   contextKeyPath = v5->_contextKeyPath;
   v5->_contextKeyPath = v9;
 
@@ -195,18 +195,18 @@ void __46__ATXHeuristicCacheContextStoreExpirer__start__block_invoke(uint64_t a1
     goto LABEL_3;
   }
 
-  v11 = [v4 error];
+  error2 = [coderCopy error];
 
-  if (v11)
+  if (error2)
   {
     goto LABEL_3;
   }
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
   predicate = v5->_predicate;
   v5->_predicate = v12;
 
-  if (!v5->_predicate || ([v4 error], v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
+  if (!v5->_predicate || ([coderCopy error], v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
   {
 LABEL_3:
     v7 = 0;

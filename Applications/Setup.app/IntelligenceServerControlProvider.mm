@@ -1,18 +1,18 @@
 @interface IntelligenceServerControlProvider
 - (_TtC5Setup33IntelligenceServerControlProvider)init;
-- (void)isFeatureEnabledFromCache:(BOOL)a3 completionHandler:(id)a4;
+- (void)isFeatureEnabledFromCache:(BOOL)cache completionHandler:(id)handler;
 @end
 
 @implementation IntelligenceServerControlProvider
 
-- (void)isFeatureEnabledFromCache:(BOOL)a3 completionHandler:(id)a4
+- (void)isFeatureEnabledFromCache:(BOOL)cache completionHandler:(id)handler
 {
   v7 = sub_100006410(&qword_1003A0110);
   __chkstk_darwin(v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  *(v11 + 16) = a3;
+  *(v11 + 16) = cache;
   *(v11 + 24) = v10;
   *(v11 + 32) = self;
   v12 = type metadata accessor for TaskPriority();
@@ -27,7 +27,7 @@
   v14[3] = 0;
   v14[4] = &unk_100297310;
   v14[5] = v13;
-  v15 = self;
+  selfCopy = self;
   sub_100063A28(0, 0, v9, &unk_1002979A0, v14);
 }
 

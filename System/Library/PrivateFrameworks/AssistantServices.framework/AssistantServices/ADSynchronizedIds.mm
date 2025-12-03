@@ -1,21 +1,21 @@
 @interface ADSynchronizedIds
-- (ADSynchronizedIds)initWithEphemeralSeeds:(id)a3 andAggregationIds:(id)a4;
-- (BOOL)setCurrentEphemeralSeedIfNil:(id)a3 andCreationTime:(id)a4;
+- (ADSynchronizedIds)initWithEphemeralSeeds:(id)seeds andAggregationIds:(id)ids;
+- (BOOL)setCurrentEphemeralSeedIfNil:(id)nil andCreationTime:(id)time;
 - (NSUUID)currentAggregationId;
 - (NSUUID)currentEphemeralSeed;
 - (NSUUID)nextAggregationId;
 - (NSUUID)nextEphemeralSeed;
-- (unint64_t)_populateNullAggregationIdsWithCreationTime:(id)a3 today:(id)a4;
-- (unint64_t)_populateNullEphemeralSeedsWithCreationTime:(id)a3 today:(id)a4;
-- (unint64_t)populateNullsWithCreationTime:(id)a3;
+- (unint64_t)_populateNullAggregationIdsWithCreationTime:(id)time today:(id)today;
+- (unint64_t)_populateNullEphemeralSeedsWithCreationTime:(id)time today:(id)today;
+- (unint64_t)populateNullsWithCreationTime:(id)time;
 @end
 
 @implementation ADSynchronizedIds
 
-- (BOOL)setCurrentEphemeralSeedIfNil:(id)a3 andCreationTime:(id)a4
+- (BOOL)setCurrentEphemeralSeedIfNil:(id)nil andCreationTime:(id)time
 {
-  v6 = a3;
-  v7 = a4;
+  nilCopy = nil;
+  timeCopy = time;
   ephemeralSeeds = self->_ephemeralSeeds;
   if (!ephemeralSeeds)
   {
@@ -26,15 +26,15 @@
     ephemeralSeeds = self->_ephemeralSeeds;
   }
 
-  v11 = [(ADSynchronizedIdItemPair *)ephemeralSeeds setCurrentIfNil:v6 andCreationTime:v7 andValidityDays:14];
+  v11 = [(ADSynchronizedIdItemPair *)ephemeralSeeds setCurrentIfNil:nilCopy andCreationTime:timeCopy andValidityDays:14];
 
   return v11;
 }
 
-- (unint64_t)_populateNullAggregationIdsWithCreationTime:(id)a3 today:(id)a4
+- (unint64_t)_populateNullAggregationIdsWithCreationTime:(id)time today:(id)today
 {
-  v6 = a3;
-  v7 = a4;
+  timeCopy = time;
+  todayCopy = today;
   aggregationIds = self->_aggregationIds;
   if (!aggregationIds)
   {
@@ -45,15 +45,15 @@
     aggregationIds = self->_aggregationIds;
   }
 
-  v11 = [(ADSynchronizedIdItemPair *)aggregationIds _populateNullsWithCreationTime:v6 today:v7 minValidityDays:30 maxValidityDays:548 currentOption:4 nextOption:8];
+  v11 = [(ADSynchronizedIdItemPair *)aggregationIds _populateNullsWithCreationTime:timeCopy today:todayCopy minValidityDays:30 maxValidityDays:548 currentOption:4 nextOption:8];
 
   return v11;
 }
 
-- (unint64_t)_populateNullEphemeralSeedsWithCreationTime:(id)a3 today:(id)a4
+- (unint64_t)_populateNullEphemeralSeedsWithCreationTime:(id)time today:(id)today
 {
-  v6 = a3;
-  v7 = a4;
+  timeCopy = time;
+  todayCopy = today;
   ephemeralSeeds = self->_ephemeralSeeds;
   if (!ephemeralSeeds)
   {
@@ -64,17 +64,17 @@
     ephemeralSeeds = self->_ephemeralSeeds;
   }
 
-  v11 = [(ADSynchronizedIdItemPair *)ephemeralSeeds _populateNullsWithCreationTime:v6 today:v7 minValidityDays:14 maxValidityDays:14 currentOption:1 nextOption:2];
+  v11 = [(ADSynchronizedIdItemPair *)ephemeralSeeds _populateNullsWithCreationTime:timeCopy today:todayCopy minValidityDays:14 maxValidityDays:14 currentOption:1 nextOption:2];
 
   return v11;
 }
 
-- (unint64_t)populateNullsWithCreationTime:(id)a3
+- (unint64_t)populateNullsWithCreationTime:(id)time
 {
-  v4 = a3;
-  v5 = [ADSynchronizedIdItem alignToMidnight:v4];
-  v6 = [(ADSynchronizedIds *)self _populateNullEphemeralSeedsWithCreationTime:v4 today:v5];
-  v7 = [(ADSynchronizedIds *)self _populateNullAggregationIdsWithCreationTime:v4 today:v5];
+  timeCopy = time;
+  v5 = [ADSynchronizedIdItem alignToMidnight:timeCopy];
+  v6 = [(ADSynchronizedIds *)self _populateNullEphemeralSeedsWithCreationTime:timeCopy today:v5];
+  v7 = [(ADSynchronizedIds *)self _populateNullAggregationIdsWithCreationTime:timeCopy today:v5];
 
   return v7 | v6;
 }
@@ -85,15 +85,15 @@
   if (aggregationIds && ([(ADSynchronizedIdItemPair *)aggregationIds next], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v4 = v3;
-    v5 = [v3 value];
+    value = [v3 value];
   }
 
   else
   {
-    v5 = 0;
+    value = 0;
   }
 
-  return v5;
+  return value;
 }
 
 - (NSUUID)currentAggregationId
@@ -102,15 +102,15 @@
   if (aggregationIds && ([(ADSynchronizedIdItemPair *)aggregationIds current], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v4 = v3;
-    v5 = [v3 value];
+    value = [v3 value];
   }
 
   else
   {
-    v5 = 0;
+    value = 0;
   }
 
-  return v5;
+  return value;
 }
 
 - (NSUUID)nextEphemeralSeed
@@ -119,15 +119,15 @@
   if (ephemeralSeeds && ([(ADSynchronizedIdItemPair *)ephemeralSeeds next], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v4 = v3;
-    v5 = [v3 value];
+    value = [v3 value];
   }
 
   else
   {
-    v5 = 0;
+    value = 0;
   }
 
-  return v5;
+  return value;
 }
 
 - (NSUUID)currentEphemeralSeed
@@ -136,29 +136,29 @@
   if (ephemeralSeeds && ([(ADSynchronizedIdItemPair *)ephemeralSeeds current], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v4 = v3;
-    v5 = [v3 value];
+    value = [v3 value];
   }
 
   else
   {
-    v5 = 0;
+    value = 0;
   }
 
-  return v5;
+  return value;
 }
 
-- (ADSynchronizedIds)initWithEphemeralSeeds:(id)a3 andAggregationIds:(id)a4
+- (ADSynchronizedIds)initWithEphemeralSeeds:(id)seeds andAggregationIds:(id)ids
 {
-  v7 = a3;
-  v8 = a4;
+  seedsCopy = seeds;
+  idsCopy = ids;
   v12.receiver = self;
   v12.super_class = ADSynchronizedIds;
   v9 = [(ADSynchronizedIds *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_ephemeralSeeds, a3);
-    objc_storeStrong(&v10->_aggregationIds, a4);
+    objc_storeStrong(&v9->_ephemeralSeeds, seeds);
+    objc_storeStrong(&v10->_aggregationIds, ids);
   }
 
   return v10;

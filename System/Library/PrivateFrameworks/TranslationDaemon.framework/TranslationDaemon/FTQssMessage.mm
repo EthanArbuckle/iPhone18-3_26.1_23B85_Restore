@@ -1,6 +1,6 @@
 @interface FTQssMessage
-+ (Class)container_message_immutableClassForType:(int64_t)a3;
-+ (int64_t)container_message_typeForImmutableObject:(id)a3;
++ (Class)container_message_immutableClassForType:(int64_t)type;
++ (int64_t)container_message_typeForImmutableObject:(id)object;
 - (FLTBFBufferAccessor)container_message;
 - (FTApgPronGuessMessage)container_messageAsFTApgPronGuessMessage;
 - (FTAsrCorrectionsValidatorMessage)container_messageAsFTAsrCorrectionsValidatorMessage;
@@ -24,54 +24,54 @@
 - (FTMtTranslationMessage)container_messageAsFTMtTranslationMessage;
 - (FTNapgCreateLanguageProfileMessage)container_messageAsFTNapgCreateLanguageProfileMessage;
 - (FTNlShortcutFuzzyMatchMessage)container_messageAsFTNlShortcutFuzzyMatchMessage;
-- (FTQssMessage)initWithFlatbuffData:(id)a3 root:(const QssMessage *)a4 verify:(BOOL)a5;
+- (FTQssMessage)initWithFlatbuffData:(id)data root:(const QssMessage *)root verify:(BOOL)verify;
 - (FTSlsLanguageDetectionMessage)container_messageAsFTSlsLanguageDetectionMessage;
 - (FTTtsTextToSpeechMessage)container_messageAsFTTtsTextToSpeechMessage;
 - (FTTtsTextToSpeechSpeechFeatureMessage)container_messageAsFTTtsTextToSpeechSpeechFeatureMessage;
 - (FTTtsTextToSpeechStreamingMessage)container_messageAsFTTtsTextToSpeechStreamingMessage;
-- (Offset<siri::speech::qss_fb::QssMessage>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::qss_fb::QssMessage>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 - (int64_t)container_message_type;
 @end
 
 @implementation FTQssMessage
 
-- (FTQssMessage)initWithFlatbuffData:(id)a3 root:(const QssMessage *)a4 verify:(BOOL)a5
+- (FTQssMessage)initWithFlatbuffData:(id)data root:(const QssMessage *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = FTQssMessage;
   v10 = [(FTQssMessage *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_15;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_15;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_233005E20;
       v27 = 0;
@@ -88,9 +88,9 @@ LABEL_15:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;
@@ -961,220 +961,220 @@ LABEL_16:
   switch([(FTQssMessage *)self container_message_type])
   {
     case 1:
-      v3 = [(FTQssMessage *)self container_messageAsFTApgPronGuessMessage];
+      container_messageAsFTApgPronGuessMessage = [(FTQssMessage *)self container_messageAsFTApgPronGuessMessage];
       break;
     case 2:
-      v3 = [(FTQssMessage *)self container_messageAsFTAsrRecognitionMessage];
+      container_messageAsFTApgPronGuessMessage = [(FTQssMessage *)self container_messageAsFTAsrRecognitionMessage];
       break;
     case 3:
-      v3 = [(FTQssMessage *)self container_messageAsFTAsrErrorBlamerMessage];
+      container_messageAsFTApgPronGuessMessage = [(FTQssMessage *)self container_messageAsFTAsrErrorBlamerMessage];
       break;
     case 4:
-      v3 = [(FTQssMessage *)self container_messageAsFTAsrItnMessage];
+      container_messageAsFTApgPronGuessMessage = [(FTQssMessage *)self container_messageAsFTAsrItnMessage];
       break;
     case 5:
-      v3 = [(FTQssMessage *)self container_messageAsFTAsrTextNormalizationMessage];
+      container_messageAsFTApgPronGuessMessage = [(FTQssMessage *)self container_messageAsFTAsrTextNormalizationMessage];
       break;
     case 6:
-      v3 = [(FTQssMessage *)self container_messageAsFTAsrPostItnHammerMessage];
+      container_messageAsFTApgPronGuessMessage = [(FTQssMessage *)self container_messageAsFTAsrPostItnHammerMessage];
       break;
     case 7:
-      v3 = [(FTQssMessage *)self container_messageAsFTAsrKeywordFinderMessage];
+      container_messageAsFTApgPronGuessMessage = [(FTQssMessage *)self container_messageAsFTAsrKeywordFinderMessage];
       break;
     case 8:
-      v3 = [(FTQssMessage *)self container_messageAsFTAsrCorrectionsValidatorMessage];
+      container_messageAsFTApgPronGuessMessage = [(FTQssMessage *)self container_messageAsFTAsrCorrectionsValidatorMessage];
       break;
     case 9:
-      v3 = [(FTQssMessage *)self container_messageAsFTAsrGraphemeToPhonemeMessage];
+      container_messageAsFTApgPronGuessMessage = [(FTQssMessage *)self container_messageAsFTAsrGraphemeToPhonemeMessage];
       break;
     case 10:
-      v3 = [(FTQssMessage *)self container_messageAsFTBlazarMultiUserMessage];
+      container_messageAsFTApgPronGuessMessage = [(FTQssMessage *)self container_messageAsFTBlazarMultiUserMessage];
       break;
     case 11:
-      v3 = [(FTQssMessage *)self container_messageAsFTBlazarMultilingualMessage];
+      container_messageAsFTApgPronGuessMessage = [(FTQssMessage *)self container_messageAsFTBlazarMultilingualMessage];
       break;
     case 12:
-      v3 = [(FTQssMessage *)self container_messageAsFTBlazarSpeechTranslationMessage];
+      container_messageAsFTApgPronGuessMessage = [(FTQssMessage *)self container_messageAsFTBlazarSpeechTranslationMessage];
       break;
     case 13:
-      v3 = [(FTQssMessage *)self container_messageAsFTBlazarBatchTranslationMessage];
+      container_messageAsFTApgPronGuessMessage = [(FTQssMessage *)self container_messageAsFTBlazarBatchTranslationMessage];
       break;
     case 14:
-      v3 = [(FTQssMessage *)self container_messageAsFTBlazarTextToSpeechRouterMessage];
+      container_messageAsFTApgPronGuessMessage = [(FTQssMessage *)self container_messageAsFTBlazarTextToSpeechRouterMessage];
       break;
     case 15:
-      v3 = [(FTQssMessage *)self container_messageAsFTBlazarTextToSpeechRouterStreamingMessage];
+      container_messageAsFTApgPronGuessMessage = [(FTQssMessage *)self container_messageAsFTBlazarTextToSpeechRouterStreamingMessage];
       break;
     case 16:
-      v3 = [(FTQssMessage *)self container_messageAsFTBlazarServiceDiscoveryMessage];
+      container_messageAsFTApgPronGuessMessage = [(FTQssMessage *)self container_messageAsFTBlazarServiceDiscoveryMessage];
       break;
     case 17:
-      v3 = [(FTQssMessage *)self container_messageAsFTLmtLmScorerMessage];
+      container_messageAsFTApgPronGuessMessage = [(FTQssMessage *)self container_messageAsFTLmtLmScorerMessage];
       break;
     case 18:
-      v3 = [(FTQssMessage *)self container_messageAsFTNapgCreateLanguageProfileMessage];
+      container_messageAsFTApgPronGuessMessage = [(FTQssMessage *)self container_messageAsFTNapgCreateLanguageProfileMessage];
       break;
     case 19:
-      v3 = [(FTQssMessage *)self container_messageAsFTMtTranslationMessage];
+      container_messageAsFTApgPronGuessMessage = [(FTQssMessage *)self container_messageAsFTMtTranslationMessage];
       break;
     case 20:
-      v3 = [(FTQssMessage *)self container_messageAsFTTtsTextToSpeechMessage];
+      container_messageAsFTApgPronGuessMessage = [(FTQssMessage *)self container_messageAsFTTtsTextToSpeechMessage];
       break;
     case 21:
-      v3 = [(FTQssMessage *)self container_messageAsFTTtsTextToSpeechStreamingMessage];
+      container_messageAsFTApgPronGuessMessage = [(FTQssMessage *)self container_messageAsFTTtsTextToSpeechStreamingMessage];
       break;
     case 22:
-      v3 = [(FTQssMessage *)self container_messageAsFTTtsTextToSpeechSpeechFeatureMessage];
+      container_messageAsFTApgPronGuessMessage = [(FTQssMessage *)self container_messageAsFTTtsTextToSpeechSpeechFeatureMessage];
       break;
     case 23:
-      v3 = [(FTQssMessage *)self container_messageAsFTNlShortcutFuzzyMatchMessage];
+      container_messageAsFTApgPronGuessMessage = [(FTQssMessage *)self container_messageAsFTNlShortcutFuzzyMatchMessage];
       break;
     case 24:
-      v3 = [(FTQssMessage *)self container_messageAsFTSlsLanguageDetectionMessage];
+      container_messageAsFTApgPronGuessMessage = [(FTQssMessage *)self container_messageAsFTSlsLanguageDetectionMessage];
       break;
     default:
-      v3 = 0;
+      container_messageAsFTApgPronGuessMessage = 0;
       break;
   }
 
-  return v3;
+  return container_messageAsFTApgPronGuessMessage;
 }
 
-+ (Class)container_message_immutableClassForType:(int64_t)a3
++ (Class)container_message_immutableClassForType:(int64_t)type
 {
-  if ((a3 - 1) > 0x17)
+  if ((type - 1) > 0x17)
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = *off_2789B85F0[a3 - 1];
+    v4 = *off_2789B85F0[type - 1];
     v5 = objc_opt_class();
   }
 
   return v5;
 }
 
-+ (int64_t)container_message_typeForImmutableObject:(id)a3
++ (int64_t)container_message_typeForImmutableObject:(id)object
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  objectCopy = object;
+  if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 1;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 2;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 3;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 4;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 5;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 6;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 7;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 8;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 9;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 10;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 11;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 12;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 13;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 14;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 15;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 16;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 17;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 18;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 19;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 20;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 21;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 22;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 23;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 24;
   }
@@ -1187,19 +1187,19 @@ LABEL_16:
   return v4;
 }
 
-- (Offset<siri::speech::qss_fb::QssMessage>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::qss_fb::QssMessage>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FTQssMessage *)self error_message];
-  v6 = [v5 addObjectToBuffer:a3];
+  error_message = [(FTQssMessage *)self error_message];
+  v6 = [error_message addObjectToBuffer:buffer];
 
-  v7 = [(FTQssMessage *)self disable_session_log];
-  v8 = [v7 addObjectToBuffer:a3];
+  disable_session_log = [(FTQssMessage *)self disable_session_log];
+  v8 = [disable_session_log addObjectToBuffer:buffer];
 
-  v9 = [(FTQssMessage *)self container_message_type];
+  container_message_type = [(FTQssMessage *)self container_message_type];
   if ([(FTQssMessage *)self container_message_type]== 1)
   {
-    v10 = [(FTQssMessage *)self container_messageAsFTApgPronGuessMessage];
-    v11 = [v10 addObjectToBuffer:a3];
+    container_messageAsFTApgPronGuessMessage = [(FTQssMessage *)self container_messageAsFTApgPronGuessMessage];
+    v11 = [container_messageAsFTApgPronGuessMessage addObjectToBuffer:buffer];
 
     v12 = v11;
   }
@@ -1211,8 +1211,8 @@ LABEL_16:
 
   if ([(FTQssMessage *)self container_message_type]== 2)
   {
-    v13 = [(FTQssMessage *)self container_messageAsFTAsrRecognitionMessage];
-    v14 = [v13 addObjectToBuffer:a3];
+    container_messageAsFTAsrRecognitionMessage = [(FTQssMessage *)self container_messageAsFTAsrRecognitionMessage];
+    v14 = [container_messageAsFTAsrRecognitionMessage addObjectToBuffer:buffer];
 
     v15 = v14;
   }
@@ -1224,8 +1224,8 @@ LABEL_16:
 
   if ([(FTQssMessage *)self container_message_type]== 3)
   {
-    v16 = [(FTQssMessage *)self container_messageAsFTAsrErrorBlamerMessage];
-    v17 = [v16 addObjectToBuffer:a3];
+    container_messageAsFTAsrErrorBlamerMessage = [(FTQssMessage *)self container_messageAsFTAsrErrorBlamerMessage];
+    v17 = [container_messageAsFTAsrErrorBlamerMessage addObjectToBuffer:buffer];
 
     v18 = v17;
   }
@@ -1237,8 +1237,8 @@ LABEL_16:
 
   if ([(FTQssMessage *)self container_message_type]== 4)
   {
-    v19 = [(FTQssMessage *)self container_messageAsFTAsrItnMessage];
-    v20 = [v19 addObjectToBuffer:a3];
+    container_messageAsFTAsrItnMessage = [(FTQssMessage *)self container_messageAsFTAsrItnMessage];
+    v20 = [container_messageAsFTAsrItnMessage addObjectToBuffer:buffer];
 
     v89 = v20;
   }
@@ -1250,8 +1250,8 @@ LABEL_16:
 
   if ([(FTQssMessage *)self container_message_type]== 5)
   {
-    v21 = [(FTQssMessage *)self container_messageAsFTAsrTextNormalizationMessage];
-    v22 = [v21 addObjectToBuffer:a3];
+    container_messageAsFTAsrTextNormalizationMessage = [(FTQssMessage *)self container_messageAsFTAsrTextNormalizationMessage];
+    v22 = [container_messageAsFTAsrTextNormalizationMessage addObjectToBuffer:buffer];
 
     v88 = v22;
   }
@@ -1263,8 +1263,8 @@ LABEL_16:
 
   if ([(FTQssMessage *)self container_message_type]== 6)
   {
-    v23 = [(FTQssMessage *)self container_messageAsFTAsrPostItnHammerMessage];
-    v24 = [v23 addObjectToBuffer:a3];
+    container_messageAsFTAsrPostItnHammerMessage = [(FTQssMessage *)self container_messageAsFTAsrPostItnHammerMessage];
+    v24 = [container_messageAsFTAsrPostItnHammerMessage addObjectToBuffer:buffer];
 
     v87 = v24;
   }
@@ -1276,8 +1276,8 @@ LABEL_16:
 
   if ([(FTQssMessage *)self container_message_type]== 7)
   {
-    v25 = [(FTQssMessage *)self container_messageAsFTAsrKeywordFinderMessage];
-    v26 = [v25 addObjectToBuffer:a3];
+    container_messageAsFTAsrKeywordFinderMessage = [(FTQssMessage *)self container_messageAsFTAsrKeywordFinderMessage];
+    v26 = [container_messageAsFTAsrKeywordFinderMessage addObjectToBuffer:buffer];
 
     v86 = v26;
   }
@@ -1289,8 +1289,8 @@ LABEL_16:
 
   if ([(FTQssMessage *)self container_message_type]== 8)
   {
-    v27 = [(FTQssMessage *)self container_messageAsFTAsrCorrectionsValidatorMessage];
-    v28 = [v27 addObjectToBuffer:a3];
+    container_messageAsFTAsrCorrectionsValidatorMessage = [(FTQssMessage *)self container_messageAsFTAsrCorrectionsValidatorMessage];
+    v28 = [container_messageAsFTAsrCorrectionsValidatorMessage addObjectToBuffer:buffer];
 
     v85 = v28;
   }
@@ -1302,8 +1302,8 @@ LABEL_16:
 
   if ([(FTQssMessage *)self container_message_type]== 9)
   {
-    v29 = [(FTQssMessage *)self container_messageAsFTAsrGraphemeToPhonemeMessage];
-    v30 = [v29 addObjectToBuffer:a3];
+    container_messageAsFTAsrGraphemeToPhonemeMessage = [(FTQssMessage *)self container_messageAsFTAsrGraphemeToPhonemeMessage];
+    v30 = [container_messageAsFTAsrGraphemeToPhonemeMessage addObjectToBuffer:buffer];
 
     v84 = v30;
   }
@@ -1315,8 +1315,8 @@ LABEL_16:
 
   if ([(FTQssMessage *)self container_message_type]== 10)
   {
-    v31 = [(FTQssMessage *)self container_messageAsFTBlazarMultiUserMessage];
-    v32 = [v31 addObjectToBuffer:a3];
+    container_messageAsFTBlazarMultiUserMessage = [(FTQssMessage *)self container_messageAsFTBlazarMultiUserMessage];
+    v32 = [container_messageAsFTBlazarMultiUserMessage addObjectToBuffer:buffer];
 
     v83 = v32;
   }
@@ -1328,8 +1328,8 @@ LABEL_16:
 
   if ([(FTQssMessage *)self container_message_type]== 11)
   {
-    v33 = [(FTQssMessage *)self container_messageAsFTBlazarMultilingualMessage];
-    v34 = [v33 addObjectToBuffer:a3];
+    container_messageAsFTBlazarMultilingualMessage = [(FTQssMessage *)self container_messageAsFTBlazarMultilingualMessage];
+    v34 = [container_messageAsFTBlazarMultilingualMessage addObjectToBuffer:buffer];
 
     v82 = v34;
   }
@@ -1341,8 +1341,8 @@ LABEL_16:
 
   if ([(FTQssMessage *)self container_message_type]== 12)
   {
-    v35 = [(FTQssMessage *)self container_messageAsFTBlazarSpeechTranslationMessage];
-    v36 = [v35 addObjectToBuffer:a3];
+    container_messageAsFTBlazarSpeechTranslationMessage = [(FTQssMessage *)self container_messageAsFTBlazarSpeechTranslationMessage];
+    v36 = [container_messageAsFTBlazarSpeechTranslationMessage addObjectToBuffer:buffer];
 
     v81 = v36;
   }
@@ -1354,8 +1354,8 @@ LABEL_16:
 
   if ([(FTQssMessage *)self container_message_type]== 13)
   {
-    v37 = [(FTQssMessage *)self container_messageAsFTBlazarBatchTranslationMessage];
-    v38 = [v37 addObjectToBuffer:a3];
+    container_messageAsFTBlazarBatchTranslationMessage = [(FTQssMessage *)self container_messageAsFTBlazarBatchTranslationMessage];
+    v38 = [container_messageAsFTBlazarBatchTranslationMessage addObjectToBuffer:buffer];
 
     v80 = v38;
   }
@@ -1367,8 +1367,8 @@ LABEL_16:
 
   if ([(FTQssMessage *)self container_message_type]== 14)
   {
-    v39 = [(FTQssMessage *)self container_messageAsFTBlazarTextToSpeechRouterMessage];
-    v40 = [v39 addObjectToBuffer:a3];
+    container_messageAsFTBlazarTextToSpeechRouterMessage = [(FTQssMessage *)self container_messageAsFTBlazarTextToSpeechRouterMessage];
+    v40 = [container_messageAsFTBlazarTextToSpeechRouterMessage addObjectToBuffer:buffer];
 
     v79 = v40;
   }
@@ -1380,8 +1380,8 @@ LABEL_16:
 
   if ([(FTQssMessage *)self container_message_type]== 15)
   {
-    v41 = [(FTQssMessage *)self container_messageAsFTBlazarTextToSpeechRouterStreamingMessage];
-    v42 = [v41 addObjectToBuffer:a3];
+    container_messageAsFTBlazarTextToSpeechRouterStreamingMessage = [(FTQssMessage *)self container_messageAsFTBlazarTextToSpeechRouterStreamingMessage];
+    v42 = [container_messageAsFTBlazarTextToSpeechRouterStreamingMessage addObjectToBuffer:buffer];
 
     v78 = v42;
   }
@@ -1393,8 +1393,8 @@ LABEL_16:
 
   if ([(FTQssMessage *)self container_message_type]== 16)
   {
-    v43 = [(FTQssMessage *)self container_messageAsFTBlazarServiceDiscoveryMessage];
-    v44 = [v43 addObjectToBuffer:a3];
+    container_messageAsFTBlazarServiceDiscoveryMessage = [(FTQssMessage *)self container_messageAsFTBlazarServiceDiscoveryMessage];
+    v44 = [container_messageAsFTBlazarServiceDiscoveryMessage addObjectToBuffer:buffer];
 
     v77 = v44;
   }
@@ -1406,8 +1406,8 @@ LABEL_16:
 
   if ([(FTQssMessage *)self container_message_type]== 17)
   {
-    v45 = [(FTQssMessage *)self container_messageAsFTLmtLmScorerMessage];
-    v46 = [v45 addObjectToBuffer:a3];
+    container_messageAsFTLmtLmScorerMessage = [(FTQssMessage *)self container_messageAsFTLmtLmScorerMessage];
+    v46 = [container_messageAsFTLmtLmScorerMessage addObjectToBuffer:buffer];
 
     v76 = v46;
   }
@@ -1419,8 +1419,8 @@ LABEL_16:
 
   if ([(FTQssMessage *)self container_message_type]== 18)
   {
-    v47 = [(FTQssMessage *)self container_messageAsFTNapgCreateLanguageProfileMessage];
-    v48 = [v47 addObjectToBuffer:a3];
+    container_messageAsFTNapgCreateLanguageProfileMessage = [(FTQssMessage *)self container_messageAsFTNapgCreateLanguageProfileMessage];
+    v48 = [container_messageAsFTNapgCreateLanguageProfileMessage addObjectToBuffer:buffer];
 
     v75 = v48;
   }
@@ -1432,8 +1432,8 @@ LABEL_16:
 
   if ([(FTQssMessage *)self container_message_type]== 19)
   {
-    v49 = [(FTQssMessage *)self container_messageAsFTMtTranslationMessage];
-    v50 = [v49 addObjectToBuffer:a3];
+    container_messageAsFTMtTranslationMessage = [(FTQssMessage *)self container_messageAsFTMtTranslationMessage];
+    v50 = [container_messageAsFTMtTranslationMessage addObjectToBuffer:buffer];
 
     v74 = v50;
   }
@@ -1445,8 +1445,8 @@ LABEL_16:
 
   if ([(FTQssMessage *)self container_message_type]== 20)
   {
-    v51 = [(FTQssMessage *)self container_messageAsFTTtsTextToSpeechMessage];
-    v52 = [v51 addObjectToBuffer:a3];
+    container_messageAsFTTtsTextToSpeechMessage = [(FTQssMessage *)self container_messageAsFTTtsTextToSpeechMessage];
+    v52 = [container_messageAsFTTtsTextToSpeechMessage addObjectToBuffer:buffer];
 
     v73 = v52;
   }
@@ -1458,8 +1458,8 @@ LABEL_16:
 
   if ([(FTQssMessage *)self container_message_type]== 21)
   {
-    v53 = [(FTQssMessage *)self container_messageAsFTTtsTextToSpeechStreamingMessage];
-    v54 = [v53 addObjectToBuffer:a3];
+    container_messageAsFTTtsTextToSpeechStreamingMessage = [(FTQssMessage *)self container_messageAsFTTtsTextToSpeechStreamingMessage];
+    v54 = [container_messageAsFTTtsTextToSpeechStreamingMessage addObjectToBuffer:buffer];
 
     v72 = v54;
   }
@@ -1471,8 +1471,8 @@ LABEL_16:
 
   if ([(FTQssMessage *)self container_message_type]== 22)
   {
-    v55 = [(FTQssMessage *)self container_messageAsFTTtsTextToSpeechSpeechFeatureMessage];
-    v56 = [v55 addObjectToBuffer:a3];
+    container_messageAsFTTtsTextToSpeechSpeechFeatureMessage = [(FTQssMessage *)self container_messageAsFTTtsTextToSpeechSpeechFeatureMessage];
+    v56 = [container_messageAsFTTtsTextToSpeechSpeechFeatureMessage addObjectToBuffer:buffer];
 
     v71 = v56;
   }
@@ -1484,8 +1484,8 @@ LABEL_16:
 
   if ([(FTQssMessage *)self container_message_type]== 23)
   {
-    v57 = [(FTQssMessage *)self container_messageAsFTNlShortcutFuzzyMatchMessage];
-    v58 = [v57 addObjectToBuffer:a3];
+    container_messageAsFTNlShortcutFuzzyMatchMessage = [(FTQssMessage *)self container_messageAsFTNlShortcutFuzzyMatchMessage];
+    v58 = [container_messageAsFTNlShortcutFuzzyMatchMessage addObjectToBuffer:buffer];
 
     v69 = v58;
   }
@@ -1499,8 +1499,8 @@ LABEL_16:
   if ([(FTQssMessage *)self container_message_type]== 24)
   {
     v59 = v6;
-    v60 = [(FTQssMessage *)self container_messageAsFTSlsLanguageDetectionMessage];
-    v61 = [v60 addObjectToBuffer:a3];
+    container_messageAsFTSlsLanguageDetectionMessage = [(FTQssMessage *)self container_messageAsFTSlsLanguageDetectionMessage];
+    v61 = [container_messageAsFTSlsLanguageDetectionMessage addObjectToBuffer:buffer];
     v62 = v12;
     v63 = v8;
     v64 = v59;
@@ -1516,134 +1516,134 @@ LABEL_16:
     v65 = 0;
   }
 
-  *(a3 + 70) = 1;
-  v66 = *(a3 + 6);
-  v67 = *(a3 + 4);
-  v90 = *(a3 + 5);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 4, v64);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v63);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(a3, 8, v9, 0);
+  *(buffer + 70) = 1;
+  v66 = *(buffer + 6);
+  v67 = *(buffer + 4);
+  v90 = *(buffer + 5);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 4, v64);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v63);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(buffer, 8, container_message_type, 0);
   if ([(FTQssMessage *)self container_message_type]== 1)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v62);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v62);
   }
 
   if ([(FTQssMessage *)self container_message_type]== 2)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v15);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v15);
   }
 
   if ([(FTQssMessage *)self container_message_type]== 3)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v70);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v70);
   }
 
   if ([(FTQssMessage *)self container_message_type]== 4)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v89);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v89);
   }
 
   if ([(FTQssMessage *)self container_message_type]== 5)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v88);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v88);
   }
 
   if ([(FTQssMessage *)self container_message_type]== 6)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v87);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v87);
   }
 
   if ([(FTQssMessage *)self container_message_type]== 7)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v86);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v86);
   }
 
   if ([(FTQssMessage *)self container_message_type]== 8)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v85);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v85);
   }
 
   if ([(FTQssMessage *)self container_message_type]== 9)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v84);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v84);
   }
 
   if ([(FTQssMessage *)self container_message_type]== 10)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v83);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v83);
   }
 
   if ([(FTQssMessage *)self container_message_type]== 11)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v82);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v82);
   }
 
   if ([(FTQssMessage *)self container_message_type]== 12)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v81);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v81);
   }
 
   if ([(FTQssMessage *)self container_message_type]== 13)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v80);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v80);
   }
 
   if ([(FTQssMessage *)self container_message_type]== 14)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v79);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v79);
   }
 
   if ([(FTQssMessage *)self container_message_type]== 15)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v78);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v78);
   }
 
   if ([(FTQssMessage *)self container_message_type]== 16)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v77);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v77);
   }
 
   if ([(FTQssMessage *)self container_message_type]== 17)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v76);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v76);
   }
 
   if ([(FTQssMessage *)self container_message_type]== 18)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v75);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v75);
   }
 
   if ([(FTQssMessage *)self container_message_type]== 19)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v74);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v74);
   }
 
   if ([(FTQssMessage *)self container_message_type]== 20)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v73);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v73);
   }
 
   if ([(FTQssMessage *)self container_message_type]== 21)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v72);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v72);
   }
 
   if ([(FTQssMessage *)self container_message_type]== 22)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v71);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v71);
   }
 
   if ([(FTQssMessage *)self container_message_type]== 23)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v69);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v69);
   }
 
   if ([(FTQssMessage *)self container_message_type]== 24)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v65);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v65);
   }
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v67 - v66 + v90);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v67 - v66 + v90);
 }
 
 - (id)flatbuffData

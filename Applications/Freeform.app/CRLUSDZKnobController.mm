@@ -1,14 +1,14 @@
 @interface CRLUSDZKnobController
 - (_TtC8Freeform21CRLUSDZKnobController)init;
-- (void)hideWithImmediately:(BOOL)a3;
+- (void)hideWithImmediately:(BOOL)immediately;
 @end
 
 @implementation CRLUSDZKnobController
 
-- (void)hideWithImmediately:(BOOL)a3
+- (void)hideWithImmediately:(BOOL)immediately
 {
-  v4 = self;
-  sub_100F97F98(a3);
+  selfCopy = self;
+  sub_100F97F98(immediately);
 }
 
 - (_TtC8Freeform21CRLUSDZKnobController)init

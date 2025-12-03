@@ -1,21 +1,21 @@
 @interface TSUBufferedReadChannelHelper
 - (TSUBufferedReadChannelHelper)init;
-- (TSUBufferedReadChannelHelper)initWithBufferedReadChannel:(id)a3;
-- (void)readWithHandler:(id)a3;
-- (void)readWithHandlerAndWait:(id)a3;
+- (TSUBufferedReadChannelHelper)initWithBufferedReadChannel:(id)channel;
+- (void)readWithHandler:(id)handler;
+- (void)readWithHandlerAndWait:(id)wait;
 @end
 
 @implementation TSUBufferedReadChannelHelper
 
-- (TSUBufferedReadChannelHelper)initWithBufferedReadChannel:(id)a3
+- (TSUBufferedReadChannelHelper)initWithBufferedReadChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   v9.receiver = self;
   v9.super_class = TSUBufferedReadChannelHelper;
   v5 = [(TSUBufferedReadChannelHelper *)&v9 init];
   if (v5)
   {
-    if (!v4)
+    if (!channelCopy)
     {
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUBufferedReadChannelHelper initWithBufferedReadChannel:]"];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUBufferedReadChannel.m"];
@@ -24,7 +24,7 @@
       +[TSUAssertionHandler logBacktraceThrottled];
     }
 
-    objc_storeWeak(&v5->_bufferedReadChannel, v4);
+    objc_storeWeak(&v5->_bufferedReadChannel, channelCopy);
   }
 
   return v5;
@@ -46,16 +46,16 @@
   objc_exception_throw(v7);
 }
 
-- (void)readWithHandler:(id)a3
+- (void)readWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_bufferedReadChannel);
-  [WeakRetained setStreamReadChannelSourceHandler:v4];
+  [WeakRetained setStreamReadChannelSourceHandler:handlerCopy];
 }
 
-- (void)readWithHandlerAndWait:(id)a3
+- (void)readWithHandlerAndWait:(id)wait
 {
-  v3 = a3;
+  waitCopy = wait;
   TSUSetCrashReporterInfo("Fatal Assertion failure: %{public}s %{public}s:%d TSUBufferedReadChannel should not call readWithHandlerAndWait on TSUBufferedReadChannelHelper", v4, v5, v6, v7, v8, v9, v10, "[TSUBufferedReadChannelHelper readWithHandlerAndWait:]");
   v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUBufferedReadChannelHelper readWithHandlerAndWait:]"];
   v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUBufferedReadChannel.m"];

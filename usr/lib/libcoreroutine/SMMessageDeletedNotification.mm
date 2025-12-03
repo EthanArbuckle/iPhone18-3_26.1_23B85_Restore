@@ -1,6 +1,6 @@
 @interface SMMessageDeletedNotification
 - (SMMessageDeletedNotification)init;
-- (SMMessageDeletedNotification)initWithMessage:(id)a3;
+- (SMMessageDeletedNotification)initWithMessage:(id)message;
 @end
 
 @implementation SMMessageDeletedNotification
@@ -21,10 +21,10 @@
   return 0;
 }
 
-- (SMMessageDeletedNotification)initWithMessage:(id)a3
+- (SMMessageDeletedNotification)initWithMessage:(id)message
 {
-  v5 = a3;
-  if (v5)
+  messageCopy = message;
+  if (messageCopy)
   {
     v11.receiver = self;
     v11.super_class = SMMessageDeletedNotification;
@@ -32,11 +32,11 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_message, a3);
+      objc_storeStrong(&v6->_message, message);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -48,10 +48,10 @@
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: message", buf, 2u);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

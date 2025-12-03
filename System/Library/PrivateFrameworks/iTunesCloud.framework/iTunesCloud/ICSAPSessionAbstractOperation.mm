@@ -1,18 +1,18 @@
 @interface ICSAPSessionAbstractOperation
 - (void)execute;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 @end
 
 @implementation ICSAPSessionAbstractOperation
 
 - (void)execute
 {
-  v3 = [(ICSAPSession *)self->_sapSession _prepareFairPlayContextOperationQueue];
-  if (v3)
+  _prepareFairPlayContextOperationQueue = [(ICSAPSession *)self->_sapSession _prepareFairPlayContextOperationQueue];
+  if (_prepareFairPlayContextOperationQueue)
   {
     v4 = objc_alloc_init(ICSAPSessionPrepareFairPlayContextOperation);
-    v5 = [(ICSAPSessionAbstractOperation *)self sapSession];
-    [(ICSAPSessionPrepareFairPlayContextOperation *)v4 setSapSession:v5];
+    sapSession = [(ICSAPSessionAbstractOperation *)self sapSession];
+    [(ICSAPSessionPrepareFairPlayContextOperation *)v4 setSapSession:sapSession];
 
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -20,7 +20,7 @@
     v6[3] = &unk_1E7BF7238;
     v6[4] = self;
     [(ICSAPSessionPrepareFairPlayContextOperation *)v4 setResponseHandler:v6];
-    [v3 addOperation:v4];
+    [_prepareFairPlayContextOperationQueue addOperation:v4];
   }
 
   else
@@ -53,20 +53,20 @@ void __40__ICSAPSessionAbstractOperation_execute__block_invoke(uint64_t a1, void
   }
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v5 isEqualToString:@"ICFairPlayError"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:@"ICFairPlayError"];
 
-  if (v6 && [v4 code] == -42186)
+  if (v6 && [errorCopy code] == -42186)
   {
     v7 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v10 = v4;
+      v10 = errorCopy;
       _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "Invalidating SAP context for error %@", buf, 0xCu);
     }
 
@@ -75,7 +75,7 @@ void __40__ICSAPSessionAbstractOperation_execute__block_invoke(uint64_t a1, void
 
   v8.receiver = self;
   v8.super_class = ICSAPSessionAbstractOperation;
-  [(ICAsyncOperation *)&v8 finishWithError:v4];
+  [(ICAsyncOperation *)&v8 finishWithError:errorCopy];
 }
 
 @end

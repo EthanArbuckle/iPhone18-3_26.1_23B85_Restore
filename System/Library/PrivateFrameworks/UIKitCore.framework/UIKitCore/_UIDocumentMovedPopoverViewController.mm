@@ -1,22 +1,22 @@
 @interface _UIDocumentMovedPopoverViewController
-- (_UIDocumentMovedPopoverViewController)initWithFileURL:(id)a3;
+- (_UIDocumentMovedPopoverViewController)initWithFileURL:(id)l;
 - (void)_updateContentSize;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)viewDidLoad;
 @end
 
 @implementation _UIDocumentMovedPopoverViewController
 
-- (_UIDocumentMovedPopoverViewController)initWithFileURL:(id)a3
+- (_UIDocumentMovedPopoverViewController)initWithFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = _UIDocumentMovedPopoverViewController;
   v5 = [(UIViewController *)&v8 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(_UIDocumentMovedPopoverViewController *)v5 setFileURL:v4];
+    [(_UIDocumentMovedPopoverViewController *)v5 setFileURL:lCopy];
     [(UIViewController *)v6 setPreferredContentSize:320.0, 44.0];
   }
 
@@ -48,8 +48,8 @@
   v3 = v2;
   _Block_object_dispose(&v66, 8);
   v4 = [v2 alloc];
-  v5 = [(_UIDocumentMovedPopoverViewController *)self fileURL];
-  v60 = [v4 initWithMetadataLoadedFromURL:v5];
+  fileURL = [(_UIDocumentMovedPopoverViewController *)self fileURL];
+  v60 = [v4 initWithMetadataLoadedFromURL:fileURL];
 
   [v60 setDelegate:self];
   [v60 _setDisableTapGesture:1];
@@ -58,27 +58,27 @@
   [v60 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(_UIDocumentMovedPopoverViewController *)self setLinkView:v60];
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [MEMORY[0x1E696AAE8] mainBundle];
-  v8 = [v7 localizedStringForKey:@"Saved to %@" value:&stru_1EFB14550 table:0];
-  v9 = [UIApp _localizedApplicationName];
-  v55 = [v6 stringWithFormat:v8, v9];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v8 = [mainBundle localizedStringForKey:@"Saved to %@" value:&stru_1EFB14550 table:0];
+  _localizedApplicationName = [UIApp _localizedApplicationName];
+  v55 = [v6 stringWithFormat:v8, _localizedApplicationName];
 
   v10 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v55];
   [v60 _setOverrideSubtitle:v10];
 
-  v11 = [(UIViewController *)self view];
-  [v11 addSubview:v60];
+  view = [(UIViewController *)self view];
+  [view addSubview:v60];
 
   v12 = MEMORY[0x1E696AF20];
-  v13 = [(_UIDocumentMovedPopoverViewController *)self fileURL];
-  v57 = [v12 componentsWithURL:v13 resolvingAgainstBaseURL:0];
+  fileURL2 = [(_UIDocumentMovedPopoverViewController *)self fileURL];
+  v57 = [v12 componentsWithURL:fileURL2 resolvingAgainstBaseURL:0];
 
   [v57 setScheme:@"shareddocuments"];
-  v14 = [v57 queryItems];
-  v15 = v14;
-  if (v14)
+  queryItems = [v57 queryItems];
+  v15 = queryItems;
+  if (queryItems)
   {
-    v16 = v14;
+    v16 = queryItems;
   }
 
   else
@@ -109,43 +109,43 @@
   v58 = [UIButton buttonWithConfiguration:v56 primaryAction:v21];
 
   [v58 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v22 = [(UIViewController *)self view];
-  [v22 addSubview:v58];
+  view2 = [(UIViewController *)self view];
+  [view2 addSubview:v58];
 
   v34 = MEMORY[0x1E69977A0];
-  v53 = [(UIViewController *)self view];
-  v52 = [v53 layoutMarginsGuide];
-  v51 = [v52 leadingAnchor];
-  v50 = [v60 leadingAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50];
+  view3 = [(UIViewController *)self view];
+  layoutMarginsGuide = [view3 layoutMarginsGuide];
+  leadingAnchor = [layoutMarginsGuide leadingAnchor];
+  leadingAnchor2 = [v60 leadingAnchor];
+  v49 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v70[0] = v49;
-  v48 = [(UIViewController *)self view];
-  v47 = [v48 layoutMarginsGuide];
-  v46 = [v47 bottomAnchor];
-  v45 = [v60 bottomAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45];
+  view4 = [(UIViewController *)self view];
+  layoutMarginsGuide2 = [view4 layoutMarginsGuide];
+  bottomAnchor = [layoutMarginsGuide2 bottomAnchor];
+  bottomAnchor2 = [v60 bottomAnchor];
+  v44 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v70[1] = v44;
-  v43 = [(UIViewController *)self view];
-  v42 = [v43 layoutMarginsGuide];
-  v41 = [v42 topAnchor];
-  v40 = [v60 topAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  view5 = [(UIViewController *)self view];
+  layoutMarginsGuide3 = [view5 layoutMarginsGuide];
+  topAnchor = [layoutMarginsGuide3 topAnchor];
+  topAnchor2 = [v60 topAnchor];
+  v39 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v70[2] = v39;
-  v38 = [(UIViewController *)self view];
-  v37 = [v38 layoutMarginsGuide];
-  v36 = [v37 centerYAnchor];
-  v35 = [v58 centerYAnchor];
-  v23 = [v36 constraintEqualToAnchor:v35];
+  view6 = [(UIViewController *)self view];
+  layoutMarginsGuide4 = [view6 layoutMarginsGuide];
+  centerYAnchor = [layoutMarginsGuide4 centerYAnchor];
+  centerYAnchor2 = [v58 centerYAnchor];
+  v23 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v70[3] = v23;
-  v24 = [(UIViewController *)self view];
-  v25 = [v24 layoutMarginsGuide];
-  v26 = [v25 trailingAnchor];
-  v27 = [v58 trailingAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  view7 = [(UIViewController *)self view];
+  layoutMarginsGuide5 = [view7 layoutMarginsGuide];
+  trailingAnchor = [layoutMarginsGuide5 trailingAnchor];
+  trailingAnchor2 = [v58 trailingAnchor];
+  v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v70[4] = v28;
-  v29 = [v58 leadingAnchor];
-  v30 = [v60 trailingAnchor];
-  v31 = [v29 constraintEqualToSystemSpacingAfterAnchor:v30 multiplier:1.0];
+  leadingAnchor3 = [v58 leadingAnchor];
+  trailingAnchor3 = [v60 trailingAnchor];
+  v31 = [leadingAnchor3 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor3 multiplier:1.0];
   v70[5] = v31;
   v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:6];
   [v34 activateConstraints:v32];
@@ -156,32 +156,32 @@
   objc_destroyWeak(location);
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v11.receiver = self;
   v11.super_class = _UIDocumentMovedPopoverViewController;
   [(UIViewController *)&v11 didMoveToParentViewController:?];
-  if (a3)
+  if (controller)
   {
-    v6 = [(UIViewController *)self popoverPresentationController];
-    v7 = [v6 delegate];
+    popoverPresentationController = [(UIViewController *)self popoverPresentationController];
+    delegate = [popoverPresentationController delegate];
 
-    if (v7 != self)
+    if (delegate != self)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
-      [v8 handleFailureInMethod:a2 object:self file:@"_UIDocumentMovedPopoverViewController.m" lineNumber:90 description:{@"%@ needs to be presented as a popover and the presentation controller's delegate needs to be the view controller itself.", v10}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDocumentMovedPopoverViewController.m" lineNumber:90 description:{@"%@ needs to be presented as a popover and the presentation controller's delegate needs to be the view controller itself.", v10}];
     }
   }
 }
 
 - (void)_updateContentSize
 {
-  v3 = [(UIViewController *)self view];
+  view = [(UIViewController *)self view];
   LODWORD(v4) = 1144750080;
   LODWORD(v5) = 1112014848;
-  [v3 systemLayoutSizeFittingSize:320.0 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v4, v5}];
+  [view systemLayoutSizeFittingSize:320.0 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v4, v5}];
   v7 = v6;
   v9 = v8;
 

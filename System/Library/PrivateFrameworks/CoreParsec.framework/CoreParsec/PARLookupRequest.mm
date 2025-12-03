@@ -1,7 +1,7 @@
 @interface PARLookupRequest
 - (Class)responseClass;
-- (PARLookupRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PARLookupRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PARLookupRequest
@@ -21,32 +21,32 @@
   return v5;
 }
 
-- (PARLookupRequest)initWithCoder:(id)a3
+- (PARLookupRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PARLookupRequest;
-  v5 = [(PARRequest *)&v17 initWithCoder:v4];
+  v5 = [(PARRequest *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"query"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"query"];
     queryString = v5->_queryString;
     v5->_queryString = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"queryContext"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"queryContext"];
     queryContext = v5->_queryContext;
     v5->_queryContext = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lookupDomain"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lookupDomain"];
     domain = v5->_domain;
     v5->_domain = v10;
 
-    v5->_lookupSelectionType = [v4 decodeIntegerForKey:@"lookupSelectionType"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appBundleId"];
+    v5->_lookupSelectionType = [coderCopy decodeIntegerForKey:@"lookupSelectionType"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appBundleId"];
     appBundleId = v5->_appBundleId;
     v5->_appBundleId = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preferredLanguage"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preferredLanguage"];
     preferredLanguage = v5->_preferredLanguage;
     v5->_preferredLanguage = v14;
   }
@@ -54,18 +54,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PARLookupRequest;
-  v4 = a3;
-  [(PARRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_queryString forKey:{@"query", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_queryContext forKey:@"queryContext"];
-  [v4 encodeObject:self->_domain forKey:@"lookupDomain"];
-  [v4 encodeInteger:self->_lookupSelectionType forKey:@"lookupSelectionType"];
-  [v4 encodeObject:self->_appBundleId forKey:@"appBundleId"];
-  [v4 encodeObject:self->_preferredLanguage forKey:@"preferredLanguage"];
+  coderCopy = coder;
+  [(PARRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_queryString forKey:{@"query", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_queryContext forKey:@"queryContext"];
+  [coderCopy encodeObject:self->_domain forKey:@"lookupDomain"];
+  [coderCopy encodeInteger:self->_lookupSelectionType forKey:@"lookupSelectionType"];
+  [coderCopy encodeObject:self->_appBundleId forKey:@"appBundleId"];
+  [coderCopy encodeObject:self->_preferredLanguage forKey:@"preferredLanguage"];
 }
 
 @end

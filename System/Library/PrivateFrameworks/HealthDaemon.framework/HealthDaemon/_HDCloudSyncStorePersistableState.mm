@@ -1,62 +1,62 @@
 @interface _HDCloudSyncStorePersistableState
-- (_HDCloudSyncStorePersistableState)initWithServerChangeToken:(id)a3 baselineEpoch:(unint64_t)a4 rebaseDeadline:(id)a5 lastSyncDate:(id)a6 emptyZones:(id)a7 lastCheckDate:(id)a8 ownerIdentifier:(id)a9 containerIdentifier:(id)a10 syncIdentity:(id)a11 syncProtocolVersion:(int)a12;
-- (_HDCloudSyncStorePersistableState)stateWithEmptyZones:(id)a3;
-- (_HDCloudSyncStorePersistableState)stateWithGapEncountered:(BOOL)a3;
-- (_HDCloudSyncStorePersistableState)stateWithPendingFullSync:(BOOL)a3;
-- (_HDCloudSyncStorePersistableState)stateWithServerChangeToken:(id)a3;
-- (_HDCloudSyncStorePersistableState)stateWithSyncProtocolVersion:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)stateByRecordingLastCheckDate:(id)a3;
-- (id)stateByRecordingLastSyncDate:(id)a3;
+- (_HDCloudSyncStorePersistableState)initWithServerChangeToken:(id)token baselineEpoch:(unint64_t)epoch rebaseDeadline:(id)deadline lastSyncDate:(id)date emptyZones:(id)zones lastCheckDate:(id)checkDate ownerIdentifier:(id)identifier containerIdentifier:(id)self0 syncIdentity:(id)self1 syncProtocolVersion:(int)self2;
+- (_HDCloudSyncStorePersistableState)stateWithEmptyZones:(id)zones;
+- (_HDCloudSyncStorePersistableState)stateWithGapEncountered:(BOOL)encountered;
+- (_HDCloudSyncStorePersistableState)stateWithPendingFullSync:(BOOL)sync;
+- (_HDCloudSyncStorePersistableState)stateWithServerChangeToken:(id)token;
+- (_HDCloudSyncStorePersistableState)stateWithSyncProtocolVersion:(int)version;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)stateByRecordingLastCheckDate:(id)date;
+- (id)stateByRecordingLastSyncDate:(id)date;
 - (id)stateByResettingRebaselineDeadline;
 @end
 
 @implementation _HDCloudSyncStorePersistableState
 
-- (_HDCloudSyncStorePersistableState)initWithServerChangeToken:(id)a3 baselineEpoch:(unint64_t)a4 rebaseDeadline:(id)a5 lastSyncDate:(id)a6 emptyZones:(id)a7 lastCheckDate:(id)a8 ownerIdentifier:(id)a9 containerIdentifier:(id)a10 syncIdentity:(id)a11 syncProtocolVersion:(int)a12
+- (_HDCloudSyncStorePersistableState)initWithServerChangeToken:(id)token baselineEpoch:(unint64_t)epoch rebaseDeadline:(id)deadline lastSyncDate:(id)date emptyZones:(id)zones lastCheckDate:(id)checkDate ownerIdentifier:(id)identifier containerIdentifier:(id)self0 syncIdentity:(id)self1 syncProtocolVersion:(int)self2
 {
-  v35 = a3;
-  v34 = a5;
-  v33 = a6;
-  v32 = a7;
-  v31 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
+  tokenCopy = token;
+  deadlineCopy = deadline;
+  dateCopy = date;
+  zonesCopy = zones;
+  checkDateCopy = checkDate;
+  identifierCopy = identifier;
+  containerIdentifierCopy = containerIdentifier;
+  identityCopy = identity;
   v36.receiver = self;
   v36.super_class = _HDCloudSyncStorePersistableState;
   v22 = [(_HDCloudSyncStorePersistableState *)&v36 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_serverChangeToken, a3);
-    v23->_baselineEpoch = a4;
-    objc_storeStrong(&v23->_rebaseDeadline, a5);
-    objc_storeStrong(&v23->_lastSyncDate, a6);
-    objc_storeStrong(&v23->_emptyZoneDateByZoneID, a7);
-    objc_storeStrong(&v23->_lastCheckDate, a8);
-    v24 = [v19 copy];
+    objc_storeStrong(&v22->_serverChangeToken, token);
+    v23->_baselineEpoch = epoch;
+    objc_storeStrong(&v23->_rebaseDeadline, deadline);
+    objc_storeStrong(&v23->_lastSyncDate, date);
+    objc_storeStrong(&v23->_emptyZoneDateByZoneID, zones);
+    objc_storeStrong(&v23->_lastCheckDate, checkDate);
+    v24 = [identifierCopy copy];
     ownerIdentifier = v23->_ownerIdentifier;
     v23->_ownerIdentifier = v24;
 
-    v26 = [v20 copy];
+    v26 = [containerIdentifierCopy copy];
     containerIdentifier = v23->_containerIdentifier;
     v23->_containerIdentifier = v26;
 
-    v28 = [v21 copy];
+    v28 = [identityCopy copy];
     syncIdentity = v23->_syncIdentity;
     v23->_syncIdentity = v28;
 
     *&v23->_hasEncounteredGapInCurrentEpoch = 0;
-    v23->_syncProtocolVersion = a12;
+    v23->_syncProtocolVersion = version;
   }
 
   return v23;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   LODWORD(v6) = self->_syncProtocolVersion;
   result = [v4 initWithServerChangeToken:self->_serverChangeToken baselineEpoch:self->_baselineEpoch rebaseDeadline:self->_rebaseDeadline lastSyncDate:self->_lastSyncDate emptyZones:self->_emptyZoneDateByZoneID lastCheckDate:self->_lastCheckDate ownerIdentifier:self->_ownerIdentifier containerIdentifier:self->_containerIdentifier syncIdentity:self->_syncIdentity syncProtocolVersion:v6];
   *(result + 8) = self->_hasEncounteredGapInCurrentEpoch;
@@ -64,12 +64,12 @@
   return result;
 }
 
-- (_HDCloudSyncStorePersistableState)stateWithServerChangeToken:(id)a3
+- (_HDCloudSyncStorePersistableState)stateWithServerChangeToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = [(_HDCloudSyncStorePersistableState *)self copy];
   v6 = v5[5];
-  v5[5] = v4;
+  v5[5] = tokenCopy;
 
   return v5;
 }
@@ -83,11 +83,11 @@
   return v2;
 }
 
-- (id)stateByRecordingLastSyncDate:(id)a3
+- (id)stateByRecordingLastSyncDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [(_HDCloudSyncStorePersistableState *)self copy];
-  v6 = [v4 copy];
+  v6 = [dateCopy copy];
 
   v7 = v5[8];
   v5[8] = v6;
@@ -95,11 +95,11 @@
   return v5;
 }
 
-- (_HDCloudSyncStorePersistableState)stateWithEmptyZones:(id)a3
+- (_HDCloudSyncStorePersistableState)stateWithEmptyZones:(id)zones
 {
-  v4 = a3;
+  zonesCopy = zones;
   v5 = [(_HDCloudSyncStorePersistableState *)self copy];
-  v6 = [v4 copy];
+  v6 = [zonesCopy copy];
 
   v7 = v5[9];
   v5[9] = v6;
@@ -107,11 +107,11 @@
   return v5;
 }
 
-- (id)stateByRecordingLastCheckDate:(id)a3
+- (id)stateByRecordingLastCheckDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [(_HDCloudSyncStorePersistableState *)self copy];
-  v6 = [v4 copy];
+  v6 = [dateCopy copy];
 
   v7 = v5[10];
   v5[10] = v6;
@@ -119,26 +119,26 @@
   return v5;
 }
 
-- (_HDCloudSyncStorePersistableState)stateWithGapEncountered:(BOOL)a3
+- (_HDCloudSyncStorePersistableState)stateWithGapEncountered:(BOOL)encountered
 {
   v4 = [(_HDCloudSyncStorePersistableState *)self copy];
-  v4[8] = a3;
+  v4[8] = encountered;
 
   return v4;
 }
 
-- (_HDCloudSyncStorePersistableState)stateWithSyncProtocolVersion:(int)a3
+- (_HDCloudSyncStorePersistableState)stateWithSyncProtocolVersion:(int)version
 {
   v4 = [(_HDCloudSyncStorePersistableState *)self copy];
-  v4[3] = a3;
+  v4[3] = version;
 
   return v4;
 }
 
-- (_HDCloudSyncStorePersistableState)stateWithPendingFullSync:(BOOL)a3
+- (_HDCloudSyncStorePersistableState)stateWithPendingFullSync:(BOOL)sync
 {
   v4 = [(_HDCloudSyncStorePersistableState *)self copy];
-  v4[9] = a3;
+  v4[9] = sync;
 
   return v4;
 }

@@ -1,13 +1,13 @@
 @interface NTKCPhotoListCell
 + (id)reuseIdentifier;
 - (CGRect)crop;
-- (NTKCPhotoListCell)initWithFrame:(CGRect)a3;
+- (NTKCPhotoListCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setCrop:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setPhoto:(id)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setCrop:(CGRect)crop;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setPhoto:(id)photo;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation NTKCPhotoListCell
@@ -19,11 +19,11 @@
   return NSStringFromClass(v2);
 }
 
-- (NTKCPhotoListCell)initWithFrame:(CGRect)a3
+- (NTKCPhotoListCell)initWithFrame:(CGRect)frame
 {
   v22.receiver = self;
   v22.super_class = NTKCPhotoListCell;
-  v3 = [(NTKCPhotoListCell *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKCPhotoListCell *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -44,8 +44,8 @@
     v3->_selectionOverlayView = v9;
 
     [(UIView *)v3->_selectionOverlayView setUserInteractionEnabled:0];
-    v11 = [MEMORY[0x277D75348] labelColor];
-    v12 = [v11 colorWithAlphaComponent:0.25];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    v12 = [labelColor colorWithAlphaComponent:0.25];
     [(UIView *)v3->_selectionOverlayView setBackgroundColor:v12];
 
     [(NTKCPhotoListCell *)v3 addSubview:v3->_selectionOverlayView];
@@ -63,8 +63,8 @@
     v3->_highlightOverlayView = v17;
 
     [(UIView *)v3->_highlightOverlayView setUserInteractionEnabled:0];
-    v19 = [MEMORY[0x277D75348] systemBackgroundColor];
-    v20 = [v19 colorWithAlphaComponent:0.5];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    v20 = [systemBackgroundColor colorWithAlphaComponent:0.5];
     [(UIView *)v3->_highlightOverlayView setBackgroundColor:v20];
 
     [(NTKCPhotoListCell *)v3 addSubview:v3->_highlightOverlayView];
@@ -88,9 +88,9 @@
   v11 = 1.0;
   if (!CGRectIsEmpty(self->_crop))
   {
-    v12 = [(UIImageView *)self->_contentImageView image];
+    image = [(UIImageView *)self->_contentImageView image];
 
-    if (v12)
+    if (image)
     {
       width = self->_crop.size.width;
       height = self->_crop.size.height;
@@ -165,35 +165,35 @@
   [(UIImageView *)self->_selectionBadge setFrame:v29, MaxY - CGRectGetHeight(v41), v25, v27];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if ([(NTKCPhotoListCell *)self isHighlighted]!= a3)
+  highlightedCopy = highlighted;
+  if ([(NTKCPhotoListCell *)self isHighlighted]!= highlighted)
   {
     v5.receiver = self;
     v5.super_class = NTKCPhotoListCell;
-    [(NTKCPhotoListCell *)&v5 setHighlighted:v3];
-    [(UIView *)self->_highlightOverlayView setHidden:v3 ^ 1];
+    [(NTKCPhotoListCell *)&v5 setHighlighted:highlightedCopy];
+    [(UIView *)self->_highlightOverlayView setHidden:highlightedCopy ^ 1];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  if ([(NTKCPhotoListCell *)self isSelected]!= a3)
+  selectedCopy = selected;
+  if ([(NTKCPhotoListCell *)self isSelected]!= selected)
   {
     v5.receiver = self;
     v5.super_class = NTKCPhotoListCell;
-    [(NTKCPhotoListCell *)&v5 setSelected:v3];
-    [(UIView *)self->_selectionOverlayView setHidden:v3 ^ 1];
+    [(NTKCPhotoListCell *)&v5 setSelected:selectedCopy];
+    [(UIView *)self->_selectionOverlayView setHidden:selectedCopy ^ 1];
   }
 }
 
-- (void)setPhoto:(id)a3
+- (void)setPhoto:(id)photo
 {
-  v4 = a3;
-  v5 = [(UIImageView *)self->_contentImageView image];
-  v6 = [v5 isEqual:v4];
+  photoCopy = photo;
+  image = [(UIImageView *)self->_contentImageView image];
+  v6 = [image isEqual:photoCopy];
 
   if ((v6 & 1) == 0)
   {
@@ -203,20 +203,20 @@
     v9[1] = v8;
     v9[2] = *(MEMORY[0x277CBF2C0] + 32);
     [(UIImageView *)contentImageView setTransform:v9];
-    [(UIImageView *)self->_contentImageView setImage:v4];
+    [(UIImageView *)self->_contentImageView setImage:photoCopy];
     [(UIImageView *)self->_contentImageView sizeToFit];
     [(NTKCPhotoListCell *)self setNeedsLayout];
   }
 }
 
-- (void)setCrop:(CGRect)a3
+- (void)setCrop:(CGRect)crop
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
   p_crop = &self->_crop;
-  if (!CGRectEqualToRect(a3, self->_crop))
+  if (!CGRectEqualToRect(crop, self->_crop))
   {
     p_crop->origin.x = x;
     p_crop->origin.y = y;

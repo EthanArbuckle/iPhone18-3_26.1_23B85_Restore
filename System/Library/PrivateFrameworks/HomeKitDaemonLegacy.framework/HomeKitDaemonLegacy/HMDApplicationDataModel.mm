@@ -1,5 +1,5 @@
 @interface HMDApplicationDataModel
-+ (id)modelWithAppDataPayload:(id)a3 existingAppData:(id)a4 parentUUID:(id)a5;
++ (id)modelWithAppDataPayload:(id)payload existingAppData:(id)data parentUUID:(id)d;
 + (id)properties;
 @end
 
@@ -30,24 +30,24 @@ void __37__HMDApplicationDataModel_properties__block_invoke()
   v3 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)modelWithAppDataPayload:(id)a3 existingAppData:(id)a4 parentUUID:(id)a5
++ (id)modelWithAppDataPayload:(id)payload existingAppData:(id)data parentUUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 count])
+  payloadCopy = payload;
+  dataCopy = data;
+  dCopy = d;
+  if ([payloadCopy count])
   {
-    if (!v8)
+    if (!dataCopy)
     {
-      v10 = [[HMDApplicationData alloc] initWithParentUUID:v9];
-      [(HMDApplicationData *)v10 setApplicationData:v7 forIdentifier:@"com.apple.homekit-entitledclient.identifer"];
+      v10 = [[HMDApplicationData alloc] initWithParentUUID:dCopy];
+      [(HMDApplicationData *)v10 setApplicationData:payloadCopy forIdentifier:@"com.apple.homekit-entitledclient.identifer"];
       v11 = v10;
       v12 = 1;
       goto LABEL_8;
     }
 
-    v10 = [v8 copy];
-    [(HMDApplicationData *)v10 setApplicationData:v7 forIdentifier:@"com.apple.homekit-entitledclient.identifer"];
+    v10 = [dataCopy copy];
+    [(HMDApplicationData *)v10 setApplicationData:payloadCopy forIdentifier:@"com.apple.homekit-entitledclient.identifer"];
 LABEL_6:
     v11 = v10;
     v12 = 2;
@@ -57,9 +57,9 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (v8)
+  if (dataCopy)
   {
-    v10 = [v8 copy];
+    v10 = [dataCopy copy];
     [(HMDApplicationData *)v10 removeApplicationDataForIdentifier:@"com.apple.homekit-entitledclient.identifer"];
     goto LABEL_6;
   }

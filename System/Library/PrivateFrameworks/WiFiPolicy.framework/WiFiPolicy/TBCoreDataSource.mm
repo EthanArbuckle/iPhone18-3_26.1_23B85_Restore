@@ -1,33 +1,33 @@
 @interface TBCoreDataSource
-- (BOOL)_canSupportRequest:(id)a3;
-- (TBCoreDataSource)initWithStoreDescriptor:(id)a3;
-- (void)_createNewNetwork:(id)a3 tile:(id)a4 withMOC:(id)a5;
-- (void)_createNewNetworkFromDictionary:(id)a3 withMOC:(id)a4;
-- (void)_executeFetchRequest:(id)a3;
-- (void)_executePreferLocalFetchRequest:(id)a3;
-- (void)cacheFetchResponse:(id)a3 completionHandler:(id)a4;
-- (void)executeFetchRequest:(id)a3;
-- (void)importObjectsWithArray:(id)a3 completionHandler:(id)a4;
-- (void)prune3BarsNetworks:(unint64_t)a3 completionHandler:(id)a4;
-- (void)removeAllWithCompletionHandler:(id)a3;
-- (void)removeWithFetchRequest:(id)a3 completionHandler:(id)a4;
+- (BOOL)_canSupportRequest:(id)request;
+- (TBCoreDataSource)initWithStoreDescriptor:(id)descriptor;
+- (void)_createNewNetwork:(id)network tile:(id)tile withMOC:(id)c;
+- (void)_createNewNetworkFromDictionary:(id)dictionary withMOC:(id)c;
+- (void)_executeFetchRequest:(id)request;
+- (void)_executePreferLocalFetchRequest:(id)request;
+- (void)cacheFetchResponse:(id)response completionHandler:(id)handler;
+- (void)executeFetchRequest:(id)request;
+- (void)importObjectsWithArray:(id)array completionHandler:(id)handler;
+- (void)prune3BarsNetworks:(unint64_t)networks completionHandler:(id)handler;
+- (void)removeAllWithCompletionHandler:(id)handler;
+- (void)removeWithFetchRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation TBCoreDataSource
 
-- (TBCoreDataSource)initWithStoreDescriptor:(id)a3
+- (TBCoreDataSource)initWithStoreDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v32.receiver = self;
   v32.super_class = TBCoreDataSource;
   v5 = [(TBCoreDataSource *)&v32 init];
   descriptor = v5->_descriptor;
-  v5->_descriptor = v4;
-  v7 = v4;
+  v5->_descriptor = descriptorCopy;
+  v7 = descriptorCopy;
 
   v8 = objc_alloc(MEMORY[0x277CBE450]);
-  v9 = [(TBCoreDataStoreDescriptor *)v7 modelURL];
-  v10 = [v8 initWithContentsOfURL:v9];
+  modelURL = [(TBCoreDataStoreDescriptor *)v7 modelURL];
+  v10 = [v8 initWithContentsOfURL:modelURL];
 
   v11 = [[TBPersistenceManager alloc] initWithManagedObjectModel:v10 storeDescriptor:v7];
   persistenceManager = v5->_persistenceManager;
@@ -41,22 +41,22 @@
   v14 = v5;
   v31 = v14;
   [(TBPersistenceManager *)v13 addPersistentStorage:v7 completionHandler:v30];
-  v15 = [(TBCoreDataStoreDescriptor *)v7 modelURL];
-  NSLog(&cfstr_SObjectModelAt.isa, "[TBCoreDataSource initWithStoreDescriptor:]", v15);
+  modelURL2 = [(TBCoreDataStoreDescriptor *)v7 modelURL];
+  NSLog(&cfstr_SObjectModelAt.isa, "[TBCoreDataSource initWithStoreDescriptor:]", modelURL2);
 
-  v16 = [(TBCoreDataStoreDescriptor *)v7 storeURL];
-  NSLog(&cfstr_SStoreUrl.isa, "[TBCoreDataSource initWithStoreDescriptor:]", v16);
+  storeURL = [(TBCoreDataStoreDescriptor *)v7 storeURL];
+  NSLog(&cfstr_SStoreUrl.isa, "[TBCoreDataSource initWithStoreDescriptor:]", storeURL);
 
   v17 = [objc_alloc(MEMORY[0x277CBE440]) initWithConcurrencyType:1];
-  v18 = [MEMORY[0x277CBE460] mergeByPropertyObjectTrumpMergePolicy];
-  [(NSManagedObjectContext *)v17 setMergePolicy:v18];
+  mergeByPropertyObjectTrumpMergePolicy = [MEMORY[0x277CBE460] mergeByPropertyObjectTrumpMergePolicy];
+  [(NSManagedObjectContext *)v17 setMergePolicy:mergeByPropertyObjectTrumpMergePolicy];
 
-  v19 = [(TBPersistenceManager *)v5->_persistenceManager persistenceCoordinator];
-  [(NSManagedObjectContext *)v17 setPersistentStoreCoordinator:v19];
+  persistenceCoordinator = [(TBPersistenceManager *)v5->_persistenceManager persistenceCoordinator];
+  [(NSManagedObjectContext *)v17 setPersistentStoreCoordinator:persistenceCoordinator];
 
-  v20 = [MEMORY[0x277CCAC38] processInfo];
-  v21 = [v20 processName];
-  [(NSManagedObjectContext *)v17 setTransactionAuthor:v21];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
+  [(NSManagedObjectContext *)v17 setTransactionAuthor:processName];
 
   context = v14->_context;
   v14->_context = v17;
@@ -102,38 +102,38 @@ void __44__TBCoreDataSource_initWithStoreDescriptor___block_invoke_2(uint64_t a1
   }
 }
 
-- (void)executeFetchRequest:(id)a3
+- (void)executeFetchRequest:(id)request
 {
-  v4 = a3;
-  if ([v4 sourcePolicy] == 3)
+  requestCopy = request;
+  if ([requestCopy sourcePolicy] == 3)
   {
-    [(TBCoreDataSource *)self _executePreferLocalFetchRequest:v4];
+    [(TBCoreDataSource *)self _executePreferLocalFetchRequest:requestCopy];
   }
 
   else
   {
-    [(TBCoreDataSource *)self _executeFetchRequest:v4];
+    [(TBCoreDataSource *)self _executeFetchRequest:requestCopy];
   }
 }
 
-- (void)_executePreferLocalFetchRequest:(id)a3
+- (void)_executePreferLocalFetchRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 descriptor];
-  v6 = [v5 preferLocalFetchDescriptor];
-  v7 = [v6 fetchRequest];
+  requestCopy = request;
+  descriptor = [requestCopy descriptor];
+  preferLocalFetchDescriptor = [descriptor preferLocalFetchDescriptor];
+  fetchRequest = [preferLocalFetchDescriptor fetchRequest];
 
-  v8 = [(TBCoreDataSource *)self context];
+  context = [(TBCoreDataSource *)self context];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __52__TBCoreDataSource__executePreferLocalFetchRequest___block_invoke;
   v11[3] = &unk_2789C6C70;
   v11[4] = self;
-  v12 = v7;
-  v13 = v4;
-  v9 = v4;
-  v10 = v7;
-  [v8 performBlock:v11];
+  v12 = fetchRequest;
+  v13 = requestCopy;
+  v9 = requestCopy;
+  v10 = fetchRequest;
+  [context performBlock:v11];
 }
 
 void __52__TBCoreDataSource__executePreferLocalFetchRequest___block_invoke(uint64_t a1)
@@ -201,11 +201,11 @@ LABEL_12:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_executeFetchRequest:(id)a3
+- (void)_executeFetchRequest:(id)request
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(TBCoreDataSource *)self _canSupportRequest:v4])
+  requestCopy = request;
+  if ([(TBCoreDataSource *)self _canSupportRequest:requestCopy])
   {
     if ([(TBCoreDataSource *)self hasStorageError])
     {
@@ -213,19 +213,19 @@ LABEL_12:
       v38 = *MEMORY[0x277CCA450];
       v39 = @"Failed to add persistent store.";
       v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
-      v7 = [(TBError *)v5 initWithType:104 userInfo:v6];
+      fetchRequest = [(TBError *)v5 initWithType:104 userInfo:v6];
 
-      v8 = [TBErrorFetchResponse responseWithError:v7];
-      [v4 handleResponse:v8];
+      v8 = [TBErrorFetchResponse responseWithError:fetchRequest];
+      [requestCopy handleResponse:v8];
     }
 
     else
     {
-      v11 = [v4 descriptor];
-      v12 = [v11 localFetchDescriptor];
-      v7 = [v12 fetchRequest];
+      descriptor = [requestCopy descriptor];
+      localFetchDescriptor = [descriptor localFetchDescriptor];
+      fetchRequest = [localFetchDescriptor fetchRequest];
 
-      if (v7)
+      if (fetchRequest)
       {
         v13 = mach_absolute_time();
         v32 = 0;
@@ -238,47 +238,47 @@ LABEL_12:
         v29 = __Block_byref_object_copy__4;
         v30 = __Block_byref_object_dispose__4;
         v31 = 0;
-        v14 = [v4 descriptor];
-        v15 = [v14 type] == 1;
+        descriptor2 = [requestCopy descriptor];
+        v15 = [descriptor2 type] == 1;
 
         if (v15)
         {
-          [(TBError *)v7 setResultType:2];
-          [(TBError *)v7 setPropertiesToFetch:&unk_2848BAD00];
-          [(TBError *)v7 setAllocationType:1];
-          v16 = [(TBCoreDataSource *)self context];
+          [(TBError *)fetchRequest setResultType:2];
+          [(TBError *)fetchRequest setPropertiesToFetch:&unk_2848BAD00];
+          [(TBError *)fetchRequest setAllocationType:1];
+          context = [(TBCoreDataSource *)self context];
           v17 = v25;
           v25[0] = MEMORY[0x277D85DD0];
           v25[1] = 3221225472;
           v25[2] = __41__TBCoreDataSource__executeFetchRequest___block_invoke;
           v25[3] = &unk_2789C73F8;
           v25[4] = self;
-          v25[5] = v7;
+          v25[5] = fetchRequest;
           v25[7] = &v26;
-          v25[6] = v4;
+          v25[6] = requestCopy;
           v25[8] = &v32;
-          [v16 performBlockAndWait:v25];
+          [context performBlockAndWait:v25];
         }
 
         else
         {
-          v16 = [(TBCoreDataSource *)self context];
+          context = [(TBCoreDataSource *)self context];
           v17 = v24;
           v24[0] = MEMORY[0x277D85DD0];
           v24[1] = 3221225472;
           v24[2] = __41__TBCoreDataSource__executeFetchRequest___block_invoke_2;
           v24[3] = &unk_2789C7420;
           v24[4] = self;
-          v24[5] = v7;
-          v24[6] = v4;
+          v24[5] = fetchRequest;
+          v24[6] = requestCopy;
           v24[7] = &v32;
-          [v16 performBlockAndWait:v24];
+          [context performBlockAndWait:v24];
         }
 
         v21 = mach_absolute_time();
         v22 = MachTimeToSecs(v21 - v13);
         NSLog(&cfstr_SFetchedLuResu.isa, "[TBCoreDataSource _executeFetchRequest:]", v33[3], *&v22);
-        [(TBDataSource *)self submitAnalyticsEventForFetchRequest:v4 duration:v27[5] error:v33[3] resultCount:v22];
+        [(TBDataSource *)self submitAnalyticsEventForFetchRequest:requestCopy duration:v27[5] error:v33[3] resultCount:v22];
         _Block_object_dispose(&v26, 8);
 
         _Block_object_dispose(&v32, 8);
@@ -292,7 +292,7 @@ LABEL_12:
         v19 = [TBError fetchMissingParametersErrorWithUserInfo:v18];
 
         v20 = [TBErrorFetchResponse responseWithError:v19];
-        [v4 handleResponse:v20];
+        [requestCopy handleResponse:v20];
       }
     }
   }
@@ -302,10 +302,10 @@ LABEL_12:
     v40 = *MEMORY[0x277CCA450];
     v41[0] = @"unhandled fetch request type";
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:&v40 count:1];
-    v7 = [TBError fetchMissingParametersErrorWithUserInfo:v9];
+    fetchRequest = [TBError fetchMissingParametersErrorWithUserInfo:v9];
 
-    v10 = [TBErrorFetchResponse responseWithError:v7];
-    [v4 handleResponse:v10];
+    v10 = [TBErrorFetchResponse responseWithError:fetchRequest];
+    [requestCopy handleResponse:v10];
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -435,82 +435,82 @@ void __41__TBCoreDataSource__executeFetchRequest___block_invoke_2(uint64_t a1)
   }
 }
 
-- (BOOL)_canSupportRequest:(id)a3
+- (BOOL)_canSupportRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 descriptor];
-  if ([v4 type] == 1)
+  requestCopy = request;
+  descriptor = [requestCopy descriptor];
+  if ([descriptor type] == 1)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 descriptor];
-    if ([v6 type] == 2)
+    descriptor2 = [requestCopy descriptor];
+    if ([descriptor2 type] == 2)
     {
       v5 = 1;
     }
 
     else
     {
-      v7 = [v3 descriptor];
-      v5 = [v7 type] == 3;
+      descriptor3 = [requestCopy descriptor];
+      v5 = [descriptor3 type] == 3;
     }
   }
 
   return v5;
 }
 
-- (void)cacheFetchResponse:(id)a3 completionHandler:(id)a4
+- (void)cacheFetchResponse:(id)response completionHandler:(id)handler
 {
   v129 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v71 = a4;
-  v66 = v5;
-  NSLog(&cfstr_SCachingRespon.isa, "[TBCoreDataSource cacheFetchResponse:completionHandler:]", v5);
+  responseCopy = response;
+  handlerCopy = handler;
+  v66 = responseCopy;
+  NSLog(&cfstr_SCachingRespon.isa, "[TBCoreDataSource cacheFetchResponse:completionHandler:]", responseCopy);
   v65 = os_transaction_create();
-  v6 = [v5 error];
+  error = [responseCopy error];
 
-  if (v6)
+  if (error)
   {
-    v7 = [v5 error];
-    NSLog(&cfstr_SError.isa, "[TBCoreDataSource cacheFetchResponse:completionHandler:]", v7);
+    error2 = [responseCopy error];
+    NSLog(&cfstr_SError.isa, "[TBCoreDataSource cacheFetchResponse:completionHandler:]", error2);
 
-    if (v71)
+    if (handlerCopy)
     {
-      v8 = [v5 error];
-      v71[2](v71, v8);
+      error3 = [responseCopy error];
+      handlerCopy[2](handlerCopy, error3);
     }
   }
 
   else
   {
     v64 = [objc_alloc(MEMORY[0x277CBE440]) initWithConcurrencyType:1];
-    v9 = [(TBCoreDataSource *)self persistenceManager];
-    v10 = [v9 persistenceCoordinator];
-    [v64 setPersistentStoreCoordinator:v10];
+    persistenceManager = [(TBCoreDataSource *)self persistenceManager];
+    persistenceCoordinator = [persistenceManager persistenceCoordinator];
+    [v64 setPersistentStoreCoordinator:persistenceCoordinator];
 
-    v11 = [MEMORY[0x277CBEAA8] date];
-    v63 = [v11 dateByAddingDays:{--[TBCoreDataSource cacheExpirationInDays](self, "cacheExpirationInDays")}];
+    date = [MEMORY[0x277CBEAA8] date];
+    v63 = [date dateByAddingDays:{--[TBCoreDataSource cacheExpirationInDays](self, "cacheExpirationInDays")}];
 
-    v12 = [v66 tiles];
-    v13 = [v12 count];
+    tiles = [v66 tiles];
+    v13 = [tiles count];
 
     if (v13)
     {
       v62 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(created < %@)", v63];
       [TBTileMO removeTilesUsingPredicate:v62 moc:v64];
       v14 = MEMORY[0x277CBEB18];
-      v15 = [v66 tiles];
-      v70 = [v14 arrayWithCapacity:{objc_msgSend(v15, "count")}];
+      tiles2 = [v66 tiles];
+      v70 = [v14 arrayWithCapacity:{objc_msgSend(tiles2, "count")}];
 
       v123 = 0u;
       v124 = 0u;
       v121 = 0u;
       v122 = 0u;
-      v16 = [v66 tiles];
-      v17 = [v16 countByEnumeratingWithState:&v121 objects:v128 count:16];
+      tiles3 = [v66 tiles];
+      v17 = [tiles3 countByEnumeratingWithState:&v121 objects:v128 count:16];
       if (v17)
       {
         v18 = *v122;
@@ -520,16 +520,16 @@ void __41__TBCoreDataSource__executeFetchRequest___block_invoke_2(uint64_t a1)
           {
             if (*v122 != v18)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(tiles3);
             }
 
             v20 = MEMORY[0x277CCABB0];
-            v21 = [*(*(&v121 + 1) + 8 * i) tile];
-            v22 = [v20 numberWithLongLong:{objc_msgSend(v21, "key")}];
+            tile = [*(*(&v121 + 1) + 8 * i) tile];
+            v22 = [v20 numberWithLongLong:{objc_msgSend(tile, "key")}];
             [v70 addObject:v22];
           }
 
-          v17 = [v16 countByEnumeratingWithState:&v121 objects:v128 count:16];
+          v17 = [tiles3 countByEnumeratingWithState:&v121 objects:v128 count:16];
         }
 
         while (v17);
@@ -544,8 +544,8 @@ void __41__TBCoreDataSource__executeFetchRequest___block_invoke_2(uint64_t a1)
       v23 = v64;
       v120 = v23;
       [v23 performBlockAndWait:v119];
-      v24 = [v66 tiles];
-      v77 = [v24 count];
+      tiles4 = [v66 tiles];
+      v77 = [tiles4 count];
 
       v117 = 0u;
       v118 = 0u;
@@ -572,26 +572,26 @@ void __41__TBCoreDataSource__executeFetchRequest___block_invoke_2(uint64_t a1)
             v72 = v25;
             v27 = *(*(&v115 + 1) + 8 * v25);
             context = objc_autoreleasePoolPush();
-            v74 = [v27 tile];
+            tile2 = [v27 tile];
             v28 = [TBTileMO generateNewTileObjectFromMOC:v23];
-            [v28 setKey:{objc_msgSend(v74, "key")}];
-            v29 = [MEMORY[0x277CBEAA8] date];
-            [v28 setCreated:v29];
+            [v28 setKey:{objc_msgSend(tile2, "key")}];
+            date2 = [MEMORY[0x277CBEAA8] date];
+            [v28 setCreated:date2];
 
             if (objc_opt_respondsToSelector())
             {
-              v30 = [v74 etag];
-              [v28 setEtag:v30];
+              etag = [tile2 etag];
+              [v28 setEtag:etag];
             }
 
             else
             {
-              NSLog(&cfstr_STileDoesnTRes.isa, "[TBCoreDataSource cacheFetchResponse:completionHandler:]", v74);
+              NSLog(&cfstr_STileDoesnTRes.isa, "[TBCoreDataSource cacheFetchResponse:completionHandler:]", tile2);
             }
 
-            v31 = [v27 networks];
-            v32 = [v31 count];
-            NSLog(&cfstr_SLdResultsForT.isa, "-[TBCoreDataSource cacheFetchResponse:completionHandler:]", v32, v80++, [v74 key]);
+            networks = [v27 networks];
+            v32 = [networks count];
+            NSLog(&cfstr_SLdResultsForT.isa, "-[TBCoreDataSource cacheFetchResponse:completionHandler:]", v32, v80++, [tile2 key]);
             v109 = 0;
             v110 = &v109;
             v111 = 0x3032000000;
@@ -606,7 +606,7 @@ void __41__TBCoreDataSource__executeFetchRequest___block_invoke_2(uint64_t a1)
                 v34 = 1;
                 do
                 {
-                  v35 = [v31 objectAtIndexedSubscript:v33];
+                  v35 = [networks objectAtIndexedSubscript:v33];
                   [(TBCoreDataSource *)self _createNewNetwork:v35 tile:v28 withMOC:v23];
                   v36 = v33 + 1;
                   if (100 * (v34 / 0x64) - 1 == v33 || v32 - 1 == v33)
@@ -633,7 +633,7 @@ void __41__TBCoreDataSource__executeFetchRequest___block_invoke_2(uint64_t a1)
 
             else
             {
-              NSLog(&cfstr_SSavingEmptyTi.isa, "-[TBCoreDataSource cacheFetchResponse:completionHandler:]", [v74 key]);
+              NSLog(&cfstr_SSavingEmptyTi.isa, "-[TBCoreDataSource cacheFetchResponse:completionHandler:]", [tile2 key]);
               v104[0] = MEMORY[0x277D85DD0];
               v104[1] = 3221225472;
               v104[2] = __57__TBCoreDataSource_cacheFetchResponse_completionHandler___block_invoke_2;
@@ -645,9 +645,9 @@ void __41__TBCoreDataSource__executeFetchRequest___block_invoke_2(uint64_t a1)
               [v105 performBlockAndWait:v104];
             }
 
-            if (v71 && v80 == v77)
+            if (handlerCopy && v80 == v77)
             {
-              v71[2](v71, v110[5]);
+              handlerCopy[2](handlerCopy, v110[5]);
             }
 
             _Block_object_dispose(&v109, 8);
@@ -666,8 +666,8 @@ void __41__TBCoreDataSource__executeFetchRequest___block_invoke_2(uint64_t a1)
 
     else
     {
-      v39 = [v66 results];
-      v40 = [v39 count];
+      results = [v66 results];
+      v40 = [results count];
 
       if (v40)
       {
@@ -676,8 +676,8 @@ void __41__TBCoreDataSource__executeFetchRequest___block_invoke_2(uint64_t a1)
         v98 = 0u;
         v95 = 0u;
         v96 = 0u;
-        v75 = [v66 results];
-        v81 = [v75 countByEnumeratingWithState:&v95 objects:v126 count:16];
+        results2 = [v66 results];
+        v81 = [results2 countByEnumeratingWithState:&v95 objects:v126 count:16];
         if (v81)
         {
           v78 = *v96;
@@ -687,7 +687,7 @@ void __41__TBCoreDataSource__executeFetchRequest___block_invoke_2(uint64_t a1)
             {
               if (*v96 != v78)
               {
-                objc_enumerationMutation(v75);
+                objc_enumerationMutation(results2);
               }
 
               v43 = *(*(&v95 + 1) + 8 * j);
@@ -695,8 +695,8 @@ void __41__TBCoreDataSource__executeFetchRequest___block_invoke_2(uint64_t a1)
               v92 = 0u;
               v93 = 0u;
               v94 = 0u;
-              v44 = [v43 accessPoints];
-              v45 = [v44 countByEnumeratingWithState:&v91 objects:v125 count:16];
+              accessPoints = [v43 accessPoints];
+              v45 = [accessPoints countByEnumeratingWithState:&v91 objects:v125 count:16];
               if (v45)
               {
                 v46 = *v92;
@@ -706,16 +706,16 @@ void __41__TBCoreDataSource__executeFetchRequest___block_invoke_2(uint64_t a1)
                   {
                     if (*v92 != v46)
                     {
-                      objc_enumerationMutation(v44);
+                      objc_enumerationMutation(accessPoints);
                     }
 
                     v48 = *(*(&v91 + 1) + 8 * k);
-                    v49 = [v48 BSSID];
+                    bSSID = [v48 BSSID];
 
-                    if (v49)
+                    if (bSSID)
                     {
-                      v50 = [v48 BSSID];
-                      [v41 addObject:v50];
+                      bSSID2 = [v48 BSSID];
+                      [v41 addObject:bSSID2];
                     }
 
                     else
@@ -724,22 +724,22 @@ void __41__TBCoreDataSource__executeFetchRequest___block_invoke_2(uint64_t a1)
                     }
                   }
 
-                  v45 = [v44 countByEnumeratingWithState:&v91 objects:v125 count:16];
+                  v45 = [accessPoints countByEnumeratingWithState:&v91 objects:v125 count:16];
                 }
 
                 while (v45);
               }
             }
 
-            v81 = [v75 countByEnumeratingWithState:&v95 objects:v126 count:16];
+            v81 = [results2 countByEnumeratingWithState:&v95 objects:v126 count:16];
           }
 
           while (v81);
         }
 
         v79 = +[TBAccessPointMO fetchRequest];
-        v51 = [v41 bssidPredicate];
-        [v79 setPredicate:v51];
+        bssidPredicate = [v41 bssidPredicate];
+        [v79 setPredicate:bssidPredicate];
 
         v52 = [objc_alloc(MEMORY[0x277CBE360]) initWithFetchRequest:v79];
         v88[0] = MEMORY[0x277D85DD0];
@@ -751,8 +751,8 @@ void __41__TBCoreDataSource__executeFetchRequest___block_invoke_2(uint64_t a1)
         v76 = v52;
         v90 = v76;
         [v53 performBlockAndWait:v88];
-        v54 = [v66 results];
-        v55 = [v54 count];
+        results3 = [v66 results];
+        v55 = [results3 count];
         NSLog(&cfstr_SLdResultsAvai.isa, "[TBCoreDataSource cacheFetchResponse:completionHandler:]", v55);
         v56 = v55 - 1;
         if (v55 >= 1)
@@ -761,7 +761,7 @@ void __41__TBCoreDataSource__executeFetchRequest___block_invoke_2(uint64_t a1)
           v58 = 1;
           do
           {
-            v59 = [v54 objectAtIndexedSubscript:v57];
+            v59 = [results3 objectAtIndexedSubscript:v57];
             [(TBCoreDataSource *)self _createNewNetwork:v59 tile:0 withMOC:v53];
             v60 = v57 + 1;
             if (v56 == v57 || 100 * (v58 / 0x64) - 1 == v57)
@@ -782,9 +782,9 @@ void __41__TBCoreDataSource__executeFetchRequest___block_invoke_2(uint64_t a1)
               v86 = v57 + 1;
               v87 = v55;
               [v84 performBlockAndWait:v83];
-              if (v71 && v56 == v57)
+              if (handlerCopy && v56 == v57)
               {
-                v71[2](v71, v110[5]);
+                handlerCopy[2](handlerCopy, v110[5]);
               }
 
               _Block_object_dispose(&v109, 8);
@@ -801,9 +801,9 @@ void __41__TBCoreDataSource__executeFetchRequest___block_invoke_2(uint64_t a1)
       else
       {
         NSLog(&cfstr_SEmptyResultsI.isa, "[TBCoreDataSource cacheFetchResponse:completionHandler:]", v66);
-        if (v71)
+        if (handlerCopy)
         {
-          v71[2](v71, 0);
+          handlerCopy[2](handlerCopy, 0);
         }
       }
     }
@@ -895,14 +895,14 @@ void __57__TBCoreDataSource_cacheFetchResponse_completionHandler___block_invoke_
   }
 }
 
-- (void)removeAllWithCompletionHandler:(id)a3
+- (void)removeAllWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = os_transaction_create();
   v6 = [objc_alloc(MEMORY[0x277CBE440]) initWithConcurrencyType:1];
-  v7 = [(TBCoreDataSource *)self persistenceManager];
-  v8 = [v7 persistenceCoordinator];
-  [v6 setPersistentStoreCoordinator:v8];
+  persistenceManager = [(TBCoreDataSource *)self persistenceManager];
+  persistenceCoordinator = [persistenceManager persistenceCoordinator];
+  [v6 setPersistentStoreCoordinator:persistenceCoordinator];
 
   NSLog(&cfstr_SRemovingAll.isa, "[TBCoreDataSource removeAllWithCompletionHandler:]");
   [TBNetworkMO removeAllNetworksInMOC:v6];
@@ -912,8 +912,8 @@ void __57__TBCoreDataSource_cacheFetchResponse_completionHandler___block_invoke_
   v11[2] = __51__TBCoreDataSource_removeAllWithCompletionHandler___block_invoke;
   v11[3] = &unk_2789C6BA8;
   v12 = v6;
-  v13 = v4;
-  v9 = v4;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
   v10 = v6;
   [v10 performBlockAndWait:v11];
 }
@@ -938,15 +938,15 @@ void __51__TBCoreDataSource_removeAllWithCompletionHandler___block_invoke(uint64
   }
 }
 
-- (void)prune3BarsNetworks:(unint64_t)a3 completionHandler:(id)a4
+- (void)prune3BarsNetworks:(unint64_t)networks completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(TBCoreDataStoreDescriptor *)self->_descriptor storeURL];
-  v8 = [v7 path];
+  handlerCopy = handler;
+  storeURL = [(TBCoreDataStoreDescriptor *)self->_descriptor storeURL];
+  path = [storeURL path];
 
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v15 = 0;
-  v10 = [v9 attributesOfItemAtPath:v8 error:&v15];
+  v10 = [defaultManager attributesOfItemAtPath:path error:&v15];
   v11 = v15;
 
   if (v10)
@@ -962,11 +962,11 @@ void __51__TBCoreDataSource_removeAllWithCompletionHandler___block_invoke(uint64
   if (v12)
   {
     v13 = [v10 objectForKey:*MEMORY[0x277CCA1C0]];
-    v14 = [v13 longLongValue];
-    if (v14 > a3)
+    longLongValue = [v13 longLongValue];
+    if (longLongValue > networks)
     {
-      NSLog(&cfstr_LocalStoreSize.isa, v14, a3);
-      [(TBCoreDataSource *)self removeAllWithCompletionHandler:v6];
+      NSLog(&cfstr_LocalStoreSize.isa, longLongValue, networks);
+      [(TBCoreDataSource *)self removeAllWithCompletionHandler:handlerCopy];
     }
   }
 
@@ -976,22 +976,22 @@ void __51__TBCoreDataSource_removeAllWithCompletionHandler___block_invoke(uint64
   }
 }
 
-- (void)removeWithFetchRequest:(id)a3 completionHandler:(id)a4
+- (void)removeWithFetchRequest:(id)request completionHandler:(id)handler
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 descriptor];
-  v7 = [v6 localFetchDescriptor];
-  v8 = [v7 fetchRequest];
+  requestCopy = request;
+  descriptor = [requestCopy descriptor];
+  localFetchDescriptor = [descriptor localFetchDescriptor];
+  fetchRequest = [localFetchDescriptor fetchRequest];
 
-  if (v8)
+  if (fetchRequest)
   {
-    NSLog(&cfstr_SRemovingAllMa.isa, "[TBCoreDataSource removeWithFetchRequest:completionHandler:]", v8);
-    v9 = [objc_alloc(MEMORY[0x277CBE360]) initWithFetchRequest:v8];
+    NSLog(&cfstr_SRemovingAllMa.isa, "[TBCoreDataSource removeWithFetchRequest:completionHandler:]", fetchRequest);
+    v9 = [objc_alloc(MEMORY[0x277CBE360]) initWithFetchRequest:fetchRequest];
     v10 = [objc_alloc(MEMORY[0x277CBE440]) initWithConcurrencyType:1];
-    v11 = [(TBCoreDataSource *)self persistenceManager];
-    v12 = [v11 persistenceCoordinator];
-    [v10 setPersistentStoreCoordinator:v12];
+    persistenceManager = [(TBCoreDataSource *)self persistenceManager];
+    persistenceCoordinator = [persistenceManager persistenceCoordinator];
+    [v10 setPersistentStoreCoordinator:persistenceCoordinator];
 
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
@@ -999,7 +999,7 @@ void __51__TBCoreDataSource_removeAllWithCompletionHandler___block_invoke(uint64
     v17[3] = &unk_2789C6C70;
     v18 = v10;
     v19 = v9;
-    v20 = v8;
+    v20 = fetchRequest;
     v13 = v9;
     v14 = v10;
     [v14 performBlockAndWait:v17];
@@ -1013,7 +1013,7 @@ void __51__TBCoreDataSource_removeAllWithCompletionHandler___block_invoke(uint64
     v14 = [TBError fetchMissingParametersErrorWithUserInfo:v15];
 
     v13 = [TBErrorFetchResponse responseWithError:v14];
-    [v5 handleResponse:v13];
+    [requestCopy handleResponse:v13];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -1043,50 +1043,50 @@ void __61__TBCoreDataSource_removeWithFetchRequest_completionHandler___block_inv
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_createNewNetwork:(id)a3 tile:(id)a4 withMOC:(id)a5
+- (void)_createNewNetwork:(id)network tile:(id)tile withMOC:(id)c
 {
   v47 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v39 = a4;
-  v8 = a5;
+  networkCopy = network;
+  tileCopy = tile;
+  cCopy = c;
   context = objc_autoreleasePoolPush();
-  v41 = v8;
-  v9 = [TBNetworkMO generateNewNetworkObjectFromMOC:v8];
-  [v9 setAuthMask:{objc_msgSend(v7, "authMask")}];
-  v10 = [v7 remoteIdentifier];
-  [v9 setIdentifier:v10];
+  v41 = cCopy;
+  v9 = [TBNetworkMO generateNewNetworkObjectFromMOC:cCopy];
+  [v9 setAuthMask:{objc_msgSend(networkCopy, "authMask")}];
+  remoteIdentifier = [networkCopy remoteIdentifier];
+  [v9 setIdentifier:remoteIdentifier];
 
-  v11 = [v7 SSID];
-  [v9 setName:v11];
+  sSID = [networkCopy SSID];
+  [v9 setName:sSID];
 
-  v12 = [v7 popularityScore];
-  [v9 setPopularityScoreValue:{objc_msgSend(v12, "score")}];
+  popularityScore = [networkCopy popularityScore];
+  [v9 setPopularityScoreValue:{objc_msgSend(popularityScore, "score")}];
 
-  v13 = [v7 qualityScore];
-  [v9 setQualityScoreValue:{objc_msgSend(v13, "score")}];
+  qualityScore = [networkCopy qualityScore];
+  [v9 setQualityScoreValue:{objc_msgSend(qualityScore, "score")}];
 
-  [v9 setMoving:{objc_msgSend(v7, "isMoving")}];
-  [v9 setSuspicious:{objc_msgSend(v7, "isSuspicious")}];
-  [v9 setCaptive:{objc_msgSend(v7, "isCaptive")}];
-  [v9 setPublic:{objc_msgSend(v7, "isPublic")}];
-  [v9 setLowQuality:{objc_msgSend(v7, "isLowQuality")}];
-  v14 = [MEMORY[0x277CBEAA8] date];
-  [v9 setCreated:v14];
+  [v9 setMoving:{objc_msgSend(networkCopy, "isMoving")}];
+  [v9 setSuspicious:{objc_msgSend(networkCopy, "isSuspicious")}];
+  [v9 setCaptive:{objc_msgSend(networkCopy, "isCaptive")}];
+  [v9 setPublic:{objc_msgSend(networkCopy, "isPublic")}];
+  [v9 setLowQuality:{objc_msgSend(networkCopy, "isLowQuality")}];
+  date = [MEMORY[0x277CBEAA8] date];
+  [v9 setCreated:date];
 
-  v15 = [v7 ownerIdentifiers];
-  [v9 setOwnerIdentifiers:v15];
+  ownerIdentifiers = [networkCopy ownerIdentifiers];
+  [v9 setOwnerIdentifiers:ownerIdentifiers];
 
-  [v9 setType:{objc_msgSend(v7, "type")}];
-  [v9 setVenueGroup:{objc_msgSend(v7, "venueGroup")}];
-  [v9 setVenueType:{objc_msgSend(v7, "venueType")}];
+  [v9 setType:{objc_msgSend(networkCopy, "type")}];
+  [v9 setVenueGroup:{objc_msgSend(networkCopy, "venueGroup")}];
+  [v9 setVenueType:{objc_msgSend(networkCopy, "venueType")}];
   v16 = objc_alloc_init(TBCentroidCalculator);
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v40 = v7;
-  v17 = [v7 accessPoints];
-  v18 = [v17 countByEnumeratingWithState:&v42 objects:v46 count:16];
+  v40 = networkCopy;
+  accessPoints = [networkCopy accessPoints];
+  v18 = [accessPoints countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v18)
   {
     v19 = v18;
@@ -1097,18 +1097,18 @@ void __61__TBCoreDataSource_removeWithFetchRequest_completionHandler___block_inv
       {
         if (*v43 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(accessPoints);
         }
 
         v22 = *(*(&v42 + 1) + 8 * i);
         v23 = objc_autoreleasePoolPush();
-        v24 = [v22 BSSID];
+        bSSID = [v22 BSSID];
 
-        if (v24)
+        if (bSSID)
         {
           v25 = [TBAccessPointMO generateNewAccessPointObjectFromMOC:v41];
-          v26 = [v22 BSSID];
-          [v25 setBssid:v26];
+          bSSID2 = [v22 BSSID];
+          [v25 setBssid:bSSID2];
 
           [v22 latitude];
           [v25 setLat:?];
@@ -1118,26 +1118,26 @@ void __61__TBCoreDataSource_removeWithFetchRequest_completionHandler___block_inv
           v28 = v27;
           [v22 longitude];
           [(TBCentroidCalculator *)v16 addLatitude:v28 longitude:v29];
-          v30 = [v22 popularityScore];
-          [v25 setPopularityScoreValue:{objc_msgSend(v30, "score")}];
+          popularityScore2 = [v22 popularityScore];
+          [v25 setPopularityScoreValue:{objc_msgSend(popularityScore2, "score")}];
 
-          v31 = [v22 qualityScore];
-          [v25 setQualityScoreValue:{objc_msgSend(v31, "score")}];
+          qualityScore2 = [v22 qualityScore];
+          [v25 setQualityScoreValue:{objc_msgSend(qualityScore2, "score")}];
 
           [v25 setEdge:{objc_msgSend(v22, "isEdge")}];
           [v25 setTcpGood:{objc_msgSend(v22, "isTCPGood")}];
           [v25 setNetwork:v9];
-          v32 = [MEMORY[0x277CBEAA8] date];
-          [v25 setCreated:v32];
+          date2 = [MEMORY[0x277CBEAA8] date];
+          [v25 setCreated:date2];
 
-          v33 = [v9 accessPoints];
-          v34 = [v33 setByAddingObject:v25];
+          accessPoints2 = [v9 accessPoints];
+          v34 = [accessPoints2 setByAddingObject:v25];
         }
 
         objc_autoreleasePoolPop(v23);
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v42 objects:v46 count:16];
+      v19 = [accessPoints countByEnumeratingWithState:&v42 objects:v46 count:16];
     }
 
     while (v19);
@@ -1147,31 +1147,31 @@ void __61__TBCoreDataSource_removeWithFetchRequest_completionHandler___block_inv
   v36 = v35;
   [v9 setCentroidLat:?];
   [v9 setCentroidLng:v36];
-  if (v39)
+  if (tileCopy)
   {
-    [v39 addNetworksObject:v9];
+    [tileCopy addNetworksObject:v9];
   }
 
   objc_autoreleasePoolPop(context);
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)importObjectsWithArray:(id)a3 completionHandler:(id)a4
+- (void)importObjectsWithArray:(id)array completionHandler:(id)handler
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  arrayCopy = array;
+  handlerCopy = handler;
+  if (arrayCopy && [arrayCopy count])
   {
-    v8 = [(TBCoreDataSource *)self context];
+    context = [(TBCoreDataSource *)self context];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __61__TBCoreDataSource_importObjectsWithArray_completionHandler___block_invoke;
     v13[3] = &unk_2789C7470;
-    v14 = v6;
-    v15 = self;
-    v16 = v7;
-    [v8 performBlock:v13];
+    v14 = arrayCopy;
+    selfCopy = self;
+    v16 = handlerCopy;
+    [context performBlock:v13];
 
     v9 = v14;
   }
@@ -1183,7 +1183,7 @@ void __61__TBCoreDataSource_removeWithFetchRequest_completionHandler___block_inv
     v18[0] = @"nil or empty objects to import";
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v11 = [(TBError *)v10 initWithType:0 userInfo:v9];
-    (*(v7 + 2))(v7, v11);
+    (*(handlerCopy + 2))(handlerCopy, v11);
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -1242,128 +1242,128 @@ void __61__TBCoreDataSource_importObjectsWithArray_completionHandler___block_inv
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createNewNetworkFromDictionary:(id)a3 withMOC:(id)a4
+- (void)_createNewNetworkFromDictionary:(id)dictionary withMOC:(id)c
 {
   v67 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v61 = a4;
+  dictionaryCopy = dictionary;
+  cCopy = c;
   v6 = [TBNetworkMO generateNewNetworkObjectFromMOC:?];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  [v7 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   [v6 setTimestamp:v8];
 
-  v9 = [MEMORY[0x277CBEAA8] date];
-  [v6 setCreated:v9];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  [v6 setCreated:date2];
 
-  v10 = [v5 objectForKeyedSubscript:@"authMask"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"authMask"];
 
   if (v10)
   {
-    v11 = [v5 objectForKeyedSubscript:@"authMask"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"authMask"];
     [v6 setAuthMask:{objc_msgSend(v11, "integerValue")}];
   }
 
-  v12 = [v5 objectForKeyedSubscript:@"identifier"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
 
   if (v12)
   {
-    v13 = [v5 objectForKeyedSubscript:@"identifier"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
     [v6 setIdentifier:v13];
   }
 
-  v14 = [v5 objectForKeyedSubscript:@"SSID"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"SSID"];
 
   if (v14)
   {
-    v15 = [v5 objectForKeyedSubscript:@"SSID"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"SSID"];
     [v6 setName:v15];
   }
 
-  v16 = [v5 objectForKeyedSubscript:@"popularityScoreValue"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"popularityScoreValue"];
 
   if (v16)
   {
-    v17 = [v5 objectForKeyedSubscript:@"popularityScoreValue"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"popularityScoreValue"];
     [v6 setPopularityScoreValue:{objc_msgSend(v17, "intValue")}];
   }
 
-  v18 = [v5 objectForKeyedSubscript:@"qualityScoreValue"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"qualityScoreValue"];
 
   if (v18)
   {
-    v19 = [v5 objectForKeyedSubscript:@"qualityScoreValue"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"qualityScoreValue"];
     [v6 setQualityScoreValue:{objc_msgSend(v19, "intValue")}];
   }
 
-  v20 = [v5 objectForKeyedSubscript:@"moving"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"moving"];
 
   if (v20)
   {
-    v21 = [v5 objectForKeyedSubscript:@"moving"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"moving"];
     [v6 setMoving:{objc_msgSend(v21, "BOOLValue")}];
   }
 
-  v22 = [v5 objectForKeyedSubscript:@"suspicious"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"suspicious"];
 
   if (v22)
   {
-    v23 = [v5 objectForKeyedSubscript:@"suspicious"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"suspicious"];
     [v6 setSuspicious:{objc_msgSend(v23, "BOOLValue")}];
   }
 
-  v24 = [v5 objectForKeyedSubscript:@"captive"];
+  v24 = [dictionaryCopy objectForKeyedSubscript:@"captive"];
 
   if (v24)
   {
-    v25 = [v5 objectForKeyedSubscript:@"captive"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"captive"];
     [v6 setCaptive:{objc_msgSend(v25, "BOOLValue")}];
   }
 
-  v26 = [v5 objectForKeyedSubscript:@"public"];
+  v26 = [dictionaryCopy objectForKeyedSubscript:@"public"];
 
   if (v26)
   {
-    v27 = [v5 objectForKeyedSubscript:@"public"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"public"];
     [v6 setPublic:{objc_msgSend(v27, "BOOLValue")}];
   }
 
-  v28 = [v5 objectForKeyedSubscript:@"public"];
+  v28 = [dictionaryCopy objectForKeyedSubscript:@"public"];
 
   if (v28)
   {
-    v29 = [v5 objectForKeyedSubscript:@"lowQuality"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"lowQuality"];
     [v6 setLowQuality:{objc_msgSend(v29, "BOOLValue")}];
   }
 
-  v30 = [v5 objectForKeyedSubscript:@"ownerIdentifiers"];
+  v30 = [dictionaryCopy objectForKeyedSubscript:@"ownerIdentifiers"];
 
   if (v30)
   {
-    v31 = [v5 objectForKeyedSubscript:@"ownerIdentifiers"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"ownerIdentifiers"];
     [v6 setOwnerIdentifiers:v31];
   }
 
-  v32 = [v5 objectForKeyedSubscript:@"type"];
+  v32 = [dictionaryCopy objectForKeyedSubscript:@"type"];
 
   if (v32)
   {
-    v33 = [v5 objectForKeyedSubscript:@"type"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     [v6 setType:{objc_msgSend(v33, "integerValue")}];
   }
 
-  v34 = [v5 objectForKeyedSubscript:@"venueGroup"];
+  v34 = [dictionaryCopy objectForKeyedSubscript:@"venueGroup"];
 
   if (v34)
   {
-    v35 = [v5 objectForKeyedSubscript:@"venueGroup"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"venueGroup"];
     [v6 setVenueGroup:{objc_msgSend(v35, "integerValue")}];
   }
 
-  v36 = [v5 objectForKeyedSubscript:@"venueType"];
+  v36 = [dictionaryCopy objectForKeyedSubscript:@"venueType"];
 
   if (v36)
   {
-    v37 = [v5 objectForKeyedSubscript:@"venueType"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"venueType"];
     [v6 setVenueType:{objc_msgSend(v37, "intValue")}];
   }
 
@@ -1371,7 +1371,7 @@ void __61__TBCoreDataSource_importObjectsWithArray_completionHandler___block_inv
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = [v5 objectForKeyedSubscript:{@"accessPoints", v5}];
+  obj = [dictionaryCopy objectForKeyedSubscript:{@"accessPoints", dictionaryCopy}];
   v38 = [obj countByEnumeratingWithState:&v62 objects:v66 count:16];
   if (v38)
   {
@@ -1387,7 +1387,7 @@ void __61__TBCoreDataSource_importObjectsWithArray_completionHandler___block_inv
         }
 
         v41 = *(*(&v62 + 1) + 8 * i);
-        v42 = [TBAccessPointMO generateNewAccessPointObjectFromMOC:v61];
+        v42 = [TBAccessPointMO generateNewAccessPointObjectFromMOC:cCopy];
         v43 = [v41 objectForKeyedSubscript:@"bssid"];
         [v42 setBssid:v43];
 
@@ -1432,11 +1432,11 @@ void __61__TBCoreDataSource_importObjectsWithArray_completionHandler___block_inv
         }
 
         [v42 setNetwork:v6];
-        v54 = [MEMORY[0x277CBEAA8] date];
-        [v42 setCreated:v54];
+        date3 = [MEMORY[0x277CBEAA8] date];
+        [v42 setCreated:date3];
 
-        v55 = [v6 accessPoints];
-        v56 = [v55 setByAddingObject:v42];
+        accessPoints = [v6 accessPoints];
+        v56 = [accessPoints setByAddingObject:v42];
       }
 
       v39 = [obj countByEnumeratingWithState:&v62 objects:v66 count:16];

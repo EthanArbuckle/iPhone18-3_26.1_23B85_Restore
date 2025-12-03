@@ -1,67 +1,67 @@
 @interface SearchUIContactButtonItemGenerator
-+ (id)buttonCategoriesForActionTypes:(id)a3;
-+ (id)buttonTitleForActionType:(id)a3 contact:(id)a4;
++ (id)buttonCategoriesForActionTypes:(id)types;
++ (id)buttonTitleForActionType:(id)type contact:(id)contact;
 + (id)cachedEnabledActionsForButtonItems;
-+ (id)defaultButtonCategoriesForPerson:(id)a3;
++ (id)defaultButtonCategoriesForPerson:(id)person;
 - (id)cachedEnabledActionTypes;
-- (id)viewForActionType:(id)a3;
-- (id)visibleButtonForActionType:(id)a3;
-- (void)cacheEnabledActionType:(id)a3;
-- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)a3 completion:(id)a4;
+- (id)viewForActionType:(id)type;
+- (id)visibleButtonForActionType:(id)type;
+- (void)cacheEnabledActionType:(id)type;
+- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)item completion:(id)completion;
 - (void)updateButtons;
 @end
 
 @implementation SearchUIContactButtonItemGenerator
 
-- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)a3 completion:(id)a4
+- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)item completion:(id)completion
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
-    v9 = [v8 person];
-    v10 = [v8 contactIdentifier];
+    command = itemCopy;
+    person = [command person];
+    contactIdentifier = [command contactIdentifier];
 
-    if (v10)
+    if (contactIdentifier)
     {
-      v11 = [v8 contactIdentifier];
-      [v9 setContactIdentifier:v11];
+      contactIdentifier2 = [command contactIdentifier];
+      [person setContactIdentifier:contactIdentifier2];
     }
 
-    v12 = [v8 actionTypesToShow];
-    v13 = [v12 count];
+    actionTypesToShow = [command actionTypesToShow];
+    v13 = [actionTypesToShow count];
     v14 = objc_opt_class();
     if (v13)
     {
-      [v14 buttonCategoriesForActionTypes:v12];
+      [v14 buttonCategoriesForActionTypes:actionTypesToShow];
     }
 
     else
     {
-      [v14 defaultButtonCategoriesForPerson:v9];
+      [v14 defaultButtonCategoriesForPerson:person];
     }
     v18 = ;
   }
 
   else
   {
-    v8 = [v6 command];
-    v9 = objc_opt_new();
-    v15 = [v8 phoneNumber];
-    if (v15)
+    command = [itemCopy command];
+    person = objc_opt_new();
+    phoneNumber = [command phoneNumber];
+    if (phoneNumber)
     {
-      v16 = [v8 phoneNumber];
-      v29[0] = v16;
+      phoneNumber2 = [command phoneNumber];
+      v29[0] = phoneNumber2;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
-      [v9 setPhoneNumbers:v17];
+      [person setPhoneNumbers:v17];
     }
 
     else
     {
-      [v9 setPhoneNumbers:0];
+      [person setPhoneNumbers:0];
     }
 
     v28 = *MEMORY[0x1E695C150];
@@ -75,8 +75,8 @@
 
     v20 = [objc_alloc(MEMORY[0x1E695D130]) initWithActionTypes:v18 contactQuickActionViewContainer:self];
     [(SearchUIContactButtonItemGenerator *)self setQuickActionsController:v20];
-    [(SearchUIContactButtonItemGenerator *)self setSfButtonItem:v6];
-    [(SearchUIContactButtonItemGenerator *)self setCompletionHandler:v7];
+    [(SearchUIContactButtonItemGenerator *)self setSfButtonItem:itemCopy];
+    [(SearchUIContactButtonItemGenerator *)self setCompletionHandler:completionCopy];
     v21 = +[SearchUIContactCache sharedCache];
     v23 = MEMORY[0x1E69E9820];
     v24 = 3221225472;
@@ -84,14 +84,14 @@
     v26 = &unk_1E85B2EE8;
     v27 = v20;
     v22 = v20;
-    [v21 fetchContactForPerson:v9 completionHandler:&v23];
+    [v21 fetchContactForPerson:person completionHandler:&v23];
 
     [(SearchUIContactButtonItemGenerator *)self updateButtons:v23];
   }
 
   else
   {
-    v7[2](v7, 0, 1);
+    completionCopy[2](completionCopy, 0, 1);
   }
 }
 
@@ -116,30 +116,30 @@ uint64_t __72__SearchUIContactButtonItemGenerator_cachedEnabledActionsForButtonI
 
 - (id)cachedEnabledActionTypes
 {
-  v3 = [objc_opt_class() cachedEnabledActionsForButtonItems];
-  v4 = [(SearchUIContactButtonItemGenerator *)self sfButtonItem];
-  v5 = [v3 objectForKey:v4];
+  cachedEnabledActionsForButtonItems = [objc_opt_class() cachedEnabledActionsForButtonItems];
+  sfButtonItem = [(SearchUIContactButtonItemGenerator *)self sfButtonItem];
+  v5 = [cachedEnabledActionsForButtonItems objectForKey:sfButtonItem];
 
   return v5;
 }
 
-- (void)cacheEnabledActionType:(id)a3
+- (void)cacheEnabledActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(SearchUIContactButtonItemGenerator *)self cachedEnabledActionTypes];
-  if (v5)
+  typeCopy = type;
+  cachedEnabledActionTypes = [(SearchUIContactButtonItemGenerator *)self cachedEnabledActionTypes];
+  if (cachedEnabledActionTypes)
   {
-    v7 = v5;
-    [v5 addObject:v4];
+    v7 = cachedEnabledActionTypes;
+    [cachedEnabledActionTypes addObject:typeCopy];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DFA8] setWithObject:v4];
+    v7 = [MEMORY[0x1E695DFA8] setWithObject:typeCopy];
 
-    v4 = [objc_opt_class() cachedEnabledActionsForButtonItems];
-    v6 = [(SearchUIContactButtonItemGenerator *)self sfButtonItem];
-    [v4 setObject:v7 forKey:v6];
+    typeCopy = [objc_opt_class() cachedEnabledActionsForButtonItems];
+    sfButtonItem = [(SearchUIContactButtonItemGenerator *)self sfButtonItem];
+    [typeCopy setObject:v7 forKey:sfButtonItem];
   }
 }
 
@@ -147,33 +147,33 @@ uint64_t __72__SearchUIContactButtonItemGenerator_cachedEnabledActionsForButtonI
 {
   v41 = *MEMORY[0x1E69E9840];
   v34 = objc_opt_new();
-  v3 = [(SearchUIContactButtonItemGenerator *)self quickActionsController];
-  v30 = [(SearchUIContactButtonItemGenerator *)self cachedEnabledActionTypes];
-  v4 = [(SearchUIContactButtonItemGenerator *)self sfButtonItem];
+  quickActionsController = [(SearchUIContactButtonItemGenerator *)self quickActionsController];
+  cachedEnabledActionTypes = [(SearchUIContactButtonItemGenerator *)self cachedEnabledActionTypes];
+  sfButtonItem = [(SearchUIContactButtonItemGenerator *)self sfButtonItem];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SearchUIContactButtonItemGenerator *)self sfButtonItem];
-    v6 = [v5 title];
+    sfButtonItem2 = [(SearchUIContactButtonItemGenerator *)self sfButtonItem];
+    title = [sfButtonItem2 title];
   }
 
   else
   {
-    v6 = 0;
+    title = 0;
   }
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = [v3 actionTypes];
+  obj = [quickActionsController actionTypes];
   v7 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v7)
   {
     v8 = v7;
     v35 = *v37;
     v32 = *MEMORY[0x1E695C170];
-    v33 = v6;
+    v33 = title;
     do
     {
       v9 = 0;
@@ -185,34 +185,34 @@ uint64_t __72__SearchUIContactButtonItemGenerator_cachedEnabledActionsForButtonI
         }
 
         v10 = *(*(&v36 + 1) + 8 * v9);
-        v11 = [(SearchUIContactButtonItemGenerator *)self quickActionViews];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        quickActionViews = [(SearchUIContactButtonItemGenerator *)self quickActionViews];
+        v12 = [quickActionViews objectForKeyedSubscript:v10];
 
-        if (([v12 enabled] & 1) != 0 || objc_msgSend(v30, "containsObject:", v10))
+        if (([v12 enabled] & 1) != 0 || objc_msgSend(cachedEnabledActionTypes, "containsObject:", v10))
         {
           v13 = [SearchUIContactButtonItem alloc];
-          v14 = [(SearchUIContactButtonItemGenerator *)self sfButtonItem];
-          v15 = [(SearchUIButtonItem *)v13 initWithSFButtonItem:v14];
+          sfButtonItem3 = [(SearchUIContactButtonItemGenerator *)self sfButtonItem];
+          v15 = [(SearchUIButtonItem *)v13 initWithSFButtonItem:sfButtonItem3];
 
-          [(SearchUIContactButtonItem *)v15 setQuickActionsController:v3];
+          [(SearchUIContactButtonItem *)v15 setQuickActionsController:quickActionsController];
           [(SearchUIContactButtonItem *)v15 setActionType:v10];
-          if (v6)
+          if (title)
           {
-            [(SearchUIContactButtonItem *)v15 setTitle:v6];
+            [(SearchUIContactButtonItem *)v15 setTitle:title];
           }
 
           else
           {
             v16 = objc_opt_class();
-            v17 = [v3 contact];
-            v18 = [v16 buttonTitleForActionType:v10 contact:v17];
+            contact = [quickActionsController contact];
+            v18 = [v16 buttonTitleForActionType:v10 contact:contact];
             [(SearchUIContactButtonItem *)v15 setTitle:v18];
           }
 
-          v19 = [(SearchUIContactButtonItemGenerator *)self quickActionsController];
-          -[SearchUIButtonItem setShowsMenuAsPrimaryAction:](v15, "setShowsMenuAsPrimaryAction:", [v19 hasDefaultActionForActionType:v10] ^ 1);
+          quickActionsController2 = [(SearchUIContactButtonItemGenerator *)self quickActionsController];
+          -[SearchUIButtonItem setShowsMenuAsPrimaryAction:](v15, "setShowsMenuAsPrimaryAction:", [quickActionsController2 hasDefaultActionForActionType:v10] ^ 1);
 
-          if (![v10 isEqualToString:v32] || ((objc_msgSend(v3, "contact"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "hasBeenPersisted"), v22 = @"square.and.pencil", (v21 & 1) == 0) ? (v23 = @"square.and.pencil") : (v23 = 0), v24 = v23, v20, (v21 & 1) != 0))
+          if (![v10 isEqualToString:v32] || ((objc_msgSend(quickActionsController, "contact"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "hasBeenPersisted"), v22 = @"square.and.pencil", (v21 & 1) == 0) ? (v23 = @"square.and.pencil") : (v23 = 0), v24 = v23, v20, (v21 & 1) != 0))
           {
             v22 = [MEMORY[0x1E6996C08] symbolOulinedImageNameForActionType:v10];
           }
@@ -226,11 +226,11 @@ uint64_t __72__SearchUIContactButtonItemGenerator_cachedEnabledActionsForButtonI
           }
 
           [v12 setButtonItem:v15];
-          [v3 setModelTrackingDelegate:v15];
+          [quickActionsController setModelTrackingDelegate:v15];
           [v34 addObject:v15];
           [(SearchUIContactButtonItemGenerator *)self cacheEnabledActionType:v10];
 
-          v6 = v33;
+          title = v33;
         }
 
         ++v9;
@@ -243,85 +243,85 @@ uint64_t __72__SearchUIContactButtonItemGenerator_cachedEnabledActionsForButtonI
     while (v8);
   }
 
-  v26 = [v3 actionTypes];
-  v27 = [v26 count];
+  actionTypes = [quickActionsController actionTypes];
+  v27 = [actionTypes count];
   v28 = v27 == [v34 count];
 
-  v29 = [(SearchUIContactButtonItemGenerator *)self completionHandler];
-  (v29)[2](v29, v34, v28);
+  completionHandler = [(SearchUIContactButtonItemGenerator *)self completionHandler];
+  (completionHandler)[2](completionHandler, v34, v28);
 }
 
-+ (id)buttonTitleForActionType:(id)a3 contact:(id)a4
++ (id)buttonTitleForActionType:(id)type contact:(id)contact
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 hasBeenPersisted];
+  typeCopy = type;
+  contactCopy = contact;
+  hasBeenPersisted = [contactCopy hasBeenPersisted];
   v8 = objc_opt_new();
-  if ([v5 isEqualToString:*MEMORY[0x1E695C1B8]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E695C1B8]])
   {
-    if (v7)
+    if (hasBeenPersisted)
     {
-      v9 = @"VIDEO_CALL_MENU_TITLE";
+      faceTimeVideoServiceName = @"VIDEO_CALL_MENU_TITLE";
     }
 
     else
     {
-      v9 = [v8 faceTimeVideoServiceName];
+      faceTimeVideoServiceName = [v8 faceTimeVideoServiceName];
     }
   }
 
-  else if ([v5 isEqualToString:*MEMORY[0x1E695C178]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x1E695C178]])
   {
-    v9 = @"SEND_MESSAGE";
+    faceTimeVideoServiceName = @"SEND_MESSAGE";
   }
 
-  else if ([v5 isEqualToString:*MEMORY[0x1E695C150]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x1E695C150]])
   {
-    v10 = [v6 phoneNumbers];
-    if ([v10 count])
+    phoneNumbers = [contactCopy phoneNumbers];
+    if ([phoneNumbers count])
     {
-      v9 = @"AUDIO_CALL_MENU_TITLE";
+      faceTimeVideoServiceName = @"AUDIO_CALL_MENU_TITLE";
     }
 
     else
     {
-      v9 = [v8 faceTimeAudioServiceName];
+      faceTimeVideoServiceName = [v8 faceTimeAudioServiceName];
     }
   }
 
-  else if ([v5 isEqualToString:*MEMORY[0x1E695C170]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x1E695C170]])
   {
-    v9 = @"SEND_EMAIL";
+    faceTimeVideoServiceName = @"SEND_EMAIL";
   }
 
   else
   {
-    v9 = 0;
+    faceTimeVideoServiceName = 0;
   }
 
-  v11 = [SearchUIUtilities localizedStringForKey:v9];
+  v11 = [SearchUIUtilities localizedStringForKey:faceTimeVideoServiceName];
 
   return v11;
 }
 
-- (id)viewForActionType:(id)a3
+- (id)viewForActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(SearchUIContactButtonItemGenerator *)self quickActionViews];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  quickActionViews = [(SearchUIContactButtonItemGenerator *)self quickActionViews];
+  v6 = [quickActionViews objectForKeyedSubscript:typeCopy];
 
   if (!v6)
   {
     v6 = objc_opt_new();
     [v6 setGenerator:self];
-    v7 = [(SearchUIContactButtonItemGenerator *)self quickActionViews];
-    [v7 setObject:v6 forKeyedSubscript:v4];
+    quickActionViews2 = [(SearchUIContactButtonItemGenerator *)self quickActionViews];
+    [quickActionViews2 setObject:v6 forKeyedSubscript:typeCopy];
   }
 
   return v6;
 }
 
-+ (id)defaultButtonCategoriesForPerson:(id)a3
++ (id)defaultButtonCategoriesForPerson:(id)person
 {
   v13 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E695C178];
@@ -329,13 +329,13 @@ uint64_t __72__SearchUIContactButtonItemGenerator_cachedEnabledActionsForButtonI
   v11 = v3;
   v12 = *MEMORY[0x1E695C150];
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
+  personCopy = person;
   v6 = [v4 arrayWithObjects:&v10 count:3];
   v7 = [v6 mutableCopy];
 
-  v8 = [v5 emailAddresses];
+  emailAddresses = [personCopy emailAddresses];
 
-  if (v8)
+  if (emailAddresses)
   {
     [v7 insertObject:*MEMORY[0x1E695C170] atIndex:0];
   }
@@ -348,16 +348,16 @@ uint64_t __72__SearchUIContactButtonItemGenerator_cachedEnabledActionsForButtonI
   return v7;
 }
 
-+ (id)buttonCategoriesForActionTypes:(id)a3
++ (id)buttonCategoriesForActionTypes:(id)types
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  typesCopy = types;
   v4 = objc_opt_new();
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = v3;
+  v5 = typesCopy;
   v6 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v6)
   {
@@ -381,13 +381,13 @@ uint64_t __72__SearchUIContactButtonItemGenerator_cachedEnabledActionsForButtonI
           objc_enumerationMutation(v5);
         }
 
-        v14 = [*(*(&v24 + 1) + 8 * i) intValue];
-        if (v14 <= 4)
+        intValue = [*(*(&v24 + 1) + 8 * i) intValue];
+        if (intValue <= 4)
         {
-          if (v14 > 2)
+          if (intValue > 2)
           {
             v15 = v11;
-            if (v14 != 3)
+            if (intValue != 3)
             {
               v15 = v21;
             }
@@ -396,10 +396,10 @@ uint64_t __72__SearchUIContactButtonItemGenerator_cachedEnabledActionsForButtonI
           else
           {
             v15 = v12;
-            if (v14 != 1)
+            if (intValue != 1)
             {
               v15 = v20;
-              if (v14 != 2)
+              if (intValue != 2)
               {
                 continue;
               }
@@ -407,10 +407,10 @@ uint64_t __72__SearchUIContactButtonItemGenerator_cachedEnabledActionsForButtonI
           }
         }
 
-        else if (v14 <= 6)
+        else if (intValue <= 6)
         {
           v15 = v10;
-          if (v14 != 5)
+          if (intValue != 5)
           {
             v15 = v22;
           }
@@ -419,12 +419,12 @@ uint64_t __72__SearchUIContactButtonItemGenerator_cachedEnabledActionsForButtonI
         else
         {
           v15 = v9;
-          if (v14 != 7)
+          if (intValue != 7)
           {
             v15 = v23;
-            if (v14 != 8)
+            if (intValue != 8)
             {
-              if (v14 != 9)
+              if (intValue != 9)
               {
                 continue;
               }
@@ -451,15 +451,15 @@ uint64_t __72__SearchUIContactButtonItemGenerator_cachedEnabledActionsForButtonI
   return v4;
 }
 
-- (id)visibleButtonForActionType:(id)a3
+- (id)visibleButtonForActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(SearchUIContactButtonItemGenerator *)self quickActionViews];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  quickActionViews = [(SearchUIContactButtonItemGenerator *)self quickActionViews];
+  v6 = [quickActionViews objectForKeyedSubscript:typeCopy];
 
-  v7 = [(SearchUIButtonItemGenerator *)self delegate];
-  v8 = [v6 buttonItem];
-  v9 = [v7 viewForButtonItem:v8];
+  delegate = [(SearchUIButtonItemGenerator *)self delegate];
+  buttonItem = [v6 buttonItem];
+  v9 = [delegate viewForButtonItem:buttonItem];
 
   return v9;
 }

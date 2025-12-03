@@ -1,12 +1,12 @@
 @interface CSLPRFReturnToAppSettings
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CSLPRFReturnToAppSettings)init;
-- (CSLPRFReturnToAppSettings)initWithDictionary:(id)a3;
+- (CSLPRFReturnToAppSettings)initWithDictionary:(id)dictionary;
 - (double)returnToAppTimeout;
 - (id)description;
 - (id)toDictionary;
 - (unint64_t)hash;
-- (void)setReturnToAppTimeout:(double)a3;
+- (void)setReturnToAppTimeout:(double)timeout;
 @end
 
 @implementation CSLPRFReturnToAppSettings
@@ -30,21 +30,21 @@
     v7 = [v4 appendBool:1 withName:@"AlwaysReturnToAppInSession"];
   }
 
-  v8 = [v4 build];
+  build = [v4 build];
 
-  return v8;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   hasCustomReturnToAppTimeout = self->_hasCustomReturnToAppTimeout;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __37__CSLPRFReturnToAppSettings_isEqual___block_invoke;
   v28[3] = &unk_278745630;
-  v7 = v4;
+  v7 = equalCopy;
   v29 = v7;
   v8 = [v5 appendBool:hasCustomReturnToAppTimeout counterpart:v28];
   returnToAppTimeout = self->_returnToAppTimeout;
@@ -78,11 +78,11 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = v3;
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = builder;
   if (self->_hasCustomReturnToAppTimeout)
   {
-    v5 = [v3 appendDouble:self->_returnToAppTimeout];
+    v5 = [builder appendDouble:self->_returnToAppTimeout];
   }
 
   v6 = [v4 appendBool:self->_sessionCapable];
@@ -94,26 +94,26 @@
 
 - (id)toDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (self->_hasCustomReturnToAppTimeout)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithDouble:self->_returnToAppTimeout];
-    [v3 setObject:v4 forKeyedSubscript:@"ReturnToAppTimeout"];
+    [dictionary setObject:v4 forKeyedSubscript:@"ReturnToAppTimeout"];
   }
 
   if (self->_sessionCapable)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithBool:1];
-    [v3 setObject:v5 forKeyedSubscript:@"SessionCapable"];
+    [dictionary setObject:v5 forKeyedSubscript:@"SessionCapable"];
   }
 
   if (self->_alwaysReturnToAppInSession)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithBool:1];
-    [v3 setObject:v6 forKeyedSubscript:@"AlwaysReturnToAppInSession"];
+    [dictionary setObject:v6 forKeyedSubscript:@"AlwaysReturnToAppInSession"];
   }
 
-  v7 = [v3 copy];
+  v7 = [dictionary copy];
 
   return v7;
 }
@@ -133,33 +133,33 @@
   return *p_returnToAppTimeout;
 }
 
-- (void)setReturnToAppTimeout:(double)a3
+- (void)setReturnToAppTimeout:(double)timeout
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = cslprf_sessions_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v12 = 67109120;
-    v13 = a3;
+    timeoutCopy3 = timeout;
     _os_log_impl(&dword_22CE92000, v5, OS_LOG_TYPE_INFO, "setting returnToAppTimeout to %d", &v12, 8u);
   }
 
-  v6 = fabs(a3);
+  v6 = fabs(timeout);
   v7 = v6 < 0.001;
   v8 = v6 >= 0.001;
-  v9 = 120.0;
+  timeoutCopy2 = 120.0;
   if (!v7)
   {
-    v9 = a3;
+    timeoutCopy2 = timeout;
   }
 
-  self->_returnToAppTimeout = v9;
+  self->_returnToAppTimeout = timeoutCopy2;
   self->_hasCustomReturnToAppTimeout = v8;
   v10 = cslprf_sessions_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v12 = 67109120;
-    v13 = a3;
+    timeoutCopy3 = timeout;
     _os_log_impl(&dword_22CE92000, v10, OS_LOG_TYPE_INFO, "_hasCustomReturnToAppTimeout = %{BOOL}u", &v12, 8u);
   }
 
@@ -179,13 +179,13 @@
   return result;
 }
 
-- (CSLPRFReturnToAppSettings)initWithDictionary:(id)a3
+- (CSLPRFReturnToAppSettings)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(CSLPRFReturnToAppSettings *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"ReturnToAppTimeout"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"ReturnToAppTimeout"];
     [v6 floatValue];
     if (v7 == -1.0 && (CSLSAllowReturnToAppUntilCrownPress() & 1) == 0)
     {
@@ -202,9 +202,9 @@
         v8 = 120.0;
 LABEL_8:
         v5->_returnToAppTimeout = v8;
-        v10 = [v4 objectForKeyedSubscript:@"SessionCapable"];
+        v10 = [dictionaryCopy objectForKeyedSubscript:@"SessionCapable"];
         v5->_sessionCapable = [v10 BOOLValue];
-        v11 = [v4 objectForKeyedSubscript:@"AlwaysReturnToAppInSession"];
+        v11 = [dictionaryCopy objectForKeyedSubscript:@"AlwaysReturnToAppInSession"];
 
         v5->_alwaysReturnToAppInSession = [v11 BOOLValue];
         goto LABEL_9;

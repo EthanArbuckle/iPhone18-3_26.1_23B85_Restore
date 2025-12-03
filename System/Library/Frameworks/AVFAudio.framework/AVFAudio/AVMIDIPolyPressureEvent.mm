@@ -1,15 +1,15 @@
 @interface AVMIDIPolyPressureEvent
 - (AVMIDIPolyPressureEvent)initWithChannel:(UInt32)channel key:(UInt32)key pressure:(UInt32)pressure;
-- (AVMIDIPolyPressureEvent)initWithMessage:(MIDIChannelMessage *)a3;
+- (AVMIDIPolyPressureEvent)initWithMessage:(MIDIChannelMessage *)message;
 @end
 
 @implementation AVMIDIPolyPressureEvent
 
-- (AVMIDIPolyPressureEvent)initWithMessage:(MIDIChannelMessage *)a3
+- (AVMIDIPolyPressureEvent)initWithMessage:(MIDIChannelMessage *)message
 {
   v4.receiver = self;
   v4.super_class = AVMIDIPolyPressureEvent;
-  return [(AVMIDIChannelEvent *)&v4 initWithMessage:a3];
+  return [(AVMIDIChannelEvent *)&v4 initWithMessage:message];
 }
 
 - (AVMIDIPolyPressureEvent)initWithChannel:(UInt32)channel key:(UInt32)key pressure:(UInt32)pressure

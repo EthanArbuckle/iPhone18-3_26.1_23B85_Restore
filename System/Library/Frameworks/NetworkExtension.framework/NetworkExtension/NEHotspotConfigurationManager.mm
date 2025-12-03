@@ -2,26 +2,26 @@
 + (NEHotspotConfigurationManager)sharedManager;
 - (void)applyConfiguration:(NEHotspotConfiguration *)configuration completionHandler:(void *)completionHandler;
 - (void)getConfiguredSSIDsWithCompletionHandler:(void *)completionHandler;
-- (void)joinAccessoryHotspot:(id)a3 passphrase:(id)a4 completionHandler:(id)a5;
-- (void)joinAccessoryHotspotWithoutSecurity:(id)a3 completionHandler:(id)a4;
+- (void)joinAccessoryHotspot:(id)hotspot passphrase:(id)passphrase completionHandler:(id)handler;
+- (void)joinAccessoryHotspotWithoutSecurity:(id)security completionHandler:(id)handler;
 - (void)removeConfigurationForHS20DomainName:(NSString *)domainName;
 - (void)removeConfigurationForSSID:(NSString *)SSID;
-- (void)reportError:(void *)a3 completionHandler:;
+- (void)reportError:(void *)error completionHandler:;
 @end
 
 @implementation NEHotspotConfigurationManager
 
-- (void)joinAccessoryHotspotWithoutSecurity:(id)a3 completionHandler:(id)a4
+- (void)joinAccessoryHotspotWithoutSecurity:(id)security completionHandler:(id)handler
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 SSID];
-  if (v7)
+  handlerCopy = handler;
+  sSID = [security SSID];
+  if (sSID)
   {
-    v8 = [[NEHotspotConfiguration alloc] initWithSSID:v7];
+    v8 = [[NEHotspotConfiguration alloc] initWithSSID:sSID];
     [(NEHotspotConfiguration *)v8 setJoinOnce:1];
     [(NEHotspotConfiguration *)v8 setIsAccessory:1];
-    [(NEHotspotConfigurationManager *)self applyConfiguration:v8 completionHandler:v6];
+    [(NEHotspotConfigurationManager *)self applyConfiguration:v8 completionHandler:handlerCopy];
   }
 
   else
@@ -35,24 +35,24 @@
       _os_log_error_impl(&dword_1BA83C000, v9, OS_LOG_TYPE_ERROR, "%@ ASAccessory object not provided", &v12, 0xCu);
     }
 
-    [(NEHotspotConfigurationManager *)self reportError:v6 completionHandler:?];
+    [(NEHotspotConfigurationManager *)self reportError:handlerCopy completionHandler:?];
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportError:(void *)a3 completionHandler:
+- (void)reportError:(void *)error completionHandler:
 {
-  v5 = a3;
-  v6 = v5;
-  if (a1 && v5)
+  errorCopy = error;
+  v6 = errorCopy;
+  if (self && errorCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __63__NEHotspotConfigurationManager_reportError_completionHandler___block_invoke;
     block[3] = &unk_1E7F0AB90;
-    block[4] = a1;
-    v8 = v5;
+    block[4] = self;
+    v8 = errorCopy;
     v9 = a2;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
@@ -230,13 +230,13 @@ LABEL_45:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)joinAccessoryHotspot:(id)a3 passphrase:(id)a4 completionHandler:(id)a5
+- (void)joinAccessoryHotspot:(id)hotspot passphrase:(id)passphrase completionHandler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 SSID];
-  if (!v10)
+  passphraseCopy = passphrase;
+  handlerCopy = handler;
+  sSID = [hotspot SSID];
+  if (!sSID)
   {
     v12 = ne_log_obj();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -247,12 +247,12 @@ LABEL_45:
       _os_log_error_impl(&dword_1BA83C000, v12, OS_LOG_TYPE_ERROR, "%@ ASAccessory object not provided", &v19, 0xCu);
     }
 
-    v13 = self;
+    selfCopy2 = self;
     v14 = 101;
     goto LABEL_10;
   }
 
-  if (!v8)
+  if (!passphraseCopy)
   {
     v15 = ne_log_obj();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -263,17 +263,17 @@ LABEL_45:
       _os_log_error_impl(&dword_1BA83C000, v15, OS_LOG_TYPE_ERROR, "%@ passphrase string not provided", &v19, 0xCu);
     }
 
-    v13 = self;
+    selfCopy2 = self;
     v14 = 102;
 LABEL_10:
-    [(NEHotspotConfigurationManager *)v13 reportError:v14 completionHandler:v9];
+    [(NEHotspotConfigurationManager *)selfCopy2 reportError:v14 completionHandler:handlerCopy];
     goto LABEL_11;
   }
 
-  v11 = [[NEHotspotConfiguration alloc] initWithSSID:v10 passphrase:v8 isWEP:0];
+  v11 = [[NEHotspotConfiguration alloc] initWithSSID:sSID passphrase:passphraseCopy isWEP:0];
   [(NEHotspotConfiguration *)v11 setJoinOnce:1];
   [(NEHotspotConfiguration *)v11 setIsAccessory:1];
-  [(NEHotspotConfigurationManager *)self applyConfiguration:v11 completionHandler:v9];
+  [(NEHotspotConfigurationManager *)self applyConfiguration:v11 completionHandler:handlerCopy];
 
 LABEL_11:
   v16 = *MEMORY[0x1E69E9840];
@@ -409,13 +409,13 @@ uint64_t __73__NEHotspotConfigurationManager_getConfiguredSSIDsWithCompletionHan
   v26 = *MEMORY[0x1E69E9840];
   v6 = configuration;
   v7 = completionHandler;
-  v8 = [(NEHotspotConfiguration *)v6 validate];
-  if (v8 != 100)
+  validate = [(NEHotspotConfiguration *)v6 validate];
+  if (validate != 100)
   {
-    v15 = v8;
-    v16 = self;
+    v15 = validate;
+    selfCopy2 = self;
 LABEL_11:
-    [(NEHotspotConfigurationManager *)v16 reportError:v15 completionHandler:v7];
+    [(NEHotspotConfigurationManager *)selfCopy2 reportError:v15 completionHandler:v7];
     goto LABEL_17;
   }
 
@@ -430,9 +430,9 @@ LABEL_11:
   [v11 encodeObject:v10 forKey:@"NEHotspotConfigurationKey"];
 
   [v11 finishEncoding];
-  v12 = [v11 encodedData];
+  encodedData = [v11 encodedData];
 
-  if (!v12)
+  if (!encodedData)
   {
 LABEL_8:
     v17 = ne_log_obj();
@@ -444,7 +444,7 @@ LABEL_8:
       _os_log_error_impl(&dword_1BA83C000, v17, OS_LOG_TYPE_ERROR, "%@ failed to serialize configuration object", buf, 0xCu);
     }
 
-    v16 = self;
+    selfCopy2 = self;
     v15 = 107;
     goto LABEL_11;
   }
@@ -461,12 +461,12 @@ LABEL_8:
       v22[3] = &unk_1E7F07AD0;
       v22[4] = self;
       v23 = v7;
-      [(NEHotspotConfigurationHelper *)v14 sendRequest:v12 requestType:0 resultHandler:v22];
+      [(NEHotspotConfigurationHelper *)v14 sendRequest:encodedData requestType:0 resultHandler:v22];
     }
 
     else
     {
-      [(NEHotspotConfigurationHelper *)v13 sendRequest:v12 requestType:0 resultHandler:0];
+      [(NEHotspotConfigurationHelper *)v13 sendRequest:encodedData requestType:0 resultHandler:0];
     }
   }
 

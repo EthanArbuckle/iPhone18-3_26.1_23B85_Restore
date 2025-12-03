@@ -1,33 +1,33 @@
 @interface HKValueHistogramCollectionQuery
-+ (void)configureClientInterface:(id)a3;
-- (HKValueHistogramCollectionQuery)initWithQuantityType:(id)a3 quantitySamplePredicate:(id)a4 anchorDate:(id)a5 intervalComponents:(id)a6 quantityRanges:(id)a7 resultsHandler:(id)a8;
-- (void)client_deliverValueHistogramCollection:(id)a3 forQuery:(id)a4;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_populateConfiguration:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
++ (void)configureClientInterface:(id)interface;
+- (HKValueHistogramCollectionQuery)initWithQuantityType:(id)type quantitySamplePredicate:(id)predicate anchorDate:(id)date intervalComponents:(id)components quantityRanges:(id)ranges resultsHandler:(id)handler;
+- (void)client_deliverValueHistogramCollection:(id)collection forQuery:(id)query;
+- (void)queue_deliverError:(id)error;
+- (void)queue_populateConfiguration:(id)configuration;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 - (void)queue_validate;
 @end
 
 @implementation HKValueHistogramCollectionQuery
 
-- (HKValueHistogramCollectionQuery)initWithQuantityType:(id)a3 quantitySamplePredicate:(id)a4 anchorDate:(id)a5 intervalComponents:(id)a6 quantityRanges:(id)a7 resultsHandler:(id)a8
+- (HKValueHistogramCollectionQuery)initWithQuantityType:(id)type quantitySamplePredicate:(id)predicate anchorDate:(id)date intervalComponents:(id)components quantityRanges:(id)ranges resultsHandler:(id)handler
 {
-  v15 = a3;
-  v24 = a5;
-  v23 = a6;
-  v16 = a7;
-  v17 = a8;
+  typeCopy = type;
+  dateCopy = date;
+  componentsCopy = components;
+  rangesCopy = ranges;
+  handlerCopy = handler;
   v25.receiver = self;
   v25.super_class = HKValueHistogramCollectionQuery;
-  v18 = [(HKQuery *)&v25 _initWithObjectType:v15 predicate:a4];
+  v18 = [(HKQuery *)&v25 _initWithObjectType:typeCopy predicate:predicate];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(v18 + 19, a3);
-    objc_storeStrong(&v19->_anchorDate, a5);
-    objc_storeStrong(&v19->_intervalComponents, a6);
-    objc_storeStrong(&v19->_quantityRanges, a7);
-    v20 = _Block_copy(v17);
+    objc_storeStrong(v18 + 19, type);
+    objc_storeStrong(&v19->_anchorDate, date);
+    objc_storeStrong(&v19->_intervalComponents, components);
+    objc_storeStrong(&v19->_quantityRanges, ranges);
+    v20 = _Block_copy(handlerCopy);
     resultsHandler = v19->_resultsHandler;
     v19->_resultsHandler = v20;
   }
@@ -35,21 +35,21 @@
   return v19;
 }
 
-- (void)client_deliverValueHistogramCollection:(id)a3 forQuery:(id)a4
+- (void)client_deliverValueHistogramCollection:(id)collection forQuery:(id)query
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKQuery *)self queue];
+  collectionCopy = collection;
+  queryCopy = query;
+  queue = [(HKQuery *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __83__HKValueHistogramCollectionQuery_client_deliverValueHistogramCollection_forQuery___block_invoke;
   block[3] = &unk_1E7376640;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = queryCopy;
+  v13 = collectionCopy;
+  v9 = collectionCopy;
+  v10 = queryCopy;
+  dispatch_async(queue, block);
 }
 
 void __83__HKValueHistogramCollectionQuery_client_deliverValueHistogramCollection_forQuery___block_invoke(uint64_t a1)
@@ -73,42 +73,42 @@ void __83__HKValueHistogramCollectionQuery_client_deliverValueHistogramCollectio
   }
 }
 
-- (void)queue_populateConfiguration:(id)a3
+- (void)queue_populateConfiguration:(id)configuration
 {
   v5.receiver = self;
   v5.super_class = HKValueHistogramCollectionQuery;
-  v4 = a3;
-  [(HKQuery *)&v5 queue_populateConfiguration:v4];
-  [v4 setAnchorDate:{self->_anchorDate, v5.receiver, v5.super_class}];
-  [v4 setIntervalComponents:self->_intervalComponents];
-  [v4 setQuantityRanges:self->_quantityRanges];
+  configurationCopy = configuration;
+  [(HKQuery *)&v5 queue_populateConfiguration:configurationCopy];
+  [configurationCopy setAnchorDate:{self->_anchorDate, v5.receiver, v5.super_class}];
+  [configurationCopy setIntervalComponents:self->_intervalComponents];
+  [configurationCopy setQuantityRanges:self->_quantityRanges];
 }
 
-+ (void)configureClientInterface:(id)a3
++ (void)configureClientInterface:(id)interface
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___HKValueHistogramCollectionQuery;
-  v3 = a3;
-  objc_msgSendSuper2(&v5, sel_configureClientInterface_, v3);
+  interfaceCopy = interface;
+  objc_msgSendSuper2(&v5, sel_configureClientInterface_, interfaceCopy);
   v4 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-  [v3 setClasses:v4 forSelector:sel_client_deliverValueHistogramCollection_forQuery_ argumentIndex:0 ofReply:0];
+  [interfaceCopy setClasses:v4 forSelector:sel_client_deliverValueHistogramCollection_forQuery_ argumentIndex:0 ofReply:0];
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _Block_copy(self->_resultsHandler);
-  v6 = [(HKQuery *)self clientQueue];
+  clientQueue = [(HKQuery *)self clientQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__HKValueHistogramCollectionQuery_queue_deliverError___block_invoke;
   block[3] = &unk_1E7376618;
-  v10 = v4;
+  v10 = errorCopy;
   v11 = v5;
   block[4] = self;
-  v7 = v4;
+  v7 = errorCopy;
   v8 = v5;
-  dispatch_async(v6, block);
+  dispatch_async(clientQueue, block);
 }
 
 - (void)queue_validate
@@ -132,11 +132,11 @@ void __83__HKValueHistogramCollectionQuery_client_deliverValueHistogramCollectio
   }
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   v5.receiver = self;
   v5.super_class = HKValueHistogramCollectionQuery;
-  [(HKQuery *)&v5 queue_queryDidDeactivate:a3];
+  [(HKQuery *)&v5 queue_queryDidDeactivate:deactivate];
   resultsHandler = self->_resultsHandler;
   self->_resultsHandler = 0;
 }

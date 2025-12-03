@@ -1,20 +1,20 @@
 @interface NanoPhoneVoicemailBody
-- (BOOL)isEqual:(id)a3;
-- (NanoPhoneVoicemailBody)initWithAudioMessage:(id)a3 voicemailNumber:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NanoPhoneVoicemailBody)initWithAudioMessage:(id)message voicemailNumber:(unint64_t)number;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NanoPhoneVoicemailBody
 
-- (NanoPhoneVoicemailBody)initWithAudioMessage:(id)a3 voicemailNumber:(unint64_t)a4
+- (NanoPhoneVoicemailBody)initWithAudioMessage:(id)message voicemailNumber:(unint64_t)number
 {
-  v6 = [a3 audioData];
-  if (v6)
+  audioData = [message audioData];
+  if (audioData)
   {
     v11.receiver = self;
     v11.super_class = NanoPhoneVoicemailBody;
@@ -22,20 +22,20 @@
     v8 = v7;
     if (v7)
     {
-      [(NanoPhoneVoicemailBody *)v7 setVoicemailNumber:a4];
-      [(NanoPhoneVoicemailBody *)v8 setVoicemailRecording:v6];
+      [(NanoPhoneVoicemailBody *)v7 setVoicemailNumber:number];
+      [(NanoPhoneVoicemailBody *)v8 setVoicemailRecording:audioData];
     }
 
     self = v8;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)description
@@ -44,32 +44,32 @@
   v8.receiver = self;
   v8.super_class = NanoPhoneVoicemailBody;
   v4 = [(NanoPhoneVoicemailBody *)&v8 description];
-  v5 = [(NanoPhoneVoicemailBody *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NanoPhoneVoicemailBody *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_voicemailNumber];
-  [v3 setObject:v4 forKey:@"voicemailNumber"];
+  [dictionary setObject:v4 forKey:@"voicemailNumber"];
 
   voicemailRecording = self->_voicemailRecording;
   if (voicemailRecording)
   {
-    [v3 setObject:voicemailRecording forKey:@"voicemailRecording"];
+    [dictionary setObject:voicemailRecording forKey:@"voicemailRecording"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   voicemailNumber = self->_voicemailNumber;
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteInt64Field();
   if (self->_voicemailRecording)
   {
@@ -77,34 +77,34 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 1) = self->_voicemailNumber;
+  *(to + 1) = self->_voicemailNumber;
   voicemailRecording = self->_voicemailRecording;
   if (voicemailRecording)
   {
-    [a3 setVoicemailRecording:voicemailRecording];
+    [to setVoicemailRecording:voicemailRecording];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[1] = self->_voicemailNumber;
-  v6 = [(NSData *)self->_voicemailRecording copyWithZone:a3];
+  v6 = [(NSData *)self->_voicemailRecording copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_voicemailNumber == v4[1])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_voicemailNumber == equalCopy[1])
   {
     voicemailRecording = self->_voicemailRecording;
-    if (voicemailRecording | v4[2])
+    if (voicemailRecording | equalCopy[2])
     {
       v6 = [(NSData *)voicemailRecording isEqual:?];
     }
@@ -123,10 +123,10 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_voicemailNumber = *(a3 + 1);
-  if (*(a3 + 2))
+  self->_voicemailNumber = *(from + 1);
+  if (*(from + 2))
   {
     [(NanoPhoneVoicemailBody *)self setVoicemailRecording:?];
   }

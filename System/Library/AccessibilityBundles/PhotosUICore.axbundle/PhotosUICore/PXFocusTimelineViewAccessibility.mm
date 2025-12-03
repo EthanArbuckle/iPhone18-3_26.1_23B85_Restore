@@ -1,45 +1,45 @@
 @interface PXFocusTimelineViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 - (void)layoutSubviews;
 @end
 
 @implementation PXFocusTimelineViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXFocusTimelineView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PXFocusTimelineView" hasInstanceVariable:@"_focusEventsView" withType:"UIView"];
-  [v3 validateClass:@"PXFocusTimelineView" hasInstanceVariable:@"_focusEvents" withType:"NSMutableArray"];
-  [v3 validateClass:@"PXFocusTimelineView" hasInstanceMethod:@"_axDescriptionForFocusEvent:" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXFocusTimelineView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PXFocusTimelineView" hasInstanceVariable:@"_focusEventsView" withType:"UIView"];
+  [validationsCopy validateClass:@"PXFocusTimelineView" hasInstanceVariable:@"_focusEvents" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"PXFocusTimelineView" hasInstanceMethod:@"_axDescriptionForFocusEvent:" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityElements
 {
-  v3 = [(PXFocusTimelineViewAccessibility *)self _axFocusTimelineViewAXElements];
-  if (!v3)
+  _axFocusTimelineViewAXElements = [(PXFocusTimelineViewAccessibility *)self _axFocusTimelineViewAXElements];
+  if (!_axFocusTimelineViewAXElements)
   {
     v26.receiver = self;
     v26.super_class = PXFocusTimelineViewAccessibility;
-    v4 = [(PXFocusTimelineViewAccessibility *)&v26 accessibilityElements];
-    if (v4)
+    accessibilityElements = [(PXFocusTimelineViewAccessibility *)&v26 accessibilityElements];
+    if (accessibilityElements)
     {
       v25.receiver = self;
       v25.super_class = PXFocusTimelineViewAccessibility;
-      v5 = [(PXFocusTimelineViewAccessibility *)&v25 accessibilityElements];
-      v6 = [v5 mutableCopy];
+      accessibilityElements2 = [(PXFocusTimelineViewAccessibility *)&v25 accessibilityElements];
+      array = [accessibilityElements2 mutableCopy];
     }
 
     else
     {
-      v6 = [MEMORY[0x29EDB8DE8] array];
+      array = [MEMORY[0x29EDB8DE8] array];
     }
 
     v7 = [(PXFocusTimelineViewAccessibility *)self safeUIViewForKey:@"_focusEventsView"];
     v8 = [(PXFocusTimelineViewAccessibility *)self safeArrayForKey:@"_focusEvents"];
-    v9 = [v7 subviews];
-    v10 = [v9 mutableCopy];
+    subviews = [v7 subviews];
+    v10 = [subviews mutableCopy];
 
     [v10 sortUsingSelector:sel_accessibilityCompareGeometry_];
     v22[0] = 0;
@@ -65,17 +65,17 @@
     v14 = v13;
     v17 = v14;
     objc_copyWeak(&v19, &location);
-    v3 = v6;
-    v18 = v3;
+    _axFocusTimelineViewAXElements = array;
+    v18 = _axFocusTimelineViewAXElements;
     [v8 enumerateObjectsUsingBlock:v16];
-    [(PXFocusTimelineViewAccessibility *)self _setAXFocusTimelineViewAXElements:v3];
+    [(PXFocusTimelineViewAccessibility *)self _setAXFocusTimelineViewAXElements:_axFocusTimelineViewAXElements];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
     _Block_object_dispose(v22, 8);
   }
 
-  return v3;
+  return _axFocusTimelineViewAXElements;
 }
 
 BOOL __57__PXFocusTimelineViewAccessibility_accessibilityElements__block_invoke(uint64_t a1, void *a2)

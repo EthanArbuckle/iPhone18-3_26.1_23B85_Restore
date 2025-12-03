@@ -14,8 +14,8 @@
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v5 = [(NSMutableArray *)self->_children reverseObjectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v50 objects:v56 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->_children reverseObjectEnumerator];
+  v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v50 objects:v56 count:16];
   if (v6)
   {
     v7 = v6;
@@ -26,13 +26,13 @@
       {
         if (*v51 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         [v4 addObject:*(*(&v50 + 1) + 8 * i)];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v50 objects:v56 count:16];
+      v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v50 objects:v56 count:16];
     }
 
     while (v7);
@@ -42,18 +42,18 @@
   {
     while (1)
     {
-      v10 = [v4 lastObject];
+      lastObject = [v4 lastObject];
       [v4 removeLastObject];
-      v11 = [v10 type];
-      if (v11 == 2)
+      type = [lastObject type];
+      if (type == 2)
       {
         v48 = 0u;
         v49 = 0u;
         v46 = 0u;
         v47 = 0u;
-        if (v10)
+        if (lastObject)
         {
-          v23 = [v10[5] copy];
+          v23 = [lastObject[5] copy];
         }
 
         else
@@ -61,9 +61,9 @@
           v23 = 0;
         }
 
-        v16 = [v23 reverseObjectEnumerator];
+        reverseObjectEnumerator2 = [v23 reverseObjectEnumerator];
 
-        v24 = [v16 countByEnumeratingWithState:&v46 objects:v55 count:16];
+        v24 = [reverseObjectEnumerator2 countByEnumeratingWithState:&v46 objects:v55 count:16];
         if (v24)
         {
           v25 = v24;
@@ -74,13 +74,13 @@
             {
               if (*v47 != v26)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(reverseObjectEnumerator2);
               }
 
               [v4 addObject:*(*(&v46 + 1) + 8 * j)];
             }
 
-            v25 = [v16 countByEnumeratingWithState:&v46 objects:v55 count:16];
+            v25 = [reverseObjectEnumerator2 countByEnumeratingWithState:&v46 objects:v55 count:16];
           }
 
           while (v25);
@@ -89,29 +89,29 @@
         goto LABEL_35;
       }
 
-      if (v11 != 1)
+      if (type != 1)
       {
         break;
       }
 
-      if (v10)
+      if (lastObject)
       {
-        v16 = v10[6];
-        v13 = [v10[5] copy];
+        reverseObjectEnumerator2 = lastObject[6];
+        v13 = [lastObject[5] copy];
       }
 
       else
       {
-        v16 = 0;
+        reverseObjectEnumerator2 = 0;
         v13 = 0;
       }
 
       v17 = [v13 count];
 LABEL_20:
 
-      if (v16)
+      if (reverseObjectEnumerator2)
       {
-        v18 = [v3 objectForKeyedSubscript:v16];
+        v18 = [v3 objectForKeyedSubscript:reverseObjectEnumerator2];
         v19 = v18;
         if (v18)
         {
@@ -122,13 +122,13 @@ LABEL_20:
 
         else
         {
-          [v41 addObject:v16];
+          [v41 addObject:reverseObjectEnumerator2];
           v22 = MEMORY[0x1E696AD98];
           v21 = v17;
         }
 
         v28 = [v22 numberWithUnsignedInteger:v21];
-        [v3 setObject:v28 forKeyedSubscript:v16];
+        [v3 setObject:v28 forKeyedSubscript:reverseObjectEnumerator2];
 
 LABEL_35:
       }
@@ -141,14 +141,14 @@ LABEL_36:
       }
     }
 
-    if (v11)
+    if (type)
     {
       goto LABEL_36;
     }
 
-    if (v10)
+    if (lastObject)
     {
-      v12 = v10[5];
+      v12 = lastObject[5];
       v13 = v12;
       if (v12)
       {
@@ -156,7 +156,7 @@ LABEL_36:
         v15 = v14;
         if (v14)
         {
-          v16 = v14[2];
+          reverseObjectEnumerator2 = v14[2];
 LABEL_16:
 
           v17 = 1;
@@ -176,7 +176,7 @@ LABEL_16:
       v13 = 0;
     }
 
-    v16 = 0;
+    reverseObjectEnumerator2 = 0;
     goto LABEL_16;
   }
 

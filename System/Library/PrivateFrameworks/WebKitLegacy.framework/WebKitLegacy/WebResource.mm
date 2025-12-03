@@ -5,16 +5,16 @@
 - (NSString)textEncodingName;
 - (NSURL)URL;
 - (WebResource)init;
-- (WebResource)initWithCoder:(id)a3;
-- (id)_initWithCoreResource:(void *)a3;
-- (id)_initWithData:(id)a3 URL:(id)a4 MIMEType:(id)a5 textEncodingName:(id)a6 frameName:(id)a7 response:(id)a8 copyData:(BOOL)a9;
+- (WebResource)initWithCoder:(id)coder;
+- (id)_initWithCoreResource:(void *)resource;
+- (id)_initWithData:(id)data URL:(id)l MIMEType:(id)type textEncodingName:(id)name frameName:(id)frameName response:(id)response copyData:(BOOL)copyData;
 - (id)_response;
 - (id)_stringValue;
 - (id)_suggestedFilename;
 - (id)description;
 - (void)_ignoreWhenUnarchiving;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WebResource
@@ -35,7 +35,7 @@
   return result;
 }
 
-- (WebResource)initWithCoder:(id)a3
+- (WebResource)initWithCoder:(id)coder
 {
   v40.receiver = self;
   v40.super_class = WebResource;
@@ -43,42 +43,42 @@
   if (v4)
   {
     v39 = 0;
-    v5 = [a3 decodeObjectForKey:@"WebResourceData"];
+    v5 = [coder decodeObjectForKey:@"WebResourceData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v39 = v5;
     }
 
-    v6 = [a3 decodeObjectForKey:@"WebResourceURL"];
+    v6 = [coder decodeObjectForKey:@"WebResourceURL"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v6 = 0;
     }
 
-    v7 = [a3 decodeObjectForKey:@"WebResourceMIMEType"];
+    v7 = [coder decodeObjectForKey:@"WebResourceMIMEType"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v7 = 0;
     }
 
-    v8 = [a3 decodeObjectForKey:@"WebResourceTextEncodingName"];
+    v8 = [coder decodeObjectForKey:@"WebResourceTextEncodingName"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v8 = 0;
     }
 
-    v9 = [a3 decodeObjectForKey:@"WebResourceFrameName"];
+    v9 = [coder decodeObjectForKey:@"WebResourceFrameName"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v9 = 0;
     }
 
-    v10 = [a3 decodeObjectForKey:@"WebResourceResponse"];
+    v10 = [coder decodeObjectForKey:@"WebResourceResponse"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -241,7 +241,7 @@ LABEL_44:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   m_ptr = self->_private->coreResource.m_ptr;
   if (m_ptr)
@@ -339,12 +339,12 @@ LABEL_44:
     v17 = 0;
   }
 
-  [a3 encodeObject:v7 forKey:{@"WebResourceData", v22}];
-  [a3 encodeObject:v8 forKey:@"WebResourceURL"];
-  [a3 encodeObject:v11 forKey:@"WebResourceMIMEType"];
-  [a3 encodeObject:v14 forKey:@"WebResourceTextEncodingName"];
-  [a3 encodeObject:v17 forKey:@"WebResourceFrameName"];
-  [a3 encodeObject:m_ptr forKey:@"WebResourceResponse"];
+  [coder encodeObject:v7 forKey:{@"WebResourceData", v22}];
+  [coder encodeObject:v8 forKey:@"WebResourceURL"];
+  [coder encodeObject:v11 forKey:@"WebResourceMIMEType"];
+  [coder encodeObject:v14 forKey:@"WebResourceTextEncodingName"];
+  [coder encodeObject:v17 forKey:@"WebResourceFrameName"];
+  [coder encodeObject:m_ptr forKey:@"WebResourceResponse"];
   if (v17)
   {
   }
@@ -580,7 +580,7 @@ LABEL_44:
   return [v3 stringWithFormat:@"<%@ %@>", NSStringFromClass(v4), -[WebResource URL](self, "URL")];
 }
 
-- (id)_initWithCoreResource:(void *)a3
+- (id)_initWithCoreResource:(void *)resource
 {
   v7.receiver = self;
   v7.super_class = WebResource;
@@ -588,7 +588,7 @@ LABEL_44:
   if (result)
   {
     v5 = result;
-    v6 = [[WebResourcePrivate alloc] initWithCoreResource:a3];
+    v6 = [[WebResourcePrivate alloc] initWithCoreResource:resource];
     result = v5;
     v5[1] = v6;
   }
@@ -605,26 +605,26 @@ LABEL_44:
   }
 }
 
-- (id)_initWithData:(id)a3 URL:(id)a4 MIMEType:(id)a5 textEncodingName:(id)a6 frameName:(id)a7 response:(id)a8 copyData:(BOOL)a9
+- (id)_initWithData:(id)data URL:(id)l MIMEType:(id)type textEncodingName:(id)name frameName:(id)frameName response:(id)response copyData:(BOOL)copyData
 {
   v45.receiver = self;
   v45.super_class = WebResource;
   result = [(WebResource *)&v45 init];
   if (result)
   {
-    if (!a3 || !a4 || !a5)
+    if (!data || !l || !type)
     {
 
       return 0;
     }
 
     v17 = result;
-    if (a9)
+    if (copyData)
     {
-      a3 = [a3 copy];
+      data = [data copy];
     }
 
-    WebCore::FragmentedSharedBuffer::create(v35, a3, v16);
+    WebCore::FragmentedSharedBuffer::create(v35, data, v16);
     v18 = WTF::fastMalloc(0x40);
     MEMORY[0x1CCA64660](v18, v35);
     v19 = v35[0];
@@ -636,28 +636,28 @@ LABEL_44:
     }
 
     v43 = v18;
-    MEMORY[0x1CCA63960](&v42, a4);
-    MEMORY[0x1CCA63A40](&v41, a5);
-    MEMORY[0x1CCA63A40](&v40, a6);
-    MEMORY[0x1CCA63A40](&v39, a7);
+    MEMORY[0x1CCA63960](&v42, l);
+    MEMORY[0x1CCA63A40](&v41, type);
+    MEMORY[0x1CCA63A40](&v40, name);
+    MEMORY[0x1CCA63A40](&v39, frameName);
     WebCore::ResourceResponseBase::ResourceResponseBase(v35);
-    v37 = a8;
-    if (a8)
+    responseCopy = response;
+    if (response)
     {
-      v20 = a8;
+      responseCopy2 = response;
     }
 
     v38 = 0;
     v21 = v36 & 0xF0;
-    if (!a8)
+    if (!response)
     {
       ++v21;
     }
 
     v36 = v21;
     WebCore::ArchiveResource::create();
-    v23 = v37;
-    v37 = 0;
+    v23 = responseCopy;
+    responseCopy = 0;
     if (v23)
     {
     }
@@ -697,18 +697,18 @@ LABEL_44:
     {
       atomic_store(1u, v29 + 2);
       (*(*v29 + 8))(v29);
-      if (!a9)
+      if (!copyData)
       {
         goto LABEL_33;
       }
     }
 
-    else if (!a9)
+    else if (!copyData)
     {
       goto LABEL_33;
     }
 
-    if (a3)
+    if (data)
     {
     }
 
@@ -852,7 +852,7 @@ LABEL_41:
 
 - (id)_stringValue
 {
-  v2 = self;
+  selfCopy = self;
   v26 = 0uLL;
   v25 = &unk_1F472B448;
   m_ptr = self->_private->coreResource.m_ptr;
@@ -862,7 +862,7 @@ LABEL_41:
     v18 = *(v17 + 24);
     v26 = *(v17 + 8);
     v27 = v18;
-    v4 = v2->_private->coreResource.m_ptr;
+    v4 = selfCopy->_private->coreResource.m_ptr;
     if (v4)
     {
       goto LABEL_4;
@@ -871,7 +871,7 @@ LABEL_41:
     return &stru_1F472E7E8;
   }
 
-  v4 = v2->_private->coreResource.m_ptr;
+  v4 = selfCopy->_private->coreResource.m_ptr;
   if (!v4)
   {
     return &stru_1F472E7E8;

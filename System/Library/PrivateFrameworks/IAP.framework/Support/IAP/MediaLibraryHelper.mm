@@ -1,14 +1,14 @@
 @interface MediaLibraryHelper
 - (BOOL)iTunesRadioEnabled;
 - (MediaLibraryHelper)init;
-- (int)getFilteredMediaTypesMask:(int)a3;
+- (int)getFilteredMediaTypesMask:(int)mask;
 - (void)_updateITunesRadioEnabled;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
-- (void)applicationsWillUninstall:(id)a3;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
+- (void)applicationsWillUninstall:(id)uninstall;
 - (void)dealloc;
-- (void)handleAppInstall:(id)a3;
-- (void)handleAppUninstall:(id)a3;
+- (void)handleAppInstall:(id)install;
+- (void)handleAppUninstall:(id)uninstall;
 @end
 
 @implementation MediaLibraryHelper
@@ -180,9 +180,9 @@ LABEL_7:
   }
 }
 
-- (void)handleAppInstall:(id)a3
+- (void)handleAppInstall:(id)install
 {
-  if ([objc_msgSend(a3 "applicationIdentifier")])
+  if ([objc_msgSend(install "applicationIdentifier")])
   {
     showMusic = self->_showMusic;
     if (showMusic < 2)
@@ -198,7 +198,7 @@ LABEL_28:
     return;
   }
 
-  if ([objc_msgSend(a3 "applicationIdentifier")])
+  if ([objc_msgSend(install "applicationIdentifier")])
   {
     showPodcasts = self->_showPodcasts;
     v9 = showPodcasts == 1;
@@ -211,7 +211,7 @@ LABEL_28:
     self->_showPodcasts = 1;
   }
 
-  else if ([objc_msgSend(a3 "applicationIdentifier")])
+  else if ([objc_msgSend(install "applicationIdentifier")])
   {
     showAudioBooks = self->_showAudioBooks;
     v9 = showAudioBooks == 1;
@@ -226,7 +226,7 @@ LABEL_28:
 
   else
   {
-    if (![objc_msgSend(a3 "applicationIdentifier")])
+    if (![objc_msgSend(install "applicationIdentifier")])
     {
       v6 = 0;
       v7 = 0;
@@ -286,7 +286,7 @@ LABEL_16:
   }
 }
 
-- (void)handleAppUninstall:(id)a3
+- (void)handleAppUninstall:(id)uninstall
 {
   AppBooleanValue = dword_10012B814;
   if (dword_10012B814 == -1)
@@ -295,9 +295,9 @@ LABEL_16:
     dword_10012B814 = AppBooleanValue;
   }
 
-  if (![objc_msgSend(a3 "applicationIdentifier")])
+  if (![objc_msgSend(uninstall "applicationIdentifier")])
   {
-    if ([objc_msgSend(a3 "applicationIdentifier")])
+    if ([objc_msgSend(uninstall "applicationIdentifier")])
     {
       showPodcasts = self->_showPodcasts;
       if (showPodcasts > 1)
@@ -310,7 +310,7 @@ LABEL_16:
       self->_showPodcasts = (AppBooleanValue & 2) != 0;
     }
 
-    else if ([objc_msgSend(a3 "applicationIdentifier")])
+    else if ([objc_msgSend(uninstall "applicationIdentifier")])
     {
       showPodcasts = self->_showAudioBooks;
       if (showPodcasts > 1)
@@ -325,7 +325,7 @@ LABEL_16:
 
     else
     {
-      if (![objc_msgSend(a3 "applicationIdentifier")])
+      if (![objc_msgSend(uninstall "applicationIdentifier")])
       {
         v7 = 0;
         v8 = 0;
@@ -399,7 +399,7 @@ LABEL_16:
   }
 }
 
-- (int)getFilteredMediaTypesMask:(int)a3
+- (int)getFilteredMediaTypesMask:(int)mask
 {
   showMusic = self->_showMusic;
   if (showMusic >= 2 || (showPodcasts = self->_showPodcasts, showPodcasts > 1) || (showAudioBooks = self->_showAudioBooks, showAudioBooks > 1) || (showiTunesU = self->_showiTunesU, showiTunesU > 1))
@@ -409,24 +409,24 @@ LABEL_16:
 
   else
   {
-    if (a3)
+    if (mask)
     {
-      v7 = a3;
+      maskCopy = mask;
     }
 
     else
     {
-      v7 = 7423;
+      maskCopy = 7423;
     }
 
     if (showMusic)
     {
-      v8 = v7;
+      v8 = maskCopy;
     }
 
     else
     {
-      v8 = v7 & 0xFFFFF7FE;
+      v8 = maskCopy & 0xFFFFF7FE;
     }
 
     if ((showPodcasts & 1) == 0)
@@ -453,13 +453,13 @@ LABEL_16:
   return self;
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [install countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -471,7 +471,7 @@ LABEL_16:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(install);
         }
 
         [(MediaLibraryHelper *)self handleAppInstall:*(*(&v9 + 1) + 8 * v8)];
@@ -479,20 +479,20 @@ LABEL_16:
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [install countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)applicationsWillUninstall:(id)a3
+- (void)applicationsWillUninstall:(id)uninstall
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [uninstall countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -504,7 +504,7 @@ LABEL_16:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(uninstall);
         }
 
         [(MediaLibraryHelper *)self handleAppUninstall:*(*(&v9 + 1) + 8 * v8)];
@@ -512,20 +512,20 @@ LABEL_16:
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [uninstall countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [uninstall countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -537,7 +537,7 @@ LABEL_16:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(uninstall);
         }
 
         [(MediaLibraryHelper *)self handleAppUninstall:*(*(&v9 + 1) + 8 * v8)];
@@ -545,7 +545,7 @@ LABEL_16:
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [uninstall countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);

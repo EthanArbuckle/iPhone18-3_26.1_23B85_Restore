@@ -1,8 +1,8 @@
 @interface WFRemoteExecutionIncomingAlertSession
-- (void)finishWithError:(id)a3;
-- (void)handleIncomingProtobuf:(id)a3 currentlyActiveSessions:(id)a4 responseDestinations:(id)a5 options:(id)a6;
+- (void)finishWithError:(id)error;
+- (void)handleIncomingProtobuf:(id)protobuf currentlyActiveSessions:(id)sessions responseDestinations:(id)destinations options:(id)options;
 - (void)handleTimeout;
-- (void)sendSelectedButton:(id)a3 forAlertWithIdentifier:(id)a4 error:(id)a5 destinations:(id)a6 options:(id)a7;
+- (void)sendSelectedButton:(id)button forAlertWithIdentifier:(id)identifier error:(id)error destinations:(id)destinations options:(id)options;
 @end
 
 @implementation WFRemoteExecutionIncomingAlertSession
@@ -14,33 +14,33 @@
   [(WFRemoteExecutionSession *)self finish];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v9 = a3;
+  errorCopy = error;
   [(WFRemoteExecutionSession *)self finish];
-  v4 = [(WFRemoteExecutionIncomingAlertSession *)self lastKnownDestinations];
+  lastKnownDestinations = [(WFRemoteExecutionIncomingAlertSession *)self lastKnownDestinations];
 
-  if (v4)
+  if (lastKnownDestinations)
   {
-    v5 = [(WFRemoteExecutionSession *)self request];
-    v6 = [v5 identifier];
-    v7 = [(WFRemoteExecutionIncomingAlertSession *)self lastKnownDestinations];
-    v8 = [(WFRemoteExecutionIncomingAlertSession *)self lastKnownOptions];
-    [(WFRemoteExecutionIncomingAlertSession *)self sendSelectedButton:0 forAlertWithIdentifier:v6 error:v9 destinations:v7 options:v8];
+    request = [(WFRemoteExecutionSession *)self request];
+    identifier = [request identifier];
+    lastKnownDestinations2 = [(WFRemoteExecutionIncomingAlertSession *)self lastKnownDestinations];
+    lastKnownOptions = [(WFRemoteExecutionIncomingAlertSession *)self lastKnownOptions];
+    [(WFRemoteExecutionIncomingAlertSession *)self sendSelectedButton:0 forAlertWithIdentifier:identifier error:errorCopy destinations:lastKnownDestinations2 options:lastKnownOptions];
   }
 }
 
-- (void)sendSelectedButton:(id)a3 forAlertWithIdentifier:(id)a4 error:(id)a5 destinations:(id)a6 options:(id)a7
+- (void)sendSelectedButton:(id)button forAlertWithIdentifier:(id)identifier error:(id)error destinations:(id)destinations options:(id)options
 {
   v51 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v39 = a7;
-  if (v14)
+  buttonCopy = button;
+  identifierCopy = identifier;
+  errorCopy = error;
+  destinationsCopy = destinations;
+  optionsCopy = options;
+  if (identifierCopy)
   {
-    if (v16)
+    if (destinationsCopy)
     {
       goto LABEL_3;
     }
@@ -48,55 +48,55 @@
 
   else
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionIncomingAlertSession.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionIncomingAlertSession.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
-    if (v16)
+    if (destinationsCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v35 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v35 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionIncomingAlertSession.m" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"destinations"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionIncomingAlertSession.m" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"destinations"}];
 
 LABEL_3:
   [(WFRemoteExecutionSession *)self setState:201];
-  v17 = [[WFRemoteExecutionAlertRequestResponse alloc] initWithSelectedButton:v13 requestIdentifier:v14 error:v15];
+  v17 = [[WFRemoteExecutionAlertRequestResponse alloc] initWithSelectedButton:buttonCopy requestIdentifier:identifierCopy error:errorCopy];
   v18 = objc_alloc_init(MEMORY[0x1E69C65C0]);
   v42 = 0;
   v19 = [(WFRemoteExecutionRequest *)v17 writeTo:v18 error:&v42];
   v20 = v42;
   if (v19)
   {
-    v37 = v15;
+    v37 = errorCopy;
     v21 = objc_alloc(MEMORY[0x1E69A5388]);
-    v22 = [v18 immutableData];
-    v23 = [v21 initWithProtobufData:v22 type:4 isResponse:0];
+    immutableData = [v18 immutableData];
+    v23 = [v21 initWithProtobufData:immutableData type:4 isResponse:0];
 
     v24 = getWFRemoteExecutionLogObject();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
-      v25 = [(WFRemoteExecutionRequest *)v17 identifier];
+      identifier = [(WFRemoteExecutionRequest *)v17 identifier];
       *buf = 136315906;
       v44 = "[WFRemoteExecutionIncomingAlertSession sendSelectedButton:forAlertWithIdentifier:error:destinations:options:]";
       v45 = 2114;
-      v46 = v25;
+      v46 = identifier;
       v47 = 2114;
-      v48 = v14;
+      v48 = identifierCopy;
       v49 = 2114;
-      v50 = v13;
+      v50 = buttonCopy;
       _os_log_impl(&dword_1CA256000, v24, OS_LOG_TYPE_INFO, "%s <%{public}@> sending response for alert (%{public}@) with selected button: %{public}@", buf, 0x2Au);
     }
 
-    v38 = v13;
+    v38 = buttonCopy;
 
     [(WFRemoteExecutionSession *)self restartTimeout];
-    v26 = [(WFRemoteExecutionSession *)self service];
+    service = [(WFRemoteExecutionSession *)self service];
     v40 = 0;
     v41 = 0;
     v36 = v23;
-    v27 = [v26 sendProtobuf:v23 toDestinations:v16 priority:300 options:v39 identifier:&v41 error:&v40];
+    v27 = [service sendProtobuf:v23 toDestinations:destinationsCopy priority:300 options:optionsCopy identifier:&v41 error:&v40];
     v28 = v41;
     v29 = v40;
 
@@ -112,11 +112,11 @@ LABEL_3:
       v31 = getWFRemoteExecutionLogObject();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_FAULT))
       {
-        v32 = [(WFRemoteExecutionRequest *)v17 identifier];
+        identifier2 = [(WFRemoteExecutionRequest *)v17 identifier];
         *buf = 136315650;
         v44 = "[WFRemoteExecutionIncomingAlertSession sendSelectedButton:forAlertWithIdentifier:error:destinations:options:]";
         v45 = 2114;
-        v46 = v32;
+        v46 = identifier2;
         v47 = 2114;
         v48 = v29;
         _os_log_impl(&dword_1CA256000, v31, OS_LOG_TYPE_FAULT, "%s <%{public}@> Failed to send alert response: %{public}@", buf, 0x20u);
@@ -125,8 +125,8 @@ LABEL_3:
       [(WFRemoteExecutionSession *)self setState:1];
     }
 
-    v15 = v37;
-    v13 = v38;
+    errorCopy = v37;
+    buttonCopy = v38;
   }
 
   else
@@ -147,20 +147,20 @@ LABEL_3:
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleIncomingProtobuf:(id)a3 currentlyActiveSessions:(id)a4 responseDestinations:(id)a5 options:(id)a6
+- (void)handleIncomingProtobuf:(id)protobuf currentlyActiveSessions:(id)sessions responseDestinations:(id)destinations options:(id)options
 {
   v76 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  [(WFRemoteExecutionIncomingAlertSession *)self setLastKnownDestinations:v12];
-  [(WFRemoteExecutionIncomingAlertSession *)self setLastKnownOptions:v13];
-  v55 = self;
+  protobufCopy = protobuf;
+  sessionsCopy = sessions;
+  destinationsCopy = destinations;
+  optionsCopy = options;
+  [(WFRemoteExecutionIncomingAlertSession *)self setLastKnownDestinations:destinationsCopy];
+  [(WFRemoteExecutionIncomingAlertSession *)self setLastKnownOptions:optionsCopy];
+  selfCopy = self;
   [(WFRemoteExecutionSession *)self setState:200];
   v14 = objc_alloc(MEMORY[0x1E69C65B8]);
-  v15 = [v10 data];
-  v16 = [v14 initWithData:v15];
+  data = [protobufCopy data];
+  v16 = [v14 initWithData:data];
 
   v66 = 0;
   v57 = objc_alloc_init(WFRemoteExecutionAlertRequest);
@@ -183,14 +183,14 @@ LABEL_3:
       _os_log_impl(&dword_1CA256000, v20, OS_LOG_TYPE_ERROR, "%s Encountered unsupported version of an alert request", buf, 0xCu);
     }
 
-    [(WFRemoteExecutionSession *)v55 setState:2];
+    [(WFRemoteExecutionSession *)selfCopy setState:2];
 LABEL_6:
     v54 = v17;
     v64 = 0u;
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v21 = v11;
+    v21 = sessionsCopy;
     v22 = [v21 countByEnumeratingWithState:&v62 objects:v67 count:16];
     if (!v22)
     {
@@ -200,9 +200,9 @@ LABEL_6:
 
     v23 = v22;
     v53 = v16;
-    v50 = v13;
-    v51 = v12;
-    v52 = v11;
+    v50 = optionsCopy;
+    v51 = destinationsCopy;
+    v52 = sessionsCopy;
     v56 = 0;
     v24 = *v63;
 LABEL_8:
@@ -227,10 +227,10 @@ LABEL_8:
         break;
       }
 
-      v29 = [v28 request];
-      v30 = [v29 identifier];
-      v31 = [(WFRemoteExecutionAlertRequest *)v57 associatedRunRequestIdentifier];
-      v32 = [v30 isEqualToString:v31];
+      request = [v28 request];
+      identifier = [request identifier];
+      associatedRunRequestIdentifier = [(WFRemoteExecutionAlertRequest *)v57 associatedRunRequestIdentifier];
+      v32 = [identifier isEqualToString:associatedRunRequestIdentifier];
 
       if (v32)
       {
@@ -250,22 +250,22 @@ LABEL_19:
         if (!v23)
         {
 
-          v11 = v52;
-          v13 = v50;
-          v12 = v51;
+          sessionsCopy = v52;
+          optionsCopy = v50;
+          destinationsCopy = v51;
           v16 = v53;
           v37 = v56;
           if (v56)
           {
             v17 = v54;
-            if ([(WFRemoteExecutionSession *)v55 state]== 2)
+            if ([(WFRemoteExecutionSession *)selfCopy state]== 2)
             {
               [v56 finishWithError:v54];
             }
 
             else if (VCIsDeviceLocked())
             {
-              [(WFRemoteExecutionSession *)v55 setState:1];
+              [(WFRemoteExecutionSession *)selfCopy setState:1];
               v38 = getWFRemoteExecutionLogObject();
               if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
               {
@@ -274,8 +274,8 @@ LABEL_19:
                 _os_log_impl(&dword_1CA256000, v38, OS_LOG_TYPE_ERROR, "%s Found a outgoing run request session to show the alert in, but the device is locked", buf, 0xCu);
               }
 
-              v39 = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
-              [v56 finishWithError:v39];
+              wfUnsupportedUserInterfaceError = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
+              [v56 finishWithError:wfUnsupportedUserInterfaceError];
             }
 
             else
@@ -284,7 +284,7 @@ LABEL_19:
               v58[1] = 3221225472;
               v58[2] = __117__WFRemoteExecutionIncomingAlertSession_handleIncomingProtobuf_currentlyActiveSessions_responseDestinations_options___block_invoke;
               v58[3] = &unk_1E8377D48;
-              v58[4] = v55;
+              v58[4] = selfCopy;
               v40 = v57;
               v59 = v40;
               v41 = v51;
@@ -292,27 +292,27 @@ LABEL_19:
               v42 = v50;
               v61 = v42;
               [(WFRemoteExecutionAlertRequest *)v40 inflateAlertWithBlock:v58];
-              [(WFRemoteExecutionSession *)v55 setRequest:v40];
-              v43 = [v56 userInterface];
-              v44 = [v43 isRunningWithSiriUI];
+              [(WFRemoteExecutionSession *)selfCopy setRequest:v40];
+              userInterface = [v56 userInterface];
+              isRunningWithSiriUI = [userInterface isRunningWithSiriUI];
 
-              if (v44)
+              if (isRunningWithSiriUI)
               {
-                v45 = [(WFRemoteExecutionRequest *)v40 identifier];
-                v46 = [MEMORY[0x1E696ABC0] userCancelledError];
-                [(WFRemoteExecutionIncomingAlertSession *)v55 sendSelectedButton:0 forAlertWithIdentifier:v45 error:v46 destinations:v41 options:v42];
+                identifier2 = [(WFRemoteExecutionRequest *)v40 identifier];
+                userCancelledError = [MEMORY[0x1E696ABC0] userCancelledError];
+                [(WFRemoteExecutionIncomingAlertSession *)selfCopy sendSelectedButton:0 forAlertWithIdentifier:identifier2 error:userCancelledError destinations:v41 options:v42];
 
-                v47 = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
+                wfUnsupportedUserInterfaceError2 = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
                 v37 = v56;
-                [v56 finishWithError:v47];
+                [v56 finishWithError:wfUnsupportedUserInterfaceError2];
               }
 
               else
               {
                 v37 = v56;
-                v47 = [v56 userInterface];
-                v48 = [(WFRemoteExecutionAlertRequest *)v40 alert];
-                [v47 presentAlert:v48];
+                wfUnsupportedUserInterfaceError2 = [v56 userInterface];
+                alert = [(WFRemoteExecutionAlertRequest *)v40 alert];
+                [wfUnsupportedUserInterfaceError2 presentAlert:alert];
               }
 
               v16 = v53;
@@ -322,7 +322,7 @@ LABEL_19:
           }
 
 LABEL_25:
-          [(WFRemoteExecutionSession *)v55 setState:-420];
+          [(WFRemoteExecutionSession *)selfCopy setState:-420];
           v17 = v54;
           goto LABEL_38;
         }

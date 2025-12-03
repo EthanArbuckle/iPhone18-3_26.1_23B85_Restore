@@ -1,15 +1,15 @@
 @interface HRExpandedRangeValueView
 - (void)didMoveToSuperview;
-- (void)updateWithData:(id)a3;
+- (void)updateWithData:(id)data;
 @end
 
 @implementation HRExpandedRangeValueView
 
-- (void)updateWithData:(id)a3
+- (void)updateWithData:(id)data
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D113B094(a3);
+  dataCopy = data;
+  selfCopy = self;
+  sub_1D113B094(data);
 }
 
 - (void)didMoveToSuperview

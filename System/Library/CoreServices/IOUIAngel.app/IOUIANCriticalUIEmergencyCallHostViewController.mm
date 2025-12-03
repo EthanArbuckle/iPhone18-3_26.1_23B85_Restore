@@ -2,42 +2,42 @@
 - (IOUIANCriticalUIEmergencyCallHostViewControllerDelegate)delegate;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)dismiss;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation IOUIANCriticalUIEmergencyCallHostViewController
 
 - (void)dismiss
 {
-  v3 = [(IOUIANCriticalUIEmergencyCallHostViewController *)self delegate];
+  delegate = [(IOUIANCriticalUIEmergencyCallHostViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(IOUIANCriticalUIEmergencyCallHostViewController *)self delegate];
-    [v5 emergencyCallHostViewControllerDidRequestDismiss:self];
+    delegate2 = [(IOUIANCriticalUIEmergencyCallHostViewController *)self delegate];
+    [delegate2 emergencyCallHostViewControllerDidRequestDismiss:self];
   }
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(IOUIANCriticalUIEmergencyCallHostViewController *)self delegate];
+  errorCopy = error;
+  delegate = [(IOUIANCriticalUIEmergencyCallHostViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(IOUIANCriticalUIEmergencyCallHostViewController *)self delegate];
-    [v6 emergencyCallHostViewControllerDidTerminate:self withError:v7];
+    delegate2 = [(IOUIANCriticalUIEmergencyCallHostViewController *)self delegate];
+    [delegate2 emergencyCallHostViewControllerDidTerminate:self withError:errorCopy];
   }
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }

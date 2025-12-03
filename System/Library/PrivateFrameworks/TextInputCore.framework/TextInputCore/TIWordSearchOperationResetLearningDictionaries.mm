@@ -1,5 +1,5 @@
 @interface TIWordSearchOperationResetLearningDictionaries
-- (TIWordSearchOperationResetLearningDictionaries)initWithMecabraWrapper:(id)a3;
+- (TIWordSearchOperationResetLearningDictionaries)initWithMecabraWrapper:(id)wrapper;
 - (void)perform;
 @end
 
@@ -8,9 +8,9 @@
 - (void)perform
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(TIWordSearchOperationResetLearningDictionaries *)self mecabraWrapper];
+  mecabraWrapper = [(TIWordSearchOperationResetLearningDictionaries *)self mecabraWrapper];
 
-  if (v3)
+  if (mecabraWrapper)
   {
     if (TICanLogMessageAtLevel_onceToken != -1)
     {
@@ -24,8 +24,8 @@
       {
         v9 = MEMORY[0x277CCACA8];
         v10 = MEMORY[0x277CCABB0];
-        v11 = [(TIWordSearchOperationResetLearningDictionaries *)self mecabraWrapper];
-        v12 = [v10 numberWithUnsignedInt:{objc_msgSend(v11, "inputMethodType")}];
+        mecabraWrapper2 = [(TIWordSearchOperationResetLearningDictionaries *)self mecabraWrapper];
+        v12 = [v10 numberWithUnsignedInt:{objc_msgSend(mecabraWrapper2, "inputMethodType")}];
         v13 = [v9 stringWithFormat:@"%s Reset learning dictionaries for input method type %@", "-[TIWordSearchOperationResetLearningDictionaries perform]", v12];
         *buf = 138412290;
         v15 = v13;
@@ -33,8 +33,8 @@
       }
     }
 
-    v5 = [(TIWordSearchOperationResetLearningDictionaries *)self mecabraWrapper];
-    [v5 inputMethodType];
+    mecabraWrapper3 = [(TIWordSearchOperationResetLearningDictionaries *)self mecabraWrapper];
+    [mecabraWrapper3 inputMethodType];
     v6 = MEMORY[0x277CBEBC0];
     v7 = UIKeyboardUserDirectory();
     [v6 fileURLWithPath:v7];
@@ -44,16 +44,16 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (TIWordSearchOperationResetLearningDictionaries)initWithMecabraWrapper:(id)a3
+- (TIWordSearchOperationResetLearningDictionaries)initWithMecabraWrapper:(id)wrapper
 {
-  v5 = a3;
+  wrapperCopy = wrapper;
   v9.receiver = self;
   v9.super_class = TIWordSearchOperationResetLearningDictionaries;
   v6 = [(TIWordSearchOperationResetLearningDictionaries *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mecabraWrapper, a3);
+    objc_storeStrong(&v6->_mecabraWrapper, wrapper);
   }
 
   return v7;

@@ -1,52 +1,52 @@
 @interface AVTCoreDataStoreServer
-+ (BOOL)resetSyncShouldPreserveContentForReason:(unint64_t)a3;
-- (AVTCoreDataStoreServer)initWithEnvironment:(id)a3 imageHandlingDelegate:(id)a4;
-- (AVTCoreDataStoreServer)initWithLocalBackend:(id)a3 configuration:(id)a4 migratorProvider:(id)a5 pushSupport:(id)a6 mirroringHandler:(id)a7 schedulingAuthority:(id)a8 remoteChangesObserver:(id)a9 stickerChangeObserver:(id)a10 changeTracker:(id)a11 daemonServer:(id)a12 storeMaintenance:(id)a13 backgroundQueue:(id)a14 environment:(id)a15 imageHandlingDelegate:(id)a16;
-- (BOOL)processInternalSettingsChanges:(id)a3;
-- (void)clientDidCheckInForServer:(id)a3;
++ (BOOL)resetSyncShouldPreserveContentForReason:(unint64_t)reason;
+- (AVTCoreDataStoreServer)initWithEnvironment:(id)environment imageHandlingDelegate:(id)delegate;
+- (AVTCoreDataStoreServer)initWithLocalBackend:(id)backend configuration:(id)configuration migratorProvider:(id)provider pushSupport:(id)support mirroringHandler:(id)handler schedulingAuthority:(id)authority remoteChangesObserver:(id)observer stickerChangeObserver:(id)self0 changeTracker:(id)self1 daemonServer:(id)self2 storeMaintenance:(id)self3 backgroundQueue:(id)self4 environment:(id)self5 imageHandlingDelegate:(id)self6;
+- (BOOL)processInternalSettingsChanges:(id)changes;
+- (void)clientDidCheckInForServer:(id)server;
 - (void)completeMigrationActivityIfNeeded;
 - (void)completeUserRequestedBackupActivityIfNeeded;
 - (void)deleteStickerRecents;
-- (void)didReceivePushNotification:(id)a3;
+- (void)didReceivePushNotification:(id)notification;
 - (void)migrate;
-- (void)mirroringHandler:(id)a3 didResetSyncWithReason:(unint64_t)a4;
-- (void)mirroringHandler:(id)a3 willResetSyncWithReason:(unint64_t)a4;
-- (void)scheduleImportDiscretionary:(BOOL)a3 completionBlock:(id)a4;
-- (void)scheduleImportExportIfRequiredWithPostImportHandler:(id)a3 completion:(id)a4;
-- (void)scheduleMigrationThen:(id)a3;
-- (void)scheduleSetupThen:(id)a3;
+- (void)mirroringHandler:(id)handler didResetSyncWithReason:(unint64_t)reason;
+- (void)mirroringHandler:(id)handler willResetSyncWithReason:(unint64_t)reason;
+- (void)scheduleImportDiscretionary:(BOOL)discretionary completionBlock:(id)block;
+- (void)scheduleImportExportIfRequiredWithPostImportHandler:(id)handler completion:(id)completion;
+- (void)scheduleMigrationThen:(id)then;
+- (void)scheduleSetupThen:(id)then;
 - (void)scheduleUpdateThumbnails;
-- (void)setImageHandlingDelegate:(id)a3;
-- (void)setupThen:(id)a3;
+- (void)setImageHandlingDelegate:(id)delegate;
+- (void)setupThen:(id)then;
 - (void)startListening;
 - (void)updateThumbnails;
 @end
 
 @implementation AVTCoreDataStoreServer
 
-- (AVTCoreDataStoreServer)initWithEnvironment:(id)a3 imageHandlingDelegate:(id)a4
+- (AVTCoreDataStoreServer)initWithEnvironment:(id)environment imageHandlingDelegate:(id)delegate
 {
-  v5 = a3;
-  v36 = a4;
-  v6 = [v5 serialQueueProvider];
-  v7 = (v6)[2](v6, "com.apple.AvatarUI.AVTCoreDataStoreServer.backgroundQueue");
+  environmentCopy = environment;
+  delegateCopy = delegate;
+  serialQueueProvider = [environmentCopy serialQueueProvider];
+  v7 = (serialQueueProvider)[2](serialQueueProvider, "com.apple.AvatarUI.AVTCoreDataStoreServer.backgroundQueue");
 
-  v8 = [v5 storeLocation];
-  v9 = [AVTCoreDataPersistentStoreConfiguration localConfigurationWithStoreLocation:v8 environment:v5];
+  storeLocation = [environmentCopy storeLocation];
+  v9 = [AVTCoreDataPersistentStoreConfiguration localConfigurationWithStoreLocation:storeLocation environment:environmentCopy];
 
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = __68__AVTCoreDataStoreServer_initWithEnvironment_imageHandlingDelegate___block_invoke;
   v42[3] = &unk_278CFB040;
-  v43 = v5;
-  v10 = v5;
+  v43 = environmentCopy;
+  v10 = environmentCopy;
   v39 = MEMORY[0x245CF3540](v42);
   v35 = [[AVTCoreDataStoreBackend alloc] initWithConfiguration:v9 environment:v10];
   v11 = [AVTStickerUserDefaultsBackend alloc];
-  v12 = [v10 serialQueueProvider];
-  v13 = (v12)[2](v12, "com.apple.AvatarUI.AVTCoreDataStoreServer.stickerBackend");
-  v14 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v34 = [(AVTStickerUserDefaultsBackend *)v11 initWithWorkQueue:v13 environment:v10 userDefaults:v14];
+  serialQueueProvider2 = [v10 serialQueueProvider];
+  v13 = (serialQueueProvider2)[2](serialQueueProvider2, "com.apple.AvatarUI.AVTCoreDataStoreServer.stickerBackend");
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v34 = [(AVTStickerUserDefaultsBackend *)v11 initWithWorkQueue:v13 environment:v10 userDefaults:standardUserDefaults];
 
   v33 = [[AVTStickerChangeObserver alloc] initWithStickerBackend:v34 environment:v10];
   v15 = [AVTPushNotificationsSupport alloc];
@@ -55,8 +55,8 @@
 
   v31 = [AVTCoreDataCloudKitMirroringConfiguration createMirroringHandlerWithEnvironment:v10];
   v17 = [AVTSyncSchedulingAuthority alloc];
-  v18 = [v10 logger];
-  v29 = [(AVTSyncSchedulingAuthority *)v17 initWithLogger:v18];
+  logger = [v10 logger];
+  v29 = [(AVTSyncSchedulingAuthority *)v17 initWithLogger:logger];
 
   v30 = objc_alloc_init(AVTPassthroughEventCoalescer);
   v19 = v7;
@@ -71,10 +71,10 @@
   v28 = v9;
   v22 = [(AVTCoreDataStoreMaintenance *)v21 initWithEnvironment:v10 managedObjectContextFactory:v40];
   v23 = [AVTAvatarsDaemonServer alloc];
-  v24 = [v10 logger];
-  v25 = [(AVTAvatarsDaemonServer *)v23 initWithLogger:v24];
+  logger2 = [v10 logger];
+  v25 = [(AVTAvatarsDaemonServer *)v23 initWithLogger:logger2];
 
-  v38 = [(AVTCoreDataStoreServer *)self initWithLocalBackend:v35 configuration:v28 migratorProvider:v39 pushSupport:v32 mirroringHandler:v31 schedulingAuthority:v29 remoteChangesObserver:v27 stickerChangeObserver:v33 changeTracker:v20 daemonServer:v25 storeMaintenance:v22 backgroundQueue:v19 environment:v10 imageHandlingDelegate:v36];
+  v38 = [(AVTCoreDataStoreServer *)self initWithLocalBackend:v35 configuration:v28 migratorProvider:v39 pushSupport:v32 mirroringHandler:v31 schedulingAuthority:v29 remoteChangesObserver:v27 stickerChangeObserver:v33 changeTracker:v20 daemonServer:v25 storeMaintenance:v22 backgroundQueue:v19 environment:v10 imageHandlingDelegate:delegateCopy];
   return v38;
 }
 
@@ -85,73 +85,73 @@ AVTStoreBackendMigrator *__68__AVTCoreDataStoreServer_initWithEnvironment_imageH
   return v1;
 }
 
-- (AVTCoreDataStoreServer)initWithLocalBackend:(id)a3 configuration:(id)a4 migratorProvider:(id)a5 pushSupport:(id)a6 mirroringHandler:(id)a7 schedulingAuthority:(id)a8 remoteChangesObserver:(id)a9 stickerChangeObserver:(id)a10 changeTracker:(id)a11 daemonServer:(id)a12 storeMaintenance:(id)a13 backgroundQueue:(id)a14 environment:(id)a15 imageHandlingDelegate:(id)a16
+- (AVTCoreDataStoreServer)initWithLocalBackend:(id)backend configuration:(id)configuration migratorProvider:(id)provider pushSupport:(id)support mirroringHandler:(id)handler schedulingAuthority:(id)authority remoteChangesObserver:(id)observer stickerChangeObserver:(id)self0 changeTracker:(id)self1 daemonServer:(id)self2 storeMaintenance:(id)self3 backgroundQueue:(id)self4 environment:(id)self5 imageHandlingDelegate:(id)self6
 {
-  v47 = a3;
-  v36 = a4;
-  v46 = a4;
-  v48 = a5;
-  v37 = a6;
-  v45 = a6;
-  v38 = a7;
-  v44 = a7;
-  v43 = a8;
-  v42 = a9;
-  v41 = a10;
-  v40 = a11;
-  v21 = a12;
-  v22 = a13;
-  v23 = a14;
-  v24 = a15;
-  v25 = a16;
+  backendCopy = backend;
+  configurationCopy = configuration;
+  configurationCopy2 = configuration;
+  providerCopy = provider;
+  supportCopy = support;
+  supportCopy2 = support;
+  handlerCopy = handler;
+  handlerCopy2 = handler;
+  authorityCopy = authority;
+  observerCopy = observer;
+  changeObserverCopy = changeObserver;
+  trackerCopy = tracker;
+  serverCopy = server;
+  maintenanceCopy = maintenance;
+  queueCopy = queue;
+  environmentCopy = environment;
+  delegateCopy = delegate;
   v49.receiver = self;
   v49.super_class = AVTCoreDataStoreServer;
   v26 = [(AVTCoreDataStoreServer *)&v49 init];
   v27 = v26;
   if (v26)
   {
-    objc_storeStrong(&v26->_backend, a3);
-    v28 = [v24 logger];
+    objc_storeStrong(&v26->_backend, backend);
+    logger = [environmentCopy logger];
     logger = v27->_logger;
-    v27->_logger = v28;
+    v27->_logger = logger;
 
-    v30 = [v24 scheduler];
+    scheduler = [environmentCopy scheduler];
     blockScheduler = v27->_blockScheduler;
-    v27->_blockScheduler = v30;
+    v27->_blockScheduler = scheduler;
 
-    objc_storeStrong(&v27->_configuration, v36);
-    v32 = [v48 copy];
+    objc_storeStrong(&v27->_configuration, configurationCopy);
+    v32 = [providerCopy copy];
     migratorProvider = v27->_migratorProvider;
     v27->_migratorProvider = v32;
 
-    objc_storeStrong(&v27->_pushNotificationsSupport, v37);
+    objc_storeStrong(&v27->_pushNotificationsSupport, supportCopy);
     [(AVTPushNotificationsSupport *)v27->_pushNotificationsSupport setDelegate:v27];
-    objc_storeStrong(&v27->_schedulingAuthority, a8);
-    objc_storeStrong(&v27->_mirroringHandler, v38);
+    objc_storeStrong(&v27->_schedulingAuthority, authority);
+    objc_storeStrong(&v27->_mirroringHandler, handlerCopy);
     [(AVTCoreDataCloudKitMirroringHandler *)v27->_mirroringHandler setDelegate:v27];
-    objc_storeStrong(&v27->_remoteChangesObserver, a9);
-    objc_storeStrong(&v27->_stickerChangeObserver, a10);
-    objc_storeStrong(&v27->_changeTracker, a11);
-    objc_storeStrong(&v27->_daemonServer, a12);
+    objc_storeStrong(&v27->_remoteChangesObserver, observer);
+    objc_storeStrong(&v27->_stickerChangeObserver, changeObserver);
+    objc_storeStrong(&v27->_changeTracker, tracker);
+    objc_storeStrong(&v27->_daemonServer, server);
     [(AVTAvatarsDaemonServer *)v27->_daemonServer setDelegate:v27];
-    objc_storeStrong(&v27->_storeMaintenance, a13);
-    objc_storeStrong(&v27->_backgroundQueue, a14);
-    objc_storeStrong(&v27->_environment, a15);
-    objc_storeStrong(&v27->_imageHandlingDelegate, a16);
-    [(AVTStickerChangeObserver *)v27->_stickerChangeObserver setImageHandlingDelegate:v25];
+    objc_storeStrong(&v27->_storeMaintenance, maintenance);
+    objc_storeStrong(&v27->_backgroundQueue, queue);
+    objc_storeStrong(&v27->_environment, environment);
+    objc_storeStrong(&v27->_imageHandlingDelegate, delegate);
+    [(AVTStickerChangeObserver *)v27->_stickerChangeObserver setImageHandlingDelegate:delegateCopy];
   }
 
   return v27;
 }
 
-- (void)setImageHandlingDelegate:(id)a3
+- (void)setImageHandlingDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   p_imageHandlingDelegate = &self->_imageHandlingDelegate;
-  if (self->_imageHandlingDelegate != v5)
+  if (self->_imageHandlingDelegate != delegateCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_imageHandlingDelegate, a3);
+    v7 = delegateCopy;
+    objc_storeStrong(p_imageHandlingDelegate, delegate);
     p_imageHandlingDelegate = [(AVTStickerChangeObserver *)self->_stickerChangeObserver setImageHandlingDelegate:v7];
   }
 
@@ -162,8 +162,8 @@ AVTStoreBackendMigrator *__68__AVTCoreDataStoreServer_initWithEnvironment_imageH
 {
   if (AVTIsRunningAsSetupUser())
   {
-    v20 = [(AVTCoreDataStoreServer *)self logger];
-    [v20 logAvatarsdExitingWithReason:@"Cancelling due to running as Setup User"];
+    logger = [(AVTCoreDataStoreServer *)self logger];
+    [logger logAvatarsdExitingWithReason:@"Cancelling due to running as Setup User"];
 
     exit(0);
   }
@@ -175,44 +175,44 @@ AVTStoreBackendMigrator *__68__AVTCoreDataStoreServer_initWithEnvironment_imageH
   v28[4] = self;
   if (![(AVTCoreDataStoreServer *)self processInternalSettingsChanges:v28])
   {
-    v3 = [(AVTCoreDataStoreServer *)self logger];
-    [v3 logStartingServer];
+    logger2 = [(AVTCoreDataStoreServer *)self logger];
+    [logger2 logStartingServer];
 
-    v4 = [(AVTCoreDataStoreServer *)self configuration];
+    configuration = [(AVTCoreDataStoreServer *)self configuration];
     v27 = 0;
-    v5 = [v4 createStoreServerWithError:&v27];
+    v5 = [configuration createStoreServerWithError:&v27];
     v6 = v27;
     [(AVTCoreDataStoreServer *)self setServer:v5];
 
-    v7 = [(AVTCoreDataStoreServer *)self server];
+    server = [(AVTCoreDataStoreServer *)self server];
 
-    if (v7)
+    if (server)
     {
-      v8 = [(AVTCoreDataStoreServer *)self server];
-      [v8 startListening];
+      server2 = [(AVTCoreDataStoreServer *)self server];
+      [server2 startListening];
 
-      v9 = [(AVTCoreDataStoreServer *)self daemonServer];
-      [v9 startListening];
+      daemonServer = [(AVTCoreDataStoreServer *)self daemonServer];
+      [daemonServer startListening];
 
-      v10 = [(AVTCoreDataStoreServer *)self pushNotificationsSupport];
-      [v10 startListeningToPushNotifications];
+      pushNotificationsSupport = [(AVTCoreDataStoreServer *)self pushNotificationsSupport];
+      [pushNotificationsSupport startListeningToPushNotifications];
 
       objc_initWeak(&location, self);
-      v11 = [(AVTCoreDataStoreServer *)self remoteChangesObserver];
+      remoteChangesObserver = [(AVTCoreDataStoreServer *)self remoteChangesObserver];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __40__AVTCoreDataStoreServer_startListening__block_invoke_2;
       v24[3] = &unk_278CF9FA0;
       objc_copyWeak(&v25, &location);
-      [v11 addChangesHandler:v24];
+      [remoteChangesObserver addChangesHandler:v24];
 
-      v12 = [(AVTCoreDataStoreServer *)self remoteChangesObserver];
-      [v12 startObservingChanges];
+      remoteChangesObserver2 = [(AVTCoreDataStoreServer *)self remoteChangesObserver];
+      [remoteChangesObserver2 startObservingChanges];
 
-      v13 = [(AVTCoreDataStoreServer *)self mirroringHandler];
-      v14 = [(AVTCoreDataStoreServer *)self environment];
-      v15 = [v14 notificationCenter];
-      [v13 startObservingResetSyncWithNotificationCenter:v15];
+      mirroringHandler = [(AVTCoreDataStoreServer *)self mirroringHandler];
+      environment = [(AVTCoreDataStoreServer *)self environment];
+      notificationCenter = [environment notificationCenter];
+      [mirroringHandler startObservingResetSyncWithNotificationCenter:notificationCenter];
 
       v16 = +[AVTBackgroundActivitySchedulerFactory schedulerForPostInstallMigrationActivity];
       v23[0] = MEMORY[0x277D85DD0];
@@ -241,9 +241,9 @@ AVTStoreBackendMigrator *__68__AVTCoreDataStoreServer_initWithEnvironment_imageH
 
     else
     {
-      v18 = [(AVTCoreDataStoreServer *)self logger];
+      logger3 = [(AVTCoreDataStoreServer *)self logger];
       v19 = [v6 description];
-      [v18 logErrorStartingServer:v19];
+      [logger3 logErrorStartingServer:v19];
     }
   }
 }
@@ -386,20 +386,20 @@ uint64_t __40__AVTCoreDataStoreServer_startListening__block_invoke_11(uint64_t a
 
 - (void)completeMigrationActivityIfNeeded
 {
-  v3 = [(AVTCoreDataStoreServer *)self backgroundQueue];
-  dispatch_assert_queue_V2(v3);
+  backgroundQueue = [(AVTCoreDataStoreServer *)self backgroundQueue];
+  dispatch_assert_queue_V2(backgroundQueue);
 
   if ([(AVTCoreDataStoreServer *)self setupCompleted])
   {
-    v4 = [(AVTCoreDataStoreServer *)self migrationActivityCompletion];
+    migrationActivityCompletion = [(AVTCoreDataStoreServer *)self migrationActivityCompletion];
 
-    if (v4)
+    if (migrationActivityCompletion)
     {
-      v5 = [(AVTCoreDataStoreServer *)self logger];
-      [v5 logMigrationXPCActivityFinished];
+      logger = [(AVTCoreDataStoreServer *)self logger];
+      [logger logMigrationXPCActivityFinished];
 
-      v6 = [(AVTCoreDataStoreServer *)self migrationActivityCompletion];
-      v6[2](v6, 1);
+      migrationActivityCompletion2 = [(AVTCoreDataStoreServer *)self migrationActivityCompletion];
+      migrationActivityCompletion2[2](migrationActivityCompletion2, 1);
 
       [(AVTCoreDataStoreServer *)self setMigrationActivityCompletion:0];
     }
@@ -408,42 +408,42 @@ uint64_t __40__AVTCoreDataStoreServer_startListening__block_invoke_11(uint64_t a
 
 - (void)completeUserRequestedBackupActivityIfNeeded
 {
-  v3 = [(AVTCoreDataStoreServer *)self backgroundQueue];
-  dispatch_assert_queue_V2(v3);
+  backgroundQueue = [(AVTCoreDataStoreServer *)self backgroundQueue];
+  dispatch_assert_queue_V2(backgroundQueue);
 
   if ([(AVTCoreDataStoreServer *)self setupCompleted])
   {
-    v4 = [(AVTCoreDataStoreServer *)self userRequestedBackupActivityCompletion];
+    userRequestedBackupActivityCompletion = [(AVTCoreDataStoreServer *)self userRequestedBackupActivityCompletion];
 
-    if (v4)
+    if (userRequestedBackupActivityCompletion)
     {
-      v5 = [(AVTCoreDataStoreServer *)self logger];
-      [v5 logUserRequestedBackupXPCActivityFinished];
+      logger = [(AVTCoreDataStoreServer *)self logger];
+      [logger logUserRequestedBackupXPCActivityFinished];
 
-      v6 = [(AVTCoreDataStoreServer *)self userRequestedBackupActivityCompletion];
-      v6[2](v6, 1);
+      userRequestedBackupActivityCompletion2 = [(AVTCoreDataStoreServer *)self userRequestedBackupActivityCompletion];
+      userRequestedBackupActivityCompletion2[2](userRequestedBackupActivityCompletion2, 1);
 
       [(AVTCoreDataStoreServer *)self setUserRequestedBackupActivityCompletion:0];
     }
   }
 }
 
-- (void)scheduleSetupThen:(id)a3
+- (void)scheduleSetupThen:(id)then
 {
-  v4 = a3;
+  thenCopy = then;
   v5 = os_transaction_create();
-  v6 = [(AVTCoreDataStoreServer *)self blockScheduler];
+  blockScheduler = [(AVTCoreDataStoreServer *)self blockScheduler];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __44__AVTCoreDataStoreServer_scheduleSetupThen___block_invoke;
   v10[3] = &unk_278CFA5D0;
   v10[4] = self;
   v11 = v5;
-  v12 = v4;
-  v7 = v4;
+  v12 = thenCopy;
+  v7 = thenCopy;
   v8 = v5;
-  v9 = [(AVTCoreDataStoreServer *)self backgroundQueue];
-  [v6 performBlock:v10 afterDelay:v9 onQueue:0.0];
+  backgroundQueue = [(AVTCoreDataStoreServer *)self backgroundQueue];
+  [blockScheduler performBlock:v10 afterDelay:backgroundQueue onQueue:0.0];
 }
 
 void __44__AVTCoreDataStoreServer_scheduleSetupThen___block_invoke(uint64_t a1)
@@ -469,18 +469,18 @@ uint64_t __44__AVTCoreDataStoreServer_scheduleSetupThen___block_invoke_2(uint64_
   return result;
 }
 
-- (void)setupThen:(id)a3
+- (void)setupThen:(id)then
 {
-  v4 = a3;
-  v5 = [(AVTCoreDataStoreServer *)self logger];
+  thenCopy = then;
+  logger = [(AVTCoreDataStoreServer *)self logger];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__AVTCoreDataStoreServer_setupThen___block_invoke;
   v7[3] = &unk_278CFB090;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 settingUpStore:v7];
+  v8 = thenCopy;
+  v6 = thenCopy;
+  [logger settingUpStore:v7];
 }
 
 void __36__AVTCoreDataStoreServer_setupThen___block_invoke(uint64_t a1)
@@ -561,28 +561,28 @@ uint64_t __36__AVTCoreDataStoreServer_setupThen___block_invoke_5(uint64_t a1)
   return v2();
 }
 
-- (void)scheduleImportExportIfRequiredWithPostImportHandler:(id)a3 completion:(id)a4
+- (void)scheduleImportExportIfRequiredWithPostImportHandler:(id)handler completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  completionCopy = completion;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __89__AVTCoreDataStoreServer_scheduleImportExportIfRequiredWithPostImportHandler_completion___block_invoke;
   v16[3] = &unk_278CFB158;
   v16[4] = self;
   v19 = 1;
-  v8 = v7;
+  v8 = completionCopy;
   v17 = v8;
-  v9 = v6;
+  v9 = handlerCopy;
   v18 = v9;
   v10 = MEMORY[0x245CF3540](v16);
-  v11 = [(AVTCoreDataStoreServer *)self schedulingAuthority];
-  v12 = [v11 importRequired];
+  schedulingAuthority = [(AVTCoreDataStoreServer *)self schedulingAuthority];
+  importRequired = [schedulingAuthority importRequired];
 
-  if (v12)
+  if (importRequired)
   {
-    v13 = [(AVTCoreDataStoreServer *)self logger];
-    [v13 logSetupSchedulingImport];
+    logger = [(AVTCoreDataStoreServer *)self logger];
+    [logger logSetupSchedulingImport];
 
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -663,22 +663,22 @@ void __89__AVTCoreDataStoreServer_scheduleImportExportIfRequiredWithPostImportHa
   }
 }
 
-- (void)scheduleMigrationThen:(id)a3
+- (void)scheduleMigrationThen:(id)then
 {
-  v4 = a3;
+  thenCopy = then;
   v5 = os_transaction_create();
-  v6 = [(AVTCoreDataStoreServer *)self blockScheduler];
+  blockScheduler = [(AVTCoreDataStoreServer *)self blockScheduler];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __48__AVTCoreDataStoreServer_scheduleMigrationThen___block_invoke;
   v10[3] = &unk_278CFA5D0;
   v10[4] = self;
   v11 = v5;
-  v12 = v4;
-  v7 = v4;
+  v12 = thenCopy;
+  v7 = thenCopy;
   v8 = v5;
-  v9 = [(AVTCoreDataStoreServer *)self backgroundQueue];
-  [v6 performBlock:v10 afterDelay:v9 onQueue:0.0];
+  backgroundQueue = [(AVTCoreDataStoreServer *)self backgroundQueue];
+  [blockScheduler performBlock:v10 afterDelay:backgroundQueue onQueue:0.0];
 }
 
 uint64_t __48__AVTCoreDataStoreServer_scheduleMigrationThen___block_invoke(uint64_t a1)
@@ -698,17 +698,17 @@ uint64_t __48__AVTCoreDataStoreServer_scheduleMigrationThen___block_invoke(uint6
 - (void)migrate
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(AVTCoreDataStoreServer *)self logger];
-  [v3 logCheckingIfMigrationNeeded];
+  logger = [(AVTCoreDataStoreServer *)self logger];
+  [logger logCheckingIfMigrationNeeded];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(AVTCoreDataStoreServer *)self configuration];
-  v5 = [v4 migratableSources];
+  configuration = [(AVTCoreDataStoreServer *)self configuration];
+  migratableSources = [configuration migratableSources];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [migratableSources countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -720,7 +720,7 @@ uint64_t __48__AVTCoreDataStoreServer_scheduleMigrationThen___block_invoke(uint6
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(migratableSources);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
@@ -728,16 +728,16 @@ uint64_t __48__AVTCoreDataStoreServer_scheduleMigrationThen___block_invoke(uint6
         {
           if (!v8)
           {
-            v12 = [(AVTCoreDataStoreServer *)self migratorProvider];
-            v8 = v12[2]();
+            migratorProvider = [(AVTCoreDataStoreServer *)self migratorProvider];
+            v8 = migratorProvider[2]();
           }
 
-          v13 = [(AVTCoreDataStoreServer *)self backend];
-          [v8 migrateContentFromSource:v11 toDestination:v13 error:0];
+          backend = [(AVTCoreDataStoreServer *)self backend];
+          [v8 migrateContentFromSource:v11 toDestination:backend error:0];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [migratableSources countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -751,22 +751,22 @@ uint64_t __48__AVTCoreDataStoreServer_scheduleMigrationThen___block_invoke(uint6
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scheduleImportDiscretionary:(BOOL)a3 completionBlock:(id)a4
+- (void)scheduleImportDiscretionary:(BOOL)discretionary completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(AVTCoreDataStoreServer *)self logger];
-  [v7 logSchedulingImport];
+  blockCopy = block;
+  logger = [(AVTCoreDataStoreServer *)self logger];
+  [logger logSchedulingImport];
 
   v8 = os_transaction_create();
-  v9 = [(AVTCoreDataStoreServer *)self blockScheduler];
+  blockScheduler = [(AVTCoreDataStoreServer *)self blockScheduler];
   v13 = MEMORY[0x277D85DD0];
-  v16 = a3;
+  discretionaryCopy = discretionary;
   v14 = v8;
-  v15 = v6;
+  v15 = blockCopy;
   v10 = v8;
-  v11 = v6;
+  v11 = blockCopy;
   v12 = [(AVTCoreDataStoreServer *)self backgroundQueue:v13];
-  [v9 performBlock:&v13 afterDelay:v12 onQueue:1.0];
+  [blockScheduler performBlock:&v13 afterDelay:v12 onQueue:1.0];
 }
 
 void __70__AVTCoreDataStoreServer_scheduleImportDiscretionary_completionBlock___block_invoke(uint64_t a1)
@@ -803,9 +803,9 @@ uint64_t __70__AVTCoreDataStoreServer_scheduleImportDiscretionary_completionBloc
   return v5();
 }
 
-- (BOOL)processInternalSettingsChanges:(id)a3
+- (BOOL)processInternalSettingsChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   v5 = os_transaction_create();
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
@@ -817,7 +817,7 @@ uint64_t __70__AVTCoreDataStoreServer_scheduleImportDiscretionary_completionBloc
   {
     AVTUISetWipeLocalDatabase(0);
     v6[2](v6);
-    v4[2](v4);
+    changesCopy[2](changesCopy);
 LABEL_9:
     v14 = 1;
     goto LABEL_10;
@@ -825,21 +825,21 @@ LABEL_9:
 
   if (AVTUIWipeCloudKitContainer())
   {
-    v7 = [(AVTCoreDataStoreServer *)self logger];
-    [v7 logWillResetZone];
+    logger = [(AVTCoreDataStoreServer *)self logger];
+    [logger logWillResetZone];
 
     AVTUISetWipeCloudKitContainer(0);
-    v8 = [(AVTCoreDataStoreServer *)self configuration];
+    configuration = [(AVTCoreDataStoreServer *)self configuration];
     v22 = 0;
-    v9 = [v8 setupIfNeeded:&v22];
+    v9 = [configuration setupIfNeeded:&v22];
     v10 = v22;
 
     if (v9)
     {
-      v11 = [(AVTCoreDataStoreServer *)self configuration];
-      v12 = [v11 createManagedObjectContext];
+      configuration2 = [(AVTCoreDataStoreServer *)self configuration];
+      createManagedObjectContext = [configuration2 createManagedObjectContext];
 
-      v13 = [(AVTCoreDataStoreServer *)self mirroringHandler];
+      mirroringHandler = [(AVTCoreDataStoreServer *)self mirroringHandler];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __57__AVTCoreDataStoreServer_processInternalSettingsChanges___block_invoke_2;
@@ -847,19 +847,19 @@ LABEL_9:
       v18[4] = self;
       v20 = v6;
       v19 = v5;
-      v21 = v4;
-      [v13 resetZoneWithManagedObjectContext:v12 completionHandler:v18];
+      v21 = changesCopy;
+      [mirroringHandler resetZoneWithManagedObjectContext:createManagedObjectContext completionHandler:v18];
 
-      v10 = v12;
+      v10 = createManagedObjectContext;
     }
 
     else
     {
-      v15 = [(AVTCoreDataStoreServer *)self logger];
+      logger2 = [(AVTCoreDataStoreServer *)self logger];
       v16 = [v10 description];
-      [v15 logErrorSettingUpStore:v16];
+      [logger2 logErrorSettingUpStore:v16];
 
-      v4[2](v4);
+      changesCopy[2](changesCopy);
     }
 
     goto LABEL_9;
@@ -918,54 +918,54 @@ void __90__AVTCoreDataStoreServer_scheduleExportWithManagedObjectContext_discret
 
 - (void)updateThumbnails
 {
-  v3 = [(AVTCoreDataStoreServer *)self logger];
-  [v3 logUpdatingThumbnails];
+  logger = [(AVTCoreDataStoreServer *)self logger];
+  [logger logUpdatingThumbnails];
 
-  v5 = [(AVTCoreDataStoreServer *)self imageHandlingDelegate];
-  v4 = [(AVTCoreDataStoreServer *)self changeTracker];
-  [v5 updateThumbnailsForChangesWithTracker:v4 recordProvider:0];
+  imageHandlingDelegate = [(AVTCoreDataStoreServer *)self imageHandlingDelegate];
+  changeTracker = [(AVTCoreDataStoreServer *)self changeTracker];
+  [imageHandlingDelegate updateThumbnailsForChangesWithTracker:changeTracker recordProvider:0];
 }
 
 - (void)scheduleUpdateThumbnails
 {
   v3 = os_transaction_create();
-  v4 = [(AVTCoreDataStoreServer *)self logger];
-  [v4 logSchedulingUpdateThumbnails];
+  logger = [(AVTCoreDataStoreServer *)self logger];
+  [logger logSchedulingUpdateThumbnails];
 
-  v5 = [(AVTCoreDataStoreServer *)self blockScheduler];
+  blockScheduler = [(AVTCoreDataStoreServer *)self blockScheduler];
   v8 = MEMORY[0x277D85DD0];
   v9 = v3;
   v6 = v3;
   v7 = [(AVTCoreDataStoreServer *)self backgroundQueue:v8];
-  [v5 performBlock:&v8 afterDelay:v7 onQueue:1.0];
+  [blockScheduler performBlock:&v8 afterDelay:v7 onQueue:1.0];
 }
 
 - (void)deleteStickerRecents
 {
   v3 = os_transaction_create();
-  v4 = [(AVTCoreDataStoreServer *)self logger];
-  [v4 logDeletingStickerRecents];
+  logger = [(AVTCoreDataStoreServer *)self logger];
+  [logger logDeletingStickerRecents];
 
-  v5 = [(AVTCoreDataStoreServer *)self stickerChangeObserver];
-  v6 = [(AVTCoreDataStoreServer *)self changeTracker];
+  stickerChangeObserver = [(AVTCoreDataStoreServer *)self stickerChangeObserver];
+  changeTracker = [(AVTCoreDataStoreServer *)self changeTracker];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__AVTCoreDataStoreServer_deleteStickerRecents__block_invoke;
   v8[3] = &unk_278CFB0E0;
   v9 = v3;
   v7 = v3;
-  [v5 processChangesForChangeTracker:v6 completionHandler:v8];
+  [stickerChangeObserver processChangesForChangeTracker:changeTracker completionHandler:v8];
 }
 
-- (void)didReceivePushNotification:(id)a3
+- (void)didReceivePushNotification:(id)notification
 {
   v4 = os_transaction_create();
-  v5 = [(AVTCoreDataStoreServer *)self blockScheduler];
+  blockScheduler = [(AVTCoreDataStoreServer *)self blockScheduler];
   v8 = MEMORY[0x277D85DD0];
   v9 = v4;
   v6 = v4;
   v7 = [(AVTCoreDataStoreServer *)self backgroundQueue:v8];
-  [v5 performBlock:&v8 afterDelay:v7 onQueue:0.0];
+  [blockScheduler performBlock:&v8 afterDelay:v7 onQueue:0.0];
 }
 
 void __53__AVTCoreDataStoreServer_didReceivePushNotification___block_invoke(uint64_t a1)
@@ -982,10 +982,10 @@ void __53__AVTCoreDataStoreServer_didReceivePushNotification___block_invoke(uint
   [v3 scheduleImportDiscretionary:1 completionBlock:v4];
 }
 
-+ (BOOL)resetSyncShouldPreserveContentForReason:(unint64_t)a3
++ (BOOL)resetSyncShouldPreserveContentForReason:(unint64_t)reason
 {
   result = AVTUIPreserveContentOnAccountChange();
-  if (a3 == 4)
+  if (reason == 4)
   {
     return 0;
   }
@@ -993,38 +993,38 @@ void __53__AVTCoreDataStoreServer_didReceivePushNotification___block_invoke(uint
   return result;
 }
 
-- (void)mirroringHandler:(id)a3 willResetSyncWithReason:(unint64_t)a4
+- (void)mirroringHandler:(id)handler willResetSyncWithReason:(unint64_t)reason
 {
-  if ([objc_opt_class() resetSyncShouldPreserveContentForReason:a4])
+  if ([objc_opt_class() resetSyncShouldPreserveContentForReason:reason])
   {
-    v5 = [(AVTCoreDataStoreServer *)self configuration];
+    configuration = [(AVTCoreDataStoreServer *)self configuration];
     v10 = 0;
-    v6 = [v5 copyStorageAside:&v10];
+    v6 = [configuration copyStorageAside:&v10];
     v7 = v10;
 
     if ((v6 & 1) == 0)
     {
-      v8 = [(AVTCoreDataStoreServer *)self logger];
+      logger = [(AVTCoreDataStoreServer *)self logger];
       v9 = [v7 description];
-      [v8 logErrorCopyingStorageAside:v9];
+      [logger logErrorCopyingStorageAside:v9];
     }
   }
 }
 
-- (void)mirroringHandler:(id)a3 didResetSyncWithReason:(unint64_t)a4
+- (void)mirroringHandler:(id)handler didResetSyncWithReason:(unint64_t)reason
 {
   v6 = os_transaction_create();
-  v7 = [(AVTCoreDataStoreServer *)self blockScheduler];
+  blockScheduler = [(AVTCoreDataStoreServer *)self blockScheduler];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __66__AVTCoreDataStoreServer_mirroringHandler_didResetSyncWithReason___block_invoke;
   v10[3] = &unk_278CFA2D0;
   v11 = v6;
-  v12 = a4;
+  reasonCopy = reason;
   v10[4] = self;
   v8 = v6;
-  v9 = [(AVTCoreDataStoreServer *)self backgroundQueue];
-  [v7 performBlock:v10 afterDelay:v9 onQueue:0.0];
+  backgroundQueue = [(AVTCoreDataStoreServer *)self backgroundQueue];
+  [blockScheduler performBlock:v10 afterDelay:backgroundQueue onQueue:0.0];
 }
 
 void __66__AVTCoreDataStoreServer_mirroringHandler_didResetSyncWithReason___block_invoke(uint64_t a1)
@@ -1076,15 +1076,15 @@ void __66__AVTCoreDataStoreServer_mirroringHandler_didResetSyncWithReason___bloc
   v3[2](v3);
 }
 
-- (void)clientDidCheckInForServer:(id)a3
+- (void)clientDidCheckInForServer:(id)server
 {
   v4 = os_transaction_create();
-  v5 = [(AVTCoreDataStoreServer *)self blockScheduler];
+  blockScheduler = [(AVTCoreDataStoreServer *)self blockScheduler];
   v8 = MEMORY[0x277D85DD0];
   v9 = v4;
   v6 = v4;
   v7 = [(AVTCoreDataStoreServer *)self backgroundQueue:v8];
-  [v5 performBlock:&v8 afterDelay:v7 onQueue:0.0];
+  [blockScheduler performBlock:&v8 afterDelay:v7 onQueue:0.0];
 }
 
 void __52__AVTCoreDataStoreServer_clientDidCheckInForServer___block_invoke(uint64_t a1)

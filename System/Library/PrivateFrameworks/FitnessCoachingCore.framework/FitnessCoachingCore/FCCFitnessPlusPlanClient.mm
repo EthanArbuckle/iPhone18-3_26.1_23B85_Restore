@@ -1,9 +1,9 @@
 @interface FCCFitnessPlusPlanClient
 - (FCCFitnessPlusPlanClient)init;
-- (FCCFitnessPlusPlanClient)initWithQueue:(id)a3 xpcClient:(id)a4;
-- (void)_hasPlanScheduledWorkoutsForTodayWithCompletion:(id)a3;
-- (void)_postNotificationWithRequest:(id)a3 completion:(id)a4;
-- (void)hasPlanScheduledWorkoutsForTodayWithCompletion:(id)a3;
+- (FCCFitnessPlusPlanClient)initWithQueue:(id)queue xpcClient:(id)client;
+- (void)_hasPlanScheduledWorkoutsForTodayWithCompletion:(id)completion;
+- (void)_postNotificationWithRequest:(id)request completion:(id)completion;
+- (void)hasPlanScheduledWorkoutsForTodayWithCompletion:(id)completion;
 @end
 
 @implementation FCCFitnessPlusPlanClient
@@ -17,54 +17,54 @@
   return v5;
 }
 
-- (FCCFitnessPlusPlanClient)initWithQueue:(id)a3 xpcClient:(id)a4
+- (FCCFitnessPlusPlanClient)initWithQueue:(id)queue xpcClient:(id)client
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  clientCopy = client;
   v12.receiver = self;
   v12.super_class = FCCFitnessPlusPlanClient;
   v9 = [(FCCFitnessPlusPlanClient *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dispatchQueue, a3);
-    objc_storeStrong(&v10->_xpcClient, a4);
+    objc_storeStrong(&v9->_dispatchQueue, queue);
+    objc_storeStrong(&v10->_xpcClient, client);
   }
 
   return v10;
 }
 
-- (void)hasPlanScheduledWorkoutsForTodayWithCompletion:(id)a3
+- (void)hasPlanScheduledWorkoutsForTodayWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__FCCFitnessPlusPlanClient_hasPlanScheduledWorkoutsForTodayWithCompletion___block_invoke;
   v7[3] = &unk_27900A068;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_postNotificationWithRequest:(id)a3 completion:(id)a4
+- (void)_postNotificationWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 transportData];
-  [(FCCXPCClient *)self->_xpcClient transportMessage:9 data:v7 completion:v6];
+  completionCopy = completion;
+  transportData = [request transportData];
+  [(FCCXPCClient *)self->_xpcClient transportMessage:9 data:transportData completion:completionCopy];
 }
 
-- (void)_hasPlanScheduledWorkoutsForTodayWithCompletion:(id)a3
+- (void)_hasPlanScheduledWorkoutsForTodayWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   xpcClient = self->_xpcClient;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __76__FCCFitnessPlusPlanClient__hasPlanScheduledWorkoutsForTodayWithCompletion___block_invoke;
   v7[3] = &unk_27900A0B0;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(FCCXPCClient *)xpcClient transportRequest:4 data:0 completion:v7];
 }
 

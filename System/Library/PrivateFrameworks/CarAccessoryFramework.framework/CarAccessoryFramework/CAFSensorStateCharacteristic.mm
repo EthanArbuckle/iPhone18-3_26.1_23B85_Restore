@@ -7,16 +7,16 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFSensorStateCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFSensorStateCharacteristic *)self sensorStateValue];
+  sensorStateValue = [(CAFSensorStateCharacteristic *)self sensorStateValue];
 
-  return NSStringFromSensorState(v2);
+  return NSStringFromSensorState(sensorStateValue);
 }
 
 @end

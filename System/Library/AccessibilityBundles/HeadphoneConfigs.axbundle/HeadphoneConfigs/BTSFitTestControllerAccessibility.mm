@@ -1,10 +1,10 @@
 @interface BTSFitTestControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)focusHeader;
 - (void)focusPlayButton;
-- (void)inEarStatusChanged:(id)a3;
-- (void)sealValueChanged:(id)a3;
+- (void)inEarStatusChanged:(id)changed;
+- (void)sealValueChanged:(id)changed;
 - (void)startFitTest;
 - (void)updateFocus;
 - (void)viewWillAppear;
@@ -12,25 +12,25 @@
 
 @implementation BTSFitTestControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BTSFitTestController" hasInstanceMethod:@"startFitTest" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"BTSFitTestController" hasInstanceMethod:@"inEarStatusChanged:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"BTSFitTestController" hasInstanceMethod:@"sealValueChanged:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"BTSFitTestController" hasInstanceVariable:@"_playButton" withType:"OBTrayButton"];
-  [v3 validateClass:@"BTSFitTestController" hasInstanceVariable:@"_testActive" withType:"B"];
-  [v3 validateClass:@"BTSFitTestController" hasInstanceVariable:@"_budsInEar" withType:"B"];
-  [v3 validateClass:@"OBTrayButton" isKindOfClass:@"UIButton"];
-  [v3 validateClass:@"OBWelcomeController" hasInstanceMethod:@"headerView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"OBHeaderView" hasInstanceMethod:@"headerLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"OBTemplateLabel" isKindOfClass:@"UILabel"];
-  [v3 validateClass:@"BTSFitTestController" hasInstanceVariable:@"_leftBudResultLabel" withType:"UILabel"];
-  [v3 validateClass:@"BTSFitTestController" hasInstanceVariable:@"_rightBudResultLabel" withType:"UILabel"];
-  [v3 validateClass:@"BTSFitTestController" hasInstanceVariable:@"_fitTestController" withType:"OBWelcomeController"];
-  [v3 validateClass:@"OBWelcomeController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"OBWelcomeController" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BTSFitTestController" hasInstanceVariable:@"currentDevice" withType:"BluetoothDevice"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BTSFitTestController" hasInstanceMethod:@"startFitTest" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"BTSFitTestController" hasInstanceMethod:@"inEarStatusChanged:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"BTSFitTestController" hasInstanceMethod:@"sealValueChanged:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"BTSFitTestController" hasInstanceVariable:@"_playButton" withType:"OBTrayButton"];
+  [validationsCopy validateClass:@"BTSFitTestController" hasInstanceVariable:@"_testActive" withType:"B"];
+  [validationsCopy validateClass:@"BTSFitTestController" hasInstanceVariable:@"_budsInEar" withType:"B"];
+  [validationsCopy validateClass:@"OBTrayButton" isKindOfClass:@"UIButton"];
+  [validationsCopy validateClass:@"OBWelcomeController" hasInstanceMethod:@"headerView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"OBHeaderView" hasInstanceMethod:@"headerLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"OBTemplateLabel" isKindOfClass:@"UILabel"];
+  [validationsCopy validateClass:@"BTSFitTestController" hasInstanceVariable:@"_leftBudResultLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"BTSFitTestController" hasInstanceVariable:@"_rightBudResultLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"BTSFitTestController" hasInstanceVariable:@"_fitTestController" withType:"OBWelcomeController"];
+  [validationsCopy validateClass:@"OBWelcomeController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"OBWelcomeController" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BTSFitTestController" hasInstanceVariable:@"currentDevice" withType:"BluetoothDevice"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -205,7 +205,7 @@ id __79__BTSFitTestControllerAccessibility__accessibilityLoadAccessibilityInform
 
   if ([v5 accessibilityElementIsFocused])
   {
-    v6 = [v5 text];
+    text = [v5 text];
     UIAccessibilitySpeak();
   }
 
@@ -231,19 +231,19 @@ id __79__BTSFitTestControllerAccessibility__accessibilityLoadAccessibilityInform
   [(BTSFitTestControllerAccessibility *)self updateFocus];
 }
 
-- (void)inEarStatusChanged:(id)a3
+- (void)inEarStatusChanged:(id)changed
 {
   v4.receiver = self;
   v4.super_class = BTSFitTestControllerAccessibility;
-  [(BTSFitTestControllerAccessibility *)&v4 inEarStatusChanged:a3];
+  [(BTSFitTestControllerAccessibility *)&v4 inEarStatusChanged:changed];
   [(BTSFitTestControllerAccessibility *)self updateFocus];
 }
 
-- (void)sealValueChanged:(id)a3
+- (void)sealValueChanged:(id)changed
 {
   v4.receiver = self;
   v4.super_class = BTSFitTestControllerAccessibility;
-  [(BTSFitTestControllerAccessibility *)&v4 sealValueChanged:a3];
+  [(BTSFitTestControllerAccessibility *)&v4 sealValueChanged:changed];
   [(BTSFitTestControllerAccessibility *)self focusHeader];
 }
 

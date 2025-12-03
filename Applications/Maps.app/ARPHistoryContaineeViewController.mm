@@ -1,10 +1,10 @@
 @interface ARPHistoryContaineeViewController
-- (_TtC4Maps33ARPHistoryContaineeViewController)initWithCoder:(id)a3;
-- (_TtC4Maps33ARPHistoryContaineeViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC4Maps33ARPHistoryContaineeViewController)initWithCoder:(id)coder;
+- (_TtC4Maps33ARPHistoryContaineeViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_TtP4Maps41ARPHistoryContaineeViewControllerDelegate_)actionDelegate;
 - (void)didResignCurrent;
 - (void)viewDidLoad;
-- (void)willBecomeCurrent:(BOOL)a3;
+- (void)willBecomeCurrent:(BOOL)current;
 @end
 
 @implementation ARPHistoryContaineeViewController
@@ -16,13 +16,13 @@
   return Strong;
 }
 
-- (void)willBecomeCurrent:(BOOL)a3
+- (void)willBecomeCurrent:(BOOL)current
 {
-  v3 = a3;
+  currentCopy = current;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(ContaineeViewController *)&v5 willBecomeCurrent:v3];
+  [(ContaineeViewController *)&v5 willBecomeCurrent:currentCopy];
   sub_100353640();
 }
 
@@ -41,17 +41,17 @@
   v7.super_class = swift_getObjectType();
   v2 = v7.receiver;
   [(MapsHostingContaineeViewController *)&v7 viewDidLoad];
-  v3 = [v2 cardPresentationController];
-  if (v3)
+  cardPresentationController = [v2 cardPresentationController];
+  if (cardPresentationController)
   {
-    v4 = v3;
-    [v3 setPresentedModally:1];
+    v4 = cardPresentationController;
+    [cardPresentationController setPresentedModally:1];
 
-    v5 = [v2 cardPresentationController];
-    if (v5)
+    cardPresentationController2 = [v2 cardPresentationController];
+    if (cardPresentationController2)
     {
-      v6 = v5;
-      [v5 setTakesAvailableHeight:1];
+      v6 = cardPresentationController2;
+      [cardPresentationController2 setTakesAvailableHeight:1];
 
       sub_1005359A8();
       return;
@@ -66,22 +66,22 @@
   __break(1u);
 }
 
-- (_TtC4Maps33ARPHistoryContaineeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps33ARPHistoryContaineeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a3 = v8;
+    name = v8;
   }
 
   swift_unknownObjectWeakInit();
   v9 = OBJC_IVAR____TtC4Maps33ARPHistoryContaineeViewController_viewModel;
   type metadata accessor for ARPHistoryViewModel();
   swift_allocObject();
-  v10 = a4;
+  bundleCopy = bundle;
   *(self + v9) = sub_100354AE8();
-  if (a3)
+  if (name)
   {
     v11 = String._bridgeToObjectiveC()();
   }
@@ -93,23 +93,23 @@
 
   v14.receiver = self;
   v14.super_class = ObjectType;
-  v12 = [(MapsHostingContaineeViewController *)&v14 initWithNibName:v11 bundle:v10];
+  v12 = [(MapsHostingContaineeViewController *)&v14 initWithNibName:v11 bundle:bundleCopy];
 
   return v12;
 }
 
-- (_TtC4Maps33ARPHistoryContaineeViewController)initWithCoder:(id)a3
+- (_TtC4Maps33ARPHistoryContaineeViewController)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectWeakInit();
   v6 = OBJC_IVAR____TtC4Maps33ARPHistoryContaineeViewController_viewModel;
   type metadata accessor for ARPHistoryViewModel();
   swift_allocObject();
-  v7 = a3;
+  coderCopy = coder;
   *(self + v6) = sub_100354AE8();
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v8 = [(MapsHostingContaineeViewController *)&v10 initWithCoder:v7];
+  v8 = [(MapsHostingContaineeViewController *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

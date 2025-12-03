@@ -1,14 +1,14 @@
 @interface PKImageDescriptor
-+ (void)_createForType:(uint64_t)a3 withTintColor:(char)a4 hasBackground:;
-- (BOOL)isEqual:(id)a3;
-- (PKImageDescriptor)initWithCoder:(id)a3;
++ (void)_createForType:(uint64_t)type withTintColor:(char)color hasBackground:;
+- (BOOL)isEqual:(id)equal;
+- (PKImageDescriptor)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKImageDescriptor
 
-+ (void)_createForType:(uint64_t)a3 withTintColor:(char)a4 hasBackground:
++ (void)_createForType:(uint64_t)type withTintColor:(char)color hasBackground:
 {
   objc_opt_self();
   v7 = off_1E79BFE68;
@@ -24,8 +24,8 @@
     v11 = v10;
     v10[2] = a2;
 
-    v11[3] = a3;
-    *(v11 + 8) = a4;
+    v11[3] = type;
+    *(v11 + 8) = color;
   }
 
   else
@@ -37,10 +37,10 @@
   return v11;
 }
 
-- (PKImageDescriptor)initWithCoder:(id)a3
+- (PKImageDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
   v6 = v5;
   if (v5 == @"bitmap" || v5 && (v7 = [(__CFString *)v5 isEqualToString:@"bitmap"], v6, (v7 & 1) != 0))
   {
@@ -59,9 +59,9 @@
 
 LABEL_15:
         v15 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PKImageDescriptor" code:0 userInfo:0];
-        [v4 failWithError:v15];
+        [coderCopy failWithError:v15];
 
-        v16 = 0;
+        selfCopy = 0;
         goto LABEL_18;
       }
     }
@@ -78,10 +78,10 @@ LABEL_15:
   {
     v13 = v12;
     v12->_type = v8;
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tintColor"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tintColor"];
     PKSemanticColorFromString(v14, &v13->_tintColor);
 
-    v13->_hasBackground = [v4 decodeBoolForKey:@"hasBackground"];
+    v13->_hasBackground = [coderCopy decodeBoolForKey:@"hasBackground"];
   }
 
   else
@@ -90,13 +90,13 @@ LABEL_15:
   }
 
   self = v13;
-  v16 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v16;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
   v5 = @"symbol";
@@ -115,18 +115,18 @@ LABEL_18:
     v6 = @"bitmap";
   }
 
-  v8 = a3;
-  [v8 encodeObject:v6 forKey:@"type"];
+  coderCopy = coder;
+  [coderCopy encodeObject:v6 forKey:@"type"];
   v7 = PKSemanticColorToString(self->_tintColor);
-  [v8 encodeObject:v7 forKey:@"tintColor"];
+  [coderCopy encodeObject:v7 forKey:@"tintColor"];
 
-  [v8 encodeBool:self->_hasBackground forKey:@"hasBackground"];
+  [coderCopy encodeBool:self->_hasBackground forKey:@"hasBackground"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -136,9 +136,9 @@ LABEL_18:
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v6 = 0;
-    if (v4 && (isKindOfClass & 1) != 0)
+    if (equalCopy && (isKindOfClass & 1) != 0)
     {
-      v7 = v4;
+      v7 = equalCopy;
       v8 = v7;
       if (!self)
       {

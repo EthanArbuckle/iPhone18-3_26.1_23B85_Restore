@@ -1,9 +1,9 @@
 @interface BKiAPController
 + (void)setup;
 - (BKiAPController)init;
-- (id)_currentMediaItemFromQuery:(id)a3;
+- (id)_currentMediaItemFromQuery:(id)query;
 - (void)dealloc;
-- (void)handleSetPlaybackQueueCommand:(id)a3 completionHandler:(id)a4;
+- (void)handleSetPlaybackQueueCommand:(id)command completionHandler:(id)handler;
 @end
 
 @implementation BKiAPController
@@ -24,15 +24,15 @@
   if (v2)
   {
     v3 = +[MPRemoteCommandCenter sharedCommandCenter];
-    v4 = [v3 setPlaybackQueueCommand];
-    [v4 setEnabled:1];
+    setPlaybackQueueCommand = [v3 setPlaybackQueueCommand];
+    [setPlaybackQueueCommand setEnabled:1];
     v5 = BKCarPlayLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       sub_100790078(v5);
     }
 
-    [v4 addTarget:v2 action:"handleSetPlaybackQueueCommand:completionHandler:"];
+    [setPlaybackQueueCommand addTarget:v2 action:"handleSetPlaybackQueueCommand:completionHandler:"];
   }
 
   return v2;
@@ -41,25 +41,25 @@
 - (void)dealloc
 {
   v3 = +[MPRemoteCommandCenter sharedCommandCenter];
-  v4 = [v3 setPlaybackQueueCommand];
-  [v4 removeTarget:self];
+  setPlaybackQueueCommand = [v3 setPlaybackQueueCommand];
+  [setPlaybackQueueCommand removeTarget:self];
 
   v5.receiver = self;
   v5.super_class = BKiAPController;
   [(BKiAPController *)&v5 dealloc];
 }
 
-- (id)_currentMediaItemFromQuery:(id)a3
+- (id)_currentMediaItemFromQuery:(id)query
 {
-  v3 = a3;
+  queryCopy = query;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = sub_100027400;
   v19 = sub_100027638;
   v20 = 0;
-  v4 = [v3 items];
-  v5 = [v4 count];
+  items = [queryCopy items];
+  v5 = [items count];
 
   if (v5)
   {
@@ -67,14 +67,14 @@
     v14[1] = v14;
     v14[2] = 0x2020000000;
     v14[3] = 0;
-    v6 = [v3 items];
+    items2 = [queryCopy items];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100116DB4;
     v13[3] = &unk_100A07C70;
     v13[4] = v14;
     v13[5] = &v15;
-    [v6 enumerateObjectsUsingBlock:v13];
+    [items2 enumerateObjectsUsingBlock:v13];
 
     _Block_object_dispose(v14, 8);
   }
@@ -82,10 +82,10 @@
   v7 = v16[5];
   if (!v7)
   {
-    v8 = [v3 items];
-    v9 = [v8 firstObject];
+    items3 = [queryCopy items];
+    firstObject = [items3 firstObject];
     v10 = v16[5];
-    v16[5] = v9;
+    v16[5] = firstObject;
 
     v7 = v16[5];
   }
@@ -96,10 +96,10 @@
   return v11;
 }
 
-- (void)handleSetPlaybackQueueCommand:(id)a3 completionHandler:(id)a4
+- (void)handleSetPlaybackQueueCommand:(id)command completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  handlerCopy = handler;
   v8 = BKCarPlayLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -110,22 +110,22 @@
   v9 = +[BKAppDelegate delegate];
   [v9 setSuppressOpenLastBook:1];
   kdebug_trace();
-  v10 = [v9 appLaunchCoordinator];
-  if (v10)
+  appLaunchCoordinator = [v9 appLaunchCoordinator];
+  if (appLaunchCoordinator)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100116FF8;
     v11[3] = &unk_100A05218;
-    v12 = v6;
-    v13 = self;
-    v14 = v7;
-    [v10 appLaunchCoordinatorOnConditionMask:2 blockID:@"Audiobook playback queue request" performBlock:v11];
+    v12 = commandCopy;
+    selfCopy = self;
+    v14 = handlerCopy;
+    [appLaunchCoordinator appLaunchCoordinatorOnConditionMask:2 blockID:@"Audiobook playback queue request" performBlock:v11];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 200);
+    (*(handlerCopy + 2))(handlerCopy, 200);
   }
 }
 

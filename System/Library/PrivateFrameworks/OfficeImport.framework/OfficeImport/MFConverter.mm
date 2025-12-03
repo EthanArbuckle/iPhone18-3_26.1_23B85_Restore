@@ -1,23 +1,23 @@
 @interface MFConverter
-+ (CGRect)boundsInLogicalUnits:(id)a3;
-+ (CGRect)boundsInPoints:(id)a3;
-+ (id)play:(id)a3 frame:(CGRect)a4 colorMap:(id)a5 fillMap:(id)a6;
-+ (id)playToPDF:(id)a3 frame:(CGRect)a4 colorMap:(id)a5 fillMap:(id)a6;
-+ (void)fromBinary:(id)a3 toXml:(id)a4;
-+ (void)playInCurrentContext:(id)a3 frame:(CGRect)a4 colorMap:(id)a5 fillMap:(id)a6;
++ (CGRect)boundsInLogicalUnits:(id)units;
++ (CGRect)boundsInPoints:(id)points;
++ (id)play:(id)play frame:(CGRect)frame colorMap:(id)map fillMap:(id)fillMap;
++ (id)playToPDF:(id)f frame:(CGRect)frame colorMap:(id)map fillMap:(id)fillMap;
++ (void)fromBinary:(id)binary toXml:(id)xml;
++ (void)playInCurrentContext:(id)context frame:(CGRect)frame colorMap:(id)map fillMap:(id)fillMap;
 @end
 
 @implementation MFConverter
 
-+ (id)playToPDF:(id)a3 frame:(CGRect)a4 colorMap:(id)a5 fillMap:(id)a6
++ (id)playToPDF:(id)f frame:(CGRect)frame colorMap:(id)map fillMap:(id)fillMap
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  fCopy = f;
+  mapCopy = map;
+  fillMapCopy = fillMap;
   if (width > 1024.0)
   {
     height = height * (1024.0 / width);
@@ -59,7 +59,7 @@
   v20 = CGRectGetMidY(v22);
   CGContextTranslateCTM(v18, 0.0, -v20);
   TCGraphicsPushContext(v18);
-  [a1 playInCurrentContext:v13 frame:v14 colorMap:v15 fillMap:{x, y, width, height}];
+  [self playInCurrentContext:fCopy frame:mapCopy colorMap:fillMapCopy fillMap:{x, y, width, height}];
   if (v18)
   {
     TCGraphicsPopContext();
@@ -76,34 +76,34 @@
   return v16;
 }
 
-+ (id)play:(id)a3 frame:(CGRect)a4 colorMap:(id)a5 fillMap:(id)a6
++ (id)play:(id)play frame:(CGRect)frame colorMap:(id)map fillMap:(id)fillMap
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  playCopy = play;
+  mapCopy = map;
+  fillMapCopy = fillMap;
   if (width != 0.0 && height != 0.0)
   {
 LABEL_6:
     v25 = objc_autoreleasePoolPush();
-    if ([a1 mapToPdf:v13])
+    if ([self mapToPdf:playCopy])
     {
-      [a1 playToPDF:v13 frame:v14 colorMap:v15 fillMap:{x, y, width, height}];
+      [self playToPDF:playCopy frame:mapCopy colorMap:fillMapCopy fillMap:{x, y, width, height}];
     }
 
     else
     {
-      [a1 playToBitmap:v13 frame:v14 colorMap:v15 fillMap:{x, y, width, height}];
+      [self playToBitmap:playCopy frame:mapCopy colorMap:fillMapCopy fillMap:{x, y, width, height}];
     }
     v24 = ;
     objc_autoreleasePoolPop(v25);
     goto LABEL_10;
   }
 
-  [a1 boundsInPoints:v13];
+  [self boundsInPoints:playCopy];
   v20 = NSNonNegativeSizeRect(v16, v17, v18, v19);
   width = v23;
   v24 = 0;
@@ -123,28 +123,28 @@ LABEL_10:
   return v24;
 }
 
-+ (void)playInCurrentContext:(id)a3 frame:(CGRect)a4 colorMap:(id)a5 fillMap:(id)a6
++ (void)playInCurrentContext:(id)context frame:(CGRect)frame colorMap:(id)map fillMap:(id)fillMap
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v21 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = [[MFGraphicsDevice alloc] initWithCanvas:x, y, width, height];
-  [(MFGraphicsDevice *)v14 setColorMap:v12 fillMap:v13];
-  v15 = [MFSniffer fileType:v21];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  contextCopy = context;
+  mapCopy = map;
+  fillMapCopy = fillMap;
+  height = [[MFGraphicsDevice alloc] initWithCanvas:x, y, width, height];
+  [(MFGraphicsDevice *)height setColorMap:mapCopy fillMap:fillMapCopy];
+  v15 = [MFSniffer fileType:contextCopy];
   if (!v15)
   {
-    v16 = [[WMFPlayer alloc] initWithGraphicsDevice:v14];
+    v16 = [[WMFPlayer alloc] initWithGraphicsDevice:height];
     v17 = [[WMFReader alloc] initWithWMFPlayer:v16];
     goto LABEL_5;
   }
 
   if (v15 == 1)
   {
-    v16 = [[EMFPlayer alloc] initWithGraphicsDevice:v14];
+    v16 = [[EMFPlayer alloc] initWithGraphicsDevice:height];
     v17 = [[EMFReader alloc] initWithEMFPlayer:v16];
 LABEL_5:
     v18 = v17;
@@ -156,28 +156,28 @@ LABEL_5:
 LABEL_7:
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
-  [(WMFReader *)v18 play:v21];
+  [(WMFReader *)v18 play:contextCopy];
   v20 = UIGraphicsGetCurrentContext();
   CGContextRestoreGState(v20);
 }
 
-+ (CGRect)boundsInPoints:(id)a3
++ (CGRect)boundsInPoints:(id)points
 {
-  v3 = a3;
+  pointsCopy = points;
   v4 = *MEMORY[0x277CBF3A0];
   v5 = *(MEMORY[0x277CBF3A0] + 8);
   v6 = *(MEMORY[0x277CBF3A0] + 16);
   v7 = *(MEMORY[0x277CBF3A0] + 24);
-  v8 = [MFSniffer fileType:v3];
+  v8 = [MFSniffer fileType:pointsCopy];
   if (!v8)
   {
-    [WMFPlayer boundsInPoints:v3];
+    [WMFPlayer boundsInPoints:pointsCopy];
     goto LABEL_5;
   }
 
   if (v8 == 1)
   {
-    [EMFPlayer boundsInPoints:v3];
+    [EMFPlayer boundsInPoints:pointsCopy];
 LABEL_5:
     v4 = v9;
     v5 = v10;
@@ -196,23 +196,23 @@ LABEL_5:
   return result;
 }
 
-+ (CGRect)boundsInLogicalUnits:(id)a3
++ (CGRect)boundsInLogicalUnits:(id)units
 {
-  v3 = a3;
+  unitsCopy = units;
   v4 = *MEMORY[0x277CBF3A0];
   v5 = *(MEMORY[0x277CBF3A0] + 8);
   v6 = *(MEMORY[0x277CBF3A0] + 16);
   v7 = *(MEMORY[0x277CBF3A0] + 24);
-  v8 = [MFSniffer fileType:v3];
+  v8 = [MFSniffer fileType:unitsCopy];
   if (!v8)
   {
-    [WMFPlayer boundsInLogicalUnits:v3];
+    [WMFPlayer boundsInLogicalUnits:unitsCopy];
     goto LABEL_5;
   }
 
   if (v8 == 1)
   {
-    [EMFPlayer boundsInLogicalUnits:v3];
+    [EMFPlayer boundsInLogicalUnits:unitsCopy];
 LABEL_5:
     v4 = v9;
     v5 = v10;
@@ -231,17 +231,17 @@ LABEL_5:
   return result;
 }
 
-+ (void)fromBinary:(id)a3 toXml:(id)a4
++ (void)fromBinary:(id)binary toXml:(id)xml
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = [v9 pathExtension];
-  v7 = [v6 lowercaseString];
-  v8 = [v7 isEqualToString:@"emf"];
+  binaryCopy = binary;
+  xmlCopy = xml;
+  pathExtension = [binaryCopy pathExtension];
+  lowercaseString = [pathExtension lowercaseString];
+  v8 = [lowercaseString isEqualToString:@"emf"];
 
   if (v8)
   {
-    [EMFPlayer fromBinary:v9 toXml:v5];
+    [EMFPlayer fromBinary:binaryCopy toXml:xmlCopy];
   }
 }
 

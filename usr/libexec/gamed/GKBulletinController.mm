@@ -6,26 +6,26 @@
 + (id)sharedController;
 + (void)startBulletinController;
 - (id)bulletinStorageFilePath;
-- (id)categoryWithIdentifier:(id)a3 acceptActionTitle:(id)a4 acceptActionIcon:(id)a5 declineActionTitle:(id)a6 declineActionIcon:(id)a7 viewActionTitle:(id)a8 viewActionIcon:(id)a9;
-- (id)categoryWithIdentifier:(id)a3 defaultActionTitle:(id)a4 defaultActionIcon:(id)a5 dismissActionTitle:(id)a6 dismissActionIcon:(id)a7;
-- (id)getBulletinsOfType:(Class)a3;
-- (id)initForTests:(BOOL)a3;
-- (id)notificationRequestFromBulletin:(id)a3;
+- (id)categoryWithIdentifier:(id)identifier acceptActionTitle:(id)title acceptActionIcon:(id)icon declineActionTitle:(id)actionTitle declineActionIcon:(id)actionIcon viewActionTitle:(id)viewActionTitle viewActionIcon:(id)viewActionIcon;
+- (id)categoryWithIdentifier:(id)identifier defaultActionTitle:(id)title defaultActionIcon:(id)icon dismissActionTitle:(id)actionTitle dismissActionIcon:(id)actionIcon;
+- (id)getBulletinsOfType:(Class)type;
+- (id)initForTests:(BOOL)tests;
+- (id)notificationRequestFromBulletin:(id)bulletin;
 - (id)registeredCategories;
-- (id)userInfoFromBulletin:(id)a3;
-- (void)clearChallengeBulletinsForChallengeID:(id)a3;
+- (id)userInfoFromBulletin:(id)bulletin;
+- (void)clearChallengeBulletinsForChallengeID:(id)d;
 - (void)clearSavedBulletins;
-- (void)clearTurnBasedBulletinsForMatchID:(id)a3;
+- (void)clearTurnBasedBulletinsForMatchID:(id)d;
 - (void)dealloc;
-- (void)expireBulletin:(id)a3;
+- (void)expireBulletin:(id)bulletin;
 - (void)loadBulletins;
-- (void)presentBulletin:(id)a3;
+- (void)presentBulletin:(id)bulletin;
 - (void)registerUserNotifications;
 - (void)removeAllBulletins;
-- (void)removeBulletin:(id)a3;
+- (void)removeBulletin:(id)bulletin;
 - (void)updateSavedBulletins;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
-- (void)withdrawBulletin:(id)a3;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
+- (void)withdrawBulletin:(id)bulletin;
 @end
 
 @implementation GKBulletinController
@@ -60,7 +60,7 @@
   block[1] = 3221225472;
   block[2] = sub_10019EA04;
   block[3] = &unk_100368998;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1003B9470 != -1)
   {
     dispatch_once(&qword_1003B9470, block);
@@ -71,15 +71,15 @@
   return v2;
 }
 
-- (id)getBulletinsOfType:(Class)a3
+- (id)getBulletinsOfType:(Class)type
 {
   v4 = +[NSMutableDictionary dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(GKBulletinController *)self bulletins];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  bulletins = [(GKBulletinController *)self bulletins];
+  v6 = [bulletins countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -90,12 +90,12 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(bulletins);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [(GKBulletinController *)self bulletins];
-        v12 = [v11 objectForKey:v10];
+        bulletins2 = [(GKBulletinController *)self bulletins];
+        v12 = [bulletins2 objectForKey:v10];
 
         if (objc_opt_isKindOfClass())
         {
@@ -103,7 +103,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [bulletins countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -146,13 +146,13 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "GKBulletinController+Common clearSavedBulletins", buf, 2u);
   }
 
-  v5 = [objc_opt_class() bulletinQueue];
+  bulletinQueue = [objc_opt_class() bulletinQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10019EE44;
   block[3] = &unk_100361770;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(bulletinQueue, block);
 }
 
 - (void)updateSavedBulletins
@@ -169,13 +169,13 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "GKBulletinController+Common updateSavedBulletins", buf, 2u);
   }
 
-  v5 = [objc_opt_class() bulletinQueue];
+  bulletinQueue = [objc_opt_class() bulletinQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10019F160;
   block[3] = &unk_100361770;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(bulletinQueue, block);
 }
 
 - (void)loadBulletins
@@ -192,19 +192,19 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "GKBulletinController+Common loadBulletins", buf, 2u);
   }
 
-  v6 = [objc_opt_class() bulletinQueue];
+  bulletinQueue = [objc_opt_class() bulletinQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10019F550;
   v7[3] = &unk_1003676D8;
   v7[4] = self;
   v7[5] = a2;
-  dispatch_sync(v6, v7);
+  dispatch_sync(bulletinQueue, v7);
 }
 
-- (void)clearTurnBasedBulletinsForMatchID:(id)a3
+- (void)clearTurnBasedBulletinsForMatchID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -222,15 +222,15 @@
   v9[1] = 3221225472;
   v9[2] = sub_10019FF80;
   v9[3] = &unk_10036A4C8;
-  v10 = v4;
-  v11 = self;
-  v8 = v4;
+  v10 = dCopy;
+  selfCopy = self;
+  v8 = dCopy;
   [v7 enumerateKeysAndObjectsUsingBlock:v9];
 }
 
-- (void)clearChallengeBulletinsForChallengeID:(id)a3
+- (void)clearChallengeBulletinsForChallengeID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -248,9 +248,9 @@
   v9[1] = 3221225472;
   v9[2] = sub_1001A011C;
   v9[3] = &unk_10036A4F0;
-  v10 = v4;
-  v11 = self;
-  v8 = v4;
+  v10 = dCopy;
+  selfCopy = self;
+  v8 = dCopy;
   [v7 enumerateKeysAndObjectsUsingBlock:v9];
 }
 
@@ -281,23 +281,23 @@
   }
 
   v7 = +[GKDevice currentDevice];
-  v8 = [v7 isFocusDevice];
+  isFocusDevice = [v7 isFocusDevice];
 
-  if (v8)
+  if (isFocusDevice)
   {
-    v9 = dispatch_get_global_queue(0, 0);
+    sharedController = dispatch_get_global_queue(0, 0);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001A0330;
     block[3] = &unk_100368998;
-    block[4] = a1;
-    dispatch_async(v9, block);
+    block[4] = self;
+    dispatch_async(sharedController, block);
   }
 
   else
   {
-    v9 = [a1 sharedController];
-    [v9 loadBulletins];
+    sharedController = [self sharedController];
+    [sharedController loadBulletins];
   }
 }
 
@@ -335,23 +335,23 @@
   [(GKBulletinController *)&v3 dealloc];
 }
 
-- (id)initForTests:(BOOL)a3
+- (id)initForTests:(BOOL)tests
 {
   v14.receiver = self;
   v14.super_class = GKBulletinController;
   v4 = [(GKBulletinController *)&v14 init];
   if (v4)
   {
-    v5 = [objc_opt_class() bulletinQueue];
+    bulletinQueue = [objc_opt_class() bulletinQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001A0604;
     block[3] = &unk_100361770;
     v6 = v4;
     v13 = v6;
-    dispatch_sync(v5, block);
+    dispatch_sync(bulletinQueue, block);
 
-    if (!a3)
+    if (!tests)
     {
       v7 = objc_alloc_init(GKAcceptedInviteManager);
       acceptedInviteManager = v6->_acceptedInviteManager;
@@ -366,7 +366,7 @@
     v10 = os_log_GKDaemon;
     if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_DEBUG))
     {
-      sub_1002966B4(a3, v10);
+      sub_1002966B4(tests, v10);
     }
   }
 
@@ -390,21 +390,21 @@
   v5 = [[UNUserNotificationCenter alloc] initWithBundleIdentifier:@"com.apple.gamecenter"];
   [(GKBulletinController *)self setUserNotificationCenter:v5];
 
-  v6 = [(GKBulletinController *)self userNotificationCenter];
-  [v6 setDelegate:self];
+  userNotificationCenter = [(GKBulletinController *)self userNotificationCenter];
+  [userNotificationCenter setDelegate:self];
 
-  v7 = [(GKBulletinController *)self userNotificationCenter];
-  [v7 setWantsNotificationResponsesDelivered];
+  userNotificationCenter2 = [(GKBulletinController *)self userNotificationCenter];
+  [userNotificationCenter2 setWantsNotificationResponsesDelivered];
 
-  v8 = [(GKBulletinController *)self registeredCategories];
-  [(GKBulletinController *)self setNotificationCategories:v8];
+  registeredCategories = [(GKBulletinController *)self registeredCategories];
+  [(GKBulletinController *)self setNotificationCategories:registeredCategories];
 
-  v9 = [(GKBulletinController *)self userNotificationCenter];
-  v10 = [(GKBulletinController *)self notificationCategories];
-  [v9 setNotificationCategories:v10];
+  userNotificationCenter3 = [(GKBulletinController *)self userNotificationCenter];
+  notificationCategories = [(GKBulletinController *)self notificationCategories];
+  [userNotificationCenter3 setNotificationCategories:notificationCategories];
 
-  v11 = [(GKBulletinController *)self userNotificationCenter];
-  [v11 requestAuthorizationWithOptions:71 completionHandler:&stru_10036A558];
+  userNotificationCenter4 = [(GKBulletinController *)self userNotificationCenter];
+  [userNotificationCenter4 requestAuthorizationWithOptions:71 completionHandler:&stru_10036A558];
 }
 
 - (id)registeredCategories
@@ -465,102 +465,102 @@
   return v3;
 }
 
-- (id)categoryWithIdentifier:(id)a3 defaultActionTitle:(id)a4 defaultActionIcon:(id)a5 dismissActionTitle:(id)a6 dismissActionIcon:(id)a7
+- (id)categoryWithIdentifier:(id)identifier defaultActionTitle:(id)title defaultActionIcon:(id)icon dismissActionTitle:(id)actionTitle dismissActionIcon:(id)actionIcon
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = a3;
-  if ([v12 length])
+  titleCopy = title;
+  iconCopy = icon;
+  actionTitleCopy = actionTitle;
+  actionIconCopy = actionIcon;
+  identifierCopy = identifier;
+  if ([iconCopy length])
   {
-    v16 = [UNNotificationActionIcon iconWithSystemImageName:v12];
-    v17 = [UNNotificationAction actionWithIdentifier:@"GKDefault" title:v11 options:0 icon:v16];
+    v16 = [UNNotificationActionIcon iconWithSystemImageName:iconCopy];
+    v17 = [UNNotificationAction actionWithIdentifier:@"GKDefault" title:titleCopy options:0 icon:v16];
   }
 
   else
   {
-    v17 = [UNNotificationAction actionWithIdentifier:@"GKDefault" title:v11 options:0 icon:0];
+    v17 = [UNNotificationAction actionWithIdentifier:@"GKDefault" title:titleCopy options:0 icon:0];
   }
 
-  if ([v14 length])
+  if ([actionIconCopy length])
   {
-    v18 = [UNNotificationActionIcon iconWithSystemImageName:v14];
-    v19 = [UNNotificationAction actionWithIdentifier:@"GKDismissed" title:v13 options:0 icon:v18];
+    v18 = [UNNotificationActionIcon iconWithSystemImageName:actionIconCopy];
+    v19 = [UNNotificationAction actionWithIdentifier:@"GKDismissed" title:actionTitleCopy options:0 icon:v18];
   }
 
   else
   {
-    v19 = [UNNotificationAction actionWithIdentifier:@"GKDismissed" title:v13 options:0 icon:0];
+    v19 = [UNNotificationAction actionWithIdentifier:@"GKDismissed" title:actionTitleCopy options:0 icon:0];
   }
 
   v23[0] = v17;
   v23[1] = v19;
   v20 = [NSArray arrayWithObjects:v23 count:2];
-  v21 = [UNNotificationCategory categoryWithIdentifier:v15 actions:v20 intentIdentifiers:&__NSArray0__struct options:1];
+  v21 = [UNNotificationCategory categoryWithIdentifier:identifierCopy actions:v20 intentIdentifiers:&__NSArray0__struct options:1];
 
   return v21;
 }
 
-- (id)categoryWithIdentifier:(id)a3 acceptActionTitle:(id)a4 acceptActionIcon:(id)a5 declineActionTitle:(id)a6 declineActionIcon:(id)a7 viewActionTitle:(id)a8 viewActionIcon:(id)a9
+- (id)categoryWithIdentifier:(id)identifier acceptActionTitle:(id)title acceptActionIcon:(id)icon declineActionTitle:(id)actionTitle declineActionIcon:(id)actionIcon viewActionTitle:(id)viewActionTitle viewActionIcon:(id)viewActionIcon
 {
-  v14 = a4;
-  v15 = a5;
-  v31 = a6;
-  v16 = a7;
-  v29 = a8;
-  v17 = a9;
-  v18 = a3;
-  if ([v15 length])
+  titleCopy = title;
+  iconCopy = icon;
+  actionTitleCopy = actionTitle;
+  actionIconCopy = actionIcon;
+  viewActionTitleCopy = viewActionTitle;
+  viewActionIconCopy = viewActionIcon;
+  identifierCopy = identifier;
+  if ([iconCopy length])
   {
-    v19 = [UNNotificationActionIcon iconWithSystemImageName:v15];
-    v20 = [UNNotificationAction actionWithIdentifier:@"GKAccepted" title:v14 options:0 icon:v19];
+    v19 = [UNNotificationActionIcon iconWithSystemImageName:iconCopy];
+    v20 = [UNNotificationAction actionWithIdentifier:@"GKAccepted" title:titleCopy options:0 icon:v19];
   }
 
   else
   {
-    v20 = [UNNotificationAction actionWithIdentifier:@"GKAccepted" title:v14 options:0 icon:0];
+    v20 = [UNNotificationAction actionWithIdentifier:@"GKAccepted" title:titleCopy options:0 icon:0];
   }
 
-  v30 = v14;
-  if ([v16 length])
+  v30 = titleCopy;
+  if ([actionIconCopy length])
   {
-    v21 = [UNNotificationActionIcon iconWithSystemImageName:v16];
-    v22 = [UNNotificationAction actionWithIdentifier:@"GKDeclined" title:v31 options:0 icon:v21];
-  }
-
-  else
-  {
-    v22 = [UNNotificationAction actionWithIdentifier:@"GKDeclined" title:v31 options:0 icon:0];
-  }
-
-  if ([v17 length])
-  {
-    v23 = [UNNotificationActionIcon iconWithSystemImageName:v17];
-    v24 = v29;
-    v25 = [UNNotificationAction actionWithIdentifier:@"GKView" title:v29 options:0 icon:v23];
+    v21 = [UNNotificationActionIcon iconWithSystemImageName:actionIconCopy];
+    v22 = [UNNotificationAction actionWithIdentifier:@"GKDeclined" title:actionTitleCopy options:0 icon:v21];
   }
 
   else
   {
-    v24 = v29;
-    v25 = [UNNotificationAction actionWithIdentifier:@"GKView" title:v29 options:0 icon:0];
+    v22 = [UNNotificationAction actionWithIdentifier:@"GKDeclined" title:actionTitleCopy options:0 icon:0];
+  }
+
+  if ([viewActionIconCopy length])
+  {
+    v23 = [UNNotificationActionIcon iconWithSystemImageName:viewActionIconCopy];
+    v24 = viewActionTitleCopy;
+    v25 = [UNNotificationAction actionWithIdentifier:@"GKView" title:viewActionTitleCopy options:0 icon:v23];
+  }
+
+  else
+  {
+    v24 = viewActionTitleCopy;
+    v25 = [UNNotificationAction actionWithIdentifier:@"GKView" title:viewActionTitleCopy options:0 icon:0];
   }
 
   v32[0] = v20;
   v32[1] = v22;
   v32[2] = v25;
   v26 = [NSArray arrayWithObjects:v32 count:3];
-  v27 = [UNNotificationCategory categoryWithIdentifier:v18 actions:v26 intentIdentifiers:&__NSArray0__struct options:0];
+  v27 = [UNNotificationCategory categoryWithIdentifier:identifierCopy actions:v26 intentIdentifiers:&__NSArray0__struct options:0];
 
   return v27;
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v47 = a3;
-  v7 = a4;
-  v48 = a5;
+  centerCopy = center;
+  responseCopy = response;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -582,7 +582,7 @@
   if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v7;
+    *(&buf + 4) = responseCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "response: %@", &buf, 0xCu);
   }
 
@@ -592,16 +592,16 @@
   v58 = sub_1001A1904;
   v59 = sub_1001A1914;
   v60 = 0;
-  v12 = [objc_opt_class() bulletinQueue];
+  bulletinQueue = [objc_opt_class() bulletinQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001A191C;
   block[3] = &unk_100363D80;
   p_buf = &buf;
   block[4] = self;
-  v13 = v7;
+  v13 = responseCopy;
   v51 = v13;
-  dispatch_sync(v12, block);
+  dispatch_sync(bulletinQueue, block);
 
   if (*(*(&buf + 1) + 40))
   {
@@ -619,18 +619,18 @@
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "bulletin: %@", v54, 0xCu);
     }
 
-    v46 = [v13 actionIdentifier];
-    v17 = [v13 notification];
-    v18 = [v17 request];
-    v19 = [v18 content];
-    v20 = [v19 expirationDate];
-    if (v20)
+    actionIdentifier = [v13 actionIdentifier];
+    notification = [v13 notification];
+    request = [notification request];
+    content = [request content];
+    expirationDate = [content expirationDate];
+    if (expirationDate)
     {
-      v21 = [v13 notification];
-      v22 = [v21 request];
-      v23 = [v22 content];
-      v24 = [v23 expirationDate];
-      [v24 timeIntervalSinceNow];
+      notification2 = [v13 notification];
+      request2 = [notification2 request];
+      content2 = [request2 content];
+      expirationDate2 = [content2 expirationDate];
+      [expirationDate2 timeIntervalSinceNow];
       v26 = v25 > 0.0;
 
       if (!v26)
@@ -644,8 +644,8 @@
     {
     }
 
-    v33 = [v13 actionIdentifier];
-    v34 = [v33 isEqualToString:UNNotificationDefaultActionIdentifier];
+    actionIdentifier2 = [v13 actionIdentifier];
+    v34 = [actionIdentifier2 isEqualToString:UNNotificationDefaultActionIdentifier];
 
     if (v34)
     {
@@ -654,13 +654,13 @@
 
     else
     {
-      v35 = [v13 actionIdentifier];
-      v36 = [v35 isEqualToString:UNNotificationDismissActionIdentifier];
+      actionIdentifier3 = [v13 actionIdentifier];
+      v36 = [actionIdentifier3 isEqualToString:UNNotificationDismissActionIdentifier];
 
       if (!v36)
       {
-        v37 = v46;
-        if (v46)
+        v37 = actionIdentifier;
+        if (actionIdentifier)
         {
           goto LABEL_27;
         }
@@ -695,13 +695,13 @@ LABEL_26:
 LABEL_27:
       v29 = v37;
       [*(*(&buf + 1) + 40) handleAction:v37];
-      v38 = [(GKBulletinController *)self userNotificationCenter];
-      v39 = [v13 notification];
-      v40 = [v39 request];
-      v41 = [v40 identifier];
-      v53 = v41;
+      userNotificationCenter = [(GKBulletinController *)self userNotificationCenter];
+      notification3 = [v13 notification];
+      request3 = [notification3 request];
+      identifier = [request3 identifier];
+      v53 = identifier;
       v42 = [NSArray arrayWithObjects:&v53 count:1];
-      [v38 removeDeliveredNotificationsWithIdentifiers:v42];
+      [userNotificationCenter removeDeliveredNotificationsWithIdentifiers:v42];
 
       goto LABEL_33;
     }
@@ -717,23 +717,23 @@ LABEL_27:
   v29 = os_log_GKMatch;
   if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
   {
-    v30 = [v13 notification];
-    v31 = [v30 request];
-    v32 = [v31 identifier];
+    notification4 = [v13 notification];
+    request4 = [notification4 request];
+    identifier2 = [request4 identifier];
     *v54 = 138412290;
-    v55 = v32;
+    v55 = identifier2;
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "no bulletin for ID: %@", v54, 0xCu);
   }
 
 LABEL_33:
 
-  v48[2]();
+  handlerCopy[2]();
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)removeBulletin:(id)a3
+- (void)removeBulletin:(id)bulletin
 {
-  v4 = a3;
+  bulletinCopy = bulletin;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -746,34 +746,34 @@ LABEL_33:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "GKBulletinController removeBulletin:", buf, 2u);
   }
 
-  v7 = [(GKBulletinController *)self userNotificationCenter];
-  v8 = [v4 recordID];
-  v23 = v8;
+  userNotificationCenter = [(GKBulletinController *)self userNotificationCenter];
+  recordID = [bulletinCopy recordID];
+  v23 = recordID;
   v9 = [NSArray arrayWithObjects:&v23 count:1];
-  [v7 removeDeliveredNotificationsWithIdentifiers:v9];
+  [userNotificationCenter removeDeliveredNotificationsWithIdentifiers:v9];
 
-  v10 = [(GKBulletinController *)self userNotificationCenter];
-  v11 = [v4 recordID];
-  v22 = v11;
+  userNotificationCenter2 = [(GKBulletinController *)self userNotificationCenter];
+  recordID2 = [bulletinCopy recordID];
+  v22 = recordID2;
   v12 = [NSArray arrayWithObjects:&v22 count:1];
-  [v10 removePendingNotificationRequestsWithIdentifiers:v12];
+  [userNotificationCenter2 removePendingNotificationRequestsWithIdentifiers:v12];
 
-  v13 = [objc_opt_class() bulletinQueue];
+  bulletinQueue = [objc_opt_class() bulletinQueue];
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_1001A1BC8;
   v18 = &unk_1003610B8;
-  v19 = self;
-  v20 = v4;
-  v14 = v4;
-  dispatch_sync(v13, &v15);
+  selfCopy = self;
+  v20 = bulletinCopy;
+  v14 = bulletinCopy;
+  dispatch_sync(bulletinQueue, &v15);
 
   [(GKBulletinController *)self updateSavedBulletins:v15];
 }
 
-- (void)withdrawBulletin:(id)a3
+- (void)withdrawBulletin:(id)bulletin
 {
-  v4 = a3;
+  bulletinCopy = bulletin;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -786,12 +786,12 @@ LABEL_33:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "GKBulletinControlleriOS withdrawBullentin", v7, 2u);
   }
 
-  [(GKBulletinController *)self removeBulletin:v4];
+  [(GKBulletinController *)self removeBulletin:bulletinCopy];
 }
 
-- (void)expireBulletin:(id)a3
+- (void)expireBulletin:(id)bulletin
 {
-  v4 = a3;
+  bulletinCopy = bulletin;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -804,12 +804,12 @@ LABEL_33:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "GKBulletinControlleriOS expireBulletin:", v7, 2u);
   }
 
-  [(GKBulletinController *)self removeBulletin:v4];
+  [(GKBulletinController *)self removeBulletin:bulletinCopy];
 }
 
-- (id)userInfoFromBulletin:(id)a3
+- (id)userInfoFromBulletin:(id)bulletin
 {
-  v3 = a3;
+  bulletinCopy = bulletin;
   if (!os_log_GKGeneral)
   {
     v4 = GKOSLoggers();
@@ -823,22 +823,22 @@ LABEL_33:
   }
 
   v6 = +[NSMutableDictionary dictionary];
-  v7 = [v3 acceptAction];
+  acceptAction = [bulletinCopy acceptAction];
 
-  if (v7)
+  if (acceptAction)
   {
-    v8 = [v3 acceptAction];
-    v9 = [v8 actionDictionary];
-    [v6 setObject:v9 forKey:GKBulletinActionDictionaryAcceptKey];
+    acceptAction2 = [bulletinCopy acceptAction];
+    actionDictionary = [acceptAction2 actionDictionary];
+    [v6 setObject:actionDictionary forKey:GKBulletinActionDictionaryAcceptKey];
 
     v10 = &GKBulletinActionDictionaryDefaultKey;
   }
 
   else
   {
-    v11 = [v3 defaultAction];
+    defaultAction = [bulletinCopy defaultAction];
 
-    if (!v11)
+    if (!defaultAction)
     {
       goto LABEL_10;
     }
@@ -846,66 +846,66 @@ LABEL_33:
     v10 = &GKBulletinActionDictionaryAcceptKey;
   }
 
-  v12 = [v3 defaultAction];
-  v13 = [v12 actionDictionary];
-  [v6 setObject:v13 forKey:*v10];
+  defaultAction2 = [bulletinCopy defaultAction];
+  actionDictionary2 = [defaultAction2 actionDictionary];
+  [v6 setObject:actionDictionary2 forKey:*v10];
 
 LABEL_10:
-  v14 = [v3 defaultAction];
+  defaultAction3 = [bulletinCopy defaultAction];
 
-  if (v14)
+  if (defaultAction3)
   {
-    v15 = [v3 defaultAction];
-    v16 = [v15 actionDictionary];
-    [v6 setObject:v16 forKey:GKBulletinActionDictionaryDefaultKey];
+    defaultAction4 = [bulletinCopy defaultAction];
+    actionDictionary3 = [defaultAction4 actionDictionary];
+    [v6 setObject:actionDictionary3 forKey:GKBulletinActionDictionaryDefaultKey];
   }
 
-  v17 = [v3 declineAction];
+  declineAction = [bulletinCopy declineAction];
 
-  if (v17)
+  if (declineAction)
   {
-    v18 = [v3 declineAction];
+    declineAction2 = [bulletinCopy declineAction];
   }
 
   else
   {
-    v19 = [v3 dismissAction];
+    dismissAction = [bulletinCopy dismissAction];
 
-    if (!v19)
+    if (!dismissAction)
     {
       goto LABEL_17;
     }
 
-    v18 = [v3 dismissAction];
+    declineAction2 = [bulletinCopy dismissAction];
   }
 
-  v20 = v18;
-  v21 = [v18 actionDictionary];
-  [v6 setObject:v21 forKey:GKBulletinActionDictionaryDeclineKey];
+  v20 = declineAction2;
+  actionDictionary4 = [declineAction2 actionDictionary];
+  [v6 setObject:actionDictionary4 forKey:GKBulletinActionDictionaryDeclineKey];
 
 LABEL_17:
-  v22 = [v3 recordID];
+  recordID = [bulletinCopy recordID];
 
-  if (v22)
+  if (recordID)
   {
-    v23 = [v3 recordID];
-    [v6 setObject:v23 forKey:GKBulletinRecordIDUserDataKey];
+    recordID2 = [bulletinCopy recordID];
+    [v6 setObject:recordID2 forKey:GKBulletinRecordIDUserDataKey];
   }
 
-  v24 = [v3 categoryIdentifier];
+  categoryIdentifier = [bulletinCopy categoryIdentifier];
 
-  if (v24)
+  if (categoryIdentifier)
   {
-    v25 = [v3 categoryIdentifier];
-    [v6 setObject:v25 forKey:GKBulletinCategoryIDUserDataKey];
+    categoryIdentifier2 = [bulletinCopy categoryIdentifier];
+    [v6 setObject:categoryIdentifier2 forKey:GKBulletinCategoryIDUserDataKey];
   }
 
   return v6;
 }
 
-- (id)notificationRequestFromBulletin:(id)a3
+- (id)notificationRequestFromBulletin:(id)bulletin
 {
-  v4 = a3;
+  bulletinCopy = bulletin;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -919,89 +919,89 @@ LABEL_17:
   }
 
   v7 = objc_alloc_init(UNMutableNotificationContent);
-  v8 = [v4 date];
-  [v7 setDate:v8];
+  date = [bulletinCopy date];
+  [v7 setDate:date];
 
-  v9 = [v4 expirationDate];
-  [v7 setExpirationDate:v9];
+  expirationDate = [bulletinCopy expirationDate];
+  [v7 setExpirationDate:expirationDate];
 
-  v10 = [v4 message];
-  [v7 setBody:v10];
+  message = [bulletinCopy message];
+  [v7 setBody:message];
 
-  v11 = [v4 title];
-  [v7 setTitle:v11];
+  title = [bulletinCopy title];
+  [v7 setTitle:title];
 
-  v12 = [(GKBulletinController *)self userInfoFromBulletin:v4];
+  v12 = [(GKBulletinController *)self userInfoFromBulletin:bulletinCopy];
   [v7 setUserInfo:v12];
 
   [v7 setShouldBackgroundDefaultAction:1];
   v13 = +[GKApplicationWorkspace defaultWorkspace];
-  LODWORD(v11) = [v13 applicationIsInstalled:@"com.apple.gamecenter.widgets"];
+  LODWORD(title) = [v13 applicationIsInstalled:@"com.apple.gamecenter.widgets"];
 
-  if (v11)
+  if (title)
   {
     v14 = [UNNotificationIcon iconForApplicationIdentifier:@"com.apple.gamecenter.widgets"];
     [v7 setIcon:v14];
   }
 
-  v15 = [v4 categoryIdentifier];
-  v16 = [v15 length];
+  categoryIdentifier = [bulletinCopy categoryIdentifier];
+  v16 = [categoryIdentifier length];
 
   if (v16)
   {
-    v17 = [v4 categoryIdentifier];
-    [v7 setCategoryIdentifier:v17];
+    categoryIdentifier2 = [bulletinCopy categoryIdentifier];
+    [v7 setCategoryIdentifier:categoryIdentifier2];
   }
 
-  if ([v4 hasSound])
+  if ([bulletinCopy hasSound])
   {
     v18 = [UNMutableNotificationSound soundWithAlertType:17];
-    if ([v4 bulletinType] != 2)
+    if ([bulletinCopy bulletinType] != 2)
     {
-      v19 = [v4 soundPath];
-      v20 = [v19 length];
+      soundPath = [bulletinCopy soundPath];
+      v20 = [soundPath length];
 
       if (v20)
       {
-        v21 = [v4 soundPath];
+        soundPath2 = [bulletinCopy soundPath];
       }
 
       else
       {
         v22 = GKGameCenterNotificationsBundle();
-        v21 = [v22 pathForResource:@"GKInvite" ofType:@"caf"];
+        soundPath2 = [v22 pathForResource:@"GKInvite" ofType:@"caf"];
       }
 
-      v23 = [NSURL fileURLWithPath:v21];
+      v23 = [NSURL fileURLWithPath:soundPath2];
       [v18 setToneFileURL:v23];
     }
 
     [v7 setSound:v18];
   }
 
-  v24 = [v4 gameIcon];
-  if (v24)
+  gameIcon = [bulletinCopy gameIcon];
+  if (gameIcon)
   {
-    v25 = v24;
-    v26 = [v4 gameIcon];
-    v27 = [v26 absoluteString];
-    v28 = [v27 length];
+    v25 = gameIcon;
+    gameIcon2 = [bulletinCopy gameIcon];
+    absoluteString = [gameIcon2 absoluteString];
+    v28 = [absoluteString length];
 
     if (v28)
     {
-      v29 = [v4 gameIcon];
-      v30 = [v29 absoluteString];
-      v31 = [UNNotificationIcon iconAtPath:v30];
+      gameIcon3 = [bulletinCopy gameIcon];
+      absoluteString2 = [gameIcon3 absoluteString];
+      v31 = [UNNotificationIcon iconAtPath:absoluteString2];
 
       [v7 setIcon:v31];
       [v7 setShouldShowSubordinateIcon:1];
     }
   }
 
-  v32 = [v4 bulletinType];
-  if (v32 <= 399)
+  bulletinType = [bulletinCopy bulletinType];
+  if (bulletinType <= 399)
   {
-    if ((v32 - 200) >= 2 && v32 != 2)
+    if ((bulletinType - 200) >= 2 && bulletinType != 2)
     {
       goto LABEL_27;
     }
@@ -1011,50 +1011,50 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (v32 == 400 || v32 == 1700 || v32 == 600)
+  if (bulletinType == 400 || bulletinType == 1700 || bulletinType == 600)
   {
     goto LABEL_26;
   }
 
 LABEL_27:
   v33 = objc_opt_new();
-  v34 = [v4 attachments];
+  attachments = [bulletinCopy attachments];
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
   v39[2] = sub_1001A24EC;
   v39[3] = &unk_10036A580;
   v40 = v33;
   v35 = v33;
-  [v34 enumerateObjectsUsingBlock:v39];
+  [attachments enumerateObjectsUsingBlock:v39];
 
   [v7 setAttachments:v35];
-  v36 = [v4 recordID];
-  v37 = [UNNotificationRequest requestWithIdentifier:v36 content:v7 trigger:0];
+  recordID = [bulletinCopy recordID];
+  v37 = [UNNotificationRequest requestWithIdentifier:recordID content:v7 trigger:0];
 
   return v37;
 }
 
-- (void)presentBulletin:(id)a3
+- (void)presentBulletin:(id)bulletin
 {
-  v4 = a3;
-  v5 = [(GKBulletinController *)self userNotificationCenter];
-  v6 = [v5 notificationSettings];
-  v7 = [v6 authorizationStatus];
+  bulletinCopy = bulletin;
+  userNotificationCenter = [(GKBulletinController *)self userNotificationCenter];
+  notificationSettings = [userNotificationCenter notificationSettings];
+  authorizationStatus = [notificationSettings authorizationStatus];
 
-  if (v7 > 1)
+  if (authorizationStatus > 1)
   {
-    v10 = [(GKBulletinController *)self notificationCategories];
-    v11 = [v4 updatedNotificationCategoriesOrNil:v10];
+    notificationCategories = [(GKBulletinController *)self notificationCategories];
+    v11 = [bulletinCopy updatedNotificationCategoriesOrNil:notificationCategories];
 
     if (v11)
     {
       [(GKBulletinController *)self setNotificationCategories:v11];
-      v12 = [(GKBulletinController *)self userNotificationCenter];
-      v13 = [(GKBulletinController *)self notificationCategories];
-      [v12 setNotificationCategories:v13];
+      userNotificationCenter2 = [(GKBulletinController *)self userNotificationCenter];
+      notificationCategories2 = [(GKBulletinController *)self notificationCategories];
+      [userNotificationCenter2 setNotificationCategories:notificationCategories2];
     }
 
-    [v4 reportMetricsForPresented];
+    [bulletinCopy reportMetricsForPresented];
     if (!os_log_GKGeneral)
     {
       v14 = GKOSLoggers();
@@ -1067,15 +1067,15 @@ LABEL_27:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "GKBulletinControlleriOS presentBulletin:", buf, 2u);
     }
 
-    v16 = [objc_opt_class() bulletinQueue];
+    bulletinQueue = [objc_opt_class() bulletinQueue];
     v22 = _NSConcreteStackBlock;
     v23 = 3221225472;
     v24 = sub_1001A2978;
     v25 = &unk_1003610B8;
-    v26 = self;
-    v17 = v4;
+    selfCopy = self;
+    v17 = bulletinCopy;
     v27 = v17;
-    dispatch_sync(v16, &v22);
+    dispatch_sync(bulletinQueue, &v22);
 
     [(GKBulletinController *)self updateSavedBulletins:v22];
     v18 = [(GKBulletinController *)self notificationRequestFromBulletin:v17];
@@ -1092,8 +1092,8 @@ LABEL_27:
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "GKBulletinController: presenting notification request:%@", buf, 0xCu);
     }
 
-    v21 = [(GKBulletinController *)self userNotificationCenter];
-    [v21 addNotificationRequest:v18 withCompletionHandler:0];
+    userNotificationCenter3 = [(GKBulletinController *)self userNotificationCenter];
+    [userNotificationCenter3 addNotificationRequest:v18 withCompletionHandler:0];
   }
 
   else
@@ -1127,16 +1127,16 @@ LABEL_27:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "GKBulletinControlleriOS removeAllBulletins", buf, 2u);
   }
 
-  v5 = [(GKBulletinController *)self userNotificationCenter];
-  [v5 removeAllDeliveredNotifications];
+  userNotificationCenter = [(GKBulletinController *)self userNotificationCenter];
+  [userNotificationCenter removeAllDeliveredNotifications];
 
-  v6 = [objc_opt_class() bulletinQueue];
+  bulletinQueue = [objc_opt_class() bulletinQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001A2AFC;
   block[3] = &unk_100361770;
   block[4] = self;
-  dispatch_sync(v6, block);
+  dispatch_sync(bulletinQueue, block);
 
   [(GKBulletinController *)self clearSavedBulletins];
 }

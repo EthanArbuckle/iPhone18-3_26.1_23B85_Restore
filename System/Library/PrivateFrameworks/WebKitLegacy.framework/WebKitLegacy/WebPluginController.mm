@@ -1,37 +1,37 @@
 @interface WebPluginController
-+ (BOOL)isPlugInView:(id)a3;
-+ (void)addPlugInView:(id)a3;
-- (WebPluginController)initWithDocumentView:(id)a3;
++ (BOOL)isPlugInView:(id)view;
++ (void)addPlugInView:(id)view;
+- (WebPluginController)initWithDocumentView:(id)view;
 - (id)URLPolicyCheckReferrer;
-- (id)_webPluginContainerCheckIfAllowedToLoadRequest:(id)a3 inFrame:(id)a4 resultObject:(id)a5 selector:(SEL)a6;
-- (id)superlayerForPluginView:(id)a3;
+- (id)_webPluginContainerCheckIfAllowedToLoadRequest:(id)request inFrame:(id)frame resultObject:(id)object selector:(SEL)selector;
+- (id)superlayerForPluginView:(id)view;
 - (id)webView;
 - (void)_cancelOutstandingChecks;
-- (void)_webPluginContainerCancelCheckIfAllowedToLoadRequest:(id)a3;
-- (void)addPlugin:(id)a3;
+- (void)_webPluginContainerCancelCheckIfAllowedToLoadRequest:(id)request;
+- (void)addPlugin:(id)plugin;
 - (void)dealloc;
 - (void)destroyAllPlugins;
-- (void)destroyOnePlugin:(id)a3;
-- (void)destroyPlugin:(id)a3;
-- (void)pluginView:(id)a3 receivedData:(id)a4;
-- (void)pluginView:(id)a3 receivedError:(id)a4;
-- (void)pluginView:(id)a3 receivedResponse:(id)a4;
-- (void)pluginViewFinishedLoading:(id)a3;
+- (void)destroyOnePlugin:(id)plugin;
+- (void)destroyPlugin:(id)plugin;
+- (void)pluginView:(id)view receivedData:(id)data;
+- (void)pluginView:(id)view receivedError:(id)error;
+- (void)pluginView:(id)view receivedResponse:(id)response;
+- (void)pluginViewFinishedLoading:(id)loading;
 - (void)restorePluginsFromCache;
 - (void)startAllPlugins;
 - (void)stopAllPlugins;
-- (void)stopOnePlugin:(id)a3;
-- (void)stopOnePluginForPageCache:(id)a3;
+- (void)stopOnePlugin:(id)plugin;
+- (void)stopOnePluginForPageCache:(id)cache;
 - (void)stopPluginsForPageCache;
-- (void)webPlugInContainerDidHideFullScreenForView:(id)a3;
-- (void)webPlugInContainerLoadRequest:(id)a3 inFrame:(id)a4;
-- (void)webPlugInContainerShowStatus:(id)a3;
-- (void)webPlugInContainerWillShowFullScreenForView:(id)a3;
+- (void)webPlugInContainerDidHideFullScreenForView:(id)view;
+- (void)webPlugInContainerLoadRequest:(id)request inFrame:(id)frame;
+- (void)webPlugInContainerShowStatus:(id)status;
+- (void)webPlugInContainerWillShowFullScreenForView:(id)view;
 @end
 
 @implementation WebPluginController
 
-+ (void)addPlugInView:(id)a3
++ (void)addPlugInView:(id)view
 {
   if (byte_1ED6A60F2)
   {
@@ -60,15 +60,15 @@ LABEL_4:
     }
   }
 
-  if (a3)
+  if (view)
   {
     v6 = qword_1ED6A6100;
 
-    [v6 addObject:a3];
+    [v6 addObject:view];
   }
 }
 
-+ (BOOL)isPlugInView:(id)a3
++ (BOOL)isPlugInView:(id)view
 {
   if (byte_1ED6A60F2 == 1)
   {
@@ -82,17 +82,17 @@ LABEL_4:
     byte_1ED6A60F2 = 1;
   }
 
-  return [v3 containsObject:a3];
+  return [v3 containsObject:view];
 }
 
-- (WebPluginController)initWithDocumentView:(id)a3
+- (WebPluginController)initWithDocumentView:(id)view
 {
   v7.receiver = self;
   v7.super_class = WebPluginController;
   result = [(WebPluginController *)&v7 init];
   if (result)
   {
-    result->_documentView = a3;
+    result->_documentView = view;
     v5 = result;
     result->_views = objc_alloc_init(MEMORY[0x1E695DF70]);
     Mutable = CFSetCreateMutable(0, 0, 0);
@@ -110,15 +110,15 @@ LABEL_4:
   [(WebPluginController *)&v3 dealloc];
 }
 
-- (id)superlayerForPluginView:(id)a3
+- (id)superlayerForPluginView:(id)view
 {
-  v4 = [(WebPluginController *)self webFrame];
-  if (!v4)
+  webFrame = [(WebPluginController *)self webFrame];
+  if (!webFrame)
   {
     return 0;
   }
 
-  v5 = *(v4[1] + 8);
+  v5 = *(webFrame[1] + 8);
   if (!v5)
   {
     return 0;
@@ -130,7 +130,7 @@ LABEL_4:
     return 0;
   }
 
-  v7 = WebCore::LocalFrameView::graphicsLayerForPlatformWidget(v6, a3);
+  v7 = WebCore::LocalFrameView::graphicsLayerForPlatformWidget(v6, view);
   if (!v7)
   {
     return 0;
@@ -141,7 +141,7 @@ LABEL_4:
   return v8();
 }
 
-- (void)stopOnePlugin:(id)a3
+- (void)stopOnePlugin:(id)plugin
 {
   v4 = objc_opt_respondsToSelector();
   if (v4)
@@ -152,7 +152,7 @@ LABEL_4:
     }
 
     MEMORY[0x1CCA63320](v6);
-    [a3 webPlugInStop];
+    [plugin webPlugInStop];
   }
 
   else
@@ -169,13 +169,13 @@ LABEL_4:
     }
 
     MEMORY[0x1CCA63320](v6);
-    [a3 pluginStop];
+    [plugin pluginStop];
   }
 
   JSC::JSLock::DropAllLocks::~DropAllLocks(v6);
 }
 
-- (void)stopOnePluginForPageCache:(id)a3
+- (void)stopOnePluginForPageCache:(id)cache
 {
   v5 = objc_opt_respondsToSelector();
   if (v5)
@@ -186,18 +186,18 @@ LABEL_4:
     }
 
     MEMORY[0x1CCA63320](v6);
-    [a3 webPlugInStopForPageCache];
+    [cache webPlugInStopForPageCache];
     JSC::JSLock::DropAllLocks::~DropAllLocks(v6);
   }
 
   else
   {
 
-    [(WebPluginController *)self stopOnePlugin:a3];
+    [(WebPluginController *)self stopOnePlugin:cache];
   }
 }
 
-- (void)destroyOnePlugin:(id)a3
+- (void)destroyOnePlugin:(id)plugin
 {
   v4 = objc_opt_respondsToSelector();
   if (v4)
@@ -208,7 +208,7 @@ LABEL_4:
     }
 
     MEMORY[0x1CCA63320](v6);
-    [a3 webPlugInDestroy];
+    [plugin webPlugInDestroy];
   }
 
   else
@@ -225,7 +225,7 @@ LABEL_4:
     }
 
     MEMORY[0x1CCA63320](v6);
-    [a3 pluginDestroy];
+    [plugin pluginDestroy];
   }
 
   JSC::JSLock::DropAllLocks::~DropAllLocks(v6);
@@ -328,26 +328,26 @@ LABEL_8:
 
 - (void)restorePluginsFromCache
 {
-  v3 = [(WAKView *)self->_documentView _webView];
+  _webView = [(WAKView *)self->_documentView _webView];
   v4 = [(NSMutableArray *)self->_views count];
   if (v4)
   {
     v5 = v4;
     for (i = 0; i != v5; ++i)
     {
-      [objc_msgSend(v3 "_UIKitDelegateForwarder")];
+      [objc_msgSend(_webView "_UIKitDelegateForwarder")];
     }
   }
 }
 
-- (void)addPlugin:(id)a3
+- (void)addPlugin:(id)plugin
 {
   if (!self->_documentView || ([(NSMutableArray *)self->_views containsObject:?]& 1) != 0)
   {
     return;
   }
 
-  [(NSMutableArray *)self->_views addObject:a3];
+  [(NSMutableArray *)self->_views addObject:plugin];
   v5 = objc_opt_respondsToSelector();
   if (v5)
   {
@@ -357,7 +357,7 @@ LABEL_8:
     }
 
     MEMORY[0x1CCA63320](v10);
-    [a3 webPlugInInitialize];
+    [plugin webPlugInInitialize];
   }
 
   else
@@ -374,7 +374,7 @@ LABEL_8:
     }
 
     MEMORY[0x1CCA63320](v10);
-    [a3 pluginInitialize];
+    [plugin pluginInitialize];
   }
 
   JSC::JSLock::DropAllLocks::~DropAllLocks(v10);
@@ -393,7 +393,7 @@ LABEL_12:
     }
 
     MEMORY[0x1CCA63320](v10);
-    [a3 webPlugInStart];
+    [plugin webPlugInStart];
   }
 
   else
@@ -410,7 +410,7 @@ LABEL_12:
     }
 
     MEMORY[0x1CCA63320](v10);
-    [a3 pluginStart];
+    [plugin pluginStart];
   }
 
   JSC::JSLock::DropAllLocks::~DropAllLocks(v10);
@@ -424,21 +424,21 @@ LABEL_22:
     }
 
     MEMORY[0x1CCA63320](v10);
-    [a3 setContainingWindow:{-[WAKView window](self->_documentView, "window")}];
+    [plugin setContainingWindow:{-[WAKView window](self->_documentView, "window")}];
     JSC::JSLock::DropAllLocks::~DropAllLocks(v10);
   }
 }
 
-- (void)destroyPlugin:(id)a3
+- (void)destroyPlugin:(id)plugin
 {
   if ([(NSMutableArray *)self->_views containsObject:?])
   {
     if (self->_started)
     {
-      [(WebPluginController *)self stopOnePlugin:a3];
+      [(WebPluginController *)self stopOnePlugin:plugin];
     }
 
-    [(WebPluginController *)self destroyOnePlugin:a3];
+    [(WebPluginController *)self destroyOnePlugin:plugin];
     if (byte_1ED6A60F2 == 1)
     {
       v5 = qword_1ED6A6100;
@@ -451,19 +451,19 @@ LABEL_22:
       byte_1ED6A60F2 = 1;
     }
 
-    [v5 removeObject:a3];
+    [v5 removeObject:plugin];
     views = self->_views;
 
-    [(NSMutableArray *)views removeObject:a3];
+    [(NSMutableArray *)views removeObject:plugin];
   }
 }
 
-- (void)_webPluginContainerCancelCheckIfAllowedToLoadRequest:(id)a3
+- (void)_webPluginContainerCancelCheckIfAllowedToLoadRequest:(id)request
 {
-  [a3 cancel];
+  [request cancel];
   checksInProgress = self->_checksInProgress;
 
-  [(NSMutableSet *)checksInProgress removeObject:a3];
+  [(NSMutableSet *)checksInProgress removeObject:request];
 }
 
 - (void)_cancelOutstandingChecks
@@ -521,17 +521,17 @@ LABEL_7:
   self->_documentView = 0;
 }
 
-- (id)_webPluginContainerCheckIfAllowedToLoadRequest:(id)a3 inFrame:(id)a4 resultObject:(id)a5 selector:(SEL)a6
+- (id)_webPluginContainerCheckIfAllowedToLoadRequest:(id)request inFrame:(id)frame resultObject:(id)object selector:(SEL)selector
 {
-  v7 = [WebPluginContainerCheck checkWithRequest:a3 target:a4 resultObject:a5 selector:a6 controller:self contextInfo:0];
+  v7 = [WebPluginContainerCheck checkWithRequest:request target:frame resultObject:object selector:selector controller:self contextInfo:0];
   [(NSMutableSet *)self->_checksInProgress addObject:v7];
   [(WebPluginContainerCheck *)v7 start];
   return v7;
 }
 
-- (void)webPlugInContainerLoadRequest:(id)a3 inFrame:(id)a4
+- (void)webPlugInContainerLoadRequest:(id)request inFrame:(id)frame
 {
-  if (!a3)
+  if (!request)
   {
     return;
   }
@@ -541,23 +541,23 @@ LABEL_7:
     return;
   }
 
-  v6 = [(WebDataSource *)self->_dataSource webFrame];
-  if (!v6)
+  webFrame = [(WebDataSource *)self->_dataSource webFrame];
+  if (!webFrame)
   {
     return;
   }
 
-  v7 = v6;
-  if (!a4)
+  v7 = webFrame;
+  if (!frame)
   {
-    a4 = @"_top";
+    frame = @"_top";
   }
 
-  v8 = [objc_msgSend(a3 "URL")];
+  v8 = [objc_msgSend(request "URL")];
   if (v8)
   {
     v9 = v8;
-    if ([(WebFrame *)v7 findFrameNamed:a4]== v7)
+    if ([(WebFrame *)v7 findFrameNamed:frame]== v7)
     {
 
       [(WebFrame *)v7 _stringByEvaluatingJavaScriptFromString:v9];
@@ -567,7 +567,7 @@ LABEL_7:
   }
 
   m_ptr = v7->_private->coreFrame.m_ptr;
-  MEMORY[0x1CCA65390](v32, a3);
+  MEMORY[0x1CCA65390](v32, request);
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
@@ -657,7 +657,7 @@ LABEL_29:
   }
 
   WebCore::ResourceRequestBase::RequestData::~RequestData(v32, v13);
-  WTF::AtomStringImpl::add(v26, a4, v22);
+  WTF::AtomStringImpl::add(v26, frame, v22);
   v24 = v26[0];
   if (v26[0])
   {
@@ -681,45 +681,45 @@ LABEL_29:
   MEMORY[0x1CCA65730](v37);
 }
 
-- (void)webPlugInContainerWillShowFullScreenForView:(id)a3
+- (void)webPlugInContainerWillShowFullScreenForView:(id)view
 {
-  v4 = [(WebDataSource *)self->_dataSource _webView];
-  v5 = [v4 _UIKitDelegateForwarder];
+  _webView = [(WebDataSource *)self->_dataSource _webView];
+  _UIKitDelegateForwarder = [_webView _UIKitDelegateForwarder];
 
-  [v5 webView:v4 willShowFullScreenForPlugInView:a3];
+  [_UIKitDelegateForwarder webView:_webView willShowFullScreenForPlugInView:view];
 }
 
-- (void)webPlugInContainerDidHideFullScreenForView:(id)a3
+- (void)webPlugInContainerDidHideFullScreenForView:(id)view
 {
-  v4 = [(WebDataSource *)self->_dataSource _webView];
-  v5 = [v4 _UIKitDelegateForwarder];
+  _webView = [(WebDataSource *)self->_dataSource _webView];
+  _UIKitDelegateForwarder = [_webView _UIKitDelegateForwarder];
 
-  [v5 webView:v4 didHideFullScreenForPlugInView:a3];
+  [_UIKitDelegateForwarder webView:_webView didHideFullScreenForPlugInView:view];
 }
 
-- (void)webPlugInContainerShowStatus:(id)a3
+- (void)webPlugInContainerShowStatus:(id)status
 {
-  if (a3)
+  if (status)
   {
-    v3 = a3;
+    statusCopy = status;
   }
 
   else
   {
-    v3 = &stru_1F472E7E8;
+    statusCopy = &stru_1F472E7E8;
   }
 
-  v4 = [(WebDataSource *)self->_dataSource _webView];
-  v5 = [v4 _UIDelegateForwarder];
+  _webView = [(WebDataSource *)self->_dataSource _webView];
+  _UIDelegateForwarder = [_webView _UIDelegateForwarder];
 
-  [v5 webView:v4 setStatusText:v3];
+  [_UIDelegateForwarder webView:_webView setStatusText:statusCopy];
 }
 
 - (id)webView
 {
-  v2 = [(WebPluginController *)self webFrame];
+  webFrame = [(WebPluginController *)self webFrame];
 
-  return [v2 webView];
+  return [webFrame webView];
 }
 
 - (id)URLPolicyCheckReferrer
@@ -729,17 +729,17 @@ LABEL_29:
   return [v2 _web_originalDataAsString];
 }
 
-- (void)pluginView:(id)a3 receivedResponse:(id)a4
+- (void)pluginView:(id)view receivedResponse:(id)response
 {
   if (objc_opt_respondsToSelector())
   {
 
-    [a3 webPlugInMainResourceDidReceiveResponse:a4];
+    [view webPlugInMainResourceDidReceiveResponse:response];
   }
 
   else
   {
-    v7 = [objc_alloc(MEMORY[0x1E696ABC0]) _initWithPluginErrorCode:204 contentURL:objc_msgSend(a4 pluginPageURL:"URL") pluginName:0 MIMEType:{0, objc_msgSend(a4, "MIMEType")}];
+    v7 = [objc_alloc(MEMORY[0x1E696ABC0]) _initWithPluginErrorCode:204 contentURL:objc_msgSend(response pluginPageURL:"URL") pluginName:0 MIMEType:{0, objc_msgSend(response, "MIMEType")}];
     dataSource = self->_dataSource;
     if (dataSource)
     {
@@ -786,30 +786,30 @@ LABEL_29:
   }
 }
 
-- (void)pluginView:(id)a3 receivedData:(id)a4
+- (void)pluginView:(id)view receivedData:(id)data
 {
   if (objc_opt_respondsToSelector())
   {
 
-    [a3 webPlugInMainResourceDidReceiveData:a4];
+    [view webPlugInMainResourceDidReceiveData:data];
   }
 }
 
-- (void)pluginView:(id)a3 receivedError:(id)a4
+- (void)pluginView:(id)view receivedError:(id)error
 {
   if (objc_opt_respondsToSelector())
   {
 
-    [a3 webPlugInMainResourceDidFailWithError:a4];
+    [view webPlugInMainResourceDidFailWithError:error];
   }
 }
 
-- (void)pluginViewFinishedLoading:(id)a3
+- (void)pluginViewFinishedLoading:(id)loading
 {
   if (objc_opt_respondsToSelector())
   {
 
-    [a3 webPlugInMainResourceDidFinishLoading];
+    [loading webPlugInMainResourceDidFinishLoading];
   }
 }
 

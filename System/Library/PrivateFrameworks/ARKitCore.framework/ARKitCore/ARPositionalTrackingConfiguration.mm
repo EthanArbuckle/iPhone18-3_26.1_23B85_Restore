@@ -2,12 +2,12 @@
 + (id)_querySupportedVideoFormats;
 + (id)supportedVideoFormats;
 - (ARPositionalTrackingConfiguration)init;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)imageSensorSettings;
 - (id)worldTrackingOptions;
-- (void)createTechniques:(id)a3;
+- (void)createTechniques:(id)techniques;
 @end
 
 @implementation ARPositionalTrackingConfiguration
@@ -16,11 +16,11 @@
 {
   v5.receiver = self;
   v5.super_class = ARPositionalTrackingConfiguration;
-  v2 = [(ARConfiguration *)&v5 initPrivate];
-  v3 = v2;
-  if (v2)
+  initPrivate = [(ARConfiguration *)&v5 initPrivate];
+  v3 = initPrivate;
+  if (initPrivate)
   {
-    [(ARConfiguration *)v2 setLightEstimationEnabled:0];
+    [(ARConfiguration *)initPrivate setLightEstimationEnabled:0];
     [(ARConfiguration *)v3 setAutoFocusEnabled:1];
     v3->_relocalizationEnabled = 1;
   }
@@ -30,20 +30,20 @@
 
 + (id)supportedVideoFormats
 {
-  if ([a1 isSupported])
+  if ([self isSupported])
   {
     if (supportedVideoFormats_supportedFormats_0 && ![supportedVideoFormats_supportedFormats_0 count])
     {
-      v3 = [a1 _querySupportedVideoFormats];
+      _querySupportedVideoFormats = [self _querySupportedVideoFormats];
       v4 = supportedVideoFormats_supportedFormats_0;
-      supportedVideoFormats_supportedFormats_0 = v3;
+      supportedVideoFormats_supportedFormats_0 = _querySupportedVideoFormats;
     }
 
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __58__ARPositionalTrackingConfiguration_supportedVideoFormats__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (supportedVideoFormats_onceToken_1 != -1)
     {
       dispatch_once(&supportedVideoFormats_onceToken_1, block);
@@ -90,7 +90,7 @@ void __58__ARPositionalTrackingConfiguration_supportedVideoFormats__block_invoke
       *buf = 138544130;
       v44 = v8;
       v45 = 2048;
-      v46 = a1;
+      selfCopy7 = self;
       v47 = 1024;
       LODWORD(v48[0]) = v40;
       WORD2(v48[0]) = 1024;
@@ -113,7 +113,7 @@ void __58__ARPositionalTrackingConfiguration_supportedVideoFormats__block_invoke
       *buf = 138543874;
       v44 = v15;
       v45 = 2048;
-      v46 = a1;
+      selfCopy7 = self;
       v47 = 2048;
       *v48 = v12;
       _os_log_impl(&dword_1C241C000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: ARPositionalTrackingConfiguration frame rate set to %f by user defaults", buf, 0x20u);
@@ -146,7 +146,7 @@ void __58__ARPositionalTrackingConfiguration_supportedVideoFormats__block_invoke
       *buf = 138543874;
       v44 = v22;
       v45 = 2048;
-      v46 = a1;
+      selfCopy7 = self;
       v47 = 2114;
       v48[0] = v17;
       _os_log_impl(&dword_1C241C000, v20, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Not returning video format %{public}@ because world tracking technique does not support its video resolution on current device", buf, 0x20u);
@@ -176,7 +176,7 @@ LABEL_26:
         *buf = 138543618;
         v44 = v34;
         v45 = 2048;
-        v46 = a1;
+        selfCopy7 = self;
         v35 = "%{public}@ <%p>: Video format not found for positional tracking configuration";
         v36 = v32;
         v37 = OS_LOG_TYPE_ERROR;
@@ -192,7 +192,7 @@ LABEL_33:
       *buf = 138543618;
       v44 = v34;
       v45 = 2048;
-      v46 = a1;
+      selfCopy7 = self;
       v35 = "Error: %{public}@ <%p>: Video format not found for positional tracking configuration";
       v36 = v32;
       v37 = OS_LOG_TYPE_INFO;
@@ -216,7 +216,7 @@ LABEL_33:
       *buf = 138543874;
       v44 = v29;
       v45 = 2048;
-      v46 = a1;
+      selfCopy7 = self;
       v47 = 2114;
       v48[0] = v19;
       _os_log_impl(&dword_1C241C000, v24, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Not returning video format %{public}@ because world tracking technique does not support its video resolution on current device", buf, 0x20u);
@@ -232,7 +232,7 @@ LABEL_33:
     *buf = 138543618;
     v44 = v27;
     v45 = 2048;
-    v46 = a1;
+    selfCopy7 = self;
     _os_log_impl(&dword_1C241C000, v24, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Falling back to 1280x720 for positional tracking configuration", buf, 0x16u);
   }
 
@@ -248,7 +248,7 @@ LABEL_35:
   v22 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = ARPositionalTrackingConfiguration;
-  v3 = [(ARConfiguration *)&v17 imageSensorSettings];
+  imageSensorSettings = [(ARConfiguration *)&v17 imageSensorSettings];
   if ([ARKitUserDefaults BOOLForKey:@"com.apple.arkit.worldTracking.visionData"])
   {
     v4 = [ARKitUserDefaults BOOLForKey:@"com.apple.arkit.worldTracking.simulateHWFeatureDetection"]^ 1;
@@ -259,15 +259,15 @@ LABEL_35:
     v4 = 0;
   }
 
-  [v3 setVisionDataOutputEnabled:v4];
-  if ([v3 visionDataOutputEnabled])
+  [imageSensorSettings setVisionDataOutputEnabled:v4];
+  if ([imageSensorSettings visionDataOutputEnabled])
   {
-    v5 = [(ARPositionalTrackingConfiguration *)self worldTrackingOptions];
-    [v5 setImageSensorSettings:v3];
-    v6 = ARVisionDataParametersForWorldTrackingOptions(v5);
+    worldTrackingOptions = [(ARPositionalTrackingConfiguration *)self worldTrackingOptions];
+    [worldTrackingOptions setImageSensorSettings:imageSensorSettings];
+    v6 = ARVisionDataParametersForWorldTrackingOptions(worldTrackingOptions);
     if (v6)
     {
-      [v3 setVisionDataOutputParameters:v6];
+      [imageSensorSettings setVisionDataOutputParameters:v6];
 LABEL_16:
 
       goto LABEL_17;
@@ -290,7 +290,7 @@ LABEL_16:
         *buf = 138543618;
         v19 = v11;
         v20 = 2048;
-        v21 = self;
+        selfCopy2 = self;
         v12 = "%{public}@ <%p>: Error reading vision data output parameters.";
         v13 = v9;
         v14 = OS_LOG_TYPE_ERROR;
@@ -306,7 +306,7 @@ LABEL_14:
       *buf = 138543618;
       v19 = v11;
       v20 = 2048;
-      v21 = self;
+      selfCopy2 = self;
       v12 = "Error: %{public}@ <%p>: Error reading vision data output parameters.";
       v13 = v9;
       v14 = OS_LOG_TYPE_INFO;
@@ -318,14 +318,14 @@ LABEL_14:
 
 LABEL_17:
 
-  return v3;
+  return imageSensorSettings;
 }
 
 - (id)worldTrackingOptions
 {
   v3 = objc_opt_new();
-  v4 = [(ARConfiguration *)self deviceModel];
-  [v3 setDeviceModel:v4];
+  deviceModel = [(ARConfiguration *)self deviceModel];
+  [v3 setDeviceModel:deviceModel];
 
   [v3 setRelocalizationEnabled:{-[ARPositionalTrackingConfiguration isRelocalizationEnabled](self, "isRelocalizationEnabled")}];
   [v3 setPlaneDetection:{-[ARPositionalTrackingConfiguration planeDetection](self, "planeDetection")}];
@@ -340,12 +340,12 @@ LABEL_17:
   }
 
   [v3 setMlModelEnabled:v5];
-  v6 = [(ARPositionalTrackingConfiguration *)self initialWorldMap];
-  [v3 setInitialWorldMap:v6];
+  initialWorldMap = [(ARPositionalTrackingConfiguration *)self initialWorldMap];
+  [v3 setInitialWorldMap:initialWorldMap];
 
-  v7 = [(ARConfiguration *)self replaySensor];
-  v8 = v7;
-  if (v7 && [v7 replayMode])
+  replaySensor = [(ARConfiguration *)self replaySensor];
+  v8 = replaySensor;
+  if (replaySensor && [replaySensor replayMode])
   {
     [v3 setDeterministicMode:1];
   }
@@ -360,15 +360,15 @@ LABEL_17:
   return v3;
 }
 
-- (void)createTechniques:(id)a3
+- (void)createTechniques:(id)techniques
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ARPositionalTrackingConfiguration *)self worldTrackingOptions];
-  v6 = [(ARPositionalTrackingConfiguration *)self imageSensorSettings];
-  [v5 setImageSensorSettings:v6];
+  techniquesCopy = techniques;
+  worldTrackingOptions = [(ARPositionalTrackingConfiguration *)self worldTrackingOptions];
+  imageSensorSettings = [(ARPositionalTrackingConfiguration *)self imageSensorSettings];
+  [worldTrackingOptions setImageSensorSettings:imageSensorSettings];
 
-  if ([v5 planeDetection])
+  if ([worldTrackingOptions planeDetection])
   {
     v7 = [ARKitUserDefaults BOOLForKey:@"com.apple.arkit.worldTracking.accuratePlaneExtentCheck"];
     v8 = _ARLogGeneral_14();
@@ -385,7 +385,7 @@ LABEL_17:
       }
 
       v23 = 2048;
-      v24 = self;
+      selfCopy = self;
       v25 = 2114;
       v26 = v11;
       _os_log_impl(&dword_1C241C000, v8, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Ray-cast accurate extent check: %{public}@", buf, 0x20u);
@@ -393,11 +393,11 @@ LABEL_17:
 
     if (v7)
     {
-      [v5 setPlaneDetection:{objc_msgSend(v5, "planeDetection") | 0x200}];
+      [worldTrackingOptions setPlaneDetection:{objc_msgSend(worldTrackingOptions, "planeDetection") | 0x200}];
     }
   }
 
-  v12 = [[ARWorldTrackingTechnique alloc] initWithOptions:v5];
+  v12 = [[ARWorldTrackingTechnique alloc] initWithOptions:worldTrackingOptions];
   if (v12)
   {
     v13 = [ARParentTechnique alloc];
@@ -405,48 +405,48 @@ LABEL_17:
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
     v15 = [(ARParentTechnique *)v13 initWithParallelTechniques:v14];
 
-    [v4 addObject:v15];
-    v16 = [(ARWorldTrackingTechnique *)v12 options];
-    v17 = [v16 planeDetection];
+    [techniquesCopy addObject:v15];
+    options = [(ARWorldTrackingTechnique *)v12 options];
+    planeDetection = [options planeDetection];
 
-    if (v17)
+    if (planeDetection)
     {
       v18 = [[ARPlaneEstimationTechnique alloc] initWithTrackingTechnique:v12];
-      [v4 addObject:v18];
+      [techniquesCopy addObject:v18];
     }
 
     v19.receiver = self;
     v19.super_class = ARPositionalTrackingConfiguration;
-    [(ARConfiguration *)&v19 createTechniques:v4];
+    [(ARConfiguration *)&v19 createTechniques:techniquesCopy];
     if ([(ARPositionalTrackingConfiguration *)self planeDetection])
     {
-      ARAddNonJasperSemanticsToParent(v15, v4, [(ARConfiguration *)self maxUltrawideImageForwardingFrameRate], 0);
+      ARAddNonJasperSemanticsToParent(v15, techniquesCopy, [(ARConfiguration *)self maxUltrawideImageForwardingFrameRate], 0);
     }
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = ARPositionalTrackingConfiguration;
-  if ([(ARConfiguration *)&v12 isEqual:v4])
+  if ([(ARConfiguration *)&v12 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self->_planeDetection == *(v5 + 15))
     {
-      v6 = [(ARPositionalTrackingConfiguration *)self initialWorldMap];
-      v7 = [v5 initialWorldMap];
-      if (v6 == v7)
+      initialWorldMap = [(ARPositionalTrackingConfiguration *)self initialWorldMap];
+      initialWorldMap2 = [v5 initialWorldMap];
+      if (initialWorldMap == initialWorldMap2)
       {
         v10 = self->_relocalizationEnabled == v5[112] && self->_vioFusionEnabled == v5[113];
       }
 
       else
       {
-        v8 = [(ARPositionalTrackingConfiguration *)self initialWorldMap];
-        v9 = [v5 initialWorldMap];
-        v10 = ([v8 isEqual:v9] & 1) != 0 && self->_relocalizationEnabled == v5[112] && self->_vioFusionEnabled == v5[113];
+        initialWorldMap3 = [(ARPositionalTrackingConfiguration *)self initialWorldMap];
+        initialWorldMap4 = [v5 initialWorldMap];
+        v10 = ([initialWorldMap3 isEqual:initialWorldMap4] & 1) != 0 && self->_relocalizationEnabled == v5[112] && self->_vioFusionEnabled == v5[113];
       }
     }
 
@@ -464,14 +464,14 @@ LABEL_17:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = ARPositionalTrackingConfiguration;
-  v4 = [(ARConfiguration *)&v7 copyWithZone:a3];
+  v4 = [(ARConfiguration *)&v7 copyWithZone:zone];
   v4[15] = self->_planeDetection;
-  v5 = [(ARPositionalTrackingConfiguration *)self initialWorldMap];
-  [v4 setInitialWorldMap:v5];
+  initialWorldMap = [(ARPositionalTrackingConfiguration *)self initialWorldMap];
+  [v4 setInitialWorldMap:initialWorldMap];
 
   *(v4 + 112) = self->_relocalizationEnabled;
   *(v4 + 113) = self->_vioFusionEnabled;
@@ -485,9 +485,9 @@ LABEL_17:
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@: %p", v5, self];
 
-  v7 = [(ARConfiguration *)self isAutoFocusEnabled];
+  isAutoFocusEnabled = [(ARConfiguration *)self isAutoFocusEnabled];
   v8 = @"Disabled";
-  if (v7)
+  if (isAutoFocusEnabled)
   {
     v8 = @"Enabled";
   }
@@ -496,16 +496,16 @@ LABEL_17:
   v9 = NSStringFromARPlaneDetection(self->_planeDetection);
   [v6 appendFormat:@" planeDetection=%@", v9];
 
-  v10 = [(ARPositionalTrackingConfiguration *)self initialWorldMap];
+  initialWorldMap = [(ARPositionalTrackingConfiguration *)self initialWorldMap];
 
-  if (v10)
+  if (initialWorldMap)
   {
-    v11 = [(ARPositionalTrackingConfiguration *)self initialWorldMap];
-    [v6 appendFormat:@" initialWorldMap=%@", v11];
+    initialWorldMap2 = [(ARPositionalTrackingConfiguration *)self initialWorldMap];
+    [v6 appendFormat:@" initialWorldMap=%@", initialWorldMap2];
   }
 
-  v12 = [(ARConfiguration *)self descriptionWithoutBrackets];
-  [v6 appendString:v12];
+  descriptionWithoutBrackets = [(ARConfiguration *)self descriptionWithoutBrackets];
+  [v6 appendString:descriptionWithoutBrackets];
 
   [v6 appendString:@">"];
 

@@ -23,7 +23,7 @@
   }
 
   v11 = [(SKUIStarRatingViewElementViewAccessibility *)self safeValueForKey:@"_starRatingImage"];
-  v12 = [v11 accessibilityLabel];
+  accessibilityLabel = [v11 accessibilityLabel];
   v13 = __UIAXStringForVariables();
 
   return v13;

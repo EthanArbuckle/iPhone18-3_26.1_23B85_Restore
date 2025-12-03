@@ -2,9 +2,9 @@
 + (id)shared;
 - (AFSiriDataSharingSensitivityManager)init;
 - (BOOL)_isRequestSensitiveForUnknownPolicy;
-- (BOOL)_isRequestSensitiveWithPolicy:(int64_t)a3 optInStatus:(int64_t)a4 siriLanguageCode:(id)a5;
+- (BOOL)_isRequestSensitiveWithPolicy:(int64_t)policy optInStatus:(int64_t)status siriLanguageCode:(id)code;
 - (BOOL)isOptedOutOfMTE;
-- (BOOL)isRequestSensitiveWithPolicy:(int64_t)a3 optInStatus:(int64_t)a4 siriLanguageCode:(id)a5;
+- (BOOL)isRequestSensitiveWithPolicy:(int64_t)policy optInStatus:(int64_t)status siriLanguageCode:(id)code;
 - (void)_registerUpdateHandler;
 @end
 
@@ -52,26 +52,26 @@
   return 0;
 }
 
-- (BOOL)_isRequestSensitiveWithPolicy:(int64_t)a3 optInStatus:(int64_t)a4 siriLanguageCode:(id)a5
+- (BOOL)_isRequestSensitiveWithPolicy:(int64_t)policy optInStatus:(int64_t)status siriLanguageCode:(id)code
 {
-  v8 = a5;
-  if (a4 == 1)
+  codeCopy = code;
+  if (status == 1)
   {
     goto LABEL_2;
   }
 
-  switch(a3)
+  switch(policy)
   {
     case 0:
-      v10 = [(AFSiriDataSharingSensitivityManager *)self _isRequestSensitiveForUnknownPolicy];
+      _isRequestSensitiveForUnknownPolicy = [(AFSiriDataSharingSensitivityManager *)self _isRequestSensitiveForUnknownPolicy];
       goto LABEL_9;
     case 3:
-      v10 = [(AFSiriDataSharingSensitivityManager *)self _isRequestSensitiveForSensitiveDomainWithSamplingPolicyForLanguage:v8];
+      _isRequestSensitiveForUnknownPolicy = [(AFSiriDataSharingSensitivityManager *)self _isRequestSensitiveForSensitiveDomainWithSamplingPolicyForLanguage:codeCopy];
       goto LABEL_9;
     case 2:
-      v10 = [(AFSiriDataSharingSensitivityManager *)self _isRequestSensitiveForSensitiveDomainPolicy];
+      _isRequestSensitiveForUnknownPolicy = [(AFSiriDataSharingSensitivityManager *)self _isRequestSensitiveForSensitiveDomainPolicy];
 LABEL_9:
-      v9 = v10;
+      v9 = _isRequestSensitiveForUnknownPolicy;
       goto LABEL_10;
   }
 
@@ -135,13 +135,13 @@ void __61__AFSiriDataSharingSensitivityManager__registerUpdateHandler__block_inv
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isRequestSensitiveWithPolicy:(int64_t)a3 optInStatus:(int64_t)a4 siriLanguageCode:(id)a5
+- (BOOL)isRequestSensitiveWithPolicy:(int64_t)policy optInStatus:(int64_t)status siriLanguageCode:(id)code
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  codeCopy = code;
   if (+[AFFeatureFlags isOptOutLogRedactionEnabled])
   {
-    v9 = [(AFSiriDataSharingSensitivityManager *)self _isRequestSensitiveWithPolicy:a3 optInStatus:a4 siriLanguageCode:v8];
+    v9 = [(AFSiriDataSharingSensitivityManager *)self _isRequestSensitiveWithPolicy:policy optInStatus:status siriLanguageCode:codeCopy];
     v10 = AFSiriLogContextUtility;
     if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_INFO))
     {
@@ -155,25 +155,25 @@ void __61__AFSiriDataSharingSensitivityManager__registerUpdateHandler__block_inv
         v11 = @"NO";
       }
 
-      if ((a3 - 1) > 2)
+      if ((policy - 1) > 2)
       {
         v12 = @"AFSiriDataSharingSensitivityPolicyUnknown";
       }
 
       else
       {
-        v12 = off_1E73479B0[a3 - 1];
+        v12 = off_1E73479B0[policy - 1];
       }
 
       v14 = v10;
-      if (a4 > 3)
+      if (status > 3)
       {
         v15 = @"(unknown)";
       }
 
       else
       {
-        v15 = off_1E7348978[a4];
+        v15 = off_1E7348978[status];
       }
 
       v16 = v15;
@@ -186,7 +186,7 @@ void __61__AFSiriDataSharingSensitivityManager__registerUpdateHandler__block_inv
       v25 = 2112;
       v26 = v16;
       v27 = 2112;
-      v28 = v8;
+      v28 = codeCopy;
       _os_log_impl(&dword_1912FE000, v14, OS_LOG_TYPE_INFO, "%s Request is sensitive:%@ with policy:%@, optInStatus:%@, siriLanguage:%@", &v19, 0x34u);
     }
   }

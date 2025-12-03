@@ -8,8 +8,8 @@
 - (void)dismiss
 {
   [(APEmergencyCallHostViewController *)self dismissViewControllerAnimated:1 completion:0];
-  v3 = [(APEmergencyCallHostViewController *)self delegate];
-  [v3 emergencyCallHostViewControllerDidDismiss:self];
+  delegate = [(APEmergencyCallHostViewController *)self delegate];
+  [delegate emergencyCallHostViewControllerDidDismiss:self];
 }
 
 - (APEmergencyCallHostViewControllerDelegate)delegate

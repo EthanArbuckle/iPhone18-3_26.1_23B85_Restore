@@ -1,35 +1,35 @@
 @interface SKUIGalleryViewController
 - (SKUIEmbeddedMediaViewDelegate)embeddedMediaDelegate;
-- (SKUIGalleryViewController)initWithGalleryComponent:(id)a3 artworkLoader:(id)a4;
+- (SKUIGalleryViewController)initWithGalleryComponent:(id)component artworkLoader:(id)loader;
 - (SKUIMediaComponent)selectedMediaComponent;
-- (id)_newViewControllerWithIndex:(int64_t)a3;
-- (id)_newViewWithMediaComponent:(id)a3;
+- (id)_newViewControllerWithIndex:(int64_t)index;
+- (id)_newViewWithMediaComponent:(id)component;
 - (id)_selectedViewController;
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4;
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4;
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController;
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController;
 - (void)_finishPaneAnimation;
-- (void)_showNextPaneAnimated:(BOOL)a3;
+- (void)_showNextPaneAnimated:(BOOL)animated;
 - (void)_startCycleTimer;
 - (void)_stopCycleTimer;
-- (void)_tapAction:(id)a3;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
+- (void)_tapAction:(id)action;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
 - (void)dealloc;
-- (void)loadArtworkForChildComponent:(id)a3 reason:(int64_t)a4 constraintWidth:(double)a5;
+- (void)loadArtworkForChildComponent:(id)component reason:(int64_t)reason constraintWidth:(double)width;
 - (void)loadView;
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6;
-- (void)performActionForSelectedComponentAnimated:(BOOL)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setEmbeddedMediaDelegate:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed;
+- (void)performActionForSelectedComponentAnimated:(BOOL)animated;
+- (void)setBackgroundColor:(id)color;
+- (void)setEmbeddedMediaDelegate:(id)delegate;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SKUIGalleryViewController
 
-- (SKUIGalleryViewController)initWithGalleryComponent:(id)a3 artworkLoader:(id)a4
+- (SKUIGalleryViewController)initWithGalleryComponent:(id)component artworkLoader:(id)loader
 {
-  v7 = a3;
-  v8 = a4;
+  componentCopy = component;
+  loaderCopy = loader;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIGalleryViewController initWithGalleryComponent:artworkLoader:];
@@ -41,12 +41,12 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_artworkLoader, a4);
+    objc_storeStrong(&v9->_artworkLoader, loader);
     v11 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:517 valueOptions:0 capacity:0];
     componentArtworkRequests = v10->_componentArtworkRequests;
     v10->_componentArtworkRequests = v11;
 
-    objc_storeStrong(&v10->_galleryComponent, a3);
+    objc_storeStrong(&v10->_galleryComponent, component);
   }
 
   return v10;
@@ -68,68 +68,68 @@
   [(SKUIGalleryViewController *)&v4 dealloc];
 }
 
-- (void)loadArtworkForChildComponent:(id)a3 reason:(int64_t)a4 constraintWidth:(double)a5
+- (void)loadArtworkForChildComponent:(id)component reason:(int64_t)reason constraintWidth:(double)width
 {
-  v16 = a3;
+  componentCopy = component;
   v8 = [(NSMapTable *)self->_componentArtworkRequests objectForKey:?];
   v9 = v8;
-  if (!v8 || !-[SKUIResourceLoader trySetReason:forRequestWithIdentifier:](self->_artworkLoader, "trySetReason:forRequestWithIdentifier:", a4, [v8 unsignedIntegerValue]))
+  if (!v8 || !-[SKUIResourceLoader trySetReason:forRequestWithIdentifier:](self->_artworkLoader, "trySetReason:forRequestWithIdentifier:", reason, [v8 unsignedIntegerValue]))
   {
-    v10 = [v16 bestThumbnailArtwork];
-    v11 = [v10 URL];
+    bestThumbnailArtwork = [componentCopy bestThumbnailArtwork];
+    v11 = [bestThumbnailArtwork URL];
     if (v11)
     {
       v12 = objc_alloc_init(SKUIArtworkRequest);
-      v13 = [SKUISizeToFitImageDataConsumer consumerWithConstraintSize:a5, 0.0];
+      v13 = [SKUISizeToFitImageDataConsumer consumerWithConstraintSize:width, 0.0];
       [(SKUIArtworkRequest *)v12 setDataConsumer:v13];
 
       [(SKUIArtworkRequest *)v12 setDelegate:self];
       [(SKUIArtworkRequest *)v12 setURL:v11];
       componentArtworkRequests = self->_componentArtworkRequests;
       v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SKUIResourceRequest requestIdentifier](v12, "requestIdentifier")}];
-      [(NSMapTable *)componentArtworkRequests setObject:v15 forKey:v16];
+      [(NSMapTable *)componentArtworkRequests setObject:v15 forKey:componentCopy];
 
-      [(SKUIResourceLoader *)self->_artworkLoader loadResourceWithRequest:v12 reason:a4];
+      [(SKUIResourceLoader *)self->_artworkLoader loadResourceWithRequest:v12 reason:reason];
     }
   }
 }
 
-- (void)performActionForSelectedComponentAnimated:(BOOL)a3
+- (void)performActionForSelectedComponentAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(SKUIGalleryViewController *)self _selectedViewController];
-  v5 = [v4 mediaView];
+  animatedCopy = animated;
+  _selectedViewController = [(SKUIGalleryViewController *)self _selectedViewController];
+  mediaView = [_selectedViewController mediaView];
 
-  [v5 beginPlaybackAnimated:v3];
+  [mediaView beginPlaybackAnimated:animatedCopy];
 }
 
 - (SKUIMediaComponent)selectedMediaComponent
 {
-  v2 = [(SKUIGalleryViewController *)self _selectedViewController];
-  v3 = [v2 component];
+  _selectedViewController = [(SKUIGalleryViewController *)self _selectedViewController];
+  component = [_selectedViewController component];
 
-  return v3;
+  return component;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(SKUIGalleryViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  colorCopy = color;
+  view = [(SKUIGalleryViewController *)self view];
+  [view setBackgroundColor:colorCopy];
 
-  v7 = [(SKUIGalleryViewController *)self _selectedViewController];
-  v6 = [v7 view];
-  [v6 setBackgroundColor:v4];
+  _selectedViewController = [(SKUIGalleryViewController *)self _selectedViewController];
+  view2 = [_selectedViewController view];
+  [view2 setBackgroundColor:colorCopy];
 }
 
-- (void)setEmbeddedMediaDelegate:(id)a3
+- (void)setEmbeddedMediaDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(SKUIGalleryViewController *)self _selectedViewController];
-  v6 = [v5 mediaView];
+  delegateCopy = delegate;
+  _selectedViewController = [(SKUIGalleryViewController *)self _selectedViewController];
+  mediaView = [_selectedViewController mediaView];
 
-  [v6 setDelegate:v4];
-  objc_storeWeak(&self->_embeddedMediaDelegate, v4);
+  [mediaView setDelegate:delegateCopy];
+  objc_storeWeak(&self->_embeddedMediaDelegate, delegateCopy);
 }
 
 - (void)loadView
@@ -137,8 +137,8 @@
   v40[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277D75D18]);
   [(SKUIGalleryViewController *)self setView:v3];
-  v4 = [(SKUIGalleryPageComponent *)self->_galleryComponent childComponents];
-  v5 = [v4 count];
+  childComponents = [(SKUIGalleryPageComponent *)self->_galleryComponent childComponents];
+  v5 = [childComponents count];
 
   pageIndicator = self->_pageIndicator;
   if (pageIndicator)
@@ -187,12 +187,12 @@ LABEL_6:
     pageViewController = self->_pageViewController;
   }
 
-  v14 = [(UIPageViewController *)pageViewController view];
-  [v14 setAutoresizingMask:18];
+  view = [(UIPageViewController *)pageViewController view];
+  [view setAutoresizingMask:18];
   [v3 bounds];
-  [v14 setFrame:?];
-  [v3 addSubview:v14];
-  [v14 subviews];
+  [view setFrame:?];
+  [v3 addSubview:view];
+  [view subviews];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -239,12 +239,12 @@ LABEL_21:
     tapGestureRecognizer = self->_tapGestureRecognizer;
     self->_tapGestureRecognizer = v21;
 
-    v23 = [(UIPageViewController *)self->_pageViewController gestureRecognizers];
+    gestureRecognizers = [(UIPageViewController *)self->_pageViewController gestureRecognizers];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v24 = [v23 countByEnumeratingWithState:&v30 objects:v38 count:16];
+    v24 = [gestureRecognizers countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (v24)
     {
       v25 = v24;
@@ -255,19 +255,19 @@ LABEL_21:
         {
           if (*v31 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(gestureRecognizers);
           }
 
           [(UITapGestureRecognizer *)self->_tapGestureRecognizer requireGestureRecognizerToFail:*(*(&v30 + 1) + 8 * j)];
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v30 objects:v38 count:16];
+        v25 = [gestureRecognizers countByEnumeratingWithState:&v30 objects:v38 count:16];
       }
 
       while (v25);
     }
 
-    [v14 addGestureRecognizer:self->_tapGestureRecognizer];
+    [view addGestureRecognizer:self->_tapGestureRecognizer];
   }
 
   v28 = self->_pageIndicator;
@@ -281,66 +281,66 @@ LABEL_21:
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SKUIGalleryViewController *)self _startCycleTimer];
   v5.receiver = self;
   v5.super_class = SKUIGalleryViewController;
-  [(SKUIGalleryViewController *)&v5 viewDidAppear:v3];
+  [(SKUIGalleryViewController *)&v5 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(SKUIGalleryViewController *)self _stopCycleTimer];
   v5.receiver = self;
   v5.super_class = SKUIGalleryViewController;
-  [(SKUIGalleryViewController *)&v5 viewWillDisappear:v3];
+  [(SKUIGalleryViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(SKUIGalleryViewController *)self _selectedViewController];
-  v8 = v7;
-  if (v7)
+  requestCopy = request;
+  imageCopy = image;
+  _selectedViewController = [(SKUIGalleryViewController *)self _selectedViewController];
+  v8 = _selectedViewController;
+  if (_selectedViewController)
   {
-    v9 = [v7 component];
-    v10 = [(NSMapTable *)self->_componentArtworkRequests objectForKey:v9];
-    v11 = [v10 unsignedIntegerValue];
-    if (v11 == [v13 requestIdentifier])
+    component = [_selectedViewController component];
+    v10 = [(NSMapTable *)self->_componentArtworkRequests objectForKey:component];
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
+    if (unsignedIntegerValue == [requestCopy requestIdentifier])
     {
-      v12 = [v8 view];
-      [v12 setThumbnailImage:v6];
+      view = [v8 view];
+      [view setThumbnailImage:imageCopy];
     }
   }
 }
 
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController
 {
-  v4 = -[SKUIGalleryViewController _newViewControllerWithIndex:](self, "_newViewControllerWithIndex:", [a4 galleryIndex] - 1);
+  v4 = -[SKUIGalleryViewController _newViewControllerWithIndex:](self, "_newViewControllerWithIndex:", [viewController galleryIndex] - 1);
 
   return v4;
 }
 
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController
 {
-  v4 = -[SKUIGalleryViewController _newViewControllerWithIndex:](self, "_newViewControllerWithIndex:", [a4 galleryIndex] + 1);
+  v4 = -[SKUIGalleryViewController _newViewControllerWithIndex:](self, "_newViewControllerWithIndex:", [viewController galleryIndex] + 1);
 
   return v4;
 }
 
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed
 {
-  v7 = [(SKUIGalleryViewController *)self _selectedViewController:a3];
+  v7 = [(SKUIGalleryViewController *)self _selectedViewController:controller];
   -[UIPageControl setCurrentPage:](self->_pageIndicator, "setCurrentPage:", [v7 galleryIndex]);
 }
 
-- (void)_tapAction:(id)a3
+- (void)_tapAction:(id)action
 {
-  if ([a3 state] == 3)
+  if ([action state] == 3)
   {
 
     [(SKUIGalleryViewController *)self performActionForSelectedComponentAnimated:1];
@@ -349,16 +349,16 @@ LABEL_21:
 
 - (void)_finishPaneAnimation
 {
-  v3 = [(SKUIGalleryViewController *)self _selectedViewController];
-  -[UIPageControl setCurrentPage:](self->_pageIndicator, "setCurrentPage:", [v3 galleryIndex]);
+  _selectedViewController = [(SKUIGalleryViewController *)self _selectedViewController];
+  -[UIPageControl setCurrentPage:](self->_pageIndicator, "setCurrentPage:", [_selectedViewController galleryIndex]);
   [(SKUIGalleryViewController *)self _startCycleTimer];
 }
 
-- (id)_newViewControllerWithIndex:(int64_t)a3
+- (id)_newViewControllerWithIndex:(int64_t)index
 {
-  v5 = [(SKUIGalleryPageComponent *)self->_galleryComponent childComponents];
-  v6 = a3 % [v5 count];
-  v7 = [v5 objectAtIndex:v6];
+  childComponents = [(SKUIGalleryPageComponent *)self->_galleryComponent childComponents];
+  v6 = index % [childComponents count];
+  v7 = [childComponents objectAtIndex:v6];
   v8 = [[SKUIGalleryPaneViewController alloc] initWithMediaComponent:v7 galleryIndex:v6];
   v9 = [(NSMapTable *)self->_componentArtworkRequests objectForKey:v7];
   v10 = v9;
@@ -374,9 +374,9 @@ LABEL_21:
 
   v12 = [(SKUIGalleryViewController *)self _newViewWithMediaComponent:v7];
   [v12 setAutoresizingMask:18];
-  v13 = [(SKUIGalleryViewController *)self view];
-  v14 = [v13 backgroundColor];
-  [v12 setBackgroundColor:v14];
+  view = [(SKUIGalleryViewController *)self view];
+  backgroundColor = [view backgroundColor];
+  [v12 setBackgroundColor:backgroundColor];
 
   [v12 setThumbnailImage:v11];
   [(SKUIGalleryPaneViewController *)v8 setView:v12];
@@ -384,29 +384,29 @@ LABEL_21:
   return v8;
 }
 
-- (id)_newViewWithMediaComponent:(id)a3
+- (id)_newViewWithMediaComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   v5 = objc_alloc_init(SKUIEmbeddedMediaView);
-  v6 = [v4 accessibilityLabel];
-  [(SKUIEmbeddedMediaView *)v5 setAccessibilityLabel:v6];
+  accessibilityLabel = [componentCopy accessibilityLabel];
+  [(SKUIEmbeddedMediaView *)v5 setAccessibilityLabel:accessibilityLabel];
 
   WeakRetained = objc_loadWeakRetained(&self->_embeddedMediaDelegate);
   [(SKUIEmbeddedMediaView *)v5 setDelegate:WeakRetained];
 
-  -[SKUIEmbeddedMediaView setMediaType:](v5, "setMediaType:", [v4 mediaType]);
-  v8 = [v4 mediaURLString];
+  -[SKUIEmbeddedMediaView setMediaType:](v5, "setMediaType:", [componentCopy mediaType]);
+  mediaURLString = [componentCopy mediaURLString];
 
-  [(SKUIEmbeddedMediaView *)v5 setMediaURLString:v8];
+  [(SKUIEmbeddedMediaView *)v5 setMediaURLString:mediaURLString];
   return v5;
 }
 
 - (id)_selectedViewController
 {
-  v2 = [(UIPageViewController *)self->_pageViewController viewControllers];
-  if ([v2 count])
+  viewControllers = [(UIPageViewController *)self->_pageViewController viewControllers];
+  if ([viewControllers count])
   {
-    v3 = [v2 objectAtIndex:0];
+    v3 = [viewControllers objectAtIndex:0];
   }
 
   else
@@ -417,15 +417,15 @@ LABEL_21:
   return v3;
 }
 
-- (void)_showNextPaneAnimated:(BOOL)a3
+- (void)_showNextPaneAnimated:(BOOL)animated
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = [(SKUIGalleryViewController *)self view];
-  v5 = [v4 isUserInteractionEnabled];
-  [v4 setUserInteractionEnabled:0];
+  view = [(SKUIGalleryViewController *)self view];
+  isUserInteractionEnabled = [view isUserInteractionEnabled];
+  [view setUserInteractionEnabled:0];
   [(SKUIGalleryViewController *)self _stopCycleTimer];
-  v6 = [(SKUIGalleryViewController *)self _selectedViewController];
-  v7 = -[SKUIGalleryViewController _newViewControllerWithIndex:](self, "_newViewControllerWithIndex:", [v6 galleryIndex] + 1);
+  _selectedViewController = [(SKUIGalleryViewController *)self _selectedViewController];
+  v7 = -[SKUIGalleryViewController _newViewControllerWithIndex:](self, "_newViewControllerWithIndex:", [_selectedViewController galleryIndex] + 1);
   objc_initWeak(&location, self);
   pageViewController = self->_pageViewController;
   v14[0] = v7;
@@ -435,7 +435,7 @@ LABEL_21:
   v10[2] = __51__SKUIGalleryViewController__showNextPaneAnimated___block_invoke;
   v10[3] = &unk_278200060;
   objc_copyWeak(&v11, &location);
-  v12 = v5;
+  v12 = isUserInteractionEnabled;
   [(UIPageViewController *)pageViewController setViewControllers:v9 direction:0 animated:1 completion:v10];
 
   objc_destroyWeak(&v11);

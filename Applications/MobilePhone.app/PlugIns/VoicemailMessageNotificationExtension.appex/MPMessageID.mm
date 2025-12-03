@@ -1,8 +1,8 @@
 @interface MPMessageID
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MPMessageID)init;
-- (MPMessageID)initWithUuid:(id)a3;
-- (MPMessageID)initWithValue:(unint64_t)a3;
+- (MPMessageID)initWithUuid:(id)uuid;
+- (MPMessageID)initWithValue:(unint64_t)value;
 - (NSUUID)messageUUID;
 - (int64_t)hash;
 @end
@@ -48,10 +48,10 @@
   return v13;
 }
 
-- (MPMessageID)initWithValue:(unint64_t)a3
+- (MPMessageID)initWithValue:(unint64_t)value
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.isa + OBJC_IVAR___MPMessageID_value) = a3;
+  *(&self->super.isa + OBJC_IVAR___MPMessageID_value) = value;
   type metadata accessor for MessageID.Value(0);
   swift_storeEnumTagMultiPayload();
   v7.receiver = self;
@@ -59,7 +59,7 @@
   return [(MPMessageID *)&v7 init];
 }
 
-- (MPMessageID)initWithUuid:(id)a3
+- (MPMessageID)initWithUuid:(id)uuid
 {
   ObjectType = swift_getObjectType();
   v5 = sub_10006036C();
@@ -86,17 +86,17 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10001ED00();
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_100060B0C();
     swift_unknownObjectRelease();
@@ -105,7 +105,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_10001FA00(v8);

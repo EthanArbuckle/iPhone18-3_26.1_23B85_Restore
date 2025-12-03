@@ -1,10 +1,10 @@
 @interface VTTriggerEventMonitorManager
 + (id)sharedManager;
 - (VTTriggerEventMonitorManager)init;
-- (void)addConnection:(id)a3;
+- (void)addConnection:(id)connection;
 - (void)notifyEarlyDetect;
 - (void)notifyVoiceTrigger;
-- (void)removeConnection:(id)a3;
+- (void)removeConnection:(id)connection;
 @end
 
 @implementation VTTriggerEventMonitorManager
@@ -64,8 +64,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v9 + 1) + 8 * v7) remoteObjectProxy];
-        [v8 earlyDetected];
+        remoteObjectProxy = [*(*(&v9 + 1) + 8 * v7) remoteObjectProxy];
+        [remoteObjectProxy earlyDetected];
 
         ++v7;
       }
@@ -130,8 +130,8 @@ uint64_t __49__VTTriggerEventMonitorManager_notifyEarlyDetect__block_invoke(uint
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v9 + 1) + 8 * v7) remoteObjectProxy];
-        [v8 voiceTriggered];
+        remoteObjectProxy = [*(*(&v9 + 1) + 8 * v7) remoteObjectProxy];
+        [remoteObjectProxy voiceTriggered];
 
         ++v7;
       }
@@ -153,11 +153,11 @@ uint64_t __50__VTTriggerEventMonitorManager_notifyVoiceTrigger__block_invoke(uin
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)removeConnection:(id)a3
+- (void)removeConnection:(id)connection
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  connectionCopy = connection;
+  v5 = connectionCopy;
+  if (connectionCopy)
   {
     queue = self->_queue;
     v8[0] = MEMORY[0x277D85DD0];
@@ -165,7 +165,7 @@ uint64_t __50__VTTriggerEventMonitorManager_notifyVoiceTrigger__block_invoke(uin
     v8[2] = __49__VTTriggerEventMonitorManager_removeConnection___block_invoke;
     v8[3] = &unk_2784ED118;
     v8[4] = self;
-    v9 = v4;
+    v9 = connectionCopy;
     dispatch_sync(queue, v8);
   }
 
@@ -201,11 +201,11 @@ void __49__VTTriggerEventMonitorManager_removeConnection___block_invoke(uint64_t
   }
 }
 
-- (void)addConnection:(id)a3
+- (void)addConnection:(id)connection
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  connectionCopy = connection;
+  v5 = connectionCopy;
+  if (connectionCopy)
   {
     queue = self->_queue;
     v8[0] = MEMORY[0x277D85DD0];
@@ -213,7 +213,7 @@ void __49__VTTriggerEventMonitorManager_removeConnection___block_invoke(uint64_t
     v8[2] = __46__VTTriggerEventMonitorManager_addConnection___block_invoke;
     v8[3] = &unk_2784ED118;
     v8[4] = self;
-    v9 = v4;
+    v9 = connectionCopy;
     dispatch_sync(queue, v8);
   }
 

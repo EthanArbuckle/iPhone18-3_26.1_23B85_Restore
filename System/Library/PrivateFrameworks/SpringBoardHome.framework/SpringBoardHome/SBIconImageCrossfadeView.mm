@@ -1,21 +1,21 @@
 @interface SBIconImageCrossfadeView
 - (CGPoint)stretchAnchorPoint;
-- (SBIconImageCrossfadeView)initWithSource:(id)a3 crossfadeView:(id)a4;
+- (SBIconImageCrossfadeView)initWithSource:(id)source crossfadeView:(id)view;
 - (id)effectiveIconImageAppearance;
-- (void)_applyCornerRadius:(double)a3;
-- (void)_applyCrossfadeScaleX:(double)a3 scaleY:(double)a4;
-- (void)_setCornerRadiusEnabled:(BOOL)a3;
+- (void)_applyCornerRadius:(double)radius;
+- (void)_applyCrossfadeScaleX:(double)x scaleY:(double)y;
+- (void)_setCornerRadiusEnabled:(BOOL)enabled;
 - (void)_updateCornerMask;
 - (void)cleanup;
 - (void)layoutSubviews;
 - (void)prepareGeometry;
-- (void)setAppSnapshotCornerRadius:(double)a3;
-- (void)setCrossfadeFraction:(double)a3;
-- (void)setCrossfadeStyle:(unint64_t)a3;
-- (void)setMasksCorners:(BOOL)a3;
-- (void)setMorphFraction:(double)a3;
-- (void)setSourceFadeFraction:(double)a3;
-- (void)setStretchAnchorPoint:(CGPoint)a3;
+- (void)setAppSnapshotCornerRadius:(double)radius;
+- (void)setCrossfadeFraction:(double)fraction;
+- (void)setCrossfadeStyle:(unint64_t)style;
+- (void)setMasksCorners:(BOOL)corners;
+- (void)setMorphFraction:(double)fraction;
+- (void)setSourceFadeFraction:(double)fraction;
+- (void)setStretchAnchorPoint:(CGPoint)point;
 - (void)updateAfterIconStyleTraitChange;
 @end
 
@@ -48,8 +48,8 @@
   v12 = 1.0 - morphFraction * (1.0 - self->_containerScaleY);
   memset(&v51, 0, sizeof(v51));
   CGAffineTransformMakeScale(&v51, v11, v12);
-  v13 = [(UIView *)self->_containerView layer];
-  [v13 anchorPoint];
+  layer = [(UIView *)self->_containerView layer];
+  [layer anchorPoint];
   v15 = v14;
   v17 = v16;
 
@@ -102,8 +102,8 @@
     [(UIView *)self->_iconImageView layer];
   }
   v31 = ;
-  v32 = [(SBIconImageCrossfadeView *)self traitCollection];
-  [v32 displayScale];
+  traitCollection = [(SBIconImageCrossfadeView *)self traitCollection];
+  [traitCollection displayScale];
   v34 = v33;
 
   [v31 setContentsScale:v34];
@@ -112,8 +112,8 @@
   {
     [(UIView *)self->_iconImageView setContentMode:1];
     v38 = self->_iconImageView;
-    v39 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(UIView *)v38 setBackgroundColor:v39];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(UIView *)v38 setBackgroundColor:systemBackgroundColor];
   }
 
   else if (!crossfadeStyle)
@@ -230,26 +230,26 @@ LABEL_19:
   [(UIView *)crossfadeView setTransform:v5];
 }
 
-- (SBIconImageCrossfadeView)initWithSource:(id)a3 crossfadeView:(id)a4
+- (SBIconImageCrossfadeView)initWithSource:(id)source crossfadeView:(id)view
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  viewCopy = view;
   v24.receiver = self;
   v24.super_class = SBIconImageCrossfadeView;
   v9 = [(SBIconImageCrossfadeView *)&v24 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v9)
   {
-    v10 = [objc_opt_class() _containerViewClass];
-    v11 = objc_alloc_init(v10);
+    _containerViewClass = [objc_opt_class() _containerViewClass];
+    v11 = objc_alloc_init(_containerViewClass);
     containerView = v9->_containerView;
     v9->_containerView = v11;
 
     [(SBIconImageCrossfadeView *)v9 addSubview:v9->_containerView];
-    objc_storeStrong(&v9->_iconImageSource, a3);
-    v13 = [(SBCrossfadingIconImageSource *)v9->_iconImageSource sourceView];
+    objc_storeStrong(&v9->_iconImageSource, source);
+    sourceView = [(SBCrossfadingIconImageSource *)v9->_iconImageSource sourceView];
     iconImageView = v9->_iconImageView;
-    v9->_iconImageView = v13;
+    v9->_iconImageView = sourceView;
 
     if (objc_opt_respondsToSelector())
     {
@@ -264,14 +264,14 @@ LABEL_19:
     }
 
     [(UIView *)v9->_containerView addSubview:v9->_iconImageView];
-    v17 = [v10 alloc];
-    [v8 bounds];
+    v17 = [_containerViewClass alloc];
+    [viewCopy bounds];
     v18 = [v17 initWithFrame:?];
     crossfadeContainerView = v9->_crossfadeContainerView;
     v9->_crossfadeContainerView = v18;
 
     [(UIView *)v9->_containerView addSubview:v9->_crossfadeContainerView];
-    objc_storeStrong(&v9->_crossfadeView, a4);
+    objc_storeStrong(&v9->_crossfadeView, view);
     [(UIView *)v9->_crossfadeContainerView addSubview:v9->_crossfadeView];
     v20 = objc_opt_self();
     v25[0] = v20;
@@ -282,11 +282,11 @@ LABEL_19:
   return v9;
 }
 
-- (void)setMasksCorners:(BOOL)a3
+- (void)setMasksCorners:(BOOL)corners
 {
-  if (self->_masksCorners != a3)
+  if (self->_masksCorners != corners)
   {
-    if (a3)
+    if (corners)
     {
       [(SBCrossfadingIconImageSource *)self->_iconImageSource continuousCornerRadius];
       v4 = BSFloatIsZero() ^ 1;
@@ -303,110 +303,110 @@ LABEL_19:
   }
 }
 
-- (void)setStretchAnchorPoint:(CGPoint)a3
+- (void)setStretchAnchorPoint:(CGPoint)point
 {
   p_stretchAnchorPoint = &self->_stretchAnchorPoint;
-  self->_stretchAnchorPoint = a3;
-  v13 = [(SBIconImageCrossfadeView *)self containerView];
-  [v13 frame];
+  self->_stretchAnchorPoint = point;
+  containerView = [(SBIconImageCrossfadeView *)self containerView];
+  [containerView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [v13 layer];
-  [v12 setAnchorPoint:{p_stretchAnchorPoint->x, p_stretchAnchorPoint->y}];
+  layer = [containerView layer];
+  [layer setAnchorPoint:{p_stretchAnchorPoint->x, p_stretchAnchorPoint->y}];
 
-  [v13 setFrame:{v5, v7, v9, v11}];
+  [containerView setFrame:{v5, v7, v9, v11}];
 }
 
-- (void)setCrossfadeFraction:(double)a3
+- (void)setCrossfadeFraction:(double)fraction
 {
   [(SBIconImageCrossfadeView *)self setSourceFadeFraction:?];
 
-  [(SBIconImageCrossfadeView *)self setCrossfadeViewFadeFraction:a3];
+  [(SBIconImageCrossfadeView *)self setCrossfadeViewFadeFraction:fraction];
 }
 
-- (void)setAppSnapshotCornerRadius:(double)a3
+- (void)setAppSnapshotCornerRadius:(double)radius
 {
   if ([(SBIconImageCrossfadeView *)self masksCorners])
   {
 
-    [(SBIconImageCrossfadeView *)self _applyCornerRadius:a3];
+    [(SBIconImageCrossfadeView *)self _applyCornerRadius:radius];
   }
 }
 
-- (void)setMorphFraction:(double)a3
+- (void)setMorphFraction:(double)fraction
 {
-  if (self->_morphFraction != a3)
+  if (self->_morphFraction != fraction)
   {
-    self->_morphFraction = a3;
+    self->_morphFraction = fraction;
     [(SBIconImageCrossfadeView *)self setNeedsLayout];
 
     [(SBIconImageCrossfadeView *)self layoutIfNeeded];
   }
 }
 
-- (void)setSourceFadeFraction:(double)a3
+- (void)setSourceFadeFraction:(double)fraction
 {
   if (self->_performsTrueCrossfade)
   {
-    v5 = 1.0 - a3;
-    [(UIView *)self->_iconImageView setAlpha:1.0 - a3];
+    v5 = 1.0 - fraction;
+    [(UIView *)self->_iconImageView setAlpha:1.0 - fraction];
     backgroundView = self->_backgroundView;
 
     [(UIView *)backgroundView setAlpha:v5];
   }
 }
 
-- (void)setCrossfadeStyle:(unint64_t)a3
+- (void)setCrossfadeStyle:(unint64_t)style
 {
-  if (self->_crossfadeStyle != a3)
+  if (self->_crossfadeStyle != style)
   {
-    self->_crossfadeStyle = a3;
+    self->_crossfadeStyle = style;
     [(SBIconImageCrossfadeView *)self setNeedsLayout];
 
     [(SBIconImageCrossfadeView *)self layoutIfNeeded];
   }
 }
 
-- (void)_applyCrossfadeScaleX:(double)a3 scaleY:(double)a4
+- (void)_applyCrossfadeScaleX:(double)x scaleY:(double)y
 {
   memset(&v7, 0, sizeof(v7));
-  CGAffineTransformMakeScale(&v7, a3, a4);
+  CGAffineTransformMakeScale(&v7, x, y);
   crossfadeView = self->_crossfadeView;
   v6 = v7;
   [(UIView *)crossfadeView setTransform:&v6];
 }
 
-- (void)_setCornerRadiusEnabled:(BOOL)a3
+- (void)_setCornerRadiusEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(SBCrossfadingIconImageSource *)self->_iconImageSource setShowsSquareCorners:?];
-  v6 = [(SBIconImageCrossfadeView *)self containerView];
-  v5 = [v6 layer];
-  [v5 setMasksToBounds:v3];
+  containerView = [(SBIconImageCrossfadeView *)self containerView];
+  layer = [containerView layer];
+  [layer setMasksToBounds:enabledCopy];
 }
 
-- (void)_applyCornerRadius:(double)a3
+- (void)_applyCornerRadius:(double)radius
 {
-  v4 = [(SBIconImageCrossfadeView *)self containerView];
-  [v4 _setContinuousCornerRadius:a3];
+  containerView = [(SBIconImageCrossfadeView *)self containerView];
+  [containerView _setContinuousCornerRadius:radius];
 }
 
 - (id)effectiveIconImageAppearance
 {
-  v2 = [(SBIconImageCrossfadeView *)self traitCollection];
-  v3 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:v2];
+  traitCollection = [(SBIconImageCrossfadeView *)self traitCollection];
+  v3 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:traitCollection];
 
   return v3;
 }
 
 - (void)updateAfterIconStyleTraitChange
 {
-  v3 = [(SBIconImageCrossfadeView *)self effectiveIconImageAppearance];
+  effectiveIconImageAppearance = [(SBIconImageCrossfadeView *)self effectiveIconImageAppearance];
   if (objc_opt_respondsToSelector())
   {
-    [(SBCrossfadingIconImageSource *)self->_iconImageSource applyGlassIfDesiredToView:self->_containerView forIconImageAppearance:v3 sourceView:self->_iconImageView];
+    [(SBCrossfadingIconImageSource *)self->_iconImageSource applyGlassIfDesiredToView:self->_containerView forIconImageAppearance:effectiveIconImageAppearance sourceView:self->_iconImageView];
   }
 }
 

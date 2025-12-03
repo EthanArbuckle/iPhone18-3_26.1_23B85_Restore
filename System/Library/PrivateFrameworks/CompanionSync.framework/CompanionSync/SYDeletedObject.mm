@@ -1,19 +1,19 @@
 @interface SYDeletedObject
-- (SYDeletedObject)initWithObjectID:(id)a3 sequencer:(id)a4;
-- (SYDeletedObject)initWithSyncId:(id)a3;
+- (SYDeletedObject)initWithObjectID:(id)d sequencer:(id)sequencer;
+- (SYDeletedObject)initWithSyncId:(id)id;
 @end
 
 @implementation SYDeletedObject
 
-- (SYDeletedObject)initWithSyncId:(id)a3
+- (SYDeletedObject)initWithSyncId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v9.receiver = self;
   v9.super_class = SYDeletedObject;
   v5 = [(SYDeletedObject *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [idCopy copy];
     syncId = v5->_syncId;
     v5->_syncId = v6;
   }
@@ -21,13 +21,13 @@
   return v5;
 }
 
-- (SYDeletedObject)initWithObjectID:(id)a3 sequencer:(id)a4
+- (SYDeletedObject)initWithObjectID:(id)d sequencer:(id)sequencer
 {
-  v6 = a4;
-  v7 = [(SYDeletedObject *)self initWithSyncId:a3];
+  sequencerCopy = sequencer;
+  v7 = [(SYDeletedObject *)self initWithSyncId:d];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [sequencerCopy copy];
     sequencer = v7->_sequencer;
     v7->_sequencer = v8;
 

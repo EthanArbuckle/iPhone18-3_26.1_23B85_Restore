@@ -2,7 +2,7 @@
 - (NSArray)accountIds;
 - (NSDictionary)serviceLocation;
 - (_TtC6HomeUI36UtilitySubscriptionInformationHelper)init;
-- (_TtC6HomeUI36UtilitySubscriptionInformationHelper)initWithSubscriptionID:(id)a3 serviceLocation:(id)a4 accountIds:(id)a5;
+- (_TtC6HomeUI36UtilitySubscriptionInformationHelper)initWithSubscriptionID:(id)d serviceLocation:(id)location accountIds:(id)ids;
 @end
 
 @implementation UtilitySubscriptionInformationHelper
@@ -23,7 +23,7 @@
   return v2;
 }
 
-- (_TtC6HomeUI36UtilitySubscriptionInformationHelper)initWithSubscriptionID:(id)a3 serviceLocation:(id)a4 accountIds:(id)a5
+- (_TtC6HomeUI36UtilitySubscriptionInformationHelper)initWithSubscriptionID:(id)d serviceLocation:(id)location accountIds:(id)ids
 {
   v6 = sub_20D567838();
   v8 = v7;

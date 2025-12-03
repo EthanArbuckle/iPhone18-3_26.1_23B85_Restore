@@ -1,29 +1,29 @@
 @interface HURemoteAccessTableViewController
-- (BOOL)shouldHideSeparatorsForCell:(id)a3 indexPath:(id)a4;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HURemoteAccessTableViewController)initWithItem:(id)a3 home:(id)a4;
+- (BOOL)shouldHideSeparatorsForCell:(id)cell indexPath:(id)path;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HURemoteAccessTableViewController)initWithItem:(id)item home:(id)home;
 - (id)user;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
 - (void)viewDidLoad;
 @end
 
 @implementation HURemoteAccessTableViewController
 
-- (HURemoteAccessTableViewController)initWithItem:(id)a3 home:(id)a4
+- (HURemoteAccessTableViewController)initWithItem:(id)item home:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  homeCopy = home;
   v8 = [HURemoteAccessItemManager alloc];
-  v9 = [v6 copy];
-  v10 = [(HURemoteAccessItemManager *)v8 initWithHome:v7 userItem:v9 delegate:self];
+  v9 = [itemCopy copy];
+  v10 = [(HURemoteAccessItemManager *)v8 initWithHome:homeCopy userItem:v9 delegate:self];
 
   v15.receiver = self;
   v15.super_class = HURemoteAccessTableViewController;
   v11 = [(HUItemTableViewController *)&v15 initWithItemManager:v10 tableViewStyle:1];
   if (v11)
   {
-    v12 = [v6 copy];
+    v12 = [itemCopy copy];
     userItem = v11->_userItem;
     v11->_userItem = v12;
 
@@ -44,19 +44,19 @@
 
 - (id)user
 {
-  v2 = [(HURemoteAccessTableViewController *)self remoteAccessItemManager];
-  v3 = [v2 user];
+  remoteAccessItemManager = [(HURemoteAccessTableViewController *)self remoteAccessItemManager];
+  user = [remoteAccessItemManager user];
 
-  return v3;
+  return user;
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HURemoteAccessTableViewController *)self remoteAccessItemManager];
-  v9 = [v8 allowRemoteAccessItem];
-  v10 = [v6 isEqual:v9];
+  itemCopy = item;
+  pathCopy = path;
+  remoteAccessItemManager = [(HURemoteAccessTableViewController *)self remoteAccessItemManager];
+  allowRemoteAccessItem = [remoteAccessItemManager allowRemoteAccessItem];
+  v10 = [itemCopy isEqual:allowRemoteAccessItem];
 
   if (v10)
   {
@@ -67,7 +67,7 @@
   {
     v14.receiver = self;
     v14.super_class = HURemoteAccessTableViewController;
-    v11 = [(HUItemTableViewController *)&v14 cellClassForItem:v6 indexPath:v7];
+    v11 = [(HUItemTableViewController *)&v14 cellClassForItem:itemCopy indexPath:pathCopy];
   }
 
   v12 = v11;
@@ -75,71 +75,71 @@
   return v12;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v8 = a3;
+  cellCopy = cell;
   v14.receiver = self;
   v14.super_class = HURemoteAccessTableViewController;
-  v9 = a4;
-  [(HUItemTableViewController *)&v14 setupCell:v8 forItem:v9 indexPath:a5];
+  itemCopy = item;
+  [(HUItemTableViewController *)&v14 setupCell:cellCopy forItem:itemCopy indexPath:path];
   v10 = [(HURemoteAccessTableViewController *)self remoteAccessItemManager:v14.receiver];
-  v11 = [v10 allowRemoteAccessItem];
-  v12 = [v9 isEqual:v11];
+  allowRemoteAccessItem = [v10 allowRemoteAccessItem];
+  v12 = [itemCopy isEqual:allowRemoteAccessItem];
 
   if (v12)
   {
-    v13 = v8;
+    v13 = cellCopy;
     [v13 setDelegate:self];
     [v13 setSelectionStyle:0];
   }
 }
 
-- (BOOL)shouldHideSeparatorsForCell:(id)a3 indexPath:(id)a4
+- (BOOL)shouldHideSeparatorsForCell:(id)cell indexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v6];
+  pathCopy = path;
+  cellCopy = cell;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
   v14.receiver = self;
   v14.super_class = HURemoteAccessTableViewController;
-  LOBYTE(v8) = [(HUItemTableViewController *)&v14 shouldHideSeparatorsForCell:v7 indexPath:v6];
+  LOBYTE(itemManager) = [(HUItemTableViewController *)&v14 shouldHideSeparatorsForCell:cellCopy indexPath:pathCopy];
 
-  if (v8)
+  if (itemManager)
   {
     v10 = 1;
   }
 
   else
   {
-    v11 = [(HURemoteAccessTableViewController *)self remoteAccessItemManager];
-    v12 = [v11 allowRemoteAccessItem];
-    v10 = [v9 isEqual:v12];
+    remoteAccessItemManager = [(HURemoteAccessTableViewController *)self remoteAccessItemManager];
+    allowRemoteAccessItem = [remoteAccessItemManager allowRemoteAccessItem];
+    v10 = [v9 isEqual:allowRemoteAccessItem];
   }
 
   return v10;
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v6 = a3;
-  v7 = [(HURemoteAccessTableViewController *)self tableView];
-  v8 = [v7 indexPathForCell:v6];
+  cellCopy = cell;
+  tableView = [(HURemoteAccessTableViewController *)self tableView];
+  v8 = [tableView indexPathForCell:cellCopy];
 
-  v9 = [(HUItemTableViewController *)self itemManager];
+  itemManager = [(HUItemTableViewController *)self itemManager];
   v27 = v8;
-  v10 = [v9 displayedItemAtIndexPath:v8];
+  v10 = [itemManager displayedItemAtIndexPath:v8];
 
-  v11 = [(HURemoteAccessTableViewController *)self remoteAccessItemManager];
-  v12 = [v11 user];
+  remoteAccessItemManager = [(HURemoteAccessTableViewController *)self remoteAccessItemManager];
+  user = [remoteAccessItemManager user];
 
-  v13 = [(HURemoteAccessTableViewController *)self remoteAccessItemManager];
-  v14 = [v13 home];
-  v15 = [v14 homeAccessControlForUser:v12];
+  remoteAccessItemManager2 = [(HURemoteAccessTableViewController *)self remoteAccessItemManager];
+  home = [remoteAccessItemManager2 home];
+  v15 = [home homeAccessControlForUser:user];
 
-  v16 = [(HURemoteAccessTableViewController *)self remoteAccessItemManager];
-  v17 = [v16 allowRemoteAccessItem];
-  v18 = [v10 isEqual:v17];
+  remoteAccessItemManager3 = [(HURemoteAccessTableViewController *)self remoteAccessItemManager];
+  allowRemoteAccessItem = [remoteAccessItemManager3 allowRemoteAccessItem];
+  v18 = [v10 isEqual:allowRemoteAccessItem];
 
   if (v18)
   {
@@ -148,7 +148,7 @@
     aBlock[2] = __58__HURemoteAccessTableViewController_switchCell_didTurnOn___block_invoke;
     aBlock[3] = &unk_277DBAE20;
     v36 = v15;
-    v37 = a4;
+    onCopy = on;
     v19 = _Block_copy(aBlock);
   }
 
@@ -170,16 +170,16 @@
   v31[2] = __58__HURemoteAccessTableViewController_switchCell_didTurnOn___block_invoke_3;
   v31[3] = &unk_277DB7E68;
   v31[4] = self;
-  v32 = v12;
-  v23 = v12;
+  v32 = user;
+  v23 = user;
   v24 = [v22 addSuccessBlock:v31];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __58__HURemoteAccessTableViewController_switchCell_didTurnOn___block_invoke_5;
   v28[3] = &unk_277DBC098;
-  v29 = v6;
-  v30 = a4;
-  v25 = v6;
+  v29 = cellCopy;
+  onCopy2 = on;
+  v25 = cellCopy;
   v26 = [v22 addFailureBlock:v28];
 }
 

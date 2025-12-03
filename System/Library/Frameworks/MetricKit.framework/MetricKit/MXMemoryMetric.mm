@@ -1,16 +1,16 @@
 @interface MXMemoryMetric
-- (MXMemoryMetric)initWithCoder:(id)a3;
-- (MXMemoryMetric)initWithPeakMemoryUsageMeasurement:(id)a3 averageMemoryUsageMeasurement:(id)a4;
+- (MXMemoryMetric)initWithCoder:(id)coder;
+- (MXMemoryMetric)initWithPeakMemoryUsageMeasurement:(id)measurement averageMemoryUsageMeasurement:(id)usageMeasurement;
 - (id)toDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MXMemoryMetric
 
-- (MXMemoryMetric)initWithPeakMemoryUsageMeasurement:(id)a3 averageMemoryUsageMeasurement:(id)a4
+- (MXMemoryMetric)initWithPeakMemoryUsageMeasurement:(id)measurement averageMemoryUsageMeasurement:(id)usageMeasurement
 {
-  v7 = a3;
-  v8 = a4;
+  measurementCopy = measurement;
+  usageMeasurementCopy = usageMeasurement;
   v16.receiver = self;
   v16.super_class = MXMemoryMetric;
   v9 = [(MXMetric *)&v16 init];
@@ -19,17 +19,17 @@
     goto LABEL_6;
   }
 
-  [v7 doubleValue];
+  [measurementCopy doubleValue];
   if (v10 >= 0.0)
   {
-    v11 = [v8 averageMeasurement];
-    [v11 doubleValue];
+    averageMeasurement = [usageMeasurementCopy averageMeasurement];
+    [averageMeasurement doubleValue];
     v13 = v12;
 
     if (v13 >= 0.0)
     {
-      objc_storeStrong(&v9->_peakMemoryUsage, a3);
-      objc_storeStrong(&v9->_averageSuspendedMemory, a4);
+      objc_storeStrong(&v9->_peakMemoryUsage, measurement);
+      objc_storeStrong(&v9->_averageSuspendedMemory, usageMeasurement);
 LABEL_6:
       v14 = v9;
       goto LABEL_7;
@@ -42,27 +42,27 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   peakMemoryUsage = self->_peakMemoryUsage;
-  v5 = a3;
-  [v5 encodeObject:peakMemoryUsage forKey:@"peakMemoryUsage"];
-  [v5 encodeObject:self->_averageSuspendedMemory forKey:@"averageSuspendedMemory"];
+  coderCopy = coder;
+  [coderCopy encodeObject:peakMemoryUsage forKey:@"peakMemoryUsage"];
+  [coderCopy encodeObject:self->_averageSuspendedMemory forKey:@"averageSuspendedMemory"];
 }
 
-- (MXMemoryMetric)initWithCoder:(id)a3
+- (MXMemoryMetric)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MXMemoryMetric;
   v5 = [(MXMetric *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peakMemoryUsage"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peakMemoryUsage"];
     peakMemoryUsage = v5->_peakMemoryUsage;
     v5->_peakMemoryUsage = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"averageSuspendedMemory"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"averageSuspendedMemory"];
     averageSuspendedMemory = v5->_averageSuspendedMemory;
     v5->_averageSuspendedMemory = v8;
   }
@@ -75,16 +75,16 @@ LABEL_7:
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
   if (self->_peakMemoryUsage)
   {
-    v4 = [(MXMetric *)self measurementFormatter];
-    v5 = [v4 stringFromMeasurement:self->_peakMemoryUsage];
+    measurementFormatter = [(MXMetric *)self measurementFormatter];
+    v5 = [measurementFormatter stringFromMeasurement:self->_peakMemoryUsage];
     [v3 setObject:v5 forKey:@"peakMemoryUsage"];
   }
 
   averageSuspendedMemory = self->_averageSuspendedMemory;
   if (averageSuspendedMemory)
   {
-    v7 = [(MXAverage *)averageSuspendedMemory toDictionary];
-    [v3 setObject:v7 forKey:@"averageSuspendedMemory"];
+    toDictionary = [(MXAverage *)averageSuspendedMemory toDictionary];
+    [v3 setObject:toDictionary forKey:@"averageSuspendedMemory"];
   }
 
   return v3;

@@ -1,27 +1,27 @@
 @interface PHChangeValidationController
-- (BOOL)_promptForUserConfirmationWithTitle:(id)a3 message:(id)a4 defaultButtonTitle:(id)a5 alternateButtonTitle:(id)a6 extensionItem:(id)a7;
-- (BOOL)_recordObjectID:(id)a3 withSimpleDeleteValidators:(id)a4;
-- (BOOL)promptForUserConfirmationWithTitle:(id)a3 message:(id)a4 defaultButtonTitle:(id)a5 alternateButtonTitle:(id)a6 previewAssetLocalIdentifiers:(id)a7;
-- (PHChangeValidationController)initWithInsertRequests:(id)a3 updateRequests:(id)a4 deleteRequests:(id)a5 context:(id)a6 photoLibrary:(id)a7;
+- (BOOL)_promptForUserConfirmationWithTitle:(id)title message:(id)message defaultButtonTitle:(id)buttonTitle alternateButtonTitle:(id)alternateButtonTitle extensionItem:(id)item;
+- (BOOL)_recordObjectID:(id)d withSimpleDeleteValidators:(id)validators;
+- (BOOL)promptForUserConfirmationWithTitle:(id)title message:(id)message defaultButtonTitle:(id)buttonTitle alternateButtonTitle:(id)alternateButtonTitle previewAssetLocalIdentifiers:(id)identifiers;
+- (PHChangeValidationController)initWithInsertRequests:(id)requests updateRequests:(id)updateRequests deleteRequests:(id)deleteRequests context:(id)context photoLibrary:(id)library;
 - (id)_prepare;
-- (id)_simpleDeleteValidatorsWithManagedObjectContext:(id)a3;
-- (id)_validateSimpleDeletionsWithValidators:(id)a3 requestsByObjectID:(id)a4;
+- (id)_simpleDeleteValidatorsWithManagedObjectContext:(id)context;
+- (id)_validateSimpleDeletionsWithValidators:(id)validators requestsByObjectID:(id)d;
 - (id)validate;
 @end
 
 @implementation PHChangeValidationController
 
-- (BOOL)_promptForUserConfirmationWithTitle:(id)a3 message:(id)a4 defaultButtonTitle:(id)a5 alternateButtonTitle:(id)a6 extensionItem:(id)a7
+- (BOOL)_promptForUserConfirmationWithTitle:(id)title message:(id)message defaultButtonTitle:(id)buttonTitle alternateButtonTitle:(id)alternateButtonTitle extensionItem:(id)item
 {
   v36[7] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v11)
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
+  alternateButtonTitleCopy = alternateButtonTitle;
+  itemCopy = item;
+  if (titleCopy)
   {
-    v16 = v11;
+    v16 = titleCopy;
   }
 
   else
@@ -32,9 +32,9 @@
   v17 = *MEMORY[0x1E695EE60];
   v35[0] = *MEMORY[0x1E695EE58];
   v35[1] = v17;
-  if (v12)
+  if (messageCopy)
   {
-    v18 = v12;
+    v18 = messageCopy;
   }
 
   else
@@ -47,8 +47,8 @@
   v19 = *MEMORY[0x1E695EE70];
   v35[2] = *MEMORY[0x1E695EE78];
   v35[3] = v19;
-  v36[2] = v13;
-  v36[3] = v14;
+  v36[2] = buttonTitleCopy;
+  v36[3] = alternateButtonTitleCopy;
   v20 = *MEMORY[0x1E69D44D0];
   v35[4] = *MEMORY[0x1E695EE68];
   v35[5] = v20;
@@ -58,12 +58,12 @@
   v36[6] = MEMORY[0x1E695E118];
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:7];
   v22 = v21;
-  if (v15)
+  if (itemCopy)
   {
     v23 = [v21 mutableCopy];
     [v23 setObject:@"com.apple.mobileslideshow.DestructiveChangeConfirmation" forKeyedSubscript:*MEMORY[0x1E69D44F0]];
     v24 = MEMORY[0x1E696ACC8];
-    v34 = v15;
+    v34 = itemCopy;
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v34 count:1];
     v26 = [v24 archivedDataWithRootObject:v25 requiringSecureCoding:1 error:0];
     [v23 setObject:v26 forKeyedSubscript:*MEMORY[0x1E69D44F8]];
@@ -98,45 +98,45 @@
   return v31;
 }
 
-- (BOOL)promptForUserConfirmationWithTitle:(id)a3 message:(id)a4 defaultButtonTitle:(id)a5 alternateButtonTitle:(id)a6 previewAssetLocalIdentifiers:(id)a7
+- (BOOL)promptForUserConfirmationWithTitle:(id)title message:(id)message defaultButtonTitle:(id)buttonTitle alternateButtonTitle:(id)alternateButtonTitle previewAssetLocalIdentifiers:(id)identifiers
 {
   v31[3] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (a7)
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
+  alternateButtonTitleCopy = alternateButtonTitle;
+  if (identifiers)
   {
     v16 = MEMORY[0x1E696ABE0];
-    v17 = a7;
-    a7 = objc_alloc_init(v16);
+    identifiersCopy = identifiers;
+    identifiers = objc_alloc_init(v16);
     v30[0] = @"previewStyle";
     v30[1] = @"assetLocalIdentifiers";
     v31[0] = @"currentAssets";
-    v31[1] = v17;
+    v31[1] = identifiersCopy;
     v30[2] = @"photoLibraryURLString";
-    v28 = [(PHChangeValidationController *)self photoLibrary];
-    v18 = [v28 pathManager];
-    v19 = [v18 libraryURL];
-    [v19 absoluteString];
+    photoLibrary = [(PHChangeValidationController *)self photoLibrary];
+    pathManager = [photoLibrary pathManager];
+    libraryURL = [pathManager libraryURL];
+    [libraryURL absoluteString];
     v20 = v29 = self;
     v31[2] = v20;
     [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:3];
-    v21 = v15;
-    v22 = v14;
-    v23 = v13;
-    v25 = v24 = v12;
+    v21 = alternateButtonTitleCopy;
+    v22 = buttonTitleCopy;
+    v23 = messageCopy;
+    v25 = v24 = titleCopy;
 
-    [a7 setUserInfo:v25];
-    v12 = v24;
-    v13 = v23;
-    v14 = v22;
-    v15 = v21;
+    [identifiers setUserInfo:v25];
+    titleCopy = v24;
+    messageCopy = v23;
+    buttonTitleCopy = v22;
+    alternateButtonTitleCopy = v21;
 
     self = v29;
   }
 
-  v26 = [(PHChangeValidationController *)self _promptForUserConfirmationWithTitle:v12 message:v13 defaultButtonTitle:v14 alternateButtonTitle:v15 extensionItem:a7];
+  v26 = [(PHChangeValidationController *)self _promptForUserConfirmationWithTitle:titleCopy message:messageCopy defaultButtonTitle:buttonTitleCopy alternateButtonTitle:alternateButtonTitleCopy extensionItem:identifiers];
 
   return v26;
 }
@@ -144,21 +144,21 @@
 - (id)validate
 {
   v115[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PHChangeValidationController *)self _prepare];
-  if ([v3 isSuccess] && -[PHChangeValidationController confirmationRequired](self, "confirmationRequired"))
+  _prepare = [(PHChangeValidationController *)self _prepare];
+  if ([_prepare isSuccess] && -[PHChangeValidationController confirmationRequired](self, "confirmationRequired"))
   {
-    v4 = [(PHChangeValidationController *)self assetsToHide];
-    v5 = [(PHChangeValidationController *)self assetsToDelete];
-    v6 = [(PHChangeValidationController *)self albumsToDelete];
-    v7 = [(PHChangeValidationController *)self foldersToDelete];
-    v8 = [v4 count];
-    v39 = [v5 count];
-    *&v38 = [v6 count];
-    *(&v38 + 1) = [v7 count];
-    v36 = [(PHChangeValidationController *)self clientName];
+    assetsToHide = [(PHChangeValidationController *)self assetsToHide];
+    assetsToDelete = [(PHChangeValidationController *)self assetsToDelete];
+    albumsToDelete = [(PHChangeValidationController *)self albumsToDelete];
+    foldersToDelete = [(PHChangeValidationController *)self foldersToDelete];
+    v8 = [assetsToHide count];
+    v39 = [assetsToDelete count];
+    *&v38 = [albumsToDelete count];
+    *(&v38 + 1) = [foldersToDelete count];
+    clientName = [(PHChangeValidationController *)self clientName];
     v34 = [MEMORY[0x1E695DF70] arrayWithCapacity:v8];
     v32 = [MEMORY[0x1E695DF70] arrayWithCapacity:v39];
-    v31 = v3;
+    v31 = _prepare;
     v108 = 0;
     v109 = &v108;
     v110 = 0x3032000000;
@@ -219,7 +219,7 @@
     v40[2] = __40__PHChangeValidationController_validate__block_invoke;
     v40[3] = &unk_1E75A3A88;
     v40[4] = self;
-    v29 = v4;
+    v29 = assetsToHide;
     v41 = v29;
     v57 = v8;
     v10 = v34;
@@ -227,9 +227,9 @@
     v48 = &v108;
     v49 = &v102;
     v50 = &v96;
-    v37 = v36;
+    v37 = clientName;
     v43 = v37;
-    v30 = v5;
+    v30 = assetsToDelete;
     v44 = v30;
     v11 = v32;
     v45 = v11;
@@ -241,15 +241,15 @@
     v55 = &v66;
     v56 = &v60;
     v58 = v39;
-    v12 = v6;
+    v12 = albumsToDelete;
     v46 = v12;
-    v35 = v7;
+    v35 = foldersToDelete;
     v47 = v35;
     [(PLPhotoLibrary *)photoLibrary performBlockAndWait:v40];
     if (!v8 && !v39 && v38 == 0)
     {
       v13 = v10;
-      v3 = v31;
+      _prepare = v31;
 LABEL_20:
 
       _Block_object_dispose(&v60, 8);
@@ -272,7 +272,7 @@ LABEL_20:
     objc_sync_enter(v14);
     v33 = PLServicesLocalizedFrameworkString();
     v13 = v10;
-    v3 = v31;
+    _prepare = v31;
     if (v8)
     {
       v15 = [(PHChangeValidationController *)self promptForUserConfirmationWithTitle:v109[5] message:v103[5] defaultButtonTitle:v97[5] alternateButtonTitle:v33 previewAssetLocalIdentifiers:v13, v29, v30];
@@ -322,13 +322,13 @@ LABEL_19:
 
     v27 = [(PHChangeValidationController *)self _failureWithError:v26];
 
-    v3 = v27;
+    _prepare = v27;
     goto LABEL_19;
   }
 
 LABEL_21:
 
-  return v3;
+  return _prepare;
 }
 
 void __40__PHChangeValidationController_validate__block_invoke(uint64_t a1)
@@ -449,20 +449,20 @@ void __40__PHChangeValidationController_validate__block_invoke(uint64_t a1)
   }
 }
 
-- (id)_validateSimpleDeletionsWithValidators:(id)a3 requestsByObjectID:(id)a4
+- (id)_validateSimpleDeletionsWithValidators:(id)validators requestsByObjectID:(id)d
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  validatorsCopy = validators;
+  dCopy = d;
   v8 = MEMORY[0x1E69BF2D0];
-  v9 = [MEMORY[0x1E695DFB0] null];
-  v10 = [v8 successWithResult:v9];
+  null = [MEMORY[0x1E695DFB0] null];
+  v10 = [v8 successWithResult:null];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = v6;
+  v11 = validatorsCopy;
   v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v12)
   {
@@ -479,7 +479,7 @@ void __40__PHChangeValidationController_validate__block_invoke(uint64_t a1)
 
         v16 = *(*(&v23 + 1) + 8 * i);
         v22 = 0;
-        v17 = [v16 validateForDeleteWithRequestsByObjectID:v7 error:&v22];
+        v17 = [v16 validateForDeleteWithRequestsByObjectID:dCopy error:&v22];
         v18 = v22;
         v19 = v18;
         if ((v17 & 1) == 0)
@@ -506,16 +506,16 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)_recordObjectID:(id)a3 withSimpleDeleteValidators:(id)a4
+- (BOOL)_recordObjectID:(id)d withSimpleDeleteValidators:(id)validators
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dCopy = d;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  validatorsCopy = validators;
+  v7 = [validatorsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -526,17 +526,17 @@ LABEL_3:
     {
       if (*v13 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(validatorsCopy);
       }
 
-      if ([*(*(&v12 + 1) + 8 * v10) recordObjectID:{v5, v12}])
+      if ([*(*(&v12 + 1) + 8 * v10) recordObjectID:{dCopy, v12}])
       {
         break;
       }
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [validatorsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -553,17 +553,17 @@ LABEL_11:
   return v8;
 }
 
-- (id)_simpleDeleteValidatorsWithManagedObjectContext:(id)a3
+- (id)_simpleDeleteValidatorsWithManagedObjectContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   pl_dispatch_once();
   v4 = _simpleDeleteValidatorsWithManagedObjectContext__pl_once_object_16;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __80__PHChangeValidationController__simpleDeleteValidatorsWithManagedObjectContext___block_invoke_2;
   v9[3] = &unk_1E75A3A60;
-  v10 = v3;
-  v5 = v3;
+  v10 = contextCopy;
+  v5 = contextCopy;
   v6 = v4;
   v7 = [v6 _pl_map:v9];
 
@@ -607,24 +607,24 @@ void __80__PHChangeValidationController__simpleDeleteValidatorsWithManagedObject
 
 - (id)_prepare
 {
-  v2 = self;
+  selfCopy2 = self;
   v207 = *MEMORY[0x1E69E9840];
   if (self->_didPrepare)
   {
-    v91 = [MEMORY[0x1E696AAA8] currentHandler];
-    v2 = self;
-    [v91 handleFailureInMethod:a2 object:self file:@"PHChangeValidationController.m" lineNumber:101 description:@"_prepare can only be called once"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    selfCopy2 = self;
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHChangeValidationController.m" lineNumber:101 description:@"_prepare can only be called once"];
   }
 
-  v2->_didPrepare = 1;
+  selfCopy2->_didPrepare = 1;
   v194 = 0;
   v195 = &v194;
   v196 = 0x3032000000;
   v197 = __Block_byref_object_copy__1949;
   v198 = __Block_byref_object_dispose__1950;
   v3 = MEMORY[0x1E69BF2D0];
-  v4 = [MEMORY[0x1E695DFB0] null];
-  v5 = [v3 successWithResult:v4];
+  null = [MEMORY[0x1E695DFB0] null];
+  v5 = [v3 successWithResult:null];
 
   v199 = v5;
   v188 = 0;
@@ -633,8 +633,8 @@ void __80__PHChangeValidationController__simpleDeleteValidatorsWithManagedObject
   v191 = __Block_byref_object_copy__1949;
   v192 = __Block_byref_object_dispose__1950;
   v193 = 0;
-  v114 = [(PHChangeValidationController *)self managedObjectContext];
-  v104 = [(PHChangeValidationController *)self photoLibrary];
+  managedObjectContext = [(PHChangeValidationController *)self managedObjectContext];
+  photoLibrary = [(PHChangeValidationController *)self photoLibrary];
   v122 = [MEMORY[0x1E695DFA8] set];
   v118 = [MEMORY[0x1E695DFA8] set];
   v119 = [MEMORY[0x1E695DFA8] set];
@@ -658,7 +658,7 @@ void __80__PHChangeValidationController__simpleDeleteValidatorsWithManagedObject
   v97 = objc_opt_new();
   v96 = objc_opt_new();
   v95 = objc_opt_new();
-  v6 = [MEMORY[0x1E69BE540] entityName];
+  entityName = [MEMORY[0x1E69BE540] entityName];
   v7 = (v189 + 5);
   obj = v189[5];
   v127 = PLSafeEntityForNameInManagedObjectContext();
@@ -670,7 +670,7 @@ void __80__PHChangeValidationController__simpleDeleteValidatorsWithManagedObject
     goto LABEL_127;
   }
 
-  v8 = [MEMORY[0x1E69BE458] entityName];
+  entityName2 = [MEMORY[0x1E69BE458] entityName];
   v9 = (v189 + 5);
   v186 = v189[5];
   v109 = PLSafeEntityForNameInManagedObjectContext();
@@ -712,8 +712,8 @@ void __80__PHChangeValidationController__simpleDeleteValidatorsWithManagedObject
     goto LABEL_123;
   }
 
-  v125 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-  v93 = [(PHChangeValidationController *)self _simpleDeleteValidatorsWithManagedObjectContext:v114];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  v93 = [(PHChangeValidationController *)self _simpleDeleteValidatorsWithManagedObjectContext:managedObjectContext];
   v179 = 0;
   v180 = &v179;
   v181 = 0x2020000000;
@@ -727,7 +727,7 @@ void __80__PHChangeValidationController__simpleDeleteValidatorsWithManagedObject
   v92 = v13;
   v177 = v92;
   v126 = _Block_copy(aBlock);
-  v14 = self;
+  selfCopy8 = self;
   if (![v195[5] isSuccess])
   {
     goto LABEL_31;
@@ -737,8 +737,8 @@ void __80__PHChangeValidationController__simpleDeleteValidatorsWithManagedObject
   v175 = 0u;
   v172 = 0u;
   v173 = 0u;
-  v15 = [(PHChangeValidationController *)self insertRequests];
-  v16 = [v15 countByEnumeratingWithState:&v172 objects:v206 count:16];
+  insertRequests = [(PHChangeValidationController *)self insertRequests];
+  v16 = [insertRequests countByEnumeratingWithState:&v172 objects:v206 count:16];
   if (!v16)
   {
     goto LABEL_30;
@@ -751,16 +751,16 @@ void __80__PHChangeValidationController__simpleDeleteValidatorsWithManagedObject
     {
       if (*v173 != v17)
       {
-        objc_enumerationMutation(v15);
+        objc_enumerationMutation(insertRequests);
       }
 
       v19 = *(*(&v172 + 1) + 8 * i);
       if (([v19 conformsToProtocol:&unk_1F1032E38] & 1) == 0)
       {
-        v23 = [v19 clientName];
-        if ([v23 length])
+        clientName = [v19 clientName];
+        if ([clientName length])
         {
-          v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid PHInsertChangeRequest from client: %@", v23];
+          v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid PHInsertChangeRequest from client: %@", clientName];
           __WriteStackshot(v24);
         }
 
@@ -782,12 +782,12 @@ void __80__PHChangeValidationController__simpleDeleteValidatorsWithManagedObject
 
       v20 = (v189 + 5);
       v171 = v189[5];
-      v21 = [v19 validateInsertIntoPhotoLibrary:v104 error:&v171];
+      v21 = [v19 validateInsertIntoPhotoLibrary:photoLibrary error:&v171];
       objc_storeStrong(v20, v171);
       if ((v21 & 1) == 0)
       {
         v25 = [(PHChangeValidationController *)self _failureWithError:v189[5]];
-        v23 = v195[5];
+        clientName = v195[5];
         v195[5] = v25;
 LABEL_29:
 
@@ -795,7 +795,7 @@ LABEL_29:
       }
     }
 
-    v16 = [v15 countByEnumeratingWithState:&v172 objects:v206 count:16];
+    v16 = [insertRequests countByEnumeratingWithState:&v172 objects:v206 count:16];
     if (v16)
     {
       continue;
@@ -806,7 +806,7 @@ LABEL_29:
 
 LABEL_30:
 
-  v14 = self;
+  selfCopy8 = self;
 LABEL_31:
   if (![v195[5] isSuccess])
   {
@@ -817,15 +817,15 @@ LABEL_31:
   v170 = 0u;
   v167 = 0u;
   v168 = 0u;
-  v30 = [(PHChangeValidationController *)v14 updateRequests];
-  v31 = [v30 countByEnumeratingWithState:&v167 objects:v205 count:16];
+  updateRequests = [(PHChangeValidationController *)selfCopy8 updateRequests];
+  v31 = [updateRequests countByEnumeratingWithState:&v167 objects:v205 count:16];
   if (!v31)
   {
     goto LABEL_56;
   }
 
   v32 = *v168;
-  v124 = v30;
+  v124 = updateRequests;
   while (2)
   {
     v33 = 0;
@@ -837,33 +837,33 @@ LABEL_31:
       }
 
       v34 = *(*(&v167 + 1) + 8 * v33);
-      v35 = [v34 objectID];
-      v36 = [v35 entity];
-      if ([v36 isKindOfEntity:v127] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      objectID = [v34 objectID];
+      entity = [objectID entity];
+      if ([entity isKindOfEntity:v127] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v37 = v34;
-        v38 = [v37 contentEditingOutput];
-        v39 = [v37 isHiding];
-        if (v39)
+        contentEditingOutput = [v37 contentEditingOutput];
+        isHiding = [v37 isHiding];
+        if (isHiding)
         {
-          [v119 addObject:v35];
+          [v119 addObject:objectID];
         }
 
         if ([v37 isRevertingContentToOriginal])
         {
-          [v118 addObject:v35];
+          [v118 addObject:objectID];
           v40 = v122;
-          if (!v38)
+          if (!contentEditingOutput)
           {
             goto LABEL_51;
           }
 
 LABEL_50:
-          [v40 addObject:v35];
+          [v40 addObject:objectID];
           goto LABEL_51;
         }
 
-        if (v38)
+        if (contentEditingOutput)
         {
           v40 = v122;
         }
@@ -873,7 +873,7 @@ LABEL_50:
           v40 = v117;
         }
 
-        if (((v38 == 0) & v39) == 0)
+        if (((contentEditingOutput == 0) & isHiding) == 0)
         {
           goto LABEL_50;
         }
@@ -883,12 +883,12 @@ LABEL_51:
 
       else if (objc_opt_respondsToSelector())
       {
-        [v123 addObject:v35];
+        [v123 addObject:objectID];
       }
 
-      if (v35)
+      if (objectID)
       {
-        [v125 setObject:v34 forKey:v35];
+        [strongToStrongObjectsMapTable setObject:v34 forKey:objectID];
       }
 
       v126[2](v126, v34);
@@ -901,7 +901,7 @@ LABEL_51:
       break;
     }
 
-    v30 = v124;
+    updateRequests = v124;
     v31 = [v124 countByEnumeratingWithState:&v167 objects:v205 count:16];
     if (v31)
     {
@@ -913,7 +913,7 @@ LABEL_51:
 
 LABEL_56:
 
-  v14 = self;
+  selfCopy8 = self;
 LABEL_57:
   if (![v195[5] isSuccess])
   {
@@ -924,8 +924,8 @@ LABEL_57:
   v166 = 0u;
   v163 = 0u;
   v164 = 0u;
-  v41 = [(PHChangeValidationController *)v14 deleteRequests];
-  v42 = [v41 countByEnumeratingWithState:&v163 objects:v204 count:16];
+  deleteRequests = [(PHChangeValidationController *)selfCopy8 deleteRequests];
+  v42 = [deleteRequests countByEnumeratingWithState:&v163 objects:v204 count:16];
   if (!v42)
   {
     goto LABEL_116;
@@ -939,15 +939,15 @@ LABEL_57:
     {
       if (*v164 != v43)
       {
-        objc_enumerationMutation(v41);
+        objc_enumerationMutation(deleteRequests);
       }
 
       v45 = *(*(&v163 + 1) + 8 * v44);
-      v46 = [v45 objectID];
-      v47 = [v46 entity];
-      if (![v47 isKindOfEntity:v127])
+      objectID2 = [v45 objectID];
+      entity2 = [objectID2 entity];
+      if (![entity2 isKindOfEntity:v127])
       {
-        if ([v47 isKindOfEntity:v116])
+        if ([entity2 isKindOfEntity:v116])
         {
           objc_opt_class();
           v53 = v45;
@@ -978,7 +978,7 @@ LABEL_57:
           }
         }
 
-        else if ([v47 isKindOfEntity:v110])
+        else if ([entity2 isKindOfEntity:v110])
         {
           objc_opt_class();
           v56 = v45;
@@ -1011,15 +1011,15 @@ LABEL_57:
 
         else
         {
-          if (![v47 isKindOfEntity:v109])
+          if (![entity2 isKindOfEntity:v109])
           {
-            if (![(PHChangeValidationController *)self _recordObjectID:v46 withSimpleDeleteValidators:v93])
+            if (![(PHChangeValidationController *)self _recordObjectID:objectID2 withSimpleDeleteValidators:v93])
             {
               v63 = MEMORY[0x1E696ABC0];
-              if (v46)
+              if (objectID2)
               {
                 v202 = *MEMORY[0x1E696A578];
-                v64 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown type %@", v46];
+                v64 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown type %@", objectID2];
                 v203 = v64;
                 [MEMORY[0x1E695DF20] dictionaryWithObjects:&v203 forKeys:&v202 count:1];
               }
@@ -1062,14 +1062,14 @@ LABEL_57:
 
           if (v50 && [v50 operation] == 2)
           {
-            v60 = [v47 isKindOfEntity:v94] == 0;
+            v60 = [entity2 isKindOfEntity:v94] == 0;
             v62 = v102;
             v61 = v103;
           }
 
           else
           {
-            v60 = [v47 isKindOfEntity:v94] == 0;
+            v60 = [entity2 isKindOfEntity:v94] == 0;
             v62 = v105;
             v61 = v106;
           }
@@ -1085,7 +1085,7 @@ LABEL_57:
           }
         }
 
-        [v55 addObject:v46];
+        [v55 addObject:objectID2];
         goto LABEL_106;
       }
 
@@ -1105,35 +1105,35 @@ LABEL_57:
 
       if (v50)
       {
-        v51 = [v50 operation];
+        operation = [v50 operation];
         v52 = v120;
-        if (v51)
+        if (operation)
         {
-          if (v51 == 1)
+          if (operation == 1)
           {
-            [v120 addObject:v46];
+            [v120 addObject:objectID2];
             v52 = v108;
           }
 
           else
           {
             v52 = v112;
-            if (v51 != 2)
+            if (operation != 2)
             {
               goto LABEL_106;
             }
           }
         }
 
-        [v52 addObject:v46];
+        [v52 addObject:objectID2];
       }
 
 LABEL_106:
 
 LABEL_107:
-      if (v46)
+      if (objectID2)
       {
-        [v125 setObject:v45 forKey:v46];
+        [strongToStrongObjectsMapTable setObject:v45 forKey:objectID2];
       }
 
       v126[2](v126, v45);
@@ -1146,7 +1146,7 @@ LABEL_107:
       break;
     }
 
-    v42 = [v41 countByEnumeratingWithState:&v163 objects:v204 count:16];
+    v42 = [deleteRequests countByEnumeratingWithState:&v163 objects:v204 count:16];
     if (v42)
     {
       continue;
@@ -1157,11 +1157,11 @@ LABEL_107:
 
 LABEL_116:
 
-  v14 = self;
+  selfCopy8 = self;
 LABEL_117:
   if ([v195[5] isSuccess])
   {
-    photoLibrary = v14->_photoLibrary;
+    photoLibrary = selfCopy8->_photoLibrary;
     v128[0] = MEMORY[0x1E69E9820];
     v128[1] = 3221225472;
     v128[2] = __40__PHChangeValidationController__prepare__block_invoke_2;
@@ -1169,9 +1169,9 @@ LABEL_117:
     v161 = &v194;
     v129 = v122;
     v130 = v127;
-    v131 = v114;
-    v132 = v125;
-    v133 = v14;
+    v131 = managedObjectContext;
+    v132 = strongToStrongObjectsMapTable;
+    v133 = selfCopy8;
     v162 = &v188;
     v134 = v100;
     v135 = v101;
@@ -1202,25 +1202,25 @@ LABEL_117:
     v160 = v93;
     [(PLPhotoLibrary *)photoLibrary performBlockAndWait:v128];
 
-    v14 = self;
+    selfCopy8 = self;
   }
 
   if ([v92 count] == 1)
   {
-    v71 = [v92 anyObject];
+    anyObject = [v92 anyObject];
   }
 
   else
   {
-    v72 = [v92 allObjects];
-    v71 = [v72 componentsJoinedByString:{@", "}];
+    allObjects = [v92 allObjects];
+    anyObject = [allObjects componentsJoinedByString:{@", "}];
 
-    v14 = self;
+    selfCopy8 = self;
   }
 
   v73 = [v101 copy];
-  renderedContentURLs = v14->_renderedContentURLs;
-  v14->_renderedContentURLs = v73;
+  renderedContentURLs = selfCopy8->_renderedContentURLs;
+  selfCopy8->_renderedContentURLs = v73;
 
   v75 = [v100 copy];
   assetsToChangeContent = self->_assetsToChangeContent;
@@ -1247,8 +1247,8 @@ LABEL_117:
   self->_foldersToDelete = v85;
 
   clientName = self->_clientName;
-  self->_clientName = v71;
-  v88 = v71;
+  self->_clientName = anyObject;
+  v88 = anyObject;
 
   self->_confirmationRequired = *(v180 + 24);
   v22 = v195[5];
@@ -2452,13 +2452,13 @@ LABEL_239:
   }
 }
 
-- (PHChangeValidationController)initWithInsertRequests:(id)a3 updateRequests:(id)a4 deleteRequests:(id)a5 context:(id)a6 photoLibrary:(id)a7
+- (PHChangeValidationController)initWithInsertRequests:(id)requests updateRequests:(id)updateRequests deleteRequests:(id)deleteRequests context:(id)context photoLibrary:(id)library
 {
-  v21 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  requestsCopy = requests;
+  updateRequestsCopy = updateRequests;
+  deleteRequestsCopy = deleteRequests;
+  contextCopy = context;
+  libraryCopy = library;
   v22.receiver = self;
   v22.super_class = PHChangeValidationController;
   v17 = [(PHChangeValidationController *)&v22 init];
@@ -2467,15 +2467,15 @@ LABEL_239:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v19 handleFailureInMethod:a2 object:v17 file:@"PHChangeValidationController.m" lineNumber:89 description:@"Must provide a managed object context"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v17 file:@"PHChangeValidationController.m" lineNumber:89 description:@"Must provide a managed object context"];
     }
 
-    objc_storeStrong(&v17->_insertRequests, a3);
-    objc_storeStrong(&v17->_updateRequests, a4);
-    objc_storeStrong(&v17->_deleteRequests, a5);
-    objc_storeStrong(&v17->_managedObjectContext, a6);
-    objc_storeStrong(&v17->_photoLibrary, a7);
+    objc_storeStrong(&v17->_insertRequests, requests);
+    objc_storeStrong(&v17->_updateRequests, updateRequests);
+    objc_storeStrong(&v17->_deleteRequests, deleteRequests);
+    objc_storeStrong(&v17->_managedObjectContext, context);
+    objc_storeStrong(&v17->_photoLibrary, library);
   }
 
   return v17;

@@ -2,10 +2,10 @@
 - (NSArray)subviews;
 - (id)ibDelegate;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setIbDelegate:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setIbDelegate:(id)delegate;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation RoomCaptureView
@@ -18,10 +18,10 @@
   return Strong;
 }
 
-- (void)setIbDelegate:(id)a3
+- (void)setIbDelegate:(id)delegate
 {
-  v4 = self;
-  if (a3)
+  selfCopy = self;
+  if (delegate)
   {
     swift_unknownObjectRetain();
     swift_getObjectType();
@@ -37,7 +37,7 @@
     v5 = 0;
   }
 
-  v6 = v4 + OBJC_IVAR____TtC8RoomPlan15RoomCaptureView_delegate;
+  v6 = selfCopy + OBJC_IVAR____TtC8RoomPlan15RoomCaptureView_delegate;
   swift_beginAccess();
   *(v6 + 1) = v5;
   swift_unknownObjectWeakAssign();
@@ -46,7 +46,7 @@
 
 - (NSArray)subviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_23A9AE07C();
 
   sub_23A8D6C58(0, &qword_27DFB0C98, 0x277D75D18);
@@ -55,21 +55,21 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_23A9AF7D4(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_23A9AF7D4(coderCopy);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v7 = self;
-  v5 = [(RoomCaptureView *)v7 traitCollection];
-  v6 = [v5 hasDifferentColorAppearanceComparedToTraitCollection_];
+  changeCopy = change;
+  selfCopy = self;
+  traitCollection = [(RoomCaptureView *)selfCopy traitCollection];
+  hasDifferentColorAppearanceComparedToTraitCollection_ = [traitCollection hasDifferentColorAppearanceComparedToTraitCollection_];
 
-  if (v6)
+  if (hasDifferentColorAppearanceComparedToTraitCollection_)
   {
     sub_23A9B0474();
   }
@@ -92,12 +92,12 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   *(sub_23A9ADC0C() + 3) = 0;
   swift_unknownObjectWeakAssign();
 
   sub_23A9AFE24();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for RoomCaptureView();
   [(RoomCaptureView *)&v3 dealloc];
 }

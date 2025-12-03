@@ -1,44 +1,44 @@
 @interface BatteryGaugingAccuracyManager
 + (id)InstanceManager;
-- (BOOL)chargeToFullDueToDOD0:(double)a3 time:(id)a4;
-- (BOOL)chargeToFullDueToQMax:(double)a3 time:(id)a4;
+- (BOOL)chargeToFullDueToDOD0:(double)d0 time:(id)time;
+- (BOOL)chargeToFullDueToQMax:(double)max time:(id)time;
 - (BOOL)disableSocLimitPolicy;
 - (BOOL)isBatterySupportBottomOcv;
-- (id)batteryPercentFromBatteryProperties:(id)a3;
-- (id)dod0ArrayFromBatteryProperties:(id)a3;
-- (id)dod0AtQualQmaxFromBatteryProperties:(id)a3;
-- (id)externalConnectedFromBatteryProperties:(id)a3;
-- (id)fcStatusFromBatteryProperties:(id)a3;
+- (id)batteryPercentFromBatteryProperties:(id)properties;
+- (id)dod0ArrayFromBatteryProperties:(id)properties;
+- (id)dod0AtQualQmaxFromBatteryProperties:(id)properties;
+- (id)externalConnectedFromBatteryProperties:(id)properties;
+- (id)fcStatusFromBatteryProperties:(id)properties;
 - (id)gaugingAccuracyMetricGet;
 - (id)gaugingMitigationStatistics;
 - (id)getBatteryProperties;
 - (id)initBatteryGaugingAccuracyData;
-- (id)qMaxFromBatteryProperties:(id)a3;
-- (id)usableBottomOcvFromBatteryProperties:(id)a3;
-- (void)handleAlarmEvent:(id)a3;
+- (id)qMaxFromBatteryProperties:(id)properties;
+- (id)usableBottomOcvFromBatteryProperties:(id)properties;
+- (void)handleAlarmEvent:(id)event;
 - (void)handleBatteryStateDataUpdate;
-- (void)incrAnalyticsMetricsAttribute:(unint64_t *)a3;
-- (void)notifyDOD0StateToSMC:(BOOL)a3;
+- (void)incrAnalyticsMetricsAttribute:(unint64_t *)attribute;
+- (void)notifyDOD0StateToSMC:(BOOL)c;
 - (void)periodicActions;
 - (void)periodicChargeToFullCheck;
 - (void)reportMonthlyData;
-- (void)requestPeriodicActionsInMinutes:(int)a3 waking:(BOOL)a4;
-- (void)restoreAnalyticDataFromDisk:(id)a3 :(unint64_t *)a4;
+- (void)requestPeriodicActionsInMinutes:(int)minutes waking:(BOOL)waking;
+- (void)restoreAnalyticDataFromDisk:(id)disk :(unint64_t *)a4;
 - (void)updateAnalyticsData;
-- (void)updateAnalyticsMetricsMaxAttribute:(unint64_t *)a3 interval:(double)a4;
-- (void)updateLastDOD0Values:(id)a3 atDate:(id)a4;
-- (void)updateLastQMaxArray:(id)a3 atDate:(id)a4;
-- (void)writeNSNumberDataToDisk:(id)a3 :(id)a4;
+- (void)updateAnalyticsMetricsMaxAttribute:(unint64_t *)attribute interval:(double)interval;
+- (void)updateLastDOD0Values:(id)values atDate:(id)date;
+- (void)updateLastQMaxArray:(id)array atDate:(id)date;
+- (void)writeNSNumberDataToDisk:(id)disk :(id)a4;
 @end
 
 @implementation BatteryGaugingAccuracyManager
 
-- (id)dod0AtQualQmaxFromBatteryProperties:(id)a3
+- (id)dod0AtQualQmaxFromBatteryProperties:(id)properties
 {
   v3 = qword_1000AD380;
-  v4 = a3;
+  propertiesCopy = properties;
   dispatch_assert_queue_V2(v3);
-  v5 = [v4 objectForKeyedSubscript:@"BatteryData"];
+  v5 = [propertiesCopy objectForKeyedSubscript:@"BatteryData"];
 
   v6 = [v5 objectForKeyedSubscript:@"Dod0AtQualifiedQmax"];
 
@@ -68,12 +68,12 @@
   return v3 != 0;
 }
 
-- (id)usableBottomOcvFromBatteryProperties:(id)a3
+- (id)usableBottomOcvFromBatteryProperties:(id)properties
 {
   v3 = qword_1000AD380;
-  v4 = a3;
+  propertiesCopy = properties;
   dispatch_assert_queue_V2(v3);
-  v5 = [v4 objectForKeyedSubscript:@"BatteryData"];
+  v5 = [propertiesCopy objectForKeyedSubscript:@"BatteryData"];
 
   v6 = [v5 objectForKeyedSubscript:@"UsableBottomOcv"];
 
@@ -99,12 +99,12 @@
   return v6;
 }
 
-- (id)batteryPercentFromBatteryProperties:(id)a3
+- (id)batteryPercentFromBatteryProperties:(id)properties
 {
   v3 = qword_1000AD380;
-  v4 = a3;
+  propertiesCopy = properties;
   dispatch_assert_queue_V2(v3);
-  v5 = [v4 objectForKeyedSubscript:@"BatteryData"];
+  v5 = [propertiesCopy objectForKeyedSubscript:@"BatteryData"];
 
   v6 = [v5 objectForKeyedSubscript:@"StateOfCharge"];
 
@@ -116,12 +116,12 @@
   return v6;
 }
 
-- (id)fcStatusFromBatteryProperties:(id)a3
+- (id)fcStatusFromBatteryProperties:(id)properties
 {
   v3 = qword_1000AD380;
-  v4 = a3;
+  propertiesCopy = properties;
   dispatch_assert_queue_V2(v3);
-  v5 = [v4 objectForKeyedSubscript:@"FullyCharged"];
+  v5 = [propertiesCopy objectForKeyedSubscript:@"FullyCharged"];
 
   if (v5)
   {
@@ -131,12 +131,12 @@
   return v5;
 }
 
-- (id)externalConnectedFromBatteryProperties:(id)a3
+- (id)externalConnectedFromBatteryProperties:(id)properties
 {
   v3 = qword_1000AD380;
-  v4 = a3;
+  propertiesCopy = properties;
   dispatch_assert_queue_V2(v3);
-  v5 = [v4 objectForKeyedSubscript:@"ExternalConnected"];
+  v5 = [propertiesCopy objectForKeyedSubscript:@"ExternalConnected"];
 
   if (v5)
   {
@@ -146,11 +146,11 @@
   return v5;
 }
 
-- (id)dod0ArrayFromBatteryProperties:(id)a3
+- (id)dod0ArrayFromBatteryProperties:(id)properties
 {
-  v3 = a3;
+  propertiesCopy = properties;
   dispatch_assert_queue_V2(qword_1000AD380);
-  v4 = [v3 objectForKeyedSubscript:@"BatteryData"];
+  v4 = [propertiesCopy objectForKeyedSubscript:@"BatteryData"];
   v5 = [v4 objectForKeyedSubscript:@"DOD0"];
 
   objc_opt_class();
@@ -161,7 +161,7 @@
 
   else
   {
-    v7 = [v3 objectForKeyedSubscript:@"BatteryFCCData"];
+    v7 = [propertiesCopy objectForKeyedSubscript:@"BatteryFCCData"];
     v8 = [v7 objectForKeyedSubscript:@"DOD0"];
 
     if (v8)
@@ -179,11 +179,11 @@
   return v6;
 }
 
-- (id)qMaxFromBatteryProperties:(id)a3
+- (id)qMaxFromBatteryProperties:(id)properties
 {
-  v3 = a3;
+  propertiesCopy = properties;
   dispatch_assert_queue_V2(qword_1000AD380);
-  v4 = [v3 objectForKeyedSubscript:@"BatteryData"];
+  v4 = [propertiesCopy objectForKeyedSubscript:@"BatteryData"];
   v5 = [v4 objectForKeyedSubscript:@"Qmax"];
 
   objc_opt_class();
@@ -194,7 +194,7 @@
 
   else
   {
-    v7 = [v3 objectForKeyedSubscript:@"BatteryData"];
+    v7 = [propertiesCopy objectForKeyedSubscript:@"BatteryData"];
     v8 = [v7 objectForKeyedSubscript:@"ITMiscStatus"];
 
     if (v8)
@@ -212,14 +212,14 @@
   return v6;
 }
 
-- (void)notifyDOD0StateToSMC:(BOOL)a3
+- (void)notifyDOD0StateToSMC:(BOOL)c
 {
-  v3 = a3;
-  v8 = a3;
+  cCopy = c;
+  cCopy2 = c;
   dispatch_assert_queue_V2(qword_1000AD380);
-  if (byte_1000AD389 != 1 || byte_1000AD388 != v3)
+  if (byte_1000AD389 != 1 || byte_1000AD388 != cCopy)
   {
-    v5 = sub_10005EEE4(1651930160, &v8, 1u);
+    v5 = sub_10005EEE4(1651930160, &cCopy2, 1u);
     if (v5)
     {
       v6 = v5;
@@ -230,19 +230,19 @@
       }
     }
 
-    byte_1000AD388 = v8;
+    byte_1000AD388 = cCopy2;
     byte_1000AD389 = 1;
   }
 }
 
-- (BOOL)chargeToFullDueToDOD0:(double)a3 time:(id)a4
+- (BOOL)chargeToFullDueToDOD0:(double)d0 time:(id)time
 {
-  v6 = a4;
+  timeCopy = time;
   dispatch_assert_queue_V2(qword_1000AD380);
   testDOD0UpdateDate = self->_testDOD0UpdateDate;
   if (!testDOD0UpdateDate)
   {
-    if (a3 >= 259200.0)
+    if (d0 >= 259200.0)
     {
       goto LABEL_8;
     }
@@ -252,7 +252,7 @@
     if (os_log_type_enabled(qword_1000AC998, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 134217984;
-      v18 = a3 / 86400.0;
+      v18 = d0 / 86400.0;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Last DOD0 Change: %.1f days too recent", &v17, 0xCu);
     }
 
@@ -264,14 +264,14 @@ LABEL_14:
 
   [(NSNumber *)testDOD0UpdateDate doubleValue];
   v8 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-  [v6 timeIntervalSinceDate:v8];
+  [timeCopy timeIntervalSinceDate:v8];
   if (v9 < 259200.0)
   {
     v13 = qword_1000AC998;
     if (os_log_type_enabled(qword_1000AC998, OS_LOG_TYPE_DEFAULT))
     {
       v14 = v13;
-      [v6 timeIntervalSinceDate:v8];
+      [timeCopy timeIntervalSinceDate:v8];
       v17 = 134217984;
       v18 = v15 / 86400.0;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "(Test) Last DOD0 Change: %.1f days too recent", &v17, 0xCu);
@@ -287,7 +287,7 @@ LABEL_8:
   if (os_log_type_enabled(qword_1000AC998, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 134217984;
-    v18 = a3 / 86400.0;
+    v18 = d0 / 86400.0;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Last DOD0 Change: %.1f days ago; charge to full", &v17, 0xCu);
   }
 
@@ -298,23 +298,23 @@ LABEL_15:
   return v12;
 }
 
-- (BOOL)chargeToFullDueToQMax:(double)a3 time:(id)a4
+- (BOOL)chargeToFullDueToQMax:(double)max time:(id)time
 {
-  v6 = a4;
+  timeCopy = time;
   dispatch_assert_queue_V2(qword_1000AD380);
   testQmaxUpdateDate = self->_testQmaxUpdateDate;
   if (testQmaxUpdateDate)
   {
     [(NSNumber *)testQmaxUpdateDate doubleValue];
     v8 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-    [v6 timeIntervalSinceDate:v8];
+    [timeCopy timeIntervalSinceDate:v8];
     if (v9 < 1209600.0)
     {
       v16 = qword_1000AC998;
       if (os_log_type_enabled(qword_1000AC998, OS_LOG_TYPE_DEFAULT))
       {
         v17 = v16;
-        [v6 timeIntervalSinceDate:v8];
+        [timeCopy timeIntervalSinceDate:v8];
         v49 = 134217984;
         v50 = v18 / 86400.0;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "(Test) Last Qmax change was %.1f days ago too recent", &v49, 0xCu);
@@ -324,13 +324,13 @@ LABEL_15:
     }
   }
 
-  else if (a3 < 1209600.0)
+  else if (max < 1209600.0)
   {
     v10 = qword_1000AC998;
     if (os_log_type_enabled(qword_1000AC998, OS_LOG_TYPE_DEFAULT))
     {
       v49 = 134217984;
-      v50 = a3 / 86400.0;
+      v50 = max / 86400.0;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Last Qmax change was %.1f days ago too recent", &v49, 0xCu);
     }
 
@@ -439,10 +439,10 @@ LABEL_8:
   testUsableBottomOCV = self->_testUsableBottomOCV;
   if (!testUsableBottomOCV)
   {
-    v22 = [(NSNumber *)self->_lastUsableBottomOCV intValue];
+    intValue = [(NSNumber *)self->_lastUsableBottomOCV intValue];
     v23 = qword_1000AC998;
     v24 = os_log_type_enabled(qword_1000AC998, OS_LOG_TYPE_DEFAULT);
-    if (!v22)
+    if (!intValue)
     {
       if (v24)
       {
@@ -497,7 +497,7 @@ LABEL_32:
   if (os_log_type_enabled(qword_1000AC998, OS_LOG_TYPE_DEFAULT))
   {
     v49 = 134217984;
-    v50 = a3 / 86400.0;
+    v50 = max / 86400.0;
     _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "Last QMax Change: %.1f days ago; charge to full now", &v49, 0xCu);
   }
 
@@ -508,13 +508,13 @@ LABEL_42:
   return v38;
 }
 
-- (void)requestPeriodicActionsInMinutes:(int)a3 waking:(BOOL)a4
+- (void)requestPeriodicActionsInMinutes:(int)minutes waking:(BOOL)waking
 {
   dispatch_assert_queue_V2(qword_1000AD380);
   xdict = xpc_dictionary_create(0, 0, 0);
   v6 = time(0);
-  xpc_dictionary_set_date(xdict, "Date", 1000000000 * (v6 + 60 * a3));
-  if (!a4)
+  xpc_dictionary_set_date(xdict, "Date", 1000000000 * (v6 + 60 * minutes));
+  if (!waking)
   {
     xpc_dictionary_set_BOOL(xdict, "ShouldWake", 0);
   }
@@ -522,14 +522,14 @@ LABEL_42:
   xpc_set_event();
 }
 
-- (void)handleAlarmEvent:(id)a3
+- (void)handleAlarmEvent:(id)event
 {
   v4 = qword_1000AD380;
-  v5 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(v4);
-  v6 = [NSString stringWithUTF8String:xpc_dictionary_get_string(v5, _xpc_event_key_name)];
-  reply = xpc_dictionary_create_reply(v5);
-  v8 = xpc_dictionary_get_remote_connection(v5);
+  v6 = [NSString stringWithUTF8String:xpc_dictionary_get_string(eventCopy, _xpc_event_key_name)];
+  reply = xpc_dictionary_create_reply(eventCopy);
+  v8 = xpc_dictionary_get_remote_connection(eventCopy);
 
   xpc_connection_send_message(v8, reply);
   v9 = qword_1000AC998;
@@ -568,27 +568,27 @@ LABEL_42:
   return v5;
 }
 
-- (void)updateAnalyticsMetricsMaxAttribute:(unint64_t *)a3 interval:(double)a4
+- (void)updateAnalyticsMetricsMaxAttribute:(unint64_t *)attribute interval:(double)interval
 {
   dispatch_assert_queue_V2(qword_1000AD380);
-  v6 = *a3;
-  if (a4 / 86400.0 > v6)
+  v6 = *attribute;
+  if (interval / 86400.0 > v6)
   {
-    v6 = a4 / 86400.0;
+    v6 = interval / 86400.0;
   }
 
-  *a3 = v6;
+  *attribute = v6;
 }
 
-- (void)incrAnalyticsMetricsAttribute:(unint64_t *)a3
+- (void)incrAnalyticsMetricsAttribute:(unint64_t *)attribute
 {
   dispatch_assert_queue_V2(qword_1000AD380);
-  v5 = [(BatteryGaugingAccuracyManager *)self getBatteryProperties];
-  v6 = [(BatteryGaugingAccuracyManager *)self externalConnectedFromBatteryProperties:v5];
+  getBatteryProperties = [(BatteryGaugingAccuracyManager *)self getBatteryProperties];
+  v6 = [(BatteryGaugingAccuracyManager *)self externalConnectedFromBatteryProperties:getBatteryProperties];
 
   if (v6 && [v6 BOOLValue])
   {
-    ++*a3;
+    ++*attribute;
   }
 
   _objc_release_x1();
@@ -665,9 +665,9 @@ LABEL_42:
 - (void)periodicActions
 {
   dispatch_assert_queue_V2(qword_1000AD380);
-  v3 = [(BatteryGaugingAccuracyManager *)self getBatteryProperties];
-  v4 = v3;
-  if (v3 && [v3 count])
+  getBatteryProperties = [(BatteryGaugingAccuracyManager *)self getBatteryProperties];
+  v4 = getBatteryProperties;
+  if (getBatteryProperties && [getBatteryProperties count])
   {
     [(BatteryGaugingAccuracyManager *)self reportMonthlyData];
     v5 = +[NSDate date];
@@ -707,8 +707,8 @@ LABEL_42:
     {
       if (v14)
       {
-        v16 = [v14 intValue];
-        if (v16 != [(NSNumber *)self->_lastUsableBottomOCV intValue])
+        intValue = [v14 intValue];
+        if (intValue != [(NSNumber *)self->_lastUsableBottomOCV intValue])
         {
           objc_storeStrong(&self->_lastUsableBottomOCV, v15);
           v17 = qword_1000AC998;
@@ -761,20 +761,20 @@ LABEL_42:
     v26 = v25;
     if (v25)
     {
-      v27 = [v25 BOOLValue];
+      bOOLValue = [v25 BOOLValue];
     }
 
     else
     {
-      v27 = 0;
+      bOOLValue = 0;
     }
 
     v28 = [(BatteryGaugingAccuracyManager *)self fcStatusFromBatteryProperties:v4];
     v29 = v28;
     if (v28)
     {
-      v30 = [v28 integerValue];
-      if (v30)
+      integerValue = [v28 integerValue];
+      if (integerValue)
       {
         objc_storeStrong(&self->_lastFullChargeDate, obj);
         lastAttemptedFullChargeDate = self->_lastAttemptedFullChargeDate;
@@ -804,26 +804,26 @@ LABEL_42:
 
     else
     {
-      v30 = 0;
+      integerValue = 0;
     }
 
-    dword_1000AD38C = v30;
+    dword_1000AD38C = integerValue;
     [(BatteryGaugingAccuracyManager *)self periodicChargeToFullCheck];
-    if ((v27 & v24) != 1 || v30)
+    if ((bOOLValue & v24) != 1 || integerValue)
     {
-      v35 = self;
+      selfCopy2 = self;
       v36 = 60;
       v37 = 0;
     }
 
     else
     {
-      v35 = self;
+      selfCopy2 = self;
       v36 = 5;
       v37 = 1;
     }
 
-    [(BatteryGaugingAccuracyManager *)v35 requestPeriodicActionsInMinutes:v36 waking:v37];
+    [(BatteryGaugingAccuracyManager *)selfCopy2 requestPeriodicActionsInMinutes:v36 waking:v37];
     if (v40)
     {
       [(BatteryGaugingAccuracyManager *)self updateAnalyticsData];
@@ -959,8 +959,8 @@ LABEL_42:
       v11 = [NSNumber numberWithDouble:?];
       [(BatteryGaugingAccuracyManager *)self writeNSNumberDataToDisk:@"MonthlyDataReportedDate"];
 
-      v14 = [(BatteryGaugingAccuracyManager *)self gaugingMitigationStatistics];
-      v12 = v14;
+      gaugingMitigationStatistics = [(BatteryGaugingAccuracyManager *)self gaugingMitigationStatistics];
+      v12 = gaugingMitigationStatistics;
       AnalyticsSendEventLazy();
     }
   }
@@ -1025,9 +1025,9 @@ LABEL_42:
 - (BOOL)disableSocLimitPolicy
 {
   dispatch_assert_queue_V2(qword_1000AD380);
-  v3 = [(BatteryGaugingAccuracyManager *)self getBatteryProperties];
-  v4 = v3;
-  if (v3 && [v3 count])
+  getBatteryProperties = [(BatteryGaugingAccuracyManager *)self getBatteryProperties];
+  v4 = getBatteryProperties;
+  if (getBatteryProperties && [getBatteryProperties count])
   {
     v5 = +[NSDate date];
     v6 = [(BatteryGaugingAccuracyManager *)self qMaxFromBatteryProperties:v4];
@@ -1213,14 +1213,14 @@ LABEL_19:
   [(BatteryGaugingAccuracyManager *)self writeNSNumberDataToDisk:@"maxDaysSinceLastFullCharge"];
 }
 
-- (void)updateLastQMaxArray:(id)a3 atDate:(id)a4
+- (void)updateLastQMaxArray:(id)array atDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  arrayCopy = array;
+  dateCopy = date;
   dispatch_assert_queue_V2(qword_1000AD380);
-  if (v6)
+  if (arrayCopy)
   {
-    v8 = v6;
+    v8 = arrayCopy;
   }
 
   else
@@ -1231,28 +1231,28 @@ LABEL_19:
   v14[0] = @"lastQMax";
   v14[1] = @"lastQMaxUpdate";
   v15[0] = v8;
-  [(NSDate *)v7 timeIntervalSinceReferenceDate];
+  [(NSDate *)dateCopy timeIntervalSinceReferenceDate];
   v9 = [NSNumber numberWithDouble:?];
   v15[1] = v9;
   v10 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2];
 
   CFPreferencesSetMultiple(v10, 0, @"com.apple.powerd.batterygauging", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
   lastQMaxArray = self->_lastQMaxArray;
-  self->_lastQMaxArray = v6;
-  v12 = v6;
+  self->_lastQMaxArray = arrayCopy;
+  v12 = arrayCopy;
 
   lastQMaxUpdate = self->_lastQMaxUpdate;
-  self->_lastQMaxUpdate = v7;
+  self->_lastQMaxUpdate = dateCopy;
 }
 
-- (void)updateLastDOD0Values:(id)a3 atDate:(id)a4
+- (void)updateLastDOD0Values:(id)values atDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  valuesCopy = values;
+  dateCopy = date;
   dispatch_assert_queue_V2(qword_1000AD380);
-  if (v6)
+  if (valuesCopy)
   {
-    v8 = v6;
+    v8 = valuesCopy;
   }
 
   else
@@ -1263,47 +1263,47 @@ LABEL_19:
   v14[0] = @"lastDOD0";
   v14[1] = @"lastDOD0Update";
   v15[0] = v8;
-  [(NSDate *)v7 timeIntervalSinceReferenceDate];
+  [(NSDate *)dateCopy timeIntervalSinceReferenceDate];
   v9 = [NSNumber numberWithDouble:?];
   v15[1] = v9;
   v10 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2];
 
   CFPreferencesSetMultiple(v10, 0, @"com.apple.powerd.batterygauging", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
   lastDOD0Values = self->_lastDOD0Values;
-  self->_lastDOD0Values = v6;
-  v12 = v6;
+  self->_lastDOD0Values = valuesCopy;
+  v12 = valuesCopy;
 
   lastDOD0Update = self->_lastDOD0Update;
-  self->_lastDOD0Update = v7;
+  self->_lastDOD0Update = dateCopy;
 }
 
-- (void)writeNSNumberDataToDisk:(id)a3 :(id)a4
+- (void)writeNSNumberDataToDisk:(id)disk :(id)a4
 {
   v5 = qword_1000AD380;
   v6 = a4;
-  key = a3;
+  key = disk;
   dispatch_assert_queue_V2(v5);
   CFPreferencesSetAppValue(key, v6, @"com.apple.powerd.batterygauging");
 }
 
-- (void)restoreAnalyticDataFromDisk:(id)a3 :(unint64_t *)a4
+- (void)restoreAnalyticDataFromDisk:(id)disk :(unint64_t *)a4
 {
   v5 = qword_1000AD380;
-  v6 = a3;
+  diskCopy = disk;
   dispatch_assert_queue_V2(v5);
-  v8 = CFPreferencesCopyAppValue(v6, @"com.apple.powerd.batterygauging");
+  v8 = CFPreferencesCopyAppValue(diskCopy, @"com.apple.powerd.batterygauging");
 
   if (v8)
   {
-    v7 = [v8 integerValue];
+    integerValue = [v8 integerValue];
   }
 
   else
   {
-    v7 = 0;
+    integerValue = 0;
   }
 
-  *a4 = v7;
+  *a4 = integerValue;
 
   _objc_release_x1();
 }
@@ -1545,10 +1545,10 @@ LABEL_21:
 - (void)handleBatteryStateDataUpdate
 {
   dispatch_assert_queue_V2(qword_1000AD380);
-  v3 = [(BatteryGaugingAccuracyManager *)self disableSocLimitPolicy];
-  v4 = v3;
+  disableSocLimitPolicy = [(BatteryGaugingAccuracyManager *)self disableSocLimitPolicy];
+  v4 = disableSocLimitPolicy;
   lastChargeToFullRequested = self->_lastChargeToFullRequested;
-  v6 = lastChargeToFullRequested | v3 ^ 1;
+  v6 = lastChargeToFullRequested | disableSocLimitPolicy ^ 1;
   if ((v6 & 1) == 0)
   {
     v8 = qword_1000AC998;
@@ -1562,7 +1562,7 @@ LABEL_21:
     goto LABEL_8;
   }
 
-  if (!(v3 & 1 | !lastChargeToFullRequested))
+  if (!(disableSocLimitPolicy & 1 | !lastChargeToFullRequested))
   {
     v7 = qword_1000AC998;
     if (os_log_type_enabled(qword_1000AC998, OS_LOG_TYPE_DEFAULT))

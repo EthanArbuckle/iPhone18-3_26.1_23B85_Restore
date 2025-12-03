@@ -1,5 +1,5 @@
 @interface MTRadioGroupDescription
-+ (id)radioGroupWithInitialValue:(unint64_t)a3 changeHandler:(id)a4;
++ (id)radioGroupWithInitialValue:(unint64_t)value changeHandler:(id)handler;
 - (MTRadioGroupDescription)init;
 - (id)settings;
 @end
@@ -19,12 +19,12 @@
   return v2;
 }
 
-+ (id)radioGroupWithInitialValue:(unint64_t)a3 changeHandler:(id)a4
++ (id)radioGroupWithInitialValue:(unint64_t)value changeHandler:(id)handler
 {
-  v6 = a4;
-  v7 = objc_alloc_init(a1);
-  [v7 setValue:a3];
-  [v7 setChangeHandler:v6];
+  handlerCopy = handler;
+  v7 = objc_alloc_init(self);
+  [v7 setValue:value];
+  [v7 setChangeHandler:handlerCopy];
 
   return v7;
 }

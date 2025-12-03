@@ -1,74 +1,74 @@
 @interface MultiCollectionViewDelegate
-- (BOOL)collectionView:(id)a3 shouldSpringLoadItemAtIndexPath:(id)a4 withContext:(id)a5;
-- (BOOL)collectionView:(id)a3 shouldUpdateFocusInContext:(id)a4;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (BOOL)scrollViewShouldScrollToTop:(id)a3;
-- (CGPoint)collectionView:(id)a3 targetContentOffsetForProposedContentOffset:(CGPoint)a4;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 previewForDismissingContextMenuWithConfiguration:(id)a4;
-- (id)collectionView:(id)a3 previewForHighlightingContextMenuWithConfiguration:(id)a4;
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6;
-- (id)collectionView:(id)a3 transitionLayoutForOldLayout:(id)a4 newLayout:(id)a5;
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3;
-- (id)viewForZoomingInScrollView:(id)a3;
-- (void)collectionView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5;
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)collectionViewDidEndMultipleSelectionInteraction:(id)a3;
-- (void)scrollViewDidChangeAdjustedContentInset:(id)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewDidScrollToTop:(id)a3;
-- (void)scrollViewDidZoom:(id)a3;
-- (void)scrollViewWillBeginDecelerating:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (BOOL)collectionView:(id)view shouldSpringLoadItemAtIndexPath:(id)path withContext:(id)context;
+- (BOOL)collectionView:(id)view shouldUpdateFocusInContext:(id)context;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (BOOL)scrollViewShouldScrollToTop:(id)top;
+- (CGPoint)collectionView:(id)view targetContentOffsetForProposedContentOffset:(CGPoint)offset;
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view previewForDismissingContextMenuWithConfiguration:(id)configuration;
+- (id)collectionView:(id)view previewForHighlightingContextMenuWithConfiguration:(id)configuration;
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath;
+- (id)collectionView:(id)view transitionLayoutForOldLayout:(id)layout newLayout:(id)newLayout;
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view;
+- (id)viewForZoomingInScrollView:(id)view;
+- (void)collectionView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)collectionViewDidEndMultipleSelectionInteraction:(id)interaction;
+- (void)scrollViewDidChangeAdjustedContentInset:(id)inset;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewDidScrollToTop:(id)top;
+- (void)scrollViewDidZoom:(id)zoom;
+- (void)scrollViewWillBeginDecelerating:(id)decelerating;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 @end
 
 @implementation MultiCollectionViewDelegate
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  v4 = self;
-  LOBYTE(a3) = MultiCollectionViewDelegate.responds(to:)(a3);
+  selfCopy = self;
+  LOBYTE(selector) = MultiCollectionViewDelegate.responds(to:)(selector);
 
-  return a3 & 1;
+  return selector & 1;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  MultiCollectionViewDelegate.scrollViewDidScroll(_:)(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  MultiCollectionViewDelegate.scrollViewDidScroll(_:)(scrollCopy);
 }
 
-- (void)collectionViewDidEndMultipleSelectionInteraction:(id)a3
+- (void)collectionViewDidEndMultipleSelectionInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = self;
-  MultiCollectionViewDelegate.collectionViewDidEndMultipleSelectionInteraction(_:)(v4);
+  interactionCopy = interaction;
+  selfCopy = self;
+  MultiCollectionViewDelegate.collectionViewDidEndMultipleSelectionInteraction(_:)(interactionCopy);
 }
 
-- (BOOL)collectionView:(id)a3 shouldUpdateFocusInContext:(id)a4
+- (BOOL)collectionView:(id)view shouldUpdateFocusInContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = MultiCollectionViewDelegate.collectionView(_:shouldUpdateFocusIn:)(v6, v7);
+  viewCopy = view;
+  contextCopy = context;
+  selfCopy = self;
+  v9 = MultiCollectionViewDelegate.collectionView(_:shouldUpdateFocusIn:)(viewCopy, contextCopy);
 
   return v9;
 }
 
-- (CGPoint)collectionView:(id)a3 targetContentOffsetForProposedContentOffset:(CGPoint)a4
+- (CGPoint)collectionView:(id)view targetContentOffsetForProposedContentOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = self;
-  v9 = MultiCollectionViewDelegate.collectionView(_:targetContentOffsetForProposedContentOffset:)(v7, __PAIR128__(*&y, *&x));
+  y = offset.y;
+  x = offset.x;
+  viewCopy = view;
+  selfCopy = self;
+  v9 = MultiCollectionViewDelegate.collectionView(_:targetContentOffsetForProposedContentOffset:)(viewCopy, __PAIR128__(*&y, *&x));
 
   v10 = v9.x;
   v11 = v9.y;
@@ -77,55 +77,55 @@
   return result;
 }
 
-- (id)collectionView:(id)a3 previewForDismissingContextMenuWithConfiguration:(id)a4
+- (id)collectionView:(id)view previewForDismissingContextMenuWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = MultiCollectionViewDelegate.collectionView(_:previewForDismissingContextMenuWithConfiguration:)(v6, v7);
+  viewCopy = view;
+  configurationCopy = configuration;
+  selfCopy = self;
+  v9 = MultiCollectionViewDelegate.collectionView(_:previewForDismissingContextMenuWithConfiguration:)(viewCopy, configurationCopy);
 
   return v9;
 }
 
-- (id)collectionView:(id)a3 previewForHighlightingContextMenuWithConfiguration:(id)a4
+- (id)collectionView:(id)view previewForHighlightingContextMenuWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = MultiCollectionViewDelegate.collectionView(_:previewForHighlightingContextMenuWithConfiguration:)(v6, v7);
+  viewCopy = view;
+  configurationCopy = configuration;
+  selfCopy = self;
+  v9 = MultiCollectionViewDelegate.collectionView(_:previewForHighlightingContextMenuWithConfiguration:)(viewCopy, configurationCopy);
 
   return v9;
 }
 
-- (void)collectionView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5
+- (void)collectionView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  MultiCollectionViewDelegate.collectionView(_:didUpdateFocusIn:with:)(v8, v9, v10);
+  viewCopy = view;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  MultiCollectionViewDelegate.collectionView(_:didUpdateFocusIn:with:)(viewCopy, contextCopy, coordinatorCopy);
 }
 
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v9 = self;
+  selfCopy = self;
   MultiCollectionViewDelegate.collectionView(_:willPerformPreviewActionForMenuWith:animator:)();
 
   swift_unknownObjectRelease();
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point
 {
   v7 = sub_1D818E994();
   v8 = *(v7 - 8);
   MEMORY[0x1EEE9AC00](v7);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D818E924();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   v13 = MultiCollectionViewDelegate.collectionView(_:contextMenuConfigurationForItemAt:point:)();
 
   (*(v8 + 8))(v10, v7);
@@ -133,16 +133,16 @@
   return v13;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSpringLoadItemAtIndexPath:(id)a4 withContext:(id)a5
+- (BOOL)collectionView:(id)view shouldSpringLoadItemAtIndexPath:(id)path withContext:(id)context
 {
   v7 = sub_1D818E994();
   v8 = *(v7 - 8);
   MEMORY[0x1EEE9AC00](v7);
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D818E924();
-  v11 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v12 = self;
+  selfCopy = self;
   LOBYTE(self) = MultiCollectionViewDelegate.collectionView(_:shouldSpringLoadItemAt:with:)();
 
   swift_unknownObjectRelease();
@@ -150,9 +150,9 @@
   return self & 1;
 }
 
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath
 {
-  v26 = self;
+  selfCopy = self;
   v7 = sub_1D818E994();
   v8 = *(v7 - 8);
   MEMORY[0x1EEE9AC00](v7);
@@ -166,8 +166,8 @@
   sub_1D818E924();
   sub_1D818E924();
   sub_1D818E924();
-  v20 = a3;
-  v21 = v26;
+  viewCopy = view;
+  v21 = selfCopy;
   MultiCollectionViewDelegate.collectionView(_:targetIndexPathForMoveOfItemFromOriginalIndexPath:atCurrentIndexPath:toProposedIndexPath:)(v10, v19);
 
   v22 = *(v8 + 8);
@@ -180,25 +180,25 @@
   return v23;
 }
 
-- (id)collectionView:(id)a3 transitionLayoutForOldLayout:(id)a4 newLayout:(id)a5
+- (id)collectionView:(id)view transitionLayoutForOldLayout:(id)layout newLayout:(id)newLayout
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12.super.super.isa = MultiCollectionViewDelegate.collectionView(_:transitionLayoutForOldLayout:newLayout:)(v8, v9, v10).super.super.isa;
+  viewCopy = view;
+  layoutCopy = layout;
+  newLayoutCopy = newLayout;
+  selfCopy = self;
+  v12.super.super.isa = MultiCollectionViewDelegate.collectionView(_:transitionLayoutForOldLayout:newLayout:)(viewCopy, layoutCopy, newLayoutCopy).super.super.isa;
 
   return v12.super.super.isa;
 }
 
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view
 {
   sub_1D7E3D564();
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v13 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = a3;
-  v9 = self;
-  MultiCollectionViewDelegate.indexPathForPreferredFocusedView(in:)(v8, v7);
+  viewCopy = view;
+  selfCopy = self;
+  MultiCollectionViewDelegate.indexPathForPreferredFocusedView(in:)(viewCopy, v7);
 
   v10 = sub_1D818E994();
   v11 = 0;
@@ -211,104 +211,104 @@
   return v11;
 }
 
-- (id)viewForZoomingInScrollView:(id)a3
+- (id)viewForZoomingInScrollView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  MultiCollectionViewDelegate.viewForZooming(in:)(v6, v4);
+  viewCopy = view;
+  selfCopy = self;
+  MultiCollectionViewDelegate.viewForZooming(in:)(v6, viewCopy);
   v8 = v7;
 
   return v8;
 }
 
-- (void)scrollViewDidZoom:(id)a3
+- (void)scrollViewDidZoom:(id)zoom
 {
-  v4 = a3;
-  v5 = self;
-  MultiCollectionViewDelegate.scrollViewDidZoom(_:)(v4);
+  zoomCopy = zoom;
+  selfCopy = self;
+  MultiCollectionViewDelegate.scrollViewDidZoom(_:)(zoomCopy);
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = self;
-  MultiCollectionViewDelegate.scrollViewWillBeginDragging(_:)(v4);
+  draggingCopy = dragging;
+  selfCopy = self;
+  MultiCollectionViewDelegate.scrollViewWillBeginDragging(_:)(draggingCopy);
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = self;
-  MultiCollectionViewDelegate.scrollViewDidEndDecelerating(_:)(v4);
+  deceleratingCopy = decelerating;
+  selfCopy = self;
+  MultiCollectionViewDelegate.scrollViewDidEndDecelerating(_:)(deceleratingCopy);
 }
 
-- (void)scrollViewWillBeginDecelerating:(id)a3
+- (void)scrollViewWillBeginDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = self;
-  MultiCollectionViewDelegate.scrollViewWillBeginDecelerating(_:)(v4);
+  deceleratingCopy = decelerating;
+  selfCopy = self;
+  MultiCollectionViewDelegate.scrollViewWillBeginDecelerating(_:)(deceleratingCopy);
 }
 
-- (void)scrollViewDidScrollToTop:(id)a3
+- (void)scrollViewDidScrollToTop:(id)top
 {
-  v4 = a3;
-  v5 = self;
-  MultiCollectionViewDelegate.scrollViewDidScrollToTop(_:)(v4);
+  topCopy = top;
+  selfCopy = self;
+  MultiCollectionViewDelegate.scrollViewDidScrollToTop(_:)(topCopy);
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = self;
-  MultiCollectionViewDelegate.scrollViewDidEndScrollingAnimation(_:)(v4);
+  animationCopy = animation;
+  selfCopy = self;
+  MultiCollectionViewDelegate.scrollViewDidEndScrollingAnimation(_:)(animationCopy);
 }
 
-- (void)scrollViewDidChangeAdjustedContentInset:(id)a3
+- (void)scrollViewDidChangeAdjustedContentInset:(id)inset
 {
-  v4 = a3;
-  v5 = self;
-  MultiCollectionViewDelegate.scrollViewDidChangeAdjustedContentInset(_:)(v4);
+  insetCopy = inset;
+  selfCopy = self;
+  MultiCollectionViewDelegate.scrollViewDidChangeAdjustedContentInset(_:)(insetCopy);
 }
 
-- (BOOL)scrollViewShouldScrollToTop:(id)a3
+- (BOOL)scrollViewShouldScrollToTop:(id)top
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = MultiCollectionViewDelegate.scrollViewShouldScrollToTop(_:)(v4);
+  topCopy = top;
+  selfCopy = self;
+  LOBYTE(self) = MultiCollectionViewDelegate.scrollViewShouldScrollToTop(_:)(topCopy);
 
   return self & 1;
 }
 
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  MultiCollectionViewDelegate.scrollViewWillBeginZooming(_:with:)(v6, a4);
+  zoomingCopy = zooming;
+  viewCopy = view;
+  selfCopy = self;
+  MultiCollectionViewDelegate.scrollViewWillBeginZooming(_:with:)(zoomingCopy, view);
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v6 = a3;
-  v7 = self;
-  MultiCollectionViewDelegate.scrollViewDidEndDragging(_:willDecelerate:)(v6, a4);
+  draggingCopy = dragging;
+  selfCopy = self;
+  MultiCollectionViewDelegate.scrollViewDidEndDragging(_:willDecelerate:)(draggingCopy, decelerate);
 }
 
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  MultiCollectionViewDelegate.scrollViewDidEndZooming(_:with:atScale:)(v8, a4, a5);
+  zoomingCopy = zooming;
+  viewCopy = view;
+  selfCopy = self;
+  MultiCollectionViewDelegate.scrollViewDidEndZooming(_:with:atScale:)(zoomingCopy, view, scale);
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = self;
-  MultiCollectionViewDelegate.scrollViewWillEndDragging(_:withVelocity:targetContentOffset:)(v9, a5, x, y);
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
+  selfCopy = self;
+  MultiCollectionViewDelegate.scrollViewWillEndDragging(_:withVelocity:targetContentOffset:)(draggingCopy, offset, x, y);
 }
 
 @end

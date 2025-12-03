@@ -1,20 +1,20 @@
 @interface ICLightweightMusicSubscriptionStatusResponse
-- (ICLightweightMusicSubscriptionStatusResponse)initWithCoder:(id)a3;
-- (id)_initWithExtendedSubscriptionStatusResponse:(id)a3;
+- (ICLightweightMusicSubscriptionStatusResponse)initWithCoder:(id)coder;
+- (id)_initWithExtendedSubscriptionStatusResponse:(id)response;
 - (id)description;
 @end
 
 @implementation ICLightweightMusicSubscriptionStatusResponse
 
-- (ICLightweightMusicSubscriptionStatusResponse)initWithCoder:(id)a3
+- (ICLightweightMusicSubscriptionStatusResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ICLightweightMusicSubscriptionStatusResponse;
   v5 = [(ICLightweightMusicSubscriptionStatusResponse *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lightweightSubscriptionStatus"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lightweightSubscriptionStatus"];
     lightweightSubscriptionStatus = v5->_lightweightSubscriptionStatus;
     v5->_lightweightSubscriptionStatus = v6;
   }
@@ -35,16 +35,16 @@
   return v6;
 }
 
-- (id)_initWithExtendedSubscriptionStatusResponse:(id)a3
+- (id)_initWithExtendedSubscriptionStatusResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v10.receiver = self;
   v10.super_class = ICLightweightMusicSubscriptionStatusResponse;
   v5 = [(ICLightweightMusicSubscriptionStatusResponse *)&v10 init];
   if (v5)
   {
-    v6 = [v4 subscriptionStatus];
-    v7 = [[ICLightweightMusicSubscriptionStatus alloc] _initWithExtendedSubscriptionStatus:v6];
+    subscriptionStatus = [responseCopy subscriptionStatus];
+    v7 = [[ICLightweightMusicSubscriptionStatus alloc] _initWithExtendedSubscriptionStatus:subscriptionStatus];
     lightweightSubscriptionStatus = v5->_lightweightSubscriptionStatus;
     v5->_lightweightSubscriptionStatus = v7;
   }

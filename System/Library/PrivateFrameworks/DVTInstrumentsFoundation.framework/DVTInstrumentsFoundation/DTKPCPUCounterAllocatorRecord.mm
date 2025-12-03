@@ -1,26 +1,26 @@
 @interface DTKPCPUCounterAllocatorRecord
-- (DTKPCPUCounterAllocatorRecord)initWithName:(id)a3 nameOrAlias:(id)a4 counterName:(id)a5 kpepEvent:(kpep_event *)a6 isPMI:(BOOL)a7 hwIdx:(unint64_t)a8;
+- (DTKPCPUCounterAllocatorRecord)initWithName:(id)name nameOrAlias:(id)alias counterName:(id)counterName kpepEvent:(kpep_event *)event isPMI:(BOOL)i hwIdx:(unint64_t)idx;
 @end
 
 @implementation DTKPCPUCounterAllocatorRecord
 
-- (DTKPCPUCounterAllocatorRecord)initWithName:(id)a3 nameOrAlias:(id)a4 counterName:(id)a5 kpepEvent:(kpep_event *)a6 isPMI:(BOOL)a7 hwIdx:(unint64_t)a8
+- (DTKPCPUCounterAllocatorRecord)initWithName:(id)name nameOrAlias:(id)alias counterName:(id)counterName kpepEvent:(kpep_event *)event isPMI:(BOOL)i hwIdx:(unint64_t)idx
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
+  nameCopy = name;
+  aliasCopy = alias;
+  counterNameCopy = counterName;
   v21.receiver = self;
   v21.super_class = DTKPCPUCounterAllocatorRecord;
   v18 = [(DTKPCPUCounterAllocatorRecord *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_eventName, a3);
-    objc_storeStrong(&v19->_eventOrAliasName, a4);
-    objc_storeStrong(&v19->_counterName, a5);
-    v19->_isPMI = a7;
-    v19->_kpepEvent = a6;
-    v19->_hwIdx = a8;
+    objc_storeStrong(&v18->_eventName, name);
+    objc_storeStrong(&v19->_eventOrAliasName, alias);
+    objc_storeStrong(&v19->_counterName, counterName);
+    v19->_isPMI = i;
+    v19->_kpepEvent = event;
+    v19->_hwIdx = idx;
   }
 
   return v19;

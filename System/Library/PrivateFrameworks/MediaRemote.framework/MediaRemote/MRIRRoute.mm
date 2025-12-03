@@ -1,9 +1,9 @@
 @interface MRIRRoute
-+ (id)debugRouteWithDebugIdentifier:(id)a3;
-+ (id)routeWithCandidate:(id)a3;
-+ (id)routeWithEndpoint:(id)a3;
-+ (id)routeWithOutputDevices:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)debugRouteWithDebugIdentifier:(id)identifier;
++ (id)routeWithCandidate:(id)candidate;
++ (id)routeWithEndpoint:(id)endpoint;
++ (id)routeWithOutputDevices:(id)devices;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 @end
 
@@ -16,15 +16,15 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 initWithFormat:@"<%@ (%p): ", v5, self];
 
-  v7 = [(MRIRRoute *)self routeIdentifier];
-  [v6 appendFormat:@"routeIdentifier: %@", v7];
+  routeIdentifier = [(MRIRRoute *)self routeIdentifier];
+  [v6 appendFormat:@"routeIdentifier: %@", routeIdentifier];
 
-  v8 = [(MRIRRoute *)self nodes];
-  [v6 appendFormat:@", nodes: %@", v8];
+  nodes = [(MRIRRoute *)self nodes];
+  [v6 appendFormat:@", nodes: %@", nodes];
 
-  v9 = [(MRIRRoute *)self donateAsCandidate];
+  donateAsCandidate = [(MRIRRoute *)self donateAsCandidate];
   v10 = @"NO";
-  if (v9)
+  if (donateAsCandidate)
   {
     v10 = @"YES";
   }
@@ -35,17 +35,17 @@
   return v6;
 }
 
-+ (id)routeWithCandidate:(id)a3
++ (id)routeWithCandidate:(id)candidate
 {
-  v3 = a3;
+  candidateCopy = candidate;
   v4 = objc_alloc_init(MRIRRoute);
-  v5 = [v3 candidateIdentifier];
-  [(MRIRRoute *)v4 setRouteIdentifier:v5];
+  candidateIdentifier = [candidateCopy candidateIdentifier];
+  [(MRIRRoute *)v4 setRouteIdentifier:candidateIdentifier];
 
   v6 = MEMORY[0x1E695DFD8];
-  v7 = [v3 nodes];
+  nodes = [candidateCopy nodes];
 
-  v8 = [v7 msv_map:&__block_literal_global_94];
+  v8 = [nodes msv_map:&__block_literal_global_94];
   v9 = [v6 setWithArray:v8];
   [(MRIRRoute *)v4 setNodes:v9];
 
@@ -54,25 +54,25 @@
   return v4;
 }
 
-+ (id)routeWithEndpoint:(id)a3
++ (id)routeWithEndpoint:(id)endpoint
 {
-  v5 = a3;
-  if (!v5)
+  endpointCopy = endpoint;
+  if (!endpointCopy)
   {
-    [(MRIRRoute *)a2 routeWithEndpoint:a1];
+    [(MRIRRoute *)a2 routeWithEndpoint:self];
   }
 
-  v6 = [v5 resolvedOutputDevices];
-  v7 = [a1 routeWithOutputDevices:v6];
+  resolvedOutputDevices = [endpointCopy resolvedOutputDevices];
+  v7 = [self routeWithOutputDevices:resolvedOutputDevices];
 
   return v7;
 }
 
-+ (id)routeWithOutputDevices:(id)a3
++ (id)routeWithOutputDevices:(id)devices
 {
   v50 = *MEMORY[0x1E69E9840];
-  v34 = a3;
-  v3 = [v34 copy];
+  devicesCopy = devices;
+  v3 = [devicesCopy copy];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v37 = 0u;
   v38 = 0u;
@@ -98,11 +98,11 @@
         v12 = *(*(&v37 + 1) + 8 * i);
         if ([v12 clusterType])
         {
-          v13 = [v12 clusterCompositionOutputDevices];
-          v14 = v13;
-          if (v13)
+          clusterCompositionOutputDevices = [v12 clusterCompositionOutputDevices];
+          v14 = clusterCompositionOutputDevices;
+          if (clusterCompositionOutputDevices)
           {
-            v15 = v13;
+            v15 = clusterCompositionOutputDevices;
           }
 
           else
@@ -121,14 +121,14 @@
             {
               v19 = [v12 uid];
               v36 = [v16 count];
-              v35 = [v12 configuredClusterSize];
+              configuredClusterSize = [v12 configuredClusterSize];
               v20 = [v12 debugDescription];
               *buf = 138413058;
               v42 = v19;
               v43 = 2048;
               v44 = v36;
               v45 = 2048;
-              v46 = v35;
+              v46 = configuredClusterSize;
               v47 = 2112;
               v48 = v20;
               _os_log_error_impl(&dword_1A2860000, v18, OS_LOG_TYPE_ERROR, "[MRDRRC].IRR Donations disallowed, cluster %@ has %lu members, expected %lu; device: %@", buf, 0x2Au);
@@ -162,9 +162,9 @@
   [(MRIRRoute *)v27 setRouteIdentifier:v28];
 
   [(MRIRRoute *)v27 setDonateAsCandidate:v22 & v9];
-  v29 = [v34 msv_firstWhere:&__block_literal_global_135_0];
+  v29 = [devicesCopy msv_firstWhere:&__block_literal_global_135_0];
 
-  if (v29 && [v34 count] != 1)
+  if (v29 && [devicesCopy count] != 1)
   {
     [(MRIRRoute *)v27 setDonateAsCandidate:0];
   }
@@ -202,15 +202,15 @@ uint64_t __36__MRIRRoute_routeWithOutputDevices___block_invoke_5(uint64_t a1, vo
   return v3;
 }
 
-+ (id)debugRouteWithDebugIdentifier:(id)a3
++ (id)debugRouteWithDebugIdentifier:(id)identifier
 {
-  v3 = [a3 componentsSeparatedByString:@"/"];
-  v4 = [v3 firstObject];
-  v5 = [v3 lastObject];
-  v6 = [v5 componentsSeparatedByString:@"&"];
+  v3 = [identifier componentsSeparatedByString:@"/"];
+  firstObject = [v3 firstObject];
+  lastObject = [v3 lastObject];
+  v6 = [lastObject componentsSeparatedByString:@"&"];
 
   v7 = objc_alloc_init(MRIRRoute);
-  [(MRIRRoute *)v7 setRouteIdentifier:v4];
+  [(MRIRRoute *)v7 setRouteIdentifier:firstObject];
   v8 = MEMORY[0x1E695DFD8];
   v9 = [v6 msv_map:&__block_literal_global_144_0];
   v10 = [v8 setWithArray:v9];
@@ -230,37 +230,37 @@ MRIRNode *__43__MRIRRoute_debugRouteWithDebugIdentifier___block_invoke(uint64_t 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     LOBYTE(v9) = 1;
   }
 
-  else if ([(MRIRRoute *)v4 conformsToProtocol:&unk_1F15B2568])
+  else if ([(MRIRRoute *)equalCopy conformsToProtocol:&unk_1F15B2568])
   {
     v6 = v5;
-    v7 = [(MRIRRoute *)self routeIdentifier];
-    v8 = [(MRIRRoute *)v6 routeIdentifier];
-    if (v7 == v8)
+    routeIdentifier = [(MRIRRoute *)self routeIdentifier];
+    routeIdentifier2 = [(MRIRRoute *)v6 routeIdentifier];
+    if (routeIdentifier == routeIdentifier2)
     {
       v9 = 1;
     }
 
     else
     {
-      v9 = [v7 isEqual:v8];
+      v9 = [routeIdentifier isEqual:routeIdentifier2];
     }
 
-    v10 = [(MRIRRoute *)self nodes];
-    v11 = [(MRIRRoute *)v6 nodes];
-    if (v10 != v11)
+    nodes = [(MRIRRoute *)self nodes];
+    nodes2 = [(MRIRRoute *)v6 nodes];
+    if (nodes != nodes2)
     {
-      v12 = [(MRIRRoute *)self nodes];
-      v13 = [(MRIRRoute *)v6 nodes];
-      v9 &= [v12 isEqualToSet:v13];
+      nodes3 = [(MRIRRoute *)self nodes];
+      nodes4 = [(MRIRRoute *)v6 nodes];
+      v9 &= [nodes3 isEqualToSet:nodes4];
     }
   }
 

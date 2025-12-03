@@ -1,7 +1,7 @@
 @interface _CPDeviceContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPDeviceContext
@@ -14,28 +14,28 @@
   return v4 ^ v5 ^ [(NSString *)self->_osVersion hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(_CPDeviceContext *)self country];
-  v6 = [v4 country];
-  if ((v5 != 0) == (v6 == 0))
+  country = [(_CPDeviceContext *)self country];
+  country2 = [equalCopy country];
+  if ((country != 0) == (country2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(_CPDeviceContext *)self country];
-  if (v7)
+  country3 = [(_CPDeviceContext *)self country];
+  if (country3)
   {
-    v8 = v7;
-    v9 = [(_CPDeviceContext *)self country];
-    v10 = [v4 country];
-    v11 = [v9 isEqual:v10];
+    v8 = country3;
+    country4 = [(_CPDeviceContext *)self country];
+    country5 = [equalCopy country];
+    v11 = [country4 isEqual:country5];
 
     if (!v11)
     {
@@ -47,20 +47,20 @@
   {
   }
 
-  v5 = [(_CPDeviceContext *)self deviceModel];
-  v6 = [v4 deviceModel];
-  if ((v5 != 0) == (v6 == 0))
+  country = [(_CPDeviceContext *)self deviceModel];
+  country2 = [equalCopy deviceModel];
+  if ((country != 0) == (country2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(_CPDeviceContext *)self deviceModel];
-  if (v12)
+  deviceModel = [(_CPDeviceContext *)self deviceModel];
+  if (deviceModel)
   {
-    v13 = v12;
-    v14 = [(_CPDeviceContext *)self deviceModel];
-    v15 = [v4 deviceModel];
-    v16 = [v14 isEqual:v15];
+    v13 = deviceModel;
+    deviceModel2 = [(_CPDeviceContext *)self deviceModel];
+    deviceModel3 = [equalCopy deviceModel];
+    v16 = [deviceModel2 isEqual:deviceModel3];
 
     if (!v16)
     {
@@ -72,20 +72,20 @@
   {
   }
 
-  v5 = [(_CPDeviceContext *)self locale];
-  v6 = [v4 locale];
-  if ((v5 != 0) == (v6 == 0))
+  country = [(_CPDeviceContext *)self locale];
+  country2 = [equalCopy locale];
+  if ((country != 0) == (country2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(_CPDeviceContext *)self locale];
-  if (v17)
+  locale = [(_CPDeviceContext *)self locale];
+  if (locale)
   {
-    v18 = v17;
-    v19 = [(_CPDeviceContext *)self locale];
-    v20 = [v4 locale];
-    v21 = [v19 isEqual:v20];
+    v18 = locale;
+    locale2 = [(_CPDeviceContext *)self locale];
+    locale3 = [equalCopy locale];
+    v21 = [locale2 isEqual:locale3];
 
     if (!v21)
     {
@@ -97,12 +97,12 @@
   {
   }
 
-  v5 = [(_CPDeviceContext *)self osVersion];
-  v6 = [v4 osVersion];
-  if ((v5 != 0) != (v6 == 0))
+  country = [(_CPDeviceContext *)self osVersion];
+  country2 = [equalCopy osVersion];
+  if ((country != 0) != (country2 == 0))
   {
-    v22 = [(_CPDeviceContext *)self osVersion];
-    if (!v22)
+    osVersion = [(_CPDeviceContext *)self osVersion];
+    if (!osVersion)
     {
 
 LABEL_25:
@@ -110,10 +110,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(_CPDeviceContext *)self osVersion];
-    v25 = [v4 osVersion];
-    v26 = [v24 isEqual:v25];
+    v23 = osVersion;
+    osVersion2 = [(_CPDeviceContext *)self osVersion];
+    osVersion3 = [equalCopy osVersion];
+    v26 = [osVersion2 isEqual:osVersion3];
 
     if (v26)
     {
@@ -133,41 +133,41 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(_CPDeviceContext *)self country];
+  toCopy = to;
+  country = [(_CPDeviceContext *)self country];
 
-  if (v4)
+  if (country)
   {
     country = self->_country;
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_CPDeviceContext *)self deviceModel];
+  deviceModel = [(_CPDeviceContext *)self deviceModel];
 
-  if (v6)
+  if (deviceModel)
   {
     deviceModel = self->_deviceModel;
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_CPDeviceContext *)self locale];
+  locale = [(_CPDeviceContext *)self locale];
 
-  if (v8)
+  if (locale)
   {
     locale = self->_locale;
     PBDataWriterWriteStringField();
   }
 
-  v10 = [(_CPDeviceContext *)self osVersion];
+  osVersion = [(_CPDeviceContext *)self osVersion];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (osVersion)
   {
     osVersion = self->_osVersion;
     PBDataWriterWriteStringField();
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 

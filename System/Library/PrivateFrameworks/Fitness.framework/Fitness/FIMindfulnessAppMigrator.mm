@@ -1,24 +1,24 @@
 @interface FIMindfulnessAppMigrator
-- (FIMindfulnessAppMigrator)initWithContainer:(id)a3;
-- (int64_t)_integerForKey:(id)a3 exists:(BOOL *)a4;
-- (void)_removeObjectForKey:(id)a3;
-- (void)_setInteger:(int64_t)a3 key:(id)a4;
+- (FIMindfulnessAppMigrator)initWithContainer:(id)container;
+- (int64_t)_integerForKey:(id)key exists:(BOOL *)exists;
+- (void)_removeObjectForKey:(id)key;
+- (void)_setInteger:(int64_t)integer key:(id)key;
 - (void)_synchronize;
 - (void)migrateIfNeeded;
 @end
 
 @implementation FIMindfulnessAppMigrator
 
-- (FIMindfulnessAppMigrator)initWithContainer:(id)a3
+- (FIMindfulnessAppMigrator)initWithContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   v9.receiver = self;
   v9.super_class = FIMindfulnessAppMigrator;
   v6 = [(FIMindfulnessAppMigrator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_container, a3);
+    objc_storeStrong(&v6->_container, container);
   }
 
   return v7;
@@ -149,30 +149,30 @@ LABEL_24:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)_integerForKey:(id)a3 exists:(BOOL *)a4
+- (int64_t)_integerForKey:(id)key exists:(BOOL *)exists
 {
-  v6 = a3;
+  keyCopy = key;
   v12 = 0;
   if (self->_container)
   {
     AppIntegerValueWithContainer = _CFPreferencesGetAppIntegerValueWithContainer();
-    if (a4)
+    if (exists)
     {
 LABEL_3:
-      *a4 = v12;
+      *exists = v12;
     }
   }
 
   else
   {
-    v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v10 = [v9 objectForKey:v6];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v10 = [standardUserDefaults objectForKey:keyCopy];
 
     if (objc_opt_respondsToSelector())
     {
-      v11 = [v10 integerValue];
-      v12 = v11 != 0;
-      if (v11)
+      integerValue = [v10 integerValue];
+      v12 = integerValue != 0;
+      if (integerValue)
       {
         AppIntegerValueWithContainer = [v10 integerValue];
       }
@@ -189,7 +189,7 @@ LABEL_3:
       v12 = 0;
     }
 
-    if (a4)
+    if (exists)
     {
       goto LABEL_3;
     }
@@ -198,13 +198,13 @@ LABEL_3:
   return AppIntegerValueWithContainer;
 }
 
-- (void)_setInteger:(int64_t)a3 key:(id)a4
+- (void)_setInteger:(int64_t)integer key:(id)key
 {
   if (self->_container)
   {
     v6 = MEMORY[0x277CCABB0];
-    v10 = a4;
-    [v6 numberWithInteger:a3];
+    keyCopy = key;
+    [v6 numberWithInteger:integer];
     container = self->_container;
     _CFPreferencesSetAppValueWithContainer();
   }
@@ -212,26 +212,26 @@ LABEL_3:
   else
   {
     v8 = MEMORY[0x277CBEBD0];
-    v9 = a4;
-    v10 = [v8 standardUserDefaults];
-    [v10 setInteger:a3 forKey:v9];
+    keyCopy2 = key;
+    keyCopy = [v8 standardUserDefaults];
+    [keyCopy setInteger:integer forKey:keyCopy2];
   }
 }
 
-- (void)_removeObjectForKey:(id)a3
+- (void)_removeObjectForKey:(id)key
 {
   if (self->_container)
   {
-    v5 = a3;
+    keyCopy = key;
     _CFPreferencesSetAppValueWithContainer();
   }
 
   else
   {
     v3 = MEMORY[0x277CBEBD0];
-    v4 = a3;
-    v5 = [v3 standardUserDefaults];
-    [v5 removeObjectForKey:v4];
+    keyCopy2 = key;
+    keyCopy = [v3 standardUserDefaults];
+    [keyCopy removeObjectForKey:keyCopy2];
   }
 }
 
@@ -245,8 +245,8 @@ LABEL_3:
 
   else
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v3 synchronize];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults synchronize];
   }
 }
 

@@ -1,30 +1,30 @@
 @interface _UITextFieldPasscodeCutoutBackground
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (UIBezierPath)customPath;
-- (_UITextFieldPasscodeCutoutBackground)initWithFrame:(CGRect)a3 active:(BOOL)a4;
+- (_UITextFieldPasscodeCutoutBackground)initWithFrame:(CGRect)frame active:(BOOL)active;
 - (double)_pathInset;
 - (double)lineWidth;
-- (id)_fillColor:(BOOL)a3;
-- (id)_strokeColor:(BOOL)a3;
+- (id)_fillColor:(BOOL)color;
+- (id)_strokeColor:(BOOL)color;
 - (id)fillColor;
 - (id)strokeColor;
 - (void)_updateLightingOutlinePath;
 - (void)_updatePath;
-- (void)setBounds:(CGRect)a3;
-- (void)setEnabled:(BOOL)a3 animated:(BOOL)a4;
-- (void)setFillColor:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setLineWidth:(double)a3 updatePath:(BOOL)a4;
-- (void)setOutlineAlpha:(double)a3;
-- (void)setStrokeColor:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setEnabled:(BOOL)enabled animated:(BOOL)animated;
+- (void)setFillColor:(id)color;
+- (void)setFrame:(CGRect)frame;
+- (void)setLineWidth:(double)width updatePath:(BOOL)path;
+- (void)setOutlineAlpha:(double)alpha;
+- (void)setStrokeColor:(id)color;
 @end
 
 @implementation _UITextFieldPasscodeCutoutBackground
 
 - (double)_pathInset
 {
-  v2 = [(_UITextFieldPasscodeCutoutBackground *)self _shapeLayer];
-  [v2 lineWidth];
+  _shapeLayer = [(_UITextFieldPasscodeCutoutBackground *)self _shapeLayer];
+  [_shapeLayer lineWidth];
   v4 = v3;
 
   return v4 * 0.5;
@@ -32,8 +32,8 @@
 
 - (double)lineWidth
 {
-  v2 = [(_UITextFieldPasscodeCutoutBackground *)self _shapeLayer];
-  [v2 lineWidth];
+  _shapeLayer = [(_UITextFieldPasscodeCutoutBackground *)self _shapeLayer];
+  [_shapeLayer lineWidth];
   v4 = v3;
 
   return v4;
@@ -41,8 +41,8 @@
 
 - (id)fillColor
 {
-  v2 = [(_UITextFieldPasscodeCutoutBackground *)self _shapeLayer];
-  v3 = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [v2 fillColor]);
+  _shapeLayer = [(_UITextFieldPasscodeCutoutBackground *)self _shapeLayer];
+  v3 = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [_shapeLayer fillColor]);
 
   return v3;
 }
@@ -50,13 +50,13 @@
 - (void)_updatePath
 {
   [(_UITextFieldPasscodeCutoutBackground *)self _updateLightingOutlinePath];
-  v3 = [(_UITextFieldPasscodeCutoutBackground *)self _shapeLayer];
-  v4 = [(_UITextFieldPasscodeCutoutBackground *)self customPath];
+  _shapeLayer = [(_UITextFieldPasscodeCutoutBackground *)self _shapeLayer];
+  customPath = [(_UITextFieldPasscodeCutoutBackground *)self customPath];
 
-  if (v4)
+  if (customPath)
   {
-    v5 = [(_UITextFieldPasscodeCutoutBackground *)self customPath];
-    [v3 setStrokeColor:0];
+    customPath2 = [(_UITextFieldPasscodeCutoutBackground *)self customPath];
+    [_shapeLayer setStrokeColor:0];
   }
 
   else
@@ -71,19 +71,19 @@
     height = v18.size.height;
     if (CGRectIsNull(v18))
     {
-      v5 = 0;
+      customPath2 = 0;
     }
 
     else
     {
       [(_UITextFieldPasscodeCutoutBackground *)self cornerRadius];
-      v5 = [UIBezierPath bezierPathWithRoundedRect:x cornerRadius:y, width, height, v12];
+      customPath2 = [UIBezierPath bezierPathWithRoundedRect:x cornerRadius:y, width, height, v12];
     }
   }
 
   if (+[UIView _isInAnimationBlock])
   {
-    v13 = [v3 animationForKey:@"path"];
+    v13 = [_shapeLayer animationForKey:@"path"];
 
     if (v13)
     {
@@ -91,16 +91,16 @@
       v15[1] = 3221225472;
       v15[2] = __51___UITextFieldPasscodeCutoutBackground__updatePath__block_invoke;
       v15[3] = &unk_1E70F3590;
-      v16 = v3;
+      v16 = _shapeLayer;
       [UIView performWithoutAnimation:v15];
     }
   }
 
-  v14 = [v3 animationForKey:@"path"];
+  v14 = [_shapeLayer animationForKey:@"path"];
 
   if (!v14)
   {
-    [v3 setPath:{objc_msgSend(v5, "CGPath")}];
+    [_shapeLayer setPath:{objc_msgSend(customPath2, "CGPath")}];
   }
 
   [(UIView *)self setNeedsDisplay];
@@ -190,19 +190,19 @@
   return v11;
 }
 
-- (_UITextFieldPasscodeCutoutBackground)initWithFrame:(CGRect)a3 active:(BOOL)a4
+- (_UITextFieldPasscodeCutoutBackground)initWithFrame:(CGRect)frame active:(BOOL)active
 {
   v14.receiver = self;
   v14.super_class = _UITextFieldPasscodeCutoutBackground;
-  v4 = [(UITextFieldBackgroundView *)&v14 initWithFrame:a4 active:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(UITextFieldBackgroundView *)&v14 initWithFrame:active active:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
     [(UIView *)v4 setAutoresizingMask:18];
     v5->_cornerRadius = 5.0;
     [(_UITextFieldPasscodeCutoutBackground *)v5 setLineWidth:1.0];
-    v6 = [(_UITextFieldPasscodeCutoutBackground *)v5 _shapeLayer];
-    [v6 setFillRule:*MEMORY[0x1E69797F8]];
+    _shapeLayer = [(_UITextFieldPasscodeCutoutBackground *)v5 _shapeLayer];
+    [_shapeLayer setFillRule:*MEMORY[0x1E69797F8]];
 
     [(UIView *)v5 setOpaque:0];
     v7 = objc_alloc_init(MEMORY[0x1E69794A0]);
@@ -219,93 +219,93 @@
     [(CAShapeLayer *)v5->_lighteningOutline setCompositingFilter:v11];
 
     [(CAShapeLayer *)v5->_lighteningOutline setLineWidth:1.0];
-    v12 = [(UIView *)v5 layer];
-    [v12 addSublayer:v5->_lighteningOutline];
+    layer = [(UIView *)v5 layer];
+    [layer addSublayer:v5->_lighteningOutline];
   }
 
   return v5;
 }
 
-- (void)setOutlineAlpha:(double)a3
+- (void)setOutlineAlpha:(double)alpha
 {
-  self->_outlineAlpha = a3;
-  v5 = [UIColor colorWithWhite:1.0 alpha:a3];
+  self->_outlineAlpha = alpha;
+  v5 = [UIColor colorWithWhite:1.0 alpha:alpha];
   v4 = v5;
   -[CAShapeLayer setStrokeColor:](self->_lighteningOutline, "setStrokeColor:", [v5 CGColor]);
 }
 
-- (void)setStrokeColor:(id)a3
+- (void)setStrokeColor:(id)color
 {
-  v4 = a3;
-  self->_hasCustomStrokeColor = v4 != 0;
-  if (!v4)
+  colorCopy = color;
+  self->_hasCustomStrokeColor = colorCopy != 0;
+  if (!colorCopy)
   {
-    v4 = [(_UITextFieldPasscodeCutoutBackground *)self _strokeColor:self->super._enabled];
+    colorCopy = [(_UITextFieldPasscodeCutoutBackground *)self _strokeColor:self->super._enabled];
   }
 
-  v8 = v4;
-  v5 = v4;
-  v6 = [v8 CGColor];
-  v7 = [(_UITextFieldPasscodeCutoutBackground *)self _shapeLayer];
-  [v7 setStrokeColor:v6];
+  v8 = colorCopy;
+  v5 = colorCopy;
+  cGColor = [v8 CGColor];
+  _shapeLayer = [(_UITextFieldPasscodeCutoutBackground *)self _shapeLayer];
+  [_shapeLayer setStrokeColor:cGColor];
 }
 
 - (id)strokeColor
 {
-  v2 = [(_UITextFieldPasscodeCutoutBackground *)self _shapeLayer];
-  v3 = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [v2 strokeColor]);
+  _shapeLayer = [(_UITextFieldPasscodeCutoutBackground *)self _shapeLayer];
+  v3 = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [_shapeLayer strokeColor]);
 
   return v3;
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v4 = a3;
-  self->_hasCustomFillColor = v4 != 0;
-  if (!v4)
+  colorCopy = color;
+  self->_hasCustomFillColor = colorCopy != 0;
+  if (!colorCopy)
   {
-    v4 = [(_UITextFieldPasscodeCutoutBackground *)self _fillColor:self->super._enabled];
+    colorCopy = [(_UITextFieldPasscodeCutoutBackground *)self _fillColor:self->super._enabled];
   }
 
-  v8 = v4;
-  v5 = v4;
-  v6 = [v8 CGColor];
-  v7 = [(_UITextFieldPasscodeCutoutBackground *)self _shapeLayer];
-  [v7 setFillColor:v6];
+  v8 = colorCopy;
+  v5 = colorCopy;
+  cGColor = [v8 CGColor];
+  _shapeLayer = [(_UITextFieldPasscodeCutoutBackground *)self _shapeLayer];
+  [_shapeLayer setFillColor:cGColor];
 }
 
-- (void)setLineWidth:(double)a3 updatePath:(BOOL)a4
+- (void)setLineWidth:(double)width updatePath:(BOOL)path
 {
-  v4 = a4;
-  v7 = [(_UITextFieldPasscodeCutoutBackground *)self _shapeLayer];
-  [v7 setLineWidth:a3];
+  pathCopy = path;
+  _shapeLayer = [(_UITextFieldPasscodeCutoutBackground *)self _shapeLayer];
+  [_shapeLayer setLineWidth:width];
 
-  if (v4)
+  if (pathCopy)
   {
 
     [(_UITextFieldPasscodeCutoutBackground *)self _updatePath];
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = _UITextFieldPasscodeCutoutBackground;
-  [(UITextFieldBackgroundView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UITextFieldBackgroundView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(_UITextFieldPasscodeCutoutBackground *)self _updatePath];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = _UITextFieldPasscodeCutoutBackground;
-  [(UITextFieldBackgroundView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UITextFieldBackgroundView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(_UITextFieldPasscodeCutoutBackground *)self _updatePath];
 }
 
-- (void)setEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)setEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v11.receiver = self;
   v11.super_class = _UITextFieldPasscodeCutoutBackground;
   [UITextFieldBackgroundView setEnabled:sel_setEnabled_animated_ animated:?];
@@ -314,10 +314,10 @@
   v9[2] = __60___UITextFieldPasscodeCutoutBackground_setEnabled_animated___block_invoke;
   v9[3] = &unk_1E70F35E0;
   v9[4] = self;
-  v10 = a3;
+  enabledCopy = enabled;
   v7 = _Block_copy(v9);
   v8 = v7;
-  if (v4)
+  if (animatedCopy)
   {
     [UIView animateWithDuration:v7 animations:0.35];
   }
@@ -328,9 +328,9 @@
   }
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = _shouldAnimatePropertyWithKey__properties;
   if (!_shouldAnimatePropertyWithKey__properties)
   {
@@ -341,7 +341,7 @@
     v5 = _shouldAnimatePropertyWithKey__properties;
   }
 
-  if ([v5 containsObject:v4])
+  if ([v5 containsObject:keyCopy])
   {
     v8 = 1;
   }
@@ -350,15 +350,15 @@
   {
     v10.receiver = self;
     v10.super_class = _UITextFieldPasscodeCutoutBackground;
-    v8 = [(UIView *)&v10 _shouldAnimatePropertyWithKey:v4];
+    v8 = [(UIView *)&v10 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v8;
 }
 
-- (id)_strokeColor:(BOOL)a3
+- (id)_strokeColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
     +[UIColor _textFieldBorderColor];
   }
@@ -372,9 +372,9 @@
   return v3;
 }
 
-- (id)_fillColor:(BOOL)a3
+- (id)_fillColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
     +[UIColor _textFieldBackgroundColor];
   }

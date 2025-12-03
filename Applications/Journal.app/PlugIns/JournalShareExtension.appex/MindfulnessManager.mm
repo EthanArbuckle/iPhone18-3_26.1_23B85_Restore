@@ -1,10 +1,10 @@
 @interface MindfulnessManager
-- (void)appDidEnterBackground:(id)a3;
+- (void)appDidEnterBackground:(id)background;
 @end
 
 @implementation MindfulnessManager
 
-- (void)appDidEnterBackground:(id)a3
+- (void)appDidEnterBackground:(id)background
 {
   v3 = sub_1000FF224();
   v4 = *(v3 - 8);

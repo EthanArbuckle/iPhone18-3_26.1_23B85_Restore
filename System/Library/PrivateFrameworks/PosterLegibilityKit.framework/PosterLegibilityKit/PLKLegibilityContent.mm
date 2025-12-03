@@ -3,17 +3,17 @@
 + (id)buildLegibilityImageGenerator;
 + (id)defaultLegibilityImageGenerator;
 + (id)labelLegibilityImageGenerator;
-+ (id)legibilityContentForAttributedString:(id)a3 legibilityDescriptor:(id)a4;
-+ (id)legibilityContentForImage:(id)a3 legibilityDescriptor:(id)a4;
-+ (id)legibilityContentForImage:(id)a3 legibilityDescriptor:(id)a4 renderer:(id)a5;
-+ (id)legibilityContentForLabel:(id)a3 legibilityDescriptor:(id)a4 context:(id)a5 renderer:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLegibilityContent:(id)a3;
-- (PLKLegibilityContent)initWithContentImage:(id)a3 legibilityDescriptor:(id)a4;
-- (PLKLegibilityContent)initWithContentImage:(id)a3 legibilityDescriptor:(id)a4 renderer:(id)a5;
-- (PLKLegibilityContent)initWithContentImageFuture:(id)a3 legibilityDescriptor:(id)a4;
-- (PLKLegibilityContent)initWithContentImageFuture:(id)a3 legibilityDescriptor:(id)a4 renderer:(id)a5;
-- (PLKLegibilityContent)initWithContentImageFuture:(id)a3 legibilityImageFuture:(id)a4 legibilityDescriptor:(id)a5;
++ (id)legibilityContentForAttributedString:(id)string legibilityDescriptor:(id)descriptor;
++ (id)legibilityContentForImage:(id)image legibilityDescriptor:(id)descriptor;
++ (id)legibilityContentForImage:(id)image legibilityDescriptor:(id)descriptor renderer:(id)renderer;
++ (id)legibilityContentForLabel:(id)label legibilityDescriptor:(id)descriptor context:(id)context renderer:(id)renderer;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLegibilityContent:(id)content;
+- (PLKLegibilityContent)initWithContentImage:(id)image legibilityDescriptor:(id)descriptor;
+- (PLKLegibilityContent)initWithContentImage:(id)image legibilityDescriptor:(id)descriptor renderer:(id)renderer;
+- (PLKLegibilityContent)initWithContentImageFuture:(id)future legibilityDescriptor:(id)descriptor;
+- (PLKLegibilityContent)initWithContentImageFuture:(id)future legibilityDescriptor:(id)descriptor renderer:(id)renderer;
+- (PLKLegibilityContent)initWithContentImageFuture:(id)future legibilityImageFuture:(id)imageFuture legibilityDescriptor:(id)descriptor;
 - (PLKLegibilityContentDataSource)dataSource;
 - (void)dealloc;
 @end
@@ -34,7 +34,7 @@
   block[1] = 3221225472;
   block[2] = __55__PLKLegibilityContent_defaultLegibilityImageGenerator__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultLegibilityImageGenerator_onceToken != -1)
   {
     dispatch_once(&defaultLegibilityImageGenerator_onceToken, block);
@@ -87,37 +87,37 @@ id __53__PLKLegibilityContent_buildLegibilityImageGenerator__block_invoke(uint64
   return v17;
 }
 
-+ (id)legibilityContentForAttributedString:(id)a3 legibilityDescriptor:(id)a4
++ (id)legibilityContentForAttributedString:(id)string legibilityDescriptor:(id)descriptor
 {
-  v5 = a4;
-  v6 = a3;
+  descriptorCopy = descriptor;
+  stringCopy = string;
   v7 = +[PLKLegibilityContentDataSource attributedStringContentDataSource];
-  v8 = [v7 legibilityContentForObject:v6 legibilityDescriptor:v5];
+  v8 = [v7 legibilityContentForObject:stringCopy legibilityDescriptor:descriptorCopy];
 
   return v8;
 }
 
-+ (id)legibilityContentForImage:(id)a3 legibilityDescriptor:(id)a4
++ (id)legibilityContentForImage:(id)image legibilityDescriptor:(id)descriptor
 {
-  v5 = a4;
-  v6 = a3;
+  descriptorCopy = descriptor;
+  imageCopy = image;
   v7 = objc_alloc(objc_opt_class());
-  v8 = [MEMORY[0x277D3EC50] futureWithResult:v6];
+  v8 = [MEMORY[0x277D3EC50] futureWithResult:imageCopy];
 
-  v9 = [v7 initWithContentImageFuture:v8 legibilityDescriptor:v5];
+  v9 = [v7 initWithContentImageFuture:v8 legibilityDescriptor:descriptorCopy];
 
   return v9;
 }
 
-+ (id)legibilityContentForImage:(id)a3 legibilityDescriptor:(id)a4 renderer:(id)a5
++ (id)legibilityContentForImage:(id)image legibilityDescriptor:(id)descriptor renderer:(id)renderer
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  rendererCopy = renderer;
+  descriptorCopy = descriptor;
+  imageCopy = image;
   v10 = objc_alloc(objc_opt_class());
-  v11 = [MEMORY[0x277D3EC50] futureWithResult:v9];
+  v11 = [MEMORY[0x277D3EC50] futureWithResult:imageCopy];
 
-  v12 = [v10 initWithContentImageFuture:v11 legibilityDescriptor:v8 renderer:v7];
+  v12 = [v10 initWithContentImageFuture:v11 legibilityDescriptor:descriptorCopy renderer:rendererCopy];
 
   return v12;
 }
@@ -151,7 +151,7 @@ void __33__PLKLegibilityContent_noContent__block_invoke()
   block[1] = 3221225472;
   block[2] = __53__PLKLegibilityContent_labelLegibilityImageGenerator__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (labelLegibilityImageGenerator_onceToken != -1)
   {
     dispatch_once(&labelLegibilityImageGenerator_onceToken, block);
@@ -173,26 +173,26 @@ void __53__PLKLegibilityContent_labelLegibilityImageGenerator__block_invoke(uint
   [v3 setWorkScheduler:v4];
 }
 
-+ (id)legibilityContentForLabel:(id)a3 legibilityDescriptor:(id)a4 context:(id)a5 renderer:(id)a6
++ (id)legibilityContentForLabel:(id)label legibilityDescriptor:(id)descriptor context:(id)context renderer:(id)renderer
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (!v9)
+  labelCopy = label;
+  descriptorCopy = descriptor;
+  contextCopy = context;
+  rendererCopy = renderer;
+  labelLegibilityImageGenerator = rendererCopy;
+  if (!labelCopy)
   {
     goto LABEL_11;
   }
 
-  if (!v12)
+  if (!rendererCopy)
   {
-    v13 = [objc_opt_class() labelLegibilityImageGenerator];
+    labelLegibilityImageGenerator = [objc_opt_class() labelLegibilityImageGenerator];
   }
 
   if (legibilityContentForLabel_legibilityDescriptor_context_renderer__onceToken == -1)
   {
-    if (v11)
+    if (contextCopy)
     {
       goto LABEL_7;
     }
@@ -201,15 +201,15 @@ void __53__PLKLegibilityContent_labelLegibilityImageGenerator__block_invoke(uint
   }
 
   +[PLKLegibilityContent legibilityContentForLabel:legibilityDescriptor:context:renderer:];
-  if (!v11)
+  if (!contextCopy)
   {
 LABEL_6:
-    v11 = +[PLKLegibilityContext defaultContext];
+    contextCopy = +[PLKLegibilityContext defaultContext];
   }
 
 LABEL_7:
   BSDispatchQueueAssertMain();
-  if (!v10)
+  if (!descriptorCopy)
   {
 LABEL_11:
     v16 = +[PLKLegibilityContent noContent];
@@ -217,7 +217,7 @@ LABEL_11:
   }
 
   v14 = objc_autoreleasePoolPush();
-  v15 = [_PLKUILabelCacheKey cacheKeyForLabel:v9];
+  v15 = [_PLKUILabelCacheKey cacheKeyForLabel:labelCopy];
   if (v15 && ![legibilityContentForLabel_legibilityDescriptor_context_renderer__activelyRenderingLabels containsObject:v15])
   {
     v43 = v14;
@@ -231,16 +231,16 @@ LABEL_11:
       _os_signpost_emit_with_name_impl(&dword_21E5D5000, v18, OS_SIGNPOST_INTERVAL_BEGIN, v19, "PLK:legibilityContentForLabel:legibilityDescriptor:renderer:", &unk_21E5F550D, buf, 2u);
     }
 
-    v20 = [v15 stringKey];
-    v21 = [v15 stringKey];
-    v22 = [v21 stringByAppendingString:@"-legibility"];
+    stringKey = [v15 stringKey];
+    stringKey2 = [v15 stringKey];
+    v22 = [stringKey2 stringByAppendingString:@"-legibility"];
 
-    [v9 bounds];
+    [labelCopy bounds];
     v24 = v23;
     v26 = v25;
     v28 = v27;
     v30 = v29;
-    [v11 displayScale];
+    [contextCopy displayScale];
     v32 = v31;
     *buf = 0;
     v59 = buf;
@@ -253,17 +253,17 @@ LABEL_11:
     v46[2] = __88__PLKLegibilityContent_legibilityContentForLabel_legibilityDescriptor_context_renderer___block_invoke_18;
     v46[3] = &unk_27835B840;
     v52 = buf;
-    v47 = v11;
-    v40 = v20;
+    v47 = contextCopy;
+    v40 = stringKey;
     v48 = v40;
     v53 = v24;
     v54 = v26;
     v55 = v28;
     v56 = v30;
     v57 = v32;
-    v49 = v9;
-    v50 = v13;
-    v33 = v10;
+    v49 = labelCopy;
+    v50 = labelLegibilityImageGenerator;
+    v33 = descriptorCopy;
     v51 = v33;
     v42 = v22;
     v44 = [v47 imageForKey:v22 generatingIfNil:v46];
@@ -356,104 +356,104 @@ id __88__PLKLegibilityContent_legibilityContentForLabel_legibilityDescriptor_con
   return v5;
 }
 
-- (PLKLegibilityContent)initWithContentImageFuture:(id)a3 legibilityDescriptor:(id)a4
+- (PLKLegibilityContent)initWithContentImageFuture:(id)future legibilityDescriptor:(id)descriptor
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() defaultLegibilityImageGenerator];
-  v9 = [(PLKLegibilityContent *)self initWithContentImageFuture:v7 legibilityDescriptor:v6 renderer:v8];
+  descriptorCopy = descriptor;
+  futureCopy = future;
+  defaultLegibilityImageGenerator = [objc_opt_class() defaultLegibilityImageGenerator];
+  v9 = [(PLKLegibilityContent *)self initWithContentImageFuture:futureCopy legibilityDescriptor:descriptorCopy renderer:defaultLegibilityImageGenerator];
 
   return v9;
 }
 
-- (PLKLegibilityContent)initWithContentImageFuture:(id)a3 legibilityDescriptor:(id)a4 renderer:(id)a5
+- (PLKLegibilityContent)initWithContentImageFuture:(id)future legibilityDescriptor:(id)descriptor renderer:(id)renderer
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  futureCopy = future;
+  descriptorCopy = descriptor;
+  rendererCopy = renderer;
+  if (!rendererCopy)
   {
     [PLKLegibilityContent initWithContentImageFuture:a2 legibilityDescriptor:? renderer:?];
   }
 
-  if (!v10)
+  if (!descriptorCopy)
   {
     [PLKLegibilityContent initWithContentImageFuture:a2 legibilityDescriptor:? renderer:?];
   }
 
-  if (!v9)
+  if (!futureCopy)
   {
     [PLKLegibilityContent initWithContentImageFuture:a2 legibilityDescriptor:? renderer:?];
   }
 
-  v12 = v11;
+  v12 = rendererCopy;
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __81__PLKLegibilityContent_initWithContentImageFuture_legibilityDescriptor_renderer___block_invoke;
   v21 = &unk_27835B868;
-  v22 = v11;
-  v23 = v10;
-  v13 = v10;
+  v22 = rendererCopy;
+  v23 = descriptorCopy;
+  v13 = descriptorCopy;
   v14 = v12;
-  v15 = [v9 flatMap:&v18];
-  v16 = [(PLKLegibilityContent *)self initWithContentImageFuture:v9 legibilityImageFuture:v15 legibilityDescriptor:v13, v18, v19, v20, v21];
+  v15 = [futureCopy flatMap:&v18];
+  v16 = [(PLKLegibilityContent *)self initWithContentImageFuture:futureCopy legibilityImageFuture:v15 legibilityDescriptor:v13, v18, v19, v20, v21];
 
   return v16;
 }
 
-- (PLKLegibilityContent)initWithContentImage:(id)a3 legibilityDescriptor:(id)a4
+- (PLKLegibilityContent)initWithContentImage:(id)image legibilityDescriptor:(id)descriptor
 {
   v6 = MEMORY[0x277D3EC50];
-  v7 = a4;
-  v8 = [v6 futureWithResult:a3];
-  v9 = [(PLKLegibilityContent *)self initWithContentImageFuture:v8 legibilityDescriptor:v7];
+  descriptorCopy = descriptor;
+  v8 = [v6 futureWithResult:image];
+  v9 = [(PLKLegibilityContent *)self initWithContentImageFuture:v8 legibilityDescriptor:descriptorCopy];
 
   return v9;
 }
 
-- (PLKLegibilityContent)initWithContentImage:(id)a3 legibilityDescriptor:(id)a4 renderer:(id)a5
+- (PLKLegibilityContent)initWithContentImage:(id)image legibilityDescriptor:(id)descriptor renderer:(id)renderer
 {
   v8 = MEMORY[0x277D3EC50];
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 futureWithResult:a3];
-  v12 = [(PLKLegibilityContent *)self initWithContentImageFuture:v11 legibilityDescriptor:v10 renderer:v9];
+  rendererCopy = renderer;
+  descriptorCopy = descriptor;
+  v11 = [v8 futureWithResult:image];
+  v12 = [(PLKLegibilityContent *)self initWithContentImageFuture:v11 legibilityDescriptor:descriptorCopy renderer:rendererCopy];
 
   return v12;
 }
 
-- (PLKLegibilityContent)initWithContentImageFuture:(id)a3 legibilityImageFuture:(id)a4 legibilityDescriptor:(id)a5
+- (PLKLegibilityContent)initWithContentImageFuture:(id)future legibilityImageFuture:(id)imageFuture legibilityDescriptor:(id)descriptor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  futureCopy = future;
+  imageFutureCopy = imageFuture;
+  descriptorCopy = descriptor;
   v15.receiver = self;
   v15.super_class = PLKLegibilityContent;
   v12 = [(PLKLegibilityContent *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_legibilityDescriptor, a5);
-    objc_storeStrong(&v13->_contentImageFuture, a3);
-    objc_storeStrong(&v13->_legibilityImageFuture, a4);
+    objc_storeStrong(&v12->_legibilityDescriptor, descriptor);
+    objc_storeStrong(&v13->_contentImageFuture, future);
+    objc_storeStrong(&v13->_legibilityImageFuture, imageFuture);
   }
 
   return v13;
 }
 
-- (BOOL)isEqualToLegibilityContent:(id)a3
+- (BOOL)isEqualToLegibilityContent:(id)content
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  contentCopy = content;
+  v5 = contentCopy;
+  if (contentCopy == self)
   {
     v11 = 1;
   }
 
-  else if (v4 && (-[PLKLegibilityContent legibilityDescriptor](self, "legibilityDescriptor"), v6 = objc_claimAutoreleasedReturnValue(), -[PLKLegibilityContent legibilityDescriptor](v5, "legibilityDescriptor"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v6 isEqualToLegibilityDescriptor:v7], v7, v6, v8))
+  else if (contentCopy && (-[PLKLegibilityContent legibilityDescriptor](self, "legibilityDescriptor"), v6 = objc_claimAutoreleasedReturnValue(), -[PLKLegibilityContent legibilityDescriptor](v5, "legibilityDescriptor"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v6 isEqualToLegibilityDescriptor:v7], v7, v6, v8))
   {
-    v9 = [(PLKLegibilityContent *)v5 content];
-    v10 = [(PLKLegibilityContent *)self content];
+    content = [(PLKLegibilityContent *)v5 content];
+    content2 = [(PLKLegibilityContent *)self content];
     v11 = BSEqualObjects();
   }
 
@@ -465,10 +465,10 @@ id __88__PLKLegibilityContent_legibilityContentForLabel_legibilityDescriptor_con
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -476,7 +476,7 @@ id __88__PLKLegibilityContent_legibilityContentForLabel_legibilityDescriptor_con
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PLKLegibilityContent *)self isEqualToLegibilityContent:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PLKLegibilityContent *)self isEqualToLegibilityContent:equalCopy];
   }
 
   return v5;

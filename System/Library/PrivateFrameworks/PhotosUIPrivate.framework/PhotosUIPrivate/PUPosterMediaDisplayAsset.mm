@@ -1,10 +1,10 @@
 @interface PUPosterMediaDisplayAsset
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)acceptableCropRect;
 - (CGRect)faceAreaRect;
 - (CGRect)preferredCropRect;
 - (PUPosterMediaDisplayAsset)init;
-- (PUPosterMediaDisplayAsset)initWithPosterMedia:(id)a3;
+- (PUPosterMediaDisplayAsset)initWithPosterMedia:(id)media;
 - (unint64_t)hash;
 @end
 
@@ -49,10 +49,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -62,18 +62,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PUPosterMediaDisplayAsset *)self posterMedia];
-      v6 = [v5 assetUUID];
-      v7 = [(PUPosterMediaDisplayAsset *)v4 posterMedia];
-      v8 = [v7 assetUUID];
-      if (v6 == v8)
+      posterMedia = [(PUPosterMediaDisplayAsset *)self posterMedia];
+      assetUUID = [posterMedia assetUUID];
+      posterMedia2 = [(PUPosterMediaDisplayAsset *)equalCopy posterMedia];
+      assetUUID2 = [posterMedia2 assetUUID];
+      if (assetUUID == assetUUID2)
       {
         v9 = 1;
       }
 
       else
       {
-        v9 = [v6 isEqualToString:v8];
+        v9 = [assetUUID isEqualToString:assetUUID2];
       }
     }
 
@@ -88,30 +88,30 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PUPosterMediaDisplayAsset *)self posterMedia];
-  v3 = [v2 hash];
+  posterMedia = [(PUPosterMediaDisplayAsset *)self posterMedia];
+  v3 = [posterMedia hash];
 
   return v3;
 }
 
 - (PUPosterMediaDisplayAsset)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUPosterMediaDisplayAsset.m" lineNumber:30 description:{@"%s is not available as initializer", "-[PUPosterMediaDisplayAsset init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUPosterMediaDisplayAsset.m" lineNumber:30 description:{@"%s is not available as initializer", "-[PUPosterMediaDisplayAsset init]"}];
 
   abort();
 }
 
-- (PUPosterMediaDisplayAsset)initWithPosterMedia:(id)a3
+- (PUPosterMediaDisplayAsset)initWithPosterMedia:(id)media
 {
-  v5 = a3;
+  mediaCopy = media;
   v9.receiver = self;
   v9.super_class = PUPosterMediaDisplayAsset;
   v6 = [(PUPosterMediaDisplayAsset *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_posterMedia, a3);
+    objc_storeStrong(&v6->_posterMedia, media);
   }
 
   return v7;

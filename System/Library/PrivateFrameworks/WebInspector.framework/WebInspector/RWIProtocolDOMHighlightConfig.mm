@@ -4,10 +4,10 @@
 - (RWIProtocolDOMRGBAColor)contentColor;
 - (RWIProtocolDOMRGBAColor)marginColor;
 - (RWIProtocolDOMRGBAColor)paddingColor;
-- (void)setBorderColor:(id)a3;
-- (void)setContentColor:(id)a3;
-- (void)setMarginColor:(id)a3;
-- (void)setPaddingColor:(id)a3;
+- (void)setBorderColor:(id)color;
+- (void)setContentColor:(id)color;
+- (void)setMarginColor:(id)color;
+- (void)setPaddingColor:(id)color;
 @end
 
 @implementation RWIProtocolDOMHighlightConfig
@@ -19,11 +19,11 @@
   return [(RWIProtocolJSONObject *)&v3 BOOLForKey:@"showInfo"];
 }
 
-- (void)setContentColor:(id)a3
+- (void)setContentColor:(id)color
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMHighlightConfig;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"contentColor"];
+  [(RWIProtocolJSONObject *)&v3 setObject:color forKey:@"contentColor"];
 }
 
 - (RWIProtocolDOMRGBAColor)contentColor
@@ -81,11 +81,11 @@
   return v7;
 }
 
-- (void)setPaddingColor:(id)a3
+- (void)setPaddingColor:(id)color
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMHighlightConfig;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"paddingColor"];
+  [(RWIProtocolJSONObject *)&v3 setObject:color forKey:@"paddingColor"];
 }
 
 - (RWIProtocolDOMRGBAColor)paddingColor
@@ -143,11 +143,11 @@
   return v7;
 }
 
-- (void)setBorderColor:(id)a3
+- (void)setBorderColor:(id)color
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMHighlightConfig;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"borderColor"];
+  [(RWIProtocolJSONObject *)&v3 setObject:color forKey:@"borderColor"];
 }
 
 - (RWIProtocolDOMRGBAColor)borderColor
@@ -205,11 +205,11 @@
   return v7;
 }
 
-- (void)setMarginColor:(id)a3
+- (void)setMarginColor:(id)color
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMHighlightConfig;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"marginColor"];
+  [(RWIProtocolJSONObject *)&v3 setObject:color forKey:@"marginColor"];
 }
 
 - (RWIProtocolDOMRGBAColor)marginColor

@@ -1,143 +1,143 @@
 @interface SUSUISoftwareUpdateController
 + (SUSUISoftwareUpdateController)sharedInstance;
 - (BOOL)_badgingQueue_isBadgedForSoftwareUpdate;
-- (BOOL)_createAutoInstallKeybagWithPasscode:(id)a3;
-- (BOOL)_doesStateContainNonInstallableReasons:(int64_t)a3 reasonsToCheck:(id)a4 outMatchingReasonsString:(id *)a5;
+- (BOOL)_createAutoInstallKeybagWithPasscode:(id)passcode;
+- (BOOL)_doesStateContainNonInstallableReasons:(int64_t)reasons reasonsToCheck:(id)check outMatchingReasonsString:(id *)string;
 - (BOOL)_isMultiUserAppleId;
 - (BOOL)_isShowingInstallAlert;
 - (BOOL)_needsToWaitForHomescreenToAppear;
-- (BOOL)_setNVRAMVar:(__CFString *)a3 withValue:(void *)a4;
+- (BOOL)_setNVRAMVar:(__CFString *)var withValue:(void *)value;
 - (BOOL)_shouldHideAlert;
 - (BOOL)_shouldShowOrScheduleInstallAlert;
-- (BOOL)_showNextInstallAlertWithReasons:(int64_t)a3 orScheduleIfNecessary:(BOOL)a4 withInstallOptions:(id)a5;
+- (BOOL)_showNextInstallAlertWithReasons:(int64_t)reasons orScheduleIfNecessary:(BOOL)necessary withInstallOptions:(id)options;
 - (BOOL)canDeferInstallation;
-- (BOOL)installErrorWhenNotReadyForManagedRequest:(id)a3;
-- (BOOL)installErrorWillScheduleAutoInstall:(id)a3;
+- (BOOL)installErrorWhenNotReadyForManagedRequest:(id)request;
+- (BOOL)installErrorWillScheduleAutoInstall:(id)install;
 - (BOOL)isUILocked;
-- (BOOL)presentAlert:(id)a3;
+- (BOOL)presentAlert:(id)alert;
 - (BOOL)settingsForeground;
 - (SUSUISoftwareUpdateController)init;
-- (SUSUISoftwareUpdateController)initWithQueue:(id)a3;
+- (SUSUISoftwareUpdateController)initWithQueue:(id)queue;
 - (id)_allNonInstallableReasons;
 - (id)_availableRollback;
 - (id)_computeDefaultRealertDate;
 - (id)_computeNextLastPredictedUnlockDateMinus4HoursFromNow;
 - (id)_stringForCurrentVersionPreference;
-- (id)_stringForInstallNotAllowableReason:(unint64_t)a3;
+- (id)_stringForInstallNotAllowableReason:(unint64_t)reason;
 - (id)_waitableReasonsForShowingInstallAlert;
-- (id)computeNextLastPredictedUnlockDateMinus4HoursFromStartDate:(id)a3;
+- (id)computeNextLastPredictedUnlockDateMinus4HoursFromStartDate:(id)date;
 - (id)getDDMUpdateDescriptor;
-- (id)getNextLastPredictedUnlockDateFromDuet:(id)a3;
-- (int64_t)_delayDaysForSkips:(int64_t)a3 isRequiredInstall:(BOOL)a4;
-- (int64_t)_springboardPasscodePolicyTypeFromSUPasscodePolicyType:(unint64_t)a3;
-- (unint64_t)getPasscodePolicyForAlertModel:(id)a3;
-- (void)_autoDownloadUnknownToUserFailedForDescriptor:(id)a3 error:(id)a4;
-- (void)_autoInstallOperationDidExpire:(id)a3 withRepopStrategy:(unint64_t)a4 error:(id)a5;
-- (void)_autoInstallOperationWasCancelled:(id)a3 withRepopStrategy:(unint64_t)a4;
-- (void)_badgingQueue_badgeSettingsWithValue:(int64_t)a3;
-- (void)_badgingQueue_savePreferencesBadgeEnabled:(BOOL)a3;
-- (void)_bootedAfterRollback:(id)a3;
-- (void)_clearLegacyBadgeIfNecessary:(id)a3;
-- (void)_createInstallTonightForecastWithResult:(id)a3;
-- (void)_createInstallTonightOperationWithResult:(id)a3;
-- (void)_discoveredUpdates:(id)a3;
-- (void)_dismissInstallAlertsWithReason:(id)a3 includingInstallTonight:(BOOL)a4 withRealertStrategy:(unint64_t)a5;
+- (id)getNextLastPredictedUnlockDateFromDuet:(id)duet;
+- (int64_t)_delayDaysForSkips:(int64_t)skips isRequiredInstall:(BOOL)install;
+- (int64_t)_springboardPasscodePolicyTypeFromSUPasscodePolicyType:(unint64_t)type;
+- (unint64_t)getPasscodePolicyForAlertModel:(id)model;
+- (void)_autoDownloadUnknownToUserFailedForDescriptor:(id)descriptor error:(id)error;
+- (void)_autoInstallOperationDidExpire:(id)expire withRepopStrategy:(unint64_t)strategy error:(id)error;
+- (void)_autoInstallOperationWasCancelled:(id)cancelled withRepopStrategy:(unint64_t)strategy;
+- (void)_badgingQueue_badgeSettingsWithValue:(int64_t)value;
+- (void)_badgingQueue_savePreferencesBadgeEnabled:(BOOL)enabled;
+- (void)_bootedAfterRollback:(id)rollback;
+- (void)_clearLegacyBadgeIfNecessary:(id)necessary;
+- (void)_createInstallTonightForecastWithResult:(id)result;
+- (void)_createInstallTonightOperationWithResult:(id)result;
+- (void)_discoveredUpdates:(id)updates;
+- (void)_dismissInstallAlertsWithReason:(id)reason includingInstallTonight:(BOOL)tonight withRealertStrategy:(unint64_t)strategy;
 - (void)_dismissInstallFailureAlertsWithoutRepop;
-- (void)_doInstallNowWithOptions:(id)a3;
-- (void)_doInstallTonight:(id)a3 consent:(BOOL)a4;
-- (void)_handleInstallError:(id)a3;
+- (void)_doInstallNowWithOptions:(id)options;
+- (void)_doInstallTonight:(id)tonight consent:(BOOL)consent;
+- (void)_handleInstallError:(id)error;
 - (void)_initializeState;
-- (void)_installUpdate:(unint64_t)a3 withInstallOperation:(id)a4 source:(unint64_t)a5 options:(id)a6;
-- (void)_installationConstraintsDidChange:(unint64_t)a3 changed:(unint64_t)a4 error:(id)a5;
-- (void)_isUpdateInstallable:(id)a3;
-- (void)_isUpdateInstallableWithInstallOptions:(id)a3 andResponse:(id)a4;
+- (void)_installUpdate:(unint64_t)update withInstallOperation:(id)operation source:(unint64_t)source options:(id)options;
+- (void)_installationConstraintsDidChange:(unint64_t)change changed:(unint64_t)changed error:(id)error;
+- (void)_isUpdateInstallable:(id)installable;
+- (void)_isUpdateInstallableWithInstallOptions:(id)options andResponse:(id)response;
 - (void)_migrateForNewOSVersionIfNecessary;
-- (void)_presentAuthenticationUIForInstallation:(id)a3 withInstallType:(unint64_t)a4 withInstallOperationForecast:(id)a5;
-- (void)_realertWithStrategy:(unint64_t)a3 andReason:(id)a4;
+- (void)_presentAuthenticationUIForInstallation:(id)installation withInstallType:(unint64_t)type withInstallOperationForecast:(id)forecast;
+- (void)_realertWithStrategy:(unint64_t)strategy andReason:(id)reason;
 - (void)_rebootQuiet;
 - (void)_registerForInstallationConstraintChangedNotifications;
 - (void)_registerForUnlockNotifications;
-- (void)_resetStateForReason:(id)a3;
-- (void)_rollbackFailed:(id)a3 withError:(id)a4;
-- (void)_rollbackSucceeded:(id)a3;
-- (void)_rollbackSuggested:(id)a3 info:(id)a4;
-- (void)_saveLastKnownVersionPreference:(id)a3;
-- (void)_savePreferencesBadgeFlag:(BOOL)a3;
-- (void)_scheduleInstallAlertReminderWithDate:(id)a3 repopStrategy:(unint64_t)a4 forReason:(id)a5;
+- (void)_resetStateForReason:(id)reason;
+- (void)_rollbackFailed:(id)failed withError:(id)error;
+- (void)_rollbackSucceeded:(id)succeeded;
+- (void)_rollbackSuggested:(id)suggested info:(id)info;
+- (void)_saveLastKnownVersionPreference:(id)preference;
+- (void)_savePreferencesBadgeFlag:(BOOL)flag;
+- (void)_scheduleInstallAlertReminderWithDate:(id)date repopStrategy:(unint64_t)strategy forReason:(id)reason;
 - (void)_sendInstallTonightDidCompleteToObservers;
-- (void)_setInstallPolicy:(id)a3;
-- (void)_setPasscodePolicyType:(unint64_t)a3;
-- (void)_setPendingInstallOptions:(id)a3;
-- (void)_setSettingsBadgeToValue:(int64_t)a3;
-- (void)_setTryTonightAutoInstallOperation:(id)a3 cancelIfNecessary:(BOOL)a4;
-- (void)_setupAutoUpdate:(id)a3 withPasscodePolicy:(unint64_t)a4;
-- (void)_showInstallAlertWithInstallOptions:(id)a3;
+- (void)_setInstallPolicy:(id)policy;
+- (void)_setPasscodePolicyType:(unint64_t)type;
+- (void)_setPendingInstallOptions:(id)options;
+- (void)_setSettingsBadgeToValue:(int64_t)value;
+- (void)_setTryTonightAutoInstallOperation:(id)operation cancelIfNecessary:(BOOL)necessary;
+- (void)_setupAutoUpdate:(id)update withPasscodePolicy:(unint64_t)policy;
+- (void)_showInstallAlertWithInstallOptions:(id)options;
 - (void)_showOrScheduleNextInstallAlert;
-- (void)_showOrScheduleNextInstallAlertFromTimer:(id)a3;
-- (void)_showSUAvailableAlertForDescriptor:(id)a3;
+- (void)_showOrScheduleNextInstallAlertFromTimer:(id)timer;
+- (void)_showSUAvailableAlertForDescriptor:(id)descriptor;
 - (void)_unregisterForInstallationConstraintChangeNotifications;
 - (void)_unregisterForUnlockNotifications;
 - (void)_unregisterHomescreenAlerts;
-- (void)addObserver:(id)a3;
-- (void)alertModel:(id)a3 alertFlowDidChangeFrom:(unint64_t)a4 to:(unint64_t)a5;
-- (void)autoInstallOperationDidConsent:(id)a3;
-- (void)autoInstallOperationDidExpire:(id)a3 withError:(id)a4;
-- (void)autoInstallOperationIsReadyToInstall:(id)a3 withResponse:(id)a4;
-- (void)autoInstallOperationPasscodePolicyDidChange:(id)a3 passcodePolicyType:(unint64_t)a4;
-- (void)autoInstallOperationWasCancelled:(id)a3;
-- (void)autoInstallTonightWithOperation:(id)a3;
-- (void)autoInstallTonightWithOperation:(id)a3 options:(id)a4;
+- (void)addObserver:(id)observer;
+- (void)alertModel:(id)model alertFlowDidChangeFrom:(unint64_t)from to:(unint64_t)to;
+- (void)autoInstallOperationDidConsent:(id)consent;
+- (void)autoInstallOperationDidExpire:(id)expire withError:(id)error;
+- (void)autoInstallOperationIsReadyToInstall:(id)install withResponse:(id)response;
+- (void)autoInstallOperationPasscodePolicyDidChange:(id)change passcodePolicyType:(unint64_t)type;
+- (void)autoInstallOperationWasCancelled:(id)cancelled;
+- (void)autoInstallTonightWithOperation:(id)operation;
+- (void)autoInstallTonightWithOperation:(id)operation options:(id)options;
 - (void)cancelRollback;
-- (void)client:(id)a3 automaticDownloadDidFailToStartForNewUpdateAvailable:(id)a4 withError:(id)a5;
-- (void)client:(id)a3 downloadDidFail:(id)a4 withError:(id)a5;
-- (void)client:(id)a3 downloadDidFinish:(id)a4 withInstallPolicy:(id)a5;
-- (void)client:(id)a3 downloadDidStart:(id)a4;
-- (void)client:(id)a3 downloadProgressDidChange:(id)a4;
-- (void)client:(id)a3 downloadWasInvalidatedForNewUpdateAvailable:(id)a4;
-- (void)client:(id)a3 handleUIForDDMDeclaration:(id)a4;
-- (void)client:(id)a3 handleUIForDDMGlobalSettings:(id)a4;
-- (void)client:(id)a3 installDidFail:(id)a4 withError:(id)a5;
-- (void)client:(id)a3 installDidFinish:(id)a4;
-- (void)client:(id)a3 installDidStart:(id)a4;
-- (void)client:(id)a3 installPolicyDidChange:(id)a4;
-- (void)client:(id)a3 installTonightScheduled:(BOOL)a4 operationID:(id)a5;
-- (void)client:(id)a3 installWantsToStart:(id)a4 completion:(id)a5;
-- (void)client:(id)a3 managedInstallationRequested:(id)a4;
-- (void)client:(id)a3 presentingRecommendedUpdate:(id)a4 shouldPresent:(BOOL)a5;
-- (void)client:(id)a3 rollbackDidFail:(id)a4 withError:(id)a5;
-- (void)client:(id)a3 rollbackDidFinish:(id)a4;
-- (void)client:(id)a3 rollbackDidStart:(id)a4;
-- (void)client:(id)a3 rollbackReadyToStart:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)client:(id)a3 rollbackSuggested:(id)a4 info:(id)a5;
-- (void)client:(id)a3 scheduledRollbackReadyForReboot:(id)a4;
-- (void)ddmAlertWasScheduled:(id)a3;
+- (void)client:(id)client automaticDownloadDidFailToStartForNewUpdateAvailable:(id)available withError:(id)error;
+- (void)client:(id)client downloadDidFail:(id)fail withError:(id)error;
+- (void)client:(id)client downloadDidFinish:(id)finish withInstallPolicy:(id)policy;
+- (void)client:(id)client downloadDidStart:(id)start;
+- (void)client:(id)client downloadProgressDidChange:(id)change;
+- (void)client:(id)client downloadWasInvalidatedForNewUpdateAvailable:(id)available;
+- (void)client:(id)client handleUIForDDMDeclaration:(id)declaration;
+- (void)client:(id)client handleUIForDDMGlobalSettings:(id)settings;
+- (void)client:(id)client installDidFail:(id)fail withError:(id)error;
+- (void)client:(id)client installDidFinish:(id)finish;
+- (void)client:(id)client installDidStart:(id)start;
+- (void)client:(id)client installPolicyDidChange:(id)change;
+- (void)client:(id)client installTonightScheduled:(BOOL)scheduled operationID:(id)d;
+- (void)client:(id)client installWantsToStart:(id)start completion:(id)completion;
+- (void)client:(id)client managedInstallationRequested:(id)requested;
+- (void)client:(id)client presentingRecommendedUpdate:(id)update shouldPresent:(BOOL)present;
+- (void)client:(id)client rollbackDidFail:(id)fail withError:(id)error;
+- (void)client:(id)client rollbackDidFinish:(id)finish;
+- (void)client:(id)client rollbackDidStart:(id)start;
+- (void)client:(id)client rollbackReadyToStart:(id)start options:(id)options completion:(id)completion;
+- (void)client:(id)client rollbackSuggested:(id)suggested info:(id)info;
+- (void)client:(id)client scheduledRollbackReadyForReboot:(id)reboot;
+- (void)ddmAlertWasScheduled:(id)scheduled;
 - (void)dealloc;
-- (void)deviceBootedAfterSplatOnlyRollback:(id)a3 rollbackDescriptor:(id)a4;
+- (void)deviceBootedAfterSplatOnlyRollback:(id)rollback rollbackDescriptor:(id)descriptor;
 - (void)initPostOTAFollowUpController;
-- (void)installNowFromSource:(unint64_t)a3 options:(id)a4;
+- (void)installNowFromSource:(unint64_t)source options:(id)options;
 - (void)installTonight;
-- (void)installTonightWithOperation:(id)a3;
-- (void)installTonightWithOperation:(id)a3 options:(id)a4;
-- (void)isDownloading:(id)a3;
-- (void)layoutStateMonitorStateDidChange:(id)a3;
-- (void)layoutStateMonitorUILockStateDidChange:(id)a3;
-- (void)powerMonitorSystemDidWakeFromSleep:(id)a3;
-- (void)powerMonitorSystemWillSleep:(id)a3;
-- (void)presentAuthenticationAlert:(id)a3 completion:(id)a4;
-- (void)presentEmergencyCallAlert:(id)a3 completion:(id)a4;
-- (void)presentFullScreenAlert:(id)a3 completion:(id)a4;
-- (void)reboot:(BOOL)a3;
-- (void)recordSUAnalyticsEvent:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)repopInstallAlertWithDefaultDurationFromNowForReason:(id)a3;
-- (void)repopInstallAlertWithWeekDurationFromNowForReason:(id)a3;
-- (void)rollbackCompleted:(id)a3;
-- (void)scanForUpdates:(id)a3 withScanResults:(id)a4;
-- (void)setInstallOperation:(id)a3;
-- (void)setUpdateToInstall:(id)a3;
-- (void)startDownloadWithOptions:(id)a3 withResult:(id)a4;
-- (void)submitSUAnalyticsEvent:(id)a3;
-- (void)toggleSettingsBadge:(BOOL)a3 update:(id)a4;
+- (void)installTonightWithOperation:(id)operation;
+- (void)installTonightWithOperation:(id)operation options:(id)options;
+- (void)isDownloading:(id)downloading;
+- (void)layoutStateMonitorStateDidChange:(id)change;
+- (void)layoutStateMonitorUILockStateDidChange:(id)change;
+- (void)powerMonitorSystemDidWakeFromSleep:(id)sleep;
+- (void)powerMonitorSystemWillSleep:(id)sleep;
+- (void)presentAuthenticationAlert:(id)alert completion:(id)completion;
+- (void)presentEmergencyCallAlert:(id)alert completion:(id)completion;
+- (void)presentFullScreenAlert:(id)alert completion:(id)completion;
+- (void)reboot:(BOOL)reboot;
+- (void)recordSUAnalyticsEvent:(id)event;
+- (void)removeObserver:(id)observer;
+- (void)repopInstallAlertWithDefaultDurationFromNowForReason:(id)reason;
+- (void)repopInstallAlertWithWeekDurationFromNowForReason:(id)reason;
+- (void)rollbackCompleted:(id)completed;
+- (void)scanForUpdates:(id)updates withScanResults:(id)results;
+- (void)setInstallOperation:(id)operation;
+- (void)setUpdateToInstall:(id)install;
+- (void)startDownloadWithOptions:(id)options withResult:(id)result;
+- (void)submitSUAnalyticsEvent:(id)event;
+- (void)toggleSettingsBadge:(BOOL)badge update:(id)update;
 @end
 
 @implementation SUSUISoftwareUpdateController
@@ -160,30 +160,30 @@
 
 - (SUSUISoftwareUpdateController)init
 {
-  v7 = self;
+  selfCopy = self;
   v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v4 = dispatch_queue_create("com.apple.softwareupdateservices.ui.ios.sumanagerQueue", v5);
-  v7 = 0;
-  v7 = [(SUSUISoftwareUpdateController *)self initWithQueue:?];
-  v6 = v7;
+  selfCopy = 0;
+  selfCopy = [(SUSUISoftwareUpdateController *)self initWithQueue:?];
+  v6 = selfCopy;
 
-  objc_storeStrong(&v7, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
-- (SUSUISoftwareUpdateController)initWithQueue:(id)a3
+- (SUSUISoftwareUpdateController)initWithQueue:(id)queue
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v17;
-  v17 = 0;
+  objc_storeStrong(location, queue);
+  v3 = selfCopy;
+  selfCopy = 0;
   v15.receiver = v3;
   v15.super_class = SUSUISoftwareUpdateController;
   v7 = [(SUSUISoftwareUpdateController *)&v15 init];
-  v17 = v7;
-  objc_storeStrong(&v17, v7);
+  selfCopy = v7;
+  objc_storeStrong(&selfCopy, v7);
   if (v7)
   {
     queue = location[0];
@@ -192,65 +192,65 @@
     v10 = 0;
     v11 = sub_220DC;
     v12 = &unk_5D008;
-    v13 = v17;
+    v13 = selfCopy;
     v14 = location[0];
     dispatch_sync(queue, &v8);
     objc_storeStrong(&v14, 0);
     objc_storeStrong(&v13, 0);
   }
 
-  v5 = v17;
+  v5 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
 - (void)_initializeState
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   dispatch_assert_queue_V2(self->_clientQueue);
-  client = v9->_client;
+  client = selfCopy->_client;
   v3 = _NSConcreteStackBlock;
   v4 = -1073741824;
   v5 = 0;
   v6 = sub_229A0;
   v7 = &unk_60338;
-  v8[0] = v9;
+  v8[0] = selfCopy;
   [(SUManagerClient *)client downloadAndInstallState:?];
   objc_storeStrong(v8, 0);
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v2 = +[NSNotificationCenter defaultCenter];
-  [(NSNotificationCenter *)v2 removeObserver:v5];
+  [(NSNotificationCenter *)v2 removeObserver:selfCopy];
 
-  [(SUSUISoftwareUpdateController *)v5 _unregisterForInstallationConstraintChangeNotifications];
-  [(SUAutoInstallOperation *)v5->_scheduledTryTonightAutoInstallOperation cancel];
-  [(SUSUISoftwareUpdateAlertModel *)v5->_alertModel setDelegate:0];
-  [(PCPersistentTimer *)v5->_installTimer invalidate];
-  [(SUManagerClient *)v5->_client invalidate];
-  v3.receiver = v5;
+  [(SUSUISoftwareUpdateController *)selfCopy _unregisterForInstallationConstraintChangeNotifications];
+  [(SUAutoInstallOperation *)selfCopy->_scheduledTryTonightAutoInstallOperation cancel];
+  [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel setDelegate:0];
+  [(PCPersistentTimer *)selfCopy->_installTimer invalidate];
+  [(SUManagerClient *)selfCopy->_client invalidate];
+  v3.receiver = selfCopy;
   v3.super_class = SUSUISoftwareUpdateController;
   [(SUSUISoftwareUpdateController *)&v3 dealloc];
 }
 
-- (void)recordSUAnalyticsEvent:(id)a3
+- (void)recordSUAnalyticsEvent:(id)event
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v12->_clientQueue;
+  objc_storeStrong(location, event);
+  queue = selfCopy->_clientQueue;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_2393C;
   v8 = &unk_5D008;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
@@ -258,19 +258,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)submitSUAnalyticsEvent:(id)a3
+- (void)submitSUAnalyticsEvent:(id)event
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v12->_clientQueue;
+  objc_storeStrong(location, event);
+  queue = selfCopy->_clientQueue;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_23A90;
   v8 = &unk_5D008;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
@@ -278,14 +278,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)isDownloading:(id)a3
+- (void)isDownloading:(id)downloading
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_V2(v11->_clientQueue);
-  client = v11->_client;
+  objc_storeStrong(location, downloading);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  client = selfCopy->_client;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
@@ -299,14 +299,14 @@
 
 - (BOOL)canDeferInstallation
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   dispatch_assert_queue_V2(self->_clientQueue);
-  if (v7->_updateToInstall)
+  if (selfCopy->_updateToInstall)
   {
-    location[0] = [(SUSUISoftwareUpdateAlertModel *)v7->_alertModel currentInstallationPolicy];
+    location[0] = [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel currentInstallationPolicy];
     v5 = 1;
-    if ([(SUSUIDDMController *)v7->_ddmController shouldEnforceUpdate])
+    if ([(SUSUIDDMController *)selfCopy->_ddmController shouldEnforceUpdate])
     {
       v8 = 0;
     }
@@ -315,11 +315,11 @@
     {
       if ([location[0] type] == &dword_0 + 1)
       {
-        v4 = [location[0] skipsAllowed];
+        skipsAllowed = [location[0] skipsAllowed];
         v3 = 0;
-        if (v4 > 0)
+        if (skipsAllowed > 0)
         {
-          v3 = [(SUSUISoftwareUpdateAlertModel *)v7->_alertModel remindMeLaterCountSinceRequiringInstallation]< v4;
+          v3 = [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel remindMeLaterCountSinceRequiringInstallation]< skipsAllowed;
         }
 
         v5 = v3;
@@ -343,46 +343,46 @@
 {
   dispatch_assert_queue_V2(self->_clientQueue);
   [(SUSUISoftwareUpdateController *)self _registerForUnlockNotifications];
-  v3 = [(SUSUILayoutStateMonitor *)self->_uiLockedLayoutStateMonitor isUILocked];
+  isUILocked = [(SUSUILayoutStateMonitor *)self->_uiLockedLayoutStateMonitor isUILocked];
   [(SUSUISoftwareUpdateController *)self _unregisterForUnlockNotifications];
-  return v3 & 1;
+  return isUILocked & 1;
 }
 
-- (void)startDownloadWithOptions:(id)a3 withResult:(id)a4
+- (void)startDownloadWithOptions:(id)options withResult:(id)result
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, options);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  dispatch_assert_queue_V2(v7->_clientQueue);
-  [(SUManagerClient *)v7->_client startDownloadWithOptions:location[0] withResult:v5];
+  objc_storeStrong(&v5, result);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  [(SUManagerClient *)selfCopy->_client startDownloadWithOptions:location[0] withResult:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)installNowFromSource:(unint64_t)a3 options:(id)a4
+- (void)installNowFromSource:(unint64_t)source options:(id)options
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  sourceCopy = source;
   location = 0;
-  objc_storeStrong(&location, a4);
-  dispatch_assert_queue_V2(v7[3]);
-  [(dispatch_queue_t *)v7 _installUpdate:0 withInstallOperation:0 source:v5 options:location];
+  objc_storeStrong(&location, options);
+  dispatch_assert_queue_V2(selfCopy[3]);
+  [(dispatch_queue_t *)selfCopy _installUpdate:0 withInstallOperation:0 source:sourceCopy options:location];
   objc_storeStrong(&location, 0);
 }
 
 - (void)installTonight
 {
-  v12 = self;
+  selfCopy = self;
   v11[1] = a2;
   dispatch_assert_queue_V2(self->_clientQueue);
-  v11[0] = v12->_scheduledTryTonightAutoInstallOperation;
+  v11[0] = selfCopy->_scheduledTryTonightAutoInstallOperation;
   if ([v11[0] _isValidForScheduling])
   {
-    [(SUSUISoftwareUpdateController *)v12 installTonightWithOperation:v11[0] options:0];
+    [(SUSUISoftwareUpdateController *)selfCopy installTonightWithOperation:v11[0] options:0];
   }
 
   else
@@ -396,13 +396,13 @@
     }
 
     objc_storeStrong(&location, 0);
-    v2 = v12;
+    v2 = selfCopy;
     v3 = _NSConcreteStackBlock;
     v4 = -1073741824;
     v5 = 0;
     v6 = sub_2417C;
     v7 = &unk_60388;
-    v8 = v12;
+    v8 = selfCopy;
     [(SUSUISoftwareUpdateController *)v2 _createInstallTonightOperationWithResult:&v3];
     objc_storeStrong(&v8, 0);
   }
@@ -410,147 +410,147 @@
   objc_storeStrong(v11, 0);
 }
 
-- (void)installTonightWithOperation:(id)a3
+- (void)installTonightWithOperation:(id)operation
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_V2(v4[3]);
-  [(dispatch_queue_t *)v4 installTonightWithOperation:location[0] options:0];
+  objc_storeStrong(location, operation);
+  dispatch_assert_queue_V2(selfCopy[3]);
+  [(dispatch_queue_t *)selfCopy installTonightWithOperation:location[0] options:0];
   objc_storeStrong(location, 0);
 }
 
-- (void)autoInstallTonightWithOperation:(id)a3
+- (void)autoInstallTonightWithOperation:(id)operation
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_V2(v4[3]);
-  [(dispatch_queue_t *)v4 autoInstallTonightWithOperation:location[0] options:0];
+  objc_storeStrong(location, operation);
+  dispatch_assert_queue_V2(selfCopy[3]);
+  [(dispatch_queue_t *)selfCopy autoInstallTonightWithOperation:location[0] options:0];
   objc_storeStrong(location, 0);
 }
 
-- (void)autoInstallTonightWithOperation:(id)a3 options:(id)a4
+- (void)autoInstallTonightWithOperation:(id)operation options:(id)options
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, operation);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  dispatch_assert_queue_V2(v7[3]);
-  [(dispatch_queue_t *)v7 _installUpdate:2 withInstallOperation:location[0] source:1 options:v5];
+  objc_storeStrong(&v5, options);
+  dispatch_assert_queue_V2(selfCopy[3]);
+  [(dispatch_queue_t *)selfCopy _installUpdate:2 withInstallOperation:location[0] source:1 options:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)installTonightWithOperation:(id)a3 options:(id)a4
+- (void)installTonightWithOperation:(id)operation options:(id)options
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, operation);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  dispatch_assert_queue_V2(v7[3]);
-  [(dispatch_queue_t *)v7 _installUpdate:1 withInstallOperation:location[0] source:0 options:v5];
+  objc_storeStrong(&v5, options);
+  dispatch_assert_queue_V2(selfCopy[3]);
+  [(dispatch_queue_t *)selfCopy _installUpdate:1 withInstallOperation:location[0] source:0 options:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)repopInstallAlertWithDefaultDurationFromNowForReason:(id)a3
+- (void)repopInstallAlertWithDefaultDurationFromNowForReason:(id)reason
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_V2(v4->_clientQueue);
-  [(SUSUISoftwareUpdateAlertModel *)v4->_alertModel userSelectedRemindMeLater];
-  [(SUSUISoftwareUpdateController *)v4 _realertWithStrategy:1 andReason:location[0]];
+  objc_storeStrong(location, reason);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel userSelectedRemindMeLater];
+  [(SUSUISoftwareUpdateController *)selfCopy _realertWithStrategy:1 andReason:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)repopInstallAlertWithWeekDurationFromNowForReason:(id)a3
+- (void)repopInstallAlertWithWeekDurationFromNowForReason:(id)reason
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_V2(v4->_clientQueue);
-  [(SUSUISoftwareUpdateAlertModel *)v4->_alertModel userSelectedRemindMeLater];
-  [(SUSUISoftwareUpdateController *)v4 _realertWithStrategy:2 andReason:location[0]];
+  objc_storeStrong(location, reason);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel userSelectedRemindMeLater];
+  [(SUSUISoftwareUpdateController *)selfCopy _realertWithStrategy:2 andReason:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)presentAuthenticationAlert:(id)a3 completion:(id)a4
+- (void)presentAuthenticationAlert:(id)alert completion:(id)completion
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, alert);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  dispatch_assert_queue_V2(v7->_clientQueue);
-  [(SUSUIFullScreenAlertPresentationManager *)v7->_fullScreenAlertPresentationManager presentAlert:location[0] completion:v5];
+  objc_storeStrong(&v5, completion);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  [(SUSUIFullScreenAlertPresentationManager *)selfCopy->_fullScreenAlertPresentationManager presentAlert:location[0] completion:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)presentEmergencyCallAlert:(id)a3 completion:(id)a4
+- (void)presentEmergencyCallAlert:(id)alert completion:(id)completion
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, alert);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  dispatch_assert_queue_V2(v7->_clientQueue);
-  [(SUSUIFullScreenAlertPresentationManager *)v7->_fullScreenAlertPresentationManager presentAlert:location[0] completion:v5];
+  objc_storeStrong(&v5, completion);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  [(SUSUIFullScreenAlertPresentationManager *)selfCopy->_fullScreenAlertPresentationManager presentAlert:location[0] completion:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)presentFullScreenAlert:(id)a3 completion:(id)a4
+- (void)presentFullScreenAlert:(id)alert completion:(id)completion
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, alert);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  dispatch_assert_queue_V2(v7->_clientQueue);
-  [(SUSUIFullScreenAlertPresentationManager *)v7->_fullScreenAlertPresentationManager presentAlert:location[0] completion:v5];
+  objc_storeStrong(&v5, completion);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  [(SUSUIFullScreenAlertPresentationManager *)selfCopy->_fullScreenAlertPresentationManager presentAlert:location[0] completion:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_V2(v4->_clientQueue);
+  objc_storeStrong(location, observer);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
   if (location[0])
   {
-    [(NSHashTable *)v4->_observers addObject:location[0]];
+    [(NSHashTable *)selfCopy->_observers addObject:location[0]];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_V2(v4->_clientQueue);
+  objc_storeStrong(location, observer);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
   if (location[0])
   {
-    [(NSHashTable *)v4->_observers removeObject:location[0]];
+    [(NSHashTable *)selfCopy->_observers removeObject:location[0]];
   }
 
   objc_storeStrong(location, 0);
@@ -558,7 +558,7 @@
 
 - (id)_availableRollback
 {
-  v22 = self;
+  selfCopy = self;
   v21[1] = a2;
   v15 = 0;
   v16 = &v15;
@@ -569,7 +569,7 @@
   v21[0] = 0;
   location = dispatch_semaphore_create(0);
   v13 = 2000000000;
-  client = v22->_client;
+  client = selfCopy->_client;
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
   v9 = 0;
@@ -594,24 +594,24 @@
   return v4;
 }
 
-- (void)_discoveredUpdates:(id)a3
+- (void)_discoveredUpdates:(id)updates
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SUManagerClient *)v4->_client descriptors:location[0]];
+  objc_storeStrong(location, updates);
+  [(SUManagerClient *)selfCopy->_client descriptors:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)_createInstallTonightForecastWithResult:(id)a3
+- (void)_createInstallTonightForecastWithResult:(id)result
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_V2(v11->_clientQueue);
-  client = v11->_client;
+  objc_storeStrong(location, result);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  client = selfCopy->_client;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
@@ -623,14 +623,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_createInstallTonightOperationWithResult:(id)a3
+- (void)_createInstallTonightOperationWithResult:(id)result
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_V2(v11->_clientQueue);
-  client = v11->_client;
+  objc_storeStrong(location, result);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  client = selfCopy->_client;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
@@ -644,7 +644,7 @@
 
 - (BOOL)_isMultiUserAppleId
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   v8 = 0;
   location = +[UMUserManager sharedManager];
@@ -652,9 +652,9 @@
   v4 = 0;
   if ([location isMultiUser])
   {
-    v6 = [location currentUser];
+    currentUser = [location currentUser];
     v5 = 1;
-    v4 = [v6 userType] == &dword_0 + 1;
+    v4 = [currentUser userType] == &dword_0 + 1;
   }
 
   if (v5)
@@ -671,16 +671,16 @@
   return v3 & 1;
 }
 
-- (BOOL)presentAlert:(id)a3
+- (BOOL)presentAlert:(id)alert
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_V2(v5->_clientQueue);
+  objc_storeStrong(location, alert);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
   if (location[0])
   {
-    v6 = [(SUSUIAlertPresentationManager *)v5->_alertPresentationManager presentAlert:location[0] animated:1];
+    v6 = [(SUSUIAlertPresentationManager *)selfCopy->_alertPresentationManager presentAlert:location[0] animated:1];
   }
 
   else
@@ -692,21 +692,21 @@
   return v6 & 1;
 }
 
-- (void)ddmAlertWasScheduled:(id)a3
+- (void)ddmAlertWasScheduled:(id)scheduled
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, scheduled);
   objc_storeStrong(location, 0);
 }
 
-- (void)powerMonitorSystemWillSleep:(id)a3
+- (void)powerMonitorSystemWillSleep:(id)sleep
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, sleep);
   v7 = SUSUILog();
   v6 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -721,12 +721,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)powerMonitorSystemDidWakeFromSleep:(id)a3
+- (void)powerMonitorSystemDidWakeFromSleep:(id)sleep
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, sleep);
   v7 = SUSUILog();
   v6 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -741,80 +741,80 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)layoutStateMonitorUILockStateDidChange:(id)a3
+- (void)layoutStateMonitorUILockStateDidChange:(id)change
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v12->_clientQueue;
+  objc_storeStrong(location, change);
+  queue = selfCopy->_clientQueue;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_25668;
   v8 = &unk_5D008;
   v9 = location[0];
-  v10 = v12;
+  v10 = selfCopy;
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)layoutStateMonitorStateDidChange:(id)a3
+- (void)layoutStateMonitorStateDidChange:(id)change
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v12->_clientQueue;
+  objc_storeStrong(location, change);
+  queue = selfCopy->_clientQueue;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_25840;
   v8 = &unk_5D008;
   v9 = location[0];
-  v10 = v12;
+  v10 = selfCopy;
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_installationConstraintsDidChange:(unint64_t)a3 changed:(unint64_t)a4 error:(id)a5
+- (void)_installationConstraintsDidChange:(unint64_t)change changed:(unint64_t)changed error:(id)error
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
-  location[1] = a4;
+  changeCopy = change;
+  location[1] = changed;
   location[0] = 0;
-  objc_storeStrong(location, a5);
-  if (v13)
+  objc_storeStrong(location, error);
+  if (changeCopy)
   {
     v11 = 16;
-    if ([(SUSUISoftwareUpdateAlertModel *)v15->_alertModel alertFlow]== &dword_4 || [(SUSUISoftwareUpdateAlertModel *)v15->_alertModel alertFlow]== &dword_0 + 1)
+    if ([(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel alertFlow]== &dword_4 || [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel alertFlow]== &dword_0 + 1)
     {
       v11 = 17;
     }
 
-    if (sub_262AC(v13, v11))
+    if (sub_262AC(changeCopy, v11))
     {
-      v7 = v15;
+      v7 = selfCopy;
       v8 = SUStringFromInstallationConstraints();
       [SUSUISoftwareUpdateController _dismissInstallAlertsWithReason:v7 includingInstallTonight:"_dismissInstallAlertsWithReason:includingInstallTonight:withRealertStrategy:" withRealertStrategy:?];
     }
 
-    else if (v15->_scheduleInstallAlertWhenAble && ![(SUSUISoftwareUpdateController *)v15 _isShowingInstallAlert]&& ![(SUSUISoftwareUpdateController *)v15 _needsToWaitForHomescreenToAppear])
+    else if (selfCopy->_scheduleInstallAlertWhenAble && ![(SUSUISoftwareUpdateController *)selfCopy _isShowingInstallAlert]&& ![(SUSUISoftwareUpdateController *)selfCopy _needsToWaitForHomescreenToAppear])
     {
-      v5 = v15;
+      v5 = selfCopy;
       v6 = SUStringFromInstallationConstraints();
       [(SUSUISoftwareUpdateController *)v5 _realertWithStrategy:4 andReason:?];
     }
   }
 
-  else if (v15->_scheduleInstallAlertWhenAble && ![(SUSUISoftwareUpdateController *)v15 _isShowingInstallAlert]&& ![(SUSUISoftwareUpdateController *)v15 _needsToWaitForHomescreenToAppear])
+  else if (selfCopy->_scheduleInstallAlertWhenAble && ![(SUSUISoftwareUpdateController *)selfCopy _isShowingInstallAlert]&& ![(SUSUISoftwareUpdateController *)selfCopy _needsToWaitForHomescreenToAppear])
   {
-    v9 = v15;
+    v9 = selfCopy;
     v10 = SUStringFromInstallationConstraints();
     [(SUSUISoftwareUpdateController *)v9 _realertWithStrategy:4 andReason:?];
   }
@@ -822,16 +822,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 downloadWasInvalidatedForNewUpdateAvailable:(id)a4
+- (void)client:(id)client downloadWasInvalidatedForNewUpdateAvailable:(id)available
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  dispatch_assert_queue_V2(v9->_clientQueue);
-  v5 = v9;
+  objc_storeStrong(&v7, available);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  v5 = selfCopy;
   v6 = [NSString stringWithFormat:@"Download invalidated for new update available: %@", v7];
   [(SUSUISoftwareUpdateController *)v5 _resetStateForReason:?];
 
@@ -839,75 +839,75 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 automaticDownloadDidFailToStartForNewUpdateAvailable:(id)a4 withError:(id)a5
+- (void)client:(id)client automaticDownloadDidFailToStartForNewUpdateAvailable:(id)available withError:(id)error
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, available);
   v7 = 0;
-  objc_storeStrong(&v7, a5);
-  dispatch_assert_queue_V2(v10[3]);
-  [(dispatch_queue_t *)v10 _autoDownloadUnknownToUserFailedForDescriptor:v8 error:v7];
+  objc_storeStrong(&v7, error);
+  dispatch_assert_queue_V2(selfCopy[3]);
+  [(dispatch_queue_t *)selfCopy _autoDownloadUnknownToUserFailedForDescriptor:v8 error:v7];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 downloadDidStart:(id)a4
+- (void)client:(id)client downloadDidStart:(id)start
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  dispatch_assert_queue_V2(v11->_clientQueue);
-  v6 = v11;
+  objc_storeStrong(&v9, start);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  v6 = selfCopy;
   v5 = v9;
-  v8 = [v9 descriptor];
-  v7 = [NSString stringWithFormat:@"New download started: %p for descriptor: %@", v5, v8];
+  descriptor = [v9 descriptor];
+  v7 = [NSString stringWithFormat:@"New download started: %p for descriptor: %@", v5, descriptor];
   [(SUSUISoftwareUpdateController *)v6 _resetStateForReason:?];
 
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 downloadProgressDidChange:(id)a4
+- (void)client:(id)client downloadProgressDidChange:(id)change
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  dispatch_assert_queue_V2(v10->_clientQueue);
-  v6 = [v8 progress];
-  v5 = [v6 phase];
-  v7 = [v5 isEqualToString:kSUDownloadPhaseUpdateFetchingQueuedRemote];
+  objc_storeStrong(&v8, change);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  progress = [v8 progress];
+  phase = [progress phase];
+  v7 = [phase isEqualToString:kSUDownloadPhaseUpdateFetchingQueuedRemote];
 
   if (v7)
   {
-    [(SUSUISoftwareUpdateAlertModel *)v10->_alertModel setDownloadWasQueuedRemotely:1];
+    [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel setDownloadWasQueuedRemotely:1];
   }
 
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 downloadDidFail:(id)a4 withError:(id)a5
+- (void)client:(id)client downloadDidFail:(id)fail withError:(id)error
 {
-  v68 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v66 = 0;
-  objc_storeStrong(&v66, a4);
+  objc_storeStrong(&v66, fail);
   v65 = 0;
-  objc_storeStrong(&v65, a5);
-  dispatch_assert_queue_V2(v68->_clientQueue);
+  objc_storeStrong(&v65, error);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
   v64 = SUSUILog();
   v63 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
@@ -917,26 +917,26 @@
   }
 
   objc_storeStrong(&v64, 0);
-  [(SUSUISoftwareUpdateAlertModel *)v68->_alertModel setDownloadWasQueuedRemotely:0];
-  v21 = [v65 userInfo];
-  v20 = [v21 objectForKey:kSUUserRequestedKey];
-  v22 = [v20 BOOLValue];
+  [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel setDownloadWasQueuedRemotely:0];
+  userInfo = [v65 userInfo];
+  v20 = [userInfo objectForKey:kSUUserRequestedKey];
+  bOOLValue = [v20 BOOLValue];
 
-  v62 = v22;
-  v61 = 1;
-  v23 = [v65 userInfo];
-  v60 = [v23 objectForKey:kSUNotifyUserKey];
+  v62 = bOOLValue;
+  bOOLValue2 = 1;
+  userInfo2 = [v65 userInfo];
+  v60 = [userInfo2 objectForKey:kSUNotifyUserKey];
 
   if (v60)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v61 = [v60 BOOLValue];
+      bOOLValue2 = [v60 BOOLValue];
     }
   }
 
-  if (v61)
+  if (bOOLValue2)
   {
     if (v62)
     {
@@ -955,14 +955,14 @@
 
     else
     {
-      v16 = [v66 metadata];
+      metadata = [v66 metadata];
       v55 = 0;
       v17 = 0;
-      if ([v16 isAutoDownload])
+      if ([metadata isAutoDownload])
       {
-        v56 = [v66 metadata];
+        metadata2 = [v66 metadata];
         v55 = 1;
-        v17 = [v56 activeDownloadPolicyType] == 1;
+        v17 = [metadata2 activeDownloadPolicyType] == 1;
       }
 
       if (v55)
@@ -971,8 +971,8 @@
 
       if (v17)
       {
-        v14 = v68;
-        v15 = [v66 descriptor];
+        v14 = selfCopy;
+        descriptor = [v66 descriptor];
         [SUSUISoftwareUpdateController _autoDownloadUnknownToUserFailedForDescriptor:v14 error:"_autoDownloadUnknownToUserFailedForDescriptor:error:"];
       }
 
@@ -1001,11 +1001,11 @@
           v47 = 0;
           v48 = sub_26EB8;
           v49 = &unk_5EA18;
-          v50 = v68;
+          v50 = selfCopy;
           v51 = v66;
           v52 = v65;
           v53 = objc_retainBlock(&v45);
-          if ([(SUSUILayoutStateMonitor *)v68->_layoutStateMonitor isHomeScreenForeground]|| [(SUSUISoftwareUpdateController *)v68 settingsForeground])
+          if ([(SUSUILayoutStateMonitor *)selfCopy->_layoutStateMonitor isHomeScreenForeground]|| [(SUSUISoftwareUpdateController *)selfCopy settingsForeground])
           {
             v44 = SUSUILog();
             v43 = OS_LOG_TYPE_DEFAULT;
@@ -1034,14 +1034,14 @@
             }
 
             objc_storeStrong(&v41, 0);
-            [(SUSUILayoutStateMonitor *)v68->_layoutStateMonitor addObserver:v68];
-            queue = v68->_homescreenBlockQueue;
+            [(SUSUILayoutStateMonitor *)selfCopy->_layoutStateMonitor addObserver:selfCopy];
+            queue = selfCopy->_homescreenBlockQueue;
             v32 = _NSConcreteStackBlock;
             v33 = -1073741824;
             v34 = 0;
             v35 = sub_27058;
             v36 = &unk_60450;
-            v37 = v68;
+            v37 = selfCopy;
             v38 = v53;
             dispatch_async(queue, &v32);
             objc_storeStrong(&v38, 0);
@@ -1078,17 +1078,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 downloadDidFinish:(id)a4 withInstallPolicy:(id)a5
+- (void)client:(id)client downloadDidFinish:(id)finish withInstallPolicy:(id)policy
 {
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v33 = 0;
-  objc_storeStrong(&v33, a4);
+  objc_storeStrong(&v33, finish);
   v32 = 0;
-  objc_storeStrong(&v32, a5);
-  dispatch_assert_queue_V2(v35[3]);
+  objc_storeStrong(&v32, policy);
+  dispatch_assert_queue_V2(selfCopy[3]);
   v31 = SUSUILog();
   v30 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -1096,8 +1096,8 @@
     log = v31;
     type = v30;
     v9 = v33;
-    v12 = [v33 descriptor];
-    v29 = v12;
+    descriptor = [v33 descriptor];
+    v29 = descriptor;
     sub_23504(v38, v9, v29);
     _os_log_impl(&dword_0, log, type, "Software update download (%p) completed successfully: %@", v38, 0x16u);
 
@@ -1117,18 +1117,18 @@
   if (v33)
   {
     v23 = objc_opt_new();
-    v5 = [v32 useDarkBoot];
-    [v23 setInstallDark:v5];
-    v6 = [v32 autoUpdateEnabled];
-    [v23 setAutomaticInstallAttempt:v6];
-    v8 = v35;
+    useDarkBoot = [v32 useDarkBoot];
+    [v23 setInstallDark:useDarkBoot];
+    autoUpdateEnabled = [v32 autoUpdateEnabled];
+    [v23 setAutomaticInstallAttempt:autoUpdateEnabled];
+    v8 = selfCopy;
     v7 = v23;
     v15 = _NSConcreteStackBlock;
     v16 = -1073741824;
     v17 = 0;
     v18 = sub_274E8;
     v19 = &unk_60478;
-    v20 = v35;
+    v20 = selfCopy;
     v21 = v33;
     v22 = v32;
     [(dispatch_queue_t *)v8 _isUpdateInstallableWithInstallOptions:v7 andResponse:&v15];
@@ -1158,17 +1158,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 installWantsToStart:(id)a4 completion:(id)a5
+- (void)client:(id)client installWantsToStart:(id)start completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, start);
   v14 = 0;
-  objc_storeStrong(&v14, a5);
-  dispatch_assert_queue_V2(v17->_clientQueue);
+  objc_storeStrong(&v14, completion);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
   v13 = SUSUILog();
   v12 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1176,8 +1176,8 @@
     log = v13;
     type = v12;
     v5 = v15;
-    v8 = [(SUSUISoftwareUpdateAlertModel *)v17->_alertModel currentInstallationPolicy];
-    v11 = v8;
+    currentInstallationPolicy = [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel currentInstallationPolicy];
+    v11 = currentInstallationPolicy;
     sub_195C(v18, v5, v11);
     _os_log_impl(&dword_0, log, type, "Software update install want to begin for update: %@\nInstall Policy: %@", v18, 0x16u);
 
@@ -1191,16 +1191,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 installDidStart:(id)a4
+- (void)client:(id)client installDidStart:(id)start
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
-  dispatch_assert_queue_V2(v21->_clientQueue);
-  [(SUSUIDDMController *)v21->_ddmController installDidStart:v19];
+  objc_storeStrong(&v19, start);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  [(SUSUIDDMController *)selfCopy->_ddmController installDidStart:v19];
   v18 = SUSUILog();
   v17 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -1208,8 +1208,8 @@
     log = v18;
     type = v17;
     v10 = v19;
-    v13 = [(SUSUISoftwareUpdateAlertModel *)v21->_alertModel currentInstallationPolicy];
-    v16 = v13;
+    currentInstallationPolicy = [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel currentInstallationPolicy];
+    v16 = currentInstallationPolicy;
     sub_195C(v22, v10, v16);
     _os_log_impl(&dword_0, log, type, "Software update install began for update: %@\nInstall Policy: %@", v22, 0x16u);
 
@@ -1217,44 +1217,44 @@
   }
 
   objc_storeStrong(&v18, 0);
-  v8 = [(SUSUISoftwareUpdateAlertModel *)v21->_alertModel currentInstallationPolicy];
-  v9 = [(SUInstallPolicy *)v8 useDarkBoot];
+  currentInstallationPolicy2 = [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel currentInstallationPolicy];
+  useDarkBoot = [(SUInstallPolicy *)currentInstallationPolicy2 useDarkBoot];
 
-  if (v9)
+  if (useDarkBoot)
   {
-    if (!v21->_pendingInstallOptions)
+    if (!selfCopy->_pendingInstallOptions)
     {
       v4 = objc_alloc_init(SUSUISoftwareUpdateInstallOptions);
-      pendingInstallOptions = v21->_pendingInstallOptions;
-      v21->_pendingInstallOptions = v4;
+      pendingInstallOptions = selfCopy->_pendingInstallOptions;
+      selfCopy->_pendingInstallOptions = v4;
     }
 
-    [(SUSUISoftwareUpdateInstallOptions *)v21->_pendingInstallOptions setInstallDark:1];
+    [(SUSUISoftwareUpdateInstallOptions *)selfCopy->_pendingInstallOptions setInstallDark:1];
   }
 
-  [(SUSUISoftwareUpdateController *)v21 _realertWithStrategy:0 andReason:@"Install starting."];
+  [(SUSUISoftwareUpdateController *)selfCopy _realertWithStrategy:0 andReason:@"Install starting."];
   v6 = [SUSUISoftwareUpdateVerifyingUpdateAlertItem alloc];
-  v7 = [(SUDownload *)v21->_updateToInstall descriptor];
+  descriptor = [(SUDownload *)selfCopy->_updateToInstall descriptor];
   v15 = [SUSUIBaseSoftwareUpdateAlertItem initWithDescriptor:v6 softwareUpdateController:"initWithDescriptor:softwareUpdateController:"];
 
-  [(SUSUIAlertPresentationManager *)v21->_alertPresentationManager presentAlert:v15 animated:1];
+  [(SUSUIAlertPresentationManager *)selfCopy->_alertPresentationManager presentAlert:v15 animated:1];
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 installDidFail:(id)a4 withError:(id)a5
+- (void)client:(id)client installDidFail:(id)fail withError:(id)error
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, fail);
   v8 = 0;
-  objc_storeStrong(&v8, a5);
-  dispatch_assert_queue_V2(v11->_clientQueue);
-  [(SUSUIDDMController *)v11->_ddmController installDidFail:v9];
+  objc_storeStrong(&v8, error);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  [(SUSUIDDMController *)selfCopy->_ddmController installDidFail:v9];
   v7 = SUSUILog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1263,29 +1263,29 @@
   }
 
   objc_storeStrong(&v7, 0);
-  [(SUSUIAlertPresentationManager *)v11->_alertPresentationManager dismissAlertsOfClass:objc_opt_class() animated:1];
-  [(SUSUIAlertPresentationManager *)v11->_alertPresentationManager dismissAlertsOfClass:objc_opt_class() animated:1];
-  [(SUSUIAlertPresentationManager *)v11->_alertPresentationManager dismissAlertsOfClass:objc_opt_class() animated:1];
-  [(SUSUISoftwareUpdateController *)v11 _handleInstallError:v8];
-  [(SUSUISoftwareUpdateController *)v11 _setPendingInstallOptions:0];
+  [(SUSUIAlertPresentationManager *)selfCopy->_alertPresentationManager dismissAlertsOfClass:objc_opt_class() animated:1];
+  [(SUSUIAlertPresentationManager *)selfCopy->_alertPresentationManager dismissAlertsOfClass:objc_opt_class() animated:1];
+  [(SUSUIAlertPresentationManager *)selfCopy->_alertPresentationManager dismissAlertsOfClass:objc_opt_class() animated:1];
+  [(SUSUISoftwareUpdateController *)selfCopy _handleInstallError:v8];
+  [(SUSUISoftwareUpdateController *)selfCopy _setPendingInstallOptions:0];
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 installDidFinish:(id)a4
+- (void)client:(id)client installDidFinish:(id)finish
 {
-  v57 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v55 = 0;
-  objc_storeStrong(&v55, a4);
-  dispatch_assert_queue_V2(v57->_clientQueue);
-  [(SUSUIDDMController *)v57->_ddmController installDidFinish:v55];
-  if ([(SUSUISoftwareUpdateInstallOptions *)v57->_pendingInstallOptions automaticInstallAttempt])
+  objc_storeStrong(&v55, finish);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  [(SUSUIDDMController *)selfCopy->_ddmController installDidFinish:v55];
+  if ([(SUSUISoftwareUpdateInstallOptions *)selfCopy->_pendingInstallOptions automaticInstallAttempt])
   {
-    [(SUSUISoftwareUpdateController *)v57 _sendInstallTonightDidCompleteToObservers];
+    [(SUSUISoftwareUpdateController *)selfCopy _sendInstallTonightDidCompleteToObservers];
   }
 
   v23 = +[SUSUIPreferences sharedInstance];
@@ -1302,15 +1302,15 @@
   }
 
   objc_storeStrong(&v54, 0);
-  v51 = [v55 isSplatOnly];
+  isSplatOnly = [v55 isSplatOnly];
   v20 = +[SUSUIPreferences sharedInstance];
-  [(SUSUIPreferences *)v20 setLastAppliedUpdateWasSplatOnly:v51 & 1];
+  [(SUSUIPreferences *)v20 setLastAppliedUpdateWasSplatOnly:isSplatOnly & 1];
 
   v50 = SUSUILog();
   v49 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
   {
-    if (v51)
+    if (isSplatOnly)
     {
       v4 = @"Splat";
     }
@@ -1320,7 +1320,7 @@
       v4 = @"Non-Splat";
     }
 
-    if (v51)
+    if (isSplatOnly)
     {
       v5 = @"YES";
     }
@@ -1336,9 +1336,9 @@
 
   objc_storeStrong(&v50, 0);
   v18 = +[SUSUIPreferences sharedInstance];
-  v19 = [(SUSUIPreferences *)v18 IWillRebootLater];
+  iWillRebootLater = [(SUSUIPreferences *)v18 IWillRebootLater];
 
-  if (v19)
+  if (iWillRebootLater)
   {
     v48 = SUSUILog();
     v47 = OS_LOG_TYPE_DEFAULT;
@@ -1362,18 +1362,18 @@
     v15 = [v44 isInPalletUpdateMode:&v42];
     objc_storeStrong(&v43, v42);
     v40 = 0;
-    if ((v15 & 1) == 0 || (v14 = 1, v43))
+    if ((v15 & 1) == 0 || (useMobileInboxUpdaterRebootDelay = 1, v43))
     {
       v41 = +[SUSUIPreferences sharedInstance];
       v40 = 1;
-      v14 = [(SUSUIPreferences *)v41 useMobileInboxUpdaterRebootDelay];
+      useMobileInboxUpdaterRebootDelay = [(SUSUIPreferences *)v41 useMobileInboxUpdaterRebootDelay];
     }
 
     if (v40)
     {
     }
 
-    if (v14)
+    if (useMobileInboxUpdaterRebootDelay)
     {
       v39 = SUSUILog();
       v38 = OS_LOG_TYPE_DEFAULT;
@@ -1392,13 +1392,13 @@
       objc_storeStrong(&v39, 0);
       v36 = dispatch_time(0, 30000000000);
       when = v36;
-      queue = v57->_clientQueue;
+      queue = selfCopy->_clientQueue;
       v30 = _NSConcreteStackBlock;
       v31 = -1073741824;
       v32 = 0;
       v33 = sub_289F4;
       v34 = &unk_5CCB0;
-      v35 = v57;
+      v35 = selfCopy;
       dispatch_after(when, queue, &v30);
       objc_storeStrong(&v35, 0);
     }
@@ -1429,7 +1429,7 @@
       }
 
       objc_storeStrong(&v27, 0);
-      [(SUSUISoftwareUpdateController *)v57 reboot:[(SUSUISoftwareUpdateInstallOptions *)v57->_pendingInstallOptions installDark]];
+      [(SUSUISoftwareUpdateController *)selfCopy reboot:[(SUSUISoftwareUpdateInstallOptions *)selfCopy->_pendingInstallOptions installDark]];
     }
 
     objc_storeStrong(&v43, 0);
@@ -1441,32 +1441,32 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 installPolicyDidChange:(id)a4
+- (void)client:(id)client installPolicyDidChange:(id)change
 {
-  v41 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v39 = 0;
-  objc_storeStrong(&v39, a4);
-  dispatch_assert_queue_V2(v41->_clientQueue);
-  v13 = [(SUSUISoftwareUpdateAlertModel *)v41->_alertModel currentInstallationPolicy];
-  v14 = [(SUInstallPolicy *)v13 type];
+  objc_storeStrong(&v39, change);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  currentInstallationPolicy = [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel currentInstallationPolicy];
+  type = [(SUInstallPolicy *)currentInstallationPolicy type];
 
-  v38 = v14;
-  v37 = [v39 type];
-  v15 = [(SUSUISoftwareUpdateAlertModel *)v41->_alertModel currentInstallationPolicy];
-  v16 = [(SUInstallPolicy *)v15 autoUpdateEnabled];
+  v38 = type;
+  type2 = [v39 type];
+  currentInstallationPolicy2 = [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel currentInstallationPolicy];
+  autoUpdateEnabled = [(SUInstallPolicy *)currentInstallationPolicy2 autoUpdateEnabled];
 
-  v36 = v16;
+  v36 = autoUpdateEnabled;
   v35 = 0;
-  v17 = [(SUSUISoftwareUpdateAlertModel *)v41->_alertModel currentInstallationPolicy];
-  v18 = [(SUInstallPolicy *)v17 useDarkBoot];
+  currentInstallationPolicy3 = [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel currentInstallationPolicy];
+  useDarkBoot = [(SUInstallPolicy *)currentInstallationPolicy3 useDarkBoot];
 
-  v34 = v18;
-  v33 = [v39 useDarkBoot];
-  v19 = [(SUSUISoftwareUpdateAlertModel *)v41->_alertModel currentInstallationPolicy];
-  v20 = [(SUInstallPolicy *)v19 isEqual:v39];
+  v34 = useDarkBoot;
+  useDarkBoot2 = [v39 useDarkBoot];
+  currentInstallationPolicy4 = [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel currentInstallationPolicy];
+  v20 = [(SUInstallPolicy *)currentInstallationPolicy4 isEqual:v39];
 
   if ((v20 & 1) == 0)
   {
@@ -1476,8 +1476,8 @@
     {
       log = v32;
       type = v31;
-      v11 = [(SUSUISoftwareUpdateAlertModel *)v41->_alertModel currentInstallationPolicy];
-      v30 = v11;
+      currentInstallationPolicy5 = [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel currentInstallationPolicy];
+      v30 = currentInstallationPolicy5;
       sub_195C(v43, v30, v39);
       _os_log_impl(&dword_0, log, type, "Install Policy changed from:%@ to %@:", v43, 0x16u);
 
@@ -1485,26 +1485,26 @@
     }
 
     objc_storeStrong(&v32, 0);
-    [(SUSUISoftwareUpdateAlertModel *)v41->_alertModel setCurrentInstallationPolicy:v39 forReason:@"Install policy changed from daemon"];
-    [(SUSUISoftwareUpdateController *)v41 _setInstallPolicy:v39];
-    if (v38 != v37 && v37 == &dword_0 + 1 && [(SUSUISoftwareUpdateAlertModel *)v41->_alertModel alertFlow]!= &dword_4 + 1)
+    [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel setCurrentInstallationPolicy:v39 forReason:@"Install policy changed from daemon"];
+    [(SUSUISoftwareUpdateController *)selfCopy _setInstallPolicy:v39];
+    if (v38 != type2 && type2 == &dword_0 + 1 && [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel alertFlow]!= &dword_4 + 1)
     {
       v35 = 1;
       v8 = SUSUIStringForInstallPolicyType(v38);
-      v7 = SUSUIStringForInstallPolicyType(v37);
+      v7 = SUSUIStringForInstallPolicyType(type2);
       v29 = [NSString stringWithFormat:@"Install policy changed from %@ to %@", v8, v7];
 
-      [(SUSUISoftwareUpdateController *)v41 _realertWithStrategy:6 andReason:v29];
+      [(SUSUISoftwareUpdateController *)selfCopy _realertWithStrategy:6 andReason:v29];
       objc_storeStrong(&v29, 0);
     }
 
-    if ((v34 & 1) != (v33 & 1))
+    if ((v34 & 1) != (useDarkBoot2 & 1))
     {
       v28 = SUSUILog();
       v27 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        if (v33)
+        if (useDarkBoot2)
         {
           v4 = @"Enabled";
         }
@@ -1519,7 +1519,7 @@
       }
 
       objc_storeStrong(&v28, 0);
-      [(SUSUISoftwareUpdateInstallOptions *)v41->_pendingInstallOptions setInstallDark:v33 & 1];
+      [(SUSUISoftwareUpdateInstallOptions *)selfCopy->_pendingInstallOptions setInstallDark:useDarkBoot2 & 1];
     }
 
     v6 = v36 & 1;
@@ -1527,32 +1527,32 @@
     {
       if ([v39 autoUpdateEnabled])
       {
-        if (v41->_updateToInstall)
+        if (selfCopy->_updateToInstall)
         {
-          client = v41->_client;
+          client = selfCopy->_client;
           v21 = _NSConcreteStackBlock;
           v22 = -1073741824;
           v23 = 0;
           v24 = sub_29118;
           v25 = &unk_60310;
-          v26 = v41;
+          v26 = selfCopy;
           [(SUManagerClient *)client currentAutoInstallOperation:1 withResult:&v21];
           objc_storeStrong(&v26, 0);
         }
 
-        [(SUSUISoftwareUpdateController *)v41 _realertWithStrategy:0 andReason:@"Auto update enabled"];
+        [(SUSUISoftwareUpdateController *)selfCopy _realertWithStrategy:0 andReason:@"Auto update enabled"];
       }
 
       else
       {
-        [(SUSUISoftwareUpdateController *)v41 _setTryTonightAutoInstallOperation:0 cancelIfNecessary:1];
-        [(SUSUISoftwareUpdateController *)v41 _setPasscodePolicyType:0];
-        if ((v35 & 1) == 0 && v41->_updateToInstall)
+        [(SUSUISoftwareUpdateController *)selfCopy _setTryTonightAutoInstallOperation:0 cancelIfNecessary:1];
+        [(SUSUISoftwareUpdateController *)selfCopy _setPasscodePolicyType:0];
+        if ((v35 & 1) == 0 && selfCopy->_updateToInstall)
         {
-          [(SUSUISoftwareUpdateController *)v41 _realertWithStrategy:1 andReason:@"Auto update turned off"];
+          [(SUSUISoftwareUpdateController *)selfCopy _realertWithStrategy:1 andReason:@"Auto update turned off"];
         }
 
-        [(SUManagerClient *)v41->_client currentAutoInstallOperation:0 withResult:&stru_604B8];
+        [(SUManagerClient *)selfCopy->_client currentAutoInstallOperation:0 withResult:&stru_604B8];
       }
     }
   }
@@ -1561,32 +1561,32 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 managedInstallationRequested:(id)a4
+- (void)client:(id)client managedInstallationRequested:(id)requested
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  if (v14->_updateToInstall)
+  objc_storeStrong(&v12, requested);
+  if (selfCopy->_updateToInstall)
   {
     if ([v12 autoUpdateEnabled])
     {
-      client = v14->_client;
+      client = selfCopy->_client;
       v6 = _NSConcreteStackBlock;
       v7 = -1073741824;
       v8 = 0;
       v9 = sub_296CC;
       v10 = &unk_60310;
-      v11 = v14;
+      v11 = selfCopy;
       [(SUManagerClient *)client currentAutoInstallOperation:1 withResult:&v6];
       objc_storeStrong(&v11, 0);
     }
 
     else
     {
-      [(SUSUISoftwareUpdateController *)v14 _realertWithStrategy:6 andReason:@"Managed Install request received"];
+      [(SUSUISoftwareUpdateController *)selfCopy _realertWithStrategy:6 andReason:@"Managed Install request received"];
     }
   }
 
@@ -1594,28 +1594,28 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 handleUIForDDMDeclaration:(id)a4
+- (void)client:(id)client handleUIForDDMDeclaration:(id)declaration
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(SUSUIDDMController *)v7->_ddmController setDeclaration:v5];
+  objc_storeStrong(&v5, declaration);
+  [(SUSUIDDMController *)selfCopy->_ddmController setDeclaration:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 handleUIForDDMGlobalSettings:(id)a4
+- (void)client:(id)client handleUIForDDMGlobalSettings:(id)settings
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(SUSUIDDMController *)v7->_ddmController setGlobalSettings:v5];
+  objc_storeStrong(&v5, settings);
+  [(SUSUIDDMController *)selfCopy->_ddmController setGlobalSettings:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
@@ -1631,26 +1631,26 @@
   return v3;
 }
 
-- (void)client:(id)a3 presentingRecommendedUpdate:(id)a4 shouldPresent:(BOOL)a5
+- (void)client:(id)client presentingRecommendedUpdate:(id)update shouldPresent:(BOOL)present
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v25 = 0;
-  objc_storeStrong(&v25, a4);
-  v24 = a5;
-  dispatch_assert_queue_V2(v27->_clientQueue);
+  objc_storeStrong(&v25, update);
+  presentCopy = present;
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
   v23 = SUSUILog();
   v22 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    sub_29E04(v30, "[SUSUISoftwareUpdateController client:presentingRecommendedUpdate:shouldPresent:]", v25, v24);
+    sub_29E04(v30, "[SUSUISoftwareUpdateController client:presentingRecommendedUpdate:shouldPresent:]", v25, presentCopy);
     _os_log_impl(&dword_0, v23, v22, "%s update:%@ shouldPresent:%d", v30, 0x1Cu);
   }
 
   objc_storeStrong(&v23, 0);
-  if ([(SUSUIDDMController *)v27->_ddmController notificationsDisabledByGlobalSettings])
+  if ([(SUSUIDDMController *)selfCopy->_ddmController notificationsDisabledByGlobalSettings])
   {
     v21 = SUSUILog();
     v20 = OS_LOG_TYPE_DEFAULT;
@@ -1666,8 +1666,8 @@
 
   else
   {
-    v18 = [(SUSUISoftwareUpdateController *)v27 settingsForeground];
-    if (v18)
+    settingsForeground = [(SUSUISoftwareUpdateController *)selfCopy settingsForeground];
+    if (settingsForeground)
     {
       v17 = SUSUILog();
       v16 = OS_LOG_TYPE_DEFAULT;
@@ -1688,9 +1688,9 @@
       v10 = 0;
       v11 = sub_29E74;
       v12 = &unk_604E0;
-      v15 = v24;
+      v15 = presentCopy;
       v13 = v25;
-      v14 = v27;
+      v14 = selfCopy;
       [v5 isDownloading:&v8];
       objc_storeStrong(&v14, 0);
       objc_storeStrong(&v13, 0);
@@ -1703,17 +1703,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 installTonightScheduled:(BOOL)a4 operationID:(id)a5
+- (void)client:(id)client installTonightScheduled:(BOOL)scheduled operationID:(id)d
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v19 = a4;
+  objc_storeStrong(location, client);
+  scheduledCopy = scheduled;
   v18 = 0;
-  objc_storeStrong(&v18, a5);
-  dispatch_assert_queue_V2(v21->_clientQueue);
-  if (v19)
+  objc_storeStrong(&v18, d);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  if (scheduledCopy)
   {
     v17 = SUSUILog();
     v16 = OS_LOG_TYPE_DEFAULT;
@@ -1724,18 +1724,18 @@
     }
 
     objc_storeStrong(&v17, 0);
-    v6 = [(SUAutoInstallOperation *)v21->_scheduledTryTonightAutoInstallOperation id];
+    v6 = [(SUAutoInstallOperation *)selfCopy->_scheduledTryTonightAutoInstallOperation id];
     v7 = [v6 isEqual:v18];
 
     if ((v7 & 1) == 0)
     {
-      client = v21->_client;
+      client = selfCopy->_client;
       v10 = _NSConcreteStackBlock;
       v11 = -1073741824;
       v12 = 0;
       v13 = sub_2A2E0;
       v14 = &unk_60310;
-      v15 = v21;
+      v15 = selfCopy;
       [(SUManagerClient *)client currentAutoInstallOperation:1 withResult:&v10];
       objc_storeStrong(&v15, 0);
     }
@@ -1745,18 +1745,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 rollbackReadyToStart:(id)a4 options:(id)a5 completion:(id)a6
+- (void)client:(id)client rollbackReadyToStart:(id)start options:(id)options completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, start);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
+  objc_storeStrong(&v11, options);
   v10 = 0;
-  objc_storeStrong(&v10, a6);
+  objc_storeStrong(&v10, completion);
   oslog = SUSUILog();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -1771,15 +1771,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 rollbackDidStart:(id)a4
+- (void)client:(id)client rollbackDidStart:(id)start
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  dispatch_assert_queue_V2(v8->_clientQueue);
+  objc_storeStrong(&v6, start);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
   oslog = SUSUILog();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -1792,15 +1792,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 rollbackDidFinish:(id)a4
+- (void)client:(id)client rollbackDidFinish:(id)finish
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  dispatch_assert_queue_V2(v8[3]);
+  objc_storeStrong(&v6, finish);
+  dispatch_assert_queue_V2(selfCopy[3]);
   oslog = SUSUILog();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -1809,22 +1809,22 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(dispatch_queue_t *)v8 _rollbackSucceeded:v6];
+  [(dispatch_queue_t *)selfCopy _rollbackSucceeded:v6];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 rollbackDidFail:(id)a4 withError:(id)a5
+- (void)client:(id)client rollbackDidFail:(id)fail withError:(id)error
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, fail);
   v8 = 0;
-  objc_storeStrong(&v8, a5);
-  dispatch_assert_queue_V2(v11[3]);
+  objc_storeStrong(&v8, error);
+  dispatch_assert_queue_V2(selfCopy[3]);
   v7 = SUSUILog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1833,21 +1833,21 @@
   }
 
   objc_storeStrong(&v7, 0);
-  [(dispatch_queue_t *)v11 _rollbackFailed:v9 withError:v8];
+  [(dispatch_queue_t *)selfCopy _rollbackFailed:v9 withError:v8];
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 scheduledRollbackReadyForReboot:(id)a4
+- (void)client:(id)client scheduledRollbackReadyForReboot:(id)reboot
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  dispatch_assert_queue_V2(v8[3]);
+  objc_storeStrong(&v6, reboot);
+  dispatch_assert_queue_V2(selfCopy[3]);
   oslog = SUSUILog();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -1856,20 +1856,20 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(dispatch_queue_t *)v8 rollbackCompleted:v6];
+  [(dispatch_queue_t *)selfCopy rollbackCompleted:v6];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)deviceBootedAfterSplatOnlyRollback:(id)a3 rollbackDescriptor:(id)a4
+- (void)deviceBootedAfterSplatOnlyRollback:(id)rollback rollbackDescriptor:(id)descriptor
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, rollback);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  dispatch_assert_queue_V2(v8[3]);
+  objc_storeStrong(&v6, descriptor);
+  dispatch_assert_queue_V2(selfCopy[3]);
   oslog = SUSUILog();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -1878,22 +1878,22 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(dispatch_queue_t *)v8 _bootedAfterRollback:v6];
+  [(dispatch_queue_t *)selfCopy _bootedAfterRollback:v6];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)client:(id)a3 rollbackSuggested:(id)a4 info:(id)a5
+- (void)client:(id)client rollbackSuggested:(id)suggested info:(id)info
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, suggested);
   v8 = 0;
-  objc_storeStrong(&v8, a5);
-  dispatch_assert_queue_V2(v11[3]);
+  objc_storeStrong(&v8, info);
+  dispatch_assert_queue_V2(selfCopy[3]);
   v7 = SUSUILog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1902,22 +1902,22 @@
   }
 
   objc_storeStrong(&v7, 0);
-  [(dispatch_queue_t *)v11 _rollbackSuggested:v9 info:v8];
+  [(dispatch_queue_t *)selfCopy _rollbackSuggested:v9 info:v8];
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)autoInstallOperationWasCancelled:(id)a3
+- (void)autoInstallOperationWasCancelled:(id)cancelled
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_V2(v5->_clientQueue);
-  if (v5->_scheduledTryTonightAutoInstallOperation == location[0])
+  objc_storeStrong(location, cancelled);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  if (selfCopy->_scheduledTryTonightAutoInstallOperation == location[0])
   {
-    [(SUSUISoftwareUpdateController *)v5 _autoInstallOperationWasCancelled:location[0] withRepopStrategy:1];
+    [(SUSUISoftwareUpdateController *)selfCopy _autoInstallOperationWasCancelled:location[0] withRepopStrategy:1];
   }
 
   else
@@ -1926,7 +1926,7 @@
     oslog = SUSUILog();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      sub_2AF9C(v6, location[0], v5->_scheduledTryTonightAutoInstallOperation);
+      sub_2AF9C(v6, location[0], selfCopy->_scheduledTryTonightAutoInstallOperation);
       _os_log_impl(&dword_0, oslog, OS_LOG_TYPE_DEFAULT, "Auto install operation (%p) cancelled, but we weren't tracking it (tracking %p currently).", v6, 0x16u);
     }
 
@@ -1936,24 +1936,24 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)autoInstallOperationDidExpire:(id)a3 withError:(id)a4
+- (void)autoInstallOperationDidExpire:(id)expire withError:(id)error
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, expire);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  dispatch_assert_queue_V2(v12->_clientQueue);
-  if (v12->_scheduledTryTonightAutoInstallOperation == location[0])
+  objc_storeStrong(&v10, error);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  if (selfCopy->_scheduledTryTonightAutoInstallOperation == location[0])
   {
     v7 = 0;
-    v5 = 0;
-    if ([(SUSUISoftwareUpdateAlertModel *)v12->_alertModel alertFlow]== &dword_4 + 1)
+    hideInstallAlert = 0;
+    if ([(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel alertFlow]== &dword_4 + 1)
     {
-      v8 = [(SUDownload *)v12->_updateToInstall descriptor];
+      descriptor = [(SUDownload *)selfCopy->_updateToInstall descriptor];
       v7 = 1;
-      v5 = [v8 hideInstallAlert];
+      hideInstallAlert = [descriptor hideInstallAlert];
     }
 
     if (v7)
@@ -1961,12 +1961,12 @@
     }
 
     v4 = 0;
-    if ((v5 & 1) == 0)
+    if ((hideInstallAlert & 1) == 0)
     {
       v4 = 3;
     }
 
-    [(SUSUISoftwareUpdateController *)v12 _autoInstallOperationDidExpire:location[0] withRepopStrategy:v4 error:v10];
+    [(SUSUISoftwareUpdateController *)selfCopy _autoInstallOperationDidExpire:location[0] withRepopStrategy:v4 error:v10];
   }
 
   else
@@ -1975,7 +1975,7 @@
     v9 = SUSUILog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      sub_2AF9C(v13, location[0], v12->_scheduledTryTonightAutoInstallOperation);
+      sub_2AF9C(v13, location[0], selfCopy->_scheduledTryTonightAutoInstallOperation);
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Auto install operation (%p) expired, but we weren't tracking it (tracking %p currently).", v13, 0x16u);
     }
 
@@ -1986,47 +1986,47 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)autoInstallOperationDidConsent:(id)a3
+- (void)autoInstallOperationDidConsent:(id)consent
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_V2(v5->_clientQueue);
-  scheduledTryTonightAutoInstallOperation = v5->_scheduledTryTonightAutoInstallOperation;
+  objc_storeStrong(location, consent);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  scheduledTryTonightAutoInstallOperation = selfCopy->_scheduledTryTonightAutoInstallOperation;
   objc_storeStrong(location, 0);
 }
 
-- (void)autoInstallOperationIsReadyToInstall:(id)a3 withResponse:(id)a4
+- (void)autoInstallOperationIsReadyToInstall:(id)install withResponse:(id)response
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, install);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
-  dispatch_assert_queue_V2(v24->_clientQueue);
+  objc_storeStrong(&v22, response);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
   v21 = SUSUILog();
   v20 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    sub_2AF9C(v26, location[0], v24->_scheduledTryTonightAutoInstallOperation);
+    sub_2AF9C(v26, location[0], selfCopy->_scheduledTryTonightAutoInstallOperation);
     _os_log_impl(&dword_0, v21, v20, "Received event that auto install operation is ready to install (operation = %p, currentlyScheduledOperation = %p).", v26, 0x16u);
   }
 
   objc_storeStrong(&v21, 0);
-  if (v24->_scheduledTryTonightAutoInstallOperation && v24->_scheduledTryTonightAutoInstallOperation == location[0])
+  if (selfCopy->_scheduledTryTonightAutoInstallOperation && selfCopy->_scheduledTryTonightAutoInstallOperation == location[0])
   {
     v16 = objc_alloc_init(SUSUISoftwareUpdateInstallOptions);
     [(SUSUISoftwareUpdateInstallOptions *)v16 setAutomaticInstallAttempt:1];
-    v5 = v24;
+    v5 = selfCopy;
     v4 = v16;
     v7 = _NSConcreteStackBlock;
     v8 = -1073741824;
     v9 = 0;
     v10 = sub_2B608;
     v11 = &unk_60508;
-    v12 = v24;
+    v12 = selfCopy;
     v13 = v16;
     v14 = location[0];
     v15 = v22;
@@ -2045,7 +2045,7 @@
     v18 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      sub_2AF9C(v25, location[0], v24->_scheduledTryTonightAutoInstallOperation);
+      sub_2AF9C(v25, location[0], selfCopy->_scheduledTryTonightAutoInstallOperation);
       _os_log_impl(&dword_0, v19, v18, "Auto install operation (%p) is ready to install, but we weren't tracking it (tracking %p currently).", v25, 0x16u);
     }
 
@@ -2057,24 +2057,24 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)autoInstallOperationPasscodePolicyDidChange:(id)a3 passcodePolicyType:(unint64_t)a4
+- (void)autoInstallOperationPasscodePolicyDidChange:(id)change passcodePolicyType:(unint64_t)type
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_V2(v6[3]);
-  [(dispatch_queue_t *)v6 _setPasscodePolicyType:a4];
+  objc_storeStrong(location, change);
+  dispatch_assert_queue_V2(selfCopy[3]);
+  [(dispatch_queue_t *)selfCopy _setPasscodePolicyType:type];
   objc_storeStrong(location, 0);
 }
 
 - (void)_sendInstallTonightDidCompleteToObservers
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   dispatch_assert_queue_V2(self->_clientQueue);
   memset(__b, 0, sizeof(__b));
-  obj = v11->_observers;
+  obj = selfCopy->_observers;
   v7 = [(NSHashTable *)obj countByEnumeratingWithState:__b objects:v12 count:16];
   if (v7)
   {
@@ -2090,7 +2090,7 @@
       }
 
       v9 = *(__b[1] + 8 * v4);
-      [v9 softwareUpdateControllerDidCompleteAutomaticInstallation:v11];
+      [v9 softwareUpdateControllerDidCompleteAutomaticInstallation:selfCopy];
       ++v4;
       if (v2 + 1 >= v5)
       {
@@ -2105,25 +2105,25 @@
   }
 }
 
-- (void)alertModel:(id)a3 alertFlowDidChangeFrom:(unint64_t)a4 to:(unint64_t)a5
+- (void)alertModel:(id)model alertFlowDidChangeFrom:(unint64_t)from to:(unint64_t)to
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v17 = a4;
-  v16 = a5;
-  dispatch_assert_queue_V2(v19[3]);
+  objc_storeStrong(location, model);
+  fromCopy = from;
+  toCopy = to;
+  dispatch_assert_queue_V2(selfCopy[3]);
   v15 = SUSUILog();
   v14 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     log = v15;
     type = v14;
-    v9 = SUSUIStringForInstallAlertFlow(v17);
+    v9 = SUSUIStringForInstallAlertFlow(fromCopy);
     v5 = v9;
     v13 = v5;
-    v8 = SUSUIStringForInstallAlertFlow(v16);
+    v8 = SUSUIStringForInstallAlertFlow(toCopy);
     v12 = v8;
     sub_54AC(v20, v5, v12);
     _os_log_impl(&dword_0, log, type, "InstallAlertFlow changed from %{public}@ to %{public}@", v20, 0x16u);
@@ -2133,9 +2133,9 @@
   }
 
   objc_storeStrong(&v15, 0);
-  if (v16 != 3 && v16 != 5)
+  if (toCopy != 3 && toCopy != 5)
   {
-    [(dispatch_queue_t *)v19 _setTryTonightAutoInstallOperation:0 cancelIfNecessary:1];
+    [(dispatch_queue_t *)selfCopy _setTryTonightAutoInstallOperation:0 cancelIfNecessary:1];
   }
 
   objc_storeStrong(location, 0);
@@ -2163,9 +2163,9 @@
   objc_storeStrong(v7, 0);
 }
 
-- (id)_stringForInstallNotAllowableReason:(unint64_t)a3
+- (id)_stringForInstallNotAllowableReason:(unint64_t)reason
 {
-  switch(a3)
+  switch(reason)
   {
     case 0uLL:
       goto LABEL_18;
@@ -2258,12 +2258,12 @@ LABEL_18:
   return v2;
 }
 
-- (int64_t)_springboardPasscodePolicyTypeFromSUPasscodePolicyType:(unint64_t)a3
+- (int64_t)_springboardPasscodePolicyTypeFromSUPasscodePolicyType:(unint64_t)type
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
-  switch(a3)
+  typeCopy = type;
+  switch(type)
   {
     case 0uLL:
       return 0;
@@ -2276,7 +2276,7 @@ LABEL_18:
   oslog = SUSUILog();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    sub_13774(v9, v5);
+    sub_13774(v9, typeCopy);
     _os_log_impl(&dword_0, oslog, OS_LOG_TYPE_DEFAULT, "Unknown SUPasscodePolicyType: %lu. Returning not required", v9, 0xCu);
   }
 
@@ -2284,42 +2284,42 @@ LABEL_18:
   return 0;
 }
 
-- (void)_setPasscodePolicyType:(unint64_t)a3
+- (void)_setPasscodePolicyType:(unint64_t)type
 {
-  v44 = self;
+  selfCopy = self;
   v43 = a2;
-  v42 = a3;
+  typeCopy = type;
   dispatch_assert_queue_V2(self->_clientQueue);
-  if (![(SUSUIDDMController *)v44->_ddmController shouldEnforceUpdate]|| v42 == 2)
+  if (![(SUSUIDDMController *)selfCopy->_ddmController shouldEnforceUpdate]|| typeCopy == 2)
   {
     v38 = objc_alloc_init(SBSSoftwareUpdateService);
     v18 = +[SUKeybagInterface sharedInstance];
-    v19 = [(SUKeybagInterface *)v18 hasPasscodeSet];
+    hasPasscodeSet = [(SUKeybagInterface *)v18 hasPasscodeSet];
 
-    if (v19)
+    if (hasPasscodeSet)
     {
       v12 = +[SUSUIPreferences sharedInstance];
-      v13 = [(SUSUIPreferences *)v12 passcodeRequiredDays];
+      passcodeRequiredDays = [(SUSUIPreferences *)v12 passcodeRequiredDays];
 
-      if (v13)
+      if (passcodeRequiredDays)
       {
         v10 = +[SUSUIPreferences sharedInstance];
-        v9 = [(SUSUIPreferences *)v10 passcodeRequiredDays];
-        v11 = [v9 integerValue];
+        passcodeRequiredDays2 = [(SUSUIPreferences *)v10 passcodeRequiredDays];
+        integerValue = [passcodeRequiredDays2 integerValue];
 
-        v30[1] = v11;
-        if (v11)
+        v30[1] = integerValue;
+        if (integerValue)
         {
           v27 = SUSUILog();
           v26 = OS_LOG_TYPE_DEFAULT;
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
           {
-            sub_13774(v46, [(SUSUISoftwareUpdateController *)v44 _springboardPasscodePolicyTypeFromSUPasscodePolicyType:v42]);
+            sub_13774(v46, [(SUSUISoftwareUpdateController *)selfCopy _springboardPasscodePolicyTypeFromSUPasscodePolicyType:typeCopy]);
             _os_log_impl(&dword_0, v27, v26, "Setting SBPasscodePolicy to: %ld", v46, 0xCu);
           }
 
           objc_storeStrong(&v27, 0);
-          [v38 setPasscodePolicy:{-[SUSUISoftwareUpdateController _springboardPasscodePolicyTypeFromSUPasscodePolicyType:](v44, "_springboardPasscodePolicyTypeFromSUPasscodePolicyType:", v42)}];
+          [v38 setPasscodePolicy:{-[SUSUISoftwareUpdateController _springboardPasscodePolicyTypeFromSUPasscodePolicyType:](selfCopy, "_springboardPasscodePolicyTypeFromSUPasscodePolicyType:", typeCopy)}];
         }
 
         else
@@ -2341,10 +2341,10 @@ LABEL_18:
 
       else
       {
-        v5 = [(SUDownload *)v44->_updateToInstall descriptor];
-        v6 = [v5 forcePasscodeRequired];
+        descriptor = [(SUDownload *)selfCopy->_updateToInstall descriptor];
+        forcePasscodeRequired = [descriptor forcePasscodeRequired];
 
-        if (v6)
+        if (forcePasscodeRequired)
         {
           v25 = SUSUILog();
           v24 = OS_LOG_TYPE_DEFAULT;
@@ -2365,21 +2365,21 @@ LABEL_18:
           v22 = SUSUILog();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
           {
-            sub_13774(v45, [(SUSUISoftwareUpdateController *)v44 _springboardPasscodePolicyTypeFromSUPasscodePolicyType:v42]);
+            sub_13774(v45, [(SUSUISoftwareUpdateController *)selfCopy _springboardPasscodePolicyTypeFromSUPasscodePolicyType:typeCopy]);
             _os_log_impl(&dword_0, v22, OS_LOG_TYPE_DEFAULT, "Setting SBPasscodePolicy to: %ld", v45, 0xCu);
           }
 
           objc_storeStrong(&v22, 0);
-          [v38 setPasscodePolicy:{-[SUSUISoftwareUpdateController _springboardPasscodePolicyTypeFromSUPasscodePolicyType:](v44, "_springboardPasscodePolicyTypeFromSUPasscodePolicyType:", v42)}];
+          [v38 setPasscodePolicy:{-[SUSUISoftwareUpdateController _springboardPasscodePolicyTypeFromSUPasscodePolicyType:](selfCopy, "_springboardPasscodePolicyTypeFromSUPasscodePolicyType:", typeCopy)}];
         }
       }
 
-      v44->_passcodePolicy = v42;
+      selfCopy->_passcodePolicy = typeCopy;
     }
 
     else
     {
-      v37 = [(SUSUISoftwareUpdateController *)v44 _springboardPasscodePolicyTypeFromSUPasscodePolicyType:0];
+      v37 = [(SUSUISoftwareUpdateController *)selfCopy _springboardPasscodePolicyTypeFromSUPasscodePolicyType:0];
       if ([v38 passcodePolicy] == v37)
       {
         v33 = SUSUILog();
@@ -2411,7 +2411,7 @@ LABEL_18:
         [v38 setPasscodePolicy:v37];
       }
 
-      v44->_passcodePolicy = 0;
+      selfCopy->_passcodePolicy = 0;
     }
 
     objc_storeStrong(&v38, 0);
@@ -2433,23 +2433,23 @@ LABEL_18:
   }
 }
 
-- (BOOL)_createAutoInstallKeybagWithPasscode:(id)a3
+- (BOOL)_createAutoInstallKeybagWithPasscode:(id)passcode
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_V2(v19->_clientQueue);
+  objc_storeStrong(location, passcode);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
   v17 = 1;
-  if ([(SUSUISoftwareUpdateController *)v19 _isAutoUpdateEnabled]|| [(SUSUIDDMController *)v19->_ddmController shouldEnforceUpdate])
+  if ([(SUSUISoftwareUpdateController *)selfCopy _isAutoUpdateEnabled]|| [(SUSUIDDMController *)selfCopy->_ddmController shouldEnforceUpdate])
   {
     v16 = objc_alloc_init(SUKeybagOptions);
     [v16 setPasscode:location[0]];
     [v16 setKeybagType:1];
-    v9 = [(SUDownload *)v19->_updateToInstall descriptor];
+    descriptor = [(SUDownload *)selfCopy->_updateToInstall descriptor];
     [v16 setDescriptor:?];
 
-    v17 = [(SUManagerClient *)v19->_client createInstallationKeybagWithOptions:v16];
+    v17 = [(SUManagerClient *)selfCopy->_client createInstallationKeybagWithOptions:v16];
     if ((v17 & 1) == 0)
     {
       v15 = SUSUILog();
@@ -2488,14 +2488,14 @@ LABEL_18:
   return v4 & 1;
 }
 
-- (void)_autoInstallOperationWasCancelled:(id)a3 withRepopStrategy:(unint64_t)a4
+- (void)_autoInstallOperationWasCancelled:(id)cancelled withRepopStrategy:(unint64_t)strategy
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = a4;
-  dispatch_assert_queue_V2(v13->_clientQueue);
+  objc_storeStrong(location, cancelled);
+  strategyCopy = strategy;
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
   v10 = SUSUILog();
   v9 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2511,20 +2511,20 @@ LABEL_18:
   }
 
   objc_storeStrong(&v10, 0);
-  [(SUSUISoftwareUpdateController *)v13 _setTryTonightAutoInstallOperation:0 cancelIfNecessary:1];
-  [(SUSUISoftwareUpdateAlertModel *)v13->_alertModel autoInstallOperationEnded:0];
-  [(SUSUISoftwareUpdateController *)v13 _dismissInstallAlertsWithReason:@"Auto install operation cancelled" includingInstallTonight:1 withRealertStrategy:v11];
+  [(SUSUISoftwareUpdateController *)selfCopy _setTryTonightAutoInstallOperation:0 cancelIfNecessary:1];
+  [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel autoInstallOperationEnded:0];
+  [(SUSUISoftwareUpdateController *)selfCopy _dismissInstallAlertsWithReason:@"Auto install operation cancelled" includingInstallTonight:1 withRealertStrategy:strategyCopy];
   objc_storeStrong(location, 0);
 }
 
-- (unint64_t)getPasscodePolicyForAlertModel:(id)a3
+- (unint64_t)getPasscodePolicyForAlertModel:(id)model
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, model);
   v14 = 1;
-  v13 = 1;
+  integerValue = 1;
   if ((+[SUUtility currentReleaseTypeIsInternal]& 1) != 0)
   {
     v12 = SUSUILog();
@@ -2536,31 +2536,31 @@ LABEL_18:
     }
 
     objc_storeStrong(&v12, 0);
-    v13 = 1;
+    integerValue = 1;
   }
 
   v8 = +[SUSUIPreferences sharedInstance];
-  v9 = [(SUSUIPreferences *)v8 passcodeRequiredDays];
+  passcodeRequiredDays = [(SUSUIPreferences *)v8 passcodeRequiredDays];
 
-  if (v9)
+  if (passcodeRequiredDays)
   {
     v7 = +[SUSUIPreferences sharedInstance];
-    v6 = [(SUSUIPreferences *)v7 passcodeRequiredDays];
-    v13 = [v6 integerValue];
+    passcodeRequiredDays2 = [(SUSUIPreferences *)v7 passcodeRequiredDays];
+    integerValue = [passcodeRequiredDays2 integerValue];
   }
 
   v10 = SUSUILog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    sub_13774(v16, v13);
+    sub_13774(v16, integerValue);
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Passcode required days set to %ld", v16, 0xCu);
   }
 
   objc_storeStrong(&v10, 0);
   if ([location[0] autoUpdateRetryCount] > 1)
   {
-    v3 = [location[0] autoUpdateRetryCount];
-    if (!(v3 % v13))
+    autoUpdateRetryCount = [location[0] autoUpdateRetryCount];
+    if (!(autoUpdateRetryCount % integerValue))
     {
       v14 = 2;
     }
@@ -2571,16 +2571,16 @@ LABEL_18:
   return v5;
 }
 
-- (void)_autoInstallOperationDidExpire:(id)a3 withRepopStrategy:(unint64_t)a4 error:(id)a5
+- (void)_autoInstallOperationDidExpire:(id)expire withRepopStrategy:(unint64_t)strategy error:(id)error
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v22 = a4;
+  objc_storeStrong(location, expire);
+  strategyCopy = strategy;
   v21 = 0;
-  objc_storeStrong(&v21, a5);
-  dispatch_assert_queue_V2(v24->_clientQueue);
+  objc_storeStrong(&v21, error);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
   v20 = SUSUILog();
   v19 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -2590,7 +2590,7 @@ LABEL_18:
   }
 
   objc_storeStrong(&v20, 0);
-  [(SUSUISoftwareUpdateAlertModel *)v24->_alertModel autoUpdateExpired];
+  [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel autoUpdateExpired];
   v18 = 30;
   if ((+[SUUtility currentReleaseTypeIsInternal]& 1) != 0)
   {
@@ -2606,16 +2606,16 @@ LABEL_18:
     v18 = 30;
   }
 
-  if ([(SUSUISoftwareUpdateAlertModel *)v24->_alertModel alertFlow]== &dword_4 + 1 && (v5 = [(SUSUISoftwareUpdateAlertModel *)v24->_alertModel autoUpdateRetryCount], v5 < v18))
+  if ([(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel alertFlow]== &dword_4 + 1 && (v5 = [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel autoUpdateRetryCount], v5 < v18))
   {
-    v15 = [(SUSUISoftwareUpdateController *)v24 getPasscodePolicyForAlertModel:v24->_alertModel];
-    client = v24->_client;
+    v15 = [(SUSUISoftwareUpdateController *)selfCopy getPasscodePolicyForAlertModel:selfCopy->_alertModel];
+    client = selfCopy->_client;
     v9 = _NSConcreteStackBlock;
     v10 = -1073741824;
     v11 = 0;
     v12 = sub_2D388;
     v13 = &unk_60570;
-    v14[0] = v24;
+    v14[0] = selfCopy;
     v14[1] = v15;
     [(SUManagerClient *)client currentAutoInstallOperation:1 withResult:&v9];
     objc_storeStrong(v14, 0);
@@ -2623,34 +2623,34 @@ LABEL_18:
 
   else
   {
-    [(SUSUISoftwareUpdateController *)v24 _setTryTonightAutoInstallOperation:0 cancelIfNecessary:1];
-    [(SUSUISoftwareUpdateAlertModel *)v24->_alertModel autoInstallOperationEnded:1];
-    [(SUSUISoftwareUpdateController *)v24 _dismissInstallAlertsWithReason:@"Auto install operation expired" includingInstallTonight:1 withRealertStrategy:v22];
+    [(SUSUISoftwareUpdateController *)selfCopy _setTryTonightAutoInstallOperation:0 cancelIfNecessary:1];
+    [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel autoInstallOperationEnded:1];
+    [(SUSUISoftwareUpdateController *)selfCopy _dismissInstallAlertsWithReason:@"Auto install operation expired" includingInstallTonight:1 withRealertStrategy:strategyCopy];
   }
 
   objc_storeStrong(&v21, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_installUpdate:(unint64_t)a3 withInstallOperation:(id)a4 source:(unint64_t)a5 options:(id)a6
+- (void)_installUpdate:(unint64_t)update withInstallOperation:(id)operation source:(unint64_t)source options:(id)options
 {
-  v49 = self;
+  selfCopy = self;
   v48 = a2;
-  v47 = a3;
+  updateCopy = update;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v45 = a5;
+  objc_storeStrong(&location, operation);
+  sourceCopy = source;
   v44 = 0;
-  objc_storeStrong(&v44, a6);
-  dispatch_assert_queue_V2(v49->_clientQueue);
-  if (v49->_updateToInstall)
+  objc_storeStrong(&v44, options);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  if (selfCopy->_updateToInstall)
   {
     if (v44)
     {
       v16 = 0;
       if ([v44 automaticInstallAttempt])
       {
-        v16 = v45 == 1;
+        v16 = sourceCopy == 1;
       }
 
       v43 = v16;
@@ -2666,7 +2666,7 @@ LABEL_18:
     {
       log = v42;
       type = v41;
-      v15 = SUSUIStringForInstallType(v47);
+      v15 = SUSUIStringForInstallType(updateCopy);
       v40 = v15;
       sub_4B94(v51, v40);
       _os_log_impl(&dword_0, log, type, "Installation asked for of type: %{public}@", v51, 0xCu);
@@ -2675,19 +2675,19 @@ LABEL_18:
     }
 
     objc_storeStrong(&v42, 0);
-    [(SUSUISoftwareUpdateController *)v49 _realertWithStrategy:0 andReason:@"Install"];
+    [(SUSUISoftwareUpdateController *)selfCopy _realertWithStrategy:0 andReason:@"Install"];
     v31 = _NSConcreteStackBlock;
     v32 = -1073741824;
     v33 = 0;
     v34 = sub_2DAE8;
     v35 = &unk_60598;
-    v36 = v49;
-    v38[1] = v47;
+    v36 = selfCopy;
+    v38[1] = updateCopy;
     v37 = v44;
     v38[0] = location;
     v39 = objc_retainBlock(&v31);
-    v30 = [(SUManagerClient *)v49->_client isInstallationKeybagRequired];
-    if ((v30 & 1) == 0 || [(SUSUISoftwareUpdateAlertModel *)v49->_alertModel alertFlow]== &dword_4 + 1)
+    isInstallationKeybagRequired = [(SUManagerClient *)selfCopy->_client isInstallationKeybagRequired];
+    if ((isInstallationKeybagRequired & 1) == 0 || [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel alertFlow]== &dword_4 + 1)
     {
       (*(v39 + 2))();
     }
@@ -2701,21 +2701,21 @@ LABEL_18:
         v10 = v29;
         v11 = v28;
         v12 = 1;
-        if (v47 != &dword_0 + 1)
+        if (updateCopy != &dword_0 + 1)
         {
-          v12 = v47 == &dword_0 + 2;
+          v12 = updateCopy == &dword_0 + 2;
         }
 
-        v9 = SUSUIStringForInstallAlertFlow([(SUSUISoftwareUpdateAlertModel *)v49->_alertModel alertFlow]);
+        v9 = SUSUIStringForInstallAlertFlow([(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel alertFlow]);
         v27 = v9;
-        sub_2DBA8(v50, v30 & 1, v12, v27);
+        sub_2DBA8(v50, isInstallationKeybagRequired & 1, v12, v27);
         _os_log_impl(&dword_0, v10, v11, "Presenting authentication UI because: keybagRequired=%d, installTypeTonight? %d alertflow: %@", v50, 0x18u);
 
         objc_storeStrong(&v27, 0);
       }
 
       objc_storeStrong(&v29, 0);
-      v7 = v49;
+      v7 = selfCopy;
       v19 = _NSConcreteStackBlock;
       v20 = -1073741824;
       v21 = 0;
@@ -2723,9 +2723,9 @@ LABEL_18:
       v23 = &unk_605C0;
       v26 = v39;
       v24 = v44;
-      v25 = v49;
-      v6 = v47;
-      v8 = [location forecast];
+      v25 = selfCopy;
+      v6 = updateCopy;
+      forecast = [location forecast];
       [(SUSUISoftwareUpdateController *)v7 _presentAuthenticationUIForInstallation:&v19 withInstallType:v6 withInstallOperationForecast:?];
 
       objc_storeStrong(&v25, 0);
@@ -2741,24 +2741,24 @@ LABEL_18:
 
   else
   {
-    [(SUSUISoftwareUpdateController *)v49 _dismissInstallAlertsWithReason:@"No update to install anymore" includingInstallTonight:1 withRealertStrategy:0];
+    [(SUSUISoftwareUpdateController *)selfCopy _dismissInstallAlertsWithReason:@"No update to install anymore" includingInstallTonight:1 withRealertStrategy:0];
   }
 
   objc_storeStrong(&v44, 0);
   objc_storeStrong(&location, 0);
 }
 
-- (void)_doInstallNowWithOptions:(id)a3
+- (void)_doInstallNowWithOptions:(id)options
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_V2(v18->_clientQueue);
-  v16 = [location[0] automaticInstallAttempt];
-  if ((v16 & 1) == 0)
+  objc_storeStrong(location, options);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  automaticInstallAttempt = [location[0] automaticInstallAttempt];
+  if ((automaticInstallAttempt & 1) == 0)
   {
-    [(SUSUISoftwareUpdateAlertModel *)v18->_alertModel willInstallWithType:0];
+    [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel willInstallWithType:0];
   }
 
   v15 = 0;
@@ -2770,7 +2770,7 @@ LABEL_18:
     v15 = v4;
   }
 
-  client = v18->_client;
+  client = selfCopy->_client;
   v6 = v15;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
@@ -2778,7 +2778,7 @@ LABEL_18:
   v11 = sub_2DE60;
   v12 = &unk_5D080;
   v13 = location[0];
-  v14 = v18;
+  v14 = selfCopy;
   [(SUManagerClient *)client installUpdateWithInstallOptions:v6 withResult:&v8];
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v13, 0);
@@ -2786,15 +2786,15 @@ LABEL_18:
   objc_storeStrong(location, 0);
 }
 
-- (void)_doInstallTonight:(id)a3 consent:(BOOL)a4
+- (void)_doInstallTonight:(id)tonight consent:(BOOL)consent
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16 = a4;
-  dispatch_assert_queue_V2(v18[3]);
-  v6 = v18[6];
+  objc_storeStrong(location, tonight);
+  consentCopy = consent;
+  dispatch_assert_queue_V2(selfCopy[3]);
+  v6 = selfCopy[6];
   if ([v6 alertFlow]== &dword_4 + 1)
   {
     v4 = 2;
@@ -2811,8 +2811,8 @@ LABEL_18:
   v10 = 0;
   v11 = sub_2E228;
   v12 = &unk_605E8;
-  v13 = v18;
-  v14 = v16;
+  v13 = selfCopy;
+  v14 = consentCopy;
   v15 = objc_retainBlock(&v8);
   if ([location[0] _isValidForScheduling])
   {
@@ -2829,7 +2829,7 @@ LABEL_18:
     }
 
     objc_storeStrong(&oslog, 0);
-    [(dispatch_queue_t *)v18 _createInstallTonightOperationWithResult:v15];
+    [(dispatch_queue_t *)selfCopy _createInstallTonightOperationWithResult:v15];
   }
 
   objc_storeStrong(&v15, 0);
@@ -2837,64 +2837,64 @@ LABEL_18:
   objc_storeStrong(location, 0);
 }
 
-- (void)_setPendingInstallOptions:(id)a3
+- (void)_setPendingInstallOptions:(id)options
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_pendingInstallOptions != location[0])
+  objc_storeStrong(location, options);
+  if (selfCopy->_pendingInstallOptions != location[0])
   {
-    objc_storeStrong(&v4->_pendingInstallOptions, location[0]);
+    objc_storeStrong(&selfCopy->_pendingInstallOptions, location[0]);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_setInstallPolicy:(id)a3
+- (void)_setInstallPolicy:(id)policy
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (([(SUInstallPolicy *)v4->_installPolicy isEqual:location[0]]& 1) == 0)
+  objc_storeStrong(location, policy);
+  if (([(SUInstallPolicy *)selfCopy->_installPolicy isEqual:location[0]]& 1) == 0)
   {
-    objc_storeStrong(&v4->_installPolicy, location[0]);
+    objc_storeStrong(&selfCopy->_installPolicy, location[0]);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_setupAutoUpdate:(id)a3 withPasscodePolicy:(unint64_t)a4
+- (void)_setupAutoUpdate:(id)update withPasscodePolicy:(unint64_t)policy
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_V2(v6->_clientQueue);
-  [(SUSUISoftwareUpdateAlertModel *)v6->_alertModel willInstallWithType:2];
-  [(SUSUISoftwareUpdateController *)v6 autoInstallTonightWithOperation:location[0]];
-  [(SUSUISoftwareUpdateController *)v6 _setPasscodePolicyType:a4];
+  objc_storeStrong(location, update);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel willInstallWithType:2];
+  [(SUSUISoftwareUpdateController *)selfCopy autoInstallTonightWithOperation:location[0]];
+  [(SUSUISoftwareUpdateController *)selfCopy _setPasscodePolicyType:policy];
   objc_storeStrong(location, 0);
 }
 
-- (void)_setTryTonightAutoInstallOperation:(id)a3 cancelIfNecessary:(BOOL)a4
+- (void)_setTryTonightAutoInstallOperation:(id)operation cancelIfNecessary:(BOOL)necessary
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = a4;
-  if (v11->_scheduledTryTonightAutoInstallOperation != location[0])
+  objc_storeStrong(location, operation);
+  necessaryCopy = necessary;
+  if (selfCopy->_scheduledTryTonightAutoInstallOperation != location[0])
   {
-    [(SUAutoInstallOperation *)v11->_scheduledTryTonightAutoInstallOperation setDelegate:0];
-    if (v11->_scheduledTryTonightAutoInstallOperation && v9)
+    [(SUAutoInstallOperation *)selfCopy->_scheduledTryTonightAutoInstallOperation setDelegate:0];
+    if (selfCopy->_scheduledTryTonightAutoInstallOperation && necessaryCopy)
     {
       oslog = SUSUILog();
       type = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        if (v9)
+        if (necessaryCopy)
         {
           v4 = @"YES";
         }
@@ -2904,59 +2904,59 @@ LABEL_18:
           v4 = @"NO";
         }
 
-        sub_2E938(v13, v11->_scheduledTryTonightAutoInstallOperation, location[0], v4);
+        sub_2E938(v13, selfCopy->_scheduledTryTonightAutoInstallOperation, location[0], v4);
         _os_log_impl(&dword_0, oslog, type, "Cancelling current auto install operation (%{public}@) for new operation: %{public}@ (cancelIfNecessary: %@)", v13, 0x20u);
       }
 
       objc_storeStrong(&oslog, 0);
-      [(SUAutoInstallOperation *)v11->_scheduledTryTonightAutoInstallOperation cancel];
+      [(SUAutoInstallOperation *)selfCopy->_scheduledTryTonightAutoInstallOperation cancel];
     }
 
-    objc_storeStrong(&v11->_scheduledTryTonightAutoInstallOperation, location[0]);
-    if (v11->_scheduledTryTonightAutoInstallOperation)
+    objc_storeStrong(&selfCopy->_scheduledTryTonightAutoInstallOperation, location[0]);
+    if (selfCopy->_scheduledTryTonightAutoInstallOperation)
     {
-      [(SUAutoInstallOperation *)v11->_scheduledTryTonightAutoInstallOperation setDelegate:v11];
+      [(SUAutoInstallOperation *)selfCopy->_scheduledTryTonightAutoInstallOperation setDelegate:selfCopy];
       v6 = SUSUILog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        sub_4B94(v12, v11->_scheduledTryTonightAutoInstallOperation);
+        sub_4B94(v12, selfCopy->_scheduledTryTonightAutoInstallOperation);
         _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Now tracking a new install tonight operation: %{public}@", v12, 0xCu);
       }
 
       objc_storeStrong(&v6, 0);
-      [(SUSUISoftwareUpdateController *)v11 _dismissInstallAlertsWithReason:@"install tonight scheduled" includingInstallTonight:1 withRealertStrategy:0];
+      [(SUSUISoftwareUpdateController *)selfCopy _dismissInstallAlertsWithReason:@"install tonight scheduled" includingInstallTonight:1 withRealertStrategy:0];
     }
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_dismissInstallAlertsWithReason:(id)a3 includingInstallTonight:(BOOL)a4 withRealertStrategy:(unint64_t)a5
+- (void)_dismissInstallAlertsWithReason:(id)reason includingInstallTonight:(BOOL)tonight withRealertStrategy:(unint64_t)strategy
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SUSUIAlertPresentationManager *)v9->_alertPresentationManager dismissAlertsOfClass:objc_opt_class() animated:1];
-  if (a4)
+  objc_storeStrong(location, reason);
+  [(SUSUIAlertPresentationManager *)selfCopy->_alertPresentationManager dismissAlertsOfClass:objc_opt_class() animated:1];
+  if (tonight)
   {
-    [(SUSUIAlertPresentationManager *)v9->_alertPresentationManager dismissAlertsOfClass:objc_opt_class() animated:1];
-    [(SUSUIFullScreenAlertPresentationManager *)v9->_fullScreenAlertPresentationManager dismissAlertsOfClass:objc_opt_class()];
+    [(SUSUIAlertPresentationManager *)selfCopy->_alertPresentationManager dismissAlertsOfClass:objc_opt_class() animated:1];
+    [(SUSUIFullScreenAlertPresentationManager *)selfCopy->_fullScreenAlertPresentationManager dismissAlertsOfClass:objc_opt_class()];
   }
 
-  [(SUSUISoftwareUpdateController *)v9 _realertWithStrategy:a5 andReason:location[0], location];
+  [(SUSUISoftwareUpdateController *)selfCopy _realertWithStrategy:strategy andReason:location[0], location];
   objc_storeStrong(v5, 0);
 }
 
 - (BOOL)_isShowingInstallAlert
 {
-  v24 = self;
+  selfCopy = self;
   v23 = a2;
   v22 = 0;
   v21 = 0;
-  v20 = [(SUSUIAlertPresentationManager *)self->_alertPresentationManager presentedAlerts];
+  presentedAlerts = [(SUSUIAlertPresentationManager *)self->_alertPresentationManager presentedAlerts];
   memset(__b, 0, 0x40uLL);
-  obj = v20;
+  obj = presentedAlerts;
   v15 = [obj countByEnumeratingWithState:__b objects:v26 count:16];
   if (v15)
   {
@@ -3006,7 +3006,7 @@ LABEL_10:
     v18 = 0;
   }
 
-  location = [(SUSUIFullScreenAlertPresentationManager *)v24->_fullScreenAlertPresentationManager activeFullScreenAlerts];
+  location = [(SUSUIFullScreenAlertPresentationManager *)selfCopy->_fullScreenAlertPresentationManager activeFullScreenAlerts];
   memset(v16, 0, 0x40uLL);
   v8 = location;
   v9 = [v8 countByEnumeratingWithState:v16 objects:v25 count:16];
@@ -3060,16 +3060,16 @@ LABEL_19:
 
   v18 = 1;
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v20, 0);
+  objc_storeStrong(&presentedAlerts, 0);
   return v3 & 1;
 }
 
-- (id)getNextLastPredictedUnlockDateFromDuet:(id)a3
+- (id)getNextLastPredictedUnlockDateFromDuet:(id)duet
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, duet);
   v25 = 0;
   v24 = objc_alloc_init(_CDSleepForAutoSu);
   if (location[0])
@@ -3101,9 +3101,9 @@ LABEL_19:
 
   else
   {
-    v5 = [v24 predictNextDateForLastUnlockAttemptOfTheDay];
+    predictNextDateForLastUnlockAttemptOfTheDay = [v24 predictNextDateForLastUnlockAttemptOfTheDay];
     v6 = v25;
-    v25 = v5;
+    v25 = predictNextDateForLastUnlockAttemptOfTheDay;
 
     v19 = SUSUILog();
     v18 = OS_LOG_TYPE_DEFAULT;
@@ -3130,13 +3130,13 @@ LABEL_19:
   return v8;
 }
 
-- (id)computeNextLastPredictedUnlockDateMinus4HoursFromStartDate:(id)a3
+- (id)computeNextLastPredictedUnlockDateMinus4HoursFromStartDate:(id)date
 {
-  v48 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v46 = [(SUSUISoftwareUpdateController *)v48 getNextLastPredictedUnlockDateFromDuet:location[0]];
+  objc_storeStrong(location, date);
+  v46 = [(SUSUISoftwareUpdateController *)selfCopy getNextLastPredictedUnlockDateFromDuet:location[0]];
   v45 = 0;
   v42 = 0;
   if (location[0])
@@ -3267,12 +3267,12 @@ LABEL_19:
   return v5;
 }
 
-- (int64_t)_delayDaysForSkips:(int64_t)a3 isRequiredInstall:(BOOL)a4
+- (int64_t)_delayDaysForSkips:(int64_t)skips isRequiredInstall:(BOOL)install
 {
   v5 = 0;
-  if (!a4)
+  if (!install)
   {
-    if (a3)
+    if (skips)
     {
       return 3;
     }
@@ -3288,31 +3288,31 @@ LABEL_19:
 
 - (id)_computeDefaultRealertDate
 {
-  v44 = self;
+  selfCopy = self;
   v43[1] = a2;
   v43[0] = [(SUSUISoftwareUpdateController *)self _computeNextLastPredictedUnlockDateMinus4HoursFromNow];
   v42 = 0;
-  v41 = [(SUSUISoftwareUpdateAlertModel *)v44->_alertModel currentInstallationPolicy];
-  v40 = [v41 type] == &dword_0 + 1;
+  currentInstallationPolicy = [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel currentInstallationPolicy];
+  v40 = [currentInstallationPolicy type] == &dword_0 + 1;
   if (v40)
   {
-    v26 = [(SUSUISoftwareUpdateAlertModel *)v44->_alertModel remindMeLaterCountSinceRequiringInstallation];
+    remindMeLaterCountSinceRequiringInstallation = [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel remindMeLaterCountSinceRequiringInstallation];
   }
 
   else
   {
-    v26 = [(SUSUISoftwareUpdateAlertModel *)v44->_alertModel remindMeLaterCountForCurrentUpdate];
+    remindMeLaterCountSinceRequiringInstallation = [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel remindMeLaterCountForCurrentUpdate];
   }
 
-  v39 = v26;
+  v39 = remindMeLaterCountSinceRequiringInstallation;
   v24 = +[SUSUIPreferences sharedInstance];
-  v25 = [(SUSUIPreferences *)v24 alertAfterDownload];
+  alertAfterDownload = [(SUSUIPreferences *)v24 alertAfterDownload];
 
-  if ((v25 & 1) == 0 || v39)
+  if ((alertAfterDownload & 1) == 0 || v39)
   {
-    if ([(SUSUISoftwareUpdateAlertModel *)v44->_alertModel alertFlow]!= &dword_4 + 1)
+    if ([(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel alertFlow]!= &dword_4 + 1)
     {
-      v42 = [(SUSUISoftwareUpdateController *)v44 _delayDaysForSkips:v39 isRequiredInstall:v40];
+      v42 = [(SUSUISoftwareUpdateController *)selfCopy _delayDaysForSkips:v39 isRequiredInstall:v40];
       if (v42 > 0)
       {
         v21 = +[NSCalendar currentCalendar];
@@ -3364,11 +3364,11 @@ LABEL_19:
       }
 
       v10 = v6;
-      v11 = [v41 skipsAllowed];
+      skipsAllowed = [currentInstallationPolicy skipsAllowed];
       v12 = v42;
       v15 = [SUUtility prettyPrintDate:v43[0]];
       v27 = v15;
-      sub_2FFB8(v46, v9, v10, v11, v12, v27);
+      sub_2FFB8(v46, v9, v10, skipsAllowed, v12, v27);
       _os_log_impl(&dword_0, v13, v14, "[SUSUISoftwareUpdateController] Compute default re-alert date consulting remind me later count (%ld) from policy [%{public}@] (skips allowed: %lu, delaying realert for %ld days) to determine if we need to adjust to one week later than computed time - adjusted time: %{public}@", v46, 0x34u);
 
       objc_storeStrong(&v27, 0);
@@ -3396,32 +3396,32 @@ LABEL_19:
     v35 = 1;
   }
 
-  objc_storeStrong(&v41, 0);
+  objc_storeStrong(&currentInstallationPolicy, 0);
   objc_storeStrong(v43, 0);
   v7 = v45;
 
   return v7;
 }
 
-- (void)_realertWithStrategy:(unint64_t)a3 andReason:(id)a4
+- (void)_realertWithStrategy:(unint64_t)strategy andReason:(id)reason
 {
-  v35 = self;
+  selfCopy = self;
   v34 = a2;
-  v33 = a3;
+  strategyCopy = strategy;
   location = 0;
-  objc_storeStrong(&location, a4);
-  dispatch_assert_queue_V2(v35[3]);
-  *(v35 + 56) = 0;
-  if (v33 != 6)
+  objc_storeStrong(&location, reason);
+  dispatch_assert_queue_V2(selfCopy[3]);
+  *(selfCopy + 56) = 0;
+  if (strategyCopy != 6)
   {
-    [(dispatch_queue_t *)v35 _unregisterForInstallationConstraintChangeNotifications];
+    [(dispatch_queue_t *)selfCopy _unregisterForInstallationConstraintChangeNotifications];
   }
 
-  *(v35 + 57) = 0;
-  [(dispatch_queue_t *)v35 _unregisterForUnlockNotifications];
-  if (v35[4] && ([(dispatch_queue_t *)v35 _shouldShowOrScheduleInstallAlert]& 1) != 0)
+  *(selfCopy + 57) = 0;
+  [(dispatch_queue_t *)selfCopy _unregisterForUnlockNotifications];
+  if (selfCopy[4] && ([(dispatch_queue_t *)selfCopy _shouldShowOrScheduleInstallAlert]& 1) != 0)
   {
-    if (([(dispatch_queue_t *)v35 canDeferInstallation]& 1) == 0 && (v33 == 1 || v33 == 2))
+    if (([(dispatch_queue_t *)selfCopy canDeferInstallation]& 1) == 0 && (strategyCopy == 1 || strategyCopy == 2))
     {
       v31 = SUSUILog();
       v30 = OS_LOG_TYPE_DEFAULT;
@@ -3429,7 +3429,7 @@ LABEL_19:
       {
         log = v31;
         type = v30;
-        v13 = SUSUIStringForInstallAlertRepopStrategy(v33);
+        v13 = SUSUIStringForInstallAlertRepopStrategy(strategyCopy);
         v9 = v13;
         v29 = v9;
         v12 = SUSUIStringForInstallAlertRepopStrategy(7);
@@ -3442,7 +3442,7 @@ LABEL_19:
       }
 
       objc_storeStrong(&v31, 0);
-      v33 = 7;
+      strategyCopy = 7;
     }
 
     else
@@ -3453,7 +3453,7 @@ LABEL_19:
       {
         v6 = v27;
         v7 = v26;
-        v8 = SUSUIStringForInstallAlertRepopStrategy(v33);
+        v8 = SUSUIStringForInstallAlertRepopStrategy(strategyCopy);
         v25 = v8;
         sub_4E04(v36, v25, location);
         _os_log_impl(&dword_0, v6, v7, "[Install Alert] Repop strategy changed to: %{public}@ (Reason=%@)", v36, 0x16u);
@@ -3466,52 +3466,52 @@ LABEL_19:
 
     v24 = +[NSCalendar autoupdatingCurrentCalendar];
     v23 = +[NSDate date];
-    if (v33)
+    if (strategyCopy)
     {
-      switch(v33)
+      switch(strategyCopy)
       {
         case 1uLL:
-          v22 = [(dispatch_queue_t *)v35 _computeDefaultRealertDate];
-          [(dispatch_queue_t *)v35 _scheduleInstallAlertReminderWithDate:v22 repopStrategy:v33 forReason:location];
-          objc_storeStrong(&v22, 0);
+          _computeDefaultRealertDate = [(dispatch_queue_t *)selfCopy _computeDefaultRealertDate];
+          [(dispatch_queue_t *)selfCopy _scheduleInstallAlertReminderWithDate:_computeDefaultRealertDate repopStrategy:strategyCopy forReason:location];
+          objc_storeStrong(&_computeDefaultRealertDate, 0);
           break;
         case 2uLL:
-          v21 = [(dispatch_queue_t *)v35 _computeNextLastPredictedUnlockDateMinus4HoursFromNow];
-          v20 = [v24 dateByAddingUnit:16 value:7 toDate:v21 options:0];
-          [(dispatch_queue_t *)v35 _scheduleInstallAlertReminderWithDate:v20 repopStrategy:v33 forReason:location];
+          _computeNextLastPredictedUnlockDateMinus4HoursFromNow = [(dispatch_queue_t *)selfCopy _computeNextLastPredictedUnlockDateMinus4HoursFromNow];
+          v20 = [v24 dateByAddingUnit:16 value:7 toDate:_computeNextLastPredictedUnlockDateMinus4HoursFromNow options:0];
+          [(dispatch_queue_t *)selfCopy _scheduleInstallAlertReminderWithDate:v20 repopStrategy:strategyCopy forReason:location];
           objc_storeStrong(&v20, 0);
-          objc_storeStrong(&v21, 0);
+          objc_storeStrong(&_computeNextLastPredictedUnlockDateMinus4HoursFromNow, 0);
           break;
         case 3uLL:
-          [(dispatch_queue_t *)v35 _scheduleInstallAlertReminderWithDate:0 repopStrategy:3 forReason:location];
-          [(dispatch_queue_t *)v35 _showOrScheduleNextInstallAlert];
+          [(dispatch_queue_t *)selfCopy _scheduleInstallAlertReminderWithDate:0 repopStrategy:3 forReason:location];
+          [(dispatch_queue_t *)selfCopy _showOrScheduleNextInstallAlert];
           break;
         case 4uLL:
           v19 = [v24 dateByAddingUnit:128 value:5 toDate:v23 options:0];
-          [(dispatch_queue_t *)v35 _scheduleInstallAlertReminderWithDate:v19 repopStrategy:v33 forReason:location];
+          [(dispatch_queue_t *)selfCopy _scheduleInstallAlertReminderWithDate:v19 repopStrategy:strategyCopy forReason:location];
           objc_storeStrong(&v19, 0);
           break;
         case 5uLL:
           v18 = [v24 dateByAddingUnit:64 value:1 toDate:v23 options:0];
-          [(dispatch_queue_t *)v35 _scheduleInstallAlertReminderWithDate:v18 repopStrategy:v33 forReason:location];
+          [(dispatch_queue_t *)selfCopy _scheduleInstallAlertReminderWithDate:v18 repopStrategy:strategyCopy forReason:location];
           objc_storeStrong(&v18, 0);
           break;
         case 6uLL:
-          *(v35 + 56) = 1;
-          [(dispatch_queue_t *)v35 _scheduleInstallAlertReminderWithDate:0 repopStrategy:v33 forReason:location];
-          [(dispatch_queue_t *)v35 _registerForInstallationConstraintChangedNotifications];
+          *(selfCopy + 56) = 1;
+          [(dispatch_queue_t *)selfCopy _scheduleInstallAlertReminderWithDate:0 repopStrategy:strategyCopy forReason:location];
+          [(dispatch_queue_t *)selfCopy _registerForInstallationConstraintChangedNotifications];
           break;
         case 7uLL:
-          *(v35 + 57) = 1;
-          [(dispatch_queue_t *)v35 _scheduleInstallAlertReminderWithDate:0 repopStrategy:v33 forReason:location];
-          [(dispatch_queue_t *)v35 _registerForUnlockNotifications];
+          *(selfCopy + 57) = 1;
+          [(dispatch_queue_t *)selfCopy _scheduleInstallAlertReminderWithDate:0 repopStrategy:strategyCopy forReason:location];
+          [(dispatch_queue_t *)selfCopy _registerForUnlockNotifications];
           break;
       }
     }
 
     else
     {
-      [(dispatch_queue_t *)v35 _scheduleInstallAlertReminderWithDate:0 repopStrategy:0 forReason:location];
+      [(dispatch_queue_t *)selfCopy _scheduleInstallAlertReminderWithDate:0 repopStrategy:0 forReason:location];
     }
 
     objc_storeStrong(&v23, 0);
@@ -3520,8 +3520,8 @@ LABEL_19:
 
   else
   {
-    v17 = [NSString stringWithFormat:@"No more update to install: %@", location];
-    [(dispatch_queue_t *)v35 _scheduleInstallAlertReminderWithDate:0 repopStrategy:v33 forReason:v17];
+    location = [NSString stringWithFormat:@"No more update to install: %@", location];
+    [(dispatch_queue_t *)selfCopy _scheduleInstallAlertReminderWithDate:0 repopStrategy:strategyCopy forReason:location];
     oslog = SUSUILog();
     v15 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -3533,18 +3533,18 @@ LABEL_19:
     }
 
     objc_storeStrong(&oslog, 0);
-    objc_storeStrong(&v17, 0);
+    objc_storeStrong(&location, 0);
   }
 
   objc_storeStrong(&location, 0);
 }
 
-- (void)_showSUAvailableAlertForDescriptor:(id)a3
+- (void)_showSUAvailableAlertForDescriptor:(id)descriptor
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, descriptor);
   if ((+[SUManagerClient _shouldDisallowAvailabilityNotifications]& 1) != 0)
   {
     v25 = SUSUILog();
@@ -3593,7 +3593,7 @@ LABEL_19:
     v22 = 1;
   }
 
-  else if ([(SUSUIDDMController *)v27->_ddmController notificationsDisabledByGlobalSettings])
+  else if ([(SUSUIDDMController *)selfCopy->_ddmController notificationsDisabledByGlobalSettings])
   {
     v15 = SUSUILog();
     v14 = OS_LOG_TYPE_DEFAULT;
@@ -3612,8 +3612,8 @@ LABEL_19:
   else
   {
     v3 = [SUSUISoftwareUpdateAvailableAlertItem alloc];
-    v12 = [(SUSUIBaseSoftwareUpdateAlertItem *)v3 initWithDescriptor:location[0] softwareUpdateController:v27];
-    [(SUSUIAlertPresentationManager *)v27->_alertPresentationManager presentAlert:v12 animated:1];
+    v12 = [(SUSUIBaseSoftwareUpdateAlertItem *)v3 initWithDescriptor:location[0] softwareUpdateController:selfCopy];
+    [(SUSUIAlertPresentationManager *)selfCopy->_alertPresentationManager presentAlert:v12 animated:1];
     objc_storeStrong(&v12, 0);
     v22 = 0;
   }
@@ -3623,7 +3623,7 @@ LABEL_19:
 
 - (void)_unregisterForInstallationConstraintChangeNotifications
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   if (self->_registeredForInstallationConstraintChanges)
   {
@@ -3638,19 +3638,19 @@ LABEL_19:
     }
 
     objc_storeStrong(location, 0);
-    v7->_registeredForInstallationConstraintChanges = 0;
-    [(SUInvalidatable *)v7->_installationConstraintObserver invalidate];
-    objc_storeStrong(&v7->_installationConstraintObserver, 0);
-    [(SUSUILayoutStateMonitor *)v7->_layoutStateMonitor removeObserver:v7];
+    selfCopy->_registeredForInstallationConstraintChanges = 0;
+    [(SUInvalidatable *)selfCopy->_installationConstraintObserver invalidate];
+    objc_storeStrong(&selfCopy->_installationConstraintObserver, 0);
+    [(SUSUILayoutStateMonitor *)selfCopy->_layoutStateMonitor removeObserver:selfCopy];
   }
 }
 
 - (void)_registerForInstallationConstraintChangedNotifications
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   dispatch_assert_queue_V2(self->_clientQueue);
-  if (!v19->_registeredForInstallationConstraintChanges)
+  if (!selfCopy->_registeredForInstallationConstraintChanges)
   {
     location[0] = SUSUILog();
     v17 = OS_LOG_TYPE_DEFAULT;
@@ -3663,21 +3663,21 @@ LABEL_19:
     }
 
     objc_storeStrong(location, 0);
-    v19->_registeredForInstallationConstraintChanges = 1;
-    [(SUSUILayoutStateMonitor *)v19->_layoutStateMonitor addObserver:v19];
-    objc_initWeak(&v15, v19);
-    client = v19->_client;
-    updateToInstall = v19->_updateToInstall;
+    selfCopy->_registeredForInstallationConstraintChanges = 1;
+    [(SUSUILayoutStateMonitor *)selfCopy->_layoutStateMonitor addObserver:selfCopy];
+    objc_initWeak(&v15, selfCopy);
+    client = selfCopy->_client;
+    updateToInstall = selfCopy->_updateToInstall;
     v8 = _NSConcreteStackBlock;
     v9 = -1073741824;
     v10 = 0;
     v11 = sub_30D44;
     v12 = &unk_60638;
-    v13 = v19;
+    v13 = selfCopy;
     objc_copyWeak(&v14, &v15);
     v2 = [(SUManagerClient *)client observeInstallationConstraintChangesForDownload:updateToInstall observer:&v8];
-    installationConstraintObserver = v19->_installationConstraintObserver;
-    v19->_installationConstraintObserver = v2;
+    installationConstraintObserver = selfCopy->_installationConstraintObserver;
+    selfCopy->_installationConstraintObserver = v2;
 
     objc_destroyWeak(&v14);
     objc_storeStrong(&v13, 0);
@@ -3706,26 +3706,26 @@ LABEL_19:
   }
 }
 
-- (void)setUpdateToInstall:(id)a3
+- (void)setUpdateToInstall:(id)install
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_updateToInstall != location[0])
+  objc_storeStrong(location, install);
+  if (selfCopy->_updateToInstall != location[0])
   {
-    objc_storeStrong(&v4->_updateToInstall, location[0]);
+    objc_storeStrong(&selfCopy->_updateToInstall, location[0]);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_showOrScheduleNextInstallAlertFromTimer:(id)a3
+- (void)_showOrScheduleNextInstallAlertFromTimer:(id)timer
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, timer);
   v7 = SUSUILog();
   v6 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -3737,7 +3737,7 @@ LABEL_19:
   }
 
   objc_storeStrong(&v7, 0);
-  [(SUSUISoftwareUpdateController *)v9 _showOrScheduleNextInstallAlert];
+  [(SUSUISoftwareUpdateController *)selfCopy _showOrScheduleNextInstallAlert];
   objc_storeStrong(location, 0);
 }
 
@@ -3755,15 +3755,15 @@ LABEL_19:
   objc_storeStrong(v8, 0);
 }
 
-- (BOOL)_showNextInstallAlertWithReasons:(int64_t)a3 orScheduleIfNecessary:(BOOL)a4 withInstallOptions:(id)a5
+- (BOOL)_showNextInstallAlertWithReasons:(int64_t)reasons orScheduleIfNecessary:(BOOL)necessary withInstallOptions:(id)options
 {
-  v43 = self;
+  selfCopy = self;
   v42 = a2;
-  v41 = a3;
-  v40 = a4;
+  reasonsCopy = reasons;
+  necessaryCopy = necessary;
   location = 0;
-  objc_storeStrong(&location, a5);
-  dispatch_assert_queue_V2(v43->_clientQueue);
+  objc_storeStrong(&location, options);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
   v38 = SUSUILog();
   v37 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
@@ -3772,23 +3772,23 @@ LABEL_19:
     type = v37;
     v23 = SUStringFromInstallationConstraints();
     v36 = v23;
-    sub_31B6C(v46, "[SUSUISoftwareUpdateController _showNextInstallAlertWithReasons:orScheduleIfNecessary:withInstallOptions:]", v36, v40, location);
+    sub_31B6C(v46, "[SUSUISoftwareUpdateController _showNextInstallAlertWithReasons:orScheduleIfNecessary:withInstallOptions:]", v36, necessaryCopy, location);
     _os_log_impl(&dword_0, log, type, "%s: reasons: %@, scheduleIfNecessary: %d, options: %@", v46, 0x26u);
 
     objc_storeStrong(&v36, 0);
   }
 
   objc_storeStrong(&v38, 0);
-  if (v40)
+  if (necessaryCopy)
   {
-    [(SUSUISoftwareUpdateController *)v43 _realertWithStrategy:0 andReason:@"_showNextInstallAlertWithReason"];
+    [(SUSUISoftwareUpdateController *)selfCopy _realertWithStrategy:0 andReason:@"_showNextInstallAlertWithReason"];
   }
 
-  v35 = v41;
-  v34 = (v41 & 0x10) != 0;
-  if ((v41 & 0x10) == 0 || [(SUSUISoftwareUpdateAlertModel *)v43->_alertModel alertFlow]== &dword_0 + 2)
+  v35 = reasonsCopy;
+  v34 = (reasonsCopy & 0x10) != 0;
+  if ((reasonsCopy & 0x10) == 0 || [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel alertFlow]== &dword_0 + 2)
   {
-    if (!v34 && [(SUSUISoftwareUpdateAlertModel *)v43->_alertModel alertFlow]== &dword_0 + 2)
+    if (!v34 && [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel alertFlow]== &dword_0 + 2)
     {
       v35 &= ~0x20uLL;
     }
@@ -3799,7 +3799,7 @@ LABEL_19:
     v35 &= ~0x10uLL;
   }
 
-  if ([(SUSUIDDMController *)v43->_ddmController decideAlertConflictWithAlertFlow:[(SUSUISoftwareUpdateAlertModel *)v43->_alertModel alertFlow]]== &dword_0 + 1)
+  if ([(SUSUIDDMController *)selfCopy->_ddmController decideAlertConflictWithAlertFlow:[(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel alertFlow]]== &dword_0 + 1)
   {
     v33 = SUSUILog();
     v32 = OS_LOG_TYPE_DEFAULT;
@@ -3807,7 +3807,7 @@ LABEL_19:
     {
       v18 = v33;
       v19 = v32;
-      v20 = SUSUIStringForInstallAlertFlow([(SUSUISoftwareUpdateAlertModel *)v43->_alertModel alertFlow]);
+      v20 = SUSUIStringForInstallAlertFlow([(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel alertFlow]);
       v31 = v20;
       sub_1FCC(v45, v31);
       _os_log_impl(&dword_0, v18, v19, "Can't show classic flow alert due to DDM having higher priority. Classic flow: %@", v45, 0xCu);
@@ -3819,24 +3819,24 @@ LABEL_19:
     v35 |= 0x4000000uLL;
   }
 
-  if ([(SUSUISoftwareUpdateAlertModel *)v43->_alertModel alertFlow]== &dword_4 + 1)
+  if ([(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel alertFlow]== &dword_4 + 1)
   {
     v35 = 0;
   }
 
-  if (![(SUSUISoftwareUpdateController *)v43 _shouldShowOrScheduleInstallAlert])
+  if (![(SUSUISoftwareUpdateController *)selfCopy _shouldShowOrScheduleInstallAlert])
   {
     goto LABEL_46;
   }
 
   if (!v35)
   {
-    if ([(SUSUISoftwareUpdateController *)v43 _needsToWaitForHomescreenToAppear])
+    if ([(SUSUISoftwareUpdateController *)selfCopy _needsToWaitForHomescreenToAppear])
     {
-      if (v40)
+      if (necessaryCopy)
       {
-        [(SUSUISoftwareUpdateAlertModel *)v43->_alertModel countdownAlertPresentationPreventedForReasons:@"Waiting for homescreen when showing countdown alert"];
-        [(SUSUISoftwareUpdateController *)v43 _realertWithStrategy:6 andReason:@"Wait for homescreen to appear"];
+        [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel countdownAlertPresentationPreventedForReasons:@"Waiting for homescreen when showing countdown alert"];
+        [(SUSUISoftwareUpdateController *)selfCopy _realertWithStrategy:6 andReason:@"Wait for homescreen to appear"];
       }
 
       v44 = 0;
@@ -3845,7 +3845,7 @@ LABEL_19:
 
     else
     {
-      [(SUSUISoftwareUpdateController *)v43 _showInstallAlertWithInstallOptions:location];
+      [(SUSUISoftwareUpdateController *)selfCopy _showInstallAlertWithInstallOptions:location];
       v44 = 1;
       v30 = 1;
     }
@@ -3862,10 +3862,10 @@ LABEL_19:
 
   if ((v35 & 0x4000000) != 0)
   {
-    if (v40)
+    if (necessaryCopy)
     {
-      v16 = v43;
-      v17 = [(SUSUISoftwareUpdateController *)v43 _stringForInstallNotAllowableReason:0x4000000];
+      v16 = selfCopy;
+      v17 = [(SUSUISoftwareUpdateController *)selfCopy _stringForInstallNotAllowableReason:0x4000000];
       [(SUSUISoftwareUpdateController *)v16 _realertWithStrategy:5 andReason:?];
     }
 
@@ -3876,10 +3876,10 @@ LABEL_19:
 
   if ((v35 & 0x8000000) != 0)
   {
-    if (v40)
+    if (necessaryCopy)
     {
-      v14 = v43;
-      v15 = [(SUSUISoftwareUpdateController *)v43 _stringForInstallNotAllowableReason:0x8000000];
+      v14 = selfCopy;
+      v15 = [(SUSUISoftwareUpdateController *)selfCopy _stringForInstallNotAllowableReason:0x8000000];
       [(SUSUISoftwareUpdateController *)v14 _resetStateForReason:?];
     }
 
@@ -3889,9 +3889,9 @@ LABEL_19:
   }
 
   v29 = 0;
-  v11 = v43;
+  v11 = selfCopy;
   v10 = v35;
-  v12 = [(SUSUISoftwareUpdateController *)v43 _waitableReasonsForShowingInstallAlert];
+  _waitableReasonsForShowingInstallAlert = [(SUSUISoftwareUpdateController *)selfCopy _waitableReasonsForShowingInstallAlert];
   v27 = v29;
   v13 = [SUSUISoftwareUpdateController _doesStateContainNonInstallableReasons:v11 reasonsToCheck:"_doesStateContainNonInstallableReasons:reasonsToCheck:outMatchingReasonsString:" outMatchingReasonsString:v10];
   objc_storeStrong(&v29, v27);
@@ -3910,13 +3910,13 @@ LABEL_19:
   }
 
   v26 |= v5;
-  if (v26 && v40)
+  if (v26 && necessaryCopy)
   {
     v9 = [NSNumber numberWithInteger:v26];
     v25 = [NSMutableDictionary dictionaryWithObject:"dictionaryWithObject:forKey:" forKey:?];
 
     v24 = [NSError errorWithDomain:SUErrorDomain code:20 userInfo:v25];
-    [(SUSUISoftwareUpdateController *)v43 _handleInstallError:v24];
+    [(SUSUISoftwareUpdateController *)selfCopy _handleInstallError:v24];
     v44 = 0;
     v30 = 1;
     objc_storeStrong(&v24, 0);
@@ -3926,16 +3926,16 @@ LABEL_19:
   else
   {
 LABEL_50:
-    if (v40)
+    if (necessaryCopy)
     {
-      if ([(SUSUISoftwareUpdateAlertModel *)v43->_alertModel alertFlow]== &dword_0 + 2)
+      if ([(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel alertFlow]== &dword_0 + 2)
       {
-        alertModel = v43->_alertModel;
+        alertModel = selfCopy->_alertModel;
         v8 = [NSString stringWithFormat:@"Unmet constraints when showing countdown alert: %ld", v35];
         [(SUSUISoftwareUpdateAlertModel *)alertModel countdownAlertPresentationPreventedForReasons:?];
       }
 
-      [(SUSUISoftwareUpdateController *)v43 _realertWithStrategy:6 andReason:v29];
+      [(SUSUISoftwareUpdateController *)selfCopy _realertWithStrategy:6 andReason:v29];
     }
 
     v30 = 0;
@@ -3956,13 +3956,13 @@ LABEL_47:
 
 - (BOOL)_needsToWaitForHomescreenToAppear
 {
-  v36 = self;
+  selfCopy = self;
   v35 = a2;
-  v34 = [(SUSUILayoutStateMonitor *)self->_layoutStateMonitor isHomeScreenForeground];
-  v33 = [(SUSUISoftwareUpdateController *)v36 settingsForeground];
-  v32 = [(SUManagerClient *)v36->_client isInstallationKeybagRequired];
-  v31 = [(SUSUISoftwareUpdateController *)v36 isUILocked];
-  v30 = [(SUManagerClient *)v36->_client isAnyClientInUserInteraction];
+  isHomeScreenForeground = [(SUSUILayoutStateMonitor *)self->_layoutStateMonitor isHomeScreenForeground];
+  settingsForeground = [(SUSUISoftwareUpdateController *)selfCopy settingsForeground];
+  isInstallationKeybagRequired = [(SUManagerClient *)selfCopy->_client isInstallationKeybagRequired];
+  isUILocked = [(SUSUISoftwareUpdateController *)selfCopy isUILocked];
+  isAnyClientInUserInteraction = [(SUManagerClient *)selfCopy->_client isAnyClientInUserInteraction];
   v29 = SUSUILog();
   v28 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -3970,7 +3970,7 @@ LABEL_47:
     log = v29;
     type = v28;
     v2 = @"Yes";
-    if (v31)
+    if (isUILocked)
     {
       v3 = @"Yes";
     }
@@ -3981,7 +3981,7 @@ LABEL_47:
     }
 
     v18 = v3;
-    if (v32)
+    if (isInstallationKeybagRequired)
     {
       v4 = @"Yes";
     }
@@ -3992,13 +3992,13 @@ LABEL_47:
     }
 
     v19 = v4;
-    if ((v34 & 1) == 0)
+    if ((isHomeScreenForeground & 1) == 0)
     {
       v2 = @"No";
     }
 
     v20 = v2;
-    v23 = SUSUIStringForInstallAlertFlow([(SUSUISoftwareUpdateAlertModel *)v36->_alertModel alertFlow]);
+    v23 = SUSUIStringForInstallAlertFlow([(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel alertFlow]);
     v27 = v23;
     sub_31F7C(v39, v18, v19, v20, v27);
     _os_log_impl(&dword_0, log, type, "UI Locked: %@, needsHomescreenForInstallAlert: %@, isShowingHomescreen: %@, alert flow: %@", v39, 0x2Au);
@@ -4007,9 +4007,9 @@ LABEL_47:
   }
 
   objc_storeStrong(&v29, 0);
-  if (v31)
+  if (isUILocked)
   {
-    return v32 & 1;
+    return isInstallationKeybagRequired & 1;
   }
 
   oslog = SUSUILog();
@@ -4019,7 +4019,7 @@ LABEL_47:
     v15 = oslog;
     v16 = v25;
     v5 = @"Yes";
-    if (v33)
+    if (settingsForeground)
     {
       v6 = @"Yes";
     }
@@ -4030,7 +4030,7 @@ LABEL_47:
     }
 
     v11 = v6;
-    if (v32)
+    if (isInstallationKeybagRequired)
     {
       v7 = @"Yes";
     }
@@ -4041,7 +4041,7 @@ LABEL_47:
     }
 
     v12 = v7;
-    if (v34)
+    if (isHomeScreenForeground)
     {
       v8 = @"Yes";
     }
@@ -4052,13 +4052,13 @@ LABEL_47:
     }
 
     v13 = v8;
-    if ((v30 & 1) == 0)
+    if ((isAnyClientInUserInteraction & 1) == 0)
     {
       v5 = @"No";
     }
 
     v14 = v5;
-    v17 = SUSUIStringForInstallAlertFlow([(SUSUISoftwareUpdateAlertModel *)v36->_alertModel alertFlow]);
+    v17 = SUSUIStringForInstallAlertFlow([(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel alertFlow]);
     v24 = v17;
     sub_31FF8(v38, v11, v12, v13, v14, v24);
     _os_log_impl(&dword_0, v15, v16, "UI not locked. inPreferences: %@, needsHomescreenForInstallAlert: %@, isShowingHomescreen: %@, isClientInUserInteraction:%@, alert flow: %@", v38, 0x34u);
@@ -4067,23 +4067,23 @@ LABEL_47:
   }
 
   objc_storeStrong(&oslog, 0);
-  if (v34 & 1) != 0 || (v10 = 1, (v33))
+  if (isHomeScreenForeground & 1) != 0 || (v10 = 1, (settingsForeground))
   {
-    v10 = v30;
+    v10 = isAnyClientInUserInteraction;
   }
 
   return v10 & 1;
 }
 
-- (void)_isUpdateInstallableWithInstallOptions:(id)a3 andResponse:(id)a4
+- (void)_isUpdateInstallableWithInstallOptions:(id)options andResponse:(id)response
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, options);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
-  dispatch_assert_queue_V2(v24[3]);
+  objc_storeStrong(&v22, response);
+  dispatch_assert_queue_V2(selfCopy[3]);
   v21 = 0;
   if (location[0])
   {
@@ -4098,7 +4098,7 @@ LABEL_47:
   v18 = 0x20000000;
   v19 = 32;
   v20 = 0;
-  v8 = v24[2];
+  v8 = selfCopy[2];
   v7 = v21;
   v10 = _NSConcreteStackBlock;
   v11 = -1073741824;
@@ -4106,7 +4106,7 @@ LABEL_47:
   v13 = sub_3228C;
   v14 = &unk_60688;
   v16[1] = v17;
-  v15 = v24;
+  v15 = selfCopy;
   v16[0] = v22;
   [v8 isUpdateReadyForInstallationWithOptions:v7 withResult:&v10];
   objc_storeStrong(v16, 0);
@@ -4117,27 +4117,27 @@ LABEL_47:
   objc_storeStrong(location, 0);
 }
 
-- (void)_isUpdateInstallable:(id)a3
+- (void)_isUpdateInstallable:(id)installable
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SUSUISoftwareUpdateController *)v4 _isUpdateInstallableWithInstallOptions:0 andResponse:location[0]];
+  objc_storeStrong(location, installable);
+  [(SUSUISoftwareUpdateController *)selfCopy _isUpdateInstallableWithInstallOptions:0 andResponse:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_doesStateContainNonInstallableReasons:(int64_t)a3 reasonsToCheck:(id)a4 outMatchingReasonsString:(id *)a5
+- (BOOL)_doesStateContainNonInstallableReasons:(int64_t)reasons reasonsToCheck:(id)check outMatchingReasonsString:(id *)string
 {
-  v30 = self;
+  selfCopy = self;
   v29 = a2;
-  v28 = a3;
+  reasonsCopy = reasons;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v26 = a5;
+  objc_storeStrong(&location, check);
+  stringCopy = string;
   v25 = 0;
   v22 = 0;
-  if (a5)
+  if (string)
   {
     v23 = objc_alloc_init(NSMutableString);
     v22 = 1;
@@ -4171,12 +4171,12 @@ LABEL_47:
       }
 
       v21 = *(__b[1] + 8 * v14);
-      v19 = [v21 integerValue];
-      if ((v28 & v19) == v19)
+      integerValue = [v21 integerValue];
+      if ((reasonsCopy & integerValue) == integerValue)
       {
         v25 = 1;
         v10 = v24;
-        v11 = [(SUSUISoftwareUpdateController *)v30 _stringForInstallNotAllowableReason:v19];
+        v11 = [(SUSUISoftwareUpdateController *)selfCopy _stringForInstallNotAllowableReason:integerValue];
         [v10 appendFormat:@"%@, ", v11];
       }
 
@@ -4193,7 +4193,7 @@ LABEL_47:
     }
   }
 
-  if (v24 && v26)
+  if (v24 && stringCopy)
   {
     if ((v25 & 1) == 0)
     {
@@ -4202,7 +4202,7 @@ LABEL_47:
 
     v9 = v24;
     v6 = v24;
-    *v26 = v9;
+    *stringCopy = v9;
   }
 
   v8 = v25;
@@ -4213,10 +4213,10 @@ LABEL_47:
 
 - (void)_dismissInstallFailureAlertsWithoutRepop
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
   memset(__b, 0, sizeof(__b));
-  obj = [(SUSUIAlertPresentationManager *)v12->_alertPresentationManager presentedAlertsOfClass:objc_opt_class()];
+  obj = [(SUSUIAlertPresentationManager *)selfCopy->_alertPresentationManager presentedAlertsOfClass:objc_opt_class()];
   v8 = [obj countByEnumeratingWithState:__b objects:v13 count:16];
   if (v8)
   {
@@ -4249,12 +4249,12 @@ LABEL_47:
   }
 }
 
-- (void)_showInstallAlertWithInstallOptions:(id)a3
+- (void)_showInstallAlertWithInstallOptions:(id)options
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, options);
   if ((+[SUManagerClient _shouldDisallowAvailabilityNotifications]& 1) != 0)
   {
     v15 = SUSUILog();
@@ -4271,26 +4271,26 @@ LABEL_47:
 
   else
   {
-    [(SUSUISoftwareUpdateController *)v17 _dismissInstallAlertsWithReason:@"Dismissing existing install alerts to show a new one." includingInstallTonight:1 withRealertStrategy:0];
-    [(SUSUISoftwareUpdateController *)v17 _dismissInstallFailureAlertsWithoutRepop];
+    [(SUSUISoftwareUpdateController *)selfCopy _dismissInstallAlertsWithReason:@"Dismissing existing install alerts to show a new one." includingInstallTonight:1 withRealertStrategy:0];
+    [(SUSUISoftwareUpdateController *)selfCopy _dismissInstallFailureAlertsWithoutRepop];
     v5 = _NSConcreteStackBlock;
     v6 = -1073741824;
     v7 = 0;
     v8 = sub_32F90;
     v9 = &unk_5D058;
-    v10 = v17;
+    v10 = selfCopy;
     v11 = location[0];
     v12 = objc_retainBlock(&v5);
-    if (v17->_scheduledTryTonightAutoInstallOperation)
+    if (selfCopy->_scheduledTryTonightAutoInstallOperation)
     {
       v3 = v12;
-      v4 = [(SUAutoInstallOperation *)v17->_scheduledTryTonightAutoInstallOperation forecast];
+      forecast = [(SUAutoInstallOperation *)selfCopy->_scheduledTryTonightAutoInstallOperation forecast];
       v3[2]();
     }
 
     else
     {
-      [(SUSUISoftwareUpdateController *)v17 _createInstallTonightForecastWithResult:v12];
+      [(SUSUISoftwareUpdateController *)selfCopy _createInstallTonightForecastWithResult:v12];
     }
 
     objc_storeStrong(&v12, 0);
@@ -4313,40 +4313,40 @@ LABEL_47:
   return v3 & 1;
 }
 
-- (void)_scheduleInstallAlertReminderWithDate:(id)a3 repopStrategy:(unint64_t)a4 forReason:(id)a5
+- (void)_scheduleInstallAlertReminderWithDate:(id)date repopStrategy:(unint64_t)strategy forReason:(id)reason
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v31 = a4;
+  objc_storeStrong(location, date);
+  strategyCopy = strategy;
   v30 = 0;
-  objc_storeStrong(&v30, a5);
-  [(PCPersistentTimer *)v33->_installTimer invalidate];
-  objc_storeStrong(&v33->_installTimer, 0);
+  objc_storeStrong(&v30, reason);
+  [(PCPersistentTimer *)selfCopy->_installTimer invalidate];
+  objc_storeStrong(&selfCopy->_installTimer, 0);
   if (location[0])
   {
     v19 = +[SUSUIPreferences sharedInstance];
-    v20 = [(SUSUIPreferences *)v19 installAlertIntervalMinutes];
+    installAlertIntervalMinutes = [(SUSUIPreferences *)v19 installAlertIntervalMinutes];
 
-    if (v20)
+    if (installAlertIntervalMinutes)
     {
       v17 = +[SUSUIPreferences sharedInstance];
-      v16 = [(SUSUIPreferences *)v17 installAlertIntervalMinutes];
-      v18 = [v16 integerValue];
+      installAlertIntervalMinutes2 = [(SUSUIPreferences *)v17 installAlertIntervalMinutes];
+      integerValue = [installAlertIntervalMinutes2 integerValue];
 
-      v29 = v18;
-      v28 = (60 * v18);
+      v29 = integerValue;
+      v28 = (60 * integerValue);
       v5 = [[NSDate alloc] initWithTimeIntervalSinceNow:v28];
       v6 = location[0];
       location[0] = v5;
     }
   }
 
-  [(SUSUISoftwareUpdateAlertModel *)v33->_alertModel setPersistedInstallAlertRepopStrategy:v31 withFireDate:location[0]];
+  [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel setPersistedInstallAlertRepopStrategy:strategyCopy withFireDate:location[0]];
   if (location[0])
   {
-    [(SUManagerClient *)v33->_client registerCSInstallPredicatesOnDate:location[0]];
+    [(SUManagerClient *)selfCopy->_client registerCSInstallPredicatesOnDate:location[0]];
     v27 = SUSUILog();
     v26 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -4357,7 +4357,7 @@ LABEL_47:
       v10 = v15;
       v25 = v10;
       v11 = v30;
-      v14 = SUSUIStringForInstallAlertRepopStrategy(v31);
+      v14 = SUSUIStringForInstallAlertRepopStrategy(strategyCopy);
       v24 = v14;
       sub_33A88(v35, v10, v11, v24);
       _os_log_impl(&dword_0, log, type, "[Install Alert] Scheduling new software update install alert reminder at %{public}@ for reason: %@ (repopStrategy: %@)", v35, 0x20u);
@@ -4368,14 +4368,14 @@ LABEL_47:
 
     objc_storeStrong(&v27, 0);
     v7 = [PCPersistentTimer alloc];
-    v8 = [v7 initWithFireDate:location[0] serviceIdentifier:@"SoftwareUpdateInstallAlertReminder" target:v33 selector:"_showOrScheduleNextInstallAlertFromTimer:" userInfo:0];
-    installTimer = v33->_installTimer;
-    v33->_installTimer = v8;
+    v8 = [v7 initWithFireDate:location[0] serviceIdentifier:@"SoftwareUpdateInstallAlertReminder" target:selfCopy selector:"_showOrScheduleNextInstallAlertFromTimer:" userInfo:0];
+    installTimer = selfCopy->_installTimer;
+    selfCopy->_installTimer = v8;
 
-    [(PCPersistentTimer *)v33->_installTimer setDisableSystemWaking:1];
-    [(PCPersistentTimer *)v33->_installTimer setUserVisible:1];
-    [(PCPersistentTimer *)v33->_installTimer setMinimumEarlyFireProportion:1.0];
-    [(PCPersistentTimer *)v33->_installTimer scheduleInQueue:v33->_clientQueue];
+    [(PCPersistentTimer *)selfCopy->_installTimer setDisableSystemWaking:1];
+    [(PCPersistentTimer *)selfCopy->_installTimer setUserVisible:1];
+    [(PCPersistentTimer *)selfCopy->_installTimer setMinimumEarlyFireProportion:1.0];
+    [(PCPersistentTimer *)selfCopy->_installTimer scheduleInQueue:selfCopy->_clientQueue];
   }
 
   else
@@ -4394,15 +4394,15 @@ LABEL_47:
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleInstallError:(id)a3
+- (void)_handleInstallError:(id)error
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v27 = ![(SUSUILayoutStateMonitor *)v29->_layoutStateMonitor isScreenOn];
+  objc_storeStrong(location, error);
+  v27 = ![(SUSUILayoutStateMonitor *)selfCopy->_layoutStateMonitor isScreenOn];
   v26 = BYSetupAssistantNeedsToRun();
-  if (![(SUSUISoftwareUpdateInstallOptions *)v29->_pendingInstallOptions automaticInstallAttempt]|| (v15 = 1, (v27 & 1) == 0))
+  if (![(SUSUISoftwareUpdateInstallOptions *)selfCopy->_pendingInstallOptions automaticInstallAttempt]|| (v15 = 1, (v27 & 1) == 0))
   {
     v15 = v26;
   }
@@ -4434,9 +4434,9 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v13 = [location[0] domain];
+  domain = [location[0] domain];
   v14 = 0;
-  if ([v13 isEqualToString:SUErrorDomain])
+  if ([domain isEqualToString:SUErrorDomain])
   {
     v14 = [location[0] code] == &dword_C + 2;
   }
@@ -4457,9 +4457,9 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  v9 = [location[0] domain];
+  domain2 = [location[0] domain];
   v10 = 0;
-  if ([v9 isEqualToString:SUErrorDomain])
+  if ([domain2 isEqualToString:SUErrorDomain])
   {
     v10 = [location[0] code] == &dword_10 + 3;
   }
@@ -4467,12 +4467,12 @@ LABEL_26:
   if (!v10)
   {
     v6 = 1;
-    if (![(SUSUISoftwareUpdateController *)v29 _isMultiUserAppleId])
+    if (![(SUSUISoftwareUpdateController *)selfCopy _isMultiUserAppleId])
     {
       v6 = 1;
-      if (![(SUSUISoftwareUpdateController *)v29 installErrorWillScheduleAutoInstall:location[0]])
+      if (![(SUSUISoftwareUpdateController *)selfCopy installErrorWillScheduleAutoInstall:location[0]])
       {
-        v6 = [(SUSUISoftwareUpdateController *)v29 installErrorWhenNotReadyForManagedRequest:location[0]];
+        v6 = [(SUSUISoftwareUpdateController *)selfCopy installErrorWhenNotReadyForManagedRequest:location[0]];
       }
     }
 
@@ -4480,13 +4480,13 @@ LABEL_26:
     if ((v6 & 1) == 0)
     {
       v4 = [SUSUISoftwareUpdateUnableToInstallAlertItem alloc];
-      v5 = [(SUDownload *)v29->_updateToInstall descriptor];
+      descriptor = [(SUDownload *)selfCopy->_updateToInstall descriptor];
       v16 = [SUSUIBaseSoftwareUpdateAlertItem initWithDescriptor:v4 softwareUpdateController:"initWithDescriptor:softwareUpdateController:"];
 
       [(SUSUISoftwareUpdateUnableToInstallAlertItem *)v16 setError:location[0]];
-      [(SUSUIBaseAlertItem *)v16 setIsUILocked:[(SUSUISoftwareUpdateController *)v29 isUILocked]];
-      [(SUSUIAlertPresentationManager *)v29->_alertPresentationManager dismissAlertsOfClass:objc_opt_class() animated:1];
-      [(SUSUIAlertPresentationManager *)v29->_alertPresentationManager presentAlert:v16 animated:1];
+      [(SUSUIBaseAlertItem *)v16 setIsUILocked:[(SUSUISoftwareUpdateController *)selfCopy isUILocked]];
+      [(SUSUIAlertPresentationManager *)selfCopy->_alertPresentationManager dismissAlertsOfClass:objc_opt_class() animated:1];
+      [(SUSUIAlertPresentationManager *)selfCopy->_alertPresentationManager presentAlert:v16 animated:1];
       objc_storeStrong(&v16, 0);
     }
 
@@ -4494,28 +4494,28 @@ LABEL_26:
   }
 
   v7 = [SUSUISoftwareUpdateVerificationFailedAlertItem alloc];
-  v8 = [(SUDownload *)v29->_updateToInstall descriptor];
+  descriptor2 = [(SUDownload *)selfCopy->_updateToInstall descriptor];
   v19 = [SUSUIBaseSoftwareUpdateAlertItem initWithDescriptor:v7 softwareUpdateController:"initWithDescriptor:softwareUpdateController:"];
 
-  [(SUSUIBaseAlertItem *)v19 setIsUILocked:[(SUSUISoftwareUpdateController *)v29 isUILocked]];
+  [(SUSUIBaseAlertItem *)v19 setIsUILocked:[(SUSUISoftwareUpdateController *)selfCopy isUILocked]];
   [(SUSUISoftwareUpdateVerificationFailedAlertItem *)v19 setError:location[0]];
-  [(SUSUIAlertPresentationManager *)v29->_alertPresentationManager dismissAlertsOfClass:objc_opt_class() animated:1];
-  [(SUSUIAlertPresentationManager *)v29->_alertPresentationManager presentAlert:v19 animated:1];
+  [(SUSUIAlertPresentationManager *)selfCopy->_alertPresentationManager dismissAlertsOfClass:objc_opt_class() animated:1];
+  [(SUSUIAlertPresentationManager *)selfCopy->_alertPresentationManager presentAlert:v19 animated:1];
   v18 = 1;
   objc_storeStrong(&v19, 0);
 LABEL_27:
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)installErrorWillScheduleAutoInstall:(id)a3
+- (BOOL)installErrorWillScheduleAutoInstall:(id)install
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = [location[0] domain];
+  objc_storeStrong(location, install);
+  domain = [location[0] domain];
   v9 = 0;
-  if ([v8 isEqualToString:SUErrorDomain])
+  if ([domain isEqualToString:SUErrorDomain])
   {
     v9 = [location[0] code] == &dword_14;
   }
@@ -4525,26 +4525,26 @@ LABEL_27:
     goto LABEL_14;
   }
 
-  v5 = [location[0] userInfo];
-  v4 = [v5 objectForKey:kSUInstallationConstraintsUnmetKey];
-  v6 = [v4 integerValue];
+  userInfo = [location[0] userInfo];
+  v4 = [userInfo objectForKey:kSUInstallationConstraintsUnmetKey];
+  integerValue = [v4 integerValue];
 
   v12 = 0;
   v10 = 0;
-  v7 = 0;
-  if ((v6 & 0x10) != 0)
+  autoUpdateEnabled = 0;
+  if ((integerValue & 0x10) != 0)
   {
-    v7 = 0;
-    if ((v6 & 0x20) != 0)
+    autoUpdateEnabled = 0;
+    if ((integerValue & 0x20) != 0)
     {
-      v13 = [location[0] userInfo];
+      userInfo2 = [location[0] userInfo];
       v12 = 1;
-      v11 = [v13 objectForKey:kSUMDMInstallationRequest];
+      v11 = [userInfo2 objectForKey:kSUMDMInstallationRequest];
       v10 = 1;
-      v7 = 0;
+      autoUpdateEnabled = 0;
       if ([v11 BOOLValue])
       {
-        v7 = [(SUInstallPolicy *)v15->_installPolicy autoUpdateEnabled];
+        autoUpdateEnabled = [(SUInstallPolicy *)selfCopy->_installPolicy autoUpdateEnabled];
       }
     }
   }
@@ -4557,7 +4557,7 @@ LABEL_27:
   {
   }
 
-  if (v7)
+  if (autoUpdateEnabled)
   {
     v16 = 1;
   }
@@ -4572,21 +4572,21 @@ LABEL_14:
   return v16 & 1;
 }
 
-- (BOOL)installErrorWhenNotReadyForManagedRequest:(id)a3
+- (BOOL)installErrorWhenNotReadyForManagedRequest:(id)request
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [location[0] domain];
+  objc_storeStrong(location, request);
+  domain = [location[0] domain];
   v9 = 0;
   v7 = 0;
   v6 = 0;
-  if ([v5 isEqualToString:SUErrorDomain])
+  if ([domain isEqualToString:SUErrorDomain])
   {
-    v10 = [location[0] userInfo];
+    userInfo = [location[0] userInfo];
     v9 = 1;
-    v8 = [v10 objectForKey:kSUMDMInstallationRequest];
+    v8 = [userInfo objectForKey:kSUMDMInstallationRequest];
     v7 = 1;
     v6 = 0;
     if ([v8 BOOLValue])
@@ -4626,12 +4626,12 @@ LABEL_14:
   return v12;
 }
 
-- (void)_resetStateForReason:(id)a3
+- (void)_resetStateForReason:(id)reason
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, reason);
   v7 = SUSUILog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -4640,17 +4640,17 @@ LABEL_14:
   }
 
   objc_storeStrong(&v7, 0);
-  [(SUSUISoftwareUpdateController *)v9 _realertWithStrategy:0 andReason:location[0]];
-  alertPresentationManager = v9->_alertPresentationManager;
+  [(SUSUISoftwareUpdateController *)selfCopy _realertWithStrategy:0 andReason:location[0]];
+  alertPresentationManager = selfCopy->_alertPresentationManager;
   v3 = objc_opt_class();
   v6 = NSStringFromClass(v3);
   v10 = v6;
   v5 = [NSArray arrayWithObjects:&v10 count:1];
   [SUSUIAlertPresentationManager dismissAllAlertsExcludingClasses:"dismissAllAlertsExcludingClasses:animated:" animated:?];
 
-  [(SUSUISoftwareUpdateController *)v9 _unregisterHomescreenAlerts];
-  [(SUSUISoftwareUpdateAlertModel *)v9->_alertModel resetTransientDownloadState];
-  [(SUSUISoftwareUpdateController *)v9 setUpdateToInstall:0];
+  [(SUSUISoftwareUpdateController *)selfCopy _unregisterHomescreenAlerts];
+  [(SUSUISoftwareUpdateAlertModel *)selfCopy->_alertModel resetTransientDownloadState];
+  [(SUSUISoftwareUpdateController *)selfCopy setUpdateToInstall:0];
   objc_storeStrong(location, 0);
 }
 
@@ -4669,22 +4669,22 @@ LABEL_14:
   objc_storeStrong(v8, 0);
 }
 
-- (void)_autoDownloadUnknownToUserFailedForDescriptor:(id)a3 error:(id)a4
+- (void)_autoDownloadUnknownToUserFailedForDescriptor:(id)descriptor error:(id)error
 {
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, descriptor);
   v33 = 0;
-  objc_storeStrong(&v33, a4);
-  dispatch_assert_queue_V2(v35->_clientQueue);
+  objc_storeStrong(&v33, error);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
   if (location[0])
   {
-    [(SUSUISoftwareUpdateController *)v35 _resetStateForReason:@"Auto download unknown to user failed to download."];
+    [(SUSUISoftwareUpdateController *)selfCopy _resetStateForReason:@"Auto download unknown to user failed to download."];
     if (v33)
     {
-      v9 = [v33 userInfo];
-      v32 = [v9 objectForKey:kSUAutoDownloadWillRetryKey];
+      userInfo = [v33 userInfo];
+      v32 = [userInfo objectForKey:kSUAutoDownloadWillRetryKey];
 
       if (v32 && ![v32 BOOLValue])
       {
@@ -4693,10 +4693,10 @@ LABEL_14:
         v26 = 0;
         v27 = sub_34C4C;
         v28 = &unk_5D008;
-        v29 = v35;
+        v29 = selfCopy;
         v30 = location[0];
         v31 = objc_retainBlock(&v24);
-        if ([(SUSUILayoutStateMonitor *)v35->_layoutStateMonitor isHomeScreenForeground])
+        if ([(SUSUILayoutStateMonitor *)selfCopy->_layoutStateMonitor isHomeScreenForeground])
         {
           v23 = SUSUILog();
           v22 = OS_LOG_TYPE_DEFAULT;
@@ -4725,14 +4725,14 @@ LABEL_14:
           }
 
           objc_storeStrong(&v20, 0);
-          [(SUSUILayoutStateMonitor *)v35->_layoutStateMonitor addObserver:v35];
-          queue = v35->_homescreenBlockQueue;
+          [(SUSUILayoutStateMonitor *)selfCopy->_layoutStateMonitor addObserver:selfCopy];
+          queue = selfCopy->_homescreenBlockQueue;
           v11 = _NSConcreteStackBlock;
           v12 = -1073741824;
           v13 = 0;
           v14 = sub_34D60;
           v15 = &unk_60450;
-          v16 = v35;
+          v16 = selfCopy;
           v17 = v31;
           dispatch_async(queue, &v11);
           objc_storeStrong(&v17, 0);
@@ -4752,15 +4752,15 @@ LABEL_14:
   objc_storeStrong(location, 0);
 }
 
-- (void)_presentAuthenticationUIForInstallation:(id)a3 withInstallType:(unint64_t)a4 withInstallOperationForecast:(id)a5
+- (void)_presentAuthenticationUIForInstallation:(id)installation withInstallType:(unint64_t)type withInstallOperationForecast:(id)forecast
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v28 = a4;
+  objc_storeStrong(location, installation);
+  typeCopy = type;
   v27 = 0;
-  objc_storeStrong(&v27, a5);
+  objc_storeStrong(&v27, forecast);
   v26 = SUSUILog();
   v25 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -4773,17 +4773,17 @@ LABEL_14:
 
   objc_storeStrong(&v26, 0);
   v10 = 1;
-  if (v28 != 1)
+  if (typeCopy != 1)
   {
-    v10 = v28 == 2;
+    v10 = typeCopy == 2;
   }
 
   v23 = v10;
   v8 = [SUSUIFullScreenAuthenticationAlert alloc];
-  v9 = [(SUDownload *)v30->_updateToInstall descriptor];
+  descriptor = [(SUDownload *)selfCopy->_updateToInstall descriptor];
   v5 = v27;
-  v6 = [(SUSUISoftwareUpdateController *)v30 canDeferInstallation];
-  clientQueue = v30->_clientQueue;
+  canDeferInstallation = [(SUSUISoftwareUpdateController *)selfCopy canDeferInstallation];
+  clientQueue = selfCopy->_clientQueue;
   v15 = _NSConcreteStackBlock;
   v16 = -1073741824;
   v17 = 0;
@@ -4791,21 +4791,21 @@ LABEL_14:
   v19 = &unk_606B0;
   v21 = v10;
   v20 = location[0];
-  v22 = [(SUSUIFullScreenAuthenticationAlert *)v8 initWithDescriptor:v9 autoInstallForecast:v5 forInstallTonight:v10 canDeferInstallation:v6 completionQueue:clientQueue completionBlock:&v15];
+  v22 = [(SUSUIFullScreenAuthenticationAlert *)v8 initWithDescriptor:descriptor autoInstallForecast:v5 forInstallTonight:v10 canDeferInstallation:canDeferInstallation completionQueue:clientQueue completionBlock:&v15];
 
-  [(SUSUIFullScreenAlertPresentationManager *)v30->_fullScreenAlertPresentationManager presentAlert:v22 completion:?];
+  [(SUSUIFullScreenAlertPresentationManager *)selfCopy->_fullScreenAlertPresentationManager presentAlert:v22 completion:?];
   objc_storeStrong(&v22, 0);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(&v27, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)rollbackCompleted:(id)a3
+- (void)rollbackCompleted:(id)completed
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completed);
   v7 = SUSUILog();
   v6 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -4817,16 +4817,16 @@ LABEL_14:
   }
 
   objc_storeStrong(&v7, 0);
-  [(SUSUISoftwareUpdateController *)v9 reboot:0];
+  [(SUSUISoftwareUpdateController *)selfCopy reboot:0];
   objc_storeStrong(location, 0);
 }
 
-- (void)_rollbackSucceeded:(id)a3
+- (void)_rollbackSucceeded:(id)succeeded
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, succeeded);
   v9 = SUSUILog();
   v8 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -4838,24 +4838,24 @@ LABEL_14:
   }
 
   objc_storeStrong(&v9, 0);
-  [(SUManagerClient *)v11->_client writeKeepAliveFile];
-  [(SUManagerClient *)v11->_client setLastRollbackDescriptor:location[0]];
+  [(SUManagerClient *)selfCopy->_client writeKeepAliveFile];
+  [(SUManagerClient *)selfCopy->_client setLastRollbackDescriptor:location[0]];
   v3 = [SUSUIRollbackCountdownAlertItem alloc];
-  v6 = [(SUSUIBaseRollbackAlertItem *)v3 initWithRollbackDescriptor:location[0] softwareUpdateController:v11];
-  [(SUSUIAlertPresentationManager *)v11->_alertPresentationManager dismissAllAlertsAnimated:1];
-  [(SUSUIAlertPresentationManager *)v11->_alertPresentationManager presentAlert:v6 animated:1];
+  v6 = [(SUSUIBaseRollbackAlertItem *)v3 initWithRollbackDescriptor:location[0] softwareUpdateController:selfCopy];
+  [(SUSUIAlertPresentationManager *)selfCopy->_alertPresentationManager dismissAllAlertsAnimated:1];
+  [(SUSUIAlertPresentationManager *)selfCopy->_alertPresentationManager presentAlert:v6 animated:1];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_rollbackFailed:(id)a3 withError:(id)a4
+- (void)_rollbackFailed:(id)failed withError:(id)error
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, failed);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, error);
   v8 = SUSUILog();
   v7 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -4866,9 +4866,9 @@ LABEL_14:
 
   objc_storeStrong(&v8, 0);
   v4 = [SUSUISoftwareUpdateRollbackFailureAlertItem alloc];
-  v6 = [(SUSUISoftwareUpdateRollbackFailureAlertItem *)v4 initWithRollbackDescriptor:location[0] softwareUpdateController:v11 error:v9];
-  [(SUSUIAlertPresentationManager *)v11->_alertPresentationManager dismissAllAlertsAnimated:1];
-  [(SUSUIAlertPresentationManager *)v11->_alertPresentationManager presentAlert:v6 animated:1];
+  v6 = [(SUSUISoftwareUpdateRollbackFailureAlertItem *)v4 initWithRollbackDescriptor:location[0] softwareUpdateController:selfCopy error:v9];
+  [(SUSUIAlertPresentationManager *)selfCopy->_alertPresentationManager dismissAllAlertsAnimated:1];
+  [(SUSUIAlertPresentationManager *)selfCopy->_alertPresentationManager presentAlert:v6 animated:1];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
@@ -4876,7 +4876,7 @@ LABEL_14:
 
 - (void)cancelRollback
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = SUSUILog();
   v6 = OS_LOG_TYPE_DEFAULT;
@@ -4889,20 +4889,20 @@ LABEL_14:
   }
 
   objc_storeStrong(location, 0);
-  [(SUManagerClient *)v8->_client writeKeepAliveFile];
+  [(SUManagerClient *)selfCopy->_client writeKeepAliveFile];
   v4 = objc_alloc_init(SUPurgeOptions);
   [v4 setNotifyUser:0];
   [v4 setUserRequested:1];
-  [(SUManagerClient *)v8->_client purgeDownloadWithOptions:v4 withResult:&stru_606F0];
+  [(SUManagerClient *)selfCopy->_client purgeDownloadWithOptions:v4 withResult:&stru_606F0];
   objc_storeStrong(&v4, 0);
 }
 
-- (void)_bootedAfterRollback:(id)a3
+- (void)_bootedAfterRollback:(id)rollback
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, rollback);
   v9 = SUSUILog();
   v8 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -4915,25 +4915,25 @@ LABEL_14:
 
   objc_storeStrong(&v9, 0);
   v3 = [SUSUIPostSplatRollbackAlertItem alloc];
-  v6 = [(SUSUIBaseRollbackAlertItem *)v3 initWithRollbackDescriptor:location[0] softwareUpdateController:v11];
-  if ([(SUSUILayoutStateMonitor *)v11->_layoutStateMonitor isUILocked])
+  v6 = [(SUSUIBaseRollbackAlertItem *)v3 initWithRollbackDescriptor:location[0] softwareUpdateController:selfCopy];
+  if ([(SUSUILayoutStateMonitor *)selfCopy->_layoutStateMonitor isUILocked])
   {
-    [(SUSUIAlertPresentationManager *)v11->_alertPresentationManager dismissAllAlertsAnimated:1];
-    [(SUSUIAlertPresentationManager *)v11->_alertPresentationManager presentAlert:v6 animated:1];
+    [(SUSUIAlertPresentationManager *)selfCopy->_alertPresentationManager dismissAllAlertsAnimated:1];
+    [(SUSUIAlertPresentationManager *)selfCopy->_alertPresentationManager presentAlert:v6 animated:1];
   }
 
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_rollbackSuggested:(id)a3 info:(id)a4
+- (void)_rollbackSuggested:(id)suggested info:(id)info
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, suggested);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, info);
   v8 = SUSUILog();
   v7 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -4944,37 +4944,37 @@ LABEL_14:
 
   objc_storeStrong(&v8, 0);
   v4 = [SUSUIRollbackSuggestedAlertItem alloc];
-  v6 = [(SUSUIRollbackSuggestedAlertItem *)v4 initWithDescriptor:location[0] softwareUpdateController:v11 info:v9];
-  [(SUSUIAlertPresentationManager *)v11->_alertPresentationManager dismissAllAlertsAnimated:1];
-  [(SUSUIAlertPresentationManager *)v11->_alertPresentationManager presentAlert:v6 animated:1];
+  v6 = [(SUSUIRollbackSuggestedAlertItem *)v4 initWithDescriptor:location[0] softwareUpdateController:selfCopy info:v9];
+  [(SUSUIAlertPresentationManager *)selfCopy->_alertPresentationManager dismissAllAlertsAnimated:1];
+  [(SUSUIAlertPresentationManager *)selfCopy->_alertPresentationManager presentAlert:v6 animated:1];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_setNVRAMVar:(__CFString *)a3 withValue:(void *)a4
+- (BOOL)_setNVRAMVar:(__CFString *)var withValue:(void *)value
 {
-  v27 = self;
+  selfCopy = self;
   v26 = a2;
-  v25 = a3;
-  v24 = a4;
+  varCopy = var;
+  valueCopy = value;
   v23 = 0;
   v22 = 0;
   v21 = 0;
-  if (a3)
+  if (var)
   {
-    if (v24)
+    if (valueCopy)
     {
       v22 = IORegistryEntryFromPath(kIOMainPortDefault, "IODeviceTree:/options");
       if (v22)
       {
-        v21 = IORegistryEntrySetCFProperty(v22, v25, v24);
+        v21 = IORegistryEntrySetCFProperty(v22, varCopy, valueCopy);
         if (v21)
         {
           v11 = SUSUILog();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
           {
-            sub_35DAC(v29, v25, v21);
+            sub_35DAC(v29, varCopy, v21);
             _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "Failed to set NVRAM key %@ in IO registry: %d", v29, 0x12u);
           }
 
@@ -5079,28 +5079,28 @@ LABEL_14:
   }
 }
 
-- (void)reboot:(BOOL)a3
+- (void)reboot:(BOOL)reboot
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
+  rebootCopy = reboot;
   location = SUSUILog();
   v11 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(location, OS_LOG_TYPE_DEFAULT))
   {
-    sub_11844(v16, v13);
+    sub_11844(v16, rebootCopy);
     _os_log_impl(&dword_0, location, v11, "Rebooting now (dark=%d)", v16, 8u);
   }
 
   objc_storeStrong(&location, 0);
-  queue = v15->_backgroundQueue;
+  queue = selfCopy->_backgroundQueue;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_36118;
   v8 = &unk_5F568;
-  v9 = v15;
-  v10 = v13;
+  v9 = selfCopy;
+  v10 = rebootCopy;
   dispatch_async(queue, &v4);
   objc_storeStrong(&v9, 0);
 }
@@ -5110,32 +5110,32 @@ LABEL_14:
   v6[2] = self;
   v6[1] = a2;
   v6[0] = +[UIDevice currentDevice];
-  v4 = [v6[0] systemVersion];
-  v3 = [v6[0] buildVersion];
-  v5 = [NSString stringWithFormat:@"%@:%@", v4, v3];
+  systemVersion = [v6[0] systemVersion];
+  buildVersion = [v6[0] buildVersion];
+  v5 = [NSString stringWithFormat:@"%@:%@", systemVersion, buildVersion];
 
   objc_storeStrong(v6, 0);
 
   return v5;
 }
 
-- (void)_saveLastKnownVersionPreference:(id)a3
+- (void)_saveLastKnownVersionPreference:(id)preference
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SUSUISoftwareUpdateDefaults *)v4->_suDefaults setLastOSVersion:location[0]];
+  objc_storeStrong(location, preference);
+  [(SUSUISoftwareUpdateDefaults *)selfCopy->_suDefaults setLastOSVersion:location[0]];
   objc_storeStrong(location, 0);
 }
 
 - (void)_migrateForNewOSVersionIfNecessary
 {
-  v14 = self;
+  selfCopy = self;
   v13[1] = a2;
   v13[0] = [(SUSUISoftwareUpdateController *)self _stringForCurrentVersionPreference];
-  v12 = [(SUSUISoftwareUpdateDefaults *)v14->_suDefaults lastOSVersion];
-  if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([v12 isEqualToString:v13[0]] & 1) == 0)
+  lastOSVersion = [(SUSUISoftwareUpdateDefaults *)selfCopy->_suDefaults lastOSVersion];
+  if (!lastOSVersion || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([lastOSVersion isEqualToString:v13[0]] & 1) == 0)
   {
     location = SUSUILog();
     v10 = OS_LOG_TYPE_DEFAULT;
@@ -5148,9 +5148,9 @@ LABEL_14:
     }
 
     objc_storeStrong(&location, 0);
-    [(SUSUISoftwareUpdateController *)v14 _saveLastKnownVersionPreference:v13[0]];
-    [(SUSUISoftwareUpdateDefaults *)v14->_suDefaults migrateAndClearLegacyPreferences];
-    [(SUSUISoftwareUpdateDefaults *)v14->_suDefaults setSoftwareUpdateState:0];
+    [(SUSUISoftwareUpdateController *)selfCopy _saveLastKnownVersionPreference:v13[0]];
+    [(SUSUISoftwareUpdateDefaults *)selfCopy->_suDefaults migrateAndClearLegacyPreferences];
+    [(SUSUISoftwareUpdateDefaults *)selfCopy->_suDefaults setSoftwareUpdateState:0];
     v8 = SUSUILog();
     v7 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -5162,21 +5162,21 @@ LABEL_14:
     }
 
     objc_storeStrong(&v8, 0);
-    [(SUSUISoftwareUpdateController *)v14 toggleSettingsBadge:0 update:0];
-    [(SUSUISoftwareUpdateController *)v14 _clearLegacyBadgeIfNecessary:v12];
+    [(SUSUISoftwareUpdateController *)selfCopy toggleSettingsBadge:0 update:0];
+    [(SUSUISoftwareUpdateController *)selfCopy _clearLegacyBadgeIfNecessary:lastOSVersion];
   }
 
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&lastOSVersion, 0);
   objc_storeStrong(v13, 0);
 }
 
-- (void)_clearLegacyBadgeIfNecessary:(id)a3
+- (void)_clearLegacyBadgeIfNecessary:(id)necessary
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_V2(v9[3]);
+  objc_storeStrong(location, necessary);
+  dispatch_assert_queue_V2(selfCopy[3]);
   if ([location[0] hasPrefix:@"5.0"])
   {
     v7 = SUSUILog();
@@ -5190,46 +5190,46 @@ LABEL_14:
     }
 
     objc_storeStrong(&v7, 0);
-    [(dispatch_queue_t *)v9 _savePreferencesBadgeFlag:0];
-    [(dispatch_queue_t *)v9 _setSettingsBadgeToValue:0];
+    [(dispatch_queue_t *)selfCopy _savePreferencesBadgeFlag:0];
+    [(dispatch_queue_t *)selfCopy _setSettingsBadgeToValue:0];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_savePreferencesBadgeFlag:(BOOL)a3
+- (void)_savePreferencesBadgeFlag:(BOOL)flag
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  flagCopy = flag;
   queue = self->_badgingQueue;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_36768;
   v8 = &unk_5F568;
-  v9 = self;
-  v10 = v11;
+  selfCopy2 = self;
+  v10 = flagCopy;
   dispatch_async(queue, &v4);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy2, 0);
 }
 
-- (void)toggleSettingsBadge:(BOOL)a3 update:(id)a4
+- (void)toggleSettingsBadge:(BOOL)badge update:(id)update
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  badgeCopy = badge;
   location = 0;
-  objc_storeStrong(&location, a4);
-  dispatch_assert_queue_V2(v16[3]);
-  queue = v16[19];
+  objc_storeStrong(&location, update);
+  dispatch_assert_queue_V2(selfCopy[3]);
+  queue = selfCopy[19];
   v5 = _NSConcreteStackBlock;
   v6 = -1073741824;
   v7 = 0;
   v8 = sub_368D8;
   v9 = &unk_60718;
-  v12 = v14;
-  v10 = v16;
+  v12 = badgeCopy;
+  v10 = selfCopy;
   v11 = location;
   dispatch_async(queue, &v5);
   objc_storeStrong(&v11, 0);
@@ -5237,20 +5237,20 @@ LABEL_14:
   objc_storeStrong(&location, 0);
 }
 
-- (void)_setSettingsBadgeToValue:(int64_t)a3
+- (void)_setSettingsBadgeToValue:(int64_t)value
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  valueCopy = value;
   dispatch_assert_queue_V2(self->_clientQueue);
-  queue = v12->_badgingQueue;
+  queue = selfCopy->_badgingQueue;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_36F9C;
   v8 = &unk_60740;
-  v9[0] = v12;
-  v9[1] = v10;
+  v9[0] = selfCopy;
+  v9[1] = valueCopy;
   dispatch_async(queue, &v4);
   objc_storeStrong(v9, 0);
 }
@@ -5262,14 +5262,14 @@ LABEL_14:
   return [(SUSUIExternalSettingsAppDefaults *)self->_settingsAppDefaults isBadgedForSoftwareUpdate];
 }
 
-- (void)_badgingQueue_badgeSettingsWithValue:(int64_t)a3
+- (void)_badgingQueue_badgeSettingsWithValue:(int64_t)value
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  valueCopy = value;
   badgingQueue = self->_badgingQueue;
   BSDispatchQueueAssert();
-  v5 = [[NSNumber alloc] initWithInteger:v6];
+  v5 = [[NSNumber alloc] initWithInteger:valueCopy];
   oslog = SUSUILog();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -5278,69 +5278,69 @@ LABEL_14:
   }
 
   objc_storeStrong(&oslog, 0);
-  [(FBSSystemService *)v8->_badgingQueue_systemService setBadgeValue:v5 forBundleID:SUSUISettingsBundleIdentifier];
+  [(FBSSystemService *)selfCopy->_badgingQueue_systemService setBadgeValue:v5 forBundleID:SUSUISettingsBundleIdentifier];
   objc_storeStrong(&v5, 0);
 }
 
-- (void)_badgingQueue_savePreferencesBadgeEnabled:(BOOL)a3
+- (void)_badgingQueue_savePreferencesBadgeEnabled:(BOOL)enabled
 {
   badgingQueue = self->_badgingQueue;
   BSDispatchQueueAssert();
-  [(SUSUIExternalSettingsAppDefaults *)self->_settingsAppDefaults setBadgedForSoftwareUpdate:a3];
+  [(SUSUIExternalSettingsAppDefaults *)self->_settingsAppDefaults setBadgedForSoftwareUpdate:enabled];
 }
 
 - (BOOL)settingsForeground
 {
-  v3 = [(SUSUISoftwareUpdateController *)self _foregroundBundleID];
-  v4 = [v3 isEqualToString:@"com.apple.Preferences"];
+  _foregroundBundleID = [(SUSUISoftwareUpdateController *)self _foregroundBundleID];
+  v4 = [_foregroundBundleID isEqualToString:@"com.apple.Preferences"];
 
   return v4;
 }
 
 - (BOOL)_shouldHideAlert
 {
-  v3 = [(SUDownload *)self->_updateToInstall metadata];
-  v4 = [v3 isAutoDownload];
+  metadata = [(SUDownload *)self->_updateToInstall metadata];
+  isAutoDownload = [metadata isAutoDownload];
 
   v8 = [(SUSUISoftwareUpdateAlertModel *)self->_alertModel alertFlow]== &dword_0 + 1;
-  v5 = [(SUDownload *)self->_updateToInstall descriptor];
-  v6 = [v5 hideInstallAlert];
+  descriptor = [(SUDownload *)self->_updateToInstall descriptor];
+  hideInstallAlert = [descriptor hideInstallAlert];
 
   v7 = 0;
-  if (v4)
+  if (isAutoDownload)
   {
     v7 = 0;
     if (v8)
     {
-      v7 = v6;
+      v7 = hideInstallAlert;
     }
   }
 
   return v7 & 1;
 }
 
-- (void)scanForUpdates:(id)a3 withScanResults:(id)a4
+- (void)scanForUpdates:(id)updates withScanResults:(id)results
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, updates);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  dispatch_assert_queue_V2(v7->_clientQueue);
-  [(SUManagerClient *)v7->_client scanForUpdates:location[0] withScanResults:v5];
+  objc_storeStrong(&v5, results);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  [(SUManagerClient *)selfCopy->_client scanForUpdates:location[0] withScanResults:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)setInstallOperation:(id)a3
+- (void)setInstallOperation:(id)operation
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_V2(v4->_clientQueue);
-  objc_storeStrong(&v4->_scheduledTryTonightAutoInstallOperation, location[0]);
+  objc_storeStrong(location, operation);
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  objc_storeStrong(&selfCopy->_scheduledTryTonightAutoInstallOperation, location[0]);
   objc_storeStrong(location, 0);
 }
 

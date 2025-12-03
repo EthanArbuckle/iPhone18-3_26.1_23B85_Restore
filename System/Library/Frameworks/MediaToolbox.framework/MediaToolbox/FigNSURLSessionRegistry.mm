@@ -1,15 +1,15 @@
 @interface FigNSURLSessionRegistry
 - (FigNSURLSessionRegistry)init;
-- (void)_checkForDoom:(id)a3;
-- (void)copySessionAndAssertionForCreateOptions:(id)a3 dispatchQueue:(id)a4 outSession:(id *)a5 outAssertion:(FigOpaqueAssertion *)a6;
+- (void)_checkForDoom:(id)doom;
+- (void)copySessionAndAssertionForCreateOptions:(id)options dispatchQueue:(id)queue outSession:(id *)session outAssertion:(FigOpaqueAssertion *)assertion;
 - (void)dealloc;
 - (void)init;
-- (void)releaseSession:(id)a3;
+- (void)releaseSession:(id)session;
 @end
 
 @implementation FigNSURLSessionRegistry
 
-- (void)copySessionAndAssertionForCreateOptions:(id)a3 dispatchQueue:(id)a4 outSession:(id *)a5 outAssertion:(FigOpaqueAssertion *)a6
+- (void)copySessionAndAssertionForCreateOptions:(id)options dispatchQueue:(id)queue outSession:(id *)session outAssertion:(FigOpaqueAssertion *)assertion
 {
   v18[0] = 0;
   v18[1] = v18;
@@ -17,10 +17,10 @@
   v18[3] = __Block_byref_object_copy__12;
   v18[4] = __Block_byref_object_dispose__12;
   v18[5] = 0;
-  v11 = [a3 objectForKeyedSubscript:0x1F0B5F5F8];
-  v12 = [a3 objectForKeyedSubscript:0x1F0B5F618];
+  v11 = [options objectForKeyedSubscript:0x1F0B5F5F8];
+  v12 = [options objectForKeyedSubscript:0x1F0B5F618];
   v17 = v12;
-  v13 = [a3 objectForKeyedSubscript:0x1F0B5D698] != 0;
+  v13 = [options objectForKeyedSubscript:0x1F0B5D698] != 0;
   if (!v11)
   {
     v11 = @"com.apple.coremedia";
@@ -44,11 +44,11 @@
   block[4] = self;
   block[5] = v11;
   block[6] = v17;
-  block[7] = a4;
+  block[7] = queue;
   v16 = v13;
   block[8] = v18;
-  block[9] = a5;
-  block[10] = a6;
+  block[9] = session;
+  block[10] = assertion;
   dispatch_sync(workQueue, block);
 
   _Block_object_dispose(v18, 8);
@@ -84,17 +84,17 @@ uint64_t __105__FigNSURLSessionRegistry_copySessionAndAssertionForCreateOptions_
   return result;
 }
 
-- (void)_checkForDoom:(id)a3
+- (void)_checkForDoom:(id)doom
 {
   UpTimeNanoseconds = FigGetUpTimeNanoseconds();
-  if ([a3 assertionCount] <= 0 && objc_msgSend(a3, "doomTime"))
+  if ([doom assertionCount] <= 0 && objc_msgSend(doom, "doomTime"))
   {
-    if (UpTimeNanoseconds < [a3 doomTime])
+    if (UpTimeNanoseconds < [doom doomTime])
     {
-      v6 = [a3 doomTime] - UpTimeNanoseconds;
-      [a3 setDoomCheckScheduled:1];
-      v7 = self;
-      v8 = a3;
+      v6 = [doom doomTime] - UpTimeNanoseconds;
+      [doom setDoomCheckScheduled:1];
+      selfCopy = self;
+      doomCopy = doom;
       v9 = dispatch_time(0, v6);
       workQueue = self->_workQueue;
       v11[0] = MEMORY[0x1E69E9820];
@@ -102,16 +102,16 @@ uint64_t __105__FigNSURLSessionRegistry_copySessionAndAssertionForCreateOptions_
       v11[2] = __41__FigNSURLSessionRegistry__checkForDoom___block_invoke;
       v11[3] = &unk_1E7483A30;
       v11[4] = self;
-      v11[5] = a3;
+      v11[5] = doom;
       dispatch_after(v9, workQueue, v11);
       return;
     }
 
-    [a3 releaseOSTransaction];
-    [(NSMutableArray *)self->_sessionArray removeObject:a3];
+    [doom releaseOSTransaction];
+    [(NSMutableArray *)self->_sessionArray removeObject:doom];
   }
 
-  [a3 setDoomCheckScheduled:0];
+  [doom setDoomCheckScheduled:0];
 }
 
 void __41__FigNSURLSessionRegistry__checkForDoom___block_invoke(uint64_t a1)
@@ -121,15 +121,15 @@ void __41__FigNSURLSessionRegistry__checkForDoom___block_invoke(uint64_t a1)
   v2 = *(a1 + 32);
 }
 
-- (void)releaseSession:(id)a3
+- (void)releaseSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__FigNSURLSessionRegistry_releaseSession___block_invoke;
   v7[3] = &unk_1E7483A30;
-  v7[4] = a3;
+  v7[4] = session;
   v7[5] = self;
   dispatch_async(workQueue, v7);
 }
@@ -256,10 +256,10 @@ uint64_t __105__FigNSURLSessionRegistry_copySessionAndAssertionForCreateOptions_
   if (FigSignalErrorAtGM())
   {
 
-    a1 = 0;
+    self = 0;
   }
 
-  *a3 = a1;
+  *a3 = self;
 }
 
 @end

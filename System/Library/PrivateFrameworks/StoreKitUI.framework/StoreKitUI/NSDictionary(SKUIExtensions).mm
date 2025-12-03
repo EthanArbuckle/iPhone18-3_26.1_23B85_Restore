@@ -13,7 +13,7 @@
   }
 
   v8[0] = @"width";
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a1];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:self];
   v8[1] = @"height";
   v9[0] = v4;
   v5 = [MEMORY[0x277CCABB0] numberWithDouble:a2];

@@ -1,12 +1,12 @@
 @interface PDExpressPassManager
 - (id)createCurrentNotificationRegistrationState;
-- (void)accessTerminalDidLockForType:(int64_t)a3 forAppletIdentifier:(id)a4 keyIdentifier:(id)a5 withContent:(id)a6;
-- (void)accessTerminalDidUnlockForType:(int64_t)a3 forAppletIdentifier:(id)a4 keyIdentifier:(id)a5 withContent:(id)a6;
-- (void)assertionManager:(id)a3 didAcquireAssertion:(id)a4;
-- (void)assertionManager:(id)a3 didInvalidateAssertion:(id)a4;
-- (void)handleNotificationWithName:(id)a3 event:(id)a4 forStream:(int64_t)a5;
-- (void)performScheduledActivityWithIdentifier:(id)a3 activityCriteria:(id)a4;
-- (void)receivedSecureExpressTransactionEvent:(id)a3;
+- (void)accessTerminalDidLockForType:(int64_t)type forAppletIdentifier:(id)identifier keyIdentifier:(id)keyIdentifier withContent:(id)content;
+- (void)accessTerminalDidUnlockForType:(int64_t)type forAppletIdentifier:(id)identifier keyIdentifier:(id)keyIdentifier withContent:(id)content;
+- (void)assertionManager:(id)manager didAcquireAssertion:(id)assertion;
+- (void)assertionManager:(id)manager didInvalidateAssertion:(id)assertion;
+- (void)handleNotificationWithName:(id)name event:(id)event forStream:(int64_t)stream;
+- (void)performScheduledActivityWithIdentifier:(id)identifier activityCriteria:(id)criteria;
+- (void)receivedSecureExpressTransactionEvent:(id)event;
 - (void)secureElementRadioStateChanged;
 @end
 
@@ -23,11 +23,11 @@
   dispatch_async(accessQueue, block);
 }
 
-- (void)accessTerminalDidLockForType:(int64_t)a3 forAppletIdentifier:(id)a4 keyIdentifier:(id)a5 withContent:(id)a6
+- (void)accessTerminalDidLockForType:(int64_t)type forAppletIdentifier:(id)identifier keyIdentifier:(id)keyIdentifier withContent:(id)content
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  keyIdentifierCopy = keyIdentifier;
+  contentCopy = content;
   v13 = PDOSTransactionCreate("PDExpressPassManager");
   v14 = PDExpressTransactionQueue();
   v19[0] = _NSConcreteStackBlock;
@@ -35,23 +35,23 @@
   v19[2] = sub_1001839E0;
   v19[3] = &unk_100849DD0;
   v20 = v13;
-  v21 = self;
-  v22 = v10;
-  v23 = v11;
-  v24 = v12;
-  v25 = a3;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  selfCopy = self;
+  v22 = identifierCopy;
+  v23 = keyIdentifierCopy;
+  v24 = contentCopy;
+  typeCopy = type;
+  v15 = contentCopy;
+  v16 = keyIdentifierCopy;
+  v17 = identifierCopy;
   v18 = v13;
   dispatch_async(v14, v19);
 }
 
-- (void)accessTerminalDidUnlockForType:(int64_t)a3 forAppletIdentifier:(id)a4 keyIdentifier:(id)a5 withContent:(id)a6
+- (void)accessTerminalDidUnlockForType:(int64_t)type forAppletIdentifier:(id)identifier keyIdentifier:(id)keyIdentifier withContent:(id)content
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  keyIdentifierCopy = keyIdentifier;
+  contentCopy = content;
   v13 = PDOSTransactionCreate("PDExpressPassManager");
   v14 = PDExpressTransactionQueue();
   v19[0] = _NSConcreteStackBlock;
@@ -59,21 +59,21 @@
   v19[2] = sub_100183B24;
   v19[3] = &unk_100849DD0;
   v20 = v13;
-  v21 = self;
-  v22 = v10;
-  v23 = v11;
-  v24 = v12;
-  v25 = a3;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  selfCopy = self;
+  v22 = identifierCopy;
+  v23 = keyIdentifierCopy;
+  v24 = contentCopy;
+  typeCopy = type;
+  v15 = contentCopy;
+  v16 = keyIdentifierCopy;
+  v17 = identifierCopy;
   v18 = v13;
   dispatch_async(v14, v19);
 }
 
-- (void)receivedSecureExpressTransactionEvent:(id)a3
+- (void)receivedSecureExpressTransactionEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = PDOSTransactionCreate("PDExpressPassManager");
   v6 = PDExpressTransactionQueue();
   block[0] = _NSConcreteStackBlock;
@@ -81,14 +81,14 @@
   block[2] = sub_100183CB0;
   block[3] = &unk_10083C4C0;
   v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = eventCopy;
+  v7 = eventCopy;
   v8 = v5;
   dispatch_async(v6, block);
 }
 
-- (void)performScheduledActivityWithIdentifier:(id)a3 activityCriteria:(id)a4
+- (void)performScheduledActivityWithIdentifier:(id)identifier activityCriteria:(id)criteria
 {
   v4 = atomic_load(&self->_biometricsEnabled);
   if ((v4 & 1) == 0)
@@ -127,24 +127,24 @@
   return v3;
 }
 
-- (void)handleNotificationWithName:(id)a3 event:(id)a4 forStream:(int64_t)a5
+- (void)handleNotificationWithName:(id)name event:(id)event forStream:(int64_t)stream
 {
-  v6 = a3;
+  nameCopy = name;
   accessQueue = self->_accessQueue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100185918;
   v9[3] = &unk_10083C420;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
+  v10 = nameCopy;
+  selfCopy = self;
+  v8 = nameCopy;
   dispatch_async(accessQueue, v9);
 }
 
-- (void)assertionManager:(id)a3 didAcquireAssertion:(id)a4
+- (void)assertionManager:(id)manager didAcquireAssertion:(id)assertion
 {
-  v5 = [a4 type];
-  if (v5 == 5 || !v5)
+  type = [assertion type];
+  if (type == 5 || !type)
   {
     accessQueue = self->_accessQueue;
     block[0] = _NSConcreteStackBlock;
@@ -156,15 +156,15 @@
   }
 }
 
-- (void)assertionManager:(id)a3 didInvalidateAssertion:(id)a4
+- (void)assertionManager:(id)manager didInvalidateAssertion:(id)assertion
 {
-  v5 = [a4 type];
-  if (v5 == 5)
+  type = [assertion type];
+  if (type == 5)
   {
     goto LABEL_4;
   }
 
-  if (v5 == 1)
+  if (type == 1)
   {
     if (![(PDAssertionManager *)self->_assertionManager hasAssertionsOfType:1])
     {
@@ -173,7 +173,7 @@
     }
   }
 
-  else if (!v5)
+  else if (!type)
   {
 LABEL_4:
     accessQueue = self->_accessQueue;

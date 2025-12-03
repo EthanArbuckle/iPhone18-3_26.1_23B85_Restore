@@ -1,32 +1,32 @@
 @interface PKDashboardTitleDetailCell
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKDashboardTitleDetailCell)initWithFrame:(CGRect)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKDashboardTitleDetailCell)initWithFrame:(CGRect)frame;
 - (void)_updateDefaultValues;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 - (void)resetFonts;
-- (void)setAccessory:(unint64_t)a3;
-- (void)setDetailTextColor:(id)a3;
-- (void)setTitleText:(id)a3 detail:(id)a4;
-- (void)setTitleTextColor:(id)a3;
+- (void)setAccessory:(unint64_t)accessory;
+- (void)setDetailTextColor:(id)color;
+- (void)setTitleText:(id)text detail:(id)detail;
+- (void)setTitleTextColor:(id)color;
 @end
 
 @implementation PKDashboardTitleDetailCell
 
-- (PKDashboardTitleDetailCell)initWithFrame:(CGRect)a3
+- (PKDashboardTitleDetailCell)initWithFrame:(CGRect)frame
 {
   v31[1] = *MEMORY[0x1E69E9840];
   v30.receiver = self;
   v30.super_class = PKDashboardTitleDetailCell;
-  v3 = [(PKDashboardCollectionViewCell *)&v30 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardCollectionViewCell *)&v30 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKDashboardTitleDetailCell *)v3 contentView];
-    v6 = [MEMORY[0x1E69DC888] labelColor];
+    contentView = [(PKDashboardTitleDetailCell *)v3 contentView];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     defaultTitleTextColor = v4->_defaultTitleTextColor;
-    v4->_defaultTitleTextColor = v6;
+    v4->_defaultTitleTextColor = labelColor;
 
     v8 = objc_alloc(MEMORY[0x1E69DCC10]);
     v9 = *MEMORY[0x1E695F058];
@@ -39,14 +39,14 @@
 
     [(UILabel *)v4->_titleLabel setNumberOfLines:0];
     [(UILabel *)v4->_titleLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
-    [v5 addSubview:v4->_titleLabel];
+    [contentView addSubview:v4->_titleLabel];
     v15 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v9, v10, v11, v12}];
     subtitleLabel = v4->_subtitleLabel;
     v4->_subtitleLabel = v15;
 
     [(UILabel *)v4->_subtitleLabel setNumberOfLines:0];
     [(UILabel *)v4->_subtitleLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9CC8]];
-    [v5 addSubview:v4->_subtitleLabel];
+    [contentView addSubview:v4->_subtitleLabel];
     v17 = objc_alloc_init(MEMORY[0x1E696ADA0]);
     numberFormatter = v4->_numberFormatter;
     v4->_numberFormatter = v17;
@@ -57,7 +57,7 @@
 
     [(UIActivityIndicatorView *)v4->_spinnerView startAnimating];
     [(UIActivityIndicatorView *)v4->_spinnerView setHidden:1];
-    [v5 addSubview:v4->_spinnerView];
+    [contentView addSubview:v4->_spinnerView];
     v21 = objc_alloc(MEMORY[0x1E69DCAE0]);
     if (_UISolariumFeatureFlagEnabled())
     {
@@ -74,11 +74,11 @@
     v4->_disclosureView = v23;
 
     v25 = v4->_disclosureView;
-    v26 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [(UIImageView *)v25 setTintColor:v26];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [(UIImageView *)v25 setTintColor:tertiaryLabelColor];
 
     [(UIImageView *)v4->_disclosureView setHidden:1];
-    [v5 addSubview:v4->_disclosureView];
+    [contentView addSubview:v4->_disclosureView];
     [(PKDashboardTitleDetailCell *)v4 resetFonts];
     [(PKDashboardTitleDetailCell *)v4 _updateDefaultValues];
     v31[0] = objc_opt_class();
@@ -102,12 +102,12 @@
   [(UILabel *)subtitleLabel setFont:v8];
 }
 
-- (void)setTitleText:(id)a3 detail:(id)a4
+- (void)setTitleText:(id)text detail:(id)detail
 {
-  v7 = a3;
-  v8 = a4;
+  textCopy = text;
+  detailCopy = detail;
   titleText = self->_titleText;
-  v16 = v7;
+  v16 = textCopy;
   v10 = titleText;
   if (v10 == v16)
   {
@@ -132,7 +132,7 @@ LABEL_13:
   }
 
   detailText = self->_detailText;
-  v13 = v8;
+  v13 = detailCopy;
   v14 = detailText;
   v10 = v14;
   if (v14 == v13)
@@ -151,8 +151,8 @@ LABEL_13:
   if (!v15)
   {
 LABEL_14:
-    objc_storeStrong(&self->_titleText, a3);
-    objc_storeStrong(&self->_detailText, a4);
+    objc_storeStrong(&self->_titleText, text);
+    objc_storeStrong(&self->_detailText, detail);
     [(UILabel *)self->_titleLabel setText:self->_titleText];
     [(UILabel *)self->_subtitleLabel setText:self->_detailText];
     [(PKDashboardTitleDetailCell *)self setNeedsLayout];
@@ -161,53 +161,53 @@ LABEL_14:
 LABEL_16:
 }
 
-- (void)setTitleTextColor:(id)a3
+- (void)setTitleTextColor:(id)color
 {
-  v7 = a3;
+  colorCopy = color;
   v4 = PKEqualObjects();
-  v5 = v7;
+  v5 = colorCopy;
   if ((v4 & 1) == 0)
   {
-    defaultTitleTextColor = v7;
-    if (!v7)
+    defaultTitleTextColor = colorCopy;
+    if (!colorCopy)
     {
       defaultTitleTextColor = self->_defaultTitleTextColor;
     }
 
     objc_storeStrong(&self->_titleTextColor, defaultTitleTextColor);
     [(UILabel *)self->_titleLabel setTextColor:self->_titleTextColor];
-    v5 = v7;
+    v5 = colorCopy;
   }
 }
 
-- (void)setDetailTextColor:(id)a3
+- (void)setDetailTextColor:(id)color
 {
-  v7 = a3;
+  colorCopy = color;
   v4 = PKEqualObjects();
-  v5 = v7;
+  v5 = colorCopy;
   if ((v4 & 1) == 0)
   {
-    defaultTitleTextColor = v7;
-    if (!v7)
+    defaultTitleTextColor = colorCopy;
+    if (!colorCopy)
     {
       defaultTitleTextColor = self->_defaultTitleTextColor;
     }
 
     objc_storeStrong(&self->_detailTextColor, defaultTitleTextColor);
     [(UILabel *)self->_subtitleLabel setTextColor:self->_detailTextColor];
-    v5 = v7;
+    v5 = colorCopy;
   }
 }
 
-- (void)setAccessory:(unint64_t)a3
+- (void)setAccessory:(unint64_t)accessory
 {
-  if (self->_accessory != a3)
+  if (self->_accessory != accessory)
   {
-    self->_accessory = a3;
-    if (a3 <= 2)
+    self->_accessory = accessory;
+    if (accessory <= 2)
     {
-      v4 = 3u >> (a3 & 7);
-      [(UIImageView *)self->_disclosureView setHidden:(a3 & 1) == 0];
+      v4 = 3u >> (accessory & 7);
+      [(UIImageView *)self->_disclosureView setHidden:(accessory & 1) == 0];
       spinnerView = self->_spinnerView;
 
       [(UIActivityIndicatorView *)spinnerView setHidden:v4 & 1];
@@ -220,25 +220,25 @@ LABEL_16:
   v4.receiver = self;
   v4.super_class = PKDashboardTitleDetailCell;
   [(PKDashboardCollectionViewCell *)&v4 layoutSubviews];
-  v3 = [(PKDashboardTitleDetailCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKDashboardTitleDetailCell *)self contentView];
+  [contentView bounds];
   [(PKDashboardTitleDetailCell *)self _layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKDashboardTitleDetailCell *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKDashboardTitleDetailCell *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v75.receiver = self;
   v75.super_class = PKDashboardTitleDetailCell;
   [(PKDashboardCollectionViewCell *)&v75 layoutSubviews];
@@ -252,8 +252,8 @@ LABEL_16:
   v13 = height + -24.0;
   remainder.size.width = v12;
   remainder.size.height = height + -24.0;
-  v14 = [(PKDashboardTitleDetailCell *)self _shouldReverseLayoutDirection];
-  if (v14)
+  _shouldReverseLayoutDirection = [(PKDashboardTitleDetailCell *)self _shouldReverseLayoutDirection];
+  if (_shouldReverseLayoutDirection)
   {
     v15 = CGRectMaxXEdge;
   }
@@ -263,7 +263,7 @@ LABEL_16:
     v15 = CGRectMinXEdge;
   }
 
-  if (v14)
+  if (_shouldReverseLayoutDirection)
   {
     v16 = CGRectMinXEdge;
   }
@@ -355,7 +355,7 @@ LABEL_16:
     v71.size.height = v55;
   }
 
-  if (!a4)
+  if (!layout)
   {
     [(UILabel *)self->_titleLabel setFrame:v71.origin.x, v71.origin.y, v71.size.width, v71.size.height];
     [(UILabel *)self->_subtitleLabel setFrame:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height];

@@ -6,12 +6,12 @@
 
 - (void)configureWithText:()CPSTableCells
 {
-  v5 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v3 = [MEMORY[0x277CF90C0] configurationWithText:location[0]];
-  [v5 applyConfiguration:v3];
+  [selfCopy applyConfiguration:v3];
   objc_storeStrong(&v3, 0);
   objc_storeStrong(location, 0);
 }

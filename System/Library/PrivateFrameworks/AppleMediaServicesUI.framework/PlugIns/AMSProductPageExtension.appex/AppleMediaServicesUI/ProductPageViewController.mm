@@ -1,7 +1,7 @@
 @interface ProductPageViewController
-- (BOOL)lookupItemDidLoad:(id)a3 parameters:(id)a4;
-- (_TtC23AMSProductPageExtension25ProductPageViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)dynamicViewController:(id)a3 didResolveWithResult:(id)a4 error:(id)a5;
+- (BOOL)lookupItemDidLoad:(id)load parameters:(id)parameters;
+- (_TtC23AMSProductPageExtension25ProductPageViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)dynamicViewController:(id)controller didResolveWithResult:(id)result error:(id)error;
 - (void)loadView;
 - (void)viewWillLayoutSubviews;
 @end
@@ -10,29 +10,29 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_100003368();
 }
 
-- (BOOL)lookupItemDidLoad:(id)a3 parameters:(id)a4
+- (BOOL)lookupItemDidLoad:(id)load parameters:(id)parameters
 {
   v6 = sub_100004540();
-  v7 = a3;
-  v8 = self;
-  sub_100003450(v7, v6);
+  loadCopy = load;
+  selfCopy = self;
+  sub_100003450(loadCopy, v6);
 
   return 0;
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000034F4();
 }
 
-- (_TtC23AMSProductPageExtension25ProductPageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC23AMSProductPageExtension25ProductPageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_100004580();
     v7 = v6;
@@ -44,13 +44,13 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1000039AC(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1000039AC(v5, v7, bundle);
 }
 
-- (void)dynamicViewController:(id)a3 didResolveWithResult:(id)a4 error:(id)a5
+- (void)dynamicViewController:(id)controller didResolveWithResult:(id)result error:(id)error
 {
-  if (a4)
+  if (result)
   {
     v8 = sub_100004540();
   }
@@ -60,10 +60,10 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  v10 = a5;
-  v11 = self;
-  sub_100003C68(v11, v8);
+  controllerCopy = controller;
+  errorCopy = error;
+  selfCopy = self;
+  sub_100003C68(selfCopy, v8);
 }
 
 @end

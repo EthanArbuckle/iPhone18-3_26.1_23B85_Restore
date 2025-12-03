@@ -1,9 +1,9 @@
 @interface CNReputationFutureBuilder
-- (CNReputationFutureBuilder)initWithHandle:(id)a3 coreRecentsAdapter:(id)a4 contactsAdapter:(id)a5 logger:(id)a6;
+- (CNReputationFutureBuilder)initWithHandle:(id)handle coreRecentsAdapter:(id)adapter contactsAdapter:(id)contactsAdapter logger:(id)logger;
 - (id)build;
-- (id)contactsTrustForEmailAddress:(id)a3;
-- (id)contactsTrustForPhoneNumber:(id)a3;
-- (id)coreRecentsTrustForHandle:(id)a3;
+- (id)contactsTrustForEmailAddress:(id)address;
+- (id)contactsTrustForPhoneNumber:(id)number;
+- (id)coreRecentsTrustForHandle:(id)handle;
 - (void)addContactsTrustForEmailAddress;
 - (void)addContactsTrustForPhoneNumber;
 - (void)addCoreRecentsTrust;
@@ -11,24 +11,24 @@
 
 @implementation CNReputationFutureBuilder
 
-- (CNReputationFutureBuilder)initWithHandle:(id)a3 coreRecentsAdapter:(id)a4 contactsAdapter:(id)a5 logger:(id)a6
+- (CNReputationFutureBuilder)initWithHandle:(id)handle coreRecentsAdapter:(id)adapter contactsAdapter:(id)contactsAdapter logger:(id)logger
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  handleCopy = handle;
+  adapterCopy = adapter;
+  contactsAdapterCopy = contactsAdapter;
+  loggerCopy = logger;
   v19.receiver = self;
   v19.super_class = CNReputationFutureBuilder;
   v14 = [(CNReputationFutureBuilder *)&v19 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [handleCopy copy];
     handle = v14->_handle;
     v14->_handle = v15;
 
-    objc_storeStrong(&v14->_coreRecentsAdapter, a4);
-    objc_storeStrong(&v14->_contactsAdapter, a5);
-    objc_storeStrong(&v14->_logger, a6);
+    objc_storeStrong(&v14->_coreRecentsAdapter, adapter);
+    objc_storeStrong(&v14->_contactsAdapter, contactsAdapter);
+    objc_storeStrong(&v14->_logger, logger);
     v17 = v14;
   }
 
@@ -37,25 +37,25 @@
 
 - (void)addCoreRecentsTrust
 {
-  v3 = [(CNReputationFutureBuilder *)self scoreFuture];
+  scoreFuture = [(CNReputationFutureBuilder *)self scoreFuture];
 
-  if (v3)
+  if (scoreFuture)
   {
-    v4 = [(CNReputationFutureBuilder *)self scoreFuture];
+    scoreFuture2 = [(CNReputationFutureBuilder *)self scoreFuture];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __48__CNReputationFutureBuilder_addCoreRecentsTrust__block_invoke;
     v9[3] = &unk_1E7414CA0;
     v9[4] = self;
-    v5 = [v4 recover:v9];
+    v5 = [scoreFuture2 recover:v9];
     [(CNReputationFutureBuilder *)self setScoreFuture:v5];
   }
 
   else
   {
-    v8 = [(CNReputationFutureBuilder *)self handle];
-    v6 = [v8 stringValue];
-    v7 = [(CNReputationFutureBuilder *)self coreRecentsTrustForHandle:v6];
+    handle = [(CNReputationFutureBuilder *)self handle];
+    stringValue = [handle stringValue];
+    v7 = [(CNReputationFutureBuilder *)self coreRecentsTrustForHandle:stringValue];
     [(CNReputationFutureBuilder *)self setScoreFuture:v7];
   }
 }
@@ -70,15 +70,15 @@ id __48__CNReputationFutureBuilder_addCoreRecentsTrust__block_invoke(uint64_t a1
   return v4;
 }
 
-- (id)coreRecentsTrustForHandle:(id)a3
+- (id)coreRecentsTrustForHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(CNReputationFutureBuilder *)self coreRecentsAdapter];
+  handleCopy = handle;
+  coreRecentsAdapter = [(CNReputationFutureBuilder *)self coreRecentsAdapter];
 
-  if (v5)
+  if (coreRecentsAdapter)
   {
-    v6 = [(CNReputationFutureBuilder *)self coreRecentsAdapter];
-    v7 = [v6 recentContactsForHandle:v4];
+    coreRecentsAdapter2 = [(CNReputationFutureBuilder *)self coreRecentsAdapter];
+    v7 = [coreRecentsAdapter2 recentContactsForHandle:handleCopy];
 
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -133,25 +133,25 @@ void __55__CNReputationFutureBuilder_coreRecentsTrustForHandle___block_invoke_3(
 
 - (void)addContactsTrustForEmailAddress
 {
-  v3 = [(CNReputationFutureBuilder *)self scoreFuture];
+  scoreFuture = [(CNReputationFutureBuilder *)self scoreFuture];
 
-  if (v3)
+  if (scoreFuture)
   {
-    v4 = [(CNReputationFutureBuilder *)self scoreFuture];
+    scoreFuture2 = [(CNReputationFutureBuilder *)self scoreFuture];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __60__CNReputationFutureBuilder_addContactsTrustForEmailAddress__block_invoke;
     v9[3] = &unk_1E7414CA0;
     v9[4] = self;
-    v5 = [v4 recover:v9];
+    v5 = [scoreFuture2 recover:v9];
     [(CNReputationFutureBuilder *)self setScoreFuture:v5];
   }
 
   else
   {
-    v8 = [(CNReputationFutureBuilder *)self handle];
-    v6 = [v8 stringValue];
-    v7 = [(CNReputationFutureBuilder *)self contactsTrustForEmailAddress:v6];
+    handle = [(CNReputationFutureBuilder *)self handle];
+    stringValue = [handle stringValue];
+    v7 = [(CNReputationFutureBuilder *)self contactsTrustForEmailAddress:stringValue];
     [(CNReputationFutureBuilder *)self setScoreFuture:v7];
   }
 }
@@ -166,15 +166,15 @@ id __60__CNReputationFutureBuilder_addContactsTrustForEmailAddress__block_invoke
   return v4;
 }
 
-- (id)contactsTrustForEmailAddress:(id)a3
+- (id)contactsTrustForEmailAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(CNReputationFutureBuilder *)self contactsAdapter];
+  addressCopy = address;
+  contactsAdapter = [(CNReputationFutureBuilder *)self contactsAdapter];
 
-  if (v5)
+  if (contactsAdapter)
   {
-    v6 = [(CNReputationFutureBuilder *)self contactsAdapter];
-    v7 = [v6 contactsForEmailAddress:v4];
+    contactsAdapter2 = [(CNReputationFutureBuilder *)self contactsAdapter];
+    v7 = [contactsAdapter2 contactsForEmailAddress:addressCopy];
 
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -229,25 +229,25 @@ void __58__CNReputationFutureBuilder_contactsTrustForEmailAddress___block_invoke
 
 - (void)addContactsTrustForPhoneNumber
 {
-  v3 = [(CNReputationFutureBuilder *)self scoreFuture];
+  scoreFuture = [(CNReputationFutureBuilder *)self scoreFuture];
 
-  if (v3)
+  if (scoreFuture)
   {
-    v4 = [(CNReputationFutureBuilder *)self scoreFuture];
+    scoreFuture2 = [(CNReputationFutureBuilder *)self scoreFuture];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __59__CNReputationFutureBuilder_addContactsTrustForPhoneNumber__block_invoke;
     v9[3] = &unk_1E7414CA0;
     v9[4] = self;
-    v5 = [v4 recover:v9];
+    v5 = [scoreFuture2 recover:v9];
     [(CNReputationFutureBuilder *)self setScoreFuture:v5];
   }
 
   else
   {
-    v8 = [(CNReputationFutureBuilder *)self handle];
-    v6 = [v8 stringValue];
-    v7 = [(CNReputationFutureBuilder *)self contactsTrustForPhoneNumber:v6];
+    handle = [(CNReputationFutureBuilder *)self handle];
+    stringValue = [handle stringValue];
+    v7 = [(CNReputationFutureBuilder *)self contactsTrustForPhoneNumber:stringValue];
     [(CNReputationFutureBuilder *)self setScoreFuture:v7];
   }
 }
@@ -262,15 +262,15 @@ id __59__CNReputationFutureBuilder_addContactsTrustForPhoneNumber__block_invoke(
   return v4;
 }
 
-- (id)contactsTrustForPhoneNumber:(id)a3
+- (id)contactsTrustForPhoneNumber:(id)number
 {
-  v4 = a3;
-  v5 = [(CNReputationFutureBuilder *)self contactsAdapter];
+  numberCopy = number;
+  contactsAdapter = [(CNReputationFutureBuilder *)self contactsAdapter];
 
-  if (v5)
+  if (contactsAdapter)
   {
-    v6 = [(CNReputationFutureBuilder *)self contactsAdapter];
-    v7 = [v6 contactsForPhoneNumber:v4];
+    contactsAdapter2 = [(CNReputationFutureBuilder *)self contactsAdapter];
+    v7 = [contactsAdapter2 contactsForPhoneNumber:numberCopy];
 
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -325,13 +325,13 @@ void __57__CNReputationFutureBuilder_contactsTrustForPhoneNumber___block_invoke_
 
 - (id)build
 {
-  v3 = [(CNReputationFutureBuilder *)self scoreFuture];
+  scoreFuture = [(CNReputationFutureBuilder *)self scoreFuture];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __34__CNReputationFutureBuilder_build__block_invoke;
   v8[3] = &unk_1E7412098;
   v8[4] = self;
-  v4 = [v3 recover:v8];
+  v4 = [scoreFuture recover:v8];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;

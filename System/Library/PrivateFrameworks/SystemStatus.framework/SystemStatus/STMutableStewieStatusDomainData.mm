@@ -1,61 +1,61 @@
 @interface STMutableStewieStatusDomainData
-- (BOOL)applyDiff:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setMaxStewieSignalStrengthBars:(unint64_t)a3;
-- (void)setStewieActive:(BOOL)a3;
-- (void)setStewieConnected:(BOOL)a3;
-- (void)setStewieSignalStrengthBars:(unint64_t)a3;
+- (BOOL)applyDiff:(id)diff;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setMaxStewieSignalStrengthBars:(unint64_t)bars;
+- (void)setStewieActive:(BOOL)active;
+- (void)setStewieConnected:(BOOL)connected;
+- (void)setStewieSignalStrengthBars:(unint64_t)bars;
 @end
 
 @implementation STMutableStewieStatusDomainData
 
-- (void)setStewieActive:(BOOL)a3
+- (void)setStewieActive:(BOOL)active
 {
-  if (self->super._stewieActive != a3)
+  if (self->super._stewieActive != active)
   {
-    self->super._stewieActive = a3;
+    self->super._stewieActive = active;
   }
 }
 
-- (void)setStewieConnected:(BOOL)a3
+- (void)setStewieConnected:(BOOL)connected
 {
-  if (self->super._stewieConnected != a3)
+  if (self->super._stewieConnected != connected)
   {
-    self->super._stewieConnected = a3;
+    self->super._stewieConnected = connected;
   }
 }
 
-- (void)setStewieSignalStrengthBars:(unint64_t)a3
+- (void)setStewieSignalStrengthBars:(unint64_t)bars
 {
-  if (self->super._stewieSignalStrengthBars != a3)
+  if (self->super._stewieSignalStrengthBars != bars)
   {
-    self->super._stewieSignalStrengthBars = a3;
+    self->super._stewieSignalStrengthBars = bars;
   }
 }
 
-- (void)setMaxStewieSignalStrengthBars:(unint64_t)a3
+- (void)setMaxStewieSignalStrengthBars:(unint64_t)bars
 {
-  if (self->super._maxStewieSignalStrengthBars != a3)
+  if (self->super._maxStewieSignalStrengthBars != bars)
   {
-    self->super._maxStewieSignalStrengthBars = a3;
+    self->super._maxStewieSignalStrengthBars = bars;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [STStewieStatusDomainData allocWithZone:a3];
+  v4 = [STStewieStatusDomainData allocWithZone:zone];
 
   return [(STStewieStatusDomainData *)v4 initWithData:?];
 }
 
-- (BOOL)applyDiff:(id)a3
+- (BOOL)applyDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    [v4 applyToMutableData:self];
+    [diffCopy applyToMutableData:self];
   }
 
   return isKindOfClass & 1;

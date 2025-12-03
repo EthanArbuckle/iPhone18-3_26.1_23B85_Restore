@@ -1,9 +1,9 @@
 @interface BMSiriExecutionEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMSiriExecutionEvent)initWithProto:(id)a3;
-- (BMSiriExecutionEvent)initWithProtoData:(id)a3;
-- (BMSiriExecutionEvent)initWithTaskID:(id)a3 taskStep:(unint64_t)a4 statusReason:(id)a5 slotValue:(id)a6 intentName:(id)a7 appBundleId:(id)a8 interactionId:(id)a9 absoluteTimestamp:(double)a10;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMSiriExecutionEvent)initWithProto:(id)proto;
+- (BMSiriExecutionEvent)initWithProtoData:(id)data;
+- (BMSiriExecutionEvent)initWithTaskID:(id)d taskStep:(unint64_t)step statusReason:(id)reason slotValue:(id)value intentName:(id)name appBundleId:(id)id interactionId:(id)interactionId absoluteTimestamp:(double)self0;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)proto;
 - (unint64_t)hash;
@@ -11,72 +11,72 @@
 
 @implementation BMSiriExecutionEvent
 
-- (BMSiriExecutionEvent)initWithTaskID:(id)a3 taskStep:(unint64_t)a4 statusReason:(id)a5 slotValue:(id)a6 intentName:(id)a7 appBundleId:(id)a8 interactionId:(id)a9 absoluteTimestamp:(double)a10
+- (BMSiriExecutionEvent)initWithTaskID:(id)d taskStep:(unint64_t)step statusReason:(id)reason slotValue:(id)value intentName:(id)name appBundleId:(id)id interactionId:(id)interactionId absoluteTimestamp:(double)self0
 {
-  v26 = a3;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v18 = a8;
-  v19 = a9;
+  dCopy = d;
+  reasonCopy = reason;
+  valueCopy = value;
+  nameCopy = name;
+  idCopy = id;
+  interactionIdCopy = interactionId;
   v27.receiver = self;
   v27.super_class = BMSiriExecutionEvent;
   v20 = [(BMEventBase *)&v27 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_taskId, a3);
-    v21->_taskStep = a4;
-    objc_storeStrong(&v21->_statusReason, a5);
-    objc_storeStrong(&v21->_slotValue, a6);
-    objc_storeStrong(&v21->_intentName, a7);
-    objc_storeStrong(&v21->_appBundleId, a8);
-    objc_storeStrong(&v21->_interactionId, a9);
-    v21->_absoluteTimestamp = a10;
+    objc_storeStrong(&v20->_taskId, d);
+    v21->_taskStep = step;
+    objc_storeStrong(&v21->_statusReason, reason);
+    objc_storeStrong(&v21->_slotValue, value);
+    objc_storeStrong(&v21->_intentName, name);
+    objc_storeStrong(&v21->_appBundleId, id);
+    objc_storeStrong(&v21->_interactionId, interactionId);
+    v21->_absoluteTimestamp = timestamp;
   }
 
   return v21;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 3)
+  if (version == 3)
   {
-    v4 = BMSiriExecutionEvent_v3;
+    selfCopy = BMSiriExecutionEvent_v3;
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  v5 = a3;
-  v6 = [[v4 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[selfCopy alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMSiriExecutionEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMSiriExecutionEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMSiriExecutionEvent)initWithProto:(id)a3
+- (BMSiriExecutionEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [v5 taskId];
-      v7 = [v5 taskStep];
-      v8 = v7;
-      if (v7 >= 0x5E)
+      v5 = protoCopy;
+      taskId = [v5 taskId];
+      taskStep = [v5 taskStep];
+      v8 = taskStep;
+      if (taskStep >= 0x5E)
       {
         v11 = __biome_log_for_category();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -89,18 +89,18 @@
 
       else
       {
-        v9 = v7;
+        v9 = taskStep;
       }
 
-      v12 = [v5 statusReason];
-      v13 = [v5 slotValue];
-      v14 = [v5 intentName];
-      v15 = [v5 appBundleId];
-      v16 = [v5 interactionId];
+      statusReason = [v5 statusReason];
+      slotValue = [v5 slotValue];
+      intentName = [v5 intentName];
+      appBundleId = [v5 appBundleId];
+      interactionId = [v5 interactionId];
       [v5 absoluteTimestamp];
-      self = [(BMSiriExecutionEvent *)self initWithTaskID:v6 taskStep:v9 statusReason:v12 slotValue:v13 intentName:v14 appBundleId:v15 interactionId:v16 absoluteTimestamp:?];
+      self = [(BMSiriExecutionEvent *)self initWithTaskID:taskId taskStep:v9 statusReason:statusReason slotValue:slotValue intentName:intentName appBundleId:appBundleId interactionId:interactionId absoluteTimestamp:?];
 
-      v10 = self;
+      selfCopy = self;
     }
 
     else
@@ -111,50 +111,50 @@
         [BMSiriExecutionEvent initWithProto:];
       }
 
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (BMSiriExecutionEvent)initWithProtoData:(id)a3
+- (BMSiriExecutionEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBSiriExecutionEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBSiriExecutionEvent alloc] initWithData:dataCopy];
 
     self = [(BMSiriExecutionEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMSiriExecutionEvent *)self taskId];
-  [v3 setTaskId:v4];
+  taskId = [(BMSiriExecutionEvent *)self taskId];
+  [v3 setTaskId:taskId];
 
-  v5 = [(BMSiriExecutionEvent *)self taskStep];
-  if (v5 >= 0x5E)
+  taskStep = [(BMSiriExecutionEvent *)self taskStep];
+  if (taskStep >= 0x5E)
   {
     v12 = __biome_log_for_category();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(BMSiriExecutionEvent *)v5 proto];
+      [(BMSiriExecutionEvent *)taskStep proto];
     }
 
     v11 = 0;
@@ -162,21 +162,21 @@
 
   else
   {
-    [v3 setTaskStep:v5];
-    v6 = [(BMSiriExecutionEvent *)self statusReason];
-    [v3 setStatusReason:v6];
+    [v3 setTaskStep:taskStep];
+    statusReason = [(BMSiriExecutionEvent *)self statusReason];
+    [v3 setStatusReason:statusReason];
 
-    v7 = [(BMSiriExecutionEvent *)self slotValue];
-    [v3 setSlotValue:v7];
+    slotValue = [(BMSiriExecutionEvent *)self slotValue];
+    [v3 setSlotValue:slotValue];
 
-    v8 = [(BMSiriExecutionEvent *)self intentName];
-    [v3 setIntentName:v8];
+    intentName = [(BMSiriExecutionEvent *)self intentName];
+    [v3 setIntentName:intentName];
 
-    v9 = [(BMSiriExecutionEvent *)self appBundleId];
-    [v3 setAppBundleId:v9];
+    appBundleId = [(BMSiriExecutionEvent *)self appBundleId];
+    [v3 setAppBundleId:appBundleId];
 
-    v10 = [(BMSiriExecutionEvent *)self interactionId];
-    [v3 setInteractionId:v10];
+    interactionId = [(BMSiriExecutionEvent *)self interactionId];
+    [v3 setInteractionId:interactionId];
 
     [(BMSiriExecutionEvent *)self absoluteTimestamp];
     [v3 setAbsoluteTimestamp:?];
@@ -188,20 +188,20 @@
 
 - (unint64_t)hash
 {
-  v3 = [(BMSiriExecutionEvent *)self taskId];
-  v4 = [v3 hash];
+  taskId = [(BMSiriExecutionEvent *)self taskId];
+  v4 = [taskId hash];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[BMSiriExecutionEvent taskStep](self, "taskStep")}];
   v6 = [v5 hash];
-  v7 = [(BMSiriExecutionEvent *)self statusReason];
-  v8 = v4 ^ [v7 hash];
-  v9 = [(BMSiriExecutionEvent *)self slotValue];
-  v10 = v8 ^ [v9 hash];
-  v11 = [(BMSiriExecutionEvent *)self intentName];
-  v12 = v10 ^ [v11 hash];
-  v13 = [(BMSiriExecutionEvent *)self appBundleId];
-  v14 = v12 ^ [v13 hash];
-  v15 = [(BMSiriExecutionEvent *)self interactionId];
-  v16 = v6 ^ v14 ^ [v15 hash];
+  statusReason = [(BMSiriExecutionEvent *)self statusReason];
+  v8 = v4 ^ [statusReason hash];
+  slotValue = [(BMSiriExecutionEvent *)self slotValue];
+  v10 = v8 ^ [slotValue hash];
+  intentName = [(BMSiriExecutionEvent *)self intentName];
+  v12 = v10 ^ [intentName hash];
+  appBundleId = [(BMSiriExecutionEvent *)self appBundleId];
+  v14 = v12 ^ [appBundleId hash];
+  interactionId = [(BMSiriExecutionEvent *)self interactionId];
+  v16 = v6 ^ v14 ^ [interactionId hash];
   v17 = MEMORY[0x1E696AD98];
   [(BMSiriExecutionEvent *)self absoluteTimestamp];
   v18 = [v17 numberWithDouble:?];
@@ -210,36 +210,36 @@
   return v16 ^ v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     taskId = self->_taskId;
-    v7 = [v5 taskId];
-    if (-[NSString isEqual:](taskId, "isEqual:", v7) && (taskStep = self->_taskStep, taskStep == [v5 taskStep]))
+    taskId = [v5 taskId];
+    if (-[NSString isEqual:](taskId, "isEqual:", taskId) && (taskStep = self->_taskStep, taskStep == [v5 taskStep]))
     {
       statusReason = self->_statusReason;
-      v10 = [v5 statusReason];
-      if ([(NSString *)statusReason isEqual:v10])
+      statusReason = [v5 statusReason];
+      if ([(NSString *)statusReason isEqual:statusReason])
       {
         slotValue = self->_slotValue;
-        v12 = [v5 slotValue];
-        if ([(NSString *)slotValue isEqual:v12])
+        slotValue = [v5 slotValue];
+        if ([(NSString *)slotValue isEqual:slotValue])
         {
           intentName = self->_intentName;
-          v14 = [v5 intentName];
-          if ([(NSString *)intentName isEqual:v14])
+          intentName = [v5 intentName];
+          if ([(NSString *)intentName isEqual:intentName])
           {
             appBundleId = self->_appBundleId;
-            v16 = [v5 appBundleId];
-            if ([(NSString *)appBundleId isEqual:v16])
+            appBundleId = [v5 appBundleId];
+            if ([(NSString *)appBundleId isEqual:appBundleId])
             {
               interactionId = self->_interactionId;
-              v18 = [v5 interactionId];
-              if ([(NSString *)interactionId isEqual:v18])
+              interactionId = [v5 interactionId];
+              if ([(NSString *)interactionId isEqual:interactionId])
               {
                 absoluteTimestamp = self->_absoluteTimestamp;
                 [v5 absoluteTimestamp];

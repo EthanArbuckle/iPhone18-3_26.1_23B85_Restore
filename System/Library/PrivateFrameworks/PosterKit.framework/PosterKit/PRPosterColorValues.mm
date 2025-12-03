@@ -1,60 +1,60 @@
 @interface PRPosterColorValues
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)identifier;
-- (PRPosterColorValues)initWithColor:(id)a3;
-- (PRPosterColorValues)initWithColor:(id)a3 hsbValues:(id)a4 hslValues:(id)a5 alpha:(double)a6;
-- (PRPosterColorValues)initWithHue:(double)a3 saturation:(double)a4 luminance:(double)a5 alpha:(double)a6;
-- (id)copyWithAlpha:(double)a3;
-- (id)copyWithLuminance:(double)a3;
+- (PRPosterColorValues)initWithColor:(id)color;
+- (PRPosterColorValues)initWithColor:(id)color hsbValues:(id)values hslValues:(id)hslValues alpha:(double)alpha;
+- (PRPosterColorValues)initWithHue:(double)hue saturation:(double)saturation luminance:(double)luminance alpha:(double)alpha;
+- (id)copyWithAlpha:(double)alpha;
+- (id)copyWithLuminance:(double)luminance;
 - (unint64_t)hash;
 @end
 
 @implementation PRPosterColorValues
 
-- (PRPosterColorValues)initWithColor:(id)a3
+- (PRPosterColorValues)initWithColor:(id)color
 {
-  v4 = a3;
-  v5 = v4;
+  colorCopy = color;
+  v5 = colorCopy;
   v10 = 1.0;
-  if (v4)
+  if (colorCopy)
   {
-    [v4 getWhite:0 alpha:&v10];
+    [colorCopy getWhite:0 alpha:&v10];
   }
 
   v6 = [[PRPosterColorHSBValues alloc] initWithColor:v5];
-  v7 = [(PRPosterColorHSBValues *)v6 hslValues];
-  v8 = [(PRPosterColorValues *)self initWithColor:v5 hsbValues:v6 hslValues:v7 alpha:v10];
+  hslValues = [(PRPosterColorHSBValues *)v6 hslValues];
+  v8 = [(PRPosterColorValues *)self initWithColor:v5 hsbValues:v6 hslValues:hslValues alpha:v10];
 
   return v8;
 }
 
-- (PRPosterColorValues)initWithHue:(double)a3 saturation:(double)a4 luminance:(double)a5 alpha:(double)a6
+- (PRPosterColorValues)initWithHue:(double)hue saturation:(double)saturation luminance:(double)luminance alpha:(double)alpha
 {
-  v8 = [[PRPosterColorHSLValues alloc] initWithHue:a3 saturation:a4 luminance:a5];
-  v9 = [(PRPosterColorHSLValues *)v8 hsbValues];
-  v10 = [v9 colorWithAlpha:a6];
-  v11 = [(PRPosterColorValues *)self initWithColor:v10 hsbValues:v9 hslValues:v8 alpha:a6];
+  v8 = [[PRPosterColorHSLValues alloc] initWithHue:hue saturation:saturation luminance:luminance];
+  hsbValues = [(PRPosterColorHSLValues *)v8 hsbValues];
+  v10 = [hsbValues colorWithAlpha:alpha];
+  v11 = [(PRPosterColorValues *)self initWithColor:v10 hsbValues:hsbValues hslValues:v8 alpha:alpha];
 
   return v11;
 }
 
-- (PRPosterColorValues)initWithColor:(id)a3 hsbValues:(id)a4 hslValues:(id)a5 alpha:(double)a6
+- (PRPosterColorValues)initWithColor:(id)color hsbValues:(id)values hslValues:(id)hslValues alpha:(double)alpha
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  colorCopy = color;
+  valuesCopy = values;
+  hslValuesCopy = hslValues;
   v17.receiver = self;
   v17.super_class = PRPosterColorValues;
   v13 = [(PRPosterColorValues *)&v17 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [colorCopy copy];
     color = v13->_color;
     v13->_color = v14;
 
-    objc_storeStrong(&v13->_hsbValues, a4);
-    objc_storeStrong(&v13->_hslValues, a5);
-    v13->_alpha = a6;
+    objc_storeStrong(&v13->_hsbValues, values);
+    objc_storeStrong(&v13->_hslValues, hslValues);
+    v13->_alpha = alpha;
   }
 
   return v13;
@@ -62,24 +62,24 @@
 
 - (NSString)identifier
 {
-  v3 = [(PRPosterColorValues *)self hslValues];
+  hslValues = [(PRPosterColorValues *)self hslValues];
   [(PRPosterColorValues *)self alpha];
   v5 = v4;
   v6 = MEMORY[0x1E696AEC0];
-  [v3 hue];
+  [hslValues hue];
   v8 = v7;
-  [v3 saturation];
+  [hslValues saturation];
   v10 = v9;
-  [v3 luminance];
+  [hslValues luminance];
   v12 = [v6 stringWithFormat:@"%.5f:%.5f:%.5f:%.2f", v8, v10, v11, v5];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -91,9 +91,9 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(PRPosterColorValues *)self identifier];
-      v9 = [(PRPosterColorValues *)v7 identifier];
+      v7 = equalCopy;
+      identifier = [(PRPosterColorValues *)self identifier];
+      identifier2 = [(PRPosterColorValues *)v7 identifier];
 
       v10 = BSEqualObjects();
     }
@@ -109,36 +109,36 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PRPosterColorValues *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(PRPosterColorValues *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (id)copyWithLuminance:(double)a3
+- (id)copyWithLuminance:(double)luminance
 {
-  v5 = [(PRPosterColorValues *)self hslValues];
+  hslValues = [(PRPosterColorValues *)self hslValues];
   v6 = [PRPosterColorValues alloc];
-  [v5 hue];
+  [hslValues hue];
   v8 = v7;
-  [v5 saturation];
+  [hslValues saturation];
   v10 = v9;
   [(PRPosterColorValues *)self alpha];
-  v12 = [(PRPosterColorValues *)v6 initWithHue:v8 saturation:v10 luminance:a3 alpha:v11];
+  v12 = [(PRPosterColorValues *)v6 initWithHue:v8 saturation:v10 luminance:luminance alpha:v11];
 
   return v12;
 }
 
-- (id)copyWithAlpha:(double)a3
+- (id)copyWithAlpha:(double)alpha
 {
-  v4 = [(PRPosterColorValues *)self hslValues];
+  hslValues = [(PRPosterColorValues *)self hslValues];
   v5 = [PRPosterColorValues alloc];
-  [v4 hue];
+  [hslValues hue];
   v7 = v6;
-  [v4 saturation];
+  [hslValues saturation];
   v9 = v8;
-  [v4 luminance];
-  v11 = [(PRPosterColorValues *)v5 initWithHue:v7 saturation:v9 luminance:v10 alpha:a3];
+  [hslValues luminance];
+  v11 = [(PRPosterColorValues *)v5 initWithHue:v7 saturation:v9 luminance:v10 alpha:alpha];
 
   return v11;
 }

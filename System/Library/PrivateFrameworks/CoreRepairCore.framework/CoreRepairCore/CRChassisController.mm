@@ -1,26 +1,26 @@
 @interface CRChassisController
 - (BOOL)checkRepairEnvironment;
-- (BOOL)shouldIgnorePatching:(id)a3;
-- (id)diffWithSealed:(id)a3 live:(id)a4;
-- (id)getAndVerifyDataInstance:(id)a3;
+- (BOOL)shouldIgnorePatching:(id)patching;
+- (id)diffWithSealed:(id)sealed live:(id)live;
+- (id)getAndVerifyDataInstance:(id)instance;
 - (id)getLiveChMf;
 - (id)getOSEnvironment;
-- (id)overrideFromNVRam:(id)a3;
-- (id)overrideParameters:(id)a3;
-- (void)replyWithMessage:(id)a3 status:(id)a4 results:(id)a5 reply:(id)a6;
-- (void)seal:(id)a3 withReply:(id)a4;
+- (id)overrideFromNVRam:(id)ram;
+- (id)overrideParameters:(id)parameters;
+- (void)replyWithMessage:(id)message status:(id)status results:(id)results reply:(id)reply;
+- (void)seal:(id)seal withReply:(id)reply;
 @end
 
 @implementation CRChassisController
 
-- (void)seal:(id)a3 withReply:(id)a4
+- (void)seal:(id)seal withReply:(id)reply
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sealCopy = seal;
+  replyCopy = reply;
   if ([(CRChassisController *)self checkRepairEnvironment])
   {
-    v8 = [(CRChassisController *)self overrideParameters:v6];
+    v8 = [(CRChassisController *)self overrideParameters:sealCopy];
     v9 = [v8 mutableCopy];
 
     v10 = [(CRChassisController *)self getAndVerifyDataInstance:@"ChMf"];
@@ -39,10 +39,10 @@
           _os_log_impl(&dword_1CEDC5000, v14, OS_LOG_TYPE_DEFAULT, "Sealed system manifest %@", buf, 0xCu);
         }
 
-        v15 = [(CRChassisController *)self getLiveChMf];
-        if (v15)
+        getLiveChMf = [(CRChassisController *)self getLiveChMf];
+        if (getLiveChMf)
         {
-          v16 = v15;
+          v16 = getLiveChMf;
           v17 = handleForCategory(0);
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
@@ -73,45 +73,45 @@
             [v23 setRemoteObjectInterface:v24];
 
             [v23 resume];
-            v25 = [v23 remoteObjectProxy];
+            remoteObjectProxy = [v23 remoteObjectProxy];
             v28[0] = MEMORY[0x1E69E9820];
             v28[1] = 3221225472;
             v28[2] = __38__CRChassisController_seal_withReply___block_invoke;
             v28[3] = &unk_1E83B3EE8;
             v28[4] = self;
             v29 = v23;
-            v30 = v7;
+            v30 = replyCopy;
             v26 = v23;
-            [v25 seal:v9 withReply:v28];
+            [remoteObjectProxy seal:v9 withReply:v28];
           }
 
           else
           {
-            [(CRChassisController *)self replyWithMessage:@"Nothing to patch" status:&unk_1F4BCD9F8 results:0 reply:v7];
+            [(CRChassisController *)self replyWithMessage:@"Nothing to patch" status:&unk_1F4BCD9F8 results:0 reply:replyCopy];
           }
         }
 
         else
         {
-          [(CRChassisController *)self replyWithError:@"Failed to get live system manifest" reply:v7];
+          [(CRChassisController *)self replyWithError:@"Failed to get live system manifest" reply:replyCopy];
         }
       }
 
       else
       {
-        [(CRChassisController *)self replyWithError:@"Failed to get sealed system manifest" reply:v7];
+        [(CRChassisController *)self replyWithError:@"Failed to get sealed system manifest" reply:replyCopy];
       }
     }
 
     else
     {
-      [(CRChassisController *)self replyWithError:@"Failed to get data instance" reply:v7];
+      [(CRChassisController *)self replyWithError:@"Failed to get data instance" reply:replyCopy];
     }
   }
 
   else
   {
-    [(CRChassisController *)self replyWithError:@"Not supported under current environment" reply:v7];
+    [(CRChassisController *)self replyWithError:@"Not supported under current environment" reply:replyCopy];
   }
 
   v27 = *MEMORY[0x1E69E9840];
@@ -160,50 +160,50 @@ void __38__CRChassisController_seal_withReply___block_invoke(uint64_t a1, void *
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)replyWithMessage:(id)a3 status:(id)a4 results:(id)a5 reply:(id)a6
+- (void)replyWithMessage:(id)message status:(id)status results:(id)results reply:(id)reply
 {
   v19[3] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  messageCopy = message;
+  statusCopy = status;
+  resultsCopy = results;
+  replyCopy = reply;
   v18[0] = @"status";
-  v13 = v10;
-  if (!v10)
+  null = statusCopy;
+  if (!statusCopy)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[0] = v13;
+  v19[0] = null;
   v18[1] = @"description";
-  v14 = v9;
-  if (!v9)
+  null2 = messageCopy;
+  if (!messageCopy)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[1] = v14;
+  v19[1] = null2;
   v18[2] = @"results";
-  v15 = v11;
-  if (!v11)
+  null3 = resultsCopy;
+  if (!resultsCopy)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[2] = v15;
+  v19[2] = null3;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:3];
-  v12[2](v12, v16);
+  replyCopy[2](replyCopy, v16);
 
-  if (v11)
+  if (resultsCopy)
   {
-    if (v9)
+    if (messageCopy)
     {
       goto LABEL_9;
     }
 
 LABEL_12:
 
-    if (v10)
+    if (statusCopy)
     {
       goto LABEL_10;
     }
@@ -213,13 +213,13 @@ LABEL_13:
     goto LABEL_10;
   }
 
-  if (!v9)
+  if (!messageCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_9:
-  if (!v10)
+  if (!statusCopy)
   {
     goto LABEL_13;
   }
@@ -229,22 +229,22 @@ LABEL_10:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)overrideParameters:(id)a3
+- (id)overrideParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  parametersCopy = parameters;
+  v5 = parametersCopy;
+  if (parametersCopy)
   {
-    v6 = [v4 mutableCopy];
+    dictionary = [parametersCopy mutableCopy];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v7 = v6;
-  v8 = [v6 objectForKeyedSubscript:@"CAURL"];
+  v7 = dictionary;
+  v8 = [dictionary objectForKeyedSubscript:@"CAURL"];
 
   if (!v8)
   {
@@ -287,10 +287,10 @@ LABEL_10:
   return v13;
 }
 
-- (id)overrideFromNVRam:(id)a3
+- (id)overrideFromNVRam:(id)ram
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  ramCopy = ram;
   v27 = 0;
   v4 = [CRNVRAMController readNVRAMValueForKey:@"corerepair-override" error:&v27];
   v5 = v27;
@@ -337,17 +337,17 @@ LABEL_10:
       _os_log_impl(&dword_1CEDC5000, v14, OS_LOG_TYPE_DEFAULT, "nvram overriede: %@", buf, 0xCu);
     }
 
-    if (v3)
+    if (ramCopy)
     {
-      v15 = [v3 mutableCopy];
+      dictionary = [ramCopy mutableCopy];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v9 = v15;
+    v9 = dictionary;
     v16 = [v10 objectForKeyedSubscript:@"CAURL"];
 
     if (v16)
@@ -392,7 +392,7 @@ LABEL_10:
       _os_log_impl(&dword_1CEDC5000, v8, OS_LOG_TYPE_DEFAULT, "No nvram override: %@", buf, 0xCu);
     }
 
-    v9 = v3;
+    v9 = ramCopy;
   }
 
   v24 = *MEMORY[0x1E69E9840];
@@ -400,17 +400,17 @@ LABEL_10:
   return v9;
 }
 
-- (id)diffWithSealed:(id)a3 live:(id)a4
+- (id)diffWithSealed:(id)sealed live:(id)live
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v21 = [MEMORY[0x1E695DF90] dictionary];
+  sealedCopy = sealed;
+  liveCopy = live;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = v5;
+  v7 = sealedCopy;
   v8 = [v7 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v8)
   {
@@ -427,7 +427,7 @@ LABEL_10:
 
         v12 = *(*(&v23 + 1) + 8 * i);
         v13 = [v7 objectForKeyedSubscript:v12];
-        v14 = [v6 objectForKeyedSubscript:v12];
+        v14 = [liveCopy objectForKeyedSubscript:v12];
         if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -458,8 +458,8 @@ LABEL_10:
 
             else
             {
-              v16 = [v6 objectForKeyedSubscript:v12];
-              [v21 setObject:v16 forKeyedSubscript:v12];
+              v16 = [liveCopy objectForKeyedSubscript:v12];
+              [dictionary setObject:v16 forKeyedSubscript:v12];
             }
           }
 
@@ -506,15 +506,15 @@ LABEL_23:
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v21;
+  return dictionary;
 }
 
-- (BOOL)shouldIgnorePatching:(id)a3
+- (BOOL)shouldIgnorePatching:(id)patching
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  patchingCopy = patching;
   LODWORD(v7) = -1281988531;
-  v4 = MGIsDeviceOfType() && (([v3 isEqualToString:{@"BM05", 0xD4C83437A3FD0C4FLL, 0x2B927B663C22D954, v7, v8}] & 1) != 0 || objc_msgSend(v3, "hasPrefix:", @"N") && (objc_msgSend(v3, "hasSuffix:", @"4") & 1) != 0);
+  v4 = MGIsDeviceOfType() && (([patchingCopy isEqualToString:{@"BM05", 0xD4C83437A3FD0C4FLL, 0x2B927B663C22D954, v7, v8}] & 1) != 0 || objc_msgSend(patchingCopy, "hasPrefix:", @"N") && (objc_msgSend(patchingCopy, "hasSuffix:", @"4") & 1) != 0);
 
   v5 = *MEMORY[0x1E69E9840];
   return v4;
@@ -534,10 +534,10 @@ LABEL_23:
   return 0;
 }
 
-- (id)getAndVerifyDataInstance:(id)a3
+- (id)getAndVerifyDataInstance:(id)instance
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  instanceCopy = instance;
   v4 = AMFDRSealingMapCopyInstanceForClass();
   v5 = handleForCategory(0);
   v6 = v5;
@@ -546,7 +546,7 @@ LABEL_23:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v26 = v3;
+      v26 = instanceCopy;
       v27 = 2112;
       v28 = v4;
       _os_log_impl(&dword_1CEDC5000, v6, OS_LOG_TYPE_DEFAULT, "Instance of %@ from sealing map: %@", buf, 0x16u);
@@ -560,7 +560,7 @@ LABEL_23:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v26 = v3;
+        v26 = instanceCopy;
         v27 = 2112;
         v28 = v7;
         _os_log_impl(&dword_1CEDC5000, v6, OS_LOG_TYPE_DEFAULT, "Instance of %@ from sealing manifest: %@", buf, 0x16u);
@@ -591,8 +591,8 @@ LABEL_23:
 
 - (BOOL)checkRepairEnvironment
 {
-  v2 = [(CRChassisController *)self getOSEnvironment];
-  v3 = [v2 isEqualToString:@"repair"];
+  getOSEnvironment = [(CRChassisController *)self getOSEnvironment];
+  v3 = [getOSEnvironment isEqualToString:@"repair"];
 
   return v3;
 }

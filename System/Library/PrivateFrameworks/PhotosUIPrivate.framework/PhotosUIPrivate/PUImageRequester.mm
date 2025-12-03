@@ -3,36 +3,36 @@
 - (CGSize)imageTargetSize;
 - (CGSize)targetSize;
 - (PUImageRequester)init;
-- (PUImageRequester)initWithMediaProvider:(id)a3 asset:(id)a4 requiresFullQualityImage:(BOOL)a5;
-- (id)imageByAddingWallpaperCropRectDiagnosticsForAsset:(id)a3 sourceImage:(id)a4;
+- (PUImageRequester)initWithMediaProvider:(id)provider asset:(id)asset requiresFullQualityImage:(BOOL)image;
+- (id)imageByAddingWallpaperCropRectDiagnosticsForAsset:(id)asset sourceImage:(id)image;
 - (void)_assertInsideChangesBlock;
 - (void)_didChange;
-- (void)_handleResultOfFullSizeImageDataRequestWithID:(int)a3 imageData:(id)a4 imageURL:(id)a5 dataUTI:(id)a6 orientation:(int64_t)a7 info:(id)a8;
-- (void)_handleResultOfImageRequestWithID:(int)a3 asset:(id)a4 targetSize:(CGSize)a5 image:(id)a6 info:(id)a7;
+- (void)_handleResultOfFullSizeImageDataRequestWithID:(int)d imageData:(id)data imageURL:(id)l dataUTI:(id)i orientation:(int64_t)orientation info:(id)info;
+- (void)_handleResultOfImageRequestWithID:(int)d asset:(id)asset targetSize:(CGSize)size image:(id)image info:(id)info;
 - (void)_produceDebugImage;
 - (void)_update;
 - (void)_updateResult;
 - (void)_willChange;
 - (void)cancelAllImageRequests;
 - (void)dealloc;
-- (void)handlePreloadedImage:(id)a3;
-- (void)performChanges:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)setAsset:(id)a3;
-- (void)setError:(id)a3;
-- (void)setFullSizeImageData:(id)a3;
-- (void)setFullSizeImageURL:(id)a3;
-- (void)setGainMapImage:(CGImage *)a3;
-- (void)setGainMapValue:(float)a3;
-- (void)setImage:(id)a3;
-- (void)setImageIsFullQuality:(BOOL)a3;
-- (void)setIncludeGainMap:(BOOL)a3;
-- (void)setNetworkAccessAllowed:(BOOL)a3;
-- (void)setRequestFullSizeImageDataUTTypes:(id)a3;
-- (void)setRequestHDR:(BOOL)a3;
-- (void)setResult:(id)a3;
-- (void)setTargetSize:(CGSize)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)handlePreloadedImage:(id)image;
+- (void)performChanges:(id)changes;
+- (void)registerObserver:(id)observer;
+- (void)setAsset:(id)asset;
+- (void)setError:(id)error;
+- (void)setFullSizeImageData:(id)data;
+- (void)setFullSizeImageURL:(id)l;
+- (void)setGainMapImage:(CGImage *)image;
+- (void)setGainMapValue:(float)value;
+- (void)setImage:(id)image;
+- (void)setImageIsFullQuality:(BOOL)quality;
+- (void)setIncludeGainMap:(BOOL)map;
+- (void)setNetworkAccessAllowed:(BOOL)allowed;
+- (void)setRequestFullSizeImageDataUTTypes:(id)types;
+- (void)setRequestHDR:(BOOL)r;
+- (void)setResult:(id)result;
+- (void)setTargetSize:(CGSize)size;
+- (void)unregisterObserver:(id)observer;
 - (void)updateIfNeeded;
 @end
 
@@ -74,7 +74,7 @@
     goto LABEL_71;
   }
 
-  v4 = [(PUImageRequester *)self asset];
+  asset = [(PUImageRequester *)self asset];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -83,17 +83,17 @@
     goto LABEL_71;
   }
 
-  v6 = [(PUImageRequester *)self asset];
-  v7 = [(PUImageRequester *)self image];
-  [v7 size];
+  asset2 = [(PUImageRequester *)self asset];
+  image = [(PUImageRequester *)self image];
+  [image size];
   v142 = v8;
-  [v7 size];
+  [image size];
   v10 = v9;
-  v11 = v7;
+  v11 = image;
   v12 = v11;
   if ([v3 showSaliencyRects])
   {
-    [v6 preferredCropRect];
+    [asset2 preferredCropRect];
     v12 = v11;
     if (__38__PUImageRequester__produceDebugImage__block_invoke(v13, v14, v15, v16))
     {
@@ -103,11 +103,11 @@
       v20 = v19;
       v22 = v21;
       v24 = v23;
-      v25 = [MEMORY[0x1E69DC888] redColor];
-      v12 = [v11 px_debugImageWithStrokeRect:v25 color:@"Preferred" text:{v18, v20, v22, v24}];
+      redColor = [MEMORY[0x1E69DC888] redColor];
+      v12 = [v11 px_debugImageWithStrokeRect:redColor color:@"Preferred" text:{v18, v20, v22, v24}];
     }
 
-    [v6 acceptableCropRect];
+    [asset2 acceptableCropRect];
     if (__38__PUImageRequester__produceDebugImage__block_invoke(v26, v27, v28, v29))
     {
       PXRectFlippedVertically();
@@ -116,8 +116,8 @@
       v33 = v32;
       v35 = v34;
       v37 = v36;
-      v38 = [MEMORY[0x1E69DC888] orangeColor];
-      v39 = [v12 px_debugImageWithStrokeRect:v38 color:@"Acceptable" text:{v31, v33, v35, v37}];
+      orangeColor = [MEMORY[0x1E69DC888] orangeColor];
+      v39 = [v12 px_debugImageWithStrokeRect:orangeColor color:@"Acceptable" text:{v31, v33, v35, v37}];
 
       v12 = v39;
     }
@@ -125,7 +125,7 @@
 
   if ([v3 showFacesRect])
   {
-    [v6 normalizedFaceAreaRect];
+    [asset2 normalizedFaceAreaRect];
     if (__38__PUImageRequester__produceDebugImage__block_invoke(v40, v41, v42, v43))
     {
       PXRectDenormalize();
@@ -133,13 +133,13 @@
       v47 = v46;
       v49 = v48;
       v51 = v50;
-      v52 = [MEMORY[0x1E69DC888] blueColor];
-      v53 = [v12 px_debugImageWithStrokeRect:v52 color:@"Faces Area" text:{v45, v47, v49, v51}];
+      blueColor = [MEMORY[0x1E69DC888] blueColor];
+      v53 = [v12 px_debugImageWithStrokeRect:blueColor color:@"Faces Area" text:{v45, v47, v49, v51}];
 
       v54 = +[PUOneUpSettings sharedInstance];
-      v55 = [v54 showPaddedFacesRect];
+      showPaddedFacesRect = [v54 showPaddedFacesRect];
 
-      if (v55)
+      if (showPaddedFacesRect)
       {
         PXRectScaleFromCenter();
         v158.origin.x = 0.0;
@@ -151,8 +151,8 @@
         y = v155.origin.y;
         width = v155.size.width;
         height = v155.size.height;
-        v60 = [MEMORY[0x1E69DC888] cyanColor];
-        v12 = [v53 px_debugImageWithStrokeRect:v60 color:@"Scaled Faces Area" text:{x, y, width, height}];
+        cyanColor = [MEMORY[0x1E69DC888] cyanColor];
+        v12 = [v53 px_debugImageWithStrokeRect:cyanColor color:@"Scaled Faces Area" text:{x, y, width, height}];
       }
 
       else
@@ -163,18 +163,18 @@
   }
 
   v140 = v3;
-  v137 = self;
+  selfCopy = self;
   v135 = v11;
-  v136 = v6;
+  v136 = asset2;
   if ([v3 showObjectRects])
   {
-    v61 = [v6 sceneClassifications];
+    sceneClassifications = [asset2 sceneClassifications];
     v62 = objc_alloc_init(MEMORY[0x1E69C0850]);
     v147 = 0u;
     v148 = 0u;
     v149 = 0u;
     v150 = 0u;
-    v63 = v61;
+    v63 = sceneClassifications;
     v64 = [v63 countByEnumeratingWithState:&v147 objects:v152 count:16];
     if (v64)
     {
@@ -216,8 +216,8 @@
                 v85 = v84;
                 v87 = v86;
                 v89 = v88;
-                v90 = [MEMORY[0x1E69DC888] redColor];
-                v91 = [v12 px_debugImageWithStrokeRect:v90 color:v81 text:{v83, v85, v87, v89}];
+                redColor2 = [MEMORY[0x1E69DC888] redColor];
+                v91 = [v12 px_debugImageWithStrokeRect:redColor2 color:v81 text:{v83, v85, v87, v89}];
 
                 v12 = v91;
               }
@@ -232,13 +232,13 @@
     }
 
     v3 = v140;
-    self = v137;
+    self = selfCopy;
     v11 = v135;
   }
 
   if ([v3 showBestSquareRect])
   {
-    [v6 bestCropRectForAspectRatio:0 verticalContentMode:2 cropMode:1.0];
+    [asset2 bestCropRectForAspectRatio:0 verticalContentMode:2 cropMode:1.0];
     if (__38__PUImageRequester__produceDebugImage__block_invoke(v92, v93, v94, v95))
     {
       PXRectDenormalize();
@@ -246,8 +246,8 @@
       v99 = v98;
       v101 = v100;
       v103 = v102;
-      v104 = [MEMORY[0x1E69DC888] greenColor];
-      v105 = [v12 px_debugImageWithStrokeRect:v104 color:@"Best Square Crop Rect" text:{v97, v99, v101, v103}];
+      greenColor = [MEMORY[0x1E69DC888] greenColor];
+      v105 = [v12 px_debugImageWithStrokeRect:greenColor color:@"Best Square Crop Rect" text:{v97, v99, v101, v103}];
 
       v12 = v105;
     }
@@ -258,22 +258,22 @@
     goto LABEL_68;
   }
 
-  v106 = [v6 photoLibrary];
-  v107 = [v106 librarySpecificFetchOptions];
+  photoLibrary = [asset2 photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v107 setWantsIncrementalChangeDetails:0];
-  [v107 setIncludeTorsoAndFaceDetectionData:1];
-  v108 = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
-  [v107 setIncludedDetectionTypes:v108];
+  [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
+  [librarySpecificFetchOptions setIncludeTorsoAndFaceDetectionData:1];
+  px_defaultDetectionTypes = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:px_defaultDetectionTypes];
 
-  v109 = [MEMORY[0x1E69787C8] fetchFacesInAsset:v6 options:v107];
+  v109 = [MEMORY[0x1E69787C8] fetchFacesInAsset:asset2 options:librarySpecificFetchOptions];
   if (![v109 count])
   {
     goto LABEL_67;
   }
 
   v133 = v109;
-  v134 = v107;
+  v134 = librarySpecificFetchOptions;
   v145 = 0u;
   v146 = 0u;
   v143 = 0u;
@@ -332,9 +332,9 @@
             v121 = v120 > 0.0;
             if (v118 > 0.0 && v120 > 0.0)
             {
-              v122 = [MEMORY[0x1E696AEC0] stringWithFormat:@"FT%d", v112];
-              v123 = [MEMORY[0x1E69DC888] greenColor];
-              v124 = [MEMORY[0x1E69DC888] cyanColor];
+              v112 = [MEMORY[0x1E696AEC0] stringWithFormat:@"FT%d", v112];
+              greenColor2 = [MEMORY[0x1E69DC888] greenColor];
+              cyanColor2 = [MEMORY[0x1E69DC888] cyanColor];
               v121 = 1;
               goto LABEL_57;
             }
@@ -342,9 +342,9 @@
             if (v118 > 0.0)
             {
 LABEL_56:
-              v122 = [MEMORY[0x1E696AEC0] stringWithFormat:@"F%d", v112];
-              v123 = [MEMORY[0x1E69DC888] magentaColor];
-              v124 = 0;
+              v112 = [MEMORY[0x1E696AEC0] stringWithFormat:@"F%d", v112];
+              greenColor2 = [MEMORY[0x1E69DC888] magentaColor];
+              cyanColor2 = 0;
 LABEL_57:
               [v115 size];
               [v115 centerX];
@@ -353,7 +353,7 @@ LABEL_57:
               [v115 centerY];
               PXRectWithEdges();
               PXRectDenormalize();
-              v128 = [v12 px_debugImageWithStrokeRect:v123 color:v122 text:?];
+              v128 = [v12 px_debugImageWithStrokeRect:greenColor2 color:v112 text:?];
 
               v12 = v128;
               if (v121)
@@ -367,8 +367,8 @@ LABEL_58:
                 [v115 bodyCenterY];
                 PXRectWithEdges();
                 PXRectDenormalize();
-                [v12 px_debugImageWithStrokeRect:v124 color:v122 text:?];
-                v12 = v126 = v12;
+                [v12 px_debugImageWithStrokeRect:cyanColor2 color:v112 text:?];
+                v12 = currentHandler = v12;
 LABEL_59:
 
                 v128 = v12;
@@ -383,21 +383,21 @@ LABEL_59:
 LABEL_50:
             if (v120 > 0.0)
             {
-              v122 = [MEMORY[0x1E696AEC0] stringWithFormat:@"T%d", v112];
-              v124 = [MEMORY[0x1E69DC888] orangeColor];
-              v123 = 0;
+              v112 = [MEMORY[0x1E696AEC0] stringWithFormat:@"T%d", v112];
+              cyanColor2 = [MEMORY[0x1E69DC888] orangeColor];
+              greenColor2 = 0;
               goto LABEL_58;
             }
           }
         }
 
-        v126 = [MEMORY[0x1E696AAA8] currentHandler];
-        v127 = [v115 localIdentifier];
-        [v126 handleFailureInMethod:a2 object:v137 file:@"PUImageRequester.m" lineNumber:659 description:{@"Face %@ is missing face and torso", v127}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        localIdentifier = [v115 localIdentifier];
+        [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"PUImageRequester.m" lineNumber:659 description:{@"Face %@ is missing face and torso", localIdentifier}];
 
-        v122 = 0;
-        v123 = 0;
-        v124 = 0;
+        v112 = 0;
+        greenColor2 = 0;
+        cyanColor2 = 0;
         goto LABEL_59;
       }
 
@@ -411,12 +411,12 @@ LABEL_61:
         v159.size.height = -1.0;
         if (!CGRectEqualToRect(v157, v159))
         {
-          v129 = [MEMORY[0x1E696AEC0] stringWithFormat:@"G%d", v112];
-          v130 = [MEMORY[0x1E69DC888] brownColor];
+          v1122 = [MEMORY[0x1E696AEC0] stringWithFormat:@"G%d", v112];
+          brownColor = [MEMORY[0x1E69DC888] brownColor];
           [v115 gazeRect];
           PXRectFlippedVertically();
           PXRectDenormalize();
-          v131 = [v12 px_debugImageWithStrokeRect:v130 color:v129 text:?];
+          v131 = [v12 px_debugImageWithStrokeRect:brownColor color:v1122 text:?];
 
           v12 = v131;
         }
@@ -431,17 +431,17 @@ LABEL_61:
   while (v111);
 LABEL_66:
 
-  self = v137;
+  self = selfCopy;
   v11 = v135;
-  v6 = v136;
+  asset2 = v136;
   v109 = v133;
-  v107 = v134;
+  librarySpecificFetchOptions = v134;
 LABEL_67:
 
 LABEL_68:
   if ([v3 showWallpaperCropRect])
   {
-    v132 = [(PUImageRequester *)self imageByAddingWallpaperCropRectDiagnosticsForAsset:v6 sourceImage:v12];
+    v132 = [(PUImageRequester *)self imageByAddingWallpaperCropRectDiagnosticsForAsset:asset2 sourceImage:v12];
 
     v12 = v132;
   }
@@ -474,21 +474,21 @@ BOOL __38__PUImageRequester__produceDebugImage__block_invoke(CGFloat a1, CGFloat
   return !CGRectIsEmpty(v10);
 }
 
-- (void)_handleResultOfFullSizeImageDataRequestWithID:(int)a3 imageData:(id)a4 imageURL:(id)a5 dataUTI:(id)a6 orientation:(int64_t)a7 info:(id)a8
+- (void)_handleResultOfFullSizeImageDataRequestWithID:(int)d imageData:(id)data imageURL:(id)l dataUTI:(id)i orientation:(int64_t)orientation info:(id)info
 {
   v42 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if ([(PUImageRequester *)self currentFullSizeImageDataRequestID]== a3)
+  dataCopy = data;
+  lCopy = l;
+  iCopy = i;
+  if ([(PUImageRequester *)self currentFullSizeImageDataRequestID]== d)
   {
     [(PUImageRequester *)self setCurrentFullSizeImageDataRequestID:0];
-    if (v12 | v13)
+    if (dataCopy | lCopy)
     {
-      v28 = v14;
-      if (v14)
+      v28 = iCopy;
+      if (iCopy)
       {
-        v15 = [MEMORY[0x1E6982C40] typeWithIdentifier:v14];
+        v15 = [MEMORY[0x1E6982C40] typeWithIdentifier:iCopy];
       }
 
       else
@@ -500,8 +500,8 @@ BOOL __38__PUImageRequester__produceDebugImage__block_invoke(CGFloat a1, CGFloat
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v16 = [(PUImageRequester *)self requestFullSizeImageDataUTTypes];
-      v17 = [v16 countByEnumeratingWithState:&v33 objects:v41 count:16];
+      requestFullSizeImageDataUTTypes = [(PUImageRequester *)self requestFullSizeImageDataUTTypes];
+      v17 = [requestFullSizeImageDataUTTypes countByEnumeratingWithState:&v33 objects:v41 count:16];
       if (v17)
       {
         v18 = v17;
@@ -512,7 +512,7 @@ LABEL_8:
         {
           if (*v34 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(requestFullSizeImageDataUTTypes);
           }
 
           v21 = [MEMORY[0x1E6982C40] typeWithIdentifier:*(*(&v33 + 1) + 8 * v20)];
@@ -525,7 +525,7 @@ LABEL_8:
 
           if (v18 == ++v20)
           {
-            v18 = [v16 countByEnumeratingWithState:&v33 objects:v41 count:16];
+            v18 = [requestFullSizeImageDataUTTypes countByEnumeratingWithState:&v33 objects:v41 count:16];
             if (v18)
             {
               goto LABEL_8;
@@ -535,23 +535,23 @@ LABEL_8:
           }
         }
 
-        if (v12)
+        if (dataCopy)
         {
           v31[0] = MEMORY[0x1E69E9820];
           v31[1] = 3221225472;
           v31[2] = __110__PUImageRequester__handleResultOfFullSizeImageDataRequestWithID_imageData_imageURL_dataUTI_orientation_info___block_invoke;
           v31[3] = &unk_1E7B80C38;
           v31[4] = self;
-          v12 = v12;
-          v32 = v12;
+          dataCopy = dataCopy;
+          v32 = dataCopy;
           [(PUImageRequester *)self performChanges:v31];
 
-          v13 = v27;
-          v14 = v28;
+          lCopy = v27;
+          iCopy = v28;
           goto LABEL_24;
         }
 
-        v14 = v28;
+        iCopy = v28;
         if (v27)
         {
           v29[0] = MEMORY[0x1E69E9820];
@@ -559,8 +559,8 @@ LABEL_8:
           v29[2] = __110__PUImageRequester__handleResultOfFullSizeImageDataRequestWithID_imageData_imageURL_dataUTI_orientation_info___block_invoke_2;
           v29[3] = &unk_1E7B80C38;
           v29[4] = self;
-          v13 = v27;
-          v30 = v13;
+          lCopy = v27;
+          v30 = lCopy;
           [(PUImageRequester *)self performChanges:v29];
 
           goto LABEL_23;
@@ -573,43 +573,43 @@ LABEL_14:
 
         v23 = [v15 conformsToType:*MEMORY[0x1E6982F88]];
         v24 = PLOneUpGetLog();
-        v14 = v28;
+        iCopy = v28;
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
-          v25 = [(PUImageRequester *)self asset];
+          asset = [(PUImageRequester *)self asset];
           *buf = 138412546;
           v38 = v28;
           v39 = 2112;
-          v40 = v25;
+          v40 = asset;
           _os_log_impl(&dword_1B36F3000, v24, OS_LOG_TYPE_ERROR, "got non-supported data %@ for %@", buf, 0x16u);
         }
 
         if (v23)
         {
-          v26 = [(PUImageRequester *)self fullSizeDataRepeatRequestCoalescer];
-          [v26 inputEvent];
+          fullSizeDataRepeatRequestCoalescer = [(PUImageRequester *)self fullSizeDataRepeatRequestCoalescer];
+          [fullSizeDataRepeatRequestCoalescer inputEvent];
         }
       }
     }
 
-    v13 = 0;
+    lCopy = 0;
 LABEL_23:
-    v12 = 0;
+    dataCopy = 0;
   }
 
 LABEL_24:
 }
 
-- (void)_handleResultOfImageRequestWithID:(int)a3 asset:(id)a4 targetSize:(CGSize)a5 image:(id)a6 info:(id)a7
+- (void)_handleResultOfImageRequestWithID:(int)d asset:(id)asset targetSize:(CGSize)size image:(id)image info:(id)info
 {
-  height = a5.height;
-  width = a5.width;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if ([(PUImageRequester *)self _currentImageRequestID]== a3)
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
+  imageCopy = image;
+  infoCopy = info;
+  if ([(PUImageRequester *)self _currentImageRequestID]== d)
   {
-    v16 = [v15 objectForKeyedSubscript:*MEMORY[0x1E6978E50]];
+    v16 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E6978E50]];
     if ([v16 BOOLValue])
     {
       v17 = 0;
@@ -617,7 +617,7 @@ LABEL_24:
 
     else
     {
-      v18 = [v15 objectForKeyedSubscript:*MEMORY[0x1E6978E58]];
+      v18 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E6978E58]];
       v17 = [v18 BOOLValue] ^ 1;
     }
 
@@ -625,11 +625,11 @@ LABEL_24:
     v19[1] = 3221225472;
     v19[2] = __82__PUImageRequester__handleResultOfImageRequestWithID_asset_targetSize_image_info___block_invoke;
     v19[3] = &unk_1E7B775D8;
-    v20 = v14;
-    v21 = self;
+    v20 = imageCopy;
+    selfCopy = self;
     v26 = v17;
-    v22 = v15;
-    v23 = v13;
+    v22 = infoCopy;
+    v23 = assetCopy;
     v24 = width;
     v25 = height;
     [(PUImageRequester *)self performChanges:v19];
@@ -694,42 +694,42 @@ LABEL_8:
 
 - (void)cancelAllImageRequests
 {
-  v3 = [(PUImageRequester *)self _currentImageRequestID];
-  if (v3)
+  _currentImageRequestID = [(PUImageRequester *)self _currentImageRequestID];
+  if (_currentImageRequestID)
   {
-    v4 = v3;
+    v4 = _currentImageRequestID;
     [(PUImageRequester *)self _setLastRequestedImageSize:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
-    v5 = [(PUImageRequester *)self mediaProvider];
-    [v5 cancelImageRequest:v4];
+    mediaProvider = [(PUImageRequester *)self mediaProvider];
+    [mediaProvider cancelImageRequest:v4];
 
     [(PUImageRequester *)self _setCurrentImageRequestID:0];
   }
 
-  v6 = [(PUImageRequester *)self currentFullSizeImageDataRequestID];
-  if (v6)
+  currentFullSizeImageDataRequestID = [(PUImageRequester *)self currentFullSizeImageDataRequestID];
+  if (currentFullSizeImageDataRequestID)
   {
-    v7 = v6;
-    v8 = [(PUImageRequester *)self mediaProvider];
-    [v8 cancelImageRequest:v7];
+    v7 = currentFullSizeImageDataRequestID;
+    mediaProvider2 = [(PUImageRequester *)self mediaProvider];
+    [mediaProvider2 cancelImageRequest:v7];
 
     [(PUImageRequester *)self setCurrentFullSizeImageDataRequestID:0];
   }
 }
 
-- (void)setResult:(id)a3
+- (void)setResult:(id)result
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_result != v5)
+  resultCopy = result;
+  if (self->_result != resultCopy)
   {
-    objc_storeStrong(&self->_result, a3);
+    objc_storeStrong(&self->_result, result);
     v6 = PLOneUpGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v18 = self;
+      selfCopy = self;
       v19 = 2112;
-      v20 = v5;
+      v20 = resultCopy;
       _os_log_impl(&dword_1B36F3000, v6, OS_LOG_TYPE_DEFAULT, "%@ produced result: %@", buf, 0x16u);
     }
 
@@ -737,8 +737,8 @@ LABEL_8:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = [(PUImageRequester *)self observers];
-    v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    observers = [(PUImageRequester *)self observers];
+    v8 = [observers countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
       v9 = v8;
@@ -749,13 +749,13 @@ LABEL_8:
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(observers);
           }
 
-          [*(*(&v12 + 1) + 8 * i) imageRequester:self didProduceResult:v5];
+          [*(*(&v12 + 1) + 8 * i) imageRequester:self didProduceResult:resultCopy];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v9 = [observers countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v9);
@@ -766,11 +766,11 @@ LABEL_8:
 - (void)_updateResult
 {
   v9 = objc_alloc_init(_PUImageRequesterResult);
-  v3 = [(PUImageRequester *)self currentRequestStartDate];
-  if (v3)
+  currentRequestStartDate = [(PUImageRequester *)self currentRequestStartDate];
+  if (currentRequestStartDate)
   {
-    v4 = [MEMORY[0x1E695DF00] date];
-    [v4 timeIntervalSinceDate:v3];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceDate:currentRequestStartDate];
     v6 = v5;
 
     [(_PUImageRequesterResult *)v9 setTimeIntervalSinceRequest:v6];
@@ -778,22 +778,22 @@ LABEL_8:
 
   [(PUImageRequester *)self imageTargetSize];
   [(_PUImageRequesterResult *)v9 setTargetSize:?];
-  v7 = [(PUImageRequester *)self image];
-  [(_PUImageRequesterResult *)v9 setImage:v7];
+  image = [(PUImageRequester *)self image];
+  [(_PUImageRequesterResult *)v9 setImage:image];
 
   [(_PUImageRequesterResult *)v9 setImageIsFullQuality:[(PUImageRequester *)self imageIsFullQuality]];
   [(_PUImageRequesterResult *)v9 setGainMapImage:[(PUImageRequester *)self gainMapImage]];
   [(PUImageRequester *)self gainMapValue];
   [(_PUImageRequesterResult *)v9 setGainMapValue:?];
-  v8 = [(PUImageRequester *)self imageAsset];
-  [(_PUImageRequesterResult *)v9 setAsset:v8];
+  imageAsset = [(PUImageRequester *)self imageAsset];
+  [(_PUImageRequesterResult *)v9 setAsset:imageAsset];
 
   [(PUImageRequester *)self setResult:v9];
 }
 
 - (void)_update
 {
-  v5 = [(PUImageRequester *)self asset];
+  asset = [(PUImageRequester *)self asset];
   [(PUImageRequester *)self targetSize];
   v8 = v7;
   v9 = v6;
@@ -803,19 +803,19 @@ LABEL_8:
     goto LABEL_56;
   }
 
-  v11 = [(PUImageRequester *)self requestFullSizeImageDataUTTypes];
-  if ([v11 count])
+  requestFullSizeImageDataUTTypes = [(PUImageRequester *)self requestFullSizeImageDataUTTypes];
+  if ([requestFullSizeImageDataUTTypes count])
   {
-    v12 = [(PUImageRequester *)self fullSizeImageData];
-    if (v12)
+    fullSizeImageData = [(PUImageRequester *)self fullSizeImageData];
+    if (fullSizeImageData)
     {
       v13 = 0;
     }
 
     else
     {
-      v14 = [(PUImageRequester *)self fullSizeImageURL];
-      v13 = v14 == 0;
+      fullSizeImageURL = [(PUImageRequester *)self fullSizeImageURL];
+      v13 = fullSizeImageURL == 0;
     }
   }
 
@@ -824,26 +824,26 @@ LABEL_8:
     v13 = 0;
   }
 
-  v15 = [(PUImageRequester *)self fullSizeImageData];
+  fullSizeImageData2 = [(PUImageRequester *)self fullSizeImageData];
 
-  v16 = [(PUImageRequester *)self currentFullSizeImageDataRequestID];
-  if (v16)
+  currentFullSizeImageDataRequestID = [(PUImageRequester *)self currentFullSizeImageDataRequestID];
+  if (currentFullSizeImageDataRequestID)
   {
     v17 = 0;
   }
 
   else
   {
-    v2 = [(PUImageRequester *)self fullSizeImageData];
-    if (v2)
+    fullSizeImageData3 = [(PUImageRequester *)self fullSizeImageData];
+    if (fullSizeImageData3)
     {
       v17 = 0;
     }
 
     else
     {
-      v18 = [(PUImageRequester *)self fullSizeImageURL];
-      if (!v18)
+      fullSizeImageURL2 = [(PUImageRequester *)self fullSizeImageURL];
+      if (!fullSizeImageURL2)
       {
         v20 = 0;
 LABEL_21:
@@ -851,40 +851,40 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v3 = v18;
+      v3 = fullSizeImageURL2;
       v17 = 1;
     }
   }
 
-  v19 = [(PUImageRequester *)self image];
-  v20 = v19 != 0;
+  image = [(PUImageRequester *)self image];
+  v20 = image != 0;
 
   if (v17)
   {
   }
 
-  if (!v16)
+  if (!currentFullSizeImageDataRequestID)
   {
     goto LABEL_21;
   }
 
 LABEL_22:
-  v21 = v15 == 0;
+  v21 = fullSizeImageData2 == 0;
   [(PUImageRequester *)self _lastRequestedImageSize];
   if (v8 > v23 || v9 > v22)
   {
-    v25 = [(PUImageRequester *)self image];
-    [v25 size];
+    image2 = [(PUImageRequester *)self image];
+    [image2 size];
     v27 = v26;
     v29 = v28;
-    [v25 scale];
+    [image2 scale];
     v31 = v9 > v29 * v30;
     if (v8 > v27 * v30)
     {
       v31 = 1;
     }
 
-    if (v25)
+    if (image2)
     {
       v32 = v31;
     }
@@ -913,37 +913,37 @@ LABEL_22:
   }
 
   v34 = v21 & ~v20;
-  v35 = [(PUImageRequester *)self useLowMemoryMode];
+  useLowMemoryMode = [(PUImageRequester *)self useLowMemoryMode];
   if (objc_opt_respondsToSelector())
   {
-    v36 = [v5 needsDeferredProcessing];
+    needsDeferredProcessing = [asset needsDeferredProcessing];
   }
 
   else
   {
-    v36 = 1;
+    needsDeferredProcessing = 1;
   }
 
-  v37 = [(PUImageRequester *)self includeGainMap];
+  includeGainMap = [(PUImageRequester *)self includeGainMap];
   if ((v34 & v24) == 1)
   {
     v38 = objc_alloc_init(MEMORY[0x1E6978868]);
     [v38 setAllowPlaceholder:1];
     [v38 setNetworkAccessAllowed:{-[PUImageRequester isNetworkAccessAllowed](self, "isNetworkAccessAllowed")}];
     [v38 setAllowSecondaryDegradedImage:1];
-    [v38 setUseLowMemoryMode:v35];
+    [v38 setUseLowMemoryMode:useLowMemoryMode];
     [v38 setDeliveryMode:{-[PUImageRequester requiresFullQualityImage](self, "requiresFullQualityImage")}];
     [v38 setIncludeHDRGainMap:{-[PUImageRequester includeGainMap](self, "includeGainMap")}];
-    [v38 setIncludeHDRGainMapInIntermediateImage:v37 & v36];
+    [v38 setIncludeHDRGainMapInIntermediateImage:includeGainMap & needsDeferredProcessing];
     [v38 setPreferHDR:{-[PUImageRequester requestHDR](self, "requestHDR")}];
     [(PUImageRequester *)self targetHDRHeadroom];
     [v38 setTargetHDRHeadroom:?];
     [v38 setDownloadIntent:3];
     [v38 setDownloadPriority:{-[PUImageRequester highPriorityRequest](self, "highPriorityRequest") ^ 1}];
-    v39 = [(PUImageRequester *)self asset];
+    asset2 = [(PUImageRequester *)self asset];
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v40 = v39;
+      v40 = asset2;
 
       if (v40 && PHSensitiveContentAnalysisAvailable() && [v40 mediaType] == 2 && objc_msgSend(MEMORY[0x1E6978AB0], "assetNeedsVideoSensitivityProcessing:", v40))
       {
@@ -961,27 +961,27 @@ LABEL_22:
     v62 = &v61;
     v63 = 0x2020000000;
     v64 = 0;
-    v41 = [(PUImageRequester *)self _currentImageRequestID];
-    v42 = [(PUImageRequester *)self mediaProvider];
-    [v42 cancelImageRequest:v41];
+    _currentImageRequestID = [(PUImageRequester *)self _currentImageRequestID];
+    mediaProvider = [(PUImageRequester *)self mediaProvider];
+    [mediaProvider cancelImageRequest:_currentImageRequestID];
 
     [(PUImageRequester *)self _setCurrentImageRequestID:*(v62 + 6)];
     [(PUImageRequester *)self _setLastRequestedImageSize:v8, v9];
-    v43 = [MEMORY[0x1E695DF00] date];
-    [(PUImageRequester *)self setCurrentRequestStartDate:v43];
+    date = [MEMORY[0x1E695DF00] date];
+    [(PUImageRequester *)self setCurrentRequestStartDate:date];
 
     objc_initWeak(&location, self);
-    v44 = [(PUImageRequester *)self mediaProvider];
+    mediaProvider2 = [(PUImageRequester *)self mediaProvider];
     v56[0] = MEMORY[0x1E69E9820];
     v56[1] = 3221225472;
     v56[2] = __27__PUImageRequester__update__block_invoke;
     v56[3] = &unk_1E7B77510;
     objc_copyWeak(v59, &location);
     v58 = &v61;
-    v57 = v5;
+    v57 = asset;
     v59[1] = *&v8;
     v59[2] = *&v9;
-    v45 = [v44 requestImageForAsset:v57 targetSize:1 contentMode:v38 options:v56 resultHandler:{v8, v9}];
+    v45 = [mediaProvider2 requestImageForAsset:v57 targetSize:1 contentMode:v38 options:v56 resultHandler:{v8, v9}];
     *(v62 + 6) = v45;
 
     [(PUImageRequester *)self _setCurrentImageRequestID:*(v62 + 6)];
@@ -994,24 +994,24 @@ LABEL_22:
   {
     v46 = objc_alloc_init(MEMORY[0x1E6978868]);
     [v46 setNetworkAccessAllowed:{-[PUImageRequester isNetworkAccessAllowed](self, "isNetworkAccessAllowed")}];
-    [v46 setUseLowMemoryMode:v35];
+    [v46 setUseLowMemoryMode:useLowMemoryMode];
     [v46 setIncludeHDRGainMap:{-[PUImageRequester includeGainMap](self, "includeGainMap")}];
-    [v46 setIncludeHDRGainMapInIntermediateImage:v37 & v36];
+    [v46 setIncludeHDRGainMapInIntermediateImage:includeGainMap & needsDeferredProcessing];
     [v46 setDownloadIntent:3];
     v61 = 0;
     v62 = &v61;
     v63 = 0x2020000000;
     v64 = 0;
     v47 = +[PUOneUpSettings sharedInstance];
-    v48 = [v47 enableFigPhotoTiledLayer];
+    enableFigPhotoTiledLayer = [v47 enableFigPhotoTiledLayer];
     if ([v47 forceURLWithFigPhotoTiledLayer])
     {
-      if (v48)
+      if (enableFigPhotoTiledLayer)
       {
 LABEL_50:
         objc_initWeak(&location, self);
         [v46 setDeliveryMode:1];
-        v49 = [(PUImageRequester *)self mediaProvider];
+        mediaProvider3 = [(PUImageRequester *)self mediaProvider];
         v50 = v54;
         v54[0] = MEMORY[0x1E69E9820];
         v54[1] = 3221225472;
@@ -1019,7 +1019,7 @@ LABEL_50:
         v54[3] = &unk_1E7B77560;
         objc_copyWeak(&v55, &location);
         v54[4] = &v61;
-        v51 = [v49 requestImageURLForAsset:v5 options:v46 resultHandler:v54];
+        v51 = [mediaProvider3 requestImageURLForAsset:asset options:v46 resultHandler:v54];
 LABEL_55:
         *(v62 + 6) = v51;
 
@@ -1032,13 +1032,13 @@ LABEL_55:
       }
     }
 
-    else if (v48 && [v47 useURLForLargePhotosWithFigPhotoTiledLayer] && objc_msgSend(v5, "originalFilesize") > 0x3200000)
+    else if (enableFigPhotoTiledLayer && [v47 useURLForLargePhotosWithFigPhotoTiledLayer] && objc_msgSend(asset, "originalFilesize") > 0x3200000)
     {
       goto LABEL_50;
     }
 
     objc_initWeak(&location, self);
-    v49 = [(PUImageRequester *)self mediaProvider];
+    mediaProvider3 = [(PUImageRequester *)self mediaProvider];
     v50 = v52;
     v52[0] = MEMORY[0x1E69E9820];
     v52[1] = 3221225472;
@@ -1046,7 +1046,7 @@ LABEL_55:
     v52[3] = &unk_1E7B775B0;
     objc_copyWeak(&v53, &location);
     v52[4] = &v61;
-    v51 = [v49 requestImageDataForAsset:v5 options:v46 resultHandler:v52];
+    v51 = [mediaProvider3 requestImageDataForAsset:asset options:v46 resultHandler:v52];
     goto LABEL_55;
   }
 
@@ -1134,20 +1134,20 @@ void __27__PUImageRequester__update__block_invoke_2(uint64_t a1)
   [WeakRetained _handleResultOfImageRequestWithID:*(*(*(a1 + 56) + 8) + 24) asset:*(a1 + 32) targetSize:*(a1 + 40) image:*(a1 + 48) info:{*(a1 + 72), *(a1 + 80)}];
 }
 
-- (void)setFullSizeImageURL:(id)a3
+- (void)setFullSizeImageURL:(id)l
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   [(PUImageRequester *)self _assertInsideChangesBlock];
-  if (self->_fullSizeImageURL != v5)
+  if (self->_fullSizeImageURL != lCopy)
   {
-    objc_storeStrong(&self->_fullSizeImageURL, a3);
+    objc_storeStrong(&self->_fullSizeImageURL, l);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = [(PUImageRequester *)self observers];
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    observers = [(PUImageRequester *)self observers];
+    v7 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1158,13 +1158,13 @@ void __27__PUImageRequester__update__block_invoke_2(uint64_t a1)
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(observers);
           }
 
           [*(*(&v11 + 1) + 8 * i) imageRequesterDidUpdateFullSizeImageData:self];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);
@@ -1172,20 +1172,20 @@ void __27__PUImageRequester__update__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setFullSizeImageData:(id)a3
+- (void)setFullSizeImageData:(id)data
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dataCopy = data;
   [(PUImageRequester *)self _assertInsideChangesBlock];
-  if (self->_fullSizeImageData != v5)
+  if (self->_fullSizeImageData != dataCopy)
   {
-    objc_storeStrong(&self->_fullSizeImageData, a3);
+    objc_storeStrong(&self->_fullSizeImageData, data);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = [(PUImageRequester *)self observers];
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    observers = [(PUImageRequester *)self observers];
+    v7 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1196,13 +1196,13 @@ void __27__PUImageRequester__update__block_invoke_2(uint64_t a1)
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(observers);
           }
 
           [*(*(&v11 + 1) + 8 * i) imageRequesterDidUpdateFullSizeImageData:self];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);
@@ -1210,17 +1210,17 @@ void __27__PUImageRequester__update__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setImageIsFullQuality:(BOOL)a3
+- (void)setImageIsFullQuality:(BOOL)quality
 {
-  v3 = a3;
+  qualityCopy = quality;
   [(PUImageRequester *)self _assertInsideChangesBlock];
-  if (self->_imageIsFullQuality != v3)
+  if (self->_imageIsFullQuality != qualityCopy)
   {
-    self->_imageIsFullQuality = v3;
-    v5 = [MEMORY[0x1E69C3970] sharedInstance];
-    v6 = [v5 canShowInternalUI];
+    self->_imageIsFullQuality = qualityCopy;
+    mEMORY[0x1E69C3970] = [MEMORY[0x1E69C3970] sharedInstance];
+    canShowInternalUI = [mEMORY[0x1E69C3970] canShowInternalUI];
 
-    if (v6)
+    if (canShowInternalUI)
     {
       [(PUImageRequester *)self _produceDebugImage];
     }
@@ -1229,37 +1229,37 @@ void __27__PUImageRequester__update__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setGainMapValue:(float)a3
+- (void)setGainMapValue:(float)value
 {
   [(PUImageRequester *)self _assertInsideChangesBlock];
   if ((PXFloatApproximatelyEqualToFloat() & 1) == 0)
   {
-    self->_gainMapValue = a3;
+    self->_gainMapValue = value;
 
     [(PUImageRequester *)self _invalidateResult];
   }
 }
 
-- (void)setGainMapImage:(CGImage *)a3
+- (void)setGainMapImage:(CGImage *)image
 {
   [(PUImageRequester *)self _assertInsideChangesBlock];
   gainMapImage = self->_gainMapImage;
-  if (gainMapImage != a3)
+  if (gainMapImage != image)
   {
     CGImageRelease(gainMapImage);
-    self->_gainMapImage = a3;
-    CGImageRetain(a3);
+    self->_gainMapImage = image;
+    CGImageRetain(image);
 
     [(PUImageRequester *)self _invalidateResult];
   }
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   [(PUImageRequester *)self _assertInsideChangesBlock];
   error = self->_error;
-  v7 = v5;
+  v7 = errorCopy;
   v9 = v7;
   if (error == v7)
   {
@@ -1271,37 +1271,37 @@ void __27__PUImageRequester__update__block_invoke_2(uint64_t a1)
 
     if ((v8 & 1) == 0)
     {
-      objc_storeStrong(&self->_error, a3);
+      objc_storeStrong(&self->_error, error);
       [(PUImageRequester *)self _invalidateResult];
     }
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   [(PUImageRequester *)self _assertInsideChangesBlock];
-  if (self->_image != v5)
+  if (self->_image != imageCopy)
   {
-    objc_storeStrong(&self->_image, a3);
+    objc_storeStrong(&self->_image, image);
     [(PUImageRequester *)self _invalidateResult];
   }
 }
 
-- (void)handlePreloadedImage:(id)a3
+- (void)handlePreloadedImage:(id)image
 {
-  v6 = a3;
-  [v6 size];
-  v4 = [(PUImageRequester *)self image];
-  [v4 size];
+  imageCopy = image;
+  [imageCopy size];
+  image = [(PUImageRequester *)self image];
+  [image size];
   if ((PFSizeLargerThanSize() & 1) != 0 || [(PUImageRequester *)self imageIsPlaceholder])
   {
-    v5 = [(PUImageRequester *)self imageIsFullQuality];
+    imageIsFullQuality = [(PUImageRequester *)self imageIsFullQuality];
 
-    if (!v5)
+    if (!imageIsFullQuality)
     {
       [(PUImageRequester *)self setImageIsPlaceholder:0];
-      [(PUImageRequester *)self setImage:v6];
+      [(PUImageRequester *)self setImage:imageCopy];
     }
   }
 
@@ -1310,40 +1310,40 @@ void __27__PUImageRequester__update__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setRequestHDR:(BOOL)a3
+- (void)setRequestHDR:(BOOL)r
 {
-  if (self->_requestHDR != a3)
+  if (self->_requestHDR != r)
   {
-    self->_requestHDR = a3;
+    self->_requestHDR = r;
     [(PUImageRequester *)self _invalidateImageRequest];
   }
 }
 
-- (void)setIncludeGainMap:(BOOL)a3
+- (void)setIncludeGainMap:(BOOL)map
 {
-  if (self->_includeGainMap != a3)
+  if (self->_includeGainMap != map)
   {
-    self->_includeGainMap = a3;
+    self->_includeGainMap = map;
     [(PUImageRequester *)self _invalidateImageRequest];
   }
 }
 
-- (void)setNetworkAccessAllowed:(BOOL)a3
+- (void)setNetworkAccessAllowed:(BOOL)allowed
 {
-  if (self->_networkAccessAllowed != a3)
+  if (self->_networkAccessAllowed != allowed)
   {
-    self->_networkAccessAllowed = a3;
+    self->_networkAccessAllowed = allowed;
     [(PUImageRequester *)self cancelAllImageRequests];
   }
 }
 
-- (void)setRequestFullSizeImageDataUTTypes:(id)a3
+- (void)setRequestFullSizeImageDataUTTypes:(id)types
 {
-  v8 = a3;
+  typesCopy = types;
   [(PUImageRequester *)self _assertInsideChangesBlock];
   v5 = self->_requestFullSizeImageDataUTTypes;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == typesCopy)
   {
   }
 
@@ -1353,16 +1353,16 @@ void __27__PUImageRequester__update__block_invoke_2(uint64_t a1)
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_requestFullSizeImageDataUTTypes, a3);
+      objc_storeStrong(&self->_requestFullSizeImageDataUTTypes, types);
       [(PUImageRequester *)self _invalidateImageRequest];
     }
   }
 }
 
-- (void)setTargetSize:(CGSize)a3
+- (void)setTargetSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PUImageRequester *)self _assertInsideChangesBlock];
   if (width != self->_targetSize.width || height != self->_targetSize.height)
   {
@@ -1373,13 +1373,13 @@ void __27__PUImageRequester__update__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   [(PUImageRequester *)self _assertInsideChangesBlock];
-  if (self->_asset != v5)
+  if (self->_asset != assetCopy)
   {
-    objc_storeStrong(&self->_asset, a3);
+    objc_storeStrong(&self->_asset, asset);
     [(PUImageRequester *)self _invalidateImageRequest];
   }
 }
@@ -1388,8 +1388,8 @@ void __27__PUImageRequester__update__block_invoke_2(uint64_t a1)
 {
   if ([(PUImageRequester *)self _changeCount]<= 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PUImageRequester.m" lineNumber:163 description:@"not within a change block"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUImageRequester.m" lineNumber:163 description:@"not within a change block"];
   }
 }
 
@@ -1421,44 +1421,44 @@ void __27__PUImageRequester__update__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v6 = a3;
-  if (!v6)
+  changesCopy = changes;
+  if (!changesCopy)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PUImageRequester.m" lineNumber:126 description:{@"Invalid parameter not satisfying: %@", @"changes != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUImageRequester.m" lineNumber:126 description:{@"Invalid parameter not satisfying: %@", @"changes != NULL"}];
   }
 
   [(PUImageRequester *)self _willChange];
-  v6[2]();
+  changesCopy[2]();
   [(PUImageRequester *)self _didChange];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v7 = a3;
-  v5 = [(PUImageRequester *)self observers];
-  if (([v5 containsObject:v7] & 1) == 0)
+  observerCopy = observer;
+  observers = [(PUImageRequester *)self observers];
+  if (([observers containsObject:observerCopy] & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PUImageRequester.m" lineNumber:119 description:{@"Attempting to remove unknown observer: ", v7}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUImageRequester.m" lineNumber:119 description:{@"Attempting to remove unknown observer: ", observerCopy}];
   }
 
-  [v5 removeObject:v7];
+  [observers removeObject:observerCopy];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PUImageRequester.m" lineNumber:111 description:{@"observer does not conform to PUImageRequesterObserver: %@", v7}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUImageRequester.m" lineNumber:111 description:{@"observer does not conform to PUImageRequesterObserver: %@", observerCopy}];
   }
 
-  v5 = [(PUImageRequester *)self observers];
-  [v5 addObject:v7];
+  observers = [(PUImageRequester *)self observers];
+  [observers addObject:observerCopy];
 }
 
 - (void)dealloc
@@ -1469,28 +1469,28 @@ void __27__PUImageRequester__update__block_invoke_2(uint64_t a1)
   [(PUImageRequester *)&v3 dealloc];
 }
 
-- (PUImageRequester)initWithMediaProvider:(id)a3 asset:(id)a4 requiresFullQualityImage:(BOOL)a5
+- (PUImageRequester)initWithMediaProvider:(id)provider asset:(id)asset requiresFullQualityImage:(BOOL)image
 {
-  v10 = a3;
-  v11 = a4;
+  providerCopy = provider;
+  assetCopy = asset;
   v20.receiver = self;
   v20.super_class = PUImageRequester;
   v12 = [(PUImageRequester *)&v20 init];
   if (v12)
   {
-    if (v10)
+    if (providerCopy)
     {
-      if (v11)
+      if (assetCopy)
       {
 LABEL_4:
-        v13 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+        weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
         observers = v12->_observers;
-        v12->_observers = v13;
+        v12->_observers = weakObjectsHashTable;
 
-        objc_storeStrong(&v12->_mediaProvider, a3);
-        objc_storeStrong(&v12->_asset, a4);
+        objc_storeStrong(&v12->_mediaProvider, provider);
+        objc_storeStrong(&v12->_asset, asset);
         *&v12->_useLowMemoryMode = 256;
-        v12->_requiresFullQualityImage = a5;
+        v12->_requiresFullQualityImage = image;
         *&v12->_currentFullSizeImageDataRequestID = 0;
         v15 = [MEMORY[0x1E69C44E8] rateLimitingCoalescerWithRate:2.0];
         fullSizeDataRepeatRequestCoalescer = v12->_fullSizeDataRepeatRequestCoalescer;
@@ -1503,17 +1503,17 @@ LABEL_4:
 
     else
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:v12 file:@"PUImageRequester.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"mediaProvider != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v12 file:@"PUImageRequester.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"mediaProvider != nil"}];
 
-      if (v11)
+      if (assetCopy)
       {
         goto LABEL_4;
       }
     }
 
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:v12 file:@"PUImageRequester.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"asset != nil"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:v12 file:@"PUImageRequester.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"asset != nil"}];
 
     goto LABEL_4;
   }
@@ -1525,28 +1525,28 @@ LABEL_5:
 
 - (PUImageRequester)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUImageRequester.m" lineNumber:77 description:{@"%s is not available as initializer", "-[PUImageRequester init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUImageRequester.m" lineNumber:77 description:{@"%s is not available as initializer", "-[PUImageRequester init]"}];
 
   abort();
 }
 
-- (id)imageByAddingWallpaperCropRectDiagnosticsForAsset:(id)a3 sourceImage:(id)a4
+- (id)imageByAddingWallpaperCropRectDiagnosticsForAsset:(id)asset sourceImage:(id)image
 {
-  v5 = a3;
-  v6 = a4;
+  assetCopy = asset;
+  imageCopy = image;
   PFDeviceScreenSize();
   v8 = v7;
   v10 = v9;
-  [v6 size];
-  [v6 size];
-  [v5 pixelWidth];
-  [v5 pixelHeight];
+  [imageCopy size];
+  [imageCopy size];
+  [assetCopy pixelWidth];
+  [assetCopy pixelHeight];
   v49 = 0;
   PFDeviceLockScreenFocusAreaRectNormalized();
   v46 = v10;
   v47 = v8;
-  [v5 suggestedCropForTargetSize:&v49 withFocusRegion:v8 andOutputCropScore:{v10, v11, v12, v13, v14}];
+  [assetCopy suggestedCropForTargetSize:&v49 withFocusRegion:v8 andOutputCropScore:{v10, v11, v12, v13, v14}];
   if (__38__PUImageRequester__produceDebugImage__block_invoke(v15, v16, v17, v18))
   {
     PXRectNormalize();
@@ -1556,14 +1556,14 @@ LABEL_5:
     v24 = v23;
     v26 = v25;
     v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Wallpaper w/ FocusRegion %.3f", v49];
-    v28 = [MEMORY[0x1E69DC888] systemYellowColor];
-    v29 = [v6 px_debugImageWithStrokeRect:v28 color:v27 text:{v20, v22, v24, v26}];
+    systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+    v29 = [imageCopy px_debugImageWithStrokeRect:systemYellowColor color:v27 text:{v20, v22, v24, v26}];
 
-    v6 = v29;
+    imageCopy = v29;
   }
 
   v48 = 0;
-  [v5 suggestedCropForTargetSize:&v48 withFocusRegion:v47 andOutputCropScore:{v46, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)}];
+  [assetCopy suggestedCropForTargetSize:&v48 withFocusRegion:v47 andOutputCropScore:{v46, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)}];
   if (__38__PUImageRequester__produceDebugImage__block_invoke(v30, v31, v32, v33))
   {
     PXRectNormalize();
@@ -1573,13 +1573,13 @@ LABEL_5:
     v39 = v38;
     v41 = v40;
     v42 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Wallpaper %.3f", v48];
-    v43 = [MEMORY[0x1E69DC888] systemBlueColor];
-    v44 = [v6 px_debugImageWithStrokeRect:v43 color:v42 text:{v35, v37, v39, v41}];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    v44 = [imageCopy px_debugImageWithStrokeRect:systemBlueColor color:v42 text:{v35, v37, v39, v41}];
 
-    v6 = v44;
+    imageCopy = v44;
   }
 
-  return v6;
+  return imageCopy;
 }
 
 @end

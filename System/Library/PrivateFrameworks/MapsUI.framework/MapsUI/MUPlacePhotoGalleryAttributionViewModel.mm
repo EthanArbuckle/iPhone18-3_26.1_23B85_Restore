@@ -1,20 +1,20 @@
 @interface MUPlacePhotoGalleryAttributionViewModel
-+ (id)viewModelForCustomTitle:(id)a3 customSubtitle:(id)a4;
-+ (id)viewModelFromMapItem:(id)a3 photo:(id)a4 photoCreditName:(id)a5 shouldAddPhotoCredit:(BOOL)a6;
++ (id)viewModelForCustomTitle:(id)title customSubtitle:(id)subtitle;
++ (id)viewModelFromMapItem:(id)item photo:(id)photo photoCreditName:(id)name shouldAddPhotoCredit:(BOOL)credit;
 @end
 
 @implementation MUPlacePhotoGalleryAttributionViewModel
 
-+ (id)viewModelFromMapItem:(id)a3 photo:(id)a4 photoCreditName:(id)a5 shouldAddPhotoCredit:(BOOL)a6
++ (id)viewModelFromMapItem:(id)item photo:(id)photo photoCreditName:(id)name shouldAddPhotoCredit:(BOOL)credit
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  creditCopy = credit;
+  itemCopy = item;
+  photoCopy = photo;
+  nameCopy = name;
   v12 = objc_alloc_init(MUPlacePhotoGalleryAttributionViewModel);
   if ((MapKitIdiomIsMacCatalyst() & 1) == 0)
   {
-    if (v6)
+    if (creditCopy)
     {
       v13 = 3;
     }
@@ -22,8 +22,8 @@
     else
     {
       v14 = MEMORY[0x1E696F2E8];
-      v15 = [v10 attribution];
-      LODWORD(v14) = [v14 shouldShowReportAnIssueOnPhotoGalleryForMapItem:v9 photoAttribution:v15];
+      attribution = [photoCopy attribution];
+      LODWORD(v14) = [v14 shouldShowReportAnIssueOnPhotoGalleryForMapItem:itemCopy photoAttribution:attribution];
 
       if (v14)
       {
@@ -39,29 +39,29 @@
     [(MUPlacePhotoGalleryAttributionViewModel *)v12 setAccessoryStyle:v13];
   }
 
-  v16 = [v10 geoMapItemPhoto];
-  v17 = [v16 author];
-  [(MUPlacePhotoGalleryAttributionViewModel *)v12 setAuthorName:v17];
+  geoMapItemPhoto = [photoCopy geoMapItemPhoto];
+  author = [geoMapItemPhoto author];
+  [(MUPlacePhotoGalleryAttributionViewModel *)v12 setAuthorName:author];
 
-  v18 = [v9 name];
-  [(MUPlacePhotoGalleryAttributionViewModel *)v12 setPlaceName:v18];
+  name = [itemCopy name];
+  [(MUPlacePhotoGalleryAttributionViewModel *)v12 setPlaceName:name];
 
-  v19 = [v10 geoMapItemPhoto];
-  v20 = [v19 dateCreated];
-  [(MUPlacePhotoGalleryAttributionViewModel *)v12 setPhotoDate:v20];
+  geoMapItemPhoto2 = [photoCopy geoMapItemPhoto];
+  dateCreated = [geoMapItemPhoto2 dateCreated];
+  [(MUPlacePhotoGalleryAttributionViewModel *)v12 setPhotoDate:dateCreated];
 
-  v21 = [v10 attribution];
-  v22 = [v21 providerName];
-  [(MUPlacePhotoGalleryAttributionViewModel *)v12 setVendorName:v22];
+  attribution2 = [photoCopy attribution];
+  providerName = [attribution2 providerName];
+  [(MUPlacePhotoGalleryAttributionViewModel *)v12 setVendorName:providerName];
 
-  v23 = [v10 geoMapItemPhoto];
-  v24 = [v23 caption];
-  [(MUPlacePhotoGalleryAttributionViewModel *)v12 setCaption:v24];
+  geoMapItemPhoto3 = [photoCopy geoMapItemPhoto];
+  caption = [geoMapItemPhoto3 caption];
+  [(MUPlacePhotoGalleryAttributionViewModel *)v12 setCaption:caption];
 
-  v25 = [v10 attribution];
-  LODWORD(v24) = [v25 isUserSubmitted];
+  attribution3 = [photoCopy attribution];
+  LODWORD(caption) = [attribution3 isUserSubmitted];
 
-  if (v24)
+  if (caption)
   {
     v26 = v12;
     v27 = 2;
@@ -70,31 +70,31 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v28 = [v10 attribution];
-  v29 = [v28 isBusinessOwned];
+  attribution4 = [photoCopy attribution];
+  isBusinessOwned = [attribution4 isBusinessOwned];
 
   v26 = v12;
-  if (v29)
+  if (isBusinessOwned)
   {
     v27 = 3;
     goto LABEL_12;
   }
 
-  if (v6)
+  if (creditCopy)
   {
     [(MUPlacePhotoGalleryAttributionViewModel *)v12 setAttributionType:4];
-    if ([v11 length])
+    if ([nameCopy length])
     {
-      [(MUPlacePhotoGalleryAttributionViewModel *)v12 setAuthorName:v11];
+      [(MUPlacePhotoGalleryAttributionViewModel *)v12 setAuthorName:nameCopy];
     }
   }
 
   else
   {
     [(MUPlacePhotoGalleryAttributionViewModel *)v12 setAttributionType:1];
-    v31 = [v10 attribution];
-    v32 = [v10 photoID];
-    v33 = [v31 urlsForPhotoWithIdentifier:v32];
+    attribution5 = [photoCopy attribution];
+    photoID = [photoCopy photoID];
+    v33 = [attribution5 urlsForPhotoWithIdentifier:photoID];
 
     if ([v33 count])
     {
@@ -107,12 +107,12 @@ LABEL_13:
   return v12;
 }
 
-+ (id)viewModelForCustomTitle:(id)a3 customSubtitle:(id)a4
++ (id)viewModelForCustomTitle:(id)title customSubtitle:(id)subtitle
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = objc_alloc_init(MUPlacePhotoGalleryAttributionViewModel);
-  [(MUPlacePhotoGalleryAttributionViewModel *)v5 setTitleText:v4];
-  [(MUPlacePhotoGalleryAttributionViewModel *)v5 setSubtitleText:v4];
+  [(MUPlacePhotoGalleryAttributionViewModel *)v5 setTitleText:titleCopy];
+  [(MUPlacePhotoGalleryAttributionViewModel *)v5 setSubtitleText:titleCopy];
 
   return v5;
 }

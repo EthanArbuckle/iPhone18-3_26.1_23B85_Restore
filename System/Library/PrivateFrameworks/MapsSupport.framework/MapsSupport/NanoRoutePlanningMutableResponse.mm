@@ -1,14 +1,14 @@
 @interface NanoRoutePlanningMutableResponse
-- (void)setObject:(id)a3 forUserInfoKey:(id)a4 forRouteID:(id)a5;
+- (void)setObject:(id)object forUserInfoKey:(id)key forRouteID:(id)d;
 @end
 
 @implementation NanoRoutePlanningMutableResponse
 
-- (void)setObject:(id)a3 forUserInfoKey:(id)a4 forRouteID:(id)a5
+- (void)setObject:(id)object forUserInfoKey:(id)key forRouteID:(id)d
 {
   v5.receiver = self;
   v5.super_class = NanoRoutePlanningMutableResponse;
-  [(NanoRoutePlanningResponse *)&v5 setObject:a3 forUserInfoKey:a4 forRouteID:a5];
+  [(NanoRoutePlanningResponse *)&v5 setObject:object forUserInfoKey:key forRouteID:d];
 }
 
 @end

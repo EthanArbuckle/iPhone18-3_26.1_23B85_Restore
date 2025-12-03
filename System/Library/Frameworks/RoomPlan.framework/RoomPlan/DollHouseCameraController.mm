@@ -1,32 +1,32 @@
 @interface DollHouseCameraController
 - (_TtC8RoomPlan25DollHouseCameraController)init;
-- (void)didPanWithPanGesture:(id)a3;
-- (void)didPinchWithPinchGesture:(id)a3;
-- (void)didTouchDownWithLongPressGesture:(id)a3;
+- (void)didPanWithPanGesture:(id)gesture;
+- (void)didPinchWithPinchGesture:(id)gesture;
+- (void)didTouchDownWithLongPressGesture:(id)gesture;
 @end
 
 @implementation DollHouseCameraController
 
-- (void)didPanWithPanGesture:(id)a3
+- (void)didPanWithPanGesture:(id)gesture
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC8RoomPlan25DollHouseCameraController_camera);
-  v6 = a3;
-  v5 = self;
-  sub_23A9E8A3C(v6);
+  gestureCopy = gesture;
+  selfCopy = self;
+  sub_23A9E8A3C(gestureCopy);
 }
 
-- (void)didPinchWithPinchGesture:(id)a3
+- (void)didPinchWithPinchGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
-  sub_23A9E9870(v4);
+  gestureCopy = gesture;
+  selfCopy = self;
+  sub_23A9E9870(gestureCopy);
 }
 
-- (void)didTouchDownWithLongPressGesture:(id)a3
+- (void)didTouchDownWithLongPressGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
-  sub_23A9E999C(v4);
+  gestureCopy = gesture;
+  selfCopy = self;
+  sub_23A9E999C(gestureCopy);
 }
 
 - (_TtC8RoomPlan25DollHouseCameraController)init

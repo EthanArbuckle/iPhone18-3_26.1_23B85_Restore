@@ -1,18 +1,18 @@
 @interface ARUIRingGroupControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityLocalizedRingDescriptions;
 - (id)_accessibilityRingValues;
 @end
 
 @implementation ARUIRingGroupControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ARUIRingGroupController" hasInstanceVariable:@"_ringGroup" withType:"ARUIRingGroup"];
-  [v3 validateClass:@"ARUIRingGroup" hasInstanceMethod:@"rings" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ARUIRing"];
-  [v3 validateClass:@"ARUIRing" hasInstanceMethod:@"percentage" withFullSignature:{"f", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ARUIRingGroupController" hasInstanceVariable:@"_ringGroup" withType:"ARUIRingGroup"];
+  [validationsCopy validateClass:@"ARUIRingGroup" hasInstanceMethod:@"rings" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ARUIRing"];
+  [validationsCopy validateClass:@"ARUIRing" hasInstanceMethod:@"percentage" withFullSignature:{"f", 0}];
 }
 
 - (id)_accessibilityLocalizedRingDescriptions
@@ -21,20 +21,20 @@
   v3 = [(ARUIRingGroupControllerAccessibility *)self _accessibilityValueForKey:@"AXRingGroupControllerPrefixOverrides"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [(ARUIRingGroupControllerAccessibility *)self _accessibilityRingValues];
+  _accessibilityRingValues = [(ARUIRingGroupControllerAccessibility *)self _accessibilityRingValues];
   v6 = [v4 count];
-  v7 = [v5 count];
+  v7 = [_accessibilityRingValues count];
   if (!v6)
   {
     if (v7 == &dword_0 + 3)
     {
-      v13 = [v5 objectAtIndexedSubscript:2];
+      v13 = [_accessibilityRingValues objectAtIndexedSubscript:2];
       [v13 floatValue];
 
-      v14 = [v5 objectAtIndexedSubscript:1];
+      v14 = [_accessibilityRingValues objectAtIndexedSubscript:1];
       [v14 floatValue];
 
-      v15 = [v5 objectAtIndexedSubscript:0];
+      v15 = [_accessibilityRingValues objectAtIndexedSubscript:0];
       [v15 floatValue];
 
       v26 = accessibilityLocalizedString(@"activity.moving.percentage");
@@ -83,7 +83,7 @@ LABEL_11:
       v10 = [v4 objectAtIndexedSubscript:v9];
       [v8 addObject:v10];
 
-      v11 = [v5 objectAtIndexedSubscript:v9];
+      v11 = [_accessibilityRingValues objectAtIndexedSubscript:v9];
       [v11 floatValue];
       v12 = AXFormatFloatWithPercentage();
       [v8 addObject:v12];

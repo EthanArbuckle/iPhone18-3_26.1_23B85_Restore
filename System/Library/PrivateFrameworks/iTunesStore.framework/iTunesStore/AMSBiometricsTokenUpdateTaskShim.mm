@@ -1,40 +1,40 @@
 @interface AMSBiometricsTokenUpdateTaskShim
-- (AMSBiometricsTokenUpdateTaskShim)initWithAccountIdentifier:(id)a3;
-- (void)runUpdateWithCompletionBlock:(id)a3;
+- (AMSBiometricsTokenUpdateTaskShim)initWithAccountIdentifier:(id)identifier;
+- (void)runUpdateWithCompletionBlock:(id)block;
 @end
 
 @implementation AMSBiometricsTokenUpdateTaskShim
 
-- (AMSBiometricsTokenUpdateTaskShim)initWithAccountIdentifier:(id)a3
+- (AMSBiometricsTokenUpdateTaskShim)initWithAccountIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = AMSBiometricsTokenUpdateTaskShim;
   v5 = [(AMSBiometricsTokenUpdateTaskShim *)&v18 init];
   v6 = v5;
   if (v5)
   {
-    [(AMSBiometricsTokenUpdateTaskShim *)v5 setAccountIdentifier:v4];
-    v7 = [MEMORY[0x277D69B38] sharedStoreServicesConfig];
-    if (!v7)
+    [(AMSBiometricsTokenUpdateTaskShim *)v5 setAccountIdentifier:identifierCopy];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedStoreServicesConfig];
+    if (!mEMORY[0x277D69B38])
     {
-      v7 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
-    if ([v7 shouldLogToDisk])
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
-    v10 = [v7 OSLogObject];
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v9 &= 2u;
     }
@@ -49,7 +49,7 @@
       v21 = 2114;
       v22 = v13;
       v23 = 2114;
-      v24 = v4;
+      v24 = identifierCopy;
       LODWORD(v17) = 32;
       v14 = _os_log_send_and_compose_impl();
 
@@ -60,7 +60,7 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v10 = [MEMORY[0x277CCACA8] stringWithCString:v14 encoding:{4, &v19, v17}];
+      oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v14 encoding:{4, &v19, v17}];
       free(v14);
       SSFileLog();
     }
@@ -74,30 +74,30 @@ LABEL_14:
   return v6;
 }
 
-- (void)runUpdateWithCompletionBlock:(id)a3
+- (void)runUpdateWithCompletionBlock:(id)block
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v5 = AMSSetLogKeyIfNeeded();
-  v6 = [MEMORY[0x277D69B38] sharedStoreServicesConfig];
-  if (!v6)
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedStoreServicesConfig];
+  if (!mEMORY[0x277D69B38])
   {
-    v6 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v7 = [v6 shouldLog];
-  if ([v6 shouldLogToDisk])
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v8 = v7 | 2;
+    v8 = shouldLog | 2;
   }
 
   else
   {
-    v8 = v7;
+    v8 = shouldLog;
   }
 
-  v9 = [v6 OSLogObject];
-  if (!os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v8 &= 2u;
   }
@@ -117,33 +117,33 @@ LABEL_14:
       goto LABEL_12;
     }
 
-    v9 = [MEMORY[0x277CCACA8] stringWithCString:v11 encoding:{4, &v24, v20}];
+    oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v11 encoding:{4, &v24, v20}];
     free(v11);
     SSFileLog();
   }
 
 LABEL_12:
-  v12 = [MEMORY[0x277CB8F48] defaultStore];
-  v13 = [v12 ams_iTunesAccountWithDSID:self->_accountIdentifier];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  ams_activeiTunesAccount = [defaultStore ams_iTunesAccountWithDSID:self->_accountIdentifier];
 
-  if (!v13)
+  if (!ams_activeiTunesAccount)
   {
-    v14 = [MEMORY[0x277CB8F48] defaultStore];
-    v13 = [v14 ams_activeiTunesAccount];
+    defaultStore2 = [MEMORY[0x277CB8F48] defaultStore];
+    ams_activeiTunesAccount = [defaultStore2 ams_activeiTunesAccount];
   }
 
-  v15 = [objc_alloc(MEMORY[0x277CEE430]) initWithAccount:v13];
-  v16 = [v15 performUpdate];
+  v15 = [objc_alloc(MEMORY[0x277CEE430]) initWithAccount:ams_activeiTunesAccount];
+  performUpdate = [v15 performUpdate];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __65__AMSBiometricsTokenUpdateTaskShim_runUpdateWithCompletionBlock___block_invoke;
   v21[3] = &unk_27A6714A0;
   v21[4] = self;
   v22 = v5;
-  v23 = v4;
-  v17 = v4;
+  v23 = blockCopy;
+  v17 = blockCopy;
   v18 = v5;
-  [v16 addFinishBlock:v21];
+  [performUpdate addFinishBlock:v21];
 
   v19 = *MEMORY[0x277D85DE8];
 }

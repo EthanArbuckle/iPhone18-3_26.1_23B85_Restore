@@ -1,19 +1,19 @@
 @interface PXPhotosGridToggleShowOnlyFromMyMacFilterActionPerformer
-+ (BOOL)canPerformActionType:(id)a3 withViewModel:(id)a4;
-- (id)localizedTitleForUseCase:(unint64_t)a3;
++ (BOOL)canPerformActionType:(id)type withViewModel:(id)model;
+- (id)localizedTitleForUseCase:(unint64_t)case;
 - (int64_t)menuElementState;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotosGridToggleShowOnlyFromMyMacFilterActionPerformer
 
-+ (BOOL)canPerformActionType:(id)a3 withViewModel:(id)a4
++ (BOOL)canPerformActionType:(id)type withViewModel:(id)model
 {
-  v5 = a4;
-  if ([PXPhotosGridToggleIncludeFromMyMacFilterActionPerformer canPerformActionType:a3 withViewModel:v5])
+  modelCopy = model;
+  if ([PXPhotosGridToggleIncludeFromMyMacFilterActionPerformer canPerformActionType:type withViewModel:modelCopy])
   {
-    v6 = [v5 contentFilterState];
-    v7 = [v6 shouldExcludeFromMyMac] ^ 1;
+    contentFilterState = [modelCopy contentFilterState];
+    v7 = [contentFilterState shouldExcludeFromMyMac] ^ 1;
   }
 
   else
@@ -26,17 +26,17 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
-  [v3 setShowOnlyFromMyMac:{objc_msgSend(v3, "showOnlyFromMyMac") ^ 1}];
-  [(PXPhotosGridToggleFilterActionPerformer *)self updateToContentFilterStateAndFinishTask:v3];
+  currentContentFilterState = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
+  [currentContentFilterState setShowOnlyFromMyMac:{objc_msgSend(currentContentFilterState, "showOnlyFromMyMac") ^ 1}];
+  [(PXPhotosGridToggleFilterActionPerformer *)self updateToContentFilterStateAndFinishTask:currentContentFilterState];
 }
 
-- (id)localizedTitleForUseCase:(unint64_t)a3
+- (id)localizedTitleForUseCase:(unint64_t)case
 {
-  if (a3 == 1)
+  if (case == 1)
   {
-    v3 = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
-    if ([v3 showOnlyFromMyMac])
+    currentContentFilterState = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
+    if ([currentContentFilterState showOnlyFromMyMac])
     {
       v4 = @"DISABLE_SHOW_ONLY_FROM_MY_MAC_FILTER_SHORTCUT";
     }
@@ -59,8 +59,8 @@
 
 - (int64_t)menuElementState
 {
-  v2 = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
-  v3 = [v2 isContentFilterActive:18];
+  currentContentFilterState = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
+  v3 = [currentContentFilterState isContentFilterActive:18];
 
   return v3;
 }

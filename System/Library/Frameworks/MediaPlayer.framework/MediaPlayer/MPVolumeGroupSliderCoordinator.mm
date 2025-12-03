@@ -1,49 +1,49 @@
 @interface MPVolumeGroupSliderCoordinator
-- (MPVolumeGroupSliderCoordinator)initWithMasterVolumeSlider:(id)a3 individualVolumeSliders:(id)a4;
+- (MPVolumeGroupSliderCoordinator)initWithMasterVolumeSlider:(id)slider individualVolumeSliders:(id)sliders;
 - (float)_maxOptimisticValue;
-- (id)_findExistingVolumeSlider:(id)a3;
-- (void)_addControlEventsForVolumeSliders:(id)a3;
-- (void)_removeControlEventsForVolumeSliders:(id)a3;
+- (id)_findExistingVolumeSlider:(id)slider;
+- (void)_addControlEventsForVolumeSliders:(id)sliders;
+- (void)_removeControlEventsForVolumeSliders:(id)sliders;
 - (void)_resetMasterVolumeSlider;
 - (void)_resetOptimisticScales;
-- (void)_setControlEventsForVolumeSlider:(id)a3 add:(BOOL)a4;
+- (void)_setControlEventsForVolumeSlider:(id)slider add:(BOOL)add;
 - (void)_updateOptimisticValueCache;
-- (void)addIndividualVolumeSlider:(id)a3;
+- (void)addIndividualVolumeSlider:(id)slider;
 - (void)removeAllIndividualVolumeSliders;
-- (void)removeIndividualVolumeSlider:(id)a3;
-- (void)syncSliders:(BOOL)a3;
-- (void)volumeSliderDidEndTracking:(id)a3;
-- (void)volumeSliderValueChanged:(id)a3;
+- (void)removeIndividualVolumeSlider:(id)slider;
+- (void)syncSliders:(BOOL)sliders;
+- (void)volumeSliderDidEndTracking:(id)tracking;
+- (void)volumeSliderValueChanged:(id)changed;
 @end
 
 @implementation MPVolumeGroupSliderCoordinator
 
-- (void)_setControlEventsForVolumeSlider:(id)a3 add:(BOOL)a4
+- (void)_setControlEventsForVolumeSlider:(id)slider add:(BOOL)add
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  addCopy = add;
+  sliderCopy = slider;
+  if (addCopy)
   {
-    [v6 addTarget:self action:sel_volumeSliderValueChanged_ forControlEvents:4096];
-    [v6 addTarget:self action:sel_volumeSliderDidEndTracking_ forControlEvents:448];
+    [sliderCopy addTarget:self action:sel_volumeSliderValueChanged_ forControlEvents:4096];
+    [sliderCopy addTarget:self action:sel_volumeSliderDidEndTracking_ forControlEvents:448];
   }
 
   else
   {
-    [v6 removeTarget:self action:sel_volumeSliderValueChanged_ forControlEvents:4096];
-    [v6 removeTarget:self action:sel_volumeSliderDidEndTracking_ forControlEvents:448];
+    [sliderCopy removeTarget:self action:sel_volumeSliderValueChanged_ forControlEvents:4096];
+    [sliderCopy removeTarget:self action:sel_volumeSliderDidEndTracking_ forControlEvents:448];
   }
 }
 
-- (void)_removeControlEventsForVolumeSliders:(id)a3
+- (void)_removeControlEventsForVolumeSliders:(id)sliders
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  slidersCopy = sliders;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [slidersCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -55,29 +55,29 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(slidersCopy);
         }
 
         [(MPVolumeGroupSliderCoordinator *)self _setControlEventsForVolumeSlider:*(*(&v9 + 1) + 8 * v8++) add:0];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [slidersCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_addControlEventsForVolumeSliders:(id)a3
+- (void)_addControlEventsForVolumeSliders:(id)sliders
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  slidersCopy = sliders;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [slidersCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -89,24 +89,24 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(slidersCopy);
         }
 
         [(MPVolumeGroupSliderCoordinator *)self _setControlEventsForVolumeSlider:*(*(&v9 + 1) + 8 * v8++) add:1];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [slidersCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)_findExistingVolumeSlider:(id)a3
+- (id)_findExistingVolumeSlider:(id)slider
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  sliderCopy = slider;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
@@ -117,7 +117,7 @@
   {
     v6 = *v36;
     v25 = *v36;
-    v26 = v5;
+    v26 = sliderCopy;
 LABEL_3:
     v7 = 0;
     while (1)
@@ -128,25 +128,25 @@ LABEL_3:
       }
 
       v8 = *(*(&v35 + 1) + 8 * v7);
-      if (v8 != v5)
+      if (v8 != sliderCopy)
       {
-        v9 = [*(*(&v35 + 1) + 8 * v7) volumeController];
-        v10 = [v9 dataSource];
+        volumeController = [*(*(&v35 + 1) + 8 * v7) volumeController];
+        dataSource = [volumeController dataSource];
 
-        v11 = [v5 volumeController];
-        v12 = [v11 dataSource];
+        volumeController2 = [sliderCopy volumeController];
+        dataSource2 = [volumeController2 dataSource];
 
-        v30 = v10;
-        v13 = [v10 outputDeviceRoute];
-        v29 = v12;
-        v14 = [v12 outputDeviceRoute];
-        v15 = [v13 routeUID];
+        v30 = dataSource;
+        outputDeviceRoute = [dataSource outputDeviceRoute];
+        v29 = dataSource2;
+        outputDeviceRoute2 = [dataSource2 outputDeviceRoute];
+        routeUID = [outputDeviceRoute routeUID];
         v31 = 0u;
         v32 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v16 = [v14 outputDevices];
-        v17 = [v16 countByEnumeratingWithState:&v31 objects:v39 count:16];
+        outputDevices = [outputDeviceRoute2 outputDevices];
+        v17 = [outputDevices countByEnumeratingWithState:&v31 objects:v39 count:16];
         if (v17)
         {
           v18 = v17;
@@ -158,21 +158,21 @@ LABEL_3:
             {
               if (*v32 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(outputDevices);
               }
 
               v21 = MRAVOutputDeviceCopyUniqueIdentifier();
-              if ([v21 isEqualToString:v15])
+              if ([v21 isEqualToString:routeUID])
               {
                 v3 = v8;
 
                 v22 = 0;
-                v5 = v26;
+                sliderCopy = v26;
                 goto LABEL_17;
               }
             }
 
-            v18 = [v16 countByEnumeratingWithState:&v31 objects:v39 count:16];
+            v18 = [outputDevices countByEnumeratingWithState:&v31 objects:v39 count:16];
             if (v18)
             {
               continue;
@@ -182,7 +182,7 @@ LABEL_3:
           }
 
           v22 = 1;
-          v5 = v26;
+          sliderCopy = v26;
           v3 = v24;
 LABEL_17:
           v6 = v25;
@@ -221,7 +221,7 @@ LABEL_22:
   return v3;
 }
 
-- (void)syncSliders:(BOOL)a3
+- (void)syncSliders:(BOOL)sliders
 {
   v20 = *MEMORY[0x1E69E9840];
   if (!self->_synced)
@@ -298,8 +298,8 @@ uint64_t __46__MPVolumeGroupSliderCoordinator_syncSliders___block_invoke_2(uint6
 - (void)_resetMasterVolumeSlider
 {
   [(MPVolumeSlider *)self->_masterVolumeSlider setOptimisticState:1];
-  v3 = [(MPVolumeSlider *)self->_masterVolumeSlider volumeController];
-  [v3 volumeValue];
+  volumeController = [(MPVolumeSlider *)self->_masterVolumeSlider volumeController];
+  [volumeController volumeValue];
   [(MPVolumeSlider *)self->_masterVolumeSlider setOptimisticValue:?];
 
   masterVolumeSlider = self->_masterVolumeSlider;
@@ -484,8 +484,8 @@ uint64_t __46__MPVolumeGroupSliderCoordinator_syncSliders___block_invoke_2(uint6
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(NSMapTable *)self->_optimisticValues keyEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  keyEnumerator = [(NSMapTable *)self->_optimisticValues keyEnumerator];
+  v4 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -497,7 +497,7 @@ uint64_t __46__MPVolumeGroupSliderCoordinator_syncSliders___block_invoke_2(uint6
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         if (*(*(&v13 + 1) + 8 * i) != self->_masterVolumeSlider)
@@ -513,7 +513,7 @@ uint64_t __46__MPVolumeGroupSliderCoordinator_syncSliders___block_invoke_2(uint6
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -527,15 +527,15 @@ uint64_t __46__MPVolumeGroupSliderCoordinator_syncSliders___block_invoke_2(uint6
   return v7;
 }
 
-- (void)volumeSliderDidEndTracking:(id)a3
+- (void)volumeSliderDidEndTracking:(id)tracking
 {
   v64 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  trackingCopy = tracking;
+  v5 = trackingCopy;
   trackingSlider = self->_trackingSlider;
-  if (trackingSlider == v4)
+  if (trackingSlider == trackingCopy)
   {
-    if (self->_masterVolumeSlider == v4 && ([(MPVolumeSlider *)v4 value], v7 <= 0.00000011921))
+    if (self->_masterVolumeSlider == trackingCopy && ([(MPVolumeSlider *)trackingCopy value], v7 <= 0.00000011921))
     {
       v44 = v5;
       v54 = 0u;
@@ -568,13 +568,13 @@ uint64_t __46__MPVolumeGroupSliderCoordinator_syncSliders___block_invoke_2(uint6
                 v36 = v35;
                 [(MPVolumeSlider *)v33 optimisticValue];
                 v38 = v37;
-                v39 = [(MPVolumeSlider *)v33 volumeControlLabel];
+                volumeControlLabel = [(MPVolumeSlider *)v33 volumeControlLabel];
                 *buf = 134218498;
                 v58 = v36;
                 v59 = 2048;
                 v60 = v38;
                 v61 = 2114;
-                v62 = v39;
+                v62 = volumeControlLabel;
                 _os_log_impl(&dword_1A238D000, v34, OS_LOG_TYPE_DEFAULT, "MPVolumeGroupSliderCoordinator changing %f to %f for %{public}@", buf, 0x20u);
               }
 
@@ -806,11 +806,11 @@ void __61__MPVolumeGroupSliderCoordinator_volumeSliderDidEndTracking___block_inv
   }
 }
 
-- (void)volumeSliderValueChanged:(id)a3
+- (void)volumeSliderValueChanged:(id)changed
 {
   v74 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (([v6 isTracking] & 1) == 0 && !self->_shouldOverrideTracking)
+  changedCopy = changed;
+  if (([changedCopy isTracking] & 1) == 0 && !self->_shouldOverrideTracking)
   {
     goto LABEL_48;
   }
@@ -819,8 +819,8 @@ void __61__MPVolumeGroupSliderCoordinator_volumeSliderDidEndTracking___block_inv
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v7 = [(NSMapTable *)self->_optimisticScales objectEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v64 objects:v73 count:16];
+  objectEnumerator = [(NSMapTable *)self->_optimisticScales objectEnumerator];
+  v8 = [objectEnumerator countByEnumeratingWithState:&v64 objects:v73 count:16];
   if (v8)
   {
     v9 = v8;
@@ -831,7 +831,7 @@ void __61__MPVolumeGroupSliderCoordinator_volumeSliderDidEndTracking___block_inv
       {
         if (*v65 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v64 + 1) + 8 * i) floatValue];
@@ -842,7 +842,7 @@ void __61__MPVolumeGroupSliderCoordinator_volumeSliderDidEndTracking___block_inv
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v64 objects:v73 count:16];
+      v9 = [objectEnumerator countByEnumeratingWithState:&v64 objects:v73 count:16];
       if (v9)
       {
         continue;
@@ -864,7 +864,7 @@ LABEL_13:
 
     else
     {
-      objc_storeStrong(&self->_trackingSlider, a3);
+      objc_storeStrong(&self->_trackingSlider, changed);
       v14 = os_log_create("com.apple.amp.mediaplayer", "Volume");
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
@@ -885,8 +885,8 @@ LABEL_13:
   masterVolumeSlider = self->_masterVolumeSlider;
   if (v18 != masterVolumeSlider && (v16 & 1) == 0)
   {
-    v51 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v51 handleFailureInMethod:a2 object:self file:@"MPVolumeGroupSliderCoordinator.m" lineNumber:134 description:@"We don't have a master or individual slider."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPVolumeGroupSliderCoordinator.m" lineNumber:134 description:@"We don't have a master or individual slider."];
   }
 
   v62 = 0u;
@@ -920,9 +920,9 @@ LABEL_13:
   if (v18 == masterVolumeSlider)
   {
     v29 = MEMORY[0x1E696AD98];
-    [v6 value];
+    [changedCopy value];
     v26 = [v29 numberWithFloat:?];
-    [(NSMapTable *)self->_optimisticValues setObject:v26 forKey:v6];
+    [(NSMapTable *)self->_optimisticValues setObject:v26 forKey:changedCopy];
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
@@ -947,7 +947,7 @@ LABEL_13:
           [v35 floatValue];
           v37 = v36;
 
-          [v6 value];
+          [changedCopy value];
           *&v39 = v37 * v38;
           v40 = [MEMORY[0x1E696AD98] numberWithFloat:v39];
           [(NSMapTable *)self->_optimisticValues setObject:v40 forKey:v34];
@@ -965,9 +965,9 @@ LABEL_13:
   if (v17)
   {
     v25 = MEMORY[0x1E696AD98];
-    [v6 value];
+    [changedCopy value];
     v26 = [v25 numberWithFloat:?];
-    [(NSMapTable *)self->_optimisticValues setObject:v26 forKey:v6];
+    [(NSMapTable *)self->_optimisticValues setObject:v26 forKey:changedCopy];
     v27 = MEMORY[0x1E696AD98];
     [(MPVolumeGroupSliderCoordinator *)self _maxOptimisticValue];
     v28 = [v27 numberWithFloat:?];
@@ -1022,75 +1022,75 @@ LABEL_48:
   [(NSMapTable *)optimisticValues removeAllObjects];
 }
 
-- (void)removeIndividualVolumeSlider:(id)a3
+- (void)removeIndividualVolumeSlider:(id)slider
 {
-  v9 = a3;
+  sliderCopy = slider;
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"WHAOptimisticStateVolumeDisabled", @"com.apple.Music", 0);
-  v5 = v9;
-  if (v9 && !AppBooleanValue)
+  v5 = sliderCopy;
+  if (sliderCopy && !AppBooleanValue)
   {
-    [(NSMapTable *)self->_optimisticValues removeObjectForKey:v9];
-    [(NSMapTable *)self->_optimisticScales removeObjectForKey:v9];
-    [(NSMutableSet *)self->_individualVolumeSliders removeObject:v9];
+    [(NSMapTable *)self->_optimisticValues removeObjectForKey:sliderCopy];
+    [(NSMapTable *)self->_optimisticScales removeObjectForKey:sliderCopy];
+    [(NSMutableSet *)self->_individualVolumeSliders removeObject:sliderCopy];
     v6 = [(NSMutableSet *)self->_individualVolumeSliders setByAddingObject:self->_masterVolumeSlider];
-    v7 = [v6 allObjects];
+    allObjects = [v6 allObjects];
     allSliders = self->_allSliders;
-    self->_allSliders = v7;
+    self->_allSliders = allObjects;
 
-    [(MPVolumeGroupSliderCoordinator *)self _removeControlEventsForVolumeSlider:v9];
+    [(MPVolumeGroupSliderCoordinator *)self _removeControlEventsForVolumeSlider:sliderCopy];
     [(MPVolumeGroupSliderCoordinator *)self _updateOptimisticValueCache];
     [(MPVolumeGroupSliderCoordinator *)self _resetMasterVolumeSlider];
-    v5 = v9;
+    v5 = sliderCopy;
   }
 }
 
-- (void)addIndividualVolumeSlider:(id)a3
+- (void)addIndividualVolumeSlider:(id)slider
 {
-  v8 = a3;
+  sliderCopy = slider;
   if (!CFPreferencesGetAppBooleanValue(@"WHAOptimisticStateVolumeDisabled", @"com.apple.Music", 0))
   {
-    v4 = [(MPVolumeGroupSliderCoordinator *)self _findExistingVolumeSlider:v8];
+    v4 = [(MPVolumeGroupSliderCoordinator *)self _findExistingVolumeSlider:sliderCopy];
     [(MPVolumeGroupSliderCoordinator *)self removeIndividualVolumeSlider:v4];
 
-    [(NSMapTable *)self->_optimisticValues removeObjectForKey:v8];
-    [(NSMapTable *)self->_optimisticScales removeObjectForKey:v8];
-    [(NSMutableSet *)self->_individualVolumeSliders addObject:v8];
-    [v8 value];
-    [v8 setOptimisticValue:?];
+    [(NSMapTable *)self->_optimisticValues removeObjectForKey:sliderCopy];
+    [(NSMapTable *)self->_optimisticScales removeObjectForKey:sliderCopy];
+    [(NSMutableSet *)self->_individualVolumeSliders addObject:sliderCopy];
+    [sliderCopy value];
+    [sliderCopy setOptimisticValue:?];
     v5 = [(NSMutableSet *)self->_individualVolumeSliders setByAddingObject:self->_masterVolumeSlider];
-    v6 = [v5 allObjects];
+    allObjects = [v5 allObjects];
     allSliders = self->_allSliders;
-    self->_allSliders = v6;
+    self->_allSliders = allObjects;
 
-    [(MPVolumeGroupSliderCoordinator *)self _addControlEventsForVolumeSlider:v8];
+    [(MPVolumeGroupSliderCoordinator *)self _addControlEventsForVolumeSlider:sliderCopy];
     [(MPVolumeGroupSliderCoordinator *)self _updateOptimisticValueCache];
     [(MPVolumeGroupSliderCoordinator *)self _resetMasterVolumeSlider];
   }
 }
 
-- (MPVolumeGroupSliderCoordinator)initWithMasterVolumeSlider:(id)a3 individualVolumeSliders:(id)a4
+- (MPVolumeGroupSliderCoordinator)initWithMasterVolumeSlider:(id)slider individualVolumeSliders:(id)sliders
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  sliderCopy = slider;
+  slidersCopy = sliders;
   v28.receiver = self;
   v28.super_class = MPVolumeGroupSliderCoordinator;
   v9 = [(MPVolumeGroupSliderCoordinator *)&v28 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_masterVolumeSlider, a3);
-    v11 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:v8];
+    objc_storeStrong(&v9->_masterVolumeSlider, slider);
+    v11 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:slidersCopy];
     individualVolumeSliders = v10->_individualVolumeSliders;
     v10->_individualVolumeSliders = v11;
 
-    v13 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     optimisticValues = v10->_optimisticValues;
-    v10->_optimisticValues = v13;
+    v10->_optimisticValues = strongToStrongObjectsMapTable;
 
-    v15 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     optimisticScales = v10->_optimisticScales;
-    v10->_optimisticScales = v15;
+    v10->_optimisticScales = strongToStrongObjectsMapTable2;
 
     v10->_inFlightDisableOptimisticStateRequests = 0;
     v10->_shouldOverrideTracking = 0;
@@ -1098,7 +1098,7 @@ LABEL_48:
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v17 = v8;
+    v17 = slidersCopy;
     v18 = [v17 countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v18)
     {

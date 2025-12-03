@@ -1,15 +1,15 @@
 @interface ContentConfigurationCollectionViewListCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation ContentConfigurationCollectionViewListCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HealthExperienceUI.ContentConfigurationCollectionViewListCell" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"_UICollectionViewListAccessoryCheckmark"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HealthExperienceUI.ContentConfigurationCollectionViewListCell" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"_UICollectionViewListAccessoryCheckmark"];
 }
 
 - (unint64_t)accessibilityTraits

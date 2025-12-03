@@ -1,23 +1,23 @@
 @interface IMViewState
-+ (id)saveStateForView:(id)a3 flags:(unint64_t)a4;
-- (IMViewState)initWithView:(id)a3 flags:(unint64_t)flags;
++ (id)saveStateForView:(id)view flags:(unint64_t)flags;
+- (IMViewState)initWithView:(id)view flags:(unint64_t)flags;
 - (void)dealloc;
 - (void)restore;
 @end
 
 @implementation IMViewState
 
-+ (id)saveStateForView:(id)a3 flags:(unint64_t)a4
++ (id)saveStateForView:(id)view flags:(unint64_t)flags
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithView:v6 flags:a4];
+  viewCopy = view;
+  v7 = [[self alloc] initWithView:viewCopy flags:flags];
 
   return v7;
 }
 
-- (IMViewState)initWithView:(id)a3 flags:(unint64_t)flags
+- (IMViewState)initWithView:(id)view flags:(unint64_t)flags
 {
-  v7 = a3;
+  viewCopy = view;
   v24.receiver = self;
   v24.super_class = IMViewState;
   v8 = [(IMViewState *)&v24 init];
@@ -27,7 +27,7 @@
     goto LABEL_9;
   }
 
-  objc_storeStrong(&v8->_view, a3);
+  objc_storeStrong(&v8->_view, view);
   v9->_flags = flags;
   if (flags)
   {
@@ -35,8 +35,8 @@
     placeholderView = v9->_placeholderView;
     v9->_placeholderView = v11;
 
-    v13 = [v7 superview];
-    [v13 insertSubview:v9->_placeholderView belowSubview:v9->_view];
+    superview = [viewCopy superview];
+    [superview insertSubview:v9->_placeholderView belowSubview:v9->_view];
 
     flags = v9->_flags;
     if ((flags & 4) == 0)
@@ -140,8 +140,8 @@ LABEL_9:
     flags = self->_flags;
     if (flags)
     {
-      v5 = [(UIView *)self->_placeholderView superview];
-      [v5 insertSubview:self->_view belowSubview:self->_placeholderView];
+      superview = [(UIView *)self->_placeholderView superview];
+      [superview insertSubview:self->_view belowSubview:self->_placeholderView];
 
       [(UIView *)self->_placeholderView removeFromSuperview];
       placeholderView = self->_placeholderView;
@@ -201,8 +201,8 @@ LABEL_6:
 
 LABEL_14:
     zPosition = self->_zPosition;
-    v9 = [(UIView *)view layer];
-    [v9 setZPosition:zPosition];
+    layer = [(UIView *)view layer];
+    [layer setZPosition:zPosition];
 
     view = self->_view;
     flags = self->_flags;

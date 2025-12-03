@@ -22,12 +22,12 @@
 {
   if (a3)
   {
-    [a1 htmlString];
+    [self htmlString];
   }
 
   else
   {
-    [a1 htmlStringWithAttachmentConversionHandler:0];
+    [self htmlStringWithAttachmentConversionHandler:0];
   }
   v3 = ;
 
@@ -37,9 +37,9 @@
 - (id)htmlStringWithAttachmentConversionHandler:()HTML
 {
   v4 = a3;
-  v5 = [a1 uiAttributedString];
-  v6 = [a1 managedObjectContext];
-  v7 = [v5 ic_attributedStringByFlatteningInlineAttachmentsWithContext:v6];
+  uiAttributedString = [self uiAttributedString];
+  managedObjectContext = [self managedObjectContext];
+  v7 = [uiAttributedString ic_attributedStringByFlatteningInlineAttachmentsWithContext:managedObjectContext];
 
   v8 = [objc_opt_class() htmlStringFromAttributedString:v7 attachmentConversionHandler:v4];
 
@@ -52,8 +52,8 @@
   v3[1] = 3221225472;
   v3[2] = __45__ICNote_HTML__htmlStringWithHTMLAttachments__block_invoke;
   v3[3] = &unk_1E8469408;
-  v3[4] = a1;
-  v1 = [a1 htmlStringWithAttachmentConversionHandler:v3];
+  v3[4] = self;
+  v1 = [self htmlStringWithAttachmentConversionHandler:v3];
 
   return v1;
 }
@@ -62,21 +62,21 @@
 {
   v8 = a4;
   v9 = a5;
-  v10 = [a1 htmlStringByFixingDashedListsInHTMLString:a3];
+  v10 = [self htmlStringByFixingDashedListsInHTMLString:a3];
   if (v9)
   {
-    [a1 mutableAttributedStringFromHTMLString:v10 readerDelegate:v9];
+    [self mutableAttributedStringFromHTMLString:v10 readerDelegate:v9];
   }
 
   else
   {
-    [a1 mutableAttributedStringFromHTMLString:v10 baseURL:v8];
+    [self mutableAttributedStringFromHTMLString:v10 baseURL:v8];
   }
   v11 = ;
-  [a1 fixDashedListsInAttributedString:v11];
-  [a1 fixUnwantedCharactersInAttributedString:v11];
-  [a1 fixFontsInAttributedString:v11];
-  [a1 fixTextColorsInAttributedString:v11];
+  [self fixDashedListsInAttributedString:v11];
+  [self fixUnwantedCharactersInAttributedString:v11];
+  [self fixFontsInAttributedString:v11];
+  [self fixTextColorsInAttributedString:v11];
 
   return v11;
 }
@@ -131,16 +131,16 @@
 {
   v5 = a4;
   v6 = [a3 dataUsingEncoding:4];
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  [v7 setObject:*MEMORY[0x1E69DB658] forKeyedSubscript:*MEMORY[0x1E69DB628]];
-  [v7 setObject:&unk_1F4FC3C18 forKeyedSubscript:*MEMORY[0x1E69DB618]];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:*MEMORY[0x1E69DB658] forKeyedSubscript:*MEMORY[0x1E69DB628]];
+  [dictionary setObject:&unk_1F4FC3C18 forKeyedSubscript:*MEMORY[0x1E69DB618]];
   if (v5)
   {
-    [v7 setObject:v5 forKeyedSubscript:*MEMORY[0x1E69B7650]];
+    [dictionary setObject:v5 forKeyedSubscript:*MEMORY[0x1E69B7650]];
   }
 
   v12 = 0;
-  v8 = [objc_alloc(MEMORY[0x1E696AD40]) initWithData:v6 options:v7 documentAttributes:0 error:&v12];
+  v8 = [objc_alloc(MEMORY[0x1E696AD40]) initWithData:v6 options:dictionary documentAttributes:0 error:&v12];
   v9 = v12;
   if (v9)
   {
@@ -196,17 +196,17 @@
 + (void)fixUnwantedCharactersInAttributedString:()HTML
 {
   v3 = a3;
-  v5 = [v3 mutableString];
+  mutableString = [v3 mutableString];
   v4 = [v3 length];
 
-  [v5 replaceOccurrencesOfString:@" " withString:@" " options:0 range:{0, v4}];
+  [mutableString replaceOccurrencesOfString:@" " withString:@" " options:0 range:{0, v4}];
 }
 
 + (void)fixFontsInAttributedString:()HTML
 {
   v3 = a3;
-  v4 = [MEMORY[0x1E69DB878] ic_preferredFontForBodyText];
-  v5 = [v4 fontDescriptor];
+  ic_preferredFontForBodyText = [MEMORY[0x1E69DB878] ic_preferredFontForBodyText];
+  fontDescriptor = [ic_preferredFontForBodyText fontDescriptor];
   v6 = *MEMORY[0x1E69DB648];
   v7 = [v3 length];
   v11[0] = MEMORY[0x1E69E9820];
@@ -214,10 +214,10 @@
   v11[2] = __43__ICNote_HTML__fixFontsInAttributedString___block_invoke;
   v11[3] = &unk_1E8469480;
   v12 = v3;
-  v13 = v4;
-  v14 = v5;
-  v8 = v5;
-  v9 = v4;
+  v13 = ic_preferredFontForBodyText;
+  v14 = fontDescriptor;
+  v8 = fontDescriptor;
+  v9 = ic_preferredFontForBodyText;
   v10 = v3;
   [v10 enumerateAttribute:v6 inRange:0 options:v7 usingBlock:{0x100000, v11}];
 }
@@ -249,26 +249,26 @@
   }
 
   v6 = objc_opt_new();
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v8 = *MEMORY[0x1E69DB5F0];
-  v9 = [v5 ic_range];
+  ic_range = [v5 ic_range];
   v11 = v10;
   v61[0] = MEMORY[0x1E69E9820];
   v61[1] = 3221225472;
   v61[2] = __75__ICNote_HTML__htmlStringFromAttributedString_attachmentConversionHandler___block_invoke;
   v61[3] = &unk_1E84694D0;
-  v47 = v7;
+  v47 = dictionary;
   v62 = v47;
-  [v5 enumerateAttribute:v8 inRange:v9 options:v11 usingBlock:{0, v61}];
+  [v5 enumerateAttribute:v8 inRange:ic_range options:v11 usingBlock:{0, v61}];
   v12 = [v5 mutableCopy];
-  v13 = [v5 ic_range];
-  [v12 removeAttribute:v8 range:{v13, v14}];
+  ic_range2 = [v5 ic_range];
+  [v12 removeAttribute:v8 range:{ic_range2, v14}];
   v51 = v12;
-  v15 = [v12 string];
-  v16 = [v15 paragraphRangeForRange:{0, 0}];
+  string = [v12 string];
+  v16 = [string paragraphRangeForRange:{0, 0}];
   v18 = v17;
 
-  v19 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (v16 == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_27;
@@ -286,7 +286,7 @@
       v24 = v23 - v20 + 1;
       do
       {
-        v25 = [v21 style];
+        style = [v21 style];
         if ([v21 style] == 102)
         {
           v26 = @"ol";
@@ -298,8 +298,8 @@
         }
 
         v27 = v26;
-        [v19 addObject:v27];
-        if (v25 == 101)
+        [array addObject:v27];
+        if (style == 101)
         {
           [v6 appendFormat:@"<%@ class=%@>\n", v27, @"Apple-dash-list"];
         }
@@ -325,9 +325,9 @@
       do
       {
         --v20;
-        v28 = [v19 lastObject];
-        [v19 removeLastObject];
-        [v6 appendFormat:@"</%@>\n", v28];
+        lastObject = [array lastObject];
+        [array removeLastObject];
+        [v6 appendFormat:@"</%@>\n", lastObject];
       }
 
       while (v22 < v20);
@@ -335,7 +335,7 @@
 
     v20 = v22;
 LABEL_18:
-    v29 = [a1 tagDictionaryForWrapperAroundParagraphStyle:v21];
+    v29 = [self tagDictionaryForWrapperAroundParagraphStyle:v21];
     v30 = [v29 objectForKeyedSubscript:@"TagName"];
     v31 = [v29 objectForKeyedSubscript:@"Attributes"];
     v32 = v31;
@@ -353,7 +353,7 @@ LABEL_18:
     v52[1] = 3221225472;
     v52[2] = __75__ICNote_HTML__htmlStringFromAttributedString_attachmentConversionHandler___block_invoke_2;
     v52[3] = &unk_1E8469520;
-    v58 = a1;
+    selfCopy = self;
     v57 = v49;
     v35 = v6;
     v53 = v35;
@@ -375,8 +375,8 @@ LABEL_18:
 
     else
     {
-      v38 = [v36 string];
-      v16 = [v38 paragraphRangeForRange:{v37, 0}];
+      string2 = [v36 string];
+      v16 = [string2 paragraphRangeForRange:{v37, 0}];
       v50 = v39;
     }
   }
@@ -388,9 +388,9 @@ LABEL_18:
     v40 = v20 + 1;
     do
     {
-      v41 = [v19 lastObject];
-      [v19 removeLastObject];
-      [v35 appendFormat:@"</%@>\n", v41];
+      lastObject2 = [array lastObject];
+      [array removeLastObject];
+      [v35 appendFormat:@"</%@>\n", lastObject2];
 
       --v40;
     }
@@ -410,9 +410,9 @@ LABEL_29:
 {
   v3 = a3;
   v4 = objc_opt_new();
-  v5 = [v3 isList];
+  isList = [v3 isList];
 
-  if (v5)
+  if (isList)
   {
     v6 = @"li";
   }
@@ -434,9 +434,9 @@ LABEL_29:
   v7 = a4;
   v8 = objc_opt_new();
   v9 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69B75E8]];
-  v10 = [v9 intValue];
+  intValue = [v9 intValue];
 
-  if (v10)
+  if (intValue)
   {
     v69 = @"TagName";
     v70[0] = @"b";
@@ -444,7 +444,7 @@ LABEL_29:
     [v8 addObject:v11];
   }
 
-  if ((v10 & 2) != 0)
+  if ((intValue & 2) != 0)
   {
     v67 = @"TagName";
     v68 = @"i";
@@ -474,13 +474,13 @@ LABEL_29:
 
   v17 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69B75E0]];
   v18 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v19 = [v17 fontName];
-  v20 = [v19 length];
+  fontName = [v17 fontName];
+  v20 = [fontName length];
 
   if (v20)
   {
-    v21 = [v17 fontName];
-    [v18 appendFormat:@" face=%@", v21];
+    fontName2 = [v17 fontName];
+    [v18 appendFormat:@" face=%@", fontName2];
   }
 
   v22 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69B75F0]];
@@ -488,9 +488,9 @@ LABEL_29:
   if (v22)
   {
     v23 = [MEMORY[0x1E69DC888] colorWithCGColor:v22];
-    if (([a1 isDefaultColor:v23] & 1) == 0)
+    if (([self isDefaultColor:v23] & 1) == 0)
     {
-      v24 = [a1 hexStringForColor:v23];
+      v24 = [self hexStringForColor:v23];
       [v18 appendFormat:@" color=#%@", v24];
     }
   }
@@ -526,11 +526,11 @@ LABEL_29:
     v33 = v32;
     if (v32)
     {
-      v34 = [v32 attachmentIdentifier];
+      attachmentIdentifier = [v32 attachmentIdentifier];
       v49 = 0;
       v50 = @"object";
       v48 = v7;
-      v35 = v7[2](v7, v34, &v50, &v49);
+      v35 = v7[2](v7, attachmentIdentifier, &v50, &v49);
       v36 = v50;
       v37 = v49;
       if (v35 && v36)
@@ -552,10 +552,10 @@ LABEL_29:
   }
 
   v39 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69B7600]];
-  v40 = [v39 style];
+  style = [v39 style];
   if (v39)
   {
-    v41 = v40;
+    v41 = style;
     v42 = [v6 objectForKeyedSubscript:*v31];
 
     if (!v42)
@@ -622,8 +622,8 @@ LABEL_40:
 + (BOOL)isDefaultColor:()HTML
 {
   v3 = a3;
-  v4 = [MEMORY[0x1E69DC888] blackColor];
-  v5 = [v3 isEqual:v4];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v5 = [v3 isEqual:blackColor];
 
   if (v5)
   {

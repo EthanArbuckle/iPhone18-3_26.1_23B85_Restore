@@ -1,8 +1,8 @@
 @interface SBScrollSwitcherModifierEvent
 - (CGPoint)contentOffset;
-- (SBScrollSwitcherModifierEvent)initWithContentOffset:(CGPoint)a3 phase:(unint64_t)a4 userInitiated:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (SBScrollSwitcherModifierEvent)initWithContentOffset:(CGPoint)offset phase:(unint64_t)phase userInitiated:(BOOL)initiated;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation SBScrollSwitcherModifierEvent
@@ -16,10 +16,10 @@
   return result;
 }
 
-- (SBScrollSwitcherModifierEvent)initWithContentOffset:(CGPoint)a3 phase:(unint64_t)a4 userInitiated:(BOOL)a5
+- (SBScrollSwitcherModifierEvent)initWithContentOffset:(CGPoint)offset phase:(unint64_t)phase userInitiated:(BOOL)initiated
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   v10.receiver = self;
   v10.super_class = SBScrollSwitcherModifierEvent;
   result = [(SBWindowingModifierActivity *)&v10 init];
@@ -27,29 +27,29 @@
   {
     result->_contentOffset.x = x;
     result->_contentOffset.y = y;
-    result->_phase = a4;
-    result->_userInitiated = a5;
+    result->_phase = phase;
+    result->_userInitiated = initiated;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = SBScrollSwitcherModifierEvent;
-  result = [(SBChainableModifierEvent *)&v5 copyWithZone:a3];
+  result = [(SBChainableModifierEvent *)&v5 copyWithZone:zone];
   *(result + 3) = self->_contentOffset;
   *(result + 5) = self->_phase;
   *(result + 32) = self->_userInitiated;
   return result;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v9.receiver = self;
   v9.super_class = SBScrollSwitcherModifierEvent;
-  v4 = [(SBSwitcherModifierEvent *)&v9 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBSwitcherModifierEvent *)&v9 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = NSStringFromCGPoint(self->_contentOffset);
   [v4 appendString:v5 withName:@"contentOffset"];
 

@@ -1,15 +1,15 @@
 @interface PXCollectionSortOrderUtilities
-+ (BOOL)supportsFetchSortOrder:(int64_t)a3 inCollection:(id)a4;
-+ (BOOL)userCanChangeSortOrderInCollection:(id)a3;
-+ (int64_t)_sortOrderFromCollection:(id)a3 sortKey:(unsigned int)a4;
-+ (int64_t)sortOrderFromCollection:(id)a3 isAscending:(BOOL *)a4;
++ (BOOL)supportsFetchSortOrder:(int64_t)order inCollection:(id)collection;
++ (BOOL)userCanChangeSortOrderInCollection:(id)collection;
++ (int64_t)_sortOrderFromCollection:(id)collection sortKey:(unsigned int)key;
++ (int64_t)sortOrderFromCollection:(id)collection isAscending:(BOOL *)ascending;
 @end
 
 @implementation PXCollectionSortOrderUtilities
 
-+ (BOOL)userCanChangeSortOrderInCollection:(id)a3
++ (BOOL)userCanChangeSortOrderInCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -17,13 +17,13 @@
     goto LABEL_15;
   }
 
-  v6 = v5;
+  v6 = collectionCopy;
   if (!v6)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    [v13 handleFailureInMethod:a2 object:a1 file:@"PXCollectionSortOrderUtilities.m" lineNumber:69 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"collection", v15}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCollectionSortOrderUtilities.m" lineNumber:69 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"collection", v15}];
 LABEL_18:
 
     goto LABEL_4;
@@ -32,18 +32,18 @@ LABEL_18:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = objc_opt_class();
     v15 = NSStringFromClass(v16);
-    v17 = [v6 px_descriptionForAssertionMessage];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"PXCollectionSortOrderUtilities.m" lineNumber:69 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"collection", v15, v17}];
+    px_descriptionForAssertionMessage = [v6 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCollectionSortOrderUtilities.m" lineNumber:69 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"collection", v15, px_descriptionForAssertionMessage}];
 
     goto LABEL_18;
   }
 
 LABEL_4:
   v7 = [v6 assetCollectionType] == 2 && objc_msgSend(v6, "assetCollectionSubtype") == 1000000204;
-  v9 = [v6 px_isSharedAlbum];
+  px_isSharedAlbum = [v6 px_isSharedAlbum];
   if ([v6 canPerformEditOperation:5])
   {
     v10 = [v6 estimatedAssetCount] > 1;
@@ -54,7 +54,7 @@ LABEL_4:
     v10 = 0;
   }
 
-  v11 = v9 | v10;
+  v11 = px_isSharedAlbum | v10;
   if (v7)
   {
     v8 = 1;
@@ -69,33 +69,33 @@ LABEL_15:
   return v8 & 1;
 }
 
-+ (BOOL)supportsFetchSortOrder:(int64_t)a3 inCollection:(id)a4
++ (BOOL)supportsFetchSortOrder:(int64_t)order inCollection:(id)collection
 {
-  v5 = a4;
-  v6 = v5;
-  if ((a3 - 1) < 2)
+  collectionCopy = collection;
+  v6 = collectionCopy;
+  if ((order - 1) < 2)
   {
-    v8 = [v5 px_isRegularAlbum];
+    px_isRegularAlbum = [collectionCopy px_isRegularAlbum];
 LABEL_8:
-    v7 = v8;
+    v7 = px_isRegularAlbum;
     goto LABEL_10;
   }
 
-  if (a3 == 4)
+  if (order == 4)
   {
     goto LABEL_7;
   }
 
-  if (a3 != 3)
+  if (order != 3)
   {
     v7 = 0;
     goto LABEL_10;
   }
 
-  if (([v5 px_isRegularAlbum] & 1) == 0)
+  if (([collectionCopy px_isRegularAlbum] & 1) == 0)
   {
 LABEL_7:
-    v8 = [v6 px_isSharedAlbum];
+    px_isRegularAlbum = [v6 px_isSharedAlbum];
     goto LABEL_8;
   }
 
@@ -105,14 +105,14 @@ LABEL_10:
   return v7;
 }
 
-+ (int64_t)_sortOrderFromCollection:(id)a3 sortKey:(unsigned int)a4
++ (int64_t)_sortOrderFromCollection:(id)collection sortKey:(unsigned int)key
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 > 6)
+  collectionCopy = collection;
+  v6 = collectionCopy;
+  if (key > 6)
   {
 LABEL_9:
-    if (a4 != 101)
+    if (key != 101)
     {
       v7 = 3;
       goto LABEL_11;
@@ -121,16 +121,16 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (((1 << a4) & 0x34) != 0)
+  if (((1 << key) & 0x34) != 0)
   {
 LABEL_10:
     v7 = 0;
     goto LABEL_11;
   }
 
-  if (((1 << a4) & 0x41) == 0)
+  if (((1 << key) & 0x41) == 0)
   {
-    if (a4 == 3)
+    if (key == 3)
     {
       v7 = 2;
       goto LABEL_11;
@@ -139,7 +139,7 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  if ([v5 px_isSharedAlbum])
+  if ([collectionCopy px_isSharedAlbum])
   {
     v7 = 4;
   }
@@ -154,27 +154,27 @@ LABEL_11:
   return v7;
 }
 
-+ (int64_t)sortOrderFromCollection:(id)a3 isAscending:(BOOL *)a4
++ (int64_t)sortOrderFromCollection:(id)collection isAscending:(BOOL *)ascending
 {
-  v6 = a3;
+  collectionCopy = collection;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
-    v8 = [v7 customSortAscending];
-    v9 = [v7 customSortKey];
+    v7 = collectionCopy;
+    customSortAscending = [v7 customSortAscending];
+    customSortKey = [v7 customSortKey];
   }
 
   else
   {
-    v8 = 0;
-    v9 = 1;
+    customSortAscending = 0;
+    customSortKey = 1;
   }
 
-  v10 = [a1 _sortOrderFromCollection:v6 sortKey:v9];
-  if (a4)
+  v10 = [self _sortOrderFromCollection:collectionCopy sortKey:customSortKey];
+  if (ascending)
   {
-    *a4 = v8;
+    *ascending = customSortAscending;
   }
 
   return v10;

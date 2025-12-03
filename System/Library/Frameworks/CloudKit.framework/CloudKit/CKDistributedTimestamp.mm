@@ -1,32 +1,32 @@
 @interface CKDistributedTimestamp
-- (BOOL)isEqual:(id)a3;
-- (CKDistributedTimestamp)initWithCoder:(id)a3;
-- (CKDistributedTimestamp)initWithSiteIdentifier:(id)a3 clockValue:(unint64_t)a4;
-- (CKDistributedTimestamp)initWithSiteIdentifierObject:(id)a3 clockValue:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (CKDistributedTimestamp)initWithCoder:(id)coder;
+- (CKDistributedTimestamp)initWithSiteIdentifier:(id)identifier clockValue:(unint64_t)value;
+- (CKDistributedTimestamp)initWithSiteIdentifierObject:(id)object clockValue:(unint64_t)value;
 - (NSData)siteIdentifier;
 - (id)description;
 - (id)descriptionWithStringSiteIdentifiers;
-- (int64_t)compareToTimestamp:(id)a3;
+- (int64_t)compareToTimestamp:(id)timestamp;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKDistributedTimestamp
 
-- (CKDistributedTimestamp)initWithSiteIdentifier:(id)a3 clockValue:(unint64_t)a4
+- (CKDistributedTimestamp)initWithSiteIdentifier:(id)identifier clockValue:(unint64_t)value
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = [CKDistributedSiteIdentifier alloc];
-  v9 = objc_msgSend_initWithIdentifier_(v7, v8, v6);
-  v11 = objc_msgSend_initWithSiteIdentifierObject_clockValue_(self, v10, v9, a4);
+  v9 = objc_msgSend_initWithIdentifier_(v7, v8, identifierCopy);
+  v11 = objc_msgSend_initWithSiteIdentifierObject_clockValue_(self, v10, v9, value);
 
   return v11;
 }
 
-- (CKDistributedTimestamp)initWithSiteIdentifierObject:(id)a3 clockValue:(unint64_t)a4
+- (CKDistributedTimestamp)initWithSiteIdentifierObject:(id)object clockValue:(unint64_t)value
 {
-  v7 = a3;
-  if (a4 == -1)
+  objectCopy = object;
+  if (value == -1)
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v6, *MEMORY[0x1E695D940], @"Clock value NSUIntegerMax is reserved");
   }
@@ -36,11 +36,11 @@
   v10 = [(CKDistributedTimestamp *)&v14 init];
   if (v10)
   {
-    v11 = objc_msgSend_copy(v7, v8, v9);
+    v11 = objc_msgSend_copy(objectCopy, v8, v9);
     siteIdentifierObject = v10->_siteIdentifierObject;
     v10->_siteIdentifierObject = v11;
 
-    v10->_clockValue = a4;
+    v10->_clockValue = value;
   }
 
   return v10;
@@ -54,9 +54,9 @@
   return v6;
 }
 
-- (CKDistributedTimestamp)initWithCoder:(id)a3
+- (CKDistributedTimestamp)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = CKDistributedTimestamp;
   v5 = [(CKDistributedTimestamp *)&v22 init];
@@ -64,18 +64,18 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_siteIdentifierObject);
-    v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v8, v6, v7);
+    v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v8, v6, v7);
     siteIdentifierObject = v5->_siteIdentifierObject;
     v5->_siteIdentifierObject = v9;
 
     v11 = NSStringFromSelector(sel_clockValue);
-    v5->_clockValue = objc_msgSend_decodeIntegerForKey_(v4, v12, v11);
+    v5->_clockValue = objc_msgSend_decodeIntegerForKey_(coderCopy, v12, v11);
 
     if (!v5->_siteIdentifierObject)
     {
       v13 = objc_opt_class();
       v14 = NSStringFromSelector(sel_siteIdentifier);
-      v16 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v15, v13, v14);
+      v16 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v15, v13, v14);
 
       v17 = [CKDistributedSiteIdentifier alloc];
       v19 = objc_msgSend_initWithIdentifier_modifier_(v17, v18, v16, 0);
@@ -87,40 +87,40 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v23 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_siteIdentifierObject(self, v5, v6);
   v8 = NSStringFromSelector(sel_siteIdentifierObject);
-  objc_msgSend_encodeObject_forKey_(v23, v9, v7, v8);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, v7, v8);
 
   v12 = objc_msgSend_clockValue(self, v10, v11);
   v13 = NSStringFromSelector(sel_clockValue);
-  objc_msgSend_encodeInteger_forKey_(v23, v14, v12, v13);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v14, v12, v13);
 
   v17 = objc_msgSend_siteIdentifierObject(self, v15, v16);
   v20 = objc_msgSend_identifier(v17, v18, v19);
   v21 = NSStringFromSelector(sel_siteIdentifier);
-  objc_msgSend_encodeObject_forKey_(v23, v22, v20, v21);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v22, v20, v21);
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (int64_t)compareToTimestamp:(id)a3
+- (int64_t)compareToTimestamp:(id)timestamp
 {
-  v4 = a3;
+  timestampCopy = timestamp;
   v7 = objc_msgSend_siteIdentifierObject(self, v5, v6);
-  v10 = objc_msgSend_siteIdentifierObject(v4, v8, v9);
+  v10 = objc_msgSend_siteIdentifierObject(timestampCopy, v8, v9);
   isEqual = objc_msgSend_isEqual_(v7, v11, v10);
 
   if (isEqual)
   {
     v15 = objc_msgSend_clockValue(self, v13, v14);
-    if (v15 >= objc_msgSend_clockValue(v4, v16, v17))
+    if (v15 >= objc_msgSend_clockValue(timestampCopy, v16, v17))
     {
       v21 = objc_msgSend_clockValue(self, v18, v19);
-      v20 = v21 > objc_msgSend_clockValue(v4, v22, v23);
+      v20 = v21 > objc_msgSend_clockValue(timestampCopy, v22, v23);
     }
 
     else
@@ -137,11 +137,11 @@
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v14 = ((v4 != 0) & objc_opt_isKindOfClass()) != 0 && (v7 = objc_msgSend_hash(self, v5, v6), v7 == objc_msgSend_hash(v4, v8, v9)) && (v11 = objc_msgSend_compareToTimestamp_(self, v10, v4), v11 == objc_msgSend_compareToTimestamp_(v4, v12, self)) && objc_msgSend_compareToTimestamp_(self, v13, v4) == 0;
+  v14 = ((equalCopy != 0) & objc_opt_isKindOfClass()) != 0 && (v7 = objc_msgSend_hash(self, v5, v6), v7 == objc_msgSend_hash(equalCopy, v8, v9)) && (v11 = objc_msgSend_compareToTimestamp_(self, v10, equalCopy), v11 == objc_msgSend_compareToTimestamp_(equalCopy, v12, self)) && objc_msgSend_compareToTimestamp_(self, v13, equalCopy) == 0;
 
   return v14;
 }

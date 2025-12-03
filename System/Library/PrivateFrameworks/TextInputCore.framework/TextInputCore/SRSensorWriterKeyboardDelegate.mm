@@ -1,12 +1,12 @@
 @interface SRSensorWriterKeyboardDelegate
-- (id)classNameForSensorIdentifier:(id)a3;
+- (id)classNameForSensorIdentifier:(id)identifier;
 @end
 
 @implementation SRSensorWriterKeyboardDelegate
 
-- (id)classNameForSensorIdentifier:(id)a3
+- (id)classNameForSensorIdentifier:(id)identifier
 {
-  if ([a3 isEqualToString:@"com.apple.SensorKit.keyboardMetrics"])
+  if ([identifier isEqualToString:@"com.apple.SensorKit.keyboardMetrics"])
   {
     return @"SRKeyboardMetrics";
   }

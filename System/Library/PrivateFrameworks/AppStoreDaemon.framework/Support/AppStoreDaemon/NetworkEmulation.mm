@@ -1,11 +1,11 @@
 @interface NetworkEmulation
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation NetworkEmulation
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[NetworkEmulation allocWithZone:?]];
   *(result + 2) = self->_interfaceType;
@@ -23,15 +23,15 @@
   interfaceType = self->_interfaceType;
   if (interfaceType >= 5)
   {
-    v6 = [[NSString alloc] initWithFormat:@"unknown (%ld)", interfaceType];
+    interfaceType = [[NSString alloc] initWithFormat:@"unknown (%ld)", interfaceType];
   }
 
   else
   {
-    v6 = off_100520330[interfaceType];
+    interfaceType = off_100520330[interfaceType];
   }
 
-  v7 = [NSString stringWithFormat:@"{constrained = %d, expensive = %d, roaming = %d, interface = %@}", isConstrained, isExpensive, isRoaming, v6];
+  v7 = [NSString stringWithFormat:@"{constrained = %d, expensive = %d, roaming = %d, interface = %@}", isConstrained, isExpensive, isRoaming, interfaceType];
 
   return v7;
 }

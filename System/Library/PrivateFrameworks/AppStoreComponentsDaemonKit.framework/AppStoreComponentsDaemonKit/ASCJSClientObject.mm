@@ -1,33 +1,33 @@
 @interface ASCJSClientObject
-- (ASCJSClientObject)initWithAccountStore:(id)a3;
-- (BOOL)isActivePairedWatchSystemVersionAtLeastMajorVersion:(id)a3 minorVersion:(id)a4 patchVersion:(id)a5;
+- (ASCJSClientObject)initWithAccountStore:(id)store;
+- (BOOL)isActivePairedWatchSystemVersionAtLeastMajorVersion:(id)version minorVersion:(id)minorVersion patchVersion:(id)patchVersion;
 - (BOOL)isAutomaticDownloadingEnabled;
 - (CGSize)screenSize;
 - (NSString)deviceType;
 - (NSString)storefrontIdentifier;
-- (id)isPairedSystemVersionAtLeast:(id)a3;
-- (void)accountStoreDidChange:(id)a3;
+- (id)isPairedSystemVersionAtLeast:(id)least;
+- (void)accountStoreDidChange:(id)change;
 - (void)dealloc;
 @end
 
 @implementation ASCJSClientObject
 
-- (ASCJSClientObject)initWithAccountStore:(id)a3
+- (ASCJSClientObject)initWithAccountStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = ASCJSClientObject;
   v6 = [(ASCJSClientObject *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountStore, a3);
-    v8 = [v5 ams_activeiTunesAccount];
+    objc_storeStrong(&v6->_accountStore, store);
+    ams_activeiTunesAccount = [storeCopy ams_activeiTunesAccount];
     activeiTunesAccount = v7->_activeiTunesAccount;
-    v7->_activeiTunesAccount = v8;
+    v7->_activeiTunesAccount = ams_activeiTunesAccount;
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v7 selector:sel_accountStoreDidChange_ name:*MEMORY[0x277CB8DB8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_accountStoreDidChange_ name:*MEMORY[0x277CB8DB8] object:0];
   }
 
   return v7;
@@ -35,19 +35,19 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ASCJSClientObject;
   [(ASCJSClientObject *)&v4 dealloc];
 }
 
-- (void)accountStoreDidChange:(id)a3
+- (void)accountStoreDidChange:(id)change
 {
-  v5 = [(ASCJSClientObject *)self accountStore];
-  v4 = [v5 ams_activeiTunesAccount];
-  [(ASCJSClientObject *)self setActiveiTunesAccount:v4];
+  accountStore = [(ASCJSClientObject *)self accountStore];
+  ams_activeiTunesAccount = [accountStore ams_activeiTunesAccount];
+  [(ASCJSClientObject *)self setActiveiTunesAccount:ams_activeiTunesAccount];
 }
 
 - (CGSize)screenSize
@@ -60,22 +60,22 @@
 
 - (NSString)storefrontIdentifier
 {
-  v3 = [(ASCJSClientObject *)self activeiTunesAccount];
-  v4 = v3;
-  if (v3)
+  activeiTunesAccount = [(ASCJSClientObject *)self activeiTunesAccount];
+  v4 = activeiTunesAccount;
+  if (activeiTunesAccount)
   {
-    v5 = v3;
+    ams_localiTunesAccount = activeiTunesAccount;
   }
 
   else
   {
-    v6 = [(ASCJSClientObject *)self accountStore];
-    v5 = [v6 ams_localiTunesAccount];
+    accountStore = [(ASCJSClientObject *)self accountStore];
+    ams_localiTunesAccount = [accountStore ams_localiTunesAccount];
   }
 
-  v7 = [v5 ams_storefront];
+  ams_storefront = [ams_localiTunesAccount ams_storefront];
 
-  return v7;
+  return ams_storefront;
 }
 
 - (NSString)deviceType
@@ -93,11 +93,11 @@
   return v2;
 }
 
-- (BOOL)isActivePairedWatchSystemVersionAtLeastMajorVersion:(id)a3 minorVersion:(id)a4 patchVersion:(id)a5
+- (BOOL)isActivePairedWatchSystemVersionAtLeastMajorVersion:(id)version minorVersion:(id)minorVersion patchVersion:(id)patchVersion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  versionCopy = version;
+  minorVersionCopy = minorVersion;
+  patchVersionCopy = patchVersion;
   v10 = +[ASCMobileGestalt activePairedSystemVersion];
   if (v10)
   {
@@ -106,47 +106,47 @@
     if ([v11 count])
     {
       v12 = [v11 objectAtIndexedSubscript:0];
-      v28 = [v12 integerValue];
+      integerValue = [v12 integerValue];
     }
 
     else
     {
-      v28 = 0;
+      integerValue = 0;
     }
 
     if ([v11 count] < 2)
     {
-      v15 = 0;
+      integerValue2 = 0;
     }
 
     else
     {
       v14 = [v11 objectAtIndexedSubscript:1];
-      v15 = [v14 integerValue];
+      integerValue2 = [v14 integerValue];
     }
 
     if ([v11 count] < 3)
     {
-      v17 = 0;
+      integerValue3 = 0;
     }
 
     else
     {
       v16 = [v11 objectAtIndexedSubscript:2];
-      v17 = [v16 integerValue];
+      integerValue3 = [v16 integerValue];
     }
 
-    v18 = [v7 toInt32];
-    v19 = [v8 toInt32];
-    v20 = [v9 toInt32];
-    v21 = v9;
-    v22 = v7;
-    v23 = v20;
-    v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld.%ld.%ld", v28, v15, v17];
+    toInt32 = [versionCopy toInt32];
+    toInt322 = [minorVersionCopy toInt32];
+    toInt323 = [patchVersionCopy toInt32];
+    v21 = patchVersionCopy;
+    v22 = versionCopy;
+    v23 = toInt323;
+    v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld.%ld.%ld", integerValue, integerValue2, integerValue3];
     v27 = v23;
-    v7 = v22;
-    v9 = v21;
-    v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld.%ld.%ld", v18, v19, v27];
+    versionCopy = v22;
+    patchVersionCopy = v21;
+    v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld.%ld.%ld", toInt32, toInt322, v27];
     v13 = [v24 compare:v25 options:64] != -1;
 
     v10 = v29;
@@ -160,24 +160,24 @@
   return v13;
 }
 
-- (id)isPairedSystemVersionAtLeast:(id)a3
+- (id)isPairedSystemVersionAtLeast:(id)least
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CD4640] currentContext];
-  if (!v4)
+  leastCopy = least;
+  currentContext = [MEMORY[0x277CD4640] currentContext];
+  if (!currentContext)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"%s called with no active JSContext", "-[ASCJSClientObject isPairedSystemVersionAtLeast:]"}];
   }
 
-  if ([v3 isString])
+  if ([leastCopy isString])
   {
     v5 = +[ASCMobileGestalt activePairedSystemVersion];
     v6 = __50__ASCJSClientObject_isPairedSystemVersionAtLeast___block_invoke(v5, v5);
 
     if (v6)
     {
-      v7 = [v3 toString];
-      v8 = __50__ASCJSClientObject_isPairedSystemVersionAtLeast___block_invoke(v7, v7);
+      toString = [leastCopy toString];
+      v8 = __50__ASCJSClientObject_isPairedSystemVersionAtLeast___block_invoke(toString, toString);
       v9 = [v6 compare:v8 options:64] != -1;
     }
 
@@ -186,15 +186,15 @@
       v9 = 0;
     }
 
-    v11 = [MEMORY[0x277CD4658] valueWithBool:v9 inContext:v4];
+    v11 = [MEMORY[0x277CD4658] valueWithBool:v9 inContext:currentContext];
   }
 
   else
     v6 = {;
-    v10 = [MEMORY[0x277CD4658] valueWithNewErrorFromMessage:v6 inContext:v4];
-    [v4 setException:v10];
+    v10 = [MEMORY[0x277CD4658] valueWithNewErrorFromMessage:v6 inContext:currentContext];
+    [currentContext setException:v10];
 
-    v11 = [MEMORY[0x277CD4658] valueWithUndefinedInContext:v4];
+    v11 = [MEMORY[0x277CD4658] valueWithUndefinedInContext:currentContext];
   }
 
   v12 = v11;
@@ -248,11 +248,11 @@ LABEL_13:
 
 - (BOOL)isAutomaticDownloadingEnabled
 {
-  v2 = [(ASCJSClientObject *)self activeiTunesAccount];
-  v3 = [v2 accountPropertyForKey:@"automaticDownloadKinds"];
+  activeiTunesAccount = [(ASCJSClientObject *)self activeiTunesAccount];
+  v3 = [activeiTunesAccount accountPropertyForKey:@"automaticDownloadKinds"];
 
-  LOBYTE(v2) = [v3 containsObject:@"software"];
-  return v2;
+  LOBYTE(activeiTunesAccount) = [v3 containsObject:@"software"];
+  return activeiTunesAccount;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface MapsSuggestionsMapsInstalledTriggeringToggle
 - (BOOL)isTrue;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)didAddFirstObserver;
 - (void)didRemoveLastObserver;
 @end
@@ -22,23 +22,23 @@
 
 - (void)didAddFirstObserver
 {
-  v3 = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v4 = [MEMORY[0x1E6963608] defaultWorkspace];
-  [v4 addObserver:self];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  [defaultWorkspace addObserver:self];
 }
 
 - (void)didRemoveLastObserver
 {
-  v3 = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v4 = [MEMORY[0x1E6963608] defaultWorkspace];
-  [v4 removeObserver:self];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  [defaultWorkspace removeObserver:self];
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = GEOFindOrCreateLog();
@@ -52,7 +52,7 @@
   [(MapsSuggestionsTriggeringToggle *)self setState:MapsSuggestionsMapsAppIsInstalled()];
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = GEOFindOrCreateLog();

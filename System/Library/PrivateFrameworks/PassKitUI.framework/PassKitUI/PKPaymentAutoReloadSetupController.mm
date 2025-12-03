@@ -1,59 +1,59 @@
 @interface PKPaymentAutoReloadSetupController
-+ (BOOL)shouldOfferAutoReloadForPass:(id)a3;
-- (PKPaymentAutoReloadSetupController)initWithPass:(id)a3 paymentDataProvider:(id)a4 provisioningController:(id)a5 viewStyle:(int64_t)a6 delegate:(id)a7;
-- (id)paymentRequest:(id)a3 threshold:(id)a4 paymentMethodIdentifier:(id)a5;
-- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)a3;
++ (BOOL)shouldOfferAutoReloadForPass:(id)pass;
+- (PKPaymentAutoReloadSetupController)initWithPass:(id)pass paymentDataProvider:(id)provider provisioningController:(id)controller viewStyle:(int64_t)style delegate:(id)delegate;
+- (id)paymentRequest:(id)request threshold:(id)threshold paymentMethodIdentifier:(id)identifier;
+- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)coordinator;
 - (void)_createThresholdTopUpSetupViewController;
-- (void)_didUpdateAutoReloadWithAmount:(id)a3 threshold:(id)a4 paymentMethodIdentifier:(id)a5 completion:(id)a6;
-- (void)_dismissViewController:(id)a3;
-- (void)_showGenericErrorAlert:(id)a3;
-- (void)autoReloadSetupCompleteViewControllerDidComplete:(int64_t)a3;
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizePayment:(id)a4 handler:(id)a5;
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizePurchase:(id)a4 completion:(id)a5;
-- (void)paymentAuthorizationCoordinatorDidFinish:(id)a3;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceiveBalanceUpdate:(id)a4;
+- (void)_didUpdateAutoReloadWithAmount:(id)amount threshold:(id)threshold paymentMethodIdentifier:(id)identifier completion:(id)completion;
+- (void)_dismissViewController:(id)controller;
+- (void)_showGenericErrorAlert:(id)alert;
+- (void)autoReloadSetupCompleteViewControllerDidComplete:(int64_t)complete;
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizePayment:(id)payment handler:(id)handler;
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizePurchase:(id)purchase completion:(id)completion;
+- (void)paymentAuthorizationCoordinatorDidFinish:(id)finish;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceiveBalanceUpdate:(id)update;
 - (void)presentAutoTopUpFlow;
-- (void)thresholdTopUpDidSelectCancel:(id)a3;
-- (void)thresholdTopUpDidSelectContinue:(id)a3 completion:(id)a4;
-- (void)thresholdTopUpDidSelectUpdate:(id)a3 completion:(id)a4;
-- (void)thresholdTopUpPerformCancel:(id)a3 completion:(id)a4;
-- (void)updateAutoReloadSection:(id)a3;
+- (void)thresholdTopUpDidSelectCancel:(id)cancel;
+- (void)thresholdTopUpDidSelectContinue:(id)continue completion:(id)completion;
+- (void)thresholdTopUpDidSelectUpdate:(id)update completion:(id)completion;
+- (void)thresholdTopUpPerformCancel:(id)cancel completion:(id)completion;
+- (void)updateAutoReloadSection:(id)section;
 @end
 
 @implementation PKPaymentAutoReloadSetupController
 
-- (PKPaymentAutoReloadSetupController)initWithPass:(id)a3 paymentDataProvider:(id)a4 provisioningController:(id)a5 viewStyle:(int64_t)a6 delegate:(id)a7
+- (PKPaymentAutoReloadSetupController)initWithPass:(id)pass paymentDataProvider:(id)provider provisioningController:(id)controller viewStyle:(int64_t)style delegate:(id)delegate
 {
-  v13 = a3;
-  v14 = a4;
+  passCopy = pass;
+  providerCopy = provider;
   if (self)
   {
-    objc_storeStrong(&self->_pass, a3);
-    v15 = a7;
+    objc_storeStrong(&self->_pass, pass);
+    delegateCopy = delegate;
     self->_passUpdated = 0;
-    objc_storeStrong(&self->_paymentDataProvider, a4);
+    objc_storeStrong(&self->_paymentDataProvider, provider);
     if (objc_opt_respondsToSelector())
     {
       [(PKPaymentDataProvider *)self->_paymentDataProvider addDelegate:self];
     }
 
-    v16 = [PKPaymentPassDetailAutoReloadSectionController autoTopUpActionForPass:v13];
+    v16 = [PKPaymentPassDetailAutoReloadSectionController autoTopUpActionForPass:passCopy];
     action = self->_action;
     self->_action = v16;
 
-    v18 = [(PKPaymentPass *)self->_pass autoTopUpMerchantTokenIdentifier];
-    v19 = v18;
-    if (v18)
+    autoTopUpMerchantTokenIdentifier = [(PKPaymentPass *)self->_pass autoTopUpMerchantTokenIdentifier];
+    v19 = autoTopUpMerchantTokenIdentifier;
+    if (autoTopUpMerchantTokenIdentifier)
     {
-      LOBYTE(v18) = [(PKPaymentPass *)self->_pass isAutoTopEnabled];
+      LOBYTE(autoTopUpMerchantTokenIdentifier) = [(PKPaymentPass *)self->_pass isAutoTopEnabled];
     }
 
-    self->_isWalletAutoTopEnabled = v18;
+    self->_isWalletAutoTopEnabled = autoTopUpMerchantTokenIdentifier;
 
-    self->_viewStyle = a6;
-    objc_storeWeak(&self->_delegate, v15);
+    self->_viewStyle = style;
+    objc_storeWeak(&self->_delegate, delegateCopy);
 
-    if (a5)
+    if (controller)
     {
       v20 = 2;
     }
@@ -77,13 +77,13 @@ LABEL_11:
   return self;
 }
 
-+ (BOOL)shouldOfferAutoReloadForPass:(id)a3
++ (BOOL)shouldOfferAutoReloadForPass:(id)pass
 {
-  v3 = a3;
-  v4 = [PKPaymentPassDetailAutoReloadSectionController autoTopUpActionForPass:v3];
+  passCopy = pass;
+  v4 = [PKPaymentPassDetailAutoReloadSectionController autoTopUpActionForPass:passCopy];
   if (v4)
   {
-    v5 = [v3 isAutoTopEnabled] ^ 1;
+    v5 = [passCopy isAutoTopEnabled] ^ 1;
   }
 
   else
@@ -94,23 +94,23 @@ LABEL_11:
   return v5;
 }
 
-- (void)updateAutoReloadSection:(id)a3
+- (void)updateAutoReloadSection:(id)section
 {
-  v9 = a3;
-  objc_storeStrong(&self->_pass, a3);
+  sectionCopy = section;
+  objc_storeStrong(&self->_pass, section);
   self->_passUpdated = 1;
-  v5 = [PKPaymentPassDetailAutoReloadSectionController autoTopUpActionForPass:v9];
+  v5 = [PKPaymentPassDetailAutoReloadSectionController autoTopUpActionForPass:sectionCopy];
   action = self->_action;
   self->_action = v5;
 
-  v7 = [(PKPaymentPass *)self->_pass autoTopUpMerchantTokenIdentifier];
-  v8 = v7;
-  if (v7)
+  autoTopUpMerchantTokenIdentifier = [(PKPaymentPass *)self->_pass autoTopUpMerchantTokenIdentifier];
+  v8 = autoTopUpMerchantTokenIdentifier;
+  if (autoTopUpMerchantTokenIdentifier)
   {
-    LOBYTE(v7) = [(PKPaymentPass *)self->_pass isAutoTopEnabled];
+    LOBYTE(autoTopUpMerchantTokenIdentifier) = [(PKPaymentPass *)self->_pass isAutoTopEnabled];
   }
 
-  self->_isWalletAutoTopEnabled = v7;
+  self->_isWalletAutoTopEnabled = autoTopUpMerchantTokenIdentifier;
 
   self->_setupMode = self->_isWalletAutoTopEnabled;
   [(PKPaymentAutoReloadSetupController *)self _createThresholdTopUpSetupViewController];
@@ -119,21 +119,21 @@ LABEL_11:
 - (void)_createThresholdTopUpSetupViewController
 {
   v69 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaymentPassAction *)self->_action autoTopUpItem];
-  v4 = [v3 defaultAmountSuggestions];
+  autoTopUpItem = [(PKPaymentPassAction *)self->_action autoTopUpItem];
+  defaultAmountSuggestions = [autoTopUpItem defaultAmountSuggestions];
 
-  v5 = [(PKPaymentPassAction *)self->_action autoTopUpItem];
-  v6 = [v5 defaultThresholdSuggestions];
+  autoTopUpItem2 = [(PKPaymentPassAction *)self->_action autoTopUpItem];
+  defaultThresholdSuggestions = [autoTopUpItem2 defaultThresholdSuggestions];
 
-  v7 = [(PKPaymentPassAction *)self->_action autoTopUpItem];
-  v8 = [v7 currency];
+  autoTopUpItem3 = [(PKPaymentPassAction *)self->_action autoTopUpItem];
+  currency = [autoTopUpItem3 currency];
   currency = self->_currency;
-  self->_currency = v8;
+  self->_currency = currency;
 
   if (!self->_isWalletAutoTopEnabled)
   {
-    v21 = 0;
-    v22 = 0;
+    firstObject2 = 0;
+    name = 0;
     goto LABEL_33;
   }
 
@@ -141,13 +141,13 @@ LABEL_11:
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v10 = [(PKPaymentPass *)self->_pass autoTopUpFields];
-  v11 = [v10 countByEnumeratingWithState:&v61 objects:v68 count:16];
+  autoTopUpFields = [(PKPaymentPass *)self->_pass autoTopUpFields];
+  v11 = [autoTopUpFields countByEnumeratingWithState:&v61 objects:v68 count:16];
   if (v11)
   {
     v12 = v11;
-    v56 = v4;
-    v13 = v6;
+    v56 = defaultAmountSuggestions;
+    v13 = defaultThresholdSuggestions;
     v14 = *v62;
     v15 = *MEMORY[0x1E69BBB80];
     while (2)
@@ -156,7 +156,7 @@ LABEL_11:
       {
         if (*v62 != v14)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(autoTopUpFields);
         }
 
         v17 = *(*(&v61 + 1) + 8 * i);
@@ -181,15 +181,15 @@ LABEL_11:
             v67 = 0;
           }
 
-          v6 = v13;
-          v21 = [v23 initWithDecimal:&buf];
+          defaultThresholdSuggestions = v13;
+          firstObject2 = [v23 initWithDecimal:&buf];
 
           v27 = objc_alloc(MEMORY[0x1E696AB90]);
           v28 = MEMORY[0x1E696AD98];
           [v17 amount];
           v29 = [v28 numberWithDouble:?];
           v30 = v29;
-          v4 = v56;
+          defaultAmountSuggestions = v56;
           if (v29)
           {
             [v29 decimalValue];
@@ -201,13 +201,13 @@ LABEL_11:
             v67 = 0;
           }
 
-          v20 = [v27 initWithDecimal:&buf];
+          firstObject = [v27 initWithDecimal:&buf];
 
           goto LABEL_20;
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v61 objects:v68 count:16];
+      v12 = [autoTopUpFields countByEnumeratingWithState:&v61 objects:v68 count:16];
       if (v12)
       {
         continue;
@@ -216,16 +216,16 @@ LABEL_11:
       break;
     }
 
-    v20 = 0;
-    v21 = 0;
-    v6 = v13;
-    v4 = v56;
+    firstObject = 0;
+    firstObject2 = 0;
+    defaultThresholdSuggestions = v13;
+    defaultAmountSuggestions = v56;
   }
 
   else
   {
-    v20 = 0;
-    v21 = 0;
+    firstObject = 0;
+    firstObject2 = 0;
   }
 
 LABEL_20:
@@ -234,34 +234,34 @@ LABEL_20:
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v31 = [(PKPaymentPass *)self->_pass balances];
-  v22 = [v31 countByEnumeratingWithState:&v57 objects:v65 count:16];
-  if (v22)
+  balances = [(PKPaymentPass *)self->_pass balances];
+  name = [balances countByEnumeratingWithState:&v57 objects:v65 count:16];
+  if (name)
   {
     v32 = *v58;
     while (2)
     {
-      for (j = 0; j != v22; j = j + 1)
+      for (j = 0; j != name; j = j + 1)
       {
         if (*v58 != v32)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(balances);
         }
 
-        v34 = [*(*(&v57 + 1) + 8 * j) paymentMethod];
-        if (![v34 type])
+        paymentMethod = [*(*(&v57 + 1) + 8 * j) paymentMethod];
+        if (![paymentMethod type])
         {
-          v22 = [v34 name];
-          v35 = [v34 fpanIdentifier];
+          name = [paymentMethod name];
+          fpanIdentifier = [paymentMethod fpanIdentifier];
           originalPaymentMethodIdentifier = self->_originalPaymentMethodIdentifier;
-          self->_originalPaymentMethodIdentifier = v35;
+          self->_originalPaymentMethodIdentifier = fpanIdentifier;
 
           goto LABEL_30;
         }
       }
 
-      v22 = [v31 countByEnumeratingWithState:&v57 objects:v65 count:16];
-      if (v22)
+      name = [balances countByEnumeratingWithState:&v57 objects:v65 count:16];
+      if (name)
       {
         continue;
       }
@@ -272,26 +272,26 @@ LABEL_20:
 
 LABEL_30:
 
-  if (!v20)
+  if (!firstObject)
   {
 LABEL_33:
-    if ([v4 count] < 2)
+    if ([defaultAmountSuggestions count] < 2)
     {
       v38 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
-        v39 = [v4 count];
+        v39 = [defaultAmountSuggestions count];
         LODWORD(buf) = 134217984;
         *(&buf + 4) = v39;
         _os_log_impl(&dword_1BD026000, v38, OS_LOG_TYPE_DEFAULT, "PKPaymentAutoReloadSetupController: defaultAmountSuggestions count [%lu] is less than 2 items per spec. Need to update server configuration for the actions.json.", &buf, 0xCu);
       }
 
-      v20 = 0;
+      firstObject = 0;
       goto LABEL_52;
     }
 
-    v20 = [v4 firstObject];
-    if (v21)
+    firstObject = [defaultAmountSuggestions firstObject];
+    if (firstObject2)
     {
       goto LABEL_37;
     }
@@ -299,28 +299,28 @@ LABEL_33:
     goto LABEL_35;
   }
 
-  if (v21)
+  if (firstObject2)
   {
     goto LABEL_37;
   }
 
 LABEL_35:
-  if ([v6 count] < 2)
+  if ([defaultThresholdSuggestions count] < 2)
   {
     v38 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
     {
-      v55 = [v6 count];
+      v55 = [defaultThresholdSuggestions count];
       LODWORD(buf) = 134217984;
       *(&buf + 4) = v55;
       _os_log_impl(&dword_1BD026000, v38, OS_LOG_TYPE_DEFAULT, "PKPaymentAutoReloadSetupController: no defaultThresholdSuggestions [%lu] is less than 2 items per spec. Need to update server configuration for the actions.json.", &buf, 0xCu);
     }
 
-    v21 = 0;
+    firstObject2 = 0;
     goto LABEL_52;
   }
 
-  v21 = [v6 firstObject];
+  firstObject2 = [defaultThresholdSuggestions firstObject];
 LABEL_37:
   if (!self->_passUpdated)
   {
@@ -330,18 +330,18 @@ LABEL_37:
   thresholdTopUpSetupViewController = self->_thresholdTopUpSetupViewController;
   if (thresholdTopUpSetupViewController)
   {
-    [(PKThresholdTopUpSetupViewController *)thresholdTopUpSetupViewController updateTopUpAmount:v20 threshold:v21 paymentMethodName:v22 paymentMethodIdentifier:self->_originalPaymentMethodIdentifier setupMode:self->_setupMode];
+    [(PKThresholdTopUpSetupViewController *)thresholdTopUpSetupViewController updateTopUpAmount:firstObject threshold:firstObject2 paymentMethodName:name paymentMethodIdentifier:self->_originalPaymentMethodIdentifier setupMode:self->_setupMode];
   }
 
   else
   {
-    v40 = [[PKThresholdTopUpSetupViewController alloc] initWithAmountSuggestions:v4 selectedAmount:v20 thresholdSuggestions:v6 selectedThreshold:v21 currencyCode:self->_currency paymentMethodName:v22 paymentMethodIdentifier:self->_originalPaymentMethodIdentifier mode:self->_setupMode viewStyle:self->_viewStyle delegate:self];
+    v40 = [[PKThresholdTopUpSetupViewController alloc] initWithAmountSuggestions:defaultAmountSuggestions selectedAmount:firstObject thresholdSuggestions:defaultThresholdSuggestions selectedThreshold:firstObject2 currencyCode:self->_currency paymentMethodName:name paymentMethodIdentifier:self->_originalPaymentMethodIdentifier mode:self->_setupMode viewStyle:self->_viewStyle delegate:self];
     v41 = self->_thresholdTopUpSetupViewController;
     self->_thresholdTopUpSetupViewController = v40;
   }
 
   v42 = self->_thresholdTopUpSetupViewController;
-  v43 = [(PKPaymentAutoReloadSetupController *)self paymentRequest:v20 threshold:v21 paymentMethodIdentifier:self->_originalPaymentMethodIdentifier];
+  v43 = [(PKPaymentAutoReloadSetupController *)self paymentRequest:firstObject threshold:firstObject2 paymentMethodIdentifier:self->_originalPaymentMethodIdentifier];
   [(PKThresholdTopUpSetupViewController *)v42 setPaymentRequest:v43];
 
   v44 = self->_thresholdTopUpSetupViewController;
@@ -371,7 +371,7 @@ LABEL_37:
   v52 = PKLocalizedPaymentString(&cfstr_PassDetailsAut_10.isa);
   [(PKThresholdTopUpSetupViewController *)v51 setCancelTitle:v52];
 
-  if ([v22 length])
+  if ([name length])
   {
     v53 = self->_thresholdTopUpSetupViewController;
     v38 = PKLocalizedPaymentString(&cfstr_PassDetailsAut_11.isa);
@@ -421,11 +421,11 @@ LABEL_52:
   }
 }
 
-- (void)autoReloadSetupCompleteViewControllerDidComplete:(int64_t)a3
+- (void)autoReloadSetupCompleteViewControllerDidComplete:(int64_t)complete
 {
-  if (a3 != 2)
+  if (complete != 2)
   {
-    if (a3 == 1)
+    if (complete == 1)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       v8 = objc_opt_respondsToSelector();
@@ -444,7 +444,7 @@ LABEL_9:
 
     else
     {
-      if (a3)
+      if (complete)
       {
         return;
       }
@@ -478,16 +478,16 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceiveBalanceUpdate:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceiveBalanceUpdate:(id)update
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __94__PKPaymentAutoReloadSetupController_paymentPassWithUniqueIdentifier_didReceiveBalanceUpdate___block_invoke;
   v7[3] = &unk_1E8010A10;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -536,32 +536,32 @@ void __94__PKPaymentAutoReloadSetupController_paymentPassWithUniqueIdentifier_di
   }
 }
 
-- (void)thresholdTopUpDidSelectCancel:(id)a3
+- (void)thresholdTopUpDidSelectCancel:(id)cancel
 {
   reporter = self->_reporter;
-  v5 = a3;
+  cancelCopy = cancel;
   [(PKProvisioningAnalyticsSessionUIReporter *)reporter reportButtonPressed:3];
-  [(PKPaymentAutoReloadSetupController *)self _dismissViewController:v5];
+  [(PKPaymentAutoReloadSetupController *)self _dismissViewController:cancelCopy];
 }
 
-- (void)thresholdTopUpPerformCancel:(id)a3 completion:(id)a4
+- (void)thresholdTopUpPerformCancel:(id)cancel completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  cancelCopy = cancel;
+  completionCopy = completion;
   self->_passUpdated = 0;
   objc_initWeak(&location, self);
   paymentDataProvider = self->_paymentDataProvider;
-  v9 = [(PKPaymentPass *)self->_pass uniqueID];
-  v10 = [(PKPaymentPass *)self->_pass autoTopUpBalanceIdentifiers];
+  uniqueID = [(PKPaymentPass *)self->_pass uniqueID];
+  autoTopUpBalanceIdentifiers = [(PKPaymentPass *)self->_pass autoTopUpBalanceIdentifiers];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __77__PKPaymentAutoReloadSetupController_thresholdTopUpPerformCancel_completion___block_invoke;
   v12[3] = &unk_1E8010F30;
   objc_copyWeak(&v14, &location);
-  v11 = v7;
+  v11 = completionCopy;
   v12[4] = self;
   v13 = v11;
-  [(PKPaymentDataProvider *)paymentDataProvider cancelAutoTopUpForPassWithUniqueIdentifier:v9 balanceIdentifiers:v10 completion:v12];
+  [(PKPaymentDataProvider *)paymentDataProvider cancelAutoTopUpForPassWithUniqueIdentifier:uniqueID balanceIdentifiers:autoTopUpBalanceIdentifiers completion:v12];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -719,39 +719,39 @@ uint64_t __77__PKPaymentAutoReloadSetupController_thresholdTopUpPerformCancel_co
   return result;
 }
 
-- (void)thresholdTopUpDidSelectContinue:(id)a3 completion:(id)a4
+- (void)thresholdTopUpDidSelectContinue:(id)continue completion:(id)completion
 {
   reporter = self->_reporter;
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  continueCopy = continue;
   [(PKProvisioningAnalyticsSessionUIReporter *)reporter reportButtonPressed:0];
-  v12 = [v8 currentAmount];
-  v9 = [v8 currentThreshold];
-  v10 = [v8 selectedPass];
+  currentAmount = [continueCopy currentAmount];
+  currentThreshold = [continueCopy currentThreshold];
+  selectedPass = [continueCopy selectedPass];
 
-  v11 = [v10 primaryAccountIdentifier];
-  [(PKPaymentAutoReloadSetupController *)self _didUpdateAutoReloadWithAmount:v12 threshold:v9 paymentMethodIdentifier:v11 completion:v7];
+  primaryAccountIdentifier = [selectedPass primaryAccountIdentifier];
+  [(PKPaymentAutoReloadSetupController *)self _didUpdateAutoReloadWithAmount:currentAmount threshold:currentThreshold paymentMethodIdentifier:primaryAccountIdentifier completion:completionCopy];
 }
 
-- (void)thresholdTopUpDidSelectUpdate:(id)a3 completion:(id)a4
+- (void)thresholdTopUpDidSelectUpdate:(id)update completion:(id)completion
 {
   reporter = self->_reporter;
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  updateCopy = update;
   [(PKProvisioningAnalyticsSessionUIReporter *)reporter reportButtonPressed:1];
-  v12 = [v8 currentAmount];
-  v9 = [v8 currentThreshold];
-  v10 = [v8 selectedPass];
+  currentAmount = [updateCopy currentAmount];
+  currentThreshold = [updateCopy currentThreshold];
+  selectedPass = [updateCopy selectedPass];
 
-  v11 = [v10 primaryAccountIdentifier];
-  [(PKPaymentAutoReloadSetupController *)self _didUpdateAutoReloadWithAmount:v12 threshold:v9 paymentMethodIdentifier:v11 completion:v7];
+  primaryAccountIdentifier = [selectedPass primaryAccountIdentifier];
+  [(PKPaymentAutoReloadSetupController *)self _didUpdateAutoReloadWithAmount:currentAmount threshold:currentThreshold paymentMethodIdentifier:primaryAccountIdentifier completion:completionCopy];
 }
 
-- (void)_dismissViewController:(id)a3
+- (void)_dismissViewController:(id)controller
 {
-  v13 = a3;
-  v4 = [v13 mode];
-  switch(v4)
+  controllerCopy = controller;
+  mode = [controllerCopy mode];
+  switch(mode)
   {
     case 2:
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -776,7 +776,7 @@ uint64_t __77__PKPaymentAutoReloadSetupController_thresholdTopUpPerformCancel_co
       }
 
       v7 = objc_loadWeakRetained(&self->_delegate);
-      [v7 autoReloadSetupController:self requestsPopViewController:v13];
+      [v7 autoReloadSetupController:self requestsPopViewController:controllerCopy];
       goto LABEL_8;
     case 0:
       v5 = objc_loadWeakRetained(&self->_delegate);
@@ -785,7 +785,7 @@ uint64_t __77__PKPaymentAutoReloadSetupController_thresholdTopUpPerformCancel_co
       if (v6)
       {
         v7 = objc_loadWeakRetained(&self->_delegate);
-        [v7 autoReloadSetupController:self requestsDismissViewController:v13];
+        [v7 autoReloadSetupController:self requestsDismissViewController:controllerCopy];
 LABEL_8:
       }
 
@@ -793,31 +793,31 @@ LABEL_8:
   }
 }
 
-- (id)paymentRequest:(id)a3 threshold:(id)a4 paymentMethodIdentifier:(id)a5
+- (id)paymentRequest:(id)request threshold:(id)threshold paymentMethodIdentifier:(id)identifier
 {
   v76 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v67 = a5;
+  requestCopy = request;
+  thresholdCopy = threshold;
+  identifierCopy = identifier;
   currency = self->_currency;
   v11 = objc_alloc(MEMORY[0x1E69B8780]);
   v12 = v11;
-  v68 = v9;
+  v68 = thresholdCopy;
   if (currency)
   {
-    v13 = [v11 initWithAmount:v8 currency:self->_currency exponent:0];
+    v13 = [v11 initWithAmount:requestCopy currency:self->_currency exponent:0];
     currentAmount = self->_currentAmount;
     self->_currentAmount = v13;
 
-    v15 = [objc_alloc(MEMORY[0x1E69B8780]) initWithAmount:v9 currency:self->_currency exponent:0];
+    v15 = [objc_alloc(MEMORY[0x1E69B8780]) initWithAmount:thresholdCopy currency:self->_currency exponent:0];
     currentThreshold = self->_currentThreshold;
     self->_currentThreshold = v15;
   }
 
   else
   {
-    v17 = [(PKThresholdTopUpSetupViewController *)self->_thresholdTopUpSetupViewController currentAmount];
-    v18 = [v12 initWithAmount:v17 currency:self->_currency exponent:0];
+    currentAmount = [(PKThresholdTopUpSetupViewController *)self->_thresholdTopUpSetupViewController currentAmount];
+    v18 = [v12 initWithAmount:currentAmount currency:self->_currency exponent:0];
     v19 = self->_currentAmount;
     self->_currentAmount = v18;
 
@@ -828,15 +828,15 @@ LABEL_8:
     self->_currentThreshold = v21;
   }
 
-  v69 = v8;
+  v69 = requestCopy;
 
-  v66 = self;
-  v23 = [(PKPaymentPass *)self->_pass autoTopUpFields];
+  selfCopy = self;
+  autoTopUpFields = [(PKPaymentPass *)self->_pass autoTopUpFields];
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v24 = [v23 countByEnumeratingWithState:&v70 objects:v75 count:16];
+  v24 = [autoTopUpFields countByEnumeratingWithState:&v70 objects:v75 count:16];
   if (v24)
   {
     v25 = v24;
@@ -849,7 +849,7 @@ LABEL_8:
       {
         if (*v71 != v27)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(autoTopUpFields);
         }
 
         v30 = *(*(&v70 + 1) + 8 * i);
@@ -859,14 +859,14 @@ LABEL_8:
         if (v32)
         {
           v33 = MEMORY[0x1E695DFF8];
-          v34 = [v30 link];
-          v35 = [v33 URLWithString:v34];
+          link = [v30 link];
+          v35 = [v33 URLWithString:link];
 
           v26 = v35;
         }
       }
 
-      v25 = [v23 countByEnumeratingWithState:&v70 objects:v75 count:16];
+      v25 = [autoTopUpFields countByEnumeratingWithState:&v70 objects:v75 count:16];
     }
 
     while (v25);
@@ -877,37 +877,37 @@ LABEL_8:
     v26 = 0;
   }
 
-  v36 = [(PKPaymentPass *)v66->_pass transactionServiceURL];
+  transactionServiceURL = [(PKPaymentPass *)selfCopy->_pass transactionServiceURL];
   v37 = PKLocalizedPaymentString(&cfstr_PassDetailsRel.isa);
-  v63 = [(PKPaymentPass *)v66->_pass organizationName];
+  organizationName = [(PKPaymentPass *)selfCopy->_pass organizationName];
   v38 = [MEMORY[0x1E69B8690] summaryItemWithLabel:v37 amount:v69 type:0];
   [v38 setThresholdAmount:v68];
   v64 = v37;
   v39 = [objc_alloc(MEMORY[0x1E69B8688]) initWithPaymentDescription:v37 automaticReloadBilling:v38 managementURL:v26];
-  v65 = v36;
-  [v39 setTokenNotificationURL:v36];
-  v40 = [(PKPaymentPass *)v66->_pass localizedDescription];
-  v41 = PKLocalizedPaymentString(&cfstr_PassDetailsAut_16.isa, &stru_1F3BD5BF0.isa, v40);
+  v65 = transactionServiceURL;
+  [v39 setTokenNotificationURL:transactionServiceURL];
+  localizedDescription = [(PKPaymentPass *)selfCopy->_pass localizedDescription];
+  v41 = PKLocalizedPaymentString(&cfstr_PassDetailsAut_16.isa, &stru_1F3BD5BF0.isa, localizedDescription);
   [v39 setBillingAgreement:v41];
 
-  v42 = [(PKPaymentPassAction *)v66->_action autoTopUpItem];
-  v43 = [v42 serviceProviderData];
-  v44 = [v43 mutableCopy];
+  autoTopUpItem = [(PKPaymentPassAction *)selfCopy->_action autoTopUpItem];
+  serviceProviderData = [autoTopUpItem serviceProviderData];
+  v44 = [serviceProviderData mutableCopy];
 
   [v44 setObject:v69 forKey:*MEMORY[0x1E69BC3E8]];
   [v44 setObject:v68 forKey:*MEMORY[0x1E69BC3F0]];
   [v44 setObject:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E69BC400]];
-  if (v67)
+  if (identifierCopy)
   {
     v45 = *MEMORY[0x1E69BBBB8];
     v46 = v44;
-    originalPaymentMethodIdentifier = v67;
+    originalPaymentMethodIdentifier = identifierCopy;
 LABEL_18:
     [v46 setObject:originalPaymentMethodIdentifier forKey:v45];
     goto LABEL_19;
   }
 
-  originalPaymentMethodIdentifier = v66->_originalPaymentMethodIdentifier;
+  originalPaymentMethodIdentifier = selfCopy->_originalPaymentMethodIdentifier;
   v45 = *MEMORY[0x1E69BBBB8];
   v46 = v44;
   if (originalPaymentMethodIdentifier)
@@ -918,38 +918,38 @@ LABEL_18:
   [v44 setValue:0 forKey:v45];
 LABEL_19:
   v48 = objc_alloc_init(MEMORY[0x1E69B8A10]);
-  v49 = [(PKPaymentPassAction *)v66->_action actionDescription];
-  [v48 setItemDescription:v49];
+  actionDescription = [(PKPaymentPassAction *)selfCopy->_action actionDescription];
+  [v48 setItemDescription:actionDescription];
 
   v50 = [v44 copy];
   [v48 setServiceProviderData:v50];
 
-  v51 = [(PKPaymentPassAction *)v66->_action serviceProviderIdentifier];
-  [v48 setServiceProviderIdentifier:v51];
+  serviceProviderIdentifier = [(PKPaymentPassAction *)selfCopy->_action serviceProviderIdentifier];
+  [v48 setServiceProviderIdentifier:serviceProviderIdentifier];
 
   v52 = [objc_alloc(MEMORY[0x1E69B9218]) initWithServiceProviderOrder:v48];
-  [v52 setCurrencyCode:v66->_currency];
-  v53 = [(PKPaymentPassAction *)v66->_action serviceProviderAcceptedNetworks];
-  [v52 setSupportedNetworks:v53];
+  [v52 setCurrencyCode:selfCopy->_currency];
+  serviceProviderAcceptedNetworks = [(PKPaymentPassAction *)selfCopy->_action serviceProviderAcceptedNetworks];
+  [v52 setSupportedNetworks:serviceProviderAcceptedNetworks];
 
-  [v52 setMerchantCapabilities:{-[PKPaymentPassAction serviceProviderCapabilities](v66->_action, "serviceProviderCapabilities")}];
-  v54 = [(PKPaymentPassAction *)v66->_action serviceProviderCountryCode];
-  [v52 setCountryCode:v54];
+  [v52 setMerchantCapabilities:{-[PKPaymentPassAction serviceProviderCapabilities](selfCopy->_action, "serviceProviderCapabilities")}];
+  serviceProviderCountryCode = [(PKPaymentPassAction *)selfCopy->_action serviceProviderCountryCode];
+  [v52 setCountryCode:serviceProviderCountryCode];
 
-  v55 = [(PKPaymentPassAction *)v66->_action serviceProviderSupportedCountries];
-  [v52 setSupportedCountries:v55];
+  serviceProviderSupportedCountries = [(PKPaymentPassAction *)selfCopy->_action serviceProviderSupportedCountries];
+  [v52 setSupportedCountries:serviceProviderSupportedCountries];
 
   v56 = [v38 copy];
-  v57 = [(PKPaymentPassAction *)v66->_action serviceProviderLocalizedDisplayName];
-  v58 = v57;
-  if (v57)
+  serviceProviderLocalizedDisplayName = [(PKPaymentPassAction *)selfCopy->_action serviceProviderLocalizedDisplayName];
+  v58 = serviceProviderLocalizedDisplayName;
+  if (serviceProviderLocalizedDisplayName)
   {
-    v59 = v57;
+    v59 = serviceProviderLocalizedDisplayName;
   }
 
   else
   {
-    v59 = v63;
+    v59 = organizationName;
   }
 
   v60 = v59;
@@ -965,24 +965,24 @@ LABEL_19:
   return v52;
 }
 
-- (void)_didUpdateAutoReloadWithAmount:(id)a3 threshold:(id)a4 paymentMethodIdentifier:(id)a5 completion:(id)a6
+- (void)_didUpdateAutoReloadWithAmount:(id)amount threshold:(id)threshold paymentMethodIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(PKPaymentAutoReloadSetupController *)self paymentRequest:v10 threshold:v11 paymentMethodIdentifier:v12];
+  amountCopy = amount;
+  thresholdCopy = threshold;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v14 = [(PKPaymentAutoReloadSetupController *)self paymentRequest:amountCopy threshold:thresholdCopy paymentMethodIdentifier:identifierCopy];
   if (self->_paymentAuthCompletionHandler)
   {
-    if (v13)
+    if (completionCopy)
     {
-      v13[2](v13, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
   else
   {
-    v15 = _Block_copy(v13);
+    v15 = _Block_copy(completionCopy);
     paymentAuthCompletionHandler = self->_paymentAuthCompletionHandler;
     self->_paymentAuthCompletionHandler = v15;
 
@@ -1036,15 +1036,15 @@ void __114__PKPaymentAutoReloadSetupController__didUpdateAutoReloadWithAmount_th
   }
 }
 
-- (void)_showGenericErrorAlert:(id)a3
+- (void)_showGenericErrorAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   v5 = [MEMORY[0x1E69B8D08] displayableErrorForAction:self->_action andReason:1];
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportError:v5 context:0];
   v6 = MEMORY[0x1E69DC650];
-  v7 = [v5 localizedDescription];
-  v8 = [v5 localizedRecoverySuggestion];
-  v9 = [v6 alertControllerWithTitle:v7 message:v8 preferredStyle:1];
+  localizedDescription = [v5 localizedDescription];
+  localizedRecoverySuggestion = [v5 localizedRecoverySuggestion];
+  v9 = [v6 alertControllerWithTitle:localizedDescription message:localizedRecoverySuggestion preferredStyle:1];
 
   v10 = MEMORY[0x1E69DC648];
   v11 = PKLocalizedPaymentString(&cfstr_PassActionUnav.isa);
@@ -1052,8 +1052,8 @@ void __114__PKPaymentAutoReloadSetupController__didUpdateAutoReloadWithAmount_th
   v14[1] = 3221225472;
   v14[2] = __61__PKPaymentAutoReloadSetupController__showGenericErrorAlert___block_invoke;
   v14[3] = &unk_1E8011248;
-  v15 = v4;
-  v12 = v4;
+  v15 = alertCopy;
+  v12 = alertCopy;
   v13 = [v10 actionWithTitle:v11 style:1 handler:v14];
   [v9 addAction:v13];
 
@@ -1071,23 +1071,23 @@ uint64_t __61__PKPaymentAutoReloadSetupController__showGenericErrorAlert___block
   return result;
 }
 
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizePayment:(id)a4 handler:(id)a5
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizePayment:(id)payment handler:(id)handler
 {
   v5 = MEMORY[0x1E69B8B80];
-  v6 = a5;
+  handlerCopy = handler;
   v7 = objc_alloc_init(v5);
   [v7 setStatus:1];
-  v6[2](v6, v7);
+  handlerCopy[2](handlerCopy, v7);
 }
 
-- (void)paymentAuthorizationCoordinatorDidFinish:(id)a3
+- (void)paymentAuthorizationCoordinatorDidFinish:(id)finish
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __79__PKPaymentAutoReloadSetupController_paymentAuthorizationCoordinatorDidFinish___block_invoke;
   v3[3] = &unk_1E8010970;
   v3[4] = self;
-  [a3 dismissWithCompletion:v3];
+  [finish dismissWithCompletion:v3];
 }
 
 void __79__PKPaymentAutoReloadSetupController_paymentAuthorizationCoordinatorDidFinish___block_invoke(uint64_t a1)
@@ -1144,29 +1144,29 @@ void __79__PKPaymentAutoReloadSetupController_paymentAuthorizationCoordinatorDid
   }
 }
 
-- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)a3
+- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)coordinator
 {
-  v3 = [(PKThresholdTopUpSetupViewController *)self->_thresholdTopUpSetupViewController view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 _sceneIdentifier];
+  view = [(PKThresholdTopUpSetupViewController *)self->_thresholdTopUpSetupViewController view];
+  window = [view window];
+  windowScene = [window windowScene];
+  _sceneIdentifier = [windowScene _sceneIdentifier];
 
-  return v6;
+  return _sceneIdentifier;
 }
 
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizePurchase:(id)a4 completion:(id)a5
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizePurchase:(id)purchase completion:(id)completion
 {
-  v9 = a4;
-  if (v9)
+  purchaseCopy = purchase;
+  if (purchaseCopy)
   {
-    objc_storeStrong(&self->_completedAutoReload, a4);
-    v8 = a5;
-    v8[2](v8, 0);
+    objc_storeStrong(&self->_completedAutoReload, purchase);
+    completionCopy = completion;
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
-    (*(a5 + 2))(a5, 1);
+    (*(completion + 2))(completion, 1);
   }
 }
 

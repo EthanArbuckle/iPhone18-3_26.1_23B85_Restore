@@ -1,28 +1,28 @@
 @interface PGPetMemoryTitleGenerator
-- (PGPetMemoryTitleGenerator)initWithMomentNodes:(id)a3 type:(int64_t)a4 titleGenerationContext:(id)a5;
-- (void)_generateTitleAndSubtitleWithResult:(id)a3;
+- (PGPetMemoryTitleGenerator)initWithMomentNodes:(id)nodes type:(int64_t)type titleGenerationContext:(id)context;
+- (void)_generateTitleAndSubtitleWithResult:(id)result;
 @end
 
 @implementation PGPetMemoryTitleGenerator
 
-- (void)_generateTitleAndSubtitleWithResult:(id)a3
+- (void)_generateTitleAndSubtitleWithResult:(id)result
 {
-  v4 = a3;
-  if (v4)
+  resultCopy = result;
+  if (resultCopy)
   {
-    v41 = v4;
+    v41 = resultCopy;
     if (self->_useAdventureTitle)
     {
-      v5 = [(PGGraphPetNodeCollection *)self->_petNodes names];
-      v6 = [v5 anyObject];
+      names = [(PGGraphPetNodeCollection *)self->_petNodes names];
+      anyObject = [names anyObject];
 
-      v7 = [v6 length];
+      v7 = [anyObject length];
       v8 = MEMORY[0x277CCACA8];
       if (v7)
       {
         v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v10 = [v9 localizedStringForKey:@"PGPetAdventuresMemoryTitleWithNameFormat" value:@"PGPetAdventuresMemoryTitleWithNameFormat" table:@"Localizable"];
-        [v8 localizedStringWithFormat:v10, v6];
+        [v8 localizedStringWithFormat:v10, anyObject];
       }
 
       else
@@ -43,20 +43,20 @@ LABEL_34:
         goto LABEL_35;
       }
 
-      v22 = [PGTitle titleWithString:v17 category:1];
+      title = [PGTitle titleWithString:v17 category:1];
 LABEL_17:
-      v20 = v22;
+      v20 = title;
       goto LABEL_34;
     }
 
     if (!self->_usePetAndPersonTitle)
     {
-      v18 = [(PGGraphPetNodeCollection *)self->_petNodes names];
-      v6 = [v18 anyObject];
+      names2 = [(PGGraphPetNodeCollection *)self->_petNodes names];
+      anyObject = [names2 anyObject];
 
-      if ([v6 length])
+      if ([anyObject length])
       {
-        v19 = [PGTitle titleWithString:v6 category:1];
+        v19 = [PGTitle titleWithString:anyObject category:1];
         if (v19)
         {
           v20 = v19;
@@ -64,61 +64,61 @@ LABEL_35:
 
           if ([(NSString *)self->_seasonName length])
           {
-            v36 = [(PGTitleGenerator *)self momentNodes];
-            v37 = [PGSeasonMemoryTitleGenerator seasonSubtitleWithMomentNodes:v36 seasonName:self->_seasonName];
+            momentNodes = [(PGTitleGenerator *)self momentNodes];
+            v37 = [PGSeasonMemoryTitleGenerator seasonSubtitleWithMomentNodes:momentNodes seasonName:self->_seasonName];
           }
 
           else
           {
-            v36 = objc_alloc_init(PGTimeTitleOptions);
-            v38 = [(PGTitleGenerator *)self momentNodes];
-            [(PGTimeTitleOptions *)v36 setMomentNodes:v38];
+            momentNodes = objc_alloc_init(PGTimeTitleOptions);
+            momentNodes2 = [(PGTitleGenerator *)self momentNodes];
+            [(PGTimeTitleOptions *)momentNodes setMomentNodes:momentNodes2];
 
-            [(PGTimeTitleOptions *)v36 setAllowedFormats:20];
-            v39 = [(PGTitleGenerator *)self featuredYearNodes];
-            [(PGTimeTitleOptions *)v36 setFeaturedYearNodes:v39];
+            [(PGTimeTitleOptions *)momentNodes setAllowedFormats:20];
+            featuredYearNodes = [(PGTitleGenerator *)self featuredYearNodes];
+            [(PGTimeTitleOptions *)momentNodes setFeaturedYearNodes:featuredYearNodes];
 
-            v40 = [PGTimeTitleUtility timeTitleWithOptions:v36];
+            v40 = [PGTimeTitleUtility timeTitleWithOptions:momentNodes];
             v37 = [PGTitle titleWithString:v40 category:5];
           }
 
           v41[2](v41, v20, v37);
-          v4 = v41;
+          resultCopy = v41;
           goto LABEL_39;
         }
       }
 
       v23 = [PGSpecBasedTitleGenerator alloc];
-      v24 = [(PGTitleGenerator *)self momentNodes];
-      v25 = [(PGTitleGenerator *)self titleGenerationContext];
-      v17 = [(PGSpecBasedTitleGenerator *)v23 initWithMomentNodes:v24 memoryCategory:0 subcategory:212 titleGenerationContext:v25];
+      momentNodes3 = [(PGTitleGenerator *)self momentNodes];
+      titleGenerationContext = [(PGTitleGenerator *)self titleGenerationContext];
+      v17 = [(PGSpecBasedTitleGenerator *)v23 initWithMomentNodes:momentNodes3 memoryCategory:0 subcategory:212 titleGenerationContext:titleGenerationContext];
 
-      v22 = [(PGSpecBasedTitleGenerator *)v17 title];
+      title = [(PGSpecBasedTitleGenerator *)v17 title];
       goto LABEL_17;
     }
 
     v11 = [(MAElementCollection *)self->_personNodeAsCollection count];
-    v12 = [(PGGraphPetNodeCollection *)self->_petNodes names];
-    v13 = v12;
+    names3 = [(PGGraphPetNodeCollection *)self->_petNodes names];
+    v13 = names3;
     if (v11)
     {
-      v6 = [v12 anyObject];
+      anyObject = [names3 anyObject];
 
-      v14 = [(PGPetMemoryTitleGenerator *)self personNodeAsCollection];
-      v15 = [v14 anyNode];
+      personNodeAsCollection = [(PGPetMemoryTitleGenerator *)self personNodeAsCollection];
+      anyNode = [personNodeAsCollection anyNode];
 
-      if ([v15 isMeNode])
+      if ([anyNode isMeNode])
       {
         v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v17 = [v16 localizedStringForKey:@"PGPeopleTitleFormatMePerson" value:@"PGPeopleTitleFormatMePerson" table:@"Localizable"];
 
 LABEL_23:
-        if ([v6 length] && -[PGSpecBasedTitleGenerator length](v17, "length"))
+        if ([anyObject length] && -[PGSpecBasedTitleGenerator length](v17, "length"))
         {
           v28 = MEMORY[0x277CCACA8];
           v29 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v30 = [v29 localizedStringForKey:@"PGPeopleTitleFormatTwoPeopleWithPersonName %@ otherPersonName %@" value:@"PGPeopleTitleFormatTwoPeopleWithPersonName %@ otherPersonName %@" table:@"Localizable"];
-          v31 = [v28 localizedStringWithFormat:v30, v6, v17];
+          v31 = [v28 localizedStringWithFormat:v30, anyObject, v17];
 
           v32 = [PGCommonTitleUtility titleWithLineBreakForTitle:v31];
 
@@ -158,23 +158,23 @@ LABEL_33:
         goto LABEL_33;
       }
 
-      v27 = [PGPeopleTitleUtility nameFromPersonNode:v15 serviceManager:self->_serviceManager];
+      v27 = [PGPeopleTitleUtility nameFromPersonNode:anyNode serviceManager:self->_serviceManager];
     }
 
     else
     {
-      v26 = [v12 allObjects];
-      v15 = [v26 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
+      allObjects = [names3 allObjects];
+      anyNode = [allObjects sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
 
-      if ([v15 count] != 2)
+      if ([anyNode count] != 2)
       {
         v17 = 0;
-        v6 = 0;
+        anyObject = 0;
         goto LABEL_23;
       }
 
-      v6 = [v15 objectAtIndexedSubscript:0];
-      v27 = [v15 objectAtIndexedSubscript:1];
+      anyObject = [anyNode objectAtIndexedSubscript:0];
+      v27 = [anyNode objectAtIndexedSubscript:1];
     }
 
     v17 = v27;
@@ -184,17 +184,17 @@ LABEL_33:
 LABEL_39:
 }
 
-- (PGPetMemoryTitleGenerator)initWithMomentNodes:(id)a3 type:(int64_t)a4 titleGenerationContext:(id)a5
+- (PGPetMemoryTitleGenerator)initWithMomentNodes:(id)nodes type:(int64_t)type titleGenerationContext:(id)context
 {
-  v8 = a5;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = PGPetMemoryTitleGenerator;
-  v9 = [(PGTitleGenerator *)&v13 initWithMomentNodes:a3 type:a4 titleGenerationContext:v8];
+  v9 = [(PGTitleGenerator *)&v13 initWithMomentNodes:nodes type:type titleGenerationContext:contextCopy];
   if (v9)
   {
-    v10 = [v8 serviceManager];
+    serviceManager = [contextCopy serviceManager];
     serviceManager = v9->_serviceManager;
-    v9->_serviceManager = v10;
+    v9->_serviceManager = serviceManager;
   }
 
   return v9;

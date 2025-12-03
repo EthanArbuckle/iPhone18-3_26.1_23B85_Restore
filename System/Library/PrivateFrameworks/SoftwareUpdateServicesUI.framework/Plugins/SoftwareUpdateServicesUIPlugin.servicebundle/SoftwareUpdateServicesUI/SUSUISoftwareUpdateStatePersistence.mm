@@ -1,122 +1,122 @@
 @interface SUSUISoftwareUpdateStatePersistence
-- (SUSUISoftwareUpdateStatePersistence)initWithDefaults:(id)a3;
+- (SUSUISoftwareUpdateStatePersistence)initWithDefaults:(id)defaults;
 - (id)description;
 - (void)_load;
 - (void)save;
-- (void)setNextAlertRepopStrategy:(unint64_t)a3 withNextAlertDate:(id)a4;
+- (void)setNextAlertRepopStrategy:(unint64_t)strategy withNextAlertDate:(id)date;
 @end
 
 @implementation SUSUISoftwareUpdateStatePersistence
 
-- (SUSUISoftwareUpdateStatePersistence)initWithDefaults:(id)a3
+- (SUSUISoftwareUpdateStatePersistence)initWithDefaults:(id)defaults
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
-  v9 = 0;
+  objc_storeStrong(location, defaults);
+  v3 = selfCopy;
+  selfCopy = 0;
   v7.receiver = v3;
   v7.super_class = SUSUISoftwareUpdateStatePersistence;
   v6 = [(SUSUISoftwareUpdateStatePersistence *)&v7 init];
-  v9 = v6;
-  objc_storeStrong(&v9, v6);
+  selfCopy = v6;
+  objc_storeStrong(&selfCopy, v6);
   if (v6)
   {
-    objc_storeStrong(&v9->_nextAlertScheduledDate, 0);
-    objc_storeStrong(&v9->_installPolicy, 0);
-    v9->_remindMeLaterCountForCurrentUpdate = 0;
-    v9->_remindMeLaterCountSinceRequiringInstallation = 0;
-    v9->_alertFlow = 0;
-    v9->_downloadWasQueuedRemotely = 0;
-    objc_storeStrong(&v9->_defaults, location[0]);
-    v9->_autoUpdateRetryCount = 0;
-    [(SUSUISoftwareUpdateStatePersistence *)v9 _load];
+    objc_storeStrong(&selfCopy->_nextAlertScheduledDate, 0);
+    objc_storeStrong(&selfCopy->_installPolicy, 0);
+    selfCopy->_remindMeLaterCountForCurrentUpdate = 0;
+    selfCopy->_remindMeLaterCountSinceRequiringInstallation = 0;
+    selfCopy->_alertFlow = 0;
+    selfCopy->_downloadWasQueuedRemotely = 0;
+    objc_storeStrong(&selfCopy->_defaults, location[0]);
+    selfCopy->_autoUpdateRetryCount = 0;
+    [(SUSUISoftwareUpdateStatePersistence *)selfCopy _load];
   }
 
-  v5 = v9;
+  v5 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (void)setNextAlertRepopStrategy:(unint64_t)a3 withNextAlertDate:(id)a4
+- (void)setNextAlertRepopStrategy:(unint64_t)strategy withNextAlertDate:(id)date
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  strategyCopy = strategy;
   location = 0;
-  objc_storeStrong(&location, a4);
-  [(SUSUISoftwareUpdateStatePersistence *)v7 _setNextAlertDate:location];
-  [(SUSUISoftwareUpdateStatePersistence *)v7 _setNextAlertRepopStrategy:v5];
+  objc_storeStrong(&location, date);
+  [(SUSUISoftwareUpdateStatePersistence *)selfCopy _setNextAlertDate:location];
+  [(SUSUISoftwareUpdateStatePersistence *)selfCopy _setNextAlertRepopStrategy:strategyCopy];
   objc_storeStrong(&location, 0);
 }
 
 - (id)description
 {
-  v18 = self;
+  selfCopy = self;
   v17[1] = a2;
   v17[0] = [BSDescriptionBuilder builderWithObject:self];
-  if (v18->_nextAlertScheduledDate)
+  if (selfCopy->_nextAlertScheduledDate)
   {
-    v16 = [SUUtility prettyPrintDate:v18->_nextAlertScheduledDate];
+    v16 = [SUUtility prettyPrintDate:selfCopy->_nextAlertScheduledDate];
     v2 = [v17[0] appendObject:? withName:?];
   }
 
   v11 = v17[0];
-  v12 = SUSUIStringForInstallAlertRepopStrategy(v18->_nextAlertRepopStrategy);
+  v12 = SUSUIStringForInstallAlertRepopStrategy(selfCopy->_nextAlertRepopStrategy);
   v3 = [v11 appendObject:? withName:?];
 
   v13 = v17[0];
-  v14 = SUSUIStringForInstallAlertFlow(v18->_alertFlow);
+  v14 = SUSUIStringForInstallAlertFlow(selfCopy->_alertFlow);
   v4 = [v13 appendObject:? withName:?];
 
-  v5 = [v17[0] appendBool:v18->_downloadWasQueuedRemotely withName:@"DownloadWasQueuedRemotely"];
-  v6 = [v17[0] appendInteger:v18->_remindMeLaterCountForCurrentUpdate withName:@"RemindMeLaterCountForCurrentUpdate"];
-  v7 = [v17[0] appendInteger:v18->_remindMeLaterCountSinceRequiringInstallation withName:@"RemindMeLaterCountSinceRequiringUpdates"];
-  v8 = [v17[0] appendObject:v18->_installPolicy withName:@"InstallPolicy"];
-  v9 = [v17[0] appendInteger:v18->_autoUpdateRetryCount withName:@"AutoUpdateRetryCount"];
-  v15 = [v17[0] build];
+  v5 = [v17[0] appendBool:selfCopy->_downloadWasQueuedRemotely withName:@"DownloadWasQueuedRemotely"];
+  v6 = [v17[0] appendInteger:selfCopy->_remindMeLaterCountForCurrentUpdate withName:@"RemindMeLaterCountForCurrentUpdate"];
+  v7 = [v17[0] appendInteger:selfCopy->_remindMeLaterCountSinceRequiringInstallation withName:@"RemindMeLaterCountSinceRequiringUpdates"];
+  v8 = [v17[0] appendObject:selfCopy->_installPolicy withName:@"InstallPolicy"];
+  v9 = [v17[0] appendInteger:selfCopy->_autoUpdateRetryCount withName:@"AutoUpdateRetryCount"];
+  build = [v17[0] build];
   objc_storeStrong(v17, 0);
 
-  return v15;
+  return build;
 }
 
 - (void)save
 {
-  v15 = self;
+  selfCopy = self;
   v14[1] = a2;
   v14[0] = +[NSMutableDictionary dictionary];
-  v6 = [NSNumber numberWithBool:v15->_downloadWasQueuedRemotely];
+  v6 = [NSNumber numberWithBool:selfCopy->_downloadWasQueuedRemotely];
   [v14[0] setObject:? forKey:?];
 
-  v7 = [NSNumber numberWithUnsignedInteger:v15->_alertFlow];
+  v7 = [NSNumber numberWithUnsignedInteger:selfCopy->_alertFlow];
   [v14[0] setObject:? forKey:?];
 
-  v8 = [NSNumber numberWithInteger:v15->_remindMeLaterCountForCurrentUpdate];
+  v8 = [NSNumber numberWithInteger:selfCopy->_remindMeLaterCountForCurrentUpdate];
   [v14[0] setObject:? forKey:?];
 
-  v9 = [NSNumber numberWithInteger:v15->_remindMeLaterCountSinceRequiringInstallation];
+  v9 = [NSNumber numberWithInteger:selfCopy->_remindMeLaterCountSinceRequiringInstallation];
   [v14[0] setObject:? forKey:?];
 
-  if (v15->_nextAlertScheduledDate)
+  if (selfCopy->_nextAlertScheduledDate)
   {
-    [v14[0] setObject:v15->_nextAlertScheduledDate forKey:@"SUSUISoftwareUpdateAlertRepopDate"];
+    [v14[0] setObject:selfCopy->_nextAlertScheduledDate forKey:@"SUSUISoftwareUpdateAlertRepopDate"];
   }
 
-  v4 = [NSNumber numberWithUnsignedInteger:v15->_nextAlertRepopStrategy];
+  v4 = [NSNumber numberWithUnsignedInteger:selfCopy->_nextAlertRepopStrategy];
   [v14[0] setObject:? forKey:?];
 
-  v5 = [NSNumber numberWithInteger:v15->_autoUpdateRetryCount];
+  v5 = [NSNumber numberWithInteger:selfCopy->_autoUpdateRetryCount];
   [v14[0] setObject:? forKey:?];
 
-  v13 = [NSKeyedArchiver archivedDataWithRootObject:v15->_installPolicy];
+  v13 = [NSKeyedArchiver archivedDataWithRootObject:selfCopy->_installPolicy];
   if (v13)
   {
     [v14[0] setObject:v13 forKey:@"SUSUISoftwareUpdateStateInstallPolicyKey"];
   }
 
-  [(SUSUISoftwareUpdateDefaults *)v15->_defaults setSoftwareUpdateState:v14[0]];
+  [(SUSUISoftwareUpdateDefaults *)selfCopy->_defaults setSoftwareUpdateState:v14[0]];
   location = SUSUILog();
   v11 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(location, OS_LOG_TYPE_DEFAULT))
@@ -134,51 +134,51 @@
 
 - (void)_load
 {
-  v13 = self;
+  selfCopy = self;
   v12[1] = a2;
   v12[0] = [(SUSUISoftwareUpdateDefaults *)self->_defaults softwareUpdateState];
   v11 = [v12[0] bs_safeObjectForKey:@"SUSUISoftwareUpdateAlertFlow" ofType:objc_opt_class()];
   if (v11)
   {
-    v10 = [v11 unsignedIntegerValue];
-    if (v10 > 4)
+    unsignedIntegerValue = [v11 unsignedIntegerValue];
+    if (unsignedIntegerValue > 4)
     {
-      [(SUSUISoftwareUpdateStatePersistence *)v13 setAlertFlow:0];
+      [(SUSUISoftwareUpdateStatePersistence *)selfCopy setAlertFlow:0];
     }
 
     else
     {
-      [(SUSUISoftwareUpdateStatePersistence *)v13 setAlertFlow:v10];
+      [(SUSUISoftwareUpdateStatePersistence *)selfCopy setAlertFlow:unsignedIntegerValue];
     }
   }
 
   v9 = [v12[0] bs_safeObjectForKey:@"SUSUISoftwareUpdateAlertRepopDate" ofType:objc_opt_class()];
   if (v9)
   {
-    [(SUSUISoftwareUpdateStatePersistence *)v13 _setNextAlertDate:v9];
+    [(SUSUISoftwareUpdateStatePersistence *)selfCopy _setNextAlertDate:v9];
   }
 
   v8 = [v12[0] bs_safeObjectForKey:@"SUSUISoftwareUpdateAlertRepopStrategy" ofType:objc_opt_class()];
   if (v8)
   {
-    -[SUSUISoftwareUpdateStatePersistence _setNextAlertRepopStrategy:](v13, "_setNextAlertRepopStrategy:", [v8 unsignedIntegerValue]);
+    -[SUSUISoftwareUpdateStatePersistence _setNextAlertRepopStrategy:](selfCopy, "_setNextAlertRepopStrategy:", [v8 unsignedIntegerValue]);
   }
 
   else
   {
-    [(SUSUISoftwareUpdateStatePersistence *)v13 _setNextAlertRepopStrategy:0];
+    [(SUSUISoftwareUpdateStatePersistence *)selfCopy _setNextAlertRepopStrategy:0];
   }
 
   v7 = [v12[0] bs_safeObjectForKey:@"SUSUISoftwareUpdateDownloadWasQueuedRemotely" ofType:objc_opt_class()];
   if (v7)
   {
-    -[SUSUISoftwareUpdateStatePersistence setDownloadWasQueuedRemotely:](v13, "setDownloadWasQueuedRemotely:", [v7 BOOLValue]);
+    -[SUSUISoftwareUpdateStatePersistence setDownloadWasQueuedRemotely:](selfCopy, "setDownloadWasQueuedRemotely:", [v7 BOOLValue]);
   }
 
   v6 = [v12[0] bs_safeObjectForKey:@"SUSUISoftwareUpdateStateAlertRemindMeLaterCount" ofType:objc_opt_class()];
   if (v6)
   {
-    -[SUSUISoftwareUpdateStatePersistence setRemindMeLaterCountForCurrentUpdate:](v13, "setRemindMeLaterCountForCurrentUpdate:", [v6 integerValue]);
+    -[SUSUISoftwareUpdateStatePersistence setRemindMeLaterCountForCurrentUpdate:](selfCopy, "setRemindMeLaterCountForCurrentUpdate:", [v6 integerValue]);
   }
 
   v5 = [v12[0] bs_safeObjectForKey:@"SUSUISoftwareUpdateStateInstallPolicyKey" ofType:objc_opt_class()];
@@ -188,7 +188,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(SUSUISoftwareUpdateStatePersistence *)v13 setCurrentInstallationPolicy:location];
+      [(SUSUISoftwareUpdateStatePersistence *)selfCopy setCurrentInstallationPolicy:location];
     }
 
     objc_storeStrong(&location, 0);
@@ -197,13 +197,13 @@
   v3 = [v12[0] bs_safeObjectForKey:@"SUSUISoftwareUpdateStateAlertRemindMeLaterCountSinceRequiringInstallation" ofType:objc_opt_class()];
   if (v3)
   {
-    -[SUSUISoftwareUpdateStatePersistence setRemindMeLaterCountSinceRequiringInstallation:](v13, "setRemindMeLaterCountSinceRequiringInstallation:", [v3 integerValue]);
+    -[SUSUISoftwareUpdateStatePersistence setRemindMeLaterCountSinceRequiringInstallation:](selfCopy, "setRemindMeLaterCountSinceRequiringInstallation:", [v3 integerValue]);
   }
 
   v2 = [v12[0] bs_safeObjectForKey:@"SUSUISoftwareUpdateStateAlertAutoUpdateRetryCount" ofType:objc_opt_class()];
   if (v2)
   {
-    -[SUSUISoftwareUpdateStatePersistence setAutoUpdateRetryCount:](v13, "setAutoUpdateRetryCount:", [v2 integerValue]);
+    -[SUSUISoftwareUpdateStatePersistence setAutoUpdateRetryCount:](selfCopy, "setAutoUpdateRetryCount:", [v2 integerValue]);
   }
 
   objc_storeStrong(&v2, 0);

@@ -1,21 +1,21 @@
 @interface PKBarcode
-+ (id)barcodesWithPassDictionary:(id)a3 bundle:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)barcodesWithPassDictionary:(id)dictionary bundle:(id)bundle;
+- (BOOL)isEqual:(id)equal;
 - (NSString)message;
 - (PKBarcode)init;
-- (PKBarcode)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKBarcode)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKBarcode
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self->_format == v5[6])
     {
       options = self->_options;
@@ -88,19 +88,19 @@ LABEL_18:
   return result;
 }
 
-+ (id)barcodesWithPassDictionary:(id)a3 bundle:(id)a4
++ (id)barcodesWithPassDictionary:(id)dictionary bundle:(id)bundle
 {
   v52[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  dictionaryCopy = dictionary;
+  bundleCopy = bundle;
+  v7 = bundleCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (dictionaryCopy && bundleCopy)
   {
-    v9 = [v5 PKArrayForKey:@"barcodes"];
+    v9 = [dictionaryCopy PKArrayForKey:@"barcodes"];
     if (!v9)
     {
-      v10 = [v5 PKDictionaryForKey:@"barcode"];
+      v10 = [dictionaryCopy PKDictionaryForKey:@"barcode"];
       v11 = v10;
       if (v10)
       {
@@ -114,7 +114,7 @@ LABEL_18:
       }
     }
 
-    v42 = v5;
+    v42 = dictionaryCopy;
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v46 = 0u;
     v47 = 0u;
@@ -262,35 +262,35 @@ LABEL_36:
       v8 = 0;
     }
 
-    v5 = v42;
+    dictionaryCopy = v42;
   }
 
   return v8;
 }
 
-- (PKBarcode)initWithCoder:(id)a3
+- (PKBarcode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKBarcode;
   v5 = [(PKBarcode *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"message"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"message"];
     messageData = v5->_messageData;
     v5->_messageData = v6;
 
-    v5->_messageEncoding = [v4 decodeInt32ForKey:@"messageEncoding"];
-    v5->_format = [v4 decodeIntegerForKey:@"format"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"options"];
+    v5->_messageEncoding = [coderCopy decodeInt32ForKey:@"messageEncoding"];
+    v5->_format = [coderCopy decodeIntegerForKey:@"format"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"options"];
     options = v5->_options;
     v5->_options = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altText"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altText"];
     altText = v5->_altText;
     v5->_altText = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"header"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"header"];
     header = v5->_header;
     v5->_header = v12;
   }
@@ -298,16 +298,16 @@ LABEL_36:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   messageData = self->_messageData;
-  v5 = a3;
-  [v5 encodeObject:messageData forKey:@"message"];
-  [v5 encodeInt32:self->_messageEncoding forKey:@"messageEncoding"];
-  [v5 encodeInteger:self->_format forKey:@"format"];
-  [v5 encodeObject:self->_options forKey:@"options"];
-  [v5 encodeObject:self->_altText forKey:@"altText"];
-  [v5 encodeObject:self->_header forKey:@"header"];
+  coderCopy = coder;
+  [coderCopy encodeObject:messageData forKey:@"message"];
+  [coderCopy encodeInt32:self->_messageEncoding forKey:@"messageEncoding"];
+  [coderCopy encodeInteger:self->_format forKey:@"format"];
+  [coderCopy encodeObject:self->_options forKey:@"options"];
+  [coderCopy encodeObject:self->_altText forKey:@"altText"];
+  [coderCopy encodeObject:self->_header forKey:@"header"];
 }
 
 - (NSString)message

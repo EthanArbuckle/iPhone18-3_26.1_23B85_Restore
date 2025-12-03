@@ -1,53 +1,53 @@
 @interface NTKFaceLibraryViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilityShouldSwipeBetweenPagesForPageScrollViewController:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilityShouldSwipeBetweenPagesForPageScrollViewController:(id)controller;
 - (BOOL)_axAddPageViewControllerIsActive;
-- (BOOL)_axCanUseOverlayButton:(id)a3;
+- (BOOL)_axCanUseOverlayButton:(id)button;
 - (BOOL)_axStartEditing;
-- (id)_accessibilityCustomActionsForPageAtIndex:(unint64_t)a3 forPageScrollViewController:(id)a4;
-- (id)_accessibilityHintForPageAtIndex:(unint64_t)a3 forPageScrollViewController:(id)a4;
-- (id)_accessibilityLabelForPageAtIndex:(unint64_t)a3 forPageScrollViewController:(id)a4;
-- (id)_accessibilityValueForPageAtIndex:(unint64_t)a3 forPageScrollViewController:(id)a4;
+- (id)_accessibilityCustomActionsForPageAtIndex:(unint64_t)index forPageScrollViewController:(id)controller;
+- (id)_accessibilityHintForPageAtIndex:(unint64_t)index forPageScrollViewController:(id)controller;
+- (id)_accessibilityLabelForPageAtIndex:(unint64_t)index forPageScrollViewController:(id)controller;
+- (id)_accessibilityValueForPageAtIndex:(unint64_t)index forPageScrollViewController:(id)controller;
 @end
 
 @implementation NTKFaceLibraryViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKFaceLibraryViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"NTKFaceCollection" hasInstanceMethod:@"faceAtIndex:" withFullSignature:{"@", "Q", 0}];
-  [v3 validateClass:@"NTKFaceLibraryViewController" hasInstanceMethod:@"_indexOfAddPage" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"NTKFaceLibraryOverlayView" hasInstanceMethod:@"cancelButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKFaceLibraryOverlayView" hasInstanceMethod:@"editButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKFaceLibraryViewController" hasInstanceMethod:@"_deactivateAddFaceAnimated: withCompletion:" withFullSignature:{"v", "B", "@?", 0}];
-  [v3 validateClass:@"NTKFaceLibraryViewController" hasInstanceMethod:@"_startFaceEditing" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"NTKFaceViewController" hasInstanceMethod:@"face" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKFaceLibraryViewController" hasInstanceVariable:@"_libraryFaceCollection" withType:"NTKFaceCollection"];
-  [v3 validateClass:@"NTKFaceLibraryViewController" hasInstanceVariable:@"_addableFaceCollection" withType:"NTKFaceCollection"];
-  [v3 validateClass:@"NTKFaceLibraryViewController" hasInstanceVariable:@"_switcherController" withType:"NTKSwitcherViewController"];
-  [v3 validateClass:@"NTKFaceLibraryViewController" hasInstanceVariable:@"_libraryOverlayView" withType:"NTKFaceLibraryOverlayView"];
-  [v3 validateClass:@"NTKFaceLibraryViewController" hasInstanceVariable:@"_selectedFaceViewController" withType:"NTKFaceViewController"];
-  [v3 validateClass:@"NTKFaceLibraryViewController" hasInstanceVariable:@"_presented" withType:"B"];
-  [v3 validateClass:@"NTKFaceLibraryViewController" hasInstanceVariable:@"_isFaceEditing" withType:"B"];
-  [v3 validateClass:@"NTKFaceLibraryViewController" hasInstanceVariable:@"_addFaceViewController" withType:"NTKAddPageViewController"];
-  [v3 validateClass:@"NTKAddPageViewController" hasInstanceMethod:@"currentPageIndex" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"NTKAddPageViewController" hasInstanceMethod:@"isActive" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"NTKFaceLibraryViewController" hasInstanceMethod:@"_titleForAddFacePageAtIndex:" withFullSignature:{"@", "Q", 0}];
-  [v3 validateClass:@"NTKFaceLibraryViewController" hasInstanceMethod:@"endInteractiveLibraryPresentationLatched:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"NTKFaceLibraryViewController" hasInstanceMethod:@"_scrollToAndSetupFaceAtIndex: updateLibraryFaceCollection:" withFullSignature:{"v", "Q", "B", 0}];
-  [v3 validateClass:@"NTKFaceLibraryViewController" hasInstanceMethod:@"_dismissSwitcherAnimated:withIndex:remainFrozen:completion:" withFullSignature:{"v", "B", "Q", "B", "@?", 0}];
-  [v3 validateClass:@"NTKFace"];
-  [v3 validateClass:@"NTKFace" hasInstanceMethod:@"faceStyle" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"NTKFace" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKPageScrollViewController"];
-  [v3 validateClass:@"NTKPageScrollViewController" hasInstanceMethod:@"scrollEnabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"NTKPageScrollViewController" hasInstanceMethod:@"currentPageIndex" withFullSignature:{"Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKFaceLibraryViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"NTKFaceCollection" hasInstanceMethod:@"faceAtIndex:" withFullSignature:{"@", "Q", 0}];
+  [validationsCopy validateClass:@"NTKFaceLibraryViewController" hasInstanceMethod:@"_indexOfAddPage" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"NTKFaceLibraryOverlayView" hasInstanceMethod:@"cancelButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKFaceLibraryOverlayView" hasInstanceMethod:@"editButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKFaceLibraryViewController" hasInstanceMethod:@"_deactivateAddFaceAnimated: withCompletion:" withFullSignature:{"v", "B", "@?", 0}];
+  [validationsCopy validateClass:@"NTKFaceLibraryViewController" hasInstanceMethod:@"_startFaceEditing" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"NTKFaceViewController" hasInstanceMethod:@"face" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKFaceLibraryViewController" hasInstanceVariable:@"_libraryFaceCollection" withType:"NTKFaceCollection"];
+  [validationsCopy validateClass:@"NTKFaceLibraryViewController" hasInstanceVariable:@"_addableFaceCollection" withType:"NTKFaceCollection"];
+  [validationsCopy validateClass:@"NTKFaceLibraryViewController" hasInstanceVariable:@"_switcherController" withType:"NTKSwitcherViewController"];
+  [validationsCopy validateClass:@"NTKFaceLibraryViewController" hasInstanceVariable:@"_libraryOverlayView" withType:"NTKFaceLibraryOverlayView"];
+  [validationsCopy validateClass:@"NTKFaceLibraryViewController" hasInstanceVariable:@"_selectedFaceViewController" withType:"NTKFaceViewController"];
+  [validationsCopy validateClass:@"NTKFaceLibraryViewController" hasInstanceVariable:@"_presented" withType:"B"];
+  [validationsCopy validateClass:@"NTKFaceLibraryViewController" hasInstanceVariable:@"_isFaceEditing" withType:"B"];
+  [validationsCopy validateClass:@"NTKFaceLibraryViewController" hasInstanceVariable:@"_addFaceViewController" withType:"NTKAddPageViewController"];
+  [validationsCopy validateClass:@"NTKAddPageViewController" hasInstanceMethod:@"currentPageIndex" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"NTKAddPageViewController" hasInstanceMethod:@"isActive" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"NTKFaceLibraryViewController" hasInstanceMethod:@"_titleForAddFacePageAtIndex:" withFullSignature:{"@", "Q", 0}];
+  [validationsCopy validateClass:@"NTKFaceLibraryViewController" hasInstanceMethod:@"endInteractiveLibraryPresentationLatched:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"NTKFaceLibraryViewController" hasInstanceMethod:@"_scrollToAndSetupFaceAtIndex: updateLibraryFaceCollection:" withFullSignature:{"v", "Q", "B", 0}];
+  [validationsCopy validateClass:@"NTKFaceLibraryViewController" hasInstanceMethod:@"_dismissSwitcherAnimated:withIndex:remainFrozen:completion:" withFullSignature:{"v", "B", "Q", "B", "@?", 0}];
+  [validationsCopy validateClass:@"NTKFace"];
+  [validationsCopy validateClass:@"NTKFace" hasInstanceMethod:@"faceStyle" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"NTKFace" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKPageScrollViewController"];
+  [validationsCopy validateClass:@"NTKPageScrollViewController" hasInstanceMethod:@"scrollEnabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"NTKPageScrollViewController" hasInstanceMethod:@"currentPageIndex" withFullSignature:{"Q", 0}];
 }
 
-- (BOOL)_accessibilityShouldSwipeBetweenPagesForPageScrollViewController:(id)a3
+- (BOOL)_accessibilityShouldSwipeBetweenPagesForPageScrollViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (([(NTKFaceLibraryViewControllerAccessibility *)self safeBoolForKey:@"_isFaceEditing"]& 1) != 0 || ![(NTKFaceLibraryViewControllerAccessibility *)self safeBoolForKey:@"_presented"])
   {
     v5 = 0;
@@ -55,19 +55,19 @@
 
   else
   {
-    v5 = [v4 safeBoolForKey:@"scrollEnabled"];
+    v5 = [controllerCopy safeBoolForKey:@"scrollEnabled"];
   }
 
   return v5;
 }
 
-- (id)_accessibilityValueForPageAtIndex:(unint64_t)a3 forPageScrollViewController:(id)a4
+- (id)_accessibilityValueForPageAtIndex:(unint64_t)index forPageScrollViewController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   v7 = [(NTKFaceLibraryViewControllerAccessibility *)self safeValueForKey:@"_libraryFaceCollection"];
   v8 = [(NTKFaceLibraryViewControllerAccessibility *)self safeValueForKey:@"_switcherController"];
 
-  if (v8 == v6 && [(NTKFaceLibraryViewControllerAccessibility *)self safeUnsignedIntegerForKey:@"_indexOfAddPage"]!= a3)
+  if (v8 == controllerCopy && [(NTKFaceLibraryViewControllerAccessibility *)self safeUnsignedIntegerForKey:@"_indexOfAddPage"]!= index)
   {
     v20 = 0;
     objc_opt_class();
@@ -110,13 +110,13 @@ uint64_t __107__NTKFaceLibraryViewControllerAccessibility__accessibilityValueFor
   return _objc_release_x1();
 }
 
-- (id)_accessibilityLabelForPageAtIndex:(unint64_t)a3 forPageScrollViewController:(id)a4
+- (id)_accessibilityLabelForPageAtIndex:(unint64_t)index forPageScrollViewController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   v7 = [(NTKFaceLibraryViewControllerAccessibility *)self safeValueForKey:@"_libraryFaceCollection"];
   v8 = [(NTKFaceLibraryViewControllerAccessibility *)self safeValueForKey:@"_switcherController"];
 
-  if (v8 != v6)
+  if (v8 != controllerCopy)
   {
     [(NTKFaceLibraryViewControllerAccessibility *)self safeValueForKey:@"_addableFaceCollection"];
     v24 = 0;
@@ -132,20 +132,20 @@ uint64_t __107__NTKFaceLibraryViewControllerAccessibility__accessibilityValueFor
     if (v10)
     {
       v11 = [v10 safeStringForKey:@"name"];
-      v12 = [v11 localizedLowercaseString];
+      localizedLowercaseString = [v11 localizedLowercaseString];
     }
 
     else
     {
-      v12 = 0;
+      localizedLowercaseString = 0;
     }
 
     goto LABEL_8;
   }
 
-  if ([(NTKFaceLibraryViewControllerAccessibility *)self safeUnsignedIntegerForKey:@"_indexOfAddPage"]== a3)
+  if ([(NTKFaceLibraryViewControllerAccessibility *)self safeUnsignedIntegerForKey:@"_indexOfAddPage"]== index)
   {
-    v12 = accessibilityLocalizedString(@"add.new.face", v13);
+    localizedLowercaseString = accessibilityLocalizedString(@"add.new.face", v13);
 LABEL_8:
     v14 = 0;
     goto LABEL_9;
@@ -176,28 +176,28 @@ LABEL_8:
     v17 = [(NTKFaceLibraryViewControllerAccessibility *)self safeValueForKey:@"_libraryOverlayView"];
     v18 = [v17 safeValueForKey:@"editButton"];
     v19 = [v14 safeStringForKey:@"name"];
-    v20 = [v19 localizedLowercaseString];
+    localizedLowercaseString2 = [v19 localizedLowercaseString];
 
     if ([(NTKFaceLibraryViewControllerAccessibility *)self _axCanUseOverlayButton:v18])
     {
       v22 = accessibilityLocalizedString(@"face.customizable.hint", v21);
-      v12 = __UIAXStringForVariables();
+      localizedLowercaseString = __UIAXStringForVariables();
     }
 
     else
     {
-      v12 = v20;
+      localizedLowercaseString = localizedLowercaseString2;
     }
   }
 
   else
   {
-    v12 = 0;
+    localizedLowercaseString = 0;
   }
 
 LABEL_9:
 
-  return v12;
+  return localizedLowercaseString;
 }
 
 uint64_t __107__NTKFaceLibraryViewControllerAccessibility__accessibilityLabelForPageAtIndex_forPageScrollViewController___block_invoke(uint64_t a1)
@@ -220,14 +220,14 @@ uint64_t __107__NTKFaceLibraryViewControllerAccessibility__accessibilityLabelFor
   return _objc_release_x1();
 }
 
-- (id)_accessibilityHintForPageAtIndex:(unint64_t)a3 forPageScrollViewController:(id)a4
+- (id)_accessibilityHintForPageAtIndex:(unint64_t)index forPageScrollViewController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   v7 = [(NTKFaceLibraryViewControllerAccessibility *)self safeValueForKey:@"_switcherController"];
 
-  if (v7 == v6)
+  if (v7 == controllerCopy)
   {
-    if ([(NTKFaceLibraryViewControllerAccessibility *)self safeUnsignedIntegerForKey:@"_indexOfAddPage"]== a3)
+    if ([(NTKFaceLibraryViewControllerAccessibility *)self safeUnsignedIntegerForKey:@"_indexOfAddPage"]== index)
     {
       v8 = accessibilityLocalizedString(@"add.face.hint", v9);
     }
@@ -255,7 +255,7 @@ uint64_t __107__NTKFaceLibraryViewControllerAccessibility__accessibilityLabelFor
         abort();
       }
 
-      v14 = [v13 _accessibilityFaceStyleDescription];
+      _accessibilityFaceStyleDescription = [v13 _accessibilityFaceStyleDescription];
       v17 = accessibilityLocalizedString(@"face.hint", v15);
       v8 = __UIAXStringForVariables();
     }
@@ -279,22 +279,22 @@ uint64_t __106__NTKFaceLibraryViewControllerAccessibility__accessibilityHintForP
   return _objc_release_x1();
 }
 
-- (BOOL)_axCanUseOverlayButton:(id)a3
+- (BOOL)_axCanUseOverlayButton:(id)button
 {
-  v3 = a3;
+  buttonCopy = button;
   objc_opt_class();
   v4 = __UIAccessibilityCastAsClass();
   if ([v4 _accessibilityViewIsVisible])
   {
-    v5 = [v4 isEnabled];
+    isEnabled = [v4 isEnabled];
   }
 
   else
   {
-    v5 = 0;
+    isEnabled = 0;
   }
 
-  return v5;
+  return isEnabled;
 }
 
 - (BOOL)_axStartEditing
@@ -334,9 +334,9 @@ id __60__NTKFaceLibraryViewControllerAccessibility__axStartEditing__block_invoke
   return v6;
 }
 
-- (id)_accessibilityCustomActionsForPageAtIndex:(unint64_t)a3 forPageScrollViewController:(id)a4
+- (id)_accessibilityCustomActionsForPageAtIndex:(unint64_t)index forPageScrollViewController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   v7 = [(NTKFaceLibraryViewControllerAccessibility *)self safeValueForKey:@"_libraryOverlayView"];
   v8 = [(NTKFaceLibraryViewControllerAccessibility *)self safeValueForKey:@"_switcherController"];
   v9 = [(NTKFaceLibraryViewControllerAccessibility *)self _accessibilityShouldSwipeBetweenPagesForPageScrollViewController:v8];
@@ -344,7 +344,7 @@ id __60__NTKFaceLibraryViewControllerAccessibility__axStartEditing__block_invoke
   if (v9)
   {
     v10 = +[NSMutableArray array];
-    if ([v6 safeBoolForKey:@"scrollEnabled"] && objc_msgSend(v6, "safeUnsignedIntegerForKey:", @"currentPageIndex") == a3)
+    if ([controllerCopy safeBoolForKey:@"scrollEnabled"] && objc_msgSend(controllerCopy, "safeUnsignedIntegerForKey:", @"currentPageIndex") == index)
     {
       v11 = [v7 safeValueForKey:@"editButton"];
       if (![(NTKFaceLibraryViewControllerAccessibility *)self _axCanUseOverlayButton:v11])

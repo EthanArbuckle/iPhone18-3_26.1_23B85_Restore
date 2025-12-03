@@ -1,30 +1,30 @@
 @interface NTKSecretariatBackgroundView
-- (NTKSecretariatBackgroundView)initWithFrame:(CGRect)a3 device:(id)a4 inactive:(BOOL)a5;
-- (id)_horseImageViewWithName:(id)a3;
-- (id)_imageViewWithName:(id)a3;
+- (NTKSecretariatBackgroundView)initWithFrame:(CGRect)frame device:(id)device inactive:(BOOL)inactive;
+- (id)_horseImageViewWithName:(id)name;
+- (id)_imageViewWithName:(id)name;
 - (void)_loadImages;
 - (void)_updateLayout;
-- (void)_updateOrigin:(CGPoint)a3 forImageView:(id)a4;
-- (void)setPalette:(id)a3;
+- (void)_updateOrigin:(CGPoint)origin forImageView:(id)view;
+- (void)setPalette:(id)palette;
 @end
 
 @implementation NTKSecretariatBackgroundView
 
-- (NTKSecretariatBackgroundView)initWithFrame:(CGRect)a3 device:(id)a4 inactive:(BOOL)a5
+- (NTKSecretariatBackgroundView)initWithFrame:(CGRect)frame device:(id)device inactive:(BOOL)inactive
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
   v16.receiver = self;
   v16.super_class = NTKSecretariatBackgroundView;
-  v13 = [(NTKSecretariatBackgroundView *)&v16 initWithFrame:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(NTKSecretariatBackgroundView *)&v16 initWithFrame:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    objc_storeStrong(&v13->_device, a4);
-    v14->_inactive = a5;
+    objc_storeStrong(&height->_device, device);
+    v14->_inactive = inactive;
     [(NTKSecretariatBackgroundView *)v14 _loadImages];
     [(NTKSecretariatBackgroundView *)v14 setClipsToBounds:1];
   }
@@ -32,27 +32,27 @@
   return v14;
 }
 
-- (void)setPalette:(id)a3
+- (void)setPalette:(id)palette
 {
-  objc_storeStrong(&self->_palette, a3);
-  v5 = a3;
-  v6 = [(NTKSecretariatColorPalette *)self->_palette apple];
-  [(UIImageView *)self->_appleImageView setTintColor:v6];
+  objc_storeStrong(&self->_palette, palette);
+  paletteCopy = palette;
+  apple = [(NTKSecretariatColorPalette *)self->_palette apple];
+  [(UIImageView *)self->_appleImageView setTintColor:apple];
 
-  v7 = [(NTKSecretariatColorPalette *)self->_palette horseshoe];
-  [(UIImageView *)self->_horseshoeImageView setTintColor:v7];
+  horseshoe = [(NTKSecretariatColorPalette *)self->_palette horseshoe];
+  [(UIImageView *)self->_horseshoeImageView setTintColor:horseshoe];
 
-  v8 = [(NTKSecretariatColorPalette *)self->_palette horseshoeHoles];
-  [(UIImageView *)self->_horseshoeHolesImageView setTintColor:v8];
+  horseshoeHoles = [(NTKSecretariatColorPalette *)self->_palette horseshoeHoles];
+  [(UIImageView *)self->_horseshoeHolesImageView setTintColor:horseshoeHoles];
 
-  v9 = [(NTKSecretariatColorPalette *)self->_palette horse];
-  [(UIImageView *)self->_horseImageView setTintColor:v9];
+  horse = [(NTKSecretariatColorPalette *)self->_palette horse];
+  [(UIImageView *)self->_horseImageView setTintColor:horse];
 
-  v10 = [(NTKSecretariatColorPalette *)self->_palette horseEye];
-  [(UIImageView *)self->_horseEyeImageView setTintColor:v10];
+  horseEye = [(NTKSecretariatColorPalette *)self->_palette horseEye];
+  [(UIImageView *)self->_horseEyeImageView setTintColor:horseEye];
 
-  v11 = [(NTKSecretariatColorPalette *)self->_palette horseHair];
-  [(UIImageView *)self->_horseHairImageView setTintColor:v11];
+  horseHair = [(NTKSecretariatColorPalette *)self->_palette horseHair];
+  [(UIImageView *)self->_horseHairImageView setTintColor:horseHair];
 }
 
 - (void)_loadImages
@@ -104,13 +104,13 @@
   [(NTKSecretariatBackgroundView *)self _updateLayout];
 }
 
-- (id)_imageViewWithName:(id)a3
+- (id)_imageViewWithName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
+  nameCopy = name;
+  v5 = nameCopy;
   if (self->_inactive)
   {
-    v6 = [v4 stringByAppendingString:@"Inactive"];
+    v6 = [nameCopy stringByAppendingString:@"Inactive"];
 
     v5 = v6;
   }
@@ -121,9 +121,9 @@
   return v8;
 }
 
-- (id)_horseImageViewWithName:(id)a3
+- (id)_horseImageViewWithName:(id)name
 {
-  v4 = [(NTKSecretariatBackgroundView *)self _imageViewWithName:a3];
+  v4 = [(NTKSecretariatBackgroundView *)self _imageViewWithName:name];
   [(NTKSecretariatBackgroundView *)self bounds];
   [v4 setFrame:?];
   [v4 setContentMode:2];
@@ -142,17 +142,17 @@
   [(NTKSecretariatBackgroundView *)self _updateOrigin:horseshoeImageView forImageView:v5, v7];
 }
 
-- (void)_updateOrigin:(CGPoint)a3 forImageView:(id)a4
+- (void)_updateOrigin:(CGPoint)origin forImageView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v11 = a4;
+  y = origin.y;
+  x = origin.x;
+  viewCopy = view;
   [(NTKSecretariatBackgroundView *)self bounds];
   CLKRectGetCenter();
   v8 = v7;
   v10 = v9;
-  [v11 frame];
-  [v11 setFrame:{(v8 - x) * 0.5, (v10 - y) * 0.5}];
+  [viewCopy frame];
+  [viewCopy setFrame:{(v8 - x) * 0.5, (v10 - y) * 0.5}];
 }
 
 @end

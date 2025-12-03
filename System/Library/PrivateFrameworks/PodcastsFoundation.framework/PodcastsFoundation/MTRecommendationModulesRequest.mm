@@ -1,16 +1,16 @@
 @interface MTRecommendationModulesRequest
 - (MTRecommendationModulesRequest)init;
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation MTRecommendationModulesRequest
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
-  sub_1D9026B8C(v5, v4);
+  selfCopy = self;
+  sub_1D9026B8C(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
@@ -19,10 +19,10 @@
 {
   *(&self->super.super.isa + OBJC_IVAR___MTRecommendationModulesRequest_kPayloadDataFetchLimit) = 50;
   v3 = OBJC_IVAR___MTRecommendationModulesRequest_context;
-  v4 = [objc_opt_self() sharedInstance];
-  v5 = [v4 mainQueueContext];
+  sharedInstance = [objc_opt_self() sharedInstance];
+  mainQueueContext = [sharedInstance mainQueueContext];
 
-  *(&self->super.super.isa + v3) = v5;
+  *(&self->super.super.isa + v3) = mainQueueContext;
   v7.receiver = self;
   v7.super_class = type metadata accessor for RecommendationModulesRequest();
   return [(MTBaseMAPIRequest *)&v7 init];

@@ -1,53 +1,53 @@
 @interface FRCFrameInterpolator
-- (BOOL)checkFrameFormatConsistencyFirstFrame:(id)a3 secondFrame:(id)a4 outputFrames:(id)a5;
-- (BOOL)checkStreamingBufferConsistencyFirstFrame:(id)a3 secondFrame:(id)a4;
+- (BOOL)checkFrameFormatConsistencyFirstFrame:(id)frame secondFrame:(id)secondFrame outputFrames:(id)frames;
+- (BOOL)checkStreamingBufferConsistencyFirstFrame:(id)frame secondFrame:(id)secondFrame;
 - (BOOL)configureSynthesis;
-- (BOOL)interpolateBetweenFirstFrame:(id)a3 secondFrame:(id)a4 timeScales:(id)a5 outputFrames:(id)a6 withError:(id *)a7;
-- (BOOL)shallDumpDebugInfoForCurrPts:(id *)a3 prevPts:(id *)a4;
-- (BOOL)shallReusePreviousFlowPts0:(id *)a3 Pts1:(id *)a4;
+- (BOOL)interpolateBetweenFirstFrame:(id)frame secondFrame:(id)secondFrame timeScales:(id)scales outputFrames:(id)frames withError:(id *)error;
+- (BOOL)shallDumpDebugInfoForCurrPts:(id *)pts prevPts:(id *)prevPts;
+- (BOOL)shallReusePreviousFlowPts0:(id *)pts0 Pts1:(id *)pts1;
 - (BOOL)updateGatingResult;
 - (CGAffineTransform)preferredTransform;
-- (FRCFrameInterpolator)initWithMode:(int64_t)a3;
-- (id)createOutputFramesWithWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(unsigned int)a5 numberOframes:(unint64_t)a6;
-- (id)errorWithErrorCode:(int64_t)a3;
-- (id)interpolateBetweenFirstFrame:(id)a3 secondFrame:(id)a4 numberOfFrames:(unint64_t)a5 withError:(id *)a6;
-- (id)interpolateBetweenFirstFrame:(id)a3 secondFrame:(id)a4 timeScales:(id)a5 outputSize:(CGSize)a6 outputPixelFormat:(unsigned int)a7 withError:(id *)a8;
-- (id)interpolateBetweenFirstFrame:(id)a3 secondFrame:(id)a4 timeScales:(id)a5 withError:(id *)a6;
-- (id)interpolateRecursiveFirstFrame:(id)a3 secondFrame:(id)a4 timeScale:(id)a5 withError:(id *)a6;
-- (id)normalizeTimingFromTimeScales:(id)a3 newBeginIdx:(int)a4 newEndIdx:(int)a5;
-- (id)selectFrameInsertionPointsFromTimingList:(id)a3 metadataList:(id)a4 withError:(id *)a5;
-- (id)selectFrameInsertionPointsFromTimingList:(id)a3 preModifiedTimingList:(id)a4;
-- (id)synthesizeInterpolatedFrames:(id)a3 second:(id)a4 normalizedFirst:(__CVBuffer *)a5 normalizedSecond:(__CVBuffer *)a6 timeScales:(id)a7 outputSize:(CGSize)a8 outputPixelFormat:(unsigned int)a9 scalerEnabled:(BOOL)a10;
-- (int)closestNumIdxInArray:(id)a3 target:(double)a4;
-- (int64_t)adjustUsage:(int64_t)a3;
+- (FRCFrameInterpolator)initWithMode:(int64_t)mode;
+- (id)createOutputFramesWithWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format numberOframes:(unint64_t)oframes;
+- (id)errorWithErrorCode:(int64_t)code;
+- (id)interpolateBetweenFirstFrame:(id)frame secondFrame:(id)secondFrame numberOfFrames:(unint64_t)frames withError:(id *)error;
+- (id)interpolateBetweenFirstFrame:(id)frame secondFrame:(id)secondFrame timeScales:(id)scales outputSize:(CGSize)size outputPixelFormat:(unsigned int)format withError:(id *)error;
+- (id)interpolateBetweenFirstFrame:(id)frame secondFrame:(id)secondFrame timeScales:(id)scales withError:(id *)error;
+- (id)interpolateRecursiveFirstFrame:(id)frame secondFrame:(id)secondFrame timeScale:(id)scale withError:(id *)error;
+- (id)normalizeTimingFromTimeScales:(id)scales newBeginIdx:(int)idx newEndIdx:(int)endIdx;
+- (id)selectFrameInsertionPointsFromTimingList:(id)list metadataList:(id)metadataList withError:(id *)error;
+- (id)selectFrameInsertionPointsFromTimingList:(id)list preModifiedTimingList:(id)timingList;
+- (id)synthesizeInterpolatedFrames:(id)frames second:(id)second normalizedFirst:(__CVBuffer *)first normalizedSecond:(__CVBuffer *)normalizedSecond timeScales:(id)scales outputSize:(CGSize)size outputPixelFormat:(unsigned int)format scalerEnabled:(BOOL)self0;
+- (int)closestNumIdxInArray:(id)array target:(double)target;
+- (int64_t)adjustUsage:(int64_t)usage;
 - (int64_t)endSession;
-- (int64_t)getFrameRotation:(int64_t)a3;
-- (int64_t)startSessionWithUsage:(int64_t)a3;
+- (int64_t)getFrameRotation:(int64_t)rotation;
+- (int64_t)startSessionWithUsage:(int64_t)usage;
 - (void)allocateInternalBuffers;
 - (void)configureGating;
-- (void)constructSessionStatisticsWithSessionDuration:(double)a3;
+- (void)constructSessionStatisticsWithSessionDuration:(double)duration;
 - (void)dealloc;
-- (void)getPixelAttributesForBuffer:(__CVBuffer *)a3;
+- (void)getPixelAttributesForBuffer:(__CVBuffer *)buffer;
 - (void)initSubModules;
 - (void)overwriteQualityModeFromDefaults;
-- (void)preserveCMAttachmentFirstFrame:(id)a3 secondFrame:(id)a4;
+- (void)preserveCMAttachmentFirstFrame:(id)frame secondFrame:(id)secondFrame;
 - (void)releaseInternalBuffers;
-- (void)restoreCMAttachmentToFirstFrame:(id)a3 secondFrame:(id)a4 interpolatedFrames:(id)a5;
+- (void)restoreCMAttachmentToFirstFrame:(id)frame secondFrame:(id)secondFrame interpolatedFrames:(id)frames;
 - (void)setCrossFlowAnalysisFromDefaults;
 - (void)setFlowAnalysisFromDefaults;
 - (void)setLiteSynthesisDebugFromDefaults;
 - (void)setNormalizationModeFromDefaults;
-- (void)setPreferredTransform:(CGAffineTransform *)a3;
+- (void)setPreferredTransform:(CGAffineTransform *)transform;
 - (void)setPropertiesFromDefaults;
 - (void)setSynthesisOptionsFromDefaults;
 - (void)updateBackwardFlow;
-- (void)updateLastFramePts:(id *)a3 duration:(id *)a4 toInterpolate:(unint64_t)a5;
+- (void)updateLastFramePts:(id *)pts duration:(id *)duration toInterpolate:(unint64_t)interpolate;
 - (void)updateRecommendation;
 @end
 
 @implementation FRCFrameInterpolator
 
-- (FRCFrameInterpolator)initWithMode:(int64_t)a3
+- (FRCFrameInterpolator)initWithMode:(int64_t)mode
 {
   v22.receiver = self;
   v22.super_class = FRCFrameInterpolator;
@@ -55,14 +55,14 @@
   v5 = v4;
   if (v4)
   {
-    *(v4 + 64) = a3;
+    *(v4 + 64) = mode;
     v6 = MEMORY[0x277CBF2C0];
     v7 = *(MEMORY[0x277CBF2C0] + 16);
     *(v4 + 600) = *MEMORY[0x277CBF2C0];
     *(v4 + 616) = v7;
     *(v4 + 632) = *(v6 + 32);
     *(v4 + 108) = 1111970369;
-    FRCGetInputFrameSizeForUsage(a3, v4 + 22, v4 + 23);
+    FRCGetInputFrameSizeForUsage(mode, v4 + 22, v4 + 23);
     v8 = dispatch_semaphore_create(0);
     completion_semaphore = v5->_completion_semaphore;
     v5->_completion_semaphore = v8;
@@ -129,9 +129,9 @@
   kdebug_trace();
 }
 
-- (int64_t)getFrameRotation:(int64_t)a3
+- (int64_t)getFrameRotation:(int64_t)rotation
 {
-  if ((a3 & 0x1000) != 0)
+  if ((rotation & 0x1000) != 0)
   {
     return 2;
   }
@@ -151,12 +151,12 @@
   }
 }
 
-- (int64_t)adjustUsage:(int64_t)a3
+- (int64_t)adjustUsage:(int64_t)usage
 {
   [(OpticalFlow *)self->_opticalFlow setTwoStageFlow:[(FRCFrameInterpolator *)self twoStageFlow]];
   [(OpticalFlow *)self->_opticalFlow setDownsampling:[(FRCFrameInterpolator *)self opticalFlowDownsampling]];
-  self->_inputRotation = [(FRCFrameInterpolator *)self getFrameRotation:a3];
-  QuarterSizeUsage = a3 & 0xFFF;
+  self->_inputRotation = [(FRCFrameInterpolator *)self getFrameRotation:usage];
+  QuarterSizeUsage = usage & 0xFFF;
   if (QuarterSizeUsage == 7)
   {
     goto LABEL_43;
@@ -296,7 +296,7 @@ LABEL_23:
   return QuarterSizeUsage;
 }
 
-- (int64_t)startSessionWithUsage:(int64_t)a3
+- (int64_t)startSessionWithUsage:(int64_t)usage
 {
   v37 = *MEMORY[0x277D85DE8];
   kdebug_trace();
@@ -313,7 +313,7 @@ LABEL_23:
     goto LABEL_4;
   }
 
-  if (a3 == -1)
+  if (usage == -1)
   {
     NSLog(&cfstr_ErrorInvalidUs.isa);
     goto LABEL_20;
@@ -342,7 +342,7 @@ LABEL_23:
     self->_lowMemoryMode = 1;
   }
 
-  usage = [(FRCFrameInterpolator *)self adjustUsage:a3];
+  usage = [(FRCFrameInterpolator *)self adjustUsage:usage];
   self->_usage = usage;
   if (self->_e5OpticalFlowModel)
   {
@@ -469,7 +469,7 @@ LABEL_45:
     else
     {
       self->_concurrentOpticalFlow = 1;
-      v22 = FRCGetNumberOfPixelsForUsage(a3) > 0x1FA400;
+      v22 = FRCGetNumberOfPixelsForUsage(usage) > 0x1FA400;
     }
 
     goto LABEL_45;
@@ -526,9 +526,9 @@ LABEL_46:
     NSLog(&cfstr_FrcStreamingMo.isa);
   }
 
-  v31 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   startTime = self->_startTime;
-  self->_startTime = v31;
+  self->_startTime = date;
 
   self->_gated = 0;
   self->_totalFramesInterpolated = 0;
@@ -652,8 +652,8 @@ LABEL_17:
     [(OpticalFlow *)self->_opticalFlow releaseResources];
     [(FRCSynthesis *)self->_synthesis releaseResources];
     [(FRCFrameInterpolator *)self releaseInternalBuffers];
-    v6 = [MEMORY[0x277CBEAA8] date];
-    [v6 timeIntervalSinceDate:self->_startTime];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:self->_startTime];
     v8 = v7;
 
     [(FRCFrameInterpolator *)self constructSessionStatisticsWithSessionDuration:v8];
@@ -816,9 +816,9 @@ LABEL_17:
   }
 }
 
-- (void)getPixelAttributesForBuffer:(__CVBuffer *)a3
+- (void)getPixelAttributesForBuffer:(__CVBuffer *)buffer
 {
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   v15 = CVPixelFormatDescriptionCreateWithPixelFormatType(*MEMORY[0x277CBECE8], PixelFormatType);
   v6 = [(__CFDictionary *)v15 objectForKeyedSubscript:*MEMORY[0x277CC4EF8]];
   self->_fullRange = [v6 isEqualToString:*MEMORY[0x277CC4F00]];
@@ -841,7 +841,7 @@ LABEL_17:
 
   self->_removeCMAttachment = v10;
   v11 = [(__CFDictionary *)v15 objectForKeyedSubscript:*MEMORY[0x277CC4F38]];
-  v12 = [v11 BOOLValue];
+  bOOLValue = [v11 BOOLValue];
 
   if (self->_isYUV)
   {
@@ -872,16 +872,16 @@ LABEL_17:
     self->_RGBAFormat = v14;
   }
 
-  else if (v12)
+  else if (bOOLValue)
   {
-    self->_RGBAFormat = CVPixelBufferGetPixelFormatType(a3);
+    self->_RGBAFormat = CVPixelBufferGetPixelFormatType(buffer);
   }
 }
 
-- (id)createOutputFramesWithWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(unsigned int)a5 numberOframes:(unint64_t)a6
+- (id)createOutputFramesWithWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format numberOframes:(unint64_t)oframes
 {
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  PixelBuffer = createPixelBuffer(a3, a4, a5, 0);
+  PixelBuffer = createPixelBuffer(width, height, format, 0);
   v11 = [FRCFrame alloc];
   CMTimeMake(&v14, 0, 0);
   v12 = [(FRCFrame *)v11 initWithBuffer:PixelBuffer presentationTimeStamp:&v14];
@@ -891,32 +891,32 @@ LABEL_17:
   return v9;
 }
 
-- (id)interpolateBetweenFirstFrame:(id)a3 secondFrame:(id)a4 numberOfFrames:(unint64_t)a5 withError:(id *)a6
+- (id)interpolateBetweenFirstFrame:(id)frame secondFrame:(id)secondFrame numberOfFrames:(unint64_t)frames withError:(id *)error
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = uniformTimeScales(a5);
-  v13 = [(FRCFrameInterpolator *)self interpolateBetweenFirstFrame:v11 secondFrame:v10 timeScales:v12 withError:a6];
+  secondFrameCopy = secondFrame;
+  frameCopy = frame;
+  v12 = uniformTimeScales(frames);
+  v13 = [(FRCFrameInterpolator *)self interpolateBetweenFirstFrame:frameCopy secondFrame:secondFrameCopy timeScales:v12 withError:error];
 
   return v13;
 }
 
-- (id)interpolateBetweenFirstFrame:(id)a3 secondFrame:(id)a4 timeScales:(id)a5 withError:(id *)a6
+- (id)interpolateBetweenFirstFrame:(id)frame secondFrame:(id)secondFrame timeScales:(id)scales withError:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  frameCopy = frame;
+  secondFrameCopy = secondFrame;
+  scalesCopy = scales;
   synthesisMode = self->_synthesisMode;
-  if ([v12 count] < 0xA || synthesisMode)
+  if ([scalesCopy count] < 0xA || synthesisMode)
   {
-    PixelFormatType = CVPixelBufferGetPixelFormatType([v10 buffer]);
-    Width = CVPixelBufferGetWidth([v10 buffer]);
-    v14 = -[FRCFrameInterpolator interpolateBetweenFirstFrame:secondFrame:timeScales:outputSize:outputPixelFormat:withError:](self, "interpolateBetweenFirstFrame:secondFrame:timeScales:outputSize:outputPixelFormat:withError:", v10, v11, v12, PixelFormatType, a6, Width, CVPixelBufferGetHeight([v10 buffer]));
+    PixelFormatType = CVPixelBufferGetPixelFormatType([frameCopy buffer]);
+    Width = CVPixelBufferGetWidth([frameCopy buffer]);
+    v14 = -[FRCFrameInterpolator interpolateBetweenFirstFrame:secondFrame:timeScales:outputSize:outputPixelFormat:withError:](self, "interpolateBetweenFirstFrame:secondFrame:timeScales:outputSize:outputPixelFormat:withError:", frameCopy, secondFrameCopy, scalesCopy, PixelFormatType, error, Width, CVPixelBufferGetHeight([frameCopy buffer]));
   }
 
   else
   {
-    v14 = [(FRCFrameInterpolator *)self interpolateRecursiveFirstFrame:v10 secondFrame:v11 timeScale:v12 withError:a6];
+    v14 = [(FRCFrameInterpolator *)self interpolateRecursiveFirstFrame:frameCopy secondFrame:secondFrameCopy timeScale:scalesCopy withError:error];
   }
 
   v17 = v14;
@@ -924,38 +924,38 @@ LABEL_17:
   return v17;
 }
 
-- (id)errorWithErrorCode:(int64_t)a3
+- (id)errorWithErrorCode:(int64_t)code
 {
-  if ((a3 + 22009) > 6)
+  if ((code + 22009) > 6)
   {
     v4 = &stru_285DE4E10;
   }
 
   else
   {
-    v4 = off_278FEA670[a3 + 22009];
+    v4 = off_278FEA670[code + 22009];
   }
 
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v4 forKey:*MEMORY[0x277CCA450]];
-  v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.FRC" code:a3 userInfo:v5];
+  v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.FRC" code:code userInfo:v5];
 
   return v6;
 }
 
-- (BOOL)interpolateBetweenFirstFrame:(id)a3 secondFrame:(id)a4 timeScales:(id)a5 outputFrames:(id)a6 withError:(id *)a7
+- (BOOL)interpolateBetweenFirstFrame:(id)frame secondFrame:(id)secondFrame timeScales:(id)scales outputFrames:(id)frames withError:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [(FRCFrameInterpolator *)self checkFrameFormatConsistencyFirstFrame:v12 secondFrame:v13 outputFrames:v15];
-  v17 = [v14 count];
-  if (v17 == [v15 count])
+  frameCopy = frame;
+  secondFrameCopy = secondFrame;
+  scalesCopy = scales;
+  framesCopy = frames;
+  v16 = [(FRCFrameInterpolator *)self checkFrameFormatConsistencyFirstFrame:frameCopy secondFrame:secondFrameCopy outputFrames:framesCopy];
+  v17 = [scalesCopy count];
+  if (v17 == [framesCopy count])
   {
     if (v16)
     {
-      objc_storeStrong(&self->_outputFrameListFromClient, a6);
-      v18 = [(FRCFrameInterpolator *)self interpolateBetweenFirstFrame:v12 secondFrame:v13 timeScales:v14 withError:a7];
+      objc_storeStrong(&self->_outputFrameListFromClient, frames);
+      v18 = [(FRCFrameInterpolator *)self interpolateBetweenFirstFrame:frameCopy secondFrame:secondFrameCopy timeScales:scalesCopy withError:error];
       outputFrameListFromClient = self->_outputFrameListFromClient;
       self->_outputFrameListFromClient = 0;
 
@@ -969,10 +969,10 @@ LABEL_17:
     NSLog(&cfstr_ErrorTheNumber.isa);
   }
 
-  if (a7)
+  if (error)
   {
     [(FRCFrameInterpolator *)self errorWithErrorCode:-22005];
-    *a7 = v20 = 0;
+    *error = v20 = 0;
   }
 
   else
@@ -985,23 +985,23 @@ LABEL_8:
   return v20;
 }
 
-- (id)interpolateBetweenFirstFrame:(id)a3 secondFrame:(id)a4 timeScales:(id)a5 outputSize:(CGSize)a6 outputPixelFormat:(unsigned int)a7 withError:(id *)a8
+- (id)interpolateBetweenFirstFrame:(id)frame secondFrame:(id)secondFrame timeScales:(id)scales outputSize:(CGSize)size outputPixelFormat:(unsigned int)format withError:(id *)error
 {
-  height = a6.height;
-  width = a6.width;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
+  height = size.height;
+  width = size.width;
+  frameCopy = frame;
+  secondFrameCopy = secondFrame;
+  scalesCopy = scales;
   if (self->_state != 2)
   {
     NSLog(&cfstr_SessionIsNotSt.isa);
-    if (a8)
+    if (error)
     {
-      v20 = self;
+      selfCopy2 = self;
       v21 = -22003;
 LABEL_19:
-      [(FRCFrameInterpolator *)v20 errorWithErrorCode:v21];
-      *a8 = v22 = 0;
+      [(FRCFrameInterpolator *)selfCopy2 errorWithErrorCode:v21];
+      *error = v22 = 0;
       goto LABEL_77;
     }
 
@@ -1010,19 +1010,19 @@ LABEL_20:
     goto LABEL_77;
   }
 
-  if (![v15 buffer] || !objc_msgSend(v16, "buffer"))
+  if (![frameCopy buffer] || !objc_msgSend(secondFrameCopy, "buffer"))
   {
     NSLog(&cfstr_InputBufferIsN.isa);
     goto LABEL_17;
   }
 
-  if (!v17)
+  if (!scalesCopy)
   {
     NSLog(&cfstr_TimescaleIsNul.isa);
 LABEL_17:
-    if (a8)
+    if (error)
     {
-      v20 = self;
+      selfCopy2 = self;
       v21 = -22009;
       goto LABEL_19;
     }
@@ -1030,30 +1030,30 @@ LABEL_17:
     goto LABEL_20;
   }
 
-  if (self->_streamingMode && ![(FRCFrameInterpolator *)self checkStreamingBufferConsistencyFirstFrame:v15 secondFrame:v16])
+  if (self->_streamingMode && ![(FRCFrameInterpolator *)self checkStreamingBufferConsistencyFirstFrame:frameCopy secondFrame:secondFrameCopy])
   {
     self->_streamingMode = 0;
   }
 
-  -[FRCFrameInterpolator getPixelAttributesForBuffer:](self, "getPixelAttributesForBuffer:", [v15 buffer]);
+  -[FRCFrameInterpolator getPixelAttributesForBuffer:](self, "getPixelAttributesForBuffer:", [frameCopy buffer]);
   outputPixelBufferPool = self->_outputPixelBufferPool;
-  if (!outputPixelBufferPool || self->_outputPixelFormat != a7)
+  if (!outputPixelBufferPool || self->_outputPixelFormat != format)
   {
     CVPixelBufferPoolRelease(outputPixelBufferPool);
-    self->_outputPixelBufferPool = createPixelBufferPool(width, height, a7, 0);
+    self->_outputPixelBufferPool = createPixelBufferPool(width, height, format, 0);
   }
 
-  self->_outputPixelFormat = a7;
-  v19 = [v17 count];
+  self->_outputPixelFormat = format;
+  v19 = [scalesCopy count];
   ++self->_totalFramePairsProcessed;
   memset(&v81, 0, sizeof(v81));
-  if (v16)
+  if (secondFrameCopy)
   {
-    [v16 presentationTimeStamp];
-    if (v15)
+    [secondFrameCopy presentationTimeStamp];
+    if (frameCopy)
     {
 LABEL_13:
-      [v15 presentationTimeStamp];
+      [frameCopy presentationTimeStamp];
       goto LABEL_24;
     }
   }
@@ -1061,7 +1061,7 @@ LABEL_13:
   else
   {
     memset(&lhs, 0, sizeof(lhs));
-    if (v15)
+    if (frameCopy)
     {
       goto LABEL_13;
     }
@@ -1078,17 +1078,17 @@ LABEL_24:
   v25 = (self->_gatingLevel != 2 || v19 > 3) && v23;
   if (self->_useCase)
   {
-    self->_cleanRectFirst = CVImageBufferGetCleanRect([v15 buffer]);
-    self->_cleanRectSecond = CVImageBufferGetCleanRect([v16 buffer]);
+    self->_cleanRectFirst = CVImageBufferGetCleanRect([frameCopy buffer]);
+    self->_cleanRectSecond = CVImageBufferGetCleanRect([secondFrameCopy buffer]);
   }
 
   if (v25)
   {
     flowAnalyzer = self->_flowAnalyzer;
     frameDropDetector = self->_frameDropDetector;
-    if (v15)
+    if (frameCopy)
     {
-      [v15 presentationTimeStamp];
+      [frameCopy presentationTimeStamp];
     }
 
     else
@@ -1109,12 +1109,12 @@ LABEL_24:
 
   kdebug_trace();
   v30 = self->_width;
-  v50 = v30 != CVPixelBufferGetWidth([v15 buffer]) || self->_isYUV;
-  [(FRCFrameInterpolator *)self preserveCMAttachmentFirstFrame:v15 secondFrame:v16];
-  if (!v15)
+  v50 = v30 != CVPixelBufferGetWidth([frameCopy buffer]) || self->_isYUV;
+  [(FRCFrameInterpolator *)self preserveCMAttachmentFirstFrame:frameCopy secondFrame:secondFrameCopy];
+  if (!frameCopy)
   {
     memset(&lhs, 0, sizeof(lhs));
-    if (v16)
+    if (secondFrameCopy)
     {
       goto LABEL_48;
     }
@@ -1124,33 +1124,33 @@ LABEL_50:
     goto LABEL_51;
   }
 
-  [v15 presentationTimeStamp];
-  if (!v16)
+  [frameCopy presentationTimeStamp];
+  if (!secondFrameCopy)
   {
     goto LABEL_50;
   }
 
 LABEL_48:
-  [v16 presentationTimeStamp];
+  [secondFrameCopy presentationTimeStamp];
 LABEL_51:
   v51 = v19;
   v31 = [(FRCFrameInterpolator *)self shallReusePreviousFlowPts0:&lhs Pts1:&rhs];
   if (self->_streamingMode && !self->_firstPairInSession)
   {
-    -[FRCImageProcessor preProcessFirstInput:secondInput:waitForCompletion:](self->_imageProcessor, "preProcessFirstInput:secondInput:waitForCompletion:", 0, [v16 buffer], 0);
+    -[FRCImageProcessor preProcessFirstInput:secondInput:waitForCompletion:](self->_imageProcessor, "preProcessFirstInput:secondInput:waitForCompletion:", 0, [secondFrameCopy buffer], 0);
     v32 = 1;
   }
 
   else
   {
-    -[FRCImageProcessor preProcessFirstInput:secondInput:waitForCompletion:](self->_imageProcessor, "preProcessFirstInput:secondInput:waitForCompletion:", [v15 buffer], objc_msgSend(v16, "buffer"), 0);
+    -[FRCImageProcessor preProcessFirstInput:secondInput:waitForCompletion:](self->_imageProcessor, "preProcessFirstInput:secondInput:waitForCompletion:", [frameCopy buffer], objc_msgSend(secondFrameCopy, "buffer"), 0);
     v32 = 0;
   }
 
   if ([(OpticalFlow *)self->_opticalFlow bypassInputNormalization])
   {
-    -[OpticalFlow setOriginalFirst:](self->_opticalFlow, "setOriginalFirst:", [v15 buffer]);
-    -[OpticalFlow setOriginalSecond:](self->_opticalFlow, "setOriginalSecond:", [v16 buffer]);
+    -[OpticalFlow setOriginalFirst:](self->_opticalFlow, "setOriginalFirst:", [frameCopy buffer]);
+    -[OpticalFlow setOriginalSecond:](self->_opticalFlow, "setOriginalSecond:", [secondFrameCopy buffer]);
   }
 
   dispatchGroup = self->_dispatchGroup;
@@ -1180,7 +1180,7 @@ LABEL_51:
     v72[2] = __115__FRCFrameInterpolator_interpolateBetweenFirstFrame_secondFrame_timeScales_outputSize_outputPixelFormat_withError___block_invoke_2;
     v72[3] = &unk_278FEA5D8;
     v72[4] = self;
-    v37 = v15;
+    v37 = frameCopy;
     v73 = v37;
     dispatch_group_async(v35, v36, v72);
     if (!self->_gatingLevel)
@@ -1193,7 +1193,7 @@ LABEL_51:
       v69[3] = &unk_278FEA600;
       v69[4] = self;
       v70 = v37;
-      v71 = v16;
+      v71 = secondFrameCopy;
       dispatch_group_async(v38, v39, v69);
     }
 
@@ -1235,13 +1235,13 @@ LABEL_51:
   v55[3] = &unk_278FEA650;
   p_lhs = &lhs;
   v55[4] = self;
-  v56 = v15;
-  v46 = v16;
+  v56 = frameCopy;
+  v46 = secondFrameCopy;
   v57 = v46;
-  v58 = v17;
+  v58 = scalesCopy;
   v60 = width;
   v61 = height;
-  v62 = a7;
+  formatCopy = format;
   v63 = v50;
   dispatch_group_async(v44, v45, v55);
   if (v25)
@@ -1259,7 +1259,7 @@ LABEL_51:
   }
 
   dispatch_group_wait(self->_dispatchGroup, 0xFFFFFFFFFFFFFFFFLL);
-  if (v16)
+  if (secondFrameCopy)
   {
     [v46 presentationTimeStamp];
   }
@@ -1275,9 +1275,9 @@ LABEL_51:
   {
     if ([(FRCFrameInterpolator *)self updateGatingResult])
     {
-      if (a8)
+      if (error)
       {
-        *a8 = [(FRCFrameInterpolator *)self errorWithErrorCode:-22006];
+        *error = [(FRCFrameInterpolator *)self errorWithErrorCode:-22006];
       }
 
       if (!self->_forceFrameOutput)
@@ -1512,31 +1512,31 @@ uint64_t __115__FRCFrameInterpolator_interpolateBetweenFirstFrame_secondFrame_ti
   return v3;
 }
 
-- (BOOL)checkFrameFormatConsistencyFirstFrame:(id)a3 secondFrame:(id)a4 outputFrames:(id)a5
+- (BOOL)checkFrameFormatConsistencyFirstFrame:(id)frame secondFrame:(id)secondFrame outputFrames:(id)frames
 {
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v31 = a5;
-  PixelFormatType = CVPixelBufferGetPixelFormatType([v7 buffer]);
-  Width = CVPixelBufferGetWidth([v7 buffer]);
-  Height = CVPixelBufferGetHeight([v7 buffer]);
-  v12 = CVPixelBufferGetPixelFormatType([v8 buffer]);
-  v13 = CVPixelBufferGetWidth([v8 buffer]);
-  v14 = CVPixelBufferGetHeight([v8 buffer]);
+  frameCopy = frame;
+  secondFrameCopy = secondFrame;
+  framesCopy = frames;
+  PixelFormatType = CVPixelBufferGetPixelFormatType([frameCopy buffer]);
+  Width = CVPixelBufferGetWidth([frameCopy buffer]);
+  Height = CVPixelBufferGetHeight([frameCopy buffer]);
+  v12 = CVPixelBufferGetPixelFormatType([secondFrameCopy buffer]);
+  v13 = CVPixelBufferGetWidth([secondFrameCopy buffer]);
+  v14 = CVPixelBufferGetHeight([secondFrameCopy buffer]);
   if (v12 == PixelFormatType && v13 == Width && v14 == Height)
   {
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v15 = v31;
+    v15 = framesCopy;
     v16 = [v15 countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v16)
     {
       v17 = v16;
-      v29 = v8;
-      v30 = v7;
+      v29 = secondFrameCopy;
+      v30 = frameCopy;
       v18 = *v33;
       do
       {
@@ -1565,8 +1565,8 @@ uint64_t __115__FRCFrameInterpolator_interpolateBetweenFirstFrame_secondFrame_ti
       while (v17);
       v26 = 1;
 LABEL_21:
-      v8 = v29;
-      v7 = v30;
+      secondFrameCopy = v29;
+      frameCopy = v30;
     }
 
     else
@@ -1585,21 +1585,21 @@ LABEL_21:
   return v26;
 }
 
-- (int)closestNumIdxInArray:(id)a3 target:(double)a4
+- (int)closestNumIdxInArray:(id)array target:(double)target
 {
-  v5 = a3;
-  v6 = [v5 count];
+  arrayCopy = array;
+  v6 = [arrayCopy count];
   v7 = v6 - 1;
   if (v6 < 3)
   {
     v8 = 0;
 LABEL_10:
-    v16 = [v5 objectAtIndexedSubscript:v8];
+    v16 = [arrayCopy objectAtIndexedSubscript:v8];
     [v16 doubleValue];
-    v18 = vabdd_f64(a4, v17);
-    v19 = [v5 objectAtIndexedSubscript:v7];
+    v18 = vabdd_f64(target, v17);
+    v19 = [arrayCopy objectAtIndexedSubscript:v7];
     [v19 doubleValue];
-    v21 = vabdd_f64(v20, a4);
+    v21 = vabdd_f64(v20, target);
 
     if (v18 <= v21)
     {
@@ -1618,20 +1618,20 @@ LABEL_10:
     while (1)
     {
       v9 = v8 + (v7 - v8) / 2;
-      v10 = [v5 objectAtIndexedSubscript:v9];
+      v10 = [arrayCopy objectAtIndexedSubscript:v9];
       [v10 doubleValue];
       v12 = v11;
 
-      if (v12 == a4)
+      if (v12 == target)
       {
         break;
       }
 
-      v13 = [v5 objectAtIndexedSubscript:v9];
+      v13 = [arrayCopy objectAtIndexedSubscript:v9];
       [v13 doubleValue];
       v15 = v14;
 
-      if (v15 > a4)
+      if (v15 > target)
       {
         v7 = v8 + (v7 - v8) / 2;
       }
@@ -1651,36 +1651,36 @@ LABEL_10:
   return v9;
 }
 
-- (id)normalizeTimingFromTimeScales:(id)a3 newBeginIdx:(int)a4 newEndIdx:(int)a5
+- (id)normalizeTimingFromTimeScales:(id)scales newBeginIdx:(int)idx newEndIdx:(int)endIdx
 {
-  v7 = a3;
-  v8 = v7;
-  if (a4 == -1)
+  scalesCopy = scales;
+  v8 = scalesCopy;
+  if (idx == -1)
   {
     v11 = 0.0;
   }
 
   else
   {
-    v9 = [v7 objectAtIndexedSubscript:a4];
+    v9 = [scalesCopy objectAtIndexedSubscript:idx];
     [v9 doubleValue];
     v11 = v10;
   }
 
   v12 = 1.0;
-  if ([v8 count] != a5)
+  if ([v8 count] != endIdx)
   {
-    v13 = [v8 objectAtIndexedSubscript:a5];
+    v13 = [v8 objectAtIndexedSubscript:endIdx];
     [v13 doubleValue];
     v12 = v14;
   }
 
   v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (a4 + 1 < a5)
+  if (idx + 1 < endIdx)
   {
     v16 = v12 - v11;
-    v17 = a4 + 1;
-    v18 = ~a4 + a5;
+    v17 = idx + 1;
+    v18 = ~idx + endIdx;
     do
     {
       v19 = [v8 objectAtIndexedSubscript:v17];
@@ -1700,52 +1700,52 @@ LABEL_10:
   return v15;
 }
 
-- (id)interpolateRecursiveFirstFrame:(id)a3 secondFrame:(id)a4 timeScale:(id)a5 withError:(id *)a6
+- (id)interpolateRecursiveFirstFrame:(id)frame secondFrame:(id)secondFrame timeScale:(id)scale withError:(id *)error
 {
   v10 = MEMORY[0x277CBEB18];
-  v11 = a5;
-  v82 = a4;
-  v12 = a3;
+  scaleCopy = scale;
+  secondFrameCopy = secondFrame;
+  frameCopy = frame;
   v71 = objc_alloc_init(v10);
-  v13 = [(FRCFrameInterpolator *)self closestNumIdxInArray:v11 target:0.5];
-  LODWORD(a4) = v13;
+  v13 = [(FRCFrameInterpolator *)self closestNumIdxInArray:scaleCopy target:0.5];
+  LODWORD(secondFrame) = v13;
   v76 = v13;
-  v14 = [(FRCFrameInterpolator *)self closestNumIdxInArray:v11 target:0.25];
+  v14 = [(FRCFrameInterpolator *)self closestNumIdxInArray:scaleCopy target:0.25];
   LODWORD(v10) = v14;
   v74 = v14;
-  v15 = [(FRCFrameInterpolator *)self closestNumIdxInArray:v11 target:0.75];
+  v15 = [(FRCFrameInterpolator *)self closestNumIdxInArray:scaleCopy target:0.75];
   v16 = v15;
   v17 = MEMORY[0x277CBEA60];
-  v80 = a4;
+  secondFrameCopy2 = secondFrame;
   v81 = v15;
-  v18 = [v11 objectAtIndexedSubscript:?];
+  v18 = [scaleCopy objectAtIndexedSubscript:?];
   v19 = [v17 arrayWithObject:v18];
-  v20 = v12;
-  v73 = v12;
-  v21 = [(FRCFrameInterpolator *)self interpolateBetweenFirstFrame:v12 secondFrame:v82 timeScales:v19 withError:a6];
+  v20 = frameCopy;
+  v73 = frameCopy;
+  v21 = [(FRCFrameInterpolator *)self interpolateBetweenFirstFrame:frameCopy secondFrame:secondFrameCopy timeScales:v19 withError:error];
 
-  v22 = [v21 firstObject];
-  [v71 insertObject:v22 atIndex:0];
+  firstObject = [v21 firstObject];
+  [v71 insertObject:firstObject atIndex:0];
 
   gatingEnabled = self->_gatingEnabled;
   self->_gatingEnabled = 0;
   v75 = v10;
-  v23 = [v11 objectAtIndexedSubscript:?];
+  v23 = [scaleCopy objectAtIndexedSubscript:?];
   [v23 doubleValue];
   v25 = v24;
-  v26 = [v11 objectAtIndexedSubscript:v80];
+  v26 = [scaleCopy objectAtIndexedSubscript:secondFrameCopy2];
   [v26 doubleValue];
   v28 = v25 / v27;
 
   v77 = v16;
-  v29 = [v11 objectAtIndexedSubscript:?];
+  v29 = [scaleCopy objectAtIndexedSubscript:?];
   [v29 doubleValue];
   v31 = v30;
-  v32 = [v11 objectAtIndexedSubscript:v80];
+  v32 = [scaleCopy objectAtIndexedSubscript:secondFrameCopy2];
   [v32 doubleValue];
   v34 = v31 - v33;
-  v72 = v11;
-  v35 = [v11 objectAtIndexedSubscript:v80];
+  v72 = scaleCopy;
+  v35 = [scaleCopy objectAtIndexedSubscript:secondFrameCopy2];
   [v35 doubleValue];
   v37 = v34 / (1.0 - v36);
 
@@ -1753,43 +1753,43 @@ LABEL_10:
   v39 = MEMORY[0x277CBEA60];
   v40 = [MEMORY[0x277CCABB0] numberWithDouble:v28];
   v41 = [v39 arrayWithObject:v40];
-  v42 = [(FRCFrameInterpolator *)self interpolateBetweenFirstFrame:v20 secondFrame:v38 timeScales:v41 withError:a6];
+  v42 = [(FRCFrameInterpolator *)self interpolateBetweenFirstFrame:v20 secondFrame:v38 timeScales:v41 withError:error];
 
-  v43 = [v42 firstObject];
-  [v71 insertObject:v43 atIndex:0];
+  firstObject2 = [v42 firstObject];
+  [v71 insertObject:firstObject2 atIndex:0];
 
   v44 = [v71 objectAtIndexedSubscript:1];
   v45 = MEMORY[0x277CBEA60];
   v46 = [MEMORY[0x277CCABB0] numberWithDouble:v37];
   v47 = [v45 arrayWithObject:v46];
-  v48 = [(FRCFrameInterpolator *)self interpolateBetweenFirstFrame:v44 secondFrame:v82 timeScales:v47 withError:a6];
+  v48 = [(FRCFrameInterpolator *)self interpolateBetweenFirstFrame:v44 secondFrame:secondFrameCopy timeScales:v47 withError:error];
 
-  v49 = [v48 firstObject];
-  [v71 insertObject:v49 atIndex:2];
+  firstObject3 = [v48 firstObject];
+  [v71 insertObject:firstObject3 atIndex:2];
 
-  v50 = [(FRCFrameInterpolator *)self normalizeTimingFromTimeScales:v11 newBeginIdx:0xFFFFFFFFLL newEndIdx:v74];
+  v50 = [(FRCFrameInterpolator *)self normalizeTimingFromTimeScales:scaleCopy newBeginIdx:0xFFFFFFFFLL newEndIdx:v74];
   v51 = [v71 objectAtIndexedSubscript:0];
-  v52 = [(FRCFrameInterpolator *)self interpolateBetweenFirstFrame:v73 secondFrame:v51 timeScales:v50 withError:a6];
+  v52 = [(FRCFrameInterpolator *)self interpolateBetweenFirstFrame:v73 secondFrame:v51 timeScales:v50 withError:error];
 
   v53 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, objc_msgSend(v52, "count")}];
   [v71 insertObjects:v52 atIndexes:v53];
 
-  v54 = [(FRCFrameInterpolator *)self normalizeTimingFromTimeScales:v11 newBeginIdx:v74 newEndIdx:v76];
+  v54 = [(FRCFrameInterpolator *)self normalizeTimingFromTimeScales:scaleCopy newBeginIdx:v74 newEndIdx:v76];
 
   v55 = [v71 objectAtIndexedSubscript:v75];
   v56 = v74 + 1;
   v57 = [v71 objectAtIndexedSubscript:v56];
-  v58 = [(FRCFrameInterpolator *)self interpolateBetweenFirstFrame:v55 secondFrame:v57 timeScales:v54 withError:a6];
+  v58 = [(FRCFrameInterpolator *)self interpolateBetweenFirstFrame:v55 secondFrame:v57 timeScales:v54 withError:error];
 
   v59 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{v56, objc_msgSend(v58, "count")}];
   [v71 insertObjects:v58 atIndexes:v59];
 
   v60 = [(FRCFrameInterpolator *)self normalizeTimingFromTimeScales:v72 newBeginIdx:v76 newEndIdx:v81];
 
-  v61 = [v71 objectAtIndexedSubscript:v80];
+  v61 = [v71 objectAtIndexedSubscript:secondFrameCopy2];
   v62 = v76 + 1;
   v63 = [v71 objectAtIndexedSubscript:v62];
-  v64 = [(FRCFrameInterpolator *)self interpolateBetweenFirstFrame:v61 secondFrame:v63 timeScales:v60 withError:a6];
+  v64 = [(FRCFrameInterpolator *)self interpolateBetweenFirstFrame:v61 secondFrame:v63 timeScales:v60 withError:error];
 
   v65 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{v62, objc_msgSend(v64, "count")}];
   [v71 insertObjects:v64 atIndexes:v65];
@@ -1797,7 +1797,7 @@ LABEL_10:
   v66 = -[FRCFrameInterpolator normalizeTimingFromTimeScales:newBeginIdx:newEndIdx:](self, "normalizeTimingFromTimeScales:newBeginIdx:newEndIdx:", v72, v81, [v72 count]);
 
   v67 = [v71 objectAtIndexedSubscript:v77];
-  v68 = [(FRCFrameInterpolator *)self interpolateBetweenFirstFrame:v67 secondFrame:v82 timeScales:v66 withError:a6];
+  v68 = [(FRCFrameInterpolator *)self interpolateBetweenFirstFrame:v67 secondFrame:secondFrameCopy timeScales:v66 withError:error];
 
   v69 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{v81 + 1, objc_msgSend(v68, "count")}];
   [v71 insertObjects:v68 atIndexes:v69];
@@ -1807,36 +1807,36 @@ LABEL_10:
   return v71;
 }
 
-- (id)synthesizeInterpolatedFrames:(id)a3 second:(id)a4 normalizedFirst:(__CVBuffer *)a5 normalizedSecond:(__CVBuffer *)a6 timeScales:(id)a7 outputSize:(CGSize)a8 outputPixelFormat:(unsigned int)a9 scalerEnabled:(BOOL)a10
+- (id)synthesizeInterpolatedFrames:(id)frames second:(id)second normalizedFirst:(__CVBuffer *)first normalizedSecond:(__CVBuffer *)normalizedSecond timeScales:(id)scales outputSize:(CGSize)size outputPixelFormat:(unsigned int)format scalerEnabled:(BOOL)self0
 {
-  height = a8.height;
-  width = a8.width;
-  v17 = a3;
-  v18 = a4;
-  v19 = a7;
+  height = size.height;
+  width = size.width;
+  framesCopy = frames;
+  secondCopy = second;
+  scalesCopy = scales;
   kdebug_trace();
   if (self->_onDemandSynthesisBufferAllocation)
   {
     [(FRCSynthesis *)self->_synthesis allocateResources];
   }
 
-  v20 = [v19 count];
+  v20 = [scalesCopy count];
   memset(&v49, 0, sizeof(v49));
-  if (v17)
+  if (framesCopy)
   {
-    [v17 presentationTimeStamp];
+    [framesCopy presentationTimeStamp];
   }
 
   memset(&v48, 0, sizeof(v48));
-  if (v18)
+  if (secondCopy)
   {
-    [v18 presentationTimeStamp];
-    if (v17)
+    [secondCopy presentationTimeStamp];
+    if (framesCopy)
     {
 LABEL_7:
-      [v17 presentationTimeStamp];
+      [framesCopy presentationTimeStamp];
       CMTimeSubtract(&v48, &lhs, &rhs);
-      [v17 presentationTimeStamp];
+      [framesCopy presentationTimeStamp];
       goto LABEL_10;
     }
   }
@@ -1844,7 +1844,7 @@ LABEL_7:
   else
   {
     memset(&lhs, 0, sizeof(lhs));
-    if (v17)
+    if (framesCopy)
     {
       goto LABEL_7;
     }
@@ -1854,10 +1854,10 @@ LABEL_7:
   CMTimeSubtract(&v48, &lhs, &rhs);
   memset(&lhs, 0, sizeof(lhs));
 LABEL_10:
-  v35 = v18;
-  if (v18)
+  v35 = secondCopy;
+  if (secondCopy)
   {
-    [v18 presentationTimeStamp];
+    [secondCopy presentationTimeStamp];
   }
 
   else
@@ -1866,25 +1866,25 @@ LABEL_10:
   }
 
   [(LiteSynthesis *)self->_liteSynthesis setEnableMemDump:[(FRCFrameInterpolator *)self shallDumpDebugInfoForCurrPts:&lhs prevPts:&rhs, v35]];
-  [(FRCSynthesis *)self->_synthesis createFeaturesFromFirstImage:a5 secondImage:a6 flowForward:self->_flowForward flowBackward:self->_flowBackward];
+  [(FRCSynthesis *)self->_synthesis createFeaturesFromFirstImage:first secondImage:normalizedSecond flowForward:self->_flowForward flowBackward:self->_flowBackward];
   v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if (v20)
   {
     v22 = 0;
     do
     {
-      v23 = [v19 objectAtIndexedSubscript:v22];
+      v23 = [scalesCopy objectAtIndexedSubscript:v22];
       [v23 floatValue];
       v25 = v24;
 
       *&v26 = v25;
-      v27 = [(FRCFrameInterpolator *)self synthesisFrameForTimeScale:a9 outputSize:a10 outputPixelFormat:v22 scalerEnabled:v20 == 1 frameIndex:v26 lastFrame:width, height];
+      height = [(FRCFrameInterpolator *)self synthesisFrameForTimeScale:format outputSize:enabled outputPixelFormat:v22 scalerEnabled:v20 == 1 frameIndex:v26 lastFrame:width, height];
       memset(&lhs, 0, sizeof(lhs));
       time = v48;
       CMTimeMultiplyByFloat64(&rhs, &time, v25);
-      if (v17)
+      if (framesCopy)
       {
-        [v17 presentationTimeStamp];
+        [framesCopy presentationTimeStamp];
         v28 = v43;
       }
 
@@ -1901,9 +1901,9 @@ LABEL_10:
       v41 = v49;
       v40 = lhs;
       CMTimeAdd(&time, &v41, &v40);
-      if (v17)
+      if (framesCopy)
       {
-        [v17 presentationTimeStamp];
+        [framesCopy presentationTimeStamp];
         v29 = v39;
       }
 
@@ -1916,8 +1916,8 @@ LABEL_10:
       CMTimeConvertScale(&rhs, &time, v29, kCMTimeRoundingMethod_QuickTime);
       v30 = [FRCFrame alloc];
       time = rhs;
-      v31 = [(FRCFrame *)v30 initWithBuffer:v27 presentationTimeStamp:&time];
-      CVPixelBufferRelease(v27);
+      v31 = [(FRCFrame *)v30 initWithBuffer:height presentationTimeStamp:&time];
+      CVPixelBufferRelease(height);
       [v21 addObject:v31];
       outputFrameListFromClient = self->_outputFrameListFromClient;
       if (outputFrameListFromClient)
@@ -1946,12 +1946,12 @@ LABEL_10:
   return v21;
 }
 
-- (id)selectFrameInsertionPointsFromTimingList:(id)a3 preModifiedTimingList:(id)a4
+- (id)selectFrameInsertionPointsFromTimingList:(id)list preModifiedTimingList:(id)timingList
 {
-  v5 = a3;
+  listCopy = list;
   if (self->_state == 2)
   {
-    v6 = [(FRCFrameDropDetector *)self->_frameDropDetector selectFrameInsertionPointsFromTimingList:v5 metadataList:0 sloMo:[(FRCFrameInterpolator *)self useCase]== 2 withError:0];
+    v6 = [(FRCFrameDropDetector *)self->_frameDropDetector selectFrameInsertionPointsFromTimingList:listCopy metadataList:0 sloMo:[(FRCFrameInterpolator *)self useCase]== 2 withError:0];
     if (!v6)
     {
       self->_gated = 1;
@@ -1968,13 +1968,13 @@ LABEL_10:
   return v6;
 }
 
-- (id)selectFrameInsertionPointsFromTimingList:(id)a3 metadataList:(id)a4 withError:(id *)a5
+- (id)selectFrameInsertionPointsFromTimingList:(id)list metadataList:(id)metadataList withError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  listCopy = list;
+  metadataListCopy = metadataList;
   if (self->_state == 2)
   {
-    v10 = [(FRCFrameDropDetector *)self->_frameDropDetector selectFrameInsertionPointsFromTimingList:v8 metadataList:v9 sloMo:[(FRCFrameInterpolator *)self useCase]== 2 withError:a5];
+    v10 = [(FRCFrameDropDetector *)self->_frameDropDetector selectFrameInsertionPointsFromTimingList:listCopy metadataList:metadataListCopy sloMo:[(FRCFrameInterpolator *)self useCase]== 2 withError:error];
     [(OpticalFlowAnalyzer *)self->_flowAnalyzer setRetimingRecipe:[(FRCFrameDropDetector *)self->_frameDropDetector retimingRecipe]];
     if (!v10)
     {
@@ -1986,10 +1986,10 @@ LABEL_10:
   else
   {
     NSLog(&cfstr_SessionIsNotSt_0.isa);
-    if (a5)
+    if (error)
     {
       [(FRCFrameInterpolator *)self errorWithErrorCode:-22003];
-      *a5 = v10 = 0;
+      *error = v10 = 0;
     }
 
     else
@@ -2219,12 +2219,12 @@ LABEL_7:
   }
 }
 
-- (BOOL)shallReusePreviousFlowPts0:(id *)a3 Pts1:(id *)a4
+- (BOOL)shallReusePreviousFlowPts0:(id *)pts0 Pts1:(id *)pts1
 {
-  var1 = a4->var1;
+  var1 = pts1->var1;
   memset(&v13, 0, sizeof(v13));
-  lhs = *a4;
-  rhs = *a3;
+  lhs = *pts1;
+  rhs = *pts0;
   CMTimeSubtract(&v13, &lhs, &rhs);
   memset(&lhs, 0, sizeof(lhs));
   time1 = v13;
@@ -2233,7 +2233,7 @@ LABEL_7:
   CMTimeAbsoluteValue(&lhs, &rhs);
   memset(&rhs, 0, sizeof(rhs));
   CMTimeMakeWithSeconds(&rhs, 0.000520833333, var1);
-  if (self->_singleFlow && (time1 = self->_lastFramePts, lastFrameDuration = *a3, !CMTimeCompare(&time1, &lastFrameDuration)))
+  if (self->_singleFlow && (time1 = self->_lastFramePts, lastFrameDuration = *pts0, !CMTimeCompare(&time1, &lastFrameDuration)))
   {
     time1 = lhs;
     lastFrameDuration = rhs;
@@ -2248,32 +2248,32 @@ LABEL_7:
   return v7;
 }
 
-- (void)preserveCMAttachmentFirstFrame:(id)a3 secondFrame:(id)a4
+- (void)preserveCMAttachmentFirstFrame:(id)frame secondFrame:(id)secondFrame
 {
-  v7 = a3;
-  v6 = a4;
-  self->_anchorFrameCMAttachment = CMCopyDictionaryOfAttachments(0, [v7 buffer], 1u);
+  frameCopy = frame;
+  secondFrameCopy = secondFrame;
+  self->_anchorFrameCMAttachment = CMCopyDictionaryOfAttachments(0, [frameCopy buffer], 1u);
   if (self->_removeCMAttachment)
   {
-    CMRemoveAllAttachments([v7 buffer]);
-    CMRemoveAllAttachments([v6 buffer]);
+    CMRemoveAllAttachments([frameCopy buffer]);
+    CMRemoveAllAttachments([secondFrameCopy buffer]);
   }
 }
 
-- (void)restoreCMAttachmentToFirstFrame:(id)a3 secondFrame:(id)a4 interpolatedFrames:(id)a5
+- (void)restoreCMAttachmentToFirstFrame:(id)frame secondFrame:(id)secondFrame interpolatedFrames:(id)frames
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  secondFrameCopy = secondFrame;
+  framesCopy = frames;
   if (self->_removeCMAttachment)
   {
-    CMSetAttachments([a3 buffer], self->_anchorFrameCMAttachment, 1u);
-    CMSetAttachments([v8 buffer], self->_anchorFrameCMAttachment, 1u);
+    CMSetAttachments([frame buffer], self->_anchorFrameCMAttachment, 1u);
+    CMSetAttachments([secondFrameCopy buffer], self->_anchorFrameCMAttachment, 1u);
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v10 = v9;
+    v10 = framesCopy;
     v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v11)
     {
@@ -2305,7 +2305,7 @@ LABEL_7:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)constructSessionStatisticsWithSessionDuration:(double)a3
+- (void)constructSessionStatisticsWithSessionDuration:(double)duration
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6 = [MEMORY[0x277CCABB0] numberWithInt:LODWORD(self->_usage)];
@@ -2317,7 +2317,7 @@ LABEL_7:
   v8 = [MEMORY[0x277CCABB0] numberWithInt:LODWORD(self->_totalFramesInterpolated)];
   [(NSDictionary *)v5 setObject:v8 forKeyedSubscript:@"FRCTotalInterpolatedFrames"];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithInt:a3];
+  v9 = [MEMORY[0x277CCABB0] numberWithInt:duration];
   [(NSDictionary *)v5 setObject:v9 forKeyedSubscript:@"FRCProcessingTime"];
 
   if (self->_gatingEnabled)
@@ -2376,7 +2376,7 @@ LABEL_8:
   self->_sessionStatistics = v5;
 }
 
-- (BOOL)shallDumpDebugInfoForCurrPts:(id *)a3 prevPts:(id *)a4
+- (BOOL)shallDumpDebugInfoForCurrPts:(id *)pts prevPts:(id *)prevPts
 {
   time1 = self->_ptsForLiteDebugging;
   v9 = **&MEMORY[0x277CC0898];
@@ -2384,7 +2384,7 @@ LABEL_8:
   if (v7)
   {
     time1 = self->_ptsForLiteDebugging;
-    v9 = *a3;
+    v9 = *pts;
     if (CMTimeCompare(&time1, &v9) < 1)
     {
       LOBYTE(v7) = 0;
@@ -2393,7 +2393,7 @@ LABEL_8:
     else
     {
       time1 = self->_ptsForLiteDebugging;
-      v9 = *a4;
+      v9 = *prevPts;
       LOBYTE(v7) = CMTimeCompare(&time1, &v9) < 1;
     }
   }
@@ -2401,15 +2401,15 @@ LABEL_8:
   return v7;
 }
 
-- (void)updateLastFramePts:(id *)a3 duration:(id *)a4 toInterpolate:(unint64_t)a5
+- (void)updateLastFramePts:(id *)pts duration:(id *)duration toInterpolate:(unint64_t)interpolate
 {
-  v5 = *&a3->var0;
-  self->_lastFramePts.epoch = a3->var3;
+  v5 = *&pts->var0;
+  self->_lastFramePts.epoch = pts->var3;
   *&self->_lastFramePts.value = v5;
-  var3 = a4->var3;
-  *&self->_lastFrameDuration.value = *&a4->var0;
+  var3 = duration->var3;
+  *&self->_lastFrameDuration.value = *&duration->var0;
   self->_lastFrameDuration.epoch = var3;
-  self->_lastFramesToInterpolate = a5;
+  self->_lastFramesToInterpolate = interpolate;
 }
 
 - (void)updateBackwardFlow
@@ -2486,10 +2486,10 @@ LABEL_14:
   NSLog(&cfstr_Recommendation.isa, recommendation, [(__CFString *)v6 UTF8String]);
 }
 
-- (BOOL)checkStreamingBufferConsistencyFirstFrame:(id)a3 secondFrame:(id)a4
+- (BOOL)checkStreamingBufferConsistencyFirstFrame:(id)frame secondFrame:(id)secondFrame
 {
-  v6 = a4;
-  if (self->_firstPairInSession || (IOSurface = CVPixelBufferGetIOSurface([a3 buffer]), ID = IOSurfaceGetID(IOSurface), previousSecondIOSurfaceID = self->_previousSecondIOSurfaceID, ID == previousSecondIOSurfaceID))
+  secondFrameCopy = secondFrame;
+  if (self->_firstPairInSession || (IOSurface = CVPixelBufferGetIOSurface([frame buffer]), ID = IOSurfaceGetID(IOSurface), previousSecondIOSurfaceID = self->_previousSecondIOSurfaceID, ID == previousSecondIOSurfaceID))
   {
     v10 = 1;
   }
@@ -2501,7 +2501,7 @@ LABEL_14:
     v10 = 0;
   }
 
-  v11 = CVPixelBufferGetIOSurface([v6 buffer]);
+  v11 = CVPixelBufferGetIOSurface([secondFrameCopy buffer]);
   self->_previousSecondIOSurfaceID = IOSurfaceGetID(v11);
 
   return v10;
@@ -2516,11 +2516,11 @@ LABEL_14:
   return self;
 }
 
-- (void)setPreferredTransform:(CGAffineTransform *)a3
+- (void)setPreferredTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_preferredTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_preferredTransform.c = *&transform->c;
   *&self->_preferredTransform.tx = v4;
   *&self->_preferredTransform.a = v3;
 }

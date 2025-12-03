@@ -1,24 +1,24 @@
 @interface PXAssetSelectionTypeCounter
 - ($DE30A600513D762F9B6AB73D2AED4B95)typedCount;
 - (PXAssetSelectionTypeCounter)init;
-- (PXAssetSelectionTypeCounter)initWithSelectionManager:(id)a3;
+- (PXAssetSelectionTypeCounter)initWithSelectionManager:(id)manager;
 - (PXSectionedSelectionManager)selectionManager;
-- (id)requestInfoOfKind:(id)a3 withResultHandler:(id)a4;
+- (id)requestInfoOfKind:(id)kind withResultHandler:(id)handler;
 - (id)selectionSnapshot;
-- (int64_t)priorityForInfoRequestOfKind:(id)a3;
-- (void)infoUpdaterDidUpdate:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setTypedCount:(id)a3;
+- (int64_t)priorityForInfoRequestOfKind:(id)kind;
+- (void)infoUpdaterDidUpdate:(id)update;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setTypedCount:(id)count;
 @end
 
 @implementation PXAssetSelectionTypeCounter
 
 - (id)selectionSnapshot
 {
-  v2 = [(PXAssetSelectionTypeCounter *)self selectionManager];
-  v3 = [v2 selectionSnapshot];
+  selectionManager = [(PXAssetSelectionTypeCounter *)self selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
 
-  return v3;
+  return selectionSnapshot;
 }
 
 - (PXSectionedSelectionManager)selectionManager
@@ -38,22 +38,22 @@
   return result;
 }
 
-- (void)infoUpdaterDidUpdate:(id)a3
+- (void)infoUpdaterDidUpdate:(id)update
 {
-  v5 = a3;
-  v6 = [(PXAssetSelectionTypeCounter *)self infoUpdater];
+  updateCopy = update;
+  infoUpdater = [(PXAssetSelectionTypeCounter *)self infoUpdater];
 
-  if (v6 != v5)
+  if (infoUpdater != updateCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXAssetSelectionTypeCounter.m" lineNumber:129 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetSelectionTypeCounter.m" lineNumber:129 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v7 = [(PXAssetSelectionTypeCounter *)self infoUpdater];
-  v8 = [v7 info];
-  v9 = [v8 PXDisplayAssetTypedCountValue];
+  infoUpdater2 = [(PXAssetSelectionTypeCounter *)self infoUpdater];
+  info = [infoUpdater2 info];
+  pXDisplayAssetTypedCountValue = [info PXDisplayAssetTypedCountValue];
   v11 = v10;
 
   v13[0] = MEMORY[0x1E69E9820];
@@ -61,21 +61,21 @@
   v13[2] = __52__PXAssetSelectionTypeCounter_infoUpdaterDidUpdate___block_invoke;
   v13[3] = &unk_1E7BB5890;
   v13[4] = self;
-  v13[5] = v9;
+  v13[5] = pXDisplayAssetTypedCountValue;
   v13[6] = v11;
   [(PXObservable *)self performChanges:v13];
 }
 
-- (int64_t)priorityForInfoRequestOfKind:(id)a3
+- (int64_t)priorityForInfoRequestOfKind:(id)kind
 {
-  if (![a3 isEqualToString:@"SelectedAssetsTypedCount"])
+  if (![kind isEqualToString:@"SelectedAssetsTypedCount"])
   {
     return 0;
   }
 
-  v4 = [(PXAssetSelectionTypeCounter *)self selectionSnapshot];
-  v5 = [v4 selectedIndexPaths];
-  v6 = [v5 count];
+  selectionSnapshot = [(PXAssetSelectionTypeCounter *)self selectionSnapshot];
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+  v6 = [selectedIndexPaths count];
 
   v7 = 10;
   if (v6 != 1)
@@ -94,20 +94,20 @@
   }
 }
 
-- (id)requestInfoOfKind:(id)a3 withResultHandler:(id)a4
+- (id)requestInfoOfKind:(id)kind withResultHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (![v7 isEqualToString:@"SelectedAssetsTypedCount"])
+  kindCopy = kind;
+  handlerCopy = handler;
+  if (![kindCopy isEqualToString:@"SelectedAssetsTypedCount"])
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXAssetSelectionTypeCounter.m" lineNumber:94 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetSelectionTypeCounter.m" lineNumber:94 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v9 = [(PXAssetSelectionTypeCounter *)self selectionSnapshot];
-  if ([v9 isAnyItemSelected] && (-[PXAssetSelectionTypeCounter selectionManager](self, "selectionManager"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "disableAssetTypeCounting"), v10, !v11))
+  selectionSnapshot = [(PXAssetSelectionTypeCounter *)self selectionSnapshot];
+  if ([selectionSnapshot isAnyItemSelected] && (-[PXAssetSelectionTypeCounter selectionManager](self, "selectionManager"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "disableAssetTypeCounting"), v10, !v11))
   {
     v14 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
     countUpdateQueue = self->_countUpdateQueue;
@@ -117,15 +117,15 @@
     block[3] = &unk_1E7BB7A10;
     v13 = v14;
     v19 = v13;
-    v20 = v9;
-    v21 = v8;
+    v20 = selectionSnapshot;
+    v21 = handlerCopy;
     dispatch_async(countUpdateQueue, block);
   }
 
   else
   {
     v12 = [MEMORY[0x1E696B098] valueWithPXDisplayAssetTypedCount:{0, 0}];
-    (*(v8 + 2))(v8, v12);
+    (*(handlerCopy + 2))(handlerCopy, v12);
 
     v13 = 0;
   }
@@ -144,40 +144,40 @@ void __67__PXAssetSelectionTypeCounter_requestInfoOfKind_withResultHandler___blo
   }
 }
 
-- (void)setTypedCount:(id)a3
+- (void)setTypedCount:(id)count
 {
-  if (self->_typedCount.count != a3.var0 || self->_typedCount.type != a3.var1)
+  if (self->_typedCount.count != count.var0 || self->_typedCount.type != count.var1)
   {
-    self->_typedCount = a3;
+    self->_typedCount = count;
     [(PXObservable *)self signalChange:1];
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXSelectionManagerObserverContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXSelectionManagerObserverContext != context)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXAssetSelectionTypeCounter.m" lineNumber:59 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetSelectionTypeCounter.m" lineNumber:59 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (v6)
+  if (changeCopy)
   {
-    v12 = v9;
-    v10 = [(PXAssetSelectionTypeCounter *)self infoUpdater];
-    [v10 invalidateInfo];
+    v12 = observableCopy;
+    infoUpdater = [(PXAssetSelectionTypeCounter *)self infoUpdater];
+    [infoUpdater invalidateInfo];
 
-    v9 = v12;
+    observableCopy = v12;
   }
 }
 
-- (PXAssetSelectionTypeCounter)initWithSelectionManager:(id)a3
+- (PXAssetSelectionTypeCounter)initWithSelectionManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = PXAssetSelectionTypeCounter;
   v5 = [(PXObservable *)&v13 init];
@@ -194,8 +194,8 @@ void __67__PXAssetSelectionTypeCounter_requestInfoOfKind_withResultHandler___blo
     countUpdateQueue = v5->_countUpdateQueue;
     v5->_countUpdateQueue = v10;
 
-    objc_storeWeak(&v5->_selectionManager, v4);
-    [v4 registerChangeObserver:v5 context:PXSelectionManagerObserverContext];
+    objc_storeWeak(&v5->_selectionManager, managerCopy);
+    [managerCopy registerChangeObserver:v5 context:PXSelectionManagerObserverContext];
   }
 
   return v5;
@@ -203,8 +203,8 @@ void __67__PXAssetSelectionTypeCounter_requestInfoOfKind_withResultHandler___blo
 
 - (PXAssetSelectionTypeCounter)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAssetSelectionTypeCounter.m" lineNumber:36 description:{@"%s is not available as initializer", "-[PXAssetSelectionTypeCounter init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetSelectionTypeCounter.m" lineNumber:36 description:{@"%s is not available as initializer", "-[PXAssetSelectionTypeCounter init]"}];
 
   abort();
 }

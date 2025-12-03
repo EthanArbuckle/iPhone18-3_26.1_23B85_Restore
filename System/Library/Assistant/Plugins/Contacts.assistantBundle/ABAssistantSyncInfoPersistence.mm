@@ -1,11 +1,11 @@
 @interface ABAssistantSyncInfoPersistence
-+ (BOOL)saveFileForDictionary:(id)a3;
++ (BOOL)saveFileForDictionary:(id)dictionary;
 + (id)filePath;
 + (id)infoDictionary;
-+ (id)stringForKey:(id)a3;
-+ (id)valueForKey:(id)a3;
-+ (void)saveString:(id)a3 forKey:(id)a4;
-+ (void)saveValue:(id)a3 forKey:(id)a4;
++ (id)stringForKey:(id)key;
++ (id)valueForKey:(id)key;
++ (void)saveString:(id)string forKey:(id)key;
++ (void)saveValue:(id)value forKey:(id)key;
 @end
 
 @implementation ABAssistantSyncInfoPersistence
@@ -26,7 +26,7 @@
 
 + (id)infoDictionary
 {
-  v3 = objc_msgSend_filePath(a1, a2, v2);
+  v3 = objc_msgSend_filePath(self, a2, v2);
   v6 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v4, v5);
   if ((objc_msgSend_fileExistsAtPath_(v6, v7, v3) & 1) == 0)
   {
@@ -55,10 +55,10 @@ LABEL_7:
   return v15;
 }
 
-+ (BOOL)saveFileForDictionary:(id)a3
++ (BOOL)saveFileForDictionary:(id)dictionary
 {
-  v4 = a3;
-  v7 = objc_msgSend_filePath(a1, v5, v6);
+  dictionaryCopy = dictionary;
+  v7 = objc_msgSend_filePath(self, v5, v6);
   v10 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v8, v9);
   if (objc_msgSend_fileExistsAtPath_(v10, v11, v7))
   {
@@ -83,7 +83,7 @@ LABEL_7:
 
   v19 = objc_msgSend_fileURLWithPath_(MEMORY[0x277CBEBC0], v17, v7);
   v23 = 0;
-  v18 = objc_msgSend_writeToURL_error_(v4, v20, v19, &v23);
+  v18 = objc_msgSend_writeToURL_error_(dictionaryCopy, v20, v19, &v23);
   v21 = v23;
   if (v21 && os_log_type_enabled(*MEMORY[0x277CEF0D0], OS_LOG_TYPE_ERROR))
   {
@@ -94,40 +94,40 @@ LABEL_11:
   return v18;
 }
 
-+ (void)saveString:(id)a3 forKey:(id)a4
++ (void)saveString:(id)string forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v12 = objc_msgSend_infoDictionary(a1, v8, v9);
-  objc_msgSend_setObject_forKeyedSubscript_(v12, v10, v7, v6);
+  keyCopy = key;
+  stringCopy = string;
+  v12 = objc_msgSend_infoDictionary(self, v8, v9);
+  objc_msgSend_setObject_forKeyedSubscript_(v12, v10, stringCopy, keyCopy);
 
-  objc_msgSend_saveFileForDictionary_(a1, v11, v12);
+  objc_msgSend_saveFileForDictionary_(self, v11, v12);
 }
 
-+ (id)stringForKey:(id)a3
++ (id)stringForKey:(id)key
 {
-  v4 = a3;
-  v7 = objc_msgSend_infoDictionary(a1, v5, v6);
-  v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, v4);
+  keyCopy = key;
+  v7 = objc_msgSend_infoDictionary(self, v5, v6);
+  v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, keyCopy);
 
   return v9;
 }
 
-+ (void)saveValue:(id)a3 forKey:(id)a4
++ (void)saveValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v12 = objc_msgSend_infoDictionary(a1, v8, v9);
-  objc_msgSend_setObject_forKeyedSubscript_(v12, v10, v7, v6);
+  keyCopy = key;
+  valueCopy = value;
+  v12 = objc_msgSend_infoDictionary(self, v8, v9);
+  objc_msgSend_setObject_forKeyedSubscript_(v12, v10, valueCopy, keyCopy);
 
-  objc_msgSend_saveFileForDictionary_(a1, v11, v12);
+  objc_msgSend_saveFileForDictionary_(self, v11, v12);
 }
 
-+ (id)valueForKey:(id)a3
++ (id)valueForKey:(id)key
 {
-  v4 = a3;
-  v7 = objc_msgSend_infoDictionary(a1, v5, v6);
-  v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, v4);
+  keyCopy = key;
+  v7 = objc_msgSend_infoDictionary(self, v5, v6);
+  v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, keyCopy);
 
   return v9;
 }

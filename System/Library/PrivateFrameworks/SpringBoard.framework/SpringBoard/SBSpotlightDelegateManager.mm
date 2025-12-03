@@ -2,13 +2,13 @@
 + (SBSpotlightDelegateManager)sharedInstance;
 - (SBSpotlightDelegateManager)init;
 - (id)activeDelegate;
-- (void)_modifyDelegatesWithBlock:(id)a3;
-- (void)addSpotlightDelegate:(id)a3 forLevel:(unint64_t)a4;
+- (void)_modifyDelegatesWithBlock:(id)block;
+- (void)addSpotlightDelegate:(id)delegate forLevel:(unint64_t)level;
 - (void)dismissSearchView;
-- (void)removeSpotlightDelegate:(id)a3 forLevel:(unint64_t)a4;
+- (void)removeSpotlightDelegate:(id)delegate forLevel:(unint64_t)level;
 - (void)searchViewContentAvailabilityDidChange;
 - (void)searchViewKeyboardPresentationStateDidChange;
-- (void)spotlightActivationRequestServerDidRequestSpotlightActivation:(id)a3;
+- (void)spotlightActivationRequestServerDidRequestSpotlightActivation:(id)activation;
 @end
 
 @implementation SBSpotlightDelegateManager
@@ -49,11 +49,11 @@ void __44__SBSpotlightDelegateManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)addSpotlightDelegate:(id)a3 forLevel:(unint64_t)a4
+- (void)addSpotlightDelegate:(id)delegate forLevel:(unint64_t)level
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (a4 >= 4)
+  delegateCopy = delegate;
+  if (level >= 4)
   {
     [SBSpotlightDelegateManager addSpotlightDelegate:a2 forLevel:self];
   }
@@ -62,9 +62,9 @@ void __44__SBSpotlightDelegateManager_sharedInstance__block_invoke()
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v14 = a4;
+    levelCopy = level;
     v15 = 2114;
-    v16 = v7;
+    v16 = delegateCopy;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Adding Spotlight delegate at level %ld: %{public}@", buf, 0x16u);
   }
 
@@ -72,10 +72,10 @@ void __44__SBSpotlightDelegateManager_sharedInstance__block_invoke()
   v10[1] = 3221225472;
   v10[2] = __60__SBSpotlightDelegateManager_addSpotlightDelegate_forLevel___block_invoke;
   v10[3] = &unk_2783AB2A8;
-  v11 = v7;
-  v12 = a4;
+  v11 = delegateCopy;
+  levelCopy2 = level;
   v10[4] = self;
-  v9 = v7;
+  v9 = delegateCopy;
   [(SBSpotlightDelegateManager *)self _modifyDelegatesWithBlock:v10];
 }
 
@@ -106,11 +106,11 @@ void __60__SBSpotlightDelegateManager_addSpotlightDelegate_forLevel___block_invo
   [v9 addObject:a1[5]];
 }
 
-- (void)removeSpotlightDelegate:(id)a3 forLevel:(unint64_t)a4
+- (void)removeSpotlightDelegate:(id)delegate forLevel:(unint64_t)level
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (a4 >= 4)
+  delegateCopy = delegate;
+  if (level >= 4)
   {
     [SBSpotlightDelegateManager removeSpotlightDelegate:a2 forLevel:self];
   }
@@ -119,9 +119,9 @@ void __60__SBSpotlightDelegateManager_addSpotlightDelegate_forLevel___block_invo
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v14 = a4;
+    levelCopy = level;
     v15 = 2114;
-    v16 = v7;
+    v16 = delegateCopy;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Removing Spotlight delegate at level %ld: %{public}@", buf, 0x16u);
   }
 
@@ -129,10 +129,10 @@ void __60__SBSpotlightDelegateManager_addSpotlightDelegate_forLevel___block_invo
   v10[1] = 3221225472;
   v10[2] = __63__SBSpotlightDelegateManager_removeSpotlightDelegate_forLevel___block_invoke;
   v10[3] = &unk_2783AB2A8;
-  v11 = v7;
-  v12 = a4;
+  v11 = delegateCopy;
+  levelCopy2 = level;
   v10[4] = self;
-  v9 = v7;
+  v9 = delegateCopy;
   [(SBSpotlightDelegateManager *)self _modifyDelegatesWithBlock:v10];
 }
 
@@ -160,9 +160,9 @@ void __63__SBSpotlightDelegateManager_removeSpotlightDelegate_forLevel___block_i
     v5 = [MEMORY[0x277CCABB0] numberWithInteger:v3];
     v6 = [(NSMutableDictionary *)delegatesForLevel objectForKey:v5];
 
-    v7 = [v6 lastObject];
+    lastObject = [v6 lastObject];
 
-    if (v7)
+    if (lastObject)
     {
       v8 = 1;
     }
@@ -177,48 +177,48 @@ void __63__SBSpotlightDelegateManager_removeSpotlightDelegate_forLevel___block_i
 
   while (!v8);
 
-  return v7;
+  return lastObject;
 }
 
-- (void)_modifyDelegatesWithBlock:(id)a3
+- (void)_modifyDelegatesWithBlock:(id)block
 {
-  v4 = a3;
-  v6 = [(SBSpotlightDelegateManager *)self activeDelegate];
-  v4[2](v4);
+  blockCopy = block;
+  activeDelegate = [(SBSpotlightDelegateManager *)self activeDelegate];
+  blockCopy[2](blockCopy);
 
-  v5 = [(SBSpotlightDelegateManager *)self activeDelegate];
-  if (v6 != v5)
+  activeDelegate2 = [(SBSpotlightDelegateManager *)self activeDelegate];
+  if (activeDelegate != activeDelegate2)
   {
-    [v5 didBecomeActiveDelegate];
-    [v6 didResignActiveDelegate:v5 == 0];
+    [activeDelegate2 didBecomeActiveDelegate];
+    [activeDelegate didResignActiveDelegate:activeDelegate2 == 0];
   }
 }
 
 - (void)dismissSearchView
 {
-  v2 = [(SBSpotlightDelegateManager *)self activeDelegate];
-  [v2 dismissSearchView];
+  activeDelegate = [(SBSpotlightDelegateManager *)self activeDelegate];
+  [activeDelegate dismissSearchView];
 }
 
 - (void)searchViewKeyboardPresentationStateDidChange
 {
-  v2 = [(SBSpotlightDelegateManager *)self activeDelegate];
+  activeDelegate = [(SBSpotlightDelegateManager *)self activeDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v2 searchViewKeyboardPresentationStateDidChange];
+    [activeDelegate searchViewKeyboardPresentationStateDidChange];
   }
 }
 
 - (void)searchViewContentAvailabilityDidChange
 {
-  v2 = [(SBSpotlightDelegateManager *)self activeDelegate];
+  activeDelegate = [(SBSpotlightDelegateManager *)self activeDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v2 searchViewContentAvailabilityDidChange];
+    [activeDelegate searchViewContentAvailabilityDidChange];
   }
 }
 
-- (void)spotlightActivationRequestServerDidRequestSpotlightActivation:(id)a3
+- (void)spotlightActivationRequestServerDidRequestSpotlightActivation:(id)activation
 {
   if (!SBSpotlightIsVisible())
   {

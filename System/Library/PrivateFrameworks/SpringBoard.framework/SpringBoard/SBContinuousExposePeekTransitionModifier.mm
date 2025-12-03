@@ -1,12 +1,12 @@
 @interface SBContinuousExposePeekTransitionModifier
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (SBContinuousExposePeekTransitionModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5 direction:(unint64_t)a6;
-- (double)blurDelayForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)scaleForIndex:(unint64_t)a3;
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (SBContinuousExposePeekTransitionModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout direction:(unint64_t)direction;
+- (double)blurDelayForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)scaleForIndex:(unint64_t)index;
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (id)topMostLayoutElements;
 - (id)transitionWillBegin;
 - (id)visibleAppLayouts;
@@ -14,28 +14,28 @@
 
 @implementation SBContinuousExposePeekTransitionModifier
 
-- (SBContinuousExposePeekTransitionModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5 direction:(unint64_t)a6
+- (SBContinuousExposePeekTransitionModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout direction:(unint64_t)direction
 {
-  v12 = a4;
-  v13 = a5;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
   v20.receiver = self;
   v20.super_class = SBContinuousExposePeekTransitionModifier;
-  v14 = [(SBTransitionSwitcherModifier *)&v20 initWithTransitionID:a3];
+  v14 = [(SBTransitionSwitcherModifier *)&v20 initWithTransitionID:d];
   if (v14)
   {
-    if (!v12)
+    if (!layoutCopy)
     {
       [SBContinuousExposePeekTransitionModifier initWithTransitionID:a2 fromAppLayout:v14 toAppLayout:? direction:?];
     }
 
-    objc_storeStrong(&v14->_fromAppLayout, a4);
-    objc_storeStrong(&v14->_toAppLayout, a5);
-    v14->_direction = a6;
+    objc_storeStrong(&v14->_fromAppLayout, layout);
+    objc_storeStrong(&v14->_toAppLayout, appLayout);
+    v14->_direction = direction;
     v15 = [[SBFullScreenContinuousExposeSwitcherModifier alloc] initWithFullScreenAppLayout:v14->_fromAppLayout];
     fromFullScreenContinuousExposeModifier = v14->_fromFullScreenContinuousExposeModifier;
     v14->_fromFullScreenContinuousExposeModifier = v15;
 
-    if (a6 == 1 && v14->_toAppLayout)
+    if (direction == 1 && v14->_toAppLayout)
     {
       v17 = [[SBFullScreenContinuousExposeSwitcherModifier alloc] initWithFullScreenAppLayout:v14->_toAppLayout];
       toFullScreenContinuousExposeModifier = v14->_toFullScreenContinuousExposeModifier;
@@ -50,9 +50,9 @@
 {
   v6.receiver = self;
   v6.super_class = SBContinuousExposePeekTransitionModifier;
-  v2 = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
   v3 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:4 updateMode:4];
-  v4 = SBAppendSwitcherModifierResponse(v3, v2);
+  v4 = SBAppendSwitcherModifierResponse(v3, transitionWillBegin);
 
   return v4;
 }
@@ -61,11 +61,11 @@
 {
   v7.receiver = self;
   v7.super_class = SBContinuousExposePeekTransitionModifier;
-  v3 = [(SBContinuousExposePeekTransitionModifier *)&v7 visibleAppLayouts];
-  v4 = v3;
+  visibleAppLayouts = [(SBContinuousExposePeekTransitionModifier *)&v7 visibleAppLayouts];
+  v4 = visibleAppLayouts;
   if (self->_direction == 1)
   {
-    v5 = [v3 setByAddingObject:self->_fromAppLayout];
+    v5 = [visibleAppLayouts setByAddingObject:self->_fromAppLayout];
 
     v4 = v5;
   }
@@ -73,10 +73,10 @@
   return v4;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
-  v5 = [(SBContinuousExposePeekTransitionModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBContinuousExposePeekTransitionModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (self->_direction == 1)
   {
@@ -95,7 +95,7 @@
       v23[3] = &unk_2783AA618;
       v23[4] = self;
       v23[5] = &v24;
-      v23[6] = a3;
+      v23[6] = index;
       [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:fromFullScreenContinuousExposeModifier usingBlock:v23];
       goto LABEL_14;
     }
@@ -115,7 +115,7 @@
       v22[3] = &unk_2783AA618;
       v22[4] = self;
       v22[5] = &v24;
-      v22[6] = a3;
+      v22[6] = index;
       [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:toFullScreenContinuousExposeModifier usingBlock:v22];
 LABEL_14:
       v9 = v25[4];
@@ -129,7 +129,7 @@ LABEL_14:
 
   v21.receiver = self;
   v21.super_class = SBContinuousExposePeekTransitionModifier;
-  [(SBContinuousExposePeekTransitionModifier *)&v21 frameForIndex:a3];
+  [(SBContinuousExposePeekTransitionModifier *)&v21 frameForIndex:index];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -169,10 +169,10 @@ uint64_t __58__SBContinuousExposePeekTransitionModifier_frameForIndex___block_in
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
-  v5 = [(SBContinuousExposePeekTransitionModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBContinuousExposePeekTransitionModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (self->_direction == 1)
   {
@@ -189,7 +189,7 @@ uint64_t __58__SBContinuousExposePeekTransitionModifier_frameForIndex___block_in
       v14[3] = &unk_2783AA618;
       v14[4] = self;
       v14[5] = &v15;
-      v14[6] = a3;
+      v14[6] = index;
       [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:fromFullScreenContinuousExposeModifier usingBlock:v14];
       goto LABEL_14;
     }
@@ -207,7 +207,7 @@ uint64_t __58__SBContinuousExposePeekTransitionModifier_frameForIndex___block_in
       v13[3] = &unk_2783AA618;
       v13[4] = self;
       v13[5] = &v15;
-      v13[6] = a3;
+      v13[6] = index;
       [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:toFullScreenContinuousExposeModifier usingBlock:v13];
 LABEL_14:
       v9 = v16[3];
@@ -218,7 +218,7 @@ LABEL_14:
 
   v12.receiver = self;
   v12.super_class = SBContinuousExposePeekTransitionModifier;
-  [(SBContinuousExposePeekTransitionModifier *)&v12 scaleForIndex:a3];
+  [(SBContinuousExposePeekTransitionModifier *)&v12 scaleForIndex:index];
   v9 = v8;
 LABEL_12:
 
@@ -239,25 +239,25 @@ uint64_t __58__SBContinuousExposePeekTransitionModifier_scaleForIndex___block_in
   return result;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
   v53.receiver = self;
   v53.super_class = SBContinuousExposePeekTransitionModifier;
-  [(SBContinuousExposePeekTransitionModifier *)&v53 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+  [(SBContinuousExposePeekTransitionModifier *)&v53 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
   if (self->_direction == 1)
   {
-    if (-[SBTransitionSwitcherModifier transitionPhase](self, "transitionPhase") >= 2 && [v11 isEqual:self->_fromAppLayout] && !-[SBAppLayout containsAnyItemFromAppLayout:](self->_toAppLayout, "containsAnyItemFromAppLayout:", self->_fromAppLayout))
+    if (-[SBTransitionSwitcherModifier transitionPhase](self, "transitionPhase") >= 2 && [layoutCopy isEqual:self->_fromAppLayout] && !-[SBAppLayout containsAnyItemFromAppLayout:](self->_toAppLayout, "containsAnyItemFromAppLayout:", self->_fromAppLayout))
     {
-      v21 = [v11 itemForLayoutRole:a3];
+      v21 = [layoutCopy itemForLayoutRole:role];
       [(SBSwitcherModifier *)self frameForContinuousExposePeekingDisplayItem:v21 inAppLayout:self->_fromAppLayout bounds:x defaultFrameForLayoutRole:y, width, height, v13, v15, v17, v19];
       v23 = v22;
       v15 = v24;
@@ -268,8 +268,8 @@ uint64_t __58__SBContinuousExposePeekTransitionModifier_scaleForIndex___block_in
       [(SBContinuousExposePeekTransitionModifier *)self containerViewBounds];
       UIRectGetCenter();
       v30 = v29;
-      v31 = [(SBSwitcherModifier *)self windowingConfiguration];
-      [v31 screenEdgePadding];
+      windowingConfiguration = [(SBSwitcherModifier *)self windowingConfiguration];
+      [windowingConfiguration screenEdgePadding];
       v33 = v32;
 
       v34 = -2.0;
@@ -281,7 +281,7 @@ uint64_t __58__SBContinuousExposePeekTransitionModifier_scaleForIndex___block_in
       v13 = v23 + v33 * v34 * 2.0;
     }
 
-    else if (self->_direction == 1 && [(SBTransitionSwitcherModifier *)self transitionPhase]>= 2 && self->_toFullScreenContinuousExposeModifier && [(SBAppLayout *)self->_toAppLayout containsAnyItemFromAppLayout:v11]&& [(SBAppLayout *)self->_fromAppLayout containsAnyItemFromAppLayout:v11])
+    else if (self->_direction == 1 && [(SBTransitionSwitcherModifier *)self transitionPhase]>= 2 && self->_toFullScreenContinuousExposeModifier && [(SBAppLayout *)self->_toAppLayout containsAnyItemFromAppLayout:layoutCopy]&& [(SBAppLayout *)self->_fromAppLayout containsAnyItemFromAppLayout:layoutCopy])
     {
       v47 = 0;
       v48 = &v47;
@@ -295,9 +295,9 @@ uint64_t __58__SBContinuousExposePeekTransitionModifier_scaleForIndex___block_in
       v39[2] = __86__SBContinuousExposePeekTransitionModifier_frameForLayoutRole_inAppLayout_withBounds___block_invoke;
       v39[3] = &unk_2783AA640;
       v41 = &v47;
-      v42 = a3;
+      roleCopy = role;
       v39[4] = self;
-      v40 = v11;
+      v40 = layoutCopy;
       v43 = x;
       v44 = y;
       v45 = width;
@@ -334,10 +334,10 @@ uint64_t __86__SBContinuousExposePeekTransitionModifier_frameForLayoutRole_inApp
   return result;
 }
 
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  if (self->_direction == 1 && [(SBTransitionSwitcherModifier *)self transitionPhase]>= 2 && self->_toFullScreenContinuousExposeModifier && [(SBAppLayout *)self->_toAppLayout containsAnyItemFromAppLayout:v6]&& [(SBAppLayout *)self->_fromAppLayout containsAnyItemFromAppLayout:v6])
+  layoutCopy = layout;
+  if (self->_direction == 1 && [(SBTransitionSwitcherModifier *)self transitionPhase]>= 2 && self->_toFullScreenContinuousExposeModifier && [(SBAppLayout *)self->_toAppLayout containsAnyItemFromAppLayout:layoutCopy]&& [(SBAppLayout *)self->_fromAppLayout containsAnyItemFromAppLayout:layoutCopy])
   {
     v16 = 0;
     v17 = &v16;
@@ -349,9 +349,9 @@ uint64_t __86__SBContinuousExposePeekTransitionModifier_frameForLayoutRole_inApp
     v12[2] = __75__SBContinuousExposePeekTransitionModifier_scaleForLayoutRole_inAppLayout___block_invoke;
     v12[3] = &unk_2783AA668;
     v14 = &v16;
-    v15 = a3;
+    roleCopy = role;
     v12[4] = self;
-    v13 = v6;
+    v13 = layoutCopy;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:toFullScreenContinuousExposeModifier usingBlock:v12];
     v8 = v17[3];
 
@@ -362,7 +362,7 @@ uint64_t __86__SBContinuousExposePeekTransitionModifier_frameForLayoutRole_inApp
   {
     v11.receiver = self;
     v11.super_class = SBContinuousExposePeekTransitionModifier;
-    [(SBContinuousExposePeekTransitionModifier *)&v11 scaleForLayoutRole:a3 inAppLayout:v6];
+    [(SBContinuousExposePeekTransitionModifier *)&v11 scaleForLayoutRole:role inAppLayout:layoutCopy];
     v8 = v9;
   }
 
@@ -380,7 +380,7 @@ uint64_t __75__SBContinuousExposePeekTransitionModifier_scaleForLayoutRole_inApp
 {
   v9.receiver = self;
   v9.super_class = SBContinuousExposePeekTransitionModifier;
-  v3 = [(SBContinuousExposePeekTransitionModifier *)&v9 topMostLayoutElements];
+  topMostLayoutElements = [(SBContinuousExposePeekTransitionModifier *)&v9 topMostLayoutElements];
   if (self->_direction == 1 && self->_toAppLayout && ![(SBAppLayout *)self->_fromAppLayout containsAllItemsFromAppLayout:?])
   {
     toAppLayout = self->_toAppLayout;
@@ -392,19 +392,19 @@ uint64_t __75__SBContinuousExposePeekTransitionModifier_scaleForLayoutRole_inApp
     v5 = [(SBAppLayout *)toAppLayout appLayoutWithItemsPassingTest:v8];
     if (v5)
     {
-      v6 = [v3 sb_arrayByInsertingOrMovingObject:v5 toIndex:0];
+      v6 = [topMostLayoutElements sb_arrayByInsertingOrMovingObject:v5 toIndex:0];
 
-      v3 = v6;
+      topMostLayoutElements = v6;
     }
   }
 
-  return v3;
+  return topMostLayoutElements;
 }
 
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout
 {
-  v6 = a4;
-  if ([(SBAppLayout *)self->_toAppLayout containsAnyItemFromAppLayout:self->_fromAppLayout]&& ([(SBAppLayout *)self->_toAppLayout containsAnyItemFromAppLayout:v6]|| [(SBAppLayout *)self->_fromAppLayout containsAnyItemFromAppLayout:v6]))
+  layoutCopy = layout;
+  if ([(SBAppLayout *)self->_toAppLayout containsAnyItemFromAppLayout:self->_fromAppLayout]&& ([(SBAppLayout *)self->_toAppLayout containsAnyItemFromAppLayout:layoutCopy]|| [(SBAppLayout *)self->_fromAppLayout containsAnyItemFromAppLayout:layoutCopy]))
   {
     v7 = 1;
   }
@@ -413,20 +413,20 @@ uint64_t __75__SBContinuousExposePeekTransitionModifier_scaleForLayoutRole_inApp
   {
     v9.receiver = self;
     v9.super_class = SBContinuousExposePeekTransitionModifier;
-    v7 = [(SBContinuousExposePeekTransitionModifier *)&v9 isLayoutRoleMatchMovedToScene:a3 inAppLayout:v6];
+    v7 = [(SBContinuousExposePeekTransitionModifier *)&v9 isLayoutRoleMatchMovedToScene:scene inAppLayout:layoutCopy];
   }
 
   return v7;
 }
 
-- (double)blurDelayForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)blurDelayForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  if ([(SBAppLayout *)self->_toAppLayout containsAnyItemFromAppLayout:self->_fromAppLayout]&& ([(SBAppLayout *)self->_toAppLayout containsAnyItemFromAppLayout:v6]|| [(SBAppLayout *)self->_fromAppLayout containsAnyItemFromAppLayout:v6]))
+  layoutCopy = layout;
+  if ([(SBAppLayout *)self->_toAppLayout containsAnyItemFromAppLayout:self->_fromAppLayout]&& ([(SBAppLayout *)self->_toAppLayout containsAnyItemFromAppLayout:layoutCopy]|| [(SBAppLayout *)self->_fromAppLayout containsAnyItemFromAppLayout:layoutCopy]))
   {
-    v7 = [(SBContinuousExposePeekTransitionModifier *)self switcherSettings];
-    v8 = [v7 animationSettings];
-    [v8 resizeBlurDelay];
+    switcherSettings = [(SBContinuousExposePeekTransitionModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings resizeBlurDelay];
     v10 = v9;
   }
 
@@ -434,21 +434,21 @@ uint64_t __75__SBContinuousExposePeekTransitionModifier_scaleForLayoutRole_inApp
   {
     v13.receiver = self;
     v13.super_class = SBContinuousExposePeekTransitionModifier;
-    [(SBContinuousExposePeekTransitionModifier *)&v13 blurDelayForLayoutRole:a3 inAppLayout:v6];
+    [(SBContinuousExposePeekTransitionModifier *)&v13 blurDelayForLayoutRole:role inAppLayout:layoutCopy];
     v10 = v11;
   }
 
   return v10;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v4 = objc_alloc_init(SBMutableSwitcherAnimationAttributes);
   [(SBSwitcherAnimationAttributes *)v4 setUpdateMode:3];
-  v5 = [(SBContinuousExposePeekTransitionModifier *)self switcherSettings];
-  v6 = [v5 windowingSettings];
-  v7 = [v6 appToAppLayoutSettings];
-  [(SBSwitcherAnimationAttributes *)v4 setLayoutSettings:v7];
+  switcherSettings = [(SBContinuousExposePeekTransitionModifier *)self switcherSettings];
+  windowingSettings = [switcherSettings windowingSettings];
+  appToAppLayoutSettings = [windowingSettings appToAppLayoutSettings];
+  [(SBSwitcherAnimationAttributes *)v4 setLayoutSettings:appToAppLayoutSettings];
 
   return v4;
 }

@@ -3,13 +3,13 @@
 - (BOOL)isFinished;
 - (BOOL)isIndeterminate;
 - (NSProgressValues)init;
-- (NSProgressValues)initWithCoder:(id)a3;
+- (NSProgressValues)initWithCoder:(id)coder;
 - (_NSProgressFraction)overallFraction;
 - (double)fractionCompleted;
-- (id)_indentedDescription:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_indentedDescription:(unint64_t)description;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSProgressValues
@@ -84,9 +84,9 @@ uint64_t __36__NSProgressValues_decodableClasses__block_invoke()
   return qword_1ED43F0B8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v4 + 8) = [(NSMutableDictionary *)self->_userInfo mutableCopy];
   v5 = *&self->_selfFraction.overflowed;
   *(v4 + 16) = *&self->_selfFraction.completed;
@@ -105,11 +105,11 @@ uint64_t __36__NSProgressValues_decodableClasses__block_invoke()
   return v4;
 }
 
-- (id)_indentedDescription:(unint64_t)a3
+- (id)_indentedDescription:(unint64_t)description
 {
   v9[5] = *MEMORY[0x1E69E9840];
   v5 = +[(NSString *)NSMutableString];
-  for (i = +[(NSString *)NSMutableString]; a3; --a3)
+  for (i = +[(NSString *)NSMutableString]; description; --description)
   {
     [(NSString *)i appendString:@"  "];
   }
@@ -137,7 +137,7 @@ uint64_t __36__NSProgressValues_decodableClasses__block_invoke()
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9[6] = *MEMORY[0x1E69E9840];
   v5 = objc_lookUpClass("NSImage");
@@ -160,21 +160,21 @@ uint64_t __36__NSProgressValues_decodableClasses__block_invoke()
     v7 = userInfo;
   }
 
-  [a3 encodeObject:v7 forKey:@"userInfo"];
-  [a3 encodeInt64:self->_selfFraction.completed forKey:@"selfFraction.completed"];
-  [a3 encodeInt64:self->_selfFraction.total forKey:@"selfFraction.total"];
-  [a3 encodeBool:self->_selfFraction.overflowed forKey:@"selfFraction.overflowed"];
-  [a3 encodeInt64:self->_childFraction.completed forKey:@"childFraction.completed"];
-  [a3 encodeInt64:self->_childFraction.total forKey:@"childFraction.total"];
-  [a3 encodeBool:self->_childFraction.overflowed forKey:@"childFraction.overflowed"];
-  [a3 encodeObject:self->_localizedDescription forKey:@"localizedDescription"];
-  [a3 encodeObject:self->_localizedAdditionalDescription forKey:@"localizedAdditionalDescription"];
-  [a3 encodeBool:self->_isCancellable forKey:@"cancellable"];
-  [a3 encodeBool:self->_isPausable forKey:@"pausable"];
-  [a3 encodeBool:self->_isCancelled forKey:@"cancelled"];
-  [a3 encodeBool:self->_isPaused forKey:@"paused"];
-  [a3 encodeObject:self->_kind forKey:@"kind"];
-  [a3 encodeBool:self->_isPrioritizable forKey:@"prioritizable"];
+  [coder encodeObject:v7 forKey:@"userInfo"];
+  [coder encodeInt64:self->_selfFraction.completed forKey:@"selfFraction.completed"];
+  [coder encodeInt64:self->_selfFraction.total forKey:@"selfFraction.total"];
+  [coder encodeBool:self->_selfFraction.overflowed forKey:@"selfFraction.overflowed"];
+  [coder encodeInt64:self->_childFraction.completed forKey:@"childFraction.completed"];
+  [coder encodeInt64:self->_childFraction.total forKey:@"childFraction.total"];
+  [coder encodeBool:self->_childFraction.overflowed forKey:@"childFraction.overflowed"];
+  [coder encodeObject:self->_localizedDescription forKey:@"localizedDescription"];
+  [coder encodeObject:self->_localizedAdditionalDescription forKey:@"localizedAdditionalDescription"];
+  [coder encodeBool:self->_isCancellable forKey:@"cancellable"];
+  [coder encodeBool:self->_isPausable forKey:@"pausable"];
+  [coder encodeBool:self->_isCancelled forKey:@"cancelled"];
+  [coder encodeBool:self->_isPaused forKey:@"paused"];
+  [coder encodeObject:self->_kind forKey:@"kind"];
+  [coder encodeBool:self->_isPrioritizable forKey:@"prioritizable"];
 }
 
 uint64_t __36__NSProgressValues_encodeWithCoder___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -197,7 +197,7 @@ uint64_t __36__NSProgressValues_encodeWithCoder___block_invoke(uint64_t a1, void
   return result;
 }
 
-- (NSProgressValues)initWithCoder:(id)a3
+- (NSProgressValues)initWithCoder:(id)coder
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -205,21 +205,21 @@ uint64_t __36__NSProgressValues_encodeWithCoder___block_invoke(uint64_t a1, void
   v4 = [(NSProgressValues *)&v6 init];
   if (v4)
   {
-    v4->_userInfo = [a3 decodeObjectOfClasses:objc_msgSend(objc_msgSend(a3 forKey:{"allowedClasses"), "setByAddingObjectsFromSet:", objc_msgSend(objc_opt_class(), "decodableClasses")), @"userInfo"}];
-    v4->_selfFraction.completed = [a3 decodeInt64ForKey:@"selfFraction.completed"];
-    v4->_selfFraction.total = [a3 decodeInt64ForKey:@"selfFraction.total"];
-    v4->_selfFraction.overflowed = [a3 decodeInt64ForKey:@"selfFraction.overflowed"] != 0;
-    v4->_childFraction.completed = [a3 decodeInt64ForKey:@"childFraction.completed"];
-    v4->_childFraction.total = [a3 decodeInt64ForKey:@"childFraction.total"];
-    v4->_childFraction.overflowed = [a3 decodeInt64ForKey:@"childFraction.overflowed"] != 0;
-    v4->_localizedDescription = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
-    v4->_localizedAdditionalDescription = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"localizedAdditionalDescription"];
-    v4->_isCancellable = [a3 decodeBoolForKey:@"cancellable"];
-    v4->_isPausable = [a3 decodeBoolForKey:@"pausable"];
-    v4->_isCancelled = [a3 decodeBoolForKey:@"cancelled"];
-    v4->_isPaused = [a3 decodeBoolForKey:@"paused"];
-    v4->_kind = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
-    v4->_isPrioritizable = [a3 decodeBoolForKey:@"prioritizable"];
+    v4->_userInfo = [coder decodeObjectOfClasses:objc_msgSend(objc_msgSend(coder forKey:{"allowedClasses"), "setByAddingObjectsFromSet:", objc_msgSend(objc_opt_class(), "decodableClasses")), @"userInfo"}];
+    v4->_selfFraction.completed = [coder decodeInt64ForKey:@"selfFraction.completed"];
+    v4->_selfFraction.total = [coder decodeInt64ForKey:@"selfFraction.total"];
+    v4->_selfFraction.overflowed = [coder decodeInt64ForKey:@"selfFraction.overflowed"] != 0;
+    v4->_childFraction.completed = [coder decodeInt64ForKey:@"childFraction.completed"];
+    v4->_childFraction.total = [coder decodeInt64ForKey:@"childFraction.total"];
+    v4->_childFraction.overflowed = [coder decodeInt64ForKey:@"childFraction.overflowed"] != 0;
+    v4->_localizedDescription = [coder decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
+    v4->_localizedAdditionalDescription = [coder decodeObjectOfClass:objc_opt_class() forKey:@"localizedAdditionalDescription"];
+    v4->_isCancellable = [coder decodeBoolForKey:@"cancellable"];
+    v4->_isPausable = [coder decodeBoolForKey:@"pausable"];
+    v4->_isCancelled = [coder decodeBoolForKey:@"cancelled"];
+    v4->_isPaused = [coder decodeBoolForKey:@"paused"];
+    v4->_kind = [coder decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
+    v4->_isPrioritizable = [coder decodeBoolForKey:@"prioritizable"];
   }
 
   return v4;

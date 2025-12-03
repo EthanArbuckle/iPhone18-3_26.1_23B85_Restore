@@ -1,14 +1,14 @@
 @interface PKPaymentPassActionBundle
-- (id)actionsMatchingTypes:(id)a3;
-- (void)setOrAddActionGroups:(id)a3;
-- (void)setOrAddActions:(id)a3;
+- (id)actionsMatchingTypes:(id)types;
+- (void)setOrAddActionGroups:(id)groups;
+- (void)setOrAddActions:(id)actions;
 @end
 
 @implementation PKPaymentPassActionBundle
 
-- (id)actionsMatchingTypes:(id)a3
+- (id)actionsMatchingTypes:(id)types
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithArray:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithArray:types];
   actions = self->_actions;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -29,14 +29,14 @@ uint64_t __50__PKPaymentPassActionBundle_actionsMatchingTypes___block_invoke(uin
   return v4;
 }
 
-- (void)setOrAddActions:(id)a3
+- (void)setOrAddActions:(id)actions
 {
-  v9 = a3;
+  actionsCopy = actions;
   actions = self->_actions;
   if (actions)
   {
     v5 = [(NSArray *)actions mutableCopy];
-    [(NSArray *)v5 addObjectsFromArray:v9];
+    [(NSArray *)v5 addObjectsFromArray:actionsCopy];
     v6 = [(NSArray *)v5 copy];
     v7 = self->_actions;
     self->_actions = v6;
@@ -44,20 +44,20 @@ uint64_t __50__PKPaymentPassActionBundle_actionsMatchingTypes___block_invoke(uin
 
   else
   {
-    v8 = v9;
+    v8 = actionsCopy;
     v5 = self->_actions;
     self->_actions = v8;
   }
 }
 
-- (void)setOrAddActionGroups:(id)a3
+- (void)setOrAddActionGroups:(id)groups
 {
-  v9 = a3;
+  groupsCopy = groups;
   actionGroups = self->_actionGroups;
   if (actionGroups)
   {
     v5 = [(NSArray *)actionGroups mutableCopy];
-    [(NSArray *)v5 addObjectsFromArray:v9];
+    [(NSArray *)v5 addObjectsFromArray:groupsCopy];
     v6 = [(NSArray *)v5 copy];
     v7 = self->_actionGroups;
     self->_actionGroups = v6;
@@ -65,7 +65,7 @@ uint64_t __50__PKPaymentPassActionBundle_actionsMatchingTypes___block_invoke(uin
 
   else
   {
-    v8 = v9;
+    v8 = groupsCopy;
     v5 = self->_actionGroups;
     self->_actionGroups = v8;
   }

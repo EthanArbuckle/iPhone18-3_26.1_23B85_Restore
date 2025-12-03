@@ -1,6 +1,6 @@
 @interface JavaIoRandomAccessFile
 - (BOOL)readBoolean;
-- (JavaIoRandomAccessFile)initWithNSString:(id)a3 withNSString:(id)a4;
+- (JavaIoRandomAccessFile)initWithNSString:(id)string withNSString:(id)sString;
 - (char)readByte;
 - (double)readDouble;
 - (float)readFloat;
@@ -9,8 +9,8 @@
 - (id)readUTF;
 - (int)read;
 - (int)readUnsignedByte;
-- (int)readWithByteArray:(id)a3;
-- (int)skipBytesWithInt:(int)a3;
+- (int)readWithByteArray:(id)array;
+- (int)skipBytesWithInt:(int)int;
 - (int64_t)getFilePointer;
 - (int64_t)length;
 - (uint64_t)readInt;
@@ -18,24 +18,24 @@
 - (unint64_t)readLong;
 - (void)close;
 - (void)dealloc;
-- (void)readFullyWithByteArray:(id)a3;
-- (void)seekWithLong:(int64_t)a3;
-- (void)setLengthWithLong:(int64_t)a3;
-- (void)writeBytesWithNSString:(id)a3;
-- (void)writeCharsWithNSString:(id)a3;
-- (void)writeDoubleWithDouble:(double)a3;
-- (void)writeFloatWithFloat:(float)a3;
-- (void)writeUTFWithNSString:(id)a3;
-- (void)writeWithByteArray:(id)a3;
-- (void)writeWithInt:(int)a3;
+- (void)readFullyWithByteArray:(id)array;
+- (void)seekWithLong:(int64_t)long;
+- (void)setLengthWithLong:(int64_t)long;
+- (void)writeBytesWithNSString:(id)string;
+- (void)writeCharsWithNSString:(id)string;
+- (void)writeDoubleWithDouble:(double)double;
+- (void)writeFloatWithFloat:(float)float;
+- (void)writeUTFWithNSString:(id)string;
+- (void)writeWithByteArray:(id)array;
+- (void)writeWithInt:(int)int;
 @end
 
 @implementation JavaIoRandomAccessFile
 
-- (JavaIoRandomAccessFile)initWithNSString:(id)a3 withNSString:(id)a4
+- (JavaIoRandomAccessFile)initWithNSString:(id)string withNSString:(id)sString
 {
-  v6 = new_JavaIoFile_initWithNSString_(a3);
-  JavaIoRandomAccessFile_initWithJavaIoFile_withNSString_(self, v6, a4);
+  v6 = new_JavaIoFile_initWithNSString_(string);
+  JavaIoRandomAccessFile_initWithJavaIoFile_withNSString_(self, v6, sString);
   return self;
 }
 
@@ -144,46 +144,46 @@
   return result;
 }
 
-- (int)readWithByteArray:(id)a3
+- (int)readWithByteArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = *(a3 + 2);
+  v4 = *(array + 2);
 
-  return [(JavaIoRandomAccessFile *)self readWithByteArray:a3 withInt:0 withInt:v4];
+  return [(JavaIoRandomAccessFile *)self readWithByteArray:array withInt:0 withInt:v4];
 }
 
 - (BOOL)readBoolean
 {
-  v2 = [(JavaIoRandomAccessFile *)self read];
-  if ((v2 & 0x80000000) != 0)
+  read = [(JavaIoRandomAccessFile *)self read];
+  if ((read & 0x80000000) != 0)
   {
     v4 = new_JavaIoEOFException_init();
     objc_exception_throw(v4);
   }
 
-  return v2 != 0;
+  return read != 0;
 }
 
 - (char)readByte
 {
-  v2 = [(JavaIoRandomAccessFile *)self read];
-  if ((v2 & 0x80000000) != 0)
+  read = [(JavaIoRandomAccessFile *)self read];
+  if ((read & 0x80000000) != 0)
   {
     v3 = new_JavaIoEOFException_init();
     objc_exception_throw(v3);
   }
 
-  return v2;
+  return read;
 }
 
 - (uint64_t)readShort
 {
-  sub_1001B92D8(a1, a1[6], 0, 2);
-  v2 = a1[6];
+  sub_1001B92D8(self, self[6], 0, 2);
+  v2 = self[6];
   if ((atomic_load_explicit(JavaNioByteOrder__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10014A090();
@@ -203,8 +203,8 @@
 
 - (unint64_t)readLong
 {
-  sub_1001B92D8(a1, a1[6], 0, 8);
-  v2 = a1[6];
+  sub_1001B92D8(self, self[6], 0, 8);
+  v2 = self[6];
   if ((atomic_load_explicit(JavaNioByteOrder__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10014A090();
@@ -224,8 +224,8 @@
 
 - (uint64_t)readInt
 {
-  sub_1001B92D8(a1, a1[6], 0, 4);
-  v2 = a1[6];
+  sub_1001B92D8(self, self[6], 0, 4);
+  v2 = self[6];
   if ((atomic_load_explicit(JavaNioByteOrder__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10014A090();
@@ -236,29 +236,29 @@
   return LibcoreIoMemory_peekIntWithByteArray_withInt_withJavaNioByteOrder_(v2, 0, v3);
 }
 
-- (void)readFullyWithByteArray:(id)a3
+- (void)readFullyWithByteArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = *(a3 + 2);
+  v4 = *(array + 2);
 
-  sub_1001B92D8(self, a3, 0, v4);
+  sub_1001B92D8(self, array, 0, v4);
 }
 
 - (id)readLine
 {
   v3 = new_JavaLangStringBuilder_initWithInt_(0x50u);
   v4 = 0;
-  v5 = 0;
+  getFilePointer = 0;
   while (1)
   {
     while (1)
     {
-      v6 = [(JavaIoRandomAccessFile *)self read];
-      if (v6 != 13)
+      read = [(JavaIoRandomAccessFile *)self read];
+      if (read != 13)
       {
         break;
       }
@@ -266,20 +266,20 @@
       if (v4)
       {
 LABEL_11:
-        [(JavaIoRandomAccessFile *)self seekWithLong:v5];
+        [(JavaIoRandomAccessFile *)self seekWithLong:getFilePointer];
         goto LABEL_12;
       }
 
-      v5 = [(JavaIoRandomAccessFile *)self getFilePointer];
+      getFilePointer = [(JavaIoRandomAccessFile *)self getFilePointer];
       v4 = 1;
     }
 
-    if (v6 == 10)
+    if (read == 10)
     {
       goto LABEL_12;
     }
 
-    if (v6 == -1)
+    if (read == -1)
     {
       break;
     }
@@ -289,7 +289,7 @@ LABEL_11:
       goto LABEL_11;
     }
 
-    [(JavaLangStringBuilder *)v3 appendWithChar:v6];
+    [(JavaLangStringBuilder *)v3 appendWithChar:read];
     v4 = 0;
   }
 
@@ -336,11 +336,11 @@ LABEL_12:
   return JavaNioCharsetModifiedUtf8_decodeWithByteArray_withCharArray_withInt_withInt_(v5, v6, 0, v4, v7, v8, v9, v10);
 }
 
-- (void)seekWithLong:(int64_t)a3
+- (void)seekWithLong:(int64_t)long
 {
-  if (a3 < 0)
+  if (long < 0)
   {
-    v10 = JreStrcat("$J", a2, a3, v3, v4, v5, v6, v7, @"offset < 0: ");
+    v10 = JreStrcat("$J", a2, long, v3, v4, v5, v6, v7, @"offset < 0: ");
     v11 = new_JavaIoIOException_initWithNSString_(v10);
     objc_exception_throw(v11);
   }
@@ -355,12 +355,12 @@ LABEL_12:
     JreThrowNullPointerException();
   }
 
-  [LibcoreIoLibcore_os_ lseekWithJavaIoFileDescriptor:self->fd_ withLong:a3 withInt:0];
+  [LibcoreIoLibcore_os_ lseekWithJavaIoFileDescriptor:self->fd_ withLong:long withInt:0];
 }
 
-- (void)setLengthWithLong:(int64_t)a3
+- (void)setLengthWithLong:(int64_t)long
 {
-  if (a3 < 0)
+  if (long < 0)
   {
     v6 = new_JavaLangIllegalArgumentException_initWithNSString_(@"newLength < 0");
     objc_exception_throw(v6);
@@ -376,10 +376,10 @@ LABEL_12:
     JreThrowNullPointerException();
   }
 
-  [LibcoreIoLibcore_os_ ftruncateWithJavaIoFileDescriptor:self->fd_ withLong:a3];
-  if ([(JavaIoRandomAccessFile *)self getFilePointer]> a3)
+  [LibcoreIoLibcore_os_ ftruncateWithJavaIoFileDescriptor:self->fd_ withLong:long];
+  if ([(JavaIoRandomAccessFile *)self getFilePointer]> long)
   {
-    [(JavaIoRandomAccessFile *)self seekWithLong:a3];
+    [(JavaIoRandomAccessFile *)self seekWithLong:long];
   }
 
   if (self->syncMetadata_)
@@ -394,38 +394,38 @@ LABEL_12:
   }
 }
 
-- (int)skipBytesWithInt:(int)a3
+- (int)skipBytesWithInt:(int)int
 {
-  if (a3 < 1)
+  if (int < 1)
   {
     return 0;
   }
 
-  v3 = a3;
-  v5 = [(JavaIoRandomAccessFile *)self getFilePointer];
+  intCopy = int;
+  getFilePointer = [(JavaIoRandomAccessFile *)self getFilePointer];
   v6 = [(JavaIoRandomAccessFile *)self length];
-  if (v5 + v3 > v6)
+  if (getFilePointer + intCopy > v6)
   {
-    v3 = v6 - v5;
+    intCopy = v6 - getFilePointer;
   }
 
-  [(JavaIoRandomAccessFile *)self seekWithLong:v5 + v3];
-  return v3;
+  [(JavaIoRandomAccessFile *)self seekWithLong:getFilePointer + intCopy];
+  return intCopy;
 }
 
-- (void)writeWithByteArray:(id)a3
+- (void)writeWithByteArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = *(a3 + 2);
+  v4 = *(array + 2);
 
-  [(JavaIoRandomAccessFile *)self writeWithByteArray:a3 withInt:0 withInt:v4];
+  [(JavaIoRandomAccessFile *)self writeWithByteArray:array withInt:0 withInt:v4];
 }
 
-- (void)writeWithInt:(int)a3
+- (void)writeWithInt:(int)int
 {
   scratch = self->scratch_;
   if (!scratch)
@@ -439,26 +439,26 @@ LABEL_12:
     IOSArray_throwOutOfBoundsWithMsg(size, 0);
   }
 
-  *(&scratch->super.size_ + 4) = a3;
+  *(&scratch->super.size_ + 4) = int;
   v6 = self->scratch_;
 
   [(JavaIoRandomAccessFile *)self writeWithByteArray:v6 withInt:0 withInt:1];
 }
 
-- (void)writeBytesWithNSString:(id)a3
+- (void)writeBytesWithNSString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = +[IOSByteArray arrayWithLength:](IOSByteArray, "arrayWithLength:", [a3 length]);
-  if ([a3 length] >= 1)
+  v5 = +[IOSByteArray arrayWithLength:](IOSByteArray, "arrayWithLength:", [string length]);
+  if ([string length] >= 1)
   {
     v6 = 0;
     do
     {
-      v7 = [a3 charAtWithInt:v6];
+      v7 = [string charAtWithInt:v6];
       size = v5->super.size_;
       if (v6 >= size)
       {
@@ -468,41 +468,41 @@ LABEL_12:
       *(&v5->super.size_ + v6++ + 4) = v7;
     }
 
-    while (v6 < [a3 length]);
+    while (v6 < [string length]);
   }
 
   [(JavaIoRandomAccessFile *)self writeWithByteArray:v5];
 }
 
-- (void)writeCharsWithNSString:(id)a3
+- (void)writeCharsWithNSString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [a3 getBytesWithCharsetName:@"UTF-16BE"];
+  v4 = [string getBytesWithCharsetName:@"UTF-16BE"];
 
   [(JavaIoRandomAccessFile *)self writeWithByteArray:v4];
 }
 
-- (void)writeDoubleWithDouble:(double)a3
+- (void)writeDoubleWithDouble:(double)double
 {
-  v4 = JavaLangDouble_doubleToLongBitsWithDouble_(a3);
+  v4 = JavaLangDouble_doubleToLongBitsWithDouble_(double);
 
   sub_1001B9AFC(self, v4);
 }
 
-- (void)writeFloatWithFloat:(float)a3
+- (void)writeFloatWithFloat:(float)float
 {
-  v4 = JavaLangFloat_floatToIntBitsWithFloat_(a3);
+  v4 = JavaLangFloat_floatToIntBitsWithFloat_(float);
 
   sub_1001B9BBC(self, v4);
 }
 
-- (void)writeUTFWithNSString:(id)a3
+- (void)writeUTFWithNSString:(id)string
 {
-  v4 = JavaNioCharsetModifiedUtf8_encodeWithNSString_(a3);
+  v4 = JavaNioCharsetModifiedUtf8_encodeWithNSString_(string);
 
   [(JavaIoRandomAccessFile *)self writeWithByteArray:v4];
 }

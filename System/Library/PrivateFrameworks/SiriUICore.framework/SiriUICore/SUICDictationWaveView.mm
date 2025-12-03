@@ -1,39 +1,39 @@
 @interface SUICDictationWaveView
-- (CGRect)_startingFrameForPipAtIndex:(unint64_t)a3;
-- (SUICDictationWaveView)initWithFrame:(CGRect)a3;
+- (CGRect)_startingFrameForPipAtIndex:(unint64_t)index;
+- (SUICDictationWaveView)initWithFrame:(CGRect)frame;
 - (double)_heightForIntroAnimationPips;
 - (double)_leftMargin;
-- (double)_originXForPipAtIndex:(unint64_t)a3;
-- (float)_heightMultiplierForPipIndex:(unint64_t)a3;
-- (float)_noiseForPipIndex:(unint64_t)a3;
-- (float)_sinusoidalTaperForPipIndex:(unint64_t)a3;
-- (float)_smoothStepTaperForPipIndex:(unint64_t)a3;
-- (float)_smoothStepWithLowerBound:(float)a3 upperBound:(float)a4 innerValue:(float)a5;
+- (double)_originXForPipAtIndex:(unint64_t)index;
+- (float)_heightMultiplierForPipIndex:(unint64_t)index;
+- (float)_noiseForPipIndex:(unint64_t)index;
+- (float)_sinusoidalTaperForPipIndex:(unint64_t)index;
+- (float)_smoothStepTaperForPipIndex:(unint64_t)index;
+- (float)_smoothStepWithLowerBound:(float)bound upperBound:(float)upperBound innerValue:(float)value;
 - (unint64_t)_numberOfPips;
 - (void)_addNewPips;
-- (void)_animateInPipsBetweenLeftIndex:(unint64_t)a3 rightIndex:(unint64_t)a4;
+- (void)_animateInPipsBetweenLeftIndex:(unint64_t)index rightIndex:(unint64_t)rightIndex;
 - (void)_introAnimationTick;
 - (void)_removeAllPips;
 - (void)_resetPips;
 - (void)_showPipsWithoutIntroAnimation;
-- (void)_tick:(id)a3;
+- (void)_tick:(id)_tick;
 - (void)_updatePipColor;
-- (void)_updatePipHeightAtIndex:(unint64_t)a3 withHeight:(double)a4;
+- (void)_updatePipHeightAtIndex:(unint64_t)index withHeight:(double)height;
 - (void)_updatePipHeights;
 - (void)layoutSubviews;
-- (void)setAudioPowerLevelDataSource:(id)a3;
-- (void)setPipColor:(id)a3;
-- (void)setPowerLevel:(float)a3;
+- (void)setAudioPowerLevelDataSource:(id)source;
+- (void)setPipColor:(id)color;
+- (void)setPowerLevel:(float)level;
 @end
 
 @implementation SUICDictationWaveView
 
-- (SUICDictationWaveView)initWithFrame:(CGRect)a3
+- (SUICDictationWaveView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v17.receiver = self;
   v17.super_class = SUICDictationWaveView;
   v7 = [(SUICDictationWaveView *)&v17 initWithFrame:?];
@@ -203,17 +203,17 @@
     v5 = 0;
     do
     {
-      v6 = [MEMORY[0x1E6979398] layer];
-      [v6 setOpacity:0.0];
-      [v6 setBackgroundColor:{-[UIColor CGColor](self->_pipColor, "CGColor")}];
+      layer = [MEMORY[0x1E6979398] layer];
+      [layer setOpacity:0.0];
+      [layer setBackgroundColor:{-[UIColor CGColor](self->_pipColor, "CGColor")}];
       [(SUICDictationWaveView *)self _startingFrameForPipAtIndex:v5];
-      [v6 setFrame:?];
+      [layer setFrame:?];
       [MEMORY[0x1E6979518] begin];
       [MEMORY[0x1E6979518] setDisableActions:1];
-      v7 = [(SUICDictationWaveView *)self layer];
-      [v7 addSublayer:v6];
+      layer2 = [(SUICDictationWaveView *)self layer];
+      [layer2 addSublayer:layer];
 
-      [(NSMutableArray *)self->_pipLayers addObject:v6];
+      [(NSMutableArray *)self->_pipLayers addObject:layer];
       [MEMORY[0x1E6979518] commit];
 
       ++v5;
@@ -223,29 +223,29 @@
   }
 }
 
-- (void)_animateInPipsBetweenLeftIndex:(unint64_t)a3 rightIndex:(unint64_t)a4
+- (void)_animateInPipsBetweenLeftIndex:(unint64_t)index rightIndex:(unint64_t)rightIndex
 {
-  if (a3 <= a4 && [(NSMutableArray *)self->_pipLayers count]> a4)
+  if (index <= rightIndex && [(NSMutableArray *)self->_pipLayers count]> rightIndex)
   {
-    v7 = a3;
+    indexCopy = index;
     do
     {
-      v8 = [(NSMutableArray *)self->_pipLayers objectAtIndex:v7];
+      v8 = [(NSMutableArray *)self->_pipLayers objectAtIndex:indexCopy];
       [MEMORY[0x1E6979518] begin];
       [MEMORY[0x1E6979518] setDisableActions:1];
       LODWORD(v9) = 1.0;
       [v8 setOpacity:v9];
       [MEMORY[0x1E6979518] commit];
 
-      ++v7;
+      ++indexCopy;
     }
 
-    while (v7 <= a4);
+    while (indexCopy <= rightIndex);
     [(SUICDictationWaveView *)self _heightForIntroAnimationPips];
-    [(SUICDictationWaveView *)self _updatePipHeightAtIndex:a3 withHeight:?];
+    [(SUICDictationWaveView *)self _updatePipHeightAtIndex:index withHeight:?];
     [(SUICDictationWaveView *)self _heightForIntroAnimationPips];
 
-    [(SUICDictationWaveView *)self _updatePipHeightAtIndex:a4 withHeight:?];
+    [(SUICDictationWaveView *)self _updatePipHeightAtIndex:rightIndex withHeight:?];
   }
 }
 
@@ -264,21 +264,21 @@
   }
 }
 
-- (void)_updatePipHeightAtIndex:(unint64_t)a3 withHeight:(double)a4
+- (void)_updatePipHeightAtIndex:(unint64_t)index withHeight:(double)height
 {
-  if ([(NSMutableArray *)self->_pipLayers count]> a3)
+  if ([(NSMutableArray *)self->_pipLayers count]> index)
   {
-    v12 = [(NSMutableArray *)self->_pipLayers objectAtIndex:a3];
-    [(SUICDictationWaveView *)self _originXForPipAtIndex:a3];
+    v12 = [(NSMutableArray *)self->_pipLayers objectAtIndex:index];
+    [(SUICDictationWaveView *)self _originXForPipAtIndex:index];
     v8 = v7;
     [(SUICDictationWaveView *)self frame];
-    v9 = (CGRectGetHeight(v14) - a4) * 0.5;
+    v9 = (CGRectGetHeight(v14) - height) * 0.5;
     [(SUICDictationWaveView *)self _pipWidth];
     [v12 setCornerRadius:v10 * 0.5];
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
     [(SUICDictationWaveView *)self _pipWidth];
-    [v12 setFrame:{v8, v9, v11, a4}];
+    [v12 setFrame:{v8, v9, v11, height}];
     [MEMORY[0x1E6979518] commit];
   }
 }
@@ -317,26 +317,26 @@
   }
 }
 
-- (void)setPipColor:(id)a3
+- (void)setPipColor:(id)color
 {
-  v5 = a3;
-  if (self->_pipColor != v5)
+  colorCopy = color;
+  if (self->_pipColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_pipColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_pipColor, color);
     [(SUICDictationWaveView *)self _updatePipColor];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setPowerLevel:(float)a3
+- (void)setPowerLevel:(float)level
 {
-  if (a3 < -96.0)
+  if (level < -96.0)
   {
-    a3 = -96.0;
+    level = -96.0;
   }
 
-  v4 = fminf(a3, 0.0);
+  v4 = fminf(level, 0.0);
   *&v5 = v4;
   [(SUICAudioLevelSmoother *)self->_smoother smoothedLevelForMicPower:v5];
   v7 = (v6 * 0.95) + 0.05;
@@ -347,28 +347,28 @@
   }
 }
 
-- (void)setAudioPowerLevelDataSource:(id)a3
+- (void)setAudioPowerLevelDataSource:(id)source
 {
-  v5 = a3;
-  if (self->_audioPowerLevelDataSource != v5)
+  sourceCopy = source;
+  if (self->_audioPowerLevelDataSource != sourceCopy)
   {
-    v16 = v5;
-    objc_storeStrong(&self->_audioPowerLevelDataSource, a3);
+    v16 = sourceCopy;
+    objc_storeStrong(&self->_audioPowerLevelDataSource, source);
     if (self->_audioPowerLevelDataSource)
     {
-      v6 = [MEMORY[0x1E69DCEB0] _carScreen];
-      v7 = v6;
-      if (v6)
+      _carScreen = [MEMORY[0x1E69DCEB0] _carScreen];
+      v7 = _carScreen;
+      if (_carScreen)
       {
-        v8 = v6;
+        mainScreen = _carScreen;
       }
 
       else
       {
-        v8 = [MEMORY[0x1E69DCEB0] mainScreen];
+        mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
       }
 
-      v9 = v8;
+      v9 = mainScreen;
 
       self->_framesPerSecond = [(CADisplayLink *)v9 maximumFramesPerSecond];
       v10 = [(CADisplayLink *)v9 displayLinkWithTarget:self selector:sel__tick_];
@@ -385,8 +385,8 @@
         v12 = self->_displayLink;
       }
 
-      v15 = [MEMORY[0x1E695DFD0] currentRunLoop];
-      [(CADisplayLink *)v12 addToRunLoop:v15 forMode:*MEMORY[0x1E695D918]];
+      currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+      [(CADisplayLink *)v12 addToRunLoop:currentRunLoop forMode:*MEMORY[0x1E695D918]];
     }
 
     else
@@ -396,11 +396,11 @@
       self->_displayLink = 0;
     }
 
-    v5 = v16;
+    sourceCopy = v16;
   }
 }
 
-- (void)_tick:(id)a3
+- (void)_tick:(id)_tick
 {
   self->_numberOfFrames = self->_numberOfFrames + 1.0;
   self->_runningVolumeSum = self->_linearPowerLevel + self->_runningVolumeSum;
@@ -411,31 +411,31 @@
   [(SUICDictationWaveView *)self _introAnimationTick];
 }
 
-- (float)_noiseForPipIndex:(unint64_t)a3
+- (float)_noiseForPipIndex:(unint64_t)index
 {
   [(SUICDictationWaveView *)self _numberOfPips];
   noise2();
   return fabsf(v3) / 0.707;
 }
 
-- (float)_smoothStepTaperForPipIndex:(unint64_t)a3
+- (float)_smoothStepTaperForPipIndex:(unint64_t)index
 {
-  v4 = a3;
-  *&v5 = a3 / ([(SUICDictationWaveView *)self _numberOfPips]- 1);
+  indexCopy = index;
+  *&v5 = index / ([(SUICDictationWaveView *)self _numberOfPips]- 1);
   LODWORD(v6) = -1102263091;
   LODWORD(v7) = 1050253722;
   [(SUICDictationWaveView *)self _smoothStepWithLowerBound:v6 upperBound:v7 innerValue:v5];
   v9 = v8;
-  *&v10 = v4 / ([(SUICDictationWaveView *)self _numberOfPips]- 1);
+  *&v10 = indexCopy / ([(SUICDictationWaveView *)self _numberOfPips]- 1);
   LODWORD(v11) = 1060320051;
   LODWORD(v12) = 1067030938;
   [(SUICDictationWaveView *)self _smoothStepWithLowerBound:v11 upperBound:v12 innerValue:v10];
   return v9 - v13;
 }
 
-- (float)_smoothStepWithLowerBound:(float)a3 upperBound:(float)a4 innerValue:(float)a5
+- (float)_smoothStepWithLowerBound:(float)bound upperBound:(float)upperBound innerValue:(float)value
 {
-  v5 = (a5 - a3) / (a4 - a3);
+  v5 = (value - bound) / (upperBound - bound);
   if (v5 < 0.0)
   {
     v5 = 0.0;
@@ -445,20 +445,20 @@
   return (v6 * v6) * ((v6 * -2.0) + 3.0);
 }
 
-- (float)_sinusoidalTaperForPipIndex:(unint64_t)a3
+- (float)_sinusoidalTaperForPipIndex:(unint64_t)index
 {
-  v3 = (a3 / ([(SUICDictationWaveView *)self _numberOfPips]- 1)) * 3.14159265 * 0.800000012 + 0.314159244;
+  v3 = (index / ([(SUICDictationWaveView *)self _numberOfPips]- 1)) * 3.14159265 * 0.800000012 + 0.314159244;
 
   return sinf(v3);
 }
 
-- (float)_heightMultiplierForPipIndex:(unint64_t)a3
+- (float)_heightMultiplierForPipIndex:(unint64_t)index
 {
   [(SUICDictationWaveView *)self _noiseForPipIndex:?];
   v6 = v5;
-  [(SUICDictationWaveView *)self _sinusoidalTaperForPipIndex:a3];
+  [(SUICDictationWaveView *)self _sinusoidalTaperForPipIndex:index];
   v8 = v7;
-  [(SUICDictationWaveView *)self _smoothStepTaperForPipIndex:a3];
+  [(SUICDictationWaveView *)self _smoothStepTaperForPipIndex:index];
   v10 = (v8 * v9) * (v6 * self->_linearPowerLevel);
   if (v10 < 0.0)
   {
@@ -488,21 +488,21 @@
   return floor((v6 + v5) * 0.5);
 }
 
-- (double)_originXForPipAtIndex:(unint64_t)a3
+- (double)_originXForPipAtIndex:(unint64_t)index
 {
   [(SUICDictationWaveView *)self _leftMargin];
   v6 = v5;
   [(SUICDictationWaveView *)self _pipWidth];
-  return v6 + (v7 + v7) * a3;
+  return v6 + (v7 + v7) * index;
 }
 
-- (CGRect)_startingFrameForPipAtIndex:(unint64_t)a3
+- (CGRect)_startingFrameForPipAtIndex:(unint64_t)index
 {
   [(SUICDictationWaveView *)self _pipWidth];
   v6 = v5;
   [(SUICDictationWaveView *)self _minimumPipHeight];
   v8 = v7;
-  [(SUICDictationWaveView *)self _originXForPipAtIndex:a3];
+  [(SUICDictationWaveView *)self _originXForPipAtIndex:index];
   v10 = v9;
   [(SUICDictationWaveView *)self frame];
   v11 = (CGRectGetHeight(v15) - v8) * 0.5;

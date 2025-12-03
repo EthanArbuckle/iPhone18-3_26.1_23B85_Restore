@@ -1,25 +1,25 @@
 @interface CNDefaultAppCell
 - (BOOL)allowsCellSelection;
-- (CNDefaultAppCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CNDefaultAppCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (CNPropertyCellDelegate)delegate;
-- (id)actionViewForType:(id)a3;
+- (id)actionViewForType:(id)type;
 - (id)allModelsObservable;
 - (id)constantConstraints;
 - (id)defaultAction;
 - (id)labelView;
 - (id)variableConstraints;
-- (void)contactActionsController:(id)a3 didSelectAction:(id)a4;
-- (void)contactActionsController:(id)a3 didUpdateWithMenu:(id)a4;
-- (void)didPressActionView:(id)a3 longPress:(BOOL)a4;
-- (void)didSelectActionType:(id)a3 withSourceView:(id)a4 longPress:(BOOL)a5;
+- (void)contactActionsController:(id)controller didSelectAction:(id)action;
+- (void)contactActionsController:(id)controller didUpdateWithMenu:(id)menu;
+- (void)didPressActionView:(id)view longPress:(BOOL)press;
+- (void)didSelectActionType:(id)type withSourceView:(id)view longPress:(BOOL)press;
 - (void)discoverAvailableActionTypes;
 - (void)loadCachedActions;
-- (void)performAction:(id)a3;
+- (void)performAction:(id)action;
 - (void)performDefaultAction;
-- (void)processModels:(id)a3;
-- (void)setActionsDataSource:(id)a3;
-- (void)setContact:(id)a3;
-- (void)setDefaultAppProvider:(id)a3;
+- (void)processModels:(id)models;
+- (void)setActionsDataSource:(id)source;
+- (void)setContact:(id)contact;
+- (void)setDefaultAppProvider:(id)provider;
 - (void)updateHorizontalTouchAreas;
 @end
 
@@ -32,73 +32,73 @@
   return WeakRetained;
 }
 
-- (void)contactActionsController:(id)a3 didSelectAction:(id)a4
+- (void)contactActionsController:(id)controller didSelectAction:(id)action
 {
-  v5 = a4;
-  v6 = [(CNDefaultAppCell *)self actionsControllerPresentation];
-  v7 = [v6 presentedViewController];
+  actionCopy = action;
+  actionsControllerPresentation = [(CNDefaultAppCell *)self actionsControllerPresentation];
+  presentedViewController = [actionsControllerPresentation presentedViewController];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __61__CNDefaultAppCell_contactActionsController_didSelectAction___block_invoke;
   v13[3] = &unk_1E74E6A88;
   v13[4] = self;
-  [v7 dismissViewControllerAnimated:1 completion:v13];
+  [presentedViewController dismissViewControllerAnimated:1 completion:v13];
 
-  [(CNDefaultAppCell *)self performAction:v5];
-  v8 = [(CNDefaultAppCell *)self actionsController];
-  v9 = [v8 actionTypes];
-  v10 = [v9 firstObject];
+  [(CNDefaultAppCell *)self performAction:actionCopy];
+  actionsController = [(CNDefaultAppCell *)self actionsController];
+  actionTypes = [actionsController actionTypes];
+  firstObject = [actionTypes firstObject];
 
-  v11 = [(CNDefaultAppCell *)self actionsDataSource];
-  v12 = [(CNDefaultAppCell *)self contact];
-  [v11 consumer:self didSelectItem:v5 forContact:v12 actionType:v10];
+  actionsDataSource = [(CNDefaultAppCell *)self actionsDataSource];
+  contact = [(CNDefaultAppCell *)self contact];
+  [actionsDataSource consumer:self didSelectItem:actionCopy forContact:contact actionType:firstObject];
 
   [(CNDefaultAppCell *)self setActionsController:0];
 }
 
-- (void)didSelectActionType:(id)a3 withSourceView:(id)a4 longPress:(BOOL)a5
+- (void)didSelectActionType:(id)type withSourceView:(id)view longPress:(BOOL)press
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  typeCopy = type;
   v7 = [CNContactActionsController alloc];
-  v8 = [(CNDefaultAppCell *)self contact];
-  v9 = [(CNDefaultAppCell *)self actionsDataSource];
-  v18[0] = v6;
+  contact = [(CNDefaultAppCell *)self contact];
+  actionsDataSource = [(CNDefaultAppCell *)self actionsDataSource];
+  v18[0] = typeCopy;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
 
-  v11 = [(CNContactActionsController *)v7 initWithContact:v8 dataSource:v9 actionTypes:v10];
+  v11 = [(CNContactActionsController *)v7 initWithContact:contact dataSource:actionsDataSource actionTypes:v10];
   [(CNDefaultAppCell *)self setActionsController:v11];
 
-  v12 = [(CNDefaultAppCell *)self actionsController];
-  [v12 setDelegate:self];
+  actionsController = [(CNDefaultAppCell *)self actionsController];
+  [actionsController setDelegate:self];
 
-  v13 = [(CNDefaultAppCell *)self defaultAppProvider];
-  v14 = [v13 bundleIdentifier];
-  v15 = [(CNDefaultAppCell *)self actionsController];
-  [v15 setDefaultAppBundleIdentifier:v14];
+  defaultAppProvider = [(CNDefaultAppCell *)self defaultAppProvider];
+  bundleIdentifier = [defaultAppProvider bundleIdentifier];
+  actionsController2 = [(CNDefaultAppCell *)self actionsController];
+  [actionsController2 setDefaultAppBundleIdentifier:bundleIdentifier];
 
-  v16 = [(CNDefaultAppCell *)self actionsController];
-  [v16 setGenerateDefaultAppListItemsOnly:1];
+  actionsController3 = [(CNDefaultAppCell *)self actionsController];
+  [actionsController3 setGenerateDefaultAppListItemsOnly:1];
 
-  v17 = [(CNDefaultAppCell *)self actionsController];
-  [v17 retrieveModels];
+  actionsController4 = [(CNDefaultAppCell *)self actionsController];
+  [actionsController4 retrieveModels];
 }
 
-- (void)contactActionsController:(id)a3 didUpdateWithMenu:(id)a4
+- (void)contactActionsController:(id)controller didUpdateWithMenu:(id)menu
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7 && ([(CNDefaultAppCell *)self actionsController], v8 = objc_claimAutoreleasedReturnValue(), v8, v8 == v6))
+  controllerCopy = controller;
+  menuCopy = menu;
+  if (menuCopy && ([(CNDefaultAppCell *)self actionsController], v8 = objc_claimAutoreleasedReturnValue(), v8, v8 == controllerCopy))
   {
-    v10 = [(CNDefaultAppCell *)self actionsController];
-    v11 = [v10 actionTypes];
-    v12 = [v11 firstObject];
-    v13 = [(CNDefaultAppCell *)self actionViewForType:v12];
+    actionsController = [(CNDefaultAppCell *)self actionsController];
+    actionTypes = [actionsController actionTypes];
+    firstObject = [actionTypes firstObject];
+    v13 = [(CNDefaultAppCell *)self actionViewForType:firstObject];
 
     if (v13)
     {
-      [v13 updateWithMenuItems:v7];
+      [v13 updateWithMenuItems:menuCopy];
       v9 = 1;
     }
 
@@ -116,38 +116,38 @@
   v14 = CNUILogContactCard();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(CNDefaultAppCell *)self actionsController];
-    v16 = [v15 actionTypes];
-    v17 = [v16 firstObject];
+    actionsController2 = [(CNDefaultAppCell *)self actionsController];
+    actionTypes2 = [actionsController2 actionTypes];
+    firstObject2 = [actionTypes2 firstObject];
     v18 = 138412802;
-    v19 = v17;
+    v19 = firstObject2;
     v20 = 1024;
     v21 = v9;
     v22 = 2112;
-    v23 = v7;
+    v23 = menuCopy;
     _os_log_impl(&dword_199A75000, v14, OS_LOG_TYPE_DEFAULT, "[CNDefaultAppCell contactActionsController:didUpdateWithMenu:], actionType = %@, didUpdate = %i, menuItems = %@,", &v18, 0x1Cu);
   }
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  actionCopy = action;
   v4 = CNUILogContactCard();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v3;
+    v14 = actionCopy;
     _os_log_impl(&dword_199A75000, v4, OS_LOG_TYPE_DEFAULT, "[CNDefaultAppCell performAction:], action = %@", buf, 0xCu);
   }
 
   v5 = objc_alloc_init(MEMORY[0x1E6996BD0]);
-  v6 = [v3 performActionWithContext:v5];
+  v6 = [actionCopy performActionWithContext:v5];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __34__CNDefaultAppCell_performAction___block_invoke;
   v11[3] = &unk_1E74E5980;
-  v7 = v3;
+  v7 = actionCopy;
   v12 = v7;
   [v6 addSuccessBlock:v11];
   v9[0] = MEMORY[0x1E69E9820];
@@ -185,18 +185,18 @@ void __34__CNDefaultAppCell_performAction___block_invoke_28(uint64_t a1)
   }
 }
 
-- (void)didPressActionView:(id)a3 longPress:(BOOL)a4
+- (void)didPressActionView:(id)view longPress:(BOOL)press
 {
-  v4 = a4;
+  pressCopy = press;
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CNDefaultAppCell *)self defaultActionPerType];
-  v8 = [v6 type];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  viewCopy = view;
+  defaultActionPerType = [(CNDefaultAppCell *)self defaultActionPerType];
+  type = [viewCopy type];
+  v9 = [defaultActionPerType objectForKeyedSubscript:type];
 
   if (v9)
   {
-    v10 = v4;
+    v10 = pressCopy;
   }
 
   else
@@ -207,17 +207,17 @@ void __34__CNDefaultAppCell_performAction___block_invoke_28(uint64_t a1)
   v11 = CNUILogContactCard();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v6 type];
+    type2 = [viewCopy type];
     v13 = @"nil";
     *buf = 138413058;
-    v28 = v12;
+    v28 = type2;
     if (v9)
     {
       v13 = v9;
     }
 
     v29 = 1024;
-    v30 = v4;
+    v30 = pressCopy;
     v31 = 1024;
     v32 = v10;
     v33 = 2112;
@@ -228,27 +228,27 @@ void __34__CNDefaultAppCell_performAction___block_invoke_28(uint64_t a1)
   if (v10)
   {
     v14 = [CNContactActionsController alloc];
-    v15 = [(CNDefaultAppCell *)self contact];
-    v16 = [(CNDefaultAppCell *)self actionsDataSource];
-    v17 = [v6 type];
-    v26 = v17;
+    contact = [(CNDefaultAppCell *)self contact];
+    actionsDataSource = [(CNDefaultAppCell *)self actionsDataSource];
+    type3 = [viewCopy type];
+    v26 = type3;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
-    v19 = [(CNContactActionsController *)v14 initWithContact:v15 dataSource:v16 actionTypes:v18];
+    v19 = [(CNContactActionsController *)v14 initWithContact:contact dataSource:actionsDataSource actionTypes:v18];
     [(CNDefaultAppCell *)self setActionsController:v19];
 
-    v20 = [(CNDefaultAppCell *)self actionsController];
-    [v20 setDelegate:self];
+    actionsController = [(CNDefaultAppCell *)self actionsController];
+    [actionsController setDelegate:self];
 
-    v21 = [(CNDefaultAppCell *)self defaultAppProvider];
-    v22 = [v21 bundleIdentifier];
-    v23 = [(CNDefaultAppCell *)self actionsController];
-    [v23 setDefaultAppBundleIdentifier:v22];
+    defaultAppProvider = [(CNDefaultAppCell *)self defaultAppProvider];
+    bundleIdentifier = [defaultAppProvider bundleIdentifier];
+    actionsController2 = [(CNDefaultAppCell *)self actionsController];
+    [actionsController2 setDefaultAppBundleIdentifier:bundleIdentifier];
 
-    v24 = [(CNDefaultAppCell *)self actionsController];
-    [v24 setGenerateDefaultAppListItemsOnly:1];
+    actionsController3 = [(CNDefaultAppCell *)self actionsController];
+    [actionsController3 setGenerateDefaultAppListItemsOnly:1];
 
-    v25 = [(CNDefaultAppCell *)self actionsController];
-    [v25 retrieveModels];
+    actionsController4 = [(CNDefaultAppCell *)self actionsController];
+    [actionsController4 retrieveModels];
   }
 
   else
@@ -259,15 +259,15 @@ void __34__CNDefaultAppCell_performAction___block_invoke_28(uint64_t a1)
 
 - (void)updateHorizontalTouchAreas
 {
-  v3 = [(CNDefaultAppCell *)self rightMostView];
-  [v3 _setTouchInsets:{0.0, -8.0, 0.0, -16.0}];
+  rightMostView = [(CNDefaultAppCell *)self rightMostView];
+  [rightMostView _setTouchInsets:{0.0, -8.0, 0.0, -16.0}];
 
-  v4 = [(CNDefaultAppCell *)self actionView2];
+  actionView2 = [(CNDefaultAppCell *)self actionView2];
 
-  if (v4)
+  if (actionView2)
   {
-    v5 = [(CNDefaultAppCell *)self actionView2];
-    [v5 _setTouchInsets:{0.0, -8.0, 0.0, -8.0}];
+    actionView22 = [(CNDefaultAppCell *)self actionView2];
+    [actionView22 _setTouchInsets:{0.0, -8.0, 0.0, -8.0}];
   }
 }
 
@@ -277,36 +277,36 @@ void __34__CNDefaultAppCell_performAction___block_invoke_28(uint64_t a1)
   v3 = MEMORY[0x1E695DF70];
   v24.receiver = self;
   v24.super_class = CNDefaultAppCell;
-  v4 = [(CNLabeledCell *)&v24 variableConstraints];
-  v5 = [v3 arrayWithArray:v4];
+  variableConstraints = [(CNLabeledCell *)&v24 variableConstraints];
+  v5 = [v3 arrayWithArray:variableConstraints];
 
-  v6 = [(CNDefaultAppCell *)self actionView1];
+  actionView1 = [(CNDefaultAppCell *)self actionView1];
   if ([(CNDefaultAppCell *)self isDefaultAppVideoAvailable])
   {
-    v23 = [(CNDefaultAppCell *)self actionView2];
+    actionView2 = [(CNDefaultAppCell *)self actionView2];
 
-    v22 = [(CNDefaultAppCell *)self actionView1];
-    v20 = [v22 leadingAnchor];
-    v21 = [(CNDefaultAppCell *)self actionView2];
-    v7 = [v21 trailingAnchor];
-    v8 = [v20 constraintEqualToAnchor:v7 constant:16.0];
+    actionView12 = [(CNDefaultAppCell *)self actionView1];
+    leadingAnchor = [actionView12 leadingAnchor];
+    actionView22 = [(CNDefaultAppCell *)self actionView2];
+    trailingAnchor = [actionView22 trailingAnchor];
+    v8 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:16.0];
     v25[0] = v8;
-    v9 = [(CNDefaultAppCell *)self actionView2];
-    v10 = [v9 centerYAnchor];
-    v11 = [(CNDefaultAppCell *)self contentView];
-    v12 = [v11 centerYAnchor];
-    v13 = [v10 constraintEqualToAnchor:v12];
+    actionView23 = [(CNDefaultAppCell *)self actionView2];
+    centerYAnchor = [actionView23 centerYAnchor];
+    contentView = [(CNDefaultAppCell *)self contentView];
+    centerYAnchor2 = [contentView centerYAnchor];
+    v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v25[1] = v13;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
     [v5 addObjectsFromArray:v14];
 
-    v6 = v23;
+    actionView1 = actionView2;
   }
 
-  v15 = [v6 leadingAnchor];
-  v16 = [(CNDefaultAppCell *)self defaultAppLabel];
-  v17 = [v16 trailingAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17 constant:16.0];
+  leadingAnchor2 = [actionView1 leadingAnchor];
+  defaultAppLabel = [(CNDefaultAppCell *)self defaultAppLabel];
+  trailingAnchor2 = [defaultAppLabel trailingAnchor];
+  v18 = [leadingAnchor2 constraintEqualToAnchor:trailingAnchor2 constant:16.0];
   [v5 addObject:v18];
 
   return v5;
@@ -318,14 +318,14 @@ void __34__CNDefaultAppCell_performAction___block_invoke_28(uint64_t a1)
   v3 = MEMORY[0x1E695DF70];
   v13.receiver = self;
   v13.super_class = CNDefaultAppCell;
-  v4 = [(CNLabeledCell *)&v13 constantConstraints];
-  v5 = [v3 arrayWithArray:v4];
+  constantConstraints = [(CNLabeledCell *)&v13 constantConstraints];
+  v5 = [v3 arrayWithArray:constantConstraints];
 
-  v6 = [(CNDefaultAppCell *)self actionView1];
-  v7 = [v6 centerYAnchor];
-  v8 = [(CNDefaultAppCell *)self contentView];
-  v9 = [v8 centerYAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  actionView1 = [(CNDefaultAppCell *)self actionView1];
+  centerYAnchor = [actionView1 centerYAnchor];
+  contentView = [(CNDefaultAppCell *)self contentView];
+  centerYAnchor2 = [contentView centerYAnchor];
+  v10 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v14[0] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   [v5 addObjectsFromArray:v11];
@@ -335,8 +335,8 @@ void __34__CNDefaultAppCell_performAction___block_invoke_28(uint64_t a1)
 
 - (id)defaultAction
 {
-  v3 = [(CNDefaultAppCell *)self defaultActionPerType];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E695C1B8]];
+  defaultActionPerType = [(CNDefaultAppCell *)self defaultActionPerType];
+  v4 = [defaultActionPerType objectForKeyedSubscript:*MEMORY[0x1E695C1B8]];
   v5 = v4;
   if (v4)
   {
@@ -345,8 +345,8 @@ void __34__CNDefaultAppCell_performAction___block_invoke_28(uint64_t a1)
 
   else
   {
-    v7 = [(CNDefaultAppCell *)self defaultActionPerType];
-    v6 = [v7 objectForKeyedSubscript:*MEMORY[0x1E695C150]];
+    defaultActionPerType2 = [(CNDefaultAppCell *)self defaultActionPerType];
+    v6 = [defaultActionPerType2 objectForKeyedSubscript:*MEMORY[0x1E695C150]];
   }
 
   return v6;
@@ -361,18 +361,18 @@ void __34__CNDefaultAppCell_performAction___block_invoke_28(uint64_t a1)
     _os_log_impl(&dword_199A75000, v3, OS_LOG_TYPE_DEFAULT, "[CNDefaultAppCell performDefaultAction]", v6, 2u);
   }
 
-  v4 = [(CNDefaultAppCell *)self defaultAction];
-  if (v4)
+  defaultAction = [(CNDefaultAppCell *)self defaultAction];
+  if (defaultAction)
   {
-    v5 = [(CNDefaultAppCell *)self defaultAction];
-    [(CNDefaultAppCell *)self performAction:v5];
+    defaultAction2 = [(CNDefaultAppCell *)self defaultAction];
+    [(CNDefaultAppCell *)self performAction:defaultAction2];
   }
 }
 
 - (BOOL)allowsCellSelection
 {
-  v2 = [(CNDefaultAppCell *)self defaultAction];
-  v3 = v2 != 0;
+  defaultAction = [(CNDefaultAppCell *)self defaultAction];
+  v3 = defaultAction != 0;
 
   return v3;
 }
@@ -382,9 +382,9 @@ void __34__CNDefaultAppCell_performAction___block_invoke_28(uint64_t a1)
   defaultAppLabel = self->_defaultAppLabel;
   if (!defaultAppLabel)
   {
-    v4 = [(CNLabeledCell *)self standardLabelView];
+    standardLabelView = [(CNLabeledCell *)self standardLabelView];
     v5 = self->_defaultAppLabel;
-    self->_defaultAppLabel = v4;
+    self->_defaultAppLabel = standardLabelView;
 
     [(UILabel *)self->_defaultAppLabel _setWantsUnderlineForAccessibilityButtonShapesEnabled:1];
     defaultAppLabel = self->_defaultAppLabel;
@@ -393,52 +393,52 @@ void __34__CNDefaultAppCell_performAction___block_invoke_28(uint64_t a1)
   return defaultAppLabel;
 }
 
-- (id)actionViewForType:(id)a3
+- (id)actionViewForType:(id)type
 {
-  v4 = a3;
-  v5 = [(CNDefaultAppCell *)self actionView1];
-  v6 = [v5 type];
+  typeCopy = type;
+  actionView1 = [(CNDefaultAppCell *)self actionView1];
+  type = [actionView1 type];
 
-  if (v6 == v4)
+  if (type == typeCopy)
   {
-    v10 = [(CNDefaultAppCell *)self actionView1];
+    actionView12 = [(CNDefaultAppCell *)self actionView1];
   }
 
   else
   {
-    v7 = [(CNDefaultAppCell *)self actionView2];
-    v8 = [v7 type];
+    actionView2 = [(CNDefaultAppCell *)self actionView2];
+    type2 = [actionView2 type];
 
-    if (v8 != v4)
+    if (type2 != typeCopy)
     {
       v9 = 0;
       goto LABEL_7;
     }
 
-    v10 = [(CNDefaultAppCell *)self actionView2];
+    actionView12 = [(CNDefaultAppCell *)self actionView2];
   }
 
-  v9 = v10;
+  v9 = actionView12;
 LABEL_7:
 
   return v9;
 }
 
-- (void)processModels:(id)a3
+- (void)processModels:(id)models
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNDefaultAppCell *)self defaultActionPerType];
-  v6 = [v5 mutableCopy];
+  modelsCopy = models;
+  defaultActionPerType = [(CNDefaultAppCell *)self defaultActionPerType];
+  v6 = [defaultActionPerType mutableCopy];
 
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __34__CNDefaultAppCell_processModels___block_invoke;
   v12 = &unk_1E74E6A10;
-  v13 = self;
+  selfCopy = self;
   v7 = v6;
   v14 = v7;
-  [v4 _cn_each:&v9];
+  [modelsCopy _cn_each:&v9];
 
   if ([v7 count])
   {
@@ -476,23 +476,23 @@ void __34__CNDefaultAppCell_processModels___block_invoke(uint64_t a1, void *a2, 
 
 - (id)allModelsObservable
 {
-  v3 = [(CNDefaultAppCell *)self supportedActionTypes];
+  supportedActionTypes = [(CNDefaultAppCell *)self supportedActionTypes];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __39__CNDefaultAppCell_allModelsObservable__block_invoke;
   v14[3] = &unk_1E74E6928;
   v14[4] = self;
-  v4 = [v3 _cn_map:v14];
+  v4 = [supportedActionTypes _cn_map:v14];
 
   v5 = MEMORY[0x1E6996798];
-  v6 = [(CNDefaultAppCell *)self schedulerProvider];
-  v7 = [v5 merge:v4 schedulerProvider:v6];
+  schedulerProvider = [(CNDefaultAppCell *)self schedulerProvider];
+  v7 = [v5 merge:v4 schedulerProvider:schedulerProvider];
 
   v8 = [v7 scan:&__block_literal_global_14813 seed:MEMORY[0x1E695E0F8]];
   [(CNDefaultAppCell *)self throttleDelay];
   v10 = v9;
-  v11 = [(CNDefaultAppCell *)self schedulerProvider];
-  v12 = [v8 throttle:v11 schedulerProvider:v10];
+  schedulerProvider2 = [(CNDefaultAppCell *)self schedulerProvider];
+  v12 = [v8 throttle:schedulerProvider2 schedulerProvider:v10];
 
   return v12;
 }
@@ -543,30 +543,30 @@ id __39__CNDefaultAppCell_allModelsObservable__block_invoke_2(uint64_t a1, void 
   v3 = CNUILogContactCard();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v15 = [(CNDefaultAppCell *)self contact];
-    v16 = [v15 shortDebugDescription];
+    contact = [(CNDefaultAppCell *)self contact];
+    shortDebugDescription = [contact shortDebugDescription];
     *buf = 138412546;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v16;
+    *&buf[14] = shortDebugDescription;
     _os_log_debug_impl(&dword_199A75000, v3, OS_LOG_TYPE_DEBUG, "[CNDefaultAppCell discoverAvailableActionTypes], %@ cancelling previous action discovering requests, contact now is %@", buf, 0x16u);
   }
 
-  v4 = [(CNDefaultAppCell *)self tokens];
+  tokens = [(CNDefaultAppCell *)self tokens];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __48__CNDefaultAppCell_discoverAvailableActionTypes__block_invoke;
   v26[3] = &unk_1E74E6998;
   v26[4] = self;
-  [v4 enumerateObjectsUsingBlock:v26];
+  [tokens enumerateObjectsUsingBlock:v26];
 
   [(CNDefaultAppCell *)self setTokens:MEMORY[0x1E695E0F0]];
-  v5 = [(CNDefaultAppCell *)self contact];
-  LOBYTE(v4) = v5 == 0;
+  contact2 = [(CNDefaultAppCell *)self contact];
+  LOBYTE(tokens) = contact2 == 0;
 
-  if ((v4 & 1) == 0)
+  if ((tokens & 1) == 0)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     objc_initWeak(&location, self);
     *buf = 0;
     *&buf[8] = buf;
@@ -577,19 +577,19 @@ id __39__CNDefaultAppCell_allModelsObservable__block_invoke_2(uint64_t a1, void 
     v7 = CNUILogContactCard();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v17 = [(CNDefaultAppCell *)self contact];
-      v18 = [v17 shortDebugDescription];
+      contact3 = [(CNDefaultAppCell *)self contact];
+      shortDebugDescription2 = [contact3 shortDebugDescription];
       *v27 = 138412546;
-      v28 = self;
+      selfCopy = self;
       v29 = 2112;
-      v30 = v18;
+      v30 = shortDebugDescription2;
       _os_log_debug_impl(&dword_199A75000, v7, OS_LOG_TYPE_DEBUG, "[CNDefaultAppCell discoverAvailableActionTypes], %@ subscribing action discovering requests for contact %@.", v27, 0x16u);
     }
 
-    v8 = [(CNDefaultAppCell *)self allModelsObservable];
-    v9 = [(CNDefaultAppCell *)self schedulerProvider];
-    v10 = [v9 backgroundScheduler];
-    v11 = [v8 subscribeOn:v10];
+    allModelsObservable = [(CNDefaultAppCell *)self allModelsObservable];
+    schedulerProvider = [(CNDefaultAppCell *)self schedulerProvider];
+    backgroundScheduler = [schedulerProvider backgroundScheduler];
+    v11 = [allModelsObservable subscribeOn:backgroundScheduler];
     v12 = MEMORY[0x1E69967A0];
     v19 = MEMORY[0x1E69E9820];
     v20 = 3221225472;
@@ -600,9 +600,9 @@ id __39__CNDefaultAppCell_allModelsObservable__block_invoke_2(uint64_t a1, void 
     v13 = [v12 observerWithResultBlock:&v19];
     v14 = [v11 subscribe:{v13, v19, v20, v21, v22}];
 
-    [v6 addObject:v14];
+    [array addObject:v14];
     objc_storeWeak((*&buf[8] + 40), v14);
-    [(CNDefaultAppCell *)self setTokens:v6];
+    [(CNDefaultAppCell *)self setTokens:array];
 
     objc_destroyWeak(&v24);
     _Block_object_dispose(buf, 8);
@@ -661,17 +661,17 @@ void __48__CNDefaultAppCell_discoverAvailableActionTypes__block_invoke_2_12(uint
 
 - (void)loadCachedActions
 {
-  v3 = [(CNDefaultAppCell *)self supportedActionTypes];
+  supportedActionTypes = [(CNDefaultAppCell *)self supportedActionTypes];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __37__CNDefaultAppCell_loadCachedActions__block_invoke;
   v8[3] = &unk_1E74E6970;
   v8[4] = self;
-  v4 = [v3 _cn_map:v8];
+  v4 = [supportedActionTypes _cn_map:v8];
 
   v5 = MEMORY[0x1E695DF20];
-  v6 = [(CNDefaultAppCell *)self supportedActionTypes];
-  v7 = [v5 dictionaryWithObjects:v4 forKeys:v6];
+  supportedActionTypes2 = [(CNDefaultAppCell *)self supportedActionTypes];
+  v7 = [v5 dictionaryWithObjects:v4 forKeys:supportedActionTypes2];
 
   [(CNDefaultAppCell *)self processModels:v7];
 }
@@ -700,36 +700,36 @@ id __37__CNDefaultAppCell_loadCachedActions__block_invoke(uint64_t a1, void *a2)
   return v10;
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
-  v5 = a3;
-  if (self->_contact != v5)
+  contactCopy = contact;
+  if (self->_contact != contactCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_contact, a3);
+    v6 = contactCopy;
+    objc_storeStrong(&self->_contact, contact);
     [(CNDefaultAppCell *)self reset];
     [(CNDefaultAppCell *)self loadCachedActions];
     [(CNDefaultAppCell *)self discoverAvailableActionTypes];
-    v5 = v6;
+    contactCopy = v6;
   }
 }
 
-- (void)setDefaultAppProvider:(id)a3
+- (void)setDefaultAppProvider:(id)provider
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  providerCopy = provider;
   if (!self->_defaultAppProvider)
   {
-    objc_storeStrong(&self->_defaultAppProvider, a3);
-    v6 = [(CNDefaultAppCell *)self defaultAppProvider];
-    v7 = [v6 localizedName];
-    [(UILabel *)self->_defaultAppLabel setText:v7];
+    objc_storeStrong(&self->_defaultAppProvider, provider);
+    defaultAppProvider = [(CNDefaultAppCell *)self defaultAppProvider];
+    localizedName = [defaultAppProvider localizedName];
+    [(UILabel *)self->_defaultAppLabel setText:localizedName];
 
-    self->_isDefaultAppVideoAvailable = [v5 supportsVideo];
-    v8 = [(CNDefaultAppCell *)self isDefaultAppVideoAvailable];
+    self->_isDefaultAppVideoAvailable = [providerCopy supportsVideo];
+    isDefaultAppVideoAvailable = [(CNDefaultAppCell *)self isDefaultAppVideoAvailable];
     v9 = *MEMORY[0x1E695C150];
     v10 = MEMORY[0x1E695C1B8];
-    if (v8)
+    if (isDefaultAppVideoAvailable)
     {
       v11 = *MEMORY[0x1E695C1B8];
       v28 = *MEMORY[0x1E695C150];
@@ -764,8 +764,8 @@ id __37__CNDefaultAppCell_loadCachedActions__block_invoke(uint64_t a1, void *a2)
     [(CNActionView *)self->_actionView1 setContentCompressionResistancePriority:0 forAxis:v19];
     LODWORD(v20) = 1148846080;
     [(CNActionView *)self->_actionView1 setContentCompressionResistancePriority:1 forAxis:v20];
-    v21 = [(CNDefaultAppCell *)self contentView];
-    [v21 addSubview:self->_actionView1];
+    contentView = [(CNDefaultAppCell *)self contentView];
+    [contentView addSubview:self->_actionView1];
 
     if ([(CNDefaultAppCell *)self isDefaultAppVideoAvailable])
     {
@@ -782,51 +782,51 @@ id __37__CNDefaultAppCell_loadCachedActions__block_invoke(uint64_t a1, void *a2)
       [(CNActionView *)self->_actionView2 setContentCompressionResistancePriority:0 forAxis:v24];
       LODWORD(v25) = 1148846080;
       [(CNActionView *)self->_actionView2 setContentCompressionResistancePriority:1 forAxis:v25];
-      v26 = [(CNDefaultAppCell *)self contentView];
-      [v26 addSubview:self->_actionView2];
+      contentView2 = [(CNDefaultAppCell *)self contentView];
+      [contentView2 addSubview:self->_actionView2];
     }
 
     [(CNDefaultAppCell *)self updateHorizontalTouchAreas];
   }
 }
 
-- (void)setActionsDataSource:(id)a3
+- (void)setActionsDataSource:(id)source
 {
-  v17 = a3;
-  if (self->_actionsDataSource != v17)
+  sourceCopy = source;
+  if (self->_actionsDataSource != sourceCopy)
   {
-    objc_storeStrong(&self->_actionsDataSource, a3);
-    v5 = [(CNDefaultAppCell *)self actionView1];
+    objc_storeStrong(&self->_actionsDataSource, source);
+    actionView1 = [(CNDefaultAppCell *)self actionView1];
 
-    if (v5)
+    if (actionView1)
     {
       v6 = MEMORY[0x1E69DCAB8];
-      v7 = [(CNDefaultAppCell *)self actionView1];
-      v8 = [v7 type];
-      v9 = [v6 cnui_userActionSymbolImageForActionType:v8 scale:-1 withColor:0];
-      v10 = [(CNDefaultAppCell *)self actionView1];
-      [v10 setImage:v9];
+      actionView12 = [(CNDefaultAppCell *)self actionView1];
+      type = [actionView12 type];
+      v9 = [v6 cnui_userActionSymbolImageForActionType:type scale:-1 withColor:0];
+      actionView13 = [(CNDefaultAppCell *)self actionView1];
+      [actionView13 setImage:v9];
     }
 
-    v11 = [(CNDefaultAppCell *)self actionView2];
+    actionView2 = [(CNDefaultAppCell *)self actionView2];
 
-    if (v11)
+    if (actionView2)
     {
       v12 = MEMORY[0x1E69DCAB8];
-      v13 = [(CNDefaultAppCell *)self actionView2];
-      v14 = [v13 type];
-      v15 = [v12 cnui_userActionSymbolImageForActionType:v14 scale:-1 withColor:0];
-      v16 = [(CNDefaultAppCell *)self actionView2];
-      [v16 setImage:v15];
+      actionView22 = [(CNDefaultAppCell *)self actionView2];
+      type2 = [actionView22 type];
+      v15 = [v12 cnui_userActionSymbolImageForActionType:type2 scale:-1 withColor:0];
+      actionView23 = [(CNDefaultAppCell *)self actionView2];
+      [actionView23 setImage:v15];
     }
   }
 }
 
-- (CNDefaultAppCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CNDefaultAppCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v12.receiver = self;
   v12.super_class = CNDefaultAppCell;
-  v4 = [(CNLabeledCell *)&v12 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CNLabeledCell *)&v12 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -834,9 +834,9 @@ id __37__CNDefaultAppCell_loadCachedActions__block_invoke(uint64_t a1, void *a2)
     v4->_tokens = MEMORY[0x1E695E0F0];
 
     v7 = +[CNUIContactsEnvironment currentEnvironment];
-    v8 = [v7 defaultSchedulerProvider];
+    defaultSchedulerProvider = [v7 defaultSchedulerProvider];
     schedulerProvider = v5->_schedulerProvider;
-    v5->_schedulerProvider = v8;
+    v5->_schedulerProvider = defaultSchedulerProvider;
 
     defaultActionPerType = v5->_defaultActionPerType;
     v5->_defaultActionPerType = MEMORY[0x1E695E0F8];

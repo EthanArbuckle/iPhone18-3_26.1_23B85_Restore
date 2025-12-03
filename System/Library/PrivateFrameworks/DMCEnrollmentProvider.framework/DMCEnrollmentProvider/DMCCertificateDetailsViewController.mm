@@ -1,13 +1,13 @@
 @interface DMCCertificateDetailsViewController
 - (DMCCertificateDetailsViewController)init;
-- (DMCCertificateDetailsViewController)initWithCertificate:(__SecCertificate *)a3;
-- (DMCCertificateDetailsViewController)initWithCertificateProperties:(id)a3;
-- (DMCCertificateDetailsViewController)initWithStyle:(int64_t)a3;
-- (DMCCertificateDetailsViewController)initWithTrust:(__SecTrust *)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (DMCCertificateDetailsViewController)initWithCertificate:(__SecCertificate *)certificate;
+- (DMCCertificateDetailsViewController)initWithCertificateProperties:(id)properties;
+- (DMCCertificateDetailsViewController)initWithStyle:(int64_t)style;
+- (DMCCertificateDetailsViewController)initWithTrust:(__SecTrust *)trust;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_setup;
 @end
 
@@ -27,11 +27,11 @@
   return v3;
 }
 
-- (DMCCertificateDetailsViewController)initWithStyle:(int64_t)a3
+- (DMCCertificateDetailsViewController)initWithStyle:(int64_t)style
 {
   v6.receiver = self;
   v6.super_class = DMCCertificateDetailsViewController;
-  v3 = [(DMCProfileTableViewController *)&v6 initWithStyle:a3];
+  v3 = [(DMCProfileTableViewController *)&v6 initWithStyle:style];
   v4 = v3;
   if (v3)
   {
@@ -41,21 +41,21 @@
   return v4;
 }
 
-- (DMCCertificateDetailsViewController)initWithCertificate:(__SecCertificate *)a3
+- (DMCCertificateDetailsViewController)initWithCertificate:(__SecCertificate *)certificate
 {
   v10.receiver = self;
   v10.super_class = DMCCertificateDetailsViewController;
   v4 = [(DMCProfileTableViewController *)&v10 initWithStyle:2];
   if (v4)
   {
-    v5 = [[DMCCertificateProperties alloc] initWithCertificate:a3];
-    v6 = [(DMCCertificateProperties *)v5 sections];
-    if ([v6 count])
+    v5 = [[DMCCertificateProperties alloc] initWithCertificate:certificate];
+    sections = [(DMCCertificateProperties *)v5 sections];
+    if ([sections count])
     {
-      objc_storeStrong(&v4->_keyValueSections, v6);
-      v7 = [(DMCCertificateProperties *)v5 sectionTitles];
+      objc_storeStrong(&v4->_keyValueSections, sections);
+      sectionTitles = [(DMCCertificateProperties *)v5 sectionTitles];
       keyValueSectionTitles = v4->_keyValueSectionTitles;
-      v4->_keyValueSectionTitles = v7;
+      v4->_keyValueSectionTitles = sectionTitles;
     }
 
     [(DMCCertificateDetailsViewController *)v4 _setup];
@@ -64,22 +64,22 @@
   return v4;
 }
 
-- (DMCCertificateDetailsViewController)initWithCertificateProperties:(id)a3
+- (DMCCertificateDetailsViewController)initWithCertificateProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v11.receiver = self;
   v11.super_class = DMCCertificateDetailsViewController;
   v5 = [(DMCProfileTableViewController *)&v11 initWithStyle:2];
   if (v5)
   {
-    v6 = [[DMCCertificateProperties alloc] initWithCertificateProperties:v4];
-    v7 = [(DMCCertificateProperties *)v6 sections];
-    if ([v7 count])
+    v6 = [[DMCCertificateProperties alloc] initWithCertificateProperties:propertiesCopy];
+    sections = [(DMCCertificateProperties *)v6 sections];
+    if ([sections count])
     {
-      objc_storeStrong(&v5->_keyValueSections, v7);
-      v8 = [(DMCCertificateProperties *)v6 sectionTitles];
+      objc_storeStrong(&v5->_keyValueSections, sections);
+      sectionTitles = [(DMCCertificateProperties *)v6 sectionTitles];
       keyValueSectionTitles = v5->_keyValueSectionTitles;
-      v5->_keyValueSectionTitles = v8;
+      v5->_keyValueSectionTitles = sectionTitles;
     }
 
     [(DMCCertificateDetailsViewController *)v5 _setup];
@@ -88,7 +88,7 @@
   return v5;
 }
 
-- (DMCCertificateDetailsViewController)initWithTrust:(__SecTrust *)a3
+- (DMCCertificateDetailsViewController)initWithTrust:(__SecTrust *)trust
 {
   v11.receiver = self;
   v11.super_class = DMCCertificateDetailsViewController;
@@ -96,15 +96,15 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_certificateTrust, a3);
-    v6 = [[DMCCertificateProperties alloc] initWithTrust:a3];
-    v7 = [(DMCCertificateProperties *)v6 sections];
-    if ([v7 count])
+    objc_storeStrong(&v4->_certificateTrust, trust);
+    v6 = [[DMCCertificateProperties alloc] initWithTrust:trust];
+    sections = [(DMCCertificateProperties *)v6 sections];
+    if ([sections count])
     {
-      objc_storeStrong(&v5->_keyValueSections, v7);
-      v8 = [(DMCCertificateProperties *)v6 sectionTitles];
+      objc_storeStrong(&v5->_keyValueSections, sections);
+      sectionTitles = [(DMCCertificateProperties *)v6 sectionTitles];
       keyValueSectionTitles = v5->_keyValueSectionTitles;
-      v5->_keyValueSectionTitles = v8;
+      v5->_keyValueSectionTitles = sectionTitles;
     }
 
     [(DMCCertificateDetailsViewController *)v5 _setup];
@@ -118,72 +118,72 @@
   v7.receiver = self;
   v7.super_class = DMCCertificateDetailsViewController;
   [(DMCProfileTableViewController *)&v7 updateExtendedLayoutIncludesOpaqueBars];
-  v3 = [(DMCCertificateDetailsViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"CertificateDetailsCell"];
+  tableView = [(DMCCertificateDetailsViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"CertificateDetailsCell"];
 
   v4 = DMCEnrollmentLocalizedString(@"DMC_GENERAL_DETAILS");
-  v5 = [(DMCCertificateDetailsViewController *)self navigationItem];
-  [v5 setTitle:v4];
+  navigationItem = [(DMCCertificateDetailsViewController *)self navigationItem];
+  [navigationItem setTitle:v4];
 
   v6.receiver = self;
   v6.super_class = DMCCertificateDetailsViewController;
   [(DMCProfileTableViewController *)&v6 reloadTableOnContentSizeCategoryChange];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(DMCCertificateDetailsViewController *)self keyValueSections];
-  v4 = [v3 count];
+  keyValueSections = [(DMCCertificateDetailsViewController *)self keyValueSections];
+  v4 = [keyValueSections count];
 
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = [(DMCCertificateDetailsViewController *)self keyValueSections];
-  v7 = [v6 count];
+  keyValueSections = [(DMCCertificateDetailsViewController *)self keyValueSections];
+  v7 = [keyValueSections count];
 
-  if (v7 <= a4)
+  if (v7 <= section)
   {
     return 0;
   }
 
-  v8 = [(DMCCertificateDetailsViewController *)self keyValueSections];
-  v9 = [v8 objectAtIndex:a4];
+  keyValueSections2 = [(DMCCertificateDetailsViewController *)self keyValueSections];
+  v9 = [keyValueSections2 objectAtIndex:section];
 
   v10 = ([v9 count] >> 1);
   return v10;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = [(DMCCertificateDetailsViewController *)self keyValueSectionTitles];
-  v7 = [v6 count];
+  keyValueSectionTitles = [(DMCCertificateDetailsViewController *)self keyValueSectionTitles];
+  v7 = [keyValueSectionTitles count];
 
-  if (v7 <= a4)
+  if (v7 <= section)
   {
     v9 = 0;
   }
 
   else
   {
-    v8 = [(DMCCertificateDetailsViewController *)self keyValueSectionTitles];
-    v9 = [v8 objectAtIndex:a4];
+    keyValueSectionTitles2 = [(DMCCertificateDetailsViewController *)self keyValueSectionTitles];
+    v9 = [keyValueSectionTitles2 objectAtIndex:section];
   }
 
   return v9;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DMCCertificateDetailsViewController *)self keyValueSections];
-  v9 = [v8 objectAtIndex:{objc_msgSend(v6, "section")}];
+  pathCopy = path;
+  viewCopy = view;
+  keyValueSections = [(DMCCertificateDetailsViewController *)self keyValueSections];
+  v9 = [keyValueSections objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
-  v10 = [v9 objectAtIndex:{2 * objc_msgSend(v6, "row")}];
-  v11 = [v9 objectAtIndex:{(2 * objc_msgSend(v6, "row")) | 1}];
-  v12 = [v7 dequeueReusableCellWithIdentifier:@"CertificateDetailsCell" forIndexPath:v6];
+  v10 = [v9 objectAtIndex:{2 * objc_msgSend(pathCopy, "row")}];
+  v11 = [v9 objectAtIndex:{(2 * objc_msgSend(pathCopy, "row")) | 1}];
+  v12 = [viewCopy dequeueReusableCellWithIdentifier:@"CertificateDetailsCell" forIndexPath:pathCopy];
 
   [v12 setDetail:v10 value:v11];
 

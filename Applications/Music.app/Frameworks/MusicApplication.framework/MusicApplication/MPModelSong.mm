@@ -30,7 +30,7 @@
 
 - (double)preferredArtworkAspectRatio
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_79EF88();
 
   return v3;

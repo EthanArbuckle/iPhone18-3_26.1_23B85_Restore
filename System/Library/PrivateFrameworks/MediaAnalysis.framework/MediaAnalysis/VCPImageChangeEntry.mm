@@ -4,9 +4,9 @@
 - (BOOL)canPublishLivePhotoVariationSuggestion;
 - (CGRect)bestPlaybackRect;
 - (void)publish;
-- (void)setAnimatedStickerTimeRange:(id *)a3;
-- (void)setKeyFrameTime:(id *)a3;
-- (void)setSummaryTimeRange:(id *)a3;
+- (void)setAnimatedStickerTimeRange:(id *)range;
+- (void)setKeyFrameTime:(id *)time;
+- (void)setSummaryTimeRange:(id *)range;
 @end
 
 @implementation VCPImageChangeEntry
@@ -18,7 +18,7 @@
     v3 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v3))
     {
-      v4 = [(PHAsset *)self->_asset localIdentifier];
+      localIdentifier = [(PHAsset *)self->_asset localIdentifier];
       if ([(PHAsset *)self->_asset vcp_isLivePhoto])
       {
         v5 = @"Live ";
@@ -29,15 +29,15 @@
         v5 = &stru_1002890F8;
       }
 
-      v6 = [(PHAsset *)self->_asset vcp_isLivePhoto];
+      vcp_isLivePhoto = [(PHAsset *)self->_asset vcp_isLivePhoto];
       v7 = &stru_1002890F8;
-      if (v6 && self->_imageOnly)
+      if (vcp_isLivePhoto && self->_imageOnly)
       {
         v7 = @"(still image analysis)";
       }
 
       *buf = 138412802;
-      *&buf[4] = v4;
+      *&buf[4] = localIdentifier;
       *&buf[12] = 2112;
       *&buf[14] = v5;
       *&buf[22] = 2112;
@@ -48,7 +48,7 @@
 
   v54 = [PHAssetChangeRequest changeRequestForAsset:self->_asset];
   v8 = +[MADStateHandler sharedStateHandler];
-  v9 = [(PHAsset *)self->_asset localIdentifier];
+  localIdentifier2 = [(PHAsset *)self->_asset localIdentifier];
   if ([(PHAsset *)self->_asset vcp_isLivePhoto])
   {
     v10 = @"Live ";
@@ -59,14 +59,14 @@
     v10 = &stru_1002890F8;
   }
 
-  v11 = [(PHAsset *)self->_asset vcp_isLivePhoto];
+  vcp_isLivePhoto2 = [(PHAsset *)self->_asset vcp_isLivePhoto];
   v12 = &stru_1002890F8;
-  if (v11 && self->_imageOnly)
+  if (vcp_isLivePhoto2 && self->_imageOnly)
   {
     v12 = @"(still image analysis)";
   }
 
-  [v8 addBreadcrumb:{@"[%@] Persisting 1 %@Photo asset %@", v9, v10, v12}];
+  [v8 addBreadcrumb:{@"[%@] Persisting 1 %@Photo asset %@", localIdentifier2, v10, v12}];
 
   v13 = v54;
   if (self->_imageCaption && +[VCPVideoCaptionAnalyzer mode]== 1)
@@ -77,11 +77,11 @@
       if (os_log_type_enabled(&_os_log_default, v14))
       {
         imageCaption = self->_imageCaption;
-        v16 = [(PHAsset *)self->_asset localIdentifier];
+        localIdentifier3 = [(PHAsset *)self->_asset localIdentifier];
         *buf = 138412546;
         *&buf[4] = imageCaption;
         *&buf[12] = 2112;
-        *&buf[14] = v16;
+        *&buf[14] = localIdentifier3;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v14, "publish image caption [%@] to photo asset %@", buf, 0x16u);
 
         v13 = v54;
@@ -99,11 +99,11 @@
       if (os_log_type_enabled(&_os_log_default, v17))
       {
         videoCaption = self->_videoCaption;
-        v19 = [(PHAsset *)self->_asset localIdentifier];
+        localIdentifier4 = [(PHAsset *)self->_asset localIdentifier];
         *buf = 138412546;
         *&buf[4] = videoCaption;
         *&buf[12] = 2112;
-        *&buf[14] = v19;
+        *&buf[14] = localIdentifier4;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v17, "publish video caption [%@] to photo asset %@", buf, 0x16u);
 
         v13 = v54;
@@ -113,8 +113,8 @@
     [v13 setGeneratedAssetDescription:self->_videoCaption analysisVersion:VCPPhotosCaptionProcessingVersion sourceType:2];
   }
 
-  v20 = [(PHAsset *)self->_asset vcp_modificationDate];
-  [v13 setMediaAnalysisTimeStamp:v20];
+  vcp_modificationDate = [(PHAsset *)self->_asset vcp_modificationDate];
+  [v13 setMediaAnalysisTimeStamp:vcp_modificationDate];
 
   v21 = MediaAnalysisVersion;
   v22 = v54;
@@ -175,11 +175,11 @@
         if (os_log_type_enabled(&_os_log_default, v30))
         {
           v31 = [(NSSet *)self->_audioClassifications count];
-          v32 = [(PHAsset *)self->_asset localIdentifier];
+          localIdentifier5 = [(PHAsset *)self->_asset localIdentifier];
           *buf = 67109378;
           *&buf[4] = v31;
           *&buf[8] = 2112;
-          *&buf[10] = v32;
+          *&buf[10] = localIdentifier5;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v30, "publish %d audio classifications to livephoto %@", buf, 0x12u);
 
           v22 = v54;
@@ -188,8 +188,8 @@
 
       audioClassifications = self->_audioClassifications;
       v34 = VCPPhotosSceneProcessingVersionInternal();
-      v35 = [(PHAsset *)self->_asset adjustmentVersion];
-      [v22 setSceneClassifications:audioClassifications ofType:3 version:v34 timestamp:v35];
+      adjustmentVersion = [(PHAsset *)self->_asset adjustmentVersion];
+      [v22 setSceneClassifications:audioClassifications ofType:3 version:v34 timestamp:adjustmentVersion];
     }
   }
 
@@ -222,12 +222,12 @@
         {
           if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, type))
           {
-            v47 = [(PHAsset *)self->_asset localIdentifier];
-            v48 = [v40 localIdentifier];
+            localIdentifier6 = [(PHAsset *)self->_asset localIdentifier];
+            localIdentifier7 = [v40 localIdentifier];
             *buf = 138412546;
-            *&buf[4] = v47;
+            *&buf[4] = localIdentifier6;
             *&buf[12] = 2112;
-            *&buf[14] = v48;
+            *&buf[14] = localIdentifier7;
             _os_log_impl(&_mh_execute_header, &_os_log_default, type, "   [%@] reset action traits for PHFace %@", buf, 0x16u);
           }
 
@@ -238,12 +238,12 @@
         {
           if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, v38))
           {
-            v44 = [(PHAsset *)self->_asset localIdentifier];
-            v45 = [v40 localIdentifier];
+            localIdentifier8 = [(PHAsset *)self->_asset localIdentifier];
+            localIdentifier9 = [v40 localIdentifier];
             *buf = 138412546;
-            *&buf[4] = v44;
+            *&buf[4] = localIdentifier8;
             *&buf[12] = 2112;
-            *&buf[14] = v45;
+            *&buf[14] = localIdentifier9;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v38, "   [%@] publish action traits for PHFace %@", buf, 0x16u);
           }
 
@@ -270,11 +270,11 @@
         v50 = VCPLogToOSLogType[7];
         if (os_log_type_enabled(&_os_log_default, v50))
         {
-          v51 = [(PHAsset *)self->_asset localIdentifier];
+          localIdentifier10 = [(PHAsset *)self->_asset localIdentifier];
           analysisStage = self->_analysisStage;
           v53 = [(NSData *)self->_computeSyncPayload length];
           *buf = 138412802;
-          *&buf[4] = v51;
+          *&buf[4] = localIdentifier10;
           *&buf[12] = 1024;
           *&buf[14] = analysisStage;
           *&buf[18] = 1024;
@@ -315,11 +315,11 @@
   return self;
 }
 
-- (void)setSummaryTimeRange:(id *)a3
+- (void)setSummaryTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var3;
-  *&self->_summaryTimeRange.duration.timescale = *&a3->var1.var1;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var0.var3;
+  *&self->_summaryTimeRange.duration.timescale = *&range->var1.var1;
   *&self->_summaryTimeRange.start.epoch = v4;
   *&self->_summaryTimeRange.start.value = v3;
 }
@@ -333,19 +333,19 @@
   return self;
 }
 
-- (void)setAnimatedStickerTimeRange:(id *)a3
+- (void)setAnimatedStickerTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var3;
-  *&self->_animatedStickerTimeRange.duration.timescale = *&a3->var1.var1;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var0.var3;
+  *&self->_animatedStickerTimeRange.duration.timescale = *&range->var1.var1;
   *&self->_animatedStickerTimeRange.start.epoch = v4;
   *&self->_animatedStickerTimeRange.start.value = v3;
 }
 
-- (void)setKeyFrameTime:(id *)a3
+- (void)setKeyFrameTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_keyFrameTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_keyFrameTime.epoch = time->var3;
   *&self->_keyFrameTime.value = v3;
 }
 

@@ -1,17 +1,17 @@
 @interface TIDPBiomeReportingDelegate
-+ (id)_BMEventWithKeyboardTokenFrequency:(id)a3 withLocale:(id)a4 withTokenType:(id)a5;
-- (BOOL)recordTokenFrequency:(id)a3 withLocale:(id)a4 withTokenType:(id)a5;
++ (id)_BMEventWithKeyboardTokenFrequency:(id)frequency withLocale:(id)locale withTokenType:(id)type;
+- (BOOL)recordTokenFrequency:(id)frequency withLocale:(id)locale withTokenType:(id)type;
 - (TIDPBiomeReportingDelegate)init;
 @end
 
 @implementation TIDPBiomeReportingDelegate
 
-- (BOOL)recordTokenFrequency:(id)a3 withLocale:(id)a4 withTokenType:(id)a5
+- (BOOL)recordTokenFrequency:(id)frequency withLocale:(id)locale withTokenType:(id)type
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_opt_class() _BMEventWithKeyboardTokenFrequency:v10 withLocale:v9 withTokenType:v8];
+  typeCopy = type;
+  localeCopy = locale;
+  frequencyCopy = frequency;
+  v11 = [objc_opt_class() _BMEventWithKeyboardTokenFrequency:frequencyCopy withLocale:localeCopy withTokenType:typeCopy];
 
   [(BMSource *)self->_source sendEvent:v11];
   return 1;
@@ -25,28 +25,28 @@
   if (v3 == self)
   {
     v4 = BiomeLibrary();
-    v5 = [v4 Keyboard];
-    v6 = [v5 TokenFrequency];
-    v7 = [v6 source];
+    keyboard = [v4 Keyboard];
+    tokenFrequency = [keyboard TokenFrequency];
+    source = [tokenFrequency source];
     source = v3->_source;
-    v3->_source = v7;
+    v3->_source = source;
   }
 
   return v3;
 }
 
-+ (id)_BMEventWithKeyboardTokenFrequency:(id)a3 withLocale:(id)a4 withTokenType:(id)a5
++ (id)_BMEventWithKeyboardTokenFrequency:(id)frequency withLocale:(id)locale withTokenType:(id)type
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v22 = a4;
-  v8 = a5;
+  frequencyCopy = frequency;
+  localeCopy = locale;
+  typeCopy = type;
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = v7;
+  v10 = frequencyCopy;
   v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v11)
   {
@@ -74,7 +74,7 @@
     while (v12);
   }
 
-  v19 = [objc_alloc(MEMORY[0x277CF1238]) initWithTokenFrequencies:v9 locale:v22 tokenType:BMKeyboardTokenFrequencyTokenTypeFromString()];
+  v19 = [objc_alloc(MEMORY[0x277CF1238]) initWithTokenFrequencies:v9 locale:localeCopy tokenType:BMKeyboardTokenFrequencyTokenTypeFromString()];
   v20 = *MEMORY[0x277D85DE8];
 
   return v19;

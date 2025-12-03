@@ -1,29 +1,29 @@
 @interface ECSignatureInfo
-- (ECSignatureInfo)initWithSignerInfo:(id)a3 certificates:(id)a4;
+- (ECSignatureInfo)initWithSignerInfo:(id)info certificates:(id)certificates;
 - (NSArray)addresses;
 - (NSArray)smimeCapabilities;
 - (NSDate)signingDate;
 - (__SecCertificate)preferredEncryptionCertificate;
-- (id)_protectedAttributeOfType:(objc_class *)a3 class:;
-- (id)_protectedEncryptionKeyPreferenceAttributeWithAdditionalCertificates:(uint64_t)a1;
+- (id)_protectedAttributeOfType:(objc_class *)type class:;
+- (id)_protectedEncryptionKeyPreferenceAttributeWithAdditionalCertificates:(uint64_t)certificates;
 - (void)dealloc;
 @end
 
 @implementation ECSignatureInfo
 
-- (ECSignatureInfo)initWithSignerInfo:(id)a3 certificates:(id)a4
+- (ECSignatureInfo)initWithSignerInfo:(id)info certificates:(id)certificates
 {
-  v7 = a3;
-  v8 = a4;
+  infoCopy = info;
+  certificatesCopy = certificates;
   v12.receiver = self;
   v12.super_class = ECSignatureInfo;
   v9 = [(ECSignatureInfo *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_signerInfo, a3);
+    objc_storeStrong(&v9->_signerInfo, info);
     v10->_encryptionCertificateLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v10->_certificates, a4);
+    objc_storeStrong(&v10->_certificates, certificates);
   }
 
   return v10;
@@ -58,16 +58,16 @@
   if (!encryptionCertificate)
   {
     v4 = [(ECSignatureInfo *)self _protectedEncryptionKeyPreferenceAttributeWithAdditionalCertificates:?];
-    v5 = [v4 encryptionCertificate];
-    if (v5 || (v5 = [(ECSignatureInfo *)self signingCertificate], encryptionCertificate = 0, (SecCertificateGetKeyUsage() & 0x14) != 0) && v5)
+    encryptionCertificate = [v4 encryptionCertificate];
+    if (encryptionCertificate || (encryptionCertificate = [(ECSignatureInfo *)self signingCertificate], encryptionCertificate = 0, (SecCertificateGetKeyUsage() & 0x14) != 0) && encryptionCertificate)
     {
       os_unfair_lock_lock(&self->_encryptionCertificateLock);
       encryptionCertificate = self->_encryptionCertificate;
       if (!encryptionCertificate)
       {
-        self->_encryptionCertificate = v5;
-        CFRetain(v5);
-        encryptionCertificate = v5;
+        self->_encryptionCertificate = encryptionCertificate;
+        CFRetain(encryptionCertificate);
+        encryptionCertificate = encryptionCertificate;
       }
 
       os_unfair_lock_unlock(&self->_encryptionCertificateLock);
@@ -77,13 +77,13 @@
   return encryptionCertificate;
 }
 
-- (id)_protectedEncryptionKeyPreferenceAttributeWithAdditionalCertificates:(uint64_t)a1
+- (id)_protectedEncryptionKeyPreferenceAttributeWithAdditionalCertificates:(uint64_t)certificates
 {
   v3 = a2;
-  if (a1)
+  if (certificates)
   {
-    v4 = [*(a1 + 8) protectedAttributes];
-    v5 = [v4 ef_firstObjectPassingTest:&__block_literal_global_0];
+    protectedAttributes = [*(certificates + 8) protectedAttributes];
+    v5 = [protectedAttributes ef_firstObjectPassingTest:&__block_literal_global_0];
 
     if (v5)
     {
@@ -111,15 +111,15 @@
   v4 = objc_opt_class();
   v5 = [(ECSignatureInfo *)self _protectedAttributeOfType:v3 class:v4];
   v6 = objc_alloc(MEMORY[0x277CBEB18]);
-  v7 = [v5 capabilities];
-  v8 = [v6 initWithCapacity:{objc_msgSend(v7, "count")}];
+  capabilities = [v5 capabilities];
+  v8 = [v6 initWithCapacity:{objc_msgSend(capabilities, "count")}];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [v5 capabilities];
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  capabilities2 = [v5 capabilities];
+  v10 = [capabilities2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = *v17;
@@ -129,14 +129,14 @@
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(capabilities2);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) OIDString];
-        [v8 addObject:v13];
+        oIDString = [*(*(&v16 + 1) + 8 * i) OIDString];
+        [v8 addObject:oIDString];
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [capabilities2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v10);
@@ -147,22 +147,22 @@
   return v8;
 }
 
-- (id)_protectedAttributeOfType:(objc_class *)a3 class:
+- (id)_protectedAttributeOfType:(objc_class *)type class:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [*(a1 + 8) protectedAttributes];
+    protectedAttributes = [*(self + 8) protectedAttributes];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __51__ECSignatureInfo__protectedAttributeOfType_class___block_invoke;
     v10[3] = &unk_27874B690;
     v11 = v5;
-    v7 = [v6 ef_firstObjectPassingTest:v10];
+    v7 = [protectedAttributes ef_firstObjectPassingTest:v10];
 
     if (v7)
     {
-      v8 = [[a3 alloc] initWithAttribute:v7 error:0];
+      v8 = [[type alloc] initWithAttribute:v7 error:0];
     }
 
     else
@@ -184,9 +184,9 @@
   v3 = *MEMORY[0x277D28570];
   v4 = objc_opt_class();
   v5 = [(ECSignatureInfo *)self _protectedAttributeOfType:v3 class:v4];
-  v6 = [v5 signingTime];
+  signingTime = [v5 signingTime];
 
-  return v6;
+  return signingTime;
 }
 
 uint64_t __51__ECSignatureInfo__protectedAttributeOfType_class___block_invoke(uint64_t a1, void *a2)

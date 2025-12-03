@@ -1,12 +1,12 @@
 @interface HKObserverQuery
-+ (void)configureClientInterface:(id)a3;
++ (void)configureClientInterface:(id)interface;
 - (HKObserverQuery)initWithQueryDescriptors:(NSArray *)queryDescriptors updateHandler:(void *)updateHandler;
 - (HKObserverQuery)initWithSampleType:(HKSampleType *)sampleType predicate:(NSPredicate *)predicate updateHandler:(void *)updateHandler;
-- (void)_validateAndRaiseExceptionIfNeeded:(id)a3;
-- (void)client_dataUpdatedInDatabaseForTypes:(id)a3 withAnchor:(id)a4 query:(id)a5;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_populateConfiguration:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
+- (void)_validateAndRaiseExceptionIfNeeded:(id)needed;
+- (void)client_dataUpdatedInDatabaseForTypes:(id)types withAnchor:(id)anchor query:(id)query;
+- (void)queue_deliverError:(id)error;
+- (void)queue_populateConfiguration:(id)configuration;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 - (void)queue_validate;
 @end
 
@@ -76,24 +76,24 @@ void __62__HKObserverQuery_initWithSampleType_predicate_updateHandler___block_in
   return v8;
 }
 
-- (void)client_dataUpdatedInDatabaseForTypes:(id)a3 withAnchor:(id)a4 query:(id)a5
+- (void)client_dataUpdatedInDatabaseForTypes:(id)types withAnchor:(id)anchor query:(id)query
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HKQuery *)self queue];
+  typesCopy = types;
+  anchorCopy = anchor;
+  queryCopy = query;
+  queue = [(HKQuery *)self queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __73__HKObserverQuery_client_dataUpdatedInDatabaseForTypes_withAnchor_query___block_invoke;
   v15[3] = &unk_1E737B738;
   v15[4] = self;
-  v16 = v10;
-  v17 = v9;
-  v18 = v8;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
-  dispatch_async(v11, v15);
+  v16 = queryCopy;
+  v17 = anchorCopy;
+  v18 = typesCopy;
+  v12 = typesCopy;
+  v13 = anchorCopy;
+  v14 = queryCopy;
+  dispatch_async(queue, v15);
 }
 
 void __73__HKObserverQuery_client_dataUpdatedInDatabaseForTypes_withAnchor_query___block_invoke(uint64_t a1)
@@ -181,32 +181,32 @@ void __73__HKObserverQuery_client_dataUpdatedInDatabaseForTypes_withAnchor_query
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)queue_populateConfiguration:(id)a3
+- (void)queue_populateConfiguration:(id)configuration
 {
   v6.receiver = self;
   v6.super_class = HKObserverQuery;
-  v4 = a3;
-  [(HKQuery *)&v6 queue_populateConfiguration:v4];
-  [v4 setObserveUnfrozenSeries:{self->_observeUnfrozenSeries, v6.receiver, v6.super_class}];
-  v5 = [(HKQuery *)self queryDescriptors];
-  [v4 setQueryDescriptors:v5];
+  configurationCopy = configuration;
+  [(HKQuery *)&v6 queue_populateConfiguration:configurationCopy];
+  [configurationCopy setObserveUnfrozenSeries:{self->_observeUnfrozenSeries, v6.receiver, v6.super_class}];
+  queryDescriptors = [(HKQuery *)self queryDescriptors];
+  [configurationCopy setQueryDescriptors:queryDescriptors];
 }
 
-+ (void)configureClientInterface:(id)a3
++ (void)configureClientInterface:(id)interface
 {
-  v4 = a3;
-  v7.receiver = a1;
+  interfaceCopy = interface;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___HKObserverQuery;
-  objc_msgSendSuper2(&v7, sel_configureClientInterface_, v4);
-  v5 = [v4 hk_setSetOfClass:objc_opt_class() forSelector:sel_client_dataUpdatedInDatabaseForTypes_withAnchor_query_ argumentIndex:0 ofReply:0];
-  v6 = [v4 hk_setSetOfClass:objc_opt_class() forSelector:sel_client_dataUpdatedInDatabaseForTypes_withAnchor_query_ argumentIndex:1 ofReply:0];
+  objc_msgSendSuper2(&v7, sel_configureClientInterface_, interfaceCopy);
+  v5 = [interfaceCopy hk_setSetOfClass:objc_opt_class() forSelector:sel_client_dataUpdatedInDatabaseForTypes_withAnchor_query_ argumentIndex:0 ofReply:0];
+  v6 = [interfaceCopy hk_setSetOfClass:objc_opt_class() forSelector:sel_client_dataUpdatedInDatabaseForTypes_withAnchor_query_ argumentIndex:1 ofReply:0];
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   v5.receiver = self;
   v5.super_class = HKObserverQuery;
-  [(HKQuery *)&v5 queue_queryDidDeactivate:a3];
+  [(HKQuery *)&v5 queue_queryDidDeactivate:deactivate];
   updateHandler = self->_updateHandler;
   self->_updateHandler = 0;
 }
@@ -217,8 +217,8 @@ void __73__HKObserverQuery_client_dataUpdatedInDatabaseForTypes_withAnchor_query
   v21.receiver = self;
   v21.super_class = HKObserverQuery;
   [(HKQuery *)&v21 queue_validate];
-  v3 = [(HKQuery *)self queryDescriptors];
-  v4 = [v3 count];
+  queryDescriptors = [(HKQuery *)self queryDescriptors];
+  v4 = [queryDescriptors count];
 
   if (!v4)
   {
@@ -229,8 +229,8 @@ void __73__HKObserverQuery_client_dataUpdatedInDatabaseForTypes_withAnchor_query
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(HKQuery *)self queryDescriptors];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  queryDescriptors2 = [(HKQuery *)self queryDescriptors];
+  v6 = [queryDescriptors2 countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -241,18 +241,18 @@ void __73__HKObserverQuery_client_dataUpdatedInDatabaseForTypes_withAnchor_query
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(queryDescriptors2);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 sampleType];
+        sampleType = [v10 sampleType];
 
-        if (!v11)
+        if (!sampleType)
         {
           [MEMORY[0x1E695DF30] raise:@"HKQueryValidationFailureException" format:{@"%@ data type must be non-nil", objc_opt_class()}];
         }
 
-        v12 = [v10 sampleType];
+        sampleType2 = [v10 sampleType];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -264,7 +264,7 @@ void __73__HKObserverQuery_client_dataUpdatedInDatabaseForTypes_withAnchor_query
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v7 = [queryDescriptors2 countByEnumeratingWithState:&v17 objects:v22 count:16];
     }
 
     while (v7);
@@ -278,27 +278,27 @@ void __73__HKObserverQuery_client_dataUpdatedInDatabaseForTypes_withAnchor_query
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _Block_copy(self->_updateHandler);
   if (v5)
   {
-    v6 = [(HKQuery *)self clientQueue];
+    clientQueue = [(HKQuery *)self clientQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __38__HKObserverQuery_queue_deliverError___block_invoke;
     block[3] = &unk_1E7376618;
     v9 = v5;
     block[4] = self;
-    v8 = v4;
-    dispatch_async(v6, block);
+    v8 = errorCopy;
+    dispatch_async(clientQueue, block);
   }
 }
 
-- (void)_validateAndRaiseExceptionIfNeeded:(id)a3
+- (void)_validateAndRaiseExceptionIfNeeded:(id)needed
 {
-  if ([a3 hk_containsObjectPassingTest:&__block_literal_global_82])
+  if ([needed hk_containsObjectPassingTest:&__block_literal_global_82])
   {
     v3 = MEMORY[0x1E695DF30];
     v4 = objc_opt_class();

@@ -1,20 +1,20 @@
 @interface NSKeyValueFastMutableCollection1Getter
-- (NSKeyValueFastMutableCollection1Getter)initWithContainerClassID:(id)a3 key:(id)a4 nonmutatingMethods:(id)a5 mutatingMethods:(id)a6 proxyClass:(Class)a7;
+- (NSKeyValueFastMutableCollection1Getter)initWithContainerClassID:(id)d key:(id)key nonmutatingMethods:(id)methods mutatingMethods:(id)mutatingMethods proxyClass:(Class)class;
 - (void)dealloc;
 @end
 
 @implementation NSKeyValueFastMutableCollection1Getter
 
-- (NSKeyValueFastMutableCollection1Getter)initWithContainerClassID:(id)a3 key:(id)a4 nonmutatingMethods:(id)a5 mutatingMethods:(id)a6 proxyClass:(Class)a7
+- (NSKeyValueFastMutableCollection1Getter)initWithContainerClassID:(id)d key:(id)key nonmutatingMethods:(id)methods mutatingMethods:(id)mutatingMethods proxyClass:(Class)class
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = NSKeyValueFastMutableCollection1Getter;
-  v9 = [(NSKeyValueProxyGetter *)&v11 initWithContainerClassID:a3 key:a4 proxyClass:a7];
+  v9 = [(NSKeyValueProxyGetter *)&v11 initWithContainerClassID:d key:key proxyClass:class];
   if (v9)
   {
-    v9->_nonmutatingMethods = a5;
-    v9->_mutatingMethods = a6;
+    v9->_nonmutatingMethods = methods;
+    v9->_mutatingMethods = mutatingMethods;
   }
 
   return v9;

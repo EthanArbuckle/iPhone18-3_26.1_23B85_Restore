@@ -2,8 +2,8 @@
 - (id)bookmark;
 - (id)bpsPublisher;
 - (id)nextObject;
-- (id)validateBookmark:(id)a3;
-- (void)applyBookmark:(id)a3;
+- (id)validateBookmark:(id)bookmark;
+- (void)applyBookmark:(id)bookmark;
 - (void)reset;
 @end
 
@@ -29,7 +29,7 @@
   return 0;
 }
 
-- (id)validateBookmark:(id)a3
+- (id)validateBookmark:(id)bookmark
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];
@@ -39,7 +39,7 @@
   return 0;
 }
 
-- (void)applyBookmark:(id)a3
+- (void)applyBookmark:(id)bookmark
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];

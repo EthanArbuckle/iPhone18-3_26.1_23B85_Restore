@@ -1,13 +1,13 @@
 @interface ActivityAwardsDateQueryListener
 - (_TtC22ActivityAwardsServices31ActivityAwardsDateQueryListener)init;
-- (void)achievementStore:(void *)a1 didRemoveAchievements:;
+- (void)achievementStore:(void *)store didRemoveAchievements:;
 @end
 
 @implementation ActivityAwardsDateQueryListener
 
-- (void)achievementStore:(void *)a1 didRemoveAchievements:
+- (void)achievementStore:(void *)store didRemoveAchievements:
 {
-  v1 = a1;
+  storeCopy = store;
   sub_1DB10C804();
 }
 

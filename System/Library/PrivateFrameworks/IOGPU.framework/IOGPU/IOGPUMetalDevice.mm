@@ -1,25 +1,25 @@
 @interface IOGPUMetalDevice
-- (BOOL)supportsVertexAmplificationCount:(unint64_t)a3;
-- (IOGPUMetalDevice)initWithAcceleratorPort:(unsigned int)a3 options:(unint64_t)a4;
+- (BOOL)supportsVertexAmplificationCount:(unint64_t)count;
+- (IOGPUMetalDevice)initWithAcceleratorPort:(unsigned int)port options:(unint64_t)options;
 - (id)_deviceWrapper;
-- (id)allocBufferSubDataWithLength:(unint64_t)a3 options:(unint64_t)a4 alignment:(unint64_t)a5 heapIndex:(signed __int16 *)a6 bufferIndex:(signed __int16 *)a7 bufferOffset:(unint64_t *)a8 parentAddress:(unint64_t)a9 parentLength:(unint64_t)a10;
-- (id)newAccelerationStructureWithBuffer:(id)a3 offset:(unint64_t)a4;
-- (id)newAccelerationStructureWithBuffer:(id)a3 offset:(unint64_t)a4 resourceIndex:(unint64_t)a5;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 resourceIndex:(unint64_t)a4;
-- (id)newCommandQueueWithDescriptor:(id)a3;
+- (id)allocBufferSubDataWithLength:(unint64_t)length options:(unint64_t)options alignment:(unint64_t)alignment heapIndex:(signed __int16 *)index bufferIndex:(signed __int16 *)bufferIndex bufferOffset:(unint64_t *)offset parentAddress:(unint64_t)address parentLength:(unint64_t)self0;
+- (id)newAccelerationStructureWithBuffer:(id)buffer offset:(unint64_t)offset;
+- (id)newAccelerationStructureWithBuffer:(id)buffer offset:(unint64_t)offset resourceIndex:(unint64_t)index;
+- (id)newAccelerationStructureWithSize:(unint64_t)size;
+- (id)newAccelerationStructureWithSize:(unint64_t)size resourceIndex:(unint64_t)index;
+- (id)newCommandQueueWithDescriptor:(id)descriptor;
 - (id)newDevicePoolAliasedCommandAllocator;
 - (id)newEvent;
-- (id)newEventWithOptions:(int64_t)a3;
+- (id)newEventWithOptions:(int64_t)options;
 - (id)newFence;
-- (id)newIOCommandQueueWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newIOHandleWithURL:(id)a3 compressionType:(int64_t)a4 error:(id *)a5;
-- (id)newIOHandleWithURL:(id)a3 error:(id *)a4;
-- (id)newIndirectCommandBufferWithDescriptor:(id)a3 maxCommandCount:(unint64_t)a4 options:(unint64_t)a5;
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3;
+- (id)newIOCommandQueueWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newIOHandleWithURL:(id)l compressionType:(int64_t)type error:(id *)error;
+- (id)newIOHandleWithURL:(id)l error:(id *)error;
+- (id)newIndirectCommandBufferWithDescriptor:(id)descriptor maxCommandCount:(unint64_t)count options:(unint64_t)options;
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor;
 - (id)newLateEvalEvent;
-- (id)newUncachedIOHandleWithURL:(id)a3 compressionType:(int64_t)a4 error:(id *)a5;
-- (id)newUncachedIOHandleWithURL:(id)a3 error:(id *)a4;
+- (id)newUncachedIOHandleWithURL:(id)l compressionType:(int64_t)type error:(id *)error;
+- (id)newUncachedIOHandleWithURL:(id)l error:(id *)error;
 - (uint64_t)updateResourcePoolPurgeability;
 - (unint64_t)currentAllocatedSize;
 - (unint64_t)maxBufferLength;
@@ -27,11 +27,11 @@
 - (void)_purgeDevice;
 - (void)cancelPeriodicUpdateResourcePoolPurgeability;
 - (void)dealloc;
-- (void)deallocBufferSubData:(id)a3 heapIndex:(signed __int16)a4 bufferIndex:(signed __int16)a5 bufferOffset:(unint64_t)a6 length:(unint64_t)a7;
+- (void)deallocBufferSubData:(id)data heapIndex:(signed __int16)index bufferIndex:(signed __int16)bufferIndex bufferOffset:(unint64_t)offset length:(unint64_t)length;
 - (void)kickCleanupQueue;
 - (void)launchMappingThread;
 - (void)periodicUpdateResourcePoolPurgeability;
-- (void)setHwResourcePool:(id *)a3 count:(int)a4;
+- (void)setHwResourcePool:(id *)pool count:(int)count;
 @end
 
 @implementation IOGPUMetalDevice
@@ -52,31 +52,31 @@
 
 - (void)kickCleanupQueue
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 816));
-    *(a1 + 821) = 1;
-    if ((*(a1 + 820) & 1) == 0)
+    os_unfair_lock_lock((self + 816));
+    *(self + 821) = 1;
+    if ((*(self + 820) & 1) == 0)
     {
-      *(a1 + 820) = 1;
-      v2 = *(a1 + 808);
+      *(self + 820) = 1;
+      v2 = *(self + 808);
       v3 = dispatch_time(0, 1000000000);
       dispatch_source_set_timer(v2, v3, 0x3B9ACA00uLL, 0x5F5E100uLL);
-      dispatch_resume(*(a1 + 808));
+      dispatch_resume(*(self + 808));
     }
 
-    os_unfair_lock_unlock((a1 + 816));
+    os_unfair_lock_unlock((self + 816));
   }
 }
 
 - (void)periodicUpdateResourcePoolPurgeability
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  OUTLINED_FUNCTION_1(a1);
+  OUTLINED_FUNCTION_1(self);
   *(v1 + 821) = 0;
   v2 = OUTLINED_FUNCTION_0();
   os_unfair_lock_unlock(v2);
@@ -221,7 +221,7 @@ void __27__IOGPUMetalDevice_dealloc__block_invoke(uint64_t a1)
   dispatch_release(v4);
 }
 
-- (IOGPUMetalDevice)initWithAcceleratorPort:(unsigned int)a3 options:(unint64_t)a4
+- (IOGPUMetalDevice)initWithAcceleratorPort:(unsigned int)port options:(unint64_t)options
 {
   +[IOGPUMemoryInfo initialize];
   v19.receiver = self;
@@ -236,21 +236,21 @@ void __27__IOGPUMetalDevice_dealloc__block_invoke(uint64_t a1)
       [IOGPUMetalDevice initWithAcceleratorPort:options:];
     }
 
-    if (a4 >= 0x10000)
+    if (options >= 0x10000)
     {
       [IOGPUMetalDevice initWithAcceleratorPort:options:];
     }
 
-    v8 = IOGPUDeviceCreateWithOptions(a3, a4);
+    v8 = IOGPUDeviceCreateWithOptions(port, options);
     *(v7 + 79) = v8;
     if (!v8)
     {
       goto LABEL_15;
     }
 
-    IORegistryEntryGetRegistryEntryID(a3, v7 + 103);
-    *(v7 + 160) = a3;
-    IOObjectRetain(a3);
+    IORegistryEntryGetRegistryEntryID(port, v7 + 103);
+    *(v7 + 160) = port;
+    IOObjectRetain(port);
     *(v7 + 84) = 0;
     *(v7 + 170) = 0;
     *(v7 + 86) = [objc_alloc(MEMORY[0x1E6974168]) initWithResourceListCapacity:1024];
@@ -337,7 +337,7 @@ LABEL_15:
   return v7;
 }
 
-- (void)setHwResourcePool:(id *)a3 count:(int)a4
+- (void)setHwResourcePool:(id *)pool count:(int)count
 {
   p_storageCreateParams = &self->_storageCreateParams;
   if (self->_storageCreateParams.hwResourcePools)
@@ -350,20 +350,20 @@ LABEL_15:
     [IOGPUMetalDevice setHwResourcePool:count:];
   }
 
-  self->_storageCreateParams.hwResourcePools = malloc_type_malloc(8 * a4, 0x80040B8603338uLL);
-  if (a4 >= 1)
+  self->_storageCreateParams.hwResourcePools = malloc_type_malloc(8 * count, 0x80040B8603338uLL);
+  if (count >= 1)
   {
     v7 = 0;
     do
     {
-      p_storageCreateParams->hwResourcePools[v7] = a3[v7];
+      p_storageCreateParams->hwResourcePools[v7] = pool[v7];
       ++v7;
     }
 
-    while (a4 != v7);
+    while (count != v7);
   }
 
-  p_storageCreateParams->var0 = a4;
+  p_storageCreateParams->var0 = count;
 }
 
 - (void)_purgeDevice
@@ -404,15 +404,15 @@ LABEL_15:
   return videoRam;
 }
 
-- (BOOL)supportsVertexAmplificationCount:(unint64_t)a3
+- (BOOL)supportsVertexAmplificationCount:(unint64_t)count
 {
-  if (a3 == 1)
+  if (count == 1)
   {
     return 1;
   }
 
   result = [(IOGPUMetalDevice *)self supportsVertexAmplification];
-  if (a3 != 2)
+  if (count != 2)
   {
     return 0;
   }
@@ -420,15 +420,15 @@ LABEL_15:
   return result;
 }
 
-- (id)allocBufferSubDataWithLength:(unint64_t)a3 options:(unint64_t)a4 alignment:(unint64_t)a5 heapIndex:(signed __int16 *)a6 bufferIndex:(signed __int16 *)a7 bufferOffset:(unint64_t *)a8 parentAddress:(unint64_t)a9 parentLength:(unint64_t)a10
+- (id)allocBufferSubDataWithLength:(unint64_t)length options:(unint64_t)options alignment:(unint64_t)alignment heapIndex:(signed __int16 *)index bufferIndex:(signed __int16 *)bufferIndex bufferOffset:(unint64_t *)offset parentAddress:(unint64_t)address parentLength:(unint64_t)self0
 {
   v22 = 0;
-  v23 = a4;
-  v20 = a3;
+  optionsCopy = options;
+  lengthCopy = length;
   v21 = 0;
-  if (a9)
+  if (address)
   {
-    v14 = a10 == 0;
+    v14 = parentLength == 0;
   }
 
   else
@@ -438,7 +438,7 @@ LABEL_15:
 
   if (!v14)
   {
-    v21 = *a8;
+    v21 = *offset;
   }
 
   buffer_suballocator = self->_buffer_suballocator;
@@ -447,30 +447,30 @@ LABEL_15:
     return 0;
   }
 
-  v16 = IOGPUMetalSuballocatorAllocate(buffer_suballocator, &v20, a5, &v23, a9, a10);
+  v16 = IOGPUMetalSuballocatorAllocate(buffer_suballocator, &lengthCopy, alignment, &optionsCopy, address, parentLength);
   v17 = v16;
   if (v16)
   {
-    *a6 = WORD1(v22);
-    *a7 = v22;
-    *a8 = v21;
-    if ((v23 & 0x90000) == 0)
+    *index = WORD1(v22);
+    *bufferIndex = v22;
+    *offset = v21;
+    if ((optionsCopy & 0x90000) == 0)
     {
-      v18 = [v16 virtualAddress];
-      bzero((v18 + v21), a3);
+      virtualAddress = [v16 virtualAddress];
+      bzero((virtualAddress + v21), length);
     }
   }
 
   return v17;
 }
 
-- (void)deallocBufferSubData:(id)a3 heapIndex:(signed __int16)a4 bufferIndex:(signed __int16)a5 bufferOffset:(unint64_t)a6 length:(unint64_t)a7
+- (void)deallocBufferSubData:(id)data heapIndex:(signed __int16)index bufferIndex:(signed __int16)bufferIndex bufferOffset:(unint64_t)offset length:(unint64_t)length
 {
-  v8[1] = a6;
+  v8[1] = offset;
   v11 = 0;
-  v10 = a4;
-  v9 = a5;
-  v8[0] = a7;
+  indexCopy = index;
+  bufferIndexCopy = bufferIndex;
+  v8[0] = length;
   buffer_suballocator = self->_buffer_suballocator;
   if (!buffer_suballocator)
   {
@@ -480,17 +480,17 @@ LABEL_15:
   IOGPUMetalSuballocatorFree(buffer_suballocator, v8);
 }
 
-- (id)newCommandQueueWithDescriptor:(id)a3
+- (id)newCommandQueueWithDescriptor:(id)descriptor
 {
-  v4 = [a3 maxCommandBufferCount];
+  maxCommandBufferCount = [descriptor maxCommandBufferCount];
 
-  return [(_MTLDevice *)self newCommandQueueWithMaxCommandBufferCount:v4];
+  return [(_MTLDevice *)self newCommandQueueWithMaxCommandBufferCount:maxCommandBufferCount];
 }
 
-- (id)newIndirectCommandBufferWithDescriptor:(id)a3 maxCommandCount:(unint64_t)a4 options:(unint64_t)a5
+- (id)newIndirectCommandBufferWithDescriptor:(id)descriptor maxCommandCount:(unint64_t)count options:(unint64_t)options
 {
-  v7 = [(IOGPUMetalDevice *)self newIndirectCommandBufferWithDescriptor:a3 maxCount:a4 options:a5];
-  v8 = [[IOGPUMetalIndirectCommandBuffer alloc] initWithBuffer:v7 descriptor:a3 maxCommandCount:a4];
+  v7 = [(IOGPUMetalDevice *)self newIndirectCommandBufferWithDescriptor:descriptor maxCount:count options:options];
+  v8 = [[IOGPUMetalIndirectCommandBuffer alloc] initWithBuffer:v7 descriptor:descriptor maxCommandCount:count];
 
   return v8;
 }
@@ -512,11 +512,11 @@ LABEL_15:
   }
 }
 
-- (id)newEventWithOptions:(int64_t)a3
+- (id)newEventWithOptions:(int64_t)options
 {
   v5 = [_IOGPUMetalMTLEvent alloc];
 
-  return [(_IOGPUMetalMTLEvent *)v5 initWithDevice:self options:a3];
+  return [(_IOGPUMetalMTLEvent *)v5 initWithDevice:self options:options];
 }
 
 - (id)newLateEvalEvent
@@ -538,11 +538,11 @@ LABEL_15:
   return [Weak _deviceWrapper];
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3
+- (id)newAccelerationStructureWithSize:(unint64_t)size
 {
   if ([(_MTLDevice *)self requiresRaytracingEmulation])
   {
-    v6 = [(IOGPUMetalDevice *)self newBufferWithLength:a3 options:32];
+    v6 = [(IOGPUMetalDevice *)self newBufferWithLength:size options:32];
     if (v6)
     {
       v7 = v6;
@@ -560,15 +560,15 @@ LABEL_15:
   return 0;
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 resourceIndex:(unint64_t)a4
+- (id)newAccelerationStructureWithSize:(unint64_t)size resourceIndex:(unint64_t)index
 {
   if ([(_MTLDevice *)self requiresRaytracingEmulation])
   {
-    v8 = [(IOGPUMetalDevice *)self newBufferWithLength:a3 options:32];
+    v8 = [(IOGPUMetalDevice *)self newBufferWithLength:size options:32];
     if (v8)
     {
       v9 = v8;
-      v10 = [[IOGPUMetalAccelerationStructure alloc] initWithBuffer:v8 offset:0 resourceIndex:a4];
+      v10 = [[IOGPUMetalAccelerationStructure alloc] initWithBuffer:v8 offset:0 resourceIndex:index];
 
       return v10;
     }
@@ -582,18 +582,18 @@ LABEL_15:
   return 0;
 }
 
-- (id)newAccelerationStructureWithBuffer:(id)a3 offset:(unint64_t)a4
+- (id)newAccelerationStructureWithBuffer:(id)buffer offset:(unint64_t)offset
 {
   if ([(_MTLDevice *)self requiresRaytracingEmulation])
   {
-    if (!a3)
+    if (!buffer)
     {
       [IOGPUMetalDevice newAccelerationStructureWithBuffer:offset:];
     }
 
     v8 = [IOGPUMetalAccelerationStructure alloc];
 
-    return [(IOGPUMetalAccelerationStructure *)v8 initWithBuffer:a3 offset:a4];
+    return [(IOGPUMetalAccelerationStructure *)v8 initWithBuffer:buffer offset:offset];
   }
 
   else
@@ -603,18 +603,18 @@ LABEL_15:
   }
 }
 
-- (id)newAccelerationStructureWithBuffer:(id)a3 offset:(unint64_t)a4 resourceIndex:(unint64_t)a5
+- (id)newAccelerationStructureWithBuffer:(id)buffer offset:(unint64_t)offset resourceIndex:(unint64_t)index
 {
   if ([(_MTLDevice *)self requiresRaytracingEmulation])
   {
-    if (!a3)
+    if (!buffer)
     {
       [IOGPUMetalDevice newAccelerationStructureWithBuffer:offset:resourceIndex:];
     }
 
     v10 = [IOGPUMetalAccelerationStructure alloc];
 
-    return [(IOGPUMetalAccelerationStructure *)v10 initWithBuffer:a3 offset:a4 resourceIndex:a5];
+    return [(IOGPUMetalAccelerationStructure *)v10 initWithBuffer:buffer offset:offset resourceIndex:index];
   }
 
   else
@@ -624,14 +624,14 @@ LABEL_15:
   }
 }
 
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor
 {
   if ([(_MTLDevice *)self requiresRaytracingEmulation])
   {
     v6 = objc_alloc_init(MEMORY[0x1E69741E8]);
-    [v6 setFunctionCount:{objc_msgSend(a3, "functionCount")}];
-    [v6 setResourceIndex:{objc_msgSend(a3, "resourceIndex")}];
-    [v6 setForceResourceIndex:{objc_msgSend(a3, "forceResourceIndex")}];
+    [v6 setFunctionCount:{objc_msgSend(descriptor, "functionCount")}];
+    [v6 setResourceIndex:{objc_msgSend(descriptor, "resourceIndex")}];
+    [v6 setForceResourceIndex:{objc_msgSend(descriptor, "forceResourceIndex")}];
     v7 = [(IOGPUMetalDevice *)self newVisibleFunctionTableWithDescriptor:v6];
 
     v8 = [[IOGPUMetalIntersectionFunctionTable alloc] initWithVisibleFunctionTable:v7];
@@ -645,161 +645,161 @@ LABEL_15:
   }
 }
 
-- (id)newIOCommandQueueWithDescriptor:(id)a3 error:(id *)a4
+- (id)newIOCommandQueueWithDescriptor:(id)descriptor error:(id *)error
 {
   if (self->_disableGPUIO)
   {
     v8.receiver = self;
     v8.super_class = IOGPUMetalDevice;
-    return [(_MTLDevice *)&v8 newIOCommandQueueWithDescriptor:a3 error:a4];
+    return [(_MTLDevice *)&v8 newIOCommandQueueWithDescriptor:descriptor error:error];
   }
 
   else
   {
     v7 = [IOGPUMetalIOCommandQueue alloc];
 
-    return [(IOGPUMetalIOCommandQueue *)v7 initWithDevice:self descriptor:a3];
+    return [(IOGPUMetalIOCommandQueue *)v7 initWithDevice:self descriptor:descriptor];
   }
 }
 
-- (id)newIOHandleWithURL:(id)a3 compressionType:(int64_t)a4 error:(id *)a5
+- (id)newIOHandleWithURL:(id)l compressionType:(int64_t)type error:(id *)error
 {
   if (self->_disableGPUIO)
   {
     v15.receiver = self;
     v15.super_class = IOGPUMetalDevice;
-    return [(_MTLDevice *)&v15 newIOFileHandleWithURL:a3 compressionMethod:a4 error:a5];
+    return [(_MTLDevice *)&v15 newIOFileHandleWithURL:l compressionMethod:type error:error];
   }
 
-  if (![a3 isFileURL])
+  if (![l isFileURL])
   {
-    if (a5)
+    if (error)
     {
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObject:@"URL is not a file" forKey:*MEMORY[0x1E696A578]];
       v13 = objc_alloc(MEMORY[0x1E696ABC0]);
       v14 = [v13 initWithDomain:*MEMORY[0x1E6973F90] code:1 userInfo:v12];
       result = 0;
-      *a5 = v14;
+      *error = v14;
       return result;
     }
 
     return 0;
   }
 
-  if (![a3 checkResourceIsReachableAndReturnError:a5])
+  if (![l checkResourceIsReachableAndReturnError:error])
   {
     return 0;
   }
 
   v10 = [IOGPUMetalIOHandleCompressed alloc];
-  v11 = [a3 fileSystemRepresentation];
+  fileSystemRepresentation = [l fileSystemRepresentation];
 
-  return [(IOGPUMetalIOHandleCompressed *)v10 initWithDevice:self path:v11 compressionType:a4 error:a5 uncached:0];
+  return [(IOGPUMetalIOHandleCompressed *)v10 initWithDevice:self path:fileSystemRepresentation compressionType:type error:error uncached:0];
 }
 
-- (id)newIOHandleWithURL:(id)a3 error:(id *)a4
+- (id)newIOHandleWithURL:(id)l error:(id *)error
 {
   if (self->_disableGPUIO)
   {
     v13.receiver = self;
     v13.super_class = IOGPUMetalDevice;
-    return [(_MTLDevice *)&v13 newIOFileHandleWithURL:a3 error:a4];
+    return [(_MTLDevice *)&v13 newIOFileHandleWithURL:l error:error];
   }
 
-  if (![a3 isFileURL])
+  if (![l isFileURL])
   {
-    if (a4)
+    if (error)
     {
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObject:@"URL is not a file" forKey:*MEMORY[0x1E696A578]];
       v11 = objc_alloc(MEMORY[0x1E696ABC0]);
       v12 = [v11 initWithDomain:*MEMORY[0x1E6973F90] code:1 userInfo:v10];
       result = 0;
-      *a4 = v12;
+      *error = v12;
       return result;
     }
 
     return 0;
   }
 
-  if (![a3 checkResourceIsReachableAndReturnError:a4])
+  if (![l checkResourceIsReachableAndReturnError:error])
   {
     return 0;
   }
 
   v8 = [IOGPUMetalIOHandleRaw alloc];
-  v9 = [a3 fileSystemRepresentation];
+  fileSystemRepresentation = [l fileSystemRepresentation];
 
-  return [(IOGPUMetalIOHandleRaw *)v8 initWithDevice:self path:v9 error:a4 uncached:0];
+  return [(IOGPUMetalIOHandleRaw *)v8 initWithDevice:self path:fileSystemRepresentation error:error uncached:0];
 }
 
-- (id)newUncachedIOHandleWithURL:(id)a3 compressionType:(int64_t)a4 error:(id *)a5
+- (id)newUncachedIOHandleWithURL:(id)l compressionType:(int64_t)type error:(id *)error
 {
   if (self->_disableGPUIO)
   {
     v15.receiver = self;
     v15.super_class = IOGPUMetalDevice;
-    return [(_MTLDevice *)&v15 newUncachedIOFileHandleWithURL:a3 compressionMethod:a4 error:a5];
+    return [(_MTLDevice *)&v15 newUncachedIOFileHandleWithURL:l compressionMethod:type error:error];
   }
 
-  if (![a3 isFileURL])
+  if (![l isFileURL])
   {
-    if (a5)
+    if (error)
     {
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObject:@"URL is not a file" forKey:*MEMORY[0x1E696A578]];
       v13 = objc_alloc(MEMORY[0x1E696ABC0]);
       v14 = [v13 initWithDomain:*MEMORY[0x1E6973F90] code:1 userInfo:v12];
       result = 0;
-      *a5 = v14;
+      *error = v14;
       return result;
     }
 
     return 0;
   }
 
-  if (![a3 checkResourceIsReachableAndReturnError:a5])
+  if (![l checkResourceIsReachableAndReturnError:error])
   {
     return 0;
   }
 
   v10 = [IOGPUMetalIOHandleCompressed alloc];
-  v11 = [a3 fileSystemRepresentation];
+  fileSystemRepresentation = [l fileSystemRepresentation];
 
-  return [(IOGPUMetalIOHandleCompressed *)v10 initWithDevice:self path:v11 compressionType:a4 error:a5 uncached:1];
+  return [(IOGPUMetalIOHandleCompressed *)v10 initWithDevice:self path:fileSystemRepresentation compressionType:type error:error uncached:1];
 }
 
-- (id)newUncachedIOHandleWithURL:(id)a3 error:(id *)a4
+- (id)newUncachedIOHandleWithURL:(id)l error:(id *)error
 {
   if (self->_disableGPUIO)
   {
     v13.receiver = self;
     v13.super_class = IOGPUMetalDevice;
-    return [(_MTLDevice *)&v13 newUncachedIOFileHandleWithURL:a3 error:a4];
+    return [(_MTLDevice *)&v13 newUncachedIOFileHandleWithURL:l error:error];
   }
 
-  if (![a3 isFileURL])
+  if (![l isFileURL])
   {
-    if (a4)
+    if (error)
     {
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObject:@"URL is not a file" forKey:*MEMORY[0x1E696A578]];
       v11 = objc_alloc(MEMORY[0x1E696ABC0]);
       v12 = [v11 initWithDomain:*MEMORY[0x1E6973F90] code:1 userInfo:v10];
       result = 0;
-      *a4 = v12;
+      *error = v12;
       return result;
     }
 
     return 0;
   }
 
-  if (![a3 checkResourceIsReachableAndReturnError:a4])
+  if (![l checkResourceIsReachableAndReturnError:error])
   {
     return 0;
   }
 
   v8 = [IOGPUMetalIOHandleRaw alloc];
-  v9 = [a3 fileSystemRepresentation];
+  fileSystemRepresentation = [l fileSystemRepresentation];
 
-  return [(IOGPUMetalIOHandleRaw *)v8 initWithDevice:self path:v9 error:a4 uncached:1];
+  return [(IOGPUMetalIOHandleRaw *)v8 initWithDevice:self path:fileSystemRepresentation error:error uncached:1];
 }
 
 - (void)launchMappingThread
@@ -859,12 +859,12 @@ uint64_t __39__IOGPUMetalDevice_launchMappingThread__block_invoke_1346(uint64_t 
 
 - (uint64_t)updateResourcePoolPurgeability
 {
-  if (a1 && *(a1 + 680))
+  if (self && *(self + 680))
   {
     v1 = 0;
     v2 = 0;
-    v3 = a1 + 24;
-    v4 = a1 + 32;
+    v3 = self + 24;
+    v4 = self + 32;
     do
     {
       v2 |= [*(*(v3 + 648) + 8 * v1++) updateResourcePurgeability];
@@ -883,9 +883,9 @@ uint64_t __39__IOGPUMetalDevice_launchMappingThread__block_invoke_1346(uint64_t 
 
 - (void)cancelPeriodicUpdateResourcePoolPurgeability
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_1(a1);
+    OUTLINED_FUNCTION_1(self);
     if ((*(v1 + 821) & 1) == 0)
     {
       dispatch_suspend(*(v1 + 808));

@@ -1,9 +1,9 @@
 @interface UIPDFAnnotationParserDelegate
 - (UIPDFAnnotationParserDelegate)init;
 - (void)dealloc;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
-- (void)parser:(id)a3 foundCharacters:(id)a4;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
+- (void)parser:(id)parser foundCharacters:(id)characters;
 @end
 
 @implementation UIPDFAnnotationParserDelegate
@@ -28,21 +28,21 @@
   [(UIPDFAnnotationParserDelegate *)&v2 dealloc];
 }
 
-- (void)parser:(id)a3 foundCharacters:(id)a4
+- (void)parser:(id)parser foundCharacters:(id)characters
 {
   characters = self->_characters;
   if (characters)
   {
-    [(NSMutableString *)characters appendString:a4];
+    [(NSMutableString *)characters appendString:characters];
   }
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
   components[4] = *MEMORY[0x1E69E9840];
-  if ([a4 isEqualToString:@"UIPDFAnnotation"])
+  if ([element isEqualToString:@"UIPDFAnnotation"])
   {
-    v10 = [a7 valueForKey:@"type"];
+    v10 = [attributes valueForKey:@"type"];
     if ([v10 isEqualToString:@"UIPDFAnnotationTypeCircle"])
     {
       v11 = off_1E70EA2A8;
@@ -100,19 +100,19 @@ LABEL_34:
     return;
   }
 
-  if ([a4 isEqualToString:@"ID"])
+  if ([element isEqualToString:@"ID"])
   {
 LABEL_5:
     self->_characters = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:0];
     return;
   }
 
-  if ([a4 isEqualToString:@"Color"])
+  if ([element isEqualToString:@"Color"])
   {
-    v12 = [a7 valueForKey:@"R"];
-    v13 = [a7 valueForKey:@"G"];
-    v14 = [a7 valueForKey:@"B"];
-    v15 = [a7 valueForKey:@"A"];
+    v12 = [attributes valueForKey:@"R"];
+    v13 = [attributes valueForKey:@"G"];
+    v14 = [attributes valueForKey:@"B"];
+    v15 = [attributes valueForKey:@"A"];
     [v12 floatValue];
     components[0] = v16;
     [v13 floatValue];
@@ -138,35 +138,35 @@ LABEL_5:
     CGColorRelease(v22);
   }
 
-  else if ([a4 isEqualToString:@"Contents"] || objc_msgSend(a4, "isEqualToString:", @"Tag") || objc_msgSend(a4, "isEqualToString:", @"Index") || objc_msgSend(a4, "isEqualToString:", @"PopupID") || objc_msgSend(a4, "isEqualToString:", @"ParentID"))
+  else if ([element isEqualToString:@"Contents"] || objc_msgSend(element, "isEqualToString:", @"Tag") || objc_msgSend(element, "isEqualToString:", @"Index") || objc_msgSend(element, "isEqualToString:", @"PopupID") || objc_msgSend(element, "isEqualToString:", @"ParentID"))
   {
     goto LABEL_5;
   }
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  if ([a4 isEqualToString:@"ID"])
+  if ([element isEqualToString:@"ID"])
   {
     [(UIPDFAnnotation *)self->_annotation setAnnotationID:self->_characters];
   }
 
-  else if ([a4 isEqualToString:@"Contents"])
+  else if ([element isEqualToString:@"Contents"])
   {
     [(UIPDFAnnotation *)self->_annotation setContents:self->_characters];
   }
 
-  else if ([a4 isEqualToString:@"PopupID"] || objc_msgSend(a4, "isEqualToString:", @"ParentID"))
+  else if ([element isEqualToString:@"PopupID"] || objc_msgSend(element, "isEqualToString:", @"ParentID"))
   {
     [(UIPDFAnnotation *)self->_annotation setAssociatedAnnotationID:self->_characters];
   }
 
-  else if ([a4 isEqualToString:@"Tag"])
+  else if ([element isEqualToString:@"Tag"])
   {
     [(UIPDFAnnotation *)self->_annotation setTag:[(NSMutableString *)self->_characters integerValue]];
   }
 
-  else if ([a4 isEqualToString:@"Index"])
+  else if ([element isEqualToString:@"Index"])
   {
     [(UIPDFAnnotation *)self->_annotation setIndex:[(NSMutableString *)self->_characters integerValue]];
   }

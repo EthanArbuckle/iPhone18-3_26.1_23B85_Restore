@@ -1,41 +1,41 @@
 @interface HSDiscoveredAccessoryFilter
-- (BOOL)shouldShowAccessory:(id)a3;
-- (HSDiscoveredAccessoryFilter)initWithEntitlementContext:(id)a3 setupAccessoryDescription:(id)a4 matterDeviceSetupRequest:(id)a5;
+- (BOOL)shouldShowAccessory:(id)accessory;
+- (HSDiscoveredAccessoryFilter)initWithEntitlementContext:(id)context setupAccessoryDescription:(id)description matterDeviceSetupRequest:(id)request;
 - (void)_computeDenylistedAccessoryCategories;
 @end
 
 @implementation HSDiscoveredAccessoryFilter
 
-- (HSDiscoveredAccessoryFilter)initWithEntitlementContext:(id)a3 setupAccessoryDescription:(id)a4 matterDeviceSetupRequest:(id)a5
+- (HSDiscoveredAccessoryFilter)initWithEntitlementContext:(id)context setupAccessoryDescription:(id)description matterDeviceSetupRequest:(id)request
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  descriptionCopy = description;
+  requestCopy = request;
   v15.receiver = self;
   v15.super_class = HSDiscoveredAccessoryFilter;
   v12 = [(HSDiscoveredAccessoryFilter *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_entitlementContext, a3);
-    objc_storeStrong(&v13->_setupAccessoryDescription, a4);
-    objc_storeStrong(&v13->_matterDeviceSetupRequest, a5);
+    objc_storeStrong(&v12->_entitlementContext, context);
+    objc_storeStrong(&v13->_setupAccessoryDescription, description);
+    objc_storeStrong(&v13->_matterDeviceSetupRequest, request);
     [(HSDiscoveredAccessoryFilter *)v13 _computeDenylistedAccessoryCategories];
   }
 
   return v13;
 }
 
-- (BOOL)shouldShowAccessory:(id)a3
+- (BOOL)shouldShowAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [v4 accessory];
-  v6 = [(HSDiscoveredAccessoryFilter *)self setupAccessoryDescription];
-  if ([v6 isSetupInitiatedByOtherMatterEcosystem] && v5)
+  accessoryCopy = accessory;
+  accessory = [accessoryCopy accessory];
+  setupAccessoryDescription = [(HSDiscoveredAccessoryFilter *)self setupAccessoryDescription];
+  if ([setupAccessoryDescription isSetupInitiatedByOtherMatterEcosystem] && accessory)
   {
-    v7 = [v5 supportsCHIP];
+    supportsCHIP = [accessory supportsCHIP];
 
-    if ((v7 & 1) == 0)
+    if ((supportsCHIP & 1) == 0)
     {
       goto LABEL_14;
     }
@@ -45,27 +45,27 @@
   {
   }
 
-  v8 = [(HSDiscoveredAccessoryFilter *)self entitlementContext];
-  v9 = [v8 isEntitledForHomeKitSPI];
+  entitlementContext = [(HSDiscoveredAccessoryFilter *)self entitlementContext];
+  isEntitledForHomeKitSPI = [entitlementContext isEntitledForHomeKitSPI];
 
-  v10 = [v4 sharingDevice];
-  v11 = v10;
-  if (v9)
+  sharingDevice = [accessoryCopy sharingDevice];
+  v11 = sharingDevice;
+  if (isEntitledForHomeKitSPI)
   {
 
     if (v11)
     {
-      v12 = [v4 sharingDevice];
-      v13 = [v12 deviceClassCode];
+      sharingDevice2 = [accessoryCopy sharingDevice];
+      deviceClassCode = [sharingDevice2 deviceClassCode];
 
-      LOBYTE(v13) = (v13 & 0xFFFFFFFD) == 4;
+      LOBYTE(deviceClassCode) = (deviceClassCode & 0xFFFFFFFD) == 4;
       goto LABEL_22;
     }
 
-    if (!v5)
+    if (!accessory)
     {
 LABEL_14:
-      LOBYTE(v13) = 0;
+      LOBYTE(deviceClassCode) = 0;
       goto LABEL_22;
     }
   }
@@ -73,50 +73,50 @@ LABEL_14:
   else
   {
 
-    LOBYTE(v13) = 0;
-    if (v11 || !v5)
+    LOBYTE(deviceClassCode) = 0;
+    if (v11 || !accessory)
     {
       goto LABEL_22;
     }
   }
 
-  v14 = [(HSDiscoveredAccessoryFilter *)self denylistedAccessoryCategories];
-  v15 = [v5 category];
-  v16 = [v15 categoryType];
-  v17 = [v14 containsObject:v16];
+  denylistedAccessoryCategories = [(HSDiscoveredAccessoryFilter *)self denylistedAccessoryCategories];
+  category = [accessory category];
+  categoryType = [category categoryType];
+  v17 = [denylistedAccessoryCategories containsObject:categoryType];
 
   if (v17)
   {
     goto LABEL_14;
   }
 
-  if ([v5 supportsCHIP] && objc_msgSend(v5, "knownToSystemCommissioner") && (-[HSDiscoveredAccessoryFilter matterDeviceSetupRequest](self, "matterDeviceSetupRequest"), v18 = objc_claimAutoreleasedReturnValue(), v18, v18))
+  if ([accessory supportsCHIP] && objc_msgSend(accessory, "knownToSystemCommissioner") && (-[HSDiscoveredAccessoryFilter matterDeviceSetupRequest](self, "matterDeviceSetupRequest"), v18 = objc_claimAutoreleasedReturnValue(), v18, v18))
   {
-    v19 = [(HSDiscoveredAccessoryFilter *)self matterDeviceSetupRequest];
-    v13 = [v19 hs_shouldShowAccessory:v5];
+    matterDeviceSetupRequest = [(HSDiscoveredAccessoryFilter *)self matterDeviceSetupRequest];
+    deviceClassCode = [matterDeviceSetupRequest hs_shouldShowAccessory:accessory];
 
     v20 = HFLogForCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [(HSDiscoveredAccessoryFilter *)self matterDeviceSetupRequest];
+      matterDeviceSetupRequest2 = [(HSDiscoveredAccessoryFilter *)self matterDeviceSetupRequest];
       v23[0] = 67109634;
-      v23[1] = v13;
+      v23[1] = deviceClassCode;
       v24 = 2112;
-      v25 = v5;
+      v25 = accessory;
       v26 = 2112;
-      v27 = v21;
+      v27 = matterDeviceSetupRequest2;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "answerFromRequest=%d for accessory %@ request %@", v23, 0x1Cu);
     }
   }
 
   else
   {
-    LOBYTE(v13) = 1;
+    LOBYTE(deviceClassCode) = 1;
   }
 
 LABEL_22:
 
-  return v13;
+  return deviceClassCode;
 }
 
 - (void)_computeDenylistedAccessoryCategories

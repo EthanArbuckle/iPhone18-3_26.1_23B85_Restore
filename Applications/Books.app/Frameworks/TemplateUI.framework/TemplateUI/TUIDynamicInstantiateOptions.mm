@@ -1,51 +1,51 @@
 @interface TUIDynamicInstantiateOptions
-+ (id)optionsWithFetchWindow:(unint64_t)a3 fetchInitial:(unint64_t)a4 fetchDelta:(unint64_t)a5 fetchPadding:(unint64_t)a6 uniqueID:(id)a7;
-- (TUIDynamicInstantiateOptions)initWithFetchWindow:(unint64_t)a3 fetchInitial:(unint64_t)a4 fetchDelta:(unint64_t)a5 fetchPadding:(unint64_t)a6 uniqueID:(id)a7;
++ (id)optionsWithFetchWindow:(unint64_t)window fetchInitial:(unint64_t)initial fetchDelta:(unint64_t)delta fetchPadding:(unint64_t)padding uniqueID:(id)d;
+- (TUIDynamicInstantiateOptions)initWithFetchWindow:(unint64_t)window fetchInitial:(unint64_t)initial fetchDelta:(unint64_t)delta fetchPadding:(unint64_t)padding uniqueID:(id)d;
 @end
 
 @implementation TUIDynamicInstantiateOptions
 
-- (TUIDynamicInstantiateOptions)initWithFetchWindow:(unint64_t)a3 fetchInitial:(unint64_t)a4 fetchDelta:(unint64_t)a5 fetchPadding:(unint64_t)a6 uniqueID:(id)a7
+- (TUIDynamicInstantiateOptions)initWithFetchWindow:(unint64_t)window fetchInitial:(unint64_t)initial fetchDelta:(unint64_t)delta fetchPadding:(unint64_t)padding uniqueID:(id)d
 {
   v13.receiver = self;
   v13.super_class = TUIDynamicInstantiateOptions;
   result = [(TUIDynamicInstantiateOptions *)&v13 init];
   if (result)
   {
-    result->_fetchWindow = a3;
-    result->_fetchDelta = a5;
-    result->_fetchInitial = a4;
-    result->_fetchPadding = a6;
-    result->_uniqueID.offset = a7.var0;
+    result->_fetchWindow = window;
+    result->_fetchDelta = delta;
+    result->_fetchInitial = initial;
+    result->_fetchPadding = padding;
+    result->_uniqueID.offset = d.var0;
   }
 
   return result;
 }
 
-+ (id)optionsWithFetchWindow:(unint64_t)a3 fetchInitial:(unint64_t)a4 fetchDelta:(unint64_t)a5 fetchPadding:(unint64_t)a6 uniqueID:(id)a7
++ (id)optionsWithFetchWindow:(unint64_t)window fetchInitial:(unint64_t)initial fetchDelta:(unint64_t)delta fetchPadding:(unint64_t)padding uniqueID:(id)d
 {
-  v9 = a4;
-  v11 = a4 == 0x7FFFFFFFFFFFFFFFLL && a3 == 0x7FFFFFFFFFFFFFFFLL;
-  var0 = a7.var0;
-  v13 = v11 || a5 == 0x7FFFFFFFFFFFFFFFLL;
-  if (v13 && !TUIValueNotNil(a7.var0))
+  windowCopy = initial;
+  v11 = initial == 0x7FFFFFFFFFFFFFFFLL && window == 0x7FFFFFFFFFFFFFFFLL;
+  var0 = d.var0;
+  v13 = v11 || delta == 0x7FFFFFFFFFFFFFFFLL;
+  if (v13 && !TUIValueNotNil(d.var0))
   {
     v15 = 0;
   }
 
   else
   {
-    if (a6 == 0x7FFFFFFFFFFFFFFFLL)
+    if (padding == 0x7FFFFFFFFFFFFFFFLL)
     {
-      a6 = a5;
+      padding = delta;
     }
 
-    if (v9 == 0x7FFFFFFFFFFFFFFFLL && a3 != 0x7FFFFFFFFFFFFFFFLL)
+    if (windowCopy == 0x7FFFFFFFFFFFFFFFLL && window != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = a3;
+      windowCopy = window;
     }
 
-    v15 = [[TUIDynamicInstantiateOptions alloc] initWithFetchWindow:a3 fetchInitial:v9 fetchDelta:a5 fetchPadding:a6 uniqueID:var0];
+    v15 = [[TUIDynamicInstantiateOptions alloc] initWithFetchWindow:window fetchInitial:windowCopy fetchDelta:delta fetchPadding:padding uniqueID:var0];
   }
 
   return v15;

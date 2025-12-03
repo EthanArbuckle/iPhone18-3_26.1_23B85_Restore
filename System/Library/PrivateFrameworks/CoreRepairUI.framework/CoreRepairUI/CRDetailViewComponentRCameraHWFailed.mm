@@ -37,17 +37,17 @@
   if (v2)
   {
     v4 = MEMORY[0x277CBEBC0];
-    v5 = [(CRUDetailViewComponent *)v2 locale];
-    v6 = [v5 localizedStringWithKey:@"RCAMERA_KB_URL" defaultString:@"RCAMERA_KB_URL"];
+    locale = [(CRUDetailViewComponent *)v2 locale];
+    v6 = [locale localizedStringWithKey:@"RCAMERA_KB_URL" defaultString:@"RCAMERA_KB_URL"];
     v7 = [v4 URLWithString:v6];
     [(CRUDetailViewComponent *)v3 setKbArticleURL:v7];
 
-    v8 = [(CRUDetailViewComponent *)v3 locale];
-    v9 = [v8 localizedStringWithKey:@"CAMERA_SETTINGS_TITLE" defaultString:@"CAMERA_SETTINGS_TITLE"];
+    locale2 = [(CRUDetailViewComponent *)v3 locale];
+    v9 = [locale2 localizedStringWithKey:@"CAMERA_SETTINGS_TITLE" defaultString:@"CAMERA_SETTINGS_TITLE"];
     [(CRUDetailViewComponent *)v3 setTitleText:v9];
 
-    v10 = [(CRUDetailViewComponent *)v3 locale];
-    v11 = [v10 localizedStringWithKey:@"CAMERA_DESC" defaultString:@"CAMERA_DESC"];
+    locale3 = [(CRUDetailViewComponent *)v3 locale];
+    v11 = [locale3 localizedStringWithKey:@"CAMERA_DESC" defaultString:@"CAMERA_DESC"];
     [(CRUDetailViewComponent *)v3 setInformativeText:v11];
   }
 

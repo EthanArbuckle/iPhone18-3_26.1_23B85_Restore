@@ -2,8 +2,8 @@
 + (id)sharedManager;
 - (CACRecordedUserActionManager)init;
 - (id)recordedUserActionFlow;
-- (void)addRecognizedSpokenCommand:(id)a3;
-- (void)beginExecutingRecordedUserActionFlow:(id)a3 completionBlock:(id)a4;
+- (void)addRecognizedSpokenCommand:(id)command;
+- (void)beginExecutingRecordedUserActionFlow:(id)flow completionBlock:(id)block;
 - (void)cancelExecution;
 - (void)startRecordingUserActions;
 - (void)stopRecordingUserActions;
@@ -45,15 +45,15 @@ uint64_t __45__CACRecordedUserActionManager_sharedManager__block_invoke()
   return v2;
 }
 
-- (void)addRecognizedSpokenCommand:(id)a3
+- (void)addRecognizedSpokenCommand:(id)command
 {
-  v8 = a3;
-  v4 = [v8 identifier];
-  v5 = v4;
-  if (self->_isRecording && ([v4 isEqualToString:@"System.StartRecordingCommands"] & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"System.StopRecordingCommands") & 1) == 0)
+  commandCopy = command;
+  identifier = [commandCopy identifier];
+  v5 = identifier;
+  if (self->_isRecording && ([identifier isEqualToString:@"System.StartRecordingCommands"] & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"System.StopRecordingCommands") & 1) == 0)
   {
     recordedUserActions = self->_recordedUserActions;
-    v7 = [[CACRecordedUserAction alloc] initWithSpokenCommand:v8];
+    v7 = [[CACRecordedUserAction alloc] initWithSpokenCommand:commandCopy];
     [(NSMutableArray *)recordedUserActions addObject:v7];
   }
 }
@@ -82,30 +82,30 @@ uint64_t __45__CACRecordedUserActionManager_sharedManager__block_invoke()
   return v2;
 }
 
-- (void)beginExecutingRecordedUserActionFlow:(id)a3 completionBlock:(id)a4
+- (void)beginExecutingRecordedUserActionFlow:(id)flow completionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  objc_sync_enter(v9);
-  if (v9->_isExecuting)
+  flowCopy = flow;
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_isExecuting)
   {
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v9->_isExecuting = 1;
-    objc_storeStrong(&v9->_executingUserActionFlow, a3);
-    objc_sync_exit(v9);
+    selfCopy->_isExecuting = 1;
+    objc_storeStrong(&selfCopy->_executingUserActionFlow, flow);
+    objc_sync_exit(selfCopy);
 
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __85__CACRecordedUserActionManager_beginExecutingRecordedUserActionFlow_completionBlock___block_invoke;
     v10[3] = &unk_279CEB690;
-    v10[4] = v9;
-    v11 = v8;
-    [v7 beginExecutingWithCompletionBlock:v10];
+    v10[4] = selfCopy;
+    v11 = blockCopy;
+    [flowCopy beginExecutingWithCompletionBlock:v10];
   }
 }
 

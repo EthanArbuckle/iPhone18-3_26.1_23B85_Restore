@@ -1,97 +1,97 @@
 @interface MADAutoAssetScheduledJob
-- (MADAutoAssetScheduledJob)initWithCoder:(id)a3;
+- (MADAutoAssetScheduledJob)initWithCoder:(id)coder;
 - (id)copy;
-- (id)initForAssetSelector:(id)a3 withActivityInterval:(int64_t)a4 forPushedJob:(BOOL)a5 forSetJob:(BOOL)a6 withSetPolicy:(id)a7 withPushedPolicy:(id)a8 requiringRetry:(BOOL)a9;
+- (id)initForAssetSelector:(id)selector withActivityInterval:(int64_t)interval forPushedJob:(BOOL)job forSetJob:(BOOL)setJob withSetPolicy:(id)policy withPushedPolicy:(id)pushedPolicy requiringRetry:(BOOL)retry;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADAutoAssetScheduledJob
 
-- (id)initForAssetSelector:(id)a3 withActivityInterval:(int64_t)a4 forPushedJob:(BOOL)a5 forSetJob:(BOOL)a6 withSetPolicy:(id)a7 withPushedPolicy:(id)a8 requiringRetry:(BOOL)a9
+- (id)initForAssetSelector:(id)selector withActivityInterval:(int64_t)interval forPushedJob:(BOOL)job forSetJob:(BOOL)setJob withSetPolicy:(id)policy withPushedPolicy:(id)pushedPolicy requiringRetry:(BOOL)retry
 {
-  v16 = a3;
-  v17 = a7;
-  v18 = a8;
+  selectorCopy = selector;
+  policyCopy = policy;
+  pushedPolicyCopy = pushedPolicy;
   v22.receiver = self;
   v22.super_class = MADAutoAssetScheduledJob;
   v19 = [(MADAutoAssetScheduledJob *)&v22 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_assetSelector, a3);
-    v20->_intervalSecs = a4;
-    v20->_remainingSecs = a4;
-    v20->_pushedJob = a5;
-    v20->_setJob = a6;
-    objc_storeStrong(&v20->_setPolicy, a7);
-    objc_storeStrong(&v20->_pushedPolicy, a8);
-    v20->_requiringRetry = a9;
+    objc_storeStrong(&v19->_assetSelector, selector);
+    v20->_intervalSecs = interval;
+    v20->_remainingSecs = interval;
+    v20->_pushedJob = job;
+    v20->_setJob = setJob;
+    objc_storeStrong(&v20->_setPolicy, policy);
+    objc_storeStrong(&v20->_pushedPolicy, pushedPolicy);
+    v20->_requiringRetry = retry;
   }
 
   return v20;
 }
 
-- (MADAutoAssetScheduledJob)initWithCoder:(id)a3
+- (MADAutoAssetScheduledJob)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MADAutoAssetScheduledJob;
   v5 = [(MADAutoAssetScheduledJob *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetSelector"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetSelector"];
     assetSelector = v5->_assetSelector;
     v5->_assetSelector = v6;
 
-    v5->_intervalSecs = [v4 decodeInt64ForKey:@"intervalSecs"];
-    v5->_remainingSecs = [v4 decodeInt64ForKey:@"remainingSecs"];
-    v5->_pushedJob = [v4 decodeBoolForKey:@"pushedJob"];
-    v5->_setJob = [v4 decodeBoolForKey:@"setJob"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setPolicy"];
+    v5->_intervalSecs = [coderCopy decodeInt64ForKey:@"intervalSecs"];
+    v5->_remainingSecs = [coderCopy decodeInt64ForKey:@"remainingSecs"];
+    v5->_pushedJob = [coderCopy decodeBoolForKey:@"pushedJob"];
+    v5->_setJob = [coderCopy decodeBoolForKey:@"setJob"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setPolicy"];
     setPolicy = v5->_setPolicy;
     v5->_setPolicy = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pushedPolicy"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pushedPolicy"];
     pushedPolicy = v5->_pushedPolicy;
     v5->_pushedPolicy = v10;
 
-    v5->_requiringRetry = [v4 decodeBoolForKey:@"requiringRetry"];
+    v5->_requiringRetry = [coderCopy decodeBoolForKey:@"requiringRetry"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(MADAutoAssetScheduledJob *)self assetSelector];
-  [v7 encodeObject:v4 forKey:@"assetSelector"];
+  coderCopy = coder;
+  assetSelector = [(MADAutoAssetScheduledJob *)self assetSelector];
+  [coderCopy encodeObject:assetSelector forKey:@"assetSelector"];
 
-  [v7 encodeInt64:-[MADAutoAssetScheduledJob intervalSecs](self forKey:{"intervalSecs"), @"intervalSecs"}];
-  [v7 encodeInt64:-[MADAutoAssetScheduledJob remainingSecs](self forKey:{"remainingSecs"), @"remainingSecs"}];
-  [v7 encodeBool:-[MADAutoAssetScheduledJob pushedJob](self forKey:{"pushedJob"), @"pushedJob"}];
-  [v7 encodeBool:-[MADAutoAssetScheduledJob setJob](self forKey:{"setJob"), @"setJob"}];
-  v5 = [(MADAutoAssetScheduledJob *)self setPolicy];
-  [v7 encodeObject:v5 forKey:@"setPolicy"];
+  [coderCopy encodeInt64:-[MADAutoAssetScheduledJob intervalSecs](self forKey:{"intervalSecs"), @"intervalSecs"}];
+  [coderCopy encodeInt64:-[MADAutoAssetScheduledJob remainingSecs](self forKey:{"remainingSecs"), @"remainingSecs"}];
+  [coderCopy encodeBool:-[MADAutoAssetScheduledJob pushedJob](self forKey:{"pushedJob"), @"pushedJob"}];
+  [coderCopy encodeBool:-[MADAutoAssetScheduledJob setJob](self forKey:{"setJob"), @"setJob"}];
+  setPolicy = [(MADAutoAssetScheduledJob *)self setPolicy];
+  [coderCopy encodeObject:setPolicy forKey:@"setPolicy"];
 
-  v6 = [(MADAutoAssetScheduledJob *)self pushedPolicy];
-  [v7 encodeObject:v6 forKey:@"pushedPolicy"];
+  pushedPolicy = [(MADAutoAssetScheduledJob *)self pushedPolicy];
+  [coderCopy encodeObject:pushedPolicy forKey:@"pushedPolicy"];
 
-  [v7 encodeBool:-[MADAutoAssetScheduledJob requiringRetry](self forKey:{"requiringRetry"), @"requiringRetry"}];
+  [coderCopy encodeBool:-[MADAutoAssetScheduledJob requiringRetry](self forKey:{"requiringRetry"), @"requiringRetry"}];
 }
 
 - (id)copy
 {
   v3 = [MADAutoAssetScheduledJob alloc];
-  v4 = [(MADAutoAssetScheduledJob *)self assetSelector];
-  v5 = [(MADAutoAssetScheduledJob *)self intervalSecs];
-  v6 = [(MADAutoAssetScheduledJob *)self pushedJob];
-  v7 = [(MADAutoAssetScheduledJob *)self setJob];
-  v8 = [(MADAutoAssetScheduledJob *)self setPolicy];
-  v9 = [(MADAutoAssetScheduledJob *)self pushedPolicy];
+  assetSelector = [(MADAutoAssetScheduledJob *)self assetSelector];
+  intervalSecs = [(MADAutoAssetScheduledJob *)self intervalSecs];
+  pushedJob = [(MADAutoAssetScheduledJob *)self pushedJob];
+  setJob = [(MADAutoAssetScheduledJob *)self setJob];
+  setPolicy = [(MADAutoAssetScheduledJob *)self setPolicy];
+  pushedPolicy = [(MADAutoAssetScheduledJob *)self pushedPolicy];
   LOBYTE(v12) = [(MADAutoAssetScheduledJob *)self requiringRetry];
-  v10 = [(MADAutoAssetScheduledJob *)v3 initForAssetSelector:v4 withActivityInterval:v5 forPushedJob:v6 forSetJob:v7 withSetPolicy:v8 withPushedPolicy:v9 requiringRetry:v12];
+  v10 = [(MADAutoAssetScheduledJob *)v3 initForAssetSelector:assetSelector withActivityInterval:intervalSecs forPushedJob:pushedJob forSetJob:setJob withSetPolicy:setPolicy withPushedPolicy:pushedPolicy requiringRetry:v12];
 
   [v10 setRemainingSecs:{-[MADAutoAssetScheduledJob remainingSecs](self, "remainingSecs")}];
   return v10;
@@ -99,11 +99,11 @@
 
 - (id)summary
 {
-  v18 = [(MADAutoAssetScheduledJob *)self assetSelector];
-  v17 = [v18 summary];
+  assetSelector = [(MADAutoAssetScheduledJob *)self assetSelector];
+  summary = [assetSelector summary];
   v16 = [MADAutoAssetControlManager allocIntervalString:[(MADAutoAssetScheduledJob *)self intervalSecs]];
   v4 = [MADAutoAssetControlManager allocIntervalString:[(MADAutoAssetScheduledJob *)self remainingSecs]];
-  v5 = @"N";
+  summary2 = @"N";
   if ([(MADAutoAssetScheduledJob *)self pushedJob])
   {
     v6 = @"Y";
@@ -125,23 +125,23 @@
     v7 = @"N";
   }
 
-  v8 = [(MADAutoAssetScheduledJob *)self setPolicy];
-  if (v8)
+  setPolicy = [(MADAutoAssetScheduledJob *)self setPolicy];
+  if (setPolicy)
   {
-    v14 = [(MADAutoAssetScheduledJob *)self setPolicy];
-    v5 = [v14 summary];
+    setPolicy2 = [(MADAutoAssetScheduledJob *)self setPolicy];
+    summary2 = [setPolicy2 summary];
   }
 
-  v9 = [(MADAutoAssetScheduledJob *)self pushedPolicy];
-  if (v9)
+  pushedPolicy = [(MADAutoAssetScheduledJob *)self pushedPolicy];
+  if (pushedPolicy)
   {
-    v2 = [(MADAutoAssetScheduledJob *)self pushedPolicy];
-    v10 = [v2 summary];
+    pushedPolicy2 = [(MADAutoAssetScheduledJob *)self pushedPolicy];
+    summary3 = [pushedPolicy2 summary];
   }
 
   else
   {
-    v10 = @"N";
+    summary3 = @"N";
   }
 
   if ([(MADAutoAssetScheduledJob *)self requiringRetry])
@@ -154,12 +154,12 @@
     v11 = @"N";
   }
 
-  v12 = [NSString stringWithFormat:@"selector:%@|intervalSecs:%@|remainingSecs:%@|pushedJob:%@||setJob:%@|setPolicy:%@|pushedPolicy:%@|requiringRetry:%@", v17, v16, v4, v15, v7, v5, v10, v11];
-  if (v9)
+  v12 = [NSString stringWithFormat:@"selector:%@|intervalSecs:%@|remainingSecs:%@|pushedJob:%@||setJob:%@|setPolicy:%@|pushedPolicy:%@|requiringRetry:%@", summary, v16, v4, v15, v7, summary2, summary3, v11];
+  if (pushedPolicy)
   {
   }
 
-  if (v8)
+  if (setPolicy)
   {
   }
 

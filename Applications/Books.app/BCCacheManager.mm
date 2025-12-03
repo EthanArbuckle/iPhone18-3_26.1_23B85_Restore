@@ -1,26 +1,26 @@
 @interface BCCacheManager
-- (void)_addTUIPurgeableImage:(id)a3 withIdentifier:(id)a4;
-- (void)addImageResource:(id)a3 withIdentifier:(id)a4 completion:(id)a5;
-- (void)imageResourceDidChangeImage:(id)a3;
+- (void)_addTUIPurgeableImage:(id)image withIdentifier:(id)identifier;
+- (void)addImageResource:(id)resource withIdentifier:(id)identifier completion:(id)completion;
+- (void)imageResourceDidChangeImage:(id)image;
 @end
 
 @implementation BCCacheManager
 
-- (void)addImageResource:(id)a3 withIdentifier:(id)a4 completion:(id)a5
+- (void)addImageResource:(id)resource withIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && [v9 length])
+  resourceCopy = resource;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (resourceCopy && [identifierCopy length])
   {
-    v11 = [v8 loadImage];
-    v12 = v11;
-    if (v11)
+    loadImage = [resourceCopy loadImage];
+    v12 = loadImage;
+    if (loadImage)
     {
-      v13 = [v11 image];
-      [(BCCacheManager *)self _addTUIPurgeableImage:v13 withIdentifier:v9];
+      image = [loadImage image];
+      [(BCCacheManager *)self _addTUIPurgeableImage:image withIdentifier:identifierCopy];
 
-      v14 = objc_retainBlock(v10);
+      v14 = objc_retainBlock(completionCopy);
       v15 = v14;
       if (v14)
       {
@@ -33,27 +33,27 @@
       v16 = BCImageCacheLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
-        sub_1007883A4(v9, v16);
+        sub_1007883A4(identifierCopy, v16);
       }
 
-      objc_setAssociatedObject(v8, @"BCCoverCacheAssetIDKey", v9, 3);
-      v17 = objc_retainBlock(v10);
-      objc_setAssociatedObject(v8, @"BCCoverCacheCompletionKey", v17, 1);
+      objc_setAssociatedObject(resourceCopy, @"BCCoverCacheAssetIDKey", identifierCopy, 3);
+      v17 = objc_retainBlock(completionCopy);
+      objc_setAssociatedObject(resourceCopy, @"BCCoverCacheCompletionKey", v17, 1);
 
-      [v8 addObserver:self];
+      [resourceCopy addObserver:self];
     }
   }
 }
 
-- (void)_addTUIPurgeableImage:(id)a3 withIdentifier:(id)a4
+- (void)_addTUIPurgeableImage:(id)image withIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [a3 CGImage];
-  if (v6)
+  identifierCopy = identifier;
+  cGImage = [image CGImage];
+  if (cGImage)
   {
-    v7 = v6;
-    Width = CGImageGetWidth(v6);
-    v9 = [BICDescribedImage describedImageWithIdentifier:v5 size:0 processingOptions:Width, CGImageGetHeight(v7)];
+    v7 = cGImage;
+    Width = CGImageGetWidth(cGImage);
+    v9 = [BICDescribedImage describedImageWithIdentifier:identifierCopy size:0 processingOptions:Width, CGImageGetHeight(v7)];
     v10 = [BICImage imageWithCGImage:v7];
     [v9 setImage:v10];
 
@@ -68,18 +68,18 @@
     v13 = BCImageCacheLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      sub_10078841C(v5, v13);
+      sub_10078841C(identifierCopy, v13);
     }
   }
 }
 
-- (void)imageResourceDidChangeImage:(id)a3
+- (void)imageResourceDidChangeImage:(id)image
 {
-  object = a3;
-  v4 = [object loadImage];
+  object = image;
+  loadImage = [object loadImage];
   v5 = objc_getAssociatedObject(object, @"BCCoverCacheAssetIDKey");
-  v6 = [v4 image];
-  [(BCCacheManager *)self _addTUIPurgeableImage:v6 withIdentifier:v5];
+  image = [loadImage image];
+  [(BCCacheManager *)self _addTUIPurgeableImage:image withIdentifier:v5];
 
   v7 = objc_getAssociatedObject(object, @"BCCoverCacheCompletionKey");
   v8 = objc_retainBlock(v7);

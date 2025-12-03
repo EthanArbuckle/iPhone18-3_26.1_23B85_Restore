@@ -1,42 +1,42 @@
 @interface CKKSHealKeyHierarchyOperation
-- (BOOL)ensureKeyPresent:(id)a3 viewState:(id)a4;
-- (CKKSHealKeyHierarchyOperation)initWithDependencies:(id)a3 allowFullRefetchResult:(BOOL)a4 intending:(id)a5 errorState:(id)a6;
-- (void)attemptToHealView:(id)a3 currentTrustStates:(id)a4;
+- (BOOL)ensureKeyPresent:(id)present viewState:(id)state;
+- (CKKSHealKeyHierarchyOperation)initWithDependencies:(id)dependencies allowFullRefetchResult:(BOOL)result intending:(id)intending errorState:(id)state;
+- (void)attemptToHealView:(id)view currentTrustStates:(id)states;
 - (void)groupStart;
 @end
 
 @implementation CKKSHealKeyHierarchyOperation
 
-- (BOOL)ensureKeyPresent:(id)a3 viewState:(id)a4
+- (BOOL)ensureKeyPresent:(id)present viewState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  presentCopy = present;
+  stateCopy = state;
   v38 = 0;
-  v8 = [v6 loadKeyMaterialFromKeychain:&v38];
+  v8 = [presentCopy loadKeyMaterialFromKeychain:&v38];
   v9 = v38;
   if ((v8 & 1) == 0)
   {
-    v11 = [v7 zoneID];
-    v12 = [v11 zoneName];
-    v13 = sub_100019104(@"ckksheal", v12);
+    zoneID = [stateCopy zoneID];
+    zoneName = [zoneID zoneName];
+    v13 = sub_100019104(@"ckksheal", zoneName);
 
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v40 = v6;
+      v40 = presentCopy;
       v41 = 2112;
       v42 = v9;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Couldn't load key(%@) from keychain. Attempting recovery: %@", buf, 0x16u);
     }
 
     v37 = 0;
-    v14 = [v6 unwrapViaKeyHierarchy:&v37];
+    v14 = [presentCopy unwrapViaKeyHierarchy:&v37];
     v15 = v37;
 
     if (v14)
     {
       v36 = 0;
-      v16 = [v6 saveKeyMaterialToKeychain:&v36];
+      v16 = [presentCopy saveKeyMaterialToKeychain:&v36];
       v17 = v36;
       v18 = v17;
       if (v16)
@@ -48,13 +48,13 @@ LABEL_25:
         goto LABEL_26;
       }
 
-      v27 = [(CKKSHealKeyHierarchyOperation *)self deps];
-      v28 = [v27 lockStateTracker];
-      v29 = [v28 isLockedError:v18];
+      deps = [(CKKSHealKeyHierarchyOperation *)self deps];
+      lockStateTracker = [deps lockStateTracker];
+      v29 = [lockStateTracker isLockedError:v18];
 
-      v30 = [v7 zoneID];
-      v31 = [v30 zoneName];
-      v32 = sub_100019104(@"ckksheal", v31);
+      zoneID2 = [stateCopy zoneID];
+      zoneName2 = [zoneID2 zoneName];
+      v32 = sub_100019104(@"ckksheal", zoneName2);
 
       v33 = os_log_type_enabled(v32, OS_LOG_TYPE_ERROR);
       if (v29)
@@ -62,7 +62,7 @@ LABEL_25:
         if (v33)
         {
           *buf = 138412546;
-          v40 = v6;
+          v40 = presentCopy;
           v41 = 2112;
           v42 = v18;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "Couldn't save key(%@) to keychain due to the lock state: %@", buf, 0x16u);
@@ -76,7 +76,7 @@ LABEL_25:
         if (v33)
         {
           *buf = 138412546;
-          v40 = v6;
+          v40 = presentCopy;
           v41 = 2112;
           v42 = v18;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "Couldn't save key(%@) to keychain: %@", buf, 0x16u);
@@ -85,18 +85,18 @@ LABEL_25:
         v34 = &off_100344510;
       }
 
-      [v7 setViewKeyHierarchyState:*v34];
+      [stateCopy setViewKeyHierarchyState:*v34];
     }
 
     else
     {
-      v19 = [(CKKSHealKeyHierarchyOperation *)self deps];
-      v20 = [v19 lockStateTracker];
-      v21 = [v20 isLockedError:v15];
+      deps2 = [(CKKSHealKeyHierarchyOperation *)self deps];
+      lockStateTracker2 = [deps2 lockStateTracker];
+      v21 = [lockStateTracker2 isLockedError:v15];
 
-      v22 = [v7 zoneID];
-      v23 = [v22 zoneName];
-      v24 = sub_100019104(@"ckksheal", v23);
+      zoneID3 = [stateCopy zoneID];
+      zoneName3 = [zoneID3 zoneName];
+      v24 = sub_100019104(@"ckksheal", zoneName3);
 
       v25 = os_log_type_enabled(v24, OS_LOG_TYPE_ERROR);
       if (v21)
@@ -104,7 +104,7 @@ LABEL_25:
         if (v25)
         {
           *buf = 138412546;
-          v40 = v6;
+          v40 = presentCopy;
           v41 = 2112;
           v42 = v15;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "Couldn't unwrap key(%@) using key hierarchy due to the lock state: %@", buf, 0x16u);
@@ -118,7 +118,7 @@ LABEL_25:
         if (v25)
         {
           *buf = 138412546;
-          v40 = v6;
+          v40 = presentCopy;
           v41 = 2112;
           v42 = v15;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "Couldn't unwrap key(%@) using key hierarchy. Keys are broken, quitting: %@", buf, 0x16u);
@@ -127,7 +127,7 @@ LABEL_25:
         v26 = &off_100344510;
       }
 
-      [v7 setViewKeyHierarchyState:*v26];
+      [stateCopy setViewKeyHierarchyState:*v26];
     }
 
     v10 = 0;
@@ -140,10 +140,10 @@ LABEL_26:
   return v10;
 }
 
-- (void)attemptToHealView:(id)a3 currentTrustStates:(id)a4
+- (void)attemptToHealView:(id)view currentTrustStates:(id)states
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  statesCopy = states;
   objc_initWeak(&location, self);
   v8 = [AAFAnalyticsEventSecurity alloc];
   v50[0] = kSecurityRTCFieldFullRefetchNeeded;
@@ -151,12 +151,12 @@ LABEL_26:
   v51[0] = &__kCFBooleanFalse;
   v51[1] = &__kCFBooleanFalse;
   v9 = [NSDictionary dictionaryWithObjects:v51 forKeys:v50 count:2];
-  v10 = [(CKKSHealKeyHierarchyOperation *)self deps];
-  v11 = [v10 activeAccount];
-  v12 = [v11 altDSID];
-  v13 = [(CKKSHealKeyHierarchyOperation *)self deps];
-  v14 = [v13 sendMetric];
-  v15 = [v8 initWithCKKSMetrics:v9 altDSID:v12 eventName:kSecurityRTCEventNameHealKeyHierarchy testsAreEnabled:0 category:kSecurityRTCEventCategoryAccountDataAccessRecovery sendMetric:v14];
+  deps = [(CKKSHealKeyHierarchyOperation *)self deps];
+  activeAccount = [deps activeAccount];
+  altDSID = [activeAccount altDSID];
+  deps2 = [(CKKSHealKeyHierarchyOperation *)self deps];
+  sendMetric = [deps2 sendMetric];
+  v15 = [v8 initWithCKKSMetrics:v9 altDSID:altDSID eventName:kSecurityRTCEventNameHealKeyHierarchy testsAreEnabled:0 category:kSecurityRTCEventCategoryAccountDataAccessRecovery sendMetric:sendMetric];
 
   v46[0] = 0;
   v46[1] = v46;
@@ -168,23 +168,23 @@ LABEL_26:
   v43 = sub_1000F1F5C;
   v44 = sub_1000F1F6C;
   v45 = objc_alloc_init(NSMutableArray);
-  v16 = [(CKKSHealKeyHierarchyOperation *)self deps];
-  v17 = [v16 databaseProvider];
+  deps3 = [(CKKSHealKeyHierarchyOperation *)self deps];
+  databaseProvider = [deps3 databaseProvider];
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_1000F1F74;
   v32[3] = &unk_100336ED8;
-  v27 = v6;
+  v27 = viewCopy;
   v33 = v27;
-  v34 = self;
+  selfCopy = self;
   v18 = v15;
   v35 = v18;
-  v19 = v7;
+  v19 = statesCopy;
   v36 = v19;
   v37 = v46;
   objc_copyWeak(&v39, &location);
   v38 = &v40;
-  [v17 dispatchSyncWithSQLTransaction:v32];
+  [databaseProvider dispatchSyncWithSQLTransaction:v32];
 
   v30 = 0u;
   v31 = 0u;
@@ -206,9 +206,9 @@ LABEL_26:
         }
 
         v24 = *(*(&v28 + 1) + 8 * v23);
-        v25 = [(CKKSHealKeyHierarchyOperation *)self deps];
-        v26 = [v25 ckdatabase];
-        [v26 addOperation:v24];
+        deps4 = [(CKKSHealKeyHierarchyOperation *)self deps];
+        ckdatabase = [deps4 ckdatabase];
+        [ckdatabase addOperation:v24];
 
         v23 = v23 + 1;
       }
@@ -229,7 +229,7 @@ LABEL_26:
 
 - (void)groupStart
 {
-  v2 = self;
+  selfCopy = self;
   objc_initWeak(&location, self);
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
@@ -237,16 +237,16 @@ LABEL_26:
   v25[3] = &unk_100337A10;
   objc_copyWeak(&v26, &location);
   v3 = [CKKSResultOperation named:@"determine-next-state" withBlockTakingSelf:v25];
-  [(CKKSHealKeyHierarchyOperation *)v2 setSetResultStateOperation:v3];
+  [(CKKSHealKeyHierarchyOperation *)selfCopy setSetResultStateOperation:v3];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [(CKKSHealKeyHierarchyOperation *)v2 deps];
-  obj = [v4 activeManagedViews];
+  deps = [(CKKSHealKeyHierarchyOperation *)selfCopy deps];
+  obj = [deps activeManagedViews];
 
-  v5 = 0;
+  currentTrustStates = 0;
   v6 = [obj countByEnumeratingWithState:&v21 objects:v30 count:16];
   if (v6)
   {
@@ -263,28 +263,28 @@ LABEL_26:
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        v11 = [v10 viewKeyHierarchyState];
-        v12 = [v11 isEqualToString:@"unhealthy"];
+        viewKeyHierarchyState = [v10 viewKeyHierarchyState];
+        v12 = [viewKeyHierarchyState isEqualToString:@"unhealthy"];
 
         if (v12)
         {
-          if (!v5)
+          if (!currentTrustStates)
           {
-            v13 = [(CKKSHealKeyHierarchyOperation *)v2 deps];
-            v5 = [v13 currentTrustStates];
+            deps2 = [(CKKSHealKeyHierarchyOperation *)selfCopy deps];
+            currentTrustStates = [deps2 currentTrustStates];
           }
 
-          [(CKKSHealKeyHierarchyOperation *)v2 attemptToHealView:v10 currentTrustStates:v5];
+          [(CKKSHealKeyHierarchyOperation *)selfCopy attemptToHealView:v10 currentTrustStates:currentTrustStates];
         }
 
         else
         {
-          v14 = v2;
-          v15 = [v10 zoneID];
-          v16 = [v15 zoneName];
-          v17 = sub_100019104(@"ckksheal", v16);
+          v14 = selfCopy;
+          zoneID = [v10 zoneID];
+          zoneName = [zoneID zoneName];
+          v17 = sub_100019104(@"ckksheal", zoneName);
 
-          v2 = v14;
+          selfCopy = v14;
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v19;
@@ -300,28 +300,28 @@ LABEL_26:
     while (v6);
   }
 
-  v18 = [(CKKSHealKeyHierarchyOperation *)v2 setResultStateOperation];
-  [(CKKSGroupOperation *)v2 runBeforeGroupFinished:v18];
+  setResultStateOperation = [(CKKSHealKeyHierarchyOperation *)selfCopy setResultStateOperation];
+  [(CKKSGroupOperation *)selfCopy runBeforeGroupFinished:setResultStateOperation];
 
   objc_destroyWeak(&v26);
   objc_destroyWeak(&location);
 }
 
-- (CKKSHealKeyHierarchyOperation)initWithDependencies:(id)a3 allowFullRefetchResult:(BOOL)a4 intending:(id)a5 errorState:(id)a6
+- (CKKSHealKeyHierarchyOperation)initWithDependencies:(id)dependencies allowFullRefetchResult:(BOOL)result intending:(id)intending errorState:(id)state
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  dependenciesCopy = dependencies;
+  intendingCopy = intending;
+  stateCopy = state;
   v19.receiver = self;
   v19.super_class = CKKSHealKeyHierarchyOperation;
   v14 = [(CKKSGroupOperation *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong((v14 + 142), a3);
-    v15[128] = a4;
-    objc_storeStrong((v15 + 134), a5);
-    objc_storeStrong((v15 + 150), a6);
+    objc_storeStrong((v14 + 142), dependencies);
+    v15[128] = result;
+    objc_storeStrong((v15 + 134), intending);
+    objc_storeStrong((v15 + 150), state);
     v15[129] = 0;
     v16 = +[NSHashTable weakObjectsHashTable];
     v17 = *(v15 + 166);

@@ -1,7 +1,7 @@
 @interface CRLFakeProgress
-- (CRLFakeProgress)initWithMaxValue:(double)a3;
-- (CRLFakeProgress)initWithMaxValue:(double)a3 numberOfStages:(unint64_t)a4;
-- (void)advanceToStage:(unint64_t)a3;
+- (CRLFakeProgress)initWithMaxValue:(double)value;
+- (CRLFakeProgress)initWithMaxValue:(double)value numberOfStages:(unint64_t)stages;
+- (void)advanceToStage:(unint64_t)stage;
 - (void)p_slowlyAdvanceToNextStage;
 - (void)start;
 - (void)stop;
@@ -9,9 +9,9 @@
 
 @implementation CRLFakeProgress
 
-- (CRLFakeProgress)initWithMaxValue:(double)a3 numberOfStages:(unint64_t)a4
+- (CRLFakeProgress)initWithMaxValue:(double)value numberOfStages:(unint64_t)stages
 {
-  if (!a4)
+  if (!stages)
   {
     v7 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -43,7 +43,7 @@
 
   v17.receiver = self;
   v17.super_class = CRLFakeProgress;
-  v12 = [(CRLBasicProgress *)&v17 initWithMaxValue:a3];
+  v12 = [(CRLBasicProgress *)&v17 initWithMaxValue:value];
   if (v12)
   {
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -51,14 +51,14 @@
     accessQueue = v12->_accessQueue;
     v12->_accessQueue = v14;
 
-    v12->_numberOfStages = a4;
+    v12->_numberOfStages = stages;
     v12->_stopped = 1;
   }
 
   return v12;
 }
 
-- (CRLFakeProgress)initWithMaxValue:(double)a3
+- (CRLFakeProgress)initWithMaxValue:(double)value
 {
   v3 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
@@ -130,7 +130,7 @@
   dispatch_async(accessQueue, block);
 }
 
-- (void)advanceToStage:(unint64_t)a3
+- (void)advanceToStage:(unint64_t)stage
 {
   accessQueue = self->_accessQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -138,7 +138,7 @@
   v4[2] = sub_1001D28C4;
   v4[3] = &unk_10183B720;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = stage;
   dispatch_async(accessQueue, v4);
 }
 

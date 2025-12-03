@@ -1,33 +1,33 @@
 @interface CKDPMergeableDeltaMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addReplacedDeltaIdentifiers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addReplacedDeltaIdentifiers:(id)identifiers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPMergeableDeltaMetadata
 
-- (void)addReplacedDeltaIdentifiers:(id)a3
+- (void)addReplacedDeltaIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   replacedDeltaIdentifiers = self->_replacedDeltaIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!replacedDeltaIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_replacedDeltaIdentifiers;
     self->_replacedDeltaIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     replacedDeltaIdentifiers = self->_replacedDeltaIdentifiers;
   }
 
-  objc_msgSend_addObject_(replacedDeltaIdentifiers, v4, v4);
+  objc_msgSend_addObject_(replacedDeltaIdentifiers, identifiersCopy, identifiersCopy);
 }
 
 - (id)description
@@ -87,10 +87,10 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
@@ -151,42 +151,42 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v20 = a3;
+  toCopy = to;
   identifier = self->_identifier;
   if (identifier)
   {
-    objc_msgSend_setIdentifier_(v20, v4, identifier);
+    objc_msgSend_setIdentifier_(toCopy, v4, identifier);
   }
 
   protectionInfo = self->_protectionInfo;
   if (protectionInfo)
   {
-    objc_msgSend_setProtectionInfo_(v20, v4, protectionInfo);
+    objc_msgSend_setProtectionInfo_(toCopy, v4, protectionInfo);
   }
 
   encryptedTimestamps = self->_encryptedTimestamps;
   if (encryptedTimestamps)
   {
-    objc_msgSend_setEncryptedTimestamps_(v20, v4, encryptedTimestamps);
+    objc_msgSend_setEncryptedTimestamps_(toCopy, v4, encryptedTimestamps);
   }
 
   timestamps = self->_timestamps;
   if (timestamps)
   {
-    objc_msgSend_setTimestamps_(v20, v4, timestamps);
+    objc_msgSend_setTimestamps_(toCopy, v4, timestamps);
   }
 
   timestampsAuthTag = self->_timestampsAuthTag;
   if (timestampsAuthTag)
   {
-    objc_msgSend_setTimestampsAuthTag_(v20, v4, timestampsAuthTag);
+    objc_msgSend_setTimestampsAuthTag_(toCopy, v4, timestampsAuthTag);
   }
 
   if (objc_msgSend_replacedDeltaIdentifiersCount(self, v4, timestampsAuthTag))
   {
-    objc_msgSend_clearReplacedDeltaIdentifiers(v20, v10, v11);
+    objc_msgSend_clearReplacedDeltaIdentifiers(toCopy, v10, v11);
     v14 = objc_msgSend_replacedDeltaIdentifiersCount(self, v12, v13);
     if (v14)
     {
@@ -194,35 +194,35 @@
       for (i = 0; i != v16; ++i)
       {
         v18 = objc_msgSend_replacedDeltaIdentifiersAtIndex_(self, v15, i);
-        objc_msgSend_addReplacedDeltaIdentifiers_(v20, v19, v18);
+        objc_msgSend_addReplacedDeltaIdentifiers_(toCopy, v19, v18);
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v42 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_identifier, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_identifier, v11, zone);
   v13 = v10[2];
   v10[2] = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_protectionInfo, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_protectionInfo, v14, zone);
   v16 = v10[3];
   v10[3] = v15;
 
-  v18 = objc_msgSend_copyWithZone_(self->_encryptedTimestamps, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_encryptedTimestamps, v17, zone);
   v19 = v10[1];
   v10[1] = v18;
 
-  v21 = objc_msgSend_copyWithZone_(self->_timestamps, v20, a3);
+  v21 = objc_msgSend_copyWithZone_(self->_timestamps, v20, zone);
   v22 = v10[5];
   v10[5] = v21;
 
-  v24 = objc_msgSend_copyWithZone_(self->_timestampsAuthTag, v23, a3);
+  v24 = objc_msgSend_copyWithZone_(self->_timestampsAuthTag, v23, zone);
   v25 = v10[6];
   v10[6] = v24;
 
@@ -246,7 +246,7 @@
           objc_enumerationMutation(v26);
         }
 
-        v33 = objc_msgSend_copyWithZone_(*(*(&v37 + 1) + 8 * v32), v29, a3, v37);
+        v33 = objc_msgSend_copyWithZone_(*(*(&v37 + 1) + 8 * v32), v29, zone, v37);
         objc_msgSend_addReplacedDeltaIdentifiers_(v10, v34, v33);
 
         ++v32;
@@ -263,17 +263,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_14;
   }
 
   identifier = self->_identifier;
-  v9 = v4[2];
+  v9 = equalCopy[2];
   if (identifier | v9)
   {
     if (!objc_msgSend_isEqual_(identifier, v7, v9))
@@ -283,7 +283,7 @@
   }
 
   protectionInfo = self->_protectionInfo;
-  v11 = v4[3];
+  v11 = equalCopy[3];
   if (protectionInfo | v11)
   {
     if (!objc_msgSend_isEqual_(protectionInfo, v7, v11))
@@ -292,10 +292,10 @@
     }
   }
 
-  if (((encryptedTimestamps = self->_encryptedTimestamps, v13 = v4[1], !(encryptedTimestamps | v13)) || objc_msgSend_isEqual_(encryptedTimestamps, v7, v13)) && ((timestamps = self->_timestamps, v15 = v4[5], !(timestamps | v15)) || objc_msgSend_isEqual_(timestamps, v7, v15)) && ((timestampsAuthTag = self->_timestampsAuthTag, v17 = v4[6], !(timestampsAuthTag | v17)) || objc_msgSend_isEqual_(timestampsAuthTag, v7, v17)))
+  if (((encryptedTimestamps = self->_encryptedTimestamps, v13 = equalCopy[1], !(encryptedTimestamps | v13)) || objc_msgSend_isEqual_(encryptedTimestamps, v7, v13)) && ((timestamps = self->_timestamps, v15 = equalCopy[5], !(timestamps | v15)) || objc_msgSend_isEqual_(timestamps, v7, v15)) && ((timestampsAuthTag = self->_timestampsAuthTag, v17 = equalCopy[6], !(timestampsAuthTag | v17)) || objc_msgSend_isEqual_(timestampsAuthTag, v7, v17)))
   {
     replacedDeltaIdentifiers = self->_replacedDeltaIdentifiers;
-    v19 = v4[4];
+    v19 = equalCopy[4];
     if (replacedDeltaIdentifiers | v19)
     {
       isEqual = objc_msgSend_isEqual_(replacedDeltaIdentifiers, v7, v19);
@@ -326,18 +326,18 @@ LABEL_14:
   return v13 ^ v16 ^ objc_msgSend_hash(self->_replacedDeltaIdentifiers, v17, v18);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = *(v5 + 2);
+  fromCopy = from;
+  v6 = *(fromCopy + 2);
   if (v6)
   {
     objc_msgSend_setIdentifier_(self, v4, v6);
   }
 
   protectionInfo = self->_protectionInfo;
-  v8 = *(v5 + 3);
+  v8 = *(fromCopy + 3);
   if (protectionInfo)
   {
     if (v8)
@@ -351,14 +351,14 @@ LABEL_14:
     objc_msgSend_setProtectionInfo_(self, v4, v8);
   }
 
-  v9 = *(v5 + 1);
+  v9 = *(fromCopy + 1);
   if (v9)
   {
     objc_msgSend_setEncryptedTimestamps_(self, v4, v9);
   }
 
   timestamps = self->_timestamps;
-  v11 = *(v5 + 5);
+  v11 = *(fromCopy + 5);
   if (timestamps)
   {
     if (v11)
@@ -372,7 +372,7 @@ LABEL_14:
     objc_msgSend_setTimestamps_(self, v4, v11);
   }
 
-  v12 = *(v5 + 6);
+  v12 = *(fromCopy + 6);
   if (v12)
   {
     objc_msgSend_setTimestampsAuthTag_(self, v4, v12);
@@ -382,7 +382,7 @@ LABEL_14:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v13 = *(v5 + 4);
+  v13 = *(fromCopy + 4);
   v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v14, &v21, v25, 16);
   if (v15)
   {

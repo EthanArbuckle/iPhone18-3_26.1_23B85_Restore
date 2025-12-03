@@ -1,67 +1,67 @@
 @interface WorkoutUIController
-- (void)didDiscardWorkout:(id)a3;
-- (void)endWorkout:(id)a3 withHKWorkout:(id)a4 endReason:(unint64_t)a5;
-- (void)updateWorkout:(id)a3 withHKWorkout:(id)a4 workoutIsFinal:(BOOL)a5;
-- (void)workoutController:(id)a3 mirroredStart:(id)a4;
-- (void)workoutController:(id)a3 startSource:(unint64_t)a4 sessionControl:(id)a5;
-- (void)workoutController:(id)a3 transitionedWorkout:(id)a4 toState:(int64_t)a5;
+- (void)didDiscardWorkout:(id)workout;
+- (void)endWorkout:(id)workout withHKWorkout:(id)kWorkout endReason:(unint64_t)reason;
+- (void)updateWorkout:(id)workout withHKWorkout:(id)kWorkout workoutIsFinal:(BOOL)final;
+- (void)workoutController:(id)controller mirroredStart:(id)start;
+- (void)workoutController:(id)controller startSource:(unint64_t)source sessionControl:(id)control;
+- (void)workoutController:(id)controller transitionedWorkout:(id)workout toState:(int64_t)state;
 @end
 
 @implementation WorkoutUIController
 
-- (void)workoutController:(id)a3 transitionedWorkout:(id)a4 toState:(int64_t)a5
+- (void)workoutController:(id)controller transitionedWorkout:(id)workout toState:(int64_t)state
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  workoutCopy = workout;
 
-  specialized WorkoutUIController.workoutController(_:transitionedWorkout:toState:)(a4, a5);
+  specialized WorkoutUIController.workoutController(_:transitionedWorkout:toState:)(workout, state);
 }
 
-- (void)workoutController:(id)a3 startSource:(unint64_t)a4 sessionControl:(id)a5
+- (void)workoutController:(id)controller startSource:(unint64_t)source sessionControl:(id)control
 {
   if (*self->workoutSessionViewController)
   {
     v8 = swift_allocObject();
     v8[2] = self;
-    v8[3] = a3;
-    v8[4] = a4;
-    v9 = a3;
+    v8[3] = controller;
+    v8[4] = source;
+    controllerCopy = controller;
     swift_retain_n();
-    v10 = v9;
+    controllerCopy2 = controllerCopy;
     WorkoutUIController.dismissWorkoutSessionViewController(completion:)(closure #1 in WorkoutUIController.workoutController(_:startSource:sessionControl:)partial apply, v8);
   }
 
   else
   {
-    if (!a3)
+    if (!controller)
     {
       __break(1u);
       return;
     }
 
-    v10 = a3;
-    WorkoutUIController.presentWorkoutSessionViewController(workoutController:startSource:)(v10, a4, 0);
+    controllerCopy2 = controller;
+    WorkoutUIController.presentWorkoutSessionViewController(workoutController:startSource:)(controllerCopy2, source, 0);
   }
 }
 
-- (void)workoutController:(id)a3 mirroredStart:(id)a4
+- (void)workoutController:(id)controller mirroredStart:(id)start
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  startCopy = start;
 
-  WorkoutUIController.workoutController(_:mirroredStart:)(v5, v6);
+  WorkoutUIController.workoutController(_:mirroredStart:)(controllerCopy, startCopy);
 }
 
-- (void)endWorkout:(id)a3 withHKWorkout:(id)a4 endReason:(unint64_t)a5
+- (void)endWorkout:(id)workout withHKWorkout:(id)kWorkout endReason:(unint64_t)reason
 {
 
-  v7 = a3;
-  v8 = a4;
-  v9 = specialized WorkoutUIController.withSourceRevision(_:)(a4);
-  if (v7)
+  workoutCopy = workout;
+  kWorkoutCopy = kWorkout;
+  v9 = specialized WorkoutUIController.withSourceRevision(_:)(kWorkout);
+  if (workoutCopy)
   {
     v10 = v9;
-    WorkoutUIController.handleWorkoutSessionCompletion(with:workout:)(v9, v7);
+    WorkoutUIController.handleWorkoutSessionCompletion(with:workout:)(v9, workoutCopy);
   }
 
   else
@@ -70,16 +70,16 @@
   }
 }
 
-- (void)updateWorkout:(id)a3 withHKWorkout:(id)a4 workoutIsFinal:(BOOL)a5
+- (void)updateWorkout:(id)workout withHKWorkout:(id)kWorkout workoutIsFinal:(BOOL)final
 {
 
-  v7 = a3;
-  v8 = a4;
-  v9 = specialized WorkoutUIController.withSourceRevision(_:)(a4);
-  if (v7)
+  workoutCopy = workout;
+  kWorkoutCopy = kWorkout;
+  v9 = specialized WorkoutUIController.withSourceRevision(_:)(kWorkout);
+  if (workoutCopy)
   {
     v10 = v9;
-    WorkoutUIController.handleWorkoutSessionCompletion(with:workout:)(v9, v7);
+    WorkoutUIController.handleWorkoutSessionCompletion(with:workout:)(v9, workoutCopy);
   }
 
   else
@@ -88,13 +88,13 @@
   }
 }
 
-- (void)didDiscardWorkout:(id)a3
+- (void)didDiscardWorkout:(id)workout
 {
-  if (a3)
+  if (workout)
   {
 
-    v4 = a3;
-    WorkoutUIController.handleWorkoutSessionCompletion(with:workout:)(0, v4);
+    workoutCopy = workout;
+    WorkoutUIController.handleWorkoutSessionCompletion(with:workout:)(0, workoutCopy);
   }
 
   else

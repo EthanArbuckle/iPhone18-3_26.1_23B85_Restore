@@ -1,7 +1,7 @@
 @interface SRLocalSnippetManager
 + (VRXVisualResponseProvider)visualResponseProvider;
-+ (id)transcriptItemForObject:(id)a3;
-+ (void)_logRFSnippetRenderingContextWithEvent:(int64_t)a3;
++ (id)transcriptItemForObject:(id)object;
++ (void)_logRFSnippetRenderingContextWithEvent:(int64_t)event;
 @end
 
 @implementation SRLocalSnippetManager
@@ -18,9 +18,9 @@
   return v3;
 }
 
-+ (id)transcriptItemForObject:(id)a3
++ (id)transcriptItemForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -94,28 +94,28 @@ LABEL_36:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v4;
-    v10 = [a1 visualResponseProvider];
-    v11 = [v9 modelData];
-    v12 = [v9 bundleName];
-    v13 = [v10 viewForSnippetModel:v11 bundleName:v12 mode:v8];
+    viewId2 = objectCopy;
+    visualResponseProvider = [self visualResponseProvider];
+    modelData = [viewId2 modelData];
+    bundleName = [viewId2 bundleName];
+    v13 = [visualResponseProvider viewForSnippetModel:modelData bundleName:bundleName mode:v8];
 
-    v14 = [v9 viewId];
-    [v13 setViewId:v14];
+    viewId = [viewId2 viewId];
+    [v13 setViewId:viewId];
 
-    v15 = [v9 responseViewId];
-    [v13 setResponseViewId:v15];
+    responseViewId = [viewId2 responseViewId];
+    [v13 setResponseViewId:responseViewId];
 
-    v16 = [v9 itemType];
-    LOBYTE(v11) = [v16 isEqualToString:SAAceViewUIItemTypeItemTypeConversationValue];
+    itemType = [viewId2 itemType];
+    LOBYTE(modelData) = [itemType isEqualToString:SAAceViewUIItemTypeItemTypeConversationValue];
 
-    if ((v11 & 1) != 0 || ([v9 itemType], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "isEqualToString:", SAAceViewUIItemTypeItemTypeHintValue), v17, v18))
+    if ((modelData & 1) != 0 || ([viewId2 itemType], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "isEqualToString:", SAAceViewUIItemTypeItemTypeHintValue), v17, v18))
     {
       [v13 setVisualResponseLocation:2];
     }
 
-    v19 = [v9 itemType];
-    v20 = [v19 isEqualToString:SAAceViewUIItemTypeItemTypeAnnouncementValue];
+    itemType2 = [viewId2 itemType];
+    v20 = [itemType2 isEqualToString:SAAceViewUIItemTypeItemTypeAnnouncementValue];
 
     if (v20)
     {
@@ -128,30 +128,30 @@ LABEL_36:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [a1 _logRFSnippetRenderingContextWithEvent:0];
+      [self _logRFSnippetRenderingContextWithEvent:0];
       goto LABEL_31;
     }
 
-    v21 = v4;
-    v22 = [a1 visualResponseProvider];
-    v23 = [v21 modelData];
-    v13 = [v22 viewForModel:v23 mode:v8];
+    v21 = objectCopy;
+    visualResponseProvider2 = [self visualResponseProvider];
+    modelData2 = [v21 modelData];
+    v13 = [visualResponseProvider2 viewForModel:modelData2 mode:v8];
 
-    v9 = [v21 viewId];
+    viewId2 = [v21 viewId];
 
-    [v13 setViewId:v9];
+    [v13 setViewId:viewId2];
   }
 
-  [a1 _logRFSnippetRenderingContextWithEvent:0];
+  [self _logRFSnippetRenderingContextWithEvent:0];
   if (v13)
   {
-    v6 = [[_TtC4Siri34SiriUIVisualResponseViewController alloc] initWithView:v13 aceObject:v4];
+    v6 = [[_TtC4Siri34SiriUIVisualResponseViewController alloc] initWithView:v13 aceObject:objectCopy];
 
     goto LABEL_13;
   }
 
 LABEL_31:
-  [a1 _logRFSnippetRenderingContextWithEvent:1];
+  [self _logRFSnippetRenderingContextWithEvent:1];
   v24 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
@@ -164,7 +164,7 @@ LABEL_31:
 LABEL_13:
   if (v6)
   {
-    v7 = [SiriSharedUITranscriptItem transcriptItemWithAceObject:v4];
+    v7 = [SiriSharedUITranscriptItem transcriptItemWithAceObject:objectCopy];
     [v7 setViewController:v6];
     goto LABEL_38;
   }
@@ -176,19 +176,19 @@ LABEL_38:
   return v7;
 }
 
-+ (void)_logRFSnippetRenderingContextWithEvent:(int64_t)a3
++ (void)_logRFSnippetRenderingContextWithEvent:(int64_t)event
 {
   v4 = +[SiriSharedUIReplayUtilityWrapper sharedInstance];
-  v5 = [v4 isSiriDetached];
+  isSiriDetached = [v4 isSiriDetached];
 
-  if ((v5 & 1) == 0)
+  if ((isSiriDetached & 1) == 0)
   {
-    v9 = [[VRXSnippetRenderingContext alloc] initWithRenderingEvent:a3];
+    v9 = [[VRXSnippetRenderingContext alloc] initWithRenderingEvent:event];
     v6 = +[SRUIFInstrumentationManager sharedManager];
-    v7 = [v6 currentInstrumentationTurnContext];
-    v8 = [v7 turnIdentifier];
+    currentInstrumentationTurnContext = [v6 currentInstrumentationTurnContext];
+    turnIdentifier = [currentInstrumentationTurnContext turnIdentifier];
 
-    [v9 emitWithTurnIdentifier:v8];
+    [v9 emitWithTurnIdentifier:turnIdentifier];
   }
 }
 

@@ -1,11 +1,11 @@
 @interface MTRReadParams
 - (MTRReadParams)init;
-- (MTRReadParams)initWithCoder:(id)a3;
+- (MTRReadParams)initWithCoder:(id)coder;
 - (NSNumber)fabricFiltered;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 - (void)setFabricFiltered:(NSNumber *)fabricFiltered;
-- (void)toReadPrepareParams:(void *)a3;
+- (void)toReadPrepareParams:(void *)params;
 @end
 
 @implementation MTRReadParams
@@ -23,17 +23,17 @@
   return result;
 }
 
-- (MTRReadParams)initWithCoder:(id)a3
+- (MTRReadParams)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MTRReadParams;
   v5 = [(MTRReadParams *)&v9 init];
   if (v5)
   {
-    -[MTRReadParams setFilterByFabric:](v5, "setFilterByFabric:", [v4 decodeBoolForKey:@"sFilterByFabricKey"]);
-    -[MTRReadParams setAssumeUnknownAttributesReportable:](v5, "setAssumeUnknownAttributesReportable:", [v4 decodeBoolForKey:@"sAssumeUnknownAttributesReportableKey"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sMinEventNumberKey"];
+    -[MTRReadParams setFilterByFabric:](v5, "setFilterByFabric:", [coderCopy decodeBoolForKey:@"sFilterByFabricKey"]);
+    -[MTRReadParams setAssumeUnknownAttributesReportable:](v5, "setAssumeUnknownAttributesReportable:", [coderCopy decodeBoolForKey:@"sAssumeUnknownAttributesReportableKey"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sMinEventNumberKey"];
     [(MTRReadParams *)v5 setMinEventNumber:v6];
 
     v7 = v5;
@@ -42,42 +42,42 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeBool:-[MTRReadParams shouldFilterByFabric](self forKey:{"shouldFilterByFabric"), @"sFilterByFabricKey"}];
-  [v6 encodeBool:-[MTRReadParams shouldAssumeUnknownAttributesReportable](self forKey:{"shouldAssumeUnknownAttributesReportable"), @"sAssumeUnknownAttributesReportableKey"}];
-  v4 = [(MTRReadParams *)self minEventNumber];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[MTRReadParams shouldFilterByFabric](self forKey:{"shouldFilterByFabric"), @"sFilterByFabricKey"}];
+  [coderCopy encodeBool:-[MTRReadParams shouldAssumeUnknownAttributesReportable](self forKey:{"shouldAssumeUnknownAttributesReportable"), @"sAssumeUnknownAttributesReportableKey"}];
+  minEventNumber = [(MTRReadParams *)self minEventNumber];
 
-  if (v4)
+  if (minEventNumber)
   {
-    v5 = [(MTRReadParams *)self minEventNumber];
-    [v6 encodeObject:v5 forKey:@"sMinEventNumberKey"];
+    minEventNumber2 = [(MTRReadParams *)self minEventNumber];
+    [coderCopy encodeObject:minEventNumber2 forKey:@"sMinEventNumberKey"];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRReadParams);
   [(MTRReadParams *)v4 setFilterByFabric:[(MTRReadParams *)self shouldFilterByFabric]];
-  v5 = [(MTRReadParams *)self minEventNumber];
-  [(MTRReadParams *)v4 setMinEventNumber:v5];
+  minEventNumber = [(MTRReadParams *)self minEventNumber];
+  [(MTRReadParams *)v4 setMinEventNumber:minEventNumber];
 
   [(MTRReadParams *)v4 setAssumeUnknownAttributesReportable:[(MTRReadParams *)self shouldAssumeUnknownAttributesReportable]];
   return v4;
 }
 
-- (void)toReadPrepareParams:(void *)a3
+- (void)toReadPrepareParams:(void *)params
 {
-  *(a3 + 113) = [(MTRReadParams *)self shouldFilterByFabric];
-  v5 = [(MTRReadParams *)self minEventNumber];
+  *(params + 113) = [(MTRReadParams *)self shouldFilterByFabric];
+  minEventNumber = [(MTRReadParams *)self minEventNumber];
 
-  if (v5)
+  if (minEventNumber)
   {
-    v7 = [(MTRReadParams *)self minEventNumber];
-    v6 = [v7 unsignedLongLongValue];
-    *(a3 + 88) = 1;
-    *(a3 + 12) = v6;
+    minEventNumber2 = [(MTRReadParams *)self minEventNumber];
+    unsignedLongLongValue = [minEventNumber2 unsignedLongLongValue];
+    *(params + 88) = 1;
+    *(params + 12) = unsignedLongLongValue;
   }
 }
 
@@ -87,23 +87,23 @@
   v6 = v4;
   if (v4)
   {
-    v5 = [(NSNumber *)v4 BOOLValue];
+    bOOLValue = [(NSNumber *)v4 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  [(MTRReadParams *)self setFilterByFabric:v5];
+  [(MTRReadParams *)self setFilterByFabric:bOOLValue];
 }
 
 - (NSNumber)fabricFiltered
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(MTRReadParams *)self shouldFilterByFabric];
+  shouldFilterByFabric = [(MTRReadParams *)self shouldFilterByFabric];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:shouldFilterByFabric];
 }
 
 @end

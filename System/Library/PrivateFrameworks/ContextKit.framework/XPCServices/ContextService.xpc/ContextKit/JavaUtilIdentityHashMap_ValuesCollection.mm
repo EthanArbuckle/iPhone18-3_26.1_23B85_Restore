@@ -1,7 +1,7 @@
 @interface JavaUtilIdentityHashMap_ValuesCollection
-- (BOOL)containsWithId:(id)a3;
-- (BOOL)removeWithId:(id)a3;
-- (JavaUtilIdentityHashMap_ValuesCollection)initWithJavaUtilIdentityHashMap:(id)a3;
+- (BOOL)containsWithId:(id)id;
+- (BOOL)removeWithId:(id)id;
+- (JavaUtilIdentityHashMap_ValuesCollection)initWithJavaUtilIdentityHashMap:(id)map;
 - (id)iterator;
 - (int)size;
 - (void)__javaClone;
@@ -10,11 +10,11 @@
 
 @implementation JavaUtilIdentityHashMap_ValuesCollection
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
   Weak = objc_loadWeak(&self->this$0_);
 
-  return [Weak containsValueWithId:a3];
+  return [Weak containsValueWithId:id];
 }
 
 - (int)size
@@ -41,36 +41,36 @@
   return v5;
 }
 
-- (BOOL)removeWithId:(id)a3
+- (BOOL)removeWithId:(id)id
 {
-  v4 = [(JavaUtilIdentityHashMap_ValuesCollection *)self iterator];
-  if (!v4)
+  iterator = [(JavaUtilIdentityHashMap_ValuesCollection *)self iterator];
+  if (!iterator)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = v4;
+  v5 = iterator;
   while (1)
   {
-    v6 = [v5 hasNext];
-    if ((v6 & 1) == 0)
+    hasNext = [v5 hasNext];
+    if ((hasNext & 1) == 0)
     {
       break;
     }
 
-    if ([v5 next] == a3)
+    if ([v5 next] == id)
     {
       [v5 remove];
-      return v6;
+      return hasNext;
     }
   }
 
-  return v6;
+  return hasNext;
 }
 
-- (JavaUtilIdentityHashMap_ValuesCollection)initWithJavaUtilIdentityHashMap:(id)a3
+- (JavaUtilIdentityHashMap_ValuesCollection)initWithJavaUtilIdentityHashMap:(id)map
 {
-  objc_storeWeak(&self->this$0_, a3);
+  objc_storeWeak(&self->this$0_, map);
   JavaUtilAbstractCollection_init(self, v4);
   return self;
 }

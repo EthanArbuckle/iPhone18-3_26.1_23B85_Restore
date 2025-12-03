@@ -1,11 +1,11 @@
 @interface BRMangledID
-+ (BOOL)validateContainerID:(id)a3;
-+ (BOOL)validateMangledIDString:(id)a3 strict:(BOOL)a4;
-+ (BOOL)validateOwnerName:(id)a3;
-+ (id)_containerIDFromSharedContainerID:(id)a3 validate:(BOOL)a4;
-+ (id)_ownerNameFromSharedMangledIDString:(id)a3 validate:(BOOL)a4;
-+ (id)_privateMangledContainerID:(id)a3 validate:(BOOL)a4;
-+ (id)_privateUnmangledContainerID:(id)a3 validate:(BOOL)a4;
++ (BOOL)validateContainerID:(id)d;
++ (BOOL)validateMangledIDString:(id)string strict:(BOOL)strict;
++ (BOOL)validateOwnerName:(id)name;
++ (id)_containerIDFromSharedContainerID:(id)d validate:(BOOL)validate;
++ (id)_ownerNameFromSharedMangledIDString:(id)string validate:(BOOL)validate;
++ (id)_privateMangledContainerID:(id)d validate:(BOOL)validate;
++ (id)_privateUnmangledContainerID:(id)d validate:(BOOL)validate;
 + (id)cloudDocsMangledID;
 + (id)containerMetadataMangledID;
 + (id)desktopMangledID;
@@ -16,16 +16,16 @@
 - (BOOL)isCorporateMangledID;
 - (BOOL)isDesktopMangledID;
 - (BOOL)isDocumentsMangledID;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPassbookMangledID;
 - (BOOL)isReservedMangedID;
 - (BOOL)isShared;
-- (BRMangledID)initWithAliasTargetContainerString:(id)a3;
-- (BRMangledID)initWithAppLibraryName:(id)a3;
-- (BRMangledID)initWithCoder:(id)a3;
-- (BRMangledID)initWithMangledString:(id)a3;
-- (BRMangledID)initWithRecordZoneID:(id)a3;
-- (BRMangledID)initWithZoneName:(id)a3 ownerName:(id)a4;
+- (BRMangledID)initWithAliasTargetContainerString:(id)string;
+- (BRMangledID)initWithAppLibraryName:(id)name;
+- (BRMangledID)initWithCoder:(id)coder;
+- (BRMangledID)initWithMangledString:(id)string;
+- (BRMangledID)initWithRecordZoneID:(id)d;
+- (BRMangledID)initWithZoneName:(id)name ownerName:(id)ownerName;
 - (NSString)appLibraryOrZoneName;
 - (id)description;
 @end
@@ -34,9 +34,9 @@
 
 - (NSString)appLibraryOrZoneName
 {
-  v3 = [(BRMangledID *)self isShared];
+  isShared = [(BRMangledID *)self isShared];
   mangledIDString = self->_mangledIDString;
-  if (v3)
+  if (isShared)
   {
     [BRMangledID _containerIDFromSharedMangledIDString:mangledIDString validate:0];
   }
@@ -64,32 +64,32 @@
 
 - (id)description
 {
-  v2 = [(BRMangledID *)self aliasTargetContainerString];
-  v3 = [v2 description];
+  aliasTargetContainerString = [(BRMangledID *)self aliasTargetContainerString];
+  v3 = [aliasTargetContainerString description];
 
   return v3;
 }
 
-- (BRMangledID)initWithRecordZoneID:(id)a3
+- (BRMangledID)initWithRecordZoneID:(id)d
 {
-  v4 = a3;
-  v5 = [v4 zoneName];
-  v6 = [v4 ownerName];
+  dCopy = d;
+  zoneName = [dCopy zoneName];
+  ownerName = [dCopy ownerName];
 
-  v7 = [(BRMangledID *)self initWithZoneName:v5 ownerName:v6];
+  v7 = [(BRMangledID *)self initWithZoneName:zoneName ownerName:ownerName];
   return v7;
 }
 
-- (BRMangledID)initWithZoneName:(id)a3 ownerName:(id)a4
+- (BRMangledID)initWithZoneName:(id)name ownerName:(id)ownerName
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  ownerNameCopy = ownerName;
   v12.receiver = self;
   v12.super_class = BRMangledID;
   v8 = [(BRMangledID *)&v12 init];
   if (v8)
   {
-    v9 = [BRMangledID _mangledIDStringFromZoneName:v6 ownerName:v7 validate:1];
+    v9 = [BRMangledID _mangledIDStringFromZoneName:nameCopy ownerName:ownerNameCopy validate:1];
     mangledIDString = v8->_mangledIDString;
     v8->_mangledIDString = v9;
 
@@ -103,18 +103,18 @@
   return v8;
 }
 
-- (BRMangledID)initWithAppLibraryName:(id)a3
+- (BRMangledID)initWithAppLibraryName:(id)name
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![BRMangledID validateContainerID:v4])
+  nameCopy = name;
+  if (![BRMangledID validateContainerID:nameCopy])
   {
     v7 = brc_bread_crumbs("[BRMangledID initWithAppLibraryName:]", 44);
     v8 = brc_default_log(1, 0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v13 = v4;
+      v13 = nameCopy;
       v14 = 2112;
       v15 = v7;
       _os_log_impl(&dword_1AE2A9000, v8, OS_LOG_TYPE_DEFAULT, "[WARNING] invalid library name %@%@", buf, 0x16u);
@@ -129,7 +129,7 @@
   v5 = [(BRMangledID *)&v11 init];
   if (v5)
   {
-    v6 = [BRMangledID _privateMangledContainerID:v4 validate:1];
+    v6 = [BRMangledID _privateMangledContainerID:nameCopy validate:1];
     self = *(v5 + 1);
     *(v5 + 1) = v6;
 LABEL_7:
@@ -139,16 +139,16 @@ LABEL_7:
   return v5;
 }
 
-- (BRMangledID)initWithMangledString:(id)a3
+- (BRMangledID)initWithMangledString:(id)string
 {
-  v4 = a3;
-  if (![BRMangledID validateMangledIDString:v4])
+  stringCopy = string;
+  if (![BRMangledID validateMangledIDString:stringCopy])
   {
     v7 = brc_bread_crumbs("[BRMangledID initWithMangledString:]", 57);
     v8 = brc_default_log(0, 0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
     {
-      [BRMangledID initWithMangledString:v4];
+      [BRMangledID initWithMangledString:stringCopy];
     }
 
     v5 = 0;
@@ -160,7 +160,7 @@ LABEL_7:
   v5 = [(BRMangledID *)&v10 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = stringCopy;
     self = *(v5 + 1);
     *(v5 + 1) = v6;
 LABEL_7:
@@ -169,17 +169,17 @@ LABEL_7:
   return v5;
 }
 
-- (BRMangledID)initWithAliasTargetContainerString:(id)a3
+- (BRMangledID)initWithAliasTargetContainerString:(id)string
 {
-  v4 = a3;
-  if ([v4 containsString:@"/"])
+  stringCopy = string;
+  if ([stringCopy containsString:@"/"])
   {
     [BRMangledID initWithAliasTargetContainerString:];
   }
 
-  v5 = [v4 rangeOfString:@":"];
+  v5 = [stringCopy rangeOfString:@":"];
   v7 = v6;
-  v8 = v4;
+  v8 = stringCopy;
   v9 = v8;
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -206,15 +206,15 @@ LABEL_7:
   return v2;
 }
 
-- (BRMangledID)initWithCoder:(id)a3
+- (BRMangledID)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = BRMangledID;
   v5 = [(BRMangledID *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mangledIDString"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mangledIDString"];
     mangledIDString = v5->_mangledIDString;
     v5->_mangledIDString = v6;
 
@@ -234,11 +234,11 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BRMangledID *)self isEqualToMangledID:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BRMangledID *)self isEqualToMangledID:equalCopy];
 
   return v5;
 }
@@ -347,18 +347,18 @@ LABEL_7:
   return v2;
 }
 
-+ (BOOL)validateContainerID:(id)a3
++ (BOOL)validateContainerID:(id)d
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (![v3 length])
+  dCopy = d;
+  if (![dCopy length])
   {
     v4 = brc_bread_crumbs("+[BRMangledID validateContainerID:]", 256);
     v5 = brc_default_log(1, 0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v9 = "empty";
-      if (!v3)
+      if (!dCopy)
       {
         v9 = "nil";
       }
@@ -376,14 +376,14 @@ LABEL_7:
     goto LABEL_18;
   }
 
-  if ([v3 length] >= 0x97)
+  if ([dCopy length] >= 0x97)
   {
     v4 = brc_bread_crumbs("+[BRMangledID validateContainerID:]", 260);
     v5 = brc_default_log(1, 0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412802;
-      v17 = v3;
+      v17 = dCopy;
       v18 = 1024;
       *v19 = 150;
       *&v19[4] = 2112;
@@ -399,7 +399,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!v3)
+  if (!dCopy)
   {
     v4 = brc_bread_crumbs("+[BRMangledID validateContainerID:]", 265);
     v5 = brc_default_log(1, 0);
@@ -424,18 +424,18 @@ LABEL_18:
     +[BRMangledID validateContainerID:];
   }
 
-  v10 = [v3 length];
-  if ([validateContainerID____regex rangeOfFirstMatchInString:v3 options:0 range:{0, v10}] || v11 != v10)
+  v10 = [dCopy length];
+  if ([validateContainerID____regex rangeOfFirstMatchInString:dCopy options:0 range:{0, v10}] || v11 != v10)
   {
     v4 = brc_bread_crumbs("+[BRMangledID validateContainerID:]", 278);
     v5 = brc_default_log(1, 0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [validateContainerID____regex pattern];
+      pattern = [validateContainerID____regex pattern];
       v16 = 138412802;
-      v17 = v3;
+      v17 = dCopy;
       v18 = 2112;
-      *v19 = v15;
+      *v19 = pattern;
       *&v19[8] = 2112;
       *&v19[10] = v4;
       _os_log_impl(&dword_1AE2A9000, v5, OS_LOG_TYPE_DEFAULT, "[WARNING] invalid container name '%@', expected regex %@%@", &v16, 0x20u);
@@ -458,10 +458,10 @@ uint64_t __35__BRMangledID_validateContainerID___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (BOOL)validateOwnerName:(id)a3
++ (BOOL)validateOwnerName:(id)name
 {
-  v3 = a3;
-  v4 = v3;
+  nameCopy = name;
+  v4 = nameCopy;
   if (validateOwnerName__onceToken != -1)
   {
     +[BRMangledID validateOwnerName:];
@@ -481,7 +481,7 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if (!v3)
+  if (!nameCopy)
   {
     goto LABEL_9;
   }
@@ -516,12 +516,12 @@ uint64_t __33__BRMangledID_validateOwnerName___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (BOOL)validateMangledIDString:(id)a3 strict:(BOOL)a4
++ (BOOL)validateMangledIDString:(id)string strict:(BOOL)strict
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v4 && ![v5 containsString:@"~"])
+  strictCopy = strict;
+  stringCopy = string;
+  v6 = stringCopy;
+  if (strictCopy && ![stringCopy containsString:@"~"])
   {
     v7 = 0;
     v10 = 0;
@@ -566,12 +566,12 @@ uint64_t __63__BRMangledID__mangledIDStringFromZoneName_ownerName_validate___blo
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)_privateMangledContainerID:(id)a3 validate:(BOOL)a4
++ (id)_privateMangledContainerID:(id)d validate:(BOOL)validate
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v4 && [v5 containsString:@"~"])
+  validateCopy = validate;
+  dCopy = d;
+  v6 = dCopy;
+  if (validateCopy && [dCopy containsString:@"~"])
   {
     +[BRMangledID _privateMangledContainerID:validate:];
   }
@@ -581,12 +581,12 @@ uint64_t __63__BRMangledID__mangledIDStringFromZoneName_ownerName_validate___blo
   return v7;
 }
 
-+ (id)_privateUnmangledContainerID:(id)a3 validate:(BOOL)a4
++ (id)_privateUnmangledContainerID:(id)d validate:(BOOL)validate
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v4 && [v5 containsString:@"."])
+  validateCopy = validate;
+  dCopy = d;
+  v6 = dCopy;
+  if (validateCopy && [dCopy containsString:@"."])
   {
     +[BRMangledID _privateUnmangledContainerID:validate:];
   }
@@ -596,14 +596,14 @@ uint64_t __63__BRMangledID__mangledIDStringFromZoneName_ownerName_validate___blo
   return v7;
 }
 
-+ (id)_ownerNameFromSharedMangledIDString:(id)a3 validate:(BOOL)a4
++ (id)_ownerNameFromSharedMangledIDString:(id)string validate:(BOOL)validate
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 rangeOfString:@":"];
+  validateCopy = validate;
+  stringCopy = string;
+  v6 = [stringCopy rangeOfString:@":"];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v4)
+    if (validateCopy)
     {
       +[BRMangledID _ownerNameFromSharedMangledIDString:validate:];
     }
@@ -613,20 +613,20 @@ uint64_t __63__BRMangledID__mangledIDStringFromZoneName_ownerName_validate___blo
 
   else
   {
-    v8 = [v5 substringFromIndex:v6 + v7];
+    v8 = [stringCopy substringFromIndex:v6 + v7];
   }
 
   return v8;
 }
 
-+ (id)_containerIDFromSharedContainerID:(id)a3 validate:(BOOL)a4
++ (id)_containerIDFromSharedContainerID:(id)d validate:(BOOL)validate
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 rangeOfString:@":"];
+  validateCopy = validate;
+  dCopy = d;
+  v6 = [dCopy rangeOfString:@":"];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v4)
+    if (validateCopy)
     {
       +[BRMangledID _containerIDFromSharedContainerID:validate:];
     }
@@ -636,7 +636,7 @@ uint64_t __63__BRMangledID__mangledIDStringFromZoneName_ownerName_validate___blo
 
   else
   {
-    v7 = [v5 substringToIndex:v6];
+    v7 = [dCopy substringToIndex:v6];
   }
 
   return v7;

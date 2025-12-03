@@ -1,52 +1,52 @@
 @interface TouchPassThroughViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_axWindowScene;
 - (id)accessibilityLabel;
 @end
 
 @implementation TouchPassThroughViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIScene" hasInstanceMethod:@"_FBSScene" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FBSScene" hasInstanceMethod:@"hostProcess" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BSProcessHandle" hasInstanceMethod:@"bundleIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CHUISWidgetScene" hasInstanceMethod:@"widget" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CHSWidget" hasInstanceMethod:@"containerBundleIdentifier" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIScene" hasInstanceMethod:@"_FBSScene" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FBSScene" hasInstanceMethod:@"hostProcess" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BSProcessHandle" hasInstanceMethod:@"bundleIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CHUISWidgetScene" hasInstanceMethod:@"widget" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CHSWidget" hasInstanceMethod:@"containerBundleIdentifier" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(TouchPassThroughViewAccessibility *)self _axWindowScene];
-  v4 = [v3 safeValueForKey:@"widget"];
+  _axWindowScene = [(TouchPassThroughViewAccessibility *)self _axWindowScene];
+  v4 = [_axWindowScene safeValueForKey:@"widget"];
   v5 = [v4 safeStringForKey:@"containerBundleIdentifier"];
 
   if (v5)
   {
-    v6 = AXAppNameForBundleId();
+    accessibilityLabel = AXAppNameForBundleId();
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = TouchPassThroughViewAccessibility;
-    v6 = [(TouchPassThroughViewAccessibility *)&v9 accessibilityLabel];
+    accessibilityLabel = [(TouchPassThroughViewAccessibility *)&v9 accessibilityLabel];
   }
 
-  v7 = v6;
+  v7 = accessibilityLabel;
 
   return v7;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(TouchPassThroughViewAccessibility *)self _axWindowScene];
-  v9 = [v8 safeValueForKeyPath:@"_FBSScene.hostProcess"];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  _axWindowScene = [(TouchPassThroughViewAccessibility *)self _axWindowScene];
+  v9 = [_axWindowScene safeValueForKeyPath:@"_FBSScene.hostProcess"];
   v10 = [v9 safeStringForKey:@"bundleIdentifier"];
 
   if ([v10 isEqualToString:@"com.apple.PosterBoard"] & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"com.apple.clockface") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"com.apple.NanoSettings"))
@@ -56,19 +56,19 @@
 
   else
   {
-    v13 = [(TouchPassThroughViewAccessibility *)self _accessibilityParentView];
-    [v13 convertPoint:0 toView:{x, y}];
+    _accessibilityParentView = [(TouchPassThroughViewAccessibility *)self _accessibilityParentView];
+    [_accessibilityParentView convertPoint:0 toView:{x, y}];
     v15 = v14;
     v17 = v16;
-    v18 = [v13 window];
-    [v18 convertPoint:0 toWindow:{v15, v17}];
+    window = [_accessibilityParentView window];
+    [window convertPoint:0 toWindow:{v15, v17}];
 
-    v19 = [(TouchPassThroughViewAccessibility *)self _accessibilityAccessibleDescendants];
+    _accessibilityAccessibleDescendants = [(TouchPassThroughViewAccessibility *)self _accessibilityAccessibleDescendants];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v20 = [v19 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    v20 = [_accessibilityAccessibleDescendants countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v20)
     {
       v21 = v20;
@@ -81,7 +81,7 @@
         {
           if (*v30 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(_accessibilityAccessibleDescendants);
           }
 
           v25 = *(*(&v29 + 1) + 8 * i);
@@ -97,7 +97,7 @@
           }
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v21 = [_accessibilityAccessibleDescendants countByEnumeratingWithState:&v29 objects:v33 count:16];
       }
 
       while (v21);
@@ -114,10 +114,10 @@
 
 - (id)_axWindowScene
 {
-  v2 = [(TouchPassThroughViewAccessibility *)self _accessibilityWindow];
-  v3 = [v2 windowScene];
+  _accessibilityWindow = [(TouchPassThroughViewAccessibility *)self _accessibilityWindow];
+  windowScene = [_accessibilityWindow windowScene];
 
-  return v3;
+  return windowScene;
 }
 
 @end

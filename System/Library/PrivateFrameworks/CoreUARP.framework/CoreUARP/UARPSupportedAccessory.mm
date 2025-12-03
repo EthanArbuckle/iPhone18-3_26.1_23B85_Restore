@@ -1,41 +1,41 @@
 @interface UARPSupportedAccessory
-+ (id)findByAppleModelNumber:(id)a3;
-+ (id)findByHardwareID:(id)a3;
-+ (id)findByMobileAssetAppleModelNumber:(id)a3;
++ (id)findByAppleModelNumber:(id)number;
++ (id)findByHardwareID:(id)d;
++ (id)findByMobileAssetAppleModelNumber:(id)number;
 + (id)supportedAccessories;
-+ (id)supportedAccessoriesByTransport:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)supportedAccessoriesByTransport:(int64_t)transport;
+- (BOOL)isEqual:(id)equal;
 - (NSString)identifier;
 - (NSString)mobileAssetAppleModelNumber;
 - (NSString)supplementalMobileAssetAppleModelNumber;
 - (UARPSupportedAccessory)init;
-- (UARPSupportedAccessory)initWithBluetoothDictionary:(id)a3;
-- (UARPSupportedAccessory)initWithDictionary:(id)a3;
-- (UARPSupportedAccessory)initWithHDSDictionary:(id)a3;
-- (UARPSupportedAccessory)initWithHIDDictionary:(id)a3;
-- (UARPSupportedAccessory)initWithHardwareID:(id)a3 appleModelNumber:(id)a4 capabilities:(unint64_t)a5;
-- (UARPSupportedAccessory)initWithHardwareID:(id)a3 capabilities:(unint64_t)a4;
-- (UARPSupportedAccessory)initWithHardwareID:(id)a3 productGroup:(id)a4 productNumber:(id)a5 capabilities:(unint64_t)a6;
-- (UARPSupportedAccessory)initWithIICDictionary:(id)a3;
-- (UARPSupportedAccessory)initWithIPv4Dictionary:(id)a3;
-- (UARPSupportedAccessory)initWithIPv6Dictionary:(id)a3;
-- (UARPSupportedAccessory)initWithSerialDictionary:(id)a3;
-- (UARPSupportedAccessory)initWithUSBDictionary:(id)a3;
-- (UARPSupportedAccessory)initWithUSBPDDictionary:(id)a3;
+- (UARPSupportedAccessory)initWithBluetoothDictionary:(id)dictionary;
+- (UARPSupportedAccessory)initWithDictionary:(id)dictionary;
+- (UARPSupportedAccessory)initWithHDSDictionary:(id)dictionary;
+- (UARPSupportedAccessory)initWithHIDDictionary:(id)dictionary;
+- (UARPSupportedAccessory)initWithHardwareID:(id)d appleModelNumber:(id)number capabilities:(unint64_t)capabilities;
+- (UARPSupportedAccessory)initWithHardwareID:(id)d capabilities:(unint64_t)capabilities;
+- (UARPSupportedAccessory)initWithHardwareID:(id)d productGroup:(id)group productNumber:(id)number capabilities:(unint64_t)capabilities;
+- (UARPSupportedAccessory)initWithIICDictionary:(id)dictionary;
+- (UARPSupportedAccessory)initWithIPv4Dictionary:(id)dictionary;
+- (UARPSupportedAccessory)initWithIPv6Dictionary:(id)dictionary;
+- (UARPSupportedAccessory)initWithSerialDictionary:(id)dictionary;
+- (UARPSupportedAccessory)initWithUSBDictionary:(id)dictionary;
+- (UARPSupportedAccessory)initWithUSBPDDictionary:(id)dictionary;
 - (id)description;
 - (id)generatePlist;
 - (id)hashIdentifier;
 - (id)plistFilename;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)addAlternativeAppleModelNumber:(id)a3;
-- (void)addDownstreamAppleModelNumber:(id)a3;
-- (void)addSupplementalAssetName:(id)a3;
-- (void)setMobileAssetAppleModelNumber:(id)a3;
-- (void)setModelName:(id)a3;
-- (void)setProductCode:(id)a3;
-- (void)setSupplementalMobileAssetAppleModelNumber:(id)a3;
-- (void)setVendorName:(id)a3;
+- (void)addAlternativeAppleModelNumber:(id)number;
+- (void)addDownstreamAppleModelNumber:(id)number;
+- (void)addSupplementalAssetName:(id)name;
+- (void)setMobileAssetAppleModelNumber:(id)number;
+- (void)setModelName:(id)name;
+- (void)setProductCode:(id)code;
+- (void)setSupplementalMobileAssetAppleModelNumber:(id)number;
+- (void)setVendorName:(id)name;
 @end
 
 @implementation UARPSupportedAccessory
@@ -73,76 +73,76 @@
   return v2;
 }
 
-- (UARPSupportedAccessory)initWithHardwareID:(id)a3 capabilities:(unint64_t)a4
+- (UARPSupportedAccessory)initWithHardwareID:(id)d capabilities:(unint64_t)capabilities
 {
-  v7 = a3;
+  dCopy = d;
   v8 = [(UARPSupportedAccessory *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_hardwareID, a3);
-    v9->_capabilities = a4;
+    objc_storeStrong(&v8->_hardwareID, d);
+    v9->_capabilities = capabilities;
   }
 
   return v9;
 }
 
-- (UARPSupportedAccessory)initWithHardwareID:(id)a3 appleModelNumber:(id)a4 capabilities:(unint64_t)a5
+- (UARPSupportedAccessory)initWithHardwareID:(id)d appleModelNumber:(id)number capabilities:(unint64_t)capabilities
 {
-  v9 = a4;
-  v10 = [(UARPSupportedAccessory *)self initWithHardwareID:a3 capabilities:a5];
+  numberCopy = number;
+  v10 = [(UARPSupportedAccessory *)self initWithHardwareID:d capabilities:capabilities];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_appleModelNumber, a4);
+    objc_storeStrong(&v10->_appleModelNumber, number);
   }
 
   return v11;
 }
 
-- (UARPSupportedAccessory)initWithHardwareID:(id)a3 productGroup:(id)a4 productNumber:(id)a5 capabilities:(unint64_t)a6
+- (UARPSupportedAccessory)initWithHardwareID:(id)d productGroup:(id)group productNumber:(id)number capabilities:(unint64_t)capabilities
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = [(UARPSupportedAccessory *)self initWithHardwareID:a3 capabilities:a6];
+  groupCopy = group;
+  numberCopy = number;
+  v13 = [(UARPSupportedAccessory *)self initWithHardwareID:d capabilities:capabilities];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_productGroup, a4);
-    objc_storeStrong(&v14->_productNumber, a5);
+    objc_storeStrong(&v13->_productGroup, group);
+    objc_storeStrong(&v14->_productNumber, number);
   }
 
   return v14;
 }
 
-- (UARPSupportedAccessory)initWithDictionary:(id)a3
+- (UARPSupportedAccessory)initWithDictionary:(id)dictionary
 {
   v95 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"Transport"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"Transport"];
   if ([v5 isEqualToString:@"Bluetooth"])
   {
-    v6 = [(UARPSupportedAccessory *)self initWithBluetoothDictionary:v4];
+    v6 = [(UARPSupportedAccessory *)self initWithBluetoothDictionary:dictionaryCopy];
   }
 
   else if ([v5 isEqualToString:@"HDS"])
   {
-    v6 = [(UARPSupportedAccessory *)self initWithHDSDictionary:v4];
+    v6 = [(UARPSupportedAccessory *)self initWithHDSDictionary:dictionaryCopy];
   }
 
   else if ([v5 isEqualToString:@"HID"])
   {
-    v6 = [(UARPSupportedAccessory *)self initWithHIDDictionary:v4];
+    v6 = [(UARPSupportedAccessory *)self initWithHIDDictionary:dictionaryCopy];
   }
 
   else if ([v5 isEqualToString:@"USB-PD"])
   {
-    v6 = [(UARPSupportedAccessory *)self initWithUSBPDDictionary:v4];
+    v6 = [(UARPSupportedAccessory *)self initWithUSBPDDictionary:dictionaryCopy];
   }
 
   else if ([v5 isEqualToString:@"IIC"])
   {
-    v6 = [(UARPSupportedAccessory *)self initWithIICDictionary:v4];
+    v6 = [(UARPSupportedAccessory *)self initWithIICDictionary:dictionaryCopy];
   }
 
   else
@@ -154,94 +154,94 @@
       goto LABEL_50;
     }
 
-    v6 = [(UARPSupportedAccessory *)self initWithUSBDictionary:v4];
+    v6 = [(UARPSupportedAccessory *)self initWithUSBDictionary:dictionaryCopy];
   }
 
   v7 = v6;
   if (v6)
   {
-    v8 = [v4 objectForKeyedSubscript:@"ModelName"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"ModelName"];
     v9 = [v8 copy];
     modelName = v7->_modelName;
     v7->_modelName = v9;
 
-    v11 = [v4 objectForKeyedSubscript:@"SupportsPowerlog"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"SupportsPowerlog"];
     v7->_supportsPowerLogging = [v11 BOOLValue];
 
-    v12 = [v4 objectForKeyedSubscript:@"SupportsHeySiriCompact"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"SupportsHeySiriCompact"];
     v7->_supportsHeySiriCompact = [v12 BOOLValue];
 
-    v13 = [v4 objectForKeyedSubscript:@"SupportsVoiceAssist"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"SupportsVoiceAssist"];
     v7->_supportsVoiceAssist = [v13 BOOLValue];
 
-    v14 = [v4 objectForKeyedSubscript:@"SupportsLogs"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"SupportsLogs"];
     v7->_supportsLogs = [v14 BOOLValue];
 
-    v15 = [v4 objectForKeyedSubscript:@"SupportsAnalytics"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"SupportsAnalytics"];
     v7->_supportsAnalytics = [v15 BOOLValue];
 
-    v16 = [v4 objectForKeyedSubscript:@"SupportsMappedAnalytics"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"SupportsMappedAnalytics"];
     v7->_supportsMappedAnalytics = [v16 BOOLValue];
 
-    v17 = [v4 objectForKeyedSubscript:@"SupportsFriendlyName"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"SupportsFriendlyName"];
     v7->_supportsFriendlyName = [v17 BOOLValue];
 
-    v18 = [v4 objectForKeyedSubscript:@"AutoAppliesStagedFirmware"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"AutoAppliesStagedFirmware"];
     v7->_autoAppliesStagedFirmware = [v18 BOOLValue];
 
-    v19 = [v4 objectForKeyedSubscript:@"SupportsAccMode7"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"SupportsAccMode7"];
     v7->_supportsAccMode7 = [v19 BOOLValue];
 
-    v20 = [v4 objectForKeyedSubscript:@"ReofferFirmwareOnSync"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"ReofferFirmwareOnSync"];
     v7->_reofferFirmwareOnSync = [v20 BOOLValue];
 
-    v21 = [v4 objectForKeyedSubscript:@"SupportsInternalSettings"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"SupportsInternalSettings"];
     v7->_supportsInternalSettings = [v21 BOOLValue];
 
-    v22 = [v4 objectForKeyedSubscript:@"SupportsDeveloperSettings"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"SupportsDeveloperSettings"];
     v7->_supportsDeveloperSettings = [v22 BOOLValue];
 
-    v23 = [v4 objectForKeyedSubscript:@"SupportsVersions"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"SupportsVersions"];
     v7->_supportsVersions = [v23 BOOLValue];
 
-    v24 = [v4 objectForKeyedSubscript:@"AllowDownloadOnCellular"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"AllowDownloadOnCellular"];
     v7->_allowDownloadOnCellular = [v24 BOOLValue];
 
-    v25 = [v4 objectForKeyedSubscript:@"TtrSolicitLogs"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"TtrSolicitLogs"];
     v7->_ttrSolicitLogs = [v25 BOOLValue];
 
-    v26 = [v4 objectForKeyedSubscript:@"UpdateRequiresPowerAssertion"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"UpdateRequiresPowerAssertion"];
     v7->_updateRequiresPowerAssertion = [v26 BOOLValue];
 
-    v27 = [v4 objectForKeyedSubscript:@"IsSimulator"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"IsSimulator"];
     v7->_isSimulator = [v27 BOOLValue];
 
-    v28 = [v4 objectForKeyedSubscript:@"DFUMode"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"DFUMode"];
     v7->_dfuMode = [v28 BOOLValue];
 
-    v29 = [v4 objectForKeyedSubscript:@"UploaderResponseTimeout"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"UploaderResponseTimeout"];
     v7->_uploaderResponseTimeout = [v29 unsignedIntValue];
 
-    v30 = [v4 objectForKeyedSubscript:@"UploaderRetryLimit"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"UploaderRetryLimit"];
     v7->_uploaderRetryLimit = [v30 unsignedIntValue];
 
-    v31 = [v4 objectForKeyedSubscript:@"UpdaterName"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"UpdaterName"];
     v32 = [v31 copy];
     updaterName = v7->_updaterName;
     v7->_updaterName = v32;
 
-    v34 = [v4 objectForKeyedSubscript:@"MobileAssetsModelNumber"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"MobileAssetsModelNumber"];
     [(UARPSupportedAccessory *)v7 setMobileAssetAppleModelNumber:v34];
 
-    v35 = [v4 objectForKeyedSubscript:@"FusingOverrideUnfused"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"FusingOverrideUnfused"];
     v36 = [v35 copy];
     fusingOverrideUnfused = v7->_fusingOverrideUnfused;
     v7->_fusingOverrideUnfused = v36;
 
-    v38 = [v4 objectForKeyedSubscript:@"SupplementalAssetsModelNumber"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"SupplementalAssetsModelNumber"];
     [(UARPSupportedAccessory *)v7 setSupplementalMobileAssetAppleModelNumber:v38];
 
-    v39 = [v4 objectForKeyedSubscript:@"SupplementalAssets"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"SupplementalAssets"];
     v86 = 0u;
     v87 = 0u;
     v88 = 0u;
@@ -271,7 +271,7 @@
       while (v41);
     }
 
-    v44 = [v4 objectForKeyedSubscript:@"DownstreamAppleModelNumbers"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"DownstreamAppleModelNumbers"];
     v82 = 0u;
     v83 = 0u;
     v84 = 0u;
@@ -302,7 +302,7 @@
     }
 
     v69 = v5;
-    v49 = [v4 objectForKeyedSubscript:@"AlternativeAppleModelNumbers"];
+    v49 = [dictionaryCopy objectForKeyedSubscript:@"AlternativeAppleModelNumbers"];
     v78 = 0u;
     v79 = 0u;
     v80 = 0u;
@@ -332,7 +332,7 @@
       while (v51);
     }
 
-    v54 = [v4 objectForKeyedSubscript:@"BSDNotifications"];
+    v54 = [dictionaryCopy objectForKeyedSubscript:@"BSDNotifications"];
     v74 = 0u;
     v75 = 0u;
     v76 = 0u;
@@ -362,7 +362,7 @@
       while (v56);
     }
 
-    v59 = [v4 objectForKeyedSubscript:@"ServiceBSDNotifications"];
+    v59 = [dictionaryCopy objectForKeyedSubscript:@"ServiceBSDNotifications"];
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
@@ -392,7 +392,7 @@
       while (v61);
     }
 
-    v64 = [v4 objectForKeyedSubscript:@"PersonalizationNotification"];
+    v64 = [dictionaryCopy objectForKeyedSubscript:@"PersonalizationNotification"];
     v65 = [v64 copy];
     personalizationNotification = v7->_personalizationNotification;
     v7->_personalizationNotification = v65;
@@ -406,60 +406,60 @@ LABEL_50:
   return v7;
 }
 
-- (UARPSupportedAccessory)initWithBluetoothDictionary:(id)a3
+- (UARPSupportedAccessory)initWithBluetoothDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"VendorID"];
-  v6 = [v4 objectForKeyedSubscript:@"ProductID"];
-  v7 = [v4 objectForKeyedSubscript:@"BluetoothVendorIDSource"];
-  v8 = [v4 objectForKeyedSubscript:@"BluetoothProductVersion"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"VendorID"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"ProductID"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"BluetoothVendorIDSource"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"BluetoothProductVersion"];
   v9 = -[UARPAccessoryHardwareBluetooth initWithVendorIDSource:vendorID:productID:productVersion:]([UARPAccessoryHardwareBluetooth alloc], "initWithVendorIDSource:vendorID:productID:productVersion:", [v7 unsignedIntegerValue], objc_msgSend(v5, "unsignedIntegerValue"), objc_msgSend(v6, "unsignedIntegerValue"), objc_msgSend(v8, "unsignedIntegerValue"));
-  v10 = [v4 objectForKeyedSubscript:@"AppleModelNumber"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"AppleModelNumber"];
 
   if (v10)
   {
     self = [(UARPSupportedAccessory *)self initWithHardwareID:v9 appleModelNumber:v10 capabilities:0];
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (UARPSupportedAccessory)initWithHDSDictionary:(id)a3
+- (UARPSupportedAccessory)initWithHDSDictionary:(id)dictionary
 {
   v4 = MEMORY[0x277CCAD78];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = [v4 alloc];
-  v7 = [v5 objectForKeyedSubscript:@"UUID"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"UUID"];
   v8 = [v6 initWithUUIDString:v7];
 
   v9 = [[UARPAccessoryHardwareHDS alloc] initWithUUID:v8];
-  v10 = [v5 objectForKeyedSubscript:@"AppleModelNumber"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"AppleModelNumber"];
 
   if (v10)
   {
     self = [(UARPSupportedAccessory *)self initWithHardwareID:v9 appleModelNumber:v10 capabilities:0];
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (UARPSupportedAccessory)initWithHIDDictionary:(id)a3
+- (UARPSupportedAccessory)initWithHIDDictionary:(id)dictionary
 {
   v29 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  [v22 objectForKeyedSubscript:@"Personalities"];
+  dictionaryCopy = dictionary;
+  [dictionaryCopy objectForKeyedSubscript:@"Personalities"];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -505,18 +505,18 @@ LABEL_50:
     v5 = 0;
   }
 
-  v12 = [v22 objectForKeyedSubscript:@"AppleModelNumber"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"AppleModelNumber"];
   if (v12)
   {
-    v13 = [v22 objectForKeyedSubscript:@"isPowerSource"];
-    v14 = -[UARPSupportedAccessory initWithHardwareID:appleModelNumber:capabilities:](self, "initWithHardwareID:appleModelNumber:capabilities:", v5, v12, [v13 BOOLValue]);
-    v15 = v14;
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"isPowerSource"];
+    selfCopy = -[UARPSupportedAccessory initWithHardwareID:appleModelNumber:capabilities:](self, "initWithHardwareID:appleModelNumber:capabilities:", v5, v12, [v13 BOOLValue]);
+    v15 = selfCopy;
   }
 
   else
   {
-    v13 = [v22 objectForKeyedSubscript:@"ProductGroup"];
-    v16 = [v22 objectForKeyedSubscript:@"ProductNumber"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"ProductGroup"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"ProductNumber"];
     v17 = v16;
     if (v13)
     {
@@ -528,7 +528,7 @@ LABEL_50:
       v18 = 1;
     }
 
-    v14 = self;
+    selfCopy = self;
     if (v18)
     {
       v15 = 0;
@@ -536,8 +536,8 @@ LABEL_50:
 
     else
     {
-      v14 = [(UARPSupportedAccessory *)self initWithHardwareID:v5 productGroup:v13 productNumber:v16 capabilities:0];
-      v15 = v14;
+      selfCopy = [(UARPSupportedAccessory *)self initWithHardwareID:v5 productGroup:v13 productNumber:v16 capabilities:0];
+      v15 = selfCopy;
     }
   }
 
@@ -545,12 +545,12 @@ LABEL_50:
   return v15;
 }
 
-- (UARPSupportedAccessory)initWithUSBPDDictionary:(id)a3
+- (UARPSupportedAccessory)initWithUSBPDDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"VendorID"];
-  v18 = [v4 objectForKeyedSubscript:@"ProductID"];
-  v6 = [v4 objectForKeyedSubscript:@"USB-PD Device Class"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"VendorID"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"ProductID"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"USB-PD Device Class"];
   if ([v6 isEqualToString:@"MagSafe Cable"])
   {
     v7 = 0;
@@ -565,35 +565,35 @@ LABEL_50:
   {
     if (![v6 isEqualToString:@"USB-C to Lightning"])
     {
-      v16 = 0;
+      selfCopy = 0;
       goto LABEL_18;
     }
 
     v7 = 2;
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"USB-PD Location"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"USB-PD Location"];
   if ([v8 isEqualToString:@"SOP"])
   {
     v9 = 0;
 LABEL_13:
-    v10 = [v4 objectForKeyedSubscript:@"SupportsAccMode7"];
-    v11 = [v10 BOOLValue];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"SupportsAccMode7"];
+    bOOLValue = [v10 BOOLValue];
 
     v12 = v5;
-    v13 = -[UARPAccessoryHardwareUSBPD initWithVendorID:productID:usbpdClass:locationType:supportsAccMode7:]([UARPAccessoryHardwareUSBPD alloc], "initWithVendorID:productID:usbpdClass:locationType:supportsAccMode7:", [v5 unsignedIntegerValue], objc_msgSend(v18, "unsignedIntegerValue"), v7, v9, v11);
-    v14 = [v4 objectForKeyedSubscript:@"AppleModelNumber"];
+    v13 = -[UARPAccessoryHardwareUSBPD initWithVendorID:productID:usbpdClass:locationType:supportsAccMode7:]([UARPAccessoryHardwareUSBPD alloc], "initWithVendorID:productID:usbpdClass:locationType:supportsAccMode7:", [v5 unsignedIntegerValue], objc_msgSend(v18, "unsignedIntegerValue"), v7, v9, bOOLValue);
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"AppleModelNumber"];
     if (v14)
     {
-      v15 = [v4 objectForKeyedSubscript:@"isPowerSource"];
+      v15 = [dictionaryCopy objectForKeyedSubscript:@"isPowerSource"];
       self = -[UARPSupportedAccessory initWithHardwareID:appleModelNumber:capabilities:](self, "initWithHardwareID:appleModelNumber:capabilities:", v13, v14, [v15 BOOLValue]);
 
-      v16 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v16 = 0;
+      selfCopy = 0;
     }
 
     v5 = v12;
@@ -612,111 +612,111 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v16 = 0;
+  selfCopy = 0;
 LABEL_17:
 
 LABEL_18:
-  return v16;
+  return selfCopy;
 }
 
-- (UARPSupportedAccessory)initWithIICDictionary:(id)a3
+- (UARPSupportedAccessory)initWithIICDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_alloc_init(UARPAccessoryHardwareIIC);
-  v6 = [v4 objectForKeyedSubscript:@"AppleModelNumber"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"AppleModelNumber"];
 
   if (v6)
   {
     self = [(UARPSupportedAccessory *)self initWithHardwareID:v5 appleModelNumber:v6 capabilities:0];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (UARPSupportedAccessory)initWithSerialDictionary:(id)a3
+- (UARPSupportedAccessory)initWithSerialDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_alloc_init(UARPAccessoryHardwareSerial);
-  v6 = [v4 objectForKeyedSubscript:@"AppleModelNumber"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"AppleModelNumber"];
 
   if (v6)
   {
     self = [(UARPSupportedAccessory *)self initWithHardwareID:v5 appleModelNumber:v6 capabilities:0];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (UARPSupportedAccessory)initWithIPv4Dictionary:(id)a3
+- (UARPSupportedAccessory)initWithIPv4Dictionary:(id)dictionary
 {
-  v4 = [a3 objectForKeyedSubscript:@"AppleModelNumber"];
+  v4 = [dictionary objectForKeyedSubscript:@"AppleModelNumber"];
   if (v4)
   {
     v5 = [[UARPAccessoryHardwareIPv4 alloc] initWithAppleModelNumber:v4];
     self = [(UARPSupportedAccessory *)self initWithHardwareID:v5 appleModelNumber:v4 capabilities:0];
 
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (UARPSupportedAccessory)initWithIPv6Dictionary:(id)a3
+- (UARPSupportedAccessory)initWithIPv6Dictionary:(id)dictionary
 {
-  v4 = [a3 objectForKeyedSubscript:@"AppleModelNumber"];
+  v4 = [dictionary objectForKeyedSubscript:@"AppleModelNumber"];
   if (v4)
   {
     v5 = [[UARPAccessoryHardwareIPv6 alloc] initWithAppleModelNumber:v4];
     self = [(UARPSupportedAccessory *)self initWithHardwareID:v5 appleModelNumber:v4 capabilities:0];
 
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (UARPSupportedAccessory)initWithUSBDictionary:(id)a3
+- (UARPSupportedAccessory)initWithUSBDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"VendorID"];
-  v6 = [v4 objectForKeyedSubscript:@"ProductID"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"VendorID"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"ProductID"];
   v7 = -[UARPAccessoryHardwareUSB initWithVendorID:productID:]([UARPAccessoryHardwareUSB alloc], "initWithVendorID:productID:", [v5 unsignedIntegerValue], objc_msgSend(v6, "unsignedIntegerValue"));
-  v8 = [v4 objectForKeyedSubscript:@"AppleModelNumber"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"AppleModelNumber"];
 
   if (v8)
   {
     self = [(UARPSupportedAccessory *)self initWithHardwareID:v7 appleModelNumber:v8 capabilities:0];
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (NSString)identifier
@@ -724,7 +724,7 @@ LABEL_18:
   productGroup = self->_productGroup;
   if (productGroup && (productNumber = self->_productNumber) != 0)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", productGroup, productNumber];
+    productNumber = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", productGroup, productNumber];
   }
 
   else
@@ -732,16 +732,16 @@ LABEL_18:
     appleModelNumber = self->_appleModelNumber;
     if (appleModelNumber)
     {
-      v4 = appleModelNumber;
+      productNumber = appleModelNumber;
     }
 
     else
     {
-      v4 = @"unknown";
+      productNumber = @"unknown";
     }
   }
 
-  return v4;
+  return productNumber;
 }
 
 - (id)description
@@ -809,22 +809,22 @@ LABEL_18:
     [v4 appendFormat:@", Mobile Asset Apple Model Numbers = %@", self->_mobileAssetAppleModelNumber];
   }
 
-  v5 = [(UARPSupportedAccessory *)self bsdNotifications];
-  v6 = [v5 count];
+  bsdNotifications = [(UARPSupportedAccessory *)self bsdNotifications];
+  v6 = [bsdNotifications count];
 
   if (v6)
   {
-    v7 = [(UARPSupportedAccessory *)self bsdNotifications];
-    [v4 appendFormat:@", BSD Notifications = %@", v7];
+    bsdNotifications2 = [(UARPSupportedAccessory *)self bsdNotifications];
+    [v4 appendFormat:@", BSD Notifications = %@", bsdNotifications2];
   }
 
-  v8 = [(UARPSupportedAccessory *)self serviceBsdNotifications];
-  v9 = [v8 count];
+  serviceBsdNotifications = [(UARPSupportedAccessory *)self serviceBsdNotifications];
+  v9 = [serviceBsdNotifications count];
 
   if (v9)
   {
-    v10 = [(UARPSupportedAccessory *)self serviceBsdNotifications];
-    [v4 appendFormat:@", Service BSD Notifications = %@", v10];
+    serviceBsdNotifications2 = [(UARPSupportedAccessory *)self serviceBsdNotifications];
+    [v4 appendFormat:@", Service BSD Notifications = %@", serviceBsdNotifications2];
   }
 
   return v4;
@@ -927,38 +927,38 @@ LABEL_18:
 
   v14 = *v4;
   v15 = MEMORY[0x277CCACA8];
-  v16 = [(UARPSupportedAccessory *)self identifier];
-  v17 = [v15 stringWithFormat:@"%@-%@", v16, v14];
+  identifier = [(UARPSupportedAccessory *)self identifier];
+  v17 = [v15 stringWithFormat:@"%@-%@", identifier, v14];
 
   return v17;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(UARPSupportedAccessory *)self hashIdentifier];
-  v3 = [v2 hash];
+  hashIdentifier = [(UARPSupportedAccessory *)self hashIdentifier];
+  v3 = [hashIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v8 = 1;
     }
 
     else
     {
-      v5 = v4;
-      v6 = [(UARPSupportedAccessory *)self hashIdentifier];
-      v7 = [(UARPSupportedAccessory *)v5 hashIdentifier];
+      v5 = equalCopy;
+      hashIdentifier = [(UARPSupportedAccessory *)self hashIdentifier];
+      hashIdentifier2 = [(UARPSupportedAccessory *)v5 hashIdentifier];
 
-      v8 = nullableObjectsEqual(v6, v7);
+      v8 = nullableObjectsEqual(hashIdentifier, hashIdentifier2);
     }
   }
 
@@ -970,17 +970,17 @@ LABEL_18:
   return v8;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(UARPSupportedAccessory *)self identifier];
-  v6 = [v4 identifier];
+  compareCopy = compare;
+  identifier = [(UARPSupportedAccessory *)self identifier];
+  identifier2 = [compareCopy identifier];
 
-  v7 = [v5 compare:v6];
+  v7 = [identifier compare:identifier2];
   return v7;
 }
 
-- (void)addSupplementalAssetName:(id)a3
+- (void)addSupplementalAssetName:(id)name
 {
   v5 = self->_supplementalMobileAssetAppleModelNumber;
   if (!v5)
@@ -989,21 +989,21 @@ LABEL_18:
   }
 
   v7 = v5;
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v5, a3];
-  [(NSMutableSet *)self->_supplementalAssetsInternal addObject:v6];
+  name = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v5, name];
+  [(NSMutableSet *)self->_supplementalAssetsInternal addObject:name];
 }
 
-- (void)addDownstreamAppleModelNumber:(id)a3
+- (void)addDownstreamAppleModelNumber:(id)number
 {
   downstreamAppleModelNumbers = self->_downstreamAppleModelNumbers;
-  v4 = [a3 copy];
+  v4 = [number copy];
   [(NSMutableSet *)downstreamAppleModelNumbers addObject:v4];
 }
 
-- (void)addAlternativeAppleModelNumber:(id)a3
+- (void)addAlternativeAppleModelNumber:(id)number
 {
   alternativeAppleModelNumbers = self->_alternativeAppleModelNumbers;
-  v4 = [a3 copy];
+  v4 = [number copy];
   [(NSMutableSet *)alternativeAppleModelNumbers addObject:v4];
 }
 
@@ -1020,9 +1020,9 @@ LABEL_18:
   return v3;
 }
 
-- (void)setMobileAssetAppleModelNumber:(id)a3
+- (void)setMobileAssetAppleModelNumber:(id)number
 {
-  v4 = [a3 copy];
+  v4 = [number copy];
   mobileAssetAppleModelNumber = self->_mobileAssetAppleModelNumber;
   self->_mobileAssetAppleModelNumber = v4;
 
@@ -1042,36 +1042,36 @@ LABEL_18:
   return v3;
 }
 
-- (void)setSupplementalMobileAssetAppleModelNumber:(id)a3
+- (void)setSupplementalMobileAssetAppleModelNumber:(id)number
 {
-  v4 = [a3 copy];
+  v4 = [number copy];
   supplementalMobileAssetAppleModelNumber = self->_supplementalMobileAssetAppleModelNumber;
   self->_supplementalMobileAssetAppleModelNumber = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setModelName:(id)a3
+- (void)setModelName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   modelName = self->_modelName;
   self->_modelName = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setVendorName:(id)a3
+- (void)setVendorName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   vendorName = self->_vendorName;
   self->_vendorName = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setProductCode:(id)a3
+- (void)setProductCode:(id)code
 {
-  v4 = [a3 copy];
+  v4 = [code copy];
   productCode = self->_productCode;
   self->_productCode = v4;
 
@@ -1080,7 +1080,7 @@ LABEL_18:
 
 - (id)generatePlist
 {
-  v2 = self;
+  selfCopy = self;
   v67 = *MEMORY[0x277D85DE8];
   if (self->_productGroup)
   {
@@ -1093,11 +1093,11 @@ LABEL_18:
   }
 
   v4 = objc_opt_new();
-  hardwareID = v2->_hardwareID;
+  hardwareID = selfCopy->_hardwareID;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v2->_hardwareID;
+    v6 = selfCopy->_hardwareID;
     [v4 setObject:@"Bluetooth" forKeyedSubscript:@"Transport"];
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{-[UARPAccessoryHardwareID vendorID](v6, "vendorID")}];
     [v4 setObject:v7 forKeyedSubscript:@"VendorID"];
@@ -1108,10 +1108,10 @@ LABEL_18:
     v9 = [MEMORY[0x277CCABB0] numberWithInteger:{-[UARPAccessoryHardwareID vendorIDSource](v6, "vendorIDSource")}];
     [v4 setObject:v9 forKeyedSubscript:@"BluetoothVendorIDSource"];
 
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{-[UARPAccessoryHardwareID productVersion](v6, "productVersion")}];
+    uuid = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{-[UARPAccessoryHardwareID productVersion](v6, "productVersion")}];
     v11 = kUARPSupportedAccessoryKeyBluetoothProductVersion;
 LABEL_9:
-    [v4 setObject:v10 forKeyedSubscript:*v11];
+    [v4 setObject:uuid forKeyedSubscript:*v11];
 LABEL_10:
 
 LABEL_11:
@@ -1121,14 +1121,14 @@ LABEL_11:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v2->_hardwareID;
+    v6 = selfCopy->_hardwareID;
     v12 = kUARPSupportedAccessoryKeyTransportB2PHID;
 LABEL_8:
     [v4 setObject:*v12 forKeyedSubscript:@"Transport"];
     v13 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{-[UARPAccessoryHardwareID vendorID](v6, "vendorID")}];
     [v4 setObject:v13 forKeyedSubscript:@"VendorID"];
 
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{-[UARPAccessoryHardwareID productID](v6, "productID")}];
+    uuid = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{-[UARPAccessoryHardwareID productID](v6, "productID")}];
     v11 = kUARPSupportedAccessoryKeyProductID;
     goto LABEL_9;
   }
@@ -1137,8 +1137,8 @@ LABEL_8:
   if (objc_opt_isKindOfClass())
   {
     v58 = v3;
-    v59 = v2;
-    v38 = v2->_hardwareID;
+    v59 = selfCopy;
+    v38 = selfCopy->_hardwareID;
     [v4 setObject:@"HID" forKeyedSubscript:@"Transport"];
     v39 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{-[UARPAccessoryHardwareID vendorID](v38, "vendorID")}];
     [v4 setObject:v39 forKeyedSubscript:@"VendorID"];
@@ -1188,7 +1188,7 @@ LABEL_8:
     v4 = v60;
     [v60 setObject:v41 forKeyedSubscript:@"Personalities"];
 
-    v2 = v59;
+    selfCopy = v59;
     v3 = v58;
   }
 
@@ -1197,7 +1197,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v2->_hardwareID;
+      v6 = selfCopy->_hardwareID;
       [v4 setObject:@"USB-PD" forKeyedSubscript:@"Transport"];
       v50 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{-[UARPAccessoryHardwareID vendorID](v6, "vendorID")}];
       [v4 setObject:v50 forKeyedSubscript:@"VendorID"];
@@ -1255,7 +1255,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v2->_hardwareID;
+      v6 = selfCopy->_hardwareID;
       v12 = kUARPSupportedAccessoryKeyTransportUSB;
       goto LABEL_8;
     }
@@ -1263,11 +1263,11 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v2->_hardwareID;
+      v6 = selfCopy->_hardwareID;
       [v4 setObject:@"HDS" forKeyedSubscript:@"Transport"];
-      v10 = [(UARPAccessoryHardwareID *)v6 uuid];
-      v53 = [v10 UUIDString];
-      [v4 setObject:v53 forKeyedSubscript:@"UUID"];
+      uuid = [(UARPAccessoryHardwareID *)v6 uuid];
+      uUIDString = [uuid UUIDString];
+      [v4 setObject:uUIDString forKeyedSubscript:@"UUID"];
 
       goto LABEL_10;
     }
@@ -1280,11 +1280,11 @@ LABEL_8:
 
     else
     {
-      v55 = v2->_hardwareID;
+      v55 = selfCopy->_hardwareID;
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v56 = v2->_hardwareID;
+        v56 = selfCopy->_hardwareID;
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -1295,9 +1295,9 @@ LABEL_8:
           }
         }
 
-        v6 = v2->_hardwareID;
+        v6 = selfCopy->_hardwareID;
         [v4 setObject:@"IP" forKeyedSubscript:@"Transport"];
-        v10 = [(UARPAccessoryHardwareID *)v6 appleModelNumber];
+        uuid = [(UARPAccessoryHardwareID *)v6 appleModelNumber];
         v11 = kUARPSupportedAccessoryKeyAppleModelNumber;
         goto LABEL_9;
       }
@@ -1311,7 +1311,7 @@ LABEL_8:
 LABEL_12:
   if (v3)
   {
-    [v4 setObject:v2->_productGroup forKeyedSubscript:@"ProductGroup"];
+    [v4 setObject:selfCopy->_productGroup forKeyedSubscript:@"ProductGroup"];
     v14 = kUARPSupportedAccessoryKeyProductNumber;
     v15 = 128;
   }
@@ -1322,43 +1322,43 @@ LABEL_12:
     v15 = 112;
   }
 
-  [v4 setObject:*(&v2->super.isa + v15) forKeyedSubscript:*v14];
-  modelName = v2->_modelName;
+  [v4 setObject:*(&selfCopy->super.isa + v15) forKeyedSubscript:*v14];
+  modelName = selfCopy->_modelName;
   if (modelName)
   {
     [v4 setObject:modelName forKeyedSubscript:@"ModelName"];
   }
 
-  vendorName = v2->_vendorName;
+  vendorName = selfCopy->_vendorName;
   if (!vendorName)
   {
     vendorName = @"Apple Inc.";
   }
 
   [v4 setObject:vendorName forKeyedSubscript:@"VendorName"];
-  if (v2->_capabilities)
+  if (selfCopy->_capabilities)
   {
     [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"isPowerSource"];
   }
 
-  if (v2->_supportsPowerLogging)
+  if (selfCopy->_supportsPowerLogging)
   {
     [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"SupportsPowerlog"];
   }
 
-  if (v2->_supportsHeySiriCompact)
+  if (selfCopy->_supportsHeySiriCompact)
   {
     [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"SupportsHeySiriCompact"];
   }
 
-  if (v2->_supportsVoiceAssist)
+  if (selfCopy->_supportsVoiceAssist)
   {
     [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"SupportsVoiceAssist"];
     v18 = objc_alloc_init(MEMORY[0x277CBEB18]);
     [v18 addObject:@"VoiceAssist"];
     [v4 setObject:v18 forKeyedSubscript:@"SupplementalAssets"];
 
-    supportsVoiceAssist = v2->_supportsVoiceAssist;
+    supportsVoiceAssist = selfCopy->_supportsVoiceAssist;
   }
 
   else
@@ -1366,155 +1366,155 @@ LABEL_12:
     supportsVoiceAssist = 0;
   }
 
-  if (supportsVoiceAssist || v2->_supportsHeySiriCompact)
+  if (supportsVoiceAssist || selfCopy->_supportsHeySiriCompact)
   {
     v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
     [v20 addObject:@"com.apple.corespeech.voicetriggerassetchange"];
     [v4 setObject:v20 forKeyedSubscript:@"BSDNotifications"];
   }
 
-  if (v2->_reofferFirmwareOnSync)
+  if (selfCopy->_reofferFirmwareOnSync)
   {
     [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"ReofferFirmwareOnSync"];
   }
 
-  if (v2->_supportsLogs)
+  if (selfCopy->_supportsLogs)
   {
     [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"SupportsLogs"];
   }
 
-  if (v2->_supportsAnalytics)
+  if (selfCopy->_supportsAnalytics)
   {
     [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"SupportsAnalytics"];
   }
 
-  if (v2->_supportsMappedAnalytics)
+  if (selfCopy->_supportsMappedAnalytics)
   {
     [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"SupportsMappedAnalytics"];
   }
 
-  if (v2->_supportsFriendlyName)
+  if (selfCopy->_supportsFriendlyName)
   {
     [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"SupportsFriendlyName"];
   }
 
-  if (v2->_supportsInternalSettings)
+  if (selfCopy->_supportsInternalSettings)
   {
     [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"SupportsInternalSettings"];
   }
 
-  if (v2->_supportsDeveloperSettings)
+  if (selfCopy->_supportsDeveloperSettings)
   {
     [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"SupportsDeveloperSettings"];
   }
 
-  if (v2->_supportsVersions)
+  if (selfCopy->_supportsVersions)
   {
     [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"SupportsVersions"];
   }
 
-  if (v2->_allowDownloadOnCellular)
+  if (selfCopy->_allowDownloadOnCellular)
   {
     [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"AllowDownloadOnCellular"];
   }
 
-  if (v2->_isSimulator)
+  if (selfCopy->_isSimulator)
   {
     [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"IsSimulator"];
   }
 
-  if (v2->_dfuMode)
+  if (selfCopy->_dfuMode)
   {
     [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"DFUMode"];
   }
 
-  if (v2->_updateRequiresPowerAssertion)
+  if (selfCopy->_updateRequiresPowerAssertion)
   {
     [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"UpdateRequiresPowerAssertion"];
   }
 
-  if (v2->_autoAppliesStagedFirmware)
+  if (selfCopy->_autoAppliesStagedFirmware)
   {
     [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"AutoAppliesStagedFirmware"];
   }
 
-  if (v2->_ttrSolicitLogs)
+  if (selfCopy->_ttrSolicitLogs)
   {
     [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"TtrSolicitLogs"];
   }
 
-  fusingOverrideUnfused = v2->_fusingOverrideUnfused;
+  fusingOverrideUnfused = selfCopy->_fusingOverrideUnfused;
   if (fusingOverrideUnfused)
   {
     [v4 setObject:fusingOverrideUnfused forKeyedSubscript:@"FusingOverrideUnfused"];
   }
 
-  if (v2->_uploaderResponseTimeout)
+  if (selfCopy->_uploaderResponseTimeout)
   {
     v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
     [v4 setObject:v22 forKeyedSubscript:@"UploaderResponseTimeout"];
   }
 
-  if (v2->_uploaderRetryLimit)
+  if (selfCopy->_uploaderRetryLimit)
   {
     v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
     [v4 setObject:v23 forKeyedSubscript:@"UploaderRetryLimit"];
   }
 
-  mobileAssetAppleModelNumber = v2->_mobileAssetAppleModelNumber;
+  mobileAssetAppleModelNumber = selfCopy->_mobileAssetAppleModelNumber;
   if (mobileAssetAppleModelNumber)
   {
-    if ([(NSString *)mobileAssetAppleModelNumber caseInsensitiveCompare:v2->_appleModelNumber]&& !v3)
+    if ([(NSString *)mobileAssetAppleModelNumber caseInsensitiveCompare:selfCopy->_appleModelNumber]&& !v3)
     {
-      [v4 setObject:v2->_mobileAssetAppleModelNumber forKeyedSubscript:@"MobileAssetsModelNumber"];
+      [v4 setObject:selfCopy->_mobileAssetAppleModelNumber forKeyedSubscript:@"MobileAssetsModelNumber"];
     }
   }
 
-  supplementalMobileAssetAppleModelNumber = v2->_supplementalMobileAssetAppleModelNumber;
+  supplementalMobileAssetAppleModelNumber = selfCopy->_supplementalMobileAssetAppleModelNumber;
   if (supplementalMobileAssetAppleModelNumber)
   {
     [v4 setObject:supplementalMobileAssetAppleModelNumber forKeyedSubscript:@"SupplementalAssetsModelNumber"];
   }
 
-  if ([(NSMutableSet *)v2->_downstreamAppleModelNumbers count])
+  if ([(NSMutableSet *)selfCopy->_downstreamAppleModelNumbers count])
   {
-    v27 = [(NSMutableSet *)v2->_downstreamAppleModelNumbers allObjects];
-    [v4 setObject:v27 forKeyedSubscript:@"DownstreamAppleModelNumbers"];
+    allObjects = [(NSMutableSet *)selfCopy->_downstreamAppleModelNumbers allObjects];
+    [v4 setObject:allObjects forKeyedSubscript:@"DownstreamAppleModelNumbers"];
   }
 
-  if ([(NSMutableSet *)v2->_alternativeAppleModelNumbers count])
+  if ([(NSMutableSet *)selfCopy->_alternativeAppleModelNumbers count])
   {
-    v28 = [(NSMutableSet *)v2->_alternativeAppleModelNumbers allObjects];
-    [v4 setObject:v28 forKeyedSubscript:@"AlternativeAppleModelNumbers"];
+    allObjects2 = [(NSMutableSet *)selfCopy->_alternativeAppleModelNumbers allObjects];
+    [v4 setObject:allObjects2 forKeyedSubscript:@"AlternativeAppleModelNumbers"];
   }
 
-  if ([(NSMutableSet *)v2->_bsdNotificationsInternal count])
+  if ([(NSMutableSet *)selfCopy->_bsdNotificationsInternal count])
   {
-    v29 = [(NSMutableSet *)v2->_bsdNotificationsInternal allObjects];
-    [v4 setObject:v29 forKeyedSubscript:@"BSDNotifications"];
+    allObjects3 = [(NSMutableSet *)selfCopy->_bsdNotificationsInternal allObjects];
+    [v4 setObject:allObjects3 forKeyedSubscript:@"BSDNotifications"];
   }
 
-  if ([(NSMutableSet *)v2->_serviceBsdNotificationsInternal count])
+  if ([(NSMutableSet *)selfCopy->_serviceBsdNotificationsInternal count])
   {
-    v30 = [(NSMutableSet *)v2->_serviceBsdNotificationsInternal allObjects];
-    [v4 setObject:v30 forKeyedSubscript:@"ServiceBSDNotifications"];
+    allObjects4 = [(NSMutableSet *)selfCopy->_serviceBsdNotificationsInternal allObjects];
+    [v4 setObject:allObjects4 forKeyedSubscript:@"ServiceBSDNotifications"];
   }
 
-  updaterName = v2->_updaterName;
+  updaterName = selfCopy->_updaterName;
   if (updaterName)
   {
     [v4 setObject:updaterName forKeyedSubscript:@"UpdaterName"];
   }
 
-  personalizationNotification = v2->_personalizationNotification;
+  personalizationNotification = selfCopy->_personalizationNotification;
   if (personalizationNotification)
   {
     [v4 setObject:personalizationNotification forKeyedSubscript:@"PersonalizationNotification"];
   }
 
   v33 = objc_opt_new();
-  v34 = [(UARPSupportedAccessory *)v2 identifier];
-  [v33 setObject:v4 forKeyedSubscript:v34];
+  identifier = [(UARPSupportedAccessory *)selfCopy identifier];
+  [v33 setObject:v4 forKeyedSubscript:identifier];
 
   v35 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v33];
 
@@ -1526,8 +1526,8 @@ LABEL_12:
 - (id)plistFilename
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(UARPSupportedAccessory *)self hashIdentifier];
-  v4 = [v2 stringWithFormat:@"%@.plist", v3];
+  hashIdentifier = [(UARPSupportedAccessory *)self hashIdentifier];
+  v4 = [v2 stringWithFormat:@"%@.plist", hashIdentifier];
 
   return v4;
 }
@@ -1536,13 +1536,13 @@ LABEL_12:
 {
   v2 = MEMORY[0x277CBEB98];
   v3 = +[UARPSupportedAccessoryManager defaultManager];
-  v4 = [v3 setOfAccessories];
-  v5 = [v2 setWithSet:v4];
+  setOfAccessories = [v3 setOfAccessories];
+  v5 = [v2 setWithSet:setOfAccessories];
 
   return v5;
 }
 
-+ (id)supportedAccessoriesByTransport:(int64_t)a3
++ (id)supportedAccessoriesByTransport:(int64_t)transport
 {
   v22 = *MEMORY[0x277D85DE8];
   v4 = +[UARPSupportedAccessory supportedAccessories];
@@ -1567,10 +1567,10 @@ LABEL_12:
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 hardwareID];
-        v13 = [v12 transport];
+        hardwareID = [v11 hardwareID];
+        transport = [hardwareID transport];
 
-        if (v13 == a3)
+        if (transport == transport)
         {
           [v5 addObject:v11];
         }
@@ -1589,10 +1589,10 @@ LABEL_12:
   return v14;
 }
 
-+ (id)findByHardwareID:(id)a3
++ (id)findByHardwareID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   +[UARPSupportedAccessory supportedAccessories];
   v13 = 0u;
   v14 = 0u;
@@ -1612,8 +1612,8 @@ LABEL_12:
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 hardwareID];
-        v10 = [v9 isEqual:v3];
+        hardwareID = [v8 hardwareID];
+        v10 = [hardwareID isEqual:dCopy];
 
         if (v10)
         {
@@ -1639,10 +1639,10 @@ LABEL_11:
   return v5;
 }
 
-+ (id)findByAppleModelNumber:(id)a3
++ (id)findByAppleModelNumber:(id)number
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  numberCopy = number;
   +[UARPSupportedAccessory supportedAccessories];
   v24 = 0u;
   v25 = 0u;
@@ -1663,8 +1663,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v24 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v3];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:numberCopy];
 
         if (v11)
         {
@@ -1676,8 +1676,8 @@ LABEL_11:
         v23 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v12 = [v9 alternativeAppleModelNumbers];
-        v13 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        alternativeAppleModelNumbers = [v9 alternativeAppleModelNumbers];
+        v13 = [alternativeAppleModelNumbers countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v13)
         {
           v14 = v13;
@@ -1688,10 +1688,10 @@ LABEL_11:
             {
               if (*v21 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(alternativeAppleModelNumbers);
               }
 
-              if ([*(*(&v20 + 1) + 8 * j) isEqualToString:v3])
+              if ([*(*(&v20 + 1) + 8 * j) isEqualToString:numberCopy])
               {
                 v17 = v9;
 
@@ -1699,7 +1699,7 @@ LABEL_11:
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v14 = [alternativeAppleModelNumbers countByEnumeratingWithState:&v20 objects:v28 count:16];
             if (v14)
             {
               continue;
@@ -1733,10 +1733,10 @@ LABEL_20:
   return v17;
 }
 
-+ (id)findByMobileAssetAppleModelNumber:(id)a3
++ (id)findByMobileAssetAppleModelNumber:(id)number
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  numberCopy = number;
   v4 = +[UARPSupportedAccessory supportedAccessories];
   v5 = [MEMORY[0x277CBEB58] set];
   v19 = 0u;
@@ -1759,13 +1759,13 @@ LABEL_20:
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 mobileAssetAppleModelNumber];
-        v13 = [v12 isEqualToString:v3];
+        mobileAssetAppleModelNumber = [v11 mobileAssetAppleModelNumber];
+        v13 = [mobileAssetAppleModelNumber isEqualToString:numberCopy];
 
         if ((v13 & 1) == 0)
         {
-          v14 = [v11 identifier];
-          v15 = [v14 isEqualToString:v3];
+          identifier = [v11 identifier];
+          v15 = [identifier isEqualToString:numberCopy];
 
           if (!v15)
           {

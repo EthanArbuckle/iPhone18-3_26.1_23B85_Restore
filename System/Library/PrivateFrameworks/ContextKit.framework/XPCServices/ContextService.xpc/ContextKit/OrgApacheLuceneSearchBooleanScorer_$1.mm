@@ -1,5 +1,5 @@
 @interface OrgApacheLuceneSearchBooleanScorer_$1
-- (OrgApacheLuceneSearchBooleanScorer_$1)initWithOrgApacheLuceneSearchBulkScorer:(id)a3;
+- (OrgApacheLuceneSearchBooleanScorer_$1)initWithOrgApacheLuceneSearchBulkScorer:(id)scorer;
 - (int64_t)cost;
 - (void)dealloc;
 @end
@@ -17,9 +17,9 @@
   return [(OrgApacheLuceneSearchBulkScorer *)v3 cost];
 }
 
-- (OrgApacheLuceneSearchBooleanScorer_$1)initWithOrgApacheLuceneSearchBulkScorer:(id)a3
+- (OrgApacheLuceneSearchBooleanScorer_$1)initWithOrgApacheLuceneSearchBulkScorer:(id)scorer
 {
-  JreStrongAssign(&self->val$scorer_, a3);
+  JreStrongAssign(&self->val$scorer_, scorer);
   OrgApacheLuceneSearchBulkScorer_init(self);
   return self;
 }

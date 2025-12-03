@@ -1,13 +1,13 @@
 @interface AVCaptureDeviceFakeBiasControlRequest
-- (void)setFakeBiasCompletionTime:(id *)a3;
+- (void)setFakeBiasCompletionTime:(id *)time;
 @end
 
 @implementation AVCaptureDeviceFakeBiasControlRequest
 
-- (void)setFakeBiasCompletionTime:(id *)a3
+- (void)setFakeBiasCompletionTime:(id *)time
 {
-  var3 = a3->var3;
-  *(&self->_fakeBias + 1) = *&a3->var0;
+  var3 = time->var3;
+  *(&self->_fakeBias + 1) = *&time->var0;
   *&self->_fakeBiasCompletionTime.flags = var3;
 }
 

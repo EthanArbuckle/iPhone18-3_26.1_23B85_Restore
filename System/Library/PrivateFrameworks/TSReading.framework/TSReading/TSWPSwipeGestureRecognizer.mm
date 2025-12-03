@@ -1,26 +1,26 @@
 @interface TSWPSwipeGestureRecognizer
-- (BOOL)p_swipeDirectionValidForAngle:(double)a3 direction:(int)a4;
-- (BOOL)p_swipeDirectionValidForXDiff:(double)a3 yDiff:(double)a4;
-- (BOOL)p_touchWasSwipe:(id)a3 movedFarOut:(BOOL *)a4;
-- (CGPoint)locationInView:(id)a3;
+- (BOOL)p_swipeDirectionValidForAngle:(double)angle direction:(int)direction;
+- (BOOL)p_swipeDirectionValidForXDiff:(double)diff yDiff:(double)yDiff;
+- (BOOL)p_touchWasSwipe:(id)swipe movedFarOut:(BOOL *)out;
+- (CGPoint)locationInView:(id)view;
 - (void)dealloc;
-- (void)p_recordTouches:(id)a3;
+- (void)p_recordTouches:(id)touches;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation TSWPSwipeGestureRecognizer
 
-- (BOOL)p_swipeDirectionValidForAngle:(double)a3 direction:(int)a4
+- (BOOL)p_swipeDirectionValidForAngle:(double)angle direction:(int)direction
 {
-  if (a4 == 1)
+  if (direction == 1)
   {
     v6 = 3.14159265;
   }
 
-  else if (a4 == 8)
+  else if (direction == 8)
   {
     v6 = -1.57079633;
   }
@@ -28,19 +28,19 @@
   else
   {
     v6 = 0.0;
-    if (a4 == 4)
+    if (direction == 4)
     {
       v6 = 1.57079633;
     }
   }
 
-  [(TSWPSwipeGestureRecognizer *)self p_angleDifferenceForAngle1:a3 angle2:v6, v4, v5];
+  [(TSWPSwipeGestureRecognizer *)self p_angleDifferenceForAngle1:angle angle2:v6, v4, v5];
   return fabs(v7) <= 0.785398163;
 }
 
-- (BOOL)p_swipeDirectionValidForXDiff:(double)a3 yDiff:(double)a4
+- (BOOL)p_swipeDirectionValidForXDiff:(double)diff yDiff:(double)yDiff
 {
-  v5 = atan2(a4, a3);
+  v5 = atan2(yDiff, diff);
   v6 = v5;
   mDirection = self->mDirection;
   if ((mDirection & 4) != 0)
@@ -82,14 +82,14 @@
   return [(TSWPSwipeGestureRecognizer *)self p_swipeDirectionValidForAngle:2 direction:v6];
 }
 
-- (void)p_recordTouches:(id)a3
+- (void)p_recordTouches:(id)touches
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [touches countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -100,7 +100,7 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(touches);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -113,7 +113,7 @@
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [touches countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -126,32 +126,32 @@
   }
 }
 
-- (BOOL)p_touchWasSwipe:(id)a3 movedFarOut:(BOOL *)a4
+- (BOOL)p_touchWasSwipe:(id)swipe movedFarOut:(BOOL *)out
 {
-  *a4 = 0;
+  *out = 0;
   v7 = [(TSUPointerKeyDictionary *)self->mStartLocations objectForKeyedSubscript:?];
   if (v7)
   {
     [v7 getValue:&v13];
-    [a3 locationInView:{objc_msgSend(a3, "view")}];
+    [swipe locationInView:{objc_msgSend(swipe, "view")}];
     if ((v9 - v14) * (v9 - v14) + (v8 - v13) * (v8 - v13) >= 2500.0)
     {
-      *a4 = 1;
+      *out = 1;
       return [TSWPSwipeGestureRecognizer p_swipeDirectionValidForXDiff:"p_swipeDirectionValidForXDiff:yDiff:" yDiff:?];
     }
   }
 
   else
   {
-    v11 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPSwipeGestureRecognizer p_touchWasSwipe:movedFarOut:]"];
-    [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPSwipeGestureRecognizer.mm"), 109, @"invalid nil value for '%s'", "value"}];
+    [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPSwipeGestureRecognizer.mm"), 109, @"invalid nil value for '%s'", "value"}];
   }
 
   return 0;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = [(TSUPointerKeyDictionary *)self->mStartLocations count];
@@ -159,8 +159,8 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [(TSUPointerKeyDictionary *)self->mStartLocations allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allKeys = [(TSUPointerKeyDictionary *)self->mStartLocations allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -173,15 +173,15 @@
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
-        [*(*(&v17 + 1) + 8 * i) locationInView:a3];
+        [*(*(&v17 + 1) + 8 * i) locationInView:view];
         v11 = v11 + v13;
         v10 = v10 + v14;
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -200,12 +200,12 @@
   return result;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = TSWPSwipeGestureRecognizer;
-  [(TSWPSwipeGestureRecognizer *)&v10 touchesBegan:a3 withEvent:a4];
-  [objc_msgSend(a3 "anyObject")];
+  [(TSWPSwipeGestureRecognizer *)&v10 touchesBegan:began withEvent:event];
+  [objc_msgSend(began "anyObject")];
   self->mStartTime = v6;
   mStartLocations = self->mStartLocations;
   if (!mStartLocations)
@@ -215,8 +215,8 @@
   }
 
   [(TSUPointerKeyDictionary *)mStartLocations removeAllObjects];
-  [(TSWPSwipeGestureRecognizer *)self p_recordTouches:a3];
-  v8 = [a3 count];
+  [(TSWPSwipeGestureRecognizer *)self p_recordTouches:began];
+  v8 = [began count];
   mNumberOfTouchesRequired = self->mNumberOfTouchesRequired;
   if (![-[TSWPSwipeGestureRecognizer delegate](self "delegate")] || v8 > mNumberOfTouchesRequired)
   {
@@ -224,20 +224,20 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v19 = *MEMORY[0x277D85DE8];
   v17.receiver = self;
   v17.super_class = TSWPSwipeGestureRecognizer;
-  [(TSWPSwipeGestureRecognizer *)&v17 touchesMoved:a3 withEvent:a4];
-  [(TSWPSwipeGestureRecognizer *)self p_recordTouches:a3];
-  if (self->mTouchCountAttained <= self->mNumberOfTouchesRequired && ([objc_msgSend(a3 "anyObject")], v6 - self->mStartTime <= 0.150000006))
+  [(TSWPSwipeGestureRecognizer *)&v17 touchesMoved:moved withEvent:event];
+  [(TSWPSwipeGestureRecognizer *)self p_recordTouches:moved];
+  if (self->mTouchCountAttained <= self->mNumberOfTouchesRequired && ([objc_msgSend(moved "anyObject")], v6 - self->mStartTime <= 0.150000006))
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = [a3 countByEnumeratingWithState:&v13 objects:v18 count:16];
+    v7 = [moved countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -248,7 +248,7 @@
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(moved);
           }
 
           v11 = *(*(&v13 + 1) + 8 * i);
@@ -259,7 +259,7 @@
           }
         }
 
-        v8 = [a3 countByEnumeratingWithState:&v13 objects:v18 count:16];
+        v8 = [moved countByEnumeratingWithState:&v13 objects:v18 count:16];
       }
 
       while (v8);
@@ -272,18 +272,18 @@
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v32 = *MEMORY[0x277D85DE8];
   [(TSWPSwipeGestureRecognizer *)self p_recordTouches:?];
-  [objc_msgSend(a3 "anyObject")];
+  [objc_msgSend(ended "anyObject")];
   if (v7 - self->mStartTime <= 0.150000006)
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v8 = [a3 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    v8 = [ended countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v8)
     {
       v9 = v8;
@@ -295,7 +295,7 @@
         {
           if (*v27 != v11)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(ended);
           }
 
           v13 = *(*(&v26 + 1) + 8 * i);
@@ -306,7 +306,7 @@
           }
         }
 
-        v9 = [a3 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v9 = [ended countByEnumeratingWithState:&v26 objects:v31 count:16];
       }
 
       while (v9);
@@ -318,7 +318,7 @@
     }
 
     v14 = [(TSUPointerKeyDictionary *)self->mStartLocations count];
-    if (v14 == [a3 count])
+    if (v14 == [ended count])
     {
       if (((self->mTouchCountAttained == self->mNumberOfTouchesRequired) & v10) != 0)
       {
@@ -337,7 +337,7 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v16 = [a3 countByEnumeratingWithState:&v21 objects:v30 count:16];
+    v16 = [ended countByEnumeratingWithState:&v21 objects:v30 count:16];
     if (v16)
     {
       v17 = v16;
@@ -348,13 +348,13 @@
         {
           if (*v22 != v18)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(ended);
           }
 
           [(TSUPointerKeyDictionary *)self->mStartLocations removeObjectForKey:*(*(&v21 + 1) + 8 * j)];
         }
 
-        v17 = [a3 countByEnumeratingWithState:&v21 objects:v30 count:16];
+        v17 = [ended countByEnumeratingWithState:&v21 objects:v30 count:16];
       }
 
       while (v17);
@@ -368,7 +368,7 @@
 
   v20.receiver = self;
   v20.super_class = TSWPSwipeGestureRecognizer;
-  [(TSWPSwipeGestureRecognizer *)&v20 touchesEnded:a3 withEvent:a4];
+  [(TSWPSwipeGestureRecognizer *)&v20 touchesEnded:ended withEvent:event];
 }
 
 - (void)reset

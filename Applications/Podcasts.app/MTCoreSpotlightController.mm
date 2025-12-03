@@ -1,31 +1,31 @@
 @interface MTCoreSpotlightController
 - (BOOL)hasBeenIndexed;
 - (MTCoreSpotlightController)init;
-- (MTCoreSpotlightController)initWithAnnotator:(id)a3;
+- (MTCoreSpotlightController)initWithAnnotator:(id)annotator;
 - (id)savedPartialUploadStateIndexPath;
-- (void)_didCompleteBatchProcessingBatchGenerator:(id)a3 state:(int64_t)a4 error:(id)a5;
+- (void)_didCompleteBatchProcessingBatchGenerator:(id)generator state:(int64_t)state error:(id)error;
 - (void)_onIndexingQueueHandleNextBatchOrUpdateRequest;
-- (void)_onIndexingQueuePerformUpdateRequest:(id)a3;
+- (void)_onIndexingQueuePerformUpdateRequest:(id)request;
 - (void)_onQueueCancelCurrentReindexAll;
-- (void)_onQueuePerformCompletionsForGenerator:(id)a3 error:(id)a4;
-- (void)_onQueueStartProcessNextBatchInGenerator:(id)a3 searchableIndex:(id)a4;
+- (void)_onQueuePerformCompletionsForGenerator:(id)generator error:(id)error;
+- (void)_onQueueStartProcessNextBatchInGenerator:(id)generator searchableIndex:(id)index;
 - (void)_performDeferredIndexAll;
-- (void)_podcastArtworkDidChangeNotification:(id)a3;
-- (void)_prepareToHandleNextBatchWithReadyBlock:(id)a3;
-- (void)_startProcessNextBatchInGenerator:(id)a3 searchableIndex:(id)a4;
+- (void)_podcastArtworkDidChangeNotification:(id)notification;
+- (void)_prepareToHandleNextBatchWithReadyBlock:(id)block;
+- (void)_startProcessNextBatchInGenerator:(id)generator searchableIndex:(id)index;
 - (void)clearHasBeenIndexed;
 - (void)clearPartialUploadState;
-- (void)deleteSearchableItemsWithIdentifiers:(id)a3;
-- (void)indexAllDataWithSearchableIndex:(id)a3 completionHandler:(id)a4;
-- (void)libraryDidChange:(id)a3;
+- (void)deleteSearchableItemsWithIdentifiers:(id)identifiers;
+- (void)indexAllDataWithSearchableIndex:(id)index completionHandler:(id)handler;
+- (void)libraryDidChange:(id)change;
 - (void)markHasBeenIndexed;
-- (void)savePartialUploadStateIndexPath:(id)a3;
+- (void)savePartialUploadStateIndexPath:(id)path;
 - (void)scheduleIndexAllIfNecessary;
-- (void)searchableIndex:(id)a3 indexSearchableItems:(id)a4 completionHandler:(id)a5;
-- (void)searchableIndex:(id)a3 reindexAllSearchableItemsWithAcknowledgementHandler:(id)a4;
-- (void)searchableIndex:(id)a3 reindexSearchableItemsWithIdentifiers:(id)a4 acknowledgementHandler:(id)a5;
-- (void)updateSearchableIndexWithReason:(id)a3 searchableIndex:(id)a4 entityLoadingBlock:(id)a5 completion:(id)a6;
-- (void)updateStationsWithUUIDs:(id)a3;
+- (void)searchableIndex:(id)index indexSearchableItems:(id)items completionHandler:(id)handler;
+- (void)searchableIndex:(id)index reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler;
+- (void)searchableIndex:(id)index reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler;
+- (void)updateSearchableIndexWithReason:(id)reason searchableIndex:(id)index entityLoadingBlock:(id)block completion:(id)completion;
+- (void)updateStationsWithUUIDs:(id)ds;
 @end
 
 @implementation MTCoreSpotlightController
@@ -38,21 +38,21 @@
   return v4;
 }
 
-- (void)updateStationsWithUUIDs:(id)a3
+- (void)updateStationsWithUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [v4 allObjects];
-  v6 = [v5 componentsJoinedByString:{@", "}];
+  dsCopy = ds;
+  allObjects = [dsCopy allObjects];
+  v6 = [allObjects componentsJoinedByString:{@", "}];
   v7 = [NSString stringWithFormat:@"Update Stations (%@)", v6];
 
-  v8 = [(MTCoreSpotlightController *)self searchableIndex];
+  searchableIndex = [(MTCoreSpotlightController *)self searchableIndex];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000AF844;
   v10[3] = &unk_1004DAD00;
-  v11 = v4;
-  v9 = v4;
-  [(MTCoreSpotlightController *)self updateSearchableIndexWithReason:v7 searchableIndex:v8 entityLoadingBlock:v10 completion:0];
+  v11 = dsCopy;
+  v9 = dsCopy;
+  [(MTCoreSpotlightController *)self updateSearchableIndexWithReason:v7 searchableIndex:searchableIndex entityLoadingBlock:v10 completion:0];
 }
 
 - (void)scheduleIndexAllIfNecessary
@@ -94,17 +94,17 @@
     }
 
     [(MTCoreSpotlightController *)self setHasDeferredIndexAll:0];
-    v4 = [(MTCoreSpotlightController *)self searchableIndex];
-    [(MTCoreSpotlightController *)self indexAllDataWithSearchableIndex:v4 completionHandler:0];
+    searchableIndex = [(MTCoreSpotlightController *)self searchableIndex];
+    [(MTCoreSpotlightController *)self indexAllDataWithSearchableIndex:searchableIndex completionHandler:0];
   }
 }
 
-- (void)indexAllDataWithSearchableIndex:(id)a3 completionHandler:(id)a4
+- (void)indexAllDataWithSearchableIndex:(id)index completionHandler:(id)handler
 {
-  v5 = a4;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v6 = v5;
+    v6 = handlerCopy;
   }
 
   else
@@ -112,7 +112,7 @@
     v6 = &stru_1004DAD20;
   }
 
-  v7 = [(MTCoreSpotlightController *)self indexingQueue];
+  indexingQueue = [(MTCoreSpotlightController *)self indexingQueue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000AFC94;
@@ -120,76 +120,76 @@
   v9[4] = self;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, v9);
+  dispatch_async(indexingQueue, v9);
 }
 
-- (void)updateSearchableIndexWithReason:(id)a3 searchableIndex:(id)a4 entityLoadingBlock:(id)a5 completion:(id)a6
+- (void)updateSearchableIndexWithReason:(id)reason searchableIndex:(id)index entityLoadingBlock:(id)block completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MTCoreSpotlightController *)self indexingQueue];
+  reasonCopy = reason;
+  indexCopy = index;
+  blockCopy = block;
+  completionCopy = completion;
+  indexingQueue = [(MTCoreSpotlightController *)self indexingQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000B0018;
   block[3] = &unk_1004DAD48;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v11;
-  v17 = v12;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = reasonCopy;
+  v21 = indexCopy;
+  v22 = blockCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = indexCopy;
+  v17 = blockCopy;
+  v18 = reasonCopy;
+  dispatch_async(indexingQueue, block);
 }
 
 - (void)_onQueueCancelCurrentReindexAll
 {
-  v3 = [(MTCoreSpotlightController *)self indexAllBatchGenerator];
+  indexAllBatchGenerator = [(MTCoreSpotlightController *)self indexAllBatchGenerator];
 
-  if (v3)
+  if (indexAllBatchGenerator)
   {
     v4 = _MTLogCategorySpotlight();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(MTCoreSpotlightController *)self indexAllBatchGenerator];
+      indexAllBatchGenerator2 = [(MTCoreSpotlightController *)self indexAllBatchGenerator];
       v8 = 138412290;
-      v9 = v5;
+      v9 = indexAllBatchGenerator2;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[Indexing] *** canceling current indexAll [%@] ***", &v8, 0xCu);
     }
 
-    v6 = [(MTCoreSpotlightController *)self indexAllBatchGenerator];
-    [v6 cancel];
+    indexAllBatchGenerator3 = [(MTCoreSpotlightController *)self indexAllBatchGenerator];
+    [indexAllBatchGenerator3 cancel];
 
-    v7 = [(MTCoreSpotlightController *)self indexAllBatchGenerator];
-    [(MTCoreSpotlightController *)self _onQueuePerformCompletionsForGenerator:v7 error:0];
+    indexAllBatchGenerator4 = [(MTCoreSpotlightController *)self indexAllBatchGenerator];
+    [(MTCoreSpotlightController *)self _onQueuePerformCompletionsForGenerator:indexAllBatchGenerator4 error:0];
 
     [(MTCoreSpotlightController *)self setIndexAllBatchGenerator:0];
     [(MTCoreSpotlightController *)self setHasIndexingOperationInProgress:0];
   }
 }
 
-- (void)_onQueuePerformCompletionsForGenerator:(id)a3 error:(id)a4
+- (void)_onQueuePerformCompletionsForGenerator:(id)generator error:(id)error
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 indexAllCompletions];
-  v8 = [v7 copy];
+  errorCopy = error;
+  generatorCopy = generator;
+  indexAllCompletions = [generatorCopy indexAllCompletions];
+  v8 = [indexAllCompletions copy];
 
-  v9 = [v6 indexAllCompletions];
+  indexAllCompletions2 = [generatorCopy indexAllCompletions];
 
-  [v9 removeAllObjects];
+  [indexAllCompletions2 removeAllObjects];
   v10 = dispatch_get_global_queue(0, 0);
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000B039C;
   v13[3] = &unk_1004D8798;
   v14 = v8;
-  v15 = v5;
-  v11 = v5;
+  v15 = errorCopy;
+  v11 = errorCopy;
   v12 = v8;
   dispatch_async(v10, v13);
 }
@@ -198,114 +198,114 @@
 {
   if (![(MTCoreSpotlightController *)self hasIndexingOperationInProgress])
   {
-    v6 = [(NSMutableArray *)self->_updateIndexRequests firstObject];
-    if (v6)
+    firstObject = [(NSMutableArray *)self->_updateIndexRequests firstObject];
+    if (firstObject)
     {
       [(NSMutableArray *)self->_updateIndexRequests removeObjectAtIndex:0];
-      [(MTCoreSpotlightController *)self _onIndexingQueuePerformUpdateRequest:v6];
+      [(MTCoreSpotlightController *)self _onIndexingQueuePerformUpdateRequest:firstObject];
     }
 
     else
     {
-      v3 = [(MTCoreSpotlightController *)self indexAllBatchGenerator];
+      indexAllBatchGenerator = [(MTCoreSpotlightController *)self indexAllBatchGenerator];
 
-      if (v3)
+      if (indexAllBatchGenerator)
       {
         [(MTCoreSpotlightController *)self setHasIndexingOperationInProgress:1];
-        v4 = [(MTCoreSpotlightController *)self indexAllBatchGenerator];
-        v5 = [(MTCoreSpotlightController *)self searchableIndex];
-        [(MTCoreSpotlightController *)self _onQueueStartProcessNextBatchInGenerator:v4 searchableIndex:v5];
+        indexAllBatchGenerator2 = [(MTCoreSpotlightController *)self indexAllBatchGenerator];
+        searchableIndex = [(MTCoreSpotlightController *)self searchableIndex];
+        [(MTCoreSpotlightController *)self _onQueueStartProcessNextBatchInGenerator:indexAllBatchGenerator2 searchableIndex:searchableIndex];
       }
     }
   }
 }
 
-- (void)_onIndexingQueuePerformUpdateRequest:(id)a3
+- (void)_onIndexingQueuePerformUpdateRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(MTCoreSpotlightController *)self setHasIndexingOperationInProgress:1];
-  v5 = [v4 searchableIndex];
+  searchableIndex = [requestCopy searchableIndex];
   v6 = +[MTDB sharedInstance];
-  v7 = [v6 privateQueueContext];
+  privateQueueContext = [v6 privateQueueContext];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000B0644;
   v11[3] = &unk_1004D8DA8;
-  v12 = v4;
-  v13 = v7;
-  v14 = self;
-  v15 = v5;
-  v8 = v5;
-  v9 = v7;
-  v10 = v4;
+  v12 = requestCopy;
+  v13 = privateQueueContext;
+  selfCopy = self;
+  v15 = searchableIndex;
+  v8 = searchableIndex;
+  v9 = privateQueueContext;
+  v10 = requestCopy;
   [v9 performBlock:v11];
 }
 
-- (void)_prepareToHandleNextBatchWithReadyBlock:(id)a3
+- (void)_prepareToHandleNextBatchWithReadyBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    (*(a3 + 2))(a3);
+    (*(block + 2))(block);
   }
 }
 
-- (void)_onQueueStartProcessNextBatchInGenerator:(id)a3 searchableIndex:(id)a4
+- (void)_onQueueStartProcessNextBatchInGenerator:(id)generator searchableIndex:(id)index
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000B0B40;
   v7[3] = &unk_1004D94C8;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(MTCoreSpotlightController *)v8 _prepareToHandleNextBatchWithReadyBlock:v7];
+  selfCopy = self;
+  generatorCopy = generator;
+  indexCopy = index;
+  v5 = indexCopy;
+  v6 = generatorCopy;
+  [(MTCoreSpotlightController *)selfCopy _prepareToHandleNextBatchWithReadyBlock:v7];
 }
 
-- (void)_startProcessNextBatchInGenerator:(id)a3 searchableIndex:(id)a4
+- (void)_startProcessNextBatchInGenerator:(id)generator searchableIndex:(id)index
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000B0C0C;
   v7[3] = &unk_1004DAE50;
   v7[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  generatorCopy = generator;
+  indexCopy = index;
+  v5 = indexCopy;
+  v6 = generatorCopy;
   [v6 collectNextBatch:v7];
 }
 
-- (void)_didCompleteBatchProcessingBatchGenerator:(id)a3 state:(int64_t)a4 error:(id)a5
+- (void)_didCompleteBatchProcessingBatchGenerator:(id)generator state:(int64_t)state error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (a4 == 4 && !v9)
+  generatorCopy = generator;
+  errorCopy = error;
+  v10 = errorCopy;
+  if (state == 4 && !errorCopy)
   {
     [(MTCoreSpotlightController *)self markHasBeenIndexed];
     [(MTCoreSpotlightController *)self clearPartialUploadState];
   }
 
-  v11 = [(MTCoreSpotlightController *)self indexingQueue];
+  indexingQueue = [(MTCoreSpotlightController *)self indexingQueue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000B10A8;
   v14[3] = &unk_1004DAE78;
-  v15 = v8;
-  v16 = self;
+  v15 = generatorCopy;
+  selfCopy = self;
   v17 = v10;
-  v18 = a4;
+  stateCopy = state;
   v12 = v10;
-  v13 = v8;
-  dispatch_async(v11, v14);
+  v13 = generatorCopy;
+  dispatch_async(indexingQueue, v14);
 }
 
-- (MTCoreSpotlightController)initWithAnnotator:(id)a3
+- (MTCoreSpotlightController)initWithAnnotator:(id)annotator
 {
-  v5 = a3;
+  annotatorCopy = annotator;
   v17.receiver = self;
   v17.super_class = MTCoreSpotlightController;
   v6 = [(MTCoreSpotlightController *)&v17 init];
@@ -314,7 +314,7 @@
     v7 = +[MTDB sharedInstance];
     [v7 addChangeNotifier:v6];
 
-    objc_storeStrong(&v6->_annotator, a3);
+    objc_storeStrong(&v6->_annotator, annotator);
     v8 = +[NSMutableArray array];
     updateIndexRequests = v6->_updateIndexRequests;
     v6->_updateIndexRequests = v8;
@@ -337,9 +337,9 @@
   return v6;
 }
 
-- (void)_podcastArtworkDidChangeNotification:(id)a3
+- (void)_podcastArtworkDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = _MTLogCategorySpotlight();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -362,19 +362,19 @@
   block[2] = sub_1000B1588;
   block[3] = &unk_1004D8798;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v9 = v6;
   dispatch_group_notify(v7, v8, block);
 }
 
-- (void)searchableIndex:(id)a3 indexSearchableItems:(id)a4 completionHandler:(id)a5
+- (void)searchableIndex:(id)index indexSearchableItems:(id)items completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  indexCopy = index;
+  itemsCopy = items;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v10 = v9;
+    v10 = handlerCopy;
   }
 
   else
@@ -382,14 +382,14 @@
     v10 = &stru_1004DAF10;
   }
 
-  if ([v8 count])
+  if ([itemsCopy count])
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1000B19E4;
     v11[3] = &unk_1004DAF60;
-    v12 = v7;
-    v13 = v8;
+    v12 = indexCopy;
+    v13 = itemsCopy;
     v14 = v10;
     [v12 indexSearchableItems:v13 completionHandler:v11];
   }
@@ -400,26 +400,26 @@
   }
 }
 
-- (void)deleteSearchableItemsWithIdentifiers:(id)a3
+- (void)deleteSearchableItemsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  if ([v4 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
-    v5 = [(MTCoreSpotlightController *)self searchableIndex];
-    v6 = [v4 allObjects];
+    searchableIndex = [(MTCoreSpotlightController *)self searchableIndex];
+    allObjects = [identifiersCopy allObjects];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1000B1B78;
     v7[3] = &unk_1004DAF88;
     v7[4] = self;
-    v8 = v4;
-    [v5 deleteSearchableItemsWithIdentifiers:v6 completionHandler:v7];
+    v8 = identifiersCopy;
+    [searchableIndex deleteSearchableItemsWithIdentifiers:allObjects completionHandler:v7];
   }
 }
 
-- (void)libraryDidChange:(id)a3
+- (void)libraryDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if ([(MTCoreSpotlightController *)self hasDeferredIndexAll])
   {
     v5 = _MTLogCategorySpotlight();
@@ -436,7 +436,7 @@
     v20[1] = kMTEpisodeEntityName;
     v20[2] = kMTPlaylistEntityName;
     v6 = [NSArray arrayWithObjects:v20 count:3];
-    v7 = [v4 hasInsertsForEntityNames:v6];
+    v7 = [changeCopy hasInsertsForEntityNames:v6];
 
     if (v7)
     {
@@ -446,16 +446,16 @@
       v17 = sub_100008A1C;
       v18 = sub_10003B4E4;
       v8 = +[MTDB sharedInstance];
-      v19 = [v8 importContext];
+      importContext = [v8 importContext];
 
       v9 = *(v15 + 5);
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_1000B1E10;
       v10[3] = &unk_1004D92B0;
-      v12 = self;
+      selfCopy = self;
       v13 = buf;
-      v11 = v4;
+      v11 = changeCopy;
       [v9 performBlock:v10];
 
       _Block_object_dispose(buf, 8);
@@ -463,40 +463,40 @@
   }
 }
 
-- (void)searchableIndex:(id)a3 reindexAllSearchableItemsWithAcknowledgementHandler:(id)a4
+- (void)searchableIndex:(id)index reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTCoreSpotlightController *)self indexingQueue];
+  indexCopy = index;
+  handlerCopy = handler;
+  indexingQueue = [(MTCoreSpotlightController *)self indexingQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000B21F0;
   block[3] = &unk_1004DABC8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = indexCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = indexCopy;
+  dispatch_async(indexingQueue, block);
 }
 
-- (void)searchableIndex:(id)a3 reindexSearchableItemsWithIdentifiers:(id)a4 acknowledgementHandler:(id)a5
+- (void)searchableIndex:(id)index reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  indexCopy = index;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v11 = dispatch_get_global_queue(-32768, 0);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000B23FC;
   v15[3] = &unk_1004D8770;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = identifiersCopy;
+  selfCopy = self;
+  v18 = indexCopy;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = indexCopy;
+  v14 = identifiersCopy;
   dispatch_async(v11, v15);
 }
 
@@ -566,20 +566,20 @@
   return v10;
 }
 
-- (void)savePartialUploadStateIndexPath:(id)a3
+- (void)savePartialUploadStateIndexPath:(id)path
 {
-  v3 = a3;
-  v4 = [MTCoreSpotlightUtil objectTypeForIndexPath:v3];
+  pathCopy = path;
+  v4 = [MTCoreSpotlightUtil objectTypeForIndexPath:pathCopy];
   v5 = +[NSUserDefaults standardUserDefaults];
   v6 = [NSNumber numberWithUnsignedInteger:v4];
   [v5 setObject:v6 forKey:@"kMTCoreSpotlightGlobalReindex_ObjectType"];
 
-  v7 = [MTCoreSpotlightUtil batchForIndexPath:v3];
+  v7 = [MTCoreSpotlightUtil batchForIndexPath:pathCopy];
   v8 = +[NSUserDefaults standardUserDefaults];
   v9 = [NSNumber numberWithUnsignedInteger:v7];
   [v8 setObject:v9 forKey:@"MTCoreSpotlightGlobalReindex_BatchNumber"];
 
-  v10 = [MTCoreSpotlightUtil indexInBatchForIndexPath:v3];
+  v10 = [MTCoreSpotlightUtil indexInBatchForIndexPath:pathCopy];
   v12 = +[NSUserDefaults standardUserDefaults];
   v11 = [NSNumber numberWithUnsignedInteger:v10];
   [v12 setObject:v11 forKey:@"MTCoreSpotlightGlobalReindex_IndexInBatch"];

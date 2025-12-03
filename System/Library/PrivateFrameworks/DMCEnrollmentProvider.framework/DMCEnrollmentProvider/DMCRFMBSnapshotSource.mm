@@ -1,18 +1,18 @@
 @interface DMCRFMBSnapshotSource
-- (BOOL)startRestoreForSnapshot:(id)a3 excludingAppBundleIdentifiers:(id)a4 completion:(id)a5;
-- (DMCRFMBSnapshotSource)initWithPersonaIdentifier:(id)a3 delegate:(id)a4;
+- (BOOL)startRestoreForSnapshot:(id)snapshot excludingAppBundleIdentifiers:(id)identifiers completion:(id)completion;
+- (DMCRFMBSnapshotSource)initWithPersonaIdentifier:(id)identifier delegate:(id)delegate;
 - (DMCRFSnapshotSourceDelegate)delegate;
-- (void)fetchAppBundleIDsForSnapshot:(id)a3 completion:(id)a4;
-- (void)fetchRestorableSnapshotsWithCompletion:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)fetchAppBundleIDsForSnapshot:(id)snapshot completion:(id)completion;
+- (void)fetchRestorableSnapshotsWithCompletion:(id)completion;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation DMCRFMBSnapshotSource
 
-- (DMCRFMBSnapshotSource)initWithPersonaIdentifier:(id)a3 delegate:(id)a4
+- (DMCRFMBSnapshotSource)initWithPersonaIdentifier:(id)identifier delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = DMCRFMBSnapshotSource;
   v9 = [(DMCRFMBSnapshotSource *)&v20 init];
@@ -29,8 +29,8 @@
     queue = v9->_queue;
     v9->_queue = v11;
 
-    objc_storeStrong(&v9->_personaIdentifier, a3);
-    v13 = [[DMCRFMBRestoreDelegate alloc] initWithDelegate:v8 source:v9];
+    objc_storeStrong(&v9->_personaIdentifier, identifier);
+    v13 = [[DMCRFMBRestoreDelegate alloc] initWithDelegate:delegateCopy source:v9];
     restoreDelegate = v9->_restoreDelegate;
     v9->_restoreDelegate = v13;
 
@@ -51,22 +51,22 @@
 
 - (DMCRFSnapshotSourceDelegate)delegate
 {
-  v2 = [(DMCRFMBSnapshotSource *)self restoreDelegate];
-  v3 = [v2 delegate];
+  restoreDelegate = [(DMCRFMBSnapshotSource *)self restoreDelegate];
+  delegate = [restoreDelegate delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(DMCRFMBSnapshotSource *)self restoreDelegate];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  restoreDelegate = [(DMCRFMBSnapshotSource *)self restoreDelegate];
+  [restoreDelegate setDelegate:delegateCopy];
 }
 
-- (void)fetchRestorableSnapshotsWithCompletion:(id)a3
+- (void)fetchRestorableSnapshotsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = *(DMCLogObjects() + 32);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -80,15 +80,15 @@
   v16 = __Block_byref_object_copy__0;
   v17 = __Block_byref_object_dispose__0;
   v18 = 0;
-  v6 = [(DMCRFMBSnapshotSource *)self mobileBackup];
+  mobileBackup = [(DMCRFMBSnapshotSource *)self mobileBackup];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__DMCRFMBSnapshotSource_fetchRestorableSnapshotsWithCompletion___block_invoke;
   v10[3] = &unk_278EE80C0;
   v12 = buf;
-  v7 = v4;
+  v7 = completionCopy;
   v11 = v7;
-  [v6 fetchRestorableSnapshotsWithCompletion:v10];
+  [mobileBackup fetchRestorableSnapshotsWithCompletion:v10];
 
   v8 = *(DMCLogObjects() + 32);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -163,10 +163,10 @@ void __64__DMCRFMBSnapshotSource_fetchRestorableSnapshotsWithCompletion___block_
   }
 }
 
-- (void)fetchAppBundleIDsForSnapshot:(id)a3 completion:(id)a4
+- (void)fetchAppBundleIDsForSnapshot:(id)snapshot completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  snapshotCopy = snapshot;
+  completionCopy = completion;
   v8 = *(DMCLogObjects() + 32);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -174,15 +174,15 @@ void __64__DMCRFMBSnapshotSource_fetchRestorableSnapshotsWithCompletion___block_
     _os_log_impl(&dword_247E7D000, v8, OS_LOG_TYPE_DEFAULT, "managed restore, fetchAppBundleIDsForSnapshot:completion: begin", buf, 2u);
   }
 
-  v9 = [v6 wrappedValue];
-  v10 = [(DMCRFMBSnapshotSource *)self mobileBackup];
+  wrappedValue = [snapshotCopy wrappedValue];
+  mobileBackup = [(DMCRFMBSnapshotSource *)self mobileBackup];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __65__DMCRFMBSnapshotSource_fetchAppBundleIDsForSnapshot_completion___block_invoke;
   v13[3] = &unk_278EE80E8;
-  v11 = v7;
+  v11 = completionCopy;
   v14 = v11;
-  [v10 fetchAppBundleIDsForSnapshot:v9 completion:v13];
+  [mobileBackup fetchAppBundleIDsForSnapshot:wrappedValue completion:v13];
 
   v12 = *(DMCLogObjects() + 32);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -210,11 +210,11 @@ void __65__DMCRFMBSnapshotSource_fetchAppBundleIDsForSnapshot_completion___block
   }
 }
 
-- (BOOL)startRestoreForSnapshot:(id)a3 excludingAppBundleIdentifiers:(id)a4 completion:(id)a5
+- (BOOL)startRestoreForSnapshot:(id)snapshot excludingAppBundleIdentifiers:(id)identifiers completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  snapshotCopy = snapshot;
+  completionCopy = completion;
+  identifiersCopy = identifiers;
   v11 = *(DMCLogObjects() + 32);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -222,18 +222,18 @@ void __65__DMCRFMBSnapshotSource_fetchAppBundleIDsForSnapshot_completion___block
     _os_log_impl(&dword_247E7D000, v11, OS_LOG_TYPE_DEFAULT, "managed restore, startRestoreForSnapshot: begin", buf, 2u);
   }
 
-  v12 = [v8 wrappedValue];
+  wrappedValue = [snapshotCopy wrappedValue];
   v13 = objc_opt_new();
-  [v13 setExcludedAppBundleIDs:v10];
+  [v13 setExcludedAppBundleIDs:identifiersCopy];
 
-  v14 = [(DMCRFMBSnapshotSource *)self mobileBackup];
+  mobileBackup = [(DMCRFMBSnapshotSource *)self mobileBackup];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __90__DMCRFMBSnapshotSource_startRestoreForSnapshot_excludingAppBundleIdentifiers_completion___block_invoke;
   v18[3] = &unk_278EE7F58;
-  v15 = v9;
+  v15 = completionCopy;
   v19 = v15;
-  [v14 startRestoreForSnapshot:v12 options:v13 completion:v18];
+  [mobileBackup startRestoreForSnapshot:wrappedValue options:v13 completion:v18];
 
   v16 = *(DMCLogObjects() + 32);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))

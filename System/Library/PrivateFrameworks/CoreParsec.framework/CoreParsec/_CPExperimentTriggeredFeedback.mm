@@ -1,9 +1,9 @@
 @interface _CPExperimentTriggeredFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPExperimentTriggeredFeedback)init;
-- (_CPExperimentTriggeredFeedback)initWithFacade:(id)a3;
+- (_CPExperimentTriggeredFeedback)initWithFacade:(id)facade;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPExperimentTriggeredFeedback
@@ -15,40 +15,40 @@
   return v3 ^ v4 ^ [(NSString *)self->_codepathId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   queryID = self->_queryID;
-  if (queryID != [v4 queryID])
+  if (queryID != [equalCopy queryID])
   {
     goto LABEL_14;
   }
 
   timestamp = self->_timestamp;
-  if (timestamp != [v4 timestamp])
+  if (timestamp != [equalCopy timestamp])
   {
     goto LABEL_14;
   }
 
-  v7 = [(_CPExperimentTriggeredFeedback *)self counterfactual];
-  v8 = [v4 counterfactual];
-  if ((v7 != 0) == (v8 == 0))
+  counterfactual = [(_CPExperimentTriggeredFeedback *)self counterfactual];
+  counterfactual2 = [equalCopy counterfactual];
+  if ((counterfactual != 0) == (counterfactual2 == 0))
   {
     goto LABEL_13;
   }
 
-  v9 = [(_CPExperimentTriggeredFeedback *)self counterfactual];
-  if (v9)
+  counterfactual3 = [(_CPExperimentTriggeredFeedback *)self counterfactual];
+  if (counterfactual3)
   {
-    v10 = v9;
-    v11 = [(_CPExperimentTriggeredFeedback *)self counterfactual];
-    v12 = [v4 counterfactual];
-    v13 = [v11 isEqual:v12];
+    v10 = counterfactual3;
+    counterfactual4 = [(_CPExperimentTriggeredFeedback *)self counterfactual];
+    counterfactual5 = [equalCopy counterfactual];
+    v13 = [counterfactual4 isEqual:counterfactual5];
 
     if (!v13)
     {
@@ -60,12 +60,12 @@
   {
   }
 
-  v7 = [(_CPExperimentTriggeredFeedback *)self codepathId];
-  v8 = [v4 codepathId];
-  if ((v7 != 0) != (v8 == 0))
+  counterfactual = [(_CPExperimentTriggeredFeedback *)self codepathId];
+  counterfactual2 = [equalCopy codepathId];
+  if ((counterfactual != 0) != (counterfactual2 == 0))
   {
-    v14 = [(_CPExperimentTriggeredFeedback *)self codepathId];
-    if (!v14)
+    codepathId = [(_CPExperimentTriggeredFeedback *)self codepathId];
+    if (!codepathId)
     {
 
 LABEL_17:
@@ -73,10 +73,10 @@ LABEL_17:
       goto LABEL_15;
     }
 
-    v15 = v14;
-    v16 = [(_CPExperimentTriggeredFeedback *)self codepathId];
-    v17 = [v4 codepathId];
-    v18 = [v16 isEqual:v17];
+    v15 = codepathId;
+    codepathId2 = [(_CPExperimentTriggeredFeedback *)self codepathId];
+    codepathId3 = [equalCopy codepathId];
+    v18 = [codepathId2 isEqual:codepathId3];
 
     if (v18)
     {
@@ -96,9 +96,9 @@ LABEL_15:
   return v19;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   if ([(_CPExperimentTriggeredFeedback *)self queryID])
   {
     queryID = self->_queryID;
@@ -111,22 +111,22 @@ LABEL_15:
     PBDataWriterWriteUint64Field();
   }
 
-  v6 = [(_CPExperimentTriggeredFeedback *)self counterfactual];
+  counterfactual = [(_CPExperimentTriggeredFeedback *)self counterfactual];
 
-  if (v6)
+  if (counterfactual)
   {
-    v7 = [(_CPExperimentTriggeredFeedback *)self counterfactual];
+    counterfactual2 = [(_CPExperimentTriggeredFeedback *)self counterfactual];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_CPExperimentTriggeredFeedback *)self codepathId];
+  codepathId = [(_CPExperimentTriggeredFeedback *)self codepathId];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (codepathId)
   {
     codepathId = self->_codepathId;
     PBDataWriterWriteStringField();
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
@@ -144,33 +144,33 @@ LABEL_15:
   return v2;
 }
 
-- (_CPExperimentTriggeredFeedback)initWithFacade:(id)a3
+- (_CPExperimentTriggeredFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_CPExperimentTriggeredFeedback *)self init];
   if (v5)
   {
-    -[_CPExperimentTriggeredFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    v6 = [v4 counterfactual];
+    -[_CPExperimentTriggeredFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    counterfactual = [facadeCopy counterfactual];
 
-    if (v6)
+    if (counterfactual)
     {
       v7 = objc_alloc_init(_CPCounterfactualInfo);
-      v8 = [v4 counterfactual];
-      -[_CPCounterfactualInfo setCfDiffered:](v7, "setCfDiffered:", [v8 cfDiffered]);
+      counterfactual2 = [facadeCopy counterfactual];
+      -[_CPCounterfactualInfo setCfDiffered:](v7, "setCfDiffered:", [counterfactual2 cfDiffered]);
 
-      v9 = [v4 counterfactual];
-      -[_CPCounterfactualInfo setCfUsed:](v7, "setCfUsed:", [v9 cfUsed]);
+      counterfactual3 = [facadeCopy counterfactual];
+      -[_CPCounterfactualInfo setCfUsed:](v7, "setCfUsed:", [counterfactual3 cfUsed]);
 
-      v10 = [v4 counterfactual];
-      -[_CPCounterfactualInfo setCfError:](v7, "setCfError:", [v10 cfError]);
+      counterfactual4 = [facadeCopy counterfactual];
+      -[_CPCounterfactualInfo setCfError:](v7, "setCfError:", [counterfactual4 cfError]);
 
       [(_CPExperimentTriggeredFeedback *)v5 setCounterfactual:v7];
     }
 
-    v11 = [v4 codepathId];
-    v12 = [v11 UUIDString];
-    [(_CPExperimentTriggeredFeedback *)v5 setCodepathId:v12];
+    codepathId = [facadeCopy codepathId];
+    uUIDString = [codepathId UUIDString];
+    [(_CPExperimentTriggeredFeedback *)v5 setCodepathId:uUIDString];
 
     v13 = v5;
   }

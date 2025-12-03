@@ -9,7 +9,7 @@
 {
   v4 = 0;
   memset(v3, 0, sizeof(v3));
-  [a1 audioStreamBasicDescription];
+  [self audioStreamBasicDescription];
   v1 = ASDTBaseLogType();
   if (os_log_type_enabled(v1, OS_LOG_TYPE_ERROR))
   {
@@ -22,9 +22,9 @@
 - (void)asdtEquivalentNativeFloatPacked
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
-  v3 = HIBYTE(*a1);
-  if ((*a1 - 0x20000000) >> 24 >= 0x5F)
+  v2 = *self;
+  v3 = HIBYTE(*self);
+  if ((*self - 0x20000000) >> 24 >= 0x5F)
   {
     v3 = 32;
   }
@@ -41,7 +41,7 @@
     v5 = 32;
   }
 
-  v6 = *a1;
+  v6 = *self;
   v8[0] = 67109888;
   v8[1] = v3;
   v9 = 1024;

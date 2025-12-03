@@ -1,16 +1,16 @@
 @interface UITableViewAccessibility__BatteryUsageUI__UIKit
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)_accessibilityBoundsOfCellsToLoad;
 - (CGRect)_visibleBounds;
 @end
 
 @implementation UITableViewAccessibility__BatteryUsageUI__UIKit
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BatteryUIController"];
-  [v3 validateClass:@"UITableView" hasInstanceMethod:@"_visibleBounds" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BatteryUIController"];
+  [validationsCopy validateClass:@"UITableView" hasInstanceMethod:@"_visibleBounds" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
 }
 
 - (CGRect)_accessibilityBoundsOfCellsToLoad
@@ -33,9 +33,9 @@
   MEMORY[0x29C2CCC70](@"BatteryUIController");
   if ((objc_opt_isKindOfClass() & 1) != 0 && UIAccessibilityIsVoiceOverRunning())
   {
-    v12 = [(UITableViewAccessibility__BatteryUsageUI__UIKit *)self isAccessibilityOpaqueElementProvider];
+    isAccessibilityOpaqueElementProvider = [(UITableViewAccessibility__BatteryUsageUI__UIKit *)self isAccessibilityOpaqueElementProvider];
 
-    if (v12)
+    if (isAccessibilityOpaqueElementProvider)
     {
       [(UITableViewAccessibility__BatteryUsageUI__UIKit *)self _accessibilityBoundsOfCellsToLoad];
       v25.origin.x = v13;

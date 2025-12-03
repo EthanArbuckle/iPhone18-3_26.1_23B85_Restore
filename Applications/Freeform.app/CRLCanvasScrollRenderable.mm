@@ -1,29 +1,29 @@
 @interface CRLCanvasScrollRenderable
 + (id)renderable;
-+ (id)renderableFromScrollLayer:(id)a3;
-- (CRLCanvasScrollRenderable)initWithScrollLayer:(id)a3;
++ (id)renderableFromScrollLayer:(id)layer;
+- (CRLCanvasScrollRenderable)initWithScrollLayer:(id)layer;
 @end
 
 @implementation CRLCanvasScrollRenderable
 
-- (CRLCanvasScrollRenderable)initWithScrollLayer:(id)a3
+- (CRLCanvasScrollRenderable)initWithScrollLayer:(id)layer
 {
   v4.receiver = self;
   v4.super_class = CRLCanvasScrollRenderable;
-  return [(CRLCanvasRenderable *)&v4 initWithCALayer:a3];
+  return [(CRLCanvasRenderable *)&v4 initWithCALayer:layer];
 }
 
-+ (id)renderableFromScrollLayer:(id)a3
++ (id)renderableFromScrollLayer:(id)layer
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithScrollLayer:v4];
+  layerCopy = layer;
+  v5 = [[self alloc] initWithScrollLayer:layerCopy];
 
   return v5;
 }
 
 + (id)renderable
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[CAScrollLayer layer];
   v4 = [v2 initWithScrollLayer:v3];
 

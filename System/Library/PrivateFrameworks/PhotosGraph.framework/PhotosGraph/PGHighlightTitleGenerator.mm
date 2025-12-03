@@ -1,7 +1,7 @@
 @interface PGHighlightTitleGenerator
-+ (id)commonMeaningLabelForTitleUsingMomentNodes:(id)a3;
++ (id)commonMeaningLabelForTitleUsingMomentNodes:(id)nodes;
 + (id)meaningLabelsSortedByPriority;
-- (PGHighlightTitleGenerator)initWithCollection:(id)a3 filteredMomentNodes:(id)a4 curatedAssetCollection:(id)a5 keyAsset:(id)a6 createVerboseTitle:(BOOL)a7 titleGenerationContext:(id)a8;
+- (PGHighlightTitleGenerator)initWithCollection:(id)collection filteredMomentNodes:(id)nodes curatedAssetCollection:(id)assetCollection keyAsset:(id)asset createVerboseTitle:(BOOL)title titleGenerationContext:(id)context;
 - (PGTitleTuple)titleTuple;
 - (void)_generateTitleTuples;
 @end
@@ -10,28 +10,28 @@
 
 - (void)_generateTitleTuples
 {
-  v3 = [(PGHighlightTitleGenerator *)self collection];
-  if ([v3 isAggregation])
+  collection = [(PGHighlightTitleGenerator *)self collection];
+  if ([collection isAggregation])
   {
     titleTuple = self->_titleTuple;
     self->_titleTuple = 0;
 
     v5 = +[PGLogging sharedLogging];
-    v6 = [v5 loggingConnection];
+    loggingConnection = [v5 loggingConnection];
 
-    if (os_log_type_enabled(&v6->super.super, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(&loggingConnection->super.super, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_22F0FC000, &v6->super.super, OS_LOG_TYPE_INFO, "Collection is aggregation, skipping title generation", buf, 2u);
+      _os_log_impl(&dword_22F0FC000, &loggingConnection->super.super, OS_LOG_TYPE_INFO, "Collection is aggregation, skipping title generation", buf, 2u);
     }
 
     goto LABEL_26;
   }
 
-  if (![v3 isTrip])
+  if (![collection isTrip])
   {
-    v7 = [(MAElementCollection *)self->_momentNodes temporarySet];
-    v8 = [objc_opt_class() commonMeaningLabelForTitleUsingMomentNodes:v7];
+    temporarySet = [(MAElementCollection *)self->_momentNodes temporarySet];
+    v8 = [objc_opt_class() commonMeaningLabelForTitleUsingMomentNodes:temporarySet];
     if (v8)
     {
       v9 = +[PGMeaningfulEventRequiredCriteriaFactory availableMeaningLabels];
@@ -54,10 +54,10 @@
           goto LABEL_18;
         }
 
-        v13 = [[PGSpecBasedHighlightTitleGenerator alloc] initWithMomentNodes:v7 meaningLabel:v8 createVerboseTitle:self->_createVerboseTitle titleGenerationContext:self->_titleGenerationContext];
+        v13 = [[PGSpecBasedHighlightTitleGenerator alloc] initWithMomentNodes:temporarySet meaningLabel:v8 createVerboseTitle:self->_createVerboseTitle titleGenerationContext:self->_titleGenerationContext];
         if (v13)
         {
-          v6 = v13;
+          loggingConnection = v13;
 LABEL_21:
 
           goto LABEL_22;
@@ -66,26 +66,26 @@ LABEL_21:
     }
 
 LABEL_18:
-    v14 = [(PGGraphMomentNodeCollection *)self->_momentNodes publicEventNodes];
-    v15 = [v14 categoryNodes];
-    v16 = [(PGTitleGenerationContext *)self->_titleGenerationContext appleEventsCategoryNodes];
-    v17 = [v15 intersectsCollection:v16];
+    publicEventNodes = [(PGGraphMomentNodeCollection *)self->_momentNodes publicEventNodes];
+    categoryNodes = [publicEventNodes categoryNodes];
+    appleEventsCategoryNodes = [(PGTitleGenerationContext *)self->_titleGenerationContext appleEventsCategoryNodes];
+    v17 = [categoryNodes intersectsCollection:appleEventsCategoryNodes];
 
-    if (!v17 || (v18 = [PGSpecBasedHighlightTitleGenerator alloc], [MEMORY[0x277D27780] appleEvents], v19 = objc_claimAutoreleasedReturnValue(), v6 = -[PGSpecBasedHighlightTitleGenerator initWithMomentNodes:meaningLabel:createVerboseTitle:titleGenerationContext:](v18, "initWithMomentNodes:meaningLabel:createVerboseTitle:titleGenerationContext:", v7, v19, self->_createVerboseTitle, self->_titleGenerationContext), v19, !v6))
+    if (!v17 || (v18 = [PGSpecBasedHighlightTitleGenerator alloc], [MEMORY[0x277D27780] appleEvents], v19 = objc_claimAutoreleasedReturnValue(), loggingConnection = -[PGSpecBasedHighlightTitleGenerator initWithMomentNodes:meaningLabel:createVerboseTitle:titleGenerationContext:](v18, "initWithMomentNodes:meaningLabel:createVerboseTitle:titleGenerationContext:", temporarySet, v19, self->_createVerboseTitle, self->_titleGenerationContext), v19, !loggingConnection))
     {
       v20 = [PGTitleGenerator alloc];
-      v21 = [(PGHighlightTitleGenerator *)self keyAsset];
-      v6 = [(PGTitleGenerator *)v20 initWithMomentNodes:v7 referenceDateInterval:0 keyAsset:v21 curatedAssetCollection:self->_curatedAssetCollection assetCollection:self->_curatedAssetCollection type:0 titleGenerationContext:self->_titleGenerationContext];
+      keyAsset = [(PGHighlightTitleGenerator *)self keyAsset];
+      loggingConnection = [(PGTitleGenerator *)v20 initWithMomentNodes:temporarySet referenceDateInterval:0 keyAsset:keyAsset curatedAssetCollection:self->_curatedAssetCollection assetCollection:self->_curatedAssetCollection type:0 titleGenerationContext:self->_titleGenerationContext];
 
-      [(PGTitleGenerator *)v6 setIsForHighlight:1];
+      [(PGTitleGenerator *)loggingConnection setIsForHighlight:1];
     }
 
     goto LABEL_21;
   }
 
-  v6 = [[PGTripHighlightTitleGenerator alloc] initWithCollection:v3 titleGenerationContext:self->_titleGenerationContext];
+  loggingConnection = [[PGTripHighlightTitleGenerator alloc] initWithCollection:collection titleGenerationContext:self->_titleGenerationContext];
 LABEL_22:
-  [(PGTitleGenerator *)v6 setLineBreakBehavior:2];
+  [(PGTitleGenerator *)loggingConnection setLineBreakBehavior:2];
   if (self->_createVerboseTitle)
   {
     v22 = 3;
@@ -96,10 +96,10 @@ LABEL_22:
     v22 = 2;
   }
 
-  [(PGTitleGenerator *)v6 setPreferredTitleType:v22];
-  v23 = [(PGTitleGenerator *)v6 title];
+  [(PGTitleGenerator *)loggingConnection setPreferredTitleType:v22];
+  title = [(PGTitleGenerator *)loggingConnection title];
   v24 = [PGTitle titleWithString:&stru_2843F5C58 category:0];
-  v25 = [[PGTitleTuple alloc] initWithWithTitle:v23 subtitle:v24];
+  v25 = [[PGTitleTuple alloc] initWithWithTitle:title subtitle:v24];
   v26 = self->_titleTuple;
   self->_titleTuple = v25;
 
@@ -118,25 +118,25 @@ LABEL_26:
   return titleTuple;
 }
 
-- (PGHighlightTitleGenerator)initWithCollection:(id)a3 filteredMomentNodes:(id)a4 curatedAssetCollection:(id)a5 keyAsset:(id)a6 createVerboseTitle:(BOOL)a7 titleGenerationContext:(id)a8
+- (PGHighlightTitleGenerator)initWithCollection:(id)collection filteredMomentNodes:(id)nodes curatedAssetCollection:(id)assetCollection keyAsset:(id)asset createVerboseTitle:(BOOL)title titleGenerationContext:(id)context
 {
-  v22 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
+  collectionCopy = collection;
+  nodesCopy = nodes;
+  assetCollectionCopy = assetCollection;
+  assetCopy = asset;
+  contextCopy = context;
   v23.receiver = self;
   v23.super_class = PGHighlightTitleGenerator;
   v18 = [(PGHighlightTitleGenerator *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_collection, a3);
-    objc_storeStrong(&v19->_momentNodes, a4);
-    objc_storeStrong(&v19->_curatedAssetCollection, a5);
-    objc_storeStrong(&v19->_keyAsset, a6);
-    v19->_createVerboseTitle = a7;
-    objc_storeStrong(&v19->_titleGenerationContext, a8);
+    objc_storeStrong(&v18->_collection, collection);
+    objc_storeStrong(&v19->_momentNodes, nodes);
+    objc_storeStrong(&v19->_curatedAssetCollection, assetCollection);
+    objc_storeStrong(&v19->_keyAsset, asset);
+    v19->_createVerboseTitle = title;
+    objc_storeStrong(&v19->_titleGenerationContext, context);
   }
 
   return v19;
@@ -168,18 +168,18 @@ void __58__PGHighlightTitleGenerator_meaningLabelsSortedByPriority__block_invoke
   [meaningLabelsSortedByPriority_sortedLabels addObjectsFromArray:v4];
 }
 
-+ (id)commonMeaningLabelForTitleUsingMomentNodes:(id)a3
++ (id)commonMeaningLabelForTitleUsingMomentNodes:(id)nodes
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  nodesCopy = nodes;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  obj = v4;
+  obj = nodesCopy;
   v30 = [obj countByEnumeratingWithState:&v44 objects:v50 count:16];
-  v27 = a1;
+  selfCopy = self;
   v6 = 0;
   if (v30)
   {
@@ -197,13 +197,13 @@ void __58__PGHighlightTitleGenerator_meaningLabelsSortedByPriority__block_invoke
 
         v31 = v7;
         v8 = *(*(&v44 + 1) + 8 * v7);
-        v9 = [v8 numberOfAssets];
-        v10 = [v8 meaningLabels];
+        numberOfAssets = [v8 numberOfAssets];
+        meaningLabels = [v8 meaningLabels];
         v40 = 0u;
         v41 = 0u;
         v42 = 0u;
         v43 = 0u;
-        v11 = [v10 countByEnumeratingWithState:&v40 objects:v49 count:16];
+        v11 = [meaningLabels countByEnumeratingWithState:&v40 objects:v49 count:16];
         if (v11)
         {
           v12 = v11;
@@ -214,22 +214,22 @@ void __58__PGHighlightTitleGenerator_meaningLabelsSortedByPriority__block_invoke
             {
               if (*v41 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(meaningLabels);
               }
 
               v15 = *(*(&v40 + 1) + 8 * i);
-              v16 = [v5 objectForKeyedSubscript:v15];
-              v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v16, "unsignedIntegerValue") + v9}];
-              [v5 setObject:v17 forKeyedSubscript:v15];
+              v16 = [dictionary objectForKeyedSubscript:v15];
+              v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v16, "unsignedIntegerValue") + numberOfAssets}];
+              [dictionary setObject:v17 forKeyedSubscript:v15];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v40 objects:v49 count:16];
+            v12 = [meaningLabels countByEnumeratingWithState:&v40 objects:v49 count:16];
           }
 
           while (v12);
         }
 
-        v6 = v9 + v32;
+        v6 = numberOfAssets + v32;
 
         v7 = v31 + 1;
       }
@@ -249,7 +249,7 @@ void __58__PGHighlightTitleGenerator_meaningLabelsSortedByPriority__block_invoke
   v39 = v6;
   v19 = v18;
   v38 = v19;
-  [v5 enumerateKeysAndObjectsUsingBlock:v37];
+  [dictionary enumerateKeysAndObjectsUsingBlock:v37];
   [objc_opt_class() meaningLabelsSortedByPriority];
   v33 = 0u;
   v34 = 0u;
@@ -269,7 +269,7 @@ void __58__PGHighlightTitleGenerator_meaningLabelsSortedByPriority__block_invoke
         }
 
         v24 = *(*(&v33 + 1) + 8 * j);
-        if ([v19 containsObject:{v24, v27}])
+        if ([v19 containsObject:{v24, selfCopy}])
         {
           v21 = v24;
           goto LABEL_25;

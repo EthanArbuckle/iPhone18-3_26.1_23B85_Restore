@@ -2,7 +2,7 @@
 - (BOOL)checkIfCancelledOrFinished;
 - (NSString)searchQuery;
 - (_TtC4Maps23SearchMapsSyncOperation)init;
-- (_TtC4Maps23SearchMapsSyncOperation)initWithSearchQuery:(id)a3 context:(id)a4 includeCustomRoutes:(BOOL)a5;
+- (_TtC4Maps23SearchMapsSyncOperation)initWithSearchQuery:(id)query context:(id)context includeCustomRoutes:(BOOL)routes;
 - (_TtP4Maps31SearchMapsSyncOperationDelegate_)delegate;
 - (id)matchInfo;
 - (void)cancel;
@@ -28,7 +28,7 @@
   return Strong;
 }
 
-- (_TtC4Maps23SearchMapsSyncOperation)initWithSearchQuery:(id)a3 context:(id)a4 includeCustomRoutes:(BOOL)a5
+- (_TtC4Maps23SearchMapsSyncOperation)initWithSearchQuery:(id)query context:(id)context includeCustomRoutes:(BOOL)routes
 {
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
@@ -39,17 +39,17 @@
   v11 = (self + OBJC_IVAR____TtC4Maps23SearchMapsSyncOperation_searchQuery);
   *v11 = v8;
   v11[1] = v10;
-  *(self + OBJC_IVAR____TtC4Maps23SearchMapsSyncOperation_context) = a4;
-  *(self + OBJC_IVAR____TtC4Maps23SearchMapsSyncOperation_includeCustomRoutes) = a5;
+  *(self + OBJC_IVAR____TtC4Maps23SearchMapsSyncOperation_context) = context;
+  *(self + OBJC_IVAR____TtC4Maps23SearchMapsSyncOperation_includeCustomRoutes) = routes;
   v14.receiver = self;
   v14.super_class = type metadata accessor for SearchMapsSyncOperation();
-  v12 = a4;
+  contextCopy = context;
   return [(SearchMapsSyncOperation *)&v14 init];
 }
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_10032939C();
 }
 
@@ -59,22 +59,22 @@
   v4 = sub_1000CE6B8(&unk_10190BA50);
   __chkstk_darwin(v4 - 8);
   v6 = &v11 - v5;
-  v7 = self;
+  selfCopy = self;
   static TaskPriority.userInitiated.getter();
   v8 = type metadata accessor for TaskPriority();
   (*(*(v8 - 8) + 56))(v6, 0, 1, v8);
   v9 = swift_allocObject();
   v9[2] = 0;
   v9[3] = 0;
-  v9[4] = v7;
+  v9[4] = selfCopy;
   v9[5] = ObjectType;
-  v10 = v7;
+  v10 = selfCopy;
   *(v10 + OBJC_IVAR____TtC4Maps23SearchMapsSyncOperation_task) = sub_10020AAE4(0, 0, v6, &unk_1011FB028, v9);
 }
 
 - (id)matchInfo
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10032C574();
 
   return v3;
@@ -82,13 +82,13 @@
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_10032C7C8();
 }
 
 - (BOOL)checkIfCancelledOrFinished
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10032CE3C();
 
   return v3 & 1;
@@ -96,7 +96,7 @@
 
 - (void)markOperationAsComplete
 {
-  v2 = self;
+  selfCopy = self;
   sub_10032D0A8();
 }
 

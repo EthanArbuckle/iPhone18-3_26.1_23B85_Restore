@@ -1,64 +1,64 @@
 @interface MTLMeshRenderPipelineDescriptor
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)maxThreadgroupsPerMeshGrid;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validateWithDevice:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validateWithDevice:(id)device error:(id *)error;
 - (MTLLinkedFunctions)fragmentLinkedFunctions;
 - (MTLLinkedFunctions)meshLinkedFunctions;
 - (MTLLinkedFunctions)objectLinkedFunctions;
 - (MTLMeshRenderPipelineDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
-- (id)newRenderPipelineDescriptorWithDevice:(id)a3 error:(id *)a4;
-- (id)newSerializedFragmentDataWithFlags:(unint64_t)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)newSerializedMeshDataWithFlags:(unint64_t)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)newSerializedObjectDataWithFlags:(unint64_t)a3 options:(unint64_t)a4 error:(id *)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
+- (id)newRenderPipelineDescriptorWithDevice:(id)device error:(id *)error;
+- (id)newSerializedFragmentDataWithFlags:(unint64_t)flags options:(unint64_t)options error:(id *)error;
+- (id)newSerializedMeshDataWithFlags:(unint64_t)flags options:(unint64_t)options error:(id *)error;
+- (id)newSerializedObjectDataWithFlags:(unint64_t)flags options:(unint64_t)options error:(id *)error;
 - (unint64_t)hash;
 - (void)_initMembers;
 - (void)_releaseMembers;
 - (void)dealloc;
 - (void)reset;
-- (void)setAlphaTestEnabled:(BOOL)a3;
+- (void)setAlphaTestEnabled:(BOOL)enabled;
 - (void)setAlphaToOneEnabled:(BOOL)alphaToOneEnabled;
-- (void)setBinaryArchives:(id)a3;
-- (void)setDepthStencilWriteDisabled:(BOOL)a3;
-- (void)setDriverCompilerOptions:(id)a3;
-- (void)setForceResourceIndex:(BOOL)a3;
+- (void)setBinaryArchives:(id)archives;
+- (void)setDepthStencilWriteDisabled:(BOOL)disabled;
+- (void)setDriverCompilerOptions:(id)options;
+- (void)setForceResourceIndex:(BOOL)index;
 - (void)setFragmentFunction:(id)fragmentFunction;
 - (void)setFragmentLinkedFunctions:(MTLLinkedFunctions *)fragmentLinkedFunctions;
-- (void)setFragmentPreloadedLibraries:(id)a3;
-- (void)setGpuCompilerSPIOptions:(id)a3;
-- (void)setInsertFragmentLibraries:(id)a3;
-- (void)setInsertMeshLibraries:(id)a3;
-- (void)setInsertObjectLibraries:(id)a3;
+- (void)setFragmentPreloadedLibraries:(id)libraries;
+- (void)setGpuCompilerSPIOptions:(id)options;
+- (void)setInsertFragmentLibraries:(id)libraries;
+- (void)setInsertMeshLibraries:(id)libraries;
+- (void)setInsertObjectLibraries:(id)libraries;
 - (void)setLabel:(NSString *)label;
-- (void)setLogicOperationEnabled:(BOOL)a3;
+- (void)setLogicOperationEnabled:(BOOL)enabled;
 - (void)setMeshFunction:(id)meshFunction;
 - (void)setMeshLinkedFunctions:(MTLLinkedFunctions *)meshLinkedFunctions;
-- (void)setMeshPreloadedLibraries:(id)a3;
+- (void)setMeshPreloadedLibraries:(id)libraries;
 - (void)setMeshThreadgroupSizeIsMultipleOfThreadExecutionWidth:(BOOL)meshThreadgroupSizeIsMultipleOfThreadExecutionWidth;
-- (void)setName:(id)a3;
-- (void)setNeedsCustomBorderColorSamplers:(BOOL)a3;
+- (void)setName:(id)name;
+- (void)setNeedsCustomBorderColorSamplers:(BOOL)samplers;
 - (void)setObjectFunction:(id)objectFunction;
 - (void)setObjectLinkedFunctions:(MTLLinkedFunctions *)objectLinkedFunctions;
-- (void)setObjectPreloadedLibraries:(id)a3;
+- (void)setObjectPreloadedLibraries:(id)libraries;
 - (void)setObjectThreadgroupSizeIsMultipleOfThreadExecutionWidth:(BOOL)objectThreadgroupSizeIsMultipleOfThreadExecutionWidth;
-- (void)setOpenGLModeEnabled:(BOOL)a3;
-- (void)setPipelineLibrary:(id)a3;
-- (void)setPluginData:(id)a3;
-- (void)setPointCoordLowerLeft:(BOOL)a3;
-- (void)setPointSizeOutputVS:(BOOL)a3;
-- (void)setPointSmoothEnabled:(BOOL)a3;
-- (void)setProfileControl:(id)a3;
+- (void)setOpenGLModeEnabled:(BOOL)enabled;
+- (void)setPipelineLibrary:(id)library;
+- (void)setPluginData:(id)data;
+- (void)setPointCoordLowerLeft:(BOOL)left;
+- (void)setPointSizeOutputVS:(BOOL)s;
+- (void)setPointSmoothEnabled:(BOOL)enabled;
+- (void)setProfileControl:(id)control;
 - (void)setRasterizationEnabled:(BOOL)rasterizationEnabled;
-- (void)setRequiredThreadsPerMeshThreadgroup:(id *)a3;
-- (void)setRequiredThreadsPerObjectThreadgroup:(id *)a3;
-- (void)setSampleCoverageInvert:(BOOL)a3;
-- (void)setSupportAddingFragmentBinaryFunctions:(BOOL)a3;
-- (void)setSupportAddingMeshBinaryFunctions:(BOOL)a3;
-- (void)setSupportAddingObjectBinaryFunctions:(BOOL)a3;
+- (void)setRequiredThreadsPerMeshThreadgroup:(id *)threadgroup;
+- (void)setRequiredThreadsPerObjectThreadgroup:(id *)threadgroup;
+- (void)setSampleCoverageInvert:(BOOL)invert;
+- (void)setSupportAddingFragmentBinaryFunctions:(BOOL)functions;
+- (void)setSupportAddingMeshBinaryFunctions:(BOOL)functions;
+- (void)setSupportAddingObjectBinaryFunctions:(BOOL)functions;
 - (void)setSupportIndirectCommandBuffers:(BOOL)supportIndirectCommandBuffers;
-- (void)setTwoSideEnabled:(BOOL)a3;
-- (void)setVertexAmplificationMode:(unint64_t)a3;
+- (void)setTwoSideEnabled:(BOOL)enabled;
+- (void)setVertexAmplificationMode:(unint64_t)mode;
 @end
 
 @implementation MTLMeshRenderPipelineDescriptor
@@ -145,14 +145,14 @@
   [(MTLMeshRenderPipelineDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[MTLMeshRenderPipelineDescriptor allocWithZone:](MTLMeshRenderPipelineDescriptor init];
   if (v5)
   {
     for (i = 0; i != 8; ++i)
     {
-      v5->_private.attachments->_descriptors[i] = [(MTLRenderPipelineColorAttachmentDescriptorInternal *)self->_private.attachments->_descriptors[i] copyWithZone:a3];
+      v5->_private.attachments->_descriptors[i] = [(MTLRenderPipelineColorAttachmentDescriptorInternal *)self->_private.attachments->_descriptors[i] copyWithZone:zone];
     }
 
     *&v5->_private.depthAttachmentPixelFormat = *&self->_private.depthAttachmentPixelFormat;
@@ -167,8 +167,8 @@
     v5->_private.colorSampleCount = self->_private.colorSampleCount;
     v5->_private.var1.miscHash[0] = self->_private.var1.miscHash[0];
     v5->_private.var1.miscHash[1] = self->_private.var1.miscHash[1];
-    v5->_private.label = [(NSString *)self->_private.label copyWithZone:a3];
-    v5->_private.name = [(NSString *)self->_private.name copyWithZone:a3];
+    v5->_private.label = [(NSString *)self->_private.label copyWithZone:zone];
+    v5->_private.name = [(NSString *)self->_private.name copyWithZone:zone];
     v5->_private.pipelineLibrary = self->_private.pipelineLibrary;
     v5->_private.objectFunction = self->_private.objectFunction;
     v5->_private.meshFunction = self->_private.meshFunction;
@@ -176,19 +176,19 @@
     v5->_private.fragmentFunction = self->_private.fragmentFunction;
     do
     {
-      v5->_private.objectBuffers->_descriptors[v8] = [(MTLPipelineBufferDescriptorInternal *)self->_private.objectBuffers->_descriptors[v8] copyWithZone:a3];
+      v5->_private.objectBuffers->_descriptors[v8] = [(MTLPipelineBufferDescriptorInternal *)self->_private.objectBuffers->_descriptors[v8] copyWithZone:zone];
       ++v8;
     }
 
     while (v8 != 31);
     for (j = 0; j != 31; ++j)
     {
-      v5->_private.meshBuffers->_descriptors[j] = [(MTLPipelineBufferDescriptorInternal *)self->_private.meshBuffers->_descriptors[j] copyWithZone:a3];
+      v5->_private.meshBuffers->_descriptors[j] = [(MTLPipelineBufferDescriptorInternal *)self->_private.meshBuffers->_descriptors[j] copyWithZone:zone];
     }
 
     for (k = 0; k != 31; ++k)
     {
-      v5->_private.fragmentBuffers->_descriptors[k] = [(MTLPipelineBufferDescriptorInternal *)self->_private.fragmentBuffers->_descriptors[k] copyWithZone:a3];
+      v5->_private.fragmentBuffers->_descriptors[k] = [(MTLPipelineBufferDescriptorInternal *)self->_private.fragmentBuffers->_descriptors[k] copyWithZone:zone];
     }
 
     v5->_private.driverCompilerOptions = [(NSDictionary *)self->_private.driverCompilerOptions copy];
@@ -342,9 +342,9 @@
   return _MTLHashState(v21, 0x458uLL);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v6) = 1;
   }
@@ -352,13 +352,13 @@
   else
   {
     Class = object_getClass(self);
-    if (Class == object_getClass(a3))
+    if (Class == object_getClass(equal))
     {
       v7 = 0;
       while (1)
       {
         v8 = self->_private.attachments->_descriptors[v7];
-        v9 = *(*(a3 + 1) + 8 + v7 * 8);
+        v9 = *(*(equal + 1) + 8 + v7 * 8);
         if (v8 != v9)
         {
           v10 = !v8 || v9 == 0;
@@ -374,7 +374,7 @@
           while (1)
           {
             v12 = self->_private.objectBuffers->_descriptors[v11];
-            v13 = *(*(a3 + 19) + 8 + v11 * 8);
+            v13 = *(*(equal + 19) + 8 + v11 * 8);
             if (v12 != v13)
             {
               v14 = !v12 || v13 == 0;
@@ -390,7 +390,7 @@
               while (1)
               {
                 v16 = self->_private.meshBuffers->_descriptors[v15];
-                v17 = *(*(a3 + 20) + 8 + v15 * 8);
+                v17 = *(*(equal + 20) + 8 + v15 * 8);
                 if (v16 != v17)
                 {
                   v18 = !v16 || v17 == 0;
@@ -406,7 +406,7 @@
                   while (1)
                   {
                     v20 = self->_private.fragmentBuffers->_descriptors[v19];
-                    v21 = *(*(a3 + 21) + 8 + v19 * 8);
+                    v21 = *(*(equal + 21) + 8 + v19 * 8);
                     if (v20 != v21)
                     {
                       v22 = !v20 || v21 == 0;
@@ -418,77 +418,77 @@
 
                     if (++v19 == 31)
                     {
-                      if (self->_private.depthAttachmentPixelFormat != *(a3 + 2) || self->_private.stencilAttachmentPixelFormat != *(a3 + 3) || self->_private.textureWriteRoundingMode != *(a3 + 4) || self->_private.resourceIndex != *(a3 + 10) || self->_private.explicitVisibilityGroupID != *(a3 + 74) || self->_private.fragmentDepthCompareClampMask != *(a3 + 19) || self->_private.rasterSampleCount != *(a3 + 5) || self->_private.sampleMask != *(a3 + 7) || self->_private.var0.sampleCoverage != *(a3 + 16) || self->_private.colorSampleCount != *(a3 + 6) || self->_private.var1.miscHash[0] != *(a3 + 17) || self->_private.var1.miscHash[1] != *(a3 + 18))
+                      if (self->_private.depthAttachmentPixelFormat != *(equal + 2) || self->_private.stencilAttachmentPixelFormat != *(equal + 3) || self->_private.textureWriteRoundingMode != *(equal + 4) || self->_private.resourceIndex != *(equal + 10) || self->_private.explicitVisibilityGroupID != *(equal + 74) || self->_private.fragmentDepthCompareClampMask != *(equal + 19) || self->_private.rasterSampleCount != *(equal + 5) || self->_private.sampleMask != *(equal + 7) || self->_private.var0.sampleCoverage != *(equal + 16) || self->_private.colorSampleCount != *(equal + 6) || self->_private.var1.miscHash[0] != *(equal + 17) || self->_private.var1.miscHash[1] != *(equal + 18))
                       {
                         goto LABEL_3;
                       }
 
                       label = self->_private.label;
-                      if (label == *(a3 + 11) || (v6 = [(NSString *)label isEqual:?]) != 0)
+                      if (label == *(equal + 11) || (v6 = [(NSString *)label isEqual:?]) != 0)
                       {
                         objectFunction = self->_private.objectFunction;
-                        if (objectFunction == *(a3 + 12) || (v6 = [(MTLFunction *)objectFunction isEqual:?]) != 0)
+                        if (objectFunction == *(equal + 12) || (v6 = [(MTLFunction *)objectFunction isEqual:?]) != 0)
                         {
                           meshFunction = self->_private.meshFunction;
-                          if (meshFunction == *(a3 + 13) || (v6 = [(MTLFunction *)meshFunction isEqual:?]) != 0)
+                          if (meshFunction == *(equal + 13) || (v6 = [(MTLFunction *)meshFunction isEqual:?]) != 0)
                           {
                             fragmentFunction = self->_private.fragmentFunction;
-                            if (fragmentFunction == *(a3 + 14) || (v6 = [(MTLFunction *)fragmentFunction isEqual:?]) != 0)
+                            if (fragmentFunction == *(equal + 14) || (v6 = [(MTLFunction *)fragmentFunction isEqual:?]) != 0)
                             {
                               driverCompilerOptions = self->_private.driverCompilerOptions;
-                              if (driverCompilerOptions == *(a3 + 22) || (v6 = [(NSDictionary *)driverCompilerOptions isEqual:?]) != 0)
+                              if (driverCompilerOptions == *(equal + 22) || (v6 = [(NSDictionary *)driverCompilerOptions isEqual:?]) != 0)
                               {
                                 gpuCompilerSPIOptions = self->_private.gpuCompilerSPIOptions;
-                                if (gpuCompilerSPIOptions == *(a3 + 23) || (v6 = [(NSDictionary *)gpuCompilerSPIOptions isEqual:?]) != 0)
+                                if (gpuCompilerSPIOptions == *(equal + 23) || (v6 = [(NSDictionary *)gpuCompilerSPIOptions isEqual:?]) != 0)
                                 {
                                   pluginData = self->_private.pluginData;
-                                  if (pluginData == *(a3 + 24) || (v6 = [(NSDictionary *)pluginData isEqual:?]) != 0)
+                                  if (pluginData == *(equal + 24) || (v6 = [(NSDictionary *)pluginData isEqual:?]) != 0)
                                   {
-                                    v6 = MTLCompareArray(self->_private.binaryArchives, *(a3 + 25), 1, 0);
+                                    v6 = MTLCompareArray(self->_private.binaryArchives, *(equal + 25), 1, 0);
                                     if (v6)
                                     {
-                                      if (self->_private.pipelineMemoryLength == *(a3 + 18) && self->_private.maxTotalThreadsPerObjectThreadgroup == *(a3 + 15) && self->_private.maxTotalThreadsPerMeshThreadgroup == *(a3 + 16) && self->_private.maxTotalThreadgroupsPerMeshGrid == *(a3 + 17))
+                                      if (self->_private.pipelineMemoryLength == *(equal + 18) && self->_private.maxTotalThreadsPerObjectThreadgroup == *(equal + 15) && self->_private.maxTotalThreadsPerMeshThreadgroup == *(equal + 16) && self->_private.maxTotalThreadgroupsPerMeshGrid == *(equal + 17))
                                       {
-                                        v6 = MTLCompareFunctionList(self->_private.objectLinkedFunctions, *(a3 + 27));
+                                        v6 = MTLCompareFunctionList(self->_private.objectLinkedFunctions, *(equal + 27));
                                         if (!v6)
                                         {
                                           return v6;
                                         }
 
-                                        v6 = MTLCompareFunctionList(self->_private.meshLinkedFunctions, *(a3 + 28));
+                                        v6 = MTLCompareFunctionList(self->_private.meshLinkedFunctions, *(equal + 28));
                                         if (!v6)
                                         {
                                           return v6;
                                         }
 
-                                        v6 = MTLCompareFunctionList(self->_private.fragmentLinkedFunctions, *(a3 + 29));
+                                        v6 = MTLCompareFunctionList(self->_private.fragmentLinkedFunctions, *(equal + 29));
                                         if (!v6)
                                         {
                                           return v6;
                                         }
 
-                                        v6 = MTLCompareArray(self->_private.objectPreloadedLibraries, *(a3 + 30), 1, 1);
+                                        v6 = MTLCompareArray(self->_private.objectPreloadedLibraries, *(equal + 30), 1, 1);
                                         if (!v6)
                                         {
                                           return v6;
                                         }
 
-                                        v6 = MTLCompareArray(self->_private.meshPreloadedLibraries, *(a3 + 31), 1, 1);
+                                        v6 = MTLCompareArray(self->_private.meshPreloadedLibraries, *(equal + 31), 1, 1);
                                         if (!v6)
                                         {
                                           return v6;
                                         }
 
-                                        v6 = MTLCompareArray(self->_private.fragmentPreloadedLibraries, *(a3 + 32), 1, 1);
+                                        v6 = MTLCompareArray(self->_private.fragmentPreloadedLibraries, *(equal + 32), 1, 1);
                                         if (!v6)
                                         {
                                           return v6;
                                         }
 
-                                        if (self->_private.maxObjectStackCallDepth == *(a3 + 33) && self->_private.maxMeshStackCallDepth == *(a3 + 34) && self->_private.maxFragmentStackCallDepth == *(a3 + 35))
+                                        if (self->_private.maxObjectStackCallDepth == *(equal + 33) && self->_private.maxMeshStackCallDepth == *(equal + 34) && self->_private.maxFragmentStackCallDepth == *(equal + 35))
                                         {
                                           profileControl = self->_private.profileControl;
-                                          if (profileControl != *(a3 + 36))
+                                          if (profileControl != *(equal + 36))
                                           {
                                             v6 = [(MTLProfileControl *)profileControl isEqual:?];
                                             if (!v6)
@@ -497,9 +497,9 @@
                                             }
                                           }
 
-                                          if (self->_private.maxAccelerationStructureTraversalDepth == *(a3 + 38) && self->_private.shaderValidation == *(a3 + 39) && self->_private.shaderValidationState == *(a3 + 40) && self->_private.requiredThreadsPerObjectThreadgroup.width == *(a3 + 41) && self->_private.requiredThreadsPerObjectThreadgroup.height == *(a3 + 42) && self->_private.requiredThreadsPerObjectThreadgroup.depth == *(a3 + 43) && self->_private.requiredThreadsPerMeshThreadgroup.width == *(a3 + 44) && self->_private.requiredThreadsPerMeshThreadgroup.height == *(a3 + 45) && self->_private.requiredThreadsPerMeshThreadgroup.depth == *(a3 + 46) && [(NSString *)self->_private.name compare:*(a3 + 47)]== NSOrderedSame)
+                                          if (self->_private.maxAccelerationStructureTraversalDepth == *(equal + 38) && self->_private.shaderValidation == *(equal + 39) && self->_private.shaderValidationState == *(equal + 40) && self->_private.requiredThreadsPerObjectThreadgroup.width == *(equal + 41) && self->_private.requiredThreadsPerObjectThreadgroup.height == *(equal + 42) && self->_private.requiredThreadsPerObjectThreadgroup.depth == *(equal + 43) && self->_private.requiredThreadsPerMeshThreadgroup.width == *(equal + 44) && self->_private.requiredThreadsPerMeshThreadgroup.height == *(equal + 45) && self->_private.requiredThreadsPerMeshThreadgroup.depth == *(equal + 46) && [(NSString *)self->_private.name compare:*(equal + 47)]== NSOrderedSame)
                                           {
-                                            LOBYTE(v6) = self->_private.colorAttachmentMappingState == *(a3 + 48);
+                                            LOBYTE(v6) = self->_private.colorAttachmentMappingState == *(equal + 48);
                                             return v6;
                                           }
                                         }
@@ -533,11 +533,11 @@ LABEL_3:
   return v6;
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v44[66] = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
-  [@"\n" stringByPaddingToLength:a3 + 8 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
+  [@"\n" stringByPaddingToLength:description + 8 withString:@" " startingAtIndex:0];
   v37 = 0;
   v38 = 0;
   requiredThreadsPerObjectThreadgroup = self->_private.requiredThreadsPerObjectThreadgroup;
@@ -568,43 +568,43 @@ LABEL_3:
   v44[7] = @"objectFunction =";
   if (objectFunction)
   {
-    v10 = [(MTLFunction *)objectFunction formattedDescription:a3 + 8];
+    null = [(MTLFunction *)objectFunction formattedDescription:description + 8];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v44[8] = v10;
+  v44[8] = null;
   v44[9] = v5;
   v44[10] = @"meshFunction =";
   meshFunction = self->_private.meshFunction;
   if (meshFunction)
   {
-    v12 = [(MTLFunction *)meshFunction formattedDescription:a3 + 8];
+    null2 = [(MTLFunction *)meshFunction formattedDescription:description + 8];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v44[11] = v12;
+  v44[11] = null2;
   v44[12] = v5;
   v44[13] = @"fragmentFunction =";
   fragmentFunction = self->_private.fragmentFunction;
   if (fragmentFunction)
   {
-    v14 = [(MTLFunction *)fragmentFunction formattedDescription:a3 + 8];
+    null3 = [(MTLFunction *)fragmentFunction formattedDescription:description + 8];
   }
 
   else
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v44[14] = v14;
+  v44[14] = null3;
   v44[15] = v5;
   v44[16] = @"maxTotalThreadsPerObjectThreadgroup =";
   v44[17] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_private.maxTotalThreadsPerObjectThreadgroup];
@@ -684,45 +684,45 @@ LABEL_3:
   objectLinkedFunctions = self->_private.objectLinkedFunctions;
   if (objectLinkedFunctions)
   {
-    v20 = [(MTLLinkedFunctions *)objectLinkedFunctions formattedDescription:a3 + 8];
+    null4 = [(MTLLinkedFunctions *)objectLinkedFunctions formattedDescription:description + 8];
   }
 
   else
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v43[2] = v20;
+  v43[2] = null4;
   [v6 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v43, 3)}];
   v42[0] = v5;
   v42[1] = @"meshLinkedFunctions =";
   meshLinkedFunctions = self->_private.meshLinkedFunctions;
   if (meshLinkedFunctions)
   {
-    v22 = [(MTLLinkedFunctions *)meshLinkedFunctions formattedDescription:a3 + 8];
+    null5 = [(MTLLinkedFunctions *)meshLinkedFunctions formattedDescription:description + 8];
   }
 
   else
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v42[2] = v22;
+  v42[2] = null5;
   [v6 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v42, 3)}];
   v41[0] = v5;
   v41[1] = @"fragmentLinkedFunctions =";
   fragmentLinkedFunctions = self->_private.fragmentLinkedFunctions;
   if (fragmentLinkedFunctions)
   {
-    v24 = [(MTLLinkedFunctions *)fragmentLinkedFunctions formattedDescription:a3 + 8];
+    null6 = [(MTLLinkedFunctions *)fragmentLinkedFunctions formattedDescription:description + 8];
   }
 
   else
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v41[2] = v24;
+  v41[2] = null6;
   [v6 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v41, 3)}];
   v40[0] = v5;
   v40[1] = @"depthAttachmentPixelFormat =";
@@ -738,7 +738,7 @@ LABEL_3:
     {
       v39[0] = v5;
       v39[1] = [MEMORY[0x1E696AEC0] stringWithFormat:@"Color Attachment %u:", i];
-      v39[2] = pipelineColorAttachmentFormattedDescription(a3 + 8, v26);
+      v39[2] = pipelineColorAttachmentFormattedDescription(description + 8, v26);
       [v6 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v39, 3)}];
     }
   }
@@ -750,7 +750,7 @@ LABEL_3:
     {
       [v6 addObject:v5];
       [v6 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Object Buffer %u:", j)}];
-      [v6 addObject:{pipelineBufferFormattedDescription(a3 + 8, v28)}];
+      [v6 addObject:{pipelineBufferFormattedDescription(description + 8, v28)}];
     }
   }
 
@@ -761,7 +761,7 @@ LABEL_3:
     {
       [v6 addObject:v5];
       [v6 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Mesh Buffer %u:", k)}];
-      [v6 addObject:{pipelineBufferFormattedDescription(a3 + 8, v30)}];
+      [v6 addObject:{pipelineBufferFormattedDescription(description + 8, v30)}];
     }
   }
 
@@ -772,7 +772,7 @@ LABEL_3:
     {
       [v6 addObject:v5];
       [v6 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Fragment Buffer %u:", m)}];
-      [v6 addObject:{pipelineBufferFormattedDescription(a3 + 8, v32)}];
+      [v6 addObject:{pipelineBufferFormattedDescription(description + 8, v32)}];
     }
   }
 
@@ -794,10 +794,10 @@ LABEL_3:
   self->_private.var1 = (*&self->_private.var1 & 0xFFFFFFFDFFFFFFFFLL | v3);
 }
 
-- (void)setForceResourceIndex:(BOOL)a3
+- (void)setForceResourceIndex:(BOOL)index
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!index)
   {
     v3 = 0;
   }
@@ -827,20 +827,20 @@ LABEL_3:
   self->_private.var1 = (*&self->_private.var1 & 0xFFFFFFFFFFFFFFEFLL | v3);
 }
 
-- (void)setVertexAmplificationMode:(unint64_t)a3
+- (void)setVertexAmplificationMode:(unint64_t)mode
 {
-  if (!isVertexAmplificationModeValid(a3))
+  if (!isVertexAmplificationModeValid(mode))
   {
-    [(MTLMeshRenderPipelineDescriptor *)a3 setVertexAmplificationMode:v5, v6, v7, v8, v9, v10, v11];
+    [(MTLMeshRenderPipelineDescriptor *)mode setVertexAmplificationMode:v5, v6, v7, v8, v9, v10, v11];
   }
 
-  self->_private.var1 = (*&self->_private.var1 & 0xFFFFFFFFFFFFFDFFLL | ((a3 & 1) << 9));
+  self->_private.var1 = (*&self->_private.var1 & 0xFFFFFFFFFFFFFDFFLL | ((mode & 1) << 9));
 }
 
-- (void)setLogicOperationEnabled:(BOOL)a3
+- (void)setLogicOperationEnabled:(BOOL)enabled
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!enabled)
   {
     v3 = 0;
   }
@@ -848,10 +848,10 @@ LABEL_3:
   self->_private.var1 = (*&self->_private.var1 & 0xFFFFFFFFBFFFFFFFLL | v3);
 }
 
-- (void)setAlphaTestEnabled:(BOOL)a3
+- (void)setAlphaTestEnabled:(BOOL)enabled
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!enabled)
   {
     v3 = 0;
   }
@@ -859,10 +859,10 @@ LABEL_3:
   self->_private.var1 = (*&self->_private.var1 & 0xFFFFFFFFFDFFFFFFLL | v3);
 }
 
-- (void)setPointSmoothEnabled:(BOOL)a3
+- (void)setPointSmoothEnabled:(BOOL)enabled
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!enabled)
   {
     v3 = 0;
   }
@@ -870,10 +870,10 @@ LABEL_3:
   self->_private.var1 = (*&self->_private.var1 & 0xFFFFFFFFFFFFDFFFLL | v3);
 }
 
-- (void)setPointCoordLowerLeft:(BOOL)a3
+- (void)setPointCoordLowerLeft:(BOOL)left
 {
   v3 = 4096;
-  if (!a3)
+  if (!left)
   {
     v3 = 0;
   }
@@ -881,10 +881,10 @@ LABEL_3:
   self->_private.var1 = (*&self->_private.var1 & 0xFFFFFFFFFFFFEFFFLL | v3);
 }
 
-- (void)setPointSizeOutputVS:(BOOL)a3
+- (void)setPointSizeOutputVS:(BOOL)s
 {
   v3 = 2048;
-  if (!a3)
+  if (!s)
   {
     v3 = 0;
   }
@@ -892,10 +892,10 @@ LABEL_3:
   self->_private.var1 = (*&self->_private.var1 & 0xFFFFFFFFFFFFF7FFLL | v3);
 }
 
-- (void)setTwoSideEnabled:(BOOL)a3
+- (void)setTwoSideEnabled:(BOOL)enabled
 {
   v3 = 1024;
-  if (!a3)
+  if (!enabled)
   {
     v3 = 0;
   }
@@ -903,20 +903,20 @@ LABEL_3:
   self->_private.var1 = (*&self->_private.var1 & 0xFFFFFFFFFFFFFBFFLL | v3);
 }
 
-- (void)setPluginData:(id)a3
+- (void)setPluginData:(id)data
 {
   pluginData = self->_private.pluginData;
-  if (pluginData != a3)
+  if (pluginData != data)
   {
 
-    self->_private.pluginData = a3;
+    self->_private.pluginData = data;
   }
 }
 
-- (void)setOpenGLModeEnabled:(BOOL)a3
+- (void)setOpenGLModeEnabled:(BOOL)enabled
 {
   v3 = 64;
-  if (!a3)
+  if (!enabled)
   {
     v3 = 0;
   }
@@ -924,10 +924,10 @@ LABEL_3:
   self->_private.var1 = (*&self->_private.var1 & 0xFFFFFFFFFFFFFFBFLL | v3);
 }
 
-- (void)setNeedsCustomBorderColorSamplers:(BOOL)a3
+- (void)setNeedsCustomBorderColorSamplers:(BOOL)samplers
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!samplers)
   {
     v3 = 0;
   }
@@ -935,10 +935,10 @@ LABEL_3:
   self->_private.var1 = (*&self->_private.var1 & 0xFFFFFFFEFFFFFFFFLL | v3);
 }
 
-- (void)setSampleCoverageInvert:(BOOL)a3
+- (void)setSampleCoverageInvert:(BOOL)invert
 {
   v3 = 128;
-  if (!a3)
+  if (!invert)
   {
     v3 = 0;
   }
@@ -946,10 +946,10 @@ LABEL_3:
   self->_private.var1 = (*&self->_private.var1 & 0xFFFFFFFFFFFFFF7FLL | v3);
 }
 
-- (void)setDepthStencilWriteDisabled:(BOOL)a3
+- (void)setDepthStencilWriteDisabled:(BOOL)disabled
 {
   v3 = 32;
-  if (!a3)
+  if (!disabled)
   {
     v3 = 0;
   }
@@ -957,13 +957,13 @@ LABEL_3:
   self->_private.var1 = (*&self->_private.var1 & 0xFFFFFFFFFFFFFFDFLL | v3);
 }
 
-- (void)setBinaryArchives:(id)a3
+- (void)setBinaryArchives:(id)archives
 {
   binaryArchives = self->_private.binaryArchives;
-  if (binaryArchives != a3)
+  if (binaryArchives != archives)
   {
 
-    self->_private.binaryArchives = [a3 copy];
+    self->_private.binaryArchives = [archives copy];
   }
 }
 
@@ -1093,70 +1093,70 @@ LABEL_3:
   }
 }
 
-- (void)setObjectPreloadedLibraries:(id)a3
+- (void)setObjectPreloadedLibraries:(id)libraries
 {
   objectPreloadedLibraries = self->_private.objectPreloadedLibraries;
-  if (objectPreloadedLibraries != a3)
+  if (objectPreloadedLibraries != libraries)
   {
 
-    self->_private.objectPreloadedLibraries = [a3 copy];
+    self->_private.objectPreloadedLibraries = [libraries copy];
   }
 }
 
-- (void)setMeshPreloadedLibraries:(id)a3
+- (void)setMeshPreloadedLibraries:(id)libraries
 {
   meshPreloadedLibraries = self->_private.meshPreloadedLibraries;
-  if (meshPreloadedLibraries != a3)
+  if (meshPreloadedLibraries != libraries)
   {
 
-    self->_private.meshPreloadedLibraries = [a3 copy];
+    self->_private.meshPreloadedLibraries = [libraries copy];
   }
 }
 
-- (void)setFragmentPreloadedLibraries:(id)a3
+- (void)setFragmentPreloadedLibraries:(id)libraries
 {
   fragmentPreloadedLibraries = self->_private.fragmentPreloadedLibraries;
-  if (fragmentPreloadedLibraries != a3)
+  if (fragmentPreloadedLibraries != libraries)
   {
 
-    self->_private.fragmentPreloadedLibraries = [a3 copy];
+    self->_private.fragmentPreloadedLibraries = [libraries copy];
   }
 }
 
-- (void)setInsertObjectLibraries:(id)a3
+- (void)setInsertObjectLibraries:(id)libraries
 {
-  if (!a3)
+  if (!libraries)
   {
-    a3 = MEMORY[0x1E695E0F0];
+    libraries = MEMORY[0x1E695E0F0];
   }
 
-  [(MTLMeshRenderPipelineDescriptor *)self setObjectPreloadedLibraries:a3];
+  [(MTLMeshRenderPipelineDescriptor *)self setObjectPreloadedLibraries:libraries];
 }
 
-- (void)setInsertMeshLibraries:(id)a3
+- (void)setInsertMeshLibraries:(id)libraries
 {
-  if (!a3)
+  if (!libraries)
   {
-    a3 = MEMORY[0x1E695E0F0];
+    libraries = MEMORY[0x1E695E0F0];
   }
 
-  [(MTLMeshRenderPipelineDescriptor *)self setMeshPreloadedLibraries:a3];
+  [(MTLMeshRenderPipelineDescriptor *)self setMeshPreloadedLibraries:libraries];
 }
 
-- (void)setInsertFragmentLibraries:(id)a3
+- (void)setInsertFragmentLibraries:(id)libraries
 {
-  if (!a3)
+  if (!libraries)
   {
-    a3 = MEMORY[0x1E695E0F0];
+    libraries = MEMORY[0x1E695E0F0];
   }
 
-  [(MTLMeshRenderPipelineDescriptor *)self setFragmentPreloadedLibraries:a3];
+  [(MTLMeshRenderPipelineDescriptor *)self setFragmentPreloadedLibraries:libraries];
 }
 
-- (void)setSupportAddingObjectBinaryFunctions:(BOOL)a3
+- (void)setSupportAddingObjectBinaryFunctions:(BOOL)functions
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!functions)
   {
     v3 = 0;
   }
@@ -1164,10 +1164,10 @@ LABEL_3:
   self->_private.var1 = (*&self->_private.var1 & 0xFFFFFFFBFFFFFFFFLL | v3);
 }
 
-- (void)setSupportAddingMeshBinaryFunctions:(BOOL)a3
+- (void)setSupportAddingMeshBinaryFunctions:(BOOL)functions
 {
   v3 = 0x800000000;
-  if (!a3)
+  if (!functions)
   {
     v3 = 0;
   }
@@ -1175,10 +1175,10 @@ LABEL_3:
   self->_private.var1 = (*&self->_private.var1 & 0xFFFFFFF7FFFFFFFFLL | v3);
 }
 
-- (void)setSupportAddingFragmentBinaryFunctions:(BOOL)a3
+- (void)setSupportAddingFragmentBinaryFunctions:(BOOL)functions
 {
   v3 = 0x1000000000;
-  if (!a3)
+  if (!functions)
   {
     v3 = 0;
   }
@@ -1206,9 +1206,9 @@ LABEL_3:
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  if (a3)
+  if (name)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -1224,10 +1224,10 @@ LABEL_3:
   }
 
   name = self->_private.name;
-  if (name != a3)
+  if (name != name)
   {
 
-    self->_private.name = [a3 copy];
+    self->_private.name = [name copy];
   }
 }
 
@@ -1240,10 +1240,10 @@ LABEL_3:
       [(MTLMeshRenderPipelineDescriptor *)objectFunction setObjectFunction:v5, v6, v7, v8, v9, v10, v11, v21];
     }
 
-    v12 = [objectFunction functionType];
-    if (v12 != 8)
+    functionType = [objectFunction functionType];
+    if (functionType != 8)
     {
-      [(MTLMeshRenderPipelineDescriptor *)v12 setObjectFunction:v13, v14, v15, v16, v17, v18, v19, v21];
+      [(MTLMeshRenderPipelineDescriptor *)functionType setObjectFunction:v13, v14, v15, v16, v17, v18, v19, v21];
     }
   }
 
@@ -1261,10 +1261,10 @@ LABEL_3:
       [(MTLMeshRenderPipelineDescriptor *)meshFunction setMeshFunction:v5, v6, v7, v8, v9, v10, v11, v21];
     }
 
-    v12 = [meshFunction functionType];
-    if (v12 != 7)
+    functionType = [meshFunction functionType];
+    if (functionType != 7)
     {
-      [(MTLMeshRenderPipelineDescriptor *)v12 setMeshFunction:v13, v14, v15, v16, v17, v18, v19, v21];
+      [(MTLMeshRenderPipelineDescriptor *)functionType setMeshFunction:v13, v14, v15, v16, v17, v18, v19, v21];
     }
   }
 
@@ -1282,10 +1282,10 @@ LABEL_3:
       [(MTLMeshRenderPipelineDescriptor *)fragmentFunction setFragmentFunction:v5, v6, v7, v8, v9, v10, v11, v21];
     }
 
-    v12 = [fragmentFunction functionType];
-    if (v12 != 2)
+    functionType = [fragmentFunction functionType];
+    if (functionType != 2)
     {
-      [(MTLMeshRenderPipelineDescriptor *)v12 setFragmentFunction:v13, v14, v15, v16, v17, v18, v19, v21];
+      [(MTLMeshRenderPipelineDescriptor *)functionType setFragmentFunction:v13, v14, v15, v16, v17, v18, v19, v21];
     }
   }
 
@@ -1294,17 +1294,17 @@ LABEL_3:
   self->_private.fragmentFunction = fragmentFunction;
 }
 
-- (void)setRequiredThreadsPerObjectThreadgroup:(id *)a3
+- (void)setRequiredThreadsPerObjectThreadgroup:(id *)threadgroup
 {
-  v3 = *&a3->var0;
-  self->_private.requiredThreadsPerObjectThreadgroup.depth = a3->var2;
+  v3 = *&threadgroup->var0;
+  self->_private.requiredThreadsPerObjectThreadgroup.depth = threadgroup->var2;
   *&self->_private.requiredThreadsPerObjectThreadgroup.width = v3;
 }
 
-- (void)setRequiredThreadsPerMeshThreadgroup:(id *)a3
+- (void)setRequiredThreadsPerMeshThreadgroup:(id *)threadgroup
 {
-  v3 = *&a3->var0;
-  self->_private.requiredThreadsPerMeshThreadgroup.depth = a3->var2;
+  v3 = *&threadgroup->var0;
+  self->_private.requiredThreadsPerMeshThreadgroup.depth = threadgroup->var2;
   *&self->_private.requiredThreadsPerMeshThreadgroup.width = v3;
 }
 
@@ -1340,45 +1340,45 @@ LABEL_3:
   return self;
 }
 
-- (void)setPipelineLibrary:(id)a3
+- (void)setPipelineLibrary:(id)library
 {
   pipelineLibrary = self->_private.pipelineLibrary;
-  if (pipelineLibrary != a3)
+  if (pipelineLibrary != library)
   {
 
-    self->_private.pipelineLibrary = a3;
+    self->_private.pipelineLibrary = library;
   }
 }
 
-- (void)setDriverCompilerOptions:(id)a3
+- (void)setDriverCompilerOptions:(id)options
 {
   driverCompilerOptions = self->_private.driverCompilerOptions;
-  if (driverCompilerOptions != a3)
+  if (driverCompilerOptions != options)
   {
 
-    self->_private.driverCompilerOptions = [a3 copy];
+    self->_private.driverCompilerOptions = [options copy];
   }
 }
 
-- (void)setGpuCompilerSPIOptions:(id)a3
+- (void)setGpuCompilerSPIOptions:(id)options
 {
   gpuCompilerSPIOptions = self->_private.gpuCompilerSPIOptions;
-  if (gpuCompilerSPIOptions != a3)
+  if (gpuCompilerSPIOptions != options)
   {
 
-    self->_private.gpuCompilerSPIOptions = [a3 copy];
+    self->_private.gpuCompilerSPIOptions = [options copy];
   }
 }
 
-- (BOOL)validateWithDevice:(id)a3 error:(id *)a4
+- (BOOL)validateWithDevice:(id)device error:(id *)error
 {
-  v7 = [a3 supportsTextureSampleCount:self->_private.rasterSampleCount];
+  v7 = [device supportsTextureSampleCount:self->_private.rasterSampleCount];
   if (v7)
   {
-    [a3 registerMeshRenderPipelineDescriptor:self];
+    [device registerMeshRenderPipelineDescriptor:self];
     v52 = 0;
     memset(v51, 0, sizeof(v51));
-    _MTLMessageContextBegin_(v51, "validateWithDevice", 1842, a3, 3, "Mesh Render Pipeline Descriptor Validation");
+    _MTLMessageContextBegin_(v51, "validateWithDevice", 1842, device, 3, "Mesh Render Pipeline Descriptor Validation");
     if ((self->_private.var1.miscHash[0] & 0x10) != 0)
     {
       v11 = 0;
@@ -1408,25 +1408,25 @@ LABEL_7:
       v13 = 0;
     }
 
-    validateFunction(v51, a3, self->_private.fragmentFunction, "fragmentFunction", v13, v8, v9, v10);
-    validateFunction(v51, a3, self->_private.objectFunction, "objectFunction", 0, v14, v15, v16);
-    validateFunction(v51, a3, self->_private.meshFunction, "meshFunction", 1, v17, v18, v19);
-    validateMeshRenderPipelinePostMeshShader(v51, a3, &self->_private);
+    validateFunction(v51, device, self->_private.fragmentFunction, "fragmentFunction", v13, v8, v9, v10);
+    validateFunction(v51, device, self->_private.objectFunction, "objectFunction", 0, v14, v15, v16);
+    validateFunction(v51, device, self->_private.meshFunction, "meshFunction", 1, v17, v18, v19);
+    validateMeshRenderPipelinePostMeshShader(v51, device, &self->_private);
     if ([(NSArray *)[(MTLLinkedFunctions *)self->_private.objectLinkedFunctions binaryFunctions] count]|| [(NSArray *)[(MTLLinkedFunctions *)self->_private.meshLinkedFunctions binaryFunctions] count])
     {
       _MTLMessageContextPush_(v51, 4, @"Binary linked functions are not supported for object and mesh shaders", v20, v21, v22, v23, v24, v46);
     }
 
-    if ((*(&self->_private.var1.var0 + 4) & 2) != 0 && ([a3 supportsMeshShadersInICB] & 1) == 0)
+    if ((*(&self->_private.var1.var0 + 4) & 2) != 0 && ([device supportsMeshShadersInICB] & 1) == 0)
     {
       _MTLMessageContextPush_(v51, 4, @"Use of mesh shader pipelines in indirect command buffers is not supported by this device.", v25, v26, v27, v28, v29, v46);
     }
 
     maxAccelerationStructureTraversalDepth = self->_private.maxAccelerationStructureTraversalDepth;
-    if (maxAccelerationStructureTraversalDepth > [a3 maxAccelerationStructureTraversalDepth])
+    if (maxAccelerationStructureTraversalDepth > [device maxAccelerationStructureTraversalDepth])
     {
       v40 = self->_private.maxAccelerationStructureTraversalDepth;
-      [a3 maxAccelerationStructureTraversalDepth];
+      [device maxAccelerationStructureTraversalDepth];
       _MTLMessageContextPush_(v51, 4, @"maxAccelerationStructureTraversalDepth (%lu) must be less than or equal to %lu", v41, v42, v43, v44, v45, v40);
     }
 
@@ -1434,12 +1434,12 @@ LABEL_7:
     {
       v49 = *&self->_private.requiredThreadsPerObjectThreadgroup.width;
       depth = self->_private.requiredThreadsPerObjectThreadgroup.depth;
-      validateRequiredThreadsPerThreadgroup(v51, 4, a3, &v49, self->_private.maxTotalThreadsPerObjectThreadgroup, "requiredThreadsPerObjectThreadgroup", v34, v35);
+      validateRequiredThreadsPerThreadgroup(v51, 4, device, &v49, self->_private.maxTotalThreadsPerObjectThreadgroup, "requiredThreadsPerObjectThreadgroup", v34, v35);
     }
 
     v49 = *&self->_private.requiredThreadsPerMeshThreadgroup.width;
     depth = self->_private.requiredThreadsPerMeshThreadgroup.depth;
-    validateRequiredThreadsPerThreadgroup(v51, 4, a3, &v49, self->_private.maxTotalThreadsPerMeshThreadgroup, "requiredThreadsPerMeshThreadgroup", v34, v35);
+    validateRequiredThreadsPerThreadgroup(v51, 4, device, &v49, self->_private.maxTotalThreadsPerMeshThreadgroup, "requiredThreadsPerMeshThreadgroup", v34, v35);
     _MTLMessageContextEnd(v51);
   }
 
@@ -1447,48 +1447,48 @@ LABEL_7:
   {
     v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"rasterSampleCount (%lu) is not supported by device.", self->_private.rasterSampleCount];
     v37 = [MEMORY[0x1E695DF20] dictionaryWithObject:v36 forKey:*MEMORY[0x1E696A578]];
-    *a4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PipelineError" code:1 userInfo:v37];
+    *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PipelineError" code:1 userInfo:v37];
   }
 
   return v7;
 }
 
-- (id)newSerializedFragmentDataWithFlags:(unint64_t)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)newSerializedFragmentDataWithFlags:(unint64_t)flags options:(unint64_t)options error:(id *)error
 {
-  result = newMeshSerializedFragmentData(a3, a4, &self->_private);
-  if (a5)
+  result = newMeshSerializedFragmentData(flags, options, &self->_private);
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   return result;
 }
 
-- (id)newSerializedObjectDataWithFlags:(unint64_t)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)newSerializedObjectDataWithFlags:(unint64_t)flags options:(unint64_t)options error:(id *)error
 {
-  result = newMeshSerializedObjectOrMeshData<MTLMeshRenderPipelineDescriptorPrivate>(0, a3, a4, &self->_private);
-  if (a5)
+  result = newMeshSerializedObjectOrMeshData<MTLMeshRenderPipelineDescriptorPrivate>(0, flags, options, &self->_private);
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   return result;
 }
 
-- (id)newSerializedMeshDataWithFlags:(unint64_t)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)newSerializedMeshDataWithFlags:(unint64_t)flags options:(unint64_t)options error:(id *)error
 {
-  result = newMeshSerializedObjectOrMeshData<MTLMeshRenderPipelineDescriptorPrivate>(1, a3, a4, &self->_private);
-  if (a5)
+  result = newMeshSerializedObjectOrMeshData<MTLMeshRenderPipelineDescriptorPrivate>(1, flags, options, &self->_private);
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   return result;
 }
 
-- (id)newRenderPipelineDescriptorWithDevice:(id)a3 error:(id *)a4
+- (id)newRenderPipelineDescriptorWithDevice:(id)device error:(id *)error
 {
-  if (a3 && ![(MTLMeshRenderPipelineDescriptor *)self validateWithDevice:a3 error:a4])
+  if (device && ![(MTLMeshRenderPipelineDescriptor *)self validateWithDevice:device error:error])
   {
     return 0;
   }
@@ -1652,13 +1652,13 @@ LABEL_7:
   return v5;
 }
 
-- (void)setProfileControl:(id)a3
+- (void)setProfileControl:(id)control
 {
   profileControl = self->_private.profileControl;
-  if (profileControl != a3)
+  if (profileControl != control)
   {
 
-    self->_private.profileControl = [a3 copy];
+    self->_private.profileControl = [control copy];
   }
 }
 

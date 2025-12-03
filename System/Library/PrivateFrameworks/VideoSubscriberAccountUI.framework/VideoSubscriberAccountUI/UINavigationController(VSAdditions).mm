@@ -15,33 +15,33 @@
     v11 = v10;
     while (1)
     {
-      v12 = [a1 viewControllers];
-      v13 = [v12 containsObject:v11];
+      viewControllers = [self viewControllers];
+      v13 = [viewControllers containsObject:v11];
 
       if (v13)
       {
         break;
       }
 
-      v14 = [v11 parentViewController];
+      parentViewController = [v11 parentViewController];
 
-      v11 = v14;
-      if (!v14)
+      v11 = parentViewController;
+      if (!parentViewController)
       {
         goto LABEL_11;
       }
     }
 
-    v15 = [a1 viewControllers];
-    if ([v15 count])
+    viewControllers2 = [self viewControllers];
+    if ([viewControllers2 count])
     {
-      v16 = [a1 topViewController];
+      topViewController = [self topViewController];
 
-      if (v16 != v11)
+      if (topViewController != v11)
       {
         [MEMORY[0x277CD9FF0] begin];
         [MEMORY[0x277CD9FF0] setCompletionBlock:v9];
-        v17 = [a1 popToViewController:v11 animated:a4];
+        v17 = [self popToViewController:v11 animated:a4];
         [MEMORY[0x277CD9FF0] commit];
         goto LABEL_12;
       }

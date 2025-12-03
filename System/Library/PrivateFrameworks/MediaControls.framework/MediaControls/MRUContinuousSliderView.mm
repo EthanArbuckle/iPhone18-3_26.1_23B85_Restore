@@ -1,29 +1,29 @@
 @interface MRUContinuousSliderView
-- (void)setGlyphScale:(double)a3;
-- (void)setImageSymbolConfiguration:(id)a3;
-- (void)setOutputDeviceAsset:(id)a3 state:(id)a4 animated:(BOOL)a5;
+- (void)setGlyphScale:(double)scale;
+- (void)setImageSymbolConfiguration:(id)configuration;
+- (void)setOutputDeviceAsset:(id)asset state:(id)state animated:(BOOL)animated;
 @end
 
 @implementation MRUContinuousSliderView
 
-- (void)setGlyphScale:(double)a3
+- (void)setGlyphScale:(double)scale
 {
   v5.receiver = self;
   v5.super_class = MRUContinuousSliderView;
   [(CCUIBaseSliderView *)&v5 setGlyphScale:?];
-  [(MRUContinuousSliderView *)self setReferenceGlyphScale:a3];
+  [(MRUContinuousSliderView *)self setReferenceGlyphScale:scale];
 }
 
-- (void)setImageSymbolConfiguration:(id)a3
+- (void)setImageSymbolConfiguration:(id)configuration
 {
-  v7 = a3;
+  configurationCopy = configuration;
   if (![(UIImageSymbolConfiguration *)self->_imageSymbolConfiguration isEqualToConfiguration:?])
   {
-    objc_storeStrong(&self->_imageSymbolConfiguration, a3);
-    v5 = [(MRUOutputDeviceAsset *)self->_outputDeviceAsset icon];
-    if (v7 && v5)
+    objc_storeStrong(&self->_imageSymbolConfiguration, configuration);
+    icon = [(MRUOutputDeviceAsset *)self->_outputDeviceAsset icon];
+    if (configurationCopy && icon)
     {
-      v6 = [v5 imageByApplyingSymbolConfiguration:v7];
+      v6 = [icon imageByApplyingSymbolConfiguration:configurationCopy];
       [(CCUIBaseSliderView *)self setGlyphImage:v6];
 
       [(MRUContinuousSliderView *)self setNeedsLayout];
@@ -32,14 +32,14 @@
   }
 }
 
-- (void)setOutputDeviceAsset:(id)a3 state:(id)a4 animated:(BOOL)a5
+- (void)setOutputDeviceAsset:(id)asset state:(id)state animated:(BOOL)animated
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
-  if (v5)
+  animatedCopy = animated;
+  assetCopy = asset;
+  stateCopy = state;
+  if (animatedCopy)
   {
-    v11 = [v9 isEqual:self->_outputDeviceAsset] ^ 1;
+    v11 = [assetCopy isEqual:self->_outputDeviceAsset] ^ 1;
   }
 
   else
@@ -47,13 +47,13 @@
     v11 = 0;
   }
 
-  objc_storeStrong(&self->_outputDeviceAsset, a3);
-  v12 = [v9 packageDescription];
-  v13 = [v9 icon];
-  v14 = v13;
-  if (v13 && self->_imageSymbolConfiguration)
+  objc_storeStrong(&self->_outputDeviceAsset, asset);
+  packageDescription = [assetCopy packageDescription];
+  icon = [assetCopy icon];
+  v14 = icon;
+  if (icon && self->_imageSymbolConfiguration)
   {
-    v15 = [v13 imageByApplyingSymbolConfiguration:?];
+    v15 = [icon imageByApplyingSymbolConfiguration:?];
 
     v14 = v15;
   }
@@ -73,10 +73,10 @@
     v18[2] = __63__MRUContinuousSliderView_setOutputDeviceAsset_state_animated___block_invoke_2;
     v18[3] = &unk_1E7664358;
     v18[4] = self;
-    v19 = v9;
+    v19 = assetCopy;
     v20 = v14;
-    v21 = v12;
-    v22 = v10;
+    v21 = packageDescription;
+    v22 = stateCopy;
     v23 = 6;
     [v16 _animateUsingSpringWithDuration:6 delay:v24 options:v18 mass:0.3175 stiffness:0.0 damping:1.0 initialVelocity:845.74 animations:58.1632 completion:0.0];
   }
@@ -84,8 +84,8 @@
   else
   {
     [(CCUIBaseSliderView *)self setGlyphImage:v14];
-    [(CCUIBaseSliderView *)self setGlyphPackageDescription:v12];
-    [(CCUIBaseSliderView *)self setGlyphState:v10];
+    [(CCUIBaseSliderView *)self setGlyphPackageDescription:packageDescription];
+    [(CCUIBaseSliderView *)self setGlyphState:stateCopy];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __63__MRUContinuousSliderView_setOutputDeviceAsset_state_animated___block_invoke_4;

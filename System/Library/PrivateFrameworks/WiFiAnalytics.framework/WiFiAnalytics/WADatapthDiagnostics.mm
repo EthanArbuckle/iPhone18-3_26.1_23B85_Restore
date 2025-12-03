@@ -1,19 +1,19 @@
 @interface WADatapthDiagnostics
 - (PBCodable)awdReport;
-- (WADatapthDiagnostics)initWithWADatapthDiagnosticsReport:(const void *)a3 length:(unint64_t)a4;
+- (WADatapthDiagnostics)initWithWADatapthDiagnosticsReport:(const void *)report length:(unint64_t)length;
 - (unsigned)awdMetricID;
 @end
 
 @implementation WADatapthDiagnostics
 
-- (WADatapthDiagnostics)initWithWADatapthDiagnosticsReport:(const void *)a3 length:(unint64_t)a4
+- (WADatapthDiagnostics)initWithWADatapthDiagnosticsReport:(const void *)report length:(unint64_t)length
 {
   v27 = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = WADatapthDiagnostics;
   v6 = [(WADatapthDiagnostics *)&v20 init];
   v7 = objc_autoreleasePoolPush();
-  v8 = [MEMORY[0x1E695DEF0] dataWithBytes:a3 length:a4];
+  v8 = [MEMORY[0x1E695DEF0] dataWithBytes:report length:length];
   if (!v8)
   {
     v10 = WALogCategoryDefaultHandle();
@@ -121,8 +121,8 @@ LABEL_14:
     goto LABEL_6;
   }
 
-  v4 = [(PBCodable *)awdReport stallNotifications];
-  v5 = [v4 count];
+  stallNotifications = [(PBCodable *)awdReport stallNotifications];
+  v5 = [stallNotifications count];
 
   if (v5)
   {

@@ -1,14 +1,14 @@
 @interface JobManagerListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (JobManagerListener)init;
-- (void)_handleLegacyNotifications:(id)a3;
-- (void)cancelJobsWithIDs:(id)a3 completionBlock:(id)a4;
-- (void)finishJobsWithIDs:(id)a3 replyBlock:(id)a4;
-- (void)getJobsUsingReplyBlock:(id)a3;
-- (void)getJobsWithIDs:(id)a3 usingReplyBlock:(id)a4;
-- (void)pauseJobsWithIDs:(id)a3 completionBlock:(id)a4;
-- (void)registerJobManagerWithOptions:(id)a3 replyBlock:(id)a4;
-- (void)resumeJobsWithIDs:(id)a3 completionBlock:(id)a4;
+- (void)_handleLegacyNotifications:(id)notifications;
+- (void)cancelJobsWithIDs:(id)ds completionBlock:(id)block;
+- (void)finishJobsWithIDs:(id)ds replyBlock:(id)block;
+- (void)getJobsUsingReplyBlock:(id)block;
+- (void)getJobsWithIDs:(id)ds usingReplyBlock:(id)block;
+- (void)pauseJobsWithIDs:(id)ds completionBlock:(id)block;
+- (void)registerJobManagerWithOptions:(id)options replyBlock:(id)block;
+- (void)resumeJobsWithIDs:(id)ds completionBlock:(id)block;
 @end
 
 @implementation JobManagerListener
@@ -40,10 +40,10 @@
   return v2;
 }
 
-- (void)cancelJobsWithIDs:(id)a3 completionBlock:(id)a4
+- (void)cancelJobsWithIDs:(id)ds completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  blockCopy = block;
   v8 = +[NSXPCConnection currentConnection];
   v9 = +[BagService appstoredService];
   dispatchQueue = self->_dispatchQueue;
@@ -53,18 +53,18 @@
   v14[3] = &unk_10051C2C8;
   v14[4] = self;
   v15 = v8;
-  v16 = v6;
-  v17 = v7;
-  v11 = v7;
-  v12 = v6;
+  v16 = dsCopy;
+  v17 = blockCopy;
+  v11 = blockCopy;
+  v12 = dsCopy;
   v13 = v8;
   [v9 bagOnQueue:dispatchQueue completionHandler:v14];
 }
 
-- (void)finishJobsWithIDs:(id)a3 replyBlock:(id)a4
+- (void)finishJobsWithIDs:(id)ds replyBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  blockCopy = block;
   v8 = +[NSXPCConnection currentConnection];
   v9 = +[BagService appstoredService];
   dispatchQueue = self->_dispatchQueue;
@@ -74,17 +74,17 @@
   v14[3] = &unk_10051C2C8;
   v14[4] = self;
   v15 = v8;
-  v16 = v6;
-  v17 = v7;
-  v11 = v7;
-  v12 = v6;
+  v16 = dsCopy;
+  v17 = blockCopy;
+  v11 = blockCopy;
+  v12 = dsCopy;
   v13 = v8;
   [v9 bagOnQueue:dispatchQueue completionHandler:v14];
 }
 
-- (void)getJobsUsingReplyBlock:(id)a3
+- (void)getJobsUsingReplyBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[NSXPCConnection currentConnection];
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -93,16 +93,16 @@
   block[3] = &unk_10051C078;
   block[4] = self;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = blockCopy;
+  v7 = blockCopy;
   v8 = v5;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)getJobsWithIDs:(id)a3 usingReplyBlock:(id)a4
+- (void)getJobsWithIDs:(id)ds usingReplyBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  blockCopy = block;
   v8 = +[NSXPCConnection currentConnection];
   dispatchQueue = self->_dispatchQueue;
   v13[0] = _NSConcreteStackBlock;
@@ -111,18 +111,18 @@
   v13[3] = &unk_10051C7A8;
   v13[4] = self;
   v14 = v8;
-  v15 = v6;
-  v16 = v7;
-  v10 = v7;
-  v11 = v6;
+  v15 = dsCopy;
+  v16 = blockCopy;
+  v10 = blockCopy;
+  v11 = dsCopy;
   v12 = v8;
   dispatch_async(dispatchQueue, v13);
 }
 
-- (void)pauseJobsWithIDs:(id)a3 completionBlock:(id)a4
+- (void)pauseJobsWithIDs:(id)ds completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  blockCopy = block;
   v8 = +[NSXPCConnection currentConnection];
   dispatchQueue = self->_dispatchQueue;
   v13[0] = _NSConcreteStackBlock;
@@ -131,18 +131,18 @@
   v13[3] = &unk_10051C7A8;
   v13[4] = self;
   v14 = v8;
-  v15 = v6;
-  v16 = v7;
-  v10 = v7;
-  v11 = v6;
+  v15 = dsCopy;
+  v16 = blockCopy;
+  v10 = blockCopy;
+  v11 = dsCopy;
   v12 = v8;
   dispatch_async(dispatchQueue, v13);
 }
 
-- (void)registerJobManagerWithOptions:(id)a3 replyBlock:(id)a4
+- (void)registerJobManagerWithOptions:(id)options replyBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  blockCopy = block;
   v8 = +[NSXPCConnection currentConnection];
   dispatchQueue = self->_dispatchQueue;
   v13[0] = _NSConcreteStackBlock;
@@ -151,18 +151,18 @@
   v13[3] = &unk_10051C7A8;
   v13[4] = self;
   v14 = v8;
-  v15 = v6;
-  v16 = v7;
-  v10 = v7;
-  v11 = v6;
+  v15 = optionsCopy;
+  v16 = blockCopy;
+  v10 = blockCopy;
+  v11 = optionsCopy;
   v12 = v8;
   dispatch_async(dispatchQueue, v13);
 }
 
-- (void)resumeJobsWithIDs:(id)a3 completionBlock:(id)a4
+- (void)resumeJobsWithIDs:(id)ds completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  blockCopy = block;
   v8 = +[NSXPCConnection currentConnection];
   dispatchQueue = self->_dispatchQueue;
   v13[0] = _NSConcreteStackBlock;
@@ -171,21 +171,21 @@
   v13[3] = &unk_10051C7A8;
   v13[4] = self;
   v14 = v8;
-  v15 = v6;
-  v16 = v7;
-  v10 = v7;
-  v11 = v6;
+  v15 = dsCopy;
+  v16 = blockCopy;
+  v10 = blockCopy;
+  v11 = dsCopy;
   v12 = v8;
   dispatch_async(dispatchQueue, v13);
 }
 
-- (void)_handleLegacyNotifications:(id)a3
+- (void)_handleLegacyNotifications:(id)notifications
 {
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = [a3 object];
+  obj = [notifications object];
   v4 = [obj countByEnumeratingWithState:&v23 objects:v41 count:16];
   if (v4)
   {
@@ -215,7 +215,7 @@
             v28 = 3221225472;
             v29 = sub_100317730;
             v30 = &unk_10051B570;
-            v31 = self;
+            selfCopy3 = self;
             v32 = v11;
             dispatch_async(dispatchQueue, &block);
           }
@@ -235,7 +235,7 @@
             v28 = 3221225472;
             v29 = sub_100317D6C;
             v30 = &unk_10051B570;
-            v31 = self;
+            selfCopy3 = self;
             v32 = v14;
             dispatch_async(v16, &block);
           }
@@ -258,7 +258,7 @@
             v28 = 3221225472;
             v29 = sub_100317830;
             v30 = &unk_10051AEE8;
-            v31 = self;
+            selfCopy3 = self;
             v32 = v19;
             v33 = v12;
             dispatch_async(v20, &block);
@@ -289,11 +289,11 @@ LABEL_21:
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 processIdentifier];
-  if (sub_1002280AC(self, v5, @"com.apple.appstored.jobmanager"))
+  connectionCopy = connection;
+  processIdentifier = [connectionCopy processIdentifier];
+  if (sub_1002280AC(self, connectionCopy, @"com.apple.appstored.jobmanager"))
   {
     goto LABEL_5;
   }
@@ -304,19 +304,19 @@ LABEL_21:
     *buf = 138412546;
     *&buf[4] = objc_opt_class();
     *&buf[12] = 1024;
-    *&buf[14] = v6;
+    *&buf[14] = processIdentifier;
     v8 = *&buf[4];
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%@]: Treating %i as legacy client", buf, 0x12u);
   }
 
-  if (sub_1002280AC(self, v5, @"com.apple.itunesstored.private"))
+  if (sub_1002280AC(self, connectionCopy, @"com.apple.itunesstored.private"))
   {
 LABEL_5:
-    v9 = v5;
+    v9 = connectionCopy;
     v10 = v9;
     if (self)
     {
-      v11 = [v9 processIdentifier];
+      processIdentifier2 = [v9 processIdentifier];
       v12 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
@@ -324,7 +324,7 @@ LABEL_5:
         *buf = 138543618;
         *&buf[4] = v13;
         *&buf[12] = 1024;
-        *&buf[14] = v11;
+        *&buf[14] = processIdentifier2;
         v14 = v13;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[%{public}@]: Got connection from pid: %i", buf, 0x12u);
       }
@@ -341,7 +341,7 @@ LABEL_5:
       v25[2] = sub_1003174D4;
       v25[3] = &unk_10051B858;
       objc_copyWeak(&v26, &location);
-      v27 = v11;
+      v27 = processIdentifier2;
       [v10 setInterruptionHandler:v25];
       *buf = _NSConcreteStackBlock;
       *&buf[8] = 3221225472;
@@ -349,7 +349,7 @@ LABEL_5:
       v31 = &unk_10051B880;
       objc_copyWeak(&v32, &location);
       objc_copyWeak(&v33, &from);
-      v34 = v11;
+      v34 = processIdentifier2;
       [v10 setInvalidationHandler:buf];
       [v10 resume];
       objc_destroyWeak(&v33);
@@ -365,7 +365,7 @@ LABEL_5:
     v22[2] = sub_100316668;
     v22[3] = &unk_10051B570;
     v23 = v10;
-    v24 = self;
+    selfCopy = self;
     dispatch_async(dispatchQueue, v22);
 
     v18 = 1;
@@ -379,7 +379,7 @@ LABEL_5:
       *buf = 138412546;
       *&buf[4] = v20;
       *&buf[12] = 1024;
-      *&buf[14] = v6;
+      *&buf[14] = processIdentifier;
       v21 = v20;
       _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "[%@]: Connection denied for pid: %i for non entitled client", buf, 0x12u);
     }

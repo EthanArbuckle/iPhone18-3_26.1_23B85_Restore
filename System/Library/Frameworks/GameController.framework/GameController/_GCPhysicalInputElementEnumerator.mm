@@ -1,5 +1,5 @@
 @interface _GCPhysicalInputElementEnumerator
-- (id)initWithCollection:(void *)a1;
+- (id)initWithCollection:(void *)collection;
 - (id)nextObject;
 @end
 
@@ -22,14 +22,14 @@
   return v5;
 }
 
-- (id)initWithCollection:(void *)a1
+- (id)initWithCollection:(void *)collection
 {
-  if (!a1)
+  if (!collection)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = collection;
   v6.super_class = _GCPhysicalInputElementEnumerator;
   v3 = objc_msgSendSuper2(&v6, sel_init);
   v4 = v3;

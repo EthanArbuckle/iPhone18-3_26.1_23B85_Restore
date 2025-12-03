@@ -1,26 +1,26 @@
 @interface LocalStickerEffectEditorViewController
-- (_TtC10StickerKit38LocalStickerEffectEditorViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (_TtC10StickerKit38LocalStickerEffectEditorViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation LocalStickerEffectEditorViewController
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = self;
+  selfCopy = self;
   sub_19A745D98();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_19A744274(a3);
+  selfCopy = self;
+  sub_19A744274(disappear);
 }
 
-- (_TtC10StickerKit38LocalStickerEffectEditorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10StickerKit38LocalStickerEffectEditorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_19A7AB014();
     v7 = v6;
@@ -32,8 +32,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return LocalStickerEffectEditorViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return LocalStickerEffectEditorViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

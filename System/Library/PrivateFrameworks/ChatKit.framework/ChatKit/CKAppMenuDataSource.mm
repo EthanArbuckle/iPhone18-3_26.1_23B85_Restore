@@ -1,45 +1,45 @@
 @interface CKAppMenuDataSource
-+ (BOOL)_shouldDisplayPluginInMenu:(id)a3;
-+ (id)_sortedMenuItemsFromItems:(id)a3;
-+ (id)appMenuWithTarget:(id)a3 traitCollection:(id)a4 conversation:(id)a5;
-+ (id)orderedItemsForTraitCollection:(id)a3 conversation:(id)a4;
++ (BOOL)_shouldDisplayPluginInMenu:(id)menu;
++ (id)_sortedMenuItemsFromItems:(id)items;
++ (id)appMenuWithTarget:(id)target traitCollection:(id)collection conversation:(id)conversation;
++ (id)orderedItemsForTraitCollection:(id)collection conversation:(id)conversation;
 @end
 
 @implementation CKAppMenuDataSource
 
-+ (id)orderedItemsForTraitCollection:(id)a3 conversation:(id)a4
++ (id)orderedItemsForTraitCollection:(id)collection conversation:(id)conversation
 {
   v62 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  conversationCopy = conversation;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = [v7 sendingService];
-  v10 = [MEMORY[0x1E69A5CA0] iMessageLiteService];
-  v11 = v10;
-  v53 = v7;
-  if (v9 == v10)
+  sendingService = [conversationCopy sendingService];
+  iMessageLiteService = [MEMORY[0x1E69A5CA0] iMessageLiteService];
+  v11 = iMessageLiteService;
+  v53 = conversationCopy;
+  if (sendingService == iMessageLiteService)
   {
   }
 
   else
   {
-    v12 = [v7 chat];
-    v13 = [v12 shouldDisplayOffGridModeStatus];
+    chat = [conversationCopy chat];
+    shouldDisplayOffGridModeStatus = [chat shouldDisplayOffGridModeStatus];
 
-    if (!v13)
+    if (!shouldDisplayOffGridModeStatus)
     {
       goto LABEL_7;
     }
   }
 
-  v14 = [v7 chat];
-  v15 = [v14 supportsCapabilities:0x20000];
+  chat2 = [conversationCopy chat];
+  v15 = [chat2 supportsCapabilities:0x20000];
 
   if (v15)
   {
     v16 = CKFrameworkBundle();
     v17 = [v16 localizedStringForKey:@"EFFECT_MENU_ITEM_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
-    v18 = [CKAppMenuItem imageForIdentifier:@"kAppMenuEffectsItemIdentifier" traitCollection:v6];
+    v18 = [CKAppMenuItem imageForIdentifier:@"kAppMenuEffectsItemIdentifier" traitCollection:collectionCopy];
     v19 = [CKAppMenuItem itemWithDisplayName:v17 identifier:@"kAppMenuEffectsItemIdentifier" accessibilityIdentifier:@"Effects" image:v18];
     [v8 addObject:v19];
 
@@ -49,31 +49,31 @@
 
 LABEL_7:
   v54 = v8;
-  if ([v7 supportsPolls])
+  if ([conversationCopy supportsPolls])
   {
     v21 = CKFrameworkBundle();
     v22 = [v21 localizedStringForKey:@"POLLS_MENU_ITEM_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
     v23 = IMBalloonExtensionIDWithSuffix();
-    v24 = a1;
+    selfCopy = self;
     v25 = IMBalloonExtensionIDWithSuffix();
-    v26 = [CKAppMenuItem imageForIdentifier:v25 traitCollection:v6];
+    v26 = [CKAppMenuItem imageForIdentifier:v25 traitCollection:collectionCopy];
     v27 = [CKAppMenuItem itemWithDisplayName:v22 identifier:v23 accessibilityIdentifier:@"Polls" image:v26];
     [v54 addObject:v27];
 
-    a1 = v24;
+    self = selfCopy;
     v8 = v54;
   }
 
-  v55 = v6;
+  v55 = collectionCopy;
   v59 = 0u;
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
   v28 = +[CKBalloonPluginManager sharedInstance];
-  v29 = [v28 visibleSwitcherPlugins];
+  visibleSwitcherPlugins = [v28 visibleSwitcherPlugins];
 
-  obj = v29;
-  v30 = [v29 countByEnumeratingWithState:&v57 objects:v61 count:16];
+  obj = visibleSwitcherPlugins;
+  v30 = [visibleSwitcherPlugins countByEnumeratingWithState:&v57 objects:v61 count:16];
   if (v30)
   {
     v31 = v30;
@@ -88,17 +88,17 @@ LABEL_7:
         }
 
         v34 = *(*(&v57 + 1) + 8 * i);
-        if ([a1 _shouldDisplayPluginInMenu:v34])
+        if ([self _shouldDisplayPluginInMenu:v34])
         {
-          v35 = [v34 browserDisplayName];
+          browserDisplayName = [v34 browserDisplayName];
           [v34 identifier];
-          v37 = v36 = a1;
-          v38 = [v34 identifier];
-          v39 = [v34 identifier];
-          v40 = [CKAppMenuItem imageForIdentifier:v39 traitCollection:v55];
-          v41 = [CKAppMenuItem itemWithDisplayName:v35 identifier:v37 accessibilityIdentifier:v38 image:v40];
+          v37 = v36 = self;
+          identifier = [v34 identifier];
+          identifier2 = [v34 identifier];
+          v40 = [CKAppMenuItem imageForIdentifier:identifier2 traitCollection:v55];
+          v41 = [CKAppMenuItem itemWithDisplayName:browserDisplayName identifier:v37 accessibilityIdentifier:identifier image:v40];
 
-          a1 = v36;
+          self = v36;
           v8 = v54;
           [v54 addObject:v41];
         }
@@ -110,7 +110,7 @@ LABEL_7:
     while (v31);
   }
 
-  v6 = v55;
+  collectionCopy = v55;
   if ([v53 supportsSendLater])
   {
     v42 = CKFrameworkBundle();
@@ -127,30 +127,30 @@ LABEL_7:
   v50 = [CKAppMenuItem itemWithDisplayName:v48 identifier:@"kAppMenuEffectsItemIdentifier" accessibilityIdentifier:@"Effects" image:v49];
   [v8 addObject:v50];
 
-  v20 = [a1 _sortedMenuItemsFromItems:v8];
+  v20 = [self _sortedMenuItemsFromItems:v8];
 LABEL_21:
   v51 = v20;
 
   return v51;
 }
 
-+ (id)_sortedMenuItemsFromItems:(id)a3
++ (id)_sortedMenuItemsFromItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_alloc_init(MEMORY[0x1E696AD50]);
   v6 = objc_alloc_init(MEMORY[0x1E695DFA0]);
-  v7 = [a1 _defaultAppOrder];
+  _defaultAppOrder = [self _defaultAppOrder];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __49__CKAppMenuDataSource__sortedMenuItemsFromItems___block_invoke;
   v23[3] = &unk_1E72EC738;
-  v8 = v4;
+  v8 = itemsCopy;
   v24 = v8;
   v9 = v6;
   v25 = v9;
   v10 = v5;
   v26 = v10;
-  [v7 enumerateObjectsUsingBlock:v23];
+  [_defaultAppOrder enumerateObjectsUsingBlock:v23];
 
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
@@ -163,9 +163,9 @@ LABEL_21:
   v12 = v9;
   v13 = v10;
   [v11 enumerateObjectsUsingBlock:&v16];
-  v14 = [v12 array];
+  array = [v12 array];
 
-  return v14;
+  return array;
 }
 
 void __49__CKAppMenuDataSource__sortedMenuItemsFromItems___block_invoke(uint64_t a1, void *a2)
@@ -208,11 +208,11 @@ void __49__CKAppMenuDataSource__sortedMenuItemsFromItems___block_invoke_3(uint64
   }
 }
 
-+ (BOOL)_shouldDisplayPluginInMenu:(id)a3
++ (BOOL)_shouldDisplayPluginInMenu:(id)menu
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  if ([v4 isClingEnabled])
+  menuCopy = menu;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  if ([mEMORY[0x1E69A8070] isClingEnabled])
   {
     v5 = CKIsStickersStripEnabled();
   }
@@ -222,17 +222,17 @@ void __49__CKAppMenuDataSource__sortedMenuItemsFromItems___block_invoke_3(uint64
     v5 = 0;
   }
 
-  v6 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v7 = [v6 showAllInstalledMessageApps];
+  mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  showAllInstalledMessageApps = [mEMORY[0x1E69A8070]2 showAllInstalledMessageApps];
 
-  if (v7)
+  if (showAllInstalledMessageApps)
   {
     goto LABEL_5;
   }
 
-  v8 = [v3 identifier];
+  identifier = [menuCopy identifier];
   v9 = IMBalloonExtensionIDWithSuffix();
-  v10 = [v8 isEqualToString:v9];
+  v10 = [identifier isEqualToString:v9];
 
   if (v10)
   {
@@ -240,18 +240,18 @@ void __49__CKAppMenuDataSource__sortedMenuItemsFromItems___block_invoke_3(uint64
     goto LABEL_16;
   }
 
-  v11 = [v3 identifier];
+  identifier2 = [menuCopy identifier];
   v12 = IMBalloonExtensionIDWithSuffix();
-  v13 = [v11 isEqualToString:v12];
+  v13 = [identifier2 isEqualToString:v12];
 
   if (v13)
   {
     goto LABEL_16;
   }
 
-  v14 = [v3 identifier];
+  identifier3 = [menuCopy identifier];
   v15 = IMBalloonExtensionIDWithSuffix();
-  v16 = [v14 isEqualToString:v15];
+  v16 = [identifier3 isEqualToString:v15];
 
   if (v16)
   {
@@ -261,21 +261,21 @@ LABEL_5:
 
   else
   {
-    v17 = [v3 identifier];
+    identifier4 = [menuCopy identifier];
     v18 = IMBalloonExtensionIDWithSuffix();
-    v19 = [v17 isEqualToString:v18];
+    v19 = [identifier4 isEqualToString:v18];
 
     if (v19)
     {
-      v20 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-      v21 = [v20 showTapToRadarMessagesApp];
+      mEMORY[0x1E69A8070]3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+      showTapToRadarMessagesApp = [mEMORY[0x1E69A8070]3 showTapToRadarMessagesApp];
     }
 
     else
     {
-      v22 = [v3 identifier];
+      identifier5 = [menuCopy identifier];
       v23 = IMBalloonExtensionIDWithSuffix();
-      v24 = [v22 isEqualToString:v23];
+      v24 = [identifier5 isEqualToString:v23];
 
       if (!v24)
       {
@@ -283,11 +283,11 @@ LABEL_5:
         goto LABEL_16;
       }
 
-      v20 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-      v21 = [v20 isGenPlaygroundEnabled];
+      mEMORY[0x1E69A8070]3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+      showTapToRadarMessagesApp = [mEMORY[0x1E69A8070]3 isGenPlaygroundEnabled];
     }
 
-    v5 = v21;
+    v5 = showTapToRadarMessagesApp;
   }
 
 LABEL_16:
@@ -295,19 +295,19 @@ LABEL_16:
   return v5;
 }
 
-+ (id)appMenuWithTarget:(id)a3 traitCollection:(id)a4 conversation:(id)a5
++ (id)appMenuWithTarget:(id)target traitCollection:(id)collection conversation:(id)conversation
 {
   v34 = *MEMORY[0x1E69E9840];
-  val = a3;
-  v8 = a4;
-  v9 = a5;
+  val = target;
+  collectionCopy = collection;
+  conversationCopy = conversation;
   v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v22 = v9;
-  obj = [a1 orderedItemsForTraitCollection:v8 conversation:v9];
+  v22 = conversationCopy;
+  obj = [self orderedItemsForTraitCollection:collectionCopy conversation:conversationCopy];
   v10 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v10)
   {
@@ -324,19 +324,19 @@ LABEL_16:
         v13 = *(*(&v29 + 1) + 8 * i);
         objc_initWeak(&location, val);
         v14 = MEMORY[0x1E69DC628];
-        v15 = [v13 displayName];
-        v16 = [v13 image];
-        v17 = [v13 identifier];
+        displayName = [v13 displayName];
+        image = [v13 image];
+        identifier = [v13 identifier];
         v26[0] = MEMORY[0x1E69E9820];
         v26[1] = 3221225472;
         v26[2] = __70__CKAppMenuDataSource_appMenuWithTarget_traitCollection_conversation___block_invoke;
         v26[3] = &unk_1E72EBF48;
         objc_copyWeak(&v27, &location);
         v26[4] = v13;
-        v18 = [v14 actionWithTitle:v15 image:v16 identifier:v17 handler:v26];
+        v18 = [v14 actionWithTitle:displayName image:image identifier:identifier handler:v26];
 
-        v19 = [v13 accessibilityIdentifier];
-        [v18 setAccessibilityIdentifier:v19];
+        accessibilityIdentifier = [v13 accessibilityIdentifier];
+        [v18 setAccessibilityIdentifier:accessibilityIdentifier];
 
         [v25 addObject:v18];
         objc_destroyWeak(&v27);

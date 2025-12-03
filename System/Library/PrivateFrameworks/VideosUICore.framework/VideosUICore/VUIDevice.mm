@@ -6,74 +6,74 @@
 + (NSString)systemName;
 + (NSString)systemVersion;
 + (int64_t)userInterfaceIdiom;
-+ (void)enablePortraitLock:(BOOL)a3;
++ (void)enablePortraitLock:(BOOL)lock;
 @end
 
 @implementation VUIDevice
 
 + (int64_t)userInterfaceIdiom
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  return v3;
+  return userInterfaceIdiom;
 }
 
 + (NSString)systemVersion
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 systemVersion];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  systemVersion = [currentDevice systemVersion];
 
-  return v3;
+  return systemVersion;
 }
 
 + (NSString)name
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 name];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  name = [currentDevice name];
 
-  return v3;
+  return name;
 }
 
 + (NSString)model
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 model];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  model = [currentDevice model];
 
-  return v3;
+  return model;
 }
 
 + (NSString)systemName
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 systemName];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  systemName = [currentDevice systemName];
 
-  return v3;
+  return systemName;
 }
 
 + (BOOL)supportsDeepColor
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 _supportsDeepColor];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  _supportsDeepColor = [currentDevice _supportsDeepColor];
 
-  return v3;
+  return _supportsDeepColor;
 }
 
-+ (void)enablePortraitLock:(BOOL)a3
++ (void)enablePortraitLock:(BOOL)lock
 {
-  if (a3)
+  if (lock)
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    _orientationBeforePortraitLock = [v3 orientation];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    _orientationBeforePortraitLock = [currentDevice orientation];
 
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    [v5 setOrientation:1];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    [currentDevice2 setOrientation:1];
   }
 
   else if (_orientationBeforePortraitLock)
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    [v4 setOrientation:_orientationBeforePortraitLock];
+    currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+    [currentDevice3 setOrientation:_orientationBeforePortraitLock];
 
     _orientationBeforePortraitLock = 0;
   }

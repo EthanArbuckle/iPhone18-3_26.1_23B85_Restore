@@ -1,29 +1,29 @@
 @interface _EXNSExtensionUIShimScene
-- (BOOL)shouldAcceptConnection:(id)a3;
-- (id)makePrincipalObjectForExtension:(id)a3;
-- (void)connectToSession:(id)a3;
+- (BOOL)shouldAcceptConnection:(id)connection;
+- (id)makePrincipalObjectForExtension:(id)extension;
+- (void)connectToSession:(id)session;
 @end
 
 @implementation _EXNSExtensionUIShimScene
 
-- (id)makePrincipalObjectForExtension:(id)a3
+- (id)makePrincipalObjectForExtension:(id)extension
 {
-  v3 = a3;
-  v4 = [v3 identity];
-  v5 = [v4 principalClass];
+  extensionCopy = extension;
+  identity = [extensionCopy identity];
+  principalClass = [identity principalClass];
 
-  if (([(objc_class *)v5 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  if (([(objc_class *)principalClass isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
     v9 = _EXDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      [_EXNSExtensionUIShimScene makePrincipalObjectForExtension:v5];
+      [_EXNSExtensionUIShimScene makePrincipalObjectForExtension:principalClass];
     }
 
     goto LABEL_10;
   }
 
-  v6 = objc_alloc_init(v5);
+  v6 = objc_alloc_init(principalClass);
   if (!v6)
   {
     v9 = _EXDefaultLog();
@@ -43,22 +43,22 @@ LABEL_10:
   return v7;
 }
 
-- (void)connectToSession:(id)a3
+- (void)connectToSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 extension];
+    extension = [sessionCopy extension];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v10.receiver = self;
       v10.super_class = _EXNSExtensionUIShimScene;
-      [(_EXNSExtensionShimScene *)&v10 connectToSession:v4];
-      v6 = [(_EXNSExtensionShimScene *)self context];
-      v7 = [v6 _principalObject];
-      [(_EXNSExtensionUIShimScene *)self setViewController:v7];
+      [(_EXNSExtensionShimScene *)&v10 connectToSession:sessionCopy];
+      context = [(_EXNSExtensionShimScene *)self context];
+      _principalObject = [context _principalObject];
+      [(_EXNSExtensionUIShimScene *)self setViewController:_principalObject];
 
       return;
     }
@@ -84,16 +84,16 @@ LABEL_10:
   __break(1u);
 }
 
-- (BOOL)shouldAcceptConnection:(id)a3
+- (BOOL)shouldAcceptConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(_EXNSExtensionShimScene *)self context];
-  v6 = [v5 conformsToProtocol:&unk_1F4E08D90];
+  connectionCopy = connection;
+  context = [(_EXNSExtensionShimScene *)self context];
+  v6 = [context conformsToProtocol:&unk_1F4E08D90];
 
   if (v6)
   {
-    v7 = [(_EXNSExtensionShimScene *)self context];
-    v8 = [v7 shouldAcceptXPCConnection:v4];
+    context2 = [(_EXNSExtensionShimScene *)self context];
+    v8 = [context2 shouldAcceptXPCConnection:connectionCopy];
   }
 
   else

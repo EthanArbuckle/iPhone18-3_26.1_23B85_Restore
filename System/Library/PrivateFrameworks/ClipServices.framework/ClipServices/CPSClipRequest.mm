@@ -1,62 +1,62 @@
 @interface CPSClipRequest
-+ (void)confirmLocationWithURL:(id)a3 inRegion:(id)a4 completion:(id)a5;
-+ (void)deleteClipsWithBundleIDs:(id)a3 completion:(id)a4;
-+ (void)getLocationConfirmationConsentForBundleID:(id)a3 completion:(id)a4;
-+ (void)getUserNotificationConsentForBundleID:(id)a3 completion:(id)a4;
-- (CPSClipRequest)initWithURL:(id)a3 fallbackClipBundleID:(id)a4;
-- (id)_errorIgnoringUserCancelledErrorIfNeeded:(id)a3;
++ (void)confirmLocationWithURL:(id)l inRegion:(id)region completion:(id)completion;
++ (void)deleteClipsWithBundleIDs:(id)ds completion:(id)completion;
++ (void)getLocationConfirmationConsentForBundleID:(id)d completion:(id)completion;
++ (void)getUserNotificationConsentForBundleID:(id)d completion:(id)completion;
+- (CPSClipRequest)initWithURL:(id)l fallbackClipBundleID:(id)d;
+- (id)_errorIgnoringUserCancelledErrorIfNeeded:(id)needed;
 - (void)_openClipWithInvocationUI;
 - (void)cancel;
 - (void)dealloc;
-- (void)installClipWithBundleID:(id)a3 completion:(id)a4;
-- (void)proxy:(id)a3 didDetermineAvailability:(BOOL)a4;
-- (void)proxy:(id)a3 didFinishLoadingWithError:(id)a4;
-- (void)proxyAppDidLaunchForTesting:(id)a3;
-- (void)proxyDidUpdateMetadata:(id)a3;
-- (void)proxyRemoteServiceDidCrash:(id)a3;
-- (void)requestClipWithCompletion:(id)a3;
+- (void)installClipWithBundleID:(id)d completion:(id)completion;
+- (void)proxy:(id)proxy didDetermineAvailability:(BOOL)availability;
+- (void)proxy:(id)proxy didFinishLoadingWithError:(id)error;
+- (void)proxyAppDidLaunchForTesting:(id)testing;
+- (void)proxyDidUpdateMetadata:(id)metadata;
+- (void)proxyRemoteServiceDidCrash:(id)crash;
+- (void)requestClipWithCompletion:(id)completion;
 @end
 
 @implementation CPSClipRequest
 
-- (CPSClipRequest)initWithURL:(id)a3 fallbackClipBundleID:(id)a4
+- (CPSClipRequest)initWithURL:(id)l fallbackClipBundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (v14.receiver = self, v14.super_class = CPSClipRequest, (self = [(CPSClipRequest *)&v14 init]) != 0))
+  lCopy = l;
+  dCopy = d;
+  if (lCopy && (v14.receiver = self, v14.super_class = CPSClipRequest, (self = [(CPSClipRequest *)&v14 init]) != 0))
   {
-    v8 = [v6 cps_sanitizedURL];
-    v9 = [[CPSSessionProxy alloc] initWithURL:v8];
+    cps_sanitizedURL = [lCopy cps_sanitizedURL];
+    v9 = [[CPSSessionProxy alloc] initWithURL:cps_sanitizedURL];
     sessionProxy = self->_sessionProxy;
     self->_sessionProxy = v9;
 
-    v11 = [CPSSessionConfiguration standardConfigurationWithURL:v8 fallbackBundleID:v7];
+    v11 = [CPSSessionConfiguration standardConfigurationWithURL:cps_sanitizedURL fallbackBundleID:dCopy];
     [(CPSSessionProxy *)self->_sessionProxy setConfiguration:v11];
 
     [(CPSSessionProxy *)self->_sessionProxy setDelegate:self];
     self = self;
 
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)requestClipWithCompletion:(id)a3
+- (void)requestClipWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __44__CPSClipRequest_requestClipWithCompletion___block_invoke;
   v11 = &unk_278DCEFD8;
-  v12 = self;
-  v13 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v13 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x245D3D5F0](&v8);
   completionHandler = self->_completionHandler;
   self->_completionHandler = v6;
@@ -90,20 +90,20 @@ void __44__CPSClipRequest_requestClipWithCompletion___block_invoke(uint64_t a1)
   [(CPSClipRequest *)&v4 dealloc];
 }
 
-+ (void)deleteClipsWithBundleIDs:(id)a3 completion:(id)a4
++ (void)deleteClipsWithBundleIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   v8 = +[CPSDaemonConnection sharedConnection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __54__CPSClipRequest_deleteClipsWithBundleIDs_completion___block_invoke;
   v11[3] = &unk_278DCF000;
-  v13 = v7;
-  v14 = a1;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  v13 = completionCopy;
+  selfCopy = self;
+  v12 = dsCopy;
+  v9 = completionCopy;
+  v10 = dsCopy;
   [v8 uninstallClipsWithBundleIDs:v10 completionHandler:v11];
 }
 
@@ -156,26 +156,26 @@ uint64_t __54__CPSClipRequest_deleteClipsWithBundleIDs_completion___block_invoke
   return result;
 }
 
-+ (void)getUserNotificationConsentForBundleID:(id)a3 completion:(id)a4
++ (void)getUserNotificationConsentForBundleID:(id)d completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  dCopy = d;
   v7 = +[CPSDaemonConnection sharedConnection];
-  [v7 getUserNotificationConsentForBundleID:v6 completion:v5];
+  [v7 getUserNotificationConsentForBundleID:dCopy completion:completionCopy];
 }
 
-+ (void)getLocationConfirmationConsentForBundleID:(id)a3 completion:(id)a4
++ (void)getLocationConfirmationConsentForBundleID:(id)d completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  dCopy = d;
   v7 = +[CPSDaemonConnection sharedConnection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __71__CPSClipRequest_getLocationConfirmationConsentForBundleID_completion___block_invoke;
   v9[3] = &unk_278DCF028;
-  v10 = v5;
-  v8 = v5;
-  [v7 getLastLaunchOptionsWithBundleID:v6 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [v7 getLastLaunchOptionsWithBundleID:dCopy completion:v9];
 }
 
 void __71__CPSClipRequest_getLocationConfirmationConsentForBundleID_completion___block_invoke(uint64_t a1, void *a2)
@@ -185,31 +185,31 @@ void __71__CPSClipRequest_getLocationConfirmationConsentForBundleID_completion__
   (*(v2 + 16))(v2, [v3 BOOLValue], 0);
 }
 
-+ (void)confirmLocationWithURL:(id)a3 inRegion:(id)a4 completion:(id)a5
++ (void)confirmLocationWithURL:(id)l inRegion:(id)region completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  regionCopy = region;
+  lCopy = l;
   v10 = +[CPSDaemonConnection sharedConnection];
-  [v10 confirmLocationWithURL:v9 inRegion:v8 completion:v7];
+  [v10 confirmLocationWithURL:lCopy inRegion:regionCopy completion:completionCopy];
 }
 
-- (void)installClipWithBundleID:(id)a3 completion:(id)a4
+- (void)installClipWithBundleID:(id)d completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   sessionProxy = self->_sessionProxy;
-  v8 = a3;
-  v9 = [(CPSSessionProxy *)sessionProxy configuration];
-  v10 = [v9 usedByPPT];
+  dCopy = d;
+  configuration = [(CPSSessionProxy *)sessionProxy configuration];
+  usedByPPT = [configuration usedByPPT];
 
-  if (v10)
+  if (usedByPPT)
   {
     v20 = MEMORY[0x277D85DD0];
     v21 = 3221225472;
     v22 = __53__CPSClipRequest_installClipWithBundleID_completion___block_invoke;
     v23 = &unk_278DCEFD8;
-    v24 = self;
-    v25 = v6;
+    selfCopy = self;
+    v25 = completionCopy;
     v11 = MEMORY[0x245D3D5F0](&v20);
     completionHandler = self->_completionHandler;
     self->_completionHandler = v11;
@@ -223,12 +223,12 @@ void __71__CPSClipRequest_getLocationConfirmationConsentForBundleID_completion__
 
   [(CPSSessionProxy *)self->_sessionProxy connectToService:v20];
   v14 = objc_alloc_init(CPSClipLaunchOptions);
-  [(CPSClipLaunchOptions *)v14 setPredefinedBundleID:v8];
+  [(CPSClipLaunchOptions *)v14 setPredefinedBundleID:dCopy];
 
-  [(CPSClipLaunchOptions *)v14 setSkipsLaunching:v10];
-  v15 = [(CPSSessionProxy *)self->_sessionProxy configuration];
-  v16 = [v15 launchReason];
-  v17 = [v16 isEqualToString:@"DeveloperTools"];
+  [(CPSClipLaunchOptions *)v14 setSkipsLaunching:usedByPPT];
+  configuration2 = [(CPSSessionProxy *)self->_sessionProxy configuration];
+  launchReason = [configuration2 launchReason];
+  v17 = [launchReason isEqualToString:@"DeveloperTools"];
 
   if (v17)
   {
@@ -237,14 +237,14 @@ void __71__CPSClipRequest_getLocationConfirmationConsentForBundleID_completion__
     [(CPSClipLaunchOptions *)v14 setUserNotificationGranted:v18];
   }
 
-  if (v10)
+  if (usedByPPT)
   {
     v19 = 0;
   }
 
   else
   {
-    v19 = v6;
+    v19 = completionCopy;
   }
 
   [(CPSSessionProxy *)self->_sessionProxy openClipWithLaunchOptions:v14 completion:v19];
@@ -258,12 +258,12 @@ void __53__CPSClipRequest_installClipWithBundleID_completion___block_invoke(uint
   *(v2 + 16) = 0;
 }
 
-- (id)_errorIgnoringUserCancelledErrorIfNeeded:(id)a3
+- (id)_errorIgnoringUserCancelledErrorIfNeeded:(id)needed
 {
-  v4 = a3;
-  if (-[CPSClipRequest shouldReturnErrorOnUserCancellation](self, "shouldReturnErrorOnUserCancellation") || ([v4 cps_isUserCanceledError] & 1) == 0)
+  neededCopy = needed;
+  if (-[CPSClipRequest shouldReturnErrorOnUserCancellation](self, "shouldReturnErrorOnUserCancellation") || ([neededCopy cps_isUserCanceledError] & 1) == 0)
   {
-    v5 = v4;
+    v5 = neededCopy;
   }
 
   else
@@ -286,7 +286,7 @@ void __53__CPSClipRequest_installClipWithBundleID_completion___block_invoke(uint
     v5 = v3;
     v6 = [(CPSSessionProxy *)sessionProxy url];
     *buf = 134218243;
-    v12 = self;
+    selfCopy = self;
     v13 = 2117;
     v14 = v6;
     _os_log_impl(&dword_2436ED000, v5, OS_LOG_TYPE_INFO, "CPSClipRequest (%p): Showing invocation UI for %{sensitive}@", buf, 0x16u);
@@ -372,17 +372,17 @@ LABEL_7:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)proxy:(id)a3 didDetermineAvailability:(BOOL)a4
+- (void)proxy:(id)proxy didDetermineAvailability:(BOOL)availability
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4)
+  proxyCopy = proxy;
+  if (availability)
   {
     self->_shouldOpenClipWhenMetadataIsUpdated = 0;
-    v7 = [(CPSSessionProxy *)self->_sessionProxy configuration];
-    v8 = [v7 useLocalContent];
+    configuration = [(CPSSessionProxy *)self->_sessionProxy configuration];
+    useLocalContent = [configuration useLocalContent];
 
-    if ((v8 & 1) == 0)
+    if ((useLocalContent & 1) == 0)
     {
       [(CPSClipRequest *)self _openClipWithInvocationUI];
     }
@@ -390,10 +390,10 @@ LABEL_7:
 
   else
   {
-    v9 = [(CPSSessionProxy *)self->_sessionProxy configuration];
-    v10 = [v9 fallbackClipBundleID];
+    configuration2 = [(CPSSessionProxy *)self->_sessionProxy configuration];
+    fallbackClipBundleID = [configuration2 fallbackClipBundleID];
 
-    if (v10)
+    if (fallbackClipBundleID)
     {
       self->_shouldOpenClipWhenMetadataIsUpdated = 1;
     }
@@ -408,16 +408,16 @@ LABEL_7:
         v13 = v11;
         v14 = [(CPSSessionProxy *)sessionProxy url];
         v21 = 134218243;
-        v22 = self;
+        selfCopy = self;
         v23 = 2117;
         v24 = v14;
         _os_log_impl(&dword_2436ED000, v13, OS_LOG_TYPE_INFO, "CPSClipRequest (%p): Clip is not available for %{sensitive}@", &v21, 0x16u);
       }
 
       v15 = +[CPSAnalyticsLogger sharedLogger];
-      v16 = [(CPSSessionProxy *)self->_sessionProxy configuration];
-      v17 = [v16 launchReason];
-      [v15 recordClientClipRequestWithBundleID:0 launchReason:v17];
+      configuration3 = [(CPSSessionProxy *)self->_sessionProxy configuration];
+      launchReason = [configuration3 launchReason];
+      [v15 recordClientClipRequestWithBundleID:0 launchReason:launchReason];
 
       completionHandler = self->_completionHandler;
       if (completionHandler)
@@ -433,20 +433,20 @@ LABEL_7:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)proxyDidUpdateMetadata:(id)a3
+- (void)proxyDidUpdateMetadata:(id)metadata
 {
-  v11 = a3;
-  v4 = [v11 metadata];
-  v5 = [v4 hasAppMetadata];
+  metadataCopy = metadata;
+  metadata = [metadataCopy metadata];
+  hasAppMetadata = [metadata hasAppMetadata];
 
-  if (v5)
+  if (hasAppMetadata)
   {
     v6 = +[CPSAnalyticsLogger sharedLogger];
-    v7 = [v11 metadata];
-    v8 = [v7 clipBundleID];
-    v9 = [(CPSSessionProxy *)self->_sessionProxy configuration];
-    v10 = [v9 launchReason];
-    [v6 recordClientClipRequestWithBundleID:v8 launchReason:v10];
+    metadata2 = [metadataCopy metadata];
+    clipBundleID = [metadata2 clipBundleID];
+    configuration = [(CPSSessionProxy *)self->_sessionProxy configuration];
+    launchReason = [configuration launchReason];
+    [v6 recordClientClipRequestWithBundleID:clipBundleID launchReason:launchReason];
   }
 
   if (self->_shouldOpenClipWhenMetadataIsUpdated)
@@ -456,15 +456,15 @@ LABEL_7:
   }
 }
 
-- (void)proxy:(id)a3 didFinishLoadingWithError:(id)a4
+- (void)proxy:(id)proxy didFinishLoadingWithError:(id)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  proxyCopy = proxy;
+  errorCopy = error;
+  v8 = errorCopy;
   if (self->_completionHandler)
   {
-    v9 = [(CPSClipRequest *)self _errorIgnoringUserCancelledErrorIfNeeded:v7];
+    v9 = [(CPSClipRequest *)self _errorIgnoringUserCancelledErrorIfNeeded:errorCopy];
 
     v10 = CPS_LOG_CHANNEL_PREFIXClipServices();
     v11 = v10;
@@ -475,15 +475,15 @@ LABEL_7:
         sessionProxy = self->_sessionProxy;
         v13 = v11;
         v14 = [(CPSSessionProxy *)sessionProxy url];
-        v15 = [v9 cps_privacyPreservingDescription];
+        cps_privacyPreservingDescription = [v9 cps_privacyPreservingDescription];
         v19 = 134218755;
-        v20 = self;
+        selfCopy2 = self;
         v21 = 2117;
         v22 = v14;
         v23 = 2114;
-        v24 = v15;
+        v24 = cps_privacyPreservingDescription;
         v25 = 2048;
-        v26 = v6;
+        v26 = proxyCopy;
         _os_log_error_impl(&dword_2436ED000, v13, OS_LOG_TYPE_ERROR, "CPSClipRequest (%p): Failed to show invocation UI for %{sensitive}@: %{public}@, proxy: %p", &v19, 0x2Au);
 
 LABEL_8:
@@ -496,11 +496,11 @@ LABEL_8:
       v17 = v11;
       v14 = [(CPSSessionProxy *)v16 url];
       v19 = 134218499;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2117;
       v22 = v14;
       v23 = 2048;
-      v24 = v6;
+      v24 = proxyCopy;
       _os_log_impl(&dword_2436ED000, v17, OS_LOG_TYPE_INFO, "CPSClipRequest (%p): Finished showing invocation UI for %{sensitive}@, proxy: %p", &v19, 0x20u);
 
       goto LABEL_8;
@@ -510,28 +510,28 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v9 = v7;
+  v9 = errorCopy;
 LABEL_10:
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)proxyRemoteServiceDidCrash:(id)a3
+- (void)proxyRemoteServiceDidCrash:(id)crash
 {
-  v4 = a3;
+  crashCopy = crash;
   v5 = CPS_LOG_CHANNEL_PREFIXClipServices();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(CPSClipRequest *)self proxyRemoteServiceDidCrash:v4, v5];
+    [(CPSClipRequest *)self proxyRemoteServiceDidCrash:crashCopy, v5];
   }
 }
 
-- (void)proxyAppDidLaunchForTesting:(id)a3
+- (void)proxyAppDidLaunchForTesting:(id)testing
 {
-  if ([a3 usedByPPT])
+  if ([testing usedByPPT])
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 postNotificationName:@"com.apple.ClipServices.Notification.TestComplete" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"com.apple.ClipServices.Notification.TestComplete" object:0];
   }
 }
 

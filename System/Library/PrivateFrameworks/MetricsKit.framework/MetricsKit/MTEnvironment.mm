@@ -34,29 +34,29 @@
 - (id)windowInnerWidth;
 - (id)windowOuterHeight;
 - (id)windowOuterWidth;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation MTEnvironment
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v8 = a3;
-  v4 = objc_storeWeak(&self->_delegate, v8);
+  delegateCopy = delegate;
+  v4 = objc_storeWeak(&self->_delegate, delegateCopy);
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(MTObject *)self metricsKit];
+    metricsKit = [(MTObject *)self metricsKit];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained setMetricsKit:v6];
+    [WeakRetained setMetricsKit:metricsKit];
   }
 }
 
 - (BOOL)isAnonymous
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -64,21 +64,21 @@
     return 0;
   }
 
-  v5 = [(MTEnvironment *)self delegate];
-  v6 = [v5 isAnonymous];
+  delegate2 = [(MTEnvironment *)self delegate];
+  isAnonymous = [delegate2 isAnonymous];
 
-  return v6;
+  return isAnonymous;
 }
 
 - (id)app
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 app];
+    delegate2 = [(MTEnvironment *)self delegate];
+    v13 = [delegate2 app];
   }
 
   else
@@ -92,329 +92,329 @@
 
 - (id)appVersion
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 appVersion];
+    delegate2 = [(MTEnvironment *)self delegate];
+    appVersion = [delegate2 appVersion];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment appVersion]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    appVersion = 0;
   }
 
-  return v13;
+  return appVersion;
 }
 
 - (id)capacityData
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 capacityData];
+    delegate2 = [(MTEnvironment *)self delegate];
+    capacityData = [delegate2 capacityData];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment capacityData]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    capacityData = 0;
   }
 
-  return v13;
+  return capacityData;
 }
 
 - (id)capacityDataAvailable
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 capacityDataAvailable];
+    delegate2 = [(MTEnvironment *)self delegate];
+    capacityDataAvailable = [delegate2 capacityDataAvailable];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment capacityDataAvailable]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    capacityDataAvailable = 0;
   }
 
-  return v13;
+  return capacityDataAvailable;
 }
 
 - (id)capacityDisk
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 capacityDisk];
+    delegate2 = [(MTEnvironment *)self delegate];
+    capacityDisk = [delegate2 capacityDisk];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment capacityDisk]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    capacityDisk = 0;
   }
 
-  return v13;
+  return capacityDisk;
 }
 
 - (id)capacitySystem
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 capacitySystem];
+    delegate2 = [(MTEnvironment *)self delegate];
+    capacitySystem = [delegate2 capacitySystem];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment capacitySystem]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    capacitySystem = 0;
   }
 
-  return v13;
+  return capacitySystem;
 }
 
 - (id)capacitySystemAvailable
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 capacitySystemAvailable];
+    delegate2 = [(MTEnvironment *)self delegate];
+    capacitySystemAvailable = [delegate2 capacitySystemAvailable];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment capacitySystemAvailable]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    capacitySystemAvailable = 0;
   }
 
-  return v13;
+  return capacitySystemAvailable;
 }
 
 - (id)connectionType
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 connectionType];
+    delegate2 = [(MTEnvironment *)self delegate];
+    connectionType = [delegate2 connectionType];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment connectionType]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    connectionType = 0;
   }
 
-  return v13;
+  return connectionType;
 }
 
 - (id)cookies
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 cookies];
+    delegate2 = [(MTEnvironment *)self delegate];
+    cookies = [delegate2 cookies];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment cookies]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    cookies = 0;
   }
 
-  return v13;
+  return cookies;
 }
 
 - (id)dsId
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 dsId];
+    delegate2 = [(MTEnvironment *)self delegate];
+    dsId = [delegate2 dsId];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment dsId]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    dsId = 0;
   }
 
-  return v13;
+  return dsId;
 }
 
 - (id)environmentBuild
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MTEnvironment *)self delegate];
-    v6 = [v5 environmentBuild];
+    delegate2 = [(MTEnvironment *)self delegate];
+    environmentBuild = [delegate2 environmentBuild];
   }
 
   else
   {
-    v6 = 0;
+    environmentBuild = 0;
   }
 
-  return v6;
+  return environmentBuild;
 }
 
 - (id)environmentDataCenter
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MTEnvironment *)self delegate];
-    v6 = [v5 environmentDataCenter];
+    delegate2 = [(MTEnvironment *)self delegate];
+    environmentDataCenter = [delegate2 environmentDataCenter];
   }
 
   else
   {
-    v6 = 0;
+    environmentDataCenter = 0;
   }
 
-  return v6;
+  return environmentDataCenter;
 }
 
 - (id)environmentInstance
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MTEnvironment *)self delegate];
-    v6 = [v5 environmentDataCenter];
+    delegate2 = [(MTEnvironment *)self delegate];
+    environmentDataCenter = [delegate2 environmentDataCenter];
   }
 
   else
   {
-    v6 = 0;
+    environmentDataCenter = 0;
   }
 
-  return v6;
+  return environmentDataCenter;
 }
 
 - (id)hardwareFamily
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 hardwareFamily];
+    delegate2 = [(MTEnvironment *)self delegate];
+    hardwareFamily = [delegate2 hardwareFamily];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment hardwareFamily]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    hardwareFamily = 0;
   }
 
-  return v13;
+  return hardwareFamily;
 }
 
 - (id)hardwareModel
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 hardwareModel];
+    delegate2 = [(MTEnvironment *)self delegate];
+    hardwareModel = [delegate2 hardwareModel];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment hardwareModel]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    hardwareModel = 0;
   }
 
-  return v13;
+  return hardwareModel;
 }
 
 - (id)hostApp
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 hostApp];
+    delegate2 = [(MTEnvironment *)self delegate];
+    hostApp = [delegate2 hostApp];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment hostApp]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    hostApp = 0;
   }
 
-  return v13;
+  return hostApp;
 }
 
 - (id)hostAppVersion
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MTEnvironment *)self delegate];
-    v6 = [v5 hostAppVersion];
+    delegate2 = [(MTEnvironment *)self delegate];
+    hostAppVersion = [delegate2 hostAppVersion];
   }
 
   else
   {
-    v6 = 0;
+    hostAppVersion = 0;
   }
 
-  return v6;
+  return hostAppVersion;
 }
 
 - (id)os
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 os];
+    delegate2 = [(MTEnvironment *)self delegate];
+    v13 = [delegate2 os];
   }
 
   else
@@ -428,301 +428,301 @@
 
 - (id)osBuildNumber
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 osBuildNumber];
+    delegate2 = [(MTEnvironment *)self delegate];
+    osBuildNumber = [delegate2 osBuildNumber];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment osBuildNumber]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    osBuildNumber = 0;
   }
 
-  return v13;
+  return osBuildNumber;
 }
 
 - (id)osLanguages
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 osLanguages];
+    delegate2 = [(MTEnvironment *)self delegate];
+    osLanguages = [delegate2 osLanguages];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment osLanguages]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    osLanguages = 0;
   }
 
-  return v13;
+  return osLanguages;
 }
 
 - (id)osVersion
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 osVersion];
+    delegate2 = [(MTEnvironment *)self delegate];
+    osVersion = [delegate2 osVersion];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment osVersion]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    osVersion = 0;
   }
 
-  return v13;
+  return osVersion;
 }
 
 - (id)pageUrl
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 pageUrl];
+    delegate2 = [(MTEnvironment *)self delegate];
+    pageUrl = [delegate2 pageUrl];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment pageUrl]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    pageUrl = 0;
   }
 
-  return v13;
+  return pageUrl;
 }
 
 - (id)parentPageUrl
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MTEnvironment *)self delegate];
-    v6 = [v5 parentPageUrl];
+    delegate2 = [(MTEnvironment *)self delegate];
+    parentPageUrl = [delegate2 parentPageUrl];
   }
 
   else
   {
-    v6 = 0;
+    parentPageUrl = 0;
   }
 
-  return v6;
+  return parentPageUrl;
 }
 
 - (id)pixelRatio
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 pixelRatio];
+    delegate2 = [(MTEnvironment *)self delegate];
+    pixelRatio = [delegate2 pixelRatio];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment pixelRatio]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    pixelRatio = 0;
   }
 
-  return v13;
+  return pixelRatio;
 }
 
 - (id)resourceRevNum
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 resourceRevNum];
+    delegate2 = [(MTEnvironment *)self delegate];
+    resourceRevNum = [delegate2 resourceRevNum];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment resourceRevNum]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    resourceRevNum = 0;
   }
 
-  return v13;
+  return resourceRevNum;
 }
 
 - (id)screenHeight
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 screenHeight];
+    delegate2 = [(MTEnvironment *)self delegate];
+    screenHeight = [delegate2 screenHeight];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment screenHeight]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    screenHeight = 0;
   }
 
-  return v13;
+  return screenHeight;
 }
 
 - (id)screenWidth
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 screenWidth];
+    delegate2 = [(MTEnvironment *)self delegate];
+    screenWidth = [delegate2 screenWidth];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment screenWidth]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    screenWidth = 0;
   }
 
-  return v13;
+  return screenWidth;
 }
 
 - (id)storeFrontHeader
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 storeFrontHeader];
+    delegate2 = [(MTEnvironment *)self delegate];
+    storeFrontHeader = [delegate2 storeFrontHeader];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment storeFrontHeader]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    storeFrontHeader = 0;
   }
 
-  return v13;
+  return storeFrontHeader;
 }
 
 - (id)userAgent
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 userAgent];
+    delegate2 = [(MTEnvironment *)self delegate];
+    userAgent = [delegate2 userAgent];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment userAgent]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    userAgent = 0;
   }
 
-  return v13;
+  return userAgent;
 }
 
 - (id)windowInnerHeight
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 windowInnerHeight];
+    delegate2 = [(MTEnvironment *)self delegate];
+    windowInnerHeight = [delegate2 windowInnerHeight];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment windowInnerHeight]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    windowInnerHeight = 0;
   }
 
-  return v13;
+  return windowInnerHeight;
 }
 
 - (id)windowInnerWidth
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 windowInnerWidth];
+    delegate2 = [(MTEnvironment *)self delegate];
+    windowInnerWidth = [delegate2 windowInnerWidth];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment windowInnerWidth]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    windowInnerWidth = 0;
   }
 
-  return v13;
+  return windowInnerWidth;
 }
 
 - (id)windowOuterHeight
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 windowOuterHeight];
+    delegate2 = [(MTEnvironment *)self delegate];
+    windowOuterHeight = [delegate2 windowOuterHeight];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment windowOuterHeight]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    windowOuterHeight = 0;
   }
 
-  return v13;
+  return windowOuterHeight;
 }
 
 - (id)windowOuterWidth
 {
-  v3 = [(MTEnvironment *)self delegate];
+  delegate = [(MTEnvironment *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(MTEnvironment *)self delegate];
-    v13 = [v12 windowOuterWidth];
+    delegate2 = [(MTEnvironment *)self delegate];
+    windowOuterWidth = [delegate2 windowOuterWidth];
   }
 
   else
   {
     v14 = MTUndelegatedMethodError("[MTEnvironment windowOuterWidth]", v5, v6, v7, v8, v9, v10, v11);
-    v13 = 0;
+    windowOuterWidth = 0;
   }
 
-  return v13;
+  return windowOuterWidth;
 }
 
 - (MTEnvironmentDelegate)delegate

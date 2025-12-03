@@ -1,18 +1,18 @@
 @interface RBSProcessInstancePredicate
-- (RBSProcessInstancePredicate)initWithRBSXPCCoder:(id)a3;
+- (RBSProcessInstancePredicate)initWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSProcessInstancePredicate
 
-- (RBSProcessInstancePredicate)initWithRBSXPCCoder:(id)a3
+- (RBSProcessInstancePredicate)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = RBSProcessInstancePredicate;
   v5 = [(RBSProcessInstancePredicate *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
     identifier = v5->super._identifier;
     v5->super._identifier = v6;
   }

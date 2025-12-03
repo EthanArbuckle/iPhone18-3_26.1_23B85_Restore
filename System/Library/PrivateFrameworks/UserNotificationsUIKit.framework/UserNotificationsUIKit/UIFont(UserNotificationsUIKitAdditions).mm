@@ -26,33 +26,33 @@
 - (uint64_t)unui_hasExuberatedLineHeightForText:()UserNotificationsUIKitAdditions
 {
   v4 = a3;
-  if ([v4 length] && objc_msgSend(a1, "unui_hasExuberatedLineHeight"))
+  if ([v4 length] && objc_msgSend(self, "unui_hasExuberatedLineHeight"))
   {
-    v5 = [v4 unui_containsExcessiveLineHeightCharacters];
+    unui_containsExcessiveLineHeightCharacters = [v4 unui_containsExcessiveLineHeightCharacters];
   }
 
   else
   {
-    v5 = 0;
+    unui_containsExcessiveLineHeightCharacters = 0;
   }
 
-  return v5;
+  return unui_containsExcessiveLineHeightCharacters;
 }
 
 - (uint64_t)unui_hasExuberatedLineHeightForAttributedText:()UserNotificationsUIKitAdditions
 {
   v4 = a3;
-  if ([v4 length] && objc_msgSend(a1, "unui_hasExuberatedLineHeight"))
+  if ([v4 length] && objc_msgSend(self, "unui_hasExuberatedLineHeight"))
   {
-    v5 = [v4 unui_containsExcessiveLineHeightCharacters];
+    unui_containsExcessiveLineHeightCharacters = [v4 unui_containsExcessiveLineHeightCharacters];
   }
 
   else
   {
-    v5 = 0;
+    unui_containsExcessiveLineHeightCharacters = 0;
   }
 
-  return v5;
+  return unui_containsExcessiveLineHeightCharacters;
 }
 
 - (uint64_t)unui_effectiveScaledValueForValue:()UserNotificationsUIKitAdditions hasExuberatedLineHeight:
@@ -60,7 +60,7 @@
   if (a4)
   {
     v6 = objc_opt_class();
-    [a1 _scaledValueForValue:a2];
+    [self _scaledValueForValue:a2];
 
     return [v6 unui_exuberatedValueForValue:?];
   }
@@ -68,16 +68,16 @@
   else
   {
 
-    return [a1 _scaledValueForValue:?];
+    return [self _scaledValueForValue:?];
   }
 }
 
 - (uint64_t)unui_effectiveLineHeightForText:()UserNotificationsUIKitAdditions
 {
-  if ([a1 unui_hasExuberatedLineHeightForText:?])
+  if ([self unui_hasExuberatedLineHeightForText:?])
   {
     v2 = objc_opt_class();
-    [a1 lineHeight];
+    [self lineHeight];
 
     return [v2 unui_exuberatedValueForValue:?];
   }
@@ -85,7 +85,7 @@
   else
   {
 
-    return [a1 lineHeight];
+    return [self lineHeight];
   }
 }
 
@@ -105,7 +105,7 @@
       }
 
       v19 = *MEMORY[0x277D740A8];
-      v20[0] = a1;
+      v20[0] = self;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
       [v14 boundingRectWithSize:1 options:v16 attributes:v15 context:{a4, a5}];
 
@@ -114,10 +114,10 @@
         a8 = -1;
       }
 
-      v17 = [v15 numberOfLineFragments];
-      if (a8 >= v17)
+      numberOfLineFragments = [v15 numberOfLineFragments];
+      if (a8 >= numberOfLineFragments)
       {
-        a8 = v17;
+        a8 = numberOfLineFragments;
       }
     }
   }
@@ -133,7 +133,7 @@
 - (double)unui_measuringHeightForText:()UserNotificationsUIKitAdditions withNumberOfLines:
 {
   v6 = a4;
-  [a1 unui_effectiveLineHeightForText:?];
+  [self unui_effectiveLineHeightForText:?];
   v8 = v7;
   v9 = a4 - 1;
   if (!a4)
@@ -142,29 +142,29 @@
   }
 
   v10 = v9;
-  [a1 leading];
+  [self leading];
   return v11 * v10 + v6 * v8;
 }
 
 - (double)unui_drawingHeightForText:()UserNotificationsUIKitAdditions withNumberOfLines:additionalPadding:
 {
-  v8 = [a1 unui_hasExuberatedLineHeightForText:?];
+  v8 = [self unui_hasExuberatedLineHeightForText:?];
   if (v8)
   {
     v9 = objc_opt_class();
-    [a1 lineHeight];
+    [self lineHeight];
     [v9 unui_exuberatedValueForValue:?];
   }
 
   else
   {
-    [a1 lineHeight];
+    [self lineHeight];
   }
 
   v11 = v10;
-  [a1 unui_effectiveScaledValueForValue:v8 hasExuberatedLineHeight:a2];
+  [self unui_effectiveScaledValueForValue:v8 hasExuberatedLineHeight:a2];
   v13 = v12;
-  [a1 leading];
+  [self leading];
   return (v13 + v11 + v14) * a5;
 }
 

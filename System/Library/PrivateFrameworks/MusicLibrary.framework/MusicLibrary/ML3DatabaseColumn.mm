@@ -1,6 +1,6 @@
 @interface ML3DatabaseColumn
-+ (id)columnWithName:(id)a3 datatype:(unint64_t)a4 constraints:(unint64_t)a5 defaultValue:(id)a6;
-- (ML3DatabaseColumn)initWithName:(id)a3 datatype:(unint64_t)a4 constraints:(unint64_t)a5 defaultValue:(id)a6;
++ (id)columnWithName:(id)name datatype:(unint64_t)datatype constraints:(unint64_t)constraints defaultValue:(id)value;
+- (ML3DatabaseColumn)initWithName:(id)name datatype:(unint64_t)datatype constraints:(unint64_t)constraints defaultValue:(id)value;
 - (id)_columnDefinitionSQL;
 @end
 
@@ -72,14 +72,14 @@ LABEL_5:
   defaultValue = self->_defaultValue;
   if (defaultValue)
   {
-    v7 = [defaultValue ml_stringValueForSQL];
-    if (!v7)
+    ml_stringValueForSQL = [defaultValue ml_stringValueForSQL];
+    if (!ml_stringValueForSQL)
     {
-      v18 = [MEMORY[0x277CCA890] currentHandler];
-      [v18 handleFailureInMethod:a2 object:self file:@"ML3DatabaseColumn.m" lineNumber:79 description:{@"Unsupported default value type %@", self->_defaultValue}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"ML3DatabaseColumn.m" lineNumber:79 description:{@"Unsupported default value type %@", self->_defaultValue}];
     }
 
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"DEFAULT %@", v7];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"DEFAULT %@", ml_stringValueForSQL];
     [v4 addObject:v8];
   }
 
@@ -109,32 +109,32 @@ LABEL_5:
   return v16;
 }
 
-- (ML3DatabaseColumn)initWithName:(id)a3 datatype:(unint64_t)a4 constraints:(unint64_t)a5 defaultValue:(id)a6
+- (ML3DatabaseColumn)initWithName:(id)name datatype:(unint64_t)datatype constraints:(unint64_t)constraints defaultValue:(id)value
 {
-  v10 = a3;
-  v11 = a6;
+  nameCopy = name;
+  valueCopy = value;
   v16.receiver = self;
   v16.super_class = ML3DatabaseColumn;
   v12 = [(ML3DatabaseColumn *)&v16 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [nameCopy copy];
     name = v12->_name;
     v12->_name = v13;
 
-    v12->_datatype = a4;
-    v12->_columnConstraints = a5;
-    objc_storeStrong(&v12->_defaultValue, a6);
+    v12->_datatype = datatype;
+    v12->_columnConstraints = constraints;
+    objc_storeStrong(&v12->_defaultValue, value);
   }
 
   return v12;
 }
 
-+ (id)columnWithName:(id)a3 datatype:(unint64_t)a4 constraints:(unint64_t)a5 defaultValue:(id)a6
++ (id)columnWithName:(id)name datatype:(unint64_t)datatype constraints:(unint64_t)constraints defaultValue:(id)value
 {
-  v9 = a6;
-  v10 = a3;
-  v11 = [objc_alloc(objc_opt_class()) initWithName:v10 datatype:a4 constraints:a5 defaultValue:v9];
+  valueCopy = value;
+  nameCopy = name;
+  v11 = [objc_alloc(objc_opt_class()) initWithName:nameCopy datatype:datatype constraints:constraints defaultValue:valueCopy];
 
   return v11;
 }

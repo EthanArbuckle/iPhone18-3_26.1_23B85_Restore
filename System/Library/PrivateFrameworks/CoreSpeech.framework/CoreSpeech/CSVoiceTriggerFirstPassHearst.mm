@@ -1,19 +1,19 @@
 @interface CSVoiceTriggerFirstPassHearst
 - (BOOL)_shouldHandleHearstActivation;
 - (CSVoiceTriggerDelegate)delegate;
-- (CSVoiceTriggerFirstPassHearst)initWithSpeechManager:(id)a3 voiceTriggerEnabledMonitor:(id)a4 siriClientBehaviorMonitor:(id)a5 phoneCallStateMonitor:(id)a6 otherAppRecordingStateMonitor:(id)a7 audioRouteChangeMonitor:(id)a8;
-- (void)CSPhoneCallStateMonitor:(id)a3 didRecievePhoneCallStateChange:(unint64_t)a4;
+- (CSVoiceTriggerFirstPassHearst)initWithSpeechManager:(id)manager voiceTriggerEnabledMonitor:(id)monitor siriClientBehaviorMonitor:(id)behaviorMonitor phoneCallStateMonitor:(id)stateMonitor otherAppRecordingStateMonitor:(id)recordingStateMonitor audioRouteChangeMonitor:(id)changeMonitor;
+- (void)CSPhoneCallStateMonitor:(id)monitor didRecievePhoneCallStateChange:(unint64_t)change;
 - (void)_cancelAllAudioStreamHoldings;
-- (void)_handleRemoteMicVADEventWithSecondPassRequest:(id)a3;
-- (void)_handleRemoteMicVoiceTriggerEvent:(id)a3 secondPassRequest:(id)a4 completion:(id)a5;
-- (void)_handleSecondPassResult:(id)a3 secondPassRequest:(id)a4 deviceId:(id)a5 requestOption:(id)a6 error:(id)a7 completion:(id)a8;
-- (void)_requestStartAudioStreamWitContext:(id)a3 secondPassRequest:(id)a4 startStreamOption:(id)a5 completion:(id)a6;
+- (void)_handleRemoteMicVADEventWithSecondPassRequest:(id)request;
+- (void)_handleRemoteMicVoiceTriggerEvent:(id)event secondPassRequest:(id)request completion:(id)completion;
+- (void)_handleSecondPassResult:(id)result secondPassRequest:(id)request deviceId:(id)id requestOption:(id)option error:(id)error completion:(id)completion;
+- (void)_requestStartAudioStreamWitContext:(id)context secondPassRequest:(id)request startStreamOption:(id)option completion:(id)completion;
 - (void)_reset;
-- (void)_setAsset:(id)a3;
-- (void)activationEventNotificationHandler:(id)a3 event:(id)a4 completion:(id)a5;
+- (void)_setAsset:(id)asset;
+- (void)activationEventNotificationHandler:(id)handler event:(id)event completion:(id)completion;
 - (void)reset;
-- (void)setAsset:(id)a3;
-- (void)siriClientBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6 withEventUUID:(id)a7;
+- (void)setAsset:(id)asset;
+- (void)siriClientBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d;
 - (void)start;
 @end
 
@@ -28,8 +28,8 @@
 
 - (BOOL)_shouldHandleHearstActivation
 {
-  v3 = [(CSAudioRouteChangeMonitor *)self->_audioRouteChangeMonitor hearstRouteStatus];
-  v4 = [(CSAudioRouteChangeMonitor *)self->_audioRouteChangeMonitor isHearstHijackable];
+  hearstRouteStatus = [(CSAudioRouteChangeMonitor *)self->_audioRouteChangeMonitor hearstRouteStatus];
+  isHearstHijackable = [(CSAudioRouteChangeMonitor *)self->_audioRouteChangeMonitor isHearstHijackable];
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -37,8 +37,8 @@
     v8 = 136315906;
     v9 = "[CSVoiceTriggerFirstPassHearst _shouldHandleHearstActivation]";
     v10 = 1024;
-    v11 = v3;
-    if (v4)
+    v11 = hearstRouteStatus;
+    if (isHearstHijackable)
     {
       v6 = @"YES";
     }
@@ -46,19 +46,19 @@
     v12 = 2112;
     v13 = v6;
     v14 = 1024;
-    v15 = ((v3 - 1) < 2) | v4 & 1;
+    v15 = ((hearstRouteStatus - 1) < 2) | isHearstHijackable & 1;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s HearstRouteStatus: %d, isHearstHijackable? %@, shouldHandle: %d", &v8, 0x22u);
   }
 
-  return ((v3 - 1) < 2) | v4 & 1;
+  return ((hearstRouteStatus - 1) < 2) | isHearstHijackable & 1;
 }
 
 - (void)_cancelAllAudioStreamHoldings
 {
   if (self->_triggeredAudioStreamHolding)
   {
-    v3 = [(CSVoiceTriggerFirstPassHearst *)self triggeredAudioProvider];
-    [v3 cancelAudioStreamHold:self->_triggeredAudioStreamHolding];
+    triggeredAudioProvider = [(CSVoiceTriggerFirstPassHearst *)self triggeredAudioProvider];
+    [triggeredAudioProvider cancelAudioStreamHold:self->_triggeredAudioStreamHolding];
 
     triggeredAudioStreamHolding = self->_triggeredAudioStreamHolding;
     self->_triggeredAudioStreamHolding = 0;
@@ -71,8 +71,8 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [(NSMutableDictionary *)self->_hearstSecondPassRequests objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_hearstSecondPassRequests objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -84,7 +84,7 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v11 + 1) + 8 * v10) cancelAudioStreamHold];
@@ -92,32 +92,32 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)_requestStartAudioStreamWitContext:(id)a3 secondPassRequest:(id)a4 startStreamOption:(id)a5 completion:(id)a6
+- (void)_requestStartAudioStreamWitContext:(id)context secondPassRequest:(id)request startStreamOption:(id)option completion:(id)completion
 {
-  v9 = a4;
+  requestCopy = request;
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_1000FC184;
   v29[3] = &unk_100253220;
-  v10 = a6;
-  v30 = v10;
-  v11 = a3;
+  completionCopy = completion;
+  v30 = completionCopy;
+  contextCopy = context;
   v12 = objc_retainBlock(v29);
   speechManager = self->_speechManager;
   v28 = 0;
-  v14 = [(CSSpeechManager *)speechManager audioProviderWithContext:v11 error:&v28];
+  v14 = [(CSSpeechManager *)speechManager audioProviderWithContext:contextCopy error:&v28];
 
   v15 = v28;
   if (v14)
   {
-    [v9 setAudioProvider:v14];
+    [requestCopy setAudioProvider:v14];
     v16 = objc_alloc_init(CSAudioStreamRequest);
     [v16 setRequiresHistoricalBuffer:1];
     v17 = objc_opt_class();
@@ -132,11 +132,11 @@
       if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_ERROR))
       {
         v25 = v21;
-        v26 = [v20 localizedDescription];
+        localizedDescription = [v20 localizedDescription];
         *buf = 136315394;
         v32 = "[CSVoiceTriggerFirstPassHearst _requestStartAudioStreamWitContext:secondPassRequest:startStreamOption:completion:]";
         v33 = 2114;
-        v34 = v26;
+        v34 = localizedDescription;
         _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%s Failed to get audio stream : %{public}@", buf, 0x16u);
       }
     }
@@ -150,11 +150,11 @@
     if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_ERROR))
     {
       v23 = v22;
-      v24 = [v15 localizedDescription];
+      localizedDescription2 = [v15 localizedDescription];
       *buf = 136315394;
       v32 = "[CSVoiceTriggerFirstPassHearst _requestStartAudioStreamWitContext:secondPassRequest:startStreamOption:completion:]";
       v33 = 2114;
-      v34 = v24;
+      v34 = localizedDescription2;
       _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%s Getting audio stream provider has failed : %{public}@", buf, 0x16u);
     }
 
@@ -162,58 +162,58 @@
   }
 }
 
-- (void)_handleSecondPassResult:(id)a3 secondPassRequest:(id)a4 deviceId:(id)a5 requestOption:(id)a6 error:(id)a7 completion:(id)a8
+- (void)_handleSecondPassResult:(id)result secondPassRequest:(id)request deviceId:(id)id requestOption:(id)option error:(id)error completion:(id)completion
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = [v13 result];
-  v20 = [v13 voiceTriggerEventInfo];
-  if (v19 == 4)
+  resultCopy = result;
+  requestCopy = request;
+  idCopy = id;
+  optionCopy = option;
+  errorCopy = error;
+  completionCopy = completion;
+  result = [resultCopy result];
+  voiceTriggerEventInfo = [resultCopy voiceTriggerEventInfo];
+  if (result == 4)
   {
-    v21 = v14;
-    if (v18)
+    v21 = requestCopy;
+    if (completionCopy)
     {
-      v18[2](v18, 0, v17);
+      completionCopy[2](completionCopy, 0, errorCopy);
     }
 
     goto LABEL_53;
   }
 
-  v85 = v18;
+  v85 = completionCopy;
   v22 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v23 = v22;
-    v24 = [v17 localizedDescription];
+    localizedDescription = [errorCopy localizedDescription];
     *buf = 136316162;
     v103 = "[CSVoiceTriggerFirstPassHearst _handleSecondPassResult:secondPassRequest:deviceId:requestOption:error:completion:]";
     v104 = 1026;
-    *v105 = v19;
+    *v105 = result;
     *&v105[4] = 2114;
-    *&v105[6] = v20;
+    *&v105[6] = voiceTriggerEventInfo;
     *&v105[14] = 2114;
-    *&v105[16] = v15;
+    *&v105[16] = idCopy;
     *&v105[24] = 2114;
-    *&v105[26] = v24;
+    *&v105[26] = localizedDescription;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%s Second Pass Result, %{public}d, %{public}@, %{public}@, %{public}@", buf, 0x30u);
   }
 
-  v21 = v14;
-  v86 = v13;
-  v87 = v17;
-  v88 = v16;
-  if (v20)
+  v21 = requestCopy;
+  v86 = resultCopy;
+  v87 = errorCopy;
+  v88 = optionCopy;
+  if (voiceTriggerEventInfo)
   {
     v25 = kVTEITriggeredPh;
-    v26 = [v20 objectForKeyedSubscript:kVTEITriggeredPh];
+    v26 = [voiceTriggerEventInfo objectForKeyedSubscript:kVTEITriggeredPh];
 
     if (v26)
     {
-      v84 = v15;
+      v84 = idCopy;
       v100 = 0u;
       v101 = 0u;
       v98 = 0u;
@@ -234,7 +234,7 @@
             }
 
             v32 = *(*(&v98 + 1) + 8 * i);
-            v33 = [v20 objectForKeyedSubscript:{v25, v84}];
+            v33 = [voiceTriggerEventInfo objectForKeyedSubscript:{v25, v84}];
             LODWORD(v32) = [v32 isEqualToString:v33];
 
             if (v32)
@@ -243,7 +243,7 @@
               if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
               {
                 v63 = v62;
-                v64 = [v20 objectForKeyedSubscript:v25];
+                v64 = [voiceTriggerEventInfo objectForKeyedSubscript:v25];
                 *buf = 136315394;
                 v103 = "[CSVoiceTriggerFirstPassHearst _handleSecondPassResult:secondPassRequest:deviceId:requestOption:error:completion:]";
                 v104 = 2112;
@@ -251,10 +251,10 @@
                 _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_DEFAULT, "%s Ignoring boron based decision making as triggered phrase %@", buf, 0x16u);
               }
 
-              v21 = v14;
-              v15 = v84;
-              v18 = v85;
-              v44 = self;
+              v21 = requestCopy;
+              idCopy = v84;
+              completionCopy = v85;
+              selfCopy2 = self;
               goto LABEL_31;
             }
           }
@@ -269,25 +269,25 @@
         }
       }
 
-      v21 = v14;
-      v15 = v84;
+      v21 = requestCopy;
+      idCopy = v84;
     }
   }
 
-  v34 = [v20 objectForKeyedSubscript:{kVTEItriggerEndSeconds, v84}];
+  v34 = [voiceTriggerEventInfo objectForKeyedSubscript:{kVTEItriggerEndSeconds, v84}];
   [v34 floatValue];
   v36 = v35;
 
-  v37 = [v20 objectForKeyedSubscript:kVTEIShadowMicScoreThresholdForVAD];
+  v37 = [voiceTriggerEventInfo objectForKeyedSubscript:kVTEIShadowMicScoreThresholdForVAD];
   [v37 doubleValue];
   v39 = v38;
 
-  v40 = [v20 objectForKeyedSubscript:kVTEIShadowMicScore];
+  v40 = [voiceTriggerEventInfo objectForKeyedSubscript:kVTEIShadowMicScore];
   [v40 doubleValue];
   v42 = v41;
 
   v43 = CSLogCategoryVT;
-  v44 = self;
+  selfCopy2 = self;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v45 = v43;
@@ -319,14 +319,14 @@
   v97 = v42;
   v95 = &stru_100251880;
   v49 = objc_retainBlock(v94);
-  v50 = [v88 rtModelRequestOptions];
-  v51 = [v50 accessoryInfo];
-  v52 = [v51 supportsAlwaysOnAccelerometer];
+  rtModelRequestOptions = [v88 rtModelRequestOptions];
+  accessoryInfo = [rtModelRequestOptions accessoryInfo];
+  supportsAlwaysOnAccelerometer = [accessoryInfo supportsAlwaysOnAccelerometer];
 
-  v53 = [v21 remoteMicVADScore];
-  if (v52)
+  remoteMicVADScore = [v21 remoteMicVADScore];
+  if (supportsAlwaysOnAccelerometer)
   {
-    v55 = sub_1000FCC20(v53, v54, self->_remoteMicVADThreshold);
+    v55 = sub_1000FCC20(remoteMicVADScore, v54, self->_remoteMicVADThreshold);
   }
 
   else
@@ -335,8 +335,8 @@
     v55 = (v49[2])(v49);
   }
 
-  v18 = v85;
-  if (v55 && v19 == 1)
+  completionCopy = v85;
+  if (v55 && result == 1)
   {
     v57 = CSLogCategoryVT;
     if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
@@ -358,52 +358,52 @@
       _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEFAULT, "%s Trigger is rejected since remoteMicVADScore is %{public}f, remoteMicVADThreshold is %{public}f, triggerEndSeconds is %{public}f, minPhraseLength is %{public}f", buf, 0x34u);
     }
 
-    v19 = 9;
+    result = 9;
   }
 
   v27 = v95;
 LABEL_31:
 
-  v65 = [v20 mutableCopy];
+  v65 = [voiceTriggerEventInfo mutableCopy];
   [v21 remoteMicVADScore];
   v66 = [NSNumber numberWithFloat:?];
   [v65 setObject:v66 forKey:kVTEIRemoteMicVADScore];
 
-  *&v67 = v44->_remoteMicVADThreshold;
+  *&v67 = selfCopy2->_remoteMicVADThreshold;
   v68 = [NSNumber numberWithFloat:v67];
   [v65 setObject:v68 forKey:kVTEIRemoteMicVADThreshold];
 
-  *&v69 = v44->_remoteMicVADMyriadThreshold;
+  *&v69 = selfCopy2->_remoteMicVADMyriadThreshold;
   v70 = [NSNumber numberWithFloat:v69];
   [v65 setObject:v70 forKey:kVTEIRemoteMicVADMyriadThreshold];
 
-  if (v19 <= 2)
+  if (result <= 2)
   {
-    v13 = v86;
-    if (v19 == 1)
+    resultCopy = v86;
+    if (result == 1)
     {
-      WeakRetained = objc_loadWeakRetained(&v44->_delegate);
+      WeakRetained = objc_loadWeakRetained(&selfCopy2->_delegate);
       v79 = objc_opt_respondsToSelector();
 
       if (v79)
       {
-        v73 = objc_loadWeakRetained(&v44->_delegate);
-        [v73 voiceTriggerDidDetectKeyword:v65 deviceId:v15];
+        v73 = objc_loadWeakRetained(&selfCopy2->_delegate);
+        [v73 voiceTriggerDidDetectKeyword:v65 deviceId:idCopy];
         goto LABEL_46;
       }
 
       goto LABEL_47;
     }
 
-    if (v19 == 2)
+    if (result == 2)
     {
-      v71 = objc_loadWeakRetained(&v44->_delegate);
+      v71 = objc_loadWeakRetained(&selfCopy2->_delegate);
       v72 = objc_opt_respondsToSelector();
 
       if (v72)
       {
-        v73 = objc_loadWeakRetained(&v44->_delegate);
-        [v73 voiceTriggerDidRejected:v65 deviceId:v15];
+        v73 = objc_loadWeakRetained(&selfCopy2->_delegate);
+        [v73 voiceTriggerDidRejected:v65 deviceId:idCopy];
 LABEL_46:
 
         goto LABEL_47;
@@ -417,11 +417,11 @@ LABEL_40:
     if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_ERROR))
     {
       v73 = v76;
-      v77 = [v87 localizedDescription];
+      localizedDescription2 = [v87 localizedDescription];
       *buf = 136315394;
       v103 = "[CSVoiceTriggerFirstPassHearst _handleSecondPassResult:secondPassRequest:deviceId:requestOption:error:completion:]";
       v104 = 2114;
-      *v105 = v77;
+      *v105 = localizedDescription2;
       _os_log_error_impl(&_mh_execute_header, v73, OS_LOG_TYPE_ERROR, "%s VoiceTrigger Second Pass has failed : %{public}@", buf, 0x16u);
 
       goto LABEL_46;
@@ -430,39 +430,39 @@ LABEL_40:
     goto LABEL_47;
   }
 
-  v13 = v86;
-  if (v19 == 3)
+  resultCopy = v86;
+  if (result == 3)
   {
-    v80 = objc_loadWeakRetained(&v44->_delegate);
+    v80 = objc_loadWeakRetained(&selfCopy2->_delegate);
     v81 = objc_opt_respondsToSelector();
 
     if (v81)
     {
-      v73 = objc_loadWeakRetained(&v44->_delegate);
-      [v73 voiceTriggerDidDetectNearMiss:v65 deviceId:v15];
+      v73 = objc_loadWeakRetained(&selfCopy2->_delegate);
+      [v73 voiceTriggerDidDetectNearMiss:v65 deviceId:idCopy];
       goto LABEL_46;
     }
 
     goto LABEL_47;
   }
 
-  if (v19 != 9)
+  if (result != 9)
   {
     goto LABEL_40;
   }
 
-  v74 = objc_loadWeakRetained(&v44->_delegate);
+  v74 = objc_loadWeakRetained(&selfCopy2->_delegate);
   v75 = objc_opt_respondsToSelector();
 
   if (v75)
   {
-    v73 = objc_loadWeakRetained(&v44->_delegate);
-    [v73 voiceTriggerDidDetectSpeakerReject:v20];
+    v73 = objc_loadWeakRetained(&selfCopy2->_delegate);
+    [v73 voiceTriggerDidDetectSpeakerReject:voiceTriggerEventInfo];
     goto LABEL_46;
   }
 
 LABEL_47:
-  if ([v13 isSecondChanceCandidate])
+  if ([resultCopy isSecondChanceCandidate])
   {
     v82 = [[CSVoiceTriggerSecondChanceContext alloc] initWithWindowStartTime:mach_absolute_time()];
   }
@@ -473,51 +473,51 @@ LABEL_47:
   }
 
   [v21 setSecondChanceContext:v82];
-  queue = v44->_queue;
+  queue = selfCopy2->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000FCCE8;
   block[3] = &unk_1002533C8;
-  v92 = v44;
-  v93 = v19;
+  v92 = selfCopy2;
+  v93 = result;
   v91 = v21;
   dispatch_async(queue, block);
-  if (v18)
+  if (completionCopy)
   {
-    v18[2](v18, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
-  v17 = v87;
-  v16 = v88;
+  errorCopy = v87;
+  optionCopy = v88;
 LABEL_53:
 }
 
-- (void)_handleRemoteMicVoiceTriggerEvent:(id)a3 secondPassRequest:(id)a4 completion:(id)a5
+- (void)_handleRemoteMicVoiceTriggerEvent:(id)event secondPassRequest:(id)request completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v34 = a5;
-  v35 = +[CSVoiceTriggerFirstPassMetrics CSVoiceTriggerFirstPassMetricsWithFirstPassInfoGeneratedTime:firstPassInfoProcessedTime:](CSVoiceTriggerFirstPassMetrics, "CSVoiceTriggerFirstPassMetricsWithFirstPassInfoGeneratedTime:firstPassInfoProcessedTime:", [v7 hosttime], mach_absolute_time());
-  v9 = [v7 deviceId];
-  v36 = [CSAudioRecordContext contextForHearstVoiceTriggerWithDeviceId:v9];
+  eventCopy = event;
+  requestCopy = request;
+  completionCopy = completion;
+  v35 = +[CSVoiceTriggerFirstPassMetrics CSVoiceTriggerFirstPassMetricsWithFirstPassInfoGeneratedTime:firstPassInfoProcessedTime:](CSVoiceTriggerFirstPassMetrics, "CSVoiceTriggerFirstPassMetricsWithFirstPassInfoGeneratedTime:firstPassInfoProcessedTime:", [eventCopy hosttime], mach_absolute_time());
+  deviceId = [eventCopy deviceId];
+  v36 = [CSAudioRecordContext contextForHearstVoiceTriggerWithDeviceId:deviceId];
 
   v47[0] = _NSConcreteStackBlock;
   v47[1] = 3221225472;
   v47[2] = sub_1000FD24C;
   v47[3] = &unk_100253C70;
   v47[4] = self;
-  v10 = v8;
+  v10 = requestCopy;
   v48 = v10;
   [(CSVoiceTriggerFirstPassHearst *)self _requestStartAudioStreamWitContext:v36 secondPassRequest:v10 startStreamOption:0 completion:v47];
   v11 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [v7 deviceId];
+    deviceId2 = [eventCopy deviceId];
     *buf = 136315394;
     v50 = "[CSVoiceTriggerFirstPassHearst _handleRemoteMicVoiceTriggerEvent:secondPassRequest:completion:]";
     v51 = 2112;
-    v52 = v13;
+    v52 = deviceId2;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
@@ -529,35 +529,35 @@ LABEL_53:
   v45[2] = sub_1000FD3B4;
   v45[3] = &unk_100251818;
   v45[4] = self;
-  v15 = v7;
+  v15 = eventCopy;
   v46 = v15;
   v16 = [(CSVoiceTriggerRTModelRequestOptions *)v14 initWithMutableBuilder:v45];
-  v17 = [v10 secondChanceContext];
-  v18 = [v17 shouldRunAsSecondChance];
+  secondChanceContext = [v10 secondChanceContext];
+  shouldRunAsSecondChance = [secondChanceContext shouldRunAsSecondChance];
 
   v19 = [CSVoiceTriggerSecondPassRequestOption alloc];
-  v20 = [v15 deviceId];
-  v21 = [v10 audioProvider];
-  v22 = [v21 UUID];
-  v23 = [v15 activationInfo];
+  deviceId3 = [v15 deviceId];
+  audioProvider = [v10 audioProvider];
+  uUID = [audioProvider UUID];
+  activationInfo = [v15 activationInfo];
   v24 = +[NSUUID UUID];
-  v25 = [(CSVoiceTriggerSecondPassRequestOption *)v19 initWithFirstPassSource:3 deviceId:v20 audioProviderUUID:v22 firstPassInfo:v23 rejectionMHUUID:v24 isSecondChanceRun:v18 firstpassMetrics:v35 rtModelRequestOptions:v16];
+  v25 = [(CSVoiceTriggerSecondPassRequestOption *)v19 initWithFirstPassSource:3 deviceId:deviceId3 audioProviderUUID:uUID firstPassInfo:activationInfo rejectionMHUUID:v24 isSecondChanceRun:shouldRunAsSecondChance firstpassMetrics:v35 rtModelRequestOptions:v16];
 
   if ([(CSVoiceTriggerRTModelRequestOptions *)v16 allowMph])
   {
-    v26 = [(CSVoiceTriggerRTModelRequestOptions *)v16 accessoryInfo];
-    v27 = [v26 supportsJustSiri];
+    accessoryInfo = [(CSVoiceTriggerRTModelRequestOptions *)v16 accessoryInfo];
+    supportsJustSiri = [accessoryInfo supportsJustSiri];
   }
 
   else
   {
-    v27 = 0;
+    supportsJustSiri = 0;
   }
 
-  v28 = [v10 voiceTriggerSecondPass];
-  [v28 setSupportsMultiPhraseDetection:v27];
+  voiceTriggerSecondPass = [v10 voiceTriggerSecondPass];
+  [voiceTriggerSecondPass setSupportsMultiPhraseDetection:supportsJustSiri];
 
-  v29 = [v10 voiceTriggerSecondPass];
+  voiceTriggerSecondPass2 = [v10 voiceTriggerSecondPass];
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
   v38[2] = sub_1000FD548;
@@ -569,23 +569,23 @@ LABEL_53:
   v40 = v31;
   v32 = v25;
   v41 = v32;
-  v33 = v34;
-  v42 = self;
+  v33 = completionCopy;
+  selfCopy = self;
   v43 = v33;
-  [v29 handleVoiceTriggerSecondPassFrom:v32 completion:v38];
+  [voiceTriggerSecondPass2 handleVoiceTriggerSecondPassFrom:v32 completion:v38];
 
   objc_destroyWeak(&v44);
   objc_destroyWeak(buf);
 }
 
-- (void)_handleRemoteMicVADEventWithSecondPassRequest:(id)a3
+- (void)_handleRemoteMicVADEventWithSecondPassRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    [v4 remoteMicVADScore];
+    [requestCopy remoteMicVADScore];
     remoteMicVADThreshold = self->_remoteMicVADThreshold;
     remoteMicVADMyriadThreshold = self->_remoteMicVADMyriadThreshold;
     v17 = 136315906;
@@ -599,26 +599,26 @@ LABEL_53:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s Handle Remote Mic VAD Event : remoteMicVADScore is %{public}f, remoteMicVADThreshold is %{public}f, remoteMicVADMyriadThreshold is %{public}f", &v17, 0x2Au);
   }
 
-  [v4 remoteMicVADScore];
+  [requestCopy remoteMicVADScore];
   if (v10 >= self->_remoteMicVADMyriadThreshold)
   {
     +[CSMyriadNotifier notifyInEarMyriadTrigger];
   }
 
   v11 = +[CSFPreferences sharedPreferences];
-  v12 = [v11 shouldOverwriteRemoteVADScore];
+  shouldOverwriteRemoteVADScore = [v11 shouldOverwriteRemoteVADScore];
 
-  if (v12)
+  if (shouldOverwriteRemoteVADScore)
   {
     v13 = +[CSFPreferences sharedPreferences];
     [v13 overwritingRemoteVADScore];
-    [v4 setRemoteMicVADScore:?];
+    [requestCopy setRemoteMicVADScore:?];
 
     v14 = CSLogCategoryVT;
     if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
     {
       v15 = v14;
-      [v4 remoteMicVADScore];
+      [requestCopy remoteMicVADScore];
       v17 = 136315394;
       v18 = "[CSVoiceTriggerFirstPassHearst _handleRemoteMicVADEventWithSecondPassRequest:]";
       v19 = 2050;
@@ -628,7 +628,7 @@ LABEL_53:
   }
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6 withEventUUID:(id)a7
+- (void)siriClientBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -639,7 +639,7 @@ LABEL_53:
   dispatch_async(queue, block);
 }
 
-- (void)CSPhoneCallStateMonitor:(id)a3 didRecievePhoneCallStateChange:(unint64_t)a4
+- (void)CSPhoneCallStateMonitor:(id)monitor didRecievePhoneCallStateChange:(unint64_t)change
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
@@ -647,59 +647,59 @@ LABEL_53:
   v5[2] = sub_1000FDBE4;
   v5[3] = &unk_100253C98;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = change;
   dispatch_async(queue, v5);
 }
 
-- (void)activationEventNotificationHandler:(id)a3 event:(id)a4 completion:(id)a5
+- (void)activationEventNotificationHandler:(id)handler event:(id)event completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  eventCopy = event;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000FDCB0;
   block[3] = &unk_1002533A0;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = eventCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = eventCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_setAsset:(id)a3
+- (void)_setAsset:(id)asset
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  assetCopy = asset;
+  v6 = assetCopy;
+  if (assetCopy)
   {
-    [v5 logAssetVersionForInsight];
-    objc_storeStrong(&self->_currentAsset, a3);
+    [assetCopy logAssetVersionForInsight];
+    objc_storeStrong(&self->_currentAsset, asset);
     v7 = [CSVoiceTriggerSecondPassConfigDecoder decodeConfigFrom:self->_currentAsset forFirstPassSource:3];
-    v8 = [v7 wearerDetectionConfig];
-    [v8 threshold];
+    wearerDetectionConfig = [v7 wearerDetectionConfig];
+    [wearerDetectionConfig threshold];
     self->_remoteMicVADThreshold = v9;
 
-    v10 = [v7 wearerDetectionConfig];
-    [v10 myriadThreshold];
+    wearerDetectionConfig2 = [v7 wearerDetectionConfig];
+    [wearerDetectionConfig2 myriadThreshold];
     self->_remoteMicVADMyriadThreshold = v11;
 
-    v12 = [v7 wearerDetectionConfig];
-    [v12 minimumPhraseLength];
+    wearerDetectionConfig3 = [v7 wearerDetectionConfig];
+    [wearerDetectionConfig3 minimumPhraseLength];
     self->_minimumPhraseLengthForVADGating = v13;
 
-    v14 = [v7 wearerDetectionConfig];
-    v15 = [v14 phrasesToSkipBoronDecisionMaking];
+    wearerDetectionConfig4 = [v7 wearerDetectionConfig];
+    phrasesToSkipBoronDecisionMaking = [wearerDetectionConfig4 phrasesToSkipBoronDecisionMaking];
     phrasesToSkipBoronDecisionMaking = self->_phrasesToSkipBoronDecisionMaking;
-    self->_phrasesToSkipBoronDecisionMaking = v15;
+    self->_phrasesToSkipBoronDecisionMaking = phrasesToSkipBoronDecisionMaking;
 
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v17 = [(NSMutableDictionary *)self->_hearstSecondPassRequests objectEnumerator];
-    v18 = [v17 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    objectEnumerator = [(NSMutableDictionary *)self->_hearstSecondPassRequests objectEnumerator];
+    v18 = [objectEnumerator countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v18)
     {
       v19 = v18;
@@ -710,13 +710,13 @@ LABEL_53:
         {
           if (*v24 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           [*(*(&v23 + 1) + 8 * i) setAsset:v6];
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v19 = [objectEnumerator countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v19);
@@ -737,17 +737,17 @@ LABEL_53:
   }
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000FE8B4;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetCopy;
+  v6 = assetCopy;
   dispatch_async(queue, v7);
 }
 
@@ -757,8 +757,8 @@ LABEL_53:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMutableDictionary *)self->_hearstSecondPassRequests objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_hearstSecondPassRequests objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -770,7 +770,7 @@ LABEL_53:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v7 + 1) + 8 * v6) reset];
@@ -778,7 +778,7 @@ LABEL_53:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -807,29 +807,29 @@ LABEL_53:
   dispatch_async(queue, block);
 }
 
-- (CSVoiceTriggerFirstPassHearst)initWithSpeechManager:(id)a3 voiceTriggerEnabledMonitor:(id)a4 siriClientBehaviorMonitor:(id)a5 phoneCallStateMonitor:(id)a6 otherAppRecordingStateMonitor:(id)a7 audioRouteChangeMonitor:(id)a8
+- (CSVoiceTriggerFirstPassHearst)initWithSpeechManager:(id)manager voiceTriggerEnabledMonitor:(id)monitor siriClientBehaviorMonitor:(id)behaviorMonitor phoneCallStateMonitor:(id)stateMonitor otherAppRecordingStateMonitor:(id)recordingStateMonitor audioRouteChangeMonitor:(id)changeMonitor
 {
-  v46 = a3;
-  v45 = a4;
-  v44 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  managerCopy = manager;
+  monitorCopy = monitor;
+  behaviorMonitorCopy = behaviorMonitor;
+  stateMonitorCopy = stateMonitor;
+  recordingStateMonitorCopy = recordingStateMonitor;
+  changeMonitorCopy = changeMonitor;
   v49.receiver = self;
   v49.super_class = CSVoiceTriggerFirstPassHearst;
   v18 = [(CSVoiceTriggerFirstPassHearst *)&v49 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_speechManager, a3);
+    objc_storeStrong(&v18->_speechManager, manager);
     if (!v19->_speechManager)
     {
-      v20 = [CSSpeechManager sharedManager:v44];
+      v20 = [CSSpeechManager sharedManager:behaviorMonitorCopy];
       speechManager = v19->_speechManager;
       v19->_speechManager = v20;
     }
 
-    objc_storeStrong(&v19->_voiceTriggerEnabledMonitor, a4);
+    objc_storeStrong(&v19->_voiceTriggerEnabledMonitor, monitor);
     if (!v19->_voiceTriggerEnabledMonitor)
     {
       v22 = +[CSVoiceTriggerEnabledMonitor sharedInstance];
@@ -837,7 +837,7 @@ LABEL_53:
       v19->_voiceTriggerEnabledMonitor = v22;
     }
 
-    objc_storeStrong(&v19->_siriClientBehaviorMonitor, a5);
+    objc_storeStrong(&v19->_siriClientBehaviorMonitor, behaviorMonitor);
     if (!v19->_siriClientBehaviorMonitor)
     {
       v24 = +[CSSiriClientBehaviorMonitor sharedInstance];
@@ -857,7 +857,7 @@ LABEL_53:
     hearstSecondPassRequests = v19->_hearstSecondPassRequests;
     v19->_hearstSecondPassRequests = v30;
 
-    objc_storeStrong(&v19->_phoneCallStateMonitor, a6);
+    objc_storeStrong(&v19->_phoneCallStateMonitor, stateMonitor);
     phoneCallStateMonitor = v19->_phoneCallStateMonitor;
     if (!phoneCallStateMonitor)
     {
@@ -868,7 +868,7 @@ LABEL_53:
       phoneCallStateMonitor = v19->_phoneCallStateMonitor;
     }
 
-    [(CSPhoneCallStateMonitor *)phoneCallStateMonitor addObserver:v19, v44];
+    [(CSPhoneCallStateMonitor *)phoneCallStateMonitor addObserver:v19, behaviorMonitorCopy];
     v35 = v19->_queue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -877,7 +877,7 @@ LABEL_53:
     v36 = v19;
     v48 = v36;
     dispatch_async(v35, block);
-    objc_storeStrong(&v36->_otherAppRecordingStateMonitor, a7);
+    objc_storeStrong(&v36->_otherAppRecordingStateMonitor, recordingStateMonitor);
     if (!v36->_otherAppRecordingStateMonitor)
     {
       v37 = +[CSOtherAppRecordingStateMonitorFactory otherAppRecordingStateMonitor];
@@ -885,7 +885,7 @@ LABEL_53:
       v36->_otherAppRecordingStateMonitor = v37;
     }
 
-    objc_storeStrong(&v36->_audioRouteChangeMonitor, a8);
+    objc_storeStrong(&v36->_audioRouteChangeMonitor, changeMonitor);
     if (!v36->_audioRouteChangeMonitor)
     {
       v39 = +[CSAudioRouteChangeMonitor sharedInstance];

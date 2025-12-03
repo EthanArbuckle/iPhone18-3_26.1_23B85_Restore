@@ -1,25 +1,25 @@
 @interface KNShimmerObjectSystem
 - ($43FE7108CB68BB85E480ACA418397947)vertexUniforms;
-- (void)drawWithPercent:(double)a3 opacity:(double)a4 rotation:(double)a5 clockwise:(BOOL)a6 texture:(id)a7 context:(id)a8;
-- (void)setVertexUniforms:(id)a3;
+- (void)drawWithPercent:(double)percent opacity:(double)opacity rotation:(double)rotation clockwise:(BOOL)clockwise texture:(id)texture context:(id)context;
+- (void)setVertexUniforms:(id)uniforms;
 @end
 
 @implementation KNShimmerObjectSystem
 
-- (void)drawWithPercent:(double)a3 opacity:(double)a4 rotation:(double)a5 clockwise:(BOOL)a6 texture:(id)a7 context:(id)a8
+- (void)drawWithPercent:(double)percent opacity:(double)opacity rotation:(double)rotation clockwise:(BOOL)clockwise texture:(id)texture context:(id)context
 {
-  v8 = a6;
-  v12 = a8;
-  v13 = fmax(a3 * 1.1 + -0.1, 0.0);
+  clockwiseCopy = clockwise;
+  contextCopy = context;
+  v13 = fmax(percent * 1.1 + -0.1, 0.0);
   v14 = -v13;
-  if (v8)
+  if (clockwiseCopy)
   {
     v14 = v13;
   }
 
   memset(&v24, 0, sizeof(v24));
   CGAffineTransformMakeRotation(&v24, v14 + v14);
-  if (v12)
+  if (contextCopy)
   {
     TSDMixFloats();
     if (v15 > 1.0)
@@ -28,7 +28,7 @@
     }
 
     v16 = v13;
-    v17 = (1.0 - v15) * a4;
+    v17 = (1.0 - v15) * opacity;
     self[2]._vertexUniforms.SpeedMax = v16;
     *self[3].super.TSDGPUParticleSystem_opaque = v17;
     v18 = vcvt_f32_f64(*&v24.a);
@@ -43,11 +43,11 @@
     [(KNShimmerSystem *)self speedMax];
     *&v21 = v21;
     *&self[5].super.TSDGPUParticleSystem_opaque[4] = LODWORD(v21);
-    v22 = [v12 renderEncoder];
-    [v22 setVertexBytes:&self->_vertexUniforms length:144 atIndex:1];
+    renderEncoder = [contextCopy renderEncoder];
+    [renderEncoder setVertexBytes:&self->_vertexUniforms length:144 atIndex:1];
 
-    v23 = [v12 renderEncoder];
-    [(KNShimmerObjectSystem *)self drawMetalWithEncoder:v23];
+    renderEncoder2 = [contextCopy renderEncoder];
+    [(KNShimmerObjectSystem *)self drawMetalWithEncoder:renderEncoder2];
   }
 }
 
@@ -72,7 +72,7 @@
   return result;
 }
 
-- (void)setVertexUniforms:(id)a3
+- (void)setVertexUniforms:(id)uniforms
 {
   *&self->_vertexUniforms.Percent = *v3;
   v4 = v3[4];

@@ -1,19 +1,19 @@
 @interface SUUIStarRatingView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUIStarRatingView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUIStarRatingView)initWithFrame:(CGRect)frame;
 - (UILabel)textLabel;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setRatingStarsImage:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setRatingStarsImage:(id)image;
 @end
 
 @implementation SUUIStarRatingView
 
-- (SUUIStarRatingView)initWithFrame:(CGRect)a3
+- (SUUIStarRatingView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = SUUIStarRatingView;
-  result = [(SUUIStarRatingView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(SUUIStarRatingView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_elementSpacing = 3.0;
@@ -22,16 +22,16 @@
   return result;
 }
 
-- (void)setRatingStarsImage:(id)a3
+- (void)setRatingStarsImage:(id)image
 {
-  v13 = a3;
-  v4 = [(UIImageView *)self->_ratingStarsImageView image];
+  imageCopy = image;
+  image = [(UIImageView *)self->_ratingStarsImageView image];
 
-  v6 = v13;
-  if (v4 != v13)
+  v6 = imageCopy;
+  if (image != imageCopy)
   {
     ratingStarsImageView = self->_ratingStarsImageView;
-    if (v13)
+    if (imageCopy)
     {
       if (!ratingStarsImageView)
       {
@@ -40,14 +40,14 @@
         self->_ratingStarsImageView = v8;
 
         v10 = self->_ratingStarsImageView;
-        v11 = [(SUUIStarRatingView *)self backgroundColor];
-        [(UIImageView *)v10 setBackgroundColor:v11];
+        backgroundColor = [(SUUIStarRatingView *)self backgroundColor];
+        [(UIImageView *)v10 setBackgroundColor:backgroundColor];
 
         [(SUUIStarRatingView *)self addSubview:self->_ratingStarsImageView];
         ratingStarsImageView = self->_ratingStarsImageView;
       }
 
-      v12 = v13;
+      v12 = imageCopy;
     }
 
     else
@@ -56,7 +56,7 @@
     }
 
     v5 = [(UIImageView *)ratingStarsImageView setImage:v12];
-    v6 = v13;
+    v6 = imageCopy;
   }
 
   MEMORY[0x2821F96F8](v5, v6);
@@ -72,8 +72,8 @@
     self->_textLabel = v4;
 
     v6 = self->_textLabel;
-    v7 = [(SUUIStarRatingView *)self backgroundColor];
-    [(UILabel *)v6 setBackgroundColor:v7];
+    backgroundColor = [(SUUIStarRatingView *)self backgroundColor];
+    [(UILabel *)v6 setBackgroundColor:backgroundColor];
 
     [(SUUIStarRatingView *)self addSubview:self->_textLabel];
     textLabel = self->_textLabel;
@@ -87,11 +87,11 @@
   [(SUUIStarRatingView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v15 = [(UIImageView *)self->_ratingStarsImageView image];
-  if (v15)
+  image = [(UIImageView *)self->_ratingStarsImageView image];
+  if (image)
   {
     [(UIImageView *)self->_ratingStarsImageView frame];
-    [v15 size];
+    [image size];
     v8 = v7;
     v10 = v9;
     *&v7 = (v6 - v9) * 0.5;
@@ -109,8 +109,8 @@
     v12 = 0.0;
   }
 
-  v13 = [(UILabel *)self->_textLabel text];
-  v14 = [v13 length];
+  text = [(UILabel *)self->_textLabel text];
+  v14 = [text length];
 
   if (v14)
   {
@@ -119,21 +119,21 @@
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   ratingStarsImageView = self->_ratingStarsImageView;
-  v5 = a3;
-  [(UIImageView *)ratingStarsImageView setBackgroundColor:v5];
-  [(UILabel *)self->_textLabel setBackgroundColor:v5];
+  colorCopy = color;
+  [(UIImageView *)ratingStarsImageView setBackgroundColor:colorCopy];
+  [(UILabel *)self->_textLabel setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SUUIStarRatingView;
-  [(SUUIStarRatingView *)&v6 setBackgroundColor:v5];
+  [(SUUIStarRatingView *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [(UIImageView *)self->_ratingStarsImageView image:a3.width];
+  width = fits.width;
+  v5 = [(UIImageView *)self->_ratingStarsImageView image:fits.width];
   v6 = v5;
   if (v5)
   {
@@ -148,8 +148,8 @@
     v10 = *(MEMORY[0x277CBF3A8] + 8);
   }
 
-  v11 = [(UILabel *)self->_textLabel text];
-  v12 = [v11 length];
+  text = [(UILabel *)self->_textLabel text];
+  v12 = [text length];
 
   if (v12)
   {

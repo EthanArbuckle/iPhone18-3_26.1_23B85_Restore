@@ -1,44 +1,44 @@
 @interface AAUIServiceSignInMessageProvider
-+ (id)_messageStringForAMPService:(unint64_t)a3;
-+ (id)_messageStringForService:(id)a3;
-+ (id)_messageStringForSplitSignInWithServiceTypes:(id)a3;
-+ (id)messageForConfiguration:(id)a3;
++ (id)_messageStringForAMPService:(unint64_t)service;
++ (id)_messageStringForService:(id)service;
++ (id)_messageStringForSplitSignInWithServiceTypes:(id)types;
++ (id)messageForConfiguration:(id)configuration;
 @end
 
 @implementation AAUIServiceSignInMessageProvider
 
-+ (id)messageForConfiguration:(id)a3
++ (id)messageForConfiguration:(id)configuration
 {
-  v4 = a3;
-  if ([v4 splitSignIn])
+  configurationCopy = configuration;
+  if ([configurationCopy splitSignIn])
   {
-    v5 = [v4 serviceTypes];
-    v6 = [a1 _messageStringForSplitSignInWithServiceTypes:v5];
+    serviceTypes = [configurationCopy serviceTypes];
+    v6 = [self _messageStringForSplitSignInWithServiceTypes:serviceTypes];
 LABEL_5:
     v9 = v6;
 
     goto LABEL_6;
   }
 
-  v7 = [v4 serviceType];
+  serviceType = [configurationCopy serviceType];
   v8 = *MEMORY[0x1E698C238];
 
-  if (v7 != v8)
+  if (serviceType != v8)
   {
-    v5 = [v4 serviceType];
-    v6 = [a1 _messageStringForService:v5];
+    serviceTypes = [configurationCopy serviceType];
+    v6 = [self _messageStringForService:serviceTypes];
     goto LABEL_5;
   }
 
-  v9 = [a1 _messageStringForAMPService:{objc_msgSend(v4, "ampServiceType")}];
+  v9 = [self _messageStringForAMPService:{objc_msgSend(configurationCopy, "ampServiceType")}];
 LABEL_6:
 
   return v9;
 }
 
-+ (id)_messageStringForSplitSignInWithServiceTypes:(id)a3
++ (id)_messageStringForSplitSignInWithServiceTypes:(id)types
 {
-  v3 = [a3 containsObject:*MEMORY[0x1E698C238]];
+  v3 = [types containsObject:*MEMORY[0x1E698C238]];
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v5 = v4;
   if (v3)
@@ -56,11 +56,11 @@ LABEL_6:
   return v7;
 }
 
-+ (id)_messageStringForService:(id)a3
++ (id)_messageStringForService:(id)service
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  serviceCopy = service;
+  v4 = serviceCopy;
+  if (!serviceCopy)
   {
     v5 = _AAUILogSystem();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -72,7 +72,7 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x1E698C218]])
+  if ([serviceCopy isEqualToString:*MEMORY[0x1E698C218]])
   {
     v5 = _AAUILogSystem();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -141,13 +141,13 @@ LABEL_21:
   return v10;
 }
 
-+ (id)_messageStringForAMPService:(unint64_t)a3
++ (id)_messageStringForAMPService:(unint64_t)service
 {
-  if (a3 <= 2)
+  if (service <= 2)
   {
-    if (a3)
+    if (service)
     {
-      if (a3 == 1)
+      if (service == 1)
       {
         v4 = _AAUILogSystem();
         if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -161,7 +161,7 @@ LABEL_21:
 
       else
       {
-        if (a3 != 2)
+        if (service != 2)
         {
           goto LABEL_31;
         }
@@ -190,9 +190,9 @@ LABEL_21:
     }
   }
 
-  else if (a3 > 4)
+  else if (service > 4)
   {
-    if (a3 == 5)
+    if (service == 5)
     {
       v4 = _AAUILogSystem();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -206,7 +206,7 @@ LABEL_21:
 
     else
     {
-      if (a3 != 6)
+      if (service != 6)
       {
         goto LABEL_31;
       }
@@ -222,7 +222,7 @@ LABEL_21:
     }
   }
 
-  else if (a3 == 3)
+  else if (service == 3)
   {
     v4 = _AAUILogSystem();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

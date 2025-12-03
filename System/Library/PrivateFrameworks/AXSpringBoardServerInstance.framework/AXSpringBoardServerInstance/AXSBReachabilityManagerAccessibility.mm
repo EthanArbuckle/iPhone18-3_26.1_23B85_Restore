@@ -1,42 +1,42 @@
 @interface AXSBReachabilityManagerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axReachabilityEnabled;
 - (id)_axDictionaryOfAnimationProperties;
 - (id)_axReachabilitySettings;
-- (void)_axAddReachabilityProperty:(id)a3 toDictionary:(id)a4;
-- (void)_axSendReachabilityToggledActionWithPayload:(id)a3;
-- (void)_notifyObserversReachabilityModeActive:(BOOL)a3;
+- (void)_axAddReachabilityProperty:(id)property toDictionary:(id)dictionary;
+- (void)_axSendReachabilityToggledActionWithPayload:(id)payload;
+- (void)_notifyObserversReachabilityModeActive:(BOOL)active;
 - (void)_setKeepAliveTimer;
 @end
 
 @implementation AXSBReachabilityManagerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBPrototypeController"];
-  [v3 validateClass:@"SBPrototypeController" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBPrototypeController" hasInstanceMethod:@"rootSettings" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBReachabilityDomain" hasClassMethod:@"rootSettings" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBReachabilitySettings" hasInstanceMethod:@"animationSettings" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBReachabilitySettings" hasInstanceMethod:@"yOffsetFactor" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"SBFFluidBehaviorSettings" hasInstanceMethod:@"trackingDampingRatio" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"SBFFluidBehaviorSettings" hasInstanceMethod:@"dampingRatio" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"SBFFluidBehaviorSettings" hasInstanceMethod:@"trackingResponse" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"SBFFluidBehaviorSettings" hasInstanceMethod:@"response" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"SBFFluidBehaviorSettings" hasInstanceMethod:@"trackingRetargetImpulse" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"SBFFluidBehaviorSettings" hasInstanceMethod:@"retargetImpulse" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"SBReachabilityManager" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBReachabilityManager" hasInstanceMethod:@"reachabilityEnabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBReachabilityManager" hasInstanceMethod:@"reachabilityModeActive" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBReachabilityManager" hasInstanceMethod:@"_notifyObserversReachabilityModeActive:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"SBReachabilityManager" hasInstanceMethod:@"_setKeepAliveTimer" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBPrototypeController"];
+  [validationsCopy validateClass:@"SBPrototypeController" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBPrototypeController" hasInstanceMethod:@"rootSettings" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBReachabilityDomain" hasClassMethod:@"rootSettings" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBReachabilitySettings" hasInstanceMethod:@"animationSettings" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBReachabilitySettings" hasInstanceMethod:@"yOffsetFactor" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"SBFFluidBehaviorSettings" hasInstanceMethod:@"trackingDampingRatio" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"SBFFluidBehaviorSettings" hasInstanceMethod:@"dampingRatio" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"SBFFluidBehaviorSettings" hasInstanceMethod:@"trackingResponse" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"SBFFluidBehaviorSettings" hasInstanceMethod:@"response" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"SBFFluidBehaviorSettings" hasInstanceMethod:@"trackingRetargetImpulse" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"SBFFluidBehaviorSettings" hasInstanceMethod:@"retargetImpulse" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"SBReachabilityManager" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBReachabilityManager" hasInstanceMethod:@"reachabilityEnabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBReachabilityManager" hasInstanceMethod:@"reachabilityModeActive" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBReachabilityManager" hasInstanceMethod:@"_notifyObserversReachabilityModeActive:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"SBReachabilityManager" hasInstanceMethod:@"_setKeepAliveTimer" withFullSignature:{"v", 0}];
 }
 
-- (void)_notifyObserversReachabilityModeActive:(BOOL)a3
+- (void)_notifyObserversReachabilityModeActive:(BOOL)active
 {
-  v3 = a3;
-  if (a3)
+  activeCopy = active;
+  if (active)
   {
     v5 = ReachableActiveInProgress + 1;
   }
@@ -50,34 +50,34 @@
   v22.receiver = self;
   v22.super_class = AXSBReachabilityManagerAccessibility;
   [(AXSBReachabilityManagerAccessibility *)&v22 _notifyObserversReachabilityModeActive:?];
-  if (v3)
+  if (activeCopy)
   {
     if (ReachableActiveInProgress >= 1)
     {
       if ([(AXSBReachabilityManagerAccessibility *)self _axReachabilityEnabled])
       {
         v6 = +[_AXSpringBoardServerInstance springBoardServerInstance];
-        v7 = [v6 shouldSendReachabilityToggled];
+        shouldSendReachabilityToggled = [v6 shouldSendReachabilityToggled];
 
-        if (v7)
+        if (shouldSendReachabilityToggled)
         {
-          v8 = [(AXSBReachabilityManagerAccessibility *)self _axDictionaryOfAnimationProperties];
+          _axDictionaryOfAnimationProperties = [(AXSBReachabilityManagerAccessibility *)self _axDictionaryOfAnimationProperties];
           v9 = MEMORY[0x277CCABB0];
           v10 = [NSClassFromString(&cfstr_Sbreachability.isa) safeValueForKey:@"sharedInstance"];
           v11 = [v9 numberWithBool:{objc_msgSend(v10, "safeBoolForKey:", @"reachabilityModeActive"}];
-          [v8 setObject:v11 forKeyedSubscript:@"enabled"];
+          [_axDictionaryOfAnimationProperties setObject:v11 forKeyedSubscript:@"enabled"];
 
-          v12 = [(AXSBReachabilityManagerAccessibility *)self _axReachabilitySettings];
+          _axReachabilitySettings = [(AXSBReachabilityManagerAccessibility *)self _axReachabilitySettings];
           v13 = MEMORY[0x277CCABB0];
-          v14 = [v12 safeValueForKey:@"yOffsetFactor"];
+          v14 = [_axReachabilitySettings safeValueForKey:@"yOffsetFactor"];
           [v14 doubleValue];
           v16 = v15;
-          v17 = [MEMORY[0x277D759A0] mainScreen];
-          [v17 bounds];
+          mainScreen = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen bounds];
           v19 = [v13 numberWithDouble:v16 * v18];
-          [v8 setObject:v19 forKeyedSubscript:@"offset"];
+          [_axDictionaryOfAnimationProperties setObject:v19 forKeyedSubscript:@"offset"];
 
-          [(AXSBReachabilityManagerAccessibility *)self _axSendReachabilityToggledActionWithPayload:v8];
+          [(AXSBReachabilityManagerAccessibility *)self _axSendReachabilityToggledActionWithPayload:_axDictionaryOfAnimationProperties];
 LABEL_13:
         }
       }
@@ -89,20 +89,20 @@ LABEL_13:
     if ([(AXSBReachabilityManagerAccessibility *)self _axReachabilityEnabled])
     {
       v20 = +[_AXSpringBoardServerInstance springBoardServerInstance];
-      v21 = [v20 shouldSendReachabilityToggled];
+      shouldSendReachabilityToggled2 = [v20 shouldSendReachabilityToggled];
 
-      if (v21)
+      if (shouldSendReachabilityToggled2)
       {
-        v8 = [(AXSBReachabilityManagerAccessibility *)self _axDictionaryOfAnimationProperties];
-        [v8 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"enabled"];
-        [v8 setObject:&unk_2833B1260 forKeyedSubscript:@"offset"];
-        [(AXSBReachabilityManagerAccessibility *)self _axSendReachabilityToggledActionWithPayload:v8];
+        _axDictionaryOfAnimationProperties = [(AXSBReachabilityManagerAccessibility *)self _axDictionaryOfAnimationProperties];
+        [_axDictionaryOfAnimationProperties setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"enabled"];
+        [_axDictionaryOfAnimationProperties setObject:&unk_2833B1260 forKeyedSubscript:@"offset"];
+        [(AXSBReachabilityManagerAccessibility *)self _axSendReachabilityToggledActionWithPayload:_axDictionaryOfAnimationProperties];
         goto LABEL_13;
       }
     }
   }
 
-  ReachabilityActive = v3;
+  ReachabilityActive = activeCopy;
 }
 
 - (id)_axReachabilitySettings
@@ -112,44 +112,44 @@ LABEL_13:
   return [(objc_class *)v2 safeValueForKey:@"rootSettings"];
 }
 
-- (void)_axAddReachabilityProperty:(id)a3 toDictionary:(id)a4
+- (void)_axAddReachabilityProperty:(id)property toDictionary:(id)dictionary
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(AXSBReachabilityManagerAccessibility *)self _axReachabilitySettings];
-  v8 = [v7 safeValueForKey:@"animationSettings"];
-  v9 = [v8 safeValueForKey:v10];
+  propertyCopy = property;
+  dictionaryCopy = dictionary;
+  _axReachabilitySettings = [(AXSBReachabilityManagerAccessibility *)self _axReachabilitySettings];
+  v8 = [_axReachabilitySettings safeValueForKey:@"animationSettings"];
+  v9 = [v8 safeValueForKey:propertyCopy];
   if (v9)
   {
-    [v6 setObject:v9 forKeyedSubscript:v10];
+    [dictionaryCopy setObject:v9 forKeyedSubscript:propertyCopy];
   }
 }
 
 - (id)_axDictionaryOfAnimationProperties
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [(AXSBReachabilityManagerAccessibility *)self _axAddReachabilityProperty:@"trackingDampingRatio" toDictionary:v3];
-  [(AXSBReachabilityManagerAccessibility *)self _axAddReachabilityProperty:@"dampingRatio" toDictionary:v3];
-  [(AXSBReachabilityManagerAccessibility *)self _axAddReachabilityProperty:@"trackingResponse" toDictionary:v3];
-  [(AXSBReachabilityManagerAccessibility *)self _axAddReachabilityProperty:@"response" toDictionary:v3];
-  [(AXSBReachabilityManagerAccessibility *)self _axAddReachabilityProperty:@"trackingRetargetImpulse" toDictionary:v3];
-  [(AXSBReachabilityManagerAccessibility *)self _axAddReachabilityProperty:@"retargetImpulse" toDictionary:v3];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(AXSBReachabilityManagerAccessibility *)self _axAddReachabilityProperty:@"trackingDampingRatio" toDictionary:dictionary];
+  [(AXSBReachabilityManagerAccessibility *)self _axAddReachabilityProperty:@"dampingRatio" toDictionary:dictionary];
+  [(AXSBReachabilityManagerAccessibility *)self _axAddReachabilityProperty:@"trackingResponse" toDictionary:dictionary];
+  [(AXSBReachabilityManagerAccessibility *)self _axAddReachabilityProperty:@"response" toDictionary:dictionary];
+  [(AXSBReachabilityManagerAccessibility *)self _axAddReachabilityProperty:@"trackingRetargetImpulse" toDictionary:dictionary];
+  [(AXSBReachabilityManagerAccessibility *)self _axAddReachabilityProperty:@"retargetImpulse" toDictionary:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)_axSendReachabilityToggledActionWithPayload:(id)a3
+- (void)_axSendReachabilityToggledActionWithPayload:(id)payload
 {
   v3 = MEMORY[0x277D75DA0];
-  v4 = a3;
-  v5 = [v3 _synchronizeDrawingAcrossProcesses];
+  payloadCopy = payload;
+  _synchronizeDrawingAcrossProcesses = [v3 _synchronizeDrawingAcrossProcesses];
   v6 = +[_AXSpringBoardServerInstance springBoardServerInstance];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __84__AXSBReachabilityManagerAccessibility__axSendReachabilityToggledActionWithPayload___block_invoke;
   v7[3] = &__block_descriptor_36_e5_v8__0l;
-  v8 = v5;
-  [v6 reachabilityToggledWithPayload:v4 synchronizationPort:v5 completion:v7];
+  v8 = _synchronizeDrawingAcrossProcesses;
+  [v6 reachabilityToggledWithPayload:payloadCopy synchronizationPort:_synchronizeDrawingAcrossProcesses completion:v7];
 }
 
 uint64_t __84__AXSBReachabilityManagerAccessibility__axSendReachabilityToggledActionWithPayload___block_invoke(uint64_t result)

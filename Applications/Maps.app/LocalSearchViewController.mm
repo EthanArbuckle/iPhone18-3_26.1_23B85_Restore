@@ -6,23 +6,23 @@
 - (VKVenueFeatureMarker)venueWithFocus;
 - (id)businessControllers;
 - (id)contentView;
-- (id)initAsButton:(BOOL)a3;
+- (id)initAsButton:(BOOL)button;
 - (int)currentMapViewTargetForAnalytics;
 - (int)currentUITargetForAnalytics;
-- (void)businessControllerContentSizeDidChange:(id)a3;
-- (void)businessControllerVisibilityDidChange:(id)a3;
+- (void)businessControllerContentSizeDidChange:(id)change;
+- (void)businessControllerVisibilityDidChange:(id)change;
 - (void)loadView;
 - (void)localSearchViewContentSizeChanged;
-- (void)localSearchViewSelected:(id)a3;
+- (void)localSearchViewSelected:(id)selected;
 - (void)localSearchViewVisibilityChanged;
 - (void)reportVisibilityIfNeeded;
-- (void)setActiveBusinessController:(id)a3;
-- (void)setBottomInset:(double)a3;
-- (void)setEnable:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setActiveBusinessController:(id)controller;
+- (void)setBottomInset:(double)inset;
+- (void)setEnable:(BOOL)enable;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation LocalSearchViewController
@@ -36,67 +36,67 @@
 
 - (int)currentMapViewTargetForAnalytics
 {
-  v3 = [(LocalSearchViewController *)self delegate];
-  v4 = [v3 conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate];
+  delegate = [(LocalSearchViewController *)self delegate];
+  v4 = [delegate conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(LocalSearchViewController *)self delegate];
+  delegate2 = [(LocalSearchViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 currentMapViewTargetForAnalytics];
+    currentMapViewTargetForAnalytics = [delegate2 currentMapViewTargetForAnalytics];
   }
 
   else
   {
-    v6 = 0;
+    currentMapViewTargetForAnalytics = 0;
   }
 
-  return v6;
+  return currentMapViewTargetForAnalytics;
 }
 
 - (int)currentUITargetForAnalytics
 {
-  v3 = [(LocalSearchViewController *)self delegate];
-  v4 = [v3 conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate];
+  delegate = [(LocalSearchViewController *)self delegate];
+  v4 = [delegate conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(LocalSearchViewController *)self delegate];
+  delegate2 = [(LocalSearchViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 currentUITargetForAnalytics];
+    currentUITargetForAnalytics = [delegate2 currentUITargetForAnalytics];
   }
 
   else
   {
-    v6 = 0;
+    currentUITargetForAnalytics = 0;
   }
 
-  return v6;
+  return currentUITargetForAnalytics;
 }
 
-- (void)businessControllerContentSizeDidChange:(id)a3
+- (void)businessControllerContentSizeDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   if (![(LocalSearchViewController *)self updateActiveBusinessController])
   {
-    v4 = [(LocalSearchViewController *)self activeBusinessController];
+    activeBusinessController = [(LocalSearchViewController *)self activeBusinessController];
 
-    if (v4 == v5)
+    if (activeBusinessController == changeCopy)
     {
       [(LocalSearchViewController *)self localSearchViewContentSizeChanged];
     }
   }
 }
 
-- (void)businessControllerVisibilityDidChange:(id)a3
+- (void)businessControllerVisibilityDidChange:(id)change
 {
   [(LocalSearchViewController *)self updateActiveBusinessController];
   [(LocalSearchViewController *)self localSearchViewVisibilityChanged];
@@ -106,71 +106,71 @@
 
 - (VKVenueFeatureMarker)venueWithFocus
 {
-  v2 = [(LocalSearchViewController *)self delegate];
-  v3 = [v2 venueWithFocus];
+  delegate = [(LocalSearchViewController *)self delegate];
+  venueWithFocus = [delegate venueWithFocus];
 
-  return v3;
+  return venueWithFocus;
 }
 
 - (void)localSearchViewContentSizeChanged
 {
-  v3 = [(LocalSearchViewController *)self delegate];
+  delegate = [(LocalSearchViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(LocalSearchViewController *)self delegate];
-    [v5 localSearchViewControllerSizeDidChange:self];
+    delegate2 = [(LocalSearchViewController *)self delegate];
+    [delegate2 localSearchViewControllerSizeDidChange:self];
   }
 }
 
 - (void)localSearchViewVisibilityChanged
 {
-  v3 = [(LocalSearchViewController *)self delegate];
+  delegate = [(LocalSearchViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(LocalSearchViewController *)self delegate];
-    [v5 localSearchViewShouldBeVisibleDidChange:self];
+    delegate2 = [(LocalSearchViewController *)self delegate];
+    [delegate2 localSearchViewShouldBeVisibleDidChange:self];
   }
 }
 
-- (void)localSearchViewSelected:(id)a3
+- (void)localSearchViewSelected:(id)selected
 {
-  v4 = [(LocalSearchViewController *)self activeBusinessController];
-  [v4 sendAnalyticsOnUserActionWithTarget:{-[LocalSearchViewController currentUITargetForAnalytics](self, "currentUITargetForAnalytics")}];
+  activeBusinessController = [(LocalSearchViewController *)self activeBusinessController];
+  [activeBusinessController sendAnalyticsOnUserActionWithTarget:{-[LocalSearchViewController currentUITargetForAnalytics](self, "currentUITargetForAnalytics")}];
 
-  v5 = [(LocalSearchViewController *)self activeBusinessController];
-  v6 = [(LocalSearchViewController *)self refreshSearchHereBusinessController];
+  activeBusinessController2 = [(LocalSearchViewController *)self activeBusinessController];
+  refreshSearchHereBusinessController = [(LocalSearchViewController *)self refreshSearchHereBusinessController];
 
-  if (v5 == v6)
+  if (activeBusinessController2 == refreshSearchHereBusinessController)
   {
-    v9 = [(LocalSearchViewController *)self delegate];
-    [v9 localSearchViewControllerDidSelectRefreshSearchHere:self];
+    delegate = [(LocalSearchViewController *)self delegate];
+    [delegate localSearchViewControllerDidSelectRefreshSearchHere:self];
   }
 
   else
   {
-    v7 = [(LocalSearchViewController *)self activeBusinessController];
-    v8 = [(LocalSearchViewController *)self browseVenueBusinessController];
+    activeBusinessController3 = [(LocalSearchViewController *)self activeBusinessController];
+    browseVenueBusinessController = [(LocalSearchViewController *)self browseVenueBusinessController];
 
-    if (v7 != v8)
+    if (activeBusinessController3 != browseVenueBusinessController)
     {
       return;
     }
 
-    v9 = [(LocalSearchViewController *)self delegate];
-    [v9 viewControllerDidSelectBrowseVenue:self];
+    delegate = [(LocalSearchViewController *)self delegate];
+    [delegate viewControllerDidSelectBrowseVenue:self];
   }
 }
 
 - (BOOL)showInCardFooterWhenCardHasExpandedLayout
 {
-  v2 = [(LocalSearchViewController *)self activeBusinessController];
-  v3 = [v2 showInCardFooterWhenCardHasExpandedLayout];
+  activeBusinessController = [(LocalSearchViewController *)self activeBusinessController];
+  showInCardFooterWhenCardHasExpandedLayout = [activeBusinessController showInCardFooterWhenCardHasExpandedLayout];
 
-  return v3;
+  return showInCardFooterWhenCardHasExpandedLayout;
 }
 
 - (BOOL)shouldBeVisible
@@ -180,26 +180,26 @@
     return 0;
   }
 
-  v3 = [(LocalSearchViewController *)self refreshSearchHereBusinessController];
-  if ([v3 shouldBeVisible])
+  refreshSearchHereBusinessController = [(LocalSearchViewController *)self refreshSearchHereBusinessController];
+  if ([refreshSearchHereBusinessController shouldBeVisible])
   {
-    v4 = 1;
+    shouldBeVisible = 1;
   }
 
   else
   {
-    v5 = [(LocalSearchViewController *)self browseVenueBusinessController];
-    v4 = [v5 shouldBeVisible];
+    browseVenueBusinessController = [(LocalSearchViewController *)self browseVenueBusinessController];
+    shouldBeVisible = [browseVenueBusinessController shouldBeVisible];
   }
 
-  return v4;
+  return shouldBeVisible;
 }
 
-- (void)setEnable:(BOOL)a3
+- (void)setEnable:(BOOL)enable
 {
-  if (self->_enable != a3)
+  if (self->_enable != enable)
   {
-    self->_enable = a3;
+    self->_enable = enable;
     [(LocalSearchViewController *)self localSearchViewVisibilityChanged];
 
     [(LocalSearchViewController *)self reportVisibilityIfNeeded];
@@ -210,16 +210,16 @@
 {
   if ([(LocalSearchViewController *)self viewHasAppeared]&& [(LocalSearchViewController *)self shouldBeVisible])
   {
-    v3 = [(LocalSearchViewController *)self activeBusinessController];
-    v4 = [(LocalSearchViewController *)self reportedVisibleBusinessController];
+    activeBusinessController = [(LocalSearchViewController *)self activeBusinessController];
+    reportedVisibleBusinessController = [(LocalSearchViewController *)self reportedVisibleBusinessController];
 
-    if (v3 != v4)
+    if (activeBusinessController != reportedVisibleBusinessController)
     {
-      v5 = [(LocalSearchViewController *)self activeBusinessController];
-      [v5 sendAnalyticsOnBecomeVisibleWithTarget:{-[LocalSearchViewController currentUITargetForAnalytics](self, "currentUITargetForAnalytics")}];
+      activeBusinessController2 = [(LocalSearchViewController *)self activeBusinessController];
+      [activeBusinessController2 sendAnalyticsOnBecomeVisibleWithTarget:{-[LocalSearchViewController currentUITargetForAnalytics](self, "currentUITargetForAnalytics")}];
 
-      v6 = [(LocalSearchViewController *)self activeBusinessController];
-      [(LocalSearchViewController *)self setReportedVisibleBusinessController:v6];
+      activeBusinessController3 = [(LocalSearchViewController *)self activeBusinessController];
+      [(LocalSearchViewController *)self setReportedVisibleBusinessController:activeBusinessController3];
     }
   }
 
@@ -230,27 +230,27 @@
   }
 }
 
-- (void)setActiveBusinessController:(id)a3
+- (void)setActiveBusinessController:(id)controller
 {
-  v5 = a3;
-  if (self->_activeBusinessController != v5)
+  controllerCopy = controller;
+  if (self->_activeBusinessController != controllerCopy)
   {
-    objc_storeStrong(&self->_activeBusinessController, a3);
-    v6 = [(LocalSearchViewController *)self delegate];
+    objc_storeStrong(&self->_activeBusinessController, controller);
+    delegate = [(LocalSearchViewController *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(LocalSearchViewController *)self delegate];
-      [v8 localSearchViewShowInCardFooterWhenCardHasExpandedLayoutDidChange:self];
+      delegate2 = [(LocalSearchViewController *)self delegate];
+      [delegate2 localSearchViewShowInCardFooterWhenCardHasExpandedLayoutDidChange:self];
     }
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = [(LocalSearchViewController *)self businessControllers];
-    v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    businessControllers = [(LocalSearchViewController *)self businessControllers];
+    v10 = [businessControllers countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
       v11 = v10;
@@ -262,14 +262,14 @@
         {
           if (*v18 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(businessControllers);
           }
 
           v14 = *(*(&v17 + 1) + 8 * v13);
-          if (v14 == v5)
+          if (v14 == controllerCopy)
           {
-            v15 = [(LocalSearchViewController *)self contentView];
-            [(LocalSearchBusinessController *)v14 setContentView:v15];
+            contentView = [(LocalSearchViewController *)self contentView];
+            [(LocalSearchBusinessController *)v14 setContentView:contentView];
           }
 
           else
@@ -281,14 +281,14 @@
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v11 = [businessControllers countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v11);
     }
 
-    v16 = [(LocalSearchViewController *)self contentView];
-    [v16 layoutIfNeeded];
+    contentView2 = [(LocalSearchViewController *)self contentView];
+    [contentView2 layoutIfNeeded];
 
     [(LocalSearchViewController *)self reportVisibilityIfNeeded];
     [(MapsThemeViewController *)self updateTheme];
@@ -320,10 +320,10 @@
 
 - (id)businessControllers
 {
-  v3 = [(LocalSearchViewController *)self refreshSearchHereBusinessController];
-  v7[0] = v3;
-  v4 = [(LocalSearchViewController *)self browseVenueBusinessController];
-  v7[1] = v4;
+  refreshSearchHereBusinessController = [(LocalSearchViewController *)self refreshSearchHereBusinessController];
+  v7[0] = refreshSearchHereBusinessController;
+  browseVenueBusinessController = [(LocalSearchViewController *)self browseVenueBusinessController];
+  v7[1] = browseVenueBusinessController;
   v5 = [NSArray arrayWithObjects:v7 count:2];
 
   return v5;
@@ -343,8 +343,8 @@
     [(LocalSearchView *)self->_contentView setBottomInset:self->_bottomInset];
     [(LocalSearchView *)self->_contentView setDelegate:self];
     v6 = self->_contentView;
-    v7 = [(LocalSearchViewController *)self activeBusinessController];
-    [v7 setContentView:v6];
+    activeBusinessController = [(LocalSearchViewController *)self activeBusinessController];
+    [activeBusinessController setContentView:v6];
 
     contentView = self->_contentView;
   }
@@ -352,43 +352,43 @@
   return contentView;
 }
 
-- (void)setBottomInset:(double)a3
+- (void)setBottomInset:(double)inset
 {
-  if (self->_bottomInset != a3)
+  if (self->_bottomInset != inset)
   {
-    self->_bottomInset = a3;
+    self->_bottomInset = inset;
     [(LocalSearchView *)self->_contentView setBottomInset:?];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = LocalSearchViewController;
-  [(LocalSearchViewController *)&v4 viewDidDisappear:a3];
+  [(LocalSearchViewController *)&v4 viewDidDisappear:disappear];
   self->_viewHasAppeared = 0;
   [(LocalSearchViewController *)self reportVisibilityIfNeeded];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(LocalSearchViewController *)self reportVisibilityIfNeeded];
   v5.receiver = self;
   v5.super_class = LocalSearchViewController;
-  [(LocalSearchViewController *)&v5 viewDidAppear:v3];
+  [(LocalSearchViewController *)&v5 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   self->_viewHasAppeared = 1;
-  v5 = [(LocalSearchViewController *)self activeBusinessController];
-  [v5 viewWillAppear];
+  activeBusinessController = [(LocalSearchViewController *)self activeBusinessController];
+  [activeBusinessController viewWillAppear];
 
   v6.receiver = self;
   v6.super_class = LocalSearchViewController;
-  [(LocalSearchViewController *)&v6 viewWillAppear:v3];
+  [(LocalSearchViewController *)&v6 viewWillAppear:appearCopy];
 }
 
 - (void)viewDidLoad
@@ -399,38 +399,38 @@
   cardView = self->_cardView;
   if (cardView || (cardView = self->_blurView) != 0)
   {
-    v4 = [cardView contentView];
+    contentView = [cardView contentView];
   }
 
   else
   {
-    v4 = [(LocalSearchViewController *)self view];
+    contentView = [(LocalSearchViewController *)self view];
   }
 
-  v5 = v4;
-  v20 = v4;
-  v6 = [(LocalSearchViewController *)self contentView];
-  [v5 addSubview:v6];
+  v5 = contentView;
+  v20 = contentView;
+  contentView2 = [(LocalSearchViewController *)self contentView];
+  [v5 addSubview:contentView2];
 
-  v23 = [(LocalSearchView *)self->_contentView leadingAnchor];
-  v24 = [(LocalSearchViewController *)self view];
-  v22 = [v24 leadingAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  leadingAnchor = [(LocalSearchView *)self->_contentView leadingAnchor];
+  view = [(LocalSearchViewController *)self view];
+  leadingAnchor2 = [view leadingAnchor];
+  v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v26[0] = v21;
-  v18 = [(LocalSearchView *)self->_contentView trailingAnchor];
-  v19 = [(LocalSearchViewController *)self view];
-  v17 = [v19 trailingAnchor];
-  v7 = [v18 constraintEqualToAnchor:v17];
+  trailingAnchor = [(LocalSearchView *)self->_contentView trailingAnchor];
+  view2 = [(LocalSearchViewController *)self view];
+  trailingAnchor2 = [view2 trailingAnchor];
+  v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v26[1] = v7;
-  v8 = [(LocalSearchView *)self->_contentView topAnchor];
-  v9 = [(LocalSearchViewController *)self view];
-  v10 = [v9 topAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  topAnchor = [(LocalSearchView *)self->_contentView topAnchor];
+  view3 = [(LocalSearchViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v26[2] = v11;
-  v12 = [(LocalSearchView *)self->_contentView bottomAnchor];
-  v13 = [(LocalSearchViewController *)self view];
-  v14 = [v13 bottomAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  bottomAnchor = [(LocalSearchView *)self->_contentView bottomAnchor];
+  view4 = [(LocalSearchViewController *)self view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v26[3] = v15;
   v16 = [NSArray arrayWithObjects:v26 count:4];
   [NSLayoutConstraint activateConstraints:v16];
@@ -481,7 +481,7 @@ LABEL_10:
   [(LocalSearchViewController *)self setView:self->_cardView];
 }
 
-- (id)initAsButton:(BOOL)a3
+- (id)initAsButton:(BOOL)button
 {
   v11.receiver = self;
   v11.super_class = LocalSearchViewController;
@@ -489,7 +489,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v4->_buttonMode = a3;
+    v4->_buttonMode = button;
     v6 = [[RefreshSearchHereBusinessController alloc] initWithDelegate:v4];
     refreshSearchHereBusinessController = v5->_refreshSearchHereBusinessController;
     v5->_refreshSearchHereBusinessController = v6;

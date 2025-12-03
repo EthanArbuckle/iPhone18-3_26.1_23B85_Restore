@@ -1,23 +1,23 @@
 @interface SBHAddWidgetDetailSheetViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_addPage:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_addPage:(id)page;
 - (void)_createViews;
-- (void)addButtonTapped:(id)a3;
+- (void)addButtonTapped:(id)tapped;
 @end
 
 @implementation SBHAddWidgetDetailSheetViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBHAddWidgetDetailSheetViewController" hasInstanceMethod:@"widgetGalleryStackView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHAddWidgetDetailSheetViewController" hasInstanceMethod:@"widgetGalleryScrollView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHAddWidgetDetailSheetViewController" hasInstanceMethod:@"_createViews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBHAddWidgetDetailSheetViewController" hasInstanceMethod:@"_addPage:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBHAddWidgetDetailSheetViewController" hasInstanceMethod:@"scrollViewDidScroll:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBHAddWidgetDetailSheetViewController" hasInstanceMethod:@"addButtonTapped:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBHAddWidgetDetailSheetViewController" hasInstanceMethod:@"applicationWidgetCollection" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHApplicationWidgetCollection" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBHAddWidgetDetailSheetViewController" hasInstanceMethod:@"widgetGalleryStackView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHAddWidgetDetailSheetViewController" hasInstanceMethod:@"widgetGalleryScrollView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHAddWidgetDetailSheetViewController" hasInstanceMethod:@"_createViews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBHAddWidgetDetailSheetViewController" hasInstanceMethod:@"_addPage:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBHAddWidgetDetailSheetViewController" hasInstanceMethod:@"scrollViewDidScroll:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBHAddWidgetDetailSheetViewController" hasInstanceMethod:@"addButtonTapped:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBHAddWidgetDetailSheetViewController" hasInstanceMethod:@"applicationWidgetCollection" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHApplicationWidgetCollection" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
 }
 
 - (void)_createViews
@@ -29,12 +29,12 @@
   [v3 _accessibilitySetPagingEnabled:1];
 }
 
-- (void)_addPage:(id)a3
+- (void)_addPage:(id)page
 {
   v24 = *MEMORY[0x29EDCA608];
   v22.receiver = self;
   v22.super_class = SBHAddWidgetDetailSheetViewControllerAccessibility;
-  v11 = a3;
+  pageCopy = page;
   [(SBHAddWidgetDetailSheetViewControllerAccessibility *)&v22 _addPage:?];
   v12 = [(SBHAddWidgetDetailSheetViewControllerAccessibility *)self safeValueForKey:@"widgetGalleryStackView"];
   v4 = [(SBHAddWidgetDetailSheetViewControllerAccessibility *)self safeValueForKey:@"widgetGalleryScrollView"];
@@ -43,8 +43,8 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v12 arrangedSubviews];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  arrangedSubviews = [v12 arrangedSubviews];
+  v6 = [arrangedSubviews countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v6)
   {
     v7 = *v18;
@@ -55,7 +55,7 @@
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
@@ -72,7 +72,7 @@
         objc_destroyWeak(&from);
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v17 objects:v23 count:16];
+      v6 = [arrangedSubviews countByEnumeratingWithState:&v17 objects:v23 count:16];
     }
 
     while (v6);
@@ -106,11 +106,11 @@ uint64_t __63__SBHAddWidgetDetailSheetViewControllerAccessibility__addPage___blo
   return WeakRetained ^ 1;
 }
 
-- (void)addButtonTapped:(id)a3
+- (void)addButtonTapped:(id)tapped
 {
   v11.receiver = self;
   v11.super_class = SBHAddWidgetDetailSheetViewControllerAccessibility;
-  [(SBHAddWidgetDetailSheetViewControllerAccessibility *)&v11 addButtonTapped:a3];
+  [(SBHAddWidgetDetailSheetViewControllerAccessibility *)&v11 addButtonTapped:tapped];
   v4 = [(SBHAddWidgetDetailSheetViewControllerAccessibility *)self safeValueForKey:@"_applicationWidgetCollection"];
   v5 = [v4 safeStringForKey:@"displayName"];
 

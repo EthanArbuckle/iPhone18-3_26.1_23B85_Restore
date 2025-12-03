@@ -1,61 +1,61 @@
 @interface _CDInteractionAdvisorSettings
-+ (id)extractContactIdentifiers:(id)a3;
++ (id)extractContactIdentifiers:(id)identifiers;
 + (id)interactionAdvisorSettingsDefault;
 - (_CDInteractionAdvisorSettings)init;
-- (_CDInteractionAdvisorSettings)initWithCoder:(id)a3;
+- (_CDInteractionAdvisorSettings)initWithCoder:(id)coder;
 - (id)contactPredicate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)interactionPredicate;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _CDInteractionAdvisorSettings
 
-- (_CDInteractionAdvisorSettings)initWithCoder:(id)a3
+- (_CDInteractionAdvisorSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v60.receiver = self;
   v60.super_class = _CDInteractionAdvisorSettings;
   v5 = [(_CDInteractionAdvisorSettings *)&v60 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"interactionDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"interactionDate"];
     interactionDate = v5->_interactionDate;
     v5->_interactionDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"interactionTitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"interactionTitle"];
     interactionTitle = v5->_interactionTitle;
     v5->_interactionTitle = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"interactionLocationUUID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"interactionLocationUUID"];
     interactionLocationUUID = v5->_interactionLocationUUID;
     v5->_interactionLocationUUID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contactPrefix"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contactPrefix"];
     contactPrefix = v5->_contactPrefix;
     v5->_contactPrefix = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"consumerIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"consumerIdentifier"];
     consumerIdentifier = v5->_consumerIdentifier;
     v5->_consumerIdentifier = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"callerBundleId"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"callerBundleId"];
     callerBundleId = v5->_callerBundleId;
     v5->_callerBundleId = v16;
 
     v18 = MEMORY[0x1E695DFD8];
     v19 = objc_opt_class();
     v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"constrainDirections"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"constrainDirections"];
     constrainDirections = v5->_constrainDirections;
     v5->_constrainDirections = v21;
 
-    v23 = [v4 decodeObjectOfClasses:v20 forKey:@"constrainMechanisms"];
+    v23 = [coderCopy decodeObjectOfClasses:v20 forKey:@"constrainMechanisms"];
     constrainMechanisms = v5->_constrainMechanisms;
     v5->_constrainMechanisms = v23;
 
-    v25 = [v4 decodeObjectOfClasses:v20 forKey:@"constrainPersonIdType"];
+    v25 = [coderCopy decodeObjectOfClasses:v20 forKey:@"constrainPersonIdType"];
     constrainPersonIdType = v5->_constrainPersonIdType;
     v5->_constrainPersonIdType = v25;
 
@@ -63,98 +63,98 @@
     v28 = objc_opt_class();
     v29 = objc_opt_class();
     v30 = [v27 setWithObjects:{v28, v29, objc_opt_class(), 0}];
-    v31 = [v4 decodeObjectOfClasses:v30 forKey:@"constrainSenders"];
+    v31 = [coderCopy decodeObjectOfClasses:v30 forKey:@"constrainSenders"];
     constrainSenders = v5->_constrainSenders;
     v5->_constrainSenders = v31;
 
-    v33 = [v4 decodeObjectOfClasses:v30 forKey:@"constrainRecipients"];
+    v33 = [coderCopy decodeObjectOfClasses:v30 forKey:@"constrainRecipients"];
     constrainRecipients = v5->_constrainRecipients;
     v5->_constrainRecipients = v33;
 
     v35 = MEMORY[0x1E695DFD8];
     v36 = objc_opt_class();
     v37 = [v35 setWithObjects:{v36, objc_opt_class(), 0}];
-    v38 = [v4 decodeObjectOfClasses:v37 forKey:@"constrainPersonIds"];
+    v38 = [coderCopy decodeObjectOfClasses:v37 forKey:@"constrainPersonIds"];
     constrainPersonIds = v5->_constrainPersonIds;
     v5->_constrainPersonIds = v38;
 
-    v40 = [v4 decodeObjectOfClasses:v37 forKey:@"constrainKeywords"];
+    v40 = [coderCopy decodeObjectOfClasses:v37 forKey:@"constrainKeywords"];
     constrainKeywords = v5->_constrainKeywords;
     v5->_constrainKeywords = v40;
 
-    v42 = [v4 decodeObjectOfClasses:v37 forKey:@"seedIdentifiers"];
+    v42 = [coderCopy decodeObjectOfClasses:v37 forKey:@"seedIdentifiers"];
     seedIdentifiers = v5->_seedIdentifiers;
     v5->_seedIdentifiers = v42;
 
-    v44 = [v4 decodeObjectOfClasses:v37 forKey:@"constrainBundleIds"];
+    v44 = [coderCopy decodeObjectOfClasses:v37 forKey:@"constrainBundleIds"];
     constrainBundleIds = v5->_constrainBundleIds;
     v5->_constrainBundleIds = v44;
 
-    v46 = [v4 decodeObjectOfClasses:v37 forKey:@"constrainAccounts"];
+    v46 = [coderCopy decodeObjectOfClasses:v37 forKey:@"constrainAccounts"];
     constrainAccounts = v5->_constrainAccounts;
     v5->_constrainAccounts = v46;
 
-    v48 = [v4 decodeObjectOfClasses:v37 forKey:@"constrainLocationUUIDs"];
+    v48 = [coderCopy decodeObjectOfClasses:v37 forKey:@"constrainLocationUUIDs"];
     constrainLocationUUIDs = v5->_constrainLocationUUIDs;
     v5->_constrainLocationUUIDs = v48;
 
-    v50 = [v4 decodeObjectOfClasses:v37 forKey:@"constrainDomainIdentifiers"];
+    v50 = [coderCopy decodeObjectOfClasses:v37 forKey:@"constrainDomainIdentifiers"];
     constrainDomainIdentifiers = v5->_constrainDomainIdentifiers;
     v5->_constrainDomainIdentifiers = v50;
 
-    v52 = [v4 decodeObjectOfClasses:v37 forKey:@"ignoreInteractionUUIDs"];
+    v52 = [coderCopy decodeObjectOfClasses:v37 forKey:@"ignoreInteractionUUIDs"];
     ignoreInteractionUUIDs = v5->_ignoreInteractionUUIDs;
     v5->_ignoreInteractionUUIDs = v52;
 
-    v54 = [v4 decodeObjectOfClasses:v37 forKey:@"ignoreContactIdentifiers"];
+    v54 = [coderCopy decodeObjectOfClasses:v37 forKey:@"ignoreContactIdentifiers"];
     ignoreContactIdentifiers = v5->_ignoreContactIdentifiers;
     v5->_ignoreContactIdentifiers = v54;
 
-    v56 = [v4 decodeObjectOfClasses:v37 forKey:@"constrainIdentifiers"];
+    v56 = [coderCopy decodeObjectOfClasses:v37 forKey:@"constrainIdentifiers"];
     constrainIdentifiers = v5->_constrainIdentifiers;
     v5->_constrainIdentifiers = v56;
 
-    v5->_resultLimit = [v4 decodeInt64ForKey:@"resultLimit"];
-    v5->_useFuture = [v4 decodeBoolForKey:@"useFutureInteractions"];
-    v5->_aggregateByIdentifier = [v4 decodeBoolForKey:@"aggregateByIdentifier"];
-    v5->_requireOutgoingInteraction = [v4 decodeBoolForKey:@"requireOutgoingInteraction"];
-    v5->_constrainMaxRecipientCount = [v4 decodeInt64ForKey:@"constrainMaxRecipientCount"];
+    v5->_resultLimit = [coderCopy decodeInt64ForKey:@"resultLimit"];
+    v5->_useFuture = [coderCopy decodeBoolForKey:@"useFutureInteractions"];
+    v5->_aggregateByIdentifier = [coderCopy decodeBoolForKey:@"aggregateByIdentifier"];
+    v5->_requireOutgoingInteraction = [coderCopy decodeBoolForKey:@"requireOutgoingInteraction"];
+    v5->_constrainMaxRecipientCount = [coderCopy decodeInt64ForKey:@"constrainMaxRecipientCount"];
     v58 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   interactionDate = self->_interactionDate;
-  v5 = a3;
-  [v5 encodeObject:interactionDate forKey:@"interactionDate"];
-  [v5 encodeObject:self->_interactionTitle forKey:@"interactionTitle"];
-  [v5 encodeObject:self->_interactionLocationUUID forKey:@"interactionLocationUUID"];
-  [v5 encodeObject:self->_contactPrefix forKey:@"contactPrefix"];
-  [v5 encodeObject:self->_seedIdentifiers forKey:@"seedIdentifiers"];
-  [v5 encodeObject:self->_constrainDirections forKey:@"constrainDirections"];
-  [v5 encodeObject:self->_constrainMechanisms forKey:@"constrainMechanisms"];
-  [v5 encodeObject:self->_constrainBundleIds forKey:@"constrainBundleIds"];
-  [v5 encodeObject:self->_constrainAccounts forKey:@"constrainAccounts"];
-  [v5 encodeObject:self->_constrainDomainIdentifiers forKey:@"constrainDomainIdentifiers"];
-  [v5 encodeObject:self->_constrainSenders forKey:@"constrainSenders"];
-  [v5 encodeObject:self->_constrainRecipients forKey:@"constrainRecipients"];
-  [v5 encodeObject:self->_constrainKeywords forKey:@"constrainKeywords"];
-  [v5 encodeObject:self->_constrainLocationUUIDs forKey:@"constrainLocationUUIDs"];
-  [v5 encodeObject:self->_constrainIdentifiers forKey:@"constrainIdentifiers"];
-  [v5 encodeObject:self->_constrainPersonIds forKey:@"constrainPersonIds"];
-  [v5 encodeObject:self->_constrainPersonIdType forKey:@"constrainPersonIdType"];
-  [v5 encodeInt64:self->_resultLimit forKey:@"resultLimit"];
-  [v5 encodeObject:self->_ignoreContactIdentifiers forKey:@"ignoreContactIdentifiers"];
-  [v5 encodeObject:self->_ignoreInteractionUUIDs forKey:@"ignoreInteractionUUIDs"];
-  [v5 encodeBool:self->_useFuture forKey:@"useFutureInteractions"];
-  [v5 encodeBool:self->_aggregateByIdentifier forKey:@"aggregateByIdentifier"];
-  [v5 encodeBool:self->_requireOutgoingInteraction forKey:@"requireOutgoingInteraction"];
-  [v5 encodeInt64:self->_constrainMaxRecipientCount forKey:@"constrainMaxRecipientCount"];
-  [v5 encodeObject:self->_consumerIdentifier forKey:@"consumerIdentifier"];
-  [v5 encodeObject:self->_callerBundleId forKey:@"callerBundleId"];
+  coderCopy = coder;
+  [coderCopy encodeObject:interactionDate forKey:@"interactionDate"];
+  [coderCopy encodeObject:self->_interactionTitle forKey:@"interactionTitle"];
+  [coderCopy encodeObject:self->_interactionLocationUUID forKey:@"interactionLocationUUID"];
+  [coderCopy encodeObject:self->_contactPrefix forKey:@"contactPrefix"];
+  [coderCopy encodeObject:self->_seedIdentifiers forKey:@"seedIdentifiers"];
+  [coderCopy encodeObject:self->_constrainDirections forKey:@"constrainDirections"];
+  [coderCopy encodeObject:self->_constrainMechanisms forKey:@"constrainMechanisms"];
+  [coderCopy encodeObject:self->_constrainBundleIds forKey:@"constrainBundleIds"];
+  [coderCopy encodeObject:self->_constrainAccounts forKey:@"constrainAccounts"];
+  [coderCopy encodeObject:self->_constrainDomainIdentifiers forKey:@"constrainDomainIdentifiers"];
+  [coderCopy encodeObject:self->_constrainSenders forKey:@"constrainSenders"];
+  [coderCopy encodeObject:self->_constrainRecipients forKey:@"constrainRecipients"];
+  [coderCopy encodeObject:self->_constrainKeywords forKey:@"constrainKeywords"];
+  [coderCopy encodeObject:self->_constrainLocationUUIDs forKey:@"constrainLocationUUIDs"];
+  [coderCopy encodeObject:self->_constrainIdentifiers forKey:@"constrainIdentifiers"];
+  [coderCopy encodeObject:self->_constrainPersonIds forKey:@"constrainPersonIds"];
+  [coderCopy encodeObject:self->_constrainPersonIdType forKey:@"constrainPersonIdType"];
+  [coderCopy encodeInt64:self->_resultLimit forKey:@"resultLimit"];
+  [coderCopy encodeObject:self->_ignoreContactIdentifiers forKey:@"ignoreContactIdentifiers"];
+  [coderCopy encodeObject:self->_ignoreInteractionUUIDs forKey:@"ignoreInteractionUUIDs"];
+  [coderCopy encodeBool:self->_useFuture forKey:@"useFutureInteractions"];
+  [coderCopy encodeBool:self->_aggregateByIdentifier forKey:@"aggregateByIdentifier"];
+  [coderCopy encodeBool:self->_requireOutgoingInteraction forKey:@"requireOutgoingInteraction"];
+  [coderCopy encodeInt64:self->_constrainMaxRecipientCount forKey:@"constrainMaxRecipientCount"];
+  [coderCopy encodeObject:self->_consumerIdentifier forKey:@"consumerIdentifier"];
+  [coderCopy encodeObject:self->_callerBundleId forKey:@"callerBundleId"];
 }
 
 + (id)interactionAdvisorSettingsDefault
@@ -174,90 +174,90 @@
   {
     v2->_resultLimit = 30;
     v2->_useFuture = 0;
-    v4 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     interactionDate = v3->_interactionDate;
-    v3->_interactionDate = v4;
+    v3->_interactionDate = date;
 
     v3->_constrainMaxRecipientCount = -1;
-    v6 = [MEMORY[0x1E696AAE8] mainBundle];
-    v7 = [v6 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     callerBundleId = v3->_callerBundleId;
-    v3->_callerBundleId = v7;
+    v3->_callerBundleId = bundleIdentifier;
   }
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = +[_CDInteractionAdvisorSettings interactionAdvisorSettingsDefault];
-  v5 = [(_CDInteractionAdvisorSettings *)self interactionDate];
-  [v4 setInteractionDate:v5];
+  interactionDate = [(_CDInteractionAdvisorSettings *)self interactionDate];
+  [v4 setInteractionDate:interactionDate];
 
-  v6 = [(_CDInteractionAdvisorSettings *)self interactionTitle];
-  [v4 setInteractionTitle:v6];
+  interactionTitle = [(_CDInteractionAdvisorSettings *)self interactionTitle];
+  [v4 setInteractionTitle:interactionTitle];
 
-  v7 = [(_CDInteractionAdvisorSettings *)self interactionLocationUUID];
-  [v4 setInteractionLocationUUID:v7];
+  interactionLocationUUID = [(_CDInteractionAdvisorSettings *)self interactionLocationUUID];
+  [v4 setInteractionLocationUUID:interactionLocationUUID];
 
-  v8 = [(_CDInteractionAdvisorSettings *)self contactPrefix];
-  [v4 setContactPrefix:v8];
+  contactPrefix = [(_CDInteractionAdvisorSettings *)self contactPrefix];
+  [v4 setContactPrefix:contactPrefix];
 
-  v9 = [(_CDInteractionAdvisorSettings *)self seedIdentifiers];
-  [v4 setSeedIdentifiers:v9];
+  seedIdentifiers = [(_CDInteractionAdvisorSettings *)self seedIdentifiers];
+  [v4 setSeedIdentifiers:seedIdentifiers];
 
-  v10 = [(_CDInteractionAdvisorSettings *)self constrainDirections];
-  [v4 setConstrainDirections:v10];
+  constrainDirections = [(_CDInteractionAdvisorSettings *)self constrainDirections];
+  [v4 setConstrainDirections:constrainDirections];
 
-  v11 = [(_CDInteractionAdvisorSettings *)self constrainMechanisms];
-  [v4 setConstrainMechanisms:v11];
+  constrainMechanisms = [(_CDInteractionAdvisorSettings *)self constrainMechanisms];
+  [v4 setConstrainMechanisms:constrainMechanisms];
 
-  v12 = [(_CDInteractionAdvisorSettings *)self constrainBundleIds];
-  [v4 setConstrainBundleIds:v12];
+  constrainBundleIds = [(_CDInteractionAdvisorSettings *)self constrainBundleIds];
+  [v4 setConstrainBundleIds:constrainBundleIds];
 
-  v13 = [(_CDInteractionAdvisorSettings *)self constrainAccounts];
-  [v4 setConstrainAccounts:v13];
+  constrainAccounts = [(_CDInteractionAdvisorSettings *)self constrainAccounts];
+  [v4 setConstrainAccounts:constrainAccounts];
 
-  v14 = [(_CDInteractionAdvisorSettings *)self constrainDomainIdentifiers];
-  [v4 setConstrainDomainIdentifiers:v14];
+  constrainDomainIdentifiers = [(_CDInteractionAdvisorSettings *)self constrainDomainIdentifiers];
+  [v4 setConstrainDomainIdentifiers:constrainDomainIdentifiers];
 
-  v15 = [(_CDInteractionAdvisorSettings *)self constrainSenders];
-  [v4 setConstrainSenders:v15];
+  constrainSenders = [(_CDInteractionAdvisorSettings *)self constrainSenders];
+  [v4 setConstrainSenders:constrainSenders];
 
-  v16 = [(_CDInteractionAdvisorSettings *)self constrainRecipients];
-  [v4 setConstrainRecipients:v16];
+  constrainRecipients = [(_CDInteractionAdvisorSettings *)self constrainRecipients];
+  [v4 setConstrainRecipients:constrainRecipients];
 
-  v17 = [(_CDInteractionAdvisorSettings *)self constrainKeywords];
-  [v4 setConstrainKeywords:v17];
+  constrainKeywords = [(_CDInteractionAdvisorSettings *)self constrainKeywords];
+  [v4 setConstrainKeywords:constrainKeywords];
 
-  v18 = [(_CDInteractionAdvisorSettings *)self constrainLocationUUIDs];
-  [v4 setConstrainLocationUUIDs:v18];
+  constrainLocationUUIDs = [(_CDInteractionAdvisorSettings *)self constrainLocationUUIDs];
+  [v4 setConstrainLocationUUIDs:constrainLocationUUIDs];
 
   [v4 setResultLimit:{-[_CDInteractionAdvisorSettings resultLimit](self, "resultLimit")}];
-  v19 = [(_CDInteractionAdvisorSettings *)self constrainIdentifiers];
-  [v4 setConstrainIdentifiers:v19];
+  constrainIdentifiers = [(_CDInteractionAdvisorSettings *)self constrainIdentifiers];
+  [v4 setConstrainIdentifiers:constrainIdentifiers];
 
-  v20 = [(_CDInteractionAdvisorSettings *)self constrainPersonIds];
-  [v4 setConstrainPersonIds:v20];
+  constrainPersonIds = [(_CDInteractionAdvisorSettings *)self constrainPersonIds];
+  [v4 setConstrainPersonIds:constrainPersonIds];
 
-  v21 = [(_CDInteractionAdvisorSettings *)self constrainPersonIdType];
-  [v4 setConstrainPersonIdType:v21];
+  constrainPersonIdType = [(_CDInteractionAdvisorSettings *)self constrainPersonIdType];
+  [v4 setConstrainPersonIdType:constrainPersonIdType];
 
-  v22 = [(_CDInteractionAdvisorSettings *)self ignoreContactIdentifiers];
-  [v4 setIgnoreContactIdentifiers:v22];
+  ignoreContactIdentifiers = [(_CDInteractionAdvisorSettings *)self ignoreContactIdentifiers];
+  [v4 setIgnoreContactIdentifiers:ignoreContactIdentifiers];
 
-  v23 = [(_CDInteractionAdvisorSettings *)self ignoreInteractionUUIDs];
-  [v4 setIgnoreInteractionUUIDs:v23];
+  ignoreInteractionUUIDs = [(_CDInteractionAdvisorSettings *)self ignoreInteractionUUIDs];
+  [v4 setIgnoreInteractionUUIDs:ignoreInteractionUUIDs];
 
   [v4 setUseFuture:{-[_CDInteractionAdvisorSettings useFuture](self, "useFuture")}];
   [v4 setAggregateByIdentifier:{-[_CDInteractionAdvisorSettings aggregateByIdentifier](self, "aggregateByIdentifier")}];
   [v4 setRequireOutgoingInteraction:{-[_CDInteractionAdvisorSettings requireOutgoingInteraction](self, "requireOutgoingInteraction")}];
   [v4 setConstrainMaxRecipientCount:{-[_CDInteractionAdvisorSettings constrainMaxRecipientCount](self, "constrainMaxRecipientCount")}];
-  v24 = [(_CDInteractionAdvisorSettings *)self consumerIdentifier];
-  [v4 setConsumerIdentifier:v24];
+  consumerIdentifier = [(_CDInteractionAdvisorSettings *)self consumerIdentifier];
+  [v4 setConsumerIdentifier:consumerIdentifier];
 
-  v25 = [(_CDInteractionAdvisorSettings *)self callerBundleId];
-  [v4 setCallerBundleId:v25];
+  callerBundleId = [(_CDInteractionAdvisorSettings *)self callerBundleId];
+  [v4 setCallerBundleId:callerBundleId];
 
   return v4;
 }
@@ -269,8 +269,8 @@
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[_CDInteractionAdvisorSettings resultLimit](self, "resultLimit")}];
   [v3 appendFormat:@"            resultLimit: %@\n", v4];
 
-  v5 = [(_CDInteractionAdvisorSettings *)self interactionPredicate];
-  [v3 appendFormat:@"              predicate: %@\n", v5];
+  interactionPredicate = [(_CDInteractionAdvisorSettings *)self interactionPredicate];
+  [v3 appendFormat:@"              predicate: %@\n", interactionPredicate];
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_useFuture];
   [v3 appendFormat:@"              useFuture: %@\n", v6];
@@ -362,16 +362,16 @@
   return v3;
 }
 
-+ (id)extractContactIdentifiers:(id)a3
++ (id)extractContactIdentifiers:(id)identifiers
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  identifiersCopy = identifiers;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = identifiersCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -390,8 +390,8 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v10 identifier];
-          [v4 addObject:v11];
+          identifier = [v10 identifier];
+          [v4 addObject:identifier];
         }
 
         else
@@ -418,33 +418,33 @@
 - (id)interactionPredicate
 {
   v70 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   constrainMechanisms = self->_constrainMechanisms;
   if (constrainMechanisms && [(NSSet *)constrainMechanisms count])
   {
     v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(mechanism IN %@)", self->_constrainMechanisms];
-    [v3 addObject:v5];
+    [array addObject:v5];
   }
 
   constrainDirections = self->_constrainDirections;
   if (constrainDirections && [(NSSet *)constrainDirections count])
   {
     v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(direction IN %@)", self->_constrainDirections];
-    [v3 addObject:v7];
+    [array addObject:v7];
   }
 
   constrainBundleIds = self->_constrainBundleIds;
   if (constrainBundleIds && [(NSSet *)constrainBundleIds count])
   {
     v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(bundleId IN %@)", self->_constrainBundleIds];
-    [v3 addObject:v9];
+    [array addObject:v9];
   }
 
   constrainAccounts = self->_constrainAccounts;
   if (constrainAccounts && [(NSSet *)constrainAccounts count])
   {
     v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(account IN %@)", self->_constrainAccounts];
-    [v3 addObject:v11];
+    [array addObject:v11];
   }
 
   constrainDomainIdentifiers = self->_constrainDomainIdentifiers;
@@ -483,14 +483,14 @@
 
     v13 = 0x1E696A000uLL;
     v21 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:v14];
-    [v3 addObject:v21];
+    [array addObject:v21];
   }
 
   constrainLocationUUIDs = self->_constrainLocationUUIDs;
   if (constrainLocationUUIDs && [(NSSet *)constrainLocationUUIDs count])
   {
     v23 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(locationUUID IN %@)", self->_constrainLocationUUIDs];
-    [v3 addObject:v23];
+    [array addObject:v23];
   }
 
   constrainSenders = self->_constrainSenders;
@@ -499,7 +499,7 @@
     v25 = MEMORY[0x1E696AE18];
     v26 = [_CDInteractionAdvisorSettings extractContactIdentifiers:self->_constrainSenders];
     v27 = [v25 predicateWithFormat:@"(sender.identifier IN %@)", v26];
-    [v3 addObject:v27];
+    [array addObject:v27];
   }
 
   constrainRecipients = self->_constrainRecipients;
@@ -508,7 +508,7 @@
     v29 = MEMORY[0x1E696AE18];
     v30 = [_CDInteractionAdvisorSettings extractContactIdentifiers:self->_constrainRecipients];
     v31 = [v29 predicateWithFormat:@"(ANY recipients.identifier IN %@)", v30];
-    [v3 addObject:v31];
+    [array addObject:v31];
   }
 
   if ([(NSSet *)self->_constrainPersonIds count])
@@ -520,7 +520,7 @@
     v68[1] = v33;
     v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v68 count:2];
     v36 = [v34 orPredicateWithSubpredicates:v35];
-    [v3 addObject:v36];
+    [array addObject:v36];
   }
 
   if ([(NSSet *)self->_constrainPersonIdType count])
@@ -532,25 +532,25 @@
     v67[1] = v38;
     v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:2];
     v41 = [v39 orPredicateWithSubpredicates:v40];
-    [v3 addObject:v41];
+    [array addObject:v41];
   }
 
   constrainKeywords = self->_constrainKeywords;
   if (constrainKeywords && [(NSSet *)constrainKeywords count])
   {
     v43 = MEMORY[0x1E696AE18];
-    v44 = [(NSSet *)self->_constrainKeywords allObjects];
-    v45 = [v43 predicateWithFormat:@"(ANY keywords.keyword IN %@)", v44];
-    [v3 addObject:v45];
+    allObjects = [(NSSet *)self->_constrainKeywords allObjects];
+    v45 = [v43 predicateWithFormat:@"(ANY keywords.keyword IN %@)", allObjects];
+    [array addObject:v45];
   }
 
   ignoreInteractionUUIDs = self->_ignoreInteractionUUIDs;
   if (ignoreInteractionUUIDs && [(NSSet *)ignoreInteractionUUIDs count])
   {
     v47 = MEMORY[0x1E696AE18];
-    v48 = [(NSSet *)self->_ignoreInteractionUUIDs allObjects];
-    v49 = [v47 predicateWithFormat:@"(NOT (uuid IN %@))", v48];
-    [v3 addObject:v49];
+    allObjects2 = [(NSSet *)self->_ignoreInteractionUUIDs allObjects];
+    v49 = [v47 predicateWithFormat:@"(NOT (uuid IN %@))", allObjects2];
+    [array addObject:v49];
   }
 
   if (self->_constrainMaxRecipientCount >= 1)
@@ -568,12 +568,12 @@
     v66[1] = v55;
     v57 = [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:2];
     v58 = [v56 orPredicateWithSubpredicates:v57];
-    [v3 addObject:v58];
+    [array addObject:v58];
   }
 
-  if ([v3 count])
+  if ([array count])
   {
-    [*(v13 + 2856) andPredicateWithSubpredicates:v3];
+    [*(v13 + 2856) andPredicateWithSubpredicates:array];
   }
 
   else

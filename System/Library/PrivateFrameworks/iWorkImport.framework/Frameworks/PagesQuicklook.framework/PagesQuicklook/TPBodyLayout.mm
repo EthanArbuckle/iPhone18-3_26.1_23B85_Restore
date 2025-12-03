@@ -1,35 +1,35 @@
 @interface TPBodyLayout
 + (CGSize)minimumBodySize;
-- (BOOL)canHaveFootnotesFromPreviousTarget:(id)a3;
-- (BOOL)containsStartOfPencilAnnotation:(id)a3;
-- (BOOL)containsStartOfRange:(_NSRange)a3;
-- (BOOL)excludeFromNearestVisibleRectSearchForSelectionPath:(id)a3;
+- (BOOL)canHaveFootnotesFromPreviousTarget:(id)target;
+- (BOOL)containsStartOfPencilAnnotation:(id)annotation;
+- (BOOL)containsStartOfRange:(_NSRange)range;
+- (BOOL)excludeFromNearestVisibleRectSearchForSelectionPath:(id)path;
 - (BOOL)invalidateForPageCountChange;
-- (BOOL)isFootnoteContainerOnSamePageAsTarget:(id)a3;
+- (BOOL)isFootnoteContainerOnSamePageAsTarget:(id)target;
 - (BOOL)isLayoutOffscreen;
 - (BOOL)layoutIsValid;
 - (BOOL)marginsAreMirrored;
 - (BOOL)processWidowAndInflation;
-- (BOOL)selectionMustBeEntirelyOnscreenToCountAsVisibleInSelectionPath:(id)a3;
-- (BOOL)shouldInvalidateSizeWhenInvalidateSizeOfReliedOnLayout:(id)a3;
+- (BOOL)selectionMustBeEntirelyOnscreenToCountAsVisibleInSelectionPath:(id)path;
+- (BOOL)shouldInvalidateSizeWhenInvalidateSizeOfReliedOnLayout:(id)layout;
 - (BOOL)textIsVertical;
-- (CGPoint)activityLineUnscaledEndPointForSearchReference:(id)a3;
+- (CGPoint)activityLineUnscaledEndPointForSearchReference:(id)reference;
 - (CGPoint)anchorPoint;
-- (CGPoint)anchoredAttachmentPositionFromLayoutPosition:(CGPoint)a3;
-- (CGPoint)calculatePointFromSearchReference:(id)a3;
+- (CGPoint)anchoredAttachmentPositionFromLayoutPosition:(CGPoint)position;
+- (CGPoint)calculatePointFromSearchReference:(id)reference;
 - (CGPoint)capturedInfoPositionForAttachment;
-- (CGPoint)layoutPositionFromAnchoredAttachmentPosition:(CGPoint)a3;
+- (CGPoint)layoutPositionFromAnchoredAttachmentPosition:(CGPoint)position;
 - (CGPoint)position;
-- (CGRect)p_rectForSelection:(id)a3 useParagraphModeRects:(BOOL)a4;
-- (CGRect)rectForPresentingAnnotationPopoverForSelectionPath:(id)a3;
-- (CGRect)rectForSelection:(id)a3;
-- (CGRect)rectInRootForPresentingAnnotationPopoverForSelectionPath:(id)a3;
-- (CGRect)rectInRootForSelectionPath:(id)a3;
-- (CGRect)rectInRootOfAutoZoomContextOfSelectionPath:(id)a3;
-- (CGRect)targetRectForCanvasRect:(CGRect)a3;
+- (CGRect)p_rectForSelection:(id)selection useParagraphModeRects:(BOOL)rects;
+- (CGRect)rectForPresentingAnnotationPopoverForSelectionPath:(id)path;
+- (CGRect)rectForSelection:(id)selection;
+- (CGRect)rectInRootForPresentingAnnotationPopoverForSelectionPath:(id)path;
+- (CGRect)rectInRootForSelectionPath:(id)path;
+- (CGRect)rectInRootOfAutoZoomContextOfSelectionPath:(id)path;
+- (CGRect)targetRectForCanvasRect:(CGRect)rect;
 - (CGSize)currentSize;
 - (CGSize)maxSize;
-- (CGSize)maximumFrameSizeForChild:(id)a3;
+- (CGSize)maximumFrameSizeForChild:(id)child;
 - (CGSize)minSize;
 - (TSDCanvas)canvas;
 - (TSDHint)nextTargetFirstChildHint;
@@ -40,35 +40,35 @@
 - (TSWPTopicNumberHints)nextTargetTopicNumberHints;
 - (double)contentBlockHeight;
 - (double)maxAnchorInBlockDirection;
-- (id)addPartitionableAttachmentLayout:(id)a3;
-- (id)columnMetricsForCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4;
+- (id)addPartitionableAttachmentLayout:(id)layout;
+- (id)columnMetricsForCharIndex:(unint64_t)index outRange:(_NSRange *)range;
 - (id)computeLayoutGeometry;
 - (id)containedPencilAnnotations;
 - (id)currentAnchoredDrawableLayouts;
-- (id)existingAttachmentLayoutForInfo:(id)a3;
-- (id)layoutForInlineDrawable:(id)a3;
-- (id)p_layoutForDrawable:(id)a3 inContainingLayout:(id)a4;
+- (id)existingAttachmentLayoutForInfo:(id)info;
+- (id)layoutForInlineDrawable:(id)drawable;
+- (id)p_layoutForDrawable:(id)drawable inContainingLayout:(id)layout;
 - (id)pageController;
-- (id)unscaledCommentFlagAnchorInfoForSearchReference:(id)a3;
+- (id)unscaledCommentFlagAnchorInfoForSearchReference:(id)reference;
 - (id)unscaledContentRectsToAvoidPencilAnnotationOverlap;
-- (id)validatedLayoutForAnchoredDrawable:(id)a3;
+- (id)validatedLayoutForAnchoredDrawable:(id)drawable;
 - (unint64_t)pageCount;
 - (unint64_t)pageNumber;
-- (void)addAttachmentLayout:(id)a3;
+- (void)addAttachmentLayout:(id)layout;
 - (void)clearHiddenInlineDrawableLayoutMarks;
-- (void)insertChild:(id)a3 atIndex:(unint64_t)a4;
+- (void)insertChild:(id)child atIndex:(unint64_t)index;
 - (void)invalidateSize;
-- (void)markHiddenInlineDrawableLayout:(id)a3;
-- (void)p_addLayoutIfAttached:(id)a3;
-- (void)p_killDrawableLayouts:(id)a3;
-- (void)parentWillChangeTo:(id)a3;
-- (void)replaceChild:(id)a3 with:(id)a4;
+- (void)markHiddenInlineDrawableLayout:(id)layout;
+- (void)p_addLayoutIfAttached:(id)attached;
+- (void)p_killDrawableLayouts:(id)layouts;
+- (void)parentWillChangeTo:(id)to;
+- (void)replaceChild:(id)child with:(id)with;
 - (void)resetFootnoteHeightMeasurer;
-- (void)setChildren:(id)a3;
+- (void)setChildren:(id)children;
 - (void)setNeedsInflation;
-- (void)updateStartCharIndexWithDirtyRanges:(id)a3;
+- (void)updateStartCharIndexWithDirtyRanges:(id)ranges;
 - (void)validate;
-- (void)willBeRemovedFromLayoutController:(id)a3;
+- (void)willBeRemovedFromLayoutController:(id)controller;
 - (void)willInflate;
 @end
 
@@ -83,16 +83,16 @@
   return result;
 }
 
-- (CGRect)rectInRootOfAutoZoomContextOfSelectionPath:(id)a3
+- (CGRect)rectInRootOfAutoZoomContextOfSelectionPath:(id)path
 {
   v105 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   v5 = *MEMORY[0x277CBF398];
   v6 = *(MEMORY[0x277CBF398] + 8);
   v7 = *(MEMORY[0x277CBF398] + 16);
   v8 = *(MEMORY[0x277CBF398] + 24);
   objc_opt_class();
-  v14 = objc_msgSend_mostSpecificSelectionOfClass_(v4, v9, v10, v11, v12, v13, 0);
+  v14 = objc_msgSend_mostSpecificSelectionOfClass_(pathCopy, v9, v10, v11, v12, v13, 0);
   v15 = TSUCheckedDynamicCast();
 
   if (v15)
@@ -173,7 +173,7 @@
   objc_msgSend_rectInRoot_(self, v84, v80, v81, v82, v83);
   v86 = v85.n128_u64[0];
   v88 = v87.n128_u64[0];
-  objc_msgSend_rectInRootForSelectionPath_(self, v89, v85, v90, v87, v91, v4);
+  objc_msgSend_rectInRootForSelectionPath_(self, v89, v85, v90, v87, v91, pathCopy);
   v93 = v92;
   v95 = v94;
 
@@ -188,15 +188,15 @@
   return result;
 }
 
-- (CGRect)rectInRootForSelectionPath:(id)a3
+- (CGRect)rectInRootForSelectionPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = *MEMORY[0x277CBF398];
   v6 = *(MEMORY[0x277CBF398] + 8);
   v7 = *(MEMORY[0x277CBF398] + 16);
   v8 = *(MEMORY[0x277CBF398] + 24);
   v9 = objc_opt_class();
-  v16 = objc_msgSend_mostSpecificSelectionOfClass_(v4, v10, v11, v12, v13, v14, v9);
+  v16 = objc_msgSend_mostSpecificSelectionOfClass_(pathCopy, v10, v11, v12, v13, v14, v9);
   if (v16)
   {
     objc_msgSend_rectForSelection_(self, v15, v17, v18, v19, v20, v16);
@@ -218,11 +218,11 @@
   return result;
 }
 
-- (BOOL)selectionMustBeEntirelyOnscreenToCountAsVisibleInSelectionPath:(id)a3
+- (BOOL)selectionMustBeEntirelyOnscreenToCountAsVisibleInSelectionPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   objc_opt_class();
-  v10 = objc_msgSend_mostSpecificSelectionOfClass_(v4, v5, v6, v7, v8, v9, 0);
+  v10 = objc_msgSend_mostSpecificSelectionOfClass_(pathCopy, v5, v6, v7, v8, v9, 0);
   v11 = TSUDynamicCast();
 
   if (v11 && (objc_msgSend_isInsertionPoint(v11, v12, v13, v14, v15, v16) & 1) != 0)
@@ -234,15 +234,15 @@
   {
     v19.receiver = self;
     v19.super_class = TPBodyLayout;
-    v17 = [(TPBodyLayout *)&v19 selectionMustBeEntirelyOnscreenToCountAsVisibleInSelectionPath:v4];
+    v17 = [(TPBodyLayout *)&v19 selectionMustBeEntirelyOnscreenToCountAsVisibleInSelectionPath:pathCopy];
   }
 
   return v17;
 }
 
-- (CGRect)rectForSelection:(id)a3
+- (CGRect)rectForSelection:(id)selection
 {
-  objc_msgSend_p_rectForSelection_useParagraphModeRects_(self, a2, v3, v4, v5, v6, a3, 1);
+  objc_msgSend_p_rectForSelection_useParagraphModeRects_(self, a2, v3, v4, v5, v6, selection, 1);
   result.size.height = v10;
   result.size.width = v9;
   result.origin.y = v8;
@@ -250,10 +250,10 @@
   return result;
 }
 
-- (CGRect)rectInRootForPresentingAnnotationPopoverForSelectionPath:(id)a3
+- (CGRect)rectInRootForPresentingAnnotationPopoverForSelectionPath:(id)path
 {
-  v4 = a3;
-  objc_msgSend_rectForPresentingAnnotationPopoverForSelectionPath_(self, v5, v6, v7, v8, v9, v4);
+  pathCopy = path;
+  objc_msgSend_rectForPresentingAnnotationPopoverForSelectionPath_(self, v5, v6, v7, v8, v9, pathCopy);
   objc_msgSend_rectInRoot_(self, v10, v11, v12, v13, v14);
   v16 = v15;
   v18 = v17;
@@ -299,9 +299,9 @@
   return v19;
 }
 
-- (BOOL)containsStartOfPencilAnnotation:(id)a3
+- (BOOL)containsStartOfPencilAnnotation:(id)annotation
 {
-  v4 = a3;
+  annotationCopy = annotation;
   v5 = MEMORY[0x277D80DC0];
   v11 = objc_msgSend_columns(self, v6, v7, v8, v9, v10);
   v17 = objc_msgSend_rangeOfColumns_(v5, v12, v13, v14, v15, v16, v11);
@@ -322,26 +322,26 @@
   return v17;
 }
 
-- (BOOL)containsStartOfRange:(_NSRange)a3
+- (BOOL)containsStartOfRange:(_NSRange)range
 {
-  location = a3.location;
+  location = range.location;
   v8 = MEMORY[0x277D80DC0];
-  v9 = objc_msgSend_columns(self, a2, v3, v4, v5, v6, a3.location, a3.length);
+  v9 = objc_msgSend_columns(self, a2, v3, v4, v5, v6, range.location, range.length);
   v15 = objc_msgSend_rangeOfColumns_(v8, v10, v11, v12, v13, v14, v9);
   v17 = v16;
 
   return location >= v15 && location - v15 < v17;
 }
 
-- (CGRect)rectForPresentingAnnotationPopoverForSelectionPath:(id)a3
+- (CGRect)rectForPresentingAnnotationPopoverForSelectionPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = *MEMORY[0x277CBF398];
   v6 = *(MEMORY[0x277CBF398] + 8);
   v7 = *(MEMORY[0x277CBF398] + 16);
   v8 = *(MEMORY[0x277CBF398] + 24);
   v9 = objc_opt_class();
-  v16 = objc_msgSend_mostSpecificSelectionOfClass_(v4, v10, v11, v12, v13, v14, v9);
+  v16 = objc_msgSend_mostSpecificSelectionOfClass_(pathCopy, v10, v11, v12, v13, v14, v9);
   if (v16)
   {
     objc_msgSend_p_rectForSelection_useParagraphModeRects_(self, v15, v17, v18, v19, v20, v16, 0);
@@ -362,13 +362,13 @@
   return result;
 }
 
-- (CGRect)p_rectForSelection:(id)a3 useParagraphModeRects:(BOOL)a4
+- (CGRect)p_rectForSelection:(id)selection useParagraphModeRects:(BOOL)rects
 {
-  v4 = a4;
-  v6 = a3;
+  rectsCopy = rects;
+  selectionCopy = selection;
   v7 = MEMORY[0x277D80DC0];
   v13 = objc_msgSend_columns(self, v8, v9, v10, v11, v12);
-  objc_msgSend_rectForSelection_withColumns_useParagraphModeRects_(v7, v14, v15, v16, v17, v18, v6, v13, v4);
+  objc_msgSend_rectForSelection_withColumns_useParagraphModeRects_(v7, v14, v15, v16, v17, v18, selectionCopy, v13, rectsCopy);
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -385,14 +385,14 @@
   return result;
 }
 
-- (void)p_killDrawableLayouts:(id)a3
+- (void)p_killDrawableLayouts:(id)layouts
 {
   v27 = *MEMORY[0x277D85DE8];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = objc_msgSend_copy(a3, a2, v3, v4, v5, v6);
+  v7 = objc_msgSend_copy(layouts, a2, v3, v4, v5, v6);
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, v9, v10, v11, v12, &v22, v26, 16);
   if (v14)
   {
@@ -426,13 +426,13 @@
   self->_columns = 0;
 }
 
-- (void)updateStartCharIndexWithDirtyRanges:(id)a3
+- (void)updateStartCharIndexWithDirtyRanges:(id)ranges
 {
   v147 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rangesCopy = ranges;
   if (objc_msgSend_count(self->_columns, v5, v6, v7, v8, v9))
   {
-    v141 = v4;
+    v141 = rangesCopy;
     v15 = objc_msgSend_objectAtIndexedSubscript_(self->_columns, v10, v11, v12, v13, v14, 0);
     v21 = objc_msgSend_range(v15, v16, v17, v18, v19, v20);
     v27 = objc_msgSend_info(self, v22, v23, v24, v25, v26);
@@ -445,14 +445,14 @@
       v45 = objc_msgSend_range(v39, v40, v41, v42, v43, v44);
 
       v56 = v45 - v21;
-      if (objc_msgSend_isEmpty(v4, v46, v47, v48, v49, v50))
+      if (objc_msgSend_isEmpty(rangesCopy, v46, v47, v48, v49, v50))
       {
         v57 = 0;
       }
 
       else
       {
-        v76 = objc_msgSend_superRange(v4, v51, v52, v53, v54, v55);
+        v76 = objc_msgSend_superRange(rangesCopy, v51, v52, v53, v54, v55);
         v57 = &v51[v76 - v56];
       }
 
@@ -519,7 +519,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v71, v72, v73, v74, v75);
     }
 
-    v4 = v141;
+    rangesCopy = v141;
   }
 }
 
@@ -705,17 +705,17 @@ LABEL_29:
   return v15;
 }
 
-- (CGSize)maximumFrameSizeForChild:(id)a3
+- (CGSize)maximumFrameSizeForChild:(id)child
 {
   v154 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  childCopy = child;
   v10 = objc_msgSend_pageLayout(self, v5, v6, v7, v8, v9);
   v16 = objc_msgSend_info(v10, v11, v12, v13, v14, v15);
   v22 = objc_msgSend_documentRoot(v16, v17, v18, v19, v20, v21);
   v28 = objc_msgSend_laysOutBodyVertically(v22, v23, v24, v25, v26, v27);
 
   objc_opt_class();
-  v34 = objc_msgSend_info(v4, v29, v30, v31, v32, v33);
+  v34 = objc_msgSend_info(childCopy, v29, v30, v31, v32, v33);
   v40 = objc_msgSend_owningAttachment(v34, v35, v36, v37, v38, v39);
   v41 = TSUDynamicCast();
 
@@ -747,7 +747,7 @@ LABEL_29:
     goto LABEL_31;
   }
 
-  v142 = v4;
+  v142 = childCopy;
   CharIndex = objc_msgSend_findCharIndex(v41, v47, v48, v49, v50, v51);
   v65 = objc_msgSend_geometry(self, v60, v61, v62, v63, v64);
   objc_msgSend_frame(v65, v66, v67, v68, v69, v70);
@@ -776,7 +776,7 @@ LABEL_29:
         {
           objc_msgSend_frameBounds(v87, v79, v81, v82, v83, v84);
           v110 = v108.n128_f64[0];
-          v4 = v142;
+          childCopy = v142;
           if (v28)
           {
             v141 = v109.n128_f64[0];
@@ -827,7 +827,7 @@ LABEL_29:
     }
   }
 
-  v4 = v142;
+  childCopy = v142;
   v146 = 0u;
   v147 = 0u;
   v144 = 0u;
@@ -854,13 +854,13 @@ LABEL_29:
           v139 = v138;
           v141 = v140;
 
-          v4 = v142;
+          childCopy = v142;
           goto LABEL_32;
         }
       }
 
       v95 = objc_msgSend_countByEnumeratingWithState_objects_count_(v88, v94, v96, v97, v98, v99, &v144, v152, 16);
-      v4 = v142;
+      childCopy = v142;
     }
 
     while (v95);
@@ -869,7 +869,7 @@ LABEL_29:
 LABEL_31:
   v143.receiver = self;
   v143.super_class = TPBodyLayout;
-  [(TPBodyLayout *)&v143 maximumFrameSizeForChild:v4];
+  [(TPBodyLayout *)&v143 maximumFrameSizeForChild:childCopy];
   v139 = v111;
   v141 = v112;
 LABEL_32:
@@ -1040,9 +1040,9 @@ LABEL_32:
   self->_columns = v30;
 }
 
-- (BOOL)shouldInvalidateSizeWhenInvalidateSizeOfReliedOnLayout:(id)a3
+- (BOOL)shouldInvalidateSizeWhenInvalidateSizeOfReliedOnLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1053,7 +1053,7 @@ LABEL_32:
   {
     v7.receiver = self;
     v7.super_class = TPBodyLayout;
-    v5 = [(TPBodyLayout *)&v7 shouldInvalidateSizeWhenInvalidateSizeOfReliedOnLayout:v4];
+    v5 = [(TPBodyLayout *)&v7 shouldInvalidateSizeWhenInvalidateSizeOfReliedOnLayout:layoutCopy];
   }
 
   return v5;
@@ -1102,46 +1102,46 @@ LABEL_32:
   }
 }
 
-- (void)parentWillChangeTo:(id)a3
+- (void)parentWillChangeTo:(id)to
 {
   v3.receiver = self;
   v3.super_class = TPBodyLayout;
-  [(TPBodyLayout *)&v3 parentWillChangeTo:a3];
+  [(TPBodyLayout *)&v3 parentWillChangeTo:to];
 }
 
-- (void)replaceChild:(id)a3 with:(id)a4
+- (void)replaceChild:(id)child with:(id)with
 {
-  v6 = a3;
-  v8 = a4;
-  if (v6 != v8)
+  childCopy = child;
+  withCopy = with;
+  if (childCopy != withCopy)
   {
-    objc_msgSend_removeObject_(self->_inlineDrawableLayouts, v7, v9, v10, v11, v12, v6);
+    objc_msgSend_removeObject_(self->_inlineDrawableLayouts, v7, v9, v10, v11, v12, childCopy);
   }
 
   v13.receiver = self;
   v13.super_class = TPBodyLayout;
-  [(TPBodyLayout *)&v13 replaceChild:v6 with:v8];
+  [(TPBodyLayout *)&v13 replaceChild:childCopy with:withCopy];
 }
 
-- (void)insertChild:(id)a3 atIndex:(unint64_t)a4
+- (void)insertChild:(id)child atIndex:(unint64_t)index
 {
-  v6 = a3;
-  objc_msgSend_p_addLayoutIfAttached_(self, v7, v8, v9, v10, v11, v6);
+  childCopy = child;
+  objc_msgSend_p_addLayoutIfAttached_(self, v7, v8, v9, v10, v11, childCopy);
   v12.receiver = self;
   v12.super_class = TPBodyLayout;
-  [(TPBodyLayout *)&v12 insertChild:v6 atIndex:a4];
+  [(TPBodyLayout *)&v12 insertChild:childCopy atIndex:index];
 }
 
-- (void)setChildren:(id)a3
+- (void)setChildren:(id)children
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  childrenCopy = children;
   objc_msgSend_removeAllObjects(self->_inlineDrawableLayouts, v5, v6, v7, v8, v9);
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = v4;
+  v10 = childrenCopy;
   v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, v12, v13, v14, v15, &v25, v29, 16);
   if (v17)
   {
@@ -1171,10 +1171,10 @@ LABEL_32:
   [(TPBodyLayout *)&v24 setChildren:v10];
 }
 
-- (void)p_addLayoutIfAttached:(id)a3
+- (void)p_addLayoutIfAttached:(id)attached
 {
-  v30 = a3;
-  v9 = objc_msgSend_info(v30, v4, v5, v6, v7, v8);
+  attachedCopy = attached;
+  v9 = objc_msgSend_info(attachedCopy, v4, v5, v6, v7, v8);
   v15 = objc_msgSend_owningAttachment(v9, v10, v11, v12, v13, v14);
   isDrawable = objc_msgSend_isDrawable(v15, v16, v17, v18, v19, v20);
 
@@ -1190,15 +1190,15 @@ LABEL_32:
       inlineDrawableLayouts = self->_inlineDrawableLayouts;
     }
 
-    objc_msgSend_addObject_(inlineDrawableLayouts, v22, v23, v24, v25, v26, v30);
+    objc_msgSend_addObject_(inlineDrawableLayouts, v22, v23, v24, v25, v26, attachedCopy);
   }
 }
 
-- (id)columnMetricsForCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4
+- (id)columnMetricsForCharIndex:(unint64_t)index outRange:(_NSRange *)range
 {
   v10 = objc_msgSend_info(self, a2, v4, v5, v6, v7);
   v16 = objc_msgSend_bodyStorage(v10, v11, v12, v13, v14, v15);
-  v22 = objc_msgSend_columnStyleAtCharIndex_effectiveRange_(v16, v17, v18, v19, v20, v21, a3, a4);
+  v22 = objc_msgSend_columnStyleAtCharIndex_effectiveRange_(v16, v17, v18, v19, v20, v21, index, range);
 
   return v22;
 }
@@ -1309,13 +1309,13 @@ LABEL_12:
   self->_footnoteHeightMeasurer = 0;
 }
 
-- (void)willBeRemovedFromLayoutController:(id)a3
+- (void)willBeRemovedFromLayoutController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_msgSend_resetFootnoteHeightMeasurer(self, v5, v6, v7, v8, v9);
   v10.receiver = self;
   v10.super_class = TPBodyLayout;
-  [(TPBodyLayout *)&v10 willBeRemovedFromLayoutController:v4];
+  [(TPBodyLayout *)&v10 willBeRemovedFromLayoutController:controllerCopy];
 }
 
 - (TSDHint)nextTargetFirstChildHint
@@ -1408,13 +1408,13 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)targetRectForCanvasRect:(CGRect)a3
+- (CGRect)targetRectForCanvasRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  objc_msgSend_frameInRoot(self, a2, a3.origin, *&a3.origin.y, a3.size, *&a3.size.height);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  objc_msgSend_frameInRoot(self, a2, rect.origin, *&rect.origin.y, rect.size, *&rect.size.height);
   v8 = -v7;
   v10 = -v9;
   v11 = x;
@@ -1433,12 +1433,12 @@ LABEL_12:
   return v12;
 }
 
-- (id)addPartitionableAttachmentLayout:(id)a3
+- (id)addPartitionableAttachmentLayout:(id)layout
 {
-  v4 = a3;
-  objc_msgSend_addAttachmentLayout_(self, v5, v6, v7, v8, v9, v4);
+  layoutCopy = layout;
+  objc_msgSend_addAttachmentLayout_(self, v5, v6, v7, v8, v9, layoutCopy);
 
-  return v4;
+  return layoutCopy;
 }
 
 - (BOOL)layoutIsValid
@@ -1460,9 +1460,9 @@ LABEL_12:
   return v18;
 }
 
-- (BOOL)isFootnoteContainerOnSamePageAsTarget:(id)a3
+- (BOOL)isFootnoteContainerOnSamePageAsTarget:(id)target
 {
-  if (a3 != self)
+  if (target != self)
   {
     return 0;
   }
@@ -1473,9 +1473,9 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)canHaveFootnotesFromPreviousTarget:(id)a3
+- (BOOL)canHaveFootnotesFromPreviousTarget:(id)target
 {
-  if (a3 != self)
+  if (target != self)
   {
     return 0;
   }
@@ -1492,11 +1492,11 @@ LABEL_12:
   self->_markedHiddenInlineDrawableLayouts = 0;
 }
 
-- (void)markHiddenInlineDrawableLayout:(id)a3
+- (void)markHiddenInlineDrawableLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   markedHiddenInlineDrawableLayouts = self->_markedHiddenInlineDrawableLayouts;
-  v12 = v4;
+  v12 = layoutCopy;
   if (!markedHiddenInlineDrawableLayouts)
   {
     v10 = objc_opt_new();
@@ -1504,26 +1504,26 @@ LABEL_12:
     self->_markedHiddenInlineDrawableLayouts = v10;
 
     markedHiddenInlineDrawableLayouts = self->_markedHiddenInlineDrawableLayouts;
-    v4 = v12;
+    layoutCopy = v12;
   }
 
-  objc_msgSend_addObject_(markedHiddenInlineDrawableLayouts, v4, v5, v6, v7, v8, v4);
+  objc_msgSend_addObject_(markedHiddenInlineDrawableLayouts, layoutCopy, v5, v6, v7, v8, layoutCopy);
 }
 
-- (id)existingAttachmentLayoutForInfo:(id)a3
+- (id)existingAttachmentLayoutForInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v10 = objc_msgSend_layoutController(self, v5, v6, v7, v8, v9);
-  v16 = objc_msgSend_layoutForInfo_childOfLayout_(v10, v11, v12, v13, v14, v15, v4, self);
+  v16 = objc_msgSend_layoutForInfo_childOfLayout_(v10, v11, v12, v13, v14, v15, infoCopy, self);
 
   return v16;
 }
 
-- (void)addAttachmentLayout:(id)a3
+- (void)addAttachmentLayout:(id)layout
 {
-  v4 = a3;
-  v63 = v4;
-  if (!v4)
+  layoutCopy = layout;
+  v63 = layoutCopy;
+  if (!layoutCopy)
   {
     v47 = MEMORY[0x277D81150];
     v35 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, v6, v7, v8, v9, "[TPBodyLayout addAttachmentLayout:]");
@@ -1532,7 +1532,7 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  v10 = objc_msgSend_parent(v4, v5, v6, v7, v8, v9);
+  v10 = objc_msgSend_parent(layoutCopy, v5, v6, v7, v8, v9);
 
   if (v10 != self)
   {
@@ -1555,7 +1555,7 @@ LABEL_7:
   }
 }
 
-- (CGPoint)calculatePointFromSearchReference:(id)a3
+- (CGPoint)calculatePointFromSearchReference:(id)reference
 {
   v3 = 0.0;
   v4 = 0.0;
@@ -1564,7 +1564,7 @@ LABEL_7:
   return result;
 }
 
-- (CGPoint)activityLineUnscaledEndPointForSearchReference:(id)a3
+- (CGPoint)activityLineUnscaledEndPointForSearchReference:(id)reference
 {
   v3 = *MEMORY[0x277D814D0];
   v4 = *(MEMORY[0x277D814D0] + 8);
@@ -1573,7 +1573,7 @@ LABEL_7:
   return result;
 }
 
-- (id)unscaledCommentFlagAnchorInfoForSearchReference:(id)a3
+- (id)unscaledCommentFlagAnchorInfoForSearchReference:(id)reference
 {
   v4 = objc_alloc(MEMORY[0x277D80638]);
   objc_msgSend_frameInRoot(self, v5, v6, v7, v8, v9);
@@ -1589,16 +1589,16 @@ LABEL_7:
   return isVertical;
 }
 
-- (BOOL)excludeFromNearestVisibleRectSearchForSelectionPath:(id)a3
+- (BOOL)excludeFromNearestVisibleRectSearchForSelectionPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = MEMORY[0x277D80DC0];
   v11 = objc_msgSend_columns(self, v6, v7, v8, v9, v10);
   objc_msgSend_rangeOfColumns_(v5, v12, v13, v14, v15, v16, v11);
   v18 = v17;
 
   v19 = objc_opt_class();
-  v25 = objc_msgSend_mostSpecificSelectionOfClass_(v4, v20, v21, v22, v23, v24, v19);
+  v25 = objc_msgSend_mostSpecificSelectionOfClass_(pathCopy, v20, v21, v22, v23, v24, v19);
   v31 = v25;
   if (v18 || (objc_msgSend_DEPRECATED_range(v25, v26, v27, v28, v29, v30), !v33))
   {
@@ -1615,29 +1615,29 @@ LABEL_7:
   return v32;
 }
 
-- (id)p_layoutForDrawable:(id)a3 inContainingLayout:(id)a4
+- (id)p_layoutForDrawable:(id)drawable inContainingLayout:(id)layout
 {
-  v5 = a3;
-  v7 = a4;
-  if (!v5)
+  drawableCopy = drawable;
+  layoutCopy = layout;
+  if (!drawableCopy)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v8, v9, v10, v11, "[TPBodyLayout p_layoutForDrawable:inContainingLayout:]");
     v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, v15, v16, v17, v18, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPBodyLayout.mm");
     v20 = objc_opt_class();
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v21, v22, v23, v24, v25, v13, v19, 1129, 0, "Invalid request to validate layout of nil drawable in %{public}@ %@", v20, v7);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v21, v22, v23, v24, v25, v13, v19, 1129, 0, "Invalid request to validate layout of nil drawable in %{public}@ %@", v20, layoutCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27, v28, v29, v30);
   }
 
-  v32 = objc_msgSend_existingAttachmentLayoutForInfo_(v7, v6, v8, v9, v10, v11, v5);
-  if (v32 || (v37 = objc_alloc(objc_msgSend_layoutClass(v5, v31, v33, v34, v35, v36)), (v32 = objc_msgSend_initWithInfo_(v37, v38, v39, v40, v41, v42, v5)) != 0))
+  v32 = objc_msgSend_existingAttachmentLayoutForInfo_(layoutCopy, v6, v8, v9, v10, v11, drawableCopy);
+  if (v32 || (v37 = objc_alloc(objc_msgSend_layoutClass(drawableCopy, v31, v33, v34, v35, v36)), (v32 = objc_msgSend_initWithInfo_(v37, v38, v39, v40, v41, v42, drawableCopy)) != 0))
   {
     v43 = objc_msgSend_parent(v32, v31, v33, v34, v35, v36);
 
-    if (v43 != v7)
+    if (v43 != layoutCopy)
     {
-      objc_msgSend_addAttachmentLayout_(v7, v44, v45, v46, v47, v48, v32);
+      objc_msgSend_addAttachmentLayout_(layoutCopy, v44, v45, v46, v47, v48, v32);
     }
   }
 
@@ -1646,7 +1646,7 @@ LABEL_7:
     v49 = MEMORY[0x277D81150];
     v50 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v31, v33, v34, v35, v36, "[TPBodyLayout p_layoutForDrawable:inContainingLayout:]");
     v56 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v51, v52, v53, v54, v55, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPBodyLayout.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v49, v57, v58, v59, v60, v61, v50, v56, 1138, 0, "Failed to create a layout for info %@", v5);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v49, v57, v58, v59, v60, v61, v50, v56, 1138, 0, "Failed to create a layout for info %@", drawableCopy);
 
     v32 = 0;
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v62, v63, v64, v65, v66);
@@ -1655,18 +1655,18 @@ LABEL_7:
   return v32;
 }
 
-- (id)layoutForInlineDrawable:(id)a3
+- (id)layoutForInlineDrawable:(id)drawable
 {
-  v7 = objc_msgSend_p_layoutForDrawable_inContainingLayout_(self, a2, v3, v4, v5, v6, a3, self);
+  v7 = objc_msgSend_p_layoutForDrawable_inContainingLayout_(self, a2, v3, v4, v5, v6, drawable, self);
 
   return v7;
 }
 
-- (id)validatedLayoutForAnchoredDrawable:(id)a3
+- (id)validatedLayoutForAnchoredDrawable:(id)drawable
 {
-  v4 = a3;
+  drawableCopy = drawable;
   v10 = objc_msgSend_parent(self, v5, v6, v7, v8, v9);
-  v16 = objc_msgSend_p_layoutForDrawable_inContainingLayout_(self, v11, v12, v13, v14, v15, v4, v10);
+  v16 = objc_msgSend_p_layoutForDrawable_inContainingLayout_(self, v11, v12, v13, v14, v15, drawableCopy, v10);
 
   return v16;
 }
@@ -1714,11 +1714,11 @@ LABEL_7:
   return isLayoutOffscreen;
 }
 
-- (CGPoint)layoutPositionFromAnchoredAttachmentPosition:(CGPoint)a3
+- (CGPoint)layoutPositionFromAnchoredAttachmentPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
-  objc_msgSend_transform(self, a2, a3, *&a3.y, v3, v4);
+  y = position.y;
+  x = position.x;
+  objc_msgSend_transform(self, a2, position, *&position.y, v3, v4);
   v5 = vaddq_f64(v11, vmlaq_n_f64(vmulq_n_f64(v10, y), v9, x));
   v6 = v5.f64[1];
   result.x = v5.f64[0];
@@ -1726,11 +1726,11 @@ LABEL_7:
   return result;
 }
 
-- (CGPoint)anchoredAttachmentPositionFromLayoutPosition:(CGPoint)a3
+- (CGPoint)anchoredAttachmentPositionFromLayoutPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
-  objc_msgSend_transform(self, a2, a3, *&a3.y, v3, v4);
+  y = position.y;
+  x = position.x;
+  objc_msgSend_transform(self, a2, position, *&position.y, v3, v4);
   CGAffineTransformInvert(&v10, &v9);
   v5 = vaddq_f64(*&v10.tx, vmlaq_n_f64(vmulq_n_f64(*&v10.c, y), *&v10.a, x));
   v6 = v5.f64[1];

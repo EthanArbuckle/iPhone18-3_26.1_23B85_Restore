@@ -1,33 +1,33 @@
 @interface KNOffscreenController
-- (BOOL)gotoSlideNode:(id)a3 andEvent:(unint64_t)a4;
-- (CGImage)copyImageOfCurrentEventIgnoringBuildVisilibity:(BOOL)a3;
+- (BOOL)gotoSlideNode:(id)node andEvent:(unint64_t)event;
+- (CGImage)copyImageOfCurrentEventIgnoringBuildVisilibity:(BOOL)visilibity;
 - (CGSize)outputSize;
 - (KNAnimatedSlideView)animatedSlideView;
-- (KNOffscreenController)initWithShow:(id)a3 canvasDelegate:(id)a4;
-- (KNOffscreenController)initWithShow:(id)a3 canvasDelegate:(id)a4 outputSize:(CGSize)a5 shouldEnableHDR:(BOOL)a6;
+- (KNOffscreenController)initWithShow:(id)show canvasDelegate:(id)delegate;
+- (KNOffscreenController)initWithShow:(id)show canvasDelegate:(id)delegate outputSize:(CGSize)size shouldEnableHDR:(BOOL)r;
 - (void)dealloc;
-- (void)drawCurrentEventIntoContext:(CGContext *)a3 intoRect:(CGRect)a4 ignoreBuildVisibility:(BOOL)a5;
-- (void)generateImageOfCurrentEventWithCompletonHandler:(id)a3;
+- (void)drawCurrentEventIntoContext:(CGContext *)context intoRect:(CGRect)rect ignoreBuildVisibility:(BOOL)visibility;
+- (void)generateImageOfCurrentEventWithCompletonHandler:(id)handler;
 @end
 
 @implementation KNOffscreenController
 
-- (KNOffscreenController)initWithShow:(id)a3 canvasDelegate:(id)a4
+- (KNOffscreenController)initWithShow:(id)show canvasDelegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
-  objc_msgSend_size(v7, v8, v9);
-  shouldEnableHDR = objc_msgSend_initWithShow_canvasDelegate_outputSize_shouldEnableHDR_(self, v10, v7, v6, 0);
+  delegateCopy = delegate;
+  showCopy = show;
+  objc_msgSend_size(showCopy, v8, v9);
+  shouldEnableHDR = objc_msgSend_initWithShow_canvasDelegate_outputSize_shouldEnableHDR_(self, v10, showCopy, delegateCopy, 0);
 
   return shouldEnableHDR;
 }
 
-- (KNOffscreenController)initWithShow:(id)a3 canvasDelegate:(id)a4 outputSize:(CGSize)a5 shouldEnableHDR:(BOOL)a6
+- (KNOffscreenController)initWithShow:(id)show canvasDelegate:(id)delegate outputSize:(CGSize)size shouldEnableHDR:(BOOL)r
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a3;
-  v12 = a4;
+  height = size.height;
+  width = size.width;
+  showCopy = show;
+  delegateCopy = delegate;
   v30.receiver = self;
   v30.super_class = KNOffscreenController;
   v13 = [(KNOffscreenController *)&v30 init];
@@ -36,7 +36,7 @@
   {
     v13->_outputSize.width = width;
     v13->_outputSize.height = height;
-    if (a6)
+    if (r)
     {
       v17 = objc_msgSend_currentCapabilities(MEMORY[0x277D801F0], v14, v15);
       v16->_supportsHDR = objc_msgSend_isHDRCapable(v17, v18, v19);
@@ -51,7 +51,7 @@
     }
     v21 = ;
     v22 = [KNPlaybackSession alloc];
-    v24 = objc_msgSend_initWithShow_configuration_canvasDelegate_(v22, v23, v11, v21, v12);
+    v24 = objc_msgSend_initWithShow_configuration_canvasDelegate_(v22, v23, showCopy, v21, delegateCopy);
     session = v16->_session;
     v16->_session = v24;
 
@@ -71,13 +71,13 @@
   [(KNOffscreenController *)&v4 dealloc];
 }
 
-- (BOOL)gotoSlideNode:(id)a3 andEvent:(unint64_t)a4
+- (BOOL)gotoSlideNode:(id)node andEvent:(unint64_t)event
 {
-  objc_msgSend_gotoSlideNode_(self->_session, a2, a3);
-  if (a3)
+  objc_msgSend_gotoSlideNode_(self->_session, a2, node);
+  if (node)
   {
     v9 = objc_msgSend_animatedSlideViewForCurrentSlide(self->_session, v7, v8);
-    objc_msgSend_setCurrentEventIndex_(v9, v10, a4);
+    objc_msgSend_setCurrentEventIndex_(v9, v10, event);
   }
 
   else
@@ -92,12 +92,12 @@
     objc_storeWeak(&self->_animatedSlideView, v9);
   }
 
-  return a3 != 0;
+  return node != 0;
 }
 
-- (CGImage)copyImageOfCurrentEventIgnoringBuildVisilibity:(BOOL)a3
+- (CGImage)copyImageOfCurrentEventIgnoringBuildVisilibity:(BOOL)visilibity
 {
-  objc_msgSend_supportsHDR(self, a2, a3);
+  objc_msgSend_supportsHDR(self, a2, visilibity);
   v5 = TSDBitmapContextCreate();
   if (objc_msgSend_supportsHDR(self, v6, v7))
   {
@@ -111,7 +111,7 @@
   v14[3] = &unk_27A698A48;
   v14[4] = self;
   v14[5] = v5;
-  v15 = a3;
+  visilibityCopy = visilibity;
   objc_msgSend_performRead_(v10, v11, v14);
 
   Image = CGBitmapContextCreateImage(v5);
@@ -119,34 +119,34 @@
   return Image;
 }
 
-- (void)generateImageOfCurrentEventWithCompletonHandler:(id)a3
+- (void)generateImageOfCurrentEventWithCompletonHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_get_global_queue(-2, 0);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_275DACF64;
   v7[3] = &unk_27A698068;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)drawCurrentEventIntoContext:(CGContext *)a3 intoRect:(CGRect)a4 ignoreBuildVisibility:(BOOL)a5
+- (void)drawCurrentEventIntoContext:(CGContext *)context intoRect:(CGRect)rect ignoreBuildVisibility:(BOOL)visibility
 {
-  v5 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  visibilityCopy = visibility;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   memset(&v28, 0, sizeof(v28));
-  CGContextGetTextMatrix(&v28, a3);
-  CGContextSaveGState(a3);
-  CGContextTranslateCTM(a3, x, y);
-  CGContextScaleCTM(a3, width / self->_outputSize.width, height / self->_outputSize.height);
-  CGContextTranslateCTM(a3, 0.0, self->_outputSize.height);
-  CGContextScaleCTM(a3, 1.0, -1.0);
+  CGContextGetTextMatrix(&v28, context);
+  CGContextSaveGState(context);
+  CGContextTranslateCTM(context, x, y);
+  CGContextScaleCTM(context, width / self->_outputSize.width, height / self->_outputSize.height);
+  CGContextTranslateCTM(context, 0.0, self->_outputSize.height);
+  CGContextScaleCTM(context, 1.0, -1.0);
   objc_msgSend_begin(MEMORY[0x277CD9FF0], v12, v13);
   v14 = MEMORY[0x277CD9FF0];
   isMainThread = objc_msgSend_isMainThread(MEMORY[0x277CCACC8], v15, v16);
@@ -154,13 +154,13 @@
   v19 = objc_autoreleasePoolPush();
   v20 = objc_loadWeakRetained(&self->_animatedSlideView);
   v23 = objc_msgSend_currentEventIndex(v20, v21, v22);
-  objc_msgSend_renderIntoContext_eventIndex_ignoreBuildVisibility_(v20, v24, a3, v23, v5);
+  objc_msgSend_renderIntoContext_eventIndex_ignoreBuildVisibility_(v20, v24, context, v23, visibilityCopy);
 
   objc_autoreleasePoolPop(v19);
   objc_msgSend_commit(MEMORY[0x277CD9FF0], v25, v26);
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
   v27 = v28;
-  CGContextSetTextMatrix(a3, &v27);
+  CGContextSetTextMatrix(context, &v27);
 }
 
 - (KNAnimatedSlideView)animatedSlideView

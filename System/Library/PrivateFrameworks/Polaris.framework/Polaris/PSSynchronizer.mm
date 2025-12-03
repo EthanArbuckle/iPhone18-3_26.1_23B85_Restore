@@ -1,25 +1,25 @@
 @interface PSSynchronizer
-+ (BOOL)timstampWithinSyncTolerance:(unint64_t)a3 compareTimestamp:(unint64_t)a4;
-+ (id)sharedInstanceWithGSM:(ps_gsm_s *)a3;
-- (PSSynchronizer)initWithGSM:(ps_gsm_s *)a3;
++ (BOOL)timstampWithinSyncTolerance:(unint64_t)tolerance compareTimestamp:(unint64_t)timestamp;
++ (id)sharedInstanceWithGSM:(ps_gsm_s *)m;
+- (PSSynchronizer)initWithGSM:(ps_gsm_s *)m;
 - (_opaque_pthread_mutex_t)mLock;
-- (unint64_t)resourceIDForKey:(id)a3;
+- (unint64_t)resourceIDForKey:(id)key;
 - (void)dealloc;
 - (void)generateLocksForSyncedResources;
-- (void)registerStreamKey:(id)a3 writer:(PSShbufferGroupWriter *)a4 telemetryID:(unsigned __int16)a5 gsm_source:(ps_gsm_source_s *)a6;
-- (void)setMLock:(_opaque_pthread_mutex_t *)a3;
-- (void)unregisterStream:(id)a3;
+- (void)registerStreamKey:(id)key writer:(PSShbufferGroupWriter *)writer telemetryID:(unsigned __int16)d gsm_source:(ps_gsm_source_s *)gsm_source;
+- (void)setMLock:(_opaque_pthread_mutex_t *)lock;
+- (void)unregisterStream:(id)stream;
 @end
 
 @implementation PSSynchronizer
 
-+ (id)sharedInstanceWithGSM:(ps_gsm_s *)a3
++ (id)sharedInstanceWithGSM:(ps_gsm_s *)m
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100011DA8;
   block[3] = &unk_100028D58;
-  block[4] = a3;
+  block[4] = m;
   if (qword_100031120 != -1)
   {
     dispatch_once(&qword_100031120, block);
@@ -30,12 +30,12 @@
   return v3;
 }
 
-+ (BOOL)timstampWithinSyncTolerance:(unint64_t)a3 compareTimestamp:(unint64_t)a4
++ (BOOL)timstampWithinSyncTolerance:(unint64_t)tolerance compareTimestamp:(unint64_t)timestamp
 {
-  v4 = a4 - a3;
-  if (a3 >= a4)
+  v4 = timestamp - tolerance;
+  if (tolerance >= timestamp)
   {
-    v4 = a3 - a4;
+    v4 = tolerance - timestamp;
   }
 
   return v4 < 0x1D4C1;
@@ -44,11 +44,11 @@
 - (void)generateLocksForSyncedResources
 {
   v3 = +[PLSSettings currentSettings];
-  v4 = [v3 synchronizeStreamPairs];
+  synchronizeStreamPairs = [v3 synchronizeStreamPairs];
 
   log = sub_100013BF4();
   v5 = os_log_type_enabled(log, OS_LOG_TYPE_DEBUG);
-  if (v4)
+  if (synchronizeStreamPairs)
   {
     if (v5)
     {
@@ -61,11 +61,11 @@
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v6 = [(PSSynchronizer *)self keyToIDMap];
-    v7 = [v6 allKeys];
+    keyToIDMap = [(PSSynchronizer *)self keyToIDMap];
+    allKeys = [keyToIDMap allKeys];
 
-    log = v7;
-    v8 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    log = allKeys;
+    v8 = [allKeys countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v8)
     {
       v9 = v8;
@@ -82,12 +82,12 @@
           v12 = *(*(&v24 + 1) + 8 * i);
           v13 = [(PLSDevice *)self->_device propertiesForKey:v12];
           v14 = [(PSSynchronizer *)self resourceIDForKey:v12];
-          v15 = [v13 syncedKey];
+          syncedKey = [v13 syncedKey];
 
-          if (v15)
+          if (syncedKey)
           {
-            v16 = [v13 syncedKey];
-            v17 = [(PSSynchronizer *)self resourceIDForKey:v16];
+            syncedKey2 = [v13 syncedKey];
+            v17 = [(PSSynchronizer *)self resourceIDForKey:syncedKey2];
 
             if (byte_100031AF0[v17] == 1)
             {
@@ -138,26 +138,26 @@
   }
 }
 
-- (unint64_t)resourceIDForKey:(id)a3
+- (unint64_t)resourceIDForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PSSynchronizer *)self keyToIDMap];
-  v6 = [v5 allKeys];
-  v7 = [v6 containsObject:v4];
+  keyCopy = key;
+  keyToIDMap = [(PSSynchronizer *)self keyToIDMap];
+  allKeys = [keyToIDMap allKeys];
+  v7 = [allKeys containsObject:keyCopy];
 
   if (!v7)
   {
-    sub_100018224(v4);
+    sub_100018224(keyCopy);
   }
 
-  v8 = [(PSSynchronizer *)self keyToIDMap];
-  v9 = [v8 objectForKeyedSubscript:v4];
-  v10 = [v9 unsignedIntegerValue];
+  keyToIDMap2 = [(PSSynchronizer *)self keyToIDMap];
+  v9 = [keyToIDMap2 objectForKeyedSubscript:keyCopy];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-  return v10;
+  return unsignedIntegerValue;
 }
 
-- (PSSynchronizer)initWithGSM:(ps_gsm_s *)a3
+- (PSSynchronizer)initWithGSM:(ps_gsm_s *)m
 {
   v8.receiver = self;
   v8.super_class = PSSynchronizer;
@@ -174,7 +174,7 @@
     device = v4->_device;
     v4->_device = v5;
 
-    v4->_gsm = a3;
+    v4->_gsm = m;
     [(PSSynchronizer *)v4 generateKeyToIDMap];
     [(PSSynchronizer *)v4 generateLocksForSyncedResources];
   }
@@ -182,42 +182,42 @@
   return v4;
 }
 
-- (void)registerStreamKey:(id)a3 writer:(PSShbufferGroupWriter *)a4 telemetryID:(unsigned __int16)a5 gsm_source:(ps_gsm_source_s *)a6
+- (void)registerStreamKey:(id)key writer:(PSShbufferGroupWriter *)writer telemetryID:(unsigned __int16)d gsm_source:(ps_gsm_source_s *)gsm_source
 {
-  v10 = a3;
+  keyCopy = key;
   [(PSSynchronizer *)self lock];
   v11 = sub_100013BF4();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v10;
+    v14 = keyCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "PSSynchronizer registering  stream for key %@", &v13, 0xCu);
   }
 
-  v12 = [(PSSynchronizer *)self resourceIDForKey:v10];
-  *(&xmmword_1000323F0 + v12) = a5;
-  qword_100031610[v12] = a4;
-  qword_100032528[v12] = a6;
+  v12 = [(PSSynchronizer *)self resourceIDForKey:keyCopy];
+  *(&xmmword_1000323F0 + v12) = d;
+  qword_100031610[v12] = writer;
+  qword_100032528[v12] = gsm_source;
   [(PSSynchronizer *)self unlock];
 }
 
-- (void)unregisterStream:(id)a3
+- (void)unregisterStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   [(PSSynchronizer *)self lock];
-  v5 = [(PSSynchronizer *)self resourceIDForKey:v4];
+  v5 = [(PSSynchronizer *)self resourceIDForKey:streamCopy];
   v6 = qword_100031610[v5];
   v7 = sub_100013BF4();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
   if (!v6)
   {
-    sub_100018290(v8, v4, v7);
+    sub_100018290(v8, streamCopy, v7);
   }
 
   if (v8)
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = streamCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "PSSynchronizer is closing stream %@.", &v9, 0xCu);
   }
 
@@ -302,12 +302,12 @@
   return self;
 }
 
-- (void)setMLock:(_opaque_pthread_mutex_t *)a3
+- (void)setMLock:(_opaque_pthread_mutex_t *)lock
 {
-  v3 = *&a3->__sig;
-  v4 = *&a3->__opaque[8];
-  v5 = *&a3->__opaque[40];
-  *&self->_mLock.__opaque[24] = *&a3->__opaque[24];
+  v3 = *&lock->__sig;
+  v4 = *&lock->__opaque[8];
+  v5 = *&lock->__opaque[40];
+  *&self->_mLock.__opaque[24] = *&lock->__opaque[24];
   *&self->_mLock.__opaque[40] = v5;
   *&self->_mLock.__sig = v3;
   *&self->_mLock.__opaque[8] = v4;

@@ -1,26 +1,26 @@
 @interface PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1
 
-- (PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1;
   v5 = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"imageUrl"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"imageUrl"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)v5 setImageUrl:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"touchIcon"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"touchIcon"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)v5 setTouchIcon:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"favIcon"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"favIcon"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,30 +50,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -86,31 +86,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_favIcon)
   {
-    v4 = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self favIcon];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"favIcon"];
+    favIcon = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self favIcon];
+    v5 = [favIcon copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"favIcon"];
   }
 
   if (self->_imageUrl)
   {
-    v6 = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self imageUrl];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"imageUrl"];
+    imageUrl = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self imageUrl];
+    v7 = [imageUrl copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"imageUrl"];
   }
 
   if (self->_touchIcon)
   {
-    v8 = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self touchIcon];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"touchIcon"];
+    touchIcon = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self touchIcon];
+    v9 = [touchIcon copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"touchIcon"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -120,28 +120,28 @@
   return v4 ^ [(NSString *)self->_favIcon hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self imageUrl];
-  v6 = [v4 imageUrl];
-  if ((v5 != 0) == (v6 == 0))
+  imageUrl = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self imageUrl];
+  imageUrl2 = [equalCopy imageUrl];
+  if ((imageUrl != 0) == (imageUrl2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self imageUrl];
-  if (v7)
+  imageUrl3 = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self imageUrl];
+  if (imageUrl3)
   {
-    v8 = v7;
-    v9 = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self imageUrl];
-    v10 = [v4 imageUrl];
-    v11 = [v9 isEqual:v10];
+    v8 = imageUrl3;
+    imageUrl4 = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self imageUrl];
+    imageUrl5 = [equalCopy imageUrl];
+    v11 = [imageUrl4 isEqual:imageUrl5];
 
     if (!v11)
     {
@@ -153,20 +153,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self touchIcon];
-  v6 = [v4 touchIcon];
-  if ((v5 != 0) == (v6 == 0))
+  imageUrl = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self touchIcon];
+  imageUrl2 = [equalCopy touchIcon];
+  if ((imageUrl != 0) == (imageUrl2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self touchIcon];
-  if (v12)
+  touchIcon = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self touchIcon];
+  if (touchIcon)
   {
-    v13 = v12;
-    v14 = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self touchIcon];
-    v15 = [v4 touchIcon];
-    v16 = [v14 isEqual:v15];
+    v13 = touchIcon;
+    touchIcon2 = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self touchIcon];
+    touchIcon3 = [equalCopy touchIcon];
+    v16 = [touchIcon2 isEqual:touchIcon3];
 
     if (!v16)
     {
@@ -178,12 +178,12 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self favIcon];
-  v6 = [v4 favIcon];
-  if ((v5 != 0) != (v6 == 0))
+  imageUrl = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self favIcon];
+  imageUrl2 = [equalCopy favIcon];
+  if ((imageUrl != 0) != (imageUrl2 == 0))
   {
-    v17 = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self favIcon];
-    if (!v17)
+    favIcon = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self favIcon];
+    if (!favIcon)
     {
 
 LABEL_20:
@@ -191,10 +191,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self favIcon];
-    v20 = [v4 favIcon];
-    v21 = [v19 isEqual:v20];
+    v18 = favIcon;
+    favIcon2 = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self favIcon];
+    favIcon3 = [equalCopy favIcon];
+    v21 = [favIcon2 isEqual:favIcon3];
 
     if (v21)
     {
@@ -214,68 +214,68 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self imageUrl];
+  toCopy = to;
+  imageUrl = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self imageUrl];
 
-  if (v4)
+  if (imageUrl)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self touchIcon];
+  touchIcon = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self touchIcon];
 
-  if (v5)
+  if (touchIcon)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self favIcon];
+  favIcon = [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self favIcon];
 
-  v7 = v8;
-  if (v6)
+  v7 = toCopy;
+  if (favIcon)
   {
     PBDataWriterWriteStringField();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v7.receiver = self;
   v7.super_class = PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self deleteImageUrl];
     [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self deleteTouchIcon];
     [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self deleteFavIcon];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self deleteImageUrl];
     [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self deleteTouchIcon];
     [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self deleteFavIcon];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self deleteImageUrl];
     [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self deleteTouchIcon];
     [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self deleteFavIcon];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self deleteImageUrl];
     [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self deleteTouchIcon];
     [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self deleteFavIcon];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self deleteImageUrl];
     [(PEGASUSSchemaPEGASUSWebAnswerThumbnailTier1 *)self deleteTouchIcon];

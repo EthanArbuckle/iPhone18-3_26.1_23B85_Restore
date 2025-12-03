@@ -1,14 +1,14 @@
 @interface AVCVideoFrame
-- (AVCVideoFrame)initWithPixelBuffer:(__CVBuffer *)a3 depthPixelBuffer:(__CVBuffer *)a4 time:(id *)a5 imageData:(id)a6 delegate:(id)a7;
-- (AVCVideoFrame)initWithPixelBuffer:(__CVBuffer *)a3 time:(id *)a4 imageData:(id)a5;
+- (AVCVideoFrame)initWithPixelBuffer:(__CVBuffer *)buffer depthPixelBuffer:(__CVBuffer *)pixelBuffer time:(id *)time imageData:(id)data delegate:(id)delegate;
+- (AVCVideoFrame)initWithPixelBuffer:(__CVBuffer *)buffer time:(id *)time imageData:(id)data;
 - (void)dealloc;
-- (void)setDepthPixelBuffer:(__CVBuffer *)a3;
-- (void)setPixelBuffer:(__CVBuffer *)a3;
+- (void)setDepthPixelBuffer:(__CVBuffer *)buffer;
+- (void)setPixelBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation AVCVideoFrame
 
-- (AVCVideoFrame)initWithPixelBuffer:(__CVBuffer *)a3 time:(id *)a4 imageData:(id)a5
+- (AVCVideoFrame)initWithPixelBuffer:(__CVBuffer *)buffer time:(id *)time imageData:(id)data
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -16,32 +16,32 @@
   v8 = [(AVCVideoFrame *)&v11 init];
   if (v8)
   {
-    *(v8 + 1) = CVPixelBufferRetain(a3);
-    var3 = a4->var3;
-    *(v8 + 24) = *&a4->var0;
+    *(v8 + 1) = CVPixelBufferRetain(buffer);
+    var3 = time->var3;
+    *(v8 + 24) = *&time->var0;
     *(v8 + 5) = var3;
-    *(v8 + 6) = a5;
+    *(v8 + 6) = data;
     *(v8 + 16) = 0;
   }
 
   return v8;
 }
 
-- (AVCVideoFrame)initWithPixelBuffer:(__CVBuffer *)a3 depthPixelBuffer:(__CVBuffer *)a4 time:(id *)a5 imageData:(id)a6 delegate:(id)a7
+- (AVCVideoFrame)initWithPixelBuffer:(__CVBuffer *)buffer depthPixelBuffer:(__CVBuffer *)pixelBuffer time:(id *)time imageData:(id)data delegate:(id)delegate
 {
   v12 = *MEMORY[0x1E69E9840];
-  v11 = *a5;
-  v9 = [(AVCVideoFrame *)self initWithPixelBuffer:a3 time:&v11 imageData:a6];
+  v11 = *time;
+  v9 = [(AVCVideoFrame *)self initWithPixelBuffer:buffer time:&v11 imageData:data];
   if (v9)
   {
-    v9->_depthPixelBuffer = CVPixelBufferRetain(a4);
-    objc_storeWeak(&v9->_delegate, a7);
+    v9->_depthPixelBuffer = CVPixelBufferRetain(pixelBuffer);
+    objc_storeWeak(&v9->_delegate, delegate);
   }
 
   return v9;
 }
 
-- (void)setDepthPixelBuffer:(__CVBuffer *)a3
+- (void)setDepthPixelBuffer:(__CVBuffer *)buffer
 {
   v17 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 8)
@@ -60,7 +60,7 @@
         v13 = 1024;
         v14 = 47;
         v15 = 2112;
-        v16 = a3;
+        bufferCopy = buffer;
         _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d depthPixelBuffer=%@", &v9, 0x26u);
       }
     }
@@ -78,13 +78,13 @@
     self->_depthPixelBuffer = 0;
   }
 
-  if (a3)
+  if (buffer)
   {
-    self->_depthPixelBuffer = CVPixelBufferRetain(a3);
+    self->_depthPixelBuffer = CVPixelBufferRetain(buffer);
   }
 }
 
-- (void)setPixelBuffer:(__CVBuffer *)a3
+- (void)setPixelBuffer:(__CVBuffer *)buffer
 {
   v17 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 8)
@@ -103,7 +103,7 @@
         v13 = 1024;
         v14 = 59;
         v15 = 2112;
-        v16 = a3;
+        bufferCopy = buffer;
         _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d pixelBuffer=%@", &v9, 0x26u);
       }
     }
@@ -121,9 +121,9 @@
     self->_pixelBuffer = 0;
   }
 
-  if (a3)
+  if (buffer)
   {
-    self->_pixelBuffer = CVPixelBufferRetain(a3);
+    self->_pixelBuffer = CVPixelBufferRetain(buffer);
   }
 }
 

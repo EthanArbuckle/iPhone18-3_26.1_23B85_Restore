@@ -1,5 +1,5 @@
 @interface PXGPPTLayoutTesterItemInput
-+ (id)createItemInputsForCount:(int64_t)a3;
++ (id)createItemInputsForCount:(int64_t)count;
 - (CGAffineTransform)transform;
 - (CGPoint)positionOffset;
 - (CGRect)acceptableCropRect;
@@ -63,13 +63,13 @@
   return result;
 }
 
-+ (id)createItemInputsForCount:(int64_t)a3
++ (id)createItemInputsForCount:(int64_t)count
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a3];
+  countCopy = count;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:count];
   v5 = time(0);
   srand48(v5);
-  if (v3 >= 1)
+  if (countCopy >= 1)
   {
     __asm { FMOV            V0.2D, #1.0 }
 
@@ -88,10 +88,10 @@
       v11->_acceptableCropRect.size = v13;
       [v4 addObject:v11];
 
-      --v3;
+      --countCopy;
     }
 
-    while (v3);
+    while (countCopy);
   }
 
   return v4;

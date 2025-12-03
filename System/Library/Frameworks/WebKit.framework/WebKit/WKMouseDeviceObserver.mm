@@ -2,14 +2,14 @@
 + (id)sharedInstance;
 - (BOOL)hasMouseDevice;
 - (WKMouseDeviceObserver)init;
-- (void)_setHasMouseDeviceForTesting:(BOOL)a3;
-- (void)setConnectedDeviceCount:(int64_t)a3;
-- (void)setStartCount:(int64_t)a3;
+- (void)_setHasMouseDeviceForTesting:(BOOL)testing;
+- (void)setConnectedDeviceCount:(int64_t)count;
+- (void)setStartCount:(int64_t)count;
 @end
 
 @implementation WKMouseDeviceObserver
 
-- (void)setStartCount:(int64_t)a3
+- (void)setStartCount:(int64_t)count
 {
   sub_19E6CD5B8();
   sub_19E6CD5A8();
@@ -19,10 +19,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  *(&self->super.isa + OBJC_IVAR___WKMouseDeviceObserver_startCount) = a3;
+  *(&self->super.isa + OBJC_IVAR___WKMouseDeviceObserver_startCount) = count;
 }
 
-- (void)setConnectedDeviceCount:(int64_t)a3
+- (void)setConnectedDeviceCount:(int64_t)count
 {
   sub_19E6CD5B8();
   sub_19E6CD5A8();
@@ -32,8 +32,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  sub_19D62C118(a3);
+  selfCopy = self;
+  sub_19D62C118(count);
 }
 
 - (BOOL)hasMouseDevice
@@ -46,9 +46,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = [(WKMouseDeviceObserver *)self connectedDeviceCount];
+  connectedDeviceCount = [(WKMouseDeviceObserver *)self connectedDeviceCount];
 
-  return v3 > 0;
+  return connectedDeviceCount > 0;
 }
 
 - (WKMouseDeviceObserver)init
@@ -92,9 +92,9 @@
   return v2;
 }
 
-- (void)_setHasMouseDeviceForTesting:(BOOL)a3
+- (void)_setHasMouseDeviceForTesting:(BOOL)testing
 {
-  v3 = a3;
+  testingCopy = testing;
   sub_19E6CD5B8();
   sub_19E6CD5A8();
   sub_19E6CD548();
@@ -103,7 +103,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  [(WKMouseDeviceObserver *)self setConnectedDeviceCount:v3];
+  [(WKMouseDeviceObserver *)self setConnectedDeviceCount:testingCopy];
 }
 
 @end

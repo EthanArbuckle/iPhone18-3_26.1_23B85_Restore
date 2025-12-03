@@ -2,17 +2,17 @@
 - (SPAdvertisementCache)init;
 - (SPAdvertisementCacheXPCProtocol)proxy;
 - (id)remoteInterface;
-- (void)advertisementsForSearchCriteria:(id)a3 completion:(id)a4;
-- (void)beaconAdvertisementAtFileURL:(id)a3 beaconIdentifier:(id)a4 scanDate:(id)a5 completion:(id)a6;
-- (void)beaconPayloadsForSearchCriteria:(id)a3 completion:(id)a4;
-- (void)clearCacheWithCompletion:(id)a3;
+- (void)advertisementsForSearchCriteria:(id)criteria completion:(id)completion;
+- (void)beaconAdvertisementAtFileURL:(id)l beaconIdentifier:(id)identifier scanDate:(id)date completion:(id)completion;
+- (void)beaconPayloadsForSearchCriteria:(id)criteria completion:(id)completion;
+- (void)clearCacheWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)markAdvertisementsProcessed:(id)a3 completion:(id)a4;
-- (void)markBeaconPayloadsProcessed:(id)a3 completion:(id)a4;
-- (void)markRecordsProcessed:(id)a3 completion:(id)a4;
-- (void)mockingEnabled:(BOOL)a3;
-- (void)saveAdvertisements:(id)a3 completion:(id)a4;
-- (void)saveBeaconPayloads:(id)a3 completion:(id)a4;
+- (void)markAdvertisementsProcessed:(id)processed completion:(id)completion;
+- (void)markBeaconPayloadsProcessed:(id)processed completion:(id)completion;
+- (void)markRecordsProcessed:(id)processed completion:(id)completion;
+- (void)mockingEnabled:(BOOL)enabled;
+- (void)saveAdvertisements:(id)advertisements completion:(id)completion;
+- (void)saveBeaconPayloads:(id)payloads completion:(id)completion;
 @end
 
 @implementation SPAdvertisementCache
@@ -20,38 +20,38 @@
 - (SPAdvertisementCacheXPCProtocol)proxy
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(SPAdvertisementCache *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SPAdvertisementCache *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SPAdvertisementCache *)self session];
+  session = [(SPAdvertisementCache *)self session];
 
-  if (!v4)
+  if (!session)
   {
     v5 = objc_alloc(MEMORY[0x277D07BA8]);
-    v6 = [(SPAdvertisementCache *)self serviceDescription];
-    v7 = [v5 initWithServiceDescription:v6];
+    serviceDescription = [(SPAdvertisementCache *)self serviceDescription];
+    v7 = [v5 initWithServiceDescription:serviceDescription];
     [(SPAdvertisementCache *)self setSession:v7];
 
     v8 = LogCategory_AdvertisementCache();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(SPAdvertisementCache *)self serviceDescription];
-      v10 = [v9 machService];
+      serviceDescription2 = [(SPAdvertisementCache *)self serviceDescription];
+      machService = [serviceDescription2 machService];
       v16 = 138412290;
-      v17 = v10;
+      v17 = machService;
       _os_log_impl(&dword_2643BF000, v8, OS_LOG_TYPE_DEFAULT, "SPAdvertisementCache: Establishing XPC connection to %@", &v16, 0xCu);
     }
 
-    v11 = [(SPAdvertisementCache *)self session];
-    [v11 resume];
+    session2 = [(SPAdvertisementCache *)self session];
+    [session2 resume];
   }
 
-  v12 = [(SPAdvertisementCache *)self session];
-  v13 = [v12 proxy];
+  session3 = [(SPAdvertisementCache *)self session];
+  proxy = [session3 proxy];
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return proxy;
 }
 
 - (SPAdvertisementCache)init
@@ -67,8 +67,8 @@
     v2->_queue = v4;
 
     v6 = objc_alloc(MEMORY[0x277D07BA0]);
-    v7 = [(SPAdvertisementCache *)v2 remoteInterface];
-    v8 = [v6 initWithMachServiceName:@"com.apple.icloud.searchpartyd.advertisementcache" options:0 remoteObjectInterface:v7 interruptionHandler:0 invalidationHandler:0];
+    remoteInterface = [(SPAdvertisementCache *)v2 remoteInterface];
+    v8 = [v6 initWithMachServiceName:@"com.apple.icloud.searchpartyd.advertisementcache" options:0 remoteObjectInterface:remoteInterface interruptionHandler:0 invalidationHandler:0];
     serviceDescription = v2->_serviceDescription;
     v2->_serviceDescription = v8;
   }
@@ -78,8 +78,8 @@
 
 - (void)dealloc
 {
-  v3 = [(SPAdvertisementCache *)self session];
-  [v3 invalidate];
+  session = [(SPAdvertisementCache *)self session];
+  [session invalidate];
 
   [(SPAdvertisementCache *)self setSession:0];
   v4.receiver = self;
@@ -107,15 +107,15 @@
   return v2;
 }
 
-- (void)mockingEnabled:(BOOL)a3
+- (void)mockingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v15 = *MEMORY[0x277D85DE8];
   v5 = LogCategory_AdvertisementCache();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v14 = v3;
+    v14 = enabledCopy;
     _os_log_impl(&dword_2643BF000, v5, OS_LOG_TYPE_DEFAULT, "mockingEnabled: %i", buf, 8u);
   }
 
@@ -125,7 +125,7 @@
   activity_block[1] = 3221225472;
   activity_block[2] = __39__SPAdvertisementCache_mockingEnabled___block_invoke;
   activity_block[3] = &unk_279B57958;
-  v12 = v3;
+  v12 = enabledCopy;
   activity_block[4] = self;
   v11 = v7;
   v8 = v7;
@@ -180,19 +180,19 @@ void __39__SPAdvertisementCache_mockingEnabled___block_invoke_3(uint64_t a1, voi
   [*(a1 + 32) signal];
 }
 
-- (void)markRecordsProcessed:(id)a3 completion:(id)a4
+- (void)markRecordsProcessed:(id)processed completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  processedCopy = processed;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __56__SPAdvertisementCache_markRecordsProcessed_completion___block_invoke;
   activity_block[3] = &unk_279B57798;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = processedCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = processedCopy;
   _os_activity_initiate(&dword_2643BF000, "SPAdvertisementCache markAdvertisementsProcessed:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -220,16 +220,16 @@ void __56__SPAdvertisementCache_markRecordsProcessed_completion___block_invoke_2
   [v2 markAdvertisementsProcessed:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)saveAdvertisements:(id)a3 completion:(id)a4
+- (void)saveAdvertisements:(id)advertisements completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  advertisementsCopy = advertisements;
+  completionCopy = completion;
   v8 = LogCategory_AdvertisementCache();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v16 = [v6 count];
+    v16 = [advertisementsCopy count];
     _os_log_impl(&dword_2643BF000, v8, OS_LOG_TYPE_DEFAULT, "saveAdvertisements: %lu", buf, 0xCu);
   }
 
@@ -238,10 +238,10 @@ void __56__SPAdvertisementCache_markRecordsProcessed_completion___block_invoke_2
   activity_block[2] = __54__SPAdvertisementCache_saveAdvertisements_completion___block_invoke;
   activity_block[3] = &unk_279B57798;
   activity_block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = advertisementsCopy;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = advertisementsCopy;
   _os_activity_initiate(&dword_2643BF000, "SPAdvertisementCache saveAdvertisements:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
   v11 = *MEMORY[0x277D85DE8];
@@ -271,16 +271,16 @@ void __54__SPAdvertisementCache_saveAdvertisements_completion___block_invoke_2(u
   [v2 saveAdvertisements:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)advertisementsForSearchCriteria:(id)a3 completion:(id)a4
+- (void)advertisementsForSearchCriteria:(id)criteria completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  criteriaCopy = criteria;
+  completionCopy = completion;
   v8 = LogCategory_AdvertisementCache();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = criteriaCopy;
     _os_log_impl(&dword_2643BF000, v8, OS_LOG_TYPE_DEFAULT, "advertisementsForSearchCriteria: %@", buf, 0xCu);
   }
 
@@ -289,10 +289,10 @@ void __54__SPAdvertisementCache_saveAdvertisements_completion___block_invoke_2(u
   activity_block[2] = __67__SPAdvertisementCache_advertisementsForSearchCriteria_completion___block_invoke;
   activity_block[3] = &unk_279B57798;
   activity_block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = criteriaCopy;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = criteriaCopy;
   _os_activity_initiate(&dword_2643BF000, "SPAdvertisementCache advertisementsForSearchCriteria:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
   v11 = *MEMORY[0x277D85DE8];
@@ -322,44 +322,44 @@ void __67__SPAdvertisementCache_advertisementsForSearchCriteria_completion___blo
   [v2 advertisementsForSearchCriteria:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)markAdvertisementsProcessed:(id)a3 completion:(id)a4
+- (void)markAdvertisementsProcessed:(id)processed completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  processedCopy = processed;
+  completionCopy = completion;
   v8 = LogCategory_AdvertisementCache();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v17 = [v6 count];
+    v17 = [processedCopy count];
     _os_log_impl(&dword_2643BF000, v8, OS_LOG_TYPE_DEFAULT, "markAdvertisementsProcessed: %lu", buf, 0xCu);
   }
 
-  v9 = [v6 fm_map:&__block_literal_global_0];
+  v9 = [processedCopy fm_map:&__block_literal_global_0];
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __63__SPAdvertisementCache_markAdvertisementsProcessed_completion___block_invoke_2;
   activity_block[3] = &unk_279B57798;
   activity_block[4] = self;
   v14 = v9;
-  v15 = v7;
-  v10 = v7;
+  v15 = completionCopy;
+  v10 = completionCopy;
   v11 = v9;
   _os_activity_initiate(&dword_2643BF000, "SPAdvertisementCache markRecordsProcessed:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveBeaconPayloads:(id)a3 completion:(id)a4
+- (void)saveBeaconPayloads:(id)payloads completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  payloadsCopy = payloads;
+  completionCopy = completion;
   v8 = LogCategory_AdvertisementCache();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v16 = [v6 count];
+    v16 = [payloadsCopy count];
     _os_log_impl(&dword_2643BF000, v8, OS_LOG_TYPE_DEFAULT, "saveBeaconPayload: %lu", buf, 0xCu);
   }
 
@@ -368,10 +368,10 @@ void __67__SPAdvertisementCache_advertisementsForSearchCriteria_completion___blo
   activity_block[2] = __54__SPAdvertisementCache_saveBeaconPayloads_completion___block_invoke;
   activity_block[3] = &unk_279B57798;
   activity_block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = payloadsCopy;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = payloadsCopy;
   _os_activity_initiate(&dword_2643BF000, "SPAdvertisementCache saveBeaconPayloads:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
   v11 = *MEMORY[0x277D85DE8];
@@ -401,16 +401,16 @@ void __54__SPAdvertisementCache_saveBeaconPayloads_completion___block_invoke_2(u
   [v2 saveBeaconPayloads:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)beaconPayloadsForSearchCriteria:(id)a3 completion:(id)a4
+- (void)beaconPayloadsForSearchCriteria:(id)criteria completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  criteriaCopy = criteria;
+  completionCopy = completion;
   v8 = LogCategory_AdvertisementCache();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = criteriaCopy;
     _os_log_impl(&dword_2643BF000, v8, OS_LOG_TYPE_DEFAULT, "beaconPayloadsForSearchCriteria: %@", buf, 0xCu);
   }
 
@@ -419,10 +419,10 @@ void __54__SPAdvertisementCache_saveBeaconPayloads_completion___block_invoke_2(u
   activity_block[2] = __67__SPAdvertisementCache_beaconPayloadsForSearchCriteria_completion___block_invoke;
   activity_block[3] = &unk_279B57798;
   activity_block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = criteriaCopy;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = criteriaCopy;
   _os_activity_initiate(&dword_2643BF000, "SPAdvertisementCache beaconPayloadsForSearchCriteria:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
   v11 = *MEMORY[0x277D85DE8];
@@ -452,16 +452,16 @@ void __67__SPAdvertisementCache_beaconPayloadsForSearchCriteria_completion___blo
   [v2 beaconPayloadsForSearchCriteria:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)markBeaconPayloadsProcessed:(id)a3 completion:(id)a4
+- (void)markBeaconPayloadsProcessed:(id)processed completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  processedCopy = processed;
+  completionCopy = completion;
   v8 = LogCategory_AdvertisementCache();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v16 = [v6 count];
+    v16 = [processedCopy count];
     _os_log_impl(&dword_2643BF000, v8, OS_LOG_TYPE_DEFAULT, "markBeaconPayloadsProcessed: %lu", buf, 0xCu);
   }
 
@@ -470,10 +470,10 @@ void __67__SPAdvertisementCache_beaconPayloadsForSearchCriteria_completion___blo
   activity_block[2] = __63__SPAdvertisementCache_markBeaconPayloadsProcessed_completion___block_invoke;
   activity_block[3] = &unk_279B57798;
   activity_block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = processedCopy;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = processedCopy;
   _os_activity_initiate(&dword_2643BF000, "SPAdvertisementCache markFilesProcessed:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
   v11 = *MEMORY[0x277D85DE8];
@@ -503,28 +503,28 @@ void __63__SPAdvertisementCache_markBeaconPayloadsProcessed_completion___block_i
   [v2 markFilesProcessed:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)beaconAdvertisementAtFileURL:(id)a3 beaconIdentifier:(id)a4 scanDate:(id)a5 completion:(id)a6
+- (void)beaconAdvertisementAtFileURL:(id)l beaconIdentifier:(id)identifier scanDate:(id)date completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  identifierCopy = identifier;
+  dateCopy = date;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v14 = [(SPAdvertisementCache *)self queue];
+  queue = [(SPAdvertisementCache *)self queue];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __90__SPAdvertisementCache_beaconAdvertisementAtFileURL_beaconIdentifier_scanDate_completion___block_invoke;
   v19[3] = &unk_279B579A0;
   objc_copyWeak(&v24, &location);
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, v19);
+  v20 = lCopy;
+  v21 = identifierCopy;
+  v22 = dateCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = dateCopy;
+  v17 = identifierCopy;
+  v18 = lCopy;
+  dispatch_async(queue, v19);
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(&location);
@@ -537,19 +537,19 @@ void __90__SPAdvertisementCache_beaconAdvertisementAtFileURL_beaconIdentifier_sc
   [v2 beaconAdvertisementAtFileURL:*(a1 + 32) beaconIdentifier:*(a1 + 40) scanDate:*(a1 + 48) completion:*(a1 + 56)];
 }
 
-- (void)clearCacheWithCompletion:(id)a3
+- (void)clearCacheWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(SPAdvertisementCache *)self queue];
+  queue = [(SPAdvertisementCache *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__SPAdvertisementCache_clearCacheWithCompletion___block_invoke;
   block[3] = &unk_279B577C0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);

@@ -1,8 +1,8 @@
 @interface NSCKRecordZoneMoveReceipt
 + (NSString)entityPath;
-+ (id)countMoveReceiptsInStore:(id)a3 matchingPredicate:(id)a4 withManagedObjectContext:(id)a5 error:(id *)a6;
-+ (id)moveReceiptsMatchingRecordIDs:(id)a3 inManagedObjectContext:(id)a4 persistentStore:(id)a5 error:(id *)a6;
-+ (uint64_t)_fetchReceiptsMatchingSubPredicates:(void *)a3 inManagedObjectContext:(uint64_t)a4 persistentStore:(uint64_t)a5 error:;
++ (id)countMoveReceiptsInStore:(id)store matchingPredicate:(id)predicate withManagedObjectContext:(id)context error:(id *)error;
++ (id)moveReceiptsMatchingRecordIDs:(id)ds inManagedObjectContext:(id)context persistentStore:(id)store error:(id *)error;
++ (uint64_t)_fetchReceiptsMatchingSubPredicates:(void *)predicates inManagedObjectContext:(uint64_t)context persistentStore:(uint64_t)store error:;
 - (id)createRecordIDForMovedRecord;
 @end
 
@@ -24,7 +24,7 @@
   return v4;
 }
 
-+ (id)moveReceiptsMatchingRecordIDs:(id)a3 inManagedObjectContext:(id)a4 persistentStore:(id)a5 error:(id *)a6
++ (id)moveReceiptsMatchingRecordIDs:(id)ds inManagedObjectContext:(id)context persistentStore:(id)store error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
   v24 = 0;
@@ -38,19 +38,19 @@
   v22 = __Block_byref_object_dispose__20;
   v23 = 0;
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([a3 count])
+  if ([ds count])
   {
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __104__NSCKRecordZoneMoveReceipt_moveReceiptsMatchingRecordIDs_inManagedObjectContext_persistentStore_error___block_invoke;
     v17[3] = &unk_1E6EC30D0;
-    v17[4] = a3;
-    v17[5] = a4;
-    v17[6] = a5;
+    v17[4] = ds;
+    v17[5] = context;
+    v17[6] = store;
     v17[7] = v10;
     v17[8] = &v18;
     v17[9] = &v24;
-    [a4 performBlockAndWait:v17];
+    [context performBlockAndWait:v17];
   }
 
   v11 = v10;
@@ -59,10 +59,10 @@
     v12 = v19[5];
     if (v12)
     {
-      if (a6)
+      if (error)
       {
         v10 = 0;
-        *a6 = v12;
+        *error = v12;
         goto LABEL_12;
       }
     }
@@ -174,34 +174,34 @@ LABEL_13:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-+ (uint64_t)_fetchReceiptsMatchingSubPredicates:(void *)a3 inManagedObjectContext:(uint64_t)a4 persistentStore:(uint64_t)a5 error:
++ (uint64_t)_fetchReceiptsMatchingSubPredicates:(void *)predicates inManagedObjectContext:(uint64_t)context persistentStore:(uint64_t)store error:
 {
   v12[1] = *MEMORY[0x1E69E9840];
   objc_opt_self();
   v9 = +[NSFetchRequest fetchRequestWithEntityName:](NSFetchRequest, "fetchRequestWithEntityName:", +[NSCKRecordZoneMoveReceipt entityPath]);
-  v12[0] = a4;
+  v12[0] = context;
   -[NSFetchRequest setAffectedStores:](v9, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1]);
   -[NSFetchRequest setPredicate:](v9, "setPredicate:", [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:a2]);
-  result = [a3 executeFetchRequest:v9 error:a5];
+  result = [predicates executeFetchRequest:v9 error:store];
   v11 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-+ (id)countMoveReceiptsInStore:(id)a3 matchingPredicate:(id)a4 withManagedObjectContext:(id)a5 error:(id *)a6
++ (id)countMoveReceiptsInStore:(id)store matchingPredicate:(id)predicate withManagedObjectContext:(id)context error:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v10 = +[NSFetchRequest fetchRequestWithEntityName:](NSFetchRequest, "fetchRequestWithEntityName:", +[NSCKRecordZoneMoveReceipt entityPath]);
-  v14[0] = a3;
+  v14[0] = store;
   -[NSFetchRequest setAffectedStores:](v10, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1]);
-  [(NSFetchRequest *)v10 setPredicate:a4];
+  [(NSFetchRequest *)v10 setPredicate:predicate];
   [(NSFetchRequest *)v10 setResultType:4];
-  if (!a5)
+  if (!context)
   {
     v11 = 0;
     goto LABEL_5;
   }
 
-  v11 = [(NSManagedObjectContext *)a5 _countForFetchRequest_:v10 error:a6];
+  v11 = [(NSManagedObjectContext *)context _countForFetchRequest_:v10 error:error];
   if (v11 != 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_5:

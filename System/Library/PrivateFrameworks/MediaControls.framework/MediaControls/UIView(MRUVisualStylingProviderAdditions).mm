@@ -7,9 +7,9 @@
 - (void)mru_applyVisualStylingWithColor:()MRUVisualStylingProviderAdditions alpha:blendMode:
 {
   v8 = a4;
-  [a1 setAlpha:a2];
-  [a1 _setDrawsAsBackdropOverlayWithBlendMode:a5];
-  [a1 setBackgroundColor:v8];
+  [self setAlpha:a2];
+  [self _setDrawsAsBackdropOverlayWithBlendMode:a5];
+  [self setBackgroundColor:v8];
 }
 
 @end

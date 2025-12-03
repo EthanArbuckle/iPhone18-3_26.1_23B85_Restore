@@ -9,7 +9,7 @@
 - (id)fp_removingObjectsNotKindOfClasses:()FPFrameworkAdditions
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(self, "count")}];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __73__NSDictionary_FPFrameworkAdditions__fp_removingObjectsNotKindOfClasses___block_invoke;
@@ -18,7 +18,7 @@
   v6 = v5;
   v13 = v6;
   v7 = v4;
-  [a1 enumerateKeysAndObjectsUsingBlock:v11];
+  [self enumerateKeysAndObjectsUsingBlock:v11];
   v8 = v13;
   v9 = v6;
 
@@ -37,7 +37,7 @@
   v6 = v5;
   v12 = v6;
   v7 = v4;
-  [a1 enumerateKeysAndObjectsUsingBlock:v11];
+  [self enumerateKeysAndObjectsUsingBlock:v11];
   v8 = v12;
   v9 = v6;
 
@@ -47,7 +47,7 @@
 - (id)fp_valueForKeyPath:()FPFrameworkAdditions
 {
   v4 = a3;
-  v5 = [a1 allKeys];
+  allKeys = [self allKeys];
   v6 = v4;
   v7 = v6;
   if (!v6 || ![v6 length])
@@ -67,7 +67,7 @@ LABEL_8:
       v12 = v7;
       v13 = [v8 count];
       v14 = v12;
-      if ([v5 containsObject:v12])
+      if ([allKeys containsObject:v12])
       {
 LABEL_12:
         v18 = [v14 length];
@@ -97,7 +97,7 @@ LABEL_12:
 
           --v15;
           v16 = v14;
-          if ([v5 containsObject:v14])
+          if ([allKeys containsObject:v14])
           {
             goto LABEL_12;
           }
@@ -143,7 +143,7 @@ LABEL_21:
     goto LABEL_31;
   }
 
-  v23 = [a1 objectForKey:v21];
+  v23 = [self objectForKey:v21];
   v24 = v23;
   if (v23)
   {

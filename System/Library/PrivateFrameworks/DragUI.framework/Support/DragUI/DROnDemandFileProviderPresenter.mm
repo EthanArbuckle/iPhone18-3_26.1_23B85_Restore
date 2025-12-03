@@ -1,39 +1,39 @@
 @interface DROnDemandFileProviderPresenter
-+ (id)presenterPresentingURLWrapper:(id)a3 type:(id)a4 outURLWrapper:(id *)a5;
-- (DROnDemandFileProviderPresenter)initWithURLWrapper:(id)a3 type:(id)a4;
++ (id)presenterPresentingURLWrapper:(id)wrapper type:(id)type outURLWrapper:(id *)lWrapper;
+- (DROnDemandFileProviderPresenter)initWithURLWrapper:(id)wrapper type:(id)type;
 - (id)presentedItemOperationQueue;
 - (void)_operationQueue_invalidate;
 - (void)beginPresenting;
-- (void)relinquishPresentedItemToReader:(id)a3;
+- (void)relinquishPresentedItemToReader:(id)reader;
 @end
 
 @implementation DROnDemandFileProviderPresenter
 
-- (DROnDemandFileProviderPresenter)initWithURLWrapper:(id)a3 type:(id)a4
+- (DROnDemandFileProviderPresenter)initWithURLWrapper:(id)wrapper type:(id)type
 {
-  v7 = a3;
-  v8 = a4;
+  wrapperCopy = wrapper;
+  typeCopy = type;
   v25.receiver = self;
   v25.super_class = DROnDemandFileProviderPresenter;
   v9 = [(DROnDemandFileProviderPresenter *)&v25 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sourceURLWrapper, a3);
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ([v7 fpItem], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+    objc_storeStrong(&v9->_sourceURLWrapper, wrapper);
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ([wrapperCopy fpItem], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
     {
-      v12 = [v7 fpItem];
-      v13 = [v12 filename];
+      fpItem = [wrapperCopy fpItem];
+      filename = [fpItem filename];
     }
 
     else
     {
-      v12 = [v7 url];
-      v13 = [v12 lastPathComponent];
+      fpItem = [wrapperCopy url];
+      filename = [fpItem lastPathComponent];
     }
 
-    v14 = v13;
-    v15 = sub_10000A848(v13, v8);
+    v14 = filename;
+    v15 = sub_10000A848(filename, typeCopy);
 
     v16 = [NSString stringWithFormat:@".%@.XXXXXX", @"com.apple.DragUI"];
     v17 = NSTemporaryDirectory();
@@ -124,29 +124,29 @@
   }
 }
 
-+ (id)presenterPresentingURLWrapper:(id)a3 type:(id)a4 outURLWrapper:(id *)a5
++ (id)presenterPresentingURLWrapper:(id)wrapper type:(id)type outURLWrapper:(id *)lWrapper
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithURLWrapper:v9 type:v8];
+  typeCopy = type;
+  wrapperCopy = wrapper;
+  v10 = [[self alloc] initWithURLWrapper:wrapperCopy type:typeCopy];
 
   v11 = [PBSecurityScopedURLWrapper alloc];
-  v12 = [v10 fileURL];
-  v13 = [v11 initWithURL:v12 readonly:1 extensionClass:@"com.apple.app-sandbox.read"];
+  fileURL = [v10 fileURL];
+  v13 = [v11 initWithURL:fileURL readonly:1 extensionClass:@"com.apple.app-sandbox.read"];
 
   [v10 beginPresenting];
-  if (a5)
+  if (lWrapper)
   {
     v14 = v13;
-    *a5 = v13;
+    *lWrapper = v13;
   }
 
   return v10;
 }
 
-- (void)relinquishPresentedItemToReader:(id)a3
+- (void)relinquishPresentedItemToReader:(id)reader
 {
-  v4 = a3;
+  readerCopy = reader;
   v5 = DRLogTarget();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -171,17 +171,17 @@
     }
 
     v12 = +[FPItemManager defaultManager];
-    v13 = [(PBSecurityScopedURLWrapper *)self->_sourceURLWrapper fpItem];
+    fpItem = [(PBSecurityScopedURLWrapper *)self->_sourceURLWrapper fpItem];
     v14 = self->_fileURL;
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_10000B204;
     v30[3] = &unk_100054DF0;
-    v32 = self;
-    v33 = v4;
+    selfCopy = self;
+    v33 = readerCopy;
     v31 = v7;
     v15 = v7;
-    [v12 recursivelyExportItem:v13 toURL:v14 completionHandler:v30];
+    [v12 recursivelyExportItem:fpItem toURL:v14 completionHandler:v30];
 
     v16 = v33;
   }
@@ -190,7 +190,7 @@
   {
     v16 = [[NSFileCoordinator alloc] initWithFilePresenter:0];
     v17 = [(PBSecurityScopedURLWrapper *)self->_sourceURLWrapper url];
-    v18 = [v17 startAccessingSecurityScopedResource];
+    startAccessingSecurityScopedResource = [v17 startAccessingSecurityScopedResource];
 
     v19 = [(PBSecurityScopedURLWrapper *)self->_sourceURLWrapper url];
     v20 = [NSFileAccessIntent readingIntentWithURL:v19 options:1];
@@ -204,9 +204,9 @@
     v24[3] = &unk_100054E18;
     v25 = v8;
     v26 = v7;
-    v27 = self;
-    v28 = v4;
-    v29 = v18;
+    selfCopy2 = self;
+    v28 = readerCopy;
+    v29 = startAccessingSecurityScopedResource;
     v23 = v7;
     [v16 coordinateAccessWithIntents:v21 queue:v22 byAccessor:v24];
   }

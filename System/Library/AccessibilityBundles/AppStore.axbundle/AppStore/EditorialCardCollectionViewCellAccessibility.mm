@@ -1,5 +1,5 @@
 @interface EditorialCardCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
@@ -8,15 +8,15 @@
 
 @implementation EditorialCardCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AppStore.EditorialCardCollectionViewCell" hasInstanceMethod:@"accessibilityCaptionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AppStore.EditorialCardCollectionViewCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AppStore.EditorialCardCollectionViewCell" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AppStore.EditorialCardCollectionViewCell" hasInstanceMethod:@"accessibilityLockupView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AppStore.AppPromotionFormattedDateView" hasInstanceMethod:@"accessibilityTextLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AppStore.EditorialCardCollectionViewCell" hasInstanceMethod:@"accessibilityAppPromotionFormattedDateView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AppStore.EditorialCardCollectionViewCell" hasInstanceMethod:@"accessibilityCaptionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AppStore.EditorialCardCollectionViewCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AppStore.EditorialCardCollectionViewCell" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AppStore.EditorialCardCollectionViewCell" hasInstanceMethod:@"accessibilityLockupView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AppStore.AppPromotionFormattedDateView" hasInstanceMethod:@"accessibilityTextLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AppStore.EditorialCardCollectionViewCell" hasInstanceMethod:@"accessibilityAppPromotionFormattedDateView" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -52,41 +52,41 @@
   v12[1] = *MEMORY[0x29EDCA608];
   v11.receiver = self;
   v11.super_class = EditorialCardCollectionViewCellAccessibility;
-  v3 = [(EditorialCardCollectionViewCellAccessibility *)&v11 accessibilityCustomActions];
+  accessibilityCustomActions = [(EditorialCardCollectionViewCellAccessibility *)&v11 accessibilityCustomActions];
   v4 = [(EditorialCardCollectionViewCellAccessibility *)self safeUIViewForKey:@"accessibilityLockupView"];
   if ([v4 _accessibilityViewIsVisible])
   {
     v5 = objc_alloc(MEMORY[0x29EDC78E0]);
-    v6 = [v4 accessibilityLabel];
-    v7 = [v5 initWithName:v6 actionHandler:&__block_literal_global_3];
+    accessibilityLabel = [v4 accessibilityLabel];
+    v7 = [v5 initWithName:accessibilityLabel actionHandler:&__block_literal_global_3];
 
     [v4 accessibilityActivationPoint];
     [v7 setActivationPoint:?];
-    if (v3)
+    if (accessibilityCustomActions)
     {
-      v8 = [v3 arrayByAddingObject:v7];
+      v8 = [accessibilityCustomActions arrayByAddingObject:v7];
 
-      v3 = v8;
+      accessibilityCustomActions = v8;
     }
 
     else
     {
       v12[0] = v7;
-      v3 = [MEMORY[0x29EDB8D80] arrayWithObjects:v12 count:1];
+      accessibilityCustomActions = [MEMORY[0x29EDB8D80] arrayWithObjects:v12 count:1];
     }
   }
 
   v9 = *MEMORY[0x29EDCA608];
 
-  return v3;
+  return accessibilityCustomActions;
 }
 
 - (id)_accessibilitySupplementaryFooterViews
 {
   v2 = [(EditorialCardCollectionViewCellAccessibility *)self safeUIViewForKey:@"accessibilityLockupView"];
-  v3 = [v2 _accessibilitySupplementaryFooterViews];
+  _accessibilitySupplementaryFooterViews = [v2 _accessibilitySupplementaryFooterViews];
 
-  return v3;
+  return _accessibilitySupplementaryFooterViews;
 }
 
 @end

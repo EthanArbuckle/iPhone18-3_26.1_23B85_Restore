@@ -1,16 +1,16 @@
 @interface CKKSUpdateCurrentItemPointerOperation
-- (CKKSUpdateCurrentItemPointerOperation)initWithCKKSOperationDependencies:(id)a3 viewState:(id)a4 newItem:(id)a5 hash:(id)a6 accessGroup:(id)a7 identifier:(id)a8 replacing:(id)a9 hash:(id)a10 ckoperationGroup:(id)a11;
-- (SecDbItem)_onqueueFindSecDbItem:(id)a3 accessGroup:(id)a4 error:(id *)a5;
-- (SecDbItem)_onqueueFindSecDbItemWithQuery:(id)a3 error:(id *)a4;
-- (SecDbItem)_onqueueFindSecDbItemWithUUID:(id)a3 accessGroup:(id)a4 error:(id *)a5;
-- (void)_fetchAndUpdateMirrorEntry:(id)a3;
+- (CKKSUpdateCurrentItemPointerOperation)initWithCKKSOperationDependencies:(id)dependencies viewState:(id)state newItem:(id)item hash:(id)hash accessGroup:(id)group identifier:(id)identifier replacing:(id)replacing hash:(id)self0 ckoperationGroup:(id)self1;
+- (SecDbItem)_onqueueFindSecDbItem:(id)item accessGroup:(id)group error:(id *)error;
+- (SecDbItem)_onqueueFindSecDbItemWithQuery:(id)query error:(id *)error;
+- (SecDbItem)_onqueueFindSecDbItemWithUUID:(id)d accessGroup:(id)group error:(id *)error;
+- (void)_fetchAndUpdateMirrorEntry:(id)entry;
 - (void)dealloc;
 - (void)groupStart;
 @end
 
 @implementation CKKSUpdateCurrentItemPointerOperation
 
-- (SecDbItem)_onqueueFindSecDbItemWithQuery:(id)a3 error:(id *)a4
+- (SecDbItem)_onqueueFindSecDbItemWithQuery:(id)query error:(id *)error
 {
   v35 = 0;
   v36 = &v35;
@@ -27,9 +27,9 @@
   v23[1] = 3221225472;
   v23[2] = sub_1001A51E4;
   v23[3] = &unk_100343948;
-  v6 = a3;
-  v24 = v6;
-  v25 = self;
+  queryCopy = query;
+  v24 = queryCopy;
+  selfCopy = self;
   v26 = &v28;
   v27 = &v35;
   v7 = sub_100008A70(1, 1, 0, &cf, v23);
@@ -38,10 +38,10 @@
   {
     if (!v8)
     {
-      v15 = [(CKKSUpdateCurrentItemPointerOperation *)self viewState];
-      v16 = [v15 zoneID];
-      v17 = [v16 zoneName];
-      v18 = sub_100019104(@"ckkscurrent", v17);
+      viewState = [(CKKSUpdateCurrentItemPointerOperation *)self viewState];
+      zoneID = [viewState zoneID];
+      zoneName = [zoneID zoneName];
+      v18 = sub_100019104(@"ckkscurrent", zoneName);
 
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
@@ -56,13 +56,13 @@
       v29[5] = v20;
 
       cf = 0;
-      if (!*a4)
+      if (!*error)
       {
         goto LABEL_17;
       }
 
 LABEL_14:
-      *a4 = v29[5];
+      *error = v29[5];
 LABEL_15:
       if (cf)
       {
@@ -75,10 +75,10 @@ LABEL_17:
     }
 
 LABEL_7:
-    v10 = [(CKKSUpdateCurrentItemPointerOperation *)self viewState];
-    v11 = [v10 zoneID];
-    v12 = [v11 zoneName];
-    v13 = sub_100019104(@"ckkscurrent", v12);
+    viewState2 = [(CKKSUpdateCurrentItemPointerOperation *)self viewState];
+    zoneID2 = [viewState2 zoneID];
+    zoneName2 = [zoneID2 zoneName];
+    v13 = sub_100019104(@"ckkscurrent", zoneName2);
 
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -88,7 +88,7 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Query failed: %@", buf, 0xCu);
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -115,10 +115,10 @@ LABEL_18:
   return v9;
 }
 
-- (SecDbItem)_onqueueFindSecDbItemWithUUID:(id)a3 accessGroup:(id)a4 error:(id *)a5
+- (SecDbItem)_onqueueFindSecDbItemWithUUID:(id)d accessGroup:(id)group error:(id *)error
 {
-  v17 = a3;
-  v6 = a4;
+  dCopy = d;
+  groupCopy = group;
   v7 = kSecAttrTombstone;
   v8 = kSecAttrUUID;
   v9 = &off_10033C738;
@@ -133,12 +133,12 @@ LABEL_18:
       v18[1] = kSecAttrSynchronizable;
       v18[2] = v7;
       v19[2] = &__kCFBooleanFalse;
-      v19[3] = v17;
+      v19[3] = dCopy;
       v18[3] = v8;
       v18[4] = kSecAttrAccessGroup;
-      v19[4] = v6;
+      v19[4] = groupCopy;
       v11 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:5];
-      v12 = [(CKKSUpdateCurrentItemPointerOperation *)self _onqueueFindSecDbItemWithQuery:v11 error:a5];
+      v12 = [(CKKSUpdateCurrentItemPointerOperation *)self _onqueueFindSecDbItemWithQuery:v11 error:error];
 
       if (v12)
       {
@@ -158,64 +158,64 @@ LABEL_18:
   return v12;
 }
 
-- (SecDbItem)_onqueueFindSecDbItem:(id)a3 accessGroup:(id)a4 error:(id *)a5
+- (SecDbItem)_onqueueFindSecDbItem:(id)item accessGroup:(id)group error:(id *)error
 {
   v13[0] = kSecValuePersistentRef;
   v13[1] = kSecAttrAccessGroup;
-  v14[0] = a3;
-  v14[1] = a4;
-  v8 = a4;
-  v9 = a3;
+  v14[0] = item;
+  v14[1] = group;
+  groupCopy = group;
+  itemCopy = item;
   v10 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:2];
 
-  v11 = [(CKKSUpdateCurrentItemPointerOperation *)self _onqueueFindSecDbItemWithQuery:v10 error:a5];
+  v11 = [(CKKSUpdateCurrentItemPointerOperation *)self _onqueueFindSecDbItemWithQuery:v10 error:error];
   return v11;
 }
 
-- (void)_fetchAndUpdateMirrorEntry:(id)a3
+- (void)_fetchAndUpdateMirrorEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   objc_initWeak(&location, self);
   v5 = objc_alloc_init(NSBlockOperation);
   [v5 setName:@"updateCurrentItemPointer-fetchRecordsComplete"];
   [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:v5];
-  v6 = [(CKKSUpdateCurrentItemPointerOperation *)self deps];
-  v7 = [v6 cloudKitClassDependencies];
-  v8 = [objc_msgSend(v7 "fetchRecordsOperationClass")];
-  v9 = [v4 item];
-  v10 = [v9 storedCKRecord];
-  v11 = [v10 recordID];
-  v31 = v11;
+  deps = [(CKKSUpdateCurrentItemPointerOperation *)self deps];
+  cloudKitClassDependencies = [deps cloudKitClassDependencies];
+  v8 = [objc_msgSend(cloudKitClassDependencies "fetchRecordsOperationClass")];
+  item = [entryCopy item];
+  storedCKRecord = [item storedCKRecord];
+  recordID = [storedCKRecord recordID];
+  v31 = recordID;
   v12 = [NSArray arrayWithObjects:&v31 count:1];
   v13 = [v8 initWithRecordIDs:v12];
   [(CKKSUpdateCurrentItemPointerOperation *)self setFetchRecordsOperation:v13];
 
-  v14 = [(CKKSUpdateCurrentItemPointerOperation *)self fetchRecordsOperation];
-  v15 = [v14 configuration];
-  [v15 setIsCloudKitSupportOperation:1];
+  fetchRecordsOperation = [(CKKSUpdateCurrentItemPointerOperation *)self fetchRecordsOperation];
+  configuration = [fetchRecordsOperation configuration];
+  [configuration setIsCloudKitSupportOperation:1];
 
-  v16 = [(CKKSUpdateCurrentItemPointerOperation *)self fetchRecordsOperation];
-  [v16 setQualityOfService:25];
+  fetchRecordsOperation2 = [(CKKSUpdateCurrentItemPointerOperation *)self fetchRecordsOperation];
+  [fetchRecordsOperation2 setQualityOfService:25];
 
-  v17 = [(CKKSUpdateCurrentItemPointerOperation *)self ckoperationGroup];
-  v18 = [(CKKSUpdateCurrentItemPointerOperation *)self fetchRecordsOperation];
-  [v18 setGroup:v17];
+  ckoperationGroup = [(CKKSUpdateCurrentItemPointerOperation *)self ckoperationGroup];
+  fetchRecordsOperation3 = [(CKKSUpdateCurrentItemPointerOperation *)self fetchRecordsOperation];
+  [fetchRecordsOperation3 setGroup:ckoperationGroup];
 
   objc_copyWeak(&v29, &location);
   v19 = v5;
   v27 = v19;
-  v20 = v4;
+  v20 = entryCopy;
   v28 = v20;
   v21 = [(CKKSUpdateCurrentItemPointerOperation *)self fetchRecordsOperation:_NSConcreteStackBlock];
   [v21 setFetchRecordsCompletionBlock:&v26];
 
-  v22 = [(CKKSUpdateCurrentItemPointerOperation *)self fetchRecordsOperation];
-  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:v22];
+  fetchRecordsOperation4 = [(CKKSUpdateCurrentItemPointerOperation *)self fetchRecordsOperation];
+  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:fetchRecordsOperation4];
 
-  v23 = [(CKKSUpdateCurrentItemPointerOperation *)self deps];
-  v24 = [v23 ckdatabase];
-  v25 = [(CKKSUpdateCurrentItemPointerOperation *)self fetchRecordsOperation];
-  [v24 addOperation:v25];
+  deps2 = [(CKKSUpdateCurrentItemPointerOperation *)self deps];
+  ckdatabase = [deps2 ckdatabase];
+  fetchRecordsOperation5 = [(CKKSUpdateCurrentItemPointerOperation *)self fetchRecordsOperation];
+  [ckdatabase addOperation:fetchRecordsOperation5];
 
   objc_destroyWeak(&v29);
   objc_destroyWeak(&location);
@@ -224,15 +224,15 @@ LABEL_18:
 - (void)groupStart
 {
   objc_initWeak(&location, self);
-  v3 = [(CKKSUpdateCurrentItemPointerOperation *)self deps];
-  v4 = [v3 databaseProvider];
+  deps = [(CKKSUpdateCurrentItemPointerOperation *)self deps];
+  databaseProvider = [deps databaseProvider];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001A6120;
   v5[3] = &unk_1003438D0;
   v5[4] = self;
   objc_copyWeak(&v6, &location);
-  [v4 dispatchSyncWithSQLTransaction:v5];
+  [databaseProvider dispatchSyncWithSQLTransaction:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -262,36 +262,36 @@ LABEL_18:
   [(CKKSGroupOperation *)&v5 dealloc];
 }
 
-- (CKKSUpdateCurrentItemPointerOperation)initWithCKKSOperationDependencies:(id)a3 viewState:(id)a4 newItem:(id)a5 hash:(id)a6 accessGroup:(id)a7 identifier:(id)a8 replacing:(id)a9 hash:(id)a10 ckoperationGroup:(id)a11
+- (CKKSUpdateCurrentItemPointerOperation)initWithCKKSOperationDependencies:(id)dependencies viewState:(id)state newItem:(id)item hash:(id)hash accessGroup:(id)group identifier:(id)identifier replacing:(id)replacing hash:(id)self0 ckoperationGroup:(id)self1
 {
-  v32 = a3;
-  v31 = a4;
-  v30 = a5;
-  v29 = a6;
-  obj = a7;
-  v18 = a7;
-  v19 = a8;
-  v28 = a9;
+  dependenciesCopy = dependencies;
+  stateCopy = state;
+  itemCopy = item;
+  hashCopy = hash;
+  obj = group;
+  groupCopy = group;
+  identifierCopy = identifier;
+  replacingCopy = replacing;
   v27 = a10;
-  v20 = a11;
+  ckoperationGroupCopy = ckoperationGroup;
   v33.receiver = self;
   v33.super_class = CKKSUpdateCurrentItemPointerOperation;
   v21 = [(CKKSGroupOperation *)&v33 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_deps, a3);
-    objc_storeStrong(&v22->_viewState, a4);
-    objc_storeStrong(&v22->_newerItemPersistentRef, a5);
-    objc_storeStrong(&v22->_newerItemSHA1, a6);
-    objc_storeStrong(&v22->_oldItemPersistentRef, a9);
+    objc_storeStrong(&v21->_deps, dependencies);
+    objc_storeStrong(&v22->_viewState, state);
+    objc_storeStrong(&v22->_newerItemPersistentRef, item);
+    objc_storeStrong(&v22->_newerItemSHA1, hash);
+    objc_storeStrong(&v22->_oldItemPersistentRef, replacing);
     objc_storeStrong(&v22->_oldItemSHA1, a10);
     objc_storeStrong(&v22->_accessGroup, obj);
-    v23 = [NSString stringWithFormat:@"%@-%@", v18, v19];
+    identifierCopy = [NSString stringWithFormat:@"%@-%@", groupCopy, identifierCopy];
     currentPointerIdentifier = v22->_currentPointerIdentifier;
-    v22->_currentPointerIdentifier = v23;
+    v22->_currentPointerIdentifier = identifierCopy;
 
-    objc_storeStrong(&v22->_ckoperationGroup, a11);
+    objc_storeStrong(&v22->_ckoperationGroup, ckoperationGroup);
     [(CKKSUpdateCurrentItemPointerOperation *)v22 setQualityOfService:25];
   }
 

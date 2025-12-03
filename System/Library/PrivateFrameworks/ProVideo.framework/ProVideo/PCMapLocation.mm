@@ -1,16 +1,16 @@
 @interface PCMapLocation
-+ (id)dictionaryFromArrayOfLocations:(id)a3;
-+ (void)removeLocationsFromArray:(id)a3 withinDistance:(float)a4 ofSameLocationsInDictionary:(id)a5;
-- (BOOL)hasSamePositionAsLocation:(id)a3 tolerance:(float)a4;
-- (BOOL)isEqualToLocation:(id)a3;
++ (id)dictionaryFromArrayOfLocations:(id)locations;
++ (void)removeLocationsFromArray:(id)array withinDistance:(float)distance ofSameLocationsInDictionary:(id)dictionary;
+- (BOOL)hasSamePositionAsLocation:(id)location tolerance:(float)tolerance;
+- (BOOL)isEqualToLocation:(id)location;
 - (NSString)locationName;
 - (PCMapLocation)init;
-- (PCMapLocation)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PCMapLocation)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)stringRepresentation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PCMapLocation
@@ -49,12 +49,12 @@
 - (id)stringRepresentation
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(PCMapLocation *)self name];
-  v5 = [(PCMapLocation *)self countryName];
+  name = [(PCMapLocation *)self name];
+  countryName = [(PCMapLocation *)self countryName];
   [(PCMapLocation *)self latitude];
   v7 = v6;
   [(PCMapLocation *)self longitude];
-  return [v3 stringWithFormat:@"[name = %@, countryName = %@, latitude = %f, longitude = %f, airportCode = %@, airportName = %@]", v4, v5, *&v7, v8, -[PCMapLocation airportCode](self, "airportCode"), -[PCMapLocation airportName](self, "airportName")];
+  return [v3 stringWithFormat:@"[name = %@, countryName = %@, latitude = %f, longitude = %f, airportCode = %@, airportName = %@]", name, countryName, *&v7, v8, -[PCMapLocation airportCode](self, "airportCode"), -[PCMapLocation airportName](self, "airportName")];
 }
 
 - (NSString)locationName
@@ -70,11 +70,11 @@
   }
 }
 
-- (BOOL)isEqualToLocation:(id)a3
+- (BOOL)isEqualToLocation:(id)location
 {
   [(PCMapLocation *)self latitude];
   v6 = v5;
-  [a3 latitude];
+  [location latitude];
   if (v6 != v7)
   {
     return 0;
@@ -82,39 +82,39 @@
 
   [(PCMapLocation *)self longitude];
   v9 = v8;
-  [a3 longitude];
+  [location longitude];
   if (v9 != v10)
   {
     return 0;
   }
 
-  v11 = [(PCMapLocation *)self name];
-  v12 = [a3 name];
+  name = [(PCMapLocation *)self name];
+  name2 = [location name];
 
-  return [(NSString *)v11 isEqualToString:v12];
+  return [(NSString *)name isEqualToString:name2];
 }
 
-- (BOOL)hasSamePositionAsLocation:(id)a3 tolerance:(float)a4
+- (BOOL)hasSamePositionAsLocation:(id)location tolerance:(float)tolerance
 {
   [(PCMapLocation *)self latitude];
   v8 = v7;
-  [a3 latitude];
+  [location latitude];
   v10 = v8 - v9;
   [(PCMapLocation *)self longitude];
   v12 = v11;
-  [a3 longitude];
-  return sqrtf((v10 * v10) + ((v12 - v13) * (v12 - v13))) <= a4;
+  [location longitude];
+  return sqrtf((v10 * v10) + ((v12 - v13) * (v12 - v13))) <= tolerance;
 }
 
-+ (id)dictionaryFromArrayOfLocations:(id)a3
++ (id)dictionaryFromArrayOfLocations:(id)locations
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [locations countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -125,11 +125,11 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(locations);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v4 objectForKey:{objc_msgSend(v9, "name")}];
+        v10 = [dictionary objectForKey:{objc_msgSend(v9, "name")}];
         if (v10)
         {
           [v10 addObject:v9];
@@ -137,30 +137,30 @@
 
         else
         {
-          v11 = [MEMORY[0x277CBEB18] array];
-          [v11 addObject:v9];
-          [v4 setObject:v11 forKey:{objc_msgSend(v9, "name")}];
+          array = [MEMORY[0x277CBEB18] array];
+          [array addObject:v9];
+          [dictionary setObject:array forKey:{objc_msgSend(v9, "name")}];
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [locations countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 
-  return v4;
+  return dictionary;
 }
 
-+ (void)removeLocationsFromArray:(id)a3 withinDistance:(float)a4 ofSameLocationsInDictionary:(id)a5
++ (void)removeLocationsFromArray:(id)array withinDistance:(float)distance ofSameLocationsInDictionary:(id)dictionary
 {
   v37 = *MEMORY[0x277D85DE8];
-  v26 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  v7 = [array countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v7)
   {
     v8 = v7;
@@ -171,11 +171,11 @@
       {
         if (*v32 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(array);
         }
 
         v11 = *(*(&v31 + 1) + 8 * i);
-        v12 = [a5 objectForKey:{objc_msgSend(v11, "name")}];
+        v12 = [dictionary objectForKey:{objc_msgSend(v11, "name")}];
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
@@ -204,9 +204,9 @@
                 [v17 longitude];
                 v23 = v22;
                 [v11 longitude];
-                if (sqrtf((v21 * v21) + ((v23 - v24) * (v23 - v24))) < a4)
+                if (sqrtf((v21 * v21) + ((v23 - v24) * (v23 - v24))) < distance)
                 {
-                  [v26 addObject:v11];
+                  [array addObject:v11];
                   goto LABEL_17;
                 }
               }
@@ -226,18 +226,18 @@ LABEL_17:
         ;
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v8 = [array countByEnumeratingWithState:&v31 objects:v36 count:16];
     }
 
     while (v8);
   }
 
-  [a3 removeObjectsInArray:v26];
+  [array removeObjectsInArray:array];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     [v4 setName:{-[PCMapLocation name](self, "name")}];
@@ -258,42 +258,42 @@ LABEL_17:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_name forKey:@"Name"];
-  [a3 encodeObject:self->_countryName forKey:@"CountryName"];
+  [coder encodeObject:self->_name forKey:@"Name"];
+  [coder encodeObject:self->_countryName forKey:@"CountryName"];
   locationName = self->_locationName;
   if (locationName)
   {
-    [a3 encodeObject:locationName forKey:@"LocationName"];
+    [coder encodeObject:locationName forKey:@"LocationName"];
   }
 
   *&v5 = self->_latitude;
-  [a3 encodeFloat:@"Latitude" forKey:v5];
+  [coder encodeFloat:@"Latitude" forKey:v5];
   *&v7 = self->_longitude;
-  [a3 encodeFloat:@"Longitude" forKey:v7];
-  [a3 encodeObject:self->_airportCode forKey:@"AirportCode"];
+  [coder encodeFloat:@"Longitude" forKey:v7];
+  [coder encodeObject:self->_airportCode forKey:@"AirportCode"];
   airportName = self->_airportName;
 
-  [a3 encodeObject:airportName forKey:@"AirportNameKey"];
+  [coder encodeObject:airportName forKey:@"AirportNameKey"];
 }
 
-- (PCMapLocation)initWithCoder:(id)a3
+- (PCMapLocation)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PCMapLocation;
   v4 = [(PCMapLocation *)&v6 init];
   if (v4)
   {
-    -[PCMapLocation setName:](v4, "setName:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"Name"]);
-    -[PCMapLocation setCountryName:](v4, "setCountryName:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"CountryName"]);
-    -[PCMapLocation setLocationName:](v4, "setLocationName:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"LocationName"]);
-    [a3 decodeFloatForKey:@"Latitude"];
+    -[PCMapLocation setName:](v4, "setName:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"Name"]);
+    -[PCMapLocation setCountryName:](v4, "setCountryName:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"CountryName"]);
+    -[PCMapLocation setLocationName:](v4, "setLocationName:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"LocationName"]);
+    [coder decodeFloatForKey:@"Latitude"];
     [(PCMapLocation *)v4 setLatitude:?];
-    [a3 decodeFloatForKey:@"Longitude"];
+    [coder decodeFloatForKey:@"Longitude"];
     [(PCMapLocation *)v4 setLongitude:?];
-    -[PCMapLocation setAirportCode:](v4, "setAirportCode:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"AirportCode"]);
-    -[PCMapLocation setAirportName:](v4, "setAirportName:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"AirportNameKey"]);
+    -[PCMapLocation setAirportCode:](v4, "setAirportCode:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"AirportCode"]);
+    -[PCMapLocation setAirportName:](v4, "setAirportName:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"AirportNameKey"]);
   }
 
   return v4;

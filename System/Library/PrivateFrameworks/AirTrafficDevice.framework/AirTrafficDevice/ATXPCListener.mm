@@ -1,26 +1,26 @@
 @interface ATXPCListener
 - (ATXPCListener)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (BOOL)run;
 - (id)connections;
-- (id)proxyForConnection:(id)a3;
+- (id)proxyForConnection:(id)connection;
 - (void)dealloc;
 - (void)stop;
 @end
 
 @implementation ATXPCListener
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = connectionCopy;
   v28 = 0u;
   v29 = 0u;
-  if (v7)
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
     v9 = DWORD1(v29);
   }
 
@@ -70,8 +70,8 @@
   objc_sync_enter(v17);
   [(NSMutableArray *)self->_connections addObject:v8];
   proxyMap = self->_proxyMap;
-  v19 = [v8 remoteObjectProxy];
-  [(NSMapTable *)proxyMap setObject:v19 forKey:v8];
+  remoteObjectProxy = [v8 remoteObjectProxy];
+  [(NSMapTable *)proxyMap setObject:remoteObjectProxy forKey:v8];
 
   objc_sync_exit(v17);
   [v8 resume];
@@ -122,12 +122,12 @@ void __52__ATXPCListener_listener_shouldAcceptNewConnection___block_invoke_102(u
   }
 }
 
-- (id)proxyForConnection:(id)a3
+- (id)proxyForConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = self->_connections;
   objc_sync_enter(v5);
-  v6 = [(NSMapTable *)self->_proxyMap objectForKey:v4];
+  v6 = [(NSMapTable *)self->_proxyMap objectForKey:connectionCopy];
   objc_sync_exit(v5);
 
   return v6;
@@ -199,9 +199,9 @@ void __52__ATXPCListener_listener_shouldAcceptNewConnection___block_invoke_102(u
     connections = v2->_connections;
     v2->_connections = v3;
 
-    v5 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     proxyMap = v2->_proxyMap;
-    v2->_proxyMap = v5;
+    v2->_proxyMap = weakToStrongObjectsMapTable;
   }
 
   return v2;

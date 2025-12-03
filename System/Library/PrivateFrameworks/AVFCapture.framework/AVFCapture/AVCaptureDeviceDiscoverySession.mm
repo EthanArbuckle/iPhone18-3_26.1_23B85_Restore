@@ -13,9 +13,9 @@
 + (id)allVirtualDevices;
 - (AVCaptureDeviceDiscoverySession)init;
 - (NSArray)supportedMultiCamDeviceSets;
-- (id)_initWithDeviceTypes:(id)a3 mediaType:(id)a4 position:(int64_t)a5 allowIOSMacEnvironment:(BOOL)a6 prefersUnsuspendedAndAllowsAnyPosition:(BOOL)a7;
+- (id)_initWithDeviceTypes:(id)types mediaType:(id)type position:(int64_t)position allowIOSMacEnvironment:(BOOL)environment prefersUnsuspendedAndAllowsAnyPosition:(BOOL)anyPosition;
 - (id)description;
-- (void)_handleDeviceConnectedDisconnectedNotification:(id)a3;
+- (void)_handleDeviceConnectedDisconnectedNotification:(id)notification;
 - (void)dealloc;
 @end
 
@@ -98,8 +98,8 @@
 
 + (id)allVideoDevices
 {
-  v2 = [a1 allVideoDeviceTypes];
-  v3 = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:v2 mediaType:*MEMORY[0x1E6987608] position:0];
+  allVideoDeviceTypes = [self allVideoDeviceTypes];
+  v3 = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:allVideoDeviceTypes mediaType:*MEMORY[0x1E6987608] position:0];
 
   return [(AVCaptureDeviceDiscoverySession *)v3 devices];
 }
@@ -113,20 +113,20 @@
   return v10;
 }
 
-- (id)_initWithDeviceTypes:(id)a3 mediaType:(id)a4 position:(int64_t)a5 allowIOSMacEnvironment:(BOOL)a6 prefersUnsuspendedAndAllowsAnyPosition:(BOOL)a7
+- (id)_initWithDeviceTypes:(id)types mediaType:(id)type position:(int64_t)position allowIOSMacEnvironment:(BOOL)environment prefersUnsuspendedAndAllowsAnyPosition:(BOOL)anyPosition
 {
   v15.receiver = self;
   v15.super_class = AVCaptureDeviceDiscoverySession;
-  v11 = [(AVCaptureDeviceDiscoverySession *)&v15 init:a3];
+  v11 = [(AVCaptureDeviceDiscoverySession *)&v15 init:types];
   if (v11)
   {
-    v11->_deviceTypes = [a3 copy];
-    v12 = a4;
-    v11->_position = a5;
-    v11->_mediaType = v12;
-    if (a6 || !AVCaptureIsRunningInMacCatalystEnvironment())
+    v11->_deviceTypes = [types copy];
+    typeCopy = type;
+    v11->_position = position;
+    v11->_mediaType = typeCopy;
+    if (environment || !AVCaptureIsRunningInMacCatalystEnvironment())
     {
-      v13 = [AVCaptureDevice _devicesWithDeviceTypes:a3 mediaType:a4 position:a5];
+      v13 = [AVCaptureDevice _devicesWithDeviceTypes:types mediaType:type position:position];
     }
 
     else
@@ -219,15 +219,15 @@
   return [v10 stringWithFormat:@"<%@: %p device types: [%@], media type: %@, position: %@>", v12, self, v3, mediaType, AVCaptureDevicePositionToString(self->_position)];
 }
 
-- (void)_handleDeviceConnectedDisconnectedNotification:(id)a3
+- (void)_handleDeviceConnectedDisconnectedNotification:(id)notification
 {
-  v4 = [a3 object];
-  if (-[NSArray containsObject:](self->_deviceTypes, "containsObject:", [v4 deviceType]) && (!self->_mediaType || objc_msgSend(v4, "hasMediaType:")))
+  object = [notification object];
+  if (-[NSArray containsObject:](self->_deviceTypes, "containsObject:", [object deviceType]) && (!self->_mediaType || objc_msgSend(object, "hasMediaType:")))
   {
     position = self->_position;
     if (position)
     {
-      if (position != [v4 position])
+      if (position != [object position])
       {
         return;
       }
@@ -264,7 +264,7 @@
     if (AVGestaltGetBoolAnswer(@"AVGQCaptureSessionSupportsMultiCamCapture"))
     {
       v4 = [(NSArray *)[(AVCaptureDeviceDiscoverySession *)self devices] objectsAtIndexes:[(NSArray *)[(AVCaptureDeviceDiscoverySession *)self devices] indexesOfObjectsPassingTest:&__block_literal_global_5]];
-      v5 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
@@ -286,7 +286,7 @@
             v10 = *(*(&v21 + 1) + 8 * i);
             if ([objc_msgSend(v10 "constituentDevices")] >= 2)
             {
-              [v5 addObject:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithObject:", v10)}];
+              [array addObject:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithObject:", v10)}];
             }
           }
 
@@ -308,22 +308,22 @@
           v16 = 2;
           do
           {
-            v17 = [MEMORY[0x1E695DF70] array];
+            array2 = [MEMORY[0x1E695DF70] array];
             v18 = 0;
             do
             {
-              [v17 setObject:objc_msgSend(MEMORY[0x1E695DFB0] atIndexedSubscript:{"null"), v18++}];
+              [array2 setObject:objc_msgSend(MEMORY[0x1E695DFB0] atIndexedSubscript:{"null"), v18++}];
             }
 
             while (v16 != v18);
-            avcdds_addValidMultiCamCombinations(v4, ++v15, 0, v17, v5, IntegerAnswer);
+            avcdds_addValidMultiCamCombinations(v4, ++v15, 0, array2, array, IntegerAnswer);
           }
 
           while (v16++ != v14);
         }
       }
 
-      result = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v5];
+      result = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:array];
     }
 
     else
@@ -339,44 +339,44 @@
 
 + (id)allDevices
 {
-  v2 = +[AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:mediaType:position:](AVCaptureDeviceDiscoverySession, "discoverySessionWithDeviceTypes:mediaType:position:", [a1 allDeviceTypes], 0, 0);
+  v2 = +[AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:mediaType:position:](AVCaptureDeviceDiscoverySession, "discoverySessionWithDeviceTypes:mediaType:position:", [self allDeviceTypes], 0, 0);
 
   return [(AVCaptureDeviceDiscoverySession *)v2 devices];
 }
 
 + (id)allPointCloudDevices
 {
-  v2 = +[AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:mediaType:position:](AVCaptureDeviceDiscoverySession, "discoverySessionWithDeviceTypes:mediaType:position:", [a1 allPointCloudDeviceTypes], @"pcld", 0);
+  v2 = +[AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:mediaType:position:](AVCaptureDeviceDiscoverySession, "discoverySessionWithDeviceTypes:mediaType:position:", [self allPointCloudDeviceTypes], @"pcld", 0);
 
   return [(AVCaptureDeviceDiscoverySession *)v2 devices];
 }
 
 + (id)allMetadataCameraDevices
 {
-  v2 = [a1 allMetadataCameraDeviceTypes];
-  v3 = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:v2 mediaType:*MEMORY[0x1E69875D8] position:0];
+  allMetadataCameraDeviceTypes = [self allMetadataCameraDeviceTypes];
+  v3 = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:allMetadataCameraDeviceTypes mediaType:*MEMORY[0x1E69875D8] position:0];
 
   return [(AVCaptureDeviceDiscoverySession *)v3 devices];
 }
 
 + (id)allAudioDevices
 {
-  v2 = [a1 allAudioDeviceTypes];
-  v3 = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:v2 mediaType:*MEMORY[0x1E69875A0] position:0];
+  allAudioDeviceTypes = [self allAudioDeviceTypes];
+  v3 = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:allAudioDeviceTypes mediaType:*MEMORY[0x1E69875A0] position:0];
 
   return [(AVCaptureDeviceDiscoverySession *)v3 devices];
 }
 
 + (id)allVirtualDevices
 {
-  v2 = +[AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:mediaType:position:](AVCaptureDeviceDiscoverySession, "discoverySessionWithDeviceTypes:mediaType:position:", [a1 allVirtualDeviceTypes], 0, 0);
+  v2 = +[AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:mediaType:position:](AVCaptureDeviceDiscoverySession, "discoverySessionWithDeviceTypes:mediaType:position:", [self allVirtualDeviceTypes], 0, 0);
 
   return [(AVCaptureDeviceDiscoverySession *)v2 devices];
 }
 
 + (id)allSupportedMultiCamDeviceSets
 {
-  v2 = +[AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:mediaType:position:](AVCaptureDeviceDiscoverySession, "discoverySessionWithDeviceTypes:mediaType:position:", [a1 allVideoDeviceTypes], 0, 0);
+  v2 = +[AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:mediaType:position:](AVCaptureDeviceDiscoverySession, "discoverySessionWithDeviceTypes:mediaType:position:", [self allVideoDeviceTypes], 0, 0);
 
   return [(AVCaptureDeviceDiscoverySession *)v2 supportedMultiCamDeviceSets];
 }

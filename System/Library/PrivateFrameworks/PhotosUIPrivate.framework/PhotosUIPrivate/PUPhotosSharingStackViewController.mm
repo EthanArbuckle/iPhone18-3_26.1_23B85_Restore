@@ -1,8 +1,8 @@
 @interface PUPhotosSharingStackViewController
 - (PHAsset)currentAsset;
-- (PUPhotosSharingStackViewController)initWithAssetFetchResult:(id)a3;
-- (PUPhotosSharingStackViewController)initWithCoder:(id)a3;
-- (PUPhotosSharingStackViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PUPhotosSharingStackViewController)initWithAssetFetchResult:(id)result;
+- (PUPhotosSharingStackViewController)initWithCoder:(id)coder;
+- (PUPhotosSharingStackViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -23,15 +23,15 @@
   [(PXMessagesStackView *)self->_cardsView setHorizontalAlignment:0];
   [(PXMessagesStackView *)self->_cardsView setUseAspectTiles:1];
   v6 = MEMORY[0x1E69C3858];
-  v7 = [(PUPhotosSharingStackViewController *)self assetFetchResult];
-  v8 = [v7 firstObject];
-  v9 = [v8 photoLibrary];
-  v10 = [v6 mediaProviderWithLibrary:v9];
+  assetFetchResult = [(PUPhotosSharingStackViewController *)self assetFetchResult];
+  firstObject = [assetFetchResult firstObject];
+  photoLibrary = [firstObject photoLibrary];
+  v10 = [v6 mediaProviderWithLibrary:photoLibrary];
 
   [(PXMessagesStackView *)self->_cardsView setMediaProvider:v10];
   v11 = MEMORY[0x1E69C37D8];
-  v12 = [(PUPhotosSharingStackViewController *)self assetFetchResult];
-  v13 = [v11 dataSourceManagerWithAssets:v12];
+  assetFetchResult2 = [(PUPhotosSharingStackViewController *)self assetFetchResult];
+  v13 = [v11 dataSourceManagerWithAssets:assetFetchResult2];
 
   [(PXMessagesStackView *)self->_cardsView setDataSourceManager:v13];
   [(PUPhotosSharingStackViewController *)self setView:self->_cardsView];
@@ -39,41 +39,41 @@
 
 - (PHAsset)currentAsset
 {
-  v3 = [(PUPhotosSharingStackViewController *)self assetFetchResult];
-  v4 = [v3 objectAtIndexedSubscript:{-[PXMessagesStackView currentIndex](self->_cardsView, "currentIndex")}];
+  assetFetchResult = [(PUPhotosSharingStackViewController *)self assetFetchResult];
+  v4 = [assetFetchResult objectAtIndexedSubscript:{-[PXMessagesStackView currentIndex](self->_cardsView, "currentIndex")}];
 
   return v4;
 }
 
-- (PUPhotosSharingStackViewController)initWithCoder:(id)a3
+- (PUPhotosSharingStackViewController)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PUPhotosSharingStackViewController.m" lineNumber:40 description:{@"%s is not available as initializer", "-[PUPhotosSharingStackViewController initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotosSharingStackViewController.m" lineNumber:40 description:{@"%s is not available as initializer", "-[PUPhotosSharingStackViewController initWithCoder:]"}];
 
   abort();
 }
 
-- (PUPhotosSharingStackViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PUPhotosSharingStackViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PUPhotosSharingStackViewController.m" lineNumber:36 description:{@"%s is not available as initializer", "-[PUPhotosSharingStackViewController initWithNibName:bundle:]"}];
+  nameCopy = name;
+  bundleCopy = bundle;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotosSharingStackViewController.m" lineNumber:36 description:{@"%s is not available as initializer", "-[PUPhotosSharingStackViewController initWithNibName:bundle:]"}];
 
   abort();
 }
 
-- (PUPhotosSharingStackViewController)initWithAssetFetchResult:(id)a3
+- (PUPhotosSharingStackViewController)initWithAssetFetchResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v9.receiver = self;
   v9.super_class = PUPhotosSharingStackViewController;
   v6 = [(PUPhotosSharingStackViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_assetFetchResult, a3);
+    objc_storeStrong(&v6->_assetFetchResult, result);
   }
 
   return v7;

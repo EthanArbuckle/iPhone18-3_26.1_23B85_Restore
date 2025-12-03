@@ -1,18 +1,18 @@
 @interface CustomTextFieldView.Coordinator
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
 - (_TtCV15WiFiSettingsKit19CustomTextFieldView11Coordinator)init;
 @end
 
 @implementation CustomTextFieldView.Coordinator
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   sub_2741C7E7C();
-  v9 = a3;
-  v10 = self;
-  LOBYTE(length) = sub_2740DDB50(v9, location, length);
+  fieldCopy = field;
+  selfCopy = self;
+  LOBYTE(length) = sub_2740DDB50(fieldCopy, location, length);
 
   return length & 1;
 }

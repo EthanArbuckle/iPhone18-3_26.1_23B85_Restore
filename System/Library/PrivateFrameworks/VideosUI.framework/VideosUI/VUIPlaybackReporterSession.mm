@@ -1,17 +1,17 @@
 @interface VUIPlaybackReporterSession
-+ (id)transitionReasonForMediaControllerStartReason:(id)a3 autoStart:(id)a4;
-+ (id)transitionReasonForMediaControllerStopReason:(id)a3 autoStop:(id)a4;
-+ (id)transitionTypeForMediaControllerAutoTransition:(id)a3;
++ (id)transitionReasonForMediaControllerStartReason:(id)reason autoStart:(id)start;
++ (id)transitionReasonForMediaControllerStopReason:(id)reason autoStop:(id)stop;
++ (id)transitionTypeForMediaControllerAutoTransition:(id)transition;
 - (TVPPlayback)player;
-- (VUIPlaybackReporterSession)initWithPlayer:(id)a3 context:(id)a4;
-- (id)consumeMetadataForKey:(id)a3;
+- (VUIPlaybackReporterSession)initWithPlayer:(id)player context:(id)context;
+- (id)consumeMetadataForKey:(id)key;
 - (id)consumeStartReason;
 - (id)consumeStartType;
 - (id)consumeStopReason;
 - (id)consumeStopType;
 - (id)description;
-- (id)metadataForKey:(id)a3;
-- (void)setMetadata:(id)a3 forKey:(id)a4;
+- (id)metadataForKey:(id)key;
+- (void)setMetadata:(id)metadata forKey:(id)key;
 @end
 
 @implementation VUIPlaybackReporterSession
@@ -76,16 +76,16 @@
   return v2;
 }
 
-+ (id)transitionTypeForMediaControllerAutoTransition:(id)a3
++ (id)transitionTypeForMediaControllerAutoTransition:(id)transition
 {
-  v3 = a3;
+  transitionCopy = transition;
   v4 = *MEMORY[0x1E69AB820];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [transitionCopy BOOLValue];
     v6 = MEMORY[0x1E69AB810];
-    if (!v5)
+    if (!bOOLValue)
     {
       v6 = MEMORY[0x1E69AB818];
     }
@@ -98,11 +98,11 @@
   return v4;
 }
 
-+ (id)transitionReasonForMediaControllerStartReason:(id)a3 autoStart:(id)a4
++ (id)transitionReasonForMediaControllerStartReason:(id)reason autoStart:(id)start
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  reasonCopy = reason;
+  startCopy = start;
   v7 = *MEMORY[0x1E69AB798];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -110,13 +110,13 @@
     goto LABEL_28;
   }
 
-  v8 = [v5 integerValue];
+  integerValue = [reasonCopy integerValue];
   v9 = 0;
-  if (v8 > 7)
+  if (integerValue > 7)
   {
-    if (v8 <= 9)
+    if (integerValue <= 9)
     {
-      if (v8 == 8)
+      if (integerValue == 8)
       {
         v10 = *MEMORY[0x1E69AB768];
 
@@ -133,7 +133,7 @@
       goto LABEL_24;
     }
 
-    switch(v8)
+    switch(integerValue)
     {
       case 10:
         v10 = *MEMORY[0x1E69AB770];
@@ -153,11 +153,11 @@
     }
   }
 
-  else if (v8 <= 1)
+  else if (integerValue <= 1)
   {
-    if (v8)
+    if (integerValue)
     {
-      if (v8 == 1)
+      if (integerValue == 1)
       {
         v10 = *MEMORY[0x1E69AB758];
 
@@ -174,7 +174,7 @@
 
   else
   {
-    switch(v8)
+    switch(integerValue)
     {
       case 2:
         v10 = *MEMORY[0x1E69AB768];
@@ -204,9 +204,9 @@ LABEL_24:
     v15 = 2112;
     v16 = v9;
     v17 = 2112;
-    v18 = v5;
+    v18 = reasonCopy;
     v19 = 2112;
-    v20 = v6;
+    v20 = startCopy;
     _os_log_impl(&dword_1E323F000, v11, OS_LOG_TYPE_DEFAULT, "VUIPlaybackReporterSession (VPAF) -  Resolved start reason:[%@]. _reason:%@(%@) _autoStart:%@", &v13, 0x2Au);
   }
 
@@ -215,11 +215,11 @@ LABEL_28:
   return v7;
 }
 
-+ (id)transitionReasonForMediaControllerStopReason:(id)a3 autoStop:(id)a4
++ (id)transitionReasonForMediaControllerStopReason:(id)reason autoStop:(id)stop
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  reasonCopy = reason;
+  stopCopy = stop;
   v7 = *MEMORY[0x1E69AB798];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -227,13 +227,13 @@ LABEL_28:
     goto LABEL_21;
   }
 
-  v8 = [v5 integerValue];
+  integerValue = [reasonCopy integerValue];
   v9 = 0;
-  if (v8 <= 2)
+  if (integerValue <= 2)
   {
-    if (v8)
+    if (integerValue)
     {
-      if (v8 == 1)
+      if (integerValue == 1)
       {
         v10 = *MEMORY[0x1E69AB7D0];
 
@@ -241,7 +241,7 @@ LABEL_28:
         goto LABEL_17;
       }
 
-      if (v8 == 2)
+      if (integerValue == 2)
       {
         v10 = *MEMORY[0x1E69AB7C0];
 
@@ -259,9 +259,9 @@ LABEL_17:
 
   else
   {
-    if (v8 <= 4)
+    if (integerValue <= 4)
     {
-      if (v8 == 3)
+      if (integerValue == 3)
       {
         v10 = *MEMORY[0x1E69AB7A8];
 
@@ -278,7 +278,7 @@ LABEL_17:
       goto LABEL_17;
     }
 
-    if (v8 == 5)
+    if (integerValue == 5)
     {
       v10 = *MEMORY[0x1E69AB7C0];
 
@@ -286,7 +286,7 @@ LABEL_17:
       goto LABEL_17;
     }
 
-    if (v8 == 6)
+    if (integerValue == 6)
     {
       v10 = *MEMORY[0x1E69AB7C0];
 
@@ -303,9 +303,9 @@ LABEL_17:
     v15 = 2112;
     v16 = v9;
     v17 = 2112;
-    v18 = v5;
+    v18 = reasonCopy;
     v19 = 2112;
-    v20 = v6;
+    v20 = stopCopy;
     _os_log_impl(&dword_1E323F000, v11, OS_LOG_TYPE_DEFAULT, "VUIPlaybackReporterSession (VPAF) -  Resolved stop reason:[%@] _reason:%@(%@) _autoStop:%@", &v13, 0x2Au);
   }
 
@@ -314,27 +314,27 @@ LABEL_21:
   return v7;
 }
 
-- (VUIPlaybackReporterSession)initWithPlayer:(id)a3 context:(id)a4
+- (VUIPlaybackReporterSession)initWithPlayer:(id)player context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 currentMediaItem];
+  playerCopy = player;
+  contextCopy = context;
+  currentMediaItem = [playerCopy currentMediaItem];
 
-  if (v8)
+  if (currentMediaItem)
   {
     v18.receiver = self;
     v18.super_class = VUIPlaybackReporterSession;
     v9 = [(VUIPlaybackReporterSession *)&v18 init];
     if (v9)
     {
-      v10 = [MEMORY[0x1E696AFB0] UUID];
-      v11 = [v10 UUIDString];
-      v12 = [v11 substringToIndex:7];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      v12 = [uUIDString substringToIndex:7];
       UUID = v9->_UUID;
       v9->_UUID = v12;
 
-      objc_storeWeak(&v9->_player, v6);
-      objc_storeStrong(&v9->_context, a4);
+      objc_storeWeak(&v9->_player, playerCopy);
+      objc_storeStrong(&v9->_context, context);
       v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
       metadata = v9->_metadata;
       v9->_metadata = v14;
@@ -343,15 +343,15 @@ LABEL_21:
     }
 
     self = v9;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 - (id)description
@@ -360,53 +360,53 @@ LABEL_21:
   v9.receiver = self;
   v9.super_class = VUIPlaybackReporterSession;
   v4 = [(VUIPlaybackReporterSession *)&v9 description];
-  v5 = [(VUIPlaybackReporterSession *)self player];
+  player = [(VUIPlaybackReporterSession *)self player];
   [(VUIPlaybackReporterSession *)self reportingEnabled];
   v6 = VUIBoolLogString();
-  v7 = [v3 stringWithFormat:@"%@ %@ Enabled:%@", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"%@ %@ Enabled:%@", v4, player, v6];
 
   return v7;
 }
 
-- (id)metadataForKey:(id)a3
+- (id)metadataForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_metadataLock);
-  v5 = [(NSMutableDictionary *)self->_metadata objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_metadata objectForKey:keyCopy];
 
   os_unfair_lock_unlock(&self->_metadataLock);
 
   return v5;
 }
 
-- (void)setMetadata:(id)a3 forKey:(id)a4
+- (void)setMetadata:(id)metadata forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  if (v6)
+  metadataCopy = metadata;
+  keyCopy = key;
+  if (keyCopy)
   {
     os_unfair_lock_lock(&self->_metadataLock);
     metadata = self->_metadata;
-    if (v8)
+    if (metadataCopy)
     {
-      [(NSMutableDictionary *)metadata setObject:v8 forKey:v6];
+      [(NSMutableDictionary *)metadata setObject:metadataCopy forKey:keyCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)metadata removeObjectForKey:v6];
+      [(NSMutableDictionary *)metadata removeObjectForKey:keyCopy];
     }
 
     os_unfair_lock_unlock(&self->_metadataLock);
   }
 }
 
-- (id)consumeMetadataForKey:(id)a3
+- (id)consumeMetadataForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_metadataLock);
-  v5 = [(NSMutableDictionary *)self->_metadata objectForKey:v4];
-  [(NSMutableDictionary *)self->_metadata removeObjectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_metadata objectForKey:keyCopy];
+  [(NSMutableDictionary *)self->_metadata removeObjectForKey:keyCopy];
 
   os_unfair_lock_unlock(&self->_metadataLock);
 

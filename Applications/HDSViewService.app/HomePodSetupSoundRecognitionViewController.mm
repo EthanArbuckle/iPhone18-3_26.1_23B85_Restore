@@ -1,5 +1,5 @@
 @interface HomePodSetupSoundRecognitionViewController
-- (_TtC14HDSViewService42HomePodSetupSoundRecognitionViewController)initWithContentView:(id)a3;
+- (_TtC14HDSViewService42HomePodSetupSoundRecognitionViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -7,14 +7,14 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000939A0();
 }
 
-- (_TtC14HDSViewService42HomePodSetupSoundRecognitionViewController)initWithContentView:(id)a3
+- (_TtC14HDSViewService42HomePodSetupSoundRecognitionViewController)initWithContentView:(id)view
 {
-  v4 = a3;
-  v5 = sub_100095084(a3);
+  viewCopy = view;
+  v5 = sub_100095084(view);
 
   return v5;
 }

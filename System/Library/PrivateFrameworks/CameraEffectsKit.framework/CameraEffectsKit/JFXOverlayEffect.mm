@@ -4,93 +4,93 @@
 - (BOOL)JFX_hasPosterFrame;
 - (BOOL)JFX_posterFrameIsCachable;
 - (BOOL)JFX_shouldEnableDynamicLineSpacingForDiacritics;
-- (BOOL)enablePresentationState:(BOOL)a3;
+- (BOOL)enablePresentationState:(BOOL)state;
 - (BOOL)hasBackground;
 - (BOOL)hasDynamicText;
-- (BOOL)hitTestPoint:(CGPoint)a3 atTime:(id *)a4 forcePosterFrame:(BOOL)a5 relativeTo:(CGRect)a6 basisOrigin:(int)a7 adjustForMinimumSize:(BOOL)a8 normalizedMinimumSize:(id)a9;
+- (BOOL)hitTestPoint:(CGPoint)point atTime:(id *)time forcePosterFrame:(BOOL)frame relativeTo:(CGRect)to basisOrigin:(int)origin adjustForMinimumSize:(BOOL)size normalizedMinimumSize:(id)minimumSize;
 - (BOOL)includeDropShadowWhenPositioningCloseButton;
-- (BOOL)isAppearanceEqual:(id)a3 forPurpose:(unint64_t)a4;
+- (BOOL)isAppearanceEqual:(id)equal forPurpose:(unint64_t)purpose;
 - (BOOL)isCurrentlyTracking;
 - (BOOL)isEmoji;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isHidden;
 - (BOOL)isTailFlipped;
 - (BOOL)isTextFlipped;
 - (BOOL)isTracked;
 - (BOOL)loopedRangeRenderIsCacheable;
-- (BOOL)objectBounds:(CGRect *)a3 time:(id *)a4 forcePosterFrame:(BOOL)a5 includeDropShadow:(BOOL)a6 includeMasks:(BOOL)a7;
+- (BOOL)objectBounds:(CGRect *)bounds time:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow includeMasks:(BOOL)masks;
 - (BOOL)supportsFlippingTail;
 - (BOOL)supportsFlippingText;
 - (BOOL)wasDynamicTextSet;
-- (CGAffineTransform)addTransform:(SEL)a3 withComponentTime:(CGAffineTransform *)a4 relativeTo:(id *)a5 basisOrigin:(CGRect)a6;
-- (CGAffineTransform)addTransform:(SEL)a3 withComponentTime:(CGAffineTransform *)a4 relativeTo:(id *)a5 basisOrigin:(CGRect)a6 restrictToBounds:(int)a7;
-- (CGPath)newPathsForHitTestingAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 relativeTo:(CGRect)a5 basisOrigin:(int)a6 adjustForMinimumSize:(BOOL)a7 normalizedMinimumSize:(id)a8 outExpandedPath:(const CGPath *)a9;
+- (CGAffineTransform)addTransform:(SEL)transform withComponentTime:(CGAffineTransform *)time relativeTo:(id *)to basisOrigin:(CGRect)origin;
+- (CGAffineTransform)addTransform:(SEL)transform withComponentTime:(CGAffineTransform *)time relativeTo:(id *)to basisOrigin:(CGRect)origin restrictToBounds:(int)bounds;
+- (CGPath)newPathsForHitTestingAtTime:(id *)time forcePosterFrame:(BOOL)frame relativeTo:(CGRect)to basisOrigin:(int)origin adjustForMinimumSize:(BOOL)size normalizedMinimumSize:(id)minimumSize outExpandedPath:(const CGPath *)path;
 - (CGPoint)closeButtonInset;
-- (CGPoint)effectCenterAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 includeTransformAnimation:(BOOL)a5 includePlayableAspectScale:(BOOL)a6 relativeTo:(CGRect)a7 basisOrigin:(int)a8;
+- (CGPoint)effectCenterAtTime:(id *)time forcePosterFrame:(BOOL)frame includeTransformAnimation:(BOOL)animation includePlayableAspectScale:(BOOL)scale relativeTo:(CGRect)to basisOrigin:(int)origin;
 - (CGPoint)hitAreaScale;
-- (CGPoint)screenPointToEffectPoint:(CGPoint)a3 withComponentTime:(id *)a4 relativeTo:(CGRect)a5 basisOrigin:(int)a6;
-- (CGRect)hitAreaBoundingFrameAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 includeDropShadow:(BOOL)a5 adjustForMinimumSize:(BOOL)a6 normalizedMinimumSize:(id)a7 relativeTo:(CGRect)a8 basisOrigin:(int)a9;
-- (CGRect)imageFrameAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 includeDropShadow:(BOOL)a5 relativeTo:(CGRect)a6 basisOrigin:(int)a7;
-- (JFXOverlayEffect)initWithCoder:(id)a3;
-- (JFXOverlayEffect)initWithEffectID:(id)a3;
+- (CGPoint)screenPointToEffectPoint:(CGPoint)point withComponentTime:(id *)time relativeTo:(CGRect)to basisOrigin:(int)origin;
+- (CGRect)hitAreaBoundingFrameAtTime:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow adjustForMinimumSize:(BOOL)size normalizedMinimumSize:(id)minimumSize relativeTo:(CGRect)to basisOrigin:(int)origin;
+- (CGRect)imageFrameAtTime:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow relativeTo:(CGRect)to basisOrigin:(int)origin;
+- (JFXOverlayEffect)initWithCoder:(id)coder;
+- (JFXOverlayEffect)initWithEffectID:(id)d;
 - (NSString)dynamicTextString;
-- (PVCGPointQuad)cornersAtTime:(SEL)a3 forcePosterFrame:(id *)a4 includeDropShadow:(BOOL)a5 scale:(BOOL)a6 relativeTo:(CGPoint)a7 basisOrigin:(CGRect)a8;
-- (double)JFX_adjustedMinimumSizeFromNormalizedMinimumSize:(id)a3 atTime:(id *)a4 forcePosterFrame:(BOOL)a5 relativeTo:(CGRect)a6 basisOrigin:(int)a7;
+- (PVCGPointQuad)cornersAtTime:(SEL)time forcePosterFrame:(id *)frame includeDropShadow:(BOOL)shadow scale:(BOOL)scale relativeTo:(CGPoint)to basisOrigin:(CGRect)origin;
+- (double)JFX_adjustedMinimumSizeFromNormalizedMinimumSize:(id)size atTime:(id *)time forcePosterFrame:(BOOL)frame relativeTo:(CGRect)to basisOrigin:(int)origin;
 - (double)customPickerRotation;
 - (double)pickerScale;
-- (double)transformAtTime:(uint64_t)a3@<X3> forcePosterFrame:(uint64_t)a4@<X4> includeTransformAnimation:(char)a5@<W5> includePlayableAspectScale:(uint64_t)a6@<X6> relativeTo:(__int128 *)a7@<X8> basisOrigin:(float64_t)a8@<D2>;
+- (double)transformAtTime:(uint64_t)time@<X3> forcePosterFrame:(uint64_t)frame@<X4> includeTransformAnimation:(char)animation@<W5> includePlayableAspectScale:(uint64_t)scale@<X6> relativeTo:(__int128 *)to@<X8> basisOrigin:(float64_t)origin@<D2>;
 - (id)JFX_dynamicTextPlaceHolderText;
-- (id)JFX_stringAtIndex:(unint64_t)a3;
+- (id)JFX_stringAtIndex:(unint64_t)index;
 - (id)accessibilityName;
 - (id)contentProperties;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)customPrimaryFillColor;
 - (id)osfaToneMappingOption;
 - (id)overlayContentDataSource;
 - (id)serializableEffectParameters;
 - (int64_t)rotatedAspectRatio;
-- (uint64_t)transformAtTime:(__int128 *)a3 forcePosterFrame:(uint64_t)a4 relativeTo:(uint64_t)a5 basisOrigin:;
+- (uint64_t)transformAtTime:(__int128 *)time forcePosterFrame:(uint64_t)frame relativeTo:(uint64_t)to basisOrigin:;
 - (unint64_t)dynamicTextType;
 - (unint64_t)hash;
 - (unint64_t)maxCharacters;
-- (void)JFX_applyEffectParametersForFaceTrackingTransform:(id)a3;
+- (void)JFX_applyEffectParametersForFaceTrackingTransform:(id)transform;
 - (void)JFX_setupTrackingProps;
 - (void)JFX_updateInteractiveMode;
-- (void)applyScaleToFitFrame:(CGRect)a3 withComponentTime:(id *)a4 relativeRect:(CGRect)a5 restrictToBounds:(BOOL)a6;
-- (void)encodeWithCoder:(id)a3;
+- (void)applyScaleToFitFrame:(CGRect)frame withComponentTime:(id *)time relativeRect:(CGRect)rect restrictToBounds:(BOOL)bounds;
+- (void)encodeWithCoder:(id)coder;
 - (void)renderEffectWillLoad;
 - (void)resetDynamicTextString;
 - (void)resumeTracking;
-- (void)rotate:(double)a3 aroundPoint:(CGPoint)a4 withComponentTime:(id *)a5 relativeTo:(CGRect)a6 basisOrigin:(int)a7;
-- (void)setDynamicTextString:(id)a3;
-- (void)setFaceTrackingTransform:(id)a3;
-- (void)setFlipTail:(BOOL)a3;
-- (void)setFlipText:(BOOL)a3;
-- (void)setForceRenderAtPosterFrame:(BOOL)a3;
+- (void)rotate:(double)rotate aroundPoint:(CGPoint)point withComponentTime:(id *)time relativeTo:(CGRect)to basisOrigin:(int)origin;
+- (void)setDynamicTextString:(id)string;
+- (void)setFaceTrackingTransform:(id)transform;
+- (void)setFlipTail:(BOOL)tail;
+- (void)setFlipText:(BOOL)text;
+- (void)setForceRenderAtPosterFrame:(BOOL)frame;
 - (void)setImageSequencePathToBundledAssets;
-- (void)setPosition:(CGPoint)a3 withComponentTime:(id *)a4 relativeTo:(CGRect)a5 basisOrigin:(int)a6 restrictToBounds:(BOOL)a7;
-- (void)setSingleLineScaleThreshold:(double)a3;
-- (void)setTrackingProps:(id)a3;
+- (void)setPosition:(CGPoint)position withComponentTime:(id *)time relativeTo:(CGRect)to basisOrigin:(int)origin restrictToBounds:(BOOL)bounds;
+- (void)setSingleLineScaleThreshold:(double)threshold;
+- (void)setTrackingProps:(id)props;
 - (void)suspendTracking;
-- (void)trackedEffectProperties:(id)a3 didChangeTrackingType:(BOOL)a4 didChangeEnabled:(BOOL)a5;
-- (void)updateDynamicTextWithCompletionBlock:(id)a3;
-- (void)updateRenderSizeMaintainingAppearance:(CGSize)a3 withComponentTime:(id *)a4;
-- (void)updateRenderSizeMaintainingRelativeSizeAndPosition:(CGSize)a3 toSize:(CGSize)a4 withComponentTime:(id *)a5;
-- (void)updateRenderSizeMaintainingSizeAndPositionRelativeToMedia:(CGSize)a3 mediaSize:(CGSize)a4 mediaContentMode:(int)a5;
+- (void)trackedEffectProperties:(id)properties didChangeTrackingType:(BOOL)type didChangeEnabled:(BOOL)enabled;
+- (void)updateDynamicTextWithCompletionBlock:(id)block;
+- (void)updateRenderSizeMaintainingAppearance:(CGSize)appearance withComponentTime:(id *)time;
+- (void)updateRenderSizeMaintainingRelativeSizeAndPosition:(CGSize)position toSize:(CGSize)size withComponentTime:(id *)time;
+- (void)updateRenderSizeMaintainingSizeAndPositionRelativeToMedia:(CGSize)media mediaSize:(CGSize)size mediaContentMode:(int)mode;
 @end
 
 @implementation JFXOverlayEffect
 
-- (JFXOverlayEffect)initWithEffectID:(id)a3
+- (JFXOverlayEffect)initWithEffectID:(id)d
 {
   v16.receiver = self;
   v16.super_class = JFXOverlayEffect;
-  v3 = [(JFXEffect *)&v16 initWithEffectID:a3];
+  v3 = [(JFXEffect *)&v16 initWithEffectID:d];
   v4 = v3;
   if (v3)
   {
-    v5 = [(JFXOverlayEffect *)v3 JFX_posterFrameIsCachable];
-    v6 = [MEMORY[0x277CCABB0] numberWithBool:v5];
+    jFX_posterFrameIsCachable = [(JFXOverlayEffect *)v3 JFX_posterFrameIsCachable];
+    v6 = [MEMORY[0x277CCABB0] numberWithBool:jFX_posterFrameIsCachable];
     [(JFXEffect *)v4 setParameter:v6 forKey:*MEMORY[0x277D41A50]];
 
     if ([(JFXOverlayEffect *)v4 JFX_shouldEnableDynamicLineSpacingForDiacritics])
@@ -99,8 +99,8 @@
     }
 
     [(JFXTextEffect *)v4 setupLocalizedText];
-    v7 = [MEMORY[0x277CCA8D8] jfxBundle];
-    v8 = [v7 localizedStringForKey:@"Overlay Text Single Line Scale Threshold" value:&stru_28553D028 table:0];
+    jfxBundle = [MEMORY[0x277CCA8D8] jfxBundle];
+    v8 = [jfxBundle localizedStringForKey:@"Overlay Text Single Line Scale Threshold" value:&stru_28553D028 table:0];
 
     [v8 doubleValue];
     [(JFXOverlayEffect *)v4 setSingleLineScaleThreshold:?];
@@ -116,16 +116,16 @@
       [(JFXEffect *)v4 setParameter:v12 forKey:@"PickerRotation"];
     }
 
-    v13 = [(JFXOverlayEffect *)v4 customPrimaryFillColor];
-    if (v13)
+    customPrimaryFillColor = [(JFXOverlayEffect *)v4 customPrimaryFillColor];
+    if (customPrimaryFillColor)
     {
-      [(JFXEffect *)v4 setParameter:v13 forKey:@"PrimaryFillColor"];
+      [(JFXEffect *)v4 setParameter:customPrimaryFillColor forKey:@"PrimaryFillColor"];
     }
 
-    v14 = [(JFXOverlayEffect *)v4 osfaToneMappingOption];
-    if (v14)
+    osfaToneMappingOption = [(JFXOverlayEffect *)v4 osfaToneMappingOption];
+    if (osfaToneMappingOption)
     {
-      [(JFXEffect *)v4 setParameter:v14 forKey:*MEMORY[0x277D41A30]];
+      [(JFXEffect *)v4 setParameter:osfaToneMappingOption forKey:*MEMORY[0x277D41A30]];
     }
 
     atomic_store(0, &v4->_isInteractiveEditingCount);
@@ -135,41 +135,41 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = JFXOverlayEffect;
-  v4 = [(JFXTextEffect *)&v12 copyWithZone:a3];
-  v5 = [(JFXOverlayEffect *)self trackingProps];
-  v6 = [v5 copy];
+  v4 = [(JFXTextEffect *)&v12 copyWithZone:zone];
+  trackingProps = [(JFXOverlayEffect *)self trackingProps];
+  v6 = [trackingProps copy];
   [v4 setTrackingProps:v6];
 
-  v7 = [(JFXOverlayEffect *)self faceTrackingTransform];
-  v8 = [v7 copy];
+  faceTrackingTransform = [(JFXOverlayEffect *)self faceTrackingTransform];
+  v8 = [faceTrackingTransform copy];
   [v4 setFaceTrackingTransform:v8];
 
-  v9 = [(JFXOverlayEffect *)self accessibilityOverlayEffectLabel];
-  v10 = [v9 copy];
+  accessibilityOverlayEffectLabel = [(JFXOverlayEffect *)self accessibilityOverlayEffectLabel];
+  v10 = [accessibilityOverlayEffectLabel copy];
   [v4 setAccessibilityOverlayEffectLabel:v10];
 
   [v4 setPrefersTrackingNotActivateAutomatically:{-[JFXOverlayEffect prefersTrackingNotActivateAutomatically](self, "prefersTrackingNotActivateAutomatically")}];
   return v4;
 }
 
-- (JFXOverlayEffect)initWithCoder:(id)a3
+- (JFXOverlayEffect)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = JFXOverlayEffect;
-  v5 = [(JFXEffect *)&v11 initWithCoder:v4];
+  v5 = [(JFXEffect *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kJTAccessibilityOverlayEffectLabelKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kJTAccessibilityOverlayEffectLabelKey"];
     accessibilityOverlayEffectLabel = v5->_accessibilityOverlayEffectLabel;
     v5->_accessibilityOverlayEffectLabel = v6;
 
-    v5->_prefersTrackingNotActivateAutomatically = [v4 decodeBoolForKey:@"OverlayPrefersTrackingNotActivateAutomaticallyKey"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"JTOverlayEffectTrackingPropsKey"];
+    v5->_prefersTrackingNotActivateAutomatically = [coderCopy decodeBoolForKey:@"OverlayPrefersTrackingNotActivateAutomaticallyKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"JTOverlayEffectTrackingPropsKey"];
     trackingProps = v5->_trackingProps;
     v5->_trackingProps = v8;
 
@@ -179,27 +179,27 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = JFXOverlayEffect;
-  v4 = a3;
-  [(JFXEffect *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(JFXEffect *)&v7 encodeWithCoder:coderCopy];
   v5 = [(JFXOverlayEffect *)self trackingProps:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"JTOverlayEffectTrackingPropsKey"];
+  [coderCopy encodeObject:v5 forKey:@"JTOverlayEffectTrackingPropsKey"];
 
-  v6 = [(JFXOverlayEffect *)self accessibilityOverlayEffectLabel];
-  [v4 encodeObject:v6 forKey:@"kJTAccessibilityOverlayEffectLabelKey"];
+  accessibilityOverlayEffectLabel = [(JFXOverlayEffect *)self accessibilityOverlayEffectLabel];
+  [coderCopy encodeObject:accessibilityOverlayEffectLabel forKey:@"kJTAccessibilityOverlayEffectLabelKey"];
 
-  [v4 encodeBool:-[JFXOverlayEffect prefersTrackingNotActivateAutomatically](self forKey:{"prefersTrackingNotActivateAutomatically"), @"OverlayPrefersTrackingNotActivateAutomaticallyKey"}];
+  [coderCopy encodeBool:-[JFXOverlayEffect prefersTrackingNotActivateAutomatically](self forKey:{"prefersTrackingNotActivateAutomatically"), @"OverlayPrefersTrackingNotActivateAutomaticallyKey"}];
 }
 
 - (id)serializableEffectParameters
 {
   v5.receiver = self;
   v5.super_class = JFXOverlayEffect;
-  v2 = [(JFXEffect *)&v5 serializableEffectParameters];
-  v3 = [v2 mutableCopy];
+  serializableEffectParameters = [(JFXEffect *)&v5 serializableEffectParameters];
+  v3 = [serializableEffectParameters mutableCopy];
 
   [v3 removeObjectForKey:*MEMORY[0x277D41B68]];
   [v3 removeObjectForKey:*MEMORY[0x277D41B58]];
@@ -209,17 +209,17 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = JFXOverlayEffect;
-  if ([(JFXEffect *)&v10 isEqual:v4])
+  if ([(JFXEffect *)&v10 isEqual:equalCopy])
   {
-    v5 = [v4 trackingProps];
-    v6 = [v5 currentTrackingType];
-    v7 = [(JFXOverlayEffect *)self trackingProps];
-    v8 = v6 == [v7 currentTrackingType];
+    trackingProps = [equalCopy trackingProps];
+    currentTrackingType = [trackingProps currentTrackingType];
+    trackingProps2 = [(JFXOverlayEffect *)self trackingProps];
+    v8 = currentTrackingType == [trackingProps2 currentTrackingType];
   }
 
   else
@@ -237,37 +237,37 @@
   return [(JFXEffect *)&v3 hash];
 }
 
-- (BOOL)isAppearanceEqual:(id)a3 forPurpose:(unint64_t)a4
+- (BOOL)isAppearanceEqual:(id)equal forPurpose:(unint64_t)purpose
 {
-  v6 = a3;
+  equalCopy = equal;
   v25.receiver = self;
   v25.super_class = JFXOverlayEffect;
-  if ([(JFXTextEffect *)&v25 isAppearanceEqual:v6 forPurpose:a4])
+  if ([(JFXTextEffect *)&v25 isAppearanceEqual:equalCopy forPurpose:purpose])
   {
-    v7 = v6;
-    v8 = [v7 trackingProps];
-    v9 = [v8 currentTrackingType];
-    v10 = [(JFXOverlayEffect *)self trackingProps];
-    v11 = [v10 currentTrackingType];
+    v7 = equalCopy;
+    trackingProps = [v7 trackingProps];
+    currentTrackingType = [trackingProps currentTrackingType];
+    trackingProps2 = [(JFXOverlayEffect *)self trackingProps];
+    currentTrackingType2 = [trackingProps2 currentTrackingType];
 
     v23 = 0;
-    if (v9 == v11)
+    if (currentTrackingType == currentTrackingType2)
     {
       v12 = MEMORY[0x277D41690];
-      v13 = [(JFXEffect *)self topLevelTransformObject];
-      v14 = [v7 topLevelTransformObject];
-      LODWORD(v12) = [v12 isMatrix:v13 equivalentTo:v14];
+      topLevelTransformObject = [(JFXEffect *)self topLevelTransformObject];
+      topLevelTransformObject2 = [v7 topLevelTransformObject];
+      LODWORD(v12) = [v12 isMatrix:topLevelTransformObject equivalentTo:topLevelTransformObject2];
 
       if (v12)
       {
-        v15 = [(JFXOverlayEffect *)self trackingProps];
-        v16 = [v15 currentTrackingType];
-        v17 = [v7 trackingProps];
-        v18 = [v17 currentTrackingType];
+        trackingProps3 = [(JFXOverlayEffect *)self trackingProps];
+        currentTrackingType3 = [trackingProps3 currentTrackingType];
+        trackingProps4 = [v7 trackingProps];
+        currentTrackingType4 = [trackingProps4 currentTrackingType];
 
-        if (v16 == v18)
+        if (currentTrackingType3 == currentTrackingType4)
         {
-          if (a4 == 1 || !-[JFXOverlayEffect isCurrentlyTracking](self, "isCurrentlyTracking") || (-[JFXOverlayEffect faceTrackingTransform](self, "faceTrackingTransform"), v19 = objc_claimAutoreleasedReturnValue(), [v7 faceTrackingTransform], v20 = objc_claimAutoreleasedReturnValue(), -[JFXOverlayEffect trackingProps](self, "trackingProps"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v19, "isEqual:forTrackingType:", v20, objc_msgSend(v21, "currentTrackingType")), v21, v20, v19, v22))
+          if (purpose == 1 || !-[JFXOverlayEffect isCurrentlyTracking](self, "isCurrentlyTracking") || (-[JFXOverlayEffect faceTrackingTransform](self, "faceTrackingTransform"), v19 = objc_claimAutoreleasedReturnValue(), [v7 faceTrackingTransform], v20 = objc_claimAutoreleasedReturnValue(), -[JFXOverlayEffect trackingProps](self, "trackingProps"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v19, "isEqual:forTrackingType:", v20, objc_msgSend(v21, "currentTrackingType")), v21, v20, v19, v22))
           {
             v23 = 1;
           }
@@ -286,21 +286,21 @@
 
 - (BOOL)isEmoji
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (v3)
+  if (contentDataSource)
   {
-    v4 = [(JFXOverlayEffect *)self overlayContentDataSource];
-    v5 = [v4 isEmoji];
+    overlayContentDataSource = [(JFXOverlayEffect *)self overlayContentDataSource];
+    isEmoji = [overlayContentDataSource isEmoji];
   }
 
   else
   {
-    v4 = [(JFXEffect *)self effectID];
-    v5 = [v4 isEqualToString:*MEMORY[0x277D417D0]];
+    overlayContentDataSource = [(JFXEffect *)self effectID];
+    isEmoji = [overlayContentDataSource isEqualToString:*MEMORY[0x277D417D0]];
   }
 
-  v6 = v5;
+  v6 = isEmoji;
 
   return v6;
 }
@@ -332,118 +332,118 @@
 
 - (id)overlayContentDataSource
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (v3 && (-[JFXEffect contentDataSource](self, "contentDataSource"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 conformsToProtocol:&unk_2855E40B8], v4, v5))
+  if (contentDataSource && (-[JFXEffect contentDataSource](self, "contentDataSource"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 conformsToProtocol:&unk_2855E40B8], v4, v5))
   {
-    v6 = [(JFXEffect *)self contentDataSource];
+    contentDataSource2 = [(JFXEffect *)self contentDataSource];
   }
 
   else
   {
-    v6 = 0;
+    contentDataSource2 = 0;
   }
 
-  return v6;
+  return contentDataSource2;
 }
 
 - (id)contentProperties
 {
-  v3 = [(JFXOverlayEffect *)self overlayContentDataSource];
-  if (v3)
+  overlayContentDataSource = [(JFXOverlayEffect *)self overlayContentDataSource];
+  if (overlayContentDataSource)
   {
     v31.receiver = self;
     v31.super_class = JFXOverlayEffect;
-    v4 = [(JFXTextEffect *)&v31 contentProperties];
-    v5 = [v4 mutableCopy];
+    contentProperties = [(JFXTextEffect *)&v31 contentProperties];
+    v5 = [contentProperties mutableCopy];
 
-    v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:15];
-    v7 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "isLabel")}];
-    [v6 setObject:v7 forKeyedSubscript:@"isLabel"];
+    contentProperties2 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:15];
+    v7 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(overlayContentDataSource, "isLabel")}];
+    [contentProperties2 setObject:v7 forKeyedSubscript:@"isLabel"];
 
-    v8 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "loopRenderRangeIsCachable")}];
-    [v6 setObject:v8 forKeyedSubscript:@"loopRenderRangeIsCachable"];
+    v8 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(overlayContentDataSource, "loopRenderRangeIsCachable")}];
+    [contentProperties2 setObject:v8 forKeyedSubscript:@"loopRenderRangeIsCachable"];
 
-    v9 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "doesNotHavePosterFrame")}];
-    [v6 setObject:v9 forKeyedSubscript:@"doesNotHavePosterFrame"];
+    v9 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(overlayContentDataSource, "doesNotHavePosterFrame")}];
+    [contentProperties2 setObject:v9 forKeyedSubscript:@"doesNotHavePosterFrame"];
 
-    v10 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "posterFrameIsNotCachable")}];
-    [v6 setObject:v10 forKeyedSubscript:@"posterFrameIsNotCachable"];
+    v10 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(overlayContentDataSource, "posterFrameIsNotCachable")}];
+    [contentProperties2 setObject:v10 forKeyedSubscript:@"posterFrameIsNotCachable"];
 
-    v11 = [v3 initialRotation];
+    initialRotation = [overlayContentDataSource initialRotation];
 
-    if (v11)
+    if (initialRotation)
     {
-      v12 = [v3 initialRotation];
-      [v6 setObject:v12 forKeyedSubscript:@"initialRotation"];
+      initialRotation2 = [overlayContentDataSource initialRotation];
+      [contentProperties2 setObject:initialRotation2 forKeyedSubscript:@"initialRotation"];
     }
 
-    v13 = [v3 primaryFillColor];
+    primaryFillColor = [overlayContentDataSource primaryFillColor];
 
-    if (v13)
+    if (primaryFillColor)
     {
-      v14 = [v3 primaryFillColor];
-      [v6 setObject:v14 forKeyedSubscript:@"primaryFillColor"];
+      primaryFillColor2 = [overlayContentDataSource primaryFillColor];
+      [contentProperties2 setObject:primaryFillColor2 forKeyedSubscript:@"primaryFillColor"];
     }
 
-    v15 = [v3 hitAreaScale];
+    hitAreaScale = [overlayContentDataSource hitAreaScale];
 
-    if (v15)
+    if (hitAreaScale)
     {
-      v16 = [v3 hitAreaScale];
-      [v6 setObject:v16 forKeyedSubscript:@"hitAreaScale"];
+      hitAreaScale2 = [overlayContentDataSource hitAreaScale];
+      [contentProperties2 setObject:hitAreaScale2 forKeyedSubscript:@"hitAreaScale"];
     }
 
-    v17 = [v3 pickerScale];
+    pickerScale = [overlayContentDataSource pickerScale];
 
-    if (v17)
+    if (pickerScale)
     {
-      v18 = [v3 pickerScale];
-      [v6 setObject:v18 forKeyedSubscript:@"pickerScale"];
+      pickerScale2 = [overlayContentDataSource pickerScale];
+      [contentProperties2 setObject:pickerScale2 forKeyedSubscript:@"pickerScale"];
     }
 
-    v19 = [v3 fontSize];
+    fontSize = [overlayContentDataSource fontSize];
 
-    if (v19)
+    if (fontSize)
     {
-      v20 = [v3 fontSize];
-      [v6 setObject:v20 forKeyedSubscript:@"fontSize"];
+      fontSize2 = [overlayContentDataSource fontSize];
+      [contentProperties2 setObject:fontSize2 forKeyedSubscript:@"fontSize"];
     }
 
-    v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "dynamicTextType")}];
-    [v6 setObject:v21 forKeyedSubscript:@"dynamicTextType"];
+    v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(overlayContentDataSource, "dynamicTextType")}];
+    [contentProperties2 setObject:v21 forKeyedSubscript:@"dynamicTextType"];
 
-    v22 = [v3 dynamicTextPlaceholder];
+    dynamicTextPlaceholder = [overlayContentDataSource dynamicTextPlaceholder];
 
-    if (v22)
+    if (dynamicTextPlaceholder)
     {
-      v23 = [v3 dynamicTextPlaceholder];
-      [v6 setObject:v23 forKeyedSubscript:@"dynamicTextPlaceholder"];
+      dynamicTextPlaceholder2 = [overlayContentDataSource dynamicTextPlaceholder];
+      [contentProperties2 setObject:dynamicTextPlaceholder2 forKeyedSubscript:@"dynamicTextPlaceholder"];
     }
 
-    v24 = [v3 shouldDisableDynamicLineSpacingForDiatrics];
+    shouldDisableDynamicLineSpacingForDiatrics = [overlayContentDataSource shouldDisableDynamicLineSpacingForDiatrics];
 
-    if (v24)
+    if (shouldDisableDynamicLineSpacingForDiatrics)
     {
-      v25 = [v3 shouldDisableDynamicLineSpacingForDiatrics];
-      [v6 setObject:v25 forKeyedSubscript:@"shouldDisableDynamicLineSpacingForDiatrics"];
+      shouldDisableDynamicLineSpacingForDiatrics2 = [overlayContentDataSource shouldDisableDynamicLineSpacingForDiatrics];
+      [contentProperties2 setObject:shouldDisableDynamicLineSpacingForDiatrics2 forKeyedSubscript:@"shouldDisableDynamicLineSpacingForDiatrics"];
     }
 
-    v26 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "isEmoji")}];
-    [v6 setObject:v26 forKeyedSubscript:@"isEmoji"];
+    v26 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(overlayContentDataSource, "isEmoji")}];
+    [contentProperties2 setObject:v26 forKeyedSubscript:@"isEmoji"];
 
-    v27 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "isTextBakedIn")}];
-    [v6 setObject:v27 forKeyedSubscript:@"isTextBakedIn"];
+    v27 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(overlayContentDataSource, "isTextBakedIn")}];
+    [contentProperties2 setObject:v27 forKeyedSubscript:@"isTextBakedIn"];
 
-    v28 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "requireEmojiRenderingWorkaround")}];
-    [v6 setObject:v28 forKeyedSubscript:@"requireEmojiRenderingWorkaround"];
+    v28 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(overlayContentDataSource, "requireEmojiRenderingWorkaround")}];
+    [contentProperties2 setObject:v28 forKeyedSubscript:@"requireEmojiRenderingWorkaround"];
 
     if (v5)
     {
-      [v5 addEntriesFromDictionary:v6];
+      [v5 addEntriesFromDictionary:contentProperties2];
       v29 = v5;
 
-      v6 = v29;
+      contentProperties2 = v29;
     }
   }
 
@@ -451,21 +451,21 @@
   {
     v32.receiver = self;
     v32.super_class = JFXOverlayEffect;
-    v6 = [(JFXTextEffect *)&v32 contentProperties];
+    contentProperties2 = [(JFXTextEffect *)&v32 contentProperties];
   }
 
-  return v6;
+  return contentProperties2;
 }
 
-- (void)setSingleLineScaleThreshold:(double)a3
+- (void)setSingleLineScaleThreshold:(double)threshold
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:threshold];
   [(JFXEffect *)self setParameter:v4 forKey:*MEMORY[0x277D41AE0]];
 }
 
-- (void)setFlipText:(BOOL)a3
+- (void)setFlipText:(BOOL)text
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:text];
   [(JFXEffect *)self setParameter:v4 forKey:*MEMORY[0x277D41A68]];
 }
 
@@ -475,29 +475,29 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v6 = [(JFXEffect *)self renderEffect];
-    v5 = [v6 isTextFlipped];
+    renderEffect = [(JFXEffect *)self renderEffect];
+    bOOLValue = [renderEffect isTextFlipped];
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)supportsFlippingText
 {
-  v2 = [(JFXEffect *)self renderEffect];
-  v3 = [v2 supportsFlippingText];
+  renderEffect = [(JFXEffect *)self renderEffect];
+  supportsFlippingText = [renderEffect supportsFlippingText];
 
-  return v3;
+  return supportsFlippingText;
 }
 
-- (void)setFlipTail:(BOOL)a3
+- (void)setFlipTail:(BOOL)tail
 {
-  if (a3)
+  if (tail)
   {
     v4 = 2;
   }
@@ -517,24 +517,24 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v6 = [(JFXEffect *)self renderEffect];
-    v5 = [v6 orientation];
+    renderEffect = [(JFXEffect *)self renderEffect];
+    intValue = [renderEffect orientation];
   }
 
-  return v5 == 2;
+  return intValue == 2;
 }
 
 - (BOOL)supportsFlippingTail
 {
-  v2 = [(JFXEffect *)self renderEffect];
-  v3 = [v2 supportsOrientation];
+  renderEffect = [(JFXEffect *)self renderEffect];
+  supportsOrientation = [renderEffect supportsOrientation];
 
-  return v3;
+  return supportsOrientation;
 }
 
 - (BOOL)isHidden
@@ -552,16 +552,16 @@
 
 - (double)customPickerRotation
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (v3)
+  if (contentDataSource)
   {
-    v4 = [(JFXOverlayEffect *)self overlayContentDataSource];
-    v5 = [v4 initialRotation];
+    overlayContentDataSource = [(JFXOverlayEffect *)self overlayContentDataSource];
+    initialRotation = [overlayContentDataSource initialRotation];
 
-    if (v5)
+    if (initialRotation)
     {
-      [v5 doubleValue];
+      [initialRotation doubleValue];
       v7 = v6;
     }
 
@@ -573,9 +573,9 @@
 
   else
   {
-    v5 = [(JFXTextEffect *)self editUIProperties];
-    v8 = [(JFXEffect *)self effectID];
-    v9 = [v5 objectForKeyedSubscript:v8];
+    initialRotation = [(JFXTextEffect *)self editUIProperties];
+    effectID = [(JFXEffect *)self effectID];
+    v9 = [initialRotation objectForKeyedSubscript:effectID];
 
     if (v9)
     {
@@ -595,19 +595,19 @@
 
 - (id)customPrimaryFillColor
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (v3)
+  if (contentDataSource)
   {
-    v4 = [(JFXOverlayEffect *)self overlayContentDataSource];
-    v5 = [v4 primaryFillColor];
+    overlayContentDataSource = [(JFXOverlayEffect *)self overlayContentDataSource];
+    primaryFillColor = [overlayContentDataSource primaryFillColor];
   }
 
   else
   {
-    v4 = [(JFXTextEffect *)self editUIProperties];
-    v6 = [(JFXEffect *)self effectID];
-    v7 = [v4 objectForKeyedSubscript:v6];
+    overlayContentDataSource = [(JFXTextEffect *)self editUIProperties];
+    effectID = [(JFXEffect *)self effectID];
+    v7 = [overlayContentDataSource objectForKeyedSubscript:effectID];
 
     if (v7)
     {
@@ -624,29 +624,29 @@
         v16 = v15;
         v17 = [v9 objectAtIndexedSubscript:2];
         [v17 doubleValue];
-        v5 = [v10 colorWithRed:v13 green:v16 blue:v18 alpha:1.0];
+        primaryFillColor = [v10 colorWithRed:v13 green:v16 blue:v18 alpha:1.0];
       }
 
       else
       {
-        v5 = 0;
+        primaryFillColor = 0;
       }
     }
 
     else
     {
-      v5 = 0;
+      primaryFillColor = 0;
     }
   }
 
-  return v5;
+  return primaryFillColor;
 }
 
 - (id)osfaToneMappingOption
 {
-  v3 = [(JFXTextEffect *)self editUIProperties];
-  v4 = [(JFXEffect *)self effectID];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  editUIProperties = [(JFXTextEffect *)self editUIProperties];
+  effectID = [(JFXEffect *)self effectID];
+  v5 = [editUIProperties objectForKeyedSubscript:effectID];
 
   if (v5)
   {
@@ -661,9 +661,9 @@
   return v6;
 }
 
-- (void)setTrackingProps:(id)a3
+- (void)setTrackingProps:(id)props
 {
-  objc_storeStrong(&self->_trackingProps, a3);
+  objc_storeStrong(&self->_trackingProps, props);
 
   [(JFXOverlayEffect *)self JFX_setupTrackingProps];
 }
@@ -677,55 +677,55 @@
 
 - (BOOL)isTracked
 {
-  v2 = [(JFXOverlayEffect *)self trackingProps];
-  v3 = [v2 trackingType] != 0;
+  trackingProps = [(JFXOverlayEffect *)self trackingProps];
+  v3 = [trackingProps trackingType] != 0;
 
   return v3;
 }
 
 - (BOOL)isCurrentlyTracking
 {
-  v2 = [(JFXOverlayEffect *)self trackingProps];
-  v3 = [v2 currentTrackingType] != 0;
+  trackingProps = [(JFXOverlayEffect *)self trackingProps];
+  v3 = [trackingProps currentTrackingType] != 0;
 
   return v3;
 }
 
 - (void)suspendTracking
 {
-  v2 = [(JFXOverlayEffect *)self trackingProps];
-  [v2 enableTrackingState:0];
+  trackingProps = [(JFXOverlayEffect *)self trackingProps];
+  [trackingProps enableTrackingState:0];
 }
 
 - (void)resumeTracking
 {
-  v2 = [(JFXOverlayEffect *)self trackingProps];
-  [v2 enableTrackingState:1];
+  trackingProps = [(JFXOverlayEffect *)self trackingProps];
+  [trackingProps enableTrackingState:1];
 }
 
-- (void)setFaceTrackingTransform:(id)a3
+- (void)setFaceTrackingTransform:(id)transform
 {
-  v6 = a3;
-  v4 = [(JFXOverlayEffect *)self internalFaceTrackingTransform];
+  transformCopy = transform;
+  internalFaceTrackingTransform = [(JFXOverlayEffect *)self internalFaceTrackingTransform];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = transformCopy;
+  if (internalFaceTrackingTransform != transformCopy)
   {
-    [(JFXOverlayEffect *)self JFX_applyEffectParametersForFaceTrackingTransform:v6];
-    v5 = v6;
+    [(JFXOverlayEffect *)self JFX_applyEffectParametersForFaceTrackingTransform:transformCopy];
+    v5 = transformCopy;
   }
 }
 
-- (void)JFX_applyEffectParametersForFaceTrackingTransform:(id)a3
+- (void)JFX_applyEffectParametersForFaceTrackingTransform:(id)transform
 {
   v11[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(JFXOverlayEffect *)self setInternalFaceTrackingTransform:v4];
-  v5 = [(JFXOverlayEffect *)self isCurrentlyTracking];
-  if (v4 && v5)
+  transformCopy = transform;
+  [(JFXOverlayEffect *)self setInternalFaceTrackingTransform:transformCopy];
+  isCurrentlyTracking = [(JFXOverlayEffect *)self isCurrentlyTracking];
+  if (transformCopy && isCurrentlyTracking)
   {
-    v6 = [(JFXOverlayEffect *)self trackingProps];
-    v7 = [v4 effectParametersForTrackingType:{objc_msgSend(v6, "currentTrackingType")}];
+    trackingProps = [(JFXOverlayEffect *)self trackingProps];
+    v7 = [transformCopy effectParametersForTrackingType:{objc_msgSend(trackingProps, "currentTrackingType")}];
 
     [(JFXEffect *)self addEffectParameters:v7];
   }
@@ -743,12 +743,12 @@
   }
 }
 
-- (CGRect)imageFrameAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 includeDropShadow:(BOOL)a5 relativeTo:(CGRect)a6 basisOrigin:(int)a7
+- (CGRect)imageFrameAtTime:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow relativeTo:(CGRect)to basisOrigin:(int)origin
 {
   memset(&v11[1], 0, sizeof(PVCGPointQuad));
-  v11[0].a = *&a3->var0;
-  *&v11[0].b.x = a3->var3;
-  [(JFXOverlayEffect *)self cornersAtTime:v11 forcePosterFrame:a4 includeDropShadow:a5 scale:*&a7 relativeTo:1.0 basisOrigin:1.0, a6.origin.x, a6.origin.y, a6.size.width, a6.size.height];
+  v11[0].a = *&time->var0;
+  *&v11[0].b.x = time->var3;
+  [(JFXOverlayEffect *)self cornersAtTime:v11 forcePosterFrame:frame includeDropShadow:shadow scale:*&origin relativeTo:1.0 basisOrigin:1.0, to.origin.x, to.origin.y, to.size.width, to.size.height];
   v11[0] = v11[1];
   pv_bounding_CGRect(v11);
   result.size.height = v10;
@@ -758,11 +758,11 @@
   return result;
 }
 
-- (CGRect)hitAreaBoundingFrameAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 includeDropShadow:(BOOL)a5 adjustForMinimumSize:(BOOL)a6 normalizedMinimumSize:(id)a7 relativeTo:(CGRect)a8 basisOrigin:(int)a9
+- (CGRect)hitAreaBoundingFrameAtTime:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow adjustForMinimumSize:(BOOL)size normalizedMinimumSize:(id)minimumSize relativeTo:(CGRect)to basisOrigin:(int)origin
 {
-  v18 = *a3;
+  v18 = *time;
   path = 0;
-  v9 = [(JFXOverlayEffect *)self newPathsForHitTestingAtTime:&v18 forcePosterFrame:a4 relativeTo:*&a9 basisOrigin:a6 adjustForMinimumSize:&path normalizedMinimumSize:a8.origin.x outExpandedPath:a8.origin.y, a8.size.width, a8.size.height, a7.var0, a7.var1];
+  v9 = [(JFXOverlayEffect *)self newPathsForHitTestingAtTime:&v18 forcePosterFrame:frame relativeTo:*&origin basisOrigin:size adjustForMinimumSize:&path normalizedMinimumSize:to.origin.x outExpandedPath:to.origin.y, to.size.width, to.size.height, minimumSize.var0, minimumSize.var1];
   PathBoundingBox = CGPathGetPathBoundingBox(path);
   x = PathBoundingBox.origin.x;
   y = PathBoundingBox.origin.y;
@@ -781,26 +781,26 @@
   return result;
 }
 
-- (PVCGPointQuad)cornersAtTime:(SEL)a3 forcePosterFrame:(id *)a4 includeDropShadow:(BOOL)a5 scale:(BOOL)a6 relativeTo:(CGPoint)a7 basisOrigin:(CGRect)a8
+- (PVCGPointQuad)cornersAtTime:(SEL)time forcePosterFrame:(id *)frame includeDropShadow:(BOOL)shadow scale:(BOOL)scale relativeTo:(CGPoint)to basisOrigin:(CGRect)origin
 {
   v9 = *&a9;
-  v10 = a6;
-  v11 = a5;
-  height = a8.size.height;
-  width = a8.size.width;
-  y = a7.y;
-  x = a7.x;
+  scaleCopy = scale;
+  shadowCopy = shadow;
+  height = origin.size.height;
+  width = origin.size.width;
+  y = to.y;
+  x = to.x;
   retstr->c = 0u;
   retstr->d = 0u;
   retstr->a = 0u;
   retstr->b = 0u;
-  v18 = [(JFXEffect *)self renderEffect];
-  v19 = v18;
-  if (v18)
+  renderEffect = [(JFXEffect *)self renderEffect];
+  v19 = renderEffect;
+  if (renderEffect)
   {
-    v21 = *&a4->var0;
-    var3 = a4->var3;
-    [v18 cornersAtTime:&v21 forcePosterFrame:v11 includeDropShadow:v10 scale:v9 viewSize:x viewOrigin:{y, width, height}];
+    v21 = *&frame->var0;
+    var3 = frame->var3;
+    [renderEffect cornersAtTime:&v21 forcePosterFrame:shadowCopy includeDropShadow:scaleCopy scale:v9 viewSize:x viewOrigin:{y, width, height}];
   }
 
   else
@@ -814,48 +814,48 @@
   return result;
 }
 
-- (BOOL)objectBounds:(CGRect *)a3 time:(id *)a4 forcePosterFrame:(BOOL)a5 includeDropShadow:(BOOL)a6 includeMasks:(BOOL)a7
+- (BOOL)objectBounds:(CGRect *)bounds time:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow includeMasks:(BOOL)masks
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
+  masksCopy = masks;
+  shadowCopy = shadow;
+  frameCopy = frame;
   v17 = 0;
   v18 = 0;
-  v12 = [(JFXEffect *)self renderEffect];
-  v16 = *a4;
-  v13 = [v12 bounds:&v17 atTime:&v16 forcePosterFrame:v9 includeDropShadow:v8 includeMasks:v7];
+  renderEffect = [(JFXEffect *)self renderEffect];
+  v16 = *time;
+  v13 = [renderEffect bounds:&v17 atTime:&v16 forcePosterFrame:frameCopy includeDropShadow:shadowCopy includeMasks:masksCopy];
 
   if (v13)
   {
     v14 = v18;
-    a3->origin = v17;
-    a3->size = v14;
+    bounds->origin = v17;
+    bounds->size = v14;
   }
 
   return v13;
 }
 
-- (uint64_t)transformAtTime:(__int128 *)a3 forcePosterFrame:(uint64_t)a4 relativeTo:(uint64_t)a5 basisOrigin:
+- (uint64_t)transformAtTime:(__int128 *)time forcePosterFrame:(uint64_t)frame relativeTo:(uint64_t)to basisOrigin:
 {
-  v6 = *a3;
-  v7 = *(a3 + 2);
-  return [a1 transformAtTime:&v6 forcePosterFrame:a4 includeTransformAnimation:1 includePlayableAspectScale:1 relativeTo:a5 basisOrigin:?];
+  v6 = *time;
+  v7 = *(time + 2);
+  return [self transformAtTime:&v6 forcePosterFrame:frame includeTransformAnimation:1 includePlayableAspectScale:1 relativeTo:to basisOrigin:?];
 }
 
-- (double)transformAtTime:(uint64_t)a3@<X3> forcePosterFrame:(uint64_t)a4@<X4> includeTransformAnimation:(char)a5@<W5> includePlayableAspectScale:(uint64_t)a6@<X6> relativeTo:(__int128 *)a7@<X8> basisOrigin:(float64_t)a8@<D2>
+- (double)transformAtTime:(uint64_t)time@<X3> forcePosterFrame:(uint64_t)frame@<X4> includeTransformAnimation:(char)animation@<W5> includePlayableAspectScale:(uint64_t)scale@<X6> relativeTo:(__int128 *)to@<X8> basisOrigin:(float64_t)origin@<D2>
 {
-  a7[6] = 0u;
-  a7[7] = 0u;
-  a7[4] = 0u;
-  a7[5] = 0u;
-  a7[2] = 0u;
-  a7[3] = 0u;
-  *a7 = 0u;
-  a7[1] = 0u;
-  v32 = [a1 renderEffect];
+  to[6] = 0u;
+  to[7] = 0u;
+  to[4] = 0u;
+  to[5] = 0u;
+  to[2] = 0u;
+  to[3] = 0u;
+  *to = 0u;
+  to[1] = 0u;
+  renderEffect = [self renderEffect];
   a18 = *a2;
   *&a19 = *(a2 + 2);
-  v33 = [v32 transformAtTime:&a18 forcePosterFrame:a3 includeTransformAnimation:a4 viewSize:a6 viewOrigin:{a8, a9}];
+  v33 = [renderEffect transformAtTime:&a18 forcePosterFrame:time includeTransformAnimation:frame viewSize:scale viewOrigin:{origin, a9}];
   v34 = v33;
   if (v33)
   {
@@ -864,35 +864,35 @@
 
   else
   {
-    a7[6] = 0u;
-    a7[7] = 0u;
-    a7[4] = 0u;
-    a7[5] = 0u;
-    a7[2] = 0u;
-    a7[3] = 0u;
-    *a7 = 0u;
-    a7[1] = 0u;
+    to[6] = 0u;
+    to[7] = 0u;
+    to[4] = 0u;
+    to[5] = 0u;
+    to[2] = 0u;
+    to[3] = 0u;
+    *to = 0u;
+    to[1] = 0u;
   }
 
-  if (a6 == 1)
+  if (scale == 1)
   {
     v36 = 0;
-    v37.f64[0] = a8;
+    v37.f64[0] = origin;
     v37.f64[1] = a9;
     __asm { FMOV            V2.2D, #0.5 }
 
     v43 = vmulq_f64(v37, _Q2);
-    v44 = a7[5];
-    a22 = a7[4];
+    v44 = to[5];
+    a22 = to[4];
     a23 = v44;
-    v45 = a7[7];
-    a24 = a7[6];
+    v45 = to[7];
+    a24 = to[6];
     a25 = v45;
-    v46 = a7[1];
-    a18 = *a7;
+    v46 = to[1];
+    a18 = *to;
     a19 = v46;
-    v47 = a7[3];
-    a20 = a7[2];
+    v47 = to[3];
+    a20 = to[2];
     a21 = v47;
     v68 = 0u;
     v69 = 0u;
@@ -909,22 +909,22 @@
     }
 
     while (v36 != 128);
-    a7[4] = 0u;
-    a7[5] = 0u;
-    a7[6] = 0u;
-    a7[7] = 0u;
+    to[4] = 0u;
+    to[5] = 0u;
+    to[6] = 0u;
+    to[7] = 0u;
     v51 = v69;
-    *a7 = v68;
-    a7[1] = v51;
+    *to = v68;
+    to[1] = v51;
     result = *&v70;
     v52 = vars0;
-    a7[2] = v70;
-    a7[3] = v52;
+    to[2] = v70;
+    to[3] = v52;
   }
 
-  if ((a5 & 1) == 0)
+  if ((animation & 1) == 0)
   {
-    [a1 playableScaleInOutputSize:{a8, a9}];
+    [self playableScaleInOutputSize:{origin, a9}];
     v54 = 1.0 / v53;
     result = fabs(1.0 / v53 + -1.0);
     if (result >= 0.0001)
@@ -932,17 +932,17 @@
       v55 = 0;
       v56.f64[0] = 0.0;
       v56.f64[1] = v54;
-      v57 = a7[5];
-      a22 = a7[4];
+      v57 = to[5];
+      a22 = to[4];
       a23 = v57;
-      v58 = a7[7];
-      a24 = a7[6];
+      v58 = to[7];
+      a24 = to[6];
       a25 = v58;
-      v59 = a7[1];
-      a18 = *a7;
+      v59 = to[1];
+      a18 = *to;
       a19 = v59;
-      v60 = a7[3];
-      a20 = a7[2];
+      v60 = to[3];
+      a20 = to[2];
       a21 = v60;
       v68 = 0u;
       v69 = 0u;
@@ -959,49 +959,49 @@
       }
 
       while (v55 != 128);
-      a7[4] = 0u;
-      a7[5] = 0u;
-      a7[6] = 0u;
-      a7[7] = 0u;
+      to[4] = 0u;
+      to[5] = 0u;
+      to[6] = 0u;
+      to[7] = 0u;
       v64 = v69;
-      *a7 = v68;
-      a7[1] = v64;
+      *to = v68;
+      to[1] = v64;
       result = *&v70;
       v65 = vars0;
-      a7[2] = v70;
-      a7[3] = v65;
+      to[2] = v70;
+      to[3] = v65;
     }
   }
 
   return result;
 }
 
-- (CGAffineTransform)addTransform:(SEL)a3 withComponentTime:(CGAffineTransform *)a4 relativeTo:(id *)a5 basisOrigin:(CGRect)a6
+- (CGAffineTransform)addTransform:(SEL)transform withComponentTime:(CGAffineTransform *)time relativeTo:(id *)to basisOrigin:(CGRect)origin
 {
-  v7 = *&a4->c;
-  v10[0] = *&a4->a;
+  v7 = *&time->c;
+  v10[0] = *&time->a;
   v10[1] = v7;
-  v10[2] = *&a4->tx;
-  v9 = *a5;
-  return [(JFXOverlayEffect *)self addTransform:v10 withComponentTime:&v9 relativeTo:*&a7 basisOrigin:0 restrictToBounds:a6.origin.x, a6.origin.y, a6.size.width, a6.size.height];
+  v10[2] = *&time->tx;
+  v9 = *to;
+  return [(JFXOverlayEffect *)self addTransform:v10 withComponentTime:&v9 relativeTo:*&a7 basisOrigin:0 restrictToBounds:origin.origin.x, origin.origin.y, origin.size.width, origin.size.height];
 }
 
-- (CGAffineTransform)addTransform:(SEL)a3 withComponentTime:(CGAffineTransform *)a4 relativeTo:(id *)a5 basisOrigin:(CGRect)a6 restrictToBounds:(int)a7
+- (CGAffineTransform)addTransform:(SEL)transform withComponentTime:(CGAffineTransform *)time relativeTo:(id *)to basisOrigin:(CGRect)origin restrictToBounds:(int)bounds
 {
   v8 = a8;
-  v9 = *&a7;
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v34.a = *&a5->var0;
-  *&v34.b.x = a5->var3;
-  [(JFXOverlayEffect *)self effectCenterAtTime:&v34 forcePosterFrame:1 includeTransformAnimation:1 includePlayableAspectScale:1 relativeTo:*&a7 basisOrigin:a6.origin.x];
+  v9 = *&bounds;
+  height = origin.size.height;
+  width = origin.size.width;
+  y = origin.origin.y;
+  x = origin.origin.x;
+  v34.a = *&to->var0;
+  *&v34.b.x = to->var3;
+  [(JFXOverlayEffect *)self effectCenterAtTime:&v34 forcePosterFrame:1 includeTransformAnimation:1 includePlayableAspectScale:1 relativeTo:*&bounds basisOrigin:origin.origin.x];
   v19 = v18;
   v21 = v20;
   memset(&v39, 0, sizeof(v39));
-  v34.a = *&a5->var0;
-  *&v34.b.x = a5->var3;
+  v34.a = *&to->var0;
+  *&v34.b.x = to->var3;
   [(JFXOverlayEffect *)self cornersAtTime:&v34 forcePosterFrame:1 includeDropShadow:1 scale:v9 relativeTo:1.0 basisOrigin:1.0, x, y, width, height];
   v34 = v39;
   pv_CGPoint_get_quad_center(&v34);
@@ -1009,24 +1009,24 @@
   v25 = v24;
   v38.receiver = self;
   v38.super_class = JFXOverlayEffect;
-  v26 = *&a4->c;
-  v36.a = *&a4->a;
+  v26 = *&time->c;
+  v36.a = *&time->a;
   v36.b = v26;
-  v36.c = *&a4->tx;
-  v37 = *a5;
+  v36.c = *&time->tx;
+  v37 = *to;
   [(CGAffineTransform *)&v38 addTransform:&v36 withComponentTime:&v37 relativeTo:v9 basisOrigin:1 ignoreTranslation:x, y, width, height];
   memset(&v36, 0, sizeof(v36));
-  v34.a = *&a5->var0;
-  *&v34.b.x = a5->var3;
+  v34.a = *&to->var0;
+  *&v34.b.x = to->var3;
   [(JFXOverlayEffect *)self cornersAtTime:&v34 forcePosterFrame:1 includeDropShadow:1 scale:v9 relativeTo:1.0 basisOrigin:1.0, x, y, width, height];
   v34 = v36;
   pv_CGPoint_get_quad_center(&v34);
-  v28 = a4->tx + v23 - v27;
-  v30 = v25 - v29 + a4->ty;
+  v28 = time->tx + v23 - v27;
+  v30 = v25 - v29 + time->ty;
   if (*MEMORY[0x277CBF3A8] != v28 || *(MEMORY[0x277CBF3A8] + 8) != v30 || v8)
   {
-    v34.a = *&a5->var0;
-    *&v34.b.x = a5->var3;
+    v34.a = *&to->var0;
+    *&v34.b.x = to->var3;
     [(JFXOverlayEffect *)self setPosition:&v34 withComponentTime:v9 relativeTo:v8 basisOrigin:v19 + v28 restrictToBounds:v21 + v30, x, y, width, height];
   }
 
@@ -1041,8 +1041,8 @@
 
 - (int64_t)rotatedAspectRatio
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  if ([v3 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
 
 LABEL_7:
@@ -1050,23 +1050,23 @@ LABEL_7:
     return [(JFXEffect *)self playableAspectRatio];
   }
 
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 orientation] - 3;
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  v5 = [currentDevice2 orientation] - 3;
 
   if (v5 > 1)
   {
     goto LABEL_7;
   }
 
-  v6 = [(JFXEffect *)self playableAspectRatio];
+  playableAspectRatio = [(JFXEffect *)self playableAspectRatio];
 
-  return complementaryAspectRatio(v6);
+  return complementaryAspectRatio(playableAspectRatio);
 }
 
-- (void)updateRenderSizeMaintainingAppearance:(CGSize)a3 withComponentTime:(id *)a4
+- (void)updateRenderSizeMaintainingAppearance:(CGSize)appearance withComponentTime:(id *)time
 {
-  height = a3.height;
-  width = a3.width;
+  height = appearance.height;
+  width = appearance.width;
   [(JFXEffect *)self renderSize];
   v9 = v8;
   v11 = v10;
@@ -1075,12 +1075,12 @@ LABEL_7:
   if (vabdd_f64(v12, v13) >= 0.0001)
   {
     v15 = fmin(v9, v11);
-    v16 = [(JFXOverlayEffect *)self trackingProps];
-    v17 = [v16 trackingType];
+    trackingProps = [(JFXOverlayEffect *)self trackingProps];
+    trackingType = [trackingProps trackingType];
 
-    if ((v17 - 1) >= 2)
+    if ((trackingType - 1) >= 2)
     {
-      if (!v17)
+      if (!trackingType)
       {
         if (v12 * v15 >= v15)
         {
@@ -1105,8 +1105,8 @@ LABEL_7:
 
         v23 = v13 * v22;
         v24 = CGRectMakeWithSize();
-        v61 = *&a4->var0;
-        *&v62 = a4->var3;
+        v61 = *&time->var0;
+        *&v62 = time->var3;
         [(JFXOverlayEffect *)self imageFrameAtTime:&v61 forcePosterFrame:1 includeDropShadow:1 relativeTo:1 basisOrigin:v24];
         v26 = v25;
         v28 = v27;
@@ -1128,8 +1128,8 @@ LABEL_7:
         [(JFXEffect *)self setRenderSize:width, height];
         [(JFXEffect *)self setPlayableAspectRatio:aspectRatioForSize(width, height)];
         v51 = CGRectMakeWithSize();
-        v61 = *&a4->var0;
-        *&v62 = a4->var3;
+        v61 = *&time->var0;
+        *&v62 = time->var3;
         [(JFXOverlayEffect *)self applyScaleToFitFrame:&v61 withComponentTime:v44 relativeRect:v46, v48, v50, v51, v52, v53, v54];
       }
     }
@@ -1143,8 +1143,8 @@ LABEL_7:
         if (fabs(v13 + -1.0) < 0.0001)
         {
           v35 = v32;
-          v36 = [MEMORY[0x277D75418] currentDevice];
-          v37 = [v36 orientation] - 3;
+          currentDevice = [MEMORY[0x277D75418] currentDevice];
+          v37 = [currentDevice orientation] - 3;
 
           v32 = v35;
           if (v37 <= 1)
@@ -1256,26 +1256,26 @@ LABEL_7:
   }
 }
 
-- (void)updateRenderSizeMaintainingRelativeSizeAndPosition:(CGSize)a3 toSize:(CGSize)a4 withComponentTime:(id *)a5
+- (void)updateRenderSizeMaintainingRelativeSizeAndPosition:(CGSize)position toSize:(CGSize)size withComponentTime:(id *)time
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3.height;
-  v9 = a3.width;
-  v11 = aspectRatioMultiplierForSize(a3.width, a3.height);
+  height = size.height;
+  width = size.width;
+  v8 = position.height;
+  v9 = position.width;
+  v11 = aspectRatioMultiplierForSize(position.width, position.height);
   if (vabdd_f64(v11, aspectRatioMultiplierForSize(width, height)) >= 0.0001)
   {
-    v13 = [(JFXOverlayEffect *)self trackingProps];
-    v14 = [v13 trackingType];
+    trackingProps = [(JFXOverlayEffect *)self trackingProps];
+    trackingType = [trackingProps trackingType];
 
-    if ((v14 - 1) >= 2)
+    if ((trackingType - 1) >= 2)
     {
-      if (!v14)
+      if (!trackingType)
       {
         v36 = CGRectMakeWithSize();
         v16 = v15;
-        *&v40.a = *&a5->var0;
-        *&v40.c = a5->var3;
+        *&v40.a = *&time->var0;
+        *&v40.c = time->var3;
         v18 = v17;
         v34 = v19;
         v35 = v17;
@@ -1319,8 +1319,8 @@ LABEL_7:
 
     else
     {
-      *&v40.a = *&a5->var0;
-      *&v40.c = a5->var3;
+      *&v40.a = *&time->var0;
+      *&v40.c = time->var3;
       [(JFXOverlayEffect *)self updateRenderSizeMaintainingAppearance:&v40 withComponentTime:width, height];
     }
   }
@@ -1334,12 +1334,12 @@ LABEL_7:
   }
 }
 
-- (void)updateRenderSizeMaintainingSizeAndPositionRelativeToMedia:(CGSize)a3 mediaSize:(CGSize)a4 mediaContentMode:(int)a5
+- (void)updateRenderSizeMaintainingSizeAndPositionRelativeToMedia:(CGSize)media mediaSize:(CGSize)size mediaContentMode:(int)mode
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3.height;
-  v9 = a3.width;
+  height = size.height;
+  width = size.width;
+  v8 = media.height;
+  v9 = media.width;
   [(JFXEffect *)self renderSize];
   v12 = v11;
   v14 = v13;
@@ -1348,7 +1348,7 @@ LABEL_7:
   if (vabdd_f64(v15, v16) >= 0.0001)
   {
     v48 = width / height;
-    v18 = [(JFXEffect *)self transformAnimation];
+    transformAnimation = [(JFXEffect *)self transformAnimation];
     [(JFXEffect *)self setTransformAnimation:0];
     v19 = fmin(v12, v14);
     if (v15 * v19 >= v19)
@@ -1373,10 +1373,10 @@ LABEL_7:
     }
 
     v23 = v16 * v22;
-    v24 = [(JFXOverlayEffect *)self trackingProps];
-    v25 = [v24 currentTrackingType];
+    trackingProps = [(JFXOverlayEffect *)self trackingProps];
+    currentTrackingType = [trackingProps currentTrackingType];
 
-    if ((v25 - 1) < 2)
+    if ((currentTrackingType - 1) < 2)
     {
       v65 = 0u;
       v66 = 0u;
@@ -1399,12 +1399,12 @@ LABEL_7:
       v62 = v54;
       [(JFXEffect *)self setTopLevelTransform:&v51];
 LABEL_52:
-      [(JFXEffect *)self setTransformAnimation:v18];
+      [(JFXEffect *)self setTransformAnimation:transformAnimation];
 
       return;
     }
 
-    if (v25)
+    if (currentTrackingType)
     {
       goto LABEL_52;
     }
@@ -1417,11 +1417,11 @@ LABEL_52:
     [(JFXOverlayEffect *)self imageFrameAtTime:&v59 forcePosterFrame:1 includeDropShadow:1 relativeTo:1 basisOrigin:v26];
     v32 = v15 * v20;
     v33 = v20;
-    if (a5)
+    if (mode)
     {
-      if (a5 <= 2)
+      if (mode <= 2)
       {
-        if (a5 == 1)
+        if (mode == 1)
         {
           v34 = v48;
           if (v21 <= v20)
@@ -1447,7 +1447,7 @@ LABEL_52:
         {
           v32 = v48;
           v33 = 1.0;
-          if (a5 != 2)
+          if (mode != 2)
           {
             goto LABEL_31;
           }
@@ -1471,9 +1471,9 @@ LABEL_52:
       {
         v32 = v21;
         v33 = v20;
-        if (a5 != 3)
+        if (mode != 3)
         {
-          if (a5 == 13)
+          if (mode == 13)
           {
             v32 = v21;
             v33 = v21 / v48;
@@ -1481,7 +1481,7 @@ LABEL_52:
 
           else
           {
-            if (a5 == 14)
+            if (mode == 14)
             {
               v32 = v48 * v20;
             }
@@ -1491,7 +1491,7 @@ LABEL_52:
               v32 = v48;
             }
 
-            if (a5 == 14)
+            if (mode == 14)
             {
               v33 = v20;
             }
@@ -1509,14 +1509,14 @@ LABEL_31:
     v67 = CGRectOffset(*&v28, -((v21 - v32) * 0.5 + 0.0), -((v20 - v33) * 0.5 + 0.0));
     v35 = v23;
     v36 = v22;
-    if (a5)
+    if (mode)
     {
       v36 = 1.0;
-      if (a5 > 2)
+      if (mode > 2)
       {
         v37 = v23 / v48;
         v38 = v48 * v22;
-        if (a5 == 14)
+        if (mode == 14)
         {
           v36 = v22;
         }
@@ -1526,7 +1526,7 @@ LABEL_31:
           v38 = v48;
         }
 
-        if (a5 == 13)
+        if (mode == 13)
         {
           v38 = v23;
         }
@@ -1536,7 +1536,7 @@ LABEL_31:
           v37 = v36;
         }
 
-        if (a5 == 3)
+        if (mode == 3)
         {
           v35 = v23;
         }
@@ -1546,7 +1546,7 @@ LABEL_31:
           v35 = v38;
         }
 
-        if (a5 == 3)
+        if (mode == 3)
         {
           v36 = v22;
         }
@@ -1560,7 +1560,7 @@ LABEL_31:
       }
 
       v35 = v48;
-      if (a5 == 1)
+      if (mode == 1)
       {
         if (v23 <= v22)
         {
@@ -1583,7 +1583,7 @@ LABEL_31:
         goto LABEL_50;
       }
 
-      if (a5 == 2)
+      if (mode == 2)
       {
         if (v23 / v48 <= v22)
         {
@@ -1625,27 +1625,27 @@ LABEL_51:
   [(JFXEffect *)self setPlayableAspectRatio:v17];
 }
 
-- (void)rotate:(double)a3 aroundPoint:(CGPoint)a4 withComponentTime:(id *)a5 relativeTo:(CGRect)a6 basisOrigin:(int)a7
+- (void)rotate:(double)rotate aroundPoint:(CGPoint)point withComponentTime:(id *)time relativeTo:(CGRect)to basisOrigin:(int)origin
 {
-  v7 = *&a7;
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v13 = a4.y;
-  v14 = a4.x;
-  v17 = [(JFXOverlayEffect *)self trackingProps];
-  v18 = [v17 trackingType];
+  v7 = *&origin;
+  height = to.size.height;
+  width = to.size.width;
+  y = to.origin.y;
+  x = to.origin.x;
+  v13 = point.y;
+  v14 = point.x;
+  trackingProps = [(JFXOverlayEffect *)self trackingProps];
+  trackingType = [trackingProps trackingType];
 
-  if (!v18)
+  if (!trackingType)
   {
-    *&v31.a = *&a5->var0;
-    *&v31.c = a5->var3;
+    *&v31.a = *&time->var0;
+    *&v31.c = time->var3;
     [(JFXOverlayEffect *)self imageFrameAtTime:&v31 forcePosterFrame:1 includeDropShadow:1 relativeTo:v7 basisOrigin:x, y, width, height];
     CenterPoint = CGRectGetCenterPoint(v19, v20, v21, v22);
     v26 = height;
     v25 = v24;
-    CGAffineTransformMakeRotation(&v27, a3);
+    CGAffineTransformMakeRotation(&v27, rotate);
     memset(&v28, 0, sizeof(v28));
     CGAffineTransformMakeTranslation(&t1, -v14, -v13);
     t2 = v27;
@@ -1653,26 +1653,26 @@ LABEL_51:
     CGAffineTransformMakeTranslation(&t1, v14, v13);
     CGAffineTransformConcat(&v28, &v31, &t1);
     CGAffineTransformMakeTranslation(&v31, v28.tx + v25 * v28.c + v28.a * CenterPoint - CenterPoint, v28.ty + v25 * v28.d + v28.b * CenterPoint - v25);
-    *&t2.a = *&a5->var0;
-    *&t2.c = a5->var3;
+    *&t2.a = *&time->var0;
+    *&t2.c = time->var3;
     [(JFXOverlayEffect *)self addTransform:&v31 withComponentTime:&t2 relativeTo:v7 basisOrigin:x, y, width, v26];
   }
 }
 
-- (void)applyScaleToFitFrame:(CGRect)a3 withComponentTime:(id *)a4 relativeRect:(CGRect)a5 restrictToBounds:(BOOL)a6
+- (void)applyScaleToFitFrame:(CGRect)frame withComponentTime:(id *)time relativeRect:(CGRect)rect restrictToBounds:(BOOL)bounds
 {
-  v6 = a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = a3.size.height;
-  v13 = a3.size.width;
-  v14 = a3.origin.y;
-  v48 = a3.origin.x;
-  *&v56.a = *&a4->var0;
-  *&v56.c = a4->var3;
-  [(JFXOverlayEffect *)self imageFrameAtTime:&v56 forcePosterFrame:1 includeDropShadow:1 relativeTo:1 basisOrigin:a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  boundsCopy = bounds;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v12 = frame.size.height;
+  v13 = frame.size.width;
+  v14 = frame.origin.y;
+  v48 = frame.origin.x;
+  *&v56.a = *&time->var0;
+  *&v56.c = time->var3;
+  [(JFXOverlayEffect *)self imageFrameAtTime:&v56 forcePosterFrame:1 includeDropShadow:1 relativeTo:1 basisOrigin:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v16 = v60.size.width;
   v49 = v60.size.height;
   if (!CGRectIsEmpty(v60))
@@ -1680,8 +1680,8 @@ LABEL_51:
     v43 = v14;
     v44 = v13;
     v45 = v12;
-    *&v56.a = *&a4->var0;
-    *&v56.c = a4->var3;
+    *&v56.a = *&time->var0;
+    *&v56.c = time->var3;
     [(JFXOverlayEffect *)self imageFrameAtTime:&v56 forcePosterFrame:1 includeDropShadow:0 relativeTo:1 basisOrigin:x, y, width, height];
     v18 = v17;
     v41 = v17;
@@ -1691,16 +1691,16 @@ LABEL_51:
     v55.a = *&v59.a;
     v55.b = *&v59.c;
     v55.c = *&v59.tx;
-    *&v58.a = *&a4->var0;
-    *&v58.c = a4->var3;
+    *&v58.a = *&time->var0;
+    *&v58.c = time->var3;
     [(JFXOverlayEffect *)self addTransform:&v55 withComponentTime:&v58 relativeTo:1 basisOrigin:x, y, width, height];
-    *&v56.a = *&a4->var0;
-    *&v56.c = a4->var3;
+    *&v56.a = *&time->var0;
+    *&v56.c = time->var3;
     [(JFXOverlayEffect *)self imageFrameAtTime:&v56 forcePosterFrame:1 includeDropShadow:1 relativeTo:1 basisOrigin:x, y, width, height];
     v21 = v20;
     v23 = v22;
-    *&v56.a = *&a4->var0;
-    *&v56.c = a4->var3;
+    *&v56.a = *&time->var0;
+    *&v56.c = time->var3;
     [(JFXOverlayEffect *)self imageFrameAtTime:&v56 forcePosterFrame:1 includeDropShadow:0 relativeTo:1 basisOrigin:x, y, width, height];
     v42 = v16;
     v24 = vabdd_f64(v16, v18);
@@ -1711,8 +1711,8 @@ LABEL_51:
     v55.b = *&v59.c;
     v55.c = *&v59.tx;
     CGAffineTransformInvert(&v56, &v55);
-    *&v58.a = *&a4->var0;
-    *&v58.c = a4->var3;
+    *&v58.a = *&time->var0;
+    *&v58.c = time->var3;
     v46 = height;
     [(JFXOverlayEffect *)self addTransform:&v56 withComponentTime:&v58 relativeTo:1 basisOrigin:x, y, width, height];
     if (v27 <= 1.0 && v29 <= 1.0)
@@ -1741,8 +1741,8 @@ LABEL_51:
     v55.a = *&v58.a;
     v55.b = *&v58.c;
     v55.c = *&v58.tx;
-    v53 = *&a4->var0;
-    var3 = a4->var3;
+    v53 = *&time->var0;
+    var3 = time->var3;
     [(JFXOverlayEffect *)self addTransform:&v55 withComponentTime:&v53 relativeTo:1 basisOrigin:x, y, width, v46];
     v61.origin.x = v48;
     v61.origin.y = v43;
@@ -1756,8 +1756,8 @@ LABEL_51:
     MidY = CGRectGetMidY(v62);
     v57 = 0;
     memset(&v56, 0, sizeof(v56));
-    v55.a = *&a4->var0;
-    *&v55.b.x = a4->var3;
+    v55.a = *&time->var0;
+    *&v55.b.x = time->var3;
     [(JFXOverlayEffect *)self cornersAtTime:&v55 forcePosterFrame:1 includeDropShadow:1 scale:1 relativeTo:1.0 basisOrigin:1.0, x, y, width, v46];
     v55.a = *&v56.a;
     v55.b = *&v56.c;
@@ -1765,32 +1765,32 @@ LABEL_51:
     v55.d = v57;
     pv_CGPoint_get_quad_center(&v55);
     CGAffineTransformMakeTranslation(&v55, MidX - v39, MidY - v40);
-    v51 = *&a4->var0;
-    v52 = a4->var3;
-    [(JFXOverlayEffect *)self addTransform:&v55 withComponentTime:&v51 relativeTo:1 basisOrigin:v6 restrictToBounds:x, y, width, v46];
+    v51 = *&time->var0;
+    v52 = time->var3;
+    [(JFXOverlayEffect *)self addTransform:&v55 withComponentTime:&v51 relativeTo:1 basisOrigin:boundsCopy restrictToBounds:x, y, width, v46];
   }
 }
 
-- (void)setPosition:(CGPoint)a3 withComponentTime:(id *)a4 relativeTo:(CGRect)a5 basisOrigin:(int)a6 restrictToBounds:(BOOL)a7
+- (void)setPosition:(CGPoint)position withComponentTime:(id *)time relativeTo:(CGRect)to basisOrigin:(int)origin restrictToBounds:(BOOL)bounds
 {
-  v7 = *&a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a3.y;
-  v14.f64[0] = a3.x;
-  if (a7)
+  v7 = *&origin;
+  height = to.size.height;
+  width = to.size.width;
+  y = to.origin.y;
+  x = to.origin.x;
+  v13 = position.y;
+  v14.f64[0] = position.x;
+  if (bounds)
   {
     v45 = v13;
-    v48 = a3.x;
-    [(JFXEffect *)self playableRectInOutputSize:a5.size.width, a5.size.height];
+    v48 = position.x;
+    [(JFXEffect *)self playableRectInOutputSize:to.size.width, to.size.height];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    v55 = *&a4->var0;
-    *&v56 = a4->var3;
+    v55 = *&time->var0;
+    *&v56 = time->var3;
     [(JFXOverlayEffect *)self effectCenterAtTime:&v55 forcePosterFrame:1 includeTransformAnimation:1 includePlayableAspectScale:1 relativeTo:v7 basisOrigin:x, y, width, height];
     v42 = v25;
     v43 = v24;
@@ -1798,8 +1798,8 @@ LABEL_51:
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v52 = *&a4->var0;
-    *&v53 = a4->var3;
+    v52 = *&time->var0;
+    *&v53 = time->var3;
     [(JFXOverlayEffect *)self cornersAtTime:&v52 forcePosterFrame:1 includeDropShadow:1 scale:v7 relativeTo:1.0 basisOrigin:1.0, x, y, width, height];
     v52 = v55;
     v53 = v56;
@@ -1842,8 +1842,8 @@ LABEL_51:
     v13 = v14.f64[1];
   }
 
-  v55 = *&a4->var0;
-  *&v56 = a4->var3;
+  v55 = *&time->var0;
+  *&v56 = time->var3;
   [(JFXOverlayEffect *)self screenPointToEffectPoint:&v55 withComponentTime:v7 relativeTo:v14.f64[0] basisOrigin:v13, x, y, width, height, *&MaxX];
   v47 = v39;
   v51 = v38;
@@ -1865,13 +1865,13 @@ LABEL_51:
   [(JFXEffect *)self setTopLevelTransform:&v52];
 }
 
-- (CGPoint)screenPointToEffectPoint:(CGPoint)a3 withComponentTime:(id *)a4 relativeTo:(CGRect)a5 basisOrigin:(int)a6
+- (CGPoint)screenPointToEffectPoint:(CGPoint)point withComponentTime:(id *)time relativeTo:(CGRect)to basisOrigin:(int)origin
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  x = a3.x;
-  y = a3.y;
-  [(JFXEffect *)self playableScaleInOutputSize:a5.size.width, a5.size.height, a5.origin.x, a5.origin.y];
+  height = to.size.height;
+  width = to.size.width;
+  x = point.x;
+  y = point.y;
+  [(JFXEffect *)self playableScaleInOutputSize:to.size.width, to.size.height, to.origin.x, to.origin.y];
   v12.f64[0] = x;
   v12.f64[1] = y;
   v60 = v12;
@@ -1892,10 +1892,10 @@ LABEL_51:
   v66 = 0.0;
   memset(&v65, 0, sizeof(v65));
   v13 = MEMORY[0x277D416B0];
-  v14 = [(JFXEffect *)self transformAnimation];
-  *&v64[0].time.value = *&a4->var0;
-  v64[0].time.epoch = a4->var3;
-  v15 = [v13 getTransformInfoFromAnimation:v14 atTime:v64 renderSize:14 contentMode:0 invertY:&v65 outInfo:{width, height}];
+  transformAnimation = [(JFXEffect *)self transformAnimation];
+  *&v64[0].time.value = *&time->var0;
+  v64[0].time.epoch = time->var3;
+  v15 = [v13 getTransformInfoFromAnimation:transformAnimation atTime:v64 renderSize:14 contentMode:0 invertY:&v65 outInfo:{width, height}];
 
   v16 = v60.f64[1];
   if (v15)
@@ -1914,19 +1914,19 @@ LABEL_51:
     v60.f64[0] = v64[0].translation.y + v60.f64[1] * *&v64[0].time.epoch + *&v64[0].time.value * v60.f64[0];
   }
 
-  v17 = [(JFXEffect *)self renderEffect];
-  [v17 outputSize];
+  renderEffect = [(JFXEffect *)self renderEffect];
+  [renderEffect outputSize];
   v19 = v18;
   v21 = v20;
 
-  v22 = [(JFXEffect *)self renderEffect];
-  v23 = [v22 origin];
+  renderEffect2 = [(JFXEffect *)self renderEffect];
+  origin = [renderEffect2 origin];
 
   v24 = *(MEMORY[0x277CBF348] + 8);
   tx = *MEMORY[0x277CBF348];
-  if (a6 == 2)
+  if (origin == 2)
   {
-    if (v23)
+    if (origin)
     {
       v37 = *(MEMORY[0x277CBF348] + 8);
     }
@@ -1936,7 +1936,7 @@ LABEL_51:
       v37 = height * 0.5;
     }
 
-    if (v23)
+    if (origin)
     {
       v38 = *MEMORY[0x277CBF348];
     }
@@ -1946,8 +1946,8 @@ LABEL_51:
       v38 = width * 0.5;
     }
 
-    v34 = v23 == 1;
-    if (v23 == 1)
+    v34 = origin == 1;
+    if (origin == 1)
     {
       v35 = height * 0.5;
     }
@@ -1957,7 +1957,7 @@ LABEL_51:
       v35 = v37;
     }
 
-    if (v23 == 1)
+    if (origin == 1)
     {
       v36 = width * 0.5;
     }
@@ -1972,7 +1972,7 @@ LABEL_51:
   {
     v25 = width * -0.5;
     v26 = height * 0.5;
-    if (v23)
+    if (origin)
     {
       v27 = *(MEMORY[0x277CBF348] + 8);
     }
@@ -1982,8 +1982,8 @@ LABEL_51:
       v27 = height;
     }
 
-    v28 = v23 == 2 || v23 == 0;
-    if (v23 == 2)
+    v28 = origin == 2 || origin == 0;
+    if (origin == 2)
     {
       v29 = width * -0.5;
     }
@@ -1995,8 +1995,8 @@ LABEL_51:
     }
 
     v30 = height * -0.5;
-    v31 = v23 == 1;
-    if (v23 == 1)
+    v31 = origin == 1;
+    if (origin == 1)
     {
       v32 = height;
     }
@@ -2006,7 +2006,7 @@ LABEL_51:
       v32 = *(MEMORY[0x277CBF348] + 8);
     }
 
-    if (v23 == 2)
+    if (origin == 2)
     {
       v31 = 0;
     }
@@ -2017,15 +2017,15 @@ LABEL_51:
       v25 = *MEMORY[0x277CBF348];
     }
 
-    if (a6)
+    if (origin)
     {
       v31 = 0;
       v30 = *(MEMORY[0x277CBF348] + 8);
       v25 = *MEMORY[0x277CBF348];
     }
 
-    v33 = a6 == 1;
-    if (a6 == 1)
+    v33 = origin == 1;
+    if (origin == 1)
     {
       v34 = v28;
     }
@@ -2074,32 +2074,32 @@ LABEL_51:
 
   v57 = t2.tx + v16 * t2.c + t2.a * v60.f64[0];
   v61 = t2.ty + v16 * t2.d + t2.b * v60.f64[0];
-  v39 = [(JFXEffect *)self effectParameters];
-  v40 = [v39 objectForKeyedSubscript:*MEMORY[0x277D419F8]];
-  v41 = [v40 BOOLValue];
+  effectParameters = [(JFXEffect *)self effectParameters];
+  v40 = [effectParameters objectForKeyedSubscript:*MEMORY[0x277D419F8]];
+  bOOLValue = [v40 BOOLValue];
 
-  v42 = [(JFXEffect *)self effectParameters];
-  v43 = [v42 objectForKeyedSubscript:*MEMORY[0x277D41B70]];
+  effectParameters2 = [(JFXEffect *)self effectParameters];
+  v43 = [effectParameters2 objectForKeyedSubscript:*MEMORY[0x277D41B70]];
 
-  v44 = [(JFXEffect *)self effectParameters];
-  v45 = [v44 objectForKeyedSubscript:*MEMORY[0x277D41A10]];
+  effectParameters3 = [(JFXEffect *)self effectParameters];
+  v45 = [effectParameters3 objectForKeyedSubscript:*MEMORY[0x277D41A10]];
 
-  v46 = [(JFXEffect *)self effectParameters];
-  v47 = [v46 objectForKeyedSubscript:*MEMORY[0x277D41A08]];
+  effectParameters4 = [(JFXEffect *)self effectParameters];
+  v47 = [effectParameters4 objectForKeyedSubscript:*MEMORY[0x277D41A08]];
 
-  if (v41 && v43 && v45 && v47)
+  if (bOOLValue && v43 && v45 && v47)
   {
-    v48 = [(JFXEffect *)self renderEffect];
-    [v48 outputROI];
+    renderEffect3 = [(JFXEffect *)self renderEffect];
+    [renderEffect3 outputROI];
 
-    if (v23 == 2)
+    if (origin == 2)
     {
       tx = v19 * 0.5;
       v24 = v21 * 0.5;
       v49 = 1;
     }
 
-    else if (v23)
+    else if (origin)
     {
       v49 = 0;
     }
@@ -2151,10 +2151,10 @@ LABEL_51:
   return result;
 }
 
-- (CGPoint)effectCenterAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 includeTransformAnimation:(BOOL)a5 includePlayableAspectScale:(BOOL)a6 relativeTo:(CGRect)a7 basisOrigin:(int)a8
+- (CGPoint)effectCenterAtTime:(id *)time forcePosterFrame:(BOOL)frame includeTransformAnimation:(BOOL)animation includePlayableAspectScale:(BOOL)scale relativeTo:(CGRect)to basisOrigin:(int)origin
 {
-  height = a7.size.height;
-  width = a7.size.width;
+  height = to.size.height;
+  width = to.size.width;
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
@@ -2163,9 +2163,9 @@ LABEL_51:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v15 = *&a3->var0;
-  *&v16 = a3->var3;
-  [(JFXOverlayEffect *)self transformAtTime:&v15 forcePosterFrame:a4 includeTransformAnimation:a5 includePlayableAspectScale:a6 relativeTo:*&a8 basisOrigin:a7.origin.x, a7.origin.y, a7.size.width];
+  v15 = *&time->var0;
+  *&v16 = time->var3;
+  [(JFXOverlayEffect *)self transformAtTime:&v15 forcePosterFrame:frame includeTransformAnimation:animation includePlayableAspectScale:scale relativeTo:*&origin basisOrigin:to.origin.x, to.origin.y, to.size.width];
   v11 = *MEMORY[0x277CBF348];
   v12 = *(MEMORY[0x277CBF348] + 8);
   v19 = v27;
@@ -2182,81 +2182,81 @@ LABEL_51:
   return result;
 }
 
-- (CGPath)newPathsForHitTestingAtTime:(id *)a3 forcePosterFrame:(BOOL)a4 relativeTo:(CGRect)a5 basisOrigin:(int)a6 adjustForMinimumSize:(BOOL)a7 normalizedMinimumSize:(id)a8 outExpandedPath:(const CGPath *)a9
+- (CGPath)newPathsForHitTestingAtTime:(id *)time forcePosterFrame:(BOOL)frame relativeTo:(CGRect)to basisOrigin:(int)origin adjustForMinimumSize:(BOOL)size normalizedMinimumSize:(id)minimumSize outExpandedPath:(const CGPath *)path
 {
-  var1 = a8.var1;
-  var0 = a8.var0;
-  v12 = a7;
-  v13 = *&a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v18 = a4;
-  v21 = [(JFXEffect *)self renderEffect];
+  var1 = minimumSize.var1;
+  var0 = minimumSize.var0;
+  sizeCopy = size;
+  v13 = *&origin;
+  height = to.size.height;
+  width = to.size.width;
+  y = to.origin.y;
+  x = to.origin.x;
+  frameCopy = frame;
+  renderEffect = [(JFXEffect *)self renderEffect];
   [(JFXOverlayEffect *)self hitAreaScale];
-  v27 = *a3;
-  v22 = [v21 hitAreaPointsAtTime:&v27 forcePosterFrame:v18 includeDropShadow:0 scale:v13 viewSize:? viewOrigin:?];
+  v27 = *time;
+  v22 = [renderEffect hitAreaPointsAtTime:&v27 forcePosterFrame:frameCopy includeDropShadow:0 scale:v13 viewSize:? viewOrigin:?];
 
   ClosedCGPathWithPoints = createClosedCGPathWithPoints(v22);
-  if (!v12 || (v27 = *a3, [(JFXOverlayEffect *)self JFX_adjustedMinimumSizeFromNormalizedMinimumSize:&v27 atTime:v18 forcePosterFrame:v13 relativeTo:var0 basisOrigin:var1, x, y, width, height], v24 <= 0.0) || (ExpandedClosedCGPathWithCGPath = createExpandedClosedCGPathWithCGPath(ClosedCGPathWithPoints, v24)) == 0)
+  if (!sizeCopy || (v27 = *time, [(JFXOverlayEffect *)self JFX_adjustedMinimumSizeFromNormalizedMinimumSize:&v27 atTime:frameCopy forcePosterFrame:v13 relativeTo:var0 basisOrigin:var1, x, y, width, height], v24 <= 0.0) || (ExpandedClosedCGPathWithCGPath = createExpandedClosedCGPathWithCGPath(ClosedCGPathWithPoints, v24)) == 0)
   {
     ExpandedClosedCGPathWithCGPath = CGPathRetain(ClosedCGPathWithPoints);
   }
 
-  *a9 = ExpandedClosedCGPathWithCGPath;
+  *path = ExpandedClosedCGPathWithCGPath;
 
   return ClosedCGPathWithPoints;
 }
 
-- (BOOL)hitTestPoint:(CGPoint)a3 atTime:(id *)a4 forcePosterFrame:(BOOL)a5 relativeTo:(CGRect)a6 basisOrigin:(int)a7 adjustForMinimumSize:(BOOL)a8 normalizedMinimumSize:(id)a9
+- (BOOL)hitTestPoint:(CGPoint)point atTime:(id *)time forcePosterFrame:(BOOL)frame relativeTo:(CGRect)to basisOrigin:(int)origin adjustForMinimumSize:(BOOL)size normalizedMinimumSize:(id)minimumSize
 {
-  var1 = a9.var1;
-  var0 = a9.var0;
-  v11 = a8;
-  v12 = *&a7;
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v17 = a5;
-  v19 = a3.y;
-  v20 = a3.x;
+  var1 = minimumSize.var1;
+  var0 = minimumSize.var0;
+  sizeCopy = size;
+  v12 = *&origin;
+  height = to.size.height;
+  width = to.size.width;
+  y = to.origin.y;
+  x = to.origin.x;
+  frameCopy = frame;
+  v19 = point.y;
+  v20 = point.x;
   if ([(JFXOverlayEffect *)self isHidden])
   {
     return 0;
   }
 
-  v25 = *&a4->var0;
-  var3 = a4->var3;
+  v25 = *&time->var0;
+  var3 = time->var3;
   path = 0;
-  v23 = [(JFXOverlayEffect *)self newPathsForHitTestingAtTime:&v25 forcePosterFrame:v17 relativeTo:v12 basisOrigin:v11 adjustForMinimumSize:&path normalizedMinimumSize:x outExpandedPath:y, width, height, var0, var1];
+  var1 = [(JFXOverlayEffect *)self newPathsForHitTestingAtTime:&v25 forcePosterFrame:frameCopy relativeTo:v12 basisOrigin:sizeCopy adjustForMinimumSize:&path normalizedMinimumSize:x outExpandedPath:y, width, height, var0, var1];
   v28.x = v20;
   v28.y = v19;
-  v22 = CGPathContainsPoint(v23, 0, v28, 0);
-  if (!v22 && v11)
+  v22 = CGPathContainsPoint(var1, 0, v28, 0);
+  if (!v22 && sizeCopy)
   {
     v29.x = v20;
     v29.y = v19;
     v22 = CGPathContainsPoint(path, 0, v29, 0);
   }
 
-  CGPathRelease(v23);
+  CGPathRelease(var1);
   CGPathRelease(path);
   return v22;
 }
 
-- (double)JFX_adjustedMinimumSizeFromNormalizedMinimumSize:(id)a3 atTime:(id *)a4 forcePosterFrame:(BOOL)a5 relativeTo:(CGRect)a6 basisOrigin:(int)a7
+- (double)JFX_adjustedMinimumSizeFromNormalizedMinimumSize:(id)size atTime:(id *)time forcePosterFrame:(BOOL)frame relativeTo:(CGRect)to basisOrigin:(int)origin
 {
-  width = a6.size.width;
-  height = a6.size.height;
-  var0 = a3.var0;
+  width = to.size.width;
+  height = to.size.height;
+  var0 = size.var0;
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v15 = *a4;
-  [(JFXOverlayEffect *)self cornersAtTime:&v15 forcePosterFrame:a5 includeDropShadow:0 scale:*&a7 relativeTo:1.0 basisOrigin:1.0, a6.origin.x, a6.origin.y];
+  v15 = *time;
+  [(JFXOverlayEffect *)self cornersAtTime:&v15 forcePosterFrame:frame includeDropShadow:0 scale:*&origin relativeTo:1.0 basisOrigin:1.0, to.origin.x, to.origin.y];
   v8 = vsubq_f64(v18, v16);
   v9.f64[0] = width;
   v9.f64[1] = height;
@@ -2267,9 +2267,9 @@ LABEL_51:
 
 - (CGPoint)closeButtonInset
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (v3)
+  if (contentDataSource)
   {
     v4 = *MEMORY[0x277CBF348];
     v5 = *(MEMORY[0x277CBF348] + 8);
@@ -2277,8 +2277,8 @@ LABEL_51:
 
   else
   {
-    v6 = [(JFXEffect *)self effectID];
-    v7 = [v6 isEqualToString:*MEMORY[0x277D418E8]];
+    effectID = [(JFXEffect *)self effectID];
+    v7 = [effectID isEqualToString:*MEMORY[0x277D418E8]];
 
     if (v7)
     {
@@ -2288,9 +2288,9 @@ LABEL_51:
 
     else
     {
-      v8 = [(JFXTextEffect *)self editUIProperties];
-      v9 = [(JFXEffect *)self effectID];
-      v10 = [v8 objectForKeyedSubscript:v9];
+      editUIProperties = [(JFXTextEffect *)self editUIProperties];
+      effectID2 = [(JFXEffect *)self effectID];
+      v10 = [editUIProperties objectForKeyedSubscript:effectID2];
 
       if (v10)
       {
@@ -2320,16 +2320,16 @@ LABEL_51:
 
 - (CGPoint)hitAreaScale
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (v3)
+  if (contentDataSource)
   {
-    v4 = [(JFXOverlayEffect *)self overlayContentDataSource];
-    v5 = [v4 initialRotation];
+    overlayContentDataSource = [(JFXOverlayEffect *)self overlayContentDataSource];
+    initialRotation = [overlayContentDataSource initialRotation];
 
-    if (v5)
+    if (initialRotation)
     {
-      [v5 CGPointValue];
+      [initialRotation CGPointValue];
       v7 = v6;
       v9 = v8;
     }
@@ -2343,9 +2343,9 @@ LABEL_51:
 
   else
   {
-    v5 = [(JFXTextEffect *)self editUIProperties];
-    v10 = [(JFXEffect *)self effectID];
-    v11 = [v5 objectForKeyedSubscript:v10];
+    initialRotation = [(JFXTextEffect *)self editUIProperties];
+    effectID = [(JFXEffect *)self effectID];
+    v11 = [initialRotation objectForKeyedSubscript:effectID];
 
     v9 = 1.0;
     if (v11 && ([v11 objectForKeyedSubscript:@"HitAreaScaleX"], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
@@ -2381,16 +2381,16 @@ LABEL_51:
 
 - (double)pickerScale
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (v3)
+  if (contentDataSource)
   {
-    v4 = [(JFXOverlayEffect *)self overlayContentDataSource];
-    v5 = [v4 pickerScale];
+    overlayContentDataSource = [(JFXOverlayEffect *)self overlayContentDataSource];
+    pickerScale = [overlayContentDataSource pickerScale];
 
-    if (v5)
+    if (pickerScale)
     {
-      [v5 doubleValue];
+      [pickerScale doubleValue];
       v7 = v6;
     }
 
@@ -2402,9 +2402,9 @@ LABEL_51:
 
   else
   {
-    v5 = [(JFXTextEffect *)self editUIProperties];
-    v8 = [(JFXEffect *)self effectID];
-    v9 = [v5 objectForKeyedSubscript:v8];
+    pickerScale = [(JFXTextEffect *)self editUIProperties];
+    effectID = [(JFXEffect *)self effectID];
+    v9 = [pickerScale objectForKeyedSubscript:effectID];
 
     v7 = 1.0;
     if (v9)
@@ -2425,16 +2425,16 @@ LABEL_51:
 
 - (BOOL)includeDropShadowWhenPositioningCloseButton
 {
-  v3 = [(JFXEffect *)self effectID];
-  if (v3 == *MEMORY[0x277D41910])
+  effectID = [(JFXEffect *)self effectID];
+  if (effectID == *MEMORY[0x277D41910])
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = [(JFXEffect *)self effectID];
-    v5 = v4 != *MEMORY[0x277D41968];
+    effectID2 = [(JFXEffect *)self effectID];
+    v5 = effectID2 != *MEMORY[0x277D41968];
   }
 
   return v5;
@@ -2444,8 +2444,8 @@ LABEL_51:
 {
   v7.receiver = self;
   v7.super_class = JFXOverlayEffect;
-  v3 = [(JFXTextEffect *)&v7 maxCharacters];
-  if (v3 == -1)
+  maxCharacters = [(JFXTextEffect *)&v7 maxCharacters];
+  if (maxCharacters == -1)
   {
     if (maxCharacters_onceToken != -1)
     {
@@ -2456,16 +2456,16 @@ LABEL_51:
     v5 = v4;
     if (v4)
     {
-      v3 = [v4 unsignedIntegerValue];
+      maxCharacters = [v4 unsignedIntegerValue];
     }
 
     else
     {
-      v3 = 80;
+      maxCharacters = 80;
     }
   }
 
-  return v3;
+  return maxCharacters;
 }
 
 void __33__JFXOverlayEffect_maxCharacters__block_invoke()
@@ -2527,19 +2527,19 @@ void __48__JFXOverlayEffect_effectIDToImageSequenceIDMap__block_invoke()
 - (void)setImageSequencePathToBundledAssets
 {
   v10 = +[JFXOverlayEffect effectIDToImageSequenceIDMap];
-  v3 = [(JFXEffect *)self effectID];
-  v4 = [v10 objectForKeyedSubscript:v3];
+  effectID = [(JFXEffect *)self effectID];
+  effectID2 = [v10 objectForKeyedSubscript:effectID];
 
-  if (!v4)
+  if (!effectID2)
   {
-    v4 = [(JFXEffect *)self effectID];
+    effectID2 = [(JFXEffect *)self effectID];
   }
 
-  v5 = [MEMORY[0x277CCA8D8] jfxBundle];
-  v6 = [v5 pathForResource:v4 ofType:0];
+  jfxBundle = [MEMORY[0x277CCA8D8] jfxBundle];
+  v6 = [jfxBundle pathForResource:effectID2 ofType:0];
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [v7 fileExistsAtPath:v6];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v8 = [defaultManager fileExistsAtPath:v6];
 
   if (v8)
   {
@@ -2557,9 +2557,9 @@ void __48__JFXOverlayEffect_effectIDToImageSequenceIDMap__block_invoke()
   }
 }
 
-- (BOOL)enablePresentationState:(BOOL)a3
+- (BOOL)enablePresentationState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v16.receiver = self;
   v16.super_class = JFXOverlayEffect;
   v5 = [(JFXEffect *)&v16 enablePresentationState:?];
@@ -2575,7 +2575,7 @@ void __48__JFXOverlayEffect_effectIDToImageSequenceIDMap__block_invoke()
     v8 = 1;
   }
 
-  if (v8 == v3)
+  if (v8 == stateCopy)
   {
     v9 = 1;
   }
@@ -2604,7 +2604,7 @@ LABEL_10:
       LODWORD(v12) = [v12 BOOLValue];
     }
 
-    if (v12 == v3)
+    if (v12 == stateCopy)
     {
       LOBYTE(v9) = 1;
     }
@@ -2625,22 +2625,22 @@ LABEL_17:
   }
 
 LABEL_15:
-  [(JFXOverlayEffect *)self setForceRenderAtPosterFrame:v3];
+  [(JFXOverlayEffect *)self setForceRenderAtPosterFrame:stateCopy];
   v14 = 1;
 LABEL_18:
 
   return v14;
 }
 
-- (void)setForceRenderAtPosterFrame:(BOOL)a3
+- (void)setForceRenderAtPosterFrame:(BOOL)frame
 {
-  v3 = a3;
+  frameCopy = frame;
   v9.receiver = self;
   v9.super_class = JFXOverlayEffect;
   [(JFXEffect *)&v9 setForceRenderAtPosterFrame:?];
   if ([(JFXOverlayEffect *)self JFX_hasPosterFrame])
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+    v5 = [MEMORY[0x277CCABB0] numberWithBool:frameCopy];
     [(JFXEffect *)self setParameter:v5 forKey:*MEMORY[0x277D41A20]];
   }
 
@@ -2659,18 +2659,18 @@ LABEL_18:
     }
   }
 
-  v8 = [MEMORY[0x277CCABB0] numberWithInt:v3 ^ 1];
+  v8 = [MEMORY[0x277CCABB0] numberWithInt:frameCopy ^ 1];
   [(JFXEffect *)self setParameter:v8 forKey:*MEMORY[0x277D41A28]];
 }
 
 - (BOOL)loopedRangeRenderIsCacheable
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (v3)
+  if (contentDataSource)
   {
-    v4 = [(JFXOverlayEffect *)self overlayContentDataSource];
-    v5 = [v4 loopRenderRangeIsCachable];
+    overlayContentDataSource = [(JFXOverlayEffect *)self overlayContentDataSource];
+    loopRenderRangeIsCachable = [overlayContentDataSource loopRenderRangeIsCachable];
   }
 
   else
@@ -2681,11 +2681,11 @@ LABEL_18:
     }
 
     v6 = loopedRangeRenderIsCacheable_cacheableEffectIDs;
-    v4 = [(JFXEffect *)self effectID];
-    v5 = [v6 containsObject:v4];
+    overlayContentDataSource = [(JFXEffect *)self effectID];
+    loopRenderRangeIsCachable = [v6 containsObject:overlayContentDataSource];
   }
 
-  v7 = v5;
+  v7 = loopRenderRangeIsCachable;
 
   return v7;
 }
@@ -2759,33 +2759,33 @@ void __48__JFXOverlayEffect_loopedRangeRenderIsCacheable__block_invoke()
 
 - (BOOL)JFX_hasPosterFrame
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (v3)
+  if (contentDataSource)
   {
-    v4 = [(JFXOverlayEffect *)self overlayContentDataSource];
-    v5 = [v4 doesNotHavePosterFrame];
+    overlayContentDataSource = [(JFXOverlayEffect *)self overlayContentDataSource];
+    doesNotHavePosterFrame = [overlayContentDataSource doesNotHavePosterFrame];
   }
 
   else
   {
-    v4 = [(JFXEffect *)self effectID];
-    v5 = [v4 isEqualToString:*MEMORY[0x277D418E8]];
+    overlayContentDataSource = [(JFXEffect *)self effectID];
+    doesNotHavePosterFrame = [overlayContentDataSource isEqualToString:*MEMORY[0x277D418E8]];
   }
 
-  v6 = v5;
+  v6 = doesNotHavePosterFrame;
 
   return v6 ^ 1;
 }
 
 - (BOOL)JFX_posterFrameIsCachable
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (v3)
+  if (contentDataSource)
   {
-    v4 = [(JFXOverlayEffect *)self overlayContentDataSource];
-    v5 = [v4 posterFrameIsNotCachable] ^ 1;
+    overlayContentDataSource = [(JFXOverlayEffect *)self overlayContentDataSource];
+    v5 = [overlayContentDataSource posterFrameIsNotCachable] ^ 1;
   }
 
   else
@@ -2798,18 +2798,18 @@ void __48__JFXOverlayEffect_loopedRangeRenderIsCacheable__block_invoke()
 
 - (BOOL)JFX_shouldEnableDynamicLineSpacingForDiacritics
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (v3)
+  if (contentDataSource)
   {
-    v4 = [(JFXOverlayEffect *)self overlayContentDataSource];
-    v5 = [v4 shouldDisableDynamicLineSpacingForDiatrics];
+    overlayContentDataSource = [(JFXOverlayEffect *)self overlayContentDataSource];
+    shouldDisableDynamicLineSpacingForDiatrics = [overlayContentDataSource shouldDisableDynamicLineSpacingForDiatrics];
 
-    if (v5)
+    if (shouldDisableDynamicLineSpacingForDiatrics)
     {
-      v6 = [v5 BOOLValue];
+      bOOLValue = [shouldDisableDynamicLineSpacingForDiatrics BOOLValue];
 LABEL_8:
-      v8 = v6 ^ 1;
+      v8 = bOOLValue ^ 1;
       goto LABEL_9;
     }
 
@@ -2819,10 +2819,10 @@ LABEL_8:
   else
   {
     v7 = *MEMORY[0x277D41930];
-    v5 = [(JFXEffect *)self effectID];
-    if (([v7 isEqualToString:v5] & 1) == 0)
+    shouldDisableDynamicLineSpacingForDiatrics = [(JFXEffect *)self effectID];
+    if (([v7 isEqualToString:shouldDisableDynamicLineSpacingForDiatrics] & 1) == 0)
     {
-      v6 = [(JFXOverlayEffect *)self isEmoji];
+      bOOLValue = [(JFXOverlayEffect *)self isEmoji];
       goto LABEL_8;
     }
 
@@ -2834,63 +2834,63 @@ LABEL_9:
   return v8;
 }
 
-- (void)trackedEffectProperties:(id)a3 didChangeTrackingType:(BOOL)a4 didChangeEnabled:(BOOL)a5
+- (void)trackedEffectProperties:(id)properties didChangeTrackingType:(BOOL)type didChangeEnabled:(BOOL)enabled
 {
-  if (a4)
+  if (type)
   {
-    v6 = [JFXAnalyticsManager sharedInstance:a3];
+    v6 = [JFXAnalyticsManager sharedInstance:properties];
     [v6 trackEventWithName:@"facetrackedoverlaychangedplanes"];
   }
 
-  v7 = [(JFXOverlayEffect *)self faceTrackingTransform];
-  [(JFXOverlayEffect *)self JFX_applyEffectParametersForFaceTrackingTransform:v7];
+  faceTrackingTransform = [(JFXOverlayEffect *)self faceTrackingTransform];
+  [(JFXOverlayEffect *)self JFX_applyEffectParametersForFaceTrackingTransform:faceTrackingTransform];
 
   [(JFXOverlayEffect *)self JFX_updateInteractiveMode];
 }
 
 - (void)JFX_updateInteractiveMode
 {
-  v3 = [(JFXOverlayEffect *)self isInteractiveEditing]|| [(JFXOverlayEffect *)self isCurrentlyTracking];
-  v4 = [(JFXEffect *)self renderEffect];
-  [v4 setIsInInteractiveMode:v3];
+  isCurrentlyTracking = [(JFXOverlayEffect *)self isInteractiveEditing]|| [(JFXOverlayEffect *)self isCurrentlyTracking];
+  renderEffect = [(JFXEffect *)self renderEffect];
+  [renderEffect setIsInInteractiveMode:isCurrentlyTracking];
 }
 
 - (id)accessibilityName
 {
-  v3 = [(JFXOverlayEffect *)self accessibilityOverlayEffectLabel];
+  accessibilityOverlayEffectLabel = [(JFXOverlayEffect *)self accessibilityOverlayEffectLabel];
 
-  if (v3)
+  if (accessibilityOverlayEffectLabel)
   {
-    v4 = [(JFXOverlayEffect *)self accessibilityOverlayEffectLabel];
+    accessibilityOverlayEffectLabel2 = [(JFXOverlayEffect *)self accessibilityOverlayEffectLabel];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = JFXOverlayEffect;
-    v4 = [(JFXEffect *)&v6 accessibilityName];
+    accessibilityOverlayEffectLabel2 = [(JFXEffect *)&v6 accessibilityName];
   }
 
-  return v4;
+  return accessibilityOverlayEffectLabel2;
 }
 
 - (BOOL)hasDynamicText
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (v3)
+  if (contentDataSource)
   {
-    v4 = [(JFXOverlayEffect *)self overlayContentDataSource];
-    v5 = [v4 dynamicTextType];
+    overlayContentDataSource = [(JFXOverlayEffect *)self overlayContentDataSource];
+    dynamicTextType = [overlayContentDataSource dynamicTextType];
 
-    LOBYTE(v6) = v5 != 0;
+    LOBYTE(v6) = dynamicTextType != 0;
   }
 
   else
   {
-    v7 = [(JFXTextEffect *)self editUIProperties];
-    v8 = [(JFXEffect *)self effectID];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    editUIProperties = [(JFXTextEffect *)self editUIProperties];
+    effectID = [(JFXEffect *)self effectID];
+    v9 = [editUIProperties objectForKeyedSubscript:effectID];
 
     if (v9)
     {
@@ -2946,33 +2946,33 @@ void __45__JFXOverlayEffect_dynamicTextPlaceholderMap__block_invoke()
 
 - (id)JFX_dynamicTextPlaceHolderText
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (v3)
+  if (contentDataSource)
   {
-    v4 = [(JFXOverlayEffect *)self overlayContentDataSource];
-    v5 = [v4 dynamicTextPlaceholder];
+    overlayContentDataSource = [(JFXOverlayEffect *)self overlayContentDataSource];
+    dynamicTextPlaceholder = [overlayContentDataSource dynamicTextPlaceholder];
   }
 
   else
   {
-    v6 = [(JFXOverlayEffect *)self dynamicTextType];
-    v4 = [objc_opt_class() dynamicTextPlaceholderMap];
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6];
-    v5 = [v4 objectForKey:v7];
+    dynamicTextType = [(JFXOverlayEffect *)self dynamicTextType];
+    overlayContentDataSource = [objc_opt_class() dynamicTextPlaceholderMap];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:dynamicTextType];
+    dynamicTextPlaceholder = [overlayContentDataSource objectForKey:v7];
   }
 
-  return v5;
+  return dynamicTextPlaceholder;
 }
 
 - (unint64_t)dynamicTextType
 {
-  v3 = [(JFXEffect *)self contentDataSource];
+  contentDataSource = [(JFXEffect *)self contentDataSource];
 
-  if (v3)
+  if (contentDataSource)
   {
-    v4 = [(JFXOverlayEffect *)self overlayContentDataSource];
-    v5 = [v4 dynamicTextType];
+    overlayContentDataSource = [(JFXOverlayEffect *)self overlayContentDataSource];
+    dynamicTextType = [overlayContentDataSource dynamicTextType];
   }
 
   else
@@ -2984,22 +2984,22 @@ void __45__JFXOverlayEffect_dynamicTextPlaceholderMap__block_invoke()
     v6 = [(JFXTextEffect *)self defaultAttributedString:0];
     if (v6)
     {
-      v7 = [objc_opt_class() dynamicTextPlaceholderMap];
+      dynamicTextPlaceholderMap = [objc_opt_class() dynamicTextPlaceholderMap];
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __35__JFXOverlayEffect_dynamicTextType__block_invoke;
       v9[3] = &unk_278D7A888;
       v10 = v6;
       v11 = &v12;
-      [v7 enumerateKeysAndObjectsUsingBlock:v9];
+      [dynamicTextPlaceholderMap enumerateKeysAndObjectsUsingBlock:v9];
     }
 
-    v5 = v13[3];
+    dynamicTextType = v13[3];
 
     _Block_object_dispose(&v12, 8);
   }
 
-  return v5;
+  return dynamicTextType;
 }
 
 void __35__JFXOverlayEffect_dynamicTextType__block_invoke(uint64_t a1, void *a2, void *a3, _BYTE *a4)
@@ -3017,14 +3017,14 @@ void __35__JFXOverlayEffect_dynamicTextType__block_invoke(uint64_t a1, void *a2,
   }
 }
 
-- (void)setDynamicTextString:(id)a3
+- (void)setDynamicTextString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if ([(JFXOverlayEffect *)self hasDynamicText])
   {
-    if (v4)
+    if (stringCopy)
     {
-      [(JFXTextEffect *)self setString:v4 atIndex:0];
+      [(JFXTextEffect *)self setString:stringCopy atIndex:0];
     }
 
     else
@@ -3038,8 +3038,8 @@ void __35__JFXOverlayEffect_dynamicTextType__block_invoke(uint64_t a1, void *a2,
 {
   if ([(JFXOverlayEffect *)self hasDynamicText])
   {
-    v3 = [(JFXOverlayEffect *)self JFX_dynamicTextPlaceHolderText];
-    [(JFXTextEffect *)self setString:v3 atIndex:0];
+    jFX_dynamicTextPlaceHolderText = [(JFXOverlayEffect *)self JFX_dynamicTextPlaceHolderText];
+    [(JFXTextEffect *)self setString:jFX_dynamicTextPlaceHolderText atIndex:0];
   }
 }
 
@@ -3055,15 +3055,15 @@ void __35__JFXOverlayEffect_dynamicTextType__block_invoke(uint64_t a1, void *a2,
   return v3;
 }
 
-- (void)updateDynamicTextWithCompletionBlock:(id)a3
+- (void)updateDynamicTextWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __57__JFXOverlayEffect_updateDynamicTextWithCompletionBlock___block_invoke;
   v17 = &unk_278D7A8B0;
-  v18 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = blockCopy;
   v19 = v5;
   v6 = MEMORY[0x245D22230](&v14);
   v7 = [(JFXOverlayEffect *)self dynamicTextType:v14];
@@ -3073,11 +3073,11 @@ void __35__JFXOverlayEffect_dynamicTextType__block_invoke(uint64_t a1, void *a2,
     {
       if (v7 == 4)
       {
-        v8 = [MEMORY[0x277CBEAA8] date];
+        date = [MEMORY[0x277CBEAA8] date];
         v9 = +[JTFormatters dateFormatterMonthDay];
 LABEL_16:
         v12 = v9;
-        v13 = [v9 stringFromDate:v8];
+        v13 = [v9 stringFromDate:date];
 
         (v6)[2](v6, v13);
         goto LABEL_17;
@@ -3086,7 +3086,7 @@ LABEL_16:
       goto LABEL_10;
     }
 
-    v8 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     if (updateDynamicTextWithCompletionBlock__onceToken != -1)
     {
       [JFXOverlayEffect updateDynamicTextWithCompletionBlock:];
@@ -3094,7 +3094,7 @@ LABEL_16:
 
     v10 = updateDynamicTextWithCompletionBlock__s_shortTimeFormatter;
 LABEL_14:
-    v11 = [v10 stringFromDate:v8];
+    v11 = [v10 stringFromDate:date];
     (v6)[2](v6, v11);
 
 LABEL_17:
@@ -3103,14 +3103,14 @@ LABEL_17:
 
   if (v7 == 5)
   {
-    v8 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v9 = +[JTFormatters dateFormatterDayOfWeekMonthDayYear];
     goto LABEL_16;
   }
 
   if (v7 == 6)
   {
-    v8 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     if (updateDynamicTextWithCompletionBlock__onceToken_284 != -1)
     {
       [JFXOverlayEffect updateDynamicTextWithCompletionBlock:];
@@ -3193,31 +3193,31 @@ uint64_t __57__JFXOverlayEffect_updateDynamicTextWithCompletionBlock___block_inv
   return v4;
 }
 
-- (id)JFX_stringAtIndex:(unint64_t)a3
+- (id)JFX_stringAtIndex:(unint64_t)index
 {
   v4 = MEMORY[0x277D41B28];
-  if (a3)
+  if (index)
   {
     v4 = MEMORY[0x277D41B48];
   }
 
   v5 = *v4;
-  v6 = [(JFXEffect *)self renderEffect];
-  v7 = [v6 effectParameters];
+  renderEffect = [(JFXEffect *)self renderEffect];
+  effectParameters = [renderEffect effectParameters];
 
-  v8 = [v7 objectForKeyedSubscript:v5];
+  v8 = [effectParameters objectForKeyedSubscript:v5];
 
   if (v8)
   {
-    v9 = [v8 string];
+    string = [v8 string];
   }
 
   else
   {
-    v9 = 0;
+    string = 0;
   }
 
-  return v9;
+  return string;
 }
 
 @end

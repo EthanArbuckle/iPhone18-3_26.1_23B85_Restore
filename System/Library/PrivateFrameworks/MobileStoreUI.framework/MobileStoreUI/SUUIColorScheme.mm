@@ -1,21 +1,21 @@
 @interface SUUIColorScheme
-- (SUUIColorScheme)initWithCoder:(id)a3;
-- (SUUIColorScheme)initWithColorSchemeDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SUUIColorScheme)initWithCoder:(id)coder;
+- (SUUIColorScheme)initWithColorSchemeDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUUIColorScheme
 
-- (SUUIColorScheme)initWithColorSchemeDictionary:(id)a3
+- (SUUIColorScheme)initWithColorSchemeDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = SUUIColorScheme;
   v5 = [(SUUIColorScheme *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"backgroundColor"];
+    v6 = [dictionaryCopy objectForKey:@"backgroundColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -24,7 +24,7 @@
       v5->_backgroundColor = v7;
     }
 
-    v9 = [v4 objectForKey:@"primaryTextColor"];
+    v9 = [dictionaryCopy objectForKey:@"primaryTextColor"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -34,7 +34,7 @@
       v5->_primaryTextColor = v10;
     }
 
-    v12 = [v4 objectForKey:@"titleTextColor"];
+    v12 = [dictionaryCopy objectForKey:@"titleTextColor"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -57,46 +57,46 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(UIColor *)self->_backgroundColor copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(UIColor *)self->_backgroundColor copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(UIColor *)self->_highlightedTextColor copyWithZone:a3];
+  v8 = [(UIColor *)self->_highlightedTextColor copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(UIColor *)self->_primaryTextColor copyWithZone:a3];
+  v10 = [(UIColor *)self->_primaryTextColor copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(UIColor *)self->_secondaryTextColor copyWithZone:a3];
+  v12 = [(UIColor *)self->_secondaryTextColor copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
   return v5;
 }
 
-- (SUUIColorScheme)initWithCoder:(id)a3
+- (SUUIColorScheme)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = SUUIColorScheme;
   v5 = [(SUUIColorScheme *)&v14 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"bgc"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"bgc"];
     backgroundColor = v5->_backgroundColor;
     v5->_backgroundColor = v7;
 
-    v9 = [v4 decodeObjectOfClass:v6 forKey:@"ptc"];
+    v9 = [coderCopy decodeObjectOfClass:v6 forKey:@"ptc"];
     primaryTextColor = v5->_primaryTextColor;
     v5->_primaryTextColor = v9;
 
-    v11 = [v4 decodeObjectOfClass:v6 forKey:@"ttc"];
+    v11 = [coderCopy decodeObjectOfClass:v6 forKey:@"ttc"];
     secondaryTextColor = v5->_secondaryTextColor;
     v5->_secondaryTextColor = v11;
   }
@@ -104,13 +104,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   backgroundColor = self->_backgroundColor;
-  v5 = a3;
-  [v5 encodeObject:backgroundColor forKey:@"bgc"];
-  [v5 encodeObject:self->_primaryTextColor forKey:@"ptc"];
-  [v5 encodeObject:self->_secondaryTextColor forKey:@"ttc"];
+  coderCopy = coder;
+  [coderCopy encodeObject:backgroundColor forKey:@"bgc"];
+  [coderCopy encodeObject:self->_primaryTextColor forKey:@"ptc"];
+  [coderCopy encodeObject:self->_secondaryTextColor forKey:@"ttc"];
 }
 
 @end

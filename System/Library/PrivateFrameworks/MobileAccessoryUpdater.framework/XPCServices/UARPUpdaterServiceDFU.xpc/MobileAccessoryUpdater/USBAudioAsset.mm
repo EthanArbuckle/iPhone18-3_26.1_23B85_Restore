@@ -1,14 +1,14 @@
 @interface USBAudioAsset
-- (BOOL)getNextCommandData:(char *)a3 length:(unsigned int)a4 offset:(unsigned int *)a5;
-- (USBAudioAsset)initWithUarpAsset:(uarpPlatformAsset *)a3 nextAsset:(id)a4;
+- (BOOL)getNextCommandData:(char *)data length:(unsigned int)length offset:(unsigned int *)offset;
+- (USBAudioAsset)initWithUarpAsset:(uarpPlatformAsset *)asset nextAsset:(id)nextAsset;
 - (unsigned)getNextCommandLength;
 @end
 
 @implementation USBAudioAsset
 
-- (USBAudioAsset)initWithUarpAsset:(uarpPlatformAsset *)a3 nextAsset:(id)a4
+- (USBAudioAsset)initWithUarpAsset:(uarpPlatformAsset *)asset nextAsset:(id)nextAsset
 {
-  v7 = a4;
+  nextAssetCopy = nextAsset;
   v15.receiver = self;
   v15.super_class = USBAudioAsset;
   v8 = [(USBAudioAsset *)&v15 init];
@@ -24,8 +24,8 @@
       sub_1000175FC(v11);
     }
 
-    *(v8 + 33) = a3;
-    objc_storeStrong(v8 + 36, a4);
+    *(v8 + 33) = asset;
+    objc_storeStrong(v8 + 36, nextAsset);
     *(v8 + 1) = 0u;
     *(v8 + 13) = 0u;
     *(v8 + 14) = 0u;
@@ -67,15 +67,15 @@
   return 4 * v6 + 8;
 }
 
-- (BOOL)getNextCommandData:(char *)a3 length:(unsigned int)a4 offset:(unsigned int *)a5
+- (BOOL)getNextCommandData:(char *)data length:(unsigned int)length offset:(unsigned int *)offset
 {
-  v9 = self->_currentPayloadOffset + a4;
+  v9 = self->_currentPayloadOffset + length;
   v10 = [(NSMutableData *)self->_payload length];
   if (v10 >= v9)
   {
-    *a5 = self->_currentPayloadOffset;
-    [(NSMutableData *)self->_payload getBytes:a3 range:?];
-    self->_currentPayloadOffset += a4;
+    *offset = self->_currentPayloadOffset;
+    [(NSMutableData *)self->_payload getBytes:data range:?];
+    self->_currentPayloadOffset += length;
   }
 
   return v10 >= v9;

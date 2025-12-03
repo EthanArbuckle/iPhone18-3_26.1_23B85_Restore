@@ -2,7 +2,7 @@
 - (id)__stringByStrippingAttachmentAndControlCharacters;
 - (id)__stringByStrippingControlCharacters;
 - (id)bd_stringByRemovingURLEscapes;
-- (id)stringByRemovingCharactersFromSet:(id)a3;
+- (id)stringByRemovingCharactersFromSet:(id)set;
 - (id)trimmedString;
 - (unsigned)unsignedIntValue;
 @end
@@ -11,10 +11,10 @@
 
 - (unsigned)unsignedIntValue
 {
-  v2 = [(NSString *)self trimmedString];
-  v3 = [v2 longLongValue];
+  trimmedString = [(NSString *)self trimmedString];
+  longLongValue = [trimmedString longLongValue];
 
-  return v3;
+  return longLongValue;
 }
 
 - (id)trimmedString
@@ -70,11 +70,11 @@
   return v5;
 }
 
-- (id)stringByRemovingCharactersFromSet:(id)a3
+- (id)stringByRemovingCharactersFromSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = [(NSString *)self length];
-  if (v5 << 32 && (v12.length = v5, v12.location = 0, CFStringFindCharacterFromSet(self, v4, v12, 0, 0)))
+  if (v5 << 32 && (v12.length = v5, v12.location = 0, CFStringFindCharacterFromSet(self, setCopy, v12, 0, 0)))
   {
     v6 = objc_alloc_init(NSMutableString);
     if ([(NSString *)self length])
@@ -83,7 +83,7 @@
       do
       {
         v8 = [(NSString *)self characterAtIndex:v7];
-        if (([v4 characterIsMember:v8] & 1) == 0)
+        if (([setCopy characterIsMember:v8] & 1) == 0)
         {
           [v6 appendFormat:@"%C", v8];
         }
@@ -94,15 +94,15 @@
       while (v7 < [(NSString *)self length]);
     }
 
-    v9 = [v6 copy];
+    selfCopy = [v6 copy];
   }
 
   else
   {
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)bd_stringByRemovingURLEscapes

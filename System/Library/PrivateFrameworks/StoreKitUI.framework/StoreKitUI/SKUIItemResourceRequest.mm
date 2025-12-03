@@ -1,15 +1,15 @@
 @interface SKUIItemResourceRequest
 - (SKUIItemRequestDelegate)delegate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newLoadOperation;
-- (void)finishWithResource:(id)a3;
+- (void)finishWithResource:(id)resource;
 @end
 
 @implementation SKUIItemResourceRequest
 
-- (void)finishWithResource:(id)a3
+- (void)finishWithResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -25,15 +25,15 @@
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v14 = [v4 loadedItems];
-    v15 = [v4 invalidItemIdentifiers];
-    [WeakRetained itemRequest:self didFinishWithItems:v14 invalidItemIdentifiers:v15];
+    loadedItems = [resourceCopy loadedItems];
+    invalidItemIdentifiers = [resourceCopy invalidItemIdentifiers];
+    [WeakRetained itemRequest:self didFinishWithItems:loadedItems invalidItemIdentifiers:invalidItemIdentifiers];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v16 = [v4 loadedItems];
-    [WeakRetained itemRequest:self didFinishWithItems:v16];
+    loadedItems2 = [resourceCopy loadedItems];
+    [WeakRetained itemRequest:self didFinishWithItems:loadedItems2];
   }
 }
 
@@ -54,7 +54,7 @@
   return [[SKUILoadItemResourceOperation alloc] initWithResourceRequest:self];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (os_variant_has_internal_content())
   {
@@ -70,7 +70,7 @@
 
   v15.receiver = self;
   v15.super_class = SKUIItemResourceRequest;
-  v13 = [(SKUIResourceRequest *)&v15 copyWithZone:a3];
+  v13 = [(SKUIResourceRequest *)&v15 copyWithZone:zone];
   [v13 setImageProfile:self->_imageProfile];
   [v13 setItemIdentifiers:self->_itemIdentifiers];
   [v13 setKeyProfile:self->_keyProfile];

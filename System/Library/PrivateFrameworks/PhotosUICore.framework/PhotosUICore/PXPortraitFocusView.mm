@@ -1,7 +1,7 @@
 @interface PXPortraitFocusView
-- (PXPortraitFocusView)initWithMediaView:(id)a3 isHDR:(BOOL)a4;
+- (PXPortraitFocusView)initWithMediaView:(id)view isHDR:(BOOL)r;
 - (PXPortraitFocusViewDelegate)focusViewDelegate;
-- (void)focusPointChanged:(CGPoint)a3;
+- (void)focusPointChanged:(CGPoint)changed;
 @end
 
 @implementation PXPortraitFocusView
@@ -13,21 +13,21 @@
   return WeakRetained;
 }
 
-- (void)focusPointChanged:(CGPoint)a3
+- (void)focusPointChanged:(CGPoint)changed
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(PXPortraitFocusView *)self focusViewDelegate];
-  [v5 focusPointChanged:{x, y}];
+  y = changed.y;
+  x = changed.x;
+  focusViewDelegate = [(PXPortraitFocusView *)self focusViewDelegate];
+  [focusViewDelegate focusPointChanged:{x, y}];
 }
 
-- (PXPortraitFocusView)initWithMediaView:(id)a3 isHDR:(BOOL)a4
+- (PXPortraitFocusView)initWithMediaView:(id)view isHDR:(BOOL)r
 {
-  v7 = a3;
-  if (!v7)
+  viewCopy = view;
+  if (!viewCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXPortraitFocusView.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"mediaView != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPortraitFocusView.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"mediaView != nil"}];
   }
 
   v12.receiver = self;
@@ -36,7 +36,7 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_mediaView, a3);
+    objc_storeStrong(&v8->_mediaView, view);
   }
 
   return v9;

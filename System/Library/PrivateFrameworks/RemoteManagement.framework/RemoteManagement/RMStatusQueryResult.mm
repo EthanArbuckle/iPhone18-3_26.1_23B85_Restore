@@ -1,7 +1,7 @@
 @interface RMStatusQueryResult
 - (BOOL)hasStatusToReport;
 - (RMStatusQueryResult)init;
-- (RMStatusQueryResult)initWithStatusKeyPaths:(id)a3 statusByKeyPath:(id)a4 errorByKeyPath:(id)a5;
+- (RMStatusQueryResult)initWithStatusKeyPaths:(id)paths statusByKeyPath:(id)path errorByKeyPath:(id)keyPath;
 @end
 
 @implementation RMStatusQueryResult
@@ -14,17 +14,17 @@
   return v4;
 }
 
-- (RMStatusQueryResult)initWithStatusKeyPaths:(id)a3 statusByKeyPath:(id)a4 errorByKeyPath:(id)a5
+- (RMStatusQueryResult)initWithStatusKeyPaths:(id)paths statusByKeyPath:(id)path errorByKeyPath:(id)keyPath
 {
-  v8 = a3;
-  v57 = a4;
-  v56 = a5;
+  pathsCopy = paths;
+  pathCopy = path;
+  keyPathCopy = keyPath;
   v71.receiver = self;
   v71.super_class = RMStatusQueryResult;
   v9 = [(RMStatusQueryResult *)&v71 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [pathsCopy copy];
     statusKeyPaths = v9->_statusKeyPaths;
     v50 = v9;
     v9->_statusKeyPaths = v10;
@@ -35,8 +35,8 @@
     v68 = 0u;
     v69 = 0u;
     v70 = 0u;
-    v51 = v8;
-    obj = v8;
+    v51 = pathsCopy;
+    obj = pathsCopy;
     v58 = [obj countByEnumeratingWithState:&v67 objects:v72 count:16];
     if (v58)
     {
@@ -71,11 +71,11 @@
 
           v23 = v19;
           v24 = v21;
-          v25 = [v56 objectForKeyedSubscript:v14];
+          v25 = [keyPathCopy objectForKeyedSubscript:v14];
           if (v23)
           {
-            v26 = [v57 valueForKeyPath:v23];
-            v59 = [v26 allKeys];
+            v26 = [pathCopy valueForKeyPath:v23];
+            allKeys = [v26 allKeys];
             [v26 allValues];
             v28 = v27 = v25;
             v60 = v24;
@@ -91,7 +91,7 @@
             {
               [v54 setObject:v27 forKeyedSubscript:v14];
               v12 = v53;
-              v34 = v59;
+              v34 = allKeys;
               v24 = v60;
             }
 
@@ -111,14 +111,14 @@
               v65 = v23;
               v66 = v54;
               v38 = v37;
-              v34 = v59;
-              [v59 enumerateObjectsUsingBlock:v61];
+              v34 = allKeys;
+              [allKeys enumerateObjectsUsingBlock:v61];
             }
           }
 
           else
           {
-            v26 = [v57 valueForKeyPath:v14];
+            v26 = [pathCopy valueForKeyPath:v14];
             if (v26)
             {
               v35 = 1;
@@ -144,13 +144,13 @@
                 if (v39)
                 {
                   v40 = v25;
-                  v41 = [v14 pathExtension];
-                  v42 = [v41 length];
+                  pathExtension = [v14 pathExtension];
+                  v42 = [pathExtension length];
 
                   if (v42)
                   {
-                    v43 = [v14 stringByDeletingPathExtension];
-                    sub_1000326D0(v12, v43);
+                    stringByDeletingPathExtension = [v14 stringByDeletingPathExtension];
+                    sub_1000326D0(v12, stringByDeletingPathExtension);
                   }
 
                   [v12 setValue:v39 forKeyPath:v14];
@@ -187,7 +187,7 @@
     errorByKeyPath = v50->_errorByKeyPath;
     v50->_errorByKeyPath = v47;
 
-    v8 = v51;
+    pathsCopy = v51;
   }
 
   return v9;
@@ -195,16 +195,16 @@
 
 - (BOOL)hasStatusToReport
 {
-  v3 = [(RMStatusQueryResult *)self statusByKeyPath];
-  if ([v3 count])
+  statusByKeyPath = [(RMStatusQueryResult *)self statusByKeyPath];
+  if ([statusByKeyPath count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(RMStatusQueryResult *)self errorByKeyPath];
-    v4 = [v5 count] != 0;
+    errorByKeyPath = [(RMStatusQueryResult *)self errorByKeyPath];
+    v4 = [errorByKeyPath count] != 0;
   }
 
   return v4;

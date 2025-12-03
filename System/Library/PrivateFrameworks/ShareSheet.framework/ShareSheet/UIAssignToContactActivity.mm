@@ -1,13 +1,13 @@
 @interface UIAssignToContactActivity
 + (unint64_t)_xpcAttributes;
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (id)_embeddedActivityViewController;
 - (id)activityTitle;
 - (id)activityViewController;
 - (void)_cleanup;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation UIAssignToContactActivity
@@ -34,9 +34,9 @@
   return v3;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v3 = a3;
+  itemsCopy = items;
   if ((_UIActivityItemTypes() & 0x42) == 0 || (_UIActivityItemTypes() & 0x40) != 0)
   {
     LOBYTE(v4) = 0;
@@ -44,39 +44,39 @@
 
   else
   {
-    v4 = !_UIActivityHasAtMoreThan(v3, 2, 1);
+    v4 = !_UIActivityHasAtMoreThan(itemsCopy, 2, 1);
   }
 
   return v4;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v4 = getCNContactPickerViewControllerClass;
-  v5 = a3;
+  itemsCopy = items;
   v6 = objc_alloc_init(v4());
   peoplePicker = self->_peoplePicker;
   self->_peoplePicker = v6;
 
   [(CNContactPickerViewController *)self->_peoplePicker setPreferredContentSize:320.0, 426.0];
-  v8 = [MEMORY[0x1E69DC938] currentDevice];
-  -[CNContactPickerViewController setAllowsCancel:](self->_peoplePicker, "setAllowsCancel:", [v8 userInterfaceIdiom] == 0);
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  -[CNContactPickerViewController setAllowsCancel:](self->_peoplePicker, "setAllowsCancel:", [currentDevice userInterfaceIdiom] == 0);
 
   [(CNContactPickerViewController *)self->_peoplePicker setDelegate:self];
   [(CNContactPickerViewController *)self->_peoplePicker setAutocloses:0];
-  v11 = _UIActivityItemsGetImages(v5, 0, 1);
+  v11 = _UIActivityItemsGetImages(itemsCopy, 0, 1);
 
-  v9 = [v11 firstObject];
+  firstObject = [v11 firstObject];
   image = self->_image;
-  self->_image = v9;
+  self->_image = firstObject;
 }
 
 - (id)_embeddedActivityViewController
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4)
+  if (userInterfaceIdiom)
   {
     v5 = self->_peoplePicker;
   }
@@ -91,10 +91,10 @@
 
 - (id)activityViewController
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v5 = 0;
   }
@@ -109,12 +109,12 @@
 
 - (void)_cleanup
 {
-  v3 = [(UIAssignToContactActivity *)self peoplePicker];
-  [v3 setDelegate:0];
+  peoplePicker = [(UIAssignToContactActivity *)self peoplePicker];
+  [peoplePicker setDelegate:0];
 
   [(UIAssignToContactActivity *)self setPeoplePicker:0];
-  v4 = [(UIAssignToContactActivity *)self imagePickerController];
-  [v4 setDelegate:0];
+  imagePickerController = [(UIAssignToContactActivity *)self imagePickerController];
+  [imagePickerController setDelegate:0];
 
   [(UIAssignToContactActivity *)self setImagePickerController:0];
   [(UIAssignToContactActivity *)self setImage:0];
@@ -122,11 +122,11 @@
   [(UIAssignToContactActivity *)self setPerson:0];
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
   v18[5] = *MEMORY[0x1E69E9840];
-  objc_storeStrong(&self->_person, a4);
-  v6 = a4;
+  objc_storeStrong(&self->_person, contact);
+  contactCopy = contact;
   v7 = objc_alloc(MEMORY[0x1E69DCAD0]);
   v8 = UIImageJPEGRepresentation(self->_image, 1.0);
   v9 = [v7 _initWithSourceImageData:v8 cropRect:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -137,8 +137,8 @@
   [(UIImagePickerController *)self->_imagePickerController setModalPresentationStyle:3];
   [(UIImagePickerController *)self->_imagePickerController _setImagePickerSavingOptions:5];
   v11 = MEMORY[0x1E695DF90];
-  v12 = [(UIImagePickerController *)self->_imagePickerController _properties];
-  v13 = [v11 dictionaryWithDictionary:v12];
+  _properties = [(UIImagePickerController *)self->_imagePickerController _properties];
+  v13 = [v11 dictionaryWithDictionary:_properties];
 
   v14 = *MEMORY[0x1E69DE8B8];
   v17[0] = *MEMORY[0x1E69DDDD8];
@@ -160,24 +160,24 @@
   [(CNContactPickerViewController *)self->_peoplePicker presentViewController:self->_imagePickerController withTransition:1 completion:0];
 }
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
-  v30 = a4;
+  infoCopy = info;
   v5 = self->_person;
-  v6 = [v30 objectForKey:*MEMORY[0x1E69DDDE8]];
+  v6 = [infoCopy objectForKey:*MEMORY[0x1E69DDDE8]];
   v7 = UIImageJPEGRepresentation(v6, 0.8);
 
-  v8 = [v30 objectForKey:*MEMORY[0x1E69DE938]];
+  v8 = [infoCopy objectForKey:*MEMORY[0x1E69DE938]];
   v9 = UIImageJPEGRepresentation(v8, 0.8);
 
-  v10 = [v30 objectForKey:*MEMORY[0x1E69DE960]];
+  v10 = [infoCopy objectForKey:*MEMORY[0x1E69DE960]];
   if (!v10)
   {
-    v11 = [v30 objectForKey:*MEMORY[0x1E69DDE10]];
+    v11 = [infoCopy objectForKey:*MEMORY[0x1E69DDE10]];
     v10 = UIImageJPEGRepresentation(v11, 0.8);
   }
 
-  v12 = [v30 objectForKey:*MEMORY[0x1E69DDDE0]];
+  v12 = [infoCopy objectForKey:*MEMORY[0x1E69DDDE0]];
   v13 = v12;
   if (v12)
   {

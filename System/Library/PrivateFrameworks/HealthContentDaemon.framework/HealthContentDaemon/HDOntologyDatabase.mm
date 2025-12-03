@@ -1,19 +1,19 @@
 @interface HDOntologyDatabase
-+ (id)_legacyOntologyVersionWithTransaction:(uint64_t)a3 error:;
-+ (id)_shardedOntologyVersionWithTransaction:(uint64_t)a3 error:;
-+ (id)ontologyContentVersionWithTransaction:(id)a3 error:(id *)a4;
++ (id)_legacyOntologyVersionWithTransaction:(uint64_t)transaction error:;
++ (id)_shardedOntologyVersionWithTransaction:(uint64_t)transaction error:;
++ (id)ontologyContentVersionWithTransaction:(id)transaction error:(id *)error;
 - (BOOL)isAvailable;
-- (BOOL)performTransactionWithDatabaseTransaction:(id)a3 error:(id *)a4 transactionHandler:(id)a5;
-- (BOOL)performTransactionWithError:(id *)a3 transactionHandler:(id)a4;
-- (BOOL)unitTesting_performWriteTransactionWithError:(id *)a3 transactionHandler:(id)a4;
+- (BOOL)performTransactionWithDatabaseTransaction:(id)transaction error:(id *)error transactionHandler:(id)handler;
+- (BOOL)performTransactionWithError:(id *)error transactionHandler:(id)handler;
+- (BOOL)unitTesting_performWriteTransactionWithError:(id *)error transactionHandler:(id)handler;
 - (HDOntologyDatabase)init;
-- (HDOntologyDatabase)initWithProfile:(id)a3;
+- (HDOntologyDatabase)initWithProfile:(id)profile;
 - (HDProfile)profile;
 - (id)backingStore;
-- (id)ontologyContentVersionWithError:(id *)a3;
-- (id)unitTesting_schemaVersionWithError:(id *)a3;
-- (void)addOntologyDatabaseAvailabilityObserver:(id)a3;
-- (void)ontologyBackingStore:(id)a3 didBecomeAvailable:(BOOL)a4;
+- (id)ontologyContentVersionWithError:(id *)error;
+- (id)unitTesting_schemaVersionWithError:(id *)error;
+- (void)addOntologyDatabaseAvailabilityObserver:(id)observer;
+- (void)ontologyBackingStore:(id)store didBecomeAvailable:(BOOL)available;
 - (void)unitTesting_close;
 @end
 
@@ -29,16 +29,16 @@
   return 0;
 }
 
-- (HDOntologyDatabase)initWithProfile:(id)a3
+- (HDOntologyDatabase)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v12.receiver = self;
   v12.super_class = HDOntologyDatabase;
   v5 = [(HDOntologyDatabase *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v6->_lock._os_unfair_lock_opaque = 0;
     v7 = objc_alloc(MEMORY[0x277CCD738]);
     v8 = HKLogHealthOntology();
@@ -50,17 +50,17 @@
   return v6;
 }
 
-- (BOOL)performTransactionWithError:(id *)a3 transactionHandler:(id)a4
+- (BOOL)performTransactionWithError:(id *)error transactionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(HDOntologyDatabase *)self backingStore];
+  handlerCopy = handler;
+  backingStore = [(HDOntologyDatabase *)self backingStore];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  LOBYTE(a3) = [v7 performOntologyTransactionForWrite:0 profile:WeakRetained databaseTransaction:0 error:a3 transactionHandler:v6];
+  LOBYTE(error) = [backingStore performOntologyTransactionForWrite:0 profile:WeakRetained databaseTransaction:0 error:error transactionHandler:handlerCopy];
 
-  return a3;
+  return error;
 }
 
-- (id)ontologyContentVersionWithError:(id *)a3
+- (id)ontologyContentVersionWithError:(id *)error
 {
   v7 = 0;
   v8 = &v7;
@@ -73,7 +73,7 @@
   v6[2] = __54__HDOntologyDatabase_ontologyContentVersionWithError___block_invoke;
   v6[3] = &unk_2796B8A00;
   v6[4] = &v7;
-  if ([(HDOntologyDatabase *)self performTransactionWithError:a3 transactionHandler:v6])
+  if ([(HDOntologyDatabase *)self performTransactionWithError:error transactionHandler:v6])
   {
     v3 = v8[5];
   }
@@ -99,16 +99,16 @@ uint64_t __54__HDOntologyDatabase_ontologyContentVersionWithError___block_invoke
   return 1;
 }
 
-+ (id)ontologyContentVersionWithTransaction:(id)a3 error:(id *)a4
++ (id)ontologyContentVersionWithTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDOntologyDatabase *)a1 _shardedOntologyVersionWithTransaction:v6 error:a4];
+  transactionCopy = transaction;
+  v7 = [(HDOntologyDatabase *)self _shardedOntologyVersionWithTransaction:transactionCopy error:error];
   v8 = v7;
   if (v7)
   {
     if ([v7 isEmptyVersion])
     {
-      v9 = [(HDOntologyDatabase *)a1 _legacyOntologyVersionWithTransaction:v6 error:a4];
+      v9 = [(HDOntologyDatabase *)self _legacyOntologyVersionWithTransaction:transactionCopy error:error];
     }
 
     else
@@ -127,11 +127,11 @@ uint64_t __54__HDOntologyDatabase_ontologyContentVersionWithError___block_invoke
   return v10;
 }
 
-+ (id)_shardedOntologyVersionWithTransaction:(uint64_t)a3 error:
++ (id)_shardedOntologyVersionWithTransaction:(uint64_t)transaction error:
 {
   v4 = a2;
   objc_opt_self();
-  v5 = [HDOntologyShardRegistry importedMercuryZipTSVEntriesWithTransaction:v4 error:a3];
+  v5 = [HDOntologyShardRegistry importedMercuryZipTSVEntriesWithTransaction:v4 error:transaction];
 
   if (v5)
   {
@@ -146,14 +146,14 @@ uint64_t __54__HDOntologyDatabase_ontologyContentVersionWithError___block_invoke
   return v6;
 }
 
-+ (id)_legacyOntologyVersionWithTransaction:(uint64_t)a3 error:
++ (id)_legacyOntologyVersionWithTransaction:(uint64_t)transaction error:
 {
   v4 = a2;
   objc_opt_self();
-  v5 = [v4 graphDatabase];
+  graphDatabase = [v4 graphDatabase];
 
   v11 = 0;
-  LODWORD(v4) = [v5 metadataValueForKey:@"ontologyAssetVersion" valueOut:&v11 error:a3];
+  LODWORD(v4) = [graphDatabase metadataValueForKey:@"ontologyAssetVersion" valueOut:&v11 error:transaction];
   v6 = v11;
 
   v7 = 0;
@@ -176,7 +176,7 @@ uint64_t __54__HDOntologyDatabase_ontologyContentVersionWithError___block_invoke
   return v7;
 }
 
-- (void)ontologyBackingStore:(id)a3 didBecomeAvailable:(BOOL)a4
+- (void)ontologyBackingStore:(id)store didBecomeAvailable:(BOOL)available
 {
   databaseAvailableObservers = self->_databaseAvailableObservers;
   v5[0] = MEMORY[0x277D85DD0];
@@ -184,11 +184,11 @@ uint64_t __54__HDOntologyDatabase_ontologyContentVersionWithError___block_invoke
   v5[2] = __62__HDOntologyDatabase_ontologyBackingStore_didBecomeAvailable___block_invoke;
   v5[3] = &unk_2796B8A28;
   v5[4] = self;
-  v6 = a4;
+  availableCopy = available;
   [(HKObserverSet *)databaseAvailableObservers notifyObservers:v5];
 }
 
-- (id)unitTesting_schemaVersionWithError:(id *)a3
+- (id)unitTesting_schemaVersionWithError:(id *)error
 {
   v7 = 0;
   v8 = &v7;
@@ -201,7 +201,7 @@ uint64_t __54__HDOntologyDatabase_ontologyContentVersionWithError___block_invoke
   v6[2] = __57__HDOntologyDatabase_unitTesting_schemaVersionWithError___block_invoke;
   v6[3] = &unk_2796B8A00;
   v6[4] = &v7;
-  if ([(HDOntologyDatabase *)self performTransactionWithError:a3 transactionHandler:v6])
+  if ([(HDOntologyDatabase *)self performTransactionWithError:error transactionHandler:v6])
   {
     v3 = v8[5];
   }
@@ -237,72 +237,72 @@ BOOL __57__HDOntologyDatabase_unitTesting_schemaVersionWithError___block_invoke(
 
 - (id)backingStore
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 32);
+    v1 = *(self + 32);
     if (v1)
     {
-      v2 = v1;
+      ontologyBackingStore = v1;
     }
 
     else
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 24));
-      v4 = [WeakRetained daemon];
-      v2 = [v4 ontologyBackingStore];
+      WeakRetained = objc_loadWeakRetained((self + 24));
+      daemon = [WeakRetained daemon];
+      ontologyBackingStore = [daemon ontologyBackingStore];
     }
   }
 
   else
   {
-    v2 = 0;
+    ontologyBackingStore = 0;
   }
 
-  return v2;
+  return ontologyBackingStore;
 }
 
-- (BOOL)performTransactionWithDatabaseTransaction:(id)a3 error:(id *)a4 transactionHandler:(id)a5
+- (BOOL)performTransactionWithDatabaseTransaction:(id)transaction error:(id *)error transactionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(HDOntologyDatabase *)self backingStore];
+  handlerCopy = handler;
+  transactionCopy = transaction;
+  backingStore = [(HDOntologyDatabase *)self backingStore];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  LOBYTE(a4) = [v10 performOntologyTransactionForWrite:0 profile:WeakRetained databaseTransaction:v9 error:a4 transactionHandler:v8];
+  LOBYTE(error) = [backingStore performOntologyTransactionForWrite:0 profile:WeakRetained databaseTransaction:transactionCopy error:error transactionHandler:handlerCopy];
 
-  return a4;
+  return error;
 }
 
 - (BOOL)isAvailable
 {
-  v2 = [(HDOntologyDatabase *)self backingStore];
-  v3 = [v2 isAvailable];
+  backingStore = [(HDOntologyDatabase *)self backingStore];
+  isAvailable = [backingStore isAvailable];
 
-  return v3;
+  return isAvailable;
 }
 
-- (void)addOntologyDatabaseAvailabilityObserver:(id)a3
+- (void)addOntologyDatabaseAvailabilityObserver:(id)observer
 {
-  v5 = a3;
-  v4 = [(HDOntologyDatabase *)self backingStore];
-  [v4 registerOntologyDatabase:self];
+  observerCopy = observer;
+  backingStore = [(HDOntologyDatabase *)self backingStore];
+  [backingStore registerOntologyDatabase:self];
 
-  [(HKObserverSet *)self->_databaseAvailableObservers registerObserver:v5];
+  [(HKObserverSet *)self->_databaseAvailableObservers registerObserver:observerCopy];
 }
 
 - (void)unitTesting_close
 {
-  v2 = [(HDOntologyDatabase *)self backingStore];
-  [v2 close];
+  backingStore = [(HDOntologyDatabase *)self backingStore];
+  [backingStore close];
 }
 
-- (BOOL)unitTesting_performWriteTransactionWithError:(id *)a3 transactionHandler:(id)a4
+- (BOOL)unitTesting_performWriteTransactionWithError:(id *)error transactionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(HDOntologyDatabase *)self backingStore];
+  handlerCopy = handler;
+  backingStore = [(HDOntologyDatabase *)self backingStore];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  LOBYTE(a3) = [v7 performOntologyTransactionForWrite:1 profile:WeakRetained databaseTransaction:0 error:a3 transactionHandler:v6];
+  LOBYTE(error) = [backingStore performOntologyTransactionForWrite:1 profile:WeakRetained databaseTransaction:0 error:error transactionHandler:handlerCopy];
 
-  return a3;
+  return error;
 }
 
 @end

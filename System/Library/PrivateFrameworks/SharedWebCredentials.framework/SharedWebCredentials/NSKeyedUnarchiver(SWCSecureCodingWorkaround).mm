@@ -9,7 +9,7 @@
 {
   v8 = a4;
   v9 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{a3, 0}];
-  v10 = [a1 swc_unarchivedObjectOfClasses:v9 fromData:v8 error:a5];
+  v10 = [self swc_unarchivedObjectOfClasses:v9 fromData:v8 error:a5];
 
   return v10;
 }
@@ -21,7 +21,7 @@
   v9 = a4;
   v10 = objc_autoreleasePoolPush();
   v28 = 0;
-  v11 = [a1 unarchivedObjectOfClasses:v8 fromData:v9 error:&v28];
+  v11 = [self unarchivedObjectOfClasses:v8 fromData:v9 error:&v28];
   v12 = v28;
   objc_autoreleasePoolPop(v10);
   if (v11)

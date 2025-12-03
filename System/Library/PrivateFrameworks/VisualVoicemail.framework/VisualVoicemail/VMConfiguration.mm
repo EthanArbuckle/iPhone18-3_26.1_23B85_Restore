@@ -5,11 +5,11 @@
 + (float)confidenceLowQualityThreshold;
 + (float)confidenceSegmentThreshold;
 + (float)confidenceThreshold;
-+ (id)VMAssetNgasrSupportedLocales:(BOOL)a3;
-+ (id)confidenceThresholdFromAssetForKey:(id)a3;
-+ (id)confidenceThresholdFromDefaultsForKey:(id)a3;
-+ (id)getVMConcatenationDelimiterforLocale:(int64_t)a3;
-+ (id)metadataDictionaryForSpeechAssetWithLanguage:(id)a3;
++ (id)VMAssetNgasrSupportedLocales:(BOOL)locales;
++ (id)confidenceThresholdFromAssetForKey:(id)key;
++ (id)confidenceThresholdFromDefaultsForKey:(id)key;
++ (id)getVMConcatenationDelimiterforLocale:(int64_t)locale;
++ (id)metadataDictionaryForSpeechAssetWithLanguage:(id)language;
 @end
 
 @implementation VMConfiguration
@@ -19,20 +19,20 @@
   v28 = *MEMORY[0x277D85DE8];
   if ([objc_opt_class() isSystemLocaleSupportedForTranscription])
   {
-    v2 = [objc_opt_class() VMASRSupportedLocales];
-    v3 = [MEMORY[0x277CBEAF8] preferredLanguages];
-    v4 = [MEMORY[0x277CBEAF8] matchedLanguagesFromAvailableLanguages:v2 forPreferredLanguages:v3];
+    vMASRSupportedLocales = [objc_opt_class() VMASRSupportedLocales];
+    preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+    v4 = [MEMORY[0x277CBEAF8] matchedLanguagesFromAvailableLanguages:vMASRSupportedLocales forPreferredLanguages:preferredLanguages];
     v5 = [v4 count];
-    v6 = vm_framework_log();
-    v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
+    firstObject2 = vm_framework_log();
+    v7 = os_log_type_enabled(firstObject2, OS_LOG_TYPE_DEFAULT);
     if (v5)
     {
       if (v7)
       {
-        v8 = [v3 componentsJoinedByString:{@", "}];
-        v9 = [v2 componentsJoinedByString:{@", "}];
+        v8 = [preferredLanguages componentsJoinedByString:{@", "}];
+        v9 = [vMASRSupportedLocales componentsJoinedByString:{@", "}];
         v10 = [v4 componentsJoinedByString:{@", "}];
-        v11 = [v4 firstObject];
+        firstObject = [v4 firstObject];
         v20 = 138413058;
         v21 = v8;
         v22 = 2112;
@@ -40,26 +40,26 @@
         v24 = 2112;
         v25 = v10;
         v26 = 2112;
-        v27 = v11;
-        _os_log_impl(&dword_2721BA000, v6, OS_LOG_TYPE_DEFAULT, "matchLocaleForTranscriptionLanguage: Mapping preferred languages (%@) to languages supported by Siri: (%@). Mapped languages: (%@) Returning identifier %@", &v20, 0x2Au);
+        v27 = firstObject;
+        _os_log_impl(&dword_2721BA000, firstObject2, OS_LOG_TYPE_DEFAULT, "matchLocaleForTranscriptionLanguage: Mapping preferred languages (%@) to languages supported by Siri: (%@). Mapped languages: (%@) Returning identifier %@", &v20, 0x2Au);
       }
 
       v12 = MEMORY[0x277CBEAF8];
-      v6 = [v4 firstObject];
-      v13 = [v12 localeWithLocaleIdentifier:v6];
+      firstObject2 = [v4 firstObject];
+      v13 = [v12 localeWithLocaleIdentifier:firstObject2];
     }
 
     else
     {
       if (v7)
       {
-        v16 = [v3 componentsJoinedByString:{@", "}];
-        v17 = [v2 componentsJoinedByString:{@", "}];
+        v16 = [preferredLanguages componentsJoinedByString:{@", "}];
+        v17 = [vMASRSupportedLocales componentsJoinedByString:{@", "}];
         v20 = 138412546;
         v21 = v16;
         v22 = 2112;
         v23 = v17;
-        _os_log_impl(&dword_2721BA000, v6, OS_LOG_TYPE_DEFAULT, "matchLocaleForTranscriptionLanguage: No preferred languages (%@) supported by Siri: (%@).", &v20, 0x16u);
+        _os_log_impl(&dword_2721BA000, firstObject2, OS_LOG_TYPE_DEFAULT, "matchLocaleForTranscriptionLanguage: No preferred languages (%@) supported by Siri: (%@).", &v20, 0x16u);
       }
 
       v13 = 0;
@@ -89,26 +89,26 @@
 + (BOOL)isSystemLocaleSupportedForTranscription
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [v2 regionCode];
-  if (v3)
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  regionCode = [currentLocale regionCode];
+  if (regionCode)
   {
-    v4 = [v2 languageCode];
-    v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@-%@", v4, v3];
+    languageCode = [currentLocale languageCode];
+    languageIdentifier = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@-%@", languageCode, regionCode];
   }
 
   else
   {
-    v5 = [v2 languageIdentifier];
+    languageIdentifier = [currentLocale languageIdentifier];
   }
 
-  v6 = [objc_opt_class() VMExpansionAvailableLocales];
-  v7 = [v6 containsObject:v5];
+  vMExpansionAvailableLocales = [objc_opt_class() VMExpansionAvailableLocales];
+  v7 = [vMExpansionAvailableLocales containsObject:languageIdentifier];
   v8 = vm_framework_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v12 = v5;
+    v12 = languageIdentifier;
     v13 = 1024;
     v14 = v7;
     _os_log_impl(&dword_2721BA000, v8, OS_LOG_TYPE_DEFAULT, "isSystemLocaleSupportedForTranscription: System locale's language identifier = %@, is it enabled? %d", buf, 0x12u);
@@ -118,9 +118,9 @@
   return v7;
 }
 
-+ (id)VMAssetNgasrSupportedLocales:(BOOL)a3
++ (id)VMAssetNgasrSupportedLocales:(BOOL)locales
 {
-  if (a3)
+  if (locales)
   {
     return &unk_28817AC68;
   }
@@ -131,9 +131,9 @@
   }
 }
 
-+ (id)getVMConcatenationDelimiterforLocale:(int64_t)a3
++ (id)getVMConcatenationDelimiterforLocale:(int64_t)locale
 {
-  if (a3 == 1010)
+  if (locale == 1010)
   {
     return &stru_2881762E0;
   }
@@ -147,14 +147,14 @@
 + (NSLocale)localeForTranscriptionLanguage
 {
   v23 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  if (v2)
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  if (currentLocale)
   {
     if (!_os_feature_enabled_impl())
     {
-      v11 = v2;
-      v12 = [v11 languageIdentifier];
-      v13 = [v12 isEqualToString:@"en-CA"];
+      v11 = currentLocale;
+      languageIdentifier = [v11 languageIdentifier];
+      v13 = [languageIdentifier isEqualToString:@"en-CA"];
 
       if (v13)
       {
@@ -173,9 +173,9 @@
       v16 = vm_framework_log();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v11 localeIdentifier];
+        localeIdentifier = [v11 localeIdentifier];
         v21 = 138412290;
-        v22 = v17;
+        v22 = localeIdentifier;
         _os_log_impl(&dword_2721BA000, v16, OS_LOG_TYPE_DEFAULT, "localeForTranscriptionLanguage: Returning %@", &v21, 0xCu);
       }
 
@@ -183,20 +183,20 @@
       goto LABEL_17;
     }
 
-    v3 = [objc_opt_class() matchLocaleForTranscriptionLanguage];
+    matchLocaleForTranscriptionLanguage = [objc_opt_class() matchLocaleForTranscriptionLanguage];
     v4 = vm_framework_log();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    if (matchLocaleForTranscriptionLanguage)
     {
       if (v5)
       {
-        v6 = [v3 localeIdentifier];
+        localeIdentifier2 = [matchLocaleForTranscriptionLanguage localeIdentifier];
         v21 = 138412290;
-        v22 = v6;
+        v22 = localeIdentifier2;
         _os_log_impl(&dword_2721BA000, v4, OS_LOG_TYPE_DEFAULT, "localeForTranscriptionLanguage: Returning %@", &v21, 0xCu);
       }
 
-      v7 = v3;
+      v7 = matchLocaleForTranscriptionLanguage;
 LABEL_17:
       v9 = v7;
       v10 = v7;
@@ -205,13 +205,13 @@ LABEL_17:
 
     if (v5)
     {
-      v20 = [v2 localeIdentifier];
+      localeIdentifier3 = [currentLocale localeIdentifier];
       v21 = 138412290;
-      v22 = v20;
+      v22 = localeIdentifier3;
       _os_log_impl(&dword_2721BA000, v4, OS_LOG_TYPE_DEFAULT, "localeForTranscriptionLanguage: No preferred languages supported by Siri. Defaulting to fallback current %@", &v21, 0xCu);
     }
 
-    v10 = v2;
+    v10 = currentLocale;
     v9 = 0;
   }
 
@@ -238,21 +238,21 @@ LABEL_18:
 + (float)confidenceThreshold
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [a1 confidenceThresholdFromAsset];
-  v4 = v3;
-  if (v3)
+  confidenceThresholdFromAsset = [self confidenceThresholdFromAsset];
+  v4 = confidenceThresholdFromAsset;
+  if (confidenceThresholdFromAsset)
   {
-    [v3 floatValue];
+    [confidenceThresholdFromAsset floatValue];
     v6 = v5;
   }
 
   else
   {
-    v7 = [a1 confidenceThresholdFromDefaultsForKey:@"VoicemailTranscriptionConfidenceThreshold"];
+    v7 = [self confidenceThresholdFromDefaultsForKey:@"VoicemailTranscriptionConfidenceThreshold"];
 
     if (v7)
     {
-      v8 = [a1 confidenceThresholdFromDefaultsForKey:@"VoicemailTranscriptionConfidenceThreshold"];
+      v8 = [self confidenceThresholdFromDefaultsForKey:@"VoicemailTranscriptionConfidenceThreshold"];
       [v8 floatValue];
       v6 = v9;
     }
@@ -278,21 +278,21 @@ LABEL_18:
 + (float)confidenceLowQualityThreshold
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [a1 confidenceLowQualityThresholdFromAsset];
-  v4 = v3;
-  if (v3)
+  confidenceLowQualityThresholdFromAsset = [self confidenceLowQualityThresholdFromAsset];
+  v4 = confidenceLowQualityThresholdFromAsset;
+  if (confidenceLowQualityThresholdFromAsset)
   {
-    [v3 floatValue];
+    [confidenceLowQualityThresholdFromAsset floatValue];
     v6 = v5;
   }
 
   else
   {
-    v7 = [a1 confidenceThresholdFromDefaultsForKey:@"VoicemailTranscriptionLowQualityConfidenceThreshold"];
+    v7 = [self confidenceThresholdFromDefaultsForKey:@"VoicemailTranscriptionLowQualityConfidenceThreshold"];
 
     if (v7)
     {
-      v8 = [a1 confidenceThresholdFromDefaultsForKey:@"VoicemailTranscriptionLowQualityConfidenceThreshold"];
+      v8 = [self confidenceThresholdFromDefaultsForKey:@"VoicemailTranscriptionLowQualityConfidenceThreshold"];
       [v8 floatValue];
       v6 = v9;
     }
@@ -318,21 +318,21 @@ LABEL_18:
 + (float)confidenceSegmentThreshold
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [a1 confidenceSegmentThresholdFromAsset];
-  v4 = v3;
-  if (v3)
+  confidenceSegmentThresholdFromAsset = [self confidenceSegmentThresholdFromAsset];
+  v4 = confidenceSegmentThresholdFromAsset;
+  if (confidenceSegmentThresholdFromAsset)
   {
-    [v3 floatValue];
+    [confidenceSegmentThresholdFromAsset floatValue];
     v6 = v5;
   }
 
   else
   {
-    v7 = [a1 confidenceThresholdFromDefaultsForKey:@"VoicemailTranscriptionSegmentConfidenceThreshold"];
+    v7 = [self confidenceThresholdFromDefaultsForKey:@"VoicemailTranscriptionSegmentConfidenceThreshold"];
 
     if (v7)
     {
-      v8 = [a1 confidenceThresholdFromDefaultsForKey:@"VoicemailTranscriptionSegmentConfidenceThreshold"];
+      v8 = [self confidenceThresholdFromDefaultsForKey:@"VoicemailTranscriptionSegmentConfidenceThreshold"];
       [v8 floatValue];
       v6 = v9;
     }
@@ -355,9 +355,9 @@ LABEL_18:
   return v6;
 }
 
-+ (id)confidenceThresholdFromDefaultsForKey:(id)a3
++ (id)confidenceThresholdFromDefaultsForKey:(id)key
 {
-  v3 = CFPreferencesCopyAppValue(a3, @"com.apple.visualvoicemail");
+  v3 = CFPreferencesCopyAppValue(key, @"com.apple.visualvoicemail");
   v4 = v3;
   if (v3)
   {
@@ -372,15 +372,15 @@ LABEL_18:
   return v4;
 }
 
-+ (id)confidenceThresholdFromAssetForKey:(id)a3
++ (id)confidenceThresholdFromAssetForKey:(id)key
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 localeForTranscriptionLanguage];
-  v6 = [v5 localeIdentifier];
+  keyCopy = key;
+  localeForTranscriptionLanguage = [self localeForTranscriptionLanguage];
+  localeIdentifier = [localeForTranscriptionLanguage localeIdentifier];
 
-  v7 = [MEMORY[0x277CBEAF8] canonicalLanguageIdentifierFromString:v6];
-  v8 = [a1 metadataDictionaryForSpeechAssetWithLanguage:v7];
+  v7 = [MEMORY[0x277CBEAF8] canonicalLanguageIdentifierFromString:localeIdentifier];
+  v8 = [self metadataDictionaryForSpeechAssetWithLanguage:v7];
   v9 = v8;
   if (!v8)
   {
@@ -408,7 +408,7 @@ LABEL_18:
     _os_log_impl(&dword_2721BA000, v11, OS_LOG_TYPE_DEFAULT, "Found confidence dictionary in asset: %@", &v21, 0xCu);
   }
 
-  v13 = [v10 objectForKeyedSubscript:v4];
+  v13 = [v10 objectForKeyedSubscript:keyCopy];
   v14 = MEMORY[0x277CCABB0];
   [v13 floatValue];
   v11 = [v14 numberWithFloat:?];
@@ -436,7 +436,7 @@ LABEL_15:
     v21 = 138412546;
     v22 = v11;
     v23 = 2112;
-    v24 = v4;
+    v24 = keyCopy;
     _os_log_impl(&dword_2721BA000, v18, OS_LOG_TYPE_DEFAULT, "Returning threshold from asset of %@, for key %@", &v21, 0x16u);
   }
 
@@ -445,22 +445,22 @@ LABEL_15:
   return v11;
 }
 
-+ (id)metadataDictionaryForSpeechAssetWithLanguage:(id)a3
++ (id)metadataDictionaryForSpeechAssetWithLanguage:(id)language
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  languageCopy = language;
   v4 = vm_framework_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v44 = v3;
+    v44 = languageCopy;
     _os_log_impl(&dword_2721BA000, v4, OS_LOG_TYPE_DEFAULT, "Fetching JSON transcription object for %@", buf, 0xCu);
   }
 
   v5 = [objc_alloc(MEMORY[0x277D289D8]) initWithType:@"com.apple.MobileAsset.EmbeddedSpeech"];
-  [v5 addKeyValuePair:@"Language" with:v3];
+  [v5 addKeyValuePair:@"Language" with:languageCopy];
   [v5 returnTypes:1];
-  v35 = v3;
+  v35 = languageCopy;
   if ([v5 queryMetaDataSync])
   {
     v6 = 0;
@@ -468,8 +468,8 @@ LABEL_15:
 
   else
   {
-    v7 = [v5 results];
-    if (!v7 || (v8 = v7, [v5 results], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, v8, !v10))
+    results = [v5 results];
+    if (!results || (v8 = results, [v5 results], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, v8, !v10))
     {
       v11 = vm_framework_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -503,25 +503,25 @@ LABEL_15:
           }
 
           v17 = *(*(&v39 + 1) + 8 * i);
-          v18 = [v17 getLocalUrl];
+          getLocalUrl = [v17 getLocalUrl];
           v19 = vm_framework_log();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v44 = v3;
+            v44 = languageCopy;
             v45 = 2112;
-            v46 = v18;
+            v46 = getLocalUrl;
             _os_log_impl(&dword_2721BA000, v19, OS_LOG_TYPE_DEFAULT, "Local url for language %@ is %@", buf, 0x16u);
           }
 
-          if (v18)
+          if (getLocalUrl)
           {
-            v20 = [v17 attributes];
-            v21 = [v20 objectForKey:@"QuasarDir"];
+            attributes = [v17 attributes];
+            v21 = [attributes objectForKey:@"QuasarDir"];
 
             if (v21)
             {
-              v22 = [v18 URLByAppendingPathComponent:v21];
+              v22 = [getLocalUrl URLByAppendingPathComponent:v21];
               v23 = [v22 URLByAppendingPathComponent:@"mini.json"];
 
               v38 = v6;
@@ -569,7 +569,7 @@ LABEL_15:
                   _os_log_error_impl(&dword_2721BA000, v27, OS_LOG_TYPE_ERROR, "Did not find a JSON object in asset, error %@. Did find %@", buf, 0x16u);
                 }
 
-                v3 = v35;
+                languageCopy = v35;
               }
 
               else

@@ -1,10 +1,10 @@
 @interface UnusedModelsVersionMismatchAlertDataSource
-- (void)snapshotDidChangeWithDataSourceID:(id)a3 snapshot:(id)a4 animated:(BOOL)a5;
+- (void)snapshotDidChangeWithDataSourceID:(id)d snapshot:(id)snapshot animated:(BOOL)animated;
 @end
 
 @implementation UnusedModelsVersionMismatchAlertDataSource
 
-- (void)snapshotDidChangeWithDataSourceID:(id)a3 snapshot:(id)a4 animated:(BOOL)a5
+- (void)snapshotDidChangeWithDataSourceID:(id)d snapshot:(id)snapshot animated:(BOOL)animated
 {
   sub_1B9F12538();
   v6 = v5;

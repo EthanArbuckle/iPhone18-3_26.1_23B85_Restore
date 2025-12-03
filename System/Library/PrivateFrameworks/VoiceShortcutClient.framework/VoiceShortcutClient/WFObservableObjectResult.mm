@@ -1,9 +1,9 @@
 @interface WFObservableObjectResult
-+ (id)getResultWithDescriptor:(id)a3 valueType:(Class)a4 glyphSize:(CGSize)a5 error:(id *)a6;
-+ (void)getResultWithDescriptor:(id)a3 valueType:(Class)a4 glyphSize:(CGSize)a5 completionHandler:(id)a6;
-- (WFObservableObjectResult)initWithValueType:(Class)a3 glyphSize:(CGSize)a4 initialValue:(id)a5 descriptor:(id)a6;
++ (id)getResultWithDescriptor:(id)descriptor valueType:(Class)type glyphSize:(CGSize)size error:(id *)error;
++ (void)getResultWithDescriptor:(id)descriptor valueType:(Class)type glyphSize:(CGSize)size completionHandler:(id)handler;
+- (WFObservableObjectResult)initWithValueType:(Class)type glyphSize:(CGSize)size initialValue:(id)value descriptor:(id)descriptor;
 - (id)description;
-- (void)handleChangeNotification:(id)a3;
+- (void)handleChangeNotification:(id)notification;
 @end
 
 @implementation WFObservableObjectResult
@@ -14,36 +14,36 @@
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = NSStringFromClass([(WFObservableResult *)self valueType]);
-  v7 = [(WFObservableObjectResult *)self value];
-  v8 = [(WFObservableObjectResult *)self descriptor];
-  v9 = [v3 stringWithFormat:@"<%@: %p, valueType: %@, value: %@, descriptor: %@>", v5, self, v6, v7, v8];
+  value = [(WFObservableObjectResult *)self value];
+  descriptor = [(WFObservableObjectResult *)self descriptor];
+  v9 = [v3 stringWithFormat:@"<%@: %p, valueType: %@, value: %@, descriptor: %@>", v5, self, v6, value, descriptor];
 
   return v9;
 }
 
-- (void)handleChangeNotification:(id)a3
+- (void)handleChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 updatedDescriptors];
-  v6 = [(WFObservableObjectResult *)self descriptor];
-  if ([v5 containsObject:v6])
+  notificationCopy = notification;
+  updatedDescriptors = [notificationCopy updatedDescriptors];
+  descriptor = [(WFObservableObjectResult *)self descriptor];
+  if ([updatedDescriptors containsObject:descriptor])
   {
 
 LABEL_4:
-    v10 = [(WFObservableResult *)self serialQueue];
+    serialQueue = [(WFObservableResult *)self serialQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __53__WFObservableObjectResult_handleChangeNotification___block_invoke;
     block[3] = &unk_1E7B02158;
     block[4] = self;
-    dispatch_sync(v10, block);
+    dispatch_sync(serialQueue, block);
 
     goto LABEL_5;
   }
 
-  v7 = [v4 deletedDescriptors];
-  v8 = [(WFObservableObjectResult *)self descriptor];
-  v9 = [v7 containsObject:v8];
+  deletedDescriptors = [notificationCopy deletedDescriptors];
+  descriptor2 = [(WFObservableObjectResult *)self descriptor];
+  v9 = [deletedDescriptors containsObject:descriptor2];
 
   if (v9)
   {
@@ -165,83 +165,83 @@ void __53__WFObservableObjectResult_handleChangeNotification___block_invoke_4(ui
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (WFObservableObjectResult)initWithValueType:(Class)a3 glyphSize:(CGSize)a4 initialValue:(id)a5 descriptor:(id)a6
+- (WFObservableObjectResult)initWithValueType:(Class)type glyphSize:(CGSize)size initialValue:(id)value descriptor:(id)descriptor
 {
-  height = a4.height;
-  width = a4.width;
-  v12 = a5;
-  v13 = a6;
+  height = size.height;
+  width = size.width;
+  valueCopy = value;
+  descriptorCopy = descriptor;
   v18.receiver = self;
   v18.super_class = WFObservableObjectResult;
-  v14 = [(WFObservableResult *)&v18 initWithValueType:a3 glyphSize:width, height];
-  v15 = v14;
-  if (v14)
+  height = [(WFObservableResult *)&v18 initWithValueType:type glyphSize:width, height];
+  v15 = height;
+  if (height)
   {
-    objc_storeStrong(&v14->_value, a5);
-    objc_storeStrong(&v15->_descriptor, a6);
+    objc_storeStrong(&height->_value, value);
+    objc_storeStrong(&v15->_descriptor, descriptor);
     v16 = v15;
   }
 
   return v15;
 }
 
-+ (id)getResultWithDescriptor:(id)a3 valueType:(Class)a4 glyphSize:(CGSize)a5 error:(id *)a6
++ (id)getResultWithDescriptor:(id)descriptor valueType:(Class)type glyphSize:(CGSize)size error:(id *)error
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v21[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  descriptorCopy = descriptor;
   v12 = +[VCVoiceShortcutClient standardClient];
   v20 = 0;
-  v13 = [v12 getValueForDescriptor:v11 resultClass:a4 error:&v20];
+  v13 = [v12 getValueForDescriptor:descriptorCopy resultClass:type error:&v20];
   v14 = v20;
 
   if (v13)
   {
     v21[0] = v13;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
-    [a1 drawGlyphsIntoWorkflowsIfNecessary:v15 glyphSize:{width, height}];
+    [self drawGlyphsIntoWorkflowsIfNecessary:v15 glyphSize:{width, height}];
 
-    v16 = [[WFObservableObjectResult alloc] initWithValueType:a4 glyphSize:v13 initialValue:v11 descriptor:width, height];
+    height = [[WFObservableObjectResult alloc] initWithValueType:type glyphSize:v13 initialValue:descriptorCopy descriptor:width, height];
   }
 
-  else if (a6)
+  else if (error)
   {
     v17 = v14;
-    v16 = 0;
-    *a6 = v14;
+    height = 0;
+    *error = v14;
   }
 
   else
   {
-    v16 = 0;
+    height = 0;
   }
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v16;
+  return height;
 }
 
-+ (void)getResultWithDescriptor:(id)a3 valueType:(Class)a4 glyphSize:(CGSize)a5 completionHandler:(id)a6
++ (void)getResultWithDescriptor:(id)descriptor valueType:(Class)type glyphSize:(CGSize)size completionHandler:(id)handler
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a3;
-  v12 = a6;
+  height = size.height;
+  width = size.width;
+  descriptorCopy = descriptor;
+  handlerCopy = handler;
   v13 = +[VCVoiceShortcutClient standardClient];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __90__WFObservableObjectResult_getResultWithDescriptor_valueType_glyphSize_completionHandler___block_invoke;
   v16[3] = &unk_1E7B018F8;
-  v18 = v12;
-  v19 = a1;
+  v18 = handlerCopy;
+  selfCopy = self;
   v20 = width;
   v21 = height;
-  v22 = a4;
-  v17 = v11;
-  v14 = v11;
-  v15 = v12;
-  [v13 getValueForDescriptor:v14 resultClass:a4 completion:v16];
+  typeCopy = type;
+  v17 = descriptorCopy;
+  v14 = descriptorCopy;
+  v15 = handlerCopy;
+  [v13 getValueForDescriptor:v14 resultClass:type completion:v16];
 }
 
 void __90__WFObservableObjectResult_getResultWithDescriptor_valueType_glyphSize_completionHandler___block_invoke(uint64_t a1, void *a2)

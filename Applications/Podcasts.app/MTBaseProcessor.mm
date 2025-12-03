@@ -8,10 +8,10 @@
 - (id)createQueryObserver;
 - (id)entityName;
 - (id)predicate;
-- (void)enqueueWorkBlock:(id)a3;
-- (void)results:(id)a3;
-- (void)resultsChangedWithDeletedIds:(id)a3 insertIds:(id)a4 updatedIds:(id)a5;
-- (void)setIsStopping:(BOOL)a3;
+- (void)enqueueWorkBlock:(id)block;
+- (void)results:(id)results;
+- (void)resultsChangedWithDeletedIds:(id)ids insertIds:(id)insertIds updatedIds:(id)updatedIds;
+- (void)setIsStopping:(BOOL)stopping;
 - (void)stop;
 - (void)updatePredicate;
 @end
@@ -28,7 +28,7 @@
 
 + (id)sharedInstance
 {
-  v3 = NSStringFromClass(a1);
+  v3 = NSStringFromClass(self);
   v4 = qword_100583C18;
   objc_sync_enter(v4);
   v5 = [qword_100583C18 objectForKey:v3];
@@ -41,7 +41,7 @@
     v5 = [qword_100583C18 objectForKey:v3];
     if (!v5)
     {
-      v8.receiver = a1;
+      v8.receiver = self;
       v8.super_class = &OBJC_METACLASS___MTBaseProcessor;
       v5 = [objc_msgSendSuper2(&v8 allocWithZone:{0), "init"}];
       [qword_100583C18 setObject:v5 forKey:v3];
@@ -85,8 +85,8 @@
 
 - (BOOL)start
 {
-  v3 = [(MTBaseProcessor *)self isStopping];
-  if ((v3 & 1) == 0)
+  isStopping = [(MTBaseProcessor *)self isStopping];
+  if ((isStopping & 1) == 0)
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
@@ -108,26 +108,26 @@
     objc_destroyWeak(&location);
   }
 
-  return v3 ^ 1;
+  return isStopping ^ 1;
 }
 
 - (BOOL)isStopping
 {
-  v2 = self;
-  v3 = [(MTBaseProcessor *)self isStoppingLock];
-  objc_sync_enter(v3);
-  LOBYTE(v2) = v2->_isStopping;
-  objc_sync_exit(v3);
+  selfCopy = self;
+  isStoppingLock = [(MTBaseProcessor *)self isStoppingLock];
+  objc_sync_enter(isStoppingLock);
+  LOBYTE(selfCopy) = selfCopy->_isStopping;
+  objc_sync_exit(isStoppingLock);
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)createQueryObserver
 {
   v3 = [MTSafeUuidQueryObserver alloc];
-  v4 = [(MTBaseProcessor *)self entityName];
-  v5 = [(MTBaseProcessor *)self predicate];
-  v6 = [(MTSafeUuidQueryObserver *)v3 initWithEntityName:v4 predicate:v5];
+  entityName = [(MTBaseProcessor *)self entityName];
+  predicate = [(MTBaseProcessor *)self predicate];
+  v6 = [(MTSafeUuidQueryObserver *)v3 initWithEntityName:entityName predicate:predicate];
 
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
@@ -149,18 +149,18 @@
 - (void)stop
 {
   [(MTBaseProcessor *)self setIsStopping:1];
-  v3 = [(MTBaseProcessor *)self queryObserver];
-  [v3 stop];
+  queryObserver = [(MTBaseProcessor *)self queryObserver];
+  [queryObserver stop];
 
-  v4 = [(MTBaseProcessor *)self defaultsNotifier];
-  [v4 stop];
+  defaultsNotifier = [(MTBaseProcessor *)self defaultsNotifier];
+  [defaultsNotifier stop];
 }
 
-- (void)setIsStopping:(BOOL)a3
+- (void)setIsStopping:(BOOL)stopping
 {
   obj = [(MTBaseProcessor *)self isStoppingLock];
   objc_sync_enter(obj);
-  self->_isStopping = a3;
+  self->_isStopping = stopping;
   objc_sync_exit(obj);
 }
 
@@ -176,9 +176,9 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ updated predicate", &v8, 0xCu);
   }
 
-  v6 = [(MTBaseProcessor *)self queryObserver];
-  v7 = [(MTBaseProcessor *)self predicate];
-  [v6 setPredicate:v7];
+  queryObserver = [(MTBaseProcessor *)self queryObserver];
+  predicate = [(MTBaseProcessor *)self predicate];
+  [queryObserver setPredicate:predicate];
 }
 
 - (id)entityName
@@ -193,40 +193,40 @@
   objc_exception_throw(v2);
 }
 
-- (void)resultsChangedWithDeletedIds:(id)a3 insertIds:(id)a4 updatedIds:(id)a5
+- (void)resultsChangedWithDeletedIds:(id)ids insertIds:(id)insertIds updatedIds:(id)updatedIds
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  idsCopy = ids;
+  insertIdsCopy = insertIds;
+  updatedIdsCopy = updatedIds;
   v10 = [NSException exceptionWithName:NSGenericException reason:@"resulstChanged must be implemented by subclasses" userInfo:0];
   objc_exception_throw(v10);
 }
 
-- (void)results:(id)a3
+- (void)results:(id)results
 {
-  v4 = a3;
-  v5 = [(MTBaseProcessor *)self queryObserver];
-  [v5 results:v4];
+  resultsCopy = results;
+  queryObserver = [(MTBaseProcessor *)self queryObserver];
+  [queryObserver results:resultsCopy];
 }
 
-- (void)enqueueWorkBlock:(id)a3
+- (void)enqueueWorkBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MTBaseProcessor *)self workQueue];
+  blockCopy = block;
+  workQueue = [(MTBaseProcessor *)self workQueue];
 
-  if (v5)
+  if (workQueue)
   {
     if (![(MTBaseProcessor *)self isStopping])
     {
       objc_initWeak(buf, self);
-      v8 = [(MTBaseProcessor *)self workQueue];
+      workQueue2 = [(MTBaseProcessor *)self workQueue];
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = sub_1000D8508;
       v9[3] = &unk_1004DB888;
       objc_copyWeak(&v11, buf);
-      v10 = v4;
-      dispatch_async(v8, v9);
+      v10 = blockCopy;
+      dispatch_async(workQueue2, v9);
 
       objc_destroyWeak(&v11);
       objc_destroyWeak(buf);

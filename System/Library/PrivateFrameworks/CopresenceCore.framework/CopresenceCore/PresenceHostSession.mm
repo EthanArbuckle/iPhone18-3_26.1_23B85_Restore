@@ -1,5 +1,5 @@
 @interface PresenceHostSession
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NSString)description;
 - (_TtC14CopresenceCore19PresenceHostSession)init;
 @end
@@ -8,7 +8,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PresenceHostSession.description.getter();
   v5 = v4;
 
@@ -24,12 +24,12 @@
   return result;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = specialized PresenceHostSession.listener(_:shouldAcceptNewConnection:)(v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = specialized PresenceHostSession.listener(_:shouldAcceptNewConnection:)(connectionCopy);
 
   return v9 & 1;
 }

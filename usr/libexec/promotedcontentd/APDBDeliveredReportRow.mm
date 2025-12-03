@@ -1,25 +1,25 @@
 @interface APDBDeliveredReportRow
-- (id)initType:(id)a3 dayOfYear:(id)a4 frequency:(id)a5 reportDate:(id)a6 table:(id)a7;
+- (id)initType:(id)type dayOfYear:(id)year frequency:(id)frequency reportDate:(id)date table:(id)table;
 @end
 
 @implementation APDBDeliveredReportRow
 
-- (id)initType:(id)a3 dayOfYear:(id)a4 frequency:(id)a5 reportDate:(id)a6 table:(id)a7
+- (id)initType:(id)type dayOfYear:(id)year frequency:(id)frequency reportDate:(id)date table:(id)table
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  typeCopy = type;
+  yearCopy = year;
+  frequencyCopy = frequency;
+  dateCopy = date;
   v19.receiver = self;
   v19.super_class = APDBDeliveredReportRow;
-  v16 = [(APDBDeliveredReportRow *)&v19 initAsNewObjectWithTable:a7];
+  v16 = [(APDBDeliveredReportRow *)&v19 initAsNewObjectWithTable:table];
   v17 = v16;
   if (v16)
   {
-    [v16 setValue:v12 forColumnName:@"type"];
-    [v17 setValue:v13 forColumnName:@"dayOfYear"];
-    [v17 setValue:v14 forColumnName:@"frequency"];
-    [v17 setValue:v15 forColumnName:@"reportDate"];
+    [v16 setValue:typeCopy forColumnName:@"type"];
+    [v17 setValue:yearCopy forColumnName:@"dayOfYear"];
+    [v17 setValue:frequencyCopy forColumnName:@"frequency"];
+    [v17 setValue:dateCopy forColumnName:@"reportDate"];
   }
 
   return v17;

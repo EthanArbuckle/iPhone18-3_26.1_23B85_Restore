@@ -1,47 +1,47 @@
 @interface OAXTransform2D
-+ (CGRect)readChildrenBoundsFromParentXmlNode:(_xmlNode *)a3 inNamespace:(id)a4 drawingState:(id)a5;
-+ (id)readOrientedBoundsFromXmlNode:(_xmlNode *)a3 inNamespace:(id)a4 relative:(BOOL)a5 drawingState:(id)a6;
-+ (void)readFromParentXmlNode:(_xmlNode *)a3 inNamespace:(id)a4 toDrawable:(id)a5 drawingState:(id)a6;
++ (CGRect)readChildrenBoundsFromParentXmlNode:(_xmlNode *)node inNamespace:(id)namespace drawingState:(id)state;
++ (id)readOrientedBoundsFromXmlNode:(_xmlNode *)node inNamespace:(id)namespace relative:(BOOL)relative drawingState:(id)state;
++ (void)readFromParentXmlNode:(_xmlNode *)node inNamespace:(id)namespace toDrawable:(id)drawable drawingState:(id)state;
 @end
 
 @implementation OAXTransform2D
 
-+ (void)readFromParentXmlNode:(_xmlNode *)a3 inNamespace:(id)a4 toDrawable:(id)a5 drawingState:(id)a6
++ (void)readFromParentXmlNode:(_xmlNode *)node inNamespace:(id)namespace toDrawable:(id)drawable drawingState:(id)state
 {
-  v17 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v11 OAXMainNamespace];
-  v13 = OCXFindChild(a3, v12, "xfrm");
+  namespaceCopy = namespace;
+  drawableCopy = drawable;
+  stateCopy = state;
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v13 = OCXFindChild(node, oAXMainNamespace, "xfrm");
 
-  if (v13 || (v13 = OCXFindChild(a3, v17, "xfrm")) != 0)
+  if (v13 || (v13 = OCXFindChild(node, namespaceCopy, "xfrm")) != 0)
   {
-    v14 = [v10 drawableProperties];
+    drawableProperties = [drawableCopy drawableProperties];
 
-    if (v14)
+    if (drawableProperties)
     {
-      v15 = [a1 readOrientedBoundsFromXmlNode:v13 inNamespace:v17 relative:objc_msgSend(v11 drawingState:{"isInsideGroup"), v11}];
-      v16 = [v10 drawableProperties];
-      [v16 setOrientedBounds:v15];
+      v15 = [self readOrientedBoundsFromXmlNode:v13 inNamespace:namespaceCopy relative:objc_msgSend(stateCopy drawingState:{"isInsideGroup"), stateCopy}];
+      drawableProperties2 = [drawableCopy drawableProperties];
+      [drawableProperties2 setOrientedBounds:v15];
     }
   }
 }
 
-+ (id)readOrientedBoundsFromXmlNode:(_xmlNode *)a3 inNamespace:(id)a4 relative:(BOOL)a5 drawingState:(id)a6
++ (id)readOrientedBoundsFromXmlNode:(_xmlNode *)node inNamespace:(id)namespace relative:(BOOL)relative drawingState:(id)state
 {
-  v6 = a5;
-  v8 = a6;
+  relativeCopy = relative;
+  stateCopy = state;
   v9 = objc_alloc_init(OADOrientedBounds);
   v10 = *MEMORY[0x277CBF3A0];
   v11 = *(MEMORY[0x277CBF3A0] + 8);
   v12 = *(MEMORY[0x277CBF3A0] + 16);
   v13 = *(MEMORY[0x277CBF3A0] + 24);
-  v14 = [v8 OAXMainNamespace];
-  v15 = OCXFindChild(a3, v14, "off");
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v15 = OCXFindChild(node, oAXMainNamespace, "off");
 
   if (v15)
   {
-    if (v6)
+    if (relativeCopy)
     {
       v10 = [OAXBaseTypes readRequiredLongFromXmlNode:v15 name:"x"];
       v11 = [OAXBaseTypes readRequiredLongFromXmlNode:v15 name:"y"];
@@ -55,12 +55,12 @@
     }
   }
 
-  v18 = [v8 OAXMainNamespace];
-  v19 = OCXFindChild(a3, v18, "ext");
+  oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+  v19 = OCXFindChild(node, oAXMainNamespace2, "ext");
 
   if (v19)
   {
-    if (v6)
+    if (relativeCopy)
     {
       v12 = [OAXBaseTypes readRequiredLongFromXmlNode:v19 name:"cx"];
       v13 = [OAXBaseTypes readRequiredLongFromXmlNode:v19 name:"cy"];
@@ -75,15 +75,15 @@
   }
 
   [(OADOrientedBounds *)v9 setBounds:v10, v11, v12, v13];
-  [OAXBaseTypes readOptionalAngleFromXmlNode:a3 name:"rot"];
+  [OAXBaseTypes readOptionalAngleFromXmlNode:node name:"rot"];
   v23 = v22;
   *&v22 = v23;
   [(OADOrientedBounds *)v9 setRotation:v22];
-  [(OADOrientedBounds *)v9 setFlipX:CXDefaultBoolAttribute(a3, CXNoNamespace, "flipH", 0)];
-  [(OADOrientedBounds *)v9 setFlipY:CXDefaultBoolAttribute(a3, CXNoNamespace, "flipV", 0)];
-  v24 = [(OADOrientedBounds *)v9 flipX];
-  v25 = [(OADOrientedBounds *)v9 flipY];
-  if (v23 != 0.0 && v24 != v25)
+  [(OADOrientedBounds *)v9 setFlipX:CXDefaultBoolAttribute(node, CXNoNamespace, "flipH", 0)];
+  [(OADOrientedBounds *)v9 setFlipY:CXDefaultBoolAttribute(node, CXNoNamespace, "flipV", 0)];
+  flipX = [(OADOrientedBounds *)v9 flipX];
+  flipY = [(OADOrientedBounds *)v9 flipY];
+  if (v23 != 0.0 && flipX != flipY)
   {
     *&v26 = 360.0 - v23;
     [(OADOrientedBounds *)v9 setRotation:v26];
@@ -92,19 +92,19 @@
   return v9;
 }
 
-+ (CGRect)readChildrenBoundsFromParentXmlNode:(_xmlNode *)a3 inNamespace:(id)a4 drawingState:(id)a5
++ (CGRect)readChildrenBoundsFromParentXmlNode:(_xmlNode *)node inNamespace:(id)namespace drawingState:(id)state
 {
-  v6 = a5;
-  v7 = [v6 OAXMainNamespace];
-  v8 = OCXFindChild(a3, v7, "xfrm");
+  stateCopy = state;
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v8 = OCXFindChild(node, oAXMainNamespace, "xfrm");
 
-  v9 = [v6 OAXMainNamespace];
-  v10 = OCXFindChild(v8, v9, "chOff");
+  oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+  v10 = OCXFindChild(v8, oAXMainNamespace2, "chOff");
 
   if (!v10)
   {
-    v11 = [v6 OAXMainNamespace];
-    v10 = OCXFindChild(v8, v11, "off");
+    oAXMainNamespace3 = [stateCopy OAXMainNamespace];
+    v10 = OCXFindChild(v8, oAXMainNamespace3, "off");
 
     if (!v10)
     {
@@ -115,13 +115,13 @@
 
   v12 = [OAXBaseTypes readRequiredLongFromXmlNode:v10 name:"x"];
   v13 = [OAXBaseTypes readRequiredLongFromXmlNode:v10 name:"y"];
-  v14 = [v6 OAXMainNamespace];
-  v15 = OCXFindChild(v8, v14, "chExt");
+  oAXMainNamespace4 = [stateCopy OAXMainNamespace];
+  v15 = OCXFindChild(v8, oAXMainNamespace4, "chExt");
 
   if (!v15)
   {
-    v16 = [v6 OAXMainNamespace];
-    v15 = OCXFindChild(v8, v16, "ext");
+    oAXMainNamespace5 = [stateCopy OAXMainNamespace];
+    v15 = OCXFindChild(v8, oAXMainNamespace5, "ext");
 
     if (!v15)
     {

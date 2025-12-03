@@ -9,7 +9,7 @@
 - (CFTypeRef)decodeCVPixelBufferForKey:()CVPixelBuffer
 {
   v4 = a3;
-  v5 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self decodeObjectOfClass:objc_opt_class() forKey:v4];
 
   if ([v5 pixelBuffer])
   {
@@ -28,7 +28,7 @@
 - (CFTypeRef)decodeCVPixelBufferForKey:()CVPixelBuffer expectSourceMedia:
 {
   v6 = a3;
-  v7 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v6];
+  v7 = [self decodeObjectOfClass:objc_opt_class() forKey:v6];
 
   if (a4 && [v7 pixelBuffer])
   {
@@ -55,7 +55,7 @@
   v6 = [[CVPixelBufferCoder alloc] initWithCVPixelBuffer:a3];
   if (v6)
   {
-    [a1 encodeObject:v6 forKey:v7];
+    [self encodeObject:v6 forKey:v7];
   }
 }
 

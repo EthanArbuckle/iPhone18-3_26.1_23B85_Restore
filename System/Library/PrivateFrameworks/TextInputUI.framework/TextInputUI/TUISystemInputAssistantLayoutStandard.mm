@@ -1,79 +1,79 @@
 @interface TUISystemInputAssistantLayoutStandard
-- (void)_layoutViewSet:(id)a3 forFixedCenterViewWidth:(double)a4 inBounds:(CGRect)a5 forAssistantView:(id)a6;
-- (void)_layoutViewSet:(id)a3 forFlexibleCenterViewInBounds:(CGRect)a4 forAssistantView:(id)a5;
-- (void)configureButtonBarsInViewSet:(id)a3 forApplicationAssistantItem:(id)a4 withSystemAssistantItem:(id)a5 withAssistantView:(id)a6;
-- (void)layoutViewSet:(id)a3 inBounds:(CGRect)a4 forAssistantView:(id)a5;
+- (void)_layoutViewSet:(id)set forFixedCenterViewWidth:(double)width inBounds:(CGRect)bounds forAssistantView:(id)view;
+- (void)_layoutViewSet:(id)set forFlexibleCenterViewInBounds:(CGRect)bounds forAssistantView:(id)view;
+- (void)configureButtonBarsInViewSet:(id)set forApplicationAssistantItem:(id)item withSystemAssistantItem:(id)assistantItem withAssistantView:(id)view;
+- (void)layoutViewSet:(id)set inBounds:(CGRect)bounds forAssistantView:(id)view;
 @end
 
 @implementation TUISystemInputAssistantLayoutStandard
 
-- (void)layoutViewSet:(id)a3 inBounds:(CGRect)a4 forAssistantView:(id)a5
+- (void)layoutViewSet:(id)set inBounds:(CGRect)bounds forAssistantView:(id)view
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v16 = a3;
-  v11 = a5;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  setCopy = set;
+  viewCopy = view;
   v18.origin.x = x;
   v18.origin.y = y;
   v18.size.width = width;
   v18.size.height = height;
   if (!CGRectIsEmpty(v18))
   {
-    v12 = [v11 showsButtonBarItemsInline];
-    v13 = [v16 leftButtonBar];
-    [v13 setHidden:v12 ^ 1u];
+    showsButtonBarItemsInline = [viewCopy showsButtonBarItemsInline];
+    leftButtonBar = [setCopy leftButtonBar];
+    [leftButtonBar setHidden:showsButtonBarItemsInline ^ 1u];
 
-    v14 = [v16 rightButtonBar];
-    [v14 setHidden:v12 ^ 1u];
+    rightButtonBar = [setCopy rightButtonBar];
+    [rightButtonBar setHidden:showsButtonBarItemsInline ^ 1u];
 
-    [v11 centerViewWidth];
+    [viewCopy centerViewWidth];
     if (v15 <= 0.0)
     {
-      [(TUISystemInputAssistantLayoutStandard *)self _layoutViewSet:v16 forFlexibleCenterViewInBounds:v11 forAssistantView:x, y, width, height];
+      [(TUISystemInputAssistantLayoutStandard *)self _layoutViewSet:setCopy forFlexibleCenterViewInBounds:viewCopy forAssistantView:x, y, width, height];
     }
 
     else
     {
-      [TUISystemInputAssistantLayoutStandard _layoutViewSet:"_layoutViewSet:forFixedCenterViewWidth:inBounds:forAssistantView:" forFixedCenterViewWidth:v16 inBounds:v11 forAssistantView:?];
+      [TUISystemInputAssistantLayoutStandard _layoutViewSet:"_layoutViewSet:forFixedCenterViewWidth:inBounds:forAssistantView:" forFixedCenterViewWidth:setCopy inBounds:viewCopy forAssistantView:?];
     }
   }
 }
 
-- (void)_layoutViewSet:(id)a3 forFlexibleCenterViewInBounds:(CGRect)a4 forAssistantView:(id)a5
+- (void)_layoutViewSet:(id)set forFlexibleCenterViewInBounds:(CGRect)bounds forAssistantView:(id)view
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v27 = a3;
-  v10 = a5;
-  v11 = [v27 viewSetContainer];
-  v12 = [v11 translatesAutoresizingMaskIntoConstraints];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  setCopy = set;
+  viewCopy = view;
+  viewSetContainer = [setCopy viewSetContainer];
+  translatesAutoresizingMaskIntoConstraints = [viewSetContainer translatesAutoresizingMaskIntoConstraints];
 
-  if (v12)
+  if (translatesAutoresizingMaskIntoConstraints)
   {
-    v13 = [v27 viewSetContainer];
-    [v10 bounds];
-    [v13 setFrame:?];
+    viewSetContainer2 = [setCopy viewSetContainer];
+    [viewCopy bounds];
+    [viewSetContainer2 setFrame:?];
   }
 
   else
   {
-    [v10 resetContainerConstraints];
+    [viewCopy resetContainerConstraints];
   }
 
-  v14 = [v10 showsButtonBarItemsInline];
+  showsButtonBarItemsInline = [viewCopy showsButtonBarItemsInline];
 
-  if (v14)
+  if (showsButtonBarItemsInline)
   {
-    v15 = [v27 leftButtonBar];
-    [v15 intrinsicContentSize];
+    leftButtonBar = [setCopy leftButtonBar];
+    [leftButtonBar intrinsicContentSize];
     v17 = v16;
 
-    v18 = [v27 rightButtonBar];
-    [v18 intrinsicContentSize];
+    rightButtonBar = [setCopy rightButtonBar];
+    [rightButtonBar intrinsicContentSize];
     v20 = v19;
 
     v21 = v17 + v20;
@@ -84,12 +84,12 @@
       v21 = v20 + v17;
     }
 
-    v22 = [v27 leftButtonBar];
+    leftButtonBar2 = [setCopy leftButtonBar];
     y = 0.0;
-    [v22 setFrame:{0.0, 0.0, v17, height}];
+    [leftButtonBar2 setFrame:{0.0, 0.0, v17, height}];
 
-    v23 = [v27 leftButtonBar];
-    [v23 frame];
+    leftButtonBar3 = [setCopy leftButtonBar];
+    [leftButtonBar3 frame];
     x = CGRectGetWidth(v29) + 0.0;
 
     width = width - v21;
@@ -98,46 +98,46 @@
     v30.size.width = width;
     v30.size.height = height;
     v24 = x + CGRectGetWidth(v30);
-    v25 = [v27 rightButtonBar];
-    [v25 setFrame:{v24, 0.0, v20, height}];
+    rightButtonBar2 = [setCopy rightButtonBar];
+    [rightButtonBar2 setFrame:{v24, 0.0, v20, height}];
   }
 
-  v26 = [v27 centerView];
-  [v26 setFrame:{x, y, width, height}];
+  centerView = [setCopy centerView];
+  [centerView setFrame:{x, y, width, height}];
 }
 
-- (void)_layoutViewSet:(id)a3 forFixedCenterViewWidth:(double)a4 inBounds:(CGRect)a5 forAssistantView:(id)a6
+- (void)_layoutViewSet:(id)set forFixedCenterViewWidth:(double)width inBounds:(CGRect)bounds forAssistantView:(id)view
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v34 = a3;
-  v13 = a6;
-  v14 = [v34 viewSetContainer];
-  v15 = [v14 translatesAutoresizingMaskIntoConstraints];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  setCopy = set;
+  viewCopy = view;
+  viewSetContainer = [setCopy viewSetContainer];
+  translatesAutoresizingMaskIntoConstraints = [viewSetContainer translatesAutoresizingMaskIntoConstraints];
 
-  if (v15)
+  if (translatesAutoresizingMaskIntoConstraints)
   {
-    v16 = [v34 viewSetContainer];
-    [v13 bounds];
-    [v16 setFrame:?];
+    viewSetContainer2 = [setCopy viewSetContainer];
+    [viewCopy bounds];
+    [viewSetContainer2 setFrame:?];
   }
 
   else
   {
-    [v13 resetContainerConstraints];
+    [viewCopy resetContainerConstraints];
   }
 
-  v17 = width - a4;
-  if (((a4 > 0.0) & [v13 showsCenterView]) != 0)
+  v17 = width - width;
+  if (((width > 0.0) & [viewCopy showsCenterView]) != 0)
   {
-    v18 = width - a4;
+    widthCopy = width - width;
   }
 
   else
   {
-    v18 = width;
+    widthCopy = width;
   }
 
   if ([(TUISystemInputAssistantLayoutStandard *)self isSplit])
@@ -150,22 +150,22 @@
 
   else
   {
-    v21 = v18 * 0.5;
+    v21 = widthCopy * 0.5;
     dx = v21;
   }
 
-  v22 = [v13 showsCenterView];
-  if (a4 <= 0.0)
+  showsCenterView = [viewCopy showsCenterView];
+  if (width <= 0.0)
   {
     v23 = height;
-    v24 = width;
+    widthCopy3 = width;
   }
 
   else
   {
     v23 = height;
-    v24 = width;
-    if (v22)
+    widthCopy3 = width;
+    if (showsCenterView)
     {
       v36.origin.x = x;
       v36.origin.y = y;
@@ -174,26 +174,26 @@
       v37 = CGRectInset(v36, v17 * 0.5, 0.0);
       x = v37.origin.x;
       y = v37.origin.y;
-      v24 = v37.size.width;
+      widthCopy3 = v37.size.width;
       v23 = v37.size.height;
     }
   }
 
-  if ([v13 showsButtonBarItemsInline])
+  if ([viewCopy showsButtonBarItemsInline])
   {
-    v25 = [v34 leftButtonBar];
-    [v25 setFrame:{0.0, 0.0, dx, height}];
+    leftButtonBar = [setCopy leftButtonBar];
+    [leftButtonBar setFrame:{0.0, 0.0, dx, height}];
 
-    if ([v13 showsCenterView])
+    if ([viewCopy showsCenterView])
     {
       v32 = height;
-      v26 = [v34 leftButtonBar];
-      [v26 frame];
+      leftButtonBar2 = [setCopy leftButtonBar];
+      [leftButtonBar2 frame];
       v27 = y;
       MaxX = CGRectGetMaxX(v38);
       v39.origin.x = x;
       v39.origin.y = v27;
-      v39.size.width = v24;
+      v39.size.width = widthCopy3;
       v39.size.height = v23;
       MinX = CGRectGetMinX(v39);
 
@@ -206,80 +206,80 @@
       {
         v40.origin.x = x;
         v40.origin.y = v27;
-        v40.size.width = v24;
+        v40.size.width = widthCopy3;
         v40.size.height = v23;
         v41 = CGRectInset(v40, dx, 0.0);
         x = v41.origin.x;
         y = v41.origin.y;
-        v24 = v41.size.width;
+        widthCopy3 = v41.size.width;
         v23 = v41.size.height;
       }
 
       height = v32;
     }
 
-    v30 = [v34 rightButtonBar];
-    [v30 setFrame:{width - v21, 0.0, v21, height}];
+    rightButtonBar = [setCopy rightButtonBar];
+    [rightButtonBar setFrame:{width - v21, 0.0, v21, height}];
   }
 
-  v31 = [v34 centerView];
-  [v31 setFrame:{x, y, v24, v23}];
+  centerView = [setCopy centerView];
+  [centerView setFrame:{x, y, widthCopy3, v23}];
 }
 
-- (void)configureButtonBarsInViewSet:(id)a3 forApplicationAssistantItem:(id)a4 withSystemAssistantItem:(id)a5 withAssistantView:(id)a6
+- (void)configureButtonBarsInViewSet:(id)set forApplicationAssistantItem:(id)item withSystemAssistantItem:(id)assistantItem withAssistantView:(id)view
 {
-  v10 = a3;
-  v11 = a6;
+  setCopy = set;
+  viewCopy = view;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __140__TUISystemInputAssistantLayoutStandard_configureButtonBarsInViewSet_forApplicationAssistantItem_withSystemAssistantItem_withAssistantView___block_invoke;
   aBlock[3] = &unk_1E72D7A48;
-  v12 = v11;
+  v12 = viewCopy;
   v30 = v12;
-  v13 = a5;
-  v14 = a4;
+  assistantItemCopy = assistantItem;
+  itemCopy = item;
   v15 = _Block_copy(aBlock);
-  v16 = [(TUISystemInputAssistantLayout *)self _buttonBarGroupSetForApplicationAssistantItem:v14 withSystemInputAssistantItem:v13 forAssistantView:v12];
+  v16 = [(TUISystemInputAssistantLayout *)self _buttonBarGroupSetForApplicationAssistantItem:itemCopy withSystemInputAssistantItem:assistantItemCopy forAssistantView:v12];
 
-  LODWORD(v13) = [v12 showsCenterView];
-  v17 = [v10 centerView];
-  [v17 setHidden:v13 ^ 1];
+  LODWORD(assistantItemCopy) = [v12 showsCenterView];
+  centerView = [setCopy centerView];
+  [centerView setHidden:assistantItemCopy ^ 1];
 
   if ([(TUISystemInputAssistantLayout *)self usesUnifiedButtonBar])
   {
-    v18 = [v10 unifiedButtonBar];
-    v19 = [v16 unifiedButtonGroups];
-    [v18 setButtonGroups:v19];
+    unifiedButtonBar = [setCopy unifiedButtonBar];
+    unifiedButtonGroups = [v16 unifiedButtonGroups];
+    [unifiedButtonBar setButtonGroups:unifiedButtonGroups];
   }
 
   else
   {
-    v20 = [v10 leftButtonBar];
-    v21 = [v20 effectiveUserInterfaceLayoutDirection];
+    leftButtonBar = [setCopy leftButtonBar];
+    effectiveUserInterfaceLayoutDirection = [leftButtonBar effectiveUserInterfaceLayoutDirection];
 
-    if (v21 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
-      v22 = [v10 rightButtonBar];
-      v23 = [v16 leadingButtonGroups];
-      v24 = [v16 leadingSeparators];
-      v15[2](v15, v22, v23, v24);
+      rightButtonBar = [setCopy rightButtonBar];
+      leadingButtonGroups = [v16 leadingButtonGroups];
+      leadingSeparators = [v16 leadingSeparators];
+      v15[2](v15, rightButtonBar, leadingButtonGroups, leadingSeparators);
 
-      [v10 leftButtonBar];
+      [setCopy leftButtonBar];
     }
 
     else
     {
-      v25 = [v10 leftButtonBar];
-      v26 = [v16 leadingButtonGroups];
-      v27 = [v16 leadingSeparators];
-      v15[2](v15, v25, v26, v27);
+      leftButtonBar2 = [setCopy leftButtonBar];
+      leadingButtonGroups2 = [v16 leadingButtonGroups];
+      leadingSeparators2 = [v16 leadingSeparators];
+      v15[2](v15, leftButtonBar2, leadingButtonGroups2, leadingSeparators2);
 
-      [v10 rightButtonBar];
+      [setCopy rightButtonBar];
     }
-    v18 = ;
-    v19 = [v16 trailingButtonGroups];
-    v28 = [v16 trailingSeparators];
-    v15[2](v15, v18, v19, v28);
+    unifiedButtonBar = ;
+    unifiedButtonGroups = [v16 trailingButtonGroups];
+    trailingSeparators = [v16 trailingSeparators];
+    v15[2](v15, unifiedButtonBar, unifiedButtonGroups, trailingSeparators);
   }
 }
 

@@ -1,12 +1,12 @@
 @interface GKSCNNodeComponent
 + (GKSCNNodeComponent)componentWithNode:(SCNNode *)node;
-- (GKSCNNodeComponent)initWithCoder:(id)a3;
+- (GKSCNNodeComponent)initWithCoder:(id)coder;
 - (GKSCNNodeComponent)initWithNode:(SCNNode *)node;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)agentDidUpdate:(id)a3;
-- (void)agentWillUpdate:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setEntity:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)agentDidUpdate:(id)update;
+- (void)agentWillUpdate:(id)update;
+- (void)encodeWithCoder:(id)coder;
+- (void)setEntity:(id)entity;
 @end
 
 @implementation GKSCNNodeComponent
@@ -34,13 +34,13 @@
   return v7;
 }
 
-- (GKSCNNodeComponent)initWithCoder:(id)a3
+- (GKSCNNodeComponent)initWithCoder:(id)coder
 {
   v14[12] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = GKSCNNodeComponent;
-  v5 = [(GKComponent *)&v13 initWithCoder:v4];
+  v5 = [(GKComponent *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -59,10 +59,10 @@
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:12];
     [v6 addObjectsFromArray:v7];
 
-    v8 = [v4 allowedClasses];
-    [v6 unionSet:v8];
+    allowedClasses = [coderCopy allowedClasses];
+    [v6 unionSet:allowedClasses];
 
-    v9 = [v4 decodeObjectOfClasses:v6 forKey:@"_serializableNodeIndexPath"];
+    v9 = [coderCopy decodeObjectOfClasses:v6 forKey:@"_serializableNodeIndexPath"];
     serializableNodeIndexPath = v5->_serializableNodeIndexPath;
     v5->_serializableNodeIndexPath = v9;
   }
@@ -71,44 +71,44 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = GKSCNNodeComponent;
-  [(GKComponent *)&v6 encodeWithCoder:v4];
+  [(GKComponent *)&v6 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x277CDBAF0] _indexPathForNode:self->_node];
   if (v5)
   {
-    [v4 encodeObject:v5 forKey:@"_serializableNodeIndexPath"];
+    [coderCopy encodeObject:v5 forKey:@"_serializableNodeIndexPath"];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = GKSCNNodeComponent;
-  v4 = [(GKComponent *)&v6 copyWithZone:a3];
+  v4 = [(GKComponent *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 6, self->_node);
   return v4;
 }
 
-- (void)setEntity:(id)a3
+- (void)setEntity:(id)entity
 {
   v5.receiver = self;
   v5.super_class = GKSCNNodeComponent;
-  v4 = a3;
-  [(GKComponent *)&v5 setEntity:v4];
-  [(SCNNode *)self->_node setEntity:v4, v5.receiver, v5.super_class];
+  entityCopy = entity;
+  [(GKComponent *)&v5 setEntity:entityCopy];
+  [(SCNNode *)self->_node setEntity:entityCopy, v5.receiver, v5.super_class];
 }
 
-- (void)agentWillUpdate:(id)a3
+- (void)agentWillUpdate:(id)update
 {
   node = self->_node;
-  v22 = a3;
+  updateCopy = update;
   [(SCNNode *)node position];
   HIDWORD(v6) = v5;
-  [v22 setPosition:v6];
+  [updateCopy setPosition:v6];
   [(SCNNode *)self->_node orientation];
   v8 = v7 * v7;
   v10 = v7 * v9;
@@ -124,13 +124,13 @@
   *(&v19 + 1) = (v10 + v18) + (v10 + v18);
   *(&v20 + 1) = 1.0 - ((v8 + v17) + (v8 + v17));
   *(&v21 + 1) = (v15 - v14) + (v15 - v14);
-  [v22 setRotation:{v19, v20, v21}];
+  [updateCopy setRotation:{v19, v20, v21}];
 }
 
-- (void)agentDidUpdate:(id)a3
+- (void)agentDidUpdate:(id)update
 {
-  v4 = a3;
-  [v4 rotation];
+  updateCopy = update;
+  [updateCopy rotation];
   v6 = v5 + 1.0;
   v9 = sqrtf((v5 + 1.0) - (v8 + *(&v7 + 1))) * 0.5;
   v10 = 1.0 - v5;
@@ -139,7 +139,7 @@
   *&v12 = sqrtf((v8 + *(&v7 + 1)) + v6) * 0.5;
   *&v13 = v9;
   [(SCNNode *)self->_node setOrientation:v13, v7, v11, v12];
-  [v4 position];
+  [updateCopy position];
   v18 = v14;
 
   LODWORD(v16) = DWORD2(v18);

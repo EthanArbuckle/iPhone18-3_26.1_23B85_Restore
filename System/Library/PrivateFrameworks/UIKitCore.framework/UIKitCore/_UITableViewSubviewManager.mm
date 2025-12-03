@@ -1,16 +1,16 @@
 @interface _UITableViewSubviewManager
-- (id)indexPathForPrefetchedCell:(id *)a1;
-- (id)prefetchedCellAtIndexPath:(id *)a1;
+- (id)indexPathForPrefetchedCell:(id *)cell;
+- (id)prefetchedCellAtIndexPath:(id *)path;
 - (uint64_t)preventReuseOfCell:(uint64_t)result;
 - (uint64_t)shouldDeferReuseOfCell:(uint64_t)result;
-- (void)cellReadyForReuse:(void *)a3 withIndexPath:(char)a4 didEndDisplaying:;
-- (void)filterPrefetchedCells:(id *)a1;
-- (void)initWithTableView:(void *)a1;
-- (void)rebasePrefetchedCellIndexPathsWithMapping:(id *)a1;
+- (void)cellReadyForReuse:(void *)reuse withIndexPath:(char)path didEndDisplaying:;
+- (void)filterPrefetchedCells:(id *)cells;
+- (void)initWithTableView:(void *)view;
+- (void)rebasePrefetchedCellIndexPathsWithMapping:(id *)mapping;
 - (void)removeAllPrefetchedCells;
-- (void)resumeReuseOfCell:(id *)a1;
-- (void)setReorderingCell:(id *)a1;
-- (void)storePrefetchedCell:(void *)a3 forIndexPath:;
+- (void)resumeReuseOfCell:(id *)cell;
+- (void)setReorderingCell:(id *)cell;
+- (void)storePrefetchedCell:(void *)cell forIndexPath:;
 @end
 
 @implementation _UITableViewSubviewManager
@@ -18,12 +18,12 @@
 - (void)removeAllPrefetchedCells
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (a1 && [a1[5] count])
+  if (self && [self[5] count])
   {
-    v2 = [a1[5] copy];
-    [a1[5] removeAllObjects];
-    [a1[6] removeAllObjects];
-    WeakRetained = objc_loadWeakRetained(a1 + 2);
+    v2 = [self[5] copy];
+    [self[5] removeAllObjects];
+    [self[6] removeAllObjects];
+    WeakRetained = objc_loadWeakRetained(self + 2);
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __54___UITableViewSubviewManager_removeAllPrefetchedCells__block_invoke;
@@ -32,8 +32,8 @@
     v21 = v4;
     [v2 enumerateKeysAndObjectsUsingBlock:v20];
     has_internal_diagnostics = os_variant_has_internal_diagnostics();
-    v6 = [a1[5] count];
-    v7 = [a1[6] count];
+    v6 = [self[5] count];
+    v7 = [self[6] count];
     if (has_internal_diagnostics)
     {
       if (v6 == v7)
@@ -46,10 +46,10 @@ LABEL_6:
       v8 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
       {
-        v9 = [a1[5] count];
-        v10 = [a1[6] count];
-        v11 = a1[5];
-        v12 = a1[6];
+        v9 = [self[5] count];
+        v10 = [self[6] count];
+        v11 = self[5];
+        v12 = self[6];
         *buf = 134218754;
         v23 = v9;
         v24 = 2048;
@@ -75,12 +75,12 @@ LABEL_6:
         goto LABEL_6;
       }
 
-      v15 = a1[5];
+      v15 = self[5];
       v8 = v13;
       v16 = [v15 count];
-      v17 = [a1[6] count];
-      v18 = a1[5];
-      v19 = a1[6];
+      v17 = [self[6] count];
+      v18 = self[5];
+      v19 = self[6];
       *buf = 134218754;
       v23 = v16;
       v24 = 2048;
@@ -96,14 +96,14 @@ LABEL_6:
   }
 }
 
-- (void)initWithTableView:(void *)a1
+- (void)initWithTableView:(void *)view
 {
-  if (!a1)
+  if (!view)
   {
     return 0;
   }
 
-  v14.receiver = a1;
+  v14.receiver = view;
   v14.super_class = _UITableViewSubviewManager;
   v3 = objc_msgSendSuper2(&v14, sel_init);
   v4 = v3;
@@ -137,9 +137,9 @@ LABEL_6:
     v3 = result;
     if (!a2)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v6 = NSStringFromSelector(sel_shouldDeferReuseOfCell_);
-      [v5 handleFailureInMethod:sel_shouldDeferReuseOfCell_ object:v3 file:@"_UITableViewSubviewManager.m" lineNumber:81 description:{@"UITableView internal inconsistency: cell should not be nil in %@", v6}];
+      [currentHandler handleFailureInMethod:sel_shouldDeferReuseOfCell_ object:v3 file:@"_UITableViewSubviewManager.m" lineNumber:81 description:{@"UITableView internal inconsistency: cell should not be nil in %@", v6}];
     }
 
     v4 = *(v3 + 24);
@@ -150,29 +150,29 @@ LABEL_6:
   return result;
 }
 
-- (void)cellReadyForReuse:(void *)a3 withIndexPath:(char)a4 didEndDisplaying:
+- (void)cellReadyForReuse:(void *)reuse withIndexPath:(char)path didEndDisplaying:
 {
-  if (a1)
+  if (self)
   {
     if (!a2)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v11 = NSStringFromSelector(sel_cellReadyForReuse_withIndexPath_didEndDisplaying_);
-      [v10 handleFailureInMethod:sel_cellReadyForReuse_withIndexPath_didEndDisplaying_ object:a1 file:@"_UITableViewSubviewManager.m" lineNumber:87 description:{@"UITableView internal inconsistency: cell should not be nil in %@", v11}];
+      [currentHandler handleFailureInMethod:sel_cellReadyForReuse_withIndexPath_didEndDisplaying_ object:self file:@"_UITableViewSubviewManager.m" lineNumber:87 description:{@"UITableView internal inconsistency: cell should not be nil in %@", v11}];
     }
 
-    if (([(_UITableViewSubviewManager *)a1 shouldDeferReuseOfCell:a2]& 1) == 0)
+    if (([(_UITableViewSubviewManager *)self shouldDeferReuseOfCell:a2]& 1) == 0)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:sel_cellReadyForReuse_withIndexPath_didEndDisplaying_ object:a1 file:@"_UITableViewSubviewManager.m" lineNumber:88 description:{@"UITableView internal inconsistency: cells that are not prevented from being reused should not be deferred from being reused: %@", a2}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:sel_cellReadyForReuse_withIndexPath_didEndDisplaying_ object:self file:@"_UITableViewSubviewManager.m" lineNumber:88 description:{@"UITableView internal inconsistency: cells that are not prevented from being reused should not be deferred from being reused: %@", a2}];
     }
 
     v8 = [_UITableViewCellReuseParameters alloc];
-    v9 = a3;
+    reuseCopy = reuse;
     if (v8 && (v14.receiver = v8, v14.super_class = _UITableViewCellReuseParameters, (v13 = objc_msgSendSuper2(&v14, sel_init)) != 0))
     {
-      objc_storeStrong(v13 + 2, a3);
-      *(v13 + 8) = a4;
+      objc_storeStrong(v13 + 2, reuse);
+      *(v13 + 8) = path;
     }
 
     else
@@ -180,7 +180,7 @@ LABEL_6:
       v13 = 0;
     }
 
-    [*(a1 + 32) setObject:v13 forKey:a2];
+    [*(self + 32) setObject:v13 forKey:a2];
   }
 }
 
@@ -191,9 +191,9 @@ LABEL_6:
     v3 = result;
     if (!a2)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v6 = NSStringFromSelector(sel_preventReuseOfCell_);
-      [v5 handleFailureInMethod:sel_preventReuseOfCell_ object:v3 file:@"_UITableViewSubviewManager.m" lineNumber:95 description:{@"UITableView internal inconsistency: cell should not be nil in %@", v6}];
+      [currentHandler handleFailureInMethod:sel_preventReuseOfCell_ object:v3 file:@"_UITableViewSubviewManager.m" lineNumber:95 description:{@"UITableView internal inconsistency: cell should not be nil in %@", v6}];
     }
 
     v4 = *(v3 + 24);
@@ -204,32 +204,32 @@ LABEL_6:
   return result;
 }
 
-- (void)resumeReuseOfCell:(id *)a1
+- (void)resumeReuseOfCell:(id *)cell
 {
-  if (a1)
+  if (cell)
   {
     if (!a2)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = NSStringFromSelector(sel_resumeReuseOfCell_);
-      [v6 handleFailureInMethod:sel_resumeReuseOfCell_ object:a1 file:@"_UITableViewSubviewManager.m" lineNumber:101 description:{@"UITableView internal inconsistency: cell should not be nil in %@", v7}];
+      [currentHandler handleFailureInMethod:sel_resumeReuseOfCell_ object:cell file:@"_UITableViewSubviewManager.m" lineNumber:101 description:{@"UITableView internal inconsistency: cell should not be nil in %@", v7}];
     }
 
-    if (([(_UITableViewSubviewManager *)a1 shouldDeferReuseOfCell:a2]& 1) == 0)
+    if (([(_UITableViewSubviewManager *)cell shouldDeferReuseOfCell:a2]& 1) == 0)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:sel_resumeReuseOfCell_ object:a1 file:@"_UITableViewSubviewManager.m" lineNumber:102 description:{@"UITableView internal inconsistency: attempted to resume reuse of a cell that was never prevented from being reused: %@", a2}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:sel_resumeReuseOfCell_ object:cell file:@"_UITableViewSubviewManager.m" lineNumber:102 description:{@"UITableView internal inconsistency: attempted to resume reuse of a cell that was never prevented from being reused: %@", a2}];
     }
 
-    [a1[3] removeObject:a2];
-    if (([a1[3] containsObject:a2] & 1) == 0)
+    [cell[3] removeObject:a2];
+    if (([cell[3] containsObject:a2] & 1) == 0)
     {
-      v4 = [a1[4] objectForKey:a2];
+      v4 = [cell[4] objectForKey:a2];
       if (v4)
       {
         v9 = v4;
-        [a1[4] removeObjectForKey:a2];
-        WeakRetained = objc_loadWeakRetained(a1 + 2);
+        [cell[4] removeObjectForKey:a2];
+        WeakRetained = objc_loadWeakRetained(cell + 2);
         [WeakRetained _reuseTableViewCell:a2 withIndexPath:v9[2] didEndDisplaying:*(v9 + 8)];
 
         v4 = v9;
@@ -238,41 +238,41 @@ LABEL_6:
   }
 }
 
-- (void)setReorderingCell:(id *)a1
+- (void)setReorderingCell:(id *)cell
 {
-  if (a1)
+  if (cell)
   {
-    v4 = a1 + 1;
-    v5 = a1[1];
+    v4 = cell + 1;
+    v5 = cell[1];
     if (v5 != a2)
     {
       v6 = v5;
       if (v5)
       {
-        [(_UITableViewSubviewManager *)a1 resumeReuseOfCell:v5];
+        [(_UITableViewSubviewManager *)cell resumeReuseOfCell:v5];
       }
 
       objc_storeStrong(v4, a2);
       v5 = v6;
       if (a2)
       {
-        [a1[3] addObject:a2];
+        [cell[3] addObject:a2];
         v5 = v6;
       }
     }
   }
 }
 
-- (void)storePrefetchedCell:(void *)a3 forIndexPath:
+- (void)storePrefetchedCell:(void *)cell forIndexPath:
 {
   v53 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  v7 = [*(a1 + 48) objectForKey:a2];
+  v7 = [*(self + 48) objectForKey:a2];
 
   if (has_internal_diagnostics)
   {
@@ -287,13 +287,13 @@ LABEL_6:
       goto LABEL_22;
     }
 
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"IP(%ld, %ld)", objc_msgSend(a3, "section"), objc_msgSend(a3, "row")];
+    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"IP(%ld, %ld)", objc_msgSend(cell, "section"), objc_msgSend(cell, "row")];
     v15 = MEMORY[0x1E696AEC0];
-    v16 = [*(a1 + 48) objectForKey:a2];
-    v17 = [v16 section];
-    v18 = [*(a1 + 48) objectForKey:a2];
-    v19 = [v15 stringWithFormat:@"IP(%ld, %ld)", v17, objc_msgSend(v18, "row")];
-    v20 = *(a1 + 40);
+    v16 = [*(self + 48) objectForKey:a2];
+    section = [v16 section];
+    v18 = [*(self + 48) objectForKey:a2];
+    v19 = [v15 stringWithFormat:@"IP(%ld, %ld)", section, objc_msgSend(v18, "row")];
+    v20 = *(self + 40);
     *buf = 138413058;
     v46 = v14;
     v47 = 2112;
@@ -316,13 +316,13 @@ LABEL_22:
     {
       v31 = MEMORY[0x1E696AEC0];
       v13 = v30;
-      v14 = [v31 stringWithFormat:@"IP(%ld, %ld)", objc_msgSend(a3, "section"), objc_msgSend(a3, "row")];
+      v14 = [v31 stringWithFormat:@"IP(%ld, %ld)", objc_msgSend(cell, "section"), objc_msgSend(cell, "row")];
       v32 = MEMORY[0x1E696AEC0];
-      v16 = [*(a1 + 48) objectForKey:a2];
-      v33 = [v16 section];
-      v18 = [*(a1 + 48) objectForKey:a2];
-      v19 = [v32 stringWithFormat:@"IP(%ld, %ld)", v33, objc_msgSend(v18, "row")];
-      v34 = *(a1 + 40);
+      v16 = [*(self + 48) objectForKey:a2];
+      section2 = [v16 section];
+      v18 = [*(self + 48) objectForKey:a2];
+      v19 = [v32 stringWithFormat:@"IP(%ld, %ld)", section2, objc_msgSend(v18, "row")];
+      v34 = *(self + 40);
       *buf = 138413058;
       v46 = v14;
       v47 = 2112;
@@ -338,7 +338,7 @@ LABEL_22:
 
 LABEL_4:
   v8 = os_variant_has_internal_diagnostics();
-  v9 = [*(a1 + 40) objectForKey:a3];
+  v9 = [*(self + 40) objectForKey:cell];
 
   if (v8)
   {
@@ -353,9 +353,9 @@ LABEL_4:
       goto LABEL_26;
     }
 
-    v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"IP(%ld, %ld)", objc_msgSend(a3, "section"), objc_msgSend(a3, "row")];
-    v23 = [*(a1 + 40) objectForKey:a3];
-    v24 = *(a1 + 40);
+    v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"IP(%ld, %ld)", objc_msgSend(cell, "section"), objc_msgSend(cell, "row")];
+    v23 = [*(self + 40) objectForKey:cell];
+    v24 = *(self + 40);
     *buf = 138413058;
     v46 = v22;
     v47 = 2112;
@@ -378,9 +378,9 @@ LABEL_26:
     {
       v36 = MEMORY[0x1E696AEC0];
       v21 = v35;
-      v22 = [v36 stringWithFormat:@"IP(%ld, %ld)", objc_msgSend(a3, "section"), objc_msgSend(a3, "row")];
-      v23 = [*(a1 + 40) objectForKey:a3];
-      v37 = *(a1 + 40);
+      v22 = [v36 stringWithFormat:@"IP(%ld, %ld)", objc_msgSend(cell, "section"), objc_msgSend(cell, "row")];
+      v23 = [*(self + 40) objectForKey:cell];
+      v37 = *(self + 40);
       *buf = 138413058;
       v46 = v22;
       v47 = 2112;
@@ -395,11 +395,11 @@ LABEL_26:
   }
 
 LABEL_6:
-  [*(a1 + 40) setObject:a2 forKey:a3];
-  [*(a1 + 48) setObject:a3 forKey:a2];
+  [*(self + 40) setObject:a2 forKey:cell];
+  [*(self + 48) setObject:cell forKey:a2];
   v10 = os_variant_has_internal_diagnostics();
-  v11 = [*(a1 + 40) count];
-  v12 = [*(a1 + 48) count];
+  v11 = [*(self + 40) count];
+  v12 = [*(self + 48) count];
   if (v10)
   {
     if (v11 != v12)
@@ -407,10 +407,10 @@ LABEL_6:
       v25 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
       {
-        v26 = [*(a1 + 40) count];
-        v27 = [*(a1 + 48) count];
-        v28 = *(a1 + 40);
-        v29 = *(a1 + 48);
+        v26 = [*(self + 40) count];
+        v27 = [*(self + 48) count];
+        v28 = *(self + 40);
+        v29 = *(self + 48);
         *buf = 134218754;
         v46 = v26;
         v47 = 2048;
@@ -431,12 +431,12 @@ LABEL_6:
     v38 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED4A2098) + 8);
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
-      v40 = *(a1 + 40);
+      v40 = *(self + 40);
       v25 = v38;
       v41 = [v40 count];
-      v42 = [*(a1 + 48) count];
-      v43 = *(a1 + 40);
-      v44 = *(a1 + 48);
+      v42 = [*(self + 48) count];
+      v43 = *(self + 40);
+      v44 = *(self + 48);
       *buf = 134218754;
       v46 = v41;
       v47 = 2048;
@@ -451,49 +451,49 @@ LABEL_29:
   }
 }
 
-- (id)prefetchedCellAtIndexPath:(id *)a1
+- (id)prefetchedCellAtIndexPath:(id *)path
 {
-  if (a1)
+  if (path)
   {
-    a1 = [a1[5] objectForKey:a2];
+    path = [path[5] objectForKey:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return path;
 }
 
-- (id)indexPathForPrefetchedCell:(id *)a1
+- (id)indexPathForPrefetchedCell:(id *)cell
 {
-  if (a1)
+  if (cell)
   {
-    a1 = [a1[6] objectForKey:a2];
+    cell = [cell[6] objectForKey:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return cell;
 }
 
-- (void)rebasePrefetchedCellIndexPathsWithMapping:(id *)a1
+- (void)rebasePrefetchedCellIndexPathsWithMapping:(id *)mapping
 {
   v33 = *MEMORY[0x1E69E9840];
-  if (a1 && [a1[5] count])
+  if (mapping && [mapping[5] count])
   {
-    v4 = [a1[5] copy];
-    [a1[5] removeAllObjects];
-    [a1[6] removeAllObjects];
-    WeakRetained = objc_loadWeakRetained(a1 + 2);
+    v4 = [mapping[5] copy];
+    [mapping[5] removeAllObjects];
+    [mapping[6] removeAllObjects];
+    WeakRetained = objc_loadWeakRetained(mapping + 2);
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __72___UITableViewSubviewManager_rebasePrefetchedCellIndexPathsWithMapping___block_invoke;
     v22[3] = &unk_1E7123CD8;
     v24 = a2;
-    v22[4] = a1;
+    v22[4] = mapping;
     v6 = WeakRetained;
     v23 = v6;
     [v4 enumerateKeysAndObjectsUsingBlock:v22];
     has_internal_diagnostics = os_variant_has_internal_diagnostics();
-    v8 = [a1[5] count];
-    v9 = [a1[6] count];
+    v8 = [mapping[5] count];
+    v9 = [mapping[6] count];
     if (has_internal_diagnostics)
     {
       if (v8 == v9)
@@ -506,10 +506,10 @@ LABEL_6:
       v10 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
       {
-        v11 = [a1[5] count];
-        v12 = [a1[6] count];
-        v13 = a1[5];
-        v14 = a1[6];
+        v11 = [mapping[5] count];
+        v12 = [mapping[6] count];
+        v13 = mapping[5];
+        v14 = mapping[6];
         *buf = 134218754;
         v26 = v11;
         v27 = 2048;
@@ -535,12 +535,12 @@ LABEL_6:
         goto LABEL_6;
       }
 
-      v17 = a1[5];
+      v17 = mapping[5];
       v10 = v15;
       v18 = [v17 count];
-      v19 = [a1[6] count];
-      v20 = a1[5];
-      v21 = a1[6];
+      v19 = [mapping[6] count];
+      v20 = mapping[5];
+      v21 = mapping[6];
       *buf = 134218754;
       v26 = v18;
       v27 = 2048;
@@ -556,10 +556,10 @@ LABEL_6:
   }
 }
 
-- (void)filterPrefetchedCells:(id *)a1
+- (void)filterPrefetchedCells:(id *)cells
 {
   v42 = *MEMORY[0x1E69E9840];
-  if (a1 && [a1[5] count])
+  if (cells && [cells[5] count])
   {
     v28 = 0;
     v29 = &v28;
@@ -567,7 +567,7 @@ LABEL_6:
     v31 = __Block_byref_object_copy__198;
     v32 = __Block_byref_object_dispose__198;
     v33 = 0;
-    v4 = a1[5];
+    v4 = cells[5];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __52___UITableViewSubviewManager_filterPrefetchedCells___block_invoke;
@@ -583,22 +583,22 @@ LABEL_7:
       return;
     }
 
-    WeakRetained = objc_loadWeakRetained(a1 + 2);
+    WeakRetained = objc_loadWeakRetained(cells + 2);
     v6 = v29[5];
     v21 = MEMORY[0x1E69E9820];
     v22 = 3221225472;
     v23 = __52___UITableViewSubviewManager_filterPrefetchedCells___block_invoke_2;
     v24 = &unk_1E7123D28;
-    v25 = a1;
+    cellsCopy = cells;
     v7 = WeakRetained;
     v26 = v7;
     [v6 enumerateKeysAndObjectsUsingBlock:&v21];
     has_internal_diagnostics = os_variant_has_internal_diagnostics();
-    v9 = a1[5];
+    v9 = cells[5];
     if (has_internal_diagnostics)
     {
       v11 = [v9 count];
-      if (v11 == [a1[6] count])
+      if (v11 == [cells[6] count])
       {
         goto LABEL_6;
       }
@@ -606,10 +606,10 @@ LABEL_7:
       v12 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
       {
-        v13 = [a1[5] count];
-        v14 = [a1[6] count];
-        v15 = a1[5];
-        v16 = a1[6];
+        v13 = [cells[5] count];
+        v14 = [cells[6] count];
+        v15 = cells[5];
+        v16 = cells[6];
         *buf = 134218754;
         v35 = v13;
         v36 = 2048;
@@ -625,7 +625,7 @@ LABEL_7:
     else
     {
       v10 = [v9 count];
-      if (v10 == [a1[6] count])
+      if (v10 == [cells[6] count])
       {
 LABEL_6:
 
@@ -635,10 +635,10 @@ LABEL_6:
       v12 = *(__UILogGetCategoryCachedImpl("Assert", &filterPrefetchedCells____s_category) + 8);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v17 = [a1[5] count];
-        v18 = [a1[6] count];
-        v19 = a1[5];
-        v20 = a1[6];
+        v17 = [cells[5] count];
+        v18 = [cells[6] count];
+        v19 = cells[5];
+        v20 = cells[6];
         *buf = 134218754;
         v35 = v17;
         v36 = 2048;

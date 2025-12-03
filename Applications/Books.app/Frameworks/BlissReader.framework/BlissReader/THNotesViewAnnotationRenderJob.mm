@@ -1,5 +1,5 @@
 @interface THNotesViewAnnotationRenderJob
-- (BOOL)waitUntilFinishedWithTimeoutTime:(unint64_t)a3;
+- (BOOL)waitUntilFinishedWithTimeoutTime:(unint64_t)time;
 - (void)dealloc;
 - (void)willStart;
 @end
@@ -19,7 +19,7 @@
   [(THNotesViewAnnotationRenderJob *)&v4 dealloc];
 }
 
-- (BOOL)waitUntilFinishedWithTimeoutTime:(unint64_t)a3
+- (BOOL)waitUntilFinishedWithTimeoutTime:(unint64_t)time
 {
   if (!+[NSThread isMainThread])
   {
@@ -31,7 +31,7 @@
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  return dispatch_semaphore_wait(self->mSemaphore, a3) == 0;
+  return dispatch_semaphore_wait(self->mSemaphore, time) == 0;
 }
 
 - (void)willStart

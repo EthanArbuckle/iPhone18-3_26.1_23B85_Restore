@@ -8,7 +8,7 @@
 
 - (char)_init
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &off_284626A80;
   v1 = objc_msgSendSuper2(&v6, sel_init);
   v2 = v1;
@@ -29,7 +29,7 @@
 - (BOOL)valid:()MetricManager
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  if ([a1 conformsToProtocol:&unk_284624910])
+  if ([self conformsToProtocol:&unk_284624910])
   {
     if (objc_opt_respondsToSelector())
     {
@@ -75,8 +75,8 @@ LABEL_9:
   v2 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [a1 keyword];
-  v6 = [v2 stringWithFormat:@"%@, keyword %@, corrects %d, incorrects %d, unknowns %d", v4, v5, objc_msgSend(a1, "corrects"), objc_msgSend(a1, "incorrects"), objc_msgSend(a1, "unknowns")];
+  keyword = [self keyword];
+  v6 = [v2 stringWithFormat:@"%@, keyword %@, corrects %d, incorrects %d, unknowns %d", v4, keyword, objc_msgSend(self, "corrects"), objc_msgSend(self, "incorrects"), objc_msgSend(self, "unknowns")];
 
   return v6;
 }

@@ -1,15 +1,15 @@
 @interface ANEDepthScalingProcessor
-- (ANEDepthScalingProcessor)initWithMetalContext:(id)a3;
+- (ANEDepthScalingProcessor)initWithMetalContext:(id)context;
 - (int)_compileShaders;
-- (int)scaleFromDepth:(id)a3 toDisparity:(id)a4;
+- (int)scaleFromDepth:(id)depth toDisparity:(id)disparity;
 @end
 
 @implementation ANEDepthScalingProcessor
 
-- (ANEDepthScalingProcessor)initWithMetalContext:(id)a3
+- (ANEDepthScalingProcessor)initWithMetalContext:(id)context
 {
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
     sub_2957325DC(self);
 LABEL_7:
@@ -23,7 +23,7 @@ LABEL_7:
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mtlContext, a3);
+    objc_storeStrong(&v6->_mtlContext, context);
     if (objc_msgSend__compileShaders(v7, v8, v9, v10, v11, v12))
     {
       sub_295732514(v7);
@@ -53,12 +53,12 @@ LABEL_4:
   }
 }
 
-- (int)scaleFromDepth:(id)a3 toDisparity:(id)a4
+- (int)scaleFromDepth:(id)depth toDisparity:(id)disparity
 {
-  v6 = a3;
-  v7 = a4;
+  depthCopy = depth;
+  disparityCopy = disparity;
   v13 = self->_aneScalerComputePipelinesState;
-  if (v6 && v7)
+  if (depthCopy && disparityCopy)
   {
     v14 = objc_msgSend_commandBuffer(self->_mtlContext, v8, v9, v10, v11, v12);
     v20 = v14;
@@ -66,12 +66,12 @@ LABEL_4:
     {
       v26 = v21;
       objc_msgSend_setComputePipelineState_(v21, v22, v13, v23, v24, v25);
-      objc_msgSend_setTexture_atIndex_(v26, v27, v6, 0, v28, v29);
-      objc_msgSend_setTexture_atIndex_(v26, v30, v7, 1, v31, v32);
+      objc_msgSend_setTexture_atIndex_(v26, v27, depthCopy, 0, v28, v29);
+      objc_msgSend_setTexture_atIndex_(v26, v30, disparityCopy, 1, v31, v32);
       v38 = objc_msgSend_threadExecutionWidth(v13, v33, v34, v35, v36, v37);
       v44 = objc_msgSend_maxTotalThreadsPerThreadgroup(v13, v39, v40, v41, v42, v43) / v38;
-      v71[0] = objc_msgSend_width(v7, v45, v46, v47, v48, v49);
-      v71[1] = objc_msgSend_height(v7, v50, v51, v52, v53, v54);
+      v71[0] = objc_msgSend_width(disparityCopy, v45, v46, v47, v48, v49);
+      v71[1] = objc_msgSend_height(disparityCopy, v50, v51, v52, v53, v54);
       v71[2] = 1;
       v70[0] = v38;
       v70[1] = v44;

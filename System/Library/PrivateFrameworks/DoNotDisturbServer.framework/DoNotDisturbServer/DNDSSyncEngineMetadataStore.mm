@@ -1,37 +1,37 @@
 @interface DNDSSyncEngineMetadataStore
-- (BOOL)addZoneName:(id)a3;
-- (BOOL)removeZoneName:(id)a3;
-- (DNDSSyncEngineMetadataStore)initWithURL:(id)a3;
+- (BOOL)addZoneName:(id)name;
+- (BOOL)removeZoneName:(id)name;
+- (DNDSSyncEngineMetadataStore)initWithURL:(id)l;
 - (NSData)metadata;
 - (NSString)userRecordID;
-- (id)_decodeRecordIDFromData:(id)a3;
-- (id)_encodedRecordIDFromRecordID:(id)a3;
-- (id)_encodedSystemFieldsFromRecord:(id)a3;
-- (id)recordIDsWithZoneID:(id)a3;
-- (id)recordWithID:(id)a3;
+- (id)_decodeRecordIDFromData:(id)data;
+- (id)_encodedRecordIDFromRecordID:(id)d;
+- (id)_encodedSystemFieldsFromRecord:(id)record;
+- (id)recordIDsWithZoneID:(id)d;
+- (id)recordWithID:(id)d;
 - (id)zoneNames;
 - (void)_read;
-- (void)_updateSystemFieldsForRecord:(id)a3;
+- (void)_updateSystemFieldsForRecord:(id)record;
 - (void)_write;
-- (void)addRecord:(id)a3;
+- (void)addRecord:(id)record;
 - (void)purge;
-- (void)removeRecordWithID:(id)a3;
-- (void)removeRecordsWithZoneID:(id)a3;
-- (void)setMetadata:(id)a3;
-- (void)setUserRecordID:(id)a3;
+- (void)removeRecordWithID:(id)d;
+- (void)removeRecordsWithZoneID:(id)d;
+- (void)setMetadata:(id)metadata;
+- (void)setUserRecordID:(id)d;
 @end
 
 @implementation DNDSSyncEngineMetadataStore
 
-- (DNDSSyncEngineMetadataStore)initWithURL:(id)a3
+- (DNDSSyncEngineMetadataStore)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = DNDSSyncEngineMetadataStore;
   v5 = [(DNDSSyncEngineMetadataStore *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     url = v5->_url;
     v5->_url = v6;
 
@@ -48,9 +48,9 @@
   return v2;
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
-  v4 = [a3 copy];
+  v4 = [metadata copy];
   metadata = self->_metadata;
   self->_metadata = v4;
 
@@ -64,19 +64,19 @@
   return v2;
 }
 
-- (void)setUserRecordID:(id)a3
+- (void)setUserRecordID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   userRecordID = self->_userRecordID;
   self->_userRecordID = v4;
 
   [(DNDSSyncEngineMetadataStore *)self _write];
 }
 
-- (id)recordWithID:(id)a3
+- (id)recordWithID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_systemFieldsByRecordID objectForKeyedSubscript:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_systemFieldsByRecordID objectForKeyedSubscript:dCopy];
   if (v5)
   {
     v11 = 0;
@@ -87,7 +87,7 @@
       v8 = DNDSLogCloudSync;
       if (os_log_type_enabled(DNDSLogCloudSync, OS_LOG_TYPE_ERROR))
       {
-        [(DNDSSyncEngineMetadataStore *)v8 recordWithID:v4, v7];
+        [(DNDSSyncEngineMetadataStore *)v8 recordWithID:dCopy, v7];
       }
 
       v9 = 0;
@@ -107,25 +107,25 @@
   return v9;
 }
 
-- (void)addRecord:(id)a3
+- (void)addRecord:(id)record
 {
-  [(DNDSSyncEngineMetadataStore *)self _updateSystemFieldsForRecord:a3];
+  [(DNDSSyncEngineMetadataStore *)self _updateSystemFieldsForRecord:record];
 
   [(DNDSSyncEngineMetadataStore *)self _write];
 }
 
-- (void)removeRecordWithID:(id)a3
+- (void)removeRecordWithID:(id)d
 {
-  [(DNDSSyncEngineMetadataStore *)self _removeSystemFieldsForRecordID:a3];
+  [(DNDSSyncEngineMetadataStore *)self _removeSystemFieldsForRecordID:d];
 
   [(DNDSSyncEngineMetadataStore *)self _write];
 }
 
-- (void)removeRecordsWithZoneID:(id)a3
+- (void)removeRecordsWithZoneID:(id)d
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  dCopy = d;
+  array = [MEMORY[0x277CBEB18] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -146,12 +146,12 @@
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
-        v12 = [v11 zoneID];
-        v13 = [v12 isEqual:v4];
+        zoneID = [v11 zoneID];
+        v13 = [zoneID isEqual:dCopy];
 
         if (v13)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -161,13 +161,13 @@
     while (v8);
   }
 
-  if ([v5 count])
+  if ([array count])
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v14 = v5;
+    v14 = array;
     v15 = [v14 countByEnumeratingWithState:&v20 objects:v28 count:16];
     if (v15)
     {
@@ -201,16 +201,16 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_24912E000, a2, OS_LOG_TYPE_ERROR, "Failed to delete metadata store: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (id)recordIDsWithZoneID:(id)a3
+- (id)recordIDsWithZoneID:(id)d
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  dCopy = d;
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -231,12 +231,12 @@
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 zoneID];
-        v13 = [v12 isEqual:v4];
+        zoneID = [v11 zoneID];
+        v13 = [zoneID isEqual:dCopy];
 
         if (v13)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -248,29 +248,29 @@
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
-- (BOOL)addZoneName:(id)a3
+- (BOOL)addZoneName:(id)name
 {
-  v4 = a3;
-  v5 = [(NSMutableSet *)self->_zoneNames containsObject:v4];
+  nameCopy = name;
+  v5 = [(NSMutableSet *)self->_zoneNames containsObject:nameCopy];
   if ((v5 & 1) == 0)
   {
-    [(NSMutableSet *)self->_zoneNames addObject:v4];
+    [(NSMutableSet *)self->_zoneNames addObject:nameCopy];
     [(DNDSSyncEngineMetadataStore *)self _write];
   }
 
   return v5 ^ 1;
 }
 
-- (BOOL)removeZoneName:(id)a3
+- (BOOL)removeZoneName:(id)name
 {
-  v4 = a3;
-  v5 = [(NSMutableSet *)self->_zoneNames containsObject:v4];
+  nameCopy = name;
+  v5 = [(NSMutableSet *)self->_zoneNames containsObject:nameCopy];
   if (v5)
   {
-    [(NSMutableSet *)self->_zoneNames removeObject:v4];
+    [(NSMutableSet *)self->_zoneNames removeObject:nameCopy];
     [(DNDSSyncEngineMetadataStore *)self _write];
   }
 
@@ -299,7 +299,7 @@
 - (void)_read
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = *a1;
+  v3 = *self;
   v5 = 138412546;
   v6 = v3;
   v7 = 2112;
@@ -312,49 +312,49 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_24912E000, a2, OS_LOG_TYPE_ERROR, "Failed to write metadata store: %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateSystemFieldsForRecord:(id)a3
+- (void)_updateSystemFieldsForRecord:(id)record
 {
-  v4 = a3;
-  v6 = [v4 recordID];
-  v5 = [(DNDSSyncEngineMetadataStore *)self _encodedSystemFieldsFromRecord:v4];
+  recordCopy = record;
+  recordID = [recordCopy recordID];
+  v5 = [(DNDSSyncEngineMetadataStore *)self _encodedSystemFieldsFromRecord:recordCopy];
 
-  [(NSMutableDictionary *)self->_systemFieldsByRecordID setObject:v5 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_systemFieldsByRecordID setObject:v5 forKeyedSubscript:recordID];
 }
 
-- (id)_encodedSystemFieldsFromRecord:(id)a3
-{
-  v3 = MEMORY[0x277CCAAB0];
-  v4 = a3;
-  v5 = [[v3 alloc] initRequiringSecureCoding:1];
-  [v4 encodeSystemFieldsWithCoder:v5];
-
-  v6 = [v5 encodedData];
-
-  return v6;
-}
-
-- (id)_encodedRecordIDFromRecordID:(id)a3
+- (id)_encodedSystemFieldsFromRecord:(id)record
 {
   v3 = MEMORY[0x277CCAAB0];
-  v4 = a3;
+  recordCopy = record;
   v5 = [[v3 alloc] initRequiringSecureCoding:1];
-  [v4 encodeWithCoder:v5];
+  [recordCopy encodeSystemFieldsWithCoder:v5];
 
-  v6 = [v5 encodedData];
+  encodedData = [v5 encodedData];
 
-  return v6;
+  return encodedData;
 }
 
-- (id)_decodeRecordIDFromData:(id)a3
+- (id)_encodedRecordIDFromRecordID:(id)d
+{
+  v3 = MEMORY[0x277CCAAB0];
+  dCopy = d;
+  v5 = [[v3 alloc] initRequiringSecureCoding:1];
+  [dCopy encodeWithCoder:v5];
+
+  encodedData = [v5 encodedData];
+
+  return encodedData;
+}
+
+- (id)_decodeRecordIDFromData:(id)data
 {
   v3 = MEMORY[0x277CCAAC8];
-  v4 = a3;
-  v5 = [[v3 alloc] initForReadingFromData:v4 error:0];
+  dataCopy = data;
+  v5 = [[v3 alloc] initForReadingFromData:dataCopy error:0];
 
   v6 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithCoder:v5];
 

@@ -1,7 +1,7 @@
 @interface CSTestingSupportWidgetProvider
 - (CSTestingSupportWidgetProvider)init;
-- (id)newWidgetGroupViewControllerWithSettings:(WGWidgetListSettings)a3;
-- (id)newWidgetListViewControllerWithSettings:(WGWidgetListSettings)a3;
+- (id)newWidgetGroupViewControllerWithSettings:(WGWidgetListSettings)settings;
+- (id)newWidgetListViewControllerWithSettings:(WGWidgetListSettings)settings;
 @end
 
 @implementation CSTestingSupportWidgetProvider
@@ -24,17 +24,17 @@
   return v2;
 }
 
-- (id)newWidgetGroupViewControllerWithSettings:(WGWidgetListSettings)a3
+- (id)newWidgetGroupViewControllerWithSettings:(WGWidgetListSettings)settings
 {
-  v3 = *&a3.var1;
-  var0 = a3.var0;
+  v3 = *&settings.var1;
+  var0 = settings.var0;
   v6 = objc_alloc(MEMORY[0x277D7BC38]);
   widgetDiscoveryController = self->_widgetDiscoveryController;
 
   return [v6 initWithWidgetDiscoveryController:widgetDiscoveryController listSettings:{var0, v3}];
 }
 
-- (id)newWidgetListViewControllerWithSettings:(WGWidgetListSettings)a3
+- (id)newWidgetListViewControllerWithSettings:(WGWidgetListSettings)settings
 {
   v4 = objc_alloc(MEMORY[0x277D7BC28]);
   widgetDiscoveryController = self->_widgetDiscoveryController;

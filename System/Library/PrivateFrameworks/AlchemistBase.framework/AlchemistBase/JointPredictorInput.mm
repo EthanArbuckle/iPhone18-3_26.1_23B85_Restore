@@ -1,6 +1,6 @@
 @interface JointPredictorInput
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation JointPredictorInput
@@ -14,7 +14,7 @@
   return v2;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   v3 = sub_23ED5E9E4();
   v5 = v4;

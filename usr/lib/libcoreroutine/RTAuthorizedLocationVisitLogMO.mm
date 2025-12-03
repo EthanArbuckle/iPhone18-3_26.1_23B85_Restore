@@ -1,15 +1,15 @@
 @interface RTAuthorizedLocationVisitLogMO
-+ (id)managedObjectWithAuthorizedLocationVisitLog:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithAuthorizedLocationVisitLog:(id)log inManagedObjectContext:(id)context;
 @end
 
 @implementation RTAuthorizedLocationVisitLogMO
 
-+ (id)managedObjectWithAuthorizedLocationVisitLog:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithAuthorizedLocationVisitLog:(id)log inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  logCopy = log;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (!logCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -25,16 +25,16 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (contextCopy)
   {
-    v8 = [[RTAuthorizedLocationVisitLogMO alloc] initWithContext:v6];
-    v9 = [v5 visitIdentifier];
-    [(RTAuthorizedLocationVisitLogMO *)v8 setVisitIdentifier:v9];
+    v8 = [[RTAuthorizedLocationVisitLogMO alloc] initWithContext:contextCopy];
+    visitIdentifier = [logCopy visitIdentifier];
+    [(RTAuthorizedLocationVisitLogMO *)v8 setVisitIdentifier:visitIdentifier];
 
-    v10 = [v5 registrationDate];
-    [(RTAuthorizedLocationVisitLogMO *)v8 setRegistrationDate:v10];
+    registrationDate = [logCopy registrationDate];
+    [(RTAuthorizedLocationVisitLogMO *)v8 setRegistrationDate:registrationDate];
 
-    -[RTAuthorizedLocationVisitLogMO setLocationTechnologyAvailability:](v8, "setLocationTechnologyAvailability:", [v5 locationTechnologyAvailability]);
+    -[RTAuthorizedLocationVisitLogMO setLocationTechnologyAvailability:](v8, "setLocationTechnologyAvailability:", [logCopy locationTechnologyAvailability]);
     goto LABEL_8;
   }
 

@@ -9,56 +9,56 @@
 - (id)shortDescription
 {
   v16 = objc_opt_class();
-  v15 = [(GEOComposedWaypoint *)self muid];
-  v3 = [(GEOComposedWaypoint *)self timezone];
-  v4 = [(GEOComposedWaypoint *)self location];
-  v5 = [(GEOComposedWaypoint *)self name];
-  v6 = [(GEOComposedWaypoint *)self navDisplayName];
-  v7 = [(GEOComposedWaypoint *)self navDisplayAddress];
-  v8 = [(GEOComposedWaypoint *)self directionsListAddress];
-  v9 = [(GEOComposedWaypoint *)self waypointCategory];
-  if (v9 >= 0xE)
+  muid = [(GEOComposedWaypoint *)self muid];
+  timezone = [(GEOComposedWaypoint *)self timezone];
+  location = [(GEOComposedWaypoint *)self location];
+  name = [(GEOComposedWaypoint *)self name];
+  navDisplayName = [(GEOComposedWaypoint *)self navDisplayName];
+  navDisplayAddress = [(GEOComposedWaypoint *)self navDisplayAddress];
+  directionsListAddress = [(GEOComposedWaypoint *)self directionsListAddress];
+  waypointCategory = [(GEOComposedWaypoint *)self waypointCategory];
+  if (waypointCategory >= 0xE)
   {
-    v10 = [NSString stringWithFormat:@"(unknown: %i)", v9];
+    v10 = [NSString stringWithFormat:@"(unknown: %i)", waypointCategory];
   }
 
   else
   {
-    v10 = *(&off_100085C80 + v9);
+    v10 = *(&off_100085C80 + waypointCategory);
   }
 
-  v11 = [(GEOComposedWaypoint *)self type];
-  if (v11 >= 4)
+  type = [(GEOComposedWaypoint *)self type];
+  if (type >= 4)
   {
-    v12 = [NSString stringWithFormat:@"(unknown: %i)", v11];
+    v12 = [NSString stringWithFormat:@"(unknown: %i)", type];
   }
 
   else
   {
-    v12 = *(&off_100085CF0 + v11);
+    v12 = *(&off_100085CF0 + type);
   }
 
-  v13 = [NSString stringWithFormat:@"<%@:%p, muid: %llu, timezone: %@, location: %@, name: %@, navDisplayName: %@, navDisplayAddress: %@, directionsListAddress: %@, waypointCategory: %@, waypointType: %@, isCurrentLocation: %d, isServerProvidedWaypoint: %d>", v16, self, v15, v3, v4, v5, v6, v7, v8, v10, v12, [(GEOComposedWaypoint *)self isCurrentLocation], [(GEOComposedWaypoint *)self isServerProvidedWaypoint]];
+  v13 = [NSString stringWithFormat:@"<%@:%p, muid: %llu, timezone: %@, location: %@, name: %@, navDisplayName: %@, navDisplayAddress: %@, directionsListAddress: %@, waypointCategory: %@, waypointType: %@, isCurrentLocation: %d, isServerProvidedWaypoint: %d>", v16, self, muid, timezone, location, name, navDisplayName, navDisplayAddress, directionsListAddress, v10, v12, [(GEOComposedWaypoint *)self isCurrentLocation], [(GEOComposedWaypoint *)self isServerProvidedWaypoint]];
 
   return v13;
 }
 
 - (id)hawkQueryRepresentation
 {
-  v3 = [(GEOComposedWaypoint *)self navDisplayAddress];
-  v4 = v3;
-  if (v3)
+  navDisplayAddress = [(GEOComposedWaypoint *)self navDisplayAddress];
+  v4 = navDisplayAddress;
+  if (navDisplayAddress)
   {
-    v5 = v3;
+    v5 = navDisplayAddress;
   }
 
   else
   {
-    v6 = [(GEOComposedWaypoint *)self bestLatLng];
-    v7 = v6;
-    if (v6)
+    bestLatLng = [(GEOComposedWaypoint *)self bestLatLng];
+    v7 = bestLatLng;
+    if (bestLatLng)
     {
-      [v6 coordinate];
+      [bestLatLng coordinate];
       v9 = v8;
       v10 = [NSNumber numberWithDouble:?];
       v11 = [NSNumber numberWithDouble:v9];
@@ -73,26 +73,26 @@
 
 - (BOOL)needsAdditionalNavData
 {
-  v3 = [(GEOComposedWaypoint *)self geoMapItem];
-  v4 = [v3 _place];
+  geoMapItem = [(GEOComposedWaypoint *)self geoMapItem];
+  _place = [geoMapItem _place];
 
-  v5 = [v4 address];
-  v6 = [v5 structuredAddress];
+  address = [_place address];
+  structuredAddress = [address structuredAddress];
 
-  if ([v6 hasSubThoroughfare])
+  if ([structuredAddress hasSubThoroughfare])
   {
-    v7 = 1;
+    hasFullThoroughfare = 1;
   }
 
   else
   {
-    v7 = [v6 hasFullThoroughfare];
+    hasFullThoroughfare = [structuredAddress hasFullThoroughfare];
   }
 
-  v8 = [(GEOComposedWaypoint *)self geoMapItem];
-  if ([v8 _hasMUID])
+  geoMapItem2 = [(GEOComposedWaypoint *)self geoMapItem];
+  if ([geoMapItem2 _hasMUID])
   {
-    v9 = [v4 hasSpokenName] ^ 1;
+    v9 = [_place hasSpokenName] ^ 1;
   }
 
   else
@@ -100,16 +100,16 @@
     LOBYTE(v9) = 0;
   }
 
-  v10 = [(GEOComposedWaypoint *)self geoMapItem];
-  [v10 coordinate];
+  geoMapItem3 = [(GEOComposedWaypoint *)self geoMapItem];
+  [geoMapItem3 coordinate];
   v12 = v11;
   v14 = v13;
 
-  if (v7)
+  if (hasFullThoroughfare)
   {
-    v15 = [v4 hasSpokenAddress] ^ 1;
-    v16 = [v4 entryPoints];
-    v17 = [v16 count];
+    v15 = [_place hasSpokenAddress] ^ 1;
+    entryPoints = [_place entryPoints];
+    v17 = [entryPoints count];
 
     if (v17)
     {

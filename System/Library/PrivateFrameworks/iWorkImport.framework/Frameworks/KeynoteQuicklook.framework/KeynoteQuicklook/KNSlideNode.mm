@@ -1,16 +1,16 @@
 @interface KNSlideNode
-+ (id)UUIDStringSetForSlideNodes:(id)a3;
-+ (id)parentSlideNodeForInfo:(id)a3;
-+ (id)slideNodeForSelectionPath:(id)a3;
-+ (id)slideNodeUUIDForObsoleteUniqueIDString:(id)a3 inSlideNodes:(id)a4;
++ (id)UUIDStringSetForSlideNodes:(id)nodes;
++ (id)parentSlideNodeForInfo:(id)info;
++ (id)slideNodeForSelectionPath:(id)path;
++ (id)slideNodeUUIDForObsoleteUniqueIDString:(id)string inSlideNodes:(id)nodes;
 - (BOOL)hasChildren;
 - (BOOL)hasExplicitBuilds;
-- (BOOL)hasSlideSpecificHyperlinkToNode:(id)a3;
+- (BOOL)hasSlideSpecificHyperlinkToNode:(id)node;
 - (BOOL)isSlideNumberVisible;
-- (BOOL)resolverNameIsUsed:(id)a3;
+- (BOOL)resolverNameIsUsed:(id)used;
 - (KNAbstractSlide)slide;
 - (KNLiveVideoSourceUsage)liveVideoSourceUsage;
-- (KNSlideNode)initWithContext:(id)a3;
+- (KNSlideNode)initWithContext:(id)context;
 - (KNSlideNode)next;
 - (KNSlideNode)nextSkippingCollapsed;
 - (KNSlideNode)nextSkippingHidden;
@@ -21,153 +21,153 @@
 - (NSArray)children;
 - (NSString)uniqueIdentifier;
 - (id)childEnumerator;
-- (id)descendantsOmittingSkippedSlideNodes:(BOOL)a3 omittingCollapsedSlideNodes:(BOOL)a4;
+- (id)descendantsOmittingSkippedSlideNodes:(BOOL)nodes omittingCollapsedSlideNodes:(BOOL)slideNodes;
 - (id)objectUUIDPath;
-- (id)p_getSlideSpecificMappingForStorage:(id)a3 forSlideNode:(id)a4;
-- (id)p_mappingFromString:(id)a3;
-- (id)p_slideNodeWithUUIDString:(id)a3 inSlideNodes:(id)a4;
+- (id)p_getSlideSpecificMappingForStorage:(id)storage forSlideNode:(id)node;
+- (id)p_mappingFromString:(id)string;
+- (id)p_slideNodeWithUUIDString:(id)string inSlideNodes:(id)nodes;
 - (id)paragraphIndexesOfTopLevelBullets;
-- (id)resolverMatchingName:(id)a3;
-- (id)resolversMatchingPrefix:(id)a3;
+- (id)resolverMatchingName:(id)name;
+- (id)resolversMatchingPrefix:(id)prefix;
 - (int64_t)bodyParagraphCount;
 - (unint64_t)buildEventCount;
-- (unint64_t)numberOfLinksToSlideNodeInStorage:(id)a3 forSlideNodeUUIDString:(id)a4;
+- (unint64_t)numberOfLinksToSlideNodeInStorage:(id)storage forSlideNodeUUIDString:(id)string;
 - (unint64_t)p_buildEventCount;
 - (unint64_t)safeBuildEventCount;
 - (unsigned)nextUntitledResolverIndex;
-- (void)addHyperlinkFieldMap:(id)a3 forStorage:(id)a4;
-- (void)addHyperlinkForInfo:(id)a3 toSlideNode:(id)a4;
-- (void)addHyperlinkForStorage:(id)a3 toSlideNode:(id)a4;
-- (void)addOldModelDescendantsToSlideTree:(id)a3;
-- (void)addRemappedTableName:(id)a3;
-- (void)addThumbnail:(id)a3 atSize:(CGSize)a4;
+- (void)addHyperlinkFieldMap:(id)map forStorage:(id)storage;
+- (void)addHyperlinkForInfo:(id)info toSlideNode:(id)node;
+- (void)addHyperlinkForStorage:(id)storage toSlideNode:(id)node;
+- (void)addOldModelDescendantsToSlideTree:(id)tree;
+- (void)addRemappedTableName:(id)name;
+- (void)addThumbnail:(id)thumbnail atSize:(CGSize)size;
 - (void)cleanOutInvalidSlideSpecificInfoEntries;
 - (void)clearRemappedTableNames;
 - (void)clearSlideSpecificLinkMap;
 - (void)invalidateBuildEventCountCaches;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)p_addHyperlinkForObjectReferencedByMapping:(id)a3 toSlideNode:(id)a4;
-- (void)p_addOldModelDescendantsToSlideTree:(id)a3 atDepth:(unint64_t)a4;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)p_addHyperlinkForObjectReferencedByMapping:(id)mapping toSlideNode:(id)node;
+- (void)p_addOldModelDescendantsToSlideTree:(id)tree atDepth:(unint64_t)depth;
 - (void)p_commonInit;
-- (void)p_removeHyperlinkForObjectReferencedByMapping:(id)a3 toSlideNode:(id)a4;
+- (void)p_removeHyperlinkForObjectReferencedByMapping:(id)mapping toSlideNode:(id)node;
 - (void)p_updateHasExplicitBuilds;
 - (void)purgeU15ModelIfNeeded;
 - (void)removeAllThumbnails;
-- (void)removeHyperlinkFieldMap:(id)a3 forStorage:(id)a4;
-- (void)removeHyperlinkForInfo:(id)a3 toSlideNode:(id)a4;
-- (void)removeHyperlinkForStorage:(id)a3 toSlideNode:(id)a4;
-- (void)removeInvalidSlideSpecificHyperlinksForStorage:(id)a3 withSlideNodeUUIDStrings:(id)a4;
-- (void)removeInvalidSlideSpecificHyperlinksWithSlideNodeUUIDStrings:(id)a3;
-- (void)removeSlideSpecificMappingsFromDrawablesInGroup:(id)a3;
-- (void)removeThumbnailAtSize:(CGSize)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setClassicUniqueID:(id)a3;
-- (void)setDepth:(unint64_t)a3;
-- (void)setDigestsForDatasThatNeedDownloadForThumbnail:(id)a3;
-- (void)setHasNote:(BOOL)a3;
-- (void)setHasTransition:(BOOL)a3;
-- (void)setIsSlideNumberVisible:(BOOL)a3;
-- (void)setPreviousIdentifier:(id)a3;
-- (void)setSkipped:(BOOL)a3;
-- (void)setSlide:(id)a3;
-- (void)setThumbnailsAreDirty:(BOOL)a3;
+- (void)removeHyperlinkFieldMap:(id)map forStorage:(id)storage;
+- (void)removeHyperlinkForInfo:(id)info toSlideNode:(id)node;
+- (void)removeHyperlinkForStorage:(id)storage toSlideNode:(id)node;
+- (void)removeInvalidSlideSpecificHyperlinksForStorage:(id)storage withSlideNodeUUIDStrings:(id)strings;
+- (void)removeInvalidSlideSpecificHyperlinksWithSlideNodeUUIDStrings:(id)strings;
+- (void)removeSlideSpecificMappingsFromDrawablesInGroup:(id)group;
+- (void)removeThumbnailAtSize:(CGSize)size;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setClassicUniqueID:(id)d;
+- (void)setDepth:(unint64_t)depth;
+- (void)setDigestsForDatasThatNeedDownloadForThumbnail:(id)thumbnail;
+- (void)setHasNote:(BOOL)note;
+- (void)setHasTransition:(BOOL)transition;
+- (void)setIsSlideNumberVisible:(BOOL)visible;
+- (void)setPreviousIdentifier:(id)identifier;
+- (void)setSkipped:(BOOL)skipped;
+- (void)setSlide:(id)slide;
+- (void)setThumbnailsAreDirty:(BOOL)dirty;
 - (void)uniquifyTableNamesForUpgradeOrImport;
 - (void)updateBackgroundIsNoFillOrColorFillWithAlpha;
 - (void)updateLiveVideoSourceUsage;
 - (void)updateTemplateSlideUUID;
-- (void)upgradeSlideSpecificHyperlinksForSlideNodes:(id)a3;
-- (void)upgradeSlideSpecificStorageHyperlinksForStorage:(id)a3 withSlideNodes:(id)a4;
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)wasRemovedFromDocumentRoot:(id)a3;
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
+- (void)upgradeSlideSpecificHyperlinksForSlideNodes:(id)nodes;
+- (void)upgradeSlideSpecificStorageHyperlinksForStorage:(id)storage withSlideNodes:(id)nodes;
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)wasRemovedFromDocumentRoot:(id)root;
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
 @end
 
 @implementation KNSlideNode
 
-- (void)setThumbnailsAreDirty:(BOOL)a3
+- (void)setThumbnailsAreDirty:(BOOL)dirty
 {
-  if (self->_thumbnailsAreDirty != a3)
+  if (self->_thumbnailsAreDirty != dirty)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_thumbnailsAreDirty = a3;
+    objc_msgSend_willModify(self, a2, dirty);
+    self->_thumbnailsAreDirty = dirty;
   }
 }
 
-- (void)setHasTransition:(BOOL)a3
+- (void)setHasTransition:(BOOL)transition
 {
-  if (self->_hasTransition != a3)
+  if (self->_hasTransition != transition)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_hasTransition = a3;
+    objc_msgSend_willModify(self, a2, transition);
+    self->_hasTransition = transition;
   }
 }
 
-- (void)setHasNote:(BOOL)a3
+- (void)setHasNote:(BOOL)note
 {
-  if (self->_hasNote != a3)
+  if (self->_hasNote != note)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_hasNote = a3;
+    objc_msgSend_willModify(self, a2, note);
+    self->_hasNote = note;
   }
 }
 
-- (void)setIsSlideNumberVisible:(BOOL)a3
+- (void)setIsSlideNumberVisible:(BOOL)visible
 {
-  if (self->_slideNumberVisible != a3)
+  if (self->_slideNumberVisible != visible)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_slideNumberVisible = a3;
+    objc_msgSend_willModify(self, a2, visible);
+    self->_slideNumberVisible = visible;
   }
 }
 
-- (void)setDepth:(unint64_t)a3
+- (void)setDepth:(unint64_t)depth
 {
-  if (self->_depth != a3)
+  if (self->_depth != depth)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_depth = a3;
+    objc_msgSend_willModify(self, a2, depth);
+    self->_depth = depth;
   }
 }
 
-- (void)setClassicUniqueID:(id)a3
+- (void)setClassicUniqueID:(id)d
 {
-  v5 = a3;
-  if (self->_classicUniqueID != v5)
+  dCopy = d;
+  if (self->_classicUniqueID != dCopy)
   {
-    v8 = v5;
+    v8 = dCopy;
     objc_msgSend_willModify(self, v6, v7);
-    objc_storeStrong(&self->_classicUniqueID, a3);
-    v5 = v8;
+    objc_storeStrong(&self->_classicUniqueID, d);
+    dCopy = v8;
   }
 }
 
-+ (id)parentSlideNodeForInfo:(id)a3
++ (id)parentSlideNodeForInfo:(id)info
 {
-  v3 = objc_msgSend_parentSlideForInfo_(KNAbstractSlide, a2, a3);
+  v3 = objc_msgSend_parentSlideForInfo_(KNAbstractSlide, a2, info);
   v6 = objc_msgSend_slideNode(v3, v4, v5);
 
   return v6;
 }
 
-+ (id)slideNodeForSelectionPath:(id)a3
++ (id)slideNodeForSelectionPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = objc_opt_class();
-  v6 = objc_msgSend_mostSpecificSelectionOfClass_(v3, v5, v4);
+  v6 = objc_msgSend_mostSpecificSelectionOfClass_(pathCopy, v5, v4);
 
   v9 = objc_msgSend_slideNodeToEdit(v6, v7, v8);
 
   return v9;
 }
 
-- (KNSlideNode)initWithContext:(id)a3
+- (KNSlideNode)initWithContext:(id)context
 {
   v12.receiver = self;
   v12.super_class = KNSlideNode;
-  v3 = [(KNSlideNode *)&v12 initWithContext:a3];
+  v3 = [(KNSlideNode *)&v12 initWithContext:context];
   v6 = v3;
   if (v3)
   {
@@ -199,13 +199,13 @@
   return v13;
 }
 
-- (void)setPreviousIdentifier:(id)a3
+- (void)setPreviousIdentifier:(id)identifier
 {
-  if (self->_previousIdentifier != a3)
+  if (self->_previousIdentifier != identifier)
   {
-    v4 = a3;
+    identifierCopy = identifier;
     objc_msgSend_willModify(self, v5, v6);
-    v9 = objc_msgSend_copy(v4, v7, v8);
+    v9 = objc_msgSend_copy(identifierCopy, v7, v8);
 
     previousIdentifier = self->_previousIdentifier;
     self->_previousIdentifier = v9;
@@ -717,18 +717,18 @@ LABEL_15:
   }
 }
 
-+ (id)UUIDStringSetForSlideNodes:(id)a3
++ (id)UUIDStringSetForSlideNodes:(id)nodes
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nodesCopy = nodes;
   v4 = MEMORY[0x277CBEB58];
-  v7 = objc_msgSend_count(v3, v5, v6);
+  v7 = objc_msgSend_count(nodesCopy, v5, v6);
   v9 = objc_msgSend_setWithCapacity_(v4, v8, v7);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = v3;
+  v10 = nodesCopy;
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v24, v28, 16);
   if (v12)
   {
@@ -757,11 +757,11 @@ LABEL_15:
   return v9;
 }
 
-- (BOOL)hasSlideSpecificHyperlinkToNode:(id)a3
+- (BOOL)hasSlideSpecificHyperlinkToNode:(id)node
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  objc_msgSend_objectForKeyedSubscript_(self->_slideSpecificHyperlinkMap, v5, v4);
+  nodeCopy = node;
+  objc_msgSend_objectForKeyedSubscript_(self->_slideSpecificHyperlinkMap, v5, nodeCopy);
   v48 = 0;
   v49 = &v48;
   v8 = v50 = 0x2020000000;
@@ -825,7 +825,7 @@ LABEL_11:
                 v37[1] = 3221225472;
                 v37[2] = sub_275D73780;
                 v37[3] = &unk_27A698280;
-                v38 = v4;
+                v38 = nodeCopy;
                 v39 = &v48;
                 objc_msgSend_enumerateSmartFieldsWithAttributeKind_inRange_usingBlock_(v28, v30, 6, 0, v29, v37);
                 LOBYTE(v28) = *(v49 + 24);
@@ -869,52 +869,52 @@ LABEL_11:
   return v9 & 1;
 }
 
-- (void)p_addHyperlinkForObjectReferencedByMapping:(id)a3 toSlideNode:(id)a4
+- (void)p_addHyperlinkForObjectReferencedByMapping:(id)mapping toSlideNode:(id)node
 {
-  v13 = a4;
+  nodeCopy = node;
   slideSpecificHyperlinkMap = self->_slideSpecificHyperlinkMap;
-  v7 = a3;
-  v9 = objc_msgSend_objectForKeyedSubscript_(slideSpecificHyperlinkMap, v8, v13);
+  mappingCopy = mapping;
+  v9 = objc_msgSend_objectForKeyedSubscript_(slideSpecificHyperlinkMap, v8, nodeCopy);
   if (v9)
   {
     v11 = v9;
-    objc_msgSend_addObject_(v9, v10, v7);
+    objc_msgSend_addObject_(v9, v10, mappingCopy);
   }
 
   else
   {
-    v11 = objc_msgSend_setWithObject_(MEMORY[0x277CBEB58], v10, v7);
+    v11 = objc_msgSend_setWithObject_(MEMORY[0x277CBEB58], v10, mappingCopy);
 
-    objc_msgSend_setObject_forKeyedSubscript_(self->_slideSpecificHyperlinkMap, v12, v11, v13);
+    objc_msgSend_setObject_forKeyedSubscript_(self->_slideSpecificHyperlinkMap, v12, v11, nodeCopy);
   }
 }
 
-- (void)addHyperlinkForInfo:(id)a3 toSlideNode:(id)a4
+- (void)addHyperlinkForInfo:(id)info toSlideNode:(id)node
 {
-  v6 = a4;
-  v10 = objc_msgSend_objectUUID(a3, v7, v8);
-  objc_msgSend_p_addHyperlinkForObjectReferencedByMapping_toSlideNode_(self, v9, v10, v6);
+  nodeCopy = node;
+  v10 = objc_msgSend_objectUUID(info, v7, v8);
+  objc_msgSend_p_addHyperlinkForObjectReferencedByMapping_toSlideNode_(self, v9, v10, nodeCopy);
 }
 
-- (void)addHyperlinkForStorage:(id)a3 toSlideNode:(id)a4
+- (void)addHyperlinkForStorage:(id)storage toSlideNode:(id)node
 {
-  v14 = a3;
-  v6 = a4;
-  v11 = objc_msgSend_tst_tableInfo(v14, v7, v8);
+  storageCopy = storage;
+  nodeCopy = node;
+  v11 = objc_msgSend_tst_tableInfo(storageCopy, v7, v8);
   if (!v11)
   {
-    v12 = objc_msgSend_objectUUID(v14, v9, v10);
-    objc_msgSend_p_addHyperlinkForObjectReferencedByMapping_toSlideNode_(self, v13, v12, v6);
+    v12 = objc_msgSend_objectUUID(storageCopy, v9, v10);
+    objc_msgSend_p_addHyperlinkForObjectReferencedByMapping_toSlideNode_(self, v13, v12, nodeCopy);
   }
 }
 
-- (void)addHyperlinkFieldMap:(id)a3 forStorage:(id)a4
+- (void)addHyperlinkFieldMap:(id)map forStorage:(id)storage
 {
-  v6 = a4;
-  if (a3)
+  storageCopy = storage;
+  if (map)
   {
-    v21 = v6;
-    v9 = objc_msgSend_url(a3, v7, v8);
+    v21 = storageCopy;
+    v9 = objc_msgSend_url(map, v7, v8);
     v12 = objc_msgSend_absoluteString(v9, v10, v11);
     v14 = v12;
     if (v9 && !objc_msgSend_rangeOfString_(v12, v13, @"?slideid="))
@@ -924,28 +924,28 @@ LABEL_11:
       objc_msgSend_addHyperlinkForStorage_toSlideNode_(self, v20, v21, v19);
     }
 
-    v6 = v21;
+    storageCopy = v21;
   }
 }
 
-- (void)p_removeHyperlinkForObjectReferencedByMapping:(id)a3 toSlideNode:(id)a4
+- (void)p_removeHyperlinkForObjectReferencedByMapping:(id)mapping toSlideNode:(id)node
 {
-  v15 = a3;
-  v6 = a4;
-  v8 = objc_msgSend_objectForKey_(self->_slideSpecificHyperlinkMap, v7, v6);
+  mappingCopy = mapping;
+  nodeCopy = node;
+  v8 = objc_msgSend_objectForKey_(self->_slideSpecificHyperlinkMap, v7, nodeCopy);
   v10 = v8;
-  if (v8 && objc_msgSend_containsObject_(v8, v9, v15))
+  if (v8 && objc_msgSend_containsObject_(v8, v9, mappingCopy))
   {
     if (objc_msgSend_count(v10, v11, v12) == 1)
     {
 
-      objc_msgSend_removeObjectForKey_(self->_slideSpecificHyperlinkMap, v14, v6);
+      objc_msgSend_removeObjectForKey_(self->_slideSpecificHyperlinkMap, v14, nodeCopy);
       v10 = 0;
     }
 
     else
     {
-      objc_msgSend_removeObject_(v10, v13, v15);
+      objc_msgSend_removeObject_(v10, v13, mappingCopy);
     }
   }
 }
@@ -1083,37 +1083,37 @@ LABEL_23:
   }
 }
 
-- (void)removeHyperlinkForStorage:(id)a3 toSlideNode:(id)a4
+- (void)removeHyperlinkForStorage:(id)storage toSlideNode:(id)node
 {
-  v16 = a3;
-  v6 = a4;
-  if (objc_msgSend_numberOfLinksToSlideNodeInStorage_forSlideNodeUUIDString_(self, v7, v16, v6) <= 1)
+  storageCopy = storage;
+  nodeCopy = node;
+  if (objc_msgSend_numberOfLinksToSlideNodeInStorage_forSlideNodeUUIDString_(self, v7, storageCopy, nodeCopy) <= 1)
   {
-    v9 = objc_msgSend_p_getSlideSpecificMappingForStorage_forSlideNode_(self, v8, v16, v6);
+    v9 = objc_msgSend_p_getSlideSpecificMappingForStorage_forSlideNode_(self, v8, storageCopy, nodeCopy);
     objc_opt_class();
     v10 = TSUDynamicCast();
     v13 = v10;
     if (!v10 || (objc_msgSend_decrement(v10, v11, v12), !objc_msgSend_linkCount(v13, v14, v15)))
     {
-      objc_msgSend_p_removeHyperlinkForObjectReferencedByMapping_toSlideNode_(self, v11, v9, v6);
+      objc_msgSend_p_removeHyperlinkForObjectReferencedByMapping_toSlideNode_(self, v11, v9, nodeCopy);
     }
   }
 }
 
-- (void)removeHyperlinkForInfo:(id)a3 toSlideNode:(id)a4
+- (void)removeHyperlinkForInfo:(id)info toSlideNode:(id)node
 {
-  v6 = a4;
-  v10 = objc_msgSend_objectUUID(a3, v7, v8);
-  objc_msgSend_p_removeHyperlinkForObjectReferencedByMapping_toSlideNode_(self, v9, v10, v6);
+  nodeCopy = node;
+  v10 = objc_msgSend_objectUUID(info, v7, v8);
+  objc_msgSend_p_removeHyperlinkForObjectReferencedByMapping_toSlideNode_(self, v9, v10, nodeCopy);
 }
 
-- (void)removeHyperlinkFieldMap:(id)a3 forStorage:(id)a4
+- (void)removeHyperlinkFieldMap:(id)map forStorage:(id)storage
 {
-  v6 = a4;
-  if (a3)
+  storageCopy = storage;
+  if (map)
   {
-    v21 = v6;
-    v9 = objc_msgSend_url(a3, v7, v8);
+    v21 = storageCopy;
+    v9 = objc_msgSend_url(map, v7, v8);
     v12 = objc_msgSend_absoluteString(v9, v10, v11);
     v14 = v12;
     if (v9 && !objc_msgSend_rangeOfString_(v12, v13, @"?slideid="))
@@ -1123,18 +1123,18 @@ LABEL_23:
       objc_msgSend_removeHyperlinkForStorage_toSlideNode_(self, v20, v21, v19);
     }
 
-    v6 = v21;
+    storageCopy = v21;
   }
 }
 
-- (void)removeSlideSpecificMappingsFromDrawablesInGroup:(id)a3
+- (void)removeSlideSpecificMappingsFromDrawablesInGroup:(id)group
 {
   v27 = *MEMORY[0x277D85DE8];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = objc_msgSend_childInfos(a3, a2, a3, 0);
+  v4 = objc_msgSend_childInfos(group, a2, group, 0);
   v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, &v22, v26, 16);
   if (v6)
   {
@@ -1181,15 +1181,15 @@ LABEL_23:
   }
 }
 
-- (id)p_getSlideSpecificMappingForStorage:(id)a3 forSlideNode:(id)a4
+- (id)p_getSlideSpecificMappingForStorage:(id)storage forSlideNode:(id)node
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v12 = objc_msgSend_tst_tableInfo(v6, v8, v9);
+  storageCopy = storage;
+  nodeCopy = node;
+  v12 = objc_msgSend_tst_tableInfo(storageCopy, v8, v9);
   if (v12)
   {
-    v13 = objc_msgSend_objectForKeyedSubscript_(self->_slideSpecificHyperlinkMap, v10, v7);
+    v13 = objc_msgSend_objectForKeyedSubscript_(self->_slideSpecificHyperlinkMap, v10, nodeCopy);
     v16 = objc_msgSend_objectUUID(v12, v14, v15);
     v33 = 0u;
     v34 = 0u;
@@ -1200,7 +1200,7 @@ LABEL_23:
     if (v19)
     {
       v20 = v19;
-      v32 = v6;
+      v32 = storageCopy;
       v21 = *v34;
 LABEL_4:
       v22 = 0;
@@ -1238,7 +1238,7 @@ LABEL_4:
         }
       }
 
-      v6 = v32;
+      storageCopy = v32;
     }
 
     else
@@ -1249,7 +1249,7 @@ LABEL_4:
 
   else
   {
-    v26 = objc_msgSend_objectUUID(v6, v10, v11);
+    v26 = objc_msgSend_objectUUID(storageCopy, v10, v11);
   }
 
   return v26;
@@ -1299,12 +1299,12 @@ LABEL_4:
   return v2;
 }
 
-- (void)setSlide:(id)a3
+- (void)setSlide:(id)slide
 {
-  v4 = a3;
+  slideCopy = slide;
   objc_msgSend_willModify(self, v5, v6);
   v7 = objc_alloc(MEMORY[0x277D80868]);
-  v9 = objc_msgSend_initWithObject_(v7, v8, v4);
+  v9 = objc_msgSend_initWithObject_(v7, v8, slideCopy);
 
   slideReference = self->_slideReference;
   self->_slideReference = v9;
@@ -1316,12 +1316,12 @@ LABEL_4:
   objc_msgSend_updateLiveVideoSourceUsage(self, v16, v17);
 }
 
-- (void)setSkipped:(BOOL)a3
+- (void)setSkipped:(BOOL)skipped
 {
-  if (self->_skipped != a3)
+  if (self->_skipped != skipped)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_skipped = a3;
+    objc_msgSend_willModify(self, a2, skipped);
+    self->_skipped = skipped;
     objc_opt_class();
     v7 = objc_msgSend_context(self, v5, v6);
     v10 = objc_msgSend_documentObject(v7, v8, v9);
@@ -1351,15 +1351,15 @@ LABEL_4:
   return isSlideNumberVisible;
 }
 
-- (void)setDigestsForDatasThatNeedDownloadForThumbnail:(id)a3
+- (void)setDigestsForDatasThatNeedDownloadForThumbnail:(id)thumbnail
 {
-  v4 = a3;
+  thumbnailCopy = thumbnail;
   digestsForDatasThatNeedDownloadForThumbnail = self->_digestsForDatasThatNeedDownloadForThumbnail;
-  if (v4 | digestsForDatasThatNeedDownloadForThumbnail)
+  if (thumbnailCopy | digestsForDatasThatNeedDownloadForThumbnail)
   {
-    v12 = v4;
-    isEqual = objc_msgSend_isEqual_(digestsForDatasThatNeedDownloadForThumbnail, v4, v4);
-    v4 = v12;
+    v12 = thumbnailCopy;
+    isEqual = objc_msgSend_isEqual_(digestsForDatasThatNeedDownloadForThumbnail, thumbnailCopy, thumbnailCopy);
+    thumbnailCopy = v12;
     if ((isEqual & 1) == 0)
     {
       objc_msgSend_willModify(self, v12, v7);
@@ -1367,28 +1367,28 @@ LABEL_4:
       v11 = self->_digestsForDatasThatNeedDownloadForThumbnail;
       self->_digestsForDatasThatNeedDownloadForThumbnail = v10;
 
-      v4 = v12;
+      thumbnailCopy = v12;
     }
   }
 }
 
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  rootCopy = root;
   v11 = objc_msgSend_slide(self, v8, v9);
-  objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v11, v10, v7, v6);
+  objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v11, v10, rootCopy, contextCopy);
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = objc_msgSend_context(v7, v8, v9);
+  contextCopy = context;
+  rootCopy = root;
+  v10 = objc_msgSend_context(rootCopy, v8, v9);
   objc_msgSend_wasAddedToDocumentWithContext_(self, v11, v10);
 
   v14 = objc_msgSend_slide(self, v12, v13);
-  objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v14, v15, v7, v6);
+  objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v14, v15, rootCopy, contextCopy);
 
   objc_opt_class();
   v23 = TSUCheckedDynamicCast();
@@ -1398,9 +1398,9 @@ LABEL_4:
   objc_msgSend_slideNodeWasAddedToDocument_(v21, v22, self);
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   objc_opt_class();
   v5 = TSUCheckedDynamicCast();
   v8 = objc_msgSend_show(v5, v6, v7);
@@ -1408,30 +1408,30 @@ LABEL_4:
   objc_msgSend_slideNodeWillBeRemovedFromDocument_(v11, v12, self);
 
   v15 = objc_msgSend_slide(self, v13, v14);
-  objc_msgSend_willBeRemovedFromDocumentRoot_(v15, v16, v4);
+  objc_msgSend_willBeRemovedFromDocumentRoot_(v15, v16, rootCopy);
 
-  v20 = objc_msgSend_context(v4, v17, v18);
+  v20 = objc_msgSend_context(rootCopy, v17, v18);
 
   objc_msgSend_willBeRemovedFromDocumentWithContext_(self, v19, v20);
 }
 
-- (void)wasRemovedFromDocumentRoot:(id)a3
+- (void)wasRemovedFromDocumentRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   v8 = objc_msgSend_slide(self, v5, v6);
-  objc_msgSend_wasRemovedFromDocumentRoot_(v8, v7, v4);
+  objc_msgSend_wasRemovedFromDocumentRoot_(v8, v7, rootCopy);
 }
 
-- (void)addThumbnail:(id)a3 atSize:(CGSize)a4
+- (void)addThumbnail:(id)thumbnail atSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v20 = a3;
-  if (v20)
+  height = size.height;
+  width = size.width;
+  thumbnailCopy = thumbnail;
+  if (thumbnailCopy)
   {
     objc_msgSend_willModify(self, v7, v8);
     v11 = objc_msgSend_valueWithCGSize_(MEMORY[0x277CCAE60], v9, v10, width, height);
-    objc_msgSend_setObject_forKey_(self->_thumbnails, v12, v20, v11);
+    objc_msgSend_setObject_forKey_(self->_thumbnails, v12, thumbnailCopy, v11);
   }
 
   else
@@ -1445,10 +1445,10 @@ LABEL_4:
   }
 }
 
-- (void)removeThumbnailAtSize:(CGSize)a3
+- (void)removeThumbnailAtSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   objc_msgSend_willModify(self, a2, v3);
   v10 = objc_msgSend_valueWithCGSize_(MEMORY[0x277CCAE60], v7, v8, width, height);
   objc_msgSend_removeObjectForKey_(self->_thumbnails, v9, v10);
@@ -1462,9 +1462,9 @@ LABEL_4:
   objc_msgSend_removeAllObjects(thumbnails, v4, v5);
 }
 
-- (id)resolverMatchingName:(id)a3
+- (id)resolverMatchingName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -1476,7 +1476,7 @@ LABEL_4:
   v12[1] = 3221225472;
   v12[2] = sub_275D74F0C;
   v12[3] = &unk_27A6982A8;
-  v8 = v4;
+  v8 = nameCopy;
   v13 = v8;
   v14 = &v15;
   objc_msgSend_performBlockOnInfos_(v7, v9, v12);
@@ -1487,9 +1487,9 @@ LABEL_4:
   return v10;
 }
 
-- (id)resolversMatchingPrefix:(id)a3
+- (id)resolversMatchingPrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -1501,7 +1501,7 @@ LABEL_4:
   v14[1] = 3221225472;
   v14[2] = sub_275D7515C;
   v14[3] = &unk_27A6982A8;
-  v10 = v4;
+  v10 = prefixCopy;
   v15 = v10;
   v16 = &v17;
   objc_msgSend_performBlockOnInfos_(v9, v11, v14);
@@ -1512,9 +1512,9 @@ LABEL_4:
   return v12;
 }
 
-- (BOOL)resolverNameIsUsed:(id)a3
+- (BOOL)resolverNameIsUsed:(id)used
 {
-  v4 = a3;
+  usedCopy = used;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -1524,7 +1524,7 @@ LABEL_4:
   v11[1] = 3221225472;
   v11[2] = sub_275D75360;
   v11[3] = &unk_27A6982A8;
-  v8 = v4;
+  v8 = usedCopy;
   v12 = v8;
   v13 = &v14;
   objc_msgSend_performBlockOnInfos_(v7, v9, v11);
@@ -1542,22 +1542,22 @@ LABEL_4:
   return tableNameCounter;
 }
 
-- (void)addRemappedTableName:(id)a3
+- (void)addRemappedTableName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   remappedTableNames = self->_remappedTableNames;
-  v8 = v4;
+  v8 = nameCopy;
   if (!remappedTableNames)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v7 = self->_remappedTableNames;
     self->_remappedTableNames = v6;
 
-    v4 = v8;
+    nameCopy = v8;
     remappedTableNames = self->_remappedTableNames;
   }
 
-  objc_msgSend_addObject_(remappedTableNames, v4, v4);
+  objc_msgSend_addObject_(remappedTableNames, nameCopy, nameCopy);
 }
 
 - (void)clearRemappedTableNames
@@ -1566,20 +1566,20 @@ LABEL_4:
   self->_remappedTableNames = 0;
 }
 
-- (id)descendantsOmittingSkippedSlideNodes:(BOOL)a3 omittingCollapsedSlideNodes:(BOOL)a4
+- (id)descendantsOmittingSkippedSlideNodes:(BOOL)nodes omittingCollapsedSlideNodes:(BOOL)slideNodes
 {
-  v4 = a4;
-  v5 = a3;
+  slideNodesCopy = slideNodes;
+  nodesCopy = nodes;
   WeakRetained = objc_loadWeakRetained(&self->_slideTree);
-  v9 = objc_msgSend_descendantsOfSlideNode_omitSkippedSlideNodes_omitCollapsedSlideNodes_(WeakRetained, v8, self, v5, v4);
+  v9 = objc_msgSend_descendantsOfSlideNode_omitSkippedSlideNodes_omitCollapsedSlideNodes_(WeakRetained, v8, self, nodesCopy, slideNodesCopy);
 
   return v9;
 }
 
-- (void)addOldModelDescendantsToSlideTree:(id)a3
+- (void)addOldModelDescendantsToSlideTree:(id)tree
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  treeCopy = tree;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -1600,7 +1600,7 @@ LABEL_4:
           objc_enumerationMutation(v5);
         }
 
-        objc_msgSend_p_addOldModelDescendantsToSlideTree_atDepth_(*(*(&v12 + 1) + 8 * v11++), v8, v4, 1, v12);
+        objc_msgSend_p_addOldModelDescendantsToSlideTree_atDepth_(*(*(&v12 + 1) + 8 * v11++), v8, treeCopy, 1, v12);
       }
 
       while (v9 != v11);
@@ -1611,18 +1611,18 @@ LABEL_4:
   }
 }
 
-- (void)p_addOldModelDescendantsToSlideTree:(id)a3 atDepth:(unint64_t)a4
+- (void)p_addOldModelDescendantsToSlideTree:(id)tree atDepth:(unint64_t)depth
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  treeCopy = tree;
   objc_msgSend_willModifyForUpgrade(self, v7, v8);
-  if (a4 >= 6)
+  if (depth >= 6)
   {
-    a4 = 6;
+    depth = 6;
   }
 
-  objc_msgSend_setSlideTree_(self, v9, v6);
-  objc_msgSend_addSlideNodeForDocumentUpgrade_atDepth_(v6, v10, self, a4);
+  objc_msgSend_setSlideTree_(self, v9, treeCopy);
+  objc_msgSend_addSlideNodeForDocumentUpgrade_atDepth_(treeCopy, v10, self, depth);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
@@ -1642,7 +1642,7 @@ LABEL_4:
           objc_enumerationMutation(v11);
         }
 
-        objc_msgSend_p_addOldModelDescendantsToSlideTree_atDepth_(*(*(&v19 + 1) + 8 * i), v14, v6, a4 + 1, v19);
+        objc_msgSend_p_addOldModelDescendantsToSlideTree_atDepth_(*(*(&v19 + 1) + 8 * i), v14, treeCopy, depth + 1, v19);
       }
 
       v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v14, &v19, v23, 16);
@@ -1708,44 +1708,44 @@ LABEL_4:
   {
     v17 = objc_msgSend_objectUUIDPath(v10, v15, v16);
     v20 = objc_msgSend_objectUUID(self, v18, v19);
-    v22 = objc_msgSend_UUIDPathByAppendingUUID_(v17, v21, v20);
+    objectUUIDPath = objc_msgSend_UUIDPathByAppendingUUID_(v17, v21, v20);
   }
 
   else
   {
     v24.receiver = self;
     v24.super_class = KNSlideNode;
-    v22 = [(KNSlideNode *)&v24 objectUUIDPath];
+    objectUUIDPath = [(KNSlideNode *)&v24 objectUUIDPath];
   }
 
-  return v22;
+  return objectUUIDPath;
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v129 = a4;
-  v10 = objc_msgSend_fileFormatVersion(v129, v6, v7);
-  v11 = *(a3 + 4);
+  unarchiverCopy = unarchiver;
+  v10 = objc_msgSend_fileFormatVersion(unarchiverCopy, v6, v7);
+  v11 = *(archive + 4);
   v12 = v11;
   if ((v11 & 4) != 0)
   {
-    v13 = *(a3 + 29);
+    v13 = *(archive + 29);
     v138[0] = MEMORY[0x277D85DD0];
     v138[1] = 3221225472;
     v138[2] = sub_275D768F4;
     v138[3] = &unk_27A6982D0;
     v138[4] = self;
-    v14 = v129;
+    v14 = unarchiverCopy;
     v15 = v138;
     v16 = objc_opt_class();
     objc_msgSend_readLazyReferenceMessage_class_protocol_completion_(v14, v17, v13, v16, 0, v15);
 
-    v12 = *(a3 + 4);
+    v12 = *(archive + 4);
   }
 
   if ((v12 & 0x400000) != 0)
   {
-    v18 = *(a3 + 72);
+    v18 = *(archive + 72);
     if (v18)
     {
       if (v18 >= 7)
@@ -1764,17 +1764,17 @@ LABEL_4:
     self->_depth = v18;
   }
 
-  v19 = *(a3 + 14);
+  v19 = *(archive + 14);
   if (v19 >= 1)
   {
-    if (v19 == *(a3 + 20))
+    if (v19 == *(archive + 20))
     {
       v20 = objc_alloc(MEMORY[0x277CBEB18]);
       v24 = objc_msgSend_initWithCapacity_(v20, v21, v19);
       v25 = 8;
       do
       {
-        v26 = objc_msgSend_valueWithCGSize_(MEMORY[0x277CCAE60], v22, v23, *(*(*(a3 + 11) + v25) + 24), *(*(*(a3 + 11) + v25) + 28));
+        v26 = objc_msgSend_valueWithCGSize_(MEMORY[0x277CCAE60], v22, v23, *(*(*(archive + 11) + v25) + 24), *(*(*(archive + 11) + v25) + 28));
         objc_msgSend_addObject_(v24, v27, v26);
 
         v25 += 8;
@@ -1788,11 +1788,11 @@ LABEL_4:
       v135[3] = &unk_27A698320;
       v28 = v24;
       v136 = v28;
-      v137 = self;
-      v29 = v129;
+      selfCopy = self;
+      v29 = unarchiverCopy;
       v30 = v135;
       v31 = objc_opt_class();
-      objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v29, v32, a3 + 48, v31, 0, v30);
+      objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v29, v32, archive + 48, v31, 0, v30);
 
       goto LABEL_24;
     }
@@ -1807,13 +1807,13 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v33 = *(a3 + 26);
+  v33 = *(archive + 26);
   if (v33 < 1)
   {
     goto LABEL_24;
   }
 
-  if (v33 != *(a3 + 20))
+  if (v33 != *(archive + 20))
   {
     v48 = MEMORY[0x277D81150];
     v44 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[KNSlideNode(PersistenceAdditions) loadFromArchive:unarchiver:]");
@@ -1825,10 +1825,10 @@ LABEL_23:
   v34 = 8;
   do
   {
-    v35 = *(*(a3 + 11) + v34);
+    v35 = *(*(archive + 11) + v34);
     v36 = *(v35 + 24);
     v37 = *(v35 + 28);
-    v38 = objc_msgSend_readDataReferenceMessage_(v129, v8, *(*(a3 + 14) + v34));
+    v38 = objc_msgSend_readDataReferenceMessage_(unarchiverCopy, v8, *(*(archive + 14) + v34));
     v41 = objc_msgSend_null(MEMORY[0x277D80828], v39, v40);
 
     if (v38 != v41)
@@ -1843,58 +1843,58 @@ LABEL_23:
   while (v33);
 LABEL_24:
   obj = objc_alloc_init(MEMORY[0x277CBEB58]);
-  if (*(a3 + 38) >= 1)
+  if (*(archive + 38) >= 1)
   {
     v54 = 0;
     do
     {
-      v55 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v53, *(*(a3 + 20) + 8 * v54 + 8));
+      v55 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v53, *(*(archive + 20) + 8 * v54 + 8));
       objc_msgSend_addObject_(obj, v56, v55);
 
       ++v54;
     }
 
-    while (v54 < *(a3 + 38));
+    while (v54 < *(archive + 38));
   }
 
   objc_storeStrong(&self->_digestsForDatasThatNeedDownloadForThumbnail, obj);
-  v58 = *(a3 + 4);
+  v58 = *(archive + 4);
   if ((v58 & 8) != 0)
   {
-    v59 = *(a3 + 30);
+    v59 = *(archive + 30);
     v134[0] = MEMORY[0x277D85DD0];
     v134[1] = 3221225472;
     v134[2] = sub_275D76B0C;
     v134[3] = &unk_27A698368;
     v134[4] = self;
-    v60 = v129;
+    v60 = unarchiverCopy;
     v61 = v134;
     v62 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v60, v63, v59, v62, 0, v61);
 
-    v58 = *(a3 + 4);
+    v58 = *(archive + 4);
   }
 
   if ((v58 & 0x20) != 0)
   {
-    self->_thumbnailsAreDirty = *(a3 + 256);
+    self->_thumbnailsAreDirty = *(archive + 256);
   }
 
-  self->_skipped = *(a3 + 257);
-  self->_collapsed = *(a3 + 258) & (v58 >> 7);
-  self->_collapsedInOutlineView = *(a3 + 259) & (v58 << 23 >> 31);
-  self->_hasBodyInOutlineView = *(a3 + 260) & (v58 << 22 >> 31);
-  objc_msgSend_setHasTransition_(self, v57, *(a3 + 262));
-  v66 = *(a3 + 4);
-  self->_hasNote = *(a3 + 263) & (v66 << 19 >> 31);
+  self->_skipped = *(archive + 257);
+  self->_collapsed = *(archive + 258) & (v58 >> 7);
+  self->_collapsedInOutlineView = *(archive + 259) & (v58 << 23 >> 31);
+  self->_hasBodyInOutlineView = *(archive + 260) & (v58 << 22 >> 31);
+  objc_msgSend_setHasTransition_(self, v57, *(archive + 262));
+  v66 = *(archive + 4);
+  self->_hasNote = *(archive + 263) & (v66 << 19 >> 31);
   if ((v66 & 0x8000) != 0)
   {
-    self->_slideNumberVisible = *(a3 + 272);
+    self->_slideNumberVisible = *(archive + 272);
   }
 
   else
   {
-    if ((objc_msgSend_hasPreUFFVersion(v129, v64, v65) & 1) == 0)
+    if ((objc_msgSend_hasPreUFFVersion(unarchiverCopy, v64, v65) & 1) == 0)
     {
       v67 = MEMORY[0x277D81150];
       v68 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v64, "[KNSlideNode(PersistenceAdditions) loadFromArchive:unarchiver:]");
@@ -1911,13 +1911,13 @@ LABEL_24:
       v133[2] = sub_275D76C68;
       v133[3] = &unk_27A698390;
       v133[4] = self;
-      objc_msgSend_addFinalizeHandler_(v129, v64, v133);
+      objc_msgSend_addFinalizeHandler_(unarchiverCopy, v64, v133);
     }
   }
 
-  if (v10 > 0x400000000000ALL && (*(a3 + 18) & 0x20) != 0)
+  if (v10 > 0x400000000000ALL && (*(archive + 18) & 0x20) != 0)
   {
-    self->_backgroundIsNoFillOrColorFillWithAlpha = *(a3 + 284);
+    self->_backgroundIsNoFillOrColorFillWithAlpha = *(archive + 284);
   }
 
   else if ((v11 & 4) != 0)
@@ -1939,25 +1939,25 @@ LABEL_24:
     v132[2] = sub_275D76D64;
     v132[3] = &unk_27A698390;
     v132[4] = self;
-    objc_msgSend_addFinalizeHandler_(v129, v64, v132);
+    objc_msgSend_addFinalizeHandler_(unarchiverCopy, v64, v132);
   }
 
-  v83 = *(a3 + 4);
-  self->_slideSpecificHyperlinksCount = *(a3 + 66) & (v83 << 18 >> 31);
+  v83 = *(archive + 4);
+  self->_slideSpecificHyperlinksCount = *(archive + 66) & (v83 << 18 >> 31);
   if ((v83 & 0x4000) != 0)
   {
-    self->_buildEventCount = *(a3 + 67);
+    self->_buildEventCount = *(archive + 67);
   }
 
   if ((v83 & 0x80000) != 0)
   {
-    v84 = *(a3 + 69) < 3u;
+    v84 = *(archive + 69) < 3u;
     goto LABEL_50;
   }
 
   if ((v83 & 0x10000) != 0)
   {
-    v84 = *(a3 + 273);
+    v84 = *(archive + 273);
 LABEL_50:
     self->_buildEventCountIsUpToDate = v84;
   }
@@ -1966,17 +1966,17 @@ LABEL_50:
   {
     objc_msgSend_willModifyForUpgrade(self, v64, v65);
     self->_buildEventCountIsUpToDate = 0;
-    v83 = *(a3 + 4);
+    v83 = *(archive + 4);
   }
 
   if ((v83 & 0x20000) != 0)
   {
-    self->_hasExplicitBuilds = *(a3 + 274);
+    self->_hasExplicitBuilds = *(archive + 274);
   }
 
   if ((v83 & 0x100000) != 0)
   {
-    v85 = *(a3 + 70) < 3u;
+    v85 = *(archive + 70) < 3u;
   }
 
   else
@@ -1986,7 +1986,7 @@ LABEL_50:
       goto LABEL_61;
     }
 
-    v85 = *(a3 + 275);
+    v85 = *(archive + 275);
   }
 
   self->_hasExplicitBuildsIsUpToDate = v85;
@@ -1999,47 +1999,47 @@ LABEL_61:
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v86, v90, v87, v89, 322, 0, "expected nil value for '%{public}s'", "_previousIdentifier");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v91, v92);
-    v83 = *(a3 + 4);
+    v83 = *(archive + 4);
   }
 
   if (v83)
   {
     v96 = objc_alloc(MEMORY[0x277CCACA8]);
-    v95 = objc_msgSend_tsp_initWithProtobufString_(v96, v97, *(a3 + 27) & 0xFFFFFFFFFFFFFFFELL);
+    v95 = objc_msgSend_tsp_initWithProtobufString_(v96, v97, *(archive + 27) & 0xFFFFFFFFFFFFFFFELL);
     goto LABEL_67;
   }
 
   if ((v83 & 2) != 0)
   {
     v93 = objc_alloc(MEMORY[0x277CCACA8]);
-    v95 = objc_msgSend_tsp_initWithProtobufString_(v93, v94, *(a3 + 28) & 0xFFFFFFFFFFFFFFFELL);
+    v95 = objc_msgSend_tsp_initWithProtobufString_(v93, v94, *(archive + 28) & 0xFFFFFFFFFFFFFFFELL);
 LABEL_67:
     v98 = v95;
     objc_storeStrong(&self->_previousIdentifier, v95);
   }
 
-  if (v10 < *MEMORY[0x277D80968] || v10 < *MEMORY[0x277D80970] && *(a3 + 8) >= 1)
+  if (v10 < *MEMORY[0x277D80968] || v10 < *MEMORY[0x277D80970] && *(archive + 8) >= 1)
   {
     v131[0] = MEMORY[0x277D85DD0];
     v131[1] = 3221225472;
     v131[2] = sub_275D76E60;
     v131[3] = &unk_27A697A10;
     v131[4] = self;
-    v99 = v129;
+    v99 = unarchiverCopy;
     v100 = v131;
     v101 = objc_opt_class();
-    objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v99, v102, a3 + 24, v101, 0, v100);
+    objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v99, v102, archive + 24, v101, 0, v100);
   }
 
   objc_msgSend_removeAllObjects(self->_slideSpecificHyperlinkMap, v64, v65);
-  v104 = a3;
-  if (*(a3 + 32) >= 1)
+  archiveCopy = archive;
+  if (*(archive + 32) >= 1)
   {
     v105 = 0;
     do
     {
-      v106 = v104;
-      v107 = *(*(v104 + 17) + 8 * v105 + 8);
+      v106 = archiveCopy;
+      v107 = *(*(archiveCopy + 17) + 8 * v105 + 8);
       v108 = objc_alloc(MEMORY[0x277CCACA8]);
       v110 = objc_msgSend_tsp_initWithProtobufString_(v108, v109, *(v107 + 48) & 0xFFFFFFFFFFFFFFFELL);
       v113 = objc_msgSend_set(MEMORY[0x277CBEB58], v111, v112);
@@ -2061,30 +2061,30 @@ LABEL_67:
       }
 
       ++v105;
-      v104 = v106;
+      archiveCopy = v106;
     }
 
     while (v105 < v106[32]);
   }
 
-  v122 = v104;
-  if ((v104[4] & 0x10) != 0)
+  v122 = archiveCopy;
+  if ((archiveCopy[4] & 0x10) != 0)
   {
-    v123 = objc_msgSend_readWeakObjectUUIDReferenceMessage_(v129, v103, *(v104 + 31));
+    v123 = objc_msgSend_readWeakObjectUUIDReferenceMessage_(unarchiverCopy, v103, *(archiveCopy + 31));
     templateSlideUUID = self->_templateSlideUUID;
     self->_templateSlideUUID = v123;
   }
 
   v125 = [KNLiveVideoSourceUsage alloc];
-  v127 = objc_msgSend_initWithLiveVideoSourceUUIDMessages_entryMessages_unarchiver_(v125, v126, (v122 + 42), v122 + 48, v129);
+  v127 = objc_msgSend_initWithLiveVideoSourceUUIDMessages_entryMessages_unarchiver_(v125, v126, (v122 + 42), v122 + 48, unarchiverCopy);
   liveVideoSourceUsage = self->_liveVideoSourceUsage;
   self->_liveVideoSourceUsage = v127;
 }
 
-- (id)p_mappingFromString:(id)a3
+- (id)p_mappingFromString:(id)string
 {
-  v3 = a3;
-  v5 = objc_msgSend_componentsSeparatedByString_(v3, v4, @",");
+  stringCopy = string;
+  v5 = objc_msgSend_componentsSeparatedByString_(stringCopy, v4, @",");
   if (objc_msgSend_count(v5, v6, v7) == 2)
   {
     objc_opt_class();
@@ -2103,17 +2103,17 @@ LABEL_67:
   else
   {
     v22 = objc_alloc(MEMORY[0x277CCAD78]);
-    v21 = objc_msgSend_initWithUUIDString_(v22, v23, v3);
+    v21 = objc_msgSend_initWithUUIDString_(v22, v23, stringCopy);
   }
 
   return v21;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
   v190 = *MEMORY[0x277D85DE8];
-  v160 = a4;
-  v166 = self;
+  archiverCopy = archiver;
+  selfCopy = self;
   v7 = objc_msgSend_depth(self, v5, v6);
   if (v7 >> 31)
   {
@@ -2126,26 +2126,26 @@ LABEL_67:
     LODWORD(v7) = 0x7FFFFFFF;
   }
 
-  v10 = a3;
-  *(a3 + 4) |= 0x400000u;
-  *(a3 + 72) = v7;
-  hasNote = objc_msgSend_hasNote(v166, v8, v9);
-  *(a3 + 4) |= 0x1000u;
-  *(a3 + 263) = hasNote;
-  isSlideNumberVisible = objc_msgSend_isSlideNumberVisible(v166, v12, v13);
-  v15 = *(a3 + 4);
-  *(a3 + 272) = isSlideNumberVisible;
-  *(a3 + 4) = v15 | 0x8400;
-  *(a3 + 261) = 0;
-  hasTransition = objc_msgSend_hasTransition(v166, v16, v17);
-  *(a3 + 4) |= 0x800u;
-  *(a3 + 262) = hasTransition;
-  isSkipped = objc_msgSend_isSkipped(v166, v19, v20);
-  *(a3 + 4) |= 0x40u;
-  *(a3 + 257) = isSkipped;
-  if (v166->_buildEventCountIsUpToDate)
+  archiveCopy2 = archive;
+  *(archive + 4) |= 0x400000u;
+  *(archive + 72) = v7;
+  hasNote = objc_msgSend_hasNote(selfCopy, v8, v9);
+  *(archive + 4) |= 0x1000u;
+  *(archive + 263) = hasNote;
+  isSlideNumberVisible = objc_msgSend_isSlideNumberVisible(selfCopy, v12, v13);
+  v15 = *(archive + 4);
+  *(archive + 272) = isSlideNumberVisible;
+  *(archive + 4) = v15 | 0x8400;
+  *(archive + 261) = 0;
+  hasTransition = objc_msgSend_hasTransition(selfCopy, v16, v17);
+  *(archive + 4) |= 0x800u;
+  *(archive + 262) = hasTransition;
+  isSkipped = objc_msgSend_isSkipped(selfCopy, v19, v20);
+  *(archive + 4) |= 0x40u;
+  *(archive + 257) = isSkipped;
+  if (selfCopy->_buildEventCountIsUpToDate)
   {
-    v24 = objc_msgSend_buildEventCount(v166, v22, v23);
+    v24 = objc_msgSend_buildEventCount(selfCopy, v22, v23);
     if (v24 >> 31)
     {
       v153 = MEMORY[0x277D81150];
@@ -2157,13 +2157,13 @@ LABEL_67:
       LODWORD(v24) = 0x7FFFFFFF;
     }
 
-    v10 = a3;
-    *(a3 + 4) |= 0x4000u;
-    *(a3 + 67) = v24;
+    archiveCopy2 = archive;
+    *(archive + 4) |= 0x4000u;
+    *(archive + 67) = v24;
   }
 
-  objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v160, v22, 26, v10);
-  if (v166->_buildEventCountIsUpToDate)
+  objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(archiverCopy, v22, 26, archiveCopy2);
+  if (selfCopy->_buildEventCountIsUpToDate)
   {
     v27 = 2;
   }
@@ -2173,18 +2173,18 @@ LABEL_67:
     v27 = -1;
   }
 
-  *(v10 + 4) |= 0x80000u;
-  *(v10 + 69) = v27;
-  if (v166->_hasExplicitBuildsIsUpToDate)
+  *(archiveCopy2 + 4) |= 0x80000u;
+  *(archiveCopy2 + 69) = v27;
+  if (selfCopy->_hasExplicitBuildsIsUpToDate)
   {
-    hasExplicitBuilds = objc_msgSend_hasExplicitBuilds(v166, v25, v26);
-    *(v10 + 4) |= 0x20000u;
-    *(v10 + 274) = hasExplicitBuilds;
+    hasExplicitBuilds = objc_msgSend_hasExplicitBuilds(selfCopy, v25, v26);
+    *(archiveCopy2 + 4) |= 0x20000u;
+    *(archiveCopy2 + 274) = hasExplicitBuilds;
   }
 
-  objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v160, v25, 27, v10);
-  v31 = v166;
-  if (v166->_hasExplicitBuildsIsUpToDate)
+  objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(archiverCopy, v25, 27, archiveCopy2);
+  v31 = selfCopy;
+  if (selfCopy->_hasExplicitBuildsIsUpToDate)
   {
     v32 = 2;
   }
@@ -2194,42 +2194,42 @@ LABEL_67:
     v32 = -1;
   }
 
-  v33 = *(v10 + 4);
-  *(v10 + 70) = v32;
-  backgroundIsNoFillOrColorFillWithAlpha = v166->_backgroundIsNoFillOrColorFillWithAlpha;
-  *(v10 + 4) = v33 | 0x300000;
-  *(v10 + 284) = backgroundIsNoFillOrColorFillWithAlpha;
-  slideReference = v166->_slideReference;
+  v33 = *(archiveCopy2 + 4);
+  *(archiveCopy2 + 70) = v32;
+  backgroundIsNoFillOrColorFillWithAlpha = selfCopy->_backgroundIsNoFillOrColorFillWithAlpha;
+  *(archiveCopy2 + 4) = v33 | 0x300000;
+  *(archiveCopy2 + 284) = backgroundIsNoFillOrColorFillWithAlpha;
+  slideReference = selfCopy->_slideReference;
   if (slideReference)
   {
-    *(v10 + 4) = v33 | 0x300004;
-    v36 = *(v10 + 29);
+    *(archiveCopy2 + 4) = v33 | 0x300004;
+    v36 = *(archiveCopy2 + 29);
     if (!v36)
     {
-      v37 = *(a3 + 1);
+      v37 = *(archive + 1);
       if (v37)
       {
         v37 = *(v37 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v36 = MEMORY[0x277C8F050](v37);
-      *(a3 + 29) = v36;
+      *(archive + 29) = v36;
     }
 
-    objc_msgSend_setStrongLazyReference_message_(v160, v29, slideReference, v36);
-    v31 = v166;
+    objc_msgSend_setStrongLazyReference_message_(archiverCopy, v29, slideReference, v36);
+    v31 = selfCopy;
   }
 
   if (v31->_thumbnails)
   {
     v38 = objc_alloc(MEMORY[0x277CBEB18]);
-    v41 = objc_msgSend_count(v166->_thumbnails, v39, v40);
+    v41 = objc_msgSend_count(selfCopy->_thumbnails, v39, v40);
     v43 = objc_msgSend_initWithCapacity_(v38, v42, v41);
     v182 = 0u;
     v183 = 0u;
     v180 = 0u;
     v181 = 0u;
-    v46 = objc_msgSend_keyEnumerator(v166->_thumbnails, v44, v45);
+    v46 = objc_msgSend_keyEnumerator(selfCopy->_thumbnails, v44, v45);
     v49 = objc_msgSend_countByEnumeratingWithState_objects_count_(v46, v47, &v180, v189, 16);
     if (!v49)
     {
@@ -2247,40 +2247,40 @@ LABEL_67:
         }
 
         v52 = *(*(&v180 + 1) + 8 * i);
-        v53 = objc_msgSend_objectForKeyedSubscript_(v166->_thumbnails, v48, v52);
+        v53 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_thumbnails, v48, v52);
         objc_msgSend_addObject_(v43, v54, v53);
 
         objc_msgSend_CGSizeValue(v52, v55, v56);
         v58 = v57;
         v60 = v59;
-        v61 = *(a3 + 11);
+        v61 = *(archive + 11);
         if (!v61)
         {
           goto LABEL_32;
         }
 
-        v62 = *(a3 + 20);
+        v62 = *(archive + 20);
         v63 = *v61;
         if (v62 < *v61)
         {
-          *(a3 + 20) = v62 + 1;
+          *(archive + 20) = v62 + 1;
           v64 = *&v61[2 * v62 + 2];
           goto LABEL_34;
         }
 
-        if (v63 == *(a3 + 21))
+        if (v63 == *(archive + 21))
         {
 LABEL_32:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 72));
-          v61 = *(a3 + 11);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 72));
+          v61 = *(archive + 11);
           v63 = *v61;
         }
 
         *v61 = v63 + 1;
-        v64 = MEMORY[0x277C8EFF0](*(a3 + 9));
-        v65 = *(a3 + 20);
-        v66 = *(a3 + 11) + 8 * v65;
-        *(a3 + 20) = v65 + 1;
+        v64 = MEMORY[0x277C8EFF0](*(archive + 9));
+        v65 = *(archive + 20);
+        v66 = *(archive + 11) + 8 * v65;
+        *(archive + 20) = v65 + 1;
         *(v66 + 8) = v64;
 LABEL_34:
         v67 = v58;
@@ -2295,16 +2295,16 @@ LABEL_34:
       {
 LABEL_36:
 
-        objc_msgSend_setDataReferenceArray_message_(v160, v69, v43, a3 + 96);
+        objc_msgSend_setDataReferenceArray_message_(archiverCopy, v69, v43, archive + 96);
         break;
       }
     }
   }
 
-  v70 = objc_msgSend_thumbnailsAreDirty(v166, v29, v30);
-  *(a3 + 4) |= 0x20u;
-  *(a3 + 256) = v70;
-  digestsForDatasThatNeedDownloadForThumbnail = v166->_digestsForDatasThatNeedDownloadForThumbnail;
+  v70 = objc_msgSend_thumbnailsAreDirty(selfCopy, v29, v30);
+  *(archive + 4) |= 0x20u;
+  *(archive + 256) = v70;
+  digestsForDatasThatNeedDownloadForThumbnail = selfCopy->_digestsForDatasThatNeedDownloadForThumbnail;
   if (digestsForDatasThatNeedDownloadForThumbnail)
   {
     v178 = 0u;
@@ -2330,36 +2330,36 @@ LABEL_36:
 
         v79 = *(*(&v176 + 1) + 8 * j);
         v82 = objc_msgSend_UTF8String(v79, v80, v81);
-        v83 = a3;
-        v84 = *(a3 + 20);
+        archiveCopy4 = archive;
+        v84 = *(archive + 20);
         if (!v84)
         {
           goto LABEL_48;
         }
 
-        v85 = *(a3 + 38);
+        v85 = *(archive + 38);
         v86 = *v84;
         if (v85 < *v84)
         {
-          *(a3 + 38) = v85 + 1;
+          *(archive + 38) = v85 + 1;
           v87 = *&v84[2 * v85 + 2];
           goto LABEL_50;
         }
 
-        if (v86 == *(a3 + 39))
+        if (v86 == *(archive + 39))
         {
 LABEL_48:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 144));
-          v83 = a3;
-          v84 = *(a3 + 20);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 144));
+          archiveCopy4 = archive;
+          v84 = *(archive + 20);
           v86 = *v84;
         }
 
         *v84 = v86 + 1;
-        v87 = sub_275D5EFD8(v83[18]);
-        v88 = *(a3 + 38);
-        v89 = *(a3 + 20) + 8 * v88;
-        *(a3 + 38) = v88 + 1;
+        v87 = sub_275D5EFD8(archiveCopy4[18]);
+        v88 = *(archive + 38);
+        v89 = *(archive + 20) + 8 * v88;
+        *(archive + 38) = v88 + 1;
         *(v89 + 8) = v87;
 LABEL_50:
         MEMORY[0x277C8F920](v87, v82);
@@ -2375,11 +2375,11 @@ LABEL_52:
     }
   }
 
-  previousIdentifier = v166->_previousIdentifier;
+  previousIdentifier = selfCopy->_previousIdentifier;
   if (previousIdentifier)
   {
     v92 = objc_msgSend_UTF8String(previousIdentifier, v71, v72);
-    *(a3 + 4) |= 2u;
+    *(archive + 4) |= 2u;
     sub_275D55B98(__p, v92);
     google::protobuf::internal::ArenaStringPtr::Set();
     if (v185 < 0)
@@ -2388,7 +2388,7 @@ LABEL_52:
     }
   }
 
-  objc_msgSend_allKeys(v166->_slideSpecificHyperlinkMap, v71, v72);
+  objc_msgSend_allKeys(selfCopy->_slideSpecificHyperlinkMap, v71, v72);
   v174 = 0u;
   v175 = 0u;
   v172 = 0u;
@@ -2407,37 +2407,37 @@ LABEL_52:
         }
 
         v95 = *(*(&v172 + 1) + 8 * k);
-        v164 = objc_msgSend_objectForKeyedSubscript_(v166->_slideSpecificHyperlinkMap, v94, v95);
-        v96 = a3;
-        v97 = *(a3 + 17);
+        v164 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_slideSpecificHyperlinkMap, v94, v95);
+        archiveCopy6 = archive;
+        v97 = *(archive + 17);
         if (!v97)
         {
           goto LABEL_66;
         }
 
-        v98 = *(a3 + 32);
+        v98 = *(archive + 32);
         v99 = *v97;
         if (v98 < *v97)
         {
-          *(a3 + 32) = v98 + 1;
+          *(archive + 32) = v98 + 1;
           v100 = *&v97[2 * v98 + 2];
           goto LABEL_68;
         }
 
-        if (v99 == *(a3 + 33))
+        if (v99 == *(archive + 33))
         {
 LABEL_66:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 120));
-          v96 = a3;
-          v97 = *(a3 + 17);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 120));
+          archiveCopy6 = archive;
+          v97 = *(archive + 17);
           v99 = *v97;
         }
 
         *v97 = v99 + 1;
-        v100 = sub_275E20080(v96[15]);
-        v101 = *(a3 + 32);
-        v102 = *(a3 + 17) + 8 * v101;
-        *(a3 + 32) = v101 + 1;
+        v100 = sub_275E20080(archiveCopy6[15]);
+        v101 = *(archive + 32);
+        v102 = *(archive + 17) + 8 * v101;
+        *(archive + 32) = v101 + 1;
         *(v102 + 8) = v100;
 LABEL_68:
         v103 = v95;
@@ -2565,47 +2565,47 @@ LABEL_92:
     while (v163);
   }
 
-  templateSlideUUID = v166->_templateSlideUUID;
+  templateSlideUUID = selfCopy->_templateSlideUUID;
   if (templateSlideUUID)
   {
-    *(a3 + 4) |= 0x10u;
-    v144 = *(a3 + 31);
+    *(archive + 4) |= 0x10u;
+    v144 = *(archive + 31);
     if (!v144)
     {
-      v145 = *(a3 + 1);
+      v145 = *(archive + 1);
       if (v145)
       {
         v145 = *(v145 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v144 = MEMORY[0x277C8F000](v145);
-      *(a3 + 31) = v144;
+      *(archive + 31) = v144;
     }
 
-    objc_msgSend_setWeakReferenceToObjectUUID_message_(v160, v142, templateSlideUUID, v144);
+    objc_msgSend_setWeakReferenceToObjectUUID_message_(archiverCopy, v142, templateSlideUUID, v144);
   }
 
-  objc_msgSend_saveToLiveVideoSourceUUIDMessages_entryMessages_archiver_(v166->_liveVideoSourceUsage, v142, a3 + 168, a3 + 192, v160);
+  objc_msgSend_saveToLiveVideoSourceUUIDMessages_entryMessages_archiver_(selfCopy->_liveVideoSourceUsage, v142, archive + 168, archive + 192, archiverCopy);
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   objc_msgSend_p_commonInit(self, v5, v6);
-  v10 = v4;
+  v10 = unarchiverCopy;
   google::protobuf::internal::AssignDescriptors();
   v8 = objc_msgSend_messageWithDescriptor_(v10, v7, off_2812EA908[36]);
 
   objc_msgSend_loadFromArchive_unarchiver_(self, v9, v8, v10);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_275D77E80, off_2812EA908[36]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_275D77E80, off_2812EA908[36]);
 
-  objc_msgSend_saveToArchive_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToArchive_archiver_(self, v6, v5, archiverCopy);
 }
 
 - (void)clearSlideSpecificLinkMap
@@ -2616,12 +2616,12 @@ LABEL_92:
   self->_slideSpecificHyperlinkMap = v4;
 }
 
-- (unint64_t)numberOfLinksToSlideNodeInStorage:(id)a3 forSlideNodeUUIDString:(id)a4
+- (unint64_t)numberOfLinksToSlideNodeInStorage:(id)storage forSlideNodeUUIDString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
-  v9 = objc_msgSend_length(v5, v7, v8);
-  MEMORY[0x277C8E690](v28, v5, 0, v9, 6, 0);
+  storageCopy = storage;
+  stringCopy = string;
+  v9 = objc_msgSend_length(storageCopy, v7, v8);
+  MEMORY[0x277C8E690](v28, storageCopy, 0, v9, 6, 0);
   v10 = 0;
   while (TSWPAttributeEnumerator::nextAttributeIndex(v28, 0))
   {
@@ -2640,7 +2640,7 @@ LABEL_92:
         {
           v23 = objc_msgSend_length(@"?slideid=", v21, v22);
           v25 = objc_msgSend_substringFromIndex_(v20, v24, v23);
-          v10 += objc_msgSend_isEqualToString_(v25, v26, v6);
+          v10 += objc_msgSend_isEqualToString_(v25, v26, stringCopy);
         }
       }
     }
@@ -2651,16 +2651,16 @@ LABEL_92:
   return v10;
 }
 
-+ (id)slideNodeUUIDForObsoleteUniqueIDString:(id)a3 inSlideNodes:(id)a4
++ (id)slideNodeUUIDForObsoleteUniqueIDString:(id)string inSlideNodes:(id)nodes
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  stringCopy = string;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v6 = a4;
-  v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v30, v34, 16);
+  nodesCopy = nodes;
+  v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(nodesCopy, v7, &v30, v34, 16);
   if (v10)
   {
     v11 = *v31;
@@ -2670,12 +2670,12 @@ LABEL_3:
     {
       if (*v31 != v11)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(nodesCopy);
       }
 
       v13 = *(*(&v30 + 1) + 8 * v12);
       v14 = objc_msgSend_previousIdentifier(v13, v8, v9, v30);
-      isEqualToString = objc_msgSend_isEqualToString_(v5, v15, v14);
+      isEqualToString = objc_msgSend_isEqualToString_(stringCopy, v15, v14);
 
       if (isEqualToString)
       {
@@ -2684,7 +2684,7 @@ LABEL_3:
 
       v19 = objc_msgSend_objectUUID(v13, v17, v18);
       v22 = objc_msgSend_UUIDString(v19, v20, v21);
-      v24 = objc_msgSend_isEqualToString_(v5, v23, v22);
+      v24 = objc_msgSend_isEqualToString_(stringCopy, v23, v22);
 
       if (v24)
       {
@@ -2693,7 +2693,7 @@ LABEL_3:
 
       if (v10 == ++v12)
       {
-        v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v8, &v30, v34, 16);
+        v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(nodesCopy, v8, &v30, v34, 16);
         if (v10)
         {
           goto LABEL_3;
@@ -2717,20 +2717,20 @@ LABEL_3:
 LABEL_10:
   }
 
-  v25 = v5;
+  v25 = stringCopy;
 LABEL_12:
 
   return v25;
 }
 
-- (void)upgradeSlideSpecificStorageHyperlinksForStorage:(id)a3 withSlideNodes:(id)a4
+- (void)upgradeSlideSpecificStorageHyperlinksForStorage:(id)storage withSlideNodes:(id)nodes
 {
   v69 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v59 = a4;
-  v60 = v5;
-  v8 = objc_msgSend_length(v5, v6, v7);
-  MEMORY[0x277C8E690](v67, v5, 0, v8, 6, 0);
+  storageCopy = storage;
+  nodesCopy = nodes;
+  v60 = storageCopy;
+  v8 = objc_msgSend_length(storageCopy, v6, v7);
+  MEMORY[0x277C8E690](v67, storageCopy, 0, v8, 6, 0);
   v54 = objc_msgSend_set(MEMORY[0x277CBEB58], v9, v10);
   while (TSWPAttributeEnumerator::nextAttributeIndex(v67, 0))
   {
@@ -2770,11 +2770,11 @@ LABEL_12:
         {
           v29 = objc_msgSend_length(@"?slideid=", v27, v28);
           v31 = objc_msgSend_substringFromIndex_(v26, v30, v29);
-          v35 = objc_msgSend_p_slideNodeWithUUIDString_inSlideNodes_(self, v32, v31, v59);
+          v35 = objc_msgSend_p_slideNodeWithUUIDString_inSlideNodes_(self, v32, v31, nodesCopy);
           v36 = v31;
           if (!v35)
           {
-            v58 = objc_msgSend_slideNodeUUIDForObsoleteUniqueIDString_inSlideNodes_(KNSlideNode, v33, v31, v59);
+            v58 = objc_msgSend_slideNodeUUIDForObsoleteUniqueIDString_inSlideNodes_(KNSlideNode, v33, v31, nodesCopy);
 
             if ((objc_msgSend_isEqualToString_(v31, v37, v58) & 1) == 0)
             {
@@ -2809,14 +2809,14 @@ LABEL_12:
   TSWPAttributeEnumerator::~TSWPAttributeEnumerator(v67);
 }
 
-- (void)removeInvalidSlideSpecificHyperlinksForStorage:(id)a3 withSlideNodeUUIDStrings:(id)a4
+- (void)removeInvalidSlideSpecificHyperlinksForStorage:(id)storage withSlideNodeUUIDStrings:(id)strings
 {
   v57 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v47 = a4;
-  v49 = v5;
-  v8 = objc_msgSend_length(v5, v6, v7);
-  MEMORY[0x277C8E690](v55, v5, 0, v8, 6, 0);
+  storageCopy = storage;
+  stringsCopy = strings;
+  v49 = storageCopy;
+  v8 = objc_msgSend_length(storageCopy, v6, v7);
+  MEMORY[0x277C8E690](v55, storageCopy, 0, v8, 6, 0);
   v46 = objc_msgSend_set(MEMORY[0x277CBEB58], v9, v10);
   while (TSWPAttributeEnumerator::nextAttributeIndex(v55, 0))
   {
@@ -2856,7 +2856,7 @@ LABEL_12:
         {
           v29 = objc_msgSend_length(@"?slideid=", v27, v28);
           v31 = objc_msgSend_substringFromIndex_(v26, v30, v29);
-          if ((objc_msgSend_containsObject_(v47, v32, v31) & 1) == 0)
+          if ((objc_msgSend_containsObject_(stringsCopy, v32, v31) & 1) == 0)
           {
             v35 = objc_msgSend_range(v20, v33, v34);
             v36 = v33;
@@ -2885,10 +2885,10 @@ LABEL_12:
   TSWPAttributeEnumerator::~TSWPAttributeEnumerator(v55);
 }
 
-- (void)upgradeSlideSpecificHyperlinksForSlideNodes:(id)a3
+- (void)upgradeSlideSpecificHyperlinksForSlideNodes:(id)nodes
 {
   v72 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nodesCopy = nodes;
   v56 = objc_msgSend_slide(self, v5, v6);
   objc_msgSend_childInfos(v56, v7, v8);
   v68 = 0u;
@@ -2917,11 +2917,11 @@ LABEL_12:
         {
           v20 = objc_msgSend_length(@"?slideid=", v18, v19);
           v22 = objc_msgSend_substringFromIndex_(v61, v21, v20);
-          v26 = objc_msgSend_p_slideNodeWithUUIDString_inSlideNodes_(self, v23, v22, v4);
+          v26 = objc_msgSend_p_slideNodeWithUUIDString_inSlideNodes_(self, v23, v22, nodesCopy);
           v27 = v22;
           if (!v26)
           {
-            v28 = objc_msgSend_slideNodeUUIDForObsoleteUniqueIDString_inSlideNodes_(KNSlideNode, v24, v22, v4);
+            v28 = objc_msgSend_slideNodeUUIDForObsoleteUniqueIDString_inSlideNodes_(KNSlideNode, v24, v22, nodesCopy);
 
             if ((objc_msgSend_isEqualToString_(v22, v29, v28) & 1) == 0)
             {
@@ -2944,7 +2944,7 @@ LABEL_12:
         if (v37)
         {
           v41 = objc_msgSend_textStorage(v37, v38, v39);
-          objc_msgSend_upgradeSlideSpecificStorageHyperlinksForStorage_withSlideNodes_(self, v42, v41, v4);
+          objc_msgSend_upgradeSlideSpecificStorageHyperlinksForStorage_withSlideNodes_(self, v42, v41, nodesCopy);
         }
 
         objc_opt_class();
@@ -2973,7 +2973,7 @@ LABEL_12:
 
                 v54 = *(*(&v62 + 1) + 8 * i);
                 objc_msgSend_setParentInfo_(v54, v50, v46);
-                objc_msgSend_upgradeSlideSpecificStorageHyperlinksForStorage_withSlideNodes_(self, v55, v54, v4);
+                objc_msgSend_upgradeSlideSpecificStorageHyperlinksForStorage_withSlideNodes_(self, v55, v54, nodesCopy);
               }
 
               v51 = objc_msgSend_countByEnumeratingWithState_objects_count_(v48, v50, &v62, v70, 16);
@@ -2998,16 +2998,16 @@ LABEL_12:
   self->_slideSpecificHyperlinksCount = 0;
 }
 
-- (id)p_slideNodeWithUUIDString:(id)a3 inSlideNodes:(id)a4
+- (id)p_slideNodeWithUUIDString:(id)string inSlideNodes:(id)nodes
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  stringCopy = string;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = a4;
-  v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v21, v25, 16);
+  nodesCopy = nodes;
+  v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(nodesCopy, v7, &v21, v25, 16);
   if (v10)
   {
     v11 = *v22;
@@ -3017,13 +3017,13 @@ LABEL_12:
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(nodesCopy);
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
         v14 = objc_msgSend_objectUUID(v13, v8, v9, v21);
         v17 = objc_msgSend_UUIDString(v14, v15, v16);
-        isEqualToString = objc_msgSend_isEqualToString_(v5, v18, v17);
+        isEqualToString = objc_msgSend_isEqualToString_(stringCopy, v18, v17);
 
         if (isEqualToString)
         {
@@ -3032,7 +3032,7 @@ LABEL_12:
         }
       }
 
-      v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v8, &v21, v25, 16);
+      v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(nodesCopy, v8, &v21, v25, 16);
       if (v10)
       {
         continue;
@@ -3047,10 +3047,10 @@ LABEL_11:
   return v10;
 }
 
-- (void)removeInvalidSlideSpecificHyperlinksWithSlideNodeUUIDStrings:(id)a3
+- (void)removeInvalidSlideSpecificHyperlinksWithSlideNodeUUIDStrings:(id)strings
 {
   v62 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringsCopy = strings;
   v46 = objc_msgSend_slide(self, v5, v6);
   objc_msgSend_childInfos(v46, v7, v8);
   v58 = 0u;
@@ -3079,7 +3079,7 @@ LABEL_11:
         {
           v20 = objc_msgSend_length(@"?slideid=", v18, v19);
           v22 = objc_msgSend_substringFromIndex_(v51, v21, v20);
-          if ((objc_msgSend_containsObject_(v4, v23, v22) & 1) == 0)
+          if ((objc_msgSend_containsObject_(stringsCopy, v23, v22) & 1) == 0)
           {
             objc_msgSend_willModifyForUpgrade(v14, v24, v25);
             objc_msgSend_setHyperlinkURL_(v14, v26, 0);
@@ -3092,7 +3092,7 @@ LABEL_11:
         if (v27)
         {
           v31 = objc_msgSend_textStorage(v27, v28, v29);
-          objc_msgSend_removeInvalidSlideSpecificHyperlinksForStorage_withSlideNodeUUIDStrings_(self, v32, v31, v4);
+          objc_msgSend_removeInvalidSlideSpecificHyperlinksForStorage_withSlideNodeUUIDStrings_(self, v32, v31, stringsCopy);
         }
 
         objc_opt_class();
@@ -3121,7 +3121,7 @@ LABEL_11:
 
                 v44 = *(*(&v52 + 1) + 8 * i);
                 objc_msgSend_setParentInfo_(v44, v40, v36);
-                objc_msgSend_removeInvalidSlideSpecificHyperlinksForStorage_withSlideNodeUUIDStrings_(self, v45, v44, v4);
+                objc_msgSend_removeInvalidSlideSpecificHyperlinksForStorage_withSlideNodeUUIDStrings_(self, v45, v44, stringsCopy);
               }
 
               v41 = objc_msgSend_countByEnumeratingWithState_objects_count_(v38, v40, &v52, v60, 16);

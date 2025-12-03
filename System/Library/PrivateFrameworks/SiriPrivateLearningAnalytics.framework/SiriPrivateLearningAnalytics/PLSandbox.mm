@@ -1,19 +1,19 @@
 @interface PLSandbox
-+ (int64_t)checkOperation:(id)a3 forPath:(id)a4;
++ (int64_t)checkOperation:(id)operation forPath:(id)path;
 @end
 
 @implementation PLSandbox
 
-+ (int64_t)checkOperation:(id)a3 forPath:(id)a4
++ (int64_t)checkOperation:(id)operation forPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 isCurrentProcessInSandbox])
+  operationCopy = operation;
+  pathCopy = path;
+  if ([self isCurrentProcessInSandbox])
   {
     getpid();
-    [v6 UTF8String];
+    [operationCopy UTF8String];
     v8 = *MEMORY[0x277D861D8];
-    [v7 UTF8String];
+    [pathCopy UTF8String];
     v9 = sandbox_check();
   }
 

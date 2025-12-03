@@ -1,62 +1,62 @@
 @interface CBStackControllerBTStack
-- (BOOL)_deleteDevice:(id)a3 error:(id *)a4;
-- (BOOL)_disconnectDevice:(id)a3 serviceFlags:(unsigned int)a4 error:(id *)a5;
-- (BOOL)addDiscoverableController:(id)a3 error:(id *)a4;
-- (BOOL)addPairingClient:(id)a3 error:(id *)a4;
-- (BOOL)connectDevice:(id)a3 connectionFlags:(unsigned int)a4 serviceFlags:(unsigned int)a5 error:(id *)a6;
-- (BOOL)deleteDevice:(id)a3 error:(id *)a4;
-- (BOOL)disconnectDevice:(id)a3 serviceFlags:(unsigned int)a4 error:(id *)a5;
-- (BOOL)isDeviceConnected:(id)a3 error:(id *)a4;
-- (BOOL)modifyDevice:(id)a3 btDevice:(void *)a4 settings:(id)a5 error:(id *)a6;
-- (BOOL)modifyDevice:(id)a3 error:(id *)a4;
-- (BOOL)modifyDevice:(id)a3 leDevice:(void *)a4 settings:(id)a5 error:(id *)a6;
-- (BOOL)modifyDevice:(id)a3 peerSourceDevice:(id)a4 peerSourceState:(char)a5 requestFlags:(unsigned int)a6 error:(id *)a7;
-- (BOOL)modifyDevice:(id)a3 settings:(id)a4 error:(id *)a5;
-- (BOOL)pairingContinueWithPairingInfo:(id)a3 error:(id *)a4;
+- (BOOL)_deleteDevice:(id)device error:(id *)error;
+- (BOOL)_disconnectDevice:(id)device serviceFlags:(unsigned int)flags error:(id *)error;
+- (BOOL)addDiscoverableController:(id)controller error:(id *)error;
+- (BOOL)addPairingClient:(id)client error:(id *)error;
+- (BOOL)connectDevice:(id)device connectionFlags:(unsigned int)flags serviceFlags:(unsigned int)serviceFlags error:(id *)error;
+- (BOOL)deleteDevice:(id)device error:(id *)error;
+- (BOOL)disconnectDevice:(id)device serviceFlags:(unsigned int)flags error:(id *)error;
+- (BOOL)isDeviceConnected:(id)connected error:(id *)error;
+- (BOOL)modifyDevice:(id)device btDevice:(void *)btDevice settings:(id)settings error:(id *)error;
+- (BOOL)modifyDevice:(id)device error:(id *)error;
+- (BOOL)modifyDevice:(id)device leDevice:(void *)leDevice settings:(id)settings error:(id *)error;
+- (BOOL)modifyDevice:(id)device peerSourceDevice:(id)sourceDevice peerSourceState:(char)state requestFlags:(unsigned int)flags error:(id *)error;
+- (BOOL)modifyDevice:(id)device settings:(id)settings error:(id *)error;
+- (BOOL)pairingContinueWithPairingInfo:(id)info error:(id *)error;
 - (BOOL)poweredOn;
-- (BOOL)sendAudioAccessoryConfig:(id)a3 device:(id)a4 error:(id *)a5;
-- (BOOL)sendAudioAccessoryEventMessage:(id)a3 eventType:(unsigned __int8)a4 device:(id)a5 error:(id *)a6;
-- (BOOL)sendConversationDetectMessage:(id)a3 device:(id)a4 error:(id *)a5;
-- (BOOL)sendRelayMessageType:(unsigned __int8)a3 messageData:(id)a4 conduitDevice:(id)a5 destinationDevice:(id)a6 error:(id *)a7;
-- (BOOL)sendSmartRoutingInformation:(id)a3 device:(id)a4 error:(id *)a5;
-- (BOOL)setLowPowerModeWithReason:(int)a3 error:(id *)a4;
-- (BOOL)setPowerState:(int64_t)a3 error:(id *)a4;
-- (BOOL)updateControllerInfo:(id)a3 error:(id *)a4;
+- (BOOL)sendAudioAccessoryConfig:(id)config device:(id)device error:(id *)error;
+- (BOOL)sendAudioAccessoryEventMessage:(id)message eventType:(unsigned __int8)type device:(id)device error:(id *)error;
+- (BOOL)sendConversationDetectMessage:(id)message device:(id)device error:(id *)error;
+- (BOOL)sendRelayMessageType:(unsigned __int8)type messageData:(id)data conduitDevice:(id)device destinationDevice:(id)destinationDevice error:(id *)error;
+- (BOOL)sendSmartRoutingInformation:(id)information device:(id)device error:(id *)error;
+- (BOOL)setLowPowerModeWithReason:(int)reason error:(id *)error;
+- (BOOL)setPowerState:(int64_t)state error:(id *)error;
+- (BOOL)updateControllerInfo:(id)info error:(id *)error;
 - (CBControllerInfo)controllerInfo;
 - (CBStackControllerBTStack)init;
-- (id)_btUUIDWithID:(id)a3 error:(id *)a4;
-- (id)descriptionWithLevel:(int)a3;
-- (id)diagnosticControl:(id)a3 error:(id *)a4;
-- (id)getDevicesWithFlags:(unsigned int)a3 error:(id *)a4;
+- (id)_btUUIDWithID:(id)d error:(id *)error;
+- (id)descriptionWithLevel:(int)level;
+- (id)diagnosticControl:(id)control error:(id *)error;
+- (id)getDevicesWithFlags:(unsigned int)flags error:(id *)error;
 - (int)discoverableState;
 - (int)inquiryState;
 - (int64_t)powerState;
 - (unsigned)softwareUpdateAdvertisingInstanceLimit;
-- (void)_accessoryCommandStatusWithDevice:(id)a3 type:(int)a4 result:(unsigned __int16)a5 reason:(unsigned __int16)a6;
-- (void)_accessoryReceivedRelayMessageType:(unsigned __int8)a3 messageData:(id)a4 conduitDevice:(id)a5 sourceDevice:(id)a6;
-- (void)_btDeviceWithID:(id)a3 createIfNeeded:(BOOL)a4 error:(id *)a5;
-- (void)_completePerformDeviceRequest:(id)a3 error:(id)a4;
-- (void)_connectDeviceCompleteRequest:(id)a3 error:(id)a4;
-- (void)_connectDeviceUpdateRequests:(id)a3 btResult:(int)a4;
+- (void)_accessoryCommandStatusWithDevice:(id)device type:(int)type result:(unsigned __int16)result reason:(unsigned __int16)reason;
+- (void)_accessoryReceivedRelayMessageType:(unsigned __int8)type messageData:(id)data conduitDevice:(id)device sourceDevice:(id)sourceDevice;
+- (void)_btDeviceWithID:(id)d createIfNeeded:(BOOL)needed error:(id *)error;
+- (void)_completePerformDeviceRequest:(id)request error:(id)error;
+- (void)_connectDeviceCompleteRequest:(id)request error:(id)error;
+- (void)_connectDeviceUpdateRequests:(id)requests btResult:(int)result;
 - (void)_deleteAllDevices;
-- (void)_disconnectAllDevicesWithServiceFlags:(unsigned int)a3;
-- (void)_modifyDeviceCompleteRequest:(id)a3 error:(id)a4;
+- (void)_disconnectAllDevicesWithServiceFlags:(unsigned int)flags;
+- (void)_modifyDeviceCompleteRequest:(id)request error:(id)error;
 - (void)_pairingAgentTearDown;
-- (void)_pairingCompletedWithBTDevice:(void *)a3 result:(int)a4;
-- (void)_pairingPromptWithBTDevice:(void *)a3 pairingType:(int64_t)a4 pinString:(id)a5 flags:(unsigned int)a6;
-- (void)_readRSSIWithConnectionHandle:(_OI_HCI_CONNECTION *)a3 status:(int)a4 rssi:(char)a5;
-- (void)_readTxPowerWithFlags:(unsigned int)a3 status:(int)a4 connectionHandle:(_OI_HCI_CONNECTION *)a5 txPowerLevel:(char)a6;
+- (void)_pairingCompletedWithBTDevice:(void *)device result:(int)result;
+- (void)_pairingPromptWithBTDevice:(void *)device pairingType:(int64_t)type pinString:(id)string flags:(unsigned int)flags;
+- (void)_readRSSIWithConnectionHandle:(_OI_HCI_CONNECTION *)handle status:(int)status rssi:(char)rssi;
+- (void)_readTxPowerWithFlags:(unsigned int)flags status:(int)status connectionHandle:(_OI_HCI_CONNECTION *)handle txPowerLevel:(char)level;
 - (void)activate;
-- (void)connectWithCBConnection:(id)a3 completionHandler:(id)a4;
+- (void)connectWithCBConnection:(id)connection completionHandler:(id)handler;
 - (void)invalidate;
-- (void)localDeviceEvent:(int)a3;
-- (void)modifyDevice:(id)a3 connectionPriorityDevices:(id)a4 timeoutSeconds:(double)a5 completionHandler:(id)a6;
-- (void)performDeviceRequest:(id)a3 device:(id)a4 completionHandler:(id)a5;
-- (void)removeDiscoverableController:(id)a3;
-- (void)removePairingClient:(id)a3;
-- (void)setLowPowerModeWithParams:(int)a3 params:(id)a4 completionHandler:(id)a5;
-- (void)setLowPowerModeWithReason:(int)a3 completionHandler:(id)a4;
-- (void)setOfflineAdvertisingParams:(id)a3;
+- (void)localDeviceEvent:(int)event;
+- (void)modifyDevice:(id)device connectionPriorityDevices:(id)devices timeoutSeconds:(double)seconds completionHandler:(id)handler;
+- (void)performDeviceRequest:(id)request device:(id)device completionHandler:(id)handler;
+- (void)removeDiscoverableController:(id)controller;
+- (void)removePairingClient:(id)client;
+- (void)setLowPowerModeWithParams:(int)params params:(id)a4 completionHandler:(id)handler;
+- (void)setLowPowerModeWithReason:(int)reason completionHandler:(id)handler;
+- (void)setOfflineAdvertisingParams:(id)params;
 @end
 
 @implementation CBStackControllerBTStack
@@ -197,8 +197,8 @@ LABEL_12:
     [v3 setHardwareAddressData:v14];
   }
 
-  v15 = [(CBStackControllerBTStack *)self fastLEConnectionInfoData];
-  [v3 setFastLEConnectionInfoData:v15];
+  fastLEConnectionInfoData = [(CBStackControllerBTStack *)self fastLEConnectionInfoData];
+  [v3 setFastLEConnectionInfoData:fastLEConnectionInfoData];
 
   [v3 setFastLEConnectionInfoVersion:{-[CBStackControllerBTStack fastLEConnectionInfoVersion](self, "fastLEConnectionInfoVersion")}];
   v16 = sub_10009B9DC();
@@ -268,15 +268,15 @@ LABEL_33:
   if (!v6)
   {
     v22 = [NSString alloc];
-    v21 = [v22 initWithFormat:@"v%u c%u", WORD5(xmmword_100BCDFD8), WORD3(xmmword_100BCDFD8)];
-    [v3 setFirmwareVersion:v21];
+    firmwareName = [v22 initWithFormat:@"v%u c%u", WORD5(xmmword_100BCDFD8), WORD3(xmmword_100BCDFD8)];
+    [v3 setFirmwareVersion:firmwareName];
     goto LABEL_39;
   }
 
   if (v6 - 2000 <= 0x7CF)
   {
-    v21 = [v3 firmwareName];
-    [v3 setFirmwareVersion:v21];
+    firmwareName = [v3 firmwareName];
+    [v3 setFirmwareVersion:firmwareName];
 LABEL_39:
 
     goto LABEL_40;
@@ -309,17 +309,17 @@ LABEL_39:
     if (((v17 | v19) & (*(*v24 + 416))(v24)) == 1)
     {
       v25 = [NSString alloc];
-      v21 = [v25 initWithFormat:@"v%d c%u", BYTE10(xmmword_100BCDFD8), WORD3(xmmword_100BCDFD8)];
-      [v3 setFirmwareVersion:v21];
+      firmwareName = [v25 initWithFormat:@"v%d c%u", BYTE10(xmmword_100BCDFD8), WORD3(xmmword_100BCDFD8)];
+      [v3 setFirmwareVersion:firmwareName];
       goto LABEL_39;
     }
   }
 
-  v30 = [v3 firmwareName];
-  v31 = [v30 UTF8String];
-  if (v31)
+  firmwareName2 = [v3 firmwareName];
+  uTF8String = [firmwareName2 UTF8String];
+  if (uTF8String)
   {
-    v32 = v31;
+    v32 = uTF8String;
   }
 
   else
@@ -368,13 +368,13 @@ LABEL_39:
     [v3 setFirmwareVersion:v39];
   }
 
-  v40 = [v3 firmwareVersion];
+  firmwareVersion = [v3 firmwareVersion];
 
-  if (!v40)
+  if (!firmwareVersion)
   {
     v41 = [NSString alloc];
-    v21 = [v41 initWithFormat:@"v%u", WORD5(xmmword_100BCDFD8)];
-    [v3 setFirmwareVersion:v21];
+    firmwareName = [v41 initWithFormat:@"v%u", WORD5(xmmword_100BCDFD8)];
+    [v3 setFirmwareVersion:firmwareName];
     goto LABEL_39;
   }
 
@@ -441,9 +441,9 @@ LABEL_40:
   return v3;
 }
 
-- (BOOL)addDiscoverableController:(id)a3 error:(id *)a4
+- (BOOL)addDiscoverableController:(id)controller error:(id *)error
 {
-  v6 = a3;
+  controllerCopy = controller;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -454,18 +454,18 @@ LABEL_40:
   v26[3] = &unk_100AE1120;
   v26[4] = &v27;
   v7 = objc_retainBlock(v26);
-  v8 = [NSValue valueWithNonretainedObject:v6];
+  v8 = [NSValue valueWithNonretainedObject:controllerCopy];
   v9 = [(NSMutableDictionary *)self->_discoverableSessionMap objectForKeyedSubscript:v8];
 
   if (!v9)
   {
-    v11 = [v6 appID];
-    if (!v11)
+    appID = [controllerCopy appID];
+    if (!appID)
     {
-      if (a4)
+      if (error)
       {
         CBErrorF();
-        *a4 = v10 = 0;
+        *error = v10 = 0;
       }
 
       else
@@ -476,15 +476,15 @@ LABEL_40:
       goto LABEL_25;
     }
 
-    v12 = [[NSString alloc] initWithFormat:@"%@-0x%08X", v11, objc_msgSend(v6, "clientID")];
-    v13 = [v12 UTF8String];
+    v12 = [[NSString alloc] initWithFormat:@"%@-0x%08X", appID, objc_msgSend(controllerCopy, "clientID")];
+    uTF8String = [v12 UTF8String];
     if (qword_100B50B88 != -1)
     {
       sub_10080EA7C();
     }
 
     v14 = qword_100B50B80;
-    sub_100007E30(__p, v13);
+    sub_100007E30(__p, uTF8String);
     v15 = sub_100044414(v14, __p);
     if (v25 < 0)
     {
@@ -493,7 +493,7 @@ LABEL_40:
 
     if (v15 && v15 != -310000)
     {
-      if (!a4)
+      if (!error)
       {
         v10 = 0;
         goto LABEL_24;
@@ -543,13 +543,13 @@ LABEL_40:
           goto LABEL_24;
         }
 
-        if (!a4)
+        if (!error)
         {
           goto LABEL_34;
         }
       }
 
-      else if (!a4)
+      else if (!error)
       {
 LABEL_34:
         v10 = 0;
@@ -558,7 +558,7 @@ LABEL_34:
     }
 
     CBErrorF();
-    *a4 = v10 = 0;
+    *error = v10 = 0;
 LABEL_24:
 
 LABEL_25:
@@ -574,28 +574,28 @@ LABEL_26:
   return v10;
 }
 
-- (void)removeDiscoverableController:(id)a3
+- (void)removeDiscoverableController:(id)controller
 {
-  v9 = a3;
+  controllerCopy = controller;
   if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
   {
-    v7 = [v9 appID];
-    v8 = [v9 clientID];
+    appID = [controllerCopy appID];
+    clientID = [controllerCopy clientID];
     LogPrintF_safe();
   }
 
-  v4 = [NSValue valueWithNonretainedObject:v9, v7, v8];
+  v4 = [NSValue valueWithNonretainedObject:controllerCopy, appID, clientID];
   v5 = [(NSMutableDictionary *)self->_discoverableSessionMap objectForKeyedSubscript:v4];
   if (v5)
   {
     [(NSMutableDictionary *)self->_discoverableSessionMap setObject:0 forKeyedSubscript:v4];
-    v6 = [v5 btSessionHandle];
+    btSessionHandle = [v5 btSessionHandle];
     if (qword_100B50B88 != -1)
     {
       sub_10080EAE8();
     }
 
-    sub_100079604(qword_100B50B80, v6);
+    sub_100079604(qword_100B50B80, btSessionHandle);
   }
 }
 
@@ -613,9 +613,9 @@ LABEL_26:
   return v3;
 }
 
-- (BOOL)setPowerState:(int64_t)a3 error:(id *)a4
+- (BOOL)setPowerState:(int64_t)state error:(id *)error
 {
-  if (a3 == 4)
+  if (state == 4)
   {
     if (qword_100B512C8 != -1)
     {
@@ -639,7 +639,7 @@ LABEL_26:
       return v6;
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_34;
     }
@@ -647,9 +647,9 @@ LABEL_26:
     goto LABEL_32;
   }
 
-  if (a3 != 10)
+  if (state != 10)
   {
-    if (a3 == 5)
+    if (state == 5)
     {
       if (qword_100B508A0 != -1)
       {
@@ -666,7 +666,7 @@ LABEL_26:
       LOBYTE(v6) = 1;
       if (v5 && v5 != -310000)
       {
-        if (a4)
+        if (error)
         {
           goto LABEL_32;
         }
@@ -679,7 +679,7 @@ LABEL_34:
       return v6;
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_34;
     }
@@ -688,7 +688,7 @@ LABEL_32:
     v10 = CBErrorF();
     v6 = v10;
     LOBYTE(v6) = 0;
-    *a4 = v10;
+    *error = v10;
     return v6;
   }
 
@@ -717,7 +717,7 @@ LABEL_32:
     {
       if (v7 != -310000)
       {
-        if (a4)
+        if (error)
         {
           goto LABEL_32;
         }
@@ -730,11 +730,11 @@ LABEL_32:
   return v6;
 }
 
-- (void)setLowPowerModeWithParams:(int)a3 params:(id)a4 completionHandler:(id)a5
+- (void)setLowPowerModeWithParams:(int)params params:(id)a4 completionHandler:(id)handler
 {
-  v6 = *&a3;
+  v6 = *&params;
   v15 = a4;
-  v8 = a5;
+  handlerCopy = handler;
   if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
   {
     v11 = v6;
@@ -760,7 +760,7 @@ LABEL_32:
         LogPrintF_safe();
       }
 
-      v8[2](v8, v10);
+      handlerCopy[2](handlerCopy, v10);
     }
 
     else
@@ -774,20 +774,20 @@ LABEL_32:
       v10 = 0;
       if (([v15 configFlags] & 0x10) != 0)
       {
-        [(CBStackControllerBTStack *)self setLowPowerModeWithReason:3 completionHandler:v8];
+        [(CBStackControllerBTStack *)self setLowPowerModeWithReason:3 completionHandler:handlerCopy];
       }
 
       else
       {
-        v8[2](v8, 0);
+        handlerCopy[2](handlerCopy, 0);
       }
     }
   }
 }
 
-- (void)setLowPowerModeWithReason:(int)a3 completionHandler:(id)a4
+- (void)setLowPowerModeWithReason:(int)reason completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v8 = dispatch_queue_create("CBStackSetLowPowerMode", v7);
 
@@ -795,16 +795,16 @@ LABEL_32:
   block[1] = 3221225472;
   block[2] = sub_100151370;
   block[3] = &unk_100AE2528;
-  v12 = a3;
+  reasonCopy = reason;
   block[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   dispatch_async(v8, block);
 }
 
-- (BOOL)setLowPowerModeWithReason:(int)a3 error:(id *)a4
+- (BOOL)setLowPowerModeWithReason:(int)reason error:(id *)error
 {
-  v5 = *&a3;
+  v5 = *&reason;
   v6 = sub_1000B11F4();
   v7 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, 0);
   v8 = dispatch_time(0, 9000000000);
@@ -819,7 +819,7 @@ LABEL_32:
   v9 = sub_100017E6C();
   if (((*(*v9 + 96))(v9, v5) & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_23;
     }
@@ -882,11 +882,11 @@ LABEL_32:
 
   if (v11)
   {
-    if (a4)
+    if (error)
     {
 LABEL_23:
       CBErrorF();
-      *a4 = v18 = 0;
+      *error = v18 = 0;
       goto LABEL_19;
     }
 
@@ -901,9 +901,9 @@ LABEL_19:
   return v18;
 }
 
-- (void)setOfflineAdvertisingParams:(id)a3
+- (void)setOfflineAdvertisingParams:(id)params
 {
-  v3 = a3;
+  paramsCopy = params;
   v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v5 = dispatch_queue_create("CBStackSetOfflineAdvertisingParams", v4);
 
@@ -911,38 +911,38 @@ LABEL_19:
   block[1] = 3221225472;
   block[2] = sub_100151AAC;
   block[3] = &unk_100ADF820;
-  v8 = v3;
-  v6 = v3;
+  v8 = paramsCopy;
+  v6 = paramsCopy;
   dispatch_async(v5, block);
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v72 = 0;
-  v3 = [(CBStackControllerBTStack *)self powerState];
-  if (v3 > 0xA)
+  powerState = [(CBStackControllerBTStack *)self powerState];
+  if (powerState > 0xA)
   {
     v4 = "?";
   }
 
   else
   {
-    v4 = off_100AE2BC8[v3];
+    v4 = off_100AE2BC8[powerState];
   }
 
-  v5 = [(CBStackControllerBTStack *)self discoverableState];
-  if (v5 > 2)
+  discoverableState = [(CBStackControllerBTStack *)self discoverableState];
+  if (discoverableState > 2)
   {
     v6 = "?";
   }
 
   else
   {
-    v6 = off_100AE2BB0[v5];
+    v6 = off_100AE2BB0[discoverableState];
   }
 
-  v7 = [(CBStackControllerBTStack *)self controllerInfo];
-  v8 = [v7 fastLEConnectionInfoVersion];
+  controllerInfo = [(CBStackControllerBTStack *)self controllerInfo];
+  fastLEConnectionInfoVersion = [controllerInfo fastLEConnectionInfoVersion];
   stackControllerInfoCloudSyncStatus = self->_stackControllerInfoCloudSyncStatus;
   if (stackControllerInfoCloudSyncStatus > 3)
   {
@@ -954,15 +954,15 @@ LABEL_19:
     v10 = off_100AE2B90[stackControllerInfoCloudSyncStatus];
   }
 
-  v11 = [(CBStackControllerBTStack *)self inquiryState];
-  if (v11 > 2)
+  inquiryState = [(CBStackControllerBTStack *)self inquiryState];
+  if (inquiryState > 2)
   {
     v12 = "?";
   }
 
   else
   {
-    v12 = off_100AE2BB0[v11];
+    v12 = off_100AE2BB0[inquiryState];
   }
 
   if (self->_btSessionPtr)
@@ -1011,8 +1011,8 @@ LABEL_19:
 
           v21 = *(*(&v67 + 1) + 8 * v19);
           v66 = v20;
-          v22 = [v21 connection];
-          [v22 peerDevice];
+          connection = [v21 connection];
+          [connection peerDevice];
           v43 = v42 = v18;
           NSAppendPrintF_safe();
           v15 = v20;
@@ -1117,9 +1117,9 @@ LABEL_19:
           }
 
           v37 = *(*(&v53 + 1) + 8 * v35);
-          v38 = [v37 device];
+          device = [v37 device];
           [v37 request];
-          v44 = v43 = v38;
+          v44 = v43 = device;
           v42 = v34;
           NSAppendPrintF_safe();
           v31 = v36;
@@ -1130,7 +1130,7 @@ LABEL_19:
         }
 
         while (v32 != v35);
-        v32 = [(NSMutableSet *)obja countByEnumeratingWithState:&v53 objects:v73 count:16, v42, v38, v44];
+        v32 = [(NSMutableSet *)obja countByEnumeratingWithState:&v53 objects:v73 count:16, v42, device, v44];
         v34 = ", ";
       }
 
@@ -1281,8 +1281,8 @@ LABEL_20:
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v3 = [(NSMutableSet *)self->_connectDeviceRequests allObjects];
-  v4 = [v3 countByEnumeratingWithState:&v42 objects:v48 count:16];
+  allObjects = [(NSMutableSet *)self->_connectDeviceRequests allObjects];
+  v4 = [allObjects countByEnumeratingWithState:&v42 objects:v48 count:16];
   if (v4)
   {
     v5 = *v43;
@@ -1292,7 +1292,7 @@ LABEL_20:
       {
         if (*v43 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
         v7 = *(*(&v42 + 1) + 8 * i);
@@ -1300,7 +1300,7 @@ LABEL_20:
         [(CBStackControllerBTStack *)self _connectDeviceCompleteRequest:v7 error:v8];
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v42 objects:v48 count:16];
+      v4 = [allObjects countByEnumeratingWithState:&v42 objects:v48 count:16];
     }
 
     while (v4);
@@ -1310,8 +1310,8 @@ LABEL_20:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v9 = [(NSMutableSet *)self->_modifyDeviceRequests allObjects];
-  v10 = [v9 countByEnumeratingWithState:&v38 objects:v47 count:16];
+  allObjects2 = [(NSMutableSet *)self->_modifyDeviceRequests allObjects];
+  v10 = [allObjects2 countByEnumeratingWithState:&v38 objects:v47 count:16];
   if (v10)
   {
     v11 = *v39;
@@ -1321,7 +1321,7 @@ LABEL_20:
       {
         if (*v39 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allObjects2);
         }
 
         v13 = *(*(&v38 + 1) + 8 * j);
@@ -1329,7 +1329,7 @@ LABEL_20:
         [(CBStackControllerBTStack *)self _modifyDeviceCompleteRequest:v13 error:v14];
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v38 objects:v47 count:16];
+      v10 = [allObjects2 countByEnumeratingWithState:&v38 objects:v47 count:16];
     }
 
     while (v10);
@@ -1339,8 +1339,8 @@ LABEL_20:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v15 = [(NSMutableSet *)self->_performDeviceRequests allObjects];
-  v16 = [v15 countByEnumeratingWithState:&v34 objects:v46 count:16];
+  allObjects3 = [(NSMutableSet *)self->_performDeviceRequests allObjects];
+  v16 = [allObjects3 countByEnumeratingWithState:&v34 objects:v46 count:16];
   if (v16)
   {
     v17 = *v35;
@@ -1350,7 +1350,7 @@ LABEL_20:
       {
         if (*v35 != v17)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(allObjects3);
         }
 
         v19 = *(*(&v34 + 1) + 8 * k);
@@ -1358,7 +1358,7 @@ LABEL_20:
         [(CBStackControllerBTStack *)self _completePerformDeviceRequest:v19 error:v20];
       }
 
-      v16 = [v15 countByEnumeratingWithState:&v34 objects:v46 count:16];
+      v16 = [allObjects3 countByEnumeratingWithState:&v34 objects:v46 count:16];
     }
 
     while (v16);
@@ -1425,19 +1425,19 @@ LABEL_20:
   }
 }
 
-- (void)_accessoryCommandStatusWithDevice:(id)a3 type:(int)a4 result:(unsigned __int16)a5 reason:(unsigned __int16)a6
+- (void)_accessoryCommandStatusWithDevice:(id)device type:(int)type result:(unsigned __int16)result reason:(unsigned __int16)reason
 {
-  v19 = a5;
-  v20 = a6;
-  v8 = a3;
-  if (a4 == 1 && self->_addedController)
+  resultCopy = result;
+  reasonCopy = reason;
+  deviceCopy = device;
+  if (type == 1 && self->_addedController)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = [(NSMutableSet *)self->_modifyDeviceRequests allObjects];
-    v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    allObjects = [(NSMutableSet *)self->_modifyDeviceRequests allObjects];
+    v10 = [allObjects countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v10)
     {
       v11 = *v22;
@@ -1447,19 +1447,19 @@ LABEL_20:
         {
           if (*v22 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allObjects);
           }
 
           v13 = *(*(&v21 + 1) + 8 * i);
-          v14 = [v13 device];
-          v15 = [v14 isEquivalentToCBDevice:v8 compareFlags:8];
+          device = [v13 device];
+          v15 = [device isEquivalentToCBDevice:deviceCopy compareFlags:8];
 
           if (v15)
           {
-            if (v20 | v19)
+            if (reasonCopy | resultCopy)
             {
-              v17 = v19;
-              v18 = v20;
+              v17 = resultCopy;
+              v18 = reasonCopy;
               v16 = CBErrorF();
             }
 
@@ -1472,7 +1472,7 @@ LABEL_20:
           }
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v10 = [allObjects countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v10);
@@ -1480,30 +1480,30 @@ LABEL_20:
   }
 }
 
-- (void)_accessoryReceivedRelayMessageType:(unsigned __int8)a3 messageData:(id)a4 conduitDevice:(id)a5 sourceDevice:(id)a6
+- (void)_accessoryReceivedRelayMessageType:(unsigned __int8)type messageData:(id)data conduitDevice:(id)device sourceDevice:(id)sourceDevice
 {
-  v8 = a3;
-  v14 = a4;
-  v10 = a5;
-  v11 = a6;
+  typeCopy = type;
+  dataCopy = data;
+  deviceCopy = device;
+  sourceDeviceCopy = sourceDevice;
   if (self->_addedController)
   {
     v12 = objc_retainBlock(self->_relayMessageHandler);
     v13 = v12;
     if (v12)
     {
-      (*(v12 + 2))(v12, v10, v11, v8, v14);
+      (*(v12 + 2))(v12, deviceCopy, sourceDeviceCopy, typeCopy, dataCopy);
     }
   }
 }
 
-- (void)_btDeviceWithID:(id)a3 createIfNeeded:(BOOL)a4 error:(id *)a5
+- (void)_btDeviceWithID:(id)d createIfNeeded:(BOOL)needed error:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
-  if (v7)
+  neededCopy = needed;
+  dCopy = d;
+  if (dCopy)
   {
-    v8 = [[NSUUID alloc] initWithUUIDString:v7];
+    v8 = [[NSUUID alloc] initWithUUIDString:dCopy];
     if (v8)
     {
       if (qword_100B508D0 != -1)
@@ -1519,13 +1519,13 @@ LABEL_20:
           sub_10080ECAC();
         }
 
-        v10 = sub_1000504C8(off_100B508E8, v9, v6);
+        v10 = sub_1000504C8(off_100B508E8, v9, neededCopy);
         if (v10)
         {
           goto LABEL_15;
         }
 
-        if (a5)
+        if (error)
         {
           goto LABEL_25;
         }
@@ -1535,7 +1535,7 @@ LABEL_26:
         goto LABEL_15;
       }
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_26;
       }
@@ -1543,10 +1543,10 @@ LABEL_26:
 
     else
     {
-      [v7 UTF8String];
+      [dCopy UTF8String];
       if (TextToHardwareAddress())
       {
-        if (!a5)
+        if (!error)
         {
           goto LABEL_26;
         }
@@ -1559,13 +1559,13 @@ LABEL_26:
           sub_10080ECC0();
         }
 
-        v10 = sub_1000504C8(off_100B508E8, 0, v6);
+        v10 = sub_1000504C8(off_100B508E8, 0, neededCopy);
         if (v10)
         {
           goto LABEL_15;
         }
 
-        if (!a5)
+        if (!error)
         {
           goto LABEL_26;
         }
@@ -1574,16 +1574,16 @@ LABEL_26:
 
 LABEL_25:
     CBErrorF();
-    *a5 = v10 = 0;
+    *error = v10 = 0;
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  if (a5)
+  if (error)
   {
     CBErrorF();
-    *a5 = v10 = 0;
+    *error = v10 = 0;
   }
 
   else
@@ -1596,25 +1596,25 @@ LABEL_16:
   return v10;
 }
 
-- (id)_btUUIDWithID:(id)a3 error:(id *)a4
+- (id)_btUUIDWithID:(id)d error:(id *)error
 {
-  v5 = a3;
-  v6 = [[NSUUID alloc] initWithUUIDString:v5];
+  dCopy = d;
+  v6 = [[NSUUID alloc] initWithUUIDString:dCopy];
   if (v6)
   {
     v7 = v6;
     goto LABEL_8;
   }
 
-  [v5 UTF8String];
+  [dCopy UTF8String];
   if (TextToHardwareAddress())
   {
-    if (a4)
+    if (error)
     {
       v11 = CBErrorF();
       v7 = 0;
 LABEL_15:
-      *a4 = v11;
+      *error = v11;
       goto LABEL_8;
     }
 
@@ -1639,7 +1639,7 @@ LABEL_15:
       goto LABEL_8;
     }
 
-    if (a4)
+    if (error)
     {
       v11 = CBErrorF();
       goto LABEL_15;
@@ -1651,9 +1651,9 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)connectDevice:(id)a3 connectionFlags:(unsigned int)a4 serviceFlags:(unsigned int)a5 error:(id *)a6
+- (BOOL)connectDevice:(id)device connectionFlags:(unsigned int)flags serviceFlags:(unsigned int)serviceFlags error:(id *)error
 {
-  v10 = a3;
+  deviceCopy = device;
   if (qword_100B50AA0 != -1)
   {
     sub_10080EB10();
@@ -1661,24 +1661,24 @@ LABEL_8:
 
   if (*(off_100B50A98 + 60))
   {
-    v11 = [v10 identifier];
-    v12 = [(CBStackControllerBTStack *)self _btDeviceWithID:v11 createIfNeeded:(a4 >> 5) & 1 error:a6];
+    identifier = [deviceCopy identifier];
+    v12 = [(CBStackControllerBTStack *)self _btDeviceWithID:identifier createIfNeeded:(flags >> 5) & 1 error:error];
     v13 = v12;
     if (v12)
     {
-      sub_100546F5C(v12, (a4 & 4) != 0);
+      sub_100546F5C(v12, (flags & 4) != 0);
       if (qword_100B50950 != -1)
       {
         sub_10080ED10();
       }
 
-      sub_10035BBE0(off_100B50948, v13, (a4 & 4) != 0);
-      if (a4)
+      sub_10035BBE0(off_100B50948, v13, (flags & 4) != 0);
+      if (flags)
       {
         sub_100546F14(v13, 1);
       }
 
-      if ((a4 & 8) != 0)
+      if ((flags & 8) != 0)
       {
         if (qword_100B50950 != -1)
         {
@@ -1688,7 +1688,7 @@ LABEL_8:
         sub_100338418(off_100B50948, v13, 1);
       }
 
-      if ((a4 & 0x10) != 0)
+      if ((flags & 0x10) != 0)
       {
         sub_100007E30(&__str, "");
         *(v13 + 1499) = 1;
@@ -1705,7 +1705,7 @@ LABEL_8:
       }
 
       memset(&__str, 0, sizeof(__str));
-      v14 = sub_10059234C(off_100B50AB8, v13, a5, &__str, 2);
+      v14 = sub_10059234C(off_100B50AB8, v13, serviceFlags, &__str, 2);
       if (SHIBYTE(__str.__r_.__value_.__r.__words[2]) < 0)
       {
         operator delete(__str.__r_.__value_.__l.__data_);
@@ -1719,10 +1719,10 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      if (a6)
+      if (error)
       {
         CBErrorF();
-        *a6 = v15 = 0;
+        *error = v15 = 0;
         goto LABEL_22;
       }
     }
@@ -1731,10 +1731,10 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (a6)
+  if (error)
   {
     CBErrorF();
-    *a6 = v15 = 0;
+    *error = v15 = 0;
   }
 
   else
@@ -1747,10 +1747,10 @@ LABEL_23:
   return v15;
 }
 
-- (void)connectWithCBConnection:(id)a3 completionHandler:(id)a4
+- (void)connectWithCBConnection:(id)connection completionHandler:(id)handler
 {
-  v6 = a3;
-  v31 = a4;
+  connectionCopy = connection;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v40 = 0;
   v41 = &v40;
@@ -1763,12 +1763,12 @@ LABEL_23:
   v37[2] = sub_100153E24;
   v37[3] = &unk_100AE2420;
   v39 = &v40;
-  v7 = v31;
+  v7 = handlerCopy;
   v38 = v7;
   v32 = objc_retainBlock(v37);
   if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
   {
-    v30 = v6;
+    v30 = connectionCopy;
     LogPrintF_safe();
   }
 
@@ -1779,22 +1779,22 @@ LABEL_23:
 
   if (*(off_100B50A98 + 60))
   {
-    v8 = [v6 peerDevice];
-    v9 = [v8 identifier];
+    peerDevice = [connectionCopy peerDevice];
+    identifier = [peerDevice identifier];
 
-    if (v9 && (v10 = [v6 serviceFlags]) != 0)
+    if (identifier && (v10 = [connectionCopy serviceFlags]) != 0)
     {
-      v11 = [v6 connectionFlags];
+      connectionFlags = [connectionCopy connectionFlags];
       v12 = v41;
       obj = v41[5];
-      v13 = [(CBStackControllerBTStack *)self _btDeviceWithID:v9 createIfNeeded:(v11 >> 5) & 1 error:&obj];
+      v13 = [(CBStackControllerBTStack *)self _btDeviceWithID:identifier createIfNeeded:(connectionFlags >> 5) & 1 error:&obj];
       objc_storeStrong(v12 + 5, obj);
       if (v13)
       {
-        v14 = [v6 connectionFlags];
-        v15 = v14;
-        v16 = (v14 >> 2) & 1;
-        sub_100546F5C(v13, (v14 & 4) != 0);
+        connectionFlags2 = [connectionCopy connectionFlags];
+        v15 = connectionFlags2;
+        v16 = (connectionFlags2 >> 2) & 1;
+        sub_100546F5C(v13, (connectionFlags2 & 4) != 0);
         if (qword_100B50950 != -1)
         {
           sub_10080ED24();
@@ -1829,13 +1829,13 @@ LABEL_23:
 
         memset(&__str, 0, sizeof(__str));
         sub_100007E30(&__str, "Unknown");
-        v17 = [v6 clientBundleID];
-        v18 = [v17 length];
+        clientBundleID = [connectionCopy clientBundleID];
+        v18 = [clientBundleID length];
 
         if (v18)
         {
-          v19 = [v6 clientBundleID];
-          sub_100007E30(&v34, [v19 UTF8String]);
+          clientBundleID2 = [connectionCopy clientBundleID];
+          sub_100007E30(&v34, [clientBundleID2 UTF8String]);
           if (SHIBYTE(__str.__r_.__value_.__r.__words[2]) < 0)
           {
             operator delete(__str.__r_.__value_.__l.__data_);
@@ -1868,7 +1868,7 @@ LABEL_23:
         {
           v21 = objc_alloc_init(CBStackConnectDeviceRequest);
           [(CBStackConnectDeviceRequest *)v21 setCompletionHandler:v7];
-          [(CBStackConnectDeviceRequest *)v21 setConnection:v6];
+          [(CBStackConnectDeviceRequest *)v21 setConnection:connectionCopy];
           [(CBStackConnectDeviceRequest *)v21 setStartTicks:mach_absolute_time()];
           v22 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, self->_dispatchQueue);
           [(CBStackConnectDeviceRequest *)v21 setTimer:v22];
@@ -1880,7 +1880,7 @@ LABEL_23:
           handler[5] = v21;
           handler[6] = self;
           dispatch_source_set_event_handler(v22, handler);
-          [v6 connectTimeoutSeconds];
+          [connectionCopy connectTimeoutSeconds];
           CUDispatchTimerSet();
           dispatch_activate(v22);
           connectDeviceRequests = self->_connectDeviceRequests;
@@ -1914,7 +1914,7 @@ LABEL_23:
   else
   {
     v26 = CBErrorF();
-    v9 = v41[5];
+    identifier = v41[5];
     v41[5] = v26;
   }
 
@@ -1922,45 +1922,45 @@ LABEL_23:
   _Block_object_dispose(&v40, 8);
 }
 
-- (void)_connectDeviceCompleteRequest:(id)a3 error:(id)a4
+- (void)_connectDeviceCompleteRequest:(id)request error:(id)error
 {
-  v16 = a3;
-  v6 = a4;
+  requestCopy = request;
+  errorCopy = error;
   if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
   {
-    v7 = [v16 connection];
+    connection = [requestCopy connection];
     v8 = CUPrintNSError();
     mach_absolute_time();
-    [v16 startTicks];
+    [requestCopy startTicks];
     v14 = v8;
     v15 = UpTicksToMilliseconds();
-    v13 = v7;
+    v13 = connection;
     LogPrintF_safe();
   }
 
-  v9 = [v16 timer];
-  v10 = v16;
-  if (v9)
+  timer = [requestCopy timer];
+  v10 = requestCopy;
+  if (timer)
   {
-    dispatch_source_cancel(v9);
-    [v16 setTimer:0];
-    v10 = v16;
+    dispatch_source_cancel(timer);
+    [requestCopy setTimer:0];
+    v10 = requestCopy;
   }
 
-  v11 = [v10 completionHandler];
-  v12 = v11;
-  if (v11)
+  completionHandler = [v10 completionHandler];
+  v12 = completionHandler;
+  if (completionHandler)
   {
-    (*(v11 + 16))(v11, v6);
-    [v16 setCompletionHandler:0];
+    (*(completionHandler + 16))(completionHandler, errorCopy);
+    [requestCopy setCompletionHandler:0];
   }
 
-  [(NSMutableSet *)self->_connectDeviceRequests removeObject:v16];
+  [(NSMutableSet *)self->_connectDeviceRequests removeObject:requestCopy];
 }
 
-- (void)_connectDeviceUpdateRequests:(id)a3 btResult:(int)a4
+- (void)_connectDeviceUpdateRequests:(id)requests btResult:(int)result
 {
-  v6 = a3;
+  requestsCopy = requests;
   if (self->_addedController)
   {
     v20 = 0u;
@@ -1983,11 +1983,11 @@ LABEL_23:
           }
 
           v10 = *(*(&v18 + 1) + 8 * i);
-          v11 = [v10 connection];
-          v12 = [v11 peerDevice];
-          if ([v12 isEquivalentToCBDevice:v6 compareFlags:8])
+          connection = [v10 connection];
+          peerDevice = [connection peerDevice];
+          if ([peerDevice isEquivalentToCBDevice:requestsCopy compareFlags:8])
           {
-            if (a4)
+            if (result)
             {
               v13 = CBErrorF();
               [(CBStackControllerBTStack *)v16 _connectDeviceCompleteRequest:v10 error:v13];
@@ -1995,9 +1995,9 @@ LABEL_23:
 
             else
             {
-              v14 = [v11 serviceFlags];
-              v15 = [v6 supportedServices];
-              if ((v15 & v14 & ~[v6 connectedServices]) == 0)
+              serviceFlags = [connection serviceFlags];
+              supportedServices = [requestsCopy supportedServices];
+              if ((supportedServices & serviceFlags & ~[requestsCopy connectedServices]) == 0)
               {
                 [(CBStackControllerBTStack *)v16 _connectDeviceCompleteRequest:v10 error:0];
               }
@@ -2013,10 +2013,10 @@ LABEL_23:
   }
 }
 
-- (id)diagnosticControl:(id)a3 error:(id *)a4
+- (id)diagnosticControl:(id)control error:(id *)error
 {
-  v6 = a3;
-  string = xpc_dictionary_get_string(v6, "iStr");
+  controlCopy = control;
+  string = xpc_dictionary_get_string(controlCopy, "iStr");
   if (string)
   {
     v8 = string;
@@ -2114,10 +2114,10 @@ LABEL_23:
       sub_1005A24D4(v22, 3703, &v41, 0, 0, 0, &v39);
     }
 
-    if (a4)
+    if (error)
     {
       CBErrorF();
-      *a4 = v10 = 0;
+      *error = v10 = 0;
     }
 
     else
@@ -2347,10 +2347,10 @@ LABEL_65:
   return v10;
 }
 
-- (BOOL)disconnectDevice:(id)a3 serviceFlags:(unsigned int)a4 error:(id *)a5
+- (BOOL)disconnectDevice:(id)device serviceFlags:(unsigned int)flags error:(id *)error
 {
-  v6 = *&a4;
-  v8 = a3;
+  v6 = *&flags;
+  deviceCopy = device;
   if (qword_100B50AA0 != -1)
   {
     sub_10080EB10();
@@ -2358,13 +2358,13 @@ LABEL_65:
 
   if (*(off_100B50A98 + 60))
   {
-    v9 = [v8 identifier];
-    v10 = v9;
-    if (v9)
+    identifier = [deviceCopy identifier];
+    v10 = identifier;
+    if (identifier)
     {
-      if ([v9 caseInsensitiveCompare:@"all"])
+      if ([identifier caseInsensitiveCompare:@"all"])
       {
-        v11 = [(CBStackControllerBTStack *)self _disconnectDevice:v8 serviceFlags:v6 error:a5];
+        v11 = [(CBStackControllerBTStack *)self _disconnectDevice:deviceCopy serviceFlags:v6 error:error];
       }
 
       else
@@ -2374,10 +2374,10 @@ LABEL_65:
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       CBErrorF();
-      *a5 = v11 = 0;
+      *error = v11 = 0;
     }
 
     else
@@ -2386,10 +2386,10 @@ LABEL_65:
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     CBErrorF();
-    *a5 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -2400,7 +2400,7 @@ LABEL_65:
   return v11;
 }
 
-- (void)_disconnectAllDevicesWithServiceFlags:(unsigned int)a3
+- (void)_disconnectAllDevicesWithServiceFlags:(unsigned int)flags
 {
   if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
   {
@@ -2444,7 +2444,7 @@ LABEL_65:
         sub_10080EA40();
       }
 
-      sub_100593A4C(off_100B50AB8, v8, a3);
+      sub_100593A4C(off_100B50AB8, v8, flags);
       if (dword_100B511E0 < 31 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
       {
         sub_1000E5A58(v8, v26);
@@ -2519,13 +2519,13 @@ LABEL_65:
   }
 }
 
-- (BOOL)_disconnectDevice:(id)a3 serviceFlags:(unsigned int)a4 error:(id *)a5
+- (BOOL)_disconnectDevice:(id)device serviceFlags:(unsigned int)flags error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 identifier];
-  if (v9)
+  deviceCopy = device;
+  identifier = [deviceCopy identifier];
+  if (identifier)
   {
-    v10 = [(CBStackControllerBTStack *)self _btDeviceWithID:v9 error:0];
+    v10 = [(CBStackControllerBTStack *)self _btDeviceWithID:identifier error:0];
     v11 = v10;
     if (v10 && sub_1000C0348(v10))
     {
@@ -2534,7 +2534,7 @@ LABEL_65:
         sub_10080EC68();
       }
 
-      v12 = sub_100593A4C(off_100B50AB8, v11, a4);
+      v12 = sub_100593A4C(off_100B50AB8, v11, flags);
       if (v12)
       {
         v13 = v12 + 310000;
@@ -2548,7 +2548,7 @@ LABEL_65:
       if (dword_100B511E0 < 31 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
       {
         CUPrintErrorCode();
-        v29 = v28 = v8;
+        v29 = v28 = deviceCopy;
         LogPrintF_safe();
       }
 
@@ -2561,7 +2561,7 @@ LABEL_65:
       v13 = 1;
     }
 
-    v15 = [(CBStackControllerBTStack *)self _btUUIDWithID:v9 error:0, v28, v29];
+    v15 = [(CBStackControllerBTStack *)self _btUUIDWithID:identifier error:0, v28, v29];
     if (!v15)
     {
       goto LABEL_27;
@@ -2652,10 +2652,10 @@ LABEL_27:
 LABEL_51:
         v25 = CBErrorF();
         LOBYTE(v23) = v25 != 0;
-        if (a5 && v25)
+        if (error && v25)
         {
           v25 = v25;
-          *a5 = v25;
+          *error = v25;
           LOBYTE(v23) = 1;
         }
 
@@ -2700,10 +2700,10 @@ LABEL_56:
     goto LABEL_57;
   }
 
-  if (a5)
+  if (error)
   {
     CBErrorF();
-    *a5 = v26 = 0;
+    *error = v26 = 0;
   }
 
   else
@@ -2716,9 +2716,9 @@ LABEL_57:
   return v26;
 }
 
-- (BOOL)deleteDevice:(id)a3 error:(id *)a4
+- (BOOL)deleteDevice:(id)device error:(id *)error
 {
-  v6 = a3;
+  deviceCopy = device;
   if (qword_100B50AA0 != -1)
   {
     sub_10080EB10();
@@ -2726,13 +2726,13 @@ LABEL_57:
 
   if (*(off_100B50A98 + 60))
   {
-    v7 = [v6 identifier];
-    v8 = v7;
-    if (v7)
+    identifier = [deviceCopy identifier];
+    v8 = identifier;
+    if (identifier)
     {
-      if ([v7 caseInsensitiveCompare:@"all"])
+      if ([identifier caseInsensitiveCompare:@"all"])
       {
-        v9 = [(CBStackControllerBTStack *)self _deleteDevice:v6 error:a4];
+        v9 = [(CBStackControllerBTStack *)self _deleteDevice:deviceCopy error:error];
       }
 
       else
@@ -2742,10 +2742,10 @@ LABEL_57:
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       CBErrorF();
-      *a4 = v9 = 0;
+      *error = v9 = 0;
     }
 
     else
@@ -2754,10 +2754,10 @@ LABEL_57:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     CBErrorF();
-    *a4 = v9 = 0;
+    *error = v9 = 0;
   }
 
   else
@@ -2904,13 +2904,13 @@ LABEL_57:
   }
 }
 
-- (BOOL)_deleteDevice:(id)a3 error:(id *)a4
+- (BOOL)_deleteDevice:(id)device error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 identifier];
-  if (v7)
+  deviceCopy = device;
+  identifier = [deviceCopy identifier];
+  if (identifier)
   {
-    v8 = [(CBStackControllerBTStack *)self _btDeviceWithID:v7 error:0];
+    v8 = [(CBStackControllerBTStack *)self _btDeviceWithID:identifier error:0];
     if (!v8)
     {
       goto LABEL_14;
@@ -2942,7 +2942,7 @@ LABEL_57:
       if (dword_100B511E0 < 31 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
       {
         CUPrintErrorCode();
-        v20 = v19 = v6;
+        v20 = v19 = deviceCopy;
         LogPrintF_safe();
       }
 
@@ -2956,7 +2956,7 @@ LABEL_14:
       v10 = 1;
     }
 
-    v12 = [(CBStackControllerBTStack *)self _btUUIDWithID:v7 error:0, v19, v20];
+    v12 = [(CBStackControllerBTStack *)self _btUUIDWithID:identifier error:0, v19, v20];
     if (!v12)
     {
       goto LABEL_24;
@@ -3015,20 +3015,20 @@ LABEL_36:
 LABEL_32:
     v15 = CBErrorF();
     v16 = v15 != 0;
-    if (a4 && v15)
+    if (error && v15)
     {
       v15 = v15;
-      *a4 = v15;
+      *error = v15;
       v16 = 1;
     }
 
     goto LABEL_36;
   }
 
-  if (a4)
+  if (error)
   {
     CBErrorF();
-    *a4 = v17 = 0;
+    *error = v17 = 0;
   }
 
   else
@@ -3041,9 +3041,9 @@ LABEL_37:
   return v17;
 }
 
-- (id)getDevicesWithFlags:(unsigned int)a3 error:(id *)a4
+- (id)getDevicesWithFlags:(unsigned int)flags error:(id *)error
 {
-  v58 = a3;
+  flagsCopy = flags;
   v56 = objc_alloc_init(NSMutableArray);
   v65 = 0u;
   v66 = 0u;
@@ -3095,8 +3095,8 @@ LABEL_37:
         if (sub_1000C320C(off_100B508C8, v7, v64))
         {
           v8 = objc_alloc_init(CBDevice);
-          v9 = [v7 UUIDString];
-          [v8 setIdentifier:v9];
+          uUIDString = [v7 UUIDString];
+          [v8 setIdentifier:uUIDString];
 
           [v8 setName:*(__p.n128_u64[1] + 40)];
           v10 = v81[3];
@@ -3110,7 +3110,7 @@ LABEL_37:
           [v8 setBtAddressData:v11];
 
           logPrivateData = self->_logPrivateData;
-          v13 = [v8 internalFlags];
+          internalFlags = [v8 internalFlags];
           if (logPrivateData)
           {
             v14 = 0x20000;
@@ -3121,9 +3121,9 @@ LABEL_37:
             v14 = 0;
           }
 
-          [v8 setInternalFlags:v14 | v13];
-          v15 = v58;
-          if ((v58 & 2) != 0)
+          [v8 setInternalFlags:v14 | internalFlags];
+          v15 = flagsCopy;
+          if ((flagsCopy & 2) != 0)
           {
             if (qword_100B508D0 != -1)
             {
@@ -3139,21 +3139,21 @@ LABEL_37:
               {
                 if (sub_1007908B4(v16, v18) == 2)
                 {
-                  v19 = [v18 UUIDString];
-                  [v8 setFindMyCaseIdentifier:v19];
+                  uUIDString2 = [v18 UUIDString];
+                  [v8 setFindMyCaseIdentifier:uUIDString2];
                 }
 
                 v20 = sub_100790774(v16, v18);
                 v21 = v20;
                 if (v20)
                 {
-                  v22 = [v20 UUIDString];
-                  [v8 setFindMyGroupIdentifier:v22];
+                  uUIDString3 = [v20 UUIDString];
+                  [v8 setFindMyGroupIdentifier:uUIDString3];
                 }
               }
             }
 
-            v15 = v58;
+            v15 = flagsCopy;
           }
 
           if (v15)
@@ -3251,8 +3251,8 @@ LABEL_35:
         v33 = sub_1000C2364(v31, &v61 + 1, &v61, &v60 + 1, &v60);
         v34 = objc_alloc_init(CBDevice);
         [v34 setColorInfo:sub_1000C2398(v31)];
-        v35 = [v32 UUIDString];
-        [v34 setIdentifier:v35];
+        uUIDString4 = [v32 UUIDString];
+        [v34 setIdentifier:uUIDString4];
 
         sub_1000C23E0(v31, &__p);
         if (v76 >= 0)
@@ -3288,7 +3288,7 @@ LABEL_35:
         [v34 setBtAddressData:v39];
 
         LODWORD(v39) = self->_logPrivateData;
-        v40 = [v34 internalFlags];
+        internalFlags2 = [v34 internalFlags];
         if (v39)
         {
           v41 = 0x20000;
@@ -3299,8 +3299,8 @@ LABEL_35:
           v41 = 0;
         }
 
-        [v34 setInternalFlags:v41 | v40];
-        if ((v58 & 2) != 0)
+        [v34 setInternalFlags:v41 | internalFlags2];
+        if ((flagsCopy & 2) != 0)
         {
           __p = 0uLL;
           v76 = 0;
@@ -3334,16 +3334,16 @@ LABEL_35:
             {
               if (sub_1007908B4(v44, v45) == 2)
               {
-                v46 = [v45 UUIDString];
-                [v34 setFindMyCaseIdentifier:v46];
+                uUIDString5 = [v45 UUIDString];
+                [v34 setFindMyCaseIdentifier:uUIDString5];
               }
 
               v47 = sub_100790774(v44, v45);
               v48 = v47;
               if (v47)
               {
-                v49 = [v47 UUIDString];
-                [v34 setFindMyGroupIdentifier:v49];
+                uUIDString6 = [v47 UUIDString];
+                [v34 setFindMyGroupIdentifier:uUIDString6];
               }
             }
           }
@@ -3352,7 +3352,7 @@ LABEL_35:
           sub_1000161FC(&v69);
         }
 
-        if (v58)
+        if (flagsCopy)
         {
           __p = 0uLL;
           LODWORD(v76) = 0;
@@ -3391,18 +3391,18 @@ LABEL_35:
   return v56;
 }
 
-- (void)localDeviceEvent:(int)a3
+- (void)localDeviceEvent:(int)event
 {
   if (!self->_addedController)
   {
     return;
   }
 
-  if (a3 <= 5)
+  if (event <= 5)
   {
-    if (a3)
+    if (event)
     {
-      if (a3 != 2)
+      if (event != 2)
       {
         return;
       }
@@ -3457,7 +3457,7 @@ LABEL_16:
 
   else
   {
-    if ((a3 - 6) < 2)
+    if ((event - 6) < 2)
     {
       if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
       {
@@ -3473,7 +3473,7 @@ LABEL_16:
       goto LABEL_15;
     }
 
-    if (a3 != 10)
+    if (event != 10)
     {
       return;
     }
@@ -3502,25 +3502,25 @@ LABEL_38:
   notify_post("com.apple.bluetooth.state");
 }
 
-- (BOOL)modifyDevice:(id)a3 error:(id *)a4
+- (BOOL)modifyDevice:(id)device error:(id *)error
 {
-  v6 = a3;
+  deviceCopy = device;
   v7 = objc_alloc_init(CBDeviceSettings);
-  [v7 setDoubleTapActionLeft:{objc_msgSend(v6, "doubleTapActionLeft")}];
-  [v7 setDoubleTapActionRight:{objc_msgSend(v6, "doubleTapActionRight")}];
-  [v7 setMicrophoneMode:{objc_msgSend(v6, "microphoneMode")}];
-  [v7 setPlacementMode:{objc_msgSend(v6, "placementMode")}];
-  [v7 setSmartRoutingMode:{objc_msgSend(v6, "smartRoutingMode")}];
-  LOBYTE(a4) = [(CBStackControllerBTStack *)self modifyDevice:v6 settings:v7 error:a4];
+  [v7 setDoubleTapActionLeft:{objc_msgSend(deviceCopy, "doubleTapActionLeft")}];
+  [v7 setDoubleTapActionRight:{objc_msgSend(deviceCopy, "doubleTapActionRight")}];
+  [v7 setMicrophoneMode:{objc_msgSend(deviceCopy, "microphoneMode")}];
+  [v7 setPlacementMode:{objc_msgSend(deviceCopy, "placementMode")}];
+  [v7 setSmartRoutingMode:{objc_msgSend(deviceCopy, "smartRoutingMode")}];
+  LOBYTE(error) = [(CBStackControllerBTStack *)self modifyDevice:deviceCopy settings:v7 error:error];
 
-  return a4;
+  return error;
 }
 
-- (void)modifyDevice:(id)a3 connectionPriorityDevices:(id)a4 timeoutSeconds:(double)a5 completionHandler:(id)a6
+- (void)modifyDevice:(id)device connectionPriorityDevices:(id)devices timeoutSeconds:(double)seconds completionHandler:(id)handler
 {
-  v36 = a3;
-  v37 = a4;
-  v34 = a6;
+  deviceCopy = device;
+  devicesCopy = devices;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v49 = 0;
   v50 = &v49;
@@ -3533,25 +3533,25 @@ LABEL_38:
   v46[2] = sub_1001579C8;
   v46[3] = &unk_100AE2420;
   v48 = &v49;
-  v9 = v34;
+  v9 = handlerCopy;
   v47 = v9;
   v35 = objc_retainBlock(v46);
   if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
   {
     CUPrintNSObjectOneLine();
-    v33 = v32 = v36;
+    v33 = v32 = deviceCopy;
     LogPrintF_safe();
   }
 
-  v10 = [v36 identifier];
+  identifier = [deviceCopy identifier];
   v11 = (v50 + 5);
   obj = v50[5];
-  v12 = [(CBStackControllerBTStack *)self _btDeviceWithID:v10 error:&obj];
+  v12 = [(CBStackControllerBTStack *)self _btDeviceWithID:identifier error:&obj];
   objc_storeStrong(v11, obj);
 
   if (v12)
   {
-    v13 = [v37 count];
+    v13 = [devicesCopy count];
     v14 = v13;
     if (v13 >= 0x100)
     {
@@ -3567,7 +3567,7 @@ LABEL_38:
       v44 = 0u;
       v41 = 0u;
       v42 = 0u;
-      v16 = v37;
+      v16 = devicesCopy;
       v17 = [(CBStackModifyDeviceRequest *)v16 countByEnumeratingWithState:&v41 objects:v55 count:16];
       if (v17)
       {
@@ -3622,7 +3622,7 @@ LABEL_38:
       {
         v16 = objc_alloc_init(CBStackModifyDeviceRequest);
         [(CBStackModifyDeviceRequest *)v16 setCompletionHandler:v9];
-        [(CBStackModifyDeviceRequest *)v16 setDevice:v36];
+        [(CBStackModifyDeviceRequest *)v16 setDevice:deviceCopy];
         v23 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, self->_dispatchQueue);
         [(CBStackModifyDeviceRequest *)v16 setTimer:v23];
         handler[0] = _NSConcreteStackBlock;
@@ -3658,15 +3658,15 @@ LABEL_23:
   _Block_object_dispose(&v49, 8);
 }
 
-- (BOOL)modifyDevice:(id)a3 peerSourceDevice:(id)a4 peerSourceState:(char)a5 requestFlags:(unsigned int)a6 error:(id *)a7
+- (BOOL)modifyDevice:(id)device peerSourceDevice:(id)sourceDevice peerSourceState:(char)state requestFlags:(unsigned int)flags error:(id *)error
 {
-  v8 = a6;
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
+  flagsCopy = flags;
+  stateCopy = state;
+  deviceCopy = device;
+  sourceDeviceCopy = sourceDevice;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v14 = [v12 identifier];
-  v15 = [(CBStackControllerBTStack *)self _btDeviceWithID:v14 error:a7];
+  identifier = [deviceCopy identifier];
+  v15 = [(CBStackControllerBTStack *)self _btDeviceWithID:identifier error:error];
 
   if (!v15)
   {
@@ -3674,13 +3674,13 @@ LABEL_23:
     goto LABEL_9;
   }
 
-  v16 = [v13 identifier];
-  v17 = v16;
-  if (v16)
+  identifier2 = [sourceDeviceCopy identifier];
+  v17 = identifier2;
+  if (identifier2)
   {
     v23 = 0;
     v22 = 0;
-    [v16 UTF8String];
+    [identifier2 UTF8String];
     if (!TextToHardwareAddress())
     {
       if (qword_100B50950 != -1)
@@ -3688,14 +3688,14 @@ LABEL_23:
         sub_10080ED24();
       }
 
-      v18 = sub_100337B04(off_100B50948, v15, &v22, v9, (v8 & 0x10) != 0);
+      v18 = sub_100337B04(off_100B50948, v15, &v22, stateCopy, (flagsCopy & 0x10) != 0);
       v19 = 1;
       if (!v18 || v18 == -310000)
       {
         goto LABEL_8;
       }
 
-      if (a7)
+      if (error)
       {
         v21 = CBErrorF();
         goto LABEL_17;
@@ -3706,13 +3706,13 @@ LABEL_18:
       goto LABEL_8;
     }
 
-    if (!a7)
+    if (!error)
     {
       goto LABEL_18;
     }
   }
 
-  else if (!a7)
+  else if (!error)
   {
     goto LABEL_18;
   }
@@ -3720,22 +3720,22 @@ LABEL_18:
   v21 = CBErrorF();
 LABEL_17:
   v19 = 0;
-  *a7 = v21;
+  *error = v21;
 LABEL_8:
 
 LABEL_9:
   return v19;
 }
 
-- (BOOL)modifyDevice:(id)a3 settings:(id)a4 error:(id *)a5
+- (BOOL)modifyDevice:(id)device settings:(id)settings error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 identifier];
-  if (v10)
+  deviceCopy = device;
+  settingsCopy = settings;
+  identifier = [deviceCopy identifier];
+  if (identifier)
   {
     logPrivateData = self->_logPrivateData;
-    v12 = [v8 internalFlags];
+    internalFlags = [deviceCopy internalFlags];
     if (logPrivateData)
     {
       v13 = 0x20000;
@@ -3746,12 +3746,12 @@ LABEL_9:
       v13 = 0;
     }
 
-    [v8 setInternalFlags:v13 | v12];
-    v14 = [v8 idsDeviceID];
-    if (v14)
+    [deviceCopy setInternalFlags:v13 | internalFlags];
+    idsDeviceID = [deviceCopy idsDeviceID];
+    if (idsDeviceID)
     {
-      v15 = [v8 idsDeviceID];
-      v16 = [v15 length];
+      idsDeviceID2 = [deviceCopy idsDeviceID];
+      v16 = [idsDeviceID2 length];
 
       if (v16)
       {
@@ -3767,16 +3767,16 @@ LABEL_9:
         }
 
         v17 = off_100B508C8;
-        v18 = [v8 idsDeviceID];
+        idsDeviceID3 = [deviceCopy idsDeviceID];
         v36[0] = _NSConcreteStackBlock;
         v36[1] = 3221225472;
         v36[2] = sub_100158248;
         v36[3] = &unk_100AE25A0;
         v36[4] = self;
-        v37 = v8;
-        v38 = v9;
+        v37 = deviceCopy;
+        v38 = settingsCopy;
         v39 = &v40;
-        v19 = sub_10078E458(v17, v18, v36);
+        v19 = sub_10078E458(v17, idsDeviceID3, v36);
 
         if (v19)
         {
@@ -3792,19 +3792,19 @@ LABEL_23:
             goto LABEL_24;
           }
 
-          if (a5)
+          if (error)
           {
             v27 = v20;
             goto LABEL_31;
           }
         }
 
-        else if (a5)
+        else if (error)
         {
           v27 = CBErrorF();
 LABEL_31:
           v21 = 0;
-          *a5 = v27;
+          *error = v27;
           goto LABEL_12;
         }
 
@@ -3813,10 +3813,10 @@ LABEL_31:
       }
     }
 
-    v22 = [(CBStackControllerBTStack *)self _btDeviceWithID:v10 error:0];
+    v22 = [(CBStackControllerBTStack *)self _btDeviceWithID:identifier error:0];
     if (v22)
     {
-      v21 = [(CBStackControllerBTStack *)self modifyDevice:v8 btDevice:v22 settings:v9 error:a5];
+      v21 = [(CBStackControllerBTStack *)self modifyDevice:deviceCopy btDevice:v22 settings:settingsCopy error:error];
       goto LABEL_24;
     }
 
@@ -3827,22 +3827,22 @@ LABEL_31:
     v44 = sub_1000425BC;
     v45 = 0;
     obj = 0;
-    v23 = [(CBStackControllerBTStack *)self _btUUIDWithID:v10 error:&obj];
+    v23 = [(CBStackControllerBTStack *)self _btUUIDWithID:identifier error:&obj];
     objc_storeStrong(&v45, obj);
     if (!v23)
     {
-      if (a5)
+      if (error)
       {
         v28 = v41[5];
         if (v28)
         {
           v21 = 0;
-          *a5 = v28;
+          *error = v28;
           goto LABEL_22;
         }
 
         v30 = CBErrorF();
-        *a5 = v30;
+        *error = v30;
       }
 
       v21 = 0;
@@ -3860,8 +3860,8 @@ LABEL_31:
     v31[2] = sub_10015829C;
     v31[3] = &unk_100AE25A0;
     v31[4] = self;
-    v32 = v8;
-    v33 = v9;
+    v32 = deviceCopy;
+    v33 = settingsCopy;
     v34 = &v40;
     if (sub_1000C320C(v24, v23, v31))
     {
@@ -3875,19 +3875,19 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      if (a5)
+      if (error)
       {
         v29 = v25;
         goto LABEL_41;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       v29 = CBErrorF();
 LABEL_41:
       v21 = 0;
-      *a5 = v29;
+      *error = v29;
       goto LABEL_21;
     }
 
@@ -3895,10 +3895,10 @@ LABEL_41:
     goto LABEL_21;
   }
 
-  if (a5)
+  if (error)
   {
     CBErrorF();
-    *a5 = v21 = 0;
+    *error = v21 = 0;
   }
 
   else
@@ -3911,16 +3911,16 @@ LABEL_24:
   return v21;
 }
 
-- (BOOL)modifyDevice:(id)a3 btDevice:(void *)a4 settings:(id)a5 error:(id *)a6
+- (BOOL)modifyDevice:(id)device btDevice:(void *)btDevice settings:(id)settings error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
-  v150 = v9;
+  deviceCopy = device;
+  settingsCopy = settings;
+  v150 = deviceCopy;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v11 = [v9 identifier];
-  if (!v11)
+  identifier = [deviceCopy identifier];
+  if (!identifier)
   {
-    if (a6)
+    if (error)
     {
       goto LABEL_360;
     }
@@ -3934,36 +3934,36 @@ LABEL_24:
   }
 
   v151 = off_100B508D8;
-  v12 = [v10 aclLinkState];
-  if (v12)
+  aclLinkState = [settingsCopy aclLinkState];
+  if (aclLinkState)
   {
     if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
     {
-      if (v12 > 3)
+      if (aclLinkState > 3)
       {
         v13 = "?";
       }
 
       else
       {
-        v13 = off_100AE2C20[v12 - 1];
+        v13 = off_100AE2C20[aclLinkState - 1];
       }
 
-      v105 = v11;
+      v105 = identifier;
       v121 = v13;
       LogPrintF_safe();
     }
 
-    sub_1005501A8(a4, [v10 aclLinkState], 0);
+    sub_1005501A8(btDevice, [settingsCopy aclLinkState], 0);
   }
 
-  v14 = [v10 aclPriority];
-  if (v14)
+  aclPriority = [settingsCopy aclPriority];
+  if (aclPriority)
   {
     v15 = sub_10000C7D0();
     if (((*(*v15 + 3240))(v15) & 1) == 0)
     {
-      if (a6)
+      if (error)
       {
         goto LABEL_360;
       }
@@ -3976,15 +3976,15 @@ LABEL_24:
       goto LABEL_31;
     }
 
-    if (v14 > 0x31u)
+    if (aclPriority > 0x31u)
     {
-      if (v14 == 50)
+      if (aclPriority == 50)
       {
         v16 = "Medium";
         goto LABEL_30;
       }
 
-      if (v14 == 80)
+      if (aclPriority == 80)
       {
         v16 = "High";
         goto LABEL_30;
@@ -3993,28 +3993,28 @@ LABEL_24:
 
     else
     {
-      if (v14 == 1)
+      if (aclPriority == 1)
       {
         v16 = "Default";
         goto LABEL_30;
       }
 
-      if (v14 == 20)
+      if (aclPriority == 20)
       {
         v16 = "Low";
 LABEL_30:
-        v105 = v11;
+        v105 = identifier;
         v121 = v16;
         LogPrintF_safe();
 LABEL_31:
         v17 = sub_10000C7D0();
-        v18 = *(a4 + 66);
-        v19 = *(a4 + 32);
-        v20 = sub_1000DEB14(a4);
-        v21 = (*(*v17 + 56))(v17, (v19 | (v18 << 32)) & 0xFFFFFFFFFFFFLL, v20, 32, v14 == 80, v14 == 80, 1, 1, v105, v121);
+        v18 = *(btDevice + 66);
+        v19 = *(btDevice + 32);
+        v20 = sub_1000DEB14(btDevice);
+        v21 = (*(*v17 + 56))(v17, (v19 | (v18 << 32)) & 0xFFFFFFFFFFFFLL, v20, 32, aclPriority == 80, aclPriority == 80, 1, 1, v105, v121);
         if (v21 && v21 != -310000)
         {
-          if (a6)
+          if (error)
           {
             goto LABEL_360;
           }
@@ -4031,14 +4031,14 @@ LABEL_31:
   }
 
 LABEL_33:
-  v22 = [v10 adaptiveVolumeConfig];
-  if (v22)
+  adaptiveVolumeConfig = [settingsCopy adaptiveVolumeConfig];
+  if (adaptiveVolumeConfig)
   {
     if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
     {
       [v150 name];
-      v121 = v11;
-      v105 = v137 = v22;
+      v121 = identifier;
+      v105 = v137 = adaptiveVolumeConfig;
       LogPrintF_safe();
     }
 
@@ -4047,12 +4047,12 @@ LABEL_33:
       sub_10080ED10();
     }
 
-    v23 = sub_100331844(off_100B50948, a4, 38, v22, 2u);
+    v23 = sub_100331844(off_100B50948, btDevice, 38, adaptiveVolumeConfig, 2u);
     if (v23)
     {
       if (v23 != -310000)
       {
-        if (a6)
+        if (error)
         {
           goto LABEL_360;
         }
@@ -4062,23 +4062,23 @@ LABEL_33:
     }
   }
 
-  v24 = [v10 allowsAutoRoute];
-  if (v24)
+  allowsAutoRoute = [settingsCopy allowsAutoRoute];
+  if (allowsAutoRoute)
   {
     if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
     {
       v25 = "?";
-      if (v24 == 1)
+      if (allowsAutoRoute == 1)
       {
         v25 = "Yes";
       }
 
-      if (v24 == 2)
+      if (allowsAutoRoute == 2)
       {
         v25 = "No";
       }
 
-      v106 = v11;
+      v106 = identifier;
       v122 = v25;
       LogPrintF_safe();
     }
@@ -4088,12 +4088,12 @@ LABEL_33:
       sub_10080ED10();
     }
 
-    v26 = sub_10035B9A8(off_100B50948, a4, v24 == 1);
+    v26 = sub_10035B9A8(off_100B50948, btDevice, allowsAutoRoute == 1);
     if (v26)
     {
       if (v26 != -310000)
       {
-        if (a6)
+        if (error)
         {
           goto LABEL_360;
         }
@@ -4103,23 +4103,23 @@ LABEL_33:
     }
   }
 
-  v27 = [v10 audioRouteHidden];
-  if (v27)
+  audioRouteHidden = [settingsCopy audioRouteHidden];
+  if (audioRouteHidden)
   {
     if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
     {
       v28 = "?";
-      if (v27 == 1)
+      if (audioRouteHidden == 1)
       {
         v28 = "Yes";
       }
 
-      if (v27 == 2)
+      if (audioRouteHidden == 2)
       {
         v28 = "No";
       }
 
-      v107 = v11;
+      v107 = identifier;
       v123 = v28;
       LogPrintF_safe();
     }
@@ -4129,12 +4129,12 @@ LABEL_33:
       sub_10080ED10();
     }
 
-    v29 = sub_10035BBE0(off_100B50948, a4, v27 == 1);
+    v29 = sub_10035BBE0(off_100B50948, btDevice, audioRouteHidden == 1);
     if (v29)
     {
       if (v29 != -310000)
       {
-        if (a6)
+        if (error)
         {
           goto LABEL_360;
         }
@@ -4144,22 +4144,22 @@ LABEL_33:
     }
   }
 
-  v30 = [v10 endCallConfig];
-  v31 = [v10 muteControlConfig];
-  if (v30 | v31)
+  endCallConfig = [settingsCopy endCallConfig];
+  muteControlConfig = [settingsCopy muteControlConfig];
+  if (endCallConfig | muteControlConfig)
   {
-    v32 = sub_1000E0734(a4) & 0xF0FF | ((v30 & 0xF) << 8) | ((v31 & 0xF) << 16);
+    v32 = sub_1000E0734(btDevice) & 0xF0FF | ((endCallConfig & 0xF) << 8) | ((muteControlConfig & 0xF) << 16);
     if (qword_100B50950 != -1)
     {
       sub_10080ED10();
     }
 
-    v33 = sub_100331844(off_100B50948, a4, 36, v32, 2u);
+    v33 = sub_100331844(off_100B50948, btDevice, 36, v32, 2u);
     if (v33)
     {
       if (v33 != -310000)
       {
-        if (a6)
+        if (error)
         {
           goto LABEL_360;
         }
@@ -4169,14 +4169,14 @@ LABEL_33:
     }
   }
 
-  v34 = [v10 conversationDetectConfig];
-  if (v34)
+  conversationDetectConfig = [settingsCopy conversationDetectConfig];
+  if (conversationDetectConfig)
   {
     if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
     {
       [v150 name];
-      v124 = v11;
-      v108 = v138 = v34;
+      v124 = identifier;
+      v108 = v138 = conversationDetectConfig;
       LogPrintF_safe();
     }
 
@@ -4185,12 +4185,12 @@ LABEL_33:
       sub_10080ED10();
     }
 
-    v35 = sub_100331844(off_100B50948, a4, 40, v34, 2u);
+    v35 = sub_100331844(off_100B50948, btDevice, 40, conversationDetectConfig, 2u);
     if (v35)
     {
       if (v35 != -310000)
       {
-        if (a6)
+        if (error)
         {
           goto LABEL_360;
         }
@@ -4200,14 +4200,14 @@ LABEL_33:
     }
   }
 
-  v36 = [v10 clickHoldModeLeft];
-  v37 = [v10 clickHoldModeRight];
-  if (v36 | v37)
+  clickHoldModeLeft = [settingsCopy clickHoldModeLeft];
+  clickHoldModeRight = [settingsCopy clickHoldModeRight];
+  if (clickHoldModeLeft | clickHoldModeRight)
   {
-    v38 = sub_1000E06EC(a4);
-    if (v36)
+    v38 = sub_1000E06EC(btDevice);
+    if (clickHoldModeLeft)
     {
-      v39 = v36;
+      v39 = clickHoldModeLeft;
     }
 
     else
@@ -4215,9 +4215,9 @@ LABEL_33:
       v39 = HIBYTE(v38);
     }
 
-    if (!v37)
+    if (!clickHoldModeRight)
     {
-      LOBYTE(v37) = v38;
+      LOBYTE(clickHoldModeRight) = v38;
     }
 
     if (dword_100B511E0 < 31 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
@@ -4232,19 +4232,19 @@ LABEL_33:
         v40 = *(&off_100AE2C38 + v39);
       }
 
-      if (v37 > 7u)
+      if (clickHoldModeRight > 7u)
       {
         v41 = @"?";
       }
 
       else
       {
-        v41 = *(&off_100AE2C38 + v37);
+        v41 = *(&off_100AE2C38 + clickHoldModeRight);
       }
 
       v139 = v41;
-      v146 = v37 | (v39 << 8);
-      v109 = v11;
+      v146 = clickHoldModeRight | (v39 << 8);
+      v109 = identifier;
       v125 = v40;
       LogPrintF_safe();
     }
@@ -4254,12 +4254,12 @@ LABEL_33:
       sub_10080ED10();
     }
 
-    v42 = sub_100331844(off_100B50948, a4, 22, v37 | (v39 << 8), 2u);
+    v42 = sub_100331844(off_100B50948, btDevice, 22, clickHoldModeRight | (v39 << 8), 2u);
     if (v42)
     {
       if (v42 != -310000)
       {
-        if (a6)
+        if (error)
         {
           goto LABEL_360;
         }
@@ -4269,23 +4269,23 @@ LABEL_33:
     }
   }
 
-  v43 = [v10 crownRotationDirection];
-  if (v43)
+  crownRotationDirection = [settingsCopy crownRotationDirection];
+  if (crownRotationDirection)
   {
     if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
     {
       v44 = @"?";
-      if (v43 == 1)
+      if (crownRotationDirection == 1)
       {
         v44 = @"BackToFront";
       }
 
-      if (v43 == 2)
+      if (crownRotationDirection == 2)
       {
         v44 = @"FrontToBack";
       }
 
-      v110 = v11;
+      v110 = identifier;
       v126 = v44;
       LogPrintF_safe();
     }
@@ -4295,12 +4295,12 @@ LABEL_33:
       sub_10080ED10();
     }
 
-    v45 = sub_100331844(off_100B50948, a4, 28, v43, 2u);
+    v45 = sub_100331844(off_100B50948, btDevice, 28, crownRotationDirection, 2u);
     if (v45)
     {
       if (v45 != -310000)
       {
-        if (a6)
+        if (error)
         {
           goto LABEL_360;
         }
@@ -4310,13 +4310,13 @@ LABEL_33:
     }
   }
 
-  v46 = [v10 deviceFlagsMask];
-  v47 = [v10 deviceFlagsValue];
-  if ((v46 & 0x400000) != 0)
+  deviceFlagsMask = [settingsCopy deviceFlagsMask];
+  deviceFlagsValue = [settingsCopy deviceFlagsValue];
+  if ((deviceFlagsMask & 0x400000) != 0)
   {
-    v48 = *(a4 + 1500);
-    v49 = *&v47 & 0x400000;
-    if (v48 != (*&v47 & 0x400000uLL) >> 22)
+    v48 = *(btDevice + 1500);
+    v49 = *&deviceFlagsValue & 0x400000;
+    if (v48 != (*&deviceFlagsValue & 0x400000uLL) >> 22)
     {
       if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
       {
@@ -4338,25 +4338,25 @@ LABEL_33:
 
         v127 = v51;
         v140 = v50;
-        v111 = v11;
+        v111 = identifier;
         LogPrintF_safe();
       }
 
-      sub_10053914C(a4, v49 != 0);
+      sub_10053914C(btDevice, v49 != 0);
     }
   }
 
-  if ((v46 & 0x80000000) != 0)
+  if ((deviceFlagsMask & 0x80000000) != 0)
   {
     if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
     {
       v52 = "yes";
-      if (v47 >= 0)
+      if (deviceFlagsValue >= 0)
       {
         v52 = "no";
       }
 
-      v111 = v11;
+      v111 = identifier;
       v127 = v52;
       LogPrintF_safe();
     }
@@ -4366,13 +4366,13 @@ LABEL_33:
       sub_10080ED10();
     }
 
-    v53 = v47 < 0 ? 1 : 2;
-    v54 = sub_100331844(off_100B50948, a4, 30, v53, 2u);
+    v53 = deviceFlagsValue < 0 ? 1 : 2;
+    v54 = sub_100331844(off_100B50948, btDevice, 30, v53, 2u);
     if (v54)
     {
       if (v54 != -310000)
       {
-        if (a6)
+        if (error)
         {
           goto LABEL_360;
         }
@@ -4382,22 +4382,22 @@ LABEL_33:
     }
   }
 
-  v55 = sub_1000E3188(a4);
-  v56 = [v10 doubleTapActionLeft];
-  v57 = [v10 doubleTapActionRight];
-  v58 = v57;
+  v55 = sub_1000E3188(btDevice);
+  doubleTapActionLeft = [settingsCopy doubleTapActionLeft];
+  doubleTapActionRight = [settingsCopy doubleTapActionRight];
+  v58 = doubleTapActionRight;
   v59 = HIBYTE(v55);
-  if (v56 > 2u)
+  if (doubleTapActionLeft > 2u)
   {
-    if (v56 == 3)
+    if (doubleTapActionLeft == 3)
     {
       v60 = 2;
       goto LABEL_156;
     }
 
-    if (v56 != 4)
+    if (doubleTapActionLeft != 4)
     {
-      if (v56 == 5)
+      if (doubleTapActionLeft == 5)
       {
         v60 = 4;
         goto LABEL_156;
@@ -4411,15 +4411,15 @@ LABEL_33:
 
   else
   {
-    if (!v56)
+    if (!doubleTapActionLeft)
     {
       v60 = HIBYTE(v55);
       goto LABEL_156;
     }
 
-    if (v56 != 1)
+    if (doubleTapActionLeft != 1)
     {
-      if (v56 == 2)
+      if (doubleTapActionLeft == 2)
       {
         v60 = 1;
         goto LABEL_156;
@@ -4436,9 +4436,9 @@ LABEL_153:
 LABEL_156:
   v61 = v55;
   v62 = 0xFFFFLL;
-  if (v57 > 2u)
+  if (doubleTapActionRight > 2u)
   {
-    switch(v57)
+    switch(doubleTapActionRight)
     {
       case 3u:
         v62 = 2;
@@ -4454,19 +4454,19 @@ LABEL_156:
 
   else
   {
-    if (!v57)
+    if (!doubleTapActionRight)
     {
       v62 = v61;
       goto LABEL_169;
     }
 
-    if (v57 == 1)
+    if (doubleTapActionRight == 1)
     {
       v62 = 0;
       goto LABEL_169;
     }
 
-    if (v57 == 2)
+    if (doubleTapActionRight == 2)
     {
       v62 = 1;
 LABEL_169:
@@ -4479,14 +4479,14 @@ LABEL_169:
 
   if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
   {
-    if (v56 > 5)
+    if (doubleTapActionLeft > 5)
     {
       v63 = "?";
     }
 
     else
     {
-      v63 = off_100AE2C78[v56];
+      v63 = off_100AE2C78[doubleTapActionLeft];
     }
 
     if (v58 > 5)
@@ -4503,14 +4503,14 @@ LABEL_169:
     v148 = v64;
     v127 = v60;
     v140 = v63;
-    v111 = v11;
+    v111 = identifier;
     LogPrintF_safe();
   }
 
-  v65 = sub_1005190B8(v151, a4, v60, v62);
+  v65 = sub_1005190B8(v151, btDevice, v60, v62);
   if (v65 && v65 != -310000)
   {
-    if (a6)
+    if (error)
     {
       goto LABEL_360;
     }
@@ -4519,22 +4519,22 @@ LABEL_169:
   }
 
 LABEL_184:
-  v66 = [v10 listeningMode];
-  if (v66 && v66 != sub_1000E3284(a4))
+  listeningMode = [settingsCopy listeningMode];
+  if (listeningMode && listeningMode != sub_1000E3284(btDevice))
   {
     if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
     {
-      if (v66 > 4)
+      if (listeningMode > 4)
       {
         v67 = "?";
       }
 
       else
       {
-        v67 = off_100AE2CA8[v66 - 1];
+        v67 = off_100AE2CA8[listeningMode - 1];
       }
 
-      v112 = v11;
+      v112 = identifier;
       v128 = v67;
       LogPrintF_safe();
     }
@@ -4544,12 +4544,12 @@ LABEL_184:
       sub_10080ED10();
     }
 
-    v68 = sub_100331844(off_100B50948, a4, 13, v66, 2u);
+    v68 = sub_100331844(off_100B50948, btDevice, 13, listeningMode, 2u);
     if (v68)
     {
       if (v68 != -310000)
       {
-        if (a6)
+        if (error)
         {
           goto LABEL_360;
         }
@@ -4559,13 +4559,13 @@ LABEL_184:
     }
   }
 
-  v69 = [v10 listeningModeConfigs];
-  if (v69)
+  listeningModeConfigs = [settingsCopy listeningModeConfigs];
+  if (listeningModeConfigs)
   {
     if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
     {
       CUPrintFlags32();
-      v129 = v113 = v11;
+      v129 = v113 = identifier;
       LogPrintF_safe();
     }
 
@@ -4574,12 +4574,12 @@ LABEL_184:
       sub_10080ED10();
     }
 
-    v70 = sub_100331844(off_100B50948, a4, 26, v69, 2u);
+    v70 = sub_100331844(off_100B50948, btDevice, 26, listeningModeConfigs, 2u);
     if (v70)
     {
       if (v70 != -310000)
       {
-        if (a6)
+        if (error)
         {
           goto LABEL_360;
         }
@@ -4589,12 +4589,12 @@ LABEL_184:
     }
   }
 
-  v71 = [v10 microphoneMode];
-  v72 = v71;
-  if (v71)
+  microphoneMode = [settingsCopy microphoneMode];
+  v72 = microphoneMode;
+  if (microphoneMode)
   {
-    v73 = v71 == 3 ? 1 : 2 * (v71 == 2);
-    if (v73 != sub_1000E3314(a4))
+    v73 = microphoneMode == 3 ? 1 : 2 * (microphoneMode == 2);
+    if (v73 != sub_1000E3314(btDevice))
     {
       if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
       {
@@ -4610,20 +4610,20 @@ LABEL_184:
 
         v130 = v73;
         v141 = v74;
-        v114 = v11;
+        v114 = identifier;
         LogPrintF_safe();
       }
 
-      v75 = sub_100518FFC(v151, a4, v73);
+      v75 = sub_100518FFC(v151, btDevice, v73);
       if (v75)
       {
         if (v75 != -310000)
         {
-          if (a6)
+          if (error)
           {
 LABEL_360:
             CBErrorF();
-            *a6 = v101 = 0;
+            *error = v101 = 0;
             goto LABEL_324;
           }
 
@@ -4635,13 +4635,13 @@ LABEL_361:
     }
   }
 
-  v76 = [v10 name];
-  if (![v76 length])
+  name = [settingsCopy name];
+  if (![name length])
   {
     goto LABEL_241;
   }
 
-  sub_1000C23E0(a4, __p);
+  sub_1000C23E0(btDevice, __p);
   if (v155 >= 0)
   {
     v77 = __p;
@@ -4658,7 +4658,7 @@ LABEL_361:
     operator delete(__p[0]);
   }
 
-  v79 = v76;
+  v79 = name;
   v80 = v78;
   v81 = v80;
   if (v79 != v80)
@@ -4681,12 +4681,12 @@ LABEL_361:
     {
       v131 = v81;
       v142 = v79;
-      v115 = v11;
+      v115 = identifier;
       LogPrintF_safe();
     }
 
     sub_100007E30(__p, [v79 UTF8String]);
-    sub_100538D30(a4, __p, 1);
+    sub_100538D30(btDevice, __p, 1);
     if (v155 < 0)
     {
       operator delete(__p[0]);
@@ -4697,28 +4697,28 @@ LABEL_361:
 
 LABEL_240:
 LABEL_241:
-  v83 = [v10 placementMode];
-  if (v83 && (v83 == 1) != sub_1000E356C(a4))
+  placementMode = [settingsCopy placementMode];
+  if (placementMode && (placementMode == 1) != sub_1000E356C(btDevice))
   {
     if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
     {
       v84 = "no";
-      if (v83 == 1)
+      if (placementMode == 1)
       {
         v84 = "yes";
       }
 
-      v116 = v11;
+      v116 = identifier;
       v132 = v84;
       LogPrintF_safe();
     }
 
-    v85 = sub_100519DD4(v151, a4, v83 == 1);
+    v85 = sub_100519DD4(v151, btDevice, placementMode == 1);
     if (v85)
     {
       if (v85 != -310000)
       {
-        if (a6)
+        if (error)
         {
           v104 = CBErrorF();
           goto LABEL_364;
@@ -4729,42 +4729,42 @@ LABEL_241:
     }
   }
 
-  v86 = [v10 relinquishAudioRoute];
-  if (v86)
+  relinquishAudioRoute = [settingsCopy relinquishAudioRoute];
+  if (relinquishAudioRoute)
   {
     if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
     {
       v87 = "?";
-      if (v86 == 1)
+      if (relinquishAudioRoute == 1)
       {
         v87 = "Yes";
       }
 
       v88 = "false";
-      if (v86 != 1)
+      if (relinquishAudioRoute != 1)
       {
         v88 = "true";
       }
 
-      if (v86 == 2)
+      if (relinquishAudioRoute == 2)
       {
         v87 = "No";
       }
 
       v133 = v87;
       v143 = v88;
-      v117 = v11;
+      v117 = identifier;
       LogPrintF_safe();
     }
 
-    if (v86 == 1)
+    if (relinquishAudioRoute == 1)
     {
       if (qword_100B50950 != -1)
       {
         sub_10080ED24();
       }
 
-      v89 = sub_100349058(off_100B50948, a4, 1);
+      v89 = sub_100349058(off_100B50948, btDevice, 1);
       if (!v89)
       {
         goto LABEL_276;
@@ -4784,7 +4784,7 @@ LABEL_241:
       }
 
       v90 = off_100B50948;
-      sub_1000BE6F8(a4 + 128, v152);
+      sub_1000BE6F8(btDevice + 128, v152);
       v91 = sub_1003347E8(v90, v152, 1);
       v89 = v91;
       if (v153 < 0)
@@ -4804,7 +4804,7 @@ LABEL_241:
 
     if (v89 != -310000)
     {
-      if (!a6)
+      if (!error)
       {
         goto LABEL_367;
       }
@@ -4813,20 +4813,20 @@ LABEL_356:
       v104 = CBErrorF();
 LABEL_364:
       v101 = 0;
-      *a6 = v104;
+      *error = v104;
       goto LABEL_323;
     }
   }
 
 LABEL_276:
-  v92 = [v10 selectiveSpeechListeningConfig];
-  if (v92)
+  selectiveSpeechListeningConfig = [settingsCopy selectiveSpeechListeningConfig];
+  if (selectiveSpeechListeningConfig)
   {
     if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
     {
       [v150 name];
-      v134 = v11;
-      v118 = v144 = v92;
+      v134 = identifier;
+      v118 = v144 = selectiveSpeechListeningConfig;
       LogPrintF_safe();
     }
 
@@ -4835,12 +4835,12 @@ LABEL_276:
       sub_10080ED24();
     }
 
-    v93 = sub_100331844(off_100B50948, a4, 41, v92, 2u);
+    v93 = sub_100331844(off_100B50948, btDevice, 41, selectiveSpeechListeningConfig, 2u);
     if (v93)
     {
       if (v93 != -310000)
       {
-        if (!a6)
+        if (!error)
         {
           goto LABEL_367;
         }
@@ -4850,42 +4850,42 @@ LABEL_276:
     }
   }
 
-  v94 = [v10 smartRoutingMode];
-  if (v94 == 1)
+  smartRoutingMode = [settingsCopy smartRoutingMode];
+  if (smartRoutingMode == 1)
   {
     v95 = 1;
   }
 
   else
   {
-    v95 = 2 * (v94 == 2);
+    v95 = 2 * (smartRoutingMode == 2);
   }
 
-  if (v95 && v95 != sub_1000E5DB8(a4))
+  if (v95 && v95 != sub_1000E5DB8(btDevice))
   {
     if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
     {
-      if (v94 > 2)
+      if (smartRoutingMode > 2)
       {
         v96 = "?";
       }
 
       else
       {
-        v96 = off_100AE2CE0[v94];
+        v96 = off_100AE2CE0[smartRoutingMode];
       }
 
       v135 = v95;
       v145 = v96;
-      v119 = v11;
+      v119 = identifier;
       LogPrintF_safe();
     }
 
-    sub_100546280(a4, v95);
+    sub_100546280(btDevice, v95);
   }
 
-  v97 = [v10 spatialAudioAllowed];
-  if (v97)
+  spatialAudioAllowed = [settingsCopy spatialAudioAllowed];
+  if (spatialAudioAllowed)
   {
     LODWORD(__p[0]) = 0;
     if (qword_100B508F0 != -1)
@@ -4893,35 +4893,35 @@ LABEL_276:
       sub_10080ECC0();
     }
 
-    sub_10056C0AC(off_100B508E8, a4, __p);
-    if (SLOBYTE(__p[0]) != v97)
+    sub_10056C0AC(off_100B508E8, btDevice, __p);
+    if (SLOBYTE(__p[0]) != spatialAudioAllowed)
     {
       if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
       {
         v98 = "?";
-        if (v97 == 1)
+        if (spatialAudioAllowed == 1)
         {
           v98 = "Yes";
         }
 
-        if (v97 == 2)
+        if (spatialAudioAllowed == 2)
         {
           v98 = "No";
         }
 
-        v120 = v11;
+        v120 = identifier;
         v136 = v98;
         LogPrintF_safe();
       }
 
-      v99 = sub_100519550(v151, a4, v97);
+      v99 = sub_100519550(v151, btDevice, spatialAudioAllowed);
       if (v99)
       {
         if (v99 != -310000)
         {
-          if (a6)
+          if (error)
           {
-            *a6 = CBErrorF();
+            *error = CBErrorF();
           }
 
           goto LABEL_367;
@@ -4930,22 +4930,22 @@ LABEL_276:
     }
   }
 
-  v100 = [v10 spatialAudioMode];
-  if (v100 != 255)
+  spatialAudioMode = [settingsCopy spatialAudioMode];
+  if (spatialAudioMode != 255)
   {
     if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
     {
       LogPrintF_safe();
     }
 
-    v102 = sub_100519AF8(v151, a4, @"global", v100, -1);
+    v102 = sub_100519AF8(v151, btDevice, @"global", spatialAudioMode, -1);
     v101 = 1;
     if (!v102 || v102 == -310000)
     {
       goto LABEL_323;
     }
 
-    if (a6)
+    if (error)
     {
       goto LABEL_356;
     }
@@ -4962,13 +4962,13 @@ LABEL_324:
   return v101;
 }
 
-- (BOOL)modifyDevice:(id)a3 leDevice:(void *)a4 settings:(id)a5 error:(id *)a6
+- (BOOL)modifyDevice:(id)device leDevice:(void *)leDevice settings:(id)settings error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v54 = v11;
-  v55 = [v11 name];
-  if (!v55)
+  deviceCopy = device;
+  settingsCopy = settings;
+  v54 = settingsCopy;
+  name = [settingsCopy name];
+  if (!name)
   {
     goto LABEL_24;
   }
@@ -4976,15 +4976,15 @@ LABEL_324:
   btSessionPtr = self->_btSessionPtr;
   if (btSessionPtr)
   {
-    if (*(a4 + 127) < 0)
+    if (*(leDevice + 127) < 0)
     {
-      sub_100008904(&__dst, *(a4 + 13), *(a4 + 14));
+      sub_100008904(&__dst, *(leDevice + 13), *(leDevice + 14));
     }
 
     else
     {
-      __dst = *(a4 + 104);
-      v66 = *(a4 + 15);
+      __dst = *(leDevice + 104);
+      v66 = *(leDevice + 15);
     }
 
     if (v66 >= 0)
@@ -5003,7 +5003,7 @@ LABEL_324:
       operator delete(__dst);
     }
 
-    v15 = v55;
+    v15 = name;
     v16 = v14;
     v17 = v16;
     if (v15 == v16)
@@ -5026,7 +5026,7 @@ LABEL_324:
       {
       }
 
-      v19 = *a4;
+      v19 = *leDevice;
       if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
       {
         [v19 UUIDString];
@@ -5048,37 +5048,37 @@ LABEL_324:
     }
 
 LABEL_23:
-    v11 = v54;
+    settingsCopy = v54;
 LABEL_24:
-    v21 = [v10 internalFlags] & 0x400;
+    v21 = [deviceCopy internalFlags] & 0x400;
     if (dword_100B511E0 <= 40 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
     {
-      v22 = [v10 identifier];
-      v23 = *a4;
-      v24 = [v10 controllerInfo];
-      v25 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", [v24 fastLEConnectionInfoVersion]);
-      v26 = [v10 controllerInfo];
-      v27 = [v26 fastLEConnectionInfoData];
-      v28 = [v10 controllerInfo];
-      v52 = v27;
-      v53 = [v28 fastLEConnectionAllowed];
+      identifier = [deviceCopy identifier];
+      v23 = *leDevice;
+      controllerInfo = [deviceCopy controllerInfo];
+      v25 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", [controllerInfo fastLEConnectionInfoVersion]);
+      controllerInfo2 = [deviceCopy controllerInfo];
+      fastLEConnectionInfoData = [controllerInfo2 fastLEConnectionInfoData];
+      controllerInfo3 = [deviceCopy controllerInfo];
+      v52 = fastLEConnectionInfoData;
+      fastLEConnectionAllowed = [controllerInfo3 fastLEConnectionAllowed];
       v50 = v23;
       v51 = v25;
       v46 = v21 >> 10;
-      v48 = v22;
+      v48 = identifier;
       LogPrintF_safe();
 
-      v11 = v54;
+      settingsCopy = v54;
     }
 
-    v29 = *a4;
+    v29 = *leDevice;
     if (v21)
     {
-      v30 = [v10 controllerInfo];
-      v31 = [v30 fastLEConnectionInfoVersion];
+      controllerInfo4 = [deviceCopy controllerInfo];
+      fastLEConnectionInfoVersion = [controllerInfo4 fastLEConnectionInfoVersion];
 
-      v32 = [v10 controllerInfo];
-      v33 = [v32 fastLEConnectionInfoData];
+      controllerInfo5 = [deviceCopy controllerInfo];
+      fastLEConnectionInfoData2 = [controllerInfo5 fastLEConnectionInfoData];
 
       v34 = sub_100007EE8();
       v59[0] = _NSConcreteStackBlock;
@@ -5086,30 +5086,30 @@ LABEL_24:
       v59[2] = sub_10015A3E4;
       v59[3] = &unk_100AE1600;
       v60 = v29;
-      v63 = v31;
-      v35 = v33;
+      v63 = fastLEConnectionInfoVersion;
+      v35 = fastLEConnectionInfoData2;
       v61 = v35;
-      v62 = v10;
+      v62 = deviceCopy;
       sub_10000CA94(v34, v59);
     }
 
-    v36 = [v10 model];
-    if (v36)
+    model = [deviceCopy model];
+    if (model)
     {
-      v37 = [v10 model];
-      v38 = [v37 length];
+      model2 = [deviceCopy model];
+      v38 = [model2 length];
 
       if (v38)
       {
-        v39 = [v10 model];
+        model3 = [deviceCopy model];
         v40 = sub_100007EE8();
         v56[0] = _NSConcreteStackBlock;
         v56[1] = 3221225472;
         v56[2] = sub_10015A4AC;
         v56[3] = &unk_100AE0B60;
         v57 = v29;
-        v58 = v39;
-        v41 = v39;
+        v58 = model3;
+        v41 = model3;
         sub_10000CA94(v40, v56);
       }
     }
@@ -5118,58 +5118,58 @@ LABEL_24:
     goto LABEL_34;
   }
 
-  if (a6)
+  if (error)
   {
-    v43 = v55;
+    v43 = name;
     CBErrorF();
-    *a6 = v42 = 0;
+    *error = v42 = 0;
     goto LABEL_35;
   }
 
   v42 = 0;
 LABEL_34:
-  v43 = v55;
+  v43 = name;
 LABEL_35:
 
   return v42;
 }
 
-- (void)_modifyDeviceCompleteRequest:(id)a3 error:(id)a4
+- (void)_modifyDeviceCompleteRequest:(id)request error:(id)error
 {
-  v14 = a3;
-  v6 = a4;
+  requestCopy = request;
+  errorCopy = error;
   if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
   {
-    v7 = [v14 device];
+    device = [requestCopy device];
     CUPrintNSError();
-    v13 = v12 = v7;
+    v13 = v12 = device;
     LogPrintF_safe();
   }
 
-  v8 = [v14 timer];
-  v9 = v14;
-  if (v8)
+  timer = [requestCopy timer];
+  v9 = requestCopy;
+  if (timer)
   {
-    dispatch_source_cancel(v8);
-    [v14 setTimer:0];
-    v9 = v14;
+    dispatch_source_cancel(timer);
+    [requestCopy setTimer:0];
+    v9 = requestCopy;
   }
 
-  v10 = [v9 completionHandler];
-  v11 = v10;
-  if (v10)
+  completionHandler = [v9 completionHandler];
+  v11 = completionHandler;
+  if (completionHandler)
   {
-    (*(v10 + 16))(v10, v6);
-    [v14 setCompletionHandler:0];
+    (*(completionHandler + 16))(completionHandler, errorCopy);
+    [requestCopy setCompletionHandler:0];
   }
 
-  [(NSMutableSet *)self->_modifyDeviceRequests removeObject:v14];
+  [(NSMutableSet *)self->_modifyDeviceRequests removeObject:requestCopy];
 }
 
-- (void)performDeviceRequest:(id)a3 device:(id)a4 completionHandler:(id)a5
+- (void)performDeviceRequest:(id)request device:(id)device completionHandler:(id)handler
 {
-  v65 = a3;
-  v63 = a4;
+  requestCopy = request;
+  deviceCopy = device;
   v83 = 0;
   v84 = &v83;
   v85 = 0x3032000000;
@@ -5181,8 +5181,8 @@ LABEL_35:
   v80[2] = sub_10015B52C;
   v80[3] = &unk_100AE2420;
   v82 = &v83;
-  v60 = a5;
-  v81 = v60;
+  handlerCopy = handler;
+  v81 = handlerCopy;
   v57 = objc_retainBlock(v80);
   if (qword_100B50AA0 != -1)
   {
@@ -5198,8 +5198,8 @@ LABEL_35:
     goto LABEL_99;
   }
 
-  v61 = [v63 identifier];
-  if (!v61)
+  identifier = [deviceCopy identifier];
+  if (!identifier)
   {
     v45 = CBErrorF();
     v46 = v84[5];
@@ -5210,11 +5210,11 @@ LABEL_35:
 
   v79 = 0;
   v78 = 0;
-  v59 = [[NSUUID alloc] initWithUUIDString:v61];
+  v59 = [[NSUUID alloc] initWithUUIDString:identifier];
   if (!v59)
   {
-    v8 = v61;
-    [v61 UTF8String];
+    v8 = identifier;
+    [identifier UTF8String];
     if (!TextToHardwareAddress())
     {
       goto LABEL_11;
@@ -5248,14 +5248,14 @@ LABEL_111:
 LABEL_11:
   if (dword_100B511E0 <= 20 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
   {
-    v55 = v63;
-    v56 = v65;
+    v55 = deviceCopy;
+    v56 = requestCopy;
     LogPrintF_safe();
   }
 
   v67 = objc_alloc_init(CBDeviceResponse);
-  v69 = [v65 requestFlags];
-  if ((v69 & 0x28) != 0)
+  requestFlags = [requestCopy requestFlags];
+  if ((requestFlags & 0x28) != 0)
   {
     LOBYTE(v89) = 0;
     sub_1000216B4(&v89);
@@ -5283,7 +5283,7 @@ LABEL_114:
     v66 = 0;
   }
 
-  if ((v69 & 0x40) != 0)
+  if ((requestFlags & 0x40) != 0)
   {
     v94[0] = 0;
     v94[1] = 0;
@@ -5377,13 +5377,13 @@ LABEL_27:
       }
     }
 
-    v20 = [v10 UUIDString];
-    [v67 setIdentifier:v20];
+    uUIDString = [v10 UUIDString];
+    [v67 setIdentifier:uUIDString];
 
     v66 |= 0x40u;
   }
 
-  if (v69)
+  if (requestFlags)
   {
     LOBYTE(v89) = 0;
     v21 = sub_10000C7D0();
@@ -5414,7 +5414,7 @@ LABEL_115:
     }
   }
 
-  if ((v69 & 6) != 0)
+  if ((requestFlags & 6) != 0)
   {
     LOBYTE(v89) = 0;
     sub_1000216B4(&v89);
@@ -5424,7 +5424,7 @@ LABEL_115:
       goto LABEL_113;
     }
 
-    if ((v69 & 2) != 0)
+    if ((requestFlags & 2) != 0)
     {
       v29 = sub_10024E134(sub_10015B70C, v64, 0, v24, v25, v26, v27, v28);
       if (v29)
@@ -5436,7 +5436,7 @@ LABEL_115:
       }
     }
 
-    if ((v69 & 4) != 0)
+    if ((requestFlags & 4) != 0)
     {
       v30 = sub_10024E134(sub_10015B7E0, v64, 1, v24, v25, v26, v27, v28);
       if (v30)
@@ -5451,7 +5451,7 @@ LABEL_115:
     sub_10002249C(&v89);
   }
 
-  if ((v69 & 0x20) != 0)
+  if ((requestFlags & 0x20) != 0)
   {
     LODWORD(v90) = 0;
     v89 = 0;
@@ -5469,7 +5469,7 @@ LABEL_115:
     v66 |= 0x20u;
   }
 
-  if ((v69 & 0x80) != 0)
+  if ((requestFlags & 0x80) != 0)
   {
     if (qword_100B51308 != -1)
     {
@@ -5485,13 +5485,13 @@ LABEL_115:
     v66 |= 0x80u;
   }
 
-  if ((v69 & 0x100) == 0)
+  if ((requestFlags & 0x100) == 0)
   {
 LABEL_76:
-    if ((v69 & 0x200) == 0)
+    if ((requestFlags & 0x200) == 0)
     {
 LABEL_79:
-      if ((v69 & 0x400) == 0)
+      if ((requestFlags & 0x400) == 0)
       {
         v36 = v66;
         goto LABEL_87;
@@ -5519,14 +5519,14 @@ LABEL_79:
           v36 = v66 | 0x400;
           sub_10002249C(&v89);
 LABEL_87:
-          if ((v69 & ~v36) != 0)
+          if ((requestFlags & ~v36) != 0)
           {
             v39 = objc_alloc_init(CBStackPerformDeviceRequest);
-            [(CBStackPerformDeviceRequest *)v39 setDevice:v63];
+            [(CBStackPerformDeviceRequest *)v39 setDevice:deviceCopy];
             [(CBStackPerformDeviceRequest *)v39 setCompletedFlags:v36];
-            [(CBStackPerformDeviceRequest *)v39 setCompletionHandler:v60];
+            [(CBStackPerformDeviceRequest *)v39 setCompletionHandler:handlerCopy];
             [(CBStackPerformDeviceRequest *)v39 setConnectionHandle:v64];
-            [(CBStackPerformDeviceRequest *)v39 setRequest:v65];
+            [(CBStackPerformDeviceRequest *)v39 setRequest:requestCopy];
             [(CBStackPerformDeviceRequest *)v39 setResponse:v67];
             v40 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, self->_dispatchQueue);
             [(CBStackPerformDeviceRequest *)v39 setTimer:v40];
@@ -5538,7 +5538,7 @@ LABEL_87:
             handler[5] = v39;
             handler[6] = self;
             dispatch_source_set_event_handler(v40, handler);
-            [v65 timeoutSeconds];
+            [requestCopy timeoutSeconds];
             CUDispatchTimerSet();
             dispatch_activate(v40);
             performDeviceRequests = self->_performDeviceRequests;
@@ -5561,7 +5561,7 @@ LABEL_87:
               LogPrintF_safe();
             }
 
-            (*(v60 + 2))(v60, v67, 0);
+            (*(handlerCopy + 2))(handlerCopy, v67, 0);
           }
 
           goto LABEL_96;
@@ -5617,56 +5617,56 @@ LABEL_99:
   _Block_object_dispose(&v83, 8);
 }
 
-- (void)_completePerformDeviceRequest:(id)a3 error:(id)a4
+- (void)_completePerformDeviceRequest:(id)request error:(id)error
 {
-  v16 = a3;
-  v6 = a4;
+  requestCopy = request;
+  errorCopy = error;
   if (dword_100B511E0 <= 20 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
   {
-    v7 = [v16 device];
-    v8 = [v16 request];
+    device = [requestCopy device];
+    request = [requestCopy request];
     CUPrintNSError();
-    v15 = v14 = v8;
-    v13 = v7;
+    v15 = v14 = request;
+    v13 = device;
     LogPrintF_safe();
   }
 
-  v9 = [v16 timer];
-  v10 = v16;
-  if (v9)
+  timer = [requestCopy timer];
+  v10 = requestCopy;
+  if (timer)
   {
-    dispatch_source_cancel(v9);
-    [v16 setTimer:0];
-    v10 = v16;
+    dispatch_source_cancel(timer);
+    [requestCopy setTimer:0];
+    v10 = requestCopy;
   }
 
-  v11 = [v10 completionHandler];
-  if (v11)
+  completionHandler = [v10 completionHandler];
+  if (completionHandler)
   {
-    if (v6)
+    if (errorCopy)
     {
-      v12 = 0;
+      response = 0;
     }
 
     else
     {
-      v12 = [v16 response];
+      response = [requestCopy response];
     }
 
-    (v11)[2](v11, v12, v6);
-    if (!v6)
+    (completionHandler)[2](completionHandler, response, errorCopy);
+    if (!errorCopy)
     {
     }
 
-    [v16 setCompletionHandler:0];
+    [requestCopy setCompletionHandler:0];
   }
 
-  [(NSMutableSet *)self->_performDeviceRequests removeObject:v16];
+  [(NSMutableSet *)self->_performDeviceRequests removeObject:requestCopy];
 }
 
-- (void)_readRSSIWithConnectionHandle:(_OI_HCI_CONNECTION *)a3 status:(int)a4 rssi:(char)a5
+- (void)_readRSSIWithConnectionHandle:(_OI_HCI_CONNECTION *)handle status:(int)status rssi:(char)rssi
 {
-  HIDWORD(v18) = a5;
+  HIDWORD(v18) = rssi;
   if (dword_100B511E0 <= 20 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
   {
     sub_10080F070(HIDWORD(v18), self);
@@ -5676,13 +5676,13 @@ LABEL_99:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [(NSMutableSet *)self->_performDeviceRequests allObjects];
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  allObjects = [(NSMutableSet *)self->_performDeviceRequests allObjects];
+  v8 = [allObjects countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = *v21;
-    v10 = a4 + 330000;
-    if (!a4)
+    v10 = status + 330000;
+    if (!status)
     {
       v10 = -6700;
     }
@@ -5690,7 +5690,7 @@ LABEL_99:
     LODWORD(v18) = v10;
     if (HIDWORD(v18))
     {
-      v11 = a4 != 0;
+      v11 = status != 0;
     }
 
     else
@@ -5704,30 +5704,30 @@ LABEL_99:
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allObjects);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        if ([v13 connectionHandle] == a3)
+        if ([v13 connectionHandle] == handle)
         {
-          v14 = [v13 request];
-          v15 = [v14 requestFlags];
+          request = [v13 request];
+          requestFlags = [request requestFlags];
 
-          if (v15)
+          if (requestFlags)
           {
             if (v11)
             {
-              v16 = CBErrorF();
-              [(CBStackControllerBTStack *)self _completePerformDeviceRequest:v13 error:v16];
+              response = CBErrorF();
+              [(CBStackControllerBTStack *)self _completePerformDeviceRequest:v13 error:response];
             }
 
             else
             {
-              v16 = [v13 response];
-              [v16 setRssi:HIDWORD(v18)];
+              response = [v13 response];
+              [response setRssi:HIDWORD(v18)];
               v17 = [v13 completedFlags] | 1;
               [v13 setCompletedFlags:v17];
-              if ((v15 & ~v17) == 0)
+              if ((requestFlags & ~v17) == 0)
               {
                 [(CBStackControllerBTStack *)self _completePerformDeviceRequest:v13 error:0];
               }
@@ -5736,21 +5736,21 @@ LABEL_99:
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v8 = [allObjects countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)_readTxPowerWithFlags:(unsigned int)a3 status:(int)a4 connectionHandle:(_OI_HCI_CONNECTION *)a5 txPowerLevel:(char)a6
+- (void)_readTxPowerWithFlags:(unsigned int)flags status:(int)status connectionHandle:(_OI_HCI_CONNECTION *)handle txPowerLevel:(char)level
 {
-  v23 = a6;
-  v7 = *&a4;
+  levelCopy = level;
+  v7 = *&status;
   if (dword_100B511E0 <= 20 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
   {
     v8 = CUPrintFlags32();
-    v21 = v23;
+    v21 = levelCopy;
     v22 = [(NSMutableSet *)self->_performDeviceRequests count];
     v19 = v8;
     v20 = v7;
@@ -5776,12 +5776,12 @@ LABEL_99:
         }
 
         v13 = *(*(&v26 + 1) + 8 * i);
-        if ([v13 connectionHandle] == a5)
+        if ([v13 connectionHandle] == handle)
         {
-          v14 = [v13 request];
-          v15 = [v14 requestFlags];
+          request = [v13 request];
+          requestFlags = [request requestFlags];
 
-          if ((v15 & a3) != 0)
+          if ((requestFlags & flags) != 0)
           {
             if (v7)
             {
@@ -5791,21 +5791,21 @@ LABEL_99:
 
             else
             {
-              v17 = [v13 response];
-              v16 = v17;
-              if ((a3 & 2) != 0)
+              response = [v13 response];
+              v16 = response;
+              if ((flags & 2) != 0)
               {
-                [v17 setTxPower:v23];
+                [response setTxPower:levelCopy];
               }
 
-              if ((a3 & 4) != 0)
+              if ((flags & 4) != 0)
               {
-                [v16 setTxPowerMax:v23];
+                [v16 setTxPowerMax:levelCopy];
               }
 
-              v18 = [v13 completedFlags] | a3;
+              v18 = [v13 completedFlags] | flags;
               [v13 setCompletedFlags:v18];
-              if ((v15 & ~v18) == 0)
+              if ((requestFlags & ~v18) == 0)
               {
                 [(CBStackControllerBTStack *)self _completePerformDeviceRequest:v13 error:0];
               }
@@ -5821,15 +5821,15 @@ LABEL_99:
   }
 }
 
-- (BOOL)sendRelayMessageType:(unsigned __int8)a3 messageData:(id)a4 conduitDevice:(id)a5 destinationDevice:(id)a6 error:(id *)a7
+- (BOOL)sendRelayMessageType:(unsigned __int8)type messageData:(id)data conduitDevice:(id)device destinationDevice:(id)destinationDevice error:(id *)error
 {
-  v10 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  typeCopy = type;
+  dataCopy = data;
+  deviceCopy = device;
+  destinationDeviceCopy = destinationDevice;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v15 = [v13 identifier];
-  v16 = [(CBStackControllerBTStack *)self _btDeviceWithID:v15 error:a7];
+  identifier = [deviceCopy identifier];
+  v16 = [(CBStackControllerBTStack *)self _btDeviceWithID:identifier error:error];
 
   if (!v16)
   {
@@ -5837,16 +5837,16 @@ LABEL_99:
     goto LABEL_10;
   }
 
-  v17 = [v14 identifier];
-  v18 = v17;
-  if (v17)
+  identifier2 = [destinationDeviceCopy identifier];
+  v18 = identifier2;
+  if (identifier2)
   {
     v26 = 0;
     v25 = 0;
-    [v17 UTF8String];
+    [identifier2 UTF8String];
     if (TextToHardwareAddress())
     {
-      if (!a7)
+      if (!error)
       {
         goto LABEL_21;
       }
@@ -5854,7 +5854,7 @@ LABEL_99:
 
     else
     {
-      v19 = [v12 length];
+      v19 = [dataCopy length];
       v20 = v19;
       if (v19 < 0x3E7)
       {
@@ -5863,14 +5863,14 @@ LABEL_99:
           sub_10080ED24();
         }
 
-        v21 = sub_100335068(off_100B50948, v16, &v25, v10, v20, [v12 bytes]);
+        v21 = sub_100335068(off_100B50948, v16, &v25, typeCopy, v20, [dataCopy bytes]);
         v22 = 1;
         if (!v21 || v21 == -310000)
         {
           goto LABEL_9;
         }
 
-        if (a7)
+        if (error)
         {
           v24 = CBErrorF();
           goto LABEL_20;
@@ -5881,14 +5881,14 @@ LABEL_21:
         goto LABEL_9;
       }
 
-      if (!a7)
+      if (!error)
       {
         goto LABEL_21;
       }
     }
   }
 
-  else if (!a7)
+  else if (!error)
   {
     goto LABEL_21;
   }
@@ -5896,21 +5896,21 @@ LABEL_21:
   v24 = CBErrorF();
 LABEL_20:
   v22 = 0;
-  *a7 = v24;
+  *error = v24;
 LABEL_9:
 
 LABEL_10:
   return v22;
 }
 
-- (BOOL)sendSmartRoutingInformation:(id)a3 device:(id)a4 error:(id *)a5
+- (BOOL)sendSmartRoutingInformation:(id)information device:(id)device error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 identifier];
-  if (!v10)
+  informationCopy = information;
+  deviceCopy = device;
+  identifier = [deviceCopy identifier];
+  if (!identifier)
   {
-    if (a5)
+    if (error)
     {
       goto LABEL_18;
     }
@@ -5918,16 +5918,16 @@ LABEL_10:
     goto LABEL_19;
   }
 
-  v11 = [(CBStackControllerBTStack *)self _btDeviceWithID:v10 error:0];
+  v11 = [(CBStackControllerBTStack *)self _btDeviceWithID:identifier error:0];
   if (!v11)
   {
     goto LABEL_12;
   }
 
-  v12 = [v8 length];
+  v12 = [informationCopy length];
   if (v12 >= 0x3E7)
   {
-    if (a5)
+    if (error)
     {
       goto LABEL_18;
     }
@@ -5945,15 +5945,15 @@ LABEL_10:
     sub_10080ED10();
   }
 
-  v13 = sub_10033F444(off_100B50948, v11, [v8 bytes], v12);
+  v13 = sub_10033F444(off_100B50948, v11, [informationCopy bytes], v12);
   LOBYTE(v11) = 1;
   if (v13 && v13 != -310000)
   {
-    if (a5)
+    if (error)
     {
 LABEL_18:
       CBErrorF();
-      *a5 = LOBYTE(v11) = 0;
+      *error = LOBYTE(v11) = 0;
       goto LABEL_12;
     }
 
@@ -5966,14 +5966,14 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)sendConversationDetectMessage:(id)a3 device:(id)a4 error:(id *)a5
+- (BOOL)sendConversationDetectMessage:(id)message device:(id)device error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 identifier];
-  if (!v10)
+  messageCopy = message;
+  deviceCopy = device;
+  identifier = [deviceCopy identifier];
+  if (!identifier)
   {
-    if (a5)
+    if (error)
     {
       goto LABEL_18;
     }
@@ -5981,16 +5981,16 @@ LABEL_12:
     goto LABEL_19;
   }
 
-  v11 = [(CBStackControllerBTStack *)self _btDeviceWithID:v10 error:0];
+  v11 = [(CBStackControllerBTStack *)self _btDeviceWithID:identifier error:0];
   if (!v11)
   {
     goto LABEL_12;
   }
 
-  v12 = [v8 length];
+  v12 = [messageCopy length];
   if (v12 >= 0x3E7)
   {
-    if (a5)
+    if (error)
     {
       goto LABEL_18;
     }
@@ -6008,15 +6008,15 @@ LABEL_12:
     sub_10080ED10();
   }
 
-  v13 = sub_10033F61C(off_100B50948, v11, [v8 bytes], v12);
+  v13 = sub_10033F61C(off_100B50948, v11, [messageCopy bytes], v12);
   LOBYTE(v11) = 1;
   if (v13 && v13 != -310000)
   {
-    if (a5)
+    if (error)
     {
 LABEL_18:
       CBErrorF();
-      *a5 = LOBYTE(v11) = 0;
+      *error = LOBYTE(v11) = 0;
       goto LABEL_12;
     }
 
@@ -6029,27 +6029,27 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)sendAudioAccessoryConfig:(id)a3 device:(id)a4 error:(id *)a5
+- (BOOL)sendAudioAccessoryConfig:(id)config device:(id)device error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 identifier];
-  if (v10)
+  configCopy = config;
+  deviceCopy = device;
+  identifier = [deviceCopy identifier];
+  if (identifier)
   {
-    v11 = [(CBStackControllerBTStack *)self _btDeviceWithID:v10 error:0];
+    v11 = [(CBStackControllerBTStack *)self _btDeviceWithID:identifier error:0];
     if (v11)
     {
-      v55 = a5;
+      errorCopy = error;
       v56 = 0;
-      v12 = [[AudioAccessoryDeviceConfig alloc] initWithXPCObject:v8 error:&v56];
+      v12 = [[AudioAccessoryDeviceConfig alloc] initWithXPCObject:configCopy error:&v56];
       v13 = v56;
       if (v13)
       {
-        if (v55)
+        if (errorCopy)
         {
 LABEL_157:
           CBErrorF();
-          *v55 = LOBYTE(v11) = 0;
+          *errorCopy = LOBYTE(v11) = 0;
 LABEL_150:
 
           goto LABEL_151;
@@ -6074,7 +6074,7 @@ LABEL_158:
 
         if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
         {
-          v33 = v10;
+          v33 = identifier;
           v44 = v14;
           LogPrintF_safe();
         }
@@ -6106,7 +6106,7 @@ LABEL_158:
 
         if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
         {
-          v33 = v10;
+          v33 = identifier;
           v44 = v16;
           LogPrintF_safe();
         }
@@ -6124,7 +6124,7 @@ LABEL_158:
         v17 = [(AudioAccessoryDeviceConfig *)v12 autoANCStrength]- 1000;
         if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
         {
-          v34 = v10;
+          v34 = identifier;
           v45 = v17;
           LogPrintF_safe();
         }
@@ -6151,7 +6151,7 @@ LABEL_158:
 
         if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
         {
-          v35 = v10;
+          v35 = identifier;
           v46 = v18;
           LogPrintF_safe();
         }
@@ -6178,7 +6178,7 @@ LABEL_158:
 
         if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
         {
-          v36 = v10;
+          v36 = identifier;
           v47 = v19;
           LogPrintF_safe();
         }
@@ -6205,7 +6205,7 @@ LABEL_158:
 
         if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
         {
-          v37 = v10;
+          v37 = identifier;
           v48 = v20;
           LogPrintF_safe();
         }
@@ -6232,7 +6232,7 @@ LABEL_158:
 
         if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
         {
-          v38 = v10;
+          v38 = identifier;
           v49 = v21;
           LogPrintF_safe();
         }
@@ -6247,16 +6247,16 @@ LABEL_158:
 
       if ([(AudioAccessoryDeviceConfig *)v12 hearingAidToggle:v38]&& ![(AudioAccessoryDeviceConfig *)v12 hearingAidEnrolled])
       {
-        v24 = [(AudioAccessoryDeviceConfig *)v12 hearingAidToggle];
+        hearingAidToggle = [(AudioAccessoryDeviceConfig *)v12 hearingAidToggle];
         v25 = sub_10054FBB0(v11);
         if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
         {
-          v39 = v10;
-          v50 = [(AudioAccessoryDeviceConfig *)v12 hearingAidToggle];
+          v39 = identifier;
+          hearingAidToggle2 = [(AudioAccessoryDeviceConfig *)v12 hearingAidToggle];
           LogPrintF_safe();
         }
 
-        v26 = v25 | (v24 << 8);
+        v26 = v25 | (hearingAidToggle << 8);
         if (qword_100B50950 == -1)
         {
           goto LABEL_95;
@@ -6282,7 +6282,7 @@ LABEL_96:
 
             if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
             {
-              v40 = v10;
+              v40 = identifier;
               v51 = v27;
               LogPrintF_safe();
             }
@@ -6309,7 +6309,7 @@ LABEL_96:
 
             if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
             {
-              v41 = v10;
+              v41 = identifier;
               v52 = v28;
               LogPrintF_safe();
             }
@@ -6336,7 +6336,7 @@ LABEL_96:
 
             if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
             {
-              v42 = v10;
+              v42 = identifier;
               v53 = v29;
               LogPrintF_safe();
             }
@@ -6363,7 +6363,7 @@ LABEL_96:
 
             if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
             {
-              v43 = v10;
+              v43 = identifier;
               v54 = v30;
               LogPrintF_safe();
             }
@@ -6398,7 +6398,7 @@ LABEL_96:
             goto LABEL_150;
           }
 
-          if (v55)
+          if (errorCopy)
           {
             goto LABEL_157;
           }
@@ -6407,15 +6407,15 @@ LABEL_96:
         }
 
         v22 = sub_10054FC88(v11);
-        v23 = [(AudioAccessoryDeviceConfig *)v12 hearingAidEnrolled];
+        hearingAidEnrolled = [(AudioAccessoryDeviceConfig *)v12 hearingAidEnrolled];
         if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
         {
-          v39 = v10;
-          v50 = [(AudioAccessoryDeviceConfig *)v12 hearingAidEnrolled];
+          v39 = identifier;
+          hearingAidToggle2 = [(AudioAccessoryDeviceConfig *)v12 hearingAidEnrolled];
           LogPrintF_safe();
         }
 
-        v26 = v23 | (v22 << 8);
+        v26 = hearingAidEnrolled | (v22 << 8);
         if (qword_100B50950 == -1)
         {
 LABEL_95:
@@ -6429,10 +6429,10 @@ LABEL_95:
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     CBErrorF();
-    *a5 = LOBYTE(v11) = 0;
+    *error = LOBYTE(v11) = 0;
   }
 
   else
@@ -6445,15 +6445,15 @@ LABEL_151:
   return v11;
 }
 
-- (BOOL)sendAudioAccessoryEventMessage:(id)a3 eventType:(unsigned __int8)a4 device:(id)a5 error:(id *)a6
+- (BOOL)sendAudioAccessoryEventMessage:(id)message eventType:(unsigned __int8)type device:(id)device error:(id *)error
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = [v11 identifier];
-  if (!v12)
+  typeCopy = type;
+  messageCopy = message;
+  deviceCopy = device;
+  identifier = [deviceCopy identifier];
+  if (!identifier)
   {
-    if (!a6)
+    if (!error)
     {
       goto LABEL_53;
     }
@@ -6463,16 +6463,16 @@ LABEL_51:
     goto LABEL_47;
   }
 
-  v13 = [(CBStackControllerBTStack *)self _btDeviceWithID:v12 error:0];
+  v13 = [(CBStackControllerBTStack *)self _btDeviceWithID:identifier error:0];
   if (!v13)
   {
     goto LABEL_44;
   }
 
-  v14 = [v10 length];
+  v14 = [messageCopy length];
   if (v14 >= 0x3E7)
   {
-    if (!a6)
+    if (!error)
     {
       goto LABEL_53;
     }
@@ -6485,36 +6485,36 @@ LABEL_51:
     LogPrintF_safe();
   }
 
-  if (v8 > 5)
+  if (typeCopy > 5)
   {
-    if (v8 > 11)
+    if (typeCopy > 11)
     {
-      if (v8 == 12)
+      if (typeCopy == 12)
       {
         if (qword_100B50950 != -1)
         {
           sub_10080ED10();
         }
 
-        v15 = sub_100340694(off_100B50948, v13, [v10 bytes], v14);
+        v15 = sub_100340694(off_100B50948, v13, [messageCopy bytes], v14);
         goto LABEL_42;
       }
 
-      if (v8 == 13)
+      if (typeCopy == 13)
       {
         if (qword_100B50950 != -1)
         {
           sub_10080ED10();
         }
 
-        v15 = sub_10034086C(off_100B50948, v13, [v10 bytes], v14);
+        v15 = sub_10034086C(off_100B50948, v13, [messageCopy bytes], v14);
         goto LABEL_42;
       }
     }
 
     else
     {
-      if (v8 == 6)
+      if (typeCopy == 6)
       {
         if (qword_100B50950 != -1)
         {
@@ -6525,26 +6525,26 @@ LABEL_51:
         goto LABEL_42;
       }
 
-      if (v8 == 8)
+      if (typeCopy == 8)
       {
         if (qword_100B50950 != -1)
         {
           sub_10080ED10();
         }
 
-        v15 = sub_10033F7F4(off_100B50948, v13, [v10 bytes], v14);
+        v15 = sub_10033F7F4(off_100B50948, v13, [messageCopy bytes], v14);
         goto LABEL_42;
       }
     }
 
 LABEL_45:
-    if (a6)
+    if (error)
     {
-      sub_10015D610(v8);
+      sub_10015D610(typeCopy);
       v17 = CBErrorF();
 LABEL_47:
       LOBYTE(v13) = 0;
-      *a6 = v17;
+      *error = v17;
       goto LABEL_44;
     }
 
@@ -6553,16 +6553,16 @@ LABEL_53:
     goto LABEL_44;
   }
 
-  if (v8 > 3)
+  if (typeCopy > 3)
   {
-    if (v8 == 4)
+    if (typeCopy == 4)
     {
       if (qword_100B50950 != -1)
       {
         sub_10080ED10();
       }
 
-      v15 = sub_10033FBB0(off_100B50948, v13, v14, [v10 bytes]);
+      v15 = sub_10033FBB0(off_100B50948, v13, v14, [messageCopy bytes]);
     }
 
     else
@@ -6572,22 +6572,22 @@ LABEL_53:
         sub_10080ED10();
       }
 
-      v15 = sub_10033FFAC(off_100B50948, v13, v14, [v10 bytes]);
+      v15 = sub_10033FFAC(off_100B50948, v13, v14, [messageCopy bytes]);
     }
   }
 
   else
   {
-    if (v8 != 2)
+    if (typeCopy != 2)
     {
-      if (v8 == 3)
+      if (typeCopy == 3)
       {
         if (qword_100B50950 != -1)
         {
           sub_10080ED10();
         }
 
-        v15 = sub_10033F444(off_100B50948, v13, [v10 bytes], v14);
+        v15 = sub_10033F444(off_100B50948, v13, [messageCopy bytes], v14);
         goto LABEL_42;
       }
 
@@ -6599,14 +6599,14 @@ LABEL_53:
       sub_10080ED10();
     }
 
-    v15 = sub_10033F61C(off_100B50948, v13, [v10 bytes], v14);
+    v15 = sub_10033F61C(off_100B50948, v13, [messageCopy bytes], v14);
   }
 
 LABEL_42:
   LOBYTE(v13) = 1;
   if (v15 && v15 != -310000)
   {
-    if (!a6)
+    if (!error)
     {
       goto LABEL_53;
     }
@@ -6619,29 +6619,29 @@ LABEL_44:
   return v13;
 }
 
-- (BOOL)updateControllerInfo:(id)a3 error:(id *)a4
+- (BOOL)updateControllerInfo:(id)info error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  infoCopy = info;
+  v7 = infoCopy;
+  if (infoCopy)
   {
-    self->_stackControllerInfoCloudSyncStatus = [v6 cloudSyncStatus];
+    self->_stackControllerInfoCloudSyncStatus = [infoCopy cloudSyncStatus];
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = CBErrorF();
+    *error = CBErrorF();
   }
 
   return v7 != 0;
 }
 
-- (BOOL)isDeviceConnected:(id)a3 error:(id *)a4
+- (BOOL)isDeviceConnected:(id)connected error:(id *)error
 {
-  v6 = [a3 identifier];
-  if (v6)
+  identifier = [connected identifier];
+  if (identifier)
   {
-    v7 = [(CBStackControllerBTStack *)self _btUUIDWithID:v6 error:0];
+    v7 = [(CBStackControllerBTStack *)self _btUUIDWithID:identifier error:0];
     if (qword_100B508B0 != -1)
     {
       sub_10080EC54();
@@ -6652,10 +6652,10 @@ LABEL_44:
     v9 = sub_100050290(v8, v11);
   }
 
-  else if (a4)
+  else if (error)
   {
     CBErrorF();
-    *a4 = v9 = 0;
+    *error = v9 = 0;
   }
 
   else
@@ -6720,9 +6720,9 @@ LABEL_44:
   }
 }
 
-- (BOOL)addPairingClient:(id)a3 error:(id *)a4
+- (BOOL)addPairingClient:(id)client error:(id *)error
 {
-  v6 = a3;
+  clientCopy = client;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   pairingClients = self->_pairingClients;
   if (!pairingClients)
@@ -6734,7 +6734,7 @@ LABEL_44:
     pairingClients = self->_pairingClients;
   }
 
-  [(CBPairable *)pairingClients addObject:v6];
+  [(CBPairable *)pairingClients addObject:clientCopy];
   if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
   {
     [(CBPairable *)self->_pairingClients count];
@@ -6754,7 +6754,7 @@ LABEL_44:
     v23[2] = sub_10015DCD4;
     v23[3] = &unk_100AE25F0;
     v23[4] = &v24;
-    v23[5] = a4;
+    v23[5] = error;
     v11 = objc_retainBlock(v23);
     if (self->_btSessionHandle)
     {
@@ -6820,11 +6820,11 @@ LABEL_28:
   return v10;
 }
 
-- (void)removePairingClient:(id)a3
+- (void)removePairingClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  [(CBPairable *)self->_pairingClients removeObject:v5];
+  [(CBPairable *)self->_pairingClients removeObject:clientCopy];
   v4 = [(CBPairable *)self->_pairingClients count];
   if (dword_100B511E0 <= 30 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
   {
@@ -6837,15 +6837,15 @@ LABEL_28:
   }
 }
 
-- (BOOL)pairingContinueWithPairingInfo:(id)a3 error:(id *)a4
+- (BOOL)pairingContinueWithPairingInfo:(id)info error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 device];
-  v8 = v7;
-  if (v7)
+  infoCopy = info;
+  device = [infoCopy device];
+  v8 = device;
+  if (device)
   {
-    v9 = [v7 identifier];
-    v10 = [(CBStackControllerBTStack *)self _btDeviceWithID:v9 error:a4];
+    identifier = [device identifier];
+    v10 = [(CBStackControllerBTStack *)self _btDeviceWithID:identifier error:error];
     if (!v10)
     {
 LABEL_20:
@@ -6863,20 +6863,20 @@ LABEL_20:
       v11 = sub_1006DB834(off_100B50F80, self->_pairingAgentHandle);
       if (v11)
       {
-        v12 = [v6 error];
-        if (!v12)
+        error = [infoCopy error];
+        if (!error)
         {
-          v16 = [v6 pin];
-          v17 = [v16 UTF8String];
+          v16 = [infoCopy pin];
+          uTF8String = [v16 UTF8String];
 
-          if (v17)
+          if (uTF8String)
           {
-            sub_1006E5ED8(v19, v17);
+            sub_1006E5ED8(v19, uTF8String);
             sub_1006D8AA8(v11, v10);
           }
         }
 
-        if ([v12 code] == -6723)
+        if ([error code] == -6723)
         {
           v13 = sub_1006D8A50(v11);
           LOBYTE(v10) = 1;
@@ -6885,7 +6885,7 @@ LABEL_20:
             goto LABEL_19;
           }
 
-          if (a4)
+          if (error)
           {
             goto LABEL_12;
           }
@@ -6893,8 +6893,8 @@ LABEL_20:
 
         else
         {
-          v14 = [v6 error];
-          v15 = sub_1006D8CE8(v11, v10, v14 != 0);
+          error2 = [infoCopy error];
+          v15 = sub_1006D8CE8(v11, v10, error2 != 0);
 
           LOBYTE(v10) = 1;
           if (!v15 || v15 == -310000)
@@ -6902,11 +6902,11 @@ LABEL_20:
             goto LABEL_19;
           }
 
-          if (a4)
+          if (error)
           {
 LABEL_12:
             CBErrorF();
-            *a4 = LOBYTE(v10) = 0;
+            *error = LOBYTE(v10) = 0;
 LABEL_19:
 
             goto LABEL_20;
@@ -6917,16 +6917,16 @@ LABEL_19:
         goto LABEL_19;
       }
 
-      if (a4)
+      if (error)
       {
 LABEL_27:
         CBErrorF();
-        *a4 = LOBYTE(v10) = 0;
+        *error = LOBYTE(v10) = 0;
         goto LABEL_20;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       goto LABEL_27;
     }
@@ -6935,10 +6935,10 @@ LABEL_27:
     goto LABEL_20;
   }
 
-  if (a4)
+  if (error)
   {
     CBErrorF();
-    *a4 = LOBYTE(v10) = 0;
+    *error = LOBYTE(v10) = 0;
   }
 
   else
@@ -6951,7 +6951,7 @@ LABEL_21:
   return v10;
 }
 
-- (void)_pairingCompletedWithBTDevice:(void *)a3 result:(int)a4
+- (void)_pairingCompletedWithBTDevice:(void *)device result:(int)result
 {
   v22 = 0u;
   v23 = 0u;
@@ -6973,24 +6973,24 @@ LABEL_21:
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
-        v12 = [v11 pairingCompletedHandler];
-        if (v12)
+        pairingCompletedHandler = [v11 pairingCompletedHandler];
+        if (pairingCompletedHandler)
         {
-          v13 = [v11 dispatchQueue];
-          dispatch_assert_queue_V2(v13);
+          dispatchQueue = [v11 dispatchQueue];
+          dispatch_assert_queue_V2(dispatchQueue);
 
           if (!v8)
           {
             v14 = [CBDevice alloc];
             v21 = 0;
-            v8 = [v14 initWithBTStackDevice:a3 error:&v21];
+            v8 = [v14 initWithBTStackDevice:device error:&v21];
             v15 = v21;
             v16 = v15;
             if (!v8)
             {
               if (dword_100B511E0 <= 90 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
               {
-                sub_1000E5A58(a3, &__p);
+                sub_1000E5A58(device, &__p);
                 v18 = CUPrintNSError();
                 LogPrintF_safe();
 
@@ -7004,7 +7004,7 @@ LABEL_21:
             }
           }
 
-          if (a4)
+          if (result)
           {
             v17 = CBErrorF();
           }
@@ -7014,7 +7014,7 @@ LABEL_21:
             v17 = 0;
           }
 
-          (v12)[2](v12, v8, v17);
+          (pairingCompletedHandler)[2](pairingCompletedHandler, v8, v17);
         }
       }
 
@@ -7035,10 +7035,10 @@ LABEL_23:
   }
 }
 
-- (void)_pairingPromptWithBTDevice:(void *)a3 pairingType:(int64_t)a4 pinString:(id)a5 flags:(unsigned int)a6
+- (void)_pairingPromptWithBTDevice:(void *)device pairingType:(int64_t)type pinString:(id)string flags:(unsigned int)flags
 {
-  v6 = *&a6;
-  v9 = a5;
+  v6 = *&flags;
+  stringCopy = string;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -7059,24 +7059,24 @@ LABEL_23:
         }
 
         v14 = *(*(&v27 + 1) + 8 * i);
-        v15 = [v14 pairingPromptHandler];
-        if (v15)
+        pairingPromptHandler = [v14 pairingPromptHandler];
+        if (pairingPromptHandler)
         {
-          v16 = [v14 dispatchQueue];
-          dispatch_assert_queue_V2(v16);
+          dispatchQueue = [v14 dispatchQueue];
+          dispatch_assert_queue_V2(dispatchQueue);
 
           if (!v11)
           {
             v17 = [CBDevice alloc];
             v26 = 0;
-            v11 = [v17 initWithBTStackDevice:a3 error:&v26];
+            v11 = [v17 initWithBTStackDevice:device error:&v26];
             v18 = v26;
             v19 = v18;
             if (!v11)
             {
               if (dword_100B511E0 <= 90 && (dword_100B511E0 != -1 || _LogCategory_Initialize()))
               {
-                sub_1000E5A58(a3, &__p);
+                sub_1000E5A58(device, &__p);
                 v21 = CUPrintNSError();
                 LogPrintF_safe();
 
@@ -7093,9 +7093,9 @@ LABEL_23:
           v20 = objc_alloc_init(CBPairingInfo);
           [v20 setDevice:v11];
           [v20 setFlags:v6];
-          [v20 setPairingType:a4];
-          [v20 setPin:v9];
-          (v15)[2](v15, v20);
+          [v20 setPairingType:type];
+          [v20 setPin:stringCopy];
+          (pairingPromptHandler)[2](pairingPromptHandler, v20);
         }
       }
 

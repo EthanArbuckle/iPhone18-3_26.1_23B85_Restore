@@ -1,81 +1,81 @@
 @interface LACUIPackagedViewStateController
-- (LACUIPackagedViewStateController)initWithLayer:(id)a3;
-- (LACUIPackagedViewStateController)initWithPlatformStateController:(id)a3;
-- (void)setState:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (LACUIPackagedViewStateController)initWithLayer:(id)layer;
+- (LACUIPackagedViewStateController)initWithPlatformStateController:(id)controller;
+- (void)setState:(id)state animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation LACUIPackagedViewStateController
 
-- (LACUIPackagedViewStateController)initWithLayer:(id)a3
+- (LACUIPackagedViewStateController)initWithLayer:(id)layer
 {
-  v4 = a3;
-  v5 = [[LACUIPackagedViewPlatformStateController alloc] initWithLayer:v4];
+  layerCopy = layer;
+  v5 = [[LACUIPackagedViewPlatformStateController alloc] initWithLayer:layerCopy];
 
   v6 = [(LACUIPackagedViewStateController *)self initWithPlatformStateController:v5];
   return v6;
 }
 
-- (LACUIPackagedViewStateController)initWithPlatformStateController:(id)a3
+- (LACUIPackagedViewStateController)initWithPlatformStateController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = LACUIPackagedViewStateController;
   v6 = [(LACUIPackagedViewStateController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_stateController, a3);
+    objc_storeStrong(&v6->_stateController, controller);
     [(LACUIPackagedViewPlatformStateController *)v7->_stateController setDelegate:v7];
   }
 
   return v7;
 }
 
-- (void)setState:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setState:(id)state animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  stateCopy = state;
+  completionCopy = completion;
   stateController = self->_stateController;
-  v11 = [v8 name];
-  LOBYTE(stateController) = [(LACUIPackagedViewPlatformStateController *)stateController hasState:v11];
+  name = [stateCopy name];
+  LOBYTE(stateController) = [(LACUIPackagedViewPlatformStateController *)stateController hasState:name];
 
   if (stateController)
   {
     v12 = [LACUIPackagedViewState alloc];
-    v13 = [(LACUIPackagedViewPlatformStateController *)self->_stateController state];
-    v14 = [(LACUIPackagedViewState *)v12 initWithName:v13];
+    state = [(LACUIPackagedViewPlatformStateController *)self->_stateController state];
+    v14 = [(LACUIPackagedViewState *)v12 initWithName:state];
 
-    v15 = [(LACUIPackagedViewState *)v14 name];
-    v16 = [v8 containsStateNamed:v15];
+    name2 = [(LACUIPackagedViewState *)v14 name];
+    v16 = [stateCopy containsStateNamed:name2];
 
     if (v16)
     {
-      v9[2](v9, 1);
+      completionCopy[2](completionCopy, 1);
     }
 
     else
     {
       [(LACUIPackagedViewStateController *)self _clearPendingTransitionWithFlag:0];
-      v17 = [[LACUIPackagedViewStateTransition alloc] initWithFromState:v14 toState:v8 completion:v9];
+      v17 = [[LACUIPackagedViewStateTransition alloc] initWithFromState:v14 toState:stateCopy completion:completionCopy];
       pendingStateTransition = self->_pendingStateTransition;
       self->_pendingStateTransition = v17;
 
       v19 = self->_stateController;
-      v20 = [v8 name];
-      [(LACUIPackagedViewPlatformStateController *)v19 setState:v20 speed:v6];
+      name3 = [stateCopy name];
+      [(LACUIPackagedViewPlatformStateController *)v19 setState:name3 speed:animatedCopy];
 
-      if (v6)
+      if (animatedCopy)
       {
-        v21 = [v8 animationOptions];
-        v22 = [v21 maxDuration];
-        v23 = v22;
-        if (!v22)
+        animationOptions = [stateCopy animationOptions];
+        maxDuration = [animationOptions maxDuration];
+        v23 = maxDuration;
+        if (!maxDuration)
         {
-          v22 = &unk_2868271A8;
+          maxDuration = &unk_2868271A8;
         }
 
-        [v22 floatValue];
+        [maxDuration floatValue];
         v25 = v24;
 
         if (v25 > 0.0)
@@ -90,7 +90,7 @@
             block[2] = __65__LACUIPackagedViewStateController_setState_animated_completion___block_invoke;
             block[3] = &unk_27981E848;
             objc_copyWeak(&v30, &location);
-            v29 = v8;
+            v29 = stateCopy;
             dispatch_after(v27, MEMORY[0x277D85CD0], block);
 
             objc_destroyWeak(&v30);
@@ -108,7 +108,7 @@
 
   else
   {
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 

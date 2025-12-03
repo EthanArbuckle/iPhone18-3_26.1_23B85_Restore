@@ -1,30 +1,30 @@
 @interface POMutableWrappedTokenJWTBody
-- (void)addCustomClaims:(id)a3;
-- (void)setCipherText:(id)a3;
-- (void)setEncapsulatedKey:(id)a3;
+- (void)addCustomClaims:(id)claims;
+- (void)setCipherText:(id)text;
+- (void)setEncapsulatedKey:(id)key;
 @end
 
 @implementation POMutableWrappedTokenJWTBody
 
-- (void)setEncapsulatedKey:(id)a3
+- (void)setEncapsulatedKey:(id)key
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"encapsulatedKey"];
+  keyCopy = key;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:keyCopy forKeyedSubscript:@"encapsulatedKey"];
 }
 
-- (void)setCipherText:(id)a3
+- (void)setCipherText:(id)text
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"cipherText"];
+  textCopy = text;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:textCopy forKeyedSubscript:@"cipherText"];
 }
 
-- (void)addCustomClaims:(id)a3
+- (void)addCustomClaims:(id)claims
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 addEntriesFromDictionary:v4];
+  claimsCopy = claims;
+  data = [(_POJWTBodyBase *)self data];
+  [data addEntriesFromDictionary:claimsCopy];
 }
 
 @end

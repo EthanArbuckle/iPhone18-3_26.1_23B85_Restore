@@ -1,13 +1,13 @@
 @interface TMTimeZoneManager
-- (BOOL)isSourceAvailable:(id)a3;
-- (TMTimeZoneManager)initWithRules:(id)a3 delegate:(id)a4;
+- (BOOL)isSourceAvailable:(id)available;
+- (TMTimeZoneManager)initWithRules:(id)rules delegate:(id)delegate;
 - (id)description;
 - (void)dealloc;
-- (void)reset:(id)a3;
+- (void)reset:(id)reset;
 - (void)sendStateAnalytics;
-- (void)setSourceAvailable:(id)a3;
-- (void)setSourceTimeZone:(id)a3;
-- (void)setSourceUnavailable:(id)a3;
+- (void)setSourceAvailable:(id)available;
+- (void)setSourceTimeZone:(id)zone;
+- (void)setSourceUnavailable:(id)unavailable;
 @end
 
 @implementation TMTimeZoneManager
@@ -39,18 +39,18 @@
         v11 = *(*(&v17 + 1) + 8 * i);
         v12 = [-[NSMutableDictionary objectForKeyedSubscript:](self->inputs objectForKeyedSubscript:{v11), "olsonName"}];
         v13 = [(NSMutableSet *)self->availableSources containsObject:v11];
-        v14 = [v11 UTF8String];
+        uTF8String = [v11 UTF8String];
         if (v12)
         {
-          v15 = [v12 UTF8String];
+          uTF8String2 = [v12 UTF8String];
         }
 
         else
         {
-          v15 = "--";
+          uTF8String2 = "--";
         }
 
-        [v5 appendFormat:@"%18s %d %s, \n", v14, v13, v15];
+        [v5 appendFormat:@"%18s %d %s, \n", uTF8String, v13, uTF8String2];
       }
 
       v8 = [(NSOrderedSet *)rules countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -90,15 +90,15 @@
         v10 = [v8 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
         if (v9)
         {
-          v11 = [v9 UTF8String];
+          uTF8String = [v9 UTF8String];
         }
 
         else
         {
-          v11 = "--";
+          uTF8String = "--";
         }
 
-        [v3 setValue:+[NSString stringWithUTF8String:](NSString forKey:{"stringWithUTF8String:", v11), v10}];
+        [v3 setValue:+[NSString stringWithUTF8String:](NSString forKey:{"stringWithUTF8String:", uTF8String), v10}];
       }
 
       v5 = [(NSOrderedSet *)obj countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -107,10 +107,10 @@
     while (v5);
   }
 
-  v12 = [[(TMTimeZoneManager *)self currentTimeZone] olsonName];
-  if (v12)
+  olsonName = [[(TMTimeZoneManager *)self currentTimeZone] olsonName];
+  if (olsonName)
   {
-    v13 = v12;
+    v13 = olsonName;
   }
 
   else
@@ -122,13 +122,13 @@
   AnalyticsSendEventLazy();
 }
 
-- (void)reset:(id)a3
+- (void)reset:(id)reset
 {
   v5 = qword_100033218;
   if (os_log_type_enabled(qword_100033218, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = self;
+    resetCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@", &v7, 0xCu);
   }
 
@@ -136,13 +136,13 @@
   if (os_log_type_enabled(qword_100033220, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = a3;
+    resetCopy = reset;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "TZ,reset,reason,%@", &v7, 0xCu);
   }
 
   [(TMTimeZoneManager *)self setCurrentTimeZone:0];
   [(NSMutableDictionary *)self->inputs removeAllObjects];
-  [(TMTimeZoneManagerDelegate *)self->_delegate timeZoneManager:self didReset:a3];
+  [(TMTimeZoneManagerDelegate *)self->_delegate timeZoneManager:self didReset:reset];
 }
 
 - (void)dealloc
@@ -153,7 +153,7 @@
   [(TMTimeZoneManager *)&v3 dealloc];
 }
 
-- (TMTimeZoneManager)initWithRules:(id)a3 delegate:(id)a4
+- (TMTimeZoneManager)initWithRules:(id)rules delegate:(id)delegate
 {
   v12.receiver = self;
   v12.super_class = TMTimeZoneManager;
@@ -161,8 +161,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_delegate = a4;
-    v8 = [objc_msgSend(a3 "allKeys")];
+    v6->_delegate = delegate;
+    v8 = [objc_msgSend(rules "allKeys")];
     v7->rules = [[NSOrderedSet alloc] initWithArray:v8];
     v9 = [v8 count];
     v7->availableSources = [[NSMutableSet alloc] initWithCapacity:v9];
@@ -181,9 +181,9 @@
   return v7;
 }
 
-- (void)setSourceAvailable:(id)a3
+- (void)setSourceAvailable:(id)available
 {
-  if (!a3)
+  if (!available)
   {
     sub_100016FB8();
   }
@@ -192,7 +192,7 @@
   if (os_log_type_enabled(qword_100033218, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = self;
+    availableCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@", &v7, 0xCu);
   }
 
@@ -200,19 +200,19 @@
   if (os_log_type_enabled(qword_100033220, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = a3;
+    availableCopy = available;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "TZ,setSourceAvailable,src,%@", &v7, 0xCu);
   }
 
-  if (([(NSMutableSet *)self->availableSources containsObject:a3]& 1) == 0)
+  if (([(NSMutableSet *)self->availableSources containsObject:available]& 1) == 0)
   {
-    sub_100017014(&self->availableSources, a3, &self->super.isa);
+    sub_100017014(&self->availableSources, available, &self->super.isa);
   }
 }
 
-- (void)setSourceUnavailable:(id)a3
+- (void)setSourceUnavailable:(id)unavailable
 {
-  if (!a3)
+  if (!unavailable)
   {
     sub_100017078();
   }
@@ -221,7 +221,7 @@
   if (os_log_type_enabled(qword_100033218, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = self;
+    unavailableCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@", &v7, 0xCu);
   }
 
@@ -229,29 +229,29 @@
   if (os_log_type_enabled(qword_100033220, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = a3;
+    unavailableCopy = unavailable;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "TZ,setSourceUnavailable,src,%@", &v7, 0xCu);
   }
 
-  if ([(NSMutableSet *)self->availableSources containsObject:a3])
+  if ([(NSMutableSet *)self->availableSources containsObject:unavailable])
   {
-    sub_1000170D4(self, a3, &self->availableSources);
+    sub_1000170D4(self, unavailable, &self->availableSources);
   }
 }
 
-- (BOOL)isSourceAvailable:(id)a3
+- (BOOL)isSourceAvailable:(id)available
 {
-  if (!a3)
+  if (!available)
   {
     sub_1000171F0();
   }
 
-  v5 = [(NSMutableSet *)self->availableSources containsObject:a3];
+  v5 = [(NSMutableSet *)self->availableSources containsObject:available];
   v6 = qword_100033220;
   if (os_log_type_enabled(qword_100033220, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = a3;
+    availableCopy = available;
     v10 = 1024;
     v11 = v5;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "TZ,isSourceAvailable,src,%@,result,%d", &v8, 0x12u);
@@ -260,9 +260,9 @@
   return v5;
 }
 
-- (void)setSourceTimeZone:(id)a3
+- (void)setSourceTimeZone:(id)zone
 {
-  if (!a3)
+  if (!zone)
   {
     [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"TMTimeZoneManager.m" description:73, @"Invalid parameter not satisfying: %@", @"tz"];
   }
@@ -270,37 +270,37 @@
   if (sub_10000240C())
   {
     *buf = 138412290;
-    v12 = self;
+    selfCopy = self;
     sub_100002280(&_mh_execute_header, v5, v6, "%@", buf);
   }
 
-  v7 = [a3 source];
+  source = [zone source];
   v8 = qword_100033220;
   if (os_log_type_enabled(qword_100033220, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [a3 olsonName];
+    olsonName = [zone olsonName];
     *buf = 138412546;
-    v12 = v7;
+    selfCopy = source;
     v13 = 2112;
-    v14 = v9;
+    v14 = olsonName;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "TZ,setSourceTimeZone,src,%@,tz,%@", buf, 0x16u);
   }
 
-  if (![(TMTimeZoneManager *)self isSourceAvailable:v7])
+  if (![(TMTimeZoneManager *)self isSourceAvailable:source])
   {
     v10 = qword_100033218;
     if (os_log_type_enabled(qword_100033218, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v12 = v7;
+      selfCopy = source;
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Source %@ gave an input without marking itself as available!", buf, 0xCu);
     }
 
-    [(NSMutableSet *)self->availableSources addObject:v7];
+    [(NSMutableSet *)self->availableSources addObject:source];
   }
 
-  [(NSMutableDictionary *)self->inputs setObject:a3 forKeyedSubscript:v7];
-  sub_100016AB4(&self->super.isa, v7);
+  [(NSMutableDictionary *)self->inputs setObject:zone forKeyedSubscript:source];
+  sub_100016AB4(&self->super.isa, source);
 }
 
 @end

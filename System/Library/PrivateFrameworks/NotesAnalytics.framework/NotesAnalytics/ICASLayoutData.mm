@@ -1,22 +1,22 @@
 @interface ICASLayoutData
-- (ICASLayoutData)initWithLayoutType:(id)a3 isTimelineView:(id)a4;
+- (ICASLayoutData)initWithLayoutType:(id)type isTimelineView:(id)view;
 - (id)toDict;
 @end
 
 @implementation ICASLayoutData
 
-- (ICASLayoutData)initWithLayoutType:(id)a3 isTimelineView:(id)a4
+- (ICASLayoutData)initWithLayoutType:(id)type isTimelineView:(id)view
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = ICASLayoutData;
   v9 = [(ICASLayoutData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_layoutType, a3);
-    objc_storeStrong(&v10->_isTimelineView, a4);
+    objc_storeStrong(&v9->_layoutType, type);
+    objc_storeStrong(&v10->_isTimelineView, view);
   }
 
   return v10;
@@ -26,33 +26,33 @@
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = @"layoutType";
-  v3 = [(ICASLayoutData *)self layoutType];
-  if (v3)
+  layoutType = [(ICASLayoutData *)self layoutType];
+  if (layoutType)
   {
-    v4 = [(ICASLayoutData *)self layoutType];
+    layoutType2 = [(ICASLayoutData *)self layoutType];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    layoutType2 = objc_opt_new();
   }
 
-  v5 = v4;
+  v5 = layoutType2;
   v12[1] = @"isTimelineView";
-  v13[0] = v4;
-  v6 = [(ICASLayoutData *)self isTimelineView];
-  if (v6)
+  v13[0] = layoutType2;
+  isTimelineView = [(ICASLayoutData *)self isTimelineView];
+  if (isTimelineView)
   {
-    v7 = [(ICASLayoutData *)self isTimelineView];
+    isTimelineView2 = [(ICASLayoutData *)self isTimelineView];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    isTimelineView2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v13[1] = v7;
+  v8 = isTimelineView2;
+  v13[1] = isTimelineView2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   v10 = *MEMORY[0x277D85DE8];

@@ -1,6 +1,6 @@
 @interface PuzzleEmbedSubmitScoreHandler
 - (_TtC8NewsFeed29PuzzleEmbedSubmitScoreHandler)init;
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4;
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin;
 @end
 
 @implementation PuzzleEmbedSubmitScoreHandler
@@ -12,12 +12,12 @@
   return result;
 }
 
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v6 = self;
-  _s8NewsFeed29PuzzleEmbedSubmitScoreHandlerC10didReceive_14securityOriginySo9SWMessage_p_So0l8SecurityK0_ptF_0(a3);
+  selfCopy = self;
+  _s8NewsFeed29PuzzleEmbedSubmitScoreHandlerC10didReceive_14securityOriginySo9SWMessage_p_So0l8SecurityK0_ptF_0(message);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }

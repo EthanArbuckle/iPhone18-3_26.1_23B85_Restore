@@ -1,25 +1,25 @@
 @interface FMDNetworkAction
-- (FMDNetworkAction)initWithRequest:(id)a3 andServerInteractionController:(id)a4;
+- (FMDNetworkAction)initWithRequest:(id)request andServerInteractionController:(id)controller;
 - (NSString)description;
 - (id)actionType;
-- (void)runWithCompletion:(id)a3;
+- (void)runWithCompletion:(id)completion;
 - (void)willCancelAction;
 @end
 
 @implementation FMDNetworkAction
 
-- (FMDNetworkAction)initWithRequest:(id)a3 andServerInteractionController:(id)a4
+- (FMDNetworkAction)initWithRequest:(id)request andServerInteractionController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = FMDNetworkAction;
   v9 = [(FMDNetworkAction *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_request, a3);
-    objc_storeStrong(&v10->_serverInteractionController, a4);
+    objc_storeStrong(&v9->_request, request);
+    objc_storeStrong(&v10->_serverInteractionController, controller);
   }
 
   return v10;
@@ -32,18 +32,18 @@
   return NSStringFromClass(v2);
 }
 
-- (void)runWithCompletion:(id)a3
+- (void)runWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = sub_10017DA30();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(FMDNetworkAction *)self request];
+    request = [(FMDNetworkAction *)self request];
     *buf = 138412546;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = request;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ run for request - %@", buf, 0x16u);
   }
 
@@ -52,8 +52,8 @@
   *&buf[16] = 0x3032000000;
   v28 = sub_10000A938;
   v29 = sub_100002A74;
-  v7 = [(FMDNetworkAction *)self request];
-  v30 = [v7 completionHandler];
+  request2 = [(FMDNetworkAction *)self request];
+  completionHandler = [request2 completionHandler];
 
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
@@ -62,7 +62,7 @@
   objc_copyWeak(&v21, &location);
   v18[4] = self;
   v20 = buf;
-  v8 = v4;
+  v8 = completionCopy;
   v19 = v8;
   v9 = objc_retainBlock(v18);
   v10 = sub_10017DA30();
@@ -71,19 +71,19 @@
     sub_100225538(self, v9);
   }
 
-  v11 = [(FMDNetworkAction *)self request];
-  [v11 setCompletionHandler:v9];
+  request3 = [(FMDNetworkAction *)self request];
+  [request3 setCompletionHandler:v9];
 
-  v12 = [(FMDNetworkAction *)self request];
-  if ([v12 cancelled])
+  request4 = [(FMDNetworkAction *)self request];
+  if ([request4 cancelled])
   {
   }
 
   else
   {
-    v13 = [(FMDNetworkAction *)self serverInteractionController];
-    v14 = [(FMDNetworkAction *)self request];
-    v15 = [v13 enqueueRequest:v14];
+    serverInteractionController = [(FMDNetworkAction *)self serverInteractionController];
+    request5 = [(FMDNetworkAction *)self request];
+    v15 = [serverInteractionController enqueueRequest:request5];
 
     if (v15)
     {
@@ -94,11 +94,11 @@
   v16 = sub_10017DA30();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(FMDNetworkAction *)self request];
+    request6 = [(FMDNetworkAction *)self request];
     *v23 = 138412546;
-    v24 = self;
+    selfCopy = self;
     v25 = 2112;
-    v26 = v17;
+    v26 = request6;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%@ request cancelled or did not enqueue: %@", v23, 0x16u);
   }
 
@@ -120,24 +120,24 @@ LABEL_12:
   v3 = sub_10017DA30();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(FMDNetworkAction *)self request];
+    request = [(FMDNetworkAction *)self request];
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = request;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ will cancel request: %@", &v7, 0x16u);
   }
 
-  v5 = [(FMDNetworkAction *)self serverInteractionController];
-  v6 = [(FMDNetworkAction *)self request];
-  [v5 cancelRequest:v6];
+  serverInteractionController = [(FMDNetworkAction *)self serverInteractionController];
+  request2 = [(FMDNetworkAction *)self request];
+  [serverInteractionController cancelRequest:request2];
 }
 
 - (NSString)description
 {
   v3 = objc_opt_class();
-  v4 = [(FMDNetworkAction *)self request];
-  v5 = [NSString stringWithFormat:@"%@-%p:%@", v3, self, v4];
+  request = [(FMDNetworkAction *)self request];
+  v5 = [NSString stringWithFormat:@"%@-%p:%@", v3, self, request];
 
   return v5;
 }

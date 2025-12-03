@@ -1,32 +1,32 @@
 @interface HMShortcutAction
-+ (BOOL)isSupportedForHome:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isValidWithError:(id *)a3;
-- (BOOL)mergeFromNewObject:(id)a3;
++ (BOOL)isSupportedForHome:(id)home;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isValidWithError:(id *)error;
+- (BOOL)mergeFromNewObject:(id)object;
 - (BOOL)requiresDeviceUnlock;
 - (HMShortcutAction)init;
-- (HMShortcutAction)initWithCoder:(id)a3;
-- (HMShortcutAction)initWithDictionary:(id)a3 home:(id)a4;
-- (HMShortcutAction)initWithShortcut:(id)a3;
-- (HMShortcutAction)initWithUUID:(id)a3;
+- (HMShortcutAction)initWithCoder:(id)coder;
+- (HMShortcutAction)initWithDictionary:(id)dictionary home:(id)home;
+- (HMShortcutAction)initWithShortcut:(id)shortcut;
+- (HMShortcutAction)initWithUUID:(id)d;
 - (WFHomeWorkflow)shortcut;
-- (char)initWithShortcut:(char *)a1 shortcutData:(void *)a2 uuid:(void *)a3;
+- (char)initWithShortcut:(char *)shortcut shortcutData:(void *)data uuid:(void *)uuid;
 - (id)_serializeForAdd;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)shortcutData;
 @end
 
 @implementation HMShortcutAction
 
-- (HMShortcutAction)initWithCoder:(id)a3
+- (HMShortcutAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HMShortcutAction;
-  v5 = [(HMAction *)&v9 initWithCoder:v4];
+  v5 = [(HMAction *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.workflowDataKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.workflowDataKey"];
     shortcutData = v5->_shortcutData;
     v5->_shortcutData = v6;
   }
@@ -34,10 +34,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -47,7 +47,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -58,19 +58,19 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMShortcutAction *)self shortcutData];
-      v8 = [(HMShortcutAction *)v6 shortcutData];
-      v9 = v8;
-      if (v7 && v8)
+      shortcutData = [(HMShortcutAction *)self shortcutData];
+      shortcutData2 = [(HMShortcutAction *)v6 shortcutData];
+      v9 = shortcutData2;
+      if (shortcutData && shortcutData2)
       {
-        v10 = [v7 isEqualToData:v8];
+        v10 = [shortcutData isEqualToData:shortcutData2];
       }
 
       else
       {
-        v11 = [(HMAction *)self uniqueIdentifier];
-        v12 = [(HMAction *)v6 uniqueIdentifier];
-        v10 = [v11 isEqual:v12];
+        uniqueIdentifier = [(HMAction *)self uniqueIdentifier];
+        uniqueIdentifier2 = [(HMAction *)v6 uniqueIdentifier];
+        v10 = [uniqueIdentifier isEqual:uniqueIdentifier2];
       }
     }
 
@@ -83,7 +83,7 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock_with_options();
   v4 = [HMShortcutAction initWithShortcut:self->_shortcut shortcutData:self->_shortcutData uuid:?];
@@ -91,46 +91,46 @@
   return v4;
 }
 
-- (char)initWithShortcut:(char *)a1 shortcutData:(void *)a2 uuid:(void *)a3
+- (char)initWithShortcut:(char *)shortcut shortcutData:(void *)data uuid:(void *)uuid
 {
-  v5 = a2;
-  v6 = a3;
-  if (a1)
+  dataCopy = data;
+  uuidCopy = uuid;
+  if (shortcut)
   {
-    v13.receiver = a1;
+    v13.receiver = shortcut;
     v13.super_class = HMShortcutAction;
-    a1 = objc_msgSendSuper2(&v13, sel_initWithUUID_, 0);
-    if (a1)
+    shortcut = objc_msgSendSuper2(&v13, sel_initWithUUID_, 0);
+    if (shortcut)
     {
       v7 = &OBJC_IVAR___HMShortcutAction__shortcut;
-      if (v5)
+      if (dataCopy)
       {
-        v8 = v5;
+        v8 = dataCopy;
       }
 
       else
       {
         v7 = &OBJC_IVAR___HMShortcutAction__shortcutData;
-        v8 = v6;
+        v8 = uuidCopy;
       }
 
       v9 = *v7;
       v10 = v8;
-      v11 = *&a1[v9];
-      *&a1[v9] = v10;
+      v11 = *&shortcut[v9];
+      *&shortcut[v9] = v10;
     }
   }
 
-  return a1;
+  return shortcut;
 }
 
-- (BOOL)mergeFromNewObject:(id)a3
+- (BOOL)mergeFromNewObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -146,13 +146,13 @@
     goto LABEL_12;
   }
 
-  v7 = [v6 shortcutData];
+  shortcutData = [v6 shortcutData];
   os_unfair_lock_lock_with_options();
   shortcutData = self->_shortcutData;
-  v9 = shortcutData;
+  data = shortcutData;
   if (!shortcutData)
   {
-    v9 = [(WFHomeWorkflow *)self->_shortcut data];
+    data = [(WFHomeWorkflow *)self->_shortcut data];
   }
 
   v10 = HMFEqualObjects();
@@ -171,7 +171,7 @@
   if ((v10 & 1) == 0)
   {
 LABEL_9:
-    objc_storeStrong(&self->_shortcutData, v7);
+    objc_storeStrong(&self->_shortcutData, shortcutData);
     shortcut = self->_shortcut;
     self->_shortcut = 0;
   }
@@ -186,15 +186,15 @@ LABEL_12:
 
 - (id)_serializeForAdd
 {
-  v3 = [(HMShortcutAction *)self shortcutData];
-  if (v3)
+  shortcutData = [(HMShortcutAction *)self shortcutData];
+  if (shortcutData)
   {
     v8.receiver = self;
     v8.super_class = HMShortcutAction;
-    v4 = [(HMAction *)&v8 _serializeForAdd];
-    v5 = [v4 mutableCopy];
+    _serializeForAdd = [(HMAction *)&v8 _serializeForAdd];
+    v5 = [_serializeForAdd mutableCopy];
 
-    [v5 setObject:v3 forKeyedSubscript:@"HM.workflowDataKey"];
+    [v5 setObject:shortcutData forKeyedSubscript:@"HM.workflowDataKey"];
     v6 = [v5 copy];
   }
 
@@ -208,16 +208,16 @@ LABEL_12:
 
 - (BOOL)requiresDeviceUnlock
 {
-  v2 = [(HMShortcutAction *)self shortcut];
-  v3 = [v2 requiresDeviceUnlock];
+  shortcut = [(HMShortcutAction *)self shortcut];
+  requiresDeviceUnlock = [shortcut requiresDeviceUnlock];
 
-  return v3;
+  return requiresDeviceUnlock;
 }
 
-- (BOOL)isValidWithError:(id *)a3
+- (BOOL)isValidWithError:(id *)error
 {
-  v3 = [(HMShortcutAction *)self shortcutData];
-  v4 = v3 != 0;
+  shortcutData = [(HMShortcutAction *)self shortcutData];
+  v4 = shortcutData != 0;
 
   return v4;
 }
@@ -228,15 +228,15 @@ LABEL_12:
   shortcutData = self->_shortcutData;
   if (shortcutData)
   {
-    v4 = shortcutData;
+    data = shortcutData;
   }
 
   else
   {
-    v4 = [(WFHomeWorkflow *)self->_shortcut data];
+    data = [(WFHomeWorkflow *)self->_shortcut data];
   }
 
-  v5 = v4;
+  v5 = data;
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
@@ -296,15 +296,15 @@ LABEL_10:
   return v4;
 }
 
-- (HMShortcutAction)initWithDictionary:(id)a3 home:(id)a4
+- (HMShortcutAction)initWithDictionary:(id)dictionary home:(id)home
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = HMShortcutAction;
-  v7 = [(HMAction *)&v11 initWithDictionary:v6 home:a4];
+  v7 = [(HMAction *)&v11 initWithDictionary:dictionaryCopy home:home];
   if (v7)
   {
-    v8 = [v6 hmf_dataForKey:@"HM.workflowDataKey"];
+    v8 = [dictionaryCopy hmf_dataForKey:@"HM.workflowDataKey"];
     shortcutData = v7->_shortcutData;
     v7->_shortcutData = v8;
   }
@@ -312,24 +312,24 @@ LABEL_10:
   return v7;
 }
 
-- (HMShortcutAction)initWithShortcut:(id)a3
+- (HMShortcutAction)initWithShortcut:(id)shortcut
 {
-  v4 = a3;
-  if (!v4)
+  shortcutCopy = shortcut;
+  if (!shortcutCopy)
   {
     v8 = _HMFPreconditionFailure();
     [(HMShortcutAction *)v8 initWithUUID:v9, v10];
   }
 
-  v5 = v4;
-  v6 = [HMShortcutAction initWithShortcut:v4 shortcutData:0 uuid:?];
+  v5 = shortcutCopy;
+  v6 = [HMShortcutAction initWithShortcut:shortcutCopy shortcutData:0 uuid:?];
 
   return v6;
 }
 
-- (HMShortcutAction)initWithUUID:(id)a3
+- (HMShortcutAction)initWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = MEMORY[0x1E696AEC0];
@@ -354,15 +354,15 @@ LABEL_10:
   objc_exception_throw(v7);
 }
 
-+ (BOOL)isSupportedForHome:(id)a3
++ (BOOL)isSupportedForHome:(id)home
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [a3 residentDevices];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  residentDevices = [home residentDevices];
+  v4 = [residentDevices countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -372,7 +372,7 @@ LABEL_10:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(residentDevices);
         }
 
         if (([*(*(&v9 + 1) + 8 * i) capabilities] & 0x100) != 0)
@@ -382,7 +382,7 @@ LABEL_10:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [residentDevices countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;

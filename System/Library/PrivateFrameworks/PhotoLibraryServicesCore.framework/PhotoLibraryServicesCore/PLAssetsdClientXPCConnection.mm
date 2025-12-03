@@ -1,12 +1,12 @@
 @interface PLAssetsdClientXPCConnection
-- (PLAssetsdClientXPCConnection)connectionWithErrorHandler:(id)a3;
+- (PLAssetsdClientXPCConnection)connectionWithErrorHandler:(id)handler;
 - (PLAssetsdClientXPCConnection)init;
-- (id)_primitiveSynchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)_primitiveSynchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (id)_unboostingRemoteObjectProxy;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
 - (void)_makeNewResumedConnection;
 - (void)_postInterruptedNotification;
-- (void)addBarrierBlock:(id)a3;
+- (void)addBarrierBlock:(id)block;
 - (void)handleInterruption;
 - (void)handleInvalidation;
 - (void)invalidate;
@@ -40,9 +40,9 @@
 - (id)_unboostingRemoteObjectProxy
 {
   v2 = [(PLAssetsdClientXPCConnection *)self connectionWithErrorHandler:&__block_literal_global_12086];
-  v3 = [v2 _unboostingRemoteObjectProxy];
+  _unboostingRemoteObjectProxy = [v2 _unboostingRemoteObjectProxy];
 
-  return v3;
+  return _unboostingRemoteObjectProxy;
 }
 
 void __60__PLAssetsdClientXPCConnection__unboostingRemoteObjectProxy__block_invoke(uint64_t a1, void *a2)
@@ -58,35 +58,35 @@ void __60__PLAssetsdClientXPCConnection__unboostingRemoteObjectProxy__block_invo
   }
 }
 
-- (id)_primitiveSynchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)_primitiveSynchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PLAssetsdClientXPCConnection *)self connectionWithErrorHandler:v4];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  v5 = [(PLAssetsdClientXPCConnection *)self connectionWithErrorHandler:handlerCopy];
+  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PLAssetsdClientXPCConnection *)self connectionWithErrorHandler:v4];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  v5 = [(PLAssetsdClientXPCConnection *)self connectionWithErrorHandler:handlerCopy];
+  v6 = [v5 remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (void)addBarrierBlock:(id)a3
+- (void)addBarrierBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   isolationQueue = self->_isolationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__PLAssetsdClientXPCConnection_addBarrierBlock___block_invoke;
   v7[3] = &unk_1E7932AB8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(isolationQueue, v7);
 }
 
@@ -118,14 +118,14 @@ uint64_t __48__PLAssetsdClientXPCConnection_addBarrierBlock___block_invoke(uint6
   dispatch_assert_queue_V2(self->_isolationQueue);
   if (self->_connection)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PLAssetsdClientXPCConnection.m" lineNumber:128 description:@"_connection is already set"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdClientXPCConnection.m" lineNumber:128 description:@"_connection is already set"];
   }
 
   if (self->_connectionLogger)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PLAssetsdClientXPCConnection.m" lineNumber:129 description:@"_connectionLogger is already set"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLAssetsdClientXPCConnection.m" lineNumber:129 description:@"_connectionLogger is already set"];
   }
 
   v4 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.photos.service" options:0];
@@ -177,10 +177,10 @@ void __57__PLAssetsdClientXPCConnection__makeNewResumedConnection__block_invoke_
   [WeakRetained handleInvalidation];
 }
 
-- (PLAssetsdClientXPCConnection)connectionWithErrorHandler:(id)a3
+- (PLAssetsdClientXPCConnection)connectionWithErrorHandler:(id)handler
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -204,7 +204,7 @@ void __57__PLAssetsdClientXPCConnection__makeNewResumedConnection__block_invoke_
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
     v9 = [v7 errorWithDomain:@"com.apple.photos.error" code:41003 userInfo:v8];
 
-    v4[2](v4, v9);
+    handlerCopy[2](handlerCopy, v9);
     v6 = v14[5];
   }
 
@@ -261,8 +261,8 @@ LABEL_7:
 
   if (!self->_isShuttingDown)
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 postNotificationName:@"PLAssetsdClientXPCConnectionInvalidatedNotificationName" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"PLAssetsdClientXPCConnectionInvalidatedNotificationName" object:self];
   }
 
   isolationQueue = self->_isolationQueue;
@@ -293,15 +293,15 @@ void __50__PLAssetsdClientXPCConnection_handleInvalidation__block_invoke(uint64_
 
 - (void)_postInterruptedNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"PLAssetsdClientXPCConnectionInterruptedInternalNotificationName" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PLAssetsdClientXPCConnectionInterruptedInternalNotificationName" object:self];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__PLAssetsdClientXPCConnection__postInterruptedNotification__block_invoke;
   v6[3] = &unk_1E7932A28;
-  v7 = v3;
-  v8 = self;
-  v4 = v3;
+  v7 = defaultCenter;
+  selfCopy = self;
+  v4 = defaultCenter;
   v5 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v6);
   dispatch_async(self->_externalNotificationQueue, v5);
 }

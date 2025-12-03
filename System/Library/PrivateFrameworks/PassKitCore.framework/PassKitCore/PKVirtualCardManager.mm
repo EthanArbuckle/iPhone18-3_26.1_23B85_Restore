@@ -1,20 +1,20 @@
 @interface PKVirtualCardManager
-+ (void)isVPANAutoFillSupported:(id)a3;
++ (void)isVPANAutoFillSupported:(id)supported;
 - (PKVirtualCardManager)init;
-- (PKVirtualCardManager)initWithPaymentService:(id)a3;
-- (id)urlToPassDetailsForVirtualCard:(id)a3;
-- (void)accountVirtualCardsWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)activeVirtualCardsWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)credentialsForVirtualCard:(id)a3 authorization:(id)a4 options:(unint64_t)a5 merchantHost:(id)a6 completion:(id)a7;
-- (void)queryKeychainForVirtualCard:(id)a3;
-- (void)vpanVirtualCardsWithOptions:(unint64_t)a3 completion:(id)a4;
+- (PKVirtualCardManager)initWithPaymentService:(id)service;
+- (id)urlToPassDetailsForVirtualCard:(id)card;
+- (void)accountVirtualCardsWithOptions:(unint64_t)options completion:(id)completion;
+- (void)activeVirtualCardsWithOptions:(unint64_t)options completion:(id)completion;
+- (void)credentialsForVirtualCard:(id)card authorization:(id)authorization options:(unint64_t)options merchantHost:(id)host completion:(id)completion;
+- (void)queryKeychainForVirtualCard:(id)card;
+- (void)vpanVirtualCardsWithOptions:(unint64_t)options completion:(id)completion;
 @end
 
 @implementation PKVirtualCardManager
 
-- (PKVirtualCardManager)initWithPaymentService:(id)a3
+- (PKVirtualCardManager)initWithPaymentService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v14.receiver = self;
   v14.super_class = PKVirtualCardManager;
   v6 = [(PKVirtualCardManager *)&v14 init];
@@ -32,7 +32,7 @@
     virtualCardQueue = v6->_virtualCardQueue;
     v6->_virtualCardQueue = v11;
 
-    objc_storeStrong(&v6->_paymentService, a3);
+    objc_storeStrong(&v6->_paymentService, service);
   }
 
   return v6;
@@ -46,10 +46,10 @@
   return v4;
 }
 
-- (void)activeVirtualCardsWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)activeVirtualCardsWithOptions:(unint64_t)options completion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (PKCurrentPassbookState() >= 2)
     {
@@ -60,7 +60,7 @@
         _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "PKVirtualCardManager not returning active virtual cards because Wallet has been deleted.", buf, 2u);
       }
 
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     else
@@ -80,7 +80,7 @@
       v23 = buf;
       v8 = v7;
       v22 = v8;
-      [(PKVirtualCardManager *)self accountVirtualCardsWithOptions:a3 completion:v21];
+      [(PKVirtualCardManager *)self accountVirtualCardsWithOptions:options completion:v21];
       dispatch_group_enter(v8);
       v19[0] = 0;
       v19[1] = v19;
@@ -95,7 +95,7 @@
       v18 = v19;
       v9 = v8;
       v17 = v9;
-      [(PKVirtualCardManager *)self vpanVirtualCardsWithOptions:a3 completion:v16];
+      [(PKVirtualCardManager *)self vpanVirtualCardsWithOptions:options completion:v16];
       virtualCardQueue = self->_virtualCardQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -103,7 +103,7 @@
       block[3] = &unk_1E79DEEF8;
       v14 = v19;
       v15 = buf;
-      v13 = v6;
+      v13 = completionCopy;
       dispatch_group_notify(v9, virtualCardQueue, block);
 
       _Block_object_dispose(v19, 8);
@@ -157,10 +157,10 @@ void __65__PKVirtualCardManager_activeVirtualCardsWithOptions_completion___block
   }
 }
 
-- (void)accountVirtualCardsWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)accountVirtualCardsWithOptions:(unint64_t)options completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v7 = PKLogFacilityTypeGetObject(0xFuLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -168,7 +168,7 @@ void __65__PKVirtualCardManager_activeVirtualCardsWithOptions_completion___block
     _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "Safari fetching active Apple Cards", buf, 2u);
   }
 
-  if ((~v4 & 3) == 0)
+  if ((~optionsCopy & 3) == 0)
   {
     inAppPaymentService = self->_inAppPaymentService;
     v13[0] = MEMORY[0x1E69E9820];
@@ -176,7 +176,7 @@ void __65__PKVirtualCardManager_activeVirtualCardsWithOptions_completion___block
     v13[2] = __66__PKVirtualCardManager_accountVirtualCardsWithOptions_completion___block_invoke;
     v13[3] = &unk_1E79DEF20;
     v13[4] = self;
-    v14 = v6;
+    v14 = completionCopy;
     [(PKInAppPaymentService *)inAppPaymentService paymentHardwareStatusWithType:1 completion:v13];
     v9 = v14;
 LABEL_12:
@@ -185,7 +185,7 @@ LABEL_12:
   }
 
   v10 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (optionsCopy)
   {
     if (v10)
     {
@@ -197,7 +197,7 @@ LABEL_12:
     v11[1] = 3221225472;
     v11[2] = __66__PKVirtualCardManager_accountVirtualCardsWithOptions_completion___block_invoke_27;
     v11[3] = &unk_1E79D1300;
-    v12 = v6;
+    v12 = completionCopy;
     [(PKVirtualCardManager *)self queryKeychainForVirtualCard:v11];
     v9 = v12;
     goto LABEL_12;
@@ -209,7 +209,7 @@ LABEL_12:
     _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "Invalid options when requesting virtual cards", buf, 2u);
   }
 
-  (*(v6 + 2))(v6, 0);
+  (*(completionCopy + 2))(completionCopy, 0);
 LABEL_13:
 }
 
@@ -412,13 +412,13 @@ void __66__PKVirtualCardManager_accountVirtualCardsWithOptions_completion___bloc
   (*(*(a1 + 32) + 16))(*(a1 + 32), v3);
 }
 
-- (void)credentialsForVirtualCard:(id)a3 authorization:(id)a4 options:(unint64_t)a5 merchantHost:(id)a6 completion:(id)a7
+- (void)credentialsForVirtualCard:(id)card authorization:(id)authorization options:(unint64_t)options merchantHost:(id)host completion:(id)completion
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  optionsCopy = options;
+  cardCopy = card;
+  authorizationCopy = authorization;
+  hostCopy = host;
+  completionCopy = completion;
   v16 = PKLogFacilityTypeGetObject(0xFuLL);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -426,9 +426,9 @@ void __66__PKVirtualCardManager_accountVirtualCardsWithOptions_completion___bloc
     _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "Safari fetching virtual card credentials", buf, 2u);
   }
 
-  if (v15)
+  if (completionCopy)
   {
-    if (!v13 || (v9 & 3) == 1)
+    if (!authorizationCopy || (optionsCopy & 3) == 1)
     {
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
@@ -436,28 +436,28 @@ void __66__PKVirtualCardManager_accountVirtualCardsWithOptions_completion___bloc
         _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "Fetching keychain card credentials", buf, 2u);
       }
 
-      v18 = [v12 keychainCardCredentials];
-      v15[2](v15, v18, 0);
+      keychainCardCredentials = [cardCopy keychainCardCredentials];
+      completionCopy[2](completionCopy, keychainCardCredentials, 0);
     }
 
-    else if ((v9 & 3) == 3)
+    else if ((optionsCopy & 3) == 3)
     {
       inAppPaymentService = self->_inAppPaymentService;
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __96__PKVirtualCardManager_credentialsForVirtualCard_authorization_options_merchantHost_completion___block_invoke;
       v19[3] = &unk_1E79DEF70;
-      v20 = v12;
-      v21 = self;
-      v22 = v13;
-      v24 = v15;
-      v23 = v14;
+      v20 = cardCopy;
+      selfCopy = self;
+      v22 = authorizationCopy;
+      v24 = completionCopy;
+      v23 = hostCopy;
       [(PKInAppPaymentService *)inAppPaymentService paymentHardwareStatusWithType:1 completion:v19];
     }
 
     else
     {
-      v15[2](v15, 0, 0);
+      completionCopy[2](completionCopy, 0, 0);
     }
   }
 }
@@ -607,17 +607,17 @@ void __96__PKVirtualCardManager_credentialsForVirtualCard_authorization_options_
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)urlToPassDetailsForVirtualCard:(id)a3
+- (id)urlToPassDetailsForVirtualCard:(id)card
 {
-  v3 = a3;
+  cardCopy = card;
   if (+[PKWalletVisibility isWalletVisible])
   {
     v4 = objc_alloc_init(MEMORY[0x1E696AF20]);
     [v4 setScheme:@"wallet"];
     [v4 setHost:@"virtualCard"];
-    v5 = [v3 identifier];
+    identifier = [cardCopy identifier];
 
-    v6 = [@"/" stringByAppendingFormat:@"%@/%@", v5, @"details"];
+    v6 = [@"/" stringByAppendingFormat:@"%@/%@", identifier, @"details"];
     [v4 setPath:v6];
 
     v7 = [v4 URL];
@@ -628,9 +628,9 @@ void __96__PKVirtualCardManager_credentialsForVirtualCard_authorization_options_
     v4 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"prefs:root=PASSBOOK&path="];
     [v4 appendString:@"virtualCard"];
     [v4 appendString:@"/"];
-    v8 = [v3 identifier];
+    identifier2 = [cardCopy identifier];
 
-    [v4 appendString:v8];
+    [v4 appendString:identifier2];
     [v4 appendString:@"/"];
     [v4 appendString:@"details"];
     v9 = MEMORY[0x1E695DFF8];
@@ -641,29 +641,29 @@ void __96__PKVirtualCardManager_credentialsForVirtualCard_authorization_options_
   return v7;
 }
 
-+ (void)isVPANAutoFillSupported:(id)a3
++ (void)isVPANAutoFillSupported:(id)supported
 {
-  if (a3)
+  if (supported)
   {
-    v5 = a3;
+    supportedCopy = supported;
     v3 = +[PKPaymentWebService sharedService];
     v4 = PKVirtualCardEnabledWithWebService(v3) && PKSecureElementIsAvailable() != 0;
 
-    v5[2](v5, v4);
+    supportedCopy[2](supportedCopy, v4);
   }
 }
 
-- (void)vpanVirtualCardsWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)vpanVirtualCardsWithOptions:(unint64_t)options completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v7 = +[PKPaymentWebService sharedService];
   v8 = PKVirtualCardEnabledWithWebService(v7);
 
   if (!v8)
   {
 LABEL_8:
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_9;
   }
 
@@ -674,7 +674,7 @@ LABEL_8:
     _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "Safari fetching active VPAN virtual cards", buf, 2u);
   }
 
-  if ((v4 & 1) == 0)
+  if ((optionsCopy & 1) == 0)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -694,7 +694,7 @@ LABEL_8:
     }
 
     v10 = +[PKVirtualCard demoVPANVirtualCards];
-    (v6)[2](v6, v10);
+    (completionCopy)[2](completionCopy, v10);
   }
 
   else
@@ -705,7 +705,7 @@ LABEL_8:
     v12[2] = __63__PKVirtualCardManager_vpanVirtualCardsWithOptions_completion___block_invoke;
     v12[3] = &unk_1E79DEF20;
     v12[4] = self;
-    v13 = v6;
+    v13 = completionCopy;
     [(PKInAppPaymentService *)inAppPaymentService paymentHardwareStatusWithType:1 completion:v12];
   }
 
@@ -764,16 +764,16 @@ void __63__PKVirtualCardManager_vpanVirtualCardsWithOptions_completion___block_i
   v8();
 }
 
-- (void)queryKeychainForVirtualCard:(id)a3
+- (void)queryKeychainForVirtualCard:(id)card
 {
-  v4 = a3;
+  cardCopy = card;
   accountService = self->_accountService;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__PKVirtualCardManager_queryKeychainForVirtualCard___block_invoke;
   v7[3] = &unk_1E79D1300;
-  v8 = v4;
-  v6 = v4;
+  v8 = cardCopy;
+  v6 = cardCopy;
   [(PKAccountService *)accountService virtualCardsInKeychainWithCompletion:v7];
 }
 

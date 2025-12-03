@@ -65,12 +65,12 @@
   v48 = *MEMORY[0x1E69E9840];
   if ([(NSNumber *)self->inputSize unsignedIntValue]> 0x31)
   {
-    v3 = 50;
+    unsignedIntValue = 50;
   }
 
   else
   {
-    v3 = [(NSNumber *)self->inputSize unsignedIntValue];
+    unsignedIntValue = [(NSNumber *)self->inputSize unsignedIntValue];
   }
 
   [(NSNumber *)self->inputSoften doubleValue];
@@ -82,12 +82,12 @@
 
   v6 = fmax(v4, 0.0);
   v7 = fmin(v6, 50.0);
-  v8 = fmax(v3 * 0.21, 0.5);
+  v8 = fmax(unsignedIntValue * 0.21, 0.5);
   [(CIImage *)self->inputImage extent];
   if (v8 != 0.5 || v7 > 4.0)
   {
     v10 = _CUIMappedBlurImageWithSize(inputImage, fmin(v6, 2.0), 0);
-    v11 = _CUIMappedBlurImageWithSize(v10, v3, 0);
+    v11 = _CUIMappedBlurImageWithSize(v10, unsignedIntValue, 0);
     [(CIImage *)v11 extent];
     if (v8 == 0.5)
     {
@@ -112,7 +112,7 @@
       width = v52.size.width;
       height = v52.size.height;
       v31 = [CIVector vectorWithX:v8 Y:-v8];
-      v32 = [(CUIOuterBevelEmbossFilter *)self _kernel];
+      _kernel = [(CUIOuterBevelEmbossFilter *)self _kernel];
       [(CIImage *)v11 extent];
       v37[0] = MEMORY[0x1E69E9820];
       v37[1] = 3221225472;
@@ -121,7 +121,7 @@
       v38 = v8;
       v40[0] = v11;
       v40[1] = v31;
-      v20 = [v32 applyWithExtent:v37 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v40, 2), v33, v34, v35, v36}];
+      v20 = [_kernel applyWithExtent:v37 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v40, 2), v33, v34, v35, v36}];
     }
   }
 
@@ -162,13 +162,13 @@
   }
 
   v24 = v20;
-  v25 = [(CUIOuterBevelEmbossFilter *)self _kernelC];
+  _kernelC = [(CUIOuterBevelEmbossFilter *)self _kernelC];
   [v24 extent];
   inputHighlightColor = self->inputHighlightColor;
   v39[0] = v24;
   v39[1] = inputHighlightColor;
   v39[2] = self->inputShadowColor;
-  return [objc_msgSend(v25 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v39, 3), v27, v28, v29, v30), "imageByCroppingToRect:", x, y, width, height}];
+  return [objc_msgSend(_kernelC applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v39, 3), v27, v28, v29, v30), "imageByCroppingToRect:", x, y, width, height}];
 }
 
 double __40__CUIOuterBevelEmbossFilter_outputImage__block_invoke(uint64_t a1, double a2, double a3, double a4, double a5)

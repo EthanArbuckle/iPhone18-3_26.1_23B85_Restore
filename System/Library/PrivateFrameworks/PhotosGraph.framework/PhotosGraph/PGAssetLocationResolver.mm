@@ -1,25 +1,25 @@
 @interface PGAssetLocationResolver
-+ (id)closestAddressNodeFromMomentNodes:(id)a3 toLocation:(id)a4 withMaximumDistance:(double)a5 allowRemoteLocations:(BOOL)a6;
-+ (id)closestAssetLocationForAsset:(id)a3 inAssetCollection:(id)a4;
++ (id)closestAddressNodeFromMomentNodes:(id)nodes toLocation:(id)location withMaximumDistance:(double)distance allowRemoteLocations:(BOOL)locations;
++ (id)closestAssetLocationForAsset:(id)asset inAssetCollection:(id)collection;
 @end
 
 @implementation PGAssetLocationResolver
 
-+ (id)closestAddressNodeFromMomentNodes:(id)a3 toLocation:(id)a4 withMaximumDistance:(double)a5 allowRemoteLocations:(BOOL)a6
++ (id)closestAddressNodeFromMomentNodes:(id)nodes toLocation:(id)location withMaximumDistance:(double)distance allowRemoteLocations:(BOOL)locations
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v10)
+  locationsCopy = locations;
+  nodesCopy = nodes;
+  locationCopy = location;
+  v11 = locationCopy;
+  if (locationCopy)
   {
-    [v10 coordinate];
+    [locationCopy coordinate];
     v13 = v12;
     v15 = v14;
     v33[0] = 0;
     v33[1] = v33;
     v33[2] = 0x2020000000;
-    *&v33[3] = a5;
+    *&v33[3] = distance;
     v27 = 0;
     v28 = &v27;
     v29 = 0x3032000000;
@@ -27,12 +27,12 @@
     v31 = __Block_byref_object_dispose__27580;
     v32 = 0;
     v16 = [PGGraphMomentNodeCollection alloc];
-    v17 = [v9 anyObject];
-    v18 = [v17 graph];
-    v19 = [(MAElementCollection *)v16 initWithSet:v9 graph:v18];
+    anyObject = [nodesCopy anyObject];
+    graph = [anyObject graph];
+    v19 = [(MAElementCollection *)v16 initWithSet:nodesCopy graph:graph];
 
     v20 = [(PGGraphEdgeCollection *)PGGraphAddressEdgeCollection edgesFromNodes:v19];
-    if (v6)
+    if (locationsCopy)
     {
       v21 = +[PGGraphRemoteAddressEdge filter];
       v22 = [(MAEdgeCollection *)PGGraphEdgeCollection edgesFromNodes:v19 matchingFilter:v21];
@@ -51,7 +51,7 @@
     v26[4] = v33;
     v26[5] = &v27;
     [v20 enumerateEdgesUsingBlock:v26];
-    v24 = [v28[5] targetNode];
+    targetNode = [v28[5] targetNode];
 
     _Block_object_dispose(&v27, 8);
     _Block_object_dispose(v33, 8);
@@ -59,10 +59,10 @@
 
   else
   {
-    v24 = 0;
+    targetNode = 0;
   }
 
-  return v24;
+  return targetNode;
 }
 
 void __113__PGAssetLocationResolver_closestAddressNodeFromMomentNodes_toLocation_withMaximumDistance_allowRemoteLocations___block_invoke(uint64_t a1, void *a2)
@@ -81,37 +81,37 @@ void __113__PGAssetLocationResolver_closestAddressNodeFromMomentNodes_toLocation
   }
 }
 
-+ (id)closestAssetLocationForAsset:(id)a3 inAssetCollection:(id)a4
++ (id)closestAssetLocationForAsset:(id)asset inAssetCollection:(id)collection
 {
   v47[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 clsLocation];
-  v8 = v7;
-  if (v7)
+  assetCopy = asset;
+  collectionCopy = collection;
+  clsLocation = [assetCopy clsLocation];
+  v8 = clsLocation;
+  if (clsLocation)
   {
-    v9 = v7;
+    v9 = clsLocation;
     goto LABEL_34;
   }
 
-  v10 = [v6 photoLibrary];
-  v11 = [v10 librarySpecificFetchOptions];
+  photoLibrary = [collectionCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v11 setIncludeGuestAssets:1];
+  [librarySpecificFetchOptions setIncludeGuestAssets:1];
   v12 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:1];
   v47[0] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:1];
-  [v11 setSortDescriptors:v13];
+  [librarySpecificFetchOptions setSortDescriptors:v13];
 
-  v14 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:v6 options:v11];
-  v15 = [v14 indexOfObject:v5];
+  v14 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:collectionCopy options:librarySpecificFetchOptions];
+  v15 = [v14 indexOfObject:assetCopy];
   if (v15 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v16 = v15;
-    v41 = v11;
-    v42 = v6;
-    v17 = [v5 creationDate];
-    [v17 timeIntervalSinceReferenceDate];
+    v41 = librarySpecificFetchOptions;
+    v42 = collectionCopy;
+    creationDate = [assetCopy creationDate];
+    [creationDate timeIntervalSinceReferenceDate];
     v19 = v18;
 
     v20 = [v14 count] - 1;
@@ -139,19 +139,19 @@ void __113__PGAssetLocationResolver_closestAddressNodeFromMomentNodes_toLocation
 LABEL_32:
 
         v8 = 0;
-        v6 = v42;
+        collectionCopy = v42;
         v14 = v40;
-        v11 = v41;
+        librarySpecificFetchOptions = v41;
         goto LABEL_33;
       }
 
-      v39 = v5;
+      v39 = assetCopy;
       v30 = 1.79769313e308;
     }
 
     else
     {
-      v39 = v5;
+      v39 = assetCopy;
       v29 = v23;
       v30 = (*(v22 + 2))(v22, v16 - 1);
       if (v16 >= v29)
@@ -163,8 +163,8 @@ LABEL_11:
           v32 = v25 && v26 ? v30 < v31 : !v25;
           v33 = v32 ? v28 : v27;
           v34 = [v21 objectAtIndexedSubscript:{v33, v39}];
-          v35 = [v34 clsLocation];
-          if (v35)
+          clsLocation2 = [v34 clsLocation];
+          if (clsLocation2)
           {
             break;
           }
@@ -206,10 +206,10 @@ LABEL_11:
           }
         }
 
-        v9 = v35;
+        v9 = clsLocation2;
 
 LABEL_31:
-        v5 = v39;
+        assetCopy = v39;
         goto LABEL_32;
       }
     }

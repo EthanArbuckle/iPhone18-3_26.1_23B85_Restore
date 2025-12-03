@@ -1,8 +1,8 @@
 @interface VTUISpeechSynthesizer
 - (BOOL)isSpeaking;
 - (VTUISpeechSynthesizer)init;
-- (void)speak:(id)a3 completion:(id)a4;
-- (void)speak:(id)a3 language:(id)a4 completion:(id)a5;
+- (void)speak:(id)speak completion:(id)completion;
+- (void)speak:(id)speak language:(id)language completion:(id)completion;
 - (void)stopSpeaking;
 @end
 
@@ -27,18 +27,18 @@
   return v2;
 }
 
-- (void)speak:(id)a3 language:(id)a4 completion:(id)a5
+- (void)speak:(id)speak language:(id)language completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  speakCopy = speak;
+  languageCopy = language;
+  completionCopy = completion;
   [(VTUISpeechSynthesizer *)self stopSpeaking];
-  v11 = _Block_copy(v10);
+  v11 = _Block_copy(completionCopy);
   speakStringCompletion = self->_speakStringCompletion;
   self->_speakStringCompletion = v11;
 
-  v13 = [objc_alloc(MEMORY[0x277D61478]) initWithLanguage:v9 name:0];
-  v14 = [objc_alloc(MEMORY[0x277D61458]) initWithText:v8 voice:v13];
+  v13 = [objc_alloc(MEMORY[0x277D61478]) initWithLanguage:languageCopy name:0];
+  v14 = [objc_alloc(MEMORY[0x277D61458]) initWithText:speakCopy voice:v13];
   objc_initWeak(&location, v14);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -106,17 +106,17 @@ void __51__VTUISpeechSynthesizer_speak_language_completion___block_invoke_5(uint
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)speak:(id)a3 completion:(id)a4
+- (void)speak:(id)speak completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  speakCopy = speak;
+  completionCopy = completion;
   [(VTUISpeechSynthesizer *)self stopSpeaking];
-  v9 = _Block_copy(v8);
+  v9 = _Block_copy(completionCopy);
   speakAudioHintCompletion = self->_speakAudioHintCompletion;
   self->_speakAudioHintCompletion = v9;
 
-  objc_initWeak(&location, v7);
-  objc_storeStrong(&self->_audioHintRequest, a3);
+  objc_initWeak(&location, speakCopy);
+  objc_storeStrong(&self->_audioHintRequest, speak);
   serviceSession = self->_serviceSession;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -124,7 +124,7 @@ void __51__VTUISpeechSynthesizer_speak_language_completion___block_invoke_5(uint
   v12[3] = &unk_279E54BE8;
   objc_copyWeak(&v13, &location);
   v12[4] = self;
-  [(SiriTTSServiceSession *)serviceSession speakWithAudioHintRequest:v7 didFinish:v12];
+  [(SiriTTSServiceSession *)serviceSession speakWithAudioHintRequest:speakCopy didFinish:v12];
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
 }

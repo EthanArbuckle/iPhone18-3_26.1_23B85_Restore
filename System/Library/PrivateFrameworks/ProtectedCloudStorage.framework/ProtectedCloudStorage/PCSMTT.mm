@@ -1,13 +1,13 @@
 @interface PCSMTT
 - (PCSMTT)init;
-- (PCSMTT)initWithCoder:(id)a3;
-- (PCSMTT)initWithMTT:(id)a3;
+- (PCSMTT)initWithCoder:(id)coder;
+- (PCSMTT)initWithMTT:(id)t;
 - (id)description;
 - (id)jsonDict;
-- (id)measurePoint:(id)a3;
-- (void)completePoint:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)measure:(id)a3 block:(id)a4;
+- (id)measurePoint:(id)point;
+- (void)completePoint:(id)point;
+- (void)encodeWithCoder:(id)coder;
+- (void)measure:(id)measure block:(id)block;
 - (void)start;
 - (void)stop;
 @end
@@ -21,9 +21,9 @@
   v2 = [(PCSMTT *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     UUID = v2->_UUID;
-    v2->_UUID = v3;
+    v2->_UUID = uUID;
 
     objc_storeStrong(&v2->_parentUUID, v2->_UUID);
     v5 = objc_opt_new();
@@ -37,15 +37,15 @@
   return v2;
 }
 
-- (PCSMTT)initWithMTT:(id)a3
+- (PCSMTT)initWithMTT:(id)t
 {
-  v4 = a3;
+  tCopy = t;
   v5 = [(PCSMTT *)self init];
   if (v5)
   {
-    v6 = [v4 UUID];
+    uUID = [tCopy UUID];
     parentUUID = v5->_parentUUID;
-    v5->_parentUUID = v6;
+    v5->_parentUUID = uUID;
   }
 
   return v5;
@@ -99,15 +99,15 @@
 {
   v27 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(PCSMTT *)self completedPoints];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  completedPoints = [(PCSMTT *)self completedPoints];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(completedPoints, "count")}];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [(PCSMTT *)self completedPoints];
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  completedPoints2 = [(PCSMTT *)self completedPoints];
+  v7 = [completedPoints2 countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -118,23 +118,23 @@
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(completedPoints2);
         }
 
-        v11 = [*(*(&v20 + 1) + 8 * i) jsonDict];
-        [v5 addObject:v11];
+        jsonDict = [*(*(&v20 + 1) + 8 * i) jsonDict];
+        [v5 addObject:jsonDict];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v8 = [completedPoints2 countByEnumeratingWithState:&v20 objects:v26 count:16];
     }
 
     while (v8);
   }
 
   v24[0] = @"uuid";
-  v12 = [(PCSMTT *)self UUID];
-  v13 = [v12 UUIDString];
-  v25[0] = v13;
+  uUID = [(PCSMTT *)self UUID];
+  uUIDString = [uUID UUIDString];
+  v25[0] = uUIDString;
   v24[1] = @"time";
   v14 = MEMORY[0x1E696AD98];
   [(PCSMTT *)self time];
@@ -154,9 +154,9 @@
 
 - (void)start
 {
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   startTime = self->_startTime;
-  self->_startTime = v3;
+  self->_startTime = date;
 
   MEMORY[0x1EEE66BB8]();
 }
@@ -165,8 +165,8 @@
 {
   if (self->_startTime)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
-    [v3 timeIntervalSinceDate:self->_startTime];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceDate:self->_startTime];
     self->_time = v4 + self->_time;
 
     startTime = self->_startTime;
@@ -174,27 +174,27 @@
   }
 }
 
-- (void)measure:(id)a3 block:(id)a4
+- (void)measure:(id)measure block:(id)block
 {
-  v6 = a4;
-  v8 = [(PCSMTT *)self measurePoint:a3];
-  v7 = v6[2](v6);
+  blockCopy = block;
+  v8 = [(PCSMTT *)self measurePoint:measure];
+  v7 = blockCopy[2](blockCopy);
 
   [v8 complete:v7];
 }
 
-- (id)measurePoint:(id)a3
+- (id)measurePoint:(id)point
 {
-  v4 = a3;
-  v5 = [[PCSMTTPoint alloc] initWithMTT:self name:v4];
+  pointCopy = point;
+  v5 = [[PCSMTTPoint alloc] initWithMTT:self name:pointCopy];
 
   return v5;
 }
 
-- (void)completePoint:(id)a3
+- (void)completePoint:(id)point
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pointCopy = point;
   if (completePoint__onceToken != -1)
   {
     [PCSMTT completePoint:];
@@ -204,24 +204,24 @@
   if (os_log_type_enabled(completePoint__log, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(PCSMTT *)self UUID];
-    v8 = [(PCSMTT *)self parentUUID];
-    v9 = [v4 name];
-    [v4 time];
+    uUID = [(PCSMTT *)self UUID];
+    parentUUID = [(PCSMTT *)self parentUUID];
+    name = [pointCopy name];
+    [pointCopy time];
     v12 = 138413314;
-    v13 = v7;
+    v13 = uUID;
     v14 = 2112;
-    v15 = v8;
+    v15 = parentUUID;
     v16 = 2112;
-    v17 = v9;
+    v17 = name;
     v18 = 2048;
     v19 = v10;
     v20 = 1024;
-    v21 = [v4 success];
+    success = [pointCopy success];
     _os_log_impl(&dword_1B229C000, v6, OS_LOG_TYPE_DEFAULT, "measure:%@:%@:%@:%f:%d", &v12, 0x30u);
   }
 
-  [(NSMutableArray *)self->_completedPoints addObject:v4];
+  [(NSMutableArray *)self->_completedPoints addObject:pointCopy];
 
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -233,46 +233,46 @@ uint64_t __24__PCSMTT_completePoint___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   UUID = self->_UUID;
-  v5 = a3;
-  [v5 encodeObject:UUID forKey:@"UUID"];
-  [v5 encodeObject:self->_parentUUID forKey:@"parentUUID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:UUID forKey:@"UUID"];
+  [coderCopy encodeObject:self->_parentUUID forKey:@"parentUUID"];
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_time];
-  [v5 encodeObject:v6 forKey:@"time"];
+  [coderCopy encodeObject:v6 forKey:@"time"];
 
-  [v5 encodeObject:self->_completedPoints forKey:@"points"];
+  [coderCopy encodeObject:self->_completedPoints forKey:@"points"];
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[PCSMTT returnedExistingIdentity](self, "returnedExistingIdentity")}];
-  [v5 encodeObject:v7 forKey:@"returnedExistingIdentity"];
+  [coderCopy encodeObject:v7 forKey:@"returnedExistingIdentity"];
 }
 
-- (PCSMTT)initWithCoder:(id)a3
+- (PCSMTT)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PCSMTT *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
     UUID = v5->_UUID;
     v5->_UUID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parentUUID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parentUUID"];
     parentUUID = v5->_parentUUID;
     v5->_parentUUID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"time"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"time"];
     [v10 doubleValue];
     v5->_time = v11;
 
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"points"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"points"];
     completedPoints = v5->_completedPoints;
     v5->_completedPoints = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"returnedExistingIdentity"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"returnedExistingIdentity"];
     -[PCSMTT setReturnedExistingIdentity:](v5, "setReturnedExistingIdentity:", [v17 BOOLValue]);
 
     v18 = v5;

@@ -1,16 +1,16 @@
 @interface SKUIIndexBarEntryViewElement
-- (SKUIIndexBarEntryViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SKUIIndexBarEntryViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (SKUIViewElement)childElement;
-- (id)applyUpdatesWithElement:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SKUIIndexBarEntryViewElement
 
-- (SKUIIndexBarEntryViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIIndexBarEntryViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIIndexBarEntryViewElement initWithDOMElement:parent:elementFactory:];
@@ -18,16 +18,16 @@
 
   v17.receiver = self;
   v17.super_class = SKUIIndexBarEntryViewElement;
-  v11 = [(SKUIViewElement *)&v17 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v17 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"targetIndexBarEntryID"];
+    v12 = [elementCopy getAttribute:@"targetIndexBarEntryID"];
     if ([v12 length])
     {
       objc_storeStrong(&v11->_targetIndexBarEntryID, v12);
     }
 
-    v13 = [v8 getAttribute:@"visibility"];
+    v13 = [elementCopy getAttribute:@"visibility"];
     if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
     {
       [SKUIIndexBarEntryViewElement initWithDOMElement:parent:elementFactory:];
@@ -46,20 +46,20 @@
   return v11;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SKUIIndexBarEntryViewElement;
-  v5 = [(SKUIViewElement *)&v10 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v10 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    v7 = [(SKUIIndexBarEntryViewElement *)v4 targetIndexBarEntryID];
+    targetIndexBarEntryID = [(SKUIIndexBarEntryViewElement *)elementCopy targetIndexBarEntryID];
     targetIndexBarEntryID = self->_targetIndexBarEntryID;
-    self->_targetIndexBarEntryID = v7;
+    self->_targetIndexBarEntryID = targetIndexBarEntryID;
 
-    self->_visibilityPriority = [(SKUIIndexBarEntryViewElement *)v4 visibilityPriority];
+    self->_visibilityPriority = [(SKUIIndexBarEntryViewElement *)elementCopy visibilityPriority];
   }
 
   return v6;

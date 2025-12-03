@@ -8,9 +8,9 @@
 {
   v5 = a4;
   v6 = a3;
-  v7 = [v6 localizedDescription];
-  v8 = [v6 localizedFailureReason];
-  v9 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v7 message:v8 preferredStyle:1];
+  localizedDescription = [v6 localizedDescription];
+  localizedFailureReason = [v6 localizedFailureReason];
+  v9 = [MEMORY[0x1E69DC650] alertControllerWithTitle:localizedDescription message:localizedFailureReason preferredStyle:1];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __84__UIAlertController_PXErrorRecovery__px_alertControllerWithError_completionHandler___block_invoke;

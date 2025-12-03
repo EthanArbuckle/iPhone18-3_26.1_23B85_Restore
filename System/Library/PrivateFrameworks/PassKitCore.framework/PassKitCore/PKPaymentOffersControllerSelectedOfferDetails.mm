@@ -1,12 +1,12 @@
 @interface PKPaymentOffersControllerSelectedOfferDetails
 - (BOOL)hasSelectedOtherOffersAfterPreconfiguredInstallmentOffer;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)updateCurrentSelectedPaymentOffer:(id)a3 selectedPassUniqueID:(id)a4 updateReason:(unint64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)updateCurrentSelectedPaymentOffer:(id)offer selectedPassUniqueID:(id)d updateReason:(unint64_t)reason;
 - (PKPaymentOffersControllerSelectedOfferDetails)init;
 - (id)description;
 - (unint64_t)hash;
 - (void)clearCurrentSelectedPaymentOfferDetails;
-- (void)updatedSelectedPassUniqueID:(id)a3;
+- (void)updatedSelectedPassUniqueID:(id)d;
 @end
 
 @implementation PKPaymentOffersControllerSelectedOfferDetails
@@ -28,22 +28,22 @@
   return v3;
 }
 
-- (BOOL)updateCurrentSelectedPaymentOffer:(id)a3 selectedPassUniqueID:(id)a4 updateReason:(unint64_t)a5
+- (BOOL)updateCurrentSelectedPaymentOffer:(id)offer selectedPassUniqueID:(id)d updateReason:(unint64_t)reason
 {
   v37 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v33 = a4;
+  offerCopy = offer;
+  dCopy = d;
   selectedPaymentOffer = self->_selectedPaymentOffer;
   v10 = selectedPaymentOffer;
   updateReason = self->_updateReason;
   p_previouslySelectedOffer = &self->_previouslySelectedOffer;
   v34 = self->_previouslySelectedOffer;
   v12 = self->_selectedPassUniqueID;
-  objc_storeStrong(&self->_selectedPaymentOffer, a3);
+  objc_storeStrong(&self->_selectedPaymentOffer, offer);
   objc_storeStrong(&self->_previouslySelectedOffer, selectedPaymentOffer);
-  v31 = a5;
-  self->_updateReason = a5;
-  objc_storeStrong(&self->_selectedPassUniqueID, a4);
+  reasonCopy = reason;
+  self->_updateReason = reason;
+  objc_storeStrong(&self->_selectedPassUniqueID, d);
   selectedPassUniqueID = self->_selectedPassUniqueID;
   v14 = v12;
   v15 = selectedPassUniqueID;
@@ -69,11 +69,11 @@
   {
 LABEL_7:
     selectedOfferHistory = self->_selectedOfferHistory;
-    v20 = v32;
+    v20 = offerCopy;
     if (self->_selectedPaymentOffer)
     {
       [(NSMutableArray *)self->_selectedOfferHistory addObject:?];
-      if (!v32)
+      if (!offerCopy)
       {
         goto LABEL_17;
       }
@@ -81,10 +81,10 @@ LABEL_7:
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [(NSMutableArray *)selectedOfferHistory addObject:v21];
+      null = [MEMORY[0x1E695DFB0] null];
+      [(NSMutableArray *)selectedOfferHistory addObject:null];
 
-      if (!v32)
+      if (!offerCopy)
       {
         goto LABEL_17;
       }
@@ -95,8 +95,8 @@ LABEL_7:
 
 LABEL_11:
   [(NSMutableArray *)self->_selectedOfferHistory removeAllObjects];
-  v20 = v32;
-  if (!v32)
+  v20 = offerCopy;
+  if (!offerCopy)
   {
 LABEL_17:
     if (v18 != v20)
@@ -158,7 +158,7 @@ LABEL_18:
 
   if (self->_selectedPaymentOffer)
   {
-    if (updateReason == v31)
+    if (updateReason == reasonCopy)
     {
       v27 = 0;
       goto LABEL_38;
@@ -168,7 +168,7 @@ LABEL_18:
   else
   {
     v27 = 0;
-    if (!*p_previouslySelectedOffer || updateReason == v31)
+    if (!*p_previouslySelectedOffer || updateReason == reasonCopy)
     {
       goto LABEL_38;
     }
@@ -179,7 +179,7 @@ LABEL_35:
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v36 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1AD337000, v28, OS_LOG_TYPE_DEFAULT, "Selected payment offer details changed: %@", buf, 0xCu);
   }
 
@@ -250,11 +250,11 @@ uint64_t __105__PKPaymentOffersControllerSelectedOfferDetails_hasSelectedOtherOf
   return v4;
 }
 
-- (void)updatedSelectedPassUniqueID:(id)a3
+- (void)updatedSelectedPassUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   selectedPassUniqueID = self->_selectedPassUniqueID;
-  v9 = v4;
+  v9 = dCopy;
   v6 = selectedPassUniqueID;
   if (v6 == v9)
   {
@@ -282,18 +282,18 @@ LABEL_8:
 LABEL_9:
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())

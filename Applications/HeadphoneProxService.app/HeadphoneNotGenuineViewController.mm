@@ -1,6 +1,6 @@
 @interface HeadphoneNotGenuineViewController
-- (_TtC20HeadphoneProxService33HeadphoneNotGenuineViewController)initWithContentView:(id)a3;
-- (void)handleTapOnLabel:(id)a3;
+- (_TtC20HeadphoneProxService33HeadphoneNotGenuineViewController)initWithContentView:(id)view;
+- (void)handleTapOnLabel:(id)label;
 - (void)viewDidLoad;
 @end
 
@@ -8,21 +8,21 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001C8AC();
 }
 
-- (void)handleTapOnLabel:(id)a3
+- (void)handleTapOnLabel:(id)label
 {
-  v4 = a3;
-  v5 = self;
-  sub_10001D9C8(v4);
+  labelCopy = label;
+  selfCopy = self;
+  sub_10001D9C8(labelCopy);
 }
 
-- (_TtC20HeadphoneProxService33HeadphoneNotGenuineViewController)initWithContentView:(id)a3
+- (_TtC20HeadphoneProxService33HeadphoneNotGenuineViewController)initWithContentView:(id)view
 {
-  v4 = a3;
-  v5 = sub_10001E49C(a3);
+  viewCopy = view;
+  v5 = sub_10001E49C(view);
 
   return v5;
 }

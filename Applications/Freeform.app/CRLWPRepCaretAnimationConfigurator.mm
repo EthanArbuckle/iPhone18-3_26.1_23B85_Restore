@@ -1,6 +1,6 @@
 @interface CRLWPRepCaretAnimationConfigurator
-+ (double)animationCycleForHide:(BOOL)a3;
-+ (double)animationDurationForHide:(BOOL)a3;
++ (double)animationCycleForHide:(BOOL)hide;
++ (double)animationDurationForHide:(BOOL)hide;
 + (void)initialize;
 @end
 
@@ -8,7 +8,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (*&qword_1019F1048 < -99999.0)
     {
@@ -66,10 +66,10 @@
   }
 }
 
-+ (double)animationDurationForHide:(BOOL)a3
++ (double)animationDurationForHide:(BOOL)hide
 {
   result = 0.15;
-  if (a3)
+  if (hide)
   {
     return 0.25;
   }
@@ -77,17 +77,17 @@
   return result;
 }
 
-+ (double)animationCycleForHide:(BOOL)a3
++ (double)animationCycleForHide:(BOOL)hide
 {
-  v3 = a3;
-  v4 = [a1 caretShouldFade];
+  hideCopy = hide;
+  caretShouldFade = [self caretShouldFade];
   v5 = &qword_1019F1058;
-  if (!v3)
+  if (!hideCopy)
   {
     v5 = &qword_1019F1050;
   }
 
-  if (!v4)
+  if (!caretShouldFade)
   {
     v5 = &qword_1019F1048;
   }

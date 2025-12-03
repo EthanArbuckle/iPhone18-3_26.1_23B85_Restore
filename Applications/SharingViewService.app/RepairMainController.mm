@@ -1,17 +1,17 @@
 @interface RepairMainController
 - (id)productImage;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_sessionHandleProgress:(unsigned int)a3 info:(id)a4;
-- (void)_sessionStart:(id)a3;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)dismiss:(int)a3 completion:(id)a4;
-- (void)handleButtonActions:(id)a3;
-- (void)logUsageDone:(int)a3;
-- (void)logUsageStart:(int)a3;
-- (void)showDoneUI:(int)a3 error:(id)a4 final:(BOOL)a5;
+- (void)_sessionHandleProgress:(unsigned int)progress info:(id)info;
+- (void)_sessionStart:(id)start;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)dismiss:(int)dismiss completion:(id)completion;
+- (void)handleButtonActions:(id)actions;
+- (void)logUsageDone:(int)done;
+- (void)logUsageStart:(int)start;
+- (void)showDoneUI:(int)i error:(id)error final:(BOOL)final;
 - (void)showProgressUI;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation RepairMainController
@@ -58,14 +58,14 @@
   sub_100127D6C(vcNav, vcProgress, 0);
 }
 
-- (void)showDoneUI:(int)a3 error:(id)a4 final:(BOOL)a5
+- (void)showDoneUI:(int)i error:(id)error final:(BOOL)final
 {
-  v5 = a5;
-  v6 = *&a3;
-  v14 = a4;
+  finalCopy = final;
+  v6 = *&i;
+  errorCopy = error;
   if (self->_vcDone)
   {
-    if (!v5)
+    if (!finalCopy)
     {
       goto LABEL_17;
     }
@@ -95,10 +95,10 @@
 
   [(SVSBaseViewController *)self->_vcDone setMainController:self];
   [(RepairDoneViewController *)self->_vcDone setStatus:v6];
-  [(RepairDoneViewController *)self->_vcDone setError:v14];
+  [(RepairDoneViewController *)self->_vcDone setError:errorCopy];
   sub_100127D6C(self->_vcNav, self->_vcDone, 0);
   [(RepairMainController *)self logUsageDone:v6];
-  if (v5)
+  if (finalCopy)
   {
 LABEL_12:
     if (dword_1001BED68 <= 30 && (dword_1001BED68 != -1 || _LogCategory_Initialize()))
@@ -110,23 +110,23 @@ LABEL_12:
     sfSession = self->_sfSession;
     self->_sfSession = 0;
 
-    v12 = [(RepairMainController *)self _remoteViewControllerProxy];
-    [v12 setIdleTimerDisabled:0 forReason:@"com.apple.SharingViewService.Repair"];
+    _remoteViewControllerProxy = [(RepairMainController *)self _remoteViewControllerProxy];
+    [_remoteViewControllerProxy setIdleTimerDisabled:0 forReason:@"com.apple.SharingViewService.Repair"];
   }
 
 LABEL_17:
 }
 
-- (void)_sessionHandleProgress:(unsigned int)a3 info:(id)a4
+- (void)_sessionHandleProgress:(unsigned int)progress info:(id)info
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&progress;
+  infoCopy = info;
   if (v4 <= 199)
   {
     switch(v4)
     {
       case 0x14:
-        v8 = v6;
+        v8 = infoCopy;
         if (dword_1001BED68 <= 30 && (dword_1001BED68 != -1 || _LogCategory_Initialize()))
         {
           LogPrintF();
@@ -135,7 +135,7 @@ LABEL_17:
         [(RepairMainController *)self showDoneUI:0 error:0 final:1];
         break;
       case 0x1E:
-        v8 = v6;
+        v8 = infoCopy;
         CFErrorGetTypeID();
         v7 = CFDictionaryGetTypedValue();
         if (dword_1001BED68 <= 60 && (dword_1001BED68 != -1 || _LogCategory_Initialize()))
@@ -147,7 +147,7 @@ LABEL_17:
 
         break;
       case 0x60:
-        v8 = v6;
+        v8 = infoCopy;
         if (dword_1001BED68 <= 30 && (dword_1001BED68 != -1 || _LogCategory_Initialize()))
         {
           LogPrintF();
@@ -164,21 +164,21 @@ LABEL_17:
 
   if ((v4 - 200) <= 0x1E && ((1 << (v4 + 56)) & 0x40100001) != 0)
   {
-    v8 = v6;
+    v8 = infoCopy;
     [(RepairProgressViewController *)self->_vcProgress handleProgressEvent:v4];
 LABEL_23:
-    v6 = v8;
+    infoCopy = v8;
   }
 
 LABEL_24:
 }
 
-- (void)_sessionStart:(id)a3
+- (void)_sessionStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   if (dword_1001BED68 <= 30 && (dword_1001BED68 != -1 || _LogCategory_Initialize()))
   {
-    v9 = v4;
+    v9 = startCopy;
     LogPrintF();
   }
 
@@ -202,7 +202,7 @@ LABEL_24:
     sfSession = self->_sfSession;
     self->_sfSession = v6;
 
-    [(SFDeviceRepairSession *)self->_sfSession setPeerDevice:v4];
+    [(SFDeviceRepairSession *)self->_sfSession setPeerDevice:startCopy];
     [(SFDeviceRepairSession *)self->_sfSession setPresentingViewController:self->_vcStart];
     [(SFDeviceRepairSession *)self->_sfSession setRepairFlags:CFDictionaryGetInt64Ranged()];
     v10[0] = _NSConcreteStackBlock;
@@ -212,16 +212,16 @@ LABEL_24:
     v10[4] = self;
     [(SFDeviceRepairSession *)self->_sfSession setProgressHandler:v10];
     [(SFDeviceRepairSession *)self->_sfSession activate];
-    v8 = [(RepairMainController *)self _remoteViewControllerProxy];
-    [v8 setIdleTimerDisabled:1 forReason:@"com.apple.SharingViewService.Repair"];
+    _remoteViewControllerProxy = [(RepairMainController *)self _remoteViewControllerProxy];
+    [_remoteViewControllerProxy setIdleTimerDisabled:1 forReason:@"com.apple.SharingViewService.Repair"];
   }
 }
 
-- (void)logUsageDone:(int)a3
+- (void)logUsageDone:(int)done
 {
   if (!self->_loggedUsageDone)
   {
-    v3 = *&a3;
+    v3 = *&done;
     self->_loggedUsageDone = 1;
     CFStringGetTypeID();
     v4 = CFDictionaryGetTypedValue();
@@ -263,11 +263,11 @@ LABEL_24:
   }
 }
 
-- (void)logUsageStart:(int)a3
+- (void)logUsageStart:(int)start
 {
   if (!self->_loggedUsageStart)
   {
-    v3 = *&a3;
+    v3 = *&start;
     self->_loggedUsageStart = 1;
     CFStringGetTypeID();
     v4 = CFDictionaryGetTypedValue();
@@ -309,14 +309,14 @@ LABEL_24:
   }
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -327,7 +327,7 @@ LABEL_24:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actionsCopy);
         }
 
         if (([*(*(&v9 + 1) + 8 * i) events] & 0x10) != 0)
@@ -341,23 +341,23 @@ LABEL_24:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)dismiss:(int)a3 completion:(id)a4
+- (void)dismiss:(int)dismiss completion:(id)completion
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&dismiss;
+  completionCopy = completion;
   if (!self->_dismissed)
   {
     self->_dismissed = 1;
     [(RepairMainController *)self logUsageStart:v4];
-    v7 = [(RepairMainController *)self _remoteViewControllerProxy];
-    v8 = v7;
+    _remoteViewControllerProxy = [(RepairMainController *)self _remoteViewControllerProxy];
+    v8 = _remoteViewControllerProxy;
     vcNav = self->_vcNav;
     if (vcNav)
     {
@@ -365,28 +365,28 @@ LABEL_24:
       v10[1] = 3221225472;
       v10[2] = sub_100115428;
       v10[3] = &unk_1001959D0;
-      v12 = v6;
+      v12 = completionCopy;
       v11 = v8;
       [(SVSCommonNavController *)vcNav dismissViewControllerAnimated:1 completion:v10];
     }
 
     else
     {
-      [v7 dismiss];
+      [_remoteViewControllerProxy dismiss];
     }
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BED68 <= 30 && (dword_1001BED68 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 
-  v5 = [(RepairMainController *)self _remoteViewControllerProxy];
-  [v5 setIdleTimerDisabled:0 forReason:@"com.apple.SharingViewService.Repair"];
+  _remoteViewControllerProxy = [(RepairMainController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setIdleTimerDisabled:0 forReason:@"com.apple.SharingViewService.Repair"];
 
   if (!self->_dismissed)
   {
@@ -422,12 +422,12 @@ LABEL_24:
 
   v12.receiver = self;
   v12.super_class = RepairMainController;
-  [(SVSBaseMainController *)&v12 viewDidDisappear:v3];
+  [(SVSBaseMainController *)&v12 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BED68 <= 30 && (dword_1001BED68 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -435,31 +435,31 @@ LABEL_24:
 
   v14.receiver = self;
   v14.super_class = RepairMainController;
-  [(RepairMainController *)&v14 viewDidAppear:v3];
+  [(RepairMainController *)&v14 viewDidAppear:appearCopy];
   self->_viewAppearedTicks = mach_absolute_time();
   v5 = [UIStoryboard storyboardWithName:@"Repair" bundle:0];
   storyboard = self->_storyboard;
   self->_storyboard = v5;
 
-  v7 = [(UIStoryboard *)self->_storyboard instantiateInitialViewController];
+  instantiateInitialViewController = [(UIStoryboard *)self->_storyboard instantiateInitialViewController];
   vcNav = self->_vcNav;
-  self->_vcNav = v7;
+  self->_vcNav = instantiateInitialViewController;
 
   [(SVSCommonNavController *)self->_vcNav setDelegate:self];
   [(SVSCommonNavController *)self->_vcNav setModalPresentationStyle:4];
   v9 = +[UIDevice currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  userInterfaceIdiom = [v9 userInterfaceIdiom];
 
-  if ((v10 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [(SVSCommonNavController *)self->_vcNav setModalTransitionStyle:2];
   }
 
   [(SVSCommonNavController *)self->_vcNav setTransitioningDelegate:self->_vcNav];
-  v11 = [(SVSCommonNavController *)self->_vcNav viewControllers];
-  v12 = [v11 firstObject];
+  viewControllers = [(SVSCommonNavController *)self->_vcNav viewControllers];
+  firstObject = [viewControllers firstObject];
   vcStart = self->_vcStart;
-  self->_vcStart = v12;
+  self->_vcStart = firstObject;
 
   [(SVSBaseViewController *)self->_vcStart setMainController:self];
   [(RepairMainController *)self presentViewController:self->_vcNav animated:1 completion:0];
@@ -467,18 +467,18 @@ LABEL_24:
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(RepairMainController *)self view];
-  v3 = [v2 window];
+  view = [(RepairMainController *)self view];
+  window = [view window];
 
-  if (!v3)
+  if (!window)
   {
     return 30;
   }
 
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return (1 << [UIApp activeInterfaceOrientation]);
   }
@@ -489,12 +489,12 @@ LABEL_24:
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v15 = a4;
-  v6 = [a3 userInfo];
+  completionCopy = completion;
+  userInfo = [context userInfo];
   userInfo = self->super._userInfo;
-  self->super._userInfo = v6;
+  self->super._userInfo = userInfo;
 
   if (dword_1001BED68 <= 30 && (dword_1001BED68 != -1 || _LogCategory_Initialize()))
   {
@@ -516,7 +516,7 @@ LABEL_24:
   {
     v11 = 1;
 LABEL_13:
-    v12 = v15;
+    v12 = completionCopy;
 LABEL_14:
     self->_testMode = v11;
     goto LABEL_15;
@@ -535,7 +535,7 @@ LABEL_14:
   }
 
   v13 = [v8 isEqual:@"00000000-0000-0000-0000-000000000004"];
-  v12 = v15;
+  v12 = completionCopy;
   if (v13)
   {
     v11 = 4;
@@ -545,7 +545,7 @@ LABEL_14:
 LABEL_15:
   if (v12)
   {
-    v15[2]();
+    completionCopy[2]();
   }
 }
 

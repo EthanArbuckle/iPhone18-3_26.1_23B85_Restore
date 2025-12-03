@@ -1,14 +1,14 @@
 @interface PKVirtualCardCredentials
 + (id)demoVPANCredentials;
-+ (id)formattedDateStringFromServerDateString:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKVirtualCardCredentials)initWithCoder:(id)a3;
-- (PKVirtualCardCredentials)initWithDictionary:(id)a3;
-- (PKVirtualCardCredentials)initWithEncryptedCardData:(id)a3 ephemeralPublicKey:(id)a4 privateKey:(__SecKey *)a5 error:(id *)a6;
-- (PKVirtualCardCredentials)initWithVPANPaymentCredentialResponse:(id)a3 privateKey:(__SecKey *)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)formattedDateStringFromServerDateString:(id)string;
+- (BOOL)isEqual:(id)equal;
+- (PKVirtualCardCredentials)initWithCoder:(id)coder;
+- (PKVirtualCardCredentials)initWithDictionary:(id)dictionary;
+- (PKVirtualCardCredentials)initWithEncryptedCardData:(id)data ephemeralPublicKey:(id)key privateKey:(__SecKey *)privateKey error:(id *)error;
+- (PKVirtualCardCredentials)initWithVPANPaymentCredentialResponse:(id)response privateKey:(__SecKey *)key error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKVirtualCardCredentials
@@ -31,63 +31,63 @@
   return v2;
 }
 
-- (PKVirtualCardCredentials)initWithDictionary:(id)a3
+- (PKVirtualCardCredentials)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = PKVirtualCardCredentials;
   v5 = [(PKVirtualCardCredentials *)&v13 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"primaryAccountNumber"];
-    v7 = [v6 pk_zString];
+    v6 = [dictionaryCopy PKStringForKey:@"primaryAccountNumber"];
+    pk_zString = [v6 pk_zString];
     primaryAccountNumber = v5->_primaryAccountNumber;
-    v5->_primaryAccountNumber = v7;
+    v5->_primaryAccountNumber = pk_zString;
 
-    v9 = [v4 PKStringForKey:@"cardSecurityCode"];
-    v10 = [v9 pk_zString];
+    v9 = [dictionaryCopy PKStringForKey:@"cardSecurityCode"];
+    pk_zString2 = [v9 pk_zString];
     cardSecurityCode = v5->_cardSecurityCode;
-    v5->_cardSecurityCode = v10;
+    v5->_cardSecurityCode = pk_zString2;
 
-    v5->_cardType = [v4 PKIntegerForKey:@"cardType"];
+    v5->_cardType = [dictionaryCopy PKIntegerForKey:@"cardType"];
   }
 
   return v5;
 }
 
-- (PKVirtualCardCredentials)initWithEncryptedCardData:(id)a3 ephemeralPublicKey:(id)a4 privateKey:(__SecKey *)a5 error:(id *)a6
+- (PKVirtualCardCredentials)initWithEncryptedCardData:(id)data ephemeralPublicKey:(id)key privateKey:(__SecKey *)privateKey error:(id *)error
 {
-  v8 = PKECDHDecryptDataWithEphemeralPublicKey(a4, a3, a5, a6);
+  v8 = PKECDHDecryptDataWithEphemeralPublicKey(key, data, privateKey, error);
   if (v8)
   {
-    v9 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v8 options:0 error:a6];
+    v9 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v8 options:0 error:error];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       self = [(PKVirtualCardCredentials *)self initWithDictionary:v9];
-      v10 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-+ (id)formattedDateStringFromServerDateString:(id)a3
++ (id)formattedDateStringFromServerDateString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 componentsSeparatedByString:@"/"];
+  stringCopy = string;
+  v4 = [stringCopy componentsSeparatedByString:@"/"];
   if ([v4 count] != 2)
   {
-    v8 = v3;
+    v8 = stringCopy;
     goto LABEL_10;
   }
 
@@ -102,7 +102,7 @@
   {
     if ([v6 length] != 4)
     {
-      v8 = v3;
+      v8 = stringCopy;
       goto LABEL_9;
     }
 
@@ -118,20 +118,20 @@ LABEL_10:
   return v8;
 }
 
-- (PKVirtualCardCredentials)initWithVPANPaymentCredentialResponse:(id)a3 privateKey:(__SecKey *)a4 error:(id *)a5
+- (PKVirtualCardCredentials)initWithVPANPaymentCredentialResponse:(id)response privateKey:(__SecKey *)key error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 credentials];
-  v10 = [v9 encryptedCardData];
-  v11 = [v8 credentials];
-  v12 = [v11 ephemeralPublicKey];
-  v13 = [(PKVirtualCardCredentials *)self initWithEncryptedCardData:v10 ephemeralPublicKey:v12 privateKey:a4 error:a5];
+  responseCopy = response;
+  credentials = [responseCopy credentials];
+  encryptedCardData = [credentials encryptedCardData];
+  credentials2 = [responseCopy credentials];
+  ephemeralPublicKey = [credentials2 ephemeralPublicKey];
+  v13 = [(PKVirtualCardCredentials *)self initWithEncryptedCardData:encryptedCardData ephemeralPublicKey:ephemeralPublicKey privateKey:key error:error];
 
   if (v13)
   {
-    v14 = [v8 expiration];
-    v15 = [objc_opt_class() formattedDateStringFromServerDateString:v14];
-    v16 = [v14 copy];
+    expiration = [responseCopy expiration];
+    v15 = [objc_opt_class() formattedDateStringFromServerDateString:expiration];
+    v16 = [expiration copy];
     expiration = v13->_expiration;
     v13->_expiration = v16;
 
@@ -145,27 +145,27 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_primaryAccountNumber];
-  [v3 safelyAddObject:self->_cardSecurityCode];
-  [v3 safelyAddObject:self->_expiration];
-  [v3 safelyAddObject:self->_formattedExpiration];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_primaryAccountNumber];
+  [array safelyAddObject:self->_cardSecurityCode];
+  [array safelyAddObject:self->_expiration];
+  [array safelyAddObject:self->_formattedExpiration];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_cardType - v4 + 32 * v4;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_26;
   }
 
-  v5 = v4[1];
+  v5 = equalCopy[1];
   v6 = self->_primaryAccountNumber;
   v7 = v5;
   v8 = v7;
@@ -188,7 +188,7 @@ LABEL_10:
     }
   }
 
-  v10 = v4[2];
+  v10 = equalCopy[2];
   v6 = self->_cardSecurityCode;
   v11 = v10;
   v8 = v11;
@@ -211,7 +211,7 @@ LABEL_10:
     }
   }
 
-  v13 = v4[4];
+  v13 = equalCopy[4];
   v6 = self->_expiration;
   v14 = v13;
   v8 = v14;
@@ -236,7 +236,7 @@ LABEL_25:
   }
 
 LABEL_20:
-  v16 = v4[5];
+  v16 = equalCopy[5];
   v6 = self->_formattedExpiration;
   v17 = v16;
   v8 = v17;
@@ -244,7 +244,7 @@ LABEL_20:
   {
 
 LABEL_29:
-    v19 = self->_cardType == v4[3];
+    v19 = self->_cardType == equalCopy[3];
     goto LABEL_27;
   }
 
@@ -267,53 +267,53 @@ LABEL_27:
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKVirtualCardCredentials allocWithZone:](PKVirtualCardCredentials init];
-  v6 = [(NSString *)self->_primaryAccountNumber copyWithZone:a3];
+  v6 = [(NSString *)self->_primaryAccountNumber copyWithZone:zone];
   primaryAccountNumber = v5->_primaryAccountNumber;
   v5->_primaryAccountNumber = v6;
 
-  v8 = [(NSString *)self->_cardSecurityCode copyWithZone:a3];
+  v8 = [(NSString *)self->_cardSecurityCode copyWithZone:zone];
   cardSecurityCode = v5->_cardSecurityCode;
   v5->_cardSecurityCode = v8;
 
   v5->_cardType = self->_cardType;
-  v10 = [(NSString *)self->_expiration copyWithZone:a3];
+  v10 = [(NSString *)self->_expiration copyWithZone:zone];
   expiration = v5->_expiration;
   v5->_expiration = v10;
 
-  v12 = [(NSString *)self->_formattedExpiration copyWithZone:a3];
+  v12 = [(NSString *)self->_formattedExpiration copyWithZone:zone];
   formattedExpiration = v5->_formattedExpiration;
   v5->_formattedExpiration = v12;
 
   return v5;
 }
 
-- (PKVirtualCardCredentials)initWithCoder:(id)a3
+- (PKVirtualCardCredentials)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PKVirtualCardCredentials;
   v5 = [(PKVirtualCardCredentials *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryAccountNumber"];
-    v7 = [v6 pk_zString];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryAccountNumber"];
+    pk_zString = [v6 pk_zString];
     primaryAccountNumber = v5->_primaryAccountNumber;
-    v5->_primaryAccountNumber = v7;
+    v5->_primaryAccountNumber = pk_zString;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cardSecurityCode"];
-    v10 = [v9 pk_zString];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cardSecurityCode"];
+    pk_zString2 = [v9 pk_zString];
     cardSecurityCode = v5->_cardSecurityCode;
-    v5->_cardSecurityCode = v10;
+    v5->_cardSecurityCode = pk_zString2;
 
-    v5->_cardType = [v4 decodeIntegerForKey:@"cardType"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expiration"];
+    v5->_cardType = [coderCopy decodeIntegerForKey:@"cardType"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expiration"];
     expiration = v5->_expiration;
     v5->_expiration = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"formattedExpiration"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"formattedExpiration"];
     formattedExpiration = v5->_formattedExpiration;
     v5->_formattedExpiration = v14;
   }
@@ -321,15 +321,15 @@ LABEL_27:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   primaryAccountNumber = self->_primaryAccountNumber;
-  v5 = a3;
-  [v5 encodeObject:primaryAccountNumber forKey:@"primaryAccountNumber"];
-  [v5 encodeObject:self->_cardSecurityCode forKey:@"cardSecurityCode"];
-  [v5 encodeInteger:self->_cardType forKey:@"cardType"];
-  [v5 encodeObject:self->_expiration forKey:@"expiration"];
-  [v5 encodeObject:self->_formattedExpiration forKey:@"formattedExpiration"];
+  coderCopy = coder;
+  [coderCopy encodeObject:primaryAccountNumber forKey:@"primaryAccountNumber"];
+  [coderCopy encodeObject:self->_cardSecurityCode forKey:@"cardSecurityCode"];
+  [coderCopy encodeInteger:self->_cardType forKey:@"cardType"];
+  [coderCopy encodeObject:self->_expiration forKey:@"expiration"];
+  [coderCopy encodeObject:self->_formattedExpiration forKey:@"formattedExpiration"];
 }
 
 @end

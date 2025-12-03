@@ -1,11 +1,11 @@
 @interface CAActivityIndicatorLayer
 - (BOOL)isAnimating;
-- (CAActivityIndicatorLayer)initWithColor:(id)a3;
-- (double)_alphaValueForStep:(int64_t)a3;
-- (double)_spokeLengthForGearWidth:(double)a3;
-- (double)_spokeWidthForGearWidth:(double)a3;
+- (CAActivityIndicatorLayer)initWithColor:(id)color;
+- (double)_alphaValueForStep:(int64_t)step;
+- (double)_spokeLengthForGearWidth:(double)width;
+- (double)_spokeWidthForGearWidth:(double)width;
 - (double)_widthForGearWidth:(double)result;
-- (id)imageForStep:(int64_t)a3 withColor:(CGColor *)a4;
+- (id)imageForStep:(int64_t)step withColor:(CGColor *)color;
 - (id)spinnerImages;
 - (void)startAnimating;
 - (void)stopAnimating;
@@ -13,9 +13,9 @@
 
 @implementation CAActivityIndicatorLayer
 
-- (CAActivityIndicatorLayer)initWithColor:(id)a3
+- (CAActivityIndicatorLayer)initWithColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v9.receiver = self;
   v9.super_class = CAActivityIndicatorLayer;
   v6 = [(CAActivityIndicatorLayer *)&v9 init];
@@ -24,7 +24,7 @@
   {
     v6->_spokeFrameRatio = 2;
     v6->_spokeCount = 8;
-    objc_storeStrong(&v6->_uiColor, a3);
+    objc_storeStrong(&v6->_uiColor, color);
     v7->_color = [(UIColor *)v7->_uiColor CGColor];
   }
 
@@ -83,13 +83,13 @@ void __41__CAActivityIndicatorLayer_spinnerImages__block_invoke(uint64_t a1)
 
 - (void)startAnimating
 {
-  v5 = [(CAActivityIndicatorLayer *)self spinnerImages];
+  spinnerImages = [(CAActivityIndicatorLayer *)self spinnerImages];
   v3 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"contents"];
   [v3 setCalculationMode:*MEMORY[0x277CDA068]];
   [v3 setDuration:0.800000012];
   LODWORD(v4) = 2139095040;
   [v3 setRepeatCount:v4];
-  [v3 setValues:v5];
+  [v3 setValues:spinnerImages];
   [(CAActivityIndicatorLayer *)self addAnimation:v3 forKey:@"contents"];
 }
 
@@ -102,21 +102,21 @@ void __41__CAActivityIndicatorLayer_spinnerImages__block_invoke(uint64_t a1)
 
 - (BOOL)isAnimating
 {
-  v2 = [(CAActivityIndicatorLayer *)self animationKeys];
-  v3 = [v2 containsObject:@"contents"];
+  animationKeys = [(CAActivityIndicatorLayer *)self animationKeys];
+  v3 = [animationKeys containsObject:@"contents"];
 
   return v3;
 }
 
-- (double)_spokeWidthForGearWidth:(double)a3
+- (double)_spokeWidthForGearWidth:(double)width
 {
   v3 = 1.0;
-  if (a3 == 14.0)
+  if (width == 14.0)
   {
     return v3;
   }
 
-  if (a3 == 20.0)
+  if (width == 20.0)
   {
     v4 = self->_spokeCount == 12;
     v5 = 1.25;
@@ -125,18 +125,18 @@ void __41__CAActivityIndicatorLayer_spinnerImages__block_invoke(uint64_t a1)
   }
 
   v3 = 1.75;
-  if (a3 == 30.0)
+  if (width == 30.0)
   {
     return v3;
   }
 
   v3 = 2.0;
-  if (a3 == 32.0)
+  if (width == 32.0)
   {
     return v3;
   }
 
-  if (a3 == 37.0)
+  if (width == 37.0)
   {
     v4 = self->_spokeCount == 12;
     v5 = 2.5;
@@ -151,9 +151,9 @@ LABEL_4:
   }
 
   v3 = 3.5;
-  if (a3 != 60.0)
+  if (width != 60.0)
   {
-    v7 = nearbyint(a3 / 7.5) * 0.5;
+    v7 = nearbyint(width / 7.5) * 0.5;
     v3 = 1.0;
     if (v7 >= 1.0)
     {
@@ -164,11 +164,11 @@ LABEL_4:
   return v3;
 }
 
-- (double)_spokeLengthForGearWidth:(double)a3
+- (double)_spokeLengthForGearWidth:(double)width
 {
-  if (a3 != 20.0)
+  if (width != 20.0)
   {
-    return nearbyint(a3 * 0.25);
+    return nearbyint(width * 0.25);
   }
 
   [(CAActivityIndicatorLayer *)self contentsScale:v3];
@@ -185,14 +185,14 @@ LABEL_4:
   return result;
 }
 
-- (double)_alphaValueForStep:(int64_t)a3
+- (double)_alphaValueForStep:(int64_t)step
 {
-  v5 = [(CAActivityIndicatorLayer *)self _spokeCount];
-  v6 = [(CAActivityIndicatorLayer *)self _spokeFrameRatio];
+  _spokeCount = [(CAActivityIndicatorLayer *)self _spokeCount];
+  _spokeFrameRatio = [(CAActivityIndicatorLayer *)self _spokeFrameRatio];
   result = 1.0;
-  if ((v6 * v5 - 2) <= 0xFFFFFFFFFFFFFFFCLL)
+  if ((_spokeFrameRatio * _spokeCount - 2) <= 0xFFFFFFFFFFFFFFFCLL)
   {
-    result = a3 * (-0.68 / (v6 * v5 / 2)) + 1.0;
+    result = step * (-0.68 / (_spokeFrameRatio * _spokeCount / 2)) + 1.0;
     if (result < 0.32)
     {
       return 0.32;
@@ -202,7 +202,7 @@ LABEL_4:
   return result;
 }
 
-- (id)imageForStep:(int64_t)a3 withColor:(CGColor *)a4
+- (id)imageForStep:(int64_t)step withColor:(CGColor *)color
 {
   [(CAActivityIndicatorLayer *)self _spokeWidthForGearWidth:20.0];
   v8 = v7;
@@ -218,8 +218,8 @@ LABEL_4:
   v33.height = 20.0;
   UIGraphicsBeginImageContextWithOptions(v33, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
-  NumberOfComponents = CGColorGetNumberOfComponents(a4);
-  Components = CGColorGetComponents(a4);
+  NumberOfComponents = CGColorGetNumberOfComponents(color);
+  Components = CGColorGetComponents(color);
   if (NumberOfComponents)
   {
     v20 = Components[NumberOfComponents - 1];
@@ -232,13 +232,13 @@ LABEL_4:
 
   CGContextSaveGState(CurrentContext);
   CGContextTranslateCTM(CurrentContext, 0.0, 0.0);
-  v21 = [(CAActivityIndicatorLayer *)self _spokeFrameRatio];
-  v22 = [(CAActivityIndicatorLayer *)self _spokeFrameRatio];
+  _spokeFrameRatio = [(CAActivityIndicatorLayer *)self _spokeFrameRatio];
+  _spokeFrameRatio2 = [(CAActivityIndicatorLayer *)self _spokeFrameRatio];
   if (spokeCount >= 1)
   {
     v23 = 0;
-    v24 = a3 % v21;
-    v25 = a3 / v22;
+    v24 = step % _spokeFrameRatio;
+    v25 = step / _spokeFrameRatio2;
     do
     {
       v26 = v24 + [(CAActivityIndicatorLayer *)self _spokeFrameRatio]* v25;
@@ -248,7 +248,7 @@ LABEL_4:
       CGContextRotateCTM(CurrentContext, -6.28318531 / spokeCount * v23);
       CGContextTranslateCTM(CurrentContext, -v13, -v13);
       [(CAActivityIndicatorLayer *)self _alphaValueForStep:v27];
-      CopyWithAlpha = CGColorCreateCopyWithAlpha(a4, v20 * v28);
+      CopyWithAlpha = CGColorCreateCopyWithAlpha(color, v20 * v28);
       CGContextSetFillColorWithColor(CurrentContext, CopyWithAlpha);
       CGContextSetStrokeColorWithColor(CurrentContext, CopyWithAlpha);
       [v14 fillWithBlendMode:17 alpha:0.85];

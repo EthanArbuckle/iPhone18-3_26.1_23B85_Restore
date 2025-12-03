@@ -1,35 +1,35 @@
 @interface RMFileConduit
 + (id)_generateEnrollmentToken;
-- (BOOL)_prepareDirectoryWithURL:(id)a3 error:(id *)a4;
-- (BOOL)_syncDeclarationsWithManagementSource:(id)a3 error:(id *)a4;
-- (BOOL)_syncWithManagementSource:(id)a3 onlyIfNeeded:(BOOL)a4 error:(id *)a5;
+- (BOOL)_prepareDirectoryWithURL:(id)l error:(id *)error;
+- (BOOL)_syncDeclarationsWithManagementSource:(id)source error:(id *)error;
+- (BOOL)_syncWithManagementSource:(id)source onlyIfNeeded:(BOOL)needed error:(id *)error;
 - (BOOL)isSyncAllowed;
-- (RMFileConduit)initWithManagementSourceObjectID:(id)a3 inContext:(id)a4;
+- (RMFileConduit)initWithManagementSourceObjectID:(id)d inContext:(id)context;
 - (RMFileConduitDelegate)delegate;
 - (id)statusItemsToImplicitlySubscribeTo;
 - (id)statusItemsToSendDuringEnrollment;
 - (signed)errorState;
-- (void)enrollWithStatusItems:(id)a3 completionHandler:(id)a4;
-- (void)sendStatusData:(id)a3 completionHandler:(id)a4;
-- (void)startWithCompletionHandler:(id)a3;
-- (void)syncOnlyIfNeeded:(BOOL)a3 completionHandler:(id)a4;
-- (void)unenrollWithCompletionHandler:(id)a3;
+- (void)enrollWithStatusItems:(id)items completionHandler:(id)handler;
+- (void)sendStatusData:(id)data completionHandler:(id)handler;
+- (void)startWithCompletionHandler:(id)handler;
+- (void)syncOnlyIfNeeded:(BOOL)needed completionHandler:(id)handler;
+- (void)unenrollWithCompletionHandler:(id)handler;
 @end
 
 @implementation RMFileConduit
 
-- (RMFileConduit)initWithManagementSourceObjectID:(id)a3 inContext:(id)a4
+- (RMFileConduit)initWithManagementSourceObjectID:(id)d inContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = RMFileConduit;
   v9 = [(RMFileConduit *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_managementSourceObjectID, a3);
-    objc_storeStrong(&v10->_context, a4);
+    objc_storeStrong(&v9->_managementSourceObjectID, d);
+    objc_storeStrong(&v10->_context, context);
     v11 = objc_opt_new();
     statusWritingLock = v10->_statusWritingLock;
     v10->_statusWritingLock = v11;
@@ -38,9 +38,9 @@
   return v10;
 }
 
-- (void)startWithCompletionHandler:(id)a3
+- (void)startWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&_mh_execute_header, "FileConduit: starting", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -51,16 +51,16 @@
   v7[2] = sub_10002F6D0;
   v6 = v7[3] = &unk_1000D1270;
   v8 = v6;
-  v9 = self;
+  selfCopy = self;
   [v6 performBlockAndWait:v7];
-  v4[2](v4);
+  handlerCopy[2](handlerCopy);
 
   os_activity_scope_leave(&state);
 }
 
 - (signed)errorState
 {
-  v2 = self;
+  selfCopy = self;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -71,13 +71,13 @@
   v5[2] = sub_10002F8A8;
   v3 = v5[3] = &unk_1000D0E38;
   v6 = v3;
-  v7 = v2;
+  v7 = selfCopy;
   v8 = &v9;
   [v3 performBlockAndWait:v5];
-  LOWORD(v2) = *(v10 + 12);
+  LOWORD(selfCopy) = *(v10 + 12);
 
   _Block_object_dispose(&v9, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (id)statusItemsToImplicitlySubscribeTo
@@ -105,7 +105,7 @@
   v7[2] = sub_10002FB84;
   v4 = v7[3] = &unk_1000D0E38;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   [v4 performBlockAndWait:v7];
   if (*(v12 + 24) == 1)
@@ -121,10 +121,10 @@
   return v5;
 }
 
-- (void)enrollWithStatusItems:(id)a3 completionHandler:(id)a4
+- (void)enrollWithStatusItems:(id)items completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  handlerCopy = handler;
   v8 = _os_activity_create(&_mh_execute_header, "FileConduit: enrolling", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -141,20 +141,20 @@
   v10[2] = sub_10002FDC8;
   v9 = v10[3] = &unk_1000D0E38;
   v11 = v9;
-  v12 = self;
+  selfCopy = self;
   v13 = &v14;
   [v9 performBlockAndWait:v10];
-  v7[2](v7, v15[5]);
+  handlerCopy[2](handlerCopy, v15[5]);
 
   _Block_object_dispose(&v14, 8);
   os_activity_scope_leave(&state);
 }
 
-- (BOOL)_prepareDirectoryWithURL:(id)a3 error:(id *)a4
+- (BOOL)_prepareDirectoryWithURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   v26 = 0;
-  v6 = [v5 getResourceValue:&v26 forKey:NSURLIsDirectoryKey error:a4];
+  v6 = [lCopy getResourceValue:&v26 forKey:NSURLIsDirectoryKey error:error];
   v7 = v26;
   v8 = v7;
   if (v6)
@@ -185,8 +185,8 @@
               objc_enumerationMutation(v11);
             }
 
-            v16 = [v5 URLByAppendingPathComponent:*(*(&v22 + 1) + 8 * i) isDirectory:{1, v22}];
-            v17 = [v10 createDirectoryAtURL:v16 withIntermediateDirectories:1 attributes:0 error:a4];
+            v16 = [lCopy URLByAppendingPathComponent:*(*(&v22 + 1) + 8 * i) isDirectory:{1, v22}];
+            v17 = [v10 createDirectoryAtURL:v16 withIntermediateDirectories:1 attributes:0 error:error];
 
             if (!v17)
             {
@@ -211,10 +211,10 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    if (a4)
+    if (error)
     {
       v27 = NSURLErrorKey;
-      v28 = v5;
+      v28 = lCopy;
       v19 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
       v11 = [NSError errorWithDomain:NSCocoaErrorDomain code:260 userInfo:v19];
 
@@ -222,7 +222,7 @@ LABEL_17:
       {
         v20 = v11;
         v18 = 0;
-        *a4 = v11;
+        *error = v11;
       }
 
       else
@@ -245,14 +245,14 @@ LABEL_19:
 + (id)_generateEnrollmentToken
 {
   v2 = objc_opt_new();
-  v3 = [v2 UUIDString];
+  uUIDString = [v2 UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)unenrollWithCompletionHandler:(id)a3
+- (void)unenrollWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&_mh_execute_header, "FileConduit: unenrolling", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -269,10 +269,10 @@ LABEL_19:
   v7[2] = sub_1000304EC;
   v6 = v7[3] = &unk_1000D0E38;
   v8 = v6;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   [v6 performBlockAndWait:v7];
-  v4[2](v4, 0, v12[5]);
+  handlerCopy[2](handlerCopy, 0, v12[5]);
 
   _Block_object_dispose(&v11, 8);
   os_activity_scope_leave(&state);
@@ -280,7 +280,7 @@ LABEL_19:
 
 - (BOOL)isSyncAllowed
 {
-  v2 = self;
+  selfCopy = self;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -291,18 +291,18 @@ LABEL_19:
   v5[2] = sub_1000307AC;
   v3 = v5[3] = &unk_1000D0E38;
   v6 = v3;
-  v7 = v2;
+  v7 = selfCopy;
   v8 = &v9;
   [v3 performBlockAndWait:v5];
-  LOBYTE(v2) = *(v10 + 24);
+  LOBYTE(selfCopy) = *(v10 + 24);
 
   _Block_object_dispose(&v9, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)syncOnlyIfNeeded:(BOOL)a3 completionHandler:(id)a4
+- (void)syncOnlyIfNeeded:(BOOL)needed completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = _os_activity_create(&_mh_execute_header, "FileConduit: syncing only if needed", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -310,7 +310,7 @@ LABEL_19:
   v8 = +[RMLog fileConduit];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100032928(a3, v8);
+    sub_100032928(needed, v8);
   }
 
   [(RMFileConduit *)self setMadeChangesDuringSync:0];
@@ -326,23 +326,23 @@ LABEL_19:
   v13 = sub_100030ABC;
   v9 = v14 = &unk_1000D1CD8;
   v15 = v9;
-  v16 = self;
-  v18 = a3;
+  selfCopy = self;
+  neededCopy = needed;
   v17 = &v19;
   [v9 performBlockAndWait:&v11];
   v10 = [(RMFileConduit *)self madeChangesDuringSync:v11];
-  v6[2](v6, v10, v20[5]);
+  handlerCopy[2](handlerCopy, v10, v20[5]);
 
   _Block_object_dispose(&v19, 8);
   os_activity_scope_leave(&state);
 }
 
-- (BOOL)_syncWithManagementSource:(id)a3 onlyIfNeeded:(BOOL)a4 error:(id *)a5
+- (BOOL)_syncWithManagementSource:(id)source onlyIfNeeded:(BOOL)needed error:(id *)error
 {
-  v7 = a3;
+  sourceCopy = source;
   v8 = objc_opt_new();
   v16 = 0;
-  v9 = [(RMFileConduit *)self _syncDeclarationsWithManagementSource:v7 error:&v16];
+  v9 = [(RMFileConduit *)self _syncDeclarationsWithManagementSource:sourceCopy error:&v16];
 
   v10 = v16;
   v11 = v10;
@@ -353,37 +353,37 @@ LABEL_19:
 
   v12 = [v8 count];
   v13 = v12;
-  if (a5 && v12)
+  if (error && v12)
   {
     v14 = [RMErrorUtilities createMultipleErrorOrReturnTheSingleErrorWithErrors:v8];
     if (v14)
     {
       v14 = v14;
-      *a5 = v14;
+      *error = v14;
     }
   }
 
   return v13 == 0;
 }
 
-- (BOOL)_syncDeclarationsWithManagementSource:(id)a3 error:(id *)a4
+- (BOOL)_syncDeclarationsWithManagementSource:(id)source error:(id *)error
 {
-  v5 = a3;
-  v94 = self;
-  v92 = [(RMFileConduit *)self context];
-  v6 = v5;
-  v7 = [v6 assets];
-  v8 = [v6 activations];
-  v9 = [v6 configurations];
+  sourceCopy = source;
+  selfCopy = self;
+  context = [(RMFileConduit *)self context];
+  v6 = sourceCopy;
+  assets = [v6 assets];
+  activations = [v6 activations];
+  configurations = [v6 configurations];
   v93 = v6;
   [v6 management];
-  v103 = v107 = v9;
-  v10 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v7 count] + objc_msgSend(v8, "count") + objc_msgSend(v103, "count") + objc_msgSend(v9, "count"));
+  v103 = v107 = configurations;
+  v10 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [assets count] + objc_msgSend(activations, "count") + objc_msgSend(v103, "count") + objc_msgSend(configurations, "count"));
   v118 = 0u;
   v119 = 0u;
   v120 = 0u;
   v121 = 0u;
-  obj = v7;
+  obj = assets;
   v11 = [obj countByEnumeratingWithState:&v118 objects:buf count:16];
   if (v11)
   {
@@ -399,9 +399,9 @@ LABEL_19:
         }
 
         v15 = *(*(&v118 + 1) + 8 * i);
-        v16 = [v15 identifier];
-        v17 = [v15 serverToken];
-        v18 = [NSString stringWithFormat:@"%@-%@", v16, v17];
+        identifier = [v15 identifier];
+        serverToken = [v15 serverToken];
+        v18 = [NSString stringWithFormat:@"%@-%@", identifier, serverToken];
         [v10 setObject:v15 forKeyedSubscript:v18];
       }
 
@@ -412,7 +412,7 @@ LABEL_19:
   }
 
   v19 = v10;
-  v20 = v8;
+  v20 = activations;
   v118 = 0u;
   v119 = 0u;
   v120 = 0u;
@@ -432,9 +432,9 @@ LABEL_19:
         }
 
         v25 = *(*(&v118 + 1) + 8 * j);
-        v26 = [v25 identifier];
-        v27 = [v25 serverToken];
-        v28 = [NSString stringWithFormat:@"%@-%@", v26, v27];
+        identifier2 = [v25 identifier];
+        serverToken2 = [v25 serverToken];
+        v28 = [NSString stringWithFormat:@"%@-%@", identifier2, serverToken2];
         [v19 setObject:v25 forKeyedSubscript:v28];
       }
 
@@ -467,9 +467,9 @@ LABEL_19:
         }
 
         v35 = *(*(&v118 + 1) + 8 * k);
-        v36 = [v35 identifier];
-        v37 = [v35 serverToken];
-        v38 = [NSString stringWithFormat:@"%@-%@", v36, v37];
+        identifier3 = [v35 identifier];
+        serverToken3 = [v35 serverToken];
+        v38 = [NSString stringWithFormat:@"%@-%@", identifier3, serverToken3];
         [v29 setObject:v35 forKeyedSubscript:v38];
       }
 
@@ -500,9 +500,9 @@ LABEL_19:
         }
 
         v44 = *(*(&v118 + 1) + 8 * m);
-        v45 = [v44 identifier];
-        v46 = [v44 serverToken];
-        v47 = [NSString stringWithFormat:@"%@-%@", v45, v46];
+        identifier4 = [v44 identifier];
+        serverToken4 = [v44 serverToken];
+        v47 = [NSString stringWithFormat:@"%@-%@", identifier4, serverToken4];
         [v108 setObject:v44 forKeyedSubscript:v47];
       }
 
@@ -514,8 +514,8 @@ LABEL_19:
 
   v48 = v108;
   v49 = objc_opt_new();
-  v50 = [v93 bootstrapURI];
-  v51 = [v50 URLByAppendingPathComponent:@"Declarations" isDirectory:1];
+  bootstrapURI = [v93 bootstrapURI];
+  v51 = [bootstrapURI URLByAppendingPathComponent:@"Declarations" isDirectory:1];
 
   v52 = +[NSFileManager defaultManager];
   v123 = NSURLNameKey;
@@ -559,29 +559,29 @@ LABEL_19:
 
           if (!v62)
           {
-            v63 = +[RMLog fileConduit];
-            if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
+            lastPathComponent = +[RMLog fileConduit];
+            if (os_log_type_enabled(lastPathComponent, OS_LOG_TYPE_ERROR))
             {
               *buf = 138543618;
               v125 = v58;
               v126 = 2114;
               v127 = v55;
-              _os_log_error_impl(&_mh_execute_header, v63, OS_LOG_TYPE_ERROR, "Could not parse declaration from file data: %{public}@ %{public}@", buf, 0x16u);
+              _os_log_error_impl(&_mh_execute_header, lastPathComponent, OS_LOG_TYPE_ERROR, "Could not parse declaration from file data: %{public}@ %{public}@", buf, 0x16u);
             }
 
             goto LABEL_59;
           }
 
-          v63 = [v58 lastPathComponent];
-          v64 = [v62 declarationIdentifier];
-          v102 = [v49 objectForKeyedSubscript:v64];
+          lastPathComponent = [v58 lastPathComponent];
+          declarationIdentifier = [v62 declarationIdentifier];
+          v102 = [v49 objectForKeyedSubscript:declarationIdentifier];
           if (v102)
           {
             v65 = +[RMLog fileConduit];
             if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
             {
               *buf = 138543618;
-              v125 = v63;
+              v125 = lastPathComponent;
               v126 = 2114;
               v66 = v102;
               v127 = v102;
@@ -601,9 +601,9 @@ LABEL_59:
             goto LABEL_60;
           }
 
-          [v49 setObject:v63 forKeyedSubscript:v64];
-          v99 = [v62 declarationServerToken];
-          v67 = [NSString stringWithFormat:@"%@-%@", v64, v99];
+          [v49 setObject:lastPathComponent forKeyedSubscript:declarationIdentifier];
+          declarationServerToken = [v62 declarationServerToken];
+          v67 = [NSString stringWithFormat:@"%@-%@", declarationIdentifier, declarationServerToken];
           [v48 objectForKeyedSubscript:v67];
           v69 = v68 = v48;
 
@@ -615,12 +615,12 @@ LABEL_59:
             v66 = 0;
 LABEL_57:
 
-            v65 = v99;
+            v65 = declarationServerToken;
             goto LABEL_58;
           }
 
           v97 = v67;
-          [(RMFileConduit *)v94 setMadeChangesDuringSync:1];
+          [(RMFileConduit *)selfCopy setMadeChangesDuringSync:1];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
           v71 = off_1000D0438;
@@ -635,10 +635,10 @@ LABEL_57:
           if (v72 & 1) != 0 || (objc_opt_class(), v73 = objc_opt_isKindOfClass(), v71 = off_1000D0440, (v73) || (objc_opt_class(), v74 = objc_opt_isKindOfClass(), v71 = &off_1000D0478, (v74))
           {
 LABEL_50:
-            v75 = [objc_alloc(*v71) initWithContext:v92];
+            v75 = [objc_alloc(*v71) initWithContext:context];
             [v75 setManagementSource:v93];
-            [v75 setIdentifier:v64];
-            [v75 setServerToken:v99];
+            [v75 setIdentifier:declarationIdentifier];
+            [v75 setServerToken:declarationServerToken];
             v111 = v55;
             v96 = v75;
             v76 = [v75 loadPayload:v62 error:&v111];
@@ -722,9 +722,9 @@ LABEL_60:
   v110[1] = 3221225472;
   v110[2] = sub_100031984;
   v110[3] = &unk_1000D1D00;
-  v110[4] = v94;
+  v110[4] = selfCopy;
   [v48 enumerateKeysAndObjectsUsingBlock:v110];
-  if (![v92 hasChanges])
+  if (![context hasChanges])
   {
     v83 = 0;
 LABEL_75:
@@ -740,7 +740,7 @@ LABEL_75:
   }
 
   v109 = 0;
-  v82 = [v92 save:&v109];
+  v82 = [context save:&v109];
   v83 = v109;
   if (v82)
   {
@@ -753,9 +753,9 @@ LABEL_75:
     sub_100032A64();
   }
 
-  [(RMFileConduit *)v94 setMadeChangesDuringSync:0];
-  [v92 rollback];
-  if (!a4)
+  [(RMFileConduit *)selfCopy setMadeChangesDuringSync:0];
+  [context rollback];
+  if (!error)
   {
     v88 = 0;
     goto LABEL_78;
@@ -767,7 +767,7 @@ LABEL_75:
   {
     v87 = v85;
     v88 = 0;
-    *a4 = v86;
+    *error = v86;
   }
 
   else
@@ -781,10 +781,10 @@ LABEL_78:
   return v88;
 }
 
-- (void)sendStatusData:(id)a3 completionHandler:(id)a4
+- (void)sendStatusData:(id)data completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   v61 = 0;
   v62 = &v61;
   v63 = 0x3032000000;
@@ -797,11 +797,11 @@ LABEL_78:
   v57[2] = sub_100032314;
   v8 = v57[3] = &unk_1000D0E38;
   v58 = v8;
-  v59 = self;
+  selfCopy = self;
   v60 = &v61;
   [v8 performBlockAndWait:v57];
   v56 = 0;
-  v9 = [NSJSONSerialization JSONObjectWithData:v6 options:0 error:&v56];
+  v9 = [NSJSONSerialization JSONObjectWithData:dataCopy options:0 error:&v56];
   v10 = v56;
   if (v9)
   {
@@ -821,7 +821,7 @@ LABEL_78:
         sub_100032B4C();
       }
 
-      v7[2](v7, v51);
+      handlerCopy[2](handlerCopy, v51);
       goto LABEL_53;
     }
 
@@ -835,7 +835,7 @@ LABEL_78:
       }
 
       v23 = +[RMErrorUtilities createInternalError];
-      v7[2](v7, v23);
+      handlerCopy[2](handlerCopy, v23);
 
       goto LABEL_52;
     }
@@ -850,7 +850,7 @@ LABEL_78:
     [v50 enumerateKeysAndObjectsUsingBlock:v54];
     v12 = v62[5];
     v47 = [v9 objectForKeyedSubscript:@"FullReport"];
-    v44 = [v47 BOOLValue];
+    bOOLValue = [v47 BOOLValue];
     v13 = v12;
     v46 = v50;
     v48 = v13;
@@ -880,8 +880,8 @@ LABEL_78:
 
     else
     {
-      v24 = [v16 domain];
-      if ([v24 isEqualToString:NSCocoaErrorDomain])
+      domain = [v16 domain];
+      if ([domain isEqualToString:NSCocoaErrorDomain])
       {
         v25 = [v17 code] == 260;
 
@@ -892,7 +892,7 @@ LABEL_26:
           oslog = objc_opt_new();
 LABEL_27:
 
-          if (v44)
+          if (bOOLValue)
           {
             v26 = objc_opt_new();
 LABEL_44:
@@ -933,7 +933,7 @@ LABEL_44:
             }
 
             objc_sync_exit(obj);
-            v7[2](v7, 0);
+            handlerCopy[2](handlerCopy, 0);
 LABEL_52:
 
 LABEL_53:
@@ -971,8 +971,8 @@ LABEL_43:
 
           else
           {
-            v33 = [v28 domain];
-            if ([v33 isEqualToString:NSCocoaErrorDomain])
+            domain2 = [v28 domain];
+            if ([domain2 isEqualToString:NSCocoaErrorDomain])
             {
               v34 = [v29 code] == 260;
 
@@ -1024,7 +1024,7 @@ LABEL_42:
     sub_100032D54();
   }
 
-  v7[2](v7, v10);
+  handlerCopy[2](handlerCopy, v10);
 LABEL_54:
 
   _Block_object_dispose(&v61, 8);

@@ -1,9 +1,9 @@
 @interface SBHPageManagementListTapGestureRecognizer
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation SBHPageManagementListTapGestureRecognizer
@@ -16,18 +16,18 @@
   [(SBHPageManagementListTapGestureRecognizer *)self setActiveTouch:0];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
+  beganCopy = began;
   v8.receiver = self;
   v8.super_class = SBHPageManagementListTapGestureRecognizer;
-  [(SBHPageManagementListTapGestureRecognizer *)&v8 touchesBegan:v6 withEvent:a4];
-  if ([v6 count] < 2)
+  [(SBHPageManagementListTapGestureRecognizer *)&v8 touchesBegan:beganCopy withEvent:event];
+  if ([beganCopy count] < 2)
   {
     if (![(SBHPageManagementListTapGestureRecognizer *)self state])
     {
-      v7 = [v6 anyObject];
-      [(SBHPageManagementListTapGestureRecognizer *)self setActiveTouch:v7];
+      anyObject = [beganCopy anyObject];
+      [(SBHPageManagementListTapGestureRecognizer *)self setActiveTouch:anyObject];
       [(SBHPageManagementListTapGestureRecognizer *)self setState:1];
     }
   }
@@ -38,14 +38,14 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v11.receiver = self;
   v11.super_class = SBHPageManagementListTapGestureRecognizer;
-  v6 = a3;
-  [(SBHPageManagementListTapGestureRecognizer *)&v11 touchesMoved:v6 withEvent:a4];
-  v7 = [v6 anyObject];
-  v8 = [v6 count];
+  movedCopy = moved;
+  [(SBHPageManagementListTapGestureRecognizer *)&v11 touchesMoved:movedCopy withEvent:event];
+  anyObject = [movedCopy anyObject];
+  v8 = [movedCopy count];
 
   if (v8 > 1)
   {
@@ -54,9 +54,9 @@
 
   else
   {
-    v9 = [(SBHPageManagementListTapGestureRecognizer *)self activeTouch];
+    activeTouch = [(SBHPageManagementListTapGestureRecognizer *)self activeTouch];
 
-    if (v7 == v9)
+    if (anyObject == activeTouch)
     {
       v10 = 2;
     }
@@ -70,14 +70,14 @@
   [(SBHPageManagementListTapGestureRecognizer *)self setState:v10];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v11.receiver = self;
   v11.super_class = SBHPageManagementListTapGestureRecognizer;
-  v6 = a3;
-  [(SBHPageManagementListTapGestureRecognizer *)&v11 touchesEnded:v6 withEvent:a4];
-  v7 = [v6 anyObject];
-  v8 = [v6 count];
+  endedCopy = ended;
+  [(SBHPageManagementListTapGestureRecognizer *)&v11 touchesEnded:endedCopy withEvent:event];
+  anyObject = [endedCopy anyObject];
+  v8 = [endedCopy count];
 
   if (v8 > 1)
   {
@@ -86,9 +86,9 @@
 
   else
   {
-    v9 = [(SBHPageManagementListTapGestureRecognizer *)self activeTouch];
+    activeTouch = [(SBHPageManagementListTapGestureRecognizer *)self activeTouch];
 
-    if (v7 == v9)
+    if (anyObject == activeTouch)
     {
       v10 = 3;
     }
@@ -102,11 +102,11 @@
   [(SBHPageManagementListTapGestureRecognizer *)self setState:v10];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = SBHPageManagementListTapGestureRecognizer;
-  [(SBHPageManagementListTapGestureRecognizer *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(SBHPageManagementListTapGestureRecognizer *)&v5 touchesCancelled:cancelled withEvent:event];
   [(SBHPageManagementListTapGestureRecognizer *)self setState:4];
 }
 

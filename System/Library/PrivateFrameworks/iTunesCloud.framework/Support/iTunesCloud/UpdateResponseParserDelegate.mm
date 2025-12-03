@@ -1,45 +1,45 @@
 @interface UpdateResponseParserDelegate
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4;
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6;
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code;
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length;
 @end
 
 @implementation UpdateResponseParserDelegate
 
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length
 {
-  if (a4 > 1634357842)
+  if (code > 1634357842)
   {
-    if (a4 == 1634357843)
+    if (code == 1634357843)
     {
       self->_hasNeedsResetSync = 1;
-      self->_needsResetSync = *a5;
+      self->_needsResetSync = *bytes;
     }
 
-    else if (a4 == 1836413810)
+    else if (code == 1836413810)
     {
-      self->_serverRevision = bswap32(*a5);
+      self->_serverRevision = bswap32(*bytes);
     }
   }
 
-  else if (a4 == 1634354753)
+  else if (code == 1634354753)
   {
     self->_hasAddToPlaylistBehavior = 1;
-    self->_addToPlaylistBehavior = *a5;
+    self->_addToPlaylistBehavior = *bytes;
   }
 
-  else if (a4 == 1634354764)
+  else if (code == 1634354764)
   {
     self->_hasAddToLibraryWhenFavoritingBehavior = 1;
-    self->_addToLibraryWhenFavoritingBehavior = *a5;
+    self->_addToLibraryWhenFavoritingBehavior = *bytes;
   }
 }
 
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code
 {
   result = 1;
-  if (a4 <= 1634357842)
+  if (code <= 1634357842)
   {
-    if (a4 == 1634354753)
+    if (code == 1634354753)
     {
       return result;
     }
@@ -48,11 +48,11 @@
     goto LABEL_7;
   }
 
-  if (a4 != 1634357843 && a4 != 1836413028)
+  if (code != 1634357843 && code != 1836413028)
   {
     v5 = 1836413810;
 LABEL_7:
-    if (a4 != v5)
+    if (code != v5)
     {
       return 0;
     }

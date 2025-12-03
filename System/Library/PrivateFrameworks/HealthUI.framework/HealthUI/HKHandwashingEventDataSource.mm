@@ -1,22 +1,22 @@
 @interface HKHandwashingEventDataSource
-- (HKHandwashingEventDataSource)initWithDisplayType:(id)a3 healthStore:(id)a4;
-- (double)durationForObject:(id)a3;
-- (id)_averageDurationChartModelForObjects:(id)a3 startDate:(id)a4 endDate:(id)a5;
-- (id)_dailyAverageChartModelForObjects:(id)a3 startDate:(id)a4 endDate:(id)a5;
-- (id)chartModelsForSamples:(id)a3 startDate:(id)a4 endDate:(id)a5 statisticsInterval:(id)a6;
-- (id)chartPointsForSamples:(id)a3 startDate:(id)a4 endDate:(id)a5 statisticsInterval:(id)a6;
-- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4;
-- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5;
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4;
+- (HKHandwashingEventDataSource)initWithDisplayType:(id)type healthStore:(id)store;
+- (double)durationForObject:(id)object;
+- (id)_averageDurationChartModelForObjects:(id)objects startDate:(id)date endDate:(id)endDate;
+- (id)_dailyAverageChartModelForObjects:(id)objects startDate:(id)date endDate:(id)endDate;
+- (id)chartModelsForSamples:(id)samples startDate:(id)date endDate:(id)endDate statisticsInterval:(id)interval;
+- (id)chartPointsForSamples:(id)samples startDate:(id)date endDate:(id)endDate statisticsInterval:(id)interval;
+- (id)chartPointsFromQueryData:(id)data dataIsFromRemoteSource:(BOOL)source;
+- (id)generateSharableQueryDataForRequest:(id)request healthStore:(id)store completionHandler:(id)handler;
+- (id)queriesForRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation HKHandwashingEventDataSource
 
-- (HKHandwashingEventDataSource)initWithDisplayType:(id)a3 healthStore:(id)a4
+- (HKHandwashingEventDataSource)initWithDisplayType:(id)type healthStore:(id)store
 {
   v7.receiver = self;
   v7.super_class = HKHandwashingEventDataSource;
-  v4 = [(HKHealthQueryChartCacheDataSource *)&v7 initWithDisplayType:a3 healthStore:a4];
+  v4 = [(HKHealthQueryChartCacheDataSource *)&v7 initWithDisplayType:type healthStore:store];
   v5 = v4;
   if (v4)
   {
@@ -37,30 +37,30 @@ HKInteractiveChartHandwashingEventData *__64__HKHandwashingEventDataSource_initW
   return v9;
 }
 
-- (double)durationForObject:(id)a3
+- (double)durationForObject:(id)object
 {
-  v3 = a3;
-  v4 = [v3 endDate];
-  [v4 timeIntervalSinceReferenceDate];
+  objectCopy = object;
+  endDate = [objectCopy endDate];
+  [endDate timeIntervalSinceReferenceDate];
   v6 = v5;
-  v7 = [v3 startDate];
+  startDate = [objectCopy startDate];
 
-  [v7 timeIntervalSinceReferenceDate];
+  [startDate timeIntervalSinceReferenceDate];
   v9 = v6 - v8;
 
   return v9;
 }
 
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4
+- (id)queriesForRequest:(id)request completionHandler:(id)handler
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  handlerCopy = handler;
   v6 = MEMORY[0x1E696C378];
-  v7 = a3;
-  v8 = [v7 startDate];
-  v9 = [v7 endDate];
+  requestCopy = request;
+  startDate = [requestCopy startDate];
+  endDate = [requestCopy endDate];
 
-  v10 = [v6 predicateForSamplesWithStartDate:v8 endDate:v9 options:0];
+  v10 = [v6 predicateForSamplesWithStartDate:startDate endDate:endDate options:0];
 
   v11 = [MEMORY[0x1E696BF90] categoryTypeForIdentifier:*MEMORY[0x1E696B5C8]];
   v12 = objc_alloc(MEMORY[0x1E696C3C8]);
@@ -69,8 +69,8 @@ HKInteractiveChartHandwashingEventData *__64__HKHandwashingEventDataSource_initW
   v20 = __68__HKHandwashingEventDataSource_queriesForRequest_completionHandler___block_invoke;
   v21 = &unk_1E81B6D10;
   v22 = v11;
-  v23 = v5;
-  v13 = v5;
+  v23 = handlerCopy;
+  v13 = handlerCopy;
   v14 = v11;
   v15 = [v12 initWithSampleType:v14 predicate:v10 limit:0 sortDescriptors:0 resultsHandler:&v18];
   [v15 setDebugIdentifier:{@"charting (handwashing)", v18, v19, v20, v21}];
@@ -119,27 +119,27 @@ LABEL_8:
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)chartPointsForSamples:(id)a3 startDate:(id)a4 endDate:(id)a5 statisticsInterval:(id)a6
+- (id)chartPointsForSamples:(id)samples startDate:(id)date endDate:(id)endDate statisticsInterval:(id)interval
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [(HKHandwashingEventDataSource *)self chartModelsForSamples:a3 startDate:v12 endDate:v11 statisticsInterval:v10];
-  v14 = [v13 data];
-  v15 = [(HKHealthQueryChartCacheDataSource *)self codableQueryDataWithType:5 startDate:v12 endDate:v11 statisticsInterval:v10 queryDataObject:v14];
+  intervalCopy = interval;
+  endDateCopy = endDate;
+  dateCopy = date;
+  v13 = [(HKHandwashingEventDataSource *)self chartModelsForSamples:samples startDate:dateCopy endDate:endDateCopy statisticsInterval:intervalCopy];
+  data = [v13 data];
+  v15 = [(HKHealthQueryChartCacheDataSource *)self codableQueryDataWithType:5 startDate:dateCopy endDate:endDateCopy statisticsInterval:intervalCopy queryDataObject:data];
 
   v16 = [(HKHandwashingEventDataSource *)self chartPointsFromQueryData:v15 dataIsFromRemoteSource:0];
-  v17 = [v16 chartPoints];
+  chartPoints = [v16 chartPoints];
 
-  return v17;
+  return chartPoints;
 }
 
-- (id)chartModelsForSamples:(id)a3 startDate:(id)a4 endDate:(id)a5 statisticsInterval:(id)a6
+- (id)chartModelsForSamples:(id)samples startDate:(id)date endDate:(id)endDate statisticsInterval:(id)interval
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
-  if ([v9 day] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v9, "hour") == 0x7FFFFFFFFFFFFFFFLL)
+  intervalCopy = interval;
+  dateCopy = date;
+  samplesCopy = samples;
+  if ([intervalCopy day] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(intervalCopy, "hour") == 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = v22;
     v22[0] = MEMORY[0x1E69E9820];
@@ -160,8 +160,8 @@ LABEL_8:
   v12[4] = self;
   v14 = _Block_copy(v12);
   v15 = MEMORY[0x1E696C660];
-  v16 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v17 = [v15 arrayByCoalescingObjects:v11 startDate:v10 intervalComponents:v9 calendar:v16 combiningBlock:v14];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v17 = [v15 arrayByCoalescingObjects:samplesCopy startDate:dateCopy intervalComponents:intervalCopy calendar:currentCalendar combiningBlock:v14];
 
   v18 = objc_alloc_init(HKCodableChartHandwashingEventDataSourceData);
   v19 = [v17 mutableCopy];
@@ -170,24 +170,24 @@ LABEL_8:
   return v18;
 }
 
-- (id)_averageDurationChartModelForObjects:(id)a3 startDate:(id)a4 endDate:(id)a5
+- (id)_averageDurationChartModelForObjects:(id)objects startDate:(id)date endDate:(id)endDate
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  objectsCopy = objects;
+  dateCopy = date;
+  endDateCopy = endDate;
+  if ([objectsCopy count])
   {
     v11 = objc_alloc_init(HKCodableHandwashingEvent);
-    HKEncodeValueForDate(v9);
+    HKEncodeValueForDate(dateCopy);
     [(HKCodableHandwashingEvent *)v11 setStartDate:?];
-    HKEncodeValueForDate(v10);
+    HKEncodeValueForDate(endDateCopy);
     [(HKCodableHandwashingEvent *)v11 setEndDate:?];
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v12 = v8;
+    v12 = objectsCopy;
     v13 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v13)
     {
@@ -220,10 +220,10 @@ LABEL_8:
 
     v19 = v16 / [v12 count];
     v20 = MEMORY[0x1E696C348];
-    v21 = [MEMORY[0x1E696C510] secondUnit];
-    v22 = [v20 quantityWithUnit:v21 doubleValue:v19];
-    v23 = [v22 codableRepresentation];
-    [(HKCodableHandwashingEvent *)v11 setAverageDuration:v23];
+    secondUnit = [MEMORY[0x1E696C510] secondUnit];
+    v22 = [v20 quantityWithUnit:secondUnit doubleValue:v19];
+    codableRepresentation = [v22 codableRepresentation];
+    [(HKCodableHandwashingEvent *)v11 setAverageDuration:codableRepresentation];
 
     [(HKCodableHandwashingEvent *)v11 setMeetsGoal:[(HKHandwashingEventDataSource *)self doesDurationMeetGoal:v19]];
     -[HKCodableHandwashingEvent setCount:](v11, "setCount:", [v12 count]);
@@ -237,30 +237,30 @@ LABEL_8:
   return v11;
 }
 
-- (id)_dailyAverageChartModelForObjects:(id)a3 startDate:(id)a4 endDate:(id)a5
+- (id)_dailyAverageChartModelForObjects:(id)objects startDate:(id)date endDate:(id)endDate
 {
   v45 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  objectsCopy = objects;
+  dateCopy = date;
+  endDateCopy = endDate;
+  if ([objectsCopy count])
   {
     v11 = [MEMORY[0x1E695DF10] hk_dateComponentsForCalendarUnit:16];
     v12 = MEMORY[0x1E696C660];
-    v13 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     v43[0] = MEMORY[0x1E69E9820];
     v43[1] = 3221225472;
     v43[2] = __84__HKHandwashingEventDataSource__dailyAverageChartModelForObjects_startDate_endDate___block_invoke;
     v43[3] = &unk_1E81B9C18;
     v43[4] = self;
-    v14 = [v12 arrayByCoalescingObjects:v8 startDate:v9 intervalComponents:v11 calendar:v13 combiningBlock:v43];
+    v14 = [v12 arrayByCoalescingObjects:objectsCopy startDate:dateCopy intervalComponents:v11 calendar:currentCalendar combiningBlock:v43];
 
     if ([v14 count])
     {
       v15 = objc_alloc_init(HKCodableHandwashingEvent);
-      HKEncodeValueForDate(v9);
+      HKEncodeValueForDate(dateCopy);
       [(HKCodableHandwashingEvent *)v15 setStartDate:?];
-      HKEncodeValueForDate(v10);
+      HKEncodeValueForDate(endDateCopy);
       [(HKCodableHandwashingEvent *)v15 setEndDate:?];
       v41 = 0u;
       v42 = 0u;
@@ -272,9 +272,9 @@ LABEL_8:
       if (v17)
       {
         v18 = v17;
-        v35 = self;
+        selfCopy = self;
         v36 = v11;
-        v37 = v10;
+        v37 = endDateCopy;
         v19 = 0;
         v20 = *v40;
         v21 = 0.0;
@@ -288,8 +288,8 @@ LABEL_8:
             }
 
             v23 = *(*(&v39 + 1) + 8 * i);
-            v24 = [v23 averageDuration];
-            [v24 value];
+            averageDuration = [v23 averageDuration];
+            [averageDuration value];
             v21 = v21 + v25;
 
             v19 += [v23 count];
@@ -302,8 +302,8 @@ LABEL_8:
         v26 = v21;
         v27 = v19;
         v11 = v36;
-        v10 = v37;
-        self = v35;
+        endDateCopy = v37;
+        self = selfCopy;
       }
 
       else
@@ -314,14 +314,14 @@ LABEL_8:
 
       v28 = v26 / [v16 count];
       v29 = MEMORY[0x1E696C348];
-      v30 = [MEMORY[0x1E696C510] secondUnit];
+      secondUnit = [MEMORY[0x1E696C510] secondUnit];
       v31 = v28;
-      v32 = [v29 quantityWithUnit:v30 doubleValue:v31];
-      v33 = [v32 codableRepresentation];
-      [(HKCodableHandwashingEvent *)v15 setAverageDuration:v33];
+      v32 = [v29 quantityWithUnit:secondUnit doubleValue:v31];
+      codableRepresentation = [v32 codableRepresentation];
+      [(HKCodableHandwashingEvent *)v15 setAverageDuration:codableRepresentation];
 
       [(HKCodableHandwashingEvent *)v15 setMeetsGoal:[(HKHandwashingEventDataSource *)self doesDurationMeetGoal:v31]];
-      -[HKCodableHandwashingEvent setCount:](v15, "setCount:", [v8 count]);
+      -[HKCodableHandwashingEvent setCount:](v15, "setCount:", [objectsCopy count]);
       -[HKCodableHandwashingEvent setAverageDailyCount:](v15, "setAverageDailyCount:", (v27 / [v16 count]));
       v14 = v38;
     }
@@ -340,26 +340,26 @@ LABEL_8:
   return v15;
 }
 
-- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5
+- (id)generateSharableQueryDataForRequest:(id)request healthStore:(id)store completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  storeCopy = store;
+  handlerCopy = handler;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __98__HKHandwashingEventDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke;
   v25[3] = &unk_1E81B78D0;
-  v27 = self;
-  v28 = v10;
-  v26 = v8;
-  v11 = v10;
-  v12 = v8;
+  selfCopy = self;
+  v28 = handlerCopy;
+  v26 = requestCopy;
+  v11 = handlerCopy;
+  v12 = requestCopy;
   v13 = [(HKHandwashingEventDataSource *)self queriesForRequest:v12 completionHandler:v25];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __98__HKHandwashingEventDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke_416;
   v23[3] = &unk_1E81B6D60;
-  v14 = v9;
+  v14 = storeCopy;
   v24 = v14;
   [v13 enumerateObjectsUsingBlock:v23];
   v20[0] = MEMORY[0x1E69E9820];
@@ -449,14 +449,14 @@ void __98__HKHandwashingEventDataSource_generateSharableQueryDataForRequest_heal
   [v1 enumerateObjectsUsingBlock:v2];
 }
 
-- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4
+- (id)chartPointsFromQueryData:(id)data dataIsFromRemoteSource:(BOOL)source
 {
-  v5 = a3;
-  if ([v5 hasTimeZoneName])
+  dataCopy = data;
+  if ([dataCopy hasTimeZoneName])
   {
     v6 = objc_alloc(MEMORY[0x1E695DFE8]);
-    v7 = [v5 timeZoneName];
-    v8 = [v6 initWithName:v7];
+    timeZoneName = [dataCopy timeZoneName];
+    v8 = [v6 initWithName:timeZoneName];
   }
 
   else
@@ -466,26 +466,26 @@ void __98__HKHandwashingEventDataSource_generateSharableQueryDataForRequest_heal
 
   v9 = objc_alloc_init(HKGraphSeriesDataBlock);
   v10 = [HKCodableChartHandwashingEventDataSourceData alloc];
-  v11 = [v5 queryDataObject];
-  v12 = [(HKCodableChartHandwashingEventDataSourceData *)v10 initWithData:v11];
+  queryDataObject = [dataCopy queryDataObject];
+  v12 = [(HKCodableChartHandwashingEventDataSourceData *)v10 initWithData:queryDataObject];
 
-  v13 = [(HKCodableChartHandwashingEventDataSourceData *)v12 events];
+  events = [(HKCodableChartHandwashingEventDataSourceData *)v12 events];
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
   v21 = __80__HKHandwashingEventDataSource_chartPointsFromQueryData_dataIsFromRemoteSource___block_invoke;
   v22 = &unk_1E81B9C40;
   v14 = v8;
   v23 = v14;
-  v24 = self;
-  v15 = [v13 hk_map:&v19];
+  selfCopy = self;
+  v15 = [events hk_map:&v19];
   [(HKGraphSeriesDataBlock *)v9 setChartPoints:v15, v19, v20, v21, v22];
 
-  v16 = [(HKGraphSeriesDataBlock *)v9 chartPoints];
+  chartPoints = [(HKGraphSeriesDataBlock *)v9 chartPoints];
 
-  if (!v16)
+  if (!chartPoints)
   {
-    v17 = [MEMORY[0x1E695DEC8] array];
-    [(HKGraphSeriesDataBlock *)v9 setChartPoints:v17];
+    array = [MEMORY[0x1E695DEC8] array];
+    [(HKGraphSeriesDataBlock *)v9 setChartPoints:array];
   }
 
   return v9;

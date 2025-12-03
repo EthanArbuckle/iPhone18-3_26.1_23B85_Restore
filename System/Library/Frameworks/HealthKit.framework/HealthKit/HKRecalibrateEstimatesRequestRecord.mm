@@ -1,37 +1,37 @@
 @interface HKRecalibrateEstimatesRequestRecord
-- (BOOL)isEqual:(id)a3;
-- (HKRecalibrateEstimatesRequestRecord)initWithCoder:(id)a3;
-- (HKRecalibrateEstimatesRequestRecord)initWithSessionIdentifier:(id)a3 source:(id)a4 sampleType:(id)a5 effectiveDate:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (HKRecalibrateEstimatesRequestRecord)initWithCoder:(id)coder;
+- (HKRecalibrateEstimatesRequestRecord)initWithSessionIdentifier:(id)identifier source:(id)source sampleType:(id)type effectiveDate:(id)date;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKRecalibrateEstimatesRequestRecord
 
-- (HKRecalibrateEstimatesRequestRecord)initWithSessionIdentifier:(id)a3 source:(id)a4 sampleType:(id)a5 effectiveDate:(id)a6
+- (HKRecalibrateEstimatesRequestRecord)initWithSessionIdentifier:(id)identifier source:(id)source sampleType:(id)type effectiveDate:(id)date
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  sourceCopy = source;
+  typeCopy = type;
+  dateCopy = date;
   v24.receiver = self;
   v24.super_class = HKRecalibrateEstimatesRequestRecord;
   v14 = [(HKRecalibrateEstimatesRequestRecord *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     sessionIdentifier = v14->_sessionIdentifier;
     v14->_sessionIdentifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [sourceCopy copy];
     source = v14->_source;
     v14->_source = v17;
 
-    v19 = [v12 copy];
+    v19 = [typeCopy copy];
     sampleType = v14->_sampleType;
     v14->_sampleType = v19;
 
-    v21 = [v13 copy];
+    v21 = [dateCopy copy];
     effectiveDate = v14->_effectiveDate;
     v14->_effectiveDate = v21;
   }
@@ -39,13 +39,13 @@
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (![(NSUUID *)self->_sessionIdentifier isEqual:v5[1]]|| ![(HKSource *)self->_source isEqual:v5[2]]|| ![(HKObjectType *)self->_sampleType isEqual:v5[3]])
     {
       goto LABEL_9;
@@ -89,27 +89,27 @@ LABEL_11:
   return v4 ^ v5 ^ [(NSDate *)self->_effectiveDate hash];
 }
 
-- (HKRecalibrateEstimatesRequestRecord)initWithCoder:(id)a3
+- (HKRecalibrateEstimatesRequestRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = HKRecalibrateEstimatesRequestRecord;
   v5 = [(HKRecalibrateEstimatesRequestRecord *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"session_id"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"session_id"];
     sessionIdentifier = v5->_sessionIdentifier;
     v5->_sessionIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"source"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"source"];
     source = v5->_source;
     v5->_source = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sample_type"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sample_type"];
     sampleType = v5->_sampleType;
     v5->_sampleType = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eff_date"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eff_date"];
     effectiveDate = v5->_effectiveDate;
     v5->_effectiveDate = v12;
   }
@@ -117,14 +117,14 @@ LABEL_11:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sessionIdentifier = self->_sessionIdentifier;
-  v5 = a3;
-  [v5 encodeObject:sessionIdentifier forKey:@"session_id"];
-  [v5 encodeObject:self->_source forKey:@"source"];
-  [v5 encodeObject:self->_sampleType forKey:@"sample_type"];
-  [v5 encodeObject:self->_effectiveDate forKey:@"eff_date"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sessionIdentifier forKey:@"session_id"];
+  [coderCopy encodeObject:self->_source forKey:@"source"];
+  [coderCopy encodeObject:self->_sampleType forKey:@"sample_type"];
+  [coderCopy encodeObject:self->_effectiveDate forKey:@"eff_date"];
 }
 
 @end

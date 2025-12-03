@@ -1,76 +1,76 @@
 @interface RAPNotificationDetailsMapCell
 + (id)identifier;
 - (BOOL)_showsSingleMarker;
-- (RAPNotificationDetailsMapCell)initWithCoder:(id)a3;
-- (RAPNotificationDetailsMapCell)initWithFrame:(CGRect)a3;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
+- (RAPNotificationDetailsMapCell)initWithCoder:(id)coder;
+- (RAPNotificationDetailsMapCell)initWithFrame:(CGRect)frame;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
 - (void)_commonInit;
 - (void)_setupConstraints;
 - (void)_setupViews;
 - (void)_updateMapView;
-- (void)setViewModel:(id)a3;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation RAPNotificationDetailsMapCell
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v5 = a4;
-  v6 = [a3 dequeueReusableAnnotationViewWithIdentifier:@"RAPNotificationMarker"];
+  annotationCopy = annotation;
+  v6 = [view dequeueReusableAnnotationViewWithIdentifier:@"RAPNotificationMarker"];
   if (!v6)
   {
-    v6 = [[MKMarkerAnnotationView alloc] initWithAnnotation:v5 reuseIdentifier:@"RAPNotificationMarker"];
+    v6 = [[MKMarkerAnnotationView alloc] initWithAnnotation:annotationCopy reuseIdentifier:@"RAPNotificationMarker"];
   }
 
   [v6 setDraggable:0];
-  v7 = [v5 styleAttributes];
-  if (!v7)
+  styleAttributes = [annotationCopy styleAttributes];
+  if (!styleAttributes)
   {
-    v7 = +[GEOFeatureStyleAttributes RAPLocationStyleAttributes];
+    styleAttributes = +[GEOFeatureStyleAttributes RAPLocationStyleAttributes];
   }
 
-  [v6 _setStyleAttributes:v7];
-  [v6 setAnnotation:v5];
+  [v6 _setStyleAttributes:styleAttributes];
+  [v6 setAnnotation:annotationCopy];
 
   return v6;
 }
 
 - (void)_updateMapView
 {
-  v3 = [(RAPNotificationDetailsMapCell *)self viewModel];
-  v4 = [v3 mapType];
-  if (v4 > 4)
+  viewModel = [(RAPNotificationDetailsMapCell *)self viewModel];
+  mapType = [viewModel mapType];
+  if (mapType > 4)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = qword_101216058[v4];
+    v5 = qword_101216058[mapType];
   }
 
-  v6 = [(RAPNotificationDetailsMapCell *)self mapView];
-  [v6 setMapType:v5];
+  mapView = [(RAPNotificationDetailsMapCell *)self mapView];
+  [mapView setMapType:v5];
 
-  v7 = [(RAPNotificationDetailsMapCell *)self viewModel];
-  v8 = [v7 mapRegion];
+  viewModel2 = [(RAPNotificationDetailsMapCell *)self viewModel];
+  mapRegion = [viewModel2 mapRegion];
 
-  [v8 southLat];
+  [mapRegion southLat];
   v10 = v9;
-  [v8 northLat];
+  [mapRegion northLat];
   if (v10 == v11)
   {
-    [v8 westLng];
+    [mapRegion westLng];
     v13 = v12;
-    [v8 eastLng];
+    [mapRegion eastLng];
     if (v13 == v14)
     {
-      [v8 southLat];
-      [v8 westLng];
+      [mapRegion southLat];
+      [mapRegion westLng];
       MKMapRectMakeWithRadialDistance();
       v19 = [[GEOMapRegion alloc] initWithMapRect:{v15, v16, v17, v18}];
 
-      v8 = v19;
+      mapRegion = v19;
     }
   }
 
@@ -92,28 +92,28 @@
       v28 = 0.0;
     }
 
-    v29 = [(RAPNotificationDetailsMapCell *)self mapView];
-    [v29 setVisibleMapRect:0 edgePadding:v23 animated:{v25, v26, v27, v28, 0.0, 0.0, 0.0}];
+    mapView2 = [(RAPNotificationDetailsMapCell *)self mapView];
+    [mapView2 setVisibleMapRect:0 edgePadding:v23 animated:{v25, v26, v27, v28, 0.0, 0.0, 0.0}];
   }
 
-  v30 = [(RAPNotificationDetailsMapCell *)self mapView];
-  v31 = [(RAPNotificationDetailsMapCell *)self mapView];
-  v32 = [v31 annotations];
-  [v30 removeAnnotations:v32];
+  mapView3 = [(RAPNotificationDetailsMapCell *)self mapView];
+  mapView4 = [(RAPNotificationDetailsMapCell *)self mapView];
+  annotations = [mapView4 annotations];
+  [mapView3 removeAnnotations:annotations];
 
-  v33 = [(RAPNotificationDetailsMapCell *)self viewModel];
-  v34 = [v33 mapItems];
+  viewModel3 = [(RAPNotificationDetailsMapCell *)self viewModel];
+  mapItems = [viewModel3 mapItems];
 
-  LODWORD(v32) = [(RAPNotificationDetailsMapCell *)self _showsSingleMarker];
-  v35 = [(RAPNotificationDetailsMapCell *)self viewModel];
-  v36 = [v35 displayStyle];
+  LODWORD(annotations) = [(RAPNotificationDetailsMapCell *)self _showsSingleMarker];
+  viewModel4 = [(RAPNotificationDetailsMapCell *)self viewModel];
+  displayStyle = [viewModel4 displayStyle];
 
-  if (v32)
+  if (annotations)
   {
-    if (v36 == 2)
+    if (displayStyle == 2)
     {
-      v37 = [v34 firstObject];
-      if (!v37)
+      firstObject = [mapItems firstObject];
+      if (!firstObject)
       {
         goto LABEL_31;
       }
@@ -121,36 +121,36 @@
       goto LABEL_29;
     }
 
-    v46 = [(RAPNotificationDetailsMapCell *)self viewModel];
-    v47 = [v46 displayStyle];
+    viewModel5 = [(RAPNotificationDetailsMapCell *)self viewModel];
+    displayStyle2 = [viewModel5 displayStyle];
 
-    if (v47 == 4)
+    if (displayStyle2 == 4)
     {
-      v48 = [(RAPNotificationDetailsMapCell *)self viewModel];
-      v49 = [v48 updatedLabel];
+      viewModel6 = [(RAPNotificationDetailsMapCell *)self viewModel];
+      updatedLabel = [viewModel6 updatedLabel];
 
       v50 = [MKPlacemark alloc];
-      v51 = [v49 center];
-      [v51 lat];
+      center = [updatedLabel center];
+      [center lat];
       v53 = v52;
-      v54 = [v49 center];
-      [v54 lng];
+      center2 = [updatedLabel center];
+      [center2 lng];
       v56 = CLLocationCoordinate2DMake(v53, v55);
       v57 = [v50 initWithCoordinate:0 addressDictionary:{v56.latitude, v56.longitude}];
 
-      v37 = [[MKMapItem alloc] initWithPlacemark:v57];
-      v58 = [v49 localizedText];
-      [v37 setName:v58];
+      firstObject = [[MKMapItem alloc] initWithPlacemark:v57];
+      localizedText = [updatedLabel localizedText];
+      [firstObject setName:localizedText];
 
-      if (v37)
+      if (firstObject)
       {
 LABEL_29:
-        v59 = [[RAPAnnotation alloc] initWithMapItem:v37];
-        v60 = [(RAPNotificationDetailsMapCell *)self mapView];
-        [v60 addAnnotation:v59];
+        v59 = [[RAPAnnotation alloc] initWithMapItem:firstObject];
+        mapView5 = [(RAPNotificationDetailsMapCell *)self mapView];
+        [mapView5 addAnnotation:v59];
 
-        v61 = [(RAPNotificationDetailsMapCell *)self mapView];
-        [v61 selectAnnotation:v59 animated:0];
+        mapView6 = [(RAPNotificationDetailsMapCell *)self mapView];
+        [mapView6 selectAnnotation:v59 animated:0];
 
         [(RAPAnnotation *)v59 coordinate];
         v62 = MKMapPointForCoordinate(v73);
@@ -163,22 +163,22 @@ LABEL_29:
         y = v75.origin.y;
         width = v75.size.width;
         height = v75.size.height;
-        v67 = [(RAPNotificationDetailsMapCell *)self mapView];
-        [v67 setVisibleMapRect:0 edgePadding:x animated:{y, width, height, v28, 0.0, 0.0, 0.0}];
+        mapView7 = [(RAPNotificationDetailsMapCell *)self mapView];
+        [mapView7 setVisibleMapRect:0 edgePadding:x animated:{y, width, height, v28, 0.0, 0.0, 0.0}];
 
 LABEL_30:
       }
     }
   }
 
-  else if (v36 == 5)
+  else if (displayStyle == 5)
   {
     v70 = 0u;
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v37 = v34;
-    v38 = [v37 countByEnumeratingWithState:&v68 objects:v72 count:16];
+    firstObject = mapItems;
+    v38 = [firstObject countByEnumeratingWithState:&v68 objects:v72 count:16];
     if (v38)
     {
       v39 = v38;
@@ -189,17 +189,17 @@ LABEL_30:
         {
           if (*v69 != v40)
           {
-            objc_enumerationMutation(v37);
+            objc_enumerationMutation(firstObject);
           }
 
           v42 = *(*(&v68 + 1) + 8 * i);
           v43 = [RAPAnnotation alloc];
           v44 = [(RAPAnnotation *)v43 initWithMapItem:v42, v68];
-          v45 = [(RAPNotificationDetailsMapCell *)self mapView];
-          [v45 addAnnotation:v44];
+          mapView8 = [(RAPNotificationDetailsMapCell *)self mapView];
+          [mapView8 addAnnotation:v44];
         }
 
-        v39 = [v37 countByEnumeratingWithState:&v68 objects:v72 count:16];
+        v39 = [firstObject countByEnumeratingWithState:&v68 objects:v72 count:16];
       }
 
       while (v39);
@@ -213,62 +213,62 @@ LABEL_31:
 
 - (BOOL)_showsSingleMarker
 {
-  v3 = [(RAPNotificationDetailsMapCell *)self viewModel];
-  if ([v3 displayStyle] == 2)
+  viewModel = [(RAPNotificationDetailsMapCell *)self viewModel];
+  if ([viewModel displayStyle] == 2)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(RAPNotificationDetailsMapCell *)self viewModel];
-    v4 = [v5 displayStyle] == 4;
+    viewModel2 = [(RAPNotificationDetailsMapCell *)self viewModel];
+    v4 = [viewModel2 displayStyle] == 4;
   }
 
   return v4;
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
-  if (self->_viewModel != v5)
+  modelCopy = model;
+  if (self->_viewModel != modelCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_viewModel, a3);
+    v6 = modelCopy;
+    objc_storeStrong(&self->_viewModel, model);
     [(RAPNotificationDetailsMapCell *)self _updateMapView];
-    v5 = v6;
+    modelCopy = v6;
   }
 }
 
 - (void)_setupConstraints
 {
-  v26 = [(RAPNotificationDetailsMapCell *)self mapView];
-  v24 = [v26 topAnchor];
-  v25 = [(RAPNotificationDetailsMapCell *)self contentView];
-  v23 = [v25 topAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23];
+  mapView = [(RAPNotificationDetailsMapCell *)self mapView];
+  topAnchor = [mapView topAnchor];
+  contentView = [(RAPNotificationDetailsMapCell *)self contentView];
+  topAnchor2 = [contentView topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v27[0] = v22;
-  v21 = [(RAPNotificationDetailsMapCell *)self mapView];
-  v19 = [v21 leadingAnchor];
-  v20 = [(RAPNotificationDetailsMapCell *)self contentView];
-  v18 = [v20 leadingAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18 constant:4.0];
+  mapView2 = [(RAPNotificationDetailsMapCell *)self mapView];
+  leadingAnchor = [mapView2 leadingAnchor];
+  contentView2 = [(RAPNotificationDetailsMapCell *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:4.0];
   v27[1] = v17;
-  v16 = [(RAPNotificationDetailsMapCell *)self mapView];
-  v14 = [v16 trailingAnchor];
-  v15 = [(RAPNotificationDetailsMapCell *)self contentView];
-  v13 = [v15 trailingAnchor];
-  v3 = [v14 constraintEqualToAnchor:v13 constant:-4.0];
+  mapView3 = [(RAPNotificationDetailsMapCell *)self mapView];
+  trailingAnchor = [mapView3 trailingAnchor];
+  contentView3 = [(RAPNotificationDetailsMapCell *)self contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v3 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-4.0];
   v27[2] = v3;
-  v4 = [(RAPNotificationDetailsMapCell *)self mapView];
-  v5 = [v4 bottomAnchor];
-  v6 = [(RAPNotificationDetailsMapCell *)self contentView];
-  v7 = [v6 bottomAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7 constant:-4.0];
+  mapView4 = [(RAPNotificationDetailsMapCell *)self mapView];
+  bottomAnchor = [mapView4 bottomAnchor];
+  contentView4 = [(RAPNotificationDetailsMapCell *)self contentView];
+  bottomAnchor2 = [contentView4 bottomAnchor];
+  v8 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-4.0];
   v27[3] = v8;
-  v9 = [(RAPNotificationDetailsMapCell *)self mapView];
-  v10 = [v9 heightAnchor];
-  v11 = [v10 constraintEqualToConstant:194.0];
+  mapView5 = [(RAPNotificationDetailsMapCell *)self mapView];
+  heightAnchor = [mapView5 heightAnchor];
+  v11 = [heightAnchor constraintEqualToConstant:194.0];
   v27[4] = v11;
   v12 = [NSArray arrayWithObjects:v27 count:5];
   [NSLayoutConstraint activateConstraints:v12];
@@ -282,44 +282,44 @@ LABEL_31:
   v4 = [[MKMapView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [(RAPNotificationDetailsMapCell *)self setMapView:v4];
 
-  v5 = [(RAPNotificationDetailsMapCell *)self mapView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  mapView = [(RAPNotificationDetailsMapCell *)self mapView];
+  [mapView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(RAPNotificationDetailsMapCell *)self mapView];
-  [v6 setUserInteractionEnabled:0];
+  mapView2 = [(RAPNotificationDetailsMapCell *)self mapView];
+  [mapView2 setUserInteractionEnabled:0];
 
-  v7 = [(RAPNotificationDetailsMapCell *)self mapView];
-  [v7 setDelegate:self];
+  mapView3 = [(RAPNotificationDetailsMapCell *)self mapView];
+  [mapView3 setDelegate:self];
 
-  v8 = [(RAPNotificationDetailsMapCell *)self mapView];
-  [v8 setShowsUserLocation:0];
+  mapView4 = [(RAPNotificationDetailsMapCell *)self mapView];
+  [mapView4 setShowsUserLocation:0];
 
-  v9 = [(RAPNotificationDetailsMapCell *)self mapView];
-  [v9 setCompassEnabled:0];
+  mapView5 = [(RAPNotificationDetailsMapCell *)self mapView];
+  [mapView5 setCompassEnabled:0];
 
-  v10 = [(RAPNotificationDetailsMapCell *)self mapView];
-  [v10 setShowsAttribution:0];
+  mapView6 = [(RAPNotificationDetailsMapCell *)self mapView];
+  [mapView6 setShowsAttribution:0];
 
-  v11 = [(RAPNotificationDetailsMapCell *)self mapView];
-  [v11 setClipsToBounds:1];
+  mapView7 = [(RAPNotificationDetailsMapCell *)self mapView];
+  [mapView7 setClipsToBounds:1];
 
   MUPlacePlatterCornerRadius();
   v13 = v12;
-  v14 = [(RAPNotificationDetailsMapCell *)self mapView];
-  v15 = [v14 layer];
-  [v15 setCornerRadius:v13];
+  mapView8 = [(RAPNotificationDetailsMapCell *)self mapView];
+  layer = [mapView8 layer];
+  [layer setCornerRadius:v13];
 
-  v16 = [(RAPNotificationDetailsMapCell *)self mapView];
-  v17 = [v16 layer];
-  [v17 setCornerCurve:kCACornerCurveContinuous];
+  mapView9 = [(RAPNotificationDetailsMapCell *)self mapView];
+  layer2 = [mapView9 layer];
+  [layer2 setCornerCurve:kCACornerCurveContinuous];
 
-  v18 = [(RAPNotificationDetailsMapCell *)self mapView];
-  v19 = [v18 layer];
-  [v19 setMaskedCorners:12];
+  mapView10 = [(RAPNotificationDetailsMapCell *)self mapView];
+  layer3 = [mapView10 layer];
+  [layer3 setMaskedCorners:12];
 
-  v21 = [(RAPNotificationDetailsMapCell *)self contentView];
-  v20 = [(RAPNotificationDetailsMapCell *)self mapView];
-  [v21 addSubview:v20];
+  contentView = [(RAPNotificationDetailsMapCell *)self contentView];
+  mapView11 = [(RAPNotificationDetailsMapCell *)self mapView];
+  [contentView addSubview:mapView11];
 }
 
 - (void)_commonInit
@@ -329,11 +329,11 @@ LABEL_31:
   [(RAPNotificationDetailsMapCell *)self _setupConstraints];
 }
 
-- (RAPNotificationDetailsMapCell)initWithCoder:(id)a3
+- (RAPNotificationDetailsMapCell)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = RAPNotificationDetailsMapCell;
-  v3 = [(RAPNotificationDetailsMapCell *)&v6 initWithCoder:a3];
+  v3 = [(RAPNotificationDetailsMapCell *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -343,11 +343,11 @@ LABEL_31:
   return v4;
 }
 
-- (RAPNotificationDetailsMapCell)initWithFrame:(CGRect)a3
+- (RAPNotificationDetailsMapCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = RAPNotificationDetailsMapCell;
-  v3 = [(RAPNotificationDetailsMapCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RAPNotificationDetailsMapCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

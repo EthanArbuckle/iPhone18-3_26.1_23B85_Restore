@@ -1,28 +1,28 @@
 @interface MSCMSSMIMECapabilitiesAttribute
 - (MSCMSSMIMECapabilitiesAttribute)init;
-- (MSCMSSMIMECapabilitiesAttribute)initWithAttribute:(id)a3 error:(id *)a4;
-- (MSCMSSMIMECapabilitiesAttribute)initWithCapabilities:(id)a3;
-- (id)copyAttributeData:(id *)a3;
-- (id)encodeAttributeWithError:(id *)a3;
+- (MSCMSSMIMECapabilitiesAttribute)initWithAttribute:(id)attribute error:(id *)error;
+- (MSCMSSMIMECapabilitiesAttribute)initWithCapabilities:(id)capabilities;
+- (id)copyAttributeData:(id *)data;
+- (id)encodeAttributeWithError:(id *)error;
 @end
 
 @implementation MSCMSSMIMECapabilitiesAttribute
 
-- (MSCMSSMIMECapabilitiesAttribute)initWithAttribute:(id)a3 error:(id *)a4
+- (MSCMSSMIMECapabilitiesAttribute)initWithAttribute:(id)attribute error:(id *)error
 {
-  v6 = a3;
+  attributeCopy = attribute;
   v24.receiver = self;
   v24.super_class = MSCMSSMIMECapabilitiesAttribute;
   v7 = [(MSCMSSMIMECapabilitiesAttribute *)&v24 init];
-  v8 = [v6 attributeType];
-  v9 = [v8 isEqualToString:@"1.2.840.113549.1.9.15"];
+  attributeType = [attributeCopy attributeType];
+  v9 = [attributeType isEqualToString:@"1.2.840.113549.1.9.15"];
 
   if ((v9 & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v15 = MSErrorCMSDomain[0];
-      v17 = *a4;
+      v17 = *error;
       v18 = @"Not an SMIMECapabilities attribute according to AttributeType";
       v16 = -26275;
       goto LABEL_10;
@@ -33,15 +33,15 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v10 = [v6 attributeValues];
-  v11 = [v10 count];
+  attributeValues = [attributeCopy attributeValues];
+  v11 = [attributeValues count];
 
   if (v11 != 1)
   {
-    if (a4)
+    if (error)
     {
       v15 = MSErrorCMSDomain[0];
-      v17 = *a4;
+      v17 = *error;
       v18 = @"SMIME Capabilities Attribute should only have one value";
       v16 = -50;
       goto LABEL_10;
@@ -52,8 +52,8 @@ LABEL_11:
 
   v22 = 0;
   v23 = 0;
-  v12 = [v6 attributeValues];
-  v13 = [v12 objectAtIndex:0];
+  attributeValues2 = [attributeCopy attributeValues];
+  v13 = [attributeValues2 objectAtIndex:0];
   v14 = nsheim_decode_SMIMECapabilities(v13);
 
   if (!v14)
@@ -66,19 +66,19 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_11;
   }
 
-  asn1ErrorToNSError(v14, a4);
+  asn1ErrorToNSError(v14, error);
   v15 = MSErrorASN1Domain[0];
   v16 = v14;
-  v17 = *a4;
+  v17 = *error;
   v18 = @"unable to decode SMIME Capabilities Attribute";
 LABEL_10:
   [MSError MSErrorWithDomain:v15 code:v16 underlyingError:v17 description:v18];
-  *a4 = v19 = 0;
+  *error = v19 = 0;
 LABEL_13:
 
   return v19;
@@ -106,19 +106,19 @@ LABEL_13:
   return v2;
 }
 
-- (MSCMSSMIMECapabilitiesAttribute)initWithCapabilities:(id)a3
+- (MSCMSSMIMECapabilitiesAttribute)initWithCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   v8.receiver = self;
   v8.super_class = MSCMSSMIMECapabilitiesAttribute;
   v5 = [(MSCMSSMIMECapabilitiesAttribute *)&v8 init];
   capabilities = v5->_capabilities;
-  v5->_capabilities = v4;
+  v5->_capabilities = capabilitiesCopy;
 
   return v5;
 }
 
-- (id)copyAttributeData:(id *)a3
+- (id)copyAttributeData:(id *)data
 {
   v25[1] = *MEMORY[0x277D85DE8];
   capabilities = self->_capabilities;
@@ -153,7 +153,7 @@ LABEL_12:
   if (!v9)
   {
     v13 = 12;
-    if (!a3)
+    if (!data)
     {
 LABEL_9:
       v10 = 0;
@@ -171,7 +171,7 @@ LABEL_8:
     v24 = *MEMORY[0x277CCA450];
     v25[0] = @"Failed encoding type SMIMECapabilities";
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:{1, v19}];
-    *a3 = [v15 errorWithDomain:@"com.apple.HeimASN1" code:v13 userInfo:v16];
+    *data = [v15 errorWithDomain:@"com.apple.HeimASN1" code:v13 userInfo:v16];
 
     goto LABEL_9;
   }
@@ -182,7 +182,7 @@ LABEL_8:
   {
 
     v13 = v12;
-    if (!a3)
+    if (!data)
     {
       goto LABEL_9;
     }
@@ -210,13 +210,13 @@ uint64_t __53__MSCMSSMIMECapabilitiesAttribute_copyAttributeData___block_invoke(
   return result;
 }
 
-- (id)encodeAttributeWithError:(id *)a3
+- (id)encodeAttributeWithError:(id *)error
 {
   v4 = [(MSCMSSMIMECapabilitiesAttribute *)self copyAttributeData:?];
   if (v4)
   {
     v5 = [MSCMSAttribute alloc];
-    v6 = [MSOID OIDWithString:@"1.2.840.113549.1.9.15" error:a3];
+    v6 = [MSOID OIDWithString:@"1.2.840.113549.1.9.15" error:error];
     v7 = [MEMORY[0x277CBEA60] arrayWithObject:v4];
     v8 = [(MSCMSAttribute *)v5 initWithAttributeType:v6 values:v7];
   }

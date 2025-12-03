@@ -7,16 +7,16 @@
 
 + (id)crl_standardVibrantBackgroundEffect
 {
-  v2 = [a1 crl_standardVibrantBackgroundStyle];
+  crl_standardVibrantBackgroundStyle = [self crl_standardVibrantBackgroundStyle];
 
-  return [UIBlurEffect effectWithStyle:v2];
+  return [UIBlurEffect effectWithStyle:crl_standardVibrantBackgroundStyle];
 }
 
 + (id)crl_popoverVibrantBackgroundEffect
 {
-  v2 = [a1 crl_popoverVibrantBackgroundStyle];
+  crl_popoverVibrantBackgroundStyle = [self crl_popoverVibrantBackgroundStyle];
 
-  return [UIBlurEffect effectWithStyle:v2];
+  return [UIBlurEffect effectWithStyle:crl_popoverVibrantBackgroundStyle];
 }
 
 @end

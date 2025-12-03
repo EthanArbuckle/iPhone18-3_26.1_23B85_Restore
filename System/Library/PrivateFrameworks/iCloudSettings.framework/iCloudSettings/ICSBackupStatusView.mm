@@ -1,20 +1,20 @@
 @interface ICSBackupStatusView
-- (ICSBackupStatusView)initWithSpecifier:(id)a3;
-- (double)preferredHeightForWidth:(double)a3 inTableView:(id)a4;
+- (ICSBackupStatusView)initWithSpecifier:(id)specifier;
+- (double)preferredHeightForWidth:(double)width inTableView:(id)view;
 - (void)_layoutSubviews;
-- (void)_sizeToFitWidth:(double)a3 inTableView:(id)a4;
+- (void)_sizeToFitWidth:(double)width inTableView:(id)view;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
-- (void)setBackupProgress:(double)a3 timeIntervalRemaining:(double)a4;
-- (void)setLastBackupText:(id)a3;
+- (void)setBackupProgress:(double)progress timeIntervalRemaining:(double)remaining;
+- (void)setLastBackupText:(id)text;
 - (void)sizeToFit;
-- (void)updateStatus:(id)a3;
-- (void)updateViewsForBackupState:(int)a3 restoreState:(int)a4 enabled:(BOOL)a5;
+- (void)updateStatus:(id)status;
+- (void)updateViewsForBackupState:(int)state restoreState:(int)restoreState enabled:(BOOL)enabled;
 @end
 
 @implementation ICSBackupStatusView
 
-- (ICSBackupStatusView)initWithSpecifier:(id)a3
+- (ICSBackupStatusView)initWithSpecifier:(id)specifier
 {
   v53.receiver = self;
   v53.super_class = ICSBackupStatusView;
@@ -22,7 +22,7 @@
   v4 = *(MEMORY[0x277CBF3A0] + 8);
   v5 = *(MEMORY[0x277CBF3A0] + 16);
   v6 = *(MEMORY[0x277CBF3A0] + 24);
-  v7 = [(ICSBackupStatusView *)&v53 initWithFrame:a3, *MEMORY[0x277CBF3A0], v4, v5, v6];
+  v7 = [(ICSBackupStatusView *)&v53 initWithFrame:specifier, *MEMORY[0x277CBF3A0], v4, v5, v6];
   if (v7)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -47,12 +47,12 @@
 
     [(UILabel *)v7->_statusLabel setAdjustsFontForContentSizeCategory:1];
     v18 = v7->_statusLabel;
-    v19 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v18 setTextColor:v19];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v18 setTextColor:labelColor];
 
     v20 = v7->_statusLabel;
-    v21 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v20 setBackgroundColor:v21];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v20 setBackgroundColor:clearColor];
 
     v22 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v3, v4, v5, v6}];
     timeRemainingLabel = v7->_timeRemainingLabel;
@@ -63,13 +63,13 @@
 
     [(UILabel *)v7->_timeRemainingLabel setAdjustsFontForContentSizeCategory:1];
     v25 = v7->_timeRemainingLabel;
-    v26 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v25 setTextColor:v26];
+    labelColor2 = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v25 setTextColor:labelColor2];
 
     [(UILabel *)v7->_timeRemainingLabel setTextAlignment:1];
     v27 = v7->_timeRemainingLabel;
-    v28 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v27 setBackgroundColor:v28];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v27 setBackgroundColor:clearColor2];
 
     v29 = v7->_timeRemainingLabel;
     v30 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -85,13 +85,13 @@
     [(UILabel *)v34 setFont:v35];
 
     v36 = v7->_backupIssueLabel;
-    v37 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v36 setTextColor:v37];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v36 setTextColor:secondaryLabelColor];
 
     [(UILabel *)v7->_backupIssueLabel setTextAlignment:4];
     v38 = v7->_backupIssueLabel;
-    v39 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v38 setBackgroundColor:v39];
+    clearColor3 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v38 setBackgroundColor:clearColor3];
 
     [(UILabel *)v7->_backupIssueLabel setNumberOfLines:0];
     v40 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v3, v4, v5, v6}];
@@ -103,13 +103,13 @@
     [(UILabel *)v42 setFont:v43];
 
     v44 = v7->_lastBackupLabel;
-    v45 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v44 setTextColor:v45];
+    secondaryLabelColor2 = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v44 setTextColor:secondaryLabelColor2];
 
     [(UILabel *)v7->_lastBackupLabel setTextAlignment:4];
     v46 = v7->_lastBackupLabel;
-    v47 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v46 setBackgroundColor:v47];
+    clearColor4 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v46 setBackgroundColor:clearColor4];
 
     [(UILabel *)v7->_lastBackupLabel setNumberOfLines:0];
     v48 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -141,30 +141,30 @@
   }
 }
 
-- (void)setLastBackupText:(id)a3
+- (void)setLastBackupText:(id)text
 {
-  [(UILabel *)self->_lastBackupLabel setText:a3];
+  [(UILabel *)self->_lastBackupLabel setText:text];
 
   [(ICSBackupStatusView *)self sizeToFit];
 }
 
-- (void)updateStatus:(id)a3
+- (void)updateStatus:(id)status
 {
-  [(UILabel *)self->_statusLabel setText:a3];
+  [(UILabel *)self->_statusLabel setText:status];
   statusLabel = self->_statusLabel;
 
   [(UILabel *)statusLabel sizeToFit];
 }
 
-- (void)_sizeToFitWidth:(double)a3 inTableView:(id)a4
+- (void)_sizeToFitWidth:(double)width inTableView:(id)view
 {
-  v6 = a4;
-  if (!v6)
+  viewCopy = view;
+  if (!viewCopy)
   {
     [ICSBackupStatusView _sizeToFitWidth:inTableView:];
   }
 
-  v45 = v6;
+  v45 = viewCopy;
   PSTextViewInsets();
   v8 = v7;
   [v45 _backgroundInset];
@@ -191,9 +191,9 @@
     [(UILabel *)self->_backupIssueLabel frame];
     v20 = v19;
     v22 = v21;
-    v23 = [(UILabel *)self->_backupIssueLabel text];
-    v24 = [(UILabel *)self->_backupIssueLabel font];
-    [v23 _legacy_sizeWithFont:v24 constrainedToSize:-[UILabel lineBreakMode](self->_backupIssueLabel lineBreakMode:{"lineBreakMode"), a3 + v13 * -2.0, 1.79769313e308}];
+    text = [(UILabel *)self->_backupIssueLabel text];
+    font = [(UILabel *)self->_backupIssueLabel font];
+    [text _legacy_sizeWithFont:font constrainedToSize:-[UILabel lineBreakMode](self->_backupIssueLabel lineBreakMode:{"lineBreakMode"), width + v13 * -2.0, 1.79769313e308}];
     v26 = v25;
     v28 = v27;
 
@@ -207,9 +207,9 @@
     [(UILabel *)self->_lastBackupLabel frame];
     v31 = v30;
     v33 = v32;
-    v34 = [(UILabel *)self->_lastBackupLabel text];
-    v35 = [(UILabel *)self->_lastBackupLabel font];
-    [v34 _legacy_sizeWithFont:v35 constrainedToSize:-[UILabel lineBreakMode](self->_lastBackupLabel lineBreakMode:{"lineBreakMode"), a3 + v13 * -2.0, 1.79769313e308}];
+    text2 = [(UILabel *)self->_lastBackupLabel text];
+    font2 = [(UILabel *)self->_lastBackupLabel font];
+    [text2 _legacy_sizeWithFont:font2 constrainedToSize:-[UILabel lineBreakMode](self->_lastBackupLabel lineBreakMode:{"lineBreakMode"), width + v13 * -2.0, 1.79769313e308}];
     v37 = v36;
     v39 = v38;
 
@@ -249,13 +249,13 @@
     v40 = v40 + v43;
   }
 
-  [(ICSBackupStatusView *)self setFrame:v44, v16, a3, v40];
+  [(ICSBackupStatusView *)self setFrame:v44, v16, width, v40];
   [(ICSBackupStatusView *)self setNeedsLayout];
 }
 
-- (double)preferredHeightForWidth:(double)a3 inTableView:(id)a4
+- (double)preferredHeightForWidth:(double)width inTableView:(id)view
 {
-  [(ICSBackupStatusView *)self _sizeToFitWidth:a4 inTableView:a3];
+  [(ICSBackupStatusView *)self _sizeToFitWidth:view inTableView:width];
   [(ICSBackupStatusView *)self bounds];
   return v5;
 }
@@ -265,25 +265,25 @@
   v8.receiver = self;
   v8.super_class = ICSBackupStatusView;
   [(ICSBackupStatusView *)&v8 sizeToFit];
-  v3 = [(ICSBackupStatusView *)self superview];
+  superview = [(ICSBackupStatusView *)self superview];
 
-  if (v3)
+  if (superview)
   {
-    v4 = [(ICSBackupStatusView *)self superview];
-    [v4 bounds];
+    superview2 = [(ICSBackupStatusView *)self superview];
+    [superview2 bounds];
     v6 = v5;
-    v7 = [(ICSBackupStatusView *)self superview];
-    [(ICSBackupStatusView *)self _sizeToFitWidth:v7 inTableView:v6];
+    superview3 = [(ICSBackupStatusView *)self superview];
+    [(ICSBackupStatusView *)self _sizeToFitWidth:superview3 inTableView:v6];
   }
 }
 
 - (void)_layoutSubviews
 {
-  v3 = [(ICSBackupStatusView *)self superview];
-  if (v3)
+  superview = [(ICSBackupStatusView *)self superview];
+  if (superview)
   {
-    v4 = [(ICSBackupStatusView *)self superview];
-    [v4 _backgroundInset];
+    superview2 = [(ICSBackupStatusView *)self superview];
+    [superview2 _backgroundInset];
     v6 = v5;
     if (PSIsN56())
     {
@@ -312,11 +312,11 @@
     [(UILabel *)backupIssueLabel frame];
     v14 = v13;
     v16 = v15;
-    v17 = [MEMORY[0x277D75128] sharedApplication];
-    v18 = [v17 userInterfaceLayoutDirection];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
     v19 = v8;
-    if (v18)
+    if (userInterfaceLayoutDirection)
     {
       [(ICSBackupStatusView *)self bounds];
       v19 = v20 - v8 - v14;
@@ -331,11 +331,11 @@
     [(UILabel *)lastBackupLabel frame];
     v23 = v22;
     v25 = v24;
-    v26 = [MEMORY[0x277D75128] sharedApplication];
-    v27 = [v26 userInterfaceLayoutDirection];
+    mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+    userInterfaceLayoutDirection2 = [mEMORY[0x277D75128]2 userInterfaceLayoutDirection];
 
     v28 = v8;
-    if (v27)
+    if (userInterfaceLayoutDirection2)
     {
       [(ICSBackupStatusView *)self bounds];
       v28 = v29 - v8 - v23;
@@ -408,9 +408,9 @@
   [(ICSBackupStatusView *)self _layoutSubviews];
 }
 
-- (void)setBackupProgress:(double)a3 timeIntervalRemaining:(double)a4
+- (void)setBackupProgress:(double)progress timeIntervalRemaining:(double)remaining
 {
-  if (a4 > 604800.0 || a4 <= 0.0)
+  if (remaining > 604800.0 || remaining <= 0.0)
   {
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = [v7 localizedStringForKey:@"ESTIMATING_TIME_REMAINING" value:&stru_288487370 table:@"Localizable-Backup"];
@@ -418,7 +418,7 @@
 
   else
   {
-    v6 = [(NSDateComponentsFormatter *)self->_durationFormatter stringFromTimeInterval:a4];
+    v6 = [(NSDateComponentsFormatter *)self->_durationFormatter stringFromTimeInterval:remaining];
   }
 
   block[0] = MEMORY[0x277D85DD0];
@@ -427,7 +427,7 @@
   block[3] = &unk_27A666E00;
   block[4] = self;
   v10 = v6;
-  v11 = a3;
+  progressCopy = progress;
   v8 = v6;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
@@ -442,28 +442,28 @@ uint64_t __63__ICSBackupStatusView_setBackupProgress_timeIntervalRemaining___blo
   return [v2 setProgress:v3];
 }
 
-- (void)updateViewsForBackupState:(int)a3 restoreState:(int)a4 enabled:(BOOL)a5
+- (void)updateViewsForBackupState:(int)state restoreState:(int)restoreState enabled:(BOOL)enabled
 {
-  v5 = a5;
+  enabledCopy = enabled;
   v51 = *MEMORY[0x277D85DE8];
   v9 = LogSubsystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v50) = a3;
+    LODWORD(v50) = state;
     _os_log_impl(&dword_275819000, v9, OS_LOG_TYPE_DEFAULT, "update view for backup state: %d", buf, 8u);
   }
 
-  self->_animatedToEnabled = v5;
-  self->_animatingToState = a3;
+  self->_animatedToEnabled = enabledCopy;
+  self->_animatingToState = state;
   [(NSMutableSet *)self->_visibleSubviews removeAllObjects];
-  if (a3 > 6)
+  if (state > 6)
   {
     v11 = 0;
     goto LABEL_48;
   }
 
-  if (((1 << a3) & 0x79) == 0)
+  if (((1 << state) & 0x79) == 0)
   {
     v11 = [MEMORY[0x277CBEB18] arrayWithObjects:{self->_backupIssueLabel, self->_lastBackupLabel, 0}];
     visibleSubviews = self->_visibleSubviews;
@@ -483,7 +483,7 @@ uint64_t __63__ICSBackupStatusView_setBackupProgress_timeIntervalRemaining___blo
   v10 = self->_progressBar;
   v11 = [MEMORY[0x277CBEB18] arrayWithObjects:{self->_spinner, v10, self->_statusLabel, self->_timeRemainingLabel, 0}];
   [(UIActivityIndicatorView *)self->_spinner stopAnimating];
-  if (!v5)
+  if (!enabledCopy)
   {
     [(NSMutableSet *)v11 addObject:self->_backupIssueLabel];
     goto LABEL_48;
@@ -500,20 +500,20 @@ uint64_t __63__ICSBackupStatusView_setBackupProgress_timeIntervalRemaining___blo
       _os_log_impl(&dword_275819000, v12, OS_LOG_TYPE_DEFAULT, "backup error only: %@", buf, 0xCu);
     }
 
-    v14 = [(NSError *)self->_backupError domain];
-    v15 = [v14 isEqualToString:@"MBErrorDomain"];
+    domain = [(NSError *)self->_backupError domain];
+    v15 = [domain isEqualToString:@"MBErrorDomain"];
 
     if (!v15)
     {
       goto LABEL_34;
     }
 
-    v16 = [(NSError *)self->_backupError code];
-    if (v16 > 208)
+    code = [(NSError *)self->_backupError code];
+    if (code > 208)
     {
-      if (v16 <= 302)
+      if (code <= 302)
       {
-        if (v16 == 209)
+        if (code == 209)
         {
           v26 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v23 = v26;
@@ -521,7 +521,7 @@ uint64_t __63__ICSBackupStatusView_setBackupProgress_timeIntervalRemaining___blo
           goto LABEL_35;
         }
 
-        if (v16 != 300)
+        if (code != 300)
         {
           goto LABEL_34;
         }
@@ -533,9 +533,9 @@ LABEL_33:
         goto LABEL_35;
       }
 
-      if (v16 != 303)
+      if (code != 303)
       {
-        if (v16 != 304 && v16 != 308)
+        if (code != 304 && code != 308)
         {
           goto LABEL_34;
         }
@@ -553,9 +553,9 @@ LABEL_51:
       goto LABEL_36;
     }
 
-    if (v16 <= 201)
+    if (code <= 201)
     {
-      if (v16 == 13)
+      if (code == 13)
       {
         v26 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v23 = v26;
@@ -563,7 +563,7 @@ LABEL_51:
         goto LABEL_35;
       }
 
-      if (v16 != 105)
+      if (code != 105)
       {
         goto LABEL_34;
       }
@@ -578,9 +578,9 @@ LABEL_36:
       goto LABEL_37;
     }
 
-    if (v16 != 202)
+    if (code != 202)
     {
-      if (v16 != 203)
+      if (code != 203)
       {
 LABEL_34:
         v26 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -613,7 +613,7 @@ LABEL_34:
 
   v25 = 0;
 LABEL_37:
-  if ((a4 - 1) > 1)
+  if ((restoreState - 1) > 1)
   {
     [(NSMutableSet *)self->_visibleSubviews addObject:self->_lastBackupLabel];
   }
@@ -628,22 +628,22 @@ LABEL_37:
     v25 = 0;
   }
 
-  v31 = [(ICSBackupStatusView *)self footerText];
+  footerText = [(ICSBackupStatusView *)self footerText];
 
-  if (v31)
+  if (footerText)
   {
-    v32 = [(ICSBackupStatusView *)self footerText];
-    v33 = v32;
+    footerText2 = [(ICSBackupStatusView *)self footerText];
+    v33 = footerText2;
     if (v25)
     {
-      v34 = [v25 stringByAppendingFormat:@"\n\n%@", v32];
+      v34 = [v25 stringByAppendingFormat:@"\n\n%@", footerText2];
 
       v25 = v34;
     }
 
     else
     {
-      v25 = v32;
+      v25 = footerText2;
     }
   }
 
@@ -669,22 +669,22 @@ LABEL_48:
   v46[2] = __70__ICSBackupStatusView_updateViewsForBackupState_restoreState_enabled___block_invoke;
   v46[3] = &unk_27A666410;
   v47 = v11;
-  v48 = self;
+  selfCopy = self;
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = __70__ICSBackupStatusView_updateViewsForBackupState_restoreState_enabled___block_invoke_2;
   v42[3] = &unk_27A666E28;
-  v44 = a3;
-  v45 = v5;
+  stateCopy = state;
+  v45 = enabledCopy;
   v42[4] = self;
   v43 = v47;
   v38 = v47;
   [v37 animateWithDuration:0 delay:v46 options:v42 animations:0.400000006 completion:0.0];
   [(ICSBackupStatusView *)self sizeToFit];
   [(ICSBackupStatusView *)self _layoutSubviews];
-  v39 = [(ICSBackupStatusView *)self superview];
+  superview = [(ICSBackupStatusView *)self superview];
   [(ICSBackupStatusView *)self frame];
-  [v39 setNeedsDisplayInRect:?];
+  [superview setNeedsDisplayInRect:?];
 
   v40 = *MEMORY[0x277D85DE8];
 }

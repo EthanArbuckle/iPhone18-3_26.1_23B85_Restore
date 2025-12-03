@@ -7,7 +7,7 @@
 - (id)wfName
 {
   v2 = +[WFObjectNameProvider sharedProvider];
-  v3 = [v2 nameForObject:a1];
+  v3 = [v2 nameForObject:self];
 
   return v3;
 }

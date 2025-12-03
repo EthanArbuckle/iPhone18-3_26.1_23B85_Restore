@@ -1,36 +1,36 @@
 @interface PKPeerPaymentAssociatedAccountInformation
-- (BOOL)isEqual:(id)a3;
-- (PKPeerPaymentAssociatedAccountInformation)initWithCoder:(id)a3;
-- (PKPeerPaymentAssociatedAccountInformation)initWithDictionary:(id)a3 lastUpdated:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (PKPeerPaymentAssociatedAccountInformation)initWithCoder:(id)coder;
+- (PKPeerPaymentAssociatedAccountInformation)initWithDictionary:(id)dictionary lastUpdated:(id)updated;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)markAssociatedAccountActiveWithAltDSID:(id)a3 hasPresentedNotification:(BOOL)a4;
-- (void)markAssociatedAccountRemovalRecordWithAltDSID:(id)a3 hasPresentedNotification:(BOOL)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)markAssociatedAccountActiveWithAltDSID:(id)d hasPresentedNotification:(BOOL)notification;
+- (void)markAssociatedAccountRemovalRecordWithAltDSID:(id)d hasPresentedNotification:(BOOL)notification;
 @end
 
 @implementation PKPeerPaymentAssociatedAccountInformation
 
-- (PKPeerPaymentAssociatedAccountInformation)initWithDictionary:(id)a3 lastUpdated:(id)a4
+- (PKPeerPaymentAssociatedAccountInformation)initWithDictionary:(id)dictionary lastUpdated:(id)updated
 {
   v57 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  updatedCopy = updated;
   v53.receiver = self;
   v53.super_class = PKPeerPaymentAssociatedAccountInformation;
   v8 = [(PKPeerPaymentAssociatedAccountInformation *)&v53 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_lastUpdated, a4);
-    [v6 PKDoubleForKey:@"proactiveAssociatedAccountFetchPeriod"];
+    objc_storeStrong(&v8->_lastUpdated, updated);
+    [dictionaryCopy PKDoubleForKey:@"proactiveAssociatedAccountFetchPeriod"];
     v9->_proactiveAssociatedAccountFetchPeriod = v10;
     v11 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v12 = [v6 PKArrayContaining:objc_opt_class() forKey:@"associatedAccounts"];
+    v12 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"associatedAccounts"];
     v13 = [v12 countByEnumeratingWithState:&v49 objects:v56 count:16];
     if (v13)
     {
@@ -45,7 +45,7 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [[PKPeerPaymentAccount alloc] initWithDictionary:*(*(&v49 + 1) + 8 * i) lastUpdated:v7];
+          v17 = [[PKPeerPaymentAccount alloc] initWithDictionary:*(*(&v49 + 1) + 8 * i) lastUpdated:updatedCopy];
           if (v17)
           {
             [v11 addObject:v17];
@@ -67,8 +67,8 @@
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v40 = v6;
-    v21 = [v6 PKArrayContaining:objc_opt_class() forKey:@"associatedAccountInvitations"];
+    v40 = dictionaryCopy;
+    v21 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"associatedAccountInvitations"];
     v22 = [v21 countByEnumeratingWithState:&v45 objects:v55 count:16];
     if (v22)
     {
@@ -106,7 +106,7 @@
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v30 = [v6 PKArrayContaining:objc_opt_class() forKey:@"previousAssociatedAccounts"];
+    v30 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"previousAssociatedAccounts"];
     v31 = [v30 countByEnumeratingWithState:&v41 objects:v54 count:16];
     if (v31)
     {
@@ -139,16 +139,16 @@
     associatedAccountRemovalRecords = v39->_associatedAccountRemovalRecords;
     v39->_associatedAccountRemovalRecords = v36;
 
-    v6 = v40;
+    dictionaryCopy = v40;
   }
 
   return v9;
 }
 
-- (PKPeerPaymentAssociatedAccountInformation)initWithCoder:(id)a3
+- (PKPeerPaymentAssociatedAccountInformation)initWithCoder:(id)coder
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = PKPeerPaymentAssociatedAccountInformation;
   v5 = [(PKPeerPaymentAssociatedAccountInformation *)&v25 init];
@@ -159,7 +159,7 @@
     v28[1] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"associatedAccounts"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"associatedAccounts"];
     associatedAccounts = v5->_associatedAccounts;
     v5->_associatedAccounts = v9;
 
@@ -168,48 +168,48 @@
     v27[1] = objc_opt_class();
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
     v13 = [v11 setWithArray:v12];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"associatedAccountInvitations"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"associatedAccountInvitations"];
     associatedAccountInvitations = v5->_associatedAccountInvitations;
     v5->_associatedAccountInvitations = v14;
 
-    [v4 decodeDoubleForKey:@"proactiveAssociatedAccountFetchPeriod"];
+    [coderCopy decodeDoubleForKey:@"proactiveAssociatedAccountFetchPeriod"];
     v5->_proactiveAssociatedAccountFetchPeriod = v16;
     v17 = MEMORY[0x1E695DFD8];
     v26[0] = objc_opt_class();
     v26[1] = objc_opt_class();
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
     v19 = [v17 setWithArray:v18];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"associatedAccountRemovalRecords"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"associatedAccountRemovalRecords"];
     associatedAccountRemovalRecords = v5->_associatedAccountRemovalRecords;
     v5->_associatedAccountRemovalRecords = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdated"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdated"];
     lastUpdated = v5->_lastUpdated;
     v5->_lastUpdated = v22;
 
-    v5->_associatedAccountStateDirty = [v4 decodeBoolForKey:@"associatedAccountStateDirty"];
+    v5->_associatedAccountStateDirty = [coderCopy decodeBoolForKey:@"associatedAccountStateDirty"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   associatedAccounts = self->_associatedAccounts;
-  v5 = a3;
-  [v5 encodeObject:associatedAccounts forKey:@"associatedAccounts"];
-  [v5 encodeObject:self->_associatedAccountInvitations forKey:@"associatedAccountInvitations"];
-  [v5 encodeDouble:@"proactiveAssociatedAccountFetchPeriod" forKey:self->_proactiveAssociatedAccountFetchPeriod];
-  [v5 encodeObject:self->_associatedAccountRemovalRecords forKey:@"associatedAccountRemovalRecords"];
-  [v5 encodeObject:self->_lastUpdated forKey:@"lastUpdated"];
-  [v5 encodeBool:self->_associatedAccountStateDirty forKey:@"associatedAccountStateDirty"];
+  coderCopy = coder;
+  [coderCopy encodeObject:associatedAccounts forKey:@"associatedAccounts"];
+  [coderCopy encodeObject:self->_associatedAccountInvitations forKey:@"associatedAccountInvitations"];
+  [coderCopy encodeDouble:@"proactiveAssociatedAccountFetchPeriod" forKey:self->_proactiveAssociatedAccountFetchPeriod];
+  [coderCopy encodeObject:self->_associatedAccountRemovalRecords forKey:@"associatedAccountRemovalRecords"];
+  [coderCopy encodeObject:self->_lastUpdated forKey:@"lastUpdated"];
+  [coderCopy encodeBool:self->_associatedAccountStateDirty forKey:@"associatedAccountStateDirty"];
 }
 
-- (void)markAssociatedAccountRemovalRecordWithAltDSID:(id)a3 hasPresentedNotification:(BOOL)a4
+- (void)markAssociatedAccountRemovalRecordWithAltDSID:(id)d hasPresentedNotification:(BOOL)notification
 {
-  v4 = a4;
+  notificationCopy = notification;
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -230,20 +230,20 @@
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 altDSID];
-        v14 = v6;
+        altDSID = [v12 altDSID];
+        v14 = dCopy;
         v15 = v14;
-        if (v13 == v14)
+        if (altDSID == v14)
         {
 
 LABEL_16:
-          [v12 setHasPresentedNotification:v4];
+          [v12 setHasPresentedNotification:notificationCopy];
           goto LABEL_17;
         }
 
-        if (v6 && v13)
+        if (dCopy && altDSID)
         {
-          v16 = [v13 isEqualToString:v14];
+          v16 = [altDSID isEqualToString:v14];
 
           if (v16)
           {
@@ -269,10 +269,10 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)markAssociatedAccountActiveWithAltDSID:(id)a3 hasPresentedNotification:(BOOL)a4
+- (void)markAssociatedAccountActiveWithAltDSID:(id)d hasPresentedNotification:(BOOL)notification
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dCopy = d;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -293,10 +293,10 @@ LABEL_17:
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 altDSID];
-        v13 = v5;
+        altDSID = [v11 altDSID];
+        v13 = dCopy;
         v14 = v13;
-        if (v12 == v13)
+        if (altDSID == v13)
         {
 
 LABEL_16:
@@ -304,9 +304,9 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        if (v5 && v12)
+        if (dCopy && altDSID)
         {
-          v15 = [v12 isEqualToString:v13];
+          v15 = [altDSID isEqualToString:v13];
 
           if (v15)
           {
@@ -332,9 +332,9 @@ LABEL_16:
 LABEL_17:
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -342,7 +342,7 @@ LABEL_17:
   }
 
   associatedAccounts = self->_associatedAccounts;
-  v6 = *(v4 + 2);
+  v6 = *(equalCopy + 2);
   if (associatedAccounts && v6)
   {
     if (([(NSSet *)associatedAccounts isEqual:?]& 1) == 0)
@@ -357,7 +357,7 @@ LABEL_17:
   }
 
   associatedAccountInvitations = self->_associatedAccountInvitations;
-  v8 = *(v4 + 3);
+  v8 = *(equalCopy + 3);
   if (associatedAccountInvitations && v8)
   {
     if (([(NSSet *)associatedAccountInvitations isEqual:?]& 1) == 0)
@@ -372,7 +372,7 @@ LABEL_17:
   }
 
   lastUpdated = self->_lastUpdated;
-  v10 = *(v4 + 6);
+  v10 = *(equalCopy + 6);
   if (lastUpdated && v10)
   {
     if (([(NSDate *)lastUpdated isEqual:?]& 1) == 0)
@@ -387,7 +387,7 @@ LABEL_17:
   }
 
   associatedAccountRemovalRecords = self->_associatedAccountRemovalRecords;
-  v12 = *(v4 + 4);
+  v12 = *(equalCopy + 4);
   if (!associatedAccountRemovalRecords || !v12)
   {
     if (associatedAccountRemovalRecords == v12)
@@ -406,12 +406,12 @@ LABEL_24:
   }
 
 LABEL_22:
-  if (self->_proactiveAssociatedAccountFetchPeriod != v4[5])
+  if (self->_proactiveAssociatedAccountFetchPeriod != equalCopy[5])
   {
     goto LABEL_24;
   }
 
-  v13 = self->_associatedAccountStateDirty == *(v4 + 8);
+  v13 = self->_associatedAccountStateDirty == *(equalCopy + 8);
 LABEL_25:
 
   return v13;
@@ -419,12 +419,12 @@ LABEL_25:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_lastUpdated];
-  [v3 safelyAddObject:self->_associatedAccounts];
-  [v3 safelyAddObject:self->_associatedAccountInvitations];
-  [v3 safelyAddObject:self->_associatedAccountRemovalRecords];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_lastUpdated];
+  [array safelyAddObject:self->_associatedAccounts];
+  [array safelyAddObject:self->_associatedAccountInvitations];
+  [array safelyAddObject:self->_associatedAccountRemovalRecords];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_proactiveAssociatedAccountFetchPeriod - v4 + 32 * v4;
   v6 = self->_associatedAccountStateDirty - v5 + 32 * v5;
 

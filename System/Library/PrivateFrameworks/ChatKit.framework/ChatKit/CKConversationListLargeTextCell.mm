@@ -1,16 +1,16 @@
 @interface CKConversationListLargeTextCell
-+ (double)cellHeightForDisplayScale:(double)a3;
++ (double)cellHeightForDisplayScale:(double)scale;
 + (id)hyphenationParagraphStyle;
-- (CKConversationListLargeTextCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (id)_constraintForEditing:(BOOL)a3;
+- (CKConversationListLargeTextCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (id)_constraintForEditing:(BOOL)editing;
 - (id)_contentSizeCategoryDependentConstraints;
 - (id)summaryLabelTextBaseColor;
-- (id)unreadIndicatorImageForVisibility:(BOOL)a3 withMuteState:(BOOL)a4;
+- (id)unreadIndicatorImageForVisibility:(BOOL)visibility withMuteState:(BOOL)state;
 - (void)contentSizeCategoryDidChange;
-- (void)updateContentsForConversation:(id)a3 fastPreview:(BOOL)a4;
-- (void)updateForEditing:(BOOL)a3;
-- (void)updateFromLabelWithText:(id)a3;
-- (void)updateUnreadIndicatorWithImage:(id)a3;
+- (void)updateContentsForConversation:(id)conversation fastPreview:(BOOL)preview;
+- (void)updateForEditing:(BOOL)editing;
+- (void)updateFromLabelWithText:(id)text;
+- (void)updateUnreadIndicatorWithImage:(id)image;
 @end
 
 @implementation CKConversationListLargeTextCell
@@ -39,186 +39,186 @@ void __60__CKConversationListLargeTextCell_hyphenationParagraphStyle__block_invo
   hyphenationParagraphStyle_hyphenationParagraphStyle = v1;
 }
 
-+ (double)cellHeightForDisplayScale:(double)a3
++ (double)cellHeightForDisplayScale:(double)scale
 {
-  v13.receiver = a1;
+  v13.receiver = self;
   v13.super_class = &OBJC_METACLASS___CKConversationListLargeTextCell;
   objc_msgSendSuper2(&v13, sel_cellHeightForDisplayScale_);
   v4 = v3;
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 conversationListDateFont];
+  conversationListDateFont = [v5 conversationListDateFont];
 
   v7 = +[CKUIBehavior sharedBehaviors];
   [v7 senderSummaryConversationListSpace];
   v9 = v8;
 
-  [v6 capHeight];
+  [conversationListDateFont capHeight];
   UIRoundToScale();
   v11 = v4 + v9 + v10;
 
   return v11;
 }
 
-- (CKConversationListLargeTextCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CKConversationListLargeTextCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v126[11] = *MEMORY[0x1E69E9840];
   v123.receiver = self;
   v123.super_class = CKConversationListLargeTextCell;
-  v4 = [(CKConversationListCell *)&v123 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CKConversationListCell *)&v123 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(CKConversationListCell *)v4 dateLabel];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+    dateLabel = [(CKConversationListCell *)v4 dateLabel];
+    [dateLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v7 = [(CKConversationListCell *)v5 dateLabel];
-    [v7 setTextAlignment:4];
+    dateLabel2 = [(CKConversationListCell *)v5 dateLabel];
+    [dateLabel2 setTextAlignment:4];
 
-    v8 = [(CKConversationListCell *)v5 dateLabel];
+    dateLabel3 = [(CKConversationListCell *)v5 dateLabel];
     v9 = +[CKUIBehavior sharedBehaviors];
-    v10 = [v9 theme];
-    v11 = [v10 conversationListLargeTextDateColor];
-    [v8 setTextColor:v11];
+    theme = [v9 theme];
+    conversationListLargeTextDateColor = [theme conversationListLargeTextDateColor];
+    [dateLabel3 setTextColor:conversationListLargeTextDateColor];
 
-    v12 = [(CKConversationListLargeTextCell *)v5 contentView];
-    v13 = [(CKConversationListCell *)v5 dateLabel];
-    [v12 addSubview:v13];
+    contentView = [(CKConversationListLargeTextCell *)v5 contentView];
+    dateLabel4 = [(CKConversationListCell *)v5 dateLabel];
+    [contentView addSubview:dateLabel4];
 
-    v14 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    LODWORD(v13) = [v14 isPriorityMessagesEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    LODWORD(dateLabel4) = [mEMORY[0x1E69A8070] isPriorityMessagesEnabled];
 
-    if (v13)
+    if (dateLabel4)
     {
-      v15 = [(CKConversationListCell *)v5 priorityLabel];
-      [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+      priorityLabel = [(CKConversationListCell *)v5 priorityLabel];
+      [priorityLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v16 = [(CKConversationListCell *)v5 priorityLabel];
-      [v16 setTextAlignment:4];
+      priorityLabel2 = [(CKConversationListCell *)v5 priorityLabel];
+      [priorityLabel2 setTextAlignment:4];
 
-      v17 = [(CKConversationListLargeTextCell *)v5 contentView];
-      v18 = [(CKConversationListCell *)v5 priorityLabel];
-      [v17 addSubview:v18];
+      contentView2 = [(CKConversationListLargeTextCell *)v5 contentView];
+      priorityLabel3 = [(CKConversationListCell *)v5 priorityLabel];
+      [contentView2 addSubview:priorityLabel3];
     }
 
-    v19 = [(CKConversationListCell *)v5 fromLabel];
-    [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
+    fromLabel = [(CKConversationListCell *)v5 fromLabel];
+    [fromLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v20 = [(CKConversationListCell *)v5 fromLabel];
-    [v20 setNumberOfLines:2];
+    fromLabel2 = [(CKConversationListCell *)v5 fromLabel];
+    [fromLabel2 setNumberOfLines:2];
 
-    v21 = [(CKConversationListCell *)v5 summaryLabel];
-    [v21 setTranslatesAutoresizingMaskIntoConstraints:0];
+    summaryLabel = [(CKConversationListCell *)v5 summaryLabel];
+    [summaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v22 = [(CKConversationListLargeTextCell *)v5 contentView];
-    v23 = [(CKConversationListCell *)v5 summaryLabel];
-    [v22 addSubview:v23];
+    contentView3 = [(CKConversationListLargeTextCell *)v5 contentView];
+    summaryLabel2 = [(CKConversationListCell *)v5 summaryLabel];
+    [contentView3 addSubview:summaryLabel2];
 
-    v24 = [(CKConversationListCell *)v5 chevronImageView];
-    [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
+    chevronImageView = [(CKConversationListCell *)v5 chevronImageView];
+    [chevronImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v25 = [(CKConversationListCell *)v5 chevronImageView];
+    chevronImageView2 = [(CKConversationListCell *)v5 chevronImageView];
     LODWORD(v26) = 1148846080;
-    [v25 setContentHuggingPriority:0 forAxis:v26];
+    [chevronImageView2 setContentHuggingPriority:0 forAxis:v26];
 
     v27 = objc_alloc_init(MEMORY[0x1E69DCC20]);
-    v28 = [(CKConversationListLargeTextCell *)v5 contentView];
-    [v28 addLayoutGuide:v27];
+    contentView4 = [(CKConversationListLargeTextCell *)v5 contentView];
+    [contentView4 addLayoutGuide:v27];
 
     v121 = v27;
     [(CKConversationListLargeTextCell *)v5 setFirstLineLayoutGuide:v27];
-    v122 = [MEMORY[0x1E695DF70] array];
-    v118 = [(CKConversationListCell *)v5 fromLabel];
-    v114 = [v118 leadingAnchor];
-    v115 = [(CKConversationListLargeTextCell *)v5 contentView];
-    v112 = [v115 leadingAnchor];
+    array = [MEMORY[0x1E695DF70] array];
+    fromLabel3 = [(CKConversationListCell *)v5 fromLabel];
+    leadingAnchor = [fromLabel3 leadingAnchor];
+    contentView5 = [(CKConversationListLargeTextCell *)v5 contentView];
+    leadingAnchor2 = [contentView5 leadingAnchor];
     v113 = +[CKUIBehavior sharedBehaviors];
     [v113 conversationListCellLargeTextLeftMargin];
-    v111 = [v114 constraintEqualToAnchor:v112 constant:?];
+    v111 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
     v126[0] = v111;
-    v110 = [(CKConversationListCell *)v5 summaryLabel];
-    v108 = [v110 leadingAnchor];
-    v109 = [(CKConversationListCell *)v5 fromLabel];
-    v107 = [v109 leadingAnchor];
-    v106 = [v108 constraintEqualToAnchor:v107];
+    summaryLabel3 = [(CKConversationListCell *)v5 summaryLabel];
+    leadingAnchor3 = [summaryLabel3 leadingAnchor];
+    fromLabel4 = [(CKConversationListCell *)v5 fromLabel];
+    leadingAnchor4 = [fromLabel4 leadingAnchor];
+    v106 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v126[1] = v106;
-    v105 = [(CKConversationListCell *)v5 summaryLabel];
-    v103 = [v105 trailingAnchor];
-    v104 = [(CKConversationListCell *)v5 fromLabel];
-    v102 = [v104 trailingAnchor];
-    v101 = [v103 constraintEqualToAnchor:v102];
+    summaryLabel4 = [(CKConversationListCell *)v5 summaryLabel];
+    trailingAnchor = [summaryLabel4 trailingAnchor];
+    fromLabel5 = [(CKConversationListCell *)v5 fromLabel];
+    trailingAnchor2 = [fromLabel5 trailingAnchor];
+    v101 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v126[2] = v101;
-    v100 = [(CKConversationListCell *)v5 dateLabel];
-    v98 = [v100 leadingAnchor];
-    v99 = [(CKConversationListCell *)v5 fromLabel];
-    v97 = [v99 leadingAnchor];
-    v96 = [v98 constraintEqualToAnchor:v97];
+    dateLabel5 = [(CKConversationListCell *)v5 dateLabel];
+    leadingAnchor5 = [dateLabel5 leadingAnchor];
+    fromLabel6 = [(CKConversationListCell *)v5 fromLabel];
+    leadingAnchor6 = [fromLabel6 leadingAnchor];
+    v96 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v126[3] = v96;
-    v95 = [(CKConversationListCell *)v5 dateLabel];
-    v93 = [v95 trailingAnchor];
-    v94 = [(CKConversationListCell *)v5 fromLabel];
-    v92 = [v94 trailingAnchor];
-    v91 = [v93 constraintEqualToAnchor:v92];
+    dateLabel6 = [(CKConversationListCell *)v5 dateLabel];
+    trailingAnchor3 = [dateLabel6 trailingAnchor];
+    fromLabel7 = [(CKConversationListCell *)v5 fromLabel];
+    trailingAnchor4 = [fromLabel7 trailingAnchor];
+    v91 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v126[4] = v91;
-    v90 = [(CKConversationListLargeTextCell *)v5 firstLineLayoutGuide];
-    v88 = [v90 bottomAnchor];
-    v89 = [(CKConversationListCell *)v5 fromLabel];
-    v87 = [v89 firstBaselineAnchor];
-    v86 = [v88 constraintEqualToAnchor:v87];
+    firstLineLayoutGuide = [(CKConversationListLargeTextCell *)v5 firstLineLayoutGuide];
+    bottomAnchor = [firstLineLayoutGuide bottomAnchor];
+    fromLabel8 = [(CKConversationListCell *)v5 fromLabel];
+    firstBaselineAnchor = [fromLabel8 firstBaselineAnchor];
+    v86 = [bottomAnchor constraintEqualToAnchor:firstBaselineAnchor];
     v126[5] = v86;
-    v85 = [(CKConversationListCell *)v5 summaryLabel];
-    v83 = [v85 topAnchor];
-    v84 = [(CKConversationListCell *)v5 fromLabel];
-    v81 = [v84 bottomAnchor];
+    summaryLabel5 = [(CKConversationListCell *)v5 summaryLabel];
+    topAnchor = [summaryLabel5 topAnchor];
+    fromLabel9 = [(CKConversationListCell *)v5 fromLabel];
+    bottomAnchor2 = [fromLabel9 bottomAnchor];
     v82 = +[CKUIBehavior sharedBehaviors];
     [v82 conversationListCellLargeTextSenderSummaryInterspacing];
-    v80 = [v83 constraintEqualToAnchor:v81 constant:?];
+    v80 = [topAnchor constraintEqualToAnchor:bottomAnchor2 constant:?];
     v126[6] = v80;
-    v79 = [(CKConversationListCell *)v5 dateLabel];
-    v77 = [v79 topAnchor];
-    v78 = [(CKConversationListCell *)v5 summaryLabel];
-    v76 = [v78 bottomAnchor];
-    v75 = [v77 constraintEqualToAnchor:v76];
+    dateLabel7 = [(CKConversationListCell *)v5 dateLabel];
+    topAnchor2 = [dateLabel7 topAnchor];
+    summaryLabel6 = [(CKConversationListCell *)v5 summaryLabel];
+    bottomAnchor3 = [summaryLabel6 bottomAnchor];
+    v75 = [topAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v126[7] = v75;
-    v74 = [(CKConversationListCell *)v5 priorityLabel];
-    v72 = [v74 leadingAnchor];
-    v73 = [(CKConversationListCell *)v5 fromLabel];
-    v71 = [v73 leadingAnchor];
-    v70 = [v72 constraintEqualToAnchor:v71];
+    priorityLabel4 = [(CKConversationListCell *)v5 priorityLabel];
+    leadingAnchor7 = [priorityLabel4 leadingAnchor];
+    fromLabel10 = [(CKConversationListCell *)v5 fromLabel];
+    leadingAnchor8 = [fromLabel10 leadingAnchor];
+    v70 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     v126[8] = v70;
-    v69 = [(CKConversationListCell *)v5 priorityLabel];
-    v68 = [v69 trailingAnchor];
-    v29 = [(CKConversationListCell *)v5 fromLabel];
-    v30 = [v29 trailingAnchor];
-    v31 = [v68 constraintEqualToAnchor:v30];
+    priorityLabel5 = [(CKConversationListCell *)v5 priorityLabel];
+    trailingAnchor5 = [priorityLabel5 trailingAnchor];
+    fromLabel11 = [(CKConversationListCell *)v5 fromLabel];
+    trailingAnchor6 = [fromLabel11 trailingAnchor];
+    v31 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     v126[9] = v31;
-    v32 = [(CKConversationListCell *)v5 priorityLabel];
-    v33 = [v32 topAnchor];
-    v34 = [(CKConversationListCell *)v5 summaryLabel];
-    v35 = [v34 bottomAnchor];
-    v36 = [v33 constraintEqualToAnchor:v35];
+    priorityLabel6 = [(CKConversationListCell *)v5 priorityLabel];
+    topAnchor3 = [priorityLabel6 topAnchor];
+    summaryLabel7 = [(CKConversationListCell *)v5 summaryLabel];
+    bottomAnchor4 = [summaryLabel7 bottomAnchor];
+    v36 = [topAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v126[10] = v36;
     v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v126 count:11];
-    [v122 addObjectsFromArray:v37];
+    [array addObjectsFromArray:v37];
 
-    v38 = [(CKConversationListCell *)v5 chevronImageView];
+    chevronImageView3 = [(CKConversationListCell *)v5 chevronImageView];
 
-    if (v38)
+    if (chevronImageView3)
     {
-      v119 = [(CKConversationListCell *)v5 chevronImageView];
-      v116 = [v119 centerYAnchor];
-      v39 = [(CKConversationListLargeTextCell *)v5 firstLineLayoutGuide];
-      v40 = [v39 centerYAnchor];
-      v41 = [v116 constraintEqualToAnchor:v40];
+      chevronImageView4 = [(CKConversationListCell *)v5 chevronImageView];
+      centerYAnchor = [chevronImageView4 centerYAnchor];
+      firstLineLayoutGuide2 = [(CKConversationListLargeTextCell *)v5 firstLineLayoutGuide];
+      centerYAnchor2 = [firstLineLayoutGuide2 centerYAnchor];
+      v41 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v125[0] = v41;
-      v42 = [(CKConversationListCell *)v5 chevronImageView];
-      v43 = [v42 trailingAnchor];
-      v44 = [(CKConversationListLargeTextCell *)v5 contentView];
-      v45 = [v44 trailingAnchor];
+      chevronImageView5 = [(CKConversationListCell *)v5 chevronImageView];
+      trailingAnchor7 = [chevronImageView5 trailingAnchor];
+      contentView6 = [(CKConversationListLargeTextCell *)v5 contentView];
+      trailingAnchor8 = [contentView6 trailingAnchor];
       [(CKConversationListLargeTextCell *)v5 layoutMargins];
-      v47 = [v43 constraintEqualToAnchor:v45 constant:-v46];
+      v47 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-v46];
       v125[1] = v47;
       v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:v125 count:2];
-      [v122 addObjectsFromArray:v48];
+      [array addObjectsFromArray:v48];
     }
 
     if ((IMSharedHelperDeviceIsiPad() & 1) != 0 || CKIsRunningInMacCatalyst())
@@ -226,45 +226,45 @@ void __60__CKConversationListLargeTextCell_hyphenationParagraphStyle__block_invo
       v49 = objc_alloc_init(CKConversationListTypingIndicatorView);
       [(CKConversationListCell *)v5 setTypingIndicatorView:v49];
 
-      v50 = [(CKConversationListCell *)v5 typingIndicatorView];
-      [v50 setTranslatesAutoresizingMaskIntoConstraints:0];
+      typingIndicatorView = [(CKConversationListCell *)v5 typingIndicatorView];
+      [typingIndicatorView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v51 = [(CKConversationListLargeTextCell *)v5 contentView];
-      v52 = [(CKConversationListCell *)v5 typingIndicatorView];
-      [v51 addSubview:v52];
+      contentView7 = [(CKConversationListLargeTextCell *)v5 contentView];
+      typingIndicatorView2 = [(CKConversationListCell *)v5 typingIndicatorView];
+      [contentView7 addSubview:typingIndicatorView2];
 
-      v120 = [(CKConversationListCell *)v5 typingIndicatorView];
-      v117 = [v120 leadingAnchor];
-      v53 = [(CKConversationListCell *)v5 fromLabel];
-      v54 = [v53 leadingAnchor];
-      v55 = [v117 constraintEqualToAnchor:v54];
+      typingIndicatorView3 = [(CKConversationListCell *)v5 typingIndicatorView];
+      leadingAnchor9 = [typingIndicatorView3 leadingAnchor];
+      fromLabel12 = [(CKConversationListCell *)v5 fromLabel];
+      leadingAnchor10 = [fromLabel12 leadingAnchor];
+      v55 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
       v124[0] = v55;
-      v56 = [(CKConversationListCell *)v5 typingIndicatorView];
-      v57 = [v56 topAnchor];
-      v58 = [(CKConversationListCell *)v5 fromLabel];
-      v59 = [v58 bottomAnchor];
-      v60 = [v57 constraintEqualToAnchor:v59];
+      typingIndicatorView4 = [(CKConversationListCell *)v5 typingIndicatorView];
+      topAnchor4 = [typingIndicatorView4 topAnchor];
+      fromLabel13 = [(CKConversationListCell *)v5 fromLabel];
+      bottomAnchor5 = [fromLabel13 bottomAnchor];
+      v60 = [topAnchor4 constraintEqualToAnchor:bottomAnchor5];
       v124[1] = v60;
       v61 = [MEMORY[0x1E695DEC8] arrayWithObjects:v124 count:2];
-      [v122 addObjectsFromArray:v61];
+      [array addObjectsFromArray:v61];
 
-      v62 = [(CKConversationListCell *)v5 typingIndicatorView];
-      [v62 setHidden:1];
+      typingIndicatorView5 = [(CKConversationListCell *)v5 typingIndicatorView];
+      [typingIndicatorView5 setHidden:1];
     }
 
     v63 = [(CKConversationListLargeTextCell *)v5 _constraintForEditing:0];
     [(CKConversationListLargeTextCell *)v5 setEditingDependentConstraint:v63];
 
-    v64 = [(CKConversationListLargeTextCell *)v5 editingDependentConstraint];
-    [v122 addObject:v64];
+    editingDependentConstraint = [(CKConversationListLargeTextCell *)v5 editingDependentConstraint];
+    [array addObject:editingDependentConstraint];
 
-    v65 = [(CKConversationListLargeTextCell *)v5 _contentSizeCategoryDependentConstraints];
-    [(CKConversationListLargeTextCell *)v5 setContentSizeCategoryDependentConstraints:v65];
+    _contentSizeCategoryDependentConstraints = [(CKConversationListLargeTextCell *)v5 _contentSizeCategoryDependentConstraints];
+    [(CKConversationListLargeTextCell *)v5 setContentSizeCategoryDependentConstraints:_contentSizeCategoryDependentConstraints];
 
-    v66 = [(CKConversationListLargeTextCell *)v5 contentSizeCategoryDependentConstraints];
-    [v122 addObjectsFromArray:v66];
+    contentSizeCategoryDependentConstraints = [(CKConversationListLargeTextCell *)v5 contentSizeCategoryDependentConstraints];
+    [array addObjectsFromArray:contentSizeCategoryDependentConstraints];
 
-    [MEMORY[0x1E696ACD8] activateConstraints:v122];
+    [MEMORY[0x1E696ACD8] activateConstraints:array];
   }
 
   return v5;
@@ -273,26 +273,26 @@ void __60__CKConversationListLargeTextCell_hyphenationParagraphStyle__block_invo
 - (id)summaryLabelTextBaseColor
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 theme];
-  v4 = [v3 conversationListLargeTextSummaryColor];
+  theme = [v2 theme];
+  conversationListLargeTextSummaryColor = [theme conversationListLargeTextSummaryColor];
 
-  return v4;
+  return conversationListLargeTextSummaryColor;
 }
 
-- (id)unreadIndicatorImageForVisibility:(BOOL)a3 withMuteState:(BOOL)a4
+- (id)unreadIndicatorImageForVisibility:(BOOL)visibility withMuteState:(BOOL)state
 {
-  if (a3)
+  if (visibility)
   {
-    v4 = [CKUIBehavior sharedBehaviors:a3];
-    v5 = [v4 unreadIndicatorTintedImage];
+    v4 = [CKUIBehavior sharedBehaviors:visibility];
+    unreadIndicatorTintedImage = [v4 unreadIndicatorTintedImage];
   }
 
   else
   {
-    v5 = 0;
+    unreadIndicatorTintedImage = 0;
   }
 
-  return v5;
+  return unreadIndicatorTintedImage;
 }
 
 - (void)contentSizeCategoryDidChange
@@ -301,55 +301,55 @@ void __60__CKConversationListLargeTextCell_hyphenationParagraphStyle__block_invo
   v8.super_class = CKConversationListLargeTextCell;
   [(CKConversationListCell *)&v8 contentSizeCategoryDidChange];
   v3 = MEMORY[0x1E696ACD8];
-  v4 = [(CKConversationListLargeTextCell *)self contentSizeCategoryDependentConstraints];
-  [v3 deactivateConstraints:v4];
+  contentSizeCategoryDependentConstraints = [(CKConversationListLargeTextCell *)self contentSizeCategoryDependentConstraints];
+  [v3 deactivateConstraints:contentSizeCategoryDependentConstraints];
 
-  v5 = [(CKConversationListLargeTextCell *)self _contentSizeCategoryDependentConstraints];
-  [(CKConversationListLargeTextCell *)self setContentSizeCategoryDependentConstraints:v5];
+  _contentSizeCategoryDependentConstraints = [(CKConversationListLargeTextCell *)self _contentSizeCategoryDependentConstraints];
+  [(CKConversationListLargeTextCell *)self setContentSizeCategoryDependentConstraints:_contentSizeCategoryDependentConstraints];
 
   v6 = MEMORY[0x1E696ACD8];
-  v7 = [(CKConversationListLargeTextCell *)self contentSizeCategoryDependentConstraints];
-  [v6 activateConstraints:v7];
+  contentSizeCategoryDependentConstraints2 = [(CKConversationListLargeTextCell *)self contentSizeCategoryDependentConstraints];
+  [v6 activateConstraints:contentSizeCategoryDependentConstraints2];
 }
 
-- (void)updateFromLabelWithText:(id)a3
+- (void)updateFromLabelWithText:(id)text
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  textCopy = text;
+  if (textCopy)
   {
-    v5 = [(CKConversationListLargeTextCell *)self indicatorTextAttachments];
-    if ([v5 count])
+    indicatorTextAttachments = [(CKConversationListLargeTextCell *)self indicatorTextAttachments];
+    if ([indicatorTextAttachments count])
     {
     }
 
     else
     {
-      v7 = [(CKConversationListLargeTextCell *)self unreadIndicatorAttachment];
+      unreadIndicatorAttachment = [(CKConversationListLargeTextCell *)self unreadIndicatorAttachment];
 
-      if (!v7)
+      if (!unreadIndicatorAttachment)
       {
-        v8 = [v4 mutableCopy];
+        v8 = [textCopy mutableCopy];
 LABEL_16:
         v20 = *MEMORY[0x1E69DB688];
-        v21 = [objc_opt_class() hyphenationParagraphStyle];
-        [v8 addAttribute:v20 value:v21 range:{0, objc_msgSend(v8, "length")}];
+        hyphenationParagraphStyle = [objc_opt_class() hyphenationParagraphStyle];
+        [v8 addAttribute:v20 value:hyphenationParagraphStyle range:{0, objc_msgSend(v8, "length")}];
 
-        v22 = [(CKConversationListCell *)self fromLabel];
-        [v22 setAttributedText:v8];
+        fromLabel = [(CKConversationListCell *)self fromLabel];
+        [fromLabel setAttributedText:v8];
 
         goto LABEL_17;
       }
     }
 
     v8 = objc_alloc_init(MEMORY[0x1E696AD40]);
-    v9 = [(CKConversationListLargeTextCell *)self unreadIndicatorAttachment];
+    unreadIndicatorAttachment2 = [(CKConversationListLargeTextCell *)self unreadIndicatorAttachment];
 
-    if (v9)
+    if (unreadIndicatorAttachment2)
     {
       v10 = MEMORY[0x1E696AAB0];
-      v11 = [(CKConversationListLargeTextCell *)self unreadIndicatorAttachment];
-      v12 = [v10 attributedStringWithAttachment:v11];
+      unreadIndicatorAttachment3 = [(CKConversationListLargeTextCell *)self unreadIndicatorAttachment];
+      v12 = [v10 attributedStringWithAttachment:unreadIndicatorAttachment3];
 
       [v8 appendAttributedString:v12];
     }
@@ -358,8 +358,8 @@ LABEL_16:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v13 = [(CKConversationListLargeTextCell *)self indicatorTextAttachments];
-    v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    indicatorTextAttachments2 = [(CKConversationListLargeTextCell *)self indicatorTextAttachments];
+    v14 = [indicatorTextAttachments2 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v14)
     {
       v15 = v14;
@@ -370,14 +370,14 @@ LABEL_16:
         {
           if (*v24 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(indicatorTextAttachments2);
           }
 
           v18 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:*(*(&v23 + 1) + 8 * i)];
           [v8 appendAttributedString:v18];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v15 = [indicatorTextAttachments2 countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v15);
@@ -386,43 +386,43 @@ LABEL_16:
     v19 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@" "];
     [v8 appendAttributedString:v19];
 
-    [v8 appendAttributedString:v4];
+    [v8 appendAttributedString:textCopy];
     goto LABEL_16;
   }
 
-  v6 = [(CKConversationListCell *)self fromLabel];
-  [v6 setAttributedText:0];
+  fromLabel2 = [(CKConversationListCell *)self fromLabel];
+  [fromLabel2 setAttributedText:0];
 
 LABEL_17:
 }
 
-- (void)updateUnreadIndicatorWithImage:(id)a3
+- (void)updateUnreadIndicatorWithImage:(id)image
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  imageCopy = image;
+  if (imageCopy)
   {
-    v5 = [(CKConversationListLargeTextCell *)self unreadIndicatorAttachment];
+    unreadIndicatorAttachment = [(CKConversationListLargeTextCell *)self unreadIndicatorAttachment];
 
-    if (!v5)
+    if (!unreadIndicatorAttachment)
     {
       v6 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
       [(CKConversationListLargeTextCell *)self setUnreadIndicatorAttachment:v6];
     }
 
-    v7 = [(CKConversationListLargeTextCell *)self unreadIndicatorAttachment];
-    [v7 setImage:v4];
+    unreadIndicatorAttachment2 = [(CKConversationListLargeTextCell *)self unreadIndicatorAttachment];
+    [unreadIndicatorAttachment2 setImage:imageCopy];
 
-    v8 = [(CKConversationListCell *)self fromLabel];
-    v9 = [v8 font];
-    [v9 capHeight];
+    fromLabel = [(CKConversationListCell *)self fromLabel];
+    font = [fromLabel font];
+    [font capHeight];
     v11 = v10;
 
-    [v4 size];
+    [imageCopy size];
     v13 = v12;
     v15 = v14;
-    v16 = [(CKConversationListLargeTextCell *)self unreadIndicatorAttachment];
-    [v16 setBounds:{0.0, v11 * 0.5 - v15 * 0.5, v13, v15}];
+    unreadIndicatorAttachment3 = [(CKConversationListLargeTextCell *)self unreadIndicatorAttachment];
+    [unreadIndicatorAttachment3 setBounds:{0.0, v11 * 0.5 - v15 * 0.5, v13, v15}];
   }
 
   else
@@ -430,17 +430,17 @@ LABEL_17:
     [(CKConversationListLargeTextCell *)self setUnreadIndicatorAttachment:0];
   }
 
-  v17 = [(CKConversationListCell *)self fromLabel];
-  v18 = [v17 font];
-  [v18 capHeight];
+  fromLabel2 = [(CKConversationListCell *)self fromLabel];
+  font2 = [fromLabel2 font];
+  [font2 capHeight];
   v20 = v19;
 
-  v21 = [(CKConversationListCell *)self makeTextAttachmentsForCurrentIndicatorState];
+  makeTextAttachmentsForCurrentIndicatorState = [(CKConversationListCell *)self makeTextAttachmentsForCurrentIndicatorState];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v22 = [v21 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  v22 = [makeTextAttachmentsForCurrentIndicatorState countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v22)
   {
     v23 = v22;
@@ -452,80 +452,80 @@ LABEL_17:
       {
         if (*v34 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(makeTextAttachmentsForCurrentIndicatorState);
         }
 
         v27 = *(*(&v33 + 1) + 8 * i);
-        v28 = [v27 image];
-        [v28 size];
+        image = [v27 image];
+        [image size];
         v30 = v29;
         v32 = v31;
 
         [v27 setBounds:{0.0, v25 + v32 * 0.65 * -0.5, v30 * 0.65}];
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      v23 = [makeTextAttachmentsForCurrentIndicatorState countByEnumeratingWithState:&v33 objects:v37 count:16];
     }
 
     while (v23);
   }
 
-  [(CKConversationListLargeTextCell *)self setIndicatorTextAttachments:v21];
+  [(CKConversationListLargeTextCell *)self setIndicatorTextAttachments:makeTextAttachmentsForCurrentIndicatorState];
 }
 
-- (void)updateForEditing:(BOOL)a3
+- (void)updateForEditing:(BOOL)editing
 {
-  v3 = a3;
+  editingCopy = editing;
   v8.receiver = self;
   v8.super_class = CKConversationListLargeTextCell;
   [(CKConversationListCell *)&v8 updateForEditing:?];
-  v5 = [(CKConversationListLargeTextCell *)self editingDependentConstraint];
-  [v5 setActive:0];
+  editingDependentConstraint = [(CKConversationListLargeTextCell *)self editingDependentConstraint];
+  [editingDependentConstraint setActive:0];
 
-  v6 = [(CKConversationListLargeTextCell *)self _constraintForEditing:v3];
+  v6 = [(CKConversationListLargeTextCell *)self _constraintForEditing:editingCopy];
   [(CKConversationListLargeTextCell *)self setEditingDependentConstraint:v6];
 
-  v7 = [(CKConversationListLargeTextCell *)self editingDependentConstraint];
-  [v7 setActive:1];
+  editingDependentConstraint2 = [(CKConversationListLargeTextCell *)self editingDependentConstraint];
+  [editingDependentConstraint2 setActive:1];
 
   [(CKConversationListLargeTextCell *)self layoutIfNeeded];
 }
 
-- (id)_constraintForEditing:(BOOL)a3
+- (id)_constraintForEditing:(BOOL)editing
 {
-  if (a3)
+  if (editing)
   {
-    v4 = [(CKConversationListCell *)self fromLabel];
-    v5 = [v4 trailingAnchor];
-    v6 = [(CKConversationListLargeTextCell *)self contentView];
-    v7 = [v6 trailingAnchor];
+    fromLabel = [(CKConversationListCell *)self fromLabel];
+    trailingAnchor = [fromLabel trailingAnchor];
+    contentView = [(CKConversationListLargeTextCell *)self contentView];
+    trailingAnchor2 = [contentView trailingAnchor];
     v8 = +[CKUIBehavior sharedBehaviors];
     [v8 conversationListCellLargeTextLeftMargin];
-    v10 = [v5 constraintEqualToAnchor:v7 constant:-v9];
+    v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v9];
   }
 
   else
   {
-    v11 = [(CKConversationListCell *)self chevronImageView];
+    chevronImageView = [(CKConversationListCell *)self chevronImageView];
 
-    v4 = [(CKConversationListCell *)self fromLabel];
-    v5 = [v4 trailingAnchor];
-    if (v11)
+    fromLabel = [(CKConversationListCell *)self fromLabel];
+    trailingAnchor = [fromLabel trailingAnchor];
+    if (chevronImageView)
     {
-      v6 = [(CKConversationListCell *)self chevronImageView];
-      v7 = [v6 leadingAnchor];
+      contentView = [(CKConversationListCell *)self chevronImageView];
+      trailingAnchor2 = [contentView leadingAnchor];
       v12 = -10.0;
     }
 
     else
     {
-      v6 = [(CKConversationListLargeTextCell *)self contentView];
-      v7 = [v6 trailingAnchor];
+      contentView = [(CKConversationListLargeTextCell *)self contentView];
+      trailingAnchor2 = [contentView trailingAnchor];
       [(CKConversationListLargeTextCell *)self layoutMargins];
       v12 = -v13;
     }
 
-    v10 = [v5 constraintEqualToAnchor:v7 constant:v12];
+    v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:v12];
   }
 
   return v10;
@@ -534,74 +534,74 @@ LABEL_17:
 - (id)_contentSizeCategoryDependentConstraints
 {
   v30[4] = *MEMORY[0x1E69E9840];
-  v29 = [(CKConversationListCell *)self fromLabel];
-  v27 = [v29 topAnchor];
-  v28 = [(CKConversationListLargeTextCell *)self contentView];
-  v25 = [v28 topAnchor];
+  fromLabel = [(CKConversationListCell *)self fromLabel];
+  topAnchor = [fromLabel topAnchor];
+  contentView = [(CKConversationListLargeTextCell *)self contentView];
+  topAnchor2 = [contentView topAnchor];
   v26 = +[CKUIBehavior sharedBehaviors];
   [v26 largeTextTopConversationListSpace];
-  v24 = [v27 constraintEqualToAnchor:v25 constant:?];
+  v24 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
   v30[0] = v24;
-  v23 = [(CKConversationListLargeTextCell *)self firstLineLayoutGuide];
-  v21 = [v23 heightAnchor];
-  v22 = [(CKConversationListCell *)self fromLabel];
-  v20 = [v22 font];
-  [v20 capHeight];
-  v19 = [v21 constraintEqualToConstant:?];
+  firstLineLayoutGuide = [(CKConversationListLargeTextCell *)self firstLineLayoutGuide];
+  heightAnchor = [firstLineLayoutGuide heightAnchor];
+  fromLabel2 = [(CKConversationListCell *)self fromLabel];
+  font = [fromLabel2 font];
+  [font capHeight];
+  v19 = [heightAnchor constraintEqualToConstant:?];
   v30[1] = v19;
-  v18 = [(CKConversationListCell *)self dateLabel];
-  v17 = [v18 bottomAnchor];
-  v3 = [(CKConversationListLargeTextCell *)self contentView];
-  v4 = [v3 bottomAnchor];
+  dateLabel = [(CKConversationListCell *)self dateLabel];
+  bottomAnchor = [dateLabel bottomAnchor];
+  contentView2 = [(CKConversationListLargeTextCell *)self contentView];
+  bottomAnchor2 = [contentView2 bottomAnchor];
   v5 = +[CKUIBehavior sharedBehaviors];
   [v5 accessibilityBottomConversationListSpace];
-  v7 = [v17 constraintEqualToAnchor:v4 constant:-v6];
+  v7 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v6];
   v30[2] = v7;
-  v8 = [(CKConversationListCell *)self priorityLabel];
-  v9 = [v8 bottomAnchor];
-  v10 = [(CKConversationListLargeTextCell *)self contentView];
-  v11 = [v10 bottomAnchor];
+  priorityLabel = [(CKConversationListCell *)self priorityLabel];
+  bottomAnchor3 = [priorityLabel bottomAnchor];
+  contentView3 = [(CKConversationListLargeTextCell *)self contentView];
+  bottomAnchor4 = [contentView3 bottomAnchor];
   v12 = +[CKUIBehavior sharedBehaviors];
   [v12 accessibilityBottomConversationListSpace];
-  v14 = [v9 constraintEqualToAnchor:v11 constant:-v13];
+  v14 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-v13];
   v30[3] = v14;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:4];
 
   return v16;
 }
 
-- (void)updateContentsForConversation:(id)a3 fastPreview:(BOOL)a4
+- (void)updateContentsForConversation:(id)conversation fastPreview:(BOOL)preview
 {
   v11.receiver = self;
   v11.super_class = CKConversationListLargeTextCell;
-  [(CKConversationListCell *)&v11 updateContentsForConversation:a3 fastPreview:a4];
+  [(CKConversationListCell *)&v11 updateContentsForConversation:conversation fastPreview:preview];
   if ((IMSharedHelperDeviceIsiPad() & 1) != 0 || CKIsRunningInMacCatalyst())
   {
     if ([(CKConversationListCell *)self lastMessageIsTypingIndicator])
     {
-      v5 = [(CKConversationListCell *)self summaryLabel];
-      [v5 setHidden:1];
+      summaryLabel = [(CKConversationListCell *)self summaryLabel];
+      [summaryLabel setHidden:1];
 
-      v6 = [(CKConversationListCell *)self typingIndicatorView];
-      [v6 stopAnimation];
+      typingIndicatorView = [(CKConversationListCell *)self typingIndicatorView];
+      [typingIndicatorView stopAnimation];
 
-      v7 = [(CKConversationListCell *)self typingIndicatorView];
-      [v7 setHidden:0];
+      typingIndicatorView2 = [(CKConversationListCell *)self typingIndicatorView];
+      [typingIndicatorView2 setHidden:0];
 
-      v8 = [(CKConversationListCell *)self typingIndicatorView];
-      [v8 startPulseAnimation];
+      typingIndicatorView3 = [(CKConversationListCell *)self typingIndicatorView];
+      [typingIndicatorView3 startPulseAnimation];
     }
 
     else
     {
-      v9 = [(CKConversationListCell *)self typingIndicatorView];
-      [v9 setHidden:1];
+      typingIndicatorView4 = [(CKConversationListCell *)self typingIndicatorView];
+      [typingIndicatorView4 setHidden:1];
 
-      v10 = [(CKConversationListCell *)self typingIndicatorView];
-      [v10 stopAnimation];
+      typingIndicatorView5 = [(CKConversationListCell *)self typingIndicatorView];
+      [typingIndicatorView5 stopAnimation];
 
-      v8 = [(CKConversationListCell *)self summaryLabel];
-      [v8 setHidden:0];
+      typingIndicatorView3 = [(CKConversationListCell *)self summaryLabel];
+      [typingIndicatorView3 setHidden:0];
     }
   }
 }

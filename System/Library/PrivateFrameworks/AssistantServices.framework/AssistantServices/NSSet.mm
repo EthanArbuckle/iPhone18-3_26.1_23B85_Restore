@@ -6,8 +6,8 @@
 
 - (id)adpm_sortedKeyString
 {
-  v2 = [(NSSet *)self allObjects];
-  v3 = [v2 sortedArrayUsingSelector:"localizedCaseInsensitiveCompare:"];
+  allObjects = [(NSSet *)self allObjects];
+  v3 = [allObjects sortedArrayUsingSelector:"localizedCaseInsensitiveCompare:"];
   v4 = [v3 componentsJoinedByString:@":"];
 
   return v4;

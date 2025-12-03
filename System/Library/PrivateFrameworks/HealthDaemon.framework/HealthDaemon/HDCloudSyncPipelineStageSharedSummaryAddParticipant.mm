@@ -1,24 +1,24 @@
 @interface HDCloudSyncPipelineStageSharedSummaryAddParticipant
-- (HDCloudSyncPipelineStageSharedSummaryAddParticipant)initWithConfiguration:(id)a3 cloudState:(id)a4 codableEntry:(id)a5 authorizationIdentifiers:(id)a6;
+- (HDCloudSyncPipelineStageSharedSummaryAddParticipant)initWithConfiguration:(id)configuration cloudState:(id)state codableEntry:(id)entry authorizationIdentifiers:(id)identifiers;
 - (void)main;
 @end
 
 @implementation HDCloudSyncPipelineStageSharedSummaryAddParticipant
 
-- (HDCloudSyncPipelineStageSharedSummaryAddParticipant)initWithConfiguration:(id)a3 cloudState:(id)a4 codableEntry:(id)a5 authorizationIdentifiers:(id)a6
+- (HDCloudSyncPipelineStageSharedSummaryAddParticipant)initWithConfiguration:(id)configuration cloudState:(id)state codableEntry:(id)entry authorizationIdentifiers:(id)identifiers
 {
-  v10 = a5;
-  v11 = a6;
+  entryCopy = entry;
+  identifiersCopy = identifiers;
   v18.receiver = self;
   v18.super_class = HDCloudSyncPipelineStageSharedSummaryAddParticipant;
-  v12 = [(HDCloudSyncPipelineStage *)&v18 initWithConfiguration:a3 cloudState:a4];
+  v12 = [(HDCloudSyncPipelineStage *)&v18 initWithConfiguration:configuration cloudState:state];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [entryCopy copy];
     codableEntry = v12->_codableEntry;
     v12->_codableEntry = v13;
 
-    v15 = [v11 copy];
+    v15 = [identifiersCopy copy];
     authorizationIdentifiers = v12->_authorizationIdentifiers;
     v12->_authorizationIdentifiers = v15;
   }
@@ -28,21 +28,21 @@
 
 - (void)main
 {
-  v4 = [(HDCloudSyncOperation *)self configuration];
-  v5 = [v4 repository];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
 
-  v6 = [(HDCodableSummarySharingEntry *)self->_codableEntry primaryContactIdentifier];
-  if ([v6 _appearsToBeEmail])
+  primaryContactIdentifier = [(HDCodableSummarySharingEntry *)self->_codableEntry primaryContactIdentifier];
+  if ([primaryContactIdentifier _appearsToBeEmail])
   {
-    v7 = [objc_alloc(MEMORY[0x277CBC7C8]) initWithEmailAddress:v6];
+    v7 = [objc_alloc(MEMORY[0x277CBC7C8]) initWithEmailAddress:primaryContactIdentifier];
 LABEL_5:
     v8 = v7;
     goto LABEL_7;
   }
 
-  if ([v6 _appearsToBePhoneNumber])
+  if ([primaryContactIdentifier _appearsToBePhoneNumber])
   {
-    v7 = [objc_alloc(MEMORY[0x277CBC7C8]) initWithPhoneNumber:v6];
+    v7 = [objc_alloc(MEMORY[0x277CBC7C8]) initWithPhoneNumber:primaryContactIdentifier];
     goto LABEL_5;
   }
 
@@ -51,14 +51,14 @@ LABEL_7:
 
   if (v8)
   {
-    v9 = [v5 primaryCKContainer];
+    primaryCKContainer = [repository primaryCKContainer];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __59__HDCloudSyncPipelineStageSharedSummaryAddParticipant_main__block_invoke;
     v11[3] = &unk_278627748;
     v11[4] = self;
     v12 = v8;
-    [v9 fetchFullNameAndPrimaryEmailOnAccountWithCompletionHandler:v11];
+    [primaryCKContainer fetchFullNameAndPrimaryEmailOnAccountWithCompletionHandler:v11];
   }
 
   else

@@ -1,43 +1,43 @@
 @interface PGTripHighlightSharingSuggester
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4;
+- (id)suggestionsWithOptions:(id)options progress:(id)progress;
 @end
 
 @implementation PGTripHighlightSharingSuggester
 
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4
+- (id)suggestionsWithOptions:(id)options progress:(id)progress
 {
-  v5 = a3;
+  optionsCopy = options;
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [(PGAbstractSuggester *)self session];
-  v8 = [v7 loggingConnection];
-  v9 = [v7 workingContext];
-  v10 = [v7 photoLibrary];
-  v11 = [v9 curationManager];
-  v12 = [v7 curationContext];
-  v13 = [v9 serviceManager];
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
+  workingContext = [session workingContext];
+  photoLibrary = [session photoLibrary];
+  curationManager = [workingContext curationManager];
+  curationContext = [session curationContext];
+  serviceManager = [workingContext serviceManager];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __67__PGTripHighlightSharingSuggester_suggestionsWithOptions_progress___block_invoke;
   v26[3] = &unk_2788847A0;
-  v27 = v5;
-  v28 = v8;
-  v29 = v7;
-  v30 = v13;
-  v31 = self;
-  v32 = v9;
-  v33 = v10;
-  v34 = v11;
-  v35 = v12;
+  v27 = optionsCopy;
+  v28 = loggingConnection;
+  v29 = session;
+  v30 = serviceManager;
+  selfCopy = self;
+  v32 = workingContext;
+  v33 = photoLibrary;
+  v34 = curationManager;
+  v35 = curationContext;
   v14 = v6;
   v36 = v14;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  v18 = v9;
-  v19 = v13;
-  v20 = v7;
-  v21 = v8;
-  v22 = v5;
+  v15 = curationContext;
+  v16 = curationManager;
+  v17 = photoLibrary;
+  v18 = workingContext;
+  v19 = serviceManager;
+  v20 = session;
+  v21 = loggingConnection;
+  v22 = optionsCopy;
   [v18 performSynchronousConcurrentGraphReadUsingBlock:v26];
   v23 = v36;
   v24 = v14;

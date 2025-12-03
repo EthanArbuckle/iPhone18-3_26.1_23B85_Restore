@@ -1,5 +1,5 @@
 @interface EventAccessoryItemModule
-- (_TtC6HomeUI24EventAccessoryItemModule)initWithContext:(id)a3 in:(id)a4 itemUpdater:(id)a5;
+- (_TtC6HomeUI24EventAccessoryItemModule)initWithContext:(id)context in:(id)in itemUpdater:(id)updater;
 - (id)buildItemProviders;
 @end
 
@@ -7,7 +7,7 @@
 
 - (id)buildItemProviders
 {
-  v2 = self;
+  selfCopy = self;
   sub_20D097A0C();
   v4 = v3;
 
@@ -26,12 +26,12 @@
   return v5;
 }
 
-- (_TtC6HomeUI24EventAccessoryItemModule)initWithContext:(id)a3 in:(id)a4 itemUpdater:(id)a5
+- (_TtC6HomeUI24EventAccessoryItemModule)initWithContext:(id)context in:(id)in itemUpdater:(id)updater
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  inCopy = in;
   swift_unknownObjectRetain();
-  return EventAccessoryItemModule.init(context:in:itemUpdater:)(v7, v8, a5);
+  return EventAccessoryItemModule.init(context:in:itemUpdater:)(contextCopy, inCopy, updater);
 }
 
 @end

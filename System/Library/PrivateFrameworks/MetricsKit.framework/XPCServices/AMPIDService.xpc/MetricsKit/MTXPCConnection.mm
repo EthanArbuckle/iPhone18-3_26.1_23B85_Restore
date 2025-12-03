@@ -1,100 +1,100 @@
 @interface MTXPCConnection
-- (MTXPCConnection)initWithXPCConnection:(id)a3 secretStore:(id)a4;
+- (MTXPCConnection)initWithXPCConnection:(id)connection secretStore:(id)store;
 - (NSXPCConnection)connection;
 - (void)doClearLocalData;
-- (void)doMaintainSchemes:(id)a3 options:(id)a4;
-- (void)doResetSchemes:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)secretForScheme:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)syncForSchemes:(id)a3 options:(id)a4 completion:(id)a5;
+- (void)doMaintainSchemes:(id)schemes options:(id)options;
+- (void)doResetSchemes:(id)schemes options:(id)options completion:(id)completion;
+- (void)secretForScheme:(id)scheme options:(id)options completion:(id)completion;
+- (void)syncForSchemes:(id)schemes options:(id)options completion:(id)completion;
 @end
 
 @implementation MTXPCConnection
 
-- (MTXPCConnection)initWithXPCConnection:(id)a3 secretStore:(id)a4
+- (MTXPCConnection)initWithXPCConnection:(id)connection secretStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = MTXPCConnection;
   v8 = [(MTXPCConnection *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_connection, v6);
-    objc_storeStrong(&v9->_secretStore, a4);
+    objc_storeWeak(&v8->_connection, connectionCopy);
+    objc_storeStrong(&v9->_secretStore, store);
   }
 
   return v9;
 }
 
-- (void)secretForScheme:(id)a3 options:(id)a4 completion:(id)a5
+- (void)secretForScheme:(id)scheme options:(id)options completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(MTXPCConnection *)self secretStore];
-  v12 = [v11 secretForScheme:v10 options:v9];
+  completionCopy = completion;
+  optionsCopy = options;
+  schemeCopy = scheme;
+  secretStore = [(MTXPCConnection *)self secretStore];
+  v12 = [secretStore secretForScheme:schemeCopy options:optionsCopy];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000017C0;
   v14[3] = &unk_100020508;
-  v15 = v8;
-  v13 = v8;
+  v15 = completionCopy;
+  v13 = completionCopy;
   [v12 addFinishBlock:v14];
 }
 
-- (void)doResetSchemes:(id)a3 options:(id)a4 completion:(id)a5
+- (void)doResetSchemes:(id)schemes options:(id)options completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(MTXPCConnection *)self secretStore];
-  v12 = [v11 resetSchemes:v10 options:v9];
+  completionCopy = completion;
+  optionsCopy = options;
+  schemesCopy = schemes;
+  secretStore = [(MTXPCConnection *)self secretStore];
+  v12 = [secretStore resetSchemes:schemesCopy options:optionsCopy];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000018C4;
   v14[3] = &unk_100020530;
-  v15 = v8;
-  v13 = v8;
+  v15 = completionCopy;
+  v13 = completionCopy;
   [v12 addFinishBlock:v14];
 }
 
-- (void)doMaintainSchemes:(id)a3 options:(id)a4
+- (void)doMaintainSchemes:(id)schemes options:(id)options
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(MTXPCConnection *)self secretStore];
+  schemesCopy = schemes;
+  optionsCopy = options;
+  secretStore = [(MTXPCConnection *)self secretStore];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(MTXPCConnection *)self secretStore];
-    v10 = [v9 maintainSchemes:v11 options:v6];
+    secretStore2 = [(MTXPCConnection *)self secretStore];
+    v10 = [secretStore2 maintainSchemes:schemesCopy options:optionsCopy];
   }
 }
 
 - (void)doClearLocalData
 {
-  v2 = [(MTXPCConnection *)self secretStore];
-  [v2 clearLocalData];
+  secretStore = [(MTXPCConnection *)self secretStore];
+  [secretStore clearLocalData];
 }
 
-- (void)syncForSchemes:(id)a3 options:(id)a4 completion:(id)a5
+- (void)syncForSchemes:(id)schemes options:(id)options completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(MTXPCConnection *)self secretStore];
-  v12 = [v11 syncForSchemes:v10 options:v9];
+  completionCopy = completion;
+  optionsCopy = options;
+  schemesCopy = schemes;
+  secretStore = [(MTXPCConnection *)self secretStore];
+  v12 = [secretStore syncForSchemes:schemesCopy options:optionsCopy];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100001AB8;
   v14[3] = &unk_100020530;
-  v15 = v8;
-  v13 = v8;
+  v15 = completionCopy;
+  v13 = completionCopy;
   [v12 addFinishBlock:v14];
 }
 

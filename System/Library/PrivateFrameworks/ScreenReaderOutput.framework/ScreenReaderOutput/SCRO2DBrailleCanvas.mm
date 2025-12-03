@@ -1,31 +1,31 @@
 @interface SCRO2DBrailleCanvas
 - ($488472A07B2E1D1A523D39A95A553F6B)_fullyDownPinState;
 - ($488472A07B2E1D1A523D39A95A553F6B)_fullyUpPinState;
-- ($488472A07B2E1D1A523D39A95A553F6B)pinStateForX:(unint64_t)a3 y:(unint64_t)a4;
-- (BOOL)_canBlitCellAtX:(unint64_t)a3 y:(unint64_t)a4;
+- ($488472A07B2E1D1A523D39A95A553F6B)pinStateForX:(unint64_t)x y:(unint64_t)y;
+- (BOOL)_canBlitCellAtX:(unint64_t)x y:(unint64_t)y;
 - (BOOL)hasConsistentHorizontalPinSpacing;
 - (BOOL)hasConsistentVerticalPinSpacing;
 - (BOOL)skipPinBetweenCellsHorizontally;
 - (BOOL)skipPinBetweenCellsVertically;
 - (BOOL)supportsBrailleText;
 - (SCRO2DBrailleCanvas)init;
-- (SCRO2DBrailleCanvas)initWithCanvasDescriptor:(id)a3;
+- (SCRO2DBrailleCanvas)initWithCanvasDescriptor:(id)descriptor;
 - (double)horizontalPinSpacing;
 - (double)interCellHorizontalSpacing;
 - (double)interCellVerticalSpacing;
 - (double)verticalPinSpacing;
-- (id)_pinForX:(unint64_t)a3 y:(unint64_t)a4;
+- (id)_pinForX:(unint64_t)x y:(unint64_t)y;
 - (id)debugAsciiCanvas;
 - (unint64_t)_textDisplayHeight;
 - (void)_blitBMP;
-- (void)_blitCell:(unsigned __int8)a3 AtX:(unint64_t)a4 y:(unint64_t)a5;
+- (void)_blitCell:(unsigned __int8)cell AtX:(unint64_t)x y:(unint64_t)y;
 - (void)_blitText;
 - (void)_clearCells;
 - (void)_updateCells;
-- (void)setBrailleText:(const char *)a3 length:(unint64_t)a4;
-- (void)setImageData:(id)a3;
-- (void)setNumberOfTextLines:(unint64_t)a3;
-- (void)setPinState:(id)a3 forX:(unint64_t)a4 y:(unint64_t)a5;
+- (void)setBrailleText:(const char *)text length:(unint64_t)length;
+- (void)setImageData:(id)data;
+- (void)setNumberOfTextLines:(unint64_t)lines;
+- (void)setPinState:(id)state forX:(unint64_t)x y:(unint64_t)y;
 @end
 
 @implementation SCRO2DBrailleCanvas
@@ -39,17 +39,17 @@
   return 0;
 }
 
-- (SCRO2DBrailleCanvas)initWithCanvasDescriptor:(id)a3
+- (SCRO2DBrailleCanvas)initWithCanvasDescriptor:(id)descriptor
 {
-  v5 = a3;
+  descriptorCopy = descriptor;
   v14.receiver = self;
   v14.super_class = SCRO2DBrailleCanvas;
   v6 = [(SCRO2DBrailleCanvas *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_descriptor, a3);
-    v8 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v6->_descriptor, descriptor);
+    array = [MEMORY[0x277CBEB18] array];
     if ([(SCRO2DBrailleCanvasDescriptor *)v7->_descriptor width])
     {
       v9 = 0;
@@ -62,7 +62,7 @@
           {
             v11 = [[SCRO2DPin alloc] initWithX:v9 y:v10 style:[(SCRO2DBrailleCanvasDescriptor *)v7->_descriptor pinHeightStyle]];
             [(SCRO2DPin *)v11 setState:[(SCRO2DBrailleCanvas *)v7 _fullyDownPinState]];
-            [v8 addObject:v11];
+            [array addObject:v11];
 
             ++v10;
           }
@@ -76,7 +76,7 @@
       while (v9 < [(SCRO2DBrailleCanvasDescriptor *)v7->_descriptor width]);
     }
 
-    objc_storeStrong(&v7->_pins, v8);
+    objc_storeStrong(&v7->_pins, array);
     if (![(SCRO2DBrailleCanvasDescriptor *)v7->_descriptor hasConsistentVerticalPinSpacing])
     {
       [MEMORY[0x277CBEAD8] raise:@"SCRO2DBrailleException" format:@"Displays with variable vertical pin spacing are not yet supported."];
@@ -193,23 +193,23 @@
   return 0.0;
 }
 
-- (id)_pinForX:(unint64_t)a3 y:(unint64_t)a4
+- (id)_pinForX:(unint64_t)x y:(unint64_t)y
 {
   pins = self->_pins;
-  v5 = a3 + [(SCRO2DBrailleCanvasDescriptor *)self->_descriptor width]* a4;
+  v5 = x + [(SCRO2DBrailleCanvasDescriptor *)self->_descriptor width]* y;
 
   return [(NSArray *)pins objectAtIndex:v5];
 }
 
-- (void)setPinState:(id)a3 forX:(unint64_t)a4 y:(unint64_t)a5
+- (void)setPinState:(id)state forX:(unint64_t)x y:(unint64_t)y
 {
-  v6 = [(SCRO2DBrailleCanvas *)self _pinForX:a4 y:a5];
-  [v6 setState:a3.var0];
+  v6 = [(SCRO2DBrailleCanvas *)self _pinForX:x y:y];
+  [v6 setState:state.var0];
 }
 
-- ($488472A07B2E1D1A523D39A95A553F6B)pinStateForX:(unint64_t)a3 y:(unint64_t)a4
+- ($488472A07B2E1D1A523D39A95A553F6B)pinStateForX:(unint64_t)x y:(unint64_t)y
 {
-  v4 = [(SCRO2DBrailleCanvas *)self _pinForX:a3 y:a4];
+  v4 = [(SCRO2DBrailleCanvas *)self _pinForX:x y:y];
   v5.var0 = [v4 state];
 
   return v5.var0;
@@ -258,26 +258,26 @@
   [(SCRO2DBrailleCanvas *)self _blitBMP];
 }
 
-- (void)setNumberOfTextLines:(unint64_t)a3
+- (void)setNumberOfTextLines:(unint64_t)lines
 {
-  if ([(SCRO2DBrailleCanvasDescriptor *)self->_descriptor numberOfTextLinesAvailable]< a3)
+  if ([(SCRO2DBrailleCanvasDescriptor *)self->_descriptor numberOfTextLinesAvailable]< lines)
   {
     [(SCRO2DBrailleCanvasDescriptor *)self->_descriptor numberOfTextLinesAvailable];
   }
 
-  self->_numberOfTextLines = a3;
+  self->_numberOfTextLines = lines;
 }
 
 - (unint64_t)_textDisplayHeight
 {
-  v3 = [(SCRO2DBrailleCanvas *)self cellHeight];
-  v4 = v3 + [(SCRO2DBrailleCanvasDescriptor *)self->_descriptor skipPinBetweenCellsVertically];
+  cellHeight = [(SCRO2DBrailleCanvas *)self cellHeight];
+  v4 = cellHeight + [(SCRO2DBrailleCanvasDescriptor *)self->_descriptor skipPinBetweenCellsVertically];
   return v4 * [(SCRO2DBrailleCanvas *)self _numberOfTextLines];
 }
 
-- (void)setBrailleText:(const char *)a3 length:(unint64_t)a4
+- (void)setBrailleText:(const char *)text length:(unint64_t)length
 {
-  v5 = [MEMORY[0x277CBEA90] dataWithBytes:a3 length:a4];
+  v5 = [MEMORY[0x277CBEA90] dataWithBytes:text length:length];
   brailleTextData = self->_brailleTextData;
   self->_brailleTextData = v5;
 
@@ -286,7 +286,7 @@
 
 - (void)_blitBMP
 {
-  v3 = [(NSData *)self->_imageData bytes];
+  bytes = [(NSData *)self->_imageData bytes];
   v4 = [(NSData *)self->_imageData length];
   if ([(SCRO2DBrailleCanvasDescriptor *)self->_descriptor height])
   {
@@ -298,15 +298,15 @@
         v6 = 0;
         do
         {
-          v7 = [(SCRO2DBrailleCanvasDescriptor *)self->_descriptor width];
-          if (v6 + v5 * v7 >= v4)
+          width = [(SCRO2DBrailleCanvasDescriptor *)self->_descriptor width];
+          if (v6 + v5 * width >= v4)
           {
             v8 = 0;
           }
 
           else
           {
-            v8 = v3[v5 * v7 + v6];
+            v8 = bytes[v5 * width + v6];
           }
 
           if ([(SCRO2DBrailleCanvasDescriptor *)self->_descriptor pinHeightStyle]!= 2)
@@ -330,9 +330,9 @@
 
 - (void)_blitText
 {
-  v3 = [(NSData *)self->_brailleTextData bytes];
+  bytes = [(NSData *)self->_brailleTextData bytes];
   v4 = [(NSData *)self->_brailleTextData length];
-  if (v3)
+  if (bytes)
   {
     v5 = v4 == 0;
   }
@@ -354,7 +354,7 @@
         break;
       }
 
-      [(SCRO2DBrailleCanvas *)self _blitCell:*v3 AtX:v8 y:v7];
+      [(SCRO2DBrailleCanvas *)self _blitCell:*bytes AtX:v8 y:v7];
       v9 = [(SCRO2DBrailleCanvas *)self cellWidth]+ v8;
       v8 = v9 + [(SCRO2DBrailleCanvasDescriptor *)self->_descriptor skipPinBetweenCellsHorizontally];
       if (![(SCRO2DBrailleCanvas *)self _canBlitCellAtX:v8 y:v7])
@@ -364,7 +364,7 @@
         v7 = v10 + [(SCRO2DBrailleCanvasDescriptor *)self->_descriptor skipPinBetweenCellsVertically];
       }
 
-      ++v3;
+      ++bytes;
       --v6;
     }
 
@@ -372,41 +372,41 @@
   }
 }
 
-- (BOOL)_canBlitCellAtX:(unint64_t)a3 y:(unint64_t)a4
+- (BOOL)_canBlitCellAtX:(unint64_t)x y:(unint64_t)y
 {
-  v7 = [(SCRO2DBrailleCanvas *)self cellHeight];
-  v8 = a3 + [(SCRO2DBrailleCanvas *)self cellWidth]- 1;
-  return v8 < [(SCRO2DBrailleCanvasDescriptor *)self->_descriptor width]&& a4 + v7 - 1 < [(SCRO2DBrailleCanvasDescriptor *)self->_descriptor height];
+  cellHeight = [(SCRO2DBrailleCanvas *)self cellHeight];
+  v8 = x + [(SCRO2DBrailleCanvas *)self cellWidth]- 1;
+  return v8 < [(SCRO2DBrailleCanvasDescriptor *)self->_descriptor width]&& y + cellHeight - 1 < [(SCRO2DBrailleCanvasDescriptor *)self->_descriptor height];
 }
 
-- (void)_blitCell:(unsigned __int8)a3 AtX:(unint64_t)a4 y:(unint64_t)a5
+- (void)_blitCell:(unsigned __int8)cell AtX:(unint64_t)x y:(unint64_t)y
 {
-  v7 = a3;
-  if ([(SCRO2DBrailleCanvas *)self cellWidth]+ a4 > a4)
+  cellCopy = cell;
+  if ([(SCRO2DBrailleCanvas *)self cellWidth]+ x > x)
   {
-    v9 = a4;
+    xCopy = x;
     do
     {
-      if ([(SCRO2DBrailleCanvas *)self cellHeight]+ a5 > a5)
+      if ([(SCRO2DBrailleCanvas *)self cellHeight]+ y > y)
       {
-        v10 = v9 - a4;
+        v10 = xCopy - x;
         v11 = 1;
-        v12 = a5;
+        yCopy = y;
         do
         {
-          if (v9 == a4 && v11 == 1)
+          if (xCopy == x && v11 == 1)
           {
             v13 = 1;
           }
 
-          else if (v9 != a4 || v11)
+          else if (xCopy != x || v11)
           {
-            if (v9 == a4 && v11 == -1)
+            if (xCopy == x && v11 == -1)
             {
               v13 = 4;
             }
 
-            else if (v9 == a4 && v11 == -2)
+            else if (xCopy == x && v11 == -2)
             {
               v13 = 64;
             }
@@ -445,7 +445,7 @@
             v13 = 2;
           }
 
-          if ((v13 & v7) != 0)
+          if ((v13 & cellCopy) != 0)
           {
             v15.var0 = [(SCRO2DBrailleCanvas *)self _fullyUpPinState];
           }
@@ -455,17 +455,17 @@
             v15.var0 = [(SCRO2DBrailleCanvas *)self _fullyDownPinState];
           }
 
-          [(SCRO2DBrailleCanvas *)self setPinState:v15.var0 forX:v9 y:v12++];
+          [(SCRO2DBrailleCanvas *)self setPinState:v15.var0 forX:xCopy y:yCopy++];
           --v11;
         }
 
-        while (v12 < [(SCRO2DBrailleCanvas *)self cellHeight]+ a5);
+        while (yCopy < [(SCRO2DBrailleCanvas *)self cellHeight]+ y);
       }
 
-      ++v9;
+      ++xCopy;
     }
 
-    while (v9 < [(SCRO2DBrailleCanvas *)self cellWidth]+ a4);
+    while (xCopy < [(SCRO2DBrailleCanvas *)self cellWidth]+ x);
   }
 }
 
@@ -489,9 +489,9 @@
 
   else if ([(SCRO2DBrailleCanvasDescriptor *)self->_descriptor pinHeightStyle]== 2)
   {
-    v5 = [(SCRO2DBrailleCanvasDescriptor *)self->_descriptor detentCount];
-    v3 = (v5 - 1) & 0xFFFFFFFF00000000;
-    v4 = (v5 - 1);
+    detentCount = [(SCRO2DBrailleCanvasDescriptor *)self->_descriptor detentCount];
+    v3 = (detentCount - 1) & 0xFFFFFFFF00000000;
+    v4 = (detentCount - 1);
   }
 
   else
@@ -504,28 +504,28 @@
   return (v4 | v3);
 }
 
-- (void)setImageData:(id)a3
+- (void)setImageData:(id)data
 {
-  objc_storeStrong(&self->_imageData, a3);
+  objc_storeStrong(&self->_imageData, data);
 
   [(SCRO2DBrailleCanvas *)self _updateCells];
 }
 
 - (id)debugAsciiCanvas
 {
-  v3 = [(SCRO2DBrailleCanvas *)self descriptor];
-  v4 = [v3 height];
+  descriptor = [(SCRO2DBrailleCanvas *)self descriptor];
+  height = [descriptor height];
 
-  if (v4)
+  if (height)
   {
     v5 = 0;
     v6 = &stru_28763D5C8;
     do
     {
-      v7 = [(SCRO2DBrailleCanvas *)self descriptor];
-      v8 = [v7 width];
+      descriptor2 = [(SCRO2DBrailleCanvas *)self descriptor];
+      width = [descriptor2 width];
 
-      if (v8)
+      if (width)
       {
         v9 = 0;
         v10 = &stru_28763D5C8;
@@ -544,13 +544,13 @@
           v12 = [(__CFString *)v10 stringByAppendingString:v11];
 
           ++v9;
-          v13 = [(SCRO2DBrailleCanvas *)self descriptor];
-          v14 = [v13 width];
+          descriptor3 = [(SCRO2DBrailleCanvas *)self descriptor];
+          width2 = [descriptor3 width];
 
           v10 = v12;
         }
 
-        while (v9 < v14);
+        while (v9 < width2);
       }
 
       else
@@ -563,11 +563,11 @@
       v6 = [v15 stringByAppendingString:@"\n"];
 
       ++v5;
-      v16 = [(SCRO2DBrailleCanvas *)self descriptor];
-      v17 = [v16 height];
+      descriptor4 = [(SCRO2DBrailleCanvas *)self descriptor];
+      height2 = [descriptor4 height];
     }
 
-    while (v5 < v17);
+    while (v5 < height2);
   }
 
   else

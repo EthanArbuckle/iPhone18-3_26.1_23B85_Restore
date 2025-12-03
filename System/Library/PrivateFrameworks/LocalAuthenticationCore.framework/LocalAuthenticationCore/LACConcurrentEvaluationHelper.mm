@@ -1,26 +1,26 @@
 @interface LACConcurrentEvaluationHelper
 + (LACConcurrentEvaluationHelper)sharedInstance;
-- (BOOL)isClientAllowListedWithClientInfo:(id)a3;
-- (BOOL)isConcurrentEvaluationEnabledForClientInfo:(id)a3;
-- (LACConcurrentEvaluationHelper)initWithAllowList:(id)a3 flags:(id)a4 sdkHelper:(id)a5;
+- (BOOL)isClientAllowListedWithClientInfo:(id)info;
+- (BOOL)isConcurrentEvaluationEnabledForClientInfo:(id)info;
+- (LACConcurrentEvaluationHelper)initWithAllowList:(id)list flags:(id)flags sdkHelper:(id)helper;
 @end
 
 @implementation LACConcurrentEvaluationHelper
 
-- (LACConcurrentEvaluationHelper)initWithAllowList:(id)a3 flags:(id)a4 sdkHelper:(id)a5
+- (LACConcurrentEvaluationHelper)initWithAllowList:(id)list flags:(id)flags sdkHelper:(id)helper
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  listCopy = list;
+  flagsCopy = flags;
+  helperCopy = helper;
   v15.receiver = self;
   v15.super_class = LACConcurrentEvaluationHelper;
   v12 = [(LACConcurrentEvaluationHelper *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_allowList, a3);
-    objc_storeStrong(&v13->_flags, a4);
-    objc_storeStrong(&v13->_sdkHelper, a5);
+    objc_storeStrong(&v12->_allowList, list);
+    objc_storeStrong(&v13->_flags, flags);
+    objc_storeStrong(&v13->_sdkHelper, helper);
     v13->_minSDKVersion = 0;
   }
 
@@ -50,28 +50,28 @@ void __47__LACConcurrentEvaluationHelper_sharedInstance__block_invoke()
   sharedInstance_sharedInstance_15 = v3;
 }
 
-- (BOOL)isConcurrentEvaluationEnabledForClientInfo:(id)a3
+- (BOOL)isConcurrentEvaluationEnabledForClientInfo:(id)info
 {
-  v4 = a3;
-  v5 = self;
-  if ([(LACConcurrentEvaluationHelper *)v5 isClientAllowListedWithClientInfo:v4])
+  infoCopy = info;
+  selfCopy = self;
+  if ([(LACConcurrentEvaluationHelper *)selfCopy isClientAllowListedWithClientInfo:infoCopy])
   {
-    v6 = 1;
+    isConcurrentEvaluationEnabled = 1;
   }
 
   else
   {
-    v6 = [(LACConcurrentEvaluationHelper *)v5 isConcurrentEvaluationEnabled];
+    isConcurrentEvaluationEnabled = [(LACConcurrentEvaluationHelper *)selfCopy isConcurrentEvaluationEnabled];
   }
 
-  return v6;
+  return isConcurrentEvaluationEnabled;
 }
 
-- (BOOL)isClientAllowListedWithClientInfo:(id)a3
+- (BOOL)isClientAllowListedWithClientInfo:(id)info
 {
-  v4 = a3;
-  v5 = self;
-  v7.super.isa = v4;
+  infoCopy = info;
+  selfCopy = self;
+  v7.super.isa = infoCopy;
   LOBYTE(self) = LACConcurrentEvaluationHelper.isClientAllowListed(with:)(v7);
 
   return self & 1;

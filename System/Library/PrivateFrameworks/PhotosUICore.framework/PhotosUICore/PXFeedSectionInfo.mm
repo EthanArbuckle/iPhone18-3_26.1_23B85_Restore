@@ -1,32 +1,32 @@
 @interface PXFeedSectionInfo
-+ (id)sectionInfoWithCloudFeedEntry:(id)a3 inPhotoLibrary:(id)a4;
++ (id)sectionInfoWithCloudFeedEntry:(id)entry inPhotoLibrary:(id)library;
 + (void)beginCachingSharedAlbumsByGUIDs;
 + (void)endCachingSharedAlbumsByGUIDs;
-- (BOOL)canPerformEditOperation:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)canPerformEditOperation:(unint64_t)operation;
+- (BOOL)isEqual:(id)equal;
 - (NSString)localizedTitle;
 - (NSString)title;
 - (NSString)transientIdentifier;
 - (NSString)uuid;
-- (PXFeedSectionInfo)initWithCloudFeedEntry:(id)a3 photoLibrary:(id)a4;
-- (id)sharedAlbumWithGUID:(id)a3;
+- (PXFeedSectionInfo)initWithCloudFeedEntry:(id)entry photoLibrary:(id)library;
+- (id)sharedAlbumWithGUID:(id)d;
 - (int64_t)_inboxModelTypeForCloudCommentType;
 - (int64_t)inboxModelType;
 - (unint64_t)approximateCount;
 - (unint64_t)photosCount;
 - (unint64_t)videosCount;
-- (void)getCommentCount:(unint64_t *)a3 likeCount:(unint64_t *)a4;
-- (void)getPhotoCount:(unint64_t *)a3 videoCount:(unint64_t *)a4;
+- (void)getCommentCount:(unint64_t *)count likeCount:(unint64_t *)likeCount;
+- (void)getPhotoCount:(unint64_t *)count videoCount:(unint64_t *)videoCount;
 - (void)reload;
 - (void)updateFromCloudFeedEntry;
 @end
 
 @implementation PXFeedSectionInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -36,11 +36,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXFeedSectionInfo *)self uuid];
-      v7 = [(PXFeedSectionInfo *)v5 uuid];
+      v5 = equalCopy;
+      uuid = [(PXFeedSectionInfo *)self uuid];
+      uuid2 = [(PXFeedSectionInfo *)v5 uuid];
 
-      v8 = [v6 isEqualToString:v7];
+      v8 = [uuid isEqualToString:uuid2];
     }
 
     else
@@ -58,9 +58,9 @@
   if (!transientIdentifier)
   {
     v4 = objc_opt_new();
-    v5 = [v4 UUIDString];
+    uUIDString = [v4 UUIDString];
     v6 = self->_transientIdentifier;
-    self->_transientIdentifier = v5;
+    self->_transientIdentifier = uUIDString;
 
     transientIdentifier = self->_transientIdentifier;
   }
@@ -68,138 +68,138 @@
   return transientIdentifier;
 }
 
-- (id)sharedAlbumWithGUID:(id)a3
+- (id)sharedAlbumWithGUID:(id)d
 {
-  v4 = a3;
-  v5 = [cacheOfSharedAlbumsByGUIDs objectForKey:v4];
-  v6 = v5;
-  if (v4 && !v5)
+  dCopy = d;
+  v5 = [cacheOfSharedAlbumsByGUIDs objectForKey:dCopy];
+  null = v5;
+  if (dCopy && !v5)
   {
-    v7 = [(PXFeedSectionInfo *)self photoLibrary];
-    v6 = [PXSharedAlbumsUtilities fetchSharedAlbumWithScopeIdentifier:v4 inPhotoLibrary:v7 allowPending:1];
+    photoLibrary = [(PXFeedSectionInfo *)self photoLibrary];
+    null = [PXSharedAlbumsUtilities fetchSharedAlbumWithScopeIdentifier:dCopy inPhotoLibrary:photoLibrary allowPending:1];
 
-    if (!v6)
+    if (!null)
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    [cacheOfSharedAlbumsByGUIDs setObject:v6 forKey:v4];
+    [cacheOfSharedAlbumsByGUIDs setObject:null forKey:dCopy];
   }
 
-  v8 = [MEMORY[0x1E695DFB0] null];
+  null2 = [MEMORY[0x1E695DFB0] null];
 
-  if (v6 == v8)
+  if (null == null2)
   {
 
-    v6 = 0;
+    null = 0;
   }
 
-  return v6;
+  return null;
 }
 
-- (BOOL)canPerformEditOperation:(unint64_t)a3
+- (BOOL)canPerformEditOperation:(unint64_t)operation
 {
-  v3 = a3;
-  if (a3 > 15)
+  operationCopy = operation;
+  if (operation > 15)
   {
-    switch(a3)
+    switch(operation)
     {
       case 0x10uLL:
-        v3 = 5;
+        operationCopy = 5;
         goto LABEL_13;
       case 0x20uLL:
-        v3 = 6;
+        operationCopy = 6;
         goto LABEL_13;
       case 0x40uLL:
-        v3 = 7;
+        operationCopy = 7;
         goto LABEL_13;
     }
 
     goto LABEL_14;
   }
 
-  if (a3 - 1 >= 2)
+  if (operation - 1 >= 2)
   {
-    if (a3 == 4)
+    if (operation == 4)
     {
-      v3 = 3;
+      operationCopy = 3;
       goto LABEL_13;
     }
 
-    if (a3 == 8)
+    if (operation == 8)
     {
-      v3 = 4;
+      operationCopy = 4;
       goto LABEL_13;
     }
 
 LABEL_14:
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"PHCollectionEditOperation PHCollectionEditOperationFromPLEditOperation(PLEditOperation)"];
-    [v7 handleFailureInFunction:v8 file:@"PXFeedSectionInfo.m" lineNumber:61 description:{@"%s: Unable to map PLEditOperation %lu to a PHCollectionEditOperation", "PHCollectionEditOperation PHCollectionEditOperationFromPLEditOperation(PLEditOperation)", v3}];
+    [currentHandler handleFailureInFunction:v8 file:@"PXFeedSectionInfo.m" lineNumber:61 description:{@"%s: Unable to map PLEditOperation %lu to a PHCollectionEditOperation", "PHCollectionEditOperation PHCollectionEditOperationFromPLEditOperation(PLEditOperation)", operationCopy}];
 
     abort();
   }
 
 LABEL_13:
-  v4 = [(PXFeedSectionInfo *)self sharedAlbum];
-  v5 = [v4 canPerformEditOperation:v3];
+  sharedAlbum = [(PXFeedSectionInfo *)self sharedAlbum];
+  v5 = [sharedAlbum canPerformEditOperation:operationCopy];
 
   return v5;
 }
 
 - (unint64_t)videosCount
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXFeedSectionInfo.m" lineNumber:378 description:{@"%s not implemented yet", "-[PXFeedSectionInfo videosCount]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedSectionInfo.m" lineNumber:378 description:{@"%s not implemented yet", "-[PXFeedSectionInfo videosCount]"}];
 
   return 0;
 }
 
 - (unint64_t)photosCount
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXFeedSectionInfo.m" lineNumber:373 description:{@"%s not implemented yet", "-[PXFeedSectionInfo photosCount]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedSectionInfo.m" lineNumber:373 description:{@"%s not implemented yet", "-[PXFeedSectionInfo photosCount]"}];
 
   return 0;
 }
 
 - (unint64_t)approximateCount
 {
-  v2 = [(PXFeedSectionInfo *)self sharedAlbum];
-  v3 = [v2 estimatedAssetCount];
+  sharedAlbum = [(PXFeedSectionInfo *)self sharedAlbum];
+  estimatedAssetCount = [sharedAlbum estimatedAssetCount];
 
-  return v3;
+  return estimatedAssetCount;
 }
 
 - (NSString)localizedTitle
 {
-  v2 = [(PXFeedSectionInfo *)self sharedAlbum];
-  v3 = [v2 localizedTitle];
+  sharedAlbum = [(PXFeedSectionInfo *)self sharedAlbum];
+  localizedTitle = [sharedAlbum localizedTitle];
 
-  return v3;
+  return localizedTitle;
 }
 
 - (NSString)title
 {
-  v2 = [(PXFeedSectionInfo *)self sharedAlbum];
-  v3 = [v2 title];
+  sharedAlbum = [(PXFeedSectionInfo *)self sharedAlbum];
+  title = [sharedAlbum title];
 
-  return v3;
+  return title;
 }
 
 - (NSString)uuid
 {
-  v2 = [(PXFeedSectionInfo *)self cloudFeedEntry];
-  v3 = [v2 objectID];
-  v4 = [v3 URIRepresentation];
-  v5 = [v4 absoluteString];
+  cloudFeedEntry = [(PXFeedSectionInfo *)self cloudFeedEntry];
+  objectID = [cloudFeedEntry objectID];
+  uRIRepresentation = [objectID URIRepresentation];
+  absoluteString = [uRIRepresentation absoluteString];
 
-  return v5;
+  return absoluteString;
 }
 
 - (int64_t)_inboxModelTypeForCloudCommentType
 {
-  v3 = [(PXFeedSectionInfo *)self numberOfItems];
+  numberOfItems = [(PXFeedSectionInfo *)self numberOfItems];
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -208,8 +208,8 @@ LABEL_13:
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v4 = [(PXFeedSectionInfo *)self photoLibrary];
-  v5 = [v4 photoLibrary];
+  photoLibrary = [(PXFeedSectionInfo *)self photoLibrary];
+  v4PhotoLibrary = [photoLibrary photoLibrary];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __55__PXFeedSectionInfo__inboxModelTypeForCloudCommentType__block_invoke;
@@ -217,8 +217,8 @@ LABEL_13:
   v13[4] = self;
   v13[5] = &v18;
   v13[6] = &v14;
-  v13[7] = v3;
-  [v5 performBlockAndWait:v13];
+  v13[7] = numberOfItems;
+  [v4PhotoLibrary performBlockAndWait:v13];
 
   v6 = v19[3];
   v7 = v15[3];
@@ -315,51 +315,51 @@ LABEL_8:
 
 - (int64_t)inboxModelType
 {
-  v3 = [(PXFeedSectionInfo *)self cachedInboxModelType];
-  if (!v3)
+  cachedInboxModelType = [(PXFeedSectionInfo *)self cachedInboxModelType];
+  if (!cachedInboxModelType)
   {
-    v4 = [(PXFeedSectionInfo *)self sectionType];
-    if (v4 > 2)
+    sectionType = [(PXFeedSectionInfo *)self sectionType];
+    if (sectionType > 2)
     {
-      v3 = 0;
-      switch(v4)
+      cachedInboxModelType = 0;
+      switch(sectionType)
       {
         case 3:
           goto LABEL_18;
         case 4:
-          v6 = [(PXFeedSectionInfo *)self invitee];
-          v7 = [v6 acceptanceStatus];
+          invitee = [(PXFeedSectionInfo *)self invitee];
+          acceptanceStatus = [invitee acceptanceStatus];
 
-          if (v7 == 2)
+          if (acceptanceStatus == 2)
           {
-            v3 = 4;
+            cachedInboxModelType = 4;
           }
 
           else
           {
-            v3 = 5;
+            cachedInboxModelType = 5;
           }
 
           goto LABEL_18;
         case 5:
 LABEL_18:
-          [(PXFeedSectionInfo *)self setCachedInboxModelType:v3];
-          return v3;
+          [(PXFeedSectionInfo *)self setCachedInboxModelType:cachedInboxModelType];
+          return cachedInboxModelType;
       }
     }
 
     else
     {
-      switch(v4)
+      switch(sectionType)
       {
         case 0:
-          v3 = 3;
+          cachedInboxModelType = 3;
           goto LABEL_18;
         case 1:
-          v3 = [(PXFeedSectionInfo *)self _inboxModelTypeForCloudCommentType];
+          cachedInboxModelType = [(PXFeedSectionInfo *)self _inboxModelTypeForCloudCommentType];
           goto LABEL_18;
         case 2:
-          v3 = 6;
+          cachedInboxModelType = 6;
           goto LABEL_18;
       }
     }
@@ -371,58 +371,58 @@ LABEL_18:
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEBUG, "Invalid section type", v9, 2u);
     }
 
-    v3 = 0;
+    cachedInboxModelType = 0;
     goto LABEL_18;
   }
 
-  return v3;
+  return cachedInboxModelType;
 }
 
-- (void)getCommentCount:(unint64_t *)a3 likeCount:(unint64_t *)a4
+- (void)getCommentCount:(unint64_t *)count likeCount:(unint64_t *)likeCount
 {
-  if (a3)
+  if (count)
   {
-    *a3 = 0;
+    *count = 0;
   }
 
-  if (a4)
+  if (likeCount)
   {
-    *a4 = 0;
+    *likeCount = 0;
   }
 }
 
-- (void)getPhotoCount:(unint64_t *)a3 videoCount:(unint64_t *)a4
+- (void)getPhotoCount:(unint64_t *)count videoCount:(unint64_t *)videoCount
 {
-  if (a3)
+  if (count)
   {
-    *a3 = 0;
+    *count = 0;
   }
 
-  if (a4)
+  if (videoCount)
   {
-    *a4 = 0;
+    *videoCount = 0;
   }
 }
 
 - (void)updateFromCloudFeedEntry
 {
-  v3 = [(PXFeedSectionInfo *)self cloudFeedEntry];
+  cloudFeedEntry = [(PXFeedSectionInfo *)self cloudFeedEntry];
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__38136;
   v17 = __Block_byref_object_dispose__38137;
   v18 = 0;
-  v4 = [(PXFeedSectionInfo *)self photoLibrary];
-  v5 = [v4 photoLibrary];
+  photoLibrary = [(PXFeedSectionInfo *)self photoLibrary];
+  v4PhotoLibrary = [photoLibrary photoLibrary];
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __45__PXFeedSectionInfo_updateFromCloudFeedEntry__block_invoke;
   v10 = &unk_1E7749A28;
   v12 = &v13;
-  v6 = v3;
+  v6 = cloudFeedEntry;
   v11 = v6;
-  [v5 performBlockAndWait:&v7];
+  [v4PhotoLibrary performBlockAndWait:&v7];
 
   [(PXFeedSectionInfo *)self setDate:v14[5], v7, v8, v9, v10];
   _Block_object_dispose(&v13, 8);
@@ -440,8 +440,8 @@ void __45__PXFeedSectionInfo_updateFromCloudFeedEntry__block_invoke(uint64_t a1)
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PXFeedSectionInfo.m" lineNumber:126 description:@"Attempted to reload PXFeedSectionInfo on background thread!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedSectionInfo.m" lineNumber:126 description:@"Attempted to reload PXFeedSectionInfo on background thread!"];
   }
 
   [(PXFeedSectionInfo *)self updateFromCloudFeedEntry];
@@ -451,18 +451,18 @@ void __45__PXFeedSectionInfo_updateFromCloudFeedEntry__block_invoke(uint64_t a1)
   [(PXFeedSectionInfo *)self inboxModelType];
 }
 
-- (PXFeedSectionInfo)initWithCloudFeedEntry:(id)a3 photoLibrary:(id)a4
+- (PXFeedSectionInfo)initWithCloudFeedEntry:(id)entry photoLibrary:(id)library
 {
-  v7 = a3;
-  v8 = a4;
+  entryCopy = entry;
+  libraryCopy = library;
   v12.receiver = self;
   v12.super_class = PXFeedSectionInfo;
   v9 = [(PXFeedSectionInfo *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_cloudFeedEntry, a3);
-    objc_storeStrong(&v10->_photoLibrary, a4);
+    objc_storeStrong(&v9->_cloudFeedEntry, entry);
+    objc_storeStrong(&v10->_photoLibrary, library);
   }
 
   return v10;
@@ -487,23 +487,23 @@ void __45__PXFeedSectionInfo_updateFromCloudFeedEntry__block_invoke(uint64_t a1)
   }
 }
 
-+ (id)sectionInfoWithCloudFeedEntry:(id)a3 inPhotoLibrary:(id)a4
++ (id)sectionInfoWithCloudFeedEntry:(id)entry inPhotoLibrary:(id)library
 {
-  v7 = a3;
-  v8 = a4;
+  entryCopy = entry;
+  libraryCopy = library;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v9 = [v7 photoLibrary];
+  photoLibrary = [entryCopy photoLibrary];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __66__PXFeedSectionInfo_sectionInfoWithCloudFeedEntry_inPhotoLibrary___block_invoke;
   v16[3] = &unk_1E7749A28;
   v18 = &v19;
-  v10 = v7;
+  v10 = entryCopy;
   v17 = v10;
-  [v9 performBlockAndWait:v16];
+  [photoLibrary performBlockAndWait:v16];
 
   v11 = 0;
   v12 = *(v20 + 12);
@@ -513,8 +513,8 @@ void __45__PXFeedSectionInfo_updateFromCloudFeedEntry__block_invoke(uint64_t a1)
     {
       if (v12 != 1)
       {
-        v15 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v15 handleFailureInMethod:a2 object:a1 file:@"PXFeedSectionInfo.m" lineNumber:108 description:{@"%s: Unknown entry type", "+[PXFeedSectionInfo sectionInfoWithCloudFeedEntry:inPhotoLibrary:]"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedSectionInfo.m" lineNumber:108 description:{@"%s: Unknown entry type", "+[PXFeedSectionInfo sectionInfoWithCloudFeedEntry:inPhotoLibrary:]"}];
 
         abort();
       }
@@ -534,7 +534,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v13 = [[v11 alloc] initWithCloudFeedEntry:v10 photoLibrary:v8];
+  v13 = [[v11 alloc] initWithCloudFeedEntry:v10 photoLibrary:libraryCopy];
 
   _Block_object_dispose(&v19, 8);
 

@@ -1,19 +1,19 @@
 @interface UIInputSwitcherTableCellSegmentViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation UIInputSwitcherTableCellSegmentViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v5 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"UIInputSwitcherTableCellSegmentView";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
   [location[0] validateClass:v3 hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
@@ -22,11 +22,11 @@
 
 - (id)accessibilityLabel
 {
-  v12 = self;
+  selfCopy = self;
   v11[1] = a2;
   v10 = 0;
   objc_opt_class();
-  v5 = [(UIInputSwitcherTableCellSegmentViewAccessibility *)v12 safeValueForKey:@"label"];
+  v5 = [(UIInputSwitcherTableCellSegmentViewAccessibility *)selfCopy safeValueForKey:@"label"];
   v9 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v5);
   v8 = MEMORY[0x29EDC9748](v9);
@@ -35,29 +35,29 @@
   *&v2 = MEMORY[0x29EDC9740](v8).n128_u64[0];
   if ([v11[0] length])
   {
-    v13 = MEMORY[0x29EDC9748](v11[0]);
+    accessibilityLabel = MEMORY[0x29EDC9748](v11[0]);
   }
 
   else
   {
-    v6.receiver = v12;
+    v6.receiver = selfCopy;
     v6.super_class = UIInputSwitcherTableCellSegmentViewAccessibility;
-    v13 = [(UIInputSwitcherTableCellSegmentViewAccessibility *)&v6 accessibilityLabel];
+    accessibilityLabel = [(UIInputSwitcherTableCellSegmentViewAccessibility *)&v6 accessibilityLabel];
   }
 
   v7 = 1;
   objc_storeStrong(v11, 0);
-  v3 = v13;
+  v3 = accessibilityLabel;
 
   return v3;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v6 = [(UIInputSwitcherTableCellSegmentViewAccessibility *)self safeBoolForKey:@"isSelected"];
-  v5.receiver = v8;
+  v5.receiver = selfCopy;
   v5.super_class = UIInputSwitcherTableCellSegmentViewAccessibility;
   v4 = [(UIInputSwitcherTableCellSegmentViewAccessibility *)&v5 accessibilityTraits]| *MEMORY[0x29EDC7F70];
   if (v6)

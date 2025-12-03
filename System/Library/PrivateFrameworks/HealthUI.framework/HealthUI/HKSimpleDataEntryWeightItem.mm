@@ -1,28 +1,28 @@
 @interface HKSimpleDataEntryWeightItem
-- (HKSimpleDataEntryWeightItem)initWithTitle:(id)a3 registrantModelKey:(id)a4 weightInKg:(id)a5 defaultWeightInKg:(id)a6;
+- (HKSimpleDataEntryWeightItem)initWithTitle:(id)title registrantModelKey:(id)key weightInKg:(id)kg defaultWeightInKg:(id)inKg;
 - (id)_formattedValueForDisplay;
 - (id)cell;
 - (id)formattedKeyAndValue;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (void)_setTextForInputTextField:(id)a3;
-- (void)_setWeightValueForSelectedRow:(int64_t)a3;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
+- (void)_setTextForInputTextField:(id)field;
+- (void)_setWeightValueForSelectedRow:(int64_t)row;
 - (void)_setupPlaceholder;
 - (void)_updateLocaleDependentValues;
 - (void)_valueDidChange;
 - (void)beginEditing;
-- (void)localeDidChange:(id)a3;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
+- (void)localeDidChange:(id)change;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
 - (void)updateCellDisplay;
 @end
 
 @implementation HKSimpleDataEntryWeightItem
 
-- (HKSimpleDataEntryWeightItem)initWithTitle:(id)a3 registrantModelKey:(id)a4 weightInKg:(id)a5 defaultWeightInKg:(id)a6
+- (HKSimpleDataEntryWeightItem)initWithTitle:(id)title registrantModelKey:(id)key weightInKg:(id)kg defaultWeightInKg:(id)inKg
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  titleCopy = title;
+  keyCopy = key;
+  kgCopy = kg;
+  inKgCopy = inKg;
   v22.receiver = self;
   v22.super_class = HKSimpleDataEntryWeightItem;
   v15 = [(HKSimpleDataEntryWeightItem *)&v22 init];
@@ -30,10 +30,10 @@
   if (v15)
   {
     [(HKSimpleDataEntryWeightItem *)v15 _updateLocaleDependentValues];
-    objc_storeStrong(&v16->_title, a3);
-    objc_storeStrong(&v16->_registrantModelKey, a4);
-    v17 = v14;
-    if (!v14)
+    objc_storeStrong(&v16->_title, title);
+    objc_storeStrong(&v16->_registrantModelKey, key);
+    v17 = inKgCopy;
+    if (!inKgCopy)
     {
       v18 = MEMORY[0x1E696AD98];
       [(HKSimpleDataEntryWeightItem *)v16 _defaultKilogramValue];
@@ -41,11 +41,11 @@
     }
 
     objc_storeStrong(&v16->_defaultValue, v17);
-    if (!v14)
+    if (!inKgCopy)
     {
     }
 
-    v19 = ClampedWeightLoggingOutOfBoundsValues(v13);
+    v19 = ClampedWeightLoggingOutOfBoundsValues(kgCopy);
     kilogramValue = v16->_kilogramValue;
     v16->_kilogramValue = v19;
   }
@@ -73,8 +73,8 @@
     v5 = self->_cell;
     self->_cell = v4;
 
-    v6 = [(HKSimpleDataEntryPlainTextCell *)self->_cell titleLabel];
-    [v6 setText:self->_title];
+    titleLabel = [(HKSimpleDataEntryPlainTextCell *)self->_cell titleLabel];
+    [titleLabel setText:self->_title];
 
     v7 = objc_alloc_init(MEMORY[0x1E69DCD78]);
     picker = self->_picker;
@@ -107,12 +107,12 @@
 
     [(UIPickerView *)self->_picker selectRow:llround(v12) inComponent:0 animated:0];
     v13 = [HKHostingAreaLayoutView viewHostingView:self->_picker];
-    v14 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
-    [v14 setInputView:v13];
+    inputTextField = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+    [inputTextField setInputView:v13];
 
-    v15 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
-    v16 = [(HKSimpleDataEntryItem *)self accessoryToolbar];
-    [v15 setInputAccessoryView:v16];
+    inputTextField2 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+    accessoryToolbar = [(HKSimpleDataEntryItem *)self accessoryToolbar];
+    [inputTextField2 setInputAccessoryView:accessoryToolbar];
 
     [(HKSimpleDataEntryWeightItem *)self _setupPlaceholder];
     [(HKSimpleDataEntryWeightItem *)self updateCellDisplay];
@@ -124,8 +124,8 @@
 
 - (void)updateCellDisplay
 {
-  v3 = [(HKSimpleDataEntryWeightItem *)self _formattedValueForDisplay];
-  [(HKSimpleDataEntryWeightItem *)self _setTextForInputTextField:v3];
+  _formattedValueForDisplay = [(HKSimpleDataEntryWeightItem *)self _formattedValueForDisplay];
+  [(HKSimpleDataEntryWeightItem *)self _setTextForInputTextField:_formattedValueForDisplay];
 }
 
 - (id)_formattedValueForDisplay
@@ -160,47 +160,47 @@
 {
   if (![(HKSimpleDataEntryItem *)self placeholderType])
   {
-    v3 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+    inputTextField = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
     v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v5 = [v4 localizedStringForKey:@"OD_PLACEHOLDER_OPTIONAL" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-    [v3 setPlaceholder:v5];
+    [inputTextField setPlaceholder:v5];
   }
 
   [(HKSimpleDataEntryWeightItem *)self _setTextForInputTextField:0];
 }
 
-- (void)_setTextForInputTextField:(id)a3
+- (void)_setTextForInputTextField:(id)field
 {
-  v11 = a3;
-  if (-[HKSimpleDataEntryItem placeholderType](self, "placeholderType") == 1 && ![v11 length])
+  fieldCopy = field;
+  if (-[HKSimpleDataEntryItem placeholderType](self, "placeholderType") == 1 && ![fieldCopy length])
   {
-    v8 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+    inputTextField = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
     v9 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v10 = [v9 localizedStringForKey:@"OD_PICKER_CHOOSE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-    [v8 setText:v10];
+    [inputTextField setText:v10];
 
-    v5 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
-    v6 = HKHealthKeyColor();
+    inputTextField2 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+    labelColor = HKHealthKeyColor();
   }
 
   else
   {
-    v4 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
-    [v4 setText:v11];
+    inputTextField3 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+    [inputTextField3 setText:fieldCopy];
 
-    v5 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
-    v6 = [MEMORY[0x1E69DC888] labelColor];
+    inputTextField2 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
   }
 
-  v7 = v6;
-  [v5 setTextColor:v6];
+  v7 = labelColor;
+  [inputTextField2 setTextColor:labelColor];
 }
 
 - (void)_valueDidChange
 {
   [(HKSimpleDataEntryWeightItem *)self updateCellDisplay];
-  v3 = [(HKSimpleDataEntryItem *)self delegate];
-  [v3 dataEntryItemDidUpdateValue:self];
+  delegate = [(HKSimpleDataEntryItem *)self delegate];
+  [delegate dataEntryItemDidUpdateValue:self];
 }
 
 - (void)_updateLocaleDependentValues
@@ -225,17 +225,17 @@
   self->_numberOfRowsForPicker = v7;
 }
 
-- (void)localeDidChange:(id)a3
+- (void)localeDidChange:(id)change
 {
   [(HKSimpleDataEntryWeightItem *)self _updateLocaleDependentValues];
 
   [(HKSimpleDataEntryWeightItem *)self updateCellDisplay];
 }
 
-- (void)_setWeightValueForSelectedRow:(int64_t)a3
+- (void)_setWeightValueForSelectedRow:(int64_t)row
 {
   localWeightUnit = self->_localWeightUnit;
-  v5 = a3;
+  rowCopy = row;
   if (localWeightUnit == 1538)
   {
     v6 = 0.453592;
@@ -243,7 +243,7 @@
 
   else if (localWeightUnit == 1539)
   {
-    v5 = v5 / 10.0;
+    rowCopy = rowCopy / 10.0;
     v6 = 6.35029;
   }
 
@@ -252,35 +252,35 @@
     v6 = 0.5;
   }
 
-  v9 = [MEMORY[0x1E696AD98] numberWithDouble:v5 * v6];
+  v9 = [MEMORY[0x1E696AD98] numberWithDouble:rowCopy * v6];
   v7 = ClampedWeightLoggingOutOfBoundsValues(v9);
   kilogramValue = self->_kilogramValue;
   self->_kilogramValue = v7;
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
-  v6 = a4;
+  rowCopy = row;
   localWeightUnit = self->_localWeightUnit;
   if (localWeightUnit == 14)
   {
-    v6 = v6 * 0.5;
+    rowCopy = rowCopy * 0.5;
   }
 
   else if (localWeightUnit == 1539)
   {
-    v6 = v6 / 10.0;
+    rowCopy = rowCopy / 10.0;
   }
 
   v8 = +[HKPersonWeightFormatter sharedFormatter];
-  v9 = [v8 stringFromWeightValue:self->_localWeightUnit inUnit:v6];
+  v9 = [v8 stringFromWeightValue:self->_localWeightUnit inUnit:rowCopy];
 
   return v9;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  [(HKSimpleDataEntryWeightItem *)self _setWeightValueForSelectedRow:a4];
+  [(HKSimpleDataEntryWeightItem *)self _setWeightValueForSelectedRow:row];
 
   [(HKSimpleDataEntryWeightItem *)self _valueDidChange];
 }

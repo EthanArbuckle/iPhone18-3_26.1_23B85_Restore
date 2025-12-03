@@ -1,8 +1,8 @@
 @interface ATXUrgencyTuningManager
 - (ATXUrgencyTuningManager)init;
-- (ATXUrgencyTuningManager)initWithDataStore:(id)a3;
+- (ATXUrgencyTuningManager)initWithDataStore:(id)store;
 - (id)activeSuggestions;
-- (id)urgencyTuningSuggestion:(id)a3 uuid:(id)a4 engagementStatus:(id)a5;
+- (id)urgencyTuningSuggestion:(id)suggestion uuid:(id)uuid engagementStatus:(id)status;
 @end
 
 @implementation ATXUrgencyTuningManager
@@ -15,19 +15,19 @@
   return v4;
 }
 
-- (ATXUrgencyTuningManager)initWithDataStore:(id)a3
+- (ATXUrgencyTuningManager)initWithDataStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = ATXUrgencyTuningManager;
   v6 = [(ATXUrgencyTuningManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataStore, a3);
-    v8 = [MEMORY[0x277CEB710] sharedInstance];
+    objc_storeStrong(&v6->_dataStore, store);
+    mEMORY[0x277CEB710] = [MEMORY[0x277CEB710] sharedInstance];
     notificationManagementMAConstants = v7->_notificationManagementMAConstants;
-    v7->_notificationManagementMAConstants = v8;
+    v7->_notificationManagementMAConstants = mEMORY[0x277CEB710];
   }
 
   return v7;
@@ -73,18 +73,18 @@ void __44__ATXUrgencyTuningManager_activeSuggestions__block_invoke(uint64_t a1, 
   }
 }
 
-- (id)urgencyTuningSuggestion:(id)a3 uuid:(id)a4 engagementStatus:(id)a5
+- (id)urgencyTuningSuggestion:(id)suggestion uuid:(id)uuid engagementStatus:(id)status
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 first];
-  v12 = [v11 unsignedIntegerValue];
+  suggestionCopy = suggestion;
+  uuidCopy = uuid;
+  statusCopy = status;
+  first = [statusCopy first];
+  unsignedIntegerValue = [first unsignedIntegerValue];
 
-  v13 = [v10 second];
+  second = [statusCopy second];
 
-  v14 = [v13 unsignedIntegerValue];
-  if (v12 || v14 <= [(ATXNotificationManagementMAConstants *)self->_notificationManagementMAConstants urgencyTuningManagerMaxNumNonEngagementsAllowedForUrgentNotifications])
+  unsignedIntegerValue2 = [second unsignedIntegerValue];
+  if (unsignedIntegerValue || unsignedIntegerValue2 <= [(ATXNotificationManagementMAConstants *)self->_notificationManagementMAConstants urgencyTuningManagerMaxNumNonEngagementsAllowedForUrgentNotifications])
   {
     v18 = 0;
   }
@@ -94,7 +94,7 @@ void __44__ATXUrgencyTuningManager_activeSuggestions__block_invoke(uint64_t a1, 
     v15 = objc_alloc(MEMORY[0x277CEB6F0]);
     v16 = objc_opt_new();
     v17 = [MEMORY[0x277CBEAA8] now];
-    v18 = [v15 initUrgencyTuningSuggestionWithUUID:v16 bundleID:v8 timestamp:v17 triggerNotificationUUID:v9];
+    v18 = [v15 initUrgencyTuningSuggestionWithUUID:v16 bundleID:suggestionCopy timestamp:v17 triggerNotificationUUID:uuidCopy];
   }
 
   return v18;

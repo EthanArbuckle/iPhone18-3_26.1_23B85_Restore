@@ -1,10 +1,10 @@
 @interface COCoordinationServiceClientSet
 - (COCoordinationServiceClientSet)init;
-- (id)serviceClientForXPCConnection:(id)a3;
+- (id)serviceClientForXPCConnection:(id)connection;
 - (id)serviceClients;
-- (void)_withLock:(id)a3;
-- (void)addServiceClient:(id)a3;
-- (void)removeServiceClient:(id)a3;
+- (void)_withLock:(id)lock;
+- (void)addServiceClient:(id)client;
+- (void)removeServiceClient:(id)client;
 @end
 
 @implementation COCoordinationServiceClientSet
@@ -24,18 +24,18 @@
   return v2;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)serviceClientForXPCConnection:(id)a3
+- (id)serviceClientForXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -47,7 +47,7 @@
   v8[2] = __64__COCoordinationServiceClientSet_serviceClientForXPCConnection___block_invoke;
   v8[3] = &unk_278E15700;
   v8[4] = self;
-  v5 = v4;
+  v5 = connectionCopy;
   v9 = v5;
   v10 = &v11;
   [(COCoordinationServiceClientSet *)self _withLock:v8];
@@ -115,16 +115,16 @@ void __48__COCoordinationServiceClientSet_serviceClients__block_invoke(uint64_t 
   *(v3 + 40) = v2;
 }
 
-- (void)addServiceClient:(id)a3
+- (void)addServiceClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__COCoordinationServiceClientSet_addServiceClient___block_invoke;
   v6[3] = &unk_278E156B0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = clientCopy;
+  v5 = clientCopy;
   [(COCoordinationServiceClientSet *)self _withLock:v6];
 }
 
@@ -134,16 +134,16 @@ void __51__COCoordinationServiceClientSet_addServiceClient___block_invoke(uint64
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)removeServiceClient:(id)a3
+- (void)removeServiceClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__COCoordinationServiceClientSet_removeServiceClient___block_invoke;
   v6[3] = &unk_278E156B0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = clientCopy;
+  v5 = clientCopy;
   [(COCoordinationServiceClientSet *)self _withLock:v6];
 }
 

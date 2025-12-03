@@ -1,24 +1,24 @@
 @interface NSKeyedUnarchiver
-+ (BOOL)_evaluateCycleSecurityRules:(NSKeyedUnarchiverCycleEvaluationRules *)a3;
++ (BOOL)_evaluateCycleSecurityRules:(NSKeyedUnarchiverCycleEvaluationRules *)rules;
 + (Class)classForClassName:(NSString *)codedName;
 + (NSArray)unarchivedArrayOfObjectsOfClass:(Class)cls fromData:(NSData *)data error:(NSError *)error;
 + (NSArray)unarchivedArrayOfObjectsOfClasses:(NSSet *)classes fromData:(NSData *)data error:(NSError *)error;
 + (NSDictionary)unarchivedDictionaryWithKeysOfClass:(Class)keyCls objectsOfClass:(Class)valueCls fromData:(NSData *)data error:(NSError *)error;
 + (NSDictionary)unarchivedDictionaryWithKeysOfClasses:(NSSet *)keyClasses objectsOfClasses:(NSSet *)valueClasses fromData:(NSData *)data error:(NSError *)error;
-+ (id)_copyByArchiving:(id)a3;
-+ (id)_strictlyUnarchivedObjectOfClasses:(id)a3 fromData:(id)a4 error:(id *)a5;
++ (id)_copyByArchiving:(id)archiving;
++ (id)_strictlyUnarchivedObjectOfClasses:(id)classes fromData:(id)data error:(id *)error;
 + (id)unarchiveObjectWithData:(NSData *)data;
 + (id)unarchiveObjectWithFile:(NSString *)path;
 + (id)unarchiveTopLevelObjectWithData:(NSData *)data error:(NSError *)error;
 + (id)unarchivedObjectOfClass:(Class)cls fromData:(NSData *)data error:(NSError *)error;
 + (id)unarchivedObjectOfClasses:(NSSet *)classes fromData:(NSData *)data error:(NSError *)error;
-+ (int)_swift_checkClassAndWarnForKeyedArchiving:(Class)a3 operation:(int)a4;
++ (int)_swift_checkClassAndWarnForKeyedArchiving:(Class)archiving operation:(int)operation;
 + (void)initialize;
 + (void)setClass:(Class)cls forClassName:(NSString *)codedName;
 - (BOOL)_containsNextUnkeyedObject;
 - (BOOL)_strictSecureDecodingEnabled;
-- (BOOL)_validateAllowedClassesContainsClass:(Class)a3 forKey:(id)a4;
-- (BOOL)_validateAllowedClassesContainsClassOfReference:(id)a3 forKey:(id)a4;
+- (BOOL)_validateAllowedClassesContainsClass:(Class)class forKey:(id)key;
+- (BOOL)_validateAllowedClassesContainsClassOfReference:(id)reference forKey:(id)key;
 - (BOOL)_willEnforceExplicitPlistTypes;
 - (BOOL)containsValueForKey:(NSString *)key;
 - (BOOL)decodeBoolForKey:(NSString *)key;
@@ -27,44 +27,44 @@
 - (NSDecodingFailurePolicy)decodingFailurePolicy;
 - (NSKeyedUnarchiver)init;
 - (NSKeyedUnarchiver)initForReadingWithData:(NSData *)data;
-- (NSKeyedUnarchiver)initWithStream:(id)a3;
+- (NSKeyedUnarchiver)initWithStream:(id)stream;
 - (const)decodeBytesForKey:(NSString *)key returnedLength:(NSUInteger *)lengthp;
 - (double)decodeDoubleForKey:(NSString *)key;
 - (float)decodeFloatForKey:(NSString *)key;
 - (id)_blobForCurrentObject;
-- (id)_decodeArrayOfObjectsForKey:(id)a3;
-- (id)_decodeObjectOfClass:(Class)a3;
-- (id)_decodePropertyListForKey:(id)a3;
-- (id)_initForReadingFromData:(id)a3 error:(id *)a4 throwLegacyExceptions:(BOOL)a5;
-- (id)_initWithStream:(__CFReadStream *)a3 data:(id)a4 topDict:(__CFDictionary *)a5;
+- (id)_decodeArrayOfObjectsForKey:(id)key;
+- (id)_decodeObjectOfClass:(Class)class;
+- (id)_decodePropertyListForKey:(id)key;
+- (id)_initForReadingFromData:(id)data error:(id *)error throwLegacyExceptions:(BOOL)exceptions;
+- (id)_initWithStream:(__CFReadStream *)stream data:(id)data topDict:(__CFDictionary *)dict;
 - (id)allowedClasses;
-- (id)decodeArrayOfObjectsOfClasses:(id)a3 forKey:(id)a4;
-- (id)decodeDictionaryWithKeysOfClasses:(id)a3 objectsOfClasses:(id)a4 forKey:(id)a5;
+- (id)decodeArrayOfObjectsOfClasses:(id)classes forKey:(id)key;
+- (id)decodeDictionaryWithKeysOfClasses:(id)classes objectsOfClasses:(id)ofClasses forKey:(id)key;
 - (id)decodeObject;
 - (id)decodeObjectForKey:(NSString *)key;
-- (id)decodeObjectOfClass:(Class)a3 forKey:(id)a4;
-- (id)decodeObjectOfClasses:(id)a3 forKey:(id)a4;
+- (id)decodeObjectOfClass:(Class)class forKey:(id)key;
+- (id)decodeObjectOfClasses:(id)classes forKey:(id)key;
 - (id)description;
 - (int)decodeIntForKey:(NSString *)key;
 - (int32_t)decodeInt32ForKey:(NSString *)key;
 - (int64_t)decodeInt64ForKey:(NSString *)key;
-- (int64_t)versionForClassName:(id)a3;
-- (uint64_t)_validatePropertyListClass:(uint64_t)a3 forKey:;
-- (unint64_t)_decodeCollectionOfClass:(void *)a3 allowedClasses:(__CFString *)a4 forKey:;
+- (int64_t)versionForClassName:(id)name;
+- (uint64_t)_validatePropertyListClass:(uint64_t)class forKey:;
+- (unint64_t)_decodeCollectionOfClass:(void *)class allowedClasses:(__CFString *)classes forKey:;
 - (void)_allowDecodingCyclesInSecureMode;
 - (void)_enableStrictSecureDecodingMode;
 - (void)_enforceExplicitPlistTypes;
 - (void)_enforceSubclassesMustBeExplicitlyMentionedWhenDecoded;
-- (void)_replaceObject:(id)a3 withObject:(id)a4;
-- (void)_setAllowedClassNames:(id)a3;
-- (void)_temporaryMapReplaceObject:(id)a3 withObject:(id)a4;
+- (void)_replaceObject:(id)object withObject:(id)withObject;
+- (void)_setAllowedClassNames:(id)names;
+- (void)_temporaryMapReplaceObject:(id)object withObject:(id)withObject;
 - (void)dealloc;
-- (void)decodeArrayOfObjCType:(const char *)a3 count:(unint64_t)a4 at:(void *)a5;
-- (void)decodeBytesWithReturnedLength:(unint64_t *)a3;
-- (void)decodeValueOfObjCType:(const char *)a3 at:(void *)a4;
-- (void)decodeValuesOfObjCTypes:(const char *)a3;
+- (void)decodeArrayOfObjCType:(const char *)type count:(unint64_t)count at:(void *)at;
+- (void)decodeBytesWithReturnedLength:(unint64_t *)length;
+- (void)decodeValueOfObjCType:(const char *)type at:(void *)at;
+- (void)decodeValuesOfObjCTypes:(const char *)types;
 - (void)finishDecoding;
-- (void)replaceObject:(id)a3 withObject:(id)a4;
+- (void)replaceObject:(id)object withObject:(id)withObject;
 - (void)setClass:(Class)cls forClassName:(NSString *)codedName;
 - (void)setDecodingFailurePolicy:(NSDecodingFailurePolicy)decodingFailurePolicy;
 - (void)setRequiresSecureCoding:(BOOL)requiresSecureCoding;
@@ -275,7 +275,7 @@ LABEL_32:
 
 + (void)initialize
 {
-  if (NSKeyedUnarchiver == a1)
+  if (NSKeyedUnarchiver == self)
   {
     if (getenv("NSWarnAboutOldStyleArchiverMethods"))
     {
@@ -306,8 +306,8 @@ LABEL_32:
   genericKey = self->_genericKey;
   if (genericKey <= 0x27)
   {
-    v4 = generic_keys[genericKey];
-    if (v4)
+    genericKey = generic_keys[genericKey];
+    if (genericKey)
     {
       goto LABEL_3;
     }
@@ -315,8 +315,8 @@ LABEL_32:
     return 0;
   }
 
-  v4 = [NSString stringWithFormat:@"$%ld", genericKey];
-  if (!v4)
+  genericKey = [NSString stringWithFormat:@"$%ld", genericKey];
+  if (!genericKey)
   {
     return 0;
   }
@@ -339,7 +339,7 @@ LABEL_3:
 
   else
   {
-    Value = CFDictionaryGetValue(ValueAtIndex, v4);
+    Value = CFDictionaryGetValue(ValueAtIndex, genericKey);
     v11 = Value;
   }
 
@@ -378,23 +378,23 @@ LABEL_3:
   self->_genericKey = genericKey + 1;
   if (genericKey > 0x27)
   {
-    v9 = [NSString stringWithFormat:@"$%ld", genericKey];
+    genericKey = [NSString stringWithFormat:@"$%ld", genericKey];
   }
 
   else
   {
-    v9 = generic_keys[genericKey];
+    genericKey = generic_keys[genericKey];
   }
 
-  _decodeObject(self, v9, v11);
+  _decodeObject(self, genericKey, v11);
   return v11[0];
 }
 
-+ (int)_swift_checkClassAndWarnForKeyedArchiving:(Class)a3 operation:(int)a4
++ (int)_swift_checkClassAndWarnForKeyedArchiving:(Class)archiving operation:(int)operation
 {
   ObjCClassMetadata = swift_getObjCClassMetadata();
 
-  return specialized static NSKeyedUnarchiver.__swift_checkClassAndWarnForKeyedArchiving(_:operation:)(ObjCClassMetadata, a4);
+  return specialized static NSKeyedUnarchiver.__swift_checkClassAndWarnForKeyedArchiving(_:operation:)(ObjCClassMetadata, operation);
 }
 
 - (id)_blobForCurrentObject
@@ -428,7 +428,7 @@ LABEL_3:
   objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v3 userInfo:0]);
 }
 
-- (id)_initWithStream:(__CFReadStream *)a3 data:(id)a4 topDict:(__CFDictionary *)a5
+- (id)_initWithStream:(__CFReadStream *)stream data:(id)data topDict:(__CFDictionary *)dict
 {
   self->_objRefMap = CFDictionaryCreateMutable(0, 0, 0, 0);
   _CFDictionarySetCapacity();
@@ -439,9 +439,9 @@ LABEL_3:
   return self;
 }
 
-- (id)_initForReadingFromData:(id)a3 error:(id *)a4 throwLegacyExceptions:(BOOL)a5
+- (id)_initForReadingFromData:(id)data error:(id *)error throwLegacyExceptions:(BOOL)exceptions
 {
-  v53 = a5;
+  exceptionsCopy = exceptions;
   v64[1] = *MEMORY[0x1E69E9840];
   v57 = 0;
   valuePtr = -1;
@@ -484,33 +484,33 @@ LABEL_3:
   atomic_store(v14 & 0xFFFFFFFFFFFFFFEFLL, v10);
   v15 = atomic_load(v10);
   self->_pac_signature = v15;
-  if (!a3)
+  if (!data)
   {
-    if (a4)
+    if (error)
     {
       v21 = [[NSString alloc] initWithFormat:@"%@: data is NULL", _NSMethodExceptionProem(self, a2)];
       v63 = @"NSDebugDescription";
       v64[0] = v21;
-      *a4 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, [MEMORY[0x1E695DF20] dictionaryWithObjects:v64 forKeys:&v63 count:1]);
+      *error = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, [MEMORY[0x1E695DF20] dictionaryWithObjects:v64 forKeys:&v63 count:1]);
     }
 
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_67;
   }
 
-  v52 = [[_NSPerformanceMeter alloc] initWithTarget:self, a3, 0];
-  v16 = [a3 bytes];
-  v17 = [a3 length];
+  v52 = [[_NSPerformanceMeter alloc] initWithTarget:self, data, 0];
+  bytes = [data bytes];
+  v17 = [data length];
   v18 = v17;
-  if (!v17 || !v16)
+  if (!v17 || !bytes)
   {
-    if (v53)
+    if (exceptionsCopy)
     {
       [(NSKeyedUnarchiver *)self setDecodingFailurePolicy:0];
     }
 
     [(NSCoder *)self __failWithExceptionName:*MEMORY[0x1E695D940] errorCode:4864 format:@"%@: data is empty; did you forget to send -finishEncoding to the NSKeyedArchiver?", _NSMethodExceptionProem(self, a2)];
-    if (!a4)
+    if (!error)
     {
       goto LABEL_62;
     }
@@ -520,32 +520,32 @@ LABEL_3:
 
   if (v17 >= 0xD)
   {
-    if (*(v16 + 1) != 11)
+    if (*(bytes + 1) != 11)
     {
       goto LABEL_30;
     }
 
-    if ((*(v16 + 2) != 0x7274736465707974 || *(v16 + 5) != 0x6D61657274736465) && (*(v16 + 2) != 0x79746D6165727473 || *(v16 + 5) != 0x64657079746D6165))
+    if ((*(bytes + 2) != 0x7274736465707974 || *(bytes + 5) != 0x6D61657274736465) && (*(bytes + 2) != 0x79746D6165727473 || *(bytes + 5) != 0x64657079746D6165))
     {
       goto LABEL_30;
     }
 
-    if (v53)
+    if (exceptionsCopy)
     {
       [(NSKeyedUnarchiver *)self setDecodingFailurePolicy:0];
     }
 
     [(NSCoder *)self __failWithExceptionName:*MEMORY[0x1E695D940] errorCode:4864 format:@"%@: non-keyed archive cannot be decoded by NSKeyedUnarchiver", _NSMethodExceptionProem(self, a2)];
-    if (!a4)
+    if (!error)
     {
       goto LABEL_62;
     }
 
 LABEL_27:
-    v23 = [(NSKeyedUnarchiver *)self error];
+    error = [(NSKeyedUnarchiver *)self error];
 LABEL_28:
-    v22 = 0;
-    *a4 = v23;
+    selfCopy = 0;
+    *error = error;
 LABEL_63:
     v28 = 1;
     goto LABEL_64;
@@ -561,7 +561,7 @@ LABEL_30:
   {
     if (v18 >= 0x78)
     {
-      v29 = CFPropertyListCreateWithData(*MEMORY[0x1E695E4A8], a3, 1uLL, 0, 0);
+      v29 = CFPropertyListCreateWithData(*MEMORY[0x1E695E4A8], data, 1uLL, 0, 0);
       if (v29)
       {
         TypeID = CFDictionaryGetTypeID();
@@ -621,19 +621,19 @@ LABEL_92:
               }
 
               CFRelease(v29);
-              if (v53)
+              if (exceptionsCopy)
               {
                 [(NSKeyedUnarchiver *)self setDecodingFailurePolicy:0];
               }
 
               [(NSCoder *)self __failWithExceptionName:@"NSArchiverArchiveInconsistency" errorCode:4864 format:@"%@: data is corrupt or archive is missing key components or object is too large to decode", _NSMethodExceptionProem(self, a2)];
-              if (!a4)
+              if (!error)
               {
                 goto LABEL_62;
               }
 
 LABEL_85:
-              v23 = [(NSKeyedUnarchiver *)self error];
+              error = [(NSKeyedUnarchiver *)self error];
               goto LABEL_28;
             }
           }
@@ -645,14 +645,14 @@ LABEL_85:
         }
 
         CFRelease(v29);
-        if (v53)
+        if (exceptionsCopy)
         {
           [(NSKeyedUnarchiver *)self setDecodingFailurePolicy:0];
         }
 
         v44 = _NSMethodExceptionProem(self, a2);
         [(NSCoder *)self __failWithExceptionName:*MEMORY[0x1E695D940] errorCode:4864 format:@"%@: incomprehensible archive version (%d)", v44, valuePtr];
-        if (!a4)
+        if (!error)
         {
           goto LABEL_62;
         }
@@ -675,17 +675,17 @@ LABEL_55:
       v41 = v18;
     }
 
-    [a3 getBytes:&v60 range:{0, v41, offsetObjMap}];
-    if (v53)
+    [data getBytes:&v60 range:{0, v41, offsetObjMap}];
+    if (exceptionsCopy)
     {
       [(NSKeyedUnarchiver *)self setDecodingFailurePolicy:0];
     }
 
     v42 = _NSMethodExceptionProem(self, a2);
     [(NSCoder *)self __failWithExceptionName:*MEMORY[0x1E695D940] errorCode:4864 format:@"%@: incomprehensible archive (0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x)", v42, v60, SBYTE1(v60), SBYTE2(v60), SBYTE3(v60), SBYTE4(v60), SBYTE5(v60), SBYTE6(v60), SHIBYTE(v60)];
-    if (a4)
+    if (error)
     {
-      *a4 = [(NSKeyedUnarchiver *)self error];
+      *error = [(NSKeyedUnarchiver *)self error];
     }
 
     goto LABEL_62;
@@ -694,13 +694,13 @@ LABEL_55:
   v49 = self->_offsetObjMap;
   if ((__CFBinaryPlistGetOffsetForValueFromDictionary3() & 1) == 0)
   {
-    if (v53)
+    if (exceptionsCopy)
     {
       [(NSKeyedUnarchiver *)self setDecodingFailurePolicy:0, v49];
     }
 
     [(NSCoder *)self __failWithExceptionName:@"NSArchiverArchiveInconsistency" errorCode:4864 format:@"%@: data is corrupt or archive is missing key components or object is too large to decode", _NSMethodExceptionProem(self, a2)];
-    if (!a4)
+    if (!error)
     {
       goto LABEL_62;
     }
@@ -711,13 +711,13 @@ LABEL_55:
   v50 = self->_offsetObjMap;
   if ((__CFBinaryPlistGetOffsetForValueFromDictionary3() & 1) == 0)
   {
-    if (v53)
+    if (exceptionsCopy)
     {
       [(NSKeyedUnarchiver *)self setDecodingFailurePolicy:0, v50];
     }
 
     [(NSCoder *)self __failWithExceptionName:@"NSArchiverArchiveInconsistency" errorCode:4864 format:@"%@: data is corrupt or archive is missing key components or object is too large to decode", _NSMethodExceptionProem(self, a2)];
-    if (!a4)
+    if (!error)
     {
       goto LABEL_62;
     }
@@ -725,18 +725,18 @@ LABEL_55:
     goto LABEL_85;
   }
 
-  if ((*v16 & 0xF0) != 0xA0)
+  if ((*bytes & 0xF0) != 0xA0)
   {
-    if (a4)
+    if (error)
     {
       v47 = [[NSString alloc] initWithFormat:@"%@: data is corrupt or archive is missing key components or object is too large to decode", _NSMethodExceptionProem(self, a2)];
       v61 = @"NSDebugDescription";
       v62 = v47;
-      *a4 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, [MEMORY[0x1E695DF20] dictionaryWithObjects:&v62 forKeys:&v61 count:1]);
+      *error = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, [MEMORY[0x1E695DF20] dictionaryWithObjects:&v62 forKeys:&v61 count:1]);
     }
 
 LABEL_62:
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_63;
   }
 
@@ -749,8 +749,8 @@ LABEL_62:
   offsetData = self->_offsetData;
   offsetData->var1 = 0;
   offsetData->var2 = 0;
-  self->_data = CFRetain(a3);
-  self->_bytes = v16;
+  self->_data = CFRetain(data);
+  self->_bytes = bytes;
   self->_len = v18;
   self->_objRefMap = CFDictionaryCreateMutable(0, 0, 0, 0);
   self->_tmpRefObjMap = CFDictionaryCreateMutable(v24, 0, 0, 0);
@@ -760,7 +760,7 @@ LABEL_62:
   v28 = 0;
   self->_offsetObjMap = CFDictionaryCreateMutable(0, 0, 0, MEMORY[0x1E695E9E8]);
 LABEL_89:
-  v22 = self;
+  selfCopy = self;
 LABEL_64:
   if (v52)
   {
@@ -772,7 +772,7 @@ LABEL_64:
 LABEL_67:
   }
 
-  return v22;
+  return selfCopy;
 }
 
 + (id)unarchivedObjectOfClass:(Class)cls fromData:(NSData *)data error:(NSError *)error
@@ -780,7 +780,7 @@ LABEL_67:
   v12 = *MEMORY[0x1E69E9840];
   v11 = cls;
   v8 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:&v11 count:1];
-  v9 = [a1 unarchivedObjectOfClasses:v8 fromData:data error:{error, v11, v12}];
+  v9 = [self unarchivedObjectOfClasses:v8 fromData:data error:{error, v11, v12}];
 
   return v9;
 }
@@ -790,7 +790,7 @@ LABEL_67:
   v12 = *MEMORY[0x1E69E9840];
   v11 = cls;
   v8 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:&v11 count:1];
-  v9 = [a1 unarchivedArrayOfObjectsOfClasses:v8 fromData:data error:{error, v11, v12}];
+  v9 = [self unarchivedArrayOfObjectsOfClasses:v8 fromData:data error:{error, v11, v12}];
 
   return v9;
 }
@@ -802,14 +802,14 @@ LABEL_67:
   v14[0] = keyCls;
   v9 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:v14 count:1];
   v10 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:&v13 count:1];
-  v11 = [a1 unarchivedDictionaryWithKeysOfClasses:v9 objectsOfClasses:v10 fromData:data error:error];
+  v11 = [self unarchivedDictionaryWithKeysOfClasses:v9 objectsOfClasses:v10 fromData:data error:error];
 
   return v11;
 }
 
 + (id)unarchivedObjectOfClasses:(NSSet *)classes fromData:(NSData *)data error:(NSError *)error
 {
-  v7 = [[a1 alloc] initForReadingFromData:data error:error];
+  v7 = [[self alloc] initForReadingFromData:data error:error];
   if (!v7)
   {
     return 0;
@@ -826,7 +826,7 @@ LABEL_67:
 + (NSArray)unarchivedArrayOfObjectsOfClasses:(NSSet *)classes fromData:(NSData *)data error:(NSError *)error
 {
   v11[6] = *MEMORY[0x1E69E9840];
-  v7 = [[a1 alloc] initForReadingFromData:data error:error];
+  v7 = [[self alloc] initForReadingFromData:data error:error];
   if (!v7)
   {
     return 0;
@@ -846,9 +846,9 @@ LABEL_67:
   return v9;
 }
 
-+ (id)_copyByArchiving:(id)a3
++ (id)_copyByArchiving:(id)archiving
 {
-  v3 = [[a1 alloc] initForReadingFromData:+[NSKeyedArchiver archivedDataWithRootObject:requiringSecureCoding:error:](NSKeyedArchiver error:{"archivedDataWithRootObject:requiringSecureCoding:error:", a3, 0, 0), 0}];
+  v3 = [[self alloc] initForReadingFromData:+[NSKeyedArchiver archivedDataWithRootObject:requiringSecureCoding:error:](NSKeyedArchiver error:{"archivedDataWithRootObject:requiringSecureCoding:error:", archiving, 0, 0), 0}];
   if (!v3)
   {
     return 0;
@@ -873,7 +873,7 @@ LABEL_67:
 + (NSDictionary)unarchivedDictionaryWithKeysOfClasses:(NSSet *)keyClasses objectsOfClasses:(NSSet *)valueClasses fromData:(NSData *)data error:(NSError *)error
 {
   v13[7] = *MEMORY[0x1E69E9840];
-  v9 = [[a1 alloc] initForReadingFromData:data error:error];
+  v9 = [[self alloc] initForReadingFromData:data error:error];
   if (!v9)
   {
     return 0;
@@ -894,9 +894,9 @@ LABEL_67:
   return v11;
 }
 
-+ (id)_strictlyUnarchivedObjectOfClasses:(id)a3 fromData:(id)a4 error:(id *)a5
++ (id)_strictlyUnarchivedObjectOfClasses:(id)classes fromData:(id)data error:(id *)error
 {
-  v7 = [[a1 alloc] initForReadingFromData:a4 error:a5];
+  v7 = [[self alloc] initForReadingFromData:data error:error];
   if (!v7)
   {
     return 0;
@@ -914,7 +914,7 @@ LABEL_67:
   atomic_fetch_or(v8 + 2, 0x20uLL);
   v10 = atomic_load(v8 + 2);
   v8[17] = v10;
-  v11 = [v8 decodeTopLevelObjectOfClasses:a3 forKey:@"root" error:a5];
+  v11 = [v8 decodeTopLevelObjectOfClasses:classes forKey:@"root" error:error];
 
   return v11;
 }
@@ -968,7 +968,7 @@ void __44__NSKeyedUnarchiver_initForReadingWithData___block_invoke()
   }
 }
 
-- (NSKeyedUnarchiver)initWithStream:(id)a3
+- (NSKeyedUnarchiver)initWithStream:(id)stream
 {
   MEMORY[0x1EEE9AC00](self);
   v5 = v4;
@@ -1074,7 +1074,7 @@ LABEL_24:
   if (v6)
   {
     v7 = v6;
-    v8 = [[a1 alloc] initForReadingWithData:v6];
+    v8 = [[self alloc] initForReadingWithData:v6];
     v9 = [v8 decodeObjectForKey:@"root"];
     [v8 finishDecoding];
   }
@@ -1092,7 +1092,7 @@ LABEL_24:
 + (id)unarchiveObjectWithData:(NSData *)data
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [[a1 alloc] initForReadingWithData:data];
+  v6 = [[self alloc] initForReadingWithData:data];
   v7 = [v6 decodeObjectForKey:@"root"];
   [v6 finishDecoding];
 
@@ -1106,7 +1106,7 @@ LABEL_24:
   v16 = *MEMORY[0x1E69E9840];
   v15 = 0;
   v7 = objc_autoreleasePoolPush();
-  v8 = [[a1 alloc] initForReadingWithData:data];
+  v8 = [[self alloc] initForReadingWithData:data];
   v9 = [v8 decodeTopLevelObjectForKey:@"root" error:&v15];
   v10 = v9;
   if (!error || v9)
@@ -1211,7 +1211,7 @@ LABEL_24:
   return result;
 }
 
-- (void)_setAllowedClassNames:(id)a3
+- (void)_setAllowedClassNames:(id)names
 {
   v7 = *MEMORY[0x1E69E9840];
   v5 = _NSRuntimeIssuesLog();
@@ -1220,10 +1220,10 @@ LABEL_24:
     *v6 = 0;
   }
 
-  [(_NSKeyedUnarchiverHelper *)self->_helper setAllowedClassNames:a3];
+  [(_NSKeyedUnarchiverHelper *)self->_helper setAllowedClassNames:names];
 }
 
-- (void)_temporaryMapReplaceObject:(id)a3 withObject:(id)a4
+- (void)_temporaryMapReplaceObject:(id)object withObject:(id)withObject
 {
   v15[1] = *MEMORY[0x1E69E9840];
   tmpRefObjMap = self->_tmpRefObjMap;
@@ -1267,7 +1267,7 @@ LABEL_13:
   }
 
   v13 = 0;
-  while (v12[v13] != a3)
+  while (v12[v13] != object)
   {
     if (v9 == ++v13)
     {
@@ -1275,7 +1275,7 @@ LABEL_13:
     }
   }
 
-  CFDictionarySetValue(self->_tmpRefObjMap, *&v11[8 * v13], a4);
+  CFDictionarySetValue(self->_tmpRefObjMap, *&v11[8 * v13], withObject);
 LABEL_12:
   if (v10 >= 0x201)
   {
@@ -1283,7 +1283,7 @@ LABEL_12:
   }
 }
 
-- (void)replaceObject:(id)a3 withObject:(id)a4
+- (void)replaceObject:(id)object withObject:(id)withObject
 {
   v4 = atomic_load(&self->_flags);
   if (v4 != self->_pac_signature)
@@ -1298,14 +1298,14 @@ LABEL_12:
     objc_exception_throw(v6);
   }
 
-  if (a3 != a4)
+  if (object != withObject)
   {
 
     [NSKeyedUnarchiver _temporaryMapReplaceObject:"_temporaryMapReplaceObject:withObject:" withObject:?];
   }
 }
 
-- (void)_replaceObject:(id)a3 withObject:(id)a4
+- (void)_replaceObject:(id)object withObject:(id)withObject
 {
   v14 = *MEMORY[0x1E69E9840];
   v4 = atomic_load(&self->_flags);
@@ -1321,23 +1321,23 @@ LABEL_12:
     objc_exception_throw(v12);
   }
 
-  if (a3 != a4)
+  if (object != withObject)
   {
     if (self->_delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [(NSKeyedUnarchiverDelegate *)self->_delegate unarchiver:self willReplaceObject:a3 withObject:a4];
+      [(NSKeyedUnarchiverDelegate *)self->_delegate unarchiver:self willReplaceObject:object withObject:withObject];
     }
 
     objRefMap = self->_objRefMap;
     if (objRefMap)
     {
-      Value = CFDictionaryGetValue(objRefMap, a3);
-      CFDictionaryRemoveValue(self->_objRefMap, a3);
-      CFDictionarySetValue(self->_objRefMap, a4, Value);
-      CFDictionarySetValue(self->_refObjMap, Value, a4);
+      Value = CFDictionaryGetValue(objRefMap, object);
+      CFDictionaryRemoveValue(self->_objRefMap, object);
+      CFDictionarySetValue(self->_objRefMap, withObject, Value);
+      CFDictionarySetValue(self->_refObjMap, Value, withObject);
     }
 
-    [(NSKeyedUnarchiver *)self _temporaryMapReplaceObject:a3 withObject:a4];
+    [(NSKeyedUnarchiver *)self _temporaryMapReplaceObject:object withObject:withObject];
   }
 
   replacementMap = self->_replacementMap;
@@ -1351,7 +1351,7 @@ LABEL_12:
     replacementMap = self->_replacementMap;
   }
 
-  CFDictionarySetValue(replacementMap, a3, a4);
+  CFDictionarySetValue(replacementMap, object, withObject);
 }
 
 - (BOOL)containsValueForKey:(NSString *)key
@@ -1399,84 +1399,84 @@ LABEL_12:
   return Value != 0;
 }
 
-- (BOOL)_validateAllowedClassesContainsClass:(Class)a3 forKey:(id)a4
+- (BOOL)_validateAllowedClassesContainsClass:(Class)class forKey:(id)key
 {
-  if (!a3)
+  if (!class)
   {
-    v15 = [NSString stringWithFormat:@"Attempt to decode an object with no class for key '%@'.", a4];
+    v15 = [NSString stringWithFormat:@"Attempt to decode an object with no class for key '%@'.", key];
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:@"NSInvalidUnarchiveOperationException" reason:v15 userInfo:0]);
   }
 
-  v7 = [(NSKeyedUnarchiver *)self allowedClasses];
+  allowedClasses = [(NSKeyedUnarchiver *)self allowedClasses];
   v8 = atomic_load(&self->_flags);
   if (v8 != self->_pac_signature || (v9 = atomic_load(&self->_flags), v10 = atomic_load(&self->_flags), v10 != self->_pac_signature))
   {
     __NSPoisoned();
   }
 
-  v11 = v7;
+  v11 = allowedClasses;
   v12 = atomic_load(&self->_flags);
-  v13 = [(NSCoder *)self _walkAllowedClassListLookingForClass:a3 forKey:a4 allowedClasses:v7 strictModeEnabled:(v9 >> 5) & 1 alwaysEnforceExplicitSubclasses:(v12 & 0x40) != 0 specialCaseObject:0];
+  v13 = [(NSCoder *)self _walkAllowedClassListLookingForClass:class forKey:key allowedClasses:allowedClasses strictModeEnabled:(v9 >> 5) & 1 alwaysEnforceExplicitSubclasses:(v12 & 0x40) != 0 specialCaseObject:0];
   if ((v13 & 1) == 0 && !self->_helper->_decodeError)
   {
-    [(NSCoder *)self __failWithUnexpectedClass:a3 forKey:a4 allowedClasses:v11];
+    [(NSCoder *)self __failWithUnexpectedClass:class forKey:key allowedClasses:v11];
   }
 
   return v13;
 }
 
-- (BOOL)_validateAllowedClassesContainsClassOfReference:(id)a3 forKey:(id)a4
+- (BOOL)_validateAllowedClassesContainsClassOfReference:(id)reference forKey:(id)key
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v15[0] = 0;
-  v7 = [(NSKeyedUnarchiver *)self allowedClasses];
+  allowedClasses = [(NSKeyedUnarchiver *)self allowedClasses];
   v8 = atomic_load(&self->_flags);
   if (v8 != self->_pac_signature || (v9 = atomic_load(&self->_flags), v10 = atomic_load(&self->_flags), v10 != self->_pac_signature))
   {
     __NSPoisoned();
   }
 
-  v11 = v7;
+  v11 = allowedClasses;
   v12 = atomic_load(&self->_flags);
-  v13 = [(NSCoder *)self _walkAllowedClassListValidatingInstance:a3 forKey:a4 allowedClasses:v7 strictModeEnabled:(v9 >> 5) & 1 alwaysEnforceExplicitSubclasses:(v12 & 0x40) != 0 specialCaseObject:0 invalidElementClass:v15];
+  v13 = [(NSCoder *)self _walkAllowedClassListValidatingInstance:reference forKey:key allowedClasses:allowedClasses strictModeEnabled:(v9 >> 5) & 1 alwaysEnforceExplicitSubclasses:(v12 & 0x40) != 0 specialCaseObject:0 invalidElementClass:v15];
   if ((v13 & 1) == 0 && !self->_helper->_decodeError)
   {
     if (v15[0])
     {
-      [(NSCoder *)self __failWithUnexpectedElementClass:a4 forContainerKey:v11 allowedClasses:?];
+      [(NSCoder *)self __failWithUnexpectedElementClass:key forContainerKey:v11 allowedClasses:?];
     }
 
     else
     {
-      -[NSCoder __failWithUnexpectedClass:forKey:allowedClasses:](self, [a3 classForCoder], a4, v11);
+      -[NSCoder __failWithUnexpectedClass:forKey:allowedClasses:](self, [reference classForCoder], key, v11);
     }
   }
 
   return v13;
 }
 
-- (uint64_t)_validatePropertyListClass:(uint64_t)a3 forKey:
+- (uint64_t)_validatePropertyListClass:(uint64_t)class forKey:
 {
   v27 = *MEMORY[0x1E69E9840];
   if (result)
   {
     if (!a2)
     {
-      v20 = [NSString stringWithFormat:@"Attempt to decode an object with no class for key '%@'.", a3];
+      v20 = [NSString stringWithFormat:@"Attempt to decode an object with no class for key '%@'.", class];
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:@"NSInvalidUnarchiveOperationException" reason:v20 userInfo:0]);
     }
 
     v5 = result;
-    v6 = [result allowedClasses];
+    allowedClasses = [result allowedClasses];
     v7 = atomic_load(v5 + 2);
     if (v7 != v5[17])
     {
       goto LABEL_25;
     }
 
-    v8 = v6;
+    v8 = allowedClasses;
     v9 = atomic_load(v5 + 2);
-    if (([(NSCoder *)v5 _walkAllowedClassListLookingForClass:a2 forKey:a3 allowedClasses:v6 strictModeEnabled:(v9 >> 5) & 1 alwaysEnforceExplicitSubclasses:0 specialCaseObject:0]& 1) != 0 || *(v5[15] + 32))
+    if (([(NSCoder *)v5 _walkAllowedClassListLookingForClass:a2 forKey:class allowedClasses:allowedClasses strictModeEnabled:(v9 >> 5) & 1 alwaysEnforceExplicitSubclasses:0 specialCaseObject:0]& 1) != 0 || *(v5[15] + 32))
     {
       return 1;
     }
@@ -1504,7 +1504,7 @@ LABEL_25:
 
     if (v11 && !v14)
     {
-      [(NSCoder *)v5 _warnAboutPlistType:a2 forKey:a3 missingInAllowedClasses:v8];
+      [(NSCoder *)v5 _warnAboutPlistType:a2 forKey:class missingInAllowedClasses:v8];
     }
 
     if (!v15 || !v14 && _os_feature_enabled_impl() && ([(NSCoder *)v5 _shouldExemptProcessBasedOnArchivingExceptionRules:?]& 1) != 0)
@@ -1514,14 +1514,14 @@ LABEL_25:
 
     v16 = [(NSCoder *)v5 __allowedClassesDescriptionForClass:a2];
     v17 = [(NSCoder *)v5 _allowedClassesDescriptionForClasses:v8];
-    if (a3)
+    if (class)
     {
-      v18 = a3;
+      classCopy = class;
     }
 
     else
     {
-      v18 = @"(no key, possibly an argument to a message)";
+      classCopy = @"(no key, possibly an argument to a message)";
     }
 
     v19 = _NSRuntimeIssuesLog();
@@ -1530,12 +1530,12 @@ LABEL_25:
       *buf = 138543874;
       v22 = v16;
       v23 = 2114;
-      v24 = v18;
+      v24 = classCopy;
       v25 = 2112;
       v26 = v17;
     }
 
-    [v5 __failWithExceptionName:@"NSInvalidUnarchiveOperationException" errorCode:4864 format:{@"value for key '%@' was of unexpected class %@.\nAllowed classes are:\n %@", v18, v16, v17}];
+    [v5 __failWithExceptionName:@"NSInvalidUnarchiveOperationException" errorCode:4864 format:{@"value for key '%@' was of unexpected class %@.\nAllowed classes are:\n %@", classCopy, v16, v17}];
     return 0;
   }
 
@@ -1574,7 +1574,7 @@ LABEL_25:
   return v9[0];
 }
 
-- (id)decodeObjectOfClass:(Class)a3 forKey:(id)a4
+- (id)decodeObjectOfClass:(Class)class forKey:(id)key
 {
   v10 = *MEMORY[0x1E69E9840];
   if (self->_helper->_decodeError)
@@ -1591,23 +1591,23 @@ LABEL_25:
   v8 = atomic_load(&self->_flags);
   if ((v8 & 4) != 0)
   {
-    if (a3)
+    if (class)
     {
-      a3 = [MEMORY[0x1E695DFD8] setWithObject:?];
+      class = [MEMORY[0x1E695DFD8] setWithObject:?];
     }
 
-    return [(NSKeyedUnarchiver *)self decodeObjectOfClasses:a3 forKey:a4];
+    return [(NSKeyedUnarchiver *)self decodeObjectOfClasses:class forKey:key];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = NSKeyedUnarchiver;
-    return [(NSCoder *)&v9 decodeObjectOfClass:a3 forKey:a4];
+    return [(NSCoder *)&v9 decodeObjectOfClass:class forKey:key];
   }
 }
 
-- (id)decodeObjectOfClasses:(id)a3 forKey:(id)a4
+- (id)decodeObjectOfClasses:(id)classes forKey:(id)key
 {
   v24 = *MEMORY[0x1E69E9840];
   if (self->_helper->_decodeError)
@@ -1626,16 +1626,16 @@ LABEL_25:
   {
     v18.receiver = self;
     v18.super_class = NSKeyedUnarchiver;
-    return [(NSCoder *)&v18 decodeObjectOfClasses:a3 forKey:a4];
+    return [(NSCoder *)&v18 decodeObjectOfClasses:classes forKey:key];
   }
 
-  if (a3)
+  if (classes)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v11 = [a3 countByEnumeratingWithState:&v20 objects:v19 count:16];
+    v11 = [classes countByEnumeratingWithState:&v20 objects:v19 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1646,7 +1646,7 @@ LABEL_25:
         {
           if (*v21 != v13)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(classes);
           }
 
           v15 = *(*(&v20 + 1) + 8 * i);
@@ -1657,22 +1657,22 @@ LABEL_25:
           }
         }
 
-        v12 = [a3 countByEnumeratingWithState:&v20 objects:v19 count:16];
+        v12 = [classes countByEnumeratingWithState:&v20 objects:v19 count:16];
       }
 
       while (v12);
     }
 
-    [(NSMutableArray *)self->_helper->_allowedClasses addObject:a3];
-    v4 = [(NSKeyedUnarchiver *)self decodeObjectForKey:a4];
+    [(NSMutableArray *)self->_helper->_allowedClasses addObject:classes];
+    v4 = [(NSKeyedUnarchiver *)self decodeObjectForKey:key];
     [(NSMutableArray *)self->_helper->_allowedClasses removeLastObject];
     return v4;
   }
 
-  return [(NSKeyedUnarchiver *)self decodeObjectForKey:a4];
+  return [(NSKeyedUnarchiver *)self decodeObjectForKey:key];
 }
 
-- (id)_decodeObjectOfClass:(Class)a3
+- (id)_decodeObjectOfClass:(Class)class
 {
   v18[1] = *MEMORY[0x1E69E9840];
   if (self->_helper->_decodeError)
@@ -1693,15 +1693,15 @@ LABEL_25:
     return [(NSKeyedUnarchiver *)self decodeObject];
   }
 
-  if (!a3 || !object_isClass(a3))
+  if (!class || !object_isClass(class))
   {
-    v15 = [NSString stringWithFormat:@"%@ '%@' is not an Objective-C class!", _NSMethodExceptionProem(self, a2), a3];
+    v15 = [NSString stringWithFormat:@"%@ '%@' is not an Objective-C class!", _NSMethodExceptionProem(self, a2), class];
     v16 = MEMORY[0x1E695DF30];
     v17 = *MEMORY[0x1E695D940];
     goto LABEL_23;
   }
 
-  v9 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{a3, 0}];
+  v9 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{class, 0}];
   [(NSMutableArray *)self->_helper->_allowedClasses addObject:v9];
 
   if (_warnArchiverCompat == 1)
@@ -1737,20 +1737,20 @@ LABEL_23:
   self->_genericKey = genericKey + 1;
   if (genericKey > 0x27)
   {
-    v14 = [NSString stringWithFormat:@"$%ld", genericKey];
+    genericKey = [NSString stringWithFormat:@"$%ld", genericKey];
   }
 
   else
   {
-    v14 = generic_keys[genericKey];
+    genericKey = generic_keys[genericKey];
   }
 
-  _decodeObject(self, v14, v18);
+  _decodeObject(self, genericKey, v18);
   [(NSMutableArray *)self->_helper->_allowedClasses removeLastObject];
   return v18[0];
 }
 
-- (unint64_t)_decodeCollectionOfClass:(void *)a3 allowedClasses:(__CFString *)a4 forKey:
+- (unint64_t)_decodeCollectionOfClass:(void *)class allowedClasses:(__CFString *)classes forKey:
 {
   v16[1] = *MEMORY[0x1E69E9840];
   if (result)
@@ -1777,11 +1777,11 @@ LABEL_23:
       }
 
       v8 = result[15];
-      [*(v8 + 24) addObject:{objc_msgSend(a3, "setByAddingObject:", a2)}];
+      [*(v8 + 24) addObject:{objc_msgSend(class, "setByAddingObject:", a2)}];
       *(v8 + 40) = 1;
-      if (a4 && CFStringGetLength(a4) >= 1 && CFStringGetCharacterAtIndex(a4, 0) == 36)
+      if (classes && CFStringGetLength(classes) >= 1 && CFStringGetCharacterAtIndex(classes, 0) == 36)
       {
-        a4 = [(__CFString *)a4 substringFromIndex:1];
+        classes = [(__CFString *)classes substringFromIndex:1];
       }
 
       v16[0] = 0;
@@ -1799,16 +1799,16 @@ LABEL_17:
       v12 = objc_autoreleasePoolPush();
       if (v4[10])
       {
-        _decodeObjectXML(v4, a4, v16);
+        _decodeObjectXML(v4, classes, v16);
       }
 
       else
       {
         v14 = 0;
         v15 = 0;
-        if (_decodeOffsetAndRef(v4, a4, &v15, &v14))
+        if (_decodeOffsetAndRef(v4, classes, &v15, &v14))
         {
-          _decodeObjectBinary(v4, v14, a4, v16);
+          _decodeObjectBinary(v4, v14, classes, v16);
         }
       }
 
@@ -1822,22 +1822,22 @@ LABEL_17:
   return result;
 }
 
-- (id)decodeArrayOfObjectsOfClasses:(id)a3 forKey:(id)a4
+- (id)decodeArrayOfObjectsOfClasses:(id)classes forKey:(id)key
 {
   v7 = _NSMethodExceptionProem(self, a2);
-  if (![(NSCoder *)self _validateDecodeCollectionAllowedClassesRequirementsWithClasses:a3 forMethodExceptionProem:v7])
+  if (![(NSCoder *)self _validateDecodeCollectionAllowedClassesRequirementsWithClasses:classes forMethodExceptionProem:v7])
   {
     return 0;
   }
 
   v8 = MEMORY[0x1E695DEC8];
 
-  return [(NSKeyedUnarchiver *)self _decodeCollectionOfClass:v8 allowedClasses:a3 forKey:a4];
+  return [(NSKeyedUnarchiver *)self _decodeCollectionOfClass:v8 allowedClasses:classes forKey:key];
 }
 
-- (id)decodeDictionaryWithKeysOfClasses:(id)a3 objectsOfClasses:(id)a4 forKey:(id)a5
+- (id)decodeDictionaryWithKeysOfClasses:(id)classes objectsOfClasses:(id)ofClasses forKey:(id)key
 {
-  v8 = [a3 setByAddingObjectsFromSet:a4];
+  v8 = [classes setByAddingObjectsFromSet:ofClasses];
   v9 = _NSMethodExceptionProem(self, a2);
   if (![(NSCoder *)self _validateDecodeCollectionAllowedClassesRequirementsWithClasses:v8 forMethodExceptionProem:v9])
   {
@@ -1846,7 +1846,7 @@ LABEL_17:
 
   v10 = MEMORY[0x1E695DF20];
 
-  return [(NSKeyedUnarchiver *)self _decodeCollectionOfClass:v10 allowedClasses:v8 forKey:a5];
+  return [(NSKeyedUnarchiver *)self _decodeCollectionOfClass:v10 allowedClasses:v8 forKey:key];
 }
 
 - (void)setRequiresSecureCoding:(BOOL)requiresSecureCoding
@@ -1958,7 +1958,7 @@ LABEL_7:
 {
   if (decodingFailurePolicy >= 2)
   {
-    v8 = [NSString stringWithFormat:@"%@: invalid decoding error policy %lu", _NSMethodExceptionProem(self, a2), decodingFailurePolicy];
+    decodingFailurePolicy = [NSString stringWithFormat:@"%@: invalid decoding error policy %lu", _NSMethodExceptionProem(self, a2), decodingFailurePolicy];
     goto LABEL_9;
   }
 
@@ -1971,9 +1971,9 @@ LABEL_7:
   v4 = atomic_load(&self->_flags);
   if ((v4 & 8) != 0)
   {
-    v8 = [NSString stringWithFormat:@"%@: unarchiver has started; cannot change decoding error policy", _NSMethodExceptionProem(self, a2), v9];
+    decodingFailurePolicy = [NSString stringWithFormat:@"%@: unarchiver has started; cannot change decoding error policy", _NSMethodExceptionProem(self, a2), v9];
 LABEL_9:
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:@"NSInvalidUnarchiveOperationException" reason:v8 userInfo:0]);
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:@"NSInvalidUnarchiveOperationException" reason:decodingFailurePolicy userInfo:0]);
   }
 
   v5 = atomic_load(&self->_flags);
@@ -1989,7 +1989,7 @@ LABEL_6:
   self->_pac_signature = v7;
 }
 
-- (id)_decodeArrayOfObjectsForKey:(id)a3
+- (id)_decodeArrayOfObjectsForKey:(id)key
 {
   v76 = *MEMORY[0x1E69E9840];
   v3 = atomic_load(&self->_flags);
@@ -2011,14 +2011,14 @@ LABEL_6:
     goto LABEL_66;
   }
 
-  v8 = a3;
+  keyCopy = key;
   v9 = atomic_load(&self->_flags);
   atomic_store(v9 | 8, &self->_flags);
   v10 = atomic_load(&self->_flags);
   self->_pac_signature = v10;
-  if (a3 && CFStringGetLength(a3) >= 1 && CFStringGetCharacterAtIndex(v8, 0) == 36)
+  if (key && CFStringGetLength(key) >= 1 && CFStringGetCharacterAtIndex(keyCopy, 0) == 36)
   {
-    v8 = [(__CFString *)v8 substringFromIndex:1];
+    keyCopy = [(__CFString *)keyCopy substringFromIndex:1];
   }
 
   v72 = 0;
@@ -2056,7 +2056,7 @@ LABEL_6:
     v19 = *v18;
     if ((*v18 & 0xF0) != 0xA0)
     {
-      [(NSCoder *)self __failWithExceptionName:@"NSInvalidUnarchiveOperationException" errorCode:4864 format:@"%@: value for key (%@) is not an array", _NSMethodExceptionProem(self, a2), v8];
+      [(NSCoder *)self __failWithExceptionName:@"NSInvalidUnarchiveOperationException" errorCode:4864 format:@"%@: value for key (%@) is not an array", _NSMethodExceptionProem(self, a2), keyCopy];
       goto LABEL_33;
     }
 
@@ -2115,7 +2115,7 @@ LABEL_54:
               break;
             }
 
-            _decodeObjectBinary(self, v59, v8, (v69[3] + 8 * v73[3]));
+            _decodeObjectBinary(self, v59, keyCopy, (v69[3] + 8 * v73[3]));
             v55 = v73[3];
             if (!*(v69[3] + 8 * v55))
             {
@@ -2155,7 +2155,7 @@ LABEL_30:
 
   else
   {
-    Value = CFDictionaryGetValue(ValueAtIndex, v8);
+    Value = CFDictionaryGetValue(ValueAtIndex, keyCopy);
     v24 = Value;
   }
 
@@ -2578,7 +2578,7 @@ LABEL_14:
   }
 }
 
-- (id)_decodePropertyListForKey:(id)a3
+- (id)_decodePropertyListForKey:(id)key
 {
   v3 = atomic_load(&self->_flags);
   if (v3 != self->_pac_signature)
@@ -2600,14 +2600,14 @@ LABEL_17:
     __NSPoisoned();
   }
 
-  v8 = a3;
+  keyCopy = key;
   v9 = atomic_load(&self->_flags);
   atomic_store(v9 | 8, &self->_flags);
   v10 = atomic_load(&self->_flags);
   self->_pac_signature = v10;
-  if (a3 && CFStringGetLength(a3) >= 1 && CFStringGetCharacterAtIndex(v8, 0) == 36)
+  if (key && CFStringGetLength(key) >= 1 && CFStringGetCharacterAtIndex(keyCopy, 0) == 36)
   {
-    v8 = [(__CFString *)v8 substringFromIndex:1];
+    keyCopy = [(__CFString *)keyCopy substringFromIndex:1];
   }
 
   containers = self->_containers;
@@ -2624,7 +2624,7 @@ LABEL_17:
 
     else
     {
-      Value = CFDictionaryGetValue(ValueAtIndex, v8);
+      Value = CFDictionaryGetValue(ValueAtIndex, keyCopy);
       v16 = Value;
     }
   }
@@ -2643,9 +2643,9 @@ LABEL_17:
   return Value;
 }
 
-+ (BOOL)_evaluateCycleSecurityRules:(NSKeyedUnarchiverCycleEvaluationRules *)a3
++ (BOOL)_evaluateCycleSecurityRules:(NSKeyedUnarchiverCycleEvaluationRules *)rules
 {
-  v3 = *&a3->var0;
+  v3 = *&rules->var0;
   if ((v3 & 0x10000) != 0)
   {
     return 0;
@@ -2654,13 +2654,13 @@ LABEL_17:
   result = 1;
   if (v3 & 0x100) == 0 && (v3 & 0x1000000) == 0 && (v3)
   {
-    return ((v3 | (a3->var4 << 32)) & 0x100000000) == 0;
+    return ((v3 | (rules->var4 << 32)) & 0x100000000) == 0;
   }
 
   return result;
 }
 
-- (void)decodeBytesWithReturnedLength:(unint64_t *)a3
+- (void)decodeBytesWithReturnedLength:(unint64_t *)length
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v17[0] = 0;
@@ -2685,10 +2685,10 @@ LABEL_17:
 
   if (self->_helper->_decodeError)
   {
-    if (a3)
+    if (length)
     {
       result = 0;
-      *a3 = 0;
+      *length = 0;
       return result;
     }
   }
@@ -2699,18 +2699,18 @@ LABEL_17:
     self->_genericKey = genericKey + 1;
     if (genericKey > 0x27)
     {
-      v11 = [NSString stringWithFormat:@"$%ld", genericKey];
+      genericKey = [NSString stringWithFormat:@"$%ld", genericKey];
     }
 
     else
     {
-      v11 = generic_keys[genericKey];
+      genericKey = generic_keys[genericKey];
     }
 
-    v12 = _decodeBytes(self, v11, v17);
-    if (a3)
+    v12 = _decodeBytes(self, genericKey, v17);
+    if (length)
     {
-      *a3 = v17[0];
+      *length = v17[0];
     }
 
     if (v12)
@@ -2730,7 +2730,7 @@ LABEL_17:
   return 0;
 }
 
-- (void)decodeValuesOfObjCTypes:(const char *)a3
+- (void)decodeValuesOfObjCTypes:(const char *)types
 {
   if (_warnArchiverCompat == 1)
   {
@@ -2754,7 +2754,7 @@ LABEL_12:
     objc_exception_throw([v13 exceptionWithName:v14 reason:v12 userInfo:0]);
   }
 
-  if (!a3)
+  if (!types)
   {
     v11 = [NSString stringWithFormat:@"%@: null types pointer", _NSMethodExceptionProem(self, a2)];
 LABEL_11:
@@ -2765,7 +2765,7 @@ LABEL_11:
   }
 
   v15 = &v16;
-  if (*a3)
+  if (*types)
   {
     while (1)
     {
@@ -2775,8 +2775,8 @@ LABEL_11:
         break;
       }
 
-      [(NSKeyedUnarchiver *)self decodeValueOfObjCType:a3 at:?];
-      if (!*++a3)
+      [(NSKeyedUnarchiver *)self decodeValueOfObjCType:types at:?];
+      if (!*++types)
       {
         return;
       }
@@ -2787,7 +2787,7 @@ LABEL_11:
   }
 }
 
-- (void)decodeValueOfObjCType:(const char *)a3 at:(void *)a4
+- (void)decodeValueOfObjCType:(const char *)type at:(void *)at
 {
   if (_warnArchiverCompat == 1)
   {
@@ -2826,7 +2826,7 @@ LABEL_25:
   atomic_store(v12 | 8, &self->_flags);
   v13 = atomic_load(&self->_flags);
   self->_pac_signature = v13;
-  if (!a3 || !a4)
+  if (!type || !at)
   {
     v23 = [NSString stringWithFormat:@"%@: null type or address pointer", _NSMethodExceptionProem(self, a2)];
 LABEL_29:
@@ -2837,13 +2837,13 @@ LABEL_30:
     objc_exception_throw([v21 exceptionWithName:v22 reason:v20 userInfo:0]);
   }
 
-  v14 = *a3;
+  v14 = *type;
   if (v14 != 91)
   {
     if (v14 != 123)
     {
 
-      _compatDecodeValueOfObjCType(self, v14, a4, a2);
+      _compatDecodeValueOfObjCType(self, v14, at, a2);
       return;
     }
 
@@ -2851,8 +2851,8 @@ LABEL_30:
     goto LABEL_29;
   }
 
-  v17 = *(a3 + 1);
-  v16 = a3 + 1;
+  v17 = *(type + 1);
+  v16 = type + 1;
   v15 = v17;
   if (v17 - 48 > 9)
   {
@@ -2889,7 +2889,7 @@ LABEL_20:
   }
 }
 
-- (void)decodeArrayOfObjCType:(const char *)a3 count:(unint64_t)a4 at:(void *)a5
+- (void)decodeArrayOfObjCType:(const char *)type count:(unint64_t)count at:(void *)at
 {
   v10 = objc_opt_class();
   if (_warnArchiverCompat == 1)
@@ -2920,16 +2920,16 @@ LABEL_20:
       atomic_store(v15 | 8, &self->_flags);
       v16 = atomic_load(&self->_flags);
       self->_pac_signature = v16;
-      if (a3 && a5)
+      if (type && at)
       {
-        if (a4)
+        if (count)
         {
           v17 = [(NSKeyedUnarchiver *)self _decodeObjectOfClass:v10];
           if (objc_opt_isKindOfClass())
           {
-            v18 = *a3;
+            v18 = *type;
 
-            [v17 fillObjCType:v18 count:a4 at:a5];
+            [v17 fillObjCType:v18 count:count at:at];
           }
 
           else
@@ -2961,9 +2961,9 @@ LABEL_19:
   }
 }
 
-- (int64_t)versionForClassName:(id)a3
+- (int64_t)versionForClassName:(id)name
 {
-  v3 = NSClassFromString(a3);
+  v3 = NSClassFromString(name);
   if (!v3)
   {
     return 0x7FFFFFFFFFFFFFFFLL;

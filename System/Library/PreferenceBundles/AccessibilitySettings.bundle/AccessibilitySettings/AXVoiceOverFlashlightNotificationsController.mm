@@ -1,25 +1,25 @@
 @interface AXVoiceOverFlashlightNotificationsController
-- (id)_getValue:(id)a3;
+- (id)_getValue:(id)value;
 - (id)getValueSelectedBlock;
 - (id)setValueSelectedBlock;
 - (id)specifiers;
-- (void)_setValue:(id)a3 specifier:(id)a4;
+- (void)_setValue:(id)value specifier:(id)specifier;
 @end
 
 @implementation AXVoiceOverFlashlightNotificationsController
 
 - (id)getValueSelectedBlock
 {
-  v2 = [(AXVoiceOverFlashlightNotificationsController *)self specifier];
-  v3 = [v2 propertyForKey:@"getValueSelectedBlock"];
+  specifier = [(AXVoiceOverFlashlightNotificationsController *)self specifier];
+  v3 = [specifier propertyForKey:@"getValueSelectedBlock"];
 
   return v3;
 }
 
 - (id)setValueSelectedBlock
 {
-  v2 = [(AXVoiceOverFlashlightNotificationsController *)self specifier];
-  v3 = [v2 propertyForKey:@"setValueSelectedBlock"];
+  specifier = [(AXVoiceOverFlashlightNotificationsController *)self specifier];
+  v3 = [specifier propertyForKey:@"setValueSelectedBlock"];
 
   return v3;
 }
@@ -54,17 +54,17 @@
   return v4;
 }
 
-- (void)_setValue:(id)a3 specifier:(id)a4
+- (void)_setValue:(id)value specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(AXVoiceOverFlashlightNotificationsController *)self setValueSelectedBlock];
-  v6[2](v6, v5);
+  valueCopy = value;
+  setValueSelectedBlock = [(AXVoiceOverFlashlightNotificationsController *)self setValueSelectedBlock];
+  setValueSelectedBlock[2](setValueSelectedBlock, valueCopy);
 }
 
-- (id)_getValue:(id)a3
+- (id)_getValue:(id)value
 {
-  v3 = [(AXVoiceOverFlashlightNotificationsController *)self getValueSelectedBlock];
-  v4 = v3[2]();
+  getValueSelectedBlock = [(AXVoiceOverFlashlightNotificationsController *)self getValueSelectedBlock];
+  v4 = getValueSelectedBlock[2]();
 
   return v4;
 }

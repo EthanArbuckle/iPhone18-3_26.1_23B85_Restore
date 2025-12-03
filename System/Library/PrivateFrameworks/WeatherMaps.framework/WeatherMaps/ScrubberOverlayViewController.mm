@@ -1,7 +1,7 @@
 @interface ScrubberOverlayViewController
-- (_TtC11WeatherMaps29ScrubberOverlayViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC11WeatherMaps29ScrubberOverlayViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -10,36 +10,36 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_220F9335C();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_220F93408();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_220F93C24(a3);
+  selfCopy = self;
+  sub_220F93C24(disappear);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_220F93DFC();
 }
 
-- (_TtC11WeatherMaps29ScrubberOverlayViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11WeatherMaps29ScrubberOverlayViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_220FC2700();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_220F95A00();
 }
 

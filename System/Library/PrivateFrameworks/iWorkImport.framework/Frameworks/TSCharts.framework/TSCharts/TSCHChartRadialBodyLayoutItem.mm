@@ -1,33 +1,33 @@
 @interface TSCHChartRadialBodyLayoutItem
-- (CGAffineTransform)transformForRenderingElementForSeries:(SEL)a3 outElementSize:(unint64_t)a4 outClipRect:(CGSize *)a5 withInnerRadius:(CGRect *)a6;
-- (CGAffineTransform)transformToMaintainLabelSameDistanceAwayFromWedge:(SEL)a3 wedgeElement:(CGRect)a4;
-- (CGAffineTransform)transformToShiftStraightLineLabelRectOutForEnableCalloutLineONSetting:(SEL)a3 wedgeElement:(CGRect)a4;
-- (CGPath)pathOfElementForSeries:(unint64_t)a3 outWedgeCenterPoint:(CGPoint *)a4 withInnerRadius:(id)a5;
+- (CGAffineTransform)transformForRenderingElementForSeries:(SEL)series outElementSize:(unint64_t)size outClipRect:(CGSize *)rect withInnerRadius:(CGRect *)radius;
+- (CGAffineTransform)transformToMaintainLabelSameDistanceAwayFromWedge:(SEL)wedge wedgeElement:(CGRect)element;
+- (CGAffineTransform)transformToShiftStraightLineLabelRectOutForEnableCalloutLineONSetting:(SEL)setting wedgeElement:(CGRect)element;
+- (CGPath)pathOfElementForSeries:(unint64_t)series outWedgeCenterPoint:(CGPoint *)point withInnerRadius:(id)radius;
 - (CGRect)calcDrawingRect;
 - (CGRect)calcOverhangRect;
-- (CGRect)calloutLineBoundingBoxForSeries:(unint64_t)a3;
-- (CGSize)bodySizeForOverhangSize:(CGSize)a3;
-- (CGSize)overhangSizeForBodySize:(CGSize)a3;
+- (CGRect)calloutLineBoundingBoxForSeries:(unint64_t)series;
+- (CGSize)bodySizeForOverhangSize:(CGSize)size;
+- (CGSize)overhangSizeForBodySize:(CGSize)size;
 - (CGSize)titleSizeToUseForOverlapPreventionWithLabels;
 - (NSDictionary)wedgeLayoutInfosInChartCoordinateSpaceForSeriesIndex;
-- (TSCHChartPieLabelGeometries)labelGeometriesForRenderingLabelsForSeriesModelCache:(SEL)a3 topLabelType:(id)a4 bottomLabelType:(int64_t)a5;
-- (TSCHChartPieLabelGeometry)labelGeometryForRenderingLabelForSeriesModelCache:(SEL)a3 labelType:(id)a4;
-- (double)normalizedLabelDistanceFromWedgeTipForSeries:(id)a3;
+- (TSCHChartPieLabelGeometries)labelGeometriesForRenderingLabelsForSeriesModelCache:(SEL)cache topLabelType:(id)type bottomLabelType:(int64_t)labelType;
+- (TSCHChartPieLabelGeometry)labelGeometryForRenderingLabelForSeriesModelCache:(SEL)cache labelType:(id)type;
+- (double)normalizedLabelDistanceFromWedgeTipForSeries:(id)series;
 - (id)createAndOptimallyPlaceWedgeLayoutInfos;
 - (id)createWedgeLayoutInfos;
-- (id)defaultPieWedgeElementForSeriesModelCache:(id)a3;
-- (id)defaultPieWedgeLayoutInfoForSeriesModelCache:(id)a3 pieLabels:(id)a4 combinedLabelTransform:(CGAffineTransform *)a5;
-- (id)knobsOfElementForSeries:(unint64_t)a3 withInnerRadius:(id)a4;
-- (id)labelStringForType:(int64_t)a3 seriesModelCache:(id)a4;
-- (id)newPathsForRenderingCalloutLineForSeries:(unint64_t)a3 outStartLineEndPath:(id *)a4 outEndLineEndPath:(id *)a5 stroke:(id)a6 outStroke:(id *)a7 context:(CGContext *)a8 contextScale:(float)a9;
-- (id)optimizedWedgeLayoutInfoPlacementForWedgeLayoutInfos:(id)a3;
-- (id)pathCacheForSeries:(unint64_t)a3 withInnerRadius:(id)a4;
-- (id)renderersWithRep:(id)a3;
-- (id)seriesIndexToWedgeLayoutInfoMapWithWedgeLayoutInfos:(id)a3;
+- (id)defaultPieWedgeElementForSeriesModelCache:(id)cache;
+- (id)defaultPieWedgeLayoutInfoForSeriesModelCache:(id)cache pieLabels:(id)labels combinedLabelTransform:(CGAffineTransform *)transform;
+- (id)knobsOfElementForSeries:(unint64_t)series withInnerRadius:(id)radius;
+- (id)labelStringForType:(int64_t)type seriesModelCache:(id)cache;
+- (id)newPathsForRenderingCalloutLineForSeries:(unint64_t)series outStartLineEndPath:(id *)path outEndLineEndPath:(id *)endPath stroke:(id)stroke outStroke:(id *)outStroke context:(CGContext *)context contextScale:(float)scale;
+- (id)optimizedWedgeLayoutInfoPlacementForWedgeLayoutInfos:(id)infos;
+- (id)pathCacheForSeries:(unint64_t)series withInnerRadius:(id)radius;
+- (id)renderersWithRep:(id)rep;
+- (id)seriesIndexToWedgeLayoutInfoMapWithWedgeLayoutInfos:(id)infos;
 - (id)seriesIndexedPieNormalizedLabelDistancesFromWedgeTips;
 - (id)wedgeLayoutInfosInChartCoordinateSpace;
-- (void)p_collectMaxRatio:(double *)a3 maxLabelOverhang:(double *)a4 maxWedgeExplosion:(float *)a5 maxComboExplosion:(float *)a6;
-- (void)setLayoutSize:(CGSize)a3;
+- (void)p_collectMaxRatio:(double *)ratio maxLabelOverhang:(double *)overhang maxWedgeExplosion:(float *)explosion maxComboExplosion:(float *)comboExplosion;
+- (void)setLayoutSize:(CGSize)size;
 @end
 
 @implementation TSCHChartRadialBodyLayoutItem
@@ -77,9 +77,9 @@
   return v56;
 }
 
-- (double)normalizedLabelDistanceFromWedgeTipForSeries:(id)a3
+- (double)normalizedLabelDistanceFromWedgeTipForSeries:(id)series
 {
-  v7 = objc_msgSend_seriesIndex(a3, a2, v3, v4, v5);
+  v7 = objc_msgSend_seriesIndex(series, a2, v3, v4, v5);
   v12 = objc_msgSend_model(self, v8, v9, v10, v11);
   v17 = objc_msgSend_pieSeriesModelCacheForSeries_(v12, v13, v14, v15, v16, v7);
 
@@ -184,16 +184,16 @@
   return v11;
 }
 
-- (id)seriesIndexToWedgeLayoutInfoMapWithWedgeLayoutInfos:(id)a3
+- (id)seriesIndexToWedgeLayoutInfoMapWithWedgeLayoutInfos:(id)infos
 {
   v54 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  infosCopy = infos;
   v8 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v4, v5, v6, v7);
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v9 = v3;
+  v9 = infosCopy;
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, v11, v12, v13, &v49, v53, 16);
   if (v14)
   {
@@ -513,23 +513,23 @@ LABEL_29:
   return v194;
 }
 
-- (id)optimizedWedgeLayoutInfoPlacementForWedgeLayoutInfos:(id)a3
+- (id)optimizedWedgeLayoutInfoPlacementForWedgeLayoutInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   v9 = objc_msgSend_chartInfo(self, v5, v6, v7, v8);
   v14 = objc_msgSend_chartType(v9, v10, v11, v12, v13);
   v19 = objc_msgSend_supportsPlaceTitleAtCenter(v14, v15, v16, v17, v18);
 
   if (!v19)
   {
-    if (objc_msgSend_count(v4, v20, v21, v22, v23) > 1)
+    if (objc_msgSend_count(infosCopy, v20, v21, v22, v23) > 1)
     {
       v45 = 0;
       goto LABEL_14;
     }
 
 LABEL_16:
-    v70 = v4;
+    v70 = infosCopy;
     v75 = objc_msgSend_copy(v70, v71, v72, v73, v74);
     goto LABEL_22;
   }
@@ -551,12 +551,12 @@ LABEL_16:
   }
 
   v45 = !v44;
-  if (objc_msgSend_count(v4, v40, v41, v42, v43) > 1)
+  if (objc_msgSend_count(infosCopy, v40, v41, v42, v43) > 1)
   {
     goto LABEL_14;
   }
 
-  if (!v45 || !objc_msgSend_count(v4, v46, v47, v48, v49))
+  if (!v45 || !objc_msgSend_count(infosCopy, v46, v47, v48, v49))
   {
     goto LABEL_16;
   }
@@ -569,7 +569,7 @@ LABEL_14:
   if (v55 == 1)
   {
     v60 = [TSCHChartPieBendedLineLabelPlacement alloc];
-    v65 = objc_msgSend_initWithArrayOfWedgeLayoutInfos_(v60, v61, v62, v63, v64, v4);
+    v65 = objc_msgSend_initWithArrayOfWedgeLayoutInfos_(v60, v61, v62, v63, v64, infosCopy);
   }
 
   else
@@ -583,7 +583,7 @@ LABEL_14:
       objc_msgSend_titleSizeToUseForOverlapPreventionWithLabels(self, v56, v57, v58, v59);
       if ((TSUSizeIsEmpty() & 1) == 0)
       {
-        v84 = objc_msgSend_firstObject(v4, v80, v81, v82, v83);
+        v84 = objc_msgSend_firstObject(infosCopy, v80, v81, v82, v83);
         v89 = objc_msgSend_wedgeElement(v84, v85, v86, v87, v88);
         objc_msgSend_centerPoint(v89, v90, v91, v92, v93);
 
@@ -596,7 +596,7 @@ LABEL_14:
     }
 
     v98 = [TSCHChartPieStraightLineLabelPlacement alloc];
-    v65 = objc_msgSend_initWithArrayOfWedgeLayoutInfos_titleRectInWedgeElementSpace_(v98, v99, v76, v77, v78, v4, v79);
+    v65 = objc_msgSend_initWithArrayOfWedgeLayoutInfos_titleRectInWedgeElementSpace_(v98, v99, v76, v77, v78, infosCopy, v79);
   }
 
   v100 = v65;
@@ -654,11 +654,11 @@ LABEL_22:
   return result;
 }
 
-- (void)setLayoutSize:(CGSize)a3
+- (void)setLayoutSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = objc_msgSend_chartInfo(self, a2, a3.width, a3.height, v3);
+  height = size.height;
+  width = size.width;
+  v7 = objc_msgSend_chartInfo(self, a2, size.width, size.height, v3);
   objc_msgSend_minimumChartBodySize(v7, v8, v9, v10, v11);
   v13 = v12;
   v15 = v14;
@@ -711,7 +711,7 @@ LABEL_22:
   [(TSCHChartLayoutItem *)&v21 setLayoutSize:v16, v17];
 }
 
-- (void)p_collectMaxRatio:(double *)a3 maxLabelOverhang:(double *)a4 maxWedgeExplosion:(float *)a5 maxComboExplosion:(float *)a6
+- (void)p_collectMaxRatio:(double *)ratio maxLabelOverhang:(double *)overhang maxWedgeExplosion:(float *)explosion maxComboExplosion:(float *)comboExplosion
 {
   v140 = *MEMORY[0x277D85DE8];
   v132 = objc_msgSend_model(self, a2, v6, v7, v8);
@@ -876,39 +876,39 @@ LABEL_22:
     v122 = v121;
   }
 
-  if (a3)
+  if (ratio)
   {
-    *a3 = v129;
+    *ratio = v129;
   }
 
-  if (a4)
+  if (overhang)
   {
-    *a4 = v122 * 0.5;
+    *overhang = v122 * 0.5;
   }
 
-  if (a5)
+  if (explosion)
   {
-    *a5 = v33;
+    *explosion = v33;
   }
 
-  if (a6)
+  if (comboExplosion)
   {
-    *a6 = v130;
+    *comboExplosion = v130;
   }
 }
 
-- (CGSize)bodySizeForOverhangSize:(CGSize)a3
+- (CGSize)bodySizeForOverhangSize:(CGSize)size
 {
-  if (a3.width >= a3.height)
+  if (size.width >= size.height)
   {
-    a3.width = a3.height;
+    size.width = size.height;
   }
 
   v25 = 0.0;
   v26 = 1.0;
-  v5 = a3.width * 0.5;
+  v5 = size.width * 0.5;
   v24 = 0;
-  objc_msgSend_p_collectMaxRatio_maxLabelOverhang_maxWedgeExplosion_maxComboExplosion_(self, a2, a3.width, 0.5, v3, &v26, &v25, &v24 + 4, &v24);
+  objc_msgSend_p_collectMaxRatio_maxLabelOverhang_maxWedgeExplosion_maxComboExplosion_(self, a2, size.width, 0.5, v3, &v26, &v25, &v24 + 4, &v24);
   v7 = *(&v24 + 1) + 1.0;
   v8 = v5 / v7;
   v9 = *&v24;
@@ -964,13 +964,13 @@ LABEL_22:
   return result;
 }
 
-- (CGSize)overhangSizeForBodySize:(CGSize)a3
+- (CGSize)overhangSizeForBodySize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   v12 = 0.0;
   v13 = 1.0;
   v11 = 0;
-  objc_msgSend_p_collectMaxRatio_maxLabelOverhang_maxWedgeExplosion_maxComboExplosion_(self, a2, a3.width, a3.height, v3, &v13, &v12, &v11 + 4, &v11);
+  objc_msgSend_p_collectMaxRatio_maxLabelOverhang_maxWedgeExplosion_maxComboExplosion_(self, a2, size.width, size.height, v3, &v13, &v12, &v11 + 4, &v11);
   v5 = *(&v11 + 1) + 1.0;
   v6 = width * 0.5 / v5;
   v7 = v5 * v6;
@@ -1240,10 +1240,10 @@ LABEL_22:
   return result;
 }
 
-- (id)renderersWithRep:(id)a3
+- (id)renderersWithRep:(id)rep
 {
   v63 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  repCopy = rep;
   v9 = objc_msgSend_array(MEMORY[0x277CBEB18], v5, v6, v7, v8);
   v58 = 0u;
   v59 = 0u;
@@ -1273,7 +1273,7 @@ LABEL_22:
         if (v46)
         {
           v47 = [v46 alloc];
-          v52 = objc_msgSend_initWithChartRep_layoutItem_(v47, v48, v49, v50, v51, v4, self);
+          v52 = objc_msgSend_initWithChartRep_layoutItem_(v47, v48, v49, v50, v51, repCopy, self);
           objc_msgSend_addObject_(v9, v53, v54, v55, v56, v52);
         }
       }
@@ -1287,9 +1287,9 @@ LABEL_22:
   return v9;
 }
 
-- (TSCHChartPieLabelGeometry)labelGeometryForRenderingLabelForSeriesModelCache:(SEL)a3 labelType:(id)a4
+- (TSCHChartPieLabelGeometry)labelGeometryForRenderingLabelForSeriesModelCache:(SEL)cache labelType:(id)type
 {
-  v9 = a4;
+  typeCopy = type;
   if (a5 >= 2)
   {
     v13 = MEMORY[0x277D81150];
@@ -1318,26 +1318,26 @@ LABEL_22:
   v112 = v115;
   v113 = v28;
   v31 = objc_msgSend_model(self, v8, v115.x, v28.width, *&v101);
-  v36 = objc_msgSend_seriesIndex(v9, v32, v33, v34, v35);
+  v36 = objc_msgSend_seriesIndex(typeCopy, v32, v33, v34, v35);
   v41 = objc_msgSend_seriesAtIndex_(v31, v37, v38, v39, v40, v36);
   v46.width = v106;
   v47.x = v108;
   v45 = v41;
   v46.height = *v30;
   v47.y = *v29;
-  if (v9)
+  if (typeCopy)
   {
     v107 = v46;
     v109 = v47;
-    shouldRenderLabel = objc_msgSend_shouldRenderLabel(v9, v42, v43, v44, v47.x);
+    shouldRenderLabel = objc_msgSend_shouldRenderLabel(typeCopy, v42, v43, v44, v47.x);
     v46 = v107;
     v47 = v109;
     if (shouldRenderLabel)
     {
-      v52 = objc_msgSend_defaultPieWedgeElementForSeriesModelCache_(self, v49, v50, v51, v109.x, v9, v107.width);
+      v52 = objc_msgSend_defaultPieWedgeElementForSeriesModelCache_(self, v49, v50, v51, v109.x, typeCopy, v107.width);
       v57 = objc_msgSend_sharedText(TSCHText, v53, v54, v55, v56);
-      v62 = objc_msgSend_labelStringForType_(v9, v58, v59, v60, v61, a5);
-      v67 = objc_msgSend_paragraphStyle(v9, v63, v64, v65, v66);
+      v62 = objc_msgSend_labelStringForType_(typeCopy, v58, v59, v60, v61, a5);
+      v67 = objc_msgSend_paragraphStyle(typeCopy, v63, v64, v65, v66);
       objc_msgSend_measureText_paragraphStyle_outErasableFrame_(v57, v68, v69, v70, v71, v62, v67, &v112);
       v104 = v73;
       v105 = v72;
@@ -1377,10 +1377,10 @@ LABEL_22:
   return result;
 }
 
-- (TSCHChartPieLabelGeometries)labelGeometriesForRenderingLabelsForSeriesModelCache:(SEL)a3 topLabelType:(id)a4 bottomLabelType:(int64_t)a5
+- (TSCHChartPieLabelGeometries)labelGeometriesForRenderingLabelsForSeriesModelCache:(SEL)cache topLabelType:(id)type bottomLabelType:(int64_t)labelType
 {
-  v11 = a4;
-  if (a5 >= 2)
+  typeCopy = type;
+  if (labelType >= 2)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v12, v13, v14, "[TSCHChartRadialBodyLayoutItem labelGeometriesForRenderingLabelsForSeriesModelCache:topLabelType:bottomLabelType:]");
@@ -1423,7 +1423,7 @@ LABEL_22:
   v159 = v167;
   v160 = v45;
   v50 = objc_msgSend_model(self, v10, v167.x, v45.width, v166.a);
-  v55 = objc_msgSend_seriesIndex(v11, v51, v52, v53, v54);
+  v55 = objc_msgSend_seriesIndex(typeCopy, v51, v52, v53, v54);
   v60 = objc_msgSend_seriesAtIndex_(v50, v56, v57, v58, v59, v55);
   v65 = v152;
   v64 = v154;
@@ -1433,10 +1433,10 @@ LABEL_22:
   v68.x = v156;
   v68.y = *v46;
   v157 = v68;
-  if (v11)
+  if (typeCopy)
   {
     v150 = v67;
-    shouldRenderLabel = objc_msgSend_shouldRenderLabel(v11, v61, v68.x, v62, v63);
+    shouldRenderLabel = objc_msgSend_shouldRenderLabel(typeCopy, v61, v68.x, v62, v63);
     v67 = v150;
     v65 = v152;
     v64 = v154;
@@ -1444,17 +1444,17 @@ LABEL_22:
     v74 = v47;
     if (shouldRenderLabel)
     {
-      v151 = objc_msgSend_defaultPieWedgeElementForSeriesModelCache_(self, v70, v71, v72, v48, v11, v47, v150.width, v154, v152);
+      v151 = objc_msgSend_defaultPieWedgeElementForSeriesModelCache_(self, v70, v71, v72, v48, typeCopy, v47, v150.width, v154, v152);
       v79 = objc_msgSend_sharedText(TSCHText, v75, v76, v77, v78);
-      v84 = objc_msgSend_labelStringForType_(v11, v80, v81, v82, v83, a5);
-      v89 = objc_msgSend_paragraphStyle(v11, v85, v86, v87, v88);
+      v84 = objc_msgSend_labelStringForType_(typeCopy, v80, v81, v82, v83, labelType);
+      v89 = objc_msgSend_paragraphStyle(typeCopy, v85, v86, v87, v88);
       objc_msgSend_measureText_paragraphStyle_outErasableFrame_(v79, v90, v91, v92, v93, v84, v89, &v164);
       v153 = v95;
       v155 = v94;
 
       v100 = objc_msgSend_sharedText(TSCHText, v96, v97, v98, v99);
-      v105 = objc_msgSend_labelStringForType_(v11, v101, v102, v103, v104, a6);
-      v110 = objc_msgSend_paragraphStyle(v11, v106, v107, v108, v109);
+      v105 = objc_msgSend_labelStringForType_(typeCopy, v101, v102, v103, v104, a6);
+      v110 = objc_msgSend_paragraphStyle(typeCopy, v106, v107, v108, v109);
       objc_msgSend_measureText_paragraphStyle_outErasableFrame_(v100, v111, v112, v113, v114, v105, v110, &v159);
       v47 = v115;
       v48 = v116;
@@ -1522,7 +1522,7 @@ LABEL_22:
   return result;
 }
 
-- (CGAffineTransform)transformToShiftStraightLineLabelRectOutForEnableCalloutLineONSetting:(SEL)a3 wedgeElement:(CGRect)a4
+- (CGAffineTransform)transformToShiftStraightLineLabelRectOutForEnableCalloutLineONSetting:(SEL)setting wedgeElement:(CGRect)element
 {
   v28 = a5;
   objc_msgSend_pointAtWedgeTipInChartCoordinateSpace(v28, v6, v7, v8, v9);
@@ -1548,12 +1548,12 @@ LABEL_22:
   return result;
 }
 
-- (CGAffineTransform)transformToMaintainLabelSameDistanceAwayFromWedge:(SEL)a3 wedgeElement:(CGRect)a4
+- (CGAffineTransform)transformToMaintainLabelSameDistanceAwayFromWedge:(SEL)wedge wedgeElement:(CGRect)element
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = element.size.height;
+  width = element.size.width;
+  y = element.origin.y;
+  x = element.origin.x;
   v25 = a5;
   TSUCenterOfRect();
   v10 = MEMORY[0x277CBF2C0];
@@ -1576,9 +1576,9 @@ LABEL_22:
   return result;
 }
 
-- (CGAffineTransform)transformForRenderingElementForSeries:(SEL)a3 outElementSize:(unint64_t)a4 outClipRect:(CGSize *)a5 withInnerRadius:(CGRect *)a6
+- (CGAffineTransform)transformForRenderingElementForSeries:(SEL)series outElementSize:(unint64_t)size outClipRect:(CGSize *)rect withInnerRadius:(CGRect *)radius
 {
-  v15 = objc_msgSend_pathCacheForSeries_withInnerRadius_(self, a3, v7, v8, v9, a4, a7);
+  v15 = objc_msgSend_pathCacheForSeries_withInnerRadius_(self, series, v7, v8, v9, size, a7);
   x = *MEMORY[0x277CBF398];
   y = *(MEMORY[0x277CBF398] + 8);
   v18 = *(MEMORY[0x277CBF398] + 16);
@@ -1596,7 +1596,7 @@ LABEL_22:
     width = *MEMORY[0x277CBF3A8];
     height = *(MEMORY[0x277CBF3A8] + 8);
 LABEL_8:
-    if (!a5)
+    if (!rect)
     {
       goto LABEL_10;
     }
@@ -1608,13 +1608,13 @@ LABEL_8:
   width = BoundingBox.size.width;
   height = BoundingBox.size.height;
   CGAffineTransformMakeTranslation(retstr, BoundingBox.origin.x, BoundingBox.origin.y);
-  if (!a6)
+  if (!radius)
   {
     goto LABEL_8;
   }
 
   v32 = objc_msgSend_model(self, v28, v29, v30, v31);
-  v37 = objc_msgSend_pieSeriesModelCacheForSeries_(v32, v33, v34, v35, v36, a4);
+  v37 = objc_msgSend_pieSeriesModelCacheForSeries_(v32, v33, v34, v35, v36, size);
 
   v42 = objc_msgSend_seriesShadow(v37, v38, v39, v40, v41);
   if (!objc_msgSend_hasShadow_(TSCHStyleUtilities, v43, v44, v45, v46, v42) || (objc_msgSend_opacity(v42, v47, v48, v49, v50), v52 <= 0.0))
@@ -1674,41 +1674,41 @@ LABEL_17:
   v18 = v88.size.width;
   v19 = v88.size.height;
 
-  if (a5)
+  if (rect)
   {
 LABEL_9:
-    a5->width = width;
-    a5->height = height;
+    rect->width = width;
+    rect->height = height;
   }
 
 LABEL_10:
-  if (a6)
+  if (radius)
   {
-    a6->origin.x = x;
-    a6->origin.y = y;
-    a6->size.width = v18;
-    a6->size.height = v19;
+    radius->origin.x = x;
+    radius->origin.y = y;
+    radius->size.width = v18;
+    radius->size.height = v19;
   }
 
   return result;
 }
 
-- (id)defaultPieWedgeElementForSeriesModelCache:(id)a3
+- (id)defaultPieWedgeElementForSeriesModelCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v9 = objc_msgSend_model(self, v5, v6, v7, v8);
-  v14 = objc_msgSend_seriesIndex(v4, v10, v11, v12, v13);
+  v14 = objc_msgSend_seriesIndex(cacheCopy, v10, v11, v12, v13);
   v19 = objc_msgSend_seriesAtIndex_(v9, v15, v16, v17, v18, v14);
   v24 = objc_msgSend_chartInfo(self, v20, v21, v22, v23);
-  objc_msgSend_effectiveLabelExplosion(v4, v25, v26, v27, v28);
+  objc_msgSend_effectiveLabelExplosion(cacheCopy, v25, v26, v27, v28);
   v72 = *&v29;
-  objc_msgSend_effectiveWedgeExplosion(v4, v30, v29, v31, v32);
+  objc_msgSend_effectiveWedgeExplosion(cacheCopy, v30, v29, v31, v32);
   v34 = *&v33;
-  objc_msgSend_midAngle(v4, v35, v33, v36, v37);
+  objc_msgSend_midAngle(cacheCopy, v35, v33, v36, v37);
   v39 = v38;
-  objc_msgSend_startAngle(v4, v40, v38, v41, v42);
+  objc_msgSend_startAngle(cacheCopy, v40, v38, v41, v42);
   v44 = v43;
-  objc_msgSend_endAngle(v4, v45, v43, v46, v47);
+  objc_msgSend_endAngle(cacheCopy, v45, v43, v46, v47);
   v49 = v48;
 
   objc_msgSend_rootedLayoutRect(self, v50, v51, v52, v53);
@@ -1726,31 +1726,31 @@ LABEL_10:
   return started;
 }
 
-- (id)defaultPieWedgeLayoutInfoForSeriesModelCache:(id)a3 pieLabels:(id)a4 combinedLabelTransform:(CGAffineTransform *)a5
+- (id)defaultPieWedgeLayoutInfoForSeriesModelCache:(id)cache pieLabels:(id)labels combinedLabelTransform:(CGAffineTransform *)transform
 {
-  v8 = a4;
-  v13 = objc_msgSend_defaultPieWedgeElementForSeriesModelCache_(self, v9, v10, v11, v12, a3);
+  labelsCopy = labels;
+  v13 = objc_msgSend_defaultPieWedgeElementForSeriesModelCache_(self, v9, v10, v11, v12, cache);
   v14 = [TSCHChartPieWedgeLayoutInfo alloc];
-  v15 = *&a5->c;
-  v20[0] = *&a5->a;
+  v15 = *&transform->c;
+  v20[0] = *&transform->a;
   v20[1] = v15;
-  v21 = *&a5->tx;
-  v18 = objc_msgSend_initWithPieWedgeElement_pieLabels_combinedLabelTransformIntoPieChartCoordinateSpace_(v14, v16, *&v21, *&v15, v17, v13, v8, v20);
+  v21 = *&transform->tx;
+  v18 = objc_msgSend_initWithPieWedgeElement_pieLabels_combinedLabelTransformIntoPieChartCoordinateSpace_(v14, v16, *&v21, *&v15, v17, v13, labelsCopy, v20);
 
   return v18;
 }
 
-- (id)newPathsForRenderingCalloutLineForSeries:(unint64_t)a3 outStartLineEndPath:(id *)a4 outEndLineEndPath:(id *)a5 stroke:(id)a6 outStroke:(id *)a7 context:(CGContext *)a8 contextScale:(float)a9
+- (id)newPathsForRenderingCalloutLineForSeries:(unint64_t)series outStartLineEndPath:(id *)path outEndLineEndPath:(id *)endPath stroke:(id)stroke outStroke:(id *)outStroke context:(CGContext *)context contextScale:(float)scale
 {
-  v15 = a6;
+  strokeCopy = stroke;
   v20 = objc_msgSend_model(self, v16, v17, v18, v19);
-  v25 = objc_msgSend_pieSeriesModelCacheForSeries_(v20, v21, v22, v23, v24, a3);
-  v30 = objc_msgSend_seriesAtIndex_(v20, v26, v27, v28, v29, a3);
+  v25 = objc_msgSend_pieSeriesModelCacheForSeries_(v20, v21, v22, v23, v24, series);
+  v30 = objc_msgSend_seriesAtIndex_(v20, v26, v27, v28, v29, series);
   v36 = objc_msgSend_wedgeLayoutInfosInChartCoordinateSpaceForSeriesIndex(self, v31, v32, v33, v34);
   if (v25)
   {
-    v133 = a8;
-    v40 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v35, v37, v38, v39, a3);
+    contextCopy = context;
+    v40 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v35, v37, v38, v39, series);
     v45 = objc_msgSend_objectForKeyedSubscript_(v36, v41, v42, v43, v44, v40);
 
     if (!objc_msgSend_shouldRenderLabel(v25, v46, v47, v48, v49) || !objc_msgSend_intValueForProperty_defaultValue_(v30, v50, v51, v52, v53, 1138, 2))
@@ -1761,7 +1761,7 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    v132 = a7;
+    outStrokeCopy = outStroke;
     v58 = objc_msgSend_chartInfo(self, v54, v55, v56, v57);
     v63 = objc_msgSend_intValueForProperty_defaultValue_(v58, v59, v60, v61, v62, 1081, 1);
 
@@ -1799,30 +1799,30 @@ LABEL_25:
     v93 = started;
     if (started > 1)
     {
-      v108 = v132;
+      v108 = outStrokeCopy;
       if (started == 2)
       {
-        v109 = a4;
+        pathCopy2 = path;
         goto LABEL_22;
       }
 
       if (started == 3)
       {
-        v109 = a4;
-        v110 = a5;
+        pathCopy2 = path;
+        endPathCopy = endPath;
         v111 = v130;
 LABEL_23:
         v129 = v108;
         v127 = v131;
-        *&v105 = a9;
-        v93 = objc_msgSend_newCalloutLinePaths_startLineEnd_outStartLineEndPath_endLineEnd_outEndLineEndPath_stroke_outStroke_context_contextScale_(v76, v104, v105, v106, v107, v45, v131, v109, v111, v110, v15, v129, v133);
+        *&v105 = scale;
+        v93 = objc_msgSend_newCalloutLinePaths_startLineEnd_outStartLineEndPath_endLineEnd_outEndLineEndPath_stroke_outStroke_context_contextScale_(v76, v104, v105, v106, v107, v45, v131, pathCopy2, v111, endPathCopy, strokeCopy, v129, contextCopy);
         goto LABEL_24;
       }
     }
 
     else
     {
-      v108 = v132;
+      v108 = outStrokeCopy;
       if (!started)
       {
 LABEL_20:
@@ -1837,10 +1837,10 @@ LABEL_24:
       {
 
         v131 = 0;
-        v109 = 0;
+        pathCopy2 = 0;
 LABEL_22:
 
-        v110 = 0;
+        endPathCopy = 0;
         v111 = 0;
         goto LABEL_23;
       }
@@ -1864,10 +1864,10 @@ LABEL_27:
   return v93;
 }
 
-- (CGRect)calloutLineBoundingBoxForSeries:(unint64_t)a3
+- (CGRect)calloutLineBoundingBoxForSeries:(unint64_t)series
 {
   v8 = objc_msgSend_model(self, a2, v3, v4, v5);
-  v13 = objc_msgSend_seriesAtIndex_(v8, v9, v10, v11, v12, a3);
+  v13 = objc_msgSend_seriesAtIndex_(v8, v9, v10, v11, v12, series);
 
   v18 = objc_msgSend_objectValueForProperty_(v13, v14, v15, v16, v17, 1133);
   v23 = objc_msgSend_stroke(MEMORY[0x277D803C0], v19, v20, v21, v22);
@@ -1875,7 +1875,7 @@ LABEL_27:
   v63 = 0;
   v61 = v23;
   LODWORD(v24) = 1.0;
-  started = objc_msgSend_newPathsForRenderingCalloutLineForSeries_outStartLineEndPath_outEndLineEndPath_stroke_outStroke_context_contextScale_(self, v25, v24, v26, v27, a3, &v63, &v62, v18, &v61, 0);
+  started = objc_msgSend_newPathsForRenderingCalloutLineForSeries_outStartLineEndPath_outEndLineEndPath_stroke_outStroke_context_contextScale_(self, v25, v24, v26, v27, series, &v63, &v62, v18, &v61, 0);
   v29 = v63;
   v30 = v62;
   v31 = v61;
@@ -1926,19 +1926,19 @@ LABEL_27:
   return result;
 }
 
-- (id)labelStringForType:(int64_t)a3 seriesModelCache:(id)a4
+- (id)labelStringForType:(int64_t)type seriesModelCache:(id)cache
 {
-  v5 = a4;
-  v10 = v5;
-  if (a3 == 1)
+  cacheCopy = cache;
+  v10 = cacheCopy;
+  if (type == 1)
   {
-    v11 = objc_msgSend_valueLabelString(v5, v6, v7, v8, v9);
+    v11 = objc_msgSend_valueLabelString(cacheCopy, v6, v7, v8, v9);
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!type)
   {
-    v11 = objc_msgSend_seriesNameLabelString(v5, v6, v7, v8, v9);
+    v11 = objc_msgSend_seriesNameLabelString(cacheCopy, v6, v7, v8, v9);
 LABEL_5:
     v12 = v11;
     goto LABEL_7;
@@ -1947,7 +1947,7 @@ LABEL_5:
   v13 = MEMORY[0x277D81150];
   v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v7, v8, v9, "[TSCHChartRadialBodyLayoutItem labelStringForType:seriesModelCache:]");
   v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, v16, v17, v18, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartRadialBodyLayoutItem.m");
-  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v20, v21, v22, v23, v14, v19, 840, 0, "Invalid label type: %ld", a3);
+  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v20, v21, v22, v23, v14, v19, 840, 0, "Invalid label type: %ld", type);
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v24, v25, v26, v27);
   v12 = &stru_288528678;
@@ -1956,15 +1956,15 @@ LABEL_7:
   return v12;
 }
 
-- (CGPath)pathOfElementForSeries:(unint64_t)a3 outWedgeCenterPoint:(CGPoint *)a4 withInnerRadius:(id)a5
+- (CGPath)pathOfElementForSeries:(unint64_t)series outWedgeCenterPoint:(CGPoint *)point withInnerRadius:(id)radius
 {
-  v9 = objc_msgSend_pathCacheForSeries_withInnerRadius_(self, a2, v5, v6, v7, a3, a5);
+  v9 = objc_msgSend_pathCacheForSeries_withInnerRadius_(self, a2, v5, v6, v7, series, radius);
   v14 = objc_msgSend_pathTransformRelative(v9, v10, v11, v12, v13);
   objc_msgSend_wedgeCenterPoint(v9, v15, v16, v17, v18);
-  if (a4)
+  if (point)
   {
-    a4->x = v19;
-    a4->y = v20;
+    point->x = v19;
+    point->y = v20;
   }
 
   if (v14)
@@ -1981,20 +1981,20 @@ LABEL_7:
   return v21;
 }
 
-- (id)knobsOfElementForSeries:(unint64_t)a3 withInnerRadius:(id)a4
+- (id)knobsOfElementForSeries:(unint64_t)series withInnerRadius:(id)radius
 {
-  v7 = objc_msgSend_pathCacheForSeries_withInnerRadius_(self, a2, v4, v5, v6, a3, a4);
+  v7 = objc_msgSend_pathCacheForSeries_withInnerRadius_(self, a2, v4, v5, v6, series, radius);
   v12 = objc_msgSend_pathSelectionKnobs(v7, v8, v9, v10, v11);
 
   return v12;
 }
 
-- (id)pathCacheForSeries:(unint64_t)a3 withInnerRadius:(id)a4
+- (id)pathCacheForSeries:(unint64_t)series withInnerRadius:(id)radius
 {
-  v6 = a4;
+  radiusCopy = radius;
   v11 = objc_msgSend_p_pathCache(self, v7, v8, v9, v10);
   v16 = v11;
-  if (v11 && objc_msgSend_seriesIndex(v11, v12, v13, v14, v15) == a3 && (objc_msgSend_rootedLayoutRect(v16, v12, v13, v14, v15), !CGRectIsNull(v122)) && (objc_msgSend_rootedLayoutRect(self, v12, v13, v14, v15), objc_msgSend_rootedLayoutRect(v16, v17, v18, v19, v20), TSUNearlyEqualRects()) && (objc_msgSend_innerRadius(v16, v12, v13, v14, v15), v21 = objc_claimAutoreleasedReturnValue(), isEqualToNumber = objc_msgSend_isEqualToNumber_(v21, v22, v23, v24, v25, v6), v21, isEqualToNumber))
+  if (v11 && objc_msgSend_seriesIndex(v11, v12, v13, v14, v15) == series && (objc_msgSend_rootedLayoutRect(v16, v12, v13, v14, v15), !CGRectIsNull(v122)) && (objc_msgSend_rootedLayoutRect(self, v12, v13, v14, v15), objc_msgSend_rootedLayoutRect(v16, v17, v18, v19, v20), TSUNearlyEqualRects()) && (objc_msgSend_innerRadius(v16, v12, v13, v14, v15), v21 = objc_claimAutoreleasedReturnValue(), isEqualToNumber = objc_msgSend_isEqualToNumber_(v21, v22, v23, v24, v25, radiusCopy), v21, isEqualToNumber))
   {
     v27 = v16;
   }
@@ -2005,8 +2005,8 @@ LABEL_7:
     v29 = *(MEMORY[0x277CBF348] + 8);
     v30 = objc_msgSend_set(MEMORY[0x277CBEB98], v12, v13, v14, v15);
     v118 = objc_msgSend_model(self, v31, v32, v33, v34);
-    v119 = a3;
-    v39 = objc_msgSend_pieSeriesModelCacheForSeries_(v118, v35, v36, v37, v38, a3);
+    seriesCopy = series;
+    v39 = objc_msgSend_pieSeriesModelCacheForSeries_(v118, v35, v36, v37, v38, series);
     v44 = objc_msgSend_chartInfo(self, v40, v41, v42, v43);
     objc_msgSend_rootedLayoutRect(self, v45, v46, v47, v48);
     v50 = v49;
@@ -2047,7 +2047,7 @@ LABEL_7:
       v91 = __sincos_stret(v80);
       v92 = v87 + v90 * v91.__cosval;
       v93 = v89 + v90 * v91.__sinval;
-      started = objc_msgSend_newElementPathWithPercentage_radius_center_startAngle_midAngle_endAngle_withInnerRadius_(self, v94, v62, v67, v92, v6, v93, v114, v80, v113);
+      started = objc_msgSend_newElementPathWithPercentage_radius_center_startAngle_midAngle_endAngle_withInnerRadius_(self, v94, v62, v67, v92, radiusCopy, v93, v114, v80, v113);
       v97 = objc_msgSend_knobsWithRadius_center_startAngle_midAngle_endAngle_(self, v96, v67, v92, v93, v114, v80, v113);
 
       if (started)
@@ -2079,7 +2079,7 @@ LABEL_7:
 
     v99 = [TSCHRadialBodyLayoutItemPathCache alloc];
     v104 = objc_msgSend_allObjects(v30, v100, v101, v102, v103);
-    v27 = objc_msgSend_initWithSeriesIndex_rootedLayoutRect_wedgeCenterPoint_pathLayoutRelative_pathTransformRelative_pathSelectionKnobs_innerRadius_(v99, v105, v50, v52, v54, v119, started, Mutable, v104, v6, v56, v28, v29);
+    v27 = objc_msgSend_initWithSeriesIndex_rootedLayoutRect_wedgeCenterPoint_pathLayoutRelative_pathTransformRelative_pathSelectionKnobs_innerRadius_(v99, v105, v50, v52, v54, seriesCopy, started, Mutable, v104, radiusCopy, v56, v28, v29);
 
     objc_msgSend_setP_pathCache_(self, v106, v107, v108, v109, v27);
     CGPathRelease(started);

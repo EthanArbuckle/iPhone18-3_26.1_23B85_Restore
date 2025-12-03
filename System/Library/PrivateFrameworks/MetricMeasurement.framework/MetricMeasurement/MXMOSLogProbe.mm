@@ -2,7 +2,7 @@
 + (MXMOSLogProbe)probeHostOSLog;
 + (MXMProbeableDevice)hostDevice;
 + (NSArray)connectedDevices;
-- (MXMOSLogProbe)initWithTargetDevice:(id)a3;
+- (MXMOSLogProbe)initWithTargetDevice:(id)device;
 - (void)_stopUpdates;
 @end
 
@@ -11,32 +11,32 @@
 + (MXMProbeableDevice)hostDevice
 {
   v2 = +[MXMOSLogDeviceStore_Internal shared];
-  v3 = [v2 hostDevice];
+  hostDevice = [v2 hostDevice];
 
-  return v3;
+  return hostDevice;
 }
 
 + (NSArray)connectedDevices
 {
   v2 = +[MXMOSLogDeviceStore_Internal shared];
-  v3 = [v2 devices];
-  v4 = [v3 allValues];
+  devices = [v2 devices];
+  allValues = [devices allValues];
 
-  return v4;
+  return allValues;
 }
 
 + (MXMOSLogProbe)probeHostOSLog
 {
-  v3 = [a1 alloc];
-  v4 = [a1 hostDevice];
-  v5 = [v3 initWithTargetDevice:v4];
+  v3 = [self alloc];
+  hostDevice = [self hostDevice];
+  v5 = [v3 initWithTargetDevice:hostDevice];
 
   return v5;
 }
 
-- (MXMOSLogProbe)initWithTargetDevice:(id)a3
+- (MXMOSLogProbe)initWithTargetDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = MXMOSLogProbe;
   v5 = [(MXMProbe *)&v11 init];
@@ -47,8 +47,8 @@
     v5->_activityStream = v6;
 
     [(OSActivityStream *)v5->_activityStream setDelegate:v5];
-    v8 = [objc_opt_class() hostDevice];
-    if ([v4 isEqual:v8])
+    hostDevice = [objc_opt_class() hostDevice];
+    if ([deviceCopy isEqual:hostDevice])
     {
       goto LABEL_6;
     }
@@ -59,12 +59,12 @@
       goto LABEL_6;
     }
 
-    v9 = [v4 rawDevice];
+    rawDevice = [deviceCopy rawDevice];
 
-    if (v9)
+    if (rawDevice)
     {
-      v8 = [v4 rawDevice];
-      [(OSActivityStream *)v5->_activityStream setDevice:v8];
+      hostDevice = [deviceCopy rawDevice];
+      [(OSActivityStream *)v5->_activityStream setDevice:hostDevice];
 LABEL_6:
     }
   }

@@ -1,9 +1,9 @@
 @interface CLSNSFWModel
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3;
-- (CLSNSFWModel)initWithSceneAnalysisVersion:(unint64_t)a3;
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version;
+- (CLSNSFWModel)initWithSceneAnalysisVersion:(unint64_t)version;
 - (id)modelInfo;
-- (id)nodeForSignalIdentifier:(unint64_t)a3;
-- (void)processSignals:(id)a3 intoProcessedSignals:(id)a4;
+- (id)nodeForSignalIdentifier:(unint64_t)identifier;
+- (void)processSignals:(id)signals intoProcessedSignals:(id)processedSignals;
 - (void)setupVersion32;
 - (void)setupVersion33;
 - (void)setupVersion50_4;
@@ -44,51 +44,51 @@ void __25__CLSNSFWModel_modelInfo__block_invoke(uint64_t a1, void *a2)
   [v2 addObject:v3];
 }
 
-- (void)processSignals:(id)a3 intoProcessedSignals:(id)a4
+- (void)processSignals:(id)signals intoProcessedSignals:(id)processedSignals
 {
-  v17 = a4;
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:&unk_287051C98];
+  processedSignalsCopy = processedSignals;
+  signalsCopy = signals;
+  v7 = [signalsCopy objectForKeyedSubscript:&unk_287051C98];
   [v7 doubleValue];
   v9 = v8;
 
-  v10 = [v6 objectForKeyedSubscript:&unk_287051CB0];
+  v10 = [signalsCopy objectForKeyedSubscript:&unk_287051CB0];
   [v10 doubleValue];
 
-  v11 = [v6 objectForKeyedSubscript:&unk_287051CC8];
+  v11 = [signalsCopy objectForKeyedSubscript:&unk_287051CC8];
 
   [v11 doubleValue];
   v13 = v12;
 
   if (self->_version < 0x32)
   {
-    [v17 setIsRecallinglyNSFWExplicit:{-[CLSSignalNode passesHighRecallWithConfidence:](self->_explicitNode, "passesHighRecallWithConfidence:", v13)}];
-    [v17 setIsNSFWExplicit:{-[CLSSignalNode passesWithConfidence:](self->_explicitNode, "passesWithConfidence:", v13)}];
+    [processedSignalsCopy setIsRecallinglyNSFWExplicit:{-[CLSSignalNode passesHighRecallWithConfidence:](self->_explicitNode, "passesHighRecallWithConfidence:", v13)}];
+    [processedSignalsCopy setIsNSFWExplicit:{-[CLSSignalNode passesWithConfidence:](self->_explicitNode, "passesWithConfidence:", v13)}];
   }
 
   else
   {
     v14 = v9 <= 0.3 && v13 >= 0.29;
-    [v17 setIsPreciselyNSFWExplicit:v14];
+    [processedSignalsCopy setIsPreciselyNSFWExplicit:v14];
     v15 = v9 <= 0.39 && v13 >= 0.15;
-    [v17 setIsNSFWExplicit:v15];
+    [processedSignalsCopy setIsNSFWExplicit:v15];
     v16 = v9 <= 0.66 && v13 >= 0.08;
-    [v17 setIsRecallinglyNSFWExplicit:v16];
+    [processedSignalsCopy setIsRecallinglyNSFWExplicit:v16];
   }
 }
 
-- (id)nodeForSignalIdentifier:(unint64_t)a3
+- (id)nodeForSignalIdentifier:(unint64_t)identifier
 {
-  if (a3 <= 2147483385)
+  if (identifier <= 2147483385)
   {
-    if (a3 > 2147483382)
+    if (identifier > 2147483382)
     {
-      if (a3 == 2147483383)
+      if (identifier == 2147483383)
       {
         explicitNode = self->_explicitNode;
       }
 
-      else if (a3 == 2147483384)
+      else if (identifier == 2147483384)
       {
         explicitNode = self->_brassiereNode;
       }
@@ -101,13 +101,13 @@ void __25__CLSNSFWModel_modelInfo__block_invoke(uint64_t a1, void *a2)
       goto LABEL_24;
     }
 
-    if (a3 == 2147483381)
+    if (identifier == 2147483381)
     {
       explicitNode = self->_noneNode;
       goto LABEL_24;
     }
 
-    if (a3 == 2147483382)
+    if (identifier == 2147483382)
     {
       explicitNode = self->_generalNode;
       goto LABEL_24;
@@ -116,14 +116,14 @@ void __25__CLSNSFWModel_modelInfo__block_invoke(uint64_t a1, void *a2)
 
   else
   {
-    if (a3 <= 2147483388)
+    if (identifier <= 2147483388)
     {
-      if (a3 == 2147483386)
+      if (identifier == 2147483386)
       {
         explicitNode = self->_maleBreastNode;
       }
 
-      else if (a3 == 2147483387)
+      else if (identifier == 2147483387)
       {
         explicitNode = self->_buttocksNode;
       }
@@ -136,7 +136,7 @@ void __25__CLSNSFWModel_modelInfo__block_invoke(uint64_t a1, void *a2)
       goto LABEL_24;
     }
 
-    switch(a3)
+    switch(identifier)
     {
       case 0x7FFFFEFDuLL:
         explicitNode = self->_maleGenitalsNode;
@@ -152,10 +152,10 @@ LABEL_24:
     }
   }
 
-  if ([(CLSNSFWModel *)self isResponsibleForSignalIdentifier:a3])
+  if ([(CLSNSFWModel *)self isResponsibleForSignalIdentifier:identifier])
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"NSFW - Unknown (%X)", a3];
-    v5 = [[CLSSignalNode alloc] initWithIdentifier:a3 name:v7 operatingPoint:0.0 highPrecisionOperatingPoint:0.0 highRecallOperatingPoint:0.0];
+    identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"NSFW - Unknown (%X)", identifier];
+    v5 = [[CLSSignalNode alloc] initWithIdentifier:identifier name:identifier operatingPoint:0.0 highPrecisionOperatingPoint:0.0 highRecallOperatingPoint:0.0];
   }
 
   else
@@ -318,7 +318,7 @@ LABEL_25:
   MEMORY[0x2821F96F8]();
 }
 
-- (CLSNSFWModel)initWithSceneAnalysisVersion:(unint64_t)a3
+- (CLSNSFWModel)initWithSceneAnalysisVersion:(unint64_t)version
 {
   v14 = *MEMORY[0x277D85DE8];
   v9.receiver = self;
@@ -327,11 +327,11 @@ LABEL_25:
   v5 = v4;
   if (v4)
   {
-    if (a3 < 0x32)
+    if (version < 0x32)
     {
-      if (a3 < 0x21)
+      if (version < 0x21)
       {
-        if (a3 == 32)
+        if (version == 32)
         {
           [(CLSNSFWModel *)v4 setupVersion32];
         }
@@ -342,7 +342,7 @@ LABEL_25:
           {
             v6 = objc_opt_class();
             *buf = 67109378;
-            v11 = a3;
+            versionCopy = version;
             v12 = 2112;
             v13 = v6;
             _os_log_impl(&dword_25E5F0000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Unsupported version %d in %@", buf, 0x12u);
@@ -368,15 +368,15 @@ LABEL_25:
   return v5;
 }
 
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version
 {
   v3 = 33;
-  if (a3 <= 0x20)
+  if (version <= 0x20)
   {
-    v3 = 32 * (a3 == 32);
+    v3 = 32 * (version == 32);
   }
 
-  if (a3 <= 0x31)
+  if (version <= 0x31)
   {
     return v3;
   }

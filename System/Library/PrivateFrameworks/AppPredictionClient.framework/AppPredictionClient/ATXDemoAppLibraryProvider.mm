@@ -1,8 +1,8 @@
 @interface ATXDemoAppLibraryProvider
 + (BOOL)isAppLibraryDemoModeEnabled;
-+ (id)_parseCategory:(id)a3 realCategories:(id)a4;
-+ (id)bundleIdsForCategoryWithName:(id)a3 in:(id)a4;
-+ (id)demoAppCategoriesForRealAppCategories:(id)a3;
++ (id)_parseCategory:(id)category realCategories:(id)categories;
++ (id)bundleIdsForCategoryWithName:(id)name in:(id)in;
++ (id)demoAppCategoriesForRealAppCategories:(id)categories;
 + (id)demoSuggestionsAndRecents;
 + (id)loadCategoriesFromDisk;
 + (void)loadCategoriesFromDisk;
@@ -21,11 +21,11 @@
   v4 = [v3 initWithSuiteName:*MEMORY[0x1E698B030]];
   if (([v4 BOOLForKey:@"ATXAppLibraryDemoModeEnabled"] & 1) != 0 || objc_msgSend(v4, "BOOLForKey:", @"SpotlightPlusDemoModeEnabled"))
   {
-    v5 = [a1 demoAppLibraryPath];
-    if (v5)
+    demoAppLibraryPath = [self demoAppLibraryPath];
+    if (demoAppLibraryPath)
     {
-      v6 = [MEMORY[0x1E696AC08] defaultManager];
-      v7 = [v6 fileExistsAtPath:v5];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v7 = [defaultManager fileExistsAtPath:demoAppLibraryPath];
     }
 
     else
@@ -44,9 +44,9 @@
 
 + (id)loadCategoriesFromDisk
 {
-  v2 = [a1 demoAppLibraryPath];
+  demoAppLibraryPath = [self demoAppLibraryPath];
   v11 = 0;
-  v3 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v2 options:0 error:&v11];
+  v3 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:demoAppLibraryPath options:0 error:&v11];
   v4 = v11;
   if (v3)
   {
@@ -88,16 +88,16 @@
   return v7;
 }
 
-+ (id)bundleIdsForCategoryWithName:(id)a3 in:(id)a4
++ (id)bundleIdsForCategoryWithName:(id)name in:(id)in
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  nameCopy = name;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  inCopy = in;
+  v7 = [inCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -108,12 +108,12 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(inCopy);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = [v11 objectForKeyedSubscript:{@"name", v16}];
-        v13 = [v12 isEqualToString:v5];
+        v13 = [v12 isEqualToString:nameCopy];
 
         if (v13)
         {
@@ -122,7 +122,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [inCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;
@@ -147,15 +147,15 @@ LABEL_11:
     _os_log_impl(&dword_1BF549000, v3, OS_LOG_TYPE_INFO, "[Demo] Demo suggestions and recents requested", v11, 2u);
   }
 
-  if ([a1 isAppLibraryDemoModeEnabled])
+  if ([self isAppLibraryDemoModeEnabled])
   {
-    v4 = [a1 loadCategoriesFromDisk];
-    if ([v4 count] > 1)
+    loadCategoriesFromDisk = [self loadCategoriesFromDisk];
+    if ([loadCategoriesFromDisk count] > 1)
     {
       v7 = [ATXAppDirectoryResponse alloc];
-      v5 = [a1 bundleIdsForCategoryWithName:@"Recents" in:v4];
-      v8 = [a1 bundleIdsForCategoryWithName:@"Suggestions" in:v4];
-      v9 = [a1 bundleIdsForCategoryWithName:@"Hidden" in:v4];
+      v5 = [self bundleIdsForCategoryWithName:@"Recents" in:loadCategoriesFromDisk];
+      v8 = [self bundleIdsForCategoryWithName:@"Suggestions" in:loadCategoriesFromDisk];
+      v9 = [self bundleIdsForCategoryWithName:@"Hidden" in:loadCategoriesFromDisk];
       v6 = [(ATXAppDirectoryResponse *)v7 initWithoutDedupingForRecents:v5 predictedApps:v8 hiddenApps:v9 error:0];
     }
 
@@ -179,15 +179,15 @@ LABEL_11:
   return v6;
 }
 
-+ (id)_parseCategory:(id)a3 realCategories:(id)a4
++ (id)_parseCategory:(id)category realCategories:(id)categories
 {
   v50 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:@"apps"];
+  categoryCopy = category;
+  categoriesCopy = categories;
+  v7 = [categoryCopy objectForKeyedSubscript:@"apps"];
   v8 = [v7 mutableCopy];
 
-  v9 = [v5 objectForKeyedSubscript:@"name"];
+  v9 = [categoryCopy objectForKeyedSubscript:@"name"];
   if ([v9 isEqualToString:@"Suggestions"] & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", @"Recents"))
   {
     v10 = 0;
@@ -199,20 +199,20 @@ LABEL_11:
     if (([v9 isEqualToString:@"Arcade"] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"Apple Arcade"))
     {
       v12 = [ATXAppDirectoryCategory alloc];
-      v13 = [v8 appIdentitiesFromBundleIDs];
-      v14 = [(ATXAppDirectoryCategory *)v12 initWithCategoryID:2 appIdentities:v13];
+      appIdentitiesFromBundleIDs = [v8 appIdentitiesFromBundleIDs];
+      v14 = [(ATXAppDirectoryCategory *)v12 initWithCategoryID:2 appIdentities:appIdentitiesFromBundleIDs];
 
       v46 = 0u;
       v47 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v15 = v6;
+      v15 = categoriesCopy;
       v16 = [v15 countByEnumeratingWithState:&v44 objects:v49 count:16];
       if (v16)
       {
         v17 = v16;
         v38 = v14;
-        v39 = v6;
+        v39 = categoriesCopy;
         v18 = *v45;
 LABEL_8:
         v19 = 0;
@@ -237,7 +237,7 @@ LABEL_8:
               goto LABEL_8;
             }
 
-            v6 = v39;
+            categoriesCopy = v39;
             goto LABEL_24;
           }
         }
@@ -245,27 +245,27 @@ LABEL_8:
 LABEL_26:
         v14 = v20;
 
-        v6 = v39;
+        categoriesCopy = v39;
       }
     }
 
     else
     {
       v21 = [ATXAppDirectoryCategory alloc];
-      v22 = [v8 appIdentitiesFromBundleIDs];
-      v14 = [(ATXAppDirectoryCategory *)v21 initWithCategoryID:1 appIdentitites:v22 localizedName:v9];
+      appIdentitiesFromBundleIDs2 = [v8 appIdentitiesFromBundleIDs];
+      v14 = [(ATXAppDirectoryCategory *)v21 initWithCategoryID:1 appIdentitites:appIdentitiesFromBundleIDs2 localizedName:v9];
 
       v42 = 0u;
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v23 = v6;
+      v23 = categoriesCopy;
       v24 = [v23 countByEnumeratingWithState:&v40 objects:v48 count:16];
       if (v24)
       {
         v25 = v24;
         v38 = v14;
-        v39 = v6;
+        v39 = categoriesCopy;
         v26 = *v41;
         while (2)
         {
@@ -296,42 +296,42 @@ LABEL_26:
           break;
         }
 
-        v6 = v39;
+        categoriesCopy = v39;
         v11 = off_1E80BF000;
 LABEL_24:
         v14 = v38;
       }
     }
 
-    v30 = [(ATXAppDirectoryCategory *)v14 appIdentities];
-    v31 = [v30 bundleIDsFromIdentities];
-    v32 = [v31 mutableCopy];
+    appIdentities = [(ATXAppDirectoryCategory *)v14 appIdentities];
+    bundleIDsFromIdentities = [appIdentities bundleIDsFromIdentities];
+    v32 = [bundleIDsFromIdentities mutableCopy];
 
     [v32 removeObjectsInArray:v8];
     [v8 addObjectsFromArray:v32];
     v33 = objc_alloc(v11[24]);
-    v34 = [(ATXAppDirectoryCategory *)v14 categoryID];
-    v35 = [v8 appIdentitiesFromBundleIDs];
-    v36 = [(ATXAppDirectoryCategory *)v14 localizedName];
-    v10 = [v33 initWithCategoryID:v34 appIdentitites:v35 localizedName:v36];
+    categoryID = [(ATXAppDirectoryCategory *)v14 categoryID];
+    appIdentitiesFromBundleIDs3 = [v8 appIdentitiesFromBundleIDs];
+    localizedName = [(ATXAppDirectoryCategory *)v14 localizedName];
+    v10 = [v33 initWithCategoryID:categoryID appIdentitites:appIdentitiesFromBundleIDs3 localizedName:localizedName];
   }
 
   return v10;
 }
 
-+ (id)demoAppCategoriesForRealAppCategories:(id)a3
++ (id)demoAppCategoriesForRealAppCategories:(id)categories
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([a1 isAppLibraryDemoModeEnabled])
+  categoriesCopy = categories;
+  if ([self isAppLibraryDemoModeEnabled])
   {
     v5 = objc_opt_new();
-    v6 = [a1 loadCategoriesFromDisk];
+    loadCategoriesFromDisk = [self loadCategoriesFromDisk];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v7 = [loadCategoriesFromDisk countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -342,17 +342,17 @@ LABEL_24:
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(loadCategoriesFromDisk);
           }
 
-          v11 = [a1 _parseCategory:*(*(&v13 + 1) + 8 * i) realCategories:v4];
+          v11 = [self _parseCategory:*(*(&v13 + 1) + 8 * i) realCategories:categoriesCopy];
           if (v11)
           {
             [v5 addObject:v11];
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [loadCategoriesFromDisk countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v8);
@@ -371,7 +371,7 @@ LABEL_24:
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1BF549000, a2, OS_LOG_TYPE_ERROR, "[Demo] Could not load demo app library: %@", &v2, 0xCu);
 }
 

@@ -1,37 +1,37 @@
 @interface HUAvatarCollectionViewCell
 - (HFUserHandle)userHandle;
-- (HUAvatarCollectionViewCell)initWithFrame:(CGRect)a3;
+- (HUAvatarCollectionViewCell)initWithFrame:(CGRect)frame;
 - (NSString)description;
 - (void)_setupConstraints;
 - (void)prepareForReuse;
-- (void)setAvatarSize:(double)a3;
-- (void)setContentConfiguration:(id)a3;
-- (void)setUserHandle:(id)a3;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)setAvatarSize:(double)size;
+- (void)setContentConfiguration:(id)configuration;
+- (void)setUserHandle:(id)handle;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUAvatarCollectionViewCell
 
-- (HUAvatarCollectionViewCell)initWithFrame:(CGRect)a3
+- (HUAvatarCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = HUAvatarCollectionViewCell;
-  v3 = [(HUAvatarCollectionViewCell *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUAvatarCollectionViewCell *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [HUAvatarContentView alloc];
-    v5 = [MEMORY[0x277D756E0] cellConfiguration];
-    v6 = [(HUAvatarContentView *)v4 initWithConfiguration:v5];
+    cellConfiguration = [MEMORY[0x277D756E0] cellConfiguration];
+    v6 = [(HUAvatarContentView *)v4 initWithConfiguration:cellConfiguration];
     avatarContentView = v3->_avatarContentView;
     v3->_avatarContentView = v6;
 
-    v8 = [(HUAvatarCollectionViewCell *)v3 contentView];
-    [v8 addSubview:v3->_avatarContentView];
+    contentView = [(HUAvatarCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_avatarContentView];
 
     v3->_showAccessLevelDescription = 0;
-    v9 = [(HUAvatarCollectionViewCell *)v3 defaultContentConfiguration];
+    defaultContentConfiguration = [(HUAvatarCollectionViewCell *)v3 defaultContentConfiguration];
     contentConfiguration = v3->_contentConfiguration;
-    v3->_contentConfiguration = v9;
+    v3->_contentConfiguration = defaultContentConfiguration;
 
     [(HUAvatarCollectionViewCell *)v3 _setupConstraints];
   }
@@ -42,16 +42,16 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HUAvatarCollectionViewCell *)self userHandle];
-  v5 = [v4 userID];
-  [v3 appendString:v5 withName:@"userHandle"];
+  userHandle = [(HUAvatarCollectionViewCell *)self userHandle];
+  userID = [userHandle userID];
+  [v3 appendString:userID withName:@"userHandle"];
 
-  v6 = [(HUAvatarCollectionViewCell *)self item];
-  v7 = [v3 appendObject:v6 withName:@"item"];
+  item = [(HUAvatarCollectionViewCell *)self item];
+  v7 = [v3 appendObject:item withName:@"item"];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 - (void)prepareForReuse
@@ -60,89 +60,89 @@
   v5.super_class = HUAvatarCollectionViewCell;
   [(HUAvatarCollectionViewCell *)&v5 prepareForReuse];
   [(HUAvatarCollectionViewCell *)self setUserHandle:0];
-  v3 = [(HUAvatarCollectionViewCell *)self defaultContentConfiguration];
-  v4 = [(HUAvatarCollectionViewCell *)self avatarContentView];
-  [v4 setConfiguration:v3];
+  defaultContentConfiguration = [(HUAvatarCollectionViewCell *)self defaultContentConfiguration];
+  avatarContentView = [(HUAvatarCollectionViewCell *)self avatarContentView];
+  [avatarContentView setConfiguration:defaultContentConfiguration];
 }
 
 - (HFUserHandle)userHandle
 {
-  v2 = [(HUAvatarCollectionViewCell *)self avatarContentView];
-  v3 = [v2 userHandle];
+  avatarContentView = [(HUAvatarCollectionViewCell *)self avatarContentView];
+  userHandle = [avatarContentView userHandle];
 
-  return v3;
+  return userHandle;
 }
 
-- (void)setUserHandle:(id)a3
+- (void)setUserHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(HUAvatarCollectionViewCell *)self avatarContentView];
-  [v5 setUserHandle:v4];
+  handleCopy = handle;
+  avatarContentView = [(HUAvatarCollectionViewCell *)self avatarContentView];
+  [avatarContentView setUserHandle:handleCopy];
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
-  v4 = [(HUAvatarCollectionViewCell *)self item];
-  v9 = [HUListContentConfigurationUtilities labelDefaultConfigurationForItem:v4];
+  item = [(HUAvatarCollectionViewCell *)self item];
+  v9 = [HUListContentConfigurationUtilities labelDefaultConfigurationForItem:item];
 
-  v5 = [(HUAvatarCollectionViewCell *)self item];
-  v6 = [v5 latestResults];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13F80]];
+  item2 = [(HUAvatarCollectionViewCell *)self item];
+  latestResults = [item2 latestResults];
+  v7 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F80]];
 
   if ([(HUAvatarCollectionViewCell *)self showAccessLevelDescription]&& v7)
   {
     [v9 setSecondaryText:v7];
   }
 
-  v8 = [(HUAvatarCollectionViewCell *)self avatarContentView];
-  [v8 setConfiguration:v9];
+  avatarContentView = [(HUAvatarCollectionViewCell *)self avatarContentView];
+  [avatarContentView setConfiguration:v9];
 }
 
-- (void)setContentConfiguration:(id)a3
+- (void)setContentConfiguration:(id)configuration
 {
-  objc_storeStrong(&self->_contentConfiguration, a3);
-  v5 = a3;
-  v6 = [(HUAvatarCollectionViewCell *)self avatarContentView];
-  [v6 setConfiguration:v5];
+  objc_storeStrong(&self->_contentConfiguration, configuration);
+  configurationCopy = configuration;
+  avatarContentView = [(HUAvatarCollectionViewCell *)self avatarContentView];
+  [avatarContentView setConfiguration:configurationCopy];
 }
 
-- (void)setAvatarSize:(double)a3
+- (void)setAvatarSize:(double)size
 {
-  self->_avatarSize = a3;
-  v4 = [(HUAvatarCollectionViewCell *)self avatarContentView];
-  [v4 setAvatarSize:a3];
+  self->_avatarSize = size;
+  avatarContentView = [(HUAvatarCollectionViewCell *)self avatarContentView];
+  [avatarContentView setAvatarSize:size];
 }
 
 - (void)_setupConstraints
 {
   v26[4] = *MEMORY[0x277D85DE8];
-  v3 = [(HUAvatarCollectionViewCell *)self avatarContentView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  avatarContentView = [(HUAvatarCollectionViewCell *)self avatarContentView];
+  [avatarContentView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v16 = MEMORY[0x277CCAAD0];
-  v25 = [(HUAvatarCollectionViewCell *)self avatarContentView];
-  v23 = [v25 leadingAnchor];
-  v24 = [(HUAvatarCollectionViewCell *)self contentView];
-  v22 = [v24 leadingAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  avatarContentView2 = [(HUAvatarCollectionViewCell *)self avatarContentView];
+  leadingAnchor = [avatarContentView2 leadingAnchor];
+  contentView = [(HUAvatarCollectionViewCell *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v26[0] = v21;
-  v20 = [(HUAvatarCollectionViewCell *)self avatarContentView];
-  v18 = [v20 trailingAnchor];
-  v19 = [(HUAvatarCollectionViewCell *)self contentView];
-  v17 = [v19 trailingAnchor];
-  v15 = [v18 constraintEqualToAnchor:v17];
+  avatarContentView3 = [(HUAvatarCollectionViewCell *)self avatarContentView];
+  trailingAnchor = [avatarContentView3 trailingAnchor];
+  contentView2 = [(HUAvatarCollectionViewCell *)self contentView];
+  trailingAnchor2 = [contentView2 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v26[1] = v15;
-  v14 = [(HUAvatarCollectionViewCell *)self avatarContentView];
-  v4 = [v14 topAnchor];
-  v5 = [(HUAvatarCollectionViewCell *)self contentView];
-  v6 = [v5 topAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  avatarContentView4 = [(HUAvatarCollectionViewCell *)self avatarContentView];
+  topAnchor = [avatarContentView4 topAnchor];
+  contentView3 = [(HUAvatarCollectionViewCell *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v7 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v26[2] = v7;
-  v8 = [(HUAvatarCollectionViewCell *)self avatarContentView];
-  v9 = [v8 bottomAnchor];
-  v10 = [(HUAvatarCollectionViewCell *)self contentView];
-  v11 = [v10 bottomAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  avatarContentView5 = [(HUAvatarCollectionViewCell *)self avatarContentView];
+  bottomAnchor = [avatarContentView5 bottomAnchor];
+  contentView4 = [(HUAvatarCollectionViewCell *)self contentView];
+  bottomAnchor2 = [contentView4 bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v26[3] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:4];
   [v16 activateConstraints:v13];

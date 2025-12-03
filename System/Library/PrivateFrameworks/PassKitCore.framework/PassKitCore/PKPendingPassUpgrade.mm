@@ -1,23 +1,23 @@
 @interface PKPendingPassUpgrade
 - (BOOL)upgradeIsComplete;
-- (PKPendingPassUpgrade)initWithRequest:(id)a3 completionHandler:(id)a4;
-- (void)setAppletDidUpgrade:(BOOL)a3;
-- (void)setUpgradedPass:(id)a3;
+- (PKPendingPassUpgrade)initWithRequest:(id)request completionHandler:(id)handler;
+- (void)setAppletDidUpgrade:(BOOL)upgrade;
+- (void)setUpgradedPass:(id)pass;
 @end
 
 @implementation PKPendingPassUpgrade
 
-- (PKPendingPassUpgrade)initWithRequest:(id)a3 completionHandler:(id)a4
+- (PKPendingPassUpgrade)initWithRequest:(id)request completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v9 = [(PKPendingPassUpgrade *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_upgradeRequest, a3);
+    objc_storeStrong(&v9->_upgradeRequest, request);
     v11 = objc_alloc(MEMORY[0x1E695DF70]);
-    v12 = _Block_copy(v8);
+    v12 = _Block_copy(handlerCopy);
     v13 = [v11 initWithObjects:{v12, 0}];
     completionHandlers = v10->_completionHandlers;
     v10->_completionHandlers = v13;
@@ -28,7 +28,7 @@
   return v10;
 }
 
-- (void)setAppletDidUpgrade:(BOOL)a3
+- (void)setAppletDidUpgrade:(BOOL)upgrade
 {
   if (self->_appletDidUpgrade)
   {
@@ -43,9 +43,9 @@
   self->_appletDidUpgrade = 1;
 }
 
-- (void)setUpgradedPass:(id)a3
+- (void)setUpgradedPass:(id)pass
 {
-  v4 = a3;
+  passCopy = pass;
   upgradedPass = self->_upgradedPass;
   if (upgradedPass)
   {
@@ -59,7 +59,7 @@
     upgradedPass = self->_upgradedPass;
   }
 
-  self->_upgradedPass = v4;
+  self->_upgradedPass = passCopy;
 }
 
 - (BOOL)upgradeIsComplete

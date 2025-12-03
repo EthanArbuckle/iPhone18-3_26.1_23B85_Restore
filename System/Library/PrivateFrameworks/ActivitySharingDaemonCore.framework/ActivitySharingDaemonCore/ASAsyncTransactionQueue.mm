@@ -1,14 +1,14 @@
 @interface ASAsyncTransactionQueue
-- (ASAsyncTransactionQueue)initWithDescription:(id)a3 targetSerialQueue:(id)a4;
-- (void)performTransaction:(id)a3;
+- (ASAsyncTransactionQueue)initWithDescription:(id)description targetSerialQueue:(id)queue;
+- (void)performTransaction:(id)transaction;
 @end
 
 @implementation ASAsyncTransactionQueue
 
-- (ASAsyncTransactionQueue)initWithDescription:(id)a3 targetSerialQueue:(id)a4
+- (ASAsyncTransactionQueue)initWithDescription:(id)description targetSerialQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  descriptionCopy = description;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = ASAsyncTransactionQueue;
   v9 = [(ASAsyncTransactionQueue *)&v13 init];
@@ -18,19 +18,19 @@
     lockingQueue = v9->_lockingQueue;
     v9->_lockingQueue = v10;
 
-    objc_storeStrong(&v9->_targetQueue, a4);
-    objc_storeStrong(&v9->_description, a3);
+    objc_storeStrong(&v9->_targetQueue, queue);
+    objc_storeStrong(&v9->_description, description);
   }
 
   return v9;
 }
 
-- (void)performTransaction:(id)a3
+- (void)performTransaction:(id)transaction
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAD78] UUID];
-  v6 = [v5 UUIDString];
+  transactionCopy = transaction;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
   ASLoggingInitialize();
   v7 = *MEMORY[0x277CE8FE8];
@@ -40,7 +40,7 @@
     *buf = 138543618;
     v17 = description;
     v18 = 2114;
-    v19 = v6;
+    v19 = uUIDString;
     _os_log_impl(&dword_23E5E3000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Transaction created with identifier: %{public}@", buf, 0x16u);
   }
 
@@ -49,10 +49,10 @@
   v13[2] = __46__ASAsyncTransactionQueue_performTransaction___block_invoke;
   v13[3] = &unk_278C4BA30;
   v13[4] = self;
-  v14 = v6;
-  v15 = v4;
-  v9 = v4;
-  v10 = v6;
+  v14 = uUIDString;
+  v15 = transactionCopy;
+  v9 = transactionCopy;
+  v10 = uUIDString;
   v11 = MEMORY[0x23EF0EB00](v13);
   dispatch_async(self->_lockingQueue, v11);
 

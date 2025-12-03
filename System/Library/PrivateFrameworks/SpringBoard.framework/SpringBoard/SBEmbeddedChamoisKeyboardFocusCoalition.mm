@@ -1,6 +1,6 @@
 @interface SBEmbeddedChamoisKeyboardFocusCoalition
 - (SBEmbeddedChamoisKeyboardFocusCoalition)init;
-- (id)updatePolicyForArbitrationRequestFromMember:(id)a3 reason:(id)a4;
+- (id)updatePolicyForArbitrationRequestFromMember:(id)member reason:(id)reason;
 @end
 
 @implementation SBEmbeddedChamoisKeyboardFocusCoalition
@@ -29,62 +29,62 @@
   return v2;
 }
 
-- (id)updatePolicyForArbitrationRequestFromMember:(id)a3 reason:(id)a4
+- (id)updatePolicyForArbitrationRequestFromMember:(id)member reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBExclusiveMultiDisplayCoalition *)self embeddedMember];
-  v9 = [(SBExclusiveMultiDisplayCoalition *)self externalMember];
-  v10 = [v9 preferences];
-  v11 = [v8 preferences];
-  v12 = [v9 updateCoalitionPreferencesWithReason:v7];
-  v13 = [v8 updateCoalitionPreferencesWithReason:v7];
+  memberCopy = member;
+  reasonCopy = reason;
+  embeddedMember = [(SBExclusiveMultiDisplayCoalition *)self embeddedMember];
+  externalMember = [(SBExclusiveMultiDisplayCoalition *)self externalMember];
+  preferences = [externalMember preferences];
+  preferences2 = [embeddedMember preferences];
+  v12 = [externalMember updateCoalitionPreferencesWithReason:reasonCopy];
+  v13 = [embeddedMember updateCoalitionPreferencesWithReason:reasonCopy];
 
-  if ([v9 hasFocus])
+  if ([externalMember hasFocus])
   {
-    v14 = v9;
+    v14 = externalMember;
   }
 
   else
   {
-    v14 = v8;
+    v14 = embeddedMember;
   }
 
   v15 = v14;
-  v16 = [v13 focusLockReasonStrength];
-  v17 = [v12 focusLockReasonStrength];
+  focusLockReasonStrength = [v13 focusLockReasonStrength];
+  focusLockReasonStrength2 = [v12 focusLockReasonStrength];
   v50 = v15;
-  if (!v6)
+  if (!memberCopy)
   {
-    if ((v20 = v15, v6 = v20, v20 == v9) && v17 == 2 || v20 == v8 && v16 == 2)
+    if ((v20 = v15, memberCopy = v20, v20 == externalMember) && focusLockReasonStrength2 == 2 || v20 == embeddedMember && focusLockReasonStrength == 2)
     {
-      v6 = v20;
-      v19 = v6;
-      if (v6)
+      memberCopy = v20;
+      v19 = memberCopy;
+      if (memberCopy)
       {
         goto LABEL_61;
       }
     }
   }
 
-  if (v16 != 2 || v17 == 2)
+  if (focusLockReasonStrength != 2 || focusLockReasonStrength2 == 2)
   {
-    if (v16 == 2 || v17 != 2)
+    if (focusLockReasonStrength == 2 || focusLockReasonStrength2 != 2)
     {
-      if (v16 == 2)
+      if (focusLockReasonStrength == 2)
       {
         v47 = v13;
-        v21 = [v13 lockReasons];
-        v22 = [SBKeyboardFocusLockReason mostRecentReasonInSet:v21 strength:2];
+        lockReasons = [v13 lockReasons];
+        v22 = [SBKeyboardFocusLockReason mostRecentReasonInSet:lockReasons strength:2];
 
-        v23 = [v12 lockReasons];
-        [SBKeyboardFocusLockReason mostRecentReasonInSet:v23 strength:2];
-        v25 = v24 = v11;
+        lockReasons2 = [v12 lockReasons];
+        [SBKeyboardFocusLockReason mostRecentReasonInSet:lockReasons2 strength:2];
+        v25 = v24 = preferences2;
 
-        v26 = [v22 isMoreRecentThanReason:v25] ? v8 : v9;
+        v26 = [v22 isMoreRecentThanReason:v25] ? embeddedMember : externalMember;
         v19 = v26;
 
-        v11 = v24;
+        preferences2 = v24;
         v13 = v47;
 
         if (v19)
@@ -96,12 +96,12 @@
       goto LABEL_24;
     }
 
-    v18 = v9;
+    v18 = externalMember;
   }
 
   else
   {
-    v18 = v8;
+    v18 = embeddedMember;
   }
 
   v19 = v18;
@@ -113,25 +113,25 @@
 LABEL_24:
   v48 = v13;
   v49 = v12;
-  v27 = [v13 lockReasons];
-  v28 = [SBKeyboardFocusLockReason mostRecentReasonInSet:v27 strength:1];
+  lockReasons3 = [v13 lockReasons];
+  v28 = [SBKeyboardFocusLockReason mostRecentReasonInSet:lockReasons3 strength:1];
 
-  v29 = [v11 lockReasons];
-  v30 = [SBKeyboardFocusLockReason mostRecentReasonInSet:v29 strength:1];
+  lockReasons4 = [preferences2 lockReasons];
+  v30 = [SBKeyboardFocusLockReason mostRecentReasonInSet:lockReasons4 strength:1];
 
   v45 = v30;
-  v46 = v11;
+  v46 = preferences2;
   if (v30 && [v30 isEqual:v28] && (objc_msgSend(v28, "isMoreRecentThanReason:", v30) & 1) == 0)
   {
 
     v28 = 0;
   }
 
-  v31 = [v49 lockReasons];
-  v32 = [SBKeyboardFocusLockReason mostRecentReasonInSet:v31 strength:1];
+  lockReasons5 = [v49 lockReasons];
+  v32 = [SBKeyboardFocusLockReason mostRecentReasonInSet:lockReasons5 strength:1];
 
-  v33 = [v10 lockReasons];
-  v34 = [SBKeyboardFocusLockReason mostRecentReasonInSet:v33 strength:1];
+  lockReasons6 = [preferences lockReasons];
+  v34 = [SBKeyboardFocusLockReason mostRecentReasonInSet:lockReasons6 strength:1];
 
   if (v34 && [v34 isEqual:v32] && (objc_msgSend(v32, "isMoreRecentThanReason:", v34) & 1) == 0)
   {
@@ -140,7 +140,7 @@ LABEL_24:
     v19 = 0;
     v38 = 0;
     v36 = v28;
-    v37 = v8;
+    v37 = embeddedMember;
     if (!v28)
     {
       goto LABEL_49;
@@ -162,12 +162,12 @@ LABEL_24:
 
     if (v35)
     {
-      v37 = v8;
+      v37 = embeddedMember;
     }
 
     else
     {
-      v37 = v9;
+      v37 = externalMember;
     }
   }
 
@@ -185,12 +185,12 @@ LABEL_24:
 
     if (v28)
     {
-      v37 = v8;
+      v37 = embeddedMember;
     }
 
     else
     {
-      v37 = v9;
+      v37 = externalMember;
     }
 
     if (!(v28 | v32))
@@ -215,7 +215,7 @@ LABEL_57:
   v13 = v48;
   if ([v38 avoidOverridingAppFocusOnOtherDisplays])
   {
-    if (v50 == v9)
+    if (v50 == externalMember)
     {
       v39 = v49;
     }
@@ -225,17 +225,17 @@ LABEL_57:
       v39 = v48;
     }
 
-    v40 = [v39 policy];
-    v41 = [v40 advicePolicy];
+    policy = [v39 policy];
+    advicePolicy = [policy advicePolicy];
 
-    if (v41)
+    if (advicePolicy)
     {
       v42 = v50;
 
       v19 = v42;
     }
 
-    v10 = v44;
+    preferences = v44;
     goto LABEL_57;
   }
 
@@ -243,11 +243,11 @@ LABEL_58:
 
   if (!v19)
   {
-    v6 = v6;
-    v19 = v6;
+    memberCopy = memberCopy;
+    v19 = memberCopy;
   }
 
-  v11 = v46;
+  preferences2 = v46;
   v12 = v49;
 LABEL_61:
 

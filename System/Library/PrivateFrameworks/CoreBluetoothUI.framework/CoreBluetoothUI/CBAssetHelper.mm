@@ -1,13 +1,13 @@
 @interface CBAssetHelper
-+ (id)findLocalizedStringForKey:(id)a3;
-+ (id)findLocalizedStringForKey:(id)a3 default:(id)a4;
++ (id)findLocalizedStringForKey:(id)key;
++ (id)findLocalizedStringForKey:(id)key default:(id)default;
 + (id)getAssetPathsFilenames;
 + (id)loadAllAssets;
-+ (id)loadAssetsFromFile:(id)a3;
-+ (id)resourcePathFromBundle:(id)a3 withResourceNamed:(id)a4;
++ (id)loadAssetsFromFile:(id)file;
++ (id)resourcePathFromBundle:(id)bundle withResourceNamed:(id)named;
 + (id)sharedAssetHelper;
 - (CBAssetHelper)init;
-- (id)getImageURLFromImageName:(id)a3;
+- (id)getImageURLFromImageName:(id)name;
 @end
 
 @implementation CBAssetHelper
@@ -68,26 +68,26 @@
   return v2;
 }
 
-+ (id)loadAssetsFromFile:(id)a3
++ (id)loadAssetsFromFile:(id)file
 {
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
-  v6 = [v4 bundleForClass:a1];
-  v7 = [v6 URLForResource:v5 withExtension:@"plist"];
+  fileCopy = file;
+  v6 = [v4 bundleForClass:self];
+  v7 = [v6 URLForResource:fileCopy withExtension:@"plist"];
 
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:v7];
 
   return v8;
 }
 
-+ (id)resourcePathFromBundle:(id)a3 withResourceNamed:(id)a4
++ (id)resourcePathFromBundle:(id)bundle withResourceNamed:(id)named
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  bundleCopy = bundle;
+  namedCopy = named;
+  v8 = namedCopy;
+  if (bundleCopy)
   {
-    if (!v7)
+    if (!namedCopy)
     {
       goto LABEL_8;
     }
@@ -95,37 +95,37 @@
 
   else
   {
-    v9 = [MEMORY[0x277CCA8D8] bundleForClass:a1];
-    v6 = [v9 bundlePath];
+    v9 = [MEMORY[0x277CCA8D8] bundleForClass:self];
+    bundleCopy = [v9 bundlePath];
 
     if (!v8)
     {
 LABEL_8:
-      NSLog(&cfstr_CbassethelperB.isa, v6, v8);
+      NSLog(&cfstr_CbassethelperB.isa, bundleCopy, v8);
       goto LABEL_10;
     }
   }
 
-  if (!v6)
+  if (!bundleCopy)
   {
     goto LABEL_8;
   }
 
-  v10 = [MEMORY[0x277CCA8D8] bundleWithPath:v6];
+  v10 = [MEMORY[0x277CCA8D8] bundleWithPath:bundleCopy];
   if (v10)
   {
     v11 = v10;
-    v12 = [v8 stringByDeletingPathExtension];
-    v13 = [v8 pathExtension];
-    v14 = [v11 pathForResource:v12 ofType:v13];
+    stringByDeletingPathExtension = [v8 stringByDeletingPathExtension];
+    pathExtension = [v8 pathExtension];
+    v14 = [v11 pathForResource:stringByDeletingPathExtension ofType:pathExtension];
 
-    NSLog(&cfstr_CbassethelperR.isa, v6, v8, v14);
+    NSLog(&cfstr_CbassethelperR.isa, bundleCopy, v8, v14);
     v15 = v14;
 
     goto LABEL_11;
   }
 
-  NSLog(&cfstr_CbassethelperI.isa, v6, v8);
+  NSLog(&cfstr_CbassethelperI.isa, bundleCopy, v8);
 LABEL_10:
   v15 = 0;
 LABEL_11:
@@ -136,12 +136,12 @@ LABEL_11:
 + (id)getAssetPathsFilenames
 {
   v23 = *MEMORY[0x277D85DE8];
-  v16 = [MEMORY[0x277CCA8D8] bundleForClass:a1];
-  v2 = [v16 resourcePath];
+  v16 = [MEMORY[0x277CCA8D8] bundleForClass:self];
+  resourcePath = [v16 resourcePath];
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v21 = 0;
-  v5 = [v4 contentsOfDirectoryAtPath:v2 error:&v21];
+  v5 = [defaultManager contentsOfDirectoryAtPath:resourcePath error:&v21];
   v15 = v21;
 
   v19 = 0u;
@@ -182,23 +182,23 @@ LABEL_11:
   return v3;
 }
 
-+ (id)findLocalizedStringForKey:(id)a3
++ (id)findLocalizedStringForKey:(id)key
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCA8D8] bundleForClass:a1];
-  v6 = [v5 localizedStringForKey:v4 value:&stru_285808710 table:@"Assets"];
-  v25 = v4;
-  if ([v6 isEqualToString:v4])
+  keyCopy = key;
+  v5 = [MEMORY[0x277CCA8D8] bundleForClass:self];
+  v6 = [v5 localizedStringForKey:keyCopy value:&stru_285808710 table:@"Assets"];
+  v25 = keyCopy;
+  if ([v6 isEqualToString:keyCopy])
   {
     v24 = v5;
     v7 = [v5 pathForResource:@"Localizable" ofType:@"strings"];
-    v8 = [v7 stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [v7 stringByDeletingLastPathComponent];
 
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v30 = 0;
-    v23 = v8;
-    v10 = [v9 contentsOfDirectoryAtPath:v8 error:&v30];
+    v23 = stringByDeletingLastPathComponent;
+    v10 = [defaultManager contentsOfDirectoryAtPath:stringByDeletingLastPathComponent error:&v30];
     v22 = v30;
 
     v28 = 0u;
@@ -265,16 +265,16 @@ LABEL_4:
   return v6;
 }
 
-+ (id)findLocalizedStringForKey:(id)a3 default:(id)a4
++ (id)findLocalizedStringForKey:(id)key default:(id)default
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 findLocalizedStringForKey:v7];
-  v9 = [v8 isEqualToString:v7];
+  defaultCopy = default;
+  keyCopy = key;
+  v8 = [self findLocalizedStringForKey:keyCopy];
+  v9 = [v8 isEqualToString:keyCopy];
 
   if (v9)
   {
-    v10 = v6;
+    v10 = defaultCopy;
   }
 
   else
@@ -302,14 +302,14 @@ LABEL_4:
   return v2;
 }
 
-- (id)getImageURLFromImageName:(id)a3
+- (id)getImageURLFromImageName:(id)name
 {
   v3 = MEMORY[0x277CCA8D8];
-  v4 = a3;
+  nameCopy = name;
   v5 = [v3 bundleForClass:objc_opt_class()];
-  v6 = [v5 bundlePath];
+  bundlePath = [v5 bundlePath];
 
-  v7 = [CBAssetHelper resourcePathFromBundle:v6 withResourceNamed:v4];
+  v7 = [CBAssetHelper resourcePathFromBundle:bundlePath withResourceNamed:nameCopy];
 
   if (v7)
   {

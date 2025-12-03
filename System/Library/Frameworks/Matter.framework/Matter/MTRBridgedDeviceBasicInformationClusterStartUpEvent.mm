@@ -1,6 +1,6 @@
 @interface MTRBridgedDeviceBasicInformationClusterStartUpEvent
 - (MTRBridgedDeviceBasicInformationClusterStartUpEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRBridgedDeviceBasicInformationClusterStartUpEvent);
-  v5 = [(MTRBridgedDeviceBasicInformationClusterStartUpEvent *)self softwareVersion];
-  [(MTRBridgedDeviceBasicInformationClusterStartUpEvent *)v4 setSoftwareVersion:v5];
+  softwareVersion = [(MTRBridgedDeviceBasicInformationClusterStartUpEvent *)self softwareVersion];
+  [(MTRBridgedDeviceBasicInformationClusterStartUpEvent *)v4 setSoftwareVersion:softwareVersion];
 
   return v4;
 }

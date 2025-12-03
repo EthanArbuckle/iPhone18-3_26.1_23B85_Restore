@@ -1,8 +1,8 @@
 @interface JavaTextFormat
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formatToCharacterIteratorWithId:(id)a3;
-- (id)parseObjectWithNSString:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formatToCharacterIteratorWithId:(id)id;
+- (id)parseObjectWithNSString:(id)string;
 @end
 
 @implementation JavaTextFormat
@@ -14,18 +14,18 @@
   return [(JavaTextFormat *)&v3 clone];
 }
 
-- (id)formatToCharacterIteratorWithId:(id)a3
+- (id)formatToCharacterIteratorWithId:(id)id
 {
-  v3 = sub_1001F5BAC(self, a3);
+  v3 = sub_1001F5BAC(self, id);
   v4 = new_JavaTextAttributedString_initWithNSString_(v3);
 
   return [(JavaTextAttributedString *)v4 getIterator];
 }
 
-- (id)parseObjectWithNSString:(id)a3
+- (id)parseObjectWithNSString:(id)string
 {
   v5 = new_JavaTextParsePosition_initWithInt_(0);
-  v6 = [(JavaTextFormat *)self parseObjectWithNSString:a3 withJavaTextParsePosition:v5];
+  v6 = [(JavaTextFormat *)self parseObjectWithNSString:string withJavaTextParsePosition:v5];
   if (![(JavaTextParsePosition *)v5 getIndex])
   {
     v8 = new_JavaTextParseException_initWithNSString_withInt_(@"Parse failure", [(JavaTextParsePosition *)v5 getErrorIndex]);
@@ -35,11 +35,11 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(JavaTextFormat *)self clone];
+  clone = [(JavaTextFormat *)self clone];
 
-  return v3;
+  return clone;
 }
 
 @end

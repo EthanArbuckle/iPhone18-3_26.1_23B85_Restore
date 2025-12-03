@@ -1,8 +1,8 @@
 @interface HKUserDomainConceptQueryResult
 - (HKUserDomainConceptQueryResult)init;
-- (HKUserDomainConceptQueryResult)initWithCoder:(id)a3;
-- (HKUserDomainConceptQueryResult)initWithUserConcept:(id)a3 rawAnchor:(int64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (HKUserDomainConceptQueryResult)initWithCoder:(id)coder;
+- (HKUserDomainConceptQueryResult)initWithUserConcept:(id)concept rawAnchor:(int64_t)anchor;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKUserDomainConceptQueryResult
@@ -17,48 +17,48 @@
   return 0;
 }
 
-- (HKUserDomainConceptQueryResult)initWithUserConcept:(id)a3 rawAnchor:(int64_t)a4
+- (HKUserDomainConceptQueryResult)initWithUserConcept:(id)concept rawAnchor:(int64_t)anchor
 {
-  v6 = a3;
+  conceptCopy = concept;
   v11.receiver = self;
   v11.super_class = HKUserDomainConceptQueryResult;
   v7 = [(HKUserDomainConceptQueryResult *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [conceptCopy copy];
     userConcept = v7->_userConcept;
     v7->_userConcept = v8;
 
-    v7->_rawAnchor = a4;
+    v7->_rawAnchor = anchor;
   }
 
   return v7;
 }
 
-- (HKUserDomainConceptQueryResult)initWithCoder:(id)a3
+- (HKUserDomainConceptQueryResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HKUserDomainConceptQueryResult;
   v5 = [(HKUserDomainConceptQueryResult *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userConcept"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userConcept"];
     userConcept = v5->_userConcept;
     v5->_userConcept = v6;
 
-    v5->_rawAnchor = [v4 decodeInt64ForKey:@"anchor"];
+    v5->_rawAnchor = [coderCopy decodeInt64ForKey:@"anchor"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   userConcept = self->_userConcept;
-  v5 = a3;
-  [v5 encodeObject:userConcept forKey:@"userConcept"];
-  [v5 encodeInt64:self->_rawAnchor forKey:@"anchor"];
+  coderCopy = coder;
+  [coderCopy encodeObject:userConcept forKey:@"userConcept"];
+  [coderCopy encodeInt64:self->_rawAnchor forKey:@"anchor"];
 }
 
 @end

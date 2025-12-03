@@ -1,19 +1,19 @@
 @interface SBFluidSwitcherItemContainerHeaderView
 + (double)distanceFromBoundingLeadingEdgeToIconTrailingEdge;
-- (SBFluidSwitcherItemContainerHeaderView)initWithFrame:(CGRect)a3 delegate:(id)a4;
+- (SBFluidSwitcherItemContainerHeaderView)initWithFrame:(CGRect)frame delegate:(id)delegate;
 - (SBFluidSwitcherItemContainerHeaderViewDelegate)delegate;
 - (id)_makeMultipleWindowsIndicatorView;
-- (id)_multiWindowIndicatorAccessibilityIdentifierForDisplayItem:(id)a3;
+- (id)_multiWindowIndicatorAccessibilityIdentifierForDisplayItem:(id)item;
 - (id)_titleLabelFont;
 - (void)_applyPrototypeSettings;
-- (void)_contentSizeCategoryDidChangeNotification:(id)a3;
-- (void)_handleTapGestureRecognizer:(id)a3;
+- (void)_contentSizeCategoryDidChangeNotification:(id)notification;
+- (void)_handleTapGestureRecognizer:(id)recognizer;
 - (void)_updateTitleAlpha;
-- (void)_updateVisualStylingWithTitleItems:(id)a3;
+- (void)_updateVisualStylingWithTitleItems:(id)items;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setTextAlpha:(double)a3;
-- (void)setTitleItems:(id)a3 animated:(BOOL)a4;
+- (void)setTextAlpha:(double)alpha;
+- (void)setTitleItems:(id)items animated:(BOOL)animated;
 @end
 
 @implementation SBFluidSwitcherItemContainerHeaderView
@@ -78,13 +78,13 @@
     v3 = [(NSArray *)self->_titleItems objectAtIndex:1];
   }
 
-  v4 = [v17 displayItem];
-  v5 = [v3 displayItem];
+  displayItem = [v17 displayItem];
+  displayItem2 = [v3 displayItem];
   if (v17)
   {
-    v16 = [(NSMutableDictionary *)self->_itemsToTitleLabels objectForKey:v4];
-    v6 = [(NSMutableDictionary *)self->_itemsToSubtitleLabelViews objectForKey:v4];
-    v7 = [(NSMutableDictionary *)self->_itemsToMultiWindowIndicatorViews objectForKey:v4];
+    v16 = [(NSMutableDictionary *)self->_itemsToTitleLabels objectForKey:displayItem];
+    v6 = [(NSMutableDictionary *)self->_itemsToSubtitleLabelViews objectForKey:displayItem];
+    v7 = [(NSMutableDictionary *)self->_itemsToMultiWindowIndicatorViews objectForKey:displayItem];
   }
 
   else
@@ -97,9 +97,9 @@
   v15 = v3;
   if (v3)
   {
-    v8 = [(NSMutableDictionary *)self->_itemsToTitleLabels objectForKey:v5];
-    v3 = [(NSMutableDictionary *)self->_itemsToSubtitleLabelViews objectForKey:v5];
-    v9 = [(NSMutableDictionary *)self->_itemsToMultiWindowIndicatorViews objectForKey:v5];
+    v8 = [(NSMutableDictionary *)self->_itemsToTitleLabels objectForKey:displayItem2];
+    v3 = [(NSMutableDictionary *)self->_itemsToSubtitleLabelViews objectForKey:displayItem2];
+    v9 = [(NSMutableDictionary *)self->_itemsToMultiWindowIndicatorViews objectForKey:displayItem2];
   }
 
   else
@@ -125,12 +125,12 @@
   }
 
   [v6 setAlpha:self->_textAlpha];
-  v13 = [v6 contentLabel];
-  [v13 setAlpha:v12];
+  contentLabel = [v6 contentLabel];
+  [contentLabel setAlpha:v12];
 
   [v3 setAlpha:self->_textAlpha];
-  v14 = [v3 contentLabel];
-  [v14 setAlpha:v12];
+  contentLabel2 = [v3 contentLabel];
+  [contentLabel2 setAlpha:v12];
 }
 
 - (id)_titleLabelFont
@@ -160,8 +160,8 @@ LABEL_18:
 
   else
   {
-    v2 = [MEMORY[0x277D75418] currentDevice];
-    if ([v2 userInterfaceIdiom] || SBFEffectiveHomeButtonType() != 2)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom] || SBFEffectiveHomeButtonType() != 2)
     {
       goto LABEL_18;
     }
@@ -176,8 +176,8 @@ LABEL_18:
 
   else
   {
-    v3 = [MEMORY[0x277D759A0] mainScreen];
-    [v3 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -193,26 +193,26 @@ LABEL_18:
 
   if (v10 >= v11)
   {
-    v2 = v4;
+    currentDevice = v4;
     v4 = *MEMORY[0x277D76918];
     goto LABEL_18;
   }
 
 LABEL_19:
-  v12 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+  preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
   v13 = *MEMORY[0x277D76808];
-  v14 = UIContentSizeCategoryCompareToCategory(v12, *MEMORY[0x277D76808]);
+  v14 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x277D76808]);
 
-  v15 = [MEMORY[0x277CF0D60] preferredFontProvider];
-  v16 = v15;
+  preferredFontProvider = [MEMORY[0x277CF0D60] preferredFontProvider];
+  v16 = preferredFontProvider;
   if (v14 == NSOrderedDescending)
   {
-    [v15 preferredFontForTextStyle:v4 hiFontStyle:4 contentSizeCategory:v13];
+    [preferredFontProvider preferredFontForTextStyle:v4 hiFontStyle:4 contentSizeCategory:v13];
   }
 
   else
   {
-    [v15 preferredFontForTextStyle:v4 hiFontStyle:4];
+    [preferredFontProvider preferredFontForTextStyle:v4 hiFontStyle:4];
   }
   v17 = ;
 
@@ -249,15 +249,15 @@ LABEL_19:
     v12 = [(NSArray *)self->_titleItems objectAtIndex:1];
   }
 
-  v13 = [v11 displayItem];
-  v14 = [v12 displayItem];
-  v167 = v13;
+  displayItem = [v11 displayItem];
+  displayItem2 = [v12 displayItem];
+  v167 = displayItem;
   if (v11)
   {
-    v179 = [(NSMutableDictionary *)self->_itemsToIconImageViews objectForKey:v13];
-    v193 = [(NSMutableDictionary *)self->_itemsToTitleLabels objectForKey:v13];
-    v15 = [(NSMutableDictionary *)self->_itemsToSubtitleLabelViews objectForKey:v13];
-    v16 = [(NSMutableDictionary *)self->_itemsToMultiWindowIndicatorViews objectForKey:v13];
+    v179 = [(NSMutableDictionary *)self->_itemsToIconImageViews objectForKey:displayItem];
+    v193 = [(NSMutableDictionary *)self->_itemsToTitleLabels objectForKey:displayItem];
+    v15 = [(NSMutableDictionary *)self->_itemsToSubtitleLabelViews objectForKey:displayItem];
+    v16 = [(NSMutableDictionary *)self->_itemsToMultiWindowIndicatorViews objectForKey:displayItem];
   }
 
   else
@@ -271,10 +271,10 @@ LABEL_19:
   v168 = v11;
   if (v12)
   {
-    v178 = [(NSMutableDictionary *)self->_itemsToIconImageViews objectForKey:v14];
-    v17 = [(NSMutableDictionary *)self->_itemsToTitleLabels objectForKey:v14];
-    v18 = [(NSMutableDictionary *)self->_itemsToSubtitleLabelViews objectForKey:v14];
-    v19 = [(NSMutableDictionary *)self->_itemsToMultiWindowIndicatorViews objectForKey:v14];
+    v178 = [(NSMutableDictionary *)self->_itemsToIconImageViews objectForKey:displayItem2];
+    v17 = [(NSMutableDictionary *)self->_itemsToTitleLabels objectForKey:displayItem2];
+    v18 = [(NSMutableDictionary *)self->_itemsToSubtitleLabelViews objectForKey:displayItem2];
+    v19 = [(NSMutableDictionary *)self->_itemsToMultiWindowIndicatorViews objectForKey:displayItem2];
   }
 
   else
@@ -308,7 +308,7 @@ LABEL_15:
 
   v175 = 0;
 LABEL_18:
-  v166 = v14;
+  v166 = displayItem2;
   if (v17)
   {
     v22 = [v17 isHidden] ^ 1;
@@ -330,8 +330,8 @@ LABEL_18:
     v176 = 0;
   }
 
-  v23 = [(SBFluidSwitcherItemContainerHeaderView *)self traitCollection];
-  [v23 displayScale];
+  traitCollection = [(SBFluidSwitcherItemContainerHeaderView *)self traitCollection];
+  [traitCollection displayScale];
 
   iconSideLength = self->_iconSideLength;
   [v179 frame];
@@ -454,19 +454,19 @@ LABEL_18:
     v37 = v64;
   }
 
-  v65 = [v15 font];
-  v66 = v65;
-  if (v65)
+  font = [v15 font];
+  v66 = font;
+  if (font)
   {
-    v67 = v65;
+    font2 = font;
   }
 
   else
   {
-    v67 = [v18 font];
+    font2 = [v18 font];
   }
 
-  v177 = v67;
+  v177 = font2;
   v183 = v34;
 
   v212.origin.x = v196;
@@ -821,19 +821,19 @@ LABEL_18:
 
   if (v175)
   {
-    v117 = [v15 contentLabel];
+    contentLabel = [v15 contentLabel];
     v241.origin.x = v196;
     v241.origin.y = v97;
     v241.size.width = v184;
     v241.size.height = v96;
     v118 = CGRectGetMaxY(v241) - self->_spacingBetweenSnapshotAndDescriptionLabelBaseline;
-    [v117 _firstLineBaseline];
+    [contentLabel _firstLineBaseline];
     v242.origin.y = v118 - v119;
     v242.origin.x = v174;
     v242.size.width = v91;
     v242.size.height = v198;
     MaxY = CGRectGetMaxY(v242);
-    [v117 _baselineOffsetFromBottom];
+    [contentLabel _baselineOffsetFromBottom];
     v122 = MaxY - v121;
     [v177 _scaledValueForValue:self->_spacingBetweenTitleAndSubtitleBaseline];
     v124 = v122 - v123;
@@ -863,12 +863,12 @@ LABEL_18:
   v132 = v205;
   if (v16)
   {
-    v133 = [*v92 userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [*v92 userInterfaceLayoutDirection];
     v134 = v94;
     v135 = v126;
     v136 = v128;
     v137 = v207;
-    if (v133 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       CGRectGetMinX(*&v134);
       v244.origin.x = v172;
@@ -897,19 +897,19 @@ LABEL_18:
 
   if (v176)
   {
-    v139 = [v18 contentLabel];
+    contentLabel2 = [v18 contentLabel];
     v245.origin.x = v196;
     v245.origin.y = v97;
     v245.size.width = v184;
     v245.size.height = v96;
     v140 = CGRectGetMaxY(v245) - self->_spacingBetweenSnapshotAndDescriptionLabelBaseline;
-    [v139 _firstLineBaseline];
+    [contentLabel2 _firstLineBaseline];
     v246.origin.y = v140 - v141;
     v246.origin.x = v35;
     v246.size.width = v208;
     v246.size.height = v171;
     v142 = CGRectGetMaxY(v246);
-    [v139 _baselineOffsetFromBottom];
+    [contentLabel2 _baselineOffsetFromBottom];
     v144 = v142 - v143;
     [v177 _scaledValueForValue:self->_spacingBetweenTitleAndSubtitleBaseline];
     v146 = v144 - v145;
@@ -937,12 +937,12 @@ LABEL_18:
 
   if (v19)
   {
-    v155 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection2 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
     v156 = v150;
     v157 = v148;
     v158 = v138;
     v159 = v132;
-    if (v155 == 1)
+    if (userInterfaceLayoutDirection2 == 1)
     {
       CGRectGetMinX(*&v156);
       v248.origin.x = v162;
@@ -978,20 +978,20 @@ LABEL_18:
   [v18 sb_setBoundsAndPositionFromFrame:?];
 }
 
-- (SBFluidSwitcherItemContainerHeaderView)initWithFrame:(CGRect)a3 delegate:(id)a4
+- (SBFluidSwitcherItemContainerHeaderView)initWithFrame:(CGRect)frame delegate:(id)delegate
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  delegateCopy = delegate;
   v25.receiver = self;
   v25.super_class = SBFluidSwitcherItemContainerHeaderView;
-  v10 = [(SBFluidSwitcherItemContainerHeaderView *)&v25 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(SBFluidSwitcherItemContainerHeaderView *)&v25 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    objc_storeWeak(&v10->_delegate, v9);
+    objc_storeWeak(&height->_delegate, delegateCopy);
     v11->_textAlpha = 1.0;
     v12 = objc_opt_new();
     itemsToTitleLabels = v11->_itemsToTitleLabels;
@@ -1012,8 +1012,8 @@ LABEL_18:
     v20 = +[SBAppSwitcherDomain rootSettings];
     [v20 addKeyObserver:v11];
     [(SBFluidSwitcherItemContainerHeaderView *)v11 _applyPrototypeSettings];
-    v21 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v21 addObserver:v11 selector:sel__contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v11 selector:sel__contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x277D76810] object:0];
 
     v22 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v11 action:sel__handleTapGestureRecognizer_];
     tapGestureRecognizer = v11->_tapGestureRecognizer;
@@ -1027,19 +1027,19 @@ LABEL_18:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76810] object:0];
 
   v4.receiver = self;
   v4.super_class = SBFluidSwitcherItemContainerHeaderView;
   [(SBFluidSwitcherItemContainerHeaderView *)&v4 dealloc];
 }
 
-- (void)setTitleItems:(id)a3 animated:(BOOL)a4
+- (void)setTitleItems:(id)items animated:(BOOL)animated
 {
-  v95 = a4;
+  animatedCopy = animated;
   v115 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  itemsCopy = items;
   if ([(NSArray *)self->_titleItems count])
   {
     v104 = [(NSArray *)self->_titleItems objectAtIndex:0];
@@ -1061,7 +1061,7 @@ LABEL_18:
   }
 
   v6 = self->_titleItems;
-  v7 = [v5 copy];
+  v7 = [itemsCopy copy];
   titleItems = self->_titleItems;
   self->_titleItems = v7;
 
@@ -1075,7 +1075,7 @@ LABEL_18:
     v9 = 0;
   }
 
-  v98 = v5;
+  v98 = itemsCopy;
   if ([(NSArray *)self->_titleItems count]< 2)
   {
     v10 = 0;
@@ -1087,9 +1087,9 @@ LABEL_18:
   }
 
   v107 = v9;
-  v102 = [v9 displayItem];
+  displayItem = [v9 displayItem];
   v100 = v10;
-  v101 = [v10 displayItem];
+  displayItem2 = [v10 displayItem];
   v97 = v6;
   v11 = [(NSArray *)v6 bs_map:&__block_literal_global_439];
   v109 = [(NSArray *)self->_titleItems bs_map:&__block_literal_global_11_6];
@@ -1203,102 +1203,102 @@ LABEL_18:
   [(SBFluidSwitcherItemContainerHeaderView *)self _updateVisualStylingWithTitleItems:v98];
   if (v107)
   {
-    v37 = [(NSMutableDictionary *)self->_itemsToIconImageViews objectForKey:v102];
-    v38 = [(NSMutableDictionary *)self->_itemsToTitleLabels objectForKey:v102];
-    v105 = [(NSMutableDictionary *)self->_itemsToSubtitleLabelViews objectForKey:v102];
-    v99 = [(NSMutableDictionary *)self->_itemsToMultiWindowIndicatorViews objectForKey:v102];
+    _sb_dequeue4 = [(NSMutableDictionary *)self->_itemsToIconImageViews objectForKey:displayItem];
+    v38 = [(NSMutableDictionary *)self->_itemsToTitleLabels objectForKey:displayItem];
+    v105 = [(NSMutableDictionary *)self->_itemsToSubtitleLabelViews objectForKey:displayItem];
+    v99 = [(NSMutableDictionary *)self->_itemsToMultiWindowIndicatorViews objectForKey:displayItem];
     if (BSEqualObjects())
     {
       v39 = 0;
       v40 = v100;
-      v41 = v38;
+      _sb_dequeue = v38;
       v42 = v105;
       goto LABEL_73;
     }
 
-    v43 = [v107 image];
-    if (v43)
+    image = [v107 image];
+    if (image)
     {
 
-      v41 = v38;
+      _sb_dequeue = v38;
     }
 
     else
     {
-      v44 = [v107 imageView];
+      imageView = [v107 imageView];
 
-      v41 = v38;
-      if (!v44)
+      _sb_dequeue = v38;
+      if (!imageView)
       {
-        v46 = v37;
+        v46 = _sb_dequeue4;
         v47 = 1;
 LABEL_50:
         [(SBFluidSwitcherIconImageContainerView *)v46 setHidden:v47];
-        v48 = [v107 titleText];
-        v49 = [v48 length];
+        titleText = [v107 titleText];
+        v49 = [titleText length];
 
         if (v49)
         {
           v50 = v107;
-          if (!v41)
+          if (!_sb_dequeue)
           {
-            v41 = [(NSMutableArray *)self->_titleLabelReusePool _sb_dequeue];
-            if (!v41)
+            _sb_dequeue = [(NSMutableArray *)self->_titleLabelReusePool _sb_dequeue];
+            if (!_sb_dequeue)
             {
               v51 = objc_alloc(MEMORY[0x277D756B8]);
-              v41 = [v51 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-              [v41 setClipsToBounds:0];
-              [v41 setSizingRule:1];
-              [(SBFluidSwitcherItemContainerHeaderView *)self addSubview:v41];
+              _sb_dequeue = [v51 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+              [_sb_dequeue setClipsToBounds:0];
+              [_sb_dequeue setSizingRule:1];
+              [(SBFluidSwitcherItemContainerHeaderView *)self addSubview:_sb_dequeue];
             }
 
-            v52 = [(SBFluidSwitcherItemContainerHeaderView *)self _titleLabelFont];
-            [v41 setFont:v52];
+            _titleLabelFont = [(SBFluidSwitcherItemContainerHeaderView *)self _titleLabelFont];
+            [_sb_dequeue setFont:_titleLabelFont];
 
-            [(NSMutableDictionary *)self->_itemsToTitleLabels setObject:v41 forKey:v102];
+            [(NSMutableDictionary *)self->_itemsToTitleLabels setObject:_sb_dequeue forKey:displayItem];
           }
 
-          [v41 setAlpha:self->_textAlpha];
-          v53 = [v107 titleTextColor];
-          [v41 setTextColor:v53];
+          [_sb_dequeue setAlpha:self->_textAlpha];
+          titleTextColor = [v107 titleTextColor];
+          [_sb_dequeue setTextColor:titleTextColor];
 
-          [v41 setHidden:0];
+          [_sb_dequeue setHidden:0];
         }
 
         else
         {
-          [v41 setHidden:1];
+          [_sb_dequeue setHidden:1];
           v50 = v107;
         }
 
-        v54 = [v50 subtitleText];
-        v55 = [v54 length];
+        subtitleText = [v50 subtitleText];
+        v55 = [subtitleText length];
 
         if (v55)
         {
-          v57 = v105;
+          _sb_dequeue2 = v105;
           v56 = v107;
           if (!v105)
           {
-            v57 = [(NSMutableArray *)self->_subtitleLabelReusePool _sb_dequeue];
-            if (!v57)
+            _sb_dequeue2 = [(NSMutableArray *)self->_subtitleLabelReusePool _sb_dequeue];
+            if (!_sb_dequeue2)
             {
               v58 = objc_alloc(MEMORY[0x277CF0D58]);
-              v57 = [v58 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-              [v57 setClipsToBounds:0];
-              [(SBFluidSwitcherItemContainerHeaderView *)self addSubview:v57];
+              _sb_dequeue2 = [v58 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+              [_sb_dequeue2 setClipsToBounds:0];
+              [(SBFluidSwitcherItemContainerHeaderView *)self addSubview:_sb_dequeue2];
             }
 
-            v59 = [(SBFluidSwitcherItemContainerHeaderView *)self _subtitleLabelFont];
-            [v57 setFont:v59];
+            _subtitleLabelFont = [(SBFluidSwitcherItemContainerHeaderView *)self _subtitleLabelFont];
+            [_sb_dequeue2 setFont:_subtitleLabelFont];
 
-            [(NSMutableDictionary *)self->_itemsToSubtitleLabelViews setObject:v57 forKey:v102];
+            [(NSMutableDictionary *)self->_itemsToSubtitleLabelViews setObject:_sb_dequeue2 forKey:displayItem];
           }
 
-          [v57 mt_replaceVisualStyling:self->_subtitleVisualStyling];
-          [v57 setAlpha:self->_textAlpha];
-          v105 = v57;
-          [v57 setHidden:0];
+          [_sb_dequeue2 mt_replaceVisualStyling:self->_subtitleVisualStyling];
+          [_sb_dequeue2 setAlpha:self->_textAlpha];
+          v105 = _sb_dequeue2;
+          [_sb_dequeue2 setHidden:0];
         }
 
         else
@@ -1307,30 +1307,30 @@ LABEL_50:
           v56 = v107;
         }
 
-        v60 = v99;
+        _sb_dequeue3 = v99;
         if ([v56 showsMultiWindowIndicator])
         {
           if (!v99)
           {
-            v60 = [(NSMutableArray *)self->_multiWindowIndicatorViewReusePool _sb_dequeue];
-            if (!v60)
+            _sb_dequeue3 = [(NSMutableArray *)self->_multiWindowIndicatorViewReusePool _sb_dequeue];
+            if (!_sb_dequeue3)
             {
-              v60 = [(SBFluidSwitcherItemContainerHeaderView *)self _makeMultipleWindowsIndicatorView];
-              [(SBFluidSwitcherItemContainerHeaderView *)self addSubview:v60];
+              _sb_dequeue3 = [(SBFluidSwitcherItemContainerHeaderView *)self _makeMultipleWindowsIndicatorView];
+              [(SBFluidSwitcherItemContainerHeaderView *)self addSubview:_sb_dequeue3];
             }
 
-            [(NSMutableDictionary *)self->_itemsToMultiWindowIndicatorViews setObject:v60 forKey:v102];
+            [(NSMutableDictionary *)self->_itemsToMultiWindowIndicatorViews setObject:_sb_dequeue3 forKey:displayItem];
           }
 
-          [v60 mt_replaceVisualStyling:self->_subtitleVisualStyling];
-          v61 = [v56 displayItem];
-          v62 = [(SBFluidSwitcherItemContainerHeaderView *)self _multiWindowIndicatorAccessibilityIdentifierForDisplayItem:v61];
-          [v60 setAccessibilityIdentifier:v62];
+          [_sb_dequeue3 mt_replaceVisualStyling:self->_subtitleVisualStyling];
+          displayItem3 = [v56 displayItem];
+          v62 = [(SBFluidSwitcherItemContainerHeaderView *)self _multiWindowIndicatorAccessibilityIdentifierForDisplayItem:displayItem3];
+          [_sb_dequeue3 setAccessibilityIdentifier:v62];
 
           v56 = v107;
-          [v60 setAlpha:self->_textAlpha];
-          v99 = v60;
-          v63 = v60;
+          [_sb_dequeue3 setAlpha:self->_textAlpha];
+          v99 = _sb_dequeue3;
+          v63 = _sb_dequeue3;
           v64 = 0;
         }
 
@@ -1342,20 +1342,20 @@ LABEL_50:
         }
 
         [v63 setHidden:v64];
-        v65 = [v56 image];
-        [(SBFluidSwitcherIconImageContainerView *)v37 setImage:v65 animated:v95];
+        image2 = [v56 image];
+        [(SBFluidSwitcherIconImageContainerView *)_sb_dequeue4 setImage:image2 animated:animatedCopy];
 
-        v66 = [v56 imageView];
-        [(SBFluidSwitcherIconImageContainerView *)v37 setCustomImageView:v66 animated:v95];
+        imageView2 = [v56 imageView];
+        [(SBFluidSwitcherIconImageContainerView *)_sb_dequeue4 setCustomImageView:imageView2 animated:animatedCopy];
 
-        [(SBFluidSwitcherIconImageContainerView *)v37 sizeToFit];
-        v67 = [v56 titleText];
-        [v41 setText:v67];
+        [(SBFluidSwitcherIconImageContainerView *)_sb_dequeue4 sizeToFit];
+        titleText2 = [v56 titleText];
+        [_sb_dequeue setText:titleText2];
 
-        [v41 sizeToFit];
-        v68 = [v56 subtitleText];
+        [_sb_dequeue sizeToFit];
+        subtitleText2 = [v56 subtitleText];
         v42 = v105;
-        [v105 setText:v68];
+        [v105 setText:subtitleText2];
 
         [v105 sizeToFit];
         v39 = 1;
@@ -1363,40 +1363,40 @@ LABEL_50:
       }
     }
 
-    if (!v37)
+    if (!_sb_dequeue4)
     {
-      v37 = [(NSMutableArray *)self->_iconImageViewReusePool _sb_dequeue];
-      if (!v37)
+      _sb_dequeue4 = [(NSMutableArray *)self->_iconImageViewReusePool _sb_dequeue];
+      if (!_sb_dequeue4)
       {
         v45 = [SBFluidSwitcherIconImageContainerView alloc];
-        v37 = [(SBFluidSwitcherIconImageContainerView *)v45 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-        [(SBFluidSwitcherItemContainerHeaderView *)self addSubview:v37];
+        _sb_dequeue4 = [(SBFluidSwitcherIconImageContainerView *)v45 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+        [(SBFluidSwitcherItemContainerHeaderView *)self addSubview:_sb_dequeue4];
       }
 
-      [(NSMutableDictionary *)self->_itemsToIconImageViews setObject:v37 forKey:v102];
+      [(NSMutableDictionary *)self->_itemsToIconImageViews setObject:_sb_dequeue4 forKey:displayItem];
     }
 
-    v46 = v37;
+    v46 = _sb_dequeue4;
     v47 = 0;
     goto LABEL_50;
   }
 
-  v37 = 0;
-  v41 = 0;
+  _sb_dequeue4 = 0;
+  _sb_dequeue = 0;
   v42 = 0;
   v99 = 0;
   v39 = BSEqualObjects() ^ 1;
 LABEL_72:
   v40 = v100;
 LABEL_73:
-  v96 = v37;
+  v96 = _sb_dequeue4;
   if (v40)
   {
     v106 = v42;
-    v69 = [(NSMutableDictionary *)self->_itemsToIconImageViews objectForKey:v101];
-    v70 = [(NSMutableDictionary *)self->_itemsToTitleLabels objectForKey:v101];
-    v71 = [(NSMutableDictionary *)self->_itemsToSubtitleLabelViews objectForKey:v101];
-    v72 = [(NSMutableDictionary *)self->_itemsToMultiWindowIndicatorViews objectForKey:v101];
+    _sb_dequeue8 = [(NSMutableDictionary *)self->_itemsToIconImageViews objectForKey:displayItem2];
+    _sb_dequeue5 = [(NSMutableDictionary *)self->_itemsToTitleLabels objectForKey:displayItem2];
+    _sb_dequeue6 = [(NSMutableDictionary *)self->_itemsToSubtitleLabelViews objectForKey:displayItem2];
+    _sb_dequeue7 = [(NSMutableDictionary *)self->_itemsToMultiWindowIndicatorViews objectForKey:displayItem2];
     if (BSEqualObjects())
     {
 LABEL_77:
@@ -1408,164 +1408,164 @@ LABEL_77:
       goto LABEL_109;
     }
 
-    v73 = [v40 image];
-    if (v73)
+    image3 = [v40 image];
+    if (image3)
     {
     }
 
     else
     {
-      v74 = [v40 imageView];
+      imageView3 = [v40 imageView];
 
-      if (!v74)
+      if (!imageView3)
       {
-        v76 = v69;
+        v76 = _sb_dequeue8;
         v77 = 1;
 LABEL_87:
         [(SBFluidSwitcherIconImageContainerView *)v76 setHidden:v77];
-        v78 = [v100 titleText];
-        v79 = [v78 length];
+        titleText3 = [v100 titleText];
+        v79 = [titleText3 length];
 
         if (v79)
         {
-          if (!v70)
+          if (!_sb_dequeue5)
           {
-            v70 = [(NSMutableArray *)self->_titleLabelReusePool _sb_dequeue];
-            if (!v70)
+            _sb_dequeue5 = [(NSMutableArray *)self->_titleLabelReusePool _sb_dequeue];
+            if (!_sb_dequeue5)
             {
               v80 = objc_alloc(MEMORY[0x277D756B8]);
-              v70 = [v80 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-              [v70 setClipsToBounds:0];
-              [v70 setSizingRule:1];
-              [(SBFluidSwitcherItemContainerHeaderView *)self addSubview:v70];
+              _sb_dequeue5 = [v80 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+              [_sb_dequeue5 setClipsToBounds:0];
+              [_sb_dequeue5 setSizingRule:1];
+              [(SBFluidSwitcherItemContainerHeaderView *)self addSubview:_sb_dequeue5];
             }
 
-            v81 = [(SBFluidSwitcherItemContainerHeaderView *)self _titleLabelFont];
-            [v70 setFont:v81];
+            _titleLabelFont2 = [(SBFluidSwitcherItemContainerHeaderView *)self _titleLabelFont];
+            [_sb_dequeue5 setFont:_titleLabelFont2];
 
-            [(NSMutableDictionary *)self->_itemsToTitleLabels setObject:v70 forKey:v101];
+            [(NSMutableDictionary *)self->_itemsToTitleLabels setObject:_sb_dequeue5 forKey:displayItem2];
           }
 
           v40 = v100;
-          v82 = [v100 titleTextColor];
-          [v70 setTextColor:v82];
+          titleTextColor2 = [v100 titleTextColor];
+          [_sb_dequeue5 setTextColor:titleTextColor2];
 
-          [v70 setAlpha:self->_textAlpha];
-          [v70 setHidden:0];
+          [_sb_dequeue5 setAlpha:self->_textAlpha];
+          [_sb_dequeue5 setHidden:0];
         }
 
         else
         {
-          [v70 setHidden:1];
+          [_sb_dequeue5 setHidden:1];
           v40 = v100;
         }
 
-        v83 = [v40 subtitleText];
-        v84 = [v83 length];
+        subtitleText3 = [v40 subtitleText];
+        v84 = [subtitleText3 length];
 
         if (v84)
         {
-          if (!v71)
+          if (!_sb_dequeue6)
           {
-            v71 = [(NSMutableArray *)self->_subtitleLabelReusePool _sb_dequeue];
-            if (!v71)
+            _sb_dequeue6 = [(NSMutableArray *)self->_subtitleLabelReusePool _sb_dequeue];
+            if (!_sb_dequeue6)
             {
               v85 = objc_alloc(MEMORY[0x277CF0D58]);
-              v71 = [v85 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-              [v71 setClipsToBounds:0];
-              [(SBFluidSwitcherItemContainerHeaderView *)self addSubview:v71];
+              _sb_dequeue6 = [v85 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+              [_sb_dequeue6 setClipsToBounds:0];
+              [(SBFluidSwitcherItemContainerHeaderView *)self addSubview:_sb_dequeue6];
             }
 
-            v86 = [(SBFluidSwitcherItemContainerHeaderView *)self _subtitleLabelFont];
-            [v71 setFont:v86];
+            _subtitleLabelFont2 = [(SBFluidSwitcherItemContainerHeaderView *)self _subtitleLabelFont];
+            [_sb_dequeue6 setFont:_subtitleLabelFont2];
 
-            [(NSMutableDictionary *)self->_itemsToSubtitleLabelViews setObject:v71 forKey:v101];
+            [(NSMutableDictionary *)self->_itemsToSubtitleLabelViews setObject:_sb_dequeue6 forKey:displayItem2];
           }
 
-          [v71 mt_replaceVisualStyling:self->_subtitleVisualStyling];
-          [v71 setAlpha:self->_textAlpha];
-          [v71 setHidden:0];
+          [_sb_dequeue6 mt_replaceVisualStyling:self->_subtitleVisualStyling];
+          [_sb_dequeue6 setAlpha:self->_textAlpha];
+          [_sb_dequeue6 setHidden:0];
         }
 
         else
         {
-          [v71 setHidden:1];
+          [_sb_dequeue6 setHidden:1];
         }
 
         if ([v40 showsMultiWindowIndicator])
         {
-          if (!v72)
+          if (!_sb_dequeue7)
           {
-            v72 = [(NSMutableArray *)self->_multiWindowIndicatorViewReusePool _sb_dequeue];
-            if (!v72)
+            _sb_dequeue7 = [(NSMutableArray *)self->_multiWindowIndicatorViewReusePool _sb_dequeue];
+            if (!_sb_dequeue7)
             {
-              v72 = [(SBFluidSwitcherItemContainerHeaderView *)self _makeMultipleWindowsIndicatorView];
-              [(SBFluidSwitcherItemContainerHeaderView *)self addSubview:v72];
+              _sb_dequeue7 = [(SBFluidSwitcherItemContainerHeaderView *)self _makeMultipleWindowsIndicatorView];
+              [(SBFluidSwitcherItemContainerHeaderView *)self addSubview:_sb_dequeue7];
             }
 
-            [(NSMutableDictionary *)self->_itemsToMultiWindowIndicatorViews setObject:v72 forKey:v101];
+            [(NSMutableDictionary *)self->_itemsToMultiWindowIndicatorViews setObject:_sb_dequeue7 forKey:displayItem2];
           }
 
-          [v72 mt_replaceVisualStyling:self->_subtitleVisualStyling];
-          v87 = [v40 displayItem];
-          v88 = [(SBFluidSwitcherItemContainerHeaderView *)self _multiWindowIndicatorAccessibilityIdentifierForDisplayItem:v87];
-          [v72 setAccessibilityIdentifier:v88];
+          [_sb_dequeue7 mt_replaceVisualStyling:self->_subtitleVisualStyling];
+          displayItem4 = [v40 displayItem];
+          v88 = [(SBFluidSwitcherItemContainerHeaderView *)self _multiWindowIndicatorAccessibilityIdentifierForDisplayItem:displayItem4];
+          [_sb_dequeue7 setAccessibilityIdentifier:v88];
 
-          [v72 setAlpha:self->_textAlpha];
-          v89 = v72;
+          [_sb_dequeue7 setAlpha:self->_textAlpha];
+          v89 = _sb_dequeue7;
           v90 = 0;
         }
 
         else
         {
-          [v72 setAccessibilityIdentifier:0];
-          v89 = v72;
+          [_sb_dequeue7 setAccessibilityIdentifier:0];
+          v89 = _sb_dequeue7;
           v90 = 1;
         }
 
         [v89 setHidden:v90];
-        v91 = [v40 image];
-        [(SBFluidSwitcherIconImageContainerView *)v69 setImage:v91 animated:v95];
+        image4 = [v40 image];
+        [(SBFluidSwitcherIconImageContainerView *)_sb_dequeue8 setImage:image4 animated:animatedCopy];
 
-        v92 = [v40 imageView];
-        [(SBFluidSwitcherIconImageContainerView *)v69 setCustomImageView:v92 animated:v95];
+        imageView4 = [v40 imageView];
+        [(SBFluidSwitcherIconImageContainerView *)_sb_dequeue8 setCustomImageView:imageView4 animated:animatedCopy];
 
-        [(SBFluidSwitcherIconImageContainerView *)v69 sizeToFit];
-        v93 = [v40 titleText];
-        [v70 setText:v93];
+        [(SBFluidSwitcherIconImageContainerView *)_sb_dequeue8 sizeToFit];
+        titleText4 = [v40 titleText];
+        [_sb_dequeue5 setText:titleText4];
 
-        [v70 sizeToFit];
-        v94 = [v40 subtitleText];
-        [v71 setText:v94];
+        [_sb_dequeue5 sizeToFit];
+        subtitleText4 = [v40 subtitleText];
+        [_sb_dequeue6 setText:subtitleText4];
 
-        [v71 sizeToFit];
+        [_sb_dequeue6 sizeToFit];
         v42 = v106;
         goto LABEL_109;
       }
     }
 
-    if (!v69)
+    if (!_sb_dequeue8)
     {
-      v69 = [(NSMutableArray *)self->_iconImageViewReusePool _sb_dequeue];
-      if (!v69)
+      _sb_dequeue8 = [(NSMutableArray *)self->_iconImageViewReusePool _sb_dequeue];
+      if (!_sb_dequeue8)
       {
         v75 = [SBFluidSwitcherIconImageContainerView alloc];
-        v69 = [(SBFluidSwitcherIconImageContainerView *)v75 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-        [(SBFluidSwitcherItemContainerHeaderView *)self addSubview:v69];
+        _sb_dequeue8 = [(SBFluidSwitcherIconImageContainerView *)v75 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+        [(SBFluidSwitcherItemContainerHeaderView *)self addSubview:_sb_dequeue8];
       }
 
-      [(NSMutableDictionary *)self->_itemsToIconImageViews setObject:v69 forKey:v101];
+      [(NSMutableDictionary *)self->_itemsToIconImageViews setObject:_sb_dequeue8 forKey:displayItem2];
     }
 
-    v76 = v69;
+    v76 = _sb_dequeue8;
     v77 = 0;
     goto LABEL_87;
   }
 
-  v69 = 0;
-  v70 = 0;
-  v71 = 0;
-  v72 = 0;
+  _sb_dequeue8 = 0;
+  _sb_dequeue5 = 0;
+  _sb_dequeue6 = 0;
+  _sb_dequeue7 = 0;
   if (BSEqualObjects())
   {
     goto LABEL_77;
@@ -1576,18 +1576,18 @@ LABEL_109:
 LABEL_110:
 }
 
-- (void)setTextAlpha:(double)a3
+- (void)setTextAlpha:(double)alpha
 {
-  if (self->_textAlpha != a3)
+  if (self->_textAlpha != alpha)
   {
-    self->_textAlpha = a3;
+    self->_textAlpha = alpha;
     [(SBFluidSwitcherItemContainerHeaderView *)self _updateTitleAlpha];
   }
 }
 
-- (void)_contentSizeCategoryDidChangeNotification:(id)a3
+- (void)_contentSizeCategoryDidChangeNotification:(id)notification
 {
-  v13 = [(SBFluidSwitcherItemContainerHeaderView *)self _titleLabelFont];
+  _titleLabelFont = [(SBFluidSwitcherItemContainerHeaderView *)self _titleLabelFont];
   if ([(NSArray *)self->_titleItems count])
   {
     v4 = [(NSArray *)self->_titleItems objectAtIndex:0];
@@ -1608,17 +1608,17 @@ LABEL_110:
     v5 = [(NSArray *)self->_titleItems objectAtIndex:1];
   }
 
-  v6 = [v4 displayItem];
-  v7 = [v5 displayItem];
+  displayItem = [v4 displayItem];
+  displayItem2 = [v5 displayItem];
   if (v4)
   {
-    v8 = [(NSMutableDictionary *)self->_itemsToTitleLabels objectForKey:v6];
-    v9 = [(NSMutableDictionary *)self->_itemsToSubtitleLabelViews objectForKey:v6];
+    v8 = [(NSMutableDictionary *)self->_itemsToTitleLabels objectForKey:displayItem];
+    v9 = [(NSMutableDictionary *)self->_itemsToSubtitleLabelViews objectForKey:displayItem];
     if (v5)
     {
 LABEL_9:
-      v10 = [(NSMutableDictionary *)self->_itemsToTitleLabels objectForKey:v7];
-      v11 = [(NSMutableDictionary *)self->_itemsToSubtitleLabelViews objectForKey:v7];
+      v10 = [(NSMutableDictionary *)self->_itemsToTitleLabels objectForKey:displayItem2];
+      v11 = [(NSMutableDictionary *)self->_itemsToSubtitleLabelViews objectForKey:displayItem2];
       goto LABEL_12;
     }
   }
@@ -1636,25 +1636,25 @@ LABEL_9:
   v11 = 0;
   v10 = 0;
 LABEL_12:
-  [v8 setFont:v13];
+  [v8 setFont:_titleLabelFont];
   [v8 sizeToFit];
-  [v10 setFont:v13];
+  [v10 setFont:_titleLabelFont];
   [v10 sizeToFit];
   if (v9 | v11)
   {
-    v12 = [(SBFluidSwitcherItemContainerHeaderView *)self _subtitleLabelFont];
-    [v9 setFont:v12];
+    _subtitleLabelFont = [(SBFluidSwitcherItemContainerHeaderView *)self _subtitleLabelFont];
+    [v9 setFont:_subtitleLabelFont];
     [v9 sizeToFit];
-    [v11 setFont:v12];
+    [v11 setFont:_subtitleLabelFont];
     [v11 sizeToFit];
   }
 
   [(SBFluidSwitcherItemContainerHeaderView *)self setNeedsLayout];
 }
 
-- (void)_handleTapGestureRecognizer:(id)a3
+- (void)_handleTapGestureRecognizer:(id)recognizer
 {
-  v49 = a3;
+  recognizerCopy = recognizer;
   if ([(NSArray *)self->_titleItems count])
   {
     v4 = [(NSArray *)self->_titleItems objectAtIndex:0];
@@ -1675,15 +1675,15 @@ LABEL_12:
     v50 = [(NSArray *)self->_titleItems objectAtIndex:1];
   }
 
-  v5 = [v4 displayItem];
-  v6 = [v50 displayItem];
-  v7 = v6;
-  if (v5)
+  displayItem = [v4 displayItem];
+  displayItem2 = [v50 displayItem];
+  v7 = displayItem2;
+  if (displayItem)
   {
-    v48 = [(NSMutableDictionary *)self->_itemsToIconImageViews objectForKey:v5];
-    v47 = [(NSMutableDictionary *)self->_itemsToTitleLabels objectForKey:v5];
-    v8 = [(NSMutableDictionary *)self->_itemsToSubtitleLabelViews objectForKey:v5];
-    v45 = [(NSMutableDictionary *)self->_itemsToMultiWindowIndicatorViews objectForKey:v5];
+    v48 = [(NSMutableDictionary *)self->_itemsToIconImageViews objectForKey:displayItem];
+    v47 = [(NSMutableDictionary *)self->_itemsToTitleLabels objectForKey:displayItem];
+    v8 = [(NSMutableDictionary *)self->_itemsToSubtitleLabelViews objectForKey:displayItem];
+    v45 = [(NSMutableDictionary *)self->_itemsToMultiWindowIndicatorViews objectForKey:displayItem];
     if (v7)
     {
 LABEL_9:
@@ -1701,7 +1701,7 @@ LABEL_9:
     v47 = 0;
     v48 = 0;
     v8 = 0;
-    if (v6)
+    if (displayItem2)
     {
       goto LABEL_9;
     }
@@ -1712,7 +1712,7 @@ LABEL_9:
   v9 = 0;
   v10 = 0;
 LABEL_12:
-  [v49 locationInView:self];
+  [recognizerCopy locationInView:self];
   v13 = v12;
   v15 = v14;
   if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1)
@@ -1814,7 +1814,7 @@ LABEL_12:
     if (!v7)
     {
 LABEL_37:
-      if (!v5)
+      if (!displayItem)
       {
         goto LABEL_45;
       }
@@ -1866,14 +1866,14 @@ LABEL_43:
 LABEL_45:
 }
 
-- (void)_updateVisualStylingWithTitleItems:(id)a3
+- (void)_updateVisualStylingWithTitleItems:(id)items
 {
-  v4 = [a3 firstObject];
-  v5 = [v4 subtitleInterfaceStyle];
+  firstObject = [items firstObject];
+  subtitleInterfaceStyle = [firstObject subtitleInterfaceStyle];
 
-  if (self->_subtitleVisualStylingInterfaceStyle != v5)
+  if (self->_subtitleVisualStylingInterfaceStyle != subtitleInterfaceStyle)
   {
-    if (!v5)
+    if (!subtitleInterfaceStyle)
     {
       return;
     }
@@ -1888,14 +1888,14 @@ LABEL_45:
 
   else
   {
-    v6 = v5 == 0;
+    v6 = subtitleInterfaceStyle == 0;
   }
 
   if (!v6)
   {
 LABEL_9:
-    self->_subtitleVisualStylingInterfaceStyle = v5;
-    v9 = [MEMORY[0x277D26740] _visualStylingProviderForRecipe:53 category:2 andUserInterfaceStyle:v5];
+    self->_subtitleVisualStylingInterfaceStyle = subtitleInterfaceStyle;
+    v9 = [MEMORY[0x277D26740] _visualStylingProviderForRecipe:53 category:2 andUserInterfaceStyle:subtitleInterfaceStyle];
     v7 = [v9 _visualStylingForStyle:0];
     subtitleVisualStyling = self->_subtitleVisualStyling;
     self->_subtitleVisualStyling = v7;
@@ -1905,14 +1905,14 @@ LABEL_9:
   }
 }
 
-- (id)_multiWindowIndicatorAccessibilityIdentifierForDisplayItem:(id)a3
+- (id)_multiWindowIndicatorAccessibilityIdentifierForDisplayItem:(id)item
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  v6 = [v4 uniqueIdentifier];
+  itemCopy = item;
+  bundleIdentifier = [itemCopy bundleIdentifier];
+  uniqueIdentifier = [itemCopy uniqueIdentifier];
 
-  v7 = [v3 stringWithFormat:@"multiple-windows-indicator:%@:%@", v5, v6];
+  v7 = [v3 stringWithFormat:@"multiple-windows-indicator:%@:%@", bundleIdentifier, uniqueIdentifier];
 
   return v7;
 }

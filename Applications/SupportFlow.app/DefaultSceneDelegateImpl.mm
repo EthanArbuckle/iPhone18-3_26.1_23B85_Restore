@@ -1,82 +1,82 @@
 @interface DefaultSceneDelegateImpl
-- (void)scene:(id)a3 continueUserActivity:(id)a4;
-- (void)scene:(id)a3 didUpdateUserActivity:(id)a4;
-- (void)scene:(id)a3 restoreInteractionStateWithUserActivity:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
+- (void)scene:(id)scene continueUserActivity:(id)activity;
+- (void)scene:(id)scene didUpdateUserActivity:(id)activity;
+- (void)scene:(id)scene restoreInteractionStateWithUserActivity:(id)activity;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
 @end
 
 @implementation DefaultSceneDelegateImpl
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
   sub_100026E6C();
 }
 
-- (void)scene:(id)a3 continueUserActivity:(id)a4
+- (void)scene:(id)scene continueUserActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  sceneCopy = scene;
+  activityCopy = activity;
+  selfCopy = self;
   sub_100027CE8();
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
+  disconnectCopy = disconnect;
+  selfCopy = self;
   sub_100027E8C();
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
+  activeCopy = active;
+  selfCopy = self;
   sub_10002754C();
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
+  activeCopy = active;
+  selfCopy = self;
   sub_10002774C();
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = self;
+  foregroundCopy = foreground;
+  selfCopy = self;
   sub_100027FF8();
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = self;
+  backgroundCopy = background;
+  selfCopy = self;
   sub_1000279DC();
 }
 
-- (void)scene:(id)a3 didUpdateUserActivity:(id)a4
+- (void)scene:(id)scene didUpdateUserActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  sceneCopy = scene;
+  activityCopy = activity;
+  selfCopy = self;
   sub_100028164();
 }
 
-- (void)scene:(id)a3 restoreInteractionStateWithUserActivity:(id)a4
+- (void)scene:(id)scene restoreInteractionStateWithUserActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  sceneCopy = scene;
+  activityCopy = activity;
+  selfCopy = self;
   sub_100028308();
 }
 

@@ -10,21 +10,21 @@
   {
     v7.receiver = self;
     v7.super_class = _UIScreenBasedSceneSpecification;
-    v3 = [(UIApplicationSceneSpecification *)&v7 coreSceneComponentClassDictionary];
-    v4 = [v3 mutableCopy];
+    coreSceneComponentClassDictionary = [(UIApplicationSceneSpecification *)&v7 coreSceneComponentClassDictionary];
+    v4 = [coreSceneComponentClassDictionary mutableCopy];
 
     [v4 setObject:objc_opt_class() forKeyedSubscript:@"_UIHomeAffordanceSceneNotifierComponentKey"];
-    v5 = [v4 copy];
+    coreSceneComponentClassDictionary2 = [v4 copy];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = _UIScreenBasedSceneSpecification;
-    v5 = [(UIApplicationSceneSpecification *)&v8 coreSceneComponentClassDictionary];
+    coreSceneComponentClassDictionary2 = [(UIApplicationSceneSpecification *)&v8 coreSceneComponentClassDictionary];
   }
 
-  return v5;
+  return coreSceneComponentClassDictionary2;
 }
 
 @end

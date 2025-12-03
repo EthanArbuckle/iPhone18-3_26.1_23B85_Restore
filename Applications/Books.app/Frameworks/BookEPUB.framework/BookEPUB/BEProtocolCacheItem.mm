@@ -1,8 +1,8 @@
 @interface BEProtocolCacheItem
 - (BEProtocolCacheItem)init;
-- (id)cachedSVGForURL:(id)a3;
+- (id)cachedSVGForURL:(id)l;
 - (unint64_t)contentBlockingRule;
-- (void)cacheSVG:(id)a3 url:(id)a4;
+- (void)cacheSVG:(id)g url:(id)url;
 @end
 
 @implementation BEProtocolCacheItem
@@ -24,7 +24,7 @@
   return v2;
 }
 
-- (id)cachedSVGForURL:(id)a3
+- (id)cachedSVGForURL:(id)l
 {
   v14 = 0;
   v15 = &v14;
@@ -37,9 +37,9 @@
   v9 = sub_8560;
   v10 = &unk_3281C0;
   v13 = &v14;
-  v11 = self;
-  v4 = a3;
-  v12 = v4;
+  selfCopy = self;
+  lCopy = l;
+  v12 = lCopy;
   v5 = v8;
   os_unfair_lock_lock(&self->_svgCacheLock);
   v9(v5);
@@ -51,18 +51,18 @@
   return v6;
 }
 
-- (void)cacheSVG:(id)a3 url:(id)a4
+- (void)cacheSVG:(id)g url:(id)url
 {
-  v6 = a3;
+  gCopy = g;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_8684;
   v9[3] = &unk_3281E8;
   v9[4] = self;
-  v10 = a4;
-  v11 = v6;
-  v7 = v6;
-  v8 = v10;
+  urlCopy = url;
+  v11 = gCopy;
+  v7 = gCopy;
+  v8 = urlCopy;
   os_unfair_lock_lock(&self->_svgCacheLock);
   sub_8684(v9);
   os_unfair_lock_unlock(&self->_svgCacheLock);

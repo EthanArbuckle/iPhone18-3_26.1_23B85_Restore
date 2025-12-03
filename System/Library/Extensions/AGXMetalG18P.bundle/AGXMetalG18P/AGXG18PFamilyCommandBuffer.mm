@@ -1,47 +1,47 @@
 @interface AGXG18PFamilyCommandBuffer
-- (AGXG18PFamilyCommandBuffer)initWithQueue:(id)a3 retainedReferences:(BOOL)a4;
+- (AGXG18PFamilyCommandBuffer)initWithQueue:(id)queue retainedReferences:(BOOL)references;
 - (BOOL)isBlitEncoderCoalescingDisabled;
 - (BOOL)isComputeEncoderCoalescingDisabled;
 - (BOOL)isEncoderCoalescingDisabled;
-- (BOOL)tryCoalescingPreviousComputeCommandEncoderWithConfig:(EncoderComputeServiceConfigA *)a3 nextEncoderClass:(Class)a4;
+- (BOOL)tryCoalescingPreviousComputeCommandEncoderWithConfig:(EncoderComputeServiceConfigA *)config nextEncoderClass:(Class)class;
 - (id).cxx_construct;
-- (id)_accelerationStructureCommandEncoderWithDescriptor:(id)a3;
-- (id)blitCommandEncoderCommon:(id)a3;
+- (id)_accelerationStructureCommandEncoderWithDescriptor:(id)descriptor;
+- (id)blitCommandEncoderCommon:(id)common;
 - (id)computeCommandEncoder;
-- (id)computeCommandEncoderWithConfig:(EncoderComputeServiceConfigA *)a3;
-- (id)computeCommandEncoderWithDescriptor:(id)a3;
-- (id)computeCommandEncoderWithDispatchType:(unint64_t)a3;
-- (id)computeCommandEncoderWithDispatchType:(unint64_t)a3 substreamCount:(unsigned int)a4;
-- (id)parallelRenderCommandEncoderWithDescriptor:(id)a3;
-- (id)renderCommandEncoderWithDescriptor:(id)a3;
+- (id)computeCommandEncoderWithConfig:(EncoderComputeServiceConfigA *)config;
+- (id)computeCommandEncoderWithDescriptor:(id)descriptor;
+- (id)computeCommandEncoderWithDispatchType:(unint64_t)type;
+- (id)computeCommandEncoderWithDispatchType:(unint64_t)type substreamCount:(unsigned int)count;
+- (id)parallelRenderCommandEncoderWithDescriptor:(id)descriptor;
+- (id)renderCommandEncoderWithDescriptor:(id)descriptor;
 - (id)resourceStateCommandEncoder;
-- (id)resourceStateCommandEncoderWithDescriptor:(id)a3;
-- (id)sampledComputeCommandEncoderWithConfig:(EncoderComputeServiceConfigA *)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5;
-- (id)sampledComputeCommandEncoderWithDescriptor:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5;
-- (id)sampledComputeCommandEncoderWithDispatchType:(unint64_t)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5;
-- (id)sampledComputeCommandEncoderWithProgramInfoBuffer:(id *)a3 capacity:(unint64_t)a4;
-- (id)sampledRenderCommandEncoderWithDescriptor:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5;
-- (id)sampledSubRenderCommandEncoderWithDescriptor:(id)a3 subEncoderIndex:(unint64_t)a4 framebuffer:(void *)a5 programInfoBuffer:(id *)a6 capacity:(unint64_t)a7;
-- (id)subRenderCommandEncoderWithDescriptor:(id)a3 subEncoderIndex:(unint64_t)a4 framebuffer:(void *)a5;
+- (id)resourceStateCommandEncoderWithDescriptor:(id)descriptor;
+- (id)sampledComputeCommandEncoderWithConfig:(EncoderComputeServiceConfigA *)config programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
+- (id)sampledComputeCommandEncoderWithDescriptor:(id)descriptor programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
+- (id)sampledComputeCommandEncoderWithDispatchType:(unint64_t)type programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
+- (id)sampledComputeCommandEncoderWithProgramInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
+- (id)sampledRenderCommandEncoderWithDescriptor:(id)descriptor programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
+- (id)sampledSubRenderCommandEncoderWithDescriptor:(id)descriptor subEncoderIndex:(unint64_t)index framebuffer:(void *)framebuffer programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
+- (id)subRenderCommandEncoderWithDescriptor:(id)descriptor subEncoderIndex:(unint64_t)index framebuffer:(void *)framebuffer;
 - (void)commit;
 - (void)commitEncoder;
-- (void)commitWithDeadline:(unint64_t)a3;
+- (void)commitWithDeadline:(unint64_t)deadline;
 - (void)dealloc;
-- (void)dropResourceGroups:(const void *)a3 count:(unint64_t)a4;
-- (void)encodeCacheHintFinalize:(unint64_t)a3 resourceGroups:(const void *)a4 count:(unint64_t)a5;
-- (void)encodeCacheHintTag:(unint64_t)a3 resourceGroups:(const void *)a4 count:(unint64_t)a5;
-- (void)encodeDashboardFinalizeForResourceGroup:(id)a3 dashboard:(unint64_t)a4 value:(unint64_t)a5 forIndex:(unint64_t)a6;
-- (void)encodeDashboardFinalizeForResourceGroup:(id)a3 dashboard:(unint64_t)a4 values:(const unint64_t *)a5 indices:(const unint64_t *)a6 count:(unint64_t)a7;
-- (void)encodeDashboardTagForResourceGroup:(id)a3;
-- (void)encodeSignalEvent:(id)a3 value:(unint64_t)a4;
-- (void)encodeSignalEvent:(id)a3 value:(unint64_t)a4 agentMask:(unint64_t)a5;
-- (void)encodeWaitForEvent:(id)a3 value:(unint64_t)a4;
-- (void)encodeWaitForEvent:(id)a3 value:(unint64_t)a4 timeout:(unsigned int)a5;
-- (void)fillCommandBufferArgs:(IOGPUCommandQueueCommandBufferArgs *)a3 commandQueue:(id)a4;
-- (void)getDriverEncoderInfoData:(id)a3;
+- (void)dropResourceGroups:(const void *)groups count:(unint64_t)count;
+- (void)encodeCacheHintFinalize:(unint64_t)finalize resourceGroups:(const void *)groups count:(unint64_t)count;
+- (void)encodeCacheHintTag:(unint64_t)tag resourceGroups:(const void *)groups count:(unint64_t)count;
+- (void)encodeDashboardFinalizeForResourceGroup:(id)group dashboard:(unint64_t)dashboard value:(unint64_t)value forIndex:(unint64_t)index;
+- (void)encodeDashboardFinalizeForResourceGroup:(id)group dashboard:(unint64_t)dashboard values:(const unint64_t *)values indices:(const unint64_t *)indices count:(unint64_t)count;
+- (void)encodeDashboardTagForResourceGroup:(id)group;
+- (void)encodeSignalEvent:(id)event value:(unint64_t)value;
+- (void)encodeSignalEvent:(id)event value:(unint64_t)value agentMask:(unint64_t)mask;
+- (void)encodeWaitForEvent:(id)event value:(unint64_t)value;
+- (void)encodeWaitForEvent:(id)event value:(unint64_t)value timeout:(unsigned int)timeout;
+- (void)fillCommandBufferArgs:(IOGPUCommandQueueCommandBufferArgs *)args commandQueue:(id)queue;
+- (void)getDriverEncoderInfoData:(id)data;
 - (void)gtpContinuePreParse;
-- (void)reserveKernelCommandBufferSpace:(unint64_t)a3;
-- (void)setResourceGroups:(const void *)a3 count:(unint64_t)a4;
+- (void)reserveKernelCommandBufferSpace:(unint64_t)space;
+- (void)setResourceGroups:(const void *)groups count:(unint64_t)count;
 @end
 
 @implementation AGXG18PFamilyCommandBuffer
@@ -56,85 +56,85 @@
   return self;
 }
 
-- (void)fillCommandBufferArgs:(IOGPUCommandQueueCommandBufferArgs *)a3 commandQueue:(id)a4
+- (void)fillCommandBufferArgs:(IOGPUCommandQueueCommandBufferArgs *)args commandQueue:(id)queue
 {
-  *&a3[1].var2 = [(AGXG18PFamilyCommandBuffer *)self deadline];
-  a3[1].var0 = [(AGXG18PFamilyCommandBuffer *)self deadline_namespace_id];
+  *&args[1].var2 = [(AGXG18PFamilyCommandBuffer *)self deadline];
+  args[1].var0 = [(AGXG18PFamilyCommandBuffer *)self deadline_namespace_id];
   v7.receiver = self;
   v7.super_class = AGXG18PFamilyCommandBuffer;
-  [(IOGPUMetalCommandBuffer *)&v7 fillCommandBufferArgs:a3 commandQueue:a4];
+  [(IOGPUMetalCommandBuffer *)&v7 fillCommandBufferArgs:args commandQueue:queue];
 }
 
-- (id)computeCommandEncoderWithDispatchType:(unint64_t)a3 substreamCount:(unsigned int)a4
+- (id)computeCommandEncoderWithDispatchType:(unint64_t)type substreamCount:(unsigned int)count
 {
-  v7 = [(IOGPUMetalCommandBuffer *)self device];
+  device = [(IOGPUMetalCommandBuffer *)self device];
   impl = self->_impl;
   impl[20] = 1;
   v9 = *(impl + 4);
-  v10 = [(IOGPUMetalCommandBuffer *)self protectionOptions];
-  v11 = *(v7 + 106);
-  v12 = a3 == 1 && (*(v11 + 16457) & 0x10) == 0;
+  protectionOptions = [(IOGPUMetalCommandBuffer *)self protectionOptions];
+  v11 = *(device + 106);
+  v12 = type == 1 && (*(v11 + 16457) & 0x10) == 0;
   block = MEMORY[0x29EDCA5F8];
-  v16 = 3221225472;
+  selfCopy = 3221225472;
   v17 = ___ZN3AGX21ComputeUSCStateLoaderINS_6HAL3008EncodersENS1_7ClassesEE17dataBufferConfigsERK16AGXGPUCoreConfig_block_invoke;
   v18 = &__block_descriptor_40_e5_v8__0l;
   v19 = v11 + 7008;
   if (AGX::ComputeUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::dataBufferConfigs(AGXGPUCoreConfig const&)::once != -1)
   {
-    v14 = v10;
+    v14 = protectionOptions;
     dispatch_once(&AGX::ComputeUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::dataBufferConfigs(AGXGPUCoreConfig const&)::once, &block);
-    v10 = v14;
+    protectionOptions = v14;
   }
 
-  block = v7;
-  v16 = self;
+  block = device;
+  selfCopy = self;
   v17 = 0;
   LODWORD(v18) = v12;
   v19 = 0;
   v20 = v9;
-  v21 = a4;
+  countCopy = count;
   v22 = 1;
-  v23 = v10;
+  v23 = protectionOptions;
   v24 = 0;
   v25 = &AGX::ComputeUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::databuffer_configs;
   return [(AGXG18PFamilyCommandBuffer *)self computeCommandEncoderWithConfig:&block];
 }
 
-- (void)encodeDashboardFinalizeForResourceGroup:(id)a3 dashboard:(unint64_t)a4 values:(const unint64_t *)a5 indices:(const unint64_t *)a6 count:(unint64_t)a7
+- (void)encodeDashboardFinalizeForResourceGroup:(id)group dashboard:(unint64_t)dashboard values:(const unint64_t *)values indices:(const unint64_t *)indices count:(unint64_t)count
 {
   if (*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB768]))
   {
     MTLReportFailure();
   }
 
-  [(AGXG18PFamilyCommandBuffer *)self commitEncoder:a3];
-  if (a3)
+  [(AGXG18PFamilyCommandBuffer *)self commitEncoder:group];
+  if (group)
   {
     impl = self->_impl;
-    *(impl + ((*(a3 + 4) >> 3) & 0x1FF8) + 72) = (*(impl + ((*(a3 + 4) >> 3) & 0x1FF8) + 72) & ~(1 << *(a3 + 4)));
+    *(impl + ((*(group + 4) >> 3) & 0x1FF8) + 72) = (*(impl + ((*(group + 4) >> 3) & 0x1FF8) + 72) & ~(1 << *(group + 4)));
     v13 = [impl[1] reserveKernelCommandBufferSpace:48];
     *v13 = 0x3000010003;
-    if (a7)
+    if (count)
     {
-      *(v13 + 8) = *a5;
-      *(v13 + 40) = *a6;
-      if (a7 != 1)
+      *(v13 + 8) = *values;
+      *(v13 + 40) = *indices;
+      if (count != 1)
       {
-        *(v13 + 16) = a5[1];
-        *(v13 + 42) = a6[1];
-        if (a7 > 2)
+        *(v13 + 16) = values[1];
+        *(v13 + 42) = indices[1];
+        if (count > 2)
         {
-          *(v13 + 24) = a5[2];
-          *(v13 + 44) = a6[2];
-          if (a7 == 3)
+          *(v13 + 24) = values[2];
+          *(v13 + 44) = indices[2];
+          if (count == 3)
           {
             v14 = -1;
           }
 
           else
           {
-            *(v13 + 32) = a5[3];
-            v14 = *(a6 + 12);
+            *(v13 + 32) = values[3];
+            v14 = *(indices + 12);
           }
 
 LABEL_12:
@@ -163,23 +163,23 @@ LABEL_11:
   }
 }
 
-- (void)encodeDashboardFinalizeForResourceGroup:(id)a3 dashboard:(unint64_t)a4 value:(unint64_t)a5 forIndex:(unint64_t)a6
+- (void)encodeDashboardFinalizeForResourceGroup:(id)group dashboard:(unint64_t)dashboard value:(unint64_t)value forIndex:(unint64_t)index
 {
-  v6 = a6;
+  indexCopy = index;
   if (*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB768]))
   {
     MTLReportFailure();
   }
 
-  [(AGXG18PFamilyCommandBuffer *)self commitEncoder:a3];
-  if (a3)
+  [(AGXG18PFamilyCommandBuffer *)self commitEncoder:group];
+  if (group)
   {
     impl = self->_impl;
-    *(impl + ((*(a3 + 4) >> 3) & 0x1FF8) + 72) = (*(impl + ((*(a3 + 4) >> 3) & 0x1FF8) + 72) & ~(1 << *(a3 + 4)));
+    *(impl + ((*(group + 4) >> 3) & 0x1FF8) + 72) = (*(impl + ((*(group + 4) >> 3) & 0x1FF8) + 72) & ~(1 << *(group + 4)));
     v11 = [impl[1] reserveKernelCommandBufferSpace:48];
     *v11 = 0x3000010003;
-    *(v11 + 8) = a5;
-    *(v11 + 40) = v6;
+    *(v11 + 8) = value;
+    *(v11 + 40) = indexCopy;
     *(v11 + 42) = -1;
     *(v11 + 46) = -1;
     [impl[1] commandBufferStorage];
@@ -189,12 +189,12 @@ LABEL_11:
   }
 }
 
-- (void)encodeDashboardTagForResourceGroup:(id)a3
+- (void)encodeDashboardTagForResourceGroup:(id)group
 {
-  if (a3)
+  if (group)
   {
     impl = self->_impl;
-    *(&impl[9] + ((*(a3 + 4) >> 3) & 0x1FF8)) |= 1 << *(a3 + 4);
+    *(&impl[9] + ((*(group + 4) >> 3) & 0x1FF8)) |= 1 << *(group + 4);
     v4 = impl[8];
     if ((*(*&v4 + 480) & 1) == 0)
     {
@@ -251,7 +251,7 @@ LABEL_9:
   }
 }
 
-- (void)encodeCacheHintFinalize:(unint64_t)a3 resourceGroups:(const void *)a4 count:(unint64_t)a5
+- (void)encodeCacheHintFinalize:(unint64_t)finalize resourceGroups:(const void *)groups count:(unint64_t)count
 {
   if (*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB768]))
   {
@@ -259,15 +259,15 @@ LABEL_9:
   }
 
   [(AGXG18PFamilyCommandBuffer *)self commitEncoder];
-  if (a5)
+  if (count)
   {
-    if (a3 == 1)
+    if (finalize == 1)
     {
       v9 = 0;
       v10 = 1;
       do
       {
-        v11 = a4[v9];
+        v11 = groups[v9];
         if (v11)
         {
           impl = self->_impl;
@@ -291,7 +291,7 @@ LABEL_9:
         v9 = v10++;
       }
 
-      while (v9 < a5);
+      while (v9 < count);
     }
 
     else
@@ -299,10 +299,10 @@ LABEL_9:
       v16 = 1;
       do
       {
-        if (*a4)
+        if (*groups)
         {
           v18 = self->_impl;
-          v19 = *(*a4 + 4);
+          v19 = *(*groups + 4);
           v20 = 1 << v19;
           v21 = (v19 >> 3) & 0x1FF8;
           *&v18[v21 + 72] &= ~v20;
@@ -314,53 +314,53 @@ LABEL_9:
         }
 
         v17 = v16;
-        ++a4;
+        ++groups;
         ++v16;
       }
 
-      while (v17 < a5);
+      while (v17 < count);
     }
   }
 }
 
-- (void)encodeCacheHintTag:(unint64_t)a3 resourceGroups:(const void *)a4 count:(unint64_t)a5
+- (void)encodeCacheHintTag:(unint64_t)tag resourceGroups:(const void *)groups count:(unint64_t)count
 {
-  if (a5)
+  if (count)
   {
     v9 = 0;
     v10 = 1;
     do
     {
-      v11 = a4[v9];
+      v11 = groups[v9];
       if (v11)
       {
-        AGX::ResourceGroupUsage<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setResourceGroup(self->_impl + 24, v11[4], a3 == 1);
+        AGX::ResourceGroupUsage<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setResourceGroup(self->_impl + 24, v11[4], tag == 1);
       }
 
       v9 = v10++;
     }
 
-    while (v9 < a5);
+    while (v9 < count);
   }
 }
 
-- (void)setResourceGroups:(const void *)a3 count:(unint64_t)a4
+- (void)setResourceGroups:(const void *)groups count:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
     v7 = 0;
     v8 = 1;
     do
     {
-      AGX::ResourceGroupUsage<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setResourceGroup(self->_impl + 24, *(a3[v7] + 4), 1);
+      AGX::ResourceGroupUsage<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setResourceGroup(self->_impl + 24, *(groups[v7] + 4), 1);
       v7 = v8++;
     }
 
-    while (v7 < a4);
+    while (v7 < count);
   }
 }
 
-- (void)dropResourceGroups:(const void *)a3 count:(unint64_t)a4
+- (void)dropResourceGroups:(const void *)groups count:(unint64_t)count
 {
   if (*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB768]))
   {
@@ -368,14 +368,14 @@ LABEL_9:
   }
 
   [(AGXG18PFamilyCommandBuffer *)self commitEncoder];
-  if (a4)
+  if (count)
   {
     v7 = 0;
     v8 = 1;
     do
     {
       impl = self->_impl;
-      v11 = *(a3[v7] + 4);
+      v11 = *(groups[v7] + 4);
       v12 = (v11 >> 3) & 0x1FF8;
       *&impl[v12 + 72] &= ~(1 << v11);
       *&impl[v12 + 104] &= ~(1 << v11);
@@ -393,24 +393,24 @@ LABEL_9:
       v7 = v8++;
     }
 
-    while (v7 < a4);
+    while (v7 < count);
   }
 }
 
-- (void)reserveKernelCommandBufferSpace:(unint64_t)a3
+- (void)reserveKernelCommandBufferSpace:(unint64_t)space
 {
-  v5 = [(IOGPUMetalCommandBuffer *)self commandBufferStorage];
-  result = v5->var5;
-  var6 = v5->var6;
+  commandBufferStorage = [(IOGPUMetalCommandBuffer *)self commandBufferStorage];
+  result = commandBufferStorage->var5;
+  var6 = commandBufferStorage->var6;
   v8 = result;
-  if (var6 - result < a3)
+  if (var6 - result < space)
   {
-    [(IOGPUMetalCommandBuffer *)self growKernelCommandBuffer:a3];
+    [(IOGPUMetalCommandBuffer *)self growKernelCommandBuffer:space];
     [(IOGPUMetalCommandBuffer *)self getCurrentKernelCommandBufferPointer:&v8 end:&var6];
     result = v8;
   }
 
-  v5->var5 = result + a3;
+  commandBufferStorage->var5 = result + space;
   return result;
 }
 
@@ -441,113 +441,113 @@ LABEL_9:
   }
 }
 
-- (id)sampledComputeCommandEncoderWithDescriptor:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5
+- (id)sampledComputeCommandEncoderWithDescriptor:(id)descriptor programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
-  v9 = [(IOGPUMetalCommandBuffer *)self device];
+  device = [(IOGPUMetalCommandBuffer *)self device];
   impl = self->_impl;
   impl[20] = 1;
   v11 = *(impl + 4);
-  v12 = [(IOGPUMetalCommandBuffer *)self protectionOptions];
-  v13 = [a3 dispatchType] == 1 && (*(*(v9 + 106) + 16457) & 0x10) == 0;
-  v14 = [a3 substreamCount];
-  v15 = [a3 allowCommandEncoderCoalescing];
-  v16 = *(v9 + 106) + 7008;
+  protectionOptions = [(IOGPUMetalCommandBuffer *)self protectionOptions];
+  v13 = [descriptor dispatchType] == 1 && (*(*(device + 106) + 16457) & 0x10) == 0;
+  substreamCount = [descriptor substreamCount];
+  allowCommandEncoderCoalescing = [descriptor allowCommandEncoderCoalescing];
+  v16 = *(device + 106) + 7008;
   block = MEMORY[0x29EDCA5F8];
-  v20 = 3221225472;
+  selfCopy = 3221225472;
   v21 = ___ZN3AGX21ComputeUSCStateLoaderINS_6HAL3008EncodersENS1_7ClassesEE17dataBufferConfigsERK16AGXGPUCoreConfig_block_invoke;
   v22 = &__block_descriptor_40_e5_v8__0l;
-  v23 = v16;
+  descriptorCopy = v16;
   if (AGX::ComputeUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::dataBufferConfigs(AGXGPUCoreConfig const&)::once != -1)
   {
-    v18 = v15;
+    v18 = allowCommandEncoderCoalescing;
     dispatch_once(&AGX::ComputeUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::dataBufferConfigs(AGXGPUCoreConfig const&)::once, &block);
-    v15 = v18;
+    allowCommandEncoderCoalescing = v18;
   }
 
-  block = v9;
-  v20 = self;
+  block = device;
+  selfCopy = self;
   v21 = 0;
   LODWORD(v22) = v13;
-  v23 = a3;
+  descriptorCopy = descriptor;
   v24 = v11;
-  v25 = v14;
-  v26 = v15;
-  v27 = v12;
+  v25 = substreamCount;
+  v26 = allowCommandEncoderCoalescing;
+  v27 = protectionOptions;
   v28 = 0;
   v29 = &AGX::ComputeUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::databuffer_configs;
-  return [(AGXG18PFamilyCommandBuffer *)self sampledComputeCommandEncoderWithConfig:&block programInfoBuffer:a4 capacity:a5];
+  return [(AGXG18PFamilyCommandBuffer *)self sampledComputeCommandEncoderWithConfig:&block programInfoBuffer:buffer capacity:capacity];
 }
 
-- (id)sampledComputeCommandEncoderWithDispatchType:(unint64_t)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5
+- (id)sampledComputeCommandEncoderWithDispatchType:(unint64_t)type programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
-  v9 = [(IOGPUMetalCommandBuffer *)self device];
+  device = [(IOGPUMetalCommandBuffer *)self device];
   impl = self->_impl;
   impl[20] = 1;
   v11 = *(impl + 4);
-  v12 = [(IOGPUMetalCommandBuffer *)self protectionOptions];
-  v13 = *(v9 + 106);
-  v14 = a3 == 1 && (*(v13 + 16457) & 0x10) == 0;
+  protectionOptions = [(IOGPUMetalCommandBuffer *)self protectionOptions];
+  v13 = *(device + 106);
+  v14 = type == 1 && (*(v13 + 16457) & 0x10) == 0;
   block = MEMORY[0x29EDCA5F8];
-  v18 = 3221225472;
+  selfCopy = 3221225472;
   v19 = ___ZN3AGX21ComputeUSCStateLoaderINS_6HAL3008EncodersENS1_7ClassesEE17dataBufferConfigsERK16AGXGPUCoreConfig_block_invoke;
   v20 = &__block_descriptor_40_e5_v8__0l;
   v21 = v13 + 7008;
   if (AGX::ComputeUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::dataBufferConfigs(AGXGPUCoreConfig const&)::once != -1)
   {
-    v16 = v12;
+    v16 = protectionOptions;
     dispatch_once(&AGX::ComputeUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::dataBufferConfigs(AGXGPUCoreConfig const&)::once, &block);
-    v12 = v16;
+    protectionOptions = v16;
   }
 
-  block = v9;
-  v18 = self;
+  block = device;
+  selfCopy = self;
   v19 = 0;
   LODWORD(v20) = v14;
   v21 = 0;
   v22 = v11;
   v23 = 0;
   v24 = 1;
-  v25 = v12;
+  v25 = protectionOptions;
   v26 = 0;
   v27 = &AGX::ComputeUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::databuffer_configs;
-  return [(AGXG18PFamilyCommandBuffer *)self sampledComputeCommandEncoderWithConfig:&block programInfoBuffer:a4 capacity:a5];
+  return [(AGXG18PFamilyCommandBuffer *)self sampledComputeCommandEncoderWithConfig:&block programInfoBuffer:buffer capacity:capacity];
 }
 
-- (id)sampledComputeCommandEncoderWithProgramInfoBuffer:(id *)a3 capacity:(unint64_t)a4
+- (id)sampledComputeCommandEncoderWithProgramInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
   impl = self->_impl;
   impl[20] = 1;
   v8 = *(impl + 4);
-  v9 = [(IOGPUMetalCommandBuffer *)self protectionOptions];
-  v10 = [(IOGPUMetalCommandBuffer *)self device];
-  v11 = *(v10 + 106) + 7008;
+  protectionOptions = [(IOGPUMetalCommandBuffer *)self protectionOptions];
+  device = [(IOGPUMetalCommandBuffer *)self device];
+  v11 = *(device + 106) + 7008;
   block = MEMORY[0x29EDCA5F8];
-  v15 = 3221225472;
+  selfCopy = 3221225472;
   v16 = ___ZN3AGX21ComputeUSCStateLoaderINS_6HAL3008EncodersENS1_7ClassesEE17dataBufferConfigsERK16AGXGPUCoreConfig_block_invoke;
   v17 = &__block_descriptor_40_e5_v8__0l;
   v18 = v11;
   if (AGX::ComputeUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::dataBufferConfigs(AGXGPUCoreConfig const&)::once != -1)
   {
-    v13 = v10;
+    v13 = device;
     dispatch_once(&AGX::ComputeUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::dataBufferConfigs(AGXGPUCoreConfig const&)::once, &block);
-    v10 = v13;
+    device = v13;
   }
 
-  block = v10;
-  v15 = self;
+  block = device;
+  selfCopy = self;
   v16 = 0;
   LODWORD(v17) = 0;
   v18 = 0;
   v19 = v8;
   v20 = 0;
   v21 = 0;
-  v22 = v9;
+  v22 = protectionOptions;
   v23 = 0;
   v24 = &AGX::ComputeUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::databuffer_configs;
-  return [(AGXG18PFamilyCommandBuffer *)self sampledComputeCommandEncoderWithConfig:&block programInfoBuffer:a3 capacity:a4];
+  return [(AGXG18PFamilyCommandBuffer *)self sampledComputeCommandEncoderWithConfig:&block programInfoBuffer:buffer capacity:capacity];
 }
 
-- (id)sampledComputeCommandEncoderWithConfig:(EncoderComputeServiceConfigA *)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5
+- (id)sampledComputeCommandEncoderWithConfig:(EncoderComputeServiceConfigA *)config programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
   v9 = *([(IOGPUMetalCommandBuffer *)self device]+ 848);
   if ((*(v9 + 16624) & 1) == 0 && !*(v9 + 16616))
@@ -562,39 +562,39 @@ LABEL_9:
 
   if (self->_captureProgramAddressTable)
   {
-    a3->var9 = 1;
+    config->var9 = 1;
   }
 
-  v10 = *&a3->var7;
-  v19 = *&a3->var4;
+  v10 = *&config->var7;
+  v19 = *&config->var4;
   v20 = v10;
-  var10 = a3->var10;
-  v11 = *&a3->var2;
-  v17 = *&a3->var0;
+  var10 = config->var10;
+  v11 = *&config->var2;
+  v17 = *&config->var0;
   v18 = v11;
   if ([(AGXG18PFamilyCommandBuffer *)self tryCoalescingPreviousComputeCommandEncoderWithConfig:&v17 nextEncoderClass:objc_opt_class()])
   {
-    v12 = [(AGXG18PFamilyComputeContext *)self->_previousComputeCommandEncoder reInitWithCommandBuffer:self programInfoBuffer:a4 capacity:a5, v17, v18, v19, v20, var10];
+    var10 = [(AGXG18PFamilyComputeContext *)self->_previousComputeCommandEncoder reInitWithCommandBuffer:self programInfoBuffer:buffer capacity:capacity, v17, v18, v19, v20, var10];
   }
 
   else
   {
     [(AGXG18PFamilyCommandBuffer *)self commitEncoder:v17];
     v13 = [AGXG18PFamilySampledComputeContext alloc];
-    v14 = *&a3->var7;
-    v19 = *&a3->var4;
+    v14 = *&config->var7;
+    v19 = *&config->var4;
     v20 = v14;
-    var10 = a3->var10;
-    v15 = *&a3->var2;
-    v17 = *&a3->var0;
+    var10 = config->var10;
+    v15 = *&config->var2;
+    v17 = *&config->var0;
     v18 = v15;
-    v12 = [(AGXG18PFamilySampledComputeContext *)v13 initWithCommandBuffer:self config:&v17 programInfoBuffer:a4 capacity:a5];
+    var10 = [(AGXG18PFamilySampledComputeContext *)v13 initWithCommandBuffer:self config:&v17 programInfoBuffer:buffer capacity:capacity];
   }
 
-  return v12;
+  return var10;
 }
 
-- (id)sampledSubRenderCommandEncoderWithDescriptor:(id)a3 subEncoderIndex:(unint64_t)a4 framebuffer:(void *)a5 programInfoBuffer:(id *)a6 capacity:(unint64_t)a7
+- (id)sampledSubRenderCommandEncoderWithDescriptor:(id)descriptor subEncoderIndex:(unint64_t)index framebuffer:(void *)framebuffer programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
   v13 = *([(IOGPUMetalCommandBuffer *)self device]+ 848);
   if ((*(v13 + 16624) & 1) == 0 && !*(v13 + 16616))
@@ -608,12 +608,12 @@ LABEL_9:
   }
 
   [(AGXG18PFamilyCommandBuffer *)self commitEncoder];
-  v14 = [[AGXG18PFamilySampledRenderContext alloc] initWithCommandBuffer:self descriptor:a3 subEncoderIndex:a4 framebuffer:a5 programInfoBuffer:a6 capacity:a7];
+  v14 = [[AGXG18PFamilySampledRenderContext alloc] initWithCommandBuffer:self descriptor:descriptor subEncoderIndex:index framebuffer:framebuffer programInfoBuffer:buffer capacity:capacity];
 
   return v14;
 }
 
-- (id)sampledRenderCommandEncoderWithDescriptor:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5
+- (id)sampledRenderCommandEncoderWithDescriptor:(id)descriptor programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
   v9 = *([(IOGPUMetalCommandBuffer *)self device]+ 848);
   if ((*(v9 + 16624) & 1) == 0 && !*(v9 + 16616))
@@ -627,12 +627,12 @@ LABEL_9:
   }
 
   [(AGXG18PFamilyCommandBuffer *)self commitEncoder];
-  v10 = [[AGXG18PFamilySampledRenderContext alloc] initWithCommandBuffer:self descriptor:a3 subEncoderIndex:0 framebuffer:0 programInfoBuffer:a4 capacity:a5];
+  v10 = [[AGXG18PFamilySampledRenderContext alloc] initWithCommandBuffer:self descriptor:descriptor subEncoderIndex:0 framebuffer:0 programInfoBuffer:buffer capacity:capacity];
 
   return v10;
 }
 
-- (id)parallelRenderCommandEncoderWithDescriptor:(id)a3
+- (id)parallelRenderCommandEncoderWithDescriptor:(id)descriptor
 {
   if (*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB768]))
   {
@@ -640,110 +640,110 @@ LABEL_9:
   }
 
   [(AGXG18PFamilyCommandBuffer *)self commitEncoder];
-  v5 = [[AGXG18PFamilyThreadedRenderPass alloc] initWithCommandBuffer:self renderPassDescriptor:a3];
+  v5 = [[AGXG18PFamilyThreadedRenderPass alloc] initWithCommandBuffer:self renderPassDescriptor:descriptor];
 
   return v5;
 }
 
-- (void)encodeSignalEvent:(id)a3 value:(unint64_t)a4 agentMask:(unint64_t)a5
+- (void)encodeSignalEvent:(id)event value:(unint64_t)value agentMask:(unint64_t)mask
 {
   v7.receiver = self;
   v7.super_class = AGXG18PFamilyCommandBuffer;
-  [(IOGPUMetalCommandBuffer *)&v7 encodeSignalEvent:a3 value:a4 agentMask:a5];
-  [a3 _encodeIOGPUKernelSignalEventAgentCommandArgs:v6 value:0 agentMask:0];
+  [(IOGPUMetalCommandBuffer *)&v7 encodeSignalEvent:event value:value agentMask:mask];
+  [event _encodeIOGPUKernelSignalEventAgentCommandArgs:v6 value:0 agentMask:0];
 }
 
-- (void)encodeSignalEvent:(id)a3 value:(unint64_t)a4
+- (void)encodeSignalEvent:(id)event value:(unint64_t)value
 {
   v6.receiver = self;
   v6.super_class = AGXG18PFamilyCommandBuffer;
-  [(IOGPUMetalCommandBuffer *)&v6 encodeSignalEvent:a3 value:a4];
-  [a3 _encodeIOGPUKernelSignalEventCommandArgs:&v5 value:0];
+  [(IOGPUMetalCommandBuffer *)&v6 encodeSignalEvent:event value:value];
+  [event _encodeIOGPUKernelSignalEventCommandArgs:&v5 value:0];
 }
 
-- (void)encodeWaitForEvent:(id)a3 value:(unint64_t)a4 timeout:(unsigned int)a5
+- (void)encodeWaitForEvent:(id)event value:(unint64_t)value timeout:(unsigned int)timeout
 {
   v7.receiver = self;
   v7.super_class = AGXG18PFamilyCommandBuffer;
-  [(IOGPUMetalCommandBuffer *)&v7 encodeWaitForEvent:a3 value:a4 timeout:*&a5];
-  [a3 _encodeIOGPUKernelWaitEventCommandArgs:&v6 value:0 timeout:0];
+  [(IOGPUMetalCommandBuffer *)&v7 encodeWaitForEvent:event value:value timeout:*&timeout];
+  [event _encodeIOGPUKernelWaitEventCommandArgs:&v6 value:0 timeout:0];
 }
 
-- (void)encodeWaitForEvent:(id)a3 value:(unint64_t)a4
+- (void)encodeWaitForEvent:(id)event value:(unint64_t)value
 {
   v6.receiver = self;
   v6.super_class = AGXG18PFamilyCommandBuffer;
-  [(IOGPUMetalCommandBuffer *)&v6 encodeWaitForEvent:a3 value:a4];
-  [a3 _encodeIOGPUKernelWaitEventCommandArgs:&v5 value:0 timeout:0];
+  [(IOGPUMetalCommandBuffer *)&v6 encodeWaitForEvent:event value:value];
+  [event _encodeIOGPUKernelWaitEventCommandArgs:&v5 value:0 timeout:0];
 }
 
-- (id)computeCommandEncoderWithDescriptor:(id)a3
+- (id)computeCommandEncoderWithDescriptor:(id)descriptor
 {
-  v5 = [(IOGPUMetalCommandBuffer *)self device];
+  device = [(IOGPUMetalCommandBuffer *)self device];
   impl = self->_impl;
   impl[20] = 1;
   v7 = *(impl + 4);
-  v8 = [(IOGPUMetalCommandBuffer *)self protectionOptions];
-  v9 = [a3 dispatchType] == 1 && (*(*(v5 + 106) + 16457) & 0x10) == 0;
-  v10 = [a3 substreamCount];
-  v11 = [a3 allowCommandEncoderCoalescing];
-  v12 = *(v5 + 106) + 7008;
+  protectionOptions = [(IOGPUMetalCommandBuffer *)self protectionOptions];
+  v9 = [descriptor dispatchType] == 1 && (*(*(device + 106) + 16457) & 0x10) == 0;
+  substreamCount = [descriptor substreamCount];
+  allowCommandEncoderCoalescing = [descriptor allowCommandEncoderCoalescing];
+  v12 = *(device + 106) + 7008;
   block = MEMORY[0x29EDCA5F8];
-  v16 = 3221225472;
+  selfCopy = 3221225472;
   v17 = ___ZN3AGX21ComputeUSCStateLoaderINS_6HAL3008EncodersENS1_7ClassesEE17dataBufferConfigsERK16AGXGPUCoreConfig_block_invoke;
   v18 = &__block_descriptor_40_e5_v8__0l;
-  v19 = v12;
+  descriptorCopy = v12;
   if (AGX::ComputeUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::dataBufferConfigs(AGXGPUCoreConfig const&)::once != -1)
   {
-    v14 = v11;
+    v14 = allowCommandEncoderCoalescing;
     dispatch_once(&AGX::ComputeUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::dataBufferConfigs(AGXGPUCoreConfig const&)::once, &block);
-    v11 = v14;
+    allowCommandEncoderCoalescing = v14;
   }
 
-  block = v5;
-  v16 = self;
+  block = device;
+  selfCopy = self;
   v17 = 0;
   LODWORD(v18) = v9;
-  v19 = a3;
+  descriptorCopy = descriptor;
   v20 = v7;
-  v21 = v10;
-  v22 = v11;
-  v23 = v8;
+  v21 = substreamCount;
+  v22 = allowCommandEncoderCoalescing;
+  v23 = protectionOptions;
   v24 = 0;
   v25 = &AGX::ComputeUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::databuffer_configs;
   return [(AGXG18PFamilyCommandBuffer *)self computeCommandEncoderWithConfig:&block];
 }
 
-- (id)computeCommandEncoderWithDispatchType:(unint64_t)a3
+- (id)computeCommandEncoderWithDispatchType:(unint64_t)type
 {
-  v5 = [(IOGPUMetalCommandBuffer *)self device];
+  device = [(IOGPUMetalCommandBuffer *)self device];
   impl = self->_impl;
   impl[20] = 1;
   v7 = *(impl + 4);
-  v8 = [(IOGPUMetalCommandBuffer *)self protectionOptions];
-  v9 = *(v5 + 106);
-  v10 = a3 == 1 && (*(v9 + 16457) & 0x10) == 0;
+  protectionOptions = [(IOGPUMetalCommandBuffer *)self protectionOptions];
+  v9 = *(device + 106);
+  v10 = type == 1 && (*(v9 + 16457) & 0x10) == 0;
   block = MEMORY[0x29EDCA5F8];
-  v14 = 3221225472;
+  selfCopy = 3221225472;
   v15 = ___ZN3AGX21ComputeUSCStateLoaderINS_6HAL3008EncodersENS1_7ClassesEE17dataBufferConfigsERK16AGXGPUCoreConfig_block_invoke;
   v16 = &__block_descriptor_40_e5_v8__0l;
   v17 = v9 + 7008;
   if (AGX::ComputeUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::dataBufferConfigs(AGXGPUCoreConfig const&)::once != -1)
   {
-    v12 = v8;
+    v12 = protectionOptions;
     dispatch_once(&AGX::ComputeUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::dataBufferConfigs(AGXGPUCoreConfig const&)::once, &block);
-    v8 = v12;
+    protectionOptions = v12;
   }
 
-  block = v5;
-  v14 = self;
+  block = device;
+  selfCopy = self;
   v15 = 0;
   LODWORD(v16) = v10;
   v17 = 0;
   v18 = v7;
   v19 = 0;
   v20 = 1;
-  v21 = v8;
+  v21 = protectionOptions;
   v22 = 0;
   v23 = &AGX::ComputeUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::databuffer_configs;
   return [(AGXG18PFamilyCommandBuffer *)self computeCommandEncoderWithConfig:&block];
@@ -754,79 +754,79 @@ LABEL_9:
   impl = self->_impl;
   impl[20] = 1;
   v4 = *(impl + 4);
-  v5 = [(IOGPUMetalCommandBuffer *)self protectionOptions];
-  v6 = [(IOGPUMetalCommandBuffer *)self device];
-  v7 = *(v6 + 106) + 7008;
+  protectionOptions = [(IOGPUMetalCommandBuffer *)self protectionOptions];
+  device = [(IOGPUMetalCommandBuffer *)self device];
+  v7 = *(device + 106) + 7008;
   block = MEMORY[0x29EDCA5F8];
-  v11 = 3221225472;
+  selfCopy = 3221225472;
   v12 = ___ZN3AGX21ComputeUSCStateLoaderINS_6HAL3008EncodersENS1_7ClassesEE17dataBufferConfigsERK16AGXGPUCoreConfig_block_invoke;
   v13 = &__block_descriptor_40_e5_v8__0l;
   v14 = v7;
   if (AGX::ComputeUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::dataBufferConfigs(AGXGPUCoreConfig const&)::once != -1)
   {
-    v9 = v6;
+    v9 = device;
     dispatch_once(&AGX::ComputeUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::dataBufferConfigs(AGXGPUCoreConfig const&)::once, &block);
-    v6 = v9;
+    device = v9;
   }
 
-  block = v6;
-  v11 = self;
+  block = device;
+  selfCopy = self;
   v12 = 0;
   LODWORD(v13) = 0;
   v14 = 0;
   v15 = v4;
   v16 = 0;
   v17 = 1;
-  v18 = v5;
+  v18 = protectionOptions;
   v19 = 0;
   v20 = &AGX::ComputeUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::databuffer_configs;
   return [(AGXG18PFamilyCommandBuffer *)self computeCommandEncoderWithConfig:&block];
 }
 
-- (id)computeCommandEncoderWithConfig:(EncoderComputeServiceConfigA *)a3
+- (id)computeCommandEncoderWithConfig:(EncoderComputeServiceConfigA *)config
 {
-  v5 = *&a3->var7;
-  v14 = *&a3->var4;
+  v5 = *&config->var7;
+  v14 = *&config->var4;
   v15 = v5;
-  var10 = a3->var10;
-  v6 = *&a3->var2;
-  v12 = *&a3->var0;
+  var10 = config->var10;
+  v6 = *&config->var2;
+  v12 = *&config->var0;
   v13 = v6;
   if ([(AGXG18PFamilyCommandBuffer *)self tryCoalescingPreviousComputeCommandEncoderWithConfig:&v12 nextEncoderClass:objc_opt_class()])
   {
-    v7 = [(AGXG18PFamilyComputeContext *)self->_previousComputeCommandEncoder reInitWithCommandBuffer:self, v12, v13, v14, v15, var10];
+    var10 = [(AGXG18PFamilyComputeContext *)self->_previousComputeCommandEncoder reInitWithCommandBuffer:self, v12, v13, v14, v15, var10];
   }
 
   else
   {
     [(AGXG18PFamilyCommandBuffer *)self commitEncoder:v12];
     v8 = [AGXG18PFamilyComputeContext alloc];
-    v9 = *&a3->var7;
-    v14 = *&a3->var4;
+    v9 = *&config->var7;
+    v14 = *&config->var4;
     v15 = v9;
-    var10 = a3->var10;
-    v10 = *&a3->var2;
-    v12 = *&a3->var0;
+    var10 = config->var10;
+    v10 = *&config->var2;
+    v12 = *&config->var0;
     v13 = v10;
-    v7 = [(AGXG18PFamilyComputeContext *)v8 initWithCommandBuffer:self config:&v12];
+    var10 = [(AGXG18PFamilyComputeContext *)v8 initWithCommandBuffer:self config:&v12];
   }
 
-  return v7;
+  return var10;
 }
 
-- (BOOL)tryCoalescingPreviousComputeCommandEncoderWithConfig:(EncoderComputeServiceConfigA *)a3 nextEncoderClass:(Class)a4
+- (BOOL)tryCoalescingPreviousComputeCommandEncoderWithConfig:(EncoderComputeServiceConfigA *)config nextEncoderClass:(Class)class
 {
   if (*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB768]))
   {
-    v14 = a4;
+    classCopy = class;
     MTLReportFailure();
-    a4 = v14;
+    class = classCopy;
   }
 
   previousComputeCommandEncoder = self->_previousComputeCommandEncoder;
   if (previousComputeCommandEncoder)
   {
-    LODWORD(previousComputeCommandEncoder) = [(AGXG18PFamilyComputeContext *)previousComputeCommandEncoder isMemberOfClass:a4];
+    LODWORD(previousComputeCommandEncoder) = [(AGXG18PFamilyComputeContext *)previousComputeCommandEncoder isMemberOfClass:class];
     if (previousComputeCommandEncoder)
     {
       {
@@ -838,8 +838,8 @@ LABEL_9:
       }
 
       impl = self->_previousComputeCommandEncoder->_impl;
-      AGX::ComputeCounterSamplingContextGen1::ComputeCounterSamplingContextGen1(&v16, a3->var4);
-      v8 = [(IOGPUMetalCommandBuffer *)self device];
+      AGX::ComputeCounterSamplingContextGen1::ComputeCounterSamplingContextGen1(&v16, config->var4);
+      device = [(IOGPUMetalCommandBuffer *)self device];
       if (([AGXG18PFamilyCommandBuffer tryCoalescingPreviousComputeCommandEncoderWithConfig:nextEncoderClass:]::disableComputeEncoderRecycling & 1) != 0 || ([AGXG18PFamilyCommandBuffer tryCoalescingPreviousComputeCommandEncoderWithConfig:nextEncoderClass:]::disableEncoderRecycling & 1) != 0 || (*(impl + 2304) & 1) != 0 || *(impl + 6906))
       {
         goto LABEL_11;
@@ -861,8 +861,8 @@ LABEL_9:
 
       if (*(impl + 6955) == -1)
       {
-        v12 = v8;
-        if (([(MTLDevice *)v8 disableComputeEncoderCoalescing]& 1) == 0 && ([(MTLDevice *)v12 disableEncoderCoalescing]& 1) == 0 && a3->var7)
+        v12 = device;
+        if (([(MTLDevice *)device disableComputeEncoderCoalescing]& 1) == 0 && ([(MTLDevice *)v12 disableEncoderCoalescing]& 1) == 0 && config->var7)
         {
           if (v16)
           {
@@ -883,7 +883,7 @@ LABEL_9:
           {
             AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::insertBarrierForCoalescingImpl(impl);
             *(impl + 14044) = 0;
-            if (a3->var3 == 1 || a3->var6 >= 2)
+            if (config->var3 == 1 || config->var6 >= 2)
             {
               v13 = *(impl + 3452);
               if (!v13)
@@ -897,7 +897,7 @@ LABEL_9:
 
           *(impl + 574) = *(impl + 573);
           *(impl + 575) = *(impl + 515);
-          *(impl + 573) = a3->var3;
+          *(impl + 573) = config->var3;
           LOBYTE(previousComputeCommandEncoder) = 1;
           return previousComputeCommandEncoder;
         }
@@ -962,7 +962,7 @@ LABEL_11:
   return v6;
 }
 
-- (id)subRenderCommandEncoderWithDescriptor:(id)a3 subEncoderIndex:(unint64_t)a4 framebuffer:(void *)a5
+- (id)subRenderCommandEncoderWithDescriptor:(id)descriptor subEncoderIndex:(unint64_t)index framebuffer:(void *)framebuffer
 {
   if (*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB768]))
   {
@@ -970,12 +970,12 @@ LABEL_11:
   }
 
   [(AGXG18PFamilyCommandBuffer *)self commitEncoder];
-  v9 = [[AGXG18PFamilyRenderContext alloc] initWithCommandBuffer:self descriptor:a3 subEncoderIndex:a4 framebuffer:a5];
+  v9 = [[AGXG18PFamilyRenderContext alloc] initWithCommandBuffer:self descriptor:descriptor subEncoderIndex:index framebuffer:framebuffer];
 
   return v9;
 }
 
-- (id)renderCommandEncoderWithDescriptor:(id)a3
+- (id)renderCommandEncoderWithDescriptor:(id)descriptor
 {
   if (*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB768]))
   {
@@ -985,7 +985,7 @@ LABEL_11:
   previousRenderCommandEncoder = self->_previousRenderCommandEncoder;
   if (previousRenderCommandEncoder)
   {
-    [(AGXG18PFamilyRenderContext *)previousRenderCommandEncoder deferredEndEncoding:a3];
+    [(AGXG18PFamilyRenderContext *)previousRenderCommandEncoder deferredEndEncoding:descriptor];
 
     self->_previousRenderCommandEncoder = 0;
   }
@@ -1006,28 +1006,28 @@ LABEL_11:
       v12 = [AGXG18PFamilyCommandBuffer renderCommandEncoderWithDescriptor:]::dcmp_check_mode;
       if ([AGXG18PFamilyCommandBuffer renderCommandEncoderWithDescriptor:]::dcmp_check_mode == 1)
       {
-        if ([objc_msgSend(objc_msgSend(a3 "colorAttachments")] && objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(a3, "colorAttachments"), "objectAtIndexedSubscript:", i), "texture"), "iosurface"))
+        if ([objc_msgSend(objc_msgSend(descriptor "colorAttachments")] && objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(descriptor, "colorAttachments"), "objectAtIndexedSubscript:", i), "texture"), "iosurface"))
         {
           if (![AGXG18PFamilyCommandBuffer renderCommandEncoderWithDescriptor:]::induce_corruption)
           {
             goto LABEL_13;
           }
 
-          BaseAddressOfPlane = IOSurfaceGetBaseAddressOfPlane([objc_msgSend(objc_msgSend(objc_msgSend(a3 "colorAttachments")], 0);
+          BaseAddressOfPlane = IOSurfaceGetBaseAddressOfPlane([objc_msgSend(objc_msgSend(objc_msgSend(descriptor "colorAttachments")], 0);
           goto LABEL_12;
         }
 
         v12 = [AGXG18PFamilyCommandBuffer renderCommandEncoderWithDescriptor:]::dcmp_check_mode;
       }
 
-      if (v12 != 2 || ![objc_msgSend(objc_msgSend(a3 "colorAttachments")])
+      if (v12 != 2 || ![objc_msgSend(objc_msgSend(descriptor "colorAttachments")])
       {
         continue;
       }
 
-      if (-[AGXG18PFamilyCommandBuffer renderCommandEncoderWithDescriptor:]::induce_corruption && AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getCPUPtr(*([objc_msgSend(objc_msgSend(a3 "colorAttachments")] + 592), 0, 0, 0))
+      if (-[AGXG18PFamilyCommandBuffer renderCommandEncoderWithDescriptor:]::induce_corruption && AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getCPUPtr(*([objc_msgSend(objc_msgSend(descriptor "colorAttachments")] + 592), 0, 0, 0))
       {
-        BaseAddressOfPlane = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getCPUPtr(*([objc_msgSend(objc_msgSend(a3 "colorAttachments")] + 592), 0, 0, 0);
+        BaseAddressOfPlane = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getCPUPtr(*([objc_msgSend(objc_msgSend(descriptor "colorAttachments")] + 592), 0, 0, 0);
 LABEL_12:
         v9 = BaseAddressOfPlane;
         v10 = getpagesize();
@@ -1035,18 +1035,18 @@ LABEL_12:
       }
 
 LABEL_13:
-      v11 = [objc_msgSend(objc_msgSend(a3 "colorAttachments")];
-      v14 = [objc_msgSend(objc_msgSend(a3 "colorAttachments")];
+      v11 = [objc_msgSend(objc_msgSend(descriptor "colorAttachments")];
+      v14 = [objc_msgSend(objc_msgSend(descriptor "colorAttachments")];
       std::vector<AGXG18PFamilyTexture *>::push_back[abi:nn200100](&self->texturesToEvaluate, &v14);
     }
   }
 
-  v6 = [[AGXG18PFamilyRenderContext alloc] initWithCommandBuffer:self descriptor:a3];
+  v6 = [[AGXG18PFamilyRenderContext alloc] initWithCommandBuffer:self descriptor:descriptor];
 
   return v6;
 }
 
-- (id)_accelerationStructureCommandEncoderWithDescriptor:(id)a3
+- (id)_accelerationStructureCommandEncoderWithDescriptor:(id)descriptor
 {
   self->_telemetryUsage.usage[0] |= 0x80uLL;
   if (([(MTLDevice *)[(IOGPUMetalCommandBuffer *)self device] buildBVHForRIA]& 1) != 0)
@@ -1057,16 +1057,16 @@ LABEL_13:
     }
 
     [(AGXG18PFamilyCommandBuffer *)self commitEncoder];
-    v5 = [[AGXG18PFamilyRayTracingGPUBuilder alloc] initWithCommandBuffer:self descriptor:a3];
+    v5 = [[AGXG18PFamilyRayTracingGPUBuilder alloc] initWithCommandBuffer:self descriptor:descriptor];
 
     return v5;
   }
 
-  else if (a3)
+  else if (descriptor)
   {
     v7.receiver = self;
     v7.super_class = AGXG18PFamilyCommandBuffer;
-    return [(_MTLCommandBuffer *)&v7 accelerationStructureCommandEncoderWithDescriptor:a3];
+    return [(_MTLCommandBuffer *)&v7 accelerationStructureCommandEncoderWithDescriptor:descriptor];
   }
 
   else
@@ -1077,7 +1077,7 @@ LABEL_13:
   }
 }
 
-- (id)resourceStateCommandEncoderWithDescriptor:(id)a3
+- (id)resourceStateCommandEncoderWithDescriptor:(id)descriptor
 {
   if (*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB768]))
   {
@@ -1085,7 +1085,7 @@ LABEL_13:
   }
 
   [(AGXG18PFamilyCommandBuffer *)self commitEncoder];
-  v5 = [[AGXG18PFamilyResourceStateContext alloc] initWithCommandBuffer:self descriptor:a3];
+  v5 = [[AGXG18PFamilyResourceStateContext alloc] initWithCommandBuffer:self descriptor:descriptor];
 
   return v5;
 }
@@ -1103,7 +1103,7 @@ LABEL_13:
   return v3;
 }
 
-- (id)blitCommandEncoderCommon:(id)a3
+- (id)blitCommandEncoderCommon:(id)common
 {
   if (*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB768]))
   {
@@ -1118,7 +1118,7 @@ LABEL_13:
     [AGXG18PFamilyCommandBuffer blitCommandEncoderCommon:]::disableEncoderRecycling = [(AGXG18PFamilyCommandBuffer *)self isEncoderCoalescingDisabled];
   }
 
-  v5 = [(AGXG18PFamilyCommandBuffer *)self getSupportedAndEnabledErrorOptions];
+  getSupportedAndEnabledErrorOptions = [(AGXG18PFamilyCommandBuffer *)self getSupportedAndEnabledErrorOptions];
   previousBlitCommandEncoder = self->_previousBlitCommandEncoder;
   if (previousBlitCommandEncoder)
   {
@@ -1152,7 +1152,7 @@ LABEL_13:
     v8 = 1;
   }
 
-  AGX::BlitCounterSamplingContextGen1::BlitCounterSamplingContextGen1(&v15, a3, 0);
+  AGX::BlitCounterSamplingContextGen1::BlitCounterSamplingContextGen1(&v15, common, 0);
   if ([AGXG18PFamilyCommandBuffer blitCommandEncoderCommon:]::disableBlitEncoderRecycling & 1) != 0 || ([AGXG18PFamilyCommandBuffer blitCommandEncoderCommon:]::disableEncoderRecycling & 1) != 0 || ([(MTLDevice *)[(IOGPUMetalCommandBuffer *)self device] disableBlitEncoderCoalescing]& 1) != 0 || ((v8 | [(MTLDevice *)[(IOGPUMetalCommandBuffer *)self device] disableEncoderCoalescing]))
   {
     goto LABEL_17;
@@ -1164,11 +1164,11 @@ LABEL_13:
     LOBYTE(v13) = *(v13 + 528) != 0;
   }
 
-  if ((v13 & 1) != 0 || (v5 & 1) != 0 || !v10 || *v10 && (*v10 != v15 ? (v14 = v15 == 0) : (v14 = 1), !v14) || v16 != -1 || *(v10 + 3) != -1)
+  if ((v13 & 1) != 0 || (getSupportedAndEnabledErrorOptions & 1) != 0 || !v10 || *v10 && (*v10 != v15 ? (v14 = v15 == 0) : (v14 = 1), !v14) || v16 != -1 || *(v10 + 3) != -1)
   {
 LABEL_17:
     [(AGXG18PFamilyCommandBuffer *)self commitEncoder];
-    v11 = [[AGXG18PFamilyBlitContext alloc] initWithCommandBuffer:self descriptor:a3];
+    v11 = [[AGXG18PFamilyBlitContext alloc] initWithCommandBuffer:self descriptor:common];
   }
 
   else
@@ -1189,17 +1189,17 @@ LABEL_17:
   return v11;
 }
 
-- (AGXG18PFamilyCommandBuffer)initWithQueue:(id)a3 retainedReferences:(BOOL)a4
+- (AGXG18PFamilyCommandBuffer)initWithQueue:(id)queue retainedReferences:(BOOL)references
 {
   v16.receiver = self;
   v16.super_class = AGXG18PFamilyCommandBuffer;
-  v5 = [(IOGPUMetalCommandBuffer *)&v16 initWithQueue:a3 retainedReferences:a4];
+  v5 = [(IOGPUMetalCommandBuffer *)&v16 initWithQueue:queue retainedReferences:references];
   v6 = v5;
   if (v5)
   {
-    v7 = [(_MTLCommandBuffer *)v5 commandQueue];
-    v8 = [a3 device];
-    v9 = v8[106];
+    commandQueue = [(_MTLCommandBuffer *)v5 commandQueue];
+    device = [queue device];
+    v9 = device[106];
     if (*(v9 + 15712) <= 0x23FuLL)
     {
       v6->_impl = 0;
@@ -1233,8 +1233,8 @@ LABEL_17:
       if (v12)
       {
 LABEL_8:
-        v13 = *(v7 + 972);
-        v14 = v8[106];
+        v13 = *(commandQueue + 972);
+        v14 = device[106];
         *v12 = 1;
         *(v12 + 1) = v6;
         *(v12 + 4) = v13;
@@ -1246,7 +1246,7 @@ LABEL_8:
     [(AGXG18PFamilyCommandBuffer *)v6 commit];
 
     v6 = 0;
-    [v8 alertCommandBufferActivityStart];
+    [device alertCommandBufferActivityStart];
     MEMORY[0x300] = 0;
     MEMORY[0x2FC] = 0;
   }
@@ -1254,7 +1254,7 @@ LABEL_8:
   return v6;
 }
 
-- (void)getDriverEncoderInfoData:(id)a3
+- (void)getDriverEncoderInfoData:(id)data
 {
   v70 = *MEMORY[0x29EDCA608];
   impl = self->_impl;
@@ -1528,7 +1528,7 @@ LABEL_51:
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v29 = [a3 countByEnumeratingWithState:&v51 objects:&v68 count:16];
+    v29 = [data countByEnumeratingWithState:&v51 objects:&v68 count:16];
     if (!v29)
     {
       goto LABEL_106;
@@ -1542,11 +1542,11 @@ LABEL_51:
       {
         if (*v52 != v30)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(data);
         }
 
         v32 = *(*(&v51 + 1) + 8 * v31);
-        v33 = [v32 uniqueID];
+        uniqueID = [v32 uniqueID];
         v34 = v60[7];
         if (!*&v34)
         {
@@ -1557,16 +1557,16 @@ LABEL_51:
         v35.i16[0] = vaddlv_u8(v35);
         if (v35.u32[0] > 1uLL)
         {
-          v36 = v33;
-          if (v33 >= *&v34)
+          v36 = uniqueID;
+          if (uniqueID >= *&v34)
           {
-            v36 = v33 % *&v34;
+            v36 = uniqueID % *&v34;
           }
         }
 
         else
         {
-          v36 = (*&v34 - 1) & v33;
+          v36 = (*&v34 - 1) & uniqueID;
         }
 
         v37 = *(v60[6] + 8 * v36);
@@ -1583,9 +1583,9 @@ LABEL_91:
           while (1)
           {
             v41 = v38[1];
-            if (v41 == v33)
+            if (v41 == uniqueID)
             {
-              if (v38[2] == v33)
+              if (v38[2] == uniqueID)
               {
                 goto LABEL_94;
               }
@@ -1607,7 +1607,7 @@ LABEL_91:
         while (1)
         {
           v40 = v38[1];
-          if (v40 == v33)
+          if (v40 == uniqueID)
           {
             break;
           }
@@ -1630,7 +1630,7 @@ LABEL_81:
           }
         }
 
-        if (v38[2] != v33)
+        if (v38[2] != uniqueID)
         {
           goto LABEL_81;
         }
@@ -1653,7 +1653,7 @@ LABEL_92:
       }
 
       while (v31 != v29);
-      v44 = [a3 countByEnumeratingWithState:&v51 objects:&v68 count:16];
+      v44 = [data countByEnumeratingWithState:&v51 objects:&v68 count:16];
       v29 = v44;
       if (!v44)
       {
@@ -1666,7 +1666,7 @@ LABEL_92:
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v45 = [a3 countByEnumeratingWithState:&v51 objects:&v68 count:16];
+  v45 = [data countByEnumeratingWithState:&v51 objects:&v68 count:16];
   if (v45)
   {
     v46 = *v52;
@@ -1676,13 +1676,13 @@ LABEL_92:
       {
         if (*v52 != v46)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(data);
         }
 
         [*(*(&v51 + 1) + 8 * j) setErrorState:1];
       }
 
-      v45 = [a3 countByEnumeratingWithState:&v51 objects:&v68 count:16];
+      v45 = [data countByEnumeratingWithState:&v51 objects:&v68 count:16];
     }
 
     while (v45);
@@ -1711,9 +1711,9 @@ LABEL_106:
   }
 }
 
-- (void)commitWithDeadline:(unint64_t)a3
+- (void)commitWithDeadline:(unint64_t)deadline
 {
-  [(AGXG18PFamilyCommandBuffer *)self setDeadline:a3];
+  [(AGXG18PFamilyCommandBuffer *)self setDeadline:deadline];
   [(AGXG18PFamilyCommandBuffer *)self setDeadline_namespace_id:*(self->_impl + 134)];
 
   [(AGXG18PFamilyCommandBuffer *)self commit];
@@ -1725,20 +1725,20 @@ LABEL_106:
   v46.receiver = self;
   v46.super_class = AGXG18PFamilyCommandBuffer;
   [(IOGPUMetalCommandBuffer *)&v46 validate];
-  v3 = [(IOGPUMetalCommandBuffer *)self device];
-  v4 = [(_MTLCommandBuffer *)self commandQueue];
-  v5 = v4;
-  v6 = *(v4 + 111);
+  device = [(IOGPUMetalCommandBuffer *)self device];
+  commandQueue = [(_MTLCommandBuffer *)self commandQueue];
+  v5 = commandQueue;
+  v6 = *(commandQueue + 111);
   if (v6 <= 1)
   {
     v6 = 1;
   }
 
-  atomic_fetch_or(v3 + 226, v6);
+  atomic_fetch_or(device + 226, v6);
   v7 = self->_telemetryUsage.usage[1];
-  atomic_fetch_or(v3 + 107, self->_telemetryUsage.usage[0]);
-  atomic_fetch_or(v3 + 108, v7);
-  if ((*(v4 + 968) & 1) == 0)
+  atomic_fetch_or(device + 107, self->_telemetryUsage.usage[0]);
+  atomic_fetch_or(device + 108, v7);
+  if ((*(commandQueue + 968) & 1) == 0)
   {
     if (AGXATelemetry::shouldCaptureTelemetryData(void)::onceToken != -1)
     {
@@ -1754,7 +1754,7 @@ LABEL_106:
         v48 = 3221225472;
         v49 = ___ZN13AGXATelemetry26telemetryEmitBacktraceInfoEPK26AGXATelemetryBacktraceInfo_block_invoke;
         v50 = &__block_descriptor_40_e5_v8__0l;
-        v51 = v3 + 856;
+        v51 = device + 856;
         if (AGXATelemetry::telemetryEmitBacktraceInfo(AGXATelemetryBacktraceInfo const*)::onceToken != -1)
         {
           dispatch_once(&AGXATelemetry::telemetryEmitBacktraceInfo(AGXATelemetryBacktraceInfo const*)::onceToken, &v47);
@@ -1765,12 +1765,12 @@ LABEL_106:
         {
           v10 = v9;
           memcpy(v9, v5 + 448, 0x208uLL);
-          v11 = *(v3 + 116);
+          v11 = *(device + 116);
           block = MEMORY[0x29EDCA5F8];
           v53 = 3221225472;
           v54 = ___ZN13AGXATelemetry26telemetryEmitBacktraceInfoEPK26AGXATelemetryBacktraceInfo_block_invoke_2;
           v55 = &__block_descriptor_48_e5_v8__0l;
-          v56 = v3 + 856;
+          v56 = device + 856;
           v57 = v10;
           dispatch_async(v11, &block);
         }
@@ -1819,12 +1819,12 @@ LABEL_106:
 
   if ([AGXG18PFamilyCommandBuffer commit]::dcmp_check_mode && self->texturesToEvaluate.__begin_ != self->texturesToEvaluate.var0)
   {
-    v41 = [(AGXG18PFamilyCommandBuffer *)self blitCommandEncoder];
+    blitCommandEncoder = [(AGXG18PFamilyCommandBuffer *)self blitCommandEncoder];
     {
       [AGXG18PFamilyCommandBuffer commit]::dcmp_check_pixel_format = 0;
     }
 
-    if (!v41)
+    if (!blitCommandEncoder)
     {
       abort();
     }
@@ -1850,27 +1850,27 @@ LABEL_106:
             block = 0;
             v53 = 0;
             v54 = 0;
-            v34 = [v30 width];
-            v35 = [v30 height];
-            v47 = v34;
-            v48 = v35;
+            width = [v30 width];
+            height = [v30 height];
+            v47 = width;
+            v48 = height;
             v49 = 1;
             v43 = 0;
             v44 = 0;
             v45 = 0;
-            [v41 copyFromTexture:v32 sourceSlice:0 sourceLevel:0 sourceOrigin:&block sourceSize:&v47 toTexture:v32 destinationSlice:0 destinationLevel:0 destinationOrigin:&v43];
+            [blitCommandEncoder copyFromTexture:v32 sourceSlice:0 sourceLevel:0 sourceOrigin:&block sourceSize:&v47 toTexture:v32 destinationSlice:0 destinationLevel:0 destinationOrigin:&v43];
             block = 0;
             v53 = 0;
             v54 = 0;
-            v36 = [v30 width];
-            v37 = [v30 height];
-            v47 = v36;
-            v48 = v37;
+            width2 = [v30 width];
+            height2 = [v30 height];
+            v47 = width2;
+            v48 = height2;
             v49 = 1;
             v43 = 0;
             v44 = 0;
             v45 = 0;
-            [v41 copyFromTexture:v33 sourceSlice:0 sourceLevel:0 sourceOrigin:&block sourceSize:&v47 toTexture:v33 destinationSlice:0 destinationLevel:0 destinationOrigin:&v43];
+            [blitCommandEncoder copyFromTexture:v33 sourceSlice:0 sourceLevel:0 sourceOrigin:&block sourceSize:&v47 toTexture:v33 destinationSlice:0 destinationLevel:0 destinationOrigin:&v43];
           }
 
           else
@@ -1878,15 +1878,15 @@ LABEL_106:
             block = 0;
             v53 = 0;
             v54 = 0;
-            v38 = [v30 width];
-            v39 = [v30 height];
-            v47 = v38;
-            v48 = v39;
+            width3 = [v30 width];
+            height3 = [v30 height];
+            v47 = width3;
+            v48 = height3;
             v49 = 1;
             v43 = 0;
             v44 = 0;
             v45 = 0;
-            [v41 copyFromTexture:v30 sourceSlice:0 sourceLevel:0 sourceOrigin:&block sourceSize:&v47 toTexture:v30 destinationSlice:0 destinationLevel:0 destinationOrigin:&v43];
+            [blitCommandEncoder copyFromTexture:v30 sourceSlice:0 sourceLevel:0 sourceOrigin:&block sourceSize:&v47 toTexture:v30 destinationSlice:0 destinationLevel:0 destinationOrigin:&v43];
           }
         }
 
@@ -1896,7 +1896,7 @@ LABEL_106:
       while (begin != var0);
     }
 
-    [v41 endEncoding];
+    [blitCommandEncoder endEncoding];
   }
 
   [(AGXG18PFamilyCommandBuffer *)self commitEncoder];
@@ -1907,7 +1907,7 @@ LABEL_106:
     block = 0;
     v47 = 0;
     [v15[1] getDebugBufferPointerStart:&block end:&v47];
-    v16 = [v15[1] commandBufferStorage];
+    commandBufferStorage = [v15[1] commandBufferStorage];
     if (block)
     {
       if (v47)
@@ -1915,7 +1915,7 @@ LABEL_106:
         v17 = v47 - block;
         if (v47 - block >= 1)
         {
-          if (v18 = (16 * (((2 * *(v16 + 840)) >> 1) & 0x7FFFFFFF)) | 8, v18 > v17) && (([v15[1] growDebugBuffer:(v18 - v17)], objc_msgSend(v15[1], "getDebugBufferPointerStart:end:", &block, &v47), v17 = v47 - block, block) ? (v19 = v47 == 0) : (v19 = 1), !v19 ? (v20 = 0) : (v20 = 1), (v20) || v17 < v18)
+          if (v18 = (16 * (((2 * *(commandBufferStorage + 840)) >> 1) & 0x7FFFFFFF)) | 8, v18 > v17) && (([v15[1] growDebugBuffer:(v18 - v17)], objc_msgSend(v15[1], "getDebugBufferPointerStart:end:", &block, &v47), v17 = v47 - block, block) ? (v19 = v47 == 0) : (v19 = 1), !v19 ? (v20 = 0) : (v20 = 1), (v20) || v17 < v18)
           {
             AGX::CommandBuffer<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::prepareDebugBufferForSubmission(void)::{lambda(void)#1}::operator()[abi:[AGX] Failed assertion _debugBufferStart __ nullptr && debugBufferEnd __ nullptr && ptrDelta(debugBufferStart_ debugBufferEnd) __ static_cast_intptr_t_(requiredDebugBufferSize)_]();
           }
@@ -1924,7 +1924,7 @@ LABEL_106:
     }
   }
 
-  v21 = *(*(v3 + 106) + 7224);
+  v21 = *(*(device + 106) + 7224);
   if (v21)
   {
     AGX::InternalSparseQueue::flushAndSubmitAllMappings(v21);
@@ -2211,11 +2211,11 @@ LABEL_11:
   [(AGXG18PFamilyRenderContext *)self->_previousRenderCommandEncoder deferredEndEncoding:0];
 
   self->_previousRenderCommandEncoder = 0;
-  v3 = [(IOGPUMetalCommandBuffer *)self device];
+  device = [(IOGPUMetalCommandBuffer *)self device];
   impl = self->_impl;
   if (impl)
   {
-    v5 = *(v3 + 106);
+    v5 = *(device + 106);
     v6 = impl[64];
     v7 = impl[65];
     *(impl + 32) = 0u;

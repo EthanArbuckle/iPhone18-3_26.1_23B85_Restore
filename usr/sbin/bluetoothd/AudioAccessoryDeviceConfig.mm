@@ -1,31 +1,31 @@
 @interface AudioAccessoryDeviceConfig
-- (AudioAccessoryDeviceConfig)initWithXPCObject:(id)a3 error:(id *)a4;
+- (AudioAccessoryDeviceConfig)initWithXPCObject:(id)object error:(id *)error;
 @end
 
 @implementation AudioAccessoryDeviceConfig
 
-- (AudioAccessoryDeviceConfig)initWithXPCObject:(id)a3 error:(id *)a4
+- (AudioAccessoryDeviceConfig)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v24.receiver = self;
   v24.super_class = AudioAccessoryDeviceConfig;
   v7 = [(AudioAccessoryDeviceConfig *)&v24 init];
   if (!v7)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_51;
     }
 
 LABEL_50:
     NSErrorF_safe();
-    *a4 = v22 = 0;
+    *error = v22 = 0;
     goto LABEL_46;
   }
 
-  if (xpc_get_type(v6) != &_xpc_type_dictionary)
+  if (xpc_get_type(objectCopy) != &_xpc_type_dictionary)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_51;
     }

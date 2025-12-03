@@ -6,9 +6,9 @@
 - (SOSLegacyContactsManager)init;
 - (id)SOSLegacyContacts;
 - (id)SOSLegacyContactsDestinations;
-- (id)_SOSFormattedDestinationForFriend:(id)a3 withDestinationNumber:(id)a4;
+- (id)_SOSFormattedDestinationForFriend:(id)friend withDestinationNumber:(id)number;
 - (id)_SOSFriends;
-- (id)_contactFromFriend:(id)a3;
+- (id)_contactFromFriend:(id)friend;
 - (void)contactStoreDidChange;
 - (void)dealloc;
 @end
@@ -36,15 +36,15 @@
     }
 
     self = v3;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -102,8 +102,8 @@
 
               v11 = *(*(&v21 + 1) + 8 * i);
               v12 = objc_opt_new();
-              v13 = [v5 displayName];
-              [v12 setName:v13];
+              displayName = [v5 displayName];
+              [v12 setName:displayName];
 
               v14 = [(SOSLegacyContactsManager *)self _SOSFormattedDestinationForFriend:v5 withDestinationNumber:v11];
               [v12 setPhoneNumber:v14];
@@ -134,24 +134,24 @@
 
 - (BOOL)SOSLegacyContactsExist
 {
-  v2 = [(SOSLegacyContactsManager *)self SOSLegacyContacts];
-  v3 = [v2 count] != 0;
+  sOSLegacyContacts = [(SOSLegacyContactsManager *)self SOSLegacyContacts];
+  v3 = [sOSLegacyContacts count] != 0;
 
   return v3;
 }
 
 - (id)_SOSFriends
 {
-  v3 = [(FKFriendsManager *)self->_friendsManager allPeople];
-  v4 = [v3 count];
+  allPeople = [(FKFriendsManager *)self->_friendsManager allPeople];
+  v4 = [allPeople count];
 
   if (v4)
   {
-    v5 = [(FKFriendsManager *)self->_friendsManager friendGroups];
-    v6 = [v5 objectAtIndexedSubscript:0];
-    v7 = [v6 friends];
+    friendGroups = [(FKFriendsManager *)self->_friendsManager friendGroups];
+    v6 = [friendGroups objectAtIndexedSubscript:0];
+    friends = [v6 friends];
     v8 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_0];
-    v9 = [v7 filteredArrayUsingPredicate:v8];
+    v9 = [friends filteredArrayUsingPredicate:v8];
   }
 
   else
@@ -179,8 +179,8 @@ uint64_t __39__SOSLegacyContactsManager__SOSFriends__block_invoke(uint64_t a1, v
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(SOSLegacyContactsManager *)self _SOSFriends];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _SOSFriends = [(SOSLegacyContactsManager *)self _SOSFriends];
+  v5 = [_SOSFriends countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -191,7 +191,7 @@ uint64_t __39__SOSLegacyContactsManager__SOSFriends__block_invoke(uint64_t a1, v
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_SOSFriends);
         }
 
         v9 = [(SOSLegacyContactsManager *)self _SOSDestinationsForFriend:*(*(&v12 + 1) + 8 * i)];
@@ -201,7 +201,7 @@ uint64_t __39__SOSLegacyContactsManager__SOSFriends__block_invoke(uint64_t a1, v
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [_SOSFriends countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -212,11 +212,11 @@ uint64_t __39__SOSLegacyContactsManager__SOSFriends__block_invoke(uint64_t a1, v
   return v3;
 }
 
-- (id)_SOSFormattedDestinationForFriend:(id)a3 withDestinationNumber:(id)a4
+- (id)_SOSFormattedDestinationForFriend:(id)friend withDestinationNumber:(id)number
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(SOSLegacyContactsManager *)self _contactFromFriend:a3];
+  numberCopy = number;
+  v7 = [(SOSLegacyContactsManager *)self _contactFromFriend:friend];
   v8 = v7;
   if (v7)
   {
@@ -225,13 +225,13 @@ uint64_t __39__SOSLegacyContactsManager__SOSFriends__block_invoke(uint64_t a1, v
     v21 = 0u;
     v22 = 0u;
     v9 = v23 = 0u;
-    v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
-    if (v10)
+    formattedStringValue = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    if (formattedStringValue)
     {
       v11 = *v21;
       while (2)
       {
-        for (i = 0; i != v10; i = i + 1)
+        for (i = 0; i != formattedStringValue; i = i + 1)
         {
           if (*v21 != v11)
           {
@@ -239,20 +239,20 @@ uint64_t __39__SOSLegacyContactsManager__SOSFriends__block_invoke(uint64_t a1, v
           }
 
           v13 = *(*(&v20 + 1) + 8 * i);
-          v14 = [v13 value];
-          v15 = [v14 unformattedInternationalStringValue];
+          value = [v13 value];
+          unformattedInternationalStringValue = [value unformattedInternationalStringValue];
 
-          if ([v15 isEqualToString:v6])
+          if ([unformattedInternationalStringValue isEqualToString:numberCopy])
           {
-            v16 = [v13 value];
-            v10 = [v16 formattedStringValue];
+            value2 = [v13 value];
+            formattedStringValue = [value2 formattedStringValue];
 
             goto LABEL_12;
           }
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
-        if (v10)
+        formattedStringValue = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        if (formattedStringValue)
         {
           continue;
         }
@@ -266,32 +266,32 @@ LABEL_12:
 
   else
   {
-    v10 = 0;
+    formattedStringValue = 0;
   }
 
-  if (![v10 length])
+  if (![formattedStringValue length])
   {
-    v17 = v6;
+    v17 = numberCopy;
 
-    v10 = v17;
+    formattedStringValue = v17;
   }
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return formattedStringValue;
 }
 
-- (id)_contactFromFriend:(id)a3
+- (id)_contactFromFriend:(id)friend
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v3 = [a3 abRecordGUID];
-  if (v3)
+  abRecordGUID = [friend abRecordGUID];
+  if (abRecordGUID)
   {
-    v4 = [objc_opt_class() contactStore];
+    contactStore = [objc_opt_class() contactStore];
     v11[0] = *MEMORY[0x277CBD098];
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
     v10 = 0;
-    v6 = [v4 unifiedContactWithIdentifier:v3 keysToFetch:v5 error:&v10];
+    v6 = [contactStore unifiedContactWithIdentifier:abRecordGUID keysToFetch:v5 error:&v10];
     v7 = v10;
 
     if (!v7)
@@ -310,8 +310,8 @@ LABEL_5:
 
 - (void)contactStoreDidChange
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"SOSLegacyContactsChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SOSLegacyContactsChangedNotification" object:0];
 }
 
 + (void)preloadContactStoreIfNecessary
@@ -320,7 +320,7 @@ LABEL_5:
   block[1] = 3221225472;
   block[2] = __58__SOSLegacyContactsManager_preloadContactStoreIfNecessary__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (preloadContactStoreIfNecessary_once_0 != -1)
   {
     dispatch_once(&preloadContactStoreIfNecessary_once_0, block);
@@ -362,7 +362,7 @@ uint64_t __58__SOSLegacyContactsManager_preloadContactStoreIfNecessary__block_in
   v8 = __Block_byref_object_copy__0;
   v9 = __Block_byref_object_dispose__0;
   v10 = 0;
-  [a1 preloadContactStoreIfNecessary];
+  [self preloadContactStoreIfNecessary];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__SOSLegacyContactsManager_contactStore__block_invoke;

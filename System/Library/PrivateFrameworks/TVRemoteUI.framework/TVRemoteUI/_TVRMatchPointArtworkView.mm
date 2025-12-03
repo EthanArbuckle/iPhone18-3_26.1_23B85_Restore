@@ -1,23 +1,23 @@
 @interface _TVRMatchPointArtworkView
-- (BOOL)touchLocationIsConsideredCenter:(CGPoint)a3;
-- (_TVRMatchPointArtworkView)initWithFrame:(CGRect)a3;
-- (void)highlightForButtonType:(int64_t)a3 enabled:(BOOL)a4;
+- (BOOL)touchLocationIsConsideredCenter:(CGPoint)center;
+- (_TVRMatchPointArtworkView)initWithFrame:(CGRect)frame;
+- (void)highlightForButtonType:(int64_t)type enabled:(BOOL)enabled;
 - (void)layoutSubviews;
 @end
 
 @implementation _TVRMatchPointArtworkView
 
-- (_TVRMatchPointArtworkView)initWithFrame:(CGRect)a3
+- (_TVRMatchPointArtworkView)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = _TVRMatchPointArtworkView;
-  v3 = [(_TVRMatchPointArtworkView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVRMatchPointArtworkView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(_TVRMatchPointArtworkView *)v3 setUserInteractionEnabled:0];
-    v5 = [(_TVRMatchPointArtworkView *)v4 layer];
-    [v5 setAllowsGroupBlending:0];
+    layer = [(_TVRMatchPointArtworkView *)v4 layer];
+    [layer setAllowsGroupBlending:0];
 
     v6 = _TVRMakeDirectionalImageView(@"DirectionalControlArrowUp");
     upImageView = v4->_upImageView;
@@ -45,13 +45,13 @@
 
     [(UIView *)v4->_selectIndicator _setContinuousCornerRadius:24.0];
     v16 = v4->_selectIndicator;
-    v17 = [MEMORY[0x277D75348] whiteColor];
-    [(UIView *)v16 setBackgroundColor:v17];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UIView *)v16 setBackgroundColor:whiteColor];
 
     [(UIView *)v4->_selectIndicator setAlpha:0.24];
-    v18 = [(UIView *)v4->_selectIndicator layer];
+    layer2 = [(UIView *)v4->_selectIndicator layer];
     v19 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA5E8]];
-    [v18 setCompositingFilter:v19];
+    [layer2 setCompositingFilter:v19];
 
     [(_TVRMatchPointArtworkView *)v4 addSubview:v4->_selectIndicator];
   }
@@ -59,18 +59,18 @@
   return v4;
 }
 
-- (void)highlightForButtonType:(int64_t)a3 enabled:(BOOL)a4
+- (void)highlightForButtonType:(int64_t)type enabled:(BOOL)enabled
 {
-  if (a3 <= 12)
+  if (type <= 12)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v4 = &OBJC_IVAR____TVRMatchPointArtworkView__selectIndicator;
     }
 
     else
     {
-      if (a3 != 12)
+      if (type != 12)
       {
         return;
       }
@@ -81,7 +81,7 @@
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 13:
         v4 = &OBJC_IVAR____TVRMatchPointArtworkView__downImageView;
@@ -99,7 +99,7 @@
 
   v5 = *(&self->super.super.super.isa + *v4);
   v6 = 0.24;
-  if (a4)
+  if (enabled)
   {
     v6 = 0.65;
   }
@@ -114,11 +114,11 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(_TVRMatchPointArtworkView *)self superview];
+  superview = [(_TVRMatchPointArtworkView *)self superview];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v11 contentInsets];
+    [superview contentInsets];
     v4 = v4 + v12;
     v6 = v6 + v13;
     v8 = v8 - (v12 + v14);
@@ -137,7 +137,7 @@
   [(_TVRMatchPointArtworkView *)&v17 layoutSubviews];
 }
 
-- (BOOL)touchLocationIsConsideredCenter:(CGPoint)a3
+- (BOOL)touchLocationIsConsideredCenter:(CGPoint)center
 {
   [(_TVRMatchPointArtworkView *)self bounds];
   v5 = v4;
@@ -161,8 +161,8 @@
   v16 = v14;
   v17 = v12;
   v18 = v13;
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
 
   return CGRectContainsPoint(*&v16, *&x);
 }

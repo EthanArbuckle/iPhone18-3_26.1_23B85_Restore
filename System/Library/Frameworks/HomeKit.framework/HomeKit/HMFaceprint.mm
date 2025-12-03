@@ -1,22 +1,22 @@
 @interface HMFaceprint
-- (BOOL)isEqual:(id)a3;
-- (HMFaceprint)initWithCoder:(id)a3;
-- (HMFaceprint)initWithUUID:(id)a3 data:(id)a4 modelUUID:(id)a5 faceCropUUID:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (HMFaceprint)initWithCoder:(id)coder;
+- (HMFaceprint)initWithUUID:(id)d data:(id)data modelUUID:(id)iD faceCropUUID:(id)uID;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMFaceprint
 
-- (HMFaceprint)initWithCoder:(id)a3
+- (HMFaceprint)initWithCoder:(id)coder
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMFP.ck.u"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMFP.ck.d"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMFP.ck.mu"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMFP.ck.fcu"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMFP.ck.u"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMFP.ck.d"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMFP.ck.mu"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMFP.ck.fcu"];
   v9 = v8;
   if (v5)
   {
@@ -31,7 +31,7 @@
   if (v10 || v7 == 0 || v8 == 0)
   {
     v13 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -55,45 +55,45 @@
 
   else
   {
-    v16 = [(HMFaceprint *)self initWithUUID:v5 data:v6 modelUUID:v7 faceCropUUID:v8];
-    v17 = v16;
+    selfCopy = [(HMFaceprint *)self initWithUUID:v5 data:v6 modelUUID:v7 faceCropUUID:v8];
+    v17 = selfCopy;
   }
 
   v18 = *MEMORY[0x1E69E9840];
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMFaceprint *)self UUID];
-  [v4 encodeObject:v5 forKey:@"HMFP.ck.u"];
+  coderCopy = coder;
+  uUID = [(HMFaceprint *)self UUID];
+  [coderCopy encodeObject:uUID forKey:@"HMFP.ck.u"];
 
-  v6 = [(HMFaceprint *)self data];
-  [v4 encodeObject:v6 forKey:@"HMFP.ck.d"];
+  data = [(HMFaceprint *)self data];
+  [coderCopy encodeObject:data forKey:@"HMFP.ck.d"];
 
-  v7 = [(HMFaceprint *)self modelUUID];
-  [v4 encodeObject:v7 forKey:@"HMFP.ck.mu"];
+  modelUUID = [(HMFaceprint *)self modelUUID];
+  [coderCopy encodeObject:modelUUID forKey:@"HMFP.ck.mu"];
 
-  v8 = [(HMFaceprint *)self faceCropUUID];
-  [v4 encodeObject:v8 forKey:@"HMFP.ck.fcu"];
+  faceCropUUID = [(HMFaceprint *)self faceCropUUID];
+  [coderCopy encodeObject:faceCropUUID forKey:@"HMFP.ck.fcu"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMFaceprint *)self UUID];
-  v3 = [v2 hash];
+  uUID = [(HMFaceprint *)self UUID];
+  v3 = [uUID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -104,21 +104,21 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMFaceprint *)self UUID];
-    v8 = [v6 UUID];
-    if ([v7 isEqual:v8])
+    uUID = [(HMFaceprint *)self UUID];
+    uUID2 = [v6 UUID];
+    if ([uUID isEqual:uUID2])
     {
-      v9 = [(HMFaceprint *)self data];
-      v10 = [v6 data];
-      if ([v9 isEqualToData:v10])
+      data = [(HMFaceprint *)self data];
+      data2 = [v6 data];
+      if ([data isEqualToData:data2])
       {
-        v11 = [(HMFaceprint *)self modelUUID];
-        v12 = [v6 modelUUID];
-        if ([v11 isEqual:v12])
+        modelUUID = [(HMFaceprint *)self modelUUID];
+        modelUUID2 = [v6 modelUUID];
+        if ([modelUUID isEqual:modelUUID2])
         {
-          v16 = [(HMFaceprint *)self faceCropUUID];
-          v13 = [v6 faceCropUUID];
-          v14 = [v16 isEqual:v13];
+          faceCropUUID = [(HMFaceprint *)self faceCropUUID];
+          faceCropUUID2 = [v6 faceCropUUID];
+          v14 = [faceCropUUID isEqual:faceCropUUID2];
         }
 
         else
@@ -150,17 +150,17 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@", objc_opt_class()];
-  v4 = [(HMFaceprint *)self UUID];
-  [v3 appendFormat:@" UUID: %@", v4];
+  uUID = [(HMFaceprint *)self UUID];
+  [v3 appendFormat:@" UUID: %@", uUID];
 
-  v5 = [(HMFaceprint *)self data];
-  [v3 appendFormat:@" data: <%lu bytes>", objc_msgSend(v5, "length")];
+  data = [(HMFaceprint *)self data];
+  [v3 appendFormat:@" data: <%lu bytes>", objc_msgSend(data, "length")];
 
-  v6 = [(HMFaceprint *)self modelUUID];
-  [v3 appendFormat:@" modelUUID: %@", v6];
+  modelUUID = [(HMFaceprint *)self modelUUID];
+  [v3 appendFormat:@" modelUUID: %@", modelUUID];
 
-  v7 = [(HMFaceprint *)self faceCropUUID];
-  [v3 appendFormat:@" faceCropUUID: %@", v7];
+  faceCropUUID = [(HMFaceprint *)self faceCropUUID];
+  [v3 appendFormat:@" faceCropUUID: %@", faceCropUUID];
 
   [v3 appendString:@">"];
   v8 = [v3 copy];
@@ -168,34 +168,34 @@
   return v8;
 }
 
-- (HMFaceprint)initWithUUID:(id)a3 data:(id)a4 modelUUID:(id)a5 faceCropUUID:(id)a6
+- (HMFaceprint)initWithUUID:(id)d data:(id)data modelUUID:(id)iD faceCropUUID:(id)uID
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  dCopy = d;
+  dataCopy = data;
+  iDCopy = iD;
+  uIDCopy = uID;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v11)
+  if (!dataCopy)
   {
 LABEL_9:
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (!v12)
+  if (!iDCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  v14 = v13;
-  if (!v13)
+  v14 = uIDCopy;
+  if (!uIDCopy)
   {
 LABEL_11:
     v25 = _HMFPreconditionFailure();
@@ -207,15 +207,15 @@ LABEL_11:
   v15 = [(HMFaceprint *)&v27 init];
   if (v15)
   {
-    v16 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:v10];
+    v16 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:dCopy];
     UUID = v15->_UUID;
     v15->_UUID = v16;
 
-    v18 = [v11 copy];
+    v18 = [dataCopy copy];
     data = v15->_data;
     v15->_data = v18;
 
-    v20 = [v12 copy];
+    v20 = [iDCopy copy];
     modelUUID = v15->_modelUUID;
     v15->_modelUUID = v20;
 

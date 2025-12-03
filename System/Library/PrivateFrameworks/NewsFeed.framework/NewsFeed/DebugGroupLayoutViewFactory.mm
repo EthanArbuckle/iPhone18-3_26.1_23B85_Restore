@@ -1,7 +1,7 @@
 @interface DebugGroupLayoutViewFactory
 - (_TtC8NewsFeed27DebugGroupLayoutViewFactory)init;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
 @end
 
 @implementation DebugGroupLayoutViewFactory
@@ -13,11 +13,11 @@
   return result;
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  v5 = a3;
+  interactionCopy = interaction;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_1D7070A6C();
 
   swift_unknownObjectRelease();
@@ -27,13 +27,13 @@
   return v7;
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
-  v7 = a3;
-  v8 = a4;
+  interactionCopy = interaction;
+  itemCopy = item;
   swift_unknownObjectRetain();
-  v9 = self;
-  v10 = sub_1D7070C28(v7);
+  selfCopy = self;
+  v10 = sub_1D7070C28(interactionCopy);
 
   swift_unknownObjectRelease();
 

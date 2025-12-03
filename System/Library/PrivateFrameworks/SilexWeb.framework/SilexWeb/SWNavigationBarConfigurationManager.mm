@@ -1,43 +1,43 @@
 @interface SWNavigationBarConfigurationManager
-- (SWNavigationBarConfigurationManager)initWithMessageHandlerManager:(id)a3 logger:(id)a4;
-- (id)shareItemsFromDictionary:(id)a3;
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4;
+- (SWNavigationBarConfigurationManager)initWithMessageHandlerManager:(id)manager logger:(id)logger;
+- (id)shareItemsFromDictionary:(id)dictionary;
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin;
 @end
 
 @implementation SWNavigationBarConfigurationManager
 
-- (SWNavigationBarConfigurationManager)initWithMessageHandlerManager:(id)a3 logger:(id)a4
+- (SWNavigationBarConfigurationManager)initWithMessageHandlerManager:(id)manager logger:(id)logger
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  loggerCopy = logger;
   v12.receiver = self;
   v12.super_class = SWNavigationBarConfigurationManager;
   v8 = [(SWNavigationBarConfigurationManager *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_logger, a4);
+    objc_storeStrong(&v8->_logger, logger);
     v10 = [SWWeakMessageHandler handlerWithMessageHandler:v9];
-    [v6 addMessageHandler:v10 name:@"navigationBarConfiguration"];
+    [managerCopy addMessageHandler:v10 name:@"navigationBarConfiguration"];
   }
 
   return v9;
 }
 
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin
 {
-  v22 = a3;
-  v5 = [v22 name];
-  v6 = [v5 isEqualToString:@"navigationBarConfiguration"];
+  messageCopy = message;
+  name = [messageCopy name];
+  v6 = [name isEqualToString:@"navigationBarConfiguration"];
 
-  v7 = v22;
+  v7 = messageCopy;
   if (v6)
   {
-    v8 = [v22 body];
-    v9 = [v8 objectForKeyedSubscript:@"title"];
+    body = [messageCopy body];
+    v9 = [body objectForKeyedSubscript:@"title"];
 
-    v10 = [v22 body];
-    v11 = [v10 objectForKeyedSubscript:@"shareConfiguration"];
+    body2 = [messageCopy body];
+    v11 = [body2 objectForKeyedSubscript:@"shareConfiguration"];
 
     if (v11 && ([v11 objectForKeyedSubscript:@"title"], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
     {
@@ -53,32 +53,32 @@
     }
 
     v17 = [[SWNavigationBarConfiguration alloc] initWithTitle:v9 shareConfiguration:v16];
-    v18 = [(SWNavigationBarConfigurationManager *)self logger];
+    logger = [(SWNavigationBarConfigurationManager *)self logger];
     v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ShareConfiguration: Web content provided share configuration"];
-    [v18 log:v19];
+    [logger log:v19];
 
-    v20 = [(SWNavigationBarConfigurationManager *)self navigationBarConfigurationBlock];
+    navigationBarConfigurationBlock = [(SWNavigationBarConfigurationManager *)self navigationBarConfigurationBlock];
 
-    if (v20)
+    if (navigationBarConfigurationBlock)
     {
-      v21 = [(SWNavigationBarConfigurationManager *)self navigationBarConfigurationBlock];
-      (v21)[2](v21, v17);
+      navigationBarConfigurationBlock2 = [(SWNavigationBarConfigurationManager *)self navigationBarConfigurationBlock];
+      (navigationBarConfigurationBlock2)[2](navigationBarConfigurationBlock2, v17);
     }
 
-    v7 = v22;
+    v7 = messageCopy;
   }
 }
 
-- (id)shareItemsFromDictionary:(id)a3
+- (id)shareItemsFromDictionary:(id)dictionary
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v16 = [MEMORY[0x1E695DF70] array];
+  dictionaryCopy = dictionary;
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v3;
+  obj = dictionaryCopy;
   v4 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
@@ -94,7 +94,7 @@
         }
 
         v8 = *(*(&v18 + 1) + 8 * i);
-        v9 = [v8 objectForKeyedSubscript:{@"kind", v16}];
+        v9 = [v8 objectForKeyedSubscript:{@"kind", array}];
         if ([v9 isEqualToString:@"URL"])
         {
           v10 = [v8 objectForKeyedSubscript:@"value"];
@@ -102,7 +102,7 @@
           if (v11)
           {
             v12 = [[SWURLShareItem alloc] initWithURL:v11];
-            [v16 addObject:v12];
+            [array addObject:v12];
           }
         }
       }
@@ -113,7 +113,7 @@
     while (v5);
   }
 
-  v13 = [MEMORY[0x1E695DEC8] arrayWithArray:v16];
+  v13 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
 
   v14 = *MEMORY[0x1E69E9840];
 

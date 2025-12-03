@@ -1,17 +1,17 @@
 @interface VKCElementInfo
-+ (id)infoWithText:(id)a3 parent:(id)a4;
++ (id)infoWithText:(id)text parent:(id)parent;
 @end
 
 @implementation VKCElementInfo
 
-+ (id)infoWithText:(id)a3 parent:(id)a4
++ (id)infoWithText:(id)text parent:(id)parent
 {
-  v5 = a4;
-  v6 = a3;
+  parentCopy = parent;
+  textCopy = text;
   v7 = objc_alloc_init(VKCElementInfo);
-  [(VKCElementInfo *)v7 setText:v6];
+  [(VKCElementInfo *)v7 setText:textCopy];
 
-  [(VKCBaseElement *)v7 setParent:v5];
+  [(VKCBaseElement *)v7 setParent:parentCopy];
 
   return v7;
 }

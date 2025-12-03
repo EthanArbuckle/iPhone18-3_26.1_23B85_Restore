@@ -1,14 +1,14 @@
 @interface AVObservationController
-- (AVObservationController)initWithOwner:(id)a3;
-- (id)startObserving:(id)a3 keyPath:(id)a4 includeInitialValue:(BOOL)a5 observationHandler:(id)a6;
-- (id)startObserving:(id)a3 keyPath:(id)a4 observationHandler:(id)a5;
-- (id)startObserving:(id)a3 keyPaths:(id)a4 includeInitialValue:(BOOL)a5 includeChanges:(BOOL)a6 observationHandler:(id)a7;
-- (id)startObserving:(id)a3 keyPaths:(id)a4 observationHandler:(id)a5;
+- (AVObservationController)initWithOwner:(id)owner;
+- (id)startObserving:(id)observing keyPath:(id)path includeInitialValue:(BOOL)value observationHandler:(id)handler;
+- (id)startObserving:(id)observing keyPath:(id)path observationHandler:(id)handler;
+- (id)startObserving:(id)observing keyPaths:(id)paths includeInitialValue:(BOOL)value includeChanges:(BOOL)changes observationHandler:(id)handler;
+- (id)startObserving:(id)observing keyPaths:(id)paths observationHandler:(id)handler;
 - (void)_stopAllObservation;
 - (void)dealloc;
-- (void)startObservingNotificationForName:(id)a3 object:(id)a4 notificationCenter:(id)a5 observationHandler:(id)a6;
+- (void)startObservingNotificationForName:(id)name object:(id)object notificationCenter:(id)center observationHandler:(id)handler;
 - (void)stopAllObservation;
-- (void)stopObserving:(id)a3;
+- (void)stopObserving:(id)observing;
 @end
 
 @implementation AVObservationController
@@ -16,13 +16,13 @@
 - (void)_stopAllObservation
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(NSMutableDictionary *)self->_proxyObserversByTokens allValues];
+  allValues = [(NSMutableDictionary *)self->_proxyObserversByTokens allValues];
   [(NSMutableDictionary *)self->_proxyObserversByTokens removeAllObjects];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = v3;
+  v4 = allValues;
   v5 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v5)
   {
@@ -50,8 +50,8 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [(NSMutableDictionary *)self->_notificationObservers allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  allKeys = [(NSMutableDictionary *)self->_notificationObservers allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v10)
   {
     v11 = v10;
@@ -62,7 +62,7 @@
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = *(*(&v17 + 1) + 8 * j);
@@ -71,7 +71,7 @@
         [v15 removeObserver:v16];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v11);
@@ -89,55 +89,55 @@
   os_unfair_lock_unlock(&self->_unfairLock);
 }
 
-- (void)stopObserving:(id)a3
+- (void)stopObserving:(id)observing
 {
-  if (a3)
+  if (observing)
   {
-    v4 = a3;
+    observingCopy = observing;
     os_unfair_lock_lock(&self->_unfairLock);
-    v5 = [(NSMutableDictionary *)self->_proxyObserversByTokens objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_proxyObserversByTokens objectForKeyedSubscript:observingCopy];
     [v5 stopObserving];
 
-    [(NSMutableDictionary *)self->_proxyObserversByTokens removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_proxyObserversByTokens removeObjectForKey:observingCopy];
 
     os_unfair_lock_unlock(&self->_unfairLock);
   }
 }
 
-- (void)startObservingNotificationForName:(id)a3 object:(id)a4 notificationCenter:(id)a5 observationHandler:(id)a6
+- (void)startObservingNotificationForName:(id)name object:(id)object notificationCenter:(id)center observationHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  objectCopy = object;
+  centerCopy = center;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_unfairLock);
-  v14 = [(NSMutableDictionary *)self->_notificationObservers objectForKeyedSubscript:v10];
+  v14 = [(NSMutableDictionary *)self->_notificationObservers objectForKeyedSubscript:nameCopy];
 
   os_unfair_lock_unlock(&self->_unfairLock);
   if (!v14)
   {
-    v15 = [v13 copy];
+    v15 = [handlerCopy copy];
 
-    if (!v12)
+    if (!centerCopy)
     {
-      v12 = [MEMORY[0x1E696AD88] defaultCenter];
+      centerCopy = [MEMORY[0x1E696AD88] defaultCenter];
     }
 
     objc_copyWeak(&to, &self->_owner);
-    objc_initWeak(&location, v11);
+    objc_initWeak(&location, objectCopy);
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;
     v19 = __106__AVObservationController_startObservingNotificationForName_object_notificationCenter_observationHandler___block_invoke;
     v20 = &unk_1E7207A68;
     objc_copyWeak(&v22, &to);
     objc_copyWeak(&v23, &location);
-    v24 = v11 == 0;
-    v13 = v15;
-    v21 = v13;
-    v16 = [v12 addObserverForName:v10 object:v11 queue:0 usingBlock:&v17];
+    v24 = objectCopy == 0;
+    handlerCopy = v15;
+    v21 = handlerCopy;
+    v16 = [centerCopy addObserverForName:nameCopy object:objectCopy queue:0 usingBlock:&v17];
     os_unfair_lock_lock(&self->_unfairLock);
-    [(NSMutableDictionary *)self->_notificationObservers setObject:v16 forKeyedSubscript:v10, v17, v18, v19, v20];
-    [(NSMutableDictionary *)self->_notificationCenters setObject:v12 forKeyedSubscript:v10];
+    [(NSMutableDictionary *)self->_notificationObservers setObject:v16 forKeyedSubscript:nameCopy, v17, v18, v19, v20];
+    [(NSMutableDictionary *)self->_notificationCenters setObject:centerCopy forKeyedSubscript:nameCopy];
     os_unfair_lock_unlock(&self->_unfairLock);
 
     objc_destroyWeak(&v23);
@@ -197,28 +197,28 @@ uint64_t __106__AVObservationController_startObservingNotificationForName_object
   return MEMORY[0x1EEE66BE0](WeakRetained);
 }
 
-- (id)startObserving:(id)a3 keyPath:(id)a4 observationHandler:(id)a5
+- (id)startObserving:(id)observing keyPath:(id)path observationHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  v15 = a4;
+  pathCopy = path;
   v8 = MEMORY[0x1E695DEC8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 arrayWithObjects:&v15 count:1];
+  handlerCopy = handler;
+  pathCopy2 = path;
+  observingCopy = observing;
+  v12 = [v8 arrayWithObjects:&pathCopy count:1];
 
-  v13 = [(AVObservationController *)self startObserving:v11 keyPaths:v12 observationHandler:v9, v15, v16];
+  v13 = [(AVObservationController *)self startObserving:observingCopy keyPaths:v12 observationHandler:handlerCopy, pathCopy, v16];
 
   return v13;
 }
 
-- (id)startObserving:(id)a3 keyPaths:(id)a4 observationHandler:(id)a5
+- (id)startObserving:(id)observing keyPaths:(id)paths observationHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  observingCopy = observing;
+  pathsCopy = paths;
+  handlerCopy = handler;
   objc_copyWeak(&to, &self->_owner);
-  v11 = [v10 copy];
+  v11 = [handlerCopy copy];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -227,7 +227,7 @@ uint64_t __106__AVObservationController_startObservingNotificationForName_object
   objc_copyWeak(&v17, &to);
   v12 = v11;
   v16 = v12;
-  v13 = [(AVObservationController *)self startObserving:v8 keyPaths:v9 includeInitialValue:0 includeChanges:0 observationHandler:v15];
+  v13 = [(AVObservationController *)self startObserving:observingCopy keyPaths:pathsCopy includeInitialValue:0 includeChanges:0 observationHandler:v15];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&to);
@@ -249,29 +249,29 @@ uint64_t __70__AVObservationController_startObserving_keyPaths_observationHandle
   return MEMORY[0x1EEE66BB8](WeakRetained, v3);
 }
 
-- (id)startObserving:(id)a3 keyPath:(id)a4 includeInitialValue:(BOOL)a5 observationHandler:(id)a6
+- (id)startObserving:(id)observing keyPath:(id)path includeInitialValue:(BOOL)value observationHandler:(id)handler
 {
-  v6 = a5;
+  valueCopy = value;
   v18 = *MEMORY[0x1E69E9840];
-  v17 = a4;
+  pathCopy = path;
   v10 = MEMORY[0x1E695DEC8];
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v10 arrayWithObjects:&v17 count:1];
+  handlerCopy = handler;
+  pathCopy2 = path;
+  observingCopy = observing;
+  v14 = [v10 arrayWithObjects:&pathCopy count:1];
 
-  v15 = [(AVObservationController *)self startObserving:v13 keyPaths:v14 includeInitialValue:v6 observationHandler:v11, v17, v18];
+  v15 = [(AVObservationController *)self startObserving:observingCopy keyPaths:v14 includeInitialValue:valueCopy observationHandler:handlerCopy, pathCopy, v18];
 
   return v15;
 }
 
-- (id)startObserving:(id)a3 keyPaths:(id)a4 includeInitialValue:(BOOL)a5 includeChanges:(BOOL)a6 observationHandler:(id)a7
+- (id)startObserving:(id)observing keyPaths:(id)paths includeInitialValue:(BOOL)value includeChanges:(BOOL)changes observationHandler:(id)handler
 {
-  v8 = a6;
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  changesCopy = changes;
+  valueCopy = value;
+  observingCopy = observing;
+  pathsCopy = paths;
+  handlerCopy = handler;
   kdebug_trace();
   v42 = 0;
   v43 = &v42;
@@ -284,7 +284,7 @@ uint64_t __70__AVObservationController_startObserving_keyPaths_observationHandle
   v40[2] = 0x3032000000;
   v40[3] = __Block_byref_object_copy__6096;
   v40[4] = __Block_byref_object_dispose__6097;
-  v15 = v12;
+  v15 = observingCopy;
   v16 = v15;
   v17 = 0;
   v41 = v15;
@@ -301,10 +301,10 @@ uint64_t __70__AVObservationController_startObserving_keyPaths_observationHandle
 
   if (!v19)
   {
-    v29 = v9;
-    v30 = v13;
+    v29 = valueCopy;
+    v30 = pathsCopy;
     objc_initWeak(&location, v18);
-    v20 = [v14 copy];
+    v20 = [handlerCopy copy];
     v21 = [AVProxyKVOObserver alloc];
     v22 = v43[5];
     v23 = objc_loadWeakRetained(&self->_owner);
@@ -313,12 +313,12 @@ uint64_t __70__AVObservationController_startObserving_keyPaths_observationHandle
     v35[2] = __105__AVObservationController_startObserving_keyPaths_includeInitialValue_includeChanges_observationHandler___block_invoke;
     v35[3] = &unk_1E72079F0;
     objc_copyWeak(&v37, &location);
-    v38 = v8;
+    v38 = changesCopy;
     v24 = v20;
     v36 = v24;
     v25 = v22;
-    v13 = v30;
-    v26 = [(AVProxyKVOObserver *)v21 initWithObservedObject:v16 observer:v25 keyPaths:v30 retainingObservedObject:v23 != v16 includeInitialValue:v29 includeChanges:v8 changesBlock:v35];
+    pathsCopy = v30;
+    v26 = [(AVProxyKVOObserver *)v21 initWithObservedObject:v16 observer:v25 keyPaths:v30 retainingObservedObject:v23 != v16 includeInitialValue:v29 includeChanges:changesCopy changesBlock:v35];
 
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
@@ -336,12 +336,12 @@ uint64_t __70__AVObservationController_startObserving_keyPaths_observationHandle
   }
 
   kdebug_trace();
-  v27 = [(AVProxyKVOObserver *)v17 token];
+  token = [(AVProxyKVOObserver *)v17 token];
   _Block_object_dispose(v40, 8);
 
   _Block_object_dispose(&v42, 8);
 
-  return v27;
+  return token;
 }
 
 void __105__AVObservationController_startObserving_keyPaths_includeInitialValue_includeChanges_observationHandler___block_invoke(uint64_t a1, void *a2, void *a3, void *a4, void *a5, void *a6)
@@ -435,9 +435,9 @@ uint64_t __105__AVObservationController_startObserving_keyPaths_includeInitialVa
   [(AVObservationController *)&v6 dealloc];
 }
 
-- (AVObservationController)initWithOwner:(id)a3
+- (AVObservationController)initWithOwner:(id)owner
 {
-  v4 = a3;
+  ownerCopy = owner;
   v14.receiver = self;
   v14.super_class = AVObservationController;
   v5 = [(AVObservationController *)&v14 init];
@@ -445,19 +445,19 @@ uint64_t __105__AVObservationController_startObserving_keyPaths_includeInitialVa
   if (v5)
   {
     v5->_unfairLock._os_unfair_lock_opaque = 0;
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     proxyObserversByTokens = v6->_proxyObserversByTokens;
-    v6->_proxyObserversByTokens = v7;
+    v6->_proxyObserversByTokens = dictionary;
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     notificationObservers = v6->_notificationObservers;
-    v6->_notificationObservers = v9;
+    v6->_notificationObservers = dictionary2;
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     notificationCenters = v6->_notificationCenters;
-    v6->_notificationCenters = v11;
+    v6->_notificationCenters = dictionary3;
 
-    objc_storeWeak(&v6->_owner, v4);
+    objc_storeWeak(&v6->_owner, ownerCopy);
   }
 
   return v6;

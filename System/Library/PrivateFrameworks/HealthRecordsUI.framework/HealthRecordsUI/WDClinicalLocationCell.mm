@@ -1,27 +1,27 @@
 @interface WDClinicalLocationCell
-- (WDClinicalLocationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (WDClinicalLocationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_configureDistinctIntrinsicLayoutPrioritiesForLabels;
 - (void)_setUpConstraints;
 - (void)_setupSubviews;
-- (void)_updateContentWithBrandable:(id)a3 dataProvider:(id)a4;
+- (void)_updateContentWithBrandable:(id)brandable dataProvider:(id)provider;
 - (void)prepareForReuse;
-- (void)setBrandable:(id)a3 dataProvider:(id)a4;
+- (void)setBrandable:(id)brandable dataProvider:(id)provider;
 - (void)willDisplay;
 @end
 
 @implementation WDClinicalLocationCell
 
-- (WDClinicalLocationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WDClinicalLocationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = WDClinicalLocationCell;
-  v4 = [(WDClinicalLocationCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(WDClinicalLocationCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(WDClinicalLocationCell *)v4 setSelectionStyle:0];
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    [(WDClinicalLocationCell *)v5 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(WDClinicalLocationCell *)v5 setBackgroundColor:clearColor];
 
     [(WDClinicalLocationCell *)v5 _setupSubviews];
     [(WDClinicalLocationCell *)v5 _setUpConstraints];
@@ -64,8 +64,8 @@
   [(UILabel *)self->_subtitleLabel setFont:v16];
 
   [(UILabel *)self->_subtitleLabel setNumberOfLines:0];
-  v17 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)self->_subtitleLabel setTextColor:v17];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)self->_subtitleLabel setTextColor:secondaryLabelColor];
 
   v18 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v4, v5, v6, v7}];
   detailLabel = self->_detailLabel;
@@ -77,8 +77,8 @@
   [(UILabel *)self->_detailLabel setFont:v20];
 
   [(UILabel *)self->_detailLabel setNumberOfLines:0];
-  v21 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)self->_detailLabel setTextColor:v21];
+  secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)self->_detailLabel setTextColor:secondaryLabelColor2];
 
   v22 = objc_alloc(MEMORY[0x1E69DCF90]);
   v23 = self->_titleLabel;
@@ -96,8 +96,8 @@
   [(UIStackView *)self->_stackView setBaselineRelativeArrangement:1];
   [(UIStackView *)self->_stackView setLayoutMarginsRelativeArrangement:1];
   [(UIStackView *)self->_stackView setPreservesSuperviewLayoutMargins:1];
-  v27 = [(WDClinicalLocationCell *)self contentView];
-  [v27 addSubview:self->_stackView];
+  contentView = [(WDClinicalLocationCell *)self contentView];
+  [contentView addSubview:self->_stackView];
 
   [(WDClinicalLocationCell *)self _updateForCurrentSizeCategory];
 }
@@ -105,8 +105,8 @@
 - (void)_setUpConstraints
 {
   stackView = self->_stackView;
-  v4 = [(WDClinicalLocationCell *)self contentView];
-  [(UIStackView *)stackView hk_alignConstraintsWithView:v4];
+  contentView = [(WDClinicalLocationCell *)self contentView];
+  [(UIStackView *)stackView hk_alignConstraintsWithView:contentView];
 
   [(WDClinicalLocationCell *)self _configureDistinctIntrinsicLayoutPrioritiesForLabels];
 }
@@ -115,15 +115,15 @@
 {
   v10[3] = *MEMORY[0x1E69E9840];
   v3 = [(UIStackView *)self->_stackView constraintsAffectingLayoutForAxis:1];
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
   LODWORD(v5) = 1132003328;
-  [v4 setPriority:v5];
-  v6 = [(WDClinicalLocationCell *)self titleLabel];
-  v7 = [(WDClinicalLocationCell *)self subtitleLabel];
-  v10[1] = v7;
-  v8 = [(WDClinicalLocationCell *)self detailLabel];
-  v10[2] = v8;
+  [firstObject setPriority:v5];
+  titleLabel = [(WDClinicalLocationCell *)self titleLabel];
+  subtitleLabel = [(WDClinicalLocationCell *)self subtitleLabel];
+  v10[1] = subtitleLabel;
+  detailLabel = [(WDClinicalLocationCell *)self detailLabel];
+  v10[2] = detailLabel;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:3];
 
   [v9 enumerateObjectsUsingBlock:&__block_literal_global_0];
@@ -140,44 +140,44 @@ void __78__WDClinicalLocationCell__configureDistinctIntrinsicLayoutPrioritiesFor
   [v7 setContentHuggingPriority:1 forAxis:v6];
 }
 
-- (void)setBrandable:(id)a3 dataProvider:(id)a4
+- (void)setBrandable:(id)brandable dataProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  brandableCopy = brandable;
+  providerCopy = provider;
   brandable = self->_brandable;
-  self->_brandable = v6;
-  v11 = v6;
+  self->_brandable = brandableCopy;
+  v11 = brandableCopy;
 
   dataProvider = self->_dataProvider;
-  self->_dataProvider = v7;
-  v10 = v7;
+  self->_dataProvider = providerCopy;
+  v10 = providerCopy;
 
   [(WDClinicalLocationCell *)self _updateContentWithBrandable:v11 dataProvider:v10];
 }
 
-- (void)_updateContentWithBrandable:(id)a3 dataProvider:(id)a4
+- (void)_updateContentWithBrandable:(id)brandable dataProvider:(id)provider
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(WDClinicalLocationCell *)self logoView];
-  v8 = v7;
-  if (v13 && v6)
+  brandableCopy = brandable;
+  providerCopy = provider;
+  logoView = [(WDClinicalLocationCell *)self logoView];
+  v8 = logoView;
+  if (brandableCopy && providerCopy)
   {
-    [v7 fetchBrandable:v13 dataProvider:v6];
+    [logoView fetchBrandable:brandableCopy dataProvider:providerCopy];
   }
 
   else
   {
-    [v7 prepareForReuse];
+    [logoView prepareForReuse];
   }
 
-  v9 = [v13 title];
-  v10 = [(WDClinicalLocationCell *)self titleLabel];
-  [v10 setText:v9];
+  title = [brandableCopy title];
+  titleLabel = [(WDClinicalLocationCell *)self titleLabel];
+  [titleLabel setText:title];
 
-  v11 = [v13 subtitle];
-  v12 = [(WDClinicalLocationCell *)self subtitleLabel];
-  [v12 setText:v11];
+  subtitle = [brandableCopy subtitle];
+  subtitleLabel = [(WDClinicalLocationCell *)self subtitleLabel];
+  [subtitleLabel setText:subtitle];
 }
 
 - (void)prepareForReuse
@@ -190,23 +190,23 @@ void __78__WDClinicalLocationCell__configureDistinctIntrinsicLayoutPrioritiesFor
 
 - (void)willDisplay
 {
-  v3 = [(WDClinicalLocationCell *)self titleLabel];
-  v4 = [v3 text];
-  v5 = [v4 length] == 0;
-  v6 = [(WDClinicalLocationCell *)self titleLabel];
-  [v6 setHidden:v5];
+  titleLabel = [(WDClinicalLocationCell *)self titleLabel];
+  text = [titleLabel text];
+  v5 = [text length] == 0;
+  titleLabel2 = [(WDClinicalLocationCell *)self titleLabel];
+  [titleLabel2 setHidden:v5];
 
-  v7 = [(WDClinicalLocationCell *)self subtitleLabel];
-  v8 = [v7 text];
-  v9 = [v8 length] == 0;
-  v10 = [(WDClinicalLocationCell *)self subtitleLabel];
-  [v10 setHidden:v9];
+  subtitleLabel = [(WDClinicalLocationCell *)self subtitleLabel];
+  text2 = [subtitleLabel text];
+  v9 = [text2 length] == 0;
+  subtitleLabel2 = [(WDClinicalLocationCell *)self subtitleLabel];
+  [subtitleLabel2 setHidden:v9];
 
-  v14 = [(WDClinicalLocationCell *)self detailLabel];
-  v11 = [v14 text];
-  v12 = [v11 length] == 0;
-  v13 = [(WDClinicalLocationCell *)self detailLabel];
-  [v13 setHidden:v12];
+  detailLabel = [(WDClinicalLocationCell *)self detailLabel];
+  text3 = [detailLabel text];
+  v12 = [text3 length] == 0;
+  detailLabel2 = [(WDClinicalLocationCell *)self detailLabel];
+  [detailLabel2 setHidden:v12];
 }
 
 @end

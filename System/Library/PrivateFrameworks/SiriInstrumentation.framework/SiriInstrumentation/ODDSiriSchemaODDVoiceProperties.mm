@@ -1,37 +1,37 @@
 @interface ODDSiriSchemaODDVoiceProperties
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDVoiceProperties)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDVoiceProperties)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDVoiceProperties)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDVoiceProperties)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)installedVoicesAtIndex:(unint64_t)a3;
+- (int)installedVoicesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addInstalledVoices:(int)a3;
-- (void)setHasName:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addInstalledVoices:(int)voices;
+- (void)setHasName:(BOOL)name;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDVoiceProperties
 
-- (ODDSiriSchemaODDVoiceProperties)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDVoiceProperties)initWithDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = ODDSiriSchemaODDVoiceProperties;
   v5 = [(ODDSiriSchemaODDVoiceProperties *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"gender"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"gender"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDVoiceProperties setGender:](v5, "setGender:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"accent"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"accent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,14 +39,14 @@
       [(ODDSiriSchemaODDVoiceProperties *)v5 setAccent:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"name"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"name"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDVoiceProperties setName:](v5, "setName:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"installedVoices"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"installedVoices"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -99,30 +99,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDVoiceProperties)initWithJSON:(id)a3
+- (ODDSiriSchemaODDVoiceProperties)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDVoiceProperties *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDVoiceProperties *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDVoiceProperties *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -135,20 +135,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_accent)
   {
-    v4 = [(ODDSiriSchemaODDVoiceProperties *)self accent];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    accent = [(ODDSiriSchemaODDVoiceProperties *)self accent];
+    dictionaryRepresentation = [accent dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"accent"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"accent"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"accent"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"accent"];
     }
   }
 
@@ -165,14 +165,14 @@
       v8 = off_1E78DDB08[v7];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"gender"];
+    [dictionary setObject:v8 forKeyedSubscript:@"gender"];
   }
 
   if ([(NSArray *)self->_installedVoices count])
   {
-    v9 = [(ODDSiriSchemaODDVoiceProperties *)self installedVoices];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"installedVoices"];
+    installedVoices = [(ODDSiriSchemaODDVoiceProperties *)self installedVoices];
+    v10 = [installedVoices copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"installedVoices"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -188,12 +188,12 @@
       v12 = off_1E78DDB20[v11];
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"name"];
+    [dictionary setObject:v12 forKeyedSubscript:@"name"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -222,15 +222,15 @@
   return v4 ^ v3 ^ v5 ^ [(NSArray *)self->_installedVoices hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  if ((*&self->_has & 1) != (v4[40] & 1))
+  if ((*&self->_has & 1) != (equalCopy[40] & 1))
   {
     goto LABEL_18;
   }
@@ -238,26 +238,26 @@
   if (*&self->_has)
   {
     gender = self->_gender;
-    if (gender != [v4 gender])
+    if (gender != [equalCopy gender])
     {
       goto LABEL_18;
     }
   }
 
-  v6 = [(ODDSiriSchemaODDVoiceProperties *)self accent];
-  v7 = [v4 accent];
-  if ((v6 != 0) == (v7 == 0))
+  accent = [(ODDSiriSchemaODDVoiceProperties *)self accent];
+  accent2 = [equalCopy accent];
+  if ((accent != 0) == (accent2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(ODDSiriSchemaODDVoiceProperties *)self accent];
-  if (v8)
+  accent3 = [(ODDSiriSchemaODDVoiceProperties *)self accent];
+  if (accent3)
   {
-    v9 = v8;
-    v10 = [(ODDSiriSchemaODDVoiceProperties *)self accent];
-    v11 = [v4 accent];
-    v12 = [v10 isEqual:v11];
+    v9 = accent3;
+    accent4 = [(ODDSiriSchemaODDVoiceProperties *)self accent];
+    accent5 = [equalCopy accent];
+    v12 = [accent4 isEqual:accent5];
 
     if (!v12)
     {
@@ -270,7 +270,7 @@
   }
 
   v13 = (*&self->_has >> 1) & 1;
-  if (v13 != ((v4[40] >> 1) & 1))
+  if (v13 != ((equalCopy[40] >> 1) & 1))
   {
     goto LABEL_18;
   }
@@ -278,18 +278,18 @@
   if (v13)
   {
     name = self->_name;
-    if (name != [v4 name])
+    if (name != [equalCopy name])
     {
       goto LABEL_18;
     }
   }
 
-  v6 = [(ODDSiriSchemaODDVoiceProperties *)self installedVoices];
-  v7 = [v4 installedVoices];
-  if ((v6 != 0) != (v7 == 0))
+  accent = [(ODDSiriSchemaODDVoiceProperties *)self installedVoices];
+  accent2 = [equalCopy installedVoices];
+  if ((accent != 0) != (accent2 == 0))
   {
-    v15 = [(ODDSiriSchemaODDVoiceProperties *)self installedVoices];
-    if (!v15)
+    installedVoices = [(ODDSiriSchemaODDVoiceProperties *)self installedVoices];
+    if (!installedVoices)
     {
 
 LABEL_21:
@@ -297,10 +297,10 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v16 = v15;
-    v17 = [(ODDSiriSchemaODDVoiceProperties *)self installedVoices];
-    v18 = [v4 installedVoices];
-    v19 = [v17 isEqual:v18];
+    v16 = installedVoices;
+    installedVoices2 = [(ODDSiriSchemaODDVoiceProperties *)self installedVoices];
+    installedVoices3 = [equalCopy installedVoices];
+    v19 = [installedVoices2 isEqual:installedVoices3];
 
     if (v19)
     {
@@ -320,20 +320,20 @@ LABEL_19:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(ODDSiriSchemaODDVoiceProperties *)self accent];
+  accent = [(ODDSiriSchemaODDVoiceProperties *)self accent];
 
-  if (v5)
+  if (accent)
   {
-    v6 = [(ODDSiriSchemaODDVoiceProperties *)self accent];
+    accent2 = [(ODDSiriSchemaODDVoiceProperties *)self accent];
     PBDataWriterWriteSubmessage();
   }
 
@@ -375,23 +375,23 @@ LABEL_19:
   }
 }
 
-- (int)installedVoicesAtIndex:(unint64_t)a3
+- (int)installedVoicesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_installedVoices objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_installedVoices objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addInstalledVoices:(int)a3
+- (void)addInstalledVoices:(int)voices
 {
-  v3 = *&a3;
+  v3 = *&voices;
   installedVoices = self->_installedVoices;
   if (!installedVoices)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_installedVoices;
-    self->_installedVoices = v6;
+    self->_installedVoices = array;
 
     installedVoices = self->_installedVoices;
   }
@@ -400,9 +400,9 @@ LABEL_19:
   [(NSArray *)installedVoices addObject:v8];
 }
 
-- (void)setHasName:(BOOL)a3
+- (void)setHasName:(BOOL)name
 {
-  if (a3)
+  if (name)
   {
     v3 = 2;
   }
@@ -415,17 +415,17 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ODDSiriSchemaODDVoiceProperties;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ODDSiriSchemaODDVoiceProperties *)self accent:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ODDSiriSchemaODDVoiceProperties *)self deleteAccent];
   }

@@ -1,39 +1,39 @@
 @interface TestProbe
-+ (id)testProbeStatusString:(unsigned int)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)startPeriodicTimerAt:(unint64_t)a3 repeatInterval:(unint64_t)a4;
-- (TestProbe)initWithQueue:(id)a3;
-- (void)cancelTest:(id)a3;
++ (id)testProbeStatusString:(unsigned int)string;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)startPeriodicTimerAt:(unint64_t)at repeatInterval:(unint64_t)interval;
+- (TestProbe)initWithQueue:(id)queue;
+- (void)cancelTest:(id)test;
 - (void)stopPeriodicTimer;
 - (void)stopTest;
 @end
 
 @implementation TestProbe
 
-- (TestProbe)initWithQueue:(id)a3
+- (TestProbe)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = TestProbe;
   v5 = [(TestProbe *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    v5->_queue = v4;
+    v5->_queue = queueCopy;
     v5->_uuid = [MEMORY[0x277CCAD78] UUID];
     v6->_status = -1;
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     probeOutputFilePaths = v6->_probeOutputFilePaths;
-    v6->_probeOutputFilePaths = v7;
+    v6->_probeOutputFilePaths = array;
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -43,8 +43,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(TestProbe *)v4 uuid];
-      v6 = [v5 isEqual:self->_uuid];
+      uuid = [(TestProbe *)equalCopy uuid];
+      v6 = [uuid isEqual:self->_uuid];
     }
 
     else
@@ -59,7 +59,7 @@
 - (void)stopTest
 {
   v11 = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  selfCopy = self;
   v2 = objc_opt_class();
   v3 = NSStringFromClass(v2);
   v5 = 136315650;
@@ -68,53 +68,53 @@
   v8 = 49;
   v9 = 2112;
   v10 = v3;
-  _os_log_debug_impl(&dword_25B859000, v1, OS_LOG_TYPE_DEBUG, "%s:%u - Nothing to stop for this probe %@", &v5, 0x1Cu);
+  _os_log_debug_impl(&dword_25B859000, selfCopy, OS_LOG_TYPE_DEBUG, "%s:%u - Nothing to stop for this probe %@", &v5, 0x1Cu);
 
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelTest:(id)a3
+- (void)cancelTest:(id)test
 {
-  v5 = a3;
+  testCopy = test;
   [(TestProbe *)self stopTest];
-  v4 = v5;
-  if (v5)
+  v4 = testCopy;
+  if (testCopy)
   {
-    (*(v5 + 2))(v5, 4);
-    v4 = v5;
+    (*(testCopy + 2))(testCopy, 4);
+    v4 = testCopy;
   }
 }
 
-+ (id)testProbeStatusString:(unsigned int)a3
++ (id)testProbeStatusString:(unsigned int)string
 {
-  if (a3 + 1 > 6)
+  if (string + 1 > 6)
   {
     return @"UNEXPECTED PROBE STATUS!";
   }
 
   else
   {
-    return *(&off_279968378 + a3 + 1);
+    return *(&off_279968378 + string + 1);
   }
 }
 
-- (BOOL)startPeriodicTimerAt:(unint64_t)a3 repeatInterval:(unint64_t)a4
+- (BOOL)startPeriodicTimerAt:(unint64_t)at repeatInterval:(unint64_t)interval
 {
-  v7 = [(TestProbe *)self queue];
-  v8 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v7);
+  queue = [(TestProbe *)self queue];
+  v8 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue);
 
   if (v8)
   {
-    dispatch_source_set_timer(v8, a3, a4, 0);
+    dispatch_source_set_timer(v8, at, interval, 0);
     v11 = MEMORY[0x277D85DD0];
     v12 = 3221225472;
     v13 = __49__TestProbe_startPeriodicTimerAt_repeatInterval___block_invoke;
     v14 = &unk_2799682B8;
-    v15 = self;
+    selfCopy = self;
     v9 = v8;
     v16 = v9;
     dispatch_source_set_event_handler(v9, &v11);
-    [(TestProbe *)self setPeriodicTimer:v9, v11, v12, v13, v14, v15];
+    [(TestProbe *)self setPeriodicTimer:v9, v11, v12, v13, v14, selfCopy];
     dispatch_resume(v9);
   }
 
@@ -123,12 +123,12 @@
 
 - (void)stopPeriodicTimer
 {
-  v3 = [(TestProbe *)self periodicTimer];
+  periodicTimer = [(TestProbe *)self periodicTimer];
 
-  if (v3)
+  if (periodicTimer)
   {
-    v4 = [(TestProbe *)self periodicTimer];
-    dispatch_source_cancel(v4);
+    periodicTimer2 = [(TestProbe *)self periodicTimer];
+    dispatch_source_cancel(periodicTimer2);
 
     [(TestProbe *)self setPeriodicTimer:0];
   }

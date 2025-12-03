@@ -1,37 +1,37 @@
 @interface WBShading
-+ (CsColour)fixedUpVersionOfColor:(CsColour)a3;
-+ (void)readFrom:(WrdShading *)a3 to:(id)a4;
-+ (void)setToSolidWhite:(id)a3;
-+ (void)write:(id)a3 to:(WrdShading *)a4;
++ (CsColour)fixedUpVersionOfColor:(CsColour)color;
++ (void)readFrom:(WrdShading *)from to:(id)to;
++ (void)setToSolidWhite:(id)white;
++ (void)write:(id)write to:(WrdShading *)to;
 @end
 
 @implementation WBShading
 
-+ (void)setToSolidWhite:(id)a3
++ (void)setToSolidWhite:(id)white
 {
-  v5 = a3;
-  [v5 setStyle:1];
+  whiteCopy = white;
+  [whiteCopy setStyle:1];
   v3 = +[OITSUColor whiteColor];
-  [v5 setForeground:v3];
+  [whiteCopy setForeground:v3];
 
   v4 = +[OITSUColor whiteColor];
-  [v5 setBackground:v4];
+  [whiteCopy setBackground:v4];
 }
 
-+ (void)readFrom:(WrdShading *)a3 to:(id)a4
++ (void)readFrom:(WrdShading *)from to:(id)to
 {
-  v6 = a4;
-  if (a3 && v6)
+  toCopy = to;
+  if (from && toCopy)
   {
-    v13 = v6;
-    [v6 setStyle:a3->var1];
-    if (a3->var2)
+    v13 = toCopy;
+    [toCopy setStyle:from->var1];
+    if (from->var2)
     {
-      if (a3->var1 != 0xFFFF || (transparentWhite(), a3->var3.var0 != _MergedGlobals_58) || __PAIR64__(a3->var3.var2, a3->var3.var1) != __PAIR64__(WORD2(_MergedGlobals_58), WORD1(_MergedGlobals_58)) || a3->var3.var3 != HIWORD(_MergedGlobals_58) || (transparentWhite(), a3->var4.var0 != _MergedGlobals_58) || __PAIR64__(a3->var4.var2, a3->var4.var1) != __PAIR64__(WORD2(_MergedGlobals_58), WORD1(_MergedGlobals_58)) || a3->var4.var3 != HIWORD(_MergedGlobals_58))
+      if (from->var1 != 0xFFFF || (transparentWhite(), from->var3.var0 != _MergedGlobals_58) || __PAIR64__(from->var3.var2, from->var3.var1) != __PAIR64__(WORD2(_MergedGlobals_58), WORD1(_MergedGlobals_58)) || from->var3.var3 != HIWORD(_MergedGlobals_58) || (transparentWhite(), from->var4.var0 != _MergedGlobals_58) || __PAIR64__(from->var4.var2, from->var4.var1) != __PAIR64__(WORD2(_MergedGlobals_58), WORD1(_MergedGlobals_58)) || from->var4.var3 != HIWORD(_MergedGlobals_58))
       {
         transparentBlack();
-        p_var3 = &a3->var3;
-        if (a3->var3.var0 == qword_27FC68DE0 && __PAIR64__(a3->var3.var2, a3->var3.var1) == __PAIR64__(WORD2(qword_27FC68DE0), WORD1(qword_27FC68DE0)) && a3->var3.var3 == HIWORD(qword_27FC68DE0))
+        p_var3 = &from->var3;
+        if (from->var3.var0 == qword_27FC68DE0 && __PAIR64__(from->var3.var2, from->var3.var1) == __PAIR64__(WORD2(qword_27FC68DE0), WORD1(qword_27FC68DE0)) && from->var3.var3 == HIWORD(qword_27FC68DE0))
         {
           v8 = +[WDShading autoForegroundColor];
           [v13 setForeground:v8];
@@ -44,8 +44,8 @@
         }
 
         transparentBlack();
-        p_var4 = &a3->var4;
-        if (a3->var4.var0 == qword_27FC68DE0 && __PAIR64__(a3->var4.var2, a3->var4.var1) == __PAIR64__(WORD2(qword_27FC68DE0), WORD1(qword_27FC68DE0)) && a3->var4.var3 == HIWORD(qword_27FC68DE0))
+        p_var4 = &from->var4;
+        if (from->var4.var0 == qword_27FC68DE0 && __PAIR64__(from->var4.var2, from->var4.var1) == __PAIR64__(WORD2(qword_27FC68DE0), WORD1(qword_27FC68DE0)) && from->var4.var3 == HIWORD(qword_27FC68DE0))
         {
           v11 = +[WDShading autoBackgroundColor];
           [v13 setBackground:v11];
@@ -61,21 +61,21 @@
       }
 
 LABEL_19:
-      [a1 setToSolidWhite:v13];
-      v6 = v13;
+      [self setToSolidWhite:v13];
+      toCopy = v13;
       goto LABEL_34;
     }
 
-    v6 = v13;
-    if (!a3->var5)
+    toCopy = v13;
+    if (!from->var5)
     {
       goto LABEL_34;
     }
 
-    var6 = a3->var6;
-    if (a3->var1 == 0xFFFF && var6 == 31)
+    var6 = from->var6;
+    if (from->var1 == 0xFFFF && var6 == 31)
     {
-      if (a3->var7 == 31)
+      if (from->var7 == 31)
       {
         goto LABEL_19;
       }
@@ -88,13 +88,13 @@ LABEL_19:
       goto LABEL_29;
     }
 
-    v12 = [OITSUColor colorWithCsColour:&a3->var3];
+    v12 = [OITSUColor colorWithCsColour:&from->var3];
     [v13 setForeground:v12];
 LABEL_29:
 
-    if (a3->var7)
+    if (from->var7)
     {
-      [OITSUColor colorWithCsColour:&a3->var4];
+      [OITSUColor colorWithCsColour:&from->var4];
     }
 
     else
@@ -105,18 +105,18 @@ LABEL_29:
     [v13 setBackground:v11];
 LABEL_33:
 
-    v6 = v13;
+    toCopy = v13;
   }
 
 LABEL_34:
 }
 
-+ (CsColour)fixedUpVersionOfColor:(CsColour)a3
++ (CsColour)fixedUpVersionOfColor:(CsColour)color
 {
   v4 = v3;
-  v5 = *a3.var0;
-  *(v4 + 2) = *(*&a3 + 2);
-  *(v4 + 4) = *(*&a3 + 4);
+  v5 = *color.var0;
+  *(v4 + 2) = *(*&color + 2);
+  *(v4 + 4) = *(*&color + 4);
   if (v5)
   {
     v6 = 255;
@@ -131,36 +131,36 @@ LABEL_34:
   }
 
   *v4 = v6;
-  return a1;
+  return self;
 }
 
-+ (void)write:(id)a3 to:(WrdShading *)a4
++ (void)write:(id)write to:(WrdShading *)to
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 && a4)
+  writeCopy = write;
+  v7 = writeCopy;
+  if (writeCopy && to)
   {
-    a4->var1 = [v6 style];
-    v8 = [v7 foreground];
+    to->var1 = [writeCopy style];
+    foreground = [v7 foreground];
 
-    if (v8)
+    if (foreground)
     {
-      v9 = [v7 foreground];
+      foreground2 = [v7 foreground];
       v10 = +[WDShading autoForegroundColor];
 
-      if (v9 == v10)
+      if (foreground2 == v10)
       {
         transparentBlack();
-        a4->var3 = qword_27FC68DE0;
+        to->var3 = qword_27FC68DE0;
       }
 
       else
       {
-        v11 = [v7 foreground];
-        v12 = v11;
-        if (v11)
+        foreground3 = [v7 foreground];
+        v12 = foreground3;
+        if (foreground3)
         {
-          [v11 csColour];
+          [foreground3 csColour];
         }
 
         else
@@ -168,31 +168,31 @@ LABEL_34:
           v19 = 0;
         }
 
-        [a1 fixedUpVersionOfColor:&v19];
-        a4->var3 = v20;
+        [self fixedUpVersionOfColor:&v19];
+        to->var3 = v20;
       }
     }
 
-    v13 = [v7 background];
+    background = [v7 background];
 
-    if (v13)
+    if (background)
     {
-      v14 = [v7 background];
+      background2 = [v7 background];
       v15 = +[WDShading autoBackgroundColor];
 
-      if (v14 == v15)
+      if (background2 == v15)
       {
         transparentBlack();
-        a4->var4 = qword_27FC68DE0;
+        to->var4 = qword_27FC68DE0;
       }
 
       else
       {
-        v16 = [v7 background];
-        v17 = v16;
-        if (v16)
+        background3 = [v7 background];
+        v17 = background3;
+        if (background3)
         {
-          [v16 csColour];
+          [background3 csColour];
         }
 
         else
@@ -200,8 +200,8 @@ LABEL_34:
           v18 = 0;
         }
 
-        [a1 fixedUpVersionOfColor:&v18];
-        a4->var4 = v20;
+        [self fixedUpVersionOfColor:&v18];
+        to->var4 = v20;
       }
     }
   }

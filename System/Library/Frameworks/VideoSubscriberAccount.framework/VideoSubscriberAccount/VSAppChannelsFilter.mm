@@ -2,8 +2,8 @@
 - (NSArray)personalAppDescriptions;
 - (VSAppChannelsFilter)init;
 - (void)_updateAdamIDs;
-- (void)setAllChannelMappings:(id)a3;
-- (void)setPersonalChannelIDs:(id)a3;
+- (void)setAllChannelMappings:(id)mappings;
+- (void)setPersonalChannelIDs:(id)ds;
 @end
 
 @implementation VSAppChannelsFilter
@@ -59,18 +59,18 @@
         }
 
         v8 = *(*(&v18 + 1) + 8 * i);
-        v9 = [v8 appAdamID];
-        [v3 addObject:v9];
-        v10 = [(VSAppChannelsFilter *)self personalChannelIDs];
-        if ([v10 count])
+        appAdamID = [v8 appAdamID];
+        [v3 addObject:appAdamID];
+        personalChannelIDs = [(VSAppChannelsFilter *)self personalChannelIDs];
+        if ([personalChannelIDs count])
         {
           v11 = MEMORY[0x277CBEB98];
-          v12 = [v8 channelIDs];
-          v13 = [v11 setWithArray:v12];
+          channelIDs = [v8 channelIDs];
+          v13 = [v11 setWithArray:channelIDs];
 
-          if ([v10 intersectsSet:v13])
+          if ([personalChannelIDs intersectsSet:v13])
           {
-            [v16 addObject:v9];
+            [v16 addObject:appAdamID];
           }
         }
       }
@@ -93,45 +93,45 @@
   [(VSAppChannelsFilter *)self setGenericAppAdamIDs:v3];
 }
 
-- (void)setPersonalChannelIDs:(id)a3
+- (void)setPersonalChannelIDs:(id)ds
 {
-  v4 = a3;
-  v7 = v4;
-  if (!v4)
+  dsCopy = ds;
+  v7 = dsCopy;
+  if (!dsCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The personalChannelIDs parameter must not be nil."];
-    v4 = 0;
+    dsCopy = 0;
   }
 
-  if (self->_personalChannelIDs != v4)
+  if (self->_personalChannelIDs != dsCopy)
   {
     v5 = [(NSSet *)v7 copy];
     personalChannelIDs = self->_personalChannelIDs;
     self->_personalChannelIDs = v5;
 
     [(VSAppChannelsFilter *)self _updateAdamIDs];
-    v4 = v7;
+    dsCopy = v7;
   }
 }
 
-- (void)setAllChannelMappings:(id)a3
+- (void)setAllChannelMappings:(id)mappings
 {
-  v4 = a3;
-  v7 = v4;
-  if (!v4)
+  mappingsCopy = mappings;
+  v7 = mappingsCopy;
+  if (!mappingsCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The allChannelMappings parameter must not be nil."];
-    v4 = 0;
+    mappingsCopy = 0;
   }
 
-  if (self->_allChannelMappings != v4)
+  if (self->_allChannelMappings != mappingsCopy)
   {
     v5 = [(NSArray *)v7 copy];
     allChannelMappings = self->_allChannelMappings;
     self->_allChannelMappings = v5;
 
     [(VSAppChannelsFilter *)self _updateAdamIDs];
-    v4 = v7;
+    mappingsCopy = v7;
   }
 }
 
@@ -143,8 +143,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(VSAppChannelsFilter *)self personalChannelIDs];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  personalChannelIDs = [(VSAppChannelsFilter *)self personalChannelIDs];
+  v5 = [personalChannelIDs countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -155,12 +155,12 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(personalChannelIDs);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [(VSAppChannelsFilter *)self appsByChannelID];
-        v11 = [v10 objectForKey:v9];
+        appsByChannelID = [(VSAppChannelsFilter *)self appsByChannelID];
+        v11 = [appsByChannelID objectForKey:v9];
 
         if (v11)
         {
@@ -168,15 +168,15 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [personalChannelIDs countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
   }
 
-  v12 = [v3 allObjects];
+  allObjects = [v3 allObjects];
 
-  return v12;
+  return allObjects;
 }
 
 @end

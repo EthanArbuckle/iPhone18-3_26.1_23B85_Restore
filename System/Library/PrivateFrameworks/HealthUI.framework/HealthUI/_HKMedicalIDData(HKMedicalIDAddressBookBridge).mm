@@ -26,45 +26,45 @@
 - (void)loadDataFromCNContact:()HKMedicalIDAddressBookBridge
 {
   v11 = a3;
-  v4 = [v11 thumbnailImageData];
-  [a1 setPictureData:v4];
+  thumbnailImageData = [v11 thumbnailImageData];
+  [self setPictureData:thumbnailImageData];
 
   v5 = [MEMORY[0x1E695CD80] stringFromContact:v11 style:0];
-  [a1 setName:v5];
+  [self setName:v5];
 
-  v6 = [v11 birthday];
-  if (v6)
+  birthday = [v11 birthday];
+  if (birthday)
   {
-    v7 = v6;
-    v8 = [v11 birthday];
-    v9 = [v8 year];
+    v7 = birthday;
+    birthday2 = [v11 birthday];
+    year = [birthday2 year];
 
-    if (v9 != 0x7FFFFFFFFFFFFFFFLL)
+    if (year != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v10 = [v11 birthday];
-      [a1 setGregorianBirthday:v10];
+      birthday3 = [v11 birthday];
+      [self setGregorianBirthday:birthday3];
     }
   }
 }
 
 - (uint64_t)updateEmergencyContacts
 {
-  v2 = [a1 emergencyContacts];
-  v3 = [v2 count];
+  emergencyContacts = [self emergencyContacts];
+  v3 = [emergencyContacts count];
 
   if (!v3)
   {
     return 0;
   }
 
-  return [a1 _updateExistingEmergencyContacts];
+  return [self _updateExistingEmergencyContacts];
 }
 
 - (uint64_t)updateEmergencyContactsAutopopulateForSecondaryProfileIfEmpty:()HKMedicalIDAddressBookBridge
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = [a1 emergencyContacts];
-  v6 = [v5 count];
+  emergencyContacts = [self emergencyContacts];
+  v6 = [emergencyContacts count];
 
   if (v6)
   {
@@ -73,11 +73,11 @@
     if (os_log_type_enabled(*MEMORY[0x1E696B968], OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543362;
-      v11 = a1;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C3942000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Updating existing emergency contacts.", &v10, 0xCu);
     }
 
-    return [a1 _updateExistingEmergencyContacts];
+    return [self _updateExistingEmergencyContacts];
   }
 
   else if (a3)
@@ -87,11 +87,11 @@
     if (os_log_type_enabled(*MEMORY[0x1E696B968], OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543362;
-      v11 = a1;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C3942000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Autopopulating emergency contacts.", &v10, 0xCu);
     }
 
-    return [a1 _autopopulateEmergencyContactsForSecondaryProfile];
+    return [self _autopopulateEmergencyContactsForSecondaryProfile];
   }
 
   else
@@ -110,7 +110,7 @@
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    obj = [a1 emergencyContacts];
+    obj = [self emergencyContacts];
     v3 = [obj countByEnumeratingWithState:&v48 objects:v53 count:16];
     if (v3)
     {
@@ -118,7 +118,7 @@
       v5 = 0;
       v6 = *v49;
       v34 = v2;
-      v35 = a1;
+      selfCopy = self;
       v33 = *v49;
       do
       {
@@ -132,23 +132,23 @@
           }
 
           v8 = *(*(&v48 + 1) + 8 * v7);
-          v5 |= [a1 _updateIdentifierByPhoneNumberForEmergencyContact:v8 contactStore:{v2, v33, v34, v35}];
-          v9 = [v8 nameContactIdentifier];
-          if (v9)
+          v5 |= [self _updateIdentifierByPhoneNumberForEmergencyContact:v8 contactStore:{v2, v33, v34, selfCopy}];
+          nameContactIdentifier = [v8 nameContactIdentifier];
+          if (nameContactIdentifier)
           {
-            v10 = [a1 _contactKeysToFetch];
+            _contactKeysToFetch = [self _contactKeysToFetch];
             v47 = 0;
-            v11 = [v2 unifiedContactWithIdentifier:v9 keysToFetch:v10 error:&v47];
+            v11 = [v2 unifiedContactWithIdentifier:nameContactIdentifier keysToFetch:_contactKeysToFetch error:&v47];
             v42 = v47;
 
             v12 = v11;
             if (v11)
             {
-              v40 = v9;
+              v40 = nameContactIdentifier;
               v41 = v11;
               v13 = [MEMORY[0x1E695CD80] stringFromContact:v11 style:0];
-              v14 = [v8 name];
-              v15 = [v13 isEqualToString:v14];
+              name = [v8 name];
+              v15 = [v13 isEqualToString:name];
 
               if ((v15 & 1) == 0)
               {
@@ -157,12 +157,12 @@
               }
 
               v12 = v41;
-              v16 = [v41 phoneNumbers];
+              phoneNumbers = [v41 phoneNumbers];
               v43 = 0u;
               v44 = 0u;
               v45 = 0u;
               v46 = 0u;
-              v17 = v16;
+              v17 = phoneNumbers;
               v18 = [v17 countByEnumeratingWithState:&v43 objects:v52 count:16];
               if (v18)
               {
@@ -180,25 +180,25 @@
                     }
 
                     v22 = *(*(&v43 + 1) + 8 * i);
-                    v23 = [v22 identifier];
-                    v24 = [v8 phoneNumberContactIdentifier];
-                    v25 = [v23 isEqualToString:v24];
+                    identifier = [v22 identifier];
+                    phoneNumberContactIdentifier = [v8 phoneNumberContactIdentifier];
+                    v25 = [identifier isEqualToString:phoneNumberContactIdentifier];
 
                     if (v25)
                     {
-                      v26 = [v22 value];
+                      value = [v22 value];
                       v27 = MEMORY[0x1E695CF50];
-                      v28 = [v8 phoneNumber];
-                      v29 = [v27 phoneNumberWithStringValue:v28];
+                      phoneNumber = [v8 phoneNumber];
+                      v29 = [v27 phoneNumberWithStringValue:phoneNumber];
 
-                      if (![v26 isLikePhoneNumber:v29])
+                      if (![value isLikePhoneNumber:v29])
                       {
-                        v30 = [v26 formattedStringValue];
-                        [v8 setPhoneNumber:v30];
+                        formattedStringValue = [value formattedStringValue];
+                        [v8 setPhoneNumber:formattedStringValue];
 
                         v5 = 1;
                         v2 = v34;
-                        a1 = v35;
+                        self = selfCopy;
                         v6 = v33;
                         goto LABEL_23;
                       }
@@ -215,7 +215,7 @@
                 }
 
                 v2 = v34;
-                a1 = v35;
+                self = selfCopy;
                 v6 = v33;
                 v5 = v36;
 LABEL_23:
@@ -224,7 +224,7 @@ LABEL_23:
               }
 
               v4 = v37;
-              v9 = v40;
+              nameContactIdentifier = v40;
             }
           }
 
@@ -252,7 +252,7 @@ LABEL_23:
     if (os_log_type_enabled(*MEMORY[0x1E696B968], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v55 = a1;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C3942000, v31, OS_LOG_TYPE_DEFAULT, "%{public}@: Contacts access not authorized, skipping update emergency contacts", buf, 0xCu);
       LOBYTE(v5) = 0;
     }
@@ -265,9 +265,9 @@ LABEL_23:
 {
   v38[1] = *MEMORY[0x1E69E9840];
   v2 = objc_alloc_init(MEMORY[0x1E695CE18]);
-  v3 = [a1 _contactKeysToFetch];
+  _contactKeysToFetch = [self _contactKeysToFetch];
   v37 = 0;
-  v4 = [v2 _ios_meContactWithKeysToFetch:v3 error:&v37];
+  v4 = [v2 _ios_meContactWithKeysToFetch:_contactKeysToFetch error:&v37];
   v5 = v37;
 
   if (v4)
@@ -276,19 +276,19 @@ LABEL_23:
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 phoneNumber];
+      phoneNumber = [v6 phoneNumber];
 
-      if (v8)
+      if (phoneNumber)
       {
         v9 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
         v10 = [v9 localizedStringForKey:@"relationship_guardian" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-tinker"];
         [v7 setRelationship:v10];
 
-        v11 = [a1 emergencyContacts];
-        if (v11)
+        emergencyContacts = [self emergencyContacts];
+        if (emergencyContacts)
         {
-          v12 = v11;
-          v13 = [v11 arrayByAddingObject:v7];
+          v12 = emergencyContacts;
+          v13 = [emergencyContacts arrayByAddingObject:v7];
         }
 
         else
@@ -297,7 +297,7 @@ LABEL_23:
           v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:1];
         }
 
-        [a1 setEmergencyContacts:v13];
+        [self setEmergencyContacts:v13];
 
         v21 = 1;
         goto LABEL_16;
@@ -307,7 +307,7 @@ LABEL_23:
       v29 = *MEMORY[0x1E696B968];
       if (os_log_type_enabled(*MEMORY[0x1E696B968], OS_LOG_TYPE_ERROR))
       {
-        [(_HKMedicalIDData(HKMedicalIDAddressBookBridge) *)a1 _autopopulateEmergencyContactsForSecondaryProfile:v29];
+        [(_HKMedicalIDData(HKMedicalIDAddressBookBridge) *)self _autopopulateEmergencyContactsForSecondaryProfile:v29];
       }
     }
 
@@ -317,7 +317,7 @@ LABEL_23:
       v22 = *MEMORY[0x1E696B968];
       if (os_log_type_enabled(*MEMORY[0x1E696B968], OS_LOG_TYPE_ERROR))
       {
-        [(_HKMedicalIDData(HKMedicalIDAddressBookBridge) *)a1 _autopopulateEmergencyContactsForSecondaryProfile:v22];
+        [(_HKMedicalIDData(HKMedicalIDAddressBookBridge) *)self _autopopulateEmergencyContactsForSecondaryProfile:v22];
       }
     }
 
@@ -331,7 +331,7 @@ LABEL_16:
   v14 = *MEMORY[0x1E696B968];
   if (os_log_type_enabled(*MEMORY[0x1E696B968], OS_LOG_TYPE_ERROR))
   {
-    [(_HKMedicalIDData(HKMedicalIDAddressBookBridge) *)a1 _autopopulateEmergencyContactsForSecondaryProfile:v14];
+    [(_HKMedicalIDData(HKMedicalIDAddressBookBridge) *)self _autopopulateEmergencyContactsForSecondaryProfile:v14];
   }
 
   v21 = 0;
@@ -346,14 +346,14 @@ LABEL_17:
   v6 = a3;
   v7 = a4;
   v8 = MEMORY[0x1E695CF50];
-  v9 = [v6 phoneNumber];
-  v10 = [v8 phoneNumberWithStringValue:v9];
+  phoneNumber = [v6 phoneNumber];
+  v10 = [v8 phoneNumberWithStringValue:phoneNumber];
 
   v56 = v10;
   v11 = [MEMORY[0x1E695CD58] predicateForContactsMatchingPhoneNumber:v10];
-  v12 = [a1 _contactKeysToFetch];
+  _contactKeysToFetch = [self _contactKeysToFetch];
   v71 = 0;
-  v13 = [v7 unifiedContactsMatchingPredicate:v11 keysToFetch:v12 error:&v71];
+  v13 = [v7 unifiedContactsMatchingPredicate:v11 keysToFetch:_contactKeysToFetch error:&v71];
   v14 = v71;
 
   v69 = 0u;
@@ -379,19 +379,19 @@ LABEL_17:
 
         v19 = *(*(&v67 + 1) + 8 * i);
         v20 = [MEMORY[0x1E695CD80] stringFromContact:v19 style:0];
-        v21 = [v6 name];
-        v22 = [v20 isEqualToString:v21];
+        name = [v6 name];
+        v22 = [v20 isEqualToString:name];
 
         if (v22)
         {
-          v24 = [v6 nameContactIdentifier];
-          v25 = [v19 identifier];
-          v26 = [v24 isEqualToString:v25];
+          nameContactIdentifier = [v6 nameContactIdentifier];
+          identifier = [v19 identifier];
+          v26 = [nameContactIdentifier isEqualToString:identifier];
 
           if ((v26 & 1) == 0)
           {
-            v27 = [v19 identifier];
-            [v6 setNameContactIdentifier:v27];
+            identifier2 = [v19 identifier];
+            [v6 setNameContactIdentifier:identifier2];
           }
 
           v50 = v26 ^ 1;
@@ -399,8 +399,8 @@ LABEL_17:
           v66 = 0u;
           v63 = 0u;
           v64 = 0u;
-          v53 = [v19 phoneNumbers];
-          v54 = [v53 countByEnumeratingWithState:&v63 objects:v72 count:16];
+          phoneNumbers = [v19 phoneNumbers];
+          v54 = [phoneNumbers countByEnumeratingWithState:&v63 objects:v72 count:16];
           if (v54)
           {
             v49 = v7;
@@ -411,41 +411,41 @@ LABEL_17:
               {
                 if (*v64 != v55)
                 {
-                  objc_enumerationMutation(v53);
+                  objc_enumerationMutation(phoneNumbers);
                 }
 
                 v29 = *(*(&v63 + 1) + 8 * j);
-                v30 = [v29 value];
-                v31 = [v30 unformattedInternationalStringValue];
-                v32 = [v6 phoneNumber];
-                if ([v31 isEqualToString:v32])
+                value = [v29 value];
+                unformattedInternationalStringValue = [value unformattedInternationalStringValue];
+                phoneNumber2 = [v6 phoneNumber];
+                if ([unformattedInternationalStringValue isEqualToString:phoneNumber2])
                 {
                   goto LABEL_28;
                 }
 
-                v33 = [v29 value];
-                [v33 formattedInternationalStringValue];
+                value2 = [v29 value];
+                [value2 formattedInternationalStringValue];
                 v35 = v34 = v6;
-                v36 = [v34 phoneNumber];
-                if ([v35 isEqualToString:v36])
+                phoneNumber3 = [v34 phoneNumber];
+                if ([v35 isEqualToString:phoneNumber3])
                 {
                   goto LABEL_27;
                 }
 
-                v59 = v32;
-                v60 = v31;
-                v61 = v30;
-                v37 = [v29 value];
-                v38 = [v37 formattedStringValue];
+                v59 = phoneNumber2;
+                v60 = unformattedInternationalStringValue;
+                v61 = value;
+                value3 = [v29 value];
+                formattedStringValue = [value3 formattedStringValue];
                 v39 = v34;
-                v40 = [v34 phoneNumber];
-                if ([v38 isEqualToString:v40])
+                phoneNumber4 = [v34 phoneNumber];
+                if ([formattedStringValue isEqualToString:phoneNumber4])
                 {
 
                   v34 = v39;
-                  v31 = v60;
-                  v30 = v61;
-                  v32 = v59;
+                  unformattedInternationalStringValue = v60;
+                  value = v61;
+                  phoneNumber2 = v59;
 LABEL_27:
 
                   v6 = v34;
@@ -453,17 +453,17 @@ LABEL_28:
 
                   v41 = v29;
 LABEL_29:
-                  v43 = [v6 phoneNumberContactIdentifier];
+                  phoneNumberContactIdentifier = [v6 phoneNumberContactIdentifier];
                   v44 = v41;
-                  v45 = [v41 identifier];
-                  v46 = [v43 isEqualToString:v45];
+                  identifier3 = [v41 identifier];
+                  v46 = [phoneNumberContactIdentifier isEqualToString:identifier3];
 
                   v7 = v49;
                   v23 = v50;
                   if ((v46 & 1) == 0)
                   {
-                    v47 = [v44 identifier];
-                    [v6 setPhoneNumberContactIdentifier:v47];
+                    identifier4 = [v44 identifier];
+                    [v6 setPhoneNumberContactIdentifier:identifier4];
 
                     v23 = 1;
                   }
@@ -472,7 +472,7 @@ LABEL_29:
                 }
 
                 [v29 value];
-                v57 = v33;
+                v57 = value2;
                 v42 = v41 = v29;
                 v58 = [v42 isLikePhoneNumber:v56];
 
@@ -483,7 +483,7 @@ LABEL_29:
                 }
               }
 
-              v54 = [v53 countByEnumeratingWithState:&v63 objects:v72 count:16];
+              v54 = [phoneNumbers countByEnumeratingWithState:&v63 objects:v72 count:16];
               if (v54)
               {
                 continue;

@@ -1,23 +1,23 @@
 @interface LAHostingController
-+ (id)makeHostingControllerWithConfiguration:(id)a3;
++ (id)makeHostingControllerWithConfiguration:(id)configuration;
 @end
 
 @implementation LAHostingController
 
-+ (id)makeHostingControllerWithConfiguration:(id)a3
++ (id)makeHostingControllerWithConfiguration:(id)configuration
 {
-  v3 = a3;
-  if (v3)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [objc_alloc(MEMORY[0x277D241E8]) initWithConfiguration:v3];
+      v4 = [objc_alloc(MEMORY[0x277D241E8]) initWithConfiguration:configurationCopy];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __62__LAHostingController_makeHostingControllerWithConfiguration___block_invoke;
       v8[3] = &unk_278A65F88;
-      v9 = v3;
+      v9 = configurationCopy;
       [v4 prepareRemoteSceneWithCompletion:v8];
       v5 = v9;
       goto LABEL_10;

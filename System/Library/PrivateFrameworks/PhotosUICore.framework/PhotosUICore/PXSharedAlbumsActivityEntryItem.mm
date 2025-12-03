@@ -23,22 +23,22 @@
 - (NSString)contributorDisplayName
 {
   v2 = *(self + OBJC_IVAR___PXSharedAlbumsActivityEntryItem_activityEntry);
-  v3 = self;
-  v4 = [v2 contributorDisplayName];
-  if (!v4)
+  selfCopy = self;
+  contributorDisplayName = [v2 contributorDisplayName];
+  if (!contributorDisplayName)
   {
     sub_1A524C674();
-    v4 = sub_1A524C634();
+    contributorDisplayName = sub_1A524C634();
   }
 
-  return v4;
+  return contributorDisplayName;
 }
 
 - (PXSharedAlbumsActivityEntryAvatarConfiguration)avatarInfo
 {
-  v2 = [*(self + OBJC_IVAR___PXSharedAlbumsActivityEntryItem_activityEntry) avatarConfiguration];
+  avatarConfiguration = [*(self + OBJC_IVAR___PXSharedAlbumsActivityEntryItem_activityEntry) avatarConfiguration];
 
-  return v2;
+  return avatarConfiguration;
 }
 
 - (PXSharedAlbumsActivityEntryItem)init

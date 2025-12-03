@@ -1,102 +1,102 @@
 @interface GEOAPPortal
 + (BOOL)isRunningInVisualIntelligence;
 + (BOOL)permittedToCountAC;
-+ (id)_caChargingStateFromAPChargingState:(int)a3;
-+ (id)_caFeatureFromAPFeature:(int)a3;
-+ (id)_caNavMapTypeFromAPNavMapType:(int)a3;
-+ (id)_caTriggerTypeFromFromAPThermalPressure:(int)a3;
++ (id)_caChargingStateFromAPChargingState:(int)state;
++ (id)_caFeatureFromAPFeature:(int)feature;
++ (id)_caNavMapTypeFromAPNavMapType:(int)type;
++ (id)_caTriggerTypeFromFromAPThermalPressure:(int)pressure;
 + (id)_netEventHandlingConfig;
-+ (id)addCodeGenDailyCountsWithActionTargetTuple:(unint64_t)a3 actionTargetValue:(id)a4 appGroup:(int)a5;
-+ (id)addStaticDailyCountsWithActionTargetTuple:(unint64_t)a3 actionTargetValue:(id)a4 appGroup:(int)a5;
++ (id)addCodeGenDailyCountsWithActionTargetTuple:(unint64_t)tuple actionTargetValue:(id)value appGroup:(int)group;
++ (id)addStaticDailyCountsWithActionTargetTuple:(unint64_t)tuple actionTargetValue:(id)value appGroup:(int)group;
 + (id)captureQueue;
-+ (int)_eventNavChargingStateFromAPNavChargingState:(int)a3;
-+ (int)_eventNavMapTypeFromAPNavMapType:(int)a3;
-+ (int)_eventThermalPressureFromAPThermalPressure:(int)a3;
-+ (void)captureBatchTrafficWithLocationCollection:(id)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7;
-+ (void)captureCarplayUserActionWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12;
-+ (void)captureClientACKeypressWithQuery:(id)a3 queryTokens:(id)a4 entries:(id)a5 keypressStatus:(int)a6 additionalStates:(id)a7 providedDropRate:(id)a8 completionQueue:(id)a9 completionBlock:(id)a10;
-+ (void)captureClientACResponseWithQuery:(id)a3 queryTokens:(id)a4 entries:(id)a5 shouldDifferentiateClientAndServerResults:(id)a6 overallLatencyInMs:(id)a7 isRerankerTriggered:(id)a8 isRetainedQuery:(id)a9 additionalStates:(id)a10 providedDropRate:(id)a11 completionQueue:(id)a12 completionBlock:(id)a13;
-+ (void)captureClientACSuggestionWithQuery:(id)a3 queryTokens:(id)a4 entries:(id)a5 selectedIndex:(id)a6 selectedSectionIndex:(id)a7 withinSectionSelectedIndex:(id)a8 isRetainedQuery:(id)a9 isRerankerTriggered:(id)a10 shouldDifferentiateClientAndServerResults:(id)a11 responseStatus:(int)a12 GEOModelMetadata_modelVersion:(id)a13 GEOModelMetadata_rolloutId:(id)a14 GEOModelMetadata_rolloutDeploymentId:(id)a15 GEOModelMetadata_rolloutFactorpackId:(id)a16 GEOModelMetadata_rolloutRampId:(id)a17 GEOExperimentMetadata_experimentId:(id)a18 GEOExperimentMetadata_deploymentId:(id)a19 GEOExperimentMetadata_treatmentId:(id)a20 GEOExperimentMetadata_experimentDescription:(id)a21 additionalStates:(id)a22 providedDropRate:(id)a23 completionQueue:(id)a24 completionBlock:(id)a25;
-+ (void)captureCommuteDoomWindow:(id)a3 exitTime:(id)a4 destinations:(id)a5 reason:(int64_t)a6 networkRequests:(unint64_t)a7 alerts:(unint64_t)a8;
-+ (void)captureCommuteWindowWithStartTime:(id)a3 duration:(id)a4 predictedExitTime:(id)a5 endReason:(int)a6 numberOfAlertingResponses:(id)a7 numberOfDoomRoutingRequests:(id)a8 predictedDestinations:(id)a9 additionalStates:(id)a10 providedDropRate:(id)a11 completionQueue:(id)a12 completionBlock:(id)a13;
-+ (void)captureCuratedCollectionUserAction:(int)a3 target:(int)a4 value:(id)a5 publisherId:(id)a6 following:(id)a7 collectionId:(id)a8 collectionCategory:(id)a9 collectionCurrentlySaved:(id)a10 verticalIndex:(id)a11 horizontalIndex:(id)a12 placeCardType:(id)a13 possibleActions:(id)a14 impossibleActions:(id)a15 providerId:(id)a16 repeatableSectionIndex:(id)a17 modules:(id)a18;
-+ (void)captureCuratedCollectionsSessionlessUserActionTargetPairRedactedCCStateWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12;
-+ (void)captureCuratedCollectionsSessionlessUserActionTargetPairWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12;
-+ (void)captureCuratedCollectionsShortUserActionTargetPairWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12;
-+ (void)captureDailyUseSummaryWithUseEvents:(id)a3 summaryPeriod:(int)a4 summaryDate:(id)a5 aggregationSummaryDate:(id)a6 firstEventDate:(id)a7 user_mapsUseLastDate:(id)a8 additionalStates:(id)a9 providedDropRate:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12;
-+ (void)captureDirectionsServiceMetadataWithDirectionsMetadata:(id)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7;
-+ (void)captureDirectionsWithDirectionsFeedbacks:(id)a3 finalLocation:(id)a4 arrivalLocation:(id)a5 arrivedAtDestination:(id)a6 navigationAudioFeedback:(GEONavigationAudioFeedback *)a7 durationOfTrip:(id)a8 durationInNavigationModes:(id)a9 preArrival:(id)a10 originalEta:(id)a11 isVlfImprovementUsed:(id)a12 isCoarseLocationUsed:(id)a13 acceptedCyclingWorkout:(id)a14 batteryDied:(id)a15 chargingStopAdded:(id)a16 isSiriEngaged:(id)a17 tripOrigin:(id)a18 isBadEvExperience:(id)a19 isEvSampleTrip:(id)a20 stateOfChargeAtOrigin:(id)a21 stateOfChargeAtDestPredicted:(id)a22 stateOfChargeAtDestActual:(id)a23 stateOfChargeDiffAtDest:(id)a24 waypoints:(id)a25 evConsumptionModel:(id)a26 evChargingMode:(id)a27 activeNavMode:(int)a28 arWalkingUsedInRoutePlanning:(id)a29 arWalkingUsedInNavigation:(id)a30 voiceGuidanceLevel:(int)a31 hFPEnabled:(id)a32 isEndRouteTermination:(id)a33 isParkedCarTermination:(id)a34 isTransitionToWalkingTermination:(id)a35 isTransitionToFindmyTermination:(id)a36 parkingDetectionLocation:(id)a37 timeBetweenParkedAndArrival:(id)a38 arrivedAtDestinationCount:(id)a39 inParkingModeCount:(id)a40 isInParkingMode:(id)a41 isSuggestToWalkingTriggered:(id)a42 isTransitedToWalking:(id)a43 isSuggestToFindmyTriggered:(id)a44 isTransitedToFindmy:(id)a45;
-+ (void)captureDirectionsWithDirectionsFeedbacks:(id)a3 finalLocation:(id)a4 arrivalLocation:(id)a5 arrivedAtDestination:(id)a6 navigationAudioFeedback:(GEONavigationAudioFeedback *)a7 durationOfTrip:(id)a8 durationInNavigationModes:(id)a9 preArrival:(id)a10 originalEta:(id)a11 isVlfImprovementUsed:(id)a12 isCoarseLocationUsed:(id)a13 acceptedCyclingWorkout:(id)a14 batteryDied:(id)a15 chargingStopAdded:(id)a16 isSiriEngaged:(id)a17 tripOrigin:(id)a18 isBadEvExperience:(id)a19 isEvSampleTrip:(id)a20 stateOfChargeAtOrigin:(id)a21 stateOfChargeAtDestPredicted:(id)a22 stateOfChargeAtDestActual:(id)a23 stateOfChargeDiffAtDest:(id)a24 waypoints:(id)a25 evConsumptionModel:(id)a26 evChargingMode:(id)a27 activeNavMode:(int)a28 arWalkingUsedInRoutePlanning:(id)a29 arWalkingUsedInNavigation:(id)a30 voiceGuidanceLevel:(int)a31 hFPEnabled:(id)a32 isEndRouteTermination:(id)a33 isParkedCarTermination:(id)a34 isTransitionToWalkingTermination:(id)a35 isTransitionToFindmyTermination:(id)a36 parkingDetectionLocation:(id)a37 timeBetweenParkedAndArrival:(id)a38 arrivedAtDestinationCount:(id)a39 inParkingModeCount:(id)a40 isInParkingMode:(id)a41 isSuggestToWalkingTriggered:(id)a42 isTransitedToWalking:(id)a43 isSuggestToFindmyTriggered:(id)a44 isTransitedToFindmy:(id)a45 additionalStates:(id)a46 providedDropRate:(id)a47 completionQueue:(id)a48 completionBlock:(id)a49;
-+ (void)captureDirectionsWithDirectionsFeedbacks:(id)a3 finalLocation:(id)a4 arrivalLocation:(id)a5 arrivedAtDestination:(id)a6 navigationAudioFeedback:(GEONavigationAudioFeedback *)a7 durationOfTrip:(id)a8 durationInNavigationModes:(id)a9 preArrival:(id)a10 originalEta:(id)a11 isVlfImprovementUsed:(id)a12 isCoarseLocationUsed:(id)a13 acceptedCyclingWorkout:(id)a14 batteryDied:(id)a15 chargingStopAdded:(id)a16 isSiriEngaged:(id)a17 tripOrigin:(id)a18 wasBadRouteExperience:(id)a19 isBadEvExperience:(id)a20 isEvSampleTrip:(id)a21 stateOfChargeAtOrigin:(id)a22 stateOfChargeAtDestPredicted:(id)a23 stateOfChargeAtDestActual:(id)a24 stateOfChargeDiffAtDest:(id)a25 waypoints:(id)a26 evConsumptionModel:(id)a27 evChargingMode:(id)a28 isEVRoute:(BOOL)a29 activeNavMode:(int)a30 arWalkingUsedInRoutePlanning:(id)a31 arWalkingUsedInNavigation:(id)a32 voiceGuidanceLevel:(int)a33 hFPEnabled:(id)a34 isEndRouteTermination:(id)a35 isParkedCarTermination:(id)a36 isTransitionToWalkingTermination:(id)a37 isTransitionToFindmyTermination:(id)a38 parkingDetectionLocation:(id)a39 timeBetweenParkedAndArrival:(id)a40 arrivedAtDestinationCount:(id)a41 inParkingModeCount:(id)a42 isInParkingMode:(id)a43 isSuggestToWalkingTriggered:(id)a44 isTransitedToWalking:(id)a45 isSuggestToFindmyTriggered:(id)a46 isTransitedToFindmy:(id)a47;
-+ (void)captureDisplayAnalyticWithDisplayActionTrigger:(int)a3 requiredResourcesAvailable:(id)a4 totalTime:(id)a5 requestedImageCount:(id)a6 renderedImageCount:(id)a7 movementDistance:(id)a8 meanImageSpacing:(id)a9 displayEvent:(int)a10 additionalStates:(id)a11 providedDropRate:(id)a12 completionQueue:(id)a13 completionBlock:(id)a14;
-+ (void)captureEnterMapsShortUserActionTargetPairWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12;
-+ (void)captureEvRoutingVehicleDetailsWithMake:(id)a3 model:(id)a4 towingNotSupported:(id)a5 batteryCapacity:(id)a6 additionalStates:(id)a7 providedDropRate:(id)a8 completionQueue:(id)a9 completionBlock:(id)a10;
-+ (void)captureEvTripWithOutOfCharge:(id)a3 outOfRangeAlertDisplayed:(id)a4 originalTripIncludedChargingStation:(id)a5 chargingStopAddedThroughSar:(id)a6 tripIncludedPreferredChargingStation:(id)a7 stopRemovedDetails:(id)a8 realtimeDodgeballs:(id)a9 chargeLocationDetails:(id)a10 stopAddedDetails:(id)a11 additionalStates:(id)a12 providedDropRate:(id)a13 completionQueue:(id)a14 completionBlock:(id)a15;
-+ (void)captureFamiliarRoutesOnlyWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12;
-+ (void)captureFindMyUsageWithUserActionEventAction:(int)a3 userActionEventTarget:(int)a4 userActionEventValue:(id)a5 additionalStates:(id)a6 providedDropRate:(id)a7 completionQueue:(id)a8 completionBlock:(id)a9;
-+ (void)captureFindMyUserActionType:(id)a3 ownerContext:(id)a4 productType:(id)a5;
-+ (void)captureGridDuration:(double)a3 previousState:(int)a4 endState:(int)a5 displayType:(int)a6 errors:(id)a7;
-+ (void)captureGridDurationWithDurationMs:(id)a3 previousState:(int)a4 endState:(int)a5 endStateErrorReasons:(id)a6 displayType:(int)a7 additionalStates:(id)a8 providedDropRate:(id)a9 completionQueue:(id)a10 completionBlock:(id)a11;
-+ (void)captureHardStopWithScore:(id)a3 digits:(id)a4 cities:(id)a5 additionalStates:(id)a6 providedDropRate:(id)a7 completionQueue:(id)a8 completionBlock:(id)a9;
-+ (void)captureImpressionEventWithAdditionalStates:(id)a3 providedDropRate:(id)a4 completionQueue:(id)a5 completionBlock:(id)a6;
-+ (void)captureMapLaunchEventWithLaunchUrl:(id)a3 sourceAppId:(id)a4 isLaunchedFromTTL:(BOOL)a5 ttlEventTime:(id)a6;
-+ (void)captureMapLaunchWithLaunchUri:(id)a3 sourceAppId:(id)a4 GEOTimeToLeaveMapLaunch_minutesUntilEvent:(id)a5 additionalStates:(id)a6 providedDropRate:(id)a7 completionQueue:(id)a8 completionBlock:(id)a9;
-+ (void)captureMapViewEngagementWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12;
-+ (void)captureMapsEngagementWithUser_mapsUseLastDate:(id)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7;
-+ (void)captureMapsInteractionWithInteractionType:(int)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7;
-+ (void)captureMarcoLiteWithTotalNavTime:(id)a3 usageStates:(id)a4 vioTrigger:(int)a5 additionalStates:(id)a6 providedDropRate:(id)a7 completionQueue:(id)a8 completionBlock:(id)a9;
-+ (void)captureMuninCameraUserActionShortOnlyWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12;
-+ (void)captureMuninUserActionShortOnlyWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12;
-+ (void)captureNavThermalPressureWithThermalPressure:(id)a3 disableMapFeatures:(id)a4 navMapType:(int)a5 collectionTrigger:(int)a6 additionalStates:(id)a7 providedDropRate:(id)a8 completionQueue:(id)a9 completionBlock:(id)a10;
-+ (void)captureNavTraceWithNavTraceData:(id)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7;
-+ (void)captureNearbyTransitShortUserActionTargetPairWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12;
-+ (void)captureNetEventSummaryWithGroups:(id)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7;
-+ (void)captureNetSelectionHarvestWithHarvestData:(id)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7;
-+ (void)captureNetworkEventWithNetworkService:(int)a3 requestAppIdentifier:(id)a4 requestAppIdMajorVer:(id)a5 requestAppIdMinorVer:(id)a6 requestErrorDomain:(id)a7 requestErrorCode:(id)a8 requestDataSize:(id)a9 responseDataSize:(id)a10 totalTime:(id)a11 httpResponseCode:(id)a12 serviceIpAddress:(id)a13 taskMetrics:(id)a14 mptcpServiceType:(int)a15 mptcpNegotiated:(id)a16 rnfTriggered:(id)a17 queuedTime:(id)a18 redirectCount:(id)a19 requestStart:(id)a20 requestEnd:(id)a21 wasBackground:(id)a22 additionalStates:(id)a23 providedDropRate:(id)a24 completionQueue:(id)a25 completionBlock:(id)a26;
-+ (void)captureOfflineSessionlessUserActionTargetPairWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12;
-+ (void)captureOfflineShortUserActionTargetPairWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12;
-+ (void)capturePeriodicSettingsWithMapSettings:(id)a3 mapUiShown:(id)a4 mapsFeatures:(id)a5 mapsUserSettings:(id)a6 routingSettings:(id)a7 additionalStates:(id)a8 providedDropRate:(id)a9 completionQueue:(id)a10 completionBlock:(id)a11;
-+ (void)capturePlaceCardRevealWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12;
-+ (void)capturePlaceCardUserAction:(int)a3 target:(int)a4 value:(id)a5 mapItem:(id)a6 timestamp:(double)a7 resultIndex:(int)a8 targetID:(unint64_t)a9 providerID:(id)a10 animationID:(unint64_t)a11 actionURL:(id)a12 photoID:(id)a13 placeCardType:(int)a14 localizedMapItemCategory:(id)a15 availableActions:(id)a16 unactionableUIElements:(id)a17 modules:(id)a18 commingledRichProviderIds:(id)a19 actionRichProviderId:(id)a20 classification:(id)a21;
-+ (void)capturePlacesServiceMetadataWithPlacesMetadata:(id)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7;
-+ (void)capturePoiBusynessDataWithTimestamp:(id)a3 GEOLatLng_lat:(id)a4 GEOLatLng_lng:(id)a5 horizontalAccuracy:(id)a6 verticalAccuracy:(id)a7 altitude:(id)a8 poiPredictions:(id)a9 additionalStates:(id)a10 providedDropRate:(id)a11 completionQueue:(id)a12 completionBlock:(id)a13;
-+ (void)capturePredExShortUserActionTargetPairWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12;
-+ (void)capturePredExTrainingWithChanceOfPrecipitation:(id)a3 chanceOfRain:(id)a4 chanceOfSnow:(id)a5 endTime:(id)a6 durationUntilEventEnd:(id)a7 durationUntilEventStart:(id)a8 startTime:(id)a9 temperature:(id)a10 timeOfDay:(id)a11 timeSinceBackgrounded:(id)a12 actualTransportMode:(int)a13 dayOfWeek:(id)a14 distanceFromHereToHome:(int)a15 distanceFromHereToOrigin:(int)a16 distanceFromHereToParkedCar:(int)a17 distanceFromHereToWork:(int)a18 distanceFromHere:(int)a19 distanceFromOriginToDestination:(int)a20 entryType:(int)a21 weatherType:(int)a22 mapType:(int)a23 predictedTransportMode:(int)a24 preferredTransportMode:(int)a25 isInBasemode:(id)a26 isCarplayConnected:(id)a27 isTourist:(id)a28 isTransitPossible:(id)a29 routePlanningScreenPresented:(id)a30 userLocationGeohash4:(id)a31 isVehicleBluetoothConnected:(id)a32 weatherAqi:(id)a33 modelName:(int)a34 modelVersion:(id)a35 modelTrainedDate:(id)a36;
-+ (void)capturePredExTrainingWithChanceOfPrecipitation:(id)a3 chanceOfRain:(id)a4 chanceOfSnow:(id)a5 endTime:(id)a6 durationUntilEventEnd:(id)a7 durationUntilEventStart:(id)a8 startTime:(id)a9 temperature:(id)a10 timeOfDay:(id)a11 timeSinceBackgrounded:(id)a12 actualTransportMode:(int)a13 dayOfWeek:(id)a14 distanceFromHereToHome:(int)a15 distanceFromHereToOrigin:(int)a16 distanceFromHereToParkedCar:(int)a17 distanceFromHereToWork:(int)a18 distanceFromHere:(int)a19 distanceFromOriginToDestination:(int)a20 entryType:(int)a21 weatherType:(int)a22 mapType:(int)a23 predictedTransportMode:(int)a24 preferredTransportMode:(int)a25 isInBasemode:(id)a26 isCarplayConnected:(id)a27 isTourist:(id)a28 isTransitPossible:(id)a29 routePlanningScreenPresented:(id)a30 userLocationGeohash4:(id)a31 isVehicleBluetoothConnected:(id)a32 weatherAqi:(id)a33 modelName:(int)a34 modelVersion:(id)a35 modelTrainedDate:(id)a36 additionalStates:(id)a37 providedDropRate:(id)a38 completionQueue:(id)a39 completionBlock:(id)a40;
-+ (void)capturePredExTrainingWithChanceOfPrecipitation:(id)a3 chanceOfRain:(id)a4 chanceOfSnow:(id)a5 endTime:(id)a6 durationUntilEventEnd:(id)a7 durationUntilEventStart:(id)a8 startTime:(id)a9 temperature:(id)a10 timeOfDay:(id)a11 timeSinceBackgrounded:(id)a12 actualTransportMode:(int)a13 dayOfWeek:(id)a14 distanceFromHereToHome:(int)a15 distanceFromHereToOrigin:(int)a16 distanceFromHereToParkedCar:(int)a17 distanceFromHereToWork:(int)a18 distanceFromHere:(int)a19 distanceFromOriginToDestination:(int)a20 entryType:(int)a21 weatherType:(int)a22 mapType:(int)a23 predictedTransportMode:(int)a24 preferredTransportMode:(int)a25 isInBasemode:(id)a26 isTourist:(id)a27 isCarplayConnected:(id)a28 isTransitPossible:(id)a29 routePlanningScreenPresented:(id)a30 userLocation:(id)a31 isVehicleBluetoothConnected:(id)a32 weatherAqi:(id)a33 modelName:(int)a34 modelVersion:(id)a35 modelTrainedDate:(id)a36;
-+ (void)capturePredExTrainingWithChanceOfPrecipitation:(id)a3 chanceOfRain:(id)a4 chanceOfSnow:(id)a5 endTime:(id)a6 durationUntilEventEnd:(id)a7 durationUntilEventStart:(id)a8 startTime:(id)a9 temperature:(id)a10 timeOfDay:(id)a11 timeSinceBackgrounded:(id)a12 actualTransportMode:(int)a13 dayOfWeek:(id)a14 distanceFromHereToHome:(int)a15 distanceFromHereToOrigin:(int)a16 distanceFromHereToParkedCar:(int)a17 distanceFromHereToWork:(int)a18 distanceFromHere:(int)a19 distanceFromOriginToDestination:(int)a20 entryType:(int)a21 weatherType:(int)a22 mapType:(int)a23 predictedTransportMode:(int)a24 preferredTransportMode:(int)a25 isTourist:(id)a26 isCarplayConnected:(id)a27 isTransitPossible:(id)a28 userLocation:(id)a29 isVehicleBluetoothConnected:(id)a30 weatherAqi:(id)a31 modelName:(int)a32 modelVersion:(id)a33 modelTrainedDate:(id)a34;
-+ (void)capturePressureDataWithPressureData:(id)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7;
-+ (void)capturePriorityPlacecardActionShortUserActionsWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12;
-+ (void)capturePriorityShortUserActionsWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12;
-+ (void)captureProactiveSuggestionWithListType:(int)a3 interactedItemIndex:(id)a4 duration:(id)a5 proactiveItems:(id)a6 additionalStates:(id)a7 providedDropRate:(id)a8 completionQueue:(id)a9 completionBlock:(id)a10;
-+ (void)captureRapSessionlessUserActionTargetPairWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12;
-+ (void)captureRapShortAndSessionlessUserActionTargetPairWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12;
-+ (void)captureRapUserActionShortOnlyWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12;
-+ (void)captureRealTrafficWithLocationCollection:(id)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7;
-+ (void)captureRedactedDirectionsServiceMetadataWithRedactedDirectionsMetadata:(id)a3 GEORedactedDirectionsClientMetadata_destinationHash:(id)a4 GEORedactedDirectionsClientMetadata_predictedDepartureTimeDelta:(id)a5 additionalStates:(id)a6 providedDropRate:(id)a7 completionQueue:(id)a8 completionBlock:(id)a9;
-+ (void)captureRideBookedWithRideBookedSessionId:(id)a3 bookedUsingMaps:(id)a4 cancelled:(id)a5 contactedDriver:(id)a6 viewedInProactiveTray:(id)a7 tappedProactiveTrayItem:(id)a8 viewedDetails:(id)a9 invalidVehicleLocation:(id)a10 missingVehicleLocation:(id)a11 rideAppId:(id)a12 rideAppVersion:(id)a13 intentResponseFailures:(id)a14 additionalStates:(id)a15 providedDropRate:(id)a16 completionQueue:(id)a17 completionBlock:(id)a18;
-+ (void)captureRideBookingWithRideBookingSessionId:(id)a3 statusIssue:(int)a4 endState:(int)a5 endView:(int)a6 rideAppId:(id)a7 rideAppVersion:(id)a8 originBlurred:(id)a9 destinationBlurred:(id)a10 exploredOtherOptions:(id)a11 distanceToPickupInMeters:(id)a12 paymentIsApplePay:(id)a13 numberOfAvailableExtensions:(id)a14 switchedApp:(id)a15 comparedRideOptions:(id)a16 showedSurgePricingAlert:(id)a17 durationOfSessionInSeconds:(id)a18 installedApp:(id)a19 timestamp:(id)a20 unavailable:(id)a21 movedPickupLocation:(id)a22 errorMessages:(id)a23 intentResponseFailures:(id)a24 additionalStates:(id)a25 providedDropRate:(id)a26 completionQueue:(id)a27 completionBlock:(id)a28;
-+ (void)captureSessionlessUserActionWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12;
-+ (void)captureShowcaseSuppressionWithBusinessId:(id)a3 localSearchProviderID:(id)a4 showcaseId:(id)a5 suppressionReason:(int)a6 adamId:(id)a7 additionalStates:(id)a8 providedDropRate:(id)a9 completionQueue:(id)a10 completionBlock:(id)a11;
-+ (void)captureStartEndNavWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12;
-+ (void)captureTableBookedWithBookedTableSessionId:(id)a3 bookedTables:(id)a4 additionalStates:(id)a5 providedDropRate:(id)a6 completionQueue:(id)a7 completionBlock:(id)a8;
-+ (void)captureTableBookingWithBookTableSessionId:(id)a3 endState:(int)a4 endView:(int)a5 bookTableAppId:(id)a6 muid:(id)a7 blurredReservationTimestamp:(id)a8 blurredBookingTimestamp:(id)a9 durationOfSessionInSeconds:(id)a10 installNeeded:(id)a11 installNeededTappedAppId:(id)a12 installCompleted:(id)a13 tableSize:(id)a14 addedSpecialRequest:(id)a15 swipedAvailableTimes:(id)a16 tappedDatePicker:(id)a17 errorMessages:(id)a18 additionalStates:(id)a19 providedDropRate:(id)a20 completionQueue:(id)a21 completionBlock:(id)a22;
-+ (void)captureTelemetricWithTelemetricEntitys:(id)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7;
-+ (void)captureTimeToLeaveIntialTravelTimeEventWithTravelTime:(double)a3;
-+ (void)captureTransitAppLaunchSource:(id)a3 destination:(id)a4 bundleIdentifier:(id)a5;
-+ (void)captureTransitAppLaunchWithBundleIdentifier:(id)a3 source:(id)a4 destination:(id)a5 timestamp:(id)a6 additionalStates:(id)a7 providedDropRate:(id)a8 completionQueue:(id)a9 completionBlock:(id)a10;
-+ (void)captureTransitShortUserActionTargetPairWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12;
-+ (void)captureTtlHypothesisWithArrival:(int)a3 departure:(int)a4 ttlUiNotificationShown:(int)a5 earliestArrivalOffset:(id)a6 earliestDepartureOffset:(id)a7 latestArrivalOffset:(id)a8 latestDepartureOffset:(id)a9 numberOfReroutes:(id)a10 additionalStates:(id)a11 providedDropRate:(id)a12 completionQueue:(id)a13 completionBlock:(id)a14;
-+ (void)captureTtlInitialTimeWithTravelTime:(id)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7;
-+ (void)captureUGCSessionlessUserActionTargetPairWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12;
-+ (void)captureUGCShortUserActionTargetPairWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12;
-+ (void)captureUgcDeleteLogsWithCertificates:(id)a3 signature:(id)a4 trigger:(int)a5 additionalStates:(id)a6 providedDropRate:(id)a7 completionQueue:(id)a8 completionBlock:(id)a9;
-+ (void)captureVlfUsageWithEntryPoint:(id)a3 sessionTimeMs:(id)a4 timeRoundedToHour:(id)a5 localizationDetails:(id)a6 finalState:(int)a7 postFusionCorrection:(id)a8 initialPositionContextClassification:(GEOVLFPositionContextClassification *)a9 initialLocation:(id)a10 initializationFailureDetails:(id)a11 arStates:(id)a12 deviceOrientations:(id)a13 crowdsourcingDetails:(id)a14 arFailureTypes:(id)a15 additionalStates:(id)a16 providedDropRate:(id)a17 completionQueue:(id)a18 completionBlock:(id)a19;
-+ (void)captureWidgetInteractionWithMapsWidgetType:(int)a3 endState:(int)a4 lockedMode:(id)a5 localHour:(id)a6 localDayOfWeek:(id)a7 duration:(id)a8 mapsNearbyWidget:(id)a9 mapsTransitWidget:(id)a10 mapsDestinationsWidget:(id)a11 additionalStates:(id)a12 providedDropRate:(id)a13 completionQueue:(id)a14 completionBlock:(id)a15;
-+ (void)captureWifiProbeWithWifiConnectionQuality:(id)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7;
-+ (void)populateCommonEventValues:(id)a3;
-+ (void)processMapsDeletionWithCompletionQueue:(id)a3 completion:(id)a4;
-+ (void)reportLogMsgEvent:(id)a3 uploadBatchId:(unint64_t)a4 completion:(id)a5 completionQueue:(id)a6;
++ (int)_eventNavChargingStateFromAPNavChargingState:(int)state;
++ (int)_eventNavMapTypeFromAPNavMapType:(int)type;
++ (int)_eventThermalPressureFromAPThermalPressure:(int)pressure;
++ (void)captureBatchTrafficWithLocationCollection:(id)collection additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block;
++ (void)captureCarplayUserActionWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2;
++ (void)captureClientACKeypressWithQuery:(id)query queryTokens:(id)tokens entries:(id)entries keypressStatus:(int)status additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)self0;
++ (void)captureClientACResponseWithQuery:(id)query queryTokens:(id)tokens entries:(id)entries shouldDifferentiateClientAndServerResults:(id)results overallLatencyInMs:(id)ms isRerankerTriggered:(id)triggered isRetainedQuery:(id)retainedQuery additionalStates:(id)self0 providedDropRate:(id)self1 completionQueue:(id)self2 completionBlock:(id)self3;
++ (void)captureClientACSuggestionWithQuery:(id)query queryTokens:(id)tokens entries:(id)entries selectedIndex:(id)index selectedSectionIndex:(id)sectionIndex withinSectionSelectedIndex:(id)selectedIndex isRetainedQuery:(id)retainedQuery isRerankerTriggered:(id)self0 shouldDifferentiateClientAndServerResults:(id)self1 responseStatus:(int)self2 GEOModelMetadata_modelVersion:(id)self3 GEOModelMetadata_rolloutId:(id)self4 GEOModelMetadata_rolloutDeploymentId:(id)self5 GEOModelMetadata_rolloutFactorpackId:(id)self6 GEOModelMetadata_rolloutRampId:(id)self7 GEOExperimentMetadata_experimentId:(id)self8 GEOExperimentMetadata_deploymentId:(id)self9 GEOExperimentMetadata_treatmentId:(id)metadata_treatmentId GEOExperimentMetadata_experimentDescription:(id)description additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block;
++ (void)captureCommuteDoomWindow:(id)window exitTime:(id)time destinations:(id)destinations reason:(int64_t)reason networkRequests:(unint64_t)requests alerts:(unint64_t)alerts;
++ (void)captureCommuteWindowWithStartTime:(id)time duration:(id)duration predictedExitTime:(id)exitTime endReason:(int)reason numberOfAlertingResponses:(id)responses numberOfDoomRoutingRequests:(id)requests predictedDestinations:(id)destinations additionalStates:(id)self0 providedDropRate:(id)self1 completionQueue:(id)self2 completionBlock:(id)self3;
++ (void)captureCuratedCollectionUserAction:(int)action target:(int)target value:(id)value publisherId:(id)id following:(id)following collectionId:(id)collectionId collectionCategory:(id)category collectionCurrentlySaved:(id)self0 verticalIndex:(id)self1 horizontalIndex:(id)self2 placeCardType:(id)self3 possibleActions:(id)self4 impossibleActions:(id)self5 providerId:(id)self6 repeatableSectionIndex:(id)self7 modules:(id)self8;
++ (void)captureCuratedCollectionsSessionlessUserActionTargetPairRedactedCCStateWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2;
++ (void)captureCuratedCollectionsSessionlessUserActionTargetPairWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2;
++ (void)captureCuratedCollectionsShortUserActionTargetPairWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2;
++ (void)captureDailyUseSummaryWithUseEvents:(id)events summaryPeriod:(int)period summaryDate:(id)date aggregationSummaryDate:(id)summaryDate firstEventDate:(id)eventDate user_mapsUseLastDate:(id)lastDate additionalStates:(id)states providedDropRate:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2;
++ (void)captureDirectionsServiceMetadataWithDirectionsMetadata:(id)metadata additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block;
++ (void)captureDirectionsWithDirectionsFeedbacks:(id)feedbacks finalLocation:(id)location arrivalLocation:(id)arrivalLocation arrivedAtDestination:(id)destination navigationAudioFeedback:(GEONavigationAudioFeedback *)feedback durationOfTrip:(id)trip durationInNavigationModes:(id)modes preArrival:(id)self0 originalEta:(id)self1 isVlfImprovementUsed:(id)self2 isCoarseLocationUsed:(id)self3 acceptedCyclingWorkout:(id)self4 batteryDied:(id)self5 chargingStopAdded:(id)self6 isSiriEngaged:(id)self7 tripOrigin:(id)self8 isBadEvExperience:(id)self9 isEvSampleTrip:(id)sampleTrip stateOfChargeAtOrigin:(id)atOrigin stateOfChargeAtDestPredicted:(id)predicted stateOfChargeAtDestActual:(id)actual stateOfChargeDiffAtDest:(id)dest waypoints:(id)waypoints evConsumptionModel:(id)model evChargingMode:(id)mode activeNavMode:(int)navMode arWalkingUsedInRoutePlanning:(id)planning arWalkingUsedInNavigation:(id)feedbacks0 voiceGuidanceLevel:(int)feedbacks1 hFPEnabled:(id)feedbacks2 isEndRouteTermination:(id)feedbacks3 isParkedCarTermination:(id)feedbacks4 isTransitionToWalkingTermination:(id)feedbacks5 isTransitionToFindmyTermination:(id)feedbacks6 parkingDetectionLocation:(id)feedbacks7 timeBetweenParkedAndArrival:(id)feedbacks8 arrivedAtDestinationCount:(id)feedbacks9 inParkingModeCount:(id)location0 isInParkingMode:(id)location1 isSuggestToWalkingTriggered:(id)location2 isTransitedToWalking:(id)location3 isSuggestToFindmyTriggered:(id)location4 isTransitedToFindmy:(id)location5;
++ (void)captureDirectionsWithDirectionsFeedbacks:(id)feedbacks finalLocation:(id)location arrivalLocation:(id)arrivalLocation arrivedAtDestination:(id)destination navigationAudioFeedback:(GEONavigationAudioFeedback *)feedback durationOfTrip:(id)trip durationInNavigationModes:(id)modes preArrival:(id)self0 originalEta:(id)self1 isVlfImprovementUsed:(id)self2 isCoarseLocationUsed:(id)self3 acceptedCyclingWorkout:(id)self4 batteryDied:(id)self5 chargingStopAdded:(id)self6 isSiriEngaged:(id)self7 tripOrigin:(id)self8 isBadEvExperience:(id)self9 isEvSampleTrip:(id)sampleTrip stateOfChargeAtOrigin:(id)atOrigin stateOfChargeAtDestPredicted:(id)predicted stateOfChargeAtDestActual:(id)actual stateOfChargeDiffAtDest:(id)dest waypoints:(id)waypoints evConsumptionModel:(id)model evChargingMode:(id)mode activeNavMode:(int)navMode arWalkingUsedInRoutePlanning:(id)planning arWalkingUsedInNavigation:(id)feedbacks0 voiceGuidanceLevel:(int)feedbacks1 hFPEnabled:(id)feedbacks2 isEndRouteTermination:(id)feedbacks3 isParkedCarTermination:(id)feedbacks4 isTransitionToWalkingTermination:(id)feedbacks5 isTransitionToFindmyTermination:(id)feedbacks6 parkingDetectionLocation:(id)feedbacks7 timeBetweenParkedAndArrival:(id)feedbacks8 arrivedAtDestinationCount:(id)feedbacks9 inParkingModeCount:(id)location0 isInParkingMode:(id)location1 isSuggestToWalkingTriggered:(id)location2 isTransitedToWalking:(id)location3 isSuggestToFindmyTriggered:(id)location4 isTransitedToFindmy:(id)location5 additionalStates:(id)location6 providedDropRate:(id)location7 completionQueue:(id)location8 completionBlock:(id)location9;
++ (void)captureDirectionsWithDirectionsFeedbacks:(id)feedbacks finalLocation:(id)location arrivalLocation:(id)arrivalLocation arrivedAtDestination:(id)destination navigationAudioFeedback:(GEONavigationAudioFeedback *)feedback durationOfTrip:(id)trip durationInNavigationModes:(id)modes preArrival:(id)self0 originalEta:(id)self1 isVlfImprovementUsed:(id)self2 isCoarseLocationUsed:(id)self3 acceptedCyclingWorkout:(id)self4 batteryDied:(id)self5 chargingStopAdded:(id)self6 isSiriEngaged:(id)self7 tripOrigin:(id)self8 wasBadRouteExperience:(id)self9 isBadEvExperience:(id)evExperience isEvSampleTrip:(id)sampleTrip stateOfChargeAtOrigin:(id)atOrigin stateOfChargeAtDestPredicted:(id)predicted stateOfChargeAtDestActual:(id)actual stateOfChargeDiffAtDest:(id)dest waypoints:(id)waypoints evConsumptionModel:(id)model evChargingMode:(id)mode isEVRoute:(BOOL)route activeNavMode:(int)feedbacks0 arWalkingUsedInRoutePlanning:(id)feedbacks1 arWalkingUsedInNavigation:(id)feedbacks2 voiceGuidanceLevel:(int)feedbacks3 hFPEnabled:(id)feedbacks4 isEndRouteTermination:(id)feedbacks5 isParkedCarTermination:(id)feedbacks6 isTransitionToWalkingTermination:(id)feedbacks7 isTransitionToFindmyTermination:(id)feedbacks8 parkingDetectionLocation:(id)feedbacks9 timeBetweenParkedAndArrival:(id)location0 arrivedAtDestinationCount:(id)location1 inParkingModeCount:(id)location2 isInParkingMode:(id)location3 isSuggestToWalkingTriggered:(id)location4 isTransitedToWalking:(id)location5 isSuggestToFindmyTriggered:(id)location6 isTransitedToFindmy:(id)location7;
++ (void)captureDisplayAnalyticWithDisplayActionTrigger:(int)trigger requiredResourcesAvailable:(id)available totalTime:(id)time requestedImageCount:(id)count renderedImageCount:(id)imageCount movementDistance:(id)distance meanImageSpacing:(id)spacing displayEvent:(int)self0 additionalStates:(id)self1 providedDropRate:(id)self2 completionQueue:(id)self3 completionBlock:(id)self4;
++ (void)captureEnterMapsShortUserActionTargetPairWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2;
++ (void)captureEvRoutingVehicleDetailsWithMake:(id)make model:(id)model towingNotSupported:(id)supported batteryCapacity:(id)capacity additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)self0;
++ (void)captureEvTripWithOutOfCharge:(id)charge outOfRangeAlertDisplayed:(id)displayed originalTripIncludedChargingStation:(id)station chargingStopAddedThroughSar:(id)sar tripIncludedPreferredChargingStation:(id)chargingStation stopRemovedDetails:(id)details realtimeDodgeballs:(id)dodgeballs chargeLocationDetails:(id)self0 stopAddedDetails:(id)self1 additionalStates:(id)self2 providedDropRate:(id)self3 completionQueue:(id)self4 completionBlock:(id)self5;
++ (void)captureFamiliarRoutesOnlyWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2;
++ (void)captureFindMyUsageWithUserActionEventAction:(int)action userActionEventTarget:(int)target userActionEventValue:(id)value additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block;
++ (void)captureFindMyUserActionType:(id)type ownerContext:(id)context productType:(id)productType;
++ (void)captureGridDuration:(double)duration previousState:(int)state endState:(int)endState displayType:(int)type errors:(id)errors;
++ (void)captureGridDurationWithDurationMs:(id)ms previousState:(int)state endState:(int)endState endStateErrorReasons:(id)reasons displayType:(int)type additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)self0 completionBlock:(id)self1;
++ (void)captureHardStopWithScore:(id)score digits:(id)digits cities:(id)cities additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block;
++ (void)captureImpressionEventWithAdditionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block;
++ (void)captureMapLaunchEventWithLaunchUrl:(id)url sourceAppId:(id)id isLaunchedFromTTL:(BOOL)l ttlEventTime:(id)time;
++ (void)captureMapLaunchWithLaunchUri:(id)uri sourceAppId:(id)id GEOTimeToLeaveMapLaunch_minutesUntilEvent:(id)event additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block;
++ (void)captureMapViewEngagementWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2;
++ (void)captureMapsEngagementWithUser_mapsUseLastDate:(id)date additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block;
++ (void)captureMapsInteractionWithInteractionType:(int)type additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block;
++ (void)captureMarcoLiteWithTotalNavTime:(id)time usageStates:(id)states vioTrigger:(int)trigger additionalStates:(id)additionalStates providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block;
++ (void)captureMuninCameraUserActionShortOnlyWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2;
++ (void)captureMuninUserActionShortOnlyWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2;
++ (void)captureNavThermalPressureWithThermalPressure:(id)pressure disableMapFeatures:(id)features navMapType:(int)type collectionTrigger:(int)trigger additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)self0;
++ (void)captureNavTraceWithNavTraceData:(id)data additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block;
++ (void)captureNearbyTransitShortUserActionTargetPairWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2;
++ (void)captureNetEventSummaryWithGroups:(id)groups additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block;
++ (void)captureNetSelectionHarvestWithHarvestData:(id)data additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block;
++ (void)captureNetworkEventWithNetworkService:(int)service requestAppIdentifier:(id)identifier requestAppIdMajorVer:(id)ver requestAppIdMinorVer:(id)minorVer requestErrorDomain:(id)domain requestErrorCode:(id)code requestDataSize:(id)size responseDataSize:(id)self0 totalTime:(id)self1 httpResponseCode:(id)self2 serviceIpAddress:(id)self3 taskMetrics:(id)self4 mptcpServiceType:(int)self5 mptcpNegotiated:(id)self6 rnfTriggered:(id)self7 queuedTime:(id)self8 redirectCount:(id)self9 requestStart:(id)start requestEnd:(id)end wasBackground:(id)background additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block;
++ (void)captureOfflineSessionlessUserActionTargetPairWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2;
++ (void)captureOfflineShortUserActionTargetPairWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2;
++ (void)capturePeriodicSettingsWithMapSettings:(id)settings mapUiShown:(id)shown mapsFeatures:(id)features mapsUserSettings:(id)userSettings routingSettings:(id)routingSettings additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)self0 completionBlock:(id)self1;
++ (void)capturePlaceCardRevealWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2;
++ (void)capturePlaceCardUserAction:(int)action target:(int)target value:(id)value mapItem:(id)item timestamp:(double)timestamp resultIndex:(int)index targetID:(unint64_t)d providerID:(id)self0 animationID:(unint64_t)self1 actionURL:(id)self2 photoID:(id)self3 placeCardType:(int)self4 localizedMapItemCategory:(id)self5 availableActions:(id)self6 unactionableUIElements:(id)self7 modules:(id)self8 commingledRichProviderIds:(id)self9 actionRichProviderId:(id)id classification:(id)classification;
++ (void)capturePlacesServiceMetadataWithPlacesMetadata:(id)metadata additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block;
++ (void)capturePoiBusynessDataWithTimestamp:(id)timestamp GEOLatLng_lat:(id)lng_lat GEOLatLng_lng:(id)lng_lng horizontalAccuracy:(id)accuracy verticalAccuracy:(id)verticalAccuracy altitude:(id)altitude poiPredictions:(id)predictions additionalStates:(id)self0 providedDropRate:(id)self1 completionQueue:(id)self2 completionBlock:(id)self3;
++ (void)capturePredExShortUserActionTargetPairWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2;
++ (void)capturePredExTrainingWithChanceOfPrecipitation:(id)precipitation chanceOfRain:(id)rain chanceOfSnow:(id)snow endTime:(id)time durationUntilEventEnd:(id)end durationUntilEventStart:(id)start startTime:(id)startTime temperature:(id)self0 timeOfDay:(id)self1 timeSinceBackgrounded:(id)self2 actualTransportMode:(int)self3 dayOfWeek:(id)self4 distanceFromHereToHome:(int)self5 distanceFromHereToOrigin:(int)self6 distanceFromHereToParkedCar:(int)self7 distanceFromHereToWork:(int)self8 distanceFromHere:(int)self9 distanceFromOriginToDestination:(int)destination entryType:(int)type weatherType:(int)weatherType mapType:(int)mapType predictedTransportMode:(int)transportMode preferredTransportMode:(int)preferredTransportMode isInBasemode:(id)basemode isCarplayConnected:(id)connected isTourist:(id)tourist isTransitPossible:(id)possible routePlanningScreenPresented:(id)precipitation0 userLocationGeohash4:(id)precipitation1 isVehicleBluetoothConnected:(id)precipitation2 weatherAqi:(id)precipitation3 modelName:(int)precipitation4 modelVersion:(id)precipitation5 modelTrainedDate:(id)precipitation6;
++ (void)capturePredExTrainingWithChanceOfPrecipitation:(id)precipitation chanceOfRain:(id)rain chanceOfSnow:(id)snow endTime:(id)time durationUntilEventEnd:(id)end durationUntilEventStart:(id)start startTime:(id)startTime temperature:(id)self0 timeOfDay:(id)self1 timeSinceBackgrounded:(id)self2 actualTransportMode:(int)self3 dayOfWeek:(id)self4 distanceFromHereToHome:(int)self5 distanceFromHereToOrigin:(int)self6 distanceFromHereToParkedCar:(int)self7 distanceFromHereToWork:(int)self8 distanceFromHere:(int)self9 distanceFromOriginToDestination:(int)destination entryType:(int)type weatherType:(int)weatherType mapType:(int)mapType predictedTransportMode:(int)transportMode preferredTransportMode:(int)preferredTransportMode isInBasemode:(id)basemode isCarplayConnected:(id)connected isTourist:(id)tourist isTransitPossible:(id)possible routePlanningScreenPresented:(id)precipitation0 userLocationGeohash4:(id)precipitation1 isVehicleBluetoothConnected:(id)precipitation2 weatherAqi:(id)precipitation3 modelName:(int)precipitation4 modelVersion:(id)precipitation5 modelTrainedDate:(id)precipitation6 additionalStates:(id)precipitation7 providedDropRate:(id)precipitation8 completionQueue:(id)precipitation9 completionBlock:(id)rain0;
++ (void)capturePredExTrainingWithChanceOfPrecipitation:(id)precipitation chanceOfRain:(id)rain chanceOfSnow:(id)snow endTime:(id)time durationUntilEventEnd:(id)end durationUntilEventStart:(id)start startTime:(id)startTime temperature:(id)self0 timeOfDay:(id)self1 timeSinceBackgrounded:(id)self2 actualTransportMode:(int)self3 dayOfWeek:(id)self4 distanceFromHereToHome:(int)self5 distanceFromHereToOrigin:(int)self6 distanceFromHereToParkedCar:(int)self7 distanceFromHereToWork:(int)self8 distanceFromHere:(int)self9 distanceFromOriginToDestination:(int)destination entryType:(int)type weatherType:(int)weatherType mapType:(int)mapType predictedTransportMode:(int)transportMode preferredTransportMode:(int)preferredTransportMode isInBasemode:(id)basemode isTourist:(id)tourist isCarplayConnected:(id)connected isTransitPossible:(id)possible routePlanningScreenPresented:(id)precipitation0 userLocation:(id)precipitation1 isVehicleBluetoothConnected:(id)precipitation2 weatherAqi:(id)precipitation3 modelName:(int)precipitation4 modelVersion:(id)precipitation5 modelTrainedDate:(id)precipitation6;
++ (void)capturePredExTrainingWithChanceOfPrecipitation:(id)precipitation chanceOfRain:(id)rain chanceOfSnow:(id)snow endTime:(id)time durationUntilEventEnd:(id)end durationUntilEventStart:(id)start startTime:(id)startTime temperature:(id)self0 timeOfDay:(id)self1 timeSinceBackgrounded:(id)self2 actualTransportMode:(int)self3 dayOfWeek:(id)self4 distanceFromHereToHome:(int)self5 distanceFromHereToOrigin:(int)self6 distanceFromHereToParkedCar:(int)self7 distanceFromHereToWork:(int)self8 distanceFromHere:(int)self9 distanceFromOriginToDestination:(int)destination entryType:(int)type weatherType:(int)weatherType mapType:(int)mapType predictedTransportMode:(int)transportMode preferredTransportMode:(int)preferredTransportMode isTourist:(id)tourist isCarplayConnected:(id)connected isTransitPossible:(id)possible userLocation:(id)location isVehicleBluetoothConnected:(id)precipitation0 weatherAqi:(id)precipitation1 modelName:(int)precipitation2 modelVersion:(id)precipitation3 modelTrainedDate:(id)precipitation4;
++ (void)capturePressureDataWithPressureData:(id)data additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block;
++ (void)capturePriorityPlacecardActionShortUserActionsWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2;
++ (void)capturePriorityShortUserActionsWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2;
++ (void)captureProactiveSuggestionWithListType:(int)type interactedItemIndex:(id)index duration:(id)duration proactiveItems:(id)items additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)self0;
++ (void)captureRapSessionlessUserActionTargetPairWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2;
++ (void)captureRapShortAndSessionlessUserActionTargetPairWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2;
++ (void)captureRapUserActionShortOnlyWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2;
++ (void)captureRealTrafficWithLocationCollection:(id)collection additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block;
++ (void)captureRedactedDirectionsServiceMetadataWithRedactedDirectionsMetadata:(id)metadata GEORedactedDirectionsClientMetadata_destinationHash:(id)hash GEORedactedDirectionsClientMetadata_predictedDepartureTimeDelta:(id)delta additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block;
++ (void)captureRideBookedWithRideBookedSessionId:(id)id bookedUsingMaps:(id)maps cancelled:(id)cancelled contactedDriver:(id)driver viewedInProactiveTray:(id)tray tappedProactiveTrayItem:(id)item viewedDetails:(id)details invalidVehicleLocation:(id)self0 missingVehicleLocation:(id)self1 rideAppId:(id)self2 rideAppVersion:(id)self3 intentResponseFailures:(id)self4 additionalStates:(id)self5 providedDropRate:(id)self6 completionQueue:(id)self7 completionBlock:(id)self8;
++ (void)captureRideBookingWithRideBookingSessionId:(id)id statusIssue:(int)issue endState:(int)state endView:(int)view rideAppId:(id)appId rideAppVersion:(id)version originBlurred:(id)blurred destinationBlurred:(id)self0 exploredOtherOptions:(id)self1 distanceToPickupInMeters:(id)self2 paymentIsApplePay:(id)self3 numberOfAvailableExtensions:(id)self4 switchedApp:(id)self5 comparedRideOptions:(id)self6 showedSurgePricingAlert:(id)self7 durationOfSessionInSeconds:(id)self8 installedApp:(id)self9 timestamp:(id)timestamp unavailable:(id)unavailable movedPickupLocation:(id)location errorMessages:(id)messages intentResponseFailures:(id)failures additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block;
++ (void)captureSessionlessUserActionWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2;
++ (void)captureShowcaseSuppressionWithBusinessId:(id)id localSearchProviderID:(id)d showcaseId:(id)showcaseId suppressionReason:(int)reason adamId:(id)adamId additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)self0 completionBlock:(id)self1;
++ (void)captureStartEndNavWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2;
++ (void)captureTableBookedWithBookedTableSessionId:(id)id bookedTables:(id)tables additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block;
++ (void)captureTableBookingWithBookTableSessionId:(id)id endState:(int)state endView:(int)view bookTableAppId:(id)appId muid:(id)muid blurredReservationTimestamp:(id)timestamp blurredBookingTimestamp:(id)bookingTimestamp durationOfSessionInSeconds:(id)self0 installNeeded:(id)self1 installNeededTappedAppId:(id)self2 installCompleted:(id)self3 tableSize:(id)self4 addedSpecialRequest:(id)self5 swipedAvailableTimes:(id)self6 tappedDatePicker:(id)self7 errorMessages:(id)self8 additionalStates:(id)self9 providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block;
++ (void)captureTelemetricWithTelemetricEntitys:(id)entitys additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block;
++ (void)captureTimeToLeaveIntialTravelTimeEventWithTravelTime:(double)time;
++ (void)captureTransitAppLaunchSource:(id)source destination:(id)destination bundleIdentifier:(id)identifier;
++ (void)captureTransitAppLaunchWithBundleIdentifier:(id)identifier source:(id)source destination:(id)destination timestamp:(id)timestamp additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)self0;
++ (void)captureTransitShortUserActionTargetPairWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2;
++ (void)captureTtlHypothesisWithArrival:(int)arrival departure:(int)departure ttlUiNotificationShown:(int)shown earliestArrivalOffset:(id)offset earliestDepartureOffset:(id)departureOffset latestArrivalOffset:(id)arrivalOffset latestDepartureOffset:(id)latestDepartureOffset numberOfReroutes:(id)self0 additionalStates:(id)self1 providedDropRate:(id)self2 completionQueue:(id)self3 completionBlock:(id)self4;
++ (void)captureTtlInitialTimeWithTravelTime:(id)time additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block;
++ (void)captureUGCSessionlessUserActionTargetPairWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2;
++ (void)captureUGCShortUserActionTargetPairWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2;
++ (void)captureUgcDeleteLogsWithCertificates:(id)certificates signature:(id)signature trigger:(int)trigger additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block;
++ (void)captureVlfUsageWithEntryPoint:(id)point sessionTimeMs:(id)ms timeRoundedToHour:(id)hour localizationDetails:(id)details finalState:(int)state postFusionCorrection:(id)correction initialPositionContextClassification:(GEOVLFPositionContextClassification *)classification initialLocation:(id)self0 initializationFailureDetails:(id)self1 arStates:(id)self2 deviceOrientations:(id)self3 crowdsourcingDetails:(id)self4 arFailureTypes:(id)self5 additionalStates:(id)self6 providedDropRate:(id)self7 completionQueue:(id)self8 completionBlock:(id)self9;
++ (void)captureWidgetInteractionWithMapsWidgetType:(int)type endState:(int)state lockedMode:(id)mode localHour:(id)hour localDayOfWeek:(id)week duration:(id)duration mapsNearbyWidget:(id)widget mapsTransitWidget:(id)self0 mapsDestinationsWidget:(id)self1 additionalStates:(id)self2 providedDropRate:(id)self3 completionQueue:(id)self4 completionBlock:(id)self5;
++ (void)captureWifiProbeWithWifiConnectionQuality:(id)quality additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block;
++ (void)populateCommonEventValues:(id)values;
++ (void)processMapsDeletionWithCompletionQueue:(id)queue completion:(id)completion;
++ (void)reportLogMsgEvent:(id)event uploadBatchId:(unint64_t)id completion:(id)completion completionQueue:(id)queue;
 @end
 
 @implementation GEOAPPortal
@@ -136,17 +136,17 @@ uint64_t __27__GEOAPPortal_captureQueue__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)reportLogMsgEvent:(id)a3 uploadBatchId:(unint64_t)a4 completion:(id)a5 completionQueue:(id)a6
++ (void)reportLogMsgEvent:(id)event uploadBatchId:(unint64_t)id completion:(id)completion completionQueue:(id)queue
 {
   v91 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v68 = a4;
+  eventCopy = event;
+  completionCopy = completion;
+  idCopy = id;
   v10 = GEOBatchLogMessageType();
-  v11 = [MEMORY[0x1E69A2398] sharedPlatform];
-  v12 = [v11 isInternalInstall];
+  mEMORY[0x1E69A2398] = [MEMORY[0x1E69A2398] sharedPlatform];
+  isInternalInstall = [mEMORY[0x1E69A2398] isInternalInstall];
 
-  if (v12)
+  if (isInternalInstall)
   {
     v13 = GEOGetGEOAPPortalAnalyticsLog();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -156,9 +156,9 @@ LABEL_122:
       goto LABEL_123;
     }
 
-    v14 = [v8 eventType];
+    eventType = [eventCopy eventType];
     v15 = @"LOG_MSG_EVENT_TYPE_UNKNOWN";
-    switch(v14)
+    switch(eventType)
     {
       case 0:
         break;
@@ -355,7 +355,7 @@ LABEL_122:
         v15 = @"REDACTED_SERVICE_METADATA";
         break;
       default:
-        v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v14];
+        v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", eventType];
         break;
     }
 
@@ -503,7 +503,7 @@ LABEL_121:
           v87 = 2112;
           v88 = v17;
           v89 = 2112;
-          v90 = v8;
+          v90 = eventCopy;
           _os_log_impl(&dword_1AB634000, v13, OS_LOG_TYPE_DEBUG, "logged event type %@, session type %@\nevent: %@", buf, 0x20u);
 
           goto LABEL_122;
@@ -526,8 +526,8 @@ LABEL_123:
     v81 = 0u;
     v78 = 0u;
     v79 = 0u;
-    v18 = [v8 logMsgStates];
-    v19 = [v18 countByEnumeratingWithState:&v78 objects:v84 count:16];
+    logMsgStates = [eventCopy logMsgStates];
+    v19 = [logMsgStates countByEnumeratingWithState:&v78 objects:v84 count:16];
     if (!v19)
     {
       goto LABEL_152;
@@ -535,7 +535,7 @@ LABEL_123:
 
     v20 = v19;
     v21 = v10;
-    v22 = v9;
+    v22 = completionCopy;
     v23 = *v79;
     while (2)
     {
@@ -543,16 +543,16 @@ LABEL_123:
       {
         if (*v79 != v23)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(logMsgStates);
         }
 
         v25 = *(*(&v78 + 1) + 8 * i);
         if ([v25 hasCarPlay])
         {
-          v26 = [v25 carPlay];
-          v27 = [v26 isConnected];
+          carPlay = [v25 carPlay];
+          isConnected = [carPlay isConnected];
 
-          if (v27)
+          if (isConnected)
           {
             v36 = +[GEOAPSharedStateData sharedData];
             if ([v36 mapsInOfflineMode])
@@ -574,7 +574,7 @@ LABEL_123:
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v78 objects:v84 count:16];
+      v20 = [logMsgStates countByEnumeratingWithState:&v78 objects:v84 count:16];
       if (v20)
       {
         continue;
@@ -584,10 +584,10 @@ LABEL_123:
     }
   }
 
-  v28 = [v8 networkEvent];
-  v29 = [v28 requestAppIdentifier];
+  networkEvent = [eventCopy networkEvent];
+  requestAppIdentifier = [networkEvent requestAppIdentifier];
   v30 = *MEMORY[0x1E69A1A78];
-  v31 = [v29 isEqualToString:*MEMORY[0x1E69A1A78]];
+  v31 = [requestAppIdentifier isEqualToString:*MEMORY[0x1E69A1A78]];
 
   if (!v31)
   {
@@ -598,13 +598,13 @@ LABEL_123:
   v77 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v18 = [v8 logMsgStates];
-  v32 = [v18 countByEnumeratingWithState:&v74 objects:v83 count:16];
+  logMsgStates = [eventCopy logMsgStates];
+  v32 = [logMsgStates countByEnumeratingWithState:&v74 objects:v83 count:16];
   if (v32)
   {
     v33 = v32;
     v21 = v10;
-    v22 = v9;
+    v22 = completionCopy;
     v34 = *v75;
     while (2)
     {
@@ -612,7 +612,7 @@ LABEL_123:
       {
         if (*v75 != v34)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(logMsgStates);
         }
 
         if ([*(*(&v74 + 1) + 8 * j) hasPairedDevice])
@@ -625,7 +625,7 @@ LABEL_150:
         }
       }
 
-      v33 = [v18 countByEnumeratingWithState:&v74 objects:v83 count:16];
+      v33 = [logMsgStates countByEnumeratingWithState:&v74 objects:v83 count:16];
       if (v33)
       {
         continue;
@@ -635,22 +635,22 @@ LABEL_150:
     }
 
 LABEL_151:
-    v9 = v22;
+    completionCopy = v22;
     v10 = v21;
   }
 
 LABEL_152:
 
 LABEL_153:
-  if ([v8 eventType] == 1)
+  if ([eventCopy eventType] == 1)
   {
-    v66 = v9;
+    v66 = completionCopy;
     v72 = 0u;
     v73 = 0u;
     v70 = 0u;
     v71 = 0u;
-    v40 = [v8 logMsgStates];
-    v41 = [v40 countByEnumeratingWithState:&v70 objects:v82 count:16];
+    logMsgStates2 = [eventCopy logMsgStates];
+    v41 = [logMsgStates2 countByEnumeratingWithState:&v70 objects:v82 count:16];
     if (!v41)
     {
       goto LABEL_174;
@@ -664,25 +664,25 @@ LABEL_153:
       {
         if (*v71 != v43)
         {
-          objc_enumerationMutation(v40);
+          objc_enumerationMutation(logMsgStates2);
         }
 
         v45 = *(*(&v70 + 1) + 8 * k);
         if ([v45 hasMapSettings])
         {
-          v46 = [v45 mapSettings];
-          if ([v46 hasLocationType])
+          mapSettings = [v45 mapSettings];
+          if ([mapSettings hasLocationType])
           {
-            v47 = [v45 mapSettings];
-            v48 = [v47 locationType];
+            mapSettings2 = [v45 mapSettings];
+            locationType = [mapSettings2 locationType];
 
-            if (v48 == 3)
+            if (locationType == 3)
             {
               v49 = 24;
 LABEL_169:
-              v50 = +[GEOAPServiceManager sharedManager];
-              v51 = +[GEOAPUtils GEOAPApplicationIdentifier];
-              [v50 reportDailyUsageCountType:v49 usageString:0 usageBool:0 appId:v51];
+              searchResults = +[GEOAPServiceManager sharedManager];
+              userActionEvent = +[GEOAPUtils GEOAPApplicationIdentifier];
+              [searchResults reportDailyUsageCountType:v49 usageString:0 usageBool:0 appId:userActionEvent];
               goto LABEL_170;
             }
           }
@@ -697,19 +697,19 @@ LABEL_169:
           continue;
         }
 
-        v50 = [v45 searchResults];
-        if (![v50 includesEnrichedResult])
+        searchResults = [v45 searchResults];
+        if (![searchResults includesEnrichedResult])
         {
           goto LABEL_171;
         }
 
-        v51 = [v8 userActionEvent];
-        if ([v51 userActionEventAction] == 2015)
+        userActionEvent = [eventCopy userActionEvent];
+        if ([userActionEvent userActionEventAction] == 2015)
         {
-          v52 = [v8 userActionEvent];
-          v53 = [v52 userActionEventTarget];
+          userActionEvent2 = [eventCopy userActionEvent];
+          userActionEventTarget = [userActionEvent2 userActionEventTarget];
 
-          if (v53 != 101)
+          if (userActionEventTarget != 101)
           {
             continue;
           }
@@ -723,33 +723,33 @@ LABEL_170:
 LABEL_171:
       }
 
-      v42 = [v40 countByEnumeratingWithState:&v70 objects:v82 count:16];
+      v42 = [logMsgStates2 countByEnumeratingWithState:&v70 objects:v82 count:16];
       if (!v42)
       {
 LABEL_174:
 
-        v54 = [v8 userActionEvent];
-        if ([v54 userActionEventAction] == 19)
+        userActionEvent3 = [eventCopy userActionEvent];
+        if ([userActionEvent3 userActionEventAction] == 19)
         {
 
-          v9 = v66;
+          completionCopy = v66;
           goto LABEL_185;
         }
 
-        v60 = [v8 userActionEvent];
-        v61 = [v60 userActionEventAction];
+        userActionEvent4 = [eventCopy userActionEvent];
+        userActionEventAction = [userActionEvent4 userActionEventAction];
 
-        v9 = v66;
-        if (v61 == 2196)
+        completionCopy = v66;
+        if (userActionEventAction == 2196)
         {
 LABEL_185:
-          v55 = [a1 captureQueue];
+          captureQueue = [self captureQueue];
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           block[2] = __74__GEOAPPortal_reportLogMsgEvent_uploadBatchId_completion_completionQueue___block_invoke;
           block[3] = &__block_descriptor_40_e5_v8__0l;
-          block[4] = a1;
-          dispatch_async(v55, block);
+          block[4] = self;
+          dispatch_async(captureQueue, block);
           goto LABEL_186;
         }
 
@@ -758,10 +758,10 @@ LABEL_185:
     }
   }
 
-  if ([v8 eventType] == 25)
+  if ([eventCopy eventType] == 25)
   {
-    v55 = [v8 clientAcSuggestions];
-    if ((-[NSObject keypressStatus](v55, "keypressStatus") == 1 || -[NSObject trigger](v55, "trigger") == 2) && [a1 permittedToCountAC])
+    captureQueue = [eventCopy clientAcSuggestions];
+    if ((-[NSObject keypressStatus](captureQueue, "keypressStatus") == 1 || -[NSObject trigger](captureQueue, "trigger") == 2) && [self permittedToCountAC])
     {
       v56 = +[GEOAPSharedStateData sharedData];
       if ([v56 mapsInOfflineMode])
@@ -785,12 +785,12 @@ LABEL_186:
 LABEL_187:
   v62 = objc_alloc_init(MEMORY[0x1E69A1E88]);
   [v62 setLogMessageType:v10];
-  [GEOAPPortal populateCommonEventValues:v8];
-  [v8 clearSensitiveFields:0];
-  [v62 addLogMsgEvent:v8];
+  [GEOAPPortal populateCommonEventValues:eventCopy];
+  [eventCopy clearSensitiveFields:0];
+  [v62 addLogMsgEvent:eventCopy];
   v63 = +[GEOAPServiceManager sharedManager];
-  v64 = [v62 data];
-  [v63 reportLogMsg:v64 uploadBatchId:v68 completion:v9];
+  data = [v62 data];
+  [v63 reportLogMsg:data uploadBatchId:idCopy completion:completionCopy];
 
   v65 = *MEMORY[0x1E69E9840];
 }
@@ -807,21 +807,21 @@ LABEL_187:
   return v3 <= Current;
 }
 
-+ (void)captureWifiProbeWithWifiConnectionQuality:(id)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7
++ (void)captureWifiProbeWithWifiConnectionQuality:(id)quality additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block
 {
   v61 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  qualityCopy = quality;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v55[0] = MEMORY[0x1E69E9820];
   v55[1] = 3221225472;
   v55[2] = __123__GEOAPPortal_captureWifiProbeWithWifiConnectionQuality_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v55[3] = &unk_1E7959478;
-  v16 = v15;
+  v16 = blockCopy;
   v57 = v16;
-  v17 = v14;
+  v17 = queueCopy;
   v56 = v17;
   v18 = MEMORY[0x1AC5A12F0](v55);
   if (GEOConfigGetBOOL())
@@ -830,17 +830,17 @@ LABEL_187:
   }
 
   v19 = +[GEOAPServiceManager sharedManager];
-  v20 = [v19 platformDiagAndUsage];
+  platformDiagAndUsage = [v19 platformDiagAndUsage];
 
-  if ((v20 & 1) == 0)
+  if ((platformDiagAndUsage & 1) == 0)
   {
     goto LABEL_21;
   }
 
   v21 = +[GEOAPServiceManager sharedManager];
-  v22 = [v21 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v21 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v22)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v23 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -854,9 +854,9 @@ LABEL_187:
     goto LABEL_21;
   }
 
-  if (v13)
+  if (rateCopy)
   {
-    [v13 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -871,19 +871,19 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v48 = v11;
+  v48 = qualityCopy;
   v47 = +[GEOAPStateFactory sharedFactory];
-  v46 = v12;
-  if ([v12 count])
+  v46 = statesCopy;
+  if ([statesCopy count])
   {
     v44 = v16;
-    v45 = v13;
-    v26 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v12, "count")}];
+    v45 = rateCopy;
+    v26 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v27 = v12;
+    v27 = statesCopy;
     v28 = [v27 countByEnumeratingWithState:&v51 objects:v58 count:16];
     if (v28)
     {
@@ -911,7 +911,7 @@ LABEL_21:
 
     v34 = [v26 copy];
     v16 = v44;
-    v13 = v45;
+    rateCopy = v45;
   }
 
   else
@@ -937,14 +937,14 @@ LABEL_21:
     v37 = v38;
   }
 
-  v12 = v46;
+  statesCopy = v46;
   v39 = objc_alloc_init(MEMORY[0x1E69A1E90]);
   [v39 setEventType:31];
   v40 = objc_alloc_init(MEMORY[0x1E69A1FF0]);
   [v39 setWifiConnectionQualityProbeEvent:v40];
 
-  v41 = [v39 wifiConnectionQualityProbeEvent];
-  [v41 setWifiConnectionQuality:v48];
+  wifiConnectionQualityProbeEvent = [v39 wifiConnectionQualityProbeEvent];
+  [wifiConnectionQualityProbeEvent setWifiConnectionQuality:v48];
 
   if (v37)
   {
@@ -961,7 +961,7 @@ LABEL_21:
   [v42 sessionStateForType:7 callback:v49];
 
   v18[2](v18);
-  v11 = v48;
+  qualityCopy = v48;
 LABEL_22:
 
   v35 = *MEMORY[0x1E69E9840];
@@ -1009,63 +1009,63 @@ void __123__GEOAPPortal_captureWifiProbeWithWifiConnectionQuality_additionalStat
   [GEOAPPortal reportLogMsgEvent:*(a1 + 32) uploadBatchId:GEOMakeGEOAPBatchID() completion:0 completionQueue:0];
 }
 
-+ (void)captureWidgetInteractionWithMapsWidgetType:(int)a3 endState:(int)a4 lockedMode:(id)a5 localHour:(id)a6 localDayOfWeek:(id)a7 duration:(id)a8 mapsNearbyWidget:(id)a9 mapsTransitWidget:(id)a10 mapsDestinationsWidget:(id)a11 additionalStates:(id)a12 providedDropRate:(id)a13 completionQueue:(id)a14 completionBlock:(id)a15
++ (void)captureWidgetInteractionWithMapsWidgetType:(int)type endState:(int)state lockedMode:(id)mode localHour:(id)hour localDayOfWeek:(id)week duration:(id)duration mapsNearbyWidget:(id)widget mapsTransitWidget:(id)self0 mapsDestinationsWidget:(id)self1 additionalStates:(id)self2 providedDropRate:(id)self3 completionQueue:(id)self4 completionBlock:(id)self5
 {
   v133 = *MEMORY[0x1E69E9840];
-  v120 = a5;
-  v18 = a6;
-  v116 = a7;
-  v114 = a8;
-  v19 = a9;
-  v119 = a10;
-  v118 = a11;
-  v20 = a12;
-  v21 = a13;
-  v22 = a14;
-  v23 = a15;
+  modeCopy = mode;
+  hourCopy = hour;
+  weekCopy = week;
+  durationCopy = duration;
+  widgetCopy = widget;
+  transitWidgetCopy = transitWidget;
+  destinationsWidgetCopy = destinationsWidget;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v127[0] = MEMORY[0x1E69E9820];
   v127[1] = 3221225472;
   v127[2] = __236__GEOAPPortal_captureWidgetInteractionWithMapsWidgetType_endState_lockedMode_localHour_localDayOfWeek_duration_mapsNearbyWidget_mapsTransitWidget_mapsDestinationsWidget_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v127[3] = &unk_1E7959478;
-  v24 = v23;
+  v24 = blockCopy;
   v129 = v24;
-  v25 = v22;
+  v25 = queueCopy;
   v128 = v25;
   v26 = MEMORY[0x1AC5A12F0](v127);
   v112 = v24;
-  v113 = v21;
+  v113 = rateCopy;
   if (GEOConfigGetBOOL())
   {
     v26[2](v26);
-    v27 = v120;
+    v27 = modeCopy;
 LABEL_9:
-    v34 = v114;
-    v33 = v116;
+    v34 = durationCopy;
+    v33 = weekCopy;
     goto LABEL_10;
   }
 
-  v110 = v19;
-  v111 = v18;
+  v110 = widgetCopy;
+  v111 = hourCopy;
   v28 = +[GEOAPServiceManager sharedManager];
-  v29 = [v28 platformDiagAndUsage];
+  platformDiagAndUsage = [v28 platformDiagAndUsage];
 
-  if ((v29 & 1) == 0)
+  if ((platformDiagAndUsage & 1) == 0)
   {
     v26[2](v26);
-    v27 = v120;
-    v19 = v110;
+    v27 = modeCopy;
+    widgetCopy = v110;
     goto LABEL_9;
   }
 
   v30 = +[GEOAPServiceManager sharedManager];
-  v31 = [v30 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v30 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v31)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v32 = GEOGetGEOAPPortalAnalyticsLog();
-    v27 = v120;
-    v34 = v114;
-    v33 = v116;
+    v27 = modeCopy;
+    v34 = durationCopy;
+    v33 = weekCopy;
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
     {
       v35 = GEOApplicationIdentifierOrProcessName();
@@ -1077,9 +1077,9 @@ LABEL_9:
     goto LABEL_25;
   }
 
-  if (v21)
+  if (rateCopy)
   {
-    [v21 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -1087,28 +1087,28 @@ LABEL_9:
     GEOConfigGetDouble();
   }
 
-  v27 = v120;
-  v34 = v114;
-  v33 = v116;
+  v27 = modeCopy;
+  v34 = durationCopy;
+  v33 = weekCopy;
   if (v37 != 0.0 && v37 >= arc4random() / 4294967300.0)
   {
 LABEL_25:
     v26[2](v26);
-    v19 = v110;
+    widgetCopy = v110;
     goto LABEL_10;
   }
 
   v38 = +[GEOAPStateFactory sharedFactory];
   v98 = v38;
-  v90 = v20;
-  if ([v20 count])
+  v90 = statesCopy;
+  if ([statesCopy count])
   {
-    v39 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v20, "count")}];
+    v39 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v123 = 0u;
     v124 = 0u;
     v125 = 0u;
     v126 = 0u;
-    v40 = v20;
+    v40 = statesCopy;
     v41 = [v40 countByEnumeratingWithState:&v123 objects:v130 count:16];
     if (v41)
     {
@@ -1135,10 +1135,10 @@ LABEL_25:
     }
 
     v107 = [v39 copy];
-    v27 = v120;
-    v18 = v111;
-    v34 = v114;
-    v33 = v116;
+    v27 = modeCopy;
+    hourCopy = v111;
+    v34 = durationCopy;
+    v33 = weekCopy;
     v38 = v98;
   }
 
@@ -1478,7 +1478,7 @@ LABEL_25:
     }
 
     v47 = v72;
-    v27 = v120;
+    v27 = modeCopy;
   }
 
   v73 = objc_alloc_init(MEMORY[0x1E69A1E90]);
@@ -1486,50 +1486,50 @@ LABEL_25:
   v74 = objc_alloc_init(MEMORY[0x1E69A1F28]);
   [v73 setMapsWidgetsInteractionSession:v74];
 
-  v75 = [v73 mapsWidgetsInteractionSession];
-  [v75 setMapsWidgetType:a3];
+  mapsWidgetsInteractionSession = [v73 mapsWidgetsInteractionSession];
+  [mapsWidgetsInteractionSession setMapsWidgetType:type];
 
-  v76 = [v73 mapsWidgetsInteractionSession];
-  [v76 setEndState:a4];
+  mapsWidgetsInteractionSession2 = [v73 mapsWidgetsInteractionSession];
+  [mapsWidgetsInteractionSession2 setEndState:state];
 
   if (v27)
   {
-    v77 = [v27 BOOLValue];
-    v78 = [v73 mapsWidgetsInteractionSession];
-    [v78 setLockedMode:v77];
+    bOOLValue = [v27 BOOLValue];
+    mapsWidgetsInteractionSession3 = [v73 mapsWidgetsInteractionSession];
+    [mapsWidgetsInteractionSession3 setLockedMode:bOOLValue];
 
-    v18 = v111;
+    hourCopy = v111;
   }
 
-  if (v18)
+  if (hourCopy)
   {
-    v79 = [v18 integerValue];
-    v80 = [v73 mapsWidgetsInteractionSession];
-    [v80 setLocalHour:v79];
+    integerValue = [hourCopy integerValue];
+    mapsWidgetsInteractionSession4 = [v73 mapsWidgetsInteractionSession];
+    [mapsWidgetsInteractionSession4 setLocalHour:integerValue];
   }
 
   if (v33)
   {
-    v81 = [v33 integerValue];
-    v82 = [v73 mapsWidgetsInteractionSession];
-    [v82 setLocalDayOfWeek:v81];
+    integerValue2 = [v33 integerValue];
+    mapsWidgetsInteractionSession5 = [v73 mapsWidgetsInteractionSession];
+    [mapsWidgetsInteractionSession5 setLocalDayOfWeek:integerValue2];
   }
 
   if (v34)
   {
-    v83 = [v34 integerValue];
-    v84 = [v73 mapsWidgetsInteractionSession];
-    [v84 setDuration:v83];
+    integerValue3 = [v34 integerValue];
+    mapsWidgetsInteractionSession6 = [v73 mapsWidgetsInteractionSession];
+    [mapsWidgetsInteractionSession6 setDuration:integerValue3];
   }
 
-  v85 = [v73 mapsWidgetsInteractionSession];
-  [v85 setMapsNearbyWidget:v110];
+  mapsWidgetsInteractionSession7 = [v73 mapsWidgetsInteractionSession];
+  [mapsWidgetsInteractionSession7 setMapsNearbyWidget:v110];
 
-  v86 = [v73 mapsWidgetsInteractionSession];
-  [v86 setMapsTransitWidget:v119];
+  mapsWidgetsInteractionSession8 = [v73 mapsWidgetsInteractionSession];
+  [mapsWidgetsInteractionSession8 setMapsTransitWidget:transitWidgetCopy];
 
-  v87 = [v73 mapsWidgetsInteractionSession];
-  [v87 setMapsDestinationsWidget:v118];
+  mapsWidgetsInteractionSession9 = [v73 mapsWidgetsInteractionSession];
+  [mapsWidgetsInteractionSession9 setMapsDestinationsWidget:destinationsWidgetCopy];
 
   if (v101)
   {
@@ -1631,10 +1631,10 @@ LABEL_25:
   [v88 sessionStateForType:5 callback:v121];
 
   v26[2](v26);
-  v19 = v110;
-  v18 = v111;
-  v20 = v90;
-  v27 = v120;
+  widgetCopy = v110;
+  hourCopy = v111;
+  statesCopy = v90;
+  v27 = modeCopy;
 LABEL_10:
 
   v36 = *MEMORY[0x1E69E9840];
@@ -1676,31 +1676,31 @@ uint64_t __236__GEOAPPortal_captureWidgetInteractionWithMapsWidgetType_endState_
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureVlfUsageWithEntryPoint:(id)a3 sessionTimeMs:(id)a4 timeRoundedToHour:(id)a5 localizationDetails:(id)a6 finalState:(int)a7 postFusionCorrection:(id)a8 initialPositionContextClassification:(GEOVLFPositionContextClassification *)a9 initialLocation:(id)a10 initializationFailureDetails:(id)a11 arStates:(id)a12 deviceOrientations:(id)a13 crowdsourcingDetails:(id)a14 arFailureTypes:(id)a15 additionalStates:(id)a16 providedDropRate:(id)a17 completionQueue:(id)a18 completionBlock:(id)a19
++ (void)captureVlfUsageWithEntryPoint:(id)point sessionTimeMs:(id)ms timeRoundedToHour:(id)hour localizationDetails:(id)details finalState:(int)state postFusionCorrection:(id)correction initialPositionContextClassification:(GEOVLFPositionContextClassification *)classification initialLocation:(id)self0 initializationFailureDetails:(id)self1 arStates:(id)self2 deviceOrientations:(id)self3 crowdsourcingDetails:(id)self4 arFailureTypes:(id)self5 additionalStates:(id)self6 providedDropRate:(id)self7 completionQueue:(id)self8 completionBlock:(id)self9
 {
   v164 = *MEMORY[0x1E69E9840];
-  v134 = a3;
-  v133 = a4;
-  v23 = a5;
-  v135 = a6;
-  v132 = a8;
-  v24 = a10;
-  v25 = a11;
-  v26 = a12;
-  v27 = a13;
-  v28 = a14;
-  v29 = a15;
-  v131 = a16;
-  v136 = a17;
-  v30 = a18;
-  v31 = a19;
+  pointCopy = point;
+  msCopy = ms;
+  hourCopy = hour;
+  detailsCopy = details;
+  correctionCopy = correction;
+  locationCopy = location;
+  failureDetailsCopy = failureDetails;
+  statesCopy = states;
+  orientationsCopy = orientations;
+  crowdsourcingDetailsCopy = crowdsourcingDetails;
+  typesCopy = types;
+  additionalStatesCopy = additionalStates;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v156[0] = MEMORY[0x1E69E9820];
   v156[1] = 3221225472;
   v156[2] = __341__GEOAPPortal_captureVlfUsageWithEntryPoint_sessionTimeMs_timeRoundedToHour_localizationDetails_finalState_postFusionCorrection_initialPositionContextClassification_initialLocation_initializationFailureDetails_arStates_deviceOrientations_crowdsourcingDetails_arFailureTypes_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v156[3] = &unk_1E7959478;
-  v32 = v31;
+  v32 = blockCopy;
   v158 = v32;
-  v33 = v30;
+  v33 = queueCopy;
   v157 = v33;
   v34 = MEMORY[0x1AC5A12F0](v156);
   if (GEOConfigGetBOOL())
@@ -1712,11 +1712,11 @@ LABEL_2:
 
   v126 = v34;
   v129 = v33;
-  v130 = v23;
+  v130 = hourCopy;
   v35 = +[GEOAPServiceManager sharedManager];
-  v36 = [v35 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v35 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v36)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v37 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
@@ -1729,14 +1729,14 @@ LABEL_2:
 
     v34[2](v34);
     v33 = v129;
-    v23 = v130;
+    hourCopy = v130;
   }
 
   else
   {
-    if (v136)
+    if (rateCopy)
     {
-      [v136 doubleValue];
+      [rateCopy doubleValue];
     }
 
     else
@@ -1745,7 +1745,7 @@ LABEL_2:
     }
 
     v33 = v129;
-    v23 = v130;
+    hourCopy = v130;
     if (v39 != 0.0 && v39 >= arc4random() / 4294967300.0)
     {
       goto LABEL_2;
@@ -1753,20 +1753,20 @@ LABEL_2:
 
     v114 = v32;
     v118 = +[GEOAPStateFactory sharedFactory];
-    v121 = v26;
-    v122 = v25;
-    v119 = v28;
-    v120 = v27;
-    v115 = v29;
-    v123 = v24;
-    if ([v131 count])
+    v121 = statesCopy;
+    v122 = failureDetailsCopy;
+    v119 = crowdsourcingDetailsCopy;
+    v120 = orientationsCopy;
+    v115 = typesCopy;
+    v123 = locationCopy;
+    if ([additionalStatesCopy count])
     {
-      v40 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v131, "count")}];
+      v40 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(additionalStatesCopy, "count")}];
       v152 = 0u;
       v153 = 0u;
       v154 = 0u;
       v155 = 0u;
-      v41 = v131;
+      v41 = additionalStatesCopy;
       v42 = [v41 countByEnumeratingWithState:&v152 objects:v163 count:16];
       if (v42)
       {
@@ -1793,14 +1793,14 @@ LABEL_2:
       }
 
       v48 = [v40 copy];
-      v49 = v133;
-      v23 = v130;
+      v49 = msCopy;
+      hourCopy = v130;
     }
 
     else
     {
       v48 = 0;
-      v49 = v133;
+      v49 = msCopy;
     }
 
     if (GEOConfigGetBOOL())
@@ -1880,42 +1880,42 @@ LABEL_2:
     v57 = objc_alloc_init(MEMORY[0x1E69A1FE8]);
     [v56 setVlfUsage:v57];
 
-    v58 = [v56 vlfUsage];
-    [v58 setEntryPoint:v134];
+    vlfUsage = [v56 vlfUsage];
+    [vlfUsage setEntryPoint:pointCopy];
 
     if (v49)
     {
-      v59 = [v49 unsignedLongLongValue];
-      v60 = [v56 vlfUsage];
-      [v60 setSessionTimeMs:v59];
+      unsignedLongLongValue = [v49 unsignedLongLongValue];
+      vlfUsage2 = [v56 vlfUsage];
+      [vlfUsage2 setSessionTimeMs:unsignedLongLongValue];
 
-      v23 = v130;
+      hourCopy = v130;
     }
 
     v112 = v51;
-    if (v23)
+    if (hourCopy)
     {
-      v61 = [v23 unsignedLongLongValue];
-      v62 = [v56 vlfUsage];
-      [v62 setTimeRoundedToHour:v61];
+      unsignedLongLongValue2 = [hourCopy unsignedLongLongValue];
+      vlfUsage3 = [v56 vlfUsage];
+      [vlfUsage3 setTimeRoundedToHour:unsignedLongLongValue2];
     }
 
     v117 = v50;
-    v63 = [v56 vlfUsage];
-    v64 = [v63 localizationDetails];
+    vlfUsage4 = [v56 vlfUsage];
+    localizationDetails = [vlfUsage4 localizationDetails];
 
-    if (!v64)
+    if (!localizationDetails)
     {
-      v65 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v135, "count")}];
-      v66 = [v56 vlfUsage];
-      [v66 setLocalizationDetails:v65];
+      v65 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(detailsCopy, "count")}];
+      vlfUsage5 = [v56 vlfUsage];
+      [vlfUsage5 setLocalizationDetails:v65];
     }
 
     v150 = 0u;
     v151 = 0u;
     v148 = 0u;
     v149 = 0u;
-    v67 = v135;
+    v67 = detailsCopy;
     v68 = [v67 countByEnumeratingWithState:&v148 objects:v162 count:16];
     if (v68)
     {
@@ -1931,10 +1931,10 @@ LABEL_2:
           }
 
           v72 = *(*(&v148 + 1) + 8 * j);
-          v73 = [v56 vlfUsage];
-          v74 = [v73 localizationDetails];
+          vlfUsage6 = [v56 vlfUsage];
+          localizationDetails2 = [vlfUsage6 localizationDetails];
           v75 = [v72 copy];
-          [v74 addObject:v75];
+          [localizationDetails2 addObject:v75];
         }
 
         v69 = [v67 countByEnumeratingWithState:&v148 objects:v162 count:16];
@@ -1943,31 +1943,31 @@ LABEL_2:
       while (v69);
     }
 
-    v76 = [v56 vlfUsage];
-    [v76 setFinalState:a7];
+    vlfUsage7 = [v56 vlfUsage];
+    [vlfUsage7 setFinalState:state];
 
-    v77 = [v56 vlfUsage];
-    [v77 setPostFusionCorrection:v132];
+    vlfUsage8 = [v56 vlfUsage];
+    [vlfUsage8 setPostFusionCorrection:correctionCopy];
 
-    v147 = *a9;
-    v78 = [v56 vlfUsage];
+    v147 = *classification;
+    vlfUsage9 = [v56 vlfUsage];
     buf = v147;
-    [v78 setInitialPositionContextClassification:&buf];
+    [vlfUsage9 setInitialPositionContextClassification:&buf];
 
-    v79 = [v56 vlfUsage];
-    [v79 setInitialLocation:v123];
+    vlfUsage10 = [v56 vlfUsage];
+    [vlfUsage10 setInitialLocation:v123];
 
-    v80 = [v56 vlfUsage];
-    [v80 setInitializationFailureDetails:v122];
+    vlfUsage11 = [v56 vlfUsage];
+    [vlfUsage11 setInitializationFailureDetails:v122];
 
-    v81 = [v56 vlfUsage];
-    v82 = [v81 arStates];
+    vlfUsage12 = [v56 vlfUsage];
+    arStates = [vlfUsage12 arStates];
 
-    if (!v82)
+    if (!arStates)
     {
       v83 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v121, "count")}];
-      v84 = [v56 vlfUsage];
-      [v84 setArStates:v83];
+      vlfUsage13 = [v56 vlfUsage];
+      [vlfUsage13 setArStates:v83];
     }
 
     v145 = 0u;
@@ -1991,10 +1991,10 @@ LABEL_2:
           }
 
           v90 = *(*(&v143 + 1) + 8 * k);
-          v91 = [v56 vlfUsage];
-          v92 = [v91 arStates];
+          vlfUsage14 = [v56 vlfUsage];
+          arStates2 = [vlfUsage14 arStates];
           v93 = [v90 copy];
-          [v92 addObject:v93];
+          [arStates2 addObject:v93];
         }
 
         v87 = [v85 countByEnumeratingWithState:&v143 objects:v160 count:16];
@@ -2003,14 +2003,14 @@ LABEL_2:
       while (v87);
     }
 
-    v94 = [v56 vlfUsage];
-    v95 = [v94 deviceOrientations];
+    vlfUsage15 = [v56 vlfUsage];
+    deviceOrientations = [vlfUsage15 deviceOrientations];
 
-    if (!v95)
+    if (!deviceOrientations)
     {
       v96 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v120, "count")}];
-      v97 = [v56 vlfUsage];
-      [v97 setDeviceOrientations:v96];
+      vlfUsage16 = [v56 vlfUsage];
+      [vlfUsage16 setDeviceOrientations:v96];
     }
 
     v141 = 0u;
@@ -2033,10 +2033,10 @@ LABEL_2:
           }
 
           v103 = *(*(&v139 + 1) + 8 * m);
-          v104 = [v56 vlfUsage];
-          v105 = [v104 deviceOrientations];
+          vlfUsage17 = [v56 vlfUsage];
+          deviceOrientations2 = [vlfUsage17 deviceOrientations];
           v106 = [v103 copy];
-          [v105 addObject:v106];
+          [deviceOrientations2 addObject:v106];
         }
 
         v100 = [v98 countByEnumeratingWithState:&v139 objects:v159 count:16];
@@ -2045,21 +2045,21 @@ LABEL_2:
       while (v100);
     }
 
-    v107 = [v56 vlfUsage];
-    [v107 setCrowdsourcingDetails:v119];
+    vlfUsage18 = [v56 vlfUsage];
+    [vlfUsage18 setCrowdsourcingDetails:v119];
 
-    v108 = [v56 vlfUsage];
-    v29 = v115;
-    [v108 setArFailureTypes:v115];
+    vlfUsage19 = [v56 vlfUsage];
+    typesCopy = v115;
+    [vlfUsage19 setArFailureTypes:v115];
 
     if (v117)
     {
       [v56 addLogMsgState:?];
     }
 
-    v24 = v123;
-    v27 = v120;
-    v26 = v121;
+    locationCopy = v123;
+    orientationsCopy = v120;
+    statesCopy = v121;
     if (v125)
     {
       [v56 addLogMsgState:?];
@@ -2089,9 +2089,9 @@ LABEL_2:
     v126[2](v126);
 
     v33 = v129;
-    v23 = v130;
-    v28 = v119;
-    v25 = v122;
+    hourCopy = v130;
+    crowdsourcingDetailsCopy = v119;
+    failureDetailsCopy = v122;
   }
 
 LABEL_83:
@@ -2135,22 +2135,22 @@ uint64_t __341__GEOAPPortal_captureVlfUsageWithEntryPoint_sessionTimeMs_timeRoun
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureUgcDeleteLogsWithCertificates:(id)a3 signature:(id)a4 trigger:(int)a5 additionalStates:(id)a6 providedDropRate:(id)a7 completionQueue:(id)a8 completionBlock:(id)a9
++ (void)captureUgcDeleteLogsWithCertificates:(id)certificates signature:(id)signature trigger:(int)trigger additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block
 {
   v92 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  certificatesCopy = certificates;
+  signatureCopy = signature;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v85[0] = MEMORY[0x1E69E9820];
   v85[1] = 3221225472;
   v85[2] = __136__GEOAPPortal_captureUgcDeleteLogsWithCertificates_signature_trigger_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v85[3] = &unk_1E7959478;
-  v20 = v19;
+  v20 = blockCopy;
   v87 = v20;
-  v21 = v18;
+  v21 = queueCopy;
   v86 = v21;
   v22 = MEMORY[0x1AC5A12F0](v85);
   if (GEOConfigGetBOOL())
@@ -2158,11 +2158,11 @@ uint64_t __341__GEOAPPortal_captureVlfUsageWithEntryPoint_sessionTimeMs_timeRoun
     goto LABEL_20;
   }
 
-  v74 = a5;
+  triggerCopy = trigger;
   v23 = +[GEOAPServiceManager sharedManager];
-  v24 = [v23 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v23 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v24)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v25 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -2176,9 +2176,9 @@ uint64_t __341__GEOAPPortal_captureVlfUsageWithEntryPoint_sessionTimeMs_timeRoun
     goto LABEL_20;
   }
 
-  if (v17)
+  if (rateCopy)
   {
-    [v17 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -2194,20 +2194,20 @@ LABEL_20:
   }
 
   v28 = +[GEOAPStateFactory sharedFactory];
-  v72 = v15;
-  v73 = v14;
+  v72 = signatureCopy;
+  v73 = certificatesCopy;
   v70 = v28;
-  v67 = v17;
-  v68 = v16;
+  v67 = rateCopy;
+  v68 = statesCopy;
   v66 = v20;
-  if ([v16 count])
+  if ([statesCopy count])
   {
-    v29 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v16, "count")}];
+    v29 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v81 = 0u;
     v82 = 0u;
     v83 = 0u;
     v84 = 0u;
-    v30 = v16;
+    v30 = statesCopy;
     v31 = [v30 countByEnumeratingWithState:&v81 objects:v89 count:16];
     if (v31)
     {
@@ -2303,14 +2303,14 @@ LABEL_20:
   v45 = objc_alloc_init(MEMORY[0x1E69A1F08]);
   [v44 setLogDiscard:v45];
 
-  v46 = [v44 logDiscard];
-  v47 = [v46 certificates];
+  logDiscard = [v44 logDiscard];
+  certificates = [logDiscard certificates];
 
-  if (!v47)
+  if (!certificates)
   {
     v48 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v73, "count")}];
-    v49 = [v44 logDiscard];
-    [v49 setCertificates:v48];
+    logDiscard2 = [v44 logDiscard];
+    [logDiscard2 setCertificates:v48];
   }
 
   v79 = 0u;
@@ -2333,10 +2333,10 @@ LABEL_20:
         }
 
         v55 = *(*(&v77 + 1) + 8 * j);
-        v56 = [v44 logDiscard];
-        v57 = [v56 certificates];
+        logDiscard3 = [v44 logDiscard];
+        certificates2 = [logDiscard3 certificates];
         v58 = [v55 copy];
-        [v57 addObject:v58];
+        [certificates2 addObject:v58];
       }
 
       v52 = [v50 countByEnumeratingWithState:&v77 objects:v88 count:16];
@@ -2345,19 +2345,19 @@ LABEL_20:
     while (v52);
   }
 
-  v59 = [v44 logDiscard];
-  [v59 setSignature:v72];
+  logDiscard4 = [v44 logDiscard];
+  [logDiscard4 setSignature:v72];
 
-  v60 = [v44 logDiscard];
-  [v60 setTrigger:v74];
+  logDiscard5 = [v44 logDiscard];
+  [logDiscard5 setTrigger:triggerCopy];
 
   if (v69)
   {
     [v44 addLogMsgState:v69];
   }
 
-  v17 = v67;
-  v16 = v68;
+  rateCopy = v67;
+  statesCopy = v68;
   v20 = v66;
   if (v71)
   {
@@ -2379,8 +2379,8 @@ LABEL_20:
   [v61 sessionStateForType:15 callback:v75];
 
   v22[2](v22);
-  v15 = v72;
-  v14 = v73;
+  signatureCopy = v72;
+  certificatesCopy = v73;
 LABEL_21:
 
   v38 = *MEMORY[0x1E69E9840];
@@ -2422,21 +2422,21 @@ uint64_t __136__GEOAPPortal_captureUgcDeleteLogsWithCertificates_signature_trigg
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureTtlInitialTimeWithTravelTime:(id)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7
++ (void)captureTtlInitialTimeWithTravelTime:(id)time additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block
 {
   v68 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  timeCopy = time;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v62[0] = MEMORY[0x1E69E9820];
   v62[1] = 3221225472;
   v62[2] = __117__GEOAPPortal_captureTtlInitialTimeWithTravelTime_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v62[3] = &unk_1E7959478;
-  v16 = v15;
+  v16 = blockCopy;
   v64 = v16;
-  v17 = v14;
+  v17 = queueCopy;
   v63 = v17;
   v18 = MEMORY[0x1AC5A12F0](v62);
   if (GEOConfigGetBOOL())
@@ -2445,17 +2445,17 @@ uint64_t __136__GEOAPPortal_captureUgcDeleteLogsWithCertificates_signature_trigg
   }
 
   v19 = +[GEOAPServiceManager sharedManager];
-  v20 = [v19 platformDiagAndUsage];
+  platformDiagAndUsage = [v19 platformDiagAndUsage];
 
-  if ((v20 & 1) == 0)
+  if ((platformDiagAndUsage & 1) == 0)
   {
     goto LABEL_21;
   }
 
   v21 = +[GEOAPServiceManager sharedManager];
-  v22 = [v21 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v21 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v22)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v23 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -2469,9 +2469,9 @@ uint64_t __136__GEOAPPortal_captureUgcDeleteLogsWithCertificates_signature_trigg
     goto LABEL_21;
   }
 
-  if (v13)
+  if (rateCopy)
   {
-    [v13 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -2487,17 +2487,17 @@ LABEL_21:
   }
 
   v54 = +[GEOAPStateFactory sharedFactory];
-  v53 = v12;
-  if ([v12 count])
+  v53 = statesCopy;
+  if ([statesCopy count])
   {
     v50 = v16;
-    v51 = v11;
-    v26 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v12, "count")}];
+    v51 = timeCopy;
+    v26 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v27 = v12;
+    v27 = statesCopy;
     v28 = [v27 countByEnumeratingWithState:&v58 objects:v65 count:16];
     if (v28)
     {
@@ -2524,7 +2524,7 @@ LABEL_21:
     }
 
     v55 = [v26 copy];
-    v11 = v51;
+    timeCopy = v51;
     v16 = v50;
   }
 
@@ -2577,15 +2577,15 @@ LABEL_21:
   v43 = objc_alloc_init(MEMORY[0x1E69A1FC8]);
   [v42 setTimeToLeaveInitialTravelTimeEvent:v43];
 
-  if (v11)
+  if (timeCopy)
   {
-    [v11 doubleValue];
+    [timeCopy doubleValue];
     v45 = v44;
     [v42 timeToLeaveInitialTravelTimeEvent];
-    v47 = v46 = v11;
+    v47 = v46 = timeCopy;
     [v47 setTravelTime:v45];
 
-    v11 = v46;
+    timeCopy = v46;
     v35 = v54;
   }
 
@@ -2609,7 +2609,7 @@ LABEL_21:
   [v48 sessionStateForType:7 callback:v56];
 
   v18[2](v18);
-  v12 = v53;
+  statesCopy = v53;
 LABEL_22:
 
   v34 = *MEMORY[0x1E69E9840];
@@ -2651,46 +2651,46 @@ uint64_t __117__GEOAPPortal_captureTtlInitialTimeWithTravelTime_additionalStates
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureTtlHypothesisWithArrival:(int)a3 departure:(int)a4 ttlUiNotificationShown:(int)a5 earliestArrivalOffset:(id)a6 earliestDepartureOffset:(id)a7 latestArrivalOffset:(id)a8 latestDepartureOffset:(id)a9 numberOfReroutes:(id)a10 additionalStates:(id)a11 providedDropRate:(id)a12 completionQueue:(id)a13 completionBlock:(id)a14
++ (void)captureTtlHypothesisWithArrival:(int)arrival departure:(int)departure ttlUiNotificationShown:(int)shown earliestArrivalOffset:(id)offset earliestDepartureOffset:(id)departureOffset latestArrivalOffset:(id)arrivalOffset latestDepartureOffset:(id)latestDepartureOffset numberOfReroutes:(id)self0 additionalStates:(id)self1 providedDropRate:(id)self2 completionQueue:(id)self3 completionBlock:(id)self4
 {
   v96 = *MEMORY[0x1E69E9840];
-  v16 = a6;
-  v17 = a7;
-  v83 = a8;
-  v18 = a9;
-  v19 = a10;
-  v20 = a11;
-  v21 = a12;
-  v22 = a13;
-  v23 = a14;
+  offsetCopy = offset;
+  departureOffsetCopy = departureOffset;
+  arrivalOffsetCopy = arrivalOffset;
+  latestDepartureOffsetCopy = latestDepartureOffset;
+  reroutesCopy = reroutes;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v90[0] = MEMORY[0x1E69E9820];
   v90[1] = 3221225472;
   v90[2] = __251__GEOAPPortal_captureTtlHypothesisWithArrival_departure_ttlUiNotificationShown_earliestArrivalOffset_earliestDepartureOffset_latestArrivalOffset_latestDepartureOffset_numberOfReroutes_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v90[3] = &unk_1E7959478;
-  v24 = v23;
+  v24 = blockCopy;
   v92 = v24;
-  v25 = v22;
+  v25 = queueCopy;
   v91 = v25;
   v26 = MEMORY[0x1AC5A12F0](v90);
-  v82 = v21;
+  v82 = rateCopy;
   if (!GEOConfigGetBOOL())
   {
     v79 = v25;
     v80 = v24;
-    v81 = v17;
+    v81 = departureOffsetCopy;
     v29 = +[GEOAPServiceManager sharedManager];
-    v30 = [v29 platformDiagAndUsage];
+    platformDiagAndUsage = [v29 platformDiagAndUsage];
 
-    if (v30)
+    if (platformDiagAndUsage)
     {
       v31 = +[GEOAPServiceManager sharedManager];
-      v32 = [v31 eventCollectionIsDisabledForCurrentProcess];
+      eventCollectionIsDisabledForCurrentProcess = [v31 eventCollectionIsDisabledForCurrentProcess];
 
-      if (!v32)
+      if (!eventCollectionIsDisabledForCurrentProcess)
       {
-        if (v21)
+        if (rateCopy)
         {
-          [v21 doubleValue];
+          [rateCopy doubleValue];
         }
 
         else
@@ -2698,8 +2698,8 @@ uint64_t __117__GEOAPPortal_captureTtlInitialTimeWithTravelTime_additionalStates
           GEOConfigGetDouble();
         }
 
-        v27 = v16;
-        v17 = v81;
+        v27 = offsetCopy;
+        departureOffsetCopy = v81;
         v25 = v79;
         if (v36 != 0.0 && v36 >= arc4random() / 4294967300.0)
         {
@@ -2708,16 +2708,16 @@ uint64_t __117__GEOAPPortal_captureTtlInitialTimeWithTravelTime_additionalStates
         }
 
         v75 = +[GEOAPStateFactory sharedFactory];
-        v70 = v20;
-        if ([v20 count])
+        v70 = statesCopy;
+        if ([statesCopy count])
         {
-          v73 = v18;
-          v37 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v20, "count")}];
+          v73 = latestDepartureOffsetCopy;
+          v37 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
           v86 = 0u;
           v87 = 0u;
           v88 = 0u;
           v89 = 0u;
-          v38 = v20;
+          v38 = statesCopy;
           v39 = [v38 countByEnumeratingWithState:&v86 objects:v93 count:16];
           if (v39)
           {
@@ -2744,8 +2744,8 @@ uint64_t __117__GEOAPPortal_captureTtlInitialTimeWithTravelTime_additionalStates
           }
 
           v45 = [v37 copy];
-          v27 = v16;
-          v18 = v73;
+          v27 = offsetCopy;
+          latestDepartureOffsetCopy = v73;
           v24 = v80;
         }
 
@@ -2754,7 +2754,7 @@ uint64_t __117__GEOAPPortal_captureTtlInitialTimeWithTravelTime_additionalStates
           v45 = 0;
         }
 
-        v28 = v83;
+        v28 = arrivalOffsetCopy;
         if (GEOConfigGetBOOL())
         {
           v72 = 0;
@@ -2771,7 +2771,7 @@ uint64_t __117__GEOAPPortal_captureTtlInitialTimeWithTravelTime_additionalStates
           }
         }
 
-        v20 = v70;
+        statesCopy = v70;
         v68 = v45;
         if (GEOConfigGetBOOL())
         {
@@ -2796,52 +2796,52 @@ uint64_t __117__GEOAPPortal_captureTtlInitialTimeWithTravelTime_additionalStates
         v48 = objc_alloc_init(MEMORY[0x1E69A1FC0]);
         [v47 setTimeToLeaveHypothesisEvent:v48];
 
-        v49 = [v47 timeToLeaveHypothesisEvent];
-        [v49 setArrival:a3];
+        timeToLeaveHypothesisEvent = [v47 timeToLeaveHypothesisEvent];
+        [timeToLeaveHypothesisEvent setArrival:arrival];
 
-        v50 = [v47 timeToLeaveHypothesisEvent];
-        [v50 setDeparture:a4];
+        timeToLeaveHypothesisEvent2 = [v47 timeToLeaveHypothesisEvent];
+        [timeToLeaveHypothesisEvent2 setDeparture:departure];
 
-        v51 = [v47 timeToLeaveHypothesisEvent];
-        [v51 setTtlUiNotificationShown:a5];
+        timeToLeaveHypothesisEvent3 = [v47 timeToLeaveHypothesisEvent];
+        [timeToLeaveHypothesisEvent3 setTtlUiNotificationShown:shown];
 
         if (v27)
         {
           [v27 doubleValue];
           v53 = v52;
-          v54 = [v47 timeToLeaveHypothesisEvent];
-          [v54 setEarliestArrivalOffset:v53];
+          timeToLeaveHypothesisEvent4 = [v47 timeToLeaveHypothesisEvent];
+          [timeToLeaveHypothesisEvent4 setEarliestArrivalOffset:v53];
         }
 
         if (v81)
         {
           [v81 doubleValue];
           v56 = v55;
-          v57 = [v47 timeToLeaveHypothesisEvent];
-          [v57 setEarliestDepartureOffset:v56];
+          timeToLeaveHypothesisEvent5 = [v47 timeToLeaveHypothesisEvent];
+          [timeToLeaveHypothesisEvent5 setEarliestDepartureOffset:v56];
         }
 
-        if (v83)
+        if (arrivalOffsetCopy)
         {
-          [v83 doubleValue];
+          [arrivalOffsetCopy doubleValue];
           v59 = v58;
-          v60 = [v47 timeToLeaveHypothesisEvent];
-          [v60 setLatestArrivalOffset:v59];
+          timeToLeaveHypothesisEvent6 = [v47 timeToLeaveHypothesisEvent];
+          [timeToLeaveHypothesisEvent6 setLatestArrivalOffset:v59];
         }
 
-        if (v18)
+        if (latestDepartureOffsetCopy)
         {
-          [v18 doubleValue];
+          [latestDepartureOffsetCopy doubleValue];
           v62 = v61;
-          v63 = [v47 timeToLeaveHypothesisEvent];
-          [v63 setLatestDepartureOffset:v62];
+          timeToLeaveHypothesisEvent7 = [v47 timeToLeaveHypothesisEvent];
+          [timeToLeaveHypothesisEvent7 setLatestDepartureOffset:v62];
         }
 
-        if (v19)
+        if (reroutesCopy)
         {
-          v64 = [v19 unsignedLongLongValue];
-          v65 = [v47 timeToLeaveHypothesisEvent];
-          [v65 setNumberOfReroutes:v64];
+          unsignedLongLongValue = [reroutesCopy unsignedLongLongValue];
+          timeToLeaveHypothesisEvent8 = [v47 timeToLeaveHypothesisEvent];
+          [timeToLeaveHypothesisEvent8 setNumberOfReroutes:unsignedLongLongValue];
 
           v24 = v80;
         }
@@ -2866,14 +2866,14 @@ uint64_t __117__GEOAPPortal_captureTtlInitialTimeWithTravelTime_additionalStates
         [v66 sessionStateForType:7 callback:v84];
 
         v26[2](v26);
-        v17 = v81;
+        departureOffsetCopy = v81;
 LABEL_11:
         v25 = v79;
         goto LABEL_12;
       }
 
       v33 = GEOGetGEOAPPortalAnalyticsLog();
-      v27 = v16;
+      v27 = offsetCopy;
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
       {
         v34 = GEOApplicationIdentifierOrProcessName();
@@ -2883,24 +2883,24 @@ LABEL_11:
       }
 
       v26[2](v26);
-      v17 = v81;
+      departureOffsetCopy = v81;
     }
 
     else
     {
       v26[2](v26);
-      v27 = v16;
-      v17 = v81;
+      v27 = offsetCopy;
+      departureOffsetCopy = v81;
     }
 
-    v28 = v83;
+    v28 = arrivalOffsetCopy;
     goto LABEL_11;
   }
 
   v26[2](v26);
-  v27 = v16;
+  v27 = offsetCopy;
 LABEL_3:
-  v28 = v83;
+  v28 = arrivalOffsetCopy;
 LABEL_12:
 
   v35 = *MEMORY[0x1E69E9840];
@@ -2942,37 +2942,37 @@ uint64_t __251__GEOAPPortal_captureTtlHypothesisWithArrival_departure_ttlUiNotif
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureTransitAppLaunchWithBundleIdentifier:(id)a3 source:(id)a4 destination:(id)a5 timestamp:(id)a6 additionalStates:(id)a7 providedDropRate:(id)a8 completionQueue:(id)a9 completionBlock:(id)a10
++ (void)captureTransitAppLaunchWithBundleIdentifier:(id)identifier source:(id)source destination:(id)destination timestamp:(id)timestamp additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)self0
 {
   v79 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  identifierCopy = identifier;
+  sourceCopy = source;
+  destinationCopy = destination;
+  timestampCopy = timestamp;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v73[0] = MEMORY[0x1E69E9820];
   v73[1] = 3221225472;
   v73[2] = __154__GEOAPPortal_captureTransitAppLaunchWithBundleIdentifier_source_destination_timestamp_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v73[3] = &unk_1E7959478;
-  v23 = v22;
+  v23 = blockCopy;
   v75 = v23;
-  v24 = v21;
+  v24 = queueCopy;
   v74 = v24;
   v25 = MEMORY[0x1AC5A12F0](v73);
   if (!GEOConfigGetBOOL())
   {
     v65 = v24;
-    v66 = v19;
+    v66 = statesCopy;
     v27 = +[GEOAPServiceManager sharedManager];
-    v28 = [v27 eventCollectionIsDisabledForCurrentProcess];
+    eventCollectionIsDisabledForCurrentProcess = [v27 eventCollectionIsDisabledForCurrentProcess];
 
-    if (v28)
+    if (eventCollectionIsDisabledForCurrentProcess)
     {
       v29 = GEOGetGEOAPPortalAnalyticsLog();
-      v26 = v20;
+      v26 = rateCopy;
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
       {
         v30 = GEOApplicationIdentifierOrProcessName();
@@ -2986,10 +2986,10 @@ uint64_t __251__GEOAPPortal_captureTtlHypothesisWithArrival_departure_ttlUiNotif
 
     else
     {
-      v26 = v20;
-      if (v20)
+      v26 = rateCopy;
+      if (rateCopy)
       {
-        [v20 doubleValue];
+        [rateCopy doubleValue];
       }
 
       else
@@ -2998,7 +2998,7 @@ uint64_t __251__GEOAPPortal_captureTtlHypothesisWithArrival_departure_ttlUiNotif
       }
 
       v24 = v65;
-      v19 = v66;
+      statesCopy = v66;
       if (v31 != 0.0 && v31 >= arc4random() / 4294967300.0)
       {
         v25[2](v25);
@@ -3006,13 +3006,13 @@ uint64_t __251__GEOAPPortal_captureTtlHypothesisWithArrival_departure_ttlUiNotif
       }
 
       v63 = +[GEOAPStateFactory sharedFactory];
-      v64 = v15;
+      v64 = identifierCopy;
       if ([v66 count])
       {
         v57 = v23;
-        v58 = v18;
-        v59 = v17;
-        v61 = v16;
+        v58 = timestampCopy;
+        v59 = destinationCopy;
+        v61 = sourceCopy;
         v32 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v66, "count")}];
         v69 = 0u;
         v70 = 0u;
@@ -3045,11 +3045,11 @@ uint64_t __251__GEOAPPortal_captureTtlHypothesisWithArrival_departure_ttlUiNotif
         }
 
         v40 = [v32 copy];
-        v17 = v59;
-        v16 = v61;
+        destinationCopy = v59;
+        sourceCopy = v61;
         v23 = v57;
-        v18 = v58;
-        v26 = v20;
+        timestampCopy = v58;
+        v26 = rateCopy;
       }
 
       else
@@ -3100,21 +3100,21 @@ uint64_t __251__GEOAPPortal_captureTtlHypothesisWithArrival_departure_ttlUiNotif
       v47 = objc_alloc_init(MEMORY[0x1E69A1FD0]);
       [v46 setTransitAppLaunchEvent:v47];
 
-      v48 = [v46 transitAppLaunchEvent];
-      [v48 setBundleIdentifier:v64];
+      transitAppLaunchEvent = [v46 transitAppLaunchEvent];
+      [transitAppLaunchEvent setBundleIdentifier:v64];
 
-      v49 = [v46 transitAppLaunchEvent];
-      [v49 setSource:v16];
+      transitAppLaunchEvent2 = [v46 transitAppLaunchEvent];
+      [transitAppLaunchEvent2 setSource:sourceCopy];
 
-      v50 = [v46 transitAppLaunchEvent];
-      [v50 setDestination:v17];
+      transitAppLaunchEvent3 = [v46 transitAppLaunchEvent];
+      [transitAppLaunchEvent3 setDestination:destinationCopy];
 
-      if (v18)
+      if (timestampCopy)
       {
-        [v18 doubleValue];
+        [timestampCopy doubleValue];
         v52 = v51;
-        v53 = [v46 transitAppLaunchEvent];
-        [v53 setTimestamp:v52];
+        transitAppLaunchEvent4 = [v46 transitAppLaunchEvent];
+        [transitAppLaunchEvent4 setTimestamp:v52];
       }
 
       if (v41)
@@ -3137,16 +3137,16 @@ uint64_t __251__GEOAPPortal_captureTtlHypothesisWithArrival_departure_ttlUiNotif
       [v54 sessionStateForType:7 callback:v67];
 
       v25[2](v25);
-      v15 = v64;
+      identifierCopy = v64;
     }
 
     v24 = v65;
-    v19 = v66;
+    statesCopy = v66;
     goto LABEL_41;
   }
 
   v25[2](v25);
-  v26 = v20;
+  v26 = rateCopy;
 LABEL_41:
 
   v56 = *MEMORY[0x1E69E9840];
@@ -3188,21 +3188,21 @@ uint64_t __154__GEOAPPortal_captureTransitAppLaunchWithBundleIdentifier_source_d
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureTelemetricWithTelemetricEntitys:(id)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7
++ (void)captureTelemetricWithTelemetricEntitys:(id)entitys additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block
 {
   v87 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  entitysCopy = entitys;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v80[0] = MEMORY[0x1E69E9820];
   v80[1] = 3221225472;
   v80[2] = __120__GEOAPPortal_captureTelemetricWithTelemetricEntitys_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v80[3] = &unk_1E7959478;
-  v16 = v15;
+  v16 = blockCopy;
   v82 = v16;
-  v17 = v14;
+  v17 = queueCopy;
   v81 = v17;
   v18 = MEMORY[0x1AC5A12F0](v80);
   if (GEOConfigGetBOOL())
@@ -3211,17 +3211,17 @@ uint64_t __154__GEOAPPortal_captureTransitAppLaunchWithBundleIdentifier_source_d
   }
 
   v19 = +[GEOAPServiceManager sharedManager];
-  v20 = [v19 platformDiagAndUsage];
+  platformDiagAndUsage = [v19 platformDiagAndUsage];
 
-  if ((v20 & 1) == 0)
+  if ((platformDiagAndUsage & 1) == 0)
   {
     goto LABEL_21;
   }
 
   v21 = +[GEOAPServiceManager sharedManager];
-  v22 = [v21 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v21 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v22)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v23 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -3235,9 +3235,9 @@ uint64_t __154__GEOAPPortal_captureTransitAppLaunchWithBundleIdentifier_source_d
     goto LABEL_21;
   }
 
-  if (v13)
+  if (rateCopy)
   {
-    [v13 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -3254,18 +3254,18 @@ LABEL_21:
 
   v26 = +[GEOAPStateFactory sharedFactory];
   v67 = v26;
-  v68 = v11;
-  v64 = v13;
-  v65 = v12;
+  v68 = entitysCopy;
+  v64 = rateCopy;
+  v65 = statesCopy;
   v63 = v16;
-  if ([v12 count])
+  if ([statesCopy count])
   {
-    v27 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v12, "count")}];
+    v27 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v76 = 0u;
     v77 = 0u;
     v78 = 0u;
     v79 = 0u;
-    v28 = v12;
+    v28 = statesCopy;
     v29 = [v28 countByEnumeratingWithState:&v76 objects:v84 count:16];
     if (v29)
     {
@@ -3293,7 +3293,7 @@ LABEL_21:
 
     v35 = [v27 copy];
     v26 = v67;
-    v11 = v68;
+    entitysCopy = v68;
   }
 
   else
@@ -3364,21 +3364,21 @@ LABEL_21:
   v44 = objc_alloc_init(MEMORY[0x1E69A1FB0]);
   [v43 setTelemetric:v44];
 
-  v45 = [v43 telemetric];
-  v46 = [v45 telemetricEntitys];
+  telemetric = [v43 telemetric];
+  telemetricEntitys = [telemetric telemetricEntitys];
 
-  if (!v46)
+  if (!telemetricEntitys)
   {
-    v47 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v11, "count")}];
-    v48 = [v43 telemetric];
-    [v48 setTelemetricEntitys:v47];
+    v47 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(entitysCopy, "count")}];
+    telemetric2 = [v43 telemetric];
+    [telemetric2 setTelemetricEntitys:v47];
   }
 
   v74 = 0u;
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v49 = v11;
+  v49 = entitysCopy;
   v50 = [v49 countByEnumeratingWithState:&v72 objects:v83 count:16];
   if (v50)
   {
@@ -3394,10 +3394,10 @@ LABEL_21:
         }
 
         v54 = *(*(&v72 + 1) + 8 * j);
-        v55 = [v43 telemetric];
-        v56 = [v55 telemetricEntitys];
+        telemetric3 = [v43 telemetric];
+        telemetricEntitys2 = [telemetric3 telemetricEntitys];
         v57 = [v54 copy];
-        [v56 addObject:v57];
+        [telemetricEntitys2 addObject:v57];
       }
 
       v51 = [v49 countByEnumeratingWithState:&v72 objects:v83 count:16];
@@ -3411,9 +3411,9 @@ LABEL_21:
     [v43 addLogMsgState:v66];
   }
 
-  v11 = v68;
+  entitysCopy = v68;
   v16 = v63;
-  v13 = v64;
+  rateCopy = v64;
   if (v69)
   {
     [v43 addLogMsgState:?];
@@ -3434,7 +3434,7 @@ LABEL_21:
   [v58 sessionStateForType:7 callback:v70];
 
   v18[2](v18);
-  v12 = v65;
+  statesCopy = v65;
 LABEL_22:
 
   v36 = *MEMORY[0x1E69E9840];
@@ -3476,49 +3476,49 @@ uint64_t __120__GEOAPPortal_captureTelemetricWithTelemetricEntitys_additionalSta
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureTableBookingWithBookTableSessionId:(id)a3 endState:(int)a4 endView:(int)a5 bookTableAppId:(id)a6 muid:(id)a7 blurredReservationTimestamp:(id)a8 blurredBookingTimestamp:(id)a9 durationOfSessionInSeconds:(id)a10 installNeeded:(id)a11 installNeededTappedAppId:(id)a12 installCompleted:(id)a13 tableSize:(id)a14 addedSpecialRequest:(id)a15 swipedAvailableTimes:(id)a16 tappedDatePicker:(id)a17 errorMessages:(id)a18 additionalStates:(id)a19 providedDropRate:(id)a20 completionQueue:(id)a21 completionBlock:(id)a22
++ (void)captureTableBookingWithBookTableSessionId:(id)id endState:(int)state endView:(int)view bookTableAppId:(id)appId muid:(id)muid blurredReservationTimestamp:(id)timestamp blurredBookingTimestamp:(id)bookingTimestamp durationOfSessionInSeconds:(id)self0 installNeeded:(id)self1 installNeededTappedAppId:(id)self2 installCompleted:(id)self3 tableSize:(id)self4 addedSpecialRequest:(id)self5 swipedAvailableTimes:(id)self6 tappedDatePicker:(id)self7 errorMessages:(id)self8 additionalStates:(id)self9 providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block
 {
   v142 = *MEMORY[0x1E69E9840];
-  v122 = a3;
-  v25 = a6;
-  v26 = a7;
-  v121 = a8;
-  v27 = a9;
-  v120 = a10;
-  v28 = a11;
-  v119 = a12;
-  v29 = a13;
-  v30 = a14;
-  v31 = a15;
-  v118 = a16;
-  v117 = a17;
-  v123 = a18;
-  v116 = a19;
-  v124 = a20;
-  v32 = a21;
-  v33 = a22;
+  idCopy = id;
+  appIdCopy = appId;
+  muidCopy = muid;
+  timestampCopy = timestamp;
+  bookingTimestampCopy = bookingTimestamp;
+  secondsCopy = seconds;
+  neededCopy = needed;
+  tappedAppIdCopy = tappedAppId;
+  completedCopy = completed;
+  sizeCopy = size;
+  requestCopy = request;
+  timesCopy = times;
+  pickerCopy = picker;
+  messagesCopy = messages;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v135[0] = MEMORY[0x1E69E9820];
   v135[1] = 3221225472;
   v135[2] = __377__GEOAPPortal_captureTableBookingWithBookTableSessionId_endState_endView_bookTableAppId_muid_blurredReservationTimestamp_blurredBookingTimestamp_durationOfSessionInSeconds_installNeeded_installNeededTappedAppId_installCompleted_tableSize_addedSpecialRequest_swipedAvailableTimes_tappedDatePicker_errorMessages_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v135[3] = &unk_1E7959478;
-  v115 = v33;
+  v115 = blockCopy;
   v137 = v115;
-  v34 = v32;
+  v34 = queueCopy;
   v136 = v34;
   v35 = MEMORY[0x1AC5A12F0](v135);
   if (GEOConfigGetBOOL())
   {
     v35[2](v35);
 LABEL_7:
-    v40 = v116;
+    v40 = statesCopy;
     goto LABEL_8;
   }
 
-  v114 = v25;
+  v114 = appIdCopy;
   v36 = +[GEOAPServiceManager sharedManager];
-  v37 = [v36 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v36 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v37)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v38 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
@@ -3530,13 +3530,13 @@ LABEL_7:
     }
 
     v35[2](v35);
-    v25 = v114;
+    appIdCopy = v114;
     goto LABEL_7;
   }
 
-  if (v124)
+  if (rateCopy)
   {
-    [v124 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -3544,25 +3544,25 @@ LABEL_7:
     GEOConfigGetDouble();
   }
 
-  v25 = v114;
-  v40 = v116;
+  appIdCopy = v114;
+  v40 = statesCopy;
   if (v42 == 0.0 || v42 < arc4random() / 4294967300.0)
   {
     v104 = +[GEOAPStateFactory sharedFactory];
-    v105 = v27;
-    v101 = v29;
-    v102 = v28;
-    v99 = v31;
-    v100 = v30;
-    v103 = v26;
-    if ([v116 count])
+    v105 = bookingTimestampCopy;
+    v101 = completedCopy;
+    v102 = neededCopy;
+    v99 = requestCopy;
+    v100 = sizeCopy;
+    v103 = muidCopy;
+    if ([statesCopy count])
     {
-      v43 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v116, "count")}];
+      v43 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
       v131 = 0u;
       v132 = 0u;
       v133 = 0u;
       v134 = 0u;
-      v44 = v116;
+      v44 = statesCopy;
       v45 = [v44 countByEnumeratingWithState:&v131 objects:v139 count:16];
       if (v45)
       {
@@ -3589,11 +3589,11 @@ LABEL_7:
       }
 
       v110 = [v43 copy];
-      v25 = v114;
-      v28 = v102;
-      v26 = v103;
-      v30 = v100;
-      v31 = v99;
+      appIdCopy = v114;
+      neededCopy = v102;
+      muidCopy = v103;
+      sizeCopy = v100;
+      requestCopy = v99;
     }
 
     else
@@ -3694,107 +3694,107 @@ LABEL_7:
     v56 = objc_alloc_init(MEMORY[0x1E69A1FA8]);
     [v55 setTableBookingSession:v56];
 
-    v57 = [v55 tableBookingSession];
-    [v57 setBookTableSessionId:v122];
+    tableBookingSession = [v55 tableBookingSession];
+    [tableBookingSession setBookTableSessionId:idCopy];
 
-    v58 = [v55 tableBookingSession];
-    [v58 setEndState:a4];
+    tableBookingSession2 = [v55 tableBookingSession];
+    [tableBookingSession2 setEndState:state];
 
-    v59 = [v55 tableBookingSession];
-    [v59 setEndView:a5];
+    tableBookingSession3 = [v55 tableBookingSession];
+    [tableBookingSession3 setEndView:view];
 
-    v60 = [v55 tableBookingSession];
-    [v60 setBookTableAppId:v25];
+    tableBookingSession4 = [v55 tableBookingSession];
+    [tableBookingSession4 setBookTableAppId:appIdCopy];
 
-    if (v26)
+    if (muidCopy)
     {
-      v61 = [v26 unsignedLongLongValue];
-      v62 = [v55 tableBookingSession];
-      [v62 setMuid:v61];
+      unsignedLongLongValue = [muidCopy unsignedLongLongValue];
+      tableBookingSession5 = [v55 tableBookingSession];
+      [tableBookingSession5 setMuid:unsignedLongLongValue];
     }
 
-    if (v121)
+    if (timestampCopy)
     {
-      v63 = [v121 integerValue];
-      v64 = [v55 tableBookingSession];
-      [v64 setBlurredReservationTimestamp:v63];
+      integerValue = [timestampCopy integerValue];
+      tableBookingSession6 = [v55 tableBookingSession];
+      [tableBookingSession6 setBlurredReservationTimestamp:integerValue];
     }
 
     if (v105)
     {
-      v65 = [v105 integerValue];
-      v66 = [v55 tableBookingSession];
-      [v66 setBlurredBookingTimestamp:v65];
+      integerValue2 = [v105 integerValue];
+      tableBookingSession7 = [v55 tableBookingSession];
+      [tableBookingSession7 setBlurredBookingTimestamp:integerValue2];
     }
 
-    if (v120)
+    if (secondsCopy)
     {
-      [v120 doubleValue];
+      [secondsCopy doubleValue];
       v68 = v67;
-      v69 = [v55 tableBookingSession];
-      [v69 setDurationOfSessionInSeconds:v68];
+      tableBookingSession8 = [v55 tableBookingSession];
+      [tableBookingSession8 setDurationOfSessionInSeconds:v68];
     }
 
-    if (v28)
+    if (neededCopy)
     {
-      v70 = [v28 BOOLValue];
-      v71 = [v55 tableBookingSession];
-      [v71 setInstallNeeded:v70];
+      bOOLValue = [neededCopy BOOLValue];
+      tableBookingSession9 = [v55 tableBookingSession];
+      [tableBookingSession9 setInstallNeeded:bOOLValue];
     }
 
-    v72 = [v55 tableBookingSession];
-    [v72 setInstallNeededTappedAppId:v119];
+    tableBookingSession10 = [v55 tableBookingSession];
+    [tableBookingSession10 setInstallNeededTappedAppId:tappedAppIdCopy];
 
-    if (v29)
+    if (completedCopy)
     {
-      v73 = [v29 BOOLValue];
-      v74 = [v55 tableBookingSession];
-      [v74 setInstallCompleted:v73];
+      bOOLValue2 = [completedCopy BOOLValue];
+      tableBookingSession11 = [v55 tableBookingSession];
+      [tableBookingSession11 setInstallCompleted:bOOLValue2];
     }
 
-    if (v30)
+    if (sizeCopy)
     {
-      v75 = [v30 unsignedLongLongValue];
-      v76 = [v55 tableBookingSession];
-      [v76 setTableSize:v75];
+      unsignedLongLongValue2 = [sizeCopy unsignedLongLongValue];
+      tableBookingSession12 = [v55 tableBookingSession];
+      [tableBookingSession12 setTableSize:unsignedLongLongValue2];
     }
 
-    if (v31)
+    if (requestCopy)
     {
-      v77 = [v31 BOOLValue];
-      v78 = [v55 tableBookingSession];
-      [v78 setAddedSpecialRequest:v77];
+      bOOLValue3 = [requestCopy BOOLValue];
+      tableBookingSession13 = [v55 tableBookingSession];
+      [tableBookingSession13 setAddedSpecialRequest:bOOLValue3];
     }
 
-    if (v118)
+    if (timesCopy)
     {
-      v79 = [v118 BOOLValue];
-      v80 = [v55 tableBookingSession];
-      [v80 setSwipedAvailableTimes:v79];
+      bOOLValue4 = [timesCopy BOOLValue];
+      tableBookingSession14 = [v55 tableBookingSession];
+      [tableBookingSession14 setSwipedAvailableTimes:bOOLValue4];
     }
 
-    if (v117)
+    if (pickerCopy)
     {
-      v81 = [v117 BOOLValue];
-      v82 = [v55 tableBookingSession];
-      [v82 setTappedDatePicker:v81];
+      bOOLValue5 = [pickerCopy BOOLValue];
+      tableBookingSession15 = [v55 tableBookingSession];
+      [tableBookingSession15 setTappedDatePicker:bOOLValue5];
     }
 
-    v83 = [v55 tableBookingSession];
-    v84 = [v83 errorMessages];
+    tableBookingSession16 = [v55 tableBookingSession];
+    errorMessages = [tableBookingSession16 errorMessages];
 
-    if (!v84)
+    if (!errorMessages)
     {
-      v85 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v123, "count")}];
-      v86 = [v55 tableBookingSession];
-      [v86 setErrorMessages:v85];
+      v85 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(messagesCopy, "count")}];
+      tableBookingSession17 = [v55 tableBookingSession];
+      [tableBookingSession17 setErrorMessages:v85];
     }
 
     v129 = 0u;
     v130 = 0u;
     v127 = 0u;
     v128 = 0u;
-    v87 = v123;
+    v87 = messagesCopy;
     v88 = [v87 countByEnumeratingWithState:&v127 objects:v138 count:16];
     if (v88)
     {
@@ -3810,10 +3810,10 @@ LABEL_7:
           }
 
           v92 = *(*(&v127 + 1) + 8 * j);
-          v93 = [v55 tableBookingSession];
-          v94 = [v93 errorMessages];
+          tableBookingSession18 = [v55 tableBookingSession];
+          errorMessages2 = [tableBookingSession18 errorMessages];
           v95 = [v92 copy];
-          [v94 addObject:v95];
+          [errorMessages2 addObject:v95];
         }
 
         v89 = [v87 countByEnumeratingWithState:&v127 objects:v138 count:16];
@@ -3827,10 +3827,10 @@ LABEL_7:
       [v55 addLogMsgState:?];
     }
 
-    v25 = v114;
-    v29 = v101;
-    v28 = v102;
-    v30 = v100;
+    appIdCopy = v114;
+    completedCopy = v101;
+    neededCopy = v102;
+    sizeCopy = v100;
     if (v107)
     {
       [v55 addLogMsgState:?];
@@ -3861,10 +3861,10 @@ LABEL_7:
     [v96 sessionStateForType:7 callback:v125];
 
     v35[2](v35);
-    v26 = v103;
-    v27 = v105;
-    v40 = v116;
-    v31 = v99;
+    muidCopy = v103;
+    bookingTimestampCopy = v105;
+    v40 = statesCopy;
+    requestCopy = v99;
   }
 
   else
@@ -3913,22 +3913,22 @@ uint64_t __377__GEOAPPortal_captureTableBookingWithBookTableSessionId_endState_e
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureTableBookedWithBookedTableSessionId:(id)a3 bookedTables:(id)a4 additionalStates:(id)a5 providedDropRate:(id)a6 completionQueue:(id)a7 completionBlock:(id)a8
++ (void)captureTableBookedWithBookedTableSessionId:(id)id bookedTables:(id)tables additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block
 {
   v92 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  idCopy = id;
+  tablesCopy = tables;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v85[0] = MEMORY[0x1E69E9820];
   v85[1] = 3221225472;
   v85[2] = __137__GEOAPPortal_captureTableBookedWithBookedTableSessionId_bookedTables_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v85[3] = &unk_1E7959478;
-  v19 = v18;
+  v19 = blockCopy;
   v87 = v19;
-  v20 = v17;
+  v20 = queueCopy;
   v86 = v20;
   v21 = MEMORY[0x1AC5A12F0](v85);
   if (GEOConfigGetBOOL())
@@ -3937,9 +3937,9 @@ uint64_t __377__GEOAPPortal_captureTableBookingWithBookTableSessionId_endState_e
   }
 
   v22 = +[GEOAPServiceManager sharedManager];
-  v23 = [v22 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v22 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v23)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v24 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -3953,9 +3953,9 @@ uint64_t __377__GEOAPPortal_captureTableBookingWithBookTableSessionId_endState_e
     goto LABEL_20;
   }
 
-  if (v16)
+  if (rateCopy)
   {
-    [v16 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -3973,19 +3973,19 @@ LABEL_20:
   v61 = v20;
   v27 = +[GEOAPStateFactory sharedFactory];
   v69 = v27;
-  v70 = v14;
-  v71 = v13;
-  v65 = v16;
-  v66 = v15;
+  v70 = tablesCopy;
+  v71 = idCopy;
+  v65 = rateCopy;
+  v66 = statesCopy;
   v64 = v19;
-  if ([v15 count])
+  if ([statesCopy count])
   {
-    v28 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v15, "count")}];
+    v28 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v81 = 0u;
     v82 = 0u;
     v83 = 0u;
     v84 = 0u;
-    v29 = v15;
+    v29 = statesCopy;
     v30 = [v29 countByEnumeratingWithState:&v81 objects:v89 count:16];
     if (v30)
     {
@@ -4012,8 +4012,8 @@ LABEL_20:
     }
 
     v36 = [v28 copy];
-    v14 = v70;
-    v13 = v71;
+    tablesCopy = v70;
+    idCopy = v71;
     v27 = v69;
   }
 
@@ -4117,24 +4117,24 @@ LABEL_20:
   v44 = objc_alloc_init(MEMORY[0x1E69A1FA0]);
   [v43 setTableBookedSession:v44];
 
-  v45 = [v43 tableBookedSession];
-  [v45 setBookedTableSessionId:v13];
+  tableBookedSession = [v43 tableBookedSession];
+  [tableBookedSession setBookedTableSessionId:idCopy];
 
-  v46 = [v43 tableBookedSession];
-  v47 = [v46 bookedTables];
+  tableBookedSession2 = [v43 tableBookedSession];
+  bookedTables = [tableBookedSession2 bookedTables];
 
-  if (!v47)
+  if (!bookedTables)
   {
-    v48 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v14, "count")}];
-    v49 = [v43 tableBookedSession];
-    [v49 setBookedTables:v48];
+    v48 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(tablesCopy, "count")}];
+    tableBookedSession3 = [v43 tableBookedSession];
+    [tableBookedSession3 setBookedTables:v48];
   }
 
   v79 = 0u;
   v80 = 0u;
   v77 = 0u;
   v78 = 0u;
-  v50 = v14;
+  v50 = tablesCopy;
   v51 = [v50 countByEnumeratingWithState:&v77 objects:v88 count:16];
   if (v51)
   {
@@ -4150,10 +4150,10 @@ LABEL_20:
         }
 
         v55 = *(*(&v77 + 1) + 8 * j);
-        v56 = [v43 tableBookedSession];
-        v57 = [v56 bookedTables];
+        tableBookedSession4 = [v43 tableBookedSession];
+        bookedTables2 = [tableBookedSession4 bookedTables];
         v58 = [v55 copy];
-        [v57 addObject:v58];
+        [bookedTables2 addObject:v58];
       }
 
       v52 = [v50 countByEnumeratingWithState:&v77 objects:v88 count:16];
@@ -4167,9 +4167,9 @@ LABEL_20:
     [v43 addLogMsgState:v68];
   }
 
-  v14 = v70;
-  v13 = v71;
-  v15 = v66;
+  tablesCopy = v70;
+  idCopy = v71;
+  statesCopy = v66;
   v19 = v64;
   if (v73)
   {
@@ -4201,7 +4201,7 @@ LABEL_20:
   [v59 sessionStateForType:7 callback:v75];
 
   v21[2](v21);
-  v16 = v65;
+  rateCopy = v65;
   v20 = v61;
 LABEL_21:
 
@@ -4244,24 +4244,24 @@ uint64_t __137__GEOAPPortal_captureTableBookedWithBookedTableSessionId_bookedTab
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureShowcaseSuppressionWithBusinessId:(id)a3 localSearchProviderID:(id)a4 showcaseId:(id)a5 suppressionReason:(int)a6 adamId:(id)a7 additionalStates:(id)a8 providedDropRate:(id)a9 completionQueue:(id)a10 completionBlock:(id)a11
++ (void)captureShowcaseSuppressionWithBusinessId:(id)id localSearchProviderID:(id)d showcaseId:(id)showcaseId suppressionReason:(int)reason adamId:(id)adamId additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)self0 completionBlock:(id)self1
 {
   v83 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
+  idCopy = id;
+  dCopy = d;
+  showcaseIdCopy = showcaseId;
+  adamIdCopy = adamId;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v77[0] = MEMORY[0x1E69E9820];
   v77[1] = 3221225472;
   v77[2] = __180__GEOAPPortal_captureShowcaseSuppressionWithBusinessId_localSearchProviderID_showcaseId_suppressionReason_adamId_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v77[3] = &unk_1E7959478;
-  v23 = v22;
+  v23 = blockCopy;
   v79 = v23;
-  v24 = v21;
+  v24 = queueCopy;
   v78 = v24;
   v25 = MEMORY[0x1AC5A12F0](v77);
   if (GEOConfigGetBOOL())
@@ -4270,12 +4270,12 @@ uint64_t __137__GEOAPPortal_captureTableBookedWithBookedTableSessionId_bookedTab
     goto LABEL_56;
   }
 
-  v70 = v19;
-  v26 = v18;
+  v70 = statesCopy;
+  v26 = adamIdCopy;
   v27 = +[GEOAPServiceManager sharedManager];
-  v28 = [v27 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v27 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v28)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v29 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
@@ -4287,13 +4287,13 @@ uint64_t __137__GEOAPPortal_captureTableBookedWithBookedTableSessionId_bookedTab
     }
 
     v25[2](v25);
-    v18 = v26;
+    adamIdCopy = v26;
     goto LABEL_22;
   }
 
-  if (v20)
+  if (rateCopy)
   {
-    [v20 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -4301,22 +4301,22 @@ uint64_t __137__GEOAPPortal_captureTableBookedWithBookedTableSessionId_bookedTab
     GEOConfigGetDouble();
   }
 
-  v18 = v26;
+  adamIdCopy = v26;
   if (v31 != 0.0 && v31 >= arc4random() / 4294967300.0)
   {
     v25[2](v25);
 LABEL_22:
-    v19 = v70;
+    statesCopy = v70;
     goto LABEL_56;
   }
 
   v60 = +[GEOAPStateFactory sharedFactory];
-  v61 = v15;
-  v65 = v16;
+  v61 = idCopy;
+  v65 = dCopy;
   if ([v70 count])
   {
-    v63 = v20;
-    v67 = v17;
+    v63 = rateCopy;
+    v67 = showcaseIdCopy;
     v32 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v70, "count")}];
     v73 = 0u;
     v74 = 0u;
@@ -4349,10 +4349,10 @@ LABEL_22:
     }
 
     v66 = [v32 copy];
-    v20 = v63;
-    v16 = v65;
-    v17 = v67;
-    v18 = v26;
+    rateCopy = v63;
+    dCopy = v65;
+    showcaseIdCopy = v67;
+    adamIdCopy = v26;
   }
 
   else
@@ -4360,7 +4360,7 @@ LABEL_22:
     v66 = 0;
   }
 
-  v19 = v70;
+  statesCopy = v70;
   if (GEOConfigGetBOOL())
   {
     v68 = 0;
@@ -4440,28 +4440,28 @@ LABEL_22:
 
   if (v61)
   {
-    v48 = [v61 unsignedLongLongValue];
-    v49 = [v46 showcaseSuppression];
-    [v49 setBusinessId:v48];
+    unsignedLongLongValue = [v61 unsignedLongLongValue];
+    showcaseSuppression = [v46 showcaseSuppression];
+    [showcaseSuppression setBusinessId:unsignedLongLongValue];
 
-    v16 = v65;
+    dCopy = v65;
   }
 
-  if (v16)
+  if (dCopy)
   {
-    v50 = [v16 integerValue];
-    v51 = [v46 showcaseSuppression];
-    [v51 setLocalSearchProviderID:v50];
+    integerValue = [dCopy integerValue];
+    showcaseSuppression2 = [v46 showcaseSuppression];
+    [showcaseSuppression2 setLocalSearchProviderID:integerValue];
   }
 
-  v52 = [v46 showcaseSuppression];
-  [v52 setShowcaseId:v17];
+  showcaseSuppression3 = [v46 showcaseSuppression];
+  [showcaseSuppression3 setShowcaseId:showcaseIdCopy];
 
-  v53 = [v46 showcaseSuppression];
-  [v53 setSuppressionReason:a6];
+  showcaseSuppression4 = [v46 showcaseSuppression];
+  [showcaseSuppression4 setSuppressionReason:reason];
 
-  v54 = [v46 showcaseSuppression];
-  [v54 setAdamId:v18];
+  showcaseSuppression5 = [v46 showcaseSuppression];
+  [showcaseSuppression5 setAdamId:adamIdCopy];
 
   if (v64)
   {
@@ -4493,8 +4493,8 @@ LABEL_22:
   [v55 sessionStateForType:8 callback:v71];
 
   v25[2](v25);
-  v15 = v61;
-  v16 = v65;
+  idCopy = v61;
+  dCopy = v65;
   v24 = v58;
 LABEL_56:
 
@@ -4537,39 +4537,39 @@ uint64_t __180__GEOAPPortal_captureShowcaseSuppressionWithBusinessId_localSearch
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureRideBookingWithRideBookingSessionId:(id)a3 statusIssue:(int)a4 endState:(int)a5 endView:(int)a6 rideAppId:(id)a7 rideAppVersion:(id)a8 originBlurred:(id)a9 destinationBlurred:(id)a10 exploredOtherOptions:(id)a11 distanceToPickupInMeters:(id)a12 paymentIsApplePay:(id)a13 numberOfAvailableExtensions:(id)a14 switchedApp:(id)a15 comparedRideOptions:(id)a16 showedSurgePricingAlert:(id)a17 durationOfSessionInSeconds:(id)a18 installedApp:(id)a19 timestamp:(id)a20 unavailable:(id)a21 movedPickupLocation:(id)a22 errorMessages:(id)a23 intentResponseFailures:(id)a24 additionalStates:(id)a25 providedDropRate:(id)a26 completionQueue:(id)a27 completionBlock:(id)a28
++ (void)captureRideBookingWithRideBookingSessionId:(id)id statusIssue:(int)issue endState:(int)state endView:(int)view rideAppId:(id)appId rideAppVersion:(id)version originBlurred:(id)blurred destinationBlurred:(id)self0 exploredOtherOptions:(id)self1 distanceToPickupInMeters:(id)self2 paymentIsApplePay:(id)self3 numberOfAvailableExtensions:(id)self4 switchedApp:(id)self5 comparedRideOptions:(id)self6 showedSurgePricingAlert:(id)self7 durationOfSessionInSeconds:(id)self8 installedApp:(id)self9 timestamp:(id)timestamp unavailable:(id)unavailable movedPickupLocation:(id)location errorMessages:(id)messages intentResponseFailures:(id)failures additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block
 {
   v183 = *MEMORY[0x1E69E9840];
-  v157 = a3;
-  v30 = a7;
-  v31 = a8;
-  v156 = a9;
-  v32 = a10;
-  v155 = a11;
-  v154 = a12;
-  v33 = a13;
-  v34 = a14;
-  v35 = a15;
-  v36 = a16;
-  v153 = a17;
-  v152 = a18;
-  v151 = a19;
-  v150 = a20;
-  v149 = a21;
-  v148 = a22;
-  v159 = a23;
-  v158 = a24;
-  v37 = a25;
-  v160 = a26;
-  v38 = a27;
-  v39 = a28;
+  idCopy = id;
+  appIdCopy = appId;
+  versionCopy = version;
+  blurredCopy = blurred;
+  destinationBlurredCopy = destinationBlurred;
+  optionsCopy = options;
+  metersCopy = meters;
+  payCopy = pay;
+  extensionsCopy = extensions;
+  appCopy = app;
+  rideOptionsCopy = rideOptions;
+  alertCopy = alert;
+  secondsCopy = seconds;
+  installedAppCopy = installedApp;
+  timestampCopy = timestamp;
+  unavailableCopy = unavailable;
+  locationCopy = location;
+  messagesCopy = messages;
+  failuresCopy = failures;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v175[0] = MEMORY[0x1E69E9820];
   v175[1] = 3221225472;
   v175[2] = __478__GEOAPPortal_captureRideBookingWithRideBookingSessionId_statusIssue_endState_endView_rideAppId_rideAppVersion_originBlurred_destinationBlurred_exploredOtherOptions_distanceToPickupInMeters_paymentIsApplePay_numberOfAvailableExtensions_switchedApp_comparedRideOptions_showedSurgePricingAlert_durationOfSessionInSeconds_installedApp_timestamp_unavailable_movedPickupLocation_errorMessages_intentResponseFailures_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v175[3] = &unk_1E7959478;
-  v147 = v39;
+  v147 = blockCopy;
   v177 = v147;
-  v40 = v38;
+  v40 = queueCopy;
   v176 = v40;
   v41 = MEMORY[0x1AC5A12F0](v175);
   if (GEOConfigGetBOOL())
@@ -4579,13 +4579,13 @@ LABEL_2:
     goto LABEL_99;
   }
 
-  v145 = v37;
-  v146 = v36;
+  v145 = statesCopy;
+  v146 = rideOptionsCopy;
   v42 = +[GEOAPServiceManager sharedManager];
-  v43 = [v42 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v42 eventCollectionIsDisabledForCurrentProcess];
 
-  v141 = v32;
-  if (v43)
+  v141 = destinationBlurredCopy;
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v44 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
@@ -4597,16 +4597,16 @@ LABEL_2:
     }
 
     v41[2](v41);
-    v32 = v141;
-    v37 = v145;
-    v36 = v146;
+    destinationBlurredCopy = v141;
+    statesCopy = v145;
+    rideOptionsCopy = v146;
   }
 
   else
   {
-    if (v160)
+    if (rateCopy)
     {
-      [v160 doubleValue];
+      [rateCopy doubleValue];
     }
 
     else
@@ -4614,19 +4614,19 @@ LABEL_2:
       GEOConfigGetDouble();
     }
 
-    v37 = v145;
-    v36 = v146;
+    statesCopy = v145;
+    rideOptionsCopy = v146;
     if (v46 != 0.0 && v46 >= arc4random() / 4294967300.0)
     {
       goto LABEL_2;
     }
 
     v136 = +[GEOAPStateFactory sharedFactory];
-    v131 = v31;
-    v132 = v30;
-    v129 = v34;
-    v130 = v33;
-    v137 = v35;
+    v131 = versionCopy;
+    v132 = appIdCopy;
+    v129 = extensionsCopy;
+    v130 = payCopy;
+    v137 = appCopy;
     if ([v145 count])
     {
       v47 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v145, "count")}];
@@ -4661,10 +4661,10 @@ LABEL_2:
       }
 
       v139 = [v47 copy];
-      v31 = v131;
-      v30 = v132;
-      v34 = v129;
-      v36 = v146;
+      versionCopy = v131;
+      appIdCopy = v132;
+      extensionsCopy = v129;
+      rideOptionsCopy = v146;
     }
 
     else
@@ -4769,131 +4769,131 @@ LABEL_2:
     v64 = objc_alloc_init(MEMORY[0x1E69A1F88]);
     [v63 setRideBookingSession:v64];
 
-    v65 = [v63 rideBookingSession];
-    [v65 setRideBookingSessionId:v157];
+    rideBookingSession = [v63 rideBookingSession];
+    [rideBookingSession setRideBookingSessionId:idCopy];
 
-    v66 = [v63 rideBookingSession];
-    [v66 setStatusIssue:a4];
+    rideBookingSession2 = [v63 rideBookingSession];
+    [rideBookingSession2 setStatusIssue:issue];
 
-    v67 = [v63 rideBookingSession];
-    [v67 setEndState:a5];
+    rideBookingSession3 = [v63 rideBookingSession];
+    [rideBookingSession3 setEndState:state];
 
-    v68 = [v63 rideBookingSession];
-    [v68 setEndView:a6];
+    rideBookingSession4 = [v63 rideBookingSession];
+    [rideBookingSession4 setEndView:view];
 
-    v69 = [v63 rideBookingSession];
-    [v69 setRideAppId:v30];
+    rideBookingSession5 = [v63 rideBookingSession];
+    [rideBookingSession5 setRideAppId:appIdCopy];
 
-    v70 = [v63 rideBookingSession];
-    [v70 setRideAppVersion:v31];
+    rideBookingSession6 = [v63 rideBookingSession];
+    [rideBookingSession6 setRideAppVersion:versionCopy];
 
-    v71 = [v63 rideBookingSession];
-    [v71 setOriginBlurred:v156];
+    rideBookingSession7 = [v63 rideBookingSession];
+    [rideBookingSession7 setOriginBlurred:blurredCopy];
 
-    v72 = [v63 rideBookingSession];
-    [v72 setDestinationBlurred:v141];
+    rideBookingSession8 = [v63 rideBookingSession];
+    [rideBookingSession8 setDestinationBlurred:v141];
 
-    if (v155)
+    if (optionsCopy)
     {
-      v73 = [v155 BOOLValue];
-      v74 = [v63 rideBookingSession];
-      [v74 setExploredOtherOptions:v73];
+      bOOLValue = [optionsCopy BOOLValue];
+      rideBookingSession9 = [v63 rideBookingSession];
+      [rideBookingSession9 setExploredOtherOptions:bOOLValue];
     }
 
-    if (v154)
+    if (metersCopy)
     {
-      [v154 doubleValue];
+      [metersCopy doubleValue];
       v76 = v75;
-      v77 = [v63 rideBookingSession];
-      [v77 setDistanceToPickupInMeters:v76];
+      rideBookingSession10 = [v63 rideBookingSession];
+      [rideBookingSession10 setDistanceToPickupInMeters:v76];
     }
 
-    if (v33)
+    if (payCopy)
     {
-      v78 = [v33 BOOLValue];
-      v79 = [v63 rideBookingSession];
-      [v79 setPaymentIsApplePay:v78];
+      bOOLValue2 = [payCopy BOOLValue];
+      rideBookingSession11 = [v63 rideBookingSession];
+      [rideBookingSession11 setPaymentIsApplePay:bOOLValue2];
     }
 
-    if (v34)
+    if (extensionsCopy)
     {
-      v80 = [v34 unsignedLongLongValue];
-      v81 = [v63 rideBookingSession];
-      [v81 setNumberOfAvailableExtensions:v80];
+      unsignedLongLongValue = [extensionsCopy unsignedLongLongValue];
+      rideBookingSession12 = [v63 rideBookingSession];
+      [rideBookingSession12 setNumberOfAvailableExtensions:unsignedLongLongValue];
     }
 
     if (v137)
     {
-      v82 = [v137 BOOLValue];
-      v83 = [v63 rideBookingSession];
-      [v83 setSwitchedApp:v82];
+      bOOLValue3 = [v137 BOOLValue];
+      rideBookingSession13 = [v63 rideBookingSession];
+      [rideBookingSession13 setSwitchedApp:bOOLValue3];
     }
 
-    if (v36)
+    if (rideOptionsCopy)
     {
-      v84 = [v36 BOOLValue];
-      v85 = [v63 rideBookingSession];
-      [v85 setComparedRideOptions:v84];
+      bOOLValue4 = [rideOptionsCopy BOOLValue];
+      rideBookingSession14 = [v63 rideBookingSession];
+      [rideBookingSession14 setComparedRideOptions:bOOLValue4];
     }
 
-    if (v153)
+    if (alertCopy)
     {
-      v86 = [v153 BOOLValue];
-      v87 = [v63 rideBookingSession];
-      [v87 setShowedSurgePricingAlert:v86];
+      bOOLValue5 = [alertCopy BOOLValue];
+      rideBookingSession15 = [v63 rideBookingSession];
+      [rideBookingSession15 setShowedSurgePricingAlert:bOOLValue5];
     }
 
-    if (v152)
+    if (secondsCopy)
     {
-      [v152 doubleValue];
+      [secondsCopy doubleValue];
       v89 = v88;
-      v90 = [v63 rideBookingSession];
-      [v90 setDurationOfSessionInSeconds:v89];
+      rideBookingSession16 = [v63 rideBookingSession];
+      [rideBookingSession16 setDurationOfSessionInSeconds:v89];
     }
 
-    if (v151)
+    if (installedAppCopy)
     {
-      v91 = [v151 BOOLValue];
-      v92 = [v63 rideBookingSession];
-      [v92 setInstalledApp:v91];
+      bOOLValue6 = [installedAppCopy BOOLValue];
+      rideBookingSession17 = [v63 rideBookingSession];
+      [rideBookingSession17 setInstalledApp:bOOLValue6];
     }
 
-    if (v150)
+    if (timestampCopy)
     {
-      v93 = [v150 integerValue];
-      v94 = [v63 rideBookingSession];
-      [v94 setTimestamp:v93];
+      integerValue = [timestampCopy integerValue];
+      rideBookingSession18 = [v63 rideBookingSession];
+      [rideBookingSession18 setTimestamp:integerValue];
     }
 
-    if (v149)
+    if (unavailableCopy)
     {
-      v95 = [v149 BOOLValue];
-      v96 = [v63 rideBookingSession];
-      [v96 setUnavailable:v95];
+      bOOLValue7 = [unavailableCopy BOOLValue];
+      rideBookingSession19 = [v63 rideBookingSession];
+      [rideBookingSession19 setUnavailable:bOOLValue7];
     }
 
-    if (v148)
+    if (locationCopy)
     {
-      v97 = [v148 BOOLValue];
-      v98 = [v63 rideBookingSession];
-      [v98 setMovedPickupLocation:v97];
+      bOOLValue8 = [locationCopy BOOLValue];
+      rideBookingSession20 = [v63 rideBookingSession];
+      [rideBookingSession20 setMovedPickupLocation:bOOLValue8];
     }
 
-    v99 = [v63 rideBookingSession];
-    v100 = [v99 errorMessages];
+    rideBookingSession21 = [v63 rideBookingSession];
+    errorMessages = [rideBookingSession21 errorMessages];
 
-    if (!v100)
+    if (!errorMessages)
     {
-      v101 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v159, "count")}];
-      v102 = [v63 rideBookingSession];
-      [v102 setErrorMessages:v101];
+      v101 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(messagesCopy, "count")}];
+      rideBookingSession22 = [v63 rideBookingSession];
+      [rideBookingSession22 setErrorMessages:v101];
     }
 
     v169 = 0u;
     v170 = 0u;
     v167 = 0u;
     v168 = 0u;
-    v103 = v159;
+    v103 = messagesCopy;
     v104 = [v103 countByEnumeratingWithState:&v167 objects:v179 count:16];
     if (v104)
     {
@@ -4909,10 +4909,10 @@ LABEL_2:
           }
 
           v108 = *(*(&v167 + 1) + 8 * j);
-          v109 = [v63 rideBookingSession];
-          v110 = [v109 errorMessages];
+          rideBookingSession23 = [v63 rideBookingSession];
+          errorMessages2 = [rideBookingSession23 errorMessages];
           v111 = [v108 copy];
-          [v110 addObject:v111];
+          [errorMessages2 addObject:v111];
         }
 
         v105 = [v103 countByEnumeratingWithState:&v167 objects:v179 count:16];
@@ -4921,21 +4921,21 @@ LABEL_2:
       while (v105);
     }
 
-    v112 = [v63 rideBookingSession];
-    v113 = [v112 intentResponseFailures];
+    rideBookingSession24 = [v63 rideBookingSession];
+    intentResponseFailures = [rideBookingSession24 intentResponseFailures];
 
-    if (!v113)
+    if (!intentResponseFailures)
     {
-      v114 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v158, "count")}];
-      v115 = [v63 rideBookingSession];
-      [v115 setIntentResponseFailures:v114];
+      v114 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(failuresCopy, "count")}];
+      rideBookingSession25 = [v63 rideBookingSession];
+      [rideBookingSession25 setIntentResponseFailures:v114];
     }
 
     v165 = 0u;
     v166 = 0u;
     v163 = 0u;
     v164 = 0u;
-    v116 = v158;
+    v116 = failuresCopy;
     v117 = [v116 countByEnumeratingWithState:&v163 objects:v178 count:16];
     if (v117)
     {
@@ -4951,10 +4951,10 @@ LABEL_2:
           }
 
           v121 = *(*(&v163 + 1) + 8 * k);
-          v122 = [v63 rideBookingSession];
-          v123 = [v122 intentResponseFailures];
+          rideBookingSession26 = [v63 rideBookingSession];
+          intentResponseFailures2 = [rideBookingSession26 intentResponseFailures];
           v124 = [v121 copy];
-          [v123 addObject:v124];
+          [intentResponseFailures2 addObject:v124];
         }
 
         v118 = [v116 countByEnumeratingWithState:&v163 objects:v178 count:16];
@@ -4968,9 +4968,9 @@ LABEL_2:
       [v63 addLogMsgState:?];
     }
 
-    v30 = v132;
-    v33 = v130;
-    v36 = v146;
+    appIdCopy = v132;
+    payCopy = v130;
+    rideOptionsCopy = v146;
     if (v134)
     {
       [v63 addLogMsgState:?];
@@ -5001,11 +5001,11 @@ LABEL_2:
     [v125 sessionStateForType:7 callback:v161];
 
     v41[2](v41);
-    v32 = v141;
-    v35 = v137;
-    v37 = v145;
-    v34 = v129;
-    v31 = v131;
+    destinationBlurredCopy = v141;
+    appCopy = v137;
+    statesCopy = v145;
+    extensionsCopy = v129;
+    versionCopy = v131;
   }
 
 LABEL_99:
@@ -5049,52 +5049,52 @@ uint64_t __478__GEOAPPortal_captureRideBookingWithRideBookingSessionId_statusIss
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureRideBookedWithRideBookedSessionId:(id)a3 bookedUsingMaps:(id)a4 cancelled:(id)a5 contactedDriver:(id)a6 viewedInProactiveTray:(id)a7 tappedProactiveTrayItem:(id)a8 viewedDetails:(id)a9 invalidVehicleLocation:(id)a10 missingVehicleLocation:(id)a11 rideAppId:(id)a12 rideAppVersion:(id)a13 intentResponseFailures:(id)a14 additionalStates:(id)a15 providedDropRate:(id)a16 completionQueue:(id)a17 completionBlock:(id)a18
++ (void)captureRideBookedWithRideBookedSessionId:(id)id bookedUsingMaps:(id)maps cancelled:(id)cancelled contactedDriver:(id)driver viewedInProactiveTray:(id)tray tappedProactiveTrayItem:(id)item viewedDetails:(id)details invalidVehicleLocation:(id)self0 missingVehicleLocation:(id)self1 rideAppId:(id)self2 rideAppVersion:(id)self3 intentResponseFailures:(id)self4 additionalStates:(id)self5 providedDropRate:(id)self6 completionQueue:(id)self7 completionBlock:(id)self8
 {
   v133 = *MEMORY[0x1E69E9840];
-  v113 = a3;
-  v115 = a4;
-  v23 = a5;
-  v24 = a6;
-  v25 = a7;
-  v111 = a8;
-  v26 = a9;
-  v27 = a10;
-  v28 = a11;
-  v110 = a12;
-  v109 = a13;
-  v29 = a14;
-  v30 = a15;
-  v114 = a16;
-  v31 = a17;
-  v32 = a18;
+  idCopy = id;
+  mapsCopy = maps;
+  cancelledCopy = cancelled;
+  driverCopy = driver;
+  trayCopy = tray;
+  itemCopy = item;
+  detailsCopy = details;
+  locationCopy = location;
+  vehicleLocationCopy = vehicleLocation;
+  appIdCopy = appId;
+  versionCopy = version;
+  failuresCopy = failures;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v126[0] = MEMORY[0x1E69E9820];
   v126[1] = 3221225472;
   v126[2] = __318__GEOAPPortal_captureRideBookedWithRideBookedSessionId_bookedUsingMaps_cancelled_contactedDriver_viewedInProactiveTray_tappedProactiveTrayItem_viewedDetails_invalidVehicleLocation_missingVehicleLocation_rideAppId_rideAppVersion_intentResponseFailures_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v126[3] = &unk_1E7959478;
-  v108 = v32;
+  v108 = blockCopy;
   v128 = v108;
-  v33 = v31;
+  v33 = queueCopy;
   v127 = v33;
   v34 = MEMORY[0x1AC5A12F0](v126);
-  v112 = v24;
+  v112 = driverCopy;
   if (GEOConfigGetBOOL())
   {
     v34[2](v34);
-    v35 = v115;
+    v35 = mapsCopy;
   }
 
   else
   {
-    v106 = v30;
-    v107 = v29;
+    v106 = statesCopy;
+    v107 = failuresCopy;
     v36 = +[GEOAPServiceManager sharedManager];
-    v37 = [v36 eventCollectionIsDisabledForCurrentProcess];
+    eventCollectionIsDisabledForCurrentProcess = [v36 eventCollectionIsDisabledForCurrentProcess];
 
-    if (v37)
+    if (eventCollectionIsDisabledForCurrentProcess)
     {
       v38 = GEOGetGEOAPPortalAnalyticsLog();
-      v35 = v115;
+      v35 = mapsCopy;
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
       {
         v39 = GEOApplicationIdentifierOrProcessName();
@@ -5104,16 +5104,16 @@ uint64_t __478__GEOAPPortal_captureRideBookingWithRideBookingSessionId_statusIss
       }
 
       v34[2](v34);
-      v30 = v106;
-      v29 = v107;
+      statesCopy = v106;
+      failuresCopy = v107;
     }
 
     else
     {
-      v35 = v115;
-      if (v114)
+      v35 = mapsCopy;
+      if (rateCopy)
       {
-        [v114 doubleValue];
+        [rateCopy doubleValue];
       }
 
       else
@@ -5121,17 +5121,17 @@ uint64_t __478__GEOAPPortal_captureRideBookingWithRideBookingSessionId_statusIss
         GEOConfigGetDouble();
       }
 
-      v30 = v106;
-      v29 = v107;
+      statesCopy = v106;
+      failuresCopy = v107;
       if (v40 == 0.0 || v40 < arc4random() / 4294967300.0)
       {
         v41 = +[GEOAPStateFactory sharedFactory];
-        v98 = v23;
-        v99 = v25;
-        v96 = v27;
-        v97 = v26;
+        v98 = cancelledCopy;
+        v99 = trayCopy;
+        v96 = locationCopy;
+        v97 = detailsCopy;
         v94 = v41;
-        v95 = v28;
+        v95 = vehicleLocationCopy;
         if ([v106 count])
         {
           v42 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v106, "count")}];
@@ -5166,10 +5166,10 @@ uint64_t __478__GEOAPPortal_captureRideBookingWithRideBookingSessionId_statusIss
           }
 
           v104 = [v42 copy];
-          v35 = v115;
-          v23 = v98;
-          v28 = v95;
-          v27 = v96;
+          v35 = mapsCopy;
+          cancelledCopy = v98;
+          vehicleLocationCopy = v95;
+          locationCopy = v96;
           v41 = v94;
         }
 
@@ -5272,79 +5272,79 @@ uint64_t __478__GEOAPPortal_captureRideBookingWithRideBookingSessionId_statusIss
         v56 = objc_alloc_init(MEMORY[0x1E69A1F80]);
         [v55 setRideBookedSession:v56];
 
-        v57 = [v55 rideBookedSession];
-        [v57 setRideBookedSessionId:v113];
+        rideBookedSession = [v55 rideBookedSession];
+        [rideBookedSession setRideBookedSessionId:idCopy];
 
         if (v35)
         {
-          v58 = [v35 BOOLValue];
-          v59 = [v55 rideBookedSession];
-          [v59 setBookedUsingMaps:v58];
+          bOOLValue = [v35 BOOLValue];
+          rideBookedSession2 = [v55 rideBookedSession];
+          [rideBookedSession2 setBookedUsingMaps:bOOLValue];
         }
 
-        if (v23)
+        if (cancelledCopy)
         {
-          v60 = [v23 BOOLValue];
-          v61 = [v55 rideBookedSession];
-          [v61 setCancelled:v60];
+          bOOLValue2 = [cancelledCopy BOOLValue];
+          rideBookedSession3 = [v55 rideBookedSession];
+          [rideBookedSession3 setCancelled:bOOLValue2];
         }
 
         if (v112)
         {
-          v62 = [v112 BOOLValue];
-          v63 = [v55 rideBookedSession];
-          [v63 setContactedDriver:v62];
+          bOOLValue3 = [v112 BOOLValue];
+          rideBookedSession4 = [v55 rideBookedSession];
+          [rideBookedSession4 setContactedDriver:bOOLValue3];
         }
 
         if (v99)
         {
-          v64 = [v99 BOOLValue];
-          v65 = [v55 rideBookedSession];
-          [v65 setViewedInProactiveTray:v64];
+          bOOLValue4 = [v99 BOOLValue];
+          rideBookedSession5 = [v55 rideBookedSession];
+          [rideBookedSession5 setViewedInProactiveTray:bOOLValue4];
         }
 
-        if (v111)
+        if (itemCopy)
         {
-          v66 = [v111 BOOLValue];
-          v67 = [v55 rideBookedSession];
-          [v67 setTappedProactiveTrayItem:v66];
+          bOOLValue5 = [itemCopy BOOLValue];
+          rideBookedSession6 = [v55 rideBookedSession];
+          [rideBookedSession6 setTappedProactiveTrayItem:bOOLValue5];
         }
 
-        if (v26)
+        if (detailsCopy)
         {
-          v68 = [v26 BOOLValue];
-          v69 = [v55 rideBookedSession];
-          [v69 setViewedDetails:v68];
+          bOOLValue6 = [detailsCopy BOOLValue];
+          rideBookedSession7 = [v55 rideBookedSession];
+          [rideBookedSession7 setViewedDetails:bOOLValue6];
         }
 
-        if (v27)
+        if (locationCopy)
         {
-          v70 = [v27 BOOLValue];
-          v71 = [v55 rideBookedSession];
-          [v71 setInvalidVehicleLocation:v70];
+          bOOLValue7 = [locationCopy BOOLValue];
+          rideBookedSession8 = [v55 rideBookedSession];
+          [rideBookedSession8 setInvalidVehicleLocation:bOOLValue7];
         }
 
-        if (v28)
+        if (vehicleLocationCopy)
         {
-          v72 = [v28 BOOLValue];
-          v73 = [v55 rideBookedSession];
-          [v73 setMissingVehicleLocation:v72];
+          bOOLValue8 = [vehicleLocationCopy BOOLValue];
+          rideBookedSession9 = [v55 rideBookedSession];
+          [rideBookedSession9 setMissingVehicleLocation:bOOLValue8];
         }
 
-        v74 = [v55 rideBookedSession];
-        [v74 setRideAppId:v110];
+        rideBookedSession10 = [v55 rideBookedSession];
+        [rideBookedSession10 setRideAppId:appIdCopy];
 
-        v75 = [v55 rideBookedSession];
-        [v75 setRideAppVersion:v109];
+        rideBookedSession11 = [v55 rideBookedSession];
+        [rideBookedSession11 setRideAppVersion:versionCopy];
 
-        v76 = [v55 rideBookedSession];
-        v77 = [v76 intentResponseFailures];
+        rideBookedSession12 = [v55 rideBookedSession];
+        intentResponseFailures = [rideBookedSession12 intentResponseFailures];
 
-        if (!v77)
+        if (!intentResponseFailures)
         {
           v78 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v107, "count")}];
-          v79 = [v55 rideBookedSession];
-          [v79 setIntentResponseFailures:v78];
+          rideBookedSession13 = [v55 rideBookedSession];
+          [rideBookedSession13 setIntentResponseFailures:v78];
         }
 
         v120 = 0u;
@@ -5367,10 +5367,10 @@ uint64_t __478__GEOAPPortal_captureRideBookingWithRideBookingSessionId_statusIss
               }
 
               v85 = *(*(&v118 + 1) + 8 * j);
-              v86 = [v55 rideBookedSession];
-              v87 = [v86 intentResponseFailures];
+              rideBookedSession14 = [v55 rideBookedSession];
+              intentResponseFailures2 = [rideBookedSession14 intentResponseFailures];
               v88 = [v85 copy];
-              [v87 addObject:v88];
+              [intentResponseFailures2 addObject:v88];
             }
 
             v82 = [v80 countByEnumeratingWithState:&v118 objects:v129 count:16];
@@ -5384,10 +5384,10 @@ uint64_t __478__GEOAPPortal_captureRideBookingWithRideBookingSessionId_statusIss
           [v55 addLogMsgState:?];
         }
 
-        v26 = v97;
-        v23 = v98;
-        v28 = v95;
-        v29 = v107;
+        detailsCopy = v97;
+        cancelledCopy = v98;
+        vehicleLocationCopy = v95;
+        failuresCopy = v107;
         if (v101)
         {
           [v55 addLogMsgState:?];
@@ -5418,10 +5418,10 @@ uint64_t __478__GEOAPPortal_captureRideBookingWithRideBookingSessionId_statusIss
         [v89 sessionStateForType:7 callback:v116];
 
         v34[2](v34);
-        v35 = v115;
-        v25 = v99;
-        v30 = v106;
-        v27 = v96;
+        v35 = mapsCopy;
+        trayCopy = v99;
+        statesCopy = v106;
+        locationCopy = v96;
       }
 
       else
@@ -5470,23 +5470,23 @@ uint64_t __318__GEOAPPortal_captureRideBookedWithRideBookedSessionId_bookedUsing
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureRedactedDirectionsServiceMetadataWithRedactedDirectionsMetadata:(id)a3 GEORedactedDirectionsClientMetadata_destinationHash:(id)a4 GEORedactedDirectionsClientMetadata_predictedDepartureTimeDelta:(id)a5 additionalStates:(id)a6 providedDropRate:(id)a7 completionQueue:(id)a8 completionBlock:(id)a9
++ (void)captureRedactedDirectionsServiceMetadataWithRedactedDirectionsMetadata:(id)metadata GEORedactedDirectionsClientMetadata_destinationHash:(id)hash GEORedactedDirectionsClientMetadata_predictedDepartureTimeDelta:(id)delta additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block
 {
   v80 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  metadataCopy = metadata;
+  hashCopy = hash;
+  deltaCopy = delta;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v74[0] = MEMORY[0x1E69E9820];
   v74[1] = 3221225472;
   v74[2] = __268__GEOAPPortal_captureRedactedDirectionsServiceMetadataWithRedactedDirectionsMetadata_GEORedactedDirectionsClientMetadata_destinationHash_GEORedactedDirectionsClientMetadata_predictedDepartureTimeDelta_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v74[3] = &unk_1E7959478;
-  v21 = v20;
+  v21 = blockCopy;
   v76 = v21;
-  v22 = v19;
+  v22 = queueCopy;
   v75 = v22;
   v23 = MEMORY[0x1AC5A12F0](v74);
   if (GEOConfigGetBOOL())
@@ -5495,9 +5495,9 @@ uint64_t __318__GEOAPPortal_captureRideBookedWithRideBookedSessionId_bookedUsing
   }
 
   v24 = +[GEOAPServiceManager sharedManager];
-  v25 = [v24 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v24 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v25)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v26 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -5511,9 +5511,9 @@ uint64_t __318__GEOAPPortal_captureRideBookedWithRideBookedSessionId_bookedUsing
     goto LABEL_20;
   }
 
-  if (v18)
+  if (rateCopy)
   {
-    [v18 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -5529,20 +5529,20 @@ LABEL_20:
   }
 
   v29 = +[GEOAPStateFactory sharedFactory];
-  v65 = v15;
-  v66 = v14;
+  v65 = hashCopy;
+  v66 = metadataCopy;
   v61 = v29;
-  v62 = v17;
-  if ([v17 count])
+  v62 = statesCopy;
+  if ([statesCopy count])
   {
     v58 = v21;
-    v63 = v16;
-    v30 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v17, "count")}];
+    v63 = deltaCopy;
+    v30 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v31 = v17;
+    v31 = statesCopy;
     v32 = [v31 countByEnumeratingWithState:&v70 objects:v77 count:16];
     if (v32)
     {
@@ -5569,7 +5569,7 @@ LABEL_20:
     }
 
     v38 = [v30 copy];
-    v16 = v63;
+    deltaCopy = v63;
     v21 = v58;
     v29 = v61;
   }
@@ -5595,7 +5595,7 @@ LABEL_20:
     }
   }
 
-  v17 = v62;
+  statesCopy = v62;
   v64 = v41;
   v60 = v38;
   if (GEOConfigGetBOOL())
@@ -5623,28 +5623,28 @@ LABEL_20:
   v46 = objc_alloc_init(MEMORY[0x1E69A1F90]);
   [v45 setRedactedServiceMetadata:v46];
 
-  v47 = [v45 redactedServiceMetadata];
-  [v47 setRedactedDirectionsMetadata:v66];
+  redactedServiceMetadata = [v45 redactedServiceMetadata];
+  [redactedServiceMetadata setRedactedDirectionsMetadata:v66];
 
   v48 = objc_alloc_init(MEMORY[0x1E69A2428]);
-  v49 = [v45 redactedServiceMetadata];
-  [v49 setRedactedDirectionsClientMetadata:v48];
+  redactedServiceMetadata2 = [v45 redactedServiceMetadata];
+  [redactedServiceMetadata2 setRedactedDirectionsClientMetadata:v48];
 
-  if (v16)
+  if (deltaCopy)
   {
-    +[GEOAPFuzzers fiveMinResolution:](GEOAPFuzzers, "fiveMinResolution:", [v16 integerValue]);
+    +[GEOAPFuzzers fiveMinResolution:](GEOAPFuzzers, "fiveMinResolution:", [deltaCopy integerValue]);
     v51 = v50;
-    v52 = [v45 redactedServiceMetadata];
-    [v52 redactedDirectionsClientMetadata];
-    v54 = v53 = v16;
+    redactedServiceMetadata3 = [v45 redactedServiceMetadata];
+    [redactedServiceMetadata3 redactedDirectionsClientMetadata];
+    v54 = v53 = deltaCopy;
     [v54 setPredictedDepartureTimeDelta:v51];
 
-    v16 = v53;
-    v17 = v62;
+    deltaCopy = v53;
+    statesCopy = v62;
   }
 
-  v55 = [v45 redactedServiceMetadata];
-  [v55 setServiceMetadataType:3];
+  redactedServiceMetadata4 = [v45 redactedServiceMetadata];
+  [redactedServiceMetadata4 setServiceMetadataType:3];
 
   if (v64)
   {
@@ -5667,9 +5667,9 @@ LABEL_20:
   [v56 sessionStateForType:20 callback:v67];
 
   v23[2](v23);
-  v15 = v65;
+  hashCopy = v65;
 
-  v14 = v66;
+  metadataCopy = v66;
 LABEL_21:
 
   v39 = *MEMORY[0x1E69E9840];
@@ -5717,21 +5717,21 @@ void __268__GEOAPPortal_captureRedactedDirectionsServiceMetadataWithRedactedDire
   [GEOAPPortal reportLogMsgEvent:*(a1 + 32) uploadBatchId:GEOMakeGEOAPBatchID() completion:0 completionQueue:0];
 }
 
-+ (void)captureRealTrafficWithLocationCollection:(id)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7
++ (void)captureRealTrafficWithLocationCollection:(id)collection additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block
 {
   v59 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  collectionCopy = collection;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v53[0] = MEMORY[0x1E69E9820];
   v53[1] = 3221225472;
   v53[2] = __122__GEOAPPortal_captureRealTrafficWithLocationCollection_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v53[3] = &unk_1E7959478;
-  v16 = v15;
+  v16 = blockCopy;
   v55 = v16;
-  v17 = v14;
+  v17 = queueCopy;
   v54 = v17;
   v18 = MEMORY[0x1AC5A12F0](v53);
   if (GEOConfigGetBOOL())
@@ -5740,9 +5740,9 @@ void __268__GEOAPPortal_captureRedactedDirectionsServiceMetadataWithRedactedDire
   }
 
   v19 = +[GEOAPServiceManager sharedManager];
-  v20 = [v19 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v19 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v20)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v21 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -5756,9 +5756,9 @@ void __268__GEOAPPortal_captureRedactedDirectionsServiceMetadataWithRedactedDire
     goto LABEL_20;
   }
 
-  if (v13)
+  if (rateCopy)
   {
-    [v13 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -5773,19 +5773,19 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v46 = v11;
+  v46 = collectionCopy;
   v45 = +[GEOAPStateFactory sharedFactory];
-  v44 = v12;
-  if ([v12 count])
+  v44 = statesCopy;
+  if ([statesCopy count])
   {
     v42 = v16;
-    v43 = v13;
-    v24 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v12, "count")}];
+    v43 = rateCopy;
+    v24 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v25 = v12;
+    v25 = statesCopy;
     v26 = [v25 countByEnumeratingWithState:&v49 objects:v56 count:16];
     if (v26)
     {
@@ -5813,7 +5813,7 @@ LABEL_20:
 
     v32 = [v24 copy];
     v16 = v42;
-    v13 = v43;
+    rateCopy = v43;
   }
 
   else
@@ -5839,14 +5839,14 @@ LABEL_20:
     v35 = v36;
   }
 
-  v12 = v44;
+  statesCopy = v44;
   v37 = objc_alloc_init(MEMORY[0x1E69A1E90]);
   [v37 setEventType:26];
   v38 = objc_alloc_init(MEMORY[0x1E69A1F78]);
   [v37 setRealtimeTrafficProbeCollection:v38];
 
-  v39 = [v37 realtimeTrafficProbeCollection];
-  [v39 setLocationCollection:v46];
+  realtimeTrafficProbeCollection = [v37 realtimeTrafficProbeCollection];
+  [realtimeTrafficProbeCollection setLocationCollection:v46];
 
   if (v35)
   {
@@ -5863,7 +5863,7 @@ LABEL_20:
   [v40 sessionStateForType:10 callback:v47];
 
   v18[2](v18);
-  v11 = v46;
+  collectionCopy = v46;
 LABEL_21:
 
   v33 = *MEMORY[0x1E69E9840];
@@ -5905,23 +5905,23 @@ uint64_t __122__GEOAPPortal_captureRealTrafficWithLocationCollection_additionalS
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureProactiveSuggestionWithListType:(int)a3 interactedItemIndex:(id)a4 duration:(id)a5 proactiveItems:(id)a6 additionalStates:(id)a7 providedDropRate:(id)a8 completionQueue:(id)a9 completionBlock:(id)a10
++ (void)captureProactiveSuggestionWithListType:(int)type interactedItemIndex:(id)index duration:(id)duration proactiveItems:(id)items additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)self0
 {
   v96 = *MEMORY[0x1E69E9840];
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
+  indexCopy = index;
+  durationCopy = duration;
+  itemsCopy = items;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v89[0] = MEMORY[0x1E69E9820];
   v89[1] = 3221225472;
   v89[2] = __164__GEOAPPortal_captureProactiveSuggestionWithListType_interactedItemIndex_duration_proactiveItems_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v89[3] = &unk_1E7959478;
-  v21 = v20;
+  v21 = blockCopy;
   v91 = v21;
-  v22 = v19;
+  v22 = queueCopy;
   v90 = v22;
   v23 = MEMORY[0x1AC5A12F0](v89);
   if (GEOConfigGetBOOL())
@@ -5931,11 +5931,11 @@ LABEL_2:
     goto LABEL_50;
   }
 
-  v78 = v18;
+  v78 = rateCopy;
   v24 = +[GEOAPServiceManager sharedManager];
-  v25 = [v24 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v24 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v25)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v26 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -5947,12 +5947,12 @@ LABEL_2:
     }
 
     v23[2](v23);
-    v18 = v78;
+    rateCopy = v78;
   }
 
   else
   {
-    v18 = v78;
+    rateCopy = v78;
     if (v78)
     {
       [v78 doubleValue];
@@ -5968,21 +5968,21 @@ LABEL_2:
       goto LABEL_2;
     }
 
-    v75 = v15;
+    v75 = durationCopy;
     v29 = +[GEOAPStateFactory sharedFactory];
-    v74 = v14;
+    v74 = indexCopy;
     v68 = v21;
-    v69 = v17;
+    v69 = statesCopy;
     v71 = v29;
-    v72 = v16;
-    if ([v17 count])
+    v72 = itemsCopy;
+    if ([statesCopy count])
     {
-      v30 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v17, "count")}];
+      v30 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
       v85 = 0u;
       v86 = 0u;
       v87 = 0u;
       v88 = 0u;
-      v31 = v17;
+      v31 = statesCopy;
       v32 = [v31 countByEnumeratingWithState:&v85 objects:v93 count:16];
       if (v32)
       {
@@ -6010,7 +6010,7 @@ LABEL_2:
 
       v38 = [v30 copy];
       v29 = v71;
-      v16 = v72;
+      itemsCopy = v72;
     }
 
     else
@@ -6061,41 +6061,41 @@ LABEL_2:
     v44 = objc_alloc_init(MEMORY[0x1E69A1F70]);
     [v43 setProactiveSuggestionInteractionSessionEvent:v44];
 
-    v45 = [v43 proactiveSuggestionInteractionSessionEvent];
-    [v45 setListType:a3];
+    proactiveSuggestionInteractionSessionEvent = [v43 proactiveSuggestionInteractionSessionEvent];
+    [proactiveSuggestionInteractionSessionEvent setListType:type];
 
     if (v74)
     {
-      v46 = [v74 integerValue];
-      v47 = [v43 proactiveSuggestionInteractionSessionEvent];
-      [v47 setInteractedItemIndex:v46];
+      integerValue = [v74 integerValue];
+      proactiveSuggestionInteractionSessionEvent2 = [v43 proactiveSuggestionInteractionSessionEvent];
+      [proactiveSuggestionInteractionSessionEvent2 setInteractedItemIndex:integerValue];
 
       v41 = v75;
     }
 
     if (v41)
     {
-      v48 = [v41 integerValue];
-      v49 = [v43 proactiveSuggestionInteractionSessionEvent];
-      [v49 setDuration:v48];
+      integerValue2 = [v41 integerValue];
+      proactiveSuggestionInteractionSessionEvent3 = [v43 proactiveSuggestionInteractionSessionEvent];
+      [proactiveSuggestionInteractionSessionEvent3 setDuration:integerValue2];
     }
 
     v77 = v38;
-    v50 = [v43 proactiveSuggestionInteractionSessionEvent];
-    v51 = [v50 proactiveItems];
+    proactiveSuggestionInteractionSessionEvent4 = [v43 proactiveSuggestionInteractionSessionEvent];
+    proactiveItems = [proactiveSuggestionInteractionSessionEvent4 proactiveItems];
 
-    if (!v51)
+    if (!proactiveItems)
     {
-      v52 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v16, "count")}];
-      v53 = [v43 proactiveSuggestionInteractionSessionEvent];
-      [v53 setProactiveItems:v52];
+      v52 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
+      proactiveSuggestionInteractionSessionEvent5 = [v43 proactiveSuggestionInteractionSessionEvent];
+      [proactiveSuggestionInteractionSessionEvent5 setProactiveItems:v52];
     }
 
     v83 = 0u;
     v84 = 0u;
     v81 = 0u;
     v82 = 0u;
-    v54 = v16;
+    v54 = itemsCopy;
     v55 = [v54 countByEnumeratingWithState:&v81 objects:v92 count:16];
     if (v55)
     {
@@ -6111,10 +6111,10 @@ LABEL_2:
           }
 
           v59 = *(*(&v81 + 1) + 8 * j);
-          v60 = [v43 proactiveSuggestionInteractionSessionEvent];
-          v61 = [v60 proactiveItems];
+          proactiveSuggestionInteractionSessionEvent6 = [v43 proactiveSuggestionInteractionSessionEvent];
+          proactiveItems2 = [proactiveSuggestionInteractionSessionEvent6 proactiveItems];
           v62 = [v59 copy];
-          [v61 addObject:v62];
+          [proactiveItems2 addObject:v62];
         }
 
         v56 = [v54 countByEnumeratingWithState:&v81 objects:v92 count:16];
@@ -6128,10 +6128,10 @@ LABEL_2:
       [v43 addLogMsgState:?];
     }
 
-    v16 = v72;
+    itemsCopy = v72;
     v21 = v68;
-    v17 = v69;
-    v18 = v78;
+    statesCopy = v69;
+    rateCopy = v78;
     if (v70)
     {
       [v43 addLogMsgState:v70];
@@ -6147,8 +6147,8 @@ LABEL_2:
     [v63 sessionStateForType:7 callback:v79];
 
     v23[2](v23);
-    v14 = v74;
-    v15 = v75;
+    indexCopy = v74;
+    durationCopy = v75;
   }
 
 LABEL_50:
@@ -6192,21 +6192,21 @@ uint64_t __164__GEOAPPortal_captureProactiveSuggestionWithListType_interactedIte
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)capturePressureDataWithPressureData:(id)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7
++ (void)capturePressureDataWithPressureData:(id)data additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block
 {
   v59 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  dataCopy = data;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v53[0] = MEMORY[0x1E69E9820];
   v53[1] = 3221225472;
   v53[2] = __117__GEOAPPortal_capturePressureDataWithPressureData_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v53[3] = &unk_1E7959478;
-  v16 = v15;
+  v16 = blockCopy;
   v55 = v16;
-  v17 = v14;
+  v17 = queueCopy;
   v54 = v17;
   v18 = MEMORY[0x1AC5A12F0](v53);
   if (GEOConfigGetBOOL())
@@ -6215,9 +6215,9 @@ uint64_t __164__GEOAPPortal_captureProactiveSuggestionWithListType_interactedIte
   }
 
   v19 = +[GEOAPServiceManager sharedManager];
-  v20 = [v19 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v19 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v20)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v21 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -6231,9 +6231,9 @@ uint64_t __164__GEOAPPortal_captureProactiveSuggestionWithListType_interactedIte
     goto LABEL_20;
   }
 
-  if (v13)
+  if (rateCopy)
   {
-    [v13 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -6248,19 +6248,19 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v46 = v11;
+  v46 = dataCopy;
   v45 = +[GEOAPStateFactory sharedFactory];
-  v44 = v12;
-  if ([v12 count])
+  v44 = statesCopy;
+  if ([statesCopy count])
   {
     v42 = v16;
-    v43 = v13;
-    v24 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v12, "count")}];
+    v43 = rateCopy;
+    v24 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v25 = v12;
+    v25 = statesCopy;
     v26 = [v25 countByEnumeratingWithState:&v49 objects:v56 count:16];
     if (v26)
     {
@@ -6288,7 +6288,7 @@ LABEL_20:
 
     v32 = [v24 copy];
     v16 = v42;
-    v13 = v43;
+    rateCopy = v43;
   }
 
   else
@@ -6314,14 +6314,14 @@ LABEL_20:
     v35 = v36;
   }
 
-  v12 = v44;
+  statesCopy = v44;
   v37 = objc_alloc_init(MEMORY[0x1E69A1E90]);
   [v37 setEventType:51];
   v38 = objc_alloc_init(MEMORY[0x1E69A1F68]);
   [v37 setPressureData:v38];
 
-  v39 = [v37 pressureData];
-  [v39 setPressureData:v46];
+  pressureData = [v37 pressureData];
+  [pressureData setPressureData:v46];
 
   if (v35)
   {
@@ -6338,7 +6338,7 @@ LABEL_20:
   [v40 sessionStateForType:13 callback:v47];
 
   v18[2](v18);
-  v11 = v46;
+  dataCopy = v46;
 LABEL_21:
 
   v33 = *MEMORY[0x1E69E9840];
@@ -6380,68 +6380,68 @@ uint64_t __117__GEOAPPortal_capturePressureDataWithPressureData_additionalStates
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)capturePredExTrainingWithChanceOfPrecipitation:(id)a3 chanceOfRain:(id)a4 chanceOfSnow:(id)a5 endTime:(id)a6 durationUntilEventEnd:(id)a7 durationUntilEventStart:(id)a8 startTime:(id)a9 temperature:(id)a10 timeOfDay:(id)a11 timeSinceBackgrounded:(id)a12 actualTransportMode:(int)a13 dayOfWeek:(id)a14 distanceFromHereToHome:(int)a15 distanceFromHereToOrigin:(int)a16 distanceFromHereToParkedCar:(int)a17 distanceFromHereToWork:(int)a18 distanceFromHere:(int)a19 distanceFromOriginToDestination:(int)a20 entryType:(int)a21 weatherType:(int)a22 mapType:(int)a23 predictedTransportMode:(int)a24 preferredTransportMode:(int)a25 isInBasemode:(id)a26 isCarplayConnected:(id)a27 isTourist:(id)a28 isTransitPossible:(id)a29 routePlanningScreenPresented:(id)a30 userLocationGeohash4:(id)a31 isVehicleBluetoothConnected:(id)a32 weatherAqi:(id)a33 modelName:(int)a34 modelVersion:(id)a35 modelTrainedDate:(id)a36 additionalStates:(id)a37 providedDropRate:(id)a38 completionQueue:(id)a39 completionBlock:(id)a40
++ (void)capturePredExTrainingWithChanceOfPrecipitation:(id)precipitation chanceOfRain:(id)rain chanceOfSnow:(id)snow endTime:(id)time durationUntilEventEnd:(id)end durationUntilEventStart:(id)start startTime:(id)startTime temperature:(id)self0 timeOfDay:(id)self1 timeSinceBackgrounded:(id)self2 actualTransportMode:(int)self3 dayOfWeek:(id)self4 distanceFromHereToHome:(int)self5 distanceFromHereToOrigin:(int)self6 distanceFromHereToParkedCar:(int)self7 distanceFromHereToWork:(int)self8 distanceFromHere:(int)self9 distanceFromOriginToDestination:(int)destination entryType:(int)type weatherType:(int)weatherType mapType:(int)mapType predictedTransportMode:(int)transportMode preferredTransportMode:(int)preferredTransportMode isInBasemode:(id)basemode isCarplayConnected:(id)connected isTourist:(id)tourist isTransitPossible:(id)possible routePlanningScreenPresented:(id)precipitation0 userLocationGeohash4:(id)precipitation1 isVehicleBluetoothConnected:(id)precipitation2 weatherAqi:(id)precipitation3 modelName:(int)precipitation4 modelVersion:(id)precipitation5 modelTrainedDate:(id)precipitation6 additionalStates:(id)precipitation7 providedDropRate:(id)precipitation8 completionQueue:(id)precipitation9 completionBlock:(id)rain0
 {
   v195 = *MEMORY[0x1E69E9840];
-  v181 = a3;
-  v45 = a4;
-  v180 = a5;
-  v179 = a6;
-  v46 = a7;
-  v178 = a8;
-  v47 = a9;
-  v177 = a10;
-  v176 = a11;
-  v48 = a12;
-  v49 = a14;
-  v174 = a26;
-  v173 = a27;
-  v172 = a28;
-  v50 = a29;
-  v182 = a30;
-  v170 = a31;
-  v169 = a32;
-  v168 = a33;
-  v167 = a35;
-  v166 = a36;
-  v165 = a37;
-  v51 = a38;
-  v52 = a39;
-  v53 = a40;
+  precipitationCopy = precipitation;
+  rainCopy = rain;
+  snowCopy = snow;
+  timeCopy = time;
+  endCopy = end;
+  startCopy = start;
+  startTimeCopy = startTime;
+  temperatureCopy = temperature;
+  dayCopy = day;
+  backgroundedCopy = backgrounded;
+  weekCopy = week;
+  basemodeCopy = basemode;
+  connectedCopy = connected;
+  touristCopy = tourist;
+  possibleCopy = possible;
+  presentedCopy = presented;
+  geohash4Copy = geohash4;
+  bluetoothConnectedCopy = bluetoothConnected;
+  aqiCopy = aqi;
+  versionCopy = version;
+  dateCopy = date;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v189[0] = MEMORY[0x1E69E9820];
   v189[1] = 3221225472;
   v189[2] = __705__GEOAPPortal_capturePredExTrainingWithChanceOfPrecipitation_chanceOfRain_chanceOfSnow_endTime_durationUntilEventEnd_durationUntilEventStart_startTime_temperature_timeOfDay_timeSinceBackgrounded_actualTransportMode_dayOfWeek_distanceFromHereToHome_distanceFromHereToOrigin_distanceFromHereToParkedCar_distanceFromHereToWork_distanceFromHere_distanceFromOriginToDestination_entryType_weatherType_mapType_predictedTransportMode_preferredTransportMode_isInBasemode_isCarplayConnected_isTourist_isTransitPossible_routePlanningScreenPresented_userLocationGeohash4_isVehicleBluetoothConnected_weatherAqi_modelName_modelVersion_modelTrainedDate_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v189[3] = &unk_1E7959478;
-  v54 = v53;
+  v54 = blockCopy;
   v191 = v54;
-  v164 = v52;
+  v164 = queueCopy;
   v190 = v164;
   v55 = MEMORY[0x1AC5A12F0](v189);
-  v175 = v48;
-  v171 = v50;
+  v175 = backgroundedCopy;
+  v171 = possibleCopy;
   if (GEOConfigGetBOOL())
   {
-    v56 = v45;
-    v57 = v47;
+    v56 = rainCopy;
+    v57 = startTimeCopy;
     (*(v55 + 16))(v55);
-    v58 = v181;
+    v58 = precipitationCopy;
     v59 = v55;
 LABEL_7:
-    v64 = v182;
+    v64 = presentedCopy;
     goto LABEL_8;
   }
 
-  v57 = v47;
+  v57 = startTimeCopy;
   v162 = v55;
-  v163 = v46;
+  v163 = endCopy;
   v60 = +[GEOAPServiceManager sharedManager];
-  v61 = [v60 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v60 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v61)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
-    v56 = v45;
+    v56 = rainCopy;
     v62 = GEOGetGEOAPPortalAnalyticsLog();
-    v58 = v181;
+    v58 = precipitationCopy;
     if (os_log_type_enabled(v62, OS_LOG_TYPE_DEBUG))
     {
       v63 = GEOApplicationIdentifierOrProcessName();
@@ -6452,14 +6452,14 @@ LABEL_7:
 
     v59 = v162;
     v162[2](v162);
-    v46 = v163;
+    endCopy = v163;
     goto LABEL_7;
   }
 
-  v58 = v181;
-  if (v51)
+  v58 = precipitationCopy;
+  if (rateCopy)
   {
-    [v51 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -6467,22 +6467,22 @@ LABEL_7:
     GEOConfigGetDouble();
   }
 
-  v46 = v163;
-  v64 = v182;
+  endCopy = v163;
+  v64 = presentedCopy;
   if (v66 == 0.0 || v66 < arc4random() / 4294967300.0)
   {
     v158 = +[GEOAPStateFactory sharedFactory];
-    v159 = v49;
-    v160 = v45;
+    v159 = weekCopy;
+    v160 = rainCopy;
     v157 = v57;
-    if ([v165 count])
+    if ([statesCopy count])
     {
-      v67 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v165, "count")}];
+      v67 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
       v185 = 0u;
       v186 = 0u;
       v187 = 0u;
       v188 = 0u;
-      v68 = v165;
+      v68 = statesCopy;
       v69 = [v68 countByEnumeratingWithState:&v185 objects:v192 count:16];
       if (v69)
       {
@@ -6509,20 +6509,20 @@ LABEL_7:
       }
 
       v75 = [v67 copy];
-      v76 = v181;
-      v45 = v160;
-      v46 = v163;
+      v76 = precipitationCopy;
+      rainCopy = v160;
+      endCopy = v163;
       v77 = v157;
     }
 
     else
     {
       v75 = 0;
-      v76 = v181;
+      v76 = precipitationCopy;
       v77 = v57;
     }
 
-    v155 = v51;
+    v155 = rateCopy;
     if (GEOConfigGetBOOL())
     {
       v161 = 0;
@@ -6593,193 +6593,193 @@ LABEL_7:
     {
       [v76 doubleValue];
       v88 = v87;
-      v89 = [v85 predExTrainingData];
-      [v89 setChanceOfPrecipitation:v88];
+      predExTrainingData = [v85 predExTrainingData];
+      [predExTrainingData setChanceOfPrecipitation:v88];
     }
 
-    if (v45)
+    if (rainCopy)
     {
-      [v45 doubleValue];
+      [rainCopy doubleValue];
       v91 = v90;
-      v92 = [v85 predExTrainingData];
-      [v92 setChanceOfRain:v91];
+      predExTrainingData2 = [v85 predExTrainingData];
+      [predExTrainingData2 setChanceOfRain:v91];
     }
 
-    if (v180)
+    if (snowCopy)
     {
-      [v180 doubleValue];
+      [snowCopy doubleValue];
       v94 = v93;
-      v95 = [v85 predExTrainingData];
-      [v95 setChanceOfSnow:v94];
+      predExTrainingData3 = [v85 predExTrainingData];
+      [predExTrainingData3 setChanceOfSnow:v94];
     }
 
-    if (v179)
+    if (timeCopy)
     {
-      [v179 doubleValue];
+      [timeCopy doubleValue];
       v97 = v96;
-      v98 = [v85 predExTrainingData];
-      [v98 setEndTime:v97];
+      predExTrainingData4 = [v85 predExTrainingData];
+      [predExTrainingData4 setEndTime:v97];
     }
 
-    if (v46)
+    if (endCopy)
     {
-      [v46 doubleValue];
+      [endCopy doubleValue];
       v100 = v99;
-      v101 = [v85 predExTrainingData];
-      [v101 setDurationUntilEventEnd:v100];
+      predExTrainingData5 = [v85 predExTrainingData];
+      [predExTrainingData5 setDurationUntilEventEnd:v100];
     }
 
-    if (v178)
+    if (startCopy)
     {
-      [v178 doubleValue];
+      [startCopy doubleValue];
       v103 = v102;
-      v104 = [v85 predExTrainingData];
-      [v104 setDurationUntilEventStart:v103];
+      predExTrainingData6 = [v85 predExTrainingData];
+      [predExTrainingData6 setDurationUntilEventStart:v103];
     }
 
     if (v77)
     {
       [v77 doubleValue];
       v106 = v105;
-      v107 = [v85 predExTrainingData];
-      [v107 setStartTime:v106];
+      predExTrainingData7 = [v85 predExTrainingData];
+      [predExTrainingData7 setStartTime:v106];
     }
 
-    if (v177)
+    if (temperatureCopy)
     {
-      [v177 doubleValue];
+      [temperatureCopy doubleValue];
       v109 = v108;
-      v110 = [v85 predExTrainingData];
-      [v110 setTemperature:v109];
+      predExTrainingData8 = [v85 predExTrainingData];
+      [predExTrainingData8 setTemperature:v109];
     }
 
-    if (v176)
+    if (dayCopy)
     {
-      [v176 doubleValue];
+      [dayCopy doubleValue];
       v112 = v111;
-      v113 = [v85 predExTrainingData];
-      [v113 setTimeOfDay:v112];
+      predExTrainingData9 = [v85 predExTrainingData];
+      [predExTrainingData9 setTimeOfDay:v112];
     }
 
     if (v175)
     {
       [v175 doubleValue];
       v115 = v114;
-      v116 = [v85 predExTrainingData];
-      [v116 setTimeSinceBackgrounded:v115];
+      predExTrainingData10 = [v85 predExTrainingData];
+      [predExTrainingData10 setTimeSinceBackgrounded:v115];
     }
 
-    v117 = [v85 predExTrainingData];
-    [v117 setActualTransportMode:a13];
+    predExTrainingData11 = [v85 predExTrainingData];
+    [predExTrainingData11 setActualTransportMode:mode];
 
     if (v159)
     {
       [v159 doubleValue];
       v119 = v118;
-      v120 = [v85 predExTrainingData];
-      [v120 setDayOfWeek:v119];
+      predExTrainingData12 = [v85 predExTrainingData];
+      [predExTrainingData12 setDayOfWeek:v119];
     }
 
-    v121 = [v85 predExTrainingData];
-    [v121 setDistanceFromHereToHome:a15];
+    predExTrainingData13 = [v85 predExTrainingData];
+    [predExTrainingData13 setDistanceFromHereToHome:home];
 
-    v122 = [v85 predExTrainingData];
-    [v122 setDistanceFromHereToOrigin:a16];
+    predExTrainingData14 = [v85 predExTrainingData];
+    [predExTrainingData14 setDistanceFromHereToOrigin:origin];
 
-    v123 = [v85 predExTrainingData];
-    [v123 setDistanceFromHereToParkedCar:a17];
+    predExTrainingData15 = [v85 predExTrainingData];
+    [predExTrainingData15 setDistanceFromHereToParkedCar:car];
 
-    v124 = [v85 predExTrainingData];
-    [v124 setDistanceFromHereToWork:a18];
+    predExTrainingData16 = [v85 predExTrainingData];
+    [predExTrainingData16 setDistanceFromHereToWork:work];
 
-    v125 = [v85 predExTrainingData];
-    [v125 setDistanceFromHere:a19];
+    predExTrainingData17 = [v85 predExTrainingData];
+    [predExTrainingData17 setDistanceFromHere:here];
 
-    v126 = [v85 predExTrainingData];
-    [v126 setDistanceFromOriginToDestination:a20];
+    predExTrainingData18 = [v85 predExTrainingData];
+    [predExTrainingData18 setDistanceFromOriginToDestination:destination];
 
-    v127 = [v85 predExTrainingData];
-    [v127 setEntryType:a21];
+    predExTrainingData19 = [v85 predExTrainingData];
+    [predExTrainingData19 setEntryType:type];
 
-    v128 = [v85 predExTrainingData];
-    [v128 setWeatherType:a22];
+    predExTrainingData20 = [v85 predExTrainingData];
+    [predExTrainingData20 setWeatherType:weatherType];
 
-    v129 = [v85 predExTrainingData];
-    [v129 setMapType:a23];
+    predExTrainingData21 = [v85 predExTrainingData];
+    [predExTrainingData21 setMapType:mapType];
 
-    v130 = [v85 predExTrainingData];
-    [v130 setPredictedTransportMode:a24];
+    predExTrainingData22 = [v85 predExTrainingData];
+    [predExTrainingData22 setPredictedTransportMode:transportMode];
 
-    v131 = [v85 predExTrainingData];
-    [v131 setPreferredTransportMode:a25];
+    predExTrainingData23 = [v85 predExTrainingData];
+    [predExTrainingData23 setPreferredTransportMode:preferredTransportMode];
 
-    if (v174)
+    if (basemodeCopy)
     {
-      v132 = [v174 BOOLValue];
-      v133 = [v85 predExTrainingData];
-      [v133 setIsInBasemode:v132];
+      bOOLValue = [basemodeCopy BOOLValue];
+      predExTrainingData24 = [v85 predExTrainingData];
+      [predExTrainingData24 setIsInBasemode:bOOLValue];
     }
 
     v56 = v160;
     v57 = v157;
-    if (v173)
+    if (connectedCopy)
     {
-      v134 = [v173 BOOLValue];
-      v135 = [v85 predExTrainingData];
-      [v135 setIsCarplayConnected:v134];
+      bOOLValue2 = [connectedCopy BOOLValue];
+      predExTrainingData25 = [v85 predExTrainingData];
+      [predExTrainingData25 setIsCarplayConnected:bOOLValue2];
     }
 
-    if (v172)
+    if (touristCopy)
     {
-      [v172 doubleValue];
+      [touristCopy doubleValue];
       v137 = v136;
-      v138 = [v85 predExTrainingData];
-      [v138 setIsTourist:v137];
+      predExTrainingData26 = [v85 predExTrainingData];
+      [predExTrainingData26 setIsTourist:v137];
     }
 
     if (v171)
     {
-      v139 = [v171 BOOLValue];
-      v140 = [v85 predExTrainingData];
-      [v140 setIsTransitPossible:v139];
+      bOOLValue3 = [v171 BOOLValue];
+      predExTrainingData27 = [v85 predExTrainingData];
+      [predExTrainingData27 setIsTransitPossible:bOOLValue3];
     }
 
-    if (v182)
+    if (presentedCopy)
     {
-      v141 = [v182 BOOLValue];
-      v142 = [v85 predExTrainingData];
-      [v142 setRoutePlanningScreenPresented:v141];
+      bOOLValue4 = [presentedCopy BOOLValue];
+      predExTrainingData28 = [v85 predExTrainingData];
+      [predExTrainingData28 setRoutePlanningScreenPresented:bOOLValue4];
     }
 
-    v143 = [v85 predExTrainingData];
-    [v143 setUserLocationGeohash4:v170];
+    predExTrainingData29 = [v85 predExTrainingData];
+    [predExTrainingData29 setUserLocationGeohash4:geohash4Copy];
 
-    if (v169)
+    if (bluetoothConnectedCopy)
     {
-      v144 = [v169 BOOLValue];
-      v145 = [v85 predExTrainingData];
-      [v145 setIsVehicleBluetoothConnected:v144];
+      bOOLValue5 = [bluetoothConnectedCopy BOOLValue];
+      predExTrainingData30 = [v85 predExTrainingData];
+      [predExTrainingData30 setIsVehicleBluetoothConnected:bOOLValue5];
 
       v56 = v160;
     }
 
-    if (v168)
+    if (aqiCopy)
     {
-      v146 = [v168 unsignedLongLongValue];
-      v147 = [v85 predExTrainingData];
-      [v147 setWeatherAqi:v146];
+      unsignedLongLongValue = [aqiCopy unsignedLongLongValue];
+      predExTrainingData31 = [v85 predExTrainingData];
+      [predExTrainingData31 setWeatherAqi:unsignedLongLongValue];
 
       v56 = v160;
     }
 
-    v148 = [v85 predExTrainingData];
-    [v148 setModelName:a34];
+    predExTrainingData32 = [v85 predExTrainingData];
+    [predExTrainingData32 setModelName:name];
 
-    v149 = [v85 predExTrainingData];
-    [v149 setModelVersion:v167];
+    predExTrainingData33 = [v85 predExTrainingData];
+    [predExTrainingData33 setModelVersion:versionCopy];
 
-    v150 = [v85 predExTrainingData];
-    [v150 setModelTrainedDate:v166];
+    predExTrainingData34 = [v85 predExTrainingData];
+    [predExTrainingData34 setModelTrainedDate:dateCopy];
 
     if (v82)
     {
@@ -6809,17 +6809,17 @@ LABEL_7:
     v59 = v162;
     v162[2](v162);
 
-    v46 = v163;
-    v49 = v159;
-    v58 = v181;
-    v64 = v182;
+    endCopy = v163;
+    weekCopy = v159;
+    v58 = precipitationCopy;
+    v64 = presentedCopy;
     v54 = v154;
-    v51 = v155;
+    rateCopy = v155;
   }
 
   else
   {
-    v56 = v45;
+    v56 = rainCopy;
     v59 = v162;
     v162[2](v162);
   }
@@ -6865,57 +6865,57 @@ uint64_t __705__GEOAPPortal_capturePredExTrainingWithChanceOfPrecipitation_chanc
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)capturePredExTrainingWithChanceOfPrecipitation:(id)a3 chanceOfRain:(id)a4 chanceOfSnow:(id)a5 endTime:(id)a6 durationUntilEventEnd:(id)a7 durationUntilEventStart:(id)a8 startTime:(id)a9 temperature:(id)a10 timeOfDay:(id)a11 timeSinceBackgrounded:(id)a12 actualTransportMode:(int)a13 dayOfWeek:(id)a14 distanceFromHereToHome:(int)a15 distanceFromHereToOrigin:(int)a16 distanceFromHereToParkedCar:(int)a17 distanceFromHereToWork:(int)a18 distanceFromHere:(int)a19 distanceFromOriginToDestination:(int)a20 entryType:(int)a21 weatherType:(int)a22 mapType:(int)a23 predictedTransportMode:(int)a24 preferredTransportMode:(int)a25 isInBasemode:(id)a26 isCarplayConnected:(id)a27 isTourist:(id)a28 isTransitPossible:(id)a29 routePlanningScreenPresented:(id)a30 userLocationGeohash4:(id)a31 isVehicleBluetoothConnected:(id)a32 weatherAqi:(id)a33 modelName:(int)a34 modelVersion:(id)a35 modelTrainedDate:(id)a36
++ (void)capturePredExTrainingWithChanceOfPrecipitation:(id)precipitation chanceOfRain:(id)rain chanceOfSnow:(id)snow endTime:(id)time durationUntilEventEnd:(id)end durationUntilEventStart:(id)start startTime:(id)startTime temperature:(id)self0 timeOfDay:(id)self1 timeSinceBackgrounded:(id)self2 actualTransportMode:(int)self3 dayOfWeek:(id)self4 distanceFromHereToHome:(int)self5 distanceFromHereToOrigin:(int)self6 distanceFromHereToParkedCar:(int)self7 distanceFromHereToWork:(int)self8 distanceFromHere:(int)self9 distanceFromOriginToDestination:(int)destination entryType:(int)type weatherType:(int)weatherType mapType:(int)mapType predictedTransportMode:(int)transportMode preferredTransportMode:(int)preferredTransportMode isInBasemode:(id)basemode isCarplayConnected:(id)connected isTourist:(id)tourist isTransitPossible:(id)possible routePlanningScreenPresented:(id)precipitation0 userLocationGeohash4:(id)precipitation1 isVehicleBluetoothConnected:(id)precipitation2 weatherAqi:(id)precipitation3 modelName:(int)precipitation4 modelVersion:(id)precipitation5 modelTrainedDate:(id)precipitation6
 {
-  LODWORD(v38) = a34;
-  LODWORD(v37) = a25;
-  LODWORD(v36) = a13;
-  [a1 capturePredExTrainingWithChanceOfPrecipitation:a3 chanceOfRain:a4 chanceOfSnow:a5 endTime:a6 durationUntilEventEnd:a7 durationUntilEventStart:a8 startTime:a9 temperature:a10 timeOfDay:a11 timeSinceBackgrounded:a12 actualTransportMode:v36 dayOfWeek:a14 distanceFromHereToHome:__PAIR64__(a16 distanceFromHereToOrigin:a15) distanceFromHereToParkedCar:__PAIR64__(a18 distanceFromHereToWork:a17) distanceFromHere:__PAIR64__(a20 distanceFromOriginToDestination:a19) entryType:__PAIR64__(a22 weatherType:a21) mapType:__PAIR64__(a24 predictedTransportMode:a23) preferredTransportMode:v37 isInBasemode:a26 isCarplayConnected:a27 isTourist:a28 isTransitPossible:a29 routePlanningScreenPresented:a30 userLocationGeohash4:a31 isVehicleBluetoothConnected:a32 weatherAqi:a33 modelName:v38 modelVersion:a35 modelTrainedDate:a36 additionalStates:0 providedDropRate:0 completionQueue:0 completionBlock:0];
+  LODWORD(v38) = name;
+  LODWORD(v37) = preferredTransportMode;
+  LODWORD(v36) = mode;
+  [self capturePredExTrainingWithChanceOfPrecipitation:precipitation chanceOfRain:rain chanceOfSnow:snow endTime:time durationUntilEventEnd:end durationUntilEventStart:start startTime:startTime temperature:temperature timeOfDay:day timeSinceBackgrounded:backgrounded actualTransportMode:v36 dayOfWeek:week distanceFromHereToHome:__PAIR64__(origin distanceFromHereToOrigin:home) distanceFromHereToParkedCar:__PAIR64__(work distanceFromHereToWork:car) distanceFromHere:__PAIR64__(destination distanceFromOriginToDestination:here) entryType:__PAIR64__(weatherType weatherType:type) mapType:__PAIR64__(transportMode predictedTransportMode:mapType) preferredTransportMode:v37 isInBasemode:basemode isCarplayConnected:connected isTourist:tourist isTransitPossible:possible routePlanningScreenPresented:presented userLocationGeohash4:geohash4 isVehicleBluetoothConnected:bluetoothConnected weatherAqi:aqi modelName:v38 modelVersion:version modelTrainedDate:date additionalStates:0 providedDropRate:0 completionQueue:0 completionBlock:0];
 }
 
-+ (void)capturePoiBusynessDataWithTimestamp:(id)a3 GEOLatLng_lat:(id)a4 GEOLatLng_lng:(id)a5 horizontalAccuracy:(id)a6 verticalAccuracy:(id)a7 altitude:(id)a8 poiPredictions:(id)a9 additionalStates:(id)a10 providedDropRate:(id)a11 completionQueue:(id)a12 completionBlock:(id)a13
++ (void)capturePoiBusynessDataWithTimestamp:(id)timestamp GEOLatLng_lat:(id)lng_lat GEOLatLng_lng:(id)lng_lng horizontalAccuracy:(id)accuracy verticalAccuracy:(id)verticalAccuracy altitude:(id)altitude poiPredictions:(id)predictions additionalStates:(id)self0 providedDropRate:(id)self1 completionQueue:(id)self2 completionBlock:(id)self3
 {
   v119 = *MEMORY[0x1E69E9840];
-  v101 = a3;
-  v100 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v98 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
-  v25 = a13;
+  timestampCopy = timestamp;
+  lng_latCopy = lng_lat;
+  lng_lngCopy = lng_lng;
+  accuracyCopy = accuracy;
+  verticalAccuracyCopy = verticalAccuracy;
+  altitudeCopy = altitude;
+  predictionsCopy = predictions;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v112[0] = MEMORY[0x1E69E9820];
   v112[1] = 3221225472;
   v112[2] = __205__GEOAPPortal_capturePoiBusynessDataWithTimestamp_GEOLatLng_lat_GEOLatLng_lng_horizontalAccuracy_verticalAccuracy_altitude_poiPredictions_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v112[3] = &unk_1E7959478;
-  v26 = v25;
+  v26 = blockCopy;
   v114 = v26;
-  v27 = v24;
+  v27 = queueCopy;
   v113 = v27;
   v28 = MEMORY[0x1AC5A12F0](v112);
-  v99 = v20;
+  v99 = verticalAccuracyCopy;
   if (GEOConfigGetBOOL())
   {
     v28[2](v28);
-    v30 = v100;
-    v29 = v101;
+    v30 = lng_latCopy;
+    v29 = timestampCopy;
   }
 
   else
   {
-    v96 = v19;
-    v97 = v18;
+    v96 = accuracyCopy;
+    v97 = lng_lngCopy;
     v31 = +[GEOAPServiceManager sharedManager];
-    v32 = [v31 eventCollectionIsDisabledForCurrentProcess];
+    eventCollectionIsDisabledForCurrentProcess = [v31 eventCollectionIsDisabledForCurrentProcess];
 
-    if (v32)
+    if (eventCollectionIsDisabledForCurrentProcess)
     {
       v33 = GEOGetGEOAPPortalAnalyticsLog();
-      v30 = v100;
-      v29 = v101;
+      v30 = lng_latCopy;
+      v29 = timestampCopy;
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
       {
         v34 = GEOApplicationIdentifierOrProcessName();
@@ -6925,17 +6925,17 @@ uint64_t __705__GEOAPPortal_capturePredExTrainingWithChanceOfPrecipitation_chanc
       }
 
       v28[2](v28);
-      v19 = v96;
-      v18 = v97;
+      accuracyCopy = v96;
+      lng_lngCopy = v97;
     }
 
     else
     {
-      v30 = v100;
-      v29 = v101;
-      if (v23)
+      v30 = lng_latCopy;
+      v29 = timestampCopy;
+      if (rateCopy)
       {
-        [v23 doubleValue];
+        [rateCopy doubleValue];
       }
 
       else
@@ -6943,24 +6943,24 @@ uint64_t __705__GEOAPPortal_capturePredExTrainingWithChanceOfPrecipitation_chanc
         GEOConfigGetDouble();
       }
 
-      v19 = v96;
-      v18 = v97;
+      accuracyCopy = v96;
+      lng_lngCopy = v97;
       if (v35 == 0.0 || v35 < arc4random() / 4294967300.0)
       {
         v36 = +[GEOAPStateFactory sharedFactory];
         v91 = v26;
-        v92 = v23;
+        v92 = rateCopy;
         v94 = v36;
-        v95 = v21;
-        v93 = v22;
-        if ([v22 count])
+        v95 = predictionsCopy;
+        v93 = statesCopy;
+        if ([statesCopy count])
         {
-          v37 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v22, "count")}];
+          v37 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
           v108 = 0u;
           v109 = 0u;
           v110 = 0u;
           v111 = 0u;
-          v38 = v22;
+          v38 = statesCopy;
           v39 = [v38 countByEnumeratingWithState:&v108 objects:v116 count:16];
           if (v39)
           {
@@ -6987,10 +6987,10 @@ uint64_t __705__GEOAPPortal_capturePredExTrainingWithChanceOfPrecipitation_chanc
           }
 
           v45 = [v37 copy];
-          v30 = v100;
-          v29 = v101;
+          v30 = lng_latCopy;
+          v29 = timestampCopy;
           v36 = v94;
-          v21 = v95;
+          predictionsCopy = v95;
         }
 
         else
@@ -7025,73 +7025,73 @@ uint64_t __705__GEOAPPortal_capturePredExTrainingWithChanceOfPrecipitation_chanc
         {
           [v29 doubleValue];
           v51 = v50;
-          v52 = [v48 poiBusynessData];
-          [v52 setTimestamp:v51];
+          poiBusynessData = [v48 poiBusynessData];
+          [poiBusynessData setTimestamp:v51];
         }
 
         v53 = objc_alloc_init(MEMORY[0x1E69A1E50]);
-        v54 = [v48 poiBusynessData];
-        [v54 setLocation:v53];
+        poiBusynessData2 = [v48 poiBusynessData];
+        [poiBusynessData2 setLocation:v53];
 
         if (v30)
         {
           [v30 doubleValue];
           v56 = v55;
-          v57 = [v48 poiBusynessData];
-          v58 = [v57 location];
-          [v58 setLat:v56];
+          poiBusynessData3 = [v48 poiBusynessData];
+          location = [poiBusynessData3 location];
+          [location setLat:v56];
         }
 
         if (v97)
         {
           [v97 doubleValue];
           v60 = v59;
-          v61 = [v48 poiBusynessData];
-          v62 = [v61 location];
-          [v62 setLng:v60];
+          poiBusynessData4 = [v48 poiBusynessData];
+          location2 = [poiBusynessData4 location];
+          [location2 setLng:v60];
         }
 
         if (v96)
         {
           [v96 doubleValue];
           v64 = v63;
-          v65 = [v48 poiBusynessData];
-          [v65 setHorizontalAccuracy:v64];
+          poiBusynessData5 = [v48 poiBusynessData];
+          [poiBusynessData5 setHorizontalAccuracy:v64];
         }
 
         if (v99)
         {
           [v99 doubleValue];
           v67 = v66;
-          v68 = [v48 poiBusynessData];
-          [v68 setVerticalAccuracy:v67];
+          poiBusynessData6 = [v48 poiBusynessData];
+          [poiBusynessData6 setVerticalAccuracy:v67];
         }
 
-        if (v98)
+        if (altitudeCopy)
         {
-          [v98 doubleValue];
+          [altitudeCopy doubleValue];
           v70 = v69;
-          v71 = [v48 poiBusynessData];
-          [v71 setAltitude:v70];
+          poiBusynessData7 = [v48 poiBusynessData];
+          [poiBusynessData7 setAltitude:v70];
         }
 
         v88 = v46;
         v90 = v45;
-        v72 = [v48 poiBusynessData];
-        v73 = [v72 poiPredictions];
+        poiBusynessData8 = [v48 poiBusynessData];
+        poiPredictions = [poiBusynessData8 poiPredictions];
 
-        if (!v73)
+        if (!poiPredictions)
         {
-          v74 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v21, "count")}];
-          v75 = [v48 poiBusynessData];
-          [v75 setPoiPredictions:v74];
+          v74 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(predictionsCopy, "count")}];
+          poiBusynessData9 = [v48 poiBusynessData];
+          [poiBusynessData9 setPoiPredictions:v74];
         }
 
         v106 = 0u;
         v107 = 0u;
         v104 = 0u;
         v105 = 0u;
-        v76 = v21;
+        v76 = predictionsCopy;
         v77 = [v76 countByEnumeratingWithState:&v104 objects:v115 count:16];
         if (v77)
         {
@@ -7107,10 +7107,10 @@ uint64_t __705__GEOAPPortal_capturePredExTrainingWithChanceOfPrecipitation_chanc
               }
 
               v81 = *(*(&v104 + 1) + 8 * j);
-              v82 = [v48 poiBusynessData];
-              v83 = [v82 poiPredictions];
+              poiBusynessData10 = [v48 poiBusynessData];
+              poiPredictions2 = [poiBusynessData10 poiPredictions];
               v84 = [v81 copy];
-              [v83 addObject:v84];
+              [poiPredictions2 addObject:v84];
             }
 
             v78 = [v76 countByEnumeratingWithState:&v104 objects:v115 count:16];
@@ -7134,13 +7134,13 @@ uint64_t __705__GEOAPPortal_capturePredExTrainingWithChanceOfPrecipitation_chanc
         [v85 sessionStateForType:16 callback:v102];
 
         v28[2](v28);
-        v30 = v100;
-        v29 = v101;
-        v19 = v96;
-        v18 = v97;
-        v21 = v95;
-        v23 = v92;
-        v22 = v93;
+        v30 = lng_latCopy;
+        v29 = timestampCopy;
+        accuracyCopy = v96;
+        lng_lngCopy = v97;
+        predictionsCopy = v95;
+        rateCopy = v92;
+        statesCopy = v93;
         v26 = v91;
       }
 
@@ -7190,21 +7190,21 @@ uint64_t __205__GEOAPPortal_capturePoiBusynessDataWithTimestamp_GEOLatLng_lat_GE
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)capturePlacesServiceMetadataWithPlacesMetadata:(id)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7
++ (void)capturePlacesServiceMetadataWithPlacesMetadata:(id)metadata additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block
 {
   v77 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  metadataCopy = metadata;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v71[0] = MEMORY[0x1E69E9820];
   v71[1] = 3221225472;
   v71[2] = __128__GEOAPPortal_capturePlacesServiceMetadataWithPlacesMetadata_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v71[3] = &unk_1E7959478;
-  v16 = v15;
+  v16 = blockCopy;
   v73 = v16;
-  v17 = v14;
+  v17 = queueCopy;
   v72 = v17;
   v18 = MEMORY[0x1AC5A12F0](v71);
   if (GEOConfigGetBOOL())
@@ -7213,9 +7213,9 @@ uint64_t __205__GEOAPPortal_capturePoiBusynessDataWithTimestamp_GEOLatLng_lat_GE
   }
 
   v19 = +[GEOAPServiceManager sharedManager];
-  v20 = [v19 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v19 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v20)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v21 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -7229,9 +7229,9 @@ uint64_t __205__GEOAPPortal_capturePoiBusynessDataWithTimestamp_GEOLatLng_lat_GE
     goto LABEL_20;
   }
 
-  if (v13)
+  if (rateCopy)
   {
-    [v13 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -7246,19 +7246,19 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v64 = v11;
+  v64 = metadataCopy;
   v24 = +[GEOAPStateFactory sharedFactory];
   v58 = v24;
-  v56 = v12;
-  if ([v12 count])
+  v56 = statesCopy;
+  if ([statesCopy count])
   {
     v61 = v16;
-    v25 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v12, "count")}];
+    v25 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
     v70 = 0u;
-    v26 = v12;
+    v26 = statesCopy;
     v27 = [v26 countByEnumeratingWithState:&v67 objects:v74 count:16];
     if (v27)
     {
@@ -7312,7 +7312,7 @@ LABEL_20:
     v63 = v36;
   }
 
-  v12 = v56;
+  statesCopy = v56;
   if (GEOConfigGetBOOL())
   {
     v62 = 0;
@@ -7415,11 +7415,11 @@ LABEL_20:
   v51 = objc_alloc_init(MEMORY[0x1E69A1F90]);
   [v50 setServiceMetadata:v51];
 
-  v52 = [v50 serviceMetadata];
-  [v52 setPlacesMetadata:v64];
+  serviceMetadata = [v50 serviceMetadata];
+  [serviceMetadata setPlacesMetadata:v64];
 
-  v53 = [v50 serviceMetadata];
-  [v53 setServiceMetadataType:2];
+  serviceMetadata2 = [v50 serviceMetadata];
+  [serviceMetadata2 setServiceMetadataType:2];
 
   if (v60)
   {
@@ -7461,7 +7461,7 @@ LABEL_20:
   [v54 sessionStateForType:6 callback:v65];
 
   v18[2](v18);
-  v11 = v64;
+  metadataCopy = v64;
 LABEL_21:
 
   v34 = *MEMORY[0x1E69E9840];
@@ -7503,38 +7503,38 @@ uint64_t __128__GEOAPPortal_capturePlacesServiceMetadataWithPlacesMetadata_addit
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)capturePeriodicSettingsWithMapSettings:(id)a3 mapUiShown:(id)a4 mapsFeatures:(id)a5 mapsUserSettings:(id)a6 routingSettings:(id)a7 additionalStates:(id)a8 providedDropRate:(id)a9 completionQueue:(id)a10 completionBlock:(id)a11
++ (void)capturePeriodicSettingsWithMapSettings:(id)settings mapUiShown:(id)shown mapsFeatures:(id)features mapsUserSettings:(id)userSettings routingSettings:(id)routingSettings additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)self0 completionBlock:(id)self1
 {
   v81 = *MEMORY[0x1E69E9840];
-  v68 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
+  settingsCopy = settings;
+  shownCopy = shown;
+  featuresCopy = features;
+  userSettingsCopy = userSettings;
+  routingSettingsCopy = routingSettings;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v75[0] = MEMORY[0x1E69E9820];
   v75[1] = 3221225472;
   v75[2] = __177__GEOAPPortal_capturePeriodicSettingsWithMapSettings_mapUiShown_mapsFeatures_mapsUserSettings_routingSettings_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v75[3] = &unk_1E7959478;
-  v24 = v23;
+  v24 = blockCopy;
   v77 = v24;
-  v25 = v22;
+  v25 = queueCopy;
   v76 = v25;
   v26 = MEMORY[0x1AC5A12F0](v75);
   if (!GEOConfigGetBOOL())
   {
     v66 = v25;
-    v67 = v19;
+    v67 = routingSettingsCopy;
     v28 = +[GEOAPServiceManager sharedManager];
-    v29 = [v28 eventCollectionIsDisabledForCurrentProcess];
+    eventCollectionIsDisabledForCurrentProcess = [v28 eventCollectionIsDisabledForCurrentProcess];
 
-    if (v29)
+    if (eventCollectionIsDisabledForCurrentProcess)
     {
       v30 = GEOGetGEOAPPortalAnalyticsLog();
-      v27 = v20;
+      v27 = statesCopy;
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
       {
         v31 = GEOApplicationIdentifierOrProcessName();
@@ -7544,15 +7544,15 @@ uint64_t __128__GEOAPPortal_capturePlacesServiceMetadataWithPlacesMetadata_addit
       }
 
       v26[2](v26);
-      v19 = v67;
+      routingSettingsCopy = v67;
     }
 
     else
     {
-      v27 = v20;
-      if (v21)
+      v27 = statesCopy;
+      if (rateCopy)
       {
-        [v21 doubleValue];
+        [rateCopy doubleValue];
       }
 
       else
@@ -7561,7 +7561,7 @@ uint64_t __128__GEOAPPortal_capturePlacesServiceMetadataWithPlacesMetadata_addit
       }
 
       v25 = v66;
-      v19 = v67;
+      routingSettingsCopy = v67;
       if (v32 != 0.0 && v32 >= arc4random() / 4294967300.0)
       {
         v26[2](v26);
@@ -7570,18 +7570,18 @@ uint64_t __128__GEOAPPortal_capturePlacesServiceMetadataWithPlacesMetadata_addit
 
       v60 = +[GEOAPStateFactory sharedFactory];
       v57 = v24;
-      v61 = v18;
-      if ([v20 count])
+      v61 = userSettingsCopy;
+      if ([statesCopy count])
       {
-        v58 = v21;
-        v62 = v17;
-        v64 = v16;
-        v33 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v20, "count")}];
+        v58 = rateCopy;
+        v62 = featuresCopy;
+        v64 = shownCopy;
+        v33 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
         v71 = 0u;
         v72 = 0u;
         v73 = 0u;
         v74 = 0u;
-        v34 = v20;
+        v34 = statesCopy;
         v35 = [v34 countByEnumeratingWithState:&v71 objects:v78 count:16];
         if (v35)
         {
@@ -7608,9 +7608,9 @@ uint64_t __128__GEOAPPortal_capturePlacesServiceMetadataWithPlacesMetadata_addit
         }
 
         v41 = [v33 copy];
-        v17 = v62;
-        v16 = v64;
-        v21 = v58;
+        featuresCopy = v62;
+        shownCopy = v64;
+        rateCopy = v58;
       }
 
       else
@@ -7634,7 +7634,7 @@ uint64_t __128__GEOAPPortal_capturePlacesServiceMetadataWithPlacesMetadata_addit
         }
       }
 
-      v27 = v20;
+      v27 = statesCopy;
       if (GEOConfigGetBOOL())
       {
         v63 = 0;
@@ -7679,20 +7679,20 @@ uint64_t __128__GEOAPPortal_capturePlacesServiceMetadataWithPlacesMetadata_addit
       v48 = objc_alloc_init(MEMORY[0x1E69A1F58]);
       [v47 setPeriodicSettingsSummary:v48];
 
-      v49 = [v47 periodicSettingsSummary];
-      [v49 setMapSettings:v68];
+      periodicSettingsSummary = [v47 periodicSettingsSummary];
+      [periodicSettingsSummary setMapSettings:settingsCopy];
 
-      v50 = [v47 periodicSettingsSummary];
-      [v50 setMapUiShown:v16];
+      periodicSettingsSummary2 = [v47 periodicSettingsSummary];
+      [periodicSettingsSummary2 setMapUiShown:shownCopy];
 
-      v51 = [v47 periodicSettingsSummary];
-      [v51 setMapsFeatures:v17];
+      periodicSettingsSummary3 = [v47 periodicSettingsSummary];
+      [periodicSettingsSummary3 setMapsFeatures:featuresCopy];
 
-      v52 = [v47 periodicSettingsSummary];
-      [v52 setMapsUserSettings:v61];
+      periodicSettingsSummary4 = [v47 periodicSettingsSummary];
+      [periodicSettingsSummary4 setMapsUserSettings:v61];
 
-      v53 = [v47 periodicSettingsSummary];
-      [v53 setRoutingSettings:v67];
+      periodicSettingsSummary5 = [v47 periodicSettingsSummary];
+      [periodicSettingsSummary5 setRoutingSettings:v67];
 
       if (v63)
       {
@@ -7719,8 +7719,8 @@ uint64_t __128__GEOAPPortal_capturePlacesServiceMetadataWithPlacesMetadata_addit
       [v54 sessionStateForType:7 callback:v69];
 
       v26[2](v26);
-      v18 = v61;
-      v19 = v67;
+      userSettingsCopy = v61;
+      routingSettingsCopy = v67;
       v24 = v57;
     }
 
@@ -7729,7 +7729,7 @@ uint64_t __128__GEOAPPortal_capturePlacesServiceMetadataWithPlacesMetadata_addit
   }
 
   v26[2](v26);
-  v27 = v20;
+  v27 = statesCopy;
 LABEL_45:
 
   v56 = *MEMORY[0x1E69E9840];
@@ -7771,58 +7771,58 @@ uint64_t __177__GEOAPPortal_capturePeriodicSettingsWithMapSettings_mapUiShown_ma
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureNetworkEventWithNetworkService:(int)a3 requestAppIdentifier:(id)a4 requestAppIdMajorVer:(id)a5 requestAppIdMinorVer:(id)a6 requestErrorDomain:(id)a7 requestErrorCode:(id)a8 requestDataSize:(id)a9 responseDataSize:(id)a10 totalTime:(id)a11 httpResponseCode:(id)a12 serviceIpAddress:(id)a13 taskMetrics:(id)a14 mptcpServiceType:(int)a15 mptcpNegotiated:(id)a16 rnfTriggered:(id)a17 queuedTime:(id)a18 redirectCount:(id)a19 requestStart:(id)a20 requestEnd:(id)a21 wasBackground:(id)a22 additionalStates:(id)a23 providedDropRate:(id)a24 completionQueue:(id)a25 completionBlock:(id)a26
++ (void)captureNetworkEventWithNetworkService:(int)service requestAppIdentifier:(id)identifier requestAppIdMajorVer:(id)ver requestAppIdMinorVer:(id)minorVer requestErrorDomain:(id)domain requestErrorCode:(id)code requestDataSize:(id)size responseDataSize:(id)self0 totalTime:(id)self1 httpResponseCode:(id)self2 serviceIpAddress:(id)self3 taskMetrics:(id)self4 mptcpServiceType:(int)self5 mptcpNegotiated:(id)self6 rnfTriggered:(id)self7 queuedTime:(id)self8 redirectCount:(id)self9 requestStart:(id)start requestEnd:(id)end wasBackground:(id)background additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block
 {
   v166 = *MEMORY[0x1E69E9840];
-  v152 = a4;
-  v30 = a5;
-  v151 = a6;
-  v150 = a7;
-  v31 = a8;
-  v32 = a9;
-  v33 = a10;
-  v34 = a11;
-  v35 = a12;
-  v36 = a13;
-  v37 = a14;
-  v149 = a16;
-  v148 = a17;
-  v147 = a18;
-  v146 = a19;
-  v145 = a20;
-  v144 = a21;
-  v143 = a22;
-  v142 = a23;
-  v153 = a24;
-  v38 = a25;
-  v39 = a26;
+  identifierCopy = identifier;
+  verCopy = ver;
+  minorVerCopy = minorVer;
+  domainCopy = domain;
+  codeCopy = code;
+  sizeCopy = size;
+  dataSizeCopy = dataSize;
+  timeCopy = time;
+  responseCodeCopy = responseCode;
+  addressCopy = address;
+  metricsCopy = metrics;
+  negotiatedCopy = negotiated;
+  triggeredCopy = triggered;
+  queuedTimeCopy = queuedTime;
+  countCopy = count;
+  startCopy = start;
+  endCopy = end;
+  backgroundCopy = background;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v160[0] = MEMORY[0x1E69E9820];
   v160[1] = 3221225472;
   v160[2] = __416__GEOAPPortal_captureNetworkEventWithNetworkService_requestAppIdentifier_requestAppIdMajorVer_requestAppIdMinorVer_requestErrorDomain_requestErrorCode_requestDataSize_responseDataSize_totalTime_httpResponseCode_serviceIpAddress_taskMetrics_mptcpServiceType_mptcpNegotiated_rnfTriggered_queuedTime_redirectCount_requestStart_requestEnd_wasBackground_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v160[3] = &unk_1E7959478;
-  v141 = v39;
+  v141 = blockCopy;
   v162 = v141;
-  v140 = v38;
+  v140 = queueCopy;
   v161 = v140;
   v40 = MEMORY[0x1AC5A12F0](v160);
   if (GEOConfigGetBOOL())
   {
     v40[2](v40);
-    v41 = v31;
+    v41 = codeCopy;
 LABEL_22:
-    v56 = v32;
+    v56 = sizeCopy;
     goto LABEL_23;
   }
 
   v136 = v40;
-  v139 = v30;
+  v139 = verCopy;
   v42 = +[GEOAPServiceManager sharedManager];
-  v43 = [v42 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v42 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v43)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v44 = GEOGetGEOAPPortalAnalyticsLog();
-    v41 = v31;
+    v41 = codeCopy;
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
     {
       v45 = GEOApplicationIdentifierOrProcessName();
@@ -7833,14 +7833,14 @@ LABEL_22:
 
     v40 = v136;
     v136[2](v136);
-    v30 = v139;
+    verCopy = v139;
     goto LABEL_22;
   }
 
-  v41 = v31;
-  if (v153)
+  v41 = codeCopy;
+  if (rateCopy)
   {
-    [v153 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -7849,7 +7849,7 @@ LABEL_22:
   }
 
   v47 = v46;
-  v30 = v139;
+  verCopy = v139;
   if (v46 != 0.0 && v46 >= arc4random() / 4294967300.0)
   {
     v40 = v136;
@@ -7858,18 +7858,18 @@ LABEL_22:
   }
 
   v124 = +[GEOAPStateFactory sharedFactory];
-  v122 = v34;
-  v135 = v35;
-  v125 = v37;
-  v126 = v36;
-  if ([v142 count])
+  v122 = timeCopy;
+  v135 = responseCodeCopy;
+  v125 = metricsCopy;
+  v126 = addressCopy;
+  if ([statesCopy count])
   {
-    v48 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v142, "count")}];
+    v48 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v156 = 0u;
     v157 = 0u;
     v158 = 0u;
     v159 = 0u;
-    v49 = v142;
+    v49 = statesCopy;
     v50 = [v49 countByEnumeratingWithState:&v156 objects:v163 count:16];
     if (v50)
     {
@@ -7896,9 +7896,9 @@ LABEL_22:
     }
 
     v138 = [v48 copy];
-    v41 = v31;
-    v34 = v122;
-    v35 = v135;
+    v41 = codeCopy;
+    timeCopy = v122;
+    responseCodeCopy = v135;
   }
 
   else
@@ -7906,7 +7906,7 @@ LABEL_22:
     v138 = 0;
   }
 
-  v56 = v32;
+  v56 = sizeCopy;
   if (GEOConfigGetBOOL())
   {
     v58 = 0;
@@ -8116,144 +8116,144 @@ LABEL_22:
   v74 = objc_alloc_init(MEMORY[0x1E69A1F38]);
   [v73 setNetworkEvent:v74];
 
-  v75 = [v73 networkEvent];
-  [v75 setNetworkService:a3];
+  networkEvent = [v73 networkEvent];
+  [networkEvent setNetworkService:service];
 
-  v76 = [v73 networkEvent];
-  [v76 setRequestAppIdentifier:v152];
+  networkEvent2 = [v73 networkEvent];
+  [networkEvent2 setRequestAppIdentifier:identifierCopy];
 
-  v77 = [v73 networkEvent];
-  [v77 setRequestAppIdMajorVer:v139];
+  networkEvent3 = [v73 networkEvent];
+  [networkEvent3 setRequestAppIdMajorVer:v139];
 
-  v78 = [v73 networkEvent];
-  [v78 setRequestAppIdMinorVer:v151];
+  networkEvent4 = [v73 networkEvent];
+  [networkEvent4 setRequestAppIdMinorVer:minorVerCopy];
 
-  v79 = [v73 networkEvent];
-  [v79 setRequestErrorDomain:v150];
+  networkEvent5 = [v73 networkEvent];
+  [networkEvent5 setRequestErrorDomain:domainCopy];
 
   if (v41)
   {
-    v80 = [v41 integerValue];
-    v81 = [v73 networkEvent];
-    [v81 setRequestErrorCode:v80];
+    integerValue = [v41 integerValue];
+    networkEvent6 = [v73 networkEvent];
+    [networkEvent6 setRequestErrorCode:integerValue];
   }
 
   if (v56)
   {
-    v82 = [v56 integerValue];
-    v83 = [v73 networkEvent];
-    [v83 setRequestDataSize:v82];
+    integerValue2 = [v56 integerValue];
+    networkEvent7 = [v73 networkEvent];
+    [networkEvent7 setRequestDataSize:integerValue2];
   }
 
-  if (v33)
+  if (dataSizeCopy)
   {
-    v84 = [v33 integerValue];
-    v85 = [v73 networkEvent];
-    [v85 setResponseDataSize:v84];
+    integerValue3 = [dataSizeCopy integerValue];
+    networkEvent8 = [v73 networkEvent];
+    [networkEvent8 setResponseDataSize:integerValue3];
   }
 
-  if (v34)
+  if (timeCopy)
   {
-    v86 = [v34 integerValue];
-    v87 = [v73 networkEvent];
-    [v87 setTotalTime:v86];
+    integerValue4 = [timeCopy integerValue];
+    networkEvent9 = [v73 networkEvent];
+    [networkEvent9 setTotalTime:integerValue4];
 
-    v35 = v135;
+    responseCodeCopy = v135;
   }
 
-  if (v35)
+  if (responseCodeCopy)
   {
-    v88 = [v35 integerValue];
-    v89 = [v73 networkEvent];
-    [v89 setHttpResponseCode:v88];
+    integerValue5 = [responseCodeCopy integerValue];
+    networkEvent10 = [v73 networkEvent];
+    [networkEvent10 setHttpResponseCode:integerValue5];
   }
 
-  v90 = [v73 networkEvent];
-  [v90 setServiceIpAddress:v126];
+  networkEvent11 = [v73 networkEvent];
+  [networkEvent11 setServiceIpAddress:v126];
 
-  v91 = [v73 networkEvent];
-  [v91 setTaskMetrics:v125];
+  networkEvent12 = [v73 networkEvent];
+  [networkEvent12 setTaskMetrics:v125];
 
-  v92 = [v73 networkEvent];
-  [v92 setMptcpServiceType:a15];
+  networkEvent13 = [v73 networkEvent];
+  [networkEvent13 setMptcpServiceType:type];
 
-  if (v149)
+  if (negotiatedCopy)
   {
-    v93 = [v149 BOOLValue];
-    v94 = [v73 networkEvent];
-    [v94 setMptcpNegotiated:v93];
+    bOOLValue = [negotiatedCopy BOOLValue];
+    networkEvent14 = [v73 networkEvent];
+    [networkEvent14 setMptcpNegotiated:bOOLValue];
   }
 
-  if (v148)
+  if (triggeredCopy)
   {
-    v95 = [v148 BOOLValue];
-    v96 = [v73 networkEvent];
-    [v96 setRnfTriggered:v95];
+    bOOLValue2 = [triggeredCopy BOOLValue];
+    networkEvent15 = [v73 networkEvent];
+    [networkEvent15 setRnfTriggered:bOOLValue2];
   }
 
-  if (v147)
+  if (queuedTimeCopy)
   {
-    v97 = [v147 integerValue];
-    v98 = [v73 networkEvent];
-    [v98 setQueuedTime:v97];
+    integerValue6 = [queuedTimeCopy integerValue];
+    networkEvent16 = [v73 networkEvent];
+    [networkEvent16 setQueuedTime:integerValue6];
   }
 
-  if (v146)
+  if (countCopy)
   {
-    v99 = [v146 integerValue];
-    v100 = [v73 networkEvent];
-    [v100 setRedirectCount:v99];
+    integerValue7 = [countCopy integerValue];
+    networkEvent17 = [v73 networkEvent];
+    [networkEvent17 setRedirectCount:integerValue7];
   }
 
-  if (v145)
+  if (startCopy)
   {
-    [v145 doubleValue];
+    [startCopy doubleValue];
     v102 = v101;
-    v103 = [v73 networkEvent];
-    [v103 setRequestStart:v102];
+    networkEvent18 = [v73 networkEvent];
+    [networkEvent18 setRequestStart:v102];
   }
 
-  if (v144)
+  if (endCopy)
   {
-    [v144 doubleValue];
+    [endCopy doubleValue];
     v105 = v104;
-    v106 = [v73 networkEvent];
-    [v106 setRequestEnd:v105];
+    networkEvent19 = [v73 networkEvent];
+    [networkEvent19 setRequestEnd:v105];
   }
 
-  if (v143)
+  if (backgroundCopy)
   {
-    v107 = [v143 BOOLValue];
-    v108 = [v73 networkEvent];
-    [v108 setWasBackground:v107];
+    bOOLValue3 = [backgroundCopy BOOLValue];
+    networkEvent20 = [v73 networkEvent];
+    [networkEvent20 setWasBackground:bOOLValue3];
   }
 
-  v109 = [MEMORY[0x1E69A2478] modernManager];
-  v110 = [v109 activeTileGroup];
-  v111 = [v110 identifier];
-  v112 = [v73 networkEvent];
-  [v112 setTilesetId:v111];
+  modernManager = [MEMORY[0x1E69A2478] modernManager];
+  activeTileGroup = [modernManager activeTileGroup];
+  identifier = [activeTileGroup identifier];
+  networkEvent21 = [v73 networkEvent];
+  [networkEvent21 setTilesetId:identifier];
 
   if (GEOConfigGetBOOL())
   {
-    v113 = [MEMORY[0x1E69A2470] defaultConfiguration];
-    v114 = [v113 environment];
-    v115 = [v73 networkEvent];
-    [v115 setManifestEnv:v114];
+    defaultConfiguration = [MEMORY[0x1E69A2470] defaultConfiguration];
+    environment = [defaultConfiguration environment];
+    networkEvent22 = [v73 networkEvent];
+    [networkEvent22 setManifestEnv:environment];
   }
 
   v116 = [MEMORY[0x1E696AD98] numberWithDouble:round((1.0 - v47) * 10000.0)];
-  v117 = [v116 unsignedIntValue];
-  v118 = [v73 networkEvent];
-  [v118 setSamplingRate:v117];
+  unsignedIntValue = [v116 unsignedIntValue];
+  networkEvent23 = [v73 networkEvent];
+  [networkEvent23 setSamplingRate:unsignedIntValue];
 
   if (v134)
   {
     [v73 addLogMsgState:?];
   }
 
-  v34 = v122;
-  v35 = v135;
+  timeCopy = v122;
+  responseCodeCopy = v135;
   if (v133)
   {
     [v73 addLogMsgState:?];
@@ -8316,9 +8316,9 @@ LABEL_22:
   v40 = v136;
   v136[2](v136);
 
-  v30 = v139;
-  v37 = v125;
-  v36 = v126;
+  verCopy = v139;
+  metricsCopy = v125;
+  addressCopy = v126;
 LABEL_23:
 
   v57 = *MEMORY[0x1E69E9840];
@@ -8360,20 +8360,20 @@ uint64_t __416__GEOAPPortal_captureNetworkEventWithNetworkService_requestAppIden
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureNetSelectionHarvestWithHarvestData:(id)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7
++ (void)captureNetSelectionHarvestWithHarvestData:(id)data additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block
 {
   v37 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
+  dataCopy = data;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __123__GEOAPPortal_captureNetSelectionHarvestWithHarvestData_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v32[3] = &unk_1E7959478;
-  v14 = v13;
+  v14 = blockCopy;
   v34 = v14;
-  v15 = v12;
+  v15 = queueCopy;
   v33 = v15;
   v16 = MEMORY[0x1AC5A12F0](v32);
   if (GEOConfigGetBOOL())
@@ -8382,17 +8382,17 @@ uint64_t __416__GEOAPPortal_captureNetworkEventWithNetworkService_requestAppIden
   }
 
   v17 = +[GEOAPServiceManager sharedManager];
-  v18 = [v17 platformDiagAndUsage];
+  platformDiagAndUsage = [v17 platformDiagAndUsage];
 
-  if ((v18 & 1) == 0)
+  if ((platformDiagAndUsage & 1) == 0)
   {
     goto LABEL_13;
   }
 
   v19 = +[GEOAPServiceManager sharedManager];
-  v20 = [v19 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v19 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v20)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v21 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -8406,9 +8406,9 @@ uint64_t __416__GEOAPPortal_captureNetworkEventWithNetworkService_requestAppIden
     goto LABEL_13;
   }
 
-  if (v11)
+  if (rateCopy)
   {
-    [v11 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -8428,8 +8428,8 @@ LABEL_13:
   v25 = objc_alloc_init(MEMORY[0x1E69A1F48]);
   [v24 setNetworkSelectionHarvest:v25];
 
-  v26 = [v24 networkSelectionHarvest];
-  [v26 setHarvestData:v10];
+  networkSelectionHarvest = [v24 networkSelectionHarvest];
+  [networkSelectionHarvest setHarvestData:dataCopy];
 
   v27 = +[GEOAPStateFactory sharedFactory];
   v30[0] = MEMORY[0x1E69E9820];
@@ -8482,21 +8482,21 @@ uint64_t __123__GEOAPPortal_captureNetSelectionHarvestWithHarvestData_additional
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureNetEventSummaryWithGroups:(id)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7
++ (void)captureNetEventSummaryWithGroups:(id)groups additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block
 {
   v86 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  groupsCopy = groups;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v79[0] = MEMORY[0x1E69E9820];
   v79[1] = 3221225472;
   v79[2] = __114__GEOAPPortal_captureNetEventSummaryWithGroups_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v79[3] = &unk_1E7959478;
-  v16 = v15;
+  v16 = blockCopy;
   v81 = v16;
-  v17 = v14;
+  v17 = queueCopy;
   v80 = v17;
   v18 = MEMORY[0x1AC5A12F0](v79);
   if (GEOConfigGetBOOL())
@@ -8505,9 +8505,9 @@ uint64_t __123__GEOAPPortal_captureNetSelectionHarvestWithHarvestData_additional
   }
 
   v19 = +[GEOAPServiceManager sharedManager];
-  v20 = [v19 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v19 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v20)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v21 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -8521,9 +8521,9 @@ uint64_t __123__GEOAPPortal_captureNetSelectionHarvestWithHarvestData_additional
     goto LABEL_20;
   }
 
-  if (v13)
+  if (rateCopy)
   {
-    [v13 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -8540,18 +8540,18 @@ LABEL_20:
 
   v24 = +[GEOAPStateFactory sharedFactory];
   v67 = v24;
-  v68 = v11;
-  v64 = v13;
-  v65 = v12;
+  v68 = groupsCopy;
+  v64 = rateCopy;
+  v65 = statesCopy;
   v63 = v16;
-  if ([v12 count])
+  if ([statesCopy count])
   {
-    v25 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v12, "count")}];
+    v25 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v75 = 0u;
     v76 = 0u;
     v77 = 0u;
     v78 = 0u;
-    v26 = v12;
+    v26 = statesCopy;
     v27 = [v26 countByEnumeratingWithState:&v75 objects:v83 count:16];
     if (v27)
     {
@@ -8579,7 +8579,7 @@ LABEL_20:
 
     v33 = [v25 copy];
     v24 = v67;
-    v11 = v68;
+    groupsCopy = v68;
   }
 
   else
@@ -8650,21 +8650,21 @@ LABEL_20:
   v42 = objc_alloc_init(MEMORY[0x1E69A1F40]);
   [v41 setNetworkEventSummary:v42];
 
-  v43 = [v41 networkEventSummary];
-  v44 = [v43 groups];
+  networkEventSummary = [v41 networkEventSummary];
+  groups = [networkEventSummary groups];
 
-  if (!v44)
+  if (!groups)
   {
-    v45 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v11, "count")}];
-    v46 = [v41 networkEventSummary];
-    [v46 setGroups:v45];
+    v45 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(groupsCopy, "count")}];
+    networkEventSummary2 = [v41 networkEventSummary];
+    [networkEventSummary2 setGroups:v45];
   }
 
   v73 = 0u;
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v47 = v11;
+  v47 = groupsCopy;
   v48 = [v47 countByEnumeratingWithState:&v71 objects:v82 count:16];
   if (v48)
   {
@@ -8680,10 +8680,10 @@ LABEL_20:
         }
 
         v52 = *(*(&v71 + 1) + 8 * j);
-        v53 = [v41 networkEventSummary];
-        v54 = [v53 groups];
+        networkEventSummary3 = [v41 networkEventSummary];
+        groups2 = [networkEventSummary3 groups];
         v55 = [v52 copy];
-        [v54 addObject:v55];
+        [groups2 addObject:v55];
       }
 
       v49 = [v47 countByEnumeratingWithState:&v71 objects:v82 count:16];
@@ -8697,9 +8697,9 @@ LABEL_20:
     [v41 addLogMsgState:v61];
   }
 
-  v11 = v68;
+  groupsCopy = v68;
   v16 = v63;
-  v13 = v64;
+  rateCopy = v64;
   if (v66)
   {
     [v41 addLogMsgState:v66];
@@ -8720,7 +8720,7 @@ LABEL_20:
   [v56 sessionStateForType:7 callback:v69];
 
   v18[2](v18);
-  v12 = v65;
+  statesCopy = v65;
   v17 = v58;
 LABEL_21:
 
@@ -8763,21 +8763,21 @@ uint64_t __114__GEOAPPortal_captureNetEventSummaryWithGroups_additionalStates_pr
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureNavTraceWithNavTraceData:(id)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7
++ (void)captureNavTraceWithNavTraceData:(id)data additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block
 {
   v69 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  dataCopy = data;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v63[0] = MEMORY[0x1E69E9820];
   v63[1] = 3221225472;
   v63[2] = __113__GEOAPPortal_captureNavTraceWithNavTraceData_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v63[3] = &unk_1E7959478;
-  v16 = v15;
+  v16 = blockCopy;
   v65 = v16;
-  v17 = v14;
+  v17 = queueCopy;
   v64 = v17;
   v18 = MEMORY[0x1AC5A12F0](v63);
   if (GEOConfigGetBOOL())
@@ -8786,9 +8786,9 @@ uint64_t __114__GEOAPPortal_captureNetEventSummaryWithGroups_additionalStates_pr
   }
 
   v19 = +[GEOAPServiceManager sharedManager];
-  v20 = [v19 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v19 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v20)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v21 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -8802,9 +8802,9 @@ uint64_t __114__GEOAPPortal_captureNetEventSummaryWithGroups_additionalStates_pr
     goto LABEL_20;
   }
 
-  if (v13)
+  if (rateCopy)
   {
-    [v13 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -8819,19 +8819,19 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v56 = v11;
+  v56 = dataCopy;
   v24 = +[GEOAPStateFactory sharedFactory];
   v52 = v24;
-  v50 = v12;
-  if ([v12 count])
+  v50 = statesCopy;
+  if ([statesCopy count])
   {
     v53 = v16;
-    v25 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v12, "count")}];
+    v25 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v59 = 0u;
     v60 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v26 = v12;
+    v26 = statesCopy;
     v27 = [v26 countByEnumeratingWithState:&v59 objects:v66 count:16];
     if (v27)
     {
@@ -8885,7 +8885,7 @@ LABEL_20:
     v55 = v36;
   }
 
-  v12 = v50;
+  statesCopy = v50;
   if (GEOConfigGetBOOL())
   {
     v37 = 0;
@@ -8949,8 +8949,8 @@ LABEL_20:
   v46 = objc_alloc_init(MEMORY[0x1E69A1ED8]);
   [v45 setFullNavTrace:v46];
 
-  v47 = [v45 fullNavTrace];
-  [v47 setNavTraceData:v56];
+  fullNavTrace = [v45 fullNavTrace];
+  [fullNavTrace setNavTraceData:v56];
 
   if (v54)
   {
@@ -8982,7 +8982,7 @@ LABEL_20:
   [v48 sessionStateForType:9 callback:v57];
 
   v18[2](v18);
-  v11 = v56;
+  dataCopy = v56;
 LABEL_21:
 
   v34 = *MEMORY[0x1E69E9840];
@@ -9024,22 +9024,22 @@ uint64_t __113__GEOAPPortal_captureNavTraceWithNavTraceData_additionalStates_pro
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureNavThermalPressureWithThermalPressure:(id)a3 disableMapFeatures:(id)a4 navMapType:(int)a5 collectionTrigger:(int)a6 additionalStates:(id)a7 providedDropRate:(id)a8 completionQueue:(id)a9 completionBlock:(id)a10
++ (void)captureNavThermalPressureWithThermalPressure:(id)pressure disableMapFeatures:(id)features navMapType:(int)type collectionTrigger:(int)trigger additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)self0
 {
   v107 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
-  v18 = a10;
+  pressureCopy = pressure;
+  featuresCopy = features;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v100[0] = MEMORY[0x1E69E9820];
   v100[1] = 3221225472;
   v100[2] = __174__GEOAPPortal_captureNavThermalPressureWithThermalPressure_disableMapFeatures_navMapType_collectionTrigger_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v100[3] = &unk_1E7959478;
-  v19 = v18;
+  v19 = blockCopy;
   v102 = v19;
-  v20 = v17;
+  v20 = queueCopy;
   v101 = v20;
   v21 = MEMORY[0x1AC5A12F0](v100);
   if (GEOConfigGetBOOL())
@@ -9048,9 +9048,9 @@ uint64_t __113__GEOAPPortal_captureNavTraceWithNavTraceData_additionalStates_pro
   }
 
   v22 = +[GEOAPServiceManager sharedManager];
-  v23 = [v22 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v22 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v23)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v24 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -9064,9 +9064,9 @@ uint64_t __113__GEOAPPortal_captureNavTraceWithNavTraceData_additionalStates_pro
     goto LABEL_20;
   }
 
-  if (v16)
+  if (rateCopy)
   {
-    [v16 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -9081,21 +9081,21 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v76 = v16;
+  v76 = rateCopy;
   v27 = +[GEOAPStateFactory sharedFactory];
   v78 = v27;
-  v79 = v14;
-  v80 = v13;
-  v77 = v15;
+  v79 = featuresCopy;
+  v80 = pressureCopy;
+  v77 = statesCopy;
   v75 = v19;
-  if ([v15 count])
+  if ([statesCopy count])
   {
-    v28 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v15, "count")}];
+    v28 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v96 = 0u;
     v97 = 0u;
     v98 = 0u;
     v99 = 0u;
-    v29 = v15;
+    v29 = statesCopy;
     v30 = [v29 countByEnumeratingWithState:&v96 objects:v104 count:16];
     if (v30)
     {
@@ -9122,8 +9122,8 @@ LABEL_20:
     }
 
     v36 = [v28 copy];
-    v14 = v79;
-    v13 = v80;
+    featuresCopy = v79;
+    pressureCopy = v80;
     v27 = v78;
   }
 
@@ -9307,18 +9307,18 @@ LABEL_20:
   v56 = objc_alloc_init(MEMORY[0x1E69A1FB8]);
   [v55 setThermalPressure:v56];
 
-  if (v13)
+  if (pressureCopy)
   {
-    v57 = [v13 unsignedLongLongValue];
-    v58 = [v55 thermalPressure];
-    [v58 setThermalPressure:v57];
+    unsignedLongLongValue = [pressureCopy unsignedLongLongValue];
+    thermalPressure = [v55 thermalPressure];
+    [thermalPressure setThermalPressure:unsignedLongLongValue];
   }
 
   v94 = 0u;
   v95 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v59 = v14;
+  v59 = featuresCopy;
   v60 = [v59 countByEnumeratingWithState:&v92 objects:v103 count:16];
   if (v60)
   {
@@ -9334,8 +9334,8 @@ LABEL_20:
         }
 
         v64 = *(*(&v92 + 1) + 8 * j);
-        v65 = [v55 thermalPressure];
-        [v65 addDisableMapFeatures:{objc_msgSend(v64, "integerValue")}];
+        thermalPressure2 = [v55 thermalPressure];
+        [thermalPressure2 addDisableMapFeatures:{objc_msgSend(v64, "integerValue")}];
       }
 
       v61 = [v59 countByEnumeratingWithState:&v92 objects:v103 count:16];
@@ -9344,18 +9344,18 @@ LABEL_20:
     while (v61);
   }
 
-  v66 = [v55 thermalPressure];
-  [v66 setNavMapType:a5];
+  thermalPressure3 = [v55 thermalPressure];
+  [thermalPressure3 setNavMapType:type];
 
-  v67 = [v55 thermalPressure];
-  [v67 setCollectionTrigger:a6];
+  thermalPressure4 = [v55 thermalPressure];
+  [thermalPressure4 setCollectionTrigger:trigger];
 
   if (v73)
   {
     [v55 addLogMsgState:v73];
   }
 
-  v14 = v79;
+  featuresCopy = v79;
   v19 = v75;
   if (v87)
   {
@@ -9367,7 +9367,7 @@ LABEL_20:
     [v55 addLogMsgState:v86];
   }
 
-  v13 = v80;
+  pressureCopy = v80;
   if (v83)
   {
     [v55 addLogMsgState:?];
@@ -9410,8 +9410,8 @@ LABEL_20:
   [v70 sessionStateForType:6 callback:v90];
 
   v21[2](v21);
-  v16 = v76;
-  v15 = v77;
+  rateCopy = v76;
+  statesCopy = v77;
 LABEL_21:
 
   v37 = *MEMORY[0x1E69E9840];
@@ -9453,22 +9453,22 @@ uint64_t __174__GEOAPPortal_captureNavThermalPressureWithThermalPressure_disable
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureMarcoLiteWithTotalNavTime:(id)a3 usageStates:(id)a4 vioTrigger:(int)a5 additionalStates:(id)a6 providedDropRate:(id)a7 completionQueue:(id)a8 completionBlock:(id)a9
++ (void)captureMarcoLiteWithTotalNavTime:(id)time usageStates:(id)states vioTrigger:(int)trigger additionalStates:(id)additionalStates providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block
 {
   v93 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  timeCopy = time;
+  statesCopy = states;
+  additionalStatesCopy = additionalStates;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v86[0] = MEMORY[0x1E69E9820];
   v86[1] = 3221225472;
   v86[2] = __137__GEOAPPortal_captureMarcoLiteWithTotalNavTime_usageStates_vioTrigger_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v86[3] = &unk_1E7959478;
-  v20 = v19;
+  v20 = blockCopy;
   v88 = v20;
-  v21 = v18;
+  v21 = queueCopy;
   v87 = v21;
   v22 = MEMORY[0x1AC5A12F0](v86);
   if (GEOConfigGetBOOL())
@@ -9476,19 +9476,19 @@ uint64_t __174__GEOAPPortal_captureNavThermalPressureWithThermalPressure_disable
     goto LABEL_21;
   }
 
-  v75 = a5;
+  triggerCopy = trigger;
   v23 = +[GEOAPServiceManager sharedManager];
-  v24 = [v23 platformDiagAndUsageOrAppleInternal];
+  platformDiagAndUsageOrAppleInternal = [v23 platformDiagAndUsageOrAppleInternal];
 
-  if ((v24 & 1) == 0)
+  if ((platformDiagAndUsageOrAppleInternal & 1) == 0)
   {
     goto LABEL_21;
   }
 
   v25 = +[GEOAPServiceManager sharedManager];
-  v26 = [v25 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v25 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v26)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v27 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -9502,9 +9502,9 @@ uint64_t __174__GEOAPPortal_captureNavThermalPressureWithThermalPressure_disable
     goto LABEL_21;
   }
 
-  if (v17)
+  if (rateCopy)
   {
-    [v17 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -9520,20 +9520,20 @@ LABEL_21:
   }
 
   v30 = +[GEOAPStateFactory sharedFactory];
-  v72 = v14;
-  v73 = v15;
+  v72 = timeCopy;
+  v73 = statesCopy;
   v68 = v20;
-  v69 = v17;
-  v70 = v16;
+  v69 = rateCopy;
+  v70 = additionalStatesCopy;
   v71 = v30;
-  if ([v16 count])
+  if ([additionalStatesCopy count])
   {
-    v31 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v16, "count")}];
+    v31 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(additionalStatesCopy, "count")}];
     v82 = 0u;
     v83 = 0u;
     v84 = 0u;
     v85 = 0u;
-    v32 = v16;
+    v32 = additionalStatesCopy;
     v33 = [v32 countByEnumeratingWithState:&v82 objects:v90 count:16];
     if (v33)
     {
@@ -9561,7 +9561,7 @@ LABEL_21:
 
     v39 = [v31 copy];
     v30 = v71;
-    v14 = v72;
+    timeCopy = v72;
   }
 
   else
@@ -9611,21 +9611,21 @@ LABEL_21:
   v46 = objc_alloc_init(MEMORY[0x1E69A1F30]);
   [v45 setMarcoLiteUsage:v46];
 
-  if (v14)
+  if (timeCopy)
   {
-    v47 = [v14 unsignedLongLongValue];
-    v48 = [v45 marcoLiteUsage];
-    [v48 setTotalNavTime:v47];
+    unsignedLongLongValue = [timeCopy unsignedLongLongValue];
+    marcoLiteUsage = [v45 marcoLiteUsage];
+    [marcoLiteUsage setTotalNavTime:unsignedLongLongValue];
   }
 
-  v49 = [v45 marcoLiteUsage];
-  v50 = [v49 usageStates];
+  marcoLiteUsage2 = [v45 marcoLiteUsage];
+  usageStates = [marcoLiteUsage2 usageStates];
 
-  if (!v50)
+  if (!usageStates)
   {
     v51 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v73, "count")}];
-    v52 = [v45 marcoLiteUsage];
-    [v52 setUsageStates:v51];
+    marcoLiteUsage3 = [v45 marcoLiteUsage];
+    [marcoLiteUsage3 setUsageStates:v51];
   }
 
   v80 = 0u;
@@ -9648,10 +9648,10 @@ LABEL_21:
         }
 
         v58 = *(*(&v78 + 1) + 8 * j);
-        v59 = [v45 marcoLiteUsage];
-        v60 = [v59 usageStates];
+        marcoLiteUsage4 = [v45 marcoLiteUsage];
+        usageStates2 = [marcoLiteUsage4 usageStates];
         v61 = [v58 copy];
-        [v60 addObject:v61];
+        [usageStates2 addObject:v61];
       }
 
       v55 = [v53 countByEnumeratingWithState:&v78 objects:v89 count:16];
@@ -9660,17 +9660,17 @@ LABEL_21:
     while (v55);
   }
 
-  v62 = [v45 marcoLiteUsage];
-  [v62 setVioTrigger:v75];
+  marcoLiteUsage5 = [v45 marcoLiteUsage];
+  [marcoLiteUsage5 setVioTrigger:triggerCopy];
 
   if (v66)
   {
     [v45 addLogMsgState:v66];
   }
 
-  v14 = v72;
-  v17 = v69;
-  v16 = v70;
+  timeCopy = v72;
+  rateCopy = v69;
+  additionalStatesCopy = v70;
   v20 = v68;
   if (v74)
   {
@@ -9687,7 +9687,7 @@ LABEL_21:
   [v63 sessionStateForType:7 callback:v76];
 
   v22[2](v22);
-  v15 = v73;
+  statesCopy = v73;
 LABEL_22:
 
   v40 = *MEMORY[0x1E69E9840];
@@ -9729,20 +9729,20 @@ uint64_t __137__GEOAPPortal_captureMarcoLiteWithTotalNavTime_usageStates_vioTrig
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureMapsInteractionWithInteractionType:(int)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7
++ (void)captureMapsInteractionWithInteractionType:(int)type additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block
 {
   v61 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v55[0] = MEMORY[0x1E69E9820];
   v55[1] = 3221225472;
   v55[2] = __123__GEOAPPortal_captureMapsInteractionWithInteractionType_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v55[3] = &unk_1E7959478;
-  v15 = v14;
+  v15 = blockCopy;
   v57 = v15;
-  v16 = v13;
+  v16 = queueCopy;
   v56 = v16;
   v17 = MEMORY[0x1AC5A12F0](v55);
   if (GEOConfigGetBOOL())
@@ -9751,9 +9751,9 @@ uint64_t __137__GEOAPPortal_captureMarcoLiteWithTotalNavTime_usageStates_vioTrig
   }
 
   v18 = +[GEOAPServiceManager sharedManager];
-  v19 = [v18 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v18 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v19)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v20 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -9767,9 +9767,9 @@ uint64_t __137__GEOAPPortal_captureMarcoLiteWithTotalNavTime_usageStates_vioTrig
     goto LABEL_20;
   }
 
-  if (v12)
+  if (rateCopy)
   {
-    [v12 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -9784,19 +9784,19 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v45 = a3;
+  typeCopy = type;
   v23 = +[GEOAPStateFactory sharedFactory];
-  v46 = v11;
+  v46 = statesCopy;
   v47 = v23;
-  if ([v11 count])
+  if ([statesCopy count])
   {
     v44 = v15;
-    v24 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v11, "count")}];
+    v24 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v25 = v11;
+    v25 = statesCopy;
     v26 = [v25 countByEnumeratingWithState:&v51 objects:v58 count:16];
     if (v26)
     {
@@ -9850,7 +9850,7 @@ LABEL_20:
     v34 = v35;
   }
 
-  v11 = v46;
+  statesCopy = v46;
   if (GEOConfigGetBOOL())
   {
     v36 = 0;
@@ -9875,8 +9875,8 @@ LABEL_20:
   v40 = objc_alloc_init(MEMORY[0x1E69A1F20]);
   [v39 setMapsInteraction:v40];
 
-  v41 = [v39 mapsInteraction];
-  [v41 setInteractionType:v45];
+  mapsInteraction = [v39 mapsInteraction];
+  [mapsInteraction setInteractionType:typeCopy];
 
   if (v34)
   {
@@ -9939,21 +9939,21 @@ uint64_t __123__GEOAPPortal_captureMapsInteractionWithInteractionType_additional
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureMapsEngagementWithUser_mapsUseLastDate:(id)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7
++ (void)captureMapsEngagementWithUser_mapsUseLastDate:(id)date additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block
 {
   v74 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  dateCopy = date;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v68[0] = MEMORY[0x1E69E9820];
   v68[1] = 3221225472;
   v68[2] = __127__GEOAPPortal_captureMapsEngagementWithUser_mapsUseLastDate_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v68[3] = &unk_1E7959478;
-  v16 = v15;
+  v16 = blockCopy;
   v70 = v16;
-  v17 = v14;
+  v17 = queueCopy;
   v69 = v17;
   v18 = MEMORY[0x1AC5A12F0](v68);
   if (GEOConfigGetBOOL())
@@ -9962,9 +9962,9 @@ uint64_t __123__GEOAPPortal_captureMapsInteractionWithInteractionType_additional
   }
 
   v19 = +[GEOAPServiceManager sharedManager];
-  v20 = [v19 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v19 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v20)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v21 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -9978,9 +9978,9 @@ uint64_t __123__GEOAPPortal_captureMapsInteractionWithInteractionType_additional
     goto LABEL_22;
   }
 
-  if (v13)
+  if (rateCopy)
   {
-    [v13 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -10002,25 +10002,25 @@ LABEL_22:
 
   if (v27)
   {
-    [v11 doubleValue];
+    [dateCopy doubleValue];
     v29 = v28;
-    v30 = [v27 user];
-    [v30 setMapsUseLastDate:v29];
+    user = [v27 user];
+    [user setMapsUseLastDate:v29];
   }
 
   v58 = v27;
-  v60 = v11;
+  v60 = dateCopy;
   v61 = v25;
-  v59 = v12;
-  if ([v12 count])
+  v59 = statesCopy;
+  if ([statesCopy count])
   {
     v55 = v16;
-    v31 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v12, "count")}];
+    v31 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v32 = v12;
+    v32 = statesCopy;
     v33 = [v32 countByEnumeratingWithState:&v64 objects:v71 count:16];
     if (v33)
     {
@@ -10083,42 +10083,42 @@ LABEL_22:
   [v44 setMapsEngagement:v45];
 
   v46 = +[GEOAPUtils currentDailyAggregationTimestamp];
-  v47 = [v44 mapsEngagement];
-  [v47 setSummaryDate:v46];
+  mapsEngagement = [v44 mapsEngagement];
+  [mapsEngagement setSummaryDate:v46];
 
   v48 = +[GEOAPUtils currentDailyAggregationRepresentativeString];
-  v49 = [v44 mapsEngagement];
-  [v49 setAggregationSummaryDate:v48];
+  mapsEngagement2 = [v44 mapsEngagement];
+  [mapsEngagement2 setAggregationSummaryDate:v48];
 
   v50 = +[GEOAPUtils myAppType];
-  v51 = [v44 mapsEngagement];
-  [v51 setAppType:v50];
+  mapsEngagement3 = [v44 mapsEngagement];
+  [mapsEngagement3 setAppType:v50];
 
-  v52 = [v44 mapsEngagement];
-  [v52 setReportingChannel:2];
+  mapsEngagement4 = [v44 mapsEngagement];
+  [mapsEngagement4 setReportingChannel:2];
 
   if (v41)
   {
     [v44 addLogMsgState:v41];
   }
 
-  v12 = v59;
+  statesCopy = v59;
   if (v58)
   {
     [v44 addLogMsgState:v58];
   }
 
-  v53 = [*(v24 + 2120) sharedFactory];
+  sharedFactory = [*(v24 + 2120) sharedFactory];
   v62[0] = MEMORY[0x1E69E9820];
   v62[1] = 3221225472;
   v62[2] = __127__GEOAPPortal_captureMapsEngagementWithUser_mapsUseLastDate_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke_64;
   v62[3] = &unk_1E7953A00;
   v63 = v44;
   v54 = v44;
-  [v53 sessionStateForType:2 callback:v62];
+  [sharedFactory sessionStateForType:2 callback:v62];
 
   v18[2](v18);
-  v11 = v60;
+  dateCopy = v60;
 LABEL_23:
 
   v40 = *MEMORY[0x1E69E9840];
@@ -10160,23 +10160,23 @@ uint64_t __127__GEOAPPortal_captureMapsEngagementWithUser_mapsUseLastDate_additi
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureMapLaunchWithLaunchUri:(id)a3 sourceAppId:(id)a4 GEOTimeToLeaveMapLaunch_minutesUntilEvent:(id)a5 additionalStates:(id)a6 providedDropRate:(id)a7 completionQueue:(id)a8 completionBlock:(id)a9
++ (void)captureMapLaunchWithLaunchUri:(id)uri sourceAppId:(id)id GEOTimeToLeaveMapLaunch_minutesUntilEvent:(id)event additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block
 {
   v126 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  uriCopy = uri;
+  idCopy = id;
+  eventCopy = event;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v120[0] = MEMORY[0x1E69E9820];
   v120[1] = 3221225472;
   v120[2] = __165__GEOAPPortal_captureMapLaunchWithLaunchUri_sourceAppId_GEOTimeToLeaveMapLaunch_minutesUntilEvent_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v120[3] = &unk_1E7959478;
-  v21 = v20;
+  v21 = blockCopy;
   v122 = v21;
-  v22 = v19;
+  v22 = queueCopy;
   v121 = v22;
   v23 = MEMORY[0x1AC5A12F0](v120);
   if (GEOConfigGetBOOL())
@@ -10185,9 +10185,9 @@ uint64_t __127__GEOAPPortal_captureMapsEngagementWithUser_mapsUseLastDate_additi
   }
 
   v24 = +[GEOAPServiceManager sharedManager];
-  v25 = [v24 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v24 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v25)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v26 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -10201,9 +10201,9 @@ uint64_t __127__GEOAPPortal_captureMapsEngagementWithUser_mapsUseLastDate_additi
     goto LABEL_20;
   }
 
-  if (v18)
+  if (rateCopy)
   {
-    [v18 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -10219,20 +10219,20 @@ LABEL_20:
   }
 
   v104 = +[GEOAPStateFactory sharedFactory];
-  v105 = v16;
-  v106 = v15;
-  v90 = v18;
-  v91 = v17;
+  v105 = eventCopy;
+  v106 = idCopy;
+  v90 = rateCopy;
+  v91 = statesCopy;
   v89 = v21;
-  if ([v17 count])
+  if ([statesCopy count])
   {
-    v112 = v14;
-    v29 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v17, "count")}];
+    v112 = uriCopy;
+    v29 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v116 = 0u;
     v117 = 0u;
     v118 = 0u;
     v119 = 0u;
-    v30 = v17;
+    v30 = statesCopy;
     v31 = [v30 countByEnumeratingWithState:&v116 objects:v123 count:16];
     if (v31)
     {
@@ -10259,7 +10259,7 @@ LABEL_20:
     }
 
     v37 = [v29 copy];
-    v14 = v112;
+    uriCopy = v112;
   }
 
   else
@@ -10645,24 +10645,24 @@ LABEL_20:
   v77 = objc_alloc_init(MEMORY[0x1E69A1F10]);
   [v76 setMapLaunchEvent:v77];
 
-  v78 = [v76 mapLaunchEvent];
-  v79 = v14;
-  [v78 setLaunchUri:v14];
+  mapLaunchEvent = [v76 mapLaunchEvent];
+  v79 = uriCopy;
+  [mapLaunchEvent setLaunchUri:uriCopy];
 
-  v80 = [v76 mapLaunchEvent];
-  [v80 setSourceAppId:v106];
+  mapLaunchEvent2 = [v76 mapLaunchEvent];
+  [mapLaunchEvent2 setSourceAppId:v106];
 
   v81 = objc_alloc_init(MEMORY[0x1E69A2628]);
-  v82 = [v76 mapLaunchEvent];
-  [v82 setTimeToLeave:v81];
+  mapLaunchEvent3 = [v76 mapLaunchEvent];
+  [mapLaunchEvent3 setTimeToLeave:v81];
 
   if (v105)
   {
     [v105 doubleValue];
     v84 = v83;
-    v85 = [v76 mapLaunchEvent];
-    v86 = [v85 timeToLeave];
-    [v86 setMinutesUntilEvent:v84];
+    mapLaunchEvent4 = [v76 mapLaunchEvent];
+    timeToLeave = [mapLaunchEvent4 timeToLeave];
+    [timeToLeave setMinutesUntilEvent:v84];
   }
 
   if (v65)
@@ -10780,11 +10780,11 @@ LABEL_20:
   [v87 sessionStateForType:6 callback:v114];
 
   v23[2](v23);
-  v14 = v79;
-  v16 = v105;
-  v15 = v106;
-  v18 = v90;
-  v17 = v91;
+  uriCopy = v79;
+  eventCopy = v105;
+  idCopy = v106;
+  rateCopy = v90;
+  statesCopy = v91;
   v21 = v89;
 LABEL_21:
 
@@ -10827,20 +10827,20 @@ uint64_t __165__GEOAPPortal_captureMapLaunchWithLaunchUri_sourceAppId_GEOTimeToL
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureImpressionEventWithAdditionalStates:(id)a3 providedDropRate:(id)a4 completionQueue:(id)a5 completionBlock:(id)a6
++ (void)captureImpressionEventWithAdditionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block
 {
   v62 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v56[0] = MEMORY[0x1E69E9820];
   v56[1] = 3221225472;
   v56[2] = __107__GEOAPPortal_captureImpressionEventWithAdditionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v56[3] = &unk_1E7959478;
-  v13 = v12;
+  v13 = blockCopy;
   v58 = v13;
-  v14 = v11;
+  v14 = queueCopy;
   v57 = v14;
   v15 = MEMORY[0x1AC5A12F0](v56);
   if (GEOConfigGetBOOL())
@@ -10849,9 +10849,9 @@ uint64_t __165__GEOAPPortal_captureMapLaunchWithLaunchUri_sourceAppId_GEOTimeToL
   }
 
   v16 = +[GEOAPServiceManager sharedManager];
-  v17 = [v16 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v16 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v17)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v18 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -10865,9 +10865,9 @@ uint64_t __165__GEOAPPortal_captureMapLaunchWithLaunchUri_sourceAppId_GEOTimeToL
     goto LABEL_20;
   }
 
-  if (v10)
+  if (rateCopy)
   {
-    [v10 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -10884,16 +10884,16 @@ LABEL_20:
 
   v21 = +[GEOAPStateFactory sharedFactory];
   v46 = v21;
-  v44 = v9;
-  if ([v9 count])
+  v44 = statesCopy;
+  if ([statesCopy count])
   {
     v47 = v13;
-    v22 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v9, "count")}];
+    v22 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v23 = v9;
+    v23 = statesCopy;
     v24 = [v23 countByEnumeratingWithState:&v52 objects:v59 count:16];
     if (v24)
     {
@@ -10945,7 +10945,7 @@ LABEL_20:
     }
   }
 
-  v9 = v44;
+  statesCopy = v44;
   if (GEOConfigGetBOOL())
   {
     v48 = 0;
@@ -11079,23 +11079,23 @@ uint64_t __107__GEOAPPortal_captureImpressionEventWithAdditionalStates_providedD
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureHardStopWithScore:(id)a3 digits:(id)a4 cities:(id)a5 additionalStates:(id)a6 providedDropRate:(id)a7 completionQueue:(id)a8 completionBlock:(id)a9
++ (void)captureHardStopWithScore:(id)score digits:(id)digits cities:(id)cities additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block
 {
   v111 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  scoreCopy = score;
+  digitsCopy = digits;
+  citiesCopy = cities;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v103[0] = MEMORY[0x1E69E9820];
   v103[1] = 3221225472;
   v103[2] = __120__GEOAPPortal_captureHardStopWithScore_digits_cities_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v103[3] = &unk_1E7959478;
-  v21 = v20;
+  v21 = blockCopy;
   v105 = v21;
-  v22 = v19;
+  v22 = queueCopy;
   v104 = v22;
   v23 = MEMORY[0x1AC5A12F0](v103);
   if (GEOConfigGetBOOL())
@@ -11104,9 +11104,9 @@ uint64_t __107__GEOAPPortal_captureImpressionEventWithAdditionalStates_providedD
   }
 
   v24 = +[GEOAPServiceManager sharedManager];
-  v25 = [v24 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v24 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v25)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v26 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -11120,9 +11120,9 @@ uint64_t __107__GEOAPPortal_captureImpressionEventWithAdditionalStates_providedD
     goto LABEL_20;
   }
 
-  if (v18)
+  if (rateCopy)
   {
-    [v18 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -11138,21 +11138,21 @@ LABEL_20:
   }
 
   v29 = +[GEOAPStateFactory sharedFactory];
-  v86 = v16;
-  v87 = v14;
+  v86 = citiesCopy;
+  v87 = scoreCopy;
   v79 = v21;
-  v80 = v18;
+  v80 = rateCopy;
   v82 = v29;
-  v83 = v15;
-  v81 = v17;
-  if ([v17 count])
+  v83 = digitsCopy;
+  v81 = statesCopy;
+  if ([statesCopy count])
   {
-    v30 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v17, "count")}];
+    v30 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v99 = 0u;
     v100 = 0u;
     v101 = 0u;
     v102 = 0u;
-    v31 = v17;
+    v31 = statesCopy;
     v32 = [v31 countByEnumeratingWithState:&v99 objects:v108 count:16];
     if (v32)
     {
@@ -11180,7 +11180,7 @@ LABEL_20:
 
     v38 = [v30 copy];
     v29 = v82;
-    v15 = v83;
+    digitsCopy = v83;
   }
 
   else
@@ -11274,15 +11274,15 @@ LABEL_20:
   {
     [v87 doubleValue];
     v51 = v50;
-    v52 = [v48 hardStop];
-    [v52 setScore:v51];
+    hardStop = [v48 hardStop];
+    [hardStop setScore:v51];
   }
 
   v97 = 0u;
   v98 = 0u;
   v95 = 0u;
   v96 = 0u;
-  v53 = v15;
+  v53 = digitsCopy;
   v54 = [v53 countByEnumeratingWithState:&v95 objects:v107 count:16];
   if (v54)
   {
@@ -11298,8 +11298,8 @@ LABEL_20:
         }
 
         v58 = *(*(&v95 + 1) + 8 * j);
-        v59 = [v48 hardStop];
-        [v59 addDigits:{objc_msgSend(v58, "unsignedLongLongValue")}];
+        hardStop2 = [v48 hardStop];
+        [hardStop2 addDigits:{objc_msgSend(v58, "unsignedLongLongValue")}];
       }
 
       v55 = [v53 countByEnumeratingWithState:&v95 objects:v107 count:16];
@@ -11308,14 +11308,14 @@ LABEL_20:
     while (v55);
   }
 
-  v60 = [v48 hardStop];
-  v61 = [v60 cities];
+  hardStop3 = [v48 hardStop];
+  cities = [hardStop3 cities];
 
-  if (!v61)
+  if (!cities)
   {
     v62 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v86, "count")}];
-    v63 = [v48 hardStop];
-    [v63 setCities:v62];
+    hardStop4 = [v48 hardStop];
+    [hardStop4 setCities:v62];
   }
 
   v93 = 0u;
@@ -11338,10 +11338,10 @@ LABEL_20:
         }
 
         v69 = *(*(&v91 + 1) + 8 * k);
-        v70 = [v48 hardStop];
-        v71 = [v70 cities];
+        hardStop5 = [v48 hardStop];
+        cities2 = [hardStop5 cities];
         v72 = [v69 copy];
-        [v71 addObject:v72];
+        [cities2 addObject:v72];
       }
 
       v66 = [v64 countByEnumeratingWithState:&v91 objects:v106 count:16];
@@ -11355,15 +11355,15 @@ LABEL_20:
     [v48 addLogMsgState:?];
   }
 
-  v16 = v86;
-  v18 = v80;
-  v17 = v81;
+  citiesCopy = v86;
+  rateCopy = v80;
+  statesCopy = v81;
   if (v88)
   {
     [v48 addLogMsgState:?];
   }
 
-  v15 = v83;
+  digitsCopy = v83;
   if (v84)
   {
     [v48 addLogMsgState:v84];
@@ -11385,7 +11385,7 @@ LABEL_20:
   [v74 sessionStateForType:7 callback:v89];
 
   v23[2](v23);
-  v14 = v87;
+  scoreCopy = v87;
   v21 = v79;
 LABEL_21:
 
@@ -11428,22 +11428,22 @@ uint64_t __120__GEOAPPortal_captureHardStopWithScore_digits_cities_additionalSta
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureGridDurationWithDurationMs:(id)a3 previousState:(int)a4 endState:(int)a5 endStateErrorReasons:(id)a6 displayType:(int)a7 additionalStates:(id)a8 providedDropRate:(id)a9 completionQueue:(id)a10 completionBlock:(id)a11
++ (void)captureGridDurationWithDurationMs:(id)ms previousState:(int)state endState:(int)endState endStateErrorReasons:(id)reasons displayType:(int)type additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)self0 completionBlock:(id)self1
 {
   v106 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a6;
-  v15 = a8;
-  v16 = a9;
-  v17 = a10;
-  v18 = a11;
+  msCopy = ms;
+  reasonsCopy = reasons;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v99[0] = MEMORY[0x1E69E9820];
   v99[1] = 3221225472;
   v99[2] = __171__GEOAPPortal_captureGridDurationWithDurationMs_previousState_endState_endStateErrorReasons_displayType_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v99[3] = &unk_1E7959478;
-  v19 = v18;
+  v19 = blockCopy;
   v101 = v19;
-  v20 = v17;
+  v20 = queueCopy;
   v100 = v20;
   v21 = MEMORY[0x1AC5A12F0](v99);
   if (GEOConfigGetBOOL())
@@ -11452,9 +11452,9 @@ uint64_t __120__GEOAPPortal_captureHardStopWithScore_digits_cities_additionalSta
   }
 
   v22 = +[GEOAPServiceManager sharedManager];
-  v23 = [v22 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v22 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v23)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v24 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -11468,9 +11468,9 @@ uint64_t __120__GEOAPPortal_captureHardStopWithScore_digits_cities_additionalSta
     goto LABEL_20;
   }
 
-  if (v16)
+  if (rateCopy)
   {
-    [v16 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -11487,19 +11487,19 @@ LABEL_20:
 
   v27 = +[GEOAPStateFactory sharedFactory];
   v74 = v19;
-  v75 = v16;
+  v75 = rateCopy;
   v78 = v27;
-  v79 = v14;
-  v80 = v13;
-  v76 = v15;
-  if ([v15 count])
+  v79 = reasonsCopy;
+  v80 = msCopy;
+  v76 = statesCopy;
+  if ([statesCopy count])
   {
-    v28 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v15, "count")}];
+    v28 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v95 = 0u;
     v96 = 0u;
     v97 = 0u;
     v98 = 0u;
-    v29 = v15;
+    v29 = statesCopy;
     v30 = [v29 countByEnumeratingWithState:&v95 objects:v103 count:16];
     if (v30)
     {
@@ -11526,8 +11526,8 @@ LABEL_20:
     }
 
     v36 = [v28 copy];
-    v14 = v79;
-    v13 = v80;
+    reasonsCopy = v79;
+    msCopy = v80;
     v27 = v78;
   }
 
@@ -11669,36 +11669,36 @@ LABEL_20:
   v50 = objc_alloc_init(MEMORY[0x1E69A1EE0]);
   [v49 setGridDuration:v50];
 
-  if (v13)
+  if (msCopy)
   {
-    v51 = [v13 unsignedLongLongValue];
-    v52 = [v49 gridDuration];
-    [v52 setDurationMs:v51];
+    unsignedLongLongValue = [msCopy unsignedLongLongValue];
+    gridDuration = [v49 gridDuration];
+    [gridDuration setDurationMs:unsignedLongLongValue];
   }
 
   v72 = v39;
   v73 = v36;
-  v53 = [v49 gridDuration];
-  [v53 setPreviousState:a4];
+  gridDuration2 = [v49 gridDuration];
+  [gridDuration2 setPreviousState:state];
 
-  v54 = [v49 gridDuration];
-  [v54 setEndState:a5];
+  gridDuration3 = [v49 gridDuration];
+  [gridDuration3 setEndState:endState];
 
-  v55 = [v49 gridDuration];
-  v56 = [v55 endStateErrorReasons];
+  gridDuration4 = [v49 gridDuration];
+  endStateErrorReasons = [gridDuration4 endStateErrorReasons];
 
-  if (!v56)
+  if (!endStateErrorReasons)
   {
-    v57 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v14, "count")}];
-    v58 = [v49 gridDuration];
-    [v58 setEndStateErrorReasons:v57];
+    v57 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(reasonsCopy, "count")}];
+    gridDuration5 = [v49 gridDuration];
+    [gridDuration5 setEndStateErrorReasons:v57];
   }
 
   v93 = 0u;
   v94 = 0u;
   v91 = 0u;
   v92 = 0u;
-  v59 = v14;
+  v59 = reasonsCopy;
   v60 = [v59 countByEnumeratingWithState:&v91 objects:v102 count:16];
   if (v60)
   {
@@ -11714,10 +11714,10 @@ LABEL_20:
         }
 
         v64 = *(*(&v91 + 1) + 8 * j);
-        v65 = [v49 gridDuration];
-        v66 = [v65 endStateErrorReasons];
+        gridDuration6 = [v49 gridDuration];
+        endStateErrorReasons2 = [gridDuration6 endStateErrorReasons];
         v67 = [v64 copy];
-        [v66 addObject:v67];
+        [endStateErrorReasons2 addObject:v67];
       }
 
       v61 = [v59 countByEnumeratingWithState:&v91 objects:v102 count:16];
@@ -11726,17 +11726,17 @@ LABEL_20:
     while (v61);
   }
 
-  v68 = [v49 gridDuration];
-  [v68 setDisplayType:a7];
+  gridDuration7 = [v49 gridDuration];
+  [gridDuration7 setDisplayType:type];
 
   if (v82)
   {
     [v49 addLogMsgState:?];
   }
 
-  v13 = v80;
+  msCopy = v80;
   v19 = v74;
-  v16 = v75;
+  rateCopy = v75;
   if (v84)
   {
     [v49 addLogMsgState:?];
@@ -11747,7 +11747,7 @@ LABEL_20:
     [v49 addLogMsgState:v85];
   }
 
-  v14 = v79;
+  reasonsCopy = v79;
   if (v72)
   {
     [v49 addLogMsgState:v72];
@@ -11778,7 +11778,7 @@ LABEL_20:
   [v69 sessionStateForType:6 callback:v89];
 
   v21[2](v21);
-  v15 = v76;
+  statesCopy = v76;
 LABEL_21:
 
   v37 = *MEMORY[0x1E69E9840];
@@ -11820,21 +11820,21 @@ uint64_t __171__GEOAPPortal_captureGridDurationWithDurationMs_previousState_endS
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureFindMyUsageWithUserActionEventAction:(int)a3 userActionEventTarget:(int)a4 userActionEventValue:(id)a5 additionalStates:(id)a6 providedDropRate:(id)a7 completionQueue:(id)a8 completionBlock:(id)a9
++ (void)captureFindMyUsageWithUserActionEventAction:(int)action userActionEventTarget:(int)target userActionEventValue:(id)value additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block
 {
   v75 = *MEMORY[0x1E69E9840];
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
+  valueCopy = value;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v69[0] = MEMORY[0x1E69E9820];
   v69[1] = 3221225472;
   v69[2] = __168__GEOAPPortal_captureFindMyUsageWithUserActionEventAction_userActionEventTarget_userActionEventValue_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v69[3] = &unk_1E7959478;
-  v19 = v18;
+  v19 = blockCopy;
   v71 = v19;
-  v20 = v17;
+  v20 = queueCopy;
   v70 = v20;
   v21 = MEMORY[0x1AC5A12F0](v69);
   if (GEOConfigGetBOOL())
@@ -11842,38 +11842,38 @@ uint64_t __171__GEOAPPortal_captureGridDurationWithDurationMs_previousState_endS
     goto LABEL_21;
   }
 
-  v62 = a3;
+  actionCopy = action;
   v22 = +[GEOAPServiceManager sharedManager];
-  v23 = [v22 AppleInternal];
+  appleInternal = [v22 AppleInternal];
 
-  if ((v23 & 1) == 0)
+  if ((appleInternal & 1) == 0)
   {
     goto LABEL_21;
   }
 
   v24 = +[GEOAPServiceManager sharedManager];
-  v25 = [v24 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v24 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v25)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v26 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
       GEOApplicationIdentifierOrProcessName();
-      v28 = v27 = v14;
+      v28 = v27 = valueCopy;
       *buf = 138412290;
       v74 = v28;
       _os_log_impl(&dword_1AB634000, v26, OS_LOG_TYPE_DEBUG, "collection is disabled for current process (%@)", buf, 0xCu);
 
-      v14 = v27;
+      valueCopy = v27;
     }
 
     goto LABEL_21;
   }
 
-  if (v16)
+  if (rateCopy)
   {
-    [v16 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -11889,19 +11889,19 @@ LABEL_21:
   }
 
   v30 = +[GEOAPStateFactory sharedFactory];
-  v57 = a4;
-  v58 = v15;
+  targetCopy = target;
+  v58 = statesCopy;
   v59 = v30;
-  if ([v15 count])
+  if ([statesCopy count])
   {
     v55 = v19;
-    v60 = v14;
-    v31 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v15, "count")}];
+    v60 = valueCopy;
+    v31 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v65 = 0u;
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v32 = v15;
+    v32 = statesCopy;
     v33 = [v32 countByEnumeratingWithState:&v65 objects:v72 count:16];
     if (v33)
     {
@@ -11929,7 +11929,7 @@ LABEL_21:
 
     v39 = [v31 copy];
     v30 = v59;
-    v14 = v60;
+    valueCopy = v60;
     v19 = v55;
   }
 
@@ -11956,7 +11956,7 @@ LABEL_21:
     v41 = v42;
   }
 
-  v15 = v58;
+  statesCopy = v58;
   v56 = v39;
   if (GEOConfigGetBOOL())
   {
@@ -11984,14 +11984,14 @@ LABEL_21:
   v47 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v46 setUserActionEvent:v47];
 
-  v48 = [v46 userActionEvent];
-  [v48 setUserActionEventAction:v62];
+  userActionEvent = [v46 userActionEvent];
+  [userActionEvent setUserActionEventAction:actionCopy];
 
-  v49 = [v46 userActionEvent];
-  [v49 setUserActionEventTarget:v57];
+  userActionEvent2 = [v46 userActionEvent];
+  [userActionEvent2 setUserActionEventTarget:targetCopy];
 
-  v50 = [v46 userActionEvent];
-  [v50 setUserActionEventValue:v14];
+  userActionEvent3 = [v46 userActionEvent];
+  [userActionEvent3 setUserActionEventValue:valueCopy];
 
   if (v43)
   {
@@ -12056,48 +12056,48 @@ uint64_t __168__GEOAPPortal_captureFindMyUsageWithUserActionEventAction_userActi
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureEvTripWithOutOfCharge:(id)a3 outOfRangeAlertDisplayed:(id)a4 originalTripIncludedChargingStation:(id)a5 chargingStopAddedThroughSar:(id)a6 tripIncludedPreferredChargingStation:(id)a7 stopRemovedDetails:(id)a8 realtimeDodgeballs:(id)a9 chargeLocationDetails:(id)a10 stopAddedDetails:(id)a11 additionalStates:(id)a12 providedDropRate:(id)a13 completionQueue:(id)a14 completionBlock:(id)a15
++ (void)captureEvTripWithOutOfCharge:(id)charge outOfRangeAlertDisplayed:(id)displayed originalTripIncludedChargingStation:(id)station chargingStopAddedThroughSar:(id)sar tripIncludedPreferredChargingStation:(id)chargingStation stopRemovedDetails:(id)details realtimeDodgeballs:(id)dodgeballs chargeLocationDetails:(id)self0 stopAddedDetails:(id)self1 additionalStates:(id)self2 providedDropRate:(id)self3 completionQueue:(id)self4 completionBlock:(id)self5
 {
   v173 = *MEMORY[0x1E69E9840];
-  v140 = a3;
-  v20 = a4;
-  v138 = a5;
-  v137 = a6;
-  v21 = a7;
-  v139 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
-  v26 = a13;
-  v27 = a14;
-  v28 = a15;
+  chargeCopy = charge;
+  displayedCopy = displayed;
+  stationCopy = station;
+  sarCopy = sar;
+  chargingStationCopy = chargingStation;
+  detailsCopy = details;
+  dodgeballsCopy = dodgeballs;
+  locationDetailsCopy = locationDetails;
+  addedDetailsCopy = addedDetails;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v163[0] = MEMORY[0x1E69E9820];
   v163[1] = 3221225472;
   v163[2] = __313__GEOAPPortal_captureEvTripWithOutOfCharge_outOfRangeAlertDisplayed_originalTripIncludedChargingStation_chargingStopAddedThroughSar_tripIncludedPreferredChargingStation_stopRemovedDetails_realtimeDodgeballs_chargeLocationDetails_stopAddedDetails_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v163[3] = &unk_1E7959478;
-  v136 = v28;
+  v136 = blockCopy;
   v165 = v136;
-  v29 = v27;
+  v29 = queueCopy;
   v164 = v29;
   v30 = MEMORY[0x1AC5A12F0](v163);
   if (GEOConfigGetBOOL())
   {
     v30[2](v30);
-    v31 = v140;
+    v31 = chargeCopy;
   }
 
   else
   {
-    v134 = v23;
-    v135 = v22;
+    v134 = locationDetailsCopy;
+    v135 = dodgeballsCopy;
     v32 = +[GEOAPServiceManager sharedManager];
-    v33 = [v32 eventCollectionIsDisabledForCurrentProcess];
+    eventCollectionIsDisabledForCurrentProcess = [v32 eventCollectionIsDisabledForCurrentProcess];
 
-    if (v33)
+    if (eventCollectionIsDisabledForCurrentProcess)
     {
       v34 = GEOGetGEOAPPortalAnalyticsLog();
-      v31 = v140;
+      v31 = chargeCopy;
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
       {
         v35 = GEOApplicationIdentifierOrProcessName();
@@ -12107,16 +12107,16 @@ uint64_t __168__GEOAPPortal_captureFindMyUsageWithUserActionEventAction_userActi
       }
 
       v30[2](v30);
-      v23 = v134;
-      v22 = v135;
+      locationDetailsCopy = v134;
+      dodgeballsCopy = v135;
     }
 
     else
     {
-      v31 = v140;
-      if (v26)
+      v31 = chargeCopy;
+      if (rateCopy)
       {
-        [v26 doubleValue];
+        [rateCopy doubleValue];
       }
 
       else
@@ -12124,25 +12124,25 @@ uint64_t __168__GEOAPPortal_captureFindMyUsageWithUserActionEventAction_userActi
         GEOConfigGetDouble();
       }
 
-      v23 = v134;
-      v22 = v135;
+      locationDetailsCopy = v134;
+      dodgeballsCopy = v135;
       if (v36 == 0.0 || v36 < arc4random() / 4294967300.0)
       {
         v37 = +[GEOAPStateFactory sharedFactory];
-        v133 = v20;
-        v130 = v24;
-        v124 = v26;
-        v125 = v25;
+        v133 = displayedCopy;
+        v130 = addedDetailsCopy;
+        v124 = rateCopy;
+        v125 = statesCopy;
         v127 = v37;
-        v128 = v21;
-        if ([v25 count])
+        v128 = chargingStationCopy;
+        if ([statesCopy count])
         {
-          v38 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v25, "count")}];
+          v38 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
           v159 = 0u;
           v160 = 0u;
           v161 = 0u;
           v162 = 0u;
-          v39 = v25;
+          v39 = statesCopy;
           v40 = [v39 countByEnumeratingWithState:&v159 objects:v170 count:16];
           if (v40)
           {
@@ -12169,10 +12169,10 @@ uint64_t __168__GEOAPPortal_captureFindMyUsageWithUserActionEventAction_userActi
           }
 
           v46 = [v38 copy];
-          v31 = v140;
-          v20 = v133;
+          v31 = chargeCopy;
+          displayedCopy = v133;
           v37 = v127;
-          v21 = v128;
+          chargingStationCopy = v128;
         }
 
         else
@@ -12258,58 +12258,58 @@ uint64_t __168__GEOAPPortal_captureFindMyUsageWithUserActionEventAction_userActi
 
         if (v31)
         {
-          v54 = [v31 BOOLValue];
-          v55 = [v52 evTrip];
-          [v55 setOutOfCharge:v54];
+          bOOLValue = [v31 BOOLValue];
+          evTrip = [v52 evTrip];
+          [evTrip setOutOfCharge:bOOLValue];
 
-          v20 = v133;
+          displayedCopy = v133;
         }
 
-        if (v20)
+        if (displayedCopy)
         {
-          v56 = [v20 BOOLValue];
-          v57 = [v52 evTrip];
-          [v57 setOutOfRangeAlertDisplayed:v56];
+          bOOLValue2 = [displayedCopy BOOLValue];
+          evTrip2 = [v52 evTrip];
+          [evTrip2 setOutOfRangeAlertDisplayed:bOOLValue2];
         }
 
-        if (v138)
+        if (stationCopy)
         {
-          v58 = [v138 BOOLValue];
-          v59 = [v52 evTrip];
-          [v59 setOriginalTripIncludedChargingStation:v58];
+          bOOLValue3 = [stationCopy BOOLValue];
+          evTrip3 = [v52 evTrip];
+          [evTrip3 setOriginalTripIncludedChargingStation:bOOLValue3];
         }
 
-        if (v137)
+        if (sarCopy)
         {
-          v60 = [v137 BOOLValue];
-          v61 = [v52 evTrip];
-          [v61 setChargingStopAddedThroughSar:v60];
+          bOOLValue4 = [sarCopy BOOLValue];
+          evTrip4 = [v52 evTrip];
+          [evTrip4 setChargingStopAddedThroughSar:bOOLValue4];
         }
 
-        if (v21)
+        if (chargingStationCopy)
         {
-          v62 = [v21 BOOLValue];
-          v63 = [v52 evTrip];
-          [v63 setTripIncludedPreferredChargingStation:v62];
+          bOOLValue5 = [chargingStationCopy BOOLValue];
+          evTrip5 = [v52 evTrip];
+          [evTrip5 setTripIncludedPreferredChargingStation:bOOLValue5];
         }
 
         v122 = v47;
         v123 = v46;
-        v64 = [v52 evTrip];
-        v65 = [v64 stopRemovedDetails];
+        evTrip6 = [v52 evTrip];
+        stopRemovedDetails = [evTrip6 stopRemovedDetails];
 
-        if (!v65)
+        if (!stopRemovedDetails)
         {
-          v66 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v139, "count")}];
-          v67 = [v52 evTrip];
-          [v67 setStopRemovedDetails:v66];
+          v66 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(detailsCopy, "count")}];
+          evTrip7 = [v52 evTrip];
+          [evTrip7 setStopRemovedDetails:v66];
         }
 
         v157 = 0u;
         v158 = 0u;
         v155 = 0u;
         v156 = 0u;
-        v68 = v139;
+        v68 = detailsCopy;
         v69 = [v68 countByEnumeratingWithState:&v155 objects:v169 count:16];
         if (v69)
         {
@@ -12325,10 +12325,10 @@ uint64_t __168__GEOAPPortal_captureFindMyUsageWithUserActionEventAction_userActi
               }
 
               v73 = *(*(&v155 + 1) + 8 * j);
-              v74 = [v52 evTrip];
-              v75 = [v74 stopRemovedDetails];
+              evTrip8 = [v52 evTrip];
+              stopRemovedDetails2 = [evTrip8 stopRemovedDetails];
               v76 = [v73 copy];
-              [v75 addObject:v76];
+              [stopRemovedDetails2 addObject:v76];
             }
 
             v70 = [v68 countByEnumeratingWithState:&v155 objects:v169 count:16];
@@ -12337,14 +12337,14 @@ uint64_t __168__GEOAPPortal_captureFindMyUsageWithUserActionEventAction_userActi
           while (v70);
         }
 
-        v77 = [v52 evTrip];
-        v78 = [v77 realtimeDodgeballs];
+        evTrip9 = [v52 evTrip];
+        realtimeDodgeballs = [evTrip9 realtimeDodgeballs];
 
-        if (!v78)
+        if (!realtimeDodgeballs)
         {
           v79 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v135, "count")}];
-          v80 = [v52 evTrip];
-          [v80 setRealtimeDodgeballs:v79];
+          evTrip10 = [v52 evTrip];
+          [evTrip10 setRealtimeDodgeballs:v79];
         }
 
         v153 = 0u;
@@ -12367,10 +12367,10 @@ uint64_t __168__GEOAPPortal_captureFindMyUsageWithUserActionEventAction_userActi
               }
 
               v86 = *(*(&v151 + 1) + 8 * k);
-              v87 = [v52 evTrip];
-              v88 = [v87 realtimeDodgeballs];
+              evTrip11 = [v52 evTrip];
+              realtimeDodgeballs2 = [evTrip11 realtimeDodgeballs];
               v89 = [v86 copy];
-              [v88 addObject:v89];
+              [realtimeDodgeballs2 addObject:v89];
             }
 
             v83 = [v81 countByEnumeratingWithState:&v151 objects:v168 count:16];
@@ -12379,14 +12379,14 @@ uint64_t __168__GEOAPPortal_captureFindMyUsageWithUserActionEventAction_userActi
           while (v83);
         }
 
-        v90 = [v52 evTrip];
-        v91 = [v90 chargeLocationDetails];
+        evTrip12 = [v52 evTrip];
+        chargeLocationDetails = [evTrip12 chargeLocationDetails];
 
-        if (!v91)
+        if (!chargeLocationDetails)
         {
           v92 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v134, "count")}];
-          v93 = [v52 evTrip];
-          [v93 setChargeLocationDetails:v92];
+          evTrip13 = [v52 evTrip];
+          [evTrip13 setChargeLocationDetails:v92];
         }
 
         v149 = 0u;
@@ -12409,10 +12409,10 @@ uint64_t __168__GEOAPPortal_captureFindMyUsageWithUserActionEventAction_userActi
               }
 
               v99 = *(*(&v147 + 1) + 8 * m);
-              v100 = [v52 evTrip];
-              v101 = [v100 chargeLocationDetails];
+              evTrip14 = [v52 evTrip];
+              chargeLocationDetails2 = [evTrip14 chargeLocationDetails];
               v102 = [v99 copy];
-              [v101 addObject:v102];
+              [chargeLocationDetails2 addObject:v102];
             }
 
             v96 = [v94 countByEnumeratingWithState:&v147 objects:v167 count:16];
@@ -12421,14 +12421,14 @@ uint64_t __168__GEOAPPortal_captureFindMyUsageWithUserActionEventAction_userActi
           while (v96);
         }
 
-        v103 = [v52 evTrip];
-        v104 = [v103 stopAddedDetails];
+        evTrip15 = [v52 evTrip];
+        stopAddedDetails = [evTrip15 stopAddedDetails];
 
-        if (!v104)
+        if (!stopAddedDetails)
         {
           v105 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v130, "count")}];
-          v106 = [v52 evTrip];
-          [v106 setStopAddedDetails:v105];
+          evTrip16 = [v52 evTrip];
+          [evTrip16 setStopAddedDetails:v105];
         }
 
         v145 = 0u;
@@ -12451,10 +12451,10 @@ uint64_t __168__GEOAPPortal_captureFindMyUsageWithUserActionEventAction_userActi
               }
 
               v112 = *(*(&v143 + 1) + 8 * n);
-              v113 = [v52 evTrip];
-              v114 = [v113 stopAddedDetails];
+              evTrip17 = [v52 evTrip];
+              stopAddedDetails2 = [evTrip17 stopAddedDetails];
               v115 = [v112 copy];
-              [v114 addObject:v115];
+              [stopAddedDetails2 addObject:v115];
             }
 
             v109 = [v107 countByEnumeratingWithState:&v143 objects:v166 count:16];
@@ -12464,20 +12464,20 @@ uint64_t __168__GEOAPPortal_captureFindMyUsageWithUserActionEventAction_userActi
         }
 
         v116 = +[GEOAPSharedStateData sharedData];
-        v117 = [v116 metroRegion];
-        v118 = [v52 evTrip];
-        [v118 setMetro:v117];
+        metroRegion = [v116 metroRegion];
+        evTrip18 = [v52 evTrip];
+        [evTrip18 setMetro:metroRegion];
 
         if (v129)
         {
           [v52 addLogMsgState:?];
         }
 
-        v31 = v140;
-        v21 = v128;
-        v24 = v130;
-        v26 = v124;
-        v25 = v125;
+        v31 = chargeCopy;
+        chargingStationCopy = v128;
+        addedDetailsCopy = v130;
+        rateCopy = v124;
+        statesCopy = v125;
         if (v131)
         {
           [v52 addLogMsgState:?];
@@ -12503,9 +12503,9 @@ uint64_t __168__GEOAPPortal_captureFindMyUsageWithUserActionEventAction_userActi
         [v119 sessionStateForType:7 callback:v141];
 
         v30[2](v30);
-        v20 = v133;
-        v23 = v134;
-        v22 = v135;
+        displayedCopy = v133;
+        locationDetailsCopy = v134;
+        dodgeballsCopy = v135;
       }
 
       else
@@ -12554,37 +12554,37 @@ uint64_t __313__GEOAPPortal_captureEvTripWithOutOfCharge_outOfRangeAlertDisplaye
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureEvRoutingVehicleDetailsWithMake:(id)a3 model:(id)a4 towingNotSupported:(id)a5 batteryCapacity:(id)a6 additionalStates:(id)a7 providedDropRate:(id)a8 completionQueue:(id)a9 completionBlock:(id)a10
++ (void)captureEvRoutingVehicleDetailsWithMake:(id)make model:(id)model towingNotSupported:(id)supported batteryCapacity:(id)capacity additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)self0
 {
   v84 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  makeCopy = make;
+  modelCopy = model;
+  supportedCopy = supported;
+  capacityCopy = capacity;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v78[0] = MEMORY[0x1E69E9820];
   v78[1] = 3221225472;
   v78[2] = __161__GEOAPPortal_captureEvRoutingVehicleDetailsWithMake_model_towingNotSupported_batteryCapacity_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v78[3] = &unk_1E7959478;
-  v23 = v22;
+  v23 = blockCopy;
   v80 = v23;
-  v24 = v21;
+  v24 = queueCopy;
   v79 = v24;
   v25 = MEMORY[0x1AC5A12F0](v78);
   if (!GEOConfigGetBOOL())
   {
     v70 = v24;
-    v71 = v19;
+    v71 = statesCopy;
     v27 = +[GEOAPServiceManager sharedManager];
-    v28 = [v27 eventCollectionIsDisabledForCurrentProcess];
+    eventCollectionIsDisabledForCurrentProcess = [v27 eventCollectionIsDisabledForCurrentProcess];
 
-    if (v28)
+    if (eventCollectionIsDisabledForCurrentProcess)
     {
       v29 = GEOGetGEOAPPortalAnalyticsLog();
-      v26 = v20;
+      v26 = rateCopy;
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
       {
         v30 = GEOApplicationIdentifierOrProcessName();
@@ -12598,10 +12598,10 @@ uint64_t __313__GEOAPPortal_captureEvTripWithOutOfCharge_outOfRangeAlertDisplaye
 
     else
     {
-      v26 = v20;
-      if (v20)
+      v26 = rateCopy;
+      if (rateCopy)
       {
-        [v20 doubleValue];
+        [rateCopy doubleValue];
       }
 
       else
@@ -12610,7 +12610,7 @@ uint64_t __313__GEOAPPortal_captureEvTripWithOutOfCharge_outOfRangeAlertDisplaye
       }
 
       v24 = v70;
-      v19 = v71;
+      statesCopy = v71;
       if (v31 != 0.0 && v31 >= arc4random() / 4294967300.0)
       {
         v25[2](v25);
@@ -12618,13 +12618,13 @@ uint64_t __313__GEOAPPortal_captureEvTripWithOutOfCharge_outOfRangeAlertDisplaye
       }
 
       v65 = +[GEOAPStateFactory sharedFactory];
-      v66 = v17;
-      v67 = v15;
-      v64 = v18;
+      v66 = supportedCopy;
+      v67 = makeCopy;
+      v64 = capacityCopy;
       if ([v71 count])
       {
         v62 = v23;
-        v68 = v16;
+        v68 = modelCopy;
         v32 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v71, "count")}];
         v74 = 0u;
         v75 = 0u;
@@ -12657,10 +12657,10 @@ uint64_t __313__GEOAPPortal_captureEvTripWithOutOfCharge_outOfRangeAlertDisplaye
         }
 
         v40 = [v32 copy];
-        v16 = v68;
+        modelCopy = v68;
         v23 = v62;
-        v18 = v64;
-        v26 = v20;
+        capacityCopy = v64;
+        v26 = rateCopy;
       }
 
       else
@@ -12747,28 +12747,28 @@ uint64_t __313__GEOAPPortal_captureEvTripWithOutOfCharge_outOfRangeAlertDisplaye
       v50 = objc_alloc_init(MEMORY[0x1E69A1EC8]);
       [v49 setEvRoutingVehicleDetails:v50];
 
-      v51 = [v49 evRoutingVehicleDetails];
-      [v51 setMake:v67];
+      evRoutingVehicleDetails = [v49 evRoutingVehicleDetails];
+      [evRoutingVehicleDetails setMake:v67];
 
-      v52 = [v49 evRoutingVehicleDetails];
-      [v52 setModel:v16];
+      evRoutingVehicleDetails2 = [v49 evRoutingVehicleDetails];
+      [evRoutingVehicleDetails2 setModel:modelCopy];
 
       if (v66)
       {
-        v53 = [v66 BOOLValue];
-        v54 = [v49 evRoutingVehicleDetails];
-        [v54 setTowingNotSupported:v53];
+        bOOLValue = [v66 BOOLValue];
+        evRoutingVehicleDetails3 = [v49 evRoutingVehicleDetails];
+        [evRoutingVehicleDetails3 setTowingNotSupported:bOOLValue];
 
-        v18 = v64;
+        capacityCopy = v64;
       }
 
-      if (v18)
+      if (capacityCopy)
       {
-        v55 = [v18 unsignedLongLongValue];
-        v56 = [v49 evRoutingVehicleDetails];
-        [v56 setBatteryCapacity:v55];
+        unsignedLongLongValue = [capacityCopy unsignedLongLongValue];
+        evRoutingVehicleDetails4 = [v49 evRoutingVehicleDetails];
+        [evRoutingVehicleDetails4 setBatteryCapacity:unsignedLongLongValue];
 
-        v18 = v64;
+        capacityCopy = v64;
       }
 
       if (v69)
@@ -12801,17 +12801,17 @@ uint64_t __313__GEOAPPortal_captureEvTripWithOutOfCharge_outOfRangeAlertDisplaye
       [v57 sessionStateForType:7 callback:v72];
 
       v25[2](v25);
-      v17 = v66;
-      v15 = v67;
+      supportedCopy = v66;
+      makeCopy = v67;
     }
 
     v24 = v70;
-    v19 = v71;
+    statesCopy = v71;
     goto LABEL_56;
   }
 
   v25[2](v25);
-  v26 = v20;
+  v26 = rateCopy;
 LABEL_56:
 
   v59 = *MEMORY[0x1E69E9840];
@@ -12853,50 +12853,50 @@ uint64_t __161__GEOAPPortal_captureEvRoutingVehicleDetailsWithMake_model_towingN
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureDisplayAnalyticWithDisplayActionTrigger:(int)a3 requiredResourcesAvailable:(id)a4 totalTime:(id)a5 requestedImageCount:(id)a6 renderedImageCount:(id)a7 movementDistance:(id)a8 meanImageSpacing:(id)a9 displayEvent:(int)a10 additionalStates:(id)a11 providedDropRate:(id)a12 completionQueue:(id)a13 completionBlock:(id)a14
++ (void)captureDisplayAnalyticWithDisplayActionTrigger:(int)trigger requiredResourcesAvailable:(id)available totalTime:(id)time requestedImageCount:(id)count renderedImageCount:(id)imageCount movementDistance:(id)distance meanImageSpacing:(id)spacing displayEvent:(int)self0 additionalStates:(id)self1 providedDropRate:(id)self2 completionQueue:(id)self3 completionBlock:(id)self4
 {
   v120 = *MEMORY[0x1E69E9840];
-  v18 = a4;
-  v19 = a5;
-  v103 = a6;
-  v20 = a7;
-  v106 = a8;
-  v21 = a9;
-  v104 = a11;
-  v107 = a12;
-  v22 = a13;
-  v23 = a14;
+  availableCopy = available;
+  timeCopy = time;
+  countCopy = count;
+  imageCountCopy = imageCount;
+  distanceCopy = distance;
+  spacingCopy = spacing;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v114[0] = MEMORY[0x1E69E9820];
   v114[1] = 3221225472;
   v114[2] = __251__GEOAPPortal_captureDisplayAnalyticWithDisplayActionTrigger_requiredResourcesAvailable_totalTime_requestedImageCount_renderedImageCount_movementDistance_meanImageSpacing_displayEvent_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v114[3] = &unk_1E7959478;
-  v24 = v23;
+  v24 = blockCopy;
   v116 = v24;
-  v25 = v22;
+  v25 = queueCopy;
   v115 = v25;
   v26 = MEMORY[0x1AC5A12F0](v114);
-  v105 = v21;
+  v105 = spacingCopy;
   if (GEOConfigGetBOOL())
   {
     v26[2](v26);
-    v27 = v18;
-    v29 = v103;
-    v28 = v104;
-    v30 = v106;
+    v27 = availableCopy;
+    v29 = countCopy;
+    v28 = statesCopy;
+    v30 = distanceCopy;
   }
 
   else
   {
-    v102 = v20;
+    v102 = imageCountCopy;
     v31 = +[GEOAPServiceManager sharedManager];
-    v32 = [v31 eventCollectionIsDisabledForCurrentProcess];
+    eventCollectionIsDisabledForCurrentProcess = [v31 eventCollectionIsDisabledForCurrentProcess];
 
-    if (v32)
+    if (eventCollectionIsDisabledForCurrentProcess)
     {
       v33 = GEOGetGEOAPPortalAnalyticsLog();
-      v27 = v18;
-      v30 = v106;
-      v28 = v104;
+      v27 = availableCopy;
+      v30 = distanceCopy;
+      v28 = statesCopy;
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
       {
         v34 = GEOApplicationIdentifierOrProcessName();
@@ -12906,18 +12906,18 @@ uint64_t __161__GEOAPPortal_captureEvRoutingVehicleDetailsWithMake_model_towingN
       }
 
       v26[2](v26);
-      v20 = v102;
-      v29 = v103;
+      imageCountCopy = v102;
+      v29 = countCopy;
     }
 
     else
     {
-      v27 = v18;
-      v30 = v106;
-      v28 = v104;
-      if (v107)
+      v27 = availableCopy;
+      v30 = distanceCopy;
+      v28 = statesCopy;
+      if (rateCopy)
       {
-        [v107 doubleValue];
+        [rateCopy doubleValue];
       }
 
       else
@@ -12925,21 +12925,21 @@ uint64_t __161__GEOAPPortal_captureEvRoutingVehicleDetailsWithMake_model_towingN
         GEOConfigGetDouble();
       }
 
-      v20 = v102;
+      imageCountCopy = v102;
       if (v35 == 0.0 || v35 < arc4random() / 4294967300.0)
       {
         v95 = +[GEOAPStateFactory sharedFactory];
-        v96 = v19;
+        v96 = timeCopy;
         v85 = v25;
         v87 = v24;
-        if ([v104 count])
+        if ([statesCopy count])
         {
-          v36 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v104, "count")}];
+          v36 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
           v110 = 0u;
           v111 = 0u;
           v112 = 0u;
           v113 = 0u;
-          v37 = v104;
+          v37 = statesCopy;
           v38 = [v37 countByEnumeratingWithState:&v110 objects:v117 count:16];
           if (v38)
           {
@@ -12966,8 +12966,8 @@ uint64_t __161__GEOAPPortal_captureEvRoutingVehicleDetailsWithMake_model_towingN
           }
 
           v44 = [v36 copy];
-          v27 = v18;
-          v30 = v106;
+          v27 = availableCopy;
+          v30 = distanceCopy;
         }
 
         else
@@ -12975,7 +12975,7 @@ uint64_t __161__GEOAPPortal_captureEvRoutingVehicleDetailsWithMake_model_towingN
           v44 = 0;
         }
 
-        v29 = v103;
+        v29 = countCopy;
         if (GEOConfigGetBOOL())
         {
           v45 = 0;
@@ -13185,63 +13185,63 @@ uint64_t __161__GEOAPPortal_captureEvRoutingVehicleDetailsWithMake_model_towingN
         v66 = objc_alloc_init(MEMORY[0x1E69A1EC0]);
         [v65 setDisplayAnalytic:v66];
 
-        v67 = [v65 displayAnalytic];
-        [v67 setDisplayActionTrigger:a3];
+        displayAnalytic = [v65 displayAnalytic];
+        [displayAnalytic setDisplayActionTrigger:trigger];
 
         if (v27)
         {
-          v68 = [v27 unsignedLongLongValue];
-          v69 = [v65 displayAnalytic];
-          [v69 setRequiredResourcesAvailable:v68];
+          unsignedLongLongValue = [v27 unsignedLongLongValue];
+          displayAnalytic2 = [v65 displayAnalytic];
+          [displayAnalytic2 setRequiredResourcesAvailable:unsignedLongLongValue];
         }
 
         if (v96)
         {
-          v70 = [v96 unsignedLongLongValue];
-          v71 = [v65 displayAnalytic];
-          [v71 setTotalTime:v70];
+          unsignedLongLongValue2 = [v96 unsignedLongLongValue];
+          displayAnalytic3 = [v65 displayAnalytic];
+          [displayAnalytic3 setTotalTime:unsignedLongLongValue2];
         }
 
-        if (v103)
+        if (countCopy)
         {
-          v72 = [v103 unsignedLongLongValue];
-          v73 = [v65 displayAnalytic];
-          [v73 setRequestedImageCount:v72];
+          unsignedLongLongValue3 = [countCopy unsignedLongLongValue];
+          displayAnalytic4 = [v65 displayAnalytic];
+          [displayAnalytic4 setRequestedImageCount:unsignedLongLongValue3];
         }
 
         if (v102)
         {
-          v74 = [v102 unsignedLongLongValue];
-          v75 = [v65 displayAnalytic];
-          [v75 setRenderedImageCount:v74];
+          unsignedLongLongValue4 = [v102 unsignedLongLongValue];
+          displayAnalytic5 = [v65 displayAnalytic];
+          [displayAnalytic5 setRenderedImageCount:unsignedLongLongValue4];
         }
 
         if (v30)
         {
-          v76 = [v30 unsignedLongLongValue];
-          v77 = [v65 displayAnalytic];
-          [v77 setMovementDistance:v76];
+          unsignedLongLongValue5 = [v30 unsignedLongLongValue];
+          displayAnalytic6 = [v65 displayAnalytic];
+          [displayAnalytic6 setMovementDistance:unsignedLongLongValue5];
 
-          v30 = v106;
+          v30 = distanceCopy;
         }
 
         if (v105)
         {
           [v105 doubleValue];
           v79 = v78;
-          v80 = [v65 displayAnalytic];
-          [v80 setMeanImageSpacing:v79];
+          displayAnalytic7 = [v65 displayAnalytic];
+          [displayAnalytic7 setMeanImageSpacing:v79];
         }
 
-        v81 = [v65 displayAnalytic];
-        [v81 setDisplayEvent:a10];
+        displayAnalytic8 = [v65 displayAnalytic];
+        [displayAnalytic8 setDisplayEvent:event];
 
         if (v99)
         {
           [v65 addLogMsgState:?];
         }
 
-        v28 = v104;
+        v28 = statesCopy;
         if (v92)
         {
           [v65 addLogMsgState:?];
@@ -13303,8 +13303,8 @@ uint64_t __161__GEOAPPortal_captureEvRoutingVehicleDetailsWithMake_model_towingN
         [v82 sessionStateForType:5 callback:v108];
 
         v26[2](v26);
-        v19 = v96;
-        v20 = v102;
+        timeCopy = v96;
+        imageCountCopy = v102;
         v25 = v86;
         v24 = v88;
       }
@@ -13312,7 +13312,7 @@ uint64_t __161__GEOAPPortal_captureEvRoutingVehicleDetailsWithMake_model_towingN
       else
       {
         v26[2](v26);
-        v29 = v103;
+        v29 = countCopy;
       }
     }
   }
@@ -13356,21 +13356,21 @@ uint64_t __251__GEOAPPortal_captureDisplayAnalyticWithDisplayActionTrigger_requi
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureDirectionsServiceMetadataWithDirectionsMetadata:(id)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7
++ (void)captureDirectionsServiceMetadataWithDirectionsMetadata:(id)metadata additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block
 {
   v77 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  metadataCopy = metadata;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v71[0] = MEMORY[0x1E69E9820];
   v71[1] = 3221225472;
   v71[2] = __136__GEOAPPortal_captureDirectionsServiceMetadataWithDirectionsMetadata_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v71[3] = &unk_1E7959478;
-  v16 = v15;
+  v16 = blockCopy;
   v73 = v16;
-  v17 = v14;
+  v17 = queueCopy;
   v72 = v17;
   v18 = MEMORY[0x1AC5A12F0](v71);
   if (GEOConfigGetBOOL())
@@ -13379,9 +13379,9 @@ uint64_t __251__GEOAPPortal_captureDisplayAnalyticWithDisplayActionTrigger_requi
   }
 
   v19 = +[GEOAPServiceManager sharedManager];
-  v20 = [v19 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v19 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v20)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v21 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -13395,9 +13395,9 @@ uint64_t __251__GEOAPPortal_captureDisplayAnalyticWithDisplayActionTrigger_requi
     goto LABEL_20;
   }
 
-  if (v13)
+  if (rateCopy)
   {
-    [v13 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -13412,19 +13412,19 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v64 = v11;
+  v64 = metadataCopy;
   v24 = +[GEOAPStateFactory sharedFactory];
   v58 = v24;
-  v56 = v12;
-  if ([v12 count])
+  v56 = statesCopy;
+  if ([statesCopy count])
   {
     v61 = v16;
-    v25 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v12, "count")}];
+    v25 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
     v70 = 0u;
-    v26 = v12;
+    v26 = statesCopy;
     v27 = [v26 countByEnumeratingWithState:&v67 objects:v74 count:16];
     if (v27)
     {
@@ -13478,7 +13478,7 @@ LABEL_20:
     v63 = v36;
   }
 
-  v12 = v56;
+  statesCopy = v56;
   if (GEOConfigGetBOOL())
   {
     v62 = 0;
@@ -13581,11 +13581,11 @@ LABEL_20:
   v51 = objc_alloc_init(MEMORY[0x1E69A1F90]);
   [v50 setServiceMetadata:v51];
 
-  v52 = [v50 serviceMetadata];
-  [v52 setDirectionsMetadata:v64];
+  serviceMetadata = [v50 serviceMetadata];
+  [serviceMetadata setDirectionsMetadata:v64];
 
-  v53 = [v50 serviceMetadata];
-  [v53 setServiceMetadataType:1];
+  serviceMetadata2 = [v50 serviceMetadata];
+  [serviceMetadata2 setServiceMetadataType:1];
 
   if (v60)
   {
@@ -13627,7 +13627,7 @@ LABEL_20:
   [v54 sessionStateForType:6 callback:v65];
 
   v18[2](v18);
-  v11 = v64;
+  metadataCopy = v64;
 LABEL_21:
 
   v34 = *MEMORY[0x1E69E9840];
@@ -13669,60 +13669,60 @@ uint64_t __136__GEOAPPortal_captureDirectionsServiceMetadataWithDirectionsMetada
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureDirectionsWithDirectionsFeedbacks:(id)a3 finalLocation:(id)a4 arrivalLocation:(id)a5 arrivedAtDestination:(id)a6 navigationAudioFeedback:(GEONavigationAudioFeedback *)a7 durationOfTrip:(id)a8 durationInNavigationModes:(id)a9 preArrival:(id)a10 originalEta:(id)a11 isVlfImprovementUsed:(id)a12 isCoarseLocationUsed:(id)a13 acceptedCyclingWorkout:(id)a14 batteryDied:(id)a15 chargingStopAdded:(id)a16 isSiriEngaged:(id)a17 tripOrigin:(id)a18 isBadEvExperience:(id)a19 isEvSampleTrip:(id)a20 stateOfChargeAtOrigin:(id)a21 stateOfChargeAtDestPredicted:(id)a22 stateOfChargeAtDestActual:(id)a23 stateOfChargeDiffAtDest:(id)a24 waypoints:(id)a25 evConsumptionModel:(id)a26 evChargingMode:(id)a27 activeNavMode:(int)a28 arWalkingUsedInRoutePlanning:(id)a29 arWalkingUsedInNavigation:(id)a30 voiceGuidanceLevel:(int)a31 hFPEnabled:(id)a32 isEndRouteTermination:(id)a33 isParkedCarTermination:(id)a34 isTransitionToWalkingTermination:(id)a35 isTransitionToFindmyTermination:(id)a36 parkingDetectionLocation:(id)a37 timeBetweenParkedAndArrival:(id)a38 arrivedAtDestinationCount:(id)a39 inParkingModeCount:(id)a40 isInParkingMode:(id)a41 isSuggestToWalkingTriggered:(id)a42 isTransitedToWalking:(id)a43 isSuggestToFindmyTriggered:(id)a44 isTransitedToFindmy:(id)a45 additionalStates:(id)a46 providedDropRate:(id)a47 completionQueue:(id)a48 completionBlock:(id)a49
++ (void)captureDirectionsWithDirectionsFeedbacks:(id)feedbacks finalLocation:(id)location arrivalLocation:(id)arrivalLocation arrivedAtDestination:(id)destination navigationAudioFeedback:(GEONavigationAudioFeedback *)feedback durationOfTrip:(id)trip durationInNavigationModes:(id)modes preArrival:(id)self0 originalEta:(id)self1 isVlfImprovementUsed:(id)self2 isCoarseLocationUsed:(id)self3 acceptedCyclingWorkout:(id)self4 batteryDied:(id)self5 chargingStopAdded:(id)self6 isSiriEngaged:(id)self7 tripOrigin:(id)self8 isBadEvExperience:(id)self9 isEvSampleTrip:(id)sampleTrip stateOfChargeAtOrigin:(id)atOrigin stateOfChargeAtDestPredicted:(id)predicted stateOfChargeAtDestActual:(id)actual stateOfChargeDiffAtDest:(id)dest waypoints:(id)waypoints evConsumptionModel:(id)model evChargingMode:(id)mode activeNavMode:(int)navMode arWalkingUsedInRoutePlanning:(id)planning arWalkingUsedInNavigation:(id)feedbacks0 voiceGuidanceLevel:(int)feedbacks1 hFPEnabled:(id)feedbacks2 isEndRouteTermination:(id)feedbacks3 isParkedCarTermination:(id)feedbacks4 isTransitionToWalkingTermination:(id)feedbacks5 isTransitionToFindmyTermination:(id)feedbacks6 parkingDetectionLocation:(id)feedbacks7 timeBetweenParkedAndArrival:(id)feedbacks8 arrivedAtDestinationCount:(id)feedbacks9 inParkingModeCount:(id)location0 isInParkingMode:(id)location1 isSuggestToWalkingTriggered:(id)location2 isTransitedToWalking:(id)location3 isSuggestToFindmyTriggered:(id)location4 isTransitedToFindmy:(id)location5 additionalStates:(id)location6 providedDropRate:(id)location7 completionQueue:(id)location8 completionBlock:(id)location9
 {
   v273 = *MEMORY[0x1E69E9840];
-  v247 = a3;
-  v52 = a4;
-  v53 = a5;
-  v54 = a6;
-  v245 = a8;
-  v55 = a9;
-  v243 = a10;
-  v56 = a11;
-  v57 = a12;
-  v58 = a13;
-  v59 = a14;
-  v242 = a15;
-  v241 = a16;
-  v240 = a17;
-  v239 = a18;
-  v238 = a19;
-  v237 = a20;
-  v236 = a21;
-  v235 = a22;
-  v234 = a23;
-  v233 = a24;
-  v246 = a25;
-  v232 = a26;
-  v231 = a27;
-  v230 = a29;
-  v229 = a30;
-  v228 = a32;
-  v227 = a33;
-  v226 = a34;
-  v225 = a35;
-  v224 = a36;
-  v223 = a37;
-  v222 = a38;
-  v221 = a39;
-  v220 = a40;
-  v219 = a41;
-  v218 = a42;
-  v217 = a43;
-  v216 = a44;
-  v215 = a45;
-  v214 = a46;
-  v248 = a47;
-  v60 = a48;
-  v61 = a49;
+  feedbacksCopy = feedbacks;
+  locationCopy = location;
+  arrivalLocationCopy = arrivalLocation;
+  destinationCopy = destination;
+  tripCopy = trip;
+  modesCopy = modes;
+  arrivalCopy = arrival;
+  etaCopy = eta;
+  usedCopy = used;
+  locationUsedCopy = locationUsed;
+  workoutCopy = workout;
+  diedCopy = died;
+  addedCopy = added;
+  engagedCopy = engaged;
+  originCopy = origin;
+  experienceCopy = experience;
+  sampleTripCopy = sampleTrip;
+  atOriginCopy = atOrigin;
+  predictedCopy = predicted;
+  actualCopy = actual;
+  destCopy = dest;
+  waypointsCopy = waypoints;
+  modelCopy = model;
+  modeCopy = mode;
+  planningCopy = planning;
+  navigationCopy = navigation;
+  enabledCopy = enabled;
+  terminationCopy = termination;
+  carTerminationCopy = carTermination;
+  walkingTerminationCopy = walkingTermination;
+  findmyTerminationCopy = findmyTermination;
+  detectionLocationCopy = detectionLocation;
+  andArrivalCopy = andArrival;
+  countCopy = count;
+  modeCountCopy = modeCount;
+  parkingModeCopy = parkingMode;
+  triggeredCopy = triggered;
+  walkingCopy = walking;
+  findmyTriggeredCopy = findmyTriggered;
+  findmyCopy = findmy;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v265[0] = MEMORY[0x1E69E9820];
   v265[1] = 3221225472;
   v265[2] = __978__GEOAPPortal_captureDirectionsWithDirectionsFeedbacks_finalLocation_arrivalLocation_arrivedAtDestination_navigationAudioFeedback_durationOfTrip_durationInNavigationModes_preArrival_originalEta_isVlfImprovementUsed_isCoarseLocationUsed_acceptedCyclingWorkout_batteryDied_chargingStopAdded_isSiriEngaged_tripOrigin_isBadEvExperience_isEvSampleTrip_stateOfChargeAtOrigin_stateOfChargeAtDestPredicted_stateOfChargeAtDestActual_stateOfChargeDiffAtDest_waypoints_evConsumptionModel_evChargingMode_activeNavMode_arWalkingUsedInRoutePlanning_arWalkingUsedInNavigation_voiceGuidanceLevel_hFPEnabled_isEndRouteTermination_isParkedCarTermination_isTransitionToWalkingTermination_isTransitionToFindmyTermination_parkingDetectionLocation_timeBetweenParkedAndArrival_arrivedAtDestinationCount_inParkingModeCount_isInParkingMode_isSuggestToWalkingTriggered_isTransitedToWalking_isSuggestToFindmyTriggered_isTransitedToFindmy_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v265[3] = &unk_1E7959478;
-  v213 = v61;
+  v213 = blockCopy;
   v267 = v213;
-  v212 = v60;
+  v212 = queueCopy;
   v266 = v212;
   v62 = MEMORY[0x1AC5A12F0](v265);
   if (GEOConfigGetBOOL())
@@ -13732,11 +13732,11 @@ LABEL_2:
     goto LABEL_137;
   }
 
-  v211 = v53;
+  v211 = arrivalLocationCopy;
   v63 = +[GEOAPServiceManager sharedManager];
-  v64 = [v63 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v63 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v64)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v65 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v65, OS_LOG_TYPE_DEBUG))
@@ -13748,14 +13748,14 @@ LABEL_2:
     }
 
     v62[2](v62);
-    v53 = v211;
+    arrivalLocationCopy = v211;
   }
 
   else
   {
-    if (v248)
+    if (rateCopy)
     {
-      [v248 doubleValue];
+      [rateCopy doubleValue];
     }
 
     else
@@ -13763,27 +13763,27 @@ LABEL_2:
       GEOConfigGetDouble();
     }
 
-    v53 = v211;
+    arrivalLocationCopy = v211;
     if (v67 != 0.0 && v67 >= arc4random() / 4294967300.0)
     {
       goto LABEL_2;
     }
 
     v199 = +[GEOAPStateFactory sharedFactory];
-    v204 = v54;
-    v205 = v52;
-    v202 = v56;
-    v203 = v55;
-    v200 = v59;
-    v201 = v57;
-    if ([v214 count])
+    v204 = destinationCopy;
+    v205 = locationCopy;
+    v202 = etaCopy;
+    v203 = modesCopy;
+    v200 = workoutCopy;
+    v201 = usedCopy;
+    if ([statesCopy count])
     {
-      v68 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v214, "count")}];
+      v68 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
       v261 = 0u;
       v262 = 0u;
       v263 = 0u;
       v264 = 0u;
-      v69 = v214;
+      v69 = statesCopy;
       v70 = [v69 countByEnumeratingWithState:&v261 objects:v272 count:16];
       if (v70)
       {
@@ -13914,21 +13914,21 @@ LABEL_2:
     v85 = objc_alloc_init(MEMORY[0x1E69A1EB8]);
     [v84 setDirectionsEvent:v85];
 
-    v86 = [v84 directionsEvent];
-    v87 = [v86 directionsFeedbacks];
+    directionsEvent = [v84 directionsEvent];
+    directionsFeedbacks = [directionsEvent directionsFeedbacks];
 
-    if (!v87)
+    if (!directionsFeedbacks)
     {
-      v88 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v247, "count")}];
-      v89 = [v84 directionsEvent];
-      [v89 setDirectionsFeedbacks:v88];
+      v88 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(feedbacksCopy, "count")}];
+      directionsEvent2 = [v84 directionsEvent];
+      [directionsEvent2 setDirectionsFeedbacks:v88];
     }
 
     v259 = 0u;
     v260 = 0u;
     v257 = 0u;
     v258 = 0u;
-    v90 = v247;
+    v90 = feedbacksCopy;
     v91 = [v90 countByEnumeratingWithState:&v257 objects:v271 count:16];
     if (v91)
     {
@@ -13944,10 +13944,10 @@ LABEL_2:
           }
 
           v95 = *(*(&v257 + 1) + 8 * j);
-          v96 = [v84 directionsEvent];
-          v97 = [v96 directionsFeedbacks];
+          directionsEvent3 = [v84 directionsEvent];
+          directionsFeedbacks2 = [directionsEvent3 directionsFeedbacks];
           v98 = [v95 copy];
-          [v97 addObject:v98];
+          [directionsFeedbacks2 addObject:v98];
         }
 
         v92 = [v90 countByEnumeratingWithState:&v257 objects:v271 count:16];
@@ -13956,157 +13956,157 @@ LABEL_2:
       while (v92);
     }
 
-    v99 = [v84 directionsEvent];
-    [v99 setFinalLocation:v205];
+    directionsEvent4 = [v84 directionsEvent];
+    [directionsEvent4 setFinalLocation:v205];
 
-    v100 = [v84 directionsEvent];
-    [v100 setArrivalLocation:v211];
+    directionsEvent5 = [v84 directionsEvent];
+    [directionsEvent5 setArrivalLocation:v211];
 
     if (v204)
     {
-      v101 = [v204 BOOLValue];
-      v102 = [v84 directionsEvent];
-      [v102 setArrivedAtDestination:v101];
+      bOOLValue = [v204 BOOLValue];
+      directionsEvent6 = [v84 directionsEvent];
+      [directionsEvent6 setArrivedAtDestination:bOOLValue];
     }
 
-    v103 = *&a7->var9;
-    v255 = *&a7->var0;
+    v103 = *&feedback->var9;
+    v255 = *&feedback->var0;
     v256[0] = v103;
-    *(v256 + 12) = *&a7->var12;
-    v104 = [v84 directionsEvent];
+    *(v256 + 12) = *&feedback->var12;
+    directionsEvent7 = [v84 directionsEvent];
     buf = v255;
     v270[0] = v256[0];
     *(v270 + 12) = *(v256 + 12);
-    [v104 setNavigationAudioFeedback:&buf];
+    [directionsEvent7 setNavigationAudioFeedback:&buf];
 
-    if (v245)
+    if (tripCopy)
     {
-      [v245 doubleValue];
+      [tripCopy doubleValue];
       v106 = v105;
-      v107 = [v84 directionsEvent];
-      [v107 setDurationOfTrip:v106];
+      directionsEvent8 = [v84 directionsEvent];
+      [directionsEvent8 setDurationOfTrip:v106];
     }
 
-    v108 = [v84 directionsEvent];
-    [v108 setDurationInNavigationModes:v203];
+    directionsEvent9 = [v84 directionsEvent];
+    [directionsEvent9 setDurationInNavigationModes:v203];
 
-    if (v243)
+    if (arrivalCopy)
     {
-      v109 = [v243 BOOLValue];
-      v110 = [v84 directionsEvent];
-      [v110 setPreArrival:v109];
+      bOOLValue2 = [arrivalCopy BOOLValue];
+      directionsEvent10 = [v84 directionsEvent];
+      [directionsEvent10 setPreArrival:bOOLValue2];
     }
 
     if (v202)
     {
-      v111 = [v202 unsignedLongLongValue];
-      v112 = [v84 directionsEvent];
-      [v112 setOriginalEta:v111];
+      unsignedLongLongValue = [v202 unsignedLongLongValue];
+      directionsEvent11 = [v84 directionsEvent];
+      [directionsEvent11 setOriginalEta:unsignedLongLongValue];
     }
 
     if (v201)
     {
-      v113 = [v201 BOOLValue];
-      v114 = [v84 directionsEvent];
-      [v114 setIsVlfImprovementUsed:v113];
+      bOOLValue3 = [v201 BOOLValue];
+      directionsEvent12 = [v84 directionsEvent];
+      [directionsEvent12 setIsVlfImprovementUsed:bOOLValue3];
     }
 
-    if (v58)
+    if (locationUsedCopy)
     {
-      v115 = [v58 BOOLValue];
-      v116 = [v84 directionsEvent];
-      [v116 setIsCoarseLocationUsed:v115];
+      bOOLValue4 = [locationUsedCopy BOOLValue];
+      directionsEvent13 = [v84 directionsEvent];
+      [directionsEvent13 setIsCoarseLocationUsed:bOOLValue4];
     }
 
     if (v200)
     {
-      v117 = [v200 BOOLValue];
-      v118 = [v84 directionsEvent];
-      [v118 setAcceptedCyclingWorkout:v117];
+      bOOLValue5 = [v200 BOOLValue];
+      directionsEvent14 = [v84 directionsEvent];
+      [directionsEvent14 setAcceptedCyclingWorkout:bOOLValue5];
     }
 
-    if (v242)
+    if (diedCopy)
     {
-      v119 = [v242 BOOLValue];
-      v120 = [v84 directionsEvent];
-      [v120 setBatteryDied:v119];
+      bOOLValue6 = [diedCopy BOOLValue];
+      directionsEvent15 = [v84 directionsEvent];
+      [directionsEvent15 setBatteryDied:bOOLValue6];
     }
 
-    if (v241)
+    if (addedCopy)
     {
-      v121 = [v241 BOOLValue];
-      v122 = [v84 directionsEvent];
-      [v122 setChargingStopAdded:v121];
+      bOOLValue7 = [addedCopy BOOLValue];
+      directionsEvent16 = [v84 directionsEvent];
+      [directionsEvent16 setChargingStopAdded:bOOLValue7];
     }
 
-    if (v240)
+    if (engagedCopy)
     {
-      v123 = [v240 BOOLValue];
-      v124 = [v84 directionsEvent];
-      [v124 setIsSiriEngaged:v123];
+      bOOLValue8 = [engagedCopy BOOLValue];
+      directionsEvent17 = [v84 directionsEvent];
+      [directionsEvent17 setIsSiriEngaged:bOOLValue8];
     }
 
-    v125 = [v84 directionsEvent];
-    [v125 setTripOrigin:v239];
+    directionsEvent18 = [v84 directionsEvent];
+    [directionsEvent18 setTripOrigin:originCopy];
 
-    if (v238)
+    if (experienceCopy)
     {
-      v126 = [v238 BOOLValue];
-      v127 = [v84 directionsEvent];
-      [v127 setIsBadEvExperience:v126];
+      bOOLValue9 = [experienceCopy BOOLValue];
+      directionsEvent19 = [v84 directionsEvent];
+      [directionsEvent19 setIsBadEvExperience:bOOLValue9];
     }
 
-    if (v237)
+    if (sampleTripCopy)
     {
-      v128 = [v237 BOOLValue];
-      v129 = [v84 directionsEvent];
-      [v129 setIsEvSampleTrip:v128];
+      bOOLValue10 = [sampleTripCopy BOOLValue];
+      directionsEvent20 = [v84 directionsEvent];
+      [directionsEvent20 setIsEvSampleTrip:bOOLValue10];
     }
 
-    if (v236)
+    if (atOriginCopy)
     {
-      v130 = [v236 unsignedLongLongValue];
-      v131 = [v84 directionsEvent];
-      [v131 setStateOfChargeAtOrigin:v130];
+      unsignedLongLongValue2 = [atOriginCopy unsignedLongLongValue];
+      directionsEvent21 = [v84 directionsEvent];
+      [directionsEvent21 setStateOfChargeAtOrigin:unsignedLongLongValue2];
     }
 
-    if (v235)
+    if (predictedCopy)
     {
-      v132 = [v235 unsignedLongLongValue];
-      v133 = [v84 directionsEvent];
-      [v133 setStateOfChargeAtDestPredicted:v132];
+      unsignedLongLongValue3 = [predictedCopy unsignedLongLongValue];
+      directionsEvent22 = [v84 directionsEvent];
+      [directionsEvent22 setStateOfChargeAtDestPredicted:unsignedLongLongValue3];
     }
 
-    if (v234)
+    if (actualCopy)
     {
-      v134 = [v234 unsignedLongLongValue];
-      v135 = [v84 directionsEvent];
-      [v135 setStateOfChargeAtDestActual:v134];
+      unsignedLongLongValue4 = [actualCopy unsignedLongLongValue];
+      directionsEvent23 = [v84 directionsEvent];
+      [directionsEvent23 setStateOfChargeAtDestActual:unsignedLongLongValue4];
     }
 
-    if (v233)
+    if (destCopy)
     {
-      v136 = [v233 unsignedLongLongValue];
-      v137 = [v84 directionsEvent];
-      [v137 setStateOfChargeDiffAtDest:v136];
+      unsignedLongLongValue5 = [destCopy unsignedLongLongValue];
+      directionsEvent24 = [v84 directionsEvent];
+      [directionsEvent24 setStateOfChargeDiffAtDest:unsignedLongLongValue5];
     }
 
-    v210 = v58;
-    v138 = [v84 directionsEvent];
-    v139 = [v138 waypoints];
+    v210 = locationUsedCopy;
+    directionsEvent25 = [v84 directionsEvent];
+    waypoints = [directionsEvent25 waypoints];
 
-    if (!v139)
+    if (!waypoints)
     {
-      v140 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v246, "count")}];
-      v141 = [v84 directionsEvent];
-      [v141 setWaypoints:v140];
+      v140 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(waypointsCopy, "count")}];
+      directionsEvent26 = [v84 directionsEvent];
+      [directionsEvent26 setWaypoints:v140];
     }
 
     v253 = 0u;
     v254 = 0u;
     v251 = 0u;
     v252 = 0u;
-    v142 = v246;
+    v142 = waypointsCopy;
     v143 = [v142 countByEnumeratingWithState:&v251 objects:v268 count:16];
     if (v143)
     {
@@ -14122,10 +14122,10 @@ LABEL_2:
           }
 
           v147 = *(*(&v251 + 1) + 8 * k);
-          v148 = [v84 directionsEvent];
-          v149 = [v148 waypoints];
+          directionsEvent27 = [v84 directionsEvent];
+          waypoints2 = [directionsEvent27 waypoints];
           v150 = [v147 copy];
-          [v149 addObject:v150];
+          [waypoints2 addObject:v150];
         }
 
         v144 = [v142 countByEnumeratingWithState:&v251 objects:v268 count:16];
@@ -14134,140 +14134,140 @@ LABEL_2:
       while (v144);
     }
 
-    v151 = [v84 directionsEvent];
-    [v151 setEvConsumptionModel:v232];
+    directionsEvent28 = [v84 directionsEvent];
+    [directionsEvent28 setEvConsumptionModel:modelCopy];
 
-    v152 = [v84 directionsEvent];
-    [v152 setEvChargingMode:v231];
+    directionsEvent29 = [v84 directionsEvent];
+    [directionsEvent29 setEvChargingMode:modeCopy];
 
-    v153 = [v84 directionsEvent];
-    [v153 setActiveNavMode:a28];
+    directionsEvent30 = [v84 directionsEvent];
+    [directionsEvent30 setActiveNavMode:navMode];
 
-    if (v230)
+    if (planningCopy)
     {
-      v154 = [v230 BOOLValue];
-      v155 = [v84 directionsEvent];
-      [v155 setArWalkingUsedInRoutePlanning:v154];
+      bOOLValue11 = [planningCopy BOOLValue];
+      directionsEvent31 = [v84 directionsEvent];
+      [directionsEvent31 setArWalkingUsedInRoutePlanning:bOOLValue11];
     }
 
-    if (v229)
+    if (navigationCopy)
     {
-      v156 = [v229 BOOLValue];
-      v157 = [v84 directionsEvent];
-      [v157 setArWalkingUsedInNavigation:v156];
+      bOOLValue12 = [navigationCopy BOOLValue];
+      directionsEvent32 = [v84 directionsEvent];
+      [directionsEvent32 setArWalkingUsedInNavigation:bOOLValue12];
     }
 
-    v158 = [v84 directionsEvent];
-    [v158 setVoiceGuidanceLevel:a31];
+    directionsEvent33 = [v84 directionsEvent];
+    [directionsEvent33 setVoiceGuidanceLevel:level];
 
-    if (v228)
+    if (enabledCopy)
     {
-      v159 = [v228 BOOLValue];
-      v160 = [v84 directionsEvent];
-      [v160 setHFPEnabled:v159];
+      bOOLValue13 = [enabledCopy BOOLValue];
+      directionsEvent34 = [v84 directionsEvent];
+      [directionsEvent34 setHFPEnabled:bOOLValue13];
     }
 
-    if (v227)
+    if (terminationCopy)
     {
-      v161 = [v227 BOOLValue];
-      v162 = [v84 directionsEvent];
-      [v162 setIsEndRouteTermination:v161];
+      bOOLValue14 = [terminationCopy BOOLValue];
+      directionsEvent35 = [v84 directionsEvent];
+      [directionsEvent35 setIsEndRouteTermination:bOOLValue14];
     }
 
-    if (v226)
+    if (carTerminationCopy)
     {
-      v163 = [v226 BOOLValue];
-      v164 = [v84 directionsEvent];
-      [v164 setIsParkedCarTermination:v163];
+      bOOLValue15 = [carTerminationCopy BOOLValue];
+      directionsEvent36 = [v84 directionsEvent];
+      [directionsEvent36 setIsParkedCarTermination:bOOLValue15];
     }
 
-    if (v225)
+    if (walkingTerminationCopy)
     {
-      v165 = [v225 BOOLValue];
-      v166 = [v84 directionsEvent];
-      [v166 setIsTransitionToWalkingTermination:v165];
+      bOOLValue16 = [walkingTerminationCopy BOOLValue];
+      directionsEvent37 = [v84 directionsEvent];
+      [directionsEvent37 setIsTransitionToWalkingTermination:bOOLValue16];
     }
 
-    if (v224)
+    if (findmyTerminationCopy)
     {
-      v167 = [v224 BOOLValue];
-      v168 = [v84 directionsEvent];
-      [v168 setIsTransitionToFindmyTermination:v167];
+      bOOLValue17 = [findmyTerminationCopy BOOLValue];
+      directionsEvent38 = [v84 directionsEvent];
+      [directionsEvent38 setIsTransitionToFindmyTermination:bOOLValue17];
     }
 
-    v169 = [v84 directionsEvent];
-    [v169 setParkingDetectionLocation:v223];
+    directionsEvent39 = [v84 directionsEvent];
+    [directionsEvent39 setParkingDetectionLocation:detectionLocationCopy];
 
-    if (v222)
+    if (andArrivalCopy)
     {
-      [v222 doubleValue];
+      [andArrivalCopy doubleValue];
       v171 = v170;
-      v172 = [v84 directionsEvent];
-      [v172 setTimeBetweenParkedAndArrival:v171];
+      directionsEvent40 = [v84 directionsEvent];
+      [directionsEvent40 setTimeBetweenParkedAndArrival:v171];
     }
 
-    if (v221)
+    if (countCopy)
     {
-      v173 = [v221 unsignedLongLongValue];
-      v174 = [v84 directionsEvent];
-      [v174 setArrivedAtDestinationCount:v173];
+      unsignedLongLongValue6 = [countCopy unsignedLongLongValue];
+      directionsEvent41 = [v84 directionsEvent];
+      [directionsEvent41 setArrivedAtDestinationCount:unsignedLongLongValue6];
     }
 
-    if (v220)
+    if (modeCountCopy)
     {
-      v175 = [v220 unsignedLongLongValue];
-      v176 = [v84 directionsEvent];
-      [v176 setInParkingModeCount:v175];
+      unsignedLongLongValue7 = [modeCountCopy unsignedLongLongValue];
+      directionsEvent42 = [v84 directionsEvent];
+      [directionsEvent42 setInParkingModeCount:unsignedLongLongValue7];
     }
 
-    if (v219)
+    if (parkingModeCopy)
     {
-      v177 = [v219 BOOLValue];
-      v178 = [v84 directionsEvent];
-      [v178 setIsInParkingMode:v177];
+      bOOLValue18 = [parkingModeCopy BOOLValue];
+      directionsEvent43 = [v84 directionsEvent];
+      [directionsEvent43 setIsInParkingMode:bOOLValue18];
     }
 
-    if (v218)
+    if (triggeredCopy)
     {
-      v179 = [v218 BOOLValue];
-      v180 = [v84 directionsEvent];
-      [v180 setIsSuggestToWalkingTriggered:v179];
+      bOOLValue19 = [triggeredCopy BOOLValue];
+      directionsEvent44 = [v84 directionsEvent];
+      [directionsEvent44 setIsSuggestToWalkingTriggered:bOOLValue19];
     }
 
-    if (v217)
+    if (walkingCopy)
     {
-      v181 = [v217 BOOLValue];
-      v182 = [v84 directionsEvent];
-      [v182 setIsTransitedToWalking:v181];
+      bOOLValue20 = [walkingCopy BOOLValue];
+      directionsEvent45 = [v84 directionsEvent];
+      [directionsEvent45 setIsTransitedToWalking:bOOLValue20];
     }
 
-    if (v216)
+    if (findmyTriggeredCopy)
     {
-      v183 = [v216 BOOLValue];
-      v184 = [v84 directionsEvent];
-      [v184 setIsSuggestToFindmyTriggered:v183];
+      bOOLValue21 = [findmyTriggeredCopy BOOLValue];
+      directionsEvent46 = [v84 directionsEvent];
+      [directionsEvent46 setIsSuggestToFindmyTriggered:bOOLValue21];
     }
 
-    if (v215)
+    if (findmyCopy)
     {
-      v185 = [v215 BOOLValue];
-      v186 = [v84 directionsEvent];
-      [v186 setIsTransitedToFindmy:v185];
+      bOOLValue22 = [findmyCopy BOOLValue];
+      directionsEvent47 = [v84 directionsEvent];
+      [directionsEvent47 setIsTransitedToFindmy:bOOLValue22];
     }
 
-    v187 = [MEMORY[0x1E69A2710] sharedInstance];
-    v188 = [v187 navSessionID];
+    mEMORY[0x1E69A2710] = [MEMORY[0x1E69A2710] sharedInstance];
+    navSessionID = [mEMORY[0x1E69A2710] navSessionID];
     v190 = v189;
-    v191 = [v84 directionsEvent];
-    [v191 setNavSessionId:{v188, v190}];
+    directionsEvent48 = [v84 directionsEvent];
+    [directionsEvent48 setNavSessionId:{navSessionID, v190}];
 
     if (v198)
     {
       [v84 addLogMsgState:?];
     }
 
-    v52 = v205;
-    v56 = v202;
+    locationCopy = v205;
+    etaCopy = v202;
     if (v207)
     {
       [v84 addLogMsgState:?];
@@ -14298,12 +14298,12 @@ LABEL_2:
     [v192 sessionStateForType:7 callback:v249];
 
     v62[2](v62);
-    v53 = v211;
-    v54 = v204;
-    v58 = v210;
-    v55 = v203;
-    v57 = v201;
-    v59 = v200;
+    arrivalLocationCopy = v211;
+    destinationCopy = v204;
+    locationUsedCopy = v210;
+    modesCopy = v203;
+    usedCopy = v201;
+    workoutCopy = v200;
   }
 
 LABEL_137:
@@ -14347,36 +14347,36 @@ uint64_t __978__GEOAPPortal_captureDirectionsWithDirectionsFeedbacks_finalLocati
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureDirectionsWithDirectionsFeedbacks:(id)a3 finalLocation:(id)a4 arrivalLocation:(id)a5 arrivedAtDestination:(id)a6 navigationAudioFeedback:(GEONavigationAudioFeedback *)a7 durationOfTrip:(id)a8 durationInNavigationModes:(id)a9 preArrival:(id)a10 originalEta:(id)a11 isVlfImprovementUsed:(id)a12 isCoarseLocationUsed:(id)a13 acceptedCyclingWorkout:(id)a14 batteryDied:(id)a15 chargingStopAdded:(id)a16 isSiriEngaged:(id)a17 tripOrigin:(id)a18 isBadEvExperience:(id)a19 isEvSampleTrip:(id)a20 stateOfChargeAtOrigin:(id)a21 stateOfChargeAtDestPredicted:(id)a22 stateOfChargeAtDestActual:(id)a23 stateOfChargeDiffAtDest:(id)a24 waypoints:(id)a25 evConsumptionModel:(id)a26 evChargingMode:(id)a27 activeNavMode:(int)a28 arWalkingUsedInRoutePlanning:(id)a29 arWalkingUsedInNavigation:(id)a30 voiceGuidanceLevel:(int)a31 hFPEnabled:(id)a32 isEndRouteTermination:(id)a33 isParkedCarTermination:(id)a34 isTransitionToWalkingTermination:(id)a35 isTransitionToFindmyTermination:(id)a36 parkingDetectionLocation:(id)a37 timeBetweenParkedAndArrival:(id)a38 arrivedAtDestinationCount:(id)a39 inParkingModeCount:(id)a40 isInParkingMode:(id)a41 isSuggestToWalkingTriggered:(id)a42 isTransitedToWalking:(id)a43 isSuggestToFindmyTriggered:(id)a44 isTransitedToFindmy:(id)a45
++ (void)captureDirectionsWithDirectionsFeedbacks:(id)feedbacks finalLocation:(id)location arrivalLocation:(id)arrivalLocation arrivedAtDestination:(id)destination navigationAudioFeedback:(GEONavigationAudioFeedback *)feedback durationOfTrip:(id)trip durationInNavigationModes:(id)modes preArrival:(id)self0 originalEta:(id)self1 isVlfImprovementUsed:(id)self2 isCoarseLocationUsed:(id)self3 acceptedCyclingWorkout:(id)self4 batteryDied:(id)self5 chargingStopAdded:(id)self6 isSiriEngaged:(id)self7 tripOrigin:(id)self8 isBadEvExperience:(id)self9 isEvSampleTrip:(id)sampleTrip stateOfChargeAtOrigin:(id)atOrigin stateOfChargeAtDestPredicted:(id)predicted stateOfChargeAtDestActual:(id)actual stateOfChargeDiffAtDest:(id)dest waypoints:(id)waypoints evConsumptionModel:(id)model evChargingMode:(id)mode activeNavMode:(int)navMode arWalkingUsedInRoutePlanning:(id)planning arWalkingUsedInNavigation:(id)feedbacks0 voiceGuidanceLevel:(int)feedbacks1 hFPEnabled:(id)feedbacks2 isEndRouteTermination:(id)feedbacks3 isParkedCarTermination:(id)feedbacks4 isTransitionToWalkingTermination:(id)feedbacks5 isTransitionToFindmyTermination:(id)feedbacks6 parkingDetectionLocation:(id)feedbacks7 timeBetweenParkedAndArrival:(id)feedbacks8 arrivedAtDestinationCount:(id)feedbacks9 inParkingModeCount:(id)location0 isInParkingMode:(id)location1 isSuggestToWalkingTriggered:(id)location2 isTransitedToWalking:(id)location3 isSuggestToFindmyTriggered:(id)location4 isTransitedToFindmy:(id)location5
 {
-  v45 = *&a7->var9;
-  v48 = *&a7->var0;
+  v45 = *&feedback->var9;
+  v48 = *&feedback->var0;
   v49[0] = v45;
-  *(v49 + 12) = *&a7->var12;
-  LODWORD(v47) = a31;
-  LODWORD(v46) = a28;
-  [a1 captureDirectionsWithDirectionsFeedbacks:a3 finalLocation:a4 arrivalLocation:a5 arrivedAtDestination:a6 navigationAudioFeedback:&v48 durationOfTrip:a8 durationInNavigationModes:a9 preArrival:a10 originalEta:a11 isVlfImprovementUsed:a12 isCoarseLocationUsed:a13 acceptedCyclingWorkout:a14 batteryDied:a15 chargingStopAdded:a16 isSiriEngaged:a17 tripOrigin:a18 isBadEvExperience:a19 isEvSampleTrip:a20 stateOfChargeAtOrigin:a21 stateOfChargeAtDestPredicted:a22 stateOfChargeAtDestActual:a23 stateOfChargeDiffAtDest:a24 waypoints:a25 evConsumptionModel:a26 evChargingMode:a27 activeNavMode:v46 arWalkingUsedInRoutePlanning:a29 arWalkingUsedInNavigation:a30 voiceGuidanceLevel:v47 hFPEnabled:a32 isEndRouteTermination:a33 isParkedCarTermination:a34 isTransitionToWalkingTermination:a35 isTransitionToFindmyTermination:a36 parkingDetectionLocation:a37 timeBetweenParkedAndArrival:a38 arrivedAtDestinationCount:a39 inParkingModeCount:a40 isInParkingMode:a41 isSuggestToWalkingTriggered:a42 isTransitedToWalking:a43 isSuggestToFindmyTriggered:a44 isTransitedToFindmy:a45 additionalStates:0 providedDropRate:0 completionQueue:0 completionBlock:0];
+  *(v49 + 12) = *&feedback->var12;
+  LODWORD(v47) = level;
+  LODWORD(v46) = navMode;
+  [self captureDirectionsWithDirectionsFeedbacks:feedbacks finalLocation:location arrivalLocation:arrivalLocation arrivedAtDestination:destination navigationAudioFeedback:&v48 durationOfTrip:trip durationInNavigationModes:modes preArrival:arrival originalEta:eta isVlfImprovementUsed:used isCoarseLocationUsed:locationUsed acceptedCyclingWorkout:workout batteryDied:died chargingStopAdded:added isSiriEngaged:engaged tripOrigin:origin isBadEvExperience:experience isEvSampleTrip:sampleTrip stateOfChargeAtOrigin:atOrigin stateOfChargeAtDestPredicted:predicted stateOfChargeAtDestActual:actual stateOfChargeDiffAtDest:dest waypoints:waypoints evConsumptionModel:model evChargingMode:mode activeNavMode:v46 arWalkingUsedInRoutePlanning:planning arWalkingUsedInNavigation:navigation voiceGuidanceLevel:v47 hFPEnabled:enabled isEndRouteTermination:termination isParkedCarTermination:carTermination isTransitionToWalkingTermination:walkingTermination isTransitionToFindmyTermination:findmyTermination parkingDetectionLocation:detectionLocation timeBetweenParkedAndArrival:andArrival arrivedAtDestinationCount:count inParkingModeCount:modeCount isInParkingMode:parkingMode isSuggestToWalkingTriggered:triggered isTransitedToWalking:walking isSuggestToFindmyTriggered:findmyTriggered isTransitedToFindmy:findmy additionalStates:0 providedDropRate:0 completionQueue:0 completionBlock:0];
 }
 
-+ (void)captureDailyUseSummaryWithUseEvents:(id)a3 summaryPeriod:(int)a4 summaryDate:(id)a5 aggregationSummaryDate:(id)a6 firstEventDate:(id)a7 user_mapsUseLastDate:(id)a8 additionalStates:(id)a9 providedDropRate:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12
++ (void)captureDailyUseSummaryWithUseEvents:(id)events summaryPeriod:(int)period summaryDate:(id)date aggregationSummaryDate:(id)summaryDate firstEventDate:(id)eventDate user_mapsUseLastDate:(id)lastDate additionalStates:(id)states providedDropRate:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2
 {
   v102 = *MEMORY[0x1E69E9840];
-  v84 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v83 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
-  v22 = a12;
+  eventsCopy = events;
+  dateCopy = date;
+  summaryDateCopy = summaryDate;
+  eventDateCopy = eventDate;
+  lastDateCopy = lastDate;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v95[0] = MEMORY[0x1E69E9820];
   v95[1] = 3221225472;
   v95[2] = __202__GEOAPPortal_captureDailyUseSummaryWithUseEvents_summaryPeriod_summaryDate_aggregationSummaryDate_firstEventDate_user_mapsUseLastDate_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v95[3] = &unk_1E7959478;
-  v23 = v22;
+  v23 = blockCopy;
   v97 = v23;
-  v24 = v21;
+  v24 = queueCopy;
   v96 = v24;
   v25 = MEMORY[0x1AC5A12F0](v95);
   if (GEOConfigGetBOOL())
@@ -14386,11 +14386,11 @@ LABEL_2:
     goto LABEL_45;
   }
 
-  v82 = v18;
+  v82 = eventDateCopy;
   v26 = +[GEOAPServiceManager sharedManager];
-  v27 = [v26 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v26 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v27)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v28 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -14402,14 +14402,14 @@ LABEL_2:
     }
 
     v25[2](v25);
-    v18 = v82;
+    eventDateCopy = v82;
   }
 
   else
   {
-    if (v20)
+    if (rateCopy)
     {
-      [v20 doubleValue];
+      [rateCopy doubleValue];
     }
 
     else
@@ -14417,7 +14417,7 @@ LABEL_2:
       GEOConfigGetDouble();
     }
 
-    v18 = v82;
+    eventDateCopy = v82;
     if (v30 != 0.0 && v30 >= arc4random() / 4294967300.0)
     {
       goto LABEL_2;
@@ -14429,27 +14429,27 @@ LABEL_2:
 
     if (v33)
     {
-      [v83 doubleValue];
+      [lastDateCopy doubleValue];
       v35 = v34;
-      v36 = [v33 user];
-      [v36 setMapsUseLastDate:v35];
+      user = [v33 user];
+      [user setMapsUseLastDate:v35];
     }
 
-    v78 = v16;
+    v78 = dateCopy;
     v79 = v31;
     v73 = v33;
     v74 = v23;
-    v76 = v19;
-    v77 = v17;
-    v75 = v20;
-    if ([v19 count])
+    v76 = statesCopy;
+    v77 = summaryDateCopy;
+    v75 = rateCopy;
+    if ([statesCopy count])
     {
-      v37 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v19, "count")}];
+      v37 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
       v91 = 0u;
       v92 = 0u;
       v93 = 0u;
       v94 = 0u;
-      v38 = v19;
+      v38 = statesCopy;
       v39 = [v38 countByEnumeratingWithState:&v91 objects:v99 count:16];
       if (v39)
       {
@@ -14508,21 +14508,21 @@ LABEL_2:
     v48 = objc_alloc_init(MEMORY[0x1E69A1EB0]);
     [v47 setDailyUseSummary:v48];
 
-    v49 = [v47 dailyUseSummary];
-    v50 = [v49 useEvents];
+    dailyUseSummary = [v47 dailyUseSummary];
+    useEvents = [dailyUseSummary useEvents];
 
-    if (!v50)
+    if (!useEvents)
     {
-      v51 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v84, "count")}];
-      v52 = [v47 dailyUseSummary];
-      [v52 setUseEvents:v51];
+      v51 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(eventsCopy, "count")}];
+      dailyUseSummary2 = [v47 dailyUseSummary];
+      [dailyUseSummary2 setUseEvents:v51];
     }
 
     v89 = 0u;
     v90 = 0u;
     v87 = 0u;
     v88 = 0u;
-    v53 = v84;
+    v53 = eventsCopy;
     v54 = [v53 countByEnumeratingWithState:&v87 objects:v98 count:16];
     if (v54)
     {
@@ -14538,10 +14538,10 @@ LABEL_2:
           }
 
           v58 = *(*(&v87 + 1) + 8 * j);
-          v59 = [v47 dailyUseSummary];
-          v60 = [v59 useEvents];
+          dailyUseSummary3 = [v47 dailyUseSummary];
+          useEvents2 = [dailyUseSummary3 useEvents];
           v61 = [v58 copy];
-          [v60 addObject:v61];
+          [useEvents2 addObject:v61];
         }
 
         v55 = [v53 countByEnumeratingWithState:&v87 objects:v98 count:16];
@@ -14550,29 +14550,29 @@ LABEL_2:
       while (v55);
     }
 
-    v62 = [v47 dailyUseSummary];
-    [v62 setSummaryPeriod:a4];
+    dailyUseSummary4 = [v47 dailyUseSummary];
+    [dailyUseSummary4 setSummaryPeriod:period];
 
-    v63 = [v47 dailyUseSummary];
-    v16 = v78;
-    [v63 setSummaryDate:v78];
+    dailyUseSummary5 = [v47 dailyUseSummary];
+    dateCopy = v78;
+    [dailyUseSummary5 setSummaryDate:v78];
 
-    v64 = [v47 dailyUseSummary];
-    v17 = v77;
-    [v64 setAggregationSummaryDate:v77];
+    dailyUseSummary6 = [v47 dailyUseSummary];
+    summaryDateCopy = v77;
+    [dailyUseSummary6 setAggregationSummaryDate:v77];
 
-    v18 = v82;
+    eventDateCopy = v82;
     if (v82)
     {
       [v82 doubleValue];
       [GEOAPFuzzers dayResolution:?];
       v66 = v65;
-      v67 = [v47 dailyUseSummary];
-      [v67 setFirstEventDate:v66];
+      dailyUseSummary7 = [v47 dailyUseSummary];
+      [dailyUseSummary7 setFirstEventDate:v66];
     }
 
-    v20 = v75;
-    v19 = v76;
+    rateCopy = v75;
+    statesCopy = v76;
     if (v80)
     {
       [v47 addLogMsgState:?];
@@ -14637,60 +14637,60 @@ uint64_t __202__GEOAPPortal_captureDailyUseSummaryWithUseEvents_summaryPeriod_su
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureCommuteWindowWithStartTime:(id)a3 duration:(id)a4 predictedExitTime:(id)a5 endReason:(int)a6 numberOfAlertingResponses:(id)a7 numberOfDoomRoutingRequests:(id)a8 predictedDestinations:(id)a9 additionalStates:(id)a10 providedDropRate:(id)a11 completionQueue:(id)a12 completionBlock:(id)a13
++ (void)captureCommuteWindowWithStartTime:(id)time duration:(id)duration predictedExitTime:(id)exitTime endReason:(int)reason numberOfAlertingResponses:(id)responses numberOfDoomRoutingRequests:(id)requests predictedDestinations:(id)destinations additionalStates:(id)self0 providedDropRate:(id)self1 completionQueue:(id)self2 completionBlock:(id)self3
 {
   v110 = *MEMORY[0x1E69E9840];
-  v92 = a3;
-  v91 = a4;
-  v17 = a5;
-  v18 = a7;
-  v90 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
-  v22 = a12;
-  v23 = a13;
+  timeCopy = time;
+  durationCopy = duration;
+  exitTimeCopy = exitTime;
+  responsesCopy = responses;
+  requestsCopy = requests;
+  destinationsCopy = destinations;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v103[0] = MEMORY[0x1E69E9820];
   v103[1] = 3221225472;
   v103[2] = __228__GEOAPPortal_captureCommuteWindowWithStartTime_duration_predictedExitTime_endReason_numberOfAlertingResponses_numberOfDoomRoutingRequests_predictedDestinations_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v103[3] = &unk_1E7959478;
-  v24 = v23;
+  v24 = blockCopy;
   v105 = v24;
-  v25 = v22;
+  v25 = queueCopy;
   v104 = v25;
   v26 = MEMORY[0x1AC5A12F0](v103);
   if (GEOConfigGetBOOL())
   {
     v26[2](v26);
-    v28 = v91;
-    v27 = v92;
+    v28 = durationCopy;
+    v27 = timeCopy;
     goto LABEL_10;
   }
 
-  v88 = v18;
-  v89 = v17;
+  v88 = responsesCopy;
+  v89 = exitTimeCopy;
   v29 = +[GEOAPServiceManager sharedManager];
-  v30 = [v29 platformDiagAndUsage];
+  platformDiagAndUsage = [v29 platformDiagAndUsage];
 
-  if ((v30 & 1) == 0)
+  if ((platformDiagAndUsage & 1) == 0)
   {
     v26[2](v26);
-    v28 = v91;
-    v27 = v92;
+    v28 = durationCopy;
+    v27 = timeCopy;
 LABEL_9:
-    v18 = v88;
-    v17 = v89;
+    responsesCopy = v88;
+    exitTimeCopy = v89;
     goto LABEL_10;
   }
 
   v31 = +[GEOAPServiceManager sharedManager];
-  v32 = [v31 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v31 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v32)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v33 = GEOGetGEOAPPortalAnalyticsLog();
-    v28 = v91;
-    v27 = v92;
+    v28 = durationCopy;
+    v27 = timeCopy;
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
     {
       v34 = GEOApplicationIdentifierOrProcessName();
@@ -14703,9 +14703,9 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (v21)
+  if (rateCopy)
   {
-    [v21 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -14713,26 +14713,26 @@ LABEL_9:
     GEOConfigGetDouble();
   }
 
-  v28 = v91;
-  v27 = v92;
-  v18 = v88;
-  v17 = v89;
+  v28 = durationCopy;
+  v27 = timeCopy;
+  responsesCopy = v88;
+  exitTimeCopy = v89;
   if (v36 == 0.0 || v36 < arc4random() / 4294967300.0)
   {
     v37 = +[GEOAPStateFactory sharedFactory];
     v79 = v24;
-    v80 = v21;
+    v80 = rateCopy;
     v83 = v37;
-    v84 = v19;
-    v81 = v20;
-    if ([v20 count])
+    v84 = destinationsCopy;
+    v81 = statesCopy;
+    if ([statesCopy count])
     {
-      v38 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v20, "count")}];
+      v38 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
       v99 = 0u;
       v100 = 0u;
       v101 = 0u;
       v102 = 0u;
-      v39 = v20;
+      v39 = statesCopy;
       v40 = [v39 countByEnumeratingWithState:&v99 objects:v107 count:16];
       if (v40)
       {
@@ -14759,10 +14759,10 @@ LABEL_9:
       }
 
       v46 = [v38 copy];
-      v28 = v91;
-      v27 = v92;
+      v28 = durationCopy;
+      v27 = timeCopy;
       v37 = v83;
-      v19 = v84;
+      destinationsCopy = v84;
     }
 
     else
@@ -14813,58 +14813,58 @@ LABEL_9:
     {
       [v27 doubleValue];
       v52 = v51;
-      v53 = [v49 commuteWindow];
-      [v53 setStartTime:v52];
+      commuteWindow = [v49 commuteWindow];
+      [commuteWindow setStartTime:v52];
     }
 
     if (v28)
     {
-      v54 = [v28 unsignedLongLongValue];
-      v55 = [v49 commuteWindow];
-      [v55 setDuration:v54];
+      unsignedLongLongValue = [v28 unsignedLongLongValue];
+      commuteWindow2 = [v49 commuteWindow];
+      [commuteWindow2 setDuration:unsignedLongLongValue];
     }
 
     if (v89)
     {
-      v56 = [v89 unsignedLongLongValue];
-      v57 = [v49 commuteWindow];
-      [v57 setPredictedExitTime:v56];
+      unsignedLongLongValue2 = [v89 unsignedLongLongValue];
+      commuteWindow3 = [v49 commuteWindow];
+      [commuteWindow3 setPredictedExitTime:unsignedLongLongValue2];
     }
 
-    v58 = [v49 commuteWindow];
-    [v58 setEndReason:a6];
+    commuteWindow4 = [v49 commuteWindow];
+    [commuteWindow4 setEndReason:reason];
 
     if (v88)
     {
-      v59 = [v88 unsignedLongLongValue];
-      v60 = [v49 commuteWindow];
-      [v60 setNumberOfAlertingResponses:v59];
+      unsignedLongLongValue3 = [v88 unsignedLongLongValue];
+      commuteWindow5 = [v49 commuteWindow];
+      [commuteWindow5 setNumberOfAlertingResponses:unsignedLongLongValue3];
     }
 
-    if (v90)
+    if (requestsCopy)
     {
-      v61 = [v90 unsignedLongLongValue];
-      v62 = [v49 commuteWindow];
-      [v62 setNumberOfDoomRoutingRequests:v61];
+      unsignedLongLongValue4 = [requestsCopy unsignedLongLongValue];
+      commuteWindow6 = [v49 commuteWindow];
+      [commuteWindow6 setNumberOfDoomRoutingRequests:unsignedLongLongValue4];
     }
 
     v78 = v47;
     v87 = v46;
-    v63 = [v49 commuteWindow];
-    v64 = [v63 predictedDestinations];
+    commuteWindow7 = [v49 commuteWindow];
+    predictedDestinations = [commuteWindow7 predictedDestinations];
 
-    if (!v64)
+    if (!predictedDestinations)
     {
-      v65 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v19, "count")}];
-      v66 = [v49 commuteWindow];
-      [v66 setPredictedDestinations:v65];
+      v65 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(destinationsCopy, "count")}];
+      commuteWindow8 = [v49 commuteWindow];
+      [commuteWindow8 setPredictedDestinations:v65];
     }
 
     v97 = 0u;
     v98 = 0u;
     v95 = 0u;
     v96 = 0u;
-    v67 = v19;
+    v67 = destinationsCopy;
     v68 = [v67 countByEnumeratingWithState:&v95 objects:v106 count:16];
     if (v68)
     {
@@ -14880,10 +14880,10 @@ LABEL_9:
           }
 
           v72 = *(*(&v95 + 1) + 8 * j);
-          v73 = [v49 commuteWindow];
-          v74 = [v73 predictedDestinations];
+          commuteWindow9 = [v49 commuteWindow];
+          predictedDestinations2 = [commuteWindow9 predictedDestinations];
           v75 = [v72 copy];
-          [v74 addObject:v75];
+          [predictedDestinations2 addObject:v75];
         }
 
         v69 = [v67 countByEnumeratingWithState:&v95 objects:v106 count:16];
@@ -14897,10 +14897,10 @@ LABEL_9:
       [v49 addLogMsgState:v82];
     }
 
-    v28 = v91;
-    v27 = v92;
-    v21 = v80;
-    v20 = v81;
+    v28 = durationCopy;
+    v27 = timeCopy;
+    rateCopy = v80;
+    statesCopy = v81;
     v24 = v79;
     if (v85)
     {
@@ -14917,9 +14917,9 @@ LABEL_9:
     [v76 sessionStateForType:7 callback:v93];
 
     v26[2](v26);
-    v18 = v88;
-    v17 = v89;
-    v19 = v84;
+    responsesCopy = v88;
+    exitTimeCopy = v89;
+    destinationsCopy = v84;
   }
 
   else
@@ -14968,56 +14968,56 @@ uint64_t __228__GEOAPPortal_captureCommuteWindowWithStartTime_duration_predicted
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureClientACSuggestionWithQuery:(id)a3 queryTokens:(id)a4 entries:(id)a5 selectedIndex:(id)a6 selectedSectionIndex:(id)a7 withinSectionSelectedIndex:(id)a8 isRetainedQuery:(id)a9 isRerankerTriggered:(id)a10 shouldDifferentiateClientAndServerResults:(id)a11 responseStatus:(int)a12 GEOModelMetadata_modelVersion:(id)a13 GEOModelMetadata_rolloutId:(id)a14 GEOModelMetadata_rolloutDeploymentId:(id)a15 GEOModelMetadata_rolloutFactorpackId:(id)a16 GEOModelMetadata_rolloutRampId:(id)a17 GEOExperimentMetadata_experimentId:(id)a18 GEOExperimentMetadata_deploymentId:(id)a19 GEOExperimentMetadata_treatmentId:(id)a20 GEOExperimentMetadata_experimentDescription:(id)a21 additionalStates:(id)a22 providedDropRate:(id)a23 completionQueue:(id)a24 completionBlock:(id)a25
++ (void)captureClientACSuggestionWithQuery:(id)query queryTokens:(id)tokens entries:(id)entries selectedIndex:(id)index selectedSectionIndex:(id)sectionIndex withinSectionSelectedIndex:(id)selectedIndex isRetainedQuery:(id)retainedQuery isRerankerTriggered:(id)self0 shouldDifferentiateClientAndServerResults:(id)self1 responseStatus:(int)self2 GEOModelMetadata_modelVersion:(id)self3 GEOModelMetadata_rolloutId:(id)self4 GEOModelMetadata_rolloutDeploymentId:(id)self5 GEOModelMetadata_rolloutFactorpackId:(id)self6 GEOModelMetadata_rolloutRampId:(id)self7 GEOExperimentMetadata_experimentId:(id)self8 GEOExperimentMetadata_deploymentId:(id)self9 GEOExperimentMetadata_treatmentId:(id)metadata_treatmentId GEOExperimentMetadata_experimentDescription:(id)description additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block
 {
   v222 = *MEMORY[0x1E69E9840];
-  v196 = a3;
-  v197 = a4;
-  v30 = a5;
-  v195 = a6;
-  v31 = a7;
-  v194 = a8;
-  v32 = a9;
-  v33 = a10;
-  v34 = a11;
-  v35 = a13;
-  v36 = a14;
-  v193 = a15;
-  v192 = a16;
-  v191 = a17;
-  v190 = a18;
-  v199 = a19;
-  v189 = a20;
-  v188 = a21;
-  v187 = a22;
-  v198 = a23;
-  v37 = a24;
-  v38 = a25;
+  queryCopy = query;
+  tokensCopy = tokens;
+  entriesCopy = entries;
+  indexCopy = index;
+  sectionIndexCopy = sectionIndex;
+  selectedIndexCopy = selectedIndex;
+  retainedQueryCopy = retainedQuery;
+  triggeredCopy = triggered;
+  resultsCopy = results;
+  versionCopy = version;
+  idCopy = id;
+  deploymentIdCopy = deploymentId;
+  factorpackIdCopy = factorpackId;
+  rampIdCopy = rampId;
+  metadata_experimentIdCopy = metadata_experimentId;
+  metadata_deploymentIdCopy = metadata_deploymentId;
+  metadata_treatmentIdCopy = metadata_treatmentId;
+  descriptionCopy = description;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v214[0] = MEMORY[0x1E69E9820];
   v214[1] = 3221225472;
   v214[2] = __601__GEOAPPortal_captureClientACSuggestionWithQuery_queryTokens_entries_selectedIndex_selectedSectionIndex_withinSectionSelectedIndex_isRetainedQuery_isRerankerTriggered_shouldDifferentiateClientAndServerResults_responseStatus_GEOModelMetadata_modelVersion_GEOModelMetadata_rolloutId_GEOModelMetadata_rolloutDeploymentId_GEOModelMetadata_rolloutFactorpackId_GEOModelMetadata_rolloutRampId_GEOExperimentMetadata_experimentId_GEOExperimentMetadata_deploymentId_GEOExperimentMetadata_treatmentId_GEOExperimentMetadata_experimentDescription_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v214[3] = &unk_1E7959478;
-  v186 = v38;
+  v186 = blockCopy;
   v216 = v186;
-  v185 = v37;
+  v185 = queueCopy;
   v215 = v185;
   v39 = MEMORY[0x1AC5A12F0](v214);
   if (GEOConfigGetBOOL())
   {
     v39[2](v39);
 LABEL_188:
-    v43 = v199;
+    v43 = metadata_deploymentIdCopy;
     goto LABEL_189;
   }
 
-  v184 = v32;
+  v184 = retainedQueryCopy;
   v40 = +[GEOAPServiceManager sharedManager];
-  v41 = [v40 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v40 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v41)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v42 = GEOGetGEOAPPortalAnalyticsLog();
-    v43 = v199;
+    v43 = metadata_deploymentIdCopy;
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
     {
       v44 = GEOApplicationIdentifierOrProcessName();
@@ -15027,16 +15027,16 @@ LABEL_188:
     }
 
     v39[2](v39);
-    v32 = v184;
+    retainedQueryCopy = v184;
   }
 
   else
   {
-    v43 = v199;
-    v161 = v31;
-    if (v198)
+    v43 = metadata_deploymentIdCopy;
+    v161 = sectionIndexCopy;
+    if (rateCopy)
     {
-      [v198 doubleValue];
+      [rateCopy doubleValue];
     }
 
     else
@@ -15044,24 +15044,24 @@ LABEL_188:
       GEOConfigGetDouble();
     }
 
-    v32 = v184;
+    retainedQueryCopy = v184;
     if (v45 == 0.0 || v45 < arc4random() / 4294967300.0)
     {
-      v175 = v35;
+      v175 = versionCopy;
       v46 = +[GEOAPStateFactory sharedFactory];
-      v176 = v34;
-      v177 = v30;
-      v158 = v33;
+      v176 = resultsCopy;
+      v177 = entriesCopy;
+      v158 = triggeredCopy;
       v160 = v46;
-      if ([v187 count])
+      if ([statesCopy count])
       {
-        v47 = v36;
-        v48 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v187, "count")}];
+        v47 = idCopy;
+        v48 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
         v210 = 0u;
         v211 = 0u;
         v212 = 0u;
         v213 = 0u;
-        v49 = v187;
+        v49 = statesCopy;
         v50 = [v49 countByEnumeratingWithState:&v210 objects:v219 count:16];
         if (v50)
         {
@@ -15088,7 +15088,7 @@ LABEL_188:
         }
 
         v56 = [v48 copy];
-        v36 = v47;
+        idCopy = v47;
         v46 = v160;
       }
 
@@ -15430,7 +15430,7 @@ LABEL_188:
       }
 
       v163 = v84;
-      v174 = v36;
+      v174 = idCopy;
       if (GEOConfigGetBOOL())
       {
         v162 = 0;
@@ -15456,24 +15456,24 @@ LABEL_188:
       v89 = objc_alloc_init(MEMORY[0x1E69A1EA0]);
       [v88 setClientAcSuggestions:v89];
 
-      v90 = [v88 clientAcSuggestions];
-      [v90 setQuery:v196];
+      clientAcSuggestions = [v88 clientAcSuggestions];
+      [clientAcSuggestions setQuery:queryCopy];
 
-      v91 = [v88 clientAcSuggestions];
-      v92 = [v91 queryTokens];
+      clientAcSuggestions2 = [v88 clientAcSuggestions];
+      queryTokens = [clientAcSuggestions2 queryTokens];
 
-      if (!v92)
+      if (!queryTokens)
       {
-        v93 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v197, "count", v56)}];
-        v94 = [v88 clientAcSuggestions];
-        [v94 setQueryTokens:v93];
+        v93 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(tokensCopy, "count", v56)}];
+        clientAcSuggestions3 = [v88 clientAcSuggestions];
+        [clientAcSuggestions3 setQueryTokens:v93];
       }
 
       v208 = 0u;
       v209 = 0u;
       v206 = 0u;
       v207 = 0u;
-      v95 = v197;
+      v95 = tokensCopy;
       v96 = [v95 countByEnumeratingWithState:&v206 objects:v218 count:16];
       if (v96)
       {
@@ -15489,10 +15489,10 @@ LABEL_188:
             }
 
             v100 = *(*(&v206 + 1) + 8 * j);
-            v101 = [v88 clientAcSuggestions];
-            v102 = [v101 queryTokens];
+            clientAcSuggestions4 = [v88 clientAcSuggestions];
+            queryTokens2 = [clientAcSuggestions4 queryTokens];
             v103 = [v100 copy];
-            [v102 addObject:v103];
+            [queryTokens2 addObject:v103];
           }
 
           v97 = [v95 countByEnumeratingWithState:&v206 objects:v218 count:16];
@@ -15501,14 +15501,14 @@ LABEL_188:
         while (v97);
       }
 
-      v104 = [v88 clientAcSuggestions];
-      v105 = [v104 entries];
+      clientAcSuggestions5 = [v88 clientAcSuggestions];
+      entries = [clientAcSuggestions5 entries];
 
-      if (!v105)
+      if (!entries)
       {
         v106 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v177, "count")}];
-        v107 = [v88 clientAcSuggestions];
-        [v107 setEntries:v106];
+        clientAcSuggestions6 = [v88 clientAcSuggestions];
+        [clientAcSuggestions6 setEntries:v106];
       }
 
       v204 = 0u;
@@ -15531,10 +15531,10 @@ LABEL_188:
             }
 
             v113 = *(*(&v202 + 1) + 8 * k);
-            v114 = [v88 clientAcSuggestions];
-            v115 = [v114 entries];
+            clientAcSuggestions7 = [v88 clientAcSuggestions];
+            entries2 = [clientAcSuggestions7 entries];
             v116 = [v113 copy];
-            [v115 addObject:v116];
+            [entries2 addObject:v116];
           }
 
           v110 = [v108 countByEnumeratingWithState:&v202 objects:v217 count:16];
@@ -15543,103 +15543,103 @@ LABEL_188:
         while (v110);
       }
 
-      if (v195)
+      if (indexCopy)
       {
-        v117 = [v195 integerValue];
-        v118 = [v88 clientAcSuggestions];
-        [v118 setSelectedIndex:v117];
+        integerValue = [indexCopy integerValue];
+        clientAcSuggestions8 = [v88 clientAcSuggestions];
+        [clientAcSuggestions8 setSelectedIndex:integerValue];
       }
 
-      v32 = v184;
-      v33 = v158;
+      retainedQueryCopy = v184;
+      triggeredCopy = v158;
       if (v161)
       {
-        v119 = [v161 integerValue];
-        v120 = [v88 clientAcSuggestions];
-        [v120 setSelectedSectionIndex:v119];
+        integerValue2 = [v161 integerValue];
+        clientAcSuggestions9 = [v88 clientAcSuggestions];
+        [clientAcSuggestions9 setSelectedSectionIndex:integerValue2];
       }
 
-      if (v194)
+      if (selectedIndexCopy)
       {
-        v121 = [v194 integerValue];
-        v122 = [v88 clientAcSuggestions];
-        [v122 setWithinSectionSelectedIndex:v121];
+        integerValue3 = [selectedIndexCopy integerValue];
+        clientAcSuggestions10 = [v88 clientAcSuggestions];
+        [clientAcSuggestions10 setWithinSectionSelectedIndex:integerValue3];
       }
 
-      v30 = v177;
+      entriesCopy = v177;
       if (v184)
       {
-        v123 = [v184 BOOLValue];
-        v124 = [v88 clientAcSuggestions];
-        [v124 setIsRetainedQuery:v123];
+        bOOLValue = [v184 BOOLValue];
+        clientAcSuggestions11 = [v88 clientAcSuggestions];
+        [clientAcSuggestions11 setIsRetainedQuery:bOOLValue];
       }
 
       if (v158)
       {
-        v125 = [v158 BOOLValue];
-        v126 = [v88 clientAcSuggestions];
-        [v126 setIsRerankerTriggered:v125];
+        bOOLValue2 = [v158 BOOLValue];
+        clientAcSuggestions12 = [v88 clientAcSuggestions];
+        [clientAcSuggestions12 setIsRerankerTriggered:bOOLValue2];
       }
 
       if (v176)
       {
-        v127 = [v176 BOOLValue];
-        v128 = [v88 clientAcSuggestions];
-        [v128 setShouldDifferentiateClientAndServerResults:v127];
+        bOOLValue3 = [v176 BOOLValue];
+        clientAcSuggestions13 = [v88 clientAcSuggestions];
+        [clientAcSuggestions13 setShouldDifferentiateClientAndServerResults:bOOLValue3];
       }
 
-      v129 = [v88 clientAcSuggestions];
-      [v129 setResponseStatus:a12];
+      clientAcSuggestions14 = [v88 clientAcSuggestions];
+      [clientAcSuggestions14 setResponseStatus:status];
 
       v130 = objc_alloc_init(MEMORY[0x1E69A2240]);
-      v131 = [v88 clientAcSuggestions];
-      [v131 setModelMetadata:v130];
+      clientAcSuggestions15 = [v88 clientAcSuggestions];
+      [clientAcSuggestions15 setModelMetadata:v130];
 
-      v132 = [v88 clientAcSuggestions];
-      v133 = [v132 modelMetadata];
-      [v133 setModelVersion:v175];
+      clientAcSuggestions16 = [v88 clientAcSuggestions];
+      modelMetadata = [clientAcSuggestions16 modelMetadata];
+      [modelMetadata setModelVersion:v175];
 
-      v134 = [v88 clientAcSuggestions];
-      v135 = [v134 modelMetadata];
-      [v135 setRolloutId:v174];
+      clientAcSuggestions17 = [v88 clientAcSuggestions];
+      modelMetadata2 = [clientAcSuggestions17 modelMetadata];
+      [modelMetadata2 setRolloutId:v174];
 
-      v136 = [v88 clientAcSuggestions];
-      v137 = [v136 modelMetadata];
-      [v137 setRolloutDeploymentId:v193];
+      clientAcSuggestions18 = [v88 clientAcSuggestions];
+      modelMetadata3 = [clientAcSuggestions18 modelMetadata];
+      [modelMetadata3 setRolloutDeploymentId:deploymentIdCopy];
 
-      v138 = [v88 clientAcSuggestions];
-      v139 = [v138 modelMetadata];
-      [v139 setRolloutFactorpackId:v192];
+      clientAcSuggestions19 = [v88 clientAcSuggestions];
+      modelMetadata4 = [clientAcSuggestions19 modelMetadata];
+      [modelMetadata4 setRolloutFactorpackId:factorpackIdCopy];
 
-      v140 = [v88 clientAcSuggestions];
-      v141 = [v140 modelMetadata];
-      [v141 setRolloutRampId:v191];
+      clientAcSuggestions20 = [v88 clientAcSuggestions];
+      modelMetadata5 = [clientAcSuggestions20 modelMetadata];
+      [modelMetadata5 setRolloutRampId:rampIdCopy];
 
       v142 = objc_alloc_init(MEMORY[0x1E69A1D98]);
-      v143 = [v88 clientAcSuggestions];
-      [v143 setTrialExperimentMetadata:v142];
+      clientAcSuggestions21 = [v88 clientAcSuggestions];
+      [clientAcSuggestions21 setTrialExperimentMetadata:v142];
 
-      v144 = [v88 clientAcSuggestions];
-      v145 = [v144 trialExperimentMetadata];
-      [v145 setExperimentId:v190];
+      clientAcSuggestions22 = [v88 clientAcSuggestions];
+      trialExperimentMetadata = [clientAcSuggestions22 trialExperimentMetadata];
+      [trialExperimentMetadata setExperimentId:metadata_experimentIdCopy];
 
-      if (v199)
+      if (metadata_deploymentIdCopy)
       {
-        v146 = [v199 unsignedLongLongValue];
-        v147 = [v88 clientAcSuggestions];
-        v148 = [v147 trialExperimentMetadata];
-        [v148 setDeploymentId:v146];
+        unsignedLongLongValue = [metadata_deploymentIdCopy unsignedLongLongValue];
+        clientAcSuggestions23 = [v88 clientAcSuggestions];
+        trialExperimentMetadata2 = [clientAcSuggestions23 trialExperimentMetadata];
+        [trialExperimentMetadata2 setDeploymentId:unsignedLongLongValue];
 
-        v32 = v184;
+        retainedQueryCopy = v184;
       }
 
-      v149 = [v88 clientAcSuggestions];
-      v150 = [v149 trialExperimentMetadata];
-      [v150 setTreatmentId:v189];
+      clientAcSuggestions24 = [v88 clientAcSuggestions];
+      trialExperimentMetadata3 = [clientAcSuggestions24 trialExperimentMetadata];
+      [trialExperimentMetadata3 setTreatmentId:metadata_treatmentIdCopy];
 
-      v151 = [v88 clientAcSuggestions];
-      v152 = [v151 trialExperimentMetadata];
-      [v152 setExperimentDescription:v188];
+      clientAcSuggestions25 = [v88 clientAcSuggestions];
+      trialExperimentMetadata4 = [clientAcSuggestions25 trialExperimentMetadata];
+      [trialExperimentMetadata4 setExperimentDescription:descriptionCopy];
 
       if (v179)
       {
@@ -15746,10 +15746,10 @@ LABEL_188:
       [v153 sessionStateForType:6 callback:v200];
 
       v39[2](v39);
-      v31 = v161;
-      v35 = v175;
-      v34 = v176;
-      v36 = v174;
+      sectionIndexCopy = v161;
+      versionCopy = v175;
+      resultsCopy = v176;
+      idCopy = v174;
       goto LABEL_188;
     }
 
@@ -15797,47 +15797,47 @@ uint64_t __601__GEOAPPortal_captureClientACSuggestionWithQuery_queryTokens_entri
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureClientACResponseWithQuery:(id)a3 queryTokens:(id)a4 entries:(id)a5 shouldDifferentiateClientAndServerResults:(id)a6 overallLatencyInMs:(id)a7 isRerankerTriggered:(id)a8 isRetainedQuery:(id)a9 additionalStates:(id)a10 providedDropRate:(id)a11 completionQueue:(id)a12 completionBlock:(id)a13
++ (void)captureClientACResponseWithQuery:(id)query queryTokens:(id)tokens entries:(id)entries shouldDifferentiateClientAndServerResults:(id)results overallLatencyInMs:(id)ms isRerankerTriggered:(id)triggered isRetainedQuery:(id)retainedQuery additionalStates:(id)self0 providedDropRate:(id)self1 completionQueue:(id)self2 completionBlock:(id)self3
 {
   v171 = *MEMORY[0x1E69E9840];
-  v147 = a3;
-  v18 = a4;
-  v148 = a5;
-  v19 = a6;
-  v146 = a7;
-  v145 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = a12;
-  v24 = a13;
+  queryCopy = query;
+  tokensCopy = tokens;
+  entriesCopy = entries;
+  resultsCopy = results;
+  msCopy = ms;
+  triggeredCopy = triggered;
+  retainedQueryCopy = retainedQuery;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v163[0] = MEMORY[0x1E69E9820];
   v163[1] = 3221225472;
   v163[2] = __231__GEOAPPortal_captureClientACResponseWithQuery_queryTokens_entries_shouldDifferentiateClientAndServerResults_overallLatencyInMs_isRerankerTriggered_isRetainedQuery_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v163[3] = &unk_1E7959478;
-  v25 = v24;
+  v25 = blockCopy;
   v165 = v25;
-  v144 = v23;
+  v144 = queueCopy;
   v164 = v144;
   v26 = MEMORY[0x1AC5A12F0](v163);
   if (GEOConfigGetBOOL())
   {
     v26[2](v26);
-    v28 = v145;
-    v27 = v146;
+    v28 = triggeredCopy;
+    v27 = msCopy;
   }
 
   else
   {
-    v143 = v19;
+    v143 = resultsCopy;
     v29 = +[GEOAPServiceManager sharedManager];
-    v30 = [v29 eventCollectionIsDisabledForCurrentProcess];
+    eventCollectionIsDisabledForCurrentProcess = [v29 eventCollectionIsDisabledForCurrentProcess];
 
-    if (v30)
+    if (eventCollectionIsDisabledForCurrentProcess)
     {
       v31 = GEOGetGEOAPPortalAnalyticsLog();
-      v28 = v145;
-      v27 = v146;
+      v28 = triggeredCopy;
+      v27 = msCopy;
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
       {
         v32 = GEOApplicationIdentifierOrProcessName();
@@ -15847,16 +15847,16 @@ uint64_t __601__GEOAPPortal_captureClientACSuggestionWithQuery_queryTokens_entri
       }
 
       v26[2](v26);
-      v19 = v143;
+      resultsCopy = v143;
     }
 
     else
     {
-      v28 = v145;
-      v27 = v146;
-      if (v22)
+      v28 = triggeredCopy;
+      v27 = msCopy;
+      if (rateCopy)
       {
-        [v22 doubleValue];
+        [rateCopy doubleValue];
       }
 
       else
@@ -15864,24 +15864,24 @@ uint64_t __601__GEOAPPortal_captureClientACSuggestionWithQuery_queryTokens_entri
         GEOConfigGetDouble();
       }
 
-      v19 = v143;
+      resultsCopy = v143;
       if (v33 == 0.0 || v33 < arc4random() / 4294967300.0)
       {
-        v142 = v18;
+        v142 = tokensCopy;
         v34 = +[GEOAPStateFactory sharedFactory];
-        v120 = v21;
-        v121 = v20;
+        v120 = statesCopy;
+        v121 = retainedQueryCopy;
         v123 = v34;
         v118 = v25;
-        if ([v21 count])
+        if ([statesCopy count])
         {
-          v35 = v22;
-          v36 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v21, "count")}];
+          v35 = rateCopy;
+          v36 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
           v159 = 0u;
           v160 = 0u;
           v161 = 0u;
           v162 = 0u;
-          v37 = v21;
+          v37 = statesCopy;
           v38 = [v37 countByEnumeratingWithState:&v159 objects:v168 count:16];
           if (v38)
           {
@@ -15908,7 +15908,7 @@ uint64_t __601__GEOAPPortal_captureClientACSuggestionWithQuery_queryTokens_entri
           }
 
           v44 = [v36 copy];
-          v22 = v35;
+          rateCopy = v35;
           v34 = v123;
         }
 
@@ -16251,7 +16251,7 @@ uint64_t __601__GEOAPPortal_captureClientACSuggestionWithQuery_queryTokens_entri
           v45 = v74;
         }
 
-        v119 = v22;
+        v119 = rateCopy;
         if (GEOConfigGetBOOL())
         {
           v135 = 0;
@@ -16277,17 +16277,17 @@ uint64_t __601__GEOAPPortal_captureClientACSuggestionWithQuery_queryTokens_entri
         v77 = objc_alloc_init(MEMORY[0x1E69A1EA0]);
         [v76 setClientAcSuggestions:v77];
 
-        v78 = [v76 clientAcSuggestions];
-        [v78 setQuery:v147];
+        clientAcSuggestions = [v76 clientAcSuggestions];
+        [clientAcSuggestions setQuery:queryCopy];
 
-        v79 = [v76 clientAcSuggestions];
-        v80 = [v79 queryTokens];
+        clientAcSuggestions2 = [v76 clientAcSuggestions];
+        queryTokens = [clientAcSuggestions2 queryTokens];
 
-        if (!v80)
+        if (!queryTokens)
         {
           v81 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v142, "count")}];
-          v82 = [v76 clientAcSuggestions];
-          [v82 setQueryTokens:v81];
+          clientAcSuggestions3 = [v76 clientAcSuggestions];
+          [clientAcSuggestions3 setQueryTokens:v81];
         }
 
         v157 = 0u;
@@ -16310,10 +16310,10 @@ uint64_t __601__GEOAPPortal_captureClientACSuggestionWithQuery_queryTokens_entri
               }
 
               v88 = *(*(&v155 + 1) + 8 * j);
-              v89 = [v76 clientAcSuggestions];
-              v90 = [v89 queryTokens];
+              clientAcSuggestions4 = [v76 clientAcSuggestions];
+              queryTokens2 = [clientAcSuggestions4 queryTokens];
               v91 = [v88 copy];
-              [v90 addObject:v91];
+              [queryTokens2 addObject:v91];
             }
 
             v85 = [v83 countByEnumeratingWithState:&v155 objects:v167 count:16];
@@ -16322,21 +16322,21 @@ uint64_t __601__GEOAPPortal_captureClientACSuggestionWithQuery_queryTokens_entri
           while (v85);
         }
 
-        v92 = [v76 clientAcSuggestions];
-        v93 = [v92 entries];
+        clientAcSuggestions5 = [v76 clientAcSuggestions];
+        entries = [clientAcSuggestions5 entries];
 
-        if (!v93)
+        if (!entries)
         {
-          v94 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v148, "count")}];
-          v95 = [v76 clientAcSuggestions];
-          [v95 setEntries:v94];
+          v94 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(entriesCopy, "count")}];
+          clientAcSuggestions6 = [v76 clientAcSuggestions];
+          [clientAcSuggestions6 setEntries:v94];
         }
 
         v153 = 0u;
         v154 = 0u;
         v151 = 0u;
         v152 = 0u;
-        v96 = v148;
+        v96 = entriesCopy;
         v97 = [v96 countByEnumeratingWithState:&v151 objects:v166 count:16];
         if (v97)
         {
@@ -16352,10 +16352,10 @@ uint64_t __601__GEOAPPortal_captureClientACSuggestionWithQuery_queryTokens_entri
               }
 
               v101 = *(*(&v151 + 1) + 8 * k);
-              v102 = [v76 clientAcSuggestions];
-              v103 = [v102 entries];
+              clientAcSuggestions7 = [v76 clientAcSuggestions];
+              entries2 = [clientAcSuggestions7 entries];
               v104 = [v101 copy];
-              [v103 addObject:v104];
+              [entries2 addObject:v104];
             }
 
             v98 = [v96 countByEnumeratingWithState:&v151 objects:v166 count:16];
@@ -16366,38 +16366,38 @@ uint64_t __601__GEOAPPortal_captureClientACSuggestionWithQuery_queryTokens_entri
 
         if (v143)
         {
-          v105 = [v143 BOOLValue];
-          v106 = [v76 clientAcSuggestions];
-          [v106 setShouldDifferentiateClientAndServerResults:v105];
+          bOOLValue = [v143 BOOLValue];
+          clientAcSuggestions8 = [v76 clientAcSuggestions];
+          [clientAcSuggestions8 setShouldDifferentiateClientAndServerResults:bOOLValue];
         }
 
-        v28 = v145;
-        v27 = v146;
-        v21 = v120;
-        v20 = v121;
-        if (v146)
+        v28 = triggeredCopy;
+        v27 = msCopy;
+        statesCopy = v120;
+        retainedQueryCopy = v121;
+        if (msCopy)
         {
-          v107 = [v146 integerValue];
-          v108 = [v76 clientAcSuggestions];
-          [v108 setOverallLatencyInMs:v107];
+          integerValue = [msCopy integerValue];
+          clientAcSuggestions9 = [v76 clientAcSuggestions];
+          [clientAcSuggestions9 setOverallLatencyInMs:integerValue];
         }
 
-        if (v145)
+        if (triggeredCopy)
         {
-          v109 = [v145 BOOLValue];
-          v110 = [v76 clientAcSuggestions];
-          [v110 setIsRerankerTriggered:v109];
+          bOOLValue2 = [triggeredCopy BOOLValue];
+          clientAcSuggestions10 = [v76 clientAcSuggestions];
+          [clientAcSuggestions10 setIsRerankerTriggered:bOOLValue2];
         }
 
         if (v121)
         {
-          v111 = [v121 BOOLValue];
-          v112 = [v76 clientAcSuggestions];
-          [v112 setIsRetainedQuery:v111];
+          bOOLValue3 = [v121 BOOLValue];
+          clientAcSuggestions11 = [v76 clientAcSuggestions];
+          [clientAcSuggestions11 setIsRetainedQuery:bOOLValue3];
         }
 
-        v113 = [v76 clientAcSuggestions];
-        [v113 setTrigger:2];
+        clientAcSuggestions12 = [v76 clientAcSuggestions];
+        [clientAcSuggestions12 setTrigger:2];
 
         if (v138)
         {
@@ -16504,10 +16504,10 @@ uint64_t __601__GEOAPPortal_captureClientACSuggestionWithQuery_queryTokens_entri
         [v114 sessionStateForType:6 callback:v149];
 
         v26[2](v26);
-        v18 = v142;
-        v19 = v143;
+        tokensCopy = v142;
+        resultsCopy = v143;
         v25 = v118;
-        v22 = v119;
+        rateCopy = v119;
       }
 
       else
@@ -16556,23 +16556,23 @@ uint64_t __231__GEOAPPortal_captureClientACResponseWithQuery_queryTokens_entries
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureClientACKeypressWithQuery:(id)a3 queryTokens:(id)a4 entries:(id)a5 keypressStatus:(int)a6 additionalStates:(id)a7 providedDropRate:(id)a8 completionQueue:(id)a9 completionBlock:(id)a10
++ (void)captureClientACKeypressWithQuery:(id)query queryTokens:(id)tokens entries:(id)entries keypressStatus:(int)status additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)self0
 {
   v157 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
+  queryCopy = query;
+  tokensCopy = tokens;
+  entriesCopy = entries;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v149[0] = MEMORY[0x1E69E9820];
   v149[1] = 3221225472;
   v149[2] = __149__GEOAPPortal_captureClientACKeypressWithQuery_queryTokens_entries_keypressStatus_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v149[3] = &unk_1E7959478;
-  v21 = v20;
+  v21 = blockCopy;
   v151 = v21;
-  v22 = v19;
+  v22 = queueCopy;
   v150 = v22;
   v23 = MEMORY[0x1AC5A12F0](v149);
   if (GEOConfigGetBOOL())
@@ -16581,9 +16581,9 @@ uint64_t __231__GEOAPPortal_captureClientACResponseWithQuery_queryTokens_entries
   }
 
   v24 = +[GEOAPServiceManager sharedManager];
-  v25 = [v24 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v24 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v25)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v26 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -16597,9 +16597,9 @@ uint64_t __231__GEOAPPortal_captureClientACResponseWithQuery_queryTokens_entries
     goto LABEL_20;
   }
 
-  if (v18)
+  if (rateCopy)
   {
-    [v18 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -16615,21 +16615,21 @@ LABEL_20:
   }
 
   v126 = +[GEOAPStateFactory sharedFactory];
-  v127 = v16;
+  v127 = entriesCopy;
   v107 = v22;
   v108 = v21;
-  v112 = v15;
-  v113 = v14;
-  v109 = v18;
-  if ([v17 count])
+  v112 = tokensCopy;
+  v113 = queryCopy;
+  v109 = rateCopy;
+  if ([statesCopy count])
   {
-    v29 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v17, "count")}];
+    v29 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v145 = 0u;
     v146 = 0u;
     v147 = 0u;
     v148 = 0u;
-    v30 = v17;
-    v31 = v17;
+    v30 = statesCopy;
+    v31 = statesCopy;
     v32 = [v31 countByEnumeratingWithState:&v145 objects:v154 count:16];
     if (v32)
     {
@@ -16656,8 +16656,8 @@ LABEL_20:
     }
 
     v38 = [v29 copy];
-    v14 = v113;
-    v17 = v30;
+    queryCopy = v113;
+    statesCopy = v30;
   }
 
   else
@@ -16998,7 +16998,7 @@ LABEL_20:
     v40 = v68;
   }
 
-  v110 = v17;
+  v110 = statesCopy;
   if (GEOConfigGetBOOL())
   {
     v114 = 0;
@@ -17025,24 +17025,24 @@ LABEL_20:
   v73 = objc_alloc_init(MEMORY[0x1E69A1EA0]);
   [v72 setClientAcSuggestions:v73];
 
-  v74 = [v72 clientAcSuggestions];
-  [v74 setQuery:v14];
+  clientAcSuggestions = [v72 clientAcSuggestions];
+  [clientAcSuggestions setQuery:queryCopy];
 
-  v75 = [v72 clientAcSuggestions];
-  v76 = [v75 queryTokens];
+  clientAcSuggestions2 = [v72 clientAcSuggestions];
+  queryTokens = [clientAcSuggestions2 queryTokens];
 
-  if (!v76)
+  if (!queryTokens)
   {
-    v77 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v15, "count", v38)}];
-    v78 = [v72 clientAcSuggestions];
-    [v78 setQueryTokens:v77];
+    v77 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(tokensCopy, "count", v38)}];
+    clientAcSuggestions3 = [v72 clientAcSuggestions];
+    [clientAcSuggestions3 setQueryTokens:v77];
   }
 
   v143 = 0u;
   v144 = 0u;
   v141 = 0u;
   v142 = 0u;
-  v79 = v15;
+  v79 = tokensCopy;
   v80 = [v79 countByEnumeratingWithState:&v141 objects:v153 count:16];
   if (v80)
   {
@@ -17058,10 +17058,10 @@ LABEL_20:
         }
 
         v84 = *(*(&v141 + 1) + 8 * j);
-        v85 = [v72 clientAcSuggestions];
-        v86 = [v85 queryTokens];
+        clientAcSuggestions4 = [v72 clientAcSuggestions];
+        queryTokens2 = [clientAcSuggestions4 queryTokens];
         v87 = [v84 copy];
-        [v86 addObject:v87];
+        [queryTokens2 addObject:v87];
       }
 
       v81 = [v79 countByEnumeratingWithState:&v141 objects:v153 count:16];
@@ -17070,14 +17070,14 @@ LABEL_20:
     while (v81);
   }
 
-  v88 = [v72 clientAcSuggestions];
-  v89 = [v88 entries];
+  clientAcSuggestions5 = [v72 clientAcSuggestions];
+  entries = [clientAcSuggestions5 entries];
 
-  if (!v89)
+  if (!entries)
   {
     v90 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v127, "count")}];
-    v91 = [v72 clientAcSuggestions];
-    [v91 setEntries:v90];
+    clientAcSuggestions6 = [v72 clientAcSuggestions];
+    [clientAcSuggestions6 setEntries:v90];
   }
 
   v139 = 0u;
@@ -17100,10 +17100,10 @@ LABEL_20:
         }
 
         v97 = *(*(&v137 + 1) + 8 * k);
-        v98 = [v72 clientAcSuggestions];
-        v99 = [v98 entries];
+        clientAcSuggestions7 = [v72 clientAcSuggestions];
+        entries2 = [clientAcSuggestions7 entries];
         v100 = [v97 copy];
-        [v99 addObject:v100];
+        [entries2 addObject:v100];
       }
 
       v94 = [v92 countByEnumeratingWithState:&v137 objects:v152 count:16];
@@ -17112,20 +17112,20 @@ LABEL_20:
     while (v94);
   }
 
-  v101 = [v72 clientAcSuggestions];
-  [v101 setKeypressStatus:a6];
+  clientAcSuggestions8 = [v72 clientAcSuggestions];
+  [clientAcSuggestions8 setKeypressStatus:status];
 
-  v102 = [v72 clientAcSuggestions];
-  [v102 setTrigger:1];
+  clientAcSuggestions9 = [v72 clientAcSuggestions];
+  [clientAcSuggestions9 setTrigger:1];
 
   if (v116)
   {
     [v72 addLogMsgState:?];
   }
 
-  v15 = v112;
-  v14 = v113;
-  v16 = v127;
+  tokensCopy = v112;
+  queryCopy = v113;
+  entriesCopy = v127;
   v22 = v107;
   v21 = v108;
   if (v125)
@@ -17228,8 +17228,8 @@ LABEL_20:
   [v103 sessionStateForType:6 callback:v135];
 
   v23[2](v23);
-  v18 = v109;
-  v17 = v110;
+  rateCopy = v109;
+  statesCopy = v110;
 LABEL_21:
 
   v39 = *MEMORY[0x1E69E9840];
@@ -17271,21 +17271,21 @@ uint64_t __149__GEOAPPortal_captureClientACKeypressWithQuery_queryTokens_entries
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)captureBatchTrafficWithLocationCollection:(id)a3 additionalStates:(id)a4 providedDropRate:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7
++ (void)captureBatchTrafficWithLocationCollection:(id)collection additionalStates:(id)states providedDropRate:(id)rate completionQueue:(id)queue completionBlock:(id)block
 {
   v59 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  collectionCopy = collection;
+  statesCopy = states;
+  rateCopy = rate;
+  queueCopy = queue;
+  blockCopy = block;
   v53[0] = MEMORY[0x1E69E9820];
   v53[1] = 3221225472;
   v53[2] = __123__GEOAPPortal_captureBatchTrafficWithLocationCollection_additionalStates_providedDropRate_completionQueue_completionBlock___block_invoke;
   v53[3] = &unk_1E7959478;
-  v16 = v15;
+  v16 = blockCopy;
   v55 = v16;
-  v17 = v14;
+  v17 = queueCopy;
   v54 = v17;
   v18 = MEMORY[0x1AC5A12F0](v53);
   if (GEOConfigGetBOOL())
@@ -17294,9 +17294,9 @@ uint64_t __149__GEOAPPortal_captureClientACKeypressWithQuery_queryTokens_entries
   }
 
   v19 = +[GEOAPServiceManager sharedManager];
-  v20 = [v19 eventCollectionIsDisabledForCurrentProcess];
+  eventCollectionIsDisabledForCurrentProcess = [v19 eventCollectionIsDisabledForCurrentProcess];
 
-  if (v20)
+  if (eventCollectionIsDisabledForCurrentProcess)
   {
     v21 = GEOGetGEOAPPortalAnalyticsLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -17310,9 +17310,9 @@ uint64_t __149__GEOAPPortal_captureClientACKeypressWithQuery_queryTokens_entries
     goto LABEL_20;
   }
 
-  if (v13)
+  if (rateCopy)
   {
-    [v13 doubleValue];
+    [rateCopy doubleValue];
   }
 
   else
@@ -17327,19 +17327,19 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v46 = v11;
+  v46 = collectionCopy;
   v45 = +[GEOAPStateFactory sharedFactory];
-  v44 = v12;
-  if ([v12 count])
+  v44 = statesCopy;
+  if ([statesCopy count])
   {
     v42 = v16;
-    v43 = v13;
-    v24 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v12, "count")}];
+    v43 = rateCopy;
+    v24 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v25 = v12;
+    v25 = statesCopy;
     v26 = [v25 countByEnumeratingWithState:&v49 objects:v56 count:16];
     if (v26)
     {
@@ -17367,7 +17367,7 @@ LABEL_20:
 
     v32 = [v24 copy];
     v16 = v42;
-    v13 = v43;
+    rateCopy = v43;
   }
 
   else
@@ -17393,14 +17393,14 @@ LABEL_20:
     v35 = v36;
   }
 
-  v12 = v44;
+  statesCopy = v44;
   v37 = objc_alloc_init(MEMORY[0x1E69A1E90]);
   [v37 setEventType:27];
   v38 = objc_alloc_init(MEMORY[0x1E69A1E98]);
   [v37 setBatchTrafficProbeCollection:v38];
 
-  v39 = [v37 batchTrafficProbeCollection];
-  [v39 setLocationCollection:v46];
+  batchTrafficProbeCollection = [v37 batchTrafficProbeCollection];
+  [batchTrafficProbeCollection setLocationCollection:v46];
 
   if (v35)
   {
@@ -17417,7 +17417,7 @@ LABEL_20:
   [v40 sessionStateForType:11 callback:v47];
 
   v18[2](v18);
-  v11 = v46;
+  collectionCopy = v46;
 LABEL_21:
 
   v33 = *MEMORY[0x1E69E9840];
@@ -17459,18 +17459,18 @@ uint64_t __123__GEOAPPortal_captureBatchTrafficWithLocationCollection_additional
   return [GEOAPPortal reportLogMsgEvent:v4 uploadBatchId:v3 completion:0 completionQueue:0];
 }
 
-+ (void)populateCommonEventValues:(id)a3
++ (void)populateCommonEventValues:(id)values
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69A2398] sharedPlatform];
-  v5 = [v4 isInternalInstall];
+  valuesCopy = values;
+  mEMORY[0x1E69A2398] = [MEMORY[0x1E69A2398] sharedPlatform];
+  isInternalInstall = [mEMORY[0x1E69A2398] isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
-    v6 = [MEMORY[0x1E69A2478] modernManager];
-    v7 = [v6 activeTileGroup];
-    v8 = [v7 environment];
-    [v3 setMapsEnvironment:v8];
+    modernManager = [MEMORY[0x1E69A2478] modernManager];
+    activeTileGroup = [modernManager activeTileGroup];
+    environment = [activeTileGroup environment];
+    [valuesCopy setMapsEnvironment:environment];
 
     if ((GEOConfigGetBOOL() & 1) == 0 && !GEOConfigGetBOOL())
     {
@@ -17487,7 +17487,7 @@ uint64_t __123__GEOAPPortal_captureBatchTrafficWithLocationCollection_additional
   v13 = 0;
   v9 = objc_alloc_init(MEMORY[0x1E69A1EF8]);
   v10 = objc_alloc_init(MEMORY[0x1E696AFB0]);
-  if (v5)
+  if (isInternalInstall)
   {
     if (GEOConfigGetBOOL())
     {
@@ -17508,7 +17508,7 @@ uint64_t __123__GEOAPPortal_captureBatchTrafficWithLocationCollection_additional
   [v10 getUUIDBytes:&v12];
   [v9 setHigh:v12];
   [v9 setLow:v13];
-  [v3 setAnalyticTag:v9];
+  [valuesCopy setAnalyticTag:v9];
 
 LABEL_13:
 }
@@ -17677,23 +17677,23 @@ void __52__GEOAPPortal_NetworkEvent___netEventHandlingConfig__block_invoke()
   v13 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)captureCuratedCollectionUserAction:(int)a3 target:(int)a4 value:(id)a5 publisherId:(id)a6 following:(id)a7 collectionId:(id)a8 collectionCategory:(id)a9 collectionCurrentlySaved:(id)a10 verticalIndex:(id)a11 horizontalIndex:(id)a12 placeCardType:(id)a13 possibleActions:(id)a14 impossibleActions:(id)a15 providerId:(id)a16 repeatableSectionIndex:(id)a17 modules:(id)a18
++ (void)captureCuratedCollectionUserAction:(int)action target:(int)target value:(id)value publisherId:(id)id following:(id)following collectionId:(id)collectionId collectionCategory:(id)category collectionCurrentlySaved:(id)self0 verticalIndex:(id)self1 horizontalIndex:(id)self2 placeCardType:(id)self3 possibleActions:(id)self4 impossibleActions:(id)self5 providerId:(id)self6 repeatableSectionIndex:(id)self7 modules:(id)self8
 {
   v116 = *MEMORY[0x1E69E9840];
-  v91 = a5;
-  v21 = a6;
-  v81 = a7;
-  v86 = a8;
-  v85 = a9;
-  v84 = a10;
-  v89 = a11;
-  v88 = a12;
-  v87 = a13;
-  v22 = a14;
-  v23 = a15;
-  v83 = a16;
-  v82 = a17;
-  v90 = a18;
+  valueCopy = value;
+  idCopy = id;
+  followingCopy = following;
+  collectionIdCopy = collectionId;
+  categoryCopy = category;
+  savedCopy = saved;
+  indexCopy = index;
+  horizontalIndexCopy = horizontalIndex;
+  typeCopy = type;
+  actionsCopy = actions;
+  impossibleActionsCopy = impossibleActions;
+  providerIdCopy = providerId;
+  sectionIndexCopy = sectionIndex;
+  modulesCopy = modules;
   v24 = objc_alloc_init(MEMORY[0x1E69A2038]);
   v25 = objc_alloc_init(MEMORY[0x1E69A23C8]);
   [v24 setPublisherDetails:v25];
@@ -17702,7 +17702,7 @@ void __52__GEOAPPortal_NetworkEvent___netEventHandlingConfig__block_invoke()
   v109 = 0u;
   v106 = 0u;
   v107 = 0u;
-  v26 = v21;
+  v26 = idCopy;
   v27 = [v26 countByEnumeratingWithState:&v106 objects:v115 count:16];
   if (v27)
   {
@@ -17718,8 +17718,8 @@ void __52__GEOAPPortal_NetworkEvent___netEventHandlingConfig__block_invoke()
         }
 
         v31 = *(*(&v106 + 1) + 8 * i);
-        v32 = [v24 publisherDetails];
-        [v32 addPublisherId:{objc_msgSend(v31, "unsignedLongLongValue")}];
+        publisherDetails = [v24 publisherDetails];
+        [publisherDetails addPublisherId:{objc_msgSend(v31, "unsignedLongLongValue")}];
       }
 
       v28 = [v26 countByEnumeratingWithState:&v106 objects:v115 count:16];
@@ -17730,56 +17730,56 @@ void __52__GEOAPPortal_NetworkEvent___netEventHandlingConfig__block_invoke()
 
   v80 = v26;
 
-  v33 = v81;
-  v34 = [v81 BOOLValue];
-  v35 = [v24 publisherDetails];
-  [v35 setCurrentlyFollowing:v34];
+  v33 = followingCopy;
+  bOOLValue = [followingCopy BOOLValue];
+  publisherDetails2 = [v24 publisherDetails];
+  [publisherDetails2 setCurrentlyFollowing:bOOLValue];
 
   v36 = objc_alloc_init(MEMORY[0x1E69A1C08]);
   [v24 setCollectionDetails:v36];
 
-  v37 = v86;
-  if (v86)
+  v37 = collectionIdCopy;
+  if (collectionIdCopy)
   {
-    v38 = [v24 collectionDetails];
-    [v38 addCollectionId:{objc_msgSend(v86, "unsignedLongLongValue")}];
+    collectionDetails = [v24 collectionDetails];
+    [collectionDetails addCollectionId:{objc_msgSend(collectionIdCopy, "unsignedLongLongValue")}];
   }
 
-  v39 = v85;
-  v40 = [v85 copy];
-  v41 = [v24 collectionDetails];
-  [v41 setCollectionCategory:v40];
+  v39 = categoryCopy;
+  v40 = [categoryCopy copy];
+  collectionDetails2 = [v24 collectionDetails];
+  [collectionDetails2 setCollectionCategory:v40];
 
-  v42 = v84;
-  if (v84)
+  v42 = savedCopy;
+  if (savedCopy)
   {
-    v43 = [v84 BOOLValue];
-    v44 = [v24 collectionDetails];
-    [v44 setCurrentlySaved:v43];
+    bOOLValue2 = [savedCopy BOOLValue];
+    collectionDetails3 = [v24 collectionDetails];
+    [collectionDetails3 setCurrentlySaved:bOOLValue2];
   }
 
-  if (v89)
+  if (indexCopy)
   {
-    [v24 setVerticalIndex:{objc_msgSend(v89, "unsignedIntValue")}];
+    [v24 setVerticalIndex:{objc_msgSend(indexCopy, "unsignedIntValue")}];
   }
 
-  if (v88)
+  if (horizontalIndexCopy)
   {
-    [v24 setHorizontalIndex:{objc_msgSend(v88, "unsignedIntValue")}];
+    [v24 setHorizontalIndex:{objc_msgSend(horizontalIndexCopy, "unsignedIntValue")}];
   }
 
-  if (v87)
+  if (typeCopy)
   {
-    [v24 setPlacecardType:{objc_msgSend(v87, "intValue")}];
+    [v24 setPlacecardType:{objc_msgSend(typeCopy, "intValue")}];
   }
 
   v104 = 0u;
   v105 = 0u;
   v102 = 0u;
   v103 = 0u;
-  obj = v22;
+  obj = actionsCopy;
   v45 = [obj countByEnumeratingWithState:&v102 objects:v114 count:16];
-  v46 = v82;
+  v46 = sectionIndexCopy;
   if (v45)
   {
     v47 = v45;
@@ -17806,7 +17806,7 @@ void __52__GEOAPPortal_NetworkEvent___netEventHandlingConfig__block_invoke()
   v101 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v50 = v23;
+  v50 = impossibleActionsCopy;
   v51 = [v50 countByEnumeratingWithState:&v98 objects:v113 count:16];
   if (v51)
   {
@@ -17830,22 +17830,22 @@ void __52__GEOAPPortal_NetworkEvent___netEventHandlingConfig__block_invoke()
     while (v52);
   }
 
-  v55 = v83;
-  if (v83)
+  v55 = providerIdCopy;
+  if (providerIdCopy)
   {
-    [v24 setLocalSearchProviderID:{objc_msgSend(v83, "intValue")}];
+    [v24 setLocalSearchProviderID:{objc_msgSend(providerIdCopy, "intValue")}];
   }
 
-  v56 = v90;
-  v57 = v91;
-  if (v82)
+  v56 = modulesCopy;
+  v57 = valueCopy;
+  if (sectionIndexCopy)
   {
-    [v24 setRepeatableSectionIndex:{objc_msgSend(v82, "intValue")}];
+    [v24 setRepeatableSectionIndex:{objc_msgSend(sectionIndexCopy, "intValue")}];
   }
 
   v79 = +[GEOAPSharedStateData sharedData];
   [v79 setCuratedCollectionState:v24];
-  if (v90)
+  if (modulesCopy)
   {
     v58 = objc_alloc_init(MEMORY[0x1E69A1FF8]);
     [v58 setStateType:702];
@@ -17853,31 +17853,31 @@ void __52__GEOAPPortal_NetworkEvent___netEventHandlingConfig__block_invoke()
     [v58 setPlaceCard:v59];
 
     v92 = v58;
-    v60 = [v58 placeCard];
-    [v60 setPlacecardType:14];
+    placeCard = [v58 placeCard];
+    [placeCard setPlacecardType:14];
 
-    v56 = v90;
-    if ([v90 count] < 2)
+    v56 = modulesCopy;
+    if ([modulesCopy count] < 2)
     {
-      v33 = v81;
-      v37 = v86;
-      if ([v90 count] != 1)
+      v33 = followingCopy;
+      v37 = collectionIdCopy;
+      if ([modulesCopy count] != 1)
       {
 LABEL_53:
 
-        v57 = v91;
+        v57 = valueCopy;
         goto LABEL_54;
       }
 
-      v71 = [v90 firstObject];
-      v72 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v71, "type")}];
-      v73 = [v71 metadata];
+      firstObject = [modulesCopy firstObject];
+      v72 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(firstObject, "type")}];
+      metadata = [firstObject metadata];
       v110 = v92;
       v74 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v110 count:1];
-      [GEOAPPortal captureUserAction:a3 target:a4 value:v91 moduleType:v72 moduleMetadata:v73 richProviderId:0 additionalStates:v74 completionQueue:0 completionBlock:0];
+      [GEOAPPortal captureUserAction:action target:target value:valueCopy moduleType:v72 moduleMetadata:metadata richProviderId:0 additionalStates:v74 completionQueue:0 completionBlock:0];
 
-      v46 = v82;
-      v37 = v86;
+      v46 = sectionIndexCopy;
+      v37 = collectionIdCopy;
     }
 
     else
@@ -17886,7 +17886,7 @@ LABEL_53:
       v97 = 0u;
       v94 = 0u;
       v95 = 0u;
-      v61 = v90;
+      v61 = modulesCopy;
       v62 = [v61 countByEnumeratingWithState:&v94 objects:v112 count:16];
       if (v62)
       {
@@ -17904,8 +17904,8 @@ LABEL_53:
             v66 = *(*(&v94 + 1) + 8 * m);
             v67 = objc_alloc_init(MEMORY[0x1E69A2358]);
             [v67 setType:{objc_msgSend(v66, "type")}];
-            v68 = [v66 metadata];
-            [v67 setMetadata:v68];
+            metadata2 = [v66 metadata];
+            [v67 setMetadata:metadata2];
 
             if ([v66 contentsCount])
             {
@@ -17918,8 +17918,8 @@ LABEL_53:
               while (v69 < [v66 contentsCount]);
             }
 
-            v70 = [v92 placeCard];
-            [v70 addModules:v67];
+            placeCard2 = [v92 placeCard];
+            [placeCard2 addModules:v67];
           }
 
           v63 = [v61 countByEnumeratingWithState:&v94 objects:v112 count:16];
@@ -17929,21 +17929,21 @@ LABEL_53:
       }
 
       v111 = v92;
-      v71 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v111 count:1];
-      [a1 captureUserAction:a3 target:a4 value:v91 moduleType:0 moduleMetadata:0 richProviderId:0 additionalStates:v71 completionQueue:0 completionBlock:0];
-      v33 = v81;
-      v46 = v82;
-      v37 = v86;
+      firstObject = [MEMORY[0x1E695DEC8] arrayWithObjects:&v111 count:1];
+      [self captureUserAction:action target:target value:valueCopy moduleType:0 moduleMetadata:0 richProviderId:0 additionalStates:firstObject completionQueue:0 completionBlock:0];
+      v33 = followingCopy;
+      v46 = sectionIndexCopy;
+      v37 = collectionIdCopy;
     }
 
-    v42 = v84;
-    v39 = v85;
-    v55 = v83;
-    v56 = v90;
+    v42 = savedCopy;
+    v39 = categoryCopy;
+    v55 = providerIdCopy;
+    v56 = modulesCopy;
     goto LABEL_53;
   }
 
-  [a1 captureUserAction:a3 target:a4 value:v91 moduleType:0 moduleMetadata:0 richProviderId:0 additionalStates:0 completionQueue:0 completionBlock:0];
+  [self captureUserAction:action target:target value:valueCopy moduleType:0 moduleMetadata:0 richProviderId:0 additionalStates:0 completionQueue:0 completionBlock:0];
 LABEL_54:
 
   v75 = *MEMORY[0x1E69E9840];
@@ -17974,63 +17974,63 @@ void __136__GEOAPPortal_UserAction__capturePlaceCardUserAction_target_value_mapI
   [v1 setPlaceCardState:v2];
 }
 
-+ (void)capturePlaceCardUserAction:(int)a3 target:(int)a4 value:(id)a5 mapItem:(id)a6 timestamp:(double)a7 resultIndex:(int)a8 targetID:(unint64_t)a9 providerID:(id)a10 animationID:(unint64_t)a11 actionURL:(id)a12 photoID:(id)a13 placeCardType:(int)a14 localizedMapItemCategory:(id)a15 availableActions:(id)a16 unactionableUIElements:(id)a17 modules:(id)a18 commingledRichProviderIds:(id)a19 actionRichProviderId:(id)a20 classification:(id)a21
++ (void)capturePlaceCardUserAction:(int)action target:(int)target value:(id)value mapItem:(id)item timestamp:(double)timestamp resultIndex:(int)index targetID:(unint64_t)d providerID:(id)self0 animationID:(unint64_t)self1 actionURL:(id)self2 photoID:(id)self3 placeCardType:(int)self4 localizedMapItemCategory:(id)self5 availableActions:(id)self6 unactionableUIElements:(id)self7 modules:(id)self8 commingledRichProviderIds:(id)self9 actionRichProviderId:(id)id classification:(id)classification
 {
   v112 = *MEMORY[0x1E69E9840];
-  v81 = a5;
-  v22 = a10;
-  v23 = a12;
-  v24 = a13;
-  v82 = a15;
-  v25 = a16;
-  v26 = a17;
-  v86 = a18;
-  v27 = a19;
-  v28 = a20;
-  v75 = a21;
-  v29 = [MEMORY[0x1E69A2350] actionDetailsWithMapItem:a6 timestamp:a8 resultIndex:a9 targetID:a7];
+  valueCopy = value;
+  iDCopy = iD;
+  lCopy = l;
+  photoIDCopy = photoID;
+  categoryCopy = category;
+  actionsCopy = actions;
+  elementsCopy = elements;
+  modulesCopy = modules;
+  idsCopy = ids;
+  idCopy = id;
+  classificationCopy = classification;
+  v29 = [MEMORY[0x1E69A2350] actionDetailsWithMapItem:item timestamp:index resultIndex:d targetID:timestamp];
   v30 = v29;
-  v85 = v22;
-  if (v22)
+  v85 = iDCopy;
+  if (iDCopy)
   {
-    [v29 setRichProviderId:v22];
+    [v29 setRichProviderId:iDCopy];
   }
 
-  if (a11)
+  if (animationID)
   {
-    [v30 setAnimationID:a11];
+    [v30 setAnimationID:animationID];
   }
 
-  if (v23)
+  if (lCopy)
   {
-    [v30 setActionUrl:v23];
+    [v30 setActionUrl:lCopy];
   }
 
-  v80 = v23;
-  if (v24)
+  v80 = lCopy;
+  if (photoIDCopy)
   {
-    [v30 setPhotoId:v24];
+    [v30 setPhotoId:photoIDCopy];
   }
 
-  v76 = v28;
-  v78 = v24;
+  v76 = idCopy;
+  v78 = photoIDCopy;
   v31 = objc_alloc_init(MEMORY[0x1E69A1FF8]);
   [v31 setStateType:702];
   v32 = objc_alloc_init(MEMORY[0x1E69A2108]);
   [v31 setPlaceCard:v32];
 
-  v33 = [v31 placeCard];
+  placeCard = [v31 placeCard];
   v73 = v30;
-  [v33 setPlaceActionDetails:v30];
+  [placeCard setPlaceActionDetails:v30];
 
-  v34 = [v31 placeCard];
-  [v34 setPlacecardType:a14];
+  placeCard2 = [v31 placeCard];
+  [placeCard2 setPlacecardType:type];
 
   v104 = 0u;
   v105 = 0u;
   v102 = 0u;
   v103 = 0u;
-  v35 = v25;
+  v35 = actionsCopy;
   v36 = [v35 countByEnumeratingWithState:&v102 objects:v111 count:16];
   if (v36)
   {
@@ -18046,8 +18046,8 @@ void __136__GEOAPPortal_UserAction__capturePlaceCardUserAction_target_value_mapI
         }
 
         v40 = *(*(&v102 + 1) + 8 * i);
-        v41 = [v31 placeCard];
-        [v41 addPossibleAction:{objc_msgSend(v40, "intValue")}];
+        placeCard3 = [v31 placeCard];
+        [placeCard3 addPossibleAction:{objc_msgSend(v40, "intValue")}];
       }
 
       v37 = [v35 countByEnumeratingWithState:&v102 objects:v111 count:16];
@@ -18060,7 +18060,7 @@ void __136__GEOAPPortal_UserAction__capturePlaceCardUserAction_target_value_mapI
   v101 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v42 = v26;
+  v42 = elementsCopy;
   v43 = [v42 countByEnumeratingWithState:&v98 objects:v110 count:16];
   if (v43)
   {
@@ -18076,8 +18076,8 @@ void __136__GEOAPPortal_UserAction__capturePlaceCardUserAction_target_value_mapI
         }
 
         v47 = *(*(&v98 + 1) + 8 * j);
-        v48 = [v31 placeCard];
-        [v48 addUnactionableUiElement:{objc_msgSend(v47, "intValue")}];
+        placeCard4 = [v31 placeCard];
+        [placeCard4 addUnactionableUiElement:{objc_msgSend(v47, "intValue")}];
       }
 
       v44 = [v42 countByEnumeratingWithState:&v98 objects:v110 count:16];
@@ -18090,7 +18090,7 @@ void __136__GEOAPPortal_UserAction__capturePlaceCardUserAction_target_value_mapI
   v97 = 0u;
   v94 = 0u;
   v95 = 0u;
-  v49 = v27;
+  v49 = idsCopy;
   v50 = [v49 countByEnumeratingWithState:&v94 objects:v109 count:16];
   if (v50)
   {
@@ -18106,8 +18106,8 @@ void __136__GEOAPPortal_UserAction__capturePlaceCardUserAction_target_value_mapI
         }
 
         v54 = *(*(&v94 + 1) + 8 * k);
-        v55 = [v31 placeCard];
-        [v55 addCommingledRichProviderIds:v54];
+        placeCard5 = [v31 placeCard];
+        [placeCard5 addCommingledRichProviderIds:v54];
       }
 
       v51 = [v49 countByEnumeratingWithState:&v94 objects:v109 count:16];
@@ -18116,9 +18116,9 @@ void __136__GEOAPPortal_UserAction__capturePlaceCardUserAction_target_value_mapI
     while (v51);
   }
 
-  v56 = [v31 placeCard];
-  v57 = v82;
-  [v56 setPlacecardCategory:v82];
+  placeCard6 = [v31 placeCard];
+  v57 = categoryCopy;
+  [placeCard6 setPlacecardCategory:categoryCopy];
 
   v58 = +[GEOAPSharedStateData sharedData];
   v91[0] = MEMORY[0x1E69E9820];
@@ -18130,14 +18130,14 @@ void __136__GEOAPPortal_UserAction__capturePlaceCardUserAction_target_value_mapI
   v60 = v31;
   v93 = v60;
   [v59 performPlaceCardStateUpdate:v91];
-  if (a3 == 21)
+  if (action == 21)
   {
     v61 = +[GEOAPSharedStateData sharedData];
     v88[0] = MEMORY[0x1E69E9820];
     v88[1] = 3221225472;
     v88[2] = __296__GEOAPPortal_UserAction__capturePlaceCardUserAction_target_value_mapItem_timestamp_resultIndex_targetID_providerID_animationID_actionURL_photoID_placeCardType_localizedMapItemCategory_availableActions_unactionableUIElements_modules_commingledRichProviderIds_actionRichProviderId_classification___block_invoke_2;
     v88[3] = &unk_1E7959400;
-    v89 = v86;
+    v89 = modulesCopy;
     v62 = v60;
     v90 = v62;
     [v61 performPlaceCardStateUpdate:v88];
@@ -18145,44 +18145,44 @@ void __136__GEOAPPortal_UserAction__capturePlaceCardUserAction_target_value_mapI
     v108 = v62;
     v63 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v108 count:1];
     v64 = v76;
-    v65 = v81;
-    [GEOAPPortal captureUserAction:21 target:a4 value:v81 moduleType:0 moduleMetadata:0 classification:v75 richProviderId:v76 additionalStates:v63 completionQueue:0 completionBlock:0];
+    v65 = valueCopy;
+    [GEOAPPortal captureUserAction:21 target:target value:valueCopy moduleType:0 moduleMetadata:0 classification:classificationCopy richProviderId:v76 additionalStates:v63 completionQueue:0 completionBlock:0];
 
-    v66 = v75;
-    v67 = v89;
+    v66 = classificationCopy;
+    firstObject = v89;
   }
 
-  else if ([v86 count] == 1)
+  else if ([modulesCopy count] == 1)
   {
-    v67 = [v86 firstObject];
-    v71 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v67, "type")}];
-    [v67 metadata];
+    firstObject = [modulesCopy firstObject];
+    v71 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(firstObject, "type")}];
+    [firstObject metadata];
     v68 = v72 = v59;
     v107 = v60;
     v69 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v107 count:1];
     v64 = v76;
-    v65 = v81;
-    v66 = v75;
-    [GEOAPPortal captureUserAction:a3 target:a4 value:v81 moduleType:v71 moduleMetadata:v68 classification:v75 richProviderId:v76 additionalStates:v69 completionQueue:0 completionBlock:0];
+    v65 = valueCopy;
+    v66 = classificationCopy;
+    [GEOAPPortal captureUserAction:action target:target value:valueCopy moduleType:v71 moduleMetadata:v68 classification:classificationCopy richProviderId:v76 additionalStates:v69 completionQueue:0 completionBlock:0];
 
     v59 = v72;
-    v57 = v82;
+    v57 = categoryCopy;
   }
 
   else
   {
-    v65 = v81;
-    if ([v86 count] >= 2 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
+    v65 = valueCopy;
+    if ([modulesCopy count] >= 2 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
       *buf = 0;
       _os_log_fault_impl(&dword_1AB634000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "Assertion failed: modules.count <= 1", buf, 2u);
     }
 
     v106 = v60;
-    v67 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v106 count:1];
+    firstObject = [MEMORY[0x1E695DEC8] arrayWithObjects:&v106 count:1];
     v64 = v76;
-    v66 = v75;
-    [GEOAPPortal captureUserAction:a3 target:a4 value:v81 moduleType:0 moduleMetadata:0 classification:v75 richProviderId:v76 additionalStates:v67 completionQueue:0 completionBlock:0];
+    v66 = classificationCopy;
+    [GEOAPPortal captureUserAction:action target:target value:valueCopy moduleType:0 moduleMetadata:0 classification:classificationCopy richProviderId:v76 additionalStates:firstObject completionQueue:0 completionBlock:0];
   }
 
   v70 = *MEMORY[0x1E69E9840];
@@ -18362,20 +18362,20 @@ uint64_t __204__GEOAPPortal_UserActionCodeGen__captureVisualIntelligenceShortUse
   return [GEOAPPortal reportLogMsgEvent:v6 uploadBatchId:v3 completion:v4 completionQueue:v5];
 }
 
-+ (void)captureOfflineShortUserActionTargetPairWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12
++ (void)captureOfflineShortUserActionTargetPairWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2
 {
   v188 = *MEMORY[0x1E69E9840];
-  v176 = a5;
-  v175 = a6;
-  v177 = a7;
-  v178 = a8;
-  v174 = a9;
-  v15 = a10;
-  v157 = a11;
-  v156 = a12;
+  valueCopy = value;
+  typeCopy = type;
+  metadataCopy = metadata;
+  classificationCopy = classification;
+  idCopy = id;
+  statesCopy = states;
+  queueCopy = queue;
+  blockCopy = block;
   v16 = +[GEOAPStateFactory sharedFactory];
-  v158 = v15;
-  if (![v15 count])
+  v158 = statesCopy;
+  if (![statesCopy count])
   {
     v25 = 0;
 LABEL_13:
@@ -18383,12 +18383,12 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v15, "count")}];
+  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
   v183 = 0u;
   v184 = 0u;
   v185 = 0u;
   v186 = 0u;
-  v18 = v15;
+  v18 = statesCopy;
   v19 = [v18 countByEnumeratingWithState:&v183 objects:v187 count:16];
   if (v19)
   {
@@ -18880,44 +18880,44 @@ LABEL_107:
   v130 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v129 setUserActionEvent:v130];
 
-  v131 = [v129 userActionEvent];
-  [v131 setUserActionEventAction:a3];
+  userActionEvent = [v129 userActionEvent];
+  [userActionEvent setUserActionEventAction:action];
 
-  v132 = [v129 userActionEvent];
-  [v132 setUserActionEventTarget:a4];
+  userActionEvent2 = [v129 userActionEvent];
+  [userActionEvent2 setUserActionEventTarget:target];
 
-  v133 = [v129 userActionEvent];
-  [v133 setUserActionEventValue:v176];
+  userActionEvent3 = [v129 userActionEvent];
+  [userActionEvent3 setUserActionEventValue:valueCopy];
 
-  v134 = [v129 userActionEvent];
-  [v134 setActionRichProviderId:v174];
+  userActionEvent4 = [v129 userActionEvent];
+  [userActionEvent4 setActionRichProviderId:idCopy];
 
-  if (v175 || v177 || v178)
+  if (typeCopy || metadataCopy || classificationCopy)
   {
     v135 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v136 = [v129 userActionEvent];
-    [v136 setModuleInfo:v135];
+    userActionEvent5 = [v129 userActionEvent];
+    [userActionEvent5 setModuleInfo:v135];
 
-    if (v175)
+    if (typeCopy)
     {
-      v137 = [v175 intValue];
-      v138 = [v129 userActionEvent];
-      v139 = [v138 moduleInfo];
-      [v139 setType:v137];
+      intValue = [typeCopy intValue];
+      userActionEvent6 = [v129 userActionEvent];
+      moduleInfo = [userActionEvent6 moduleInfo];
+      [moduleInfo setType:intValue];
     }
 
-    if (v177)
+    if (metadataCopy)
     {
-      v140 = [v129 userActionEvent];
-      v141 = [v140 moduleInfo];
-      [v141 setModuleMetadata:v177];
+      userActionEvent7 = [v129 userActionEvent];
+      moduleInfo2 = [userActionEvent7 moduleInfo];
+      [moduleInfo2 setModuleMetadata:metadataCopy];
     }
 
-    if (v178)
+    if (classificationCopy)
     {
-      v142 = [v129 userActionEvent];
-      v143 = [v142 moduleInfo];
-      [v143 setClassification:v178];
+      userActionEvent8 = [v129 userActionEvent];
+      moduleInfo3 = [userActionEvent8 moduleInfo];
+      [moduleInfo3 setClassification:classificationCopy];
     }
   }
 
@@ -19031,9 +19031,9 @@ LABEL_107:
   v179[3] = &unk_1E7953B38;
   v148 = v129;
   v180 = v148;
-  v149 = v156;
+  v149 = blockCopy;
   v182 = v149;
-  v150 = v157;
+  v150 = queueCopy;
   v181 = v150;
   [v147 sessionStateForType:6 callback:v179];
 
@@ -19056,34 +19056,34 @@ uint64_t __202__GEOAPPortal_UserActionCodeGen__captureOfflineShortUserActionTarg
   return [GEOAPPortal reportLogMsgEvent:v6 uploadBatchId:v3 completion:v4 completionQueue:v5];
 }
 
-+ (void)captureNearbyTransitShortUserActionTargetPairWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12
++ (void)captureNearbyTransitShortUserActionTargetPairWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2
 {
   v167 = *MEMORY[0x1E69E9840];
-  v154 = a5;
-  v156 = a6;
-  v155 = a7;
-  v157 = a8;
-  v153 = a9;
-  v15 = a10;
-  v138 = a11;
-  v137 = a12;
+  valueCopy = value;
+  typeCopy = type;
+  metadataCopy = metadata;
+  classificationCopy = classification;
+  idCopy = id;
+  statesCopy = states;
+  queueCopy = queue;
+  blockCopy = block;
   v16 = +[GEOAPStateFactory sharedFactory];
-  v139 = v15;
-  if (![v15 count])
+  v139 = statesCopy;
+  if (![statesCopy count])
   {
     v25 = 0;
 LABEL_13:
     v30 = 1;
-    v29 = v156;
+    v29 = typeCopy;
     goto LABEL_14;
   }
 
-  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v15, "count")}];
+  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
   v162 = 0u;
   v163 = 0u;
   v164 = 0u;
   v165 = 0u;
-  v18 = v15;
+  v18 = statesCopy;
   v19 = [v18 countByEnumeratingWithState:&v162 objects:v166 count:16];
   if (v19)
   {
@@ -19119,7 +19119,7 @@ LABEL_13:
   v27 = [MEMORY[0x1E696AD98] numberWithInt:v26];
   v28 = [v25 objectForKeyedSubscript:v27];
 
-  v29 = v156;
+  v29 = typeCopy;
   if (v28)
   {
     v152 = v28;
@@ -19505,44 +19505,44 @@ LABEL_92:
   v116 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v115 setUserActionEvent:v116];
 
-  v117 = [v115 userActionEvent];
-  [v117 setUserActionEventAction:a3];
+  userActionEvent = [v115 userActionEvent];
+  [userActionEvent setUserActionEventAction:action];
 
-  v118 = [v115 userActionEvent];
-  [v118 setUserActionEventTarget:a4];
+  userActionEvent2 = [v115 userActionEvent];
+  [userActionEvent2 setUserActionEventTarget:target];
 
-  v119 = [v115 userActionEvent];
-  [v119 setUserActionEventValue:v154];
+  userActionEvent3 = [v115 userActionEvent];
+  [userActionEvent3 setUserActionEventValue:valueCopy];
 
-  v120 = [v115 userActionEvent];
-  [v120 setActionRichProviderId:v153];
+  userActionEvent4 = [v115 userActionEvent];
+  [userActionEvent4 setActionRichProviderId:idCopy];
 
-  if (v29 || v155 || v157)
+  if (v29 || metadataCopy || classificationCopy)
   {
     v121 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v122 = [v115 userActionEvent];
-    [v122 setModuleInfo:v121];
+    userActionEvent5 = [v115 userActionEvent];
+    [userActionEvent5 setModuleInfo:v121];
 
-    if (v156)
+    if (typeCopy)
     {
-      v123 = [v156 intValue];
-      v124 = [v115 userActionEvent];
-      v125 = [v124 moduleInfo];
-      [v125 setType:v123];
+      intValue = [typeCopy intValue];
+      userActionEvent6 = [v115 userActionEvent];
+      moduleInfo = [userActionEvent6 moduleInfo];
+      [moduleInfo setType:intValue];
     }
 
-    if (v155)
+    if (metadataCopy)
     {
-      v126 = [v115 userActionEvent];
-      v127 = [v126 moduleInfo];
-      [v127 setModuleMetadata:v155];
+      userActionEvent7 = [v115 userActionEvent];
+      moduleInfo2 = [userActionEvent7 moduleInfo];
+      [moduleInfo2 setModuleMetadata:metadataCopy];
     }
 
-    if (v157)
+    if (classificationCopy)
     {
-      v128 = [v115 userActionEvent];
-      v129 = [v128 moduleInfo];
-      [v129 setClassification:v157];
+      userActionEvent8 = [v115 userActionEvent];
+      moduleInfo3 = [userActionEvent8 moduleInfo];
+      [moduleInfo3 setClassification:classificationCopy];
     }
   }
 
@@ -19638,9 +19638,9 @@ LABEL_92:
   v158[3] = &unk_1E7953B38;
   v131 = v115;
   v159 = v131;
-  v132 = v137;
+  v132 = blockCopy;
   v161 = v132;
-  v133 = v138;
+  v133 = queueCopy;
   v160 = v133;
   [v130 sessionStateForType:6 callback:v158];
 
@@ -19663,28 +19663,28 @@ uint64_t __208__GEOAPPortal_UserActionCodeGen__captureNearbyTransitShortUserActi
   return [GEOAPPortal reportLogMsgEvent:v6 uploadBatchId:v3 completion:v4 completionQueue:v5];
 }
 
-+ (void)captureOfflineSessionlessUserActionTargetPairWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12
++ (void)captureOfflineSessionlessUserActionTargetPairWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2
 {
   v112 = *MEMORY[0x1E69E9840];
-  v96 = a5;
-  v15 = a6;
-  v101 = a7;
-  v102 = a8;
-  v95 = a9;
-  v16 = a10;
-  v91 = a11;
-  v90 = a12;
+  valueCopy = value;
+  typeCopy = type;
+  metadataCopy = metadata;
+  classificationCopy = classification;
+  idCopy = id;
+  statesCopy = states;
+  queueCopy = queue;
+  blockCopy = block;
   v17 = +[GEOAPStateFactory sharedFactory];
-  v97 = v15;
-  v92 = v16;
-  if ([v16 count])
+  v97 = typeCopy;
+  v92 = statesCopy;
+  if ([statesCopy count])
   {
-    v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v16, "count")}];
+    v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v107 = 0u;
     v108 = 0u;
     v109 = 0u;
     v110 = 0u;
-    v19 = v16;
+    v19 = statesCopy;
     v20 = [v19 countByEnumeratingWithState:&v107 objects:v111 count:16];
     if (v20)
     {
@@ -19720,7 +19720,7 @@ uint64_t __208__GEOAPPortal_UserActionCodeGen__captureNearbyTransitShortUserActi
       if (v29)
       {
         v94 = v29;
-        v15 = v97;
+        typeCopy = v97;
         goto LABEL_17;
       }
     }
@@ -19730,7 +19730,7 @@ uint64_t __208__GEOAPPortal_UserActionCodeGen__captureNearbyTransitShortUserActi
       LOBYTE(v29) = 1;
     }
 
-    v15 = v97;
+    typeCopy = v97;
   }
 
   else
@@ -19914,44 +19914,44 @@ LABEL_43:
   v69 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v68 setUserActionEvent:v69];
 
-  v70 = [v68 userActionEvent];
-  [v70 setUserActionEventAction:a3];
+  userActionEvent = [v68 userActionEvent];
+  [userActionEvent setUserActionEventAction:action];
 
-  v71 = [v68 userActionEvent];
-  [v71 setUserActionEventTarget:a4];
+  userActionEvent2 = [v68 userActionEvent];
+  [userActionEvent2 setUserActionEventTarget:target];
 
-  v72 = [v68 userActionEvent];
-  [v72 setUserActionEventValue:v96];
+  userActionEvent3 = [v68 userActionEvent];
+  [userActionEvent3 setUserActionEventValue:valueCopy];
 
-  v73 = [v68 userActionEvent];
-  [v73 setActionRichProviderId:v95];
+  userActionEvent4 = [v68 userActionEvent];
+  [userActionEvent4 setActionRichProviderId:idCopy];
 
-  if (v15 || v101 || v102)
+  if (typeCopy || metadataCopy || classificationCopy)
   {
     v74 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v75 = [v68 userActionEvent];
-    [v75 setModuleInfo:v74];
+    userActionEvent5 = [v68 userActionEvent];
+    [userActionEvent5 setModuleInfo:v74];
 
     if (v97)
     {
-      v76 = [v97 intValue];
-      v77 = [v68 userActionEvent];
-      v78 = [v77 moduleInfo];
-      [v78 setType:v76];
+      intValue = [v97 intValue];
+      userActionEvent6 = [v68 userActionEvent];
+      moduleInfo = [userActionEvent6 moduleInfo];
+      [moduleInfo setType:intValue];
     }
 
-    if (v101)
+    if (metadataCopy)
     {
-      v79 = [v68 userActionEvent];
-      v80 = [v79 moduleInfo];
-      [v80 setModuleMetadata:v101];
+      userActionEvent7 = [v68 userActionEvent];
+      moduleInfo2 = [userActionEvent7 moduleInfo];
+      [moduleInfo2 setModuleMetadata:metadataCopy];
     }
 
-    if (v102)
+    if (classificationCopy)
     {
-      v81 = [v68 userActionEvent];
-      v82 = [v81 moduleInfo];
-      [v82 setClassification:v102];
+      userActionEvent8 = [v68 userActionEvent];
+      moduleInfo3 = [userActionEvent8 moduleInfo];
+      [moduleInfo3 setClassification:classificationCopy];
     }
   }
 
@@ -20005,11 +20005,11 @@ LABEL_43:
   v103[1] = 3221225472;
   v103[2] = __208__GEOAPPortal_UserActionCodeGen__captureOfflineSessionlessUserActionTargetPairWithAction_target_value_moduleType_moduleMetadata_classification_richProviderId_additionalStates_completionQueue_completionBlock___block_invoke;
   v103[3] = &unk_1E7953B38;
-  v105 = v91;
-  v106 = v90;
+  v105 = queueCopy;
+  v106 = blockCopy;
   v104 = v68;
-  v84 = v91;
-  v85 = v90;
+  v84 = queueCopy;
+  v85 = blockCopy;
   v86 = v68;
   [v83 sessionStateForType:8 callback:v103];
 
@@ -20064,28 +20064,28 @@ uint64_t __183__GEOAPPortal_UserActionCodeGen__captureStandardShortWithAction_ta
   return [GEOAPPortal reportLogMsgEvent:v6 uploadBatchId:v3 completion:v4 completionQueue:v5];
 }
 
-+ (void)captureRapSessionlessUserActionTargetPairWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12
++ (void)captureRapSessionlessUserActionTargetPairWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2
 {
   v112 = *MEMORY[0x1E69E9840];
-  v96 = a5;
-  v15 = a6;
-  v101 = a7;
-  v102 = a8;
-  v95 = a9;
-  v16 = a10;
-  v91 = a11;
-  v90 = a12;
+  valueCopy = value;
+  typeCopy = type;
+  metadataCopy = metadata;
+  classificationCopy = classification;
+  idCopy = id;
+  statesCopy = states;
+  queueCopy = queue;
+  blockCopy = block;
   v17 = +[GEOAPStateFactory sharedFactory];
-  v97 = v15;
-  v92 = v16;
-  if ([v16 count])
+  v97 = typeCopy;
+  v92 = statesCopy;
+  if ([statesCopy count])
   {
-    v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v16, "count")}];
+    v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v107 = 0u;
     v108 = 0u;
     v109 = 0u;
     v110 = 0u;
-    v19 = v16;
+    v19 = statesCopy;
     v20 = [v19 countByEnumeratingWithState:&v107 objects:v111 count:16];
     if (v20)
     {
@@ -20121,7 +20121,7 @@ uint64_t __183__GEOAPPortal_UserActionCodeGen__captureStandardShortWithAction_ta
       if (v29)
       {
         v94 = v29;
-        v15 = v97;
+        typeCopy = v97;
         goto LABEL_17;
       }
     }
@@ -20131,7 +20131,7 @@ uint64_t __183__GEOAPPortal_UserActionCodeGen__captureStandardShortWithAction_ta
       LOBYTE(v29) = 1;
     }
 
-    v15 = v97;
+    typeCopy = v97;
   }
 
   else
@@ -20315,44 +20315,44 @@ LABEL_43:
   v69 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v68 setUserActionEvent:v69];
 
-  v70 = [v68 userActionEvent];
-  [v70 setUserActionEventAction:a3];
+  userActionEvent = [v68 userActionEvent];
+  [userActionEvent setUserActionEventAction:action];
 
-  v71 = [v68 userActionEvent];
-  [v71 setUserActionEventTarget:a4];
+  userActionEvent2 = [v68 userActionEvent];
+  [userActionEvent2 setUserActionEventTarget:target];
 
-  v72 = [v68 userActionEvent];
-  [v72 setUserActionEventValue:v96];
+  userActionEvent3 = [v68 userActionEvent];
+  [userActionEvent3 setUserActionEventValue:valueCopy];
 
-  v73 = [v68 userActionEvent];
-  [v73 setActionRichProviderId:v95];
+  userActionEvent4 = [v68 userActionEvent];
+  [userActionEvent4 setActionRichProviderId:idCopy];
 
-  if (v15 || v101 || v102)
+  if (typeCopy || metadataCopy || classificationCopy)
   {
     v74 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v75 = [v68 userActionEvent];
-    [v75 setModuleInfo:v74];
+    userActionEvent5 = [v68 userActionEvent];
+    [userActionEvent5 setModuleInfo:v74];
 
     if (v97)
     {
-      v76 = [v97 intValue];
-      v77 = [v68 userActionEvent];
-      v78 = [v77 moduleInfo];
-      [v78 setType:v76];
+      intValue = [v97 intValue];
+      userActionEvent6 = [v68 userActionEvent];
+      moduleInfo = [userActionEvent6 moduleInfo];
+      [moduleInfo setType:intValue];
     }
 
-    if (v101)
+    if (metadataCopy)
     {
-      v79 = [v68 userActionEvent];
-      v80 = [v79 moduleInfo];
-      [v80 setModuleMetadata:v101];
+      userActionEvent7 = [v68 userActionEvent];
+      moduleInfo2 = [userActionEvent7 moduleInfo];
+      [moduleInfo2 setModuleMetadata:metadataCopy];
     }
 
-    if (v102)
+    if (classificationCopy)
     {
-      v81 = [v68 userActionEvent];
-      v82 = [v81 moduleInfo];
-      [v82 setClassification:v102];
+      userActionEvent8 = [v68 userActionEvent];
+      moduleInfo3 = [userActionEvent8 moduleInfo];
+      [moduleInfo3 setClassification:classificationCopy];
     }
   }
 
@@ -20406,11 +20406,11 @@ LABEL_43:
   v103[1] = 3221225472;
   v103[2] = __204__GEOAPPortal_UserActionCodeGen__captureRapSessionlessUserActionTargetPairWithAction_target_value_moduleType_moduleMetadata_classification_richProviderId_additionalStates_completionQueue_completionBlock___block_invoke;
   v103[3] = &unk_1E7953B38;
-  v105 = v91;
-  v106 = v90;
+  v105 = queueCopy;
+  v106 = blockCopy;
   v104 = v68;
-  v84 = v91;
-  v85 = v90;
+  v84 = queueCopy;
+  v85 = blockCopy;
   v86 = v68;
   [v83 sessionStateForType:7 callback:v103];
 
@@ -20433,28 +20433,28 @@ uint64_t __204__GEOAPPortal_UserActionCodeGen__captureRapSessionlessUserActionTa
   return [GEOAPPortal reportLogMsgEvent:v6 uploadBatchId:v3 completion:v4 completionQueue:v5];
 }
 
-+ (void)captureTransitShortUserActionTargetPairWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12
++ (void)captureTransitShortUserActionTargetPairWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2
 {
   v197 = *MEMORY[0x1E69E9840];
-  v185 = a5;
-  v15 = a6;
-  v186 = a7;
-  v187 = a8;
-  v184 = a9;
-  v16 = a10;
-  v165 = a11;
-  v164 = a12;
+  valueCopy = value;
+  typeCopy = type;
+  metadataCopy = metadata;
+  classificationCopy = classification;
+  idCopy = id;
+  statesCopy = states;
+  queueCopy = queue;
+  blockCopy = block;
   v17 = +[GEOAPStateFactory sharedFactory];
-  v166 = v16;
-  v167 = v15;
-  if ([v16 count])
+  v166 = statesCopy;
+  v167 = typeCopy;
+  if ([statesCopy count])
   {
-    v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v16, "count")}];
+    v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v192 = 0u;
     v193 = 0u;
     v194 = 0u;
     v195 = 0u;
-    v19 = v16;
+    v19 = statesCopy;
     v20 = [v19 countByEnumeratingWithState:&v192 objects:v196 count:16];
     if (v20)
     {
@@ -20491,7 +20491,7 @@ uint64_t __204__GEOAPPortal_UserActionCodeGen__captureRapSessionlessUserActionTa
       {
         v183 = v29;
 
-        v15 = v167;
+        typeCopy = v167;
         goto LABEL_18;
       }
 
@@ -20503,7 +20503,7 @@ uint64_t __204__GEOAPPortal_UserActionCodeGen__captureRapSessionlessUserActionTa
       v30 = 1;
     }
 
-    v15 = v167;
+    typeCopy = v167;
   }
 
   else
@@ -20983,44 +20983,44 @@ LABEL_114:
   v138 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v137 setUserActionEvent:v138];
 
-  v139 = [v137 userActionEvent];
-  [v139 setUserActionEventAction:a3];
+  userActionEvent = [v137 userActionEvent];
+  [userActionEvent setUserActionEventAction:action];
 
-  v140 = [v137 userActionEvent];
-  [v140 setUserActionEventTarget:a4];
+  userActionEvent2 = [v137 userActionEvent];
+  [userActionEvent2 setUserActionEventTarget:target];
 
-  v141 = [v137 userActionEvent];
-  [v141 setUserActionEventValue:v185];
+  userActionEvent3 = [v137 userActionEvent];
+  [userActionEvent3 setUserActionEventValue:valueCopy];
 
-  v142 = [v137 userActionEvent];
-  [v142 setActionRichProviderId:v184];
+  userActionEvent4 = [v137 userActionEvent];
+  [userActionEvent4 setActionRichProviderId:idCopy];
 
-  if (v15 || v186 || v187)
+  if (typeCopy || metadataCopy || classificationCopy)
   {
     v143 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v144 = [v137 userActionEvent];
-    [v144 setModuleInfo:v143];
+    userActionEvent5 = [v137 userActionEvent];
+    [userActionEvent5 setModuleInfo:v143];
 
-    if (v15)
+    if (typeCopy)
     {
-      v145 = [v15 intValue];
-      v146 = [v137 userActionEvent];
-      v147 = [v146 moduleInfo];
-      [v147 setType:v145];
+      intValue = [typeCopy intValue];
+      userActionEvent6 = [v137 userActionEvent];
+      moduleInfo = [userActionEvent6 moduleInfo];
+      [moduleInfo setType:intValue];
     }
 
-    if (v186)
+    if (metadataCopy)
     {
-      v148 = [v137 userActionEvent];
-      v149 = [v148 moduleInfo];
-      [v149 setModuleMetadata:v186];
+      userActionEvent7 = [v137 userActionEvent];
+      moduleInfo2 = [userActionEvent7 moduleInfo];
+      [moduleInfo2 setModuleMetadata:metadataCopy];
     }
 
-    if (v187)
+    if (classificationCopy)
     {
-      v150 = [v137 userActionEvent];
-      v151 = [v150 moduleInfo];
-      [v151 setClassification:v187];
+      userActionEvent8 = [v137 userActionEvent];
+      moduleInfo3 = [userActionEvent8 moduleInfo];
+      [moduleInfo3 setClassification:classificationCopy];
     }
   }
 
@@ -21140,9 +21140,9 @@ LABEL_114:
   v188[3] = &unk_1E7953B38;
   v156 = v137;
   v189 = v156;
-  v157 = v164;
+  v157 = blockCopy;
   v191 = v157;
-  v158 = v165;
+  v158 = queueCopy;
   v190 = v158;
   [v155 sessionStateForType:6 callback:v188];
 
@@ -21181,20 +21181,20 @@ uint64_t __207__GEOAPPortal_UserActionCodeGen__capturePredExSessionlessUserActio
   return [GEOAPPortal reportLogMsgEvent:v6 uploadBatchId:v3 completion:v4 completionQueue:v5];
 }
 
-+ (void)capturePredExShortUserActionTargetPairWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12
++ (void)capturePredExShortUserActionTargetPairWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2
 {
   v182 = *MEMORY[0x1E69E9840];
-  v168 = a5;
-  v170 = a6;
-  v169 = a7;
-  v172 = a8;
-  v167 = a9;
-  v15 = a10;
-  v152 = a11;
-  v151 = a12;
+  valueCopy = value;
+  typeCopy = type;
+  metadataCopy = metadata;
+  classificationCopy = classification;
+  idCopy = id;
+  statesCopy = states;
+  queueCopy = queue;
+  blockCopy = block;
   v16 = +[GEOAPStateFactory sharedFactory];
-  v153 = v15;
-  if (![v15 count])
+  v153 = statesCopy;
+  if (![statesCopy count])
   {
     v25 = 0;
 LABEL_13:
@@ -21202,12 +21202,12 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v15, "count")}];
+  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
   v177 = 0u;
   v178 = 0u;
   v179 = 0u;
   v180 = 0u;
-  v18 = v15;
+  v18 = statesCopy;
   v19 = [v18 countByEnumeratingWithState:&v177 objects:v181 count:16];
   if (v19)
   {
@@ -21681,46 +21681,46 @@ LABEL_103:
   v127 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v126 setUserActionEvent:v127];
 
-  v128 = [v126 userActionEvent];
-  [v128 setUserActionEventAction:a3];
+  userActionEvent = [v126 userActionEvent];
+  [userActionEvent setUserActionEventAction:action];
 
-  v129 = [v126 userActionEvent];
-  [v129 setUserActionEventTarget:a4];
+  userActionEvent2 = [v126 userActionEvent];
+  [userActionEvent2 setUserActionEventTarget:target];
 
-  v130 = [v126 userActionEvent];
-  [v130 setUserActionEventValue:v168];
+  userActionEvent3 = [v126 userActionEvent];
+  [userActionEvent3 setUserActionEventValue:valueCopy];
 
-  v131 = [v126 userActionEvent];
-  [v131 setActionRichProviderId:v167];
+  userActionEvent4 = [v126 userActionEvent];
+  [userActionEvent4 setActionRichProviderId:idCopy];
 
   v132 = v61;
-  if (v170 || v169 || v172)
+  if (typeCopy || metadataCopy || classificationCopy)
   {
     v133 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v134 = [v126 userActionEvent];
-    [v134 setModuleInfo:v133];
+    userActionEvent5 = [v126 userActionEvent];
+    [userActionEvent5 setModuleInfo:v133];
 
-    if (v170)
+    if (typeCopy)
     {
-      v135 = [v170 intValue];
-      v136 = [v126 userActionEvent];
-      v137 = [v136 moduleInfo];
-      [v137 setType:v135];
+      intValue = [typeCopy intValue];
+      userActionEvent6 = [v126 userActionEvent];
+      moduleInfo = [userActionEvent6 moduleInfo];
+      [moduleInfo setType:intValue];
     }
 
-    if (v169)
+    if (metadataCopy)
     {
-      v138 = [v126 userActionEvent];
-      v139 = [v138 moduleInfo];
-      [v139 setModuleMetadata:v169];
+      userActionEvent7 = [v126 userActionEvent];
+      moduleInfo2 = [userActionEvent7 moduleInfo];
+      [moduleInfo2 setModuleMetadata:metadataCopy];
     }
 
     v61 = v132;
-    if (v172)
+    if (classificationCopy)
     {
-      v140 = [v126 userActionEvent];
-      v141 = [v140 moduleInfo];
-      [v141 setClassification:v172];
+      userActionEvent8 = [v126 userActionEvent];
+      moduleInfo3 = [userActionEvent8 moduleInfo];
+      [moduleInfo3 setClassification:classificationCopy];
 
       v61 = v132;
     }
@@ -21828,9 +21828,9 @@ LABEL_103:
   v173[3] = &unk_1E7953B38;
   v143 = v126;
   v174 = v143;
-  v144 = v151;
+  v144 = blockCopy;
   v176 = v144;
-  v145 = v152;
+  v145 = queueCopy;
   v175 = v145;
   [v142 sessionStateForType:6 callback:v173];
 
@@ -21853,28 +21853,28 @@ uint64_t __201__GEOAPPortal_UserActionCodeGen__capturePredExShortUserActionTarge
   return [GEOAPPortal reportLogMsgEvent:v6 uploadBatchId:v3 completion:v4 completionQueue:v5];
 }
 
-+ (void)captureUGCSessionlessUserActionTargetPairWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12
++ (void)captureUGCSessionlessUserActionTargetPairWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2
 {
   v111 = *MEMORY[0x1E69E9840];
-  v94 = a5;
-  v15 = a6;
-  v100 = a7;
-  v101 = a8;
-  v93 = a9;
-  v16 = a10;
-  v90 = a11;
-  v89 = a12;
+  valueCopy = value;
+  typeCopy = type;
+  metadataCopy = metadata;
+  classificationCopy = classification;
+  idCopy = id;
+  statesCopy = states;
+  queueCopy = queue;
+  blockCopy = block;
   v17 = +[GEOAPStateFactory sharedFactory];
-  v95 = v15;
-  v91 = v16;
-  if ([v16 count])
+  v95 = typeCopy;
+  v91 = statesCopy;
+  if ([statesCopy count])
   {
-    v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v16, "count")}];
+    v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v106 = 0u;
     v107 = 0u;
     v108 = 0u;
     v109 = 0u;
-    v19 = v16;
+    v19 = statesCopy;
     v20 = [v19 countByEnumeratingWithState:&v106 objects:v110 count:16];
     if (v20)
     {
@@ -21910,7 +21910,7 @@ uint64_t __201__GEOAPPortal_UserActionCodeGen__capturePredExShortUserActionTarge
       if (v29)
       {
         v92 = v29;
-        v15 = v95;
+        typeCopy = v95;
         goto LABEL_17;
       }
     }
@@ -21920,7 +21920,7 @@ uint64_t __201__GEOAPPortal_UserActionCodeGen__capturePredExShortUserActionTarge
       LOBYTE(v29) = 1;
     }
 
-    v15 = v95;
+    typeCopy = v95;
   }
 
   else
@@ -22102,44 +22102,44 @@ LABEL_42:
   v68 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v67 setUserActionEvent:v68];
 
-  v69 = [v67 userActionEvent];
-  [v69 setUserActionEventAction:a3];
+  userActionEvent = [v67 userActionEvent];
+  [userActionEvent setUserActionEventAction:action];
 
-  v70 = [v67 userActionEvent];
-  [v70 setUserActionEventTarget:a4];
+  userActionEvent2 = [v67 userActionEvent];
+  [userActionEvent2 setUserActionEventTarget:target];
 
-  v71 = [v67 userActionEvent];
-  [v71 setUserActionEventValue:v94];
+  userActionEvent3 = [v67 userActionEvent];
+  [userActionEvent3 setUserActionEventValue:valueCopy];
 
-  v72 = [v67 userActionEvent];
-  [v72 setActionRichProviderId:v93];
+  userActionEvent4 = [v67 userActionEvent];
+  [userActionEvent4 setActionRichProviderId:idCopy];
 
-  if (v15 || v100 || v101)
+  if (typeCopy || metadataCopy || classificationCopy)
   {
     v73 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v74 = [v67 userActionEvent];
-    [v74 setModuleInfo:v73];
+    userActionEvent5 = [v67 userActionEvent];
+    [userActionEvent5 setModuleInfo:v73];
 
     if (v95)
     {
-      v75 = [v95 intValue];
-      v76 = [v67 userActionEvent];
-      v77 = [v76 moduleInfo];
-      [v77 setType:v75];
+      intValue = [v95 intValue];
+      userActionEvent6 = [v67 userActionEvent];
+      moduleInfo = [userActionEvent6 moduleInfo];
+      [moduleInfo setType:intValue];
     }
 
-    if (v100)
+    if (metadataCopy)
     {
-      v78 = [v67 userActionEvent];
-      v79 = [v78 moduleInfo];
-      [v79 setModuleMetadata:v100];
+      userActionEvent7 = [v67 userActionEvent];
+      moduleInfo2 = [userActionEvent7 moduleInfo];
+      [moduleInfo2 setModuleMetadata:metadataCopy];
     }
 
-    if (v101)
+    if (classificationCopy)
     {
-      v80 = [v67 userActionEvent];
-      v81 = [v80 moduleInfo];
-      [v81 setClassification:v101];
+      userActionEvent8 = [v67 userActionEvent];
+      moduleInfo3 = [userActionEvent8 moduleInfo];
+      [moduleInfo3 setClassification:classificationCopy];
     }
   }
 
@@ -22193,11 +22193,11 @@ LABEL_42:
   v102[1] = 3221225472;
   v102[2] = __204__GEOAPPortal_UserActionCodeGen__captureUGCSessionlessUserActionTargetPairWithAction_target_value_moduleType_moduleMetadata_classification_richProviderId_additionalStates_completionQueue_completionBlock___block_invoke;
   v102[3] = &unk_1E7953B38;
-  v104 = v90;
-  v105 = v89;
+  v104 = queueCopy;
+  v105 = blockCopy;
   v103 = v67;
-  v83 = v90;
-  v84 = v89;
+  v83 = queueCopy;
+  v84 = blockCopy;
   v85 = v67;
   [v82 sessionStateForType:7 callback:v102];
 
@@ -22220,20 +22220,20 @@ uint64_t __204__GEOAPPortal_UserActionCodeGen__captureUGCSessionlessUserActionTa
   return [GEOAPPortal reportLogMsgEvent:v6 uploadBatchId:v3 completion:v4 completionQueue:v5];
 }
 
-+ (void)captureUGCShortUserActionTargetPairWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12
++ (void)captureUGCShortUserActionTargetPairWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2
 {
   v182 = *MEMORY[0x1E69E9840];
-  v168 = a5;
-  v171 = a6;
-  v169 = a7;
-  v172 = a8;
-  v167 = a9;
-  v15 = a10;
-  v149 = a11;
-  v148 = a12;
+  valueCopy = value;
+  typeCopy = type;
+  metadataCopy = metadata;
+  classificationCopy = classification;
+  idCopy = id;
+  statesCopy = states;
+  queueCopy = queue;
+  blockCopy = block;
   v16 = +[GEOAPStateFactory sharedFactory];
-  v150 = v15;
-  if (![v15 count])
+  v150 = statesCopy;
+  if (![statesCopy count])
   {
     v25 = 0;
 LABEL_13:
@@ -22241,12 +22241,12 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v15, "count")}];
+  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
   v177 = 0u;
   v178 = 0u;
   v179 = 0u;
   v180 = 0u;
-  v18 = v15;
+  v18 = statesCopy;
   v19 = [v18 countByEnumeratingWithState:&v177 objects:v181 count:16];
   if (v19)
   {
@@ -22715,48 +22715,48 @@ LABEL_102:
   v126 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v125 setUserActionEvent:v126];
 
-  v127 = [v125 userActionEvent];
-  v128 = a3;
-  [v127 setUserActionEventAction:a3];
+  userActionEvent = [v125 userActionEvent];
+  actionCopy3 = action;
+  [userActionEvent setUserActionEventAction:action];
 
-  v129 = [v125 userActionEvent];
-  [v129 setUserActionEventTarget:a4];
+  userActionEvent2 = [v125 userActionEvent];
+  [userActionEvent2 setUserActionEventTarget:target];
 
-  v130 = [v125 userActionEvent];
-  [v130 setUserActionEventValue:v168];
+  userActionEvent3 = [v125 userActionEvent];
+  [userActionEvent3 setUserActionEventValue:valueCopy];
 
-  v131 = [v125 userActionEvent];
-  [v131 setActionRichProviderId:v167];
+  userActionEvent4 = [v125 userActionEvent];
+  [userActionEvent4 setActionRichProviderId:idCopy];
 
-  if (v171 || v169 || v172)
+  if (typeCopy || metadataCopy || classificationCopy)
   {
     v132 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v133 = [v125 userActionEvent];
-    [v133 setModuleInfo:v132];
+    userActionEvent5 = [v125 userActionEvent];
+    [userActionEvent5 setModuleInfo:v132];
 
-    if (v171)
+    if (typeCopy)
     {
-      v134 = [v171 intValue];
-      v135 = [v125 userActionEvent];
-      v136 = [v135 moduleInfo];
-      [v136 setType:v134];
+      intValue = [typeCopy intValue];
+      userActionEvent6 = [v125 userActionEvent];
+      moduleInfo = [userActionEvent6 moduleInfo];
+      [moduleInfo setType:intValue];
     }
 
-    if (v169)
+    if (metadataCopy)
     {
-      v137 = [v125 userActionEvent];
-      v138 = [v137 moduleInfo];
-      [v138 setModuleMetadata:v169];
+      userActionEvent7 = [v125 userActionEvent];
+      moduleInfo2 = [userActionEvent7 moduleInfo];
+      [moduleInfo2 setModuleMetadata:metadataCopy];
     }
 
-    v128 = a3;
-    if (v172)
+    actionCopy3 = action;
+    if (classificationCopy)
     {
-      v139 = [v125 userActionEvent];
-      v140 = [v139 moduleInfo];
-      [v140 setClassification:v172];
+      userActionEvent8 = [v125 userActionEvent];
+      moduleInfo3 = [userActionEvent8 moduleInfo];
+      [moduleInfo3 setClassification:classificationCopy];
 
-      v128 = a3;
+      actionCopy3 = action;
     }
   }
 
@@ -22855,7 +22855,7 @@ LABEL_102:
     [v125 addLogMsgState:v152];
   }
 
-  if (v128 == 6100 && a4 == 665 || v128 == 6048 && a4 == 612 || v128 == 6049 && a4 == 612 || v128 == 6101 && a4 == 665 || v128 == 6006 && a4 == 665)
+  if (actionCopy3 == 6100 && target == 665 || actionCopy3 == 6048 && target == 612 || actionCopy3 == 6049 && target == 612 || actionCopy3 == 6101 && target == 665 || actionCopy3 == 6006 && target == 665)
   {
     v141 = [v16 stateForType:68];
     v142 = [v141 copy];
@@ -22873,9 +22873,9 @@ LABEL_102:
   v173[3] = &unk_1E7953B38;
   v144 = v125;
   v174 = v144;
-  v145 = v148;
+  v145 = blockCopy;
   v176 = v145;
-  v146 = v149;
+  v146 = queueCopy;
   v175 = v146;
   [v143 sessionStateForType:6 callback:v173];
 
@@ -22898,30 +22898,30 @@ uint64_t __198__GEOAPPortal_UserActionCodeGen__captureUGCShortUserActionTargetPa
   return [GEOAPPortal reportLogMsgEvent:v6 uploadBatchId:v3 completion:v4 completionQueue:v5];
 }
 
-+ (void)captureCuratedCollectionsSessionlessUserActionTargetPairRedactedCCStateWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12
++ (void)captureCuratedCollectionsSessionlessUserActionTargetPairRedactedCCStateWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2
 {
-  LODWORD(v86) = a3;
-  HIDWORD(v86) = a4;
+  LODWORD(v86) = action;
+  HIDWORD(v86) = target;
   v108 = *MEMORY[0x1E69E9840];
-  v94 = a5;
-  v15 = a6;
-  v97 = a7;
-  v98 = a8;
-  v93 = a9;
-  v16 = a10;
-  v88 = a11;
-  v87 = a12;
+  valueCopy = value;
+  typeCopy = type;
+  metadataCopy = metadata;
+  classificationCopy = classification;
+  idCopy = id;
+  statesCopy = states;
+  queueCopy = queue;
+  blockCopy = block;
   v17 = +[GEOAPStateFactory sharedFactory];
-  v89 = v16;
-  v90 = v15;
-  if ([v16 count])
+  v89 = statesCopy;
+  v90 = typeCopy;
+  if ([statesCopy count])
   {
-    v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v16, "count")}];
+    v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v103 = 0u;
     v104 = 0u;
     v105 = 0u;
     v106 = 0u;
-    v19 = v16;
+    v19 = statesCopy;
     v20 = [v19 countByEnumeratingWithState:&v103 objects:v107 count:16];
     if (v20)
     {
@@ -22956,7 +22956,7 @@ uint64_t __198__GEOAPPortal_UserActionCodeGen__captureUGCShortUserActionTargetPa
 
       if (v29)
       {
-        v15 = v90;
+        typeCopy = v90;
         goto LABEL_18;
       }
 
@@ -22968,7 +22968,7 @@ uint64_t __198__GEOAPPortal_UserActionCodeGen__captureUGCShortUserActionTargetPa
       v30 = 1;
     }
 
-    v15 = v90;
+    typeCopy = v90;
   }
 
   else
@@ -23133,46 +23133,46 @@ LABEL_41:
   v66 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v65 setUserActionEvent:v66];
 
-  v67 = [v65 userActionEvent];
-  [v67 setUserActionEventAction:v86];
+  userActionEvent = [v65 userActionEvent];
+  [userActionEvent setUserActionEventAction:v86];
 
-  v68 = [v65 userActionEvent];
-  [v68 setUserActionEventTarget:HIDWORD(v86)];
+  userActionEvent2 = [v65 userActionEvent];
+  [userActionEvent2 setUserActionEventTarget:HIDWORD(v86)];
 
-  v69 = [v65 userActionEvent];
-  [v69 setUserActionEventValue:v94];
+  userActionEvent3 = [v65 userActionEvent];
+  [userActionEvent3 setUserActionEventValue:valueCopy];
 
-  v70 = [v65 userActionEvent];
-  [v70 setActionRichProviderId:v93];
+  userActionEvent4 = [v65 userActionEvent];
+  [userActionEvent4 setActionRichProviderId:idCopy];
 
   v71 = v29;
-  if (v15 || v97 || v98)
+  if (typeCopy || metadataCopy || classificationCopy)
   {
     v72 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v73 = [v65 userActionEvent];
-    [v73 setModuleInfo:v72];
+    userActionEvent5 = [v65 userActionEvent];
+    [userActionEvent5 setModuleInfo:v72];
 
-    if (v15)
+    if (typeCopy)
     {
-      v74 = [v15 intValue];
-      v75 = [v65 userActionEvent];
-      v76 = [v75 moduleInfo];
-      [v76 setType:v74];
+      intValue = [typeCopy intValue];
+      userActionEvent6 = [v65 userActionEvent];
+      moduleInfo = [userActionEvent6 moduleInfo];
+      [moduleInfo setType:intValue];
     }
 
-    if (v97)
+    if (metadataCopy)
     {
-      v77 = [v65 userActionEvent];
-      v78 = [v77 moduleInfo];
-      [v78 setModuleMetadata:v97];
+      userActionEvent7 = [v65 userActionEvent];
+      moduleInfo2 = [userActionEvent7 moduleInfo];
+      [moduleInfo2 setModuleMetadata:metadataCopy];
     }
 
     v29 = v71;
-    if (v98)
+    if (classificationCopy)
     {
-      v79 = [v65 userActionEvent];
-      v80 = [v79 moduleInfo];
-      [v80 setClassification:v98];
+      userActionEvent8 = [v65 userActionEvent];
+      moduleInfo3 = [userActionEvent8 moduleInfo];
+      [moduleInfo3 setClassification:classificationCopy];
 
       v29 = v71;
     }
@@ -23223,11 +23223,11 @@ LABEL_41:
   v99[1] = 3221225472;
   v99[2] = __234__GEOAPPortal_UserActionCodeGen__captureCuratedCollectionsSessionlessUserActionTargetPairRedactedCCStateWithAction_target_value_moduleType_moduleMetadata_classification_richProviderId_additionalStates_completionQueue_completionBlock___block_invoke;
   v99[3] = &unk_1E7953B38;
-  v101 = v88;
-  v102 = v87;
+  v101 = queueCopy;
+  v102 = blockCopy;
   v100 = v65;
-  v82 = v88;
-  v83 = v87;
+  v82 = queueCopy;
+  v83 = blockCopy;
   v84 = v65;
   [v81 sessionStateForType:7 callback:v99];
 
@@ -23250,30 +23250,30 @@ uint64_t __234__GEOAPPortal_UserActionCodeGen__captureCuratedCollectionsSessionl
   return [GEOAPPortal reportLogMsgEvent:v6 uploadBatchId:v3 completion:v4 completionQueue:v5];
 }
 
-+ (void)captureCuratedCollectionsSessionlessUserActionTargetPairWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12
++ (void)captureCuratedCollectionsSessionlessUserActionTargetPairWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2
 {
-  LODWORD(v86) = a3;
-  HIDWORD(v86) = a4;
+  LODWORD(v86) = action;
+  HIDWORD(v86) = target;
   v108 = *MEMORY[0x1E69E9840];
-  v94 = a5;
-  v15 = a6;
-  v97 = a7;
-  v98 = a8;
-  v93 = a9;
-  v16 = a10;
-  v88 = a11;
-  v87 = a12;
+  valueCopy = value;
+  typeCopy = type;
+  metadataCopy = metadata;
+  classificationCopy = classification;
+  idCopy = id;
+  statesCopy = states;
+  queueCopy = queue;
+  blockCopy = block;
   v17 = +[GEOAPStateFactory sharedFactory];
-  v89 = v16;
-  v90 = v15;
-  if ([v16 count])
+  v89 = statesCopy;
+  v90 = typeCopy;
+  if ([statesCopy count])
   {
-    v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v16, "count")}];
+    v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v103 = 0u;
     v104 = 0u;
     v105 = 0u;
     v106 = 0u;
-    v19 = v16;
+    v19 = statesCopy;
     v20 = [v19 countByEnumeratingWithState:&v103 objects:v107 count:16];
     if (v20)
     {
@@ -23308,7 +23308,7 @@ uint64_t __234__GEOAPPortal_UserActionCodeGen__captureCuratedCollectionsSessionl
 
       if (v29)
       {
-        v15 = v90;
+        typeCopy = v90;
         goto LABEL_18;
       }
 
@@ -23320,7 +23320,7 @@ uint64_t __234__GEOAPPortal_UserActionCodeGen__captureCuratedCollectionsSessionl
       v30 = 1;
     }
 
-    v15 = v90;
+    typeCopy = v90;
   }
 
   else
@@ -23485,46 +23485,46 @@ LABEL_41:
   v66 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v65 setUserActionEvent:v66];
 
-  v67 = [v65 userActionEvent];
-  [v67 setUserActionEventAction:v86];
+  userActionEvent = [v65 userActionEvent];
+  [userActionEvent setUserActionEventAction:v86];
 
-  v68 = [v65 userActionEvent];
-  [v68 setUserActionEventTarget:HIDWORD(v86)];
+  userActionEvent2 = [v65 userActionEvent];
+  [userActionEvent2 setUserActionEventTarget:HIDWORD(v86)];
 
-  v69 = [v65 userActionEvent];
-  [v69 setUserActionEventValue:v94];
+  userActionEvent3 = [v65 userActionEvent];
+  [userActionEvent3 setUserActionEventValue:valueCopy];
 
-  v70 = [v65 userActionEvent];
-  [v70 setActionRichProviderId:v93];
+  userActionEvent4 = [v65 userActionEvent];
+  [userActionEvent4 setActionRichProviderId:idCopy];
 
   v71 = v29;
-  if (v15 || v97 || v98)
+  if (typeCopy || metadataCopy || classificationCopy)
   {
     v72 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v73 = [v65 userActionEvent];
-    [v73 setModuleInfo:v72];
+    userActionEvent5 = [v65 userActionEvent];
+    [userActionEvent5 setModuleInfo:v72];
 
-    if (v15)
+    if (typeCopy)
     {
-      v74 = [v15 intValue];
-      v75 = [v65 userActionEvent];
-      v76 = [v75 moduleInfo];
-      [v76 setType:v74];
+      intValue = [typeCopy intValue];
+      userActionEvent6 = [v65 userActionEvent];
+      moduleInfo = [userActionEvent6 moduleInfo];
+      [moduleInfo setType:intValue];
     }
 
-    if (v97)
+    if (metadataCopy)
     {
-      v77 = [v65 userActionEvent];
-      v78 = [v77 moduleInfo];
-      [v78 setModuleMetadata:v97];
+      userActionEvent7 = [v65 userActionEvent];
+      moduleInfo2 = [userActionEvent7 moduleInfo];
+      [moduleInfo2 setModuleMetadata:metadataCopy];
     }
 
     v29 = v71;
-    if (v98)
+    if (classificationCopy)
     {
-      v79 = [v65 userActionEvent];
-      v80 = [v79 moduleInfo];
-      [v80 setClassification:v98];
+      userActionEvent8 = [v65 userActionEvent];
+      moduleInfo3 = [userActionEvent8 moduleInfo];
+      [moduleInfo3 setClassification:classificationCopy];
 
       v29 = v71;
     }
@@ -23575,11 +23575,11 @@ LABEL_41:
   v99[1] = 3221225472;
   v99[2] = __219__GEOAPPortal_UserActionCodeGen__captureCuratedCollectionsSessionlessUserActionTargetPairWithAction_target_value_moduleType_moduleMetadata_classification_richProviderId_additionalStates_completionQueue_completionBlock___block_invoke;
   v99[3] = &unk_1E7953B38;
-  v101 = v88;
-  v102 = v87;
+  v101 = queueCopy;
+  v102 = blockCopy;
   v100 = v65;
-  v82 = v88;
-  v83 = v87;
+  v82 = queueCopy;
+  v83 = blockCopy;
   v84 = v65;
   [v81 sessionStateForType:7 callback:v99];
 
@@ -23602,20 +23602,20 @@ uint64_t __219__GEOAPPortal_UserActionCodeGen__captureCuratedCollectionsSessionl
   return [GEOAPPortal reportLogMsgEvent:v6 uploadBatchId:v3 completion:v4 completionQueue:v5];
 }
 
-+ (void)captureCuratedCollectionsShortUserActionTargetPairWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12
++ (void)captureCuratedCollectionsShortUserActionTargetPairWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2
 {
   v185 = *MEMORY[0x1E69E9840];
-  v173 = a5;
-  v172 = a6;
-  v174 = a7;
-  v175 = a8;
-  v171 = a9;
-  v15 = a10;
-  v154 = a11;
-  v153 = a12;
+  valueCopy = value;
+  typeCopy = type;
+  metadataCopy = metadata;
+  classificationCopy = classification;
+  idCopy = id;
+  statesCopy = states;
+  queueCopy = queue;
+  blockCopy = block;
   v16 = +[GEOAPStateFactory sharedFactory];
-  v155 = v15;
-  if (![v15 count])
+  v155 = statesCopy;
+  if (![statesCopy count])
   {
     v25 = 0;
 LABEL_13:
@@ -23623,12 +23623,12 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v15, "count")}];
+  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
   v180 = 0u;
   v181 = 0u;
   v182 = 0u;
   v183 = 0u;
-  v18 = v15;
+  v18 = statesCopy;
   v19 = [v18 countByEnumeratingWithState:&v180 objects:v184 count:16];
   if (v19)
   {
@@ -24120,44 +24120,44 @@ LABEL_107:
   v130 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v129 setUserActionEvent:v130];
 
-  v131 = [v129 userActionEvent];
-  [v131 setUserActionEventAction:a3];
+  userActionEvent = [v129 userActionEvent];
+  [userActionEvent setUserActionEventAction:action];
 
-  v132 = [v129 userActionEvent];
-  [v132 setUserActionEventTarget:a4];
+  userActionEvent2 = [v129 userActionEvent];
+  [userActionEvent2 setUserActionEventTarget:target];
 
-  v133 = [v129 userActionEvent];
-  [v133 setUserActionEventValue:v173];
+  userActionEvent3 = [v129 userActionEvent];
+  [userActionEvent3 setUserActionEventValue:valueCopy];
 
-  v134 = [v129 userActionEvent];
-  [v134 setActionRichProviderId:v171];
+  userActionEvent4 = [v129 userActionEvent];
+  [userActionEvent4 setActionRichProviderId:idCopy];
 
-  if (v172 || v174 || v175)
+  if (typeCopy || metadataCopy || classificationCopy)
   {
     v135 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v136 = [v129 userActionEvent];
-    [v136 setModuleInfo:v135];
+    userActionEvent5 = [v129 userActionEvent];
+    [userActionEvent5 setModuleInfo:v135];
 
-    if (v172)
+    if (typeCopy)
     {
-      v137 = [v172 intValue];
-      v138 = [v129 userActionEvent];
-      v139 = [v138 moduleInfo];
-      [v139 setType:v137];
+      intValue = [typeCopy intValue];
+      userActionEvent6 = [v129 userActionEvent];
+      moduleInfo = [userActionEvent6 moduleInfo];
+      [moduleInfo setType:intValue];
     }
 
-    if (v174)
+    if (metadataCopy)
     {
-      v140 = [v129 userActionEvent];
-      v141 = [v140 moduleInfo];
-      [v141 setModuleMetadata:v174];
+      userActionEvent7 = [v129 userActionEvent];
+      moduleInfo2 = [userActionEvent7 moduleInfo];
+      [moduleInfo2 setModuleMetadata:metadataCopy];
     }
 
-    if (v175)
+    if (classificationCopy)
     {
-      v142 = [v129 userActionEvent];
-      v143 = [v142 moduleInfo];
-      [v143 setClassification:v175];
+      userActionEvent8 = [v129 userActionEvent];
+      moduleInfo3 = [userActionEvent8 moduleInfo];
+      [moduleInfo3 setClassification:classificationCopy];
     }
   }
 
@@ -24268,9 +24268,9 @@ LABEL_107:
   v176[3] = &unk_1E7953B38;
   v145 = v129;
   v177 = v145;
-  v146 = v153;
+  v146 = blockCopy;
   v179 = v146;
-  v147 = v154;
+  v147 = queueCopy;
   v178 = v147;
   [v144 sessionStateForType:6 callback:v176];
 
@@ -24293,28 +24293,28 @@ uint64_t __213__GEOAPPortal_UserActionCodeGen__captureCuratedCollectionsShortUse
   return [GEOAPPortal reportLogMsgEvent:v6 uploadBatchId:v3 completion:v4 completionQueue:v5];
 }
 
-+ (void)captureEnterMapsShortUserActionTargetPairWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12
++ (void)captureEnterMapsShortUserActionTargetPairWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2
 {
   v194 = *MEMORY[0x1E69E9840];
-  v182 = a5;
-  v15 = a6;
-  v183 = a7;
-  v184 = a8;
-  v181 = a9;
-  v16 = a10;
-  v162 = a11;
-  v161 = a12;
+  valueCopy = value;
+  typeCopy = type;
+  metadataCopy = metadata;
+  classificationCopy = classification;
+  idCopy = id;
+  statesCopy = states;
+  queueCopy = queue;
+  blockCopy = block;
   v17 = +[GEOAPStateFactory sharedFactory];
-  v163 = v16;
-  v164 = v15;
-  if ([v16 count])
+  v163 = statesCopy;
+  v164 = typeCopy;
+  if ([statesCopy count])
   {
-    v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v16, "count")}];
+    v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v189 = 0u;
     v190 = 0u;
     v191 = 0u;
     v192 = 0u;
-    v19 = v16;
+    v19 = statesCopy;
     v20 = [v19 countByEnumeratingWithState:&v189 objects:v193 count:16];
     if (v20)
     {
@@ -24351,7 +24351,7 @@ uint64_t __213__GEOAPPortal_UserActionCodeGen__captureCuratedCollectionsShortUse
       {
         v180 = v29;
 
-        v15 = v164;
+        typeCopy = v164;
         goto LABEL_18;
       }
 
@@ -24363,7 +24363,7 @@ uint64_t __213__GEOAPPortal_UserActionCodeGen__captureCuratedCollectionsShortUse
       v30 = 1;
     }
 
-    v15 = v164;
+    typeCopy = v164;
   }
 
   else
@@ -24841,44 +24841,44 @@ LABEL_114:
   v136 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v135 setUserActionEvent:v136];
 
-  v137 = [v135 userActionEvent];
-  [v137 setUserActionEventAction:a3];
+  userActionEvent = [v135 userActionEvent];
+  [userActionEvent setUserActionEventAction:action];
 
-  v138 = [v135 userActionEvent];
-  [v138 setUserActionEventTarget:a4];
+  userActionEvent2 = [v135 userActionEvent];
+  [userActionEvent2 setUserActionEventTarget:target];
 
-  v139 = [v135 userActionEvent];
-  [v139 setUserActionEventValue:v182];
+  userActionEvent3 = [v135 userActionEvent];
+  [userActionEvent3 setUserActionEventValue:valueCopy];
 
-  v140 = [v135 userActionEvent];
-  [v140 setActionRichProviderId:v181];
+  userActionEvent4 = [v135 userActionEvent];
+  [userActionEvent4 setActionRichProviderId:idCopy];
 
-  if (v15 || v183 || v184)
+  if (typeCopy || metadataCopy || classificationCopy)
   {
     v141 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v142 = [v135 userActionEvent];
-    [v142 setModuleInfo:v141];
+    userActionEvent5 = [v135 userActionEvent];
+    [userActionEvent5 setModuleInfo:v141];
 
-    if (v15)
+    if (typeCopy)
     {
-      v143 = [v15 intValue];
-      v144 = [v135 userActionEvent];
-      v145 = [v144 moduleInfo];
-      [v145 setType:v143];
+      intValue = [typeCopy intValue];
+      userActionEvent6 = [v135 userActionEvent];
+      moduleInfo = [userActionEvent6 moduleInfo];
+      [moduleInfo setType:intValue];
     }
 
-    if (v183)
+    if (metadataCopy)
     {
-      v146 = [v135 userActionEvent];
-      v147 = [v146 moduleInfo];
-      [v147 setModuleMetadata:v183];
+      userActionEvent7 = [v135 userActionEvent];
+      moduleInfo2 = [userActionEvent7 moduleInfo];
+      [moduleInfo2 setModuleMetadata:metadataCopy];
     }
 
-    if (v184)
+    if (classificationCopy)
     {
-      v148 = [v135 userActionEvent];
-      v149 = [v148 moduleInfo];
-      [v149 setClassification:v184];
+      userActionEvent8 = [v135 userActionEvent];
+      moduleInfo3 = [userActionEvent8 moduleInfo];
+      [moduleInfo3 setClassification:classificationCopy];
     }
   }
 
@@ -24995,9 +24995,9 @@ LABEL_114:
   v185[3] = &unk_1E7953B38;
   v152 = v135;
   v186 = v152;
-  v153 = v161;
+  v153 = blockCopy;
   v188 = v153;
-  v154 = v162;
+  v154 = queueCopy;
   v187 = v154;
   [v151 sessionStateForType:6 callback:v185];
 
@@ -25036,20 +25036,20 @@ uint64_t __180__GEOAPPortal_UserActionCodeGen__captureArpPrivacyWithAction_targe
   return [GEOAPPortal reportLogMsgEvent:v6 uploadBatchId:v3 completion:v4 completionQueue:v5];
 }
 
-+ (void)captureSessionlessUserActionWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12
++ (void)captureSessionlessUserActionWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2
 {
   v117 = *MEMORY[0x1E69E9840];
-  v100 = a5;
-  v105 = a6;
-  v104 = a7;
-  v106 = a8;
-  v99 = a9;
-  v15 = a10;
-  v95 = a11;
-  v94 = a12;
+  valueCopy = value;
+  typeCopy = type;
+  metadataCopy = metadata;
+  classificationCopy = classification;
+  idCopy = id;
+  statesCopy = states;
+  queueCopy = queue;
+  blockCopy = block;
   v16 = +[GEOAPStateFactory sharedFactory];
-  v96 = v15;
-  if (![v15 count])
+  v96 = statesCopy;
+  if (![statesCopy count])
   {
     v25 = 0;
 LABEL_13:
@@ -25057,12 +25057,12 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v15, "count")}];
+  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
   v112 = 0u;
   v113 = 0u;
   v114 = 0u;
   v115 = 0u;
-  v18 = v15;
+  v18 = statesCopy;
   v19 = [v18 countByEnumeratingWithState:&v112 objects:v116 count:16];
   if (v19)
   {
@@ -25259,54 +25259,54 @@ LABEL_38:
   v63 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v62 setUserActionEvent:v63];
 
-  v64 = [v62 userActionEvent];
-  [v64 setUserActionEventAction:a3];
+  userActionEvent = [v62 userActionEvent];
+  [userActionEvent setUserActionEventAction:action];
 
-  v65 = [v62 userActionEvent];
-  v66 = a4;
-  [v65 setUserActionEventTarget:a4];
+  userActionEvent2 = [v62 userActionEvent];
+  targetCopy4 = target;
+  [userActionEvent2 setUserActionEventTarget:target];
 
-  v67 = [v62 userActionEvent];
-  [v67 setUserActionEventValue:v100];
+  userActionEvent3 = [v62 userActionEvent];
+  [userActionEvent3 setUserActionEventValue:valueCopy];
 
-  v68 = [v62 userActionEvent];
-  [v68 setActionRichProviderId:v99];
+  userActionEvent4 = [v62 userActionEvent];
+  [userActionEvent4 setActionRichProviderId:idCopy];
 
   v97 = v28;
-  if (v105 || v104 || v106)
+  if (typeCopy || metadataCopy || classificationCopy)
   {
     v69 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v70 = [v62 userActionEvent];
-    [v70 setModuleInfo:v69];
+    userActionEvent5 = [v62 userActionEvent];
+    [userActionEvent5 setModuleInfo:v69];
 
-    if (v105)
+    if (typeCopy)
     {
-      v71 = [v105 intValue];
-      v72 = [v62 userActionEvent];
-      v73 = [v72 moduleInfo];
-      [v73 setType:v71];
+      intValue = [typeCopy intValue];
+      userActionEvent6 = [v62 userActionEvent];
+      moduleInfo = [userActionEvent6 moduleInfo];
+      [moduleInfo setType:intValue];
 
-      v66 = a4;
+      targetCopy4 = target;
     }
 
-    if (v104)
+    if (metadataCopy)
     {
-      v74 = [v62 userActionEvent];
-      v75 = [v74 moduleInfo];
-      [v75 setModuleMetadata:v104];
+      userActionEvent7 = [v62 userActionEvent];
+      moduleInfo2 = [userActionEvent7 moduleInfo];
+      [moduleInfo2 setModuleMetadata:metadataCopy];
 
-      v66 = a4;
+      targetCopy4 = target;
     }
 
     v28 = v97;
-    if (v106)
+    if (classificationCopy)
     {
-      v76 = [v62 userActionEvent];
-      v77 = [v76 moduleInfo];
-      [v77 setClassification:v106];
+      userActionEvent8 = [v62 userActionEvent];
+      moduleInfo3 = [userActionEvent8 moduleInfo];
+      [moduleInfo3 setClassification:classificationCopy];
 
       v28 = v97;
-      v66 = a4;
+      targetCopy4 = target;
     }
   }
 
@@ -25350,20 +25350,20 @@ LABEL_38:
     [v62 addLogMsgState:v56];
   }
 
-  if (a3 != 2059 || v66 != 201)
+  if (action != 2059 || targetCopy4 != 201)
   {
-    v81 = v66 == 30;
-    if (a3 != 2059 || v66 != 30)
+    v81 = targetCopy4 == 30;
+    if (action != 2059 || targetCopy4 != 30)
     {
-      if (a3 == 469 && v66 == 201)
+      if (action == 469 && targetCopy4 == 201)
       {
         goto LABEL_65;
       }
 
-      if (a3 != 469 || v66 != 30)
+      if (action != 469 || targetCopy4 != 30)
       {
-        v80 = a3 == 477;
-        if (a3 != 477 || a4 != 201)
+        v80 = action == 477;
+        if (action != 477 || target != 201)
         {
           goto LABEL_68;
         }
@@ -25415,8 +25415,8 @@ LABEL_68:
     goto LABEL_76;
   }
 
-  v82 = a3 == 2073;
-  if (a3 == 2073 && a4 == 201)
+  v82 = action == 2073;
+  if (action == 2073 && target == 201)
   {
     v83 = [v16 stateForType:68];
     v84 = [v83 copy];
@@ -25446,11 +25446,11 @@ LABEL_76:
   v108[1] = 3221225472;
   v108[2] = __191__GEOAPPortal_UserActionCodeGen__captureSessionlessUserActionWithAction_target_value_moduleType_moduleMetadata_classification_richProviderId_additionalStates_completionQueue_completionBlock___block_invoke;
   v108[3] = &unk_1E7953B38;
-  v110 = v95;
-  v111 = v94;
+  v110 = queueCopy;
+  v111 = blockCopy;
   v109 = v62;
-  v88 = v95;
-  v89 = v94;
+  v88 = queueCopy;
+  v89 = blockCopy;
   v90 = v62;
   [v87 sessionStateForType:8 callback:v108];
 
@@ -25473,20 +25473,20 @@ uint64_t __191__GEOAPPortal_UserActionCodeGen__captureSessionlessUserActionWithA
   return [GEOAPPortal reportLogMsgEvent:v6 uploadBatchId:v3 completion:v4 completionQueue:v5];
 }
 
-+ (void)captureCarplayUserActionWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12
++ (void)captureCarplayUserActionWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2
 {
   v175 = *MEMORY[0x1E69E9840];
-  v161 = a5;
-  v164 = a6;
-  v163 = a7;
-  v165 = a8;
-  v160 = a9;
-  v15 = a10;
-  v144 = a11;
-  v143 = a12;
+  valueCopy = value;
+  typeCopy = type;
+  metadataCopy = metadata;
+  classificationCopy = classification;
+  idCopy = id;
+  statesCopy = states;
+  queueCopy = queue;
+  blockCopy = block;
   v16 = +[GEOAPStateFactory sharedFactory];
-  v145 = v15;
-  if (![v15 count])
+  v145 = statesCopy;
+  if (![statesCopy count])
   {
     v25 = 0;
 LABEL_13:
@@ -25494,12 +25494,12 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v15, "count")}];
+  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
   v170 = 0u;
   v171 = 0u;
   v172 = 0u;
   v173 = 0u;
-  v18 = v15;
+  v18 = statesCopy;
   v19 = [v18 countByEnumeratingWithState:&v170 objects:v174 count:16];
   if (v19)
   {
@@ -25923,46 +25923,46 @@ LABEL_92:
   v116 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v115 setUserActionEvent:v116];
 
-  v117 = [v115 userActionEvent];
-  v118 = a3;
-  [v117 setUserActionEventAction:a3];
+  userActionEvent = [v115 userActionEvent];
+  actionCopy2 = action;
+  [userActionEvent setUserActionEventAction:action];
 
-  v119 = [v115 userActionEvent];
-  [v119 setUserActionEventTarget:a4];
+  userActionEvent2 = [v115 userActionEvent];
+  [userActionEvent2 setUserActionEventTarget:target];
 
-  v120 = [v115 userActionEvent];
-  [v120 setUserActionEventValue:v161];
+  userActionEvent3 = [v115 userActionEvent];
+  [userActionEvent3 setUserActionEventValue:valueCopy];
 
-  v121 = [v115 userActionEvent];
-  [v121 setActionRichProviderId:v160];
+  userActionEvent4 = [v115 userActionEvent];
+  [userActionEvent4 setActionRichProviderId:idCopy];
 
-  if (v164 || v163 || v165)
+  if (typeCopy || metadataCopy || classificationCopy)
   {
     v122 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v123 = [v115 userActionEvent];
-    [v123 setModuleInfo:v122];
+    userActionEvent5 = [v115 userActionEvent];
+    [userActionEvent5 setModuleInfo:v122];
 
-    if (v164)
+    if (typeCopy)
     {
-      v124 = [v164 intValue];
-      v125 = [v115 userActionEvent];
-      v126 = [v125 moduleInfo];
-      [v126 setType:v124];
+      intValue = [typeCopy intValue];
+      userActionEvent6 = [v115 userActionEvent];
+      moduleInfo = [userActionEvent6 moduleInfo];
+      [moduleInfo setType:intValue];
     }
 
-    if (v163)
+    if (metadataCopy)
     {
-      v127 = [v115 userActionEvent];
-      v128 = [v127 moduleInfo];
-      [v128 setModuleMetadata:v163];
+      userActionEvent7 = [v115 userActionEvent];
+      moduleInfo2 = [userActionEvent7 moduleInfo];
+      [moduleInfo2 setModuleMetadata:metadataCopy];
     }
 
-    v118 = a3;
-    if (v165)
+    actionCopy2 = action;
+    if (classificationCopy)
     {
-      v129 = [v115 userActionEvent];
-      v130 = [v129 moduleInfo];
-      [v130 setClassification:v165];
+      userActionEvent8 = [v115 userActionEvent];
+      moduleInfo3 = [userActionEvent8 moduleInfo];
+      [moduleInfo3 setClassification:classificationCopy];
     }
   }
 
@@ -26052,7 +26052,7 @@ LABEL_92:
     [v115 addLogMsgState:v146];
   }
 
-  if (v118 == 2015 && a4 == 1011)
+  if (actionCopy2 == 2015 && target == 1011)
   {
     v132 = [v16 stateForType:59];
     v133 = [v132 copy];
@@ -26076,7 +26076,7 @@ LABEL_150:
     goto LABEL_151;
   }
 
-  if (v118 == 6097 && a4 == 1009 || v118 == 2007 && a4 == 1023 || a4 == 1011 && v118 == 2007)
+  if (actionCopy2 == 6097 && target == 1009 || actionCopy2 == 2007 && target == 1023 || target == 1011 && actionCopy2 == 2007)
   {
     v136 = [v16 stateForType:68];
     v133 = [v136 copy];
@@ -26097,9 +26097,9 @@ LABEL_151:
   v166[3] = &unk_1E7953B38;
   v138 = v115;
   v167 = v138;
-  v139 = v143;
+  v139 = blockCopy;
   v169 = v139;
-  v140 = v144;
+  v140 = queueCopy;
   v168 = v140;
   [v137 sessionStateForType:6 callback:v166];
 
@@ -26122,28 +26122,28 @@ uint64_t __187__GEOAPPortal_UserActionCodeGen__captureCarplayUserActionWithActio
   return [GEOAPPortal reportLogMsgEvent:v6 uploadBatchId:v3 completion:v4 completionQueue:v5];
 }
 
-+ (void)captureRapShortAndSessionlessUserActionTargetPairWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12
++ (void)captureRapShortAndSessionlessUserActionTargetPairWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2
 {
   v226 = *MEMORY[0x1E69E9840];
-  v211 = a5;
-  v15 = a6;
-  v204 = a7;
-  v212 = a8;
-  v210 = a9;
-  v16 = a10;
-  v183 = a11;
-  v182 = a12;
+  valueCopy = value;
+  typeCopy = type;
+  metadataCopy = metadata;
+  classificationCopy = classification;
+  idCopy = id;
+  statesCopy = states;
+  queueCopy = queue;
+  blockCopy = block;
   v17 = +[GEOAPStateFactory sharedFactory];
-  v202 = v15;
-  v185 = v16;
-  if ([v16 count])
+  v202 = typeCopy;
+  v185 = statesCopy;
+  if ([statesCopy count])
   {
-    v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v16, "count")}];
+    v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v221 = 0u;
     v222 = 0u;
     v223 = 0u;
     v224 = 0u;
-    v19 = v16;
+    v19 = statesCopy;
     v20 = [v19 countByEnumeratingWithState:&v221 objects:v225 count:16];
     if (v20)
     {
@@ -26180,7 +26180,7 @@ uint64_t __187__GEOAPPortal_UserActionCodeGen__captureCarplayUserActionWithActio
       {
         v201 = v29;
 
-        v15 = v202;
+        typeCopy = v202;
         goto LABEL_18;
       }
 
@@ -26192,7 +26192,7 @@ uint64_t __187__GEOAPPortal_UserActionCodeGen__captureCarplayUserActionWithActio
       v30 = 1;
     }
 
-    v15 = v202;
+    typeCopy = v202;
   }
 
   else
@@ -26696,51 +26696,51 @@ LABEL_120:
   v141 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v140 setUserActionEvent:v141];
 
-  v142 = [v140 userActionEvent];
-  [v142 setUserActionEventAction:a3];
+  userActionEvent = [v140 userActionEvent];
+  [userActionEvent setUserActionEventAction:action];
 
-  v143 = [v140 userActionEvent];
-  [v143 setUserActionEventTarget:a4];
+  userActionEvent2 = [v140 userActionEvent];
+  [userActionEvent2 setUserActionEventTarget:target];
 
-  v144 = [v140 userActionEvent];
-  [v144 setUserActionEventValue:v211];
+  userActionEvent3 = [v140 userActionEvent];
+  [userActionEvent3 setUserActionEventValue:valueCopy];
 
-  v145 = [v140 userActionEvent];
-  [v145 setActionRichProviderId:v210];
+  userActionEvent4 = [v140 userActionEvent];
+  [userActionEvent4 setActionRichProviderId:idCopy];
 
-  v146 = v204;
-  v147 = v15 | v204 | v212;
+  v146 = metadataCopy;
+  v147 = typeCopy | metadataCopy | classificationCopy;
   v148 = v147 != 0;
   v203 = v71;
   if (v147)
   {
     v149 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v150 = [v140 userActionEvent];
-    [v150 setModuleInfo:v149];
+    userActionEvent5 = [v140 userActionEvent];
+    [userActionEvent5 setModuleInfo:v149];
 
-    if (v15)
+    if (typeCopy)
     {
-      v151 = [v15 intValue];
-      v152 = [v140 userActionEvent];
-      v153 = [v152 moduleInfo];
-      [v153 setType:v151];
+      intValue = [typeCopy intValue];
+      userActionEvent6 = [v140 userActionEvent];
+      moduleInfo = [userActionEvent6 moduleInfo];
+      [moduleInfo setType:intValue];
 
-      v146 = v204;
+      v146 = metadataCopy;
     }
 
     if (v146)
     {
-      v154 = [v140 userActionEvent];
-      v155 = [v154 moduleInfo];
-      [v155 setModuleMetadata:v146];
+      userActionEvent7 = [v140 userActionEvent];
+      moduleInfo2 = [userActionEvent7 moduleInfo];
+      [moduleInfo2 setModuleMetadata:v146];
     }
 
     v71 = v203;
-    if (v212)
+    if (classificationCopy)
     {
-      v156 = [v140 userActionEvent];
-      v157 = [v156 moduleInfo];
-      [v157 setClassification:v212];
+      userActionEvent8 = [v140 userActionEvent];
+      moduleInfo3 = [userActionEvent8 moduleInfo];
+      [moduleInfo3 setClassification:classificationCopy];
 
       v71 = v203;
     }
@@ -26853,9 +26853,9 @@ LABEL_120:
   v217[3] = &unk_1E7953B38;
   v159 = v140;
   v218 = v159;
-  v160 = v182;
+  v160 = blockCopy;
   v220 = v160;
-  v161 = v183;
+  v161 = queueCopy;
   v219 = v161;
   [v158 sessionStateForType:6 callback:v217];
 
@@ -26864,44 +26864,44 @@ LABEL_120:
   v163 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v162 setUserActionEvent:v163];
 
-  v164 = [v162 userActionEvent];
-  [v164 setUserActionEventAction:a3];
+  userActionEvent9 = [v162 userActionEvent];
+  [userActionEvent9 setUserActionEventAction:action];
 
-  v165 = [v162 userActionEvent];
-  [v165 setUserActionEventTarget:a4];
+  userActionEvent10 = [v162 userActionEvent];
+  [userActionEvent10 setUserActionEventTarget:target];
 
-  v166 = [v162 userActionEvent];
-  [v166 setUserActionEventValue:v211];
+  userActionEvent11 = [v162 userActionEvent];
+  [userActionEvent11 setUserActionEventValue:valueCopy];
 
-  v167 = [v162 userActionEvent];
-  [v167 setActionRichProviderId:v210];
+  userActionEvent12 = [v162 userActionEvent];
+  [userActionEvent12 setActionRichProviderId:idCopy];
 
   if (v148)
   {
     v168 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v169 = [v162 userActionEvent];
-    [v169 setModuleInfo:v168];
+    userActionEvent13 = [v162 userActionEvent];
+    [userActionEvent13 setModuleInfo:v168];
 
     if (v202)
     {
-      v170 = [v202 intValue];
-      v171 = [v162 userActionEvent];
-      v172 = [v171 moduleInfo];
-      [v172 setType:v170];
+      intValue2 = [v202 intValue];
+      userActionEvent14 = [v162 userActionEvent];
+      moduleInfo4 = [userActionEvent14 moduleInfo];
+      [moduleInfo4 setType:intValue2];
     }
 
-    if (v204)
+    if (metadataCopy)
     {
-      v173 = [v162 userActionEvent];
-      v174 = [v173 moduleInfo];
-      [v174 setModuleMetadata:v204];
+      userActionEvent15 = [v162 userActionEvent];
+      moduleInfo5 = [userActionEvent15 moduleInfo];
+      [moduleInfo5 setModuleMetadata:metadataCopy];
     }
 
-    if (v212)
+    if (classificationCopy)
     {
-      v175 = [v162 userActionEvent];
-      v176 = [v175 moduleInfo];
-      [v176 setClassification:v212];
+      userActionEvent16 = [v162 userActionEvent];
+      moduleInfo6 = [userActionEvent16 moduleInfo];
+      [moduleInfo6 setClassification:classificationCopy];
     }
   }
 
@@ -26993,20 +26993,20 @@ uint64_t __212__GEOAPPortal_UserActionCodeGen__captureRapShortAndSessionlessUser
   return [GEOAPPortal reportLogMsgEvent:v6 uploadBatchId:v3 completion:v4 completionQueue:v5];
 }
 
-+ (void)captureRapUserActionShortOnlyWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12
++ (void)captureRapUserActionShortOnlyWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2
 {
   v186 = *MEMORY[0x1E69E9840];
-  v174 = a5;
-  v173 = a6;
-  v175 = a7;
-  v176 = a8;
-  v172 = a9;
-  v15 = a10;
-  v155 = a11;
-  v154 = a12;
+  valueCopy = value;
+  typeCopy = type;
+  metadataCopy = metadata;
+  classificationCopy = classification;
+  idCopy = id;
+  statesCopy = states;
+  queueCopy = queue;
+  blockCopy = block;
   v16 = +[GEOAPStateFactory sharedFactory];
-  v156 = v15;
-  if (![v15 count])
+  v156 = statesCopy;
+  if (![statesCopy count])
   {
     v25 = 0;
 LABEL_13:
@@ -27014,12 +27014,12 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v15, "count")}];
+  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
   v181 = 0u;
   v182 = 0u;
   v183 = 0u;
   v184 = 0u;
-  v18 = v15;
+  v18 = statesCopy;
   v19 = [v18 countByEnumeratingWithState:&v181 objects:v185 count:16];
   if (v19)
   {
@@ -27511,44 +27511,44 @@ LABEL_107:
   v130 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v129 setUserActionEvent:v130];
 
-  v131 = [v129 userActionEvent];
-  [v131 setUserActionEventAction:a3];
+  userActionEvent = [v129 userActionEvent];
+  [userActionEvent setUserActionEventAction:action];
 
-  v132 = [v129 userActionEvent];
-  [v132 setUserActionEventTarget:a4];
+  userActionEvent2 = [v129 userActionEvent];
+  [userActionEvent2 setUserActionEventTarget:target];
 
-  v133 = [v129 userActionEvent];
-  [v133 setUserActionEventValue:v174];
+  userActionEvent3 = [v129 userActionEvent];
+  [userActionEvent3 setUserActionEventValue:valueCopy];
 
-  v134 = [v129 userActionEvent];
-  [v134 setActionRichProviderId:v172];
+  userActionEvent4 = [v129 userActionEvent];
+  [userActionEvent4 setActionRichProviderId:idCopy];
 
-  if (v173 || v175 || v176)
+  if (typeCopy || metadataCopy || classificationCopy)
   {
     v135 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v136 = [v129 userActionEvent];
-    [v136 setModuleInfo:v135];
+    userActionEvent5 = [v129 userActionEvent];
+    [userActionEvent5 setModuleInfo:v135];
 
-    if (v173)
+    if (typeCopy)
     {
-      v137 = [v173 intValue];
-      v138 = [v129 userActionEvent];
-      v139 = [v138 moduleInfo];
-      [v139 setType:v137];
+      intValue = [typeCopy intValue];
+      userActionEvent6 = [v129 userActionEvent];
+      moduleInfo = [userActionEvent6 moduleInfo];
+      [moduleInfo setType:intValue];
     }
 
-    if (v175)
+    if (metadataCopy)
     {
-      v140 = [v129 userActionEvent];
-      v141 = [v140 moduleInfo];
-      [v141 setModuleMetadata:v175];
+      userActionEvent7 = [v129 userActionEvent];
+      moduleInfo2 = [userActionEvent7 moduleInfo];
+      [moduleInfo2 setModuleMetadata:metadataCopy];
     }
 
-    if (v176)
+    if (classificationCopy)
     {
-      v142 = [v129 userActionEvent];
-      v143 = [v142 moduleInfo];
-      [v143 setClassification:v176];
+      userActionEvent8 = [v129 userActionEvent];
+      moduleInfo3 = [userActionEvent8 moduleInfo];
+      [moduleInfo3 setClassification:classificationCopy];
     }
   }
 
@@ -27660,9 +27660,9 @@ LABEL_107:
   v177[3] = &unk_1E7953B38;
   v146 = v129;
   v178 = v146;
-  v147 = v154;
+  v147 = blockCopy;
   v180 = v147;
-  v148 = v155;
+  v148 = queueCopy;
   v179 = v148;
   [v145 sessionStateForType:6 callback:v177];
 
@@ -27685,30 +27685,30 @@ uint64_t __192__GEOAPPortal_UserActionCodeGen__captureRapUserActionShortOnlyWith
   return [GEOAPPortal reportLogMsgEvent:v6 uploadBatchId:v3 completion:v4 completionQueue:v5];
 }
 
-+ (void)captureMuninCameraUserActionShortOnlyWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12
++ (void)captureMuninCameraUserActionShortOnlyWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2
 {
-  LODWORD(v121) = a3;
-  HIDWORD(v121) = a4;
+  LODWORD(v121) = action;
+  HIDWORD(v121) = target;
   v149 = *MEMORY[0x1E69E9840];
-  v137 = a5;
-  v15 = a6;
-  v138 = a7;
-  v139 = a8;
-  v136 = a9;
-  v16 = a10;
-  v123 = a11;
-  v122 = a12;
+  valueCopy = value;
+  typeCopy = type;
+  metadataCopy = metadata;
+  classificationCopy = classification;
+  idCopy = id;
+  statesCopy = states;
+  queueCopy = queue;
+  blockCopy = block;
   v17 = +[GEOAPStateFactory sharedFactory];
-  v124 = v16;
-  v125 = v15;
-  if ([v16 count])
+  v124 = statesCopy;
+  v125 = typeCopy;
+  if ([statesCopy count])
   {
-    v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v16, "count")}];
+    v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v144 = 0u;
     v145 = 0u;
     v146 = 0u;
     v147 = 0u;
-    v19 = v16;
+    v19 = statesCopy;
     v20 = [v19 countByEnumeratingWithState:&v144 objects:v148 count:16];
     if (v20)
     {
@@ -27745,7 +27745,7 @@ uint64_t __192__GEOAPPortal_UserActionCodeGen__captureRapUserActionShortOnlyWith
       {
         v30 = v29;
 
-        v15 = v125;
+        typeCopy = v125;
         goto LABEL_18;
       }
 
@@ -27757,7 +27757,7 @@ uint64_t __192__GEOAPPortal_UserActionCodeGen__captureRapUserActionShortOnlyWith
       v31 = 1;
     }
 
-    v15 = v125;
+    typeCopy = v125;
   }
 
   else
@@ -28073,46 +28073,46 @@ LABEL_79:
   v101 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v100 setUserActionEvent:v101];
 
-  v102 = [v100 userActionEvent];
-  [v102 setUserActionEventAction:v121];
+  userActionEvent = [v100 userActionEvent];
+  [userActionEvent setUserActionEventAction:v121];
 
-  v103 = [v100 userActionEvent];
-  [v103 setUserActionEventTarget:HIDWORD(v121)];
+  userActionEvent2 = [v100 userActionEvent];
+  [userActionEvent2 setUserActionEventTarget:HIDWORD(v121)];
 
-  v104 = [v100 userActionEvent];
-  [v104 setUserActionEventValue:v137];
+  userActionEvent3 = [v100 userActionEvent];
+  [userActionEvent3 setUserActionEventValue:valueCopy];
 
-  v105 = [v100 userActionEvent];
-  [v105 setActionRichProviderId:v136];
+  userActionEvent4 = [v100 userActionEvent];
+  [userActionEvent4 setActionRichProviderId:idCopy];
 
   v106 = v30;
-  if (v15 || v138 || v139)
+  if (typeCopy || metadataCopy || classificationCopy)
   {
     v107 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v108 = [v100 userActionEvent];
-    [v108 setModuleInfo:v107];
+    userActionEvent5 = [v100 userActionEvent];
+    [userActionEvent5 setModuleInfo:v107];
 
-    if (v15)
+    if (typeCopy)
     {
-      v109 = [v15 intValue];
-      v110 = [v100 userActionEvent];
-      v111 = [v110 moduleInfo];
-      [v111 setType:v109];
+      intValue = [typeCopy intValue];
+      userActionEvent6 = [v100 userActionEvent];
+      moduleInfo = [userActionEvent6 moduleInfo];
+      [moduleInfo setType:intValue];
     }
 
-    if (v138)
+    if (metadataCopy)
     {
-      v112 = [v100 userActionEvent];
-      v113 = [v112 moduleInfo];
-      [v113 setModuleMetadata:v138];
+      userActionEvent7 = [v100 userActionEvent];
+      moduleInfo2 = [userActionEvent7 moduleInfo];
+      [moduleInfo2 setModuleMetadata:metadataCopy];
     }
 
     v30 = v106;
-    if (v139)
+    if (classificationCopy)
     {
-      v114 = [v100 userActionEvent];
-      v115 = [v114 moduleInfo];
-      [v115 setClassification:v139];
+      userActionEvent8 = [v100 userActionEvent];
+      moduleInfo3 = [userActionEvent8 moduleInfo];
+      [moduleInfo3 setClassification:classificationCopy];
 
       v30 = v106;
     }
@@ -28195,9 +28195,9 @@ LABEL_79:
   v140[3] = &unk_1E7953B38;
   v117 = v100;
   v141 = v117;
-  v118 = v122;
+  v118 = blockCopy;
   v143 = v118;
-  v119 = v123;
+  v119 = queueCopy;
   v142 = v119;
   [v116 sessionStateForType:6 callback:v140];
 
@@ -28220,30 +28220,30 @@ uint64_t __200__GEOAPPortal_UserActionCodeGen__captureMuninCameraUserActionShort
   return [GEOAPPortal reportLogMsgEvent:v6 uploadBatchId:v3 completion:v4 completionQueue:v5];
 }
 
-+ (void)captureMuninUserActionShortOnlyWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12
++ (void)captureMuninUserActionShortOnlyWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2
 {
-  LODWORD(v121) = a3;
-  HIDWORD(v121) = a4;
+  LODWORD(v121) = action;
+  HIDWORD(v121) = target;
   v149 = *MEMORY[0x1E69E9840];
-  v137 = a5;
-  v15 = a6;
-  v138 = a7;
-  v139 = a8;
-  v136 = a9;
-  v16 = a10;
-  v123 = a11;
-  v122 = a12;
+  valueCopy = value;
+  typeCopy = type;
+  metadataCopy = metadata;
+  classificationCopy = classification;
+  idCopy = id;
+  statesCopy = states;
+  queueCopy = queue;
+  blockCopy = block;
   v17 = +[GEOAPStateFactory sharedFactory];
-  v124 = v16;
-  v125 = v15;
-  if ([v16 count])
+  v124 = statesCopy;
+  v125 = typeCopy;
+  if ([statesCopy count])
   {
-    v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v16, "count")}];
+    v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v144 = 0u;
     v145 = 0u;
     v146 = 0u;
     v147 = 0u;
-    v19 = v16;
+    v19 = statesCopy;
     v20 = [v19 countByEnumeratingWithState:&v144 objects:v148 count:16];
     if (v20)
     {
@@ -28280,7 +28280,7 @@ uint64_t __200__GEOAPPortal_UserActionCodeGen__captureMuninCameraUserActionShort
       {
         v30 = v29;
 
-        v15 = v125;
+        typeCopy = v125;
         goto LABEL_18;
       }
 
@@ -28292,7 +28292,7 @@ uint64_t __200__GEOAPPortal_UserActionCodeGen__captureMuninCameraUserActionShort
       v31 = 1;
     }
 
-    v15 = v125;
+    typeCopy = v125;
   }
 
   else
@@ -28608,46 +28608,46 @@ LABEL_79:
   v101 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v100 setUserActionEvent:v101];
 
-  v102 = [v100 userActionEvent];
-  [v102 setUserActionEventAction:v121];
+  userActionEvent = [v100 userActionEvent];
+  [userActionEvent setUserActionEventAction:v121];
 
-  v103 = [v100 userActionEvent];
-  [v103 setUserActionEventTarget:HIDWORD(v121)];
+  userActionEvent2 = [v100 userActionEvent];
+  [userActionEvent2 setUserActionEventTarget:HIDWORD(v121)];
 
-  v104 = [v100 userActionEvent];
-  [v104 setUserActionEventValue:v137];
+  userActionEvent3 = [v100 userActionEvent];
+  [userActionEvent3 setUserActionEventValue:valueCopy];
 
-  v105 = [v100 userActionEvent];
-  [v105 setActionRichProviderId:v136];
+  userActionEvent4 = [v100 userActionEvent];
+  [userActionEvent4 setActionRichProviderId:idCopy];
 
   v106 = v30;
-  if (v15 || v138 || v139)
+  if (typeCopy || metadataCopy || classificationCopy)
   {
     v107 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v108 = [v100 userActionEvent];
-    [v108 setModuleInfo:v107];
+    userActionEvent5 = [v100 userActionEvent];
+    [userActionEvent5 setModuleInfo:v107];
 
-    if (v15)
+    if (typeCopy)
     {
-      v109 = [v15 intValue];
-      v110 = [v100 userActionEvent];
-      v111 = [v110 moduleInfo];
-      [v111 setType:v109];
+      intValue = [typeCopy intValue];
+      userActionEvent6 = [v100 userActionEvent];
+      moduleInfo = [userActionEvent6 moduleInfo];
+      [moduleInfo setType:intValue];
     }
 
-    if (v138)
+    if (metadataCopy)
     {
-      v112 = [v100 userActionEvent];
-      v113 = [v112 moduleInfo];
-      [v113 setModuleMetadata:v138];
+      userActionEvent7 = [v100 userActionEvent];
+      moduleInfo2 = [userActionEvent7 moduleInfo];
+      [moduleInfo2 setModuleMetadata:metadataCopy];
     }
 
     v30 = v106;
-    if (v139)
+    if (classificationCopy)
     {
-      v114 = [v100 userActionEvent];
-      v115 = [v114 moduleInfo];
-      [v115 setClassification:v139];
+      userActionEvent8 = [v100 userActionEvent];
+      moduleInfo3 = [userActionEvent8 moduleInfo];
+      [moduleInfo3 setClassification:classificationCopy];
 
       v30 = v106;
     }
@@ -28730,9 +28730,9 @@ LABEL_79:
   v140[3] = &unk_1E7953B38;
   v117 = v100;
   v141 = v117;
-  v118 = v122;
+  v118 = blockCopy;
   v143 = v118;
-  v119 = v123;
+  v119 = queueCopy;
   v142 = v119;
   [v116 sessionStateForType:6 callback:v140];
 
@@ -28755,20 +28755,20 @@ uint64_t __194__GEOAPPortal_UserActionCodeGen__captureMuninUserActionShortOnlyWi
   return [GEOAPPortal reportLogMsgEvent:v6 uploadBatchId:v3 completion:v4 completionQueue:v5];
 }
 
-+ (void)capturePriorityPlacecardActionShortUserActionsWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12
++ (void)capturePriorityPlacecardActionShortUserActionsWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2
 {
   v192 = *MEMORY[0x1E69E9840];
-  v178 = a5;
-  v180 = a6;
-  v179 = a7;
-  v181 = a8;
-  v177 = a9;
-  v15 = a10;
-  v158 = a11;
-  v157 = a12;
+  valueCopy = value;
+  typeCopy = type;
+  metadataCopy = metadata;
+  classificationCopy = classification;
+  idCopy = id;
+  statesCopy = states;
+  queueCopy = queue;
+  blockCopy = block;
   v16 = +[GEOAPStateFactory sharedFactory];
-  v159 = v15;
-  if (![v15 count])
+  v159 = statesCopy;
+  if (![statesCopy count])
   {
     v25 = 0;
 LABEL_13:
@@ -28776,12 +28776,12 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v15, "count")}];
+  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
   v187 = 0u;
   v188 = 0u;
   v189 = 0u;
   v190 = 0u;
-  v18 = v15;
+  v18 = statesCopy;
   v19 = [v18 countByEnumeratingWithState:&v187 objects:v191 count:16];
   if (v19)
   {
@@ -29270,46 +29270,46 @@ LABEL_106:
   v129 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v128 setUserActionEvent:v129];
 
-  v130 = [v128 userActionEvent];
-  [v130 setUserActionEventAction:a3];
+  userActionEvent = [v128 userActionEvent];
+  [userActionEvent setUserActionEventAction:action];
 
-  v131 = [v128 userActionEvent];
-  [v131 setUserActionEventTarget:a4];
+  userActionEvent2 = [v128 userActionEvent];
+  [userActionEvent2 setUserActionEventTarget:target];
 
-  v132 = [v128 userActionEvent];
-  [v132 setUserActionEventValue:v178];
+  userActionEvent3 = [v128 userActionEvent];
+  [userActionEvent3 setUserActionEventValue:valueCopy];
 
-  v133 = [v128 userActionEvent];
-  [v133 setActionRichProviderId:v177];
+  userActionEvent4 = [v128 userActionEvent];
+  [userActionEvent4 setActionRichProviderId:idCopy];
 
   v134 = v29;
-  if (v180 || v179 || v181)
+  if (typeCopy || metadataCopy || classificationCopy)
   {
     v135 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v136 = [v128 userActionEvent];
-    [v136 setModuleInfo:v135];
+    userActionEvent5 = [v128 userActionEvent];
+    [userActionEvent5 setModuleInfo:v135];
 
-    if (v180)
+    if (typeCopy)
     {
-      v137 = [v180 intValue];
-      v138 = [v128 userActionEvent];
-      v139 = [v138 moduleInfo];
-      [v139 setType:v137];
+      intValue = [typeCopy intValue];
+      userActionEvent6 = [v128 userActionEvent];
+      moduleInfo = [userActionEvent6 moduleInfo];
+      [moduleInfo setType:intValue];
     }
 
-    if (v179)
+    if (metadataCopy)
     {
-      v140 = [v128 userActionEvent];
-      v141 = [v140 moduleInfo];
-      [v141 setModuleMetadata:v179];
+      userActionEvent7 = [v128 userActionEvent];
+      moduleInfo2 = [userActionEvent7 moduleInfo];
+      [moduleInfo2 setModuleMetadata:metadataCopy];
     }
 
     v29 = v134;
-    if (v181)
+    if (classificationCopy)
     {
-      v142 = [v128 userActionEvent];
-      v143 = [v142 moduleInfo];
-      [v143 setClassification:v181];
+      userActionEvent8 = [v128 userActionEvent];
+      moduleInfo3 = [userActionEvent8 moduleInfo];
+      [moduleInfo3 setClassification:classificationCopy];
 
       v29 = v134;
     }
@@ -29415,7 +29415,7 @@ LABEL_106:
     [v128 addLogMsgState:?];
   }
 
-  if (a3 == 6036 && a4 == 201)
+  if (action == 6036 && target == 201)
   {
 LABEL_157:
     v144 = [v16 stateForType:68];
@@ -29435,18 +29435,18 @@ LABEL_158:
     goto LABEL_159;
   }
 
-  v147 = a4 == 30;
-  if (a3 == 6036 && a4 == 30)
+  v147 = target == 30;
+  if (action == 6036 && target == 30)
   {
     goto LABEL_168;
   }
 
-  if (a3 == 6074 && a4 == 201)
+  if (action == 6074 && target == 201)
   {
     goto LABEL_157;
   }
 
-  if (a3 == 6074 && a4 == 30)
+  if (action == 6074 && target == 30)
   {
 LABEL_168:
     v155 = [v16 stateForType:68];
@@ -29462,8 +29462,8 @@ LABEL_168:
     goto LABEL_158;
   }
 
-  v146 = a3 == 50;
-  if (a3 == 50 && a4 == 201)
+  v146 = action == 50;
+  if (action == 50 && target == 201)
   {
     v156 = [v16 stateForType:68];
     v145 = [v156 copy];
@@ -29497,9 +29497,9 @@ LABEL_160:
   v183[3] = &unk_1E7953B38;
   v151 = v128;
   v184 = v151;
-  v152 = v157;
+  v152 = blockCopy;
   v186 = v152;
-  v153 = v158;
+  v153 = queueCopy;
   v185 = v153;
   [v150 sessionStateForType:6 callback:v183];
 
@@ -29522,29 +29522,29 @@ uint64_t __209__GEOAPPortal_UserActionCodeGen__capturePriorityPlacecardActionSho
   return [GEOAPPortal reportLogMsgEvent:v6 uploadBatchId:v3 completion:v4 completionQueue:v5];
 }
 
-+ (void)capturePriorityShortUserActionsWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12
++ (void)capturePriorityShortUserActionsWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2
 {
   v256 = *MEMORY[0x1E69E9840];
-  v242 = a5;
-  v15 = a6;
-  v16 = a7;
-  v244 = a8;
-  v241 = a9;
-  v17 = a10;
-  v220 = a11;
-  v219 = a12;
+  valueCopy = value;
+  typeCopy = type;
+  metadataCopy = metadata;
+  classificationCopy = classification;
+  idCopy = id;
+  statesCopy = states;
+  queueCopy = queue;
+  blockCopy = block;
   v18 = +[GEOAPStateFactory sharedFactory];
-  v243 = v16;
-  v221 = v17;
-  if ([v17 count])
+  v243 = metadataCopy;
+  v221 = statesCopy;
+  if ([statesCopy count])
   {
-    v19 = v15;
-    v20 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v17, "count")}];
+    v19 = typeCopy;
+    v20 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v251 = 0u;
     v252 = 0u;
     v253 = 0u;
     v254 = 0u;
-    v21 = v17;
+    v21 = statesCopy;
     v22 = [v21 countByEnumeratingWithState:&v251 objects:v255 count:16];
     if (v22)
     {
@@ -29581,7 +29581,7 @@ uint64_t __209__GEOAPPortal_UserActionCodeGen__capturePriorityPlacecardActionSho
       {
         v32 = v31;
 
-        v15 = v19;
+        typeCopy = v19;
         goto LABEL_18;
       }
 
@@ -29593,7 +29593,7 @@ uint64_t __209__GEOAPPortal_UserActionCodeGen__capturePriorityPlacecardActionSho
       v33 = 1;
     }
 
-    v15 = v19;
+    typeCopy = v19;
   }
 
   else
@@ -30028,49 +30028,49 @@ LABEL_104:
   v127 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v126 setUserActionEvent:v127];
 
-  v128 = [v126 userActionEvent];
-  [v128 setUserActionEventAction:a3];
+  userActionEvent = [v126 userActionEvent];
+  [userActionEvent setUserActionEventAction:action];
 
-  v129 = [v126 userActionEvent];
-  v130 = a4;
-  [v129 setUserActionEventTarget:a4];
+  userActionEvent2 = [v126 userActionEvent];
+  targetCopy6 = target;
+  [userActionEvent2 setUserActionEventTarget:target];
 
-  v131 = [v126 userActionEvent];
-  [v131 setUserActionEventValue:v242];
+  userActionEvent3 = [v126 userActionEvent];
+  [userActionEvent3 setUserActionEventValue:valueCopy];
 
-  v132 = [v126 userActionEvent];
-  [v132 setActionRichProviderId:v241];
+  userActionEvent4 = [v126 userActionEvent];
+  [userActionEvent4 setActionRichProviderId:idCopy];
 
   v223 = v125;
-  if (v15 || v243 || v244)
+  if (typeCopy || v243 || classificationCopy)
   {
     v133 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v134 = [v126 userActionEvent];
-    [v134 setModuleInfo:v133];
+    userActionEvent5 = [v126 userActionEvent];
+    [userActionEvent5 setModuleInfo:v133];
 
-    if (v15)
+    if (typeCopy)
     {
-      v135 = [v15 intValue];
-      v136 = [v126 userActionEvent];
-      v137 = [v136 moduleInfo];
-      [v137 setType:v135];
+      intValue = [typeCopy intValue];
+      userActionEvent6 = [v126 userActionEvent];
+      moduleInfo = [userActionEvent6 moduleInfo];
+      [moduleInfo setType:intValue];
 
-      v130 = a4;
+      targetCopy6 = target;
     }
 
     if (v243)
     {
-      v138 = [v126 userActionEvent];
-      v139 = [v138 moduleInfo];
-      [v139 setModuleMetadata:v243];
+      userActionEvent7 = [v126 userActionEvent];
+      moduleInfo2 = [userActionEvent7 moduleInfo];
+      [moduleInfo2 setModuleMetadata:v243];
     }
 
     v125 = v223;
-    if (v244)
+    if (classificationCopy)
     {
-      v140 = [v126 userActionEvent];
-      v141 = [v140 moduleInfo];
-      [v141 setClassification:v244];
+      userActionEvent8 = [v126 userActionEvent];
+      moduleInfo3 = [userActionEvent8 moduleInfo];
+      [moduleInfo3 setClassification:classificationCopy];
 
       v125 = v223;
     }
@@ -30171,9 +30171,9 @@ LABEL_104:
     [v126 addLogMsgState:v227];
   }
 
-  v222 = v15;
+  v222 = typeCopy;
   v216 = v55;
-  if (a3 == 6003 && v130 == 201)
+  if (action == 6003 && targetCopy6 == 201)
   {
     v142 = [v18 stateForType:{68, v55}];
     v143 = [v142 copy];
@@ -30191,7 +30191,7 @@ LABEL_104:
     goto LABEL_185;
   }
 
-  if (a3 == 2015 && v130 == 102)
+  if (action == 2015 && targetCopy6 == 102)
   {
     v149 = [v18 stateForType:{56, v55}];
     v143 = [v149 copy];
@@ -30224,14 +30224,14 @@ LABEL_165:
     v147 = 0;
     v148 = 0;
 LABEL_184:
-    v130 = a4;
+    targetCopy6 = target;
 LABEL_185:
 
     goto LABEL_186;
   }
 
-  v147 = v130 == 105;
-  if (a3 == 2015 && v130 == 105)
+  v147 = targetCopy6 == 105;
+  if (action == 2015 && targetCopy6 == 105)
   {
     v154 = [v18 stateForType:{56, v55}];
     v143 = [v154 copy];
@@ -30265,8 +30265,8 @@ LABEL_185:
     goto LABEL_184;
   }
 
-  v146 = v130 == 101;
-  if (a3 == 2015 && v130 == 101)
+  v146 = targetCopy6 == 101;
+  if (action == 2015 && targetCopy6 == 101)
   {
     v159 = [v18 stateForType:{56, v55}];
     v143 = [v159 copy];
@@ -30300,7 +30300,7 @@ LABEL_185:
     goto LABEL_184;
   }
 
-  if (a3 == 2015 && v130 == 701)
+  if (action == 2015 && targetCopy6 == 701)
   {
     v201 = [v18 stateForType:{59, v55}];
     v143 = [v201 copy];
@@ -30321,8 +30321,8 @@ LABEL_185:
     goto LABEL_165;
   }
 
-  v145 = v130 == 11;
-  if (a3 == 2015 && v130 == 11)
+  v145 = targetCopy6 == 11;
+  if (action == 2015 && targetCopy6 == 11)
   {
     v203 = [v18 stateForType:{59, v55}];
     v143 = [v203 copy];
@@ -30348,8 +30348,8 @@ LABEL_185:
     goto LABEL_184;
   }
 
-  v148 = v130 == 803;
-  if (a3 == 2015 && v130 == 803)
+  v148 = targetCopy6 == 803;
+  if (action == 2015 && targetCopy6 == 803)
   {
     v209 = [v18 stateForType:{59, v55}];
     v143 = [v209 copy];
@@ -30375,8 +30375,8 @@ LABEL_185:
     goto LABEL_184;
   }
 
-  v144 = a3 == 2007;
-  if (a3 == 2007 && v130 == 102)
+  v144 = action == 2007;
+  if (action == 2007 && targetCopy6 == 102)
   {
     v213 = [v18 stateForType:{68, v55}];
     v143 = [v213 copy];
@@ -30421,7 +30421,7 @@ LABEL_186:
       [v126 addLogMsgState:v167];
     }
 
-    v130 = a4;
+    targetCopy6 = target;
   }
 
   if (v144 && v146)
@@ -30442,11 +30442,11 @@ LABEL_186:
       [v126 addLogMsgState:v171];
     }
 
-    v130 = a4;
+    targetCopy6 = target;
   }
 
   v172 = !v144;
-  if (v130 != 8)
+  if (targetCopy6 != 8)
   {
     v172 = 1;
   }
@@ -30484,17 +30484,17 @@ LABEL_186:
     }
 
     v179 = v222;
-    v180 = v220;
+    v180 = queueCopy;
 LABEL_221:
 
-    v185 = v130 == 503;
+    v185 = targetCopy6 == 503;
 LABEL_222:
-    v186 = v130 == 501;
+    v186 = targetCopy6 == 501;
     goto LABEL_223;
   }
 
   v181 = !v146;
-  if (a3 != 6006)
+  if (action != 6006)
   {
     v181 = 1;
   }
@@ -30505,7 +30505,7 @@ LABEL_222:
     v178 = [v182 copy];
 
     v179 = v222;
-    v180 = v220;
+    v180 = queueCopy;
     if (v178)
     {
       [v126 addLogMsgState:v178];
@@ -30519,14 +30519,14 @@ LABEL_222:
       [v126 addLogMsgState:v184];
     }
 
-    v130 = a4;
+    targetCopy6 = target;
     goto LABEL_221;
   }
 
-  v185 = v130 == 503;
+  v185 = targetCopy6 == 503;
   v179 = v222;
-  v180 = v220;
-  if (a3 == 1018 && v130 == 503)
+  v180 = queueCopy;
+  if (action == 1018 && targetCopy6 == 503)
   {
     v198 = [v18 stateForType:57];
     v199 = [v198 copy];
@@ -30540,7 +30540,7 @@ LABEL_222:
     goto LABEL_222;
   }
 
-  if (a3 == 1017 && v130 == 259)
+  if (action == 1017 && targetCopy6 == 259)
   {
 LABEL_230:
     v191 = [v18 stateForType:{68, v216}];
@@ -30556,8 +30556,8 @@ LABEL_232:
     goto LABEL_233;
   }
 
-  v186 = v130 == 501;
-  if (v130 == 501 && a3 == 1017)
+  v186 = targetCopy6 == 501;
+  if (targetCopy6 == 501 && action == 1017)
   {
     v200 = [v18 stateForType:68];
     v189 = [v200 copy];
@@ -30572,7 +30572,7 @@ LABEL_232:
     goto LABEL_226;
   }
 
-  if (v130 == 503 && a3 == 1017)
+  if (targetCopy6 == 503 && action == 1017)
   {
     v206 = [v18 stateForType:68];
     v192 = [v206 copy];
@@ -30593,7 +30593,7 @@ LABEL_232:
     goto LABEL_232;
   }
 
-  if (v130 == 49 && a3 == 1017)
+  if (targetCopy6 == 49 && action == 1017)
   {
     v212 = [v18 stateForType:68];
     v192 = [v212 copy];
@@ -30607,8 +30607,8 @@ LABEL_232:
   }
 
 LABEL_223:
-  v187 = a3 == 194;
-  if (a3 == 194 && v186)
+  v187 = action == 194;
+  if (action == 194 && v186)
   {
     v188 = [v18 stateForType:68];
     v189 = [v188 copy];
@@ -30642,7 +30642,7 @@ LABEL_233:
   v247[3] = &unk_1E7953B38;
   v194 = v126;
   v248 = v194;
-  v195 = v219;
+  v195 = blockCopy;
   v250 = v195;
   v196 = v180;
   v249 = v196;
@@ -30667,19 +30667,19 @@ uint64_t __194__GEOAPPortal_UserActionCodeGen__capturePriorityShortUserActionsWi
   return [GEOAPPortal reportLogMsgEvent:v6 uploadBatchId:v3 completion:v4 completionQueue:v5];
 }
 
-+ (void)captureFamiliarRoutesOnlyWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12
++ (void)captureFamiliarRoutesOnlyWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2
 {
   v73 = *MEMORY[0x1E69E9840];
-  v59 = a5;
-  v62 = a6;
-  v61 = a7;
-  v63 = a8;
-  v60 = a9;
-  v15 = a10;
-  v58 = a11;
-  v57 = a12;
+  valueCopy = value;
+  typeCopy = type;
+  metadataCopy = metadata;
+  classificationCopy = classification;
+  idCopy = id;
+  statesCopy = states;
+  queueCopy = queue;
+  blockCopy = block;
   v16 = +[GEOAPStateFactory sharedFactory];
-  if (![v15 count])
+  if (![statesCopy count])
   {
     v25 = 0;
 LABEL_13:
@@ -30687,12 +30687,12 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v15, "count")}];
+  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v18 = v15;
+  v18 = statesCopy;
   v19 = [v18 countByEnumeratingWithState:&v68 objects:v72 count:16];
   if (v19)
   {
@@ -30763,44 +30763,44 @@ LABEL_17:
   v36 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v35 setUserActionEvent:v36];
 
-  v37 = [v35 userActionEvent];
-  [v37 setUserActionEventAction:a3];
+  userActionEvent = [v35 userActionEvent];
+  [userActionEvent setUserActionEventAction:action];
 
-  v38 = [v35 userActionEvent];
-  [v38 setUserActionEventTarget:a4];
+  userActionEvent2 = [v35 userActionEvent];
+  [userActionEvent2 setUserActionEventTarget:target];
 
-  v39 = [v35 userActionEvent];
-  [v39 setUserActionEventValue:v59];
+  userActionEvent3 = [v35 userActionEvent];
+  [userActionEvent3 setUserActionEventValue:valueCopy];
 
-  v40 = [v35 userActionEvent];
-  [v40 setActionRichProviderId:v60];
+  userActionEvent4 = [v35 userActionEvent];
+  [userActionEvent4 setActionRichProviderId:idCopy];
 
-  if (v62 || v61 || v63)
+  if (typeCopy || metadataCopy || classificationCopy)
   {
     v41 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v42 = [v35 userActionEvent];
-    [v42 setModuleInfo:v41];
+    userActionEvent5 = [v35 userActionEvent];
+    [userActionEvent5 setModuleInfo:v41];
 
-    if (v62)
+    if (typeCopy)
     {
-      v43 = [v62 intValue];
-      v44 = [v35 userActionEvent];
-      v45 = [v44 moduleInfo];
-      [v45 setType:v43];
+      intValue = [typeCopy intValue];
+      userActionEvent6 = [v35 userActionEvent];
+      moduleInfo = [userActionEvent6 moduleInfo];
+      [moduleInfo setType:intValue];
     }
 
-    if (v61)
+    if (metadataCopy)
     {
-      v46 = [v35 userActionEvent];
-      v47 = [v46 moduleInfo];
-      [v47 setModuleMetadata:v61];
+      userActionEvent7 = [v35 userActionEvent];
+      moduleInfo2 = [userActionEvent7 moduleInfo];
+      [moduleInfo2 setModuleMetadata:metadataCopy];
     }
 
-    if (v63)
+    if (classificationCopy)
     {
-      v48 = [v35 userActionEvent];
-      v49 = [v48 moduleInfo];
-      [v49 setClassification:v63];
+      userActionEvent8 = [v35 userActionEvent];
+      moduleInfo3 = [userActionEvent8 moduleInfo];
+      [moduleInfo3 setClassification:classificationCopy];
     }
   }
 
@@ -30819,11 +30819,11 @@ LABEL_17:
   v64[1] = 3221225472;
   v64[2] = __188__GEOAPPortal_UserActionCodeGen__captureFamiliarRoutesOnlyWithAction_target_value_moduleType_moduleMetadata_classification_richProviderId_additionalStates_completionQueue_completionBlock___block_invoke;
   v64[3] = &unk_1E7953B38;
-  v66 = v58;
-  v67 = v57;
+  v66 = queueCopy;
+  v67 = blockCopy;
   v65 = v35;
-  v51 = v58;
-  v52 = v57;
+  v51 = queueCopy;
+  v52 = blockCopy;
   v53 = v35;
   [v50 sessionStateForType:20 callback:v64];
 
@@ -30846,28 +30846,28 @@ uint64_t __188__GEOAPPortal_UserActionCodeGen__captureFamiliarRoutesOnlyWithActi
   return [GEOAPPortal reportLogMsgEvent:v6 uploadBatchId:v3 completion:v4 completionQueue:v5];
 }
 
-+ (void)captureStartEndNavWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12
++ (void)captureStartEndNavWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2
 {
   v241 = *MEMORY[0x1E69E9840];
-  v224 = a5;
-  v15 = a6;
-  v16 = a7;
-  v226 = a8;
-  v223 = a9;
-  v17 = a10;
-  v199 = a11;
-  v198 = a12;
+  valueCopy = value;
+  typeCopy = type;
+  metadataCopy = metadata;
+  classificationCopy = classification;
+  idCopy = id;
+  statesCopy = states;
+  queueCopy = queue;
+  blockCopy = block;
   v18 = +[GEOAPStateFactory sharedFactory];
-  v219 = v16;
-  v200 = v17;
-  if ([v17 count])
+  v219 = metadataCopy;
+  v200 = statesCopy;
+  if ([statesCopy count])
   {
-    v19 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v17, "count")}];
+    v19 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
     v236 = 0u;
     v237 = 0u;
     v238 = 0u;
     v239 = 0u;
-    v20 = v17;
+    v20 = statesCopy;
     v21 = [v20 countByEnumeratingWithState:&v236 objects:v240 count:16];
     if (v21)
     {
@@ -30904,7 +30904,7 @@ uint64_t __188__GEOAPPortal_UserActionCodeGen__captureFamiliarRoutesOnlyWithActi
       {
         v222 = v30;
 
-        v16 = v219;
+        metadataCopy = v219;
         goto LABEL_18;
       }
 
@@ -30916,7 +30916,7 @@ uint64_t __188__GEOAPPortal_UserActionCodeGen__captureFamiliarRoutesOnlyWithActi
       v31 = 1;
     }
 
-    v16 = v219;
+    metadataCopy = v219;
   }
 
   else
@@ -31377,48 +31377,48 @@ LABEL_109:
   v133 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v132 setUserActionEvent:v133];
 
-  v134 = [v132 userActionEvent];
-  [v134 setUserActionEventAction:a3];
+  userActionEvent = [v132 userActionEvent];
+  [userActionEvent setUserActionEventAction:action];
 
-  v135 = [v132 userActionEvent];
-  [v135 setUserActionEventTarget:a4];
+  userActionEvent2 = [v132 userActionEvent];
+  [userActionEvent2 setUserActionEventTarget:target];
 
-  v136 = [v132 userActionEvent];
-  [v136 setUserActionEventValue:v224];
+  userActionEvent3 = [v132 userActionEvent];
+  [userActionEvent3 setUserActionEventValue:valueCopy];
 
-  v137 = [v132 userActionEvent];
-  [v137 setActionRichProviderId:v223];
+  userActionEvent4 = [v132 userActionEvent];
+  [userActionEvent4 setActionRichProviderId:idCopy];
 
-  v138 = v15 | v16 | v226;
+  v138 = typeCopy | metadataCopy | classificationCopy;
   v139 = v138 != 0;
   if (v138)
   {
     v140 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v141 = [v132 userActionEvent];
-    [v141 setModuleInfo:v140];
+    userActionEvent5 = [v132 userActionEvent];
+    [userActionEvent5 setModuleInfo:v140];
 
-    if (v15)
+    if (typeCopy)
     {
-      v142 = [v15 intValue];
-      v143 = [v132 userActionEvent];
-      v144 = [v143 moduleInfo];
-      [v144 setType:v142];
+      intValue = [typeCopy intValue];
+      userActionEvent6 = [v132 userActionEvent];
+      moduleInfo = [userActionEvent6 moduleInfo];
+      [moduleInfo setType:intValue];
 
-      v16 = v219;
+      metadataCopy = v219;
     }
 
-    if (v16)
+    if (metadataCopy)
     {
-      v145 = [v132 userActionEvent];
-      v146 = [v145 moduleInfo];
-      [v146 setModuleMetadata:v16];
+      userActionEvent7 = [v132 userActionEvent];
+      moduleInfo2 = [userActionEvent7 moduleInfo];
+      [moduleInfo2 setModuleMetadata:metadataCopy];
     }
 
-    if (v226)
+    if (classificationCopy)
     {
-      v147 = [v132 userActionEvent];
-      v148 = [v147 moduleInfo];
-      [v148 setClassification:v226];
+      userActionEvent8 = [v132 userActionEvent];
+      moduleInfo3 = [userActionEvent8 moduleInfo];
+      [moduleInfo3 setClassification:classificationCopy];
     }
   }
 
@@ -31437,11 +31437,11 @@ LABEL_109:
     [v132 addLogMsgState:v126];
   }
 
-  v149 = a3 == 3001 && a4 == 305;
+  v149 = action == 3001 && target == 305;
   v150 = v149;
   v202 = v150;
-  v201 = v15;
-  if (v149 || a3 == 3001 && a4 == 301)
+  v201 = typeCopy;
+  if (v149 || action == 3001 && target == 301)
   {
     v151 = [v18 stateForType:68];
     v152 = [v151 copy];
@@ -31457,7 +31457,7 @@ LABEL_109:
   else
   {
     v153 = 0;
-    if (a3 == 3001 && a4 == 303)
+    if (action == 3001 && target == 303)
     {
       v158 = [v18 stateForType:68];
       v155 = [v158 copy];
@@ -31479,7 +31479,7 @@ LABEL_109:
   }
 
   v197 = v153;
-  if (a3 == 3001 && a4 == 302)
+  if (action == 3001 && target == 302)
   {
     v154 = [v18 stateForType:68];
     v155 = [v154 copy];
@@ -31498,7 +31498,7 @@ LABEL_109:
   else
   {
     v156 = 0;
-    if (a3 != 3001 || a4 != 802)
+    if (action != 3001 || target != 802)
     {
       v195 = 0;
       v196 = 0;
@@ -31531,9 +31531,9 @@ LABEL_152:
   v232[3] = &unk_1E7953B38;
   v160 = v132;
   v233 = v160;
-  v161 = v198;
+  v161 = blockCopy;
   v235 = v161;
-  v162 = v199;
+  v162 = queueCopy;
   v234 = v162;
   [v159 sessionStateForType:20 callback:v232];
 
@@ -31542,49 +31542,49 @@ LABEL_152:
   v164 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v163 setUserActionEvent:v164];
 
-  v165 = [v163 userActionEvent];
-  [v165 setUserActionEventAction:a3];
+  userActionEvent9 = [v163 userActionEvent];
+  [userActionEvent9 setUserActionEventAction:action];
 
-  v166 = [v163 userActionEvent];
-  [v166 setUserActionEventTarget:a4];
+  userActionEvent10 = [v163 userActionEvent];
+  [userActionEvent10 setUserActionEventTarget:target];
 
-  v167 = [v163 userActionEvent];
-  [v167 setUserActionEventValue:v224];
+  userActionEvent11 = [v163 userActionEvent];
+  [userActionEvent11 setUserActionEventValue:valueCopy];
 
-  v168 = [v163 userActionEvent];
-  [v168 setActionRichProviderId:v223];
+  userActionEvent12 = [v163 userActionEvent];
+  [userActionEvent12 setActionRichProviderId:idCopy];
 
   v169 = v203;
   if (v139)
   {
     v170 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v171 = [v163 userActionEvent];
-    [v171 setModuleInfo:v170];
+    userActionEvent13 = [v163 userActionEvent];
+    [userActionEvent13 setModuleInfo:v170];
 
     if (v201)
     {
-      v172 = [v201 intValue];
-      v173 = [v163 userActionEvent];
-      v174 = [v173 moduleInfo];
-      [v174 setType:v172];
+      intValue2 = [v201 intValue];
+      userActionEvent14 = [v163 userActionEvent];
+      moduleInfo4 = [userActionEvent14 moduleInfo];
+      [moduleInfo4 setType:intValue2];
 
       v169 = v203;
     }
 
     if (v219)
     {
-      v175 = [v163 userActionEvent];
-      v176 = [v175 moduleInfo];
-      [v176 setModuleMetadata:v219];
+      userActionEvent15 = [v163 userActionEvent];
+      moduleInfo5 = [userActionEvent15 moduleInfo];
+      [moduleInfo5 setModuleMetadata:v219];
 
       v169 = v203;
     }
 
-    if (v226)
+    if (classificationCopy)
     {
-      v177 = [v163 userActionEvent];
-      v178 = [v177 moduleInfo];
-      [v178 setClassification:v226];
+      userActionEvent16 = [v163 userActionEvent];
+      moduleInfo6 = [userActionEvent16 moduleInfo];
+      [moduleInfo6 setClassification:classificationCopy];
 
       v169 = v203;
     }
@@ -31799,20 +31799,20 @@ uint64_t __181__GEOAPPortal_UserActionCodeGen__captureStartEndNavWithAction_targ
   return [GEOAPPortal reportLogMsgEvent:v6 uploadBatchId:v3 completion:v4 completionQueue:v5];
 }
 
-+ (void)capturePlaceCardRevealWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12
++ (void)capturePlaceCardRevealWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2
 {
   v187 = *MEMORY[0x1E69E9840];
-  v175 = a5;
-  v174 = a6;
-  v176 = a7;
-  v177 = a8;
-  v173 = a9;
-  v15 = a10;
-  v153 = a11;
-  v152 = a12;
+  valueCopy = value;
+  typeCopy = type;
+  metadataCopy = metadata;
+  classificationCopy = classification;
+  idCopy = id;
+  statesCopy = states;
+  queueCopy = queue;
+  blockCopy = block;
   v16 = +[GEOAPStateFactory sharedFactory];
-  v154 = v15;
-  if (![v15 count])
+  v154 = statesCopy;
+  if (![statesCopy count])
   {
     v25 = 0;
 LABEL_13:
@@ -31820,12 +31820,12 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v15, "count")}];
+  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
   v182 = 0u;
   v183 = 0u;
   v184 = 0u;
   v185 = 0u;
-  v18 = v15;
+  v18 = statesCopy;
   v19 = [v18 countByEnumeratingWithState:&v182 objects:v186 count:16];
   if (v19)
   {
@@ -32316,44 +32316,44 @@ LABEL_107:
   v131 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v130 setUserActionEvent:v131];
 
-  v132 = [v130 userActionEvent];
-  [v132 setUserActionEventAction:a3];
+  userActionEvent = [v130 userActionEvent];
+  [userActionEvent setUserActionEventAction:action];
 
-  v133 = [v130 userActionEvent];
-  [v133 setUserActionEventTarget:a4];
+  userActionEvent2 = [v130 userActionEvent];
+  [userActionEvent2 setUserActionEventTarget:target];
 
-  v134 = [v130 userActionEvent];
-  [v134 setUserActionEventValue:v175];
+  userActionEvent3 = [v130 userActionEvent];
+  [userActionEvent3 setUserActionEventValue:valueCopy];
 
-  v135 = [v130 userActionEvent];
-  [v135 setActionRichProviderId:v173];
+  userActionEvent4 = [v130 userActionEvent];
+  [userActionEvent4 setActionRichProviderId:idCopy];
 
-  if (v174 || v176 || v177)
+  if (typeCopy || metadataCopy || classificationCopy)
   {
     v136 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v137 = [v130 userActionEvent];
-    [v137 setModuleInfo:v136];
+    userActionEvent5 = [v130 userActionEvent];
+    [userActionEvent5 setModuleInfo:v136];
 
-    if (v174)
+    if (typeCopy)
     {
-      v138 = [v174 intValue];
-      v139 = [v130 userActionEvent];
-      v140 = [v139 moduleInfo];
-      [v140 setType:v138];
+      intValue = [typeCopy intValue];
+      userActionEvent6 = [v130 userActionEvent];
+      moduleInfo = [userActionEvent6 moduleInfo];
+      [moduleInfo setType:intValue];
     }
 
-    if (v176)
+    if (metadataCopy)
     {
-      v141 = [v130 userActionEvent];
-      v142 = [v141 moduleInfo];
-      [v142 setModuleMetadata:v176];
+      userActionEvent7 = [v130 userActionEvent];
+      moduleInfo2 = [userActionEvent7 moduleInfo];
+      [moduleInfo2 setModuleMetadata:metadataCopy];
     }
 
-    if (v177)
+    if (classificationCopy)
     {
-      v143 = [v130 userActionEvent];
-      v144 = [v143 moduleInfo];
-      [v144 setClassification:v177];
+      userActionEvent8 = [v130 userActionEvent];
+      moduleInfo3 = [userActionEvent8 moduleInfo];
+      [moduleInfo3 setClassification:classificationCopy];
     }
   }
 
@@ -32457,7 +32457,7 @@ LABEL_107:
     [v130 addLogMsgState:v156];
   }
 
-  if (a3 == 21 && a4 == 201)
+  if (action == 21 && target == 201)
   {
     v145 = [v16 stateForType:68];
     v146 = [v145 copy];
@@ -32475,9 +32475,9 @@ LABEL_107:
   v178[3] = &unk_1E7953B38;
   v148 = v130;
   v179 = v148;
-  v149 = v152;
+  v149 = blockCopy;
   v181 = v149;
-  v150 = v153;
+  v150 = queueCopy;
   v180 = v150;
   [v147 sessionStateForType:6 callback:v178];
 
@@ -32500,19 +32500,19 @@ uint64_t __185__GEOAPPortal_UserActionCodeGen__capturePlaceCardRevealWithAction_
   return [GEOAPPortal reportLogMsgEvent:v6 uploadBatchId:v3 completion:v4 completionQueue:v5];
 }
 
-+ (void)captureMapViewEngagementWithAction:(int)a3 target:(int)a4 value:(id)a5 moduleType:(id)a6 moduleMetadata:(id)a7 classification:(id)a8 richProviderId:(id)a9 additionalStates:(id)a10 completionQueue:(id)a11 completionBlock:(id)a12
++ (void)captureMapViewEngagementWithAction:(int)action target:(int)target value:(id)value moduleType:(id)type moduleMetadata:(id)metadata classification:(id)classification richProviderId:(id)id additionalStates:(id)self0 completionQueue:(id)self1 completionBlock:(id)self2
 {
   v73 = *MEMORY[0x1E69E9840];
-  v59 = a5;
-  v62 = a6;
-  v61 = a7;
-  v63 = a8;
-  v60 = a9;
-  v15 = a10;
-  v58 = a11;
-  v57 = a12;
+  valueCopy = value;
+  typeCopy = type;
+  metadataCopy = metadata;
+  classificationCopy = classification;
+  idCopy = id;
+  statesCopy = states;
+  queueCopy = queue;
+  blockCopy = block;
   v16 = +[GEOAPStateFactory sharedFactory];
-  if (![v15 count])
+  if (![statesCopy count])
   {
     v25 = 0;
 LABEL_13:
@@ -32520,12 +32520,12 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v15, "count")}];
+  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v18 = v15;
+  v18 = statesCopy;
   v19 = [v18 countByEnumeratingWithState:&v68 objects:v72 count:16];
   if (v19)
   {
@@ -32596,44 +32596,44 @@ LABEL_17:
   v36 = objc_alloc_init(MEMORY[0x1E69A1FD8]);
   [v35 setUserActionEvent:v36];
 
-  v37 = [v35 userActionEvent];
-  [v37 setUserActionEventAction:a3];
+  userActionEvent = [v35 userActionEvent];
+  [userActionEvent setUserActionEventAction:action];
 
-  v38 = [v35 userActionEvent];
-  [v38 setUserActionEventTarget:a4];
+  userActionEvent2 = [v35 userActionEvent];
+  [userActionEvent2 setUserActionEventTarget:target];
 
-  v39 = [v35 userActionEvent];
-  [v39 setUserActionEventValue:v59];
+  userActionEvent3 = [v35 userActionEvent];
+  [userActionEvent3 setUserActionEventValue:valueCopy];
 
-  v40 = [v35 userActionEvent];
-  [v40 setActionRichProviderId:v60];
+  userActionEvent4 = [v35 userActionEvent];
+  [userActionEvent4 setActionRichProviderId:idCopy];
 
-  if (v62 || v61 || v63)
+  if (typeCopy || metadataCopy || classificationCopy)
   {
     v41 = objc_alloc_init(MEMORY[0x1E69A1FE0]);
-    v42 = [v35 userActionEvent];
-    [v42 setModuleInfo:v41];
+    userActionEvent5 = [v35 userActionEvent];
+    [userActionEvent5 setModuleInfo:v41];
 
-    if (v62)
+    if (typeCopy)
     {
-      v43 = [v62 intValue];
-      v44 = [v35 userActionEvent];
-      v45 = [v44 moduleInfo];
-      [v45 setType:v43];
+      intValue = [typeCopy intValue];
+      userActionEvent6 = [v35 userActionEvent];
+      moduleInfo = [userActionEvent6 moduleInfo];
+      [moduleInfo setType:intValue];
     }
 
-    if (v61)
+    if (metadataCopy)
     {
-      v46 = [v35 userActionEvent];
-      v47 = [v46 moduleInfo];
-      [v47 setModuleMetadata:v61];
+      userActionEvent7 = [v35 userActionEvent];
+      moduleInfo2 = [userActionEvent7 moduleInfo];
+      [moduleInfo2 setModuleMetadata:metadataCopy];
     }
 
-    if (v63)
+    if (classificationCopy)
     {
-      v48 = [v35 userActionEvent];
-      v49 = [v48 moduleInfo];
-      [v49 setClassification:v63];
+      userActionEvent8 = [v35 userActionEvent];
+      moduleInfo3 = [userActionEvent8 moduleInfo];
+      [moduleInfo3 setClassification:classificationCopy];
     }
   }
 
@@ -32652,11 +32652,11 @@ LABEL_17:
   v64[1] = 3221225472;
   v64[2] = __187__GEOAPPortal_UserActionCodeGen__captureMapViewEngagementWithAction_target_value_moduleType_moduleMetadata_classification_richProviderId_additionalStates_completionQueue_completionBlock___block_invoke;
   v64[3] = &unk_1E7953B38;
-  v66 = v58;
-  v67 = v57;
+  v66 = queueCopy;
+  v67 = blockCopy;
   v65 = v35;
-  v51 = v58;
-  v52 = v57;
+  v51 = queueCopy;
+  v52 = blockCopy;
   v53 = v35;
   [v50 sessionStateForType:8 callback:v64];
 
@@ -32679,36 +32679,36 @@ uint64_t __187__GEOAPPortal_UserActionCodeGen__captureMapViewEngagementWithActio
   return [GEOAPPortal reportLogMsgEvent:v6 uploadBatchId:v3 completion:v4 completionQueue:v5];
 }
 
-+ (void)processMapsDeletionWithCompletionQueue:(id)a3 completion:(id)a4
++ (void)processMapsDeletionWithCompletionQueue:(id)queue completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
   v7 = +[GEOAPServiceManager sharedManager];
-  [v7 processMapsDeletionWithCompletionQueue:v6 completion:v5];
+  [v7 processMapsDeletionWithCompletionQueue:queueCopy completion:completionCopy];
 }
 
-+ (id)_caChargingStateFromAPChargingState:(int)a3
++ (id)_caChargingStateFromAPChargingState:(int)state
 {
-  if ((a3 - 1) > 2)
+  if ((state - 1) > 2)
   {
     return @"UNKNOWN";
   }
 
   else
   {
-    return off_1E7953BB0[a3 - 1];
+    return off_1E7953BB0[state - 1];
   }
 }
 
-+ (id)_caFeatureFromAPFeature:(int)a3
++ (id)_caFeatureFromAPFeature:(int)feature
 {
   v3 = @"UNKNOWN";
-  if (a3 == 1)
+  if (feature == 1)
   {
     v3 = @"TREE";
   }
 
-  if (a3 == 2)
+  if (feature == 2)
   {
     return @"SHADOW";
   }
@@ -32719,128 +32719,128 @@ uint64_t __187__GEOAPPortal_UserActionCodeGen__captureMapViewEngagementWithActio
   }
 }
 
-+ (id)_caTriggerTypeFromFromAPThermalPressure:(int)a3
++ (id)_caTriggerTypeFromFromAPThermalPressure:(int)pressure
 {
-  if ((a3 - 1) > 3)
+  if ((pressure - 1) > 3)
   {
     return @"UNKNOWN";
   }
 
   else
   {
-    return off_1E7953B90[a3 - 1];
+    return off_1E7953B90[pressure - 1];
   }
 }
 
-+ (id)_caNavMapTypeFromAPNavMapType:(int)a3
++ (id)_caNavMapTypeFromAPNavMapType:(int)type
 {
-  if ((a3 - 1) > 2)
+  if ((type - 1) > 2)
   {
     return @"UNKNOWN";
   }
 
   else
   {
-    return off_1E7953B78[a3 - 1];
+    return off_1E7953B78[type - 1];
   }
 }
 
-+ (int)_eventNavChargingStateFromAPNavChargingState:(int)a3
++ (int)_eventNavChargingStateFromAPNavChargingState:(int)state
 {
-  if ((a3 - 1) >= 3)
+  if ((state - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return state;
   }
 }
 
-+ (int)_eventNavMapTypeFromAPNavMapType:(int)a3
++ (int)_eventNavMapTypeFromAPNavMapType:(int)type
 {
-  if ((a3 - 1) >= 3)
+  if ((type - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
-+ (int)_eventThermalPressureFromAPThermalPressure:(int)a3
++ (int)_eventThermalPressureFromAPThermalPressure:(int)pressure
 {
-  if ((a3 - 1) >= 4)
+  if ((pressure - 1) >= 4)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return pressure;
   }
 }
 
-+ (void)captureDirectionsWithDirectionsFeedbacks:(id)a3 finalLocation:(id)a4 arrivalLocation:(id)a5 arrivedAtDestination:(id)a6 navigationAudioFeedback:(GEONavigationAudioFeedback *)a7 durationOfTrip:(id)a8 durationInNavigationModes:(id)a9 preArrival:(id)a10 originalEta:(id)a11 isVlfImprovementUsed:(id)a12 isCoarseLocationUsed:(id)a13 acceptedCyclingWorkout:(id)a14 batteryDied:(id)a15 chargingStopAdded:(id)a16 isSiriEngaged:(id)a17 tripOrigin:(id)a18 wasBadRouteExperience:(id)a19 isBadEvExperience:(id)a20 isEvSampleTrip:(id)a21 stateOfChargeAtOrigin:(id)a22 stateOfChargeAtDestPredicted:(id)a23 stateOfChargeAtDestActual:(id)a24 stateOfChargeDiffAtDest:(id)a25 waypoints:(id)a26 evConsumptionModel:(id)a27 evChargingMode:(id)a28 isEVRoute:(BOOL)a29 activeNavMode:(int)a30 arWalkingUsedInRoutePlanning:(id)a31 arWalkingUsedInNavigation:(id)a32 voiceGuidanceLevel:(int)a33 hFPEnabled:(id)a34 isEndRouteTermination:(id)a35 isParkedCarTermination:(id)a36 isTransitionToWalkingTermination:(id)a37 isTransitionToFindmyTermination:(id)a38 parkingDetectionLocation:(id)a39 timeBetweenParkedAndArrival:(id)a40 arrivedAtDestinationCount:(id)a41 inParkingModeCount:(id)a42 isInParkingMode:(id)a43 isSuggestToWalkingTriggered:(id)a44 isTransitedToWalking:(id)a45 isSuggestToFindmyTriggered:(id)a46 isTransitedToFindmy:(id)a47
++ (void)captureDirectionsWithDirectionsFeedbacks:(id)feedbacks finalLocation:(id)location arrivalLocation:(id)arrivalLocation arrivedAtDestination:(id)destination navigationAudioFeedback:(GEONavigationAudioFeedback *)feedback durationOfTrip:(id)trip durationInNavigationModes:(id)modes preArrival:(id)self0 originalEta:(id)self1 isVlfImprovementUsed:(id)self2 isCoarseLocationUsed:(id)self3 acceptedCyclingWorkout:(id)self4 batteryDied:(id)self5 chargingStopAdded:(id)self6 isSiriEngaged:(id)self7 tripOrigin:(id)self8 wasBadRouteExperience:(id)self9 isBadEvExperience:(id)evExperience isEvSampleTrip:(id)sampleTrip stateOfChargeAtOrigin:(id)atOrigin stateOfChargeAtDestPredicted:(id)predicted stateOfChargeAtDestActual:(id)actual stateOfChargeDiffAtDest:(id)dest waypoints:(id)waypoints evConsumptionModel:(id)model evChargingMode:(id)mode isEVRoute:(BOOL)route activeNavMode:(int)feedbacks0 arWalkingUsedInRoutePlanning:(id)feedbacks1 arWalkingUsedInNavigation:(id)feedbacks2 voiceGuidanceLevel:(int)feedbacks3 hFPEnabled:(id)feedbacks4 isEndRouteTermination:(id)feedbacks5 isParkedCarTermination:(id)feedbacks6 isTransitionToWalkingTermination:(id)feedbacks7 isTransitionToFindmyTermination:(id)feedbacks8 parkingDetectionLocation:(id)feedbacks9 timeBetweenParkedAndArrival:(id)location0 arrivedAtDestinationCount:(id)location1 inParkingModeCount:(id)location2 isInParkingMode:(id)location3 isSuggestToWalkingTriggered:(id)location4 isTransitedToWalking:(id)location5 isSuggestToFindmyTriggered:(id)location6 isTransitedToFindmy:(id)location7
 {
-  v106 = a3;
-  v75 = a4;
-  v103 = a5;
-  v109 = a6;
-  v105 = a8;
-  v102 = a9;
-  v108 = a10;
-  v104 = a11;
-  v101 = a12;
-  v100 = a13;
-  v99 = a14;
-  v98 = a15;
-  v97 = a16;
-  v96 = a17;
-  v95 = a18;
-  v76 = a19;
-  v94 = a20;
-  v93 = a21;
-  v92 = a22;
-  v91 = a23;
-  v50 = a24;
-  v51 = a25;
-  v52 = a26;
-  v74 = a27;
-  v90 = a28;
-  v89 = a31;
-  v88 = a32;
-  v87 = a34;
-  v86 = a35;
-  v85 = a36;
-  v84 = a37;
-  v83 = a38;
-  v82 = a39;
-  v81 = a40;
-  v80 = a41;
-  v79 = a42;
-  v78 = a43;
-  v77 = a44;
-  v53 = a45;
-  v54 = a46;
-  v55 = a47;
+  feedbacksCopy = feedbacks;
+  locationCopy = location;
+  arrivalLocationCopy = arrivalLocation;
+  destinationCopy = destination;
+  tripCopy = trip;
+  modesCopy = modes;
+  arrivalCopy = arrival;
+  etaCopy = eta;
+  usedCopy = used;
+  locationUsedCopy = locationUsed;
+  workoutCopy = workout;
+  diedCopy = died;
+  addedCopy = added;
+  engagedCopy = engaged;
+  originCopy = origin;
+  experienceCopy = experience;
+  evExperienceCopy = evExperience;
+  sampleTripCopy = sampleTrip;
+  atOriginCopy = atOrigin;
+  predictedCopy = predicted;
+  actualCopy = actual;
+  destCopy = dest;
+  waypointsCopy = waypoints;
+  modelCopy = model;
+  modeCopy = mode;
+  planningCopy = planning;
+  navigationCopy = navigation;
+  enabledCopy = enabled;
+  terminationCopy = termination;
+  carTerminationCopy = carTermination;
+  walkingTerminationCopy = walkingTermination;
+  findmyTerminationCopy = findmyTermination;
+  detectionLocationCopy = detectionLocation;
+  andArrivalCopy = andArrival;
+  countCopy = count;
+  modeCountCopy = modeCount;
+  parkingModeCopy = parkingMode;
+  triggeredCopy = triggered;
+  walkingCopy = walking;
+  findmyTriggeredCopy = findmyTriggered;
+  findmyCopy = findmy;
   v56 = +[GEOAPServiceManager sharedManager];
   v57 = v56;
-  if (!a30)
+  if (!navMode)
   {
     [v56 reportDailyUsageCountType:167];
-    v58 = [v109 BOOLValue];
-    v59 = [v108 BOOLValue];
-    if ((v58 & 1) != 0 || v59)
+    bOOLValue = [destinationCopy BOOLValue];
+    bOOLValue2 = [arrivalCopy BOOLValue];
+    if ((bOOLValue & 1) != 0 || bOOLValue2)
     {
       [v57 reportDailyUsageCountType:168];
-      [v104 floatValue];
+      [etaCopy floatValue];
       v64 = v63;
-      [v105 floatValue];
-      v66 = v64 == 0.0 ? 0 : v58;
+      [tripCopy floatValue];
+      v66 = v64 == 0.0 ? 0 : bOOLValue;
       if (v66 == 1 && v65 != 0.0)
       {
         v67 = v65;
@@ -32868,31 +32868,31 @@ uint64_t __187__GEOAPPortal_UserActionCodeGen__captureMapViewEngagementWithActio
       }
     }
 
-    if ([v106 count] >= 2)
+    if ([feedbacksCopy count] >= 2)
     {
       [v57 reportDailyUsageCountType:169];
     }
   }
 
-  if (a29)
+  if (route)
   {
-    v60 = v74;
+    v60 = modelCopy;
     if (([v57 evDirectionsFeedbackAuth] & 1) == 0)
     {
       [v57 setEvDirectionsFeedbackAllowed:0];
       goto LABEL_16;
     }
 
-    if ([v76 BOOLValue])
+    if ([experienceCopy BOOLValue])
     {
       [v57 setEvDirectionsFeedbackAllowed:0];
     }
 
     else
     {
-      v70 = [v57 evDirectionsFeedbackAllowed];
+      evDirectionsFeedbackAllowed = [v57 evDirectionsFeedbackAllowed];
       [v57 toggleEVDirectionsFeedbackAllowed];
-      if (!v70)
+      if (!evDirectionsFeedbackAllowed)
       {
         goto LABEL_16;
       }
@@ -32901,7 +32901,7 @@ uint64_t __187__GEOAPPortal_UserActionCodeGen__captureMapViewEngagementWithActio
 
   else
   {
-    v60 = v74;
+    v60 = modelCopy;
     if (([v57 directionsFeedbackAllowed] & 1) == 0)
     {
       [v57 setDirectionsFeedbackAllowed:1];
@@ -32909,34 +32909,34 @@ uint64_t __187__GEOAPPortal_UserActionCodeGen__captureMapViewEngagementWithActio
     }
   }
 
-  v61 = a33;
-  if ((a33 - 1) >= 3)
+  levelCopy = level;
+  if ((level - 1) >= 3)
   {
-    v61 = 0;
+    levelCopy = 0;
   }
 
-  v62 = *&a7->var9;
-  v110 = *&a7->var0;
+  v62 = *&feedback->var9;
+  v110 = *&feedback->var0;
   v111[0] = v62;
-  *(v111 + 12) = *&a7->var12;
-  LODWORD(v72) = v61;
-  LODWORD(v71) = a30;
-  [GEOAPPortal captureDirectionsWithDirectionsFeedbacks:v106 finalLocation:v75 arrivalLocation:v103 arrivedAtDestination:v109 navigationAudioFeedback:&v110 durationOfTrip:v105 durationInNavigationModes:v102 preArrival:v108 originalEta:v104 isVlfImprovementUsed:v101 isCoarseLocationUsed:v100 acceptedCyclingWorkout:v99 batteryDied:v98 chargingStopAdded:v97 isSiriEngaged:v96 tripOrigin:v95 isBadEvExperience:v94 isEvSampleTrip:v93 stateOfChargeAtOrigin:v92 stateOfChargeAtDestPredicted:v91 stateOfChargeAtDestActual:v50 stateOfChargeDiffAtDest:v51 waypoints:v52 evConsumptionModel:v60 evChargingMode:v90 activeNavMode:v71 arWalkingUsedInRoutePlanning:v89 arWalkingUsedInNavigation:v88 voiceGuidanceLevel:v72 hFPEnabled:v87 isEndRouteTermination:v86 isParkedCarTermination:v85 isTransitionToWalkingTermination:v84 isTransitionToFindmyTermination:v83 parkingDetectionLocation:v82 timeBetweenParkedAndArrival:v81 arrivedAtDestinationCount:v80 inParkingModeCount:v79 isInParkingMode:v78 isSuggestToWalkingTriggered:v77 isTransitedToWalking:v53 isSuggestToFindmyTriggered:v54 isTransitedToFindmy:v55 additionalStates:0 providedDropRate:0 completionQueue:0 completionBlock:0];
+  *(v111 + 12) = *&feedback->var12;
+  LODWORD(v72) = levelCopy;
+  LODWORD(v71) = navMode;
+  [GEOAPPortal captureDirectionsWithDirectionsFeedbacks:feedbacksCopy finalLocation:locationCopy arrivalLocation:arrivalLocationCopy arrivedAtDestination:destinationCopy navigationAudioFeedback:&v110 durationOfTrip:tripCopy durationInNavigationModes:modesCopy preArrival:arrivalCopy originalEta:etaCopy isVlfImprovementUsed:usedCopy isCoarseLocationUsed:locationUsedCopy acceptedCyclingWorkout:workoutCopy batteryDied:diedCopy chargingStopAdded:addedCopy isSiriEngaged:engagedCopy tripOrigin:originCopy isBadEvExperience:evExperienceCopy isEvSampleTrip:sampleTripCopy stateOfChargeAtOrigin:atOriginCopy stateOfChargeAtDestPredicted:predictedCopy stateOfChargeAtDestActual:actualCopy stateOfChargeDiffAtDest:destCopy waypoints:waypointsCopy evConsumptionModel:v60 evChargingMode:modeCopy activeNavMode:v71 arWalkingUsedInRoutePlanning:planningCopy arWalkingUsedInNavigation:navigationCopy voiceGuidanceLevel:v72 hFPEnabled:enabledCopy isEndRouteTermination:terminationCopy isParkedCarTermination:carTerminationCopy isTransitionToWalkingTermination:walkingTerminationCopy isTransitionToFindmyTermination:findmyTerminationCopy parkingDetectionLocation:detectionLocationCopy timeBetweenParkedAndArrival:andArrivalCopy arrivedAtDestinationCount:countCopy inParkingModeCount:modeCountCopy isInParkingMode:parkingModeCopy isSuggestToWalkingTriggered:triggeredCopy isTransitedToWalking:walkingCopy isSuggestToFindmyTriggered:findmyTriggeredCopy isTransitedToFindmy:findmyCopy additionalStates:0 providedDropRate:0 completionQueue:0 completionBlock:0];
 LABEL_16:
 }
 
-+ (void)captureCommuteDoomWindow:(id)a3 exitTime:(id)a4 destinations:(id)a5 reason:(int64_t)a6 networkRequests:(unint64_t)a7 alerts:(unint64_t)a8
++ (void)captureCommuteDoomWindow:(id)window exitTime:(id)time destinations:(id)destinations reason:(int64_t)reason networkRequests:(unint64_t)requests alerts:(unint64_t)alerts
 {
   v49 = *MEMORY[0x1E69E9840];
-  v41 = a3;
-  v42 = a4;
-  v10 = a5;
+  windowCopy = window;
+  timeCopy = time;
+  destinationsCopy = destinations;
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  obj = v10;
+  obj = destinationsCopy;
   v12 = [obj countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (v12)
   {
@@ -32984,39 +32984,39 @@ LABEL_16:
   }
 
   v23 = MEMORY[0x1E696AD98];
-  v37 = [v41 startDate];
-  [v37 timeIntervalSinceReferenceDate];
+  startDate = [windowCopy startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v34 = [v23 numberWithDouble:?];
   v24 = MEMORY[0x1E696AD98];
-  v36 = [v41 endDate];
-  v35 = [v41 startDate];
-  [v36 timeIntervalSinceDate:v35];
+  endDate = [windowCopy endDate];
+  startDate2 = [windowCopy startDate];
+  [endDate timeIntervalSinceDate:startDate2];
   v25 = [v24 numberWithDouble:?];
   v26 = MEMORY[0x1E696AD98];
-  v27 = [v41 startDate];
-  [v42 timeIntervalSinceDate:v27];
+  startDate3 = [windowCopy startDate];
+  [timeCopy timeIntervalSinceDate:startDate3];
   v28 = [v26 numberWithDouble:?];
-  if (a6 == 2)
+  if (reason == 2)
   {
     v29 = 2;
   }
 
   else
   {
-    v29 = a6 == 1;
+    v29 = reason == 1;
   }
 
-  v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a8];
-  v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a7];
+  v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:alerts];
+  v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:requests];
   v32 = [v11 copy];
   [GEOAPPortal captureCommuteWindowWithStartTime:v34 duration:v25 predictedExitTime:v28 endReason:v29 numberOfAlertingResponses:v30 numberOfDoomRoutingRequests:v31 predictedDestinations:v32];
 
   v33 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)captureTimeToLeaveIntialTravelTimeEventWithTravelTime:(double)a3
++ (void)captureTimeToLeaveIntialTravelTimeEventWithTravelTime:(double)time
 {
-  v3 = a3 / 60.0;
+  v3 = time / 60.0;
   if (v3 >= 15.0)
   {
     if (v3 >= 30.0)
@@ -33063,13 +33063,13 @@ LABEL_16:
   [GEOAPPortal captureTtlInitialTimeWithTravelTime:v5];
 }
 
-+ (void)captureTransitAppLaunchSource:(id)a3 destination:(id)a4 bundleIdentifier:(id)a5
++ (void)captureTransitAppLaunchSource:(id)source destination:(id)destination bundleIdentifier:(id)identifier
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v7 = a3.var1;
-  v8 = a3.var0;
-  v12 = a5;
+  var1 = destination.var1;
+  var0 = destination.var0;
+  v7 = source.var1;
+  v8 = source.var0;
+  identifierCopy = identifier;
   v9 = 0;
   if (fabs(v7) <= 180.0 && fabs(v8) <= 90.0)
   {
@@ -33083,28 +33083,28 @@ LABEL_16:
   }
 
   v11 = [MEMORY[0x1E696AD98] numberWithDouble:CFAbsoluteTimeGetCurrent()];
-  [GEOAPPortal captureTransitAppLaunchWithBundleIdentifier:v12 source:v9 destination:v10 timestamp:v11];
+  [GEOAPPortal captureTransitAppLaunchWithBundleIdentifier:identifierCopy source:v9 destination:v10 timestamp:v11];
 }
 
-+ (void)captureMapLaunchEventWithLaunchUrl:(id)a3 sourceAppId:(id)a4 isLaunchedFromTTL:(BOOL)a5 ttlEventTime:(id)a6
++ (void)captureMapLaunchEventWithLaunchUrl:(id)url sourceAppId:(id)id isLaunchedFromTTL:(BOOL)l ttlEventTime:(id)time
 {
-  v7 = a5;
-  v18 = a3;
-  v9 = a4;
-  v10 = a6;
-  v11 = [MEMORY[0x1E696AAE8] mainBundle];
-  v12 = [v11 bundleIdentifier];
-  v13 = [v9 isEqualToString:v12];
+  lCopy = l;
+  urlCopy = url;
+  idCopy = id;
+  timeCopy = time;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v13 = [idCopy isEqualToString:bundleIdentifier];
 
   if ((v13 & 1) == 0)
   {
     v14 = +[GEOAPSharedStateData sharedData];
-    [v14 setMapLaunchSourceAppId:v9];
+    [v14 setMapLaunchSourceAppId:idCopy];
 
-    if (v10 || v7)
+    if (timeCopy || lCopy)
     {
       v16 = MEMORY[0x1E696AD98];
-      [v10 timeIntervalSinceNow];
+      [timeCopy timeIntervalSinceNow];
       v15 = [v16 numberWithDouble:v17 / 60.0];
     }
 
@@ -33113,18 +33113,18 @@ LABEL_16:
       v15 = 0;
     }
 
-    [GEOAPPortal captureMapLaunchWithLaunchUri:v18 sourceAppId:v9 GEOTimeToLeaveMapLaunch_minutesUntilEvent:v15];
-    if ([v9 isEqualToString:@"com.apple.Maps.GeneralMapsWidget"])
+    [GEOAPPortal captureMapLaunchWithLaunchUri:urlCopy sourceAppId:idCopy GEOTimeToLeaveMapLaunch_minutesUntilEvent:v15];
+    if ([idCopy isEqualToString:@"com.apple.Maps.GeneralMapsWidget"])
     {
       [GEOAPPortal reportDailyUsageCountType:112];
     }
   }
 }
 
-+ (id)addCodeGenDailyCountsWithActionTargetTuple:(unint64_t)a3 actionTargetValue:(id)a4 appGroup:(int)a5
++ (id)addCodeGenDailyCountsWithActionTargetTuple:(unint64_t)tuple actionTargetValue:(id)value appGroup:(int)group
 {
   v90 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  valueCopy = value;
   if (GEOGetGEOAPDailyUsageAnalyticsLog_onceToken != -1)
   {
     dispatch_once(&GEOGetGEOAPDailyUsageAnalyticsLog_onceToken, &__block_literal_global_1046);
@@ -33142,23 +33142,23 @@ LABEL_16:
   v11 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:2];
   v12 = v11;
   v13 = &unk_1F2054FC8;
-  if (a3 > 0x7FE000003ECLL)
+  if (tuple > 0x7FE000003ECLL)
   {
-    if (a3 > 0x177D0000025BLL)
+    if (tuple > 0x177D0000025BLL)
     {
-      if (a3 <= 0x1B5F000000C8)
+      if (tuple <= 0x1B5F000000C8)
       {
-        if (a3 <= 0x17A7000000C8)
+        if (tuple <= 0x17A7000000C8)
         {
-          if (a3 <= 0x1796000000C8)
+          if (tuple <= 0x1796000000C8)
           {
-            if (a3 > 0x178B000000C8)
+            if (tuple > 0x178B000000C8)
             {
-              if (a3 > 0x1792000000C8)
+              if (tuple > 0x1792000000C8)
               {
-                if (a3 > 0x1794000000C8)
+                if (tuple > 0x1794000000C8)
                 {
-                  if (a3 == 0x1794000000C9)
+                  if (tuple == 0x1794000000C9)
                   {
                     goto LABEL_1016;
                   }
@@ -33168,7 +33168,7 @@ LABEL_16:
 
                 else
                 {
-                  if (a3 == 0x1792000000C9)
+                  if (tuple == 0x1792000000C9)
                   {
                     goto LABEL_1016;
                   }
@@ -33179,9 +33179,9 @@ LABEL_16:
                 v16 = v46 & 0xFFFF0000FFFFFFFFLL | 0x179400000000;
               }
 
-              else if (a3 > 0x178D000000C8)
+              else if (tuple > 0x178D000000C8)
               {
-                if (a3 == 0x178D000000C9)
+                if (tuple == 0x178D000000C9)
                 {
                   goto LABEL_1016;
                 }
@@ -33191,7 +33191,7 @@ LABEL_16:
 
               else
               {
-                if (a3 == 0x178B000000C9)
+                if (tuple == 0x178B000000C9)
                 {
                   goto LABEL_1016;
                 }
@@ -33202,11 +33202,11 @@ LABEL_16:
 
             else
             {
-              if (a3 <= 0x177D000006A4)
+              if (tuple <= 0x177D000006A4)
               {
-                if (a3 > 0x177D0000025DLL)
+                if (tuple > 0x177D0000025DLL)
                 {
-                  if (a3 != 0x177D0000025ELL && a3 != 0x177D00000262)
+                  if (tuple != 0x177D0000025ELL && tuple != 0x177D00000262)
                   {
                     goto LABEL_1017;
                   }
@@ -33214,7 +33214,7 @@ LABEL_16:
                   v13 = &unk_1F20557F0;
                 }
 
-                else if (a3 == 0x177D0000025CLL)
+                else if (tuple == 0x177D0000025CLL)
                 {
                   v13 = &unk_1F2055820;
                 }
@@ -33227,9 +33227,9 @@ LABEL_16:
                 goto LABEL_1016;
               }
 
-              if (a3 > 0x17800000001DLL)
+              if (tuple > 0x17800000001DLL)
               {
-                if (a3 == 0x17800000001ELL)
+                if (tuple == 0x17800000001ELL)
                 {
                   goto LABEL_1016;
                 }
@@ -33239,7 +33239,7 @@ LABEL_16:
 
               else
               {
-                if (a3 == 0x177D000006A5)
+                if (tuple == 0x177D000006A5)
                 {
                   v13 = &unk_1F20557D8;
                   goto LABEL_1016;
@@ -33252,13 +33252,13 @@ LABEL_16:
             goto LABEL_876;
           }
 
-          if (a3 <= 0x17A000000064)
+          if (tuple <= 0x17A000000064)
           {
-            if (a3 > 0x179D0000001DLL)
+            if (tuple > 0x179D0000001DLL)
             {
-              if (a3 > 0x179E000000C8)
+              if (tuple > 0x179E000000C8)
               {
-                if (a3 == 0x179E000000C9)
+                if (tuple == 0x179E000000C9)
                 {
                   goto LABEL_1016;
                 }
@@ -33268,7 +33268,7 @@ LABEL_16:
 
               else
               {
-                if (a3 == 0x179D0000001ELL)
+                if (tuple == 0x179D0000001ELL)
                 {
                   goto LABEL_1016;
                 }
@@ -33277,9 +33277,9 @@ LABEL_16:
               }
             }
 
-            else if (a3 > 0x179B000000C8)
+            else if (tuple > 0x179B000000C8)
             {
-              if (a3 == 0x179B000000C9)
+              if (tuple == 0x179B000000C9)
               {
                 goto LABEL_1016;
               }
@@ -33289,7 +33289,7 @@ LABEL_16:
 
             else
             {
-              if (a3 == 0x1796000000C9)
+              if (tuple == 0x1796000000C9)
               {
                 goto LABEL_1016;
               }
@@ -33300,11 +33300,11 @@ LABEL_16:
             goto LABEL_876;
           }
 
-          if (a3 > 0x17A1000000C8)
+          if (tuple > 0x17A1000000C8)
           {
-            if (a3 > 0x17A2000000C8)
+            if (tuple > 0x17A2000000C8)
             {
-              if (a3 == 0x17A2000000C9)
+              if (tuple == 0x17A2000000C9)
               {
                 goto LABEL_1016;
               }
@@ -33313,12 +33313,12 @@ LABEL_16:
               goto LABEL_876;
             }
 
-            if (a3 == 0x17A1000000C9)
+            if (tuple == 0x17A1000000C9)
             {
               goto LABEL_1016;
             }
 
-            if (a3 != 0x17A1000004B9)
+            if (tuple != 0x17A1000004B9)
             {
               goto LABEL_1017;
             }
@@ -33326,9 +33326,9 @@ LABEL_16:
 
           else
           {
-            if (a3 <= 0x17A0000004B8)
+            if (tuple <= 0x17A0000004B8)
             {
-              if (a3 != 0x17A000000065)
+              if (tuple != 0x17A000000065)
               {
                 v16 = 0x17A0000000C9;
                 goto LABEL_876;
@@ -33339,9 +33339,9 @@ LABEL_781:
               goto LABEL_1016;
             }
 
-            if (a3 != 0x17A0000004B9)
+            if (tuple != 0x17A0000004B9)
             {
-              if (a3 != 0x17A100000065)
+              if (tuple != 0x17A100000065)
               {
                 goto LABEL_1017;
               }
@@ -33355,15 +33355,15 @@ LABEL_782:
           goto LABEL_1016;
         }
 
-        if (a3 <= 0x17D100000039)
+        if (tuple <= 0x17D100000039)
         {
-          if (a3 <= 0x17BB000000C8)
+          if (tuple <= 0x17BB000000C8)
           {
-            if (a3 > 0x17AC000000C8)
+            if (tuple > 0x17AC000000C8)
             {
-              if (a3 > 0x17BA000000C8)
+              if (tuple > 0x17BA000000C8)
               {
-                if (a3 == 0x17BA000000C9)
+                if (tuple == 0x17BA000000C9)
                 {
                   goto LABEL_1016;
                 }
@@ -33373,7 +33373,7 @@ LABEL_782:
 
               else
               {
-                if (a3 == 0x17AC000000C9)
+                if (tuple == 0x17AC000000C9)
                 {
                   goto LABEL_1016;
                 }
@@ -33386,11 +33386,11 @@ LABEL_782:
 
             else
             {
-              if (a3 > 0x17A9000000C8)
+              if (tuple > 0x17A9000000C8)
               {
-                if (a3 != 0x17A9000000C9)
+                if (tuple != 0x17A9000000C9)
                 {
-                  if (a3 != 0x17AA00000000)
+                  if (tuple != 0x17AA00000000)
                   {
                     goto LABEL_1017;
                   }
@@ -33401,7 +33401,7 @@ LABEL_782:
                 goto LABEL_1016;
               }
 
-              if (a3 == 0x17A7000000C9)
+              if (tuple == 0x17A7000000C9)
               {
                 goto LABEL_1016;
               }
@@ -33412,11 +33412,11 @@ LABEL_782:
             goto LABEL_876;
           }
 
-          if (a3 <= 0x17BF000000C8)
+          if (tuple <= 0x17BF000000C8)
           {
-            if (a3 > 0x17BD000000C8)
+            if (tuple > 0x17BD000000C8)
             {
-              if (a3 == 0x17BD000000C9)
+              if (tuple == 0x17BD000000C9)
               {
                 goto LABEL_1016;
               }
@@ -33426,7 +33426,7 @@ LABEL_782:
 
             else
             {
-              if (a3 == 0x17BB000000C9)
+              if (tuple == 0x17BB000000C9)
               {
                 goto LABEL_1016;
               }
@@ -33437,9 +33437,9 @@ LABEL_782:
             goto LABEL_876;
           }
 
-          if (a3 > 0x17C0000000C8)
+          if (tuple > 0x17C0000000C8)
           {
-            if (a3 == 0x17C0000000C9)
+            if (tuple == 0x17C0000000C9)
             {
               goto LABEL_1016;
             }
@@ -33448,7 +33448,7 @@ LABEL_782:
             goto LABEL_876;
           }
 
-          if (a3 == 0x17BF000000C9)
+          if (tuple == 0x17BF000000C9)
           {
             goto LABEL_1016;
           }
@@ -33457,13 +33457,13 @@ LABEL_782:
           goto LABEL_551;
         }
 
-        if (a3 > 0x17D100000400)
+        if (tuple > 0x17D100000400)
         {
-          if (a3 > 0x1B5B000000C8)
+          if (tuple > 0x1B5B000000C8)
           {
-            if (a3 > 0x1B5D000000C8)
+            if (tuple > 0x1B5D000000C8)
             {
-              if (a3 == 0x1B5D000000C9)
+              if (tuple == 0x1B5D000000C9)
               {
                 goto LABEL_1016;
               }
@@ -33473,7 +33473,7 @@ LABEL_782:
 
             else
             {
-              if (a3 == 0x1B5B000000C9)
+              if (tuple == 0x1B5B000000C9)
               {
                 goto LABEL_1016;
               }
@@ -33484,9 +33484,9 @@ LABEL_782:
             goto LABEL_876;
           }
 
-          if (a3 > 0x1B59000000C8)
+          if (tuple > 0x1B59000000C8)
           {
-            if (a3 == 0x1B59000000C9)
+            if (tuple == 0x1B59000000C9)
             {
               goto LABEL_1016;
             }
@@ -33495,9 +33495,9 @@ LABEL_782:
             goto LABEL_876;
           }
 
-          if (a3 != 0x17D100000401)
+          if (tuple != 0x17D100000401)
           {
-            if (a3 != 0x17D90000029ELL)
+            if (tuple != 0x17D90000029ELL)
             {
               goto LABEL_1017;
             }
@@ -33509,24 +33509,24 @@ LABEL_782:
 
         else
         {
-          if (a3 <= 0x17D100000190)
+          if (tuple <= 0x17D100000190)
           {
-            if (a3 > 0x17D1000000C8)
+            if (tuple > 0x17D1000000C8)
             {
-              if (a3 != 0x17D1000000C9)
+              if (tuple != 0x17D1000000C9)
               {
                 v26 = 301;
                 goto LABEL_764;
               }
             }
 
-            else if (a3 != 0x17D10000003ALL)
+            else if (tuple != 0x17D10000003ALL)
             {
               v26 = 104;
 LABEL_764:
               v28 = v26 & 0xFFFF0000FFFFFFFFLL | 0x17D100000000;
 LABEL_765:
-              if (a3 != v28)
+              if (tuple != v28)
               {
                 goto LABEL_1017;
               }
@@ -33537,9 +33537,9 @@ LABEL_765:
             goto LABEL_766;
           }
 
-          if (a3 <= 0x17D1000003F0)
+          if (tuple <= 0x17D1000003F0)
           {
-            if (a3 != 0x17D100000191)
+            if (tuple != 0x17D100000191)
             {
               v26 = 607;
               goto LABEL_764;
@@ -33550,7 +33550,7 @@ LABEL_766:
             goto LABEL_1016;
           }
 
-          if (a3 != 0x17D1000003F1 && a3 != 0x17D1000003FDLL)
+          if (tuple != 0x17D1000003F1 && tuple != 0x17D1000003FDLL)
           {
             goto LABEL_1017;
           }
@@ -33560,17 +33560,17 @@ LABEL_766:
         goto LABEL_1016;
       }
 
-      if (a3 <= 0x2345000002D8)
+      if (tuple <= 0x2345000002D8)
       {
-        if (a3 <= 0x2338000003EDLL)
+        if (tuple <= 0x2338000003EDLL)
         {
-          if (a3 <= 0x232E000003ECLL)
+          if (tuple <= 0x232E000003ECLL)
           {
-            if (a3 <= 0x1B63000000C8)
+            if (tuple <= 0x1B63000000C8)
             {
-              if (a3 > 0x1B61000000C8)
+              if (tuple > 0x1B61000000C8)
               {
-                if (a3 == 0x1B61000000C9)
+                if (tuple == 0x1B61000000C9)
                 {
                   goto LABEL_1016;
                 }
@@ -33580,7 +33580,7 @@ LABEL_766:
 
               else
               {
-                if (a3 == 0x1B5F000000C9)
+                if (tuple == 0x1B5F000000C9)
                 {
                   goto LABEL_1016;
                 }
@@ -33591,9 +33591,9 @@ LABEL_766:
               goto LABEL_876;
             }
 
-            if (a3 <= 0x1F49000003F1)
+            if (tuple <= 0x1F49000003F1)
             {
-              if (a3 == 0x1B63000000C9)
+              if (tuple == 0x1B63000000C9)
               {
                 goto LABEL_1016;
               }
@@ -33602,9 +33602,9 @@ LABEL_766:
               goto LABEL_876;
             }
 
-            if (a3 != 0x1F49000003F2)
+            if (tuple != 0x1F49000003F2)
             {
-              if (a3 != 0x2329000002A3)
+              if (tuple != 0x2329000002A3)
               {
                 goto LABEL_1017;
               }
@@ -33617,18 +33617,18 @@ LABEL_809:
             goto LABEL_1016;
           }
 
-          if (a3 <= 0x23380000012ELL)
+          if (tuple <= 0x23380000012ELL)
           {
-            if (a3 <= 0x23380000012CLL)
+            if (tuple <= 0x23380000012CLL)
             {
-              if (a3 == 0x232E000003EDLL)
+              if (tuple == 0x232E000003EDLL)
               {
                 goto LABEL_809;
               }
 
               v32 = 0x232E000003FDLL;
 LABEL_808:
-              if (a3 != v32)
+              if (tuple != v32)
               {
                 goto LABEL_1017;
               }
@@ -33636,7 +33636,7 @@ LABEL_808:
               goto LABEL_809;
             }
 
-            if (a3 != 0x23380000012DLL)
+            if (tuple != 0x23380000012DLL)
             {
               if ([v10 mapSettingsLocationPrecisionType] != 3)
               {
@@ -33660,11 +33660,11 @@ LABEL_999:
             goto LABEL_1016;
           }
 
-          if (a3 <= 0x2338000003E8)
+          if (tuple <= 0x2338000003E8)
           {
-            if (a3 != 0x23380000012FLL)
+            if (tuple != 0x23380000012FLL)
             {
-              if (a3 != 0x233800000131)
+              if (tuple != 0x233800000131)
               {
                 goto LABEL_1017;
               }
@@ -33688,7 +33688,7 @@ LABEL_999:
             goto LABEL_995;
           }
 
-          if (a3 != 0x2338000003E9)
+          if (tuple != 0x2338000003E9)
           {
             v25 = 1005;
             goto LABEL_821;
@@ -33697,13 +33697,13 @@ LABEL_999:
           goto LABEL_823;
         }
 
-        if (a3 <= 0x233B000003F1)
+        if (tuple <= 0x233B000003F1)
         {
-          if (a3 > 0x233B000003E9)
+          if (tuple > 0x233B000003E9)
           {
-            if (a3 > 0x233B000003EELL)
+            if (tuple > 0x233B000003EELL)
             {
-              if (a3 == 0x233B000003EFLL)
+              if (tuple == 0x233B000003EFLL)
               {
                 goto LABEL_809;
               }
@@ -33713,7 +33713,7 @@ LABEL_999:
 
             else
             {
-              if (a3 == 0x233B000003EALL)
+              if (tuple == 0x233B000003EALL)
               {
                 goto LABEL_809;
               }
@@ -33724,15 +33724,15 @@ LABEL_999:
 
           else
           {
-            if (a3 <= 0x2338000003EFLL)
+            if (tuple <= 0x2338000003EFLL)
             {
-              if (a3 != 0x2338000003EELL)
+              if (tuple != 0x2338000003EELL)
               {
                 v25 = 1007;
 LABEL_821:
                 v56 = v25 & 0xFFFF0000FFFFFFFFLL | 0x233800000000;
 LABEL_822:
-                if (a3 != v56)
+                if (tuple != v56)
                 {
                   goto LABEL_1017;
                 }
@@ -33743,7 +33743,7 @@ LABEL_823:
               goto LABEL_1016;
             }
 
-            if (a3 == 0x2338000003F0)
+            if (tuple == 0x2338000003F0)
             {
               goto LABEL_823;
             }
@@ -33756,11 +33756,11 @@ LABEL_807:
           goto LABEL_808;
         }
 
-        if (a3 <= 0x2345000002D4)
+        if (tuple <= 0x2345000002D4)
         {
-          if (a3 > 0x233B000003FALL)
+          if (tuple > 0x233B000003FALL)
           {
-            if (a3 == 0x233B000003FBLL)
+            if (tuple == 0x233B000003FBLL)
             {
               goto LABEL_809;
             }
@@ -33770,7 +33770,7 @@ LABEL_807:
 
           else
           {
-            if (a3 == 0x233B000003F2)
+            if (tuple == 0x233B000003F2)
             {
               goto LABEL_809;
             }
@@ -33781,9 +33781,9 @@ LABEL_807:
           goto LABEL_807;
         }
 
-        if (a3 <= 0x2345000002D6)
+        if (tuple <= 0x2345000002D6)
         {
-          if (a3 != 0x2345000002D5)
+          if (tuple != 0x2345000002D5)
           {
             v21 = 726;
             goto LABEL_834;
@@ -33794,7 +33794,7 @@ LABEL_835:
           goto LABEL_1016;
         }
 
-        if (a3 == 0x2345000002D7)
+        if (tuple == 0x2345000002D7)
         {
           goto LABEL_835;
         }
@@ -33803,15 +33803,15 @@ LABEL_835:
         goto LABEL_834;
       }
 
-      if (a3 <= 0x2B04000004BFLL)
+      if (tuple <= 0x2B04000004BFLL)
       {
-        if (a3 <= 0x2346000002D8)
+        if (tuple <= 0x2346000002D8)
         {
-          if (a3 <= 0x2346000002D4)
+          if (tuple <= 0x2346000002D4)
           {
-            if (a3 <= 0x2345000002DALL)
+            if (tuple <= 0x2345000002DALL)
             {
-              if (a3 != 0x2345000002D9)
+              if (tuple != 0x2345000002D9)
               {
                 v21 = 730;
                 goto LABEL_834;
@@ -33820,14 +33820,14 @@ LABEL_835:
               goto LABEL_835;
             }
 
-            if (a3 == 0x2345000002DBLL)
+            if (tuple == 0x2345000002DBLL)
             {
               goto LABEL_835;
             }
 
             v21 = 732;
 LABEL_834:
-            if (a3 != (v21 & 0xFFFF0000FFFFFFFFLL | 0x234500000000))
+            if (tuple != (v21 & 0xFFFF0000FFFFFFFFLL | 0x234500000000))
             {
               goto LABEL_1017;
             }
@@ -33835,9 +33835,9 @@ LABEL_834:
             goto LABEL_835;
           }
 
-          if (a3 <= 0x2346000002D6)
+          if (tuple <= 0x2346000002D6)
           {
-            if (a3 != 0x2346000002D5)
+            if (tuple != 0x2346000002D5)
             {
               v33 = 726;
               goto LABEL_801;
@@ -33848,7 +33848,7 @@ LABEL_802:
             goto LABEL_1016;
           }
 
-          if (a3 == 0x2346000002D7)
+          if (tuple == 0x2346000002D7)
           {
             goto LABEL_802;
           }
@@ -33857,11 +33857,11 @@ LABEL_802:
           goto LABEL_801;
         }
 
-        if (a3 <= 0x234C000000C8)
+        if (tuple <= 0x234C000000C8)
         {
-          if (a3 <= 0x2346000002DALL)
+          if (tuple <= 0x2346000002DALL)
           {
-            if (a3 != 0x2346000002D9)
+            if (tuple != 0x2346000002D9)
             {
               v33 = 730;
               goto LABEL_801;
@@ -33870,14 +33870,14 @@ LABEL_802:
             goto LABEL_802;
           }
 
-          if (a3 == 0x2346000002DBLL)
+          if (tuple == 0x2346000002DBLL)
           {
             goto LABEL_802;
           }
 
           v33 = 732;
 LABEL_801:
-          if (a3 != (v33 & 0xFFFF0000FFFFFFFFLL | 0x234600000000))
+          if (tuple != (v33 & 0xFFFF0000FFFFFFFFLL | 0x234600000000))
           {
             goto LABEL_1017;
           }
@@ -33885,9 +33885,9 @@ LABEL_801:
           goto LABEL_802;
         }
 
-        if (a3 <= 0x2AFB000004B7)
+        if (tuple <= 0x2AFB000004B7)
         {
-          if (a3 == 0x234C000000C9)
+          if (tuple == 0x234C000000C9)
           {
             goto LABEL_1016;
           }
@@ -33896,11 +33896,11 @@ LABEL_801:
           goto LABEL_876;
         }
 
-        if (a3 != 0x2AFB000004B8)
+        if (tuple != 0x2AFB000004B8)
         {
           v27 = 0x2B04000004B9;
 LABEL_828:
-          if (a3 != v27)
+          if (tuple != v27)
           {
             goto LABEL_1017;
           }
@@ -33913,20 +33913,20 @@ LABEL_790:
         goto LABEL_1016;
       }
 
-      if (a3 <= 0x2B0900000070)
+      if (tuple <= 0x2B0900000070)
       {
-        if (a3 <= 0x2B06000004BFLL)
+        if (tuple <= 0x2B06000004BFLL)
         {
-          if (a3 > 0x2B05000004BFLL)
+          if (tuple > 0x2B05000004BFLL)
           {
-            if (a3 != 0x2B05000004C0)
+            if (tuple != 0x2B05000004C0)
             {
               v27 = 0x2B06000004B9;
               goto LABEL_828;
             }
           }
 
-          else if (a3 != 0x2B04000004C0)
+          else if (tuple != 0x2B04000004C0)
           {
             v27 = 0x2B05000004B9;
             goto LABEL_828;
@@ -33937,9 +33937,9 @@ LABEL_829:
           goto LABEL_1016;
         }
 
-        if (a3 <= 0x2B0900000060)
+        if (tuple <= 0x2B0900000060)
         {
-          if (a3 == 0x2B06000004C0)
+          if (tuple == 0x2B06000004C0)
           {
             goto LABEL_829;
           }
@@ -33948,7 +33948,7 @@ LABEL_829:
           goto LABEL_815;
         }
 
-        if (a3 != 0x2B0900000061)
+        if (tuple != 0x2B0900000061)
         {
           v45 = 111;
 LABEL_815:
@@ -33961,11 +33961,11 @@ LABEL_895:
         goto LABEL_1016;
       }
 
-      if (a3 <= 0x4283FFFFFFFFLL)
+      if (tuple <= 0x4283FFFFFFFFLL)
       {
-        if (a3 <= 0x2B12000004BFLL)
+        if (tuple <= 0x2B12000004BFLL)
         {
-          if (a3 != 0x2B0900000071)
+          if (tuple != 0x2B0900000071)
           {
             v27 = 0x2B12000004B9;
             goto LABEL_828;
@@ -33974,14 +33974,14 @@ LABEL_895:
           goto LABEL_895;
         }
 
-        if (a3 == 0x2B12000004C0)
+        if (tuple == 0x2B12000004C0)
         {
           goto LABEL_829;
         }
 
         v23 = 0x2B130000006DLL;
 LABEL_789:
-        if (a3 != v23)
+        if (tuple != v23)
         {
           goto LABEL_1017;
         }
@@ -33989,9 +33989,9 @@ LABEL_789:
         goto LABEL_790;
       }
 
-      if (a3 <= 0x42B400000001)
+      if (tuple <= 0x42B400000001)
       {
-        if (a3 == 0x428400000000)
+        if (tuple == 0x428400000000)
         {
           v13 = &unk_1F2055328;
           goto LABEL_1016;
@@ -34001,13 +34001,13 @@ LABEL_789:
         goto LABEL_840;
       }
 
-      if (a3 != 0x42B400000002)
+      if (tuple != 0x42B400000002)
       {
         v47 = 4;
 LABEL_840:
         v39 = v47 & 0xFFFF0000FFFFFFFFLL | 0x42B400000000;
 LABEL_841:
-        if (a3 != v39)
+        if (tuple != v39)
         {
           goto LABEL_1017;
         }
@@ -34018,26 +34018,26 @@ LABEL_842:
       goto LABEL_1016;
     }
 
-    if (a3 > 0xBB9000000C8)
+    if (tuple > 0xBB9000000C8)
     {
-      if (a3 <= 0x177300000086)
+      if (tuple <= 0x177300000086)
       {
-        if (a3 <= 0xBB9000004BALL)
+        if (tuple <= 0xBB9000004BALL)
         {
-          if (a3 <= 0xBB900000321)
+          if (tuple <= 0xBB900000321)
           {
-            if (a3 > 0xBB900000130)
+            if (tuple > 0xBB900000130)
             {
-              if (a3 > 0xBB900000191)
+              if (tuple > 0xBB900000191)
               {
-                if (a3 == 0xBB900000192)
+                if (tuple == 0xBB900000192)
                 {
 LABEL_774:
                   v13 = &unk_1F20559A0;
                   goto LABEL_1016;
                 }
 
-                if (a3 != 0xBB900000193)
+                if (tuple != 0xBB900000193)
                 {
                   goto LABEL_1017;
                 }
@@ -34047,9 +34047,9 @@ LABEL_995:
                 goto LABEL_1016;
               }
 
-              if (a3 != 0xBB900000131)
+              if (tuple != 0xBB900000131)
               {
-                if (a3 != 0xBB900000191)
+                if (tuple != 0xBB900000191)
                 {
                   goto LABEL_1017;
                 }
@@ -34076,9 +34076,9 @@ LABEL_975:
               goto LABEL_1016;
             }
 
-            if (a3 > 0xBB90000012DLL)
+            if (tuple > 0xBB90000012DLL)
             {
-              if (a3 == 0xBB90000012ELL)
+              if (tuple == 0xBB90000012ELL)
               {
                 if ([v10 mapSettingsLocationPrecisionType] == 2)
                 {
@@ -34090,7 +34090,7 @@ LABEL_975:
 
               else
               {
-                if (a3 != 0xBB90000012FLL)
+                if (tuple != 0xBB90000012FLL)
                 {
                   goto LABEL_1017;
                 }
@@ -34106,9 +34106,9 @@ LABEL_975:
               goto LABEL_975;
             }
 
-            if (a3 != 0xBB9000000C9)
+            if (tuple != 0xBB9000000C9)
             {
-              if (a3 != 0xBB90000012DLL)
+              if (tuple != 0xBB90000012DLL)
               {
                 goto LABEL_1017;
               }
@@ -34123,7 +34123,7 @@ LABEL_975:
             }
 
             [v11 addObject:&unk_1F20559B8];
-            if (a5 != 1)
+            if (group != 1)
             {
               goto LABEL_1017;
             }
@@ -34133,11 +34133,11 @@ LABEL_966:
             goto LABEL_1016;
           }
 
-          if (a3 > 0xBB9000003EDLL)
+          if (tuple > 0xBB9000003EDLL)
           {
-            if (a3 > 0xBB9000003EFLL)
+            if (tuple > 0xBB9000003EFLL)
             {
-              if (a3 == 0xBB9000003F0)
+              if (tuple == 0xBB9000003F0)
               {
                 goto LABEL_823;
               }
@@ -34147,7 +34147,7 @@ LABEL_966:
 
             else
             {
-              if (a3 == 0xBB9000003EELL)
+              if (tuple == 0xBB9000003EELL)
               {
                 goto LABEL_823;
               }
@@ -34158,9 +34158,9 @@ LABEL_966:
 
           else
           {
-            if (a3 <= 0xBB9000003E8)
+            if (tuple <= 0xBB9000003E8)
             {
-              if (a3 != 0xBB900000322 && a3 != 0xBB900000323)
+              if (tuple != 0xBB900000322 && tuple != 0xBB900000323)
               {
                 goto LABEL_1017;
               }
@@ -34168,7 +34168,7 @@ LABEL_966:
               goto LABEL_966;
             }
 
-            if (a3 == 0xBB9000003E9)
+            if (tuple == 0xBB9000003E9)
             {
               goto LABEL_823;
             }
@@ -34180,13 +34180,13 @@ LABEL_966:
           goto LABEL_822;
         }
 
-        if (a3 <= 0x1389000004B7)
+        if (tuple <= 0x1389000004B7)
         {
-          if (a3 <= 0xBB9000004D4)
+          if (tuple <= 0xBB9000004D4)
           {
-            if (a3 > 0xBB9000004C4)
+            if (tuple > 0xBB9000004C4)
             {
-              if (a3 == 0xBB9000004C5)
+              if (tuple == 0xBB9000004C5)
               {
                 goto LABEL_895;
               }
@@ -34196,7 +34196,7 @@ LABEL_966:
 
             else
             {
-              if (a3 == 0xBB9000004BBLL)
+              if (tuple == 0xBB9000004BBLL)
               {
                 goto LABEL_895;
               }
@@ -34207,7 +34207,7 @@ LABEL_966:
 LABEL_893:
             v57 = v24 & 0xFFFF0000FFFFFFFFLL | 0xBB900000000;
 LABEL_894:
-            if (a3 != v57)
+            if (tuple != v57)
             {
               goto LABEL_1017;
             }
@@ -34215,16 +34215,16 @@ LABEL_894:
             goto LABEL_895;
           }
 
-          if (a3 <= 0xFA1000004B7)
+          if (tuple <= 0xFA1000004B7)
           {
-            if (a3 == 0xBB9000004D5)
+            if (tuple == 0xBB9000004D5)
             {
               goto LABEL_895;
             }
 
             v16 = 0xBF7000000C9;
 LABEL_876:
-            if (a3 != v16)
+            if (tuple != v16)
             {
               goto LABEL_1017;
             }
@@ -34234,9 +34234,9 @@ LABEL_1016:
             goto LABEL_1017;
           }
 
-          if (a3 != 0xFA1000004B8)
+          if (tuple != 0xFA1000004B8)
           {
-            if (a3 != 0xFA600000284)
+            if (tuple != 0xFA600000284)
             {
               goto LABEL_1017;
             }
@@ -34249,11 +34249,11 @@ LABEL_704:
           goto LABEL_1016;
         }
 
-        if (a3 <= 0x17730000001DLL)
+        if (tuple <= 0x17730000001DLL)
         {
-          if (a3 <= 0x1392000000C8)
+          if (tuple <= 0x1392000000C8)
           {
-            if (a3 != 0x1389000004B8)
+            if (tuple != 0x1389000004B8)
             {
               v16 = 0x1391000000C9;
               goto LABEL_876;
@@ -34262,7 +34262,7 @@ LABEL_704:
             goto LABEL_704;
           }
 
-          if (a3 == 0x1392000000C9)
+          if (tuple == 0x1392000000C9)
           {
             goto LABEL_1016;
           }
@@ -34271,9 +34271,9 @@ LABEL_704:
           goto LABEL_686;
         }
 
-        if (a3 <= 0x177300000082)
+        if (tuple <= 0x177300000082)
         {
-          if (a3 != 0x17730000001ELL)
+          if (tuple != 0x17730000001ELL)
           {
             v20 = 130;
             goto LABEL_714;
@@ -34284,11 +34284,11 @@ LABEL_675:
           goto LABEL_1016;
         }
 
-        if (a3 != 0x177300000083)
+        if (tuple != 0x177300000083)
         {
           v20 = 132;
 LABEL_714:
-          if (a3 != (v20 & 0xFFFF0000FFFFFFFFLL | 0x177300000000))
+          if (tuple != (v20 & 0xFFFF0000FFFFFFFFLL | 0x177300000000))
           {
             goto LABEL_1017;
           }
@@ -34299,15 +34299,15 @@ LABEL_715:
         goto LABEL_1016;
       }
 
-      if (a3 <= 0x1777000004B8)
+      if (tuple <= 0x1777000004B8)
       {
-        if (a3 > 0x177300000321)
+        if (tuple > 0x177300000321)
         {
-          if (a3 > 0x1775000004B8)
+          if (tuple > 0x1775000004B8)
           {
-            if (a3 > 0x1776000000C8)
+            if (tuple > 0x1776000000C8)
             {
-              if (a3 == 0x1776000000C9)
+              if (tuple == 0x1776000000C9)
               {
                 goto LABEL_1016;
               }
@@ -34316,9 +34316,9 @@ LABEL_715:
               goto LABEL_876;
             }
 
-            if (a3 != 0x1775000004B9)
+            if (tuple != 0x1775000004B9)
             {
-              if (a3 != 0x177600000065)
+              if (tuple != 0x177600000065)
               {
                 goto LABEL_1017;
               }
@@ -34329,9 +34329,9 @@ LABEL_715:
             goto LABEL_782;
           }
 
-          if (a3 > 0x17740000001DLL)
+          if (tuple > 0x17740000001DLL)
           {
-            if (a3 == 0x17740000001ELL)
+            if (tuple == 0x17740000001ELL)
             {
               goto LABEL_1016;
             }
@@ -34340,9 +34340,9 @@ LABEL_715:
             goto LABEL_876;
           }
 
-          if (a3 != 0x177300000322)
+          if (tuple != 0x177300000322)
           {
-            if (a3 == 0x177300000323)
+            if (tuple == 0x177300000323)
             {
               [v11 addObject:&unk_1F2055340];
               if ([v10 mapsInOfflineMode])
@@ -34350,7 +34350,7 @@ LABEL_715:
                 [v12 addObject:&unk_1F2055358];
               }
 
-              if (a5 == 1)
+              if (group == 1)
               {
                 v13 = &unk_1F20553A0;
                 goto LABEL_1016;
@@ -34363,11 +34363,11 @@ LABEL_715:
 
         else
         {
-          if (a3 <= 0x17730000025ELL)
+          if (tuple <= 0x17730000025ELL)
           {
-            if (a3 <= 0x1773000000C8)
+            if (tuple <= 0x1773000000C8)
             {
-              if (a3 != 0x177300000087)
+              if (tuple != 0x177300000087)
               {
                 v20 = 137;
                 goto LABEL_714;
@@ -34376,9 +34376,9 @@ LABEL_715:
               goto LABEL_715;
             }
 
-            if (a3 != 0x1773000000C9)
+            if (tuple != 0x1773000000C9)
             {
-              if (a3 != 0x1773000000CBLL)
+              if (tuple != 0x1773000000CBLL)
               {
                 goto LABEL_1017;
               }
@@ -34399,8 +34399,8 @@ LABEL_715:
             }
 
             [v12 addObject:&unk_1F2055370];
-            v82 = a5 - 1;
-            if ((a5 - 1) < 3)
+            v82 = group - 1;
+            if ((group - 1) < 3)
             {
               v83 = &unk_1E7953BC8;
               goto LABEL_980;
@@ -34409,9 +34409,9 @@ LABEL_715:
             goto LABEL_1017;
           }
 
-          if (a3 > 0x1773000002BCLL)
+          if (tuple > 0x1773000002BCLL)
           {
-            if (a3 == 0x1773000002BDLL)
+            if (tuple == 0x1773000002BDLL)
             {
               [v11 addObject:&unk_1F2055340];
               if ([v10 mapsInOfflineMode])
@@ -34419,14 +34419,14 @@ LABEL_715:
                 [v12 addObject:&unk_1F2055358];
               }
 
-              if (a5 == 2)
+              if (group == 2)
               {
                 v13 = &unk_1F2055388;
                 goto LABEL_1016;
               }
             }
 
-            else if (a3 == 0x1773000002BELL)
+            else if (tuple == 0x1773000002BELL)
             {
               [v11 addObject:&unk_1F2055340];
               if ([v10 mapsInOfflineMode])
@@ -34434,7 +34434,7 @@ LABEL_715:
                 [v12 addObject:&unk_1F2055358];
               }
 
-              if (a5 == 3)
+              if (group == 3)
               {
                 v13 = &unk_1F20553B8;
                 goto LABEL_1016;
@@ -34444,11 +34444,11 @@ LABEL_715:
             goto LABEL_1017;
           }
 
-          if (a3 != 0x17730000025FLL)
+          if (tuple != 0x17730000025FLL)
           {
             v40 = 0x17730000028ALL;
 LABEL_686:
-            if (a3 != v40)
+            if (tuple != v40)
             {
               goto LABEL_1017;
             }
@@ -34465,20 +34465,20 @@ LABEL_686:
         goto LABEL_1016;
       }
 
-      if (a3 > 0x177A000000CALL)
+      if (tuple > 0x177A000000CALL)
       {
-        if (a3 > 0x177D00000092)
+        if (tuple > 0x177D00000092)
         {
-          if (a3 <= 0x177D000000C8)
+          if (tuple <= 0x177D000000C8)
           {
-            if (a3 == 0x177D00000093)
+            if (tuple == 0x177D00000093)
             {
               v13 = &unk_1F20557C0;
             }
 
             else
             {
-              if (a3 != 0x177D00000099)
+              if (tuple != 0x177D00000099)
               {
                 goto LABEL_1017;
               }
@@ -34489,7 +34489,7 @@ LABEL_686:
             goto LABEL_1016;
           }
 
-          if (a3 != 0x177D000000C9 && a3 != 0x177D000000CBLL)
+          if (tuple != 0x177D000000C9 && tuple != 0x177D000000CBLL)
           {
             goto LABEL_1017;
           }
@@ -34497,9 +34497,9 @@ LABEL_686:
 
         else
         {
-          if (a3 <= 0x177C000000C8)
+          if (tuple <= 0x177C000000C8)
           {
-            if (a3 == 0x177A000000CBLL)
+            if (tuple == 0x177A000000CBLL)
             {
               goto LABEL_1016;
             }
@@ -34508,12 +34508,12 @@ LABEL_686:
             goto LABEL_876;
           }
 
-          if (a3 == 0x177C000000C9)
+          if (tuple == 0x177C000000C9)
           {
             goto LABEL_1016;
           }
 
-          if (a3 != 0x177D0000001ELL)
+          if (tuple != 0x177D0000001ELL)
           {
             goto LABEL_1017;
           }
@@ -34526,11 +34526,11 @@ LABEL_686:
         goto LABEL_842;
       }
 
-      if (a3 <= 0x1779000000CALL)
+      if (tuple <= 0x1779000000CALL)
       {
-        if (a3 > 0x17790000001DLL)
+        if (tuple > 0x17790000001DLL)
         {
-          if (a3 == 0x17790000001ELL)
+          if (tuple == 0x17790000001ELL)
           {
             goto LABEL_1016;
           }
@@ -34539,7 +34539,7 @@ LABEL_686:
           goto LABEL_876;
         }
 
-        if (a3 != 0x1777000004B9)
+        if (tuple != 0x1777000004B9)
         {
           v16 = 0x1778000000C9;
           goto LABEL_876;
@@ -34548,9 +34548,9 @@ LABEL_686:
         goto LABEL_782;
       }
 
-      if (a3 > 0x177A0000001DLL)
+      if (tuple > 0x177A0000001DLL)
       {
-        if (a3 == 0x177A0000001ELL)
+        if (tuple == 0x177A0000001ELL)
         {
           goto LABEL_1016;
         }
@@ -34559,14 +34559,14 @@ LABEL_686:
         goto LABEL_876;
       }
 
-      if (a3 == 0x1779000000CBLL)
+      if (tuple == 0x1779000000CBLL)
       {
         goto LABEL_1016;
       }
 
       v41 = 0x1779000004B9;
 LABEL_568:
-      if (a3 != v41)
+      if (tuple != v41)
       {
         goto LABEL_1017;
       }
@@ -34574,21 +34574,21 @@ LABEL_568:
       goto LABEL_782;
     }
 
-    if (a3 > 0x818000000C8)
+    if (tuple > 0x818000000C8)
     {
-      if (a3 <= 0x8330000006CLL)
+      if (tuple <= 0x8330000006CLL)
       {
-        if (a3 <= 0x822000000FBLL)
+        if (tuple <= 0x822000000FBLL)
         {
-          if (a3 <= 0x819000000C8)
+          if (tuple <= 0x819000000C8)
           {
-            if (a3 <= 0x818000000FFLL)
+            if (tuple <= 0x818000000FFLL)
             {
-              if (a3 != 0x818000000C9)
+              if (tuple != 0x818000000C9)
               {
                 v18 = 251;
 LABEL_746:
-                if (a3 != (v18 & 0xFFFF0000FFFFFFFFLL | 0x81800000000))
+                if (tuple != (v18 & 0xFFFF0000FFFFFFFFLL | 0x81800000000))
                 {
                   goto LABEL_1017;
                 }
@@ -34603,7 +34603,7 @@ LABEL_1009:
               goto LABEL_1016;
             }
 
-            if (a3 == 0x81800000100)
+            if (tuple == 0x81800000100)
             {
 LABEL_878:
               v13 = &unk_1F2055100;
@@ -34616,9 +34616,9 @@ LABEL_875:
             goto LABEL_876;
           }
 
-          if (a3 <= 0x82200000007)
+          if (tuple <= 0x82200000007)
           {
-            if (a3 == 0x819000000C9)
+            if (tuple == 0x819000000C9)
             {
               goto LABEL_1016;
             }
@@ -34627,7 +34627,7 @@ LABEL_875:
             goto LABEL_875;
           }
 
-          if (a3 != 0x82200000008 && a3 != 0x822000000FBLL)
+          if (tuple != 0x82200000008 && tuple != 0x822000000FBLL)
           {
             goto LABEL_1017;
           }
@@ -34637,13 +34637,13 @@ LABEL_890:
           goto LABEL_1016;
         }
 
-        if (a3 <= 0x82E000000C8)
+        if (tuple <= 0x82E000000C8)
         {
-          if (a3 > 0x824000000C8)
+          if (tuple > 0x824000000C8)
           {
-            if (a3 != 0x824000000C9)
+            if (tuple != 0x824000000C9)
             {
-              if (a3 != 0x82B00000103)
+              if (tuple != 0x82B00000103)
               {
                 goto LABEL_1017;
               }
@@ -34654,7 +34654,7 @@ LABEL_890:
             goto LABEL_1016;
           }
 
-          if (a3 != 0x822000000FCLL)
+          if (tuple != 0x822000000FCLL)
           {
             v16 = 0x823000000C9;
             goto LABEL_876;
@@ -34663,9 +34663,9 @@ LABEL_890:
           goto LABEL_890;
         }
 
-        if (a3 > 0x830000000FALL)
+        if (tuple > 0x830000000FALL)
         {
-          if (a3 == 0x830000000FBLL)
+          if (tuple == 0x830000000FBLL)
           {
 LABEL_899:
             v13 = &unk_1F2055868;
@@ -34677,7 +34677,7 @@ LABEL_899:
 
         else
         {
-          if (a3 == 0x82E000000C9)
+          if (tuple == 0x82E000000C9)
           {
             goto LABEL_1016;
           }
@@ -34685,7 +34685,7 @@ LABEL_899:
           v50 = 8;
         }
 
-        if (a3 != (v50 & 0xFFFF0000FFFFFFFFLL | 0x83000000000))
+        if (tuple != (v50 & 0xFFFF0000FFFFFFFFLL | 0x83000000000))
         {
           goto LABEL_1017;
         }
@@ -34693,15 +34693,15 @@ LABEL_899:
         goto LABEL_899;
       }
 
-      if (a3 <= 0xBB900000060)
+      if (tuple <= 0xBB900000060)
       {
-        if (a3 <= 0x8700000029CLL)
+        if (tuple <= 0x8700000029CLL)
         {
-          if (a3 > 0x8630000001DLL)
+          if (tuple > 0x8630000001DLL)
           {
-            if (a3 != 0x8630000001ELL)
+            if (tuple != 0x8630000001ELL)
             {
-              if (a3 != 0x86D0000029DLL)
+              if (tuple != 0x86D0000029DLL)
               {
                 goto LABEL_1017;
               }
@@ -34712,7 +34712,7 @@ LABEL_899:
             goto LABEL_1016;
           }
 
-          if (a3 != 0x8330000006DLL)
+          if (tuple != 0x8330000006DLL)
           {
             v16 = 0x833000000C9;
             goto LABEL_876;
@@ -34721,9 +34721,9 @@ LABEL_899:
           goto LABEL_790;
         }
 
-        if (a3 > 0x893FFFFFFFFLL)
+        if (tuple > 0x893FFFFFFFFLL)
         {
-          if (a3 == 0x89400000000)
+          if (tuple == 0x89400000000)
           {
             v13 = &unk_1F20550B8;
             goto LABEL_1016;
@@ -34733,9 +34733,9 @@ LABEL_899:
           goto LABEL_893;
         }
 
-        if (a3 != 0x8700000029DLL)
+        if (tuple != 0x8700000029DLL)
         {
-          if (a3 != 0x8710000029DLL)
+          if (tuple != 0x8710000029DLL)
           {
             goto LABEL_1017;
           }
@@ -34749,11 +34749,11 @@ LABEL_857:
         goto LABEL_1016;
       }
 
-      if (a3 <= 0xBB900000082)
+      if (tuple <= 0xBB900000082)
       {
-        if (a3 <= 0xBB900000070)
+        if (tuple <= 0xBB900000070)
         {
-          if (a3 == 0xBB900000061)
+          if (tuple == 0xBB900000061)
           {
             goto LABEL_895;
           }
@@ -34762,12 +34762,12 @@ LABEL_857:
           goto LABEL_893;
         }
 
-        if (a3 == 0xBB900000071)
+        if (tuple == 0xBB900000071)
         {
           goto LABEL_895;
         }
 
-        if (a3 != 0xBB900000082)
+        if (tuple != 0xBB900000082)
         {
           goto LABEL_1017;
         }
@@ -34777,11 +34777,11 @@ LABEL_887:
         goto LABEL_1016;
       }
 
-      if (a3 <= 0xBB900000086)
+      if (tuple <= 0xBB900000086)
       {
-        if (a3 != 0xBB900000083)
+        if (tuple != 0xBB900000083)
         {
-          if (a3 != 0xBB900000084)
+          if (tuple != 0xBB900000084)
           {
             goto LABEL_1017;
           }
@@ -34793,10 +34793,10 @@ LABEL_887:
         goto LABEL_887;
       }
 
-      if (a3 == 0xBB900000087)
+      if (tuple == 0xBB900000087)
       {
 LABEL_903:
-        if (v8)
+        if (valueCopy)
         {
           v13 = &unk_1F2055928;
         }
@@ -34811,7 +34811,7 @@ LABEL_903:
 
       v55 = 0xBB900000089;
 LABEL_902:
-      if (a3 != v55)
+      if (tuple != v55)
       {
         goto LABEL_1017;
       }
@@ -34819,17 +34819,17 @@ LABEL_902:
       goto LABEL_903;
     }
 
-    if (a3 > 0x80C0000001DLL)
+    if (tuple > 0x80C0000001DLL)
     {
-      if (a3 <= 0x813000000C8)
+      if (tuple <= 0x813000000C8)
       {
-        if (a3 <= 0x81300000007)
+        if (tuple <= 0x81300000007)
         {
-          if (a3 > 0x80C000000CALL)
+          if (tuple > 0x80C000000CALL)
           {
-            if (a3 != 0x80C000000CBLL)
+            if (tuple != 0x80C000000CBLL)
             {
-              if (a3 != 0x81000000008)
+              if (tuple != 0x81000000008)
               {
                 goto LABEL_1017;
               }
@@ -34840,7 +34840,7 @@ LABEL_902:
             goto LABEL_1016;
           }
 
-          if (a3 == 0x80C0000001ELL)
+          if (tuple == 0x80C0000001ELL)
           {
             goto LABEL_1016;
           }
@@ -34849,9 +34849,9 @@ LABEL_902:
           goto LABEL_876;
         }
 
-        if (a3 <= 0x8130000006CLL)
+        if (tuple <= 0x8130000006CLL)
         {
-          if (a3 != 0x81300000008)
+          if (tuple != 0x81300000008)
           {
             v43 = 11;
             goto LABEL_742;
@@ -34862,14 +34862,14 @@ LABEL_743:
           goto LABEL_1016;
         }
 
-        if (a3 == 0x8130000006DLL)
+        if (tuple == 0x8130000006DLL)
         {
           goto LABEL_743;
         }
 
         v43 = 119;
 LABEL_742:
-        if (a3 != (v43 & 0xFFFF0000FFFFFFFFLL | 0x81300000000))
+        if (tuple != (v43 & 0xFFFF0000FFFFFFFFLL | 0x81300000000))
         {
           goto LABEL_1017;
         }
@@ -34877,11 +34877,11 @@ LABEL_742:
         goto LABEL_743;
       }
 
-      if (a3 > 0x814000000FBLL)
+      if (tuple > 0x814000000FBLL)
       {
-        if (a3 <= 0x81400000102)
+        if (tuple <= 0x81400000102)
         {
-          if (a3 != 0x814000000FCLL && a3 != 0x81400000100)
+          if (tuple != 0x814000000FCLL && tuple != 0x81400000100)
           {
             goto LABEL_1017;
           }
@@ -34890,7 +34890,7 @@ LABEL_742:
           goto LABEL_1016;
         }
 
-        if (a3 == 0x81400000103)
+        if (tuple == 0x81400000103)
         {
           v13 = &unk_1F2055B38;
           goto LABEL_1016;
@@ -34900,9 +34900,9 @@ LABEL_742:
         goto LABEL_746;
       }
 
-      if (a3 > 0x813000000FFLL)
+      if (tuple > 0x813000000FFLL)
       {
-        if (a3 == 0x81300000100)
+        if (tuple == 0x81300000100)
         {
           goto LABEL_743;
         }
@@ -34911,13 +34911,13 @@ LABEL_742:
         goto LABEL_742;
       }
 
-      if (a3 == 0x813000000C9)
+      if (tuple == 0x813000000C9)
       {
         v84 = &unk_1F2055898;
         goto LABEL_1009;
       }
 
-      if (a3 != 0x813000000FBLL)
+      if (tuple != 0x813000000FBLL)
       {
         goto LABEL_1017;
       }
@@ -34928,13 +34928,13 @@ LABEL_573:
       goto LABEL_1016;
     }
 
-    if (a3 > 0x801FFFFFFFFLL)
+    if (tuple > 0x801FFFFFFFFLL)
     {
-      if (a3 > 0x809000000FDLL)
+      if (tuple > 0x809000000FDLL)
       {
-        if (a3 > 0x80B000000C8)
+        if (tuple > 0x80B000000C8)
         {
-          if (a3 == 0x80B000000C9)
+          if (tuple == 0x80B000000C9)
           {
             goto LABEL_1016;
           }
@@ -34944,7 +34944,7 @@ LABEL_573:
 
         else
         {
-          if (a3 == 0x809000000FELL)
+          if (tuple == 0x809000000FELL)
           {
             v13 = &unk_1F2055880;
             goto LABEL_1016;
@@ -34957,16 +34957,16 @@ LABEL_573:
         goto LABEL_876;
       }
 
-      if (a3 > 0x803FFFFFFFFLL)
+      if (tuple > 0x803FFFFFFFFLL)
       {
-        if (a3 != 0x80400000000)
+        if (tuple != 0x80400000000)
         {
           v39 = 0x80900000008;
           goto LABEL_841;
         }
       }
 
-      else if (a3 != 0x80200000000)
+      else if (tuple != 0x80200000000)
       {
         v30 = 0x80300000000;
         goto LABEL_733;
@@ -34977,11 +34977,11 @@ LABEL_734:
       goto LABEL_1016;
     }
 
-    if (a3 > 0x7FF000003ECLL)
+    if (tuple > 0x7FF000003ECLL)
     {
-      if (a3 <= 0x801000000FDLL)
+      if (tuple <= 0x801000000FDLL)
       {
-        if (a3 != 0x7FF000003EDLL)
+        if (tuple != 0x7FF000003EDLL)
         {
           v35 = 0x80100000008;
           goto LABEL_724;
@@ -34992,7 +34992,7 @@ LABEL_591:
         goto LABEL_1016;
       }
 
-      if (a3 != 0x801000000FELL)
+      if (tuple != 0x801000000FELL)
       {
         v52 = 0x801000003EDLL;
         goto LABEL_590;
@@ -35003,19 +35003,19 @@ LABEL_725:
       goto LABEL_1016;
     }
 
-    if (a3 == 0x7FE000003EDLL)
+    if (tuple == 0x7FE000003EDLL)
     {
       goto LABEL_591;
     }
 
-    if (a3 == 0x7FF00000008)
+    if (tuple == 0x7FF00000008)
     {
       goto LABEL_725;
     }
 
     v35 = 0x7FF000000FELL;
 LABEL_724:
-    if (a3 != v35)
+    if (tuple != v35)
     {
       goto LABEL_1017;
     }
@@ -35023,17 +35023,17 @@ LABEL_724:
     goto LABEL_725;
   }
 
-  if (a3 > 0x3EC000001F4)
+  if (tuple > 0x3EC000001F4)
   {
-    if (a3 <= 0x418000001F8)
+    if (tuple <= 0x418000001F8)
     {
-      if (a3 <= 0x413000001F8)
+      if (tuple <= 0x413000001F8)
       {
-        if (a3 > 0x411000001F4)
+        if (tuple > 0x411000001F4)
         {
-          if (a3 <= 0x412000001F6)
+          if (tuple <= 0x412000001F6)
           {
-            if (a3 > 0x411000001F8 && a3 <= 0x412000001F4 && a3 != 0x411000001F9 && a3 != 0x41200000000)
+            if (tuple > 0x411000001F8 && tuple <= 0x412000001F4 && tuple != 0x411000001F9 && tuple != 0x41200000000)
             {
               goto LABEL_1017;
             }
@@ -35041,12 +35041,12 @@ LABEL_724:
             goto LABEL_859;
           }
 
-          if (a3 > 0x413000001F4 || a3 <= 0x412000001F9)
+          if (tuple > 0x413000001F4 || tuple <= 0x412000001F9)
           {
             goto LABEL_859;
           }
 
-          if (a3 != 0x41300000000)
+          if (tuple != 0x41300000000)
           {
             goto LABEL_1017;
           }
@@ -35054,16 +35054,16 @@ LABEL_724:
           goto LABEL_869;
         }
 
-        if (a3 <= 0x3FC000004B7)
+        if (tuple <= 0x3FC000004B7)
         {
-          if (a3 <= 0x3EC000001F7)
+          if (tuple <= 0x3EC000001F7)
           {
             goto LABEL_859;
           }
 
-          if (a3 <= 0x3F2000004B7)
+          if (tuple <= 0x3F2000004B7)
           {
-            if (a3 != 0x3EC000001F8 && a3 != 0x3EC000001F9)
+            if (tuple != 0x3EC000001F8 && tuple != 0x3EC000001F9)
             {
               goto LABEL_1017;
             }
@@ -35071,7 +35071,7 @@ LABEL_724:
             goto LABEL_859;
           }
 
-          if (a3 == 0x3F2000004B8)
+          if (tuple == 0x3F2000004B8)
           {
             goto LABEL_704;
           }
@@ -35081,11 +35081,11 @@ LABEL_724:
 
         else
         {
-          if (a3 <= 0x408000000C8)
+          if (tuple <= 0x408000000C8)
           {
-            if (a3 <= 0x406000000C8)
+            if (tuple <= 0x406000000C8)
             {
-              if (a3 != 0x3FC000004B8 && a3 != 0x40600000050)
+              if (tuple != 0x3FC000004B8 && tuple != 0x40600000050)
               {
                 goto LABEL_1017;
               }
@@ -35093,7 +35093,7 @@ LABEL_724:
               goto LABEL_704;
             }
 
-            if (a3 == 0x406000000C9)
+            if (tuple == 0x406000000C9)
             {
               goto LABEL_1016;
             }
@@ -35102,14 +35102,14 @@ LABEL_724:
             goto LABEL_568;
           }
 
-          if (a3 > 0x410000004B7)
+          if (tuple > 0x410000004B7)
           {
-            if (a3 == 0x410000004B8)
+            if (tuple == 0x410000004B8)
             {
               goto LABEL_704;
             }
 
-            if (a3 != 0x41100000000)
+            if (tuple != 0x41100000000)
             {
               goto LABEL_1017;
             }
@@ -35117,7 +35117,7 @@ LABEL_724:
             goto LABEL_859;
           }
 
-          if (a3 == 0x408000000C9)
+          if (tuple == 0x408000000C9)
           {
             goto LABEL_1016;
           }
@@ -35128,18 +35128,18 @@ LABEL_724:
 
       else
       {
-        if (a3 > 0x416000001F5)
+        if (tuple > 0x416000001F5)
         {
-          if (a3 > 0x417000001F6)
+          if (tuple > 0x417000001F6)
           {
-            if (a3 <= 0x418000001F4)
+            if (tuple <= 0x418000001F4)
             {
-              if (a3 <= 0x417000001F9)
+              if (tuple <= 0x417000001F9)
               {
                 goto LABEL_859;
               }
 
-              if (a3 != 0x41800000000)
+              if (tuple != 0x41800000000)
               {
                 goto LABEL_1017;
               }
@@ -35148,16 +35148,16 @@ LABEL_724:
 
           else
           {
-            if (a3 > 0x416000004B7)
+            if (tuple > 0x416000004B7)
             {
-              if (a3 <= 0x417000001F4)
+              if (tuple <= 0x417000001F4)
               {
-                if (a3 == 0x416000004B8)
+                if (tuple == 0x416000004B8)
                 {
                   goto LABEL_704;
                 }
 
-                if (a3 != 0x41700000000)
+                if (tuple != 0x41700000000)
                 {
                   goto LABEL_1017;
                 }
@@ -35166,7 +35166,7 @@ LABEL_724:
               goto LABEL_859;
             }
 
-            if (a3 > 0x416000001F9)
+            if (tuple > 0x416000001F9)
             {
               goto LABEL_1017;
             }
@@ -35175,13 +35175,13 @@ LABEL_724:
           goto LABEL_869;
         }
 
-        if (a3 <= 0x415000001F4)
+        if (tuple <= 0x415000001F4)
         {
-          if (a3 > 0x414000001F6)
+          if (tuple > 0x414000001F6)
           {
-            if (a3 > 0x414000001F9)
+            if (tuple > 0x414000001F9)
             {
-              if (a3 != 0x41500000000)
+              if (tuple != 0x41500000000)
               {
                 goto LABEL_1017;
               }
@@ -35190,14 +35190,14 @@ LABEL_724:
             }
           }
 
-          else if (a3 <= 0x414000001F4)
+          else if (tuple <= 0x414000001F4)
           {
-            if (a3 == 0x413000001F9)
+            if (tuple == 0x413000001F9)
             {
               goto LABEL_859;
             }
 
-            if (a3 != 0x41400000000)
+            if (tuple != 0x41400000000)
             {
               goto LABEL_1017;
             }
@@ -35206,14 +35206,14 @@ LABEL_724:
           goto LABEL_869;
         }
 
-        if (a3 <= 0x415000001F8)
+        if (tuple <= 0x415000001F8)
         {
           goto LABEL_859;
         }
 
-        if (a3 > 0x415FFFFFFFFLL)
+        if (tuple > 0x415FFFFFFFFLL)
         {
-          if (a3 != 0x41600000000 && a3 != 0x416000001F5)
+          if (tuple != 0x41600000000 && tuple != 0x416000001F5)
           {
             goto LABEL_1017;
           }
@@ -35221,7 +35221,7 @@ LABEL_724:
           goto LABEL_869;
         }
 
-        if (a3 == 0x415000001F9)
+        if (tuple == 0x415000001F9)
         {
           goto LABEL_859;
         }
@@ -35229,7 +35229,7 @@ LABEL_724:
         v36 = 0x415000004B8;
       }
 
-      if (a3 != v36)
+      if (tuple != v36)
       {
         goto LABEL_1017;
       }
@@ -35237,20 +35237,20 @@ LABEL_724:
       goto LABEL_704;
     }
 
-    if (a3 <= 0x7D700000322)
+    if (tuple <= 0x7D700000322)
     {
-      if (a3 <= 0x41F000000C8)
+      if (tuple <= 0x41F000000C8)
       {
-        if (a3 <= 0x41A000001F4)
+        if (tuple <= 0x41A000001F4)
         {
-          if (a3 > 0x419000001F6)
+          if (tuple > 0x419000001F6)
           {
-            if (a3 <= 0x419000001F9)
+            if (tuple <= 0x419000001F9)
             {
               goto LABEL_859;
             }
 
-            if (a3 != 0x41A00000000)
+            if (tuple != 0x41A00000000)
             {
               goto LABEL_1017;
             }
@@ -35258,14 +35258,14 @@ LABEL_724:
 
           else
           {
-            if (a3 > 0x419000001F4)
+            if (tuple > 0x419000001F4)
             {
               goto LABEL_859;
             }
 
-            if (a3 != 0x418000001F9)
+            if (tuple != 0x418000001F9)
             {
-              if (a3 != 0x41900000000)
+              if (tuple != 0x41900000000)
               {
                 goto LABEL_1017;
               }
@@ -35277,16 +35277,16 @@ LABEL_724:
           goto LABEL_869;
         }
 
-        if (a3 <= 0x41A000001F8)
+        if (tuple <= 0x41A000001F8)
         {
           goto LABEL_869;
         }
 
-        if (a3 > 0x41D000001F5)
+        if (tuple > 0x41D000001F5)
         {
-          if (a3 != 0x41D000001F6)
+          if (tuple != 0x41D000001F6)
           {
-            if (a3 != 0x41F00000008)
+            if (tuple != 0x41F00000008)
             {
               goto LABEL_1017;
             }
@@ -35297,12 +35297,12 @@ LABEL_724:
 
         else
         {
-          if (a3 == 0x41A000001F9)
+          if (tuple == 0x41A000001F9)
           {
             goto LABEL_869;
           }
 
-          if (a3 != 0x41D000001F5)
+          if (tuple != 0x41D000001F5)
           {
             goto LABEL_1017;
           }
@@ -35319,13 +35319,13 @@ LABEL_953:
         goto LABEL_1016;
       }
 
-      if (a3 <= 0x7D700000062)
+      if (tuple <= 0x7D700000062)
       {
-        if (a3 <= 0x7D4000003F1)
+        if (tuple <= 0x7D4000003F1)
         {
-          if (a3 <= 0x7D4000000C8)
+          if (tuple <= 0x7D4000000C8)
           {
-            if (a3 == 0x41F000000C9)
+            if (tuple == 0x41F000000C9)
             {
               goto LABEL_1016;
             }
@@ -35334,13 +35334,13 @@ LABEL_953:
             goto LABEL_789;
           }
 
-          if (a3 == 0x7D4000000C9)
+          if (tuple == 0x7D4000000C9)
           {
             [v11 addObject:&unk_1F2054FC8];
             goto LABEL_952;
           }
 
-          if (a3 != 0x7D4000003F1)
+          if (tuple != 0x7D4000003F1)
           {
             goto LABEL_1017;
           }
@@ -35351,11 +35351,11 @@ LABEL_613:
           goto LABEL_1016;
         }
 
-        if (a3 <= 0x7D70000000ALL)
+        if (tuple <= 0x7D70000000ALL)
         {
-          if (a3 != 0x7D4000003F2)
+          if (tuple != 0x7D4000003F2)
           {
-            if (a3 != 0x7D4000003FFLL)
+            if (tuple != 0x7D4000003FFLL)
             {
               goto LABEL_1017;
             }
@@ -35366,9 +35366,9 @@ LABEL_613:
           goto LABEL_613;
         }
 
-        if (a3 != 0x7D70000000BLL)
+        if (tuple != 0x7D70000000BLL)
         {
-          if (a3 != 0x7D70000003BLL)
+          if (tuple != 0x7D70000003BLL)
           {
             goto LABEL_1017;
           }
@@ -35388,11 +35388,11 @@ LABEL_639:
         goto LABEL_1016;
       }
 
-      if (a3 <= 0x7D70000025ELL)
+      if (tuple <= 0x7D70000025ELL)
       {
-        if (a3 > 0x7D700000065)
+        if (tuple > 0x7D700000065)
         {
-          if (a3 != 0x7D700000066)
+          if (tuple != 0x7D700000066)
           {
             v23 = 0x7D70000006DLL;
             goto LABEL_789;
@@ -35401,12 +35401,12 @@ LABEL_639:
 
         else
         {
-          if (a3 == 0x7D700000063)
+          if (tuple == 0x7D700000063)
           {
             goto LABEL_790;
           }
 
-          if (a3 != 0x7D700000065)
+          if (tuple != 0x7D700000065)
           {
             goto LABEL_1017;
           }
@@ -35415,16 +35415,16 @@ LABEL_639:
         goto LABEL_639;
       }
 
-      if (a3 <= 0x7D7000002BDLL)
+      if (tuple <= 0x7D7000002BDLL)
       {
-        if (a3 == 0x7D70000025FLL)
+        if (tuple == 0x7D70000025FLL)
         {
           v13 = &unk_1F2055BE0;
         }
 
         else
         {
-          if (a3 != 0x7D7000002BDLL)
+          if (tuple != 0x7D7000002BDLL)
           {
             goto LABEL_1017;
           }
@@ -35435,7 +35435,7 @@ LABEL_639:
         goto LABEL_1016;
       }
 
-      if (a3 == 0x7D7000002BELL)
+      if (tuple == 0x7D7000002BELL)
       {
         v13 = &unk_1F2055C40;
         goto LABEL_1016;
@@ -35445,17 +35445,17 @@ LABEL_639:
       goto LABEL_660;
     }
 
-    if (a3 <= 0x7DF00000321)
+    if (tuple <= 0x7DF00000321)
     {
-      if (a3 <= 0x7DE0000003ALL)
+      if (tuple <= 0x7DE0000003ALL)
       {
-        if (a3 > 0x7D7000003F2)
+        if (tuple > 0x7D7000003F2)
         {
-          if (a3 > 0x7D7000004B6)
+          if (tuple > 0x7D7000004B6)
           {
-            if (a3 != 0x7D7000004B7)
+            if (tuple != 0x7D7000004B7)
             {
-              if (a3 != 0x7DE0000000BLL)
+              if (tuple != 0x7DE0000000BLL)
               {
                 goto LABEL_1017;
               }
@@ -35467,12 +35467,12 @@ LABEL_639:
             goto LABEL_790;
           }
 
-          if (a3 == 0x7D7000003F3)
+          if (tuple == 0x7D7000003F3)
           {
             goto LABEL_591;
           }
 
-          if (a3 != 0x7D7000003FFLL)
+          if (tuple != 0x7D7000003FFLL)
           {
             goto LABEL_1017;
           }
@@ -35481,16 +35481,16 @@ LABEL_639:
           goto LABEL_613;
         }
 
-        if (a3 > 0x7D7000003EALL)
+        if (tuple > 0x7D7000003EALL)
         {
-          if (a3 == 0x7D7000003EBLL)
+          if (tuple == 0x7D7000003EBLL)
           {
             goto LABEL_591;
           }
 
           v52 = 0x7D7000003F1;
 LABEL_590:
-          if (a3 != v52)
+          if (tuple != v52)
           {
             goto LABEL_1017;
           }
@@ -35498,7 +35498,7 @@ LABEL_590:
           goto LABEL_591;
         }
 
-        if (a3 == 0x7D700000323)
+        if (tuple == 0x7D700000323)
         {
 LABEL_661:
           v13 = &unk_1F2055C28;
@@ -35507,7 +35507,7 @@ LABEL_661:
 
         v19 = 804;
 LABEL_660:
-        if (a3 != (v19 & 0xFFFF0000FFFFFFFFLL | 0x7D700000000))
+        if (tuple != (v19 & 0xFFFF0000FFFFFFFFLL | 0x7D700000000))
         {
           goto LABEL_1017;
         }
@@ -35515,13 +35515,13 @@ LABEL_660:
         goto LABEL_661;
       }
 
-      if (a3 > 0x7DF00000064)
+      if (tuple > 0x7DF00000064)
       {
-        if (a3 > 0x7DF000002BCLL)
+        if (tuple > 0x7DF000002BCLL)
         {
-          if (a3 == 0x7DF000002BDLL)
+          if (tuple == 0x7DF000002BDLL)
           {
-            if (([a1 permittedToCountAC] & 1) == 0)
+            if (([self permittedToCountAC] & 1) == 0)
             {
               goto LABEL_1017;
             }
@@ -35531,7 +35531,7 @@ LABEL_660:
 
           else
           {
-            if (a3 != 0x7DF000002BELL || ([a1 permittedToCountAC] & 1) == 0)
+            if (tuple != 0x7DF000002BELL || ([self permittedToCountAC] & 1) == 0)
             {
               goto LABEL_1017;
             }
@@ -35542,7 +35542,7 @@ LABEL_660:
           goto LABEL_1016;
         }
 
-        if (a3 == 0x7DF00000065 || a3 == 0x7DF00000066)
+        if (tuple == 0x7DF00000065 || tuple == 0x7DF00000066)
         {
           [v11 addObject:&unk_1F20558B0];
           if ([v10 mapsInOfflineMode])
@@ -35555,16 +35555,16 @@ LABEL_660:
         goto LABEL_1017;
       }
 
-      if (a3 <= 0x7DE000003FELL)
+      if (tuple <= 0x7DE000003FELL)
       {
-        if (a3 == 0x7DE0000003BLL)
+        if (tuple == 0x7DE0000003BLL)
         {
           v13 = &unk_1F2055CA0;
         }
 
         else
         {
-          if (a3 != 0x7DE0000025FLL)
+          if (tuple != 0x7DE0000025FLL)
           {
             goto LABEL_1017;
           }
@@ -35575,7 +35575,7 @@ LABEL_660:
         goto LABEL_1016;
       }
 
-      if (a3 == 0x7DE000003FFLL)
+      if (tuple == 0x7DE000003FFLL)
       {
         goto LABEL_613;
       }
@@ -35586,13 +35586,13 @@ LABEL_610:
       goto LABEL_611;
     }
 
-    if (a3 > 0x7EE000002E5)
+    if (tuple > 0x7EE000002E5)
     {
-      if (a3 > 0x7F700000007)
+      if (tuple > 0x7F700000007)
       {
-        if (a3 <= 0x7FE00000007)
+        if (tuple <= 0x7FE00000007)
         {
-          if (a3 == 0x7F700000008)
+          if (tuple == 0x7F700000008)
           {
             v13 = &unk_1F2055CD0;
             goto LABEL_1016;
@@ -35602,7 +35602,7 @@ LABEL_610:
           goto LABEL_841;
         }
 
-        if (a3 == 0x7FE00000008)
+        if (tuple == 0x7FE00000008)
         {
           goto LABEL_725;
         }
@@ -35611,9 +35611,9 @@ LABEL_610:
         goto LABEL_724;
       }
 
-      if (a3 <= 0x7EF0000000ALL)
+      if (tuple <= 0x7EF0000000ALL)
       {
-        if (a3 == 0x7EE000002E6)
+        if (tuple == 0x7EE000002E6)
         {
           v13 = &unk_1F2055AA8;
           goto LABEL_1016;
@@ -35623,7 +35623,7 @@ LABEL_610:
         goto LABEL_789;
       }
 
-      if (a3 != 0x7EF0000000BLL)
+      if (tuple != 0x7EF0000000BLL)
       {
         v39 = 0x7F500000008;
         goto LABEL_841;
@@ -35633,11 +35633,11 @@ LABEL_610:
       goto LABEL_957;
     }
 
-    if (a3 > 0x7E0000000C8)
+    if (tuple > 0x7E0000000C8)
     {
-      if (a3 > 0x7EE0000000CLL)
+      if (tuple > 0x7EE0000000CLL)
       {
-        if (a3 == 0x7EE0000000DLL)
+        if (tuple == 0x7EE0000000DLL)
         {
           [v11 addObject:&unk_1F2055AC0];
           [v12 addObject:&unk_1F2055AD8];
@@ -35651,7 +35651,7 @@ LABEL_610:
 
         else
         {
-          if (a3 != 0x7EE0000006DLL)
+          if (tuple != 0x7EE0000006DLL)
           {
             goto LABEL_1017;
           }
@@ -35661,9 +35661,9 @@ LABEL_610:
         }
       }
 
-      else if (a3 != 0x7E0000000C9)
+      else if (tuple != 0x7E0000000C9)
       {
-        if (a3 != 0x7E90000000DLL)
+        if (tuple != 0x7E90000000DLL)
         {
           goto LABEL_1017;
         }
@@ -35674,16 +35674,16 @@ LABEL_610:
       goto LABEL_1016;
     }
 
-    if (a3 > 0x7DF00000324)
+    if (tuple > 0x7DF00000324)
     {
-      if (a3 != 0x7DF00000325)
+      if (tuple != 0x7DF00000325)
       {
         v54 = 1207;
         goto LABEL_610;
       }
     }
 
-    else if (a3 != 0x7DF00000322 && a3 != 0x7DF00000323)
+    else if (tuple != 0x7DF00000322 && tuple != 0x7DF00000323)
     {
       goto LABEL_1017;
     }
@@ -35692,19 +35692,19 @@ LABEL_610:
     goto LABEL_1016;
   }
 
-  if (a3 > 0x1730000012DLL)
+  if (tuple > 0x1730000012DLL)
   {
-    if (a3 <= 0x1EFFFFFFFFFLL)
+    if (tuple <= 0x1EFFFFFFFFFLL)
     {
-      if (a3 <= 0x196000004B7)
+      if (tuple <= 0x196000004B7)
       {
-        if (a3 > 0x17D000000C8)
+        if (tuple > 0x17D000000C8)
         {
-          if (a3 > 0x18A000000C8)
+          if (tuple > 0x18A000000C8)
           {
-            if (a3 > 0x194000001F5)
+            if (tuple > 0x194000001F5)
             {
-              if (a3 != 0x194000001F6 && a3 != 0x195000000C9)
+              if (tuple != 0x194000001F6 && tuple != 0x195000000C9)
               {
                 goto LABEL_1017;
               }
@@ -35713,7 +35713,7 @@ LABEL_610:
               goto LABEL_1016;
             }
 
-            if (a3 == 0x18A000000C9)
+            if (tuple == 0x18A000000C9)
             {
               goto LABEL_625;
             }
@@ -35722,16 +35722,16 @@ LABEL_610:
             goto LABEL_624;
           }
 
-          if (a3 > 0x17D000002BDLL)
+          if (tuple > 0x17D000002BDLL)
           {
-            if (a3 == 0x17D000002BELL)
+            if (tuple == 0x17D000002BELL)
             {
               goto LABEL_625;
             }
 
             v38 = 0x17E00000051;
 LABEL_624:
-            if (a3 != v38)
+            if (tuple != v38)
             {
               goto LABEL_1017;
             }
@@ -35739,7 +35739,7 @@ LABEL_624:
             goto LABEL_625;
           }
 
-          if (a3 == 0x17D000000C9)
+          if (tuple == 0x17D000000C9)
           {
             goto LABEL_625;
           }
@@ -35747,11 +35747,11 @@ LABEL_624:
           v31 = 203;
         }
 
-        else if (a3 > 0x17D0000002DLL)
+        else if (tuple > 0x17D0000002DLL)
         {
-          if (a3 > 0x17D00000055)
+          if (tuple > 0x17D00000055)
           {
-            if (a3 == 0x17D00000056)
+            if (tuple == 0x17D00000056)
             {
               goto LABEL_625;
             }
@@ -35761,7 +35761,7 @@ LABEL_624:
 
           else
           {
-            if (a3 == 0x17D0000002ELL)
+            if (tuple == 0x17D0000002ELL)
             {
               goto LABEL_625;
             }
@@ -35772,9 +35772,9 @@ LABEL_624:
 
         else
         {
-          if (a3 <= 0x17300000130)
+          if (tuple <= 0x17300000130)
           {
-            if (a3 != 0x1730000012ELL)
+            if (tuple != 0x1730000012ELL)
             {
               v14 = 303;
 LABEL_563:
@@ -35785,7 +35785,7 @@ LABEL_563:
             goto LABEL_625;
           }
 
-          if (a3 == 0x17300000131)
+          if (tuple == 0x17300000131)
           {
             goto LABEL_625;
           }
@@ -35797,13 +35797,13 @@ LABEL_563:
         goto LABEL_624;
       }
 
-      if (a3 <= 0x1A8000004B7)
+      if (tuple <= 0x1A8000004B7)
       {
-        if (a3 > 0x1A200000064)
+        if (tuple > 0x1A200000064)
         {
-          if (a3 > 0x1A3000004B6)
+          if (tuple > 0x1A3000004B6)
           {
-            if (a3 == 0x1A3000004B7)
+            if (tuple == 0x1A3000004B7)
             {
               goto LABEL_790;
             }
@@ -35812,7 +35812,7 @@ LABEL_563:
             goto LABEL_789;
           }
 
-          if (a3 == 0x1A200000065 || a3 == 0x1A200000066)
+          if (tuple == 0x1A200000065 || tuple == 0x1A200000066)
           {
             [v11 addObject:&unk_1F2055460];
             if ([v10 mapsInOfflineMode])
@@ -35825,9 +35825,9 @@ LABEL_563:
           goto LABEL_1017;
         }
 
-        if (a3 <= 0x19F0000006CLL)
+        if (tuple <= 0x19F0000006CLL)
         {
-          if (a3 == 0x196000004B8)
+          if (tuple == 0x196000004B8)
           {
             goto LABEL_704;
           }
@@ -35836,14 +35836,14 @@ LABEL_563:
           goto LABEL_551;
         }
 
-        if (a3 == 0x19F0000006DLL)
+        if (tuple == 0x19F0000006DLL)
         {
           goto LABEL_790;
         }
 
         v53 = 0x1A00000006DLL;
 LABEL_611:
-        if (a3 != v53)
+        if (tuple != v53)
         {
           goto LABEL_1017;
         }
@@ -35851,13 +35851,13 @@ LABEL_611:
         goto LABEL_790;
       }
 
-      if (a3 <= 0x1DE00000092)
+      if (tuple <= 0x1DE00000092)
       {
-        if (a3 <= 0x1D500000083)
+        if (tuple <= 0x1D500000083)
         {
-          if (a3 != 0x1A8000004B8)
+          if (tuple != 0x1A8000004B8)
           {
-            if (a3 != 0x1CF00000083)
+            if (tuple != 0x1CF00000083)
             {
               goto LABEL_1017;
             }
@@ -35869,7 +35869,7 @@ LABEL_611:
           goto LABEL_704;
         }
 
-        if (a3 == 0x1D500000084)
+        if (tuple == 0x1D500000084)
         {
           v13 = &unk_1F2055010;
           goto LABEL_1016;
@@ -35879,16 +35879,16 @@ LABEL_611:
         goto LABEL_902;
       }
 
-      if (a3 > 0x1ECFFFFFFFFLL)
+      if (tuple > 0x1ECFFFFFFFFLL)
       {
-        if (a3 == 0x1ED00000000)
+        if (tuple == 0x1ED00000000)
         {
           v13 = &unk_1F2055CE8;
         }
 
         else
         {
-          if (a3 != 0x1EF00000000)
+          if (tuple != 0x1EF00000000)
           {
             goto LABEL_1017;
           }
@@ -35899,9 +35899,9 @@ LABEL_611:
         goto LABEL_1016;
       }
 
-      if (a3 != 0x1DE00000093)
+      if (tuple != 0x1DE00000093)
       {
-        if (a3 != 0x1EC00000000)
+        if (tuple != 0x1EC00000000)
         {
           goto LABEL_1017;
         }
@@ -35915,15 +35915,15 @@ LABEL_630:
       goto LABEL_1016;
     }
 
-    if (a3 <= 0x3E9000001F7)
+    if (tuple <= 0x3E9000001F7)
     {
-      if (a3 <= 0x20300000092)
+      if (tuple <= 0x20300000092)
       {
-        if (a3 > 0x1F400000091)
+        if (tuple > 0x1F400000091)
         {
-          if (a3 <= 0x1F600000091)
+          if (tuple <= 0x1F600000091)
           {
-            if (a3 != 0x1F400000092 && a3 != 0x1F500000092)
+            if (tuple != 0x1F400000092 && tuple != 0x1F500000092)
             {
               goto LABEL_1017;
             }
@@ -35932,9 +35932,9 @@ LABEL_630:
             goto LABEL_1016;
           }
 
-          if (a3 != 0x1F600000092)
+          if (tuple != 0x1F600000092)
           {
-            if (a3 != 0x1FB00000093)
+            if (tuple != 0x1FB00000093)
             {
               goto LABEL_1017;
             }
@@ -35945,16 +35945,16 @@ LABEL_630:
 
         else
         {
-          if (a3 <= 0x1F1FFFFFFFFLL)
+          if (tuple <= 0x1F1FFFFFFFFLL)
           {
-            if (a3 == 0x1F000000000)
+            if (tuple == 0x1F000000000)
             {
               v13 = &unk_1F2055400;
             }
 
             else
             {
-              if (a3 != 0x1F100000000)
+              if (tuple != 0x1F100000000)
               {
                 goto LABEL_1017;
               }
@@ -35965,13 +35965,13 @@ LABEL_630:
             goto LABEL_1016;
           }
 
-          if (a3 == 0x1F200000000)
+          if (tuple == 0x1F200000000)
           {
             v13 = &unk_1F2055430;
             goto LABEL_1016;
           }
 
-          if (a3 != 0x1F300000092)
+          if (tuple != 0x1F300000092)
           {
             goto LABEL_1017;
           }
@@ -35981,18 +35981,18 @@ LABEL_630:
         goto LABEL_1016;
       }
 
-      if (a3 <= 0x3E8FFFFFFFFLL)
+      if (tuple <= 0x3E8FFFFFFFFLL)
       {
-        if (a3 > 0x20E0000012CLL)
+        if (tuple > 0x20E0000012CLL)
         {
-          if (a3 == 0x20E0000012DLL)
+          if (tuple == 0x20E0000012DLL)
           {
             v13 = &unk_1F20552F8;
           }
 
           else
           {
-            if (a3 != 0x20F0000012DLL)
+            if (tuple != 0x20F0000012DLL)
             {
               goto LABEL_1017;
             }
@@ -36001,14 +36001,14 @@ LABEL_630:
           }
         }
 
-        else if (a3 == 0x20300000093)
+        else if (tuple == 0x20300000093)
         {
           v13 = &unk_1F2055D18;
         }
 
         else
         {
-          if (a3 != 0x20300000099)
+          if (tuple != 0x20300000099)
           {
             goto LABEL_1017;
           }
@@ -36019,7 +36019,7 @@ LABEL_630:
         goto LABEL_1016;
       }
 
-      if (a3 <= 0x3E9000001F5 && a3 != 0x3E900000000 && a3 != 0x3E9000001F5)
+      if (tuple <= 0x3E9000001F5 && tuple != 0x3E900000000 && tuple != 0x3E9000001F5)
       {
         goto LABEL_1017;
       }
@@ -36041,24 +36041,24 @@ LABEL_859:
       goto LABEL_1017;
     }
 
-    if (a3 <= 0x3EA000001F8)
+    if (tuple <= 0x3EA000001F8)
     {
-      if (a3 <= 0x3EA000001F4)
+      if (tuple <= 0x3EA000001F4)
       {
-        if (a3 > 0x3E9000004B7)
+        if (tuple > 0x3E9000004B7)
         {
-          if (a3 == 0x3E9000004B8)
+          if (tuple == 0x3E9000004B8)
           {
             goto LABEL_704;
           }
 
-          if (a3 != 0x3EA00000000)
+          if (tuple != 0x3EA00000000)
           {
             goto LABEL_1017;
           }
         }
 
-        else if (a3 != 0x3E9000001F8 && a3 != 0x3E9000001F9)
+        else if (tuple != 0x3E9000001F8 && tuple != 0x3E9000001F9)
         {
           goto LABEL_1017;
         }
@@ -36067,11 +36067,11 @@ LABEL_859:
       goto LABEL_859;
     }
 
-    if (a3 > 0x3EB000001F6)
+    if (tuple > 0x3EB000001F6)
     {
-      if (a3 > 0x3EB000001F9)
+      if (tuple > 0x3EB000001F9)
       {
-        if (a3 != 0x3EC00000000)
+        if (tuple != 0x3EC00000000)
         {
           goto LABEL_1017;
         }
@@ -36080,14 +36080,14 @@ LABEL_859:
       }
     }
 
-    else if (a3 <= 0x3EB000001F4)
+    else if (tuple <= 0x3EB000001F4)
     {
-      if (a3 == 0x3EA000001F9)
+      if (tuple == 0x3EA000001F9)
       {
         goto LABEL_859;
       }
 
-      if (a3 != 0x3EB00000000)
+      if (tuple != 0x3EB00000000)
       {
         goto LABEL_1017;
       }
@@ -36110,21 +36110,21 @@ LABEL_869:
     goto LABEL_1017;
   }
 
-  if (a3 > 0x67FFFFFFFFLL)
+  if (tuple > 0x67FFFFFFFFLL)
   {
-    if (a3 <= 0xF50000006CLL)
+    if (tuple <= 0xF50000006CLL)
     {
-      if (a3 <= 0x7A00000191)
+      if (tuple <= 0x7A00000191)
       {
-        if (a3 > 0x7800000191)
+        if (tuple > 0x7800000191)
         {
-          if (a3 > 0x7900000191)
+          if (tuple > 0x7900000191)
           {
-            if (a3 != 0x7900000192)
+            if (tuple != 0x7900000192)
             {
               v17 = 0x7A0000012ELL;
 LABEL_855:
-              if (a3 != v17)
+              if (tuple != v17)
               {
                 goto LABEL_1017;
               }
@@ -36135,12 +36135,12 @@ LABEL_855:
 
           else
           {
-            if (a3 == 0x7800000192)
+            if (tuple == 0x7800000192)
             {
               goto LABEL_856;
             }
 
-            if (a3 != 0x790000012ELL)
+            if (tuple != 0x790000012ELL)
             {
               goto LABEL_1017;
             }
@@ -36150,9 +36150,9 @@ LABEL_855:
           goto LABEL_1016;
         }
 
-        if (a3 <= 0x7700000191)
+        if (tuple <= 0x7700000191)
         {
-          if (a3 == 0x6800000000)
+          if (tuple == 0x6800000000)
           {
             [v11 addObject:&unk_1F2055280];
             if ([v10 mapUiShownActiveNavMode] == 5)
@@ -36183,7 +36183,7 @@ LABEL_855:
           goto LABEL_855;
         }
 
-        if (a3 != 0x7700000192)
+        if (tuple != 0x7700000192)
         {
           v17 = 0x780000012ELL;
           goto LABEL_855;
@@ -36194,13 +36194,13 @@ LABEL_856:
         goto LABEL_857;
       }
 
-      if (a3 > 0x9D00000014)
+      if (tuple > 0x9D00000014)
       {
-        if (a3 > 0xD60000006CLL)
+        if (tuple > 0xD60000006CLL)
         {
-          if (a3 != 0xD60000006DLL)
+          if (tuple != 0xD60000006DLL)
           {
-            if (a3 != 0xF30000001FLL || ([v8 isEqualToString:@"AUTOMOBILE"] & 1) == 0)
+            if (tuple != 0xF30000001FLL || ([valueCopy isEqualToString:@"AUTOMOBILE"] & 1) == 0)
             {
               goto LABEL_1017;
             }
@@ -36212,7 +36212,7 @@ LABEL_856:
           goto LABEL_790;
         }
 
-        if (a3 == 0x9D00000015)
+        if (tuple == 0x9D00000015)
         {
 LABEL_850:
           v13 = &unk_1F2055490;
@@ -36224,14 +36224,14 @@ LABEL_850:
 
       else
       {
-        if (a3 <= 0x7B00000191)
+        if (tuple <= 0x7B00000191)
         {
-          if (a3 == 0x7A00000192)
+          if (tuple == 0x7A00000192)
           {
             goto LABEL_856;
           }
 
-          if (a3 != 0x7B0000012ELL)
+          if (tuple != 0x7B0000012ELL)
           {
             goto LABEL_1017;
           }
@@ -36241,7 +36241,7 @@ LABEL_909:
           goto LABEL_1016;
         }
 
-        if (a3 == 0x7B00000192)
+        if (tuple == 0x7B00000192)
         {
           goto LABEL_909;
         }
@@ -36249,7 +36249,7 @@ LABEL_909:
         v48 = 0x9B00000015;
       }
 
-      if (a3 != v48)
+      if (tuple != v48)
       {
         goto LABEL_1017;
       }
@@ -36257,13 +36257,13 @@ LABEL_909:
       goto LABEL_850;
     }
 
-    if (a3 > 0x13E000000CBLL)
+    if (tuple > 0x13E000000CBLL)
     {
-      if (a3 > 0x171FFFFFFFFLL)
+      if (tuple > 0x171FFFFFFFFLL)
       {
-        if (a3 <= 0x173000000C8)
+        if (tuple <= 0x173000000C8)
         {
-          if (a3 == 0x17200000000)
+          if (tuple == 0x17200000000)
           {
             v13 = &unk_1F20550D0;
             goto LABEL_1016;
@@ -36273,7 +36273,7 @@ LABEL_909:
           goto LABEL_563;
         }
 
-        if (a3 != 0x173000000C9)
+        if (tuple != 0x173000000C9)
         {
           v14 = 301;
           goto LABEL_563;
@@ -36284,18 +36284,18 @@ LABEL_625:
         goto LABEL_1016;
       }
 
-      if (a3 == 0x13E000000CCLL)
+      if (tuple == 0x13E000000CCLL)
       {
         goto LABEL_1016;
       }
 
-      if (a3 == 0x15100000322)
+      if (tuple == 0x15100000322)
       {
         [v11 addObject:&unk_1F2054FE0];
         v78 = +[GEOAPSharedStateData sharedData];
-        v79 = [v78 hasCarPlayInfo];
+        hasCarPlayInfo = [v78 hasCarPlayInfo];
 
-        if ((v79 & 1) == 0)
+        if ((hasCarPlayInfo & 1) == 0)
         {
           goto LABEL_1017;
         }
@@ -36306,7 +36306,7 @@ LABEL_625:
 
       v22 = 0x16D000004B9;
 LABEL_551:
-      if (a3 != v22)
+      if (tuple != v22)
       {
         goto LABEL_1017;
       }
@@ -36314,11 +36314,11 @@ LABEL_551:
       goto LABEL_782;
     }
 
-    if (a3 > 0x11A000000C8)
+    if (tuple > 0x11A000000C8)
     {
-      if (a3 <= 0x13E00000037)
+      if (tuple <= 0x13E00000037)
       {
-        if (a3 == 0x11A000000C9 || a3 == 0x11C000000C9)
+        if (tuple == 0x11A000000C9 || tuple == 0x11C000000C9)
         {
           goto LABEL_1016;
         }
@@ -36327,7 +36327,7 @@ LABEL_551:
         goto LABEL_765;
       }
 
-      if (a3 - 0x13E00000038 < 2)
+      if (tuple - 0x13E00000038 < 2)
       {
         goto LABEL_1016;
       }
@@ -36335,24 +36335,24 @@ LABEL_551:
       goto LABEL_1017;
     }
 
-    if (a3 - 0x11900000038 < 2)
+    if (tuple - 0x11900000038 < 2)
     {
       goto LABEL_1016;
     }
 
-    if (a3 == 0xF50000006DLL)
+    if (tuple == 0xF50000006DLL)
     {
       goto LABEL_790;
     }
 
-    if (a3 != 0xFA000001F8)
+    if (tuple != 0xFA000001F8)
     {
       goto LABEL_1017;
     }
 
     v51 = @"OFFLINE";
 LABEL_957:
-    if (([v8 isEqualToString:v51] & 1) == 0)
+    if (([valueCopy isEqualToString:v51] & 1) == 0)
     {
       goto LABEL_1017;
     }
@@ -36361,22 +36361,22 @@ LABEL_957:
     goto LABEL_1016;
   }
 
-  if (a3 > 0x1500000102)
+  if (tuple > 0x1500000102)
   {
-    if (a3 <= 0x32000000C8)
+    if (tuple <= 0x32000000C8)
     {
-      if (a3 <= 0x1500000130)
+      if (tuple <= 0x1500000130)
       {
-        if (a3 > 0x150000012DLL)
+        if (tuple > 0x150000012DLL)
         {
-          if (a3 == 0x150000012ELL)
+          if (tuple == 0x150000012ELL)
           {
             v13 = &unk_1F2055718;
           }
 
           else
           {
-            if (a3 != 0x150000012FLL)
+            if (tuple != 0x150000012FLL)
             {
               goto LABEL_1017;
             }
@@ -36385,14 +36385,14 @@ LABEL_957:
           }
         }
 
-        else if (a3 == 0x1500000103)
+        else if (tuple == 0x1500000103)
         {
           v13 = &unk_1F2055598;
         }
 
         else
         {
-          if (a3 != 0x150000012DLL)
+          if (tuple != 0x150000012DLL)
           {
             goto LABEL_1017;
           }
@@ -36403,9 +36403,9 @@ LABEL_957:
         goto LABEL_1016;
       }
 
-      if (a3 > 0x2D000006ABLL)
+      if (tuple > 0x2D000006ABLL)
       {
-        if (a3 == 0x2D000006ACLL)
+        if (tuple == 0x2D000006ACLL)
         {
           v13 = &unk_1F2055118;
           goto LABEL_1016;
@@ -36415,13 +36415,13 @@ LABEL_957:
         goto LABEL_876;
       }
 
-      if (a3 == 0x1500000131)
+      if (tuple == 0x1500000131)
       {
         v13 = &unk_1F20556D0;
         goto LABEL_1016;
       }
 
-      if (a3 != 0x15000003EFLL)
+      if (tuple != 0x15000003EFLL)
       {
         goto LABEL_1017;
       }
@@ -36429,11 +36429,11 @@ LABEL_957:
       goto LABEL_591;
     }
 
-    if (a3 > 0x59FFFFFFFFLL)
+    if (tuple > 0x59FFFFFFFFLL)
     {
-      if (a3 > 0x5BFFFFFFFFLL)
+      if (tuple > 0x5BFFFFFFFFLL)
       {
-        if (a3 == 0x5C00000000)
+        if (tuple == 0x5C00000000)
         {
           goto LABEL_734;
         }
@@ -36443,7 +36443,7 @@ LABEL_957:
 
       else
       {
-        if (a3 == 0x5A00000000)
+        if (tuple == 0x5A00000000)
         {
           goto LABEL_734;
         }
@@ -36452,7 +36452,7 @@ LABEL_957:
       }
 
 LABEL_733:
-      if (a3 != v30)
+      if (tuple != v30)
       {
         goto LABEL_1017;
       }
@@ -36460,9 +36460,9 @@ LABEL_733:
       goto LABEL_734;
     }
 
-    if (a3 <= 0x5400000007)
+    if (tuple <= 0x5400000007)
     {
-      if (a3 == 0x32000000C9)
+      if (tuple == 0x32000000C9)
       {
         goto LABEL_1016;
       }
@@ -36471,7 +36471,7 @@ LABEL_733:
       goto LABEL_733;
     }
 
-    if (a3 == 0x5400000008)
+    if (tuple == 0x5400000008)
     {
       goto LABEL_725;
     }
@@ -36480,13 +36480,13 @@ LABEL_733:
     goto LABEL_724;
   }
 
-  if (a3 <= 0x1500000083)
+  if (tuple <= 0x1500000083)
   {
-    if (a3 > 0x150000001BLL)
+    if (tuple > 0x150000001BLL)
     {
-      if (a3 > 0x1500000081)
+      if (tuple > 0x1500000081)
       {
-        if (a3 == 0x1500000082)
+        if (tuple == 0x1500000082)
         {
           v13 = &unk_1F20556B8;
         }
@@ -36497,14 +36497,14 @@ LABEL_733:
         }
       }
 
-      else if (a3 == 0x150000001CLL)
+      else if (tuple == 0x150000001CLL)
       {
         v13 = &unk_1F2055580;
       }
 
       else
       {
-        if (a3 != 0x150000001DLL)
+        if (tuple != 0x150000001DLL)
         {
           goto LABEL_1017;
         }
@@ -36515,15 +36515,15 @@ LABEL_733:
       goto LABEL_1016;
     }
 
-    if (a3 == 0x110000026ELL)
+    if (tuple == 0x110000026ELL)
     {
       v13 = &unk_1F2055A60;
       goto LABEL_1016;
     }
 
-    if (a3 != 0x1300000000)
+    if (tuple != 0x1300000000)
     {
-      if (a3 != 0x1500000013)
+      if (tuple != 0x1500000013)
       {
         goto LABEL_1017;
       }
@@ -36539,65 +36539,65 @@ LABEL_733:
     }
 
     v62 = +[GEOAPSharedStateData sharedData];
-    v63 = [v62 is3rdPartyPunchIn];
+    is3rdPartyPunchIn = [v62 is3rdPartyPunchIn];
 
-    if (v63)
+    if (is3rdPartyPunchIn)
     {
       [v12 addObject:&unk_1F20551C0];
     }
 
     v64 = +[GEOAPSharedStateData sharedData];
-    v65 = [v64 isFindMyPunchIn];
+    isFindMyPunchIn = [v64 isFindMyPunchIn];
 
-    if (v65)
+    if (isFindMyPunchIn)
     {
       [v12 addObject:&unk_1F20551D8];
     }
 
     v66 = +[GEOAPSharedStateData sharedData];
-    v67 = [v66 isOther2ndPartyPunchIn];
+    isOther2ndPartyPunchIn = [v66 isOther2ndPartyPunchIn];
 
-    if (v67)
+    if (isOther2ndPartyPunchIn)
     {
       [v12 addObject:&unk_1F20551F0];
     }
 
     v68 = +[GEOAPSharedStateData sharedData];
-    v69 = [v68 isSafariPunchIn];
+    isSafariPunchIn = [v68 isSafariPunchIn];
 
-    if (v69)
+    if (isSafariPunchIn)
     {
       [v12 addObject:&unk_1F2055208];
     }
 
     v70 = +[GEOAPSharedStateData sharedData];
-    v71 = [v70 isSiriPunchIn];
+    isSiriPunchIn = [v70 isSiriPunchIn];
 
-    if (v71)
+    if (isSiriPunchIn)
     {
       [v12 addObject:&unk_1F2055220];
     }
 
     v72 = +[GEOAPSharedStateData sharedData];
-    v73 = [v72 isSMSPunchIn];
+    isSMSPunchIn = [v72 isSMSPunchIn];
 
-    if (v73)
+    if (isSMSPunchIn)
     {
       [v12 addObject:&unk_1F2055238];
     }
 
     v74 = +[GEOAPSharedStateData sharedData];
-    v75 = [v74 isSpotlightPunchIn];
+    isSpotlightPunchIn = [v74 isSpotlightPunchIn];
 
-    if (v75)
+    if (isSpotlightPunchIn)
     {
       [v12 addObject:&unk_1F2055250];
     }
 
     v76 = +[GEOAPSharedStateData sharedData];
-    v77 = [v76 isMapsWidgetPunchIn];
+    isMapsWidgetPunchIn = [v76 isMapsWidgetPunchIn];
 
-    if (v77)
+    if (isMapsWidgetPunchIn)
     {
 LABEL_931:
       v13 = &unk_1F2055268;
@@ -36607,11 +36607,11 @@ LABEL_931:
     goto LABEL_1017;
   }
 
-  if (a3 <= 0x1500000092)
+  if (tuple <= 0x1500000092)
   {
-    if (a3 > 0x1500000088)
+    if (tuple > 0x1500000088)
     {
-      if (a3 == 0x1500000089)
+      if (tuple == 0x1500000089)
       {
         goto LABEL_573;
       }
@@ -36621,7 +36621,7 @@ LABEL_931:
 
     else
     {
-      if (a3 == 0x1500000084)
+      if (tuple == 0x1500000084)
       {
         v13 = &unk_1F20556A0;
         goto LABEL_1016;
@@ -36631,7 +36631,7 @@ LABEL_931:
     }
 
 LABEL_572:
-    if (a3 != (v29 & 0xFFFF0000FFFFFFFFLL | 0x1500000000))
+    if (tuple != (v29 & 0xFFFF0000FFFFFFFFLL | 0x1500000000))
     {
       goto LABEL_1017;
     }
@@ -36639,9 +36639,9 @@ LABEL_572:
     goto LABEL_573;
   }
 
-  if (a3 <= 0x15000000C8)
+  if (tuple <= 0x15000000C8)
   {
-    if (a3 == 0x1500000093)
+    if (tuple == 0x1500000093)
     {
       [v11 addObject:&unk_1F20555C8];
       v13 = &unk_1F20555E0;
@@ -36649,7 +36649,7 @@ LABEL_572:
 
     else
     {
-      if (a3 != 0x150000009BLL)
+      if (tuple != 0x150000009BLL)
       {
         goto LABEL_1017;
       }
@@ -36660,7 +36660,7 @@ LABEL_572:
     goto LABEL_1016;
   }
 
-  if (a3 != 0x15000000C9)
+  if (tuple != 0x15000000C9)
   {
     v29 = 254;
     goto LABEL_572;
@@ -36668,9 +36668,9 @@ LABEL_572:
 
   [v11 addObject:&unk_1F20555F8];
   v80 = +[GEOAPSharedStateData sharedData];
-  v81 = [v80 placeCardIsPersonLocationShared];
+  placeCardIsPersonLocationShared = [v80 placeCardIsPersonLocationShared];
 
-  if (v81)
+  if (placeCardIsPersonLocationShared)
   {
     [v12 addObject:&unk_1F2055610];
   }
@@ -36680,8 +36680,8 @@ LABEL_572:
     [v12 addObject:&unk_1F2055628];
   }
 
-  v82 = a5 - 1;
-  if ((a5 - 1) < 3)
+  v82 = group - 1;
+  if ((group - 1) < 3)
   {
     v83 = &unk_1E7953BE0;
 LABEL_980:
@@ -36705,11 +36705,11 @@ LABEL_1017:
   return v85;
 }
 
-+ (id)addStaticDailyCountsWithActionTargetTuple:(unint64_t)a3 actionTargetValue:(id)a4 appGroup:(int)a5
++ (id)addStaticDailyCountsWithActionTargetTuple:(unint64_t)tuple actionTargetValue:(id)value appGroup:(int)group
 {
   v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:1];
   v7 = v6;
-  switch(a3)
+  switch(tuple)
   {
     case 0x1300000000uLL:
       v8 = &unk_1F2054F80;
@@ -36731,37 +36731,37 @@ LABEL_8:
   return v9;
 }
 
-+ (void)capturePredExTrainingWithChanceOfPrecipitation:(id)a3 chanceOfRain:(id)a4 chanceOfSnow:(id)a5 endTime:(id)a6 durationUntilEventEnd:(id)a7 durationUntilEventStart:(id)a8 startTime:(id)a9 temperature:(id)a10 timeOfDay:(id)a11 timeSinceBackgrounded:(id)a12 actualTransportMode:(int)a13 dayOfWeek:(id)a14 distanceFromHereToHome:(int)a15 distanceFromHereToOrigin:(int)a16 distanceFromHereToParkedCar:(int)a17 distanceFromHereToWork:(int)a18 distanceFromHere:(int)a19 distanceFromOriginToDestination:(int)a20 entryType:(int)a21 weatherType:(int)a22 mapType:(int)a23 predictedTransportMode:(int)a24 preferredTransportMode:(int)a25 isTourist:(id)a26 isCarplayConnected:(id)a27 isTransitPossible:(id)a28 userLocation:(id)a29 isVehicleBluetoothConnected:(id)a30 weatherAqi:(id)a31 modelName:(int)a32 modelVersion:(id)a33 modelTrainedDate:(id)a34
++ (void)capturePredExTrainingWithChanceOfPrecipitation:(id)precipitation chanceOfRain:(id)rain chanceOfSnow:(id)snow endTime:(id)time durationUntilEventEnd:(id)end durationUntilEventStart:(id)start startTime:(id)startTime temperature:(id)self0 timeOfDay:(id)self1 timeSinceBackgrounded:(id)self2 actualTransportMode:(int)self3 dayOfWeek:(id)self4 distanceFromHereToHome:(int)self5 distanceFromHereToOrigin:(int)self6 distanceFromHereToParkedCar:(int)self7 distanceFromHereToWork:(int)self8 distanceFromHere:(int)self9 distanceFromOriginToDestination:(int)destination entryType:(int)type weatherType:(int)weatherType mapType:(int)mapType predictedTransportMode:(int)transportMode preferredTransportMode:(int)preferredTransportMode isTourist:(id)tourist isCarplayConnected:(id)connected isTransitPossible:(id)possible userLocation:(id)location isVehicleBluetoothConnected:(id)precipitation0 weatherAqi:(id)precipitation1 modelName:(int)precipitation2 modelVersion:(id)precipitation3 modelTrainedDate:(id)precipitation4
 {
-  LODWORD(v36) = a32;
-  LODWORD(v35) = a25;
-  LODWORD(v34) = a13;
-  [a1 capturePredExTrainingWithChanceOfPrecipitation:a3 chanceOfRain:a4 chanceOfSnow:a5 endTime:a6 durationUntilEventEnd:a7 durationUntilEventStart:a8 startTime:a9 temperature:a10 timeOfDay:a11 timeSinceBackgrounded:a12 actualTransportMode:v34 dayOfWeek:a14 distanceFromHereToHome:__PAIR64__(a16 distanceFromHereToOrigin:a15) distanceFromHereToParkedCar:__PAIR64__(a18 distanceFromHereToWork:a17) distanceFromHere:__PAIR64__(a20 distanceFromOriginToDestination:a19) entryType:__PAIR64__(a22 weatherType:a21) mapType:__PAIR64__(a24 predictedTransportMode:a23) preferredTransportMode:v35 isInBasemode:0 isTourist:a26 isCarplayConnected:a27 isTransitPossible:a28 routePlanningScreenPresented:0 userLocation:a29 isVehicleBluetoothConnected:a30 weatherAqi:a31 modelName:v36 modelVersion:a33 modelTrainedDate:a34];
+  LODWORD(v36) = name;
+  LODWORD(v35) = preferredTransportMode;
+  LODWORD(v34) = mode;
+  [self capturePredExTrainingWithChanceOfPrecipitation:precipitation chanceOfRain:rain chanceOfSnow:snow endTime:time durationUntilEventEnd:end durationUntilEventStart:start startTime:startTime temperature:temperature timeOfDay:day timeSinceBackgrounded:backgrounded actualTransportMode:v34 dayOfWeek:week distanceFromHereToHome:__PAIR64__(origin distanceFromHereToOrigin:home) distanceFromHereToParkedCar:__PAIR64__(work distanceFromHereToWork:car) distanceFromHere:__PAIR64__(destination distanceFromOriginToDestination:here) entryType:__PAIR64__(weatherType weatherType:type) mapType:__PAIR64__(transportMode predictedTransportMode:mapType) preferredTransportMode:v35 isInBasemode:0 isTourist:tourist isCarplayConnected:connected isTransitPossible:possible routePlanningScreenPresented:0 userLocation:location isVehicleBluetoothConnected:bluetoothConnected weatherAqi:aqi modelName:v36 modelVersion:version modelTrainedDate:date];
 }
 
-+ (void)capturePredExTrainingWithChanceOfPrecipitation:(id)a3 chanceOfRain:(id)a4 chanceOfSnow:(id)a5 endTime:(id)a6 durationUntilEventEnd:(id)a7 durationUntilEventStart:(id)a8 startTime:(id)a9 temperature:(id)a10 timeOfDay:(id)a11 timeSinceBackgrounded:(id)a12 actualTransportMode:(int)a13 dayOfWeek:(id)a14 distanceFromHereToHome:(int)a15 distanceFromHereToOrigin:(int)a16 distanceFromHereToParkedCar:(int)a17 distanceFromHereToWork:(int)a18 distanceFromHere:(int)a19 distanceFromOriginToDestination:(int)a20 entryType:(int)a21 weatherType:(int)a22 mapType:(int)a23 predictedTransportMode:(int)a24 preferredTransportMode:(int)a25 isInBasemode:(id)a26 isTourist:(id)a27 isCarplayConnected:(id)a28 isTransitPossible:(id)a29 routePlanningScreenPresented:(id)a30 userLocation:(id)a31 isVehicleBluetoothConnected:(id)a32 weatherAqi:(id)a33 modelName:(int)a34 modelVersion:(id)a35 modelTrainedDate:(id)a36
++ (void)capturePredExTrainingWithChanceOfPrecipitation:(id)precipitation chanceOfRain:(id)rain chanceOfSnow:(id)snow endTime:(id)time durationUntilEventEnd:(id)end durationUntilEventStart:(id)start startTime:(id)startTime temperature:(id)self0 timeOfDay:(id)self1 timeSinceBackgrounded:(id)self2 actualTransportMode:(int)self3 dayOfWeek:(id)self4 distanceFromHereToHome:(int)self5 distanceFromHereToOrigin:(int)self6 distanceFromHereToParkedCar:(int)self7 distanceFromHereToWork:(int)self8 distanceFromHere:(int)self9 distanceFromOriginToDestination:(int)destination entryType:(int)type weatherType:(int)weatherType mapType:(int)mapType predictedTransportMode:(int)transportMode preferredTransportMode:(int)preferredTransportMode isInBasemode:(id)basemode isTourist:(id)tourist isCarplayConnected:(id)connected isTransitPossible:(id)possible routePlanningScreenPresented:(id)precipitation0 userLocation:(id)precipitation1 isVehicleBluetoothConnected:(id)precipitation2 weatherAqi:(id)precipitation3 modelName:(int)precipitation4 modelVersion:(id)precipitation5 modelTrainedDate:(id)precipitation6
 {
-  v71 = a3;
-  v70 = a4;
-  v69 = a5;
-  v68 = a6;
-  v67 = a7;
-  v66 = a8;
-  v65 = a9;
-  v64 = a10;
-  v63 = a11;
-  v62 = a12;
-  v56 = a14;
-  v61 = a26;
-  v57 = a27;
-  v58 = a28;
-  v59 = a29;
-  v60 = a30;
-  v41 = a31;
-  v42 = a32;
-  v43 = a33;
-  v44 = a35;
-  v45 = a36;
+  precipitationCopy = precipitation;
+  rainCopy = rain;
+  snowCopy = snow;
+  timeCopy = time;
+  endCopy = end;
+  startCopy = start;
+  startTimeCopy = startTime;
+  temperatureCopy = temperature;
+  dayCopy = day;
+  backgroundedCopy = backgrounded;
+  weekCopy = week;
+  basemodeCopy = basemode;
+  touristCopy = tourist;
+  connectedCopy = connected;
+  possibleCopy = possible;
+  presentedCopy = presented;
+  locationCopy = location;
+  bluetoothConnectedCopy = bluetoothConnected;
+  aqiCopy = aqi;
+  versionCopy = version;
+  dateCopy = date;
   v73 = 0;
   v74 = &v73;
   v75 = 0x2050000000;
@@ -36780,27 +36780,27 @@ LABEL_8:
 
   v47 = v46;
   _Block_object_dispose(&v73, 8);
-  [v41 lat];
+  [locationCopy lat];
   v49 = v48;
-  [v41 lng];
+  [locationCopy lng];
   v51 = [v46 coordinatesToGeoHashWithLength:4 latitude:v49 longitude:v50];
   if (!GEOConfigGetBOOL())
   {
-    a22 = 0;
+    weatherType = 0;
   }
 
-  LODWORD(v55) = a34;
-  LODWORD(v54) = a25;
-  LODWORD(v53) = a13;
-  [GEOAPPortal capturePredExTrainingWithChanceOfPrecipitation:v71 chanceOfRain:v70 chanceOfSnow:v69 endTime:v68 durationUntilEventEnd:v67 durationUntilEventStart:v66 startTime:v65 temperature:v64 timeOfDay:v63 timeSinceBackgrounded:v62 actualTransportMode:v53 dayOfWeek:v56 distanceFromHereToHome:__PAIR64__(a16 distanceFromHereToOrigin:a15) distanceFromHereToParkedCar:__PAIR64__(a18 distanceFromHereToWork:a17) distanceFromHere:__PAIR64__(a20 distanceFromOriginToDestination:a19) entryType:__PAIR64__(a22 weatherType:a21) mapType:__PAIR64__(a24 predictedTransportMode:a23) preferredTransportMode:v54 isInBasemode:v61 isCarplayConnected:v58 isTourist:v57 isTransitPossible:v59 routePlanningScreenPresented:v60 userLocationGeohash4:v51 isVehicleBluetoothConnected:v42 weatherAqi:v43 modelName:v55 modelVersion:v44 modelTrainedDate:v45];
+  LODWORD(v55) = name;
+  LODWORD(v54) = preferredTransportMode;
+  LODWORD(v53) = mode;
+  [GEOAPPortal capturePredExTrainingWithChanceOfPrecipitation:precipitationCopy chanceOfRain:rainCopy chanceOfSnow:snowCopy endTime:timeCopy durationUntilEventEnd:endCopy durationUntilEventStart:startCopy startTime:startTimeCopy temperature:temperatureCopy timeOfDay:dayCopy timeSinceBackgrounded:backgroundedCopy actualTransportMode:v53 dayOfWeek:weekCopy distanceFromHereToHome:__PAIR64__(origin distanceFromHereToOrigin:home) distanceFromHereToParkedCar:__PAIR64__(work distanceFromHereToWork:car) distanceFromHere:__PAIR64__(destination distanceFromOriginToDestination:here) entryType:__PAIR64__(weatherType weatherType:type) mapType:__PAIR64__(transportMode predictedTransportMode:mapType) preferredTransportMode:v54 isInBasemode:basemodeCopy isCarplayConnected:connectedCopy isTourist:touristCopy isTransitPossible:possibleCopy routePlanningScreenPresented:presentedCopy userLocationGeohash4:v51 isVehicleBluetoothConnected:bluetoothConnectedCopy weatherAqi:aqiCopy modelName:v55 modelVersion:versionCopy modelTrainedDate:dateCopy];
 }
 
-+ (void)captureGridDuration:(double)a3 previousState:(int)a4 endState:(int)a5 displayType:(int)a6 errors:(id)a7
++ (void)captureGridDuration:(double)duration previousState:(int)state endState:(int)endState displayType:(int)type errors:(id)errors
 {
   v40 = *MEMORY[0x1E69E9840];
-  v27 = a7;
-  v25 = a5;
-  if (a5 == 2)
+  errorsCopy = errors;
+  endStateCopy = endState;
+  if (endState == 2)
   {
     v33 = 0;
     v34 = &v33;
@@ -36817,13 +36817,13 @@ LABEL_8:
     v10 = v34[5];
     v34[5] = v9;
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v12 = v27;
-    v13 = 0;
+    v12 = errorsCopy;
+    array = 0;
     v14 = [v12 countByEnumeratingWithState:&v28 objects:v39 count:16];
     if (v14)
     {
@@ -36840,20 +36840,20 @@ LABEL_8:
           v17 = *(*(&v28 + 1) + 8 * i);
           v18 = (*(v34[5] + 16))();
           v19 = [MEMORY[0x1E696AD98] numberWithInt:v18];
-          v20 = [v11 objectForKeyedSubscript:v19];
+          v20 = [dictionary objectForKeyedSubscript:v19];
 
           if (!v20)
           {
             v20 = objc_alloc_init(MEMORY[0x1E69A1EE8]);
             [v20 setType:v18];
-            if (!v13)
+            if (!array)
             {
-              v13 = [MEMORY[0x1E695DF70] array];
+              array = [MEMORY[0x1E695DF70] array];
             }
 
-            [v13 addObject:v20];
+            [array addObject:v20];
             v21 = [MEMORY[0x1E696AD98] numberWithInt:v18];
-            [v11 setObject:v20 forKeyedSubscript:v21];
+            [dictionary setObject:v20 forKeyedSubscript:v21];
           }
 
           [v20 setCount:{objc_msgSend(v20, "count") + 1}];
@@ -36870,11 +36870,11 @@ LABEL_8:
 
   else
   {
-    v13 = 0;
+    array = 0;
   }
 
-  v22 = [MEMORY[0x1E696AD98] numberWithDouble:a3 * 1000.0];
-  [GEOAPPortal captureGridDurationWithDurationMs:v22 previousState:a4 endState:v25 endStateErrorReasons:v13 displayType:a6];
+  v22 = [MEMORY[0x1E696AD98] numberWithDouble:duration * 1000.0];
+  [GEOAPPortal captureGridDurationWithDurationMs:v22 previousState:state endState:endStateCopy endStateErrorReasons:array displayType:type];
 
   v23 = *MEMORY[0x1E69E9840];
 }
@@ -37062,35 +37062,35 @@ LABEL_36:
   return v11;
 }
 
-+ (void)captureFindMyUserActionType:(id)a3 ownerContext:(id)a4 productType:(id)a5
++ (void)captureFindMyUserActionType:(id)type ownerContext:(id)context productType:(id)productType
 {
-  v7 = a5;
-  v13 = a4;
-  v8 = [&unk_1F2056700 objectForKeyedSubscript:a3];
+  productTypeCopy = productType;
+  contextCopy = context;
+  v8 = [&unk_1F2056700 objectForKeyedSubscript:type];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 integerValue];
+    integerValue = [v8 integerValue];
   }
 
   else
   {
-    v10 = 0;
+    integerValue = 0;
   }
 
-  v11 = [&unk_1F2056728 objectForKeyedSubscript:v7];
+  v11 = [&unk_1F2056728 objectForKeyedSubscript:productTypeCopy];
 
   if (v11)
   {
-    v12 = [v11 integerValue];
+    integerValue2 = [v11 integerValue];
   }
 
   else
   {
-    v12 = 0;
+    integerValue2 = 0;
   }
 
-  [GEOAPPortal captureFindMyUsageWithUserActionEventAction:v10 userActionEventTarget:v12 userActionEventValue:v13 additionalStates:0 providedDropRate:0 completionQueue:0 completionBlock:0];
+  [GEOAPPortal captureFindMyUsageWithUserActionEventAction:integerValue userActionEventTarget:integerValue2 userActionEventValue:contextCopy additionalStates:0 providedDropRate:0 completionQueue:0 completionBlock:0];
 }
 
 @end

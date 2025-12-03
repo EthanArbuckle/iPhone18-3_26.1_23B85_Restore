@@ -1,5 +1,5 @@
 @interface CHUISWidgetSceneSettings
-+ (id)_renderSchemeFromSettings:(id)a3;
++ (id)_renderSchemeFromSettings:(id)settings;
 - (BOOL)areAnimationsPaused;
 - (BOOL)canAppearInSecureEnvironment;
 - (BOOL)isContentPaused;
@@ -23,9 +23,9 @@
 - (NSString)remoteViewControllerClassName;
 - (NSString)widgetConfigurationIdentifier;
 - (double)renderingScale;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 - (int64_t)proximity;
 - (unint64_t)clipBehavior;
 - (unint64_t)colorScheme;
@@ -39,8 +39,8 @@
 
 - (CHUISWidgetVisibilitySettings)visibility
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88891];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88891];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -70,8 +70,8 @@
 
 - (BOOL)areAnimationsPaused
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88894];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88894];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -94,14 +94,14 @@
 
   v7 = v6;
 
-  v8 = [v7 BOOLValue];
-  return v8;
+  bOOLValue = [v7 BOOLValue];
+  return bOOLValue;
 }
 
 - (NSString)additionalSnapshotPresentationContext
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88900];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88900];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -131,8 +131,8 @@
 
 - (CHSWidgetTintParameters)tintParameters
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88898];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88898];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -160,8 +160,8 @@
 
 - (CHSWidget)widget
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88888];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88888];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -189,8 +189,8 @@
 
 - (BOOL)supportsLowLuminance
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88902];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88902];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -213,15 +213,15 @@
 
   v7 = v6;
 
-  v8 = [v7 BOOLValue];
-  return v8;
+  bOOLValue = [v7 BOOLValue];
+  return bOOLValue;
 }
 
 - (NSArray)supportedRenderSchemes
 {
   v21 = *MEMORY[0x1E69E9840];
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88914];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88914];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -251,8 +251,8 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = [v7 value];
-    v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    value = [v7 value];
+    v10 = [value countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v10)
     {
       v11 = *v17;
@@ -262,14 +262,14 @@
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(value);
           }
 
           v13 = [*(*(&v16 + 1) + 8 * i) copy];
           [v8 addObject:v13];
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [value countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v10);
@@ -288,8 +288,8 @@
 
 - (BOOL)canAppearInSecureEnvironment
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88897];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88897];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -312,22 +312,22 @@
 
   v7 = v6;
 
-  v8 = [v7 BOOLValue];
-  return v8;
+  bOOLValue = [v7 BOOLValue];
+  return bOOLValue;
 }
 
 - (CHSWidgetRenderScheme)renderScheme
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [CHUISWidgetSceneSettings _renderSchemeFromSettings:v2];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [CHUISWidgetSceneSettings _renderSchemeFromSettings:otherSettings];
 
   return v3;
 }
 
 - (double)renderingScale
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88911];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88911];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -358,8 +358,8 @@
 
 - (unint64_t)widgetPriority
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88906];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88906];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -382,14 +382,14 @@
 
   v7 = v6;
 
-  v8 = [v7 unsignedIntegerValue];
-  return v8;
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)contentType
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88892];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88892];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -412,14 +412,14 @@
 
   v7 = v6;
 
-  v8 = [v7 unsignedIntegerValue];
-  return v8;
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (NSString)widgetConfigurationIdentifier
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88890];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88890];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -447,8 +447,8 @@
 
 - (CHSWidgetMetrics)metrics
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88889];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88889];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -476,8 +476,8 @@
 
 - (unint64_t)colorScheme
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88893];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88893];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -500,14 +500,14 @@
 
   v7 = v6;
 
-  v8 = [v7 unsignedIntegerValue];
-  return v8;
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (NSString)hostIdentifier
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88896];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88896];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -535,8 +535,8 @@
 
 - (unint64_t)supportedColorSchemes
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88913];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88913];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -559,14 +559,14 @@
 
   v7 = v6;
 
-  v8 = [v7 integerValue];
-  return v8;
+  integerValue = [v7 integerValue];
+  return integerValue;
 }
 
 - (BOOL)showsWidgetLabel
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88905];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88905];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -589,14 +589,14 @@
 
   v7 = v6;
 
-  v8 = [v7 BOOLValue];
-  return v8;
+  bOOLValue = [v7 BOOLValue];
+  return bOOLValue;
 }
 
 - (unint64_t)supportedProximities
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88915];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88915];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -619,14 +619,14 @@
 
   v7 = v6;
 
-  v8 = [v7 unsignedIntegerValue];
-  return v8;
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (int64_t)proximity
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88912];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88912];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -649,14 +649,14 @@
 
   v7 = v6;
 
-  v8 = [v7 unsignedIntegerValue];
-  return v8;
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (BOOL)prefersUnredactedContentInLowLuminanceEnvironment
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88903];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88903];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -679,14 +679,14 @@
 
   v7 = v6;
 
-  v8 = [v7 BOOLValue];
-  return v8;
+  bOOLValue = [v7 BOOLValue];
+  return bOOLValue;
 }
 
 - (CHSInlineTextParameters)inlineTextParameters
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88899];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88899];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -714,8 +714,8 @@
 
 - (unint64_t)clipBehavior
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88909];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88909];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -738,14 +738,14 @@
 
   v7 = v6;
 
-  v8 = [v7 unsignedIntegerValue];
-  return v8;
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (BOOL)isInteractionDisabled
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88907];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88907];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -768,14 +768,14 @@
 
   v7 = v6;
 
-  v8 = [v7 BOOLValue];
-  return v8;
+  bOOLValue = [v7 BOOLValue];
+  return bOOLValue;
 }
 
 - (BOOL)isContentPaused
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88904];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88904];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -798,14 +798,14 @@
 
   v7 = v6;
 
-  v8 = [v7 BOOLValue];
-  return v8;
+  bOOLValue = [v7 BOOLValue];
+  return bOOLValue;
 }
 
 - (NSDateComponents)idealizedDateComponents
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88916];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88916];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -835,8 +835,8 @@
 
 - (BOOL)wantsBaseContentTouchEvents
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88910];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88910];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -859,14 +859,14 @@
 
   v7 = v6;
 
-  v8 = [v7 BOOLValue];
-  return v8;
+  bOOLValue = [v7 BOOLValue];
+  return bOOLValue;
 }
 
 - (NSString)remoteViewControllerClassName
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88901];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88901];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -894,7 +894,7 @@
   return v8;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CHUISMutableWidgetSceneSettings alloc];
 
@@ -903,8 +903,8 @@
 
 - (BOOL)shouldVisibleEntrySnapshot
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88895];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88895];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -927,13 +927,13 @@
 
   v7 = v6;
 
-  v8 = [v7 BOOLValue];
-  return v8;
+  bOOLValue = [v7 BOOLValue];
+  return bOOLValue;
 }
 
-+ (id)_renderSchemeFromSettings:(id)a3
++ (id)_renderSchemeFromSettings:(id)settings
 {
-  v3 = [a3 objectForSetting:88908];
+  v3 = [settings objectForSetting:88908];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -973,8 +973,8 @@
 
 - (BOOL)separateLayers
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:88917];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:88917];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -997,13 +997,13 @@
 
   v7 = v6;
 
-  v8 = [v7 BOOLValue];
-  return v8;
+  bOOLValue = [v7 BOOLValue];
+  return bOOLValue;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 - 88888 > 0x1D)
+  if (setting - 88888 > 0x1D)
   {
     v5.receiver = self;
     v5.super_class = CHUISWidgetSceneSettings;
@@ -1012,27 +1012,27 @@
 
   else
   {
-    v3 = CHUISWidgetSceneSettingsKeyDescription(a3);
+    v3 = CHUISWidgetSceneSettingsKeyDescription(setting);
   }
 
   return v3;
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v8 = a4;
-  if (a5 - 88888 > 0x1D)
+  objectCopy = object;
+  if (setting - 88888 > 0x1D)
   {
     v11.receiver = self;
     v11.super_class = CHUISWidgetSceneSettings;
-    v9 = [(FBSSettings *)&v11 valueDescriptionForFlag:a3 object:v8 ofSetting:a5];
+    v9 = [(FBSSettings *)&v11 valueDescriptionForFlag:flag object:objectCopy ofSetting:setting];
   }
 
   else
   {
-    CHUISWidgetSceneSettingsValueDescription(a5, v8);
+    CHUISWidgetSceneSettingsValueDescription(setting, objectCopy);
     objc_claimAutoreleasedReturnValue();
-    v9 = v8;
+    v9 = objectCopy;
   }
 
   return v9;

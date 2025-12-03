@@ -1,49 +1,49 @@
 @interface ArtworkView
 - (CGRect)frame;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setFrame:(CGRect)frame;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ArtworkView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   ArtworkView.traitCollectionDidChange(_:)(v9);
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  if (a3)
+  if (color)
   {
-    v10 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11AppStoreKit11ArtworkView_internalBackgroundColor);
-    *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11AppStoreKit11ArtworkView_internalBackgroundColor) = a3;
+    selfCopy2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11AppStoreKit11ArtworkView_internalBackgroundColor);
+    *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11AppStoreKit11ArtworkView_internalBackgroundColor) = color;
     sub_1E1355E88();
-    v5 = a3;
-    v6 = self;
+    colorCopy = color;
+    selfCopy = self;
     if ((sub_1E1AF6D0C() & 1) == 0)
     {
       sub_1E13523F0();
     }
 
-    v7 = v5;
+    v7 = colorCopy;
   }
 
   else
   {
     v8 = objc_opt_self();
-    v10 = self;
-    v9 = [v8 clearColor];
-    v7 = *(&v10->super.super.super.super.isa + OBJC_IVAR____TtC11AppStoreKit11ArtworkView_internalBackgroundColor);
-    *(&v10->super.super.super.super.isa + OBJC_IVAR____TtC11AppStoreKit11ArtworkView_internalBackgroundColor) = v9;
+    selfCopy2 = self;
+    clearColor = [v8 clearColor];
+    v7 = *(&selfCopy2->super.super.super.super.isa + OBJC_IVAR____TtC11AppStoreKit11ArtworkView_internalBackgroundColor);
+    *(&selfCopy2->super.super.super.super.isa + OBJC_IVAR____TtC11AppStoreKit11ArtworkView_internalBackgroundColor) = clearColor;
     sub_1E1355E88();
-    v5 = v9;
+    colorCopy = clearColor;
     if ((sub_1E1AF6D0C() & 1) == 0)
     {
       sub_1E13523F0();
@@ -53,7 +53,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   ArtworkView.layoutSubviews()();
 }
 
@@ -69,30 +69,30 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v23.receiver = self;
   v23.super_class = ObjectType;
-  v9 = self;
+  selfCopy = self;
   [(ArtworkView *)&v23 frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v22.receiver = v9;
+  v22.receiver = selfCopy;
   v22.super_class = ObjectType;
   [(ArtworkView *)&v22 frame];
   if (v19 != width || v18 != height)
   {
-    *(&v9->super.super.super.super.isa + OBJC_IVAR____TtC11AppStoreKit11ArtworkView_isCornerRadiusInvalid) = 1;
+    *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC11AppStoreKit11ArtworkView_isCornerRadiusInvalid) = 1;
   }
 
-  v21.receiver = v9;
+  v21.receiver = selfCopy;
   v21.super_class = ObjectType;
   [(ArtworkView *)&v21 setFrame:x, y, width, height];
   sub_1E1353C04(v11, v13, v15, v17);

@@ -1,12 +1,12 @@
 @interface HDCloudSyncRegisterSubscriptionsOperation
-- (HDCloudSyncRegisterSubscriptionsOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
-- (HDCloudSyncRegisterSubscriptionsOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 container:(id)a5 subscriptions:(id)a6;
+- (HDCloudSyncRegisterSubscriptionsOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
+- (HDCloudSyncRegisterSubscriptionsOperation)initWithConfiguration:(id)configuration cloudState:(id)state container:(id)container subscriptions:(id)subscriptions;
 - (void)main;
 @end
 
 @implementation HDCloudSyncRegisterSubscriptionsOperation
 
-- (HDCloudSyncRegisterSubscriptionsOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncRegisterSubscriptionsOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -16,20 +16,20 @@
   return 0;
 }
 
-- (HDCloudSyncRegisterSubscriptionsOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 container:(id)a5 subscriptions:(id)a6
+- (HDCloudSyncRegisterSubscriptionsOperation)initWithConfiguration:(id)configuration cloudState:(id)state container:(id)container subscriptions:(id)subscriptions
 {
-  v11 = a5;
-  v12 = a6;
+  containerCopy = container;
+  subscriptionsCopy = subscriptions;
   v17.receiver = self;
   v17.super_class = HDCloudSyncRegisterSubscriptionsOperation;
-  v13 = [(HDCloudSyncOperation *)&v17 initWithConfiguration:a3 cloudState:a4];
+  v13 = [(HDCloudSyncOperation *)&v17 initWithConfiguration:configuration cloudState:state];
   if (v13)
   {
-    v14 = [v12 copy];
+    v14 = [subscriptionsCopy copy];
     subscriptions = v13->_subscriptions;
     v13->_subscriptions = v14;
 
-    objc_storeStrong(&v13->_container, a5);
+    objc_storeStrong(&v13->_container, container);
   }
 
   return v13;
@@ -41,26 +41,26 @@
   if ([(NSDictionary *)self->_subscriptions count])
   {
     v3 = objc_alloc(MEMORY[0x277CBC418]);
-    v4 = [(NSDictionary *)self->_subscriptions allKeys];
-    v5 = [v3 initWithSubscriptionIDs:v4];
+    allKeys = [(NSDictionary *)self->_subscriptions allKeys];
+    v5 = [v3 initWithSubscriptionIDs:allKeys];
 
     container = self->_container;
-    v7 = [(HDCloudSyncOperation *)self configuration];
-    v8 = [v7 repository];
-    v9 = [v8 profileIdentifier];
-    v10 = HDDatabaseForContainer(container, v9);
+    configuration = [(HDCloudSyncOperation *)self configuration];
+    repository = [configuration repository];
+    profileIdentifier = [repository profileIdentifier];
+    v10 = HDDatabaseForContainer(container, profileIdentifier);
 
     v16 = MEMORY[0x277D85DD0];
     v17 = 3221225472;
     v18 = __49__HDCloudSyncRegisterSubscriptionsOperation_main__block_invoke;
     v19 = &unk_27862A7F8;
-    v20 = self;
+    selfCopy = self;
     v21 = v10;
     v11 = v10;
     [v5 setFetchSubscriptionCompletionBlock:&v16];
     v12 = [(HDCloudSyncOperation *)self configuration:v16];
-    v13 = [v12 operationGroup];
-    [v5 setGroup:v13];
+    operationGroup = [v12 operationGroup];
+    [v5 setGroup:operationGroup];
 
     [v11 addOperation:v5];
   }
@@ -72,7 +72,7 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v23 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_228986000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: No subscriptions to register.", buf, 0xCu);
     }
 

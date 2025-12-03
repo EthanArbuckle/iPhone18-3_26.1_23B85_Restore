@@ -1,19 +1,19 @@
 @interface LAPSPasscodeChangeSystemVerificationAdapter
-- (LAPSPasscodeChangeSystemVerificationAdapter)initWithPersistence:(id)a3;
+- (LAPSPasscodeChangeSystemVerificationAdapter)initWithPersistence:(id)persistence;
 - (id)oldPasscodeRequest;
 @end
 
 @implementation LAPSPasscodeChangeSystemVerificationAdapter
 
-- (LAPSPasscodeChangeSystemVerificationAdapter)initWithPersistence:(id)a3
+- (LAPSPasscodeChangeSystemVerificationAdapter)initWithPersistence:(id)persistence
 {
-  v4 = a3;
+  persistenceCopy = persistence;
   v9.receiver = self;
   v9.super_class = LAPSPasscodeChangeSystemVerificationAdapter;
   v5 = [(LAPSPasscodeChangeSystemVerificationAdapter *)&v9 init];
   if (v5)
   {
-    v6 = [[LAPSCurrentPasscodeService alloc] initWithPersistence:v4];
+    v6 = [[LAPSCurrentPasscodeService alloc] initWithPersistence:persistenceCopy];
     currentPasscodeService = v5->_currentPasscodeService;
     v5->_currentPasscodeService = v6;
   }
@@ -25,8 +25,8 @@
 {
   v3 = objc_alloc_init(LAPSFetchOldPasscodeRequest);
   [(LAPSFetchOldPasscodeRequest *)v3 setFailedAttempts:[(LAPSCurrentPasscodeService *)self->_currentPasscodeService failedPasscodeAttempts]];
-  v4 = [(LAPSCurrentPasscodeService *)self->_currentPasscodeService passcodeType];
-  [(LAPSFetchOldPasscodeRequest *)v3 setPasscodeType:v4];
+  passcodeType = [(LAPSCurrentPasscodeService *)self->_currentPasscodeService passcodeType];
+  [(LAPSFetchOldPasscodeRequest *)v3 setPasscodeType:passcodeType];
 
   [(LAPSFetchOldPasscodeRequest *)v3 setBackoffTimeout:[(LAPSCurrentPasscodeService *)self->_currentPasscodeService backoffTimeout]];
 

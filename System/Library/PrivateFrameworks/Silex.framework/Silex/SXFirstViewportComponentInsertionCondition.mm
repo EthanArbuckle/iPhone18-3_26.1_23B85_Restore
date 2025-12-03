@@ -1,46 +1,46 @@
 @interface SXFirstViewportComponentInsertionCondition
-- (BOOL)validateMarker:(id)a3 componentTraits:(unint64_t)a4 layoutProvider:(id)a5;
-- (SXFirstViewportComponentInsertionCondition)initWithAllowFirstViewportException:(BOOL)a3;
+- (BOOL)validateMarker:(id)marker componentTraits:(unint64_t)traits layoutProvider:(id)provider;
+- (SXFirstViewportComponentInsertionCondition)initWithAllowFirstViewportException:(BOOL)exception;
 @end
 
 @implementation SXFirstViewportComponentInsertionCondition
 
-- (SXFirstViewportComponentInsertionCondition)initWithAllowFirstViewportException:(BOOL)a3
+- (SXFirstViewportComponentInsertionCondition)initWithAllowFirstViewportException:(BOOL)exception
 {
   v5.receiver = self;
   v5.super_class = SXFirstViewportComponentInsertionCondition;
   result = [(SXFirstViewportComponentInsertionCondition *)&v5 init];
   if (result)
   {
-    result->_allowFirstViewportException = a3;
+    result->_allowFirstViewportException = exception;
   }
 
   return result;
 }
 
-- (BOOL)validateMarker:(id)a3 componentTraits:(unint64_t)a4 layoutProvider:(id)a5
+- (BOOL)validateMarker:(id)marker componentTraits:(unint64_t)traits layoutProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a5;
-  [v7 approximateLocation];
+  markerCopy = marker;
+  providerCopy = provider;
+  [markerCopy approximateLocation];
   v10 = v9;
-  [v8 viewportSize];
+  [providerCopy viewportSize];
   v12 = v11;
-  v13 = [v7 trailingComponent];
-  if (v13)
+  trailingComponent = [markerCopy trailingComponent];
+  if (trailingComponent)
   {
     v14 = 0;
   }
 
   else
   {
-    v15 = [v7 path];
-    v14 = [v15 count] == 0;
+    path = [markerCopy path];
+    v14 = [path count] == 0;
   }
 
-  [v8 documentSize];
+  [providerCopy documentSize];
   v17 = v16;
-  [v8 viewportSize];
+  [providerCopy viewportSize];
   if (v10 >= v12)
   {
     v22 = 1;
@@ -49,8 +49,8 @@
   else
   {
     v19 = v18;
-    v20 = [(SXFirstViewportComponentInsertionCondition *)self allowFirstViewportException];
-    v21 = v17 <= v19 && v20;
+    allowFirstViewportException = [(SXFirstViewportComponentInsertionCondition *)self allowFirstViewportException];
+    v21 = v17 <= v19 && allowFirstViewportException;
     v22 = v21 && v14;
   }
 

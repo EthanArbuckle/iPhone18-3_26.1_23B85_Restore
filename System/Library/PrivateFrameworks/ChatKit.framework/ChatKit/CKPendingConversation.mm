@@ -1,30 +1,30 @@
 @interface CKPendingConversation
-+ (id)pendingConversationForHandle:(id)a3;
++ (id)pendingConversationForHandle:(id)handle;
 - (BOOL)isAppleConversation;
 - (BOOL)isMakoConversation;
 - (IMService)composeSendingService;
 - (IMService)previousSendingService;
 - (id)deviceIndependentID;
 - (id)sendingService;
-- (id)serviceReachabilityContextForRefreshContext:(id)a3;
-- (void)refreshComposeSendingServiceForAddresses:(id)a3 context:(id)a4 withCompletionBlock:(id)a5;
-- (void)refreshComposeSendingServiceForAddresses:(id)a3 withCompletionBlock:(id)a4;
-- (void)refreshStatusForAddresses:(id)a3 context:(id)a4 withCompletionBlock:(id)a5;
-- (void)refreshStatusForAddresses:(id)a3 withCompletionBlock:(id)a4;
+- (id)serviceReachabilityContextForRefreshContext:(id)context;
+- (void)refreshComposeSendingServiceForAddresses:(id)addresses context:(id)context withCompletionBlock:(id)block;
+- (void)refreshComposeSendingServiceForAddresses:(id)addresses withCompletionBlock:(id)block;
+- (void)refreshStatusForAddresses:(id)addresses context:(id)context withCompletionBlock:(id)block;
+- (void)refreshStatusForAddresses:(id)addresses withCompletionBlock:(id)block;
 @end
 
 @implementation CKPendingConversation
 
 - (id)sendingService
 {
-  v3 = [(CKConversation *)self chat];
+  chat = [(CKConversation *)self chat];
 
-  if (v3)
+  if (chat)
   {
     v11.receiver = self;
     v11.super_class = CKPendingConversation;
-    v4 = [(CKConversation *)&v11 sendingService];
-    if (!v4)
+    sendingService = [(CKConversation *)&v11 sendingService];
+    if (!sendingService)
     {
       goto LABEL_6;
     }
@@ -32,24 +32,24 @@
 
   else
   {
-    v5 = [(CKPendingConversation *)self composeSendingService];
+    composeSendingService = [(CKPendingConversation *)self composeSendingService];
 
-    if (!v5 || ([(CKPendingConversation *)self composeSendingService], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!composeSendingService || ([(CKPendingConversation *)self composeSendingService], (sendingService = objc_claimAutoreleasedReturnValue()) == 0))
     {
 LABEL_6:
-      v6 = [(CKPendingConversation *)self previousSendingService];
+      previousSendingService = [(CKPendingConversation *)self previousSendingService];
 
-      if (v6)
+      if (previousSendingService)
       {
-        v4 = [(CKPendingConversation *)self previousSendingService];
+        sendingService = [(CKPendingConversation *)self previousSendingService];
       }
 
       else
       {
         v7 = MEMORY[0x1E69A5CA0];
-        v8 = [(CKConversation *)self lastAddressedHandle];
-        v9 = [(CKConversation *)self lastAddressedSIMID];
-        LOBYTE(v7) = [v7 iMessageEnabledForSenderLastAddressedHandle:v8 simID:v9];
+        lastAddressedHandle = [(CKConversation *)self lastAddressedHandle];
+        lastAddressedSIMID = [(CKConversation *)self lastAddressedSIMID];
+        LOBYTE(v7) = [v7 iMessageEnabledForSenderLastAddressedHandle:lastAddressedHandle simID:lastAddressedSIMID];
 
         if (v7)
         {
@@ -60,41 +60,41 @@ LABEL_6:
         {
           [MEMORY[0x1E69A5C90] smsService];
         }
-        v4 = ;
+        sendingService = ;
       }
     }
   }
 
-  return v4;
+  return sendingService;
 }
 
-- (id)serviceReachabilityContextForRefreshContext:(id)a3
+- (id)serviceReachabilityContextForRefreshContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 customContext];
+  contextCopy = context;
+  customContext = [contextCopy customContext];
 
-  if (v5)
+  if (customContext)
   {
-    v6 = [v4 customContext];
-    v7 = [v6 copy];
+    customContext2 = [contextCopy customContext];
+    v7 = [customContext2 copy];
   }
 
   else
   {
-    v8 = [(CKConversation *)self chat];
+    chat = [(CKConversation *)self chat];
 
-    if (v8)
+    if (chat)
     {
-      v6 = [MEMORY[0x1E69A5CA8] sharedController];
-      v9 = [(CKConversation *)self chat];
-      v7 = [v6 reachabilityContextForChat:v9];
+      customContext2 = [MEMORY[0x1E69A5CA8] sharedController];
+      chat2 = [(CKConversation *)self chat];
+      v7 = [customContext2 reachabilityContextForChat:chat2];
     }
 
     else
     {
       v7 = objc_alloc_init(MEMORY[0x1E69A8240]);
-      v6 = [(CKConversation *)self handles];
-      if ([v6 count] <= 1)
+      customContext2 = [(CKConversation *)self handles];
+      if ([customContext2 count] <= 1)
       {
         v10 = 45;
       }
@@ -108,15 +108,15 @@ LABEL_6:
     }
   }
 
-  v11 = [(CKConversation *)self lastAddressedHandle];
-  v12 = [v11 _stripFZIDPrefix];
-  [v7 setSenderLastAddressedHandle:v12];
+  lastAddressedHandle = [(CKConversation *)self lastAddressedHandle];
+  _stripFZIDPrefix = [lastAddressedHandle _stripFZIDPrefix];
+  [v7 setSenderLastAddressedHandle:_stripFZIDPrefix];
 
-  v13 = [(CKConversation *)self lastAddressedSIMID];
-  [v7 setSenderLastAddressedSIMID:v13];
+  lastAddressedSIMID = [(CKConversation *)self lastAddressedSIMID];
+  [v7 setSenderLastAddressedSIMID:lastAddressedSIMID];
 
-  v14 = [v4 customContext];
-  if (v14 || ([(CKConversation *)self chat], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
+  customContext3 = [contextCopy customContext];
+  if (customContext3 || ([(CKConversation *)self chat], (customContext3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
@@ -125,13 +125,13 @@ LABEL_6:
     [v7 setIsForPendingConversation:1];
   }
 
-  if ([v4 isForPendingConversation] && IMBagBoolValueWithDefault())
+  if ([contextCopy isForPendingConversation] && IMBagBoolValueWithDefault())
   {
     [v7 setIsForPendingConversation:1];
   }
 
-  v15 = [v7 preconditionsIgnoredForServices];
-  v16 = [v15 mutableCopy];
+  preconditionsIgnoredForServices = [v7 preconditionsIgnoredForServices];
+  v16 = [preconditionsIgnoredForServices mutableCopy];
   v17 = v16;
   if (v16)
   {
@@ -145,20 +145,20 @@ LABEL_6:
 
   v19 = v18;
 
-  v20 = [v4 preconditionsIgnoredForServices];
+  preconditionsIgnoredForServices2 = [contextCopy preconditionsIgnoredForServices];
 
-  if (v20)
+  if (preconditionsIgnoredForServices2)
   {
-    v21 = [v4 preconditionsIgnoredForServices];
-    [v19 unionSet:v21];
+    preconditionsIgnoredForServices3 = [contextCopy preconditionsIgnoredForServices];
+    [v19 unionSet:preconditionsIgnoredForServices3];
   }
 
-  v22 = [(CKPendingConversation *)self sendingService];
-  v23 = v22;
-  if (v22)
+  sendingService = [(CKPendingConversation *)self sendingService];
+  v23 = sendingService;
+  if (sendingService)
   {
-    v24 = [v22 internalName];
-    [v19 addObject:v24];
+    internalName = [sendingService internalName];
+    [v19 addObject:internalName];
   }
 
   v25 = [v19 copy];
@@ -167,16 +167,16 @@ LABEL_6:
   return v7;
 }
 
-- (void)refreshStatusForAddresses:(id)a3 withCompletionBlock:(id)a4
+- (void)refreshStatusForAddresses:(id)addresses withCompletionBlock:(id)block
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  addressesCopy = addresses;
+  blockCopy = block;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = v6;
+  v8 = addressesCopy;
   v9 = [v8 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v9)
   {
@@ -208,36 +208,36 @@ LABEL_3:
     }
   }
 
-  v12 = [(CKConversation *)self chat];
-  [v12 shouldForceServerStatusRefresh];
+  chat = [(CKConversation *)self chat];
+  [chat shouldForceServerStatusRefresh];
 
-  v13 = [(CKConversation *)self lastAddressedHandle];
-  v14 = [v13 _stripFZIDPrefix];
-  v15 = [v14 _bestGuessURI];
+  lastAddressedHandle = [(CKConversation *)self lastAddressedHandle];
+  _stripFZIDPrefix = [lastAddressedHandle _stripFZIDPrefix];
+  _bestGuessURI = [_stripFZIDPrefix _bestGuessURI];
 
-  v16 = [(CKConversation *)self lastAddressedSIMID];
+  lastAddressedSIMID = [(CKConversation *)self lastAddressedSIMID];
   if (IMOSLoggingEnabled())
   {
     v17 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v28 = v15;
+      v28 = _bestGuessURI;
       v29 = 2112;
-      v30 = v16;
+      v30 = lastAddressedSIMID;
       _os_log_impl(&dword_19020E000, v17, OS_LOG_TYPE_INFO, "Calling IMChatCalculateServiceForSendingNewComposeMaybeForce with last addressed handle %@ simID %@", buf, 0x16u);
     }
   }
 
-  v18 = [(CKConversation *)self chat];
-  [v18 receivedResponseForChat];
+  chat2 = [(CKConversation *)self chat];
+  [chat2 receivedResponseForChat];
 
-  v19 = [(CKConversation *)self chat];
+  chat3 = [(CKConversation *)self chat];
   [(CKConversation *)self forceMMS];
-  v20 = [(CKConversation *)self chat];
-  [v20 isDowngraded];
-  v22 = v7;
-  v21 = v7;
+  chat4 = [(CKConversation *)self chat];
+  [chat4 isDowngraded];
+  v22 = blockCopy;
+  v21 = blockCopy;
   IMChatCalculateServiceForSendingNewComposeMaybeForce();
 }
 
@@ -252,26 +252,26 @@ uint64_t __71__CKPendingConversation_refreshStatusForAddresses_withCompletionBlo
   return result;
 }
 
-- (void)refreshStatusForAddresses:(id)a3 context:(id)a4 withCompletionBlock:(id)a5
+- (void)refreshStatusForAddresses:(id)addresses context:(id)context withCompletionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CKPendingConversation *)self serviceReachabilityContextForRefreshContext:v9];
+  addressesCopy = addresses;
+  contextCopy = context;
+  blockCopy = block;
+  v11 = [(CKPendingConversation *)self serviceReachabilityContextForRefreshContext:contextCopy];
   objc_initWeak(&location, self);
-  v12 = [v9 availabilities];
+  availabilities = [contextCopy availabilities];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __79__CKPendingConversation_refreshStatusForAddresses_context_withCompletionBlock___block_invoke;
   v16[3] = &unk_1E72F8150;
-  v13 = v10;
+  v13 = blockCopy;
   v19 = v13;
   objc_copyWeak(&v20, &location);
-  v14 = v9;
+  v14 = contextCopy;
   v17 = v14;
-  v15 = v8;
+  v15 = addressesCopy;
   v18 = v15;
-  [v12 refreshAvailabilityForRecipients:v15 context:v11 resultHandler:v16];
+  [availabilities refreshAvailabilityForRecipients:v15 context:v11 resultHandler:v16];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&location);
@@ -373,17 +373,17 @@ LABEL_23:
   }
 }
 
-- (void)refreshComposeSendingServiceForAddresses:(id)a3 withCompletionBlock:(id)a4
+- (void)refreshComposeSendingServiceForAddresses:(id)addresses withCompletionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __86__CKPendingConversation_refreshComposeSendingServiceForAddresses_withCompletionBlock___block_invoke;
   v8[3] = &unk_1E72F8178;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(CKPendingConversation *)self refreshStatusForAddresses:a3 withCompletionBlock:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [(CKPendingConversation *)self refreshStatusForAddresses:addresses withCompletionBlock:v8];
 }
 
 void __86__CKPendingConversation_refreshComposeSendingServiceForAddresses_withCompletionBlock___block_invoke(uint64_t a1, void *a2, void *a3, uint64_t a4, uint64_t a5)
@@ -419,17 +419,17 @@ void __86__CKPendingConversation_refreshComposeSendingServiceForAddresses_withCo
   }
 }
 
-- (void)refreshComposeSendingServiceForAddresses:(id)a3 context:(id)a4 withCompletionBlock:(id)a5
+- (void)refreshComposeSendingServiceForAddresses:(id)addresses context:(id)context withCompletionBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __94__CKPendingConversation_refreshComposeSendingServiceForAddresses_context_withCompletionBlock___block_invoke;
   v10[3] = &unk_1E72EC5B8;
   v10[4] = self;
-  v11 = v8;
-  v9 = v8;
-  [(CKPendingConversation *)self refreshStatusForAddresses:a3 context:a4 withCompletionBlock:v10];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  [(CKPendingConversation *)self refreshStatusForAddresses:addresses context:context withCompletionBlock:v10];
 }
 
 void __94__CKPendingConversation_refreshComposeSendingServiceForAddresses_context_withCompletionBlock___block_invoke(uint64_t a1, void *a2, void *a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7)
@@ -469,31 +469,31 @@ void __94__CKPendingConversation_refreshComposeSendingServiceForAddresses_contex
 {
   v8.receiver = self;
   v8.super_class = CKPendingConversation;
-  v3 = [(CKConversation *)&v8 deviceIndependentID];
-  if (!v3)
+  deviceIndependentID = [(CKConversation *)&v8 deviceIndependentID];
+  if (!deviceIndependentID)
   {
-    v4 = [(CKConversation *)self recipients];
-    if ([v4 count] == 1)
+    recipients = [(CKConversation *)self recipients];
+    if ([recipients count] == 1)
     {
-      v5 = [v4 firstObject];
-      v6 = [v5 defaultIMHandle];
-      v3 = [v6 ID];
+      firstObject = [recipients firstObject];
+      defaultIMHandle = [firstObject defaultIMHandle];
+      deviceIndependentID = [defaultIMHandle ID];
     }
 
     else
     {
-      v3 = 0;
+      deviceIndependentID = 0;
     }
   }
 
-  return v3;
+  return deviceIndependentID;
 }
 
-+ (id)pendingConversationForHandle:(id)a3
++ (id)pendingConversationForHandle:(id)handle
 {
-  v3 = a3;
+  handleCopy = handle;
   v4 = [CKPendingConversation alloc];
-  v5 = [MEMORY[0x1E69A5AE0] pendingChatForHandle:v3];
+  v5 = [MEMORY[0x1E69A5AE0] pendingChatForHandle:handleCopy];
 
   v6 = [(CKConversation *)v4 initWithChat:v5];
   [(CKPendingConversation *)v6 setPendingChat:1];
@@ -503,18 +503,18 @@ void __94__CKPendingConversation_refreshComposeSendingServiceForAddresses_contex
 
 - (BOOL)isAppleConversation
 {
-  v2 = [(CKConversation *)self businessHandle];
-  v3 = [v2 isApple];
+  businessHandle = [(CKConversation *)self businessHandle];
+  isApple = [businessHandle isApple];
 
-  return v3;
+  return isApple;
 }
 
 - (BOOL)isMakoConversation
 {
-  v2 = [(CKConversation *)self businessHandle];
-  v3 = [v2 isMako];
+  businessHandle = [(CKConversation *)self businessHandle];
+  isMako = [businessHandle isMako];
 
-  return v3;
+  return isMako;
 }
 
 - (IMService)previousSendingService

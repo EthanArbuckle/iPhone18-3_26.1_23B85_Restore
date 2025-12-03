@@ -2,12 +2,12 @@
 - (BOOL)_updateCachedRecentAssets;
 - (NSArray)recentPHAssets;
 - (NSOrderedSet)recentAssets;
-- (PXFeedRecentsManager)initWithPhotoLibrary:(id)a3 count:(int64_t)a4;
+- (PXFeedRecentsManager)initWithPhotoLibrary:(id)library count:(int64_t)count;
 - (PXFeedRecentsManagerDelegate)delegate;
-- (void)_didFinishPostingNotifications:(id)a3;
-- (void)_setCachedRecentAssets:(id)a3;
+- (void)_didFinishPostingNotifications:(id)notifications;
+- (void)_setCachedRecentAssets:(id)assets;
 - (void)dealloc;
-- (void)shouldReload:(id)a3;
+- (void)shouldReload:(id)reload;
 @end
 
 @implementation PXFeedRecentsManager
@@ -19,7 +19,7 @@
   return WeakRetained;
 }
 
-- (void)_didFinishPostingNotifications:(id)a3
+- (void)_didFinishPostingNotifications:(id)notifications
 {
   v29 = *MEMORY[0x1E69E9840];
   if ([(NSMutableArray *)self->_pendingFeedEntriesChangeNotifications count]|| [(NSMutableArray *)self->_pendingAssetsChangeNotifications count])
@@ -32,14 +32,14 @@
     {
       [(PXFeedRecentsManager *)self _invalidateCachedRecentAssets];
 LABEL_5:
-      v6 = [(PXFeedRecentsManager *)self delegate];
-      [v6 feedRecentsManagerRecentAssetsDidChange:self];
+      delegate = [(PXFeedRecentsManager *)self delegate];
+      [delegate feedRecentsManagerRecentAssetsDidChange:self];
     }
 
     else
     {
-      v6 = [(PXFeedRecentsManager *)self _cachedRecentAssets];
-      if ([v6 count])
+      delegate = [(PXFeedRecentsManager *)self _cachedRecentAssets];
+      if ([delegate count])
       {
         v25 = 0u;
         v26 = 0u;
@@ -61,12 +61,12 @@ LABEL_5:
                 objc_enumerationMutation(v7);
               }
 
-              v10 = [*(*(&v23 + 1) + 8 * i) updatedAssets];
+              updatedAssets = [*(*(&v23 + 1) + 8 * i) updatedAssets];
               v19 = 0u;
               v20 = 0u;
               v21 = 0u;
               v22 = 0u;
-              v11 = v6;
+              v11 = delegate;
               v12 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
               if (v12)
               {
@@ -81,7 +81,7 @@ LABEL_5:
                       objc_enumerationMutation(v11);
                     }
 
-                    if ([v10 containsObject:*(*(&v19 + 1) + 8 * j)])
+                    if ([updatedAssets containsObject:*(*(&v19 + 1) + 8 * j)])
                     {
 
                       goto LABEL_5;
@@ -116,23 +116,23 @@ LABEL_7:
   }
 }
 
-- (void)shouldReload:(id)a3
+- (void)shouldReload:(id)reload
 {
   [(NSMutableArray *)self->_pendingFeedEntriesChangeNotifications removeAllObjects];
   [(NSMutableArray *)self->_pendingAssetsChangeNotifications removeAllObjects];
   [(PXFeedRecentsManager *)self _invalidateCachedRecentAssets];
-  v4 = [(PXFeedRecentsManager *)self delegate];
-  [v4 feedRecentsManagerRecentAssetsDidChange:self];
+  delegate = [(PXFeedRecentsManager *)self delegate];
+  [delegate feedRecentsManagerRecentAssetsDidChange:self];
 }
 
 - (BOOL)_updateCachedRecentAssets
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
   v4 = [(PXFeedRecentsManager *)self count];
   v5 = MEMORY[0x1E69BE320];
-  v6 = [(PHPhotoLibrary *)self->_photoLibrary photoLibrary];
-  v7 = [v5 recentAssetsEntriesInLibrary:v6 limit:v4];
+  photoLibrary = [(PHPhotoLibrary *)self->_photoLibrary photoLibrary];
+  v7 = [v5 recentAssetsEntriesInLibrary:photoLibrary limit:v4];
 
   v24 = 0u;
   v25 = 0u;
@@ -153,20 +153,20 @@ LABEL_7:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v22 + 1) + 8 * i) entryAssets];
-        v14 = [v13 count];
-        if ([v3 count] + v14 >= v4)
+        entryAssets = [*(*(&v22 + 1) + 8 * i) entryAssets];
+        v14 = [entryAssets count];
+        if ([orderedSet count] + v14 >= v4)
         {
-          v16 = v4 - [v3 count];
-          v17 = [v13 array];
-          v18 = [v17 subarrayWithRange:{0, v16}];
-          [v3 addObjectsFromArray:v18];
+          v16 = v4 - [orderedSet count];
+          array = [entryAssets array];
+          v18 = [array subarrayWithRange:{0, v16}];
+          [orderedSet addObjectsFromArray:v18];
 
           goto LABEL_11;
         }
 
-        v15 = [v13 array];
-        [v3 addObjectsFromArray:v15];
+        array2 = [entryAssets array];
+        [orderedSet addObjectsFromArray:array2];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -181,11 +181,11 @@ LABEL_7:
 
 LABEL_11:
 
-  v19 = [(PXFeedRecentsManager *)self _cachedRecentAssets];
-  v20 = [v3 isEqualToOrderedSet:v19];
+  _cachedRecentAssets = [(PXFeedRecentsManager *)self _cachedRecentAssets];
+  v20 = [orderedSet isEqualToOrderedSet:_cachedRecentAssets];
   if ((v20 & 1) == 0)
   {
-    [(PXFeedRecentsManager *)self _setCachedRecentAssets:v3];
+    [(PXFeedRecentsManager *)self _setCachedRecentAssets:orderedSet];
   }
 
   return v20 ^ 1;
@@ -193,84 +193,84 @@ LABEL_11:
 
 - (NSArray)recentPHAssets
 {
-  v3 = [(PXFeedRecentsManager *)self _cachedRecentPHAssets];
-  if (!v3)
+  _cachedRecentPHAssets = [(PXFeedRecentsManager *)self _cachedRecentPHAssets];
+  if (!_cachedRecentPHAssets)
   {
-    v4 = [(PXFeedRecentsManager *)self recentAssets];
-    v5 = [v4 array];
+    recentAssets = [(PXFeedRecentsManager *)self recentAssets];
+    array = [recentAssets array];
 
-    v3 = [MEMORY[0x1E69BE540] pl_PHAssetsForManagedAssets:v5 photoLibrary:self->_photoLibrary];
-    [(PXFeedRecentsManager *)self _setCachedRecentPHAssets:v3];
+    _cachedRecentPHAssets = [MEMORY[0x1E69BE540] pl_PHAssetsForManagedAssets:array photoLibrary:self->_photoLibrary];
+    [(PXFeedRecentsManager *)self _setCachedRecentPHAssets:_cachedRecentPHAssets];
   }
 
-  return v3;
+  return _cachedRecentPHAssets;
 }
 
 - (NSOrderedSet)recentAssets
 {
-  v3 = [(PXFeedRecentsManager *)self _cachedRecentAssets];
-  if (!v3)
+  _cachedRecentAssets = [(PXFeedRecentsManager *)self _cachedRecentAssets];
+  if (!_cachedRecentAssets)
   {
     [(PXFeedRecentsManager *)self _updateCachedRecentAssets];
-    v3 = [(PXFeedRecentsManager *)self _cachedRecentAssets];
+    _cachedRecentAssets = [(PXFeedRecentsManager *)self _cachedRecentAssets];
   }
 
-  return v3;
+  return _cachedRecentAssets;
 }
 
-- (void)_setCachedRecentAssets:(id)a3
+- (void)_setCachedRecentAssets:(id)assets
 {
-  v5 = a3;
-  if (self->__cachedRecentAssets != v5)
+  assetsCopy = assets;
+  if (self->__cachedRecentAssets != assetsCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->__cachedRecentAssets, a3);
+    v7 = assetsCopy;
+    objc_storeStrong(&self->__cachedRecentAssets, assets);
     cachedRecentPHAssets = self->__cachedRecentPHAssets;
     self->__cachedRecentPHAssets = 0;
 
-    v5 = v7;
+    assetsCopy = v7;
   }
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E69BE2F0] defaultCenter];
-  [v3 removeCloudFeedEntriesObserver:self];
-  [v3 removeAssetChangeObserver:self];
-  [v3 removeShouldReloadObserver:self];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E69BE918] object:0];
+  defaultCenter = [MEMORY[0x1E69BE2F0] defaultCenter];
+  [defaultCenter removeCloudFeedEntriesObserver:self];
+  [defaultCenter removeAssetChangeObserver:self];
+  [defaultCenter removeShouldReloadObserver:self];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x1E69BE918] object:0];
 
   v5.receiver = self;
   v5.super_class = PXFeedRecentsManager;
   [(PXFeedRecentsManager *)&v5 dealloc];
 }
 
-- (PXFeedRecentsManager)initWithPhotoLibrary:(id)a3 count:(int64_t)a4
+- (PXFeedRecentsManager)initWithPhotoLibrary:(id)library count:(int64_t)count
 {
-  v6 = a3;
+  libraryCopy = library;
   v16.receiver = self;
   v16.super_class = PXFeedRecentsManager;
   v7 = [(PXFeedRecentsManager *)&v16 init];
   v8 = v7;
   if (v7)
   {
-    [(PXFeedRecentsManager *)v7 _setPhotoLibrary:v6];
-    [(PXFeedRecentsManager *)v8 _setCount:a4];
-    v9 = [MEMORY[0x1E695DF70] array];
+    [(PXFeedRecentsManager *)v7 _setPhotoLibrary:libraryCopy];
+    [(PXFeedRecentsManager *)v8 _setCount:count];
+    array = [MEMORY[0x1E695DF70] array];
     pendingFeedEntriesChangeNotifications = v8->_pendingFeedEntriesChangeNotifications;
-    v8->_pendingFeedEntriesChangeNotifications = v9;
+    v8->_pendingFeedEntriesChangeNotifications = array;
 
-    v11 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     pendingAssetsChangeNotifications = v8->_pendingAssetsChangeNotifications;
-    v8->_pendingAssetsChangeNotifications = v11;
+    v8->_pendingAssetsChangeNotifications = array2;
 
-    v13 = [MEMORY[0x1E69BE2F0] defaultCenter];
-    [v13 addCloudFeedEntriesObserver:v8];
-    [v13 addAssetChangeObserver:v8];
-    [v13 addShouldReloadObserver:v8];
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v8 selector:sel__didFinishPostingNotifications_ name:*MEMORY[0x1E69BE918] object:0];
+    defaultCenter = [MEMORY[0x1E69BE2F0] defaultCenter];
+    [defaultCenter addCloudFeedEntriesObserver:v8];
+    [defaultCenter addAssetChangeObserver:v8];
+    [defaultCenter addShouldReloadObserver:v8];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v8 selector:sel__didFinishPostingNotifications_ name:*MEMORY[0x1E69BE918] object:0];
 
     [(PXFeedRecentsManager *)v8 _invalidateCachedRecentAssets];
   }

@@ -1,31 +1,31 @@
 @interface PFARepackagingExecutionFailure
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (PFARepackagingExecutionFBFFailure)fbfFailure;
-- (PFARepackagingExecutionFailure)initWithDictionary:(id)a3;
-- (PFARepackagingExecutionFailure)initWithJSON:(id)a3;
+- (PFARepackagingExecutionFailure)initWithDictionary:(id)dictionary;
+- (PFARepackagingExecutionFailure)initWithJSON:(id)n;
 - (PFARepackagingExecutionSandboxError)sandboxError;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (void)deleteFbfFailure;
 - (void)deleteSandboxError;
-- (void)setFbfFailure:(id)a3;
-- (void)setSandboxError:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setFbfFailure:(id)failure;
+- (void)setSandboxError:(id)error;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PFARepackagingExecutionFailure
 
-- (PFARepackagingExecutionFailure)initWithDictionary:(id)a3
+- (PFARepackagingExecutionFailure)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PFARepackagingExecutionFailure;
   v5 = [(PFARepackagingExecutionFailure *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"fbfFailure"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"fbfFailure"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
       [(PFARepackagingExecutionFailure *)v5 setFbfFailure:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"sandboxError"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"sandboxError"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,30 +47,30 @@
   return v5;
 }
 
-- (PFARepackagingExecutionFailure)initWithJSON:(id)a3
+- (PFARepackagingExecutionFailure)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PFARepackagingExecutionFailure *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PFARepackagingExecutionFailure *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PFARepackagingExecutionFailure *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -83,72 +83,72 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_fbfFailure)
   {
-    v4 = [(PFARepackagingExecutionFailure *)self fbfFailure];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    fbfFailure = [(PFARepackagingExecutionFailure *)self fbfFailure];
+    dictionaryRepresentation = [fbfFailure dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"fbfFailure"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"fbfFailure"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"fbfFailure"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"fbfFailure"];
     }
   }
 
   if (self->_sandboxError)
   {
-    v7 = [(PFARepackagingExecutionFailure *)self sandboxError];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    sandboxError = [(PFARepackagingExecutionFailure *)self sandboxError];
+    dictionaryRepresentation2 = [sandboxError dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"sandboxError"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"sandboxError"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"sandboxError"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"sandboxError"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   whichKind = self->_whichKind;
-  if (whichKind != [v4 whichKind])
+  if (whichKind != [equalCopy whichKind])
   {
     goto LABEL_13;
   }
 
-  v6 = [(PFARepackagingExecutionFailure *)self fbfFailure];
-  v7 = [v4 fbfFailure];
-  if ((v6 != 0) == (v7 == 0))
+  fbfFailure = [(PFARepackagingExecutionFailure *)self fbfFailure];
+  fbfFailure2 = [equalCopy fbfFailure];
+  if ((fbfFailure != 0) == (fbfFailure2 == 0))
   {
     goto LABEL_12;
   }
 
-  v8 = [(PFARepackagingExecutionFailure *)self fbfFailure];
-  if (v8)
+  fbfFailure3 = [(PFARepackagingExecutionFailure *)self fbfFailure];
+  if (fbfFailure3)
   {
-    v9 = v8;
-    v10 = [(PFARepackagingExecutionFailure *)self fbfFailure];
-    v11 = [v4 fbfFailure];
-    v12 = [v10 isEqual:v11];
+    v9 = fbfFailure3;
+    fbfFailure4 = [(PFARepackagingExecutionFailure *)self fbfFailure];
+    fbfFailure5 = [equalCopy fbfFailure];
+    v12 = [fbfFailure4 isEqual:fbfFailure5];
 
     if (!v12)
     {
@@ -160,12 +160,12 @@
   {
   }
 
-  v6 = [(PFARepackagingExecutionFailure *)self sandboxError];
-  v7 = [v4 sandboxError];
-  if ((v6 != 0) != (v7 == 0))
+  fbfFailure = [(PFARepackagingExecutionFailure *)self sandboxError];
+  fbfFailure2 = [equalCopy sandboxError];
+  if ((fbfFailure != 0) != (fbfFailure2 == 0))
   {
-    v13 = [(PFARepackagingExecutionFailure *)self sandboxError];
-    if (!v13)
+    sandboxError = [(PFARepackagingExecutionFailure *)self sandboxError];
+    if (!sandboxError)
     {
 
 LABEL_16:
@@ -173,10 +173,10 @@ LABEL_16:
       goto LABEL_14;
     }
 
-    v14 = v13;
-    v15 = [(PFARepackagingExecutionFailure *)self sandboxError];
-    v16 = [v4 sandboxError];
-    v17 = [v15 isEqual:v16];
+    v14 = sandboxError;
+    sandboxError2 = [(PFARepackagingExecutionFailure *)self sandboxError];
+    sandboxError3 = [equalCopy sandboxError];
+    v17 = [sandboxError2 isEqual:sandboxError3];
 
     if (v17)
     {
@@ -196,22 +196,22 @@ LABEL_14:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(PFARepackagingExecutionFailure *)self fbfFailure];
+  toCopy = to;
+  fbfFailure = [(PFARepackagingExecutionFailure *)self fbfFailure];
 
-  if (v4)
+  if (fbfFailure)
   {
-    v5 = [(PFARepackagingExecutionFailure *)self fbfFailure];
+    fbfFailure2 = [(PFARepackagingExecutionFailure *)self fbfFailure];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(PFARepackagingExecutionFailure *)self sandboxError];
+  sandboxError = [(PFARepackagingExecutionFailure *)self sandboxError];
 
-  if (v6)
+  if (sandboxError)
   {
-    v7 = [(PFARepackagingExecutionFailure *)self sandboxError];
+    sandboxError2 = [(PFARepackagingExecutionFailure *)self sandboxError];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -241,15 +241,15 @@ LABEL_14:
   return v3;
 }
 
-- (void)setSandboxError:(id)a3
+- (void)setSandboxError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   fbfFailure = self->_fbfFailure;
   self->_fbfFailure = 0;
 
-  self->_whichKind = 2 * (v4 != 0);
+  self->_whichKind = 2 * (errorCopy != 0);
   sandboxError = self->_sandboxError;
-  self->_sandboxError = v4;
+  self->_sandboxError = errorCopy;
 }
 
 - (void)deleteFbfFailure
@@ -277,37 +277,37 @@ LABEL_14:
   return v3;
 }
 
-- (void)setFbfFailure:(id)a3
+- (void)setFbfFailure:(id)failure
 {
-  v4 = a3;
+  failureCopy = failure;
   sandboxError = self->_sandboxError;
   self->_sandboxError = 0;
 
-  self->_whichKind = v4 != 0;
+  self->_whichKind = failureCopy != 0;
   fbfFailure = self->_fbfFailure;
-  self->_fbfFailure = v4;
+  self->_fbfFailure = failureCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = PFARepackagingExecutionFailure;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(PFARepackagingExecutionFailure *)self fbfFailure];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  fbfFailure = [(PFARepackagingExecutionFailure *)self fbfFailure];
+  v7 = [fbfFailure applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PFARepackagingExecutionFailure *)self deleteFbfFailure];
   }
 
-  v9 = [(PFARepackagingExecutionFailure *)self sandboxError];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  sandboxError = [(PFARepackagingExecutionFailure *)self sandboxError];
+  v10 = [sandboxError applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PFARepackagingExecutionFailure *)self deleteSandboxError];
   }

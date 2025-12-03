@@ -1,17 +1,17 @@
 @interface LibrarySideBarManager
 - (void)deviceMediaLibraryUpdateStateDidChange;
-- (void)isLibraryOnlyCountryChanged:(id)a3;
+- (void)isLibraryOnlyCountryChanged:(id)changed;
 @end
 
 @implementation LibrarySideBarManager
 
 - (void)deviceMediaLibraryUpdateStateDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3EC0328();
 }
 
-- (void)isLibraryOnlyCountryChanged:(id)a3
+- (void)isLibraryOnlyCountryChanged:(id)changed
 {
   sub_1E41FDF34();
   OUTLINED_FUNCTION_0_10();
@@ -19,7 +19,7 @@
   OUTLINED_FUNCTION_5();
   OUTLINED_FUNCTION_41();
   sub_1E41FDEE4();
-  v5 = self;
+  selfCopy = self;
   sub_1E3EC057C();
 
   v6 = OUTLINED_FUNCTION_74();

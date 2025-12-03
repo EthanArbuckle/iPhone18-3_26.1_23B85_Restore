@@ -1,17 +1,17 @@
 @interface PRUISSwitcherLayout
-- (PRUISSwitcherLayout)initWithLayoutMode:(unint64_t)a3;
+- (PRUISSwitcherLayout)initWithLayoutMode:(unint64_t)mode;
 @end
 
 @implementation PRUISSwitcherLayout
 
-- (PRUISSwitcherLayout)initWithLayoutMode:(unint64_t)a3
+- (PRUISSwitcherLayout)initWithLayoutMode:(unint64_t)mode
 {
   v5.receiver = self;
   v5.super_class = PRUISSwitcherLayout;
   result = [(PRUISSwitcherLayout *)&v5 init];
   if (result)
   {
-    result->_layoutMode = a3;
+    result->_layoutMode = mode;
   }
 
   return result;

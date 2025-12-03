@@ -3,11 +3,11 @@
 - (BOOL)_isOnPower;
 - (BOOL)_isWifiUsable;
 - (IMLogDump)init;
-- (double)_calculateMinutesSyncingWithDurationKey:(id)a3 attemptDateKey:(id)a4;
-- (id)_calculatePowerAndWifiConnectedTimeInMinutesForDictionary:(id)a3;
-- (void)_calculateConnectedMinutesForDateKey:(id)a3 durationKey:(id)a4 daysDictionary:(id)a5 totalDurationDictionary:(id)a6 totalDurationKey:(id)a7;
-- (void)_incrementSyncAttemptsWithKey:(id)a3 syncDateKey:(id)a4;
-- (void)_noteSyncEndedForDurationKey:(id)a3 dateKey:(id)a4;
+- (double)_calculateMinutesSyncingWithDurationKey:(id)key attemptDateKey:(id)dateKey;
+- (id)_calculatePowerAndWifiConnectedTimeInMinutesForDictionary:(id)dictionary;
+- (void)_calculateConnectedMinutesForDateKey:(id)key durationKey:(id)durationKey daysDictionary:(id)dictionary totalDurationDictionary:(id)durationDictionary totalDurationKey:(id)totalDurationKey;
+- (void)_incrementSyncAttemptsWithKey:(id)key syncDateKey:(id)dateKey;
+- (void)_noteSyncEndedForDurationKey:(id)key dateKey:(id)dateKey;
 - (void)clearSyncStats;
 - (void)dumpMOCLoggingMetaData;
 - (void)printPowerAndWifiStats;
@@ -35,10 +35,10 @@
   v2 = [(IMLogDump *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-    v4 = [v3 isInternalInstall];
+    mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+    isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-    if (v4)
+    if (isInternalInstall)
     {
       v2->_shouldCollectPowerWifiStats = 1;
     }
@@ -93,22 +93,22 @@
         }
 
         v10 = *(*(&v26 + 1) + 8 * i);
-        v11 = [v10 accountProperties];
-        v12 = [v11 valueForKey:v8];
+        accountProperties = [v10 accountProperties];
+        v12 = [accountProperties valueForKey:v8];
         v13 = MEMORY[0x1E696AEC0];
-        v14 = [v10 username];
-        v15 = [v13 stringWithFormat:@"%@@%@", v14, v12];
+        username = [v10 username];
+        v15 = [v13 stringWithFormat:@"%@@%@", username, v12];
 
         if (IMOSLoggingEnabled())
         {
           v16 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
           {
-            v17 = [v10 qualifiedUsername];
+            qualifiedUsername = [v10 qualifiedUsername];
             *buf = 138412546;
             v33 = v15;
             v34 = 2112;
-            v35 = v17;
+            v35 = qualifiedUsername;
             _os_log_impl(&dword_1A85E5000, v16, OS_LOG_TYPE_INFO, "<StartAccountDetails>Account userName %@ | Account qualifiedUserName %@ <EndAccountDetails>", buf, 0x16u);
           }
         }
@@ -151,9 +151,9 @@
   IMSetDomainValueForKey();
 }
 
-- (double)_calculateMinutesSyncingWithDurationKey:(id)a3 attemptDateKey:(id)a4
+- (double)_calculateMinutesSyncingWithDurationKey:(id)key attemptDateKey:(id)dateKey
 {
-  v4 = a4;
+  dateKeyCopy = dateKey;
   v5 = IMGetCachedDomainValueForKey();
   [v5 doubleValue];
   v7 = v6;
@@ -162,8 +162,8 @@
 
   if (v8)
   {
-    v9 = [MEMORY[0x1E695DF00] date];
-    [v9 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceReferenceDate];
     v11 = v10;
     [v8 timeIntervalSinceReferenceDate];
     v7 = v7 + v11 - v12;
@@ -178,7 +178,7 @@
   if ([(IMLogDump *)self shouldCollectPowerWifiStats])
   {
     v3 = IMGetCachedDomainValueForKey();
-    v4 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
 
     [(IMLogDump *)self _calculateMinutesSyncingWithDurationKey:@"IMCKTotalDurationOfCoreDuetSync" attemptDateKey:@"CoreduetLastFullSyncAttemptDate"];
     v6 = v5;
@@ -187,7 +187,7 @@
       v7 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v4];
+        v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue];
         v9 = 138412546;
         v10 = v8;
         v11 = 2048;
@@ -201,55 +201,55 @@
 - (BOOL)_isWifiUsable
 {
   v2 = +[IMDeviceConditions sharedInstance];
-  v3 = [v2 isDeviceOnWifi];
+  isDeviceOnWifi = [v2 isDeviceOnWifi];
 
-  return v3;
+  return isDeviceOnWifi;
 }
 
 - (BOOL)_isOnPower
 {
   v2 = +[IMDeviceConditions sharedInstance];
-  v3 = [v2 isDeviceCharging];
+  isDeviceCharging = [v2 isDeviceCharging];
 
-  return v3;
+  return isDeviceCharging;
 }
 
-- (void)_calculateConnectedMinutesForDateKey:(id)a3 durationKey:(id)a4 daysDictionary:(id)a5 totalDurationDictionary:(id)a6 totalDurationKey:(id)a7
+- (void)_calculateConnectedMinutesForDateKey:(id)key durationKey:(id)durationKey daysDictionary:(id)dictionary totalDurationDictionary:(id)durationDictionary totalDurationKey:(id)totalDurationKey
 {
-  v33 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [v12 objectForKeyedSubscript:v33];
+  totalDurationKeyCopy = totalDurationKey;
+  durationDictionaryCopy = durationDictionary;
+  dictionaryCopy = dictionary;
+  durationKeyCopy = durationKey;
+  keyCopy = key;
+  v16 = [durationDictionaryCopy objectForKeyedSubscript:totalDurationKeyCopy];
   [v16 doubleValue];
   v18 = v17;
 
-  v19 = [v13 objectForKeyedSubscript:v14];
+  v19 = [dictionaryCopy objectForKeyedSubscript:durationKeyCopy];
 
   [v19 doubleValue];
   v21 = v18 + v20;
-  v22 = [v13 objectForKeyedSubscript:v15];
+  v22 = [dictionaryCopy objectForKeyedSubscript:keyCopy];
 
   if (v22)
   {
-    v23 = [(IMLogDump *)self _isOnPower];
-    v24 = [(IMLogDump *)self _isWifiUsable];
-    v25 = [MEMORY[0x1E695DF00] date];
-    [v25 timeIntervalSinceReferenceDate];
+    _isOnPower = [(IMLogDump *)self _isOnPower];
+    _isWifiUsable = [(IMLogDump *)self _isWifiUsable];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceReferenceDate];
     v27 = v26;
     [v22 timeIntervalSinceReferenceDate];
     v29 = v27 - v28;
-    if ([v33 isEqualToString:@"totalPowerWifi"] && v24 && v23 || (objc_msgSend(v33, "isEqualToString:", @"totalPower") & v23) == 1)
+    if ([totalDurationKeyCopy isEqualToString:@"totalPowerWifi"] && _isWifiUsable && _isOnPower || (objc_msgSend(totalDurationKeyCopy, "isEqualToString:", @"totalPower") & _isOnPower) == 1)
     {
       v21 = v21 + v29;
     }
 
     else
     {
-      v30 = [v33 isEqualToString:@"totalWifi"];
+      v30 = [totalDurationKeyCopy isEqualToString:@"totalWifi"];
       v31 = v21 + v29;
-      if (!v24)
+      if (!_isWifiUsable)
       {
         v31 = v21;
       }
@@ -262,12 +262,12 @@
   }
 
   v32 = [MEMORY[0x1E696AD98] numberWithDouble:v21];
-  [v12 setObject:v32 forKeyedSubscript:v33];
+  [durationDictionaryCopy setObject:v32 forKeyedSubscript:totalDurationKeyCopy];
 }
 
-- (id)_calculatePowerAndWifiConnectedTimeInMinutesForDictionary:(id)a3
+- (id)_calculatePowerAndWifiConnectedTimeInMinutesForDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if ([(IMLogDump *)self shouldCollectPowerWifiStats])
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -284,11 +284,11 @@
     v24 = 3221225472;
     v25 = sub_1A864783C;
     v26 = &unk_1E78270A0;
-    v27 = self;
+    selfCopy = self;
     v9 = v5;
     v28 = v9;
-    [v4 enumerateKeysAndObjectsUsingBlock:&v23];
-    v10 = [v9 objectForKeyedSubscript:{@"totalPowerWifi", v23, v24, v25, v26, v27}];
+    [dictionaryCopy enumerateKeysAndObjectsUsingBlock:&v23];
+    v10 = [v9 objectForKeyedSubscript:{@"totalPowerWifi", v23, v24, v25, v26, selfCopy}];
     [v10 doubleValue];
     v12 = v11 / 60.0;
 
@@ -392,46 +392,46 @@
   }
 }
 
-- (void)_incrementSyncAttemptsWithKey:(id)a3 syncDateKey:(id)a4
+- (void)_incrementSyncAttemptsWithKey:(id)key syncDateKey:(id)dateKey
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  dateKeyCopy = dateKey;
   if ([(IMLogDump *)self shouldCollectPowerWifiStats])
   {
-    v8 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v9 = IMGetCachedDomainValueForKey();
-    v10 = [v9 unsignedIntegerValue];
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
 
     if (IMOSLoggingEnabled())
     {
       v11 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v10 + 1];
+        v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue + 1];
         v14 = 138412546;
-        v15 = v6;
+        v15 = keyCopy;
         v16 = 2112;
         v17 = v12;
         _os_log_impl(&dword_1A85E5000, v11, OS_LOG_TYPE_INFO, "Incrementing %@ | numberOfSyncAttempts %@", &v14, 0x16u);
       }
     }
 
-    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v10 + 1];
+    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue + 1];
     IMSetDomainValueForKey();
 
     IMSetDomainValueForKey();
   }
 }
 
-- (void)_noteSyncEndedForDurationKey:(id)a3 dateKey:(id)a4
+- (void)_noteSyncEndedForDurationKey:(id)key dateKey:(id)dateKey
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  dateKeyCopy = dateKey;
   if ([(IMLogDump *)self shouldCollectPowerWifiStats])
   {
-    v8 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v9 = IMGetCachedDomainValueForKey();
     [v9 doubleValue];
     v11 = v10;
@@ -439,7 +439,7 @@
     v12 = IMGetCachedDomainValueForKey();
     if (v12)
     {
-      [v8 timeIntervalSinceReferenceDate];
+      [date timeIntervalSinceReferenceDate];
       v14 = v13;
       [v12 timeIntervalSinceReferenceDate];
       v16 = [MEMORY[0x1E696AD98] numberWithDouble:v11 + v14 - v15];
@@ -454,7 +454,7 @@
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         v18 = 138412290;
-        v19 = v7;
+        v19 = dateKeyCopy;
         _os_log_impl(&dword_1A85E5000, v17, OS_LOG_TYPE_INFO, "We for some reason did not have a %@, early returning as that would mess up our statistics", &v18, 0xCu);
       }
     }

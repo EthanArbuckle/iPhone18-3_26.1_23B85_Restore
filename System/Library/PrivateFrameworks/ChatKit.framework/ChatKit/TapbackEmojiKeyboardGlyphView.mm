@@ -2,9 +2,9 @@
 - (BOOL)isSelected;
 - (CKTapbackViewDelegate)delegate;
 - (UIEdgeInsets)platterEdgeInsets;
-- (_TtC7ChatKit29TapbackEmojiKeyboardGlyphView)initWithFrame:(CGRect)a3;
+- (_TtC7ChatKit29TapbackEmojiKeyboardGlyphView)initWithFrame:(CGRect)frame;
 - (void)interfaceStyleChanged;
-- (void)setIsSelected:(BOOL)a3;
+- (void)setIsSelected:(BOOL)selected;
 @end
 
 @implementation TapbackEmojiKeyboardGlyphView
@@ -29,11 +29,11 @@
   return *(self + v3);
 }
 
-- (void)setIsSelected:(BOOL)a3
+- (void)setIsSelected:(BOOL)selected
 {
   v5 = OBJC_IVAR____TtC7ChatKit29TapbackEmojiKeyboardGlyphView_isSelected;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = selected;
 }
 
 - (CKTapbackViewDelegate)delegate
@@ -44,7 +44,7 @@
   return Strong;
 }
 
-- (_TtC7ChatKit29TapbackEmojiKeyboardGlyphView)initWithFrame:(CGRect)a3
+- (_TtC7ChatKit29TapbackEmojiKeyboardGlyphView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -53,7 +53,7 @@
 
 - (void)interfaceStyleChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_190B789E8();
 }
 

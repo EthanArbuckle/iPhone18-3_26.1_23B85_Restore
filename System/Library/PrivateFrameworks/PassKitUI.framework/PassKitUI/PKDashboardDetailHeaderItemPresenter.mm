@@ -1,25 +1,25 @@
 @interface PKDashboardDetailHeaderItemPresenter
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
 - (PKDashboardDetailHeaderItemPresenter)init;
-- (id)_backgroundImageFromLogoImage:(id)a3;
-- (id)_installmentProductHeaderCellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
-- (id)_merchantHeaderCellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
-- (id)_peerPaymentHeaderCellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
-- (id)_transactionGroupHeaderCellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
-- (id)_transactionTypeHeaderCellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (id)_backgroundImageFromLogoImage:(id)image;
+- (id)_installmentProductHeaderCellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
+- (id)_merchantHeaderCellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
+- (id)_peerPaymentHeaderCellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
+- (id)_transactionGroupHeaderCellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
+- (id)_transactionTypeHeaderCellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (void)_configureCategoryHeaderCell:(id)a3 forItem:(id)a4 isUpdate:(BOOL)a5;
-- (void)_configureCell:(id)a3 withRegion:(id)a4 isUpdate:(BOOL)a5;
-- (void)_configureInstallmentProductHeaderCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 atIndexPath:(id)a6 downloadImage:(BOOL)a7;
-- (void)_configureMerchantHeaderCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 atIndexPath:(id)a6;
-- (void)_configurePeerPaymentHeaderCell:(id)a3 forItem:(id)a4;
-- (void)_configureTransactionTypeHeaderCell:(id)a3 forItem:(id)a4;
-- (void)_downloadLogoForItem:(id)a3 withCompletionHandler:(id)a4;
-- (void)_updateMerchantHeaderImagesOnCell:(id)a3 item:(id)a4;
+- (void)_configureCategoryHeaderCell:(id)cell forItem:(id)item isUpdate:(BOOL)update;
+- (void)_configureCell:(id)cell withRegion:(id)region isUpdate:(BOOL)update;
+- (void)_configureInstallmentProductHeaderCell:(id)cell forItem:(id)item inCollectionView:(id)view atIndexPath:(id)path downloadImage:(BOOL)image;
+- (void)_configureMerchantHeaderCell:(id)cell forItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
+- (void)_configurePeerPaymentHeaderCell:(id)cell forItem:(id)item;
+- (void)_configureTransactionTypeHeaderCell:(id)cell forItem:(id)item;
+- (void)_downloadLogoForItem:(id)item withCompletionHandler:(id)handler;
+- (void)_updateMerchantHeaderImagesOnCell:(id)cell item:(id)item;
 - (void)dealloc;
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5;
-- (void)updateCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 atIndexPath:(id)a6;
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view;
+- (void)updateCell:(id)cell forItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 @end
 
 @implementation PKDashboardDetailHeaderItemPresenter
@@ -45,44 +45,44 @@
   [(PKDashboardDetailHeaderItemPresenter *)&v3 dealloc];
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v8;
-  v12 = [v11 type];
+  itemCopy = item;
+  viewCopy = view;
+  pathCopy = path;
+  v11 = itemCopy;
+  type = [v11 type];
   v13 = 0;
-  if (v12 <= 1)
+  if (type <= 1)
   {
-    if (v12)
+    if (type)
     {
-      if (v12 != 1)
+      if (type != 1)
       {
         goto LABEL_13;
       }
 
-      v14 = [(PKDashboardDetailHeaderItemPresenter *)self _peerPaymentHeaderCellForItem:v11 inCollectionView:v9 atIndexPath:v10];
+      v14 = [(PKDashboardDetailHeaderItemPresenter *)self _peerPaymentHeaderCellForItem:v11 inCollectionView:viewCopy atIndexPath:pathCopy];
     }
 
     else
     {
-      v14 = [(PKDashboardDetailHeaderItemPresenter *)self _merchantHeaderCellForItem:v11 inCollectionView:v9 atIndexPath:v10];
+      v14 = [(PKDashboardDetailHeaderItemPresenter *)self _merchantHeaderCellForItem:v11 inCollectionView:viewCopy atIndexPath:pathCopy];
     }
   }
 
   else
   {
-    switch(v12)
+    switch(type)
     {
       case 2:
-        v14 = [(PKDashboardDetailHeaderItemPresenter *)self _transactionGroupHeaderCellForItem:v11 inCollectionView:v9 atIndexPath:v10];
+        v14 = [(PKDashboardDetailHeaderItemPresenter *)self _transactionGroupHeaderCellForItem:v11 inCollectionView:viewCopy atIndexPath:pathCopy];
         break;
       case 3:
-        v14 = [(PKDashboardDetailHeaderItemPresenter *)self _transactionTypeHeaderCellForItem:v11 inCollectionView:v9 atIndexPath:v10];
+        v14 = [(PKDashboardDetailHeaderItemPresenter *)self _transactionTypeHeaderCellForItem:v11 inCollectionView:viewCopy atIndexPath:pathCopy];
         break;
       case 4:
-        v14 = [(PKDashboardDetailHeaderItemPresenter *)self _installmentProductHeaderCellForItem:v11 inCollectionView:v9 atIndexPath:v10];
+        v14 = [(PKDashboardDetailHeaderItemPresenter *)self _installmentProductHeaderCellForItem:v11 inCollectionView:viewCopy atIndexPath:pathCopy];
         break;
       default:
         goto LABEL_13;
@@ -109,18 +109,18 @@ LABEL_13:
   return v2;
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = v10;
-  v14 = [v13 type];
-  if (v14 <= 1)
+  itemCopy = item;
+  viewCopy = view;
+  pathCopy = path;
+  v13 = itemCopy;
+  type = [v13 type];
+  if (type <= 1)
   {
-    if (v14)
+    if (type)
     {
-      if (v14 == 1)
+      if (type == 1)
       {
         templateCell = self->_templateCell;
         if (!templateCell)
@@ -148,7 +148,7 @@ LABEL_13:
 
   else
   {
-    switch(v14)
+    switch(type)
     {
       case 2:
         v23 = self->_templateCell;
@@ -190,13 +190,13 @@ LABEL_13:
           v15 = self->_templateCell;
         }
 
-        [(PKDashboardDetailHeaderItemPresenter *)self _configureInstallmentProductHeaderCell:v15 forItem:v13 inCollectionView:v11 atIndexPath:v12 downloadImage:0];
+        [(PKDashboardDetailHeaderItemPresenter *)self _configureInstallmentProductHeaderCell:v15 forItem:v13 inCollectionView:viewCopy atIndexPath:pathCopy downloadImage:0];
         break;
     }
   }
 
-  [v11 bounds];
-  [(UICollectionViewCell *)self->_templateCell sizeThatFits:a5, v34];
+  [viewCopy bounds];
+  [(UICollectionViewCell *)self->_templateCell sizeThatFits:width, v34];
   v36 = v35;
   v38 = v37;
 
@@ -207,87 +207,87 @@ LABEL_13:
   return result;
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 atIndexPath:(id)a6
+- (void)updateCell:(id)cell forItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v10;
-  v14 = [v13 type];
-  if (v14 <= 1)
+  cellCopy = cell;
+  itemCopy = item;
+  viewCopy = view;
+  pathCopy = path;
+  v13 = itemCopy;
+  type = [v13 type];
+  if (type <= 1)
   {
-    if (v14)
+    if (type)
     {
-      if (v14 == 1)
+      if (type == 1)
       {
-        [(PKDashboardDetailHeaderItemPresenter *)self _configurePeerPaymentHeaderCell:v15 forItem:v13];
+        [(PKDashboardDetailHeaderItemPresenter *)self _configurePeerPaymentHeaderCell:cellCopy forItem:v13];
       }
     }
 
     else
     {
-      [(PKDashboardDetailHeaderItemPresenter *)self _configureMerchantHeaderCell:v15 forItem:v13 inCollectionView:v11 atIndexPath:v12];
+      [(PKDashboardDetailHeaderItemPresenter *)self _configureMerchantHeaderCell:cellCopy forItem:v13 inCollectionView:viewCopy atIndexPath:pathCopy];
     }
   }
 
   else
   {
-    switch(v14)
+    switch(type)
     {
       case 2:
-        [(PKDashboardDetailHeaderItemPresenter *)self _configureCategoryHeaderCell:v15 forItem:v13 isUpdate:1];
+        [(PKDashboardDetailHeaderItemPresenter *)self _configureCategoryHeaderCell:cellCopy forItem:v13 isUpdate:1];
         break;
       case 3:
-        [(PKDashboardDetailHeaderItemPresenter *)self _configureTransactionTypeHeaderCell:v15 forItem:v13];
+        [(PKDashboardDetailHeaderItemPresenter *)self _configureTransactionTypeHeaderCell:cellCopy forItem:v13];
         break;
       case 4:
-        [(PKDashboardDetailHeaderItemPresenter *)self _configureInstallmentProductHeaderCell:v15 forItem:v13 inCollectionView:v11 atIndexPath:v12 downloadImage:1];
+        [(PKDashboardDetailHeaderItemPresenter *)self _configureInstallmentProductHeaderCell:cellCopy forItem:v13 inCollectionView:viewCopy atIndexPath:pathCopy downloadImage:1];
         break;
     }
   }
 }
 
-- (id)_merchantHeaderCellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)_merchantHeaderCellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 dequeueReusableCellWithReuseIdentifier:@"PKTransactionHistoryHeaderPresenterMerchantReuseIdentifier" forIndexPath:v8];
-  [(PKDashboardDetailHeaderItemPresenter *)self _configureMerchantHeaderCell:v11 forItem:v10 inCollectionView:v9 atIndexPath:v8];
+  pathCopy = path;
+  viewCopy = view;
+  itemCopy = item;
+  v11 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"PKTransactionHistoryHeaderPresenterMerchantReuseIdentifier" forIndexPath:pathCopy];
+  [(PKDashboardDetailHeaderItemPresenter *)self _configureMerchantHeaderCell:v11 forItem:itemCopy inCollectionView:viewCopy atIndexPath:pathCopy];
 
   return v11;
 }
 
-- (id)_installmentProductHeaderCellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)_installmentProductHeaderCellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 dequeueReusableCellWithReuseIdentifier:@"PKTransactionHistoryTransactionGroupHeaderCellReuseIdentifier" forIndexPath:v8];
-  [(PKDashboardDetailHeaderItemPresenter *)self _configureInstallmentProductHeaderCell:v11 forItem:v10 inCollectionView:v9 atIndexPath:v8 downloadImage:1];
+  pathCopy = path;
+  viewCopy = view;
+  itemCopy = item;
+  v11 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"PKTransactionHistoryTransactionGroupHeaderCellReuseIdentifier" forIndexPath:pathCopy];
+  [(PKDashboardDetailHeaderItemPresenter *)self _configureInstallmentProductHeaderCell:v11 forItem:itemCopy inCollectionView:viewCopy atIndexPath:pathCopy downloadImage:1];
 
   return v11;
 }
 
-- (void)_configureInstallmentProductHeaderCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 atIndexPath:(id)a6 downloadImage:(BOOL)a7
+- (void)_configureInstallmentProductHeaderCell:(id)cell forItem:(id)item inCollectionView:(id)view atIndexPath:(id)path downloadImage:(BOOL)image
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
-  v38 = a5;
-  v14 = a6;
-  v15 = [v13 installmentProduct];
-  v16 = [v15 serialNumber];
+  imageCopy = image;
+  cellCopy = cell;
+  itemCopy = item;
+  viewCopy = view;
+  pathCopy = path;
+  installmentProduct = [itemCopy installmentProduct];
+  serialNumber = [installmentProduct serialNumber];
   v17 = PKSerialNumber();
-  v18 = v16;
+  v18 = serialNumber;
   v19 = v17;
   v20 = v19;
   if (v18 != v19)
   {
     if (v18 && v19)
     {
-      v21 = [v18 caseInsensitiveCompare:{v19, v38}];
+      v21 = [v18 caseInsensitiveCompare:{v19, viewCopy}];
 
       if (!v21)
       {
@@ -299,19 +299,19 @@ LABEL_13:
     {
     }
 
-    v22 = [v15 model];
-    v23 = 0;
+    model = [installmentProduct model];
+    model2 = 0;
     goto LABEL_10;
   }
 
 LABEL_7:
-  v22 = PKDeviceName();
-  v23 = [v15 model];
+  model = PKDeviceName();
+  model2 = [installmentProduct model];
 LABEL_10:
-  [v12 setTitle:{v22, v38}];
-  [v12 setSubtitle:v23];
-  [v12 setUseShadows:1];
-  v24 = [v15 iconURLForScale:0 suffix:PKUIScreenScale()];
+  [cellCopy setTitle:{model, viewCopy}];
+  [cellCopy setSubtitle:model2];
+  [cellCopy setUseShadows:1];
+  v24 = [installmentProduct iconURLForScale:0 suffix:PKUIScreenScale()];
   v25 = v24;
   logoImage = self->_logoImage;
   if (!logoImage && v24)
@@ -334,7 +334,7 @@ LABEL_10:
       self->_logoImage = v31;
     }
 
-    else if (v7)
+    else if (imageCopy)
     {
       objc_initWeak(&location, self);
       v33 = self->_fileDownloader;
@@ -343,7 +343,7 @@ LABEL_10:
       v40[2] = __130__PKDashboardDetailHeaderItemPresenter__configureInstallmentProductHeaderCell_forItem_inCollectionView_atIndexPath_downloadImage___block_invoke;
       v40[3] = &unk_1E801E148;
       objc_copyWeak(&v42, &location);
-      v41 = v12;
+      v41 = cellCopy;
       [(PKObjectDownloader *)v33 downloadFromUrl:v25 completionHandler:v40];
 
       objc_destroyWeak(&v42);
@@ -371,7 +371,7 @@ LABEL_10:
     }
   }
 
-  [v12 setImage:v34 animated:0];
+  [cellCopy setImage:v34 animated:0];
 }
 
 void __130__PKDashboardDetailHeaderItemPresenter__configureInstallmentProductHeaderCell_forItem_inCollectionView_atIndexPath_downloadImage___block_invoke(uint64_t a1, uint64_t a2, void *a3, uint64_t a4)
@@ -422,24 +422,24 @@ void __130__PKDashboardDetailHeaderItemPresenter__configureInstallmentProductHea
   }
 }
 
-- (void)_configureMerchantHeaderCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 atIndexPath:(id)a6
+- (void)_configureMerchantHeaderCell:(id)cell forItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v48 = a6;
-  v13 = [v11 merchant];
-  v14 = v13;
-  if (!v13)
+  cellCopy = cell;
+  itemCopy = item;
+  viewCopy = view;
+  pathCopy = path;
+  merchant = [itemCopy merchant];
+  v14 = merchant;
+  if (!merchant)
   {
-    v13 = v11;
+    merchant = itemCopy;
   }
 
-  v15 = [v13 category];
+  category = [merchant category];
   if ([v14 useDisplayNameIgnoringBrand])
   {
-    v47 = [v14 displayNameIgnoringBrand];
-    if (!v15)
+    displayNameIgnoringBrand = [v14 displayNameIgnoringBrand];
+    if (!category)
     {
       goto LABEL_11;
     }
@@ -447,27 +447,27 @@ void __130__PKDashboardDetailHeaderItemPresenter__configureInstallmentProductHea
 
   else
   {
-    v16 = [v14 displayName];
-    v17 = v16;
-    if (v16)
+    displayName = [v14 displayName];
+    v17 = displayName;
+    if (displayName)
     {
-      v18 = v16;
+      title = displayName;
     }
 
     else
     {
-      v18 = [v11 title];
+      title = [itemCopy title];
     }
 
-    v47 = v18;
+    displayNameIgnoringBrand = title;
 
-    if (!v15)
+    if (!category)
     {
       goto LABEL_11;
     }
   }
 
-  if ([v11 showDetailedPropertyLocation])
+  if ([itemCopy showDetailedPropertyLocation])
   {
 LABEL_11:
     v19 = 0;
@@ -476,18 +476,18 @@ LABEL_11:
 
   v19 = PKLocalizedStringFromMerchantCategory();
 LABEL_13:
-  if ([v11 showDetailedPropertyLocation])
+  if ([itemCopy showDetailedPropertyLocation])
   {
-    v20 = [v14 mapsMerchant];
-    v21 = [v20 postalAddress];
+    mapsMerchant = [v14 mapsMerchant];
+    postalAddress = [mapsMerchant postalAddress];
     v22 = PKMerchantFormattedLocationForPostalAddress();
 
     v19 = v22;
   }
 
-  v23 = [v14 logoImageURL];
-  v24 = v23;
-  if (!self->_logoImage && v23)
+  logoImageURL = [v14 logoImageURL];
+  v24 = logoImageURL;
+  if (!self->_logoImage && logoImageURL)
   {
     fileDownloader = self->_fileDownloader;
     if (!fileDownloader)
@@ -527,8 +527,8 @@ LABEL_13:
       v55[2] = __106__PKDashboardDetailHeaderItemPresenter__configureMerchantHeaderCell_forItem_inCollectionView_atIndexPath___block_invoke;
       v55[3] = &unk_1E8027C60;
       objc_copyWeak(&v58, location);
-      v56 = v10;
-      v57 = v11;
+      v56 = cellCopy;
+      v57 = itemCopy;
       [(PKDashboardDetailHeaderItemPresenter *)self _downloadLogoForItem:v57 withCompletionHandler:v55];
 
       objc_destroyWeak(&v58);
@@ -536,10 +536,10 @@ LABEL_13:
     }
   }
 
-  v46 = v12;
-  v33 = [v14 heroImageURL];
-  v34 = v33;
-  if (!self->_heroImage && v33)
+  v46 = viewCopy;
+  heroImageURL = [v14 heroImageURL];
+  v34 = heroImageURL;
+  if (!self->_heroImage && heroImageURL)
   {
     v35 = self->_fileDownloader;
     if (!v35)
@@ -576,8 +576,8 @@ LABEL_13:
       v51[2] = __106__PKDashboardDetailHeaderItemPresenter__configureMerchantHeaderCell_forItem_inCollectionView_atIndexPath___block_invoke_3;
       v51[3] = &unk_1E8015960;
       objc_copyWeak(&v54, location);
-      v52 = v10;
-      v53 = v11;
+      v52 = cellCopy;
+      v53 = itemCopy;
       [(PKObjectDownloader *)v41 downloadFromUrl:v34 completionHandler:v51];
 
       objc_destroyWeak(&v54);
@@ -585,9 +585,9 @@ LABEL_13:
     }
   }
 
-  v42 = [v10 headerView];
-  [v42 setPrimaryText:v47];
-  [v42 setSecondaryText:v19];
+  headerView = [cellCopy headerView];
+  [headerView setPrimaryText:displayNameIgnoringBrand];
+  [headerView setSecondaryText:v19];
   PKUIScreenScale();
   v43 = PKMapsColorForMerchantCategory();
   location[0] = 0;
@@ -598,11 +598,11 @@ LABEL_13:
   v49 = v49 * 0.9;
   v50 = v50 * 0.9;
   v44 = [MEMORY[0x1E69DC888] colorWithRed:? green:? blue:? alpha:?];
-  [v42 setFallbackColor:v44];
+  [headerView setFallbackColor:v44];
 
-  [v10 setOverlayEffect:self->_overlayEffect];
-  [v10 setShadowColor:self->_shadowColor];
-  [(PKDashboardDetailHeaderItemPresenter *)self _updateMerchantHeaderImagesOnCell:v10 item:v11];
+  [cellCopy setOverlayEffect:self->_overlayEffect];
+  [cellCopy setShadowColor:self->_shadowColor];
+  [(PKDashboardDetailHeaderItemPresenter *)self _updateMerchantHeaderImagesOnCell:cellCopy item:itemCopy];
 }
 
 void __106__PKDashboardDetailHeaderItemPresenter__configureMerchantHeaderCell_forItem_inCollectionView_atIndexPath___block_invoke(id *a1, uint64_t a2, uint64_t a3)
@@ -679,14 +679,14 @@ void __106__PKDashboardDetailHeaderItemPresenter__configureMerchantHeaderCell_fo
   }
 }
 
-- (void)_updateMerchantHeaderImagesOnCell:(id)a3 item:(id)a4
+- (void)_updateMerchantHeaderImagesOnCell:(id)cell item:(id)item
 {
-  v19 = a4;
-  v6 = a3;
-  v7 = [v19 merchant];
-  v8 = [v6 headerView];
+  itemCopy = item;
+  cellCopy = cell;
+  merchant = [itemCopy merchant];
+  headerView = [cellCopy headerView];
 
-  if (v7)
+  if (merchant)
   {
     logoImage = self->_logoImage;
     if (logoImage)
@@ -706,13 +706,13 @@ void __106__PKDashboardDetailHeaderItemPresenter__configureMerchantHeaderCell_fo
   else
   {
     PKUIScreenScale();
-    [v19 category];
+    [itemCopy category];
     PKUIScreenScale();
     v11 = PKMapsColorForMerchantCategory();
     v12 = PKIconForGenericBusiness();
   }
 
-  [v8 setIconImage:v12];
+  [headerView setIconImage:v12];
   heroImage = self->_heroImage;
   if (!heroImage)
   {
@@ -720,39 +720,39 @@ void __106__PKDashboardDetailHeaderItemPresenter__configureMerchantHeaderCell_fo
   }
 
   v14 = heroImage;
-  v15 = [v8 backgroundImage];
-  v16 = v15 == 0;
+  backgroundImage = [headerView backgroundImage];
+  v16 = backgroundImage == 0;
 
-  [v8 setBackgroundImage:v14 animated:v16];
+  [headerView setBackgroundImage:v14 animated:v16];
   v17 = self->_heroImage;
   if (v17)
   {
-    v18 = [v7 heroImageAttribution];
-    [v8 setAttributionProviderName:v18];
+    heroImageAttribution = [merchant heroImageAttribution];
+    [headerView setAttributionProviderName:heroImageAttribution];
   }
 
-  [v8 setShowsGradientOverlay:v17 != 0];
+  [headerView setShowsGradientOverlay:v17 != 0];
 }
 
-- (id)_backgroundImageFromLogoImage:(id)a3
+- (id)_backgroundImageFromLogoImage:(id)image
 {
   v3 = MEMORY[0x1E695F620];
-  v4 = a3;
+  imageCopy = image;
   v5 = [[v3 alloc] initWithOptions:0];
-  v6 = [objc_alloc(MEMORY[0x1E695F658]) initWithImage:v4];
+  v6 = [objc_alloc(MEMORY[0x1E695F658]) initWithImage:imageCopy];
 
   v7 = [MEMORY[0x1E695F648] filterWithName:@"CIAffineClamp"];
   [v7 setDefaults];
   v8 = *MEMORY[0x1E695FAB0];
   [v7 setValue:v6 forKey:*MEMORY[0x1E695FAB0]];
   v9 = [MEMORY[0x1E695F648] filterWithName:@"CIGaussianBlur"];
-  v10 = [v7 outputImage];
-  [v9 setValue:v10 forKey:v8];
+  outputImage = [v7 outputImage];
+  [v9 setValue:outputImage forKey:v8];
 
   [v9 setValue:&unk_1F3CC81E0 forKey:*MEMORY[0x1E695FB10]];
   v11 = [MEMORY[0x1E695F648] filterWithName:@"CIColorControls"];
-  v12 = [v9 outputImage];
-  [v11 setValue:v12 forKey:v8];
+  outputImage2 = [v9 outputImage];
+  [v11 setValue:outputImage2 forKey:v8];
 
   [v11 setValue:&unk_1F3CC6D48 forKey:*MEMORY[0x1E695FB18]];
   [v6 extent];
@@ -760,12 +760,12 @@ void __106__PKDashboardDetailHeaderItemPresenter__configureMerchantHeaderCell_fo
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [v11 outputImage];
-  v22 = [v5 createCGImage:v21 fromRect:{v14, v16, v18, v20}];
+  outputImage3 = [v11 outputImage];
+  v22 = [v5 createCGImage:outputImage3 fromRect:{v14, v16, v18, v20}];
 
   v23 = objc_alloc(MEMORY[0x1E69DCA78]);
-  v24 = [MEMORY[0x1E69DCA80] preferredFormat];
-  v25 = [v23 initWithBounds:v24 format:{v14, v16, v18, v20}];
+  preferredFormat = [MEMORY[0x1E69DCA80] preferredFormat];
+  v25 = [v23 initWithBounds:preferredFormat format:{v14, v16, v18, v20}];
 
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
@@ -803,47 +803,47 @@ void __70__PKDashboardDetailHeaderItemPresenter__backgroundImageFromLogoImage___
   CGContextFillRect(v3, *(a1 + 32));
 }
 
-- (id)_peerPaymentHeaderCellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)_peerPaymentHeaderCellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = [a4 dequeueReusableCellWithReuseIdentifier:@"PKTransactionHistoryHeaderPresenterPeerPaymentReuseIdentifier" forIndexPath:a5];
-  [(PKDashboardDetailHeaderItemPresenter *)self _configurePeerPaymentHeaderCell:v9 forItem:v8];
+  itemCopy = item;
+  v9 = [view dequeueReusableCellWithReuseIdentifier:@"PKTransactionHistoryHeaderPresenterPeerPaymentReuseIdentifier" forIndexPath:path];
+  [(PKDashboardDetailHeaderItemPresenter *)self _configurePeerPaymentHeaderCell:v9 forItem:itemCopy];
 
   return v9;
 }
 
-- (void)_configurePeerPaymentHeaderCell:(id)a3 forItem:(id)a4
+- (void)_configurePeerPaymentHeaderCell:(id)cell forItem:(id)item
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = [v5 peerPaymentCounterpartHandle];
-  v7 = [v5 contact];
+  itemCopy = item;
+  cellCopy = cell;
+  peerPaymentCounterpartHandle = [itemCopy peerPaymentCounterpartHandle];
+  contact = [itemCopy contact];
 
-  [v6 configureWithPeerPaymentCounterpartHandle:v8 contact:v7];
+  [cellCopy configureWithPeerPaymentCounterpartHandle:peerPaymentCounterpartHandle contact:contact];
 }
 
-- (id)_transactionGroupHeaderCellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)_transactionGroupHeaderCellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = [a4 dequeueReusableCellWithReuseIdentifier:@"PKTransactionHistoryTransactionGroupHeaderCellReuseIdentifier" forIndexPath:a5];
-  [(PKDashboardDetailHeaderItemPresenter *)self _configureCategoryHeaderCell:v9 forItem:v8 isUpdate:0];
+  itemCopy = item;
+  v9 = [view dequeueReusableCellWithReuseIdentifier:@"PKTransactionHistoryTransactionGroupHeaderCellReuseIdentifier" forIndexPath:path];
+  [(PKDashboardDetailHeaderItemPresenter *)self _configureCategoryHeaderCell:v9 forItem:itemCopy isUpdate:0];
 
   return v9;
 }
 
-- (id)_transactionTypeHeaderCellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)_transactionTypeHeaderCellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = [a4 dequeueReusableCellWithReuseIdentifier:@"PKTransactionHistoryTransactionGroupHeaderCellReuseIdentifier" forIndexPath:a5];
-  [(PKDashboardDetailHeaderItemPresenter *)self _configureTransactionTypeHeaderCell:v9 forItem:v8];
+  itemCopy = item;
+  v9 = [view dequeueReusableCellWithReuseIdentifier:@"PKTransactionHistoryTransactionGroupHeaderCellReuseIdentifier" forIndexPath:path];
+  [(PKDashboardDetailHeaderItemPresenter *)self _configureTransactionTypeHeaderCell:v9 forItem:itemCopy];
 
   return v9;
 }
 
-- (void)_configureTransactionTypeHeaderCell:(id)a3 forItem:(id)a4
+- (void)_configureTransactionTypeHeaderCell:(id)cell forItem:(id)item
 {
-  v5 = a3;
-  if ([a4 transactionType] == 11)
+  cellCopy = cell;
+  if ([item transactionType] == 11)
   {
     v11 = PKLocalizedFeatureString();
     v6 = PKLocalizedFeatureString();
@@ -860,16 +860,16 @@ void __70__PKDashboardDetailHeaderItemPresenter__backgroundImageFromLogoImage___
     v10 = 0;
   }
 
-  [v5 setTitle:v11];
-  [v5 setSubtitle:v6];
-  [v5 setImage:v10 animated:0];
+  [cellCopy setTitle:v11];
+  [cellCopy setSubtitle:v6];
+  [cellCopy setImage:v10 animated:0];
 }
 
-- (void)_configureCell:(id)a3 withRegion:(id)a4 isUpdate:(BOOL)a5
+- (void)_configureCell:(id)cell withRegion:(id)region isUpdate:(BOOL)update
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  updateCopy = update;
+  cellCopy = cell;
+  regionCopy = region;
   if (!self->_snapshotManager)
   {
     v10 = objc_alloc_init(PKMapsSnapshotManager);
@@ -877,22 +877,22 @@ void __70__PKDashboardDetailHeaderItemPresenter__backgroundImageFromLogoImage___
     self->_snapshotManager = v10;
   }
 
-  [v9 displayRegion];
+  [regionCopy displayRegion];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  objc_initWeak(&location, v8);
+  objc_initWeak(&location, cellCopy);
   v20 = self->_snapshotManager;
-  v21 = [v8 traitCollection];
+  traitCollection = [cellCopy traitCollection];
   v23 = MEMORY[0x1E69E9820];
   v24 = 3221225472;
   v25 = __75__PKDashboardDetailHeaderItemPresenter__configureCell_withRegion_isUpdate___block_invoke;
   v26 = &unk_1E80203C0;
   objc_copyWeak(&v27, &location);
-  v22 = [(PKMapsSnapshotManager *)v20 snapshotForDisplayRegion:v21 size:&v23 traitCollection:v13 completion:v15, v17, v19, 100.0, 100.0];
+  v22 = [(PKMapsSnapshotManager *)v20 snapshotForDisplayRegion:traitCollection size:&v23 traitCollection:v13 completion:v15, v17, v19, 100.0, 100.0];
 
-  [v8 setImage:v22 animated:{v5, v23, v24, v25, v26}];
+  [cellCopy setImage:v22 animated:{updateCopy, v23, v24, v25, v26}];
   objc_destroyWeak(&v27);
   objc_destroyWeak(&location);
 }
@@ -927,36 +927,36 @@ void __75__PKDashboardDetailHeaderItemPresenter__configureCell_withRegion_isUpda
   }
 }
 
-- (void)_configureCategoryHeaderCell:(id)a3 forItem:(id)a4 isUpdate:(BOOL)a5
+- (void)_configureCategoryHeaderCell:(id)cell forItem:(id)item isUpdate:(BOOL)update
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 transactionGroup];
-  v11 = [v10 type];
-  v12 = [v9 featureIdentifier];
+  updateCopy = update;
+  cellCopy = cell;
+  itemCopy = item;
+  transactionGroup = [itemCopy transactionGroup];
+  type = [transactionGroup type];
+  featureIdentifier = [itemCopy featureIdentifier];
   v13 = 1;
-  switch(v11)
+  switch(type)
   {
     case 0uLL:
     case 0xFuLL:
-      [v10 merchantCategory];
+      [transactionGroup merchantCategory];
       v14 = PKLocalizedStringFromMerchantCategory();
-      [v8 setTitle:v14];
+      [cellCopy setTitle:v14];
 
       PKUIScreenScale();
       v15 = PKMapsIconForMerchantCategory();
-      [v8 setImage:v15 animated:0];
+      [cellCopy setImage:v15 animated:0];
 
       v13 = 1;
-      if (v11 <= 0xF)
+      if (type <= 0xF)
       {
-        if (((1 << v11) & 0xA553) != 0)
+        if (((1 << type) & 0xA553) != 0)
         {
           goto LABEL_24;
         }
 
-        if (v11 == 14)
+        if (type == 14)
         {
           goto LABEL_91;
         }
@@ -966,21 +966,21 @@ void __75__PKDashboardDetailHeaderItemPresenter__configureCell_withRegion_isUpda
     case 1uLL:
       goto LABEL_24;
     case 2uLL:
-      v25 = [v10 startDate];
+      startDate = [transactionGroup startDate];
       v26 = PKMonthAndYearStringFromDate();
       goto LABEL_12;
     case 3uLL:
-      v25 = [v10 startDate];
+      startDate = [transactionGroup startDate];
       v26 = PKYearStringFromDate();
 LABEL_12:
       v34 = v26;
-      [v8 setTitle:v26];
+      [cellCopy setTitle:v26];
 
-      [v8 setImage:0 animated:0];
+      [cellCopy setImage:0 animated:0];
       goto LABEL_38;
     case 4uLL:
       v30 = PKLocalizedFeatureString();
-      [v8 setTitle:v30];
+      [cellCopy setTitle:v30];
 
       v31 = PKPassKitUIBundle();
       v32 = v31;
@@ -988,10 +988,10 @@ LABEL_12:
       goto LABEL_22;
     case 5uLL:
       v35 = PKLocalizedFeatureString();
-      [v8 setTitle:v35];
+      [cellCopy setTitle:v35];
 
       v36 = PKLocalizedFeatureString();
-      [v8 setSubtitle:v36];
+      [cellCopy setSubtitle:v36];
 
       v28 = PKPassKitUIBundle();
       v24 = v28;
@@ -999,21 +999,21 @@ LABEL_12:
       goto LABEL_36;
     case 6uLL:
       v37 = PKLocalizedFeatureString();
-      [v8 setTitle:v37];
+      [cellCopy setTitle:v37];
 
       v31 = PKPassKitUIBundle();
       v32 = v31;
       v33 = @"SpendingIcon";
       goto LABEL_22;
     case 7uLL:
-      v60 = v12;
+      v60 = featureIdentifier;
       v61 = PKLocalizedFeatureString();
-      [v8 setTitle:v61];
+      [cellCopy setTitle:v61];
 
       if (v60 == 5)
       {
-        v78 = PKLocalizedString(&cfstr_TransactionsCo.isa, &cfstr_Lu.isa, [v9 historyCount]);
-        [v8 setSubtitle:v78];
+        v78 = PKLocalizedString(&cfstr_TransactionsCo.isa, &cfstr_Lu.isa, [itemCopy historyCount]);
+        [cellCopy setSubtitle:v78];
 
         v28 = PKPassKitUIBundle();
         v24 = v28;
@@ -1028,7 +1028,7 @@ LABEL_12:
         }
 
         v62 = PKLocalizedFeatureString();
-        [v8 setSubtitle:v62];
+        [cellCopy setSubtitle:v62];
 
         v28 = PKPassKitUIBundle();
         v24 = v28;
@@ -1039,7 +1039,7 @@ LABEL_36:
       v79 = [v28 URLForResource:v29 withExtension:@"pdf"];
       v80 = PKUIScreenScale();
       v81 = PKUIImageFromPDF(v79, 100.0, 100.0, v80);
-      [v8 setImage:v81 animated:0];
+      [cellCopy setImage:v81 animated:0];
 
 LABEL_37:
 LABEL_38:
@@ -1048,7 +1048,7 @@ LABEL_38:
     case 8uLL:
     case 0xAuLL:
       v53 = PKLocalizedFeatureString();
-      [v8 setTitle:v53];
+      [cellCopy setTitle:v53];
 
       v31 = PKPassKitUIBundle();
       v32 = v31;
@@ -1057,70 +1057,70 @@ LABEL_22:
       v54 = [v31 URLForResource:v33 withExtension:@"pdf"];
       v55 = PKUIScreenScale();
       v56 = PKUIImageFromPDF(v54, 100.0, 100.0, v55);
-      [v8 setImage:v56 animated:0];
+      [cellCopy setImage:v56 animated:0];
 
       goto LABEL_23;
     case 9uLL:
       v19 = PKLocalizedFeatureString();
-      [v8 setTitle:v19];
+      [cellCopy setTitle:v19];
 
       v20 = PKPassKitUIBundle();
       v21 = [v20 URLForResource:@"AppleCardIcon" withExtension:@"pdf"];
       v22 = PKUIScreenScale();
       v23 = PKUIImageFromPDF(v21, 100.0, 100.0, v22);
-      [v8 setImage:v23 animated:0];
+      [cellCopy setImage:v23 animated:0];
 
       v24 = PKLocalizedFeatureString();
-      [v8 setSubtitle:v24];
+      [cellCopy setSubtitle:v24];
       goto LABEL_37;
     case 0xBuLL:
       v27 = PKLocalizedFeatureString();
-      [v8 setTitle:v27];
+      [cellCopy setTitle:v27];
 
       v28 = PKPassKitUIBundle();
       v24 = v28;
       v29 = @"AdjustmentsIcon";
       goto LABEL_36;
     case 0xDuLL:
-      v16 = [v10 regions];
-      v17 = [v16 firstObject];
+      regions = [transactionGroup regions];
+      firstObject = [regions firstObject];
 
-      v18 = [v17 localizedName];
-      [v8 setTitle:v18];
+      localizedName = [firstObject localizedName];
+      [cellCopy setTitle:localizedName];
 
-      [(PKDashboardDetailHeaderItemPresenter *)self _configureCell:v8 withRegion:v17 isUpdate:v5];
+      [(PKDashboardDetailHeaderItemPresenter *)self _configureCell:cellCopy withRegion:firstObject isUpdate:updateCopy];
 LABEL_23:
       v13 = 1;
       goto LABEL_24;
     case 0xEuLL:
-      v38 = [v10 searchQuery];
-      v39 = [v38 tokens];
-      v40 = [v39 count];
+      searchQuery = [transactionGroup searchQuery];
+      tokens = [searchQuery tokens];
+      v40 = [tokens count];
 
       if (v40 > 2)
       {
         if (v40 == 3)
         {
           v184 = 0;
-          v90 = [v38 tokens];
-          v91 = [v90 objectAtIndex:0];
+          tokens2 = [searchQuery tokens];
+          v91 = [tokens2 objectAtIndex:0];
           PKSearchAutoCompletionTextAndImageFromSuggestion(&v184, 0, 1, v91, self->_contactResolver);
           v92 = v184;
 
           v183 = 0;
-          v93 = [v38 tokens];
-          v94 = [v93 objectAtIndex:1];
+          tokens3 = [searchQuery tokens];
+          v94 = [tokens3 objectAtIndex:1];
           PKSearchAutoCompletionTextAndImageFromSuggestion(&v183, 0, 1, v94, self->_contactResolver);
           v95 = v183;
 
           v182 = 0;
-          v96 = [v38 tokens];
-          v97 = [v96 objectAtIndex:2];
+          tokens4 = [searchQuery tokens];
+          v97 = [tokens4 objectAtIndex:2];
           PKSearchAutoCompletionTextAndImageFromSuggestion(&v182, 0, 1, v97, self->_contactResolver);
           v98 = v182;
 
           v99 = PKLocalizedString(&cfstr_SearchResultsT_0.isa, &stru_1F3BDAC30.isa, v92, v95, v98);
-          [v8 setTitle:v99];
+          [cellCopy setTitle:v99];
 
           v13 = 1;
           goto LABEL_86;
@@ -1129,31 +1129,31 @@ LABEL_23:
         if (v40 == 4)
         {
           v181 = 0;
-          v63 = [v38 tokens];
-          v64 = [v63 objectAtIndex:0];
+          tokens5 = [searchQuery tokens];
+          v64 = [tokens5 objectAtIndex:0];
           PKSearchAutoCompletionTextAndImageFromSuggestion(&v181, 0, 1, v64, self->_contactResolver);
           v65 = v181;
 
           v180 = 0;
-          v66 = [v38 tokens];
-          v67 = [v66 objectAtIndex:1];
+          tokens6 = [searchQuery tokens];
+          v67 = [tokens6 objectAtIndex:1];
           PKSearchAutoCompletionTextAndImageFromSuggestion(&v180, 0, 1, v67, self->_contactResolver);
           v68 = v180;
 
           v179 = 0;
-          v69 = [v38 tokens];
-          v70 = [v69 objectAtIndex:2];
+          tokens7 = [searchQuery tokens];
+          v70 = [tokens7 objectAtIndex:2];
           PKSearchAutoCompletionTextAndImageFromSuggestion(&v179, 0, 1, v70, self->_contactResolver);
           v71 = v179;
 
           v178 = 0;
-          v72 = [v38 tokens];
-          v73 = [v72 objectAtIndex:3];
+          tokens8 = [searchQuery tokens];
+          v73 = [tokens8 objectAtIndex:3];
           PKSearchAutoCompletionTextAndImageFromSuggestion(&v178, 0, 1, v73, self->_contactResolver);
           v74 = v178;
 
           v75 = PKLocalizedString(&cfstr_SearchResultsF.isa, &stru_1F3BDB530.isa, v65, v68, v71, v74);
-          [v8 setTitle:v75];
+          [cellCopy setTitle:v75];
 
           v13 = 1;
           goto LABEL_86;
@@ -1163,7 +1163,7 @@ LABEL_40:
         if (v40 >= 5)
         {
           v82 = PKLocalizedString(&cfstr_SearchResults.isa);
-          [v8 setTitle:v82];
+          [cellCopy setTitle:v82];
 
           v13 = 1;
           goto LABEL_86;
@@ -1177,20 +1177,20 @@ LABEL_40:
         if (v40 == 2)
         {
           v186 = 0;
-          v41 = [v38 tokens];
-          v42 = [v41 objectAtIndex:0];
+          tokens9 = [searchQuery tokens];
+          v42 = [tokens9 objectAtIndex:0];
           v13 = 1;
           PKSearchAutoCompletionTextAndImageFromSuggestion(&v186, 0, 1, v42, self->_contactResolver);
           v43 = v186;
 
           v185 = 0;
-          v44 = [v38 tokens];
-          v45 = [v44 objectAtIndex:1];
+          tokens10 = [searchQuery tokens];
+          v45 = [tokens10 objectAtIndex:1];
           PKSearchAutoCompletionTextAndImageFromSuggestion(&v185, 0, 1, v45, self->_contactResolver);
           v46 = v185;
 
           v47 = PKLocalizedString(&cfstr_SearchResultsT.isa, &stru_1F3BD6370.isa, v43, v46);
-          [v8 setTitle:v47];
+          [cellCopy setTitle:v47];
 
           goto LABEL_86;
         }
@@ -1198,20 +1198,20 @@ LABEL_40:
         goto LABEL_40;
       }
 
-      v83 = [v38 locationTokens];
-      v84 = [v83 count];
+      locationTokens = [searchQuery locationTokens];
+      v84 = [locationTokens count];
 
       if (v84)
       {
-        v175 = [v38 locationTokens];
-        v85 = [v175 lastObject];
-        v86 = [v85 group];
-        [v86 regions];
-        v88 = v87 = v38;
-        v89 = [v88 firstObject];
+        locationTokens2 = [searchQuery locationTokens];
+        lastObject = [locationTokens2 lastObject];
+        group = [lastObject group];
+        [group regions];
+        v88 = v87 = searchQuery;
+        firstObject2 = [v88 firstObject];
 
-        v38 = v87;
-        [(PKDashboardDetailHeaderItemPresenter *)self _configureCell:v8 withRegion:v89 isUpdate:v5];
+        searchQuery = v87;
+        [(PKDashboardDetailHeaderItemPresenter *)self _configureCell:cellCopy withRegion:firstObject2 isUpdate:updateCopy];
 LABEL_47:
 
 LABEL_48:
@@ -1221,36 +1221,36 @@ LABEL_75:
         goto LABEL_76;
       }
 
-      v100 = [v38 categoryToken];
+      categoryToken = [searchQuery categoryToken];
 
-      if (v100)
+      if (categoryToken)
       {
-        v101 = [v38 categoryToken];
-        v102 = [v101 group];
-        [v102 merchantCategory];
+        categoryToken2 = [searchQuery categoryToken];
+        group2 = [categoryToken2 group];
+        [group2 merchantCategory];
 
         PKUIScreenScale();
-        v89 = PKMapsIconForMerchantCategory();
-        [v8 setImage:v89 animated:0];
+        firstObject2 = PKMapsIconForMerchantCategory();
+        [cellCopy setImage:firstObject2 animated:0];
         goto LABEL_47;
       }
 
-      v104 = [v38 transactionTypes];
-      v105 = [v104 count];
+      transactionTypes = [searchQuery transactionTypes];
+      v105 = [transactionTypes count];
 
       if (v105)
       {
-        v106 = [v38 transactionTypes];
-        v107 = [v106 firstObject];
-        v108 = [v107 integerValue];
+        transactionTypes2 = [searchQuery transactionTypes];
+        firstObject3 = [transactionTypes2 firstObject];
+        integerValue = [firstObject3 integerValue];
 
         v103 = 1;
-        if (v108 > 6)
+        if (integerValue > 6)
         {
-          if (v108 == 7)
+          if (integerValue == 7)
           {
             v140 = PKLocalizedFeatureString();
-            [v8 setTitle:v140];
+            [cellCopy setTitle:v140];
 
             v138 = PKPassKitUIBundle();
             v127 = v138;
@@ -1259,25 +1259,25 @@ LABEL_75:
 
           else
           {
-            if (v108 != 11)
+            if (integerValue != 11)
             {
               v13 = 1;
-              if (v108 != 10)
+              if (integerValue != 10)
               {
                 goto LABEL_76;
               }
 
               v122 = PKLocalizedFeatureString();
-              [v8 setTitle:v122];
+              [cellCopy setTitle:v122];
 
               v123 = PKPassKitUIBundle();
               v124 = [v123 URLForResource:@"AppleCardIcon" withExtension:@"pdf"];
               v125 = PKUIScreenScale();
               v126 = PKUIImageFromPDF(v124, 100.0, 100.0, v125);
-              [v8 setImage:v126 animated:0];
+              [cellCopy setImage:v126 animated:0];
 
               v127 = PKLocalizedFeatureString();
-              [v8 setSubtitle:v127];
+              [cellCopy setSubtitle:v127];
 LABEL_70:
 
               v13 = 1;
@@ -1285,10 +1285,10 @@ LABEL_70:
             }
 
             v142 = PKLocalizedFeatureString();
-            [v8 setTitle:v142];
+            [cellCopy setTitle:v142];
 
             v143 = PKLocalizedFeatureString();
-            [v8 setSubtitle:v143];
+            [cellCopy setSubtitle:v143];
 
             v138 = PKPassKitUIBundle();
             v127 = v138;
@@ -1296,10 +1296,10 @@ LABEL_70:
           }
         }
 
-        else if (v108 == 1)
+        else if (integerValue == 1)
         {
           v137 = PKLocalizedFeatureString();
-          [v8 setTitle:v137];
+          [cellCopy setTitle:v137];
 
           v138 = PKPassKitUIBundle();
           v127 = v138;
@@ -1308,7 +1308,7 @@ LABEL_70:
 
         else
         {
-          if (v108 == 5)
+          if (integerValue == 5)
           {
             v109 = @"TRANSACTION_TYPE_WITHDRAWAL_GENERIC";
           }
@@ -1316,7 +1316,7 @@ LABEL_70:
           else
           {
             v13 = 1;
-            if (v108 != 6)
+            if (integerValue != 6)
             {
               goto LABEL_76;
             }
@@ -1325,7 +1325,7 @@ LABEL_70:
           }
 
           v141 = PKLocalizedPaymentString(&v109->isa);
-          [v8 setTitle:v141];
+          [cellCopy setTitle:v141];
 
           v138 = PKPassKitUIBundle();
           v127 = v138;
@@ -1335,21 +1335,21 @@ LABEL_70:
         v144 = [v138 URLForResource:v139 withExtension:@"pdf"];
         v145 = PKUIScreenScale();
         v146 = PKUIImageFromPDF(v144, 100.0, 100.0, v145);
-        [v8 setImage:v146 animated:0];
+        [cellCopy setImage:v146 animated:0];
 
         goto LABEL_70;
       }
 
-      v110 = [v38 transactionSources];
-      v111 = [v110 count];
+      transactionSources = [searchQuery transactionSources];
+      v111 = [transactionSources count];
 
       if (v111)
       {
         v112 = MEMORY[0x1E69DCAB8];
         v113 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:100.0];
         v114 = [v112 _systemImageNamed:@"applecard.fill" withConfiguration:v113];
-        v115 = [MEMORY[0x1E69DC888] whiteColor];
-        v116 = [v114 imageWithTintColor:v115];
+        whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+        v116 = [v114 imageWithTintColor:whiteColor];
 
         v117 = PKPassKitUIBundle();
         v118 = [v117 URLForResource:@"AppleCardSquareBackground" withExtension:@"pdf"];
@@ -1357,64 +1357,64 @@ LABEL_70:
         v120 = PKUIImageFromPDF(v118, 100.0, 100.0, v119);
         v121 = ApplySymbolToBackgroundImage(v116, v120);
 
-        [v8 setImage:v121 animated:0];
+        [cellCopy setImage:v121 animated:0];
 LABEL_95:
 
         goto LABEL_48;
       }
 
-      v128 = [v38 dateToken];
+      dateToken = [searchQuery dateToken];
 
-      if (v128)
+      if (dateToken)
       {
         v129 = MEMORY[0x1E69DCAB8];
         v130 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:100.0];
         v131 = [v129 systemImageNamed:@"calendar" withConfiguration:v130];
-        v132 = [MEMORY[0x1E69DC888] whiteColor];
-        v116 = [v131 imageWithTintColor:v132];
+        whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+        v116 = [v131 imageWithTintColor:whiteColor2];
 
-        if ([v9 featureIdentifier] == 2)
+        if ([itemCopy featureIdentifier] == 2)
         {
-          v133 = PKPassKitUIBundle();
-          v134 = [v133 URLForResource:@"AppleCardSquareBackground" withExtension:@"pdf"];
+          blackColor = PKPassKitUIBundle();
+          v134 = [blackColor URLForResource:@"AppleCardSquareBackground" withExtension:@"pdf"];
           v135 = PKUIScreenScale();
           v136 = PKUIImageFromPDF(v134, 100.0, 100.0, v135);
         }
 
         else
         {
-          v133 = [MEMORY[0x1E69DC888] blackColor];
-          v136 = ImageOfSizeAndColor(v133, 100.0, 100.0);
+          blackColor = [MEMORY[0x1E69DC888] blackColor];
+          v136 = ImageOfSizeAndColor(blackColor, 100.0, 100.0);
         }
 
         v172 = ApplySymbolToBackgroundImage(v116, v136);
-        [v8 setImage:v172 animated:0];
+        [cellCopy setImage:v172 animated:0];
 
         goto LABEL_95;
       }
 
-      v147 = [v38 accountUserToken];
+      accountUserToken = [searchQuery accountUserToken];
 
-      if (!v147)
+      if (!accountUserToken)
       {
 LABEL_74:
         v103 = 1;
         goto LABEL_75;
       }
 
-      v176 = v38;
-      v148 = [v38 accountUserToken];
-      v149 = [v148 group];
+      v176 = searchQuery;
+      accountUserToken2 = [searchQuery accountUserToken];
+      group3 = [accountUserToken2 group];
 
-      v150 = [v149 familyMember];
-      v151 = [v149 accountUser];
+      familyMember = [group3 familyMember];
+      accountUser = [group3 accountUser];
       avatarManager = self->_avatarManager;
-      v153 = [v151 altDSID];
-      v154 = [(PKContactAvatarManager *)avatarManager cachedAvatarForAltDSID:v153];
+      altDSID = [accountUser altDSID];
+      v154 = [(PKContactAvatarManager *)avatarManager cachedAvatarForAltDSID:altDSID];
 
       if (v154)
       {
-        [v8 setImage:v154 animated:0];
+        [cellCopy setImage:v154 animated:0];
       }
 
       else
@@ -1424,24 +1424,24 @@ LABEL_74:
         v187[1] = 3221225472;
         v187[2] = __86__PKDashboardDetailHeaderItemPresenter__configureCategoryHeaderCell_forItem_isUpdate___block_invoke_3;
         v187[3] = &unk_1E8010A38;
-        v188 = v8;
-        [(PKContactAvatarManager *)v173 avatarForFamilyMember:v150 accountUser:v151 invitation:0 completion:v187];
+        v188 = cellCopy;
+        [(PKContactAvatarManager *)v173 avatarForFamilyMember:familyMember accountUser:accountUser invitation:0 completion:v187];
       }
 
-      v174 = [v149 userDisplayName];
-      [v8 setTitle:v174];
+      userDisplayName = [group3 userDisplayName];
+      [cellCopy setTitle:userDisplayName];
 
       v103 = 0;
       v13 = 0;
-      v38 = v176;
+      searchQuery = v176;
 LABEL_76:
-      v155 = [v9 title];
-      v156 = [v155 length];
+      title = [itemCopy title];
+      v156 = [title length];
 
       if (v156)
       {
-        v157 = [v9 title];
-        [v8 setTitle:v157];
+        title2 = [itemCopy title];
+        [cellCopy setTitle:title2];
 
         if ((v103 & 1) == 0)
         {
@@ -1451,23 +1451,23 @@ LABEL_76:
         goto LABEL_86;
       }
 
-      v158 = [v38 tokens];
-      v159 = [v158 firstObject];
+      tokens11 = [searchQuery tokens];
+      firstObject4 = [tokens11 firstObject];
 
-      if (v159)
+      if (firstObject4)
       {
         v177 = 0;
-        PKSearchAutoCompletionTextAndImageFromSuggestion(&v177, 0, 0, v159, self->_contactResolver);
-        v160 = v177;
-        [v8 setTitle:v160];
+        PKSearchAutoCompletionTextAndImageFromSuggestion(&v177, 0, 0, firstObject4, self->_contactResolver);
+        text = v177;
+        [cellCopy setTitle:text];
       }
 
       else
       {
-        v160 = [v38 text];
-        if ([v160 length])
+        text = [searchQuery text];
+        if ([text length])
         {
-          PKLocalizedString(&cfstr_SearchTextResu.isa, &stru_1F3BD5BF0.isa, v160);
+          PKLocalizedString(&cfstr_SearchTextResu.isa, &stru_1F3BD5BF0.isa, text);
         }
 
         else
@@ -1475,7 +1475,7 @@ LABEL_76:
           PKLocalizedString(&cfstr_SearchResults.isa);
         }
         v161 = ;
-        [v8 setTitle:v161];
+        [cellCopy setTitle:v161];
       }
 
       if (v103)
@@ -1484,35 +1484,35 @@ LABEL_86:
         v162 = MEMORY[0x1E69DCAB8];
         v163 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:100.0];
         v164 = [v162 systemImageNamed:@"magnifyingglass" withConfiguration:v163];
-        v165 = [MEMORY[0x1E69DC888] whiteColor];
-        v166 = [v164 imageWithTintColor:v165];
+        whiteColor3 = [MEMORY[0x1E69DC888] whiteColor];
+        v166 = [v164 imageWithTintColor:whiteColor3];
 
-        if ([v9 featureIdentifier] == 2)
+        if ([itemCopy featureIdentifier] == 2)
         {
-          v167 = PKPassKitUIBundle();
-          v168 = [v167 URLForResource:@"AppleCardSquareBackground" withExtension:@"pdf"];
+          blackColor2 = PKPassKitUIBundle();
+          v168 = [blackColor2 URLForResource:@"AppleCardSquareBackground" withExtension:@"pdf"];
           v169 = PKUIScreenScale();
           v170 = PKUIImageFromPDF(v168, 100.0, 100.0, v169);
         }
 
         else
         {
-          v167 = [MEMORY[0x1E69DC888] blackColor];
-          v170 = ImageOfSizeAndColor(v167, 100.0, 100.0);
+          blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+          v170 = ImageOfSizeAndColor(blackColor2, 100.0, 100.0);
         }
 
         v171 = ApplySymbolToBackgroundImage(v166, v170);
-        [v8 setImage:v171 animated:0];
+        [cellCopy setImage:v171 animated:0];
       }
 
 LABEL_90:
 
 LABEL_91:
-      v57 = [v10 transactionCount];
-      if (v57)
+      transactionCount = [transactionGroup transactionCount];
+      if (transactionCount)
       {
 LABEL_25:
-        v58 = PKLocalizedString(&cfstr_TransactionsCo.isa, &cfstr_Lu.isa, v57);
+        v58 = PKLocalizedString(&cfstr_TransactionsCo.isa, &cfstr_Lu.isa, transactionCount);
       }
 
       else
@@ -1521,22 +1521,22 @@ LABEL_25:
       }
 
       v59 = v58;
-      [v8 setSubtitle:v58];
+      [cellCopy setSubtitle:v58];
 
 LABEL_39:
-      [v8 setStrokeImage:v13];
+      [cellCopy setStrokeImage:v13];
 
       return;
     case 0x10uLL:
-      v48 = [v10 familyMember];
-      v49 = [v10 accountUser];
+      familyMember2 = [transactionGroup familyMember];
+      accountUser2 = [transactionGroup accountUser];
       v50 = self->_avatarManager;
-      v51 = [v49 altDSID];
-      v52 = [(PKContactAvatarManager *)v50 cachedAvatarForAltDSID:v51];
+      altDSID2 = [accountUser2 altDSID];
+      v52 = [(PKContactAvatarManager *)v50 cachedAvatarForAltDSID:altDSID2];
 
       if (v52)
       {
-        [v8 setImage:v52 animated:0];
+        [cellCopy setImage:v52 animated:0];
       }
 
       else
@@ -1546,16 +1546,16 @@ LABEL_39:
         v189[1] = 3221225472;
         v189[2] = __86__PKDashboardDetailHeaderItemPresenter__configureCategoryHeaderCell_forItem_isUpdate___block_invoke;
         v189[3] = &unk_1E8010A38;
-        v190 = v8;
-        [(PKContactAvatarManager *)v76 avatarForFamilyMember:v48 accountUser:v49 invitation:0 completion:v189];
+        v190 = cellCopy;
+        [(PKContactAvatarManager *)v76 avatarForFamilyMember:familyMember2 accountUser:accountUser2 invitation:0 completion:v189];
       }
 
-      v77 = [v10 userDisplayName];
-      [v8 setTitle:v77];
+      userDisplayName2 = [transactionGroup userDisplayName];
+      [cellCopy setTitle:userDisplayName2];
 
       v13 = 0;
 LABEL_24:
-      v57 = [v10 transactionCount];
+      transactionCount = [transactionGroup transactionCount];
       goto LABEL_25;
     default:
       goto LABEL_39;
@@ -1588,21 +1588,21 @@ void __86__PKDashboardDetailHeaderItemPresenter__configureCategoryHeaderCell_for
   dispatch_async(MEMORY[0x1E69E96A0], v5);
 }
 
-- (void)_downloadLogoForItem:(id)a3 withCompletionHandler:(id)a4
+- (void)_downloadLogoForItem:(id)item withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  handlerCopy = handler;
   if (self->_hasNetworkAccess)
   {
     fileDownloader = self->_fileDownloader;
-    v9 = [v6 merchant];
-    v10 = [v9 logoImageURL];
+    merchant = [itemCopy merchant];
+    logoImageURL = [merchant logoImageURL];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __83__PKDashboardDetailHeaderItemPresenter__downloadLogoForItem_withCompletionHandler___block_invoke;
     v17[3] = &unk_1E8013E70;
-    v18 = v7;
-    [(PKObjectDownloader *)fileDownloader downloadFromUrl:v10 completionHandler:v17];
+    v18 = handlerCopy;
+    [(PKObjectDownloader *)fileDownloader downloadFromUrl:logoImageURL completionHandler:v17];
   }
 
   else
@@ -1610,38 +1610,38 @@ void __86__PKDashboardDetailHeaderItemPresenter__configureCategoryHeaderCell_for
     paymentService = self->_paymentService;
     if (!paymentService)
     {
-      v12 = [MEMORY[0x1E69B8DB8] paymentService];
+      paymentService = [MEMORY[0x1E69B8DB8] paymentService];
       v13 = self->_paymentService;
-      self->_paymentService = v12;
+      self->_paymentService = paymentService;
 
       paymentService = self->_paymentService;
     }
 
-    v14 = [v6 transaction];
-    v15 = [v14 merchant];
-    v16 = [v15 logoImageURL];
-    [(PKPaymentService *)paymentService logoImageDataForURL:v16 completion:v7];
+    transaction = [itemCopy transaction];
+    merchant2 = [transaction merchant];
+    logoImageURL2 = [merchant2 logoImageURL];
+    [(PKPaymentService *)paymentService logoImageDataForURL:logoImageURL2 completion:handlerCopy];
   }
 }
 
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view
 {
-  v13 = a3;
-  v7 = a4;
-  if (v13 && v7)
+  traitCopy = trait;
+  toTraitCopy = toTrait;
+  if (traitCopy && toTraitCopy)
   {
-    v8 = [v13 preferredContentSizeCategory];
-    v9 = [v7 preferredContentSizeCategory];
-    if (UIContentSizeCategoryCompareToCategory(v8, v9))
+    preferredContentSizeCategory = [traitCopy preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [toTraitCopy preferredContentSizeCategory];
+    if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2))
     {
     }
 
     else
     {
-      v10 = [v13 legibilityWeight];
-      v11 = [v7 legibilityWeight];
+      legibilityWeight = [traitCopy legibilityWeight];
+      legibilityWeight2 = [toTraitCopy legibilityWeight];
 
-      if (v10 == v11)
+      if (legibilityWeight == legibilityWeight2)
       {
         goto LABEL_7;
       }

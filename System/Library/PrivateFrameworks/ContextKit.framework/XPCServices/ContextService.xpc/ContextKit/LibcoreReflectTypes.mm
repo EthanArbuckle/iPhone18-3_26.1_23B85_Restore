@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = new_JavaUtilHashMap_initWithInt_(9);
     JreStrongAssignAndConsume(&qword_100555090, v2);

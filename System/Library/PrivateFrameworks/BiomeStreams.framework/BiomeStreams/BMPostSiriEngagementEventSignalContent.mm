@@ -1,27 +1,27 @@
 @interface BMPostSiriEngagementEventSignalContent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMPostSiriEngagementEventSignalContent)initWithKey:(id)a3 value:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMPostSiriEngagementEventSignalContent)initWithKey:(id)key value:(id)value;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPostSiriEngagementEventSignalContent
 
-- (BMPostSiriEngagementEventSignalContent)initWithKey:(id)a3 value:(id)a4
+- (BMPostSiriEngagementEventSignalContent)initWithKey:(id)key value:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = BMPostSiriEngagementEventSignalContent;
   v9 = [(BMEventBase *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_key, a3);
-    objc_storeStrong(&v10->_value, a4);
+    objc_storeStrong(&v9->_key, key);
+    objc_storeStrong(&v10->_value, value);
   }
 
   return v10;
@@ -31,15 +31,15 @@
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = [(BMPostSiriEngagementEventSignalContent *)self key];
-  v5 = [(BMPostSiriEngagementEventSignalContent *)self value];
-  v6 = [v3 initWithFormat:@"BMPostSiriEngagementEventSignalContent with key: %@, value: %@", v4, v5];
+  value = [(BMPostSiriEngagementEventSignalContent *)self value];
+  v6 = [v3 initWithFormat:@"BMPostSiriEngagementEventSignalContent with key: %@, value: %@", v4, value];
 
   return v6;
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v22.receiver = self;
   v22.super_class = BMPostSiriEngagementEventSignalContent;
   v5 = [(BMEventBase *)&v22 init];
@@ -48,12 +48,12 @@
     goto LABEL_27;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -64,18 +64,18 @@
       while (1)
       {
         v23 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v23 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v23 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v23 & 0x7F) << v7;
@@ -92,9 +92,9 @@
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -125,13 +125,13 @@ LABEL_16:
       *(&v5->super.super.isa + v17) = v16;
 
 LABEL_24:
-      v19 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v19 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_26:
     v20 = 0;
@@ -146,26 +146,26 @@ LABEL_27:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_value)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -173,8 +173,8 @@ LABEL_27:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v4 = [[BMPostSiriEngagementEventSignalContent alloc] initByReadFrom:v7];
   }
@@ -186,18 +186,18 @@ LABEL_27:
 {
   v3 = objc_opt_new();
   [(BMPostSiriEngagementEventSignalContent *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(BMPostSiriEngagementEventSignalContent *)self key];
     v7 = [v5 key];
     if (v6 == v7)
@@ -212,18 +212,18 @@ LABEL_27:
       v10 = [v8 isEqual:v9];
     }
 
-    v12 = [(BMPostSiriEngagementEventSignalContent *)self value];
-    v13 = [v5 value];
-    if (v12 == v13)
+    value = [(BMPostSiriEngagementEventSignalContent *)self value];
+    value2 = [v5 value];
+    if (value == value2)
     {
       v16 = 1;
     }
 
     else
     {
-      v14 = [(BMPostSiriEngagementEventSignalContent *)self value];
-      v15 = [v5 value];
-      v16 = [v14 isEqual:v15];
+      value3 = [(BMPostSiriEngagementEventSignalContent *)self value];
+      value4 = [v5 value];
+      v16 = [value3 isEqual:value4];
     }
 
     v11 = v10 & v16;

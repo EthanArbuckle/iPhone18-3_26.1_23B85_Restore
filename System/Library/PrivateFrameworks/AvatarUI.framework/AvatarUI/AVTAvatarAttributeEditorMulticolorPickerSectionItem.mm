@@ -1,42 +1,42 @@
 @interface AVTAvatarAttributeEditorMulticolorPickerSectionItem
-- (AVTAvatarAttributeEditorMulticolorPickerSectionItem)initWithIdentifier:(id)a3 localizedName:(id)a4 isPlaceholder:(BOOL)a5 isRemovable:(BOOL)a6 colorItem:(id)a7 variationStore:(id)a8 avatarUpdater:(id)a9 editorStateUpdater:(id)a10 removalUpdater:(id)a11;
+- (AVTAvatarAttributeEditorMulticolorPickerSectionItem)initWithIdentifier:(id)identifier localizedName:(id)name isPlaceholder:(BOOL)placeholder isRemovable:(BOOL)removable colorItem:(id)item variationStore:(id)store avatarUpdater:(id)updater editorStateUpdater:(id)self0 removalUpdater:(id)self1;
 @end
 
 @implementation AVTAvatarAttributeEditorMulticolorPickerSectionItem
 
-- (AVTAvatarAttributeEditorMulticolorPickerSectionItem)initWithIdentifier:(id)a3 localizedName:(id)a4 isPlaceholder:(BOOL)a5 isRemovable:(BOOL)a6 colorItem:(id)a7 variationStore:(id)a8 avatarUpdater:(id)a9 editorStateUpdater:(id)a10 removalUpdater:(id)a11
+- (AVTAvatarAttributeEditorMulticolorPickerSectionItem)initWithIdentifier:(id)identifier localizedName:(id)name isPlaceholder:(BOOL)placeholder isRemovable:(BOOL)removable colorItem:(id)item variationStore:(id)store avatarUpdater:(id)updater editorStateUpdater:(id)self0 removalUpdater:(id)self1
 {
-  v35 = a3;
-  v17 = a4;
-  v34 = a7;
-  v33 = a8;
-  v18 = a9;
-  v19 = a10;
-  v20 = a11;
+  identifierCopy = identifier;
+  nameCopy = name;
+  itemCopy = item;
+  storeCopy = store;
+  updaterCopy = updater;
+  stateUpdaterCopy = stateUpdater;
+  removalUpdaterCopy = removalUpdater;
   v36.receiver = self;
   v36.super_class = AVTAvatarAttributeEditorMulticolorPickerSectionItem;
   v21 = [(AVTAvatarAttributeEditorMulticolorPickerSectionItem *)&v36 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_identifier, a3);
-    v23 = [v17 copy];
+    objc_storeStrong(&v21->_identifier, identifier);
+    v23 = [nameCopy copy];
     localizedName = v22->_localizedName;
     v22->_localizedName = v23;
 
-    v22->_isPlaceholder = a5;
-    v22->_isRemovable = a6;
-    objc_storeStrong(&v22->_colorItem, a7);
-    objc_storeStrong(&v22->_variationStore, a8);
-    v25 = [v18 copy];
+    v22->_isPlaceholder = placeholder;
+    v22->_isRemovable = removable;
+    objc_storeStrong(&v22->_colorItem, item);
+    objc_storeStrong(&v22->_variationStore, store);
+    v25 = [updaterCopy copy];
     avatarUpdater = v22->_avatarUpdater;
     v22->_avatarUpdater = v25;
 
-    v27 = [v19 copy];
+    v27 = [stateUpdaterCopy copy];
     editorStateUpdater = v22->_editorStateUpdater;
     v22->_editorStateUpdater = v27;
 
-    v29 = [v20 copy];
+    v29 = [removalUpdaterCopy copy];
     removalUpdater = v22->_removalUpdater;
     v22->_removalUpdater = v29;
   }

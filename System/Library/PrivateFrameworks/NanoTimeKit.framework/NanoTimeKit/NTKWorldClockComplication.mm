@@ -1,48 +1,48 @@
 @interface NTKWorldClockComplication
 + (id)_allCities;
-+ (id)_allComplicationConfigurationsWithType:(unint64_t)a3;
-+ (int64_t)compareComplication:(id)a3 toComplication:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)snapshotContext:(id)a3 isStaleRelativeToContext:(id)a4;
-- (NTKWorldClockComplication)initWithCoder:(id)a3;
++ (id)_allComplicationConfigurationsWithType:(unint64_t)type;
++ (int64_t)compareComplication:(id)complication toComplication:(id)toComplication;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)snapshotContext:(id)context isStaleRelativeToContext:(id)toContext;
+- (NTKWorldClockComplication)initWithCoder:(id)coder;
 - (id)_generateUniqueIdentifier;
-- (id)_initWithComplicationType:(unint64_t)a3 JSONDictionary:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)customDailySnapshotKeyForFamily:(int64_t)a3 device:(id)a4;
+- (id)_initWithComplicationType:(unint64_t)type JSONDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)customDailySnapshotKeyForFamily:(int64_t)family device:(id)device;
 - (id)description;
 - (id)localizedDetailText;
-- (void)_addKeysToJSONDictionary:(id)a3;
+- (void)_addKeysToJSONDictionary:(id)dictionary;
 - (void)_handleAddedFromFaceSharing;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKWorldClockComplication
 
-+ (int64_t)compareComplication:(id)a3 toComplication:(id)a4
++ (int64_t)compareComplication:(id)complication toComplication:(id)toComplication
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _allCities];
+  complicationCopy = complication;
+  toComplicationCopy = toComplication;
+  _allCities = [self _allCities];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __64__NTKWorldClockComplication_compareComplication_toComplication___block_invoke;
   aBlock[3] = &unk_278787550;
-  v19 = v8;
-  v9 = v8;
+  v19 = _allCities;
+  v9 = _allCities;
   v10 = _Block_copy(aBlock);
-  v11 = v10[2](v10, v6);
-  v12 = v10[2](v10, v7);
+  v11 = v10[2](v10, complicationCopy);
+  v12 = v10[2](v10, toComplicationCopy);
   if (v11 == v12)
   {
-    v13 = [v6 complicationType];
-    v14 = [v7 complicationType];
+    complicationType = [complicationCopy complicationType];
+    complicationType2 = [toComplicationCopy complicationType];
     v15 = -1;
-    if (v13 >= v14)
+    if (complicationType >= complicationType2)
     {
       v15 = 1;
     }
 
-    if (v13 == v14)
+    if (complicationType == complicationType2)
     {
       v16 = 0;
     }
@@ -155,26 +155,26 @@ uint64_t __64__NTKWorldClockComplication_compareComplication_toComplication___bl
 + (id)_allCities
 {
   v2 = +[NTKWorldClockManager sharedManager];
-  v3 = [v2 cities];
-  if (!v3 || (v4 = v3, v5 = [v2 checkIfCitiesModified], v4, v5))
+  cities = [v2 cities];
+  if (!cities || (v4 = cities, v5 = [v2 checkIfCitiesModified], v4, v5))
   {
     [v2 loadCities];
   }
 
-  v6 = [v2 cities];
+  cities2 = [v2 cities];
 
-  return v6;
+  return cities2;
 }
 
-+ (id)_allComplicationConfigurationsWithType:(unint64_t)a3
++ (id)_allComplicationConfigurationsWithType:(unint64_t)type
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = [a1 _allCities];
+  obj = [self _allCities];
   v6 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -190,13 +190,13 @@ uint64_t __64__NTKWorldClockComplication_compareComplication_toComplication___bl
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [[a1 alloc] initWithComplicationType:a3];
+        v11 = [[self alloc] initWithComplicationType:type];
         objc_storeStrong((v11 + 32), v10);
-        v12 = [v11 _generateUniqueIdentifier];
+        _generateUniqueIdentifier = [v11 _generateUniqueIdentifier];
         v13 = *(v11 + 8);
-        *(v11 + 8) = v12;
+        *(v11 + 8) = _generateUniqueIdentifier;
 
-        [v5 addObject:v11];
+        [array addObject:v11];
       }
 
       v7 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -205,19 +205,19 @@ uint64_t __64__NTKWorldClockComplication_compareComplication_toComplication___bl
     while (v7);
   }
 
-  return v5;
+  return array;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v8 = 0;
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NTKWorldClockComplication *)self city];
-    v6 = [v4 city];
-    v7 = [v5 isEqual:v6];
+    city = [(NTKWorldClockComplication *)self city];
+    city2 = [equalCopy city];
+    v7 = [city isEqual:city2];
 
     if (v7)
     {
@@ -232,29 +232,29 @@ uint64_t __64__NTKWorldClockComplication_compareComplication_toComplication___bl
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NTKComplication complicationType](self, "complicationType")}];
-  v5 = [v4 stringValue];
-  v6 = [(WorldClockCity *)self->_city alCityId];
-  v7 = [v3 stringWithFormat:@"%@-%@", v5, v6];
+  stringValue = [v4 stringValue];
+  alCityId = [(WorldClockCity *)self->_city alCityId];
+  v7 = [v3 stringWithFormat:@"%@-%@", stringValue, alCityId];
 
   return v7;
 }
 
 - (id)localizedDetailText
 {
-  v3 = [(NTKWorldClockComplication *)self city];
-  v4 = [v3 name];
+  city = [(NTKWorldClockComplication *)self city];
+  name = [city name];
 
-  if (v4)
+  if (name)
   {
-    v5 = [MEMORY[0x277CBBAE8] currentDevice];
-    if ([v5 supportsPDRCapability:2031260689])
+    currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+    if ([currentDevice supportsPDRCapability:2031260689])
     {
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v4];
+      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", name];
     }
 
     else
     {
-      v6 = v4;
+      v6 = name;
     }
 
     v7 = v6;
@@ -274,28 +274,28 @@ uint64_t __64__NTKWorldClockComplication_compareComplication_toComplication___bl
   v8.receiver = self;
   v8.super_class = NTKWorldClockComplication;
   v4 = [(NTKComplication *)&v8 description];
-  v5 = [(WorldClockCity *)self->_city alCityId];
-  v6 = [v3 stringWithFormat:@"%@ (%d)", v4, objc_msgSend(v5, "intValue")];
+  alCityId = [(WorldClockCity *)self->_city alCityId];
+  v6 = [v3 stringWithFormat:@"%@ (%d)", v4, objc_msgSend(alCityId, "intValue")];
 
   return v6;
 }
 
-- (id)customDailySnapshotKeyForFamily:(int64_t)a3 device:(id)a4
+- (id)customDailySnapshotKeyForFamily:(int64_t)family device:(id)device
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(WorldClockCity *)self->_city alCityId:a3];
+  v5 = [(WorldClockCity *)self->_city alCityId:family];
   v6 = [v4 stringWithFormat:@"%d", objc_msgSend(v5, "intValue")];
 
   return v6;
 }
 
-- (BOOL)snapshotContext:(id)a3 isStaleRelativeToContext:(id)a4
+- (BOOL)snapshotContext:(id)context isStaleRelativeToContext:(id)toContext
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 calendarDateMatchesContext:v6] && objc_msgSend(v5, "timeZoneMatchesContext:", v6))
+  contextCopy = context;
+  toContextCopy = toContext;
+  if ([contextCopy calendarDateMatchesContext:toContextCopy] && objc_msgSend(contextCopy, "timeZoneMatchesContext:", toContextCopy))
   {
-    v7 = [v5 localeMatchesContext:v6] ^ 1;
+    v7 = [contextCopy localeMatchesContext:toContextCopy] ^ 1;
   }
 
   else
@@ -306,24 +306,24 @@ uint64_t __64__NTKWorldClockComplication_compareComplication_toComplication___bl
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NTKWorldClockComplication;
-  v4 = [(NTKComplication *)&v6 copyWithZone:a3];
+  v4 = [(NTKComplication *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 4, self->_city);
   return v4;
 }
 
-- (NTKWorldClockComplication)initWithCoder:(id)a3
+- (NTKWorldClockComplication)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = NTKWorldClockComplication;
-  v5 = [(NTKComplication *)&v12 initWithCoder:v4];
+  v5 = [(NTKComplication *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeIntForKey:@"WorldClockComplicationCityKey"];
+    v6 = [coderCopy decodeIntForKey:@"WorldClockComplicationCityKey"];
     v7 = [objc_alloc(MEMORY[0x277D29750]) initWithALCityIdentifier:v6];
     city = v5->_city;
     v5->_city = v7;
@@ -333,43 +333,43 @@ uint64_t __64__NTKWorldClockComplication_compareComplication_toComplication___bl
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CCA2A8] format:{@"%@ cannot have nil city", objc_opt_class()}];
     }
 
-    v9 = [(NTKWorldClockComplication *)v5 _generateUniqueIdentifier];
+    _generateUniqueIdentifier = [(NTKWorldClockComplication *)v5 _generateUniqueIdentifier];
     uniqueIdentifier = v5->super._uniqueIdentifier;
-    v5->super._uniqueIdentifier = v9;
+    v5->super._uniqueIdentifier = _generateUniqueIdentifier;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = NTKWorldClockComplication;
-  v4 = a3;
-  [(NTKComplication *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(NTKComplication *)&v6 encodeWithCoder:coderCopy];
   v5 = [(WorldClockCity *)self->_city alCityId:v6.receiver];
-  [v4 encodeInt:objc_msgSend(v5 forKey:{"intValue"), @"WorldClockComplicationCityKey"}];
+  [coderCopy encodeInt:objc_msgSend(v5 forKey:{"intValue"), @"WorldClockComplicationCityKey"}];
 }
 
-- (void)_addKeysToJSONDictionary:(id)a3
+- (void)_addKeysToJSONDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = NTKWorldClockComplication;
-  v4 = a3;
-  [(NTKComplication *)&v6 _addKeysToJSONDictionary:v4];
+  dictionaryCopy = dictionary;
+  [(NTKComplication *)&v6 _addKeysToJSONDictionary:dictionaryCopy];
   v5 = [(WorldClockCity *)self->_city alCityId:v6.receiver];
-  [v4 setObject:v5 forKeyedSubscript:@"city ID"];
+  [dictionaryCopy setObject:v5 forKeyedSubscript:@"city ID"];
 }
 
-- (id)_initWithComplicationType:(unint64_t)a3 JSONDictionary:(id)a4
+- (id)_initWithComplicationType:(unint64_t)type JSONDictionary:(id)dictionary
 {
-  v6 = a4;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = NTKWorldClockComplication;
-  v7 = [(NTKComplication *)&v12 _initWithComplicationType:a3 JSONDictionary:v6];
+  v7 = [(NTKComplication *)&v12 _initWithComplicationType:type JSONDictionary:dictionaryCopy];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"city ID"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"city ID"];
     if (!v8)
     {
       [MEMORY[0x277CBEAD8] raise:@"NTKFaceBundleException" format:{@"missing value for key '%@'", @"city ID"}];
@@ -422,9 +422,9 @@ uint64_t __64__NTKWorldClockComplication_compareComplication_toComplication___bl
               objc_enumerationMutation(v5);
             }
 
-            v10 = [*(*(&v13 + 1) + 8 * i) alCityId];
-            v11 = [(WorldClockCity *)self->_city alCityId];
-            v12 = [v10 isEqual:v11];
+            alCityId = [*(*(&v13 + 1) + 8 * i) alCityId];
+            alCityId2 = [(WorldClockCity *)self->_city alCityId];
+            v12 = [alCityId isEqual:alCityId2];
 
             if (v12)
             {

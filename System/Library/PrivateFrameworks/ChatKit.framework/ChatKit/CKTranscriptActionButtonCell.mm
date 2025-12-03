@@ -1,32 +1,32 @@
 @interface CKTranscriptActionButtonCell
-+ (CGSize)sizeThatFits:(CGSize)a3 attributedText:(id)a4 displayScale:(double)a5;
-- (CKTranscriptActionButtonCell)initWithFrame:(CGRect)a3;
++ (CGSize)sizeThatFits:(CGSize)fits attributedText:(id)text displayScale:(double)scale;
+- (CKTranscriptActionButtonCell)initWithFrame:(CGRect)frame;
 - (CKTranscriptActionButtonCellDelegate)delegate;
 - (id)attributedText;
-- (void)buttonPrimaryActionTriggered:(id)a3;
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7;
-- (void)setAttributedText:(id)a3;
+- (void)buttonPrimaryActionTriggered:(id)triggered;
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve;
+- (void)setAttributedText:(id)text;
 @end
 
 @implementation CKTranscriptActionButtonCell
 
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve
 {
-  v9 = a5;
+  animatedCopy = animated;
   v14.receiver = self;
   v14.super_class = CKTranscriptActionButtonCell;
-  v12 = a3;
-  [(CKTranscriptCell *)&v14 configureForChatItem:v12 context:a4 animated:v9 animationDuration:a7 animationCurve:a6];
-  v13 = [v12 transcriptText];
+  itemCopy = item;
+  [(CKTranscriptCell *)&v14 configureForChatItem:itemCopy context:context animated:animatedCopy animationDuration:curve animationCurve:duration];
+  transcriptText = [itemCopy transcriptText];
 
-  [(CKTranscriptActionButtonCell *)self setAttributedText:v13];
+  [(CKTranscriptActionButtonCell *)self setAttributedText:transcriptText];
 }
 
-- (CKTranscriptActionButtonCell)initWithFrame:(CGRect)a3
+- (CKTranscriptActionButtonCell)initWithFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = CKTranscriptActionButtonCell;
-  v3 = [(CKTranscriptAbstractLabelCell *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKTranscriptAbstractLabelCell *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = _CreateActionButton();
@@ -48,23 +48,23 @@
     [v16 smallTranscriptSpace];
     [(CKTranscriptLegibilityButton *)v6 _setTouchInsets:v9, v12, v15, -v17];
 
-    v18 = [(CKEditableCollectionViewCell *)v3 contentView];
-    [v18 addSubview:v3->_actionButton];
+    contentView = [(CKEditableCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_actionButton];
   }
 
   return v3;
 }
 
-+ (CGSize)sizeThatFits:(CGSize)a3 attributedText:(id)a4 displayScale:(double)a5
++ (CGSize)sizeThatFits:(CGSize)fits attributedText:(id)text displayScale:(double)scale
 {
-  width = a3.width;
-  v6 = a4;
-  if ([v6 length])
+  width = fits.width;
+  textCopy = text;
+  if ([textCopy length])
   {
     v7 = _CreateActionButton();
-    v8 = [v7 configuration];
-    [v8 setAttributedTitle:v6];
-    [v7 setConfiguration:v8];
+    configuration = [v7 configuration];
+    [configuration setAttributedTitle:textCopy];
+    [v7 setConfiguration:configuration];
     [v7 sizeThatFits:{width, 1.79769313e308}];
     v10 = v9;
     v12 = v11;
@@ -83,28 +83,28 @@
   return result;
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
   actionButton = self->_actionButton;
-  v5 = a3;
-  v6 = [(CKTranscriptLegibilityButton *)actionButton configuration];
-  [v6 setAttributedTitle:v5];
+  textCopy = text;
+  configuration = [(CKTranscriptLegibilityButton *)actionButton configuration];
+  [configuration setAttributedTitle:textCopy];
 
-  [(CKTranscriptLegibilityButton *)self->_actionButton setConfiguration:v6];
+  [(CKTranscriptLegibilityButton *)self->_actionButton setConfiguration:configuration];
 }
 
 - (id)attributedText
 {
-  v2 = [(CKTranscriptLegibilityButton *)self->_actionButton configuration];
-  v3 = [v2 attributedTitle];
+  configuration = [(CKTranscriptLegibilityButton *)self->_actionButton configuration];
+  attributedTitle = [configuration attributedTitle];
 
-  return v3;
+  return attributedTitle;
 }
 
-- (void)buttonPrimaryActionTriggered:(id)a3
+- (void)buttonPrimaryActionTriggered:(id)triggered
 {
-  v4 = [(CKTranscriptActionButtonCell *)self delegate];
-  [v4 didTapTranscriptActionButtonCell:self];
+  delegate = [(CKTranscriptActionButtonCell *)self delegate];
+  [delegate didTapTranscriptActionButtonCell:self];
 }
 
 - (CKTranscriptActionButtonCellDelegate)delegate

@@ -1,10 +1,10 @@
 @interface RELocationRelevanceProvider
-- (BOOL)isEqual:(id)a3;
-- (RELocationRelevanceProvider)initWithDictionary:(id)a3;
-- (RELocationRelevanceProvider)initWithLocation:(id)a3 radius:(double)a4 accuracy:(double)a5;
-- (RELocationRelevanceProvider)initWithLocationType:(unint64_t)a3;
-- (RELocationRelevanceProvider)providerWithBundleIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (RELocationRelevanceProvider)initWithDictionary:(id)dictionary;
+- (RELocationRelevanceProvider)initWithLocation:(id)location radius:(double)radius accuracy:(double)accuracy;
+- (RELocationRelevanceProvider)initWithLocationType:(unint64_t)type;
+- (RELocationRelevanceProvider)providerWithBundleIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryEncoding;
 - (unint64_t)_hash;
@@ -12,7 +12,7 @@
 
 @implementation RELocationRelevanceProvider
 
-- (RELocationRelevanceProvider)initWithLocationType:(unint64_t)a3
+- (RELocationRelevanceProvider)initWithLocationType:(unint64_t)type
 {
   v9.receiver = self;
   v9.super_class = RELocationRelevanceProvider;
@@ -20,7 +20,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_type = a3;
+    v4->_type = type;
     v6 = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:37.3353672 longitude:-122.011737];
     location = v5->_location;
     v5->_location = v6;
@@ -32,9 +32,9 @@
   return v5;
 }
 
-- (RELocationRelevanceProvider)initWithLocation:(id)a3 radius:(double)a4 accuracy:(double)a5
+- (RELocationRelevanceProvider)initWithLocation:(id)location radius:(double)radius accuracy:(double)accuracy
 {
-  v9 = a3;
+  locationCopy = location;
   v13.receiver = self;
   v13.super_class = RELocationRelevanceProvider;
   v10 = [(RERelevanceProvider *)&v13 init];
@@ -42,19 +42,19 @@
   if (v10)
   {
     v10->_type = 0;
-    objc_storeStrong(&v10->_location, a3);
-    v11->_radius = a4;
-    v11->_accuracy = a5;
+    objc_storeStrong(&v10->_location, location);
+    v11->_radius = radius;
+    v11->_accuracy = accuracy;
   }
 
   return v11;
 }
 
-- (RELocationRelevanceProvider)providerWithBundleIdentifier:(id)a3
+- (RELocationRelevanceProvider)providerWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(RELocationRelevanceProvider *)self copy];
-  v6 = [v4 copy];
+  v6 = [identifierCopy copy];
 
   v7 = v5[8];
   v5[8] = v6;
@@ -62,24 +62,24 @@
   return v5;
 }
 
-- (RELocationRelevanceProvider)initWithDictionary:(id)a3
+- (RELocationRelevanceProvider)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"type"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"type"];
   v6 = v5;
   if (v5 && [v5 integerValue])
   {
     self = -[RELocationRelevanceProvider initWithLocationType:](self, "initWithLocationType:", [v6 integerValue]);
-    v7 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v8 = [v4 objectForKeyedSubscript:@"lat"];
-    v9 = [v4 objectForKeyedSubscript:@"long"];
-    v10 = [v4 objectForKeyedSubscript:@"radius"];
-    v11 = [v4 objectForKeyedSubscript:@"bundleIdentifier"];
-    v7 = 0;
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"lat"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"long"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"radius"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"bundleIdentifier"];
+    selfCopy2 = 0;
     if (v8 && v9)
     {
       v12 = objc_alloc(MEMORY[0x277CE41F8]);
@@ -98,7 +98,7 @@
         v18 = 1000.0;
       }
 
-      v19 = [v4 objectForKeyedSubscript:@"accuracy"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"accuracy"];
       v20 = v19;
       if (v19)
       {
@@ -114,52 +114,52 @@
       self = v22;
       objc_storeStrong(&self->_bundleIdentifier, v11);
 
-      v7 = self;
+      selfCopy2 = self;
     }
   }
 
-  return v7;
+  return selfCopy2;
 }
 
 - (id)dictionaryEncoding
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = MEMORY[0x277CCABB0];
   [(CLLocation *)self->_location coordinate];
   v5 = [v4 numberWithDouble:?];
-  [v3 setObject:v5 forKeyedSubscript:@"lat"];
+  [dictionary setObject:v5 forKeyedSubscript:@"lat"];
 
   v6 = MEMORY[0x277CCABB0];
   [(CLLocation *)self->_location coordinate];
   v8 = [v6 numberWithDouble:v7];
-  [v3 setObject:v8 forKeyedSubscript:@"long"];
+  [dictionary setObject:v8 forKeyedSubscript:@"long"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:self->_radius];
-  [v3 setObject:v9 forKeyedSubscript:@"radius"];
+  [dictionary setObject:v9 forKeyedSubscript:@"radius"];
 
-  [v3 setObject:self->_bundleIdentifier forKeyedSubscript:@"bundleIdentifier"];
+  [dictionary setObject:self->_bundleIdentifier forKeyedSubscript:@"bundleIdentifier"];
   v10 = self->_radius * *&kDefaultAccuracyScaleFactor;
   accuracy = self->_accuracy;
   if (vabds_f32(v10, accuracy) >= 0.00000011921)
   {
     v12 = [MEMORY[0x277CCABB0] numberWithDouble:?];
-    [v3 setObject:v12 forKeyedSubscript:@"accuracy"];
+    [dictionary setObject:v12 forKeyedSubscript:@"accuracy"];
   }
 
   if (self->_type)
   {
     v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
-    [v3 setObject:v13 forKeyedSubscript:@"type"];
+    [dictionary setObject:v13 forKeyedSubscript:@"type"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = RELocationRelevanceProvider;
-  v4 = [(RERelevanceProvider *)&v6 copyWithZone:a3];
+  v4 = [(RERelevanceProvider *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 5, self->_location);
   v4[6] = *&self->_radius;
   v4[7] = *&self->_accuracy;
@@ -168,10 +168,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -180,12 +180,12 @@
   {
     v20.receiver = self;
     v20.super_class = RELocationRelevanceProvider;
-    if ([(RERelevanceProvider *)&v20 isEqual:v4])
+    if ([(RERelevanceProvider *)&v20 isEqual:equalCopy])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = v4;
+        v5 = equalCopy;
         type = self->_type;
         if (type == v5->_type)
         {

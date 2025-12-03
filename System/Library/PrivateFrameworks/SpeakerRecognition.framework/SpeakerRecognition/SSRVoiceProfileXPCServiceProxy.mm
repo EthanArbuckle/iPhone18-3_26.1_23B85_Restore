@@ -1,16 +1,16 @@
 @interface SSRVoiceProfileXPCServiceProxy
 + (id)sharedInstance;
-- (BOOL)fetchEnrollmentStatusForSiriProfileId:(id)a3 forLanguageCode:(id)a4;
+- (BOOL)fetchEnrollmentStatusForSiriProfileId:(id)id forLanguageCode:(id)code;
 @end
 
 @implementation SSRVoiceProfileXPCServiceProxy
 
-- (BOOL)fetchEnrollmentStatusForSiriProfileId:(id)a3 forLanguageCode:(id)a4
+- (BOOL)fetchEnrollmentStatusForSiriProfileId:(id)id forLanguageCode:(id)code
 {
-  v5 = a4;
-  v6 = a3;
+  codeCopy = code;
+  idCopy = id;
   v7 = +[SSRVoiceProfileManager sharedInstance];
-  v8 = [v7 isSATEnrolledForSiriProfileId:v6 forLanguageCode:v5];
+  v8 = [v7 isSATEnrolledForSiriProfileId:idCopy forLanguageCode:codeCopy];
 
   return v8;
 }

@@ -1,54 +1,54 @@
 @interface CSModalButton
-- (CSModalButton)initWithFrame:(CGRect)a3;
-- (void)_buttonPressed:(id)a3;
-- (void)_buttonReleased:(id)a3;
-- (void)_setContinuousCornerRadius:(double)a3;
+- (CSModalButton)initWithFrame:(CGRect)frame;
+- (void)_buttonPressed:(id)pressed;
+- (void)_buttonReleased:(id)released;
+- (void)_setContinuousCornerRadius:(double)radius;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setVisualEffect:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setVisualEffect:(id)effect;
 @end
 
 @implementation CSModalButton
 
-- (CSModalButton)initWithFrame:(CGRect)a3
+- (CSModalButton)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = CSModalButton;
-  v3 = [(CSModalButton *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CSModalButton *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] whiteColor];
-    [(CSModalButton *)v3 setTitleColor:v4 forState:0];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(CSModalButton *)v3 setTitleColor:whiteColor forState:0];
 
     v5 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.5];
     [(CSModalButton *)v3 setTitleColor:v5 forState:1];
 
     [(CSModalButton *)v3 addTarget:v3 action:sel__buttonPressed_ forControlEvents:5];
     [(CSModalButton *)v3 addTarget:v3 action:sel__buttonReleased_ forControlEvents:456];
-    v6 = [(CSModalButton *)v3 titleLabel];
-    [v6 setNumberOfLines:1];
-    [v6 setBaselineAdjustment:1];
-    [v6 setLineBreakMode:0];
-    [v6 setTextAlignment:1];
+    titleLabel = [(CSModalButton *)v3 titleLabel];
+    [titleLabel setNumberOfLines:1];
+    [titleLabel setBaselineAdjustment:1];
+    [titleLabel setLineBreakMode:0];
+    [titleLabel setTextAlignment:1];
     [(CSModalButton *)v3 setBackgroundColor:0];
     [(CSModalButton *)v3 setContentEdgeInsets:16.0, 16.0, 16.0, 16.0];
-    v7 = [(CSModalButton *)v3 layer];
-    [v7 setHitTestsAsOpaque:1];
+    layer = [(CSModalButton *)v3 layer];
+    [layer setHitTestsAsOpaque:1];
   }
 
   return v3;
 }
 
-- (void)setVisualEffect:(id)a3
+- (void)setVisualEffect:(id)effect
 {
-  v4 = a3;
+  effectCopy = effect;
   effectView = self->_effectView;
-  if (v4)
+  if (effectCopy)
   {
-    v11 = v4;
+    v11 = effectCopy;
     if (!effectView)
     {
-      v6 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v4];
+      v6 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:effectCopy];
       [(UIVisualEffectView *)v6 setAutoresizingMask:18];
       [(UIVisualEffectView *)v6 bs_setHitTestingDisabled:1];
       [(CSModalButton *)self _continuousCornerRadius];
@@ -80,19 +80,19 @@
     self->_effectView = 0;
   }
 
-  v4 = v11;
+  effectCopy = v11;
 LABEL_8:
 
-  MEMORY[0x2821F96F8](effectView, v4);
+  MEMORY[0x2821F96F8](effectView, effectCopy);
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = v4;
+  colorCopy = color;
+  v5 = colorCopy;
   if (!self->_isPressed)
   {
-    v6 = [v4 copy];
+    v6 = [colorCopy copy];
     backgroundColor = self->_backgroundColor;
     self->_backgroundColor = v6;
   }
@@ -100,8 +100,8 @@ LABEL_8:
   effectView = self->_effectView;
   if (effectView)
   {
-    v9 = [(UIVisualEffectView *)effectView contentView];
-    [v9 setBackgroundColor:v5];
+    contentView = [(UIVisualEffectView *)effectView contentView];
+    [contentView setBackgroundColor:v5];
   }
 
   else
@@ -112,12 +112,12 @@ LABEL_8:
   }
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = CSModalButton;
   [(CSModalButton *)&v5 _setContinuousCornerRadius:?];
-  [(UIVisualEffectView *)self->_effectView _setContinuousCornerRadius:a3];
+  [(UIVisualEffectView *)self->_effectView _setContinuousCornerRadius:radius];
 }
 
 - (void)layoutSubviews
@@ -130,7 +130,7 @@ LABEL_8:
   [(UIVisualEffectView *)effectView setFrame:?];
 }
 
-- (void)_buttonPressed:(id)a3
+- (void)_buttonPressed:(id)pressed
 {
   v7 = 0;
   v8 = 0;
@@ -157,7 +157,7 @@ void __32__CSModalButton__buttonPressed___block_invoke(uint64_t a1)
   [v1 setBackgroundColor:v2];
 }
 
-- (void)_buttonReleased:(id)a3
+- (void)_buttonReleased:(id)released
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;

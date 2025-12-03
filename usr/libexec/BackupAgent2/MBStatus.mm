@@ -1,35 +1,35 @@
 @interface MBStatus
-+ (MBStatus)statusWithDrive:(id)a3 path:(id)a4 error:(id *)a5;
++ (MBStatus)statusWithDrive:(id)drive path:(id)path error:(id *)error;
 + (id)status;
-+ (int)backupStateWithString:(id)a3;
-+ (int)snapshotStateWithString:(id)a3;
-- (BOOL)writeToDrive:(id)a3 path:(id)a4 error:(id *)a5;
++ (int)backupStateWithString:(id)string;
++ (int)snapshotStateWithString:(id)string;
+- (BOOL)writeToDrive:(id)drive path:(id)path error:(id *)error;
 - (MBStatus)init;
-- (MBStatus)initWithPropertyList:(id)a3;
+- (MBStatus)initWithPropertyList:(id)list;
 - (id)description;
 - (id)propertyList;
 @end
 
 @implementation MBStatus
 
-+ (int)backupStateWithString:(id)a3
++ (int)backupStateWithString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"empty"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"empty"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"old"])
+  else if ([stringCopy isEqualToString:@"old"])
   {
     v4 = 1;
   }
 
   else
   {
-    if (([v3 isEqualToString:@"new"] & 1) == 0)
+    if (([stringCopy isEqualToString:@"new"] & 1) == 0)
     {
-      objc_exception_throw([[MBException alloc] initWithCode:11 format:{@"Invalid backup state name: %@", v3}]);
+      objc_exception_throw([[MBException alloc] initWithCode:11 format:{@"Invalid backup state name: %@", stringCopy}]);
     }
 
     v4 = 2;
@@ -38,29 +38,29 @@
   return v4;
 }
 
-+ (int)snapshotStateWithString:(id)a3
++ (int)snapshotStateWithString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"uploading"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"uploading"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"moving"])
+  else if ([stringCopy isEqualToString:@"moving"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"removing"])
+  else if ([stringCopy isEqualToString:@"removing"])
   {
     v4 = 2;
   }
 
   else
   {
-    if (([v3 isEqualToString:@"finished"] & 1) == 0)
+    if (([stringCopy isEqualToString:@"finished"] & 1) == 0)
     {
-      objc_exception_throw([[MBException alloc] initWithCode:11 format:{@"Invalid snapshot state name: %@", v3}]);
+      objc_exception_throw([[MBException alloc] initWithCode:11 format:{@"Invalid snapshot state name: %@", stringCopy}]);
     }
 
     v4 = 3;
@@ -76,11 +76,11 @@
   return v2;
 }
 
-+ (MBStatus)statusWithDrive:(id)a3 path:(id)a4 error:(id *)a5
++ (MBStatus)statusWithDrive:(id)drive path:(id)path error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 propertyListAtPath:v8 options:0 error:a5];
+  driveCopy = drive;
+  pathCopy = path;
+  v9 = [driveCopy propertyListAtPath:pathCopy options:0 error:error];
   if (v9)
   {
     v10 = [[MBStatus alloc] initWithPropertyList:v9];
@@ -107,9 +107,9 @@
   return result;
 }
 
-- (MBStatus)initWithPropertyList:(id)a3
+- (MBStatus)initWithPropertyList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -123,8 +123,8 @@
   v5 = [(MBStatus *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"Backup Success"];
-    v7 = [v4 objectForKeyedSubscript:@"Version"];
+    v6 = [listCopy objectForKeyedSubscript:@"Backup Success"];
+    v7 = [listCopy objectForKeyedSubscript:@"Version"];
     if (!v7)
     {
       v5->_version = 0.0;
@@ -147,27 +147,27 @@ LABEL_27:
       v5->_versionAmbiguous = v6 != 0;
       if (v8 >= 2.0)
       {
-        v9 = [v4 objectForKeyedSubscript:@"UUID"];
+        v9 = [listCopy objectForKeyedSubscript:@"UUID"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           objc_storeStrong(&v5->_uuid, v9);
-          v10 = [v4 objectForKeyedSubscript:@"Date"];
+          v10 = [listCopy objectForKeyedSubscript:@"Date"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
             objc_storeStrong(&v5->_date, v10);
-            v11 = [v4 objectForKeyedSubscript:@"BackupState"];
+            v11 = [listCopy objectForKeyedSubscript:@"BackupState"];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
               v5->_backupState = [MBStatus backupStateWithString:v11];
-              v12 = [v4 objectForKeyedSubscript:@"SnapshotState"];
+              v12 = [listCopy objectForKeyedSubscript:@"SnapshotState"];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
                 v5->_snapshotState = [MBStatus snapshotStateWithString:v12];
-                v13 = [v4 objectForKeyedSubscript:@"IsFullBackup"];
+                v13 = [listCopy objectForKeyedSubscript:@"IsFullBackup"];
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
@@ -236,16 +236,16 @@ LABEL_18:
   }
 
   v3 = [NSMutableDictionary dictionaryWithCapacity:0];
-  v4 = [NSString stringWithFormat:@"%0.1f", 0x400A666666666666];
-  [v3 setObject:v4 forKeyedSubscript:@"Version"];
+  0x400A666666666666 = [NSString stringWithFormat:@"%0.1f", 0x400A666666666666];
+  [v3 setObject:0x400A666666666666 forKeyedSubscript:@"Version"];
 
   [v3 setObject:self->_uuid forKeyedSubscript:@"UUID"];
   [v3 setObject:self->_date forKeyedSubscript:@"Date"];
-  v5 = [(MBStatus *)self backupStateName];
-  [v3 setObject:v5 forKeyedSubscript:@"BackupState"];
+  backupStateName = [(MBStatus *)self backupStateName];
+  [v3 setObject:backupStateName forKeyedSubscript:@"BackupState"];
 
-  v6 = [(MBStatus *)self snapshotStateName];
-  [v3 setObject:v6 forKeyedSubscript:@"SnapshotState"];
+  snapshotStateName = [(MBStatus *)self snapshotStateName];
+  [v3 setObject:snapshotStateName forKeyedSubscript:@"SnapshotState"];
 
   v7 = [NSNumber numberWithBool:self->_fullBackup];
   [v3 setObject:v7 forKeyedSubscript:@"IsFullBackup"];
@@ -253,14 +253,14 @@ LABEL_18:
   return v3;
 }
 
-- (BOOL)writeToDrive:(id)a3 path:(id)a4 error:(id *)a5
+- (BOOL)writeToDrive:(id)drive path:(id)path error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(MBStatus *)self propertyList];
-  LOBYTE(a5) = [v9 uploadPropertyList:v10 toPath:v8 options:0 error:a5];
+  pathCopy = path;
+  driveCopy = drive;
+  propertyList = [(MBStatus *)self propertyList];
+  LOBYTE(error) = [driveCopy uploadPropertyList:propertyList toPath:pathCopy options:0 error:error];
 
-  return a5;
+  return error;
 }
 
 - (id)description
@@ -268,10 +268,10 @@ LABEL_18:
   v3 = objc_opt_class();
   [(MBStatus *)self version];
   v5 = v4;
-  v6 = [(MBStatus *)self date];
-  v7 = [(MBStatus *)self backupStateName];
-  v8 = [(MBStatus *)self snapshotStateName];
-  v9 = [NSString stringWithFormat:@"<%@: version=%0.1f, date=%@, backupState=%@, snapshotState=%@, fullBackup=%d>", v3, v5, v6, v7, v8, [(MBStatus *)self isFullBackup]];
+  date = [(MBStatus *)self date];
+  backupStateName = [(MBStatus *)self backupStateName];
+  snapshotStateName = [(MBStatus *)self snapshotStateName];
+  v9 = [NSString stringWithFormat:@"<%@: version=%0.1f, date=%@, backupState=%@, snapshotState=%@, fullBackup=%d>", v3, v5, date, backupStateName, snapshotStateName, [(MBStatus *)self isFullBackup]];
 
   return v9;
 }

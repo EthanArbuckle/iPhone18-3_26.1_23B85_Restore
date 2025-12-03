@@ -1,10 +1,10 @@
 @interface SBBacklightSignificantUserInteractionMonitor
-- (BOOL)handleEvent:(id)a3;
+- (BOOL)handleEvent:(id)event;
 - (CSCoverSheetViewController)coverSheetViewController;
 - (NSString)coverSheetIdentifier;
 - (void)_notifyObserversOfSignificantUserInteraction;
-- (void)addObserver:(id)a3;
-- (void)setCoverSheetViewController:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)setCoverSheetViewController:(id)controller;
 @end
 
 @implementation SBBacklightSignificantUserInteractionMonitor
@@ -12,8 +12,8 @@
 - (void)_notifyObserversOfSignificantUserInteraction
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(NSHashTable *)self->_observers allObjects];
-  v4 = [v3 copy];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v4 = [allObjects copy];
 
   v12 = 0u;
   v13 = 0u;
@@ -46,27 +46,27 @@
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)setCoverSheetViewController:(id)a3
+- (void)setCoverSheetViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_coverSheetViewController);
   if (WeakRetained != obj)
   {
@@ -83,10 +83,10 @@
   return NSStringFromClass(v2);
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = [a3 type];
-  if (v4 == 21 || v4 == 12)
+  type = [event type];
+  if (type == 21 || type == 12)
   {
     [(SBBacklightSignificantUserInteractionMonitor *)self _notifyObserversOfSignificantUserInteraction];
   }

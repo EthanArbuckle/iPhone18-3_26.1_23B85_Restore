@@ -1,16 +1,16 @@
 @interface JournalSearchViewController
-- (_TtC7Journal27JournalSearchViewController)initWithCoder:(id)a3;
-- (_TtC7Journal27JournalSearchViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC7Journal27JournalSearchViewController)initWithSearchResultsController:(id)a3;
-- (void)showViewController:(id)a3 sender:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC7Journal27JournalSearchViewController)initWithCoder:(id)coder;
+- (_TtC7Journal27JournalSearchViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC7Journal27JournalSearchViewController)initWithSearchResultsController:(id)controller;
+- (void)showViewController:(id)controller sender:(id)sender;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation JournalSearchViewController
 
-- (_TtC7Journal27JournalSearchViewController)initWithCoder:(id)a3
+- (_TtC7Journal27JournalSearchViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC7Journal27JournalSearchViewController_searchResultsViewModel) = 0;
   type metadata accessor for JournalSearchViewController();
@@ -20,32 +20,32 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004B9C04();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004B9D8C();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for JournalSearchViewController();
   v4 = v5.receiver;
-  [(JournalSearchViewController *)&v5 viewDidAppear:v3];
+  [(JournalSearchViewController *)&v5 viewDidAppear:appearCopy];
   [v4 setActive:{1, v5.receiver, v5.super_class}];
 }
 
-- (void)showViewController:(id)a3 sender:(id)a4
+- (void)showViewController:(id)controller sender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = a3;
-    v7 = self;
+    controllerCopy = controller;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -54,23 +54,23 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a3;
-    v9 = self;
+    controllerCopy2 = controller;
+    selfCopy2 = self;
   }
 
-  sub_1004B9FC4(a3, v10);
+  sub_1004B9FC4(controller, v10);
 
   sub_1000261D4(v10);
 }
 
-- (_TtC7Journal27JournalSearchViewController)initWithSearchResultsController:(id)a3
+- (_TtC7Journal27JournalSearchViewController)initWithSearchResultsController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC7Journal27JournalSearchViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Journal27JournalSearchViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

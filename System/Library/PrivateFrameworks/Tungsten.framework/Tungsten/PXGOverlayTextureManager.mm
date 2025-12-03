@@ -1,22 +1,22 @@
 @interface PXGOverlayTextureManager
-- (id)overlayTexturesByPresentationTypeForTextures:(id)a3 spriteDataStore:(id)a4;
+- (id)overlayTexturesByPresentationTypeForTextures:(id)textures spriteDataStore:(id)store;
 @end
 
 @implementation PXGOverlayTextureManager
 
-- (id)overlayTexturesByPresentationTypeForTextures:(id)a3 spriteDataStore:(id)a4
+- (id)overlayTexturesByPresentationTypeForTextures:(id)textures spriteDataStore:(id)store
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  v8 = [v5 objectForKeyedSubscript:&unk_282C7F5E0];
+  texturesCopy = textures;
+  storeCopy = store;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v8 = [texturesCopy objectForKeyedSubscript:&unk_282C7F5E0];
   if (v8)
   {
-    v23 = v7;
-    v24 = v5;
-    v9 = [MEMORY[0x277CBEB18] array];
-    v10 = [v6 infos];
+    v23 = dictionary;
+    v24 = texturesCopy;
+    array = [MEMORY[0x277CBEB18] array];
+    infos = [storeCopy infos];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -40,14 +40,14 @@
           v16 = *(*(&v25 + 1) + 8 * i);
           if (([v16 isAtlas] & 1) == 0)
           {
-            v17 = [v16 spriteIndexes];
-            v18 = [v17 firstIndex];
+            spriteIndexes = [v16 spriteIndexes];
+            firstIndex = [spriteIndexes firstIndex];
 
-            v19 = v10 + 40 * v18;
+            v19 = infos + 40 * firstIndex;
             if (*(v19 + 1) == 2 && (*(v19 + 34) & 0x10) == 0)
             {
               v20 = [[PXGRemoteEffectOverlayTexture alloc] initWithMetalSpriteTexture:v16];
-              [v9 addObject:v20];
+              [array addObject:v20];
             }
           }
         }
@@ -58,14 +58,14 @@
       while (v13);
     }
 
-    v7 = v23;
-    [v23 setObject:v9 forKeyedSubscript:&unk_282C7F5F8];
+    dictionary = v23;
+    [v23 setObject:array forKeyedSubscript:&unk_282C7F5F8];
 
-    v5 = v24;
+    texturesCopy = v24;
     v8 = v22;
   }
 
-  return v7;
+  return dictionary;
 }
 
 @end

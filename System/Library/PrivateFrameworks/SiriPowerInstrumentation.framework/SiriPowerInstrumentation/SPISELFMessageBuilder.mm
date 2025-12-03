@@ -1,8 +1,8 @@
 @interface SPISELFMessageBuilder
 - (SPISELFMessageBuilder)init;
 - (id)buildMessage;
-- (void)addContext:(id)a3;
-- (void)addProcessUsage:(SPIResourceUsage *)a3;
+- (void)addContext:(id)context;
+- (void)addProcessUsage:(SPIResourceUsage *)usage;
 @end
 
 @implementation SPISELFMessageBuilder
@@ -24,28 +24,28 @@
   return v3;
 }
 
-- (void)addProcessUsage:(SPIResourceUsage *)a3
+- (void)addProcessUsage:(SPIResourceUsage *)usage
 {
   v6 = objc_alloc_init(POWSchemaProvisionalPOWProcessUsage);
-  [(POWSchemaProvisionalPOWProcessUsage *)v6 setCpuCycles:a3->cpuCycles];
-  [(POWSchemaProvisionalPOWProcessUsage *)v6 setCpuInstructions:a3->cpuInstructions];
-  [(POWSchemaProvisionalPOWProcessUsage *)v6 setMemoryFootprint:a3->memPhysFootprint];
-  v5 = [(SPISELFMessageBuilder *)self usageMsg];
-  [v5 setProcessUsage:v6];
+  [(POWSchemaProvisionalPOWProcessUsage *)v6 setCpuCycles:usage->cpuCycles];
+  [(POWSchemaProvisionalPOWProcessUsage *)v6 setCpuInstructions:usage->cpuInstructions];
+  [(POWSchemaProvisionalPOWProcessUsage *)v6 setMemoryFootprint:usage->memPhysFootprint];
+  usageMsg = [(SPISELFMessageBuilder *)self usageMsg];
+  [usageMsg setProcessUsage:v6];
 }
 
-- (void)addContext:(id)a3
+- (void)addContext:(id)context
 {
-  v4 = a3;
-  v5 = [(SPISELFMessageBuilder *)self usageMsg];
-  [v4 setContextForUsage:v5];
+  contextCopy = context;
+  usageMsg = [(SPISELFMessageBuilder *)self usageMsg];
+  [contextCopy setContextForUsage:usageMsg];
 }
 
 - (id)buildMessage
 {
-  v3 = [(SPISELFMessageBuilder *)self powClientEventMsg];
-  v4 = [(SPISELFMessageBuilder *)self usageMsg];
-  [v3 setUsage:v4];
+  powClientEventMsg = [(SPISELFMessageBuilder *)self powClientEventMsg];
+  usageMsg = [(SPISELFMessageBuilder *)self usageMsg];
+  [powClientEventMsg setUsage:usageMsg];
 
   return [(SPISELFMessageBuilder *)self powClientEventMsg];
 }

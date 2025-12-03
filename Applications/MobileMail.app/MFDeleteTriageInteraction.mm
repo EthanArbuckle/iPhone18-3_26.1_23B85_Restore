@@ -24,32 +24,32 @@
     return 1;
   }
 
-  v6 = [(MFTriageInteraction *)self messageListItemSelection];
-  v7 = [v6 messageListItems];
-  v5 = [v7 em_messageListItemTotalCount] > 1;
+  messageListItemSelection = [(MFTriageInteraction *)self messageListItemSelection];
+  messageListItems = [messageListItemSelection messageListItems];
+  v5 = [messageListItems em_messageListItemTotalCount] > 1;
 
   return v5;
 }
 
 - (BOOL)_movesToTrash
 {
-  v2 = [(MFTriageInteraction *)self messageListItemSelection];
-  v3 = [v2 messageListItems];
-  v4 = [v3 ef_any:&stru_100653E60];
+  messageListItemSelection = [(MFTriageInteraction *)self messageListItemSelection];
+  messageListItems = [messageListItemSelection messageListItems];
+  v4 = [messageListItems ef_any:&stru_100653E60];
 
   return v4;
 }
 
 - (id)title
 {
-  v3 = [(MFDeleteTriageInteraction *)self _movesToTrash];
+  _movesToTrash = [(MFDeleteTriageInteraction *)self _movesToTrash];
   if ([(MFTriageInteraction *)self titleIncludesCount])
   {
     if ([(MFTriageInteraction *)self messageCount]< 2)
     {
       v9 = +[NSBundle mainBundle];
       v5 = v9;
-      if (v3)
+      if (_movesToTrash)
       {
         [(__CFString *)v9 localizedStringForKey:@"TRASH_EMAIL" value:&stru_100662A88 table:@"Main"];
       }
@@ -64,7 +64,7 @@
     else
     {
       v4 = @"DELETE_FORMAT%1$lu";
-      if (v3)
+      if (_movesToTrash)
       {
         v4 = @"TRASH_FORMAT%1$lu";
       }
@@ -86,13 +86,13 @@
 
 - (id)shortTitle
 {
-  v3 = [(MFDeleteTriageInteraction *)self _movesToTrash];
-  v4 = [(MFTriageInteraction *)self messageCount];
+  _movesToTrash = [(MFDeleteTriageInteraction *)self _movesToTrash];
+  messageCount = [(MFTriageInteraction *)self messageCount];
   v5 = +[NSBundle mainBundle];
   v6 = v5;
-  if (v4 < 2)
+  if (messageCount < 2)
   {
-    if (v3)
+    if (_movesToTrash)
     {
       [v5 localizedStringForKey:@"TRASH" value:&stru_100662A88 table:@"Main"];
     }
@@ -107,7 +107,7 @@
 
   else
   {
-    if (v3)
+    if (_movesToTrash)
     {
       [v5 localizedStringForKey:@"TRASH_COUNT" value:&stru_100662A88 table:@"Main"];
     }
@@ -126,13 +126,13 @@
 
 - (id)swipeTitle
 {
-  v3 = [(MFDeleteTriageInteraction *)self _movesToTrash];
-  v4 = [(MFTriageInteraction *)self messageCount];
+  _movesToTrash = [(MFDeleteTriageInteraction *)self _movesToTrash];
+  messageCount = [(MFTriageInteraction *)self messageCount];
   v5 = +[NSBundle mainBundle];
   v6 = v5;
-  if (v4 < 2)
+  if (messageCount < 2)
   {
-    if (v3)
+    if (_movesToTrash)
     {
       [v5 localizedStringForKey:@"SWIPE_TRASH" value:&stru_100662A88 table:@"Main"];
     }
@@ -147,7 +147,7 @@
 
   else
   {
-    if (v3)
+    if (_movesToTrash)
     {
       [v5 localizedStringForKey:@"SWIPE_TRASH_COUNT" value:&stru_100662A88 table:@"Main"];
     }

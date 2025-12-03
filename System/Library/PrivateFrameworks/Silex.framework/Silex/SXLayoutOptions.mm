@@ -1,64 +1,64 @@
 @interface SXLayoutOptions
 - (CGSize)viewportSize;
-- (SXLayoutOptions)initWithColumnLayout:(id)a3 viewportSize:(CGSize)a4 traitCollection:(id)a5 contentSizeCategory:(id)a6 bundleSubscriptionStatus:(int64_t)a7 channelSubscriptionStatus:(int64_t)a8 testing:(BOOL)a9 viewingLocation:(unint64_t)a10 contentScaleFactor:(double)a11 newsletterSubscriptionStatus:(unint64_t)a12 offerUpsellScenario:(int64_t)a13 subscriptionActivationEligibility:(int64_t)a14 offerIdentifier:(id)a15 smartInvertColorsEnabled:(BOOL)a16 conditionKeys:(id)a17 tagSubscriptionStatus:(id)a18;
+- (SXLayoutOptions)initWithColumnLayout:(id)layout viewportSize:(CGSize)size traitCollection:(id)collection contentSizeCategory:(id)category bundleSubscriptionStatus:(int64_t)status channelSubscriptionStatus:(int64_t)subscriptionStatus testing:(BOOL)testing viewingLocation:(unint64_t)self0 contentScaleFactor:(double)self1 newsletterSubscriptionStatus:(unint64_t)self2 offerUpsellScenario:(int64_t)self3 subscriptionActivationEligibility:(int64_t)self4 offerIdentifier:(id)self5 smartInvertColorsEnabled:(BOOL)self6 conditionKeys:(id)self7 tagSubscriptionStatus:(id)self8;
 - (id)description;
-- (unint64_t)diffWithLayoutOptions:(id)a3;
+- (unint64_t)diffWithLayoutOptions:(id)options;
 - (unint64_t)hash;
 @end
 
 @implementation SXLayoutOptions
 
-- (SXLayoutOptions)initWithColumnLayout:(id)a3 viewportSize:(CGSize)a4 traitCollection:(id)a5 contentSizeCategory:(id)a6 bundleSubscriptionStatus:(int64_t)a7 channelSubscriptionStatus:(int64_t)a8 testing:(BOOL)a9 viewingLocation:(unint64_t)a10 contentScaleFactor:(double)a11 newsletterSubscriptionStatus:(unint64_t)a12 offerUpsellScenario:(int64_t)a13 subscriptionActivationEligibility:(int64_t)a14 offerIdentifier:(id)a15 smartInvertColorsEnabled:(BOOL)a16 conditionKeys:(id)a17 tagSubscriptionStatus:(id)a18
+- (SXLayoutOptions)initWithColumnLayout:(id)layout viewportSize:(CGSize)size traitCollection:(id)collection contentSizeCategory:(id)category bundleSubscriptionStatus:(int64_t)status channelSubscriptionStatus:(int64_t)subscriptionStatus testing:(BOOL)testing viewingLocation:(unint64_t)self0 contentScaleFactor:(double)self1 newsletterSubscriptionStatus:(unint64_t)self2 offerUpsellScenario:(int64_t)self3 subscriptionActivationEligibility:(int64_t)self4 offerIdentifier:(id)self5 smartInvertColorsEnabled:(BOOL)self6 conditionKeys:(id)self7 tagSubscriptionStatus:(id)self8
 {
-  height = a4.height;
-  width = a4.width;
-  v25 = a3;
-  v26 = a5;
-  v27 = a6;
-  v36 = a15;
-  v28 = a17;
-  v35 = a18;
+  height = size.height;
+  width = size.width;
+  layoutCopy = layout;
+  collectionCopy = collection;
+  categoryCopy = category;
+  identifierCopy = identifier;
+  keysCopy = keys;
+  tagSubscriptionStatusCopy = tagSubscriptionStatus;
   v37.receiver = self;
   v37.super_class = SXLayoutOptions;
   v29 = [(SXLayoutOptions *)&v37 init];
   v30 = v29;
   if (v29)
   {
-    objc_storeStrong(&v29->_columnLayout, a3);
+    objc_storeStrong(&v29->_columnLayout, layout);
     v30->_viewportSize.width = width;
     v30->_viewportSize.height = height;
-    objc_storeStrong(&v30->_traitCollection, a5);
-    objc_storeStrong(&v30->_contentSizeCategory, a6);
-    v30->_bundleSubscriptionStatus = a7;
-    v30->_channelSubscriptionStatus = a8;
-    v30->_testing = a9;
-    v30->_viewingLocation = a10;
-    v30->_contentScaleFactor = a11;
-    v30->_newsletterSubscriptionStatus = a12;
-    v30->_offerUpsellScenario = a13;
-    v30->_subscriptionActivationEligibility = a14;
-    objc_storeStrong(&v30->_offerIdentifier, a15);
-    v30->_smartInvertColorsEnabled = a16;
-    objc_storeStrong(&v30->_conditionKeys, a17);
-    objc_storeStrong(&v30->_tagSubscriptionStatus, a18);
+    objc_storeStrong(&v30->_traitCollection, collection);
+    objc_storeStrong(&v30->_contentSizeCategory, category);
+    v30->_bundleSubscriptionStatus = status;
+    v30->_channelSubscriptionStatus = subscriptionStatus;
+    v30->_testing = testing;
+    v30->_viewingLocation = location;
+    v30->_contentScaleFactor = factor;
+    v30->_newsletterSubscriptionStatus = newsletterSubscriptionStatus;
+    v30->_offerUpsellScenario = scenario;
+    v30->_subscriptionActivationEligibility = eligibility;
+    objc_storeStrong(&v30->_offerIdentifier, identifier);
+    v30->_smartInvertColorsEnabled = enabled;
+    objc_storeStrong(&v30->_conditionKeys, keys);
+    objc_storeStrong(&v30->_tagSubscriptionStatus, tagSubscriptionStatus);
   }
 
   return v30;
 }
 
-- (unint64_t)diffWithLayoutOptions:(id)a3
+- (unint64_t)diffWithLayoutOptions:(id)options
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  optionsCopy = options;
+  if (optionsCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    if (self == v4)
+    if (self == optionsCopy)
     {
       v20 = 0;
     }
 
     else
     {
-      if ([(SXColumnLayout *)self->_columnLayout isEqual:v4->_columnLayout])
+      if ([(SXColumnLayout *)self->_columnLayout isEqual:optionsCopy->_columnLayout])
       {
         v5 = 262142;
       }
@@ -68,28 +68,28 @@
         v5 = 0x3FFFFLL;
       }
 
-      v6 = [(UITraitCollection *)self->_traitCollection horizontalSizeClass];
-      if (v6 == [(UITraitCollection *)v4->_traitCollection horizontalSizeClass])
+      horizontalSizeClass = [(UITraitCollection *)self->_traitCollection horizontalSizeClass];
+      if (horizontalSizeClass == [(UITraitCollection *)optionsCopy->_traitCollection horizontalSizeClass])
       {
         v5 &= 0x3FDFFuLL;
       }
 
-      v7 = [(UITraitCollection *)self->_traitCollection verticalSizeClass];
-      if (v7 == [(UITraitCollection *)v4->_traitCollection verticalSizeClass])
+      verticalSizeClass = [(UITraitCollection *)self->_traitCollection verticalSizeClass];
+      if (verticalSizeClass == [(UITraitCollection *)optionsCopy->_traitCollection verticalSizeClass])
       {
         v5 &= 0x3FBFFuLL;
       }
 
-      v8 = [(UITraitCollection *)self->_traitCollection userInterfaceStyle];
-      v9 = [(UITraitCollection *)v4->_traitCollection userInterfaceStyle];
+      userInterfaceStyle = [(UITraitCollection *)self->_traitCollection userInterfaceStyle];
+      userInterfaceStyle2 = [(UITraitCollection *)optionsCopy->_traitCollection userInterfaceStyle];
       v10 = v5 & 0x3FEFF;
-      if (v8 != v9)
+      if (userInterfaceStyle != userInterfaceStyle2)
       {
         v10 = v5;
       }
 
       width = self->_viewportSize.width;
-      if (self->_viewportSize.height == v4->_viewportSize.height && width == v4->_viewportSize.width)
+      if (self->_viewportSize.height == optionsCopy->_viewportSize.height && width == optionsCopy->_viewportSize.width)
       {
         v13 = v10 & 0x3FFFD;
       }
@@ -99,34 +99,34 @@
         v13 = v10;
       }
 
-      v14 = [(NSString *)self->_contentSizeCategory isEqual:v4->_contentSizeCategory, width];
+      width = [(NSString *)self->_contentSizeCategory isEqual:optionsCopy->_contentSizeCategory, width];
       v15 = v13 & 0x3FFFB;
-      if (!v14)
+      if (!width)
       {
         v15 = v13;
       }
 
-      if (self->_bundleSubscriptionStatus == v4->_bundleSubscriptionStatus)
+      if (self->_bundleSubscriptionStatus == optionsCopy->_bundleSubscriptionStatus)
       {
         v15 &= ~8uLL;
       }
 
-      if (self->_channelSubscriptionStatus == v4->_channelSubscriptionStatus)
+      if (self->_channelSubscriptionStatus == optionsCopy->_channelSubscriptionStatus)
       {
         v15 &= ~0x10uLL;
       }
 
-      if (self->_viewingLocation == v4->_viewingLocation)
+      if (self->_viewingLocation == optionsCopy->_viewingLocation)
       {
         v15 &= ~0x20uLL;
       }
 
-      if (self->_testing == v4->_testing)
+      if (self->_testing == optionsCopy->_testing)
       {
         v15 &= ~0x40uLL;
       }
 
-      v16 = self->_contentScaleFactor - v4->_contentScaleFactor;
+      v16 = self->_contentScaleFactor - optionsCopy->_contentScaleFactor;
       if (v16 < 0.0)
       {
         v16 = -v16;
@@ -137,18 +137,18 @@
         v15 &= ~0x80uLL;
       }
 
-      if (self->_newsletterSubscriptionStatus == v4->_newsletterSubscriptionStatus)
+      if (self->_newsletterSubscriptionStatus == optionsCopy->_newsletterSubscriptionStatus)
       {
         v15 &= ~0x800uLL;
       }
 
-      if (self->_offerUpsellScenario == v4->_offerUpsellScenario)
+      if (self->_offerUpsellScenario == optionsCopy->_offerUpsellScenario)
       {
         v15 &= ~0x1000uLL;
       }
 
       offerIdentifier = self->_offerIdentifier;
-      if (self->_subscriptionActivationEligibility == v4->_subscriptionActivationEligibility)
+      if (self->_subscriptionActivationEligibility == optionsCopy->_subscriptionActivationEligibility)
       {
         v18 = v15 & 0xFFFFFFFFFFFFDFFFLL;
       }
@@ -158,23 +158,23 @@
         v18 = v15;
       }
 
-      if (offerIdentifier == v4->_offerIdentifier || [(NSString *)offerIdentifier isEqualToString:?])
+      if (offerIdentifier == optionsCopy->_offerIdentifier || [(NSString *)offerIdentifier isEqualToString:?])
       {
         v18 &= ~0x10000uLL;
       }
 
-      if (self->_smartInvertColorsEnabled == v4->_smartInvertColorsEnabled)
+      if (self->_smartInvertColorsEnabled == optionsCopy->_smartInvertColorsEnabled)
       {
         v18 &= ~0x4000uLL;
       }
 
       conditionKeys = self->_conditionKeys;
-      if (conditionKeys == v4->_conditionKeys || [(NSSet *)conditionKeys isEqual:?])
+      if (conditionKeys == optionsCopy->_conditionKeys || [(NSSet *)conditionKeys isEqual:?])
       {
         v18 &= ~0x8000uLL;
       }
 
-      if ([(SXTagSubscriptionStatus *)self->_tagSubscriptionStatus isEqual:v4->_tagSubscriptionStatus])
+      if ([(SXTagSubscriptionStatus *)self->_tagSubscriptionStatus isEqual:optionsCopy->_tagSubscriptionStatus])
       {
         v20 = v18 & 0xFFFFFFFFFFFDFFFFLL;
       }
@@ -204,43 +204,43 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [v3 appendFormat:@"<%@: %p; options: \n", objc_opt_class(), self];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"<%@: %p; options: \n", objc_opt_class(), self];
   [(SXLayoutOptions *)self viewportSize];
   v4 = NSStringFromCGSize(v28);
-  [v3 appendFormat:@"  viewportSize: %@; \n", v4];
+  [string appendFormat:@"  viewportSize: %@; \n", v4];
 
-  v5 = [(SXLayoutOptions *)self contentSizeCategory];
-  [v3 appendFormat:@"  contentSizeCategory: %@; \n", v5];
+  contentSizeCategory = [(SXLayoutOptions *)self contentSizeCategory];
+  [string appendFormat:@"  contentSizeCategory: %@; \n", contentSizeCategory];
 
-  v6 = [(SXLayoutOptions *)self bundleSubscriptionStatus];
-  if (v6 <= 3)
+  bundleSubscriptionStatus = [(SXLayoutOptions *)self bundleSubscriptionStatus];
+  if (bundleSubscriptionStatus <= 3)
   {
-    [v3 appendFormat:off_1E85003E8[v6]];
+    [string appendFormat:off_1E85003E8[bundleSubscriptionStatus]];
   }
 
-  v7 = [(SXLayoutOptions *)self channelSubscriptionStatus];
-  if (v7 <= 3)
+  channelSubscriptionStatus = [(SXLayoutOptions *)self channelSubscriptionStatus];
+  if (channelSubscriptionStatus <= 3)
   {
-    [v3 appendFormat:off_1E8500408[v7]];
+    [string appendFormat:off_1E8500408[channelSubscriptionStatus]];
   }
 
-  v8 = [(SXLayoutOptions *)self offerUpsellScenario];
-  if (v8 <= 9)
+  offerUpsellScenario = [(SXLayoutOptions *)self offerUpsellScenario];
+  if (offerUpsellScenario <= 9)
   {
-    [v3 appendFormat:off_1E8500428[v8]];
+    [string appendFormat:off_1E8500428[offerUpsellScenario]];
   }
 
-  v9 = [(SXLayoutOptions *)self columnLayout];
-  v10 = [v9 numberOfColumns];
-  v11 = [(SXLayoutOptions *)self columnLayout];
-  [v11 constrainedViewportSize];
+  columnLayout = [(SXLayoutOptions *)self columnLayout];
+  numberOfColumns = [columnLayout numberOfColumns];
+  columnLayout2 = [(SXLayoutOptions *)self columnLayout];
+  [columnLayout2 constrainedViewportSize];
   v12 = NSStringFromCGSize(v29);
-  [v3 appendFormat:@"  columnLayout: (numberOfColumns: %d, constrainedViewportSize: %@); \n", v10, v12];
+  [string appendFormat:@"  columnLayout: (numberOfColumns: %d, constrainedViewportSize: %@); \n", numberOfColumns, v12];
 
-  v13 = [(SXLayoutOptions *)self traitCollection];
-  v14 = [v13 description];
-  [v3 appendFormat:@"  traitCollection: %@; \n", v14];
+  traitCollection = [(SXLayoutOptions *)self traitCollection];
+  v14 = [traitCollection description];
+  [string appendFormat:@"  traitCollection: %@; \n", v14];
 
   if ([(SXLayoutOptions *)self testing])
   {
@@ -252,44 +252,44 @@
     v15 = @"NO";
   }
 
-  [v3 appendFormat:@"  testing: %@; \n", v15];
-  v16 = [(SXLayoutOptions *)self viewingLocation];
-  if (v16 <= 3)
+  [string appendFormat:@"  testing: %@; \n", v15];
+  viewingLocation = [(SXLayoutOptions *)self viewingLocation];
+  if (viewingLocation <= 3)
   {
-    [v3 appendFormat:off_1E8500478[v16]];
+    [string appendFormat:off_1E8500478[viewingLocation]];
   }
 
   [(SXLayoutOptions *)self contentScaleFactor];
-  [v3 appendFormat:@"  contentScaleFactor: %f; \n", v17];
-  v18 = [(SXLayoutOptions *)self newsletterSubscriptionStatus];
-  if (v18 - 1 > 4)
+  [string appendFormat:@"  contentScaleFactor: %f; \n", v17];
+  newsletterSubscriptionStatus = [(SXLayoutOptions *)self newsletterSubscriptionStatus];
+  if (newsletterSubscriptionStatus - 1 > 4)
   {
     v19 = @"unspecified";
   }
 
   else
   {
-    v19 = off_1E8500498[v18 - 1];
+    v19 = off_1E8500498[newsletterSubscriptionStatus - 1];
   }
 
-  [v3 appendFormat:@"  newsletter status: %@; \n", v19];
-  v20 = [(SXLayoutOptions *)self subscriptionActivationEligibility];
-  if ((v20 - 1) > 3)
+  [string appendFormat:@"  newsletter status: %@; \n", v19];
+  subscriptionActivationEligibility = [(SXLayoutOptions *)self subscriptionActivationEligibility];
+  if ((subscriptionActivationEligibility - 1) > 3)
   {
     v21 = @"unknown";
   }
 
   else
   {
-    v21 = off_1E85004C0[v20 - 1];
+    v21 = off_1E85004C0[subscriptionActivationEligibility - 1];
   }
 
-  [v3 appendFormat:@"  subscriptionActivationEligibility: %@; \n", v21];
-  v22 = [(SXLayoutOptions *)self offerIdentifier];
-  [v3 appendFormat:@"  offerIdentifier: %@; \n", v22];
+  [string appendFormat:@"  subscriptionActivationEligibility: %@; \n", v21];
+  offerIdentifier = [(SXLayoutOptions *)self offerIdentifier];
+  [string appendFormat:@"  offerIdentifier: %@; \n", offerIdentifier];
 
-  v23 = [(SXLayoutOptions *)self conditionKeys];
-  [v3 appendFormat:@"  conditionKeys: %@; \n", v23];
+  conditionKeys = [(SXLayoutOptions *)self conditionKeys];
+  [string appendFormat:@"  conditionKeys: %@; \n", conditionKeys];
 
   if ([(SXLayoutOptions *)self smartInvertColorsEnabled])
   {
@@ -301,13 +301,13 @@
     v24 = @"NO";
   }
 
-  [v3 appendFormat:@"  smartInvertColorsEnabled: %@; \n", v24];
-  v25 = [(SXLayoutOptions *)self tagSubscriptionStatus];
-  [v3 appendFormat:@"  tagSubscriptionStatus: %@; \n", v25];
+  [string appendFormat:@"  smartInvertColorsEnabled: %@; \n", v24];
+  tagSubscriptionStatus = [(SXLayoutOptions *)self tagSubscriptionStatus];
+  [string appendFormat:@"  tagSubscriptionStatus: %@; \n", tagSubscriptionStatus];
 
-  [v3 appendFormat:@">"];
+  [string appendFormat:@">"];
 
-  return v3;
+  return string;
 }
 
 - (CGSize)viewportSize

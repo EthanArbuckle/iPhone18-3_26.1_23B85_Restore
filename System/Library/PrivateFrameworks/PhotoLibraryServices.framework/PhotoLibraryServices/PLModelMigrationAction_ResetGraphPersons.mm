@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_ResetGraphPersons
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_ResetGraphPersons
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v82 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLPerson entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -17,7 +17,7 @@
   [v9 setPredicate:v10];
 
   v47 = 0;
-  v11 = [v6 executeFetchRequest:v9 error:&v47];
+  v11 = [contextCopy executeFetchRequest:v9 error:&v47];
   v12 = v47;
   if (v11)
   {
@@ -30,7 +30,7 @@
     v45[4] = self;
     v15 = v14;
     v46 = v15;
-    v16 = [v6 enumerateWithIncrementalSaveUsingObjects:v11 withBlock:v45];
+    v16 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v11 withBlock:v45];
 
     v17 = PLMigrationGetLog();
     v18 = v17;
@@ -40,9 +40,9 @@
 
       if (v19)
       {
-        v20 = [(PLModelMigrationActionCore *)self logger];
+        logger = [(PLModelMigrationActionCore *)self logger];
 
-        if (v20)
+        if (logger)
         {
           v80 = 0u;
           v81 = 0u;
@@ -109,17 +109,17 @@
 
     else
     {
-      v44 = a4;
+      errorCopy = error;
       v30 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
 
       if (v30)
       {
-        v31 = [(PLModelMigrationActionCore *)self logger];
+        logger2 = [(PLModelMigrationActionCore *)self logger];
 
-        if (!v31)
+        if (!logger2)
         {
           v42 = PLMigrationGetLog();
-          a4 = v44;
+          error = errorCopy;
           if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134217984;
@@ -180,7 +180,7 @@
       }
 
       v35 = 1;
-      a4 = v44;
+      error = errorCopy;
     }
 
 LABEL_20:
@@ -193,9 +193,9 @@ LABEL_20:
 
   if (v25)
   {
-    v26 = [(PLModelMigrationActionCore *)self logger];
+    logger3 = [(PLModelMigrationActionCore *)self logger];
 
-    if (v26)
+    if (logger3)
     {
       v80 = 0u;
       v81 = 0u;
@@ -263,10 +263,10 @@ LABEL_25:
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v38 = v16;
   v39 = v38;
-  if (v35 != 1 && a4)
+  if (v35 != 1 && error)
   {
     v40 = v38;
-    *a4 = v39;
+    *error = v39;
   }
 
   return v35;

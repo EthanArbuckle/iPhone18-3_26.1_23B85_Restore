@@ -1,23 +1,23 @@
 @interface SXTextComponentBlueprint
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addExclusionPath:(id)a3 forIdentifier:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addExclusionPath:(id)path forIdentifier:(id)identifier;
 - (void)invalidateSize;
 @end
 
 @implementation SXTextComponentBlueprint
 
-- (void)addExclusionPath:(id)a3 forIdentifier:(id)a4
+- (void)addExclusionPath:(id)path forIdentifier:(id)identifier
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(NSDictionary *)self->_exclusionPaths mutableCopy];
-  if (!v7)
+  pathCopy = path;
+  identifierCopy = identifier;
+  dictionary = [(NSDictionary *)self->_exclusionPaths mutableCopy];
+  if (!dictionary)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  [v7 setObject:v10 forKey:v6];
-  v8 = [v7 copy];
+  [dictionary setObject:pathCopy forKey:identifierCopy];
+  v8 = [dictionary copy];
   exclusionPaths = self->_exclusionPaths;
   self->_exclusionPaths = v8;
 }
@@ -31,14 +31,14 @@
   self->_exclusionPaths = 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SXTextComponentBlueprint;
-  v4 = [(SXComponentBlueprint *)&v8 copyWithZone:a3];
-  v5 = [(SXTextComponentBlueprint *)self exclusionPaths];
+  v4 = [(SXComponentBlueprint *)&v8 copyWithZone:zone];
+  exclusionPaths = [(SXTextComponentBlueprint *)self exclusionPaths];
   v6 = v4[48];
-  v4[48] = v5;
+  v4[48] = exclusionPaths;
 
   return v4;
 }

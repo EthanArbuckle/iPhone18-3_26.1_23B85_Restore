@@ -1,9 +1,9 @@
 @interface CSDeviceDetermination
-+ (BOOL)_screenScaleMatchesZoomScale:(double)a3;
-+ (double)_zoomScaleForBaseDevice:(unint64_t)a3;
-+ (unint64_t)_zoomAwareCategoryForDevice:(unint64_t)a3 zoomVariant:(unint64_t)a4;
++ (BOOL)_screenScaleMatchesZoomScale:(double)scale;
++ (double)_zoomScaleForBaseDevice:(unint64_t)device;
++ (unint64_t)_zoomAwareCategoryForDevice:(unint64_t)device zoomVariant:(unint64_t)variant;
 + (unint64_t)baseCategory;
-+ (unint64_t)categoryFromReferenceBounds:(CGRect)a3;
++ (unint64_t)categoryFromReferenceBounds:(CGRect)bounds;
 + (unint64_t)categoryFromScreenSize;
 @end
 
@@ -18,7 +18,7 @@
   v9 = v8;
   v11 = v10;
 
-  return [a1 categoryFromReferenceBounds:{v5, v7, v9, v11}];
+  return [self categoryFromReferenceBounds:{v5, v7, v9, v11}];
 }
 
 + (unint64_t)baseCategory
@@ -128,19 +128,19 @@
   return result;
 }
 
-+ (unint64_t)categoryFromReferenceBounds:(CGRect)a3
++ (unint64_t)categoryFromReferenceBounds:(CGRect)bounds
 {
   BSSizeRoundForScale();
-  v4 = [MEMORY[0x1E698E730] sharedInstance];
-  v5 = [v4 deviceClass];
+  mEMORY[0x1E698E730] = [MEMORY[0x1E698E730] sharedInstance];
+  deviceClass = [mEMORY[0x1E698E730] deviceClass];
 
-  v6 = [MEMORY[0x1E698E730] sharedInstance];
-  v7 = v6;
-  if (v5 == 2)
+  mEMORY[0x1E698E730]2 = [MEMORY[0x1E698E730] sharedInstance];
+  v7 = mEMORY[0x1E698E730]2;
+  if (deviceClass == 2)
   {
-    v8 = [v6 homeButtonType];
+    homeButtonType = [mEMORY[0x1E698E730]2 homeButtonType];
 
-    if (v8 == 2)
+    if (homeButtonType == 2)
     {
       if (BSFloatGreaterThanFloat())
       {
@@ -198,9 +198,9 @@
     return 23;
   }
 
-  v10 = [v6 deviceClass];
+  deviceClass2 = [mEMORY[0x1E698E730]2 deviceClass];
 
-  if (v10)
+  if (deviceClass2)
   {
     return 34;
   }
@@ -211,10 +211,10 @@
   }
 
   v11 = CSEffectiveArtworkSubtype_deviceSubtype;
-  v12 = [MEMORY[0x1E698E730] sharedInstance];
-  v13 = [v12 homeButtonType];
+  mEMORY[0x1E698E730]3 = [MEMORY[0x1E698E730] sharedInstance];
+  homeButtonType2 = [mEMORY[0x1E698E730]3 homeButtonType];
 
-  if (v13 != 2)
+  if (homeButtonType2 != 2)
   {
     if (BSFloatGreaterThanFloat())
     {
@@ -234,12 +234,12 @@
 
   if (_CS_Private_MainScreenClass_mainScreenClass == 22)
   {
-    v14 = a1;
+    selfCopy3 = self;
     v15 = 9;
     v16 = 8;
 LABEL_31:
 
-    return [v14 _zoomAwareCategoryForDevice:v15 zoomVariant:v16];
+    return [selfCopy3 _zoomAwareCategoryForDevice:v15 zoomVariant:v16];
   }
 
   if (_CS_Private_BaseIsN84OrSimilarDevice_onceToken != -1)
@@ -249,7 +249,7 @@ LABEL_31:
 
   if (_CS_Private_BaseIsN84OrSimilarDevice_baseIsN84OrSimilarDevice == 1)
   {
-    v14 = a1;
+    selfCopy3 = self;
     v15 = 7;
     v16 = 6;
     goto LABEL_31;
@@ -272,7 +272,7 @@ LABEL_31:
       return 18;
     }
 
-    v14 = a1;
+    selfCopy3 = self;
     v15 = 16;
     v16 = 17;
     goto LABEL_31;
@@ -363,31 +363,31 @@ LABEL_31:
   }
 }
 
-+ (unint64_t)_zoomAwareCategoryForDevice:(unint64_t)a3 zoomVariant:(unint64_t)a4
++ (unint64_t)_zoomAwareCategoryForDevice:(unint64_t)device zoomVariant:(unint64_t)variant
 {
-  [a1 _zoomScaleForBaseDevice:?];
-  if ([a1 _screenScaleMatchesZoomScale:?])
+  [self _zoomScaleForBaseDevice:?];
+  if ([self _screenScaleMatchesZoomScale:?])
   {
-    return a4;
+    return variant;
   }
 
   else
   {
-    return a3;
+    return device;
   }
 }
 
-+ (double)_zoomScaleForBaseDevice:(unint64_t)a3
++ (double)_zoomScaleForBaseDevice:(unint64_t)device
 {
   result = 3.375;
-  if (a3 > 8)
+  if (device > 8)
   {
-    if (a3 == 9)
+    if (device == 9)
     {
       return result;
     }
 
-    if (a3 == 17)
+    if (device == 17)
     {
       return 3.36;
     }
@@ -395,12 +395,12 @@ LABEL_31:
 
   else
   {
-    if (a3 == 4)
+    if (device == 4)
     {
       return result;
     }
 
-    if (a3 == 7)
+    if (device == 7)
     {
       return 2.208;
     }
@@ -409,7 +409,7 @@ LABEL_31:
   return 0.0;
 }
 
-+ (BOOL)_screenScaleMatchesZoomScale:(double)a3
++ (BOOL)_screenScaleMatchesZoomScale:(double)scale
 {
   _CSEmbeddedDisplayNativeScale();
 

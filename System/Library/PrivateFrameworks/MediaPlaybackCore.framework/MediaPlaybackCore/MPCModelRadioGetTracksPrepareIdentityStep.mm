@@ -1,13 +1,13 @@
 @interface MPCModelRadioGetTracksPrepareIdentityStep
-- (id)nextStepWithIdentityProperties:(id)a3 delegatedIdentityProperties:(id)a4;
-- (void)performWithCompletionHandler:(id)a3;
+- (id)nextStepWithIdentityProperties:(id)properties delegatedIdentityProperties:(id)identityProperties;
+- (void)performWithCompletionHandler:(id)handler;
 @end
 
 @implementation MPCModelRadioGetTracksPrepareIdentityStep
 
-- (void)performWithCompletionHandler:(id)a3
+- (void)performWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x3032000000;
@@ -32,24 +32,24 @@
   v21 = 1;
   v5 = dispatch_group_create();
   v6 = dispatch_queue_create("com.apple.MediaPlaybackCore.MPCModelRadioGetTracksPrepareIdentityStep", 0);
-  v7 = [(ICRadioGetTracksRequest *)self->super._request requestContext];
-  v8 = [v7 identityStore];
+  requestContext = [(ICRadioGetTracksRequest *)self->super._request requestContext];
+  identityStore = [requestContext identityStore];
   dispatch_group_enter(v5);
-  v9 = [v7 identity];
+  identity = [requestContext identity];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __74__MPCModelRadioGetTracksPrepareIdentityStep_performWithCompletionHandler___block_invoke;
   v19[3] = &unk_1E8235320;
   v19[4] = v5;
   v19[5] = v6;
-  v19[6] = v7;
+  v19[6] = requestContext;
   v19[7] = v22;
   v19[8] = v24;
   v19[9] = v20;
-  [v8 getPropertiesForUserIdentity:v9 completionHandler:v19];
+  [identityStore getPropertiesForUserIdentity:identity completionHandler:v19];
 
-  v10 = [v7 delegatedIdentity];
-  if (v10)
+  delegatedIdentity = [requestContext delegatedIdentity];
+  if (delegatedIdentity)
   {
     dispatch_group_enter(v5);
     v18[0] = MEMORY[0x1E69E9820];
@@ -58,11 +58,11 @@
     v18[3] = &unk_1E8235320;
     v18[4] = v5;
     v18[5] = v6;
-    v18[6] = v7;
+    v18[6] = requestContext;
     v18[7] = v26;
     v18[8] = v24;
     v18[9] = v20;
-    [v8 getPropertiesForUserIdentity:v10 completionHandler:v18];
+    [identityStore getPropertiesForUserIdentity:delegatedIdentity completionHandler:v18];
   }
 
   v12[0] = MEMORY[0x1E69E9820];
@@ -70,12 +70,12 @@
   v12[2] = __74__MPCModelRadioGetTracksPrepareIdentityStep_performWithCompletionHandler___block_invoke_5;
   v12[3] = &unk_1E8235348;
   v12[4] = self;
-  v13 = v4;
+  v13 = handlerCopy;
   v14 = v20;
   v15 = v24;
   v16 = v22;
   v17 = v26;
-  v11 = v4;
+  v11 = handlerCopy;
   dispatch_group_notify(v5, v6, v12);
 
   _Block_object_dispose(v20, 8);
@@ -215,17 +215,17 @@ uint64_t __74__MPCModelRadioGetTracksPrepareIdentityStep_performWithCompletionHa
   return MEMORY[0x1EEE66BB8](v4, v5);
 }
 
-- (id)nextStepWithIdentityProperties:(id)a3 delegatedIdentityProperties:(id)a4
+- (id)nextStepWithIdentityProperties:(id)properties delegatedIdentityProperties:(id)identityProperties
 {
-  v6 = a4;
-  v7 = a3;
+  identityPropertiesCopy = identityProperties;
+  propertiesCopy = properties;
   v8 = [(MPCModelRadioGetTracksStep *)[MPCModelRadioGetTracksRequestStep alloc] initWithPreviousStep:self];
-  v9 = [v6 copy];
+  v9 = [identityPropertiesCopy copy];
 
   delegatedIdentityProperties = v8->super._delegatedIdentityProperties;
   v8->super._delegatedIdentityProperties = v9;
 
-  v11 = [v7 copy];
+  v11 = [propertiesCopy copy];
   identityProperties = v8->super._identityProperties;
   v8->super._identityProperties = v11;
 

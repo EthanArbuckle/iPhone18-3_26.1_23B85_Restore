@@ -29,20 +29,20 @@
 - (int64_t)numOfArticlesSinceInterstitial;
 - (int64_t)serverUnfilledReason;
 - (unint64_t)retrieveNetworkType;
-- (void)notifyListenersPCUsedWithPcID:(id)a3;
-- (void)registerPromotedContentUsedWithAction:(id)a3;
-- (void)setAttachedToView:(BOOL)a3;
-- (void)setConsumed:(BOOL)a3;
-- (void)setDiscarded:(BOOL)a3;
-- (void)setDiscardedDueToPolicy:(BOOL)a3;
-- (void)setDisclosureURL:(id)a3;
-- (void)setExpirationDate:(id)a3;
-- (void)setImpressionThreshold:(double)a3;
-- (void)setMetaData:(id)a3;
-- (void)setMinimumTimeBetweenPresentation:(int64_t)a3;
-- (void)setRepresentations:(id)a3;
-- (void)setServerUnfilledReason:(int64_t)a3;
-- (void)setVended:(BOOL)a3;
+- (void)notifyListenersPCUsedWithPcID:(id)d;
+- (void)registerPromotedContentUsedWithAction:(id)action;
+- (void)setAttachedToView:(BOOL)view;
+- (void)setConsumed:(BOOL)consumed;
+- (void)setDiscarded:(BOOL)discarded;
+- (void)setDiscardedDueToPolicy:(BOOL)policy;
+- (void)setDisclosureURL:(id)l;
+- (void)setExpirationDate:(id)date;
+- (void)setImpressionThreshold:(double)threshold;
+- (void)setMetaData:(id)data;
+- (void)setMinimumTimeBetweenPresentation:(int64_t)presentation;
+- (void)setRepresentations:(id)representations;
+- (void)setServerUnfilledReason:(int64_t)reason;
+- (void)setVended:(BOOL)vended;
 @end
 
 @implementation APPCPromotedContent
@@ -73,7 +73,7 @@
   swift_beginAccess();
   v7 = *v5;
   v6 = v5[1];
-  v8 = self;
+  selfCopy = self;
 
   LOBYTE(v7) = sub_1C1AB1C0C(v7, v6, v4);
 
@@ -82,7 +82,7 @@
 
 - (int64_t)adType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C1AB6388();
 
   return v3;
@@ -95,10 +95,10 @@
   return *(self + v3);
 }
 
-- (void)setVended:(BOOL)a3
+- (void)setVended:(BOOL)vended
 {
-  v4 = self;
-  sub_1C1AB6E24(a3);
+  selfCopy = self;
+  sub_1C1AB6E24(vended);
 }
 
 - (APPCPromotableContext)context
@@ -114,7 +114,7 @@
   v3 = OBJC_IVAR___APPCPromotedContent_representations;
   swift_beginAccess();
   v4 = *(self + v3);
-  v5 = self;
+  selfCopy = self;
 
   v7 = sub_1C1ABBCD4(v6);
 
@@ -148,19 +148,19 @@
   return v4;
 }
 
-- (void)setMetaData:(id)a3
+- (void)setMetaData:(id)data
 {
-  v3 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
     sub_1C1AC1F08(&qword_1EBF07EA0, &qword_1C1B9ACD0);
-    v3 = sub_1C1B94CB8();
+    dataCopy = sub_1C1B94CB8();
   }
 
   v5 = OBJC_IVAR___APPCPromotedContent_metaData;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = v3;
+  *(self + v5) = dataCopy;
 }
 
 - (NSURL)disclosureURL
@@ -186,13 +186,13 @@
   return v11;
 }
 
-- (void)setDisclosureURL:(id)a3
+- (void)setDisclosureURL:(id)l
 {
   v5 = sub_1C1AC1F08(&qword_1EBF07AC8, &qword_1C1B9CED0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v13 - v7;
-  if (a3)
+  if (l)
   {
     sub_1C1B94488();
     v9 = sub_1C1B944A8();
@@ -207,7 +207,7 @@
 
   v11 = OBJC_IVAR___APPCPromotedContent_disclosureURL;
   swift_beginAccess();
-  v12 = self;
+  selfCopy = self;
   sub_1C1B19384(v8, self + v11, &qword_1EBF07AC8, &qword_1C1B9CED0);
   swift_endAccess();
 }
@@ -219,11 +219,11 @@
   return *(self + v3);
 }
 
-- (void)setMinimumTimeBetweenPresentation:(int64_t)a3
+- (void)setMinimumTimeBetweenPresentation:(int64_t)presentation
 {
   v5 = OBJC_IVAR___APPCPromotedContent_minimumTimeBetweenPresentation;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = presentation;
 }
 
 - (NSArray)representations
@@ -238,7 +238,7 @@
   return v5;
 }
 
-- (void)setRepresentations:(id)a3
+- (void)setRepresentations:(id)representations
 {
   sub_1C1AC1F08(&qword_1EBF07AE8, qword_1C1BA46C0);
   v4 = sub_1C1B94EC8();
@@ -278,7 +278,7 @@
   return v9;
 }
 
-- (void)setExpirationDate:(id)a3
+- (void)setExpirationDate:(id)date
 {
   v4 = sub_1C1B94588();
   v5 = *(v4 - 8);
@@ -289,16 +289,16 @@
   v9 = OBJC_IVAR___APPCPromotedContent_expirationDate;
   swift_beginAccess();
   v10 = *(v5 + 40);
-  v11 = self;
+  selfCopy = self;
   v10(self + v9, v8, v4);
   swift_endAccess();
 }
 
-- (void)setServerUnfilledReason:(int64_t)a3
+- (void)setServerUnfilledReason:(int64_t)reason
 {
   v5 = OBJC_IVAR___APPCPromotedContent_serverUnfilledReason;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = reason;
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
@@ -314,11 +314,11 @@
   return *(self + v3);
 }
 
-- (void)setAttachedToView:(BOOL)a3
+- (void)setAttachedToView:(BOOL)view
 {
   v5 = OBJC_IVAR___APPCPromotedContent_attachedToView;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = view;
 }
 
 - (BOOL)vended
@@ -328,11 +328,11 @@
   return *(self + v3);
 }
 
-- (void)setDiscarded:(BOOL)a3
+- (void)setDiscarded:(BOOL)discarded
 {
   v5 = OBJC_IVAR___APPCPromotedContent_discarded;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = discarded;
 }
 
 - (BOOL)consumed
@@ -342,11 +342,11 @@
   return *(self + v3);
 }
 
-- (void)setConsumed:(BOOL)a3
+- (void)setConsumed:(BOOL)consumed
 {
   v5 = OBJC_IVAR___APPCPromotedContent_consumed;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = consumed;
 }
 
 - (double)impressionThreshold
@@ -356,11 +356,11 @@
   return *(self + v3);
 }
 
-- (void)setImpressionThreshold:(double)a3
+- (void)setImpressionThreshold:(double)threshold
 {
   v5 = OBJC_IVAR___APPCPromotedContent_impressionThreshold;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = threshold;
 }
 
 - (BOOL)discardedDueToPolicy
@@ -370,11 +370,11 @@
   return *(self + v3);
 }
 
-- (void)setDiscardedDueToPolicy:(BOOL)a3
+- (void)setDiscardedDueToPolicy:(BOOL)policy
 {
   v5 = OBJC_IVAR___APPCPromotedContent_discardedDueToPolicy;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = policy;
 }
 
 - (NSDate)receivedReferenceTime
@@ -417,7 +417,7 @@
 
 - (int64_t)numOfArticlesSinceInterstitial
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C1B6AC28();
 
   return v3;
@@ -429,7 +429,7 @@
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x1EEE9AC00](v3 - 8);
   v6 = &v14 - v5;
-  v7 = self;
+  selfCopy = self;
   sub_1C1B6ADBC(v6);
 
   v8 = sub_1C1B945F8();
@@ -448,7 +448,7 @@
 
 - (BOOL)available
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C1B6B010();
 
   return v3 & 1;
@@ -456,7 +456,7 @@
 
 - (NSDictionary)transparencyDetailsDictionary
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C1B6B224();
 
   v3 = sub_1C1B94CA8();
@@ -466,7 +466,7 @@
 
 - (int64_t)feedMetadataContentProviderID
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C1B6B5A4();
 
   return v3;
@@ -474,7 +474,7 @@
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C1B6B9B8();
 
   v3 = sub_1C1B94D78();
@@ -484,15 +484,15 @@
 
 - (unint64_t)retrieveNetworkType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C1AB2120();
 
   return v3;
 }
 
-- (void)registerPromotedContentUsedWithAction:(id)a3
+- (void)registerPromotedContentUsedWithAction:(id)action
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(action);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
@@ -501,7 +501,7 @@
   v7 = OBJC_IVAR___APPCPromotedContent_onPromotedContentComplete;
   swift_beginAccess();
   v8 = *(self + v7);
-  v9 = self;
+  selfCopy = self;
 
   isUniquelyReferenced_nonNull_native = swift_isUniquelyReferenced_nonNull_native();
   *(self + v7) = v8;
@@ -526,11 +526,11 @@
   swift_endAccess();
 }
 
-- (void)notifyListenersPCUsedWithPcID:(id)a3
+- (void)notifyListenersPCUsedWithPcID:(id)d
 {
   v4 = sub_1C1B94D88();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1C1B74618(v4, v6);
 }
 

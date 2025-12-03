@@ -1,34 +1,34 @@
 @interface TRIXPCInternalServiceListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (TRIXPCInternalServiceListener)initWithServerContextPromise:(id)a3 forSystem:(BOOL)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (TRIXPCInternalServiceListener)initWithServerContextPromise:(id)promise forSystem:(BOOL)system;
 @end
 
 @implementation TRIXPCInternalServiceListener
 
-- (TRIXPCInternalServiceListener)initWithServerContextPromise:(id)a3 forSystem:(BOOL)a4
+- (TRIXPCInternalServiceListener)initWithServerContextPromise:(id)promise forSystem:(BOOL)system
 {
-  v4 = a4;
-  v7 = a3;
+  systemCopy = system;
+  promiseCopy = promise;
   v25.receiver = self;
   v25.super_class = TRIXPCInternalServiceListener;
   v8 = [(TRIXPCInternalServiceListener *)&v25 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_promise, a3);
+    objc_storeStrong(&v8->_promise, promise);
     v10 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_287FCCFA0];
     interface = v9->_interface;
     v9->_interface = v10;
 
     v12 = v9->_interface;
     v13 = +[TRITaskSupport sharedInstance];
-    v14 = [v13 XPCTaskAllowlist];
-    [(NSXPCInterface *)v12 setClasses:v14 forSelector:sel_submitTask_options_completion_ argumentIndex:0 ofReply:0];
+    xPCTaskAllowlist = [v13 XPCTaskAllowlist];
+    [(NSXPCInterface *)v12 setClasses:xPCTaskAllowlist forSelector:sel_submitTask_options_completion_ argumentIndex:0 ofReply:0];
 
     v15 = v9->_interface;
     v16 = +[TRITaskSupport sharedInstance];
-    v17 = [v16 XPCTaskAllowlist];
-    [(NSXPCInterface *)v15 setClasses:v17 forSelector:sel_addWithoutRunningForTask_options_completion_ argumentIndex:0 ofReply:0];
+    xPCTaskAllowlist2 = [v16 XPCTaskAllowlist];
+    [(NSXPCInterface *)v15 setClasses:xPCTaskAllowlist2 forSelector:sel_addWithoutRunningForTask_options_completion_ argumentIndex:0 ofReply:0];
 
     v18 = v9->_interface;
     v19 = objc_autoreleasePoolPush();
@@ -38,7 +38,7 @@
     objc_autoreleasePoolPop(v19);
     [(NSXPCInterface *)v18 setClasses:v22 forSelector:sel_setSubscription_namespaceName_completion_ argumentIndex:0 ofReply:0];
 
-    if (v4)
+    if (systemCopy)
     {
       v23 = @"com.apple.triald.system.internal";
     }
@@ -54,15 +54,15 @@
   return v9;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = objc_opt_new();
   v7 = [TRIInternalServiceRequestHandler alloc];
   promise = self->_promise;
-  if (v5)
+  if (connectionCopy)
   {
-    [v5 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -82,7 +82,7 @@
   v16[3] = &unk_279DE0968;
   v16[4] = self;
   v14 = TRILogCategory_Server();
-  LOBYTE(v11) = [v11 shouldAcceptConnection:v5 serviceName:serviceName whitelistedServerInterface:interface whitelistedClientInterface:0 requestHandler:v10 validateConnection:v16 setupClientProxy:0 interruptionHandler:&__block_literal_global_321 invalidationHandler:&__block_literal_global_323 logHandle:v14];
+  LOBYTE(v11) = [v11 shouldAcceptConnection:connectionCopy serviceName:serviceName whitelistedServerInterface:interface whitelistedClientInterface:0 requestHandler:v10 validateConnection:v16 setupClientProxy:0 interruptionHandler:&__block_literal_global_321 invalidationHandler:&__block_literal_global_323 logHandle:v14];
 
   return v11;
 }

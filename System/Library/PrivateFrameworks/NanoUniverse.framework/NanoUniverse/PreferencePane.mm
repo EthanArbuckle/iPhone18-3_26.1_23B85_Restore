@@ -5,19 +5,19 @@
 - (NSDictionary)pickerOptions;
 - (NSString)name;
 - (_TtC12NanoUniverse14PreferencePane)init;
-- (_TtC12NanoUniverse14PreferencePane)initWithName:(id)a3 panes:(id)a4;
-- (_TtC12NanoUniverse14PreferencePane)initWithName:(id)a3 userDefaults:(id)a4 sliders:(id)a5 toggles:(id)a6 pickerOptions:(id)a7 pickerSelections:(id)a8;
+- (_TtC12NanoUniverse14PreferencePane)initWithName:(id)name panes:(id)panes;
+- (_TtC12NanoUniverse14PreferencePane)initWithName:(id)name userDefaults:(id)defaults sliders:(id)sliders toggles:(id)toggles pickerOptions:(id)options pickerSelections:(id)selections;
 - (_TtP12NanoUniverse22PreferencePaneDelegate_)delegate;
-- (id)fractionValueForOption:(id)a3;
-- (id)getValueForKey:(id)a3;
+- (id)fractionValueForOption:(id)option;
+- (id)getValueForKey:(id)key;
 - (unsigned)changeSequence;
-- (void)preferencePaneDidChangeWithPreference:(id)a3;
+- (void)preferencePaneDidChangeWithPreference:(id)preference;
 - (void)reset;
-- (void)set:(id)a3 forKey:(id)a4;
-- (void)setChangeSequence:(unsigned int)a3;
-- (void)setName:(id)a3;
-- (void)setPanes:(id)a3;
-- (void)setPickerOptions:(id)a3;
+- (void)set:(id)set forKey:(id)key;
+- (void)setChangeSequence:(unsigned int)sequence;
+- (void)setName:(id)name;
+- (void)setPanes:(id)panes;
+- (void)setPickerOptions:(id)options;
 @end
 
 @implementation PreferencePane
@@ -34,25 +34,25 @@
   return v3;
 }
 
-- (id)fractionValueForOption:(id)a3
+- (id)fractionValueForOption:(id)option
 {
   v4 = sub_25B7167D0();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = COERCE_DOUBLE(sub_25B6FA524(v4, v6));
   LOBYTE(v4) = v9;
 
   if (v4)
   {
-    v10 = 0;
+    initWithDouble_ = 0;
   }
 
   else
   {
-    v10 = [objc_allocWithZone(MEMORY[0x277CCABB0]) initWithDouble_];
+    initWithDouble_ = [objc_allocWithZone(MEMORY[0x277CCABB0]) initWithDouble_];
   }
 
-  return v10;
+  return initWithDouble_;
 }
 
 + (_TtC12NanoUniverse14PreferencePane)calliopeRenderingPreferencePane
@@ -71,7 +71,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_25B7163B0();
 
   v4 = sub_25B7167A0();
@@ -79,12 +79,12 @@
   return v4;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   sub_25B7167D0();
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   sub_25B7163C0();
 }
 
@@ -92,7 +92,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_25B7163B0();
 
   if (v6)
@@ -109,9 +109,9 @@
   return v4;
 }
 
-- (void)setPanes:(id)a3
+- (void)setPanes:(id)panes
 {
-  if (a3)
+  if (panes)
   {
     type metadata accessor for PreferencePane();
     sub_25B716840();
@@ -119,7 +119,7 @@
 
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   sub_25B7163C0();
 }
 
@@ -130,11 +130,11 @@
   return *(self + v3);
 }
 
-- (void)setChangeSequence:(unsigned int)a3
+- (void)setChangeSequence:(unsigned int)sequence
 {
   v5 = OBJC_IVAR____TtC12NanoUniverse14PreferencePane_changeSequence;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = sequence;
 }
 
 - (NSDictionary)pickerOptions
@@ -156,19 +156,19 @@
   return v4;
 }
 
-- (void)setPickerOptions:(id)a3
+- (void)setPickerOptions:(id)options
 {
-  v3 = a3;
-  if (a3)
+  optionsCopy = options;
+  if (options)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27FA4A208, &unk_25B7381A0);
-    v3 = sub_25B716770();
+    optionsCopy = sub_25B716770();
   }
 
   v5 = OBJC_IVAR____TtC12NanoUniverse14PreferencePane_pickerOptions;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = v3;
+  *(self + v5) = optionsCopy;
 }
 
 - (_TtP12NanoUniverse22PreferencePaneDelegate_)delegate
@@ -179,7 +179,7 @@
   return Strong;
 }
 
-- (_TtC12NanoUniverse14PreferencePane)initWithName:(id)a3 panes:(id)a4
+- (_TtC12NanoUniverse14PreferencePane)initWithName:(id)name panes:(id)panes
 {
   v4 = sub_25B7167D0();
   v6 = v5;
@@ -189,7 +189,7 @@
   return result;
 }
 
-- (_TtC12NanoUniverse14PreferencePane)initWithName:(id)a3 userDefaults:(id)a4 sliders:(id)a5 toggles:(id)a6 pickerOptions:(id)a7 pickerSelections:(id)a8
+- (_TtC12NanoUniverse14PreferencePane)initWithName:(id)name userDefaults:(id)defaults sliders:(id)sliders toggles:(id)toggles pickerOptions:(id)options pickerSelections:(id)selections
 {
   v9 = sub_25B7167D0();
   v11 = v10;
@@ -198,15 +198,15 @@
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27FA4A208, &unk_25B7381A0);
   v14 = sub_25B716770();
   v15 = sub_25B716770();
-  v16 = a4;
-  return PreferencePane.init(name:userDefaults:sliders:toggles:pickerOptions:pickerSelections:)(v9, v11, a4, v12, v13, v14, v15);
+  defaultsCopy = defaults;
+  return PreferencePane.init(name:userDefaults:sliders:toggles:pickerOptions:pickerSelections:)(v9, v11, defaults, v12, v13, v14, v15);
 }
 
-- (id)getValueForKey:(id)a3
+- (id)getValueForKey:(id)key
 {
   v4 = sub_25B7167D0();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_25B6FA948(v4, v6, v16);
 
   v8 = v17;
@@ -231,12 +231,12 @@
   return v14;
 }
 
-- (void)set:(id)a3 forKey:(id)a4
+- (void)set:(id)set forKey:(id)key
 {
-  if (a3)
+  if (set)
   {
-    v6 = a4;
-    v7 = self;
+    keyCopy = key;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_25B7169E0();
     swift_unknownObjectRelease();
@@ -245,8 +245,8 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a4;
-    v9 = self;
+    keyCopy2 = key;
+    selfCopy2 = self;
   }
 
   sub_25B7167D0();
@@ -256,12 +256,12 @@
   sub_25B6F6328(v10);
 }
 
-- (void)preferencePaneDidChangeWithPreference:(id)a3
+- (void)preferencePaneDidChangeWithPreference:(id)preference
 {
   swift_beginAccess();
   Strong = swift_unknownObjectWeakLoadStrong();
-  v6 = a3;
-  v7 = self;
+  preferenceCopy = preference;
+  selfCopy = self;
   if (Strong)
   {
     [Strong preferencePaneDidChangeWithPreference_];
@@ -270,12 +270,12 @@
 
   v8 = OBJC_IVAR____TtC12NanoUniverse14PreferencePane_changeSequence;
   swift_beginAccess();
-  ++*(v7 + v8);
+  ++*(selfCopy + v8);
 }
 
 - (void)reset
 {
-  v2 = self;
+  selfCopy = self;
   sub_25B6FB18C();
 }
 

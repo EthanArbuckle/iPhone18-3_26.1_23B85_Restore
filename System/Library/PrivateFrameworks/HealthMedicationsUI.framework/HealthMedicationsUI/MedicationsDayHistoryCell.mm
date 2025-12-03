@@ -1,11 +1,11 @@
 @interface MedicationsDayHistoryCell
-- (_TtC19HealthMedicationsUI25MedicationsDayHistoryCell)initWithCoder:(id)a3;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (_TtC19HealthMedicationsUI25MedicationsDayHistoryCell)initWithCoder:(id)coder;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 @end
 
 @implementation MedicationsDayHistoryCell
 
-- (_TtC19HealthMedicationsUI25MedicationsDayHistoryCell)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI25MedicationsDayHistoryCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI25MedicationsDayHistoryCell____lazy_storage___historyView) = 0;
   v3 = self + OBJC_IVAR____TtC19HealthMedicationsUI25MedicationsDayHistoryCell_item;
@@ -17,7 +17,7 @@
   return result;
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = sub_228391350();
   v5 = *(v4 - 8);
@@ -25,7 +25,7 @@
   MEMORY[0x28223BE20](v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_228391340();
-  v9 = self;
+  selfCopy = self;
   sub_228386634();
 
   (*(v5 + 8))(v8, v4);

@@ -1,45 +1,45 @@
 @interface VenueCategoryDataSource
 - (NSArray)filterBarTitles;
-- (VenueCategoryDataSource)initWithTableView:(id)a3 searchCategory:(id)a4;
+- (VenueCategoryDataSource)initWithTableView:(id)view searchCategory:(id)category;
 - (id)filterBarTitlesWithBuildings;
 - (id)filterBarTitlesWithSubcategories;
-- (id)placeSummaryTemplateForSearchResult:(id)a3 indexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)placeSummaryTemplateForSearchResult:(id)result indexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)venueIdentifier;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_cacheEVChargersTemplates;
 - (void)dealloc;
-- (void)iterateThroughIndexPathsAndExecuteBlock:(id)a3;
-- (void)refreshEVChargers:(id)a3;
+- (void)iterateThroughIndexPathsAndExecuteBlock:(id)block;
+- (void)refreshEVChargers:(id)chargers;
 - (void)resetCache;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setBuildingsWithMapItem:(id)a3;
-- (void)setMapItem:(id)a3;
-- (void)setSearchResults:(id)a3 labelContext:(unint64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setBuildingsWithMapItem:(id)item;
+- (void)setMapItem:(id)item;
+- (void)setSearchResults:(id)results labelContext:(unint64_t)context;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation VenueCategoryDataSource
 
 - (id)filterBarTitlesWithBuildings
 {
-  v3 = [(VenueCategoryDataSource *)self buildings];
-  v4 = [v3 count];
+  buildings = [(VenueCategoryDataSource *)self buildings];
+  v4 = [buildings count];
 
   if (v4)
   {
     v5 = [NSMutableArray alloc];
-    v6 = [(VenueCategoryDataSource *)self buildings];
-    v7 = [v5 initWithCapacity:{objc_msgSend(v6, "count")}];
+    buildings2 = [(VenueCategoryDataSource *)self buildings];
+    v7 = [v5 initWithCapacity:{objc_msgSend(buildings2, "count")}];
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [(VenueCategoryDataSource *)self buildings];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    buildings3 = [(VenueCategoryDataSource *)self buildings];
+    v9 = [buildings3 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -50,15 +50,15 @@
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(buildings3);
           }
 
-          v13 = [*(*(&v17 + 1) + 8 * i) label];
-          v14 = [v13 name];
-          [v7 addObject:v14];
+          label = [*(*(&v17 + 1) + 8 * i) label];
+          name = [label name];
+          [v7 addObject:name];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [buildings3 countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);
@@ -77,21 +77,21 @@
 
 - (id)filterBarTitlesWithSubcategories
 {
-  v3 = [(VenueCategoryDataSource *)self subcategories];
-  v4 = [v3 count];
+  subcategories = [(VenueCategoryDataSource *)self subcategories];
+  v4 = [subcategories count];
 
   if (v4)
   {
     v5 = [NSMutableArray alloc];
-    v6 = [(VenueCategoryDataSource *)self subcategories];
-    v7 = [v5 initWithCapacity:{objc_msgSend(v6, "count")}];
+    subcategories2 = [(VenueCategoryDataSource *)self subcategories];
+    v7 = [v5 initWithCapacity:{objc_msgSend(subcategories2, "count")}];
 
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [(VenueCategoryDataSource *)self subcategories];
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    subcategories3 = [(VenueCategoryDataSource *)self subcategories];
+    v9 = [subcategories3 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -102,14 +102,14 @@
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(subcategories3);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) displayString];
-          [v7 addObject:v13];
+          displayString = [*(*(&v16 + 1) + 8 * i) displayString];
+          [v7 addObject:displayString];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [subcategories3 countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v10);
@@ -128,57 +128,57 @@
 
 - (NSArray)filterBarTitles
 {
-  v3 = [(VenueCategoryDataSource *)self subcategoriesType];
-  if (v3 >= 2)
+  subcategoriesType = [(VenueCategoryDataSource *)self subcategoriesType];
+  if (subcategoriesType >= 2)
   {
-    if (v3 == 2)
+    if (subcategoriesType == 2)
     {
-      v3 = [(VenueCategoryDataSource *)self filterBarTitlesWithBuildings];
+      subcategoriesType = [(VenueCategoryDataSource *)self filterBarTitlesWithBuildings];
     }
   }
 
   else
   {
-    v3 = [(VenueCategoryDataSource *)self filterBarTitlesWithSubcategories];
+    subcategoriesType = [(VenueCategoryDataSource *)self filterBarTitlesWithSubcategories];
   }
 
-  return v3;
+  return subcategoriesType;
 }
 
-- (void)setSearchResults:(id)a3 labelContext:(unint64_t)a4
+- (void)setSearchResults:(id)results labelContext:(unint64_t)context
 {
-  v6 = a3;
-  v13 = [[AlphabeticallyOrderedDataSource alloc] initWithAlphabeticallySortableObject:v6];
+  resultsCopy = results;
+  v13 = [[AlphabeticallyOrderedDataSource alloc] initWithAlphabeticallySortableObject:resultsCopy];
 
   self->_numberOfSectionsNotEmpty = [(AlphabeticallyOrderedDataSource *)v13 numberOfSectionsNotEmpty];
-  v7 = [(AlphabeticallyOrderedDataSource *)v13 sectionIndexTitles];
+  sectionIndexTitles = [(AlphabeticallyOrderedDataSource *)v13 sectionIndexTitles];
   sectionIndexTitles = self->_sectionIndexTitles;
-  self->_sectionIndexTitles = v7;
+  self->_sectionIndexTitles = sectionIndexTitles;
 
-  self->_searchResultLabelContext = a4;
+  self->_searchResultLabelContext = context;
   v9 = [[SearchResultsDataSourceContent alloc] initWithOrderedDataSource:v13];
   content = self->_content;
   self->_content = v9;
 
-  v11 = [(VenueCategoryDataSource *)self placeSummaryTemplateViewModels];
+  placeSummaryTemplateViewModels = [(VenueCategoryDataSource *)self placeSummaryTemplateViewModels];
 
-  if (v11)
+  if (placeSummaryTemplateViewModels)
   {
-    v12 = [(VenueCategoryDataSource *)self placeSummaryTemplateViewModels];
-    [v12 removeAllObjects];
+    placeSummaryTemplateViewModels2 = [(VenueCategoryDataSource *)self placeSummaryTemplateViewModels];
+    [placeSummaryTemplateViewModels2 removeAllObjects];
   }
 
   [(VenueCategoryDataSource *)self _cacheEVChargersTemplates];
 }
 
-- (void)refreshEVChargers:(id)a3
+- (void)refreshEVChargers:(id)chargers
 {
-  v4 = a3;
+  chargersCopy = chargers;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [chargersCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -189,65 +189,65 @@
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(chargersCopy);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 mapItem];
-        v11 = [v10 _identifier];
+        mapItem = [v9 mapItem];
+        _identifier = [mapItem _identifier];
 
-        v12 = [(NSMutableDictionary *)self->_mapitemTemplates objectForKeyedSubscript:v11];
+        v12 = [(NSMutableDictionary *)self->_mapitemTemplates objectForKeyedSubscript:_identifier];
 
         if (v12)
         {
           evChargerDownloader = self->_evChargerDownloader;
-          v14 = [(NSMutableDictionary *)self->_mapitemTemplates objectForKeyedSubscript:v11];
-          v15 = [v9 mapItem];
-          [(PlaceSummaryEVChargerDownloader *)evChargerDownloader refreshResultForForTemplate:v14 mapItem:v15];
+          v14 = [(NSMutableDictionary *)self->_mapitemTemplates objectForKeyedSubscript:_identifier];
+          mapItem2 = [v9 mapItem];
+          [(PlaceSummaryEVChargerDownloader *)evChargerDownloader refreshResultForForTemplate:v14 mapItem:mapItem2];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [chargersCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)setBuildingsWithMapItem:(id)a3
+- (void)setBuildingsWithMapItem:(id)item
 {
-  v4 = [a3 _venueInfo];
-  v15 = [v4 filters];
+  _venueInfo = [item _venueInfo];
+  filters = [_venueInfo filters];
 
-  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v15, "count") + 1}];
+  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(filters, "count") + 1}];
   v6 = [VenueAllBuildings alloc];
-  v7 = [(VenueCategoryDataSource *)self mapItem];
-  v8 = [v7 _venueInfo];
-  v9 = [v8 venueIdentifier];
-  v10 = [(VenueAllBuildings *)v6 initWithVenueIdentifier:v9];
+  mapItem = [(VenueCategoryDataSource *)self mapItem];
+  _venueInfo2 = [mapItem _venueInfo];
+  venueIdentifier = [_venueInfo2 venueIdentifier];
+  v10 = [(VenueAllBuildings *)v6 initWithVenueIdentifier:venueIdentifier];
   [v5 addObject:v10];
 
-  v11 = [[AlphabeticallyOrderedDataSource alloc] initWithObjects:v15];
-  v12 = [(AlphabeticallyOrderedDataSource *)v11 orderedObjects];
-  [v5 addObjectsFromArray:v12];
+  v11 = [[AlphabeticallyOrderedDataSource alloc] initWithObjects:filters];
+  orderedObjects = [(AlphabeticallyOrderedDataSource *)v11 orderedObjects];
+  [v5 addObjectsFromArray:orderedObjects];
 
   v13 = [v5 copy];
   buildings = self->_buildings;
   self->_buildings = v13;
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v14 = a3;
-  v9 = [(DataSource *)self delegate];
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
+  delegate = [(DataSource *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(DataSource *)self delegate];
-    [v11 scrollViewWillEndDragging:v14 withVelocity:a5 targetContentOffset:{x, y}];
+    delegate2 = [(DataSource *)self delegate];
+    [delegate2 scrollViewWillEndDragging:draggingCopy withVelocity:offset targetContentOffset:{x, y}];
   }
 
   if (y <= 0.0)
@@ -264,68 +264,68 @@
   [v13 captureUserAction:v12 onTarget:106 eventValue:0];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(VenueCategoryDataSource *)self content];
-  v10 = [v8 objectAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  content = [(VenueCategoryDataSource *)self content];
+  v10 = [content objectAtIndexPath:pathCopy];
 
-  [(DataSource *)self sendAnalyticsForDataAtIndexPath:v6 object:v10 action:2007];
-  v9 = [(DataSource *)self delegate];
-  [v9 dataSource:self itemTapped:v10];
+  [(DataSource *)self sendAnalyticsForDataAtIndexPath:pathCopy object:v10 action:2007];
+  delegate = [(DataSource *)self delegate];
+  [delegate dataSource:self itemTapped:v10];
 
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (void)tableView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5
+- (void)tableView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v13 = a3;
-  v7 = [a4 nextFocusedItem];
+  viewCopy = view;
+  nextFocusedItem = [context nextFocusedItem];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v13 indexPathForCell:v7], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([viewCopy indexPathForCell:nextFocusedItem], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v9 = v8;
-    v10 = [(DataSource *)self delegate];
-    v11 = [(VenueCategoryDataSource *)self content];
-    v12 = [v11 objectAtIndexPath:v9];
-    [v10 dataSource:self itemFocused:v12];
+    delegate2 = v8;
+    delegate = [(DataSource *)self delegate];
+    content = [(VenueCategoryDataSource *)self content];
+    v12 = [content objectAtIndexPath:delegate2];
+    [delegate dataSource:self itemFocused:v12];
   }
 
   else
   {
-    v9 = [(DataSource *)self delegate];
-    [v9 dataSource:self itemFocused:0];
+    delegate2 = [(DataSource *)self delegate];
+    [delegate2 dataSource:self itemFocused:0];
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(VenueCategoryDataSource *)self content];
-  v4 = [v3 numberOfSections];
+  content = [(VenueCategoryDataSource *)self content];
+  numberOfSections = [content numberOfSections];
 
-  return v4;
+  return numberOfSections;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(VenueCategoryDataSource *)self content];
-  v6 = [v5 numberOfRowsInSection:a4];
+  content = [(VenueCategoryDataSource *)self content];
+  v6 = [content numberOfRowsInSection:section];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(VenueCategoryDataSource *)self content];
-  v9 = [v8 objectAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  content = [(VenueCategoryDataSource *)self content];
+  v9 = [content objectAtIndexPath:pathCopy];
 
-  v10 = [(VenueCategoryDataSource *)self placeSummaryTemplateForSearchResult:v9 indexPath:v6];
+  v10 = [(VenueCategoryDataSource *)self placeSummaryTemplateForSearchResult:v9 indexPath:pathCopy];
 
   v11 = +[_TtC4Maps25PlaceSummaryTableViewCell reuseIdentifier];
-  v12 = [v7 dequeueReusableCellWithIdentifier:v11];
+  v12 = [viewCopy dequeueReusableCellWithIdentifier:v11];
 
   [v12 setViewModel:v10 delegate:self asyncDataManager:self->_placeSummaryAsyncDataManager];
 
@@ -334,28 +334,28 @@
 
 - (id)venueIdentifier
 {
-  v2 = [(VenueCategoryDataSource *)self mapItem];
-  v3 = [v2 _venueInfo];
-  v4 = [v3 venueIdentifier];
+  mapItem = [(VenueCategoryDataSource *)self mapItem];
+  _venueInfo = [mapItem _venueInfo];
+  venueIdentifier = [_venueInfo venueIdentifier];
 
-  return v4;
+  return venueIdentifier;
 }
 
-- (id)placeSummaryTemplateForSearchResult:(id)a3 indexPath:(id)a4
+- (id)placeSummaryTemplateForSearchResult:(id)result indexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VenueCategoryDataSource *)self placeSummaryTemplateViewModels];
-  v9 = [v8 objectForKey:v7];
+  resultCopy = result;
+  pathCopy = path;
+  placeSummaryTemplateViewModels = [(VenueCategoryDataSource *)self placeSummaryTemplateViewModels];
+  v9 = [placeSummaryTemplateViewModels objectForKey:pathCopy];
 
   if (!v9)
   {
-    v9 = [_TtC4Maps36PlaceSummaryViewModelTemplateFactory venueViewModelWithSearchResult:v6 metadata:0 labelContext:self->_searchResultLabelContext];
+    v9 = [_TtC4Maps36PlaceSummaryViewModelTemplateFactory venueViewModelWithSearchResult:resultCopy metadata:0 labelContext:self->_searchResultLabelContext];
     v10 = [[_TtC4Maps19PlaceSummaryMetrics alloc] initWithLeadingMargin:0 trailingMargin:0 topMargin:0.0 bottomMargin:0.0 topLeadingCornerRadius:0.0 topTrailingCornerRadius:0.0 bottomLeadingCornerRadius:0.0 bottomTrailingCornerRadius:0.0 showsDivider:0.0 showPlatter:0.0];
     [v9 setMetrics:v10];
 
-    v11 = [(VenueCategoryDataSource *)self placeSummaryTemplateViewModels];
-    [v11 setObject:v9 forKey:v7];
+    placeSummaryTemplateViewModels2 = [(VenueCategoryDataSource *)self placeSummaryTemplateViewModels];
+    [placeSummaryTemplateViewModels2 setObject:v9 forKey:pathCopy];
   }
 
   v12 = v9;
@@ -363,25 +363,25 @@
   return v12;
 }
 
-- (void)iterateThroughIndexPathsAndExecuteBlock:(id)a3
+- (void)iterateThroughIndexPathsAndExecuteBlock:(id)block
 {
-  v11 = a3;
-  v4 = [(VenueCategoryDataSource *)self content];
-  v5 = [v4 numberOfSections];
+  blockCopy = block;
+  content = [(VenueCategoryDataSource *)self content];
+  numberOfSections = [content numberOfSections];
 
-  if (v5 >= 1)
+  if (numberOfSections >= 1)
   {
-    for (i = 0; i != v5; ++i)
+    for (i = 0; i != numberOfSections; ++i)
     {
-      v7 = [(VenueCategoryDataSource *)self content];
-      v8 = [v7 numberOfRowsInSection:i];
+      content2 = [(VenueCategoryDataSource *)self content];
+      v8 = [content2 numberOfRowsInSection:i];
 
       if (v8 >= 1)
       {
         for (j = 0; j != v8; ++j)
         {
           v10 = [NSIndexPath indexPathForRow:j inSection:i];
-          v11[2](v11, v10);
+          blockCopy[2](blockCopy, v10);
         }
       }
     }
@@ -390,8 +390,8 @@
 
 - (void)_cacheEVChargersTemplates
 {
-  v3 = [(SearchResultsDataSourceContent *)self->_content objects];
-  v4 = [v3 count];
+  objects = [(SearchResultsDataSourceContent *)self->_content objects];
+  v4 = [objects count];
 
   if (v4)
   {
@@ -404,17 +404,17 @@
   }
 }
 
-- (void)setMapItem:(id)a3
+- (void)setMapItem:(id)item
 {
-  v7 = a3;
-  objc_storeStrong(&self->_mapItem, a3);
+  itemCopy = item;
+  objc_storeStrong(&self->_mapItem, item);
   [(VenueCategoryDataSource *)self setBuildingsWithMapItem:self->_mapItem];
-  v5 = [(VenueCategoryDataSource *)self content];
+  content = [(VenueCategoryDataSource *)self content];
 
-  if (v5)
+  if (content)
   {
-    v6 = [(DataSource *)self tableView];
-    [v6 reloadData];
+    tableView = [(DataSource *)self tableView];
+    [tableView reloadData];
   }
 }
 
@@ -422,8 +422,8 @@
 {
   if (self->_placeSummaryTemplateViewModels)
   {
-    v3 = [(VenueCategoryDataSource *)self placeSummaryTemplateViewModels];
-    [v3 removeAllObjects];
+    placeSummaryTemplateViewModels = [(VenueCategoryDataSource *)self placeSummaryTemplateViewModels];
+    [placeSummaryTemplateViewModels removeAllObjects];
 
     [(VenueCategoryDataSource *)self setPlaceSummaryTemplateViewModels:0];
   }
@@ -443,31 +443,31 @@
   [(VenueCategoryDataSource *)&v3 dealloc];
 }
 
-- (VenueCategoryDataSource)initWithTableView:(id)a3 searchCategory:(id)a4
+- (VenueCategoryDataSource)initWithTableView:(id)view searchCategory:(id)category
 {
-  v7 = a4;
+  categoryCopy = category;
   v26.receiver = self;
   v26.super_class = VenueCategoryDataSource;
-  v8 = [(DataSource *)&v26 initWithTableView:a3 updateLocation:0];
+  v8 = [(DataSource *)&v26 initWithTableView:view updateLocation:0];
   v9 = v8;
   if (v8)
   {
-    v10 = [(DataSource *)v8 tableView];
-    [v10 setDelegate:v9];
+    tableView = [(DataSource *)v8 tableView];
+    [tableView setDelegate:v9];
 
-    v11 = [(DataSource *)v9 tableView];
-    [v11 setDataSource:v9];
+    tableView2 = [(DataSource *)v9 tableView];
+    [tableView2 setDataSource:v9];
 
-    v12 = [(DataSource *)v9 tableView];
+    tableView3 = [(DataSource *)v9 tableView];
     v13 = objc_opt_class();
     v14 = +[_TtC4Maps25PlaceSummaryTableViewCell reuseIdentifier];
-    [v12 registerClass:v13 forCellReuseIdentifier:v14];
+    [tableView3 registerClass:v13 forCellReuseIdentifier:v14];
 
     UInteger = GEOConfigGetUInteger();
-    v16 = [(DataSource *)v9 tableView];
-    [v16 setSectionIndexMinimumDisplayRowCount:UInteger];
+    tableView4 = [(DataSource *)v9 tableView];
+    [tableView4 setSectionIndexMinimumDisplayRowCount:UInteger];
 
-    objc_storeStrong(&v9->_searchCategory, a4);
+    objc_storeStrong(&v9->_searchCategory, category);
     v9->_searchResultLabelContext = 1;
     v17 = objc_alloc_init(_TtC4Maps28PlaceSummaryAsyncDataManager);
     placeSummaryAsyncDataManager = v9->_placeSummaryAsyncDataManager;

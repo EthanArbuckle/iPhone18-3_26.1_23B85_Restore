@@ -1,12 +1,12 @@
 @interface MOEventPatternDetectorTimeOfDayRoutineDetector
-- (BOOL)_routineStartCheck:(id)a3;
-- (BOOL)configure:(id)a3;
+- (BOOL)_routineStartCheck:(id)check;
+- (BOOL)configure:(id)configure;
 - (MOEventPatternDetectorTimeOfDayRoutineDetector)init;
-- (id)_dailyRoutineCheck:(id)a3;
-- (id)_detectDailyRoutine:(id)a3;
-- (id)_findHabitualTime:(id)a3;
-- (id)_findTopNRoutines:(id)a3 withN:(int64_t)a4;
-- (id)extractRoutineEventsFrom:(id)a3 withFeatures:(id)a4;
+- (id)_dailyRoutineCheck:(id)check;
+- (id)_detectDailyRoutine:(id)routine;
+- (id)_findHabitualTime:(id)time;
+- (id)_findTopNRoutines:(id)routines withN:(int64_t)n;
+- (id)extractRoutineEventsFrom:(id)from withFeatures:(id)features;
 @end
 
 @implementation MOEventPatternDetectorTimeOfDayRoutineDetector
@@ -33,10 +33,10 @@
   return v3;
 }
 
-- (id)extractRoutineEventsFrom:(id)a3 withFeatures:(id)a4
+- (id)extractRoutineEventsFrom:(id)from withFeatures:(id)features
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  featuresCopy = features;
   if (self->_routineConsistencyThreshold == -1 || self->_intraWeekFreqThreshold == -1 || self->_routineDetectionSlidingWinSize == -1.0 || self->_lastWindowEnd == -1.0 || self->_lastWindowStartThreshold == -1.0 || self->_maxNumDailyDetections == -1)
   {
     v8 = _mo_log_facility_get_os_log(&MOLogFacilityPatternDetection);
@@ -51,21 +51,21 @@
   else
   {
     v82 = objc_opt_new();
-    if ([v7 count])
+    if ([featuresCopy count])
     {
       v10 = 0;
       v11 = &GEOPOICategoryGasStation_ptr;
-      v91 = self;
-      v75 = v7;
-      v76 = v6;
+      selfCopy = self;
+      v75 = featuresCopy;
+      v76 = fromCopy;
       while (1)
       {
-        v12 = [v7 objectAtIndex:v10];
+        v12 = [featuresCopy objectAtIndex:v10];
         v13 = [v12 mutableCopy];
 
         v77 = v10;
-        v80 = [v6 objectAtIndex:v10];
-        v79 = [v80 firstObject];
+        v80 = [fromCopy objectAtIndex:v10];
+        firstObject = [v80 firstObject];
         v81 = v13;
         v14 = [(MOEventPatternDetectorTimeOfDayRoutineDetector *)self _detectDailyRoutine:v13];
         if ([v14 count])
@@ -76,8 +76,8 @@
 LABEL_47:
 
         v10 = v77 + 1;
-        v7 = v75;
-        v6 = v76;
+        featuresCopy = v75;
+        fromCopy = v76;
         if ([v75 count] <= v77 + 1)
         {
           goto LABEL_9;
@@ -108,13 +108,13 @@ LABEL_47:
         v92 = [v24 valueForKeyPath:v25];
 
         v26 = [MOEvent alloc];
-        v27 = [v11[200] UUID];
-        v28 = [v23 lastObject];
-        v29 = [v28 valueForKey:@"startDate"];
-        v30 = [v23 lastObject];
-        v31 = [v30 valueForKey:@"endDate"];
+        uUID = [v11[200] UUID];
+        lastObject = [v23 lastObject];
+        v29 = [lastObject valueForKey:@"startDate"];
+        lastObject2 = [v23 lastObject];
+        v31 = [lastObject2 valueForKey:@"endDate"];
         v32 = +[NSDate date];
-        v33 = -[MOEvent initWithEventIdentifier:startDate:endDate:creationDate:provider:category:](v26, "initWithEventIdentifier:startDate:endDate:creationDate:provider:category:", v27, v29, v31, v32, 5, [v79 category]);
+        v33 = -[MOEvent initWithEventIdentifier:startDate:endDate:creationDate:provider:category:](v26, "initWithEventIdentifier:startDate:endDate:creationDate:provider:category:", uUID, v29, v31, v32, 5, [firstObject category]);
 
         v34 = [NSDate dateWithTimeIntervalSinceNow:2419200.0];
         v86 = v33;
@@ -122,7 +122,7 @@ LABEL_47:
 
         v35 = objc_opt_new();
         [v35 setObject:&off_1003693B8 forKeyedSubscript:@"kEventPatternType"];
-        v36 = [NSNumber numberWithUnsignedInteger:v91->_routineFeatureType];
+        v36 = [NSNumber numberWithUnsignedInteger:selfCopy->_routineFeatureType];
         [v35 setObject:v36 forKeyedSubscript:@"kEventPatternRoutineFeatureType"];
 
         [v35 setObject:v95 forKeyedSubscript:@"kEventPatternRoutineEventIdentifierList"];
@@ -130,7 +130,7 @@ LABEL_47:
         [v35 setObject:v93 forKeyedSubscript:@"kEventPatternRoutineNumHits"];
         [v35 setObject:0 forKeyedSubscript:@"kEventPatternRoutineDayOfWeek"];
         [v35 setObject:v92 forKeyedSubscript:@"kEventPatternRoutineDetectedWeeks"];
-        v37 = [NSNumber numberWithBool:[(MOEventPatternDetectorTimeOfDayRoutineDetector *)v91 _routineStartCheck:v92]];
+        v37 = [NSNumber numberWithBool:[(MOEventPatternDetectorTimeOfDayRoutineDetector *)selfCopy _routineStartCheck:v92]];
         [v35 setObject:v37 forKeyedSubscript:@"kEventPatternRoutineStartingRoutine"];
 
         v38 = [v23 valueForKey:@"workoutType"];
@@ -140,8 +140,8 @@ LABEL_47:
         v84 = v39;
         if ([v39 count] == 1)
         {
-          v40 = [v23 lastObject];
-          v41 = [v40 valueForKey:@"workoutType"];
+          lastObject3 = [v23 lastObject];
+          v41 = [lastObject3 valueForKey:@"workoutType"];
           [v35 setObject:v41 forKeyedSubscript:@"kEventPatternOverallWorkoutType"];
         }
 
@@ -221,7 +221,7 @@ LABEL_42:
         [v82 addObject:v86];
 
         v15 = v90 + 1;
-        self = v91;
+        self = selfCopy;
         v11 = &GEOPOICategoryGasStation_ptr;
         if ([v78 count] <= v90 + 1)
         {
@@ -246,51 +246,51 @@ LABEL_29:
           goto LABEL_40;
         }
 
-        v58 = [v57 startDate];
-        if (!v58)
+        startDate = [v57 startDate];
+        if (!startDate)
         {
           goto LABEL_40;
         }
 
-        v59 = v58;
-        v60 = [v57 endDate];
-        if (!v60)
+        v59 = startDate;
+        endDate = [v57 endDate];
+        if (!endDate)
         {
           goto LABEL_39;
         }
 
-        v61 = v60;
-        v62 = [v57 workoutType];
-        if (!v62)
+        v61 = endDate;
+        workoutType = [v57 workoutType];
+        if (!workoutType)
         {
           break;
         }
 
-        v63 = v62;
-        v64 = [v57 identifierFromProvider];
+        v63 = workoutType;
+        identifierFromProvider = [v57 identifierFromProvider];
 
-        if (v64)
+        if (identifierFromProvider)
         {
           v59 = objc_opt_new();
-          v65 = [v57 identifierFromProvider];
-          [v59 setObject:v65 forKey:@"kEventResourcePatternWorkoutIdentifierFromProvider"];
+          identifierFromProvider2 = [v57 identifierFromProvider];
+          [v59 setObject:identifierFromProvider2 forKey:@"kEventResourcePatternWorkoutIdentifierFromProvider"];
 
-          v66 = [v57 startDate];
-          [v66 timeIntervalSince1970];
+          startDate2 = [v57 startDate];
+          [startDate2 timeIntervalSince1970];
           v67 = [NSNumber numberWithDouble:?];
           [v59 setObject:v67 forKey:@"kEventResourcePatternWorkoutStartDate"];
 
-          v68 = [v57 endDate];
-          [v68 timeIntervalSince1970];
+          endDate2 = [v57 endDate];
+          [endDate2 timeIntervalSince1970];
           v69 = [NSNumber numberWithDouble:?];
           [v59 setObject:v69 forKey:@"kEventResourcePatternWorkoutEndDate"];
 
-          v70 = [v57 workoutEvent];
-          v71 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v70 isIndoors]);
+          workoutEvent = [v57 workoutEvent];
+          v71 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [workoutEvent isIndoors]);
           [v59 setObject:v71 forKey:@"kEventResourcePatternWorkoutIsIndoors"];
 
-          v72 = [v57 workoutType];
-          [v59 setObject:v72 forKey:@"kEventResourcePatternWorkoutType"];
+          workoutType2 = [v57 workoutType];
+          [v59 setObject:workoutType2 forKey:@"kEventResourcePatternWorkoutType"];
 
           [v96 addObject:v59];
 LABEL_39:
@@ -318,9 +318,9 @@ LABEL_9:
   return v82;
 }
 
-- (BOOL)_routineStartCheck:(id)a3
+- (BOOL)_routineStartCheck:(id)check
 {
-  v3 = a3;
+  checkCopy = check;
   v4 = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
   v5 = +[NSDate date];
   *&v6 = [v4 component:0x2000 fromDate:v5];
@@ -332,16 +332,16 @@ LABEL_9:
   [v8 addObject:v9];
 
   v10 = [NSSet setWithArray:v8];
-  v11 = [NSSet setWithArray:v3];
+  v11 = [NSSet setWithArray:checkCopy];
 
-  LOBYTE(v3) = [v10 isEqualToSet:v11];
-  return v3;
+  LOBYTE(checkCopy) = [v10 isEqualToSet:v11];
+  return checkCopy;
 }
 
-- (id)_findHabitualTime:(id)a3
+- (id)_findHabitualTime:(id)time
 {
-  v4 = a3;
-  v5 = [v4 valueForKey:@"hrFromMidnight"];
+  timeCopy = time;
+  v5 = [timeCopy valueForKey:@"hrFromMidnight"];
   v6 = [NSExpression expressionForConstantValue:v5];
   v31 = v6;
   v7 = [NSArray arrayWithObjects:&v31 count:1];
@@ -365,10 +365,10 @@ LABEL_9:
     [v13 floatValue];
     v27 = [NSNumber numberWithDouble:self->_routineStdFilterMultiplier * v15];
     v16 = [NSPredicate predicateWithFormat:@"(abs(hrFromMidnight-%@) < %@)", v9, v27];
-    v26 = [v4 filteredArrayUsingPredicate:v16];
+    v26 = [timeCopy filteredArrayUsingPredicate:v16];
 
     [v26 valueForKey:@"hrFromMidnight"];
-    v17 = v28 = v4;
+    v17 = v28 = timeCopy;
     v18 = [NSExpression expressionForConstantValue:v17];
     v29 = v18;
     [NSArray arrayWithObjects:&v29 count:1];
@@ -383,16 +383,16 @@ LABEL_9:
 
     v24 = [v23 expressionValueWithObject:0 context:0];
 
-    v4 = v28;
+    timeCopy = v28;
   }
 
   return v24;
 }
 
-- (id)_dailyRoutineCheck:(id)a3
+- (id)_dailyRoutineCheck:(id)check
 {
-  v4 = a3;
-  v5 = [v4 valueForKey:@"weekOfYear"];
+  checkCopy = check;
+  v5 = [checkCopy valueForKey:@"weekOfYear"];
   v6 = [NSString stringWithFormat:@"@distinctUnionOfObjects.%@", @"self"];
   v20 = v5;
   v7 = [v5 valueForKeyPath:v6];
@@ -418,7 +418,7 @@ LABEL_9:
         }
 
         v13 = [NSPredicate predicateWithFormat:@"(weekOfYear == %@)", *(*(&v22 + 1) + 8 * i)];
-        v14 = [v4 filteredArrayUsingPredicate:v13];
+        v14 = [checkCopy filteredArrayUsingPredicate:v13];
 
         v15 = [v14 valueForKey:@"weekday"];
         v16 = [NSString stringWithFormat:@"@distinctUnionOfObjects.%@", @"self"];
@@ -446,9 +446,9 @@ LABEL_9:
   return v10;
 }
 
-- (id)_detectDailyRoutine:(id)a3
+- (id)_detectDailyRoutine:(id)routine
 {
-  v51 = a3;
+  routineCopy = routine;
   v4 = &GEOPOICategoryGasStation_ptr;
   v5 = [NSNumber numberWithDouble:self->_routineDetectionSlidingWinSize];
   v50 = +[NSMutableArray array];
@@ -488,7 +488,7 @@ LABEL_9:
       }
 
       v19 = [NSPredicate predicateWithFormat:@"(hrFromMidnight >= %@) AND (hrFromMidnight < %@)", v9, v5];
-      v20 = [v51 filteredArrayUsingPredicate:v19];
+      v20 = [routineCopy filteredArrayUsingPredicate:v19];
 
       if ([v20 count])
       {
@@ -511,7 +511,7 @@ LABEL_9:
           [v21 floatValue];
           v29 = v28 - self->_routineEnvelope;
           v30 = [NSPredicate predicateWithFormat:@"(hrFromMidnight >= %f) AND (hrFromMidnight < %f)", v29, v27];
-          v31 = [v51 filteredArrayUsingPredicate:v30];
+          v31 = [routineCopy filteredArrayUsingPredicate:v30];
 
           v32 = [(MOEventPatternDetectorTimeOfDayRoutineDetector *)self _dailyRoutineCheck:v31];
           if ([v32 intValue] >= self->_routineConsistencyThreshold)
@@ -566,43 +566,43 @@ LABEL_9:
   return v47;
 }
 
-- (id)_findTopNRoutines:(id)a3 withN:(int64_t)a4
+- (id)_findTopNRoutines:(id)routines withN:(int64_t)n
 {
-  v5 = a3;
+  routinesCopy = routines;
   v6 = [NSSortDescriptor sortDescriptorWithKey:@"numHits" ascending:0];
   v27 = v6;
   v7 = [NSArray arrayWithObjects:&v27 count:1];
-  [v5 sortUsingDescriptors:v7];
+  [routinesCopy sortUsingDescriptors:v7];
 
-  v8 = [v5 valueForKey:@"numHits"];
-  v24 = v5;
-  v9 = [v5 valueForKey:@"habitualTime"];
+  v8 = [routinesCopy valueForKey:@"numHits"];
+  v24 = routinesCopy;
+  v9 = [routinesCopy valueForKey:@"habitualTime"];
   v10 = [v8 count];
-  if (v10 >= a4)
+  if (v10 >= n)
   {
-    v11 = a4;
+    nCopy = n;
   }
 
   else
   {
-    v11 = v10;
+    nCopy = v10;
   }
 
   v23 = v8;
-  v12 = [v8 subarrayWithRange:{0, v11}];
+  v12 = [v8 subarrayWithRange:{0, nCopy}];
   v13 = [v9 count];
-  if (v13 >= a4)
+  if (v13 >= n)
   {
-    v14 = a4;
+    nCopy2 = n;
   }
 
   else
   {
-    v14 = v13;
+    nCopy2 = v13;
   }
 
   v22 = v9;
-  v15 = [v9 subarrayWithRange:{0, v14}];
+  v15 = [v9 subarrayWithRange:{0, nCopy2}];
   v16 = +[NSMutableArray array];
   if ([v15 count])
   {
@@ -627,17 +627,17 @@ LABEL_9:
   return v16;
 }
 
-- (BOOL)configure:(id)a3
+- (BOOL)configure:(id)configure
 {
-  v4 = a3;
-  v5 = [v4 count];
+  configureCopy = configure;
+  v5 = [configureCopy count];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"RoutineConsistencyThreshold"];
+    v6 = [configureCopy objectForKey:@"RoutineConsistencyThreshold"];
 
     if (v6)
     {
-      v7 = [v4 objectForKeyedSubscript:@"RoutineConsistencyThreshold"];
+      v7 = [configureCopy objectForKeyedSubscript:@"RoutineConsistencyThreshold"];
       self->_routineConsistencyThreshold = [v7 intValue];
     }
 
@@ -650,11 +650,11 @@ LABEL_9:
       }
     }
 
-    v9 = [v4 objectForKey:@"IntraWeekFreqThreshold"];
+    v9 = [configureCopy objectForKey:@"IntraWeekFreqThreshold"];
 
     if (v9)
     {
-      v10 = [v4 objectForKeyedSubscript:@"IntraWeekFreqThreshold"];
+      v10 = [configureCopy objectForKeyedSubscript:@"IntraWeekFreqThreshold"];
       self->_intraWeekFreqThreshold = [v10 intValue];
     }
 
@@ -667,11 +667,11 @@ LABEL_9:
       }
     }
 
-    v11 = [v4 objectForKey:@"RoutineStdThreshold"];
+    v11 = [configureCopy objectForKey:@"RoutineStdThreshold"];
 
     if (v11)
     {
-      v12 = [v4 objectForKeyedSubscript:@"RoutineStdThreshold"];
+      v12 = [configureCopy objectForKeyedSubscript:@"RoutineStdThreshold"];
       [v12 doubleValue];
       self->_routineStdThreshold = v13;
     }
@@ -685,11 +685,11 @@ LABEL_9:
       }
     }
 
-    v14 = [v4 objectForKey:@"RoutineStdFilterMultiplier"];
+    v14 = [configureCopy objectForKey:@"RoutineStdFilterMultiplier"];
 
     if (v14)
     {
-      v15 = [v4 objectForKeyedSubscript:@"RoutineStdFilterMultiplier"];
+      v15 = [configureCopy objectForKeyedSubscript:@"RoutineStdFilterMultiplier"];
       [v15 doubleValue];
       self->_routineStdFilterMultiplier = v16;
     }
@@ -703,11 +703,11 @@ LABEL_9:
       }
     }
 
-    v17 = [v4 objectForKey:@"RoutineEnvelope"];
+    v17 = [configureCopy objectForKey:@"RoutineEnvelope"];
 
     if (v17)
     {
-      v18 = [v4 objectForKeyedSubscript:@"RoutineEnvelope"];
+      v18 = [configureCopy objectForKeyedSubscript:@"RoutineEnvelope"];
       [v18 doubleValue];
       self->_routineEnvelope = v19;
     }
@@ -721,11 +721,11 @@ LABEL_9:
       }
     }
 
-    v20 = [v4 objectForKey:@"RoutineDetectionSlidingWinSize"];
+    v20 = [configureCopy objectForKey:@"RoutineDetectionSlidingWinSize"];
 
     if (v20)
     {
-      v21 = [v4 objectForKeyedSubscript:@"RoutineDetectionSlidingWinSize"];
+      v21 = [configureCopy objectForKeyedSubscript:@"RoutineDetectionSlidingWinSize"];
       [v21 doubleValue];
       self->_routineDetectionSlidingWinSize = v22;
     }
@@ -739,11 +739,11 @@ LABEL_9:
       }
     }
 
-    v23 = [v4 objectForKey:@"RoutineDetectionSlidingWinStepSize"];
+    v23 = [configureCopy objectForKey:@"RoutineDetectionSlidingWinStepSize"];
 
     if (v23)
     {
-      v24 = [v4 objectForKeyedSubscript:@"RoutineDetectionSlidingWinStepSize"];
+      v24 = [configureCopy objectForKeyedSubscript:@"RoutineDetectionSlidingWinStepSize"];
       [v24 doubleValue];
       self->_routineDetectionSlidingWinStepSize = v25;
     }
@@ -757,11 +757,11 @@ LABEL_9:
       }
     }
 
-    v26 = [v4 objectForKey:@"MaxNumDailyDetections"];
+    v26 = [configureCopy objectForKey:@"MaxNumDailyDetections"];
 
     if (v26)
     {
-      v27 = [v4 objectForKeyedSubscript:@"MaxNumDailyDetections"];
+      v27 = [configureCopy objectForKeyedSubscript:@"MaxNumDailyDetections"];
       self->_maxNumDailyDetections = [v27 intValue];
     }
 
@@ -774,11 +774,11 @@ LABEL_9:
       }
     }
 
-    v28 = [v4 objectForKey:@"LastWindowEnd"];
+    v28 = [configureCopy objectForKey:@"LastWindowEnd"];
 
     if (v28)
     {
-      v29 = [v4 objectForKeyedSubscript:@"LastWindowEnd"];
+      v29 = [configureCopy objectForKeyedSubscript:@"LastWindowEnd"];
       [v29 doubleValue];
       self->_lastWindowEnd = v30;
     }
@@ -792,11 +792,11 @@ LABEL_9:
       }
     }
 
-    v31 = [v4 objectForKey:@"LastWindowStartThreshold"];
+    v31 = [configureCopy objectForKey:@"LastWindowStartThreshold"];
 
     if (v31)
     {
-      v32 = [v4 objectForKeyedSubscript:@"LastWindowStartThreshold"];
+      v32 = [configureCopy objectForKeyedSubscript:@"LastWindowStartThreshold"];
       [v32 doubleValue];
       self->_lastWindowStartThreshold = v33;
     }
@@ -810,11 +810,11 @@ LABEL_9:
       }
     }
 
-    v34 = [v4 objectForKey:@"RoutineFeatureType"];
+    v34 = [configureCopy objectForKey:@"RoutineFeatureType"];
 
     if (v34)
     {
-      v35 = [v4 objectForKeyedSubscript:@"RoutineFeatureType"];
+      v35 = [configureCopy objectForKeyedSubscript:@"RoutineFeatureType"];
       self->_routineFeatureType = [v35 intValue];
     }
 

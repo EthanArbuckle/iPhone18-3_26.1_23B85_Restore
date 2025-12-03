@@ -1,37 +1,37 @@
 @interface VNRecognizeObjectsRequest
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4;
-+ (id)descriptionForPrivateRevision:(unint64_t)a3;
-+ (id)knownObjectIdentifiersRecognizedByRequestRevision:(unint64_t)a3 error:(id *)a4;
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision;
++ (id)descriptionForPrivateRevision:(unint64_t)revision;
++ (id)knownObjectIdentifiersRecognizedByRequestRevision:(unint64_t)revision error:(id *)error;
 + (id)privateRevisionsSet;
 - (BOOL)useImageAnalyzerScaling;
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3;
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration;
 - (NSArray)targetedIdentifiers;
 - (float)modelMinimumDetectionConfidence;
 - (float)modelNonMaximumSuppressionThreshold;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4;
-- (id)supportedIdentifiersAndReturnError:(id *)a3;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session;
+- (id)supportedIdentifiersAndReturnError:(id *)error;
 - (unint64_t)imageCropAndScaleOption;
-- (void)setImageCropAndScaleOption:(unint64_t)a3;
-- (void)setModelMinimumDetectionConfidence:(float)a3;
-- (void)setModelNonMaximumSuppressionThreshold:(float)a3;
-- (void)setTargetedIdentifiers:(id)a3;
-- (void)setUseImageAnalyzerScaling:(BOOL)a3;
+- (void)setImageCropAndScaleOption:(unint64_t)option;
+- (void)setModelMinimumDetectionConfidence:(float)confidence;
+- (void)setModelNonMaximumSuppressionThreshold:(float)threshold;
+- (void)setTargetedIdentifiers:(id)identifiers;
+- (void)setUseImageAnalyzerScaling:(BOOL)scaling;
 @end
 
 @implementation VNRecognizeObjectsRequest
 
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   [(VNRecognizeObjectsRequest *)self modelMinimumDetectionConfidence];
   v6 = v5;
-  [v4 modelMinimumDetectionConfidence];
-  if (v6 == v7 && (-[VNRecognizeObjectsRequest modelNonMaximumSuppressionThreshold](self, "modelNonMaximumSuppressionThreshold"), v9 = v8, [v4 modelNonMaximumSuppressionThreshold], v9 == v10) && (-[VNRecognizeObjectsRequest targetedIdentifiers](self, "targetedIdentifiers"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "targetedIdentifiers"), v12 = objc_claimAutoreleasedReturnValue(), v13 = VisionCoreEquivalentOrNilUnorderedArrays(), v12, v11, (v13 & 1) != 0))
+  [configurationCopy modelMinimumDetectionConfidence];
+  if (v6 == v7 && (-[VNRecognizeObjectsRequest modelNonMaximumSuppressionThreshold](self, "modelNonMaximumSuppressionThreshold"), v9 = v8, [configurationCopy modelNonMaximumSuppressionThreshold], v9 == v10) && (-[VNRecognizeObjectsRequest targetedIdentifiers](self, "targetedIdentifiers"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(configurationCopy, "targetedIdentifiers"), v12 = objc_claimAutoreleasedReturnValue(), v13 = VisionCoreEquivalentOrNilUnorderedArrays(), v12, v11, (v13 & 1) != 0))
   {
     v16.receiver = self;
     v16.super_class = VNRecognizeObjectsRequest;
-    v14 = [(VNImageBasedRequest *)&v16 willAcceptCachedResultsFromRequestWithConfiguration:v4];
+    v14 = [(VNImageBasedRequest *)&v16 willAcceptCachedResultsFromRequestWithConfiguration:configurationCopy];
   }
 
   else
@@ -42,17 +42,17 @@
   return v14;
 }
 
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = VNRecognizeObjectsRequest;
-  v6 = [(VNRequest *)&v17 newDefaultDetectorOptionsForRequestRevision:a3 session:a4];
+  v6 = [(VNRequest *)&v17 newDefaultDetectorOptionsForRequestRevision:revision session:session];
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[VNRecognizeObjectsRequest imageCropAndScaleOption](self, "imageCropAndScaleOption")}];
   [v6 setObject:v7 forKeyedSubscript:@"VNDetectorProcessOption_ImageCropAndScaleOption"];
 
-  v8 = [(VNRequest *)self frameworkClass];
-  if ([VNCoreSceneUnderstandingDetector handlesRequestClass:v8 revision:a3])
+  frameworkClass = [(VNRequest *)self frameworkClass];
+  if ([VNCoreSceneUnderstandingDetector handlesRequestClass:frameworkClass revision:revision])
   {
     v9 = [[VNCoreSceneUnderstandingDetectorRecognizeObjectsConfiguration alloc] initWithObservationsRecipient:self];
     v18[0] = v9;
@@ -64,7 +64,7 @@
 
   else
   {
-    v12 = [VNImageAnalyzerMultiDetector modelForRequestClass:v8 revision:a3];
+    v12 = [VNImageAnalyzerMultiDetector modelForRequestClass:frameworkClass revision:revision];
     if (v12)
     {
       v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12];
@@ -81,10 +81,10 @@
   return v6;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  v7 = [(VNRequest *)self frameworkClass];
-  if ([VNCoreSceneUnderstandingDetector handlesRequestClass:v7 revision:a3])
+  frameworkClass = [(VNRequest *)self frameworkClass];
+  if ([VNCoreSceneUnderstandingDetector handlesRequestClass:frameworkClass revision:revision])
   {
     v8 = @"VNCoreSceneUnderstandingDetectorType";
 LABEL_5:
@@ -92,16 +92,16 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([VNImageAnalyzerMultiDetector modelForRequestClass:v7 revision:a3])
+  if ([VNImageAnalyzerMultiDetector modelForRequestClass:frameworkClass revision:revision])
   {
     v8 = @"VNImageAnalyzerMultiDetectorType";
     goto LABEL_5;
   }
 
-  if (a4)
+  if (error)
   {
-    [VNError errorForUnsupportedRevision:a3 ofRequest:self];
-    *a4 = v8 = 0;
+    [VNError errorForUnsupportedRevision:revision ofRequest:self];
+    *error = v8 = 0;
   }
 
   else
@@ -114,87 +114,87 @@ LABEL_6:
   return v8;
 }
 
-- (void)setTargetedIdentifiers:(id)a3
+- (void)setTargetedIdentifiers:(id)identifiers
 {
-  v5 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setTargetedIdentifiers:v5];
+  identifiersCopy = identifiers;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setTargetedIdentifiers:identifiersCopy];
 }
 
 - (NSArray)targetedIdentifiers
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 targetedIdentifiers];
+  configuration = [(VNRequest *)self configuration];
+  targetedIdentifiers = [configuration targetedIdentifiers];
 
-  return v3;
+  return targetedIdentifiers;
 }
 
-- (void)setModelNonMaximumSuppressionThreshold:(float)a3
+- (void)setModelNonMaximumSuppressionThreshold:(float)threshold
 {
-  v5 = [(VNRequest *)self configuration];
-  *&v4 = a3;
-  [v5 setModelNonMaximumSuppressionThreshold:v4];
+  configuration = [(VNRequest *)self configuration];
+  *&v4 = threshold;
+  [configuration setModelNonMaximumSuppressionThreshold:v4];
 }
 
 - (float)modelNonMaximumSuppressionThreshold
 {
-  v2 = [(VNRequest *)self configuration];
-  [v2 modelNonMaximumSuppressionThreshold];
+  configuration = [(VNRequest *)self configuration];
+  [configuration modelNonMaximumSuppressionThreshold];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setModelMinimumDetectionConfidence:(float)a3
+- (void)setModelMinimumDetectionConfidence:(float)confidence
 {
-  v5 = [(VNRequest *)self configuration];
-  *&v4 = a3;
-  [v5 setModelMinimumDetectionConfidence:v4];
+  configuration = [(VNRequest *)self configuration];
+  *&v4 = confidence;
+  [configuration setModelMinimumDetectionConfidence:v4];
 }
 
 - (float)modelMinimumDetectionConfidence
 {
-  v2 = [(VNRequest *)self configuration];
-  [v2 modelMinimumDetectionConfidence];
+  configuration = [(VNRequest *)self configuration];
+  [configuration modelMinimumDetectionConfidence];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setUseImageAnalyzerScaling:(BOOL)a3
+- (void)setUseImageAnalyzerScaling:(BOOL)scaling
 {
-  v3 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setUseImageAnalyzerScaling:v3];
+  scalingCopy = scaling;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setUseImageAnalyzerScaling:scalingCopy];
 }
 
 - (BOOL)useImageAnalyzerScaling
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 useImageAnalyzerScaling];
+  configuration = [(VNRequest *)self configuration];
+  useImageAnalyzerScaling = [configuration useImageAnalyzerScaling];
 
-  return v3;
+  return useImageAnalyzerScaling;
 }
 
-- (void)setImageCropAndScaleOption:(unint64_t)a3
+- (void)setImageCropAndScaleOption:(unint64_t)option
 {
-  v4 = [(VNRequest *)self configuration];
-  [v4 setImageCropAndScaleOption:a3];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setImageCropAndScaleOption:option];
 }
 
 - (unint64_t)imageCropAndScaleOption
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 imageCropAndScaleOption];
+  configuration = [(VNRequest *)self configuration];
+  imageCropAndScaleOption = [configuration imageCropAndScaleOption];
 
-  return v3;
+  return imageCropAndScaleOption;
 }
 
-- (id)supportedIdentifiersAndReturnError:(id *)a3
+- (id)supportedIdentifiersAndReturnError:(id *)error
 {
-  v5 = [(VNRequest *)self resolvedRevision];
+  resolvedRevision = [(VNRequest *)self resolvedRevision];
   v14 = 0;
-  v6 = [(VNRequest *)self applicableDetectorClassAndOptions:&v14 forRevision:v5 error:a3];
+  v6 = [(VNRequest *)self applicableDetectorClassAndOptions:&v14 forRevision:resolvedRevision error:error];
   v7 = v14;
   if (!v6)
   {
@@ -204,7 +204,7 @@ LABEL_6:
 
   if ([(objc_class *)v6 isSubclassOfClass:objc_opt_class()])
   {
-    v8 = [(objc_class *)v6 allRecognizedObjectIdentifiersWithConfigurationOptions:v7 error:a3];
+    v8 = [(objc_class *)v6 allRecognizedObjectIdentifiersWithConfigurationOptions:v7 error:error];
 LABEL_5:
     v9 = v7;
     goto LABEL_13;
@@ -212,7 +212,7 @@ LABEL_5:
 
   v10 = objc_alloc_init(VNSession);
   v13 = v7;
-  v11 = [(VNRequest *)self applicableDetectorAndOptions:&v13 forRevision:v5 loadedInSession:v10 error:a3];
+  v11 = [(VNRequest *)self applicableDetectorAndOptions:&v13 forRevision:resolvedRevision loadedInSession:v10 error:error];
   v9 = v13;
 
   if (!v11)
@@ -223,10 +223,10 @@ LABEL_5:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a3)
+    if (error)
     {
       [VNError errorForUnsupportedRevision:[(VNRequest *)self resolvedRevision] ofRequest:self];
-      *a3 = v8 = 0;
+      *error = v8 = 0;
       goto LABEL_12;
     }
 
@@ -235,7 +235,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v8 = [v11 allRecognizedObjectsIdentifiersWithOptions:v9 error:a3];
+  v8 = [v11 allRecognizedObjectsIdentifiersWithOptions:v9 error:error];
 LABEL_12:
 
 LABEL_13:
@@ -243,29 +243,29 @@ LABEL_13:
   return v8;
 }
 
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision
 {
-  v7 = [VNImageAnalyzerMultiDetector modelForRequestClass:a1 revision:a3];
-  if (v7 != [VNImageAnalyzerMultiDetector modelForRequestClass:a1 revision:a4])
+  v7 = [VNImageAnalyzerMultiDetector modelForRequestClass:self revision:revision];
+  if (v7 != [VNImageAnalyzerMultiDetector modelForRequestClass:self revision:byRevision])
   {
     return 0;
   }
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___VNRecognizeObjectsRequest;
-  return objc_msgSendSuper2(&v9, sel_revision_mayAcceptResultsProducedByRevision_, a3, a4);
+  return objc_msgSendSuper2(&v9, sel_revision_mayAcceptResultsProducedByRevision_, revision, byRevision);
 }
 
-+ (id)descriptionForPrivateRevision:(unint64_t)a3
++ (id)descriptionForPrivateRevision:(unint64_t)revision
 {
-  if (a3 - 3737841664u > 3)
+  if (revision - 3737841664u > 3)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_1E77B3180 + a3 - 3737841664u);
+    return *(&off_1E77B3180 + revision - 3737841664u);
   }
 }
 
@@ -288,12 +288,12 @@ uint64_t __48__VNRecognizeObjectsRequest_privateRevisionsSet__block_invoke(uint6
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)knownObjectIdentifiersRecognizedByRequestRevision:(unint64_t)a3 error:(id *)a4
++ (id)knownObjectIdentifiersRecognizedByRequestRevision:(unint64_t)revision error:(id *)error
 {
-  v6 = objc_alloc_init(a1);
-  if ([v6 setRevision:a3 error:a4])
+  v6 = objc_alloc_init(self);
+  if ([v6 setRevision:revision error:error])
   {
-    v7 = [v6 supportedIdentifiersAndReturnError:a4];
+    v7 = [v6 supportedIdentifiersAndReturnError:error];
   }
 
   else

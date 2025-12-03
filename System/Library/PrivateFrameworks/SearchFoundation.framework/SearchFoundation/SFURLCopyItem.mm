@@ -1,12 +1,12 @@
 @interface SFURLCopyItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFURLCopyItem)initWithCoder:(id)a3;
-- (SFURLCopyItem)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFURLCopyItem)initWithCoder:(id)coder;
+- (SFURLCopyItem)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFURLCopyItem
@@ -22,17 +22,17 @@
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(SFURLCopyItem *)v4 isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFURLCopyItem, [(SFCopyItem *)&v13 isEqual:v4]))
+  else if ([(SFURLCopyItem *)equalCopy isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFURLCopyItem, [(SFCopyItem *)&v13 isEqual:equalCopy]))
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(SFURLCopyItem *)self url];
     v7 = [(SFURLCopyItem *)v5 url];
     if ((v6 != 0) == (v7 == 0))
@@ -65,11 +65,11 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFURLCopyItem;
-  v4 = [(SFCopyItem *)&v8 copyWithZone:a3];
+  v4 = [(SFCopyItem *)&v8 copyWithZone:zone];
   v5 = [(SFURLCopyItem *)self url];
   v6 = [v5 copy];
   [v4 setUrl:v6];
@@ -80,31 +80,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBURLCopyItem alloc] initWithFacade:self];
-  v3 = [(_SFPBURLCopyItem *)v2 jsonData];
+  jsonData = [(_SFPBURLCopyItem *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBURLCopyItem alloc] initWithFacade:self];
-  v3 = [(_SFPBURLCopyItem *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBURLCopyItem *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBURLCopyItem alloc] initWithFacade:self];
-  v5 = [(_SFPBURLCopyItem *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBURLCopyItem *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFURLCopyItem)initWithCoder:(id)a3
+- (SFURLCopyItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBURLCopyItem alloc] initWithData:v5];
   v7 = [(SFURLCopyItem *)self initWithProtobuf:v6];
@@ -112,19 +112,19 @@
   return v7;
 }
 
-- (SFURLCopyItem)initWithProtobuf:(id)a3
+- (SFURLCopyItem)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v11.receiver = self;
   v11.super_class = SFURLCopyItem;
   v5 = [(SFURLCopyItem *)&v11 init];
   if (v5)
   {
-    v6 = [v4 url];
+    v6 = [protobufCopy url];
 
     if (v6)
     {
-      v7 = [v4 url];
+      v7 = [protobufCopy url];
       v8 = _SFPBURLHandwrittenTranslator(v7);
       [(SFURLCopyItem *)v5 setUrl:v8];
     }

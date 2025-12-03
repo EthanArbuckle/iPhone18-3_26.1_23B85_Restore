@@ -3,7 +3,7 @@
 - (BOOL)isRunning;
 - (BOOL)start;
 - (MTDebouncedAssetRemovalProcessor)init;
-- (void)setIsRunning:(BOOL)a3;
+- (void)setIsRunning:(BOOL)running;
 @end
 
 @implementation MTDebouncedAssetRemovalProcessor
@@ -27,16 +27,16 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsRunning:(BOOL)a3
+- (void)setIsRunning:(BOOL)running
 {
   v5 = OBJC_IVAR___MTDebouncedAssetRemovalProcessor_isRunning;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = running;
 }
 
 - (BOOL)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_100048A4C();
 
   return 1;

@@ -67,9 +67,9 @@
   [(CIImage *)self->inputImage extent];
   v13 = v12;
   v14 = v11 / v13;
-  v15 = [(CIImage *)v4 imageByClampingToExtent];
+  imageByClampingToExtent = [(CIImage *)v4 imageByClampingToExtent];
   CGAffineTransformMakeScale(&v32, v9, v14);
-  v16 = [[(CIImage *)v15 imageByApplyingTransform:&v32] imageByApplyingGaussianBlurWithSigma:5.0];
+  v16 = [[(CIImage *)imageByClampingToExtent imageByApplyingTransform:&v32] imageByApplyingGaussianBlurWithSigma:5.0];
   [(NSNumber *)self->inputScale floatValue];
   v18 = v17;
   [(NSNumber *)self->inputScale floatValue];
@@ -86,12 +86,12 @@
   v24 = -[CIImage imageByApplyingFilter:withInputParameters:](v21, "imageByApplyingFilter:withInputParameters:", @"CIEdgePreserveUpsampleFilter", [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:3]);
   [(CIImage *)self->inputImage extent];
   v25 = [(CIImage *)v24 imageByCroppingToRect:?];
-  v26 = [(CILocalContrast *)self _kernelLocalContrast];
+  _kernelLocalContrast = [(CILocalContrast *)self _kernelLocalContrast];
   [(CIImage *)self->inputImage extent];
   v33[0] = self->inputImage;
   v33[1] = v25;
   v33[2] = self->inputStrength;
-  return [v26 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v33, 3), v27, v28, v29, v30}];
+  return [_kernelLocalContrast applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v33, 3), v27, v28, v29, v30}];
 }
 
 @end

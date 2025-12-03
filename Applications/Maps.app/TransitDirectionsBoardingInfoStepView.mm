@@ -2,11 +2,11 @@
 - (TransitDirectionsBoardingInfoStepViewDelegate)boardingInfoDelegate;
 - (id)_initialConstraints;
 - (void)_createSubviews;
-- (void)_scheduleButtonTapped:(id)a3;
-- (void)_updateNavigationStateAlpha:(double)a3;
-- (void)configureWithItem:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setUseNavigationMetrics:(BOOL)a3;
+- (void)_scheduleButtonTapped:(id)tapped;
+- (void)_updateNavigationStateAlpha:(double)alpha;
+- (void)configureWithItem:(id)item;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setUseNavigationMetrics:(BOOL)metrics;
 @end
 
 @implementation TransitDirectionsBoardingInfoStepView
@@ -18,19 +18,19 @@
   return WeakRetained;
 }
 
-- (void)_updateNavigationStateAlpha:(double)a3
+- (void)_updateNavigationStateAlpha:(double)alpha
 {
   v5.receiver = self;
   v5.super_class = TransitDirectionsBoardingInfoStepView;
   [(TransitDirectionsStepView *)&v5 _updateNavigationStateAlpha:?];
-  [(TransitDirectionsBoardingInfoListView *)self->_boardingInfoListView setAlpha:a3];
+  [(TransitDirectionsBoardingInfoListView *)self->_boardingInfoListView setAlpha:alpha];
 }
 
-- (void)setUseNavigationMetrics:(BOOL)a3
+- (void)setUseNavigationMetrics:(BOOL)metrics
 {
   v6.receiver = self;
   v6.super_class = TransitDirectionsBoardingInfoStepView;
-  [(TransitDirectionsStepView *)&v6 setUseNavigationMetrics:a3];
+  [(TransitDirectionsStepView *)&v6 setUseNavigationMetrics:metrics];
   boardingInfoListView = self->_boardingInfoListView;
   if ([(TransitDirectionsStepView *)self useNavigationMetrics])
   {
@@ -45,19 +45,19 @@
   [(TransitDirectionsBoardingInfoListView *)boardingInfoListView setTargetForAnalytics:v5];
 }
 
-- (void)configureWithItem:(id)a3
+- (void)configureWithItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v16.receiver = self;
   v16.super_class = TransitDirectionsBoardingInfoStepView;
-  [(TransitDirectionsStepView *)&v16 configureWithItem:v4];
-  v5 = v4;
-  v6 = [v5 matchingRouteStep];
-  v7 = [v6 segment];
+  [(TransitDirectionsStepView *)&v16 configureWithItem:itemCopy];
+  v5 = itemCopy;
+  matchingRouteStep = [v5 matchingRouteStep];
+  segment = [matchingRouteStep segment];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = segment;
   }
 
   else
@@ -67,12 +67,12 @@
 
   v9 = v8;
 
-  v10 = [v9 transitLine];
+  transitLine = [v9 transitLine];
 
   boardingInfoListView = self->_boardingInfoListView;
-  if (v10)
+  if (transitLine)
   {
-    v12 = [v10 departureTimeDisplayStyle] == 1;
+    v12 = [transitLine departureTimeDisplayStyle] == 1;
   }
 
   else
@@ -81,55 +81,55 @@
   }
 
   [(TransitDirectionsBoardingInfoListView *)boardingInfoListView setDropPastDepartures:v12];
-  v13 = [v5 boardingInfo];
+  boardingInfo = [v5 boardingInfo];
 
   v14 = self->_boardingInfoListView;
-  if (v13)
+  if (boardingInfo)
   {
-    v15 = [v5 boardingInfo];
-    [(TransitDirectionsBoardingInfoListView *)v14 setBoardingInfo:v15];
+    boardingInfo2 = [v5 boardingInfo];
+    [(TransitDirectionsBoardingInfoListView *)v14 setBoardingInfo:boardingInfo2];
   }
 
   else
   {
-    v15 = [v5 preboardingStrings];
-    [(TransitDirectionsBoardingInfoListView *)v14 setPreboardingStrings:v15];
+    boardingInfo2 = [v5 preboardingStrings];
+    [(TransitDirectionsBoardingInfoListView *)v14 setPreboardingStrings:boardingInfo2];
   }
 }
 
-- (void)_scheduleButtonTapped:(id)a3
+- (void)_scheduleButtonTapped:(id)tapped
 {
-  v6 = [(TransitDirectionsBoardingInfoStepView *)self boardingInfoDelegate];
-  v4 = [(TransitDirectionsStepView *)self transitListItem];
-  v5 = [v4 parentItem];
-  [v6 transitDirectionsBoardingInfoStepView:self didSelectScheduleForItem:v5];
+  boardingInfoDelegate = [(TransitDirectionsBoardingInfoStepView *)self boardingInfoDelegate];
+  transitListItem = [(TransitDirectionsStepView *)self transitListItem];
+  parentItem = [transitListItem parentItem];
+  [boardingInfoDelegate transitDirectionsBoardingInfoStepView:self didSelectScheduleForItem:parentItem];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = TransitDirectionsBoardingInfoStepView;
   [(TransitDirectionsStepView *)&v5 setHighlighted:?];
-  [(TransitDirectionsBoardingInfoListView *)self->_boardingInfoListView setHighlighted:v3];
+  [(TransitDirectionsBoardingInfoListView *)self->_boardingInfoListView setHighlighted:highlightedCopy];
 }
 
 - (id)_initialConstraints
 {
   v39.receiver = self;
   v39.super_class = TransitDirectionsBoardingInfoStepView;
-  v38 = [(TransitDirectionsStepView *)&v39 _initialConstraints];
-  v3 = [(TransitDirectionsBoardingInfoListView *)self->_boardingInfoListView leadingAnchor];
-  v34 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-  [v34 leadingAnchor];
-  v32 = v36 = v3;
-  v31 = [v3 constraintEqualToAnchor:?];
+  _initialConstraints = [(TransitDirectionsStepView *)&v39 _initialConstraints];
+  leadingAnchor = [(TransitDirectionsBoardingInfoListView *)self->_boardingInfoListView leadingAnchor];
+  contentLayoutGuide = [(TransitDirectionsStepView *)self contentLayoutGuide];
+  [contentLayoutGuide leadingAnchor];
+  v32 = v36 = leadingAnchor;
+  v31 = [leadingAnchor constraintEqualToAnchor:?];
   v41[0] = v31;
-  v4 = [(TransitDirectionsBoardingInfoListView *)self->_boardingInfoListView topAnchor];
-  v29 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-  [v29 topAnchor];
-  v28 = v30 = v4;
-  v27 = [v4 constraintEqualToAnchor:?];
+  topAnchor = [(TransitDirectionsBoardingInfoListView *)self->_boardingInfoListView topAnchor];
+  contentLayoutGuide2 = [(TransitDirectionsStepView *)self contentLayoutGuide];
+  [contentLayoutGuide2 topAnchor];
+  v28 = v30 = topAnchor;
+  v27 = [topAnchor constraintEqualToAnchor:?];
   v41[1] = v27;
   scrollControlsView = self->_scrollControlsView;
   if (scrollControlsView)
@@ -139,52 +139,52 @@
 
   else
   {
-    v26 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-    [v26 trailingAnchor];
+    contentLayoutGuide3 = [(TransitDirectionsStepView *)self contentLayoutGuide];
+    [contentLayoutGuide3 trailingAnchor];
   }
   v6 = ;
-  v7 = [(TransitDirectionsBoardingInfoListView *)self->_boardingInfoListView trailingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  trailingAnchor = [(TransitDirectionsBoardingInfoListView *)self->_boardingInfoListView trailingAnchor];
+  v8 = [v6 constraintEqualToAnchor:trailingAnchor];
   v41[2] = v8;
-  v9 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-  v10 = [v9 bottomAnchor];
-  v11 = [(TransitDirectionsBoardingInfoListView *)self->_boardingInfoListView bottomAnchor];
+  contentLayoutGuide4 = [(TransitDirectionsStepView *)self contentLayoutGuide];
+  bottomAnchor = [contentLayoutGuide4 bottomAnchor];
+  bottomAnchor2 = [(TransitDirectionsBoardingInfoListView *)self->_boardingInfoListView bottomAnchor];
   [(TransitDirectionsBoardingInfoListView *)self->_boardingInfoListView _contentBottomAnchorAdjustment];
-  v12 = [v10 constraintEqualToAnchor:v11 constant:?];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:?];
   v41[3] = v12;
   v13 = [NSArray arrayWithObjects:v41 count:4];
-  [v38 addObjectsFromArray:v13];
+  [_initialConstraints addObjectsFromArray:v13];
 
   if (!scrollControlsView)
   {
 
-    v6 = v26;
+    v6 = contentLayoutGuide3;
   }
 
   v14 = self->_scrollControlsView;
   if (v14)
   {
-    v37 = [(MUPagingScrollControlsView *)v14 leadingAnchor];
-    v35 = [(TransitDirectionsBoardingInfoStepView *)self leadingAnchor];
-    v33 = [v37 constraintEqualToAnchor:v35 constant:3.0];
+    leadingAnchor2 = [(MUPagingScrollControlsView *)v14 leadingAnchor];
+    leadingAnchor3 = [(TransitDirectionsBoardingInfoStepView *)self leadingAnchor];
+    v33 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3 constant:3.0];
     v40[0] = v33;
-    v15 = [(MUPagingScrollControlsView *)self->_scrollControlsView topAnchor];
-    v16 = [(TransitDirectionsBoardingInfoListView *)self->_boardingInfoListView topAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    topAnchor2 = [(MUPagingScrollControlsView *)self->_scrollControlsView topAnchor];
+    topAnchor3 = [(TransitDirectionsBoardingInfoListView *)self->_boardingInfoListView topAnchor];
+    v17 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
     v40[1] = v17;
-    v18 = [(TransitDirectionsBoardingInfoStepView *)self trailingAnchor];
-    v19 = [(MUPagingScrollControlsView *)self->_scrollControlsView trailingAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19 constant:3.0];
+    trailingAnchor2 = [(TransitDirectionsBoardingInfoStepView *)self trailingAnchor];
+    trailingAnchor3 = [(MUPagingScrollControlsView *)self->_scrollControlsView trailingAnchor];
+    v20 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:3.0];
     v40[2] = v20;
-    v21 = [(TransitDirectionsBoardingInfoListView *)self->_boardingInfoListView bottomAnchor];
-    v22 = [(MUPagingScrollControlsView *)self->_scrollControlsView bottomAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    bottomAnchor3 = [(TransitDirectionsBoardingInfoListView *)self->_boardingInfoListView bottomAnchor];
+    bottomAnchor4 = [(MUPagingScrollControlsView *)self->_scrollControlsView bottomAnchor];
+    v23 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v40[3] = v23;
     v24 = [NSArray arrayWithObjects:v40 count:4];
-    [v38 addObjectsFromArray:v24];
+    [_initialConstraints addObjectsFromArray:v24];
   }
 
-  return v38;
+  return _initialConstraints;
 }
 
 - (void)_createSubviews
@@ -207,8 +207,8 @@
   if (sub_10000FA08(self) == 5)
   {
     v7 = [MUPagingScrollControlsView alloc];
-    v8 = [(TransitDirectionsBoardingInfoListView *)self->_boardingInfoListView _scrollView];
-    v9 = [v7 initWithHorizontalScrollView:v8];
+    _scrollView = [(TransitDirectionsBoardingInfoListView *)self->_boardingInfoListView _scrollView];
+    v9 = [v7 initWithHorizontalScrollView:_scrollView];
 
     [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(TransitDirectionsBoardingInfoStepView *)self addSubview:v9];

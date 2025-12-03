@@ -2,12 +2,12 @@
 - (ISEventGraph)init;
 - (NSDate)date;
 - (NSSet)componentIdentifiersBridge;
-- (id)getComponentGroupBridgeWithType:(Class)a3;
-- (id)getComponentGroupBridgesWithType:(Class)a3;
-- (id)sieventWithInnerType:(Class)a3;
+- (id)getComponentGroupBridgeWithType:(Class)type;
+- (id)getComponentGroupBridgesWithType:(Class)type;
+- (id)sieventWithInnerType:(Class)type;
 - (id)sievents;
-- (id)sieventsWithComponentIdentifier:(id)a3;
-- (id)sieventsWithComponentName:(int)a3;
+- (id)sieventsWithComponentIdentifier:(id)identifier;
+- (id)sieventsWithComponentName:(int)name;
 @end
 
 @implementation ISEventGraph
@@ -36,7 +36,7 @@
 
 - (id)sievents
 {
-  v2 = self;
+  selfCopy = self;
   EventGraph.sievents()();
 
   sub_23C5A3FDC(0, &qword_27E1F9F60, 0x277D5A690);
@@ -45,9 +45,9 @@
   return v3;
 }
 
-- (id)sieventsWithComponentName:(int)a3
+- (id)sieventsWithComponentName:(int)name
 {
-  v3 = self;
+  selfCopy = self;
   EventGraph.sievents(componentName:)();
 
   sub_23C5A3FDC(0, &qword_27E1F9F60, 0x277D5A690);
@@ -56,11 +56,11 @@
   return v4;
 }
 
-- (id)sieventsWithComponentIdentifier:(id)a3
+- (id)sieventsWithComponentIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  EventGraph.sievents(componentIdentifier:)(v4);
+  identifierCopy = identifier;
+  selfCopy = self;
+  EventGraph.sievents(componentIdentifier:)(identifierCopy);
 
   sub_23C5A3FDC(0, &qword_27E1F9F60, 0x277D5A690);
   v6 = sub_23C871894();
@@ -68,19 +68,19 @@
   return v6;
 }
 
-- (id)sieventWithInnerType:(Class)a3
+- (id)sieventWithInnerType:(Class)type
 {
   ObjCClassMetadata = swift_getObjCClassMetadata();
-  v5 = self;
+  selfCopy = self;
   v6 = EventGraph.sievent(innerType:)(ObjCClassMetadata);
 
   return v6;
 }
 
-- (id)getComponentGroupBridgesWithType:(Class)a3
+- (id)getComponentGroupBridgesWithType:(Class)type
 {
   ObjCClassMetadata = swift_getObjCClassMetadata();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_23C6029BC(ObjCClassMetadata);
   v7 = sub_23C606178(v6);
 
@@ -92,10 +92,10 @@
   return v8;
 }
 
-- (id)getComponentGroupBridgeWithType:(Class)a3
+- (id)getComponentGroupBridgeWithType:(Class)type
 {
-  v4 = self;
-  v5 = [(ISEventGraph *)v4 getComponentGroupBridgesWithType:a3];
+  selfCopy = self;
+  v5 = [(ISEventGraph *)selfCopy getComponentGroupBridgesWithType:type];
   type metadata accessor for ComponentGroupBridge();
   v6 = sub_23C8718A4();
 
@@ -143,7 +143,7 @@ LABEL_9:
 
 - (NSSet)componentIdentifiersBridge
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_23C601004();
   v4 = sub_23C604FB0(v3);
 

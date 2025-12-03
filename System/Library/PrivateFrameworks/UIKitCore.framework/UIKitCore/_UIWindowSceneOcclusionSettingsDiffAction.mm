@@ -1,6 +1,6 @@
 @interface _UIWindowSceneOcclusionSettingsDiffAction
 - (UIApplicationSceneSettingsDiffInspector)sceneSettingsBackgroundAndOcclusionDiffInspector;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 @end
 
 @implementation _UIWindowSceneOcclusionSettingsDiffAction
@@ -22,44 +22,44 @@
   return sceneSettingsBackgroundAndOcclusionDiffInspector;
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
   v28[4] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  sceneCopy = scene;
+  sSceneCopy = sScene;
+  diffCopy = diff;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"_UIWindowSceneOcclusionSettingsDiffAction.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"[uiScene isKindOfClass:[UIWindowScene class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIWindowSceneOcclusionSettingsDiffAction.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"[uiScene isKindOfClass:[UIWindowScene class]]"}];
   }
 
   v26 = 0;
-  v15 = [(_UIWindowSceneOcclusionSettingsDiffAction *)self sceneSettingsBackgroundAndOcclusionDiffInspector];
-  [v15 inspectDiff:v14 withContext:&v26];
+  sceneSettingsBackgroundAndOcclusionDiffInspector = [(_UIWindowSceneOcclusionSettingsDiffAction *)self sceneSettingsBackgroundAndOcclusionDiffInspector];
+  [sceneSettingsBackgroundAndOcclusionDiffInspector inspectDiff:diffCopy withContext:&v26];
 
   if (v26 & 2) != 0 || (v26)
   {
-    v16 = [v13 settings];
-    v28[0] = v13;
+    settings = [sSceneCopy settings];
+    v28[0] = sSceneCopy;
     v27[0] = @"scene";
     v27[1] = @"isOccluded";
-    v17 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v16, "isOccluded")}];
+    v17 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(settings, "isOccluded")}];
     v28[1] = v17;
     v27[2] = @"isBackgrounded";
-    v18 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v16, "isForeground") ^ 1}];
+    v18 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(settings, "isForeground") ^ 1}];
     v28[2] = v18;
     v27[3] = @"isCarDisplay";
     v19 = MEMORY[0x1E696AD98];
-    v20 = [v13 settings];
-    v21 = [v20 displayConfiguration];
-    v22 = [v19 numberWithBool:{objc_msgSend(v21, "isCarDisplay")}];
+    settings2 = [sSceneCopy settings];
+    displayConfiguration = [settings2 displayConfiguration];
+    v22 = [v19 numberWithBool:{objc_msgSend(displayConfiguration, "isCarDisplay")}];
     v28[3] = v22;
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:4];
 
-    v24 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v24 postNotificationName:@"UIApplicationSceneOcclusionChangedNotification" object:self userInfo:v23];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"UIApplicationSceneOcclusionChangedNotification" object:self userInfo:v23];
   }
 }
 

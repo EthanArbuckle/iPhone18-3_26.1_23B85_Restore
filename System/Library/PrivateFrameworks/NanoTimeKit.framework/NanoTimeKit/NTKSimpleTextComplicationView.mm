@@ -1,16 +1,16 @@
 @interface NTKSimpleTextComplicationView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
 - (CDComplicationDisplayObserver)displayObserver;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CLKUIColoringLabel)label;
 - (NTKSimpleTextComplicationView)init;
 - (id)_defaultFont;
 - (unint64_t)complicationType;
 - (void)_updateLabelFrame;
 - (void)layoutSubviews;
-- (void)setComplicationTemplate:(id)a3 reason:(int64_t)a4;
-- (void)setFont:(id)a3;
-- (void)setTimeTravelDate:(id)a3 animated:(BOOL)a4;
+- (void)setComplicationTemplate:(id)template reason:(int64_t)reason;
+- (void)setFont:(id)font;
+- (void)setTimeTravelDate:(id)date animated:(BOOL)animated;
 @end
 
 @implementation NTKSimpleTextComplicationView
@@ -23,15 +23,15 @@
   if (v2)
   {
     v3 = +[(CLKRenderingContext *)NTKFaceViewRenderingContext];
-    v4 = [v3 device];
+    device = [v3 device];
     device = v2->_device;
-    v2->_device = v4;
+    v2->_device = device;
 
-    v6 = [(NTKSimpleTextComplicationView *)v2 label];
-    [(NTKSimpleTextComplicationView *)v2 addSubview:v6];
+    label = [(NTKSimpleTextComplicationView *)v2 label];
+    [(NTKSimpleTextComplicationView *)v2 addSubview:label];
 
-    v7 = [MEMORY[0x277D75348] clearColor];
-    [(NTKSimpleTextComplicationView *)v2 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(NTKSimpleTextComplicationView *)v2 setBackgroundColor:clearColor];
   }
 
   return v2;
@@ -45,16 +45,16 @@
   [(NTKSimpleTextComplicationView *)self _updateLabelFrame];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(CLKUIColoringLabel *)self->_label sizeThatFits:a3.width, a3.height];
+  [(CLKUIColoringLabel *)self->_label sizeThatFits:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
   v13 = 0;
   v11 = 0u;
   v12 = 0u;
-  v8 = [(NTKSimpleTextComplicationView *)self device];
-  ___LayoutConstants_block_invoke_59(v8, &v11);
+  device = [(NTKSimpleTextComplicationView *)self device];
+  ___LayoutConstants_block_invoke_59(device, &v11);
 
   v9 = v5 + *(&v12 + 1);
   if (v5 + *(&v12 + 1) < *(&v11 + 1))
@@ -80,8 +80,8 @@
 - (void)_updateLabelFrame
 {
   [(CLKUIColoringLabel *)self->_label sizeToFit];
-  v3 = [(NTKSimpleTextComplicationView *)self device];
-  ___LayoutConstants_block_invoke_59(v3, v9);
+  device = [(NTKSimpleTextComplicationView *)self device];
+  ___LayoutConstants_block_invoke_59(device, v9);
   v4 = v10;
 
   [(CLKUIColoringLabel *)self->_label bounds];
@@ -105,8 +105,8 @@
   if (!label)
   {
     v4 = objc_alloc_init(off_27877BEF8);
-    v5 = [(NTKSimpleTextComplicationView *)self _defaultFont];
-    [v4 setFont:v5];
+    _defaultFont = [(NTKSimpleTextComplicationView *)self _defaultFont];
+    [v4 setFont:_defaultFont];
 
     objc_initWeak(&location, self);
     v15[0] = MEMORY[0x277D85DD0];
@@ -131,12 +131,12 @@
     v10[3] = &unk_27877DC58;
     objc_copyWeak(&v11, &from);
     [v4 setNeedsResizeHandler:v10];
-    v6 = [(NTKSimpleTextComplicationView *)self device];
-    ___LayoutConstants_block_invoke_59(v6, v9);
+    device = [(NTKSimpleTextComplicationView *)self device];
+    ___LayoutConstants_block_invoke_59(device, v9);
     [v4 setMaxWidth:v9[4]];
 
-    v7 = [(NTKSimpleTextComplicationView *)self timeTravelDate];
-    [v4 setInTimeTravel:v7 != 0];
+    timeTravelDate = [(NTKSimpleTextComplicationView *)self timeTravelDate];
+    [v4 setInTimeTravel:timeTravelDate != 0];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&from);
@@ -186,64 +186,64 @@ void __38__NTKSimpleTextComplicationView_label__block_invoke_3(uint64_t a1)
 {
   v7 = 0;
   memset(v6, 0, sizeof(v6));
-  v2 = [(NTKSimpleTextComplicationView *)self device];
-  ___LayoutConstants_block_invoke_59(v2, v6);
+  device = [(NTKSimpleTextComplicationView *)self device];
+  ___LayoutConstants_block_invoke_59(device, v6);
 
   v3 = [MEMORY[0x277CBBB08] systemFontOfSize:*MEMORY[0x277CBB6C0] weight:*v6 design:*MEMORY[0x277D74420]];
-  v4 = [v3 CLKFontWithAlternativePunctuation];
+  cLKFontWithAlternativePunctuation = [v3 CLKFontWithAlternativePunctuation];
 
-  return v4;
+  return cLKFontWithAlternativePunctuation;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v6 = a3;
-  v4 = [(CLKUIColoringLabel *)self->_label font];
-  v5 = [v4 isEqual:v6];
+  fontCopy = font;
+  font = [(CLKUIColoringLabel *)self->_label font];
+  v5 = [font isEqual:fontCopy];
 
   if ((v5 & 1) == 0)
   {
-    [(CLKUIColoringLabel *)self->_label setFont:v6];
+    [(CLKUIColoringLabel *)self->_label setFont:fontCopy];
     [(NTKSimpleTextComplicationView *)self setNeedsLayout];
   }
 }
 
 - (unint64_t)complicationType
 {
-  v2 = [(CLKComplicationTemplateSimpleText *)self->_template metadata];
-  v3 = [v2 objectForKeyedSubscript:@"NTKSimpleTextComplicationTypeMetadataKey"];
-  v4 = [v3 unsignedIntValue];
+  metadata = [(CLKComplicationTemplateSimpleText *)self->_template metadata];
+  v3 = [metadata objectForKeyedSubscript:@"NTKSimpleTextComplicationTypeMetadataKey"];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)setComplicationTemplate:(id)a3 reason:(int64_t)a4
+- (void)setComplicationTemplate:(id)template reason:(int64_t)reason
 {
-  objc_storeStrong(&self->_template, a3);
-  v6 = a3;
-  v7 = [v6 textProvider];
-  [(CLKUIColoringLabel *)self->_label setTextProvider:v7];
+  objc_storeStrong(&self->_template, template);
+  templateCopy = template;
+  textProvider = [templateCopy textProvider];
+  [(CLKUIColoringLabel *)self->_label setTextProvider:textProvider];
 
   [(NTKSimpleTextComplicationView *)self setNeedsLayout];
 }
 
-- (void)setTimeTravelDate:(id)a3 animated:(BOOL)a4
+- (void)setTimeTravelDate:(id)date animated:(BOOL)animated
 {
-  v6 = a3;
+  dateCopy = date;
   timeTravelDate = self->_timeTravelDate;
-  v15 = v6;
-  if (v6)
+  v15 = dateCopy;
+  if (dateCopy)
   {
-    if ([v6 isEqual:timeTravelDate])
+    if ([dateCopy isEqual:timeTravelDate])
     {
       goto LABEL_14;
     }
@@ -262,16 +262,16 @@ void __38__NTKSimpleTextComplicationView_label__block_invoke_3(uint64_t a1)
     v10 = 1;
   }
 
-  objc_storeStrong(&self->_timeTravelDate, a3);
+  objc_storeStrong(&self->_timeTravelDate, date);
   label = self->_label;
-  v12 = [(NTKSimpleTextComplicationView *)self timeTravelDate];
-  [(CLKUIColoringLabel *)label setInTimeTravel:v12 != 0];
+  timeTravelDate = [(NTKSimpleTextComplicationView *)self timeTravelDate];
+  [(CLKUIColoringLabel *)label setInTimeTravel:timeTravelDate != 0];
 
   if (v10)
   {
     v13 = self->_label;
-    v14 = [(CLKComplicationTemplateSimpleText *)self->_template textProvider];
-    [(CLKUIColoringLabel *)v13 setTextProvider:v14];
+    textProvider = [(CLKComplicationTemplateSimpleText *)self->_template textProvider];
+    [(CLKUIColoringLabel *)v13 setTextProvider:textProvider];
   }
 
 LABEL_14:

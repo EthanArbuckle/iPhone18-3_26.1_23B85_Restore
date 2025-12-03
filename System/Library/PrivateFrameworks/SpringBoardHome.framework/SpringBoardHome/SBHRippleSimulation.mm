@@ -1,17 +1,17 @@
 @interface SBHRippleSimulation
-- (CATransform3D)transformForGridCoordinate:(SEL)a3;
-- (CGPoint)convertGridToRippleCoordinate:(CGPoint)a3;
-- (SBHRippleSimulation)initWithRows:(unint64_t)a3 columns:(unint64_t)a4 resolution:(unint64_t)a5 style:(unint64_t)a6;
-- (double)zPositionForGridCoordinate:(CGPoint)a3;
+- (CATransform3D)transformForGridCoordinate:(SEL)coordinate;
+- (CGPoint)convertGridToRippleCoordinate:(CGPoint)coordinate;
+- (SBHRippleSimulation)initWithRows:(unint64_t)rows columns:(unint64_t)columns resolution:(unint64_t)resolution style:(unint64_t)style;
+- (double)zPositionForGridCoordinate:(CGPoint)coordinate;
 - (void)clear;
-- (void)createRippleAtGridCoordinate:(CGPoint)a3 strength:(double)a4;
+- (void)createRippleAtGridCoordinate:(CGPoint)coordinate strength:(double)strength;
 - (void)dealloc;
-- (void)step:(double)a3;
+- (void)step:(double)step;
 @end
 
 @implementation SBHRippleSimulation
 
-- (SBHRippleSimulation)initWithRows:(unint64_t)a3 columns:(unint64_t)a4 resolution:(unint64_t)a5 style:(unint64_t)a6
+- (SBHRippleSimulation)initWithRows:(unint64_t)rows columns:(unint64_t)columns resolution:(unint64_t)resolution style:(unint64_t)style
 {
   v20.receiver = self;
   v20.super_class = SBHRippleSimulation;
@@ -20,13 +20,13 @@
   if (v10)
   {
     v10[80] = 1;
-    *(v10 + 3) = a5;
-    *(v10 + 4) = a6;
-    v12 = vdup_n_s32(a6 == 1);
+    *(v10 + 3) = resolution;
+    *(v10 + 4) = style;
+    v12 = vdup_n_s32(style == 1);
     v13.i64[0] = v12.u32[0];
     v13.i64[1] = v12.u32[1];
     *(v10 + 40) = vbslq_s8(vcltzq_s64(vshlq_n_s64(v13, 0x3FuLL)), xmmword_1BEE86230, xmmword_1BEE86220);
-    [v10 convertGridToRippleCoordinate:{a4, a3}];
+    [v10 convertGridToRippleCoordinate:{columns, rows}];
     rippleTouchRadius = v11->_rippleTouchRadius;
     v16 = (rippleTouchRadius + ceil(v14) + 1.0);
     v18 = rippleTouchRadius + ceil(v17) + 1.0;
@@ -87,11 +87,11 @@
   }
 }
 
-- (CGPoint)convertGridToRippleCoordinate:(CGPoint)a3
+- (CGPoint)convertGridToRippleCoordinate:(CGPoint)coordinate
 {
   rippleResolution = self->_rippleResolution;
-  v4 = (a3.x + -1.0) * rippleResolution;
-  v5 = (a3.y + -1.0) * rippleResolution;
+  v4 = (coordinate.x + -1.0) * rippleResolution;
+  v5 = (coordinate.y + -1.0) * rippleResolution;
   v6 = ceil(self->_rippleTouchRadius);
   v7 = v4 + v6 + 0.5;
   v8 = v5 + v6 + 0.5;
@@ -100,10 +100,10 @@
   return result;
 }
 
-- (void)createRippleAtGridCoordinate:(CGPoint)a3 strength:(double)a4
+- (void)createRippleAtGridCoordinate:(CGPoint)coordinate strength:(double)strength
 {
-  self->_rippleTouchHeight = *&SBHRippleDefaultTouchHeight * a4;
-  [(SBHRippleSimulation *)self convertGridToRippleCoordinate:a3.x, a3.y];
+  self->_rippleTouchHeight = *&SBHRippleDefaultTouchHeight * strength;
+  [(SBHRippleSimulation *)self convertGridToRippleCoordinate:coordinate.x, coordinate.y];
   v6 = v5;
   v8 = v7;
   self->_settled = 0;
@@ -160,11 +160,11 @@
   }
 }
 
-- (void)step:(double)a3
+- (void)step:(double)step
 {
   rippleHeight = self->_rippleHeight;
   v5 = self->_rippleWidth - 1;
-  v6 = a3 * 60.0 * self->_rippleTimeStep;
+  v6 = step * 60.0 * self->_rippleTimeStep;
   UIAnimationDragCoefficient();
   v8 = v6 / v7;
   v9 = v8;
@@ -289,9 +289,9 @@ LABEL_27:
   }
 }
 
-- (double)zPositionForGridCoordinate:(CGPoint)a3
+- (double)zPositionForGridCoordinate:(CGPoint)coordinate
 {
-  [(SBHRippleSimulation *)self convertGridToRippleCoordinate:a3.x, a3.y];
+  [(SBHRippleSimulation *)self convertGridToRippleCoordinate:coordinate.x, coordinate.y];
   positionBuffer = self->_positionBuffer;
   rippleWidth = self->_rippleWidth;
   v6 = LODWORD(self->_rippleHeight) * rippleWidth - 1;
@@ -348,7 +348,7 @@ LABEL_27:
   return *&SBHRippleHeight * (((v30 + v32 + positionBuffer[v33] + positionBuffer[v6] + v24 + positionBuffer[v23] + v26 + v27) * 3.0 + (v14 + v15 + v19 + v20) * 9.0 + positionBuffer[v34.i32[0]] + positionBuffer[v34.i32[1]] + positionBuffer[v35.i32[0]] + positionBuffer[v35.i32[1]]) * 0.015625);
 }
 
-- (CATransform3D)transformForGridCoordinate:(SEL)a3
+- (CATransform3D)transformForGridCoordinate:(SEL)coordinate
 {
   [(SBHRippleSimulation *)self convertGridToRippleCoordinate:a4.x, a4.y];
   positionBuffer = self->_positionBuffer;

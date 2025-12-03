@@ -1,17 +1,17 @@
 @interface SDAirDropHandleriCloudFamilyLinks
 - (BOOL)canHandleTransfer;
-- (SDAirDropHandleriCloudFamilyLinks)initWithTransfer:(id)a3;
+- (SDAirDropHandleriCloudFamilyLinks)initWithTransfer:(id)transfer;
 - (id)suitableContentsDescription;
 - (int64_t)transferTypes;
 @end
 
 @implementation SDAirDropHandleriCloudFamilyLinks
 
-- (SDAirDropHandleriCloudFamilyLinks)initWithTransfer:(id)a3
+- (SDAirDropHandleriCloudFamilyLinks)initWithTransfer:(id)transfer
 {
   v4.receiver = self;
   v4.super_class = SDAirDropHandleriCloudFamilyLinks;
-  return [(SDAirDropHandler *)&v4 initWithTransfer:a3 bundleIdentifier:@"com.apple.family"];
+  return [(SDAirDropHandler *)&v4 initWithTransfer:transfer bundleIdentifier:@"com.apple.family"];
 }
 
 - (BOOL)canHandleTransfer
@@ -25,10 +25,10 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(SDAirDropHandler *)self transfer];
-  v4 = [v3 completedURLs];
+  transfer = [(SDAirDropHandler *)self transfer];
+  completedURLs = [transfer completedURLs];
 
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [completedURLs countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -39,7 +39,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(completedURLs);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -50,7 +50,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [completedURLs countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -75,10 +75,10 @@ LABEL_13:
 
 - (id)suitableContentsDescription
 {
-  v3 = [(SDAirDropHandler *)self senderName];
+  senderName = [(SDAirDropHandler *)self senderName];
   v4 = [(SDAirDropHandler *)self alertMessageLocalizedKeyForTypeDicts:&off_1009101D8];
   v5 = SFLocalizedStringForKey();
-  v6 = [NSString localizedStringWithFormat:v5, v3];
+  v6 = [NSString localizedStringWithFormat:v5, senderName];
 
   return v6;
 }

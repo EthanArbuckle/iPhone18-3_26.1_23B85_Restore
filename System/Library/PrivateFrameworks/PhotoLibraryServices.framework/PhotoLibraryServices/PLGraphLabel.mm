@@ -1,30 +1,30 @@
 @interface PLGraphLabel
-+ (BOOL)_needsLabelUpdateCheckFromGlobalValues:(id)a3;
-+ (BOOL)labelableObject:(id)a3 hasLabel:(id)a4;
-+ (BOOL)labelableObject:(id)a3 hasLabelWithCode:(int)a4;
-+ (id)_assignmentForLabel:(id)a3 onLabelableObject:(id)a4 createIfMissing:(BOOL)a5;
-+ (id)_fetchExternalIdentifiersHavingLabel:(id)a3 forEntityClass:(Class)a4;
-+ (id)_generateBitsetUsingFetchForLabel:(id)a3 forClass:(Class)a4;
-+ (id)_generateBitsetUsingObjectGraphFromPrimaryLabelsKey:(id)a3 additionalLabelsKey:(id)a4 forLabel:(id)a5;
-+ (id)_insertBuiltInLabelWithCode:(int)a3 inManagedObjectContext:(id)a4;
-+ (id)_insertLabelWithAlias:(id)a3 inManagedObjectContext:(id)a4;
-+ (id)additionalLabelsFromLabelableObject:(id)a3;
-+ (id)fetchBuiltInLabelWithCode:(int)a3 inContext:(id)a4;
-+ (id)fetchLabelWithAlias:(id)a3 inContext:(id)a4 createIfMissing:(BOOL)a5;
-+ (void)addLabel:(id)a3 toLabelableObject:(id)a4;
-+ (void)ensureLabelsAreUpdatedInContext:(id)a3;
-+ (void)removeLabel:(id)a3 fromLabelableObject:(id)a4;
-+ (void)setAdditionalLabels:(id)a3 onLabelableObject:(id)a4;
-+ (void)setPrimaryLabel:(id)a3 onLabelableObject:(id)a4;
-- (BOOL)_removeFromAdditionalLabelsOnAllObjectsWithError:(id *)a3 assignmentEntityName:(id)a4;
-- (BOOL)removeFromAdditionalLabelsOnAllEdgesWithError:(id *)a3;
-- (BOOL)removeFromAdditionalLabelsOnAllNodesWithError:(id *)a3;
-- (BOOL)validateForDelete:(id *)a3;
++ (BOOL)_needsLabelUpdateCheckFromGlobalValues:(id)values;
++ (BOOL)labelableObject:(id)object hasLabel:(id)label;
++ (BOOL)labelableObject:(id)object hasLabelWithCode:(int)code;
++ (id)_assignmentForLabel:(id)label onLabelableObject:(id)object createIfMissing:(BOOL)missing;
++ (id)_fetchExternalIdentifiersHavingLabel:(id)label forEntityClass:(Class)class;
++ (id)_generateBitsetUsingFetchForLabel:(id)label forClass:(Class)class;
++ (id)_generateBitsetUsingObjectGraphFromPrimaryLabelsKey:(id)key additionalLabelsKey:(id)labelsKey forLabel:(id)label;
++ (id)_insertBuiltInLabelWithCode:(int)code inManagedObjectContext:(id)context;
++ (id)_insertLabelWithAlias:(id)alias inManagedObjectContext:(id)context;
++ (id)additionalLabelsFromLabelableObject:(id)object;
++ (id)fetchBuiltInLabelWithCode:(int)code inContext:(id)context;
++ (id)fetchLabelWithAlias:(id)alias inContext:(id)context createIfMissing:(BOOL)missing;
++ (void)addLabel:(id)label toLabelableObject:(id)object;
++ (void)ensureLabelsAreUpdatedInContext:(id)context;
++ (void)removeLabel:(id)label fromLabelableObject:(id)object;
++ (void)setAdditionalLabels:(id)labels onLabelableObject:(id)object;
++ (void)setPrimaryLabel:(id)label onLabelableObject:(id)object;
+- (BOOL)_removeFromAdditionalLabelsOnAllObjectsWithError:(id *)error assignmentEntityName:(id)name;
+- (BOOL)removeFromAdditionalLabelsOnAllEdgesWithError:(id *)error;
+- (BOOL)removeFromAdditionalLabelsOnAllNodesWithError:(id *)error;
+- (BOOL)validateForDelete:(id *)delete;
 - (PLGraphBitset)edgeExternalIdentifiersHavingLabel;
 - (PLGraphBitset)nodeExternalIdentifiersHavingLabel;
 - (id)debugDescription;
 - (void)clearBitsetData;
-- (void)handleAddOrRemoveOfBitsetTrackedObject:(id)a3 isAdd:(BOOL)a4;
+- (void)handleAddOrRemoveOfBitsetTrackedObject:(id)object isAdd:(BOOL)add;
 - (void)willSave;
 @end
 
@@ -33,23 +33,23 @@
 - (id)debugDescription
 {
   v3 = [[PLDescriptionBuilder alloc] initWithObject:self style:3 indent:0];
-  v4 = [(PLGraphLabel *)self objectID];
-  [(PLDescriptionBuilder *)v3 appendName:@"objectID" object:v4];
+  objectID = [(PLGraphLabel *)self objectID];
+  [(PLDescriptionBuilder *)v3 appendName:@"objectID" object:objectID];
 
-  v5 = [(PLGraphLabel *)self code];
-  if (v5 > 1101)
+  code = [(PLGraphLabel *)self code];
+  if (code > 1101)
   {
-    if (v5 > 1299)
+    if (code > 1299)
     {
-      if (v5 > 1400)
+      if (code > 1400)
       {
-        if (v5 == 1401)
+        if (code == 1401)
         {
           v6 = @"MomentThemeNoThemes";
           goto LABEL_37;
         }
 
-        if (v5 == 2000)
+        if (code == 2000)
         {
           v6 = @"Actor";
           goto LABEL_37;
@@ -58,13 +58,13 @@
 
       else
       {
-        if (v5 == 1300)
+        if (code == 1300)
         {
           v6 = @"GeneratedAssetDescription";
           goto LABEL_37;
         }
 
-        if (v5 == 1400)
+        if (code == 1400)
         {
           v6 = @"MomentTheme";
           goto LABEL_37;
@@ -72,15 +72,15 @@
       }
     }
 
-    else if (v5 > 1199)
+    else if (code > 1199)
     {
-      if (v5 == 1200)
+      if (code == 1200)
       {
         v6 = @"SmallDetectedFace";
         goto LABEL_37;
       }
 
-      if (v5 == 1201)
+      if (code == 1201)
       {
         v6 = @"LargeDetectedFace";
         goto LABEL_37;
@@ -89,13 +89,13 @@
 
     else
     {
-      if (v5 == 1102)
+      if (code == 1102)
       {
         v6 = @"SearchEntityPersonRelationMe";
         goto LABEL_37;
       }
 
-      if (v5 == 1103)
+      if (code == 1103)
       {
         v6 = @"SearchEntityPersonRelationSelf";
         goto LABEL_37;
@@ -105,17 +105,17 @@
     goto LABEL_35;
   }
 
-  if (v5 <= 1002)
+  if (code <= 1002)
   {
-    if (v5)
+    if (code)
     {
-      if (v5 == 1000)
+      if (code == 1000)
       {
         v6 = @"SocialGroup";
         goto LABEL_37;
       }
 
-      if (v5 == 1001)
+      if (code == 1001)
       {
         v6 = @"SocialGroupKeyAsset";
         goto LABEL_37;
@@ -129,26 +129,26 @@
 
   else
   {
-    if (v5 <= 1099)
+    if (code <= 1099)
     {
-      if (v5 == 1003)
+      if (code == 1003)
       {
         v6 = @"SocialGroupKeyAssetUserPicked";
         goto LABEL_37;
       }
 
-      if (v5 == 1004)
+      if (code == 1004)
       {
         v6 = @"SocialGroupExclusiveAsset";
         goto LABEL_37;
       }
 
 LABEL_35:
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown code: %u", v5];
+      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown code: %u", code];
       goto LABEL_37;
     }
 
-    if (v5 == 1100)
+    if (code == 1100)
     {
       v6 = @"SearchEntity";
     }
@@ -162,25 +162,25 @@ LABEL_35:
 LABEL_37:
   [(PLDescriptionBuilder *)v3 appendName:@"name" object:v6];
 
-  v7 = [(PLDescriptionBuilder *)v3 build];
+  build = [(PLDescriptionBuilder *)v3 build];
 
-  return v7;
+  return build;
 }
 
-- (BOOL)removeFromAdditionalLabelsOnAllEdgesWithError:(id *)a3
+- (BOOL)removeFromAdditionalLabelsOnAllEdgesWithError:(id *)error
 {
   v5 = +[PLGraphEdgeAdditionalLabelAssignment entityName];
-  LOBYTE(a3) = [(PLGraphLabel *)self _removeFromAdditionalLabelsOnAllObjectsWithError:a3 assignmentEntityName:v5];
+  LOBYTE(error) = [(PLGraphLabel *)self _removeFromAdditionalLabelsOnAllObjectsWithError:error assignmentEntityName:v5];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)removeFromAdditionalLabelsOnAllNodesWithError:(id *)a3
+- (BOOL)removeFromAdditionalLabelsOnAllNodesWithError:(id *)error
 {
   v5 = +[PLGraphNodeAdditionalLabelAssignment entityName];
-  LOBYTE(a3) = [(PLGraphLabel *)self _removeFromAdditionalLabelsOnAllObjectsWithError:a3 assignmentEntityName:v5];
+  LOBYTE(error) = [(PLGraphLabel *)self _removeFromAdditionalLabelsOnAllObjectsWithError:error assignmentEntityName:v5];
 
-  return a3;
+  return error;
 }
 
 - (void)clearBitsetData
@@ -196,22 +196,22 @@ LABEL_37:
   [(PLGraphLabel *)self setEdgeExternalIdentifierDataHavingLabel:0];
 }
 
-- (void)handleAddOrRemoveOfBitsetTrackedObject:(id)a3 isAdd:(BOOL)a4
+- (void)handleAddOrRemoveOfBitsetTrackedObject:(id)object isAdd:(BOOL)add
 {
-  v4 = a4;
+  addCopy = add;
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(PLGraphLabel *)self nodeExternalIdentifiersHavingLabel];
+    nodeExternalIdentifiersHavingLabel = [(PLGraphLabel *)self nodeExternalIdentifiersHavingLabel];
     v8 = @"nodeExternalIdentifierDataHavingLabel";
-    if (v7)
+    if (nodeExternalIdentifiersHavingLabel)
     {
 LABEL_3:
-      [v7 setBit:v4 atIndex:{objc_msgSend(v6, "externalIdentifier")}];
-      v9 = [MEMORY[0x1E695DEF0] data];
-      [(PLManagedObject *)self pl_setValue:v9 forKey:v8 valueDidChangeHandler:0];
+      [nodeExternalIdentifiersHavingLabel setBit:addCopy atIndex:{objc_msgSend(objectCopy, "externalIdentifier")}];
+      data = [MEMORY[0x1E695DEF0] data];
+      [(PLManagedObject *)self pl_setValue:data forKey:v8 valueDidChangeHandler:0];
 
       goto LABEL_8;
     }
@@ -219,9 +219,9 @@ LABEL_3:
 
   else
   {
-    v7 = [(PLGraphLabel *)self edgeExternalIdentifiersHavingLabel];
+    nodeExternalIdentifiersHavingLabel = [(PLGraphLabel *)self edgeExternalIdentifiersHavingLabel];
     v8 = @"edgeExternalIdentifierDataHavingLabel";
-    if (v7)
+    if (nodeExternalIdentifiersHavingLabel)
     {
       goto LABEL_3;
     }
@@ -231,7 +231,7 @@ LABEL_3:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = objectCopy;
     _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "Unable to resolve a bitset for object: %@", &v11, 0xCu);
   }
 
@@ -266,7 +266,7 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)validateForDelete:(id *)a3
+- (BOOL)validateForDelete:(id *)delete
 {
   v28.receiver = self;
   v28.super_class = PLGraphLabel;
@@ -275,8 +275,8 @@ LABEL_8:
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"primaryLabel", self];
   [v6 setPredicate:v7];
 
-  v8 = [(PLGraphLabel *)self managedObjectContext];
-  v9 = [v8 countForFetchRequest:v6 error:0];
+  managedObjectContext = [(PLGraphLabel *)self managedObjectContext];
+  v9 = [managedObjectContext countForFetchRequest:v6 error:0];
 
   if (v9)
   {
@@ -291,10 +291,10 @@ LABEL_8:
   if (!v10)
   {
     v11 = PLErrorCreate();
-    if (a3)
+    if (delete)
     {
       v11 = v11;
-      *a3 = v11;
+      *delete = v11;
     }
 
     v5 = 0;
@@ -304,16 +304,16 @@ LABEL_8:
   v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"primaryLabel", self];
   [v12 setPredicate:v13];
 
-  v14 = [(PLGraphLabel *)self managedObjectContext];
-  v15 = [v14 countForFetchRequest:v12 error:0];
+  managedObjectContext2 = [(PLGraphLabel *)self managedObjectContext];
+  v15 = [managedObjectContext2 countForFetchRequest:v12 error:0];
 
   if (v15 && v15 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v16 = PLErrorCreate();
-    if (a3)
+    if (delete)
     {
       v16 = v16;
-      *a3 = v16;
+      *delete = v16;
     }
 
     v5 = 0;
@@ -323,16 +323,16 @@ LABEL_8:
   v18 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"label", self];
   [v17 setPredicate:v18];
 
-  v19 = [(PLGraphLabel *)self managedObjectContext];
-  v20 = [v19 countForFetchRequest:v17 error:0];
+  managedObjectContext3 = [(PLGraphLabel *)self managedObjectContext];
+  v20 = [managedObjectContext3 countForFetchRequest:v17 error:0];
 
   if (v20 && v20 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v21 = PLErrorCreate();
-    if (a3)
+    if (delete)
     {
       v21 = v21;
-      *a3 = v21;
+      *delete = v21;
     }
 
     v5 = 0;
@@ -342,16 +342,16 @@ LABEL_8:
   v23 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"label", self];
   [v22 setPredicate:v23];
 
-  v24 = [(PLGraphLabel *)self managedObjectContext];
-  v25 = [v24 countForFetchRequest:v22 error:0];
+  managedObjectContext4 = [(PLGraphLabel *)self managedObjectContext];
+  v25 = [managedObjectContext4 countForFetchRequest:v22 error:0];
 
   if (v25 && v25 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v26 = PLErrorCreate();
-    if (a3)
+    if (delete)
     {
       v26 = v26;
-      *a3 = v26;
+      *delete = v26;
     }
 
     v5 = 0;
@@ -365,65 +365,65 @@ LABEL_8:
   v10.receiver = self;
   v10.super_class = PLGraphLabel;
   [(PLManagedObject *)&v10 willSave];
-  v3 = [(PLGraphLabel *)self changedValues];
-  v4 = [v3 objectForKeyedSubscript:@"nodeExternalIdentifierDataHavingLabel"];
+  changedValues = [(PLGraphLabel *)self changedValues];
+  v4 = [changedValues objectForKeyedSubscript:@"nodeExternalIdentifierDataHavingLabel"];
 
   if (v4 && self->_nodeExternalIdentifiersHavingLabel)
   {
-    v5 = [(PLGraphLabel *)self nodeExternalIdentifiersHavingLabel];
-    v6 = [v5 encodedData];
-    [(PLManagedObject *)self pl_safeSetValue:v6 forKey:@"nodeExternalIdentifierDataHavingLabel" valueDidChangeHandler:0];
+    nodeExternalIdentifiersHavingLabel = [(PLGraphLabel *)self nodeExternalIdentifiersHavingLabel];
+    encodedData = [nodeExternalIdentifiersHavingLabel encodedData];
+    [(PLManagedObject *)self pl_safeSetValue:encodedData forKey:@"nodeExternalIdentifierDataHavingLabel" valueDidChangeHandler:0];
   }
 
-  v7 = [v3 objectForKeyedSubscript:@"edgeExternalIdentifierDataHavingLabel"];
+  v7 = [changedValues objectForKeyedSubscript:@"edgeExternalIdentifierDataHavingLabel"];
 
   if (v7 && self->_edgeExternalIdentifiersHavingLabel)
   {
-    v8 = [(PLGraphLabel *)self edgeExternalIdentifiersHavingLabel];
-    v9 = [v8 encodedData];
-    [(PLManagedObject *)self pl_safeSetValue:v9 forKey:@"edgeExternalIdentifierDataHavingLabel" valueDidChangeHandler:0];
+    edgeExternalIdentifiersHavingLabel = [(PLGraphLabel *)self edgeExternalIdentifiersHavingLabel];
+    encodedData2 = [edgeExternalIdentifiersHavingLabel encodedData];
+    [(PLManagedObject *)self pl_safeSetValue:encodedData2 forKey:@"edgeExternalIdentifierDataHavingLabel" valueDidChangeHandler:0];
   }
 }
 
-- (BOOL)_removeFromAdditionalLabelsOnAllObjectsWithError:(id *)a3 assignmentEntityName:(id)a4
+- (BOOL)_removeFromAdditionalLabelsOnAllObjectsWithError:(id *)error assignmentEntityName:(id)name
 {
-  v6 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:a4];
+  v6 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:name];
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"label", self];
   [v6 setPredicate:v7];
 
   v8 = [PLEnumerateAndSaveController alloc];
-  v9 = [(PLGraphLabel *)self managedObjectContext];
+  managedObjectContext = [(PLGraphLabel *)self managedObjectContext];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __86__PLGraphLabel__removeFromAdditionalLabelsOnAllObjectsWithError_assignmentEntityName___block_invoke;
   v15[3] = &unk_1E7575B30;
   v15[4] = self;
-  v10 = [(PLEnumerateAndSaveController *)v8 initWithName:@"removeFromAdditionalLabelsOnAllObjectsWithError:assignmentEntityName:" fetchRequest:v6 context:v9 options:4 generateContextBlock:v15 didFetchObjectIDsBlock:0 processResultBlock:&__block_literal_global_105582];
+  v10 = [(PLEnumerateAndSaveController *)v8 initWithName:@"removeFromAdditionalLabelsOnAllObjectsWithError:assignmentEntityName:" fetchRequest:v6 context:managedObjectContext options:4 generateContextBlock:v15 didFetchObjectIDsBlock:0 processResultBlock:&__block_literal_global_105582];
 
   v14 = 0;
   v11 = [(PLEnumerateAndSaveController *)v10 processObjectsWithError:&v14];
   v12 = v14;
-  if (!v11 && a3)
+  if (!v11 && error)
   {
     v12 = v12;
-    *a3 = v12;
+    *error = v12;
   }
 
   return v11;
 }
 
-+ (void)setPrimaryLabel:(id)a3 onLabelableObject:(id)a4
++ (void)setPrimaryLabel:(id)label onLabelableObject:(id)object
 {
-  v5 = a3;
-  v6 = a4;
+  labelCopy = label;
+  objectCopy = object;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __50__PLGraphLabel_setPrimaryLabel_onLabelableObject___block_invoke;
   v9[3] = &unk_1E7575C28;
-  v10 = v6;
-  v11 = v5;
-  v7 = v5;
-  v8 = v6;
+  v10 = objectCopy;
+  v11 = labelCopy;
+  v7 = labelCopy;
+  v8 = objectCopy;
   [v8 pl_setValue:v7 forKey:@"primaryLabel" valueDidChangeHandler:v9];
 }
 
@@ -446,26 +446,26 @@ void __50__PLGraphLabel_setPrimaryLabel_onLabelableObject___block_invoke(uint64_
   }
 }
 
-+ (void)setAdditionalLabels:(id)a3 onLabelableObject:(id)a4
++ (void)setAdditionalLabels:(id)labels onLabelableObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  labelsCopy = labels;
+  objectCopy = object;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __54__PLGraphLabel_setAdditionalLabels_onLabelableObject___block_invoke;
   v15[3] = &unk_1E7575BD8;
-  v17 = a1;
-  v8 = v7;
+  selfCopy = self;
+  v8 = objectCopy;
   v16 = v8;
-  v9 = [v6 _pl_map:v15];
+  v9 = [labelsCopy _pl_map:v15];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __54__PLGraphLabel_setAdditionalLabels_onLabelableObject___block_invoke_2;
   v12[3] = &unk_1E7575C00;
-  v13 = v6;
+  v13 = labelsCopy;
   v14 = v8;
   v10 = v8;
-  v11 = v6;
+  v11 = labelsCopy;
   [v10 pl_setValue:v9 forKey:@"additionalLabelAssignments" valueDidChangeHandler:v12];
 }
 
@@ -544,69 +544,69 @@ void __54__PLGraphLabel_setAdditionalLabels_onLabelableObject___block_invoke_2(u
   }
 }
 
-+ (id)additionalLabelsFromLabelableObject:(id)a3
++ (id)additionalLabelsFromLabelableObject:(id)object
 {
-  v3 = [a3 additionalLabelAssignments];
-  v4 = [v3 _pl_map:&__block_literal_global_135_105630];
+  additionalLabelAssignments = [object additionalLabelAssignments];
+  v4 = [additionalLabelAssignments _pl_map:&__block_literal_global_135_105630];
 
   return v4;
 }
 
-+ (void)removeLabel:(id)a3 fromLabelableObject:(id)a4
++ (void)removeLabel:(id)label fromLabelableObject:(id)object
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [a1 _assignmentForLabel:v10 onLabelableObject:v6 createIfMissing:0];
+  labelCopy = label;
+  objectCopy = object;
+  v7 = [self _assignmentForLabel:labelCopy onLabelableObject:objectCopy createIfMissing:0];
   if (v7)
   {
-    v8 = [v6 mutableSetValueForKey:@"additionalLabelAssignments"];
-    [v6 willChangeValueForKey:@"additionalLabelAssignments"];
+    v8 = [objectCopy mutableSetValueForKey:@"additionalLabelAssignments"];
+    [objectCopy willChangeValueForKey:@"additionalLabelAssignments"];
     [v8 removeObject:v7];
-    [v6 didChangeValueForKey:@"additionalLabelAssignments"];
-    v9 = [v10 managedObjectContext];
-    [v9 deleteObject:v7];
+    [objectCopy didChangeValueForKey:@"additionalLabelAssignments"];
+    managedObjectContext = [labelCopy managedObjectContext];
+    [managedObjectContext deleteObject:v7];
 
-    [v10 handleAddOrRemoveOfBitsetTrackedObject:v6 isAdd:0];
+    [labelCopy handleAddOrRemoveOfBitsetTrackedObject:objectCopy isAdd:0];
   }
 }
 
-+ (void)addLabel:(id)a3 toLabelableObject:(id)a4
++ (void)addLabel:(id)label toLabelableObject:(id)object
 {
-  v13 = a3;
-  v7 = a4;
-  v8 = v13;
-  v9 = v7;
-  if (!v13)
+  labelCopy = label;
+  objectCopy = object;
+  v8 = labelCopy;
+  v9 = objectCopy;
+  if (!labelCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PLGraphLabel.m" lineNumber:498 description:{@"Invalid parameter not satisfying: %@", @"label"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphLabel.m" lineNumber:498 description:{@"Invalid parameter not satisfying: %@", @"label"}];
 
     v8 = 0;
   }
 
-  v10 = [a1 _assignmentForLabel:v8 onLabelableObject:v9 createIfMissing:1];
+  v10 = [self _assignmentForLabel:v8 onLabelableObject:v9 createIfMissing:1];
   if ([v10 isInserted])
   {
     v11 = [v9 mutableSetValueForKey:@"additionalLabelAssignments"];
     [v9 willChangeValueForKey:@"additionalLabelAssignments"];
     [v11 addObject:v10];
     [v9 didChangeValueForKey:@"additionalLabelAssignments"];
-    [v13 handleAddOrRemoveOfBitsetTrackedObject:v9 isAdd:1];
+    [labelCopy handleAddOrRemoveOfBitsetTrackedObject:v9 isAdd:1];
   }
 }
 
-+ (BOOL)labelableObject:(id)a3 hasLabelWithCode:(int)a4
++ (BOOL)labelableObject:(id)object hasLabelWithCode:(int)code
 {
-  v5 = [a3 additionalLabelAssignments];
+  additionalLabelAssignments = [object additionalLabelAssignments];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __49__PLGraphLabel_labelableObject_hasLabelWithCode___block_invoke;
   v8[3] = &__block_descriptor_36_e46_B16__0__PLGraphEdgeAdditionalLabelAssignment_8l;
-  v9 = a4;
-  v6 = [v5 _pl_firstObjectPassingTest:v8];
-  LOBYTE(a4) = v6 != 0;
+  codeCopy = code;
+  v6 = [additionalLabelAssignments _pl_firstObjectPassingTest:v8];
+  LOBYTE(code) = v6 != 0;
 
-  return a4;
+  return code;
 }
 
 BOOL __49__PLGraphLabel_labelableObject_hasLabelWithCode___block_invoke(uint64_t a1, void *a2)
@@ -617,22 +617,22 @@ BOOL __49__PLGraphLabel_labelableObject_hasLabelWithCode___block_invoke(uint64_t
   return v4;
 }
 
-+ (BOOL)labelableObject:(id)a3 hasLabel:(id)a4
++ (BOOL)labelableObject:(id)object hasLabel:(id)label
 {
-  v5 = a4;
-  if (a3)
+  labelCopy = label;
+  if (object)
   {
-    v6 = [a3 additionalLabelAssignments];
+    additionalLabelAssignments = [object additionalLabelAssignments];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __41__PLGraphLabel_labelableObject_hasLabel___block_invoke;
     v9[3] = &unk_1E7575B08;
-    v10 = v5;
-    v7 = [v6 _pl_firstObjectPassingTest:v9];
-    LOBYTE(a3) = v7 != 0;
+    v10 = labelCopy;
+    v7 = [additionalLabelAssignments _pl_firstObjectPassingTest:v9];
+    LOBYTE(object) = v7 != 0;
   }
 
-  return a3;
+  return object;
 }
 
 uint64_t __41__PLGraphLabel_labelableObject_hasLabel___block_invoke(uint64_t a1, void *a2)
@@ -643,30 +643,30 @@ uint64_t __41__PLGraphLabel_labelableObject_hasLabel___block_invoke(uint64_t a1,
   return v4;
 }
 
-+ (id)fetchLabelWithAlias:(id)a3 inContext:(id)a4 createIfMissing:(BOOL)a5
++ (id)fetchLabelWithAlias:(id)alias inContext:(id)context createIfMissing:(BOOL)missing
 {
-  v5 = a5;
+  missingCopy = missing;
   v24 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  aliasCopy = alias;
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"PLGraphLabel.m" lineNumber:365 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphLabel.m" lineNumber:365 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
-  if (!v9)
+  if (!aliasCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:a1 file:@"PLGraphLabel.m" lineNumber:366 description:{@"Invalid parameter not satisfying: %@", @"alias"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLGraphLabel.m" lineNumber:366 description:{@"Invalid parameter not satisfying: %@", @"alias"}];
   }
 
   v11 = +[PLGraphLabel fetchRequest];
-  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"alias", v9];
-  [v11 setPredicate:v12];
+  aliasCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"alias", aliasCopy];
+  [v11 setPredicate:aliasCopy];
 
   v21 = 0;
-  v13 = [v10 executeFetchRequest:v11 error:&v21];
+  v13 = [contextCopy executeFetchRequest:v11 error:&v21];
   v14 = v21;
   if (!v13)
   {
@@ -678,39 +678,39 @@ uint64_t __41__PLGraphLabel_labelableObject_hasLabel___block_invoke(uint64_t a1,
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_ERROR, "Error fetching labels: %@", buf, 0xCu);
     }
 
-    v15 = 0;
+    firstObject = 0;
     goto LABEL_13;
   }
 
-  v15 = [v13 firstObject];
-  if (!v15 && v5)
+  firstObject = [v13 firstObject];
+  if (!firstObject && missingCopy)
   {
-    v15 = [a1 _insertLabelWithAlias:v9 inManagedObjectContext:v10];
+    firstObject = [self _insertLabelWithAlias:aliasCopy inManagedObjectContext:contextCopy];
     v16 = PLBackendGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v23 = v15;
+      v23 = firstObject;
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_INFO, "Inserted GraphLabel: %@", buf, 0xCu);
     }
 
 LABEL_13:
   }
 
-  v17 = v15;
+  v17 = firstObject;
 
-  return v15;
+  return firstObject;
 }
 
-+ (id)fetchBuiltInLabelWithCode:(int)a3 inContext:(id)a4
++ (id)fetchBuiltInLabelWithCode:(int)code inContext:(id)context
 {
-  v4 = *&a3;
+  v4 = *&code;
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!v7)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"PLGraphLabel.m" lineNumber:345 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphLabel.m" lineNumber:345 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
   v8 = +[PLGraphLabel fetchRequest];
@@ -718,11 +718,11 @@ LABEL_13:
   [v8 setPredicate:v9];
 
   v16 = 0;
-  v10 = [v7 executeFetchRequest:v8 error:&v16];
+  v10 = [contextCopy executeFetchRequest:v8 error:&v16];
   v11 = v16;
   if (v10)
   {
-    v12 = [v10 firstObject];
+    firstObject = [v10 firstObject];
   }
 
   else
@@ -735,32 +735,32 @@ LABEL_13:
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "Error fetching labels: %@", buf, 0xCu);
     }
 
-    v12 = 0;
+    firstObject = 0;
   }
 
-  return v12;
+  return firstObject;
 }
 
-+ (void)ensureLabelsAreUpdatedInContext:(id)a3
++ (void)ensureLabelsAreUpdatedInContext:(id)context
 {
   v46[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PLManagedObject *)PLGraphLabel entityInManagedObjectContext:v5];
-  v7 = [v6 managedObjectClassName];
+  contextCopy = context;
+  v6 = [(PLManagedObject *)PLGraphLabel entityInManagedObjectContext:contextCopy];
+  managedObjectClassName = [v6 managedObjectClassName];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v7 isEqualToString:v9];
+  v10 = [managedObjectClassName isEqualToString:v9];
 
   if ((v10 & 1) == 0)
   {
-    if (!v5)
+    if (!contextCopy)
     {
-      v33 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v33 handleFailureInMethod:a2 object:a1 file:@"PLGraphLabel.m" lineNumber:304 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphLabel.m" lineNumber:304 description:{@"Invalid parameter not satisfying: %@", @"context"}];
     }
 
-    v11 = [[PLGlobalValues alloc] initWithManagedObjectContext:v5];
-    if ([a1 _needsLabelUpdateCheckFromGlobalValues:v11])
+    v11 = [[PLGlobalValues alloc] initWithManagedObjectContext:contextCopy];
+    if ([self _needsLabelUpdateCheckFromGlobalValues:v11])
     {
       v12 = +[PLGraphLabel fetchRequest];
       [v12 setResultType:2];
@@ -770,7 +770,7 @@ LABEL_13:
 
       v14 = MEMORY[0x1E695DFD8];
       v42 = 0;
-      v15 = [v5 executeFetchRequest:v12 error:&v42];
+      v15 = [contextCopy executeFetchRequest:v12 error:&v42];
       v16 = v42;
       v17 = [v15 _pl_map:&__block_literal_global_121_105661];
       v18 = [v14 setWithArray:v17];
@@ -807,13 +807,13 @@ LABEL_13:
               v27 = PLBackendGetLog();
               if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
               {
-                v28 = [v26 integerValue];
+                integerValue = [v26 integerValue];
                 *buf = 134217984;
-                v44 = v28;
+                v44 = integerValue;
                 _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_DEFAULT, "Adding missing GraphLabel with code %ld", buf, 0xCu);
               }
 
-              v29 = [a1 _insertBuiltInLabelWithCode:objc_msgSend(v26 inManagedObjectContext:{"integerValue"), v5}];
+              v29 = [self _insertBuiltInLabelWithCode:objc_msgSend(v26 inManagedObjectContext:{"integerValue"), contextCopy}];
             }
 
             v23 = v37 + v22;
@@ -829,9 +829,9 @@ LABEL_13:
         }
 
         v30 = PLPhotoLibraryServicesBinaryImageUUID();
-        v31 = [v30 UUIDString];
+        uUIDString = [v30 UUIDString];
         v11 = v36;
-        [(PLGlobalValues *)v36 setLastUpdatedGraphLabelsAgainstPLSImageUUID:v31];
+        [(PLGlobalValues *)v36 setLastUpdatedGraphLabelsAgainstPLSImageUUID:uUIDString];
 
         v16 = v34;
         v12 = v35;
@@ -861,44 +861,44 @@ LABEL_13:
   }
 }
 
-+ (id)_assignmentForLabel:(id)a3 onLabelableObject:(id)a4 createIfMissing:(BOOL)a5
++ (id)_assignmentForLabel:(id)label onLabelableObject:(id)object createIfMissing:(BOOL)missing
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  missingCopy = missing;
+  labelCopy = label;
+  objectCopy = object;
+  if (!objectCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:a1 file:@"PLGraphLabel.m" lineNumber:174 description:{@"Invalid parameter not satisfying: %@", @"object"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphLabel.m" lineNumber:174 description:{@"Invalid parameter not satisfying: %@", @"object"}];
 
-    if (v9)
+    if (labelCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_12:
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"PLGraphLabel.m" lineNumber:175 description:{@"Invalid parameter not satisfying: %@", @"label"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLGraphLabel.m" lineNumber:175 description:{@"Invalid parameter not satisfying: %@", @"label"}];
 
     goto LABEL_3;
   }
 
-  if (!v9)
+  if (!labelCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_3:
-  v11 = [v10 additionalLabelAssignments];
+  additionalLabelAssignments = [objectCopy additionalLabelAssignments];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __70__PLGraphLabel__assignmentForLabel_onLabelableObject_createIfMissing___block_invoke;
   v22[3] = &unk_1E7575B08;
-  v12 = v9;
+  v12 = labelCopy;
   v23 = v12;
-  v13 = [v11 _pl_firstObjectPassingTest:v22];
+  v13 = [additionalLabelAssignments _pl_firstObjectPassingTest:v22];
 
-  if (!v13 && v5)
+  if (!v13 && missingCopy)
   {
     v14 = objc_opt_class();
     v15 = objc_opt_class();
@@ -908,9 +908,9 @@ LABEL_3:
       v16 = off_1E755FF08;
     }
 
-    v17 = [(__objc2_class *)*v16 entityName];
-    v18 = [v12 managedObjectContext];
-    v13 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v17, v18, 0);
+    entityName = [(__objc2_class *)*v16 entityName];
+    managedObjectContext = [v12 managedObjectContext];
+    v13 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(entityName, managedObjectContext, 0);
 
     [v13 pl_setValue:v12 forKey:@"label" valueDidChangeHandler:0];
   }
@@ -927,10 +927,10 @@ uint64_t __70__PLGraphLabel__assignmentForLabel_onLabelableObject_createIfMissin
   return v4;
 }
 
-+ (id)_generateBitsetUsingFetchForLabel:(id)a3 forClass:(Class)a4
++ (id)_generateBitsetUsingFetchForLabel:(id)label forClass:(Class)class
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  labelCopy = label;
   v7 = PLBackendGetLog();
   v8 = os_signpost_id_generate(v7);
   info = 0;
@@ -944,7 +944,7 @@ uint64_t __70__PLGraphLabel__assignmentForLabel_onLabelableObject_createIfMissin
   }
 
   v11 = mach_absolute_time();
-  v12 = [a1 _fetchExternalIdentifiersHavingLabel:v6 forEntityClass:a4];
+  v12 = [self _fetchExternalIdentifiersHavingLabel:labelCopy forEntityClass:class];
 
   if (v12)
   {
@@ -986,11 +986,11 @@ uint64_t __70__PLGraphLabel__assignmentForLabel_onLabelableObject_createIfMissin
   return v14;
 }
 
-+ (id)_fetchExternalIdentifiersHavingLabel:(id)a3 forEntityClass:(Class)a4
++ (id)_fetchExternalIdentifiersHavingLabel:(id)label forEntityClass:(Class)class
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (objc_opt_class() == a4 || objc_opt_class() == a4)
+  labelCopy = label;
+  if (objc_opt_class() == class || objc_opt_class() == class)
   {
     v11 = @"primaryLabel";
     v10 = @"additionalLabelAssignments";
@@ -999,8 +999,8 @@ uint64_t __70__PLGraphLabel__assignmentForLabel_onLabelableObject_createIfMissin
 
   else
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"PLGraphLabel.m" lineNumber:123 description:{@"unexpected class passed to _fetchExternalIdentifiersHavingLabel: %@", a4}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphLabel.m" lineNumber:123 description:{@"unexpected class passed to _fetchExternalIdentifiersHavingLabel: %@", class}];
 
     v9 = 0;
     v10 = 0;
@@ -1008,18 +1008,18 @@ uint64_t __70__PLGraphLabel__assignmentForLabel_onLabelableObject_createIfMissin
   }
 
   v12 = objc_autoreleasePoolPush();
-  v13 = [(objc_class *)a4 fetchRequest];
-  v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@ OR ANY %K.%K = %@", v11, v7, v10, v9, v7];
-  [v13 setPredicate:v14];
+  fetchRequest = [(objc_class *)class fetchRequest];
+  labelCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@ OR ANY %K.%K = %@", v11, labelCopy, v10, v9, labelCopy];
+  [fetchRequest setPredicate:labelCopy];
 
-  [v13 setResultType:2];
+  [fetchRequest setResultType:2];
   v36[0] = @"externalIdentifier";
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
-  [v13 setPropertiesToFetch:v15];
+  [fetchRequest setPropertiesToFetch:v15];
 
-  v16 = [v7 managedObjectContext];
+  managedObjectContext = [labelCopy managedObjectContext];
   v32 = 0;
-  v17 = [v16 executeFetchRequest:v13 error:&v32];
+  v17 = [managedObjectContext executeFetchRequest:fetchRequest error:&v32];
   v18 = v32;
 
   if (v17)
@@ -1075,19 +1075,19 @@ uint64_t __70__PLGraphLabel__assignmentForLabel_onLabelableObject_createIfMissin
   return v19;
 }
 
-+ (id)_generateBitsetUsingObjectGraphFromPrimaryLabelsKey:(id)a3 additionalLabelsKey:(id)a4 forLabel:(id)a5
++ (id)_generateBitsetUsingObjectGraphFromPrimaryLabelsKey:(id)key additionalLabelsKey:(id)labelsKey forLabel:(id)label
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  labelsKeyCopy = labelsKey;
+  labelCopy = label;
   v10 = objc_alloc_init(PLGraphBitset);
   v11 = objc_autoreleasePoolPush();
   v12 = MEMORY[0x1E695DFA8];
-  v13 = [v9 valueForKey:v7];
+  v13 = [labelCopy valueForKey:keyCopy];
   v14 = [v12 setWithSet:v13];
 
-  v15 = [v9 valueForKey:v8];
+  v15 = [labelCopy valueForKey:labelsKeyCopy];
   [v14 unionSet:v15];
 
   v24 = 0u;
@@ -1123,13 +1123,13 @@ uint64_t __70__PLGraphLabel__assignmentForLabel_onLabelableObject_createIfMissin
   return v10;
 }
 
-+ (id)_insertLabelWithAlias:(id)a3 inManagedObjectContext:(id)a4
++ (id)_insertLabelWithAlias:(id)alias inManagedObjectContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  aliasCopy = alias;
+  contextCopy = context;
+  if (contextCopy)
   {
-    if (v7)
+    if (aliasCopy)
     {
       goto LABEL_3;
     }
@@ -1137,60 +1137,60 @@ uint64_t __70__PLGraphLabel__assignmentForLabel_onLabelableObject_createIfMissin
 
   else
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"PLGraphLabel.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphLabel.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"context"}];
 
-    if (v7)
+    if (aliasCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v12 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v12 handleFailureInMethod:a2 object:a1 file:@"PLGraphLabel.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"alias"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLGraphLabel.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"alias"}];
 
 LABEL_3:
-  v9 = [a1 insertInManagedObjectContext:v8];
-  [v9 pl_setValue:v7 forKey:@"alias" valueDidChangeHandler:0];
+  v9 = [self insertInManagedObjectContext:contextCopy];
+  [v9 pl_setValue:aliasCopy forKey:@"alias" valueDidChangeHandler:0];
 
   return v9;
 }
 
-+ (id)_insertBuiltInLabelWithCode:(int)a3 inManagedObjectContext:(id)a4
++ (id)_insertBuiltInLabelWithCode:(int)code inManagedObjectContext:(id)context
 {
-  v4 = *&a3;
-  v7 = a4;
-  if (!v7)
+  v4 = *&code;
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PLGraphLabel.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphLabel.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
-  v8 = [a1 insertInManagedObjectContext:v7];
+  v8 = [self insertInManagedObjectContext:contextCopy];
   [v8 setCode:v4];
 
   return v8;
 }
 
-+ (BOOL)_needsLabelUpdateCheckFromGlobalValues:(id)a3
++ (BOOL)_needsLabelUpdateCheckFromGlobalValues:(id)values
 {
-  v5 = a3;
-  if (!v5)
+  valuesCopy = values;
+  if (!valuesCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"PLGraphLabel.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"globalValues"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphLabel.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"globalValues"}];
   }
 
   v6 = PLPhotoLibraryServicesBinaryImageUUID();
-  v7 = [v6 UUIDString];
+  uUIDString = [v6 UUIDString];
 
-  if (!v7)
+  if (!uUIDString)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PLGraphLabel.m" lineNumber:65 description:@"can't read PLS image UUID"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLGraphLabel.m" lineNumber:65 description:@"can't read PLS image UUID"];
   }
 
-  v8 = [v5 lastUpdatedGraphLabelsAgainstPLSImageUUID];
+  lastUpdatedGraphLabelsAgainstPLSImageUUID = [valuesCopy lastUpdatedGraphLabelsAgainstPLSImageUUID];
   IsEqual = PLObjectIsEqual();
 
   return IsEqual ^ 1;

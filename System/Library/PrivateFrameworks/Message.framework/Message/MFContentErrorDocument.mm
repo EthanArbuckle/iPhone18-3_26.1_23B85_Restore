@@ -1,18 +1,18 @@
 @interface MFContentErrorDocument
-- (MFContentErrorDocument)initWithMimePart:(id)a3;
+- (MFContentErrorDocument)initWithMimePart:(id)part;
 - (NSString)content;
 @end
 
 @implementation MFContentErrorDocument
 
-- (MFContentErrorDocument)initWithMimePart:(id)a3
+- (MFContentErrorDocument)initWithMimePart:(id)part
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  partCopy = part;
+  if (!partCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"MFContentErrorDocument.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"mimePart"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFContentErrorDocument.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"mimePart"}];
   }
 
   v19.receiver = self;
@@ -22,9 +22,9 @@
   {
     v7 = MEMORY[0x1E696AEC0];
     v8 = MFLookupLocalizedString(@"CANNOT_DECODE_MULTIPART_MESSAGE", @"This message cannot be displayed because of the way it is formatted. Ask the sender to send it again using a different format or email program.\n\n%@/%@", @"Delayed");
-    v9 = [v5 type];
-    v10 = [v5 subtype];
-    v11 = [v7 stringWithFormat:v8, v9, v10];
+    type = [partCopy type];
+    subtype = [partCopy subtype];
+    v11 = [v7 stringWithFormat:v8, type, subtype];
 
     v12 = MEMORY[0x1E696ABC0];
     v20 = *MEMORY[0x1E696A578];
@@ -42,10 +42,10 @@
 
 - (NSString)content
 {
-  v2 = [(MFContentErrorDocument *)self error];
-  v3 = [v2 localizedDescription];
+  error = [(MFContentErrorDocument *)self error];
+  localizedDescription = [error localizedDescription];
 
-  return v3;
+  return localizedDescription;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface CPFontKerning
-- (CPFontKerning)initWithCGFont:(CGFont *)a3;
-- (CPFontKerning)initWithKernData:(__CFData *)a3;
+- (CPFontKerning)initWithCGFont:(CGFont *)font;
+- (CPFontKerning)initWithKernData:(__CFData *)data;
 - (__CFDictionary)createKernTable;
 - (unsigned)readByte;
 - (unsigned)readUnsignedLong;
@@ -50,10 +50,10 @@
     self->offset = offset;
     if ([(CPFontKerning *)self readUnsignedLong]== 0x10000)
     {
-      v4 = [(CPFontKerning *)self readUnsignedLong];
-      if (v4)
+      readUnsignedLong = [(CPFontKerning *)self readUnsignedLong];
+      if (readUnsignedLong)
       {
-        v5 = v4;
+        v5 = readUnsignedLong;
         do
         {
           if (!self->valid)
@@ -76,10 +76,10 @@ LABEL_9:
     return;
   }
 
-  v6 = [(CPFontKerning *)self readUnsignedShort];
-  if (v6)
+  readUnsignedShort = [(CPFontKerning *)self readUnsignedShort];
+  if (readUnsignedShort)
   {
-    v7 = v6;
+    v7 = readUnsignedShort;
     do
     {
       if (!self->valid)
@@ -99,54 +99,54 @@ LABEL_9:
 {
   offset = self->offset;
   self->offset = offset + 2;
-  v4 = [(CPFontKerning *)self readUnsignedShort];
-  v5 = [(CPFontKerning *)self readUnsignedShort];
-  if ((v5 & 7) == 1)
+  readUnsignedShort = [(CPFontKerning *)self readUnsignedShort];
+  readUnsignedShort2 = [(CPFontKerning *)self readUnsignedShort];
+  if ((readUnsignedShort2 & 7) == 1)
   {
-    self->override = (v5 & 8) != 0;
-    if (v5 >> 8 == 2)
+    self->override = (readUnsignedShort2 & 8) != 0;
+    if (readUnsignedShort2 >> 8 == 2)
     {
       [(CPFontKerning *)self doSubtableFormat2];
     }
 
-    else if (!(v5 >> 8))
+    else if (!(readUnsignedShort2 >> 8))
     {
       [(CPFontKerning *)self doSubtableFormat0];
     }
   }
 
-  if (self->offset > offset + v4)
+  if (self->offset > offset + readUnsignedShort)
   {
     self->valid = 0;
   }
 
-  self->offset = offset + v4;
+  self->offset = offset + readUnsignedShort;
 }
 
 - (void)doTTSubtable
 {
   offset = self->offset;
-  v4 = [(CPFontKerning *)self readUnsignedLong];
-  v5 = [(CPFontKerning *)self readUnsignedShort];
+  readUnsignedLong = [(CPFontKerning *)self readUnsignedLong];
+  readUnsignedShort = [(CPFontKerning *)self readUnsignedShort];
   self->offset += 2;
-  if ((v5 & 0xE000) == 0)
+  if ((readUnsignedShort & 0xE000) == 0)
   {
-    if (v5 > 1u)
+    if (readUnsignedShort > 1u)
     {
-      if (v5 == 2)
+      if (readUnsignedShort == 2)
       {
         [(CPFontKerning *)self doSubtableFormat2];
       }
 
-      else if (v5 == 3)
+      else if (readUnsignedShort == 3)
       {
         [(CPFontKerning *)self doSubtableFormat3];
       }
     }
 
-    else if (v5)
+    else if (readUnsignedShort)
     {
-      if (v5 == 1)
+      if (readUnsignedShort == 1)
       {
         [(CPFontKerning *)self doSubtableFormat1];
       }
@@ -158,21 +158,21 @@ LABEL_9:
     }
   }
 
-  if (self->offset > v4 + offset)
+  if (self->offset > readUnsignedLong + offset)
   {
     self->valid = 0;
   }
 
-  self->offset = v4 + offset;
+  self->offset = readUnsignedLong + offset;
 }
 
 - (void)doSubtableFormat0
 {
-  v3 = [(CPFontKerning *)self readUnsignedShort];
+  readUnsignedShort = [(CPFontKerning *)self readUnsignedShort];
   self->offset += 6;
-  if (v3)
+  if (readUnsignedShort)
   {
-    v4 = v3;
+    v4 = readUnsignedShort;
     do
     {
       if (!self->valid)
@@ -190,13 +190,13 @@ LABEL_9:
 
 - (void)doKerningPair
 {
-  v3 = [(CPFontKerning *)self readUnsignedShort];
-  v4 = [(CPFontKerning *)self readUnsignedShort];
-  v5 = [(CPFontKerning *)self readUnsignedShort];
+  readUnsignedShort = [(CPFontKerning *)self readUnsignedShort];
+  readUnsignedShort2 = [(CPFontKerning *)self readUnsignedShort];
+  readUnsignedShort3 = [(CPFontKerning *)self readUnsignedShort];
   if (self->valid)
   {
-    v6 = v5;
-    v7 = (v4 | (v3 << 16));
+    v6 = readUnsignedShort3;
+    v7 = (readUnsignedShort2 | (readUnsignedShort << 16));
     if (CFDictionaryContainsKey(self->kernDictionary, v7))
     {
       if (!self->override)
@@ -220,10 +220,10 @@ LABEL_9:
 
 - (unsigned)readUnsignedLong
 {
-  v3 = [(CPFontKerning *)self readByte];
-  v4 = [(CPFontKerning *)self readByte];
-  v5 = [(CPFontKerning *)self readByte];
-  return (v3 << 24) | (v4 << 16) | (v5 << 8) | [(CPFontKerning *)self readByte];
+  readByte = [(CPFontKerning *)self readByte];
+  readByte2 = [(CPFontKerning *)self readByte];
+  readByte3 = [(CPFontKerning *)self readByte];
+  return (readByte << 24) | (readByte2 << 16) | (readByte3 << 8) | [(CPFontKerning *)self readByte];
 }
 
 - (unsigned)readByte
@@ -271,11 +271,11 @@ LABEL_9:
   }
 }
 
-- (CPFontKerning)initWithCGFont:(CGFont *)a3
+- (CPFontKerning)initWithCGFont:(CGFont *)font
 {
-  if (a3)
+  if (font)
   {
-    v4 = (*(*(a3 + 2) + 432))(*(a3 + 14), 1801810542);
+    v4 = (*(*(font + 2) + 432))(*(font + 14), 1801810542);
     v5 = [(CPFontKerning *)self initWithKernData:v4];
     if (v4)
     {
@@ -292,19 +292,19 @@ LABEL_9:
   }
 }
 
-- (CPFontKerning)initWithKernData:(__CFData *)a3
+- (CPFontKerning)initWithKernData:(__CFData *)data
 {
   v4 = [(CPFontKerning *)self init];
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (data)
     {
-      Length = CFDataGetLength(a3);
+      Length = CFDataGetLength(data);
       v5->kernTableLength = Length;
       if (Length)
       {
-        v7 = CFRetain(a3);
+        v7 = CFRetain(data);
         v5->kernTable = v7;
         v5->dataPtr = CFDataGetBytePtr(v7);
       }

@@ -1,28 +1,28 @@
 @interface msdosVolume
-- (BOOL)isOffsetInMetadataZone:(unint64_t)a3;
+- (BOOL)isOffsetInMetadataZone:(unint64_t)zone;
 - (id)createRootDirItem;
-- (id)supportedXattrNamesForItem:(id)a3;
+- (id)supportedXattrNamesForItem:(id)item;
 - (id)sync;
-- (id)updateLabelInBootSector:(char)a3[11] toName:(char)a4[11];
-- (id)verifyFileSize:(unint64_t)a3;
+- (id)updateLabelInBootSector:(char)sector[11] toName:(char)name[11];
+- (id)verifyFileSize:(unint64_t)size;
 - (int)ScanBootSector;
-- (msdosVolume)initWithResource:(id)a3 volumeID:(id)a4 volumeName:(id)a5;
-- (void)FatMount:(id)a3 replyHandler:(id)a4;
-- (void)calcNumOfDirEntriesForName:(unistr255 *)a3 replyHandler:(id)a4;
-- (void)getXattrNamed:(id)a3 ofItem:(id)a4 replyHandler:(id)a5;
-- (void)listXattrsOfItem:(id)a3 replyHandler:(id)a4;
-- (void)nameToUnistr:(id)a3 flags:(unsigned int)a4 replyHandler:(id)a5;
-- (void)setVolumeLabel:(id)a3 rootDir:(id)a4 replyHandler:(id)a5;
-- (void)setXattrNamed:(id)a3 toData:(id)a4 onItem:(id)a5 policy:(unint64_t)a6 replyHandler:(id)a7;
+- (msdosVolume)initWithResource:(id)resource volumeID:(id)d volumeName:(id)name;
+- (void)FatMount:(id)mount replyHandler:(id)handler;
+- (void)calcNumOfDirEntriesForName:(unistr255 *)name replyHandler:(id)handler;
+- (void)getXattrNamed:(id)named ofItem:(id)item replyHandler:(id)handler;
+- (void)listXattrsOfItem:(id)item replyHandler:(id)handler;
+- (void)nameToUnistr:(id)unistr flags:(unsigned int)flags replyHandler:(id)handler;
+- (void)setVolumeLabel:(id)label rootDir:(id)dir replyHandler:(id)handler;
+- (void)setXattrNamed:(id)named toData:(id)data onItem:(id)item policy:(unint64_t)policy replyHandler:(id)handler;
 @end
 
 @implementation msdosVolume
 
-- (msdosVolume)initWithResource:(id)a3 volumeID:(id)a4 volumeName:(id)a5
+- (msdosVolume)initWithResource:(id)resource volumeID:(id)d volumeName:(id)name
 {
   v8.receiver = self;
   v8.super_class = msdosVolume;
-  v5 = [(FATVolume *)&v8 initWithResource:a3 volumeID:a4 volumeName:a5];
+  v5 = [(FATVolume *)&v8 initWithResource:resource volumeID:d volumeName:name];
   if (v5 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     *v7 = 0;
@@ -34,18 +34,18 @@
 
 - (int)ScanBootSector
 {
-  v3 = [(FATVolume *)self resource];
-  v4 = [v3 blockSize];
+  resource = [(FATVolume *)self resource];
+  blockSize = [resource blockSize];
 
-  v5 = [[NSMutableData alloc] initWithLength:v4];
-  v6 = [(FATVolume *)self resource];
-  v7 = +[Utilities syncMetaReadFromDevice:into:startingAt:length:](Utilities, "syncMetaReadFromDevice:into:startingAt:length:", v6, [v5 mutableBytes], 0, v4);
+  v5 = [[NSMutableData alloc] initWithLength:blockSize];
+  resource2 = [(FATVolume *)self resource];
+  v7 = +[Utilities syncMetaReadFromDevice:into:startingAt:length:](Utilities, "syncMetaReadFromDevice:into:startingAt:length:", resource2, [v5 mutableBytes], 0, blockSize);
 
   if (!v7)
   {
-    v9 = [v5 bytes];
-    v10 = v9;
-    if ((*v9 | 2) != 0xEB)
+    bytes = [v5 bytes];
+    v10 = bytes;
+    if ((*bytes | 2) != 0xEB)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
@@ -55,33 +55,33 @@
       goto LABEL_26;
     }
 
-    if ((v9[510] != 85 || v9[511] != 170) && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+    if ((bytes[510] != 85 || bytes[511] != 170) && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       sub_100033E00(v10 + 510);
     }
 
     v11 = *(v10 + 11);
-    v12 = [(FATVolume *)self systemInfo];
-    [v12 setBytesPerSector:v11];
+    systemInfo = [(FATVolume *)self systemInfo];
+    [systemInfo setBytesPerSector:v11];
 
-    v13 = [(FATVolume *)self systemInfo];
+    systemInfo2 = [(FATVolume *)self systemInfo];
     v146 = v10;
-    v14 = [v13 bytesPerSector] * v10[13];
-    v15 = [(FATVolume *)self systemInfo];
-    [v15 setBytesPerCluster:v14];
+    v14 = [systemInfo2 bytesPerSector] * v10[13];
+    systemInfo3 = [(FATVolume *)self systemInfo];
+    [systemInfo3 setBytesPerCluster:v14];
 
-    v16 = [(FATVolume *)self systemInfo];
-    v17 = [v16 bytesPerSector];
-    v18 = [(FATVolume *)self systemInfo];
-    [v18 setDirBlockSize:v17];
+    systemInfo4 = [(FATVolume *)self systemInfo];
+    bytesPerSector = [systemInfo4 bytesPerSector];
+    systemInfo5 = [(FATVolume *)self systemInfo];
+    [systemInfo5 setDirBlockSize:bytesPerSector];
 
     v19 = v10 + 13;
     v20 = *(v10 + 7);
     v21 = *(v19 + 2);
-    v22 = [(FATVolume *)self systemInfo];
-    LODWORD(v17) = [v22 bytesPerSector];
+    systemInfo6 = [(FATVolume *)self systemInfo];
+    LODWORD(bytesPerSector) = [systemInfo6 bytesPerSector];
 
-    if (v17 != v4)
+    if (bytesPerSector != blockSize)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
@@ -144,44 +144,44 @@
     [v26 setRootSector:v25];
 
     v142 = v21;
-    v27 = [(FATVolume *)self systemInfo];
-    [v27 setRootDirSize:(v4 + 32 * v21 - 1) / v4];
+    systemInfo7 = [(FATVolume *)self systemInfo];
+    [systemInfo7 setRootDirSize:(blockSize + 32 * v21 - 1) / blockSize];
 
-    v28 = [(FATVolume *)self systemInfo];
-    LODWORD(v27) = [v28 rootSector];
-    v29 = [(FATVolume *)self systemInfo];
-    v30 = [v29 rootDirSize];
-    v31 = [(FATVolume *)self systemInfo];
-    [v31 setFirstClusterOffset:v30 + v27];
+    systemInfo8 = [(FATVolume *)self systemInfo];
+    LODWORD(systemInfo7) = [systemInfo8 rootSector];
+    systemInfo9 = [(FATVolume *)self systemInfo];
+    rootDirSize = [systemInfo9 rootDirSize];
+    systemInfo10 = [(FATVolume *)self systemInfo];
+    [systemInfo10 setFirstClusterOffset:rootDirSize + systemInfo7];
 
-    v32 = [(FATVolume *)self systemInfo];
-    LODWORD(v29) = [v32 rootSector];
-    v33 = [(FATVolume *)self systemInfo];
-    v34 = [v33 bytesPerSector] * v29;
-    v35 = [(FATVolume *)self systemInfo];
-    [v35 setMetaDataZoneSize:v34];
+    systemInfo11 = [(FATVolume *)self systemInfo];
+    LODWORD(systemInfo9) = [systemInfo11 rootSector];
+    systemInfo12 = [(FATVolume *)self systemInfo];
+    v34 = [systemInfo12 bytesPerSector] * systemInfo9;
+    systemInfo13 = [(FATVolume *)self systemInfo];
+    [systemInfo13 setMetaDataZoneSize:v34];
 
-    v36 = [(FATVolume *)self systemInfo];
-    v37 = [v36 bytesPerCluster];
-    v38 = [(FATVolume *)self systemInfo];
-    v39 = 2 * (v37 / [v38 dirBlockSize]);
-    v40 = [(FATVolume *)self systemInfo];
-    [v40 setFirstDirBlockNum:v39];
+    systemInfo14 = [(FATVolume *)self systemInfo];
+    bytesPerCluster = [systemInfo14 bytesPerCluster];
+    systemInfo15 = [(FATVolume *)self systemInfo];
+    v39 = 2 * (bytesPerCluster / [systemInfo15 dirBlockSize]);
+    systemInfo16 = [(FATVolume *)self systemInfo];
+    [systemInfo16 setFirstDirBlockNum:v39];
 
     if (v145 > v144)
     {
       goto LABEL_24;
     }
 
-    v41 = [(FATVolume *)self systemInfo];
-    if ([v41 rootSector] < v145)
+    systemInfo17 = [(FATVolume *)self systemInfo];
+    if ([systemInfo17 rootSector] < v145)
     {
 
       goto LABEL_24;
     }
 
-    v42 = [(FATVolume *)self systemInfo];
-    v43 = [v42 firstClusterOffset] + *v143;
+    systemInfo18 = [(FATVolume *)self systemInfo];
+    v43 = [systemInfo18 firstClusterOffset] + *v143;
 
     if (v43 > v144)
     {
@@ -192,36 +192,36 @@ LABEL_24:
       }
 
 LABEL_26:
-      v8 = 22;
+      code = 22;
       goto LABEL_27;
     }
 
-    v45 = [(FATVolume *)self systemInfo];
-    v46 = (v144 - [v45 firstClusterOffset]) / *v143 + 1;
-    v47 = [(FATVolume *)self systemInfo];
-    [v47 setMaxValidCluster:v46];
+    systemInfo19 = [(FATVolume *)self systemInfo];
+    v46 = (v144 - [systemInfo19 firstClusterOffset]) / *v143 + 1;
+    systemInfo20 = [(FATVolume *)self systemInfo];
+    [systemInfo20 setMaxValidCluster:v46];
 
-    v48 = v145 * v4;
-    v49 = [(FATVolume *)self systemInfo];
-    [v49 setFsInfoSectorNumber:0];
+    v48 = v145 * blockSize;
+    systemInfo21 = [(FATVolume *)self systemInfo];
+    [systemInfo21 setFsInfoSectorNumber:0];
 
-    v50 = [(FATVolume *)self systemInfo];
-    v51 = [v50 maxValidCluster];
+    systemInfo22 = [(FATVolume *)self systemInfo];
+    maxValidCluster = [systemInfo22 maxValidCluster];
 
-    v52 = [(FATVolume *)self systemInfo];
-    v53 = v52;
-    if (v51 > 0xFF5)
+    systemInfo23 = [(FATVolume *)self systemInfo];
+    v53 = systemInfo23;
+    if (maxValidCluster > 0xFF5)
     {
-      v60 = [v52 maxValidCluster];
+      maxValidCluster2 = [systemInfo23 maxValidCluster];
 
-      v61 = [(FATVolume *)self systemInfo];
-      v62 = v61;
+      systemInfo24 = [(FATVolume *)self systemInfo];
+      v62 = systemInfo24;
       v59 = v142;
-      if (v60 > 0xFFF5)
+      if (maxValidCluster2 > 0xFFF5)
       {
-        v67 = [v61 maxValidCluster];
+        maxValidCluster3 = [systemInfo24 maxValidCluster];
 
-        if (v67 > 0xFFFFFF5)
+        if (maxValidCluster3 > 0xFFFFFF5)
         {
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
           {
@@ -231,43 +231,43 @@ LABEL_26:
           goto LABEL_26;
         }
 
-        v68 = [(FATVolume *)self systemInfo];
-        [v68 setFATMask:0xFFFFFFFLL];
+        systemInfo25 = [(FATVolume *)self systemInfo];
+        [systemInfo25 setFATMask:0xFFFFFFFLL];
 
-        v69 = [(FATVolume *)self systemInfo];
-        [v69 setType:2];
+        systemInfo26 = [(FATVolume *)self systemInfo];
+        [systemInfo26 setType:2];
 
-        v70 = [(FATVolume *)self systemInfo];
-        [v70 setFsSubTypeName:@"fat32"];
+        systemInfo27 = [(FATVolume *)self systemInfo];
+        [systemInfo27 setFsSubTypeName:@"fat32"];
 
         v71 = [NSNumber numberWithInt:2];
-        v72 = [(FATVolume *)self systemInfo];
-        [v72 setFsSubTypeNum:v71];
+        systemInfo28 = [(FATVolume *)self systemInfo];
+        [systemInfo28 setFsSubTypeNum:v71];
 
         v58 = v48 >> 2;
         v73 = *(v146 + 11);
-        v74 = [(FATVolume *)self systemInfo];
-        [v74 setRootFirstCluster:v73];
+        systemInfo29 = [(FATVolume *)self systemInfo];
+        [systemInfo29 setRootFirstCluster:v73];
 
         v75 = *(v146 + 24);
         v59 = v142;
-        v76 = [(FATVolume *)self systemInfo];
-        [v76 setFsInfoSectorNumber:v75];
+        systemInfo30 = [(FATVolume *)self systemInfo];
+        [systemInfo30 setFsInfoSectorNumber:v75];
       }
 
       else
       {
-        [v61 setFATMask:0xFFFFLL];
+        [systemInfo24 setFATMask:0xFFFFLL];
 
-        v63 = [(FATVolume *)self systemInfo];
-        [v63 setType:1];
+        systemInfo31 = [(FATVolume *)self systemInfo];
+        [systemInfo31 setType:1];
 
-        v64 = [(FATVolume *)self systemInfo];
-        [v64 setFsSubTypeName:@"fat16"];
+        systemInfo32 = [(FATVolume *)self systemInfo];
+        [systemInfo32 setFsSubTypeName:@"fat16"];
 
         v65 = [NSNumber numberWithInt:1];
-        v66 = [(FATVolume *)self systemInfo];
-        [v66 setFsSubTypeNum:v65];
+        systemInfo33 = [(FATVolume *)self systemInfo];
+        [systemInfo33 setFsSubTypeNum:v65];
 
         v58 = v48 >> 1;
       }
@@ -275,47 +275,47 @@ LABEL_26:
 
     else
     {
-      [v52 setFATMask:4095];
+      [systemInfo23 setFATMask:4095];
 
-      v54 = [(FATVolume *)self systemInfo];
-      [v54 setType:0];
+      systemInfo34 = [(FATVolume *)self systemInfo];
+      [systemInfo34 setType:0];
 
-      v55 = [(FATVolume *)self systemInfo];
-      [v55 setFsSubTypeName:@"fat12"];
+      systemInfo35 = [(FATVolume *)self systemInfo];
+      [systemInfo35 setFsSubTypeName:@"fat12"];
 
       v56 = [NSNumber numberWithInt:0];
-      v57 = [(FATVolume *)self systemInfo];
-      [v57 setFsSubTypeNum:v56];
+      systemInfo36 = [(FATVolume *)self systemInfo];
+      [systemInfo36 setFsSubTypeNum:v56];
 
       v58 = 2 * v48 / 3u;
       v59 = v142;
     }
 
-    v77 = [(FATVolume *)self systemInfo];
-    v78 = [v77 maxValidCluster];
+    systemInfo37 = [(FATVolume *)self systemInfo];
+    maxValidCluster4 = [systemInfo37 maxValidCluster];
 
-    if (v78 >= v58)
+    if (maxValidCluster4 >= v58)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
       {
         sub_100034088(self);
       }
 
-      v79 = [(FATVolume *)self systemInfo];
-      [v79 setMaxValidCluster:v58 - 1];
+      systemInfo38 = [(FATVolume *)self systemInfo];
+      [systemInfo38 setMaxValidCluster:v58 - 1];
     }
 
-    v80 = [(FATVolume *)self resource];
-    v81 = [v80 blockCount];
+    resource3 = [(FATVolume *)self resource];
+    blockCount = [resource3 blockCount];
 
-    if (v81 < v144)
+    if (blockCount < v144)
     {
-      v82 = [(FATVolume *)self systemInfo];
-      v83 = [v82 firstClusterOffset] + *v143;
-      v84 = [(FATVolume *)self resource];
-      v85 = [v84 blockCount];
+      systemInfo39 = [(FATVolume *)self systemInfo];
+      v83 = [systemInfo39 firstClusterOffset] + *v143;
+      resource4 = [(FATVolume *)self resource];
+      blockCount2 = [resource4 blockCount];
 
-      if (v85 < v83)
+      if (blockCount2 < v83)
       {
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
         {
@@ -325,16 +325,16 @@ LABEL_26:
         goto LABEL_26;
       }
 
-      v86 = [(FATVolume *)self resource];
-      v87 = [v86 blockCount];
-      v88 = [(FATVolume *)self systemInfo];
-      v89 = ((v87 - [v88 firstClusterOffset]) / *v143) + 1;
+      resource5 = [(FATVolume *)self resource];
+      blockCount3 = [resource5 blockCount];
+      systemInfo40 = [(FATVolume *)self systemInfo];
+      v89 = ((blockCount3 - [systemInfo40 firstClusterOffset]) / *v143) + 1;
 
-      v90 = [(FATVolume *)self systemInfo];
-      v91 = [v90 maxValidCluster];
+      systemInfo41 = [(FATVolume *)self systemInfo];
+      maxValidCluster5 = [systemInfo41 maxValidCluster];
 
       v92 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG);
-      if (v91 <= v89)
+      if (maxValidCluster5 <= v89)
       {
         v59 = v142;
         if (v92)
@@ -350,30 +350,30 @@ LABEL_26:
           sub_1000341D8(self);
         }
 
-        v93 = [(FATVolume *)self systemInfo];
-        [v93 setMaxValidCluster:v89];
+        systemInfo42 = [(FATVolume *)self systemInfo];
+        [systemInfo42 setMaxValidCluster:v89];
 
         v59 = v142;
       }
     }
 
     v94 = v146;
-    v95 = v4 * *(v146 + 7);
-    v96 = [(FATVolume *)self systemInfo];
-    [v96 setFatOffset:v95];
+    v95 = blockSize * *(v146 + 7);
+    systemInfo43 = [(FATVolume *)self systemInfo];
+    [systemInfo43 setFatOffset:v95];
 
-    v97 = [(FATVolume *)self systemInfo];
-    [v97 setFatSize:v48];
+    systemInfo44 = [(FATVolume *)self systemInfo];
+    [systemInfo44 setFatSize:v48];
 
     v98 = v146[16];
-    v99 = [(FATVolume *)self systemInfo];
-    [v99 setNumOfFATs:v98];
+    systemInfo45 = [(FATVolume *)self systemInfo];
+    [systemInfo45 setNumOfFATs:v98];
 
-    v100 = [(FATVolume *)self systemInfo];
-    LODWORD(v99) = [v100 FATMask];
+    systemInfo46 = [(FATVolume *)self systemInfo];
+    LODWORD(systemInfo45) = [systemInfo46 FATMask];
 
     v101 = 36;
-    if (v99 == 0xFFFFFFF)
+    if (systemInfo45 == 0xFFFFFFF)
     {
       v101 = 64;
     }
@@ -382,49 +382,49 @@ LABEL_26:
     if (v102[2] == 41)
     {
       v103 = *(v102 + 3);
-      v104 = [(FATVolume *)self systemInfo];
-      [v104 setSerialNumber:v103];
+      systemInfo47 = [(FATVolume *)self systemInfo];
+      [systemInfo47 setSerialNumber:v103];
 
-      v105 = [(FATVolume *)self systemInfo];
-      [v105 setSerialNumberExists:1];
+      systemInfo48 = [(FATVolume *)self systemInfo];
+      [systemInfo48 setSerialNumberExists:1];
 
-      v106 = [(FATVolume *)self systemInfo];
-      LODWORD(v104) = [v106 serialNumber];
+      systemInfo49 = [(FATVolume *)self systemInfo];
+      LODWORD(systemInfo47) = [systemInfo49 serialNumber];
 
-      if (v104)
+      if (systemInfo47)
       {
         v147[0] = 0;
         v147[1] = 0;
         v107 = [FSVolumeIdentifier alloc];
         v108 = [[NSUUID alloc] initWithUUIDBytes:v147];
         v109 = [v107 initWithUUID:v108];
-        v110 = [(FATVolume *)self systemInfo];
-        [v110 setUuid:v109];
+        systemInfo50 = [(FATVolume *)self systemInfo];
+        [systemInfo50 setUuid:v109];
 
         v59 = v142;
-        v111 = [(FATVolume *)self systemInfo];
-        [v111 setUuidExists:1];
+        systemInfo51 = [(FATVolume *)self systemInfo];
+        [systemInfo51 setUuidExists:1];
       }
     }
 
-    v112 = [(FATVolume *)self systemInfo];
-    v113 = [v112 fsInfoSectorNumber];
+    systemInfo52 = [(FATVolume *)self systemInfo];
+    fsInfoSectorNumber = [systemInfo52 fsInfoSectorNumber];
 
-    if (!v113)
+    if (!fsInfoSectorNumber)
     {
 LABEL_75:
-      v127 = [(FATVolume *)self systemInfo];
-      v128 = [v127 type];
+      systemInfo53 = [(FATVolume *)self systemInfo];
+      type = [systemInfo53 type];
 
-      if (v128 == 2)
+      if (type == 2)
       {
         v129 = *(v94 + 11);
-        v130 = [(FATVolume *)self systemInfo];
-        [v130 setRootFirstCluster:v129];
+        systemInfo54 = [(FATVolume *)self systemInfo];
+        [systemInfo54 setRootFirstCluster:v129];
 
-        v131 = [(FATVolume *)self systemInfo];
-        v132 = [(FATVolume *)self systemInfo];
-        v133 = [v131 isClusterValid:{objc_msgSend(v132, "rootFirstCluster")}];
+        systemInfo55 = [(FATVolume *)self systemInfo];
+        systemInfo56 = [(FATVolume *)self systemInfo];
+        v133 = [systemInfo55 isClusterValid:{objc_msgSend(systemInfo56, "rootFirstCluster")}];
 
         if ((v133 & 1) == 0 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
         {
@@ -500,20 +500,20 @@ LABEL_79:
         }
       }
 
-      v8 = 0;
+      code = 0;
       goto LABEL_27;
     }
 
-    v114 = [[NSMutableData alloc] initWithLength:v4];
-    v115 = [(FATVolume *)self systemInfo];
-    [v115 setFsInfoSector:v114];
+    v114 = [[NSMutableData alloc] initWithLength:blockSize];
+    systemInfo57 = [(FATVolume *)self systemInfo];
+    [systemInfo57 setFsInfoSector:v114];
 
-    v116 = [(FATVolume *)self resource];
-    v117 = [(FATVolume *)self systemInfo];
-    v118 = [v117 fsInfoSector];
-    v119 = [v118 mutableBytes];
-    v120 = [(FATVolume *)self systemInfo];
-    v121 = +[Utilities syncMetaReadFromDevice:into:startingAt:length:](Utilities, "syncMetaReadFromDevice:into:startingAt:length:", v116, v119, [v120 fsInfoSectorNumber] * v4, v4);
+    resource6 = [(FATVolume *)self resource];
+    systemInfo58 = [(FATVolume *)self systemInfo];
+    fsInfoSector = [systemInfo58 fsInfoSector];
+    mutableBytes = [fsInfoSector mutableBytes];
+    systemInfo59 = [(FATVolume *)self systemInfo];
+    v121 = +[Utilities syncMetaReadFromDevice:into:startingAt:length:](Utilities, "syncMetaReadFromDevice:into:startingAt:length:", resource6, mutableBytes, [systemInfo59 fsInfoSectorNumber] * blockSize, blockSize);
 
     if (v121)
     {
@@ -522,31 +522,31 @@ LABEL_79:
         sub_1000342D0();
       }
 
-      v122 = [(FATVolume *)self systemInfo];
-      [v122 setFsInfoSectorNumber:0];
+      systemInfo60 = [(FATVolume *)self systemInfo];
+      [systemInfo60 setFsInfoSectorNumber:0];
     }
 
-    v123 = [(FATVolume *)self systemInfo];
-    v124 = [v123 fsInfoSector];
-    v125 = [v124 mutableBytes];
+    systemInfo61 = [(FATVolume *)self systemInfo];
+    fsInfoSector2 = [systemInfo61 fsInfoSector];
+    mutableBytes2 = [fsInfoSector2 mutableBytes];
 
-    if (*v125 == 1096897106 && v125[121] == 1631679090 && v125[127] == -1437270016)
+    if (*mutableBytes2 == 1096897106 && mutableBytes2[121] == 1631679090 && mutableBytes2[127] == -1437270016)
     {
-      v134 = v125[122];
-      v135 = [(FATVolume *)self systemInfo];
-      [v135 setFreeClusters:v134];
+      v134 = mutableBytes2[122];
+      systemInfo62 = [(FATVolume *)self systemInfo];
+      [systemInfo62 setFreeClusters:v134];
 
-      v136 = v125[123];
-      v137 = [(FATVolume *)self systemInfo];
-      [v137 setFirstFreeCluster:v136];
+      v136 = mutableBytes2[123];
+      systemInfo63 = [(FATVolume *)self systemInfo];
+      [systemInfo63 setFirstFreeCluster:v136];
 
-      v138 = [(FATVolume *)self systemInfo];
-      v139 = [v138 freeClusters];
-      v140 = [(FATVolume *)self systemInfo];
-      v141 = [v140 maxValidCluster] - 1;
+      systemInfo64 = [(FATVolume *)self systemInfo];
+      freeClusters = [systemInfo64 freeClusters];
+      systemInfo65 = [(FATVolume *)self systemInfo];
+      v141 = [systemInfo65 maxValidCluster] - 1;
 
       v94 = v146;
-      if (v139 <= v141)
+      if (freeClusters <= v141)
       {
         goto LABEL_74;
       }
@@ -561,27 +561,27 @@ LABEL_79:
       }
     }
 
-    v126 = [(FATVolume *)self systemInfo];
-    [v126 setFsInfoSectorNumber:0];
+    systemInfo66 = [(FATVolume *)self systemInfo];
+    [systemInfo66 setFsInfoSectorNumber:0];
 
 LABEL_74:
     v59 = v142;
     goto LABEL_75;
   }
 
-  v8 = [v7 code];
+  code = [v7 code];
 LABEL_27:
 
-  return v8;
+  return code;
 }
 
 - (id)createRootDirItem
 {
   v3 = [MsdosDirItem alloc];
-  v4 = [(FATVolume *)self systemInfo];
-  v5 = [v4 rootFirstCluster];
+  systemInfo = [(FATVolume *)self systemInfo];
+  rootFirstCluster = [systemInfo rootFirstCluster];
   v6 = [[FSFileName alloc] initWithCString:""];
-  v7 = [(MsdosDirItem *)v3 initInVolume:self inDir:0 startingAt:v5 withData:0 andName:v6 isRoot:1];
+  v7 = [(MsdosDirItem *)v3 initInVolume:self inDir:0 startingAt:rootFirstCluster withData:0 andName:v6 isRoot:1];
 
   if (v7)
   {
@@ -596,9 +596,9 @@ LABEL_27:
   return v7;
 }
 
-- (id)supportedXattrNamesForItem:(id)a3
+- (id)supportedXattrNamesForItem:(id)item
 {
-  v3 = [(FATItem *)DirItem dynamicCast:a3];
+  v3 = [(FATItem *)DirItem dynamicCast:item];
   v4 = v3;
   if (v3 && [v3 isRoot])
   {
@@ -615,92 +615,92 @@ LABEL_27:
   return v6;
 }
 
-- (void)getXattrNamed:(id)a3 ofItem:(id)a4 replyHandler:(id)a5
+- (void)getXattrNamed:(id)named ofItem:(id)item replyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(FATItem *)DirItem dynamicCast:a4];
+  namedCopy = named;
+  handlerCopy = handler;
+  v10 = [(FATItem *)DirItem dynamicCast:item];
   v11 = v10;
   if (!v10 || ![v10 isRoot])
   {
     goto LABEL_7;
   }
 
-  v12 = [v8 data];
-  if ([v12 length] != 39)
+  data = [namedCopy data];
+  if ([data length] != 39)
   {
 
     goto LABEL_7;
   }
 
-  v13 = [v8 data];
-  v14 = memcmp([v13 bytes], "com.apple.filesystems.msdosfs.volume_id", 0x27uLL);
+  data2 = [namedCopy data];
+  v14 = memcmp([data2 bytes], "com.apple.filesystems.msdosfs.volume_id", 0x27uLL);
 
   if (v14)
   {
 LABEL_7:
     v16 = fs_errorForPOSIXError();
-    v9[2](v9, 0, v16);
+    handlerCopy[2](handlerCopy, 0, v16);
 
     goto LABEL_8;
   }
 
-  v15 = [v11 queue];
+  queue = [v11 queue];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10002A3B4;
   v17[3] = &unk_100050E90;
   v17[4] = self;
-  v18 = v9;
-  dispatch_async(v15, v17);
+  v18 = handlerCopy;
+  dispatch_async(queue, v17);
 
 LABEL_8:
 }
 
-- (void)setXattrNamed:(id)a3 toData:(id)a4 onItem:(id)a5 policy:(unint64_t)a6 replyHandler:(id)a7
+- (void)setXattrNamed:(id)named toData:(id)data onItem:(id)item policy:(unint64_t)policy replyHandler:(id)handler
 {
-  v15 = a3;
-  v9 = a7;
-  v10 = [(FATItem *)DirItem dynamicCast:a5];
+  namedCopy = named;
+  handlerCopy = handler;
+  v10 = [(FATItem *)DirItem dynamicCast:item];
   v11 = v10;
   if (v10 && [v10 isRoot])
   {
-    v12 = [v15 data];
-    if ([v12 length] == 39)
+    data = [namedCopy data];
+    if ([data length] == 39)
     {
-      v13 = [v15 data];
-      memcmp([v13 bytes], "com.apple.filesystems.msdosfs.volume_id", 0x27uLL);
+      data2 = [namedCopy data];
+      memcmp([data2 bytes], "com.apple.filesystems.msdosfs.volume_id", 0x27uLL);
     }
   }
 
   v14 = fs_errorForPOSIXError();
-  v9[2](v9, v14);
+  handlerCopy[2](handlerCopy, v14);
 }
 
-- (void)listXattrsOfItem:(id)a3 replyHandler:(id)a4
+- (void)listXattrsOfItem:(id)item replyHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(FATItem *)DirItem dynamicCast:a3];
+  handlerCopy = handler;
+  v7 = [(FATItem *)DirItem dynamicCast:item];
   v8 = v7;
   if (v7 && [v7 isRoot] && (-[FATVolume systemInfo](self, "systemInfo"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "serialNumberExists"), v9, v10))
   {
     v11 = [FSFileName nameWithString:@"com.apple.filesystems.msdosfs.volume_id"];
     v13 = v11;
     v12 = [NSArray arrayWithObjects:&v13 count:1];
-    v6[2](v6, v12, 0);
+    handlerCopy[2](handlerCopy, v12, 0);
   }
 
   else
   {
     v11 = fs_errorForPOSIXError();
-    (v6)[2](v6, 0, v11);
+    (handlerCopy)[2](handlerCopy, 0, v11);
   }
 }
 
-- (void)FatMount:(id)a3 replyHandler:(id)a4
+- (void)FatMount:(id)mount replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  mountCopy = mount;
+  handlerCopy = handler;
   v69 = 0;
   v70 = &v69;
   v71 = 0x3032000000;
@@ -709,8 +709,8 @@ LABEL_8:
   v74 = 0;
   if (!malloc_type_calloc(1uLL, 0x28uLL, 0x100004077774924uLL))
   {
-    v15 = fs_errorForPOSIXError();
-    v7[2](v7, 0, v15);
+    rootItem2 = fs_errorForPOSIXError();
+    handlerCopy[2](handlerCopy, 0, rootItem2);
     goto LABEL_12;
   }
 
@@ -718,9 +718,9 @@ LABEL_8:
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v8 = [v6 taskOptions];
+  taskOptions = [mountCopy taskOptions];
   v9 = 0;
-  v10 = [v8 countByEnumeratingWithState:&v65 objects:v75 count:16];
+  v10 = [taskOptions countByEnumeratingWithState:&v65 objects:v75 count:16];
   if (v10)
   {
     v11 = *v66;
@@ -730,13 +730,13 @@ LABEL_8:
       {
         if (*v66 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(taskOptions);
         }
 
         v9 |= [*(*(&v65 + 1) + 8 * i) containsString:@"rdonly"];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v65 objects:v75 count:16];
+      v10 = [taskOptions countByEnumeratingWithState:&v65 objects:v75 count:16];
     }
 
     while (v10);
@@ -746,27 +746,27 @@ LABEL_8:
   v13 = objc_alloc_init(FileSystemInfo);
   [(FATVolume *)self setSystemInfo:v13];
 
-  v14 = [(FATVolume *)self systemInfo];
-  [v14 setFsTypeName:@"msdos"];
+  systemInfo = [(FATVolume *)self systemInfo];
+  [systemInfo setFsTypeName:@"msdos"];
 
   if (![(msdosVolume *)self ScanBootSector])
   {
     v17 = [FSOperations alloc];
-    v18 = [(FATVolume *)self systemInfo];
-    v19 = -[FSOperations initWithType:](v17, "initWithType:", [v18 type]);
+    systemInfo2 = [(FATVolume *)self systemInfo];
+    v19 = -[FSOperations initWithType:](v17, "initWithType:", [systemInfo2 type]);
     [(msdosVolume *)self setFsOps:v19];
 
     v20 = [FATManager alloc];
-    v21 = [(FATVolume *)self resource];
-    v22 = [(FATVolume *)self systemInfo];
-    v23 = [(msdosVolume *)self fsOps];
-    v24 = [(FATManager *)v20 initWithDevice:v21 info:v22 ops:v23 usingCache:0];
+    resource = [(FATVolume *)self resource];
+    systemInfo3 = [(FATVolume *)self systemInfo];
+    fsOps = [(msdosVolume *)self fsOps];
+    v24 = [(FATManager *)v20 initWithDevice:resource info:systemInfo3 ops:fsOps usingCache:0];
     [(FATVolume *)self setFatManager:v24];
 
-    v25 = [(FATVolume *)self fatManager];
-    LODWORD(v21) = v25 == 0;
+    fatManager = [(FATVolume *)self fatManager];
+    LODWORD(resource) = fatManager == 0;
 
-    if (v21)
+    if (resource)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
@@ -776,12 +776,12 @@ LABEL_8:
       goto LABEL_10;
     }
 
-    v26 = [(FATVolume *)self systemInfo];
-    v27 = [v26 type] == 0;
+    systemInfo4 = [(FATVolume *)self systemInfo];
+    v27 = [systemInfo4 type] == 0;
 
     if (!v27)
     {
-      v28 = [(FATVolume *)self fatManager];
+      fatManager2 = [(FATVolume *)self fatManager];
       v63[0] = _NSConcreteStackBlock;
       v63[1] = 3221225472;
       v63[2] = sub_10002AF60;
@@ -789,7 +789,7 @@ LABEL_8:
       v63[4] = self;
       v63[5] = &v69;
       v64 = v9 & 1;
-      [v28 getDirtyBitValue:v63];
+      [fatManager2 getDirtyBitValue:v63];
     }
 
     if (v70[5])
@@ -797,103 +797,103 @@ LABEL_8:
       goto LABEL_22;
     }
 
-    v29 = [(FATVolume *)self systemInfo];
-    v30 = [v29 type] == 2;
+    systemInfo5 = [(FATVolume *)self systemInfo];
+    v30 = [systemInfo5 type] == 2;
 
     if (v30)
     {
-      v31 = [(FATVolume *)self fatManager];
-      v32 = [(FATVolume *)self systemInfo];
+      fatManager3 = [(FATVolume *)self fatManager];
+      systemInfo6 = [(FATVolume *)self systemInfo];
       v62[0] = _NSConcreteStackBlock;
       v62[1] = 3221225472;
       v62[2] = sub_10002B060;
       v62[3] = &unk_100051558;
       v62[4] = self;
       v62[5] = &v69;
-      [v31 getContigClusterChainLengthStartingAt:objc_msgSend(v32 replyHandler:{"rootFirstCluster"), v62}];
+      [fatManager3 getContigClusterChainLengthStartingAt:objc_msgSend(systemInfo6 replyHandler:{"rootFirstCluster"), v62}];
     }
 
     if (v70[5])
     {
 LABEL_22:
-      (v7[2])(v7, 0);
+      (handlerCopy[2])(handlerCopy, 0);
       v16 = 0;
       goto LABEL_14;
     }
 
-    v33 = [(msdosVolume *)self createRootDirItem];
-    [(FATVolume *)self setRootItem:v33];
+    createRootDirItem = [(msdosVolume *)self createRootDirItem];
+    [(FATVolume *)self setRootItem:createRootDirItem];
 
-    v34 = [(FATVolume *)self rootItem];
-    LODWORD(v33) = v34 == 0;
+    rootItem = [(FATVolume *)self rootItem];
+    LODWORD(createRootDirItem) = rootItem == 0;
 
-    if (v33)
+    if (createRootDirItem)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
       {
         sub_100034CB0();
       }
 
-      v15 = fs_errorForPOSIXError();
-      v7[2](v7, 0, v15);
+      rootItem2 = fs_errorForPOSIXError();
+      handlerCopy[2](handlerCopy, 0, rootItem2);
       goto LABEL_12;
     }
 
     v35 = [NSMutableData alloc];
-    v36 = [(FATVolume *)self systemInfo];
-    v16 = [v35 initWithLength:{objc_msgSend(v36, "bytesPerSector")}];
+    systemInfo7 = [(FATVolume *)self systemInfo];
+    v16 = [v35 initWithLength:{objc_msgSend(systemInfo7, "bytesPerSector")}];
 
-    v37 = [(FATVolume *)self resource];
+    resource2 = [(FATVolume *)self resource];
     v38 = v16;
-    v39 = [v16 mutableBytes];
-    v40 = [(FATVolume *)self systemInfo];
-    v41 = +[Utilities syncMetaReadFromDevice:into:startingAt:length:](Utilities, "syncMetaReadFromDevice:into:startingAt:length:", v37, v39, 0, [v40 bytesPerSector]);
+    mutableBytes = [v16 mutableBytes];
+    systemInfo8 = [(FATVolume *)self systemInfo];
+    v41 = +[Utilities syncMetaReadFromDevice:into:startingAt:length:](Utilities, "syncMetaReadFromDevice:into:startingAt:length:", resource2, mutableBytes, 0, [systemInfo8 bytesPerSector]);
     v42 = v70[5];
     v70[5] = v41;
 
     if (v70[5])
     {
-      (v7[2])(v7, 0);
+      (handlerCopy[2])(handlerCopy, 0);
       goto LABEL_14;
     }
 
-    v58 = [(FATVolume *)self resource];
-    v60 = [(FATVolume *)self systemInfo];
-    v43 = [v60 bytesPerSector];
-    v44 = [(FATVolume *)self systemInfo];
-    v45 = [v44 bytesPerCluster];
-    v46 = [(FATVolume *)self systemInfo];
-    v47 = [v46 bytesPerSector];
+    resource3 = [(FATVolume *)self resource];
+    systemInfo9 = [(FATVolume *)self systemInfo];
+    bytesPerSector = [systemInfo9 bytesPerSector];
+    systemInfo10 = [(FATVolume *)self systemInfo];
+    bytesPerCluster = [systemInfo10 bytesPerCluster];
+    systemInfo11 = [(FATVolume *)self systemInfo];
+    bytesPerSector2 = [systemInfo11 bytesPerSector];
     v48 = v16;
-    v49 = +[Utilities getVolumeName:bps:spc:bootsector:flags:](Utilities, "getVolumeName:bps:spc:bootsector:flags:", v58, v43, (v45 / v47), [v16 mutableBytes], 3);
-    v50 = [(FATVolume *)self systemInfo];
-    [v50 setVolumeLabel:v49];
+    v49 = +[Utilities getVolumeName:bps:spc:bootsector:flags:](Utilities, "getVolumeName:bps:spc:bootsector:flags:", resource3, bytesPerSector, (bytesPerCluster / bytesPerSector2), [v16 mutableBytes], 3);
+    systemInfo12 = [(FATVolume *)self systemInfo];
+    [systemInfo12 setVolumeLabel:v49];
 
-    v51 = [(FATVolume *)self systemInfo];
-    v52 = [v51 volumeLabel];
-    if (v52)
+    systemInfo13 = [(FATVolume *)self systemInfo];
+    volumeLabel = [systemInfo13 volumeLabel];
+    if (volumeLabel)
     {
-      v61 = [(FATVolume *)self systemInfo];
-      v53 = [v61 volumeLabel];
-      v54 = v53;
-      if ([v53 UTF8String])
+      systemInfo14 = [(FATVolume *)self systemInfo];
+      volumeLabel2 = [systemInfo14 volumeLabel];
+      v54 = volumeLabel2;
+      if ([volumeLabel2 UTF8String])
       {
-        v55 = [(FATVolume *)self systemInfo];
-        v56 = [v55 volumeLabel];
-        v57 = v56;
-        v59 = *[v56 UTF8String] == 0;
+        systemInfo15 = [(FATVolume *)self systemInfo];
+        volumeLabel3 = [systemInfo15 volumeLabel];
+        v57 = volumeLabel3;
+        v59 = *[volumeLabel3 UTF8String] == 0;
 
         if (v59)
         {
 LABEL_38:
           +[Utilities enableMetaRW];
-          v15 = [(FATVolume *)self rootItem];
-          (v7)[2](v7, v15, 0);
+          rootItem2 = [(FATVolume *)self rootItem];
+          (handlerCopy)[2](handlerCopy, rootItem2, 0);
           goto LABEL_13;
         }
 
-        v51 = [(FATVolume *)self systemInfo];
-        [v51 setVolumeLabelExists:1];
+        systemInfo13 = [(FATVolume *)self systemInfo];
+        [systemInfo13 setVolumeLabelExists:1];
       }
 
       else
@@ -905,8 +905,8 @@ LABEL_38:
   }
 
 LABEL_10:
-  v15 = fs_errorForPOSIXError();
-  v7[2](v7, 0, v15);
+  rootItem2 = fs_errorForPOSIXError();
+  handlerCopy[2](handlerCopy, 0, rootItem2);
 LABEL_12:
   v16 = 0;
 LABEL_13:
@@ -915,20 +915,20 @@ LABEL_14:
   _Block_object_dispose(&v69, 8);
 }
 
-- (void)calcNumOfDirEntriesForName:(unistr255 *)a3 replyHandler:(id)a4
+- (void)calcNumOfDirEntriesForName:(unistr255 *)name replyHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v9 = 0;
-  v6 = msdosfs_unicode_to_dos_name(a3->var1, a3->var0, v10, &v9);
+  v6 = msdosfs_unicode_to_dos_name(name->var1, name->var0, v10, &v9);
   if ((v6 - 2) < 2)
   {
-    v7 = msdosfs_winSlotCnt(a3->var1, a3->var0);
-    (*(v5 + 2))(v5, 0, (v7 + 1));
+    v7 = msdosfs_winSlotCnt(name->var1, name->var0);
+    (*(handlerCopy + 2))(handlerCopy, 0, (v7 + 1));
   }
 
   else if (v6 == 1)
   {
-    (*(v5 + 2))(v5, 0, 1);
+    (*(handlerCopy + 2))(handlerCopy, 0, 1);
   }
 
   else
@@ -939,20 +939,20 @@ LABEL_14:
     }
 
     v8 = fs_errorForPOSIXError();
-    (*(v5 + 2))(v5, v8, 0);
+    (*(handlerCopy + 2))(handlerCopy, v8, 0);
   }
 }
 
-- (void)nameToUnistr:(id)a3 flags:(unsigned int)a4 replyHandler:(id)a5
+- (void)nameToUnistr:(id)unistr flags:(unsigned int)flags replyHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   memset(__src, 0, sizeof(__src));
-  v8 = a3;
-  v9 = [v8 data];
-  v10 = [v9 bytes];
-  v11 = [v8 data];
+  unistrCopy = unistr;
+  data = [unistrCopy data];
+  bytes = [data bytes];
+  data2 = [unistrCopy data];
 
-  v12 = CONV_UTF8ToUnistr255(v10, [v11 length], __src, a4);
+  v12 = CONV_UTF8ToUnistr255(bytes, [data2 length], __src, flags);
   if (v12)
   {
     v13 = fs_errorForPOSIXError();
@@ -963,17 +963,17 @@ LABEL_14:
     v13 = 0;
   }
 
-  v14 = v7[2];
+  v14 = handlerCopy[2];
   memcpy(v15, __src, sizeof(v15));
-  v14(v7, v13, v15);
+  v14(handlerCopy, v13, v15);
   if (v12)
   {
   }
 }
 
-- (id)verifyFileSize:(unint64_t)a3
+- (id)verifyFileSize:(unint64_t)size
 {
-  if (HIDWORD(a3))
+  if (HIDWORD(size))
   {
     v4 = fs_errorForPOSIXError();
   }
@@ -986,48 +986,48 @@ LABEL_14:
   return v4;
 }
 
-- (BOOL)isOffsetInMetadataZone:(unint64_t)a3
+- (BOOL)isOffsetInMetadataZone:(unint64_t)zone
 {
-  v4 = [(FATVolume *)self systemInfo];
-  LOBYTE(a3) = [v4 metaDataZoneSize] > a3;
+  systemInfo = [(FATVolume *)self systemInfo];
+  LOBYTE(zone) = [systemInfo metaDataZoneSize] > zone;
 
-  return a3;
+  return zone;
 }
 
 - (id)sync
 {
-  v3 = [(FATVolume *)self systemInfo];
-  v4 = [v3 fsInfoSector];
-  if (!v4)
+  systemInfo = [(FATVolume *)self systemInfo];
+  fsInfoSector = [systemInfo fsInfoSector];
+  if (!fsInfoSector)
   {
 
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v6 = [(FATVolume *)self systemInfo];
-  v7 = [v6 fsInfoSectorNumber];
+  v5 = fsInfoSector;
+  systemInfo2 = [(FATVolume *)self systemInfo];
+  fsInfoSectorNumber = [systemInfo2 fsInfoSectorNumber];
 
-  if (!v7)
+  if (!fsInfoSectorNumber)
   {
 LABEL_7:
     v15 = 0;
     goto LABEL_8;
   }
 
-  v8 = [(FATVolume *)self systemInfo];
-  v9 = [v8 fsInfoSector];
-  v10 = [v9 mutableBytes];
+  systemInfo3 = [(FATVolume *)self systemInfo];
+  fsInfoSector2 = [systemInfo3 fsInfoSector];
+  mutableBytes = [fsInfoSector2 mutableBytes];
 
-  v11 = v10[122];
-  LODWORD(v9) = v10[123];
-  v12 = [(FATVolume *)self systemInfo];
-  if ([v12 firstFreeCluster] == v9)
+  v11 = mutableBytes[122];
+  LODWORD(fsInfoSector2) = mutableBytes[123];
+  systemInfo4 = [(FATVolume *)self systemInfo];
+  if ([systemInfo4 firstFreeCluster] == fsInfoSector2)
   {
-    v13 = [(FATVolume *)self systemInfo];
-    v14 = [v13 freeClusters];
+    systemInfo5 = [(FATVolume *)self systemInfo];
+    freeClusters = [systemInfo5 freeClusters];
 
-    if (v14 != v11)
+    if (freeClusters != v11)
     {
       goto LABEL_12;
     }
@@ -1036,22 +1036,22 @@ LABEL_7:
   }
 
 LABEL_12:
-  v17 = [(FATVolume *)self systemInfo];
-  v10[122] = [v17 freeClusters];
+  systemInfo6 = [(FATVolume *)self systemInfo];
+  mutableBytes[122] = [systemInfo6 freeClusters];
 
-  v18 = [(FATVolume *)self systemInfo];
-  v10[123] = [v18 firstFreeCluster];
+  systemInfo7 = [(FATVolume *)self systemInfo];
+  mutableBytes[123] = [systemInfo7 firstFreeCluster];
 
-  v19 = [(FATVolume *)self resource];
-  v20 = [(FATVolume *)self systemInfo];
-  v21 = [v20 fsInfoSector];
-  v22 = [v21 mutableBytes];
-  v23 = [(FATVolume *)self systemInfo];
-  v24 = [v23 fsInfoSectorNumber];
-  v25 = [(FATVolume *)self systemInfo];
-  v26 = [v25 bytesPerSector] * v24;
-  v27 = [(FATVolume *)self systemInfo];
-  v15 = +[Utilities metaWriteToDevice:from:startingAt:length:forceSyncWrite:](Utilities, "metaWriteToDevice:from:startingAt:length:forceSyncWrite:", v19, v22, v26, [v27 bytesPerSector], 0);
+  resource = [(FATVolume *)self resource];
+  systemInfo8 = [(FATVolume *)self systemInfo];
+  fsInfoSector3 = [systemInfo8 fsInfoSector];
+  mutableBytes2 = [fsInfoSector3 mutableBytes];
+  systemInfo9 = [(FATVolume *)self systemInfo];
+  fsInfoSectorNumber2 = [systemInfo9 fsInfoSectorNumber];
+  systemInfo10 = [(FATVolume *)self systemInfo];
+  v26 = [systemInfo10 bytesPerSector] * fsInfoSectorNumber2;
+  systemInfo11 = [(FATVolume *)self systemInfo];
+  v15 = +[Utilities metaWriteToDevice:from:startingAt:length:forceSyncWrite:](Utilities, "metaWriteToDevice:from:startingAt:length:forceSyncWrite:", resource, mutableBytes2, v26, [systemInfo11 bytesPerSector], 0);
 
   if (v15 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
@@ -1063,11 +1063,11 @@ LABEL_8:
   return v15;
 }
 
-- (void)setVolumeLabel:(id)a3 rootDir:(id)a4 replyHandler:(id)a5
+- (void)setVolumeLabel:(id)label rootDir:(id)dir replyHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  if (CONV_LabelUTF8ToUTF16LocalEncoding([a3 bytes], v17))
+  dirCopy = dir;
+  handlerCopy = handler;
+  if (CONV_LabelUTF8ToUTF16LocalEncoding([label bytes], v17))
   {
     v10 = fs_errorForPOSIXError();
 LABEL_4:
@@ -1075,8 +1075,8 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v11 = [(FATVolume *)self fatManager];
-  [v11 setDirtyBitValue:1 forceWriteToDisk:0 replyHandler:&stru_100051578];
+  fatManager = [(FATVolume *)self fatManager];
+  [fatManager setDirtyBitValue:1 forceWriteToDisk:0 replyHandler:&stru_100051578];
 
   v10 = [(msdosVolume *)self updateLabelInBootSector:v18 toName:v17];
   if (v10)
@@ -1084,12 +1084,12 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v13 = [v8 entryData];
+  entryData = [dirCopy entryData];
 
-  if (!v13 || ([v8 entryData], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "setName:", v17), v14, objc_msgSend(v8, "flushDirEntryData"), (v15 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!entryData || ([dirCopy entryData], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "setName:", v17), v14, objc_msgSend(dirCopy, "flushDirEntryData"), (v15 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v12 = [Utilities getVolumeLabelFromBootSector:v17];
-    v9[2](v9, v12, 0);
+    handlerCopy[2](handlerCopy, v12, 0);
     goto LABEL_6;
   }
 
@@ -1101,35 +1101,35 @@ LABEL_4:
 
   v16 = [(msdosVolume *)self updateLabelInBootSector:v17 toName:v18];
 LABEL_5:
-  (v9)[2](v9, 0, v12);
+  (handlerCopy)[2](handlerCopy, 0, v12);
 LABEL_6:
 }
 
-- (id)updateLabelInBootSector:(char)a3[11] toName:(char)a4[11]
+- (id)updateLabelInBootSector:(char)sector[11] toName:(char)name[11]
 {
-  v7 = [(FATVolume *)self systemInfo];
-  v8 = [v7 bytesPerSector];
+  systemInfo = [(FATVolume *)self systemInfo];
+  bytesPerSector = [systemInfo bytesPerSector];
 
-  v9 = [[NSMutableData alloc] initWithLength:v8];
-  v10 = [(FATVolume *)self resource];
-  v11 = +[Utilities syncMetaReadFromDevice:into:startingAt:length:](Utilities, "syncMetaReadFromDevice:into:startingAt:length:", v10, [v9 mutableBytes], 0, v8);
+  v9 = [[NSMutableData alloc] initWithLength:bytesPerSector];
+  resource = [(FATVolume *)self resource];
+  v11 = +[Utilities syncMetaReadFromDevice:into:startingAt:length:](Utilities, "syncMetaReadFromDevice:into:startingAt:length:", resource, [v9 mutableBytes], 0, bytesPerSector);
 
   if (!v11)
   {
-    v12 = [v9 mutableBytes];
-    v13 = v12;
-    if ((*v12 | 2) == 0xEB)
+    mutableBytes = [v9 mutableBytes];
+    v13 = mutableBytes;
+    if ((*mutableBytes | 2) == 0xEB)
     {
-      if ((v12[510] != 85 || v12[511] != 170) && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+      if ((mutableBytes[510] != 85 || mutableBytes[511] != 170) && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
         sub_1000350FC(v13 + 510);
       }
 
-      v14 = [(FATVolume *)self systemInfo];
-      v15 = [v14 type];
+      systemInfo2 = [(FATVolume *)self systemInfo];
+      type = [systemInfo2 type];
 
       v16 = 36;
-      if (v15 == 2)
+      if (type == 2)
       {
         v16 = 64;
       }
@@ -1138,15 +1138,15 @@ LABEL_6:
       if (v17[2] == 41)
       {
         v18 = *(v17 + 7);
-        *(a3 + 7) = *(v17 + 14);
-        *a3 = v18;
-        v19 = *a4;
-        *(v17 + 14) = *(a4 + 7);
+        *(sector + 7) = *(v17 + 14);
+        *sector = v18;
+        v19 = *name;
+        *(v17 + 14) = *(name + 7);
         *(v17 + 7) = v19;
       }
 
-      v20 = [(FATVolume *)self resource];
-      v11 = +[Utilities metaWriteToDevice:from:startingAt:length:forceSyncWrite:](Utilities, "metaWriteToDevice:from:startingAt:length:forceSyncWrite:", v20, [v9 bytes], 0, v8, 0);
+      resource2 = [(FATVolume *)self resource];
+      v11 = +[Utilities metaWriteToDevice:from:startingAt:length:forceSyncWrite:](Utilities, "metaWriteToDevice:from:startingAt:length:forceSyncWrite:", resource2, [v9 bytes], 0, bytesPerSector, 0);
     }
 
     else

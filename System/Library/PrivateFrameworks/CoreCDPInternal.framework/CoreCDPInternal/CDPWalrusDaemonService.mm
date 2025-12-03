@@ -1,16 +1,16 @@
 @interface CDPWalrusDaemonService
-- (CDPWalrusDaemonService)initWithEntitlements:(unint64_t)a3 walrusController:(id)a4;
+- (CDPWalrusDaemonService)initWithEntitlements:(unint64_t)entitlements walrusController:(id)controller;
 - (id)defaultWalrusStateController;
-- (void)_checkWalrusBeforeFetchingPCSKeysForServices:(id)a3 pcsController:(id)a4 completion:(id)a5;
-- (void)_pcsKeysForServices:(id)a3 pcsController:(id)a4 completion:(id)a5;
+- (void)_checkWalrusBeforeFetchingPCSKeysForServices:(id)services pcsController:(id)controller completion:(id)completion;
+- (void)_pcsKeysForServices:(id)services pcsController:(id)controller completion:(id)completion;
 - (void)broadcastWalrusStateChange;
-- (void)combinedWalrusStatusWithContext:(id)a3 completion:(id)a4;
-- (void)pcsKeysForServices:(id)a3 completion:(id)a4;
-- (void)repairWalrusWithCompletion:(id)a3;
-- (void)updateWalrusStatus:(unint64_t)a3 authenticatedContext:(id)a4 completion:(id)a5;
-- (void)updateWebAccessStatus:(unint64_t)a3 completion:(id)a4;
-- (void)walrusStatusWithContext:(id)a3 completion:(id)a4;
-- (void)webAccessStatusWithCompletion:(id)a3;
+- (void)combinedWalrusStatusWithContext:(id)context completion:(id)completion;
+- (void)pcsKeysForServices:(id)services completion:(id)completion;
+- (void)repairWalrusWithCompletion:(id)completion;
+- (void)updateWalrusStatus:(unint64_t)status authenticatedContext:(id)context completion:(id)completion;
+- (void)updateWebAccessStatus:(unint64_t)status completion:(id)completion;
+- (void)walrusStatusWithContext:(id)context completion:(id)completion;
+- (void)webAccessStatusWithCompletion:(id)completion;
 @end
 
 @implementation CDPWalrusDaemonService
@@ -21,14 +21,14 @@
   if (!walrusStateController)
   {
     v4 = [CDPInternalWalrusStateController alloc];
-    v5 = [MEMORY[0x277CFD480] sharedInstance];
+    mEMORY[0x277CFD480] = [MEMORY[0x277CFD480] sharedInstance];
     v6 = objc_alloc_init(CDPDAccount);
     v7 = objc_alloc_init(CDPWalrusSecurityProxyImpl);
     v8 = objc_alloc_init(MEMORY[0x277CFD520]);
     v9 = [CDPDSecureBackupProxyImpl alloc];
-    v10 = [MEMORY[0x277CFD4A8] contextForPrimaryAccount];
-    v11 = [(CDPDSecureBackupProxyImpl *)v9 initWithContext:v10];
-    v12 = [(CDPInternalWalrusStateController *)v4 initWithAccount:v5 cdpdAccount:v6 securityProxy:v7 pcsProxy:v8 sbProxy:v11];
+    contextForPrimaryAccount = [MEMORY[0x277CFD4A8] contextForPrimaryAccount];
+    v11 = [(CDPDSecureBackupProxyImpl *)v9 initWithContext:contextForPrimaryAccount];
+    v12 = [(CDPInternalWalrusStateController *)v4 initWithAccount:mEMORY[0x277CFD480] cdpdAccount:v6 securityProxy:v7 pcsProxy:v8 sbProxy:v11];
     v13 = self->_walrusStateController;
     self->_walrusStateController = v12;
 
@@ -38,41 +38,41 @@
   return walrusStateController;
 }
 
-- (CDPWalrusDaemonService)initWithEntitlements:(unint64_t)a3 walrusController:(id)a4
+- (CDPWalrusDaemonService)initWithEntitlements:(unint64_t)entitlements walrusController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = CDPWalrusDaemonService;
   v7 = [(CDPWalrusDaemonService *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_entitlements = a3;
-    if (v6)
+    v7->_entitlements = entitlements;
+    if (controllerCopy)
     {
-      v9 = v6;
+      defaultWalrusStateController = controllerCopy;
     }
 
     else
     {
-      v9 = [(CDPWalrusDaemonService *)v7 defaultWalrusStateController];
+      defaultWalrusStateController = [(CDPWalrusDaemonService *)v7 defaultWalrusStateController];
     }
 
     walrusStateController = v8->_walrusStateController;
-    v8->_walrusStateController = v9;
+    v8->_walrusStateController = defaultWalrusStateController;
   }
 
   return v8;
 }
 
-- (void)walrusStatusWithContext:(id)a3 completion:(id)a4
+- (void)walrusStatusWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   if ([(CDPWalrusDaemonService *)self _allowWalrusAccess])
   {
-    v8 = [(CDPWalrusDaemonService *)self walrusStateController];
-    [v8 walrusStatusWithContext:v6 completion:v7];
+    walrusStateController = [(CDPWalrusDaemonService *)self walrusStateController];
+    [walrusStateController walrusStatusWithContext:contextCopy completion:completionCopy];
 LABEL_7:
 
     goto LABEL_8;
@@ -84,26 +84,26 @@ LABEL_7:
     [CDPWalrusDaemonService walrusStatusWithContext:completion:];
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v8 = _CDPStateError();
-    v7[2](v7, 0, v8);
+    walrusStateController = _CDPStateError();
+    completionCopy[2](completionCopy, 0, walrusStateController);
     goto LABEL_7;
   }
 
 LABEL_8:
 }
 
-- (void)combinedWalrusStatusWithContext:(id)a3 completion:(id)a4
+- (void)combinedWalrusStatusWithContext:(id)context completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   if ([(CDPWalrusDaemonService *)self _allowWalrusAccess])
   {
-    v8 = [(CDPWalrusDaemonService *)self walrusStateController];
+    walrusStateController = [(CDPWalrusDaemonService *)self walrusStateController];
     v15 = 0;
-    v9 = [v8 combinedWalrusStatusWithContext:v6 error:&v15];
+    v9 = [walrusStateController combinedWalrusStatusWithContext:contextCopy error:&v15];
     v10 = v15;
 
     v11 = _CDPLogSystem();
@@ -123,9 +123,9 @@ LABEL_8:
       _os_log_impl(&dword_24510B000, v12, OS_LOG_TYPE_DEFAULT, "Walrus combined status %@ status fetched successfully.", buf, 0xCu);
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, v9, v10);
+      completionCopy[2](completionCopy, v9, v10);
     }
 
     goto LABEL_14;
@@ -137,23 +137,23 @@ LABEL_8:
     [CDPWalrusDaemonService walrusStatusWithContext:completion:];
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v10 = _CDPStateError();
-    v7[2](v7, 0, v10);
+    completionCopy[2](completionCopy, 0, v10);
 LABEL_14:
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)repairWalrusWithCompletion:(id)a3
+- (void)repairWalrusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(CDPWalrusDaemonService *)self _allowWalrusAccess])
   {
-    v5 = [(CDPWalrusDaemonService *)self walrusStateController];
-    [v5 repairWalrusStatusWithCompletion:v4];
+    walrusStateController = [(CDPWalrusDaemonService *)self walrusStateController];
+    [walrusStateController repairWalrusStatusWithCompletion:completionCopy];
 LABEL_7:
 
     goto LABEL_8;
@@ -165,10 +165,10 @@ LABEL_7:
     [CDPWalrusDaemonService walrusStatusWithContext:completion:];
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v5 = _CDPStateError();
-    v4[2](v4, v5);
+    walrusStateController = _CDPStateError();
+    completionCopy[2](completionCopy, walrusStateController);
     goto LABEL_7;
   }
 
@@ -193,22 +193,22 @@ LABEL_8:
   }
 }
 
-- (void)updateWalrusStatus:(unint64_t)a3 authenticatedContext:(id)a4 completion:(id)a5
+- (void)updateWalrusStatus:(unint64_t)status authenticatedContext:(id)context completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  completionCopy = completion;
   if ([(CDPWalrusDaemonService *)self _allowWalrusAccess])
   {
-    if (a3)
+    if (status)
     {
-      v10 = [(CDPWalrusDaemonService *)self walrusStateController];
-      v11 = [v8 password];
+      walrusStateController = [(CDPWalrusDaemonService *)self walrusStateController];
+      password = [contextCopy password];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __77__CDPWalrusDaemonService_updateWalrusStatus_authenticatedContext_completion___block_invoke;
       v16[3] = &unk_278E24E30;
-      v17 = v9;
-      [v10 setWalrusStatusEnabled:a3 == 1 password:v11 completion:v16];
+      v17 = completionCopy;
+      [walrusStateController setWalrusStatusEnabled:status == 1 password:password completion:v16];
 
       v12 = v17;
 LABEL_13:
@@ -222,7 +222,7 @@ LABEL_13:
       [CDPWalrusDaemonService updateWalrusStatus:authenticatedContext:completion:];
     }
 
-    if (v9)
+    if (completionCopy)
     {
       v14 = [MEMORY[0x277CCA9B8] cdp_errorWithCode:-7002];
       goto LABEL_12;
@@ -237,12 +237,12 @@ LABEL_13:
       [CDPWalrusDaemonService updateWalrusStatus:authenticatedContext:completion:];
     }
 
-    if (v9)
+    if (completionCopy)
     {
       v14 = _CDPStateError();
 LABEL_12:
       v12 = v14;
-      (*(v9 + 2))(v9, 0, v14);
+      (*(completionCopy + 2))(completionCopy, 0, v14);
       goto LABEL_13;
     }
   }
@@ -285,18 +285,18 @@ void __77__CDPWalrusDaemonService_updateWalrusStatus_authenticatedContext_comple
   }
 }
 
-- (void)webAccessStatusWithCompletion:(id)a3
+- (void)webAccessStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(CDPWalrusDaemonService *)self _allowWalrusAccess])
   {
-    v5 = [(CDPWalrusDaemonService *)self walrusStateController];
+    walrusStateController = [(CDPWalrusDaemonService *)self walrusStateController];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __56__CDPWalrusDaemonService_webAccessStatusWithCompletion___block_invoke;
     v8[3] = &unk_278E24E58;
-    v9 = v4;
-    [v5 webAccessStatusWithCompletion:v8];
+    v9 = completionCopy;
+    [walrusStateController webAccessStatusWithCompletion:v8];
 
     v6 = v9;
 LABEL_7:
@@ -310,10 +310,10 @@ LABEL_7:
     [CDPWalrusDaemonService webAccessStatusWithCompletion:];
   }
 
-  if (v4)
+  if (completionCopy)
   {
     v6 = _CDPStateError();
-    (*(v4 + 2))(v4, 0, v6);
+    (*(completionCopy + 2))(completionCopy, 0, v6);
     goto LABEL_7;
   }
 
@@ -350,20 +350,20 @@ void __56__CDPWalrusDaemonService_webAccessStatusWithCompletion___block_invoke(u
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWebAccessStatus:(unint64_t)a3 completion:(id)a4
+- (void)updateWebAccessStatus:(unint64_t)status completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if ([(CDPWalrusDaemonService *)self _allowWalrusAccess])
   {
-    if (a3)
+    if (status)
     {
-      v7 = [(CDPWalrusDaemonService *)self walrusStateController];
+      walrusStateController = [(CDPWalrusDaemonService *)self walrusStateController];
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __59__CDPWalrusDaemonService_updateWebAccessStatus_completion___block_invoke;
       v12[3] = &unk_278E24780;
-      v13 = v6;
-      [v7 setWebAccessStatusEnabled:a3 == 1 completion:v12];
+      v13 = completionCopy;
+      [walrusStateController setWebAccessStatusEnabled:status == 1 completion:v12];
 
       v8 = v13;
 LABEL_13:
@@ -377,7 +377,7 @@ LABEL_13:
       [CDPWalrusDaemonService updateWebAccessStatus:completion:];
     }
 
-    if (v6)
+    if (completionCopy)
     {
       v10 = [MEMORY[0x277CCA9B8] cdp_errorWithCode:-7002];
       goto LABEL_12;
@@ -392,12 +392,12 @@ LABEL_13:
       [CDPWalrusDaemonService updateWebAccessStatus:completion:];
     }
 
-    if (v6)
+    if (completionCopy)
     {
       v10 = _CDPStateError();
 LABEL_12:
       v8 = v10;
-      (*(v6 + 2))(v6, v10);
+      (*(completionCopy + 2))(completionCopy, v10);
       goto LABEL_13;
     }
   }
@@ -431,16 +431,16 @@ void __59__CDPWalrusDaemonService_updateWebAccessStatus_completion___block_invok
   }
 }
 
-- (void)pcsKeysForServices:(id)a3 completion:(id)a4
+- (void)pcsKeysForServices:(id)services completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  servicesCopy = services;
+  completionCopy = completion;
   if ([(CDPWalrusDaemonService *)self _allowWalrusPCSKeysAccess])
   {
-    v8 = [MEMORY[0x277CFD4A8] contextForPrimaryAccount];
+    contextForPrimaryAccount = [MEMORY[0x277CFD4A8] contextForPrimaryAccount];
     v9 = objc_alloc_init(MEMORY[0x277CFD520]);
-    v10 = [[CDPDPCSController alloc] initWithContext:v8 pcsProxy:v9];
-    [(CDPWalrusDaemonService *)self _checkWalrusBeforeFetchingPCSKeysForServices:v6 pcsController:v10 completion:v7];
+    v10 = [[CDPDPCSController alloc] initWithContext:contextForPrimaryAccount pcsProxy:v9];
+    [(CDPWalrusDaemonService *)self _checkWalrusBeforeFetchingPCSKeysForServices:servicesCopy pcsController:v10 completion:completionCopy];
   }
 
   else
@@ -451,23 +451,23 @@ void __59__CDPWalrusDaemonService_updateWebAccessStatus_completion___block_invok
       [CDPWalrusDaemonService updateWalrusStatus:authenticatedContext:completion:];
     }
 
-    if (v7)
+    if (completionCopy)
     {
       v12 = objc_alloc_init(MEMORY[0x277CBEAC0]);
       v13 = _CDPStateError();
-      v7[2](v7, v12, v13);
+      completionCopy[2](completionCopy, v12, v13);
     }
   }
 }
 
-- (void)_checkWalrusBeforeFetchingPCSKeysForServices:(id)a3 pcsController:(id)a4 completion:(id)a5
+- (void)_checkWalrusBeforeFetchingPCSKeysForServices:(id)services pcsController:(id)controller completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CDPWalrusDaemonService *)self walrusStateController];
+  servicesCopy = services;
+  controllerCopy = controller;
+  completionCopy = completion;
+  walrusStateController = [(CDPWalrusDaemonService *)self walrusStateController];
   v20 = 0;
-  v12 = [v11 walrusStatusWithContext:0 error:&v20];
+  v12 = [walrusStateController walrusStatusWithContext:0 error:&v20];
   v13 = v20;
 
   if (v13)
@@ -478,20 +478,20 @@ void __59__CDPWalrusDaemonService_updateWebAccessStatus_completion___block_invok
       [CDPWalrusDaemonService _checkWalrusBeforeFetchingPCSKeysForServices:v13 pcsController:? completion:?];
     }
 
-    if (v10)
+    if (completionCopy)
     {
       v15 = objc_alloc_init(MEMORY[0x277CBEAC0]);
       v16 = MEMORY[0x277CCA9B8];
       v17 = -7002;
 LABEL_12:
       v19 = [v16 cdp_errorWithCode:v17];
-      v10[2](v10, v15, v19);
+      completionCopy[2](completionCopy, v15, v19);
     }
   }
 
   else if (v12 == 1)
   {
-    [(CDPWalrusDaemonService *)self _pcsKeysForServices:v8 pcsController:v9 completion:v10];
+    [(CDPWalrusDaemonService *)self _pcsKeysForServices:servicesCopy pcsController:controllerCopy completion:completionCopy];
   }
 
   else
@@ -502,7 +502,7 @@ LABEL_12:
       [CDPWalrusDaemonService _checkWalrusBeforeFetchingPCSKeysForServices:pcsController:completion:];
     }
 
-    if (v10)
+    if (completionCopy)
     {
       v15 = objc_alloc_init(MEMORY[0x277CBEAC0]);
       v16 = MEMORY[0x277CCA9B8];
@@ -512,23 +512,23 @@ LABEL_12:
   }
 }
 
-- (void)_pcsKeysForServices:(id)a3 pcsController:(id)a4 completion:(id)a5
+- (void)_pcsKeysForServices:(id)services pcsController:(id)controller completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CDPWalrusDaemonService *)self walrusStateController];
+  servicesCopy = services;
+  controllerCopy = controller;
+  completionCopy = completion;
+  walrusStateController = [(CDPWalrusDaemonService *)self walrusStateController];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __71__CDPWalrusDaemonService__pcsKeysForServices_pcsController_completion___block_invoke;
   v15[3] = &unk_278E24E80;
-  v17 = v9;
-  v18 = v10;
-  v16 = v8;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
-  [v11 webAccessStatusWithCompletion:v15];
+  v17 = controllerCopy;
+  v18 = completionCopy;
+  v16 = servicesCopy;
+  v12 = controllerCopy;
+  v13 = servicesCopy;
+  v14 = completionCopy;
+  [walrusStateController webAccessStatusWithCompletion:v15];
 }
 
 void __71__CDPWalrusDaemonService__pcsKeysForServices_pcsController_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)

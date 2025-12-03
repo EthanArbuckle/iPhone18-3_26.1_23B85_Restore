@@ -3,14 +3,14 @@
 - (BOOL)hasOriginAnchorType;
 - (BOOL)hasOriginBundleId;
 - (BOOL)hasSuggestionUUID;
-- (BOOL)isEqual:(id)a3;
-- (__CFString)typeAsString:(__CFString *)a1;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (__CFString)typeAsString:(__CFString *)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)serializedTriggersAtIndex:(id *)a1;
-- (uint64_t)StringAsType:(uint64_t)a1;
-- (uint64_t)addSerializedTriggers:(uint64_t)a1;
+- (id)serializedTriggersAtIndex:(id *)index;
+- (uint64_t)StringAsType:(uint64_t)type;
+- (uint64_t)addSerializedTriggers:(uint64_t)triggers;
 - (uint64_t)clearSerializedTriggers;
 - (uint64_t)hasOrigin;
 - (uint64_t)hasShouldSuggestTriggers;
@@ -35,14 +35,14 @@
 - (uint64_t)type;
 - (uint64_t)uiLocation;
 - (unint64_t)hash;
-- (void)copyTo:(uint64_t)a1;
-- (void)mergeFrom:(uint64_t)a1;
-- (void)setModeUUID:(uint64_t)a1;
-- (void)setOriginAnchorType:(uint64_t)a1;
-- (void)setOriginBundleId:(uint64_t)a1;
-- (void)setSerializedTriggers:(uint64_t)a1;
-- (void)setSuggestionUUID:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(uint64_t)to;
+- (void)mergeFrom:(uint64_t)from;
+- (void)setModeUUID:(uint64_t)d;
+- (void)setOriginAnchorType:(uint64_t)type;
+- (void)setOriginBundleId:(uint64_t)id;
+- (void)setSerializedTriggers:(uint64_t)triggers;
+- (void)setSuggestionUUID:(uint64_t)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBActivity
@@ -53,20 +53,20 @@
   v8.receiver = self;
   v8.super_class = ATXPBActivity;
   v4 = [(ATXPBActivity *)&v8 description];
-  v5 = [(ATXPBActivity *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBActivity *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_uiLocation];
-    [v3 setObject:v5 forKey:@"uiLocation"];
+    [dictionary setObject:v5 forKey:@"uiLocation"];
 
     has = self->_has;
   }
@@ -84,58 +84,58 @@
       v7 = off_1E80C6388[type];
     }
 
-    [v3 setObject:v7 forKey:@"type"];
+    [dictionary setObject:v7 forKey:@"type"];
   }
 
   modeUUID = self->_modeUUID;
   if (modeUUID)
   {
-    [v3 setObject:modeUUID forKey:@"modeUUID"];
+    [dictionary setObject:modeUUID forKey:@"modeUUID"];
   }
 
   suggestionUUID = self->_suggestionUUID;
   if (suggestionUUID)
   {
-    [v3 setObject:suggestionUUID forKey:@"suggestionUUID"];
+    [dictionary setObject:suggestionUUID forKey:@"suggestionUUID"];
   }
 
   if (*&self->_has)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_origin];
-    [v3 setObject:v10 forKey:@"origin"];
+    [dictionary setObject:v10 forKey:@"origin"];
   }
 
   originBundleId = self->_originBundleId;
   if (originBundleId)
   {
-    [v3 setObject:originBundleId forKey:@"originBundleId"];
+    [dictionary setObject:originBundleId forKey:@"originBundleId"];
   }
 
   originAnchorType = self->_originAnchorType;
   if (originAnchorType)
   {
-    [v3 setObject:originAnchorType forKey:@"originAnchorType"];
+    [dictionary setObject:originAnchorType forKey:@"originAnchorType"];
   }
 
   serializedTriggers = self->_serializedTriggers;
   if (serializedTriggers)
   {
-    [v3 setObject:serializedTriggers forKey:@"serializedTriggers"];
+    [dictionary setObject:serializedTriggers forKey:@"serializedTriggers"];
   }
 
   if ((*&self->_has & 8) != 0)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithBool:self->_shouldSuggestTriggers];
-    [v3 setObject:v14 forKey:@"shouldSuggestTriggers"];
+    [dictionary setObject:v14 forKey:@"shouldSuggestTriggers"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -207,10 +207,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -226,11 +226,11 @@
     *(v5 + 72) |= 4u;
   }
 
-  v8 = [(NSString *)self->_modeUUID copyWithZone:a3];
+  v8 = [(NSString *)self->_modeUUID copyWithZone:zone];
   v9 = *(v6 + 24);
   *(v6 + 24) = v8;
 
-  v10 = [(NSString *)self->_suggestionUUID copyWithZone:a3];
+  v10 = [(NSString *)self->_suggestionUUID copyWithZone:zone];
   v11 = *(v6 + 56);
   *(v6 + 56) = v10;
 
@@ -240,11 +240,11 @@
     *(v6 + 72) |= 1u;
   }
 
-  v12 = [(NSString *)self->_originBundleId copyWithZone:a3];
+  v12 = [(NSString *)self->_originBundleId copyWithZone:zone];
   v13 = *(v6 + 40);
   *(v6 + 40) = v12;
 
-  v14 = [(NSString *)self->_originAnchorType copyWithZone:a3];
+  v14 = [(NSString *)self->_originAnchorType copyWithZone:zone];
   v15 = *(v6 + 32);
   *(v6 + 32) = v14;
 
@@ -267,7 +267,7 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v23 + 1) + 8 * i) copyWithZone:{a3, v23}];
+        v21 = [*(*(&v23 + 1) + 8 * i) copyWithZone:{zone, v23}];
         [(ATXPBActivity *)v6 addSerializedTriggers:v21];
       }
 
@@ -286,48 +286,48 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 72) & 2) == 0 || self->_uiLocation != *(v4 + 2))
+    if ((*(equalCopy + 72) & 2) == 0 || self->_uiLocation != *(equalCopy + 2))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 72) & 2) != 0)
+  else if ((*(equalCopy + 72) & 2) != 0)
   {
     goto LABEL_29;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 72) & 4) == 0 || self->_type != *(v4 + 16))
+    if ((*(equalCopy + 72) & 4) == 0 || self->_type != *(equalCopy + 16))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 72) & 4) != 0)
+  else if ((*(equalCopy + 72) & 4) != 0)
   {
     goto LABEL_29;
   }
 
   modeUUID = self->_modeUUID;
-  if (modeUUID | *(v4 + 3) && ![(NSString *)modeUUID isEqual:?])
+  if (modeUUID | *(equalCopy + 3) && ![(NSString *)modeUUID isEqual:?])
   {
     goto LABEL_29;
   }
 
   suggestionUUID = self->_suggestionUUID;
-  if (suggestionUUID | *(v4 + 7))
+  if (suggestionUUID | *(equalCopy + 7))
   {
     if (![(NSString *)suggestionUUID isEqual:?])
     {
@@ -337,25 +337,25 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_origin != *(v4 + 1))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_origin != *(equalCopy + 1))
     {
       goto LABEL_29;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_29;
   }
 
   originBundleId = self->_originBundleId;
-  if (originBundleId | *(v4 + 5) && ![(NSString *)originBundleId isEqual:?])
+  if (originBundleId | *(equalCopy + 5) && ![(NSString *)originBundleId isEqual:?])
   {
     goto LABEL_29;
   }
 
   originAnchorType = self->_originAnchorType;
-  if (originAnchorType | *(v4 + 4))
+  if (originAnchorType | *(equalCopy + 4))
   {
     if (![(NSString *)originAnchorType isEqual:?])
     {
@@ -364,7 +364,7 @@
   }
 
   serializedTriggers = self->_serializedTriggers;
-  if (serializedTriggers | *(v4 + 6))
+  if (serializedTriggers | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)serializedTriggers isEqual:?])
     {
@@ -372,10 +372,10 @@
     }
   }
 
-  v10 = (*(v4 + 72) & 8) == 0;
+  v10 = (*(equalCopy + 72) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 72) & 8) == 0)
+    if ((*(equalCopy + 72) & 8) == 0)
     {
 LABEL_29:
       v10 = 0;
@@ -384,13 +384,13 @@ LABEL_29:
 
     if (self->_shouldSuggestTriggers)
     {
-      if ((*(v4 + 68) & 1) == 0)
+      if ((*(equalCopy + 68) & 1) == 0)
       {
         goto LABEL_29;
       }
     }
 
-    else if (*(v4 + 68))
+    else if (*(equalCopy + 68))
     {
       goto LABEL_29;
     }
@@ -555,31 +555,31 @@ LABEL_6:
   return result;
 }
 
-- (__CFString)typeAsString:(__CFString *)a1
+- (__CFString)typeAsString:(__CFString *)string
 {
-  if (!a1)
+  if (!string)
   {
 LABEL_4:
 
-    return a1;
+    return string;
   }
 
   if (a2 < 0xE)
   {
-    a1 = off_1E80C6388[a2];
+    string = off_1E80C6388[a2];
     goto LABEL_4;
   }
 
-  a1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
+  string = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
 
-  return a1;
+  return string;
 }
 
-- (uint64_t)StringAsType:(uint64_t)a1
+- (uint64_t)StringAsType:(uint64_t)type
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (type)
   {
     v5 = v3;
     if ([v5 isEqualToString:@"Custom"])
@@ -747,21 +747,21 @@ LABEL_4:
   return result;
 }
 
-- (uint64_t)addSerializedTriggers:(uint64_t)a1
+- (uint64_t)addSerializedTriggers:(uint64_t)triggers
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (triggers)
   {
-    v5 = *(a1 + 48);
+    v5 = *(triggers + 48);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 48);
-      *(a1 + 48) = v6;
+      v7 = *(triggers + 48);
+      *(triggers + 48) = v6;
 
-      v5 = *(a1 + 48);
+      v5 = *(triggers + 48);
     }
 
     v3 = [v5 addObject:v9];
@@ -781,15 +781,15 @@ LABEL_4:
   return result;
 }
 
-- (id)serializedTriggersAtIndex:(id *)a1
+- (id)serializedTriggersAtIndex:(id *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [a1[6] objectAtIndex:a2];
+    index = [index[6] objectAtIndex:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
 - (uint64_t)setShouldSuggestTriggers:(uint64_t)result
@@ -833,33 +833,33 @@ LABEL_4:
   return result;
 }
 
-- (void)copyTo:(uint64_t)a1
+- (void)copyTo:(uint64_t)to
 {
   v3 = a2;
-  if (a1)
+  if (to)
   {
     OUTLINED_FUNCTION_1_24();
     if ((v6 & 2) != 0)
     {
-      *(v4 + 16) = *(a1 + 16);
+      *(v4 + 16) = *(to + 16);
       *(v4 + v5) |= 2u;
       OUTLINED_FUNCTION_1_24();
     }
 
     if ((v6 & 4) != 0)
     {
-      *(v4 + 64) = *(a1 + 64);
+      *(v4 + 64) = *(to + 64);
       *(v4 + 72) |= 4u;
     }
 
-    v7 = *(a1 + 24);
+    v7 = *(to + 24);
     v18 = v4;
     if (v7)
     {
       [(ATXPBActivity *)v4 setModeUUID:v7];
     }
 
-    v8 = *(a1 + 56);
+    v8 = *(to + 56);
     if (v8)
     {
       [(ATXPBActivity *)v18 setSuggestionUUID:v8];
@@ -868,132 +868,132 @@ LABEL_4:
     OUTLINED_FUNCTION_1_24();
     if (v11)
     {
-      *(v9 + 8) = *(a1 + 8);
+      *(v9 + 8) = *(to + 8);
       *(v9 + v10) |= 1u;
     }
 
-    v12 = *(a1 + 40);
+    v12 = *(to + 40);
     if (v12)
     {
       [(ATXPBActivity *)v18 setOriginBundleId:v12];
     }
 
-    v13 = *(a1 + 32);
+    v13 = *(to + 32);
     if (v13)
     {
       [(ATXPBActivity *)v18 setOriginAnchorType:v13];
     }
 
-    if ([*(a1 + 48) count])
+    if ([*(to + 48) count])
     {
       if (v18)
       {
         [v18[6] removeAllObjects];
       }
 
-      v14 = [*(a1 + 48) count];
+      v14 = [*(to + 48) count];
       if (v14)
       {
         v15 = v14;
         for (i = 0; i != v15; ++i)
         {
-          v17 = [*(a1 + 48) objectAtIndex:i];
+          v17 = [*(to + 48) objectAtIndex:i];
           [(ATXPBActivity *)v18 addSerializedTriggers:v17];
         }
       }
     }
 
     v3 = v18;
-    if ((*(a1 + 72) & 8) != 0)
+    if ((*(to + 72) & 8) != 0)
     {
-      *(v18 + 68) = *(a1 + 68);
+      *(v18 + 68) = *(to + 68);
       *(v18 + 72) |= 8u;
     }
   }
 }
 
-- (void)setModeUUID:(uint64_t)a1
+- (void)setModeUUID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 24);
+    OUTLINED_FUNCTION_2(d, a2, 24);
   }
 }
 
-- (void)setSuggestionUUID:(uint64_t)a1
+- (void)setSuggestionUUID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 56);
+    OUTLINED_FUNCTION_2(d, a2, 56);
   }
 }
 
-- (void)setOriginBundleId:(uint64_t)a1
+- (void)setOriginBundleId:(uint64_t)id
 {
-  if (a1)
+  if (id)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 40);
+    OUTLINED_FUNCTION_2(id, a2, 40);
   }
 }
 
-- (void)setOriginAnchorType:(uint64_t)a1
+- (void)setOriginAnchorType:(uint64_t)type
 {
-  if (a1)
+  if (type)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 32);
+    OUTLINED_FUNCTION_2(type, a2, 32);
   }
 }
 
-- (void)mergeFrom:(uint64_t)a1
+- (void)mergeFrom:(uint64_t)from
 {
   v24 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (from)
   {
     v5 = v3[72];
     if ((v5 & 2) != 0)
     {
-      *(a1 + 16) = *(v3 + 2);
-      *(a1 + 72) |= 2u;
+      *(from + 16) = *(v3 + 2);
+      *(from + 72) |= 2u;
       v5 = v3[72];
     }
 
     if ((v5 & 4) != 0)
     {
-      *(a1 + 64) = *(v3 + 16);
+      *(from + 64) = *(v3 + 16);
       OUTLINED_FUNCTION_1_24();
-      *(a1 + v7) = v6 | 4;
+      *(from + v7) = v6 | 4;
     }
 
     v8 = *(v4 + 3);
     if (v8)
     {
-      objc_storeStrong((a1 + 24), v8);
+      objc_storeStrong((from + 24), v8);
     }
 
     v9 = *(v4 + 7);
     if (v9)
     {
-      objc_storeStrong((a1 + 56), v9);
+      objc_storeStrong((from + 56), v9);
     }
 
     if (*(v4 + 72))
     {
-      *(a1 + 8) = *(v4 + 1);
-      *(a1 + 72) |= 1u;
+      *(from + 8) = *(v4 + 1);
+      *(from + 72) |= 1u;
     }
 
     v10 = *(v4 + 5);
     if (v10)
     {
-      objc_storeStrong((a1 + 40), v10);
+      objc_storeStrong((from + 40), v10);
     }
 
     v11 = *(v4 + 4);
     if (v11)
     {
-      objc_storeStrong((a1 + 32), v11);
+      objc_storeStrong((from + 32), v11);
     }
 
     v21 = 0u;
@@ -1015,7 +1015,7 @@ LABEL_4:
             objc_enumerationMutation(v12);
           }
 
-          [(ATXPBActivity *)a1 addSerializedTriggers:?];
+          [(ATXPBActivity *)from addSerializedTriggers:?];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -1026,9 +1026,9 @@ LABEL_4:
 
     if ((*(v4 + 72) & 8) != 0)
     {
-      *(a1 + 68) = *(v4 + 68);
+      *(from + 68) = *(v4 + 68);
       OUTLINED_FUNCTION_1_24();
-      *(a1 + v18) = v17 | 8;
+      *(from + v18) = v17 | 8;
     }
   }
 }
@@ -1103,19 +1103,19 @@ LABEL_4:
   return result;
 }
 
-- (void)setSerializedTriggers:(uint64_t)a1
+- (void)setSerializedTriggers:(uint64_t)triggers
 {
-  if (a1)
+  if (triggers)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 48);
+    OUTLINED_FUNCTION_2(triggers, a2, 48);
   }
 }
 
 - (uint64_t)shouldSuggestTriggers
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 68);
+    v1 = *(self + 68);
   }
 
   else

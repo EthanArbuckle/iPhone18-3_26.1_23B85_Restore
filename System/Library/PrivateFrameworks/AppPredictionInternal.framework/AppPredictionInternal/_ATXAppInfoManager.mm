@@ -1,69 +1,69 @@
 @interface _ATXAppInfoManager
 + (_ATXAppInfoManager)sharedInstance;
-+ (id)sortArrayAndComputeMedian:(id)a3;
++ (id)sortArrayAndComputeMedian:(id)median;
 - (BOOL)hasRemoteApps;
-- (_ATXAppInfoManager)initWithDataStore:(id)a3;
+- (_ATXAppInfoManager)initWithDataStore:(id)store;
 - (_ATXAppInfoManager)initWithInMemoryStore;
-- (id)_appInfoNoLockForBundleId:(id)a3;
+- (id)_appInfoNoLockForBundleId:(id)id;
 - (id)allActionKeys;
 - (id)allApps;
 - (id)allAppsLaunchedOrInstalledWithin30Days;
 - (id)allAppsWithInstallDate;
 - (id)allRemoteApps;
-- (id)app2VecClusterForBundleId:(id)a3;
-- (id)appInfoForBundleId:(id)a3;
-- (id)averageSecondsBetweenAppActionsForActionKey:(id)a3;
-- (id)averageSecondsBetweenLaunchesForBundleId:(id)a3;
-- (id)bundleIDForRemoteAppWithUUID:(id)a3;
-- (id)genreIdForBundleId:(id)a3;
-- (id)genreIdsForBundleId:(id)a3;
+- (id)app2VecClusterForBundleId:(id)id;
+- (id)appInfoForBundleId:(id)id;
+- (id)averageSecondsBetweenAppActionsForActionKey:(id)key;
+- (id)averageSecondsBetweenLaunchesForBundleId:(id)id;
+- (id)bundleIDForRemoteAppWithUUID:(id)d;
+- (id)genreIdForBundleId:(id)id;
+- (id)genreIdsForBundleId:(id)id;
 - (id)lastAppActionLaunch;
 - (id)lastAppActionLaunchDate;
-- (id)lastAppActionLaunchDateForActionKey:(id)a3;
+- (id)lastAppActionLaunchDateForActionKey:(id)key;
 - (id)lastAppLaunch;
 - (id)lastAppLaunchDate;
-- (id)lastLaunchDateForBundleId:(id)a3;
+- (id)lastLaunchDateForBundleId:(id)id;
 - (id)lastUnlockDate;
-- (id)medianSecondsBetweenAppActionsForActionKey:(id)a3;
-- (id)medianSecondsBetweenLaunchesForBundleId:(id)a3;
+- (id)medianSecondsBetweenAppActionsForActionKey:(id)key;
+- (id)medianSecondsBetweenLaunchesForBundleId:(id)id;
 - (id)secondMostRecentAppLaunch;
 - (id)stopInstallDeltaRecording;
-- (id)subGenreIdsForBundleId:(id)a3;
+- (id)subGenreIdsForBundleId:(id)id;
 - (id)totalSlotsInDatastore;
 - (int64_t)launchedAppCount;
-- (void)addAverageSecondsBetweenAppActionsForActionKey:(id)a3 average:(id)a4;
-- (void)addAverageSecondsBetweenLaunchesForBundleId:(id)a3 average:(id)a4;
-- (void)addExtensionLaunchForBundleId:(id)a3 date:(id)a4;
-- (void)addInstallForBundleId:(id)a3 date:(id)a4;
-- (void)addInstallForBundleInfoMap:(id)a3;
-- (void)addLaunchForAppAction:(id)a3 date:(id)a4;
-- (void)addLaunchForBundleId:(id)a3 date:(id)a4;
-- (void)addMedianSecondsBetweenAppActionsForActionKey:(id)a3 median:(id)a4;
-- (void)addMedianSecondsBetweenLaunchesForBundleId:(id)a3 median:(id)a4;
-- (void)addScreenLockAtDate:(id)a3;
-- (void)addSpotlightLaunchForBundleId:(id)a3 date:(id)a4;
-- (void)appLaunchesCalculations:(id)a3;
+- (void)addAverageSecondsBetweenAppActionsForActionKey:(id)key average:(id)average;
+- (void)addAverageSecondsBetweenLaunchesForBundleId:(id)id average:(id)average;
+- (void)addExtensionLaunchForBundleId:(id)id date:(id)date;
+- (void)addInstallForBundleId:(id)id date:(id)date;
+- (void)addInstallForBundleInfoMap:(id)map;
+- (void)addLaunchForAppAction:(id)action date:(id)date;
+- (void)addLaunchForBundleId:(id)id date:(id)date;
+- (void)addMedianSecondsBetweenAppActionsForActionKey:(id)key median:(id)median;
+- (void)addMedianSecondsBetweenLaunchesForBundleId:(id)id median:(id)median;
+- (void)addScreenLockAtDate:(id)date;
+- (void)addSpotlightLaunchForBundleId:(id)id date:(id)date;
+- (void)appLaunchesCalculations:(id)calculations;
 - (void)clearAppInstallInfo;
 - (void)clearAppLaunchInfo;
 - (void)computeAverageAndMedianSecondsBetweenAppActions;
-- (void)computeAverageAndMedianSecondsBetweenAppActions:(id)a3;
+- (void)computeAverageAndMedianSecondsBetweenAppActions:(id)actions;
 - (void)computeAverageAndMedianSecondsBetweenAppLaunches;
 - (void)dealloc;
 - (void)deleteAllRemoteApps;
-- (void)removeActionDataForBundleId:(id)a3;
-- (void)removeAppInfoForBundleId:(id)a3;
-- (void)removeAppInfoForBundleIds:(id)a3;
-- (void)removeAppLaunchesForBundleId:(id)a3;
-- (void)removeBundleIds:(id)a3;
+- (void)removeActionDataForBundleId:(id)id;
+- (void)removeAppInfoForBundleId:(id)id;
+- (void)removeAppInfoForBundleIds:(id)ids;
+- (void)removeAppLaunchesForBundleId:(id)id;
+- (void)removeBundleIds:(id)ids;
 - (void)removeUninstalledApps;
 - (void)startInstallDeltaRecording;
 - (void)train;
-- (void)updateApp2VecClusterForBundleId:(id)a3 app2VecCluster:(id)a4;
+- (void)updateApp2VecClusterForBundleId:(id)id app2VecCluster:(id)cluster;
 - (void)updateApp2VecClustersForAllApps;
 - (void)updateDatabaseWithRemoteAppsInfo;
 - (void)updateGenreIdsForAllApps;
-- (void)updateGenreIdsForBundleId:(id)a3 genreId:(id)a4 subGenreIds:(id)a5;
-- (void)updateInstallDateForBundleID:(id)a3 timestamp:(double)a4;
+- (void)updateGenreIdsForBundleId:(id)id genreId:(id)genreId subGenreIds:(id)ids;
+- (void)updateInstallDateForBundleID:(id)d timestamp:(double)timestamp;
 @end
 
 @implementation _ATXAppInfoManager
@@ -82,16 +82,16 @@
 
 - (_ATXAppInfoManager)initWithInMemoryStore
 {
-  v3 = [[_ATXDataStore alloc] initWithInMemoryDataStore];
-  v4 = [(_ATXAppInfoManager *)self initWithDataStore:v3];
+  initWithInMemoryDataStore = [[_ATXDataStore alloc] initWithInMemoryDataStore];
+  v4 = [(_ATXAppInfoManager *)self initWithDataStore:initWithInMemoryDataStore];
 
   return v4;
 }
 
-- (_ATXAppInfoManager)initWithDataStore:(id)a3
+- (_ATXAppInfoManager)initWithDataStore:(id)store
 {
-  v6 = a3;
-  if (!v6)
+  storeCopy = store;
+  if (!storeCopy)
   {
     [(_ATXAppInfoManager *)a2 initWithDataStore:?];
   }
@@ -102,8 +102,8 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_dataStore, a3);
-    if (!v6)
+    objc_storeStrong(&v7->_dataStore, store);
+    if (!storeCopy)
     {
       v10 = 0;
       goto LABEL_10;
@@ -131,129 +131,129 @@ LABEL_10:
   [(_ATXAppInfoManager *)&v3 dealloc];
 }
 
-- (id)_appInfoNoLockForBundleId:(id)a3
+- (id)_appInfoNoLockForBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(_ATXDataStore *)self->_dataStore appInfoForBundleId:v4];
+  v6 = [(_ATXDataStore *)self->_dataStore appInfoForBundleId:idCopy];
   objc_autoreleasePoolPop(v5);
 
   return v6;
 }
 
-- (id)appInfoForBundleId:(id)a3
+- (id)appInfoForBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   pthread_rwlock_rdlock(&self->_rwlock);
-  v5 = [(_ATXAppInfoManager *)self _appInfoNoLockForBundleId:v4];
+  v5 = [(_ATXAppInfoManager *)self _appInfoNoLockForBundleId:idCopy];
 
   pthread_rwlock_unlock(&self->_rwlock);
 
   return v5;
 }
 
-- (id)lastLaunchDateForBundleId:(id)a3
+- (id)lastLaunchDateForBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   pthread_rwlock_rdlock(&self->_rwlock);
-  v5 = [(_ATXAppInfoManager *)self _appInfoNoLockForBundleId:v4];
+  v5 = [(_ATXAppInfoManager *)self _appInfoNoLockForBundleId:idCopy];
 
-  v6 = [v5 lastLaunch];
+  lastLaunch = [v5 lastLaunch];
 
   pthread_rwlock_unlock(&self->_rwlock);
 
-  return v6;
+  return lastLaunch;
 }
 
-- (id)averageSecondsBetweenLaunchesForBundleId:(id)a3
+- (id)averageSecondsBetweenLaunchesForBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   pthread_rwlock_rdlock(&self->_rwlock);
-  v5 = [(_ATXAppInfoManager *)self _appInfoNoLockForBundleId:v4];
+  v5 = [(_ATXAppInfoManager *)self _appInfoNoLockForBundleId:idCopy];
 
-  v6 = [v5 averageSecondsBetweenLaunches];
+  averageSecondsBetweenLaunches = [v5 averageSecondsBetweenLaunches];
 
   pthread_rwlock_unlock(&self->_rwlock);
 
-  return v6;
+  return averageSecondsBetweenLaunches;
 }
 
-- (id)medianSecondsBetweenLaunchesForBundleId:(id)a3
+- (id)medianSecondsBetweenLaunchesForBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   pthread_rwlock_rdlock(&self->_rwlock);
-  v5 = [(_ATXAppInfoManager *)self _appInfoNoLockForBundleId:v4];
+  v5 = [(_ATXAppInfoManager *)self _appInfoNoLockForBundleId:idCopy];
 
-  v6 = [v5 medianSecondsBetweenLaunches];
+  medianSecondsBetweenLaunches = [v5 medianSecondsBetweenLaunches];
 
   pthread_rwlock_unlock(&self->_rwlock);
 
-  return v6;
+  return medianSecondsBetweenLaunches;
 }
 
-- (id)genreIdForBundleId:(id)a3
+- (id)genreIdForBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   pthread_rwlock_rdlock(&self->_rwlock);
-  v5 = [(_ATXAppInfoManager *)self _appInfoNoLockForBundleId:v4];
+  v5 = [(_ATXAppInfoManager *)self _appInfoNoLockForBundleId:idCopy];
 
-  v6 = [v5 genreId];
+  genreId = [v5 genreId];
 
   pthread_rwlock_unlock(&self->_rwlock);
 
-  return v6;
+  return genreId;
 }
 
-- (id)subGenreIdsForBundleId:(id)a3
+- (id)subGenreIdsForBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   pthread_rwlock_rdlock(&self->_rwlock);
-  v5 = [(_ATXAppInfoManager *)self _appInfoNoLockForBundleId:v4];
+  v5 = [(_ATXAppInfoManager *)self _appInfoNoLockForBundleId:idCopy];
 
-  v6 = [v5 subGenreIds];
-  v7 = [v6 copy];
+  subGenreIds = [v5 subGenreIds];
+  v7 = [subGenreIds copy];
 
   pthread_rwlock_unlock(&self->_rwlock);
 
   return v7;
 }
 
-- (id)genreIdsForBundleId:(id)a3
+- (id)genreIdsForBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   pthread_rwlock_rdlock(&self->_rwlock);
-  v5 = [(_ATXAppInfoManager *)self _appInfoNoLockForBundleId:v4];
+  v5 = [(_ATXAppInfoManager *)self _appInfoNoLockForBundleId:idCopy];
 
-  v6 = [v5 genreId];
-  v7 = [v5 subGenreIds];
-  v8 = [v7 copy];
+  genreId = [v5 genreId];
+  subGenreIds = [v5 subGenreIds];
+  v8 = [subGenreIds copy];
 
   pthread_rwlock_unlock(&self->_rwlock);
-  v9 = [MEMORY[0x277D42648] tupleWithFirst:v6 second:v8];
+  v9 = [MEMORY[0x277D42648] tupleWithFirst:genreId second:v8];
 
   return v9;
 }
 
-- (id)app2VecClusterForBundleId:(id)a3
+- (id)app2VecClusterForBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   pthread_rwlock_rdlock(&self->_rwlock);
-  v5 = [(_ATXAppInfoManager *)self _appInfoNoLockForBundleId:v4];
+  v5 = [(_ATXAppInfoManager *)self _appInfoNoLockForBundleId:idCopy];
 
-  v6 = [v5 app2VecCluster];
+  app2VecCluster = [v5 app2VecCluster];
 
   pthread_rwlock_unlock(&self->_rwlock);
 
-  return v6;
+  return app2VecCluster;
 }
 
 - (id)lastAppLaunch
 {
   pthread_rwlock_rdlock(&self->_rwlock);
-  v3 = [(_ATXDataStore *)self->_dataStore lastLaunchedApp];
+  lastLaunchedApp = [(_ATXDataStore *)self->_dataStore lastLaunchedApp];
   pthread_rwlock_unlock(&self->_rwlock);
 
-  return v3;
+  return lastLaunchedApp;
 }
 
 - (id)secondMostRecentAppLaunch
@@ -268,18 +268,18 @@ LABEL_10:
 - (id)lastAppLaunchDate
 {
   pthread_rwlock_rdlock(&self->_rwlock);
-  v3 = [(_ATXDataStore *)self->_dataStore lastLaunchDate];
+  lastLaunchDate = [(_ATXDataStore *)self->_dataStore lastLaunchDate];
   pthread_rwlock_unlock(&self->_rwlock);
 
-  return v3;
+  return lastLaunchDate;
 }
 
 - (id)allActionKeys
 {
   pthread_rwlock_rdlock(&self->_rwlock);
-  v3 = [(_ATXDataStore *)self->_dataStore loadAppActionsFromAppActionInfo];
+  loadAppActionsFromAppActionInfo = [(_ATXDataStore *)self->_dataStore loadAppActionsFromAppActionInfo];
   pthread_rwlock_unlock(&self->_rwlock);
-  v4 = [MEMORY[0x277CBEB98] setWithArray:v3];
+  v4 = [MEMORY[0x277CBEB98] setWithArray:loadAppActionsFromAppActionInfo];
 
   return v4;
 }
@@ -287,59 +287,59 @@ LABEL_10:
 - (id)totalSlotsInDatastore
 {
   pthread_rwlock_rdlock(&self->_rwlock);
-  v3 = [(_ATXDataStore *)self->_dataStore totalSlotsInDatastore];
+  totalSlotsInDatastore = [(_ATXDataStore *)self->_dataStore totalSlotsInDatastore];
   pthread_rwlock_unlock(&self->_rwlock);
 
-  return v3;
+  return totalSlotsInDatastore;
 }
 
 - (id)lastAppActionLaunch
 {
   pthread_rwlock_rdlock(&self->_rwlock);
-  v3 = [(_ATXDataStore *)self->_dataStore loadAppActionInfo];
-  v4 = [v3 first];
+  loadAppActionInfo = [(_ATXDataStore *)self->_dataStore loadAppActionInfo];
+  first = [loadAppActionInfo first];
   pthread_rwlock_unlock(&self->_rwlock);
 
-  return v4;
+  return first;
 }
 
 - (id)lastAppActionLaunchDate
 {
   pthread_rwlock_rdlock(&self->_rwlock);
-  v3 = [(_ATXDataStore *)self->_dataStore loadAppActionInfo];
-  v4 = [v3 second];
+  loadAppActionInfo = [(_ATXDataStore *)self->_dataStore loadAppActionInfo];
+  second = [loadAppActionInfo second];
   pthread_rwlock_unlock(&self->_rwlock);
 
-  return v4;
+  return second;
 }
 
-- (id)lastAppActionLaunchDateForActionKey:(id)a3
+- (id)lastAppActionLaunchDateForActionKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   pthread_rwlock_rdlock(&self->_rwlock);
-  v5 = [(_ATXDataStore *)self->_dataStore lastAppActionLaunchDateForAppAction:v4];
-
-  pthread_rwlock_unlock(&self->_rwlock);
-
-  return v5;
-}
-
-- (id)averageSecondsBetweenAppActionsForActionKey:(id)a3
-{
-  v4 = a3;
-  pthread_rwlock_rdlock(&self->_rwlock);
-  v5 = [(_ATXDataStore *)self->_dataStore averageSecondsBetweenAppActionsForAppAction:v4];
+  v5 = [(_ATXDataStore *)self->_dataStore lastAppActionLaunchDateForAppAction:keyCopy];
 
   pthread_rwlock_unlock(&self->_rwlock);
 
   return v5;
 }
 
-- (id)medianSecondsBetweenAppActionsForActionKey:(id)a3
+- (id)averageSecondsBetweenAppActionsForActionKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   pthread_rwlock_rdlock(&self->_rwlock);
-  v5 = [(_ATXDataStore *)self->_dataStore medianSecondsBetweenAppActionsForAppAction:v4];
+  v5 = [(_ATXDataStore *)self->_dataStore averageSecondsBetweenAppActionsForAppAction:keyCopy];
+
+  pthread_rwlock_unlock(&self->_rwlock);
+
+  return v5;
+}
+
+- (id)medianSecondsBetweenAppActionsForActionKey:(id)key
+{
+  keyCopy = key;
+  pthread_rwlock_rdlock(&self->_rwlock);
+  v5 = [(_ATXDataStore *)self->_dataStore medianSecondsBetweenAppActionsForAppAction:keyCopy];
 
   pthread_rwlock_unlock(&self->_rwlock);
 
@@ -350,62 +350,62 @@ LABEL_10:
 {
   pthread_rwlock_rdlock(&self->_rwlock);
   v3 = [(_ATXDataStore *)self->_dataStore appInfoForBundleId:@"com.apple.DEC.AppPredictionInternal.backlightActivated"];
-  v4 = [v3 lastLaunch];
+  lastLaunch = [v3 lastLaunch];
 
   pthread_rwlock_unlock(&self->_rwlock);
 
-  return v4;
+  return lastLaunch;
 }
 
 - (int64_t)launchedAppCount
 {
   pthread_rwlock_rdlock(&self->_rwlock);
-  v3 = [(_ATXDataStore *)self->_dataStore launchedAppCount];
+  launchedAppCount = [(_ATXDataStore *)self->_dataStore launchedAppCount];
   pthread_rwlock_unlock(&self->_rwlock);
-  return v3;
+  return launchedAppCount;
 }
 
 - (id)allApps
 {
   pthread_rwlock_rdlock(&self->_rwlock);
-  v3 = [(_ATXDataStore *)self->_dataStore allApps];
+  allApps = [(_ATXDataStore *)self->_dataStore allApps];
   pthread_rwlock_unlock(&self->_rwlock);
 
-  return v3;
+  return allApps;
 }
 
 - (id)allRemoteApps
 {
   pthread_rwlock_rdlock(&self->_rwlock);
-  v3 = [(_ATXDataStore *)self->_dataStore allRemoteApps];
+  allRemoteApps = [(_ATXDataStore *)self->_dataStore allRemoteApps];
   pthread_rwlock_unlock(&self->_rwlock);
 
-  return v3;
+  return allRemoteApps;
 }
 
 - (id)allAppsWithInstallDate
 {
   pthread_rwlock_rdlock(&self->_rwlock);
-  v3 = [(_ATXDataStore *)self->_dataStore allAppsWithInstallDate];
+  allAppsWithInstallDate = [(_ATXDataStore *)self->_dataStore allAppsWithInstallDate];
   pthread_rwlock_unlock(&self->_rwlock);
 
-  return v3;
+  return allAppsWithInstallDate;
 }
 
 - (id)allAppsLaunchedOrInstalledWithin30Days
 {
   pthread_rwlock_rdlock(&self->_rwlock);
-  v3 = [(_ATXDataStore *)self->_dataStore allAppsLaunchedOrInstalledWithin30Days];
+  allAppsLaunchedOrInstalledWithin30Days = [(_ATXDataStore *)self->_dataStore allAppsLaunchedOrInstalledWithin30Days];
   pthread_rwlock_unlock(&self->_rwlock);
 
-  return v3;
+  return allAppsLaunchedOrInstalledWithin30Days;
 }
 
-- (id)bundleIDForRemoteAppWithUUID:(id)a3
+- (id)bundleIDForRemoteAppWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   pthread_rwlock_rdlock(&self->_rwlock);
-  v5 = [(_ATXDataStore *)self->_dataStore bundleIDForRemoteAppWithUUID:v4];
+  v5 = [(_ATXDataStore *)self->_dataStore bundleIDForRemoteAppWithUUID:dCopy];
 
   pthread_rwlock_unlock(&self->_rwlock);
 
@@ -415,9 +415,9 @@ LABEL_10:
 - (BOOL)hasRemoteApps
 {
   pthread_rwlock_rdlock(&self->_rwlock);
-  v3 = [(_ATXDataStore *)self->_dataStore hasRemoteApps];
+  hasRemoteApps = [(_ATXDataStore *)self->_dataStore hasRemoteApps];
   pthread_rwlock_unlock(&self->_rwlock);
-  return v3;
+  return hasRemoteApps;
 }
 
 - (void)deleteAllRemoteApps
@@ -443,14 +443,14 @@ LABEL_10:
   pthread_rwlock_unlock(&self->_rwlock);
 }
 
-- (void)updateGenreIdsForBundleId:(id)a3 genreId:(id)a4 subGenreIds:(id)a5
+- (void)updateGenreIdsForBundleId:(id)id genreId:(id)genreId subGenreIds:(id)ids
 {
-  v21 = a3;
-  v8 = a4;
-  v9 = a5;
+  idCopy = id;
+  genreIdCopy = genreId;
+  idsCopy = ids;
   pthread_rwlock_wrlock(&self->_rwlock);
   v10 = objc_autoreleasePoolPush();
-  v11 = [(_ATXAppInfoManager *)self _appInfoNoLockForBundleId:v21];
+  v11 = [(_ATXAppInfoManager *)self _appInfoNoLockForBundleId:idCopy];
   if (!v11)
   {
     pthread_rwlock_unlock(&self->_rwlock);
@@ -459,15 +459,15 @@ LABEL_10:
   }
 
   v12 = v11;
-  v13 = [v11 genreId];
-  if (![v8 isEqual:v13])
+  genreId = [v11 genreId];
+  if (![genreIdCopy isEqual:genreId])
   {
     goto LABEL_11;
   }
 
-  v14 = [v12 subGenreIds];
-  v15 = v9;
-  v16 = v14;
+  subGenreIds = [v12 subGenreIds];
+  v15 = idsCopy;
+  v16 = subGenreIds;
   v17 = v16;
   if (v16 != v15)
   {
@@ -487,9 +487,9 @@ LABEL_10:
 
 LABEL_11:
 LABEL_12:
-    [v12 setGenreId:v8];
-    [v12 setSubGenreIds:v9];
-    [(_ATXDataStore *)self->_dataStore writeGenreId:v8 subGenreIds:v9 forBundleId:v21];
+    [v12 setGenreId:genreIdCopy];
+    [v12 setSubGenreIds:idsCopy];
+    [(_ATXDataStore *)self->_dataStore writeGenreId:genreIdCopy subGenreIds:idsCopy forBundleId:idCopy];
     goto LABEL_13;
   }
 
@@ -499,53 +499,53 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)updateApp2VecClusterForBundleId:(id)a3 app2VecCluster:(id)a4
+- (void)updateApp2VecClusterForBundleId:(id)id app2VecCluster:(id)cluster
 {
-  v11 = a3;
-  v6 = a4;
+  idCopy = id;
+  clusterCopy = cluster;
   pthread_rwlock_wrlock(&self->_rwlock);
-  v7 = [(_ATXAppInfoManager *)self _appInfoNoLockForBundleId:v11];
+  v7 = [(_ATXAppInfoManager *)self _appInfoNoLockForBundleId:idCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 app2VecCluster];
-    v10 = [v6 isEqual:v9];
+    app2VecCluster = [v7 app2VecCluster];
+    v10 = [clusterCopy isEqual:app2VecCluster];
 
     if ((v10 & 1) == 0)
     {
-      [v8 setApp2VecCluster:v6];
-      [(_ATXDataStore *)self->_dataStore writeApp2VecCluster:v6 forBundleId:v11];
+      [v8 setApp2VecCluster:clusterCopy];
+      [(_ATXDataStore *)self->_dataStore writeApp2VecCluster:clusterCopy forBundleId:idCopy];
     }
   }
 
   pthread_rwlock_unlock(&self->_rwlock);
 }
 
-- (void)addInstallForBundleId:(id)a3 date:(id)a4
+- (void)addInstallForBundleId:(id)id date:(id)date
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12[0] = a4;
+  idCopy = id;
+  v12[0] = date;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 dictionaryWithObjects:v12 forKeys:&v11 count:1];
+  dateCopy = date;
+  idCopy2 = id;
+  v9 = [v6 dictionaryWithObjects:v12 forKeys:&idCopy count:1];
 
   [(_ATXAppInfoManager *)self addInstallForBundleInfoMap:v9];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addInstallForBundleInfoMap:(id)a3
+- (void)addInstallForBundleInfoMap:(id)map
 {
   v51 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  mapCopy = map;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v6 = v3;
+  v6 = mapCopy;
   v7 = [v6 countByEnumeratingWithState:&v40 objects:v50 count:16];
   if (v7)
   {
@@ -616,22 +616,22 @@ LABEL_14:
           }
 
           v19 = [ATXLaunchServicesHelper getGenreIdsForBundleId:v14 remoteBundleIDMappings:0];
-          v20 = [v19 first];
-          v21 = v20;
+          first = [v19 first];
+          v21 = first;
           v22 = &unk_283A56E10;
-          if (v20)
+          if (first)
           {
-            v22 = v20;
+            v22 = first;
           }
 
           v23 = v22;
 
-          v24 = [v19 second];
+          second = [v19 second];
           v25 = +[ATXApp2VecClustering sharedInstance];
           v26 = [v25 getClosestClusterCentroidForBundleId:v14];
 
           pthread_rwlock_wrlock(&self->_rwlock);
-          [(_ATXDataStore *)self->_dataStore addAppInstallForBundleId:v14 date:v17 genreId:v23 subGenreIds:v24 app2VecCluster:v26];
+          [(_ATXDataStore *)self->_dataStore addAppInstallForBundleId:v14 date:v17 genreId:v23 subGenreIds:second app2VecCluster:v26];
 
           installDeltaLog = self->_installDeltaLog;
           if (installDeltaLog)
@@ -661,119 +661,119 @@ LABEL_14:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateInstallDateForBundleID:(id)a3 timestamp:(double)a4
+- (void)updateInstallDateForBundleID:(id)d timestamp:(double)timestamp
 {
-  v6 = a3;
+  dCopy = d;
   pthread_rwlock_wrlock(&self->_rwlock);
-  [(_ATXDataStore *)self->_dataStore updateInstallDateForBundleID:v6 timestamp:a4];
+  [(_ATXDataStore *)self->_dataStore updateInstallDateForBundleID:dCopy timestamp:timestamp];
 
   pthread_rwlock_unlock(&self->_rwlock);
 }
 
-- (void)addExtensionLaunchForBundleId:(id)a3 date:(id)a4
+- (void)addExtensionLaunchForBundleId:(id)id date:(id)date
 {
-  v6 = a4;
-  v7 = a3;
+  dateCopy = date;
+  idCopy = id;
   pthread_rwlock_wrlock(&self->_rwlock);
-  [(_ATXDataStore *)self->_dataStore addExtensionLaunchForBundleId:v7 date:v6];
+  [(_ATXDataStore *)self->_dataStore addExtensionLaunchForBundleId:idCopy date:dateCopy];
 
   pthread_rwlock_unlock(&self->_rwlock);
 }
 
-- (void)addLaunchForBundleId:(id)a3 date:(id)a4
+- (void)addLaunchForBundleId:(id)id date:(id)date
 {
-  v6 = a4;
-  v7 = a3;
+  dateCopy = date;
+  idCopy = id;
   pthread_rwlock_wrlock(&self->_rwlock);
-  [(_ATXDataStore *)self->_dataStore addAppLaunchForBundleId:v7 date:v6 withLaunchType:0];
+  [(_ATXDataStore *)self->_dataStore addAppLaunchForBundleId:idCopy date:dateCopy withLaunchType:0];
 
   pthread_rwlock_unlock(&self->_rwlock);
 }
 
-- (void)addLaunchForAppAction:(id)a3 date:(id)a4
+- (void)addLaunchForAppAction:(id)action date:(id)date
 {
-  v6 = a4;
-  v7 = a3;
+  dateCopy = date;
+  actionCopy = action;
   pthread_rwlock_wrlock(&self->_rwlock);
-  [(_ATXDataStore *)self->_dataStore addAppActionLaunchForAppAction:v7 date:v6];
+  [(_ATXDataStore *)self->_dataStore addAppActionLaunchForAppAction:actionCopy date:dateCopy];
 
   pthread_rwlock_unlock(&self->_rwlock);
 }
 
-- (void)addSpotlightLaunchForBundleId:(id)a3 date:(id)a4
+- (void)addSpotlightLaunchForBundleId:(id)id date:(id)date
 {
-  v6 = a4;
-  v7 = a3;
+  dateCopy = date;
+  idCopy = id;
   pthread_rwlock_wrlock(&self->_rwlock);
-  [(_ATXDataStore *)self->_dataStore addAppLaunchForBundleId:v7 date:v6 withLaunchType:1];
+  [(_ATXDataStore *)self->_dataStore addAppLaunchForBundleId:idCopy date:dateCopy withLaunchType:1];
 
   pthread_rwlock_unlock(&self->_rwlock);
 }
 
-- (void)addAverageSecondsBetweenLaunchesForBundleId:(id)a3 average:(id)a4
+- (void)addAverageSecondsBetweenLaunchesForBundleId:(id)id average:(id)average
 {
-  v6 = a4;
-  v7 = a3;
+  averageCopy = average;
+  idCopy = id;
   pthread_rwlock_wrlock(&self->_rwlock);
-  [(_ATXDataStore *)self->_dataStore writeAverageSecondsBetweenLaunches:v6 forBundleId:v7];
+  [(_ATXDataStore *)self->_dataStore writeAverageSecondsBetweenLaunches:averageCopy forBundleId:idCopy];
 
   pthread_rwlock_unlock(&self->_rwlock);
 }
 
-- (void)addMedianSecondsBetweenLaunchesForBundleId:(id)a3 median:(id)a4
+- (void)addMedianSecondsBetweenLaunchesForBundleId:(id)id median:(id)median
 {
-  v6 = a4;
-  v7 = a3;
+  medianCopy = median;
+  idCopy = id;
   pthread_rwlock_wrlock(&self->_rwlock);
-  [(_ATXDataStore *)self->_dataStore writeMedianSecondsBetweenLaunches:v6 forBundleId:v7];
+  [(_ATXDataStore *)self->_dataStore writeMedianSecondsBetweenLaunches:medianCopy forBundleId:idCopy];
 
   pthread_rwlock_unlock(&self->_rwlock);
 }
 
-- (void)addAverageSecondsBetweenAppActionsForActionKey:(id)a3 average:(id)a4
+- (void)addAverageSecondsBetweenAppActionsForActionKey:(id)key average:(id)average
 {
-  v6 = a4;
-  v7 = a3;
+  averageCopy = average;
+  keyCopy = key;
   pthread_rwlock_wrlock(&self->_rwlock);
-  [(_ATXDataStore *)self->_dataStore writeAverageSecondsBetweenAppActions:v6 forAppAction:v7];
+  [(_ATXDataStore *)self->_dataStore writeAverageSecondsBetweenAppActions:averageCopy forAppAction:keyCopy];
 
   pthread_rwlock_unlock(&self->_rwlock);
 }
 
-- (void)addMedianSecondsBetweenAppActionsForActionKey:(id)a3 median:(id)a4
+- (void)addMedianSecondsBetweenAppActionsForActionKey:(id)key median:(id)median
 {
-  v6 = a4;
-  v7 = a3;
+  medianCopy = median;
+  keyCopy = key;
   pthread_rwlock_wrlock(&self->_rwlock);
-  [(_ATXDataStore *)self->_dataStore writeMedianSecondsBetweenAppActions:v6 forAppAction:v7];
+  [(_ATXDataStore *)self->_dataStore writeMedianSecondsBetweenAppActions:medianCopy forAppAction:keyCopy];
 
   pthread_rwlock_unlock(&self->_rwlock);
 }
 
-- (void)addScreenLockAtDate:(id)a3
+- (void)addScreenLockAtDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    [(_ATXAppInfoManager *)self addLaunchForBundleId:@"com.apple.DEC.AppPredictionInternal.backlightActivated" date:a3];
+    [(_ATXAppInfoManager *)self addLaunchForBundleId:@"com.apple.DEC.AppPredictionInternal.backlightActivated" date:date];
   }
 }
 
-- (void)removeAppInfoForBundleId:(id)a3
+- (void)removeAppInfoForBundleId:(id)id
 {
-  v4 = [MEMORY[0x277CBEB98] setWithObject:a3];
+  v4 = [MEMORY[0x277CBEB98] setWithObject:id];
   [(_ATXAppInfoManager *)self removeAppInfoForBundleIds:v4];
 }
 
-- (void)removeAppInfoForBundleIds:(id)a3
+- (void)removeAppInfoForBundleIds:(id)ids
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idsCopy = ids;
   pthread_rwlock_wrlock(&self->_rwlock);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v4;
+  v5 = idsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v19 count:16];
   if (v6)
   {
@@ -811,20 +811,20 @@ LABEL_14:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeAppLaunchesForBundleId:(id)a3
+- (void)removeAppLaunchesForBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   pthread_rwlock_wrlock(&self->_rwlock);
-  [(_ATXDataStore *)self->_dataStore removeAppLaunchesForBundleId:v4];
+  [(_ATXDataStore *)self->_dataStore removeAppLaunchesForBundleId:idCopy];
 
   pthread_rwlock_unlock(&self->_rwlock);
 }
 
-- (void)removeActionDataForBundleId:(id)a3
+- (void)removeActionDataForBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   pthread_rwlock_wrlock(&self->_rwlock);
-  [(_ATXDataStore *)self->_dataStore removeActionDataForBundleId:v4];
+  [(_ATXDataStore *)self->_dataStore removeActionDataForBundleId:idCopy];
 
   pthread_rwlock_unlock(&self->_rwlock);
 }
@@ -963,8 +963,8 @@ LABEL_14:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * v8) bundleIdentifier];
-        [v3 addObject:v9];
+        bundleIdentifier = [*(*(&v11 + 1) + 8 * v8) bundleIdentifier];
+        [v3 addObject:bundleIdentifier];
 
         ++v8;
       }
@@ -981,22 +981,22 @@ LABEL_14:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)sortArrayAndComputeMedian:(id)a3
++ (id)sortArrayAndComputeMedian:(id)median
 {
-  v3 = a3;
-  if ([v3 count])
+  medianCopy = median;
+  if ([medianCopy count])
   {
-    [v3 sortUsingSelector:sel_compare_];
-    v4 = [v3 count];
+    [medianCopy sortUsingSelector:sel_compare_];
+    v4 = [medianCopy count];
     v5 = v4 + (v4 >> 31);
-    v6 = [v3 count];
-    v7 = [v3 objectAtIndexedSubscript:v5 >> 1];
+    v6 = [medianCopy count];
+    v7 = [medianCopy objectAtIndexedSubscript:v5 >> 1];
     v8 = v7;
     if ((v6 & 1) == 0)
     {
       [v7 doubleValue];
       v10 = v9;
-      v11 = [v3 objectAtIndexedSubscript:(v5 >> 1) - 1];
+      v11 = [medianCopy objectAtIndexedSubscript:(v5 >> 1) - 1];
       [v11 doubleValue];
       v13 = (v10 + v12) * 0.5;
 
@@ -1026,15 +1026,15 @@ LABEL_14:
   v7 = v4;
   [v5 enumerateAppLaunchSessionsBetweenStartDate:v3 endDate:v6 shouldReverse:1 bundleIDFilter:0 block:v10];
 
-  v8 = [v7 reverseObjectEnumerator];
-  v9 = [v8 allObjects];
-  [(_ATXAppInfoManager *)self appLaunchesCalculations:v9];
+  reverseObjectEnumerator = [v7 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
+  [(_ATXAppInfoManager *)self appLaunchesCalculations:allObjects];
 }
 
-- (void)appLaunchesCalculations:(id)a3
+- (void)appLaunchesCalculations:(id)calculations
 {
   v62 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  calculationsCopy = calculations;
   v47 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-2419200.0];
   v4 = objc_opt_new();
   v5 = objc_opt_new();
@@ -1043,7 +1043,7 @@ LABEL_14:
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  obj = v3;
+  obj = calculationsCopy;
   v6 = [obj countByEnumeratingWithState:&v56 objects:v61 count:16];
   if (v6)
   {
@@ -1060,57 +1060,57 @@ LABEL_14:
 
         v10 = *(*(&v56 + 1) + 8 * i);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v10 bundleID];
-        v13 = [v4 objectForKeyedSubscript:v12];
+        bundleID = [v10 bundleID];
+        v13 = [v4 objectForKeyedSubscript:bundleID];
 
         if (!v13)
         {
           v14 = objc_opt_new();
-          [v4 setObject:v14 forKeyedSubscript:v12];
+          [v4 setObject:v14 forKeyedSubscript:bundleID];
         }
 
-        v15 = [v5 objectForKeyedSubscript:v12];
+        v15 = [v5 objectForKeyedSubscript:bundleID];
 
         if (!v15)
         {
-          [v5 setObject:v47 forKeyedSubscript:v12];
+          [v5 setObject:v47 forKeyedSubscript:bundleID];
         }
 
-        v16 = [v10 appSessionStartTime];
-        if (v16)
+        appSessionStartTime = [v10 appSessionStartTime];
+        if (appSessionStartTime)
         {
-          v17 = v16;
-          v18 = [v5 objectForKeyedSubscript:v12];
+          v17 = appSessionStartTime;
+          v18 = [v5 objectForKeyedSubscript:bundleID];
 
           if (v18)
           {
-            v19 = [v10 appSessionStartTime];
-            v20 = [v5 objectForKeyedSubscript:v12];
-            [v19 timeIntervalSinceDate:v20];
+            appSessionStartTime2 = [v10 appSessionStartTime];
+            v20 = [v5 objectForKeyedSubscript:bundleID];
+            [appSessionStartTime2 timeIntervalSinceDate:v20];
             v22 = v21;
 
-            v23 = [v4 objectForKeyedSubscript:v12];
+            v23 = [v4 objectForKeyedSubscript:bundleID];
             v24 = [MEMORY[0x277CCABB0] numberWithDouble:v22];
             [v23 addObject:v24];
 
             v25 = MEMORY[0x277CCABB0];
-            v26 = [v51 objectForKeyedSubscript:v12];
+            v26 = [v51 objectForKeyedSubscript:bundleID];
             [v26 doubleValue];
             v28 = [v25 numberWithDouble:v22 + v27];
-            [v51 setObject:v28 forKeyedSubscript:v12];
+            [v51 setObject:v28 forKeyedSubscript:bundleID];
           }
         }
 
-        v29 = [v10 appSessionEndTime];
-        if (v29)
+        appSessionEndTime = [v10 appSessionEndTime];
+        if (appSessionEndTime)
         {
-          [v5 setObject:v29 forKeyedSubscript:v12];
+          [v5 setObject:appSessionEndTime forKeyedSubscript:bundleID];
         }
 
         else
         {
-          v30 = [v10 appSessionStartTime];
-          [v5 setObject:v30 forKeyedSubscript:v12];
+          appSessionStartTime3 = [v10 appSessionStartTime];
+          [v5 setObject:appSessionStartTime3 forKeyedSubscript:bundleID];
         }
 
         objc_autoreleasePoolPop(v11);
@@ -1126,8 +1126,8 @@ LABEL_14:
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v31 = [(_ATXAppInfoManager *)self allApps];
-  v32 = [v31 countByEnumeratingWithState:&v52 objects:v60 count:16];
+  allApps = [(_ATXAppInfoManager *)self allApps];
+  v32 = [allApps countByEnumeratingWithState:&v52 objects:v60 count:16];
   if (v32)
   {
     v33 = v32;
@@ -1138,7 +1138,7 @@ LABEL_14:
       {
         if (*v53 != v49)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(allApps);
         }
 
         v35 = *(*(&v52 + 1) + 8 * j);
@@ -1170,7 +1170,7 @@ LABEL_14:
         objc_autoreleasePoolPop(v36);
       }
 
-      v33 = [v31 countByEnumeratingWithState:&v52 objects:v60 count:16];
+      v33 = [allApps countByEnumeratingWithState:&v52 objects:v60 count:16];
     }
 
     while (v33);
@@ -1189,10 +1189,10 @@ LABEL_14:
   [(_ATXAppInfoManager *)self computeAverageAndMedianSecondsBetweenAppActions:v5];
 }
 
-- (void)computeAverageAndMedianSecondsBetweenAppActions:(id)a3
+- (void)computeAverageAndMedianSecondsBetweenAppActions:(id)actions
 {
   v63 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  actionsCopy = actions;
   v46 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-2419200.0];
   v4 = objc_opt_new();
   v5 = objc_opt_new();
@@ -1201,7 +1201,7 @@ LABEL_14:
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  obj = v3;
+  obj = actionsCopy;
   v51 = [obj countByEnumeratingWithState:&v57 objects:v62 count:16];
   if (v51)
   {
@@ -1219,9 +1219,9 @@ LABEL_14:
         v8 = *(*(&v57 + 1) + 8 * v7);
         v9 = objc_autoreleasePoolPush();
         v10 = MEMORY[0x277CEB2C8];
-        v11 = [v8 bundleId];
-        v12 = [v8 intentType];
-        v13 = [v10 getActionKeyForBundleId:v11 actionType:v12];
+        bundleId = [v8 bundleId];
+        intentType = [v8 intentType];
+        v13 = [v10 getActionKeyForBundleId:bundleId actionType:intentType];
 
         v14 = [v4 objectForKeyedSubscript:v13];
 
@@ -1238,9 +1238,9 @@ LABEL_14:
           [v5 setObject:v46 forKeyedSubscript:v13];
         }
 
-        v17 = [v8 startDate];
+        startDate = [v8 startDate];
         v18 = [v5 objectForKeyedSubscript:v13];
-        [v17 timeIntervalSinceDate:v18];
+        [startDate timeIntervalSinceDate:v18];
         v20 = v19;
 
         v21 = [v4 objectForKeyedSubscript:v13];
@@ -1253,8 +1253,8 @@ LABEL_14:
         v26 = [v23 numberWithDouble:v20 + v25];
         [v6 setObject:v26 forKeyedSubscript:v13];
 
-        v27 = [v8 endDate];
-        [v5 setObject:v27 forKeyedSubscript:v13];
+        endDate = [v8 endDate];
+        [v5 setObject:endDate forKeyedSubscript:v13];
 
         objc_autoreleasePoolPop(v9);
         ++v7;
@@ -1267,9 +1267,9 @@ LABEL_14:
     while (v51);
   }
 
-  v28 = [(_ATXAppInfoManager *)self allActionKeys];
-  v29 = [v6 allKeys];
-  v30 = [v28 setByAddingObjectsFromArray:v29];
+  allActionKeys = [(_ATXAppInfoManager *)self allActionKeys];
+  allKeys = [v6 allKeys];
+  v30 = [allActionKeys setByAddingObjectsFromArray:allKeys];
 
   v55 = 0u;
   v56 = 0u;
@@ -1356,11 +1356,11 @@ LABEL_14:
         v7 = *(*(&v18 + 1) + 8 * i);
         v8 = objc_autoreleasePoolPush();
         v9 = [ATXLaunchServicesHelper getGenreIdsForBundleId:v7 remoteBundleIDMappings:0];
-        v10 = [v9 first];
-        v11 = v10;
-        if (v10)
+        first = [v9 first];
+        v11 = first;
+        if (first)
         {
-          v12 = v10;
+          v12 = first;
         }
 
         else
@@ -1368,11 +1368,11 @@ LABEL_14:
           v12 = &unk_283A56E10;
         }
 
-        v13 = [v9 second];
-        v14 = v13;
-        if (v13)
+        second = [v9 second];
+        v14 = second;
+        if (second)
         {
-          v15 = v13;
+          v15 = second;
         }
 
         else
@@ -1396,9 +1396,9 @@ LABEL_14:
 
 - (void)updateApp2VecClustersForAllApps
 {
-  v3 = [(_ATXAppInfoManager *)self allApps];
-  v4 = [v3 allObjects];
-  v11 = [v4 mutableCopy];
+  allApps = [(_ATXAppInfoManager *)self allApps];
+  allObjects = [allApps allObjects];
+  v11 = [allObjects mutableCopy];
 
   v5 = +[ATXApp2VecClustering sharedInstance];
   v6 = [v5 getClusterCentroidsForBundleIds:v11];
@@ -1420,15 +1420,15 @@ LABEL_14:
   }
 }
 
-- (void)removeBundleIds:(id)a3
+- (void)removeBundleIds:(id)ids
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idsCopy = ids;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [idsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1439,7 +1439,7 @@ LABEL_14:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(idsCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -1447,7 +1447,7 @@ LABEL_14:
         [(_ATXAppInfoManager *)self removeActionDataForBundleId:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [idsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);

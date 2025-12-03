@@ -1,10 +1,10 @@
 @interface MUIMessageListBucketBarSectionDataSource
-- (MUIMessageListBucketBarSectionDataSource)initWithConfiguration:(id)a3 bucketsViewController:(id)a4;
+- (MUIMessageListBucketBarSectionDataSource)initWithConfiguration:(id)configuration bucketsViewController:(id)controller;
 - (id)bucketsViewController;
-- (id)configuredCollectionViewCellForCollectionView:(id)a3 indexPath:(id)a4 itemID:(id)a5 cellIdentifier:(id)a6;
-- (void)_configureCell:(id)a3;
-- (void)beginObservingAnimated:(BOOL)a3 nextUpdateNeedsCleanSnapshot:(BOOL)a4;
-- (void)setLayoutConstraints:(uint64_t)a1;
+- (id)configuredCollectionViewCellForCollectionView:(id)view indexPath:(id)path itemID:(id)d cellIdentifier:(id)identifier;
+- (void)_configureCell:(id)cell;
+- (void)beginObservingAnimated:(BOOL)animated nextUpdateNeedsCleanSnapshot:(BOOL)snapshot;
+- (void)setLayoutConstraints:(uint64_t)constraints;
 - (void)stopObserving;
 @end
 
@@ -21,13 +21,13 @@
   return WeakRetained;
 }
 
-- (MUIMessageListBucketBarSectionDataSource)initWithConfiguration:(id)a3 bucketsViewController:(id)a4
+- (MUIMessageListBucketBarSectionDataSource)initWithConfiguration:(id)configuration bucketsViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  controllerCopy = controller;
   v23.receiver = self;
   v23.super_class = MUIMessageListBucketBarSectionDataSource;
-  v8 = [(MessageListSectionDataSource *)&v23 initWithConfiguration:v6];
+  v8 = [(MessageListSectionDataSource *)&v23 initWithConfiguration:configurationCopy];
   if (v8)
   {
     objc_initWeak(&location, v8);
@@ -47,7 +47,7 @@
     itemIdentifier = v8->_itemIdentifier;
     v8->_itemIdentifier = v14;
 
-    objc_storeWeak(&v8->_bucketsViewController, v7);
+    objc_storeWeak(&v8->_bucketsViewController, controllerCopy);
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
   }
@@ -62,14 +62,14 @@ void __88__MUIMessageListBucketBarSectionDataSource_initWithConfiguration_bucket
   [WeakRetained _configureCell:v3];
 }
 
-- (void)beginObservingAnimated:(BOOL)a3 nextUpdateNeedsCleanSnapshot:(BOOL)a4
+- (void)beginObservingAnimated:(BOOL)animated nextUpdateNeedsCleanSnapshot:(BOOL)snapshot
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __96__MUIMessageListBucketBarSectionDataSource_beginObservingAnimated_nextUpdateNeedsCleanSnapshot___block_invoke;
   v4[3] = &unk_278188EE0;
   v4[4] = self;
-  [(MessageListSectionDataSource *)self _performDataSourceUpdateAnimated:a3 cleanSnapshot:0 isLastUpdate:1 prepare:0 update:v4 completion:0];
+  [(MessageListSectionDataSource *)self _performDataSourceUpdateAnimated:animated cleanSnapshot:0 isLastUpdate:1 prepare:0 update:v4 completion:0];
 }
 
 - (void)stopObserving
@@ -81,8 +81,8 @@ void __88__MUIMessageListBucketBarSectionDataSource_initWithConfiguration_bucket
   v7 = &unk_278188CD0;
   objc_copyWeak(&v8, &location);
   v2 = &v4;
-  v3 = [MEMORY[0x277D071B8] mainThreadScheduler];
-  [v3 performBlock:v2];
+  mainThreadScheduler = [MEMORY[0x277D071B8] mainThreadScheduler];
+  [mainThreadScheduler performBlock:v2];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -147,13 +147,13 @@ id __96__MUIMessageListBucketBarSectionDataSource_beginObservingAnimated_nextUpd
   return v14;
 }
 
-- (void)_configureCell:(id)a3
+- (void)_configureCell:(id)cell
 {
   v42[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MUIMessageListBucketBarSectionDataSource *)&self->super.super.isa bucketsViewController];
-  v6 = [v5 view];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  cellCopy = cell;
+  bucketsViewController = [(MUIMessageListBucketBarSectionDataSource *)&self->super.super.isa bucketsViewController];
+  view = [bucketsViewController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
   if (self)
   {
     layoutConstraints = self->_layoutConstraints;
@@ -171,15 +171,15 @@ id __96__MUIMessageListBucketBarSectionDataSource_beginObservingAnimated_nextUpd
     [MEMORY[0x277CCAAD0] deactivateConstraints:v40];
   }
 
-  v9 = [v4 contentView];
+  contentView = [cellCopy contentView];
 
-  if (v6 != v9)
+  if (view != contentView)
   {
-    v10 = [(MessageListSectionDataSource *)self delegate];
+    delegate = [(MessageListSectionDataSource *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v11 = [v10 parentViewControllerForBucketBarSectionDataSource:self];
-      [v5 willMoveToParentViewController:v11];
+      v11 = [delegate parentViewControllerForBucketBarSectionDataSource:self];
+      [bucketsViewController willMoveToParentViewController:v11];
     }
 
     else
@@ -187,93 +187,93 @@ id __96__MUIMessageListBucketBarSectionDataSource_beginObservingAnimated_nextUpd
       v11 = 0;
     }
 
-    [v11 addChildViewController:v5];
-    v12 = [v4 contentView];
-    [v12 addSubview:v6];
+    [v11 addChildViewController:bucketsViewController];
+    contentView2 = [cellCopy contentView];
+    [contentView2 addSubview:view];
 
     if (v11)
     {
-      [v5 didMoveToParentViewController:v11];
+      [bucketsViewController didMoveToParentViewController:v11];
     }
   }
 
   v13 = MUISolariumFeatureEnabled();
-  v14 = [v6 topAnchor];
-  v38 = [v4 contentView];
-  v15 = [v38 topAnchor];
-  v39 = v14;
-  v37 = v15;
+  topAnchor = [view topAnchor];
+  contentView3 = [cellCopy contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v39 = topAnchor;
+  v37 = topAnchor2;
   if (v13)
   {
-    v36 = [v14 constraintEqualToAnchor:v15 constant:8.0];
+    v36 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:8.0];
     v42[0] = v36;
-    [v6 leadingAnchor];
+    [view leadingAnchor];
     objc_claimAutoreleasedReturnValue();
-    v34 = [OUTLINED_FUNCTION_1_4() contentView];
-    v33 = [v34 safeAreaLayoutGuide];
-    [v33 leadingAnchor];
+    contentView4 = [OUTLINED_FUNCTION_1_4() contentView];
+    safeAreaLayoutGuide = [contentView4 safeAreaLayoutGuide];
+    [safeAreaLayoutGuide leadingAnchor];
     v32 = v35 = v13;
     v31 = [v13 constraintEqualToAnchor:?];
     v42[1] = v31;
-    [v6 bottomAnchor];
+    [view bottomAnchor];
     objc_claimAutoreleasedReturnValue();
-    v29 = [OUTLINED_FUNCTION_1_4() contentView];
-    [v29 bottomAnchor];
-    v28 = v30 = v13;
+    contentView5 = [OUTLINED_FUNCTION_1_4() contentView];
+    [contentView5 bottomAnchor];
+    v28 = contentView7 = v13;
     v27 = [v13 constraintEqualToAnchor:-8.0 constant:?];
     v42[2] = v27;
-    [v6 trailingAnchor];
+    [view trailingAnchor];
     objc_claimAutoreleasedReturnValue();
-    v16 = [OUTLINED_FUNCTION_1_4() contentView];
-    v17 = [v16 trailingAnchor];
-    v26 = v13;
-    v18 = [v13 constraintEqualToAnchor:v17];
-    v42[3] = v18;
-    v19 = [v6 heightAnchor];
-    [v5 preferredHeight];
-    [v19 constraintEqualToConstant:?];
-    v20 = self;
-    v21 = v4;
-    v23 = v22 = v5;
+    contentView6 = [OUTLINED_FUNCTION_1_4() contentView];
+    trailingAnchor = [contentView6 trailingAnchor];
+    contentView8 = v13;
+    heightAnchor2 = [v13 constraintEqualToAnchor:trailingAnchor];
+    v42[3] = heightAnchor2;
+    heightAnchor = [view heightAnchor];
+    [bucketsViewController preferredHeight];
+    [heightAnchor constraintEqualToConstant:?];
+    selfCopy = self;
+    v21 = cellCopy;
+    v23 = v22 = bucketsViewController;
     v42[4] = v23;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:5];
 
     v25 = v23;
-    v5 = v22;
-    v4 = v21;
-    self = v20;
+    bucketsViewController = v22;
+    cellCopy = v21;
+    self = selfCopy;
     v8 = 0x277CCA000;
   }
 
   else
   {
-    v36 = [v14 constraintEqualToAnchor:v15];
+    v36 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v41[0] = v36;
-    [v6 leadingAnchor];
+    [view leadingAnchor];
     objc_claimAutoreleasedReturnValue();
-    v34 = [OUTLINED_FUNCTION_1_4() contentView];
-    [v34 leadingAnchor];
-    v33 = v35 = v13;
+    contentView4 = [OUTLINED_FUNCTION_1_4() contentView];
+    [contentView4 leadingAnchor];
+    safeAreaLayoutGuide = v35 = v13;
     v32 = [v13 constraintEqualToAnchor:?];
     v41[1] = v32;
-    [v6 bottomAnchor];
+    [view bottomAnchor];
     objc_claimAutoreleasedReturnValue();
-    v30 = [OUTLINED_FUNCTION_1_4() contentView];
-    [v30 bottomAnchor];
-    v29 = v31 = v13;
+    contentView7 = [OUTLINED_FUNCTION_1_4() contentView];
+    [contentView7 bottomAnchor];
+    contentView5 = v31 = v13;
     v28 = [v13 constraintEqualToAnchor:-8.0 constant:?];
     v41[2] = v28;
-    [v6 trailingAnchor];
+    [view trailingAnchor];
     objc_claimAutoreleasedReturnValue();
-    v26 = [OUTLINED_FUNCTION_1_4() contentView];
-    v16 = [v26 trailingAnchor];
+    contentView8 = [OUTLINED_FUNCTION_1_4() contentView];
+    contentView6 = [contentView8 trailingAnchor];
     v27 = v13;
-    v17 = [v13 constraintEqualToAnchor:v16];
-    v41[3] = v17;
-    v18 = [v6 heightAnchor];
-    [v5 preferredHeight];
-    v19 = [v18 constraintEqualToConstant:?];
-    v41[4] = v19;
+    trailingAnchor = [v13 constraintEqualToAnchor:contentView6];
+    v41[3] = trailingAnchor;
+    heightAnchor2 = [view heightAnchor];
+    [bucketsViewController preferredHeight];
+    heightAnchor = [heightAnchor2 constraintEqualToConstant:?];
+    v41[4] = heightAnchor;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:5];
     v25 = v40;
   }
@@ -282,15 +282,15 @@ id __96__MUIMessageListBucketBarSectionDataSource_beginObservingAnimated_nextUpd
   [(MUIMessageListBucketBarSectionDataSource *)self setLayoutConstraints:v24];
 }
 
-- (void)setLayoutConstraints:(uint64_t)a1
+- (void)setLayoutConstraints:(uint64_t)constraints
 {
-  if (a1)
+  if (constraints)
   {
-    OUTLINED_FUNCTION_0_7(a1, a2, 232);
+    OUTLINED_FUNCTION_0_7(constraints, a2, 232);
   }
 }
 
-- (id)configuredCollectionViewCellForCollectionView:(id)a3 indexPath:(id)a4 itemID:(id)a5 cellIdentifier:(id)a6
+- (id)configuredCollectionViewCellForCollectionView:(id)view indexPath:(id)path itemID:(id)d cellIdentifier:(id)identifier
 {
   if (self)
   {
@@ -302,7 +302,7 @@ id __96__MUIMessageListBucketBarSectionDataSource_beginObservingAnimated_nextUpd
     cellRegistration = 0;
   }
 
-  return [a3 dequeueConfiguredReusableCellWithRegistration:cellRegistration forIndexPath:a4 item:{a5, a6}];
+  return [view dequeueConfiguredReusableCellWithRegistration:cellRegistration forIndexPath:path item:{d, identifier}];
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface ICTTTextStorage
-+ (double)listItemGlyphPointSizeForUnorderedListStyle:(unsigned int)a3 zoomFactor:(double)a4;
-+ (id)bulletTextAttributesWithTextFont:(id)a3 paragraphStyle:(id)a4 zoomFactor:(double)a5;
-+ (id)filteredAttributedSubstring:(id)a3 fromRange:(_NSRange)a4 forPlainText:(BOOL)a5 forStandardizedText:(BOOL)a6 fixAttachments:(BOOL)a7 insertListMarkers:(BOOL)a8;
-+ (id)removeDataDetectorLinksForAttributedString:(id)a3;
-+ (id)removeTextAttachmentsForAttributedString:(id)a3 translateICTTFont:(BOOL)a4;
-+ (id)standardizedAttributedStringFromAttributedString:(id)a3 withStyler:(id)a4 fixAttachments:(BOOL)a5 translateICTTFont:(BOOL)a6 context:(id)a7;
-+ (void)fixAttachmentsForRenderingInAttributedString:(id)a3 forPlainText:(BOOL)a4 forStandardizedText:(BOOL)a5;
++ (double)listItemGlyphPointSizeForUnorderedListStyle:(unsigned int)style zoomFactor:(double)factor;
++ (id)bulletTextAttributesWithTextFont:(id)font paragraphStyle:(id)style zoomFactor:(double)factor;
++ (id)filteredAttributedSubstring:(id)substring fromRange:(_NSRange)range forPlainText:(BOOL)text forStandardizedText:(BOOL)standardizedText fixAttachments:(BOOL)attachments insertListMarkers:(BOOL)markers;
++ (id)removeDataDetectorLinksForAttributedString:(id)string;
++ (id)removeTextAttachmentsForAttributedString:(id)string translateICTTFont:(BOOL)font;
++ (id)standardizedAttributedStringFromAttributedString:(id)string withStyler:(id)styler fixAttachments:(BOOL)attachments translateICTTFont:(BOOL)font context:(id)context;
++ (void)fixAttachmentsForRenderingInAttributedString:(id)string forPlainText:(BOOL)text forStandardizedText:(BOOL)standardizedText;
 - (BOOL)hasAnyTextViewWithDarkAppearance;
-- (BOOL)hasNamedStyle:(unsigned int)a3 inRange:(_NSRange)a4;
-- (BOOL)isDeletingContentAttachmentWithReplacementRange:(_NSRange)a3 replacementLength:(unint64_t)a4;
-- (BOOL)isDeletingDictationAttachmentWithReplacementRange:(_NSRange)a3 replacementLength:(unint64_t)a4;
-- (BOOL)isEditingOrConvertingMarkedText:(BOOL)a3;
+- (BOOL)hasNamedStyle:(unsigned int)style inRange:(_NSRange)range;
+- (BOOL)isDeletingContentAttachmentWithReplacementRange:(_NSRange)range replacementLength:(unint64_t)length;
+- (BOOL)isDeletingDictationAttachmentWithReplacementRange:(_NSRange)range replacementLength:(unint64_t)length;
+- (BOOL)isEditingOrConvertingMarkedText:(BOOL)text;
 - (BOOL)isForTextKit2;
-- (BOOL)isRightToLeftAtIndex:(int64_t)a3;
-- (BOOL)mergeableStringIsEqualAfterSerialization:(id)a3;
-- (BOOL)shouldBreakUndoCoalescingWithReplacementRange:(_NSRange)a3 replacementLength:(unint64_t)a4;
-- (BOOL)textViewHasMarkedText:(id)a3;
-- (BOOL)validateIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
+- (BOOL)isRightToLeftAtIndex:(int64_t)index;
+- (BOOL)mergeableStringIsEqualAfterSerialization:(id)serialization;
+- (BOOL)shouldBreakUndoCoalescingWithReplacementRange:(_NSRange)range replacementLength:(unint64_t)length;
+- (BOOL)textViewHasMarkedText:(id)text;
+- (BOOL)validateIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
 - (BOOL)wantsTimestampUpdates;
 - (ICOutlineController)outlineController;
-- (ICTTTextStorage)initWithAttributedString:(id)a3 replicaID:(id)a4;
-- (ICTTTextStorage)initWithAttributedString:(id)a3 replicaID:(id)a4 sourceZoomController:(id)a5 keepSourceZoomController:(BOOL)a6 existingStyler:(id)a7;
-- (ICTTTextStorage)initWithData:(id)a3 replicaID:(id)a4;
-- (ICTTTextStorage)initWithDocument:(id)a3;
+- (ICTTTextStorage)initWithAttributedString:(id)string replicaID:(id)d;
+- (ICTTTextStorage)initWithAttributedString:(id)string replicaID:(id)d sourceZoomController:(id)controller keepSourceZoomController:(BOOL)zoomController existingStyler:(id)styler;
+- (ICTTTextStorage)initWithData:(id)data replicaID:(id)d;
+- (ICTTTextStorage)initWithDocument:(id)document;
 - (ICTTTextUndoTarget)overrideUndoTarget;
 - (ICTTTextUndoTarget)undoTarget;
 - (NSNumber)currentTimestamp;
@@ -31,78 +31,78 @@
 - (NSUUID)replicaID;
 - (_NSRange)beforeEndEditedRange;
 - (_NSRange)lastUndoEditRange;
-- (_NSRange)logicalRangeForLocation:(unint64_t)a3;
-- (_NSRange)safeCharacterRangeForRange:(_NSRange)a3;
+- (_NSRange)logicalRangeForLocation:(unint64_t)location;
+- (_NSRange)safeCharacterRangeForRange:(_NSRange)range;
 - (_NSRange)ttEditedRange;
-- (id)attribute:(id)a3 atIndex:(unint64_t)a4 effectiveRange:(_NSRange *)a5;
-- (id)attribute:(id)a3 atIndex:(unint64_t)a4 longestEffectiveRange:(_NSRange *)a5 inRange:(_NSRange)a6;
-- (id)attributedSubstringFromRange:(_NSRange)a3;
-- (id)attributesAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)attributesAtIndex:(unint64_t)a3 longestEffectiveRange:(_NSRange *)a4 inRange:(_NSRange)a5;
-- (id)copyDataForUTI:(id)a3 range:(_NSRange)a4 persistenceHelper:(id)a5;
-- (id)correctParagraphStyleReuseForRange:(_NSRange)a3 withNewAttributedString:(id)a4;
-- (id)customPasteboardDataFromRange:(_NSRange)a3 persistenceHelper:(id)a4;
-- (id)dataFromRange:(_NSRange)a3 documentAttributes:(id)a4 error:(id *)a5;
-- (id)editAtIndex:(unint64_t)a3;
-- (id)filteredAttributedStringForUTI:(id)a3 range:(_NSRange)a4;
-- (id)filteredAttributedSubstringFromRange:(_NSRange)a3;
-- (id)filteredAttributedSubstringFromRange:(_NSRange)a3 insertListMarkers:(BOOL)a4;
-- (id)itemProviderForRange:(_NSRange)a3 andNote:(id)a4;
-- (id)paragraphUUIDsInRange:(_NSRange)a3;
-- (id)plainTextParagraphsFromRange:(_NSRange)a3;
-- (id)savedSelectionWithSelectionAffinity:(unint64_t)a3;
-- (id)standardizedAttributedStringFixingTextAttachmentsForRange:(_NSRange)a3 context:(id)a4;
-- (id)standardizedAttributedStringFixingTextAttachmentsForRange:(_NSRange)a3 styler:(id)a4 context:(id)a5;
-- (id)standardizedAttributedStringFixingTextAttachmentsInContext:(id)a3;
+- (id)attribute:(id)attribute atIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)attribute:(id)attribute atIndex:(unint64_t)index longestEffectiveRange:(_NSRange *)range inRange:(_NSRange)inRange;
+- (id)attributedSubstringFromRange:(_NSRange)range;
+- (id)attributesAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)attributesAtIndex:(unint64_t)index longestEffectiveRange:(_NSRange *)range inRange:(_NSRange)inRange;
+- (id)copyDataForUTI:(id)i range:(_NSRange)range persistenceHelper:(id)helper;
+- (id)correctParagraphStyleReuseForRange:(_NSRange)range withNewAttributedString:(id)string;
+- (id)customPasteboardDataFromRange:(_NSRange)range persistenceHelper:(id)helper;
+- (id)dataFromRange:(_NSRange)range documentAttributes:(id)attributes error:(id *)error;
+- (id)editAtIndex:(unint64_t)index;
+- (id)filteredAttributedStringForUTI:(id)i range:(_NSRange)range;
+- (id)filteredAttributedSubstringFromRange:(_NSRange)range;
+- (id)filteredAttributedSubstringFromRange:(_NSRange)range insertListMarkers:(BOOL)markers;
+- (id)itemProviderForRange:(_NSRange)range andNote:(id)note;
+- (id)paragraphUUIDsInRange:(_NSRange)range;
+- (id)plainTextParagraphsFromRange:(_NSRange)range;
+- (id)savedSelectionWithSelectionAffinity:(unint64_t)affinity;
+- (id)standardizedAttributedStringFixingTextAttachmentsForRange:(_NSRange)range context:(id)context;
+- (id)standardizedAttributedStringFixingTextAttachmentsForRange:(_NSRange)range styler:(id)styler context:(id)context;
+- (id)standardizedAttributedStringFixingTextAttachmentsInContext:(id)context;
 - (id)string;
 - (unint64_t)attributeOptions;
 - (unint64_t)length;
-- (unint64_t)mergeWithDocument:(id)a3;
-- (void)addAttribute:(id)a3 value:(id)a4 range:(_NSRange)a5;
-- (void)addTextLayoutManager:(id)a3;
-- (void)addUndoCommand:(id)a3;
-- (void)applyUndoGroup:(id)a3;
-- (void)applyUndoWithBlock:(id)a3;
+- (unint64_t)mergeWithDocument:(id)document;
+- (void)addAttribute:(id)attribute value:(id)value range:(_NSRange)range;
+- (void)addTextLayoutManager:(id)manager;
+- (void)addUndoCommand:(id)command;
+- (void)applyUndoGroup:(id)group;
+- (void)applyUndoWithBlock:(id)block;
 - (void)beginEditing;
 - (void)beginSkippingTimestampUpdates;
 - (void)beginTemporaryAttributeEditing;
 - (void)breakUndoCoalescing;
-- (void)convertNSTablesToTabs:(id)a3;
-- (void)coordinateAccess:(id)a3;
-- (void)coordinateEditing:(id)a3;
-- (void)coordinateReading:(id)a3;
-- (void)dd_makeLinksForResultsInAttributesOfType:(unint64_t)a3 context:(id)a4 range:(_NSRange)a5;
+- (void)convertNSTablesToTabs:(id)tabs;
+- (void)coordinateAccess:(id)access;
+- (void)coordinateEditing:(id)editing;
+- (void)coordinateReading:(id)reading;
+- (void)dd_makeLinksForResultsInAttributesOfType:(unint64_t)type context:(id)context range:(_NSRange)range;
 - (void)dd_resetResults;
-- (void)editWithAttributeOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)edited:(unint64_t)a3 range:(_NSRange)a4 changeInLength:(int64_t)a5;
+- (void)editWithAttributeOptions:(unint64_t)options usingBlock:(id)block;
+- (void)edited:(unint64_t)edited range:(_NSRange)range changeInLength:(int64_t)length;
 - (void)endEditing;
 - (void)endSkippingTimestampUpdates;
 - (void)endTemporaryAttributeEditing;
 - (void)endTemporaryAttributes;
-- (void)enumerateEditsInRange:(_NSRange)a3 usingBlock:(id)a4;
+- (void)enumerateEditsInRange:(_NSRange)range usingBlock:(id)block;
 - (void)executeDelayedFixupAfterEditing;
 - (void)fixupAfterEditing;
 - (void)fixupAfterEditingDelayedToEndOfRunLoop;
 - (void)forceFixupAfterEditingIfDelayed;
-- (void)handleDidUndoRedoNotification:(id)a3;
-- (void)preReplaceCharactersInRange:(_NSRange)a3 withStringLength:(unint64_t)a4;
+- (void)handleDidUndoRedoNotification:(id)notification;
+- (void)preReplaceCharactersInRange:(_NSRange)range withStringLength:(unint64_t)length;
 - (void)redactAuthorAttributionsToCurrentUser;
-- (void)removeAttribute:(id)a3 range:(_NSRange)a4;
-- (void)removeTextLayoutManager:(id)a3;
-- (void)replaceCharactersInRange:(_NSRange)a3 withAttributedString:(id)a4;
-- (void)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4;
-- (void)replaceWithDocument:(id)a3;
+- (void)removeAttribute:(id)attribute range:(_NSRange)range;
+- (void)removeTextLayoutManager:(id)manager;
+- (void)replaceCharactersInRange:(_NSRange)range withAttributedString:(id)string;
+- (void)replaceCharactersInRange:(_NSRange)range withString:(id)string;
+- (void)replaceWithDocument:(id)document;
 - (void)resetHighlightsAttributedString;
 - (void)resetTTEdits;
 - (void)resetUndoManager;
-- (void)restoreAttributedString:(id)a3;
-- (void)restoreSelection:(id)a3;
-- (void)saveSelectionDuringBlock:(id)a3 affinity:(unint64_t)a4;
-- (void)setAttributeOptions:(unint64_t)a3;
-- (void)setAttributes:(id)a3 range:(_NSRange)a4;
-- (void)setTimestamp:(id)a3 range:(_NSRange)a4;
-- (void)styleTextInRange:(_NSRange)a3;
-- (void)suppressingShiftStateUpdatesIfNecessaryWithSelection:(void *)a3 perform:;
+- (void)restoreAttributedString:(id)string;
+- (void)restoreSelection:(id)selection;
+- (void)saveSelectionDuringBlock:(id)block affinity:(unint64_t)affinity;
+- (void)setAttributeOptions:(unint64_t)options;
+- (void)setAttributes:(id)attributes range:(_NSRange)range;
+- (void)setTimestamp:(id)timestamp range:(_NSRange)range;
+- (void)styleTextInRange:(_NSRange)range;
+- (void)suppressingShiftStateUpdatesIfNecessaryWithSelection:(void *)selection perform:;
 @end
 
 @implementation ICTTTextStorage
@@ -110,29 +110,29 @@
 - (void)resetHighlightsAttributedString
 {
   v3 = objc_alloc(MEMORY[0x1E696AD40]);
-  v4 = [(NSMutableAttributedString *)self->_attributedString string];
-  v5 = [v3 initWithString:v4];
+  string = [(NSMutableAttributedString *)self->_attributedString string];
+  v5 = [v3 initWithString:string];
   highlightsAttributedString = self->_highlightsAttributedString;
   self->_highlightsAttributedString = v5;
 
   attributedString = self->_attributedString;
   v8 = *MEMORY[0x1E69DB650];
-  v9 = [(NSMutableAttributedString *)attributedString ic_range];
+  ic_range = [(NSMutableAttributedString *)attributedString ic_range];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __50__ICTTTextStorage_resetHighlightsAttributedString__block_invoke;
   v16[3] = &unk_1E846A170;
   v16[4] = self;
-  [(NSMutableAttributedString *)attributedString enumerateAttribute:v8 inRange:v9 options:v10 usingBlock:0, v16];
+  [(NSMutableAttributedString *)attributedString enumerateAttribute:v8 inRange:ic_range options:v10 usingBlock:0, v16];
   v11 = self->_attributedString;
   v12 = *MEMORY[0x1E69B75D8];
-  v13 = [(NSMutableAttributedString *)v11 ic_range];
+  ic_range2 = [(NSMutableAttributedString *)v11 ic_range];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __50__ICTTTextStorage_resetHighlightsAttributedString__block_invoke_2;
   v15[3] = &unk_1E846A170;
   v15[4] = self;
-  [(NSMutableAttributedString *)v11 enumerateAttribute:v12 inRange:v13 options:v14 usingBlock:0, v15];
+  [(NSMutableAttributedString *)v11 enumerateAttribute:v12 inRange:ic_range2 options:v14 usingBlock:0, v15];
 }
 
 uint64_t __50__ICTTTextStorage_resetHighlightsAttributedString__block_invoke(uint64_t result, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -164,9 +164,9 @@ uint64_t __50__ICTTTextStorage_resetHighlightsAttributedString__block_invoke_2(u
 
 - (unint64_t)length
 {
-  v2 = [(ICTTMergeableStringVersionedDocument *)self->_document mergeableString];
-  v3 = [v2 attributedString];
-  v4 = [v3 length];
+  mergeableString = [(ICTTMergeableStringVersionedDocument *)self->_document mergeableString];
+  attributedString = [mergeableString attributedString];
+  v4 = [attributedString length];
 
   return v4;
 }
@@ -180,12 +180,12 @@ uint64_t __50__ICTTTextStorage_resetHighlightsAttributedString__block_invoke_2(u
 
 - (id)string
 {
-  v2 = [(ICTTMergeableStringVersionedDocument *)self->_document mergeableString];
-  v3 = [v2 attributedString];
+  mergeableString = [(ICTTMergeableStringVersionedDocument *)self->_document mergeableString];
+  attributedString = [mergeableString attributedString];
 
-  v4 = [v3 string];
+  string = [attributedString string];
 
-  return v4;
+  return string;
 }
 
 - (void)beginEditing
@@ -194,21 +194,21 @@ uint64_t __50__ICTTTextStorage_resetHighlightsAttributedString__block_invoke_2(u
   v4.receiver = self;
   v4.super_class = ICTTTextStorage;
   [(ICTTTextStorage *)&v4 beginEditing];
-  v3 = [(ICTTTextStorage *)self mergeableString];
-  [v3 beginEditing];
+  mergeableString = [(ICTTTextStorage *)self mergeableString];
+  [mergeableString beginEditing];
 }
 
 - (void)endEditing
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = [(ICTTTextStorage *)self mergeableString];
-  [v3 endEditing];
+  mergeableString = [(ICTTTextStorage *)self mergeableString];
+  [mergeableString endEditing];
 
-  v4 = [(ICTTTextStorage *)self changeInLength];
-  v5 = [(ICTTTextStorage *)self editedRange];
+  changeInLength = [(ICTTTextStorage *)self changeInLength];
+  editedRange = [(ICTTTextStorage *)self editedRange];
   v7 = v6;
-  v8 = [(ICTTTextStorage *)self editedMask];
-  [(ICTTTextStorage *)self setBeforeEndEditedRange:v5, v7];
+  editedMask = [(ICTTTextStorage *)self editedMask];
+  [(ICTTTextStorage *)self setBeforeEndEditedRange:editedRange, v7];
   if ([(ICTTTextStorage *)self isEndingEditing])
   {
     [(ICTTTextStorage *)self beginSkippingTimestampUpdates];
@@ -236,41 +236,41 @@ uint64_t __50__ICTTTextStorage_resetHighlightsAttributedString__block_invoke_2(u
 
   if (![(ICTTTextStorage *)self editingCount])
   {
-    if (![(ICTTTextStorage *)self isFixing]&& v8)
+    if (![(ICTTTextStorage *)self isFixing]&& editedMask)
     {
       p_ttEditedRange = &self->_ttEditedRange;
       location = self->_ttEditedRange.location;
       if (location == 0x7FFFFFFFFFFFFFFFLL)
       {
-        p_ttEditedRange->location = v5;
+        p_ttEditedRange->location = editedRange;
         self->_ttEditedRange.length = v7;
       }
 
       else
       {
-        if (v5 >= location)
+        if (editedRange >= location)
         {
           v11 = self->_ttEditedRange.location;
         }
 
         else
         {
-          v11 = v5;
+          v11 = editedRange;
         }
 
         v12 = self->_ttEditedRange.length + location;
-        if (v7 - v4 + v5 > v12)
+        if (v7 - changeInLength + editedRange > v12)
         {
-          v12 = v7 - v4 + v5;
+          v12 = v7 - changeInLength + editedRange;
         }
 
         p_ttEditedRange->location = v11;
-        self->_ttEditedRange.length = v4 - v11 + v12;
-        v4 += self->_ttChangeInLength;
+        self->_ttEditedRange.length = changeInLength - v11 + v12;
+        changeInLength += self->_ttChangeInLength;
       }
 
-      self->_ttChangeInLength = v4;
-      [(ICTTTextStorage *)self setTtEditedMask:[(ICTTTextStorage *)self ttEditedMask]| v8];
+      self->_ttChangeInLength = changeInLength;
+      [(ICTTTextStorage *)self setTtEditedMask:[(ICTTTextStorage *)self ttEditedMask]| editedMask];
       if (![(ICTTTextStorage *)self isApplyingUndoCommand]&& ![(ICTTTextStorage *)self isEditingTemporaryAttributes])
       {
         [(ICTTTextStorage *)self fixupAfterEditingDelayedToEndOfRunLoop];
@@ -278,32 +278,32 @@ uint64_t __50__ICTTTextStorage_resetHighlightsAttributedString__block_invoke_2(u
     }
 
     [(NSMutableArray *)self->_deletedRanges removeAllObjects];
-    v13 = [(ICTTTextStorage *)self undoCommands];
-    v14 = [v13 count];
+    undoCommands = [(ICTTTextStorage *)self undoCommands];
+    v14 = [undoCommands count];
 
     if (v14)
     {
-      v15 = [(ICTTTextStorage *)self coalescingUndoGroup];
+      coalescingUndoGroup = [(ICTTTextStorage *)self coalescingUndoGroup];
 
-      if (!v15)
+      if (!coalescingUndoGroup)
       {
-        v16 = [(ICTTTextStorage *)self undoTarget];
-        v17 = [v16 newCoalescingUndoGroup];
-        [(ICTTTextStorage *)self setCoalescingUndoGroup:v17];
+        undoTarget = [(ICTTTextStorage *)self undoTarget];
+        newCoalescingUndoGroup = [undoTarget newCoalescingUndoGroup];
+        [(ICTTTextStorage *)self setCoalescingUndoGroup:newCoalescingUndoGroup];
 
-        v18 = [(ICTTTextStorage *)self undoManager];
-        v19 = [(ICTTTextStorage *)self coalescingUndoGroup];
-        [v18 registerUndoWithTarget:v16 selector:sel_applyUndoGroup_ object:v19];
+        undoManager = [(ICTTTextStorage *)self undoManager];
+        coalescingUndoGroup2 = [(ICTTTextStorage *)self coalescingUndoGroup];
+        [undoManager registerUndoWithTarget:undoTarget selector:sel_applyUndoGroup_ object:coalescingUndoGroup2];
 
-        v20 = [(ICTTTextStorage *)self undoManager];
-        v21 = [v20 undoActionName];
-        v22 = [v21 length];
+        undoManager2 = [(ICTTTextStorage *)self undoManager];
+        undoActionName = [undoManager2 undoActionName];
+        v22 = [undoActionName length];
 
         if (!v22)
         {
-          v23 = [(ICTTTextStorage *)self undoManager];
+          undoManager3 = [(ICTTTextStorage *)self undoManager];
           v24 = __ICLocalizedFrameworkString_impl(@"Typing", @"Typing", 0, 1);
-          [v23 setActionName:v24];
+          [undoManager3 setActionName:v24];
         }
       }
 
@@ -311,8 +311,8 @@ uint64_t __50__ICTTTextStorage_resetHighlightsAttributedString__block_invoke_2(u
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v25 = [(ICTTTextStorage *)self undoCommands];
-      v26 = [v25 countByEnumeratingWithState:&v33 objects:v38 count:16];
+      undoCommands2 = [(ICTTTextStorage *)self undoCommands];
+      v26 = [undoCommands2 countByEnumeratingWithState:&v33 objects:v38 count:16];
       if (v26)
       {
         v27 = v26;
@@ -323,22 +323,22 @@ uint64_t __50__ICTTTextStorage_resetHighlightsAttributedString__block_invoke_2(u
           {
             if (*v34 != v28)
             {
-              objc_enumerationMutation(v25);
+              objc_enumerationMutation(undoCommands2);
             }
 
             v30 = *(*(&v33 + 1) + 8 * i);
-            v31 = [(ICTTTextStorage *)self coalescingUndoGroup];
-            [v31 addCommand:v30];
+            coalescingUndoGroup3 = [(ICTTTextStorage *)self coalescingUndoGroup];
+            [coalescingUndoGroup3 addCommand:v30];
           }
 
-          v27 = [v25 countByEnumeratingWithState:&v33 objects:v38 count:16];
+          v27 = [undoCommands2 countByEnumeratingWithState:&v33 objects:v38 count:16];
         }
 
         while (v27);
       }
 
-      v32 = [(ICTTTextStorage *)self undoCommands];
-      [v32 removeAllObjects];
+      undoCommands3 = [(ICTTTextStorage *)self undoCommands];
+      [undoCommands3 removeAllObjects];
     }
   }
 }
@@ -365,21 +365,21 @@ uint64_t __50__ICTTTextStorage_resetHighlightsAttributedString__block_invoke_2(u
 
 - (BOOL)wantsTimestampUpdates
 {
-  v3 = [(ICTTTextStorage *)self wantsUndoCommands];
-  if (v3)
+  wantsUndoCommands = [(ICTTTextStorage *)self wantsUndoCommands];
+  if (wantsUndoCommands)
   {
     if ([(ICTTTextStorage *)self isSkippingTimestampUpdates]|| [(ICTTTextStorage *)self isEditingTemporaryAttributes]|| [(ICTTTextStorage *)self disableUndoCoalesceBreaking])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(wantsUndoCommands) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = ![(ICTTTextStorage *)self isFixing];
+      LOBYTE(wantsUndoCommands) = ![(ICTTTextStorage *)self isFixing];
     }
   }
 
-  return v3;
+  return wantsUndoCommands;
 }
 
 - (void)endTemporaryAttributeEditing
@@ -404,15 +404,15 @@ uint64_t __50__ICTTTextStorage_resetHighlightsAttributedString__block_invoke_2(u
 {
   if ([(ICTTTextStorage *)self isForTextKit2])
   {
-    v3 = [(ICTTTextStorage *)self textLayoutManagers];
-    v4 = [v3 ic_compactMap:&__block_literal_global_142];
+    textLayoutManagers = [(ICTTTextStorage *)self textLayoutManagers];
+    v4 = [textLayoutManagers ic_compactMap:&__block_literal_global_142];
   }
 
   else
   {
     v5 = MEMORY[0x1E695DFD8];
-    v3 = [(ICTTTextStorage *)self layoutManagers];
-    v6 = [v3 ic_flatMap:&__block_literal_global_146];
+    textLayoutManagers = [(ICTTTextStorage *)self layoutManagers];
+    v6 = [textLayoutManagers ic_flatMap:&__block_literal_global_146];
     v4 = [v5 setWithArray:v6];
   }
 
@@ -443,8 +443,8 @@ uint64_t __50__ICTTTextStorage_resetHighlightsAttributedString__block_invoke_2(u
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(ICTTTextStorage *)self textLayoutManagerReferences];
-  v5 = [v4 copy];
+  textLayoutManagerReferences = [(ICTTTextStorage *)self textLayoutManagerReferences];
+  v5 = [textLayoutManagerReferences copy];
 
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
@@ -461,18 +461,18 @@ uint64_t __50__ICTTTextStorage_resetHighlightsAttributedString__block_invoke_2(u
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 object];
+        object = [v10 object];
 
-        if (v11)
+        if (object)
         {
-          v12 = [v10 object];
-          [v3 addObject:v12];
+          object2 = [v10 object];
+          [v3 addObject:object2];
         }
 
         else
         {
-          v12 = [(ICTTTextStorage *)self textLayoutManagerReferences];
-          [v12 removeObject:v10];
+          object2 = [(ICTTTextStorage *)self textLayoutManagerReferences];
+          [object2 removeObject:v10];
         }
       }
 
@@ -504,20 +504,20 @@ id __28__ICTTTextStorage_textViews__block_invoke(uint64_t a1, void *a2)
 {
   if ([(ICTTTextStorage *)self pendingFixupAfterEditing])
   {
-    v3 = [(ICTTTextStorage *)self wantsUndoCommands];
+    wantsUndoCommands = [(ICTTTextStorage *)self wantsUndoCommands];
     [(ICTTTextStorage *)self setWantsUndoCommands:[(ICTTTextStorage *)self delayedFixupAfterEditingWantsUndoCommand]];
     [(ICTTTextStorage *)self setHasUserEditSinceFixupAfterEditing:1];
     [(ICTTTextStorage *)self fixupAfterEditing];
     [(ICTTTextStorage *)self setHasUserEditSinceFixupAfterEditing:0];
 
-    [(ICTTTextStorage *)self setWantsUndoCommands:v3];
+    [(ICTTTextStorage *)self setWantsUndoCommands:wantsUndoCommands];
   }
 }
 
 - (BOOL)hasAnyTextViewWithDarkAppearance
 {
-  v2 = [(ICTTTextStorage *)self textViews];
-  v3 = [v2 ic_containsObjectPassingTest:&__block_literal_global_42];
+  textViews = [(ICTTTextStorage *)self textViews];
+  v3 = [textViews ic_containsObjectPassingTest:&__block_literal_global_42];
 
   return v3;
 }
@@ -530,16 +530,16 @@ uint64_t __51__ICTTTextStorage_hasAnyTextViewWithDarkAppearance__block_invoke(ui
   return v3;
 }
 
-- (ICTTTextStorage)initWithAttributedString:(id)a3 replicaID:(id)a4
+- (ICTTTextStorage)initWithAttributedString:(id)string replicaID:(id)d
 {
-  v6 = a3;
-  v7 = [(ICTTTextStorage *)self initWithData:0 replicaID:a4];
+  stringCopy = string;
+  v7 = [(ICTTTextStorage *)self initWithData:0 replicaID:d];
   v8 = v7;
   if (v7)
   {
-    v9 = [(ICTTTextStorage *)v7 isForTextKit2];
+    isForTextKit2 = [(ICTTTextStorage *)v7 isForTextKit2];
     v10 = off_1E8466318;
-    if (!v9)
+    if (!isForTextKit2)
     {
       v10 = off_1E84663E0;
     }
@@ -549,7 +549,7 @@ uint64_t __51__ICTTTextStorage_hasAnyTextViewWithDarkAppearance__block_invoke(ui
 
     [(ICTTTextStorage *)v8 setConvertAttributes:1];
     [(ICTTTextStorage *)v8 setWantsUndoCommands:0];
-    [(ICTTTextStorage *)v8 replaceCharactersInRange:0 withAttributedString:[(ICTTTextStorage *)v8 length], v6];
+    [(ICTTTextStorage *)v8 replaceCharactersInRange:0 withAttributedString:[(ICTTTextStorage *)v8 length], stringCopy];
     [(ICTTTextStorage *)v8 fixupAfterEditing];
     [(ICTTTextStorage *)v8 setConvertAttributes:0];
   }
@@ -557,19 +557,19 @@ uint64_t __51__ICTTTextStorage_hasAnyTextViewWithDarkAppearance__block_invoke(ui
   return v8;
 }
 
-- (ICTTTextStorage)initWithAttributedString:(id)a3 replicaID:(id)a4 sourceZoomController:(id)a5 keepSourceZoomController:(BOOL)a6 existingStyler:(id)a7
+- (ICTTTextStorage)initWithAttributedString:(id)string replicaID:(id)d sourceZoomController:(id)controller keepSourceZoomController:(BOOL)zoomController existingStyler:(id)styler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
-  v15 = [(ICTTTextStorage *)self initWithData:0 replicaID:a4];
+  stringCopy = string;
+  controllerCopy = controller;
+  stylerCopy = styler;
+  v15 = [(ICTTTextStorage *)self initWithData:0 replicaID:d];
   v16 = v15;
   if (!v15)
   {
     goto LABEL_8;
   }
 
-  if (!v14)
+  if (!stylerCopy)
   {
     if ([(ICTTTextStorage *)v15 isForTextKit2])
     {
@@ -584,7 +584,7 @@ uint64_t __51__ICTTTextStorage_hasAnyTextViewWithDarkAppearance__block_invoke(ui
     v27 = objc_alloc_init(v26);
     [(ICTTTextStorage *)v16 setStyler:v27];
 
-    if (!v13)
+    if (!controllerCopy)
     {
       goto LABEL_5;
     }
@@ -592,30 +592,30 @@ uint64_t __51__ICTTTextStorage_hasAnyTextViewWithDarkAppearance__block_invoke(ui
     goto LABEL_4;
   }
 
-  [(ICTTTextStorage *)v15 setStyler:v14];
-  if (v13)
+  [(ICTTTextStorage *)v15 setStyler:stylerCopy];
+  if (controllerCopy)
   {
 LABEL_4:
     objc_opt_class();
-    v17 = [(ICTTTextStorage *)v16 styler];
+    styler = [(ICTTTextStorage *)v16 styler];
     v18 = ICDynamicCast();
-    [v18 setZoomController:v13];
+    [v18 setZoomController:controllerCopy];
   }
 
 LABEL_5:
   [(ICTTTextStorage *)v16 setConvertAttributes:1];
   [(ICTTTextStorage *)v16 setWantsUndoCommands:0];
-  [(ICTTTextStorage *)v16 replaceCharactersInRange:0 withAttributedString:[(ICTTTextStorage *)v16 length], v12];
-  v19 = [(ICTTTextStorage *)v16 styler];
-  v20 = [(ICTTTextStorage *)v16 editedRange];
-  [v19 styleText:v16 inRange:v20 fixModelAttributes:{v21, 1}];
+  [(ICTTTextStorage *)v16 replaceCharactersInRange:0 withAttributedString:[(ICTTTextStorage *)v16 length], stringCopy];
+  styler2 = [(ICTTTextStorage *)v16 styler];
+  editedRange = [(ICTTTextStorage *)v16 editedRange];
+  [styler2 styleText:v16 inRange:editedRange fixModelAttributes:{v21, 1}];
 
   [(ICTTTextStorage *)v16 fixupAfterEditing];
   [(ICTTTextStorage *)v16 setConvertAttributes:0];
-  if (v13 && !a6)
+  if (controllerCopy && !zoomController)
   {
     objc_opt_class();
-    v22 = [(ICTTTextStorage *)v16 styler];
+    styler3 = [(ICTTTextStorage *)v16 styler];
     v23 = ICDynamicCast();
 
     v24 = objc_alloc_init(objc_opt_class());
@@ -629,13 +629,13 @@ LABEL_8:
   return v16;
 }
 
-- (void)preReplaceCharactersInRange:(_NSRange)a3 withStringLength:(unint64_t)a4
+- (void)preReplaceCharactersInRange:(_NSRange)range withStringLength:(unint64_t)length
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v15[2] = *MEMORY[0x1E69E9840];
   v8 = [ICTTTextStorage isDeletingDictationAttachmentWithReplacementRange:"isDeletingDictationAttachmentWithReplacementRange:replacementLength:" replacementLength:?];
-  v9 = [(ICTTTextStorage *)self shouldBreakUndoCoalescingWithReplacementRange:location replacementLength:length, a4];
+  v9 = [(ICTTTextStorage *)self shouldBreakUndoCoalescingWithReplacementRange:location replacementLength:length, length];
   if ([(ICTTTextStorage *)self isPerformingAccessibilityUndoableTextInsertion]|| ![(ICTTTextStorage *)self isDragging]&& ![(ICTTTextStorage *)self isPausingUndoActions]&& !v8 && v9 && ![(ICTTTextStorage *)self isEditingViaWritingTools])
   {
     [(ICTTTextStorage *)self breakUndoCoalescing];
@@ -643,50 +643,50 @@ LABEL_8:
 
   if (length)
   {
-    if (!a4)
+    if (!length)
     {
-      v10 = [(ICTTTextStorage *)self deletedRanges];
+      deletedRanges = [(ICTTTextStorage *)self deletedRanges];
       v11 = [MEMORY[0x1E696B098] valueWithRange:{location, length}];
       v15[0] = v11;
-      v12 = [(ICTTTextStorage *)self attributedString];
-      v13 = [v12 attributedSubstringFromRange:{location, length}];
+      attributedString = [(ICTTTextStorage *)self attributedString];
+      v13 = [attributedString attributedSubstringFromRange:{location, length}];
       v15[1] = v13;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
-      [v10 addObject:v14];
+      [deletedRanges addObject:v14];
     }
   }
 }
 
-- (BOOL)isDeletingDictationAttachmentWithReplacementRange:(_NSRange)a3 replacementLength:(unint64_t)a4
+- (BOOL)isDeletingDictationAttachmentWithReplacementRange:(_NSRange)range replacementLength:(unint64_t)length
 {
   LOBYTE(v4) = 0;
-  if (a3.length && !a4)
+  if (range.length && !length)
   {
-    v5 = [(ICTTTextStorage *)self attribute:*MEMORY[0x1E69DB5F8] atIndex:a3.location effectiveRange:?];
+    v5 = [(ICTTTextStorage *)self attribute:*MEMORY[0x1E69DB5F8] atIndex:range.location effectiveRange:?];
     v4 = ![ICTextAttachment textAttachmentIsContent:v5];
   }
 
   return v4;
 }
 
-- (BOOL)isEditingOrConvertingMarkedText:(BOOL)a3
+- (BOOL)isEditingOrConvertingMarkedText:(BOOL)text
 {
-  v3 = a3;
+  textCopy = text;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [(ICTTTextStorage *)self textViews];
+  textViews = [(ICTTTextStorage *)self textViews];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__ICTTTextStorage_UI__isEditingOrConvertingMarkedText___block_invoke;
   v8[3] = &unk_1E846A0A8;
   v8[4] = self;
   v8[5] = &v9;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [textViews enumerateObjectsUsingBlock:v8];
 
   v6 = *(v10 + 24);
-  if (v3)
+  if (textCopy)
   {
     [(ICTTTextStorage *)self setPreviouslyHadMarkedText:*(v10 + 24)];
   }
@@ -703,25 +703,25 @@ uint64_t __55__ICTTTextStorage_UI__isEditingOrConvertingMarkedText___block_invok
   return result;
 }
 
-- (BOOL)textViewHasMarkedText:(id)a3
+- (BOOL)textViewHasMarkedText:(id)text
 {
-  v3 = [a3 markedTextRange];
-  v4 = v3 != 0;
+  markedTextRange = [text markedTextRange];
+  v4 = markedTextRange != 0;
 
   return v4;
 }
 
-- (BOOL)isDeletingContentAttachmentWithReplacementRange:(_NSRange)a3 replacementLength:(unint64_t)a4
+- (BOOL)isDeletingContentAttachmentWithReplacementRange:(_NSRange)range replacementLength:(unint64_t)length
 {
-  length = a3.length;
+  length = range.length;
   v5 = 0;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  if (a3.length && !a4)
+  if (range.length && !length)
   {
-    location = a3.location;
+    location = range.location;
     v7 = *MEMORY[0x1E69DB5F8];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -748,13 +748,13 @@ uint64_t __89__ICTTTextStorage_UI__isDeletingContentAttachmentWithReplacementRan
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)shouldBreakUndoCoalescingWithReplacementRange:(_NSRange)a3 replacementLength:(unint64_t)a4
+- (BOOL)shouldBreakUndoCoalescingWithReplacementRange:(_NSRange)range replacementLength:(unint64_t)length
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v8 = [(ICTTTextStorage *)self isEditingOrConvertingMarkedText:1];
-  v9 = [(ICTTTextStorage *)self lastUndoEditRange];
-  v11 = location != v9 + v10 && location + length != [(ICTTTextStorage *)self lastUndoEditRange];
+  lastUndoEditRange = [(ICTTTextStorage *)self lastUndoEditRange];
+  v11 = location != lastUndoEditRange + v10 && location + length != [(ICTTTextStorage *)self lastUndoEditRange];
   if (location >= [(ICTTTextStorage *)self length])
   {
     v14 = 0;
@@ -762,14 +762,14 @@ uint64_t __89__ICTTTextStorage_UI__isDeletingContentAttachmentWithReplacementRan
 
   else
   {
-    v12 = [(ICTTTextStorage *)self string];
-    [v12 rangeOfComposedCharacterSequenceAtIndex:location];
+    string = [(ICTTTextStorage *)self string];
+    [string rangeOfComposedCharacterSequenceAtIndex:location];
     v14 = v13;
   }
 
-  v15 = length == v14 && a4 == 0;
-  v16 = [(ICTTTextStorage *)self isDeletingContentAttachmentWithReplacementRange:location replacementLength:length, a4];
-  if (a4)
+  v15 = length == v14 && length == 0;
+  v16 = [(ICTTTextStorage *)self isDeletingContentAttachmentWithReplacementRange:location replacementLength:length, length];
+  if (length)
   {
     v17 = length == 0;
   }
@@ -787,8 +787,8 @@ uint64_t __89__ICTTTextStorage_UI__isDeletingContentAttachmentWithReplacementRan
   else
   {
     v18 = length != 0;
-    v19 = a4 == 0;
-    if (!a4)
+    v19 = length == 0;
+    if (!length)
     {
       v18 = 0;
     }
@@ -803,15 +803,15 @@ uint64_t __89__ICTTTextStorage_UI__isDeletingContentAttachmentWithReplacementRan
 
   if (![(ICTTTextStorage *)self isHandlingTextCheckingResults])
   {
-    [(ICTTTextStorage *)self setLastUndoEditRange:location, a4];
+    [(ICTTTextStorage *)self setLastUndoEditRange:location, length];
   }
 
   return v20;
 }
 
-- (void)convertNSTablesToTabs:(id)a3
+- (void)convertNSTablesToTabs:(id)tabs
 {
-  v3 = a3;
+  tabsCopy = tabs;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3010000000;
@@ -823,7 +823,7 @@ uint64_t __89__ICTTTextStorage_UI__isDeletingContentAttachmentWithReplacementRan
   v11[3] = __Block_byref_object_copy__18;
   v11[4] = __Block_byref_object_dispose__18;
   v12 = 0;
-  v4 = [v3 length];
+  v4 = [tabsCopy length];
   v5 = *MEMORY[0x1E69DB688];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -831,7 +831,7 @@ uint64_t __89__ICTTTextStorage_UI__isDeletingContentAttachmentWithReplacementRan
   v7[3] = &unk_1E846A0F8;
   v9 = v13;
   v10 = v11;
-  v6 = v3;
+  v6 = tabsCopy;
   v8 = v6;
   [v6 enumerateAttribute:v5 inRange:0 options:v4 usingBlock:{0, v7}];
 
@@ -893,11 +893,11 @@ void __45__ICTTTextStorage_UI__convertNSTablesToTabs___block_invoke(uint64_t a1,
   }
 }
 
-- (void)replaceCharactersInRange:(_NSRange)a3 withAttributedString:(id)a4
+- (void)replaceCharactersInRange:(_NSRange)range withAttributedString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   if (location + length > -[ICTTTextStorage length](self, "length") || (-[ICTTTextStorage attributedString](self, "attributedString"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 length], v8, location + length > v9))
   {
     v10 = os_log_create("com.apple.notes", "Topotext");
@@ -912,9 +912,9 @@ void __45__ICTTTextStorage_UI__convertNSTablesToTabs___block_invoke(uint64_t a1,
     goto LABEL_52;
   }
 
-  v12 = [(ICTTTextStorage *)self styler];
+  styler = [(ICTTTextStorage *)self styler];
 
-  v112 = v12;
+  v112 = styler;
   if ([(ICTTTextStorage *)self parsePresentationIntents])
   {
     if (![(ICTTTextStorage *)self convertAttributes])
@@ -928,20 +928,20 @@ void __45__ICTTTextStorage_UI__convertNSTablesToTabs___block_invoke(uint64_t a1,
       [(ICTTTextStorage *)self setConvertAttributes:1];
     }
 
-    if (!v12)
+    if (!styler)
     {
       v14 = objc_alloc_init(ICTextController);
       [(ICTTTextStorage *)self setStyler:v14];
     }
 
-    if ([ICMarkdownRepresentation isMarkdownAttributedString:v7])
+    if ([ICMarkdownRepresentation isMarkdownAttributedString:stringCopy])
     {
-      v15 = [[ICMarkdownRepresentation alloc] initWithMarkdown:v7];
+      v15 = [[ICMarkdownRepresentation alloc] initWithMarkdown:stringCopy];
       [(ICMarkdownRepresentation *)v15 setKeepOriginalAttributes:1];
       [(ICMarkdownRepresentation *)v15 setFilterConflictingAttributes:1];
-      v16 = [(ICMarkdownRepresentation *)v15 createRenderableAttributedString];
+      createRenderableAttributedString = [(ICMarkdownRepresentation *)v15 createRenderableAttributedString];
 
-      v7 = v16;
+      stringCopy = createRenderableAttributedString;
     }
   }
 
@@ -950,12 +950,12 @@ void __45__ICTTTextStorage_UI__convertNSTablesToTabs___block_invoke(uint64_t a1,
     [(ICTTTextStorage *)self setShouldRemoveLeadingWhitespaceForChecklistDrop:0];
     if (!length)
     {
-      v17 = [(ICTTTextStorage *)self string];
-      v18 = [v17 lineRangeForRange:{location, 0}];
-      v20 = [v17 ic_substringWithRange:{v18, v19}];
-      v21 = [v20 ic_leadingTrimmedString];
+      string = [(ICTTTextStorage *)self string];
+      v18 = [string lineRangeForRange:{location, 0}];
+      v20 = [string ic_substringWithRange:{v18, v19}];
+      ic_leadingTrimmedString = [v20 ic_leadingTrimmedString];
       v22 = [v20 length];
-      v23 = v22 - [v21 length];
+      v23 = v22 - [ic_leadingTrimmedString length];
       if (v23)
       {
         location = v18;
@@ -965,46 +965,46 @@ void __45__ICTTTextStorage_UI__convertNSTablesToTabs___block_invoke(uint64_t a1,
     }
   }
 
-  v24 = [(ICTTTextStorage *)self correctParagraphStyleReuseForRange:location withNewAttributedString:length, v7];
+  stringCopy = [(ICTTTextStorage *)self correctParagraphStyleReuseForRange:location withNewAttributedString:length, stringCopy];
 
-  -[ICTTTextStorage preReplaceCharactersInRange:withStringLength:](self, "preReplaceCharactersInRange:withStringLength:", location, length, [v24 length]);
-  v25 = [(ICTTTextStorage *)self isEditingViaWritingTools];
+  -[ICTTTextStorage preReplaceCharactersInRange:withStringLength:](self, "preReplaceCharactersInRange:withStringLength:", location, length, [stringCopy length]);
+  isEditingViaWritingTools = [(ICTTTextStorage *)self isEditingViaWritingTools];
   v26 = MEMORY[0x1E69B75F8];
-  if (v25)
+  if (isEditingViaWritingTools)
   {
-    v27 = [v24 mutableCopy];
+    v27 = [stringCopy mutableCopy];
     v28 = *v26;
-    v29 = [v27 ic_range];
-    [v27 addAttribute:v28 value:&unk_1F4FC3DB0 range:{v29, v30}];
+    ic_range = [v27 ic_range];
+    [v27 addAttribute:v28 value:&unk_1F4FC3DB0 range:{ic_range, v30}];
   }
 
   else
   {
     v31 = *MEMORY[0x1E69B75F8];
-    v32 = [v24 ic_range];
-    if (![v24 ic_containsAttribute:v31 inRange:{v32, v33}])
+    ic_range2 = [stringCopy ic_range];
+    if (![stringCopy ic_containsAttribute:v31 inRange:{ic_range2, v33}])
     {
       goto LABEL_25;
     }
 
-    v27 = [v24 mutableCopy];
+    v27 = [stringCopy mutableCopy];
     v34 = *v26;
-    v35 = [v27 ic_range];
-    [v27 removeAttribute:v34 range:{v35, v36}];
+    ic_range3 = [v27 ic_range];
+    [v27 removeAttribute:v34 range:{ic_range3, v36}];
   }
 
   v37 = [v27 copy];
 
-  v24 = v37;
+  stringCopy = v37;
 LABEL_25:
-  v114 = [v24 copy];
-  v38 = [v24 mutableCopy];
+  v114 = [stringCopy copy];
+  v38 = [stringCopy mutableCopy];
   v39 = *MEMORY[0x1E69B7618];
-  v40 = [v38 ic_range];
-  [v38 removeAttribute:v39 range:{v40, v41}];
+  ic_range4 = [v38 ic_range];
+  [v38 removeAttribute:v39 range:{ic_range4, v41}];
   v10 = v38;
 
-  v42 = [(ICTTTextStorage *)self filterPastedAttributes];
+  filterPastedAttributes = [(ICTTTextStorage *)self filterPastedAttributes];
   v113 = length;
   if ([(ICTTTextStorage *)self convertAttributes]|| [(ICTTTextStorage *)self isEditingViaWritingTools]&& ![(ICTTTextStorage *)self isEditingPlaceholderForWritingTools])
   {
@@ -1016,35 +1016,35 @@ LABEL_25:
 
     else
     {
-      v44 = [(ICTTTextStorage *)self styler];
+      styler2 = [(ICTTTextStorage *)self styler];
       v45 = objc_opt_respondsToSelector();
 
       if (v45)
       {
-        v46 = [(ICTTTextStorage *)self styler];
-        v47 = [(ICTTTextStorage *)self pasteboardTypes];
-        [v46 convertNSTablesToICTables:v43 pasteboardTypes:v47 filterPastedAttributes:v42 isReadingSelectionFromPasteboard:{-[ICTTTextStorage isReadingSelectionFromPasteboard](self, "isReadingSelectionFromPasteboard")}];
+        styler3 = [(ICTTTextStorage *)self styler];
+        pasteboardTypes = [(ICTTTextStorage *)self pasteboardTypes];
+        [styler3 convertNSTablesToICTables:v43 pasteboardTypes:pasteboardTypes filterPastedAttributes:filterPastedAttributes isReadingSelectionFromPasteboard:{-[ICTTTextStorage isReadingSelectionFromPasteboard](self, "isReadingSelectionFromPasteboard")}];
       }
     }
 
     v108 = [v43 mutableCopy];
-    if (v42)
+    if (filterPastedAttributes)
     {
-      v48 = [(ICTTTextStorage *)self styler];
-      [v48 guessFontSizeThresholdsForTTStylesInAttributedString:v43];
+      styler4 = [(ICTTTextStorage *)self styler];
+      [styler4 guessFontSizeThresholdsForTTStylesInAttributedString:v43];
     }
 
     v130[0] = 0;
     v130[1] = v130;
     v130[2] = 0x2020000000;
     v131 = 0;
-    v49 = [v43 ic_range];
+    ic_range5 = [v43 ic_range];
     v129[0] = MEMORY[0x1E69E9820];
     v129[1] = 3221225472;
     v129[2] = __69__ICTTTextStorage_UI__replaceCharactersInRange_withAttributedString___block_invoke;
     v129[3] = &unk_1E846A120;
     v129[4] = v130;
-    [v43 enumerateAttributesInRange:v49 options:v50 usingBlock:{0, v129}];
+    [v43 enumerateAttributesInRange:ic_range5 options:v50 usingBlock:{0, v129}];
     objc_opt_class();
     v51 = MEMORY[0x1E69B7600];
     v52 = [(ICTTTextStorage *)self attribute:*MEMORY[0x1E69B7600] atIndex:location effectiveRange:0];
@@ -1055,13 +1055,13 @@ LABEL_25:
     v127[2] = 0x2020000000;
     v128 = 0;
     v54 = *v51;
-    v55 = [v10 ic_range];
+    ic_range6 = [v10 ic_range];
     v126[0] = MEMORY[0x1E69E9820];
     v126[1] = 3221225472;
     v126[2] = __69__ICTTTextStorage_UI__replaceCharactersInRange_withAttributedString___block_invoke_2;
     v126[3] = &unk_1E846A0D0;
     v126[4] = v127;
-    [v10 enumerateAttribute:v54 inRange:v55 options:v56 usingBlock:0, v126];
+    [v10 enumerateAttribute:v54 inRange:ic_range6 options:v56 usingBlock:0, v126];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1073,17 +1073,17 @@ LABEL_25:
       v57 = v10;
     }
 
-    v58 = [(ICTTTextStorage *)self styler];
-    [v58 prepareIndentInformationInAttributedString:v10];
+    styler5 = [(ICTTTextStorage *)self styler];
+    [styler5 prepareIndentInformationInAttributedString:v10];
 
-    v59 = [v43 ic_range];
+    ic_range7 = [v43 ic_range];
     v61 = v60;
     v119[0] = MEMORY[0x1E69E9820];
     v119[1] = 3221225472;
     v119[2] = __69__ICTTTextStorage_UI__replaceCharactersInRange_withAttributedString___block_invoke_3;
     v119[3] = &unk_1E846A148;
     v119[4] = self;
-    v125 = v42;
+    v125 = filterPastedAttributes;
     v62 = v57;
     v120 = v62;
     v63 = v53;
@@ -1093,14 +1093,14 @@ LABEL_25:
     v122 = v64;
     v65 = v43;
     v123 = v65;
-    [v65 enumerateAttributesInRange:v59 options:v61 usingBlock:{0, v119}];
-    v66 = [(ICTTTextStorage *)self styler];
-    [v66 resetGuessedFontSizes];
+    [v65 enumerateAttributesInRange:ic_range7 options:v61 usingBlock:{0, v119}];
+    styler6 = [(ICTTTextStorage *)self styler];
+    [styler6 resetGuessedFontSizes];
 
-    v67 = [(ICTTTextStorage *)self styler];
-    [v67 resetIndentInformation];
+    styler7 = [(ICTTTextStorage *)self styler];
+    [styler7 resetIndentInformation];
 
-    v7 = [v65 copy];
+    stringCopy = [v65 copy];
     v68 = [v64 copy];
 
     _Block_object_dispose(v127, 8);
@@ -1112,16 +1112,16 @@ LABEL_25:
 
   else
   {
-    v7 = v10;
+    stringCopy = v10;
   }
 
   if ([(ICTTTextStorage *)self wantsTimestampUpdates])
   {
     v69 = [v114 mutableCopy];
     v70 = *MEMORY[0x1E69B7618];
-    v71 = [(ICTTTextStorage *)self currentTimestamp];
-    v72 = [v69 ic_range];
-    [v69 addAttribute:v70 value:v71 range:{v72, v73}];
+    currentTimestamp = [(ICTTTextStorage *)self currentTimestamp];
+    ic_range8 = [v69 ic_range];
+    [v69 addAttribute:v70 value:currentTimestamp range:{ic_range8, v73}];
 
     length = v113;
     v74 = [v69 copy];
@@ -1130,32 +1130,32 @@ LABEL_25:
     v114 = v74;
   }
 
-  v75 = [(ICTTTextStorage *)self document];
-  v76 = [v75 mergeableString];
-  v77 = [v76 attributedString];
-  v110 = [v77 attributedSubstringFromRange:{location, length}];
+  document = [(ICTTTextStorage *)self document];
+  mergeableString = [document mergeableString];
+  attributedString = [mergeableString attributedString];
+  v110 = [attributedString attributedSubstringFromRange:{location, length}];
 
-  v78 = [(ICTTTextStorage *)self delegate];
-  LOBYTE(v76) = objc_opt_respondsToSelector();
+  delegate = [(ICTTTextStorage *)self delegate];
+  LOBYTE(mergeableString) = objc_opt_respondsToSelector();
 
-  if (v76)
+  if (mergeableString)
   {
-    v79 = [(ICTTTextStorage *)self delegate];
-    [v79 textStorageWillChange:self];
+    delegate2 = [(ICTTTextStorage *)self delegate];
+    [delegate2 textStorageWillChange:self];
   }
 
   [(ICTTTextStorage *)self setDirectlyEditing:1, v110];
   objc_opt_class();
-  v80 = [(ICTTTextStorage *)self attributedString];
+  attributedString2 = [(ICTTTextStorage *)self attributedString];
   v81 = ICCheckedDynamicCast();
-  [v81 replaceCharactersInRange:location withAttributedString:{length, v7}];
+  [v81 replaceCharactersInRange:location withAttributedString:{length, stringCopy}];
 
   v82 = objc_alloc(MEMORY[0x1E696AD40]);
-  v83 = [v7 string];
-  v84 = [v82 initWithString:v83];
+  string2 = [stringCopy string];
+  v84 = [v82 initWithString:string2];
 
   v85 = *MEMORY[0x1E69DB650];
-  v86 = [v7 ic_range];
+  ic_range9 = [stringCopy ic_range];
   v88 = v87;
   v117[0] = MEMORY[0x1E69E9820];
   v117[1] = 3221225472;
@@ -1163,9 +1163,9 @@ LABEL_25:
   v117[3] = &unk_1E846A170;
   v89 = v84;
   v118 = v89;
-  [v7 enumerateAttribute:v85 inRange:v86 options:v88 usingBlock:{0, v117}];
+  [stringCopy enumerateAttribute:v85 inRange:ic_range9 options:v88 usingBlock:{0, v117}];
   v90 = *MEMORY[0x1E69B75D8];
-  v91 = [v7 ic_range];
+  ic_range10 = [stringCopy ic_range];
   v93 = v92;
   v115[0] = MEMORY[0x1E69E9820];
   v115[1] = 3221225472;
@@ -1173,23 +1173,23 @@ LABEL_25:
   v115[3] = &unk_1E846A170;
   v94 = v89;
   v116 = v94;
-  [v7 enumerateAttribute:v90 inRange:v91 options:v93 usingBlock:{0, v115}];
+  [stringCopy enumerateAttribute:v90 inRange:ic_range10 options:v93 usingBlock:{0, v115}];
   objc_opt_class();
-  v95 = [(ICTTTextStorage *)self highlightsAttributedString];
+  highlightsAttributedString = [(ICTTTextStorage *)self highlightsAttributedString];
   v96 = ICCheckedDynamicCast();
   v97 = [v94 copy];
   [v96 replaceCharactersInRange:location withAttributedString:{v113, v97}];
 
-  v98 = [(ICTTTextStorage *)self document];
-  v99 = [v98 mergeableString];
+  document2 = [(ICTTTextStorage *)self document];
+  mergeableString2 = [document2 mergeableString];
   v11 = v114;
-  [v99 replaceCharactersInRange:location withAttributedString:{v113, v114}];
+  [mergeableString2 replaceCharactersInRange:location withAttributedString:{v113, v114}];
 
   if ([(ICTTTextStorage *)self isEditingViaWritingTools])
   {
-    v100 = [(ICTTTextStorage *)self paragraphUUIDsInRange:location, v113];
-    v101 = [(ICTTTextStorage *)self outlineController];
-    [v101 expandUUIDs:v100];
+    v113 = [(ICTTTextStorage *)self paragraphUUIDsInRange:location, v113];
+    outlineController = [(ICTTTextStorage *)self outlineController];
+    [outlineController expandUUIDs:v113];
   }
 
   if (!v112)
@@ -1198,22 +1198,22 @@ LABEL_25:
   }
 
   [(ICTTTextStorage *)self setDirectlyEditing:0];
-  v102 = [(ICTTTextStorage *)self delegate];
+  delegate3 = [(ICTTTextStorage *)self delegate];
   v103 = objc_opt_respondsToSelector();
 
   if (v103)
   {
-    v104 = [(ICTTTextStorage *)self delegate];
-    [v104 textStorage:self didReplace:v111 with:v7];
+    delegate4 = [(ICTTTextStorage *)self delegate];
+    [delegate4 textStorage:self didReplace:v111 with:stringCopy];
   }
 
-  v105 = [(ICTTTextStorage *)self delegate];
+  delegate5 = [(ICTTTextStorage *)self delegate];
   v106 = objc_opt_respondsToSelector();
 
   if (v106)
   {
-    v107 = [(ICTTTextStorage *)self delegate];
-    [v107 textStorageDidChange:self];
+    delegate6 = [(ICTTTextStorage *)self delegate];
+    [delegate6 textStorageDidChange:self];
   }
 
   [(ICTTTextStorage *)self setHasEditedCharactersAfterTextSelection:1];
@@ -1310,49 +1310,49 @@ uint64_t __69__ICTTTextStorage_UI__replaceCharactersInRange_withAttributedString
   return result;
 }
 
-- (void)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4
+- (void)replaceCharactersInRange:(_NSRange)range withString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   if (location + length <= -[ICTTTextStorage length](self, "length") && (-[ICTTTextStorage attributedString](self, "attributedString"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 length], v8, location + length <= v9))
   {
-    -[ICTTTextStorage preReplaceCharactersInRange:withStringLength:](self, "preReplaceCharactersInRange:withStringLength:", location, length, [v7 length]);
-    v11 = [(ICTTTextStorage *)self document];
-    v12 = [v11 mergeableString];
-    v13 = [v12 attributedString];
-    v10 = [v13 attributedSubstringFromRange:{location, length}];
+    -[ICTTTextStorage preReplaceCharactersInRange:withStringLength:](self, "preReplaceCharactersInRange:withStringLength:", location, length, [stringCopy length]);
+    document = [(ICTTTextStorage *)self document];
+    mergeableString = [document mergeableString];
+    attributedString = [mergeableString attributedString];
+    v10 = [attributedString attributedSubstringFromRange:{location, length}];
 
-    v14 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v7];
+    v14 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:stringCopy];
     [(ICTTTextStorage *)self setDirectlyEditing:1];
     objc_opt_class();
-    v15 = [(ICTTTextStorage *)self attributedString];
+    attributedString2 = [(ICTTTextStorage *)self attributedString];
     v16 = ICCheckedDynamicCast();
-    [v16 replaceCharactersInRange:location withString:{length, v7}];
+    [v16 replaceCharactersInRange:location withString:{length, stringCopy}];
 
     objc_opt_class();
-    v17 = [(ICTTTextStorage *)self highlightsAttributedString];
+    highlightsAttributedString = [(ICTTTextStorage *)self highlightsAttributedString];
     v18 = ICCheckedDynamicCast();
-    [v18 replaceCharactersInRange:location withString:{length, v7}];
+    [v18 replaceCharactersInRange:location withString:{length, stringCopy}];
 
-    v19 = [(ICTTTextStorage *)self document];
-    v20 = [v19 mergeableString];
-    [v20 replaceCharactersInRange:location withString:{length, v7}];
+    document2 = [(ICTTTextStorage *)self document];
+    mergeableString2 = [document2 mergeableString];
+    [mergeableString2 replaceCharactersInRange:location withString:{length, stringCopy}];
 
-    if ([v7 length] && -[ICTTTextStorage wantsTimestampUpdates](self, "wantsTimestampUpdates"))
+    if ([stringCopy length] && -[ICTTTextStorage wantsTimestampUpdates](self, "wantsTimestampUpdates"))
     {
-      v21 = [(ICTTTextStorage *)self document];
-      v22 = [v21 mergeableString];
-      v23 = [v22 attributesAtIndex:location effectiveRange:0];
+      document3 = [(ICTTTextStorage *)self document];
+      mergeableString3 = [document3 mergeableString];
+      v23 = [mergeableString3 attributesAtIndex:location effectiveRange:0];
       v24 = [v23 mutableCopy];
 
-      v25 = [(ICTTTextStorage *)self currentTimestamp];
-      [v24 setObject:v25 forKeyedSubscript:*MEMORY[0x1E69B7618]];
+      currentTimestamp = [(ICTTTextStorage *)self currentTimestamp];
+      [v24 setObject:currentTimestamp forKeyedSubscript:*MEMORY[0x1E69B7618]];
 
-      v26 = [(ICTTTextStorage *)self document];
-      v27 = [v26 mergeableString];
+      document4 = [(ICTTTextStorage *)self document];
+      mergeableString4 = [document4 mergeableString];
       v28 = [v24 copy];
-      [v27 setAttributes:v28 range:{location, objc_msgSend(v7, "length")}];
+      [mergeableString4 setAttributes:v28 range:{location, objc_msgSend(stringCopy, "length")}];
     }
 
     if ([(ICTTTextStorage *)self wantsTimestampUpdates])
@@ -1361,13 +1361,13 @@ uint64_t __69__ICTTTextStorage_UI__replaceCharactersInRange_withAttributedString
     }
 
     [(ICTTTextStorage *)self setDirectlyEditing:0];
-    v29 = [(ICTTTextStorage *)self delegate];
+    delegate = [(ICTTTextStorage *)self delegate];
     v30 = objc_opt_respondsToSelector();
 
     if (v30)
     {
-      v31 = [(ICTTTextStorage *)self delegate];
-      [v31 textStorage:self didReplace:v10 with:v14];
+      delegate2 = [(ICTTTextStorage *)self delegate];
+      [delegate2 textStorage:self didReplace:v10 with:v14];
     }
   }
 
@@ -1383,53 +1383,53 @@ uint64_t __69__ICTTTextStorage_UI__replaceCharactersInRange_withAttributedString
   }
 }
 
-+ (id)bulletTextAttributesWithTextFont:(id)a3 paragraphStyle:(id)a4 zoomFactor:(double)a5
++ (id)bulletTextAttributesWithTextFont:(id)font paragraphStyle:(id)style zoomFactor:(double)factor
 {
   v20[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  fontCopy = font;
+  styleCopy = style;
   if (bulletTextAttributesWithTextFont_paragraphStyle_zoomFactor__onceToken != -1)
   {
     +[ICTTTextStorage(UI) bulletTextAttributesWithTextFont:paragraphStyle:zoomFactor:];
   }
 
-  v10 = [[TTBulletTextAttributesCacheKey alloc] initWithTextFont:v8 paragraphStyle:v9 zoomFactor:a5];
+  v10 = [[TTBulletTextAttributesCacheKey alloc] initWithTextFont:fontCopy paragraphStyle:styleCopy zoomFactor:factor];
   v11 = [bulletTextAttributesWithTextFont_paragraphStyle_zoomFactor__cache objectForKey:v10];
   if (!v11)
   {
-    if ([v9 style] == 100)
+    if ([styleCopy style] == 100)
     {
-      [a1 listItemGlyphPointSizeForUnorderedListStyle:100 zoomFactor:a5];
-      v12 = [MEMORY[0x1E69DB878] fontWithName:@"Menlo-Regular" size:?];
+      [self listItemGlyphPointSizeForUnorderedListStyle:100 zoomFactor:factor];
+      ic_fontWithTabularNumbers = [MEMORY[0x1E69DB878] fontWithName:@"Menlo-Regular" size:?];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E69DB878] ic_preferredFontForBodyText];
-      if ([v9 style] == 101)
+      ic_preferredFontForBodyText = [MEMORY[0x1E69DB878] ic_preferredFontForBodyText];
+      if ([styleCopy style] == 101)
       {
-        [a1 listItemGlyphPointSizeForUnorderedListStyle:101 zoomFactor:a5];
-        v12 = [v13 ic_fontWithSize:?];
+        [self listItemGlyphPointSizeForUnorderedListStyle:101 zoomFactor:factor];
+        ic_fontWithTabularNumbers = [ic_preferredFontForBodyText ic_fontWithSize:?];
       }
 
       else
       {
-        [v8 pointSize];
-        v14 = [v13 ic_fontWithSize:?];
-        v12 = [v14 ic_fontWithTabularNumbers];
+        [fontCopy pointSize];
+        v14 = [ic_preferredFontForBodyText ic_fontWithSize:?];
+        ic_fontWithTabularNumbers = [v14 ic_fontWithTabularNumbers];
       }
     }
 
-    v15 = [MEMORY[0x1E69DB7D0] ic_mutableDefaultParagraphStyle];
-    [v15 setBaseWritingDirection:{objc_msgSend(v9, "layoutWritingDirection")}];
+    ic_mutableDefaultParagraphStyle = [MEMORY[0x1E69DB7D0] ic_mutableDefaultParagraphStyle];
+    [ic_mutableDefaultParagraphStyle setBaseWritingDirection:{objc_msgSend(styleCopy, "layoutWritingDirection")}];
     v16 = *MEMORY[0x1E69DB688];
     v19[0] = *MEMORY[0x1E69DB648];
     v19[1] = v16;
-    v20[0] = v12;
-    v20[1] = v15;
+    v20[0] = ic_fontWithTabularNumbers;
+    v20[1] = ic_mutableDefaultParagraphStyle;
     v19[2] = *MEMORY[0x1E69DB650];
-    v17 = [MEMORY[0x1E69DC888] preferredDefaultFontColor];
-    v20[2] = v17;
+    preferredDefaultFontColor = [MEMORY[0x1E69DC888] preferredDefaultFontColor];
+    v20[2] = preferredDefaultFontColor;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:3];
 
     [bulletTextAttributesWithTextFont_paragraphStyle_zoomFactor__cache setObject:v11 forKey:v10];
@@ -1445,15 +1445,15 @@ uint64_t __82__ICTTTextStorage_UI__bulletTextAttributesWithTextFont_paragraphSty
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (double)listItemGlyphPointSizeForUnorderedListStyle:(unsigned int)a3 zoomFactor:(double)a4
++ (double)listItemGlyphPointSizeForUnorderedListStyle:(unsigned int)style zoomFactor:(double)factor
 {
-  if (a3 == 100)
+  if (style == 100)
   {
     v4 = 12.0;
     v5 = 26.0;
   }
 
-  else if (a3 == 101)
+  else if (style == 101)
   {
     v4 = 17.0;
     v5 = 32.0;
@@ -1461,7 +1461,7 @@ uint64_t __82__ICTTTextStorage_UI__bulletTextAttributesWithTextFont_paragraphSty
 
   else
   {
-    [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"__objc_no" functionName:"+[ICTTTextStorage(UI) listItemGlyphPointSizeForUnorderedListStyle:zoomFactor:]" simulateCrash:1 showAlert:0 format:{@"Expected bulleted or dashed list style", a4}];
+    [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"__objc_no" functionName:"+[ICTTTextStorage(UI) listItemGlyphPointSizeForUnorderedListStyle:zoomFactor:]" simulateCrash:1 showAlert:0 format:{@"Expected bulleted or dashed list style", factor}];
     v5 = 0.0;
     v4 = 0.0;
   }
@@ -1473,145 +1473,145 @@ uint64_t __82__ICTTTextStorage_UI__bulletTextAttributesWithTextFont_paragraphSty
   return ceil(v8);
 }
 
-+ (id)standardizedAttributedStringFromAttributedString:(id)a3 withStyler:(id)a4 fixAttachments:(BOOL)a5 translateICTTFont:(BOOL)a6 context:(id)a7
++ (id)standardizedAttributedStringFromAttributedString:(id)string withStyler:(id)styler fixAttachments:(BOOL)attachments translateICTTFont:(BOOL)font context:(id)context
 {
-  v8 = a6;
-  v9 = a5;
-  v11 = a3;
-  v12 = a7;
-  v13 = a4;
+  fontCopy = font;
+  attachmentsCopy = attachments;
+  stringCopy = string;
+  contextCopy = context;
+  stylerCopy = styler;
   objc_opt_class();
   v14 = ICDynamicCast();
 
-  v15 = [v11 mutableCopy];
+  v15 = [stringCopy mutableCopy];
   if (v14)
   {
-    [v14 styleFontInAttributedString:v15 inRange:0 contentSizeCategory:{objc_msgSend(v11, "length"), *MEMORY[0x1E69DDC70]}];
+    [v14 styleFontInAttributedString:v15 inRange:0 contentSizeCategory:{objc_msgSend(stringCopy, "length"), *MEMORY[0x1E69DDC70]}];
     [v14 styleListsAndIndentsInAttributedString:v15 inRange:{0, objc_msgSend(v15, "length")}];
     v16 = [v15 copy];
 
-    v17 = [v14 zoomController];
-    [v17 zoomFactor];
+    zoomController = [v14 zoomController];
+    [zoomController zoomFactor];
     if (v18 != 1.0)
     {
-      v19 = [v17 unzoomAttributedString:v16];
+      v19 = [zoomController unzoomAttributedString:v16];
 
       v16 = v19;
     }
 
-    v11 = v16;
+    stringCopy = v16;
   }
 
   LOBYTE(v25) = 1;
-  v20 = +[ICTTTextStorage filteredAttributedSubstring:fromRange:forPlainText:forStandardizedText:fixAttachments:insertListMarkers:](ICTTTextStorage, "filteredAttributedSubstring:fromRange:forPlainText:forStandardizedText:fixAttachments:insertListMarkers:", v11, 0, [v11 length], 0, 1, v9, v25);
-  v21 = [v20 ic_attributedStringByFlatteningInlineAttachmentsWithContext:v12];
+  v20 = +[ICTTTextStorage filteredAttributedSubstring:fromRange:forPlainText:forStandardizedText:fixAttachments:insertListMarkers:](ICTTTextStorage, "filteredAttributedSubstring:fromRange:forPlainText:forStandardizedText:fixAttachments:insertListMarkers:", stringCopy, 0, [stringCopy length], 0, 1, attachmentsCopy, v25);
+  v21 = [v20 ic_attributedStringByFlatteningInlineAttachmentsWithContext:contextCopy];
 
-  v22 = [ICTTTextStorage removeTextAttachmentsForAttributedString:v21 translateICTTFont:v8];
+  v22 = [ICTTTextStorage removeTextAttachmentsForAttributedString:v21 translateICTTFont:fontCopy];
 
   v23 = [ICTTTextStorage removeDataDetectorLinksForAttributedString:v22];
 
   return v23;
 }
 
-- (id)standardizedAttributedStringFixingTextAttachmentsInContext:(id)a3
+- (id)standardizedAttributedStringFixingTextAttachmentsInContext:(id)context
 {
-  v4 = a3;
-  v5 = [(ICTTTextStorage *)self attributedString];
-  v6 = -[ICTTTextStorage standardizedAttributedStringFixingTextAttachmentsForRange:context:](self, "standardizedAttributedStringFixingTextAttachmentsForRange:context:", 0, [v5 length], v4);
+  contextCopy = context;
+  attributedString = [(ICTTTextStorage *)self attributedString];
+  v6 = -[ICTTTextStorage standardizedAttributedStringFixingTextAttachmentsForRange:context:](self, "standardizedAttributedStringFixingTextAttachmentsForRange:context:", 0, [attributedString length], contextCopy);
 
   return v6;
 }
 
-- (id)standardizedAttributedStringFixingTextAttachmentsForRange:(_NSRange)a3 context:(id)a4
+- (id)standardizedAttributedStringFixingTextAttachmentsForRange:(_NSRange)range context:(id)context
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  v8 = [(ICTTTextStorage *)self styler];
-  v9 = [(ICTTTextStorage *)self standardizedAttributedStringFixingTextAttachmentsForRange:location styler:length context:v8, v7];
+  length = range.length;
+  location = range.location;
+  contextCopy = context;
+  styler = [(ICTTTextStorage *)self styler];
+  contextCopy = [(ICTTTextStorage *)self standardizedAttributedStringFixingTextAttachmentsForRange:location styler:length context:styler, contextCopy];
 
-  return v9;
+  return contextCopy;
 }
 
-- (id)standardizedAttributedStringFixingTextAttachmentsForRange:(_NSRange)a3 styler:(id)a4 context:(id)a5
+- (id)standardizedAttributedStringFixingTextAttachmentsForRange:(_NSRange)range styler:(id)styler context:(id)context
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(ICTTTextStorage *)self attributedString];
-  v12 = [v11 attributedSubstringFromRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  contextCopy = context;
+  stylerCopy = styler;
+  attributedString = [(ICTTTextStorage *)self attributedString];
+  v12 = [attributedString attributedSubstringFromRange:{location, length}];
 
-  v13 = [ICTTTextStorage standardizedAttributedStringFromAttributedString:v12 withStyler:v10 fixAttachments:1 translateICTTFont:1 context:v9];
+  v13 = [ICTTTextStorage standardizedAttributedStringFromAttributedString:v12 withStyler:stylerCopy fixAttachments:1 translateICTTFont:1 context:contextCopy];
 
   return v13;
 }
 
-- (id)dataFromRange:(_NSRange)a3 documentAttributes:(id)a4 error:(id *)a5
+- (id)dataFromRange:(_NSRange)range documentAttributes:(id)attributes error:(id *)error
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
+  length = range.length;
+  location = range.location;
+  attributesCopy = attributes;
   if ([(ICTTTextStorage *)self filterSubstringAttributes])
   {
-    v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E69DB630]];
+    v10 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E69DB630]];
     v11 = [(ICTTTextStorage *)self filteredAttributedSubstringFromRange:location insertListMarkers:length, v10 != *MEMORY[0x1E69DB658]];
-    v12 = [v11 dataFromRange:0 documentAttributes:objc_msgSend(v11 error:{"length"), v9, a5}];
+    error = [v11 dataFromRange:0 documentAttributes:objc_msgSend(v11 error:{"length"), attributesCopy, error}];
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = ICTTTextStorage;
-    v12 = [(ICTTTextStorage *)&v14 dataFromRange:location documentAttributes:length error:v9, a5];
+    error = [(ICTTTextStorage *)&v14 dataFromRange:location documentAttributes:length error:attributesCopy, error];
   }
 
-  return v12;
+  return error;
 }
 
-- (id)filteredAttributedSubstringFromRange:(_NSRange)a3 insertListMarkers:(BOOL)a4
+- (id)filteredAttributedSubstringFromRange:(_NSRange)range insertListMarkers:(BOOL)markers
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = [(ICTTTextStorage *)self attributedString];
-  LOBYTE(v11) = a4;
-  v9 = [ICTTTextStorage filteredAttributedSubstring:v8 fromRange:location forPlainText:length forStandardizedText:[(ICTTTextStorage *)self filterSubstringAttributesForPlainText] fixAttachments:0 insertListMarkers:1, v11];
+  length = range.length;
+  location = range.location;
+  attributedString = [(ICTTTextStorage *)self attributedString];
+  LOBYTE(v11) = markers;
+  v9 = [ICTTTextStorage filteredAttributedSubstring:attributedString fromRange:location forPlainText:length forStandardizedText:[(ICTTTextStorage *)self filterSubstringAttributesForPlainText] fixAttachments:0 insertListMarkers:1, v11];
 
   return v9;
 }
 
-- (id)filteredAttributedSubstringFromRange:(_NSRange)a3
+- (id)filteredAttributedSubstringFromRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(ICTTTextStorage *)self attributedString];
+  length = range.length;
+  location = range.location;
+  attributedString = [(ICTTTextStorage *)self attributedString];
   LOBYTE(v9) = 1;
-  v7 = [ICTTTextStorage filteredAttributedSubstring:v6 fromRange:location forPlainText:length forStandardizedText:[(ICTTTextStorage *)self filterSubstringAttributesForPlainText] fixAttachments:0 insertListMarkers:1, v9];
+  v7 = [ICTTTextStorage filteredAttributedSubstring:attributedString fromRange:location forPlainText:length forStandardizedText:[(ICTTTextStorage *)self filterSubstringAttributesForPlainText] fixAttachments:0 insertListMarkers:1, v9];
 
   return v7;
 }
 
-- (id)plainTextParagraphsFromRange:(_NSRange)a3
+- (id)plainTextParagraphsFromRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(ICTTTextStorage *)self attributedString];
+  length = range.length;
+  location = range.location;
+  attributedString = [(ICTTTextStorage *)self attributedString];
   LOBYTE(v11) = 0;
-  v6 = [ICTTTextStorage filteredAttributedSubstring:v5 fromRange:location forPlainText:length forStandardizedText:1 fixAttachments:0 insertListMarkers:1, v11];
-  v7 = [v6 string];
+  v6 = [ICTTTextStorage filteredAttributedSubstring:attributedString fromRange:location forPlainText:length forStandardizedText:1 fixAttachments:0 insertListMarkers:1, v11];
+  string = [v6 string];
 
-  v8 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  v9 = [v7 componentsSeparatedByCharactersInSet:v8];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  v9 = [string componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
   return v9;
 }
 
-- (id)attributedSubstringFromRange:(_NSRange)a3
+- (id)attributedSubstringFromRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(ICTTTextStorage *)self attributedString];
-  v14.location = [v6 ic_range];
+  length = range.length;
+  location = range.location;
+  attributedString = [(ICTTTextStorage *)self attributedString];
+  v14.location = [attributedString ic_range];
   v15.location = location;
   v15.length = length;
   v7 = NSIntersectionRange(v14, v15);
@@ -1627,10 +1627,10 @@ uint64_t __82__ICTTTextStorage_UI__bulletTextAttributesWithTextFont_paragraphSty
     goto LABEL_6;
   }
 
-  v9 = [(ICTTTextStorage *)self attributedString];
-  v10 = [v9 string];
+  attributedString2 = [(ICTTTextStorage *)self attributedString];
+  string = [attributedString2 string];
 
-  if (!v10 || (-[ICTTTextStorage attributedString](self, "attributedString"), v11 = objc_claimAutoreleasedReturnValue(), [v11 attributedSubstringFromRange:{v7.location, v7.length}], v8 = objc_claimAutoreleasedReturnValue(), v11, !v8))
+  if (!string || (-[ICTTTextStorage attributedString](self, "attributedString"), v11 = objc_claimAutoreleasedReturnValue(), [v11 attributedSubstringFromRange:{v7.location, v7.length}], v8 = objc_claimAutoreleasedReturnValue(), v11, !v8))
   {
 LABEL_6:
     v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:&stru_1F4F94F00 attributes:0];
@@ -1641,9 +1641,9 @@ LABEL_7:
   return v8;
 }
 
-+ (id)removeDataDetectorLinksForAttributedString:(id)a3
++ (id)removeDataDetectorLinksForAttributedString:(id)string
 {
-  v3 = [a3 mutableCopy];
+  v3 = [string mutableCopy];
   v4 = *MEMORY[0x1E69DB670];
   v5 = [v3 length];
   v8[0] = MEMORY[0x1E69E9820];
@@ -1676,10 +1676,10 @@ void __66__ICTTTextStorage_UI__removeDataDetectorLinksForAttributedString___bloc
   }
 }
 
-+ (id)removeTextAttachmentsForAttributedString:(id)a3 translateICTTFont:(BOOL)a4
++ (id)removeTextAttachmentsForAttributedString:(id)string translateICTTFont:(BOOL)font
 {
-  v4 = a4;
-  v5 = [a3 mutableCopy];
+  fontCopy = font;
+  v5 = [string mutableCopy];
   v6 = *MEMORY[0x1E69DB5F8];
   v7 = [v5 length];
   v14[0] = MEMORY[0x1E69E9820];
@@ -1689,7 +1689,7 @@ void __66__ICTTTextStorage_UI__removeDataDetectorLinksForAttributedString___bloc
   v8 = v5;
   v15 = v8;
   [v8 ic_enumerateClampedAttribute:v6 inRange:0 options:v7 usingBlock:{0x100000, v14}];
-  if (v4)
+  if (fontCopy)
   {
     v9 = *MEMORY[0x1E69B75E0];
     v10 = [v8 length];
@@ -1735,19 +1735,19 @@ void __82__ICTTTextStorage_UI__removeTextAttachmentsForAttributedString_translat
   }
 }
 
-+ (void)fixAttachmentsForRenderingInAttributedString:(id)a3 forPlainText:(BOOL)a4 forStandardizedText:(BOOL)a5
++ (void)fixAttachmentsForRenderingInAttributedString:(id)string forPlainText:(BOOL)text forStandardizedText:(BOOL)standardizedText
 {
-  v7 = a3;
+  stringCopy = string;
   v8 = *MEMORY[0x1E69DB5F8];
-  v9 = [v7 length];
+  v9 = [stringCopy length];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __101__ICTTTextStorage_UI__fixAttachmentsForRenderingInAttributedString_forPlainText_forStandardizedText___block_invoke;
   v11[3] = &unk_1E846A1E8;
-  v12 = v7;
-  v13 = a4;
-  v14 = a5;
-  v10 = v7;
+  v12 = stringCopy;
+  textCopy = text;
+  standardizedTextCopy = standardizedText;
+  v10 = stringCopy;
   [v10 enumerateAttribute:v8 inRange:0 options:v9 usingBlock:{0, v11}];
 }
 
@@ -1764,26 +1764,26 @@ void __101__ICTTTextStorage_UI__fixAttachmentsForRenderingInAttributedString_for
   }
 }
 
-+ (id)filteredAttributedSubstring:(id)a3 fromRange:(_NSRange)a4 forPlainText:(BOOL)a5 forStandardizedText:(BOOL)a6 fixAttachments:(BOOL)a7 insertListMarkers:(BOOL)a8
++ (id)filteredAttributedSubstring:(id)substring fromRange:(_NSRange)range forPlainText:(BOOL)text forStandardizedText:(BOOL)standardizedText fixAttachments:(BOOL)attachments insertListMarkers:(BOOL)markers
 {
-  v64 = a6;
-  v65 = a7;
-  v74 = a5;
-  length = a4.length;
-  location = a4.location;
+  standardizedTextCopy = standardizedText;
+  attachmentsCopy = attachments;
+  textCopy = text;
+  length = range.length;
+  location = range.location;
   v92[4] = *MEMORY[0x1E69E9840];
   v83 = 0;
   v84 = &v83;
   v85 = 0x3032000000;
   v86 = __Block_byref_object_copy__18;
   v87 = __Block_byref_object_dispose__18;
-  v66 = a3;
-  v10 = [v66 attributedSubstringFromRange:{location, length}];
+  substringCopy = substring;
+  v10 = [substringCopy attributedSubstringFromRange:{location, length}];
   v88 = [v10 mutableCopy];
 
-  v72 = [ICTextController shouldRetainFirstListStyleForFilteredAttributedSubstring:v66 fromRange:location, length];
+  v72 = [ICTextController shouldRetainFirstListStyleForFilteredAttributedSubstring:substringCopy fromRange:location, length];
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v74)
+  if (textCopy)
   {
     v91[0] = &unk_1F4FC3DC8;
     v91[1] = &unk_1F4FC3DE0;
@@ -1829,8 +1829,8 @@ void __101__ICTTTextStorage_UI__fixAttachmentsForRenderingInAttributedString_for
     {
       while (1)
       {
-        v15 = [v14 indent];
-        if (v15 + 1 <= [v11 count])
+        indent = [v14 indent];
+        if (indent + 1 <= [v11 count])
         {
           break;
         }
@@ -1848,24 +1848,24 @@ void __101__ICTTTextStorage_UI__fixAttachmentsForRenderingInAttributedString_for
         [v11 addObject:v19];
       }
 
-      v20 = [v14 indent];
-      if (v20 + 1 < [v11 count])
+      indent2 = [v14 indent];
+      if (indent2 + 1 < [v11 count])
       {
         [v11 removeObjectsInRange:{objc_msgSend(v14, "indent") + 1, objc_msgSend(v11, "count") + ~objc_msgSend(v14, "indent")}];
       }
 
-      v21 = [v11 lastObject];
-      v22 = [v14 todo];
-      if (v22 && ([v14 todo], v69 = objc_claimAutoreleasedReturnValue(), v70 = v67, (objc_msgSend(v69, "done") & 1) != 0) || (objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(v14, "style")), v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v76, "objectForKeyedSubscript:", v23), v70 = objc_claimAutoreleasedReturnValue(), v23, v22))
+      lastObject = [v11 lastObject];
+      todo = [v14 todo];
+      if (todo && ([v14 todo], v69 = objc_claimAutoreleasedReturnValue(), v70 = v67, (objc_msgSend(v69, "done") & 1) != 0) || (objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(v14, "style")), v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v76, "objectForKeyedSubscript:", v23), v70 = objc_claimAutoreleasedReturnValue(), v23, todo))
       {
       }
 
-      v24 = [v21 markerFormat];
-      v25 = [v24 isEqualToString:v70];
+      markerFormat = [lastObject markerFormat];
+      v25 = [markerFormat isEqualToString:v70];
 
       if (v25)
       {
-        v75 = v21;
+        v75 = lastObject;
       }
 
       else
@@ -1880,9 +1880,9 @@ void __101__ICTTTextStorage_UI__fixAttachmentsForRenderingInAttributedString_for
         [v11 replaceObjectAtIndex:objc_msgSend(v11 withObject:{"count") - 1, v75}];
       }
 
-      v71 = [MEMORY[0x1E69DB7D0] ic_mutableDefaultParagraphStyle];
-      v26 = [v71 tabStops];
-      v27 = [v26 mutableCopy];
+      ic_mutableDefaultParagraphStyle = [MEMORY[0x1E69DB7D0] ic_mutableDefaultParagraphStyle];
+      tabStops = [ic_mutableDefaultParagraphStyle tabStops];
+      v27 = [tabStops mutableCopy];
 
       v28 = [v27 count];
       if (v28)
@@ -1891,9 +1891,9 @@ void __101__ICTTTextStorage_UI__fixAttachmentsForRenderingInAttributedString_for
         {
           v30 = [v27 objectAtIndexedSubscript:i];
           v31 = objc_alloc(MEMORY[0x1E69DB858]);
-          v32 = [v30 alignment];
-          v33 = [v14 indent];
-          v34 = [v30 options];
+          alignment = [v30 alignment];
+          indent3 = [v14 indent];
+          options = [v30 options];
           if (i)
           {
             v35 = 0.0;
@@ -1904,42 +1904,42 @@ void __101__ICTTTextStorage_UI__fixAttachmentsForRenderingInAttributedString_for
             v35 = 11.0;
           }
 
-          v36 = [v31 initWithTextAlignment:v32 location:v34 options:v35 + (i + v33) * 36.0];
+          v36 = [v31 initWithTextAlignment:alignment location:options options:v35 + (i + indent3) * 36.0];
 
           [v27 replaceObjectAtIndex:i withObject:v36];
         }
       }
 
-      [v71 setTabStops:v27];
-      [v71 setTextLists:v11];
+      [ic_mutableDefaultParagraphStyle setTabStops:v27];
+      [ic_mutableDefaultParagraphStyle setTextLists:v11];
       v38 = v81;
       v37 = v82;
-      if (a8 && v81 < v82 + v81)
+      if (markers && v81 < v82 + v81)
       {
         do
         {
           v39 = [v84[5] attribute:*MEMORY[0x1E69B7950] atIndex:v38 effectiveRange:{0, v37}];
-          v40 = [v39 unsignedIntegerValue];
+          unsignedIntegerValue = [v39 unsignedIntegerValue];
 
           v41 = MEMORY[0x1E696AEC0];
-          if (v74)
+          if (textCopy)
           {
             v42 = [&stru_1F4F94F00 stringByPaddingToLength:4 * objc_msgSend(v14 withString:"indent") startingAtIndex:{@" ", 0}];
-            v43 = [v75 markerForItemNumber:v40];
+            v43 = [v75 markerForItemNumber:unsignedIntegerValue];
             v44 = [v41 stringWithFormat:@"%@%@ ", v42, v43];
           }
 
           else
           {
-            v42 = [v75 markerForItemNumber:v40];
+            v42 = [v75 markerForItemNumber:unsignedIntegerValue];
             v44 = [v41 stringWithFormat:@"\t%@\t", v42];
           }
 
           v45 = [v84[5] attribute:v73 atIndex:v38 effectiveRange:0];
           v46 = [ICTTTextStorage bulletTextAttributesWithTextFont:v45 paragraphStyle:v14 zoomFactor:1.0];
           v47 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v44 attributes:v46];
-          v48 = [v84[5] string];
-          v49 = [v48 paragraphRangeForRange:{v38, 0}];
+          string = [v84[5] string];
+          v49 = [string paragraphRangeForRange:{v38, 0}];
           v38 = v50;
 
           if (v49 != 0 || v72)
@@ -1964,7 +1964,7 @@ void __101__ICTTTextStorage_UI__fixAttachmentsForRenderingInAttributedString_for
         v38 = v81;
       }
 
-      [v84[5] addAttribute:v68 value:v71 range:{v38, v37}];
+      [v84[5] addAttribute:v68 value:ic_mutableDefaultParagraphStyle range:{v38, v37}];
     }
 
     else
@@ -1987,18 +1987,18 @@ void __101__ICTTTextStorage_UI__fixAttachmentsForRenderingInAttributedString_for
   v80[3] = &unk_1E846A0D0;
   v80[4] = &v83;
   [v55 enumerateAttribute:v56 inRange:0 options:v57 usingBlock:{0, v80}];
-  if (v65)
+  if (attachmentsCopy)
   {
-    [a1 fixAttachmentsForRenderingInAttributedString:v84[5] forPlainText:v74 forStandardizedText:v64];
-    v58 = [MEMORY[0x1E69B7800] sharedContext];
-    v59 = [v58 workerManagedObjectContext];
+    [self fixAttachmentsForRenderingInAttributedString:v84[5] forPlainText:textCopy forStandardizedText:standardizedTextCopy];
+    mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+    workerManagedObjectContext = [mEMORY[0x1E69B7800] workerManagedObjectContext];
 
     v77[0] = MEMORY[0x1E69E9820];
     v77[1] = 3221225472;
     v77[2] = __127__ICTTTextStorage_UI__filteredAttributedSubstring_fromRange_forPlainText_forStandardizedText_fixAttachments_insertListMarkers___block_invoke_2;
     v77[3] = &unk_1E8468FA8;
     v79 = &v83;
-    v60 = v59;
+    v60 = workerManagedObjectContext;
     v78 = v60;
     [v60 performBlockAndWait:v77];
   }
@@ -2029,10 +2029,10 @@ void __127__ICTTTextStorage_UI__filteredAttributedSubstring_fromRange_forPlainTe
   *(v3 + 40) = v2;
 }
 
-- (_NSRange)safeCharacterRangeForRange:(_NSRange)a3
+- (_NSRange)safeCharacterRangeForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v5 = [(ICTTTextStorage *)self length];
   if (v5 == location)
   {
@@ -2065,89 +2065,89 @@ LABEL_9:
 
 - (unint64_t)attributeOptions
 {
-  v3 = [(ICTTTextStorage *)self convertAttributes];
+  convertAttributes = [(ICTTTextStorage *)self convertAttributes];
   if ([(ICTTTextStorage *)self filterPastedAttributes])
   {
-    v3 |= 2uLL;
+    convertAttributes |= 2uLL;
   }
 
   if ([(ICTTTextStorage *)self parsePresentationIntents])
   {
-    return v3 | 5;
+    return convertAttributes | 5;
   }
 
   else
   {
-    return v3;
+    return convertAttributes;
   }
 }
 
-- (void)setAttributeOptions:(unint64_t)a3
+- (void)setAttributeOptions:(unint64_t)options
 {
-  [(ICTTTextStorage *)self setConvertAttributes:a3 & 1];
-  [(ICTTTextStorage *)self setFilterPastedAttributes:(a3 >> 1) & 1];
+  [(ICTTTextStorage *)self setConvertAttributes:options & 1];
+  [(ICTTTextStorage *)self setFilterPastedAttributes:(options >> 1) & 1];
 
-  [(ICTTTextStorage *)self setParsePresentationIntents:(a3 & 5) != 0];
+  [(ICTTTextStorage *)self setParsePresentationIntents:(options & 5) != 0];
 }
 
-- (void)editWithAttributeOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)editWithAttributeOptions:(unint64_t)options usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(ICTTTextStorage *)self attributeOptions];
+  blockCopy = block;
+  attributeOptions = [(ICTTTextStorage *)self attributeOptions];
   [(ICTTTextStorage *)self beginEditing];
-  [(ICTTTextStorage *)self setAttributeOptions:a3];
-  v6[2](v6);
+  [(ICTTTextStorage *)self setAttributeOptions:options];
+  blockCopy[2](blockCopy);
 
   [(ICTTTextStorage *)self endEditing];
 
-  [(ICTTTextStorage *)self setAttributeOptions:v7];
+  [(ICTTTextStorage *)self setAttributeOptions:attributeOptions];
 }
 
-- (id)itemProviderForRange:(_NSRange)a3 andNote:(id)a4
+- (id)itemProviderForRange:(_NSRange)range andNote:(id)note
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  v8 = [[ICTTTextStorageWithRange alloc] initWithTextStorage:self range:location note:length, v7];
+  length = range.length;
+  location = range.location;
+  noteCopy = note;
+  noteCopy = [[ICTTTextStorageWithRange alloc] initWithTextStorage:self range:location note:length, noteCopy];
 
-  v9 = [objc_alloc(MEMORY[0x1E696ACA0]) initWithObject:v8];
-  [(ICTTTextStorageWithRange *)v8 prepareTextStorage];
+  v9 = [objc_alloc(MEMORY[0x1E696ACA0]) initWithObject:noteCopy];
+  [(ICTTTextStorageWithRange *)noteCopy prepareTextStorage];
 
   return v9;
 }
 
-- (ICTTTextStorage)initWithDocument:(id)a3
+- (ICTTTextStorage)initWithDocument:(id)document
 {
-  v5 = a3;
+  documentCopy = document;
   v28.receiver = self;
   v28.super_class = ICTTTextStorage;
   v6 = [(ICTTTextStorage *)&v28 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_document, a3);
-    v8 = [(ICTTMergeableStringVersionedDocument *)v7->_document mergeableString];
-    [v8 setDelegate:v7];
+    objc_storeStrong(&v6->_document, document);
+    mergeableString = [(ICTTMergeableStringVersionedDocument *)v7->_document mergeableString];
+    [mergeableString setDelegate:v7];
 
-    v9 = [(ICTTMergeableStringVersionedDocument *)v7->_document mergeableString];
-    v10 = [v9 attributedString];
-    v11 = [v10 mutableCopy];
+    mergeableString2 = [(ICTTMergeableStringVersionedDocument *)v7->_document mergeableString];
+    attributedString = [mergeableString2 attributedString];
+    v11 = [attributedString mutableCopy];
     attributedString = v7->_attributedString;
     v7->_attributedString = v11;
 
     v13 = v7->_attributedString;
     v14 = *MEMORY[0x1E69B7618];
-    v15 = [(NSMutableAttributedString *)v13 ic_range];
-    [(NSMutableAttributedString *)v13 removeAttribute:v14 range:v15, v16];
+    ic_range = [(NSMutableAttributedString *)v13 ic_range];
+    [(NSMutableAttributedString *)v13 removeAttribute:v14 range:ic_range, v16];
     v17 = [[ICTTUndoManager_135534566 alloc] initWithTextStorage:v7];
     undoManager = v7->_undoManager;
     v7->_undoManager = &v17->super;
 
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v19 addObserver:v7 selector:sel_handleDidUndoRedoNotification_ name:*MEMORY[0x1E696AA30] object:v7->_undoManager];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_handleDidUndoRedoNotification_ name:*MEMORY[0x1E696AA30] object:v7->_undoManager];
 
-    v20 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v20 addObserver:v7 selector:sel_handleDidUndoRedoNotification_ name:*MEMORY[0x1E696AA28] object:v7->_undoManager];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel_handleDidUndoRedoNotification_ name:*MEMORY[0x1E696AA28] object:v7->_undoManager];
 
     v21 = objc_alloc_init(MEMORY[0x1E695DF70]);
     undoCommands = v7->_undoCommands;
@@ -2170,12 +2170,12 @@ LABEL_9:
   return v7;
 }
 
-- (ICTTTextStorage)initWithData:(id)a3 replicaID:(id)a4
+- (ICTTTextStorage)initWithData:(id)data replicaID:(id)d
 {
   v6 = MEMORY[0x1E69B78B0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithData:v8 replicaID:v7];
+  dCopy = d;
+  dataCopy = data;
+  v9 = [[v6 alloc] initWithData:dataCopy replicaID:dCopy];
 
   v10 = [(ICTTTextStorage *)self initWithDocument:v9];
   return v10;
@@ -2183,19 +2183,19 @@ LABEL_9:
 
 - (NSUUID)replicaID
 {
-  v2 = [(ICTTTextStorage *)self document];
-  v3 = [v2 replicaID];
+  document = [(ICTTTextStorage *)self document];
+  replicaID = [document replicaID];
 
-  return v3;
+  return replicaID;
 }
 
-- (void)handleDidUndoRedoNotification:(id)a3
+- (void)handleDidUndoRedoNotification:(id)notification
 {
   v16 = *MEMORY[0x1E69E9840];
   if ([(ICTTTextStorage *)self isEditingViaWritingTools])
   {
-    v4 = [(ICTTTextStorage *)self undoCommands];
-    v5 = [v4 count];
+    undoCommands = [(ICTTTextStorage *)self undoCommands];
+    v5 = [undoCommands count];
 
     if (!v5)
     {
@@ -2203,8 +2203,8 @@ LABEL_9:
       v14 = 0u;
       v11 = 0u;
       v12 = 0u;
-      v6 = [(ICTTTextStorage *)self textViews];
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      textViews = [(ICTTTextStorage *)self textViews];
+      v7 = [textViews countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v7)
       {
         v8 = v7;
@@ -2216,14 +2216,14 @@ LABEL_9:
           {
             if (*v12 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(textViews);
             }
 
             [*(*(&v11 + 1) + 8 * v10++) _customUndoManagerDidFinishUndoRedoChanges];
           }
 
           while (v8 != v10);
-          v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+          v8 = [textViews countByEnumeratingWithState:&v11 objects:v15 count:16];
         }
 
         while (v8);
@@ -2232,19 +2232,19 @@ LABEL_9:
   }
 }
 
-- (void)restoreAttributedString:(id)a3
+- (void)restoreAttributedString:(id)string
 {
-  objc_storeStrong(&self->_attributedString, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_attributedString, string);
+  stringCopy = string;
   attributedString = self->_attributedString;
   v7 = *MEMORY[0x1E69B7618];
-  v8 = [(NSMutableAttributedString *)attributedString ic_range];
-  [(NSMutableAttributedString *)attributedString removeAttribute:v7 range:v8, v9];
+  ic_range = [(NSMutableAttributedString *)attributedString ic_range];
+  [(NSMutableAttributedString *)attributedString removeAttribute:v7 range:ic_range, v9];
 
   [(ICTTTextStorage *)self resetHighlightsAttributedString];
 }
 
-- (_NSRange)logicalRangeForLocation:(unint64_t)a3
+- (_NSRange)logicalRangeForLocation:(unint64_t)location
 {
   v3 = [(ICTTTextStorage *)self length];
   v4 = 0;
@@ -2253,56 +2253,56 @@ LABEL_9:
   return result;
 }
 
-- (void)edited:(unint64_t)a3 range:(_NSRange)a4 changeInLength:(int64_t)a5
+- (void)edited:(unint64_t)edited range:(_NSRange)range changeInLength:(int64_t)length
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
+  length = range.length;
+  location = range.location;
+  editedCopy = edited;
   v23.receiver = self;
   v23.super_class = ICTTTextStorage;
   [ICTTTextStorage edited:sel_edited_range_changeInLength_ range:? changeInLength:?];
   if (!self->_directlyEditing && location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = [(ICTTMergeableStringVersionedDocument *)self->_document mergeableString];
-    v11 = [v10 attributedString];
+    mergeableString = [(ICTTMergeableStringVersionedDocument *)self->_document mergeableString];
+    attributedString = [mergeableString attributedString];
 
     v12 = [(NSMutableAttributedString *)self->_attributedString attributedSubstringFromRange:location, length];
-    v13 = [v11 attributedSubstringFromRange:{location, length + a5}];
+    v13 = [attributedString attributedSubstringFromRange:{location, length + length}];
     v14 = [v13 mutableCopy];
 
     v15 = *MEMORY[0x1E69B7618];
-    v16 = [v14 ic_range];
-    [v14 removeAttribute:v15 range:{v16, v17}];
+    ic_range = [v14 ic_range];
+    [v14 removeAttribute:v15 range:{ic_range, v17}];
     [(NSMutableAttributedString *)self->_attributedString replaceCharactersInRange:location withAttributedString:length, v14];
     highlightsAttributedString = self->_highlightsAttributedString;
-    v19 = [v14 string];
-    [(NSMutableAttributedString *)highlightsAttributedString replaceCharactersInRange:location withString:length, v19];
+    string = [v14 string];
+    [(NSMutableAttributedString *)highlightsAttributedString replaceCharactersInRange:location withString:length, string];
 
-    if ((v8 & 2) != 0)
+    if ((editedCopy & 2) != 0)
     {
-      v20 = [(ICTTTextStorage *)self delegate];
+      delegate = [(ICTTTextStorage *)self delegate];
       v21 = objc_opt_respondsToSelector();
 
       if (v21)
       {
-        v22 = [(ICTTTextStorage *)self delegate];
-        [v22 textStorage:self didReplace:v12 with:v14];
+        delegate2 = [(ICTTTextStorage *)self delegate];
+        [delegate2 textStorage:self didReplace:v12 with:v14];
       }
     }
   }
 }
 
-- (id)paragraphUUIDsInRange:(_NSRange)a3
+- (id)paragraphUUIDsInRange:(_NSRange)range
 {
-  if (a3.location == 0x7FFFFFFFFFFFFFFFLL)
+  if (range.location == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = [MEMORY[0x1E695DFD8] set];
   }
 
   else
   {
-    length = a3.length;
-    location = a3.location;
+    length = range.length;
+    location = range.location;
     v7 = [MEMORY[0x1E695DFA8] set];
     v8 = v7;
     v9 = *MEMORY[0x1E69B7600];
@@ -2321,8 +2321,8 @@ LABEL_9:
       v10 = [(ICTTTextStorage *)self attribute:*MEMORY[0x1E69B7600] atIndex:location effectiveRange:0];
       objc_opt_class();
       v11 = ICDynamicCast();
-      v12 = [v11 uuid];
-      [v8 ic_addNonNilObject:v12];
+      uuid = [v11 uuid];
+      [v8 ic_addNonNilObject:uuid];
     }
 
     v3 = [v8 copy];
@@ -2344,38 +2344,38 @@ void __41__ICTTTextStorage_paragraphUUIDsInRange___block_invoke(uint64_t a1, voi
 
 - (ICTTTextUndoTarget)undoTarget
 {
-  v2 = self;
-  v3 = [(ICTTTextStorage *)self overrideUndoTarget];
-  v4 = v3;
-  if (v3)
+  selfCopy = self;
+  overrideUndoTarget = [(ICTTTextStorage *)self overrideUndoTarget];
+  v4 = overrideUndoTarget;
+  if (overrideUndoTarget)
   {
-    v2 = v3;
+    selfCopy = overrideUndoTarget;
   }
 
-  v5 = v2;
+  v5 = selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)addUndoCommand:(id)a3
+- (void)addUndoCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   [(ICTTTextStorage *)self beginEditing];
-  [(NSMutableArray *)self->_undoCommands addObject:v4];
+  [(NSMutableArray *)self->_undoCommands addObject:commandCopy];
 
   [(ICTTTextStorage *)self endEditing];
 }
 
-- (void)applyUndoGroup:(id)a3
+- (void)applyUndoGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34__ICTTTextStorage_applyUndoGroup___block_invoke;
   v6[3] = &unk_1E8468F80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = groupCopy;
+  v5 = groupCopy;
   [(ICTTTextStorage *)self applyUndoWithBlock:v6];
 }
 
@@ -2385,32 +2385,32 @@ void __34__ICTTTextStorage_applyUndoGroup___block_invoke(uint64_t a1)
   [v2 applyUndoCommand:*(a1 + 40)];
 }
 
-- (void)applyUndoWithBlock:(id)a3
+- (void)applyUndoWithBlock:(id)block
 {
   v36 = *MEMORY[0x1E69E9840];
-  v26 = a3;
-  v4 = [(ICTTTextStorage *)self styler];
+  blockCopy = block;
+  styler = [(ICTTTextStorage *)self styler];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICTTTextStorage *)self styler];
-    [v6 setDisableAddingExtraLinesIfNeeded:1];
+    styler2 = [(ICTTTextStorage *)self styler];
+    [styler2 setDisableAddingExtraLinesIfNeeded:1];
   }
 
   [(ICTTTextStorage *)self setIsApplyingUndoCommand:1];
   [(ICTTTextStorage *)self breakUndoCoalescing];
-  v7 = [(ICTTTextStorage *)self writingToolsSessionUUID];
+  writingToolsSessionUUID = [(ICTTTextStorage *)self writingToolsSessionUUID];
 
   v8 = &off_1D4433000;
-  if (v7)
+  if (writingToolsSessionUUID)
   {
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v9 = [(ICTTTextStorage *)self textViews];
-    v10 = [v9 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    textViews = [(ICTTTextStorage *)self textViews];
+    v10 = [textViews countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v10)
     {
       v11 = v10;
@@ -2421,21 +2421,21 @@ void __34__ICTTTextStorage_applyUndoGroup___block_invoke(uint64_t a1)
         {
           if (*v32 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(textViews);
           }
 
           v14 = *(*(&v31 + 1) + 8 * i);
-          v15 = [(ICTTTextStorage *)self writingToolsSessionUUID];
+          writingToolsSessionUUID2 = [(ICTTTextStorage *)self writingToolsSessionUUID];
           v29[0] = MEMORY[0x1E69E9820];
           v29[1] = 3221225472;
           v29[2] = __38__ICTTTextStorage_applyUndoWithBlock___block_invoke;
           v29[3] = &unk_1E846B730;
           v29[4] = self;
-          v30 = v26;
-          [v14 _performExternalEditsForWritingToolsSessionIdentifier:v15 action:1 usingBlock:v29];
+          v30 = blockCopy;
+          [v14 _performExternalEditsForWritingToolsSessionIdentifier:writingToolsSessionUUID2 action:1 usingBlock:v29];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v11 = [textViews countByEnumeratingWithState:&v31 objects:v35 count:16];
       }
 
       while (v11);
@@ -2447,43 +2447,43 @@ void __34__ICTTTextStorage_applyUndoGroup___block_invoke(uint64_t a1)
   else
   {
     [(ICTTTextStorage *)self beginEditing];
-    v26[2]();
+    blockCopy[2]();
     [(ICTTTextStorage *)self endEditing];
   }
 
-  v16 = [(ICTTTextStorage *)self ttEditedRange];
+  ttEditedRange = [(ICTTTextStorage *)self ttEditedRange];
   v18 = v17;
   [(ICTTTextStorage *)self setPendingFixupAfterEditing:1];
   [(ICTTTextStorage *)self fixupAfterEditing];
   [(ICTTTextStorage *)self breakUndoCoalescing];
-  v19 = [(ICTTTextStorage *)self textViews];
+  textViews2 = [(ICTTTextStorage *)self textViews];
   v28[0] = MEMORY[0x1E69E9820];
   v20 = *(v8 + 491);
   v28[1] = v20;
   v28[2] = __38__ICTTTextStorage_applyUndoWithBlock___block_invoke_2;
   v28[3] = &unk_1E846B758;
   v28[4] = self;
-  v28[5] = v16;
+  v28[5] = ttEditedRange;
   v28[6] = v18;
-  [v19 enumerateObjectsUsingBlock:v28];
+  [textViews2 enumerateObjectsUsingBlock:v28];
 
   [(ICTTTextStorage *)self setIsApplyingUndoCommand:0];
-  v21 = [(ICTTTextStorage *)self delegate];
+  delegate = [(ICTTTextStorage *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v21 textStorageDidPerformUndo:self];
+    [delegate textStorageDidPerformUndo:self];
   }
 
-  v22 = [(ICTTTextStorage *)self styler];
+  styler3 = [(ICTTTextStorage *)self styler];
   v23 = objc_opt_respondsToSelector();
 
   if (v23)
   {
-    v24 = [(ICTTTextStorage *)self styler];
-    [v24 setDisableAddingExtraLinesIfNeeded:0];
+    styler4 = [(ICTTTextStorage *)self styler];
+    [styler4 setDisableAddingExtraLinesIfNeeded:0];
   }
 
-  if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0 && v16 + v18 <= [(ICTTTextStorage *)self length])
+  if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0 && ttEditedRange + v18 <= [(ICTTTextStorage *)self length])
   {
     v25 = *MEMORY[0x1E69DB5F8];
     v27[0] = MEMORY[0x1E69E9820];
@@ -2491,7 +2491,7 @@ void __34__ICTTTextStorage_applyUndoGroup___block_invoke(uint64_t a1)
     v27[2] = __38__ICTTTextStorage_applyUndoWithBlock___block_invoke_3;
     v27[3] = &unk_1E846A170;
     v27[4] = self;
-    [(ICTTTextStorage *)self enumerateAttribute:v25 inRange:v16 options:v18 usingBlock:0, v27];
+    [(ICTTTextStorage *)self enumerateAttribute:v25 inRange:ttEditedRange options:v18 usingBlock:0, v27];
   }
 }
 
@@ -2557,8 +2557,8 @@ void __38__ICTTTextStorage_applyUndoWithBlock___block_invoke_3(uint64_t a1, uint
 {
   if (![(ICTTTextStorage *)self disableUndoCoalesceBreaking])
   {
-    v3 = [(ICTTTextStorage *)self coalescingUndoGroup];
-    [v3 closeGroup];
+    coalescingUndoGroup = [(ICTTTextStorage *)self coalescingUndoGroup];
+    [coalescingUndoGroup closeGroup];
 
     [(ICTTTextStorage *)self setCoalescingUndoGroup:0];
   }
@@ -2571,11 +2571,11 @@ void __38__ICTTTextStorage_applyUndoWithBlock___block_invoke_3(uint64_t a1, uint
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"self.disableUndoCoalesceBreaking == __objc_no" functionName:"-[ICTTTextStorage resetUndoManager]" simulateCrash:1 showAlert:0 format:@"We shouldn't get here when disableUndoCoalesceBreaking == YES"];
   }
 
-  v3 = [(ICTTTextStorage *)self undoManager];
-  [v3 removeAllActions];
+  undoManager = [(ICTTTextStorage *)self undoManager];
+  [undoManager removeAllActions];
 
-  v4 = [(ICTTTextStorage *)self coalescingUndoGroup];
-  [v4 closeGroup];
+  coalescingUndoGroup = [(ICTTTextStorage *)self coalescingUndoGroup];
+  [coalescingUndoGroup closeGroup];
 
   [(ICTTTextStorage *)self setCoalescingUndoGroup:0];
 
@@ -2584,7 +2584,7 @@ void __38__ICTTTextStorage_applyUndoWithBlock___block_invoke_3(uint64_t a1, uint
 
 - (void)fixupAfterEditing
 {
-  v3 = [(ICTTTextStorage *)self pendingFixupAfterEditing];
+  pendingFixupAfterEditing = [(ICTTTextStorage *)self pendingFixupAfterEditing];
   [(ICTTTextStorage *)self setPendingFixupAfterEditing:0];
   if (![(ICTTTextStorage *)self isFixing]&& [(ICTTTextStorage *)self ttEditedRange]!= 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -2598,10 +2598,10 @@ void __38__ICTTTextStorage_applyUndoWithBlock___block_invoke_3(uint64_t a1, uint
     [(ICTTTextStorage *)self resetTTEdits];
     [(ICTTTextStorage *)self setHasUserEditSinceFixupAfterEditing:0];
     [(ICTTTextStorage *)self setIsFixing:0];
-    if (v3)
+    if (pendingFixupAfterEditing)
     {
-      v4 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v4 postNotificationName:@"ICTTTextStorageDidProcessEndEditingNotification" object:self];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"ICTTTextStorageDidProcessEndEditingNotification" object:self];
     }
   }
 }
@@ -2645,16 +2645,16 @@ void __36__ICTTTextStorage_fixupAfterEditing__block_invoke(uint64_t a1)
 {
   if (![(ICTTTextStorage *)self isZombie]&& [(ICTTTextStorage *)self pendingFixupAfterEditing])
   {
-    v3 = [(ICTTTextStorage *)self wantsUndoCommands];
+    wantsUndoCommands = [(ICTTTextStorage *)self wantsUndoCommands];
     [(ICTTTextStorage *)self setWantsUndoCommands:[(ICTTTextStorage *)self delayedFixupAfterEditingWantsUndoCommand]];
-    v4 = [(ICTTTextStorage *)self textViews];
-    [v4 enumerateObjectsUsingBlock:&__block_literal_global_78];
+    textViews = [(ICTTTextStorage *)self textViews];
+    [textViews enumerateObjectsUsingBlock:&__block_literal_global_78];
 
     [(ICTTTextStorage *)self fixupAfterEditing];
-    v5 = [(ICTTTextStorage *)self textViews];
-    [v5 enumerateObjectsUsingBlock:&__block_literal_global_126];
+    textViews2 = [(ICTTTextStorage *)self textViews];
+    [textViews2 enumerateObjectsUsingBlock:&__block_literal_global_126];
 
-    [(ICTTTextStorage *)self setWantsUndoCommands:v3];
+    [(ICTTTextStorage *)self setWantsUndoCommands:wantsUndoCommands];
   }
 }
 
@@ -2687,32 +2687,32 @@ void __50__ICTTTextStorage_executeDelayedFixupAfterEditing__block_invoke_2(uint6
   }
 }
 
-- (BOOL)mergeableStringIsEqualAfterSerialization:(id)a3
+- (BOOL)mergeableStringIsEqualAfterSerialization:(id)serialization
 {
-  v4 = a3;
-  v5 = [(ICTTTextStorage *)self mergeableString];
+  serializationCopy = serialization;
+  mergeableString = [(ICTTTextStorage *)self mergeableString];
 
-  if (v5 == v4)
+  if (mergeableString == serializationCopy)
   {
     v46 = 1;
   }
 
   else
   {
-    v6 = [(ICTTTextStorage *)self mergeableString];
-    v7 = [v6 attributedString];
-    v8 = [v7 string];
-    v9 = [v4 attributedString];
-    v10 = [v9 string];
-    v11 = [v8 isEqual:v10];
+    mergeableString2 = [(ICTTTextStorage *)self mergeableString];
+    attributedString = [mergeableString2 attributedString];
+    string = [attributedString string];
+    attributedString2 = [serializationCopy attributedString];
+    string2 = [attributedString2 string];
+    v11 = [string isEqual:string2];
 
     if (v11)
     {
-      v50 = v4;
-      v48 = self;
-      v12 = [(ICTTTextStorage *)self mergeableString];
-      v13 = [v12 attributedString];
-      v51 = [v13 length];
+      v50 = serializationCopy;
+      selfCopy = self;
+      mergeableString3 = [(ICTTTextStorage *)self mergeableString];
+      attributedString3 = [mergeableString3 attributedString];
+      v51 = [attributedString3 length];
 
       v14 = 0;
       v15 = 0;
@@ -2733,9 +2733,9 @@ void __50__ICTTTextStorage_executeDelayedFixupAfterEditing__block_invoke_2(uint6
 
         if (v16 >= v54 + v55)
         {
-          v19 = [(ICTTTextStorage *)v48 mergeableString];
-          v20 = [v19 attributedString];
-          v21 = [v20 attributesAtIndex:v16 effectiveRange:&v54];
+          mergeableString4 = [(ICTTTextStorage *)selfCopy mergeableString];
+          attributedString4 = [mergeableString4 attributedString];
+          v21 = [attributedString4 attributesAtIndex:v16 effectiveRange:&v54];
           v22 = [v21 mutableCopy];
 
           v15 = v22;
@@ -2743,8 +2743,8 @@ void __50__ICTTTextStorage_executeDelayedFixupAfterEditing__block_invoke_2(uint6
 
         if (v16 >= v52 + v53)
         {
-          v23 = [v50 attributedString];
-          v24 = [v23 attributesAtIndex:v16 effectiveRange:&v52];
+          attributedString5 = [v50 attributedString];
+          v24 = [attributedString5 attributesAtIndex:v16 effectiveRange:&v52];
           v25 = [v24 mutableCopy];
 
           v14 = v25;
@@ -2760,24 +2760,24 @@ void __50__ICTTTextStorage_executeDelayedFixupAfterEditing__block_invoke_2(uint6
         [v27 setNeedsListCleanup:0];
         [v29 setNeedsParagraphCleanup:0];
         [v29 setNeedsListCleanup:0];
-        v30 = [MEMORY[0x1E696AFB0] UUID];
-        v31 = [v27 todo];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        todo = [v27 todo];
 
-        if (v31)
+        if (todo)
         {
           v32 = objc_alloc(MEMORY[0x1E69B78E0]);
-          v33 = [v27 todo];
-          v34 = [v32 initWithIdentifier:v30 done:{objc_msgSend(v33, "done")}];
+          todo2 = [v27 todo];
+          v34 = [v32 initWithIdentifier:uUID done:{objc_msgSend(todo2, "done")}];
           [v27 setTodo:v34];
         }
 
-        v35 = [v29 todo];
+        todo3 = [v29 todo];
 
-        if (v35)
+        if (todo3)
         {
           v36 = objc_alloc(MEMORY[0x1E69B78E0]);
-          v37 = [v29 todo];
-          v38 = [v36 initWithIdentifier:v30 done:{objc_msgSend(v37, "done")}];
+          todo4 = [v29 todo];
+          v38 = [v36 initWithIdentifier:uUID done:{objc_msgSend(todo4, "done")}];
           [v29 setTodo:v38];
         }
 
@@ -2817,7 +2817,7 @@ void __50__ICTTTextStorage_executeDelayedFixupAfterEditing__block_invoke_2(uint6
 
       while ((v45 & 1) != 0);
 
-      v4 = v50;
+      serializationCopy = v50;
       v46 = v49;
     }
 
@@ -2830,24 +2830,24 @@ void __50__ICTTTextStorage_executeDelayedFixupAfterEditing__block_invoke_2(uint6
   return v46 & 1;
 }
 
-- (void)addTextLayoutManager:(id)a3
+- (void)addTextLayoutManager:(id)manager
 {
   v4 = MEMORY[0x1E69B7AD8];
-  v5 = a3;
-  v7 = [[v4 alloc] initWithObject:v5];
+  managerCopy = manager;
+  v7 = [[v4 alloc] initWithObject:managerCopy];
 
-  v6 = [(ICTTTextStorage *)self textLayoutManagerReferences];
-  [v6 addObject:v7];
+  textLayoutManagerReferences = [(ICTTTextStorage *)self textLayoutManagerReferences];
+  [textLayoutManagerReferences addObject:v7];
 }
 
-- (void)removeTextLayoutManager:(id)a3
+- (void)removeTextLayoutManager:(id)manager
 {
   v4 = MEMORY[0x1E69B7AD8];
-  v5 = a3;
-  v7 = [[v4 alloc] initWithObject:v5];
+  managerCopy = manager;
+  v7 = [[v4 alloc] initWithObject:managerCopy];
 
-  v6 = [(ICTTTextStorage *)self textLayoutManagerReferences];
-  [v6 removeObject:v7];
+  textLayoutManagerReferences = [(ICTTTextStorage *)self textLayoutManagerReferences];
+  [textLayoutManagerReferences removeObject:v7];
 }
 
 id __28__ICTTTextStorage_textViews__block_invoke_2(uint64_t a1, void *a2)
@@ -2870,21 +2870,21 @@ id __28__ICTTTextStorage_textViews__block_invoke_3(uint64_t a1, void *a2)
   return v5;
 }
 
-- (id)editAtIndex:(unint64_t)a3
+- (id)editAtIndex:(unint64_t)index
 {
-  v4 = [(ICTTTextStorage *)self mergeableString];
-  v5 = [v4 editAtIndex:a3];
+  mergeableString = [(ICTTTextStorage *)self mergeableString];
+  v5 = [mergeableString editAtIndex:index];
 
   return v5;
 }
 
-- (void)enumerateEditsInRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateEditsInRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  v8 = [(ICTTTextStorage *)self mergeableString];
-  [v8 enumerateEditsInRange:location usingBlock:{length, v7}];
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
+  mergeableString = [(ICTTTextStorage *)self mergeableString];
+  [mergeableString enumerateEditsInRange:location usingBlock:{length, blockCopy}];
 }
 
 - (void)redactAuthorAttributionsToCurrentUser
@@ -2892,18 +2892,18 @@ id __28__ICTTTextStorage_textViews__block_invoke_3(uint64_t a1, void *a2)
   [(ICTTTextStorage *)self setWantsUndoCommands:0];
   v9 = [(ICTTTextStorage *)self mutableCopy];
   v3 = *MEMORY[0x1E69B7618];
-  v4 = [(ICTTTextStorage *)self currentTimestamp];
-  v5 = [v9 ic_range];
-  [v9 addAttribute:v3 value:v4 range:{v5, v6}];
+  currentTimestamp = [(ICTTTextStorage *)self currentTimestamp];
+  ic_range = [v9 ic_range];
+  [v9 addAttribute:v3 value:currentTimestamp range:{ic_range, v6}];
 
-  v7 = [v9 ic_range];
-  [(ICTTTextStorage *)self replaceCharactersInRange:v7 withAttributedString:v8, v9];
+  ic_range2 = [v9 ic_range];
+  [(ICTTTextStorage *)self replaceCharactersInRange:ic_range2 withAttributedString:v8, v9];
   [(ICTTTextStorage *)self setWantsUndoCommands:1];
 }
 
-- (void)coordinateReading:(id)a3
+- (void)coordinateReading:(id)reading
 {
-  v4 = a3;
+  readingCopy = reading;
   if (![(ICTTTextStorage *)self isTypingOrMarkingText]&& ![(ICTTTextStorage *)self isSelectingText]&& ![(ICTTTextStorage *)self isDropping])
   {
     [(ICTTTextStorage *)self forceFixupAfterEditingIfDelayed];
@@ -2911,12 +2911,12 @@ id __28__ICTTTextStorage_textViews__block_invoke_3(uint64_t a1, void *a2)
 
   v5.receiver = self;
   v5.super_class = ICTTTextStorage;
-  [(ICTTTextStorage *)&v5 coordinateReading:v4];
+  [(ICTTTextStorage *)&v5 coordinateReading:readingCopy];
 }
 
-- (void)coordinateEditing:(id)a3
+- (void)coordinateEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   if (![(ICTTTextStorage *)self isTypingOrMarkingText]&& ![(ICTTTextStorage *)self isSelectingText]&& ![(ICTTTextStorage *)self isDropping])
   {
     [(ICTTTextStorage *)self forceFixupAfterEditingIfDelayed];
@@ -2924,12 +2924,12 @@ id __28__ICTTTextStorage_textViews__block_invoke_3(uint64_t a1, void *a2)
 
   v5.receiver = self;
   v5.super_class = ICTTTextStorage;
-  [(ICTTTextStorage *)&v5 coordinateEditing:v4];
+  [(ICTTTextStorage *)&v5 coordinateEditing:editingCopy];
 }
 
-- (void)coordinateAccess:(id)a3
+- (void)coordinateAccess:(id)access
 {
-  v4 = a3;
+  accessCopy = access;
   if (![(ICTTTextStorage *)self isTypingOrMarkingText]&& ![(ICTTTextStorage *)self isSelectingText]&& ![(ICTTTextStorage *)self isDropping])
   {
     [(ICTTTextStorage *)self forceFixupAfterEditingIfDelayed];
@@ -2937,21 +2937,21 @@ id __28__ICTTTextStorage_textViews__block_invoke_3(uint64_t a1, void *a2)
 
   v5.receiver = self;
   v5.super_class = ICTTTextStorage;
-  [(ICTTTextStorage *)&v5 coordinateAccess:v4];
+  [(ICTTTextStorage *)&v5 coordinateAccess:accessCopy];
 }
 
-- (id)savedSelectionWithSelectionAffinity:(unint64_t)a3
+- (id)savedSelectionWithSelectionAffinity:(unint64_t)affinity
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = [(ICTTTextStorage *)self textViews];
-  v6 = [v5 allObjects];
+  textViews = [(ICTTTextStorage *)self textViews];
+  allObjects = [textViews allObjects];
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v6;
+  obj = allObjects;
   v8 = [obj countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v8)
   {
@@ -2967,18 +2967,18 @@ id __28__ICTTTextStorage_textViews__block_invoke_3(uint64_t a1, void *a2)
         }
 
         v12 = MEMORY[0x1E696B098];
-        v13 = [*(*(&v24 + 1) + 8 * i) selectedRange];
-        v15 = [v12 valueWithRange:{v13, v14}];
+        selectedRange = [*(*(&v24 + 1) + 8 * i) selectedRange];
+        v15 = [v12 valueWithRange:{selectedRange, v14}];
         v29 = v15;
         v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v29 count:1];
 
-        v17 = [(ICTTMergeableStringVersionedDocument *)self->_document mergeableString];
-        v18 = [v17 selectionForCharacterRanges:v16 selectionAffinity:a3];
+        mergeableString = [(ICTTMergeableStringVersionedDocument *)self->_document mergeableString];
+        v18 = [mergeableString selectionForCharacterRanges:v16 selectionAffinity:affinity];
 
         [v7 addObject:v18];
-        v19 = [(ICTTMergeableStringVersionedDocument *)self->_document mergeableString];
-        v20 = [v19 objectsNeedingUpdatedRanges];
-        [v20 addObject:v18];
+        mergeableString2 = [(ICTTMergeableStringVersionedDocument *)self->_document mergeableString];
+        objectsNeedingUpdatedRanges = [mergeableString2 objectsNeedingUpdatedRanges];
+        [objectsNeedingUpdatedRanges addObject:v18];
       }
 
       v9 = [obj countByEnumeratingWithState:&v24 objects:v30 count:16];
@@ -3081,50 +3081,50 @@ void __36__ICTTTextStorage_restoreSelection___block_invoke(id *a1)
   }
 }
 
-- (void)saveSelectionDuringBlock:(id)a3 affinity:(unint64_t)a4
+- (void)saveSelectionDuringBlock:(id)block affinity:(unint64_t)affinity
 {
-  v6 = a3;
-  v7 = [(ICTTTextStorage *)self savedSelectionWithSelectionAffinity:a4];
-  v6[2](v6);
+  blockCopy = block;
+  v7 = [(ICTTTextStorage *)self savedSelectionWithSelectionAffinity:affinity];
+  blockCopy[2](blockCopy);
 
   [(ICTTTextStorage *)self restoreSelection:v7];
 }
 
-- (unint64_t)mergeWithDocument:(id)a3
+- (unint64_t)mergeWithDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v5 = [(ICTTTextStorage *)self savedSelectionWithSelectionAffinity:0];
-  v6 = [(ICTTTextStorage *)self document];
-  v7 = [v6 mergeWithStringVersionedDocument:v4];
+  document = [(ICTTTextStorage *)self document];
+  v7 = [document mergeWithStringVersionedDocument:documentCopy];
 
   [(ICTTTextStorage *)self restoreSelection:v5];
   return v7;
 }
 
-- (void)replaceWithDocument:(id)a3
+- (void)replaceWithDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v5 = [(NSMutableAttributedString *)self->_attributedString length];
-  v6 = [(ICTTMergeableStringVersionedDocument *)self->_document mergeableString];
-  [v6 setDelegate:0];
+  mergeableString = [(ICTTMergeableStringVersionedDocument *)self->_document mergeableString];
+  [mergeableString setDelegate:0];
 
   document = self->_document;
-  self->_document = v4;
-  v8 = v4;
+  self->_document = documentCopy;
+  v8 = documentCopy;
 
-  v9 = [(ICTTMergeableStringVersionedDocument *)self->_document mergeableString];
-  [v9 setDelegate:self];
+  mergeableString2 = [(ICTTMergeableStringVersionedDocument *)self->_document mergeableString];
+  [mergeableString2 setDelegate:self];
 
-  v10 = [(ICTTMergeableStringVersionedDocument *)self->_document mergeableString];
-  v11 = [v10 attributedString];
-  v12 = [v11 mutableCopy];
+  mergeableString3 = [(ICTTMergeableStringVersionedDocument *)self->_document mergeableString];
+  attributedString = [mergeableString3 attributedString];
+  v12 = [attributedString mutableCopy];
   attributedString = self->_attributedString;
   self->_attributedString = v12;
 
   v14 = self->_attributedString;
   v15 = *MEMORY[0x1E69B7618];
-  v16 = [(NSMutableAttributedString *)v14 ic_range];
-  [(NSMutableAttributedString *)v14 removeAttribute:v15 range:v16, v17];
+  ic_range = [(NSMutableAttributedString *)v14 ic_range];
+  [(NSMutableAttributedString *)v14 removeAttribute:v15 range:ic_range, v17];
   [(ICTTTextStorage *)self resetHighlightsAttributedString];
   v18 = [(NSMutableAttributedString *)self->_attributedString length];
   v19.receiver = self;
@@ -3132,22 +3132,22 @@ void __36__ICTTTextStorage_restoreSelection___block_invoke(id *a1)
   [(ICTTTextStorage *)&v19 edited:3 range:0 changeInLength:v5, v18 - v5];
 }
 
-- (BOOL)validateIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (BOOL)validateIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v6 = [(NSMutableAttributedString *)self->_attributedString length];
-  if (a4 && v6 <= a3)
+  if (range && v6 <= index)
   {
-    *a4 = xmmword_1D4433FC0;
+    *range = xmmword_1D4433FC0;
   }
 
-  return v6 > a3;
+  return v6 > index;
 }
 
-- (id)attributesAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)attributesAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   if ([ICTTTextStorage validateIndex:"validateIndex:effectiveRange:" effectiveRange:?])
   {
-    v7 = [(NSMutableAttributedString *)self->_attributedString attributesAtIndex:a3 effectiveRange:a4];
+    v7 = [(NSMutableAttributedString *)self->_attributedString attributesAtIndex:index effectiveRange:range];
   }
 
   else
@@ -3158,15 +3158,15 @@ void __36__ICTTTextStorage_restoreSelection___block_invoke(id *a1)
   return v7;
 }
 
-- (id)attributesAtIndex:(unint64_t)a3 longestEffectiveRange:(_NSRange *)a4 inRange:(_NSRange)a5
+- (id)attributesAtIndex:(unint64_t)index longestEffectiveRange:(_NSRange *)range inRange:(_NSRange)inRange
 {
-  length = a5.length;
-  location = a5.location;
+  length = inRange.length;
+  location = inRange.location;
   if ([ICTTTextStorage validateIndex:"validateIndex:effectiveRange:" effectiveRange:?])
   {
     v12.receiver = self;
     v12.super_class = ICTTTextStorage;
-    v10 = [(ICTTTextStorage *)&v12 attributesAtIndex:a3 longestEffectiveRange:a4 inRange:location, length];
+    v10 = [(ICTTTextStorage *)&v12 attributesAtIndex:index longestEffectiveRange:range inRange:location, length];
   }
 
   else
@@ -3177,12 +3177,12 @@ void __36__ICTTTextStorage_restoreSelection___block_invoke(id *a1)
   return v10;
 }
 
-- (id)attribute:(id)a3 atIndex:(unint64_t)a4 effectiveRange:(_NSRange *)a5
+- (id)attribute:(id)attribute atIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  v8 = a3;
-  if ([(ICTTTextStorage *)self validateIndex:a4 effectiveRange:a5])
+  attributeCopy = attribute;
+  if ([(ICTTTextStorage *)self validateIndex:index effectiveRange:range])
   {
-    v9 = [(NSMutableAttributedString *)self->_attributedString attribute:v8 atIndex:a4 effectiveRange:a5];
+    v9 = [(NSMutableAttributedString *)self->_attributedString attribute:attributeCopy atIndex:index effectiveRange:range];
   }
 
   else
@@ -3193,16 +3193,16 @@ void __36__ICTTTextStorage_restoreSelection___block_invoke(id *a1)
   return v9;
 }
 
-- (id)attribute:(id)a3 atIndex:(unint64_t)a4 longestEffectiveRange:(_NSRange *)a5 inRange:(_NSRange)a6
+- (id)attribute:(id)attribute atIndex:(unint64_t)index longestEffectiveRange:(_NSRange *)range inRange:(_NSRange)inRange
 {
-  length = a6.length;
-  location = a6.location;
-  v11 = a3;
-  if ([(ICTTTextStorage *)self validateIndex:a4 effectiveRange:a5])
+  length = inRange.length;
+  location = inRange.location;
+  attributeCopy = attribute;
+  if ([(ICTTTextStorage *)self validateIndex:index effectiveRange:range])
   {
     v14.receiver = self;
     v14.super_class = ICTTTextStorage;
-    v12 = [(ICTTTextStorage *)&v14 attribute:v11 atIndex:a4 longestEffectiveRange:a5 inRange:location, length];
+    v12 = [(ICTTTextStorage *)&v14 attribute:attributeCopy atIndex:index longestEffectiveRange:range inRange:location, length];
   }
 
   else
@@ -3213,22 +3213,22 @@ void __36__ICTTTextStorage_restoreSelection___block_invoke(id *a1)
   return v12;
 }
 
-- (id)correctParagraphStyleReuseForRange:(_NSRange)a3 withNewAttributedString:(id)a4
+- (id)correctParagraphStyleReuseForRange:(_NSRange)range withNewAttributedString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   v8 = ![(ICTTTextStorage *)self hasEditedCharactersAfterTextSelection]&& [(ICTTTextStorage *)self isTypingOrMarkingText];
-  v9 = [(ICTTTextStorage *)self string];
-  v10 = [v9 paragraphRangeForRange:{location, length}];
+  string = [(ICTTTextStorage *)self string];
+  v10 = [string paragraphRangeForRange:{location, length}];
   v12 = v11;
 
   v13 = v10 + v12;
   if (v12 && v10 + v12 != 0 && v8)
   {
-    v14 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-    v15 = [(ICTTTextStorage *)self string];
-    v16 = [v14 characterIsMember:{objc_msgSend(v15, "characterAtIndex:", v13 - 1)}];
+    newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+    string2 = [(ICTTTextStorage *)self string];
+    v16 = [newlineCharacterSet characterIsMember:{objc_msgSend(string2, "characterAtIndex:", v13 - 1)}];
 
     if (!v16 || v12 != 1)
     {
@@ -3247,28 +3247,28 @@ void __36__ICTTTextStorage_restoreSelection___block_invoke(id *a1)
   v26 = __Block_byref_object_copy__35;
   v27 = __Block_byref_object_dispose__35;
   v28 = 0;
-  v17 = [(ICTTTextStorage *)self textViews];
+  textViews = [(ICTTTextStorage *)self textViews];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __78__ICTTTextStorage_correctParagraphStyleReuseForRange_withNewAttributedString___block_invoke;
   v22[3] = &unk_1E846B800;
   v22[4] = &v23;
-  [v17 enumerateObjectsUsingBlock:v22];
+  [textViews enumerateObjectsUsingBlock:v22];
 
   if (v24[5])
   {
     v18 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v19 = [v7 string];
-    v20 = [v18 initWithString:v19 attributes:v24[5]];
+    string3 = [stringCopy string];
+    v20 = [v18 initWithString:string3 attributes:v24[5]];
 
-    v7 = v20;
+    stringCopy = v20;
   }
 
   _Block_object_dispose(&v23, 8);
 
 LABEL_13:
 
-  return v7;
+  return stringCopy;
 }
 
 uint64_t __78__ICTTTextStorage_correctParagraphStyleReuseForRange_withNewAttributedString___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -3283,21 +3283,21 @@ uint64_t __78__ICTTTextStorage_correctParagraphStyleReuseForRange_withNewAttribu
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addAttribute:(id)a3 value:(id)a4 range:(_NSRange)a5
+- (void)addAttribute:(id)attribute value:(id)value range:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v9 = a3;
-  v10 = a4;
+  length = range.length;
+  location = range.location;
+  attributeCopy = attribute;
+  valueCopy = value;
   if (addAttribute_value_range__onceToken != -1)
   {
     [ICTTTextStorage addAttribute:value:range:];
   }
 
-  if (-[ICTTTextStorage isEditingTemporaryAttributes](self, "isEditingTemporaryAttributes") || ![MEMORY[0x1E696AD40] dd_isTransientAttribute:v9])
+  if (-[ICTTTextStorage isEditingTemporaryAttributes](self, "isEditingTemporaryAttributes") || ![MEMORY[0x1E696AD40] dd_isTransientAttribute:attributeCopy])
   {
     v11 = 0;
-    if (!v10)
+    if (!valueCopy)
     {
       goto LABEL_9;
     }
@@ -3307,12 +3307,12 @@ uint64_t __78__ICTTTextStorage_correctParagraphStyleReuseForRange_withNewAttribu
 
   [(ICTTTextStorage *)self beginTemporaryAttributes];
   v11 = 1;
-  if (v10)
+  if (valueCopy)
   {
 LABEL_8:
     v12.receiver = self;
     v12.super_class = ICTTTextStorage;
-    [(ICTTTextStorage *)&v12 addAttribute:v9 value:v10 range:location, length];
+    [(ICTTTextStorage *)&v12 addAttribute:attributeCopy value:valueCopy range:location, length];
   }
 
 LABEL_9:
@@ -3335,24 +3335,24 @@ void __44__ICTTTextStorage_addAttribute_value_range___block_invoke()
   }
 }
 
-- (void)dd_makeLinksForResultsInAttributesOfType:(unint64_t)a3 context:(id)a4 range:(_NSRange)a5
+- (void)dd_makeLinksForResultsInAttributesOfType:(unint64_t)type context:(id)context range:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v9 = a4;
+  length = range.length;
+  location = range.location;
+  contextCopy = context;
   v10 = [MEMORY[0x1E696AD50] indexSetWithIndexesInRange:{location, length}];
   objc_opt_class();
-  v11 = [(ICTTTextStorage *)self delegate];
+  delegate = [(ICTTTextStorage *)self delegate];
   v12 = ICDynamicCast();
 
   objc_opt_class();
-  v13 = [v12 calculateDocumentController];
+  calculateDocumentController = [v12 calculateDocumentController];
   v14 = ICDynamicCast();
 
   if (v14)
   {
-    v15 = [v14 expressionsIndexSet];
-    [v10 removeIndexes:v15];
+    expressionsIndexSet = [v14 expressionsIndexSet];
+    [v10 removeIndexes:expressionsIndexSet];
   }
 
   [(ICTTTextStorage *)self beginTemporaryAttributes];
@@ -3360,14 +3360,14 @@ void __44__ICTTTextStorage_addAttribute_value_range___block_invoke()
   v18[1] = 3221225472;
   v18[2] = __74__ICTTTextStorage_dd_makeLinksForResultsInAttributesOfType_context_range___block_invoke;
   v18[3] = &unk_1E846B828;
-  v20 = self;
-  v21 = a3;
-  v19 = v9;
-  v16 = v9;
+  selfCopy = self;
+  typeCopy = type;
+  v19 = contextCopy;
+  v16 = contextCopy;
   [v10 enumerateRangesUsingBlock:v18];
   [(ICTTTextStorage *)self endTemporaryAttributes];
-  v17 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v17 postNotificationName:@"ICTTTextStorageDidUpdateDataDetectionResultsNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"ICTTTextStorageDidUpdateDataDetectionResultsNotification" object:self];
 }
 
 id __74__ICTTTextStorage_dd_makeLinksForResultsInAttributesOfType_context_range___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -3402,8 +3402,8 @@ id __74__ICTTTextStorage_dd_makeLinksForResultsInAttributesOfType_context_range_
   v8[4] = self;
   [(ICTTTextStorage *)self enumerateAttribute:v5 inRange:0 options:v6 usingBlock:0, v8];
   [(ICTTTextStorage *)self endTemporaryAttributes];
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 postNotificationName:@"ICTTTextStorageDidUpdateDataDetectionResultsNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"ICTTTextStorageDidUpdateDataDetectionResultsNotification" object:self];
 }
 
 uint64_t __34__ICTTTextStorage_dd_resetResults__block_invoke(uint64_t result, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -3446,19 +3446,19 @@ void __34__ICTTTextStorage_dd_resetResults__block_invoke_2(uint64_t a1, uint64_t
   }
 }
 
-- (void)removeAttribute:(id)a3 range:(_NSRange)a4
+- (void)removeAttribute:(id)attribute range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  if ([v7 isEqualToString:*MEMORY[0x1E69B79B0]])
+  length = range.length;
+  location = range.location;
+  attributeCopy = attribute;
+  if ([attributeCopy isEqualToString:*MEMORY[0x1E69B79B0]])
   {
-    if ([(ICTTTextStorage *)self ic_containsAttribute:v7 inRange:location, length])
+    if ([(ICTTTextStorage *)self ic_containsAttribute:attributeCopy inRange:location, length])
     {
       [(ICTTTextStorage *)self beginTemporaryAttributes];
       v8.receiver = self;
       v8.super_class = ICTTTextStorage;
-      [(ICTTTextStorage *)&v8 removeAttribute:v7 range:location, length];
+      [(ICTTTextStorage *)&v8 removeAttribute:attributeCopy range:location, length];
       [(ICTTTextStorage *)self endTemporaryAttributes];
     }
   }
@@ -3467,15 +3467,15 @@ void __34__ICTTTextStorage_dd_resetResults__block_invoke_2(uint64_t a1, uint64_t
   {
     v8.receiver = self;
     v8.super_class = ICTTTextStorage;
-    [(ICTTTextStorage *)&v8 removeAttribute:v7 range:location, length];
+    [(ICTTTextStorage *)&v8 removeAttribute:attributeCopy range:location, length];
   }
 }
 
-- (void)setAttributes:(id)a3 range:(_NSRange)a4
+- (void)setAttributes:(id)attributes range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  attributesCopy = attributes;
   if (length)
   {
     if (![(ICTTTextStorage *)self isResettingBaseWritingDirection]&& ![(ICTTTextStorage *)self isTypingOrMarkingText]&& ![(ICTTTextStorage *)self isSelectingText]&& ![(ICTTTextStorage *)self isPausingUndoActions]&& ![(ICTTTextStorage *)self isEditingTemporaryAttributes]&& ![(ICTTTextStorage *)self isEndingEditing]&& (location != [(ICTTTextStorage *)self lastUndoEditRange]|| length != v8))
@@ -3487,16 +3487,16 @@ void __34__ICTTTextStorage_dd_resetResults__block_invoke_2(uint64_t a1, uint64_t
     self->_directlyEditing = 1;
     if (![(ICTTTextStorage *)self isEditingTemporaryAttributes])
     {
-      v7 = v7;
-      v9 = v7;
+      attributesCopy = attributesCopy;
+      v9 = attributesCopy;
       if ([(ICTTTextStorage *)self convertAttributes])
       {
-        v10 = [(ICTTTextStorage *)self styler];
-        v9 = [v10 modelForStyleAttributes:v7 filterAttributes:0];
+        styler = [(ICTTTextStorage *)self styler];
+        v9 = [styler modelForStyleAttributes:attributesCopy filterAttributes:0];
       }
 
-      v11 = [(ICTTMergeableStringVersionedDocument *)self->_document mergeableString];
-      v12 = [v11 attributedString];
+      mergeableString = [(ICTTMergeableStringVersionedDocument *)self->_document mergeableString];
+      attributedString = [mergeableString attributedString];
       v13 = *MEMORY[0x1E69B7618];
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
@@ -3504,15 +3504,15 @@ void __34__ICTTTextStorage_dd_resetResults__block_invoke_2(uint64_t a1, uint64_t
       v28[3] = &unk_1E846B850;
       v14 = v9;
       v29 = v14;
-      v30 = self;
-      [v12 enumerateAttribute:v13 inRange:location options:length usingBlock:{0, v28}];
+      selfCopy = self;
+      [attributedString enumerateAttribute:v13 inRange:location options:length usingBlock:{0, v28}];
 
       if ([(ICTTTextStorage *)self convertAttributes])
       {
-        v15 = [(ICTTTextStorage *)self styler];
-        v16 = [v15 styleForModelAttributes:v14];
+        styler2 = [(ICTTTextStorage *)self styler];
+        v16 = [styler2 styleForModelAttributes:v14];
 
-        v7 = v16;
+        attributesCopy = v16;
       }
     }
 
@@ -3521,13 +3521,13 @@ void __34__ICTTTextStorage_dd_resetResults__block_invoke_2(uint64_t a1, uint64_t
       [(ICTTTextStorage *)self setHasUserEditSinceFixupAfterEditing:1];
     }
 
-    [(NSMutableAttributedString *)self->_attributedString setAttributes:v7 range:location, length];
+    [(NSMutableAttributedString *)self->_attributedString setAttributes:attributesCopy range:location, length];
     objc_opt_class();
-    v17 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69DB650]];
+    v17 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E69DB650]];
     v18 = ICCheckedDynamicCast();
 
     objc_opt_class();
-    v19 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69B75D8]];
+    v19 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E69B75D8]];
     v20 = ICCheckedDynamicCast();
 
     highlightsAttributedString = self->_highlightsAttributedString;
@@ -3536,7 +3536,7 @@ void __34__ICTTTextStorage_dd_resetResults__block_invoke_2(uint64_t a1, uint64_t
     v24[2] = __39__ICTTTextStorage_setAttributes_range___block_invoke_2;
     v24[3] = &unk_1E846B878;
     v25 = v18;
-    v26 = self;
+    selfCopy2 = self;
     v27 = v20;
     v22 = v20;
     v23 = v18;
@@ -3730,16 +3730,16 @@ LABEL_41:
 LABEL_43:
 }
 
-- (BOOL)hasNamedStyle:(unsigned int)a3 inRange:(_NSRange)a4
+- (BOOL)hasNamedStyle:(unsigned int)style inRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v8 = [(ICTTTextStorage *)self string];
-  v9 = [v8 ic_rangeIsValid:{location, length}];
+  string = [(ICTTTextStorage *)self string];
+  v9 = [string ic_rangeIsValid:{location, length}];
 
   if (v9)
   {
@@ -3748,7 +3748,7 @@ LABEL_43:
     v13[1] = 3221225472;
     v13[2] = __41__ICTTTextStorage_hasNamedStyle_inRange___block_invoke;
     v13[3] = &unk_1E846B8A0;
-    v14 = a3;
+    styleCopy = style;
     v13[4] = &v15;
     [(ICTTTextStorage *)self enumerateAttribute:v10 inRange:location options:length usingBlock:0, v13];
   }
@@ -3771,26 +3771,26 @@ void __41__ICTTTextStorage_hasNamedStyle_inRange___block_invoke(uint64_t a1, voi
   }
 }
 
-- (BOOL)isRightToLeftAtIndex:(int64_t)a3
+- (BOOL)isRightToLeftAtIndex:(int64_t)index
 {
-  v3 = [(ICTTTextStorage *)self attribute:*MEMORY[0x1E69B7600] atIndex:a3 effectiveRange:0];
+  v3 = [(ICTTTextStorage *)self attribute:*MEMORY[0x1E69B7600] atIndex:index effectiveRange:0];
   objc_opt_class();
   v4 = ICDynamicCast();
-  v5 = [v4 isRTL];
+  isRTL = [v4 isRTL];
 
-  return v5;
+  return isRTL;
 }
 
-- (void)styleTextInRange:(_NSRange)a3
+- (void)styleTextInRange:(_NSRange)range
 {
-  if (a3.location != 0x7FFFFFFFFFFFFFFFLL)
+  if (range.location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    length = a3.length;
-    location = a3.location;
+    length = range.length;
+    location = range.location;
     if (![(ICTTTextStorage *)self isEditingTemporaryAttributes])
     {
-      v6 = [(ICTTTextStorage *)self styler];
-      [v6 styleText:self inRange:location fixModelAttributes:{length, 1}];
+      styler = [(ICTTTextStorage *)self styler];
+      [styler styleText:self inRange:location fixModelAttributes:{length, 1}];
     }
   }
 }
@@ -3812,18 +3812,18 @@ void __41__ICTTTextStorage_hasNamedStyle_inRange___block_invoke(uint64_t a1, voi
   v5 = v4;
 
   v6 = MEMORY[0x1E696AD98];
-  v7 = [v5 ic_truncated];
-  [v7 timeIntervalSince1970];
+  ic_truncated = [v5 ic_truncated];
+  [ic_truncated timeIntervalSince1970];
   v8 = [v6 numberWithDouble:?];
 
   return v8;
 }
 
-- (void)setTimestamp:(id)a3 range:(_NSRange)a4
+- (void)setTimestamp:(id)timestamp range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = [a3 ic_truncated];
+  length = range.length;
+  location = range.location;
+  ic_truncated = [timestamp ic_truncated];
   v11.location = [(NSMutableAttributedString *)self->_attributedString ic_range];
   v12.location = location;
   v12.length = length;
@@ -3833,8 +3833,8 @@ void __41__ICTTTextStorage_hasNamedStyle_inRange___block_invoke(uint64_t a1, voi
     self->_directlyEditing = 1;
     [(ICTTTextStorage *)self beginSkippingTimestampUpdates];
     [(ICTTTextStorage *)self beginEditing];
-    v8 = [(ICTTMergeableStringVersionedDocument *)self->_document mergeableString];
-    [v8 setTimestamp:v9 range:{v7.location, v7.length}];
+    mergeableString = [(ICTTMergeableStringVersionedDocument *)self->_document mergeableString];
+    [mergeableString setTimestamp:ic_truncated range:{v7.location, v7.length}];
 
     [(ICTTTextStorage *)self edited:1 range:v7.location changeInLength:v7.length, 0];
     [(ICTTTextStorage *)self endEditing];
@@ -3887,23 +3887,23 @@ void __41__ICTTTextStorage_hasNamedStyle_inRange___block_invoke(uint64_t a1, voi
   return result;
 }
 
-- (id)customPasteboardDataFromRange:(_NSRange)a3 persistenceHelper:(id)a4
+- (id)customPasteboardDataFromRange:(_NSRange)range persistenceHelper:(id)helper
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  v8 = [(ICTTTextStorage *)self attributedString];
-  v9 = [v8 attributedSubstringFromRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  helperCopy = helper;
+  attributedString = [(ICTTTextStorage *)self attributedString];
+  v9 = [attributedString attributedSubstringFromRange:{location, length}];
 
   v10 = [ICTextController removeBeginningListStyleIfNecessaryForAttributedString:v9 fromTextStorage:self andRange:location, length];
 
-  v11 = [v10 ic_attributedStringByRefreshingParagraphStyleUUIDs];
+  ic_attributedStringByRefreshingParagraphStyleUUIDs = [v10 ic_attributedStringByRefreshingParagraphStyleUUIDs];
 
-  if (v7)
+  if (helperCopy)
   {
     v12 = objc_alloc(MEMORY[0x1E69B7730]);
-    v13 = [v7 identifier];
-    v14 = [v12 initWithObjectIdentifier:v13 forPasteboard:1];
+    identifier = [helperCopy identifier];
+    v14 = [v12 initWithObjectIdentifier:identifier forPasteboard:1];
   }
 
   else
@@ -3911,8 +3911,8 @@ void __41__ICTTTextStorage_hasNamedStyle_inRange___block_invoke(uint64_t a1, voi
     v14 = 0;
   }
 
-  v15 = [v7 managedObjectContext];
-  v16 = [v11 ic_serializeWithFlags:1 dataPersister:v14 managedObjectContext:v15 error:0];
+  managedObjectContext = [helperCopy managedObjectContext];
+  v16 = [ic_attributedStringByRefreshingParagraphStyleUUIDs ic_serializeWithFlags:1 dataPersister:v14 managedObjectContext:managedObjectContext error:0];
 
   if (v16)
   {
@@ -3927,18 +3927,18 @@ void __41__ICTTTextStorage_hasNamedStyle_inRange___block_invoke(uint64_t a1, voi
   return v17;
 }
 
-- (id)copyDataForUTI:(id)a3 range:(_NSRange)a4 persistenceHelper:(id)a5
+- (id)copyDataForUTI:(id)i range:(_NSRange)range persistenceHelper:(id)helper
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v41[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  if (![v9 isEqualToString:*MEMORY[0x1E69B7508]])
+  iCopy = i;
+  helperCopy = helper;
+  if (![iCopy isEqualToString:*MEMORY[0x1E69B7508]])
   {
     [(ICTTTextStorage *)self setFilterSubstringAttributes:1];
-    v13 = [*MEMORY[0x1E6982E18] identifier];
-    v14 = [v9 isEqualToString:v13];
+    identifier = [*MEMORY[0x1E6982E18] identifier];
+    v14 = [iCopy isEqualToString:identifier];
 
     if (v14)
     {
@@ -3951,8 +3951,8 @@ void __41__ICTTTextStorage_hasNamedStyle_inRange___block_invoke(uint64_t a1, voi
 
     else
     {
-      v18 = [*MEMORY[0x1E6983098] identifier];
-      v19 = [v9 isEqualToString:v18];
+      identifier2 = [*MEMORY[0x1E6983098] identifier];
+      v19 = [iCopy isEqualToString:identifier2];
 
       if (v19)
       {
@@ -3965,8 +3965,8 @@ void __41__ICTTTextStorage_hasNamedStyle_inRange___block_invoke(uint64_t a1, voi
 
       else
       {
-        v20 = [*MEMORY[0x1E6982F90] identifier];
-        v21 = [v9 isEqualToString:v20];
+        identifier3 = [*MEMORY[0x1E6982F90] identifier];
+        v21 = [iCopy isEqualToString:identifier3];
 
         if (v21)
         {
@@ -3979,13 +3979,13 @@ void __41__ICTTTextStorage_hasNamedStyle_inRange___block_invoke(uint64_t a1, voi
 
         else
         {
-          v22 = [*MEMORY[0x1E6982DC0] identifier];
-          v23 = [v9 isEqualToString:v22];
+          identifier4 = [*MEMORY[0x1E6982DC0] identifier];
+          v23 = [iCopy isEqualToString:identifier4];
 
           if (!v23)
           {
-            v26 = [*MEMORY[0x1E6983060] identifier];
-            v27 = [v9 isEqualToString:v26];
+            identifier5 = [*MEMORY[0x1E6983060] identifier];
+            v27 = [iCopy isEqualToString:identifier5];
 
             if (v27)
             {
@@ -3997,7 +3997,7 @@ void __41__ICTTTextStorage_hasNamedStyle_inRange___block_invoke(uint64_t a1, voi
               v33[0] = v28;
               v33[1] = &unk_1F4FC4260;
               v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:2];
-              v12 = [(ICTTTextStorage *)self dataFromRange:location documentAttributes:length error:v30, 0];
+              persistenceData = [(ICTTTextStorage *)self dataFromRange:location documentAttributes:length error:v30, 0];
 
               [(ICTTTextStorage *)self setFilterSubstringAttributesForPlainText:0];
             }
@@ -4005,7 +4005,7 @@ void __41__ICTTTextStorage_hasNamedStyle_inRange___block_invoke(uint64_t a1, voi
             else
             {
               v31 = [(ICTTTextStorage *)self filteredAttributedSubstringFromRange:location, length];
-              v12 = [v31 ic_itemProviderDataForUTI:v9];
+              persistenceData = [v31 ic_itemProviderDataForUTI:iCopy];
             }
 
             goto LABEL_12;
@@ -4021,28 +4021,28 @@ void __41__ICTTTextStorage_hasNamedStyle_inRange___block_invoke(uint64_t a1, voi
     }
 
     v24 = [v15 dictionaryWithObjects:v16 forKeys:v17 count:1];
-    v12 = [(ICTTTextStorage *)self dataFromRange:location documentAttributes:length error:v24, 0];
+    persistenceData = [(ICTTTextStorage *)self dataFromRange:location documentAttributes:length error:v24, 0];
 
 LABEL_12:
     [(ICTTTextStorage *)self setFilterSubstringAttributes:0];
     goto LABEL_13;
   }
 
-  v11 = [(ICTTTextStorage *)self customPasteboardDataFromRange:location persistenceHelper:length, v10];
-  v12 = [v11 persistenceData];
+  helperCopy = [(ICTTTextStorage *)self customPasteboardDataFromRange:location persistenceHelper:length, helperCopy];
+  persistenceData = [helperCopy persistenceData];
 
 LABEL_13:
-  return v12;
+  return persistenceData;
 }
 
-- (id)filteredAttributedStringForUTI:(id)a3 range:(_NSRange)a4
+- (id)filteredAttributedStringForUTI:(id)i range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v7 = *MEMORY[0x1E6983060];
-  v8 = a3;
-  v9 = [v7 identifier];
-  v10 = [v8 isEqualToString:v9];
+  iCopy = i;
+  identifier = [v7 identifier];
+  v10 = [iCopy isEqualToString:identifier];
 
   [(ICTTTextStorage *)self setFilterSubstringAttributesForPlainText:v10];
   v11 = [(ICTTTextStorage *)self filteredAttributedSubstringFromRange:location, length];
@@ -4051,39 +4051,39 @@ LABEL_13:
   return v11;
 }
 
-- (void)suppressingShiftStateUpdatesIfNecessaryWithSelection:(void *)a3 perform:
+- (void)suppressingShiftStateUpdatesIfNecessaryWithSelection:(void *)selection perform:
 {
-  v6 = a3;
-  if (a1)
+  selectionCopy = selection;
+  if (self)
   {
     v5 = [a2 objectAtIndexedSubscript:0];
-    if (([a1 isFixing] & 1) != 0 || !objc_msgSend(v5, "count"))
+    if (([self isFixing] & 1) != 0 || !objc_msgSend(v5, "count"))
     {
-      v6[2]();
+      selectionCopy[2]();
     }
 
     else
     {
-      [MEMORY[0x1E69DCBB8] ic_suppressingShiftStateUpdates:v6];
+      [MEMORY[0x1E69DCBB8] ic_suppressingShiftStateUpdates:selectionCopy];
     }
   }
 }
 
-- (void)restoreSelection:(id)a3
+- (void)restoreSelection:(id)selection
 {
-  v4 = a3;
-  v5 = [v4 objectAtIndexedSubscript:0];
-  v6 = [v4 objectAtIndexedSubscript:1];
+  selectionCopy = selection;
+  v5 = [selectionCopy objectAtIndexedSubscript:0];
+  v6 = [selectionCopy objectAtIndexedSubscript:1];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __36__ICTTTextStorage_restoreSelection___block_invoke;
   v9[3] = &unk_1E8468D98;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v12 = v6;
   v7 = v6;
   v8 = v5;
-  [(ICTTTextStorage *)self suppressingShiftStateUpdatesIfNecessaryWithSelection:v4 perform:v9];
+  [(ICTTTextStorage *)self suppressingShiftStateUpdatesIfNecessaryWithSelection:selectionCopy perform:v9];
 }
 
 void __36__ICTTTextStorage_restoreSelection___block_invoke_cold_1(uint8_t *buf, _BYTE *a2, os_log_t log)

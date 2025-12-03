@@ -1,16 +1,16 @@
 @interface CKLStreamLogStatsObserver
-- (CKLStreamLogStatsObserver)initWithLogTypes:(unint64_t)a3;
-- (void)eventMatched:(id)a3;
+- (CKLStreamLogStatsObserver)initWithLogTypes:(unint64_t)types;
+- (void)eventMatched:(id)matched;
 - (void)finish;
 @end
 
 @implementation CKLStreamLogStatsObserver
 
-- (CKLStreamLogStatsObserver)initWithLogTypes:(unint64_t)a3
+- (CKLStreamLogStatsObserver)initWithLogTypes:(unint64_t)types
 {
   v9.receiver = self;
   v9.super_class = CKLStreamLogStatsObserver;
-  v3 = [(CKLStreamObserver *)&v9 initWithLogTypes:a3];
+  v3 = [(CKLStreamObserver *)&v9 initWithLogTypes:types];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -25,9 +25,9 @@
   return v3;
 }
 
-- (void)eventMatched:(id)a3
+- (void)eventMatched:(id)matched
 {
-  v43 = objc_msgSend_composedMessage(a3, a2, a3);
+  v43 = objc_msgSend_composedMessage(matched, a2, matched);
   v5 = objc_msgSend_componentsSeparatedByString_(v43, v4, @" ");
   v7 = objc_msgSend_objectAtIndexedSubscript_(v5, v6, 0);
   v9 = objc_msgSend_objectAtIndexedSubscript_(v5, v8, 1);

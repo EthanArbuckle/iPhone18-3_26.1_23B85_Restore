@@ -1,14 +1,14 @@
 @interface CKSuggestedActionsBalloonView
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5;
-- (CKSuggestedActionsBalloonView)initWithCoder:(id)a3;
-- (void)configureForMessagePart:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets;
+- (CKSuggestedActionsBalloonView)initWithCoder:(id)coder;
+- (void)configureForMessagePart:(id)part;
 - (void)layoutSubviews;
-- (void)setWithActions:(id)a3 chatBotName:(id)a4;
+- (void)setWithActions:(id)actions chatBotName:(id)name;
 @end
 
 @implementation CKSuggestedActionsBalloonView
 
-- (CKSuggestedActionsBalloonView)initWithCoder:(id)a3
+- (CKSuggestedActionsBalloonView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR___CKSuggestedActionsBalloonView_actions) = MEMORY[0x1E69E7CC0];
   v4 = OBJC_IVAR___CKSuggestedActionsBalloonView_titleLabel;
@@ -20,14 +20,14 @@
   return result;
 }
 
-- (void)setWithActions:(id)a3 chatBotName:(id)a4
+- (void)setWithActions:(id)actions chatBotName:(id)name
 {
   sub_190D57620();
   v6 = sub_190D57180();
-  if (a4)
+  if (name)
   {
     v7 = sub_190D56F10();
-    a4 = v8;
+    name = v8;
   }
 
   else
@@ -35,15 +35,15 @@
     v7 = 0;
   }
 
-  v9 = self;
-  sub_190CA4008(v6, v7, a4);
+  selfCopy = self;
+  sub_190CA4008(v6, v7, name);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v8 = sub_190CA4A1C(width, height);
   v10 = v9;
 
@@ -56,15 +56,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_190CA45C8();
 }
 
-- (void)configureForMessagePart:(id)a3
+- (void)configureForMessagePart:(id)part
 {
-  v5 = a3;
-  v6 = self;
-  sub_190CA47A4(a3);
+  partCopy = part;
+  selfCopy = self;
+  sub_190CA47A4(part);
 }
 
 @end

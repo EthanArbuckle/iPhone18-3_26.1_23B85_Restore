@@ -1,26 +1,26 @@
 @interface HDMedicationScheduleEntity
-+ (BOOL)updateMedicationSchedulesToBeDeletedWithMedicationUUID:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6;
-+ (HDCodableMedicationSchedule)_codableRepresentationForMedicationScheduleID:(uint64_t)a3 row:(void *)a4 profile:(void *)a5 transaction:(uint64_t)a6 error:;
-+ (id)_insertSchedule:(uint64_t)a3 syncProvenance:(uint64_t)a4 syncIdentity:(void *)a5 profile:(void *)a6 transaction:(uint64_t)a7 error:;
-+ (id)_medicationScheduleFromRow:(uint64_t)a3 persistentID:(void *)a4 transaction:(NSObject *)a5 error:;
-+ (id)allActiveMedicationSchedulesWithTransaction:(id)a3 error:(id *)a4;
++ (BOOL)updateMedicationSchedulesToBeDeletedWithMedicationUUID:(id)d profile:(id)profile transaction:(id)transaction error:(id *)error;
++ (HDCodableMedicationSchedule)_codableRepresentationForMedicationScheduleID:(uint64_t)d row:(void *)row profile:(void *)profile transaction:(uint64_t)transaction error:;
++ (id)_insertSchedule:(uint64_t)schedule syncProvenance:(uint64_t)provenance syncIdentity:(void *)identity profile:(void *)profile transaction:(uint64_t)transaction error:;
++ (id)_medicationScheduleFromRow:(uint64_t)row persistentID:(void *)d transaction:(NSObject *)transaction error:;
++ (id)allActiveMedicationSchedulesWithTransaction:(id)transaction error:(id *)error;
 + (id)compatibilityVersion0ScheduleTypesPredicate;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
 + (id)privateSubEntities;
-+ (int64_t)allActiveSchedulesCreatedWithinTimeZone:(id)a3 transaction:(id)a4 offsetChange:(int64_t *)a5 error:(id *)a6;
-+ (uint64_t)_enumerateSchedulesWithPredicate:(uint64_t)a3 limit:(void *)a4 orderingTerms:(void *)a5 transaction:(uint64_t)a6 error:(void *)a7 enumerationHandler:;
-+ (uint64_t)_insertMedicationSchedule:(uint64_t)a3 syncProvenance:(uint64_t)a4 syncIdentity:(void *)a5 profile:(void *)a6 transaction:(void *)a7 error:;
-+ (uint64_t)_insertTimeIntervals:(void *)a3 schedulePrimaryKey:(void *)a4 transaction:(uint64_t)a5 error:;
-+ (uint64_t)_isNewestSchedule:(void *)a3 transaction:(uint64_t)a4 error:;
-+ (uint64_t)_shouldProceedWithInsertionForSchedule:(void *)a3 profile:(void *)a4 transaction:(void *)a5 error:;
++ (int64_t)allActiveSchedulesCreatedWithinTimeZone:(id)zone transaction:(id)transaction offsetChange:(int64_t *)change error:(id *)error;
++ (uint64_t)_enumerateSchedulesWithPredicate:(uint64_t)predicate limit:(void *)limit orderingTerms:(void *)terms transaction:(uint64_t)transaction error:(void *)error enumerationHandler:;
++ (uint64_t)_insertMedicationSchedule:(uint64_t)schedule syncProvenance:(uint64_t)provenance syncIdentity:(void *)identity profile:(void *)profile transaction:(void *)transaction error:;
++ (uint64_t)_insertTimeIntervals:(void *)intervals schedulePrimaryKey:(void *)key transaction:(uint64_t)transaction error:;
++ (uint64_t)_isNewestSchedule:(void *)schedule transaction:(uint64_t)transaction error:;
++ (uint64_t)_shouldProceedWithInsertionForSchedule:(void *)schedule profile:(void *)profile transaction:(void *)transaction error:;
 @end
 
 @implementation HDMedicationScheduleEntity
 
-+ (id)_medicationScheduleFromRow:(uint64_t)a3 persistentID:(void *)a4 transaction:(NSObject *)a5 error:
++ (id)_medicationScheduleFromRow:(uint64_t)row persistentID:(void *)d transaction:(NSObject *)transaction error:
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  dCopy = d;
   v39 = objc_opt_self();
   v46 = HDSQLiteColumnWithNameAsUUID();
   v7 = HDSQLiteColumnWithNameAsUUID();
@@ -44,7 +44,7 @@
   v50[3] = &unk_2796CE8F8;
   v15 = v14;
   v51 = v15;
-  v16 = [HDMedicationScheduleIntervalDataEntity enumerateMedicationScheduleIntervalDataWithOwnerID:a3 transaction:v6 error:&v52 enumerationHandler:v50];
+  v16 = [HDMedicationScheduleIntervalDataEntity enumerateMedicationScheduleIntervalDataWithOwnerID:row transaction:dCopy error:&v52 enumerationHandler:v50];
 
   v49 = v52;
   v47 = v11;
@@ -73,11 +73,11 @@
     v27 = v8;
     if (v31)
     {
-      if (a5)
+      if (transaction)
       {
         v32 = v31;
         v26 = 0;
-        *a5 = v29;
+        *transaction = v29;
         goto LABEL_14;
       }
 
@@ -152,36 +152,36 @@ LABEL_16:
   return v2;
 }
 
-+ (uint64_t)_enumerateSchedulesWithPredicate:(uint64_t)a3 limit:(void *)a4 orderingTerms:(void *)a5 transaction:(uint64_t)a6 error:(void *)a7 enumerationHandler:
++ (uint64_t)_enumerateSchedulesWithPredicate:(uint64_t)predicate limit:(void *)limit orderingTerms:(void *)terms transaction:(uint64_t)transaction error:(void *)error enumerationHandler:
 {
-  v12 = a5;
-  v13 = a7;
-  v14 = a4;
+  termsCopy = terms;
+  errorCopy = error;
+  limitCopy = limit;
   v15 = a2;
   v16 = objc_opt_self();
-  v17 = [v12 databaseForEntityClass:v16];
-  v18 = [v16 queryWithDatabase:v17 predicate:v15 limit:a3 orderingTerms:v14 groupBy:0];
+  v17 = [termsCopy databaseForEntityClass:v16];
+  v18 = [v16 queryWithDatabase:v17 predicate:v15 limit:predicate orderingTerms:limitCopy groupBy:0];
 
   v19 = HDMedicationsScheduleEntityAllProperties();
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __120__HDMedicationScheduleEntity__enumerateSchedulesWithPredicate_limit_orderingTerms_transaction_error_enumerationHandler___block_invoke;
   v24[3] = &unk_2796CEB10;
-  v26 = v13;
+  v26 = errorCopy;
   v27 = v16;
-  v25 = v12;
-  v20 = v13;
-  v21 = v12;
-  v22 = [v18 enumeratePersistentIDsAndProperties:v19 error:a6 enumerationHandler:v24];
+  v25 = termsCopy;
+  v20 = errorCopy;
+  v21 = termsCopy;
+  v22 = [v18 enumeratePersistentIDsAndProperties:v19 error:transaction enumerationHandler:v24];
 
   return v22;
 }
 
-+ (id)allActiveMedicationSchedulesWithTransaction:(id)a3 error:(id *)a4
++ (id)allActiveMedicationSchedulesWithTransaction:(id)transaction error:(id *)error
 {
   v20[2] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CBEB18];
-  v6 = a3;
+  transactionCopy = transaction;
   v7 = objc_alloc_init(v5);
   v8 = [MEMORY[0x277D10B18] predicateWithProperty:@"deleted" equalToValue:MEMORY[0x277CBEC28]];
   v9 = HDMedicationSchedulePredicateForActiveMedications();
@@ -197,9 +197,9 @@ LABEL_16:
   v18[3] = &unk_2796CD720;
   v19 = v7;
   v13 = v7;
-  LODWORD(a4) = [HDMedicationScheduleEntity enumerateSchedulesWithPredicate:v12 limit:0 orderingTerms:0 transaction:v6 error:a4 enumerationHandler:v18];
+  LODWORD(error) = [HDMedicationScheduleEntity enumerateSchedulesWithPredicate:v12 limit:0 orderingTerms:0 transaction:transactionCopy error:error enumerationHandler:v18];
 
-  if (a4)
+  if (error)
   {
     v14 = v13;
   }
@@ -215,11 +215,11 @@ LABEL_16:
   return v14;
 }
 
-+ (int64_t)allActiveSchedulesCreatedWithinTimeZone:(id)a3 transaction:(id)a4 offsetChange:(int64_t *)a5 error:(id *)a6
++ (int64_t)allActiveSchedulesCreatedWithinTimeZone:(id)zone transaction:(id)transaction offsetChange:(int64_t *)change error:(id *)error
 {
   v32[3] = *MEMORY[0x277D85DE8];
-  v25 = a3;
-  v24 = a4;
+  zoneCopy = zone;
+  transactionCopy = transaction;
   v9 = [MEMORY[0x277D10B18] predicateWithProperty:@"deleted" equalToValue:MEMORY[0x277CBEC28]];
   v10 = HDMedicationSchedulePredicateForActiveMedications();
   v11 = [MEMORY[0x277D10B28] doesNotContainPredicateWithProperty:@"schedule_type" values:&unk_2863C2E10];
@@ -235,12 +235,12 @@ LABEL_16:
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 1;
-  if (a5)
+  if (change)
   {
-    *a5 = 0x7FFFFFFFFFFFFFFFLL;
+    *change = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v16 = [v25 secondsFromGMT];
+  secondsFromGMT = [zoneCopy secondsFromGMT];
   v31 = v15;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v31 count:1];
   v18 = *MEMORY[0x277D10C08];
@@ -248,12 +248,12 @@ LABEL_16:
   v26[1] = 3221225472;
   v26[2] = __101__HDMedicationScheduleEntity_allActiveSchedulesCreatedWithinTimeZone_transaction_offsetChange_error___block_invoke;
   v26[3] = &unk_2796CEAE8;
-  v26[5] = v16;
-  v26[6] = a5;
+  v26[5] = secondsFromGMT;
+  v26[6] = change;
   v26[4] = &v27;
-  LODWORD(v16) = [(HDMedicationScheduleEntity *)a1 _enumerateSchedulesWithPredicate:v14 limit:v18 orderingTerms:v17 transaction:v24 error:v23 enumerationHandler:v26];
+  LODWORD(secondsFromGMT) = [(HDMedicationScheduleEntity *)self _enumerateSchedulesWithPredicate:v14 limit:v18 orderingTerms:v17 transaction:transactionCopy error:v23 enumerationHandler:v26];
 
-  if (v16)
+  if (secondsFromGMT)
   {
     v19 = v28[3];
   }
@@ -335,20 +335,20 @@ uint64_t __120__HDMedicationScheduleEntity__enumerateSchedulesWithPredicate_limi
   return v7;
 }
 
-+ (uint64_t)_insertMedicationSchedule:(uint64_t)a3 syncProvenance:(uint64_t)a4 syncIdentity:(void *)a5 profile:(void *)a6 transaction:(void *)a7 error:
++ (uint64_t)_insertMedicationSchedule:(uint64_t)schedule syncProvenance:(uint64_t)provenance syncIdentity:(void *)identity profile:(void *)profile transaction:(void *)transaction error:
 {
   v12 = a2;
-  v13 = a5;
-  v14 = a6;
+  identityCopy = identity;
+  profileCopy = profile;
   v15 = objc_opt_self();
-  v16 = [(HDMedicationScheduleEntity *)v15 _shouldProceedWithInsertionForSchedule:v12 profile:v13 transaction:v14 error:a7];
+  v16 = [(HDMedicationScheduleEntity *)v15 _shouldProceedWithInsertionForSchedule:v12 profile:identityCopy transaction:profileCopy error:transaction];
   if (v16 == 1)
   {
-    v17 = [(HDMedicationScheduleEntity *)v15 _insertSchedule:v12 syncProvenance:a3 syncIdentity:a4 profile:v13 transaction:v14 error:a7];
+    v17 = [(HDMedicationScheduleEntity *)v15 _insertSchedule:v12 syncProvenance:schedule syncIdentity:provenance profile:identityCopy transaction:profileCopy error:transaction];
     if (v17)
     {
-      v18 = [v12 timeIntervals];
-      v19 = [(HDMedicationScheduleEntity *)v15 _insertTimeIntervals:v18 schedulePrimaryKey:v17 transaction:v14 error:a7];
+      timeIntervals = [v12 timeIntervals];
+      v19 = [(HDMedicationScheduleEntity *)v15 _insertTimeIntervals:timeIntervals schedulePrimaryKey:v17 transaction:profileCopy error:transaction];
     }
 
     else
@@ -365,17 +365,17 @@ uint64_t __120__HDMedicationScheduleEntity__enumerateSchedulesWithPredicate_limi
   return v19;
 }
 
-+ (uint64_t)_shouldProceedWithInsertionForSchedule:(void *)a3 profile:(void *)a4 transaction:(void *)a5 error:
++ (uint64_t)_shouldProceedWithInsertionForSchedule:(void *)schedule profile:(void *)profile transaction:(void *)transaction error:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
+  scheduleCopy = schedule;
+  profileCopy = profile;
   v11 = objc_opt_self();
   if ([v8 needsToBeMadeUnavailable])
   {
     v12 = MEMORY[0x277CCA9B8];
     v13 = [v8 description];
-    [v12 hk_assignError:a5 code:100 format:{@"Attempted to save a HKMedicationSchedule [%@] that should have been made unavailable. Before inserting a schedule that is not understood by the current operating system, you must call -[HKMedicationSchedule unavailableSchedule] before insertion, and insert the copy returned instead.", v13}];
+    [v12 hk_assignError:transaction code:100 format:{@"Attempted to save a HKMedicationSchedule [%@] that should have been made unavailable. Before inserting a schedule that is not understood by the current operating system, you must call -[HKMedicationSchedule unavailableSchedule] before insertion, and insert the copy returned instead.", v13}];
 
     v14 = 0;
     goto LABEL_32;
@@ -393,30 +393,30 @@ uint64_t __120__HDMedicationScheduleEntity__enumerateSchedulesWithPredicate_limi
       }
     }
 
-    v19 = [v8 medicationUUID];
-    if (v19)
+    medicationUUID = [v8 medicationUUID];
+    if (medicationUUID)
     {
-      v20 = v19;
+      v20 = medicationUUID;
       v21 = MEMORY[0x277D10B20];
       v22 = HDUserDomainConceptEntityPredicateForConceptUUID();
       v23 = [MEMORY[0x277D10B18] predicateWithProperty:*MEMORY[0x277D10508] equalToValue:MEMORY[0x277CBEC28]];
       v24 = [v21 compoundPredicateWithPredicate:v22 otherPredicate:v23];
 
       v25 = MEMORY[0x277D10920];
-      v26 = [v10 protectedDatabase];
+      protectedDatabase = [profileCopy protectedDatabase];
       v34 = 0;
-      v27 = [v25 anyInDatabase:v26 predicate:v24 error:&v34];
+      v27 = [v25 anyInDatabase:protectedDatabase predicate:v24 error:&v34];
       v28 = v34;
 
       if (!v27)
       {
         if (v28)
         {
-          if (a5)
+          if (transaction)
           {
             v31 = v28;
             v14 = 0;
-            *a5 = v28;
+            *transaction = v28;
           }
 
           else
@@ -438,8 +438,8 @@ uint64_t __120__HDMedicationScheduleEntity__enumerateSchedulesWithPredicate_limi
     else
     {
       v29 = MEMORY[0x277D10920];
-      v30 = [v8 medicationIdentifier];
-      v20 = [v29 userDomainConceptUUIDForCanonicalConceptWithSemanticIdentifierString:v30 profile:v9 transaction:v10 error:a5];
+      medicationIdentifier = [v8 medicationIdentifier];
+      v20 = [v29 userDomainConceptUUIDForCanonicalConceptWithSemanticIdentifierString:medicationIdentifier profile:scheduleCopy transaction:profileCopy error:transaction];
 
       if (!v20)
       {
@@ -455,7 +455,7 @@ uint64_t __120__HDMedicationScheduleEntity__enumerateSchedulesWithPredicate_limi
         goto LABEL_31;
       }
 
-      if (![MEMORY[0x277D10920] incrementSyncAnchorAndAdjustSyncProvenanceIfNotLocalForUserDomainConceptWithUUID:v20 profile:v9 transaction:v10 error:a5])
+      if (![MEMORY[0x277D10920] incrementSyncAnchorAndAdjustSyncProvenanceIfNotLocalForUserDomainConceptWithUUID:v20 profile:scheduleCopy transaction:profileCopy error:transaction])
       {
         v14 = 0;
         goto LABEL_31;
@@ -464,7 +464,7 @@ uint64_t __120__HDMedicationScheduleEntity__enumerateSchedulesWithPredicate_limi
       [v8 _setMedicationUUID:v20];
     }
 
-    v14 = [(HDMedicationScheduleEntity *)v11 _isNewestSchedule:v8 transaction:v10 error:a5];
+    v14 = [(HDMedicationScheduleEntity *)v11 _isNewestSchedule:v8 transaction:profileCopy error:transaction];
 LABEL_31:
 
     goto LABEL_32;
@@ -489,14 +489,14 @@ LABEL_32:
   return v14;
 }
 
-+ (id)_insertSchedule:(uint64_t)a3 syncProvenance:(uint64_t)a4 syncIdentity:(void *)a5 profile:(void *)a6 transaction:(uint64_t)a7 error:
++ (id)_insertSchedule:(uint64_t)schedule syncProvenance:(uint64_t)provenance syncIdentity:(void *)identity profile:(void *)profile transaction:(uint64_t)transaction error:
 {
   v42 = *MEMORY[0x277D85DE8];
   v12 = a2;
-  v13 = a5;
-  v14 = a6;
+  identityCopy = identity;
+  profileCopy = profile;
   v15 = objc_opt_self();
-  v16 = [v14 protectedDatabase];
+  protectedDatabase = [profileCopy protectedDatabase];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __100__HDMedicationScheduleEntity__insertSchedule_syncProvenance_syncIdentity_profile_transaction_error___block_invoke;
@@ -508,17 +508,17 @@ LABEL_32:
   v27[3] = &unk_2796CEB38;
   v17 = v12;
   v28 = v17;
-  v29 = a4;
-  v30 = a3;
-  v18 = 0;
-  if ([v16 executeCachedStatementForKey:&_insertSchedule_syncProvenance_syncIdentity_profile_transaction_error__statementKey error:a7 SQLGenerator:v31 bindingHandler:v27 enumerationHandler:0])
+  provenanceCopy = provenance;
+  scheduleCopy = schedule;
+  lastInsertRowID2 = 0;
+  if ([protectedDatabase executeCachedStatementForKey:&_insertSchedule_syncProvenance_syncIdentity_profile_transaction_error__statementKey error:transaction SQLGenerator:v31 bindingHandler:v27 enumerationHandler:0])
   {
-    if ([v16 getChangesCount] < 1)
+    if ([protectedDatabase getChangesCount] < 1)
     {
       v24 = MEMORY[0x277CCA9B8];
-      v23 = [v17 UUID];
-      [v24 hk_assignError:a7 code:115 format:{@"Duplicate medication schedule with UUID %@", v23}];
-      v18 = 0;
+      uUID = [v17 UUID];
+      [v24 hk_assignError:transaction code:115 format:{@"Duplicate medication schedule with UUID %@", uUID}];
+      lastInsertRowID2 = 0;
     }
 
     else
@@ -527,42 +527,42 @@ LABEL_32:
       v19 = HKLogMedication();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v16 lastInsertRowID];
-        v21 = [v20 longLongValue];
+        lastInsertRowID = [protectedDatabase lastInsertRowID];
+        longLongValue = [lastInsertRowID longLongValue];
         *buf = 138544386;
         v33 = v15;
         v34 = 2048;
-        v35 = v21;
+        v35 = longLongValue;
         v36 = 2048;
-        v37 = a4;
+        provenanceCopy2 = provenance;
         v38 = 2048;
-        v39 = a3;
+        scheduleCopy2 = schedule;
         v40 = 2114;
         v41 = v17;
         _os_log_impl(&dword_25181C000, v19, OS_LOG_TYPE_DEFAULT, "[%{public}@] Inserted schedule with persistent ID: %lld sync_identity: %lld, sync_provenance=%lld description: %{public}@", buf, 0x34u);
       }
 
-      v22 = [v13 healthMedicationsProfileExtension];
-      v23 = [v22 medicationScheduleManager];
+      healthMedicationsProfileExtension = [identityCopy healthMedicationsProfileExtension];
+      uUID = [healthMedicationsProfileExtension medicationScheduleManager];
 
-      [v23 batchNotifyObserversOnCommitOfTransaction:v14 didAddOrModifySchedule:v17 syncIdentity:a4];
-      v18 = [v16 lastInsertRowID];
+      [uUID batchNotifyObserversOnCommitOfTransaction:profileCopy didAddOrModifySchedule:v17 syncIdentity:provenance];
+      lastInsertRowID2 = [protectedDatabase lastInsertRowID];
     }
   }
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v18;
+  return lastInsertRowID2;
 }
 
-+ (uint64_t)_insertTimeIntervals:(void *)a3 schedulePrimaryKey:(void *)a4 transaction:(uint64_t)a5 error:
++ (uint64_t)_insertTimeIntervals:(void *)intervals schedulePrimaryKey:(void *)key transaction:(uint64_t)transaction error:
 {
   v26 = *MEMORY[0x277D85DE8];
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
+  intervalsCopy = intervals;
+  keyCopy = key;
   objc_opt_self();
-  v11 = [v10 databaseForEntityClass:objc_opt_class()];
+  v11 = [keyCopy databaseForEntityClass:objc_opt_class()];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -583,7 +583,7 @@ LABEL_32:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [HDMedicationScheduleIntervalDataEntity insertPersistableMedicationScheduleIntervalData:*(*(&v21 + 1) + 8 * v16) ownerID:v9 database:v11 error:a5, v21];
+        v17 = [HDMedicationScheduleIntervalDataEntity insertPersistableMedicationScheduleIntervalData:*(*(&v21 + 1) + 8 * v16) ownerID:intervalsCopy database:v11 error:transaction, v21];
 
         if (!v17)
         {
@@ -612,17 +612,17 @@ LABEL_11:
   return v18;
 }
 
-+ (uint64_t)_isNewestSchedule:(void *)a3 transaction:(uint64_t)a4 error:
++ (uint64_t)_isNewestSchedule:(void *)schedule transaction:(uint64_t)transaction error:
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  scheduleCopy = schedule;
   v7 = a2;
   v8 = objc_opt_self();
-  v9 = [v7 UUID];
-  v10 = [MEMORY[0x277D10B18] predicateWithProperty:@"uuid" value:v9 comparisonType:1];
+  uUID = [v7 UUID];
+  v10 = [MEMORY[0x277D10B18] predicateWithProperty:@"uuid" value:uUID comparisonType:1];
 
-  v11 = [v7 medicationIdentifier];
-  v12 = [MEMORY[0x277D10B18] predicateWithProperty:@"medication_identifier" equalToValue:v11];
+  medicationIdentifier = [v7 medicationIdentifier];
+  v12 = [MEMORY[0x277D10B18] predicateWithProperty:@"medication_identifier" equalToValue:medicationIdentifier];
 
   v13 = MEMORY[0x277D10B20];
   v26[0] = v10;
@@ -633,9 +633,9 @@ LABEL_11:
   [v7 creationTimestamp];
   v16 = HDMedicationSchedulePredicateForCreationDate(5);
   v17 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v15 otherPredicate:v16];
-  v18 = [v6 databaseForEntityClass:v8];
+  v18 = [scheduleCopy databaseForEntityClass:v8];
 
-  v19 = [v8 countValueForProperty:@"creation_date" predicate:v17 database:v18 error:a4];
+  v19 = [v8 countValueForProperty:@"creation_date" predicate:v17 database:v18 error:transaction];
 
   if (v19)
   {
@@ -767,12 +767,12 @@ LABEL_7:
   return sqlite3_bind_int64(a2, 17, v23);
 }
 
-+ (BOOL)updateMedicationSchedulesToBeDeletedWithMedicationUUID:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)updateMedicationSchedulesToBeDeletedWithMedicationUUID:(id)d profile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [a5 protectedDatabase];
-  v12 = [v10 currentSyncIdentityPersistentID];
+  dCopy = d;
+  profileCopy = profile;
+  protectedDatabase = [transaction protectedDatabase];
+  currentSyncIdentityPersistentID = [profileCopy currentSyncIdentityPersistentID];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -783,12 +783,12 @@ LABEL_7:
   v15[1] = 3221225472;
   v15[2] = __111__HDMedicationScheduleEntity_updateMedicationSchedulesToBeDeletedWithMedicationUUID_profile_transaction_error___block_invoke_2;
   v15[3] = &unk_2796CE690;
-  v16 = v9;
-  v17 = v12;
-  v13 = v9;
-  LOBYTE(a6) = [v11 executeCachedStatementForKey:&updateMedicationSchedulesToBeDeletedWithMedicationUUID_profile_transaction_error__statementKeyUDCUpdate error:a6 SQLGenerator:v18 bindingHandler:v15 enumerationHandler:0];
+  v16 = dCopy;
+  v17 = currentSyncIdentityPersistentID;
+  v13 = dCopy;
+  LOBYTE(error) = [protectedDatabase executeCachedStatementForKey:&updateMedicationSchedulesToBeDeletedWithMedicationUUID_profile_transaction_error__statementKeyUDCUpdate error:error SQLGenerator:v18 bindingHandler:v15 enumerationHandler:0];
 
-  return a6;
+  return error;
 }
 
 uint64_t __111__HDMedicationScheduleEntity_updateMedicationSchedulesToBeDeletedWithMedicationUUID_profile_transaction_error___block_invoke_2(uint64_t a1, sqlite3_stmt *a2)
@@ -815,30 +815,30 @@ uint64_t __111__HDMedicationScheduleEntity_updateMedicationSchedulesToBeDeletedW
   return sqlite3_bind_int(a2, 14, 0);
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(HDEntityEncoder *)[HDMedicationScheduleEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [(HDEntityEncoder *)[HDMedicationScheduleEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }
 
-+ (HDCodableMedicationSchedule)_codableRepresentationForMedicationScheduleID:(uint64_t)a3 row:(void *)a4 profile:(void *)a5 transaction:(uint64_t)a6 error:
++ (HDCodableMedicationSchedule)_codableRepresentationForMedicationScheduleID:(uint64_t)d row:(void *)row profile:(void *)profile transaction:(uint64_t)transaction error:
 {
-  v9 = a5;
-  v10 = a4;
+  profileCopy = profile;
+  rowCopy = row;
   objc_opt_self();
   v11 = objc_alloc_init(HDCodableMedicationSchedule);
   v12 = HDSQLiteColumnWithNameAsUUID();
-  v13 = [v12 hk_dataForUUIDBytes];
-  [(HDCodableMedicationSchedule *)v11 setUuid:v13];
+  hk_dataForUUIDBytes = [v12 hk_dataForUUIDBytes];
+  [(HDCodableMedicationSchedule *)v11 setUuid:hk_dataForUUIDBytes];
 
   v14 = HDSQLiteColumnWithNameAsUUID();
-  v15 = [v14 hk_dataForUUIDBytes];
-  [(HDCodableMedicationSchedule *)v11 setMedicationUUID:v15];
+  hk_dataForUUIDBytes2 = [v14 hk_dataForUUIDBytes];
+  [(HDCodableMedicationSchedule *)v11 setMedicationUUID:hk_dataForUUIDBytes2];
 
   v16 = HDSQLiteColumnWithNameAsString();
   v17 = v16;
@@ -869,8 +869,8 @@ uint64_t __111__HDMedicationScheduleEntity_updateMedicationSchedulesToBeDeletedW
   [(HDCodableMedicationSchedule *)v11 setFrequencyType:?];
   objc_opt_class();
   v22 = HDSQLiteColumnWithNameAsObject();
-  v23 = [v22 hk_codableDateComponents];
-  [(HDCodableMedicationSchedule *)v11 setCycleStartDateComponents:v23];
+  hk_codableDateComponents = [v22 hk_codableDateComponents];
+  [(HDCodableMedicationSchedule *)v11 setCycleStartDateComponents:hk_codableDateComponents];
 
   v24 = HDSQLiteColumnWithNameAsString();
   [(HDCodableMedicationSchedule *)v11 setNote:v24];
@@ -885,19 +885,19 @@ uint64_t __111__HDMedicationScheduleEntity_updateMedicationSchedulesToBeDeletedW
   [(HDCodableMedicationSchedule *)v11 setScheduleType:HDSQLiteColumnWithNameAsInt64()];
   [(HDCodableMedicationSchedule *)v11 setDisplayOptions:HDSQLiteColumnWithNameAsInt64()];
   v26 = HDSQLiteColumnWithNameAsInt64();
-  v27 = [v10 syncIdentityManager];
+  syncIdentityManager = [rowCopy syncIdentityManager];
 
   v35 = 0;
-  v28 = [v27 identityForEntityID:v26 transaction:v9 error:&v35];
+  v28 = [syncIdentityManager identityForEntityID:v26 transaction:profileCopy error:&v35];
   v29 = v35;
 
   if (v28)
   {
-    v30 = [v28 identity];
-    v31 = [v30 codableSyncIdentity];
-    [(HDCodableMedicationSchedule *)v11 setSyncIdentity:v31];
+    identity = [v28 identity];
+    codableSyncIdentity = [identity codableSyncIdentity];
+    [(HDCodableMedicationSchedule *)v11 setSyncIdentity:codableSyncIdentity];
 
-    if ([HDMedicationScheduleIntervalDataEntity addIntervalDataToCodable:v11 withScheduleID:a2 transaction:v9 error:a6])
+    if ([HDMedicationScheduleIntervalDataEntity addIntervalDataToCodable:v11 withScheduleID:a2 transaction:profileCopy error:transaction])
     {
       v32 = v11;
       goto LABEL_10;

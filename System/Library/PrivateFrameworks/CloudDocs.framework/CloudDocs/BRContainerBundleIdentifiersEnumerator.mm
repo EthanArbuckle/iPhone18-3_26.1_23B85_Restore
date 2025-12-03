@@ -1,21 +1,21 @@
 @interface BRContainerBundleIdentifiersEnumerator
-- (BRContainerBundleIdentifiersEnumerator)initWithContainerPlist:(id)a3;
+- (BRContainerBundleIdentifiersEnumerator)initWithContainerPlist:(id)plist;
 - (id)nextObject;
 @end
 
 @implementation BRContainerBundleIdentifiersEnumerator
 
-- (BRContainerBundleIdentifiersEnumerator)initWithContainerPlist:(id)a3
+- (BRContainerBundleIdentifiersEnumerator)initWithContainerPlist:(id)plist
 {
-  v4 = a3;
+  plistCopy = plist;
   v9.receiver = self;
   v9.super_class = BRContainerBundleIdentifiersEnumerator;
   v5 = [(BRContainerBundleIdentifiersEnumerator *)&v9 init];
   if (v5)
   {
-    v6 = [v4 keyEnumerator];
+    keyEnumerator = [plistCopy keyEnumerator];
     enumerator = v5->_enumerator;
-    v5->_enumerator = v6;
+    v5->_enumerator = keyEnumerator;
   }
 
   return v5;
@@ -24,17 +24,17 @@
 - (id)nextObject
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(NSEnumerator *)self->_enumerator nextObject];
-  if (v3)
+  nextObject = [(NSEnumerator *)self->_enumerator nextObject];
+  if (nextObject)
   {
     *&v4 = 138412290;
     v10 = v4;
     do
     {
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && ([v3 isEqualToString:@"BRContainerIcons"] & 1) == 0)
+      if ((objc_opt_isKindOfClass() & 1) != 0 && ([nextObject isEqualToString:@"BRContainerIcons"] & 1) == 0)
       {
-        if (![v3 isEqualToString:@"com.apple.bird"])
+        if (![nextObject isEqualToString:@"com.apple.bird"])
         {
           break;
         }
@@ -49,17 +49,17 @@
         }
       }
 
-      v7 = [(NSEnumerator *)self->_enumerator nextObject];
+      nextObject2 = [(NSEnumerator *)self->_enumerator nextObject];
 
-      v3 = v7;
+      nextObject = nextObject2;
     }
 
-    while (v7);
+    while (nextObject2);
   }
 
   v8 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return nextObject;
 }
 
 @end

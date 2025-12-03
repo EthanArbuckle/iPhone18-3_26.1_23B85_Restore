@@ -1,19 +1,19 @@
 @interface _MRDiscoverySessionConfigurationProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsFeatures:(id)a3;
+- (int)StringAsFeatures:(id)features;
 - (int)features;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAlwaysAllowUpdates:(BOOL)a3;
-- (void)setHasCachedDiscoveryEnabled:(BOOL)a3;
-- (void)setHasEnableThrottling:(BOOL)a3;
-- (void)setHasPopulatesExternalDevice:(BOOL)a3;
-- (void)setHasTargetSessionID:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAlwaysAllowUpdates:(BOOL)updates;
+- (void)setHasCachedDiscoveryEnabled:(BOOL)enabled;
+- (void)setHasEnableThrottling:(BOOL)throttling;
+- (void)setHasPopulatesExternalDevice:(BOOL)device;
+- (void)setHasTargetSessionID:(BOOL)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRDiscoverySessionConfigurationProtobuf
@@ -33,7 +33,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     features = self->_features;
@@ -66,7 +66,7 @@
         case 2:
           v5 = @"Screen";
 LABEL_16:
-          [v3 setObject:v5 forKey:@"features"];
+          [dictionary setObject:v5 forKey:@"features"];
 
           goto LABEL_17;
       }
@@ -80,14 +80,14 @@ LABEL_17:
   routingContextUID = self->_routingContextUID;
   if (routingContextUID)
   {
-    [v3 setObject:routingContextUID forKey:@"routingContextUID"];
+    [dictionary setObject:routingContextUID forKey:@"routingContextUID"];
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithBool:self->_enableThrottling];
-    [v3 setObject:v14 forKey:@"enableThrottling"];
+    [dictionary setObject:v14 forKey:@"enableThrottling"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -108,27 +108,27 @@ LABEL_21:
   }
 
   v15 = [MEMORY[0x1E696AD98] numberWithBool:self->_alwaysAllowUpdates];
-  [v3 setObject:v15 forKey:@"alwaysAllowUpdates"];
+  [dictionary setObject:v15 forKey:@"alwaysAllowUpdates"];
 
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_22:
     v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_populatesExternalDevice];
-    [v3 setObject:v8 forKey:@"populatesExternalDevice"];
+    [dictionary setObject:v8 forKey:@"populatesExternalDevice"];
   }
 
 LABEL_23:
   outputDeviceUID = self->_outputDeviceUID;
   if (outputDeviceUID)
   {
-    [v3 setObject:outputDeviceUID forKey:@"outputDeviceUID"];
+    [dictionary setObject:outputDeviceUID forKey:@"outputDeviceUID"];
   }
 
   v10 = self->_has;
   if ((v10 & 2) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_targetSessionID];
-    [v3 setObject:v11 forKey:@"targetSessionID"];
+    [dictionary setObject:v11 forKey:@"targetSessionID"];
 
     v10 = self->_has;
   }
@@ -136,41 +136,41 @@ LABEL_23:
   if ((v10 & 8) != 0)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:self->_cachedDiscoveryEnabled];
-    [v3 setObject:v12 forKey:@"cachedDiscoveryEnabled"];
+    [dictionary setObject:v12 forKey:@"cachedDiscoveryEnabled"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (int)StringAsFeatures:(id)a3
+- (int)StringAsFeatures:(id)features
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  featuresCopy = features;
+  if ([featuresCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Audio"])
+  else if ([featuresCopy isEqualToString:@"Audio"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Screen"])
+  else if ([featuresCopy isEqualToString:@"Screen"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Video"])
+  else if ([featuresCopy isEqualToString:@"Video"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"RemoteControl"])
+  else if ([featuresCopy isEqualToString:@"RemoteControl"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Companion"])
+  else if ([featuresCopy isEqualToString:@"Companion"])
   {
     v4 = 256;
   }
@@ -183,9 +183,9 @@ LABEL_23:
   return v4;
 }
 
-- (void)setHasEnableThrottling:(BOOL)a3
+- (void)setHasEnableThrottling:(BOOL)throttling
 {
-  if (a3)
+  if (throttling)
   {
     v3 = 16;
   }
@@ -198,9 +198,9 @@ LABEL_23:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasAlwaysAllowUpdates:(BOOL)a3
+- (void)setHasAlwaysAllowUpdates:(BOOL)updates
 {
-  if (a3)
+  if (updates)
   {
     v3 = 4;
   }
@@ -213,9 +213,9 @@ LABEL_23:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasPopulatesExternalDevice:(BOOL)a3
+- (void)setHasPopulatesExternalDevice:(BOOL)device
 {
-  if (a3)
+  if (device)
   {
     v3 = 32;
   }
@@ -228,9 +228,9 @@ LABEL_23:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasTargetSessionID:(BOOL)a3
+- (void)setHasTargetSessionID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 2;
   }
@@ -243,9 +243,9 @@ LABEL_23:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasCachedDiscoveryEnabled:(BOOL)a3
+- (void)setHasCachedDiscoveryEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 8;
   }
@@ -264,15 +264,15 @@ LABEL_23:
   v8.receiver = self;
   v8.super_class = _MRDiscoverySessionConfigurationProtobuf;
   v4 = [(_MRDiscoverySessionConfigurationProtobuf *)&v8 description];
-  v5 = [(_MRDiscoverySessionConfigurationProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRDiscoverySessionConfigurationProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     features = self->_features;
@@ -337,27 +337,27 @@ LABEL_9:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[2] = self->_features;
-    *(v4 + 40) |= 1u;
+    toCopy[2] = self->_features;
+    *(toCopy + 40) |= 1u;
   }
 
-  v7 = v4;
+  v7 = toCopy;
   if (self->_routingContextUID)
   {
-    [v4 setRoutingContextUID:?];
-    v4 = v7;
+    [toCopy setRoutingContextUID:?];
+    toCopy = v7;
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    *(v4 + 38) = self->_enableThrottling;
-    *(v4 + 40) |= 0x10u;
+    *(toCopy + 38) = self->_enableThrottling;
+    *(toCopy + 40) |= 0x10u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -376,40 +376,40 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 36) = self->_alwaysAllowUpdates;
-  *(v4 + 40) |= 4u;
+  *(toCopy + 36) = self->_alwaysAllowUpdates;
+  *(toCopy + 40) |= 4u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_8:
-    *(v4 + 39) = self->_populatesExternalDevice;
-    *(v4 + 40) |= 0x20u;
+    *(toCopy + 39) = self->_populatesExternalDevice;
+    *(toCopy + 40) |= 0x20u;
   }
 
 LABEL_9:
   if (self->_outputDeviceUID)
   {
     [v7 setOutputDeviceUID:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 2) != 0)
   {
-    v4[8] = self->_targetSessionID;
-    *(v4 + 40) |= 2u;
+    toCopy[8] = self->_targetSessionID;
+    *(toCopy + 40) |= 2u;
     v6 = self->_has;
   }
 
   if ((v6 & 8) != 0)
   {
-    *(v4 + 37) = self->_cachedDiscoveryEnabled;
-    *(v4 + 40) |= 8u;
+    *(toCopy + 37) = self->_cachedDiscoveryEnabled;
+    *(toCopy + 40) |= 8u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -417,7 +417,7 @@ LABEL_9:
     *(v5 + 40) |= 1u;
   }
 
-  v7 = [(NSString *)self->_routingContextUID copyWithZone:a3];
+  v7 = [(NSString *)self->_routingContextUID copyWithZone:zone];
   v8 = *(v6 + 24);
   *(v6 + 24) = v7;
 
@@ -454,7 +454,7 @@ LABEL_6:
   }
 
 LABEL_7:
-  v10 = [(NSString *)self->_outputDeviceUID copyWithZone:a3];
+  v10 = [(NSString *)self->_outputDeviceUID copyWithZone:zone];
   v11 = *(v6 + 16);
   *(v6 + 16) = v10;
 
@@ -475,31 +475,31 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_46;
   }
 
   has = self->_has;
-  v6 = *(v4 + 40);
+  v6 = *(equalCopy + 40);
   if (has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_features != *(v4 + 2))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_features != *(equalCopy + 2))
     {
       goto LABEL_46;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_46;
   }
 
   routingContextUID = self->_routingContextUID;
-  if (routingContextUID | *(v4 + 3))
+  if (routingContextUID | *(equalCopy + 3))
   {
     if (![(NSString *)routingContextUID isEqual:?])
     {
@@ -509,90 +509,90 @@ LABEL_7:
     has = self->_has;
   }
 
-  v8 = *(v4 + 40);
+  v8 = *(equalCopy + 40);
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 40) & 0x10) == 0)
+    if ((*(equalCopy + 40) & 0x10) == 0)
     {
       goto LABEL_46;
     }
 
-    v10 = *(v4 + 38);
+    v10 = *(equalCopy + 38);
     if (self->_enableThrottling)
     {
-      if ((*(v4 + 38) & 1) == 0)
+      if ((*(equalCopy + 38) & 1) == 0)
       {
         goto LABEL_46;
       }
     }
 
-    else if (*(v4 + 38))
+    else if (*(equalCopy + 38))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 40) & 0x10) != 0)
+  else if ((*(equalCopy + 40) & 0x10) != 0)
   {
     goto LABEL_46;
   }
 
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0)
+    if ((*(equalCopy + 40) & 4) == 0)
     {
       goto LABEL_46;
     }
 
-    v11 = *(v4 + 36);
+    v11 = *(equalCopy + 36);
     if (self->_alwaysAllowUpdates)
     {
-      if ((*(v4 + 36) & 1) == 0)
+      if ((*(equalCopy + 36) & 1) == 0)
       {
         goto LABEL_46;
       }
     }
 
-    else if (*(v4 + 36))
+    else if (*(equalCopy + 36))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
     goto LABEL_46;
   }
 
   if ((has & 0x20) != 0)
   {
-    if ((*(v4 + 40) & 0x20) == 0)
+    if ((*(equalCopy + 40) & 0x20) == 0)
     {
       goto LABEL_46;
     }
 
-    v12 = *(v4 + 39);
+    v12 = *(equalCopy + 39);
     if (self->_populatesExternalDevice)
     {
-      if ((*(v4 + 39) & 1) == 0)
+      if ((*(equalCopy + 39) & 1) == 0)
       {
         goto LABEL_46;
       }
     }
 
-    else if (*(v4 + 39))
+    else if (*(equalCopy + 39))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 40) & 0x20) != 0)
+  else if ((*(equalCopy + 40) & 0x20) != 0)
   {
     goto LABEL_46;
   }
 
   outputDeviceUID = self->_outputDeviceUID;
-  if (outputDeviceUID | *(v4 + 2))
+  if (outputDeviceUID | *(equalCopy + 2))
   {
     if (![(NSString *)outputDeviceUID isEqual:?])
     {
@@ -604,31 +604,31 @@ LABEL_7:
 
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_targetSessionID != *(v4 + 8))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_targetSessionID != *(equalCopy + 8))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_46;
   }
 
-  v13 = (*(v4 + 40) & 8) == 0;
+  v13 = (*(equalCopy + 40) & 8) == 0;
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 40) & 8) != 0)
+    if ((*(equalCopy + 40) & 8) != 0)
     {
       if (self->_cachedDiscoveryEnabled)
       {
-        if (*(v4 + 37))
+        if (*(equalCopy + 37))
         {
           goto LABEL_49;
         }
       }
 
-      else if (!*(v4 + 37))
+      else if (!*(equalCopy + 37))
       {
 LABEL_49:
         v13 = 1;
@@ -719,28 +719,28 @@ LABEL_13:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 40))
+  fromCopy = from;
+  if (*(fromCopy + 40))
   {
-    self->_features = *(v4 + 2);
+    self->_features = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
-  v7 = v4;
-  if (*(v4 + 3))
+  v7 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(_MRDiscoverySessionConfigurationProtobuf *)self setRoutingContextUID:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x10) != 0)
   {
-    self->_enableThrottling = *(v4 + 38);
+    self->_enableThrottling = *(fromCopy + 38);
     *&self->_has |= 0x10u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
     if ((v5 & 4) == 0)
     {
 LABEL_7:
@@ -753,38 +753,38 @@ LABEL_7:
     }
   }
 
-  else if ((*(v4 + 40) & 4) == 0)
+  else if ((*(fromCopy + 40) & 4) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_alwaysAllowUpdates = *(v4 + 36);
+  self->_alwaysAllowUpdates = *(fromCopy + 36);
   *&self->_has |= 4u;
-  if ((*(v4 + 40) & 0x20) != 0)
+  if ((*(fromCopy + 40) & 0x20) != 0)
   {
 LABEL_8:
-    self->_populatesExternalDevice = *(v4 + 39);
+    self->_populatesExternalDevice = *(fromCopy + 39);
     *&self->_has |= 0x20u;
   }
 
 LABEL_9:
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(_MRDiscoverySessionConfigurationProtobuf *)self setOutputDeviceUID:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 40);
+  v6 = *(fromCopy + 40);
   if ((v6 & 2) != 0)
   {
-    self->_targetSessionID = *(v4 + 8);
+    self->_targetSessionID = *(fromCopy + 8);
     *&self->_has |= 2u;
-    v6 = *(v4 + 40);
+    v6 = *(fromCopy + 40);
   }
 
   if ((v6 & 8) != 0)
   {
-    self->_cachedDiscoveryEnabled = *(v4 + 37);
+    self->_cachedDiscoveryEnabled = *(fromCopy + 37);
     *&self->_has |= 8u;
   }
 }

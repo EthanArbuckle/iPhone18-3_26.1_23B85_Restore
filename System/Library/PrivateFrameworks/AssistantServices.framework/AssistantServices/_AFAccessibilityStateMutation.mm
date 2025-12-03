@@ -1,5 +1,5 @@
 @interface _AFAccessibilityStateMutation
-- (_AFAccessibilityStateMutation)initWithBase:(id)a3;
+- (_AFAccessibilityStateMutation)initWithBase:(id)base;
 - (int64_t)getIsVibrationDisabled;
 - (int64_t)getIsVoiceOverTouchEnabled;
 @end
@@ -32,16 +32,16 @@
   }
 }
 
-- (_AFAccessibilityStateMutation)initWithBase:(id)a3
+- (_AFAccessibilityStateMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFAccessibilityStateMutation;
   v6 = [(_AFAccessibilityStateMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

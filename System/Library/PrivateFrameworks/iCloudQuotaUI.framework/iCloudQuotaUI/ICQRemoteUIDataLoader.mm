@@ -1,8 +1,8 @@
 @interface ICQRemoteUIDataLoader
 - (ICQRemoteUIDataLoader)init;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
-- (void)addHeadersForRequest:(id)a3 withCompletion:(id)a4;
-- (void)loadDataFromURL:(id)a3 completion:(id)a4;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
+- (void)addHeadersForRequest:(id)request withCompletion:(id)completion;
+- (void)loadDataFromURL:(id)l completion:(id)completion;
 @end
 
 @implementation ICQRemoteUIDataLoader
@@ -14,11 +14,11 @@
   v2 = [(ICQRemoteUIDataLoader *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+    defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
     v4 = [objc_alloc(MEMORY[0x277CF0188]) initWithIdentifier:@"ICQRemoteUILoaderSession"];
-    [v3 set_appleIDContext:v4];
+    [defaultSessionConfiguration set_appleIDContext:v4];
 
-    v5 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v3];
+    v5 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration];
     session = v2->_session;
     v2->_session = v5;
   }
@@ -26,11 +26,11 @@
   return v2;
 }
 
-- (void)addHeadersForRequest:(id)a3 withCompletion:(id)a4
+- (void)addHeadersForRequest:(id)request withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 mutableCopy];
+  requestCopy = request;
+  completionCopy = completion;
+  v7 = [requestCopy mutableCopy];
   [v7 setValue:@"application/x-plist" forHTTPHeaderField:@"Content-Type"];
   [v7 setValue:@"application/x-buddyml" forHTTPHeaderField:@"Accept"];
   v11[0] = MEMORY[0x277D85DD0];
@@ -38,11 +38,11 @@
   v11[2] = __61__ICQRemoteUIDataLoader_addHeadersForRequest_withCompletion___block_invoke;
   v11[3] = &unk_27A65A5B8;
   v13 = v7;
-  v14 = v6;
-  v12 = v5;
+  v14 = completionCopy;
+  v12 = requestCopy;
   v8 = v7;
-  v9 = v6;
-  v10 = v5;
+  v9 = completionCopy;
+  v10 = requestCopy;
   [v8 icq_addHeadersForUpgradeWithCompletion:v11];
 }
 
@@ -66,29 +66,29 @@ uint64_t __61__ICQRemoteUIDataLoader_addHeadersForRequest_withCompletion___block
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)loadDataFromURL:(id)a3 completion:(id)a4
+- (void)loadDataFromURL:(id)l completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v15 = "[ICQRemoteUIDataLoader loadDataFromURL:completion:]";
     v16 = 2112;
-    v17 = v6;
+    v17 = lCopy;
     _os_log_impl(&dword_275623000, v8, OS_LOG_TYPE_DEFAULT, "%s - server call to URL %@", buf, 0x16u);
   }
 
   objc_initWeak(buf, self);
-  v9 = [MEMORY[0x277CCAB70] requestWithURL:v6 cachePolicy:1 timeoutInterval:30.0];
+  v9 = [MEMORY[0x277CCAB70] requestWithURL:lCopy cachePolicy:1 timeoutInterval:30.0];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __52__ICQRemoteUIDataLoader_loadDataFromURL_completion___block_invoke;
   v11[3] = &unk_27A65A608;
   objc_copyWeak(&v13, buf);
-  v10 = v7;
+  v10 = completionCopy;
   v12 = v10;
   [(ICQRemoteUIDataLoader *)self addHeadersForRequest:v9 withCompletion:v11];
 
@@ -182,11 +182,11 @@ LABEL_4:
 LABEL_19:
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v9 = a7;
-  v10 = a6;
+  handlerCopy = handler;
+  requestCopy = request;
   v11 = _ICQGetLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -199,9 +199,9 @@ LABEL_19:
   v13[1] = 3221225472;
   v13[2] = __97__ICQRemoteUIDataLoader_URLSession_task_willPerformHTTPRedirection_newRequest_completionHandler___block_invoke;
   v13[3] = &unk_27A65A630;
-  v14 = v9;
-  v12 = v9;
-  [(ICQRemoteUIDataLoader *)self addHeadersForRequest:v10 withCompletion:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [(ICQRemoteUIDataLoader *)self addHeadersForRequest:requestCopy withCompletion:v13];
 }
 
 void __52__ICQRemoteUIDataLoader_loadDataFromURL_completion___block_invoke_2_cold_1(void *a1, NSObject *a2)

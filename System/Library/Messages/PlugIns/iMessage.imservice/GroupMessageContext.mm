@@ -1,24 +1,24 @@
 @interface GroupMessageContext
-- (GroupMessageContext)initWithGroupPayload:(id)a3 additionalPayload:(id)a4 isGroupChat:(BOOL)a5;
+- (GroupMessageContext)initWithGroupPayload:(id)payload additionalPayload:(id)additionalPayload isGroupChat:(BOOL)chat;
 @end
 
 @implementation GroupMessageContext
 
-- (GroupMessageContext)initWithGroupPayload:(id)a3 additionalPayload:(id)a4 isGroupChat:(BOOL)a5
+- (GroupMessageContext)initWithGroupPayload:(id)payload additionalPayload:(id)additionalPayload isGroupChat:(BOOL)chat
 {
-  v8 = a3;
-  v9 = a4;
+  payloadCopy = payload;
+  additionalPayloadCopy = additionalPayload;
   v15.receiver = self;
   v15.super_class = GroupMessageContext;
   v10 = [(GroupMessageContext *)&v15 init];
   groupPayload = v10->_groupPayload;
-  v10->_groupPayload = v8;
-  v12 = v8;
+  v10->_groupPayload = payloadCopy;
+  v12 = payloadCopy;
 
   additionalPayload = v10->_additionalPayload;
-  v10->_additionalPayload = v9;
+  v10->_additionalPayload = additionalPayloadCopy;
 
-  v10->_groupChat = a5;
+  v10->_groupChat = chat;
   return v10;
 }
 

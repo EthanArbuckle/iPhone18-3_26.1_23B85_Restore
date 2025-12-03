@@ -1,41 +1,41 @@
 @interface CERecommendationDataController
-- (CERecommendationDataController)initWithAccount:(id)a3;
-- (void)fetchCompletedRecommendations:(id)a3 completion:(id)a4;
-- (void)fetchCompletedRecommendations:(id)a3 recommendationInfo:(id)a4 completion:(id)a5;
-- (void)fetchRecommendationsRulesetWithCompletion:(id)a3;
-- (void)fetchRecommendationsRulesetWithInfo:(id)a3 completion:(id)a4;
-- (void)fetchRecommendationsWithCompletion:(id)a3;
-- (void)fetchRecommendationsWithInfo:(id)a3 completion:(id)a4;
-- (void)sendRecommendationStatus:(id)a3 configuration:(id)a4 recommendationIdentifiers:(id)a5 storageRecovered:(id)a6 context:(id)a7 completion:(id)a8;
+- (CERecommendationDataController)initWithAccount:(id)account;
+- (void)fetchCompletedRecommendations:(id)recommendations completion:(id)completion;
+- (void)fetchCompletedRecommendations:(id)recommendations recommendationInfo:(id)info completion:(id)completion;
+- (void)fetchRecommendationsRulesetWithCompletion:(id)completion;
+- (void)fetchRecommendationsRulesetWithInfo:(id)info completion:(id)completion;
+- (void)fetchRecommendationsWithCompletion:(id)completion;
+- (void)fetchRecommendationsWithInfo:(id)info completion:(id)completion;
+- (void)sendRecommendationStatus:(id)status configuration:(id)configuration recommendationIdentifiers:(id)identifiers storageRecovered:(id)recovered context:(id)context completion:(id)completion;
 @end
 
 @implementation CERecommendationDataController
 
-- (CERecommendationDataController)initWithAccount:(id)a3
+- (CERecommendationDataController)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = CERecommendationDataController;
   v6 = [(CERecommendationDataController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
 }
 
-- (void)fetchRecommendationsWithCompletion:(id)a3
+- (void)fetchRecommendationsWithCompletion:(id)completion
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACAccount *)self->_account aa_altDSID];
+  completionCopy = completion;
+  aa_altDSID = [(ACAccount *)self->_account aa_altDSID];
   v6 = [(ACAccount *)self->_account aa_isAccountClass:*MEMORY[0x277CEC688]];
-  v7 = [(ACAccount *)self->_account aa_isManagedAppleID];
+  aa_isManagedAppleID = [(ACAccount *)self->_account aa_isManagedAppleID];
   v8 = _CELogSystem();
   v9 = v8;
-  if (v5)
+  if (aa_altDSID)
   {
     v10 = v6 == 0;
   }
@@ -45,7 +45,7 @@
     v10 = 1;
   }
 
-  if (!v10 && v7 == 0)
+  if (!v10 && aa_isManagedAppleID == 0)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
@@ -78,7 +78,7 @@
     v28[3] = &unk_278DE0370;
     v30 = v15;
     v31 = v17;
-    v21 = v4;
+    v21 = completionCopy;
     v29 = v21;
     v22 = [v12 daemonWithErrorHandler:v28];
     v24[0] = MEMORY[0x277D85DD0];
@@ -88,7 +88,7 @@
     v26 = v15;
     v27 = v17;
     v25 = v21;
-    [v22 fetchRecommendationsForAltDSID:v5 completion:v24];
+    [v22 fetchRecommendationsForAltDSID:aa_altDSID completion:v24];
   }
 
   else
@@ -96,16 +96,16 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v33 = v5;
+      v33 = aa_altDSID;
       v34 = 1024;
       v35 = v6;
       v36 = 1024;
-      v37 = v7;
+      v37 = aa_isManagedAppleID;
       _os_log_error_impl(&dword_2439E1000, v9, OS_LOG_TYPE_ERROR, "Invalid account. altDSID: %@ isPrimary: %d isManaged: %d.", buf, 0x18u);
     }
 
     v12 = CECreateError(12);
-    (*(v4 + 2))(v4, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -178,17 +178,17 @@ void __69__CERecommendationDataController_fetchRecommendationsWithCompletion___b
   v11();
 }
 
-- (void)fetchRecommendationsWithInfo:(id)a3 completion:(id)a4
+- (void)fetchRecommendationsWithInfo:(id)info completion:(id)completion
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACAccount *)self->_account aa_altDSID];
+  infoCopy = info;
+  completionCopy = completion;
+  aa_altDSID = [(ACAccount *)self->_account aa_altDSID];
   v9 = [(ACAccount *)self->_account aa_isAccountClass:*MEMORY[0x277CEC688]];
-  v10 = [(ACAccount *)self->_account aa_isManagedAppleID];
+  aa_isManagedAppleID = [(ACAccount *)self->_account aa_isManagedAppleID];
   v11 = _CELogSystem();
   v12 = v11;
-  if (v8)
+  if (aa_altDSID)
   {
     v13 = v9 == 0;
   }
@@ -198,7 +198,7 @@ void __69__CERecommendationDataController_fetchRecommendationsWithCompletion___b
     v13 = 1;
   }
 
-  if (!v13 && v10 == 0)
+  if (!v13 && aa_isManagedAppleID == 0)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -231,7 +231,7 @@ void __69__CERecommendationDataController_fetchRecommendationsWithCompletion___b
     v32[3] = &unk_278DE0370;
     v34 = v18;
     v35 = v20;
-    v24 = v7;
+    v24 = completionCopy;
     v33 = v24;
     v25 = [v15 synchronousDaemonWithErrorHandler:v32];
     if (objc_opt_respondsToSelector())
@@ -243,7 +243,7 @@ void __69__CERecommendationDataController_fetchRecommendationsWithCompletion___b
       v30 = v18;
       v31 = v20;
       v29 = v24;
-      [v25 fetchRecommendationsForAltDSID:v8 recommendationInfo:v6 completion:v28];
+      [v25 fetchRecommendationsForAltDSID:aa_altDSID recommendationInfo:infoCopy completion:v28];
       v26 = v29;
     }
 
@@ -262,16 +262,16 @@ void __69__CERecommendationDataController_fetchRecommendationsWithCompletion___b
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v37 = v8;
+      v37 = aa_altDSID;
       v38 = 1024;
       v39 = v9;
       v40 = 1024;
-      v41 = v10;
+      v41 = aa_isManagedAppleID;
       _os_log_error_impl(&dword_2439E1000, v12, OS_LOG_TYPE_ERROR, "Invalid account. altDSID: %@ isPrimary: %d isManaged: %d.", buf, 0x18u);
     }
 
     v15 = CECreateError(12);
-    (*(v7 + 2))(v7, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, v15);
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -344,16 +344,16 @@ void __74__CERecommendationDataController_fetchRecommendationsWithInfo_completio
   v11();
 }
 
-- (void)fetchRecommendationsRulesetWithCompletion:(id)a3
+- (void)fetchRecommendationsRulesetWithCompletion:(id)completion
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACAccount *)self->_account aa_altDSID];
+  completionCopy = completion;
+  aa_altDSID = [(ACAccount *)self->_account aa_altDSID];
   v6 = [(ACAccount *)self->_account aa_isAccountClass:*MEMORY[0x277CEC688]];
-  v7 = [(ACAccount *)self->_account aa_isManagedAppleID];
+  aa_isManagedAppleID = [(ACAccount *)self->_account aa_isManagedAppleID];
   v8 = _CELogSystem();
   v9 = v8;
-  if (v5)
+  if (aa_altDSID)
   {
     v10 = v6 == 0;
   }
@@ -363,7 +363,7 @@ void __74__CERecommendationDataController_fetchRecommendationsWithInfo_completio
     v10 = 1;
   }
 
-  if (!v10 && v7 == 0)
+  if (!v10 && aa_isManagedAppleID == 0)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
@@ -396,7 +396,7 @@ void __74__CERecommendationDataController_fetchRecommendationsWithInfo_completio
     v28[3] = &unk_278DE0370;
     v30 = v15;
     v31 = v17;
-    v21 = v4;
+    v21 = completionCopy;
     v29 = v21;
     v22 = [v12 daemonWithErrorHandler:v28];
     v24[0] = MEMORY[0x277D85DD0];
@@ -406,7 +406,7 @@ void __74__CERecommendationDataController_fetchRecommendationsWithInfo_completio
     v26 = v15;
     v27 = v17;
     v25 = v21;
-    [v22 fetchRecommendationsRulesetForAltDSID:v5 completion:v24];
+    [v22 fetchRecommendationsRulesetForAltDSID:aa_altDSID completion:v24];
   }
 
   else
@@ -414,16 +414,16 @@ void __74__CERecommendationDataController_fetchRecommendationsWithInfo_completio
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v33 = v5;
+      v33 = aa_altDSID;
       v34 = 1024;
       v35 = v6;
       v36 = 1024;
-      v37 = v7;
+      v37 = aa_isManagedAppleID;
       _os_log_error_impl(&dword_2439E1000, v9, OS_LOG_TYPE_ERROR, "Invalid account. altDSID: %@ isPrimary: %d isManaged: %d.", buf, 0x18u);
     }
 
     v12 = CECreateError(12);
-    (*(v4 + 2))(v4, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -496,17 +496,17 @@ void __76__CERecommendationDataController_fetchRecommendationsRulesetWithComplet
   v11();
 }
 
-- (void)fetchRecommendationsRulesetWithInfo:(id)a3 completion:(id)a4
+- (void)fetchRecommendationsRulesetWithInfo:(id)info completion:(id)completion
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACAccount *)self->_account aa_altDSID];
+  infoCopy = info;
+  completionCopy = completion;
+  aa_altDSID = [(ACAccount *)self->_account aa_altDSID];
   v9 = [(ACAccount *)self->_account aa_isAccountClass:*MEMORY[0x277CEC688]];
-  v10 = [(ACAccount *)self->_account aa_isManagedAppleID];
+  aa_isManagedAppleID = [(ACAccount *)self->_account aa_isManagedAppleID];
   v11 = _CELogSystem();
   v12 = v11;
-  if (v8)
+  if (aa_altDSID)
   {
     v13 = v9 == 0;
   }
@@ -516,7 +516,7 @@ void __76__CERecommendationDataController_fetchRecommendationsRulesetWithComplet
     v13 = 1;
   }
 
-  if (!v13 && v10 == 0)
+  if (!v13 && aa_isManagedAppleID == 0)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -549,7 +549,7 @@ void __76__CERecommendationDataController_fetchRecommendationsRulesetWithComplet
     v32[3] = &unk_278DE0370;
     v34 = v18;
     v35 = v20;
-    v24 = v7;
+    v24 = completionCopy;
     v33 = v24;
     v25 = [v15 synchronousDaemonWithErrorHandler:v32];
     if (objc_opt_respondsToSelector())
@@ -561,7 +561,7 @@ void __76__CERecommendationDataController_fetchRecommendationsRulesetWithComplet
       v30 = v18;
       v31 = v20;
       v29 = v24;
-      [v25 fetchRecommendationsRulesetForAltDSID:v8 recommendationInfo:v6 completion:v28];
+      [v25 fetchRecommendationsRulesetForAltDSID:aa_altDSID recommendationInfo:infoCopy completion:v28];
       v26 = v29;
     }
 
@@ -580,16 +580,16 @@ void __76__CERecommendationDataController_fetchRecommendationsRulesetWithComplet
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v37 = v8;
+      v37 = aa_altDSID;
       v38 = 1024;
       v39 = v9;
       v40 = 1024;
-      v41 = v10;
+      v41 = aa_isManagedAppleID;
       _os_log_error_impl(&dword_2439E1000, v12, OS_LOG_TYPE_ERROR, "Invalid account. altDSID: %@ isPrimary: %d isManaged: %d.", buf, 0x18u);
     }
 
     v15 = CECreateError(12);
-    (*(v7 + 2))(v7, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, v15);
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -662,17 +662,17 @@ void __81__CERecommendationDataController_fetchRecommendationsRulesetWithInfo_co
   v11();
 }
 
-- (void)fetchCompletedRecommendations:(id)a3 completion:(id)a4
+- (void)fetchCompletedRecommendations:(id)recommendations completion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACAccount *)self->_account aa_altDSID];
+  recommendationsCopy = recommendations;
+  completionCopy = completion;
+  aa_altDSID = [(ACAccount *)self->_account aa_altDSID];
   v9 = [(ACAccount *)self->_account aa_isAccountClass:*MEMORY[0x277CEC688]];
-  v10 = [(ACAccount *)self->_account aa_isManagedAppleID];
+  aa_isManagedAppleID = [(ACAccount *)self->_account aa_isManagedAppleID];
   v11 = _CELogSystem();
   v12 = v11;
-  if (v8)
+  if (aa_altDSID)
   {
     v13 = v9 == 0;
   }
@@ -682,7 +682,7 @@ void __81__CERecommendationDataController_fetchRecommendationsRulesetWithInfo_co
     v13 = 1;
   }
 
-  if (!v13 && v10 == 0)
+  if (!v13 && aa_isManagedAppleID == 0)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -715,7 +715,7 @@ void __81__CERecommendationDataController_fetchRecommendationsRulesetWithInfo_co
     v31[3] = &unk_278DE0370;
     v33 = v18;
     v34 = v20;
-    v24 = v7;
+    v24 = completionCopy;
     v32 = v24;
     v25 = [v15 daemonWithErrorHandler:v31];
     v27[0] = MEMORY[0x277D85DD0];
@@ -725,7 +725,7 @@ void __81__CERecommendationDataController_fetchRecommendationsRulesetWithInfo_co
     v29 = v18;
     v30 = v20;
     v28 = v24;
-    [v25 fetchCompletedAndDismissedRecommendationsForAltDSID:v8 configuration:v6 completion:v27];
+    [v25 fetchCompletedAndDismissedRecommendationsForAltDSID:aa_altDSID configuration:recommendationsCopy completion:v27];
   }
 
   else
@@ -733,16 +733,16 @@ void __81__CERecommendationDataController_fetchRecommendationsRulesetWithInfo_co
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v36 = v8;
+      v36 = aa_altDSID;
       v37 = 1024;
       v38 = v9;
       v39 = 1024;
-      v40 = v10;
+      v40 = aa_isManagedAppleID;
       _os_log_error_impl(&dword_2439E1000, v12, OS_LOG_TYPE_ERROR, "Invalid account. altDSID: %@ isPrimary: %d isManaged: %d.", buf, 0x18u);
     }
 
     v15 = CECreateError(12);
-    (*(v7 + 2))(v7, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, v15);
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -815,17 +815,17 @@ void __75__CERecommendationDataController_fetchCompletedRecommendations_completi
   v11();
 }
 
-- (void)fetchCompletedRecommendations:(id)a3 recommendationInfo:(id)a4 completion:(id)a5
+- (void)fetchCompletedRecommendations:(id)recommendations recommendationInfo:(id)info completion:(id)completion
 {
   v43 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(ACAccount *)self->_account aa_altDSID];
+  infoCopy = info;
+  completionCopy = completion;
+  aa_altDSID = [(ACAccount *)self->_account aa_altDSID];
   v10 = [(ACAccount *)self->_account aa_isAccountClass:*MEMORY[0x277CEC688]];
-  v11 = [(ACAccount *)self->_account aa_isManagedAppleID];
+  aa_isManagedAppleID = [(ACAccount *)self->_account aa_isManagedAppleID];
   v12 = _CELogSystem();
   v13 = v12;
-  if (v9)
+  if (aa_altDSID)
   {
     v14 = v10 == 0;
   }
@@ -835,7 +835,7 @@ void __75__CERecommendationDataController_fetchCompletedRecommendations_completi
     v14 = 1;
   }
 
-  if (!v14 && v11 == 0)
+  if (!v14 && aa_isManagedAppleID == 0)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
@@ -868,7 +868,7 @@ void __75__CERecommendationDataController_fetchCompletedRecommendations_completi
     v33[3] = &unk_278DE0370;
     v35 = v19;
     v36 = v21;
-    v25 = v8;
+    v25 = completionCopy;
     v34 = v25;
     v26 = [v16 synchronousDaemonWithErrorHandler:v33];
     if (objc_opt_respondsToSelector())
@@ -880,7 +880,7 @@ void __75__CERecommendationDataController_fetchCompletedRecommendations_completi
       v31 = v19;
       v32 = v21;
       v30 = v25;
-      [v26 fetchCompletedAndDismissedRecommendationsForAltDSID:v9 recommendationInfo:v7 completion:v29];
+      [v26 fetchCompletedAndDismissedRecommendationsForAltDSID:aa_altDSID recommendationInfo:infoCopy completion:v29];
       v27 = v30;
     }
 
@@ -899,16 +899,16 @@ void __75__CERecommendationDataController_fetchCompletedRecommendations_completi
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v38 = v9;
+      v38 = aa_altDSID;
       v39 = 1024;
       v40 = v10;
       v41 = 1024;
-      v42 = v11;
+      v42 = aa_isManagedAppleID;
       _os_log_error_impl(&dword_2439E1000, v13, OS_LOG_TYPE_ERROR, "Invalid account. altDSID: %@ isPrimary: %d isManaged: %d.", buf, 0x18u);
     }
 
     v16 = CECreateError(12);
-    (*(v8 + 2))(v8, 0, v16);
+    (*(completionCopy + 2))(completionCopy, 0, v16);
   }
 
   v28 = *MEMORY[0x277D85DE8];
@@ -981,23 +981,23 @@ void __94__CERecommendationDataController_fetchCompletedRecommendations_recommen
   v11();
 }
 
-- (void)sendRecommendationStatus:(id)a3 configuration:(id)a4 recommendationIdentifiers:(id)a5 storageRecovered:(id)a6 context:(id)a7 completion:(id)a8
+- (void)sendRecommendationStatus:(id)status configuration:(id)configuration recommendationIdentifiers:(id)identifiers storageRecovered:(id)recovered context:(id)context completion:(id)completion
 {
   v60 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v44 = a4;
-  v15 = a5;
-  v16 = a6;
-  v45 = a7;
-  v17 = a8;
-  v18 = [(ACAccount *)self->_account aa_altDSID];
+  statusCopy = status;
+  configurationCopy = configuration;
+  identifiersCopy = identifiers;
+  recoveredCopy = recovered;
+  contextCopy = context;
+  completionCopy = completion;
+  aa_altDSID = [(ACAccount *)self->_account aa_altDSID];
   v19 = [(ACAccount *)self->_account aa_isAccountClass:*MEMORY[0x277CEC688]];
-  v20 = [(ACAccount *)self->_account aa_isManagedAppleID];
+  aa_isManagedAppleID = [(ACAccount *)self->_account aa_isManagedAppleID];
   v21 = _CELogSystem();
   v22 = v21;
-  if (v18 && (v19 ? (v23 = v20 == 0) : (v23 = 0), v23))
+  if (aa_altDSID && (v19 ? (v23 = aa_isManagedAppleID == 0) : (v23 = 0), v23))
   {
-    v43 = v15;
+    v43 = identifiersCopy;
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
       [CERecommendationDataController sendRecommendationStatus:configuration:recommendationIdentifiers:storageRecovered:context:completion:];
@@ -1029,17 +1029,17 @@ void __94__CERecommendationDataController_fetchCompletedRecommendations_recommen
     v50[3] = &unk_278DE0370;
     v52 = v26;
     v53 = v28;
-    v42 = v17;
-    v33 = v17;
+    v42 = completionCopy;
+    v33 = completionCopy;
     v34 = v28;
     v35 = v33;
     v51 = v33;
     v36 = [v32 daemonWithErrorHandler:v50];
     v37 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [v37 setObject:v43 forKeyedSubscript:@"recommendations"];
-    if (v45)
+    if (contextCopy)
     {
-      v38 = v45;
+      v38 = contextCopy;
     }
 
     else
@@ -1048,8 +1048,8 @@ void __94__CERecommendationDataController_fetchCompletedRecommendations_recommen
     }
 
     [v37 setObject:v38 forKeyedSubscript:@"context"];
-    [v37 setObject:v16 forKeyedSubscript:@"storageRecovered"];
-    [v37 setObject:v14 forKeyedSubscript:@"action"];
+    [v37 setObject:recoveredCopy forKeyedSubscript:@"storageRecovered"];
+    [v37 setObject:statusCopy forKeyedSubscript:@"action"];
     if (objc_opt_respondsToSelector())
     {
       v48[0] = MEMORY[0x277D85DD0];
@@ -1060,8 +1060,8 @@ void __94__CERecommendationDataController_fetchCompletedRecommendations_recommen
       v49[2] = v34;
       v39 = v49;
       v49[0] = v35;
-      v40 = v44;
-      [v36 sendStatusForRecommendationsWithAltDSID:v18 configuration:v44 params:v37 completion:v48];
+      v40 = configurationCopy;
+      [v36 sendStatusForRecommendationsWithAltDSID:aa_altDSID configuration:configurationCopy params:v37 completion:v48];
     }
 
     else
@@ -1074,12 +1074,12 @@ void __94__CERecommendationDataController_fetchCompletedRecommendations_recommen
       v47[2] = v34;
       v39 = v47;
       v47[0] = v35;
-      v40 = v44;
-      [v36 sendStatusForRecommendationsWithAltDSID:v18 configuration:v44 status:v14 recommendationIdentifiers:v43 storageRecovered:v16 completion:v46];
+      v40 = configurationCopy;
+      [v36 sendStatusForRecommendationsWithAltDSID:aa_altDSID configuration:configurationCopy status:statusCopy recommendationIdentifiers:v43 storageRecovered:recoveredCopy completion:v46];
     }
 
-    v17 = v42;
-    v15 = v43;
+    completionCopy = v42;
+    identifiersCopy = v43;
   }
 
   else
@@ -1087,17 +1087,17 @@ void __94__CERecommendationDataController_fetchCompletedRecommendations_recommen
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v55 = v18;
+      v55 = aa_altDSID;
       v56 = 1024;
       v57 = v19;
       v58 = 1024;
-      v59 = v20;
+      v59 = aa_isManagedAppleID;
       _os_log_error_impl(&dword_2439E1000, v22, OS_LOG_TYPE_ERROR, "Invalid account. altDSID: %@ isPrimary: %d isManaged: %d.", buf, 0x18u);
     }
 
     v32 = CECreateError(12);
-    (*(v17 + 2))(v17, v32);
-    v40 = v44;
+    (*(completionCopy + 2))(completionCopy, v32);
+    v40 = configurationCopy;
   }
 
   v41 = *MEMORY[0x277D85DE8];

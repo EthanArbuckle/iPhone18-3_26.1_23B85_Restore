@@ -1,16 +1,16 @@
 @interface PSDSchedulerAWDLogger
 + (id)defaultLogger;
 - (PSDSchedulerAWDLogger)init;
-- (PSDSchedulerAWDLogger)initWithCoder:(id)a3;
-- (void)accumulateStatisticsForSegment:(id)a3;
-- (void)bookmarkCurrentStatistics:(id)a3;
+- (PSDSchedulerAWDLogger)initWithCoder:(id)coder;
+- (void)accumulateStatisticsForSegment:(id)segment;
+- (void)bookmarkCurrentStatistics:(id)statistics;
 - (void)clearSessionState;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)initialize;
 - (void)logAWDDurationsForSync;
 - (void)saveSessionState;
-- (void)scheduler:(id)a3 didUpdateSyncSessionWithUpdate:(id)a4;
-- (void)scheduler:(id)a3 willStartSyncSession:(id)a4;
+- (void)scheduler:(id)scheduler didUpdateSyncSessionWithUpdate:(id)update;
+- (void)scheduler:(id)scheduler willStartSyncSession:(id)session;
 @end
 
 @implementation PSDSchedulerAWDLogger
@@ -61,15 +61,15 @@
   return v3;
 }
 
-- (PSDSchedulerAWDLogger)initWithCoder:(id)a3
+- (PSDSchedulerAWDLogger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = PSDSchedulerAWDLogger;
   v5 = [(PSDSchedulerAWDLogger *)&v28 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionState"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionState"];
     sessionState = v5->_sessionState;
     v5->_sessionState = v6;
 
@@ -78,7 +78,7 @@
     v36[2] = objc_opt_class();
     v8 = [NSArray arrayWithObjects:v36 count:3];
     v9 = [NSSet setWithArray:v8];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"cumulativeStatisticsCollections"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"cumulativeStatisticsCollections"];
     v11 = [v10 mutableCopy];
     cumulativeStatisticsCollections = v5->_cumulativeStatisticsCollections;
     v5->_cumulativeStatisticsCollections = v11;
@@ -88,7 +88,7 @@
     v35[2] = objc_opt_class();
     v13 = [NSArray arrayWithObjects:v35 count:3];
     v14 = [NSSet setWithArray:v13];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"segmentStartingStatisticsCollections"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"segmentStartingStatisticsCollections"];
     v16 = [v15 mutableCopy];
     segmentStartingStatisticsCollections = v5->_segmentStartingStatisticsCollections;
     v5->_segmentStartingStatisticsCollections = v16;
@@ -131,51 +131,51 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sessionState = self->_sessionState;
-  v5 = a3;
-  [v5 encodeObject:sessionState forKey:@"sessionState"];
-  [v5 encodeObject:self->_cumulativeStatisticsCollections forKey:@"cumulativeStatisticsCollections"];
-  [v5 encodeObject:self->_segmentStartingStatisticsCollections forKey:@"segmentStartingStatisticsCollections"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sessionState forKey:@"sessionState"];
+  [coderCopy encodeObject:self->_cumulativeStatisticsCollections forKey:@"cumulativeStatisticsCollections"];
+  [coderCopy encodeObject:self->_segmentStartingStatisticsCollections forKey:@"segmentStartingStatisticsCollections"];
 }
 
-- (void)scheduler:(id)a3 willStartSyncSession:(id)a4
+- (void)scheduler:(id)scheduler willStartSyncSession:(id)session
 {
-  v5 = a4;
+  sessionCopy = session;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100006A84;
   v8[3] = &unk_10002C8B8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = sessionCopy;
+  v7 = sessionCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)scheduler:(id)a3 didUpdateSyncSessionWithUpdate:(id)a4
+- (void)scheduler:(id)scheduler didUpdateSyncSessionWithUpdate:(id)update
 {
-  v5 = a4;
+  updateCopy = update;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100006BFC;
   v8[3] = &unk_10002C8B8;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = updateCopy;
+  selfCopy = self;
+  v7 = updateCopy;
   dispatch_async(queue, v8);
 }
 
 - (void)saveSessionState
 {
   v3 = +[PSDFileManager defaultManager];
-  v4 = [v3 storageURL];
-  v5 = [v4 URLByAppendingPathComponent:@"AWDLogger.dat"];
+  storageURL = [v3 storageURL];
+  v5 = [storageURL URLByAppendingPathComponent:@"AWDLogger.dat"];
 
-  v6 = [v5 path];
-  LOBYTE(self) = [NSKeyedArchiver secureArchiveRootObject:self toFile:v6];
+  path = [v5 path];
+  LOBYTE(self) = [NSKeyedArchiver secureArchiveRootObject:self toFile:path];
 
   if ((self & 1) == 0)
   {
@@ -196,8 +196,8 @@
 - (void)clearSessionState
 {
   v3 = +[PSDFileManager defaultManager];
-  v4 = [v3 storageURL];
-  v5 = [v4 URLByAppendingPathComponent:@"AWDLogger.dat"];
+  storageURL = [v3 storageURL];
+  v5 = [storageURL URLByAppendingPathComponent:@"AWDLogger.dat"];
 
   v6 = +[NSFileManager defaultManager];
   v12 = 0;
@@ -224,7 +224,7 @@
 
 - (void)logAWDDurationsForSync
 {
-  v2 = [(PSDSchedulerAWDLogger *)self sessionState];
+  sessionState = [(PSDSchedulerAWDLogger *)self sessionState];
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v32 = [v3 pathForResource:@"activity-service" ofType:@"plist"];
 
@@ -241,11 +241,11 @@
   v61[1] = 3221225472;
   v61[2] = sub_10000798C;
   v61[3] = &unk_10002CA18;
-  v62 = v2;
+  v62 = sessionState;
   v65 = &v66;
   v5 = v4;
   v63 = v5;
-  v64 = self;
+  selfCopy = self;
   v29 = v62;
   [v62 enumerateActivityNamesWithBlock:v61];
   v6 = +[NSMutableSet set];
@@ -360,7 +360,7 @@
               v23 = *(*(&v43 + 1) + 8 * m);
               v24 = [(NSMutableDictionary *)self->_cumulativeStatisticsCollections objectForKeyedSubscript:v23];
               v25 = [v24 statisticsForServiceName:v16];
-              v26 = [v25 deliveredMessageCount];
+              deliveredMessageCount = [v25 deliveredMessageCount];
               if ([v23 isEqualToString:@"syncMessagesStats"])
               {
                 v19 += [v25 bytes];
@@ -376,7 +376,7 @@
                 v39 += [v25 bytes];
               }
 
-              v20 += v26;
+              v20 += deliveredMessageCount;
             }
 
             v17 = v41;
@@ -408,9 +408,9 @@
   _Block_object_dispose(&v66, 8);
 }
 
-- (void)bookmarkCurrentStatistics:(id)a3
+- (void)bookmarkCurrentStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -431,7 +431,7 @@
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v4 objectForKeyedSubscript:v10];
+        v11 = [statisticsCopy objectForKeyedSubscript:v10];
         v12 = [PSDIDSServiceStatisticsCollection statisticsCollectionWithChannelName:v10 statisticsDictionary:v11];
         [(NSMutableDictionary *)self->_segmentStartingStatisticsCollections setObject:v12 forKeyedSubscript:v10];
       }
@@ -443,9 +443,9 @@
   }
 }
 
-- (void)accumulateStatisticsForSegment:(id)a3
+- (void)accumulateStatisticsForSegment:(id)segment
 {
-  v4 = a3;
+  segmentCopy = segment;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -465,7 +465,7 @@
         }
 
         v7 = *(*(&v27 + 1) + 8 * i);
-        v8 = [v4 objectForKeyedSubscript:v7];
+        v8 = [segmentCopy objectForKeyedSubscript:v7];
         v9 = [PSDIDSServiceStatisticsCollection statisticsCollectionWithChannelName:v7 statisticsDictionary:v8];
 
         v10 = [(NSMutableDictionary *)self->_segmentStartingStatisticsCollections objectForKeyedSubscript:v7];
@@ -489,7 +489,7 @@
         [v9 enumerateServiceStatisticsWithBlock:v18];
         if (*(v24 + 24) == 1)
         {
-          [(PSDSchedulerAWDLogger *)self bookmarkCurrentStatistics:v4];
+          [(PSDSchedulerAWDLogger *)self bookmarkCurrentStatistics:segmentCopy];
         }
 
         else

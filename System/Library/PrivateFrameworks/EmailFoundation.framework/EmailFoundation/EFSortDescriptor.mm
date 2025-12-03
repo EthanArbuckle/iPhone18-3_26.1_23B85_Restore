@@ -9,11 +9,11 @@
   v3 = [(EFSortDescriptor *)self key];
   v4 = [v3 hash];
 
-  v5 = [(EFSortDescriptor *)self ascending];
+  ascending = [(EFSortDescriptor *)self ascending];
   v6 = NSStringFromSelector([(EFSortDescriptor *)self selector]);
   v7 = [v6 hash] + 193376997;
 
-  return 33 * (33 * v4 + v5) + v7;
+  return 33 * (33 * v4 + ascending) + v7;
 }
 
 @end

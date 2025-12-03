@@ -64,12 +64,12 @@ void __35__STDeviceUnlockStateListener_init__block_invoke(uint64_t a1)
 {
   v7 = *MEMORY[0x277D85DE8];
   v2 = MKBGetDeviceLockState();
-  v3 = [MEMORY[0x277D4BA00] deviceState];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  deviceState = [MEMORY[0x277D4BA00] deviceState];
+  if (os_log_type_enabled(deviceState, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
     v6[1] = v2;
-    _os_log_impl(&dword_264BA2000, v3, OS_LOG_TYPE_DEFAULT, "Device lock state %d", v6, 8u);
+    _os_log_impl(&dword_264BA2000, deviceState, OS_LOG_TYPE_DEFAULT, "Device lock state %d", v6, 8u);
   }
 
   if (v2)

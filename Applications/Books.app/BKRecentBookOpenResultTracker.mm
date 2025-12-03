@@ -2,12 +2,12 @@
 + (id)_cachePath;
 + (void)removeCache;
 - (BKRecentBookOpenResultTracker)init;
-- (BOOL)shouldAutoOpenAsset:(id)a3;
+- (BOOL)shouldAutoOpenAsset:(id)asset;
 - (id)_loadCache;
-- (id)_mutableResultsForAsset:(id)a3;
-- (void)_addEvent:(id)a3 forAsset:(id)a4;
-- (void)openDidFinishForAsset:(id)a3;
-- (void)openDidStartForAsset:(id)a3;
+- (id)_mutableResultsForAsset:(id)asset;
+- (void)_addEvent:(id)event forAsset:(id)asset;
+- (void)openDidFinishForAsset:(id)asset;
+- (void)openDidStartForAsset:(id)asset;
 - (void)save;
 @end
 
@@ -21,9 +21,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(BKRecentBookOpenResultTracker *)v2 _loadCache];
+    _loadCache = [(BKRecentBookOpenResultTracker *)v2 _loadCache];
     cache = v3->_cache;
-    v3->_cache = v4;
+    v3->_cache = _loadCache;
   }
 
   return v3;
@@ -108,15 +108,15 @@ LABEL_15:
 + (id)_cachePath
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v3 = [v2 lastObject];
-  v4 = [v3 stringByAppendingPathComponent:@"BKRecentOpenResultsCache_v20250815"];
+  lastObject = [v2 lastObject];
+  v4 = [lastObject stringByAppendingPathComponent:@"BKRecentOpenResultsCache_v20250815"];
 
   return v4;
 }
 
-- (id)_mutableResultsForAsset:(id)a3
+- (id)_mutableResultsForAsset:(id)asset
 {
-  v3 = [(BKRecentBookOpenResultTracker *)self resultsForAsset:a3];
+  v3 = [(BKRecentBookOpenResultTracker *)self resultsForAsset:asset];
   v4 = v3;
   if (v3)
   {
@@ -133,18 +133,18 @@ LABEL_15:
   return v6;
 }
 
-- (void)openDidStartForAsset:(id)a3
+- (void)openDidStartForAsset:(id)asset
 {
-  v4 = a3;
-  if ([v4 length])
+  assetCopy = asset;
+  if ([assetCopy length])
   {
     v5 = +[BKUserActivityManager sharedInstance];
-    v6 = [v5 isInBackground];
+    isInBackground = [v5 isInBackground];
 
-    if (!v6)
+    if (!isInBackground)
     {
       v12 = [BKRecentBookOpenTrackingEvent eventForStart:1];
-      [(BKRecentBookOpenResultTracker *)self _addEvent:v12 forAsset:v4];
+      [(BKRecentBookOpenResultTracker *)self _addEvent:v12 forAsset:assetCopy];
 
       goto LABEL_10;
     }
@@ -179,13 +179,13 @@ LABEL_7:
 LABEL_10:
 }
 
-- (void)openDidFinishForAsset:(id)a3
+- (void)openDidFinishForAsset:(id)asset
 {
-  v4 = a3;
-  if ([v4 length])
+  assetCopy = asset;
+  if ([assetCopy length])
   {
     v5 = [BKRecentBookOpenTrackingEvent eventForStart:0];
-    [(BKRecentBookOpenResultTracker *)self _addEvent:v5 forAsset:v4];
+    [(BKRecentBookOpenResultTracker *)self _addEvent:v5 forAsset:assetCopy];
   }
 
   else
@@ -199,16 +199,16 @@ LABEL_10:
   }
 }
 
-- (BOOL)shouldAutoOpenAsset:(id)a3
+- (BOOL)shouldAutoOpenAsset:(id)asset
 {
-  v4 = a3;
-  if ([v4 length])
+  assetCopy = asset;
+  if ([assetCopy length])
   {
-    v5 = [(BKRecentBookOpenResultTracker *)self resultsForAsset:v4];
-    v6 = [v5 lastObject];
-    v7 = v6;
-    v8 = v6 == 0;
-    if (!v6)
+    v5 = [(BKRecentBookOpenResultTracker *)self resultsForAsset:assetCopy];
+    lastObject = [v5 lastObject];
+    v7 = lastObject;
+    v8 = lastObject == 0;
+    if (!lastObject)
     {
       v19 = sub_100026E38();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -220,10 +220,10 @@ LABEL_10:
       goto LABEL_20;
     }
 
-    if ([v6 isStart])
+    if ([lastObject isStart])
     {
-      v9 = [v7 timestamp];
-      [v9 timeIntervalSinceNow];
+      timestamp = [v7 timestamp];
+      [timestamp timeIntervalSinceNow];
       v11 = fabs(v10);
 
       if (v11 <= 300.0)
@@ -244,10 +244,10 @@ LABEL_10:
       while (v14-- >= 1)
       {
         v17 = [v5 objectAtIndexedSubscript:v14];
-        v18 = [v17 isStart];
+        isStart = [v17 isStart];
 
         ++v13;
-        if ((v18 & 1) == 0)
+        if ((isStart & 1) == 0)
         {
           goto LABEL_17;
         }
@@ -295,18 +295,18 @@ LABEL_23:
   return v8;
 }
 
-- (void)_addEvent:(id)a3 forAsset:(id)a4
+- (void)_addEvent:(id)event forAsset:(id)asset
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(BKRecentBookOpenResultTracker *)self _mutableResultsForAsset:v6];
+  eventCopy = event;
+  assetCopy = asset;
+  v7 = [(BKRecentBookOpenResultTracker *)self _mutableResultsForAsset:assetCopy];
   if ([v7 count] >= 3)
   {
     [v7 removeObjectAtIndex:0];
   }
 
-  [v7 addObject:v8];
-  [(BKLRUCache *)self->_cache setObject:v7 forKey:v6];
+  [v7 addObject:eventCopy];
+  [(BKLRUCache *)self->_cache setObject:v7 forKey:assetCopy];
 
   [(BKRecentBookOpenResultTracker *)self save];
 }

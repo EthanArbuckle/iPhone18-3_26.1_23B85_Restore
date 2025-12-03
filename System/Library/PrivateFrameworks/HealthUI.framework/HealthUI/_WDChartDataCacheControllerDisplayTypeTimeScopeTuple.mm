@@ -1,34 +1,34 @@
 @interface _WDChartDataCacheControllerDisplayTypeTimeScopeTuple
-- (BOOL)isEqual:(id)a3;
-- (_WDChartDataCacheControllerDisplayTypeTimeScopeTuple)initWithDisplayType:(id)a3 timeScope:(int64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (_WDChartDataCacheControllerDisplayTypeTimeScopeTuple)initWithDisplayType:(id)type timeScope:(int64_t)scope;
 @end
 
 @implementation _WDChartDataCacheControllerDisplayTypeTimeScopeTuple
 
-- (_WDChartDataCacheControllerDisplayTypeTimeScopeTuple)initWithDisplayType:(id)a3 timeScope:(int64_t)a4
+- (_WDChartDataCacheControllerDisplayTypeTimeScopeTuple)initWithDisplayType:(id)type timeScope:(int64_t)scope
 {
-  v7 = a3;
+  typeCopy = type;
   v11.receiver = self;
   v11.super_class = _WDChartDataCacheControllerDisplayTypeTimeScopeTuple;
   v8 = [(_WDChartDataCacheControllerDisplayTypeTimeScopeTuple *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_displayType, a3);
-    v9->_timeScope = a4;
+    objc_storeStrong(&v8->_displayType, type);
+    v9->_timeScope = scope;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(HKDisplayType *)self->_displayType isEqual:v4[1]];
-    v6 = self->_timeScope == v4[2] && v5;
+    v5 = [(HKDisplayType *)self->_displayType isEqual:equalCopy[1]];
+    v6 = self->_timeScope == equalCopy[2] && v5;
   }
 
   else

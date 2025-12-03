@@ -1,130 +1,130 @@
 @interface THWGalleryRep
-- (BOOL)canHandleGesture:(id)a3;
-- (BOOL)control:(id)a3 isInteractionEnabledForRep:(id)a4;
+- (BOOL)canHandleGesture:(id)gesture;
+- (BOOL)control:(id)control isInteractionEnabledForRep:(id)rep;
 - (BOOL)expandedAllowFreeTransform;
-- (BOOL)expandedHasContentForPanel:(int)a3;
+- (BOOL)expandedHasContentForPanel:(int)panel;
 - (BOOL)expandedIsRelatedCanvasScrolling;
-- (BOOL)handleGesture:(id)a3;
+- (BOOL)handleGesture:(id)gesture;
 - (BOOL)isExpanded;
 - (BOOL)isFreeTransformInProgress;
 - (BOOL)p_isExpanding;
 - (BOOL)p_moveToNextPage;
 - (BOOL)p_moveToPreviousPage;
-- (BOOL)p_shouldPageOnGesture:(id)a3 toLeft:(BOOL *)a4 toRight:(BOOL *)a5;
+- (BOOL)p_shouldPageOnGesture:(id)gesture toLeft:(BOOL *)left toRight:(BOOL *)right;
 - (BOOL)p_shouldSuppressRenderingDuringExpansion;
 - (BOOL)p_supportZoom;
-- (BOOL)pagedCanvasControllerDeferViewCreation:(id)a3;
-- (BOOL)pagedCanvasControllerIsRelatedCanvasScrolling:(id)a3;
+- (BOOL)pagedCanvasControllerDeferViewCreation:(id)creation;
+- (BOOL)pagedCanvasControllerIsRelatedCanvasScrolling:(id)scrolling;
 - (BOOL)wantsPressAnimation;
-- (BOOL)zoomableCanvasControllerIsRelatedCanvasScrolling:(id)a3;
+- (BOOL)zoomableCanvasControllerIsRelatedCanvasScrolling:(id)scrolling;
 - (CALayer)pressableAnimationLayer;
 - (CGAffineTransform)freeTransform;
-- (CGAffineTransform)shadowAnimationLayerDestinationTransform:(SEL)a3 uniformTargetScale:(id)a4;
+- (CGAffineTransform)shadowAnimationLayerDestinationTransform:(SEL)transform uniformTargetScale:(id)scale;
 - (CGRect)ftcTargetFrame;
-- (CGRect)p_contentsRectForItem:(id)a3;
+- (CGRect)p_contentsRectForItem:(id)item;
 - (CGRect)rectForCompletion;
 - (CGRect)resizeOriginalLayoutFrame;
-- (CGSize)sizeOfCanvasForZoomableCanvasController:(id)a3;
+- (CGSize)sizeOfCanvasForZoomableCanvasController:(id)controller;
 - (THAnimationController)animationController;
-- (THWGalleryRep)initWithLayout:(id)a3 canvas:(id)a4;
-- (UIEdgeInsets)expandedStackedControlContainerInsetsForPanel:(int)a3 withDefault:(UIEdgeInsets)a4;
-- (__CTFont)pageControlCreateFont:(id)a3;
-- (double)expandedLeftRightInsetForTextLayout:(id)a3 inPanel:(int)a4;
-- (double)expandedMinHeightForPanel:(int)a3 withDefault:(double)result;
-- (double)expandedVerticalPaddingAfterForLayout:(id)a3 inPanel:(int)a4;
+- (THWGalleryRep)initWithLayout:(id)layout canvas:(id)canvas;
+- (UIEdgeInsets)expandedStackedControlContainerInsetsForPanel:(int)panel withDefault:(UIEdgeInsets)default;
+- (__CTFont)pageControlCreateFont:(id)font;
+- (double)expandedLeftRightInsetForTextLayout:(id)layout inPanel:(int)panel;
+- (double)expandedMinHeightForPanel:(int)panel withDefault:(double)result;
+- (double)expandedVerticalPaddingAfterForLayout:(id)layout inPanel:(int)panel;
 - (double)p_expandedPaddingAfterCaption;
-- (double)pagedCanvasController:(id)a3 adjustScale:(double)a4 andFrame:(CGRect *)a5;
-- (double)pagedCanvasControllerContentsScale:(id)a3;
-- (double)pagedCanvasControllerVerticalOverflow:(id)a3;
-- (double)zoomableCanvasControllerContentsScale:(id)a3;
+- (double)pagedCanvasController:(id)controller adjustScale:(double)scale andFrame:(CGRect *)frame;
+- (double)pagedCanvasControllerContentsScale:(id)scale;
+- (double)pagedCanvasControllerVerticalOverflow:(id)overflow;
+- (double)zoomableCanvasControllerContentsScale:(id)scale;
 - (id)animationLayer;
-- (id)buttonControl:(id)a3 imageForState:(int)a4 highlighted:(BOOL)a5;
+- (id)buttonControl:(id)control imageForState:(int)state highlighted:(BOOL)highlighted;
 - (id)currentItem;
-- (id)expandedAdditionalChildLayoutsForPanel:(int)a3;
-- (id)expandedChildInfosForPanel:(int)a3;
-- (id)expandedLayoutGeometryForLayout:(id)a3 inPanel:(int)a4 withWidth:(double)a5 insets:(UIEdgeInsets)a6;
-- (id)expandedPanel:(int)a3 primaryTargetForGesture:(id)a4;
+- (id)expandedAdditionalChildLayoutsForPanel:(int)panel;
+- (id)expandedChildInfosForPanel:(int)panel;
+- (id)expandedLayoutGeometryForLayout:(id)layout inPanel:(int)panel withWidth:(double)width insets:(UIEdgeInsets)insets;
+- (id)expandedPanel:(int)panel primaryTargetForGesture:(id)gesture;
 - (id)expandedRotationAnimationController;
 - (id)expandedZoomableInteractiveCanvasController;
 - (id)p_currentImageContentLayer;
 - (id)p_currentImageRep;
-- (id)p_highlightLayerForThumbnailSize:(CGSize)a3;
-- (id)p_imageRepForItem:(id)a3;
-- (id)p_itemAtIndex:(unint64_t)a3;
-- (id)p_itemForZoomableCanvasController:(id)a3;
-- (id)p_layerForItem:(id)a3;
-- (id)p_zoomableCanvasControlRepForItemIndex:(unint64_t)a3;
-- (id)p_zoomableCanvasControllerForItem:(id)a3;
-- (id)p_zoomableCanvasControllerForItemIndex:(unint64_t)a3;
-- (id)pageControl:(id)a3 layerForState:(int)a4 pageIndex:(unint64_t)a5;
-- (id)pageControlTextColor:(id)a3;
-- (id)pagedCanvasController:(id)a3 infosToDisplayForPageRange:(_NSRange)a4;
-- (id)pagedCanvasController:(id)a3 primaryTargetForGesture:(id)a4;
-- (id)pagedCanvasController:(id)a3 renderedPageIndexSetFromReps:(id)a4;
+- (id)p_highlightLayerForThumbnailSize:(CGSize)size;
+- (id)p_imageRepForItem:(id)item;
+- (id)p_itemAtIndex:(unint64_t)index;
+- (id)p_itemForZoomableCanvasController:(id)controller;
+- (id)p_layerForItem:(id)item;
+- (id)p_zoomableCanvasControlRepForItemIndex:(unint64_t)index;
+- (id)p_zoomableCanvasControllerForItem:(id)item;
+- (id)p_zoomableCanvasControllerForItemIndex:(unint64_t)index;
+- (id)pageControl:(id)control layerForState:(int)state pageIndex:(unint64_t)index;
+- (id)pageControlTextColor:(id)color;
+- (id)pagedCanvasController:(id)controller infosToDisplayForPageRange:(_NSRange)range;
+- (id)pagedCanvasController:(id)controller primaryTargetForGesture:(id)gesture;
+- (id)pagedCanvasController:(id)controller renderedPageIndexSetFromReps:(id)reps;
 - (id)shadowAnimationLayer;
 - (id)shadowPath;
 - (id)targetLayer;
-- (id)zoomableCanvasController:(id)a3 infosToDisplayForViewport:(CGRect)a4;
+- (id)zoomableCanvasController:(id)controller infosToDisplayForViewport:(CGRect)viewport;
 - (unint64_t)currentPage;
-- (unint64_t)p_itemIndexForZoomableCanvasController:(id)a3;
-- (unint64_t)pageCountForPagedCanvasController:(id)a3;
-- (unsigned)expandedAlignmentForLayout:(id)a3 inPanel:(int)a4;
-- (unsigned)expandedMaxLineCountForTextLayout:(id)a3 inPanel:(int)a4 withDefault:(unsigned int)a5;
-- (void)animationControllerDidAddContentAnimations:(id)a3 uniformTargetScale:(double)a4;
-- (void)animationControllerSetupTarget:(id)a3;
-- (void)animationControllerTeardownTarget:(id)a3;
-- (void)buttonControl:(id)a3 didUpdateLayer:(id)a4;
-- (void)buttonControlInteractionDidEnd:(id)a3;
-- (void)buttonControlInteractionWillStart:(id)a3;
-- (void)buttonControlWasPressed:(id)a3;
-- (void)control:(id)a3 repWasAdded:(id)a4;
-- (void)control:(id)a3 repWillBeRemoved:(id)a4;
+- (unint64_t)p_itemIndexForZoomableCanvasController:(id)controller;
+- (unint64_t)pageCountForPagedCanvasController:(id)controller;
+- (unsigned)expandedAlignmentForLayout:(id)layout inPanel:(int)panel;
+- (unsigned)expandedMaxLineCountForTextLayout:(id)layout inPanel:(int)panel withDefault:(unsigned int)default;
+- (void)animationControllerDidAddContentAnimations:(id)animations uniformTargetScale:(double)scale;
+- (void)animationControllerSetupTarget:(id)target;
+- (void)animationControllerTeardownTarget:(id)target;
+- (void)buttonControl:(id)control didUpdateLayer:(id)layer;
+- (void)buttonControlInteractionDidEnd:(id)end;
+- (void)buttonControlInteractionWillStart:(id)start;
+- (void)buttonControlWasPressed:(id)pressed;
+- (void)control:(id)control repWasAdded:(id)added;
+- (void)control:(id)control repWillBeRemoved:(id)removed;
 - (void)dealloc;
 - (void)didPresentExpanded;
 - (void)didPresentExpandedPostCommit;
-- (void)expandedContentHandleDoubleTapZoomDirectlyAtPoint:(CGPoint)a3;
-- (void)expandedWidgetLayoutFrameDidChangeFromFrame:(CGRect)a3 toFrame:(CGRect)a4;
-- (void)expandedWillStartWidgetLayoutFrameResize:(CGRect)a3;
+- (void)expandedContentHandleDoubleTapZoomDirectlyAtPoint:(CGPoint)point;
+- (void)expandedWidgetLayoutFrameDidChangeFromFrame:(CGRect)frame toFrame:(CGRect)toFrame;
+- (void)expandedWillStartWidgetLayoutFrameResize:(CGRect)resize;
 - (void)freeTransformDidEnd;
 - (void)freeTransformWillBegin;
-- (void)p_goToPage:(unint64_t)a3;
-- (void)p_rasterizeCanvases:(BOOL)a3;
+- (void)p_goToPage:(unint64_t)page;
+- (void)p_rasterizeCanvases:(BOOL)canvases;
 - (void)p_relaxMinimizeInfosNextFrame;
-- (void)p_resetViewScaleForItemsExcept:(id)a3;
-- (void)p_setupImageCropAnimationControllerWithDestinationRep:(id)a3;
-- (void)p_toggleCurrentItemZoomableWithStageRelativeTouch:(CGPoint)a3;
+- (void)p_resetViewScaleForItemsExcept:(id)except;
+- (void)p_setupImageCropAnimationControllerWithDestinationRep:(id)rep;
+- (void)p_toggleCurrentItemZoomableWithStageRelativeTouch:(CGPoint)touch;
 - (void)p_togglePanelDescriptionExpanded;
-- (void)p_updateMinMaxViewScaleForItem:(id)a3 forceMinScale:(BOOL)a4;
+- (void)p_updateMinMaxViewScaleForItem:(id)item forceMinScale:(BOOL)scale;
 - (void)p_updateStageCornerRadius;
-- (void)p_updateToPageIndex:(unint64_t)a3 usingCachedImagedFromRep:(id)a4;
-- (void)p_updateUserInteractionForController:(id)a3;
-- (void)pageControl:(id)a3 didChangeInteractivelyFromPageIndex:(unint64_t)a4 toPageIndex:(unint64_t)a5;
-- (void)pagedCanvasController:(id)a3 customizeLayerHost:(id)a4;
-- (void)pagedCanvasController:(id)a3 didScrollToPageIndex:(unint64_t)a4;
-- (void)pagedCanvasController:(id)a3 mostVisiblePageChangedToPageIndex:(unint64_t)a4;
+- (void)p_updateToPageIndex:(unint64_t)index usingCachedImagedFromRep:(id)rep;
+- (void)p_updateUserInteractionForController:(id)controller;
+- (void)pageControl:(id)control didChangeInteractivelyFromPageIndex:(unint64_t)index toPageIndex:(unint64_t)pageIndex;
+- (void)pagedCanvasController:(id)controller customizeLayerHost:(id)host;
+- (void)pagedCanvasController:(id)controller didScrollToPageIndex:(unint64_t)index;
+- (void)pagedCanvasController:(id)controller mostVisiblePageChangedToPageIndex:(unint64_t)index;
 - (void)screenScaleDidChange;
 - (void)viewScaleDidChange;
-- (void)willBeginHandlingGesture:(id)a3;
-- (void)willReplaceContentsFromRep:(id)a3;
-- (void)zoomableCanvasControllerCustomizeLayerHost:(id)a3;
+- (void)willBeginHandlingGesture:(id)gesture;
+- (void)willReplaceContentsFromRep:(id)rep;
+- (void)zoomableCanvasControllerCustomizeLayerHost:(id)host;
 @end
 
 @implementation THWGalleryRep
 
-- (THWGalleryRep)initWithLayout:(id)a3 canvas:(id)a4
+- (THWGalleryRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v7.receiver = self;
   v7.super_class = THWGalleryRep;
-  v4 = [(THWGalleryRep *)&v7 initWithLayout:a3 canvas:a4];
+  v4 = [(THWGalleryRep *)&v7 initWithLayout:layout canvas:canvas];
   if (v4)
   {
     objc_opt_class();
     [(THWGalleryRep *)v4 interactiveCanvasController];
-    v5 = [TSUDynamicCast() pressHandlerForPressableReps];
+    pressHandlerForPressableReps = [TSUDynamicCast() pressHandlerForPressableReps];
     v4->_currentPage = 0x7FFFFFFFFFFFFFFFLL;
-    if (v5)
+    if (pressHandlerForPressableReps)
     {
-      v4->_pressableHandler = [[THWPressableRepGestureTargetHandler alloc] initWithPressableRep:v4 pressHandler:v5];
+      v4->_pressableHandler = [[THWPressableRepGestureTargetHandler alloc] initWithPressableRep:v4 pressHandler:pressHandlerForPressableReps];
     }
 
     if ([(THWGalleryRep *)v4 isExpanded])
@@ -157,9 +157,9 @@
 
 - (BOOL)p_supportZoom
 {
-  v2 = [(THWGalleryRep *)self layout];
+  layout = [(THWGalleryRep *)self layout];
 
-  return [v2 useZoom];
+  return [layout useZoom];
 }
 
 - (void)screenScaleDidChange
@@ -171,10 +171,10 @@
   [(CAShapeLayer *)self->_thumbnailHighlightLayer setContentsScale:?];
 }
 
-- (id)p_highlightLayerForThumbnailSize:(CGSize)a3
+- (id)p_highlightLayerForThumbnailSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (!self->_thumbnailHighlightLayer)
   {
     self->_thumbnailHighlightLayer = objc_alloc_init(CAShapeLayer);
@@ -221,9 +221,9 @@
     return self->_currentPage;
   }
 
-  v4 = [-[THWGalleryRep layout](self layout];
+  layout = [-[THWGalleryRep layout](self layout];
 
-  return [v4 currentPage];
+  return [layout currentPage];
 }
 
 - (void)viewScaleDidChange
@@ -246,34 +246,34 @@
   [v7 setCornerRadius:v6];
 }
 
-- (BOOL)p_shouldPageOnGesture:(id)a3 toLeft:(BOOL *)a4 toRight:(BOOL *)a5
+- (BOOL)p_shouldPageOnGesture:(id)gesture toLeft:(BOOL *)left toRight:(BOOL *)right
 {
-  if (a4)
+  if (left)
   {
-    *a4 = 0;
+    *left = 0;
   }
 
-  if (a5)
+  if (right)
   {
-    *a5 = 0;
+    *right = 0;
   }
 
   return 0;
 }
 
-- (void)p_goToPage:(unint64_t)a3
+- (void)p_goToPage:(unint64_t)page
 {
-  if ([(THWGalleryRep *)self pageCountForPagedCanvasController:self->_stageCanvasController]<= a3)
+  if ([(THWGalleryRep *)self pageCountForPagedCanvasController:self->_stageCanvasController]<= page)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v5 = [(THWPagedCanvasController *)self->_stageCanvasController pageIndex];
-  if (v5 != a3)
+  pageIndex = [(THWPagedCanvasController *)self->_stageCanvasController pageIndex];
+  if (pageIndex != page)
   {
-    v6 = v5 >= a3 ? v5 - a3 : a3 - v5;
+    v6 = pageIndex >= page ? pageIndex - page : page - pageIndex;
     [(THWPagedCanvasController *)self->_stageCanvasController setMinimizeInfoChange:1];
-    [(THWPagedCanvasController *)self->_stageCanvasController setPageIndex:a3 animated:v6 < 2];
+    [(THWPagedCanvasController *)self->_stageCanvasController setPageIndex:page animated:v6 < 2];
     if (v6 >= 2)
     {
       [-[THWGalleryRep layout](self "layout")];
@@ -286,29 +286,29 @@
 
 - (BOOL)p_moveToNextPage
 {
-  v3 = [(THWGalleryRep *)self p_canMoveToNextPage];
-  if (v3)
+  p_canMoveToNextPage = [(THWGalleryRep *)self p_canMoveToNextPage];
+  if (p_canMoveToNextPage)
   {
     [(THWGalleryRep *)self p_goToPage:[(THWPagedCanvasController *)self->_stageCanvasController pageIndex]+ 1];
   }
 
-  return v3;
+  return p_canMoveToNextPage;
 }
 
 - (BOOL)p_moveToPreviousPage
 {
-  v3 = [(THWGalleryRep *)self p_canMoveToPreviousPage];
-  if (v3)
+  p_canMoveToPreviousPage = [(THWGalleryRep *)self p_canMoveToPreviousPage];
+  if (p_canMoveToPreviousPage)
   {
     [(THWGalleryRep *)self p_goToPage:[(THWPagedCanvasController *)self->_stageCanvasController pageIndex]- 1];
   }
 
-  return v3;
+  return p_canMoveToPreviousPage;
 }
 
-- (void)control:(id)a3 repWasAdded:(id)a4
+- (void)control:(id)control repWasAdded:(id)added
 {
-  v6 = [a3 tag];
+  v6 = [control tag];
   if (v6 <= 2)
   {
     if (!v6)
@@ -342,9 +342,9 @@ LABEL_21:
 
       self->_thumbnailTrackCanvasController = 0;
       objc_opt_class();
-      v11 = [TSUDynamicCast() pagedCanvasController];
-      self->_thumbnailTrackCanvasController = v11;
-      [(THWPagedCanvasController *)v11 setDelegate:self];
+      pagedCanvasController = [TSUDynamicCast() pagedCanvasController];
+      self->_thumbnailTrackCanvasController = pagedCanvasController;
+      [(THWPagedCanvasController *)pagedCanvasController setDelegate:self];
       thumbnailTrackCanvasController = self->_thumbnailTrackCanvasController;
 
       [(THWPagedCanvasController *)thumbnailTrackCanvasController setDisableThreadedLayoutAndRenderDuringAnimation:0];
@@ -364,8 +364,8 @@ LABEL_21:
           [objc_msgSend(v7 "zoomableCanvasController")];
           [objc_msgSend(v7 "zoomableCanvasController")];
           v8 = [objc_msgSend(v7 "zoomableCanvasController")];
-          v9 = [a3 index];
-          v10 = v9 == [(THWPagedCanvasController *)self->_stageCanvasController pageIndex]&& [(THWGalleryRep *)self p_shouldSuppressRenderingDuringExpansion];
+          index = [control index];
+          v10 = index == [(THWPagedCanvasController *)self->_stageCanvasController pageIndex]&& [(THWGalleryRep *)self p_shouldSuppressRenderingDuringExpansion];
 
           [v8 setShouldSuppressRendering:v10 animated:0];
         }
@@ -382,94 +382,94 @@ LABEL_21:
     v13 = TSUDynamicCast();
     [v13 setDelegate:self];
     [v13 setPageDirectlyToIndex:0];
-    v14 = [v13 layout];
+    layout = [v13 layout];
 
-    [v14 setSpacing:9.0];
+    [layout setSpacing:9.0];
   }
 }
 
-- (void)control:(id)a3 repWillBeRemoved:(id)a4
+- (void)control:(id)control repWillBeRemoved:(id)removed
 {
-  if ([a3 tag] == &dword_4 + 3)
+  if ([control tag] == &dword_4 + 3)
   {
     objc_opt_class();
-    v4 = [TSUDynamicCast() zoomableCanvasController];
+    zoomableCanvasController = [TSUDynamicCast() zoomableCanvasController];
 
-    [v4 setDelegate:0];
+    [zoomableCanvasController setDelegate:0];
   }
 }
 
-- (BOOL)control:(id)a3 isInteractionEnabledForRep:(id)a4
+- (BOOL)control:(id)control isInteractionEnabledForRep:(id)rep
 {
-  if (![(THWGalleryRep *)self pressableHandler:a3])
+  if (![(THWGalleryRep *)self pressableHandler:control])
   {
     return 1;
   }
 
-  v5 = [(THWGalleryRep *)self pressableHandler];
+  pressableHandler = [(THWGalleryRep *)self pressableHandler];
 
-  return [(THWPressableRepGestureTargetHandler *)v5 widgetInteractionEnabled];
+  return [(THWPressableRepGestureTargetHandler *)pressableHandler widgetInteractionEnabled];
 }
 
-- (unint64_t)pageCountForPagedCanvasController:(id)a3
+- (unint64_t)pageCountForPagedCanvasController:(id)controller
 {
-  if (!a3)
+  if (!controller)
   {
     return 0;
   }
 
-  if (self->_stageCanvasController == a3)
+  if (self->_stageCanvasController == controller)
   {
-    v4 = [(THWGalleryRep *)self layout];
+    layout = [(THWGalleryRep *)self layout];
 
-    return [v4 numberOfStagePages];
+    return [layout numberOfStagePages];
   }
 
   else
   {
-    if (self->_thumbnailTrackCanvasController != a3)
+    if (self->_thumbnailTrackCanvasController != controller)
     {
       return 0;
     }
 
-    v5 = [(THWGalleryRep *)self layout];
+    layout2 = [(THWGalleryRep *)self layout];
 
-    return [v5 numberOfThumbnailTrackPages];
+    return [layout2 numberOfThumbnailTrackPages];
   }
 }
 
-- (id)pagedCanvasController:(id)a3 infosToDisplayForPageRange:(_NSRange)a4
+- (id)pagedCanvasController:(id)controller infosToDisplayForPageRange:(_NSRange)range
 {
-  if (!a3)
+  if (!controller)
   {
     return 0;
   }
 
-  length = a4.length;
-  location = a4.location;
-  if (self->_stageCanvasController == a3)
+  length = range.length;
+  location = range.location;
+  if (self->_stageCanvasController == controller)
   {
-    v7 = [(THWGalleryRep *)self layout];
+    layout = [(THWGalleryRep *)self layout];
 
-    return [v7 infosForStagePages:{location, length}];
+    return [layout infosForStagePages:{location, length}];
   }
 
   else
   {
-    if (self->_thumbnailTrackCanvasController != a3)
+    if (self->_thumbnailTrackCanvasController != controller)
     {
       return 0;
     }
 
-    v8 = [(THWGalleryRep *)self layout];
+    layout2 = [(THWGalleryRep *)self layout];
 
-    return [v8 infosForThumbnailTrackPages:{location, length}];
+    return [layout2 infosForThumbnailTrackPages:{location, length}];
   }
 }
 
-- (void)pagedCanvasController:(id)a3 mostVisiblePageChangedToPageIndex:(unint64_t)a4
+- (void)pagedCanvasController:(id)controller mostVisiblePageChangedToPageIndex:(unint64_t)index
 {
-  if (a3 && self->_stageCanvasController == a3)
+  if (controller && self->_stageCanvasController == controller)
   {
     expandedRepController = self->_expandedRepController;
     if (expandedRepController)
@@ -491,40 +491,40 @@ LABEL_21:
   }
 }
 
-- (void)pagedCanvasController:(id)a3 didScrollToPageIndex:(unint64_t)a4
+- (void)pagedCanvasController:(id)controller didScrollToPageIndex:(unint64_t)index
 {
-  if (a3)
+  if (controller)
   {
-    v7 = [(THWGalleryRep *)self layout];
-    v8 = v7;
-    if (self->_stageCanvasController == a3)
+    layout = [(THWGalleryRep *)self layout];
+    v8 = layout;
+    if (self->_stageCanvasController == controller)
     {
       [(THWGalleryRep *)self p_relaxMinimizeInfosNextFrame];
-      [v8 updateCurrentItemIndex:a4];
+      [v8 updateCurrentItemIndex:index];
       [(THWExpandedRepController *)self->_expandedRepController expandedRepControllerInvalidateChildrenInPanel:1 invalidateWPAuto:0];
       if (self->_thumbnailTrackCanvasController)
       {
-        -[THWPagedCanvasController setPageIndex:](self->_thumbnailTrackCanvasController, "setPageIndex:", [v8 thumbnailPageIndexForItemIndex:a4]);
+        -[THWPagedCanvasController setPageIndex:](self->_thumbnailTrackCanvasController, "setPageIndex:", [v8 thumbnailPageIndexForItemIndex:index]);
         [(THWPagedCanvasController *)self->_thumbnailTrackCanvasController invalidateLayers];
       }
 
-      v9 = [(THWGalleryRep *)self currentItem];
+      currentItem = [(THWGalleryRep *)self currentItem];
 
-      [(THWGalleryRep *)self p_resetViewScaleForItemsExcept:v9];
+      [(THWGalleryRep *)self p_resetViewScaleForItemsExcept:currentItem];
     }
 
-    else if (self->_thumbnailTrackCanvasController == a3)
+    else if (self->_thumbnailTrackCanvasController == controller)
     {
-      v10 = [v7 thumbnailPageControl];
+      thumbnailPageControl = [layout thumbnailPageControl];
 
-      [v10 setCurrentPage:a4];
+      [thumbnailPageControl setCurrentPage:index];
     }
   }
 }
 
-- (id)pagedCanvasController:(id)a3 primaryTargetForGesture:(id)a4
+- (id)pagedCanvasController:(id)controller primaryTargetForGesture:(id)gesture
 {
-  if (*(self + 40) != a3)
+  if (*(self + 40) != controller)
   {
     return 0;
   }
@@ -532,9 +532,9 @@ LABEL_21:
   return self;
 }
 
-- (void)p_rasterizeCanvases:(BOOL)a3
+- (void)p_rasterizeCanvases:(BOOL)canvases
 {
-  if (a3)
+  if (canvases)
   {
     [-[THWGalleryRep layout](self "layout")];
   }
@@ -544,49 +544,49 @@ LABEL_21:
   [(THWPagedCanvasController *)stageCanvasController setRasterize:?];
 }
 
-- (double)pagedCanvasControllerVerticalOverflow:(id)a3
+- (double)pagedCanvasControllerVerticalOverflow:(id)overflow
 {
-  if (self->_thumbnailTrackCanvasController != a3)
+  if (self->_thumbnailTrackCanvasController != overflow)
   {
     return 0.0;
   }
 
-  v6 = [(THWGalleryRep *)self layout];
+  layout = [(THWGalleryRep *)self layout];
 
-  [v6 thumbnailTrackVerticalPadding];
+  [layout thumbnailTrackVerticalPadding];
   return result;
 }
 
-- (void)p_updateUserInteractionForController:(id)a3
+- (void)p_updateUserInteractionForController:(id)controller
 {
-  if (a3)
+  if (controller)
   {
     if ([(THWGalleryRep *)self p_isExpanding])
     {
-      v5 = 0;
+      widgetInteractionEnabled = 0;
     }
 
     else if ([(THWGalleryRep *)self pressableHandler])
     {
-      v5 = [(THWPressableRepGestureTargetHandler *)[(THWGalleryRep *)self pressableHandler] widgetInteractionEnabled];
+      widgetInteractionEnabled = [(THWPressableRepGestureTargetHandler *)[(THWGalleryRep *)self pressableHandler] widgetInteractionEnabled];
     }
 
     else
     {
-      v5 = 1;
+      widgetInteractionEnabled = 1;
     }
 
-    [a3 setUserInteractionEnabled:v5];
+    [controller setUserInteractionEnabled:widgetInteractionEnabled];
   }
 }
 
-- (void)pagedCanvasController:(id)a3 customizeLayerHost:(id)a4
+- (void)pagedCanvasController:(id)controller customizeLayerHost:(id)host
 {
-  if (self->_stageCanvasController == a3)
+  if (self->_stageCanvasController == controller)
   {
-    v6 = [(THWGalleryRep *)self layout];
+    layout = [(THWGalleryRep *)self layout];
     [(THWPagedCanvasController *)self->_stageCanvasController setPageIndex:[(THWGalleryRep *)self currentPage] animated:0];
-    if (([v6 isExpanded] & 1) == 0)
+    if (([layout isExpanded] & 1) == 0)
     {
       -[THWPagedCanvasController setupImmediatePressGestureWithSimultaneousGestures:](self->_stageCanvasController, "setupImmediatePressGestureWithSimultaneousGestures:", [objc_msgSend(objc_msgSend(-[THWGalleryRep interactiveCanvasController](self "interactiveCanvasController")]);
     }
@@ -600,7 +600,7 @@ LABEL_21:
   else
   {
     thumbnailTrackCanvasController = self->_thumbnailTrackCanvasController;
-    if (thumbnailTrackCanvasController == a3)
+    if (thumbnailTrackCanvasController == controller)
     {
       -[THWPagedCanvasController setPageIndex:animated:](thumbnailTrackCanvasController, "setPageIndex:animated:", [objc_msgSend(-[THWGalleryRep layout](self "layout")], 0);
       [(THWPagedCanvasController *)self->_thumbnailTrackCanvasController setupImmediatePressGesture];
@@ -613,37 +613,37 @@ LABEL_21:
   }
 }
 
-- (BOOL)pagedCanvasControllerIsRelatedCanvasScrolling:(id)a3
+- (BOOL)pagedCanvasControllerIsRelatedCanvasScrolling:(id)scrolling
 {
-  v3 = [(THWGalleryRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWGalleryRep *)self interactiveCanvasController];
 
-  return [v3 currentlyScrolling];
+  return [interactiveCanvasController currentlyScrolling];
 }
 
-- (BOOL)pagedCanvasControllerDeferViewCreation:(id)a3
+- (BOOL)pagedCanvasControllerDeferViewCreation:(id)creation
 {
-  v3 = [(THWGalleryRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWGalleryRep *)self interactiveCanvasController];
 
-  return [v3 currentlyScrolling];
+  return [interactiveCanvasController currentlyScrolling];
 }
 
-- (double)pagedCanvasControllerContentsScale:(id)a3
+- (double)pagedCanvasControllerContentsScale:(id)scale
 {
-  v3 = [-[THWGalleryRep interactiveCanvasController](self interactiveCanvasController];
+  interactiveCanvasController = [-[THWGalleryRep interactiveCanvasController](self interactiveCanvasController];
 
-  [v3 contentsScale];
+  [interactiveCanvasController contentsScale];
   return result;
 }
 
-- (double)pagedCanvasController:(id)a3 adjustScale:(double)a4 andFrame:(CGRect *)a5
+- (double)pagedCanvasController:(id)controller adjustScale:(double)scale andFrame:(CGRect *)frame
 {
-  if (!a5)
+  if (!frame)
   {
-    return a4;
+    return scale;
   }
 
-  Width = CGRectGetWidth(*a5);
-  if (self->_stageCanvasController == a3)
+  Width = CGRectGetWidth(*frame);
+  if (self->_stageCanvasController == controller)
   {
     [-[THWGalleryRep layout](self layout];
   }
@@ -651,7 +651,7 @@ LABEL_21:
   else
   {
     v10 = Width;
-    if (self->_thumbnailTrackCanvasController != a3)
+    if (self->_thumbnailTrackCanvasController != controller)
     {
       goto LABEL_7;
     }
@@ -665,48 +665,48 @@ LABEL_7:
   {
     [objc_msgSend(-[THWGalleryRep interactiveCanvasController](self "interactiveCanvasController")];
     TSDRoundedRectForScale();
-    *a5 = v16;
+    *frame = v16;
     return CGRectGetWidth(v16) / v10;
   }
 
-  return a4;
+  return scale;
 }
 
-- (id)pagedCanvasController:(id)a3 renderedPageIndexSetFromReps:(id)a4
+- (id)pagedCanvasController:(id)controller renderedPageIndexSetFromReps:(id)reps
 {
-  if (self->_stageCanvasController != a3)
+  if (self->_stageCanvasController != controller)
   {
     return 0;
   }
 
-  v7 = [(THWGalleryRep *)self layout];
+  layout = [(THWGalleryRep *)self layout];
 
-  return [v7 pageIndexesFromStageReps:a4];
+  return [layout pageIndexesFromStageReps:reps];
 }
 
-- (id)p_itemAtIndex:(unint64_t)a3
+- (id)p_itemAtIndex:(unint64_t)index
 {
   v4 = [-[THWGalleryRep info](self "info")];
-  if ([v4 count] <= a3)
+  if ([v4 count] <= index)
   {
     return 0;
   }
 
-  return [v4 objectAtIndex:a3];
+  return [v4 objectAtIndex:index];
 }
 
 - (CALayer)pressableAnimationLayer
 {
-  v2 = [(THWPagedCanvasController *)self->_stageCanvasController view];
+  view = [(THWPagedCanvasController *)self->_stageCanvasController view];
 
-  return [(UIView *)v2 layer];
+  return [(UIView *)view layer];
 }
 
 - (BOOL)wantsPressAnimation
 {
-  v2 = [(THWGalleryRep *)self pressableHandler];
+  pressableHandler = [(THWGalleryRep *)self pressableHandler];
 
-  return [(THWPressableRepGestureTargetHandler *)v2 widgetInteractionDisabledOnPage];
+  return [(THWPressableRepGestureTargetHandler *)pressableHandler widgetInteractionDisabledOnPage];
 }
 
 - (id)animationLayer
@@ -733,7 +733,7 @@ LABEL_7:
   return [(THWFreeTransformController *)v3 shadowLayer];
 }
 
-- (CGAffineTransform)shadowAnimationLayerDestinationTransform:(SEL)a3 uniformTargetScale:(id)a4
+- (CGAffineTransform)shadowAnimationLayerDestinationTransform:(SEL)transform uniformTargetScale:(id)scale
 {
   v7 = *&CGAffineTransformIdentity.c;
   *&retstr->a = *&CGAffineTransformIdentity.a;
@@ -892,21 +892,21 @@ LABEL_7:
   return result;
 }
 
-- (void)p_setupImageCropAnimationControllerWithDestinationRep:(id)a3
+- (void)p_setupImageCropAnimationControllerWithDestinationRep:(id)rep
 {
-  v5 = [(THWGalleryRep *)self p_currentImageContentLayer];
-  if (v5 && !self->_imageCropAnimationController)
+  p_currentImageContentLayer = [(THWGalleryRep *)self p_currentImageContentLayer];
+  if (p_currentImageContentLayer && !self->_imageCropAnimationController)
   {
-    v11 = v5;
-    v12 = [(THWGalleryRep *)self currentItem];
-    [(THWGalleryRep *)self p_contentsRectForItem:v12];
+    v11 = p_currentImageContentLayer;
+    currentItem = [(THWGalleryRep *)self currentItem];
+    [(THWGalleryRep *)self p_contentsRectForItem:currentItem];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    if (a3)
+    if (rep)
     {
-      [a3 p_contentsRectForItem:v12];
+      [rep p_contentsRectForItem:currentItem];
       v22 = v21;
       v24 = v23;
       v26 = v25;
@@ -929,9 +929,9 @@ LABEL_7:
     [-[THWGalleryRep canvas](self "canvas")];
     [(THWImageCropAnimationController *)self->_imageCropAnimationController setSourceCornerRadius:v31 * v32];
     [(THWImageCropAnimationController *)self->_imageCropAnimationController setTargetContentsRect:v22, v24, v26, v28];
-    [objc_msgSend(a3 "layout")];
+    [objc_msgSend(rep "layout")];
     v34 = v33;
-    [objc_msgSend(a3 "canvas")];
+    [objc_msgSend(rep "canvas")];
     [(THWImageCropAnimationController *)self->_imageCropAnimationController setTargetCornerRadius:v34 * v35];
     [(THWImageCropAnimationController *)self->_imageCropAnimationController setCropDurationScale:0.5];
     [(THWImageCropAnimationController *)self->_imageCropAnimationController setCornerRadiusDurationScale:0.5];
@@ -940,13 +940,13 @@ LABEL_7:
     [(THWImageCropAnimationController *)imageCropAnimationController setupWrapperLayer];
   }
 
-  else if (a3)
+  else if (rep)
   {
-    [a3 p_contentsRectForItem:{-[THWGalleryRep currentItem](self, "currentItem")}];
+    [rep p_contentsRectForItem:{-[THWGalleryRep currentItem](self, "currentItem")}];
     [(THWImageCropAnimationController *)self->_imageCropAnimationController setTargetContentsRect:?];
-    [objc_msgSend(a3 "layout")];
+    [objc_msgSend(rep "layout")];
     v7 = v6;
-    [objc_msgSend(a3 "canvas")];
+    [objc_msgSend(rep "canvas")];
     v9 = v7 * v8;
     v10 = self->_imageCropAnimationController;
 
@@ -954,16 +954,16 @@ LABEL_7:
   }
 }
 
-- (void)animationControllerSetupTarget:(id)a3
+- (void)animationControllerSetupTarget:(id)target
 {
   objc_opt_class();
-  [a3 destination];
+  [target destination];
   v5 = TSUDynamicCast();
 
   [(THWGalleryRep *)self p_setupImageCropAnimationControllerWithDestinationRep:v5];
 }
 
-- (void)animationControllerTeardownTarget:(id)a3
+- (void)animationControllerTeardownTarget:(id)target
 {
   if (![(THWFreeTransformController *)[(THWFreeTransformableRepGestureTargetHandler *)[(THWGalleryRep *)self freeTransformableHandler] ftc] isFreeTransformInProgress])
   {
@@ -973,20 +973,20 @@ LABEL_7:
   }
 }
 
-- (void)animationControllerDidAddContentAnimations:(id)a3 uniformTargetScale:(double)a4
+- (void)animationControllerDidAddContentAnimations:(id)animations uniformTargetScale:(double)scale
 {
   imageCropAnimationController = self->_imageCropAnimationController;
-  [a3 animationDuration];
+  [animations animationDuration];
 
   [THWImageCropAnimationController addAnimationWithDuration:"addAnimationWithDuration:targetScale:" targetScale:?];
 }
 
-- (void)expandedWillStartWidgetLayoutFrameResize:(CGRect)a3
+- (void)expandedWillStartWidgetLayoutFrameResize:(CGRect)resize
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = resize.size.height;
+  width = resize.size.width;
+  y = resize.origin.y;
+  x = resize.origin.x;
   [objc_msgSend(objc_msgSend(-[THWGalleryRep p_zoomableCanvasControlRepForItemIndex:](self p_zoomableCanvasControlRepForItemIndex:{-[THWPagedCanvasController pageIndex](self->_stageCanvasController, "pageIndex")), "zoomableCanvasController"), "interactiveCanvasController"), "viewScale"}];
   [(THWGalleryRep *)self setResizeOriginalViewScale:?];
   [(THWGalleryRep *)self setResizeOriginalLayoutFrame:x, y, width, height];
@@ -995,19 +995,19 @@ LABEL_7:
   [(THWPagedCanvasController *)stageCanvasController setPadInfos:0];
 }
 
-- (void)expandedWidgetLayoutFrameDidChangeFromFrame:(CGRect)a3 toFrame:(CGRect)a4
+- (void)expandedWidgetLayoutFrameDidChangeFromFrame:(CGRect)frame toFrame:(CGRect)toFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  [(THWPagedCanvasController *)self->_stageCanvasController forceStopScrollingAtCurrentPageIndex:a3.origin.x];
+  height = toFrame.size.height;
+  width = toFrame.size.width;
+  [(THWPagedCanvasController *)self->_stageCanvasController forceStopScrollingAtCurrentPageIndex:frame.origin.x];
   v7 = [-[THWGalleryRep p_zoomableCanvasControlRepForItemIndex:](self p_zoomableCanvasControlRepForItemIndex:{-[THWPagedCanvasController pageIndex](self->_stageCanvasController, "pageIndex")), "zoomableCanvasController"}];
   [v7 setInResize:1];
   [v7 contentOffsetForAnchor:{0.5, 0.5}];
   v9 = v8;
   v11 = v10;
-  v12 = [(THWGalleryRep *)self layout];
-  [v12 invalidateFrame];
-  [v12 invalidateChildren];
+  layout = [(THWGalleryRep *)self layout];
+  [layout invalidateFrame];
+  [layout invalidateChildren];
   [-[THWGalleryRep interactiveCanvasController](self "interactiveCanvasController")];
   [(THWPagedCanvasController *)self->_stageCanvasController invalidateLayoutsAndFrames];
   [(TSDInteractiveCanvasController *)[(THWPagedCanvasController *)self->_stageCanvasController interactiveCanvasController] layoutIfNeeded];
@@ -1095,26 +1095,26 @@ LABEL_7:
   return v2;
 }
 
-- (BOOL)expandedHasContentForPanel:(int)a3
+- (BOOL)expandedHasContentForPanel:(int)panel
 {
-  v3 = *&a3;
-  v4 = [(THWGalleryRep *)self layout];
+  v3 = *&panel;
+  layout = [(THWGalleryRep *)self layout];
 
-  return [v4 expandedHasContentForPanel:v3];
+  return [layout expandedHasContentForPanel:v3];
 }
 
-- (UIEdgeInsets)expandedStackedControlContainerInsetsForPanel:(int)a3 withDefault:(UIEdgeInsets)a4
+- (UIEdgeInsets)expandedStackedControlContainerInsetsForPanel:(int)panel withDefault:(UIEdgeInsets)default
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  if (a3 == 2)
+  right = default.right;
+  bottom = default.bottom;
+  left = default.left;
+  top = default.top;
+  if (panel == 2)
   {
     [(THWGalleryRep *)self expandedHasContentForPanel:1];
   }
 
-  else if (a3 == 1)
+  else if (panel == 1)
   {
     if ([(THWGalleryRep *)self expandedHasContentForPanel:2])
     {
@@ -1140,18 +1140,18 @@ LABEL_7:
   return result;
 }
 
-- (double)expandedMinHeightForPanel:(int)a3 withDefault:(double)result
+- (double)expandedMinHeightForPanel:(int)panel withDefault:(double)result
 {
   v4 = result;
-  if (a3 == 1)
+  if (panel == 1)
   {
     v6 = [(THWGalleryRep *)self expandedHasContentForPanel:2];
     result = 0.0;
     if ((v6 & 1) == 0)
     {
-      v7 = [-[THWGalleryRep layout](self layout];
+      layout = [-[THWGalleryRep layout](self layout];
       result = 0.0;
-      if (v7)
+      if (layout)
       {
         return v4;
       }
@@ -1161,7 +1161,7 @@ LABEL_7:
   return result;
 }
 
-- (id)expandedLayoutGeometryForLayout:(id)a3 inPanel:(int)a4 withWidth:(double)a5 insets:(UIEdgeInsets)a6
+- (id)expandedLayoutGeometryForLayout:(id)layout inPanel:(int)panel withWidth:(double)width insets:(UIEdgeInsets)insets
 {
   v9 = TSUProtocolCast();
   if (!v9)
@@ -1172,7 +1172,7 @@ LABEL_7:
   v10 = [v9 tag];
   if (v10 == &dword_4)
   {
-    if ((a4 - 1) <= 1)
+    if ((panel - 1) <= 1)
     {
       x = CGPointZero.x;
       y = CGPointZero.y;
@@ -1183,7 +1183,7 @@ LABEL_7:
     return 0;
   }
 
-  if (v10 != (&dword_0 + 1) || (a4 - 1) > 1)
+  if (v10 != (&dword_0 + 1) || (panel - 1) > 1)
   {
     return 0;
   }
@@ -1191,15 +1191,15 @@ LABEL_7:
   x = CGPointZero.x;
   y = CGPointZero.y;
   [-[THWGalleryRep layout](self "layout")];
-  a5 = v13;
+  width = v13;
   v15 = v14;
 LABEL_8:
-  v16 = [[TSDLayoutGeometry alloc] initWithFrame:{x, y, a5, v15}];
+  v16 = [[TSDLayoutGeometry alloc] initWithFrame:{x, y, width, v15}];
 
   return v16;
 }
 
-- (unsigned)expandedAlignmentForLayout:(id)a3 inPanel:(int)a4
+- (unsigned)expandedAlignmentForLayout:(id)layout inPanel:(int)panel
 {
   v4 = TSUProtocolCast();
   if (v4 && ((v5 = v4, [v4 tag] == &dword_0 + 1) || objc_msgSend(v5, "tag") == &dword_4))
@@ -1213,9 +1213,9 @@ LABEL_8:
   }
 }
 
-- (id)expandedChildInfosForPanel:(int)a3
+- (id)expandedChildInfosForPanel:(int)panel
 {
-  if (a3 == 1)
+  if (panel == 1)
   {
     v3 = [-[THWGalleryRep layout](self "layout")];
     if (v3)
@@ -1226,7 +1226,7 @@ LABEL_8:
     return 0;
   }
 
-  if (a3)
+  if (panel)
   {
     return 0;
   }
@@ -1242,18 +1242,18 @@ LABEL_4:
   return [NSArray arrayWithObject:v3];
 }
 
-- (id)expandedAdditionalChildLayoutsForPanel:(int)a3
+- (id)expandedAdditionalChildLayoutsForPanel:(int)panel
 {
-  v3 = *&a3;
-  v4 = [(THWGalleryRep *)self layout];
+  v3 = *&panel;
+  layout = [(THWGalleryRep *)self layout];
 
-  return [v4 thumbnailTrackAdditionalLayoutsInExpandedPanel:v3];
+  return [layout thumbnailTrackAdditionalLayoutsInExpandedPanel:v3];
 }
 
-- (void)expandedContentHandleDoubleTapZoomDirectlyAtPoint:(CGPoint)a3
+- (void)expandedContentHandleDoubleTapZoomDirectlyAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [-[THWGalleryRep layout](self "layout")];
   v6 = v10.origin.x;
   v7 = v10.origin.y;
@@ -1266,19 +1266,19 @@ LABEL_4:
   }
 }
 
-- (double)expandedLeftRightInsetForTextLayout:(id)a3 inPanel:(int)a4
+- (double)expandedLeftRightInsetForTextLayout:(id)layout inPanel:(int)panel
 {
-  if (!a4)
+  if (!panel)
   {
     return 10.0;
   }
 
-  if (a4 != 1)
+  if (panel != 1)
   {
     return 0.0;
   }
 
-  v6 = [(THWGalleryRep *)self layout:a3];
+  v6 = [(THWGalleryRep *)self layout:layout];
 
   [v6 expandedLeftRightInsetForCaption];
   return result;
@@ -1296,15 +1296,15 @@ LABEL_4:
   return result;
 }
 
-- (double)expandedVerticalPaddingAfterForLayout:(id)a3 inPanel:(int)a4
+- (double)expandedVerticalPaddingAfterForLayout:(id)layout inPanel:(int)panel
 {
-  if (a4 != 1)
+  if (panel != 1)
   {
     return 10.0;
   }
 
   v6 = [-[THWGalleryRep layout](self "layout")];
-  if (!v6 || [a3 info] != v6)
+  if (!v6 || [layout info] != v6)
   {
     return 10.0;
   }
@@ -1315,9 +1315,9 @@ LABEL_4:
 
 - (BOOL)expandedIsRelatedCanvasScrolling
 {
-  v2 = [(THWPagedCanvasController *)self->_stageCanvasController interactiveCanvasController];
+  interactiveCanvasController = [(THWPagedCanvasController *)self->_stageCanvasController interactiveCanvasController];
 
-  return [(TSDInteractiveCanvasController *)v2 currentlyScrolling];
+  return [(TSDInteractiveCanvasController *)interactiveCanvasController currentlyScrolling];
 }
 
 - (void)p_togglePanelDescriptionExpanded
@@ -1329,9 +1329,9 @@ LABEL_4:
   [(THWExpandedRepController *)expandedRepController expandedRepControllerInvalidateChildrenInPanel:1 invalidateWPAuto:1];
 }
 
-- (id)expandedPanel:(int)a3 primaryTargetForGesture:(id)a4
+- (id)expandedPanel:(int)panel primaryTargetForGesture:(id)gesture
 {
-  if (a3 != 1)
+  if (panel != 1)
   {
     return 0;
   }
@@ -1346,53 +1346,53 @@ LABEL_4:
   return [[THWTapGestureAction alloc] initWithAction:v7];
 }
 
-- (unsigned)expandedMaxLineCountForTextLayout:(id)a3 inPanel:(int)a4 withDefault:(unsigned int)a5
+- (unsigned)expandedMaxLineCountForTextLayout:(id)layout inPanel:(int)panel withDefault:(unsigned int)default
 {
-  if (a4 == 1 && !self->_panelDescriptionExpanded)
+  if (panel == 1 && !self->_panelDescriptionExpanded)
   {
-    v6 = [-[THWGalleryRep layout](self layout];
-    if ([v6 isCompactHeight])
+    layout = [-[THWGalleryRep layout](self layout];
+    if ([layout isCompactHeight])
     {
       return 2;
     }
 
-    else if ([v6 isCompactWidth])
+    else if ([layout isCompactWidth])
     {
       return 5;
     }
   }
 
-  return a5;
+  return default;
 }
 
-- (void)pageControl:(id)a3 didChangeInteractivelyFromPageIndex:(unint64_t)a4 toPageIndex:(unint64_t)a5
+- (void)pageControl:(id)control didChangeInteractivelyFromPageIndex:(unint64_t)index toPageIndex:(unint64_t)pageIndex
 {
-  v8 = [a3 layout];
-  if (v8)
+  layout = [control layout];
+  if (layout)
   {
-    v9 = v8;
-    if (v8 == [-[THWGalleryRep layout](self "layout")])
+    v9 = layout;
+    if (layout == [-[THWGalleryRep layout](self "layout")])
     {
       stageCanvasController = self->_stageCanvasController;
-      v11 = a4 - a5;
-      if ((a4 - a5) < 0)
+      v11 = index - pageIndex;
+      if ((index - pageIndex) < 0)
       {
-        v11 = a5 - a4;
+        v11 = pageIndex - index;
       }
 
-      [(THWPagedCanvasController *)stageCanvasController setPageIndex:a5 animated:v11 < 2];
+      [(THWPagedCanvasController *)stageCanvasController setPageIndex:pageIndex animated:v11 < 2];
     }
 
     else if (v9 == [-[THWGalleryRep layout](self "layout")])
     {
       thumbnailTrackCanvasController = self->_thumbnailTrackCanvasController;
 
-      [(THWPagedCanvasController *)thumbnailTrackCanvasController setPageIndex:a5];
+      [(THWPagedCanvasController *)thumbnailTrackCanvasController setPageIndex:pageIndex];
     }
   }
 }
 
-- (__CTFont)pageControlCreateFont:(id)a3
+- (__CTFont)pageControlCreateFont:(id)font
 {
   result = [-[THWGalleryRep layout](self layout];
   if (!result)
@@ -1404,7 +1404,7 @@ LABEL_4:
   return result;
 }
 
-- (id)pageControlTextColor:(id)a3
+- (id)pageControlTextColor:(id)color
 {
   result = [-[THWGalleryRep layout](self layout];
   if (!result)
@@ -1416,9 +1416,9 @@ LABEL_4:
   return result;
 }
 
-- (id)pageControl:(id)a3 layerForState:(int)a4 pageIndex:(unint64_t)a5
+- (id)pageControl:(id)control layerForState:(int)state pageIndex:(unint64_t)index
 {
-  if ([objc_msgSend(a3 "layout")] - 3 > &dword_0 + 1)
+  if ([objc_msgSend(control "layout")] - 3 > &dword_0 + 1)
   {
     return 0;
   }
@@ -1442,7 +1442,7 @@ LABEL_4:
 
   v7 = v9;
 LABEL_7:
-  if (a4 == 1)
+  if (state == 1)
   {
     v10 = 0.8;
     if (!v8)
@@ -1453,7 +1453,7 @@ LABEL_7:
 
   else
   {
-    if (a4)
+    if (state)
     {
       return 0;
     }
@@ -1476,9 +1476,9 @@ LABEL_7:
 
 - (BOOL)isExpanded
 {
-  v2 = [(THWGalleryRep *)self layout];
+  layout = [(THWGalleryRep *)self layout];
 
-  return [v2 isExpanded];
+  return [layout isExpanded];
 }
 
 - (BOOL)isFreeTransformInProgress
@@ -1488,27 +1488,27 @@ LABEL_7:
   return [(THWFreeTransformController *)v2 isFreeTransformInProgress];
 }
 
-- (void)p_updateToPageIndex:(unint64_t)a3 usingCachedImagedFromRep:(id)a4
+- (void)p_updateToPageIndex:(unint64_t)index usingCachedImagedFromRep:(id)rep
 {
   [objc_msgSend(-[THWGalleryRep layout](self "layout")];
   if (self->_stageCanvasController)
   {
-    v7 = [(THWGalleryRep *)self p_itemAtIndex:a3];
+    v7 = [(THWGalleryRep *)self p_itemAtIndex:index];
     [(THWPagedCanvasController *)self->_stageCanvasController setPadInfos:0];
-    [(THWPagedCanvasController *)self->_stageCanvasController setPageIndex:a3 animated:0];
+    [(THWPagedCanvasController *)self->_stageCanvasController setPageIndex:index animated:0];
     [(TSDInteractiveCanvasController *)[(THWPagedCanvasController *)self->_stageCanvasController interactiveCanvasController] setShouldSuppressRendering:1 animated:0];
     [(TSDInteractiveCanvasController *)[(THWPagedCanvasController *)self->_stageCanvasController interactiveCanvasController] layoutIfNeeded];
     v8 = [(THWGalleryRep *)self p_imageRepForItem:v7];
-    v9 = [a4 p_imageRepForItem:v7];
+    v9 = [rep p_imageRepForItem:v7];
     if (v8)
     {
       if (v9)
       {
-        v10 = [v9 newCachedSizedImage];
-        if (v10)
+        newCachedSizedImage = [v9 newCachedSizedImage];
+        if (newCachedSizedImage)
         {
-          v11 = v10;
-          [v8 useCachedSizedImage:v10];
+          v11 = newCachedSizedImage;
+          [v8 useCachedSizedImage:newCachedSizedImage];
           [v8 generateSizedImageOnBackgroundThread];
         }
       }
@@ -1520,12 +1520,12 @@ LABEL_7:
 
   else
   {
-    self->_currentPage = a3;
+    self->_currentPage = index;
   }
 
-  v12 = [(THWGalleryRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWGalleryRep *)self interactiveCanvasController];
 
-  [v12 layoutIfNeeded];
+  [interactiveCanvasController layoutIfNeeded];
 }
 
 - (void)freeTransformWillBegin
@@ -1557,9 +1557,9 @@ LABEL_7:
   [(THWImageCropAnimationController *)self->_imageCropAnimationController teardownWrapperLayer];
 
   self->_imageCropAnimationController = 0;
-  v3 = [(THWGalleryRep *)self p_currentImageRep];
+  p_currentImageRep = [(THWGalleryRep *)self p_currentImageRep];
 
-  [v3 resumeLayerUpdatesAndLayoutImmediately];
+  [p_currentImageRep resumeLayerUpdatesAndLayoutImmediately];
 }
 
 - (CGRect)rectForCompletion
@@ -1574,16 +1574,16 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)canHandleGesture:(id)a3
+- (BOOL)canHandleGesture:(id)gesture
 {
-  if ([(THWFreeTransformableRepGestureTargetHandler *)[(THWGalleryRep *)self freeTransformableHandler] canHandleGesture:a3])
+  if ([(THWFreeTransformableRepGestureTargetHandler *)[(THWGalleryRep *)self freeTransformableHandler] canHandleGesture:gesture])
   {
     LOBYTE(v5) = 1;
   }
 
   else
   {
-    [a3 naturalLocationForRep:self];
+    [gesture naturalLocationForRep:self];
     v7 = v6;
     v9 = v8;
     [-[THWGalleryRep layout](self "layout")];
@@ -1594,62 +1594,62 @@ LABEL_7:
     {
       pressableHandler = self->_pressableHandler;
 
-      LOBYTE(v5) = [(THWPressableRepGestureTargetHandler *)pressableHandler canHandleGesture:a3];
+      LOBYTE(v5) = [(THWPressableRepGestureTargetHandler *)pressableHandler canHandleGesture:gesture];
     }
   }
 
   return v5;
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
-  [a3 naturalLocationForRep:self];
+  [gesture naturalLocationForRep:self];
   v6 = v5;
   v8 = v7;
   [-[THWGalleryRep layout](self "layout")];
   v12.x = v6;
   v12.y = v8;
-  if (CGRectContainsPoint(v13, v12) && [(THWPressableRepGestureTargetHandler *)self->_pressableHandler handleGesture:a3])
+  if (CGRectContainsPoint(v13, v12) && [(THWPressableRepGestureTargetHandler *)self->_pressableHandler handleGesture:gesture])
   {
     return 1;
   }
 
-  v10 = [(THWGalleryRep *)self freeTransformableHandler];
+  freeTransformableHandler = [(THWGalleryRep *)self freeTransformableHandler];
 
-  return [(THWFreeTransformableRepGestureTargetHandler *)v10 handleGesture:a3];
+  return [(THWFreeTransformableRepGestureTargetHandler *)freeTransformableHandler handleGesture:gesture];
 }
 
-- (void)willBeginHandlingGesture:(id)a3
+- (void)willBeginHandlingGesture:(id)gesture
 {
-  v5 = [a3 gestureKind];
-  if (v5 == TSDFreeTransform)
+  gestureKind = [gesture gestureKind];
+  if (gestureKind == TSDFreeTransform)
   {
-    v6 = [(THWGalleryRep *)self freeTransformableHandler];
+    freeTransformableHandler = [(THWGalleryRep *)self freeTransformableHandler];
 
-    [(THWFreeTransformableRepGestureTargetHandler *)v6 willBeginHandlingGesture:a3];
+    [(THWFreeTransformableRepGestureTargetHandler *)freeTransformableHandler willBeginHandlingGesture:gesture];
   }
 }
 
-- (void)buttonControlWasPressed:(id)a3
+- (void)buttonControlWasPressed:(id)pressed
 {
-  v4 = [a3 layout];
-  if ([v4 tag] == &dword_4 + 1)
+  layout = [pressed layout];
+  if ([layout tag] == &dword_4 + 1)
   {
-    v5 = [v4 index];
+    index = [layout index];
 
-    [(THWGalleryRep *)self p_goToPage:v5];
+    [(THWGalleryRep *)self p_goToPage:index];
   }
 }
 
-- (id)buttonControl:(id)a3 imageForState:(int)a4 highlighted:(BOOL)a5
+- (id)buttonControl:(id)control imageForState:(int)state highlighted:(BOOL)highlighted
 {
-  v6 = [a3 layout];
-  if ([v6 tag] != &dword_4 + 1)
+  layout = [control layout];
+  if ([layout tag] != &dword_4 + 1)
   {
     return 0;
   }
 
-  v7 = [-[THWGalleryRep p_itemAtIndex:](self p_itemAtIndex:{objc_msgSend(v6, "index")), "thumbnailImageData"}];
+  v7 = [-[THWGalleryRep p_itemAtIndex:](self p_itemAtIndex:{objc_msgSend(layout, "index")), "thumbnailImageData"}];
   if (!v7)
   {
     return 0;
@@ -1658,22 +1658,22 @@ LABEL_7:
   return [TSDBitmapImageProvider TSUImageForImageData:v7];
 }
 
-- (void)buttonControl:(id)a3 didUpdateLayer:(id)a4
+- (void)buttonControl:(id)control didUpdateLayer:(id)layer
 {
-  v6 = [a3 layout];
-  if ([v6 tag] == &dword_4 + 1)
+  layout = [control layout];
+  if ([layout tag] == &dword_4 + 1)
   {
     v7 = [objc_msgSend(-[THWGalleryRep layout](self "layout")];
-    if (v7 == [v6 index])
+    if (v7 == [layout index])
     {
-      [a4 setBorderWidth:0.0];
-      [a4 bounds];
+      [layer setBorderWidth:0.0];
+      [layer bounds];
       v10 = [(THWGalleryRep *)self p_highlightLayerForThumbnailSize:v8, v9];
       v11 = v10;
-      if (v10 && [v10 superlayer] != a4)
+      if (v10 && [v10 superlayer] != layer)
       {
         [v11 removeFromSuperlayer];
-        [a4 addSublayer:v11];
+        [layer addSublayer:v11];
       }
 
       [(THWGalleryRep *)self p_integralScaledThumbnailHighlightWidth];
@@ -1683,43 +1683,43 @@ LABEL_7:
 
     else
     {
-      [a4 setBorderColor:{objc_msgSend(objc_msgSend(-[THWGalleryRep layout](self, "layout"), "thumbnailBorderColor"), "CGColor")}];
+      [layer setBorderColor:{objc_msgSend(objc_msgSend(-[THWGalleryRep layout](self, "layout"), "thumbnailBorderColor"), "CGColor")}];
 
-      [a4 setBorderWidth:1.0];
+      [layer setBorderWidth:1.0];
     }
   }
 }
 
-- (void)buttonControlInteractionWillStart:(id)a3
+- (void)buttonControlInteractionWillStart:(id)start
 {
-  v4 = [a3 layout];
-  if ([v4 tag] == &dword_4 + 1)
+  layout = [start layout];
+  if ([layout tag] == &dword_4 + 1)
   {
     [(TSDInteractiveCanvasController *)[(THWPagedCanvasController *)self->_stageCanvasController interactiveCanvasController] setStaticLayoutAndRenderOnThread:1];
-    v5 = [v4 index];
+    index = [layout index];
     stageCanvasController = self->_stageCanvasController;
 
-    [(THWPagedCanvasController *)stageCanvasController setPreloadPageIndex:v5];
+    [(THWPagedCanvasController *)stageCanvasController setPreloadPageIndex:index];
   }
 }
 
-- (void)buttonControlInteractionDidEnd:(id)a3
+- (void)buttonControlInteractionDidEnd:(id)end
 {
-  if ([objc_msgSend(a3 "layout")] == &dword_4 + 1)
+  if ([objc_msgSend(end "layout")] == &dword_4 + 1)
   {
     [(TSDInteractiveCanvasController *)[(THWPagedCanvasController *)self->_stageCanvasController interactiveCanvasController] setStaticLayoutAndRenderOnThread:0];
     [(THWPagedCanvasController *)self->_stageCanvasController setPreloadPageIndex:0x7FFFFFFFFFFFFFFFLL];
     if (([(TSDInteractiveCanvasController *)[(THWPagedCanvasController *)self->_stageCanvasController interactiveCanvasController] currentlyScrolling]& 1) == 0 && ([(TSDInteractiveCanvasController *)[(THWPagedCanvasController *)self->_thumbnailTrackCanvasController interactiveCanvasController] currentlyScrolling]& 1) == 0)
     {
       stageCanvasController = self->_stageCanvasController;
-      v5 = [(THWPagedCanvasController *)stageCanvasController pageIndex];
+      pageIndex = [(THWPagedCanvasController *)stageCanvasController pageIndex];
 
-      [(THWGalleryRep *)self pagedCanvasController:stageCanvasController didScrollToPageIndex:v5];
+      [(THWGalleryRep *)self pagedCanvasController:stageCanvasController didScrollToPageIndex:pageIndex];
     }
   }
 }
 
-- (void)willReplaceContentsFromRep:(id)a3
+- (void)willReplaceContentsFromRep:(id)rep
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
@@ -1731,9 +1731,9 @@ LABEL_7:
     if (stageCanvasController)
     {
       [(THWPagedCanvasController *)stageCanvasController setPageIndex:v5 animated:0];
-      v7 = [(THWPagedCanvasController *)self->_stageCanvasController interactiveCanvasController];
+      interactiveCanvasController = [(THWPagedCanvasController *)self->_stageCanvasController interactiveCanvasController];
 
-      [(TSDInteractiveCanvasController *)v7 layoutIfNeeded];
+      [(TSDInteractiveCanvasController *)interactiveCanvasController layoutIfNeeded];
     }
 
     else
@@ -1743,20 +1743,20 @@ LABEL_7:
   }
 }
 
-- (CGSize)sizeOfCanvasForZoomableCanvasController:(id)a3
+- (CGSize)sizeOfCanvasForZoomableCanvasController:(id)controller
 {
-  v5 = [(THWGalleryRep *)self layout];
-  v6 = [(THWGalleryRep *)self p_itemForZoomableCanvasController:a3];
+  layout = [(THWGalleryRep *)self layout];
+  v6 = [(THWGalleryRep *)self p_itemForZoomableCanvasController:controller];
 
-  [v5 zoomableCanvasSizeForItem:v6];
+  [layout zoomableCanvasSizeForItem:v6];
   result.height = v8;
   result.width = v7;
   return result;
 }
 
-- (id)zoomableCanvasController:(id)a3 infosToDisplayForViewport:(CGRect)a4
+- (id)zoomableCanvasController:(id)controller infosToDisplayForViewport:(CGRect)viewport
 {
-  result = [-[THWGalleryRep p_itemForZoomableCanvasController:](self p_itemForZoomableCanvasController:{a3, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height), "imageInfo"}];
+  result = [-[THWGalleryRep p_itemForZoomableCanvasController:](self p_itemForZoomableCanvasController:{controller, viewport.origin.x, viewport.origin.y, viewport.size.width, viewport.size.height), "imageInfo"}];
   if (result)
   {
 
@@ -1766,83 +1766,83 @@ LABEL_7:
   return result;
 }
 
-- (double)zoomableCanvasControllerContentsScale:(id)a3
+- (double)zoomableCanvasControllerContentsScale:(id)scale
 {
-  v3 = [(THWGalleryRep *)self canvas];
+  canvas = [(THWGalleryRep *)self canvas];
 
-  [v3 contentsScale];
+  [canvas contentsScale];
   return result;
 }
 
-- (void)zoomableCanvasControllerCustomizeLayerHost:(id)a3
+- (void)zoomableCanvasControllerCustomizeLayerHost:(id)host
 {
   v5 = [(THWGalleryRep *)self p_itemForZoomableCanvasController:?];
   [-[THWGalleryRep layout](self "layout")];
   v7 = v6;
-  [objc_msgSend(objc_msgSend(objc_msgSend(a3 "interactiveCanvasController")];
+  [objc_msgSend(objc_msgSend(objc_msgSend(host "interactiveCanvasController")];
   [(THWGalleryRep *)self p_updateMinMaxViewScaleForItem:v5 forceMinScale:0];
   TSDRectWithSize();
   TSDCenterOfRect();
 
-  [a3 setViewScale:v7 contentOffset:v8 anchor:{v9, 0.5, 0.5}];
+  [host setViewScale:v7 contentOffset:v8 anchor:{v9, 0.5, 0.5}];
 }
 
-- (BOOL)zoomableCanvasControllerIsRelatedCanvasScrolling:(id)a3
+- (BOOL)zoomableCanvasControllerIsRelatedCanvasScrolling:(id)scrolling
 {
-  v3 = [(THWPagedCanvasController *)self->_stageCanvasController interactiveCanvasController];
+  interactiveCanvasController = [(THWPagedCanvasController *)self->_stageCanvasController interactiveCanvasController];
 
-  return [(TSDInteractiveCanvasController *)v3 currentlyScrolling];
+  return [(TSDInteractiveCanvasController *)interactiveCanvasController currentlyScrolling];
 }
 
-- (unint64_t)p_itemIndexForZoomableCanvasController:(id)a3
+- (unint64_t)p_itemIndexForZoomableCanvasController:(id)controller
 {
   objc_opt_class();
-  [a3 instanceData];
+  [controller instanceData];
   v4 = TSUDynamicCast();
 
   return [v4 unsignedIntegerValue];
 }
 
-- (id)p_itemForZoomableCanvasController:(id)a3
+- (id)p_itemForZoomableCanvasController:(id)controller
 {
-  v5 = [(THWGalleryRep *)self info];
-  v6 = [(THWGalleryRep *)self p_itemIndexForZoomableCanvasController:a3];
+  info = [(THWGalleryRep *)self info];
+  v6 = [(THWGalleryRep *)self p_itemIndexForZoomableCanvasController:controller];
 
-  return [v5 itemAtIndex:v6];
+  return [info itemAtIndex:v6];
 }
 
-- (void)p_updateMinMaxViewScaleForItem:(id)a3 forceMinScale:(BOOL)a4
+- (void)p_updateMinMaxViewScaleForItem:(id)item forceMinScale:(BOOL)scale
 {
-  v4 = a4;
+  scaleCopy = scale;
   [-[THWGalleryRep layout](self "layout")];
   v8 = v7;
-  v9 = [(THWGalleryRep *)self p_zoomableCanvasControllerForItem:a3];
+  v9 = [(THWGalleryRep *)self p_zoomableCanvasControllerForItem:item];
   v10 = [objc_msgSend(objc_msgSend(v9 "interactiveCanvasController")];
   [v10 setMinimumPinchViewScale:v8];
   [v10 setMaximumPinchViewScale:{fmax(v8, 1.5)}];
   [v10 setAllowsPinchZoom:1];
-  if (v4)
+  if (scaleCopy)
   {
-    v11 = [v9 interactiveCanvasController];
+    interactiveCanvasController = [v9 interactiveCanvasController];
 
-    [v11 setViewScale:v8];
+    [interactiveCanvasController setViewScale:v8];
   }
 }
 
-- (void)p_toggleCurrentItemZoomableWithStageRelativeTouch:(CGPoint)a3
+- (void)p_toggleCurrentItemZoomableWithStageRelativeTouch:(CGPoint)touch
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(THWGalleryRep *)self currentItem];
-  if (v6)
+  y = touch.y;
+  x = touch.x;
+  currentItem = [(THWGalleryRep *)self currentItem];
+  if (currentItem)
   {
-    v7 = v6;
-    v8 = [(THWGalleryRep *)self p_zoomableCanvasControllerForItem:v6];
-    v9 = [v8 interactiveCanvasController];
-    v10 = [(THWGalleryRep *)self layout];
-    [v9 viewScale];
+    v7 = currentItem;
+    v8 = [(THWGalleryRep *)self p_zoomableCanvasControllerForItem:currentItem];
+    interactiveCanvasController = [v8 interactiveCanvasController];
+    layout = [(THWGalleryRep *)self layout];
+    [interactiveCanvasController viewScale];
     v12 = v11;
-    [v10 zoomableItemMinimumViewScaleForItem:v7];
+    [layout zoomableItemMinimumViewScaleForItem:v7];
     v14 = v13;
     v15 = TSUPhoneUI();
     v16 = 1.5;
@@ -1873,7 +1873,7 @@ LABEL_7:
       v19 = v16;
     }
 
-    [v9 contentOffset];
+    [interactiveCanvasController contentOffset];
     v21 = x / v12 + v20;
     v23 = y / v12 + v22;
     if (v12 >= (v14 + v19) * 0.5)
@@ -1888,7 +1888,7 @@ LABEL_7:
 
     [objc_msgSend(v8 "scrollView")];
 
-    [v9 setViewScale:1 contentOffset:1 clampOffset:v24 animated:{v21 - v25 * 0.5 / v24, v23 - v26 * 0.5 / v24}];
+    [interactiveCanvasController setViewScale:1 contentOffset:1 clampOffset:v24 animated:{v21 - v25 * 0.5 / v24, v23 - v26 * 0.5 / v24}];
   }
 }
 
@@ -1899,10 +1899,10 @@ LABEL_7:
   return [(THWGalleryRep *)self p_imageRepForItem:v3];
 }
 
-- (id)p_imageRepForItem:(id)a3
+- (id)p_imageRepForItem:(id)item
 {
-  v5 = [(THWPagedCanvasController *)self->_stageCanvasController interactiveCanvasController];
-  v6 = [-[TSDInteractiveCanvasController layoutController](v5 "layoutController")];
+  interactiveCanvasController = [(THWPagedCanvasController *)self->_stageCanvasController interactiveCanvasController];
+  v6 = [-[TSDInteractiveCanvasController layoutController](interactiveCanvasController "layoutController")];
   if (!v6)
   {
     if (![(THWGalleryRep *)self p_supportZoom])
@@ -1910,8 +1910,8 @@ LABEL_7:
       return 0;
     }
 
-    v5 = [-[THWGalleryRep p_zoomableCanvasControllerForItem:](self p_zoomableCanvasControllerForItem:{a3), "interactiveCanvasController"}];
-    v6 = [-[TSDInteractiveCanvasController layoutController](v5 "layoutController")];
+    interactiveCanvasController = [-[THWGalleryRep p_zoomableCanvasControllerForItem:](self p_zoomableCanvasControllerForItem:{item), "interactiveCanvasController"}];
+    v6 = [-[TSDInteractiveCanvasController layoutController](interactiveCanvasController "layoutController")];
     if (!v6)
     {
       return 0;
@@ -1920,29 +1920,29 @@ LABEL_7:
 
   v7 = v6;
   objc_opt_class();
-  [-[TSDInteractiveCanvasController canvas](v5 "canvas")];
+  [-[TSDInteractiveCanvasController canvas](interactiveCanvasController "canvas")];
 
   return TSUDynamicCast();
 }
 
-- (id)p_layerForItem:(id)a3
+- (id)p_layerForItem:(id)item
 {
-  v3 = [(THWGalleryRep *)self p_imageRepForItem:a3];
-  v4 = [v3 interactiveCanvasController];
+  v3 = [(THWGalleryRep *)self p_imageRepForItem:item];
+  interactiveCanvasController = [v3 interactiveCanvasController];
 
-  return [v4 layerForRep:v3];
+  return [interactiveCanvasController layerForRep:v3];
 }
 
 - (id)p_currentImageContentLayer
 {
-  v2 = [(THWGalleryRep *)self p_currentImageRep];
+  p_currentImageRep = [(THWGalleryRep *)self p_currentImageRep];
 
-  return [v2 contentsLayer];
+  return [p_currentImageRep contentsLayer];
 }
 
-- (CGRect)p_contentsRectForItem:(id)a3
+- (CGRect)p_contentsRectForItem:(id)item
 {
-  if (a3)
+  if (item)
   {
     if ([-[THWGalleryRep layout](self "layout")])
     {
@@ -1954,10 +1954,10 @@ LABEL_7:
 
     else
     {
-      [objc_msgSend(a3 "imageInfo")];
+      [objc_msgSend(item "imageInfo")];
       v9 = v8;
       v11 = v10;
-      [a3 cropRect];
+      [item cropRect];
       v5 = v12 / v9;
       v6 = v13 / v11;
       v4 = v14 / v9;
@@ -1980,7 +1980,7 @@ LABEL_7:
   return result;
 }
 
-- (id)p_zoomableCanvasControlRepForItemIndex:(unint64_t)a3
+- (id)p_zoomableCanvasControlRepForItemIndex:(unint64_t)index
 {
   objc_opt_class();
   -[TSDInteractiveCanvasController repForLayout:](-[THWPagedCanvasController interactiveCanvasController](self->_stageCanvasController, "interactiveCanvasController"), "repForLayout:", [-[THWGalleryRep layout](self "layout")]);
@@ -1988,21 +1988,21 @@ LABEL_7:
   return TSUDynamicCast();
 }
 
-- (id)p_zoomableCanvasControllerForItemIndex:(unint64_t)a3
+- (id)p_zoomableCanvasControllerForItemIndex:(unint64_t)index
 {
-  v3 = [(THWGalleryRep *)self p_zoomableCanvasControlRepForItemIndex:a3];
+  v3 = [(THWGalleryRep *)self p_zoomableCanvasControlRepForItemIndex:index];
 
   return [v3 zoomableCanvasController];
 }
 
-- (id)p_zoomableCanvasControllerForItem:(id)a3
+- (id)p_zoomableCanvasControllerForItem:(id)item
 {
   v3 = -[THWGalleryRep p_zoomableCanvasControlRepForItemIndex:](self, "p_zoomableCanvasControlRepForItemIndex:", [-[THWGalleryRep info](self "info")]);
 
   return [v3 zoomableCanvasController];
 }
 
-- (void)p_resetViewScaleForItemsExcept:(id)a3
+- (void)p_resetViewScaleForItemsExcept:(id)except
 {
   if ([(THWGalleryRep *)self p_supportZoom])
   {
@@ -2010,8 +2010,8 @@ LABEL_7:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [-[THWGalleryRep info](self info];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    info = [-[THWGalleryRep info](self info];
+    v6 = [info countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -2023,11 +2023,11 @@ LABEL_7:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(info);
           }
 
           v10 = *(*(&v11 + 1) + 8 * v9);
-          if (v10 != a3)
+          if (v10 != except)
           {
             [(THWGalleryRep *)self p_updateMinMaxViewScaleForItem:v10 forceMinScale:1];
           }
@@ -2036,7 +2036,7 @@ LABEL_7:
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [info countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -2046,15 +2046,15 @@ LABEL_7:
 
 - (BOOL)p_shouldSuppressRenderingDuringExpansion
 {
-  v3 = [(THWGalleryRep *)self p_isExpanding];
-  if (v3)
+  p_isExpanding = [(THWGalleryRep *)self p_isExpanding];
+  if (p_isExpanding)
   {
     objc_opt_class();
     [(THWExpandedRepController *)self->_expandedRepController expandedRepSourceRep];
-    LOBYTE(v3) = TSUDynamicCast() != 0;
+    LOBYTE(p_isExpanding) = TSUDynamicCast() != 0;
   }
 
-  return v3;
+  return p_isExpanding;
 }
 
 - (BOOL)p_isExpanding
@@ -2084,9 +2084,9 @@ LABEL_7:
 
 - (id)currentItem
 {
-  v3 = [(THWPagedCanvasController *)self->_stageCanvasController pageIndex];
+  pageIndex = [(THWPagedCanvasController *)self->_stageCanvasController pageIndex];
 
-  return [(THWGalleryRep *)self p_itemAtIndex:v3];
+  return [(THWGalleryRep *)self p_itemAtIndex:pageIndex];
 }
 
 - (CGRect)resizeOriginalLayoutFrame

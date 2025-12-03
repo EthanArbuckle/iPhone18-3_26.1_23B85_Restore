@@ -7,9 +7,9 @@
 + (id)aaPrimaryAppleAccount
 {
   v2 = +[ACAccountStore defaultStore];
-  v3 = [v2 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v2 aa_primaryAppleAccount];
 
-  return v3;
+  return aa_primaryAppleAccount;
 }
 
 @end

@@ -1,35 +1,35 @@
 @interface SwiftUIContainerCell
-- (SwiftUIContainerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (SwiftUIContainerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setNewSwiftUIViewFromSpecifier:(id)a3;
-- (void)setSeparatorStyle:(int64_t)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setNewSwiftUIViewFromSpecifier:(id)specifier;
+- (void)setSeparatorStyle:(int64_t)style;
 @end
 
 @implementation SwiftUIContainerCell
 
-- (SwiftUIContainerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (SwiftUIContainerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v12.receiver = self;
   v12.super_class = SwiftUIContainerCell;
-  v9 = [(SwiftUIContainerCell *)&v12 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(SwiftUIContainerCell *)&v12 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   v10 = v9;
   if (v9)
   {
-    [(SwiftUIContainerCell *)v9 setNewSwiftUIViewFromSpecifier:v8];
+    [(SwiftUIContainerCell *)v9 setNewSwiftUIViewFromSpecifier:specifierCopy];
   }
 
   return v10;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v5.receiver = self;
   v5.super_class = SwiftUIContainerCell;
-  v4 = a3;
-  [(SwiftUIContainerCell *)&v5 refreshCellContentsWithSpecifier:v4];
-  [(SwiftUIContainerCell *)self setNewSwiftUIViewFromSpecifier:v4, v5.receiver, v5.super_class];
+  specifierCopy = specifier;
+  [(SwiftUIContainerCell *)&v5 refreshCellContentsWithSpecifier:specifierCopy];
+  [(SwiftUIContainerCell *)self setNewSwiftUIViewFromSpecifier:specifierCopy, v5.receiver, v5.super_class];
 }
 
 - (void)prepareForReuse
@@ -37,59 +37,59 @@
   v6.receiver = self;
   v6.super_class = SwiftUIContainerCell;
   [(SwiftUIContainerCell *)&v6 prepareForReuse];
-  v3 = [(SwiftUIContainerCell *)self child];
+  child = [(SwiftUIContainerCell *)self child];
 
-  if (v3)
+  if (child)
   {
-    v4 = [(SwiftUIContainerCell *)self child];
-    v5 = [v4 view];
-    [v5 removeFromSuperview];
+    child2 = [(SwiftUIContainerCell *)self child];
+    view = [child2 view];
+    [view removeFromSuperview];
 
     [(SwiftUIContainerCell *)self setChild:0];
   }
 }
 
-- (void)setNewSwiftUIViewFromSpecifier:(id)a3
+- (void)setNewSwiftUIViewFromSpecifier:(id)specifier
 {
-  v4 = [a3 objectForKeyedSubscript:@"SwiftUIContainerCellViewController"];
+  v4 = [specifier objectForKeyedSubscript:@"SwiftUIContainerCellViewController"];
   [(SwiftUIContainerCell *)self setChild:v4];
 
-  v5 = [(SwiftUIContainerCell *)self child];
-  v6 = [v5 view];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  child = [(SwiftUIContainerCell *)self child];
+  view = [child view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(SwiftUIContainerCell *)self contentView];
-  v8 = [(SwiftUIContainerCell *)self child];
-  v9 = [v8 view];
-  [v7 addSubview:v9];
+  contentView = [(SwiftUIContainerCell *)self contentView];
+  child2 = [(SwiftUIContainerCell *)self child];
+  view2 = [child2 view];
+  [contentView addSubview:view2];
 
-  v34 = [(SwiftUIContainerCell *)self child];
-  v33 = [v34 view];
-  v31 = [v33 topAnchor];
-  v32 = [(SwiftUIContainerCell *)self contentView];
-  v30 = [v32 topAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  child3 = [(SwiftUIContainerCell *)self child];
+  view3 = [child3 view];
+  topAnchor = [view3 topAnchor];
+  contentView2 = [(SwiftUIContainerCell *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v29 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v35[0] = v29;
-  v28 = [(SwiftUIContainerCell *)self child];
-  v27 = [v28 view];
-  v25 = [v27 leadingAnchor];
-  v26 = [(SwiftUIContainerCell *)self contentView];
-  v24 = [v26 leadingAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  child4 = [(SwiftUIContainerCell *)self child];
+  view4 = [child4 view];
+  leadingAnchor = [view4 leadingAnchor];
+  contentView3 = [(SwiftUIContainerCell *)self contentView];
+  leadingAnchor2 = [contentView3 leadingAnchor];
+  v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v35[1] = v23;
-  v22 = [(SwiftUIContainerCell *)self child];
-  v21 = [v22 view];
-  v19 = [v21 trailingAnchor];
-  v10 = [(SwiftUIContainerCell *)self contentView];
-  v11 = [v10 trailingAnchor];
-  v12 = [v19 constraintEqualToAnchor:v11];
+  child5 = [(SwiftUIContainerCell *)self child];
+  view5 = [child5 view];
+  trailingAnchor = [view5 trailingAnchor];
+  contentView4 = [(SwiftUIContainerCell *)self contentView];
+  trailingAnchor2 = [contentView4 trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v35[2] = v12;
-  v13 = [(SwiftUIContainerCell *)self child];
-  v14 = [v13 view];
-  v15 = [v14 bottomAnchor];
-  v16 = [(SwiftUIContainerCell *)self contentView];
-  v17 = [v16 bottomAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  child6 = [(SwiftUIContainerCell *)self child];
+  view6 = [child6 view];
+  bottomAnchor = [view6 bottomAnchor];
+  contentView5 = [(SwiftUIContainerCell *)self contentView];
+  bottomAnchor2 = [contentView5 bottomAnchor];
+  v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v35[3] = v18;
   v20 = [NSArray arrayWithObjects:v35 count:4];
 
@@ -98,7 +98,7 @@
   [(SwiftUIContainerCell *)self setNeedsDisplay];
 }
 
-- (void)setSeparatorStyle:(int64_t)a3
+- (void)setSeparatorStyle:(int64_t)style
 {
   v3.receiver = self;
   v3.super_class = SwiftUIContainerCell;

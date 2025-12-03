@@ -8,7 +8,7 @@
 - (AVCaptionRegionWritingMode)writingMode;
 - (AVCaptionSize)size;
 - (AVMutableCaptionRegion)init;
-- (AVMutableCaptionRegion)initWithFigMutableCaptionRegion:(OpaqueFigCaptionRegion *)a3;
+- (AVMutableCaptionRegion)initWithFigMutableCaptionRegion:(OpaqueFigCaptionRegion *)region;
 - (AVMutableCaptionRegion)initWithIdentifier:(NSString *)identifier;
 - (void)setOrigin:(AVCaptionPoint *)origin;
 - (void)setSize:(AVCaptionSize *)size;
@@ -16,11 +16,11 @@
 
 @implementation AVMutableCaptionRegion
 
-- (AVMutableCaptionRegion)initWithFigMutableCaptionRegion:(OpaqueFigCaptionRegion *)a3
+- (AVMutableCaptionRegion)initWithFigMutableCaptionRegion:(OpaqueFigCaptionRegion *)region
 {
   v4.receiver = self;
   v4.super_class = AVMutableCaptionRegion;
-  return [(AVCaptionRegion *)&v4 initWithFigCaptionRegion:a3];
+  return [(AVCaptionRegion *)&v4 initWithFigCaptionRegion:region];
 }
 
 - (AVMutableCaptionRegion)initWithIdentifier:(NSString *)identifier

@@ -1,6 +1,6 @@
 @interface WFTextFieldCell
 - (BOOL)becomeFirstResponder;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (NSLayoutConstraint)labelWidthConstraint;
 - (NSLayoutConstraint)stackViewBottomConstraint;
 - (NSLayoutConstraint)stackViewLeadingConstraint;
@@ -12,14 +12,14 @@
 - (void)_adjustStackViewPadding;
 - (void)_updateStackViewForTraitCollection;
 - (void)awakeFromNib;
-- (void)copy:(id)a3;
+- (void)copy:(id)copy;
 - (void)dealloc;
 - (void)prepareForReuse;
-- (void)setAccessoryType:(int64_t)a3;
-- (void)setEditable:(BOOL)a3;
-- (void)textFieldDidChange:(id)a3;
-- (void)textFieldDidEndEditingExit:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAccessoryType:(int64_t)type;
+- (void)setEditable:(BOOL)editable;
+- (void)textFieldDidChange:(id)change;
+- (void)textFieldDidEndEditingExit:(id)exit;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation WFTextFieldCell
@@ -30,34 +30,34 @@
   v14.receiver = self;
   v14.super_class = WFTextFieldCell;
   [(WFTextFieldCell *)&v14 awakeFromNib];
-  v3 = [(WFTextFieldCell *)self textField];
-  [v3 addTarget:self action:sel_textFieldDidChange_ forControlEvents:0x20000];
+  textField = [(WFTextFieldCell *)self textField];
+  [textField addTarget:self action:sel_textFieldDidChange_ forControlEvents:0x20000];
 
-  v4 = [(WFTextFieldCell *)self textField];
-  [v4 addTarget:self action:sel_textFieldDidEndEditingExit_ forControlEvents:0x80000];
+  textField2 = [(WFTextFieldCell *)self textField];
+  [textField2 addTarget:self action:sel_textFieldDidEndEditingExit_ forControlEvents:0x80000];
 
   [(WFTextFieldCell *)self setSelectionStyle:0];
   [(WFTextFieldCell *)self _adjustStackViewPadding];
-  v5 = [(WFTextFieldCell *)self textField];
-  v6 = [v5 textInputTraits];
-  [v6 setSmartQuotesType:1];
+  textField3 = [(WFTextFieldCell *)self textField];
+  textInputTraits = [textField3 textInputTraits];
+  [textInputTraits setSmartQuotesType:1];
 
-  v7 = [(WFTextFieldCell *)self textField];
-  v8 = [v7 textInputTraits];
-  [v8 setSmartDashesType:1];
+  textField4 = [(WFTextFieldCell *)self textField];
+  textInputTraits2 = [textField4 textInputTraits];
+  [textInputTraits2 setSmartDashesType:1];
 
-  v9 = [MEMORY[0x277D75348] defaultTextColor];
-  v10 = [(WFTextFieldCell *)self label];
-  [v10 setTextColor:v9];
+  defaultTextColor = [MEMORY[0x277D75348] defaultTextColor];
+  label = [(WFTextFieldCell *)self label];
+  [label setTextColor:defaultTextColor];
 
-  v11 = [MEMORY[0x277D75348] defaultTextColor];
-  v12 = [(WFTextFieldCell *)self textField];
-  [v12 setTextColor:v11];
+  defaultTextColor2 = [MEMORY[0x277D75348] defaultTextColor];
+  textField5 = [(WFTextFieldCell *)self textField];
+  [textField5 setTextColor:defaultTextColor2];
 
   if ([(WFTextFieldCell *)self _shouldReverseLayoutDirection])
   {
-    v13 = [(WFTextFieldCell *)self textField];
-    [v13 setTextAlignment:2];
+    textField6 = [(WFTextFieldCell *)self textField];
+    [textField6 setTextAlignment:2];
   }
 
   [(WFTextFieldCell *)self _updateStackViewForTraitCollection];
@@ -67,31 +67,31 @@
 {
   [(WFTextFieldCell *)self _verticalPadding];
   v4 = v3;
-  v5 = [(WFTextFieldCell *)self stackViewTopConstraint];
-  [v5 setConstant:v4];
+  stackViewTopConstraint = [(WFTextFieldCell *)self stackViewTopConstraint];
+  [stackViewTopConstraint setConstant:v4];
 
   [(WFTextFieldCell *)self _verticalPadding];
   v7 = v6;
-  v8 = [(WFTextFieldCell *)self stackViewBottomConstraint];
-  [v8 setConstant:v7];
+  stackViewBottomConstraint = [(WFTextFieldCell *)self stackViewBottomConstraint];
+  [stackViewBottomConstraint setConstant:v7];
 }
 
 - (double)_verticalPadding
 {
-  v2 = [(WFTextFieldCell *)self label];
-  v3 = [v2 font];
-  [v3 _bodyLeading];
+  label = [(WFTextFieldCell *)self label];
+  font = [label font];
+  [font _bodyLeading];
   v5 = v4 * 0.5;
 
   return v5;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = [a3 preferredContentSizeCategory];
-  v5 = [(WFTextFieldCell *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 isEqualToString:v6];
+  preferredContentSizeCategory = [change preferredContentSizeCategory];
+  traitCollection = [(WFTextFieldCell *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
+  v7 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
   if ((v7 & 1) == 0)
   {
@@ -103,92 +103,92 @@
 
 - (void)_updateStackViewForTraitCollection
 {
-  v3 = [(WFTextFieldCell *)self traitCollection];
-  v4 = [v3 isLargeTextTraitCollection];
+  traitCollection = [(WFTextFieldCell *)self traitCollection];
+  isLargeTextTraitCollection = [traitCollection isLargeTextTraitCollection];
 
-  v5 = [(WFTextFieldCell *)self stackView];
-  v6 = v5;
-  if (v4)
+  stackView = [(WFTextFieldCell *)self stackView];
+  v6 = stackView;
+  if (isLargeTextTraitCollection)
   {
-    [v5 setAxis:1];
+    [stackView setAxis:1];
 
-    v7 = [(WFTextFieldCell *)self labelWidthConstraint];
-    [v7 setActive:0];
+    labelWidthConstraint = [(WFTextFieldCell *)self labelWidthConstraint];
+    [labelWidthConstraint setActive:0];
 
     if (([(WFTextFieldCell *)self _shouldReverseLayoutDirection]& 1) != 0)
     {
       return;
     }
 
-    v8 = [(WFTextFieldCell *)self textField];
-    [v8 setTextAlignment:0];
+    textField = [(WFTextFieldCell *)self textField];
+    [textField setTextAlignment:0];
   }
 
   else
   {
-    [v5 setAxis:0];
+    [stackView setAxis:0];
 
-    v8 = [(WFTextFieldCell *)self labelWidthConstraint];
-    [v8 setActive:1];
+    textField = [(WFTextFieldCell *)self labelWidthConstraint];
+    [textField setActive:1];
   }
 }
 
-- (void)textFieldDidChange:(id)a3
+- (void)textFieldDidChange:(id)change
 {
-  v4 = [(WFTextFieldCell *)self textChangeHandler];
+  textChangeHandler = [(WFTextFieldCell *)self textChangeHandler];
 
-  if (v4)
+  if (textChangeHandler)
   {
-    v5 = [(WFTextFieldCell *)self textField];
-    v6 = [v5 text];
-    if ([v6 length])
+    textField = [(WFTextFieldCell *)self textField];
+    text = [textField text];
+    if ([text length])
     {
-      v7 = [(WFTextFieldCell *)self textField];
-      v9 = [v7 text];
+      textField2 = [(WFTextFieldCell *)self textField];
+      text2 = [textField2 text];
     }
 
     else
     {
-      v9 = &stru_2882E4AD8;
+      text2 = &stru_2882E4AD8;
     }
 
-    v8 = [(WFTextFieldCell *)self textChangeHandler];
-    (v8)[2](v8, v9);
+    textChangeHandler2 = [(WFTextFieldCell *)self textChangeHandler];
+    (textChangeHandler2)[2](textChangeHandler2, text2);
   }
 }
 
-- (void)textFieldDidEndEditingExit:(id)a3
+- (void)textFieldDidEndEditingExit:(id)exit
 {
-  v4 = [(WFTextFieldCell *)self returnKeyHandler];
+  returnKeyHandler = [(WFTextFieldCell *)self returnKeyHandler];
 
-  if (v4)
+  if (returnKeyHandler)
   {
-    v5 = [(WFTextFieldCell *)self returnKeyHandler];
-    v5[2](v5, self);
+    returnKeyHandler2 = [(WFTextFieldCell *)self returnKeyHandler];
+    returnKeyHandler2[2](returnKeyHandler2, self);
   }
 }
 
-- (void)setAccessoryType:(int64_t)a3
+- (void)setAccessoryType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = WFTextFieldCell;
   [(WFTextFieldCell *)&v8 setAccessoryType:?];
-  v5 = [(WFTextFieldCell *)self trailingMarginConstraint];
-  v6 = v5;
+  trailingMarginConstraint = [(WFTextFieldCell *)self trailingMarginConstraint];
+  v6 = trailingMarginConstraint;
   v7 = 0.0;
-  if (!a3)
+  if (!type)
   {
     v7 = 8.0;
   }
 
-  [v5 setConstant:v7];
+  [trailingMarginConstraint setConstant:v7];
 }
 
-- (void)setEditable:(BOOL)a3
+- (void)setEditable:(BOOL)editable
 {
-  if (self->_editable != a3)
+  if (self->_editable != editable)
   {
-    self->_editable = a3;
+    self->_editable = editable;
   }
 }
 
@@ -197,40 +197,40 @@
   v10.receiver = self;
   v10.super_class = WFTextFieldCell;
   [(WFTextFieldCell *)&v10 prepareForReuse];
-  v3 = [(WFTextFieldCell *)self textField];
-  [v3 setText:&stru_2882E4AD8];
+  textField = [(WFTextFieldCell *)self textField];
+  [textField setText:&stru_2882E4AD8];
 
-  v4 = [(WFTextFieldCell *)self textField];
-  [v4 setKeyboardType:0];
+  textField2 = [(WFTextFieldCell *)self textField];
+  [textField2 setKeyboardType:0];
 
-  v5 = [(WFTextFieldCell *)self textField];
-  [v5 setSecureTextEntry:0];
+  textField3 = [(WFTextFieldCell *)self textField];
+  [textField3 setSecureTextEntry:0];
 
   [(WFTextFieldCell *)self setAccessoryType:0];
   self->_editable = 1;
-  v6 = [MEMORY[0x277D75348] defaultTextColor];
-  v7 = [(WFTextFieldCell *)self label];
-  [v7 setTextColor:v6];
+  defaultTextColor = [MEMORY[0x277D75348] defaultTextColor];
+  label = [(WFTextFieldCell *)self label];
+  [label setTextColor:defaultTextColor];
 
-  v8 = [MEMORY[0x277D75348] defaultTextColor];
-  v9 = [(WFTextFieldCell *)self textField];
-  [v9 setTextColor:v8];
+  defaultTextColor2 = [MEMORY[0x277D75348] defaultTextColor];
+  textField4 = [(WFTextFieldCell *)self textField];
+  [textField4 setTextColor:defaultTextColor2];
 }
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = [(WFTextFieldCell *)self textField];
-  v3 = [v2 becomeFirstResponder];
+  textField = [(WFTextFieldCell *)self textField];
+  becomeFirstResponder = [textField becomeFirstResponder];
 
-  return v3;
+  return becomeFirstResponder;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (sel_copy_ == a3)
+  if (sel_copy_ == action)
   {
-    v5 = [(WFTextFieldCell *)self textField];
-    v4 = [v5 isSecureTextEntry] ^ 1;
+    textField = [(WFTextFieldCell *)self textField];
+    v4 = [textField isSecureTextEntry] ^ 1;
   }
 
   else
@@ -241,25 +241,25 @@
   return v4;
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v4 = [(WFTextFieldCell *)self textField];
-  v5 = [v4 text];
-  v6 = [v5 length];
+  textField = [(WFTextFieldCell *)self textField];
+  text = [textField text];
+  v6 = [text length];
 
   if (v6)
   {
-    v9 = [(WFTextFieldCell *)self textField];
-    v7 = [v9 text];
-    v8 = [MEMORY[0x277D75810] generalPasteboard];
-    [v8 setString:v7];
+    textField2 = [(WFTextFieldCell *)self textField];
+    text2 = [textField2 text];
+    generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+    [generalPasteboard setString:text2];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(WFTextFieldCell *)self textField];
-  [v3 removeTarget:self forEvents:655360];
+  textField = [(WFTextFieldCell *)self textField];
+  [textField removeTarget:self forEvents:655360];
 
   v4.receiver = self;
   v4.super_class = WFTextFieldCell;

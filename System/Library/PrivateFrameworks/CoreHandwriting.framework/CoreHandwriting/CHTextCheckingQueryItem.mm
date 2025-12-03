@@ -1,7 +1,7 @@
 @interface CHTextCheckingQueryItem
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTextCheckingQueryItem:(id)a3;
-- (BOOL)isEquivalentToTextCheckingQueryItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTextCheckingQueryItem:(id)item;
+- (BOOL)isEquivalentToTextCheckingQueryItem:(id)item;
 - (NSArray)replacementStrings;
 - (_NSRange)replacementRange;
 - (id)description;
@@ -36,11 +36,11 @@
   return v21;
 }
 
-- (BOOL)isEqualToTextCheckingQueryItem:(id)a3
+- (BOOL)isEqualToTextCheckingQueryItem:(id)item
 {
   v56 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  itemCopy = item;
+  if (!itemCopy)
   {
     goto LABEL_19;
   }
@@ -57,7 +57,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v54 = 138412290;
-      v55 = v4;
+      v55 = itemCopy;
       _os_log_impl(&dword_18366B000, v5, OS_LOG_TYPE_ERROR, "item should be of class CHTextCheckingQueryItem: %@", &v54, 0xCu);
     }
   }
@@ -74,24 +74,24 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
       v54 = 138412290;
-      v55 = v4;
+      v55 = itemCopy;
       _os_log_impl(&dword_18366B000, v11, OS_LOG_TYPE_FAULT, "item should be of class CHTextCheckingQueryItem: %@", &v54, 0xCu);
     }
   }
 
-  if (v4 == self)
+  if (itemCopy == self)
   {
     v52 = 1;
     goto LABEL_21;
   }
 
-  v12 = objc_msgSend_strokeIdentifiers(v4, v6, v7, v8, v9, v10);
+  v12 = objc_msgSend_strokeIdentifiers(itemCopy, v6, v7, v8, v9, v10);
   v18 = objc_msgSend_strokeIdentifiers(self, v13, v14, v15, v16, v17);
   isEqual = objc_msgSend_isEqual_(v12, v19, v18, v20, v21, v22);
 
-  if (isEqual && objc_msgSend_textCheckingResultType(v4, v24, v25, v26, v27, v28) == self->_textCheckingResultType && (objc_msgSend_replacementStrings(v4, v29, v30, v31, v32, v33), v34 = objc_claimAutoreleasedReturnValue(), objc_msgSend_replacementStrings(self, v35, v36, v37, v38, v39), v40 = objc_claimAutoreleasedReturnValue(), v45 = objc_msgSend_isEqual_(v34, v41, v40, v42, v43, v44), v40, v34, v45))
+  if (isEqual && objc_msgSend_textCheckingResultType(itemCopy, v24, v25, v26, v27, v28) == self->_textCheckingResultType && (objc_msgSend_replacementStrings(itemCopy, v29, v30, v31, v32, v33), v34 = objc_claimAutoreleasedReturnValue(), objc_msgSend_replacementStrings(self, v35, v36, v37, v38, v39), v40 = objc_claimAutoreleasedReturnValue(), v45 = objc_msgSend_isEqual_(v34, v41, v40, v42, v43, v44), v40, v34, v45))
   {
-    v51 = objc_msgSend_estimatedBaseline(v4, v46, v47, v48, v49, v50);
+    v51 = objc_msgSend_estimatedBaseline(itemCopy, v46, v47, v48, v49, v50);
     v52 = CGPathEqualToPath(v51, self->_estimatedBaseline);
   }
 
@@ -106,13 +106,13 @@ LABEL_21:
   return v52;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    isEqualToTextCheckingQueryItem = objc_msgSend_isEqualToTextCheckingQueryItem_(self, v5, v4, v6, v7, v8);
+    isEqualToTextCheckingQueryItem = objc_msgSend_isEqualToTextCheckingQueryItem_(self, v5, equalCopy, v6, v7, v8);
 
     return isEqualToTextCheckingQueryItem;
   }
@@ -124,11 +124,11 @@ LABEL_21:
   }
 }
 
-- (BOOL)isEquivalentToTextCheckingQueryItem:(id)a3
+- (BOOL)isEquivalentToTextCheckingQueryItem:(id)item
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  itemCopy = item;
+  if (!itemCopy)
   {
     goto LABEL_17;
   }
@@ -145,7 +145,7 @@ LABEL_21:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v31 = 138412290;
-      v32 = v4;
+      v32 = itemCopy;
       _os_log_impl(&dword_18366B000, v5, OS_LOG_TYPE_ERROR, "item should be of class CHTextCheckingQueryItem: %@", &v31, 0xCu);
     }
   }
@@ -162,24 +162,24 @@ LABEL_21:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
       v31 = 138412290;
-      v32 = v4;
+      v32 = itemCopy;
       _os_log_impl(&dword_18366B000, v11, OS_LOG_TYPE_FAULT, "item should be of class CHTextCheckingQueryItem: %@", &v31, 0xCu);
     }
   }
 
-  if (v4 == self)
+  if (itemCopy == self)
   {
     v29 = 1;
     goto LABEL_19;
   }
 
-  v12 = objc_msgSend_strokeIdentifiers(v4, v6, v7, v8, v9, v10);
+  v12 = objc_msgSend_strokeIdentifiers(itemCopy, v6, v7, v8, v9, v10);
   v18 = objc_msgSend_strokeIdentifiers(self, v13, v14, v15, v16, v17);
   isEqual = objc_msgSend_isEqual_(v12, v19, v18, v20, v21, v22);
 
   if (isEqual)
   {
-    v29 = objc_msgSend_textCheckingResultType(v4, v24, v25, v26, v27, v28) == self->_textCheckingResultType;
+    v29 = objc_msgSend_textCheckingResultType(itemCopy, v24, v25, v26, v27, v28) == self->_textCheckingResultType;
   }
 
   else
@@ -266,15 +266,15 @@ LABEL_12:
       goto LABEL_12;
     }
 
-    v12 = self;
+    selfCopy = self;
     v13 = objc_msgSend_grammarDetails(self->_textCheckingResult, a2, v2, v3, v4, v5);
     v19 = objc_msgSend_count(v13, v14, v15, v16, v17, v18);
-    textCheckingResultGrammarDetailIndex = v12->_textCheckingResultGrammarDetailIndex;
+    textCheckingResultGrammarDetailIndex = selfCopy->_textCheckingResultGrammarDetailIndex;
 
     if (v19 > textCheckingResultGrammarDetailIndex)
     {
-      v26 = objc_msgSend_grammarDetails(v12->_textCheckingResult, v21, v22, v23, v24, v25);
-      v31 = objc_msgSend_objectAtIndexedSubscript_(v26, v27, v12->_textCheckingResultGrammarDetailIndex, v28, v29, v30);
+      v26 = objc_msgSend_grammarDetails(selfCopy->_textCheckingResult, v21, v22, v23, v24, v25);
+      v31 = objc_msgSend_objectAtIndexedSubscript_(v26, v27, selfCopy->_textCheckingResultGrammarDetailIndex, v28, v29, v30);
       v36 = objc_msgSend_objectForKey_(v31, v32, @"NSGrammarRange", v33, v34, v35);
       v42 = objc_msgSend_rangeValue(v36, v37, v38, v39, v40, v41);
       v44 = v43;

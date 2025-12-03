@@ -1,34 +1,34 @@
 @interface ComAppleProactiveLuceneNSDataDirectory_NSDataIndexInputOld
 - (char)readByte;
-- (char)readByteWithLong:(int64_t)a3;
-- (id)sliceWithNSString:(id)a3 withLong:(int64_t)a4 withLong:(int64_t)a5;
+- (char)readByteWithLong:(int64_t)long;
+- (id)sliceWithNSString:(id)string withLong:(int64_t)long withLong:(int64_t)withLong;
 - (int)readInt;
-- (int)readIntWithLong:(int64_t)a3;
+- (int)readIntWithLong:(int64_t)long;
 - (int)readVInt;
 - (int64_t)readLong;
-- (int64_t)readLongWithLong:(int64_t)a3;
+- (int64_t)readLongWithLong:(int64_t)long;
 - (int64_t)readZLong;
 - (signed)readShort;
-- (signed)readShortWithLong:(int64_t)a3;
+- (signed)readShortWithLong:(int64_t)long;
 - (void)dealloc;
 @end
 
 @implementation ComAppleProactiveLuceneNSDataDirectory_NSDataIndexInputOld
 
-- (id)sliceWithNSString:(id)a3 withLong:(int64_t)a4 withLong:(int64_t)a5
+- (id)sliceWithNSString:(id)string withLong:(int64_t)long withLong:(int64_t)withLong
 {
-  v6 = a4;
+  longCopy = long;
   v8 = self->this$0_;
   if (v8->useMadvise_)
   {
-    madvise([self->nsData_ bytes] + a4, a5, 3);
+    madvise([self->nsData_ bytes] + long, withLong, 3);
     v8 = self->this$0_;
   }
 
   name = self->name_;
   nsData = self->nsData_;
   v11 = [ComAppleProactiveLuceneNSDataDirectory_NSDataIndexInputOld alloc];
-  sub_1000414B0(v11, v8, name, nsData, v6, a5);
+  sub_1000414B0(v11, v8, name, nsData, longCopy, withLong);
 
   return v11;
 }
@@ -62,31 +62,31 @@
   return result;
 }
 
-- (char)readByteWithLong:(int64_t)a3
+- (char)readByteWithLong:(int64_t)long
 {
   v4 = 0;
-  [self->nsData_ getBytes:&v4 range:{self->sliceOffset_ + a3, 1}];
+  [self->nsData_ getBytes:&v4 range:{self->sliceOffset_ + long, 1}];
   return v4;
 }
 
-- (signed)readShortWithLong:(int64_t)a3
+- (signed)readShortWithLong:(int64_t)long
 {
   v5 = 0;
-  [self->nsData_ getBytes:&v5 range:{self->sliceOffset_ + a3, 2}];
+  [self->nsData_ getBytes:&v5 range:{self->sliceOffset_ + long, 2}];
   return bswap32(v5) >> 16;
 }
 
-- (int)readIntWithLong:(int64_t)a3
+- (int)readIntWithLong:(int64_t)long
 {
   v4 = 0;
-  [self->nsData_ getBytes:&v4 range:{self->sliceOffset_ + a3, 4}];
+  [self->nsData_ getBytes:&v4 range:{self->sliceOffset_ + long, 4}];
   return bswap32(v4);
 }
 
-- (int64_t)readLongWithLong:(int64_t)a3
+- (int64_t)readLongWithLong:(int64_t)long
 {
   v4 = 0;
-  [self->nsData_ getBytes:&v4 range:{self->sliceOffset_ + a3, 8}];
+  [self->nsData_ getBytes:&v4 range:{self->sliceOffset_ + long, 8}];
   return bswap64(v4);
 }
 

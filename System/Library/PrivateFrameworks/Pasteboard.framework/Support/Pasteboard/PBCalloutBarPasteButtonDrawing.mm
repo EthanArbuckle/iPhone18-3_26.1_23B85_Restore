@@ -1,15 +1,15 @@
 @interface PBCalloutBarPasteButtonDrawing
 - (CGSize)drawingSize;
-- (PBCalloutBarPasteButtonDrawing)initWithStyle:(id)a3 tag:(id)a4;
+- (PBCalloutBarPasteButtonDrawing)initWithStyle:(id)style tag:(id)tag;
 - (void)dealloc;
 @end
 
 @implementation PBCalloutBarPasteButtonDrawing
 
-- (PBCalloutBarPasteButtonDrawing)initWithStyle:(id)a3 tag:(id)a4
+- (PBCalloutBarPasteButtonDrawing)initWithStyle:(id)style tag:(id)tag
 {
-  v6 = a3;
-  v7 = a4;
+  styleCopy = style;
+  tagCopy = tag;
   v33.receiver = self;
   v33.super_class = PBCalloutBarPasteButtonDrawing;
   v8 = [(PBCalloutBarPasteButtonDrawing *)&v33 init];
@@ -18,15 +18,15 @@
     goto LABEL_14;
   }
 
-  v9 = +[UISPasteVariant variantForSecureName:](UISPasteVariant, "variantForSecureName:", [v7 secureName]);
-  v10 = [v6 localization];
-  v11 = [v9 localizedStringForLocalization:v10];
+  v9 = +[UISPasteVariant variantForSecureName:](UISPasteVariant, "variantForSecureName:", [tagCopy secureName]);
+  localization = [styleCopy localization];
+  v11 = [v9 localizedStringForLocalization:localization];
 
-  [v6 preferredContentSizeCategory];
-  [v7 contentScaleLevel];
+  [styleCopy preferredContentSizeCategory];
+  [tagCopy contentScaleLevel];
   UISCalloutBarFontSize();
   UIFontForLanguage = CTFontCreateUIFontForLanguage(kCTFontUIFontSystem, v12, 0);
-  v14 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v6 accessibilityButtonShapes] == 1);
+  v14 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [styleCopy accessibilityButtonShapes] == 1);
   v35[0] = UIFontForLanguage;
   v34[0] = kCTFontAttributeName;
   v34[1] = kCTForegroundColorAttributeName;
@@ -35,12 +35,12 @@
   v35[1] = ConstantColor;
   v35[2] = v14;
   v16 = [NSDictionary dictionaryWithObjects:v35 forKeys:v34 count:3];
-  [v7 titleWidth];
-  v18 = [[UISTextLineDrawing alloc] initWithString:v11 attributes:v16 lineBreakMode:1 textAlignment:2 width:v17 scale:{objc_msgSend(v6, "displayScale")}];
+  [tagCopy titleWidth];
+  v18 = [[UISTextLineDrawing alloc] initWithString:v11 attributes:v16 lineBreakMode:1 textAlignment:2 width:v17 scale:{objc_msgSend(styleCopy, "displayScale")}];
   text = v8->_text;
   v8->_text = v18;
 
-  [v7 size];
+  [tagCopy size];
   v8->_size.width = v20;
   v8->_size.height = v21;
   CFRelease(UIFontForLanguage);
@@ -75,7 +75,7 @@ LABEL_17:
     goto LABEL_8;
   }
 
-  [v7 titleOrigin];
+  [tagCopy titleOrigin];
   v8->_textOffset.x = v30;
   v8->_textOffset.y = v29;
   if (v26 + v30 <= v8->_size.width && v27 + v29 <= v8->_size.height)

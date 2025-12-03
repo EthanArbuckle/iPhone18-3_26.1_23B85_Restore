@@ -1,31 +1,31 @@
 @interface SXFillView
 - (CGRect)contentFrame;
-- (CGRect)fillFrameWithBoundingSize:(CGSize)a3;
+- (CGRect)fillFrameWithBoundingSize:(CGSize)size;
 - (CGRect)originalFrame;
-- (SXFillView)initWithFill:(id)a3;
+- (SXFillView)initWithFill:(id)fill;
 @end
 
 @implementation SXFillView
 
-- (SXFillView)initWithFill:(id)a3
+- (SXFillView)initWithFill:(id)fill
 {
-  v5 = a3;
+  fillCopy = fill;
   v9.receiver = self;
   v9.super_class = SXFillView;
   v6 = [(SXFillView *)&v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fill, a3);
+    objc_storeStrong(&v6->_fill, fill);
   }
 
   return v7;
 }
 
-- (CGRect)fillFrameWithBoundingSize:(CGSize)a3
+- (CGRect)fillFrameWithBoundingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = 0.0;
   v6 = 0.0;
   result.size.height = height;

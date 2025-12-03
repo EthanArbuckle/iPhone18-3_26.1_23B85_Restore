@@ -1,23 +1,23 @@
 @interface ClientInterface
 + (id)_badgeQueue;
 + (id)allApprovedItemsByBundle;
-+ (void)_updateBadgeCounts:(BOOL)a3 processTelemetry:(id)a4;
-+ (void)refreshBadgesWithItems:(id)a3 forBundleIdentifier:(id)a4;
-+ (void)updateBadgeCount:(unint64_t)a3 bundleID:(id)a4;
-- (ClientInterface)initWithXPCConnection:(id)a3;
-- (id)_predicateForClientIdentifier:(id)a3;
++ (void)_updateBadgeCounts:(BOOL)counts processTelemetry:(id)telemetry;
++ (void)refreshBadgesWithItems:(id)items forBundleIdentifier:(id)identifier;
++ (void)updateBadgeCount:(unint64_t)count bundleID:(id)d;
+- (ClientInterface)initWithXPCConnection:(id)connection;
+- (id)_predicateForClientIdentifier:(id)identifier;
 - (id)_telemetryProcessor;
-- (id)itemsForClientIdentifier:(id)a3;
-- (void)_callExtensionPerformUpdateForItem:(id)a3 shouldCallDidChangeFollowUpItems:(BOOL)a4;
+- (id)itemsForClientIdentifier:(id)identifier;
+- (void)_callExtensionPerformUpdateForItem:(id)item shouldCallDidChangeFollowUpItems:(BOOL)items;
 - (void)_didChangeFollowUpItems;
-- (void)clearNotificationForItem:(id)a3 completion:(id)a4;
-- (void)clearPendingFollowUpItemsForClientIdentifier:(id)a3 completion:(id)a4;
-- (void)clearPendingFollowUpItemsForClientIdentifier:(id)a3 uniqueIdentifiers:(id)a4 completion:(id)a5;
-- (void)countOfPendingFollowUpItemsForClientIdentifier:(id)a3 completion:(id)a4;
-- (void)didActivateHSA2LoginNotificationNotification:(id)a3;
-- (void)pendingFollowUpItemsForClientIdentifier:(id)a3 completion:(id)a4;
-- (void)postFollowUpItem:(id)a3 completion:(id)a4;
-- (void)postHSA2PasswordResetNotification:(id)a3 completion:(id)a4;
+- (void)clearNotificationForItem:(id)item completion:(id)completion;
+- (void)clearPendingFollowUpItemsForClientIdentifier:(id)identifier completion:(id)completion;
+- (void)clearPendingFollowUpItemsForClientIdentifier:(id)identifier uniqueIdentifiers:(id)identifiers completion:(id)completion;
+- (void)countOfPendingFollowUpItemsForClientIdentifier:(id)identifier completion:(id)completion;
+- (void)didActivateHSA2LoginNotificationNotification:(id)notification;
+- (void)pendingFollowUpItemsForClientIdentifier:(id)identifier completion:(id)completion;
+- (void)postFollowUpItem:(id)item completion:(id)completion;
+- (void)postHSA2PasswordResetNotification:(id)notification completion:(id)completion;
 @end
 
 @implementation ClientInterface
@@ -35,8 +35,8 @@
   transaction = self->_transaction;
   self->_transaction = v4;
 
-  v6 = [(ClientInterface *)self _telemetryProcessor];
-  [ClientInterface _updateBadgeCounts:1 processTelemetry:v6];
+  _telemetryProcessor = [(ClientInterface *)self _telemetryProcessor];
+  [ClientInterface _updateBadgeCounts:1 processTelemetry:_telemetryProcessor];
 
   v7 = +[NotificationController sharedController];
   [v7 updateRepeatingActivityState];
@@ -56,9 +56,9 @@
 + (id)allApprovedItemsByBundle
 {
   v2 = +[ItemStore sharedInstance];
-  v3 = [v2 allFollowUpItems];
+  allFollowUpItems = [v2 allFollowUpItems];
 
-  v4 = [v3 fl_multiMap:&stru_100020F08];
+  v4 = [allFollowUpItems fl_multiMap:&stru_100020F08];
 
   return v4;
 }
@@ -84,59 +84,59 @@
   return v3;
 }
 
-- (ClientInterface)initWithXPCConnection:(id)a3
+- (ClientInterface)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v6 = [(ClientInterface *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_conn, a3);
+    objc_storeStrong(&v6->_conn, connection);
     v8 = +[NSUUID UUID];
-    v9 = [v8 UUIDString];
+    uUIDString = [v8 UUIDString];
     uniqueIdentifier = v7->_uniqueIdentifier;
-    v7->_uniqueIdentifier = v9;
+    v7->_uniqueIdentifier = uUIDString;
   }
 
   return v7;
 }
 
-- (void)countOfPendingFollowUpItemsForClientIdentifier:(id)a3 completion:(id)a4
+- (void)countOfPendingFollowUpItemsForClientIdentifier:(id)identifier completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    v7 = a4;
-    v8 = [(ClientInterface *)self itemsForClientIdentifier:a3];
-    (*(a4 + 2))(v7, [v8 count], 0);
+    completionCopy = completion;
+    v8 = [(ClientInterface *)self itemsForClientIdentifier:identifier];
+    (*(completion + 2))(completionCopy, [v8 count], 0);
   }
 }
 
-- (void)postFollowUpItem:(id)a3 completion:(id)a4
+- (void)postFollowUpItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  itemCopy = item;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = [v6 uniqueIdentifier];
+    uniqueIdentifier = [itemCopy uniqueIdentifier];
 
-    if (!v8 || ([v6 clientIdentifier], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
+    if (!uniqueIdentifier || ([itemCopy clientIdentifier], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
     {
       v27 = FLError();
-      v7[2](v7, 0, v27);
+      completionCopy[2](completionCopy, 0, v27);
 
       goto LABEL_22;
     }
   }
 
   v10 = +[FLEnvironment currentEnvironment];
-  v11 = [v10 stressMode];
+  stressMode = [v10 stressMode];
 
-  if (v11)
+  if (stressMode)
   {
     v12 = +[ItemStore sharedInstance];
-    v13 = [v12 insertFollowUpItem:v6];
+    v13 = [v12 insertFollowUpItem:itemCopy];
 
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_22;
     }
@@ -145,21 +145,21 @@
   }
 
   v14 = [FLItemStoreDecorator alloc];
-  v15 = [v6 clientIdentifier];
-  v16 = [(FLItemStoreDecorator *)v14 initWithClientIdentifier:v15];
+  clientIdentifier = [itemCopy clientIdentifier];
+  v16 = [(FLItemStoreDecorator *)v14 initWithClientIdentifier:clientIdentifier];
 
-  v17 = [v6 uniqueIdentifier];
-  v18 = [(FLItemStoreDecorator *)v16 itemsMatchingIdentifier:v17];
+  uniqueIdentifier2 = [itemCopy uniqueIdentifier];
+  v18 = [(FLItemStoreDecorator *)v16 itemsMatchingIdentifier:uniqueIdentifier2];
 
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_10000E024;
   v29[3] = &unk_1000209C0;
-  v19 = v6;
+  v19 = itemCopy;
   v30 = v19;
   [v18 enumerateObjectsUsingBlock:v29];
-  v20 = [v19 notification];
-  [v20 recalculateActionDateToAccountForDelay];
+  notification = [v19 notification];
+  [notification recalculateActionDateToAccountForDelay];
 
   v21 = +[ItemStore sharedInstance];
   v13 = [v21 insertFollowUpItem:v19];
@@ -175,8 +175,8 @@
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Inserting a new follow up", &v28, 2u);
       }
 
-      v23 = [(ClientInterface *)self _telemetryProcessor];
-      [v23 processItemAddition:v19];
+      _telemetryProcessor = [(ClientInterface *)self _telemetryProcessor];
+      [_telemetryProcessor processItemAddition:v19];
     }
 
     v24 = +[FLApprovedItemsFilter sharedFilter];
@@ -199,33 +199,33 @@
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
 LABEL_20:
-    (v7)[2](v7, v13, 0);
+    (completionCopy)[2](completionCopy, v13, 0);
   }
 
 LABEL_22:
 }
 
-- (void)pendingFollowUpItemsForClientIdentifier:(id)a3 completion:(id)a4
+- (void)pendingFollowUpItemsForClientIdentifier:(id)identifier completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    v7 = a4;
-    v8 = [(ClientInterface *)self itemsForClientIdentifier:a3];
-    (*(a4 + 2))(v7, v8, 0);
+    completionCopy = completion;
+    v8 = [(ClientInterface *)self itemsForClientIdentifier:identifier];
+    (*(completion + 2))(completionCopy, v8, 0);
   }
 }
 
-- (void)clearPendingFollowUpItemsForClientIdentifier:(id)a3 completion:(id)a4
+- (void)clearPendingFollowUpItemsForClientIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v19 = v6;
-  if (v6)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v19 = identifierCopy;
+  if (identifierCopy)
   {
-    v8 = [(ClientInterface *)self itemsForClientIdentifier:v6];
+    v8 = [(ClientInterface *)self itemsForClientIdentifier:identifierCopy];
   }
 
   else
@@ -254,8 +254,8 @@ LABEL_22:
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        v16 = [(ClientInterface *)self _telemetryProcessor];
-        [v16 processItemRemoval:v15];
+        _telemetryProcessor = [(ClientInterface *)self _telemetryProcessor];
+        [_telemetryProcessor processItemRemoval:v15];
 
         v17 = +[ItemStore sharedInstance];
         [v17 deleteFollowUpItem:v15];
@@ -277,66 +277,66 @@ LABEL_22:
     [(ClientInterface *)self _didChangeFollowUpItems];
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 
-- (void)clearNotificationForItem:(id)a3 completion:(id)a4
+- (void)clearNotificationForItem:(id)item completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 uniqueIdentifier];
+  itemCopy = item;
+  completionCopy = completion;
+  uniqueIdentifier = [itemCopy uniqueIdentifier];
 
-  if (v7)
+  if (uniqueIdentifier)
   {
     v8 = _FLLogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v5 uniqueIdentifier];
+      uniqueIdentifier2 = [itemCopy uniqueIdentifier];
       v18 = 138412290;
-      v19 = v9;
+      v19 = uniqueIdentifier2;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Searching for matching item in store, using identifier: %@", &v18, 0xCu);
     }
 
     v10 = [FLItemStoreDecorator alloc];
-    v11 = [v5 clientIdentifier];
-    v12 = [(FLItemStoreDecorator *)v10 initWithClientIdentifier:v11];
+    clientIdentifier = [itemCopy clientIdentifier];
+    v12 = [(FLItemStoreDecorator *)v10 initWithClientIdentifier:clientIdentifier];
 
-    v13 = [v5 uniqueIdentifier];
-    v14 = [(FLItemStoreDecorator *)v12 itemsMatchingIdentifier:v13];
+    uniqueIdentifier3 = [itemCopy uniqueIdentifier];
+    v14 = [(FLItemStoreDecorator *)v12 itemsMatchingIdentifier:uniqueIdentifier3];
 
     if ([v14 count])
     {
       v15 = +[NotificationController sharedController];
-      v16 = [v14 firstObject];
-      [v15 tearDownNotificationForItem:v16];
+      firstObject = [v14 firstObject];
+      [v15 tearDownNotificationForItem:firstObject];
 
-      v6[2](v6, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
 
     else
     {
       v17 = FLError();
-      (v6)[2](v6, 0, v17);
+      (completionCopy)[2](completionCopy, 0, v17);
     }
   }
 
   else
   {
     v12 = FLError();
-    (v6)[2](v6, 0, v12);
+    (completionCopy)[2](completionCopy, 0, v12);
   }
 }
 
-- (void)clearPendingFollowUpItemsForClientIdentifier:(id)a3 uniqueIdentifiers:(id)a4 completion:(id)a5
+- (void)clearPendingFollowUpItemsForClientIdentifier:(id)identifier uniqueIdentifiers:(id)identifiers completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v20 = [[FLItemStoreDecorator alloc] initWithClientIdentifier:v8];
-  v11 = [(FLItemStoreDecorator *)v20 itemsMatchingIdentifiers:v9];
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  v20 = [[FLItemStoreDecorator alloc] initWithClientIdentifier:identifierCopy];
+  v11 = [(FLItemStoreDecorator *)v20 itemsMatchingIdentifiers:identifiersCopy];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -356,8 +356,8 @@ LABEL_22:
         }
 
         v16 = *(*(&v21 + 1) + 8 * i);
-        v17 = [(ClientInterface *)self _telemetryProcessor];
-        [v17 processItemRemoval:v16];
+        _telemetryProcessor = [(ClientInterface *)self _telemetryProcessor];
+        [_telemetryProcessor processItemRemoval:v16];
 
         v18 = +[ItemStore sharedInstance];
         [v18 deleteFollowUpItem:v16];
@@ -379,15 +379,15 @@ LABEL_22:
     [(ClientInterface *)self _didChangeFollowUpItems];
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 
-- (id)itemsForClientIdentifier:(id)a3
+- (id)itemsForClientIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = _FLSignpostCreate();
   v5 = _FLSignpostLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -395,8 +395,8 @@ LABEL_22:
     sub_100010D5C(v4, v5);
   }
 
-  v6 = [[FLItemStoreDecorator alloc] initWithClientIdentifier:v3];
-  v7 = [(FLItemStoreDecorator *)v6 followUpItems];
+  v6 = [[FLItemStoreDecorator alloc] initWithClientIdentifier:identifierCopy];
+  followUpItems = [(FLItemStoreDecorator *)v6 followUpItems];
   Nanoseconds = _FLSignpostGetNanoseconds();
   v9 = _FLSignpostLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -404,28 +404,28 @@ LABEL_22:
     sub_100010DD4(Nanoseconds, v4, v9);
   }
 
-  return v7;
+  return followUpItems;
 }
 
-- (id)_predicateForClientIdentifier:(id)a3
+- (id)_predicateForClientIdentifier:(id)identifier
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000E9A0;
   v6[3] = &unk_100020E50;
-  v7 = a3;
-  v3 = v7;
+  identifierCopy = identifier;
+  v3 = identifierCopy;
   v4 = [NSPredicate predicateWithBlock:v6];
 
   return v4;
 }
 
-- (void)_callExtensionPerformUpdateForItem:(id)a3 shouldCallDidChangeFollowUpItems:(BOOL)a4
+- (void)_callExtensionPerformUpdateForItem:(id)item shouldCallDidChangeFollowUpItems:(BOOL)items
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 extensionIdentifier];
-  if (v7 && (v8 = v7, +[FLEnvironment currentEnvironment](FLEnvironment, "currentEnvironment"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 followUpExtensionSupportEnabled], v9, v8, v10))
+  itemsCopy = items;
+  itemCopy = item;
+  extensionIdentifier = [itemCopy extensionIdentifier];
+  if (extensionIdentifier && (v8 = extensionIdentifier, +[FLEnvironment currentEnvironment](FLEnvironment, "currentEnvironment"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 followUpExtensionSupportEnabled], v9, v8, v10))
   {
     v11 = os_transaction_create();
     objc_initWeak(&location, self);
@@ -435,8 +435,8 @@ LABEL_22:
     block[2] = sub_10000EB60;
     block[3] = &unk_100020EA0;
     objc_copyWeak(&v18, &location);
-    v13 = v6;
-    v19 = v4;
+    v13 = itemCopy;
+    v19 = itemsCopy;
     v16 = v13;
     v17 = v11;
     v14 = v11;
@@ -446,21 +446,21 @@ LABEL_22:
     objc_destroyWeak(&location);
   }
 
-  else if (v4)
+  else if (itemsCopy)
   {
     [(ClientInterface *)self _didChangeFollowUpItems];
   }
 }
 
-+ (void)_updateBadgeCounts:(BOOL)a3 processTelemetry:(id)a4
++ (void)_updateBadgeCounts:(BOOL)counts processTelemetry:(id)telemetry
 {
-  v6 = a4;
+  telemetryCopy = telemetry;
   v7 = os_transaction_create();
   v8 = +[FLEnvironment currentEnvironment];
-  v9 = [v8 supportedBundleIdentifiers];
+  supportedBundleIdentifiers = [v8 supportedBundleIdentifiers];
 
   v10 = +[ClientInterface allApprovedItemsByBundle];
-  v11 = [NSMutableSet setWithArray:v9];
+  v11 = [NSMutableSet setWithArray:supportedBundleIdentifiers];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_10000F160;
@@ -469,10 +469,10 @@ LABEL_22:
   v29 = v20;
   v12 = v11;
   v30 = v12;
-  v33 = a3;
-  v22 = v9;
+  countsCopy = counts;
+  v22 = supportedBundleIdentifiers;
   v31 = v22;
-  v21 = v6;
+  v21 = telemetryCopy;
   v32 = v21;
   v23 = v10;
   [v10 enumerateKeysAndObjectsUsingBlock:v28];
@@ -504,7 +504,7 @@ LABEL_22:
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "No items found for bundle ID, %@, ensuring badge count is 0", buf, 0xCu);
         }
 
-        [a1 refreshBadgesWithItems:&__NSArray0__struct forBundleIdentifier:{v18, v20}];
+        [self refreshBadgesWithItems:&__NSArray0__struct forBundleIdentifier:{v18, v20}];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v24 objects:v36 count:16];
@@ -514,17 +514,17 @@ LABEL_22:
   }
 }
 
-+ (void)refreshBadgesWithItems:(id)a3 forBundleIdentifier:(id)a4
++ (void)refreshBadgesWithItems:(id)items forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  itemsCopy = items;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+    v8 = [itemsCopy countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v8)
     {
       v9 = v8;
@@ -536,7 +536,7 @@ LABEL_22:
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(itemsCopy);
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
@@ -547,7 +547,7 @@ LABEL_22:
           }
         }
 
-        v9 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+        v9 = [itemsCopy countByEnumeratingWithState:&v16 objects:v21 count:16];
       }
 
       while (v9);
@@ -558,7 +558,7 @@ LABEL_22:
       v10 = 0;
     }
 
-    [a1 updateBadgeCount:v10 bundleID:v7];
+    [self updateBadgeCount:v10 bundleID:identifierCopy];
   }
 
   else
@@ -572,54 +572,54 @@ LABEL_22:
   }
 }
 
-+ (void)updateBadgeCount:(unint64_t)a3 bundleID:(id)a4
++ (void)updateBadgeCount:(unint64_t)count bundleID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   v7 = _FLLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
     v19 = objc_opt_class();
     v20 = 2048;
-    v21 = a3;
+    countCopy = count;
     v22 = 2112;
-    v23 = v6;
+    v23 = dCopy;
     v8 = v19;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@: Badging (%lu, %@)", buf, 0x20u);
   }
 
   v9 = os_transaction_create();
-  v10 = [a1 _badgeQueue];
+  _badgeQueue = [self _badgeQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000F53C;
   v13[3] = &unk_100020F30;
-  v16 = a3;
-  v17 = a1;
-  v14 = v6;
+  countCopy2 = count;
+  selfCopy = self;
+  v14 = dCopy;
   v15 = v9;
   v11 = v9;
-  v12 = v6;
-  dispatch_async(v10, v13);
+  v12 = dCopy;
+  dispatch_async(_badgeQueue, v13);
 }
 
-- (void)didActivateHSA2LoginNotificationNotification:(id)a3
+- (void)didActivateHSA2LoginNotificationNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = +[NotificationController sharedController];
-  [v4 didActivateHSA2LoginNotificationNotification:v3];
+  [v4 didActivateHSA2LoginNotificationNotification:notificationCopy];
 }
 
-- (void)postHSA2PasswordResetNotification:(id)a3 completion:(id)a4
+- (void)postHSA2PasswordResetNotification:(id)notification completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  notificationCopy = notification;
   v13 = objc_alloc_init(FLFollowUpNotification);
-  v8 = [v7 title];
-  [v13 setTitle:v8];
+  title = [notificationCopy title];
+  [v13 setTitle:title];
 
-  v9 = [v7 informativeText];
-  [v13 setInformativeText:v9];
+  informativeText = [notificationCopy informativeText];
+  [v13 setInformativeText:informativeText];
 
   v10 = [NSSet setWithObjects:FLNotificationOptionNotificationCenter, FLNotificationOptionForce, 0];
   [v13 setOptions:v10];
@@ -629,11 +629,11 @@ LABEL_22:
   [v11 setClientIdentifier:@"com.apple.authkit"];
   [v11 setTargetBundleIdentifier:0];
   [v11 setNotification:v13];
-  v12 = [v7 followUpItemUserInfo];
+  followUpItemUserInfo = [notificationCopy followUpItemUserInfo];
 
-  [v11 setUserInfo:v12];
+  [v11 setUserInfo:followUpItemUserInfo];
   [v11 setGroupIdentifier:FLGroupIdentifierAccount];
-  [(ClientInterface *)self postFollowUpItem:v11 completion:v6];
+  [(ClientInterface *)self postFollowUpItem:v11 completion:completionCopy];
 }
 
 @end

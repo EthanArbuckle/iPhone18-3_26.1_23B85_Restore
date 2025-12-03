@@ -1,12 +1,12 @@
 @interface UserProfileContaineeViewController
 + (NSString)userProfileDidOpenProfilePageNotification;
-- (_TtC4Maps34UserProfileContaineeViewController)initWithCoder:(id)a3;
-- (_TtC4Maps34UserProfileContaineeViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC4Maps34UserProfileContaineeViewController)initWithCoder:(id)coder;
+- (_TtC4Maps34UserProfileContaineeViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_TtP4Maps42UserProfileContaineeViewControllerDelegate_)actionDelegate;
 - (int64_t)floatingControlsOptions;
 - (void)didDismissByGesture;
-- (void)handleDismissAction:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)handleDismissAction:(id)action;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -33,24 +33,24 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001237EC();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(MapsHostingContaineeViewController *)&v5 viewDidAppear:v3];
+  [(MapsHostingContaineeViewController *)&v5 viewDidAppear:appearCopy];
   sub_100124084();
 }
 
-- (void)handleDismissAction:(id)a3
+- (void)handleDismissAction:(id)action
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   sub_100123F08();
@@ -62,14 +62,14 @@
 {
   ObjectType = swift_getObjectType();
   Strong = swift_unknownObjectWeakLoadStrong();
-  v5 = self;
+  selfCopy = self;
   if (Strong)
   {
-    [Strong userProfileViewControllerDismissByGestureWithViewController:v5];
+    [Strong userProfileViewControllerDismissByGestureWithViewController:selfCopy];
     swift_unknownObjectRelease();
   }
 
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(ContaineeViewController *)&v6 didDismissByGesture];
 }
@@ -87,22 +87,22 @@
   }
 }
 
-- (_TtC4Maps34UserProfileContaineeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps34UserProfileContaineeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a3 = v8;
+    name = v8;
   }
 
   swift_unknownObjectWeakInit();
   v9 = OBJC_IVAR____TtC4Maps34UserProfileContaineeViewController_viewModel;
   type metadata accessor for UserProfileViewModel();
   swift_allocObject();
-  v10 = a4;
+  bundleCopy = bundle;
   *(self + v9) = sub_100409918();
-  if (a3)
+  if (name)
   {
     v11 = String._bridgeToObjectiveC()();
   }
@@ -114,23 +114,23 @@
 
   v14.receiver = self;
   v14.super_class = ObjectType;
-  v12 = [(MapsHostingContaineeViewController *)&v14 initWithNibName:v11 bundle:v10];
+  v12 = [(MapsHostingContaineeViewController *)&v14 initWithNibName:v11 bundle:bundleCopy];
 
   return v12;
 }
 
-- (_TtC4Maps34UserProfileContaineeViewController)initWithCoder:(id)a3
+- (_TtC4Maps34UserProfileContaineeViewController)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectWeakInit();
   v6 = OBJC_IVAR____TtC4Maps34UserProfileContaineeViewController_viewModel;
   type metadata accessor for UserProfileViewModel();
   swift_allocObject();
-  v7 = a3;
+  coderCopy = coder;
   *(self + v6) = sub_100409918();
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v8 = [(MapsHostingContaineeViewController *)&v10 initWithCoder:v7];
+  v8 = [(MapsHostingContaineeViewController *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

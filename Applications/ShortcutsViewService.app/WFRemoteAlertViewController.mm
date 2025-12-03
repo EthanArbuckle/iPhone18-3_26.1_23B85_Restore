@@ -1,22 +1,22 @@
 @interface WFRemoteAlertViewController
 - (WFRemoteAlertViewController)init;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)dismissPersistentChromeWithSuccess:(BOOL)a3 customAttribution:(id)a4 completionHandler:(id)a5;
-- (void)dismissPresentedContentWithCompletionHandler:(id)a3;
-- (void)handleButtonActions:(id)a3;
-- (void)hostingViewControllerDidRequestExit:(id)a3;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
-- (void)preparePersistentChromeWithContext:(id)a3 attribution:(id)a4;
-- (void)showDialogRequest:(id)a3 completionHandler:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)dismissPersistentChromeWithSuccess:(BOOL)success customAttribution:(id)attribution completionHandler:(id)handler;
+- (void)dismissPresentedContentWithCompletionHandler:(id)handler;
+- (void)handleButtonActions:(id)actions;
+- (void)hostingViewControllerDidRequestExit:(id)exit;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
+- (void)preparePersistentChromeWithContext:(id)context attribution:(id)attribution;
+- (void)showDialogRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation WFRemoteAlertViewController
 
-- (void)hostingViewControllerDidRequestExit:(id)a3
+- (void)hostingViewControllerDidRequestExit:(id)exit
 {
-  v3 = [(WFRemoteAlertViewController *)self xpcConnection];
-  v4 = [v3 remoteObjectProxy];
+  xpcConnection = [(WFRemoteAlertViewController *)self xpcConnection];
+  remoteObjectProxy = [xpcConnection remoteObjectProxy];
 
   v5 = getWFDialogLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -26,17 +26,17 @@
     v8 = 2114;
     v9 = WFViewServiceDismissalReasonBadState;
     v10 = 2112;
-    v11 = v4;
+    v11 = remoteObjectProxy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s Requesting dismissal with reason: %{public}@. host interface: %@", &v6, 0x20u);
   }
 
-  [v4 requestDismissalWithReason:WFViewServiceDismissalReasonBadState];
+  [remoteObjectProxy requestDismissalWithReason:WFViewServiceDismissalReasonBadState];
 }
 
-- (void)dismissPersistentChromeWithSuccess:(BOOL)a3 customAttribution:(id)a4 completionHandler:(id)a5
+- (void)dismissPersistentChromeWithSuccess:(BOOL)success customAttribution:(id)attribution completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  attributionCopy = attribution;
+  handlerCopy = handler;
   v10 = sub_100003510();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -49,18 +49,18 @@
   v13[1] = 3221225472;
   v13[2] = sub_100003564;
   v13[3] = &unk_100010530;
-  v16 = a3;
+  successCopy = success;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = attributionCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = attributionCopy;
   dispatch_async(&_dispatch_main_q, v13);
 }
 
-- (void)dismissPresentedContentWithCompletionHandler:(id)a3
+- (void)dismissPresentedContentWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = sub_100003510();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -74,22 +74,22 @@
   v7[2] = sub_10000372C;
   v7[3] = &unk_100010508;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(&_dispatch_main_q, v7);
 }
 
-- (void)showDialogRequest:(id)a3 completionHandler:(id)a4
+- (void)showDialogRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = sub_100003510();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v15 = "[WFRemoteAlertViewController showDialogRequest:completionHandler:]";
     v16 = 2114;
-    v17 = v6;
+    v17 = requestCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s Showing dialog request: %{public}@", buf, 0x16u);
   }
 
@@ -98,26 +98,26 @@
   block[2] = sub_1000038D8;
   block[3] = &unk_1000104E0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = requestCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)preparePersistentChromeWithContext:(id)a3 attribution:(id)a4
+- (void)preparePersistentChromeWithContext:(id)context attribution:(id)attribution
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  attributionCopy = attribution;
   v8 = sub_100003510();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v15 = "[WFRemoteAlertViewController preparePersistentChromeWithContext:attribution:]";
     v16 = 2112;
-    v17 = v6;
+    v17 = contextCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = attributionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s Received running context: %@, attribution: %@", buf, 0x20u);
   }
 
@@ -126,23 +126,23 @@
   block[2] = sub_100003A8C;
   block[3] = &unk_1000104B8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = contextCopy;
+  v13 = attributionCopy;
+  v9 = attributionCopy;
+  v10 = contextCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v5 = sub_100003510();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v15 = "[WFRemoteAlertViewController handleButtonActions:]";
     v16 = 2114;
-    v17 = v4;
+    v17 = actionsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s Received button actions: %{public}@", buf, 0x16u);
   }
 
@@ -152,16 +152,16 @@
   v13[3] = &unk_1000105A8;
   v13[4] = self;
   v6 = objc_retainBlock(v13);
-  v7 = [(WFRemoteAlertViewController *)self compactViewController];
-  v8 = [v7 actionInterfaceListener];
-  v9 = [v8 actionInterface];
+  compactViewController = [(WFRemoteAlertViewController *)self compactViewController];
+  actionInterfaceListener = [compactViewController actionInterfaceListener];
+  actionInterface = [actionInterfaceListener actionInterface];
 
-  if (v9)
+  if (actionInterface)
   {
-    v10 = [(WFRemoteAlertViewController *)self compactViewController];
-    v11 = [v10 actionInterfaceListener];
-    v12 = [v11 actionInterface];
-    [v12 cancelPresentationWithCompletionHandler:v6];
+    compactViewController2 = [(WFRemoteAlertViewController *)self compactViewController];
+    actionInterfaceListener2 = [compactViewController2 actionInterfaceListener];
+    actionInterface2 = [actionInterfaceListener2 actionInterface];
+    [actionInterface2 cancelPresentationWithCompletionHandler:v6];
   }
 
   else
@@ -170,9 +170,9 @@
   }
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = sub_100003510();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -181,24 +181,24 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s Preparing for activation", &v6, 0xCu);
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(WFRemoteAlertViewController *)self compactViewController];
-  v3 = [v2 supportedInterfaceOrientations];
+  compactViewController = [(WFRemoteAlertViewController *)self compactViewController];
+  supportedInterfaceOrientations = [compactViewController supportedInterfaceOrientations];
 
-  return v3;
+  return supportedInterfaceOrientations;
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = sub_100003510();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -208,40 +208,40 @@
   }
 
   [WFInitialization initializeProcessWithDatabase:0];
-  v9 = [(WFRemoteAlertViewController *)self _remoteViewControllerProxy];
-  [v9 setWallpaperStyle:6 withDuration:0.0];
-  [v9 setDesiredHardwareButtonEvents:16];
-  [v9 setSwipeDismissalStyle:1];
-  [v9 setAllowsAlertStacking:1];
-  v10 = [(WFRemoteAlertViewController *)self compactViewController];
-  [(WFRemoteAlertViewController *)self addChildViewController:v10];
-  v11 = [v10 view];
-  [v11 setAutoresizingMask:18];
+  _remoteViewControllerProxy = [(WFRemoteAlertViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setWallpaperStyle:6 withDuration:0.0];
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:16];
+  [_remoteViewControllerProxy setSwipeDismissalStyle:1];
+  [_remoteViewControllerProxy setAllowsAlertStacking:1];
+  compactViewController = [(WFRemoteAlertViewController *)self compactViewController];
+  [(WFRemoteAlertViewController *)self addChildViewController:compactViewController];
+  view = [compactViewController view];
+  [view setAutoresizingMask:18];
 
-  v12 = [(WFRemoteAlertViewController *)self view];
-  [v12 bounds];
+  view2 = [(WFRemoteAlertViewController *)self view];
+  [view2 bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [v10 view];
-  [v21 setFrame:{v14, v16, v18, v20}];
+  view3 = [compactViewController view];
+  [view3 setFrame:{v14, v16, v18, v20}];
 
-  v22 = [v10 view];
-  [v22 setTranslatesAutoresizingMaskIntoConstraints:1];
+  view4 = [compactViewController view];
+  [view4 setTranslatesAutoresizingMaskIntoConstraints:1];
 
-  v23 = [(WFRemoteAlertViewController *)self view];
-  v24 = [v10 view];
-  [v23 addSubview:v24];
+  view5 = [(WFRemoteAlertViewController *)self view];
+  view6 = [compactViewController view];
+  [view5 addSubview:view6];
 
-  [v10 didMoveToParentViewController:self];
-  v25 = [v6 xpcEndpoint];
+  [compactViewController didMoveToParentViewController:self];
+  xpcEndpoint = [contextCopy xpcEndpoint];
 
-  if (v25)
+  if (xpcEndpoint)
   {
     v26 = objc_alloc_init(NSXPCListenerEndpoint);
-    v27 = [v6 xpcEndpoint];
-    [v26 _setEndpoint:v27];
+    xpcEndpoint2 = [contextCopy xpcEndpoint];
+    [v26 _setEndpoint:xpcEndpoint2];
 
     v28 = [[NSXPCConnection alloc] initWithListenerEndpoint:v26];
     [v28 setExportedObject:self];
@@ -255,8 +255,8 @@
     v30 = WFDialogXPCHostInterface();
     [v28 setRemoteObjectInterface:v30];
 
-    v31 = [v28 remoteObjectProxy];
-    [v31 beginConnection];
+    remoteObjectProxy = [v28 remoteObjectProxy];
+    [remoteObjectProxy beginConnection];
 
     v32 = sub_100003510();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -278,9 +278,9 @@
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 

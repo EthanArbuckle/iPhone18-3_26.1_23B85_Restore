@@ -1,43 +1,43 @@
 @interface NSPEventsPredictorTrainingInput
-- (NSPEventsPredictorTrainingInput)initWithLstm_input:(id)a3 sequential_TimeDistributedDense_dense_BiasAdd_true:(id)a4;
-- (id)featureValueForName:(id)a3;
+- (NSPEventsPredictorTrainingInput)initWithLstm_input:(id)lstm_input sequential_TimeDistributedDense_dense_BiasAdd_true:(id)add_true;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation NSPEventsPredictorTrainingInput
 
-- (NSPEventsPredictorTrainingInput)initWithLstm_input:(id)a3 sequential_TimeDistributedDense_dense_BiasAdd_true:(id)a4
+- (NSPEventsPredictorTrainingInput)initWithLstm_input:(id)lstm_input sequential_TimeDistributedDense_dense_BiasAdd_true:(id)add_true
 {
-  v7 = a3;
-  v8 = a4;
+  lstm_inputCopy = lstm_input;
+  add_trueCopy = add_true;
   v12.receiver = self;
   v12.super_class = NSPEventsPredictorTrainingInput;
   v9 = [(NSPEventsPredictorTrainingInput *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_lstm_input, a3);
-    objc_storeStrong(&v10->_sequential_TimeDistributedDense_dense_BiasAdd_true, a4);
+    objc_storeStrong(&v9->_lstm_input, lstm_input);
+    objc_storeStrong(&v10->_sequential_TimeDistributedDense_dense_BiasAdd_true, add_true);
   }
 
   return v10;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"lstm_input"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"lstm_input"])
   {
-    v5 = [(NSPEventsPredictorTrainingInput *)self lstm_input];
+    lstm_input = [(NSPEventsPredictorTrainingInput *)self lstm_input];
 LABEL_5:
-    v6 = v5;
-    v7 = [MLFeatureValue featureValueWithMultiArray:v5];
+    v6 = lstm_input;
+    v7 = [MLFeatureValue featureValueWithMultiArray:lstm_input];
 
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"sequential/TimeDistributedDense/dense/BiasAdd_true"])
+  if ([nameCopy isEqualToString:@"sequential/TimeDistributedDense/dense/BiasAdd_true"])
   {
-    v5 = [(NSPEventsPredictorTrainingInput *)self sequential_TimeDistributedDense_dense_BiasAdd_true];
+    lstm_input = [(NSPEventsPredictorTrainingInput *)self sequential_TimeDistributedDense_dense_BiasAdd_true];
     goto LABEL_5;
   }
 

@@ -1,33 +1,33 @@
 @interface _UIBasicHeaderFooterContentView
 - (BOOL)_needsDoubleUpdateConstraintsPass;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (NSString)description;
 - (UILabel)textLabel;
-- (_UIBasicHeaderFooterContentView)initWithCoder:(id)a3;
-- (_UIBasicHeaderFooterContentView)initWithConfiguration:(id)a3;
+- (_UIBasicHeaderFooterContentView)initWithCoder:(id)coder;
+- (_UIBasicHeaderFooterContentView)initWithConfiguration:(id)configuration;
 - (_UIBasicHeaderFooterContentViewConfiguration)configuration;
-- (double)_computeSizesForAvailableSpace:(double)a3;
+- (double)_computeSizesForAvailableSpace:(double)space;
 - (double)_preferredMaxLayoutWidth;
-- (void)_applyConfiguration:(id *)a1;
-- (void)_layoutMarginsDidChangeFromOldMargins:(UIEdgeInsets)a3;
+- (void)_applyConfiguration:(id *)configuration;
+- (void)_layoutMarginsDidChangeFromOldMargins:(UIEdgeInsets)margins;
 - (void)_prepareForFirstIntrinsicContentSizeCalculation;
-- (void)_prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:(CGRect)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:(CGRect)bounds;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setConfiguration:(id)a3;
+- (void)setConfiguration:(id)configuration;
 @end
 
 @implementation _UIBasicHeaderFooterContentView
 
-- (_UIBasicHeaderFooterContentView)initWithConfiguration:(id)a3
+- (_UIBasicHeaderFooterContentView)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (!v5)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UIBasicHeaderFooterContentView.m" lineNumber:370 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIBasicHeaderFooterContentView.m" lineNumber:370 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
   }
 
   v13.receiver = self;
@@ -41,17 +41,17 @@
     v10[2] = __57___UIBasicHeaderFooterContentView_initWithConfiguration___block_invoke;
     v10[3] = &unk_1E70F35B8;
     v11 = v6;
-    v12 = v5;
+    v12 = configurationCopy;
     [UIView performWithoutAnimation:v10];
   }
 
   return v7;
 }
 
-- (_UIBasicHeaderFooterContentView)initWithCoder:(id)a3
+- (_UIBasicHeaderFooterContentView)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
   if (!v5)
   {
 
@@ -60,7 +60,7 @@
 
   v12.receiver = self;
   v12.super_class = _UIBasicHeaderFooterContentView;
-  v6 = [(UIView *)&v12 initWithCoder:v4];
+  v6 = [(UIView *)&v12 initWithCoder:coderCopy];
   if (!v6)
   {
 LABEL_5:
@@ -81,13 +81,13 @@ LABEL_6:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _UIBasicHeaderFooterContentView;
-  v4 = a3;
-  [(UIView *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_configuration forKey:{@"configuration", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(UIView *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_configuration forKey:{@"configuration", v5.receiver, v5.super_class}];
 }
 
 - (NSString)description
@@ -119,19 +119,19 @@ LABEL_6:
   return v3;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (!v5)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UIBasicHeaderFooterContentView.m" lineNumber:423 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIBasicHeaderFooterContentView.m" lineNumber:423 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
   }
 
   animatingToConfiguration = self->_animatingToConfiguration;
-  if (![(_UIBasicHeaderFooterContentViewConfiguration *)self->_configuration _isEqualToConfigurationQuick:v5]|| animatingToConfiguration && ([(_UIBasicHeaderFooterContentViewConfiguration *)self->_animatingToConfiguration _isEqualToConfigurationQuick:v5]& 1) == 0)
+  if (![(_UIBasicHeaderFooterContentViewConfiguration *)self->_configuration _isEqualToConfigurationQuick:configurationCopy]|| animatingToConfiguration && ([(_UIBasicHeaderFooterContentViewConfiguration *)self->_animatingToConfiguration _isEqualToConfigurationQuick:configurationCopy]& 1) == 0)
   {
-    v7 = [v5 copy];
+    v7 = [configurationCopy copy];
     if (+[UIView _isInAnimationBlockWithAnimationsEnabled])
     {
       objc_storeStrong(&self->_animatingToConfiguration, v7);
@@ -177,37 +177,37 @@ LABEL_6:
   }
 }
 
-- (void)_applyConfiguration:(id *)a1
+- (void)_applyConfiguration:(id *)configuration
 {
   v4 = a2;
-  if (a1)
+  if (configuration)
   {
     v12 = v4;
     if (!v4)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:sel__applyConfiguration_ object:a1 file:@"_UIBasicHeaderFooterContentView.m" lineNumber:479 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__applyConfiguration_ object:configuration file:@"_UIBasicHeaderFooterContentView.m" lineNumber:479 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
     }
 
-    objc_storeStrong(a1 + 54, a2);
-    v5 = [v12 axesPreservingSuperviewLayoutMargins];
-    if ((v5 & 2) != 0)
+    objc_storeStrong(configuration + 54, a2);
+    axesPreservingSuperviewLayoutMargins = [v12 axesPreservingSuperviewLayoutMargins];
+    if ((axesPreservingSuperviewLayoutMargins & 2) != 0)
     {
-      v6 = (v5 << 63 >> 63) & 0xA | 5;
+      v6 = (axesPreservingSuperviewLayoutMargins << 63 >> 63) & 0xA | 5;
     }
 
     else
     {
-      v6 = (v5 << 63 >> 63) & 0xA;
+      v6 = (axesPreservingSuperviewLayoutMargins << 63 >> 63) & 0xA;
     }
 
-    [a1 setEdgesPreservingSuperviewLayoutMargins:v6];
+    [configuration setEdgesPreservingSuperviewLayoutMargins:v6];
     [v12 directionalLayoutMargins];
-    [a1 setDirectionalLayoutMargins:?];
-    v7 = [v12 textLabel];
-    v8 = a1;
-    v9 = a1[55];
-    if ([v7 _hasText])
+    [configuration setDirectionalLayoutMargins:?];
+    textLabel = [v12 textLabel];
+    configurationCopy = configuration;
+    v9 = configuration[55];
+    if ([textLabel _hasText])
     {
       if (v9)
       {
@@ -220,13 +220,13 @@ LABEL_6:
       else
       {
         v9 = objc_alloc_init(UILabel);
-        v10 = a1[55];
-        a1[55] = v9;
+        v10 = configuration[55];
+        configuration[55] = v9;
 
-        [v8 addSubview:v9];
+        [configurationCopy addSubview:v9];
       }
 
-      [v7 applyToLabel:v9];
+      [textLabel applyToLabel:v9];
     }
 
     else if (v9 && ![(UIView *)v9 isHidden])
@@ -234,9 +234,9 @@ LABEL_6:
       [(UIView *)v9 setHidden:1];
     }
 
-    v8[53] = 0x7FEFFFFFFFFFFFFFLL;
-    [v8 invalidateIntrinsicContentSize];
-    [v8 setNeedsLayout];
+    configurationCopy[53] = 0x7FEFFFFFFFFFFFFFLL;
+    [configurationCopy invalidateIntrinsicContentSize];
+    [configurationCopy setNeedsLayout];
     v4 = v12;
   }
 }
@@ -263,11 +263,11 @@ LABEL_6:
     return 0;
   }
 
-  v4 = [(_UIBasicHeaderFooterContentView *)self textLabel];
-  if (v4)
+  textLabel = [(_UIBasicHeaderFooterContentView *)self textLabel];
+  if (textLabel)
   {
-    v5 = [(_UIBasicHeaderFooterContentView *)self textLabel];
-    v2 = [v5 numberOfLines] != 1;
+    textLabel2 = [(_UIBasicHeaderFooterContentView *)self textLabel];
+    v2 = [textLabel2 numberOfLines] != 1;
   }
 
   else
@@ -286,12 +286,12 @@ LABEL_6:
   [(UIView *)&v2 _prepareForFirstIntrinsicContentSizeCalculation];
 }
 
-- (void)_prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:(CGRect)a3
+- (void)_prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self alignmentRectForFrame:?];
   self->_preferredMaxLayoutWidth = v8;
   v9.receiver = self;
@@ -310,32 +310,32 @@ LABEL_6:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  if (a3.width <= 0.0)
+  if (fits.width <= 0.0)
   {
-    a3.width = 1.79769313e308;
+    fits.width = 1.79769313e308;
   }
 
-  if (a3.height <= 0.0)
+  if (fits.height <= 0.0)
   {
-    a3.height = 1.79769313e308;
+    fits.height = 1.79769313e308;
   }
 
-  [(_UIBasicHeaderFooterContentView *)self _intrinsicSizeWithinSize:a3.width, a3.height];
+  [(_UIBasicHeaderFooterContentView *)self _intrinsicSizeWithinSize:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9 = 1.79769313e308;
-  if (a3.width <= 0.0)
+  if (size.width <= 0.0)
   {
-    a3.width = 1.79769313e308;
+    size.width = 1.79769313e308;
   }
 
   if (height > 0.0)
@@ -343,13 +343,13 @@ LABEL_6:
     v9 = height;
   }
 
-  [(_UIBasicHeaderFooterContentView *)self _intrinsicSizeWithinSize:a3.width, v9];
-  if (a4 >= 1000.0)
+  [(_UIBasicHeaderFooterContentView *)self _intrinsicSizeWithinSize:size.width, v9];
+  if (priority >= 1000.0)
   {
     v10 = width;
   }
 
-  if (a5 >= 1000.0)
+  if (fittingPriority >= 1000.0)
   {
     v11 = height;
   }
@@ -359,29 +359,29 @@ LABEL_6:
   return result;
 }
 
-- (double)_computeSizesForAvailableSpace:(double)a3
+- (double)_computeSizesForAvailableSpace:(double)space
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
   v5 = *MEMORY[0x1E695F060];
-  v6 = [a1 textLabel];
-  v7 = v6;
-  if (v6)
+  textLabel = [self textLabel];
+  v7 = textLabel;
+  if (textLabel)
   {
-    [v6 _intrinsicSizeWithinSize:{a2, a3}];
+    [textLabel _intrinsicSizeWithinSize:{a2, space}];
     v5 = fmax(v5, fmin(v8, a2));
   }
 
   return v5;
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (self && (animatingToConfiguration = self->_animatingToConfiguration) != 0 && (configuration = self->_configuration, configuration != animatingToConfiguration))
   {
     v8 = configuration;
@@ -437,11 +437,11 @@ LABEL_6:
   return result;
 }
 
-- (void)_layoutMarginsDidChangeFromOldMargins:(UIEdgeInsets)a3
+- (void)_layoutMarginsDidChangeFromOldMargins:(UIEdgeInsets)margins
 {
   v4.receiver = self;
   v4.super_class = _UIBasicHeaderFooterContentView;
-  [(UIView *)&v4 _layoutMarginsDidChangeFromOldMargins:a3.top, a3.left, a3.bottom, a3.right];
+  [(UIView *)&v4 _layoutMarginsDidChangeFromOldMargins:margins.top, margins.left, margins.bottom, margins.right];
   [(UIView *)self invalidateIntrinsicContentSize];
   [(UIView *)self setNeedsLayout];
 }
@@ -451,8 +451,8 @@ LABEL_6:
   v31.receiver = self;
   v31.super_class = _UIBasicHeaderFooterContentView;
   [(UIView *)&v31 layoutSubviews];
-  v3 = [(_UIBasicHeaderFooterContentView *)self textLabel];
-  if (v3)
+  textLabel = [(_UIBasicHeaderFooterContentView *)self textLabel];
+  if (textLabel)
   {
     [(UIView *)self _currentScreenScale];
     v5 = v4;
@@ -474,7 +474,7 @@ LABEL_6:
     v30[5] = v17;
     v22 = [(UIView *)self _applyDirectionalRelativePosition:v30 toRect:0.0, 0.0, v21];
     v26 = UIRectCenteredYInRectScale(v22, v23, v24, v25, 0.0, v15, 0.0, v20, v5);
-    [v3 setFrame:{UIRectIntegralWithScale(v26, v27, v28, v29, v5)}];
+    [textLabel setFrame:{UIRectIntegralWithScale(v26, v27, v28, v29, v5)}];
   }
 }
 

@@ -1,9 +1,9 @@
 @interface TUILiveOverscrollingLayoutController
 - (CGPoint)currentContentOffset;
 - (TUILiveOverscrollingLayoutController)init;
-- (id)liveAttributesForRenderModel:(id)a3;
-- (void)setRenderModel:(id)a3 withInvalidationContext:(id)a4;
-- (void)updateOverscrollingTransformsWithContentOffset:(CGPoint)a3 invalidationContext:(id)a4;
+- (id)liveAttributesForRenderModel:(id)model;
+- (void)setRenderModel:(id)model withInvalidationContext:(id)context;
+- (void)updateOverscrollingTransformsWithContentOffset:(CGPoint)offset invalidationContext:(id)context;
 @end
 
 @implementation TUILiveOverscrollingLayoutController
@@ -24,15 +24,15 @@
   return v3;
 }
 
-- (void)setRenderModel:(id)a3 withInvalidationContext:(id)a4
+- (void)setRenderModel:(id)model withInvalidationContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  if (self->_renderModel != v7)
+  modelCopy = model;
+  contextCopy = context;
+  if (self->_renderModel != modelCopy)
   {
-    v38 = v8;
-    v39 = v7;
-    objc_storeStrong(&self->_renderModel, a3);
+    v38 = contextCopy;
+    v39 = modelCopy;
+    objc_storeStrong(&self->_renderModel, model);
     v9 = [NSMapTable mapTableWithKeyOptions:512 valueOptions:512];
     entryMap = self->_entryMap;
     self->_entryMap = v9;
@@ -135,18 +135,18 @@
     entries = self->_entries;
     self->_entries = v36;
 
-    v8 = v38;
+    contextCopy = v38;
     [(TUILiveOverscrollingLayoutController *)self updateOverscrollingTransformsWithContentOffset:v38 invalidationContext:self->_currentContentOffset.x, self->_currentContentOffset.y];
 
-    v7 = v39;
+    modelCopy = v39;
   }
 }
 
-- (void)updateOverscrollingTransformsWithContentOffset:(CGPoint)a3 invalidationContext:(id)a4
+- (void)updateOverscrollingTransformsWithContentOffset:(CGPoint)offset invalidationContext:(id)context
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = offset.y;
+  x = offset.x;
+  contextCopy = context;
   self->_currentContentOffset.x = x;
   self->_currentContentOffset.y = y;
   entries = self->_entries;
@@ -155,19 +155,19 @@
   v10[2] = sub_12102C;
   v10[3] = &unk_262040;
   v10[4] = self;
-  v11 = v7;
-  v9 = v7;
+  v11 = contextCopy;
+  v9 = contextCopy;
   [(NSArray *)entries enumerateObjectsUsingBlock:v10];
 }
 
-- (id)liveAttributesForRenderModel:(id)a3
+- (id)liveAttributesForRenderModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 liveTransform];
-  v6 = [(NSMapTable *)self->_entryMap objectForKey:v5];
-  [v4 center];
+  modelCopy = model;
+  liveTransform = [modelCopy liveTransform];
+  v6 = [(NSMapTable *)self->_entryMap objectForKey:liveTransform];
+  [modelCopy center];
   v8 = v7;
-  [v4 center];
+  [modelCopy center];
   v10 = v9;
   [v6 defaultOrigin];
   v12 = v8 + v11;
@@ -175,18 +175,18 @@
   v14 = v10 + v13;
   v15 = objc_alloc_init(TUILayoutAttributes);
   [(TUILayoutAttributes *)v15 setCenter:v12, v14];
-  [v4 size];
+  [modelCopy size];
   [(TUILayoutAttributes *)v15 setSize:?];
   memset(&v40, 0, sizeof(v40));
   [v6 currentScale];
   v17 = v16;
   [v6 currentScale];
   CGAffineTransformMakeScale(&v40, v17, v18);
-  [v4 center];
+  [modelCopy center];
   v20 = v19;
   [v6 defaultSize];
   v22 = v21;
-  [v4 center];
+  [modelCopy center];
   v24 = v23;
   [v6 defaultSize];
   v26 = v25;
@@ -196,12 +196,12 @@
   *&v39.c = v28;
   v29 = *&CGAffineTransformIdentity.tx;
   *&v39.tx = v29;
-  if (v5)
+  if (liveTransform)
   {
     v34 = v28;
     v35 = v27;
     v33 = v29;
-    [v5 transform];
+    [liveTransform transform];
     v29 = v33;
     v28 = v34;
     v27 = v35;
@@ -216,9 +216,9 @@
   *&t1.c = v28;
   *&t1.tx = v29;
   CGAffineTransformConcat(&v39, &t1, &t2);
-  if (v4)
+  if (modelCopy)
   {
-    [v4 transform];
+    [modelCopy transform];
   }
 
   else

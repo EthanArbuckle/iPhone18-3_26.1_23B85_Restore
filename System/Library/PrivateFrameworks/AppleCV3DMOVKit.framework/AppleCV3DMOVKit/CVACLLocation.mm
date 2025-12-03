@@ -1,53 +1,53 @@
 @interface CVACLLocation
-- (CVACLLocation)initWithCLLocation:(id)a3 timestamp:(double)a4;
-- (CVACLLocation)initWithDictionary:(id)a3;
+- (CVACLLocation)initWithCLLocation:(id)location timestamp:(double)timestamp;
+- (CVACLLocation)initWithDictionary:(id)dictionary;
 - (id)debugDescription;
 - (id)dictionary;
 @end
 
 @implementation CVACLLocation
 
-- (CVACLLocation)initWithDictionary:(id)a3
+- (CVACLLocation)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = CVACLLocation;
   v5 = [(CVACLLocation *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"t"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"t"];
     [v6 doubleValue];
     v5->_timestamp = v7;
 
-    v8 = [v4 objectForKeyedSubscript:@"ts"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"ts"];
     [v8 doubleValue];
     v5->_timestampSince1970 = v9;
 
-    v10 = [v4 objectForKeyedSubscript:@"lat"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"lat"];
     [v10 doubleValue];
     v5->_latitude = v11;
 
-    v12 = [v4 objectForKeyedSubscript:@"long"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"long"];
     [v12 doubleValue];
     v5->_longitude = v13;
 
-    v14 = [v4 objectForKeyedSubscript:@"alt"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"alt"];
     [v14 doubleValue];
     v5->_altitude = v15;
 
-    v16 = [v4 objectForKeyedSubscript:@"h_acc"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"h_acc"];
     [v16 doubleValue];
     v5->_horizontalAccuracy = v17;
 
-    v18 = [v4 objectForKeyedSubscript:@"v_acc"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"v_acc"];
     [v18 doubleValue];
     v5->_verticalAccuracy = v19;
 
-    v20 = [v4 objectForKeyedSubscript:@"speed"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"speed"];
     [v20 doubleValue];
     v5->_speed = v21;
 
-    v22 = [v4 objectForKeyedSubscript:@"course"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"course"];
     [v22 doubleValue];
     v5->_course = v23;
   }
@@ -55,33 +55,33 @@
   return v5;
 }
 
-- (CVACLLocation)initWithCLLocation:(id)a3 timestamp:(double)a4
+- (CVACLLocation)initWithCLLocation:(id)location timestamp:(double)timestamp
 {
-  v6 = a3;
+  locationCopy = location;
   v19.receiver = self;
   v19.super_class = CVACLLocation;
   v7 = [(CVACLLocation *)&v19 init];
   v8 = v7;
   if (v7)
   {
-    v7->_timestamp = a4;
-    v9 = [v6 timestamp];
-    [v9 timeIntervalSince1970];
+    v7->_timestamp = timestamp;
+    timestamp = [locationCopy timestamp];
+    [timestamp timeIntervalSince1970];
     v8->_timestampSince1970 = v10;
 
-    [v6 coordinate];
+    [locationCopy coordinate];
     v8->_latitude = v11;
-    [v6 coordinate];
+    [locationCopy coordinate];
     v8->_longitude = v12;
-    [v6 altitude];
+    [locationCopy altitude];
     v8->_altitude = v13;
-    [v6 horizontalAccuracy];
+    [locationCopy horizontalAccuracy];
     v8->_horizontalAccuracy = v14;
-    [v6 verticalAccuracy];
+    [locationCopy verticalAccuracy];
     v8->_verticalAccuracy = v15;
-    [v6 speed];
+    [locationCopy speed];
     v8->_speed = v16;
-    [v6 course];
+    [locationCopy course];
     v8->_course = v17;
   }
 
@@ -128,8 +128,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CVACLLocation *)self dictionary];
-  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, v5];
+  dictionary = [(CVACLLocation *)self dictionary];
+  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, dictionary];
 
   return v6;
 }

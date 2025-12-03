@@ -1,5 +1,5 @@
 @interface _CUIRawDataRendition
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4;
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version;
 - (id)data;
 - (void)dealloc;
 @end
@@ -26,17 +26,17 @@
   return v2;
 }
 
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version
 {
   v18.receiver = self;
   v18.super_class = _CUIRawDataRendition;
-  v5 = [(CUIThemeRendition *)&v18 _initWithCSIHeader:a3 version:*&a4];
-  if (a3->var6 != 1145132097)
+  v5 = [(CUIThemeRendition *)&v18 _initWithCSIHeader:header version:*&version];
+  if (header->var6 != 1145132097)
   {
     [_CUIRawDataRendition _initWithCSIHeader:version:];
   }
 
-  v6 = &a3->var0 + 4 * a3->var11.var0 + a3->var10;
+  v6 = &header->var0 + 4 * header->var11.var0 + header->var10;
   v8 = *(v6 + 45);
   v7 = v6 + 180;
   v9 = *(v7 + 2);
@@ -53,18 +53,18 @@
 
   v12 = v7 - [objc_msgSend(v5 "srcData")];
   v13 = *(v7 + 1);
-  v14 = [v5 renditionFlags];
-  v15 = *v14 & 0xFFFFFFC3;
+  renditionFlags = [v5 renditionFlags];
+  v15 = *renditionFlags & 0xFFFFFFC3;
   if (v13)
   {
-    *v14 = v15 | 0x10;
+    *renditionFlags = v15 | 0x10;
     v16 = -[_CUISubrangeData initWithData:range:]([_CUISubrangeData alloc], "initWithData:range:", [v5 srcData], v12 + 12, v11);
     v5[27] = CUIUncompressDataWithLZFSE(v16);
   }
 
   else
   {
-    *v14 = v15;
+    *renditionFlags = v15;
     v5[27] = -[_CUISubrangeData initWithData:range:]([_CUISubrangeData alloc], "initWithData:range:", [v5 srcData], v12 + 12, v11);
   }
 

@@ -1,18 +1,18 @@
 @interface SCATXYAxisLineLayer
-- (id)_backgroundColorForTheme:(int)a3;
-- (id)_foregroundColorForTheme:(int)a3;
-- (void)updateTheme:(int)a3 animated:(BOOL)a4;
+- (id)_backgroundColorForTheme:(int)theme;
+- (id)_foregroundColorForTheme:(int)theme;
+- (void)updateTheme:(int)theme animated:(BOOL)animated;
 @end
 
 @implementation SCATXYAxisLineLayer
 
-- (void)updateTheme:(int)a3 animated:(BOOL)a4
+- (void)updateTheme:(int)theme animated:(BOOL)animated
 {
-  v5 = *&a3;
+  v5 = *&theme;
   v17.receiver = self;
   v17.super_class = SCATXYAxisLineLayer;
   [SCATAxisLayer updateTheme:"updateTheme:animated:" animated:?];
-  if (!a4)
+  if (!animated)
   {
     +[CATransaction begin];
     [CATransaction setDisableActions:1];
@@ -25,28 +25,28 @@
   [(SCATXYAxisLineLayer *)self setCompositingFilter:v8];
 
   v9 = [(SCATXYAxisLineLayer *)self _backgroundColorForTheme:v5];
-  v10 = [v9 CGColor];
-  v11 = [(SCATAxisLayer *)self foregroundLayer];
-  [v11 setBackgroundColor:v10];
+  cGColor = [v9 CGColor];
+  foregroundLayer = [(SCATAxisLayer *)self foregroundLayer];
+  [foregroundLayer setBackgroundColor:cGColor];
 
-  v12 = [(SCATAxisLayer *)self foregroundLayer];
+  foregroundLayer2 = [(SCATAxisLayer *)self foregroundLayer];
   v13 = kCAFilterPlusD;
   v14 = [CAFilter filterWithType:kCAFilterPlusD];
-  [v12 setCompositingFilter:v14];
+  [foregroundLayer2 setCompositingFilter:v14];
 
-  v15 = [(SCATAxisLayer *)self compositingLayer];
+  compositingLayer = [(SCATAxisLayer *)self compositingLayer];
   v16 = [CAFilter filterWithType:v13];
-  [v15 setCompositingFilter:v16];
+  [compositingLayer setCompositingFilter:v16];
 
-  if (!a4)
+  if (!animated)
   {
     +[CATransaction commit];
   }
 }
 
-- (id)_backgroundColorForTheme:(int)a3
+- (id)_backgroundColorForTheme:(int)theme
 {
-  if (a3)
+  if (theme)
   {
     v3 = +[AXSettings sharedInstance];
     [v3 assistiveTouchCursorColor];
@@ -63,9 +63,9 @@
   return v4;
 }
 
-- (id)_foregroundColorForTheme:(int)a3
+- (id)_foregroundColorForTheme:(int)theme
 {
-  if (a3)
+  if (theme)
   {
     v3 = +[AXSettings sharedInstance];
     [v3 assistiveTouchCursorColor];

@@ -1,11 +1,11 @@
 @interface HKSPStateMachineState
 - (BOOL)isCurrentState;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKSPStateMachine)stateMachine;
-- (HKSPStateMachineState)initWithStateMachine:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)equalsBuilderWithObject:(id)a3;
+- (HKSPStateMachineState)initWithStateMachine:(id)machine;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)equalsBuilderWithObject:(id)object;
 - (id)stateIdentifier;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
@@ -13,16 +13,16 @@
 
 @implementation HKSPStateMachineState
 
-- (HKSPStateMachineState)initWithStateMachine:(id)a3
+- (HKSPStateMachineState)initWithStateMachine:(id)machine
 {
-  v4 = a3;
+  machineCopy = machine;
   v9.receiver = self;
   v9.super_class = HKSPStateMachineState;
   v5 = [(HKSPStateMachineState *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_stateMachine, v4);
+    objc_storeWeak(&v5->_stateMachine, machineCopy);
     v7 = v6;
   }
 
@@ -31,12 +31,12 @@
 
 - (BOOL)isCurrentState
 {
-  v2 = self;
-  v3 = [(HKSPStateMachineState *)self stateMachine];
-  v4 = [v3 currentState];
-  LOBYTE(v2) = v4 == v2;
+  selfCopy = self;
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  currentState = [stateMachine currentState];
+  LOBYTE(selfCopy) = currentState == selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
 - (HKSPStateMachine)stateMachine
@@ -53,10 +53,10 @@
   return NSStringFromClass(v2);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -66,7 +66,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(HKSPStateMachineState *)self equalsBuilderWithObject:v4];
+      v5 = [(HKSPStateMachineState *)self equalsBuilderWithObject:equalCopy];
       v6 = [v5 isEqual];
     }
 
@@ -79,54 +79,54 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(HKSPStateMachineState *)self stateMachine];
-  objc_storeWeak(v4 + 1, v5);
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  objc_storeWeak(v4 + 1, stateMachine);
 
   return v4;
 }
 
-- (id)equalsBuilderWithObject:(id)a3
+- (id)equalsBuilderWithObject:(id)object
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(HKSPStateMachineState *)self stateName];
+  objectCopy = object;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:objectCopy ofExpectedClass:objc_opt_class()];
+  stateName = [(HKSPStateMachineState *)self stateName];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __49__HKSPStateMachineState_equalsBuilderWithObject___block_invoke;
   v10[3] = &unk_279C74680;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v5 appendObject:v6 counterpart:v10];
+  v11 = objectCopy;
+  v7 = objectCopy;
+  v8 = [v5 appendObject:stateName counterpart:v10];
 
   return v5;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(HKSPStateMachineState *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(HKSPStateMachineState *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(HKSPStateMachineState *)self stateName];
-  [v3 appendString:v4 withName:@"stateName"];
+  stateName = [(HKSPStateMachineState *)self stateName];
+  [v3 appendString:stateName withName:@"stateName"];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(HKSPStateMachineState *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(HKSPStateMachineState *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

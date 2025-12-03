@@ -1,5 +1,5 @@
 @interface PKPaymentSetupFieldCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsPickerType;
 - (BOOL)_axIsTextFieldType;
 - (BOOL)isAccessibilityElement;
@@ -12,15 +12,15 @@
 
 @implementation PKPaymentSetupFieldCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPaymentSetupFieldCell" isKindOfClass:@"UITableViewCell"];
-  [v3 validateClass:@"PKPaymentSetupFieldCell" hasInstanceVariable:@"_paymentSetupField" withType:"PKPaymentSetupField"];
-  [v3 validateClass:@"PKPaymentSetupFieldCell" hasInstanceMethod:@"editableTextField" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKPaymentSetupField" hasInstanceMethod:@"isFieldTypeDate" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PKPaymentSetupField" hasInstanceMethod:@"isFieldTypeText" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PKPaymentSetupField" hasInstanceMethod:@"isFieldTypePicker" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPaymentSetupFieldCell" isKindOfClass:@"UITableViewCell"];
+  [validationsCopy validateClass:@"PKPaymentSetupFieldCell" hasInstanceVariable:@"_paymentSetupField" withType:"PKPaymentSetupField"];
+  [validationsCopy validateClass:@"PKPaymentSetupFieldCell" hasInstanceMethod:@"editableTextField" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKPaymentSetupField" hasInstanceMethod:@"isFieldTypeDate" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PKPaymentSetupField" hasInstanceMethod:@"isFieldTypeText" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PKPaymentSetupField" hasInstanceMethod:@"isFieldTypePicker" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)_axIsPickerType
@@ -106,21 +106,21 @@ id __54__PKPaymentSetupFieldCellAccessibility_layoutSubviews__block_invoke(uint6
 - (id)accessibilityValue
 {
   v3 = [(PKPaymentSetupFieldCellAccessibility *)self safeUIViewForKey:@"editableTextField"];
-  v4 = [v3 accessibilityValue];
+  accessibilityValue = [v3 accessibilityValue];
 
-  if (v4)
+  if (accessibilityValue)
   {
-    v5 = v4;
+    accessibilityValue2 = accessibilityValue;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = PKPaymentSetupFieldCellAccessibility;
-    v5 = [(PKPaymentSetupFieldCellAccessibility *)&v8 accessibilityValue];
+    accessibilityValue2 = [(PKPaymentSetupFieldCellAccessibility *)&v8 accessibilityValue];
   }
 
-  v6 = v5;
+  v6 = accessibilityValue2;
 
   return v6;
 }
@@ -169,21 +169,21 @@ id __54__PKPaymentSetupFieldCellAccessibility_layoutSubviews__block_invoke(uint6
   v3 = [(PKPaymentSetupFieldCellAccessibility *)self safeUIViewForKey:@"textLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 accessibilityLabel];
-  v6 = v5;
-  if (v5)
+  accessibilityLabel = [v4 accessibilityLabel];
+  v6 = accessibilityLabel;
+  if (accessibilityLabel)
   {
-    v7 = v5;
+    accessibilityLabel2 = accessibilityLabel;
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = PKPaymentSetupFieldCellAccessibility;
-    v7 = [(PKPaymentSetupFieldCellAccessibility *)&v10 accessibilityLabel];
+    accessibilityLabel2 = [(PKPaymentSetupFieldCellAccessibility *)&v10 accessibilityLabel];
   }
 
-  v8 = v7;
+  v8 = accessibilityLabel2;
 
   return v8;
 }

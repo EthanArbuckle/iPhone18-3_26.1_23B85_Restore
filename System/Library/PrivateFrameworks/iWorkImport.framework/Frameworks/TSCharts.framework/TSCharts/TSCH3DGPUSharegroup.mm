@@ -1,37 +1,37 @@
 @interface TSCH3DGPUSharegroup
-+ (id)sharegroupForToken:(id)a3;
++ (id)sharegroupForToken:(id)token;
 - (BOOL)debug_isInteractive;
-- (TSCH3DGPUSharegroup)initWithOwningThread:(id)a3 token:(id)a4 context:(id)a5;
+- (TSCH3DGPUSharegroup)initWithOwningThread:(id)thread token:(id)token context:(id)context;
 - (id)description;
 - (id)targetThreadForFlushing;
 - (void)garbageCollectAllUnretainedResources;
-- (void)garbageCollectResources:(id)a3;
+- (void)garbageCollectResources:(id)resources;
 - (void)lock;
 - (void)p_clearContextInCurrentThread;
 - (void)p_flushCache;
 - (void)p_flushPurgeableResourceSet;
-- (void)p_forceFlushResourceSet:(id)a3;
+- (void)p_forceFlushResourceSet:(id)set;
 - (void)p_owningThreadWillChange;
 - (void)unlock;
-- (void)updateSharegroupMapToken:(id)a3;
+- (void)updateSharegroupMapToken:(id)token;
 @end
 
 @implementation TSCH3DGPUSharegroup
 
-+ (id)sharegroupForToken:(id)a3
++ (id)sharegroupForToken:(id)token
 {
-  v6 = objc_msgSend_tokenSharegroup(a3, a2, v3, v4, v5);
+  v6 = objc_msgSend_tokenSharegroup(token, a2, v3, v4, v5);
 
   return v6;
 }
 
-- (TSCH3DGPUSharegroup)initWithOwningThread:(id)a3 token:(id)a4 context:(id)a5
+- (TSCH3DGPUSharegroup)initWithOwningThread:(id)thread token:(id)token context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  threadCopy = thread;
+  tokenCopy = token;
   v36.receiver = self;
   v36.super_class = TSCH3DGPUSharegroup;
-  v9 = [(TSCH3DSharegroup *)&v36 initWithOwningThread:v7 token:v8];
+  v9 = [(TSCH3DSharegroup *)&v36 initWithOwningThread:threadCopy token:tokenCopy];
   if (v9)
   {
     v10 = objc_alloc_init(MEMORY[0x277CCAC60]);
@@ -190,9 +190,9 @@
   }
 }
 
-- (void)garbageCollectResources:(id)a3
+- (void)garbageCollectResources:(id)resources
 {
-  v5 = a3;
+  resourcesCopy = resources;
   if (self->super._owningThread)
   {
     v9 = objc_msgSend_currentThread(MEMORY[0x277CCACC8], v4, v6, v7, v8);
@@ -221,7 +221,7 @@
     v42[2] = sub_276303108;
     v42[3] = &unk_27A6B6338;
     v42[4] = self;
-    v43 = v5;
+    v43 = resourcesCopy;
     objc_msgSend_performBlockWithContext_block_(TSCH3DContextSession, v38, v39, v40, v41, GPUContext, v42);
   }
 }
@@ -289,9 +289,9 @@
   }
 }
 
-- (void)p_forceFlushResourceSet:(id)a3
+- (void)p_forceFlushResourceSet:(id)set
 {
-  v5 = a3;
+  setCopy = set;
   if (self->super._owningThread)
   {
     v9 = objc_msgSend_currentThread(MEMORY[0x277CCACC8], v4, v6, v7, v8);
@@ -309,7 +309,7 @@
     }
   }
 
-  if (objc_msgSend_count(v5, v4, v6, v7, v8))
+  if (objc_msgSend_count(setCopy, v4, v6, v7, v8))
   {
     GPUContext = self->_GPUContext;
     v36[0] = MEMORY[0x277D85DD0];
@@ -317,7 +317,7 @@
     v36[2] = sub_276303730;
     v36[3] = &unk_27A6B6338;
     v36[4] = self;
-    v37 = v5;
+    v37 = setCopy;
     objc_msgSend_performBlockWithContext_block_(TSCH3DContextSession, v32, v33, v34, v35, GPUContext, v36);
   }
 }
@@ -405,9 +405,9 @@
   objc_msgSend_unlock(lock, v29, v30, v31, v32);
 }
 
-- (void)updateSharegroupMapToken:(id)a3
+- (void)updateSharegroupMapToken:(id)token
 {
-  objc_storeWeak(&self->super._token, a3);
+  objc_storeWeak(&self->super._token, token);
   v20 = objc_msgSend_currentThread(MEMORY[0x277CCACC8], v4, v5, v6, v7);
   objc_msgSend_setOwningThread_(self, v8, v9, v10, v11);
 

@@ -1,64 +1,64 @@
 @interface DNDSModeRecord
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)_initWithRecord:(id)a3;
-- (id)_initWithSymbolImageName:(id)a3 tintColorName:(id)a4 symbolDescriptorTintStyle:(unint64_t)a5 symbolDescriptorTintColorNames:(id)a6 symbolDescriptorImageName:(id)a7 name:(id)a8 modeIdentifier:(id)a9 semanticType:(int64_t)a10 visibility:(unint64_t)a11 identifier:(id)a12 placeholderExcludedPlatforms:(id)a13;
-- (id)dictionaryRepresentationWithContext:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithRecord:(id)record;
+- (id)_initWithSymbolImageName:(id)name tintColorName:(id)colorName symbolDescriptorTintStyle:(unint64_t)style symbolDescriptorTintColorNames:(id)names symbolDescriptorImageName:(id)imageName name:(id)a8 modeIdentifier:(id)identifier semanticType:(int64_t)self0 visibility:(unint64_t)self1 identifier:(id)self2 placeholderExcludedPlatforms:(id)self3;
+- (id)dictionaryRepresentationWithContext:(id)context;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation DNDSModeRecord
 
-- (id)_initWithRecord:(id)a3
+- (id)_initWithRecord:(id)record
 {
-  v3 = a3;
-  v16 = [v3 symbolImageName];
-  v4 = [v3 tintColorName];
-  v15 = [v3 symbolDescriptorTintStyle];
-  v5 = [v3 symbolDescriptorTintColorNames];
-  v6 = [v3 symbolDescriptorImageName];
-  v7 = [v3 name];
-  v8 = [v3 modeIdentifier];
-  v9 = [v3 semanticType];
-  v10 = [v3 visibility];
-  v11 = [v3 identifier];
-  v12 = [v3 placeholderExcludedPlatforms];
+  recordCopy = record;
+  symbolImageName = [recordCopy symbolImageName];
+  tintColorName = [recordCopy tintColorName];
+  symbolDescriptorTintStyle = [recordCopy symbolDescriptorTintStyle];
+  symbolDescriptorTintColorNames = [recordCopy symbolDescriptorTintColorNames];
+  symbolDescriptorImageName = [recordCopy symbolDescriptorImageName];
+  name = [recordCopy name];
+  modeIdentifier = [recordCopy modeIdentifier];
+  semanticType = [recordCopy semanticType];
+  visibility = [recordCopy visibility];
+  identifier = [recordCopy identifier];
+  placeholderExcludedPlatforms = [recordCopy placeholderExcludedPlatforms];
 
-  v13 = [(DNDSModeRecord *)self _initWithSymbolImageName:v16 tintColorName:v4 symbolDescriptorTintStyle:v15 symbolDescriptorTintColorNames:v5 symbolDescriptorImageName:v6 name:v7 modeIdentifier:v8 semanticType:v9 visibility:v10 identifier:v11 placeholderExcludedPlatforms:v12];
+  v13 = [(DNDSModeRecord *)self _initWithSymbolImageName:symbolImageName tintColorName:tintColorName symbolDescriptorTintStyle:symbolDescriptorTintStyle symbolDescriptorTintColorNames:symbolDescriptorTintColorNames symbolDescriptorImageName:symbolDescriptorImageName name:name modeIdentifier:modeIdentifier semanticType:semanticType visibility:visibility identifier:identifier placeholderExcludedPlatforms:placeholderExcludedPlatforms];
   return v13;
 }
 
-- (id)_initWithSymbolImageName:(id)a3 tintColorName:(id)a4 symbolDescriptorTintStyle:(unint64_t)a5 symbolDescriptorTintColorNames:(id)a6 symbolDescriptorImageName:(id)a7 name:(id)a8 modeIdentifier:(id)a9 semanticType:(int64_t)a10 visibility:(unint64_t)a11 identifier:(id)a12 placeholderExcludedPlatforms:(id)a13
+- (id)_initWithSymbolImageName:(id)name tintColorName:(id)colorName symbolDescriptorTintStyle:(unint64_t)style symbolDescriptorTintColorNames:(id)names symbolDescriptorImageName:(id)imageName name:(id)a8 modeIdentifier:(id)identifier semanticType:(int64_t)self0 visibility:(unint64_t)self1 identifier:(id)self2 placeholderExcludedPlatforms:(id)self3
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a6;
-  v21 = a7;
+  nameCopy = name;
+  colorNameCopy = colorName;
+  namesCopy = names;
+  imageNameCopy = imageName;
   v22 = a8;
-  v23 = a9;
+  identifierCopy = identifier;
   v24 = a12;
-  v25 = a13;
+  platformsCopy = platforms;
   v45.receiver = self;
   v45.super_class = DNDSModeRecord;
   v26 = [(DNDSModeRecord *)&v45 init];
   if (v26)
   {
-    v27 = [v18 copy];
+    v27 = [nameCopy copy];
     symbolImageName = v26->_symbolImageName;
     v26->_symbolImageName = v27;
 
-    v29 = [v19 copy];
+    v29 = [colorNameCopy copy];
     tintColorName = v26->_tintColorName;
     v26->_tintColorName = v29;
 
-    v26->_symbolDescriptorTintStyle = a5;
-    v31 = [v20 copy];
+    v26->_symbolDescriptorTintStyle = style;
+    v31 = [namesCopy copy];
     symbolDescriptorTintColorNames = v26->_symbolDescriptorTintColorNames;
     v26->_symbolDescriptorTintColorNames = v31;
 
-    v33 = [v21 copy];
+    v33 = [imageNameCopy copy];
     symbolDescriptorImageName = v26->_symbolDescriptorImageName;
     v26->_symbolDescriptorImageName = v33;
 
@@ -66,12 +66,12 @@
     name = v26->_name;
     v26->_name = v35;
 
-    v37 = [v23 copy];
+    v37 = [identifierCopy copy];
     modeIdentifier = v26->_modeIdentifier;
     v26->_modeIdentifier = v37;
 
-    v26->_semanticType = a10;
-    v26->_visibility = a11;
+    v26->_semanticType = type;
+    v26->_visibility = visibility;
     if (v24)
     {
       v39 = v24;
@@ -85,7 +85,7 @@
     identifier = v26->_identifier;
     v26->_identifier = v39;
 
-    v41 = [v25 copy];
+    v41 = [platformsCopy copy];
     placeholderExcludedPlatforms = v26->_placeholderExcludedPlatforms;
     v26->_placeholderExcludedPlatforms = v41;
   }
@@ -107,10 +107,10 @@
   return v9 ^ v11 ^ [(NSArray *)self->_placeholderExcludedPlatforms hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
-  if (self == v7)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v16 = 1;
     goto LABEL_123;
@@ -123,13 +123,13 @@
     goto LABEL_123;
   }
 
-  v8 = v7;
-  v9 = [(DNDSModeRecord *)self symbolImageName];
-  v10 = [(DNDSModeRecord *)v8 symbolImageName];
-  if (v9 != v10)
+  v8 = equalCopy;
+  symbolImageName = [(DNDSModeRecord *)self symbolImageName];
+  symbolImageName2 = [(DNDSModeRecord *)v8 symbolImageName];
+  if (symbolImageName != symbolImageName2)
   {
-    v11 = [(DNDSModeRecord *)self symbolImageName];
-    if (!v11)
+    symbolImageName3 = [(DNDSModeRecord *)self symbolImageName];
+    if (!symbolImageName3)
     {
       v85 = 0;
       v94 = 0uLL;
@@ -148,9 +148,9 @@
       goto LABEL_60;
     }
 
-    v85 = v11;
-    v12 = [(DNDSModeRecord *)v8 symbolImageName];
-    if (!v12)
+    v85 = symbolImageName3;
+    symbolImageName4 = [(DNDSModeRecord *)v8 symbolImageName];
+    if (!symbolImageName4)
     {
       v82 = 0;
       *v93 = 0;
@@ -171,11 +171,11 @@
       goto LABEL_60;
     }
 
-    v82 = v12;
-    v3 = [(DNDSModeRecord *)self symbolImageName];
-    v79 = [(DNDSModeRecord *)v8 symbolImageName];
-    v80 = v3;
-    if (![v3 isEqual:?])
+    v82 = symbolImageName4;
+    symbolImageName5 = [(DNDSModeRecord *)self symbolImageName];
+    symbolImageName6 = [(DNDSModeRecord *)v8 symbolImageName];
+    v80 = symbolImageName5;
+    if (![symbolImageName5 isEqual:?])
     {
       *&v93[4] = 0;
       v91 = 0;
@@ -197,15 +197,15 @@
     }
   }
 
-  v3 = [(DNDSModeRecord *)self tintColorName];
-  v83 = [(DNDSModeRecord *)v8 tintColorName];
-  v84 = v3;
-  v5 = v3 != v83;
-  *&v93[16] = v9 != v10;
-  if (v3 != v83)
+  symbolImageName5 = [(DNDSModeRecord *)self tintColorName];
+  tintColorName = [(DNDSModeRecord *)v8 tintColorName];
+  v84 = symbolImageName5;
+  placeholderExcludedPlatforms4 = symbolImageName5 != tintColorName;
+  *&v93[16] = symbolImageName != symbolImageName2;
+  if (symbolImageName5 != tintColorName)
   {
-    v17 = [(DNDSModeRecord *)self tintColorName];
-    if (!v17)
+    tintColorName2 = [(DNDSModeRecord *)self tintColorName];
+    if (!tintColorName2)
     {
       v81 = 0;
       v91 = 0;
@@ -216,7 +216,7 @@
       v86 = 0uLL;
       v89 = 0;
       v92 = 0;
-      *v93 = v9 != v10;
+      *v93 = symbolImageName != symbolImageName2;
       v14 = 0;
       v15 = 0;
       v16 = 0;
@@ -226,9 +226,9 @@
       goto LABEL_60;
     }
 
-    v81 = v17;
-    v18 = [(DNDSModeRecord *)v8 tintColorName];
-    if (!v18)
+    v81 = tintColorName2;
+    tintColorName3 = [(DNDSModeRecord *)v8 tintColorName];
+    if (!tintColorName3)
     {
       v78 = 0;
       memset(v90, 0, sizeof(v90));
@@ -238,7 +238,7 @@
       v86 = 0uLL;
       v89 = 0;
       v92 = 0;
-      *v93 = v9 != v10;
+      *v93 = symbolImageName != symbolImageName2;
       v14 = 0;
       v15 = 0;
       v16 = 0;
@@ -249,11 +249,11 @@
       goto LABEL_60;
     }
 
-    v78 = v18;
-    v3 = [(DNDSModeRecord *)self tintColorName];
-    v74 = [(DNDSModeRecord *)v8 tintColorName];
-    v75 = v3;
-    if (![v3 isEqual:?])
+    v78 = tintColorName3;
+    symbolImageName5 = [(DNDSModeRecord *)self tintColorName];
+    tintColorName4 = [(DNDSModeRecord *)v8 tintColorName];
+    v75 = symbolImageName5;
+    if (![symbolImageName5 isEqual:?])
     {
       memset(v90, 0, sizeof(v90));
       *v88 = 0;
@@ -261,7 +261,7 @@
       memset(v87, 0, sizeof(v87));
       v86 = 0uLL;
       v92 = 0;
-      *v93 = v9 != v10;
+      *v93 = symbolImageName != symbolImageName2;
       v14 = 0;
       v15 = 0;
       v16 = 0;
@@ -277,9 +277,9 @@ LABEL_24:
     }
   }
 
-  v3 = [(DNDSModeRecord *)self symbolDescriptorTintStyle];
-  *&v93[8] = v5;
-  if (v3 != [(DNDSModeRecord *)v8 symbolDescriptorTintStyle])
+  symbolImageName5 = [(DNDSModeRecord *)self symbolDescriptorTintStyle];
+  *&v93[8] = placeholderExcludedPlatforms4;
+  if (symbolImageName5 != [(DNDSModeRecord *)v8 symbolDescriptorTintStyle])
   {
     *&v93[12] = 0;
     memset(v90, 0, sizeof(v90));
@@ -287,32 +287,32 @@ LABEL_24:
     v94 = 0uLL;
     memset(v87, 0, sizeof(v87));
     v86 = 0uLL;
-    v91 = v5;
+    v91 = placeholderExcludedPlatforms4;
     v92 = 0;
-    *v93 = v9 != v10;
+    *v93 = symbolImageName != symbolImageName2;
     v14 = 0;
     v15 = 0;
     v16 = 0;
     *&v93[4] = 1;
     v13 = 0;
-    v19 = v5;
+    v19 = placeholderExcludedPlatforms4;
     goto LABEL_24;
   }
 
-  v20 = [(DNDSModeRecord *)self symbolDescriptorTintColorNames];
-  v21 = [(DNDSModeRecord *)v8 symbolDescriptorTintColorNames];
-  v22 = v20;
-  v23 = v20 == v21;
-  v3 = v20 != v21;
-  v76 = v21;
+  symbolDescriptorTintColorNames = [(DNDSModeRecord *)self symbolDescriptorTintColorNames];
+  symbolDescriptorTintColorNames2 = [(DNDSModeRecord *)v8 symbolDescriptorTintColorNames];
+  v22 = symbolDescriptorTintColorNames;
+  v23 = symbolDescriptorTintColorNames == symbolDescriptorTintColorNames2;
+  symbolImageName5 = symbolDescriptorTintColorNames != symbolDescriptorTintColorNames2;
+  v76 = symbolDescriptorTintColorNames2;
   v77 = v22;
   if (v23)
   {
     goto LABEL_27;
   }
 
-  v24 = [(DNDSModeRecord *)self symbolDescriptorTintColorNames];
-  if (!v24)
+  symbolDescriptorTintColorNames3 = [(DNDSModeRecord *)self symbolDescriptorTintColorNames];
+  if (!symbolDescriptorTintColorNames3)
   {
     v73 = 0;
     memset(v90, 0, sizeof(v90));
@@ -320,11 +320,11 @@ LABEL_24:
     v94 = 0uLL;
     memset(v87, 0, sizeof(v87));
     v86 = 0uLL;
-    *&v88[8] = v5;
+    *&v88[8] = placeholderExcludedPlatforms4;
     v89 = 0;
-    v91 = v5;
+    v91 = placeholderExcludedPlatforms4;
     v92 = 0;
-    *v93 = v9 != v10;
+    *v93 = symbolImageName != symbolImageName2;
     v14 = 0;
     v15 = 0;
     v16 = 0;
@@ -334,9 +334,9 @@ LABEL_24:
     goto LABEL_60;
   }
 
-  v73 = v24;
-  v25 = [(DNDSModeRecord *)v8 symbolDescriptorTintColorNames];
-  if (!v25)
+  v73 = symbolDescriptorTintColorNames3;
+  symbolDescriptorTintColorNames4 = [(DNDSModeRecord *)v8 symbolDescriptorTintColorNames];
+  if (!symbolDescriptorTintColorNames4)
   {
     v70 = 0;
     *v88 = 0;
@@ -344,145 +344,145 @@ LABEL_24:
     v94 = 0uLL;
     memset(v87, 0, sizeof(v87));
     v86 = 0uLL;
-    *&v88[8] = v5;
+    *&v88[8] = placeholderExcludedPlatforms4;
     v89 = 0;
     *&v90[12] = 0;
     v92 = 0;
-    *v93 = v9 != v10;
+    *v93 = symbolImageName != symbolImageName2;
     v14 = 0;
     v15 = 0;
     v16 = 0;
     *&v93[4] = 1;
-    v91 = v5;
+    v91 = placeholderExcludedPlatforms4;
     v13 = 1;
     *&v93[12] = 1;
     *v90 = 1;
     goto LABEL_60;
   }
 
-  v70 = v25;
-  v4 = [(DNDSModeRecord *)self symbolDescriptorTintColorNames];
-  v65 = [(DNDSModeRecord *)v8 symbolDescriptorTintColorNames];
-  v66 = v4;
-  if ([v4 isEqual:?])
+  v70 = symbolDescriptorTintColorNames4;
+  symbolDescriptorTintColorNames5 = [(DNDSModeRecord *)self symbolDescriptorTintColorNames];
+  symbolDescriptorTintColorNames6 = [(DNDSModeRecord *)v8 symbolDescriptorTintColorNames];
+  v66 = symbolDescriptorTintColorNames5;
+  if ([symbolDescriptorTintColorNames5 isEqual:?])
   {
 LABEL_27:
-    v4 = [(DNDSModeRecord *)self symbolDescriptorImageName];
-    v71 = [(DNDSModeRecord *)v8 symbolDescriptorImageName];
-    HIDWORD(v94) = v4 != v71;
-    *&v93[12] = v3;
-    v72 = v4;
-    if (v4 == v71)
+    symbolDescriptorTintColorNames5 = [(DNDSModeRecord *)self symbolDescriptorImageName];
+    symbolDescriptorImageName = [(DNDSModeRecord *)v8 symbolDescriptorImageName];
+    HIDWORD(v94) = symbolDescriptorTintColorNames5 != symbolDescriptorImageName;
+    *&v93[12] = symbolImageName5;
+    v72 = symbolDescriptorTintColorNames5;
+    if (symbolDescriptorTintColorNames5 == symbolDescriptorImageName)
     {
       goto LABEL_33;
     }
 
-    v26 = [(DNDSModeRecord *)self symbolDescriptorImageName];
-    if (!v26)
+    symbolDescriptorImageName2 = [(DNDSModeRecord *)self symbolDescriptorImageName];
+    if (!symbolDescriptorImageName2)
     {
       v69 = 0;
       *v88 = 0;
-      *&v88[4] = v3;
+      *&v88[4] = symbolImageName5;
       *(&v94 + 4) = 0;
       memset(v87, 0, sizeof(v87));
       v86 = 0uLL;
       *&v90[8] = 0;
       LODWORD(v94) = 0;
-      *&v88[8] = v5;
+      *&v88[8] = placeholderExcludedPlatforms4;
       v89 = 0;
       *&v90[16] = 0;
-      v91 = v5;
+      v91 = placeholderExcludedPlatforms4;
       v92 = 0;
-      *v93 = v9 != v10;
+      *v93 = symbolImageName != symbolImageName2;
       v14 = 0;
       v15 = 0;
       v16 = 0;
       *&v93[4] = 1;
       v13 = 1;
-      *v90 = v3;
+      *v90 = symbolImageName5;
       *&v90[4] = 1;
       HIDWORD(v94) = 1;
       goto LABEL_60;
     }
 
-    v69 = v26;
-    v27 = [(DNDSModeRecord *)v8 symbolDescriptorImageName];
-    if (!v27)
+    v69 = symbolDescriptorImageName2;
+    symbolDescriptorImageName3 = [(DNDSModeRecord *)v8 symbolDescriptorImageName];
+    if (!symbolDescriptorImageName3)
     {
       v64 = 0;
       *v87 = 0;
       *v88 = 0;
-      *&v88[4] = v3;
+      *&v88[4] = symbolImageName5;
       *(&v94 + 4) = 0;
       v86 = 0uLL;
       *&v90[8] = 0;
       LODWORD(v94) = 0;
-      *&v88[8] = v5;
+      *&v88[8] = placeholderExcludedPlatforms4;
       v89 = 0;
       *&v90[16] = 0;
-      v91 = v5;
+      v91 = placeholderExcludedPlatforms4;
       v92 = 0;
-      *v93 = v9 != v10;
+      *v93 = symbolImageName != symbolImageName2;
       v14 = 0;
       v15 = 0;
       v16 = 0;
       *&v93[4] = 1;
       v13 = 1;
-      *v90 = v3;
+      *v90 = symbolImageName5;
       *&v90[4] = 1;
       HIDWORD(v94) = 1;
       *&v87[8] = 1;
       goto LABEL_60;
     }
 
-    v64 = v27;
-    v4 = [(DNDSModeRecord *)self symbolDescriptorImageName];
-    v59 = [(DNDSModeRecord *)v8 symbolDescriptorImageName];
-    v60 = v4;
-    if ([v4 isEqual:?])
+    v64 = symbolDescriptorImageName3;
+    symbolDescriptorTintColorNames5 = [(DNDSModeRecord *)self symbolDescriptorImageName];
+    symbolDescriptorImageName4 = [(DNDSModeRecord *)v8 symbolDescriptorImageName];
+    v60 = symbolDescriptorTintColorNames5;
+    if ([symbolDescriptorTintColorNames5 isEqual:?])
     {
 LABEL_33:
-      v4 = [(DNDSModeRecord *)self name];
-      v67 = [(DNDSModeRecord *)v8 name];
-      DWORD2(v94) = v4 != v67;
-      v68 = v4;
-      if (v4 == v67)
+      symbolDescriptorTintColorNames5 = [(DNDSModeRecord *)self name];
+      name = [(DNDSModeRecord *)v8 name];
+      DWORD2(v94) = symbolDescriptorTintColorNames5 != name;
+      v68 = symbolDescriptorTintColorNames5;
+      if (symbolDescriptorTintColorNames5 == name)
       {
         goto LABEL_40;
       }
 
-      v28 = [(DNDSModeRecord *)self name];
-      if (!v28)
+      name2 = [(DNDSModeRecord *)self name];
+      if (!name2)
       {
         v63 = 0;
         *v87 = 0;
         *&v94 = 0;
         v86 = 0uLL;
         *&v90[8] = 0;
-        *&v88[8] = v5;
+        *&v88[8] = placeholderExcludedPlatforms4;
         v89 = 0;
         *&v90[16] = 0;
-        v91 = v5;
+        v91 = placeholderExcludedPlatforms4;
         v92 = 0;
-        *v93 = v9 != v10;
+        *v93 = symbolImageName != symbolImageName2;
         v14 = 0;
         v15 = 0;
         v16 = 0;
         *&v93[4] = 1;
         v13 = 1;
-        *v90 = v3;
+        *v90 = symbolImageName5;
         *&v90[4] = 1;
         *&v87[4] = HIDWORD(v94);
         *&v87[8] = HIDWORD(v94);
         *v88 = 1;
-        *&v88[4] = v3;
+        *&v88[4] = symbolImageName5;
         DWORD2(v94) = 1;
         goto LABEL_60;
       }
 
-      v63 = v28;
-      v29 = [(DNDSModeRecord *)v8 name];
-      if (!v29)
+      v63 = name2;
+      name3 = [(DNDSModeRecord *)v8 name];
+      if (!name3)
       {
         v58 = 0;
         *(&v86 + 4) = 0;
@@ -490,132 +490,132 @@ LABEL_33:
         *&v94 = 0;
         LODWORD(v86) = 0;
         *&v90[8] = 0;
-        *&v88[8] = v5;
+        *&v88[8] = placeholderExcludedPlatforms4;
         v89 = 0;
         *&v90[16] = 0;
-        v91 = v5;
+        v91 = placeholderExcludedPlatforms4;
         v92 = 0;
-        *v93 = v9 != v10;
+        *v93 = symbolImageName != symbolImageName2;
         v14 = 0;
         v15 = 0;
         v16 = 0;
         *&v93[4] = 1;
         v13 = 1;
-        *v90 = v3;
+        *v90 = symbolImageName5;
         *&v90[4] = 1;
         *&v87[4] = HIDWORD(v94);
         *&v87[8] = HIDWORD(v94);
         *v88 = 1;
-        *&v88[4] = v3;
+        *&v88[4] = symbolImageName5;
         DWORD2(v94) = 1;
         HIDWORD(v86) = 1;
         goto LABEL_60;
       }
 
-      v58 = v29;
-      v4 = [(DNDSModeRecord *)self name];
-      v55 = [(DNDSModeRecord *)v8 name];
-      v56 = v4;
-      if ([v4 isEqual:?])
+      v58 = name3;
+      symbolDescriptorTintColorNames5 = [(DNDSModeRecord *)self name];
+      name4 = [(DNDSModeRecord *)v8 name];
+      v56 = symbolDescriptorTintColorNames5;
+      if ([symbolDescriptorTintColorNames5 isEqual:?])
       {
 LABEL_40:
-        v4 = [(DNDSModeRecord *)self modeIdentifier];
-        v61 = [(DNDSModeRecord *)v8 modeIdentifier];
-        DWORD1(v94) = v4 != v61;
-        v62 = v4;
-        if (v4 == v61)
+        symbolDescriptorTintColorNames5 = [(DNDSModeRecord *)self modeIdentifier];
+        modeIdentifier = [(DNDSModeRecord *)v8 modeIdentifier];
+        DWORD1(v94) = symbolDescriptorTintColorNames5 != modeIdentifier;
+        v62 = symbolDescriptorTintColorNames5;
+        if (symbolDescriptorTintColorNames5 == modeIdentifier)
         {
-          v4 = v3;
+          symbolDescriptorTintColorNames5 = symbolImageName5;
         }
 
         else
         {
-          v30 = [(DNDSModeRecord *)self modeIdentifier];
-          if (!v30)
+          modeIdentifier2 = [(DNDSModeRecord *)self modeIdentifier];
+          if (!modeIdentifier2)
           {
             v57 = 0;
             *&v86 = 0;
             *&v90[8] = 0;
             *&v94 = 0x100000000;
-            *&v88[8] = v5;
+            *&v88[8] = placeholderExcludedPlatforms4;
             v89 = 0;
             *&v90[16] = 0;
-            v91 = v5;
+            v91 = placeholderExcludedPlatforms4;
             v92 = 0;
-            *v93 = v9 != v10;
+            *v93 = symbolImageName != symbolImageName2;
             v14 = 0;
             v15 = 0;
             v16 = 0;
             *&v93[4] = 1;
             v13 = 1;
-            *v90 = v3;
+            *v90 = symbolImageName5;
             *&v90[4] = 1;
             *&v87[4] = HIDWORD(v94);
             *&v87[8] = HIDWORD(v94);
             *v88 = 1;
-            *&v88[4] = v3;
+            *&v88[4] = symbolImageName5;
             DWORD2(v86) = DWORD2(v94);
             HIDWORD(v86) = DWORD2(v94);
             *v87 = 1;
             goto LABEL_60;
           }
 
-          v57 = v30;
-          v31 = [(DNDSModeRecord *)v8 modeIdentifier];
-          if (!v31)
+          v57 = modeIdentifier2;
+          modeIdentifier3 = [(DNDSModeRecord *)v8 modeIdentifier];
+          if (!modeIdentifier3)
           {
             v54 = 0;
             *&v86 = 0x100000000;
             *&v90[8] = 0;
             *&v94 = 0x100000000;
-            *&v88[8] = v5;
+            *&v88[8] = placeholderExcludedPlatforms4;
             v89 = 0;
             *&v90[16] = 0;
-            v91 = v5;
+            v91 = placeholderExcludedPlatforms4;
             v92 = 0;
-            *v93 = v9 != v10;
+            *v93 = symbolImageName != symbolImageName2;
             v14 = 0;
             v15 = 0;
             v16 = 0;
             *&v93[4] = 1;
             v13 = 1;
-            *v90 = v3;
+            *v90 = symbolImageName5;
             *&v90[4] = 1;
             *&v87[4] = HIDWORD(v94);
             *&v87[8] = HIDWORD(v94);
             *v88 = 1;
-            *&v88[4] = v3;
+            *&v88[4] = symbolImageName5;
             DWORD2(v86) = DWORD2(v94);
             HIDWORD(v86) = DWORD2(v94);
             *v87 = 1;
             goto LABEL_60;
           }
 
-          v54 = v31;
-          v4 = [(DNDSModeRecord *)self modeIdentifier];
-          v52 = [(DNDSModeRecord *)v8 modeIdentifier];
-          v53 = v4;
-          if (![v4 isEqual:?])
+          v54 = modeIdentifier3;
+          symbolDescriptorTintColorNames5 = [(DNDSModeRecord *)self modeIdentifier];
+          modeIdentifier4 = [(DNDSModeRecord *)v8 modeIdentifier];
+          v53 = symbolDescriptorTintColorNames5;
+          if (![symbolDescriptorTintColorNames5 isEqual:?])
           {
             *&v90[8] = 0;
             *&v94 = 0x100000000;
-            *&v88[8] = v5;
+            *&v88[8] = placeholderExcludedPlatforms4;
             v89 = 0;
             *&v90[16] = 0;
-            v91 = v5;
+            v91 = placeholderExcludedPlatforms4;
             v92 = 0;
-            *v93 = v9 != v10;
+            *v93 = symbolImageName != symbolImageName2;
             v14 = 0;
             v15 = 0;
             v16 = 0;
             *&v93[4] = 1;
             v13 = 1;
-            *v90 = v3;
+            *v90 = symbolImageName5;
             *&v90[4] = 1;
             *&v87[4] = HIDWORD(v94);
             *&v87[8] = HIDWORD(v94);
             *v88 = 1;
-            *&v88[4] = v3;
+            *&v88[4] = symbolImageName5;
             DWORD2(v86) = DWORD2(v94);
             HIDWORD(v86) = DWORD2(v94);
             *v87 = 1;
@@ -623,47 +623,47 @@ LABEL_40:
             goto LABEL_60;
           }
 
-          v4 = v3;
+          symbolDescriptorTintColorNames5 = symbolImageName5;
         }
 
-        v3 = [(DNDSModeRecord *)self semanticType];
-        if (v3 == [(DNDSModeRecord *)v8 semanticType]&& (v3 = [(DNDSModeRecord *)self visibility], v3 == [(DNDSModeRecord *)v8 visibility]))
+        symbolImageName5 = [(DNDSModeRecord *)self semanticType];
+        if (symbolImageName5 == [(DNDSModeRecord *)v8 semanticType]&& (symbolImageName5 = [(DNDSModeRecord *)self visibility], symbolImageName5 == [(DNDSModeRecord *)v8 visibility]))
         {
-          v32 = [(DNDSModeRecord *)self identifier];
-          v33 = [(DNDSModeRecord *)v8 identifier];
-          v34 = v32;
-          v50 = v33;
-          v23 = v32 == v33;
-          LODWORD(v94) = v32 != v33;
-          v3 = v4;
+          identifier = [(DNDSModeRecord *)self identifier];
+          identifier2 = [(DNDSModeRecord *)v8 identifier];
+          v34 = identifier;
+          v50 = identifier2;
+          v23 = identifier == identifier2;
+          LODWORD(v94) = identifier != identifier2;
+          symbolImageName5 = symbolDescriptorTintColorNames5;
           v51 = v34;
           if (v23)
           {
             goto LABEL_124;
           }
 
-          v35 = [(DNDSModeRecord *)self identifier];
-          if (!v35)
+          identifier3 = [(DNDSModeRecord *)self identifier];
+          if (!identifier3)
           {
             v49 = 0;
-            *&v88[8] = v5;
+            *&v88[8] = placeholderExcludedPlatforms4;
             v89 = 0;
             *&v90[12] = 0;
             v92 = 0;
-            *v93 = v9 != v10;
+            *v93 = symbolImageName != symbolImageName2;
             v14 = 0;
             v15 = 0;
             v16 = 0;
             *&v93[4] = 1;
-            v91 = v5;
+            v91 = placeholderExcludedPlatforms4;
             v13 = 1;
-            *v90 = v4;
+            *v90 = symbolDescriptorTintColorNames5;
             *&v90[4] = 1;
             *&v87[4] = HIDWORD(v94);
             *&v87[8] = HIDWORD(v94);
             *v88 = 1;
-            *&v88[4] = v4;
-            v4 = DWORD1(v94);
+            *&v88[4] = symbolDescriptorTintColorNames5;
+            symbolDescriptorTintColorNames5 = DWORD1(v94);
             HIDWORD(v86) = DWORD2(v94);
             *v87 = 1;
             LODWORD(v86) = DWORD1(v94);
@@ -673,29 +673,29 @@ LABEL_40:
             goto LABEL_60;
           }
 
-          v36 = v35;
-          v48 = [(DNDSModeRecord *)v8 identifier];
+          v36 = identifier3;
+          identifier4 = [(DNDSModeRecord *)v8 identifier];
           v49 = v36;
-          if (!v48)
+          if (!identifier4)
           {
-            v48 = 0;
+            identifier4 = 0;
             *&v90[12] = 0;
             v92 = 0;
-            *v93 = v9 != v10;
+            *v93 = symbolImageName != symbolImageName2;
             v14 = 0;
             v15 = 0;
             v16 = 0;
             *&v93[4] = 1;
-            v91 = v5;
-            *&v88[4] = v3;
-            *&v88[8] = v5;
+            v91 = placeholderExcludedPlatforms4;
+            *&v88[4] = symbolImageName5;
+            *&v88[8] = placeholderExcludedPlatforms4;
             v13 = 1;
-            *v90 = v3;
+            *v90 = symbolImageName5;
             *&v90[4] = 1;
             *&v87[4] = HIDWORD(v94);
             *&v87[8] = HIDWORD(v94);
             *v88 = 1;
-            v4 = DWORD1(v94);
+            symbolDescriptorTintColorNames5 = DWORD1(v94);
             HIDWORD(v86) = DWORD2(v94);
             *v87 = 1;
             LODWORD(v86) = DWORD1(v94);
@@ -706,32 +706,32 @@ LABEL_40:
             goto LABEL_60;
           }
 
-          v37 = [(DNDSModeRecord *)self identifier];
-          v43 = [(DNDSModeRecord *)v8 identifier];
-          v44 = v37;
-          if ([v37 isEqual:?])
+          identifier5 = [(DNDSModeRecord *)self identifier];
+          identifier6 = [(DNDSModeRecord *)v8 identifier];
+          v44 = identifier5;
+          if ([identifier5 isEqual:?])
           {
 LABEL_124:
-            v41 = [(DNDSModeRecord *)self placeholderExcludedPlatforms];
-            v46 = [(DNDSModeRecord *)v8 placeholderExcludedPlatforms];
-            v47 = v41;
-            if (v41 == v46)
+            placeholderExcludedPlatforms = [(DNDSModeRecord *)self placeholderExcludedPlatforms];
+            placeholderExcludedPlatforms2 = [(DNDSModeRecord *)v8 placeholderExcludedPlatforms];
+            v47 = placeholderExcludedPlatforms;
+            if (placeholderExcludedPlatforms == placeholderExcludedPlatforms2)
             {
               v92 = 0;
-              *v93 = v9 != v10;
+              *v93 = symbolImageName != symbolImageName2;
               v14 = 0;
               v15 = 0;
               *&v93[4] = 1;
-              v91 = v5;
-              *&v88[4] = v3;
-              *&v88[8] = v5;
+              v91 = placeholderExcludedPlatforms4;
+              *&v88[4] = symbolImageName5;
+              *&v88[8] = placeholderExcludedPlatforms4;
               v13 = 1;
-              *v90 = v3;
+              *v90 = symbolImageName5;
               *&v90[4] = 1;
               *&v87[4] = HIDWORD(v94);
               *&v87[8] = HIDWORD(v94);
               *v88 = 1;
-              v4 = DWORD1(v94);
+              symbolDescriptorTintColorNames5 = DWORD1(v94);
               HIDWORD(v86) = DWORD2(v94);
               *v87 = 1;
               LODWORD(v86) = DWORD1(v94);
@@ -745,17 +745,17 @@ LABEL_124:
 
             else
             {
-              v42 = [(DNDSModeRecord *)self placeholderExcludedPlatforms];
-              if (v42)
+              placeholderExcludedPlatforms3 = [(DNDSModeRecord *)self placeholderExcludedPlatforms];
+              if (placeholderExcludedPlatforms3)
               {
-                v45 = v42;
-                v4 = [(DNDSModeRecord *)v8 placeholderExcludedPlatforms];
-                if (v4)
+                v45 = placeholderExcludedPlatforms3;
+                symbolDescriptorTintColorNames5 = [(DNDSModeRecord *)v8 placeholderExcludedPlatforms];
+                if (symbolDescriptorTintColorNames5)
                 {
-                  v3 = [(DNDSModeRecord *)self placeholderExcludedPlatforms];
-                  v5 = [(DNDSModeRecord *)v8 placeholderExcludedPlatforms];
-                  v16 = [v3 isEqual:v5];
-                  *v93 = v9 != v10;
+                  symbolImageName5 = [(DNDSModeRecord *)self placeholderExcludedPlatforms];
+                  placeholderExcludedPlatforms4 = [(DNDSModeRecord *)v8 placeholderExcludedPlatforms];
+                  v16 = [symbolImageName5 isEqual:placeholderExcludedPlatforms4];
+                  *v93 = symbolImageName != symbolImageName2;
                   *&v93[4] = 1;
                   *&v88[4] = *&v93[12];
                   v91 = *&v93[8];
@@ -779,11 +779,11 @@ LABEL_124:
                 {
                   v15 = 0;
                   v16 = 0;
-                  *v93 = v9 != v10;
+                  *v93 = symbolImageName != symbolImageName2;
                   *&v93[4] = 1;
-                  v91 = v5;
+                  v91 = placeholderExcludedPlatforms4;
                   *&v88[4] = *&v93[12];
-                  *&v88[8] = v5;
+                  *&v88[8] = placeholderExcludedPlatforms4;
                   v13 = 1;
                   *v90 = *&v93[12];
                   *&v87[4] = HIDWORD(v94);
@@ -810,18 +810,18 @@ LABEL_124:
                 v14 = 0;
                 v15 = 0;
                 v16 = 0;
-                *v93 = v9 != v10;
+                *v93 = symbolImageName != symbolImageName2;
                 *&v93[4] = 1;
-                v91 = v5;
-                *&v88[4] = v3;
-                *&v88[8] = v5;
+                v91 = placeholderExcludedPlatforms4;
+                *&v88[4] = symbolImageName5;
+                *&v88[8] = placeholderExcludedPlatforms4;
                 v13 = 1;
-                *v90 = v3;
+                *v90 = symbolImageName5;
                 *&v90[4] = 1;
                 *&v87[4] = HIDWORD(v94);
                 *&v87[8] = HIDWORD(v94);
                 *v88 = 1;
-                v4 = DWORD1(v94);
+                symbolDescriptorTintColorNames5 = DWORD1(v94);
                 HIDWORD(v86) = DWORD2(v94);
                 *v87 = 1;
                 LODWORD(v86) = DWORD1(v94);
@@ -838,22 +838,22 @@ LABEL_124:
           }
 
           *&v90[16] = 0;
-          v91 = v5;
+          v91 = placeholderExcludedPlatforms4;
           v92 = 0;
-          *v93 = v9 != v10;
+          *v93 = symbolImageName != symbolImageName2;
           v14 = 0;
           v15 = 0;
           v16 = 0;
           *&v93[4] = 1;
-          *&v88[4] = v3;
-          *&v88[8] = v5;
+          *&v88[4] = symbolImageName5;
+          *&v88[8] = placeholderExcludedPlatforms4;
           v13 = 1;
-          *v90 = v3;
+          *v90 = symbolImageName5;
           *&v90[4] = 1;
           *&v87[4] = HIDWORD(v94);
           *&v87[8] = HIDWORD(v94);
           *v88 = 1;
-          v4 = DWORD1(v94);
+          symbolDescriptorTintColorNames5 = DWORD1(v94);
           HIDWORD(v86) = DWORD2(v94);
           *v87 = 1;
           LODWORD(v86) = DWORD1(v94);
@@ -868,23 +868,23 @@ LABEL_124:
         {
           *&v90[8] = 0;
           LODWORD(v94) = 0;
-          *&v88[8] = v5;
+          *&v88[8] = placeholderExcludedPlatforms4;
           v89 = 0;
           *&v90[16] = 0;
-          v91 = v5;
+          v91 = placeholderExcludedPlatforms4;
           v92 = 0;
-          *v93 = v9 != v10;
+          *v93 = symbolImageName != symbolImageName2;
           v14 = 0;
           v15 = 0;
           v16 = 0;
           *&v93[4] = 1;
           v13 = 1;
-          *v90 = v4;
+          *v90 = symbolDescriptorTintColorNames5;
           *&v90[4] = 1;
           *&v87[4] = HIDWORD(v94);
           *&v87[8] = HIDWORD(v94);
           *v88 = 1;
-          *&v88[4] = v4;
+          *&v88[4] = symbolDescriptorTintColorNames5;
           HIDWORD(v86) = DWORD2(v94);
           *v87 = 1;
           LODWORD(v86) = DWORD1(v94);
@@ -898,23 +898,23 @@ LABEL_124:
         *&v94 = 0;
         *&v86 = 0;
         *&v90[8] = 0;
-        *&v88[8] = v5;
+        *&v88[8] = placeholderExcludedPlatforms4;
         v89 = 0;
         *&v90[16] = 0;
-        v91 = v5;
+        v91 = placeholderExcludedPlatforms4;
         v92 = 0;
-        *v93 = v9 != v10;
+        *v93 = symbolImageName != symbolImageName2;
         v14 = 0;
         v15 = 0;
         v16 = 0;
         *&v93[4] = 1;
         v13 = 1;
-        *v90 = v3;
+        *v90 = symbolImageName5;
         *&v90[4] = 1;
         *&v87[4] = HIDWORD(v94);
         *&v87[8] = HIDWORD(v94);
         *v88 = 1;
-        *&v88[4] = v3;
+        *&v88[4] = symbolImageName5;
         DWORD2(v94) = 1;
         *(&v86 + 1) = 0x100000001;
       }
@@ -923,24 +923,24 @@ LABEL_124:
     else
     {
       *v88 = 0;
-      *&v88[4] = v3;
+      *&v88[4] = symbolImageName5;
       *(&v94 + 4) = 0;
       *v87 = 0x100000000;
       v86 = 0uLL;
       *&v90[8] = 0;
       LODWORD(v94) = 0;
-      *&v88[8] = v5;
+      *&v88[8] = placeholderExcludedPlatforms4;
       v89 = 0;
       *&v90[16] = 0;
-      v91 = v5;
+      v91 = placeholderExcludedPlatforms4;
       v92 = 0;
-      *v93 = v9 != v10;
+      *v93 = symbolImageName != symbolImageName2;
       v14 = 0;
       v15 = 0;
       v16 = 0;
       *&v93[4] = 1;
       v13 = 1;
-      *v90 = v3;
+      *v90 = symbolImageName5;
       *&v90[4] = 1;
       HIDWORD(v94) = 1;
       *&v87[8] = 1;
@@ -953,15 +953,15 @@ LABEL_124:
     v94 = 0uLL;
     memset(v87, 0, sizeof(v87));
     v86 = 0uLL;
-    *&v88[8] = v5;
+    *&v88[8] = placeholderExcludedPlatforms4;
     v89 = 0;
     v92 = 0;
-    *v93 = v9 != v10;
+    *v93 = symbolImageName != symbolImageName2;
     v14 = 0;
     v15 = 0;
     v16 = 0;
     *&v93[4] = 1;
-    v91 = v5;
+    v91 = placeholderExcludedPlatforms4;
     v13 = 1;
     *&v93[12] = 1;
     *v90 = 1;
@@ -1094,7 +1094,7 @@ LABEL_60:
   {
   }
 
-  if (v9 != v10)
+  if (symbolImageName != symbolImageName2)
   {
   }
 
@@ -1106,46 +1106,46 @@ LABEL_123:
 {
   v18 = MEMORY[0x277CCACA8];
   v17 = objc_opt_class();
-  v16 = [(DNDSModeRecord *)self symbolImageName];
-  v15 = [(DNDSModeRecord *)self tintColorName];
-  v14 = [(DNDSModeRecord *)self symbolDescriptorTintStyle];
-  v3 = [(DNDSModeRecord *)self symbolDescriptorTintColorNames];
-  v4 = [(DNDSModeRecord *)self symbolDescriptorImageName];
-  v5 = [(DNDSModeRecord *)self name];
-  v6 = [(DNDSModeRecord *)self modeIdentifier];
-  v7 = [(DNDSModeRecord *)self semanticType];
-  v8 = [(DNDSModeRecord *)self visibility];
-  v9 = [(DNDSModeRecord *)self identifier];
-  v10 = [v9 UUIDString];
-  v11 = [(DNDSModeRecord *)self placeholderExcludedPlatforms];
-  v12 = [v18 stringWithFormat:@"<%@: %p symbolImageName: %@; tintColorName: %@; symbolDescriptorTintStyle: %lu; symbolDescriptorTintColorNames: %@; symbolDescriptorImageName: %@; name: %@; modeIdentifier: %@; semanticType: %zd; visibility: %lu; identifier: %@; placeholderExcludedPlatforms; %@>", v17, self, v16, v15, v14, v3, v4, v5, v6, v7, v8, v10, v11];;
+  symbolImageName = [(DNDSModeRecord *)self symbolImageName];
+  tintColorName = [(DNDSModeRecord *)self tintColorName];
+  symbolDescriptorTintStyle = [(DNDSModeRecord *)self symbolDescriptorTintStyle];
+  symbolDescriptorTintColorNames = [(DNDSModeRecord *)self symbolDescriptorTintColorNames];
+  symbolDescriptorImageName = [(DNDSModeRecord *)self symbolDescriptorImageName];
+  name = [(DNDSModeRecord *)self name];
+  modeIdentifier = [(DNDSModeRecord *)self modeIdentifier];
+  semanticType = [(DNDSModeRecord *)self semanticType];
+  visibility = [(DNDSModeRecord *)self visibility];
+  identifier = [(DNDSModeRecord *)self identifier];
+  uUIDString = [identifier UUIDString];
+  placeholderExcludedPlatforms = [(DNDSModeRecord *)self placeholderExcludedPlatforms];
+  v12 = [v18 stringWithFormat:@"<%@: %p symbolImageName: %@; tintColorName: %@; symbolDescriptorTintStyle: %lu; symbolDescriptorTintColorNames: %@; symbolDescriptorImageName: %@; name: %@; modeIdentifier: %@; semanticType: %zd; visibility: %lu; identifier: %@; placeholderExcludedPlatforms; %@>", v17, self, symbolImageName, tintColorName, symbolDescriptorTintStyle, symbolDescriptorTintColorNames, symbolDescriptorImageName, name, modeIdentifier, semanticType, visibility, uUIDString, placeholderExcludedPlatforms];;
 
   return v12;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DNDSMutableModeRecord alloc];
 
   return [(DNDSModeRecord *)v4 _initWithRecord:self];
 }
 
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context
 {
-  v5 = a3;
-  v22 = [v5 bs_safeObjectForKey:@"symbolImageName" ofType:objc_opt_class()];
-  v21 = [v5 bs_safeObjectForKey:@"tintColorName" ofType:objc_opt_class()];
-  v20 = [v5 bs_safeObjectForKey:@"symbolDescriptorTintStyle" ofType:objc_opt_class()];
-  v6 = [v20 integerValue];
-  v19 = [v5 bs_safeArrayForKey:@"symbolDescriptorTintColorNames"];
-  v18 = [v5 bs_safeObjectForKey:@"symbolDescriptorImageName" ofType:objc_opt_class()];
-  v17 = [v5 bs_safeObjectForKey:@"name" ofType:objc_opt_class()];
-  v7 = [v5 bs_safeObjectForKey:@"modeIdentifier" ofType:objc_opt_class()];
-  v16 = [v5 bs_safeObjectForKey:@"semanticType" ofType:objc_opt_class()];
-  v8 = [v16 integerValue];
-  v15 = [v5 bs_safeObjectForKey:@"visibility" ofType:objc_opt_class()];
-  v9 = [v15 integerValue];
-  v10 = [v5 bs_safeObjectForKey:@"identifier" ofType:objc_opt_class()];
+  representationCopy = representation;
+  v22 = [representationCopy bs_safeObjectForKey:@"symbolImageName" ofType:objc_opt_class()];
+  v21 = [representationCopy bs_safeObjectForKey:@"tintColorName" ofType:objc_opt_class()];
+  v20 = [representationCopy bs_safeObjectForKey:@"symbolDescriptorTintStyle" ofType:objc_opt_class()];
+  integerValue = [v20 integerValue];
+  v19 = [representationCopy bs_safeArrayForKey:@"symbolDescriptorTintColorNames"];
+  v18 = [representationCopy bs_safeObjectForKey:@"symbolDescriptorImageName" ofType:objc_opt_class()];
+  v17 = [representationCopy bs_safeObjectForKey:@"name" ofType:objc_opt_class()];
+  v7 = [representationCopy bs_safeObjectForKey:@"modeIdentifier" ofType:objc_opt_class()];
+  v16 = [representationCopy bs_safeObjectForKey:@"semanticType" ofType:objc_opt_class()];
+  integerValue2 = [v16 integerValue];
+  v15 = [representationCopy bs_safeObjectForKey:@"visibility" ofType:objc_opt_class()];
+  integerValue3 = [v15 integerValue];
+  v10 = [representationCopy bs_safeObjectForKey:@"identifier" ofType:objc_opt_class()];
   if (v10)
   {
     v11 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v10];
@@ -1156,28 +1156,28 @@ LABEL_123:
     v11 = 0;
   }
 
-  v12 = [v5 bs_safeArrayForKey:@"excludedPlatforms"];
-  v14 = [[a1 alloc] _initWithSymbolImageName:v22 tintColorName:v21 symbolDescriptorTintStyle:v6 symbolDescriptorTintColorNames:v19 symbolDescriptorImageName:v18 name:v17 modeIdentifier:v7 semanticType:v8 visibility:v9 identifier:v11 placeholderExcludedPlatforms:v12];
+  v12 = [representationCopy bs_safeArrayForKey:@"excludedPlatforms"];
+  v14 = [[self alloc] _initWithSymbolImageName:v22 tintColorName:v21 symbolDescriptorTintStyle:integerValue symbolDescriptorTintColorNames:v19 symbolDescriptorImageName:v18 name:v17 modeIdentifier:v7 semanticType:integerValue2 visibility:integerValue3 identifier:v11 placeholderExcludedPlatforms:v12];
 
   return v14;
 }
 
-- (id)dictionaryRepresentationWithContext:(id)a3
+- (id)dictionaryRepresentationWithContext:(id)context
 {
-  v4 = [a3 healingSource];
-  v5 = [v4 mutableCopy];
+  healingSource = [context healingSource];
+  v5 = [healingSource mutableCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    dictionary = v5;
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v8 = v7;
+  v8 = dictionary;
 
   [v8 setObject:self->_name forKeyedSubscript:@"name"];
   [v8 setObject:self->_modeIdentifier forKeyedSubscript:@"modeIdentifier"];
@@ -1187,16 +1187,16 @@ LABEL_123:
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_visibility];
   [v8 setObject:v10 forKeyedSubscript:@"visibility"];
 
-  v11 = [(NSUUID *)self->_identifier UUIDString];
-  [v8 setObject:v11 forKeyedSubscript:@"identifier"];
+  uUIDString = [(NSUUID *)self->_identifier UUIDString];
+  [v8 setObject:uUIDString forKeyedSubscript:@"identifier"];
 
   [v8 setObject:self->_tintColorName forKeyedSubscript:@"tintColorName"];
   [v8 setObject:self->_symbolImageName forKeyedSubscript:@"symbolImageName"];
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_symbolDescriptorTintStyle];
   [v8 setObject:v12 forKeyedSubscript:@"symbolDescriptorTintStyle"];
 
-  v13 = [(DNDSModeRecord *)self symbolDescriptorTintColorNames];
-  [v8 bs_setSafeObject:v13 forKey:@"symbolDescriptorTintColorNames"];
+  symbolDescriptorTintColorNames = [(DNDSModeRecord *)self symbolDescriptorTintColorNames];
+  [v8 bs_setSafeObject:symbolDescriptorTintColorNames forKey:@"symbolDescriptorTintColorNames"];
 
   [v8 setObject:self->_symbolDescriptorImageName forKeyedSubscript:@"symbolDescriptorImageName"];
 

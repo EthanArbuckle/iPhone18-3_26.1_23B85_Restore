@@ -1,28 +1,28 @@
 @interface CHTextCheckUtils
-+ (id)rawTranscriptionForStrokesWithEncodedIdentifiers:(id)a3 contextResults:(id)a4 outLocale:(id *)a5;
-+ (id)rawTranscriptionForStrokesWithIdentifiers:(id)a3 strokeProvider:(id)a4 sessionResult:(id)a5;
++ (id)rawTranscriptionForStrokesWithEncodedIdentifiers:(id)identifiers contextResults:(id)results outLocale:(id *)locale;
++ (id)rawTranscriptionForStrokesWithIdentifiers:(id)identifiers strokeProvider:(id)provider sessionResult:(id)result;
 @end
 
 @implementation CHTextCheckUtils
 
-+ (id)rawTranscriptionForStrokesWithEncodedIdentifiers:(id)a3 contextResults:(id)a4 outLocale:(id *)a5
++ (id)rawTranscriptionForStrokesWithEncodedIdentifiers:(id)identifiers contextResults:(id)results outLocale:(id *)locale
 {
   v99 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifiersCopy = identifiers;
   v92 = 0;
   v93 = &v92;
   v94 = 0x3032000000;
   v95 = sub_183991460;
   v96 = sub_183991470;
   v97 = &stru_1EF1C0318;
-  v78 = a4;
-  v79 = v6;
-  v83 = objc_msgSend_setWithArray_(MEMORY[0x1E695DFD8], v7, v6, v8, v9, v10);
+  resultsCopy = results;
+  v79 = identifiersCopy;
+  v83 = objc_msgSend_setWithArray_(MEMORY[0x1E695DFD8], v7, identifiersCopy, v8, v9, v10);
   v90 = 0u;
   v91 = 0u;
   v88 = 0u;
   v89 = 0u;
-  obj = v78;
+  obj = resultsCopy;
   v13 = 0;
   v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v11, &v88, v98, 16, v12);
   if (v19)
@@ -78,10 +78,10 @@
   v74 = v93[5];
   v93[5] = v73;
 
-  if (a5)
+  if (locale)
   {
     v75 = v13;
-    *a5 = v13;
+    *locale = v13;
   }
 
   v76 = v93[5];
@@ -91,16 +91,16 @@
   return v76;
 }
 
-+ (id)rawTranscriptionForStrokesWithIdentifiers:(id)a3 strokeProvider:(id)a4 sessionResult:(id)a5
++ (id)rawTranscriptionForStrokesWithIdentifiers:(id)identifiers strokeProvider:(id)provider sessionResult:(id)result
 {
-  v7 = a5;
-  v11 = objc_msgSend_encodedStrokeIdentifiers_withStrokeProvider_(CHStrokeUtilities, v8, a3, a4, v9, v10);
+  resultCopy = result;
+  v11 = objc_msgSend_encodedStrokeIdentifiers_withStrokeProvider_(CHStrokeUtilities, v8, identifiers, provider, v9, v10);
   v12 = objc_alloc_init(MEMORY[0x1E695DEC8]);
   v26 = v12;
-  v16 = objc_msgSend_fullyCoveredStrokeGroupsForContextStrokes_partiallyCoveredStrokeGroups_(v7, v13, v11, &v26, v14, v15);
+  v16 = objc_msgSend_fullyCoveredStrokeGroupsForContextStrokes_partiallyCoveredStrokeGroups_(resultCopy, v13, v11, &v26, v14, v15);
   v17 = v26;
 
-  v21 = objc_msgSend_contextualResultsWithFullyCoveredStrokeGroups_partiallyCoveredStrokeGroups_drawingCanvasSize_(v7, v18, v16, v17, v19, v20, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
+  v21 = objc_msgSend_contextualResultsWithFullyCoveredStrokeGroups_partiallyCoveredStrokeGroups_drawingCanvasSize_(resultCopy, v18, v16, v17, v19, v20, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
   v24 = objc_msgSend_rawTranscriptionForStrokesWithEncodedIdentifiers_contextResults_outLocale_(CHTextCheckUtils, v22, v11, v21, 0, v23);
 
   return v24;

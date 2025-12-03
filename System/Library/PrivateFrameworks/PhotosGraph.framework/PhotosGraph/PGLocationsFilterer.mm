@@ -1,6 +1,6 @@
 @interface PGLocationsFilterer
 - (NSArray)filteredLocationNodes;
-- (PGLocationsFilterer)initWithSortedMomentNodes:(id)a3 locationNodes:(id)a4 incompleteLocationResolver:(id)a5;
+- (PGLocationsFilterer)initWithSortedMomentNodes:(id)nodes locationNodes:(id)locationNodes incompleteLocationResolver:(id)resolver;
 - (id)_filteredSignificantLocationNodes;
 @end
 
@@ -10,24 +10,24 @@
 {
   v152 = *MEMORY[0x277D85DE8];
   v88 = self->_locationNodes;
-  v82 = self;
+  selfCopy = self;
   v83 = self->_sortedMomentNodes;
-  v3 = [(NSArray *)v83 firstObject];
-  v84 = [v3 graph];
+  firstObject = [(NSArray *)v83 firstObject];
+  graph = [firstObject graph];
 
-  v86 = [v84 version] >= 0xCE && +[PGUserDefaults useExtendedCurationAssetCountForLocationTitles](PGUserDefaults, "useExtendedCurationAssetCountForLocationTitles");
-  v95 = v82->_incompleteLocationResolver;
+  v86 = [graph version] >= 0xCE && +[PGUserDefaults useExtendedCurationAssetCountForLocationTitles](PGUserDefaults, "useExtendedCurationAssetCountForLocationTitles");
+  v95 = selfCopy->_incompleteLocationResolver;
   if (![(NSArray *)v88 count])
   {
     v49 = v88;
     goto LABEL_94;
   }
 
-  v4 = [(NSArray *)v88 firstObject];
-  v94 = [v4 label];
+  firstObject2 = [(NSArray *)v88 firstObject];
+  label = [firstObject2 label];
 
-  v91 = [PGCommonTitleUtility dimensionForLabel:v94];
-  v5 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  v91 = [PGCommonTitleUtility dimensionForLabel:label];
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   v92 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSArray count](v88, "count")}];
   v143 = 0u;
   v144 = 0u;
@@ -55,7 +55,7 @@
         v96 = v7;
         v9 = *(*(&v141 + 1) + 8 * v7);
         context = objc_autoreleasePoolPush();
-        v10 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+        strongToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
         v137 = 0;
         v138 = &v137;
         v139 = 0x2020000000;
@@ -68,45 +68,45 @@
         v125[1] = 3221225472;
         v125[2] = __56__PGLocationsFilterer__filteredSignificantLocationNodes__block_invoke;
         v125[3] = &unk_278882E28;
-        v126 = v94;
+        v126 = label;
         v127 = v95;
         v132 = v91;
         v11 = v92;
         v128 = v11;
         v130 = &v133;
         v131 = &v137;
-        v12 = v10;
+        v12 = strongToStrongObjectsMapTable2;
         v129 = v12;
         [v9 enumerateAddressEdgesAndNodesUsingBlock:v125];
         if (v138[3] > 0.0)
         {
           if (v86)
           {
-            v13 = [v9 numberOfAssetsInExtendedCuration];
+            numberOfAssetsInExtendedCuration = [v9 numberOfAssetsInExtendedCuration];
           }
 
           else
           {
-            v13 = [v9 numberOfAssets];
+            numberOfAssetsInExtendedCuration = [v9 numberOfAssets];
           }
 
-          if (!v13)
+          if (!numberOfAssetsInExtendedCuration)
           {
-            v13 = [v9 numberOfAssets];
+            numberOfAssetsInExtendedCuration = [v9 numberOfAssets];
           }
 
-          v90 = v13;
+          v90 = numberOfAssetsInExtendedCuration;
           if (*(v134 + 24) == 1)
           {
             v123 = 0u;
             v124 = 0u;
             v121 = 0u;
             v122 = 0u;
-            v14 = [v11 allValues];
-            v15 = [v14 countByEnumeratingWithState:&v121 objects:v150 count:16];
+            allValues = [v11 allValues];
+            v15 = [allValues countByEnumeratingWithState:&v121 objects:v150 count:16];
             if (v15)
             {
-              v98 = v14;
+              v98 = allValues;
               v99 = *v122;
               do
               {
@@ -205,7 +205,7 @@
                   }
                 }
 
-                v14 = v98;
+                allValues = v98;
                 v15 = [v98 countByEnumeratingWithState:&v121 objects:v150 count:16];
               }
 
@@ -217,8 +217,8 @@
           v112 = 0u;
           v109 = 0u;
           v110 = 0u;
-          v35 = [v12 keyEnumerator];
-          v36 = [v35 countByEnumeratingWithState:&v109 objects:v147 count:16];
+          keyEnumerator = [v12 keyEnumerator];
+          v36 = [keyEnumerator countByEnumeratingWithState:&v109 objects:v147 count:16];
           if (v36)
           {
             v37 = *v110;
@@ -228,7 +228,7 @@
               {
                 if (*v110 != v37)
                 {
-                  objc_enumerationMutation(v35);
+                  objc_enumerationMutation(keyEnumerator);
                 }
 
                 v39 = *(*(&v109 + 1) + 8 * m);
@@ -237,15 +237,15 @@
                 v42 = v41;
 
                 v43 = v138[3];
-                v44 = [v5 objectForKey:v39];
+                v44 = [strongToStrongObjectsMapTable objectForKey:v39];
                 [v44 floatValue];
                 v46 = v45;
 
                 v47 = [*(v6 + 2992) numberWithDouble:v42 / v43 * v90 + v46];
-                [v5 setObject:v47 forKey:v39];
+                [strongToStrongObjectsMapTable setObject:v47 forKey:v39];
               }
 
-              v36 = [v35 countByEnumeratingWithState:&v109 objects:v147 count:16];
+              v36 = [keyEnumerator countByEnumeratingWithState:&v109 objects:v147 count:16];
             }
 
             while (v36);
@@ -275,13 +275,13 @@
   }
 
   v49 = [(NSArray *)v88 mutableCopy];
-  v50 = [v5 count];
+  v50 = [strongToStrongObjectsMapTable count];
   v51 = v50;
   if (v50 >= 2)
   {
     if (v50 == 3)
     {
-      filteringType = v82->_filteringType;
+      filteringType = selfCopy->_filteringType;
       v53 = 0.0;
       if (filteringType <= 2)
       {
@@ -298,8 +298,8 @@
         v108 = 0u;
         v105 = 0u;
         v106 = 0u;
-        v56 = [v5 keyEnumerator];
-        v57 = [v56 countByEnumeratingWithState:&v105 objects:v146 count:16];
+        keyEnumerator2 = [strongToStrongObjectsMapTable keyEnumerator];
+        v57 = [keyEnumerator2 countByEnumeratingWithState:&v105 objects:v146 count:16];
         v58 = v51;
         v59 = v48 / v51;
         if (v57)
@@ -312,17 +312,17 @@
             {
               if (*v106 != v60)
               {
-                objc_enumerationMutation(v56);
+                objc_enumerationMutation(keyEnumerator2);
               }
 
-              v63 = [v5 objectForKey:*(*(&v105 + 1) + 8 * n)];
+              v63 = [strongToStrongObjectsMapTable objectForKey:*(*(&v105 + 1) + 8 * n)];
               [v63 floatValue];
               v65 = v64;
 
               v61 = v61 + ((v65 - v59) * (v65 - v59));
             }
 
-            v57 = [v56 countByEnumeratingWithState:&v105 objects:v146 count:16];
+            v57 = [keyEnumerator2 countByEnumeratingWithState:&v105 objects:v146 count:16];
           }
 
           while (v57);
@@ -334,7 +334,7 @@
         }
 
         v66 = sqrtf(v61 / v58);
-        v67 = v82->_filteringType;
+        v67 = selfCopy->_filteringType;
         v68 = 0.0;
         if (v67 <= 2)
         {
@@ -352,7 +352,7 @@
         goto LABEL_83;
       }
 
-      filteringType = v82->_filteringType;
+      filteringType = selfCopy->_filteringType;
       v53 = 0.0;
       if (filteringType <= 2)
       {
@@ -368,8 +368,8 @@ LABEL_83:
     v104 = 0u;
     v101 = 0u;
     v102 = 0u;
-    v71 = [v5 keyEnumerator];
-    v72 = [v71 countByEnumeratingWithState:&v101 objects:v145 count:16];
+    keyEnumerator3 = [strongToStrongObjectsMapTable keyEnumerator];
+    v72 = [keyEnumerator3 countByEnumeratingWithState:&v101 objects:v145 count:16];
     if (v72)
     {
       v73 = *v102;
@@ -380,11 +380,11 @@ LABEL_83:
         {
           if (*v102 != v73)
           {
-            objc_enumerationMutation(v71);
+            objc_enumerationMutation(keyEnumerator3);
           }
 
           v76 = *(*(&v101 + 1) + 8 * ii);
-          v77 = [v5 objectForKey:v76];
+          v77 = [strongToStrongObjectsMapTable objectForKey:v76];
           [v77 floatValue];
           v79 = v78;
 
@@ -394,7 +394,7 @@ LABEL_83:
           }
         }
 
-        v72 = [v71 countByEnumeratingWithState:&v101 objects:v145 count:16];
+        v72 = [keyEnumerator3 countByEnumeratingWithState:&v101 objects:v145 count:16];
       }
 
       while (v72);
@@ -482,9 +482,9 @@ LABEL_17:
   filteredLocationNodes = self->_filteredLocationNodes;
   if (!filteredLocationNodes)
   {
-    v4 = [(PGLocationsFilterer *)self _filteredSignificantLocationNodes];
+    _filteredSignificantLocationNodes = [(PGLocationsFilterer *)self _filteredSignificantLocationNodes];
     v5 = self->_filteredLocationNodes;
-    self->_filteredLocationNodes = v4;
+    self->_filteredLocationNodes = _filteredSignificantLocationNodes;
 
     filteredLocationNodes = self->_filteredLocationNodes;
   }
@@ -492,11 +492,11 @@ LABEL_17:
   return filteredLocationNodes;
 }
 
-- (PGLocationsFilterer)initWithSortedMomentNodes:(id)a3 locationNodes:(id)a4 incompleteLocationResolver:(id)a5
+- (PGLocationsFilterer)initWithSortedMomentNodes:(id)nodes locationNodes:(id)locationNodes incompleteLocationResolver:(id)resolver
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nodesCopy = nodes;
+  locationNodesCopy = locationNodes;
+  resolverCopy = resolver;
   v15.receiver = self;
   v15.super_class = PGLocationsFilterer;
   v12 = [(PGLocationsFilterer *)&v15 init];
@@ -504,9 +504,9 @@ LABEL_17:
   if (v12)
   {
     v12->_filteringType = 0;
-    objc_storeStrong(&v12->_sortedMomentNodes, a3);
-    objc_storeStrong(&v13->_locationNodes, a4);
-    objc_storeStrong(&v13->_incompleteLocationResolver, a5);
+    objc_storeStrong(&v12->_sortedMomentNodes, nodes);
+    objc_storeStrong(&v13->_locationNodes, locationNodes);
+    objc_storeStrong(&v13->_incompleteLocationResolver, resolver);
   }
 
   return v13;

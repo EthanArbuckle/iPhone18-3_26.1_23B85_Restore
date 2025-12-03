@@ -1,18 +1,18 @@
 @interface NSError
-+ (NSError)errorWithMessage:(id)a3;
++ (NSError)errorWithMessage:(id)message;
 @end
 
 @implementation NSError
 
-+ (NSError)errorWithMessage:(id)a3
++ (NSError)errorWithMessage:(id)message
 {
   v9 = NSLocalizedDescriptionKey;
-  v10 = a3;
-  v3 = a3;
-  v4 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
+  messageCopy = message;
+  messageCopy2 = message;
+  v4 = [NSDictionary dictionaryWithObjects:&messageCopy forKeys:&v9 count:1];
   v5 = +[NSBundle mainBundle];
-  v6 = [v5 bundleIdentifier];
-  v7 = [NSError errorWithDomain:v6 code:0 userInfo:v4];
+  bundleIdentifier = [v5 bundleIdentifier];
+  v7 = [NSError errorWithDomain:bundleIdentifier code:0 userInfo:v4];
 
   return v7;
 }

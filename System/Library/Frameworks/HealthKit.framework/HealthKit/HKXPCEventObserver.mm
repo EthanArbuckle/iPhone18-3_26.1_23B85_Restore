@@ -1,28 +1,28 @@
 @interface HKXPCEventObserver
-+ (void)_registerEventHandler:(id)a3 forStream:(const char *)a4;
-+ (void)_subscribeToStream:(const char *)a3 clientIdentifier:(const char *)a4;
-+ (void)setAuthorizationStreamEventHandler:(id)a3;
-+ (void)subscribeToAuthorizationStreamWithIdentifier:(const char *)a3;
++ (void)_registerEventHandler:(id)handler forStream:(const char *)stream;
++ (void)_subscribeToStream:(const char *)stream clientIdentifier:(const char *)identifier;
++ (void)setAuthorizationStreamEventHandler:(id)handler;
++ (void)subscribeToAuthorizationStreamWithIdentifier:(const char *)identifier;
 @end
 
 @implementation HKXPCEventObserver
 
-+ (void)setAuthorizationStreamEventHandler:(id)a3
++ (void)setAuthorizationStreamEventHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if (atomic_exchange(_hasRegisteredAuthorizationHandler, 1u))
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"HKXPCEventObserver.m" lineNumber:30 description:@"This method can only be called once during the lifetime of a process"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKXPCEventObserver.m" lineNumber:30 description:@"This method can only be called once during the lifetime of a process"];
   }
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __57__HKXPCEventObserver_setAuthorizationStreamEventHandler___block_invoke;
   v9[3] = &unk_1E7381F68;
-  v10 = v5;
+  v10 = handlerCopy;
   v7 = HKAuthorizationEventStream;
-  v8 = v5;
+  v8 = handlerCopy;
   [HKXPCEventObserver _registerEventHandler:v9 forStream:v7];
 }
 
@@ -34,32 +34,32 @@ uint64_t __57__HKXPCEventObserver_setAuthorizationStreamEventHandler___block_inv
   return v3();
 }
 
-+ (void)subscribeToAuthorizationStreamWithIdentifier:(const char *)a3
++ (void)subscribeToAuthorizationStreamWithIdentifier:(const char *)identifier
 {
   v4 = atomic_load(_hasRegisteredAuthorizationHandler);
   if ((v4 & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"HKXPCEventObserver.m" lineNumber:42 description:@"This method may not be called until a handler block is registered"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKXPCEventObserver.m" lineNumber:42 description:@"This method may not be called until a handler block is registered"];
   }
 
   v8 = HKAuthorizationEventStream;
 
-  [HKXPCEventObserver _subscribeToStream:v8 clientIdentifier:a3];
+  [HKXPCEventObserver _subscribeToStream:v8 clientIdentifier:identifier];
 }
 
-+ (void)_registerEventHandler:(id)a3 forStream:(const char *)a4
++ (void)_registerEventHandler:(id)handler forStream:(const char *)stream
 {
-  v6 = a3;
-  v7 = HKCreateSerialDispatchQueue(a1, @"eventQueue");
+  handlerCopy = handler;
+  v7 = HKCreateSerialDispatchQueue(self, @"eventQueue");
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __54__HKXPCEventObserver__registerEventHandler_forStream___block_invoke;
   v9[3] = &unk_1E7381F90;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  xpc_set_event_stream_handler(a4, v7, v9);
+  v10 = handlerCopy;
+  streamCopy = stream;
+  v8 = handlerCopy;
+  xpc_set_event_stream_handler(stream, v7, v9);
 }
 
 void __54__HKXPCEventObserver__registerEventHandler_forStream___block_invoke(uint64_t a1, void *a2)
@@ -138,7 +138,7 @@ LABEL_19:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_subscribeToStream:(const char *)a3 clientIdentifier:(const char *)a4
++ (void)_subscribeToStream:(const char *)stream clientIdentifier:(const char *)identifier
 {
   v4 = xpc_dictionary_create(0, 0, 0);
   xpc_set_event();

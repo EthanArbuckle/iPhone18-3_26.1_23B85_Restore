@@ -1,13 +1,13 @@
 @interface HMKTCommand
 + (NSString)name;
-- (int)main:(id)a3;
+- (int)main:(id)main;
 @end
 
 @implementation HMKTCommand
 
 + (NSString)name
 {
-  v2 = NSStringFromClass(a1);
+  v2 = NSStringFromClass(self);
   if ([v2 hasPrefix:@"HMKT"])
   {
     v3 = [v2 substringFromIndex:{objc_msgSend(@"HMKT", "length")}];
@@ -15,14 +15,14 @@
     v2 = v3;
   }
 
-  v4 = [v2 lowercaseString];
+  lowercaseString = [v2 lowercaseString];
 
-  return v4;
+  return lowercaseString;
 }
 
-- (int)main:(id)a3
+- (int)main:(id)main
 {
-  v4 = a3;
+  mainCopy = main;
   v5 = NSStringFromSelector(a2);
   v6 = [NSString stringWithFormat:@"You must override %@ in a subclass", v5];
   v7 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v6 userInfo:0];

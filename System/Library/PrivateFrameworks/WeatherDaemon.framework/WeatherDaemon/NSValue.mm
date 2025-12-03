@@ -1,14 +1,14 @@
 @interface NSValue
-+ (NSValue)valueWithCoordinate:(CLLocationCoordinate2D)a3;
++ (NSValue)valueWithCoordinate:(CLLocationCoordinate2D)coordinate;
 - (CLLocationCoordinate2D)coordinateValue;
 @end
 
 @implementation NSValue
 
-+ (NSValue)valueWithCoordinate:(CLLocationCoordinate2D)a3
++ (NSValue)valueWithCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  v5 = a3;
-  v3 = [NSValue valueWithBytes:&v5 objCType:"{CLLocationCoordinate2D=dd}"];
+  coordinateCopy = coordinate;
+  v3 = [NSValue valueWithBytes:&coordinateCopy objCType:"{CLLocationCoordinate2D=dd}"];
 
   return v3;
 }

@@ -1,39 +1,39 @@
 @interface StickerPhotosUtil
-- ($B6DA3D8FAB1629C12E7AA8FD40BC825C)videoPreviewTimeRangeForImageAnalysisInteraction:(SEL)a3;
-- (CGRect)videoPreviewNormalizedCropRectForImageAnalysisInteraction:(id)a3;
-- (id)imageAnalysisInteraction:(id)a3 videoPreviewSubjectMatteAtCompositionTime:(id *)a4;
-- (void)imageAnalysisInteraction:(id)a3 createStickerRepresentationsAtIndexSet:(id)a4 type:(unint64_t)a5 stickerIDs:(id)a6 progress:(id)a7 completion:(id)a8;
-- (void)loadImageFromItemProvider:(id)a3 completion:(id)a4;
-- (void)loadLivePhotoFromItemProvider:(id)a3 completion:(id)a4;
-- (void)setUsesLightDimmingViewInLightModeForImageAnalysisInteraction:(id)a3;
+- ($B6DA3D8FAB1629C12E7AA8FD40BC825C)videoPreviewTimeRangeForImageAnalysisInteraction:(SEL)interaction;
+- (CGRect)videoPreviewNormalizedCropRectForImageAnalysisInteraction:(id)interaction;
+- (id)imageAnalysisInteraction:(id)interaction videoPreviewSubjectMatteAtCompositionTime:(id *)time;
+- (void)imageAnalysisInteraction:(id)interaction createStickerRepresentationsAtIndexSet:(id)set type:(unint64_t)type stickerIDs:(id)ds progress:(id)progress completion:(id)completion;
+- (void)loadImageFromItemProvider:(id)provider completion:(id)completion;
+- (void)loadLivePhotoFromItemProvider:(id)provider completion:(id)completion;
+- (void)setUsesLightDimmingViewInLightModeForImageAnalysisInteraction:(id)interaction;
 @end
 
 @implementation StickerPhotosUtil
 
-- (void)loadLivePhotoFromItemProvider:(id)a3 completion:(id)a4
+- (void)loadLivePhotoFromItemProvider:(id)provider completion:(id)completion
 {
-  v7 = a3;
-  v5 = a4;
-  v6 = [v7 loadObjectOfClass:objc_opt_class() completionHandler:v5];
+  providerCopy = provider;
+  completionCopy = completion;
+  v6 = [providerCopy loadObjectOfClass:objc_opt_class() completionHandler:completionCopy];
 }
 
-- (void)loadImageFromItemProvider:(id)a3 completion:(id)a4
+- (void)loadImageFromItemProvider:(id)provider completion:(id)completion
 {
-  v7 = a3;
-  v5 = a4;
-  v6 = [v7 loadObjectOfClass:objc_opt_class() completionHandler:v5];
+  providerCopy = provider;
+  completionCopy = completion;
+  v6 = [providerCopy loadObjectOfClass:objc_opt_class() completionHandler:completionCopy];
 }
 
-- (void)imageAnalysisInteraction:(id)a3 createStickerRepresentationsAtIndexSet:(id)a4 type:(unint64_t)a5 stickerIDs:(id)a6 progress:(id)a7 completion:(id)a8
+- (void)imageAnalysisInteraction:(id)interaction createStickerRepresentationsAtIndexSet:(id)set type:(unint64_t)type stickerIDs:(id)ds progress:(id)progress completion:(id)completion
 {
-  v13 = a6;
-  v14 = a7;
-  v15 = a8;
-  v16 = a4;
-  v17 = a3;
+  dsCopy = ds;
+  progressCopy = progress;
+  completionCopy = completion;
+  setCopy = set;
+  interactionCopy = interaction;
   if (objc_opt_respondsToSelector())
   {
-    [v17 createStickerRepresentationsAtIndexSet:v16 type:a5 stickerIDs:v13 progress:v14 completion:v15];
+    [interactionCopy createStickerRepresentationsAtIndexSet:setCopy type:type stickerIDs:dsCopy progress:progressCopy completion:completionCopy];
   }
 
   else
@@ -42,21 +42,21 @@
     v18[1] = 3221225472;
     v18[2] = sub_10000610C;
     v18[3] = &unk_1000A2878;
-    v19 = v15;
-    [v17 createStickerRepresentationsAtIndexSet:v16 completion:v18];
+    v19 = completionCopy;
+    [interactionCopy createStickerRepresentationsAtIndexSet:setCopy completion:v18];
 
-    v17 = v19;
+    interactionCopy = v19;
   }
 }
 
-- (id)imageAnalysisInteraction:(id)a3 videoPreviewSubjectMatteAtCompositionTime:(id *)a4
+- (id)imageAnalysisInteraction:(id)interaction videoPreviewSubjectMatteAtCompositionTime:(id *)time
 {
-  v5 = a3;
+  interactionCopy = interaction;
   if (objc_opt_respondsToSelector())
   {
-    v8 = *&a4->var0;
-    var3 = a4->var3;
-    v6 = [v5 videoPreviewSubjectMatteAtCompositionTime:&v8];
+    v8 = *&time->var0;
+    var3 = time->var3;
+    v6 = [interactionCopy videoPreviewSubjectMatteAtCompositionTime:&v8];
   }
 
   else
@@ -67,7 +67,7 @@
   return v6;
 }
 
-- ($B6DA3D8FAB1629C12E7AA8FD40BC825C)videoPreviewTimeRangeForImageAnalysisInteraction:(SEL)a3
+- ($B6DA3D8FAB1629C12E7AA8FD40BC825C)videoPreviewTimeRangeForImageAnalysisInteraction:(SEL)interaction
 {
   v5 = a4;
   if (objc_opt_respondsToSelector())
@@ -95,12 +95,12 @@
   return result;
 }
 
-- (CGRect)videoPreviewNormalizedCropRectForImageAnalysisInteraction:(id)a3
+- (CGRect)videoPreviewNormalizedCropRectForImageAnalysisInteraction:(id)interaction
 {
-  v3 = a3;
+  interactionCopy = interaction;
   if (objc_opt_respondsToSelector())
   {
-    [v3 videoPreviewNormalizedCropRect];
+    [interactionCopy videoPreviewNormalizedCropRect];
     x = v4;
     y = v6;
     width = v8;
@@ -126,12 +126,12 @@
   return result;
 }
 
-- (void)setUsesLightDimmingViewInLightModeForImageAnalysisInteraction:(id)a3
+- (void)setUsesLightDimmingViewInLightModeForImageAnalysisInteraction:(id)interaction
 {
-  v3 = a3;
+  interactionCopy = interaction;
   if (objc_opt_respondsToSelector())
   {
-    [v3 setUsesLightDimmingViewInLightMode:1];
+    [interactionCopy setUsesLightDimmingViewInLightMode:1];
   }
 }
 

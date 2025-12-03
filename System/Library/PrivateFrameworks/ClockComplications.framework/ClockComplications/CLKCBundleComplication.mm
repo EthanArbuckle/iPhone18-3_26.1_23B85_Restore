@@ -1,54 +1,54 @@
 @interface CLKCBundleComplication
-+ (id)complicationWithBundleIdentifier:(id)a3 appBundleIdentifier:(id)a4;
-+ (id)complicationWithBundleIdentifier:(id)a3 appBundleIdentifier:(id)a4 complicationDescriptor:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (CLKCBundleComplication)initWithBundleIdentifier:(id)a3 appBundleIdentifier:(id)a4 complicationDescriptor:(id)a5;
-- (CLKCBundleComplication)initWithCoder:(id)a3;
++ (id)complicationWithBundleIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier;
++ (id)complicationWithBundleIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier complicationDescriptor:(id)descriptor;
+- (BOOL)isEqual:(id)equal;
+- (CLKCBundleComplication)initWithBundleIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier complicationDescriptor:(id)descriptor;
+- (CLKCBundleComplication)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLKCBundleComplication
 
-+ (id)complicationWithBundleIdentifier:(id)a3 appBundleIdentifier:(id)a4 complicationDescriptor:(id)a5
++ (id)complicationWithBundleIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier complicationDescriptor:(id)descriptor
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithBundleIdentifier:v10 appBundleIdentifier:v9 complicationDescriptor:v8];
+  descriptorCopy = descriptor;
+  bundleIdentifierCopy = bundleIdentifier;
+  identifierCopy = identifier;
+  v11 = [[self alloc] initWithBundleIdentifier:identifierCopy appBundleIdentifier:bundleIdentifierCopy complicationDescriptor:descriptorCopy];
 
   return v11;
 }
 
-+ (id)complicationWithBundleIdentifier:(id)a3 appBundleIdentifier:(id)a4
++ (id)complicationWithBundleIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithBundleIdentifier:v7 appBundleIdentifier:v6 complicationDescriptor:0];
+  bundleIdentifierCopy = bundleIdentifier;
+  identifierCopy = identifier;
+  v8 = [[self alloc] initWithBundleIdentifier:identifierCopy appBundleIdentifier:bundleIdentifierCopy complicationDescriptor:0];
 
   return v8;
 }
 
-- (CLKCBundleComplication)initWithBundleIdentifier:(id)a3 appBundleIdentifier:(id)a4 complicationDescriptor:(id)a5
+- (CLKCBundleComplication)initWithBundleIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier complicationDescriptor:(id)descriptor
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  descriptorCopy = descriptor;
   v17.receiver = self;
   v17.super_class = CLKCBundleComplication;
   v11 = [(CLKCBundleComplication *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     bundleIdentifier = v11->_bundleIdentifier;
     v11->_bundleIdentifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [bundleIdentifierCopy copy];
     appBundleIdentifier = v11->_appBundleIdentifier;
     v11->_appBundleIdentifier = v14;
 
-    objc_storeStrong(&v11->_complicationDescriptor, a5);
+    objc_storeStrong(&v11->_complicationDescriptor, descriptor);
   }
 
   return v11;
@@ -60,34 +60,34 @@
   v9.receiver = self;
   v9.super_class = CLKCBundleComplication;
   v4 = [(CLKCBundleComplication *)&v9 description];
-  v5 = [(CLKCBundleComplication *)self bundleIdentifier];
-  v6 = [(CLKCBundleComplication *)self appBundleIdentifier];
-  v7 = [v3 stringWithFormat:@"%@: bundleId=%@, appBundleId=%@", v4, v5, v6];
+  bundleIdentifier = [(CLKCBundleComplication *)self bundleIdentifier];
+  appBundleIdentifier = [(CLKCBundleComplication *)self appBundleIdentifier];
+  v7 = [v3 stringWithFormat:@"%@: bundleId=%@, appBundleId=%@", v4, bundleIdentifier, appBundleIdentifier];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CLKCBundleComplication *)self bundleIdentifier];
-    v7 = [v5 bundleIdentifier];
-    if (v6 == v7 || [v6 isEqual:v7])
+    v5 = equalCopy;
+    bundleIdentifier = [(CLKCBundleComplication *)self bundleIdentifier];
+    bundleIdentifier2 = [v5 bundleIdentifier];
+    if (bundleIdentifier == bundleIdentifier2 || [bundleIdentifier isEqual:bundleIdentifier2])
     {
-      v8 = [(CLKCBundleComplication *)self complicationDescriptor];
-      v9 = [v5 complicationDescriptor];
-      if (v8 == v9)
+      complicationDescriptor = [(CLKCBundleComplication *)self complicationDescriptor];
+      complicationDescriptor2 = [v5 complicationDescriptor];
+      if (complicationDescriptor == complicationDescriptor2)
       {
         v10 = 1;
       }
 
       else
       {
-        v10 = [v8 isEqual:v9];
+        v10 = [complicationDescriptor isEqual:complicationDescriptor2];
       }
     }
 
@@ -107,31 +107,31 @@
 
 - (unint64_t)hash
 {
-  v3 = [(CLKCBundleComplication *)self bundleIdentifier];
-  v4 = [v3 hash];
-  v5 = [(CLKCBundleComplication *)self complicationDescriptor];
-  v6 = [v5 hash];
+  bundleIdentifier = [(CLKCBundleComplication *)self bundleIdentifier];
+  v4 = [bundleIdentifier hash];
+  complicationDescriptor = [(CLKCBundleComplication *)self complicationDescriptor];
+  v6 = [complicationDescriptor hash];
 
   return v6 ^ v4;
 }
 
-- (CLKCBundleComplication)initWithCoder:(id)a3
+- (CLKCBundleComplication)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CLKCBundleComplication;
   v5 = [(CLKCBundleComplication *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CLKCBundleComplicationBundleIdentifierKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CLKCBundleComplicationBundleIdentifierKey"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CLKCBundleComplicationAppBundleIdentifierKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CLKCBundleComplicationAppBundleIdentifierKey"];
     appBundleIdentifier = v5->_appBundleIdentifier;
     v5->_appBundleIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CLKCBundleComplicationComplicationDescriptorKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CLKCBundleComplicationComplicationDescriptorKey"];
     complicationDescriptor = v5->_complicationDescriptor;
     v5->_complicationDescriptor = v10;
   }
@@ -139,13 +139,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleIdentifier = self->_bundleIdentifier;
-  v5 = a3;
-  [v5 encodeObject:bundleIdentifier forKey:@"CLKCBundleComplicationBundleIdentifierKey"];
-  [v5 encodeObject:self->_appBundleIdentifier forKey:@"CLKCBundleComplicationAppBundleIdentifierKey"];
-  [v5 encodeObject:self->_complicationDescriptor forKey:@"CLKCBundleComplicationComplicationDescriptorKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleIdentifier forKey:@"CLKCBundleComplicationBundleIdentifierKey"];
+  [coderCopy encodeObject:self->_appBundleIdentifier forKey:@"CLKCBundleComplicationAppBundleIdentifierKey"];
+  [coderCopy encodeObject:self->_complicationDescriptor forKey:@"CLKCBundleComplicationComplicationDescriptorKey"];
 }
 
 @end

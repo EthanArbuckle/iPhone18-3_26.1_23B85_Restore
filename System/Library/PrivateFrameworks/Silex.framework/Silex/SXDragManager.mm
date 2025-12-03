@@ -1,39 +1,39 @@
 @interface SXDragManager
-- (BOOL)dragSession:(id)a3 containsDragItemWithIdentifier:(id)a4;
-- (SXDragManager)initWithSharingPolicy:(unint64_t)a3 dataSource:(id)a4;
+- (BOOL)dragSession:(id)session containsDragItemWithIdentifier:(id)identifier;
+- (SXDragManager)initWithSharingPolicy:(unint64_t)policy dataSource:(id)source;
 - (SXDragManagerDataSource)dataSource;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (id)dragItemForObject:(id)a3 withSession:(id)a4;
-- (id)itemsForSession:(id)a3 atLocation:(CGPoint)a4;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (id)dragItemForObject:(id)object withSession:(id)session;
+- (id)itemsForSession:(id)session atLocation:(CGPoint)location;
 - (void)dealloc;
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 session:(id)a4 willAddItems:(id)a5 forInteraction:(id)a6;
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4;
-- (void)setEnabled:(BOOL)a3;
-- (void)updateAccessibilityDragSourceDescriptorsForDraggableElement:(id)a3;
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction session:(id)session willAddItems:(id)items forInteraction:(id)forInteraction;
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin;
+- (void)setEnabled:(BOOL)enabled;
+- (void)updateAccessibilityDragSourceDescriptorsForDraggableElement:(id)element;
 @end
 
 @implementation SXDragManager
 
-- (SXDragManager)initWithSharingPolicy:(unint64_t)a3 dataSource:(id)a4
+- (SXDragManager)initWithSharingPolicy:(unint64_t)policy dataSource:(id)source
 {
-  v6 = a4;
+  sourceCopy = source;
   v13.receiver = self;
   v13.super_class = SXDragManager;
   v7 = [(SXDragManager *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    v7->_sharingPolicy = a3;
-    objc_storeWeak(&v7->_dataSource, v6);
-    if (a3 != 1)
+    v7->_sharingPolicy = policy;
+    objc_storeWeak(&v7->_dataSource, sourceCopy);
+    if (policy != 1)
     {
       v9 = [objc_alloc(MEMORY[0x1E69DC988]) initWithDelegate:v8];
       dragInteraction = v8->_dragInteraction;
       v8->_dragInteraction = v9;
 
-      v11 = [v6 viewForDragManager:v8];
+      v11 = [sourceCopy viewForDragManager:v8];
       [v11 addInteraction:v8->_dragInteraction];
     }
   }
@@ -43,54 +43,54 @@
 
 - (void)dealloc
 {
-  v3 = [(SXDragManager *)self dragInteraction];
-  v4 = [v3 view];
-  v5 = [(SXDragManager *)self dragInteraction];
-  [v4 removeInteraction:v5];
+  dragInteraction = [(SXDragManager *)self dragInteraction];
+  view = [dragInteraction view];
+  dragInteraction2 = [(SXDragManager *)self dragInteraction];
+  [view removeInteraction:dragInteraction2];
 
   v6.receiver = self;
   v6.super_class = SXDragManager;
   [(SXDragManager *)&v6 dealloc];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([MEMORY[0x1E69DC988] isEnabledByDefault])
   {
-    self->_enabled = v3;
-    v5 = [(SXDragManager *)self dragInteraction];
-    [v5 setEnabled:v3];
+    self->_enabled = enabledCopy;
+    dragInteraction = [(SXDragManager *)self dragInteraction];
+    [dragInteraction setEnabled:enabledCopy];
   }
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  v6 = a4;
-  v7 = [a3 view];
-  [v6 locationInView:v7];
+  sessionCopy = session;
+  view = [interaction view];
+  [sessionCopy locationInView:view];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(SXDragManager *)self itemsForSession:v6 atLocation:v9, v11];
+  v12 = [(SXDragManager *)self itemsForSession:sessionCopy atLocation:v9, v11];
 
   return v12;
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
-  v5 = a4;
-  v6 = [v5 localObject];
-  v7 = [v6 conformsToProtocol:&unk_1F53AB2B8];
+  itemCopy = item;
+  localObject = [itemCopy localObject];
+  v7 = [localObject conformsToProtocol:&unk_1F53AB2B8];
 
   if (v7)
   {
-    v8 = [v5 localObject];
-    if (v8)
+    localObject2 = [itemCopy localObject];
+    if (localObject2)
     {
       v9 = objc_alloc(MEMORY[0x1E69DD068]);
-      v10 = [v8 dragPreviewView];
-      v11 = [v9 initWithView:v10];
+      dragPreviewView = [localObject2 dragPreviewView];
+      v11 = [v9 initWithView:dragPreviewView];
     }
 
     else
@@ -107,16 +107,16 @@
   return v11;
 }
 
-- (id)itemsForSession:(id)a3 atLocation:(CGPoint)a4
+- (id)itemsForSession:(id)session atLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v13[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [(SXDragManager *)self dataSource];
-  v9 = [v8 dragManager:self dragableAtLocation:{x, y}];
+  sessionCopy = session;
+  dataSource = [(SXDragManager *)self dataSource];
+  v9 = [dataSource dragManager:self dragableAtLocation:{x, y}];
 
-  v10 = [(SXDragManager *)self dragItemForObject:v9 withSession:v7];
+  v10 = [(SXDragManager *)self dragItemForObject:v9 withSession:sessionCopy];
 
   if (v10)
   {
@@ -132,15 +132,15 @@
   return v11;
 }
 
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [a4 items];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  items = [begin items];
+  v5 = [items countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -151,36 +151,36 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(items);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 localObject];
-        v11 = [v10 conformsToProtocol:&unk_1F53AB2B8];
+        localObject = [v9 localObject];
+        v11 = [localObject conformsToProtocol:&unk_1F53AB2B8];
 
         if (v11)
         {
-          v12 = [v9 localObject];
-          [v12 didStartDragging];
+          localObject2 = [v9 localObject];
+          [localObject2 didStartDragging];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [items countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 willAddItems:(id)a5 forInteraction:(id)a6
+- (void)dragInteraction:(id)interaction session:(id)session willAddItems:(id)items forInteraction:(id)forInteraction
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a5;
+  itemsCopy = items;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [itemsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -191,36 +191,36 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 localObject];
-        v13 = [v12 conformsToProtocol:&unk_1F53AB2B8];
+        localObject = [v11 localObject];
+        v13 = [localObject conformsToProtocol:&unk_1F53AB2B8];
 
         if (v13)
         {
-          v14 = [v11 localObject];
-          [v14 didStartDragging];
+          localObject2 = [v11 localObject];
+          [localObject2 didStartDragging];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [itemsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a4 items];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  items = [session items];
+  v6 = [items countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -231,60 +231,60 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(items);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 localObject];
-        v12 = [v11 conformsToProtocol:&unk_1F53AB2B8];
+        localObject = [v10 localObject];
+        v12 = [localObject conformsToProtocol:&unk_1F53AB2B8];
 
         if (v12)
         {
-          v13 = [v10 localObject];
-          [v13 didEndDragging];
+          localObject2 = [v10 localObject];
+          [localObject2 didEndDragging];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [items countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 }
 
-- (id)dragItemForObject:(id)a3 withSession:(id)a4
+- (id)dragItemForObject:(id)object withSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 dragIdentifier];
-  v9 = [(SXDragManager *)self dragSession:v7 containsDragItemWithIdentifier:v8];
+  objectCopy = object;
+  sessionCopy = session;
+  dragIdentifier = [objectCopy dragIdentifier];
+  v9 = [(SXDragManager *)self dragSession:sessionCopy containsDragItemWithIdentifier:dragIdentifier];
 
-  v10 = [v6 dragObject];
+  dragObject = [objectCopy dragObject];
 
   v11 = 0;
-  if (v10 && !v9)
+  if (dragObject && !v9)
   {
     v12 = objc_alloc(MEMORY[0x1E696ACA0]);
-    v13 = [v6 dragObject];
-    v14 = [v12 initWithObject:v13];
+    dragObject2 = [objectCopy dragObject];
+    v14 = [v12 initWithObject:dragObject2];
 
     v11 = [objc_alloc(MEMORY[0x1E69DC990]) initWithItemProvider:v14];
-    [v11 setLocalObject:v6];
+    [v11 setLocalObject:objectCopy];
   }
 
   return v11;
 }
 
-- (BOOL)dragSession:(id)a3 containsDragItemWithIdentifier:(id)a4
+- (BOOL)dragSession:(id)session containsDragItemWithIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  identifierCopy = identifier;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [a3 items];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  items = [session items];
+  v7 = [items countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = *v19;
@@ -294,21 +294,21 @@
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(items);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 localObject];
-        v12 = [v11 conformsToProtocol:&unk_1F53AB2B8];
+        localObject = [v10 localObject];
+        v12 = [localObject conformsToProtocol:&unk_1F53AB2B8];
 
         if (v12)
         {
-          v13 = [v10 localObject];
-          v14 = v13;
-          if (v13)
+          localObject2 = [v10 localObject];
+          v14 = localObject2;
+          if (localObject2)
           {
-            v15 = [v13 dragIdentifier];
-            v16 = [v15 isEqualToString:v5];
+            dragIdentifier = [localObject2 dragIdentifier];
+            v16 = [dragIdentifier isEqualToString:identifierCopy];
 
             if (v16)
             {
@@ -320,7 +320,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [items countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v7)
       {
         continue;
@@ -335,28 +335,28 @@ LABEL_14:
   return v7;
 }
 
-- (void)updateAccessibilityDragSourceDescriptorsForDraggableElement:(id)a3
+- (void)updateAccessibilityDragSourceDescriptorsForDraggableElement:(id)element
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_1F53AB2B8])
+  elementCopy = element;
+  if ([elementCopy conformsToProtocol:&unk_1F53AB2B8])
   {
-    v5 = [v4 stringForAXDragAction];
+    stringForAXDragAction = [elementCopy stringForAXDragAction];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E696AAE8] mainBundle];
-    v5 = [v6 localizedStringForKey:@"Drag Item" value:&stru_1F532F6C0 table:0];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    stringForAXDragAction = [mainBundle localizedStringForKey:@"Drag Item" value:&stru_1F532F6C0 table:0];
   }
 
-  v7 = [(SXDragManager *)self dataSource];
-  v8 = [v7 viewForDragManager:self];
+  dataSource = [(SXDragManager *)self dataSource];
+  v8 = [dataSource viewForDragManager:self];
 
-  v9 = [objc_alloc(MEMORY[0x1E69DC620]) initWithName:v5 view:v8];
+  v9 = [objc_alloc(MEMORY[0x1E69DC620]) initWithName:stringForAXDragAction view:v8];
   v11[0] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  [v4 setAccessibilityDragSourceDescriptors:v10];
+  [elementCopy setAccessibilityDragSourceDescriptors:v10];
 }
 
 - (SXDragManagerDataSource)dataSource

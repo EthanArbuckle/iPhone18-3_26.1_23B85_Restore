@@ -1,30 +1,30 @@
 @interface MSAccountToEmailProvider
-+ (int64_t)accountStatisticsKindToIdentifier:(id)a3;
++ (int64_t)accountStatisticsKindToIdentifier:(id)identifier;
 @end
 
 @implementation MSAccountToEmailProvider
 
-+ (int64_t)accountStatisticsKindToIdentifier:(id)a3
++ (int64_t)accountStatisticsKindToIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (accountStatisticsKindToIdentifier__onceToken != -1)
   {
     +[MSAccountToEmailProvider accountStatisticsKindToIdentifier:];
   }
 
-  v4 = [accountStatisticsKindToIdentifier___statisticsKindToAccountTypeMapping objectForKeyedSubscript:v3];
+  v4 = [accountStatisticsKindToIdentifier___statisticsKindToAccountTypeMapping objectForKeyedSubscript:identifierCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 intValue];
+    intValue = [v4 intValue];
   }
 
   else
   {
-    v6 = 0;
+    intValue = 0;
   }
 
-  return v6;
+  return intValue;
 }
 
 void __62__MSAccountToEmailProvider_accountStatisticsKindToIdentifier___block_invoke()

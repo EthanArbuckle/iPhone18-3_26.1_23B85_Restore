@@ -4,9 +4,9 @@
 - (void)handleTap;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setSelected:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setSelected:(BOOL)selected;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation BaseEmojiAndStickerCollectionViewCell
@@ -18,10 +18,10 @@
   return [(BaseEmojiAndStickerCollectionViewCell *)&v3 isSelected];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v4 = self;
-  sub_19A70FCB8(a3);
+  selfCopy = self;
+  sub_19A70FCB8(selected);
 }
 
 - (void)dealloc
@@ -30,13 +30,13 @@
   if (v3)
   {
     v4 = v3;
-    v5 = self;
+    selfCopy = self;
     [v4 removeFromSuperview];
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
   }
 
   v7.receiver = self;
@@ -73,42 +73,42 @@
   sub_19A70FF44();
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   sub_19A5F5028(0, &qword_1EAFCCC08);
   sub_19A63D890();
   sub_19A7AB494();
-  v6 = a4;
-  v7 = self;
+  eventCopy = event;
+  selfCopy = self;
   v8 = sub_19A7AB484();
 
-  v10.receiver = v7;
+  v10.receiver = selfCopy;
   v10.super_class = type metadata accessor for BaseEmojiAndStickerCollectionViewCell();
-  [(BaseEmojiAndStickerCollectionViewCell *)&v10 touchesBegan:v8 withEvent:v6];
+  [(BaseEmojiAndStickerCollectionViewCell *)&v10 touchesBegan:v8 withEvent:eventCopy];
 
-  if ((*((*MEMORY[0x1E69E7D40] & v7->super.super.super.super.super.isa) + 0x110))())
+  if ((*((*MEMORY[0x1E69E7D40] & selfCopy->super.super.super.super.super.isa) + 0x110))())
   {
-    v9 = *(&v7->super.super.super.super.super.isa + OBJC_IVAR____TtC10StickerKit37BaseEmojiAndStickerCollectionViewCell_showsPaddle);
-    *(&v7->super.super.super.super.super.isa + OBJC_IVAR____TtC10StickerKit37BaseEmojiAndStickerCollectionViewCell_showsPaddle) = 1;
+    v9 = *(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC10StickerKit37BaseEmojiAndStickerCollectionViewCell_showsPaddle);
+    *(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC10StickerKit37BaseEmojiAndStickerCollectionViewCell_showsPaddle) = 1;
     sub_19A710240(v9);
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   sub_19A5F5028(0, &qword_1EAFCCC08);
   sub_19A63D890();
   sub_19A7AB494();
-  v6 = a4;
-  v7 = self;
+  eventCopy = event;
+  selfCopy = self;
   v8 = sub_19A7AB484();
 
-  v10.receiver = v7;
+  v10.receiver = selfCopy;
   v10.super_class = type metadata accessor for BaseEmojiAndStickerCollectionViewCell();
-  [(BaseEmojiAndStickerCollectionViewCell *)&v10 touchesMoved:v8 withEvent:v6];
+  [(BaseEmojiAndStickerCollectionViewCell *)&v10 touchesMoved:v8 withEvent:eventCopy];
 
-  v9 = *(&v7->super.super.super.super.super.isa + OBJC_IVAR____TtC10StickerKit37BaseEmojiAndStickerCollectionViewCell_showsPaddle);
-  *(&v7->super.super.super.super.super.isa + OBJC_IVAR____TtC10StickerKit37BaseEmojiAndStickerCollectionViewCell_showsPaddle) = 0;
+  v9 = *(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC10StickerKit37BaseEmojiAndStickerCollectionViewCell_showsPaddle);
+  *(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC10StickerKit37BaseEmojiAndStickerCollectionViewCell_showsPaddle) = 0;
   sub_19A710240(v9);
 }
 

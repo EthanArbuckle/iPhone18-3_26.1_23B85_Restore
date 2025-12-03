@@ -1,8 +1,8 @@
 @interface SKUIFilterBarViewElement
 - (SKUIDividerViewElement)bottomDivider;
-- (id)childViewElementsForAlignment:(unint64_t)a3;
+- (id)childViewElementsForAlignment:(unint64_t)alignment;
 - (int64_t)pageComponentType;
-- (void)enumerateChildrenUsingBlock:(id)a3;
+- (void)enumerateChildrenUsingBlock:(id)block;
 @end
 
 @implementation SKUIFilterBarViewElement
@@ -51,7 +51,7 @@ void __41__SKUIFilterBarViewElement_bottomDivider__block_invoke(uint64_t a1, voi
   }
 }
 
-- (id)childViewElementsForAlignment:(unint64_t)a3
+- (id)childViewElementsForAlignment:(unint64_t)alignment
 {
   v33 = *MEMORY[0x277D85DE8];
   if (os_variant_has_internal_content())
@@ -66,8 +66,8 @@ void __41__SKUIFilterBarViewElement_bottomDivider__block_invoke(uint64_t a1, voi
     }
   }
 
-  v13 = [MEMORY[0x277CBEB18] array];
-  if (a3 - 1 <= 2)
+  array = [MEMORY[0x277CBEB18] array];
+  if (alignment - 1 <= 2)
   {
     [(SKUIViewElement *)self flattenedChildren];
     v30 = 0u;
@@ -112,14 +112,14 @@ void __41__SKUIFilterBarViewElement_bottomDivider__block_invoke(uint64_t a1, voi
     v23 = v27;
     v24 = v15;
     v25 = v19;
-    v26 = a3;
-    v22 = v13;
+    alignmentCopy = alignment;
+    v22 = array;
     [v14 enumerateObjectsUsingBlock:v21];
 
     _Block_object_dispose(v27, 8);
   }
 
-  return v13;
+  return array;
 }
 
 void __58__SKUIFilterBarViewElement_childViewElementsForAlignment___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -195,9 +195,9 @@ LABEL_2:
   }
 }
 
-- (void)enumerateChildrenUsingBlock:(id)a3
+- (void)enumerateChildrenUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -214,10 +214,10 @@ LABEL_2:
   v15[1] = 3221225472;
   v15[2] = __56__SKUIFilterBarViewElement_enumerateChildrenUsingBlock___block_invoke;
   v15[3] = &unk_2781FA298;
-  v16 = v4;
+  v16 = blockCopy;
   v14.receiver = self;
   v14.super_class = SKUIFilterBarViewElement;
-  v13 = v4;
+  v13 = blockCopy;
   [(SKUIViewElement *)&v14 enumerateChildrenUsingBlock:v15];
 }
 

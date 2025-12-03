@@ -1,19 +1,19 @@
 @interface NEPathRule
 - (BOOL)isAggregateRule;
 - (BOOL)isDefaultPathRule;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)supportsCellularBehavior:(int64_t)a3;
-- (BOOL)supportsWiFiBehavior:(int64_t)a3;
-- (NEPathRule)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)supportsCellularBehavior:(int64_t)behavior;
+- (BOOL)supportsWiFiBehavior:(int64_t)behavior;
+- (NEPathRule)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)cellularBehavior;
 - (int64_t)wifiBehavior;
-- (void)addCellularBehavior:(int64_t)a3 grade:(int64_t)a4;
-- (void)addWiFiBehavior:(int64_t)a3 grade:(int64_t)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCellularBehavior:(int64_t)a3;
-- (void)setWifiBehavior:(int64_t)a3;
+- (void)addCellularBehavior:(int64_t)behavior grade:(int64_t)grade;
+- (void)addWiFiBehavior:(int64_t)behavior grade:(int64_t)grade;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCellularBehavior:(int64_t)behavior;
+- (void)setWifiBehavior:(int64_t)behavior;
 @end
 
 @implementation NEPathRule
@@ -89,15 +89,15 @@
 
 - (BOOL)isAggregateRule
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v3 = 1;
-  if (!objc_getProperty(a1, a2, 96, 1) && !objc_getProperty(a1, v4, 88, 1) && !objc_getProperty(a1, v5, 120, 1))
+  if (!objc_getProperty(self, a2, 96, 1) && !objc_getProperty(self, v4, 88, 1) && !objc_getProperty(self, v5, 120, 1))
   {
-    return objc_getProperty(a1, v6, 112, 1) != 0;
+    return objc_getProperty(self, v6, 112, 1) != 0;
   }
 
   return v3;
@@ -105,16 +105,16 @@
 
 - (BOOL)isDefaultPathRule
 {
-  v3 = [(NEAppRule *)self matchSigningIdentifier];
-  if ([v3 isEqualToString:@"PathRuleDefaultIdentifier"])
+  matchSigningIdentifier = [(NEAppRule *)self matchSigningIdentifier];
+  if ([matchSigningIdentifier isEqualToString:@"PathRuleDefaultIdentifier"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(NEAppRule *)self matchSigningIdentifier];
-    v4 = [v5 isEqualToString:@"PathRuleDefaultNonSystemIdentifier"];
+    matchSigningIdentifier2 = [(NEAppRule *)self matchSigningIdentifier];
+    v4 = [matchSigningIdentifier2 isEqualToString:@"PathRuleDefaultNonSystemIdentifier"];
   }
 
   return v4;
@@ -189,7 +189,7 @@
   return [v6 integerValue];
 }
 
-- (BOOL)supportsWiFiBehavior:(int64_t)a3
+- (BOOL)supportsWiFiBehavior:(int64_t)behavior
 {
   if (!self)
   {
@@ -200,15 +200,15 @@
   if (objc_getProperty(self, a2, 120, 1))
   {
     v7 = [objc_getProperty(self v6];
-    return v7 != 1 && (a3 != 2 || v7 != 0);
+    return v7 != 1 && (behavior != 2 || v7 != 0);
   }
 
   return v5;
 }
 
-- (void)addWiFiBehavior:(int64_t)a3 grade:(int64_t)a4
+- (void)addWiFiBehavior:(int64_t)behavior grade:(int64_t)grade
 {
-  if (a4 == 1)
+  if (grade == 1)
   {
     if (self && objc_getProperty(self, a2, 120, 1))
     {
@@ -218,7 +218,7 @@
       v17 = 1;
       if (v15)
       {
-        v18 = a3 == 0;
+        v18 = behavior == 0;
       }
 
       else
@@ -237,27 +237,27 @@
         v19 = 1;
       }
 
-      if (a3 != 1)
+      if (behavior != 1)
       {
         v17 = v19;
       }
 
-      if (v15 == a3)
+      if (v15 == behavior)
       {
-        v20 = a3;
+        behaviorCopy = behavior;
       }
 
       else
       {
-        v20 = v17;
+        behaviorCopy = v17;
       }
 
-      v13 = [v16 numberWithInteger:v20];
+      v13 = [v16 numberWithInteger:behaviorCopy];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v13 = [MEMORY[0x1E696AD98] numberWithInteger:behavior];
       if (!self)
       {
         goto LABEL_42;
@@ -268,7 +268,7 @@
     goto LABEL_38;
   }
 
-  if (a4 != 2)
+  if (grade != 2)
   {
     return;
   }
@@ -281,7 +281,7 @@
     v9 = 1;
     if (v7)
     {
-      v10 = a3 == 0;
+      v10 = behavior == 0;
     }
 
     else
@@ -300,26 +300,26 @@
       v11 = 1;
     }
 
-    if (a3 != 1)
+    if (behavior != 1)
     {
       v9 = v11;
     }
 
-    if (v7 == a3)
+    if (v7 == behavior)
     {
-      v12 = a3;
+      behaviorCopy2 = behavior;
     }
 
     else
     {
-      v12 = v9;
+      behaviorCopy2 = v9;
     }
 
-    v13 = [v8 numberWithInteger:v12];
+    v13 = [v8 numberWithInteger:behaviorCopy2];
     goto LABEL_35;
   }
 
-  v13 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v13 = [MEMORY[0x1E696AD98] numberWithInteger:behavior];
   if (!self)
   {
 LABEL_42:
@@ -335,7 +335,7 @@ LABEL_38:
 LABEL_39:
 }
 
-- (BOOL)supportsCellularBehavior:(int64_t)a3
+- (BOOL)supportsCellularBehavior:(int64_t)behavior
 {
   if (!self)
   {
@@ -346,15 +346,15 @@ LABEL_39:
   if (objc_getProperty(self, a2, 96, 1))
   {
     v7 = [objc_getProperty(self v6];
-    return v7 != 1 && (a3 != 2 || v7 != 0);
+    return v7 != 1 && (behavior != 2 || v7 != 0);
   }
 
   return v5;
 }
 
-- (void)addCellularBehavior:(int64_t)a3 grade:(int64_t)a4
+- (void)addCellularBehavior:(int64_t)behavior grade:(int64_t)grade
 {
-  if (a4 == 1)
+  if (grade == 1)
   {
     if (self && objc_getProperty(self, a2, 96, 1))
     {
@@ -364,7 +364,7 @@ LABEL_39:
       v17 = 1;
       if (v15)
       {
-        v18 = a3 == 0;
+        v18 = behavior == 0;
       }
 
       else
@@ -383,27 +383,27 @@ LABEL_39:
         v19 = 1;
       }
 
-      if (a3 != 1)
+      if (behavior != 1)
       {
         v17 = v19;
       }
 
-      if (v15 == a3)
+      if (v15 == behavior)
       {
-        v20 = a3;
+        behaviorCopy = behavior;
       }
 
       else
       {
-        v20 = v17;
+        behaviorCopy = v17;
       }
 
-      v13 = [v16 numberWithInteger:v20];
+      v13 = [v16 numberWithInteger:behaviorCopy];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v13 = [MEMORY[0x1E696AD98] numberWithInteger:behavior];
       if (!self)
       {
         goto LABEL_42;
@@ -414,7 +414,7 @@ LABEL_39:
     goto LABEL_38;
   }
 
-  if (a4 != 2)
+  if (grade != 2)
   {
     return;
   }
@@ -427,7 +427,7 @@ LABEL_39:
     v9 = 1;
     if (v7)
     {
-      v10 = a3 == 0;
+      v10 = behavior == 0;
     }
 
     else
@@ -446,26 +446,26 @@ LABEL_39:
       v11 = 1;
     }
 
-    if (a3 != 1)
+    if (behavior != 1)
     {
       v9 = v11;
     }
 
-    if (v7 == a3)
+    if (v7 == behavior)
     {
-      v12 = a3;
+      behaviorCopy2 = behavior;
     }
 
     else
     {
-      v12 = v9;
+      behaviorCopy2 = v9;
     }
 
-    v13 = [v8 numberWithInteger:v12];
+    v13 = [v8 numberWithInteger:behaviorCopy2];
     goto LABEL_35;
   }
 
-  v13 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v13 = [MEMORY[0x1E696AD98] numberWithInteger:behavior];
   if (!self)
   {
 LABEL_42:
@@ -481,26 +481,26 @@ LABEL_38:
 LABEL_39:
 }
 
-- (void)setWifiBehavior:(int64_t)a3
+- (void)setWifiBehavior:(int64_t)behavior
 {
-  v5 = [(NEPathRule *)self isAggregateRule];
+  isAggregateRule = [(NEPathRule *)self isAggregateRule];
   if (self)
   {
-    if (!v5)
+    if (!isAggregateRule)
     {
-      self->_internalWiFiBehavior = a3;
+      self->_internalWiFiBehavior = behavior;
     }
   }
 }
 
-- (void)setCellularBehavior:(int64_t)a3
+- (void)setCellularBehavior:(int64_t)behavior
 {
-  v5 = [(NEPathRule *)self isAggregateRule];
+  isAggregateRule = [(NEPathRule *)self isAggregateRule];
   if (self)
   {
-    if (!v5)
+    if (!isAggregateRule)
     {
-      self->_internalCellularBehavior = a3;
+      self->_internalCellularBehavior = behavior;
     }
   }
 }
@@ -509,17 +509,17 @@ LABEL_39:
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:0];
   [v3 appendString:@"{"];
-  v4 = [(NEAppRule *)self matchSigningIdentifier];
-  [v3 appendPrettyObject:v4 withName:@"matchSigningIdentifier" andIndent:0 options:0];
+  matchSigningIdentifier = [(NEAppRule *)self matchSigningIdentifier];
+  [v3 appendPrettyObject:matchSigningIdentifier withName:@"matchSigningIdentifier" andIndent:0 options:0];
 
-  v5 = [(NEAppRule *)self matchPath];
-  [v3 appendPrettyObject:v5 withName:@"matchPath" andIndent:0 options:0];
+  matchPath = [(NEAppRule *)self matchPath];
+  [v3 appendPrettyObject:matchPath withName:@"matchPath" andIndent:0 options:0];
 
   [v3 appendPrettyInt:-[NEPathRule cellularBehavior](self withName:"cellularBehavior") andIndent:@"cellularBehavior" options:{0, 0}];
   [v3 appendPrettyBOOL:-[NEPathRule denyCellularFallback](self withName:"denyCellularFallback") andIndent:@"denyCellularFallback" options:{0, 0}];
   [v3 appendPrettyBOOL:-[NEPathRule denyMulticast](self withName:"denyMulticast") andIndent:@"denyMulticast" options:{0, 0}];
-  v6 = [(NEPathRule *)self temporaryAllowMulticastNetworkName];
-  [v3 appendPrettyObject:v6 withName:@"temporaryAllowMulticastNetworkName" andIndent:0 options:0];
+  temporaryAllowMulticastNetworkName = [(NEPathRule *)self temporaryAllowMulticastNetworkName];
+  [v3 appendPrettyObject:temporaryAllowMulticastNetworkName withName:@"temporaryAllowMulticastNetworkName" andIndent:0 options:0];
 
   [v3 appendPrettyBOOL:-[NEPathRule multicastPreferenceSet](self withName:"multicastPreferenceSet") andIndent:@"multicastPreferenceSet" options:{0, 0}];
   [v3 appendPrettyBOOL:-[NEPathRule isIdentifierExternal](self withName:"isIdentifierExternal") andIndent:@"isIdentifierExternal" options:{0, 0}];
@@ -537,11 +537,11 @@ LABEL_39:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v15.receiver = self;
   v15.super_class = NEPathRule;
-  v4 = [(NEAppRule *)&v15 copyWithZone:a3];
+  v4 = [(NEAppRule *)&v15 copyWithZone:zone];
   v5 = v4;
   if (self)
   {
@@ -662,84 +662,84 @@ LABEL_18:
 
 LABEL_19:
   [v5 setDenyAll:{-[NEPathRule denyAll](self, "denyAll", v12)}];
-  v13 = [(NEPathRule *)self temporaryAllowMulticastNetworkName];
-  [v5 setTemporaryAllowMulticastNetworkName:v13];
+  temporaryAllowMulticastNetworkName = [(NEPathRule *)self temporaryAllowMulticastNetworkName];
+  [v5 setTemporaryAllowMulticastNetworkName:temporaryAllowMulticastNetworkName];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = NEPathRule;
-  [(NEAppRule *)&v11 encodeWithCoder:v4];
+  [(NEAppRule *)&v11 encodeWithCoder:coderCopy];
   if (self)
   {
-    [v4 encodeInt32:self->_internalCellularBehavior forKey:@"CellularBehavior"];
-    [v4 encodeBool:-[NEPathRule denyCellularFallback](self forKey:{"denyCellularFallback"), @"DenyCellularFallback"}];
-    [v4 encodeBool:-[NEPathRule denyMulticast](self forKey:{"denyMulticast"), @"DenyMulticast"}];
-    [v4 encodeBool:-[NEPathRule multicastPreferenceSet](self forKey:{"multicastPreferenceSet"), @"MulticastPreferenceSet"}];
-    [v4 encodeBool:-[NEPathRule isIdentifierExternal](self forKey:{"isIdentifierExternal"), @"IsIdentifierExternal"}];
-    [v4 encodeObject:objc_getProperty(self forKey:{v5, 96, 1), @"AggregateEnterpriseCellularBehavior"}];
-    [v4 encodeObject:objc_getProperty(self forKey:{v6, 88, 1), @"AggregatePersonalCellularBehavior"}];
-    [v4 encodeInt32:self->_internalWiFiBehavior forKey:@"WiFiBehavior"];
-    [v4 encodeObject:objc_getProperty(self forKey:{v7, 120, 1), @"AggregateEnterpriseWiFiBehavior"}];
+    [coderCopy encodeInt32:self->_internalCellularBehavior forKey:@"CellularBehavior"];
+    [coderCopy encodeBool:-[NEPathRule denyCellularFallback](self forKey:{"denyCellularFallback"), @"DenyCellularFallback"}];
+    [coderCopy encodeBool:-[NEPathRule denyMulticast](self forKey:{"denyMulticast"), @"DenyMulticast"}];
+    [coderCopy encodeBool:-[NEPathRule multicastPreferenceSet](self forKey:{"multicastPreferenceSet"), @"MulticastPreferenceSet"}];
+    [coderCopy encodeBool:-[NEPathRule isIdentifierExternal](self forKey:{"isIdentifierExternal"), @"IsIdentifierExternal"}];
+    [coderCopy encodeObject:objc_getProperty(self forKey:{v5, 96, 1), @"AggregateEnterpriseCellularBehavior"}];
+    [coderCopy encodeObject:objc_getProperty(self forKey:{v6, 88, 1), @"AggregatePersonalCellularBehavior"}];
+    [coderCopy encodeInt32:self->_internalWiFiBehavior forKey:@"WiFiBehavior"];
+    [coderCopy encodeObject:objc_getProperty(self forKey:{v7, 120, 1), @"AggregateEnterpriseWiFiBehavior"}];
     Property = objc_getProperty(self, v8, 112, 1);
   }
 
   else
   {
-    [v4 encodeInt32:0 forKey:@"CellularBehavior"];
-    [v4 encodeBool:objc_msgSend(0 forKey:{"denyCellularFallback"), @"DenyCellularFallback"}];
-    [v4 encodeBool:objc_msgSend(0 forKey:{"denyMulticast"), @"DenyMulticast"}];
-    [v4 encodeBool:objc_msgSend(0 forKey:{"multicastPreferenceSet"), @"MulticastPreferenceSet"}];
-    [v4 encodeBool:objc_msgSend(0 forKey:{"isIdentifierExternal"), @"IsIdentifierExternal"}];
-    [v4 encodeObject:0 forKey:@"AggregateEnterpriseCellularBehavior"];
-    [v4 encodeObject:0 forKey:@"AggregatePersonalCellularBehavior"];
-    [v4 encodeInt32:0 forKey:@"WiFiBehavior"];
-    [v4 encodeObject:0 forKey:@"AggregateEnterpriseWiFiBehavior"];
+    [coderCopy encodeInt32:0 forKey:@"CellularBehavior"];
+    [coderCopy encodeBool:objc_msgSend(0 forKey:{"denyCellularFallback"), @"DenyCellularFallback"}];
+    [coderCopy encodeBool:objc_msgSend(0 forKey:{"denyMulticast"), @"DenyMulticast"}];
+    [coderCopy encodeBool:objc_msgSend(0 forKey:{"multicastPreferenceSet"), @"MulticastPreferenceSet"}];
+    [coderCopy encodeBool:objc_msgSend(0 forKey:{"isIdentifierExternal"), @"IsIdentifierExternal"}];
+    [coderCopy encodeObject:0 forKey:@"AggregateEnterpriseCellularBehavior"];
+    [coderCopy encodeObject:0 forKey:@"AggregatePersonalCellularBehavior"];
+    [coderCopy encodeInt32:0 forKey:@"WiFiBehavior"];
+    [coderCopy encodeObject:0 forKey:@"AggregateEnterpriseWiFiBehavior"];
     Property = 0;
   }
 
-  [v4 encodeObject:Property forKey:@"AggregatePersonalWiFiBehavior"];
-  [v4 encodeBool:-[NEPathRule denyAll](self forKey:{"denyAll"), @"DenyAll"}];
-  v10 = [(NEPathRule *)self temporaryAllowMulticastNetworkName];
-  [v4 encodeObject:v10 forKey:@"TemporaryAllowMulticastNetworkName"];
+  [coderCopy encodeObject:Property forKey:@"AggregatePersonalWiFiBehavior"];
+  [coderCopy encodeBool:-[NEPathRule denyAll](self forKey:{"denyAll"), @"DenyAll"}];
+  temporaryAllowMulticastNetworkName = [(NEPathRule *)self temporaryAllowMulticastNetworkName];
+  [coderCopy encodeObject:temporaryAllowMulticastNetworkName forKey:@"TemporaryAllowMulticastNetworkName"];
 }
 
-- (NEPathRule)initWithCoder:(id)a3
+- (NEPathRule)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = NEPathRule;
-  v5 = [(NEAppRule *)&v17 initWithCoder:v4];
+  v5 = [(NEAppRule *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_internalCellularBehavior = [v4 decodeInt32ForKey:@"CellularBehavior"];
-    v5->_denyCellularFallback = [v4 decodeBoolForKey:@"DenyCellularFallback"];
-    v5->_denyMulticast = [v4 decodeBoolForKey:@"DenyMulticast"];
-    v5->_multicastPreferenceSet = [v4 decodeBoolForKey:@"MulticastPreferenceSet"];
-    v5->_isIdentifierExternal = [v4 decodeBoolForKey:@"IsIdentifierExternal"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AggregateEnterpriseCellularBehavior"];
+    v5->_internalCellularBehavior = [coderCopy decodeInt32ForKey:@"CellularBehavior"];
+    v5->_denyCellularFallback = [coderCopy decodeBoolForKey:@"DenyCellularFallback"];
+    v5->_denyMulticast = [coderCopy decodeBoolForKey:@"DenyMulticast"];
+    v5->_multicastPreferenceSet = [coderCopy decodeBoolForKey:@"MulticastPreferenceSet"];
+    v5->_isIdentifierExternal = [coderCopy decodeBoolForKey:@"IsIdentifierExternal"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AggregateEnterpriseCellularBehavior"];
     aggregateEnterpriseCellular = v5->_aggregateEnterpriseCellular;
     v5->_aggregateEnterpriseCellular = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AggregatePersonalCellularBehavior"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AggregatePersonalCellularBehavior"];
     aggregatePersonalCellular = v5->_aggregatePersonalCellular;
     v5->_aggregatePersonalCellular = v8;
 
-    v5->_internalWiFiBehavior = [v4 decodeInt32ForKey:@"WiFiBehavior"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AggregateEnterpriseWiFiBehavior"];
+    v5->_internalWiFiBehavior = [coderCopy decodeInt32ForKey:@"WiFiBehavior"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AggregateEnterpriseWiFiBehavior"];
     aggregateEnterpriseWiFi = v5->_aggregateEnterpriseWiFi;
     v5->_aggregateEnterpriseWiFi = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AggregatePersonalWiFiBehavior"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AggregatePersonalWiFiBehavior"];
     aggregatePersonalWiFi = v5->_aggregatePersonalWiFi;
     v5->_aggregatePersonalWiFi = v12;
 
-    v5->_denyAll = [v4 decodeBoolForKey:@"DenyAll"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TemporaryAllowMulticastNetworkName"];
+    v5->_denyAll = [coderCopy decodeBoolForKey:@"DenyAll"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TemporaryAllowMulticastNetworkName"];
     temporaryAllowMulticastNetworkName = v5->_temporaryAllowMulticastNetworkName;
     v5->_temporaryAllowMulticastNetworkName = v14;
   }
@@ -747,26 +747,26 @@ LABEL_19:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = [v4 matchSigningIdentifier];
-    v8 = [(NEAppRule *)self matchSigningIdentifier];
-    if ([v7 isEqualToString:v8])
+    matchSigningIdentifier = [equalCopy matchSigningIdentifier];
+    matchSigningIdentifier2 = [(NEAppRule *)self matchSigningIdentifier];
+    if ([matchSigningIdentifier isEqualToString:matchSigningIdentifier2])
     {
-      v9 = [v4 matchPath];
-      v10 = [(NEAppRule *)self matchPath];
-      if ([v9 isEqualToString:v10])
+      matchPath = [equalCopy matchPath];
+      matchPath2 = [(NEAppRule *)self matchPath];
+      if ([matchPath isEqualToString:matchPath2])
       {
-        v11 = [v4 temporaryAllowMulticastNetworkName];
-        v12 = [(NEPathRule *)self temporaryAllowMulticastNetworkName];
-        if ([v11 isEqualToString:v12] && (v13 = objc_msgSend(v4, "cellularBehavior"), v13 == -[NEPathRule cellularBehavior](self, "cellularBehavior")) && (v14 = objc_msgSend(v4, "wifiBehavior"), v14 == -[NEPathRule wifiBehavior](self, "wifiBehavior")) && (v15 = objc_msgSend(v4, "isIdentifierExternal"), v15 == -[NEPathRule isIdentifierExternal](self, "isIdentifierExternal")) && (v16 = objc_msgSend(v4, "denyMulticast"), v16 == -[NEPathRule denyMulticast](self, "denyMulticast")) && (v17 = objc_msgSend(v4, "multicastPreferenceSet"), v17 == -[NEPathRule multicastPreferenceSet](self, "multicastPreferenceSet")))
+        temporaryAllowMulticastNetworkName = [equalCopy temporaryAllowMulticastNetworkName];
+        temporaryAllowMulticastNetworkName2 = [(NEPathRule *)self temporaryAllowMulticastNetworkName];
+        if ([temporaryAllowMulticastNetworkName isEqualToString:temporaryAllowMulticastNetworkName2] && (v13 = objc_msgSend(equalCopy, "cellularBehavior"), v13 == -[NEPathRule cellularBehavior](self, "cellularBehavior")) && (v14 = objc_msgSend(equalCopy, "wifiBehavior"), v14 == -[NEPathRule wifiBehavior](self, "wifiBehavior")) && (v15 = objc_msgSend(equalCopy, "isIdentifierExternal"), v15 == -[NEPathRule isIdentifierExternal](self, "isIdentifierExternal")) && (v16 = objc_msgSend(equalCopy, "denyMulticast"), v16 == -[NEPathRule denyMulticast](self, "denyMulticast")) && (v17 = objc_msgSend(equalCopy, "multicastPreferenceSet"), v17 == -[NEPathRule multicastPreferenceSet](self, "multicastPreferenceSet")))
         {
-          v19 = [v4 denyAll];
-          v6 = v19 ^ [(NEPathRule *)self denyAll]^ 1;
+          denyAll = [equalCopy denyAll];
+          v6 = denyAll ^ [(NEPathRule *)self denyAll]^ 1;
         }
 
         else

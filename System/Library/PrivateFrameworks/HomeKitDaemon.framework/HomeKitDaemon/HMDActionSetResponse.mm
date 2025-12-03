@@ -1,8 +1,8 @@
 @interface HMDActionSetResponse
-+ (id)responsesFromSerializedResponses:(id)a3;
-+ (id)serializeWithResponses:(id)a3;
++ (id)responsesFromSerializedResponses:(id)responses;
++ (id)serializeWithResponses:(id)responses;
 - (HMDActionSetResponse)init;
-- (HMDActionSetResponse)initWithActionSetUUID:(id)a3 state:(BOOL)a4;
+- (HMDActionSetResponse)initWithActionSetUUID:(id)d state:(BOOL)state;
 - (NSUUID)actionSetUUID;
 - (id)serialize;
 @end
@@ -35,7 +35,7 @@
   return result;
 }
 
-- (HMDActionSetResponse)initWithActionSetUUID:(id)a3 state:(BOOL)a4
+- (HMDActionSetResponse)initWithActionSetUUID:(id)d state:(BOOL)state
 {
   v6 = sub_22A4DB7DC();
   v7 = *(v6 - 8);
@@ -47,7 +47,7 @@
   v11[3] = v6;
   boxed_opaque_existential_1 = __swift_allocate_boxed_opaque_existential_1(v11);
   (*(v7 + 16))(boxed_opaque_existential_1, v10, v6);
-  *(&self->super.super.isa + OBJC_IVAR___HMDActionSetResponse_state) = a4;
+  *(&self->super.super.isa + OBJC_IVAR___HMDActionSetResponse_state) = state;
   v15.receiver = self;
   v15.super_class = HMDActionSetResponse;
   v13 = [(HMDActionSetResponse *)&v15 init];
@@ -55,7 +55,7 @@
   return v13;
 }
 
-+ (id)responsesFromSerializedResponses:(id)a3
++ (id)responsesFromSerializedResponses:(id)responses
 {
   sub_229562F68(0, &qword_281401770, 0x277CCABB0);
   v3 = sub_22A4DD49C();
@@ -67,9 +67,9 @@
   return v5;
 }
 
-+ (id)serializeWithResponses:(id)a3
++ (id)serializeWithResponses:(id)responses
 {
-  type metadata accessor for HMDActionSetResponse(a1);
+  type metadata accessor for HMDActionSetResponse(self);
   v3 = sub_22A4DD83C();
   sub_229609E08(v3);
 
@@ -81,7 +81,7 @@
 
 - (id)serialize
 {
-  v2 = self;
+  selfCopy = self;
   sub_229609760();
 
   sub_229562F68(0, &qword_281401770, 0x277CCABB0);

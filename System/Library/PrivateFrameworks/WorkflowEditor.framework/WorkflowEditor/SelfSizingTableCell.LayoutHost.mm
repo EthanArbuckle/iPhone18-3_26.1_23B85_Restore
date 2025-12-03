@@ -6,7 +6,7 @@
 
 - (void)_layoutMetricsInvalidatedForHostedView
 {
-  v2 = self;
+  selfCopy = self;
   sub_2744D3A18();
 }
 

@@ -1,10 +1,10 @@
 @interface NTArticleIDsSectionFetchDescriptor
 - (NTArticleIDsSectionFetchDescriptor)init;
-- (NTArticleIDsSectionFetchDescriptor)initWithArticleIDsConfiguration:(id)a3;
-- (id)assembleResultsWithCatchUpOperation:(id)a3;
-- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)a3 limit:(unint64_t)a4 priorFeedItems:(id)a5;
-- (id)incrementalSortTransformationWithFeedPersonalizer:(id)a3;
-- (void)configureCatchUpOperationWithFetchRequest:(id)a3;
+- (NTArticleIDsSectionFetchDescriptor)initWithArticleIDsConfiguration:(id)configuration;
+- (id)assembleResultsWithCatchUpOperation:(id)operation;
+- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)personalizer limit:(unint64_t)limit priorFeedItems:(id)items;
+- (id)incrementalSortTransformationWithFeedPersonalizer:(id)personalizer;
+- (void)configureCatchUpOperationWithFetchRequest:(id)request;
 @end
 
 @implementation NTArticleIDsSectionFetchDescriptor
@@ -35,11 +35,11 @@
   objc_exception_throw(v6);
 }
 
-- (NTArticleIDsSectionFetchDescriptor)initWithArticleIDsConfiguration:(id)a3
+- (NTArticleIDsSectionFetchDescriptor)initWithArticleIDsConfiguration:(id)configuration
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  configurationCopy = configuration;
+  if (!configurationCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTArticleIDsSectionFetchDescriptor initWithArticleIDsConfiguration:];
   }
@@ -54,8 +54,8 @@
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = [v4 articles];
-    v8 = [v7 countByEnumeratingWithState:&v18 objects:v23 count:16];
+    articles = [configurationCopy articles];
+    v8 = [articles countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v8)
     {
       v9 = v8;
@@ -66,7 +66,7 @@
         {
           if (*v19 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(articles);
           }
 
           v12 = *(*(&v18 + 1) + 8 * i);
@@ -76,7 +76,7 @@
           [v6 addItems:v13];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v18 objects:v23 count:16];
+        v9 = [articles countByEnumeratingWithState:&v18 objects:v23 count:16];
       }
 
       while (v9);
@@ -91,37 +91,37 @@
   return v5;
 }
 
-- (void)configureCatchUpOperationWithFetchRequest:(id)a3
+- (void)configureCatchUpOperationWithFetchRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NTArticleIDsSectionFetchDescriptor *)self privateFetchDescriptor];
-  [v5 configureCatchUpOperationWithFetchRequest:v4];
+  requestCopy = request;
+  privateFetchDescriptor = [(NTArticleIDsSectionFetchDescriptor *)self privateFetchDescriptor];
+  [privateFetchDescriptor configureCatchUpOperationWithFetchRequest:requestCopy];
 }
 
-- (id)assembleResultsWithCatchUpOperation:(id)a3
+- (id)assembleResultsWithCatchUpOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [(NTArticleIDsSectionFetchDescriptor *)self privateFetchDescriptor];
-  v6 = [v5 assembleResultsWithCatchUpOperation:v4];
+  operationCopy = operation;
+  privateFetchDescriptor = [(NTArticleIDsSectionFetchDescriptor *)self privateFetchDescriptor];
+  v6 = [privateFetchDescriptor assembleResultsWithCatchUpOperation:operationCopy];
 
   return v6;
 }
 
-- (id)incrementalSortTransformationWithFeedPersonalizer:(id)a3
+- (id)incrementalSortTransformationWithFeedPersonalizer:(id)personalizer
 {
-  v4 = a3;
-  v5 = [(NTArticleIDsSectionFetchDescriptor *)self privateFetchDescriptor];
-  v6 = [v5 incrementalSortTransformationWithFeedPersonalizer:v4];
+  personalizerCopy = personalizer;
+  privateFetchDescriptor = [(NTArticleIDsSectionFetchDescriptor *)self privateFetchDescriptor];
+  v6 = [privateFetchDescriptor incrementalSortTransformationWithFeedPersonalizer:personalizerCopy];
 
   return v6;
 }
 
-- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)a3 limit:(unint64_t)a4 priorFeedItems:(id)a5
+- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)personalizer limit:(unint64_t)limit priorFeedItems:(id)items
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(NTArticleIDsSectionFetchDescriptor *)self privateFetchDescriptor];
-  v11 = [v10 incrementalLimitTransformationWithFeedPersonalizer:v9 limit:a4 priorFeedItems:v8];
+  itemsCopy = items;
+  personalizerCopy = personalizer;
+  privateFetchDescriptor = [(NTArticleIDsSectionFetchDescriptor *)self privateFetchDescriptor];
+  v11 = [privateFetchDescriptor incrementalLimitTransformationWithFeedPersonalizer:personalizerCopy limit:limit priorFeedItems:itemsCopy];
 
   return v11;
 }

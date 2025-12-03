@@ -4,20 +4,20 @@
 - (BOOL)autoDisableLowPowerMode;
 - (BOOL)getDippedBelow;
 - (BOOL)isInternalBuild;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (BOOL)readStateFromDefaults;
 - (PMLowPowerModeService)init;
 - (double)getBatteryChargeWhenEnabled;
 - (id)readDateFromDefaults;
 - (id)readParamsFromDefaults;
 - (void)autoEnableCheck;
-- (void)batteryPercentageNotificationHandler:(int)a3;
+- (void)batteryPercentageNotificationHandler:(int)handler;
 - (void)initAnalyticsTimers;
 - (void)lostModeCheck;
-- (void)pluggedInNotificationHandler:(int)a3;
+- (void)pluggedInNotificationHandler:(int)handler;
 - (void)readPreferences;
-- (void)reportStateToBiome:(BOOL)a3 fromSource:(id)a4;
-- (void)setPowerMode:(int64_t)a3 fromSource:(id)a4 withParams:(id)a5 withCompletion:(id)a6;
+- (void)reportStateToBiome:(BOOL)biome fromSource:(id)source;
+- (void)setPowerMode:(int64_t)mode fromSource:(id)source withParams:(id)params withCompletion:(id)completion;
 @end
 
 @implementation PMLowPowerModeService
@@ -54,8 +54,8 @@
     defaults = v2->_defaults;
     v2->_defaults = v10;
 
-    v12 = [(PMLowPowerModeService *)v2 mainQueue];
-    v13 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v12);
+    mainQueue = [(PMLowPowerModeService *)v2 mainQueue];
+    v13 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, mainQueue);
 
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
@@ -107,24 +107,24 @@
   dispatch_resume(v4);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL____PMLowPowerModeProtocol];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  v7 = [v5 valueForEntitlement:@"com.apple.powerd.lowpowermode.allow"];
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.powerd.lowpowermode.allow"];
   v8 = v7;
   if (v7 && [v7 BOOLValue])
   {
-    [v5 setExportedObject:self];
-    [v5 resume];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy resume];
     v9 = qword_1000ACA28;
     if (os_log_type_enabled(qword_1000ACA28, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
       v14[0] = 67109120;
-      v14[1] = [v5 processIdentifier];
+      v14[1] = [connectionCopy processIdentifier];
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "LPM: listener: accepted new connection from PID %d\n", v14, 8u);
     }
 
@@ -136,7 +136,7 @@
     v12 = qword_1000ACA28;
     if (os_log_type_enabled(qword_1000ACA28, OS_LOG_TYPE_ERROR))
     {
-      sub_1000635E4(v12, v5);
+      sub_1000635E4(v12, connectionCopy);
     }
 
     v11 = 0;
@@ -166,7 +166,7 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "LPM: Read defaults state=%d\n", v9, 8u);
     }
 
-    v7 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
@@ -177,10 +177,10 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "LPM: No previous defaults state found\n", v9, 2u);
     }
 
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 - (id)readDateFromDefaults
@@ -263,62 +263,62 @@
   v4 = v3;
   if (v3)
   {
-    v2 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v2 = 0;
+    bOOLValue = 0;
   }
 
-  return v2;
+  return bOOLValue;
 }
 
-- (void)reportStateToBiome:(BOOL)a3 fromSource:(id)a4
+- (void)reportStateToBiome:(BOOL)biome fromSource:(id)source
 {
-  v4 = a3;
-  v13 = a4;
-  if ([v13 isEqualToString:kPMLPMSourceSpringBoardAlert])
+  biomeCopy = biome;
+  sourceCopy = source;
+  if ([sourceCopy isEqualToString:kPMLPMSourceSpringBoardAlert])
   {
     v5 = 3;
   }
 
-  else if ([v13 isEqualToString:kPMLPMSourceReenableBulletin])
+  else if ([sourceCopy isEqualToString:kPMLPMSourceReenableBulletin])
   {
     v5 = 4;
   }
 
-  else if ([v13 isEqualToString:kPMLPMSourceControlCenter])
+  else if ([sourceCopy isEqualToString:kPMLPMSourceControlCenter])
   {
     v5 = 5;
   }
 
-  else if ([v13 isEqualToString:kPMLPMSourceSettings])
+  else if ([sourceCopy isEqualToString:kPMLPMSourceSettings])
   {
     v5 = 1;
   }
 
-  else if ([v13 isEqualToString:kPMLPMSourceSiri])
+  else if ([sourceCopy isEqualToString:kPMLPMSourceSiri])
   {
     v5 = 2;
   }
 
-  else if ([v13 isEqualToString:kPMLPMSourceLostMode])
+  else if ([sourceCopy isEqualToString:kPMLPMSourceLostMode])
   {
     v5 = 6;
   }
 
-  else if ([v13 isEqualToString:kPMLPMSourceSystemDisable])
+  else if ([sourceCopy isEqualToString:kPMLPMSourceSystemDisable])
   {
     v5 = 7;
   }
 
-  else if ([v13 isEqualToString:kPMLPMSourceWorkouts])
+  else if ([sourceCopy isEqualToString:kPMLPMSourceWorkouts])
   {
     v5 = 8;
   }
 
-  else if ([v13 isEqualToString:kPMLPMSourceStandbyMode])
+  else if ([sourceCopy isEqualToString:kPMLPMSourceStandbyMode])
   {
     v5 = 9;
   }
@@ -328,7 +328,7 @@
     v5 = 0;
   }
 
-  if (v4)
+  if (biomeCopy)
   {
     v6 = 1;
   }
@@ -340,24 +340,24 @@
 
   v7 = [[BMEnergyMode alloc] initWithMode:v6 reason:v5];
   v8 = BiomeLibrary();
-  v9 = [v8 Device];
-  v10 = [v9 Power];
-  v11 = [v10 EnergyMode];
+  device = [v8 Device];
+  power = [device Power];
+  energyMode = [power EnergyMode];
 
-  v12 = [v11 source];
-  [v12 sendEvent:v7];
+  source = [energyMode source];
+  [source sendEvent:v7];
 }
 
 - (void)autoEnableCheck
 {
   if ([(PMLowPowerModeService *)self readStateFromDefaults])
   {
-    v3 = [(PMLowPowerModeService *)self readSourceFromDefaults];
+    readSourceFromDefaults = [(PMLowPowerModeService *)self readSourceFromDefaults];
     source = self->_source;
-    self->_source = v3;
+    self->_source = readSourceFromDefaults;
 
-    v5 = [(PMLowPowerModeService *)self readDateFromDefaults];
-    v6 = [v5 copy];
+    readDateFromDefaults = [(PMLowPowerModeService *)self readDateFromDefaults];
+    v6 = [readDateFromDefaults copy];
     stateChangeDate = self->_stateChangeDate;
     self->_stateChangeDate = v6;
 
@@ -365,9 +365,9 @@
     [(PMLowPowerModeService *)self getBatteryChargeWhenEnabled];
     self->_batteryChargeWhenEnabled = v8;
     self->_dippedBelow = [(PMLowPowerModeService *)self getDippedBelow];
-    v9 = [(PMLowPowerModeService *)self readParamsFromDefaults];
+    readParamsFromDefaults = [(PMLowPowerModeService *)self readParamsFromDefaults];
     params = self->_params;
-    self->_params = v9;
+    self->_params = readParamsFromDefaults;
 
     if (self->_enabled)
     {
@@ -394,7 +394,7 @@ LABEL_11:
       }
     }
 
-    else if ([(PMLowPowerModeService *)self toggleState:1 withDate:v5 withBatteryLevel:self->_source fromSource:self->_params withParams:self->_batteryChargeWhenEnabled]&& os_log_type_enabled(qword_1000ACA28, OS_LOG_TYPE_ERROR))
+    else if ([(PMLowPowerModeService *)self toggleState:1 withDate:readDateFromDefaults withBatteryLevel:self->_source fromSource:self->_params withParams:self->_batteryChargeWhenEnabled]&& os_log_type_enabled(qword_1000ACA28, OS_LOG_TYPE_ERROR))
     {
       sub_1000638B8();
     }
@@ -409,7 +409,7 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "LPM: No saved state found, not auto-enabling\n", buf, 2u);
     }
 
-    v5 = 0;
+    readDateFromDefaults = 0;
   }
 }
 
@@ -464,9 +464,9 @@ LABEL_11:
   if (objc_opt_class())
   {
     v3 = +[FMDFMIPManager sharedInstance];
-    v4 = [v3 isLostModeActive];
+    isLostModeActive = [v3 isLostModeActive];
 
-    if (v4)
+    if (isLostModeActive)
     {
       v5 = qword_1000ACA28;
       if (os_log_type_enabled(qword_1000ACA28, OS_LOG_TYPE_DEFAULT))
@@ -549,11 +549,11 @@ LABEL_11:
         }
 
         v15 = [(NSUserDefaults *)self->_defaults valueForKey:@"preLostModeState"];
-        v16 = [v15 BOOLValue];
+        bOOLValue = [v15 BOOLValue];
 
         [(NSUserDefaults *)self->_defaults removeObjectForKey:@"preLostModeState"];
         [(NSUserDefaults *)self->_defaults synchronize];
-        if (v16)
+        if (bOOLValue)
         {
           v17 = qword_1000ACA28;
           if (os_log_type_enabled(qword_1000ACA28, OS_LOG_TYPE_DEFAULT))
@@ -589,18 +589,18 @@ LABEL_11:
   }
 }
 
-- (void)setPowerMode:(int64_t)a3 fromSource:(id)a4 withParams:(id)a5 withCompletion:(id)a6
+- (void)setPowerMode:(int64_t)mode fromSource:(id)source withParams:(id)params withCompletion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (a3 >= 2)
+  sourceCopy = source;
+  paramsCopy = params;
+  completionCopy = completion;
+  if (mode >= 2)
   {
     v33 = NSLocalizedDescriptionKey;
     v34 = @"Invalid Power Mode";
     v16 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
     v17 = [NSError errorWithDomain:@"Low Power Mode" code:1 userInfo:v16];
-    v12[2](v12, 0, v17);
+    completionCopy[2](completionCopy, 0, v17);
   }
 
   else
@@ -614,10 +614,10 @@ LABEL_11:
     v19 = 3221225472;
     v20 = sub_1000285A8;
     v21 = &unk_100099590;
-    v26 = a3;
-    v22 = self;
-    v23 = v10;
-    v24 = v11;
+    modeCopy = mode;
+    selfCopy = self;
+    v23 = sourceCopy;
+    v24 = paramsCopy;
     v25 = &v27;
     dispatch_sync(mainQueue, &v18);
     v14 = *(v28 + 24);
@@ -630,11 +630,11 @@ LABEL_11:
     {
       v31 = NSLocalizedDescriptionKey;
       v32 = @"Failed to update power mode";
-      a3 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1, v18, v19, v20, v21, v22, v23];
-      v15 = [NSError errorWithDomain:@"Low Power Mode" code:1 userInfo:a3];
+      mode = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1, v18, v19, v20, v21, selfCopy, v23];
+      v15 = [NSError errorWithDomain:@"Low Power Mode" code:1 userInfo:mode];
     }
 
-    v12[2](v12, v14, v15);
+    completionCopy[2](completionCopy, v14, v15);
     if ((v14 & 1) == 0)
     {
     }
@@ -771,9 +771,9 @@ LABEL_17:
 
   v13 = +[NSDate date];
   v14 = [(NSDictionary *)self->_params objectForKey:@"MinimumOnDays"];
-  v15 = [v14 intValue];
+  intValue = [v14 intValue];
 
-  if (v15 - 1 >= 3)
+  if (intValue - 1 >= 3)
   {
     if (os_log_type_enabled(qword_1000ACA28, OS_LOG_TYPE_ERROR))
     {
@@ -783,32 +783,32 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v16 = [(NSDate *)self->_stateChangeDate dateByAddingTimeInterval:(86400 * v15)];
+  v16 = [(NSDate *)self->_stateChangeDate dateByAddingTimeInterval:(86400 * intValue)];
   if ([v13 compare:v16] == -1)
   {
     v19 = qword_1000ACA28;
-    v17 = 0;
+    autoDisableLowPowerMode = 0;
     if (os_log_type_enabled(qword_1000ACA28, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138543362;
       *v22 = v16;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "LPM: won't auto exit until at least %{public}@", &v21, 0xCu);
-      v17 = 0;
+      autoDisableLowPowerMode = 0;
     }
   }
 
   else
   {
-    v17 = [(PMLowPowerModeService *)self autoDisableLowPowerMode];
+    autoDisableLowPowerMode = [(PMLowPowerModeService *)self autoDisableLowPowerMode];
   }
 
-  return v17;
+  return autoDisableLowPowerMode;
 }
 
-- (void)batteryPercentageNotificationHandler:(int)a3
+- (void)batteryPercentageNotificationHandler:(int)handler
 {
   state64 = 0;
-  notify_get_state(a3, &state64);
+  notify_get_state(handler, &state64);
   v4 = state64;
   v5 = state64;
   if (self->_batteryPercentage != v5)
@@ -847,7 +847,7 @@ LABEL_17:
   }
 }
 
-- (void)pluggedInNotificationHandler:(int)a3
+- (void)pluggedInNotificationHandler:(int)handler
 {
   v4 = IOPSDrawingUnlimitedPower();
   if (self->_pluggedIn != v4)

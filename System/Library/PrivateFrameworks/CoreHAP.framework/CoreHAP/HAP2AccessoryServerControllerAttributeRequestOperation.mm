@@ -1,6 +1,6 @@
 @interface HAP2AccessoryServerControllerAttributeRequestOperation
-+ (id)_characteristicsFromCachedCharacteristics:(id)a3;
-+ (id)_parseCache:(id)a3;
++ (id)_characteristicsFromCachedCharacteristics:(id)characteristics;
++ (id)_parseCache:(id)cache;
 - (void)_cleanUp;
 - (void)_sendRequest;
 - (void)main;
@@ -10,24 +10,24 @@
 
 - (void)_sendRequest
 {
-  v2 = self;
+  selfCopy = self;
   v14 = *MEMORY[0x277D85DE8];
   if (self)
   {
     self = self->_cache;
   }
 
-  v3 = [(HAP2AccessoryServerControllerAttributeRequestOperation *)self accessoryCache];
+  accessoryCache = [(HAP2AccessoryServerControllerAttributeRequestOperation *)self accessoryCache];
 
-  if (!v3)
+  if (!accessoryCache)
   {
     goto LABEL_14;
   }
 
   v4 = objc_opt_class();
-  if (v2)
+  if (selfCopy)
   {
-    cache = v2->_cache;
+    cache = selfCopy->_cache;
   }
 
   else
@@ -35,8 +35,8 @@
     cache = 0;
   }
 
-  v6 = [(HAP2AccessoryServerAccessoryCache *)cache accessoryCache];
-  v7 = [v4 _parseCache:v6];
+  accessoryCache2 = [(HAP2AccessoryServerAccessoryCache *)cache accessoryCache];
+  v7 = [v4 _parseCache:accessoryCache2];
 
   if (hap2LogInitialize_onceToken != -1)
   {
@@ -49,12 +49,12 @@
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v13 = v2;
+      v13 = selfCopy;
       _os_log_error_impl(&dword_22AADC000, v8, OS_LOG_TYPE_ERROR, "%@ Unable to deserialize the cache falling back to the accessory", buf, 0xCu);
     }
 
 LABEL_14:
-    v11.receiver = v2;
+    v11.receiver = selfCopy;
     v11.super_class = HAP2AccessoryServerControllerAttributeRequestOperation;
     [(HAP2AccessoryServerControllerOperation *)&v11 _sendRequest];
     goto LABEL_15;
@@ -63,22 +63,22 @@ LABEL_14:
   if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v13 = v2;
+    v13 = selfCopy;
     _os_log_impl(&dword_22AADC000, v8, OS_LOG_TYPE_INFO, "%@ Attempting to use the accessory cache", buf, 0xCu);
   }
 
   v9 = [[HAP2EncodedAttributeDatabaseResponseCached alloc] initWithAttributeDatabase:v7];
-  [(HAP2AccessoryServerControllerOperation *)v2 setResponse:v9];
+  [(HAP2AccessoryServerControllerOperation *)selfCopy setResponse:v9];
 
-  [(HAP2AccessoryServerControllerOperation *)v2 finish];
+  [(HAP2AccessoryServerControllerOperation *)selfCopy finish];
 LABEL_15:
   v10 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_cleanUp
 {
-  v3 = [(HAP2AccessoryServerControllerOperation *)&self->super.super.super.super.isa controller];
-  [(HAP2AccessoryServerController *)v3 setReadingAttributeDatabase:?];
+  controller = [(HAP2AccessoryServerControllerOperation *)&self->super.super.super.super.isa controller];
+  [(HAP2AccessoryServerController *)controller setReadingAttributeDatabase:?];
 
   v4.receiver = self;
   v4.super_class = HAP2AccessoryServerControllerAttributeRequestOperation;
@@ -101,27 +101,27 @@ LABEL_15:
     _os_log_impl(&dword_22AADC000, v3, OS_LOG_TYPE_DEFAULT, "%@ Starting", &buf, 0xCu);
   }
 
-  v4 = [(HAP2AccessoryServerControllerOperation *)&self->super.super.super.super.isa controller];
-  [(HAP2AccessoryServerController *)v4 setReadingAttributeDatabase:?];
+  controller = [(HAP2AccessoryServerControllerOperation *)&self->super.super.super.super.isa controller];
+  [(HAP2AccessoryServerController *)controller setReadingAttributeDatabase:?];
 
-  v5 = [(HAP2AccessoryServerControllerOperation *)&self->super.super.super.super.isa controller];
+  controller2 = [(HAP2AccessoryServerControllerOperation *)&self->super.super.super.super.isa controller];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v18 = __62__HAP2AccessoryServerControllerAttributeRequestOperation_main__block_invoke;
   v19 = &unk_2786D4EC0;
-  v20 = self;
+  selfCopy = self;
   v6 = v17;
-  if (v5)
+  if (controller2)
   {
-    [v5[11] assertCurrentQueue];
-    v7 = v5[9];
+    [controller2[11] assertCurrentQueue];
+    v7 = controller2[9];
     if (v7)
     {
-      v8 = [v7 metadataVersion];
+      metadataVersion = [v7 metadataVersion];
 
-      if (v8)
+      if (metadataVersion)
       {
-        v18(v6, v5[9]);
+        v18(v6, controller2[9]);
         goto LABEL_22;
       }
 
@@ -134,30 +134,30 @@ LABEL_15:
       if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v5;
+        *(&buf + 4) = controller2;
         _os_log_impl(&dword_22AADC000, v9, OS_LOG_TYPE_INFO, "%@ Invalidating accessory cache due to missing metadata version", &buf, 0xCu);
       }
 
-      [v5[9] invalidateAccessoryCache];
+      [controller2[9] invalidateAccessoryCache];
     }
 
-    v10 = [v5 accessoryServer];
-    v11 = [v10 browser];
-    v12 = [v11 storage];
+    accessoryServer = [controller2 accessoryServer];
+    browser = [accessoryServer browser];
+    storage = [browser storage];
 
-    if (v12)
+    if (storage)
     {
-      v13 = [objc_opt_class() controllerIdentifier];
-      v14 = cacheFileIdentifierForAccessoryServer(v13, v10);
+      controllerIdentifier = [objc_opt_class() controllerIdentifier];
+      v14 = cacheFileIdentifierForAccessoryServer(controllerIdentifier, accessoryServer);
 
       *&buf = MEMORY[0x277D85DD0];
       *(&buf + 1) = 3221225472;
       v22 = __68__HAP2AccessoryServerController_lookupAccessoryCacheWithCompletion___block_invoke;
       v23 = &unk_2786D5C70;
-      v24 = v5;
+      v24 = controller2;
       v26 = v6;
-      v25 = v10;
-      [v12 fetchCacheForIdentifier:v14 completion:&buf];
+      v25 = accessoryServer;
+      [storage fetchCacheForIdentifier:v14 completion:&buf];
     }
 
     else
@@ -171,7 +171,7 @@ LABEL_15:
       if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v5;
+        *(&buf + 4) = controller2;
         _os_log_error_impl(&dword_22AADC000, v15, OS_LOG_TYPE_ERROR, "%@ Unable to get to the storage", &buf, 0xCu);
       }
 
@@ -202,18 +202,18 @@ uint64_t __62__HAP2AccessoryServerControllerAttributeRequestOperation_main__bloc
   return [v5 _openTransport:0];
 }
 
-+ (id)_characteristicsFromCachedCharacteristics:(id)a3
++ (id)_characteristicsFromCachedCharacteristics:(id)characteristics
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  characteristicsCopy = characteristics;
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(characteristicsCopy, "count")}];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __100__HAP2AccessoryServerControllerAttributeRequestOperation__characteristicsFromCachedCharacteristics___block_invoke;
   v9[3] = &unk_2786D4F38;
   v10 = v5;
   v6 = v5;
-  [v4 hmf_enumerateWithAutoreleasePoolUsingBlock:v9];
+  [characteristicsCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v9];
 
   v7 = [v6 copy];
 
@@ -239,19 +239,19 @@ void __100__HAP2AccessoryServerControllerAttributeRequestOperation__characterist
   [*(a1 + 32) addObject:v12];
 }
 
-+ (id)_parseCache:(id)a3
++ (id)_parseCache:(id)cache
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
-  v6 = [v4 dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
+  cacheCopy = cache;
+  v6 = [v4 dictionaryWithCapacity:{objc_msgSend(cacheCopy, "count")}];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __70__HAP2AccessoryServerControllerAttributeRequestOperation__parseCache___block_invoke;
   v13 = &unk_2786D4F10;
   v14 = v6;
-  v15 = a1;
+  selfCopy = self;
   v7 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:&v10];
+  [cacheCopy enumerateKeysAndObjectsUsingBlock:&v10];
 
   v8 = [v7 copy];
 

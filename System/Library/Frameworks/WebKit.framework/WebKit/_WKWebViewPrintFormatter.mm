@@ -2,19 +2,19 @@
 - (BOOL)requiresMainThread;
 - (CGImage)_printPreviewImage;
 - (CGPDFDocument)_printedDocument;
-- (CGRect)rectForPageAtIndex:(int64_t)a3;
+- (CGRect)rectForPageAtIndex:(int64_t)index;
 - (id).cxx_construct;
 - (int64_t)_recalcPageCount;
-- (void)_drawInRectUsingBitmap:(CGRect)a3 forPageAtIndex:(int64_t)a4;
-- (void)_drawInRectUsingPDF:(CGRect)a3 forPageAtIndex:(int64_t)a4;
+- (void)_drawInRectUsingBitmap:(CGRect)bitmap forPageAtIndex:(int64_t)index;
+- (void)_drawInRectUsingPDF:(CGRect)f forPageAtIndex:(int64_t)index;
 - (void)_invalidatePrintRenderingState;
 - (void)_setNeedsRecalc;
-- (void)_setPrintPreviewImage:(CGImage *)a3;
-- (void)_setPrintedDocument:(CGPDFDocument *)a3;
-- (void)_setSnapshotPaperRect:(CGRect)a3;
+- (void)_setPrintPreviewImage:(CGImage *)image;
+- (void)_setPrintedDocument:(CGPDFDocument *)document;
+- (void)_setSnapshotPaperRect:(CGRect)rect;
 - (void)_waitForPrintedDocumentOrImage;
-- (void)drawInRect:(CGRect)a3 forPageAtIndex:(int64_t)a4;
-- (void)setFrameToPrint:(id)a3;
+- (void)drawInRect:(CGRect)rect forPageAtIndex:(int64_t)index;
+- (void)setFrameToPrint:(id)print;
 @end
 
 @implementation _WKWebViewPrintFormatter
@@ -26,15 +26,15 @@
   return [v2 _wk_printFormatterRequiresMainThread];
 }
 
-- (void)setFrameToPrint:(id)a3
+- (void)setFrameToPrint:(id)print
 {
-  if (a3)
+  if (print)
   {
-    v5 = a3;
+    printCopy = print;
   }
 
   m_ptr = self->_frameToPrint.m_ptr;
-  self->_frameToPrint.m_ptr = a3;
+  self->_frameToPrint.m_ptr = print;
   if (m_ptr)
   {
   }
@@ -68,17 +68,17 @@
   return m_ptr;
 }
 
-- (void)_setPrintedDocument:(CGPDFDocument *)a3
+- (void)_setPrintedDocument:(CGPDFDocument *)document
 {
   if ([(_WKWebViewPrintFormatter *)self requiresMainThread])
   {
-    if (a3)
+    if (document)
     {
-      CFRetain(a3);
+      CFRetain(document);
     }
 
     m_ptr = self->_printedDocument.m_ptr;
-    self->_printedDocument.m_ptr = a3;
+    self->_printedDocument.m_ptr = document;
     if (m_ptr)
     {
 
@@ -95,13 +95,13 @@
       MEMORY[0x19EB01E30](&self->_printLock);
     }
 
-    if (a3)
+    if (document)
     {
-      CFRetain(a3);
+      CFRetain(document);
     }
 
     v7 = self->_printedDocument.m_ptr;
-    self->_printedDocument.m_ptr = a3;
+    self->_printedDocument.m_ptr = document;
     if (v7)
     {
       CFRelease(v7);
@@ -146,17 +146,17 @@
   return m_ptr;
 }
 
-- (void)_setPrintPreviewImage:(CGImage *)a3
+- (void)_setPrintPreviewImage:(CGImage *)image
 {
   if ([(_WKWebViewPrintFormatter *)self requiresMainThread])
   {
-    if (a3)
+    if (image)
     {
-      CFRetain(a3);
+      CFRetain(image);
     }
 
     m_ptr = self->_printPreviewImage.m_ptr;
-    self->_printPreviewImage.m_ptr = a3;
+    self->_printPreviewImage.m_ptr = image;
     if (m_ptr)
     {
 
@@ -173,13 +173,13 @@
       MEMORY[0x19EB01E30](&self->_printLock);
     }
 
-    if (a3)
+    if (image)
     {
-      CFRetain(a3);
+      CFRetain(image);
     }
 
     v7 = self->_printPreviewImage.m_ptr;
-    self->_printPreviewImage.m_ptr = a3;
+    self->_printPreviewImage.m_ptr = image;
     if (v7)
     {
       CFRelease(v7);
@@ -217,17 +217,17 @@
   }
 }
 
-- (void)_setSnapshotPaperRect:(CGRect)a3
+- (void)_setSnapshotPaperRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   suppressPageCountRecalc = self->_suppressPageCountRecalc;
   self->_suppressPageCountRecalc = 1;
-  v9 = [(UIPrintFormatter *)self printPageRenderer];
-  [(UIPrintPageRenderer *)v9 setPaperRect:x, y, width, height];
-  [(UIPrintPageRenderer *)v9 setPrintableRect:x, y, width, height];
+  printPageRenderer = [(UIPrintFormatter *)self printPageRenderer];
+  [(UIPrintPageRenderer *)printPageRenderer setPaperRect:x, y, width, height];
+  [(UIPrintPageRenderer *)printPageRenderer setPrintableRect:x, y, width, height];
   self->_suppressPageCountRecalc = suppressPageCountRecalc;
 }
 
@@ -272,7 +272,7 @@
   }
 }
 
-- (CGRect)rectForPageAtIndex:(int64_t)a3
+- (CGRect)rectForPageAtIndex:(int64_t)index
 {
   if ([(_WKWebViewPrintFormatter *)self snapshotFirstPage])
   {
@@ -281,7 +281,7 @@
 
   else
   {
-    [(UIPrintFormatter *)self _pageContentRect:[(UIPrintFormatter *)self startPage]== a3];
+    [(UIPrintFormatter *)self _pageContentRect:[(UIPrintFormatter *)self startPage]== index];
   }
 
   result.size.height = v8;
@@ -291,36 +291,36 @@
   return result;
 }
 
-- (void)drawInRect:(CGRect)a3 forPageAtIndex:(int64_t)a4
+- (void)drawInRect:(CGRect)rect forPageAtIndex:(int64_t)index
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ([(_WKWebViewPrintFormatter *)self _shouldDrawUsingBitmap])
   {
 
-    [(_WKWebViewPrintFormatter *)self _drawInRectUsingBitmap:a4 forPageAtIndex:x, y, width, height];
+    [(_WKWebViewPrintFormatter *)self _drawInRectUsingBitmap:index forPageAtIndex:x, y, width, height];
   }
 
   else
   {
 
-    [(_WKWebViewPrintFormatter *)self _drawInRectUsingPDF:a4 forPageAtIndex:x, y, width, height];
+    [(_WKWebViewPrintFormatter *)self _drawInRectUsingPDF:index forPageAtIndex:x, y, width, height];
   }
 }
 
-- (void)_drawInRectUsingBitmap:(CGRect)a3 forPageAtIndex:(int64_t)a4
+- (void)_drawInRectUsingBitmap:(CGRect)bitmap forPageAtIndex:(int64_t)index
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(_WKWebViewPrintFormatter *)self _printPreviewImage];
-  if (v10 || ([objc_msgSend(-[_WKWebViewPrintFormatter _webView](self "_webView")], (v10 = -[_WKWebViewPrintFormatter _printPreviewImage](self, "_printPreviewImage")) != 0))
+  height = bitmap.size.height;
+  width = bitmap.size.width;
+  y = bitmap.origin.y;
+  x = bitmap.origin.x;
+  _printPreviewImage = [(_WKWebViewPrintFormatter *)self _printPreviewImage];
+  if (_printPreviewImage || ([objc_msgSend(-[_WKWebViewPrintFormatter _webView](self "_webView")], (_printPreviewImage = -[_WKWebViewPrintFormatter _printPreviewImage](self, "_printPreviewImage")) != 0))
   {
-    v11 = v10;
-    CFRetain(v10);
+    v11 = _printPreviewImage;
+    CFRetain(_printPreviewImage);
     if ([(UIPrintFormatter *)self pageCount])
     {
       CurrentContext = UIGraphicsGetCurrentContext();
@@ -328,11 +328,11 @@
       m_ptr = self->_printPreviewImage.m_ptr;
       v14 = CGImageGetWidth(m_ptr);
       v15 = CGImageGetHeight(m_ptr);
-      v16 = [(UIPrintFormatter *)self pageCount];
-      if (v14 && v16 <= v15)
+      pageCount = [(UIPrintFormatter *)self pageCount];
+      if (v14 && pageCount <= v15)
       {
-        v17 = (v15 / v16);
-        v24.origin.y = a4 * v17;
+        v17 = (v15 / pageCount);
+        v24.origin.y = index * v17;
         v24.origin.x = 0.0;
         v24.size.width = v14;
         v24.size.height = v17;
@@ -382,18 +382,18 @@
   }
 }
 
-- (void)_drawInRectUsingPDF:(CGRect)a3 forPageAtIndex:(int64_t)a4
+- (void)_drawInRectUsingPDF:(CGRect)f forPageAtIndex:(int64_t)index
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(_WKWebViewPrintFormatter *)self _printedDocument];
-  if (v10 || ([objc_msgSend(-[_WKWebViewPrintFormatter _webView](self "_webView")], (v10 = -[_WKWebViewPrintFormatter _printedDocument](self, "_printedDocument")) != 0))
+  height = f.size.height;
+  width = f.size.width;
+  y = f.origin.y;
+  x = f.origin.x;
+  _printedDocument = [(_WKWebViewPrintFormatter *)self _printedDocument];
+  if (_printedDocument || ([objc_msgSend(-[_WKWebViewPrintFormatter _webView](self "_webView")], (_printedDocument = -[_WKWebViewPrintFormatter _printedDocument](self, "_printedDocument")) != 0))
   {
-    v11 = v10;
-    CFRetain(v10);
-    v12 = a4 - [(UIPrintFormatter *)self startPage];
+    v11 = _printedDocument;
+    CFRetain(_printedDocument);
+    v12 = index - [(UIPrintFormatter *)self startPage];
     if (v12 >= 0)
     {
       Page = CGPDFDocumentGetPage(v11, v12 + 1);

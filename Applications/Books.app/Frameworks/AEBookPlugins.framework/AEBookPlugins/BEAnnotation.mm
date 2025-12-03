@@ -1,7 +1,7 @@
 @interface BEAnnotation
 - (BEAnnotation)init;
 - (NSArray)rects;
-- (void)setRects:(id)a3;
+- (void)setRects:(id)rects;
 @end
 
 @implementation BEAnnotation
@@ -16,7 +16,7 @@
   return v2.super.isa;
 }
 
-- (void)setRects:(id)a3
+- (void)setRects:(id)rects
 {
   type metadata accessor for CGRect(0);
   v4 = sub_139A40();

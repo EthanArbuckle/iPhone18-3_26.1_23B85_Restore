@@ -1,33 +1,33 @@
 @interface IFTSchemaIFTSystemRequirementUserLocationForSystemRequest
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTSystemRequirementUserLocationForSystemRequest)initWithDictionary:(id)a3;
-- (IFTSchemaIFTSystemRequirementUserLocationForSystemRequest)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTSystemRequirementUserLocationForSystemRequest)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTSystemRequirementUserLocationForSystemRequest)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasTimeoutForLocationFetch:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasTimeoutForLocationFetch:(BOOL)fetch;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTSystemRequirementUserLocationForSystemRequest
 
-- (IFTSchemaIFTSystemRequirementUserLocationForSystemRequest)initWithDictionary:(id)a3
+- (IFTSchemaIFTSystemRequirementUserLocationForSystemRequest)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = IFTSchemaIFTSystemRequirementUserLocationForSystemRequest;
   v5 = [(IFTSchemaIFTSystemRequirementUserLocationForSystemRequest *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isPreciseLocationRequired"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isPreciseLocationRequired"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTSystemRequirementUserLocationForSystemRequest setIsPreciseLocationRequired:](v5, "setIsPreciseLocationRequired:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"timeoutForLocationFetch"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"timeoutForLocationFetch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTSystemRequirementUserLocationForSystemRequest)initWithJSON:(id)a3
+- (IFTSchemaIFTSystemRequirementUserLocationForSystemRequest)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTSystemRequirementUserLocationForSystemRequest *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTSystemRequirementUserLocationForSystemRequest *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTSystemRequirementUserLocationForSystemRequest *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,12 +76,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTSystemRequirementUserLocationForSystemRequest isPreciseLocationRequired](self, "isPreciseLocationRequired")}];
-    [v3 setObject:v5 forKeyedSubscript:@"isPreciseLocationRequired"];
+    [dictionary setObject:v5 forKeyedSubscript:@"isPreciseLocationRequired"];
 
     has = self->_has;
   }
@@ -89,12 +89,12 @@
   if ((has & 2) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[IFTSchemaIFTSystemRequirementUserLocationForSystemRequest timeoutForLocationFetch](self, "timeoutForLocationFetch")}];
-    [v3 setObject:v6 forKeyedSubscript:@"timeoutForLocationFetch"];
+    [dictionary setObject:v6 forKeyedSubscript:@"timeoutForLocationFetch"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -123,16 +123,16 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_10;
@@ -141,7 +141,7 @@ LABEL_3:
   if (*&has)
   {
     isPreciseLocationRequired = self->_isPreciseLocationRequired;
-    if (isPreciseLocationRequired != [v4 isPreciseLocationRequired])
+    if (isPreciseLocationRequired != [equalCopy isPreciseLocationRequired])
     {
 LABEL_10:
       v10 = 0;
@@ -149,7 +149,7 @@ LABEL_10:
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -161,7 +161,7 @@ LABEL_10:
   if (v8)
   {
     timeoutForLocationFetch = self->_timeoutForLocationFetch;
-    if (timeoutForLocationFetch != [v4 timeoutForLocationFetch])
+    if (timeoutForLocationFetch != [equalCopy timeoutForLocationFetch])
     {
       goto LABEL_10;
     }
@@ -173,28 +173,28 @@ LABEL_11:
   return v10;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)setHasTimeoutForLocationFetch:(BOOL)a3
+- (void)setHasTimeoutForLocationFetch:(BOOL)fetch
 {
-  if (a3)
+  if (fetch)
   {
     v3 = 2;
   }

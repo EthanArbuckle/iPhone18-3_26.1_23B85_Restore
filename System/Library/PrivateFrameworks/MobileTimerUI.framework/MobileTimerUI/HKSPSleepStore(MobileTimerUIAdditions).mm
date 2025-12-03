@@ -11,9 +11,9 @@
   v6 = a3;
   v7 = objc_opt_new();
   v26 = 0;
-  v8 = [MEMORY[0x277CBEAA8] mtNow];
+  mtNow = [MEMORY[0x277CBEAA8] mtNow];
   v25 = 0;
-  v9 = [a1 upcomingResolvedScheduleOccurrenceAfterDate:v8 alarmStatus:&v26 error:&v25];
+  v9 = [self upcomingResolvedScheduleOccurrenceAfterDate:mtNow alarmStatus:&v26 error:&v25];
   v10 = v25;
 
   v11 = MTLogForCategory();
@@ -22,28 +22,28 @@
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(HKSPSleepStore(MobileTimerUIAdditions) *)a1 mt_sleepMetaDataForUpcomingAlarmInCalendar:v10 error:v12];
+      [(HKSPSleepStore(MobileTimerUIAdditions) *)self mt_sleepMetaDataForUpcomingAlarmInCalendar:v10 error:v12];
     }
 
     [v7 setDisplaysTime:0];
-    v13 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.MobileTimerUI"];
-    v14 = [v13 localizedStringForKey:@"SLEEP_ALARM_NONE" value:&stru_286BC5E38 table:@"MobileTimerUI_Burrito"];
-    [v7 setMainDescription:v14];
+    wakeUpEvent = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.MobileTimerUI"];
+    dueDate = [wakeUpEvent localizedStringForKey:@"SLEEP_ALARM_NONE" value:&stru_286BC5E38 table:@"MobileTimerUI_Burrito"];
+    [v7 setMainDescription:dueDate];
     goto LABEL_18;
   }
 
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v28 = a1;
+    selfCopy = self;
     v29 = 2114;
     v30 = v9;
     _os_log_impl(&dword_25A0D1000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ upcoming sleep occurrence: %{public}@", buf, 0x16u);
   }
 
-  v15 = [v9 occurrence];
-  v16 = [v15 wakeUpComponents];
-  [v7 setAlarmComponents:v16];
+  occurrence = [v9 occurrence];
+  wakeUpComponents = [occurrence wakeUpComponents];
+  [v7 setAlarmComponents:wakeUpComponents];
 
   if (v26 > 1)
   {
@@ -89,9 +89,9 @@
   v19 = 0;
 LABEL_17:
   v22 = objc_opt_class();
-  v13 = [v9 wakeUpEvent];
-  v14 = [v13 dueDate];
-  v23 = [v22 mt_getDetailedAlarmTitleForDate:v14 calendar:v6 onlyAppliesOnce:v19];
+  wakeUpEvent = [v9 wakeUpEvent];
+  dueDate = [wakeUpEvent dueDate];
+  v23 = [v22 mt_getDetailedAlarmTitleForDate:dueDate calendar:v6 onlyAppliesOnce:v19];
   [v7 setDetailedDescription:v23];
 
 LABEL_18:
@@ -111,8 +111,8 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v9 = [MEMORY[0x277CBEAF8] currentLocale];
-  v10 = [v8 hksp_dayPeriodForDate:v7 locale:v9];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v10 = [v8 hksp_dayPeriodForDate:v7 locale:currentLocale];
 
   v11 = MTLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -130,8 +130,8 @@ LABEL_19:
   {
     v14 = objc_alloc_init(MEMORY[0x277CCA968]);
     [v14 setDateFormat:@"EEEE"];
-    v15 = [MEMORY[0x277CBEAF8] currentLocale];
-    [v14 setLocale:v15];
+    currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+    [v14 setLocale:currentLocale2];
 
     v16 = [v14 stringFromDate:v7];
     v17 = MTLogForCategory();

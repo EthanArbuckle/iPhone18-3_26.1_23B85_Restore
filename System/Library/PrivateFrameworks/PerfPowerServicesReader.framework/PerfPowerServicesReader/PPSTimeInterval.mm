@@ -1,50 +1,50 @@
 @interface PPSTimeInterval
-- (BOOL)containsTimeInterval:(id)a3;
-- (BOOL)containsTimestamp:(double)a3;
-- (BOOL)intersectsTimeInterval:(id)a3;
-- (BOOL)isAdjacentToTimeInterval:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)containsTimeInterval:(id)interval;
+- (BOOL)containsTimestamp:(double)timestamp;
+- (BOOL)intersectsTimeInterval:(id)interval;
+- (BOOL)isAdjacentToTimeInterval:(id)interval;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)dictionary;
-- (PPSTimeInterval)initWithCoder:(id)a3;
-- (PPSTimeInterval)initWithStartTimestamp:(double)a3 endTimestamp:(double)a4 payload:(id)a5;
+- (PPSTimeInterval)initWithCoder:(id)coder;
+- (PPSTimeInterval)initWithStartTimestamp:(double)timestamp endTimestamp:(double)endTimestamp payload:(id)payload;
 - (double)duration;
 - (id)JSONRepresentation;
 - (id)debugDescription;
 - (id)description;
-- (id)intersectionWithTimeInterval:(id)a3;
-- (id)subtractTimeInterval:(id)a3;
-- (id)unionWithTimeInterval:(id)a3;
-- (int64_t)compare:(id)a3;
+- (id)intersectionWithTimeInterval:(id)interval;
+- (id)subtractTimeInterval:(id)interval;
+- (id)unionWithTimeInterval:(id)interval;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPSTimeInterval
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   [(PPSTimeInterval *)self endTimestamp];
-  [v5 encodeDouble:@"endTimestamp" forKey:?];
+  [coderCopy encodeDouble:@"endTimestamp" forKey:?];
   [(PPSTimeInterval *)self startTimestamp];
-  [v5 encodeDouble:@"startTimestamp" forKey:?];
-  v4 = [(PPSTimeInterval *)self payload];
-  [v5 encodeObject:v4 forKey:@"payload"];
+  [coderCopy encodeDouble:@"startTimestamp" forKey:?];
+  payload = [(PPSTimeInterval *)self payload];
+  [coderCopy encodeObject:payload forKey:@"payload"];
 }
 
-- (PPSTimeInterval)initWithCoder:(id)a3
+- (PPSTimeInterval)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PPSTimeInterval;
   v5 = [(PPSTimeInterval *)&v11 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"endTimestamp"];
+    [coderCopy decodeDoubleForKey:@"endTimestamp"];
     v5->_endTimestamp = v6;
-    [v4 decodeDoubleForKey:@"startTimestamp"];
+    [coderCopy decodeDoubleForKey:@"startTimestamp"];
     v5->_startTimestamp = v7;
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"payload"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"payload"];
     payload = v5->_payload;
     v5->_payload = v8;
   }
@@ -52,10 +52,10 @@
   return v5;
 }
 
-- (PPSTimeInterval)initWithStartTimestamp:(double)a3 endTimestamp:(double)a4 payload:(id)a5
+- (PPSTimeInterval)initWithStartTimestamp:(double)timestamp endTimestamp:(double)endTimestamp payload:(id)payload
 {
-  v8 = a5;
-  if (a3 >= a4)
+  payloadCopy = payload;
+  if (timestamp >= endTimestamp)
   {
     v12 = PPSReaderLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -73,9 +73,9 @@
   v10 = v9;
   if (v9)
   {
-    v9->_startTimestamp = a3;
-    v9->_endTimestamp = a4;
-    v11 = v8;
+    v9->_startTimestamp = timestamp;
+    v9->_endTimestamp = endTimestamp;
+    v11 = payloadCopy;
     self = v10->_payload;
     v10->_payload = v11;
 LABEL_7:
@@ -84,14 +84,14 @@ LABEL_7:
   return v10;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   v5 = MEMORY[0x277CBEAA8];
   [(PPSTimeInterval *)self startTimestamp];
   v6 = [v5 dateWithTimeIntervalSince1970:?];
   v7 = MEMORY[0x277CBEAA8];
-  [v4 startTimestamp];
+  [compareCopy startTimestamp];
   v8 = [v7 dateWithTimeIntervalSince1970:?];
   v9 = [v6 compare:v8];
 
@@ -127,10 +127,10 @@ LABEL_7:
 
   v17 = 0uLL;
   v18 = 0uLL;
-  v7 = [(PPSTimeInterval *)self payload];
-  v8 = [v7 allValues];
+  payload = [(PPSTimeInterval *)self payload];
+  allValues = [payload allValues];
 
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v9 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
   v10 = (v6 + (v4 << 6) + (v4 >> 2)) ^ v4;
   if (v9)
   {
@@ -141,13 +141,13 @@ LABEL_7:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         v10 ^= (v10 << 6) + 2654435769u + (v10 >> 2) + [*(*(&v15 + 1) + 8 * i) hash];
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
@@ -157,10 +157,10 @@ LABEL_7:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (!v5)
+  equalCopy = equal;
+  if (!equalCopy)
   {
     v7 = 0;
     goto LABEL_18;
@@ -169,7 +169,7 @@ LABEL_7:
   v6 = objc_opt_class();
   if (v6 == objc_opt_class())
   {
-    v8 = v5;
+    v8 = equalCopy;
     if (self == v8)
     {
       v7 = 1;
@@ -187,14 +187,14 @@ LABEL_7:
         [(PPSTimeInterval *)v8 endTimestamp];
         if (v13 == v14)
         {
-          v15 = [(PPSTimeInterval *)self payload];
-          if (v15 || ([(PPSTimeInterval *)v8 payload], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+          payload = [(PPSTimeInterval *)self payload];
+          if (payload || ([(PPSTimeInterval *)v8 payload], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v16 = [(PPSTimeInterval *)self payload];
-            v17 = [(PPSTimeInterval *)v8 payload];
-            v7 = [v16 isEqualToDictionary:v17];
+            payload2 = [(PPSTimeInterval *)self payload];
+            payload3 = [(PPSTimeInterval *)v8 payload];
+            v7 = [payload2 isEqualToDictionary:payload3];
 
-            if (v15)
+            if (payload)
             {
 LABEL_16:
 
@@ -221,7 +221,7 @@ LABEL_17:
 
   v19.receiver = self;
   v19.super_class = PPSTimeInterval;
-  v7 = [(PPSTimeInterval *)&v19 isEqual:v5];
+  v7 = [(PPSTimeInterval *)&v19 isEqual:equalCopy];
 LABEL_18:
 
   return v7;
@@ -230,9 +230,9 @@ LABEL_18:
 - (id)JSONRepresentation
 {
   v2 = MEMORY[0x277CCAAA0];
-  v3 = [(PPSTimeInterval *)self dictionary];
+  dictionary = [(PPSTimeInterval *)self dictionary];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:dictionary options:1 error:&v8];
   v5 = v8;
 
   if (v5)
@@ -260,8 +260,8 @@ LABEL_18:
 
 - (id)description
 {
-  v2 = [(PPSTimeInterval *)self dictionary];
-  v3 = [v2 description];
+  dictionary = [(PPSTimeInterval *)self dictionary];
+  v3 = [dictionary description];
 
   return v3;
 }
@@ -280,8 +280,8 @@ LABEL_18:
   v6 = [v5 numberWithDouble:?];
   v13[1] = v6;
   v12[2] = @"payload";
-  v7 = [(PPSTimeInterval *)self payload];
-  v8 = [v7 copy];
+  payload = [(PPSTimeInterval *)self payload];
+  v8 = [payload copy];
   v13[2] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:3];
 
@@ -298,17 +298,17 @@ LABEL_18:
   return v4 - v5;
 }
 
-- (BOOL)containsTimeInterval:(id)a3
+- (BOOL)containsTimeInterval:(id)interval
 {
-  v4 = a3;
+  intervalCopy = interval;
   [(PPSTimeInterval *)self startTimestamp];
   v6 = v5;
-  [v4 startTimestamp];
+  [intervalCopy startTimestamp];
   if (v6 <= v7)
   {
     [(PPSTimeInterval *)self endTimestamp];
     v10 = v9;
-    [v4 endTimestamp];
+    [intervalCopy endTimestamp];
     v8 = v10 >= v11;
   }
 
@@ -320,34 +320,34 @@ LABEL_18:
   return v8;
 }
 
-- (BOOL)containsTimestamp:(double)a3
+- (BOOL)containsTimestamp:(double)timestamp
 {
   [(PPSTimeInterval *)self startTimestamp];
-  if (v5 > a3)
+  if (v5 > timestamp)
   {
     return 0;
   }
 
   [(PPSTimeInterval *)self endTimestamp];
-  return v7 > a3;
+  return v7 > timestamp;
 }
 
-- (id)intersectionWithTimeInterval:(id)a3
+- (id)intersectionWithTimeInterval:(id)interval
 {
-  v4 = a3;
-  if ([(PPSTimeInterval *)self intersectsTimeInterval:v4])
+  intervalCopy = interval;
+  if ([(PPSTimeInterval *)self intersectsTimeInterval:intervalCopy])
   {
     v5 = objc_alloc(objc_opt_class());
     [(PPSTimeInterval *)self startTimestamp];
     v7 = v6;
-    [v4 startTimestamp];
+    [intervalCopy startTimestamp];
     v9 = v8;
     [(PPSTimeInterval *)self endTimestamp];
     v11 = v10;
-    [v4 endTimestamp];
+    [intervalCopy endTimestamp];
     v13 = v12;
-    v14 = [(PPSTimeInterval *)self payload];
-    v15 = [v5 initWithStartTimestamp:v14 endTimestamp:fmax(v7 payload:{v9), fmin(v11, v13)}];
+    payload = [(PPSTimeInterval *)self payload];
+    v15 = [v5 initWithStartTimestamp:payload endTimestamp:fmax(v7 payload:{v9), fmin(v11, v13)}];
   }
 
   else
@@ -358,10 +358,10 @@ LABEL_18:
   return v15;
 }
 
-- (BOOL)intersectsTimeInterval:(id)a3
+- (BOOL)intersectsTimeInterval:(id)interval
 {
-  v4 = a3;
-  [v4 endTimestamp];
+  intervalCopy = interval;
+  [intervalCopy endTimestamp];
   v6 = v5;
   [(PPSTimeInterval *)self startTimestamp];
   if (v6 <= v7)
@@ -373,19 +373,19 @@ LABEL_18:
   {
     [(PPSTimeInterval *)self endTimestamp];
     v9 = v8;
-    [v4 startTimestamp];
+    [intervalCopy startTimestamp];
     v11 = v9 > v10;
   }
 
   return v11;
 }
 
-- (BOOL)isAdjacentToTimeInterval:(id)a3
+- (BOOL)isAdjacentToTimeInterval:(id)interval
 {
-  v4 = a3;
+  intervalCopy = interval;
   [(PPSTimeInterval *)self startTimestamp];
   v6 = v5;
-  [v4 endTimestamp];
+  [intervalCopy endTimestamp];
   if (v6 == v7)
   {
     v8 = 1;
@@ -393,7 +393,7 @@ LABEL_18:
 
   else
   {
-    [v4 startTimestamp];
+    [intervalCopy startTimestamp];
     v10 = v9;
     [(PPSTimeInterval *)self endTimestamp];
     v8 = v10 == v11;
@@ -402,25 +402,25 @@ LABEL_18:
   return v8;
 }
 
-- (id)subtractTimeInterval:(id)a3
+- (id)subtractTimeInterval:(id)interval
 {
   v50[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![(PPSTimeInterval *)self intersectsTimeInterval:v4])
+  intervalCopy = interval;
+  if (![(PPSTimeInterval *)self intersectsTimeInterval:intervalCopy])
   {
     v50[0] = self;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:1];
     goto LABEL_19;
   }
 
-  if ([v4 containsTimeInterval:self])
+  if ([intervalCopy containsTimeInterval:self])
   {
     v5 = MEMORY[0x277CBEBF8];
     goto LABEL_19;
   }
 
-  v6 = [(PPSTimeInterval *)self intersectionWithTimeInterval:v4];
-  v7 = [(PPSTimeInterval *)self compare:v4];
+  v6 = [(PPSTimeInterval *)self intersectionWithTimeInterval:intervalCopy];
+  v7 = [(PPSTimeInterval *)self compare:intervalCopy];
   if (v7 == -1)
   {
     v28 = objc_alloc(objc_opt_class());
@@ -428,12 +428,12 @@ LABEL_18:
     v30 = v29;
     [v6 startTimestamp];
     v32 = v31;
-    v33 = [(PPSTimeInterval *)self payload];
-    v17 = [v28 initWithStartTimestamp:v33 endTimestamp:v30 payload:v32];
+    payload = [(PPSTimeInterval *)self payload];
+    v17 = [v28 initWithStartTimestamp:payload endTimestamp:v30 payload:v32];
 
     [(PPSTimeInterval *)self endTimestamp];
     v35 = v34;
-    [v4 endTimestamp];
+    [intervalCopy endTimestamp];
     if (v35 > v36)
     {
       v37 = objc_alloc(objc_opt_class());
@@ -441,8 +441,8 @@ LABEL_18:
       v39 = v38;
       [(PPSTimeInterval *)self endTimestamp];
       v41 = v40;
-      v42 = [(PPSTimeInterval *)self payload];
-      v43 = [v37 initWithStartTimestamp:v42 endTimestamp:v39 payload:v41];
+      payload2 = [(PPSTimeInterval *)self payload];
+      v43 = [v37 initWithStartTimestamp:payload2 endTimestamp:v39 payload:v41];
 
       v48[0] = v17;
       v48[1] = v43;
@@ -465,7 +465,7 @@ LABEL_16:
     {
       [(PPSTimeInterval *)self endTimestamp];
       v9 = v8;
-      [v4 endTimestamp];
+      [intervalCopy endTimestamp];
       if (v9 > v10)
       {
         v11 = objc_alloc(objc_opt_class());
@@ -473,8 +473,8 @@ LABEL_16:
         v13 = v12;
         [(PPSTimeInterval *)self endTimestamp];
         v15 = v14;
-        v16 = [(PPSTimeInterval *)self payload];
-        v17 = [v11 initWithStartTimestamp:v16 endTimestamp:v13 payload:v15];
+        payload3 = [(PPSTimeInterval *)self payload];
+        v17 = [v11 initWithStartTimestamp:payload3 endTimestamp:v13 payload:v15];
 
         v46 = v17;
         v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v46 count:1];
@@ -485,7 +485,7 @@ LABEL_16:
 
   else
   {
-    [v4 endTimestamp];
+    [intervalCopy endTimestamp];
     v20 = v19;
     [(PPSTimeInterval *)self endTimestamp];
     if (v20 > v21)
@@ -493,10 +493,10 @@ LABEL_16:
       v22 = objc_alloc(objc_opt_class());
       [v6 endTimestamp];
       v24 = v23;
-      [v4 endTimestamp];
+      [intervalCopy endTimestamp];
       v26 = v25;
-      v27 = [v4 payload];
-      v17 = [v22 initWithStartTimestamp:v27 endTimestamp:v24 payload:v26];
+      payload4 = [intervalCopy payload];
+      v17 = [v22 initWithStartTimestamp:payload4 endTimestamp:v24 payload:v26];
 
       v47 = v17;
       v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v47 count:1];
@@ -513,24 +513,24 @@ LABEL_19:
   return v5;
 }
 
-- (id)unionWithTimeInterval:(id)a3
+- (id)unionWithTimeInterval:(id)interval
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PPSTimeInterval *)self compare:v4];
-  if ([(PPSTimeInterval *)self intersectsTimeInterval:v4]|| [(PPSTimeInterval *)self isAdjacentToTimeInterval:v4])
+  intervalCopy = interval;
+  v5 = [(PPSTimeInterval *)self compare:intervalCopy];
+  if ([(PPSTimeInterval *)self intersectsTimeInterval:intervalCopy]|| [(PPSTimeInterval *)self isAdjacentToTimeInterval:intervalCopy])
   {
     [(PPSTimeInterval *)self startTimestamp];
     v7 = v6;
-    [(PPSTimeInterval *)v4 startTimestamp];
+    [(PPSTimeInterval *)intervalCopy startTimestamp];
     v9 = v8;
     [(PPSTimeInterval *)self endTimestamp];
     v11 = v10;
-    [(PPSTimeInterval *)v4 endTimestamp];
+    [(PPSTimeInterval *)intervalCopy endTimestamp];
     v13 = v12;
     v14 = objc_alloc(objc_opt_class());
-    v15 = [(PPSTimeInterval *)self payload];
-    v16 = [v14 initWithStartTimestamp:v15 endTimestamp:fmin(v7 payload:{v9), fmax(v11, v13)}];
+    payload = [(PPSTimeInterval *)self payload];
+    v16 = [v14 initWithStartTimestamp:payload endTimestamp:fmin(v7 payload:{v9), fmax(v11, v13)}];
     v23[0] = v16;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
   }
@@ -539,14 +539,14 @@ LABEL_19:
   {
     if (v5 == -1)
     {
-      v22 = self;
-      v18 = &v22;
-      self = v4;
+      selfCopy = self;
+      v18 = &selfCopy;
+      self = intervalCopy;
     }
 
     else
     {
-      v21 = v4;
+      v21 = intervalCopy;
       v18 = &v21;
     }
 

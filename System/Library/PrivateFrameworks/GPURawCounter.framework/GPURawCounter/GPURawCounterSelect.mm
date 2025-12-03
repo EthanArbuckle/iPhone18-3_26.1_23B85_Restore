@@ -1,20 +1,20 @@
 @interface GPURawCounterSelect
-+ (id)selectWithName:(id)a3 options:(id)a4;
-- (GPURawCounterSelect)initWithName:(id)a3 options:(id)a4;
++ (id)selectWithName:(id)name options:(id)options;
+- (GPURawCounterSelect)initWithName:(id)name options:(id)options;
 - (void)dealloc;
 @end
 
 @implementation GPURawCounterSelect
 
-- (GPURawCounterSelect)initWithName:(id)a3 options:(id)a4
+- (GPURawCounterSelect)initWithName:(id)name options:(id)options
 {
   v8.receiver = self;
   v8.super_class = GPURawCounterSelect;
   v6 = [(GPURawCounterSelect *)&v8 init];
   if (v6)
   {
-    v6->_name = [a3 copy];
-    v6->_options = [a4 copy];
+    v6->_name = [name copy];
+    v6->_options = [options copy];
   }
 
   return v6;
@@ -27,9 +27,9 @@
   [(GPURawCounterSelect *)&v3 dealloc];
 }
 
-+ (id)selectWithName:(id)a3 options:(id)a4
++ (id)selectWithName:(id)name options:(id)options
 {
-  v4 = [[GPURawCounterSelect alloc] initWithName:a3 options:a4];
+  v4 = [[GPURawCounterSelect alloc] initWithName:name options:options];
 
   return v4;
 }

@@ -1,6 +1,6 @@
 @interface SSKDefaultDisplayTransformer
 - (SSKDefaultDisplayTransformer)init;
-- (id)transformDisplayConfiguration:(id)a3;
+- (id)transformDisplayConfiguration:(id)configuration;
 @end
 
 @implementation SSKDefaultDisplayTransformer
@@ -12,10 +12,10 @@
   return [(SSKDefaultDisplayTransformer *)&v3 init];
 }
 
-- (id)transformDisplayConfiguration:(id)a3
+- (id)transformDisplayConfiguration:(id)configuration
 {
   v3 = qword_28156BE28;
-  v4 = a3;
+  configurationCopy = configuration;
   if (v3 != -1)
   {
     swift_once();
@@ -23,7 +23,7 @@
 
   type metadata accessor for DefaultDisplayTransformerRegistry();
   swift_dynamicCastClassUnconditional();
-  sub_265FD75EC(v4);
+  sub_265FD75EC(configurationCopy);
 
   sub_265FCF0EC(0, &qword_28156BE10, 0x277D0ACE0);
   sub_265FD8364();

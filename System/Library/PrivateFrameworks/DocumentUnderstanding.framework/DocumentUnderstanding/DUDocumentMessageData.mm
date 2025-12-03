@@ -1,21 +1,21 @@
 @interface DUDocumentMessageData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DUDocumentMessageData
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_232B3DEE0(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_232B3DEE0(coderCopy);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_232B3E154(v6);
 
   sub_232B203C8(v6, v6[3]);
@@ -24,11 +24,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_232CEA420();
     swift_unknownObjectRelease();
@@ -37,7 +37,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_232B3E820(v8);

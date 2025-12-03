@@ -1,5 +1,5 @@
 @interface GEOFeatureStyleAttributesPOI
-- (GEOFeatureStyleAttributesPOI)initWithStyleAttributes:(id)a3 category:(unint64_t)a4 labelText:(id)a5 location:(id)a6;
+- (GEOFeatureStyleAttributesPOI)initWithStyleAttributes:(id)attributes category:(unint64_t)category labelText:(id)text location:(id)location;
 - (UIColor)fillColor;
 - (UIColor)glyphColor;
 - (UIImage)glyphImage;
@@ -7,30 +7,30 @@
 
 @implementation GEOFeatureStyleAttributesPOI
 
-- (GEOFeatureStyleAttributesPOI)initWithStyleAttributes:(id)a3 category:(unint64_t)a4 labelText:(id)a5 location:(id)a6
+- (GEOFeatureStyleAttributesPOI)initWithStyleAttributes:(id)attributes category:(unint64_t)category labelText:(id)text location:(id)location
 {
   v28 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  attributesCopy = attributes;
+  textCopy = text;
+  locationCopy = location;
   v21.receiver = self;
   v21.super_class = GEOFeatureStyleAttributesPOI;
   v14 = [(GEOFeatureStyleAttributesPOI *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_styleAttributes, a3);
-    objc_storeStrong(&v15->_labelText, a5);
-    v15->_category = a4;
-    objc_storeStrong(&v15->_location, a6);
+    objc_storeStrong(&v14->_styleAttributes, attributes);
+    objc_storeStrong(&v15->_labelText, text);
+    v15->_category = category;
+    objc_storeStrong(&v15->_location, location);
     v16 = NTKFoghornFaceBundleLogObject();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = objc_msgSend_description(v11, v17, v18);
+      v19 = objc_msgSend_description(attributesCopy, v17, v18);
       *buf = 136315650;
       v23 = "[GEOFeatureStyleAttributesPOI initWithStyleAttributes:category:labelText:location:]";
       v24 = 2112;
-      v25 = v12;
+      v25 = textCopy;
       v26 = 2112;
       v27 = v19;
       _os_log_impl(&dword_23BEB1000, v16, OS_LOG_TYPE_DEFAULT, "%s: waypoint.name = %@, style.attr = %@", buf, 0x20u);

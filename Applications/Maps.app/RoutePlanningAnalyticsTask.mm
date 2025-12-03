@@ -1,9 +1,9 @@
 @interface RoutePlanningAnalyticsTask
 - (RoutePlanningSession)routePlanningSession;
 - (int)analyticsTarget;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
-- (void)routePlanningSession:(id)a3 didUpdateRouteCollectionResult:(id)a4 forTransportType:(int64_t)a5;
-- (void)setRoutePlanningSession:(id)a3;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
+- (void)routePlanningSession:(id)session didUpdateRouteCollectionResult:(id)result forTransportType:(int64_t)type;
+- (void)setRoutePlanningSession:(id)session;
 @end
 
 @implementation RoutePlanningAnalyticsTask
@@ -15,11 +15,11 @@
   return WeakRetained;
 }
 
-- (void)routePlanningSession:(id)a3 didUpdateRouteCollectionResult:(id)a4 forTransportType:(int64_t)a5
+- (void)routePlanningSession:(id)session didUpdateRouteCollectionResult:(id)result forTransportType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v9 isSuccess] && objc_msgSend(v8, "currentTransportType") == a5)
+  sessionCopy = session;
+  resultCopy = result;
+  if ([resultCopy isSuccess] && objc_msgSend(sessionCopy, "currentTransportType") == type)
   {
     v18 = 0;
     v19 = &v18;
@@ -32,7 +32,7 @@
     v17[2] = sub_100D7111C;
     v17[3] = &unk_10165E5B8;
     v17[4] = &v18;
-    [v9 withValue:v17 orError:&stru_101653008];
+    [resultCopy withValue:v17 orError:&stru_101653008];
     if (!v19[5])
     {
       v14 = sub_10006D178();
@@ -62,10 +62,10 @@
       }
     }
 
-    v10 = [v19[5] routes];
-    v11 = [(RoutePlanningAnalyticsTask *)self routeCollection];
-    v12 = [v11 routes];
-    v13 = [v10 isEqualToArray:v12];
+    routes = [v19[5] routes];
+    routeCollection = [(RoutePlanningAnalyticsTask *)self routeCollection];
+    routes2 = [routeCollection routes];
+    v13 = [routes isEqualToArray:routes2];
 
     [(RoutePlanningAnalyticsTask *)self setRouteCollection:v19[5]];
     if ((v13 & 1) == 0)
@@ -77,13 +77,13 @@
   }
 }
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v8 = a5;
+  toSessionCopy = toSession;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v8;
+    v6 = toSessionCopy;
   }
 
   else
@@ -97,14 +97,14 @@
 
 - (int)analyticsTarget
 {
-  v2 = [(RoutePlanningAnalyticsTask *)self routePlanningSession];
-  v3 = [v2 currentTransportType];
+  routePlanningSession = [(RoutePlanningAnalyticsTask *)self routePlanningSession];
+  currentTransportType = [routePlanningSession currentTransportType];
 
   v4 = 302;
-  if (v3 > 2)
+  if (currentTransportType > 2)
   {
     v5 = 303;
-    if (v3 == 5)
+    if (currentTransportType == 5)
     {
       v4 = 305;
     }
@@ -114,18 +114,18 @@
       v4 = 302;
     }
 
-    if (v3 == 4)
+    if (currentTransportType == 4)
     {
       v4 = 304;
     }
 
-    v6 = v3 == 3;
+    v6 = currentTransportType == 3;
     goto LABEL_10;
   }
 
-  if (v3)
+  if (currentTransportType)
   {
-    v6 = v3 == 1;
+    v6 = currentTransportType == 1;
     v5 = 301;
 LABEL_10:
     if (v6)
@@ -169,11 +169,11 @@ LABEL_10:
   return result;
 }
 
-- (void)setRoutePlanningSession:(id)a3
+- (void)setRoutePlanningSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = objc_loadWeakRetained(&self->_routePlanningSession);
-  v6 = v4;
+  v6 = sessionCopy;
   if (v6 | v5)
   {
     obj = v6;

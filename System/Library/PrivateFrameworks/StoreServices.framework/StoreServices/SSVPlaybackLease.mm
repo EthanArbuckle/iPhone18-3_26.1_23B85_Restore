@@ -1,34 +1,34 @@
 @interface SSVPlaybackLease
-- (BOOL)_shouldEndLeaseForError:(id)a3 returningEndReasonType:(unint64_t *)a4;
+- (BOOL)_shouldEndLeaseForError:(id)error returningEndReasonType:(unint64_t *)type;
 - (BOOL)refreshesAutomatically;
 - (NSData)certificateData;
 - (NSString)certificateURLBagKey;
 - (SSVPlaybackLease)init;
-- (SSVPlaybackLease)initWithLeaseConfiguration:(id)a3;
-- (SSVPlaybackLease)initWithURLBag:(id)a3 leaseType:(int64_t)a4;
+- (SSVPlaybackLease)initWithLeaseConfiguration:(id)configuration;
+- (SSVPlaybackLease)initWithURLBag:(id)bag leaseType:(int64_t)type;
 - (SSVPlaybackLeaseDelegate)delegate;
-- (id)_addOperationWithRequest:(id)a3 configurationURL:(id)a4 completionBlock:(id)a5;
+- (id)_addOperationWithRequest:(id)request configurationURL:(id)l completionBlock:(id)block;
 - (id)_initSSVPlaybackLease;
 - (void)_cancelRefreshTimer;
 - (void)_endLease;
 - (void)_fireRefreshTimer;
-- (void)_sendLeaseDidEndWithEndReasonType:(unint64_t)a3;
+- (void)_sendLeaseDidEndWithEndReasonType:(unint64_t)type;
 - (void)_startRefreshTimerIfNecessary;
-- (void)_updateForLeaseResponse:(id)a3 error:(id)a4;
-- (void)_updateWithLeaseResponseError:(id)a3;
-- (void)beginLeaseWithRequest:(id)a3 completionBlock:(id)a4;
+- (void)_updateForLeaseResponse:(id)response error:(id)error;
+- (void)_updateWithLeaseResponseError:(id)error;
+- (void)beginLeaseWithRequest:(id)request completionBlock:(id)block;
 - (void)cancelAllAssetRequests;
 - (void)dealloc;
 - (void)endLease;
-- (void)getAssetWithRequest:(id)a3 completionBlock:(id)a4;
-- (void)getCertificateDataWithCompletionBlock:(id)a3;
-- (void)preheatLeaseRequestsWithCompletionBlock:(id)a3;
-- (void)refreshLeaseWithRequest:(id)a3 completionBlock:(id)a4;
-- (void)setCertificateData:(id)a3;
-- (void)setCertificateURLBagKey:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setRefreshesAutomatically:(BOOL)a3;
-- (void)updateWithExternalLeaseResponseError:(id)a3;
+- (void)getAssetWithRequest:(id)request completionBlock:(id)block;
+- (void)getCertificateDataWithCompletionBlock:(id)block;
+- (void)preheatLeaseRequestsWithCompletionBlock:(id)block;
+- (void)refreshLeaseWithRequest:(id)request completionBlock:(id)block;
+- (void)setCertificateData:(id)data;
+- (void)setCertificateURLBagKey:(id)key;
+- (void)setDelegate:(id)delegate;
+- (void)setRefreshesAutomatically:(BOOL)automatically;
+- (void)updateWithExternalLeaseResponseError:(id)error;
 @end
 
 @implementation SSVPlaybackLease
@@ -112,31 +112,31 @@ void __41__SSVPlaybackLease__initSSVPlaybackLease__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (SSVPlaybackLease)initWithLeaseConfiguration:(id)a3
+- (SSVPlaybackLease)initWithLeaseConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(SSVPlaybackLease *)self _initSSVPlaybackLease];
-  if (v5)
+  configurationCopy = configuration;
+  _initSSVPlaybackLease = [(SSVPlaybackLease *)self _initSSVPlaybackLease];
+  if (_initSSVPlaybackLease)
   {
-    v6 = [v4 copy];
-    configuration = v5->_configuration;
-    v5->_configuration = v6;
+    v6 = [configurationCopy copy];
+    configuration = _initSSVPlaybackLease->_configuration;
+    _initSSVPlaybackLease->_configuration = v6;
 
-    v5->_leaseType = [(SSVPlaybackLeaseConfiguration *)v5->_configuration leaseType];
+    _initSSVPlaybackLease->_leaseType = [(SSVPlaybackLeaseConfiguration *)_initSSVPlaybackLease->_configuration leaseType];
   }
 
-  return v5;
+  return _initSSVPlaybackLease;
 }
 
-- (SSVPlaybackLease)initWithURLBag:(id)a3 leaseType:(int64_t)a4
+- (SSVPlaybackLease)initWithURLBag:(id)bag leaseType:(int64_t)type
 {
-  v7 = a3;
-  v8 = [(SSVPlaybackLease *)self _initSSVPlaybackLease];
-  v9 = v8;
-  if (v8)
+  bagCopy = bag;
+  _initSSVPlaybackLease = [(SSVPlaybackLease *)self _initSSVPlaybackLease];
+  v9 = _initSSVPlaybackLease;
+  if (_initSSVPlaybackLease)
   {
-    v8->_leaseType = a4;
-    objc_storeStrong(&v8->_urlBag, a3);
+    _initSSVPlaybackLease->_leaseType = type;
+    objc_storeStrong(&_initSSVPlaybackLease->_urlBag, bag);
   }
 
   return v9;
@@ -156,20 +156,20 @@ void __41__SSVPlaybackLease__initSSVPlaybackLease__block_invoke(uint64_t a1)
   [(SSVPlaybackLease *)&v4 dealloc];
 }
 
-- (void)beginLeaseWithRequest:(id)a3 completionBlock:(id)a4
+- (void)beginLeaseWithRequest:(id)request completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  blockCopy = block;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__SSVPlaybackLease_beginLeaseWithRequest_completionBlock___block_invoke;
   block[3] = &unk_1E84AC000;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = blockCopy;
+  v9 = blockCopy;
+  v10 = requestCopy;
   dispatch_async(serialQueue, block);
 }
 
@@ -346,20 +346,20 @@ void __28__SSVPlaybackLease_delegate__block_invoke(uint64_t a1)
   dispatch_async(serialQueue, block);
 }
 
-- (void)getAssetWithRequest:(id)a3 completionBlock:(id)a4
+- (void)getAssetWithRequest:(id)request completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  blockCopy = block;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__SSVPlaybackLease_getAssetWithRequest_completionBlock___block_invoke;
   block[3] = &unk_1E84AC000;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = blockCopy;
+  v9 = blockCopy;
+  v10 = requestCopy;
   dispatch_async(serialQueue, block);
 }
 
@@ -412,9 +412,9 @@ void __56__SSVPlaybackLease_getAssetWithRequest_completionBlock___block_invoke_2
   }
 }
 
-- (void)getCertificateDataWithCompletionBlock:(id)a3
+- (void)getCertificateDataWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = self->_delegateQueue;
   v6 = self->_certificateData;
   if (!v6)
@@ -437,7 +437,7 @@ void __56__SSVPlaybackLease_getAssetWithRequest_completionBlock___block_invoke_2
     v12 = 3221225472;
     v13 = __58__SSVPlaybackLease_getCertificateDataWithCompletionBlock___block_invoke_2;
     v14 = &unk_1E84B1868;
-    v16 = v4;
+    v16 = blockCopy;
     v15 = v5;
     [(SSVLeaseCertificateRequestOperation *)v7 setOutputBlock:&v11];
     [(SSVBarrierOperationQueue *)self->_operationQueue addOperation:v7, v11, v12, v13, v14];
@@ -445,13 +445,13 @@ void __56__SSVPlaybackLease_getAssetWithRequest_completionBlock___block_invoke_2
     goto LABEL_8;
   }
 
-  if (v4)
+  if (blockCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __58__SSVPlaybackLease_getCertificateDataWithCompletionBlock___block_invoke;
     block[3] = &unk_1E84AC338;
-    v19 = v4;
+    v19 = blockCopy;
     v18 = v6;
     dispatch_async(v5, block);
 
@@ -479,15 +479,15 @@ void __58__SSVPlaybackLease_getCertificateDataWithCompletionBlock___block_invoke
   }
 }
 
-- (void)preheatLeaseRequestsWithCompletionBlock:(id)a3
+- (void)preheatLeaseRequestsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__SSVPlaybackLease_preheatLeaseRequestsWithCompletionBlock___block_invoke;
   v6[3] = &unk_1E84B1890;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(SSVPlaybackLease *)self getCertificateDataWithCompletionBlock:v6];
 }
 
@@ -521,20 +521,20 @@ uint64_t __60__SSVPlaybackLease_preheatLeaseRequestsWithCompletionBlock___block_
   return v3;
 }
 
-- (void)refreshLeaseWithRequest:(id)a3 completionBlock:(id)a4
+- (void)refreshLeaseWithRequest:(id)request completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  blockCopy = block;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__SSVPlaybackLease_refreshLeaseWithRequest_completionBlock___block_invoke;
   block[3] = &unk_1E84AC000;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = blockCopy;
+  v9 = blockCopy;
+  v10 = requestCopy;
   dispatch_async(serialQueue, block);
 }
 
@@ -575,17 +575,17 @@ void __60__SSVPlaybackLease_refreshLeaseWithRequest_completionBlock___block_invo
   }
 }
 
-- (void)setCertificateData:(id)a3
+- (void)setCertificateData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__SSVPlaybackLease_setCertificateData___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -602,17 +602,17 @@ void __39__SSVPlaybackLease_setCertificateData___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setCertificateURLBagKey:(id)a3
+- (void)setCertificateURLBagKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__SSVPlaybackLease_setCertificateURLBagKey___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -629,21 +629,21 @@ void __44__SSVPlaybackLease_setCertificateURLBagKey___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __32__SSVPlaybackLease_setDelegate___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(serialQueue, v7);
 }
 
-- (void)setRefreshesAutomatically:(BOOL)a3
+- (void)setRefreshesAutomatically:(BOOL)automatically
 {
   serialQueue = self->_serialQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -651,7 +651,7 @@ void __44__SSVPlaybackLease_setCertificateURLBagKey___block_invoke(uint64_t a1)
   v4[2] = __46__SSVPlaybackLease_setRefreshesAutomatically___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  automaticallyCopy = automatically;
   dispatch_async(serialQueue, v4);
 }
 
@@ -670,45 +670,45 @@ uint64_t __46__SSVPlaybackLease_setRefreshesAutomatically___block_invoke(uint64_
   }
 }
 
-- (void)updateWithExternalLeaseResponseError:(id)a3
+- (void)updateWithExternalLeaseResponseError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__SSVPlaybackLease_updateWithExternalLeaseResponseError___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(serialQueue, v7);
 }
 
-- (id)_addOperationWithRequest:(id)a3 configurationURL:(id)a4 completionBlock:(id)a5
+- (id)_addOperationWithRequest:(id)request configurationURL:(id)l completionBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  lCopy = l;
+  blockCopy = block;
   leaseType = self->_leaseType;
-  [v9 _setCertificateData:self->_certificateData];
-  [v9 _setKDMovieIdentifier:self->_kdMovieIdentifier];
-  [v9 _setURL:v10];
+  [requestCopy _setCertificateData:self->_certificateData];
+  [requestCopy _setKDMovieIdentifier:self->_kdMovieIdentifier];
+  [requestCopy _setURL:lCopy];
   v13 = [SSVLeaseRequestOperation alloc];
-  if (v10)
+  if (lCopy)
   {
-    v14 = [(SSVLeaseRequestOperation *)v13 initWithLeaseRequest:v9 configuration:self->_configuration];
+    v14 = [(SSVLeaseRequestOperation *)v13 initWithLeaseRequest:requestCopy configuration:self->_configuration];
   }
 
   else
   {
-    v14 = [(SSVLeaseRequestOperation *)v13 initWithLeaseRequest:v9 URLBag:self->_urlBag];
+    v14 = [(SSVLeaseRequestOperation *)v13 initWithLeaseRequest:requestCopy URLBag:self->_urlBag];
   }
 
   v15 = v14;
   [(SSVLeaseRequestOperation *)v14 setCertificateURLBagKey:self->_certificateURLBagKey];
   if (leaseType == 1)
   {
-    objc_storeStrong(&self->_lastKDLeaseRequest, a3);
+    objc_storeStrong(&self->_lastKDLeaseRequest, request);
   }
 
   v16 = self->_serialQueue;
@@ -722,8 +722,8 @@ uint64_t __46__SSVPlaybackLease_setRefreshesAutomatically___block_invoke(uint64_
   v21 = v17;
   objc_copyWeak(&v24, &from);
   objc_copyWeak(&v25, &location);
-  v22 = self;
-  v18 = v11;
+  selfCopy = self;
+  v18 = blockCopy;
   v23 = v18;
   [(SSVLeaseRequestOperation *)v15 setOutputBlock:v20];
   [(SSVBarrierOperationQueue *)self->_operationQueue addBarrierOperation:v15];
@@ -842,13 +842,13 @@ LABEL_9:
 
   v6 = v5;
   [v5 _setActionType:2];
-  v7 = [(SSVPlaybackLeaseConfiguration *)self->_configuration refreshLeaseURL];
+  refreshLeaseURL = [(SSVPlaybackLeaseConfiguration *)self->_configuration refreshLeaseURL];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __37__SSVPlaybackLease__fireRefreshTimer__block_invoke;
   v9[3] = &unk_1E84B1930;
   objc_copyWeak(&v10, &location);
-  v8 = [(SSVPlaybackLease *)self _addOperationWithRequest:v6 configurationURL:v7 completionBlock:v9];
+  v8 = [(SSVPlaybackLease *)self _addOperationWithRequest:v6 configurationURL:refreshLeaseURL completionBlock:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -932,7 +932,7 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)_sendLeaseDidEndWithEndReasonType:(unint64_t)a3
+- (void)_sendLeaseDidEndWithEndReasonType:(unint64_t)type
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -963,7 +963,7 @@ LABEL_5:
     v7 = v12;
     v12[0] = WeakRetained;
     v12[1] = self;
-    v12[2] = a3;
+    v12[2] = type;
     v8 = block;
     v9 = v10;
     goto LABEL_5;
@@ -972,15 +972,15 @@ LABEL_5:
 LABEL_6:
 }
 
-- (BOOL)_shouldEndLeaseForError:(id)a3 returningEndReasonType:(unint64_t *)a4
+- (BOOL)_shouldEndLeaseForError:(id)error returningEndReasonType:(unint64_t *)type
 {
-  v5 = a3;
-  v6 = [v5 domain];
-  if ([v6 isEqualToString:@"SSServerErrorDomain"] && (objc_msgSend(v5, "code") == 3059 || objc_msgSend(v5, "code") == 3060))
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:@"SSServerErrorDomain"] && (objc_msgSend(errorCopy, "code") == 3059 || objc_msgSend(errorCopy, "code") == 3060))
   {
     v7 = 1;
     v8 = 2;
-    if (!a4)
+    if (!type)
     {
       goto LABEL_11;
     }
@@ -988,9 +988,9 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  if ([v6 isEqualToString:@"SSVFairPlayErrorDomain"])
+  if ([domain isEqualToString:@"SSVFairPlayErrorDomain"])
   {
-    v7 = ([v5 code] + 42589) < 2;
+    v7 = ([errorCopy code] + 42589) < 2;
   }
 
   else
@@ -999,10 +999,10 @@ LABEL_6:
   }
 
   v8 = 1;
-  if (a4)
+  if (type)
   {
 LABEL_10:
-    *a4 = v8;
+    *type = v8;
   }
 
 LABEL_11:
@@ -1037,21 +1037,21 @@ LABEL_11:
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
-    v11 = [v9 shouldLogToDisk];
-    v12 = [v9 OSLogObject];
-    v13 = v12;
-    if (v11)
+    shouldLog = [v9 shouldLog];
+    shouldLogToDisk = [v9 shouldLogToDisk];
+    oSLogObject = [v9 OSLogObject];
+    v13 = oSLogObject;
+    if (shouldLogToDisk)
     {
-      v10 |= 2u;
+      shouldLog |= 2u;
     }
 
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
-      v10 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v10)
+    if (shouldLog)
     {
       v14 = objc_opt_class();
       [(NSDate *)self->_leaseExpirationDate timeIntervalSinceNow];
@@ -1087,27 +1087,27 @@ void __49__SSVPlaybackLease__startRefreshTimerIfNecessary__block_invoke(uint64_t
   [WeakRetained _fireRefreshTimer];
 }
 
-- (void)_updateForLeaseResponse:(id)a3 error:(id)a4
+- (void)_updateForLeaseResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  errorCopy = error;
   [(SSVPlaybackLease *)self _cancelRefreshTimer];
   if (!self->_certificateData)
   {
-    v8 = [v6 certificateData];
+    certificateData = [responseCopy certificateData];
     certificateData = self->_certificateData;
-    self->_certificateData = v8;
+    self->_certificateData = certificateData;
   }
 
-  self->_kdMovieIdentifier = [v6 KDMovieIdentifier];
-  if (v7)
+  self->_kdMovieIdentifier = [responseCopy KDMovieIdentifier];
+  if (errorCopy)
   {
-    [(SSVPlaybackLease *)self _updateWithLeaseResponseError:v7];
+    [(SSVPlaybackLease *)self _updateWithLeaseResponseError:errorCopy];
   }
 
   else
   {
-    [v6 leaseDuration];
+    [responseCopy leaseDuration];
     if (v10 >= 2.22044605e-16)
     {
       if (v10 <= 90.0)
@@ -1131,7 +1131,7 @@ void __49__SSVPlaybackLease__startRefreshTimerIfNecessary__block_invoke(uint64_t
       self->_leaseExpirationDate = 0;
     }
 
-    if ([v6 isOfflineSlotAvailable] && !self->_offlineSlotRequest && !self->_leaseType)
+    if ([responseCopy isOfflineSlotAvailable] && !self->_offlineSlotRequest && !self->_leaseType)
     {
       v14 = objc_alloc_init(SSVRefreshSubscriptionRequest);
       offlineSlotRequest = self->_offlineSlotRequest;
@@ -1176,10 +1176,10 @@ void __50__SSVPlaybackLease__updateForLeaseResponse_error___block_invoke_2(uint6
   *(v1 + 104) = 0;
 }
 
-- (void)_updateWithLeaseResponseError:(id)a3
+- (void)_updateWithLeaseResponseError:(id)error
 {
   v7 = 1;
-  if ([(SSVPlaybackLease *)self _shouldEndLeaseForError:a3 returningEndReasonType:&v7])
+  if ([(SSVPlaybackLease *)self _shouldEndLeaseForError:error returningEndReasonType:&v7])
   {
     [(SSVPlaybackLease *)self _endLease];
     [(SSVPlaybackLease *)self _sendLeaseDidEndWithEndReasonType:v7];

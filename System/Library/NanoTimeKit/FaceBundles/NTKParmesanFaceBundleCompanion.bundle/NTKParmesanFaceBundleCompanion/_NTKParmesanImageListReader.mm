@@ -1,17 +1,17 @@
 @interface _NTKParmesanImageListReader
-- (_NTKParmesanImageListReader)initWithResourceDirectory:(id)a3;
-- (id)objectAtIndex:(unint64_t)a3;
+- (_NTKParmesanImageListReader)initWithResourceDirectory:(id)directory;
+- (id)objectAtIndex:(unint64_t)index;
 @end
 
 @implementation _NTKParmesanImageListReader
 
-- (_NTKParmesanImageListReader)initWithResourceDirectory:(id)a3
+- (_NTKParmesanImageListReader)initWithResourceDirectory:(id)directory
 {
   v152 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  directoryCopy = directory;
   v146.receiver = self;
   v146.super_class = _NTKParmesanImageListReader;
-  v8 = [(NTKParmesanAssetReader *)&v146 initWithResourceDirectory:v4];
+  v8 = [(NTKParmesanAssetReader *)&v146 initWithResourceDirectory:directoryCopy];
   if (v8)
   {
     v9 = objc_msgSend_logObject(NTKParmesanFaceBundle, v5, v6, v7);
@@ -21,7 +21,7 @@
       *buf = 138412546;
       v149 = v10;
       v150 = 2112;
-      v151 = v4;
+      v151 = directoryCopy;
       v11 = v10;
       _os_log_impl(&dword_23BF0C000, v9, OS_LOG_TYPE_DEFAULT, "%@: initWithResourceDirectory %@", buf, 0x16u);
     }
@@ -30,9 +30,9 @@
     assets = v8->_assets;
     v8->_assets = v12;
 
-    if (v4)
+    if (directoryCopy)
     {
-      v16 = objc_msgSend_stringByAppendingPathComponent_(v4, v14, kParmesanReaderImagelistFileName, v15);
+      v16 = objc_msgSend_stringByAppendingPathComponent_(directoryCopy, v14, kParmesanReaderImagelistFileName, v15);
       v19 = objc_msgSend_dictionaryWithContentsOfFile_(MEMORY[0x277CBEAC0], v17, v16, v18);
       v23 = v19;
       if (v19)
@@ -146,7 +146,7 @@
               }
 
               v132 = *(*(&v142 + 1) + 8 * i);
-              v136 = objc_msgSend_decodeFromDictionary_inResourceDirectory_(NTKParmesanAsset, v128, v132, v4);
+              v136 = objc_msgSend_decodeFromDictionary_inResourceDirectory_(NTKParmesanAsset, v128, v132, directoryCopy);
               if (v136)
               {
                 objc_msgSend_addObject_(v8->_assets, v133, v136, v135);
@@ -192,16 +192,16 @@
   return v8;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  if (objc_msgSend_count(self->_assets, a2, a3, v3) <= a3)
+  if (objc_msgSend_count(self->_assets, a2, index, v3) <= index)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = objc_msgSend_objectAtIndexedSubscript_(self->_assets, v6, a3, v7);
+    v8 = objc_msgSend_objectAtIndexedSubscript_(self->_assets, v6, index, v7);
   }
 
   return v8;

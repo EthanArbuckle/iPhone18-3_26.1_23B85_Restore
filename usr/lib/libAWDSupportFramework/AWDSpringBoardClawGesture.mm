@@ -1,24 +1,24 @@
 @interface AWDSpringBoardClawGesture
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDidPressLock:(BOOL)a3;
-- (void)setHasDidPressVolumeDown:(BOOL)a3;
-- (void)setHasDidPressVolumeUp:(BOOL)a3;
-- (void)setHasDidTriggerSOS:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDidPressLock:(BOOL)lock;
+- (void)setHasDidPressVolumeDown:(BOOL)down;
+- (void)setHasDidPressVolumeUp:(BOOL)up;
+- (void)setHasDidTriggerSOS:(BOOL)s;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSpringBoardClawGesture
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -31,9 +31,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasDidPressLock:(BOOL)a3
+- (void)setHasDidPressLock:(BOOL)lock
 {
-  if (a3)
+  if (lock)
   {
     v3 = 4;
   }
@@ -46,9 +46,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasDidPressVolumeUp:(BOOL)a3
+- (void)setHasDidPressVolumeUp:(BOOL)up
 {
-  if (a3)
+  if (up)
   {
     v3 = 16;
   }
@@ -61,9 +61,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasDidPressVolumeDown:(BOOL)a3
+- (void)setHasDidPressVolumeDown:(BOOL)down
 {
-  if (a3)
+  if (down)
   {
     v3 = 8;
   }
@@ -76,9 +76,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasDidTriggerSOS:(BOOL)a3
+- (void)setHasDidTriggerSOS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 32;
   }
@@ -100,11 +100,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -123,7 +123,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_didPressLock), @"didPressLock"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_didPressLock), @"didPressLock"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -137,7 +137,7 @@ LABEL_4:
   }
 
 LABEL_11:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_didPressVolumeUp), @"didPressVolumeUp"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_didPressVolumeUp), @"didPressVolumeUp"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -148,17 +148,17 @@ LABEL_5:
     }
 
 LABEL_13:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_didTriggerSOS), @"didTriggerSOS"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_didTriggerSOS), @"didTriggerSOS"}];
     if ((*&self->_has & 1) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_7;
   }
 
 LABEL_12:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_didPressVolumeDown), @"didPressVolumeDown"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_didPressVolumeDown), @"didPressVolumeDown"}];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
@@ -169,13 +169,13 @@ LABEL_6:
   if (has)
   {
 LABEL_7:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_duration), @"duration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_duration), @"duration"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
@@ -258,13 +258,13 @@ LABEL_13:
   PBDataWriterWriteUint64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 2) = self->_timestamp;
-    *(a3 + 28) |= 2u;
+    *(to + 2) = self->_timestamp;
+    *(to + 28) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -283,8 +283,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 24) = self->_didPressLock;
-  *(a3 + 28) |= 4u;
+  *(to + 24) = self->_didPressLock;
+  *(to + 28) |= 4u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -298,8 +298,8 @@ LABEL_4:
   }
 
 LABEL_10:
-  *(a3 + 26) = self->_didPressVolumeUp;
-  *(a3 + 28) |= 0x10u;
+  *(to + 26) = self->_didPressVolumeUp;
+  *(to + 28) |= 0x10u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -313,8 +313,8 @@ LABEL_5:
   }
 
 LABEL_11:
-  *(a3 + 25) = self->_didPressVolumeDown;
-  *(a3 + 28) |= 8u;
+  *(to + 25) = self->_didPressVolumeDown;
+  *(to + 28) |= 8u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -325,23 +325,23 @@ LABEL_6:
     }
 
 LABEL_13:
-    *(a3 + 1) = self->_duration;
-    *(a3 + 28) |= 1u;
+    *(to + 1) = self->_duration;
+    *(to + 28) |= 1u;
     return;
   }
 
 LABEL_12:
-  *(a3 + 27) = self->_didTriggerSOS;
-  *(a3 + 28) |= 0x20u;
+  *(to + 27) = self->_didTriggerSOS;
+  *(to + 28) |= 0x20u;
   if (*&self->_has)
   {
     goto LABEL_13;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -423,9 +423,9 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
@@ -433,101 +433,101 @@ LABEL_7:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(a3 + 28) & 2) == 0 || self->_timestamp != *(a3 + 2))
+    if ((*(equal + 28) & 2) == 0 || self->_timestamp != *(equal + 2))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(a3 + 28) & 2) != 0)
+  else if ((*(equal + 28) & 2) != 0)
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(a3 + 28) & 4) == 0)
+    if ((*(equal + 28) & 4) == 0)
     {
       goto LABEL_42;
     }
 
-    v6 = *(a3 + 24);
+    v6 = *(equal + 24);
     if (self->_didPressLock)
     {
-      if ((*(a3 + 24) & 1) == 0)
+      if ((*(equal + 24) & 1) == 0)
       {
         goto LABEL_42;
       }
     }
 
-    else if (*(a3 + 24))
+    else if (*(equal + 24))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(a3 + 28) & 4) != 0)
+  else if ((*(equal + 28) & 4) != 0)
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(a3 + 28) & 0x10) == 0)
+    if ((*(equal + 28) & 0x10) == 0)
     {
       goto LABEL_42;
     }
 
-    v7 = *(a3 + 26);
+    v7 = *(equal + 26);
     if (self->_didPressVolumeUp)
     {
-      if ((*(a3 + 26) & 1) == 0)
+      if ((*(equal + 26) & 1) == 0)
       {
         goto LABEL_42;
       }
     }
 
-    else if (*(a3 + 26))
+    else if (*(equal + 26))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(a3 + 28) & 0x10) != 0)
+  else if ((*(equal + 28) & 0x10) != 0)
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(a3 + 28) & 8) == 0)
+    if ((*(equal + 28) & 8) == 0)
     {
       goto LABEL_42;
     }
 
-    v8 = *(a3 + 25);
+    v8 = *(equal + 25);
     if (self->_didPressVolumeDown)
     {
-      if ((*(a3 + 25) & 1) == 0)
+      if ((*(equal + 25) & 1) == 0)
       {
         goto LABEL_42;
       }
     }
 
-    else if (*(a3 + 25))
+    else if (*(equal + 25))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(a3 + 28) & 8) != 0)
+  else if ((*(equal + 28) & 8) != 0)
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 0x20) == 0)
   {
-    if ((*(a3 + 28) & 0x20) == 0)
+    if ((*(equal + 28) & 0x20) == 0)
     {
       goto LABEL_15;
     }
@@ -537,15 +537,15 @@ LABEL_42:
     return v5;
   }
 
-  if ((*(a3 + 28) & 0x20) == 0)
+  if ((*(equal + 28) & 0x20) == 0)
   {
     goto LABEL_42;
   }
 
-  v9 = *(a3 + 27);
+  v9 = *(equal + 27);
   if (self->_didTriggerSOS)
   {
-    if ((*(a3 + 27) & 1) == 0)
+    if ((*(equal + 27) & 1) == 0)
     {
       goto LABEL_42;
     }
@@ -553,16 +553,16 @@ LABEL_42:
     goto LABEL_15;
   }
 
-  if (*(a3 + 27))
+  if (*(equal + 27))
   {
     goto LABEL_42;
   }
 
 LABEL_15:
-  LOBYTE(v5) = (*(a3 + 28) & 1) == 0;
+  LOBYTE(v5) = (*(equal + 28) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(a3 + 28) & 1) == 0 || self->_duration != *(a3 + 1))
+    if ((*(equal + 28) & 1) == 0 || self->_duration != *(equal + 1))
     {
       goto LABEL_42;
     }
@@ -655,14 +655,14 @@ LABEL_7:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 2) != 0)
   {
-    self->_timestamp = *(a3 + 2);
+    self->_timestamp = *(from + 2);
     *&self->_has |= 2u;
-    v3 = *(a3 + 28);
+    v3 = *(from + 28);
     if ((v3 & 4) == 0)
     {
 LABEL_3:
@@ -675,14 +675,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 28) & 4) == 0)
+  else if ((*(from + 28) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_didPressLock = *(a3 + 24);
+  self->_didPressLock = *(from + 24);
   *&self->_has |= 4u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 0x10) == 0)
   {
 LABEL_4:
@@ -695,9 +695,9 @@ LABEL_4:
   }
 
 LABEL_10:
-  self->_didPressVolumeUp = *(a3 + 26);
+  self->_didPressVolumeUp = *(from + 26);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 8) == 0)
   {
 LABEL_5:
@@ -710,9 +710,9 @@ LABEL_5:
   }
 
 LABEL_11:
-  self->_didPressVolumeDown = *(a3 + 25);
+  self->_didPressVolumeDown = *(from + 25);
   *&self->_has |= 8u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 0x20) == 0)
   {
 LABEL_6:
@@ -722,15 +722,15 @@ LABEL_6:
     }
 
 LABEL_13:
-    self->_duration = *(a3 + 1);
+    self->_duration = *(from + 1);
     *&self->_has |= 1u;
     return;
   }
 
 LABEL_12:
-  self->_didTriggerSOS = *(a3 + 27);
+  self->_didTriggerSOS = *(from + 27);
   *&self->_has |= 0x20u;
-  if (*(a3 + 28))
+  if (*(from + 28))
   {
     goto LABEL_13;
   }

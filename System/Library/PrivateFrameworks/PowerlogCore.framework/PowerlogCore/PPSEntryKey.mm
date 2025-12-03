@@ -1,45 +1,45 @@
 @interface PPSEntryKey
-+ (BOOL)PPSEnabled:(id)a3;
-+ (BOOL)filterEntryLoggingForEntryKey:(id)a3;
-+ (BOOL)hasAppIdentiferKeys:(id)a3;
-+ (BOOL)hasArrayKeys:(id)a3;
-+ (BOOL)hasDMAKeys:(id)a3;
-+ (BOOL)hasDynamicKeys:(id)a3;
-+ (id)allAppIdentiferKeysForEntryKey:(id)a3;
-+ (id)allArrayKeysForEntryKey:(id)a3;
-+ (id)allBaseKeysForEntryKey:(id)a3;
-+ (id)allDMAKeysForEntryKey:(id)a3;
-+ (id)allDynamicKeysForEntryKey:(id)a3;
++ (BOOL)PPSEnabled:(id)enabled;
++ (BOOL)filterEntryLoggingForEntryKey:(id)key;
++ (BOOL)hasAppIdentiferKeys:(id)keys;
++ (BOOL)hasArrayKeys:(id)keys;
++ (BOOL)hasDMAKeys:(id)keys;
++ (BOOL)hasDynamicKeys:(id)keys;
++ (id)allAppIdentiferKeysForEntryKey:(id)key;
++ (id)allArrayKeysForEntryKey:(id)key;
++ (id)allBaseKeysForEntryKey:(id)key;
++ (id)allDMAKeysForEntryKey:(id)key;
++ (id)allDynamicKeysForEntryKey:(id)key;
 + (id)allEntryKeys;
-+ (id)allEntryKeysForStorage:(int)a3;
-+ (id)allKeysForEntryKey:(id)a3;
-+ (id)allMetricsForEntryKey:(id)a3;
-+ (id)anyMetricsForEntryKey:(id)a3;
-+ (id)arrayMetricsForEntryKey:(id)a3;
-+ (id)baseMetricsForEntryKey:(id)a3;
-+ (id)categoryForEntryKey:(id)a3;
-+ (id)dynamicMetricsForEntryKey:(id)a3;
-+ (id)entryKeyForMetric:(id)a3;
-+ (id)entrySelectorForMetric:(id)a3;
-+ (id)metricsForEntryKey:(id)a3;
-+ (id)subsystemForEntryKey:(id)a3;
-+ (int)directionalityForEntryKey:(id)a3;
-+ (int)storageForEntryKey:(id)a3;
-+ (int64_t)timeToLiveForEntryKey:(id)a3;
-+ (void)addAuxiliaryType:(id)a3 withEntryKey:(id)a4;
-+ (void)resetMetricsForEntryKey:(id)a3;
-+ (void)setupEntryKeyForMetric:(id)a3;
++ (id)allEntryKeysForStorage:(int)storage;
++ (id)allKeysForEntryKey:(id)key;
++ (id)allMetricsForEntryKey:(id)key;
++ (id)anyMetricsForEntryKey:(id)key;
++ (id)arrayMetricsForEntryKey:(id)key;
++ (id)baseMetricsForEntryKey:(id)key;
++ (id)categoryForEntryKey:(id)key;
++ (id)dynamicMetricsForEntryKey:(id)key;
++ (id)entryKeyForMetric:(id)metric;
++ (id)entrySelectorForMetric:(id)metric;
++ (id)metricsForEntryKey:(id)key;
++ (id)subsystemForEntryKey:(id)key;
++ (int)directionalityForEntryKey:(id)key;
++ (int)storageForEntryKey:(id)key;
++ (int64_t)timeToLiveForEntryKey:(id)key;
++ (void)addAuxiliaryType:(id)type withEntryKey:(id)key;
++ (void)resetMetricsForEntryKey:(id)key;
++ (void)setupEntryKeyForMetric:(id)metric;
 @end
 
 @implementation PPSEntryKey
 
-+ (void)setupEntryKeyForMetric:(id)a3
++ (void)setupEntryKeyForMetric:(id)metric
 {
-  v4 = a3;
-  v5 = v4;
+  metricCopy = metric;
+  v5 = metricCopy;
   if (setupEntryKeyForMetric__onceToken == -1)
   {
-    if (!v4)
+    if (!metricCopy)
     {
       goto LABEL_12;
     }
@@ -47,7 +47,7 @@
 
   else
   {
-    v15 = v4;
+    v15 = metricCopy;
     +[PPSEntryKey setupEntryKeyForMetric:];
     v5 = v15;
     if (!v15)
@@ -81,13 +81,13 @@
     if ([v14 auxiliaryType] == 1)
     {
       v12 = [_metricsByEntryKey objectForKeyedSubscript:v9];
-      v13 = [v14 name];
-      [v12 setObject:v14 forKeyedSubscript:v13];
+      name = [v14 name];
+      [v12 setObject:v14 forKeyedSubscript:name];
     }
 
     else
     {
-      [a1 addAuxiliaryType:v14 withEntryKey:v9];
+      [self addAuxiliaryType:v14 withEntryKey:v9];
     }
 
     objc_sync_exit(@"++entryKeyObjectsSync++");
@@ -112,26 +112,26 @@ uint64_t __38__PPSEntryKey_setupEntryKeyForMetric___block_invoke()
   return objc_sync_exit(@"++entryKeyObjectsSync++");
 }
 
-+ (void)addAuxiliaryType:(id)a3 withEntryKey:(id)a4
++ (void)addAuxiliaryType:(id)type withEntryKey:(id)key
 {
-  v16 = a3;
-  v5 = a4;
-  v6 = [v16 auxiliaryType];
-  if (v6 == 3)
+  typeCopy = type;
+  keyCopy = key;
+  auxiliaryType = [typeCopy auxiliaryType];
+  if (auxiliaryType == 3)
   {
-    v7 = [_metricsByEntryKey objectForKeyedSubscript:v5];
+    v7 = [_metricsByEntryKey objectForKeyedSubscript:keyCopy];
     v8 = v7;
     v9 = @"__PPSArray__";
   }
 
   else
   {
-    if (v6 != 2)
+    if (auxiliaryType != 2)
     {
       goto LABEL_8;
     }
 
-    v7 = [_metricsByEntryKey objectForKeyedSubscript:v5];
+    v7 = [_metricsByEntryKey objectForKeyedSubscript:keyCopy];
     v8 = v7;
     v9 = @"__PPSDynamic__";
   }
@@ -141,23 +141,23 @@ uint64_t __38__PPSEntryKey_setupEntryKeyForMetric___block_invoke()
   if (!v10)
   {
     v11 = objc_opt_new();
-    v12 = [_metricsByEntryKey objectForKeyedSubscript:v5];
+    v12 = [_metricsByEntryKey objectForKeyedSubscript:keyCopy];
     [v12 setObject:v11 forKeyedSubscript:v9];
   }
 
-  v13 = [_metricsByEntryKey objectForKeyedSubscript:v5];
+  v13 = [_metricsByEntryKey objectForKeyedSubscript:keyCopy];
   v14 = [v13 objectForKeyedSubscript:v9];
-  v15 = [v16 name];
-  [v14 setObject:v16 forKeyedSubscript:v15];
+  name = [typeCopy name];
+  [v14 setObject:typeCopy forKeyedSubscript:name];
 
 LABEL_8:
 }
 
-+ (BOOL)PPSEnabled:(id)a3
++ (BOOL)PPSEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   objc_sync_enter(@"++entryKeyObjectsSync++");
-  v4 = [_metricsByEntryKey objectForKeyedSubscript:v3];
+  v4 = [_metricsByEntryKey objectForKeyedSubscript:enabledCopy];
 
   objc_sync_exit(@"++entryKeyObjectsSync++");
   return v4 != 0;
@@ -166,13 +166,13 @@ LABEL_8:
 + (id)allEntryKeys
 {
   objc_sync_enter(@"++entryKeyObjectsSync++");
-  v2 = [_entryKeyByMetadata allValues];
+  allValues = [_entryKeyByMetadata allValues];
   objc_sync_exit(@"++entryKeyObjectsSync++");
 
-  return v2;
+  return allValues;
 }
 
-+ (id)allEntryKeysForStorage:(int)a3
++ (id)allEntryKeysForStorage:(int)storage
 {
   v4 = objc_opt_new();
   v5 = [&unk_1F540B710 indexOfObject:@"storage"];
@@ -183,7 +183,7 @@ LABEL_8:
   v9[2] = __38__PPSEntryKey_allEntryKeysForStorage___block_invoke;
   v9[3] = &unk_1E8519368;
   v11 = v5;
-  v12 = a3;
+  storageCopy = storage;
   v7 = v4;
   v10 = v7;
   [v6 enumerateKeysAndObjectsUsingBlock:v9];
@@ -206,33 +206,33 @@ void __38__PPSEntryKey_allEntryKeysForStorage___block_invoke(uint64_t a1, void *
   }
 }
 
-+ (void)resetMetricsForEntryKey:(id)a3
++ (void)resetMetricsForEntryKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   objc_sync_enter(@"++entryKeyObjectsSync++");
-  [_metricsByEntryKey setObject:0 forKeyedSubscript:v3];
+  [_metricsByEntryKey setObject:0 forKeyedSubscript:keyCopy];
   objc_sync_exit(@"++entryKeyObjectsSync++");
 }
 
-+ (id)metricsForEntryKey:(id)a3
++ (id)metricsForEntryKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   objc_sync_enter(@"++entryKeyObjectsSync++");
-  v4 = [_metricsByEntryKey objectForKeyedSubscript:v3];
+  v4 = [_metricsByEntryKey objectForKeyedSubscript:keyCopy];
   objc_sync_exit(@"++entryKeyObjectsSync++");
 
   return v4;
 }
 
-+ (id)anyMetricsForEntryKey:(id)a3
++ (id)anyMetricsForEntryKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   objc_sync_enter(@"++entryKeyObjectsSync++");
-  v4 = [_metricsByEntryKey objectForKeyedSubscript:v3];
+  v4 = [_metricsByEntryKey objectForKeyedSubscript:keyCopy];
 
   if (v4)
   {
-    v5 = [_metricsByEntryKey objectForKeyedSubscript:v3];
+    v5 = [_metricsByEntryKey objectForKeyedSubscript:keyCopy];
     v4 = [v5 mutableCopy];
 
     v6 = [v4 objectForKey:@"__PPSDynamic__"];
@@ -265,34 +265,34 @@ LABEL_7:
   return v4;
 }
 
-+ (id)allMetricsForEntryKey:(id)a3
++ (id)allMetricsForEntryKey:(id)key
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  keyCopy = key;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   objc_sync_enter(@"++entryKeyObjectsSync++");
-  v5 = [PPSEntryKey baseMetricsForEntryKey:v3];
-  [v4 addEntriesFromDictionary:v5];
+  v5 = [PPSEntryKey baseMetricsForEntryKey:keyCopy];
+  [dictionary addEntriesFromDictionary:v5];
 
-  v6 = [PPSEntryKey dynamicMetricsForEntryKey:v3];
-  [v4 addEntriesFromDictionary:v6];
+  v6 = [PPSEntryKey dynamicMetricsForEntryKey:keyCopy];
+  [dictionary addEntriesFromDictionary:v6];
 
-  v7 = [PPSEntryKey arrayMetricsForEntryKey:v3];
-  [v4 addEntriesFromDictionary:v7];
+  v7 = [PPSEntryKey arrayMetricsForEntryKey:keyCopy];
+  [dictionary addEntriesFromDictionary:v7];
 
   objc_sync_exit(@"++entryKeyObjectsSync++");
 
-  return v4;
+  return dictionary;
 }
 
-+ (id)baseMetricsForEntryKey:(id)a3
++ (id)baseMetricsForEntryKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   objc_sync_enter(@"++entryKeyObjectsSync++");
-  v4 = [_metricsByEntryKey objectForKeyedSubscript:v3];
+  v4 = [_metricsByEntryKey objectForKeyedSubscript:keyCopy];
 
   if (v4)
   {
-    v5 = [_metricsByEntryKey objectForKeyedSubscript:v3];
+    v5 = [_metricsByEntryKey objectForKeyedSubscript:keyCopy];
     v4 = [v5 mutableCopy];
 
     [v4 removeObjectForKey:@"__PPSDynamic__"];
@@ -304,14 +304,14 @@ LABEL_7:
   return v4;
 }
 
-+ (id)allKeysForEntryKey:(id)a3
++ (id)allKeysForEntryKey:(id)key
 {
-  v3 = [a1 allMetricsForEntryKey:a3];
+  v3 = [self allMetricsForEntryKey:key];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 allKeys];
-    v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_29];
+    allKeys = [v3 allKeys];
+    v6 = [allKeys sortedArrayUsingComparator:&__block_literal_global_29];
   }
 
   else
@@ -322,14 +322,14 @@ LABEL_7:
   return v6;
 }
 
-+ (id)allBaseKeysForEntryKey:(id)a3
++ (id)allBaseKeysForEntryKey:(id)key
 {
-  v3 = [a1 baseMetricsForEntryKey:a3];
+  v3 = [self baseMetricsForEntryKey:key];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 allKeys];
-    v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_31];
+    allKeys = [v3 allKeys];
+    v6 = [allKeys sortedArrayUsingComparator:&__block_literal_global_31];
   }
 
   else
@@ -340,13 +340,13 @@ LABEL_7:
   return v6;
 }
 
-+ (BOOL)hasDynamicKeys:(id)a3
++ (BOOL)hasDynamicKeys:(id)keys
 {
-  v3 = a3;
-  if (v3)
+  keysCopy = keys;
+  if (keysCopy)
   {
     objc_sync_enter(@"++entryKeyObjectsSync++");
-    v4 = [_metricsByEntryKey objectForKeyedSubscript:v3];
+    v4 = [_metricsByEntryKey objectForKeyedSubscript:keysCopy];
     v5 = [v4 objectForKeyedSubscript:@"__PPSDynamic__"];
     v6 = v5 != 0;
 
@@ -361,13 +361,13 @@ LABEL_7:
   return v6;
 }
 
-+ (id)dynamicMetricsForEntryKey:(id)a3
++ (id)dynamicMetricsForEntryKey:(id)key
 {
-  v3 = a3;
-  if (v3)
+  keyCopy = key;
+  if (keyCopy)
   {
     objc_sync_enter(@"++entryKeyObjectsSync++");
-    v4 = [_metricsByEntryKey objectForKeyedSubscript:v3];
+    v4 = [_metricsByEntryKey objectForKeyedSubscript:keyCopy];
     v5 = [v4 objectForKeyedSubscript:@"__PPSDynamic__"];
 
     objc_sync_exit(@"++entryKeyObjectsSync++");
@@ -381,20 +381,20 @@ LABEL_7:
   return v5;
 }
 
-+ (id)allDynamicKeysForEntryKey:(id)a3
++ (id)allDynamicKeysForEntryKey:(id)key
 {
-  v3 = a3;
-  if (v3)
+  keyCopy = key;
+  if (keyCopy)
   {
     objc_sync_enter(@"++entryKeyObjectsSync++");
-    v4 = [_metricsByEntryKey objectForKeyedSubscript:v3];
+    v4 = [_metricsByEntryKey objectForKeyedSubscript:keyCopy];
     v5 = [v4 objectForKeyedSubscript:@"__PPSDynamic__"];
-    v6 = [v5 allKeys];
+    allKeys = [v5 allKeys];
 
     objc_sync_exit(@"++entryKeyObjectsSync++");
-    if (v6)
+    if (allKeys)
     {
-      v7 = [v6 sortedArrayUsingComparator:&__block_literal_global_33];
+      v7 = [allKeys sortedArrayUsingComparator:&__block_literal_global_33];
     }
 
     else
@@ -411,13 +411,13 @@ LABEL_7:
   return v7;
 }
 
-+ (BOOL)hasArrayKeys:(id)a3
++ (BOOL)hasArrayKeys:(id)keys
 {
-  v3 = a3;
-  if (v3)
+  keysCopy = keys;
+  if (keysCopy)
   {
     objc_sync_enter(@"++entryKeyObjectsSync++");
-    v4 = [_metricsByEntryKey objectForKeyedSubscript:v3];
+    v4 = [_metricsByEntryKey objectForKeyedSubscript:keysCopy];
     v5 = [v4 objectForKeyedSubscript:@"__PPSArray__"];
     v6 = v5 != 0;
 
@@ -432,12 +432,12 @@ LABEL_7:
   return v6;
 }
 
-+ (BOOL)hasDMAKeys:(id)a3
++ (BOOL)hasDMAKeys:(id)keys
 {
-  v3 = a3;
-  if (v3)
+  keysCopy = keys;
+  if (keysCopy)
   {
-    v4 = [PPSEntryKey allMetricsForEntryKey:v3];
+    v4 = [PPSEntryKey allMetricsForEntryKey:keysCopy];
     v8 = 0;
     v9 = &v8;
     v10 = 0x2020000000;
@@ -472,12 +472,12 @@ void __26__PPSEntryKey_hasDMAKeys___block_invoke(uint64_t a1, void *a2, void *a3
   }
 }
 
-+ (BOOL)hasAppIdentiferKeys:(id)a3
++ (BOOL)hasAppIdentiferKeys:(id)keys
 {
-  v3 = a3;
-  if (v3)
+  keysCopy = keys;
+  if (keysCopy)
   {
-    v4 = [PPSEntryKey allMetricsForEntryKey:v3];
+    v4 = [PPSEntryKey allMetricsForEntryKey:keysCopy];
     v8 = 0;
     v9 = &v8;
     v10 = 0x2020000000;
@@ -512,13 +512,13 @@ void __35__PPSEntryKey_hasAppIdentiferKeys___block_invoke(uint64_t a1, void *a2,
   }
 }
 
-+ (id)arrayMetricsForEntryKey:(id)a3
++ (id)arrayMetricsForEntryKey:(id)key
 {
-  v3 = a3;
-  if (v3)
+  keyCopy = key;
+  if (keyCopy)
   {
     objc_sync_enter(@"++entryKeyObjectsSync++");
-    v4 = [_metricsByEntryKey objectForKeyedSubscript:v3];
+    v4 = [_metricsByEntryKey objectForKeyedSubscript:keyCopy];
     v5 = [v4 objectForKeyedSubscript:@"__PPSArray__"];
 
     objc_sync_exit(@"++entryKeyObjectsSync++");
@@ -532,20 +532,20 @@ void __35__PPSEntryKey_hasAppIdentiferKeys___block_invoke(uint64_t a1, void *a2,
   return v5;
 }
 
-+ (id)allArrayKeysForEntryKey:(id)a3
++ (id)allArrayKeysForEntryKey:(id)key
 {
-  v3 = a3;
-  if (v3)
+  keyCopy = key;
+  if (keyCopy)
   {
     objc_sync_enter(@"++entryKeyObjectsSync++");
-    v4 = [_metricsByEntryKey objectForKeyedSubscript:v3];
+    v4 = [_metricsByEntryKey objectForKeyedSubscript:keyCopy];
     v5 = [v4 objectForKeyedSubscript:@"__PPSArray__"];
-    v6 = [v5 allKeys];
+    allKeys = [v5 allKeys];
 
     objc_sync_exit(@"++entryKeyObjectsSync++");
-    if (v6)
+    if (allKeys)
     {
-      v7 = [v6 sortedArrayUsingComparator:&__block_literal_global_40];
+      v7 = [allKeys sortedArrayUsingComparator:&__block_literal_global_40];
     }
 
     else
@@ -562,18 +562,18 @@ void __35__PPSEntryKey_hasAppIdentiferKeys___block_invoke(uint64_t a1, void *a2,
   return v7;
 }
 
-+ (id)allDMAKeysForEntryKey:(id)a3
++ (id)allDMAKeysForEntryKey:(id)key
 {
-  v3 = a3;
-  if (v3)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v4 = [PPSEntryKey allMetricsForEntryKey:v3];
+    v4 = [PPSEntryKey allMetricsForEntryKey:keyCopy];
     v8 = 0;
     v9 = &v8;
     v10 = 0x3032000000;
     v11 = __Block_byref_object_copy__2;
     v12 = __Block_byref_object_dispose__2;
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __37__PPSEntryKey_allDMAKeysForEntryKey___block_invoke;
@@ -605,18 +605,18 @@ void __37__PPSEntryKey_allDMAKeysForEntryKey___block_invoke(uint64_t a1, void *a
   }
 }
 
-+ (id)allAppIdentiferKeysForEntryKey:(id)a3
++ (id)allAppIdentiferKeysForEntryKey:(id)key
 {
-  v3 = a3;
-  if (v3)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v4 = [PPSEntryKey allMetricsForEntryKey:v3];
+    v4 = [PPSEntryKey allMetricsForEntryKey:keyCopy];
     v8 = 0;
     v9 = &v8;
     v10 = 0x3032000000;
     v11 = __Block_byref_object_copy__2;
     v12 = __Block_byref_object_dispose__2;
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __46__PPSEntryKey_allAppIdentiferKeysForEntryKey___block_invoke;
@@ -648,12 +648,12 @@ void __46__PPSEntryKey_allAppIdentiferKeysForEntryKey___block_invoke(uint64_t a1
   }
 }
 
-+ (id)entryKeyForMetric:(id)a3
++ (id)entryKeyForMetric:(id)metric
 {
-  v3 = a3;
-  if (v3)
+  metricCopy = metric;
+  if (metricCopy)
   {
-    v4 = [PPSEntryKey entrySelectorForMetric:v3];
+    v4 = [PPSEntryKey entrySelectorForMetric:metricCopy];
     objc_sync_enter(@"++entryKeyObjectsSync++");
     v5 = [_entryKeyByMetadata objectForKeyedSubscript:v4];
     objc_sync_exit(@"++entryKeyObjectsSync++");
@@ -667,90 +667,90 @@ void __46__PPSEntryKey_allAppIdentiferKeysForEntryKey___block_invoke(uint64_t a1
   return v5;
 }
 
-+ (id)subsystemForEntryKey:(id)a3
++ (id)subsystemForEntryKey:(id)key
 {
-  v3 = [PPSEntryKey anyMetricsForEntryKey:a3];
+  v3 = [PPSEntryKey anyMetricsForEntryKey:key];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 allValues];
-    v6 = [v5 objectAtIndexedSubscript:0];
+    allValues = [v3 allValues];
+    v6 = [allValues objectAtIndexedSubscript:0];
 
-    v7 = [v6 subsystem];
+    subsystem = [v6 subsystem];
   }
 
   else
   {
-    v7 = 0;
+    subsystem = 0;
   }
 
-  return v7;
+  return subsystem;
 }
 
-+ (id)categoryForEntryKey:(id)a3
++ (id)categoryForEntryKey:(id)key
 {
-  v3 = [PPSEntryKey anyMetricsForEntryKey:a3];
+  v3 = [PPSEntryKey anyMetricsForEntryKey:key];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 allValues];
-    v6 = [v5 objectAtIndexedSubscript:0];
+    allValues = [v3 allValues];
+    v6 = [allValues objectAtIndexedSubscript:0];
 
-    v7 = [v6 category];
+    category = [v6 category];
   }
 
   else
   {
-    v7 = 0;
+    category = 0;
   }
 
-  return v7;
+  return category;
 }
 
-+ (int64_t)timeToLiveForEntryKey:(id)a3
++ (int64_t)timeToLiveForEntryKey:(id)key
 {
-  v3 = [PPSEntryKey anyMetricsForEntryKey:a3];
+  v3 = [PPSEntryKey anyMetricsForEntryKey:key];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 allValues];
-    v6 = [v5 objectAtIndexedSubscript:0];
+    allValues = [v3 allValues];
+    v6 = [allValues objectAtIndexedSubscript:0];
 
-    v7 = [v6 timeToLive];
+    timeToLive = [v6 timeToLive];
   }
 
   else
   {
-    v7 = 0;
+    timeToLive = 0;
   }
 
-  return v7;
+  return timeToLive;
 }
 
-+ (int)storageForEntryKey:(id)a3
++ (int)storageForEntryKey:(id)key
 {
-  v3 = [PPSEntryKey anyMetricsForEntryKey:a3];
+  v3 = [PPSEntryKey anyMetricsForEntryKey:key];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 allValues];
-    v6 = [v5 objectAtIndexedSubscript:0];
+    allValues = [v3 allValues];
+    v6 = [allValues objectAtIndexedSubscript:0];
 
-    v7 = [v6 storage];
+    storage = [v6 storage];
   }
 
   else
   {
-    v7 = 0;
+    storage = 0;
   }
 
-  return v7;
+  return storage;
 }
 
-+ (int)directionalityForEntryKey:(id)a3
++ (int)directionalityForEntryKey:(id)key
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [PPSEntryKey anyMetricsForEntryKey:a3];
+  v3 = [PPSEntryKey anyMetricsForEntryKey:key];
   v4 = v3;
   if (v3)
   {
@@ -758,8 +758,8 @@ void __46__PPSEntryKey_allAppIdentiferKeysForEntryKey___block_invoke(uint64_t a1
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [v3 allValues];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    allValues = [v3 allValues];
+    v6 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -770,17 +770,17 @@ void __46__PPSEntryKey_allAppIdentiferKeysForEntryKey___block_invoke(uint64_t a1
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allValues);
           }
 
           if ([*(*(&v14 + 1) + 8 * i) directionality] == 3)
           {
-            v11 = 3;
+            directionality = 3;
             goto LABEL_12;
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v7)
         {
           continue;
@@ -790,26 +790,26 @@ void __46__PPSEntryKey_allAppIdentiferKeysForEntryKey___block_invoke(uint64_t a1
       }
     }
 
-    v10 = [v4 allValues];
-    v5 = [v10 objectAtIndexedSubscript:0];
+    allValues2 = [v4 allValues];
+    allValues = [allValues2 objectAtIndexedSubscript:0];
 
-    v11 = [v5 directionality];
+    directionality = [allValues directionality];
 LABEL_12:
   }
 
   else
   {
-    v11 = 0;
+    directionality = 0;
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return v11;
+  return directionality;
 }
 
-+ (BOOL)filterEntryLoggingForEntryKey:(id)a3
++ (BOOL)filterEntryLoggingForEntryKey:(id)key
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [PPSEntryKey baseMetricsForEntryKey:a3];
+  v3 = [PPSEntryKey baseMetricsForEntryKey:key];
   v4 = v3;
   if (v3)
   {
@@ -817,8 +817,8 @@ LABEL_12:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [v3 allValues];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    allValues = [v3 allValues];
+    v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = *v12;
@@ -828,7 +828,7 @@ LABEL_12:
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allValues);
           }
 
           if ([*(*(&v11 + 1) + 8 * i) filterEntryLogging])
@@ -838,7 +838,7 @@ LABEL_12:
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v6)
         {
           continue;
@@ -860,18 +860,18 @@ LABEL_12:
   return v6;
 }
 
-+ (id)entrySelectorForMetric:(id)a3
++ (id)entrySelectorForMetric:(id)metric
 {
-  v3 = a3;
+  metricCopy = metric;
   v4 = objc_opt_new();
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __38__PPSEntryKey_entrySelectorForMetric___block_invoke;
   v10[3] = &unk_1E85193D8;
-  v11 = v3;
+  v11 = metricCopy;
   v5 = v4;
   v12 = v5;
-  v6 = v3;
+  v6 = metricCopy;
   [&unk_1F540B710 enumerateObjectsUsingBlock:v10];
   v7 = v12;
   v8 = v5;

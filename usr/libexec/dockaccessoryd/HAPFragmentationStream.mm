@@ -1,10 +1,10 @@
 @interface HAPFragmentationStream
 - (HAPFragmentationStream)init;
 - (HAPFragmentationStreamDelegate)delegate;
-- (id)__transactionDataWithTransactionIdentifier:(unsigned __int16)a3;
-- (void)__addFragmentationPacket:(id)a3;
+- (id)__transactionDataWithTransactionIdentifier:(unsigned __int16)identifier;
+- (void)__addFragmentationPacket:(id)packet;
 - (void)close;
-- (void)receivedFragmentedPacket:(id)a3;
+- (void)receivedFragmentedPacket:(id)packet;
 @end
 
 @implementation HAPFragmentationStream
@@ -33,37 +33,37 @@
 
 - (void)close
 {
-  v3 = [(HAPFragmentationStream *)self clientQueue];
+  clientQueue = [(HAPFragmentationStream *)self clientQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100006428;
   block[3] = &unk_100273348;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(clientQueue, block);
 }
 
-- (void)receivedFragmentedPacket:(id)a3
+- (void)receivedFragmentedPacket:(id)packet
 {
-  v4 = a3;
-  v5 = [(HAPFragmentationStream *)self clientQueue];
+  packetCopy = packet;
+  clientQueue = [(HAPFragmentationStream *)self clientQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100006560;
   v7[3] = &unk_100273370;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = packetCopy;
+  v6 = packetCopy;
+  dispatch_async(clientQueue, v7);
 }
 
-- (id)__transactionDataWithTransactionIdentifier:(unsigned __int16)a3
+- (id)__transactionDataWithTransactionIdentifier:(unsigned __int16)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [(HAPFragmentationStream *)self __filteredPacketsWithTransactionIdentifier:?];
   if ([v4 count])
   {
-    v5 = [v4 firstObject];
-    v6 = [v5 length];
+    firstObject = [v4 firstObject];
+    v6 = [firstObject length];
 
     v7 = [NSMutableData dataWithCapacity:v6];
     v24 = 0u;
@@ -86,19 +86,19 @@
           }
 
           v13 = *(*(&v24 + 1) + 8 * i);
-          v14 = [v13 offset];
-          if ([v7 length]!= v14)
+          offset = [v13 offset];
+          if ([v7 length]!= offset)
           {
             v17 = sub_10007FAA0();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
             {
               v18 = sub_10007FAFC(0);
-              v19 = [v13 offset];
+              offset2 = [v13 offset];
               v20 = [v7 length];
               *buf = 138543874;
               v29 = v18;
               v30 = 1024;
-              *v31 = v19;
+              *v31 = offset2;
               *&v31[4] = 2048;
               *&v31[6] = v20;
               _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%{public}@[HAPFragmentationInputStream] Packet with offset %u does not match current offset %tu", buf, 0x1Cu);
@@ -107,8 +107,8 @@
             goto LABEL_19;
           }
 
-          v15 = [v13 data];
-          [v7 appendData:v15];
+          data = [v13 data];
+          [v7 appendData:data];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -152,7 +152,7 @@
     *buf = 138543618;
     v29 = v8;
     v30 = 1024;
-    *v31 = v3;
+    *v31 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%{public}@[HAPFragmentationInputStream] No packets matching transaction %u", buf, 0x12u);
 LABEL_19:
   }
@@ -163,22 +163,22 @@ LABEL_21:
   return v16;
 }
 
-- (void)__addFragmentationPacket:(id)a3
+- (void)__addFragmentationPacket:(id)packet
 {
-  v4 = a3;
+  packetCopy = packet;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v5 = [(HAPFragmentationStream *)self pendingPackets];
+  pendingPackets = [(HAPFragmentationStream *)self pendingPackets];
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_100006DEC;
   v11 = &unk_100273398;
-  v6 = v4;
+  v6 = packetCopy;
   v12 = v6;
   v13 = &v14;
-  [v5 enumerateObjectsUsingBlock:&v8];
+  [pendingPackets enumerateObjectsUsingBlock:&v8];
 
   v7 = [(HAPFragmentationStream *)self pendingPackets:v8];
   [v7 insertObject:v6 atIndex:v15[3]];

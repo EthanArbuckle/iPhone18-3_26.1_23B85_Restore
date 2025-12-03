@@ -1,27 +1,27 @@
 @interface _TVCardFloatingContentView
 - (CGSize)focusedShadowCardSize;
 - (CGSize)unfocusedShadowCardSize;
-- (UIEdgeInsets)selectionMarginsForSize:(CGSize)a3;
-- (_TVCardFloatingContentView)initWithFrame:(CGRect)a3;
+- (UIEdgeInsets)selectionMarginsForSize:(CGSize)size;
+- (_TVCardFloatingContentView)initWithFrame:(CGRect)frame;
 - (void)_updateForAccessibilityChange;
 - (void)dealloc;
-- (void)floatingContentView:(id)a3 didFinishTransitioningToState:(unint64_t)a4;
+- (void)floatingContentView:(id)view didFinishTransitioningToState:(unint64_t)state;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBgColor:(id)a3 highlightBgColor:(id)a4 cornerRadius:(double)a5;
-- (void)setFocusedShadowImage:(id)a3;
-- (void)setPressed:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4 withAnimationCoordinator:(id)a5;
-- (void)setUnfocusedShadowImage:(id)a3;
+- (void)setBgColor:(id)color highlightBgColor:(id)bgColor cornerRadius:(double)radius;
+- (void)setFocusedShadowImage:(id)image;
+- (void)setPressed:(BOOL)pressed animated:(BOOL)animated completion:(id)completion;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated withAnimationCoordinator:(id)coordinator;
+- (void)setUnfocusedShadowImage:(id)image;
 @end
 
 @implementation _TVCardFloatingContentView
 
-- (_TVCardFloatingContentView)initWithFrame:(CGRect)a3
+- (_TVCardFloatingContentView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _TVCardFloatingContentView;
-  v3 = [(_UIFloatingContentView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_UIFloatingContentView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -35,8 +35,8 @@
     [(_UIFloatingContentView *)v4 setFloatingContentDelegate:v4];
     [(_TVCardFloatingContentView *)v4 setFocusedShadowCardSize:200.0, 200.0];
     [(_TVCardFloatingContentView *)v4 setUnfocusedShadowCardSize:26.0, 26.0];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v4 selector:sel__updateForAccessibilityChange name:*MEMORY[0x277D81CF8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__updateForAccessibilityChange name:*MEMORY[0x277D81CF8] object:0];
   }
 
   return v4;
@@ -44,8 +44,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = _TVCardFloatingContentView;
@@ -59,35 +59,35 @@
   [(_UIFloatingContentView *)self setShowsHighContrastFocusIndicator:v3];
 }
 
-- (void)setBgColor:(id)a3 highlightBgColor:(id)a4 cornerRadius:(double)a5
+- (void)setBgColor:(id)color highlightBgColor:(id)bgColor cornerRadius:(double)radius
 {
-  v9 = a3;
-  v8 = a4;
+  colorCopy = color;
+  bgColorCopy = bgColor;
   self->_unfocusedAlpha = 1.0;
   [(_UIFloatingContentView *)self setCornerRadius:0.0];
   [(_UIFloatingContentView *)self setBackgroundColor:0 forState:0];
   [(_UIFloatingContentView *)self setBackgroundColor:0 forState:8];
   [(_UIFloatingContentView *)self setBackgroundColor:0 forState:1];
   [(_UIFloatingContentView *)self setBackgroundColor:0 forState:4];
-  if (v9 | v8)
+  if (colorCopy | bgColorCopy)
   {
     [(_TVCardFloatingContentView *)self setAlpha:1.0];
-    [(_UIFloatingContentView *)self setCornerRadius:a5];
-    [(_UIFloatingContentView *)self setBackgroundColor:v9 forState:0];
-    if (v8)
+    [(_UIFloatingContentView *)self setCornerRadius:radius];
+    [(_UIFloatingContentView *)self setBackgroundColor:colorCopy forState:0];
+    if (bgColorCopy)
     {
-      [(_UIFloatingContentView *)self setBackgroundColor:v8 forState:8];
-      [(_UIFloatingContentView *)self setBackgroundColor:v8 forState:1];
-      [(_UIFloatingContentView *)self setBackgroundColor:v8 forState:4];
+      [(_UIFloatingContentView *)self setBackgroundColor:bgColorCopy forState:8];
+      [(_UIFloatingContentView *)self setBackgroundColor:bgColorCopy forState:1];
+      [(_UIFloatingContentView *)self setBackgroundColor:bgColorCopy forState:4];
     }
   }
 }
 
 - (void)prepareForReuse
 {
-  v3 = [(_UIFloatingContentView *)self contentView];
-  v4 = [v3 subviews];
-  [v4 makeObjectsPerformSelector:sel_removeFromSuperview];
+  contentView = [(_UIFloatingContentView *)self contentView];
+  subviews = [contentView subviews];
+  [subviews makeObjectsPerformSelector:sel_removeFromSuperview];
 
   unfocusedShadowView = self->_unfocusedShadowView;
   self->_unfocusedShadowView = 0;
@@ -96,11 +96,11 @@
   self->_focusedShadowView = 0;
 }
 
-- (void)setUnfocusedShadowImage:(id)a3
+- (void)setUnfocusedShadowImage:(id)image
 {
-  v24 = a3;
-  objc_storeStrong(&self->_unfocusedShadowImage, a3);
-  [v24 size];
+  imageCopy = image;
+  objc_storeStrong(&self->_unfocusedShadowImage, image);
+  [imageCopy size];
   v6 = v5;
   v8 = v7;
   [(_TVCardFloatingContentView *)self bounds];
@@ -120,22 +120,22 @@
     v17 = self->_unfocusedShadowView;
     self->_unfocusedShadowView = v16;
 
-    v18 = [(_UIFloatingContentView *)self contentView];
-    [v18 insertSubview:self->_unfocusedShadowView atIndex:0];
+    contentView = [(_UIFloatingContentView *)self contentView];
+    [contentView insertSubview:self->_unfocusedShadowView atIndex:0];
 
     unfocusedShadowView = self->_unfocusedShadowView;
   }
 
-  v19 = [(UIView *)unfocusedShadowView layer];
-  v20 = v24;
-  [v19 setContents:{objc_msgSend(v24, "CGImage")}];
+  layer = [(UIView *)unfocusedShadowView layer];
+  v20 = imageCopy;
+  [layer setContents:{objc_msgSend(imageCopy, "CGImage")}];
 
-  v21 = [(UIView *)self->_unfocusedShadowView layer];
-  [v24 scale];
-  [v21 setContentsScale:?];
+  layer2 = [(UIView *)self->_unfocusedShadowView layer];
+  [imageCopy scale];
+  [layer2 setContentsScale:?];
 
-  v22 = [(UIView *)self->_unfocusedShadowView layer];
-  [v22 setContentsCenter:{0.5, 0.5, 0.1, 0.1}];
+  layer3 = [(UIView *)self->_unfocusedShadowView layer];
+  [layer3 setContentsCenter:{0.5, 0.5, 0.1, 0.1}];
 
   unfocusedShadowAlpha = 0.0;
   if (!self->_isSelected)
@@ -146,11 +146,11 @@
   [(UIView *)self->_unfocusedShadowView setAlpha:unfocusedShadowAlpha];
 }
 
-- (void)setFocusedShadowImage:(id)a3
+- (void)setFocusedShadowImage:(id)image
 {
-  v24 = a3;
-  objc_storeStrong(&self->_focusedShadowImage, a3);
-  [v24 size];
+  imageCopy = image;
+  objc_storeStrong(&self->_focusedShadowImage, image);
+  [imageCopy size];
   v6 = v5;
   v8 = v7;
   [(_TVCardFloatingContentView *)self bounds];
@@ -170,22 +170,22 @@
     v17 = self->_focusedShadowView;
     self->_focusedShadowView = v16;
 
-    v18 = [(_UIFloatingContentView *)self contentView];
-    [v18 insertSubview:self->_focusedShadowView atIndex:0];
+    contentView = [(_UIFloatingContentView *)self contentView];
+    [contentView insertSubview:self->_focusedShadowView atIndex:0];
 
     focusedShadowView = self->_focusedShadowView;
   }
 
-  v19 = [(UIView *)focusedShadowView layer];
-  v20 = v24;
-  [v19 setContents:{objc_msgSend(v24, "CGImage")}];
+  layer = [(UIView *)focusedShadowView layer];
+  v20 = imageCopy;
+  [layer setContents:{objc_msgSend(imageCopy, "CGImage")}];
 
-  v21 = [(UIView *)self->_focusedShadowView layer];
-  [v24 scale];
-  [v21 setContentsScale:?];
+  layer2 = [(UIView *)self->_focusedShadowView layer];
+  [imageCopy scale];
+  [layer2 setContentsScale:?];
 
-  v22 = [(UIView *)self->_focusedShadowView layer];
-  [v22 setContentsCenter:{0.5, 0.5, 0.1, 0.1}];
+  layer3 = [(UIView *)self->_focusedShadowView layer];
+  [layer3 setContentsCenter:{0.5, 0.5, 0.1, 0.1}];
 
   focusedShadowAlpha = 0.0;
   if (self->_isSelected)
@@ -196,13 +196,13 @@
   [(UIView *)self->_focusedShadowView setAlpha:focusedShadowAlpha];
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4 withAnimationCoordinator:(id)a5
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated withAnimationCoordinator:(id)coordinator
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  self->_isSelected = v6;
-  if (v6)
+  animatedCopy = animated;
+  selectedCopy = selected;
+  coordinatorCopy = coordinator;
+  self->_isSelected = selectedCopy;
+  if (selectedCopy)
   {
     v9 = 8;
   }
@@ -212,23 +212,23 @@
     v9 = 0;
   }
 
-  [(_UIFloatingContentView *)self setControlState:v9 withAnimationCoordinator:v8];
+  [(_UIFloatingContentView *)self setControlState:v9 withAnimationCoordinator:coordinatorCopy];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __76___TVCardFloatingContentView_setSelected_animated_withAnimationCoordinator___block_invoke;
   v21[3] = &unk_279D6E6D0;
   v21[4] = self;
-  v22 = v6;
+  v22 = selectedCopy;
   v10 = MEMORY[0x26D6AFBB0](v21);
   v11 = v10;
-  if (v5)
+  if (animatedCopy)
   {
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __76___TVCardFloatingContentView_setSelected_animated_withAnimationCoordinator___block_invoke_3;
     v19[3] = &unk_279D6E6F8;
     v20 = v10;
-    [v8 addCoordinatedAnimationsForAnimation:!v6 animations:v19 completion:0];
+    [coordinatorCopy addCoordinatedAnimationsForAnimation:!selectedCopy animations:v19 completion:0];
   }
 
   else
@@ -236,22 +236,22 @@
     v10[2](v10);
   }
 
-  v12 = [(_UIFloatingContentView *)self contentView];
-  v13 = [v12 subviews];
+  contentView = [(_UIFloatingContentView *)self contentView];
+  subviews = [contentView subviews];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __76___TVCardFloatingContentView_setSelected_animated_withAnimationCoordinator___block_invoke_4;
   v15[3] = &unk_279D6E720;
-  v17 = v6;
-  v18 = v5;
-  v16 = v8;
-  v14 = v8;
-  [v13 enumerateObjectsUsingBlock:v15];
+  v17 = selectedCopy;
+  v18 = animatedCopy;
+  v16 = coordinatorCopy;
+  v14 = coordinatorCopy;
+  [subviews enumerateObjectsUsingBlock:v15];
 }
 
-- (void)setPressed:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setPressed:(BOOL)pressed animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
+  animatedCopy = animated;
   if (self->_isSelected)
   {
     v7 = 8;
@@ -262,28 +262,28 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = a5;
-  [(_UIFloatingContentView *)self setControlState:v7 | v8 animated:v5];
-  [(_TVCardFloatingContentView *)self setPressCompletionBlock:v9];
+  pressedCopy = pressed;
+  completionCopy = completion;
+  [(_UIFloatingContentView *)self setControlState:v7 | pressedCopy animated:animatedCopy];
+  [(_TVCardFloatingContentView *)self setPressCompletionBlock:completionCopy];
 }
 
-- (void)floatingContentView:(id)a3 didFinishTransitioningToState:(unint64_t)a4
+- (void)floatingContentView:(id)view didFinishTransitioningToState:(unint64_t)state
 {
-  v5 = [(_TVCardFloatingContentView *)self pressCompletionBlock:a3];
+  v5 = [(_TVCardFloatingContentView *)self pressCompletionBlock:view];
 
   if (v5)
   {
-    v6 = [(_TVCardFloatingContentView *)self pressCompletionBlock];
-    v6[2]();
+    pressCompletionBlock = [(_TVCardFloatingContentView *)self pressCompletionBlock];
+    pressCompletionBlock[2]();
 
     [(_TVCardFloatingContentView *)self setPressCompletionBlock:0];
   }
 }
 
-- (UIEdgeInsets)selectionMarginsForSize:(CGSize)a3
+- (UIEdgeInsets)selectionMarginsForSize:(CGSize)size
 {
-  if (a3.width == 0.0 || (height = a3.height, a3.height == 0.0))
+  if (size.width == 0.0 || (height = size.height, size.height == 0.0))
   {
     [(_TVCardFloatingContentView *)self bounds];
     width = v6;
@@ -292,11 +292,11 @@
 
   else
   {
-    width = a3.width;
+    width = size.width;
   }
 
-  v8 = [(_TVCardFloatingContentView *)self layer];
-  [v8 anchorPoint];
+  layer = [(_TVCardFloatingContentView *)self layer];
+  [layer anchorPoint];
   v10 = v9;
   v12 = v11;
 
@@ -330,8 +330,8 @@
   v27.receiver = self;
   v27.super_class = _TVCardFloatingContentView;
   [(_UIFloatingContentView *)&v27 layoutSubviews];
-  v3 = [(_TVCardFloatingContentView *)self unfocusedShadowImage];
-  [v3 size];
+  unfocusedShadowImage = [(_TVCardFloatingContentView *)self unfocusedShadowImage];
+  [unfocusedShadowImage size];
   v5 = v4;
   v7 = v6;
 
@@ -347,8 +347,8 @@
   v14 = floor((CGRectGetWidth(v30) - v10) * 0.5);
   [(_TVCardFloatingContentView *)self bounds];
   [(UIView *)self->_unfocusedShadowView setFrame:v14, floor((CGRectGetHeight(v31) - v13) * 0.5), v10, v13];
-  v15 = [(_TVCardFloatingContentView *)self focusedShadowImage];
-  [v15 size];
+  focusedShadowImage = [(_TVCardFloatingContentView *)self focusedShadowImage];
+  [focusedShadowImage size];
   v17 = v16;
   v19 = v18;
 

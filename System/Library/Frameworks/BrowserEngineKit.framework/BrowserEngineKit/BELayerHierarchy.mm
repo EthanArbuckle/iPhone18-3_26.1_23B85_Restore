@@ -1,13 +1,13 @@
 @interface BELayerHierarchy
-+ (id)layerHierarchyWithError:(id *)a3;
-+ (id)layerHierarchyWithOptions:(id)a3 error:(id *)a4;
++ (id)layerHierarchyWithError:(id *)error;
++ (id)layerHierarchyWithOptions:(id)options error:(id *)error;
 - (BELayerHierarchy)init;
-- (BELayerHierarchy)initWithContext:(id)a3;
+- (BELayerHierarchy)initWithContext:(id)context;
 - (CALayer)layer;
 - (uint64_t)_context;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setLayer:(id)a3;
+- (void)setLayer:(id)layer;
 @end
 
 @implementation BELayerHierarchy
@@ -25,7 +25,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BELayerHierarchy.m";
     v17 = 1024;
@@ -43,7 +43,7 @@
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ must be invalidated before dealloc", a1];
+  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ must be invalidated before dealloc", self];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v5 = NSStringFromSelector(a2);
@@ -54,7 +54,7 @@
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = a1;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"BELayerHierarchy.m";
     v16 = 1024;
@@ -69,15 +69,15 @@
   __break(0);
 }
 
-- (BELayerHierarchy)initWithContext:(id)a3
+- (BELayerHierarchy)initWithContext:(id)context
 {
-  v6 = a3;
-  if (!v6)
+  contextCopy = context;
+  if (!contextCopy)
   {
     [(BELayerHierarchy *)a2 initWithContext:?];
   }
 
-  v7 = v6;
+  v7 = contextCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -91,14 +91,14 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_context, a3);
+    objc_storeStrong(&v8->_context, context);
     v10 = objc_opt_new();
     invalidationSignal = v9->_invalidationSignal;
     v9->_invalidationSignal = v10;
 
     v12 = [BELayerHierarchyHandle alloc];
-    v13 = [(CAContext *)v9->_context hostingToken];
-    v14 = [(BELayerHierarchyHandle *)&v12->super.isa _initWithToken:v13];
+    hostingToken = [(CAContext *)v9->_context hostingToken];
+    v14 = [(BELayerHierarchyHandle *)&v12->super.isa _initWithToken:hostingToken];
     handle = v9->_handle;
     v9->_handle = v14;
   }
@@ -106,21 +106,21 @@
   return v9;
 }
 
-+ (id)layerHierarchyWithOptions:(id)a3 error:(id *)a4
++ (id)layerHierarchyWithOptions:(id)options error:(id *)error
 {
-  v5 = a3;
+  optionsCopy = options;
   BSDispatchQueueAssertMain();
-  v6 = [MEMORY[0x1E6979320] remoteContextWithOptions:v5];
+  v6 = [MEMORY[0x1E6979320] remoteContextWithOptions:optionsCopy];
 
   if (v6)
   {
     v7 = [[BELayerHierarchy alloc] initWithContext:v6];
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:1 userInfo:0];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else
@@ -131,13 +131,13 @@
   return v7;
 }
 
-+ (id)layerHierarchyWithError:(id *)a3
++ (id)layerHierarchyWithError:(id *)error
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = *MEMORY[0x1E69796C0];
   v9[0] = MEMORY[0x1E695E118];
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  v5 = [BELayerHierarchy layerHierarchyWithOptions:v4 error:a3];
+  v5 = [BELayerHierarchy layerHierarchyWithOptions:v4 error:error];
 
   v6 = *MEMORY[0x1E69E9840];
 
@@ -152,11 +152,11 @@
   return [(CAContext *)context layer];
 }
 
-- (void)setLayer:(id)a3
+- (void)setLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   BSDispatchQueueAssertMain();
-  [(CAContext *)self->_context setLayer:v4];
+  [(CAContext *)self->_context setLayer:layerCopy];
 }
 
 - (void)invalidate

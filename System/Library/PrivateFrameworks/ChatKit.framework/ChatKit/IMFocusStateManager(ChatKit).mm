@@ -19,15 +19,15 @@
     }
   }
 
-  return [a1 updateFocusStateForCurrentFocusFilterAction:&__block_literal_global_98];
+  return [self updateFocusStateForCurrentFocusFilterAction:&__block_literal_global_98];
 }
 
 - (uint64_t)conversationMatchesActiveFocusMode:()ChatKit
 {
-  v4 = [a3 chat];
-  if (v4)
+  chat = [a3 chat];
+  if (chat)
   {
-    v5 = [a1 chatMatchesActiveFocusMode:v4];
+    v5 = [self chatMatchesActiveFocusMode:chat];
   }
 
   else
@@ -40,8 +40,8 @@
 
 - (uint64_t)chatMatchesActiveFocusMode:()ChatKit
 {
-  v4 = [a3 participantDNDContactHandles];
-  v5 = [a1 activeFocusModeMatchesConversationWithHandles:v4];
+  participantDNDContactHandles = [a3 participantDNDContactHandles];
+  v5 = [self activeFocusModeMatchesConversationWithHandles:participantDNDContactHandles];
 
   return v5;
 }
@@ -49,14 +49,14 @@
 - (uint64_t)senderMatchesActiveFocusModeForMessage:()ChatKit
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 sender];
-  v5 = [v4 dndContactHandle];
-  v6 = v5;
-  if (v5)
+  sender = [a3 sender];
+  dndContactHandle = [sender dndContactHandle];
+  v6 = dndContactHandle;
+  if (dndContactHandle)
   {
-    v10[0] = v5;
+    v10[0] = dndContactHandle;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-    v8 = [a1 activeFocusModeMatchesConversationWithHandles:v7];
+    v8 = [self activeFocusModeMatchesConversationWithHandles:v7];
   }
 
   else

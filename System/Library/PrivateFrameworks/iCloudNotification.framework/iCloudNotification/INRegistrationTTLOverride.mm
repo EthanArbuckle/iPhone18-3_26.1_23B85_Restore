@@ -9,7 +9,7 @@
 - (BOOL)hasOverride
 {
   v2 = *((swift_isaMask & self->super.isa) + 0x78);
-  v3 = self;
+  selfCopy = self;
   v2();
   LOBYTE(v2) = v4;
 
@@ -19,7 +19,7 @@
 - (double)overrideTimeInterval
 {
   v2 = *((swift_isaMask & self->super.isa) + 0x78);
-  v3 = self;
+  selfCopy = self;
   v4 = COERCE_DOUBLE(v2());
   v6 = v5;
 

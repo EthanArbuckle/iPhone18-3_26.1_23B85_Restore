@@ -1,14 +1,14 @@
 @interface MusicKit_SoftLinking_MPModelLibrarySearchRequest
-- (MusicKit_SoftLinking_MPModelLibrarySearchRequest)initWithSearchTerm:(id)a3 scopes:(id)a4 limit:(int64_t)a5;
-- (void)performWithCompletionHandler:(id)a3;
+- (MusicKit_SoftLinking_MPModelLibrarySearchRequest)initWithSearchTerm:(id)term scopes:(id)scopes limit:(int64_t)limit;
+- (void)performWithCompletionHandler:(id)handler;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelLibrarySearchRequest
 
-- (MusicKit_SoftLinking_MPModelLibrarySearchRequest)initWithSearchTerm:(id)a3 scopes:(id)a4 limit:(int64_t)a5
+- (MusicKit_SoftLinking_MPModelLibrarySearchRequest)initWithSearchTerm:(id)term scopes:(id)scopes limit:(int64_t)limit
 {
-  v9 = a3;
-  v10 = a4;
+  termCopy = term;
+  scopesCopy = scopes;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2050000000;
@@ -28,39 +28,39 @@
   v12 = v11;
   _Block_object_dispose(&v22, 8);
   v13 = objc_alloc_init(v11);
-  [v13 setSearchString:v9];
-  v14 = [v10 msv_map:&__block_literal_global];
+  [v13 setSearchString:termCopy];
+  v14 = [scopesCopy msv_map:&__block_literal_global];
   [v13 setScopes:v14];
-  [v13 setMaximumResultsPerScope:a5];
+  [v13 setMaximumResultsPerScope:limit];
   v20.receiver = self;
   v20.super_class = MusicKit_SoftLinking_MPModelLibrarySearchRequest;
   v15 = [(MusicKit_SoftLinking_MPModelRequest *)&v20 _initWithUnderlyingRequest:v13];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(v15 + 2, a3);
-    v17 = [v10 copy];
+    objc_storeStrong(v15 + 2, term);
+    v17 = [scopesCopy copy];
     scopes = v16->_scopes;
     v16->_scopes = v17;
 
-    v16->_limit = a5;
+    v16->_limit = limit;
   }
 
   return v16;
 }
 
-- (void)performWithCompletionHandler:(id)a3
+- (void)performWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (MRMediaRemoteIsMusicAppInstalled())
   {
-    v5 = [(MusicKit_SoftLinking_MPModelRequest *)self _underlyingRequest];
+    _underlyingRequest = [(MusicKit_SoftLinking_MPModelRequest *)self _underlyingRequest];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __81__MusicKit_SoftLinking_MPModelLibrarySearchRequest_performWithCompletionHandler___block_invoke;
     v7[3] = &unk_2782296B0;
-    v8 = v4;
-    [v5 performWithResponseHandler:v7];
+    v8 = handlerCopy;
+    [_underlyingRequest performWithResponseHandler:v7];
   }
 
   else
@@ -71,8 +71,8 @@
       [MusicKit_SoftLinking_MPModelLibrarySearchRequest performWithCompletionHandler:v6];
     }
 
-    v5 = [MEMORY[0x277CCA9B8] musicKit_defaultLibraryError];
-    (*(v4 + 2))(v4, 0, v5);
+    _underlyingRequest = [MEMORY[0x277CCA9B8] musicKit_defaultLibraryError];
+    (*(handlerCopy + 2))(handlerCopy, 0, _underlyingRequest);
   }
 }
 

@@ -1,36 +1,36 @@
 @interface ATXRemoteAppPlaceholderInfo
-- (ATXRemoteAppPlaceholderInfo)initWithUUID:(id)a3 bundleID:(id)a4 registrationDate:(id)a5 genreID:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXRemoteAppPlaceholderInfo:(id)a3;
+- (ATXRemoteAppPlaceholderInfo)initWithUUID:(id)d bundleID:(id)iD registrationDate:(id)date genreID:(id)genreID;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXRemoteAppPlaceholderInfo:(id)info;
 - (unint64_t)hash;
 @end
 
 @implementation ATXRemoteAppPlaceholderInfo
 
-- (ATXRemoteAppPlaceholderInfo)initWithUUID:(id)a3 bundleID:(id)a4 registrationDate:(id)a5 genreID:(id)a6
+- (ATXRemoteAppPlaceholderInfo)initWithUUID:(id)d bundleID:(id)iD registrationDate:(id)date genreID:(id)genreID
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  dateCopy = date;
+  genreIDCopy = genreID;
   v24.receiver = self;
   v24.super_class = ATXRemoteAppPlaceholderInfo;
   v14 = [(ATXRemoteAppPlaceholderInfo *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [dCopy copy];
     uuid = v14->_uuid;
     v14->_uuid = v15;
 
-    v17 = [v11 copy];
+    v17 = [iDCopy copy];
     bundleID = v14->_bundleID;
     v14->_bundleID = v17;
 
-    v19 = [v12 copy];
+    v19 = [dateCopy copy];
     registrationDate = v14->_registrationDate;
     v14->_registrationDate = v19;
 
-    v21 = [v13 copy];
+    v21 = [genreIDCopy copy];
     genreID = v14->_genreID;
     v14->_genreID = v21;
   }
@@ -38,29 +38,29 @@
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXRemoteAppPlaceholderInfo *)self isEqualToATXRemoteAppPlaceholderInfo:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXRemoteAppPlaceholderInfo *)self isEqualToATXRemoteAppPlaceholderInfo:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXRemoteAppPlaceholderInfo:(id)a3
+- (BOOL)isEqualToATXRemoteAppPlaceholderInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = self->_uuid;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == infoCopy[1])
   {
   }
 
@@ -76,7 +76,7 @@
 
   v8 = self->_bundleID;
   v9 = v8;
-  if (v8 == v4[2])
+  if (v8 == infoCopy[2])
   {
   }
 
@@ -92,7 +92,7 @@
 
   v11 = self->_registrationDate;
   v12 = v11;
-  if (v11 == v4[3])
+  if (v11 == infoCopy[3])
   {
   }
 
@@ -110,7 +110,7 @@ LABEL_11:
 
   v15 = self->_genreID;
   v16 = v15;
-  if (v15 == v4[4])
+  if (v15 == infoCopy[4])
   {
     v14 = 1;
   }
@@ -126,17 +126,17 @@ LABEL_17:
 
 - (unint64_t)hash
 {
-  v3 = [(ATXRemoteAppPlaceholderInfo *)self uuid];
-  v4 = [v3 hash];
+  uuid = [(ATXRemoteAppPlaceholderInfo *)self uuid];
+  v4 = [uuid hash];
 
-  v5 = [(ATXRemoteAppPlaceholderInfo *)self bundleID];
-  v6 = [v5 hash] - v4 + 32 * v4;
+  bundleID = [(ATXRemoteAppPlaceholderInfo *)self bundleID];
+  v6 = [bundleID hash] - v4 + 32 * v4;
 
-  v7 = [(ATXRemoteAppPlaceholderInfo *)self registrationDate];
-  v8 = [v7 hash] - v6 + 32 * v6;
+  registrationDate = [(ATXRemoteAppPlaceholderInfo *)self registrationDate];
+  v8 = [registrationDate hash] - v6 + 32 * v6;
 
-  v9 = [(ATXRemoteAppPlaceholderInfo *)self genreID];
-  v10 = [v9 hash] - v8 + 32 * v8;
+  genreID = [(ATXRemoteAppPlaceholderInfo *)self genreID];
+  v10 = [genreID hash] - v8 + 32 * v8;
 
   return v10;
 }

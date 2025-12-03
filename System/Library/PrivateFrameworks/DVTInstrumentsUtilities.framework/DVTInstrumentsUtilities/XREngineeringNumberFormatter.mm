@@ -1,13 +1,13 @@
 @interface XREngineeringNumberFormatter
 + (void)initialize;
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5;
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description;
 @end
 
 @implementation XREngineeringNumberFormatter
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_opt_new();
     v3 = qword_27EE86960;
@@ -22,15 +22,15 @@
   }
 }
 
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description
 {
-  v8 = a4;
+  stringCopy = string;
   v18 = 0;
-  if (objc_msgSend_xr_getLongLong_(v8, v9, &v18, v10, v11))
+  if (objc_msgSend_xr_getLongLong_(stringCopy, v9, &v18, v10, v11))
   {
-    if (a3)
+    if (value)
     {
-      *a3 = objc_msgSend_numberWithLongLong_(MEMORY[0x277CCABB0], v12, v18, v13, v14);
+      *value = objc_msgSend_numberWithLongLong_(MEMORY[0x277CCABB0], v12, v18, v13, v14);
     }
 
     v15 = 1;
@@ -40,7 +40,7 @@
   {
     v17.receiver = self;
     v17.super_class = XREngineeringNumberFormatter;
-    v15 = [(XREngineeringNumberFormatter *)&v17 getObjectValue:a3 forString:v8 errorDescription:a5];
+    v15 = [(XREngineeringNumberFormatter *)&v17 getObjectValue:value forString:stringCopy errorDescription:description];
   }
 
   return v15;

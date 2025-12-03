@@ -1,43 +1,43 @@
 @interface RSABSSATokenBlinder
-+ (id)keyIDFromSPKI:(id)a3;
-- (BOOL)setParamsForSize:(unint64_t)a3 params:(id)a4 error:(id *)a5;
-- (BOOL)verifyFullyParsedASN1:(const char *)a3 end:(const char *)a4 error:(id *)a5;
-- (RSABSSATokenBlinder)initWithPublicKey:(id)a3 error:(id *)a4;
-- (id)tokenWaitingActivationWithContent:(id)a3 error:(id *)a4;
++ (id)keyIDFromSPKI:(id)i;
+- (BOOL)setParamsForSize:(unint64_t)size params:(id)params error:(id *)error;
+- (BOOL)verifyFullyParsedASN1:(const char *)n1 end:(const char *)end error:(id *)error;
+- (RSABSSATokenBlinder)initWithPublicKey:(id)key error:(id *)error;
+- (id)tokenWaitingActivationWithContent:(id)content error:(id *)error;
 @end
 
 @implementation RSABSSATokenBlinder
 
-+ (id)keyIDFromSPKI:(id)a3
++ (id)keyIDFromSPKI:(id)i
 {
   v3 = MEMORY[0x1E695DF88];
-  v4 = a3;
+  iCopy = i;
   v5 = [[v3 alloc] initWithLength:32];
-  v6 = [v4 bytes];
-  v7 = [v4 length];
+  bytes = [iCopy bytes];
+  v7 = [iCopy length];
 
-  CC_SHA256(v6, v7, [v5 mutableBytes]);
+  CC_SHA256(bytes, v7, [v5 mutableBytes]);
 
   return v5;
 }
 
-- (BOOL)verifyFullyParsedASN1:(const char *)a3 end:(const char *)a4 error:(id *)a5
+- (BOOL)verifyFullyParsedASN1:(const char *)n1 end:(const char *)end error:(id *)error
 {
-  if (a3 != a4 && a5)
+  if (n1 != end && error)
   {
-    *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.cryptokit.rsabssa" code:2 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.cryptokit.rsabssa" code:2 userInfo:0];
   }
 
-  return a3 == a4;
+  return n1 == end;
 }
 
-- (BOOL)setParamsForSize:(unint64_t)a3 params:(id)a4 error:(id *)a5
+- (BOOL)setParamsForSize:(unint64_t)size params:(id)params error:(id *)error
 {
-  v8 = a4;
-  v9 = 8 * a3;
-  self->_ciphersuiteModulusByteCount = 8 * a3;
-  self->_publicKey[0].pb_n = a3;
-  if (8 * a3 == 256)
+  paramsCopy = params;
+  v9 = 8 * size;
+  self->_ciphersuiteModulusByteCount = 8 * size;
+  self->_publicKey[0].pb_n = size;
+  if (8 * size == 256)
   {
     v10 = MEMORY[0x1E69E95B0];
     goto LABEL_7;
@@ -59,10 +59,10 @@ LABEL_7:
   }
 
   self->_ciphersuite = 0;
-  if (a5)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.cryptokit.rsabssa" code:1 userInfo:0];
-    *a5 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -75,9 +75,9 @@ LABEL_8:
   return v11;
 }
 
-- (RSABSSATokenBlinder)initWithPublicKey:(id)a3 error:(id *)a4
+- (RSABSSATokenBlinder)initWithPublicKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v18.receiver = self;
   v18.super_class = RSABSSATokenBlinder;
   v7 = [(RSABSSATokenBlinder *)&v18 init];
@@ -86,29 +86,29 @@ LABEL_8:
     goto LABEL_5;
   }
 
-  v8 = [RSABSSATokenBlinder keyIDFromSPKI:v6];
+  v8 = [RSABSSATokenBlinder keyIDFromSPKI:keyCopy];
   keyId = v7->_keyId;
   v7->_keyId = v8;
 
-  v10 = [[_TtC16CryptoKitPrivate19RSAPSSSPKI_Bridging alloc] initWithData:v6 error:a4];
+  v10 = [[_TtC16CryptoKitPrivate19RSAPSSSPKI_Bridging alloc] initWithData:keyCopy error:error];
   if (!v10)
   {
     goto LABEL_7;
   }
 
   v11 = v10;
-  v12 = [(RSAPSSSPKI_Bridging *)v10 publicKeyBytes];
-  v13 = [v12 bytes];
-  v14 = [v12 length];
-  [v12 bytes];
-  if (![(RSABSSATokenBlinder *)v7 setParamsForSize:ccder_decode_rsa_pub_n() params:v11 error:a4])
+  publicKeyBytes = [(RSAPSSSPKI_Bridging *)v10 publicKeyBytes];
+  bytes = [publicKeyBytes bytes];
+  v14 = [publicKeyBytes length];
+  [publicKeyBytes bytes];
+  if (![(RSABSSATokenBlinder *)v7 setParamsForSize:ccder_decode_rsa_pub_n() params:v11 error:error])
   {
 
     goto LABEL_7;
   }
 
-  [v12 bytes];
-  v15 = [(RSABSSATokenBlinder *)v7 verifyFullyParsedASN1:ccder_decode_rsa_pub() end:v13 + v14 error:a4];
+  [publicKeyBytes bytes];
+  v15 = [(RSABSSATokenBlinder *)v7 verifyFullyParsedASN1:ccder_decode_rsa_pub() end:bytes + v14 error:error];
 
   if (!v15)
   {
@@ -124,17 +124,17 @@ LABEL_8:
   return v16;
 }
 
-- (id)tokenWaitingActivationWithContent:(id)a3 error:(id *)a4
+- (id)tokenWaitingActivationWithContent:(id)content error:(id *)error
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  contentCopy = content;
+  v7 = contentCopy;
+  if (contentCopy)
   {
-    v8 = v6;
+    v8 = contentCopy;
 LABEL_8:
     v10 = ccrng();
-    v19 = a4;
+    errorCopy = error;
     v11 = [MEMORY[0x1E695DF88] dataWithLength:self->_ciphersuiteModulusByteCount];
     v12 = [MEMORY[0x1E695DF88] dataWithLength:self->_ciphersuiteModulusByteCount];
     ciphersuite = self->_ciphersuite;
@@ -147,14 +147,14 @@ LABEL_8:
     v13 = ccrsabssa_blind_message();
     if (v13)
     {
-      if (v19)
+      if (errorCopy)
       {
         v14 = MEMORY[0x1E696ABC0];
         v21 = @"corecrypto_error";
         v15 = [MEMORY[0x1E696AD98] numberWithInteger:{v13, v10}];
         v22[0] = v15;
         v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-        *v19 = [v14 errorWithDomain:@"com.apple.cryptokit.rsabssa" code:3 userInfo:v16];
+        *errorCopy = [v14 errorWithDomain:@"com.apple.cryptokit.rsabssa" code:3 userInfo:v16];
       }
 
       v9 = 0;
@@ -174,9 +174,9 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.cryptokit.rsabssa" code:0 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.cryptokit.rsabssa" code:0 userInfo:0];
   }
 
   v8 = 0;

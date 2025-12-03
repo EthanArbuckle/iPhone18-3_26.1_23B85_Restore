@@ -1,30 +1,30 @@
 @interface BLSHSceneEnvironmentObserver
-+ (id)observerWithObserver:(id)a3;
-- (BLSHSceneEnvironmentObserver)initWithObserver:(id)a3;
++ (id)observerWithObserver:(id)observer;
+- (BLSHSceneEnvironmentObserver)initWithObserver:(id)observer;
 - (NSString)description;
-- (void)sceneDidInvalidate:(id)a3;
+- (void)sceneDidInvalidate:(id)invalidate;
 @end
 
 @implementation BLSHSceneEnvironmentObserver
 
-+ (id)observerWithObserver:(id)a3
++ (id)observerWithObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithObserver:v4];
+  observerCopy = observer;
+  v5 = [[self alloc] initWithObserver:observerCopy];
 
   return v5;
 }
 
-- (BLSHSceneEnvironmentObserver)initWithObserver:(id)a3
+- (BLSHSceneEnvironmentObserver)initWithObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v9.receiver = self;
   v9.super_class = BLSHSceneEnvironmentObserver;
   v6 = [(BLSHSceneEnvironmentObserver *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_observer, a3);
+    objc_storeStrong(&v6->_observer, observer);
   }
 
   return v7;
@@ -38,7 +38,7 @@
   v9 = __43__BLSHSceneEnvironmentObserver_description__block_invoke;
   v10 = &unk_27841E538;
   v11 = v3;
-  v12 = self;
+  selfCopy = self;
   v4 = v3;
   [v4 appendProem:self block:&v7];
   v5 = [v4 description];
@@ -46,13 +46,13 @@
   return v5;
 }
 
-- (void)sceneDidInvalidate:(id)a3
+- (void)sceneDidInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = [v4 identityToken];
-  v6 = [v4 backlightSceneHostEnvironment];
-  [(BLSHSceneEnvironmentObserving *)self->_observer sceneDidInvalidate:v5 environment:v6];
-  [v4 removeObserver:self];
+  invalidateCopy = invalidate;
+  identityToken = [invalidateCopy identityToken];
+  backlightSceneHostEnvironment = [invalidateCopy backlightSceneHostEnvironment];
+  [(BLSHSceneEnvironmentObserving *)self->_observer sceneDidInvalidate:identityToken environment:backlightSceneHostEnvironment];
+  [invalidateCopy removeObserver:self];
 
   v7 = bls_assertions_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))

@@ -1,54 +1,54 @@
 @interface AMSPushParsableBadging
-+ (void)_performLegacyCallbackWithRequest:(id)a3 payload:(id)a4 config:(id)a5 bag:(id)a6 error:(id *)a7;
-+ (void)handleNotificationPayload:(id)a3 config:(id)a4 bag:(id)a5;
++ (void)_performLegacyCallbackWithRequest:(id)request payload:(id)payload config:(id)config bag:(id)bag error:(id *)error;
++ (void)handleNotificationPayload:(id)payload config:(id)config bag:(id)bag;
 @end
 
 @implementation AMSPushParsableBadging
 
-+ (void)handleNotificationPayload:(id)a3 config:(id)a4 bag:(id)a5
++ (void)handleNotificationPayload:(id)payload config:(id)config bag:(id)bag
 {
   v44 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v32 = a5;
+  payloadCopy = payload;
+  configCopy = config;
+  bagCopy = bag;
   v9 = AMSSetLogKeyIfNeeded();
-  v10 = [[AMSBadgeRequest alloc] initWithPushPayload:v7];
+  v10 = [[AMSBadgeRequest alloc] initWithPushPayload:payloadCopy];
   v11 = +[AMSLogConfig sharedConfig];
   if (!v11)
   {
     v11 = +[AMSLogConfig sharedConfig];
   }
 
-  v12 = [v11 OSLogObject];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v11 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = v8;
+    v13 = configCopy;
     v14 = objc_opt_class();
     v15 = AMSLogKey();
-    v16 = [(AMSBadgeRequest *)v10 bundleIdentifier];
-    v17 = [(AMSBadgeRequest *)v10 badgeIdentifier];
+    bundleIdentifier = [(AMSBadgeRequest *)v10 bundleIdentifier];
+    badgeIdentifier = [(AMSBadgeRequest *)v10 badgeIdentifier];
     *buf = 138544386;
     v35 = v14;
-    v8 = v13;
+    configCopy = v13;
     v36 = 2114;
     v37 = v15;
     v38 = 2114;
-    v39 = v16;
+    v39 = bundleIdentifier;
     v40 = 2114;
-    v41 = v17;
+    v41 = badgeIdentifier;
     v42 = 1024;
-    v43 = [(AMSBadgeRequest *)v10 enabled];
-    _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Received badging push. Client: %{public}@ Id: %{public}@ enabled: %d", buf, 0x30u);
+    enabled = [(AMSBadgeRequest *)v10 enabled];
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Received badging push. Client: %{public}@ Id: %{public}@ enabled: %d", buf, 0x30u);
   }
 
-  v18 = [v8 delegate];
+  delegate = [configCopy delegate];
   v19 = objc_opt_respondsToSelector();
 
-  v20 = [v8 delegate];
-  v21 = v20;
+  delegate2 = [configCopy delegate];
+  v21 = delegate2;
   if (v19)
   {
-    [v20 pushPayload:v7 withBadgeRequest:v10];
+    [delegate2 pushPayload:payloadCopy withBadgeRequest:v10];
 
 LABEL_16:
     v24 = +[AMSLogConfig sharedConfig];
@@ -57,8 +57,8 @@ LABEL_16:
       v24 = +[AMSLogConfig sharedConfig];
     }
 
-    v25 = [v24 OSLogObject];
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v24 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v29 = objc_opt_class();
       v30 = AMSLogKey();
@@ -66,7 +66,7 @@ LABEL_16:
       v35 = v29;
       v36 = 2114;
       v37 = v30;
-      _os_log_impl(&dword_192869000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Finished handling badge push.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Finished handling badge push.", buf, 0x16u);
     }
 
     goto LABEL_20;
@@ -77,7 +77,7 @@ LABEL_16:
   if (v22)
   {
     v33 = 0;
-    [a1 _performLegacyCallbackWithRequest:v10 payload:v7 config:v8 bag:v32 error:&v33];
+    [self _performLegacyCallbackWithRequest:v10 payload:payloadCopy config:configCopy bag:bagCopy error:&v33];
     v23 = v33;
   }
 
@@ -92,14 +92,14 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v25 = +[AMSLogConfig sharedConfig];
-  if (!v25)
+  oSLogObject2 = +[AMSLogConfig sharedConfig];
+  if (!oSLogObject2)
   {
-    v25 = +[AMSLogConfig sharedConfig];
+    oSLogObject2 = +[AMSLogConfig sharedConfig];
   }
 
-  v26 = [v25 OSLogObject];
-  if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+  v25OSLogObject = [oSLogObject2 OSLogObject];
+  if (os_log_type_enabled(v25OSLogObject, OS_LOG_TYPE_ERROR))
   {
     v27 = objc_opt_class();
     v28 = AMSLogKey();
@@ -109,28 +109,28 @@ LABEL_16:
     v37 = v28;
     v38 = 2114;
     v39 = v24;
-    _os_log_impl(&dword_192869000, v26, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to handle badge push. %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, v25OSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to handle badge push. %{public}@", buf, 0x20u);
   }
 
 LABEL_20:
 }
 
-+ (void)_performLegacyCallbackWithRequest:(id)a3 payload:(id)a4 config:(id)a5 bag:(id)a6 error:(id *)a7
++ (void)_performLegacyCallbackWithRequest:(id)request payload:(id)payload config:(id)config bag:(id)bag error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
-  v13 = a4;
-  v14 = [a5 delegate];
-  v15 = [v11 bundleIdentifier];
-  v16 = [v11 badgeIdentifier];
-  v17 = [v14 pushPaylod:v13 shouldUpdateBadgeForBundleIdentifier:v15 badgeIdentifier:v16 enabled:{objc_msgSend(v11, "enabled")}];
+  requestCopy = request;
+  bagCopy = bag;
+  payloadCopy = payload;
+  delegate = [config delegate];
+  bundleIdentifier = [requestCopy bundleIdentifier];
+  badgeIdentifier = [requestCopy badgeIdentifier];
+  v17 = [delegate pushPaylod:payloadCopy shouldUpdateBadgeForBundleIdentifier:bundleIdentifier badgeIdentifier:badgeIdentifier enabled:{objc_msgSend(requestCopy, "enabled")}];
 
   if (v17)
   {
-    v18 = [v11 bundleIdentifier];
-    v19 = [v11 badgeIdentifier];
-    +[AMSUserNotificationCenter badgeBundleId:badgeId:enabled:error:](AMSUserNotificationCenter, "badgeBundleId:badgeId:enabled:error:", v18, v19, [v11 enabled], a7);
+    bundleIdentifier2 = [requestCopy bundleIdentifier];
+    badgeIdentifier2 = [requestCopy badgeIdentifier];
+    +[AMSUserNotificationCenter badgeBundleId:badgeId:enabled:error:](AMSUserNotificationCenter, "badgeBundleId:badgeId:enabled:error:", bundleIdentifier2, badgeIdentifier2, [requestCopy enabled], error);
   }
 
   else
@@ -141,8 +141,8 @@ LABEL_20:
       v20 = +[AMSLogConfig sharedConfig];
     }
 
-    v21 = [v20 OSLogObject];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v20 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v22 = objc_opt_class();
       v23 = AMSLogKey();
@@ -150,19 +150,19 @@ LABEL_20:
       v30 = v22;
       v31 = 2114;
       v32 = v23;
-      _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Not allowed to badge.", &v29, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Not allowed to badge.", &v29, 0x16u);
     }
   }
 
-  v24 = [v11 metrics];
+  metrics = [requestCopy metrics];
 
-  if (v24)
+  if (metrics)
   {
-    v25 = [v11 metrics];
-    v26 = [v11 bundleIdentifier];
-    v27 = [AMSUserNotificationMetricsEvent eventForBadgingForMetricsDictionary:v25 bundleID:v26];
+    metrics2 = [requestCopy metrics];
+    bundleIdentifier3 = [requestCopy bundleIdentifier];
+    v27 = [AMSUserNotificationMetricsEvent eventForBadgingForMetricsDictionary:metrics2 bundleID:bundleIdentifier3];
 
-    v28 = [AMSMetrics internalInstanceUsingBag:v12];
+    v28 = [AMSMetrics internalInstanceUsingBag:bagCopy];
     [v28 enqueueEvent:v27];
   }
 }

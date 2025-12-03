@@ -1,27 +1,27 @@
 @interface _EXItemProviderItem
-- (_EXItemProviderItem)initWithCoder:(id)a3;
-- (_EXItemProviderItem)initWithTypeIdentifier:(id)a3 error:(id)a4;
-- (_EXItemProviderItem)initWithTypeIdentifier:(id)a3 payload:(id)a4;
-- (id)payloadOfClass:(Class)a3;
-- (id)payloadOfClasses:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_EXItemProviderItem)initWithCoder:(id)coder;
+- (_EXItemProviderItem)initWithTypeIdentifier:(id)identifier error:(id)error;
+- (_EXItemProviderItem)initWithTypeIdentifier:(id)identifier payload:(id)payload;
+- (id)payloadOfClass:(Class)class;
+- (id)payloadOfClasses:(id)classes;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _EXItemProviderItem
 
-- (_EXItemProviderItem)initWithTypeIdentifier:(id)a3 payload:(id)a4
+- (_EXItemProviderItem)initWithTypeIdentifier:(id)identifier payload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  payloadCopy = payload;
   v8 = [(_EXItemProviderItem *)self init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     typeIdentifier = v8->_typeIdentifier;
     v8->_typeIdentifier = v9;
 
-    objc_storeStrong(&v8->_payload, a4);
-    if (v7)
+    objc_storeStrong(&v8->_payload, payload);
+    if (payloadCopy)
     {
       v11 = objc_opt_new();
       payloadIdentifier = v8->_payloadIdentifier;
@@ -32,40 +32,40 @@
   return v8;
 }
 
-- (_EXItemProviderItem)initWithTypeIdentifier:(id)a3 error:(id)a4
+- (_EXItemProviderItem)initWithTypeIdentifier:(id)identifier error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  errorCopy = error;
   v8 = [(_EXItemProviderItem *)self init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     typeIdentifier = v8->_typeIdentifier;
     v8->_typeIdentifier = v9;
 
-    objc_storeStrong(&v8->_error, a4);
+    objc_storeStrong(&v8->_error, error);
   }
 
   return v8;
 }
 
-- (_EXItemProviderItem)initWithCoder:(id)a3
+- (_EXItemProviderItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_EXItemProviderItem *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"typeIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"typeIdentifier"];
     typeIdentifier = v5->_typeIdentifier;
     v5->_typeIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"payloadIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"payloadIdentifier"];
     payloadIdentifier = v5->_payloadIdentifier;
     v5->_payloadIdentifier = v8;
 
     v10 = +[_EXDefaults sharedInstance];
-    v11 = [v10 errorTypes];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"error"];
+    errorTypes = [v10 errorTypes];
+    v12 = [coderCopy decodeObjectOfClasses:errorTypes forKey:@"error"];
     error = v5->_error;
     v5->_error = v12;
   }
@@ -73,24 +73,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeObject:self->_typeIdentifier forKey:@"typeIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_typeIdentifier forKey:@"typeIdentifier"];
   error = self->_error;
   if (error)
   {
-    [v6 encodeObject:error forKey:@"error"];
+    [coderCopy encodeObject:error forKey:@"error"];
   }
 
   payloadIdentifier = self->_payloadIdentifier;
   if (payloadIdentifier)
   {
-    [v6 encodeObject:payloadIdentifier forKey:@"payloadIdentifier"];
+    [coderCopy encodeObject:payloadIdentifier forKey:@"payloadIdentifier"];
   }
 }
 
-- (id)payloadOfClass:(Class)a3
+- (id)payloadOfClass:(Class)class
 {
   payload = self->_payload;
   if (payload)
@@ -101,8 +101,8 @@
   encodedPayload = self->_encodedPayload;
   if (encodedPayload)
   {
-    v7 = [(NSUUID *)self->_payloadIdentifier UUIDString];
-    v8 = [(NSCoder *)encodedPayload decodeObjectOfClass:a3 forKey:v7];
+    uUIDString = [(NSUUID *)self->_payloadIdentifier UUIDString];
+    v8 = [(NSCoder *)encodedPayload decodeObjectOfClass:class forKey:uUIDString];
     v9 = self->_payload;
     self->_payload = v8;
 
@@ -118,9 +118,9 @@ LABEL_5:
   return v10;
 }
 
-- (id)payloadOfClasses:(id)a3
+- (id)payloadOfClasses:(id)classes
 {
-  v4 = a3;
+  classesCopy = classes;
   payload = self->_payload;
   if (payload)
   {
@@ -130,8 +130,8 @@ LABEL_5:
   encodedPayload = self->_encodedPayload;
   if (encodedPayload)
   {
-    v7 = [(NSUUID *)self->_payloadIdentifier UUIDString];
-    v8 = [(NSCoder *)encodedPayload decodeObjectOfClasses:v4 forKey:v7];
+    uUIDString = [(NSUUID *)self->_payloadIdentifier UUIDString];
+    v8 = [(NSCoder *)encodedPayload decodeObjectOfClasses:classesCopy forKey:uUIDString];
     v9 = self->_payload;
     self->_payload = v8;
 

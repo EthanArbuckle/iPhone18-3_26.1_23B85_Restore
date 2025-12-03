@@ -6,49 +6,49 @@
 - (BOOL)_cloudKitAccountsAreActive;
 - (BOOL)_fitnessModeRequiresWatchSetup;
 - (BOOL)_isSetupViewControllerVisible;
-- (CHActivitySharingNavigationController)initWithFriendListManager:(id)a3 friendManager:(id)a4 achievementsDataProvider:(id)a5 workoutsDataProvider:(id)a6 workoutFormattingManager:(id)a7 formattingManager:(id)a8 badgeImageFactory:(id)a9 healthStore:(id)a10 fitnessAppContext:(id)a11;
-- (void)_applicationDidBecomeActive:(id)a3;
+- (CHActivitySharingNavigationController)initWithFriendListManager:(id)manager friendManager:(id)friendManager achievementsDataProvider:(id)provider workoutsDataProvider:(id)dataProvider workoutFormattingManager:(id)formattingManager formattingManager:(id)a8 badgeImageFactory:(id)factory healthStore:(id)self0 fitnessAppContext:(id)self1;
+- (void)_applicationDidBecomeActive:(id)active;
 - (void)_getAndHandlePhoneCloudKitAccountStatus;
 - (void)_getAndHandleWatchCloudKitAccountStatus;
 - (void)_handleWatchStatusAndCloudKitAccountStatusChange;
-- (void)_hideSetupControllerAnimated:(BOOL)a3;
-- (void)_setActivitySharingIsSetup:(BOOL)a3;
-- (void)_showSetupControllerInPhase:(int64_t)a3 animated:(BOOL)a4;
+- (void)_hideSetupControllerAnimated:(BOOL)animated;
+- (void)_setActivitySharingIsSetup:(BOOL)setup;
+- (void)_showSetupControllerInPhase:(int64_t)phase animated:(BOOL)animated;
 - (void)_updateActivitySharingWatchPairingStatus;
 - (void)dealloc;
-- (void)friendsSetupViewController:(id)a3 didCompletePhase:(int64_t)a4;
-- (void)friendsSetupViewControllerDidCompleteSetup:(id)a3;
-- (void)handleActivitySharingURL:(id)a3;
+- (void)friendsSetupViewController:(id)controller didCompletePhase:(int64_t)phase;
+- (void)friendsSetupViewControllerDidCompleteSetup:(id)setup;
+- (void)handleActivitySharingURL:(id)l;
 - (void)scrollToTop;
-- (void)setPhoneCloudKitAccountIsActive:(BOOL)a3;
-- (void)setWatchCloudKitAccountAssumedToExist:(BOOL)a3;
-- (void)setWatchCloudKitAccountExists:(BOOL)a3;
+- (void)setPhoneCloudKitAccountIsActive:(BOOL)active;
+- (void)setWatchCloudKitAccountAssumedToExist:(BOOL)exist;
+- (void)setWatchCloudKitAccountExists:(BOOL)exists;
 @end
 
 @implementation CHActivitySharingNavigationController
 
-- (CHActivitySharingNavigationController)initWithFriendListManager:(id)a3 friendManager:(id)a4 achievementsDataProvider:(id)a5 workoutsDataProvider:(id)a6 workoutFormattingManager:(id)a7 formattingManager:(id)a8 badgeImageFactory:(id)a9 healthStore:(id)a10 fitnessAppContext:(id)a11
+- (CHActivitySharingNavigationController)initWithFriendListManager:(id)manager friendManager:(id)friendManager achievementsDataProvider:(id)provider workoutsDataProvider:(id)dataProvider workoutFormattingManager:(id)formattingManager formattingManager:(id)a8 badgeImageFactory:(id)factory healthStore:(id)self0 fitnessAppContext:(id)self1
 {
-  v17 = a3;
-  obj = a4;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
+  managerCopy = manager;
+  obj = friendManager;
+  friendManagerCopy = friendManager;
+  providerCopy = provider;
+  dataProviderCopy = dataProvider;
+  formattingManagerCopy = formattingManager;
   v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  v25 = a11;
+  factoryCopy = factory;
+  storeCopy = store;
+  contextCopy = context;
   v26 = [CHFriendListViewController alloc];
-  v54 = v19;
-  v55 = v23;
-  v52 = v17;
-  v53 = v18;
-  v27 = v19;
-  v28 = v20;
-  v29 = v21;
+  v54 = providerCopy;
+  v55 = factoryCopy;
+  v52 = managerCopy;
+  v53 = friendManagerCopy;
+  v27 = providerCopy;
+  v28 = dataProviderCopy;
+  v29 = formattingManagerCopy;
   v56 = v22;
-  v30 = [(CHFriendListViewController *)v26 initWithFriendListManager:v17 andWithFriendManager:v18 achievementsDataProvider:v27 workoutsDataProvider:v28 workoutFormattingManager:v21 formattingManager:v22 badgeImageFactory:v23 healthStore:v24 fitnessAppContext:v25];
+  v30 = [(CHFriendListViewController *)v26 initWithFriendListManager:managerCopy andWithFriendManager:friendManagerCopy achievementsDataProvider:v27 workoutsDataProvider:v28 workoutFormattingManager:formattingManagerCopy formattingManager:v22 badgeImageFactory:factoryCopy healthStore:storeCopy fitnessAppContext:contextCopy];
   v62.receiver = self;
   v62.super_class = CHActivitySharingNavigationController;
   v31 = [(CHActivitySharingNavigationController *)&v62 initWithRootViewController:v30];
@@ -58,18 +58,18 @@
     [(CHActivitySharingNavigationController *)v31 setFormattingManager:v56];
     objc_storeStrong(&v32->_friendListViewController, v30);
     objc_storeStrong(&v32->_friendManager, obj);
-    objc_storeStrong(&v32->_imageFactory, a9);
+    objc_storeStrong(&v32->_imageFactory, factory);
     v33 = +[NSBundle mainBundle];
     v34 = [v33 localizedStringForKey:@"SHARING" value:&stru_1008680E8 table:@"Localizable"];
-    v35 = [(CHActivitySharingNavigationController *)v32 tabBarItem];
-    [v35 setTitle:v34];
+    tabBarItem = [(CHActivitySharingNavigationController *)v32 tabBarItem];
+    [tabBarItem setTitle:v34];
 
     v36 = [UIImage _systemImageNamed:@"activity.sharing"];
-    v37 = [(CHActivitySharingNavigationController *)v32 tabBarItem];
-    [v37 setImage:v36];
+    tabBarItem2 = [(CHActivitySharingNavigationController *)v32 tabBarItem];
+    [tabBarItem2 setImage:v36];
 
-    v38 = [(CHActivitySharingNavigationController *)v32 navigationBar];
-    [v38 setPrefersLargeTitles:1];
+    navigationBar = [(CHActivitySharingNavigationController *)v32 navigationBar];
+    [navigationBar setPrefersLargeTitles:1];
 
     v39 = [[NSSManager alloc] initWithQueue:&_dispatch_main_q];
     [(CHActivitySharingNavigationController *)v32 setNanoSystemSettingsManager:v39];
@@ -82,22 +82,22 @@
     if (os_log_type_enabled(ASLogDefault, OS_LOG_TYPE_DEFAULT))
     {
       v41 = v40;
-      v42 = [(CHActivitySharingNavigationController *)v32 phoneCloudKitAccountIsActive];
-      v43 = [(CHActivitySharingNavigationController *)v32 watchCloudKitAccountExists];
-      v44 = [(CHActivitySharingNavigationController *)v32 watchCloudKitAccountAssumedToExist];
+      phoneCloudKitAccountIsActive = [(CHActivitySharingNavigationController *)v32 phoneCloudKitAccountIsActive];
+      watchCloudKitAccountExists = [(CHActivitySharingNavigationController *)v32 watchCloudKitAccountExists];
+      watchCloudKitAccountAssumedToExist = [(CHActivitySharingNavigationController *)v32 watchCloudKitAccountAssumedToExist];
       LODWORD(buf) = 67109632;
-      HIDWORD(buf) = v42;
+      HIDWORD(buf) = phoneCloudKitAccountIsActive;
       v64 = 1024;
-      v65 = v43;
+      v65 = watchCloudKitAccountExists;
       v66 = 1024;
-      v67 = v44;
+      v67 = watchCloudKitAccountAssumedToExist;
       _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "Initializing account status from cache: [phone=%d], [watch=%d], [watch(assumed)=%d]", &buf, 0x14u);
     }
 
-    objc_storeStrong(&v32->_friendListManager, a3);
-    v45 = [(CHActivitySharingNavigationController *)v32 _checkPairedWatchIsMinimumVersion];
-    v32->_currentlyPairedWatchIsMinimumVersion = v45;
-    if ((v45 & 1) != 0 || ([(ASFriendListSectionManager *)v32->_friendListManager hasAnyFriendsSetup]& 1) != 0 || ![(CHActivitySharingNavigationController *)v32 _fitnessModeRequiresWatchSetup])
+    objc_storeStrong(&v32->_friendListManager, manager);
+    _checkPairedWatchIsMinimumVersion = [(CHActivitySharingNavigationController *)v32 _checkPairedWatchIsMinimumVersion];
+    v32->_currentlyPairedWatchIsMinimumVersion = _checkPairedWatchIsMinimumVersion;
+    if ((_checkPairedWatchIsMinimumVersion & 1) != 0 || ([(ASFriendListSectionManager *)v32->_friendListManager hasAnyFriendsSetup]& 1) != 0 || ![(CHActivitySharingNavigationController *)v32 _fitnessModeRequiresWatchSetup])
     {
       if ([(CHActivitySharingNavigationController *)v32 _activitySharingIsSetup])
       {
@@ -179,7 +179,7 @@
   [(CHActivitySharingNavigationController *)&v6 dealloc];
 }
 
-- (void)_applicationDidBecomeActive:(id)a3
+- (void)_applicationDidBecomeActive:(id)active
 {
   if (![(CHActivitySharingNavigationController *)self watchCloudKitAccountExists])
   {
@@ -232,10 +232,10 @@ LABEL_12:
 
 - (void)scrollToTop
 {
-  v3 = [(CHActivitySharingNavigationController *)self topViewController];
+  topViewController = [(CHActivitySharingNavigationController *)self topViewController];
   friendListViewController = self->_friendListViewController;
 
-  if (v3 == friendListViewController)
+  if (topViewController == friendListViewController)
   {
     v5 = self->_friendListViewController;
 
@@ -243,38 +243,38 @@ LABEL_12:
   }
 }
 
-- (void)setPhoneCloudKitAccountIsActive:(BOOL)a3
+- (void)setPhoneCloudKitAccountIsActive:(BOOL)active
 {
-  if (self->_phoneCloudKitAccountIsActive != a3)
+  if (self->_phoneCloudKitAccountIsActive != active)
   {
-    v4 = a3;
-    self->_phoneCloudKitAccountIsActive = a3;
+    activeCopy = active;
+    self->_phoneCloudKitAccountIsActive = active;
     v5 = +[NSUserDefaults standardUserDefaults];
-    [v5 setBool:v4 forKey:@"CHActivitySharingPhoneHasCloudKitAccountDefaultsKey"];
+    [v5 setBool:activeCopy forKey:@"CHActivitySharingPhoneHasCloudKitAccountDefaultsKey"];
   }
 }
 
-- (void)setWatchCloudKitAccountExists:(BOOL)a3
+- (void)setWatchCloudKitAccountExists:(BOOL)exists
 {
-  if (self->_watchCloudKitAccountExists != a3)
+  if (self->_watchCloudKitAccountExists != exists)
   {
-    v4 = a3;
-    self->_watchCloudKitAccountExists = a3;
+    existsCopy = exists;
+    self->_watchCloudKitAccountExists = exists;
     v5 = +[NSUserDefaults standardUserDefaults];
-    [v5 setBool:v4 forKey:@"CHActivitySharingWatchHasCloudKitAccountDefaultsKey"];
+    [v5 setBool:existsCopy forKey:@"CHActivitySharingWatchHasCloudKitAccountDefaultsKey"];
   }
 }
 
-- (void)setWatchCloudKitAccountAssumedToExist:(BOOL)a3
+- (void)setWatchCloudKitAccountAssumedToExist:(BOOL)exist
 {
-  if (self->_watchCloudKitAccountAssumedToExist != a3)
+  if (self->_watchCloudKitAccountAssumedToExist != exist)
   {
     v13[5] = v3;
     v13[6] = v4;
-    v5 = a3;
-    self->_watchCloudKitAccountAssumedToExist = a3;
+    existCopy = exist;
+    self->_watchCloudKitAccountAssumedToExist = exist;
     v7 = +[NSUserDefaults standardUserDefaults];
-    [v7 setBool:v5 forKey:@"CHActivitySharingWatchAssumedToHaveCloudKitAccountDefaultsKey"];
+    [v7 setBool:existCopy forKey:@"CHActivitySharingWatchAssumedToHaveCloudKitAccountDefaultsKey"];
 
     v8 = +[NSUserDefaults standardUserDefaults];
     v9 = +[NSDate date];
@@ -294,19 +294,19 @@ LABEL_12:
   }
 }
 
-- (void)handleActivitySharingURL:(id)a3
+- (void)handleActivitySharingURL:(id)l
 {
-  v4 = a3;
-  v5 = [(CHActivitySharingNavigationController *)self _isSetupViewControllerVisible];
+  lCopy = l;
+  _isSetupViewControllerVisible = [(CHActivitySharingNavigationController *)self _isSetupViewControllerVisible];
   ASLoggingInitialize();
   v6 = ASLogDefault;
   v7 = os_log_type_enabled(ASLogDefault, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (_isSetupViewControllerVisible)
   {
     if (v7)
     {
       v25 = 138543362;
-      v26 = v4;
+      v26 = lCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Setup controller is visible, not handling URL: %{public}@", &v25, 0xCu);
     }
   }
@@ -316,7 +316,7 @@ LABEL_12:
     if (v7)
     {
       v25 = 138543362;
-      v26 = v4;
+      v26 = lCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Handling URL: %{public}@", &v25, 0xCu);
     }
 
@@ -344,8 +344,8 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Date is %@", &v25, 0xCu);
     }
 
-    v14 = [v4 host];
-    v15 = [v14 isEqualToString:kASActivitySharingHostMe];
+    host = [lCopy host];
+    v15 = [host isEqualToString:kASActivitySharingHostMe];
 
     if (v15)
     {
@@ -362,8 +362,8 @@ LABEL_12:
 
     else
     {
-      v17 = [v4 host];
-      v18 = [v17 isEqualToString:kASActivitySharingHostFriendDetail];
+      host2 = [lCopy host];
+      v18 = [host2 isEqualToString:kASActivitySharingHostFriendDetail];
 
       if (v18)
       {
@@ -382,8 +382,8 @@ LABEL_12:
 
       else
       {
-        v21 = [v4 host];
-        v22 = [v21 isEqualToString:kASActivitySharingHostInbox];
+        host3 = [lCopy host];
+        v22 = [host3 isEqualToString:kASActivitySharingHostInbox];
 
         ASLoggingInitialize();
         v23 = ASLogDefault;
@@ -411,12 +411,12 @@ LABEL_12:
 
 - (BOOL)_isSetupViewControllerVisible
 {
-  v3 = [(CHActivitySharingNavigationController *)self friendsSetupViewController];
-  if (v3)
+  friendsSetupViewController = [(CHActivitySharingNavigationController *)self friendsSetupViewController];
+  if (friendsSetupViewController)
   {
-    v4 = [(CHActivitySharingNavigationController *)self viewControllers];
-    v5 = [(CHActivitySharingNavigationController *)self friendsSetupViewController];
-    v6 = [v4 containsObject:v5];
+    viewControllers = [(CHActivitySharingNavigationController *)self viewControllers];
+    friendsSetupViewController2 = [(CHActivitySharingNavigationController *)self friendsSetupViewController];
+    v6 = [viewControllers containsObject:friendsSetupViewController2];
   }
 
   else
@@ -427,64 +427,64 @@ LABEL_12:
   return v6;
 }
 
-- (void)_showSetupControllerInPhase:(int64_t)a3 animated:(BOOL)a4
+- (void)_showSetupControllerInPhase:(int64_t)phase animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   if ([(CHActivitySharingNavigationController *)self _isSetupViewControllerVisible])
   {
-    v13 = [(CHActivitySharingNavigationController *)self friendsSetupViewController];
-    [v13 setPhase:a3 animated:0];
+    friendsSetupViewController = [(CHActivitySharingNavigationController *)self friendsSetupViewController];
+    [friendsSetupViewController setPhase:phase animated:0];
   }
 
   else
   {
-    v7 = [(CHActivitySharingNavigationController *)self viewControllers];
-    [(CHActivitySharingNavigationController *)self setNavigationStackDisplacedBySetupController:v7];
+    viewControllers = [(CHActivitySharingNavigationController *)self viewControllers];
+    [(CHActivitySharingNavigationController *)self setNavigationStackDisplacedBySetupController:viewControllers];
 
     v8 = objc_alloc_init(CHFriendsSetupViewController);
     [(CHActivitySharingNavigationController *)self setFriendsSetupViewController:v8];
 
-    v9 = [(CHActivitySharingNavigationController *)self friendsSetupViewController];
-    [v9 setDelegate:self];
+    friendsSetupViewController2 = [(CHActivitySharingNavigationController *)self friendsSetupViewController];
+    [friendsSetupViewController2 setDelegate:self];
 
-    v10 = [(CHActivitySharingNavigationController *)self friendsSetupViewController];
-    [v10 setPhase:a3 animated:0];
+    friendsSetupViewController3 = [(CHActivitySharingNavigationController *)self friendsSetupViewController];
+    [friendsSetupViewController3 setPhase:phase animated:0];
 
-    v11 = [(CHActivitySharingNavigationController *)self friendsSetupViewController];
-    v14 = v11;
+    friendsSetupViewController4 = [(CHActivitySharingNavigationController *)self friendsSetupViewController];
+    v14 = friendsSetupViewController4;
     v12 = [NSArray arrayWithObjects:&v14 count:1];
-    [(CHActivitySharingNavigationController *)self setViewControllers:v12 animated:v4];
+    [(CHActivitySharingNavigationController *)self setViewControllers:v12 animated:animatedCopy];
 
-    [(CHActivitySharingNavigationController *)self setNavigationBarHidden:1 animated:v4];
+    [(CHActivitySharingNavigationController *)self setNavigationBarHidden:1 animated:animatedCopy];
   }
 }
 
-- (void)_hideSetupControllerAnimated:(BOOL)a3
+- (void)_hideSetupControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(CHActivitySharingNavigationController *)self _isSetupViewControllerVisible])
   {
-    v5 = [(CHActivitySharingNavigationController *)self navigationStackDisplacedBySetupController];
-    [(CHActivitySharingNavigationController *)self setViewControllers:v5 animated:v3];
+    navigationStackDisplacedBySetupController = [(CHActivitySharingNavigationController *)self navigationStackDisplacedBySetupController];
+    [(CHActivitySharingNavigationController *)self setViewControllers:navigationStackDisplacedBySetupController animated:animatedCopy];
 
-    [(CHActivitySharingNavigationController *)self setNavigationBarHidden:0 animated:v3];
+    [(CHActivitySharingNavigationController *)self setNavigationBarHidden:0 animated:animatedCopy];
     [(CHActivitySharingNavigationController *)self setNavigationStackDisplacedBySetupController:0];
 
     [(CHActivitySharingNavigationController *)self setFriendsSetupViewController:0];
   }
 }
 
-- (void)friendsSetupViewController:(id)a3 didCompletePhase:(int64_t)a4
+- (void)friendsSetupViewController:(id)controller didCompletePhase:(int64_t)phase
 {
-  v6 = a3;
-  v7 = [(CHActivitySharingNavigationController *)self friendsSetupViewController];
+  controllerCopy = controller;
+  friendsSetupViewController = [(CHActivitySharingNavigationController *)self friendsSetupViewController];
 
-  if (v7 != v6)
+  if (friendsSetupViewController != controllerCopy)
   {
     return;
   }
 
-  if (a4 == 2)
+  if (phase == 2)
   {
     v10 = +[LSApplicationWorkspace defaultWorkspace];
     v8 = @"bridge:root=GENERAL_LINK&path=SOFTWARE_UPDATE_LINK";
@@ -492,9 +492,9 @@ LABEL_12:
 
   else
   {
-    if (a4 != 1)
+    if (phase != 1)
     {
-      if (!a4)
+      if (!phase)
       {
 
         [(CHActivitySharingNavigationController *)self _setActivitySharingIsSetup:1];
@@ -525,12 +525,12 @@ LABEL_12:
   [v10 openSensitiveURL:v9 withOptions:0];
 }
 
-- (void)friendsSetupViewControllerDidCompleteSetup:(id)a3
+- (void)friendsSetupViewControllerDidCompleteSetup:(id)setup
 {
-  v4 = a3;
-  v5 = [(CHActivitySharingNavigationController *)self friendsSetupViewController];
+  setupCopy = setup;
+  friendsSetupViewController = [(CHActivitySharingNavigationController *)self friendsSetupViewController];
 
-  if (v5 == v4)
+  if (friendsSetupViewController == setupCopy)
   {
 
     [(CHActivitySharingNavigationController *)self _hideSetupControllerAnimated:1];
@@ -554,9 +554,9 @@ LABEL_12:
   return v4;
 }
 
-- (void)_setActivitySharingIsSetup:(BOOL)a3
+- (void)_setActivitySharingIsSetup:(BOOL)setup
 {
-  v3 = a3;
+  setupCopy = setup;
   v4 = [NSUserDefaults alloc];
   v5 = kASDomain;
   v6 = [v4 initWithSuiteName:kASDomain];
@@ -565,11 +565,11 @@ LABEL_12:
   if (os_log_type_enabled(ASLogDefault, OS_LOG_TYPE_DEFAULT))
   {
     v12[0] = 67109120;
-    v12[1] = v3;
+    v12[1] = setupCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Setting defaults for fitness friends setup: %{BOOL}d", v12, 8u);
   }
 
-  v8 = [NSNumber numberWithBool:v3];
+  v8 = [NSNumber numberWithBool:setupCopy];
   v9 = kASActivitySharingIsSetup;
   [v6 setObject:v8 forKey:kASActivitySharingIsSetup];
 
@@ -604,11 +604,11 @@ LABEL_12:
 
 - (void)_getAndHandleWatchCloudKitAccountStatus
 {
-  v3 = [(CHActivitySharingNavigationController *)self watchCloudKitAccountFetchInProgress];
+  watchCloudKitAccountFetchInProgress = [(CHActivitySharingNavigationController *)self watchCloudKitAccountFetchInProgress];
   ASLoggingInitialize();
   v4 = ASLogDefault;
   v5 = os_log_type_enabled(ASLogDefault, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (watchCloudKitAccountFetchInProgress)
   {
     if (v5)
     {
@@ -627,13 +627,13 @@ LABEL_12:
 
     [(CHActivitySharingNavigationController *)self setWatchCloudKitAccountFetchInProgress:1];
     objc_initWeak(buf, self);
-    v6 = [(CHActivitySharingNavigationController *)self nanoSystemSettingsManager];
+    nanoSystemSettingsManager = [(CHActivitySharingNavigationController *)self nanoSystemSettingsManager];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1000E7778;
     v7[3] = &unk_10083A738;
     objc_copyWeak(&v8, buf);
-    [v6 getAccountsInfo:v7];
+    [nanoSystemSettingsManager getAccountsInfo:v7];
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(buf);
@@ -643,39 +643,39 @@ LABEL_12:
 - (BOOL)_fitnessModeRequiresWatchSetup
 {
   v2 = +[_HKBehavior sharedBehavior];
-  v3 = [v2 fitnessMode];
+  fitnessMode = [v2 fitnessMode];
 
-  return (v3 & 0xFFFFFFFFFFFFFFFELL) != 2;
+  return (fitnessMode & 0xFFFFFFFFFFFFFFFELL) != 2;
 }
 
 - (void)_handleWatchStatusAndCloudKitAccountStatusChange
 {
-  v3 = [(CHActivitySharingNavigationController *)self viewIfLoaded];
-  v4 = [v3 window];
+  viewIfLoaded = [(CHActivitySharingNavigationController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  v5 = [(CHActivitySharingNavigationController *)self _cloudKitAccountsAreActive];
+  _cloudKitAccountsAreActive = [(CHActivitySharingNavigationController *)self _cloudKitAccountsAreActive];
   self->_currentlyPairedWatchIsMinimumVersion = [(CHActivitySharingNavigationController *)self _checkPairedWatchIsMinimumVersion];
   ASLoggingInitialize();
   v6 = ASLogDefault;
   if (os_log_type_enabled(ASLogDefault, OS_LOG_TYPE_DEFAULT))
   {
     v17[0] = 67109120;
-    v17[1] = v4 != 0;
+    v17[1] = window != 0;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Handling account status change (view currently visible: %d)", v17, 8u);
   }
 
   if (!self->_currentlyPairedWatchIsMinimumVersion)
   {
-    v7 = [(CHActivitySharingNavigationController *)self friendListManager];
-    if ([v7 hasAnyFriendsSetup])
+    friendListManager = [(CHActivitySharingNavigationController *)self friendListManager];
+    if ([friendListManager hasAnyFriendsSetup])
     {
     }
 
     else
     {
-      v8 = [(CHActivitySharingNavigationController *)self _fitnessModeRequiresWatchSetup];
+      _fitnessModeRequiresWatchSetup = [(CHActivitySharingNavigationController *)self _fitnessModeRequiresWatchSetup];
 
-      if (v8)
+      if (_fitnessModeRequiresWatchSetup)
       {
         ASLoggingInitialize();
         v9 = ASLogDefault;
@@ -685,18 +685,18 @@ LABEL_12:
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Showing upgrade watch page.", v17, 2u);
         }
 
-        v10 = v4 != 0;
-        v11 = self;
+        v10 = window != 0;
+        selfCopy3 = self;
         v12 = 2;
         goto LABEL_24;
       }
     }
   }
 
-  v13 = [(CHActivitySharingNavigationController *)self _isSetupViewControllerVisible];
-  if ((v5 & 1) == 0)
+  _isSetupViewControllerVisible = [(CHActivitySharingNavigationController *)self _isSetupViewControllerVisible];
+  if ((_cloudKitAccountsAreActive & 1) == 0)
   {
-    if (v13)
+    if (_isSetupViewControllerVisible)
     {
 LABEL_17:
       if ([(CHActivitySharingNavigationController *)self _activitySharingIsSetup])
@@ -712,7 +712,7 @@ LABEL_17:
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Showing introduction setup page.", v17, 2u);
       }
 
-      v11 = self;
+      selfCopy3 = self;
       v12 = 0;
       v10 = 0;
       goto LABEL_24;
@@ -726,15 +726,15 @@ LABEL_17:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Showing iCloud signin page.", v17, 2u);
     }
 
-    v10 = v4 != 0;
-    v11 = self;
+    v10 = window != 0;
+    selfCopy3 = self;
     v12 = 1;
 LABEL_24:
-    [(CHActivitySharingNavigationController *)v11 _showSetupControllerInPhase:v12 animated:v10];
+    [(CHActivitySharingNavigationController *)selfCopy3 _showSetupControllerInPhase:v12 animated:v10];
     return;
   }
 
-  if (!v13 || ![(CHActivitySharingNavigationController *)self _activitySharingIsSetup])
+  if (!_isSetupViewControllerVisible || ![(CHActivitySharingNavigationController *)self _activitySharingIsSetup])
   {
     goto LABEL_17;
   }
@@ -747,15 +747,15 @@ LABEL_24:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Hiding iCloud signin page.", v17, 2u);
   }
 
-  [(CHActivitySharingNavigationController *)self _hideSetupControllerAnimated:v4 != 0];
+  [(CHActivitySharingNavigationController *)self _hideSetupControllerAnimated:window != 0];
 }
 
 - (void)_updateActivitySharingWatchPairingStatus
 {
-  v3 = [(CHActivitySharingNavigationController *)self _checkPairedWatchIsMinimumVersion];
-  if (self->_currentlyPairedWatchIsMinimumVersion != v3)
+  _checkPairedWatchIsMinimumVersion = [(CHActivitySharingNavigationController *)self _checkPairedWatchIsMinimumVersion];
+  if (self->_currentlyPairedWatchIsMinimumVersion != _checkPairedWatchIsMinimumVersion)
   {
-    self->_currentlyPairedWatchIsMinimumVersion = v3;
+    self->_currentlyPairedWatchIsMinimumVersion = _checkPairedWatchIsMinimumVersion;
 
     [(CHActivitySharingNavigationController *)self _handleWatchStatusAndCloudKitAccountStatusChange];
   }
@@ -771,27 +771,27 @@ LABEL_24:
     v7[0] = 67109632;
     v7[1] = [(CHActivitySharingNavigationController *)self phoneCloudKitAccountIsActive];
     v8 = 1024;
-    v9 = [(CHActivitySharingNavigationController *)self watchCloudKitAccountExists];
+    watchCloudKitAccountExists = [(CHActivitySharingNavigationController *)self watchCloudKitAccountExists];
     v10 = 1024;
-    v11 = [(CHActivitySharingNavigationController *)self watchCloudKitAccountAssumedToExist];
+    watchCloudKitAccountAssumedToExist = [(CHActivitySharingNavigationController *)self watchCloudKitAccountAssumedToExist];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Deriving account status from: [phone=%d], [watch=%d], [watch(assumed)=%d]", v7, 0x14u);
   }
 
-  v5 = [(CHActivitySharingNavigationController *)self phoneCloudKitAccountIsActive];
-  if (v5)
+  phoneCloudKitAccountIsActive = [(CHActivitySharingNavigationController *)self phoneCloudKitAccountIsActive];
+  if (phoneCloudKitAccountIsActive)
   {
     if ([(CHActivitySharingNavigationController *)self watchCloudKitAccountExists]|| [(CHActivitySharingNavigationController *)self watchCloudKitAccountAssumedToExist])
     {
-      LOBYTE(v5) = 1;
+      LOBYTE(phoneCloudKitAccountIsActive) = 1;
     }
 
     else
     {
-      LOBYTE(v5) = ![(CHActivitySharingNavigationController *)self _fitnessModeRequiresWatchSetup];
+      LOBYTE(phoneCloudKitAccountIsActive) = ![(CHActivitySharingNavigationController *)self _fitnessModeRequiresWatchSetup];
     }
   }
 
-  return v5;
+  return phoneCloudKitAccountIsActive;
 }
 
 - (BOOL)_cachedPhoneCloudKitAccountStatusIsActive

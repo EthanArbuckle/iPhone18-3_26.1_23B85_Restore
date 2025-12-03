@@ -1,36 +1,36 @@
 @interface ACMAppleConnectPreferences
-+ (id)preferencesWithStore:(id)a3;
-- (ACMAppleConnectPreferences)initWithPreferencesStore:(id)a3;
++ (id)preferencesWithStore:(id)store;
+- (ACMAppleConnectPreferences)initWithPreferencesStore:(id)store;
 - (BOOL)runsOn64BitsDevice;
 - (BOOL)shouldRememberPasswordInKeychain;
 - (NSMutableDictionary)environmentsContainer;
-- (id)allValuesWithOptions:(int64_t)a3;
-- (id)environmentPreferencesWithRealm:(id)a3;
-- (id)principalPreferencesWithPrincipal:(id)a3;
+- (id)allValuesWithOptions:(int64_t)options;
+- (id)environmentPreferencesWithRealm:(id)realm;
+- (id)principalPreferencesWithPrincipal:(id)principal;
 - (int)logLevel;
 - (void)cleanupOnMemoryWarning;
 - (void)clearCache;
 - (void)dealloc;
 - (void)purgeAllValues;
-- (void)purgeAllValuesWithOptions:(int64_t)a3;
-- (void)replaceAllValues:(id)a3 withOptions:(int64_t)a4;
+- (void)purgeAllValuesWithOptions:(int64_t)options;
+- (void)replaceAllValues:(id)values withOptions:(int64_t)options;
 - (void)savePreferencesIfNeeded;
-- (void)setLogLevel:(int)a3;
-- (void)setRunsOn64BitsDevice:(BOOL)a3;
-- (void)setShouldRememberPasswordInKeychain:(BOOL)a3;
-- (void)setUUID:(id)a3;
+- (void)setLogLevel:(int)level;
+- (void)setRunsOn64BitsDevice:(BOOL)device;
+- (void)setShouldRememberPasswordInKeychain:(BOOL)keychain;
+- (void)setUUID:(id)d;
 @end
 
 @implementation ACMAppleConnectPreferences
 
-+ (id)preferencesWithStore:(id)a3
++ (id)preferencesWithStore:(id)store
 {
-  v3 = [[a1 alloc] initWithPreferencesStore:a3];
+  v3 = [[self alloc] initWithPreferencesStore:store];
 
   return v3;
 }
 
-- (ACMAppleConnectPreferences)initWithPreferencesStore:(id)a3
+- (ACMAppleConnectPreferences)initWithPreferencesStore:(id)store
 {
   v7.receiver = self;
   v7.super_class = ACMAppleConnectPreferences;
@@ -38,7 +38,7 @@
   v5 = v4;
   if (v4)
   {
-    [(ACMPreferences *)v4 setPreferencesStore:a3];
+    [(ACMPreferences *)v4 setPreferencesStore:store];
   }
 
   return v5;
@@ -66,17 +66,17 @@
   return environmentsContainer;
 }
 
-- (id)environmentPreferencesWithRealm:(id)a3
+- (id)environmentPreferencesWithRealm:(id)realm
 {
   objc_sync_enter(self);
-  v5 = [(NSMutableDictionary *)[(ACMAppleConnectPreferences *)self environmentsContainer] objectForKey:a3];
+  v5 = [(NSMutableDictionary *)[(ACMAppleConnectPreferences *)self environmentsContainer] objectForKey:realm];
   if (!v5)
   {
-    v5 = [(ACMAppleConnectPreferences *)self createEnvironmentWithRealm:a3];
+    v5 = [(ACMAppleConnectPreferences *)self createEnvironmentWithRealm:realm];
     if (v5)
     {
       [v5 setPreferencesStore:{-[ACMPreferences preferencesStore](self, "preferencesStore")}];
-      [(NSMutableDictionary *)[(ACMAppleConnectPreferences *)self environmentsContainer] setObject:v5 forKey:a3];
+      [(NSMutableDictionary *)[(ACMAppleConnectPreferences *)self environmentsContainer] setObject:v5 forKey:realm];
     }
   }
 
@@ -84,12 +84,12 @@
   return v5;
 }
 
-- (id)principalPreferencesWithPrincipal:(id)a3
+- (id)principalPreferencesWithPrincipal:(id)principal
 {
-  v4 = -[ACMAppleConnectPreferences environmentPreferencesWithRealm:](self, "environmentPreferencesWithRealm:", [a3 realm]);
-  v5 = [a3 userName];
+  v4 = -[ACMAppleConnectPreferences environmentPreferencesWithRealm:](self, "environmentPreferencesWithRealm:", [principal realm]);
+  userName = [principal userName];
 
-  return [v4 principalPreferencesWithUserName:v5];
+  return [v4 principalPreferencesWithUserName:userName];
 }
 
 - (int)logLevel
@@ -103,18 +103,18 @@
   return [v2 intValue];
 }
 
-- (void)setLogLevel:(int)a3
+- (void)setLogLevel:(int)level
 {
-  v4 = [MEMORY[0x29EDBA070] numberWithInt:*&a3];
+  v4 = [MEMORY[0x29EDBA070] numberWithInt:*&level];
 
   [(ACMPreferences *)self setPreferencesValue:v4 forKey:@"ACCLogLevel"];
 }
 
-- (void)setUUID:(id)a3
+- (void)setUUID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    [(ACMPreferences *)self setPreferencesValue:a3 forKey:@"ACCUUID"];
+    [(ACMPreferences *)self setPreferencesValue:d forKey:@"ACCUUID"];
   }
 }
 
@@ -125,18 +125,18 @@
   return [v2 BOOLValue];
 }
 
-- (void)setRunsOn64BitsDevice:(BOOL)a3
+- (void)setRunsOn64BitsDevice:(BOOL)device
 {
-  v3 = a3;
-  v4 = [(ACMPreferences *)self preferencesStore];
-  v5 = [MEMORY[0x29EDBA070] numberWithBool:v3];
+  deviceCopy = device;
+  preferencesStore = [(ACMPreferences *)self preferencesStore];
+  v5 = [MEMORY[0x29EDBA070] numberWithBool:deviceCopy];
 
-  [(ACMPreferencesStore *)v4 setPreferencesValue:v5 forKey:@"ACCRunsOn64BitsDevice"];
+  [(ACMPreferencesStore *)preferencesStore setPreferencesValue:v5 forKey:@"ACCRunsOn64BitsDevice"];
 }
 
-- (void)setShouldRememberPasswordInKeychain:(BOOL)a3
+- (void)setShouldRememberPasswordInKeychain:(BOOL)keychain
 {
-  v4 = [MEMORY[0x29EDBA070] numberWithBool:a3];
+  v4 = [MEMORY[0x29EDBA070] numberWithBool:keychain];
 
   [(ACMPreferences *)self setPreferencesValue:v4 forKey:@"ACCRememberPassword"];
 }
@@ -150,52 +150,52 @@
 
 - (void)purgeAllValues
 {
-  v2 = [(ACMPreferences *)self preferencesStore];
+  preferencesStore = [(ACMPreferences *)self preferencesStore];
 
-  [(ACMPreferencesStore *)v2 removeAllValues];
+  [(ACMPreferencesStore *)preferencesStore removeAllValues];
 }
 
-- (void)purgeAllValuesWithOptions:(int64_t)a3
+- (void)purgeAllValuesWithOptions:(int64_t)options
 {
-  v4 = [(ACMPreferences *)self preferencesStore];
+  preferencesStore = [(ACMPreferences *)self preferencesStore];
 
-  [(ACMPreferencesStore *)v4 removeAllValuesWithOptions:a3];
+  [(ACMPreferencesStore *)preferencesStore removeAllValuesWithOptions:options];
 }
 
-- (id)allValuesWithOptions:(int64_t)a3
+- (id)allValuesWithOptions:(int64_t)options
 {
-  v4 = [(ACMPreferences *)self preferencesStore];
+  preferencesStore = [(ACMPreferences *)self preferencesStore];
 
-  return [(ACMPreferencesStore *)v4 allValuesWithOptions:a3];
+  return [(ACMPreferencesStore *)preferencesStore allValuesWithOptions:options];
 }
 
-- (void)replaceAllValues:(id)a3 withOptions:(int64_t)a4
+- (void)replaceAllValues:(id)values withOptions:(int64_t)options
 {
-  v6 = [(ACMPreferences *)self preferencesStore];
+  preferencesStore = [(ACMPreferences *)self preferencesStore];
 
-  [(ACMPreferencesStore *)v6 replaceAllValues:a3 withOptions:a4];
+  [(ACMPreferencesStore *)preferencesStore replaceAllValues:values withOptions:options];
 }
 
 - (void)clearCache
 {
-  v2 = [(ACMPreferences *)self preferencesStore];
+  preferencesStore = [(ACMPreferences *)self preferencesStore];
 
-  [(ACMPreferencesStore *)v2 clearCache];
+  [(ACMPreferencesStore *)preferencesStore clearCache];
 }
 
 - (void)savePreferencesIfNeeded
 {
   [(ACMPreferencesStore *)[(ACMPreferences *)self preferencesStore] savePreferencesIfNeeded];
-  v3 = [(ACMPreferences *)self preferencesStore];
+  preferencesStore = [(ACMPreferences *)self preferencesStore];
 
-  [(ACMPreferencesStore *)v3 clearCache];
+  [(ACMPreferencesStore *)preferencesStore clearCache];
 }
 
 - (void)cleanupOnMemoryWarning
 {
-  v2 = [(ACMPreferences *)self preferencesStore];
+  preferencesStore = [(ACMPreferences *)self preferencesStore];
 
-  [(ACMPreferencesStore *)v2 cleanupOnMemoryWarning];
+  [(ACMPreferencesStore *)preferencesStore cleanupOnMemoryWarning];
 }
 
 @end

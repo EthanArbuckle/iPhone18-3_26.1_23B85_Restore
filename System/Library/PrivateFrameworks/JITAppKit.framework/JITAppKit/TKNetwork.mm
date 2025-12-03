@@ -1,10 +1,10 @@
 @interface TKNetwork
 + (id)shared;
-+ (void)setShared:(id)a3;
-- (id)downloadImage:(id)a3 priority:(int64_t)a4 completion:(id)a5;
-- (id)downloadRequest:(id)a3 priority:(int64_t)a4 completion:(id)a5;
-- (id)loadRequest:(id)a3 priority:(int64_t)a4 completion:(id)a5;
-- (void)updateNetworkActivity:(int64_t)a3;
++ (void)setShared:(id)shared;
+- (id)downloadImage:(id)image priority:(int64_t)priority completion:(id)completion;
+- (id)downloadRequest:(id)request priority:(int64_t)priority completion:(id)completion;
+- (id)loadRequest:(id)request priority:(int64_t)priority completion:(id)completion;
+- (void)updateNetworkActivity:(int64_t)activity;
 @end
 
 @implementation TKNetwork
@@ -38,37 +38,37 @@ uint64_t __19__TKNetwork_shared__block_invoke()
   return result;
 }
 
-+ (void)setShared:(id)a3
++ (void)setShared:(id)shared
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, shared);
   objc_storeStrong(&_shared, location[0]);
   objc_storeStrong(location, 0);
 }
 
-- (id)loadRequest:(id)a3 priority:(int64_t)a4 completion:(id)a5
+- (id)loadRequest:(id)request priority:(int64_t)priority completion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v23 = a4;
+  objc_storeStrong(location, request);
+  priorityCopy = priority;
   v22 = 0;
-  objc_storeStrong(&v22, a5);
+  objc_storeStrong(&v22, completion);
   v21 = MEMORY[0x277D82BE0](@"normal");
-  if (v23 == -1)
+  if (priorityCopy == -1)
   {
     objc_storeStrong(&v21, @"low");
   }
 
-  else if (v23 == 1)
+  else if (priorityCopy == 1)
   {
     objc_storeStrong(&v21, @"high");
   }
 
-  [(TKNetwork *)v25 updateNetworkActivity:1];
+  [(TKNetwork *)selfCopy updateNetworkActivity:1];
   v9 = +[MCLURLDataLoader shared];
   v7 = location[0];
   v8 = v21;
@@ -77,7 +77,7 @@ uint64_t __19__TKNetwork_shared__block_invoke()
   v15 = 0;
   v16 = __45__TKNetwork_loadRequest_priority_completion___block_invoke;
   v17 = &unk_2797EDF48;
-  v18 = MEMORY[0x277D82BE0](v25);
+  v18 = MEMORY[0x277D82BE0](selfCopy);
   v19 = MEMORY[0x277D82BE0](v22);
   v20 = [v9 downloadRequest:v7 category:v8 completionHandler:&v13];
   MEMORY[0x277D82BD8](v9);
@@ -124,27 +124,27 @@ void __45__TKNetwork_loadRequest_priority_completion___block_invoke(uint64_t a1,
   objc_storeStrong(location, 0);
 }
 
-- (id)downloadRequest:(id)a3 priority:(int64_t)a4 completion:(id)a5
+- (id)downloadRequest:(id)request priority:(int64_t)priority completion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v23 = a4;
+  objc_storeStrong(location, request);
+  priorityCopy = priority;
   v22 = 0;
-  objc_storeStrong(&v22, a5);
+  objc_storeStrong(&v22, completion);
   v21 = MEMORY[0x277D82BE0](@"normal");
-  if (v23 == -1)
+  if (priorityCopy == -1)
   {
     objc_storeStrong(&v21, @"low");
   }
 
-  else if (v23 == 1)
+  else if (priorityCopy == 1)
   {
     objc_storeStrong(&v21, @"high");
   }
 
-  [(TKNetwork *)v25 updateNetworkActivity:1];
+  [(TKNetwork *)selfCopy updateNetworkActivity:1];
   v9 = +[MCLURLDataLoader shared];
   v7 = location[0];
   v8 = v21;
@@ -153,7 +153,7 @@ void __45__TKNetwork_loadRequest_priority_completion___block_invoke(uint64_t a1,
   v15 = 0;
   v16 = __49__TKNetwork_downloadRequest_priority_completion___block_invoke;
   v17 = &unk_2797EDF48;
-  v18 = MEMORY[0x277D82BE0](v25);
+  v18 = MEMORY[0x277D82BE0](selfCopy);
   v19 = MEMORY[0x277D82BE0](v22);
   v20 = [v9 downloadRequest:v7 category:v8 completionHandler:&v13];
   MEMORY[0x277D82BD8](v9);
@@ -194,27 +194,27 @@ void __49__TKNetwork_downloadRequest_priority_completion___block_invoke(uint64_t
   objc_storeStrong(location, 0);
 }
 
-- (id)downloadImage:(id)a3 priority:(int64_t)a4 completion:(id)a5
+- (id)downloadImage:(id)image priority:(int64_t)priority completion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v23 = a4;
+  objc_storeStrong(location, image);
+  priorityCopy = priority;
   v22 = 0;
-  objc_storeStrong(&v22, a5);
+  objc_storeStrong(&v22, completion);
   v21 = MEMORY[0x277D82BE0](@"normal");
-  if (v23 == -1)
+  if (priorityCopy == -1)
   {
     objc_storeStrong(&v21, @"low");
   }
 
-  else if (v23 == 1)
+  else if (priorityCopy == 1)
   {
     objc_storeStrong(&v21, @"high");
   }
 
-  [(TKNetwork *)v25 updateNetworkActivity:1];
+  [(TKNetwork *)selfCopy updateNetworkActivity:1];
   v9 = +[MCLURLDataLoader shared];
   v7 = location[0];
   v8 = v21;
@@ -223,7 +223,7 @@ void __49__TKNetwork_downloadRequest_priority_completion___block_invoke(uint64_t
   v15 = 0;
   v16 = __47__TKNetwork_downloadImage_priority_completion___block_invoke;
   v17 = &unk_2797EDF70;
-  v18 = MEMORY[0x277D82BE0](v25);
+  v18 = MEMORY[0x277D82BE0](selfCopy);
   v19 = MEMORY[0x277D82BE0](v22);
   v20 = [v9 downloadImageWithRequest:v7 category:v8 completionHandler:&v13];
   MEMORY[0x277D82BD8](v9);
@@ -255,11 +255,11 @@ void __47__TKNetwork_downloadImage_priority_completion___block_invoke(uint64_t a
   objc_storeStrong(location, 0);
 }
 
-- (void)updateNetworkActivity:(int64_t)a3
+- (void)updateNetworkActivity:(int64_t)activity
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  activityCopy = activity;
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   v5 = v4;
@@ -268,7 +268,7 @@ void __47__TKNetwork_downloadImage_priority_completion___block_invoke(uint64_t a
   v8 = 0;
   v9 = __35__TKNetwork_updateNetworkActivity___block_invoke;
   v10 = &__block_descriptor_40_e5_v8__0l;
-  v11 = v12;
+  v11 = activityCopy;
   dispatch_async(v5, &block);
   MEMORY[0x277D82BD8](v5);
 }

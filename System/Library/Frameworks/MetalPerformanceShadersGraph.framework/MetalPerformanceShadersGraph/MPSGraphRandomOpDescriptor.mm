@@ -1,6 +1,6 @@
 @interface MPSGraphRandomOpDescriptor
 + (MPSGraphRandomOpDescriptor)descriptorWithDistribution:(MPSGraphRandomDistribution)distribution dataType:(MPSDataType)dataType;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MPSGraphRandomOpDescriptor
@@ -76,7 +76,7 @@ LABEL_19:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MPSGraphRandomOpDescriptor alloc];
   [(MPSGraphRandomOpDescriptor *)v4 setDistribution:self->_distribution];

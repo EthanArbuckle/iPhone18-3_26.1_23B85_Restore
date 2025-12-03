@@ -1,37 +1,37 @@
 @interface HMIObjectDetection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)boundingBox;
-- (HMIObjectDetection)initWithCoder:(id)a3;
-- (HMIObjectDetection)initWithLabelIndex:(int)a3 confidence:(double)a4 unclampedBoundingBox:(CGRect)a5 yaw:(id)a6 roll:(id)a7;
+- (HMIObjectDetection)initWithCoder:(id)coder;
+- (HMIObjectDetection)initWithLabelIndex:(int)index confidence:(double)confidence unclampedBoundingBox:(CGRect)box yaw:(id)yaw roll:(id)roll;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMIObjectDetection
 
-- (HMIObjectDetection)initWithLabelIndex:(int)a3 confidence:(double)a4 unclampedBoundingBox:(CGRect)a5 yaw:(id)a6 roll:(id)a7
+- (HMIObjectDetection)initWithLabelIndex:(int)index confidence:(double)confidence unclampedBoundingBox:(CGRect)box yaw:(id)yaw roll:(id)roll
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v16 = a6;
-  v17 = a7;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  yawCopy = yaw;
+  rollCopy = roll;
   v21.receiver = self;
   v21.super_class = HMIObjectDetection;
   v18 = [(HMIObjectDetection *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    v18->_labelIndex = a3;
-    v18->_confidence = a4;
+    v18->_labelIndex = index;
+    v18->_confidence = confidence;
     v18->_boundingBox.origin.x = x;
     v18->_boundingBox.origin.y = y;
     v18->_boundingBox.size.width = width;
     v18->_boundingBox.size.height = height;
-    objc_storeStrong(&v18->_yaw, a6);
-    objc_storeStrong(&v19->_roll, a7);
+    objc_storeStrong(&v18->_yaw, yaw);
+    objc_storeStrong(&v19->_roll, roll);
   }
 
   return v19;
@@ -40,7 +40,7 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMIObjectDetection *)self labelIndex];
+  labelIndex = [(HMIObjectDetection *)self labelIndex];
   [(HMIObjectDetection *)self confidence];
   v6 = v5;
   [(HMIObjectDetection *)self boundingBox];
@@ -52,7 +52,7 @@
   [(HMIObjectDetection *)self boundingBox];
   v14 = v13;
   v15 = [(HMIObjectDetection *)self yaw];
-  v16 = [v3 stringWithFormat:@"Label:%d Confidence:%f X:%f Y:%f Width:%f Height:%f Yaw:%@}", v4, v6, v8, v10, v12, v14, v15];
+  v16 = [v3 stringWithFormat:@"Label:%d Confidence:%f X:%f Y:%f Width:%f Height:%f Yaw:%@}", labelIndex, v6, v8, v10, v12, v14, v15];
 
   return v16;
 }
@@ -70,52 +70,52 @@
   return result;
 }
 
-- (HMIObjectDetection)initWithCoder:(id)a3
+- (HMIObjectDetection)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntForKey:@"HMIOD.l"];
-  [v4 decodeDoubleForKey:@"HMIOD.c"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntForKey:@"HMIOD.l"];
+  [coderCopy decodeDoubleForKey:@"HMIOD.c"];
   v7 = v6;
-  [v4 decodeDoubleForKey:@"HMIOD.b.x"];
+  [coderCopy decodeDoubleForKey:@"HMIOD.b.x"];
   v9 = v8;
-  [v4 decodeDoubleForKey:@"HMIOD.b.y"];
+  [coderCopy decodeDoubleForKey:@"HMIOD.b.y"];
   v11 = v10;
-  [v4 decodeDoubleForKey:@"HMIOD.b.w"];
+  [coderCopy decodeDoubleForKey:@"HMIOD.b.w"];
   v13 = v12;
-  [v4 decodeDoubleForKey:@"HMIOD.b.h"];
+  [coderCopy decodeDoubleForKey:@"HMIOD.b.h"];
   v15 = v14;
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMIOD.y.a"];
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMIOD.r.o"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMIOD.y.a"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMIOD.r.o"];
 
   v18 = [(HMIObjectDetection *)self initWithLabelIndex:v5 confidence:v16 boundingBox:v17 yaw:v7 roll:v9, v11, v13, v15];
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:-[HMIObjectDetection labelIndex](self forKey:{"labelIndex"), @"HMIOD.l"}];
+  coderCopy = coder;
+  [coderCopy encodeInt:-[HMIObjectDetection labelIndex](self forKey:{"labelIndex"), @"HMIOD.l"}];
   [(HMIObjectDetection *)self confidence];
-  [v4 encodeDouble:@"HMIOD.c" forKey:?];
+  [coderCopy encodeDouble:@"HMIOD.c" forKey:?];
   [(HMIObjectDetection *)self boundingBox];
-  [v4 encodeDouble:@"HMIOD.b.x" forKey:?];
+  [coderCopy encodeDouble:@"HMIOD.b.x" forKey:?];
   [(HMIObjectDetection *)self boundingBox];
-  [v4 encodeDouble:@"HMIOD.b.y" forKey:v5];
+  [coderCopy encodeDouble:@"HMIOD.b.y" forKey:v5];
   [(HMIObjectDetection *)self boundingBox];
-  [v4 encodeDouble:@"HMIOD.b.w" forKey:v6];
+  [coderCopy encodeDouble:@"HMIOD.b.w" forKey:v6];
   [(HMIObjectDetection *)self boundingBox];
-  [v4 encodeDouble:@"HMIOD.b.h" forKey:v7];
+  [coderCopy encodeDouble:@"HMIOD.b.h" forKey:v7];
   v8 = [(HMIObjectDetection *)self yaw];
-  [v4 encodeObject:v8 forKey:@"HMIOD.y.a"];
+  [coderCopy encodeObject:v8 forKey:@"HMIOD.y.a"];
 
-  v9 = [(HMIObjectDetection *)self roll];
-  [v4 encodeObject:v9 forKey:@"HMIOD.r.o"];
+  roll = [(HMIObjectDetection *)self roll];
+  [coderCopy encodeObject:roll forKey:@"HMIOD.r.o"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v18 = 1;
   }
@@ -125,9 +125,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HMIObjectDetection *)self labelIndex];
-      v7 = [(HMIObjectDetection *)v5 labelIndex];
+      v5 = equalCopy;
+      labelIndex = [(HMIObjectDetection *)self labelIndex];
+      labelIndex2 = [(HMIObjectDetection *)v5 labelIndex];
       [(HMIObjectDetection *)self confidence];
       v9 = v8;
       [(HMIObjectDetection *)v5 confidence];
@@ -136,12 +136,12 @@
       v13 = [(HMIObjectDetection *)v5 yaw];
       v14 = HMFEqualObjects();
 
-      v15 = [(HMIObjectDetection *)self roll];
-      v16 = [(HMIObjectDetection *)v5 roll];
+      roll = [(HMIObjectDetection *)self roll];
+      roll2 = [(HMIObjectDetection *)v5 roll];
       v17 = HMFEqualObjects();
 
       v18 = 0;
-      if (v6 == v7 && v9 == v11 && v14 && v17)
+      if (labelIndex == labelIndex2 && v9 == v11 && v14 && v17)
       {
         [(HMIObjectDetection *)self boundingBox];
         v20 = v19;
@@ -172,7 +172,7 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMIObjectDetection *)self labelIndex];
+  labelIndex = [(HMIObjectDetection *)self labelIndex];
   [(HMIObjectDetection *)self confidence];
   if (v4 < 0.0)
   {
@@ -203,14 +203,14 @@
     v12 = v10;
   }
 
-  if (v3 >= 0)
+  if (labelIndex >= 0)
   {
-    v13 = v3;
+    v13 = labelIndex;
   }
 
   else
   {
-    v13 = -v3;
+    v13 = -labelIndex;
   }
 
   v14 = 2654435761 * v13;
@@ -218,8 +218,8 @@
   v22 = v14 ^ HMIHashCGRect(v15, v16, v17, v18, v19, v20, v21);
   v23 = [(HMIObjectDetection *)self yaw];
   v24 = v22 ^ [v23 hash];
-  v25 = [(HMIObjectDetection *)self roll];
-  v26 = v24 ^ [v25 hash];
+  roll = [(HMIObjectDetection *)self roll];
+  v26 = v24 ^ [roll hash];
 
   return v12 ^ v26;
 }

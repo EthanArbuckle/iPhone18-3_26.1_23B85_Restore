@@ -1,42 +1,42 @@
 @interface FPExtensionCollection
-+ (BOOL)_item:(id)a3 isCollectionRootForObservedItemID:(id)a4;
-+ (BOOL)item:(id)a3 isValidForObservedItemID:(id)a4;
-- (BOOL)isCollectionValidForItem:(id)a3;
-- (BOOL)isRootItem:(id)a3;
-- (BOOL)recoverFromError:(id)a3;
-- (BOOL)shouldRetryError:(id)a3;
-- (FPExtensionCollection)initWithSettings:(id)a3;
-- (id)createDataSourceWithSortDescriptors:(id)a3;
++ (BOOL)_item:(id)_item isCollectionRootForObservedItemID:(id)d;
++ (BOOL)item:(id)item isValidForObservedItemID:(id)d;
+- (BOOL)isCollectionValidForItem:(id)item;
+- (BOOL)isRootItem:(id)item;
+- (BOOL)recoverFromError:(id)error;
+- (BOOL)shouldRetryError:(id)error;
+- (FPExtensionCollection)initWithSettings:(id)settings;
+- (id)createDataSourceWithSortDescriptors:(id)descriptors;
 - (id)description;
 - (id)scopedSearchQuery;
-- (void)_failMonitoringWithError:(id)a3;
+- (void)_failMonitoringWithError:(id)error;
 - (void)_startMonitoringDSCopyProgress;
 - (void)_startMonitoringDomains;
 - (void)_stopMonitoringDomains;
 - (void)startObserving;
 - (void)stopObserving;
-- (void)updateRootItem:(id)a3;
+- (void)updateRootItem:(id)item;
 @end
 
 @implementation FPExtensionCollection
 
 - (id)description
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_alternateID;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_alternateID;
+  objc_sync_exit(selfCopy);
 
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
   if (v3)
   {
-    [v4 stringWithFormat:@"<%@:%p [%@, %@]>", v5, v2, v2->_settings, v3];
+    [v4 stringWithFormat:@"<%@:%p [%@, %@]>", v5, selfCopy, selfCopy->_settings, v3];
   }
 
   else
   {
-    [v4 stringWithFormat:@"<%@:%p %@>", v5, v2, v2->_settings, v8];
+    [v4 stringWithFormat:@"<%@:%p %@>", v5, selfCopy, selfCopy->_settings, v8];
   }
   v6 = ;
 
@@ -54,8 +54,8 @@
 
 - (void)_stopMonitoringDomains
 {
-  v3 = [(FPItemCollection *)self workingQueue];
-  dispatch_assert_queue_V2(v3);
+  workingQueue = [(FPItemCollection *)self workingQueue];
+  dispatch_assert_queue_V2(workingQueue);
 
   if (self->_providerDomainMonitoringContext)
   {
@@ -69,9 +69,9 @@
 {
   if (+[FPProviderDomain hasProviderDomainAccess])
   {
-    v3 = [(FPExtensionCollection *)self enumeratedItemID];
-    v4 = [v3 providerDomainID];
-    v5 = [FPProviderDomain providerDomainWithID:v4 cachePolicy:1 error:0];
+    enumeratedItemID = [(FPExtensionCollection *)self enumeratedItemID];
+    providerDomainID = [enumeratedItemID providerDomainID];
+    v5 = [FPProviderDomain providerDomainWithID:providerDomainID cachePolicy:1 error:0];
 
     if (v5 && [v5 usesDSCopyEngine])
     {
@@ -85,7 +85,7 @@
       objc_copyWeak(&v14, &location);
       v6 = _Block_copy(aBlock);
       v7 = +[FPItemManager defaultManager];
-      v8 = [(FPExtensionCollection *)self enumeratedItemID];
+      enumeratedItemID2 = [(FPExtensionCollection *)self enumeratedItemID];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __55__FPExtensionCollection__startMonitoringDSCopyProgress__block_invoke_35;
@@ -93,7 +93,7 @@
       objc_copyWeak(&v12, &location);
       v9 = v6;
       v11 = v9;
-      [v7 fetchURLForItemID:v8 completionHandler:v10];
+      [v7 fetchURLForItemID:enumeratedItemID2 completionHandler:v10];
 
       objc_destroyWeak(&v12);
       objc_destroyWeak(&v14);
@@ -122,16 +122,16 @@ void __55__FPExtensionCollection__startMonitoringDSCopyProgress__block_invoke_35
   }
 }
 
-- (FPExtensionCollection)initWithSettings:(id)a3
+- (FPExtensionCollection)initWithSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v11.receiver = self;
   v11.super_class = FPExtensionCollection;
   v6 = [(FPItemCollection *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_settings, a3);
+    objc_storeStrong(&v6->_settings, settings);
     v8 = objc_opt_new();
     dsCopySubscriber = v7->_dsCopySubscriber;
     v7->_dsCopySubscriber = v8;
@@ -140,33 +140,33 @@ void __55__FPExtensionCollection__startMonitoringDSCopyProgress__block_invoke_35
   return v7;
 }
 
-- (BOOL)isRootItem:(id)a3
+- (BOOL)isRootItem:(id)item
 {
-  v4 = a3;
-  v5 = [(FPExtensionEnumerationSettings *)self->_settings enumeratedItemID];
+  itemCopy = item;
+  enumeratedItemID = [(FPExtensionEnumerationSettings *)self->_settings enumeratedItemID];
 
-  if (!v5)
+  if (!enumeratedItemID)
   {
-    v6 = [(FPExtensionEnumerationSettings *)self->_settings enumeratedURL];
-    if (!v6)
+    enumeratedURL = [(FPExtensionEnumerationSettings *)self->_settings enumeratedURL];
+    if (!enumeratedURL)
     {
       v8 = 0;
       goto LABEL_9;
     }
 
-    v7 = [(FPExtensionEnumerationSettings *)self->_settings enumeratedURL];
-    v9 = [v4 fileURL];
-    v8 = [v7 fp_relationshipToItemAtURL:v9] == 1;
+    enumeratedURL2 = [(FPExtensionEnumerationSettings *)self->_settings enumeratedURL];
+    fileURL = [itemCopy fileURL];
+    v8 = [enumeratedURL2 fp_relationshipToItemAtURL:fileURL] == 1;
     goto LABEL_7;
   }
 
-  v6 = [v4 itemID];
-  v7 = [(FPExtensionEnumerationSettings *)self->_settings enumeratedItemID];
-  if (([v6 isEqual:v7] & 1) == 0)
+  enumeratedURL = [itemCopy itemID];
+  enumeratedURL2 = [(FPExtensionEnumerationSettings *)self->_settings enumeratedItemID];
+  if (([enumeratedURL isEqual:enumeratedURL2] & 1) == 0)
   {
-    v9 = [v4 formerItemID];
-    v10 = [(FPExtensionEnumerationSettings *)self->_settings enumeratedItemID];
-    v8 = [v9 isEqual:v10];
+    fileURL = [itemCopy formerItemID];
+    enumeratedItemID2 = [(FPExtensionEnumerationSettings *)self->_settings enumeratedItemID];
+    v8 = [fileURL isEqual:enumeratedItemID2];
 
 LABEL_7:
     goto LABEL_8;
@@ -179,16 +179,16 @@ LABEL_9:
   return v8;
 }
 
-- (void)updateRootItem:(id)a3
+- (void)updateRootItem:(id)item
 {
-  v4 = a3;
-  v5 = [(FPExtensionEnumerationSettings *)self->_settings enumeratedURL];
+  itemCopy = item;
+  enumeratedURL = [(FPExtensionEnumerationSettings *)self->_settings enumeratedURL];
 
-  if (v5)
+  if (enumeratedURL)
   {
-    v6 = [(FPExtensionEnumerationSettings *)self->_settings enumeratedURL];
-    v7 = [v4 fileURL];
-    p_super = [v6 fp_relativePathOf:v7];
+    enumeratedURL2 = [(FPExtensionEnumerationSettings *)self->_settings enumeratedURL];
+    fileURL = [itemCopy fileURL];
+    p_super = [enumeratedURL2 fp_relativePathOf:fileURL];
 
     if (!p_super || [p_super length])
     {
@@ -198,29 +198,29 @@ LABEL_9:
         [FPExtensionCollection updateRootItem:];
       }
 
-      v10 = self;
-      objc_sync_enter(v10);
-      alternateID = v10->_alternateID;
-      v10->_alternateID = 0;
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      alternateID = selfCopy->_alternateID;
+      selfCopy->_alternateID = 0;
 
-      objc_sync_exit(v10);
+      objc_sync_exit(selfCopy);
       [(FPExtensionEnumerationSettings *)self->_settings setNullableEnumeratedItemID:0];
-      v12 = [(FPItemCollection *)v10 dataSource];
-      [v12 invalidate];
+      dataSource = [(FPItemCollection *)selfCopy dataSource];
+      [dataSource invalidate];
 
-      v13 = [(FPItemCollection *)v10 dataSource];
+      dataSource2 = [(FPItemCollection *)selfCopy dataSource];
       v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"NSFileProviderErrorDomain" code:-1002 userInfo:0];
-      [(FPItemCollection *)v10 dataSource:v13 wasInvalidatedWithError:v14];
+      [(FPItemCollection *)selfCopy dataSource:dataSource2 wasInvalidatedWithError:v14];
 
       goto LABEL_19;
     }
 
-    v15 = [(FPExtensionEnumerationSettings *)self->_settings nullableEnumeratedItemID];
+    nullableEnumeratedItemID = [(FPExtensionEnumerationSettings *)self->_settings nullableEnumeratedItemID];
 
-    if (!v15)
+    if (!nullableEnumeratedItemID)
     {
-      v16 = [v4 itemID];
-      [(FPExtensionEnumerationSettings *)self->_settings setNullableEnumeratedItemID:v16];
+      itemID = [itemCopy itemID];
+      [(FPExtensionEnumerationSettings *)self->_settings setNullableEnumeratedItemID:itemID];
 
       v17 = fp_current_or_default_log();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -230,34 +230,34 @@ LABEL_9:
     }
   }
 
-  v18 = self;
-  objc_sync_enter(v18);
-  if (v18->_alternateID)
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  if (selfCopy2->_alternateID)
   {
-    objc_sync_exit(v18);
-    p_super = &v18->super.super;
+    objc_sync_exit(selfCopy2);
+    p_super = &selfCopy2->super.super;
   }
 
   else
   {
-    v19 = [v4 itemID];
-    v20 = [(FPExtensionEnumerationSettings *)self->_settings enumeratedItemID];
-    v21 = [v19 isEqual:v20];
+    itemID2 = [itemCopy itemID];
+    enumeratedItemID = [(FPExtensionEnumerationSettings *)self->_settings enumeratedItemID];
+    v21 = [itemID2 isEqual:enumeratedItemID];
 
     if (v21)
     {
-      [v4 formerItemID];
+      [itemCopy formerItemID];
     }
 
     else
     {
-      [v4 itemID];
+      [itemCopy itemID];
     }
     v22 = ;
-    v23 = v18->_alternateID;
-    v18->_alternateID = v22;
+    v23 = selfCopy2->_alternateID;
+    selfCopy2->_alternateID = v22;
 
-    objc_sync_exit(v18);
+    objc_sync_exit(selfCopy2);
     p_super = fp_current_or_default_log();
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEBUG))
     {
@@ -268,11 +268,11 @@ LABEL_9:
 LABEL_19:
 }
 
-- (BOOL)isCollectionValidForItem:(id)a3
+- (BOOL)isCollectionValidForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(FPExtensionCollection *)self enumeratedItemID];
-  v6 = [FPExtensionCollection item:v4 isValidForObservedItemID:v5];
+  itemCopy = item;
+  enumeratedItemID = [(FPExtensionCollection *)self enumeratedItemID];
+  v6 = [FPExtensionCollection item:itemCopy isValidForObservedItemID:enumeratedItemID];
 
   if (v6)
   {
@@ -281,14 +281,14 @@ LABEL_19:
 
   else
   {
-    v8 = self;
-    objc_sync_enter(v8);
-    v9 = v8->_alternateID;
-    objc_sync_exit(v8);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v9 = selfCopy->_alternateID;
+    objc_sync_exit(selfCopy);
 
     if (v9)
     {
-      v7 = [FPExtensionCollection item:v4 isValidForObservedItemID:v9];
+      v7 = [FPExtensionCollection item:itemCopy isValidForObservedItemID:v9];
     }
 
     else
@@ -300,22 +300,22 @@ LABEL_19:
   return v7;
 }
 
-+ (BOOL)item:(id)a3 isValidForObservedItemID:(id)a4
++ (BOOL)item:(id)item isValidForObservedItemID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 identifier];
-  v9 = [v8 isEqualToString:@"NSFileProviderWorkingSetContainerItemIdentifier"];
+  itemCopy = item;
+  dCopy = d;
+  identifier = [dCopy identifier];
+  v9 = [identifier isEqualToString:@"NSFileProviderWorkingSetContainerItemIdentifier"];
 
   if (v9)
   {
     goto LABEL_5;
   }
 
-  v10 = [v7 identifier];
-  v11 = [v10 hasPrefix:@"NSFileProviderSearchContainerItemIdentifier"];
+  identifier2 = [dCopy identifier];
+  v11 = [identifier2 hasPrefix:@"NSFileProviderSearchContainerItemIdentifier"];
 
-  if (v11 & 1) != 0 || ([a1 _item:v6 isCollectionRootForObservedItemID:v7] & 1) != 0 || (objc_msgSend(v7, "providerID"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "hasPrefix:", @"com.apple.Document"), v12, (v13))
+  if (v11 & 1) != 0 || ([self _item:itemCopy isCollectionRootForObservedItemID:dCopy] & 1) != 0 || (objc_msgSend(dCopy, "providerID"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "hasPrefix:", @"com.apple.Document"), v12, (v13))
   {
 LABEL_5:
     v14 = 1;
@@ -323,22 +323,22 @@ LABEL_5:
 
   else
   {
-    v16 = [v6 parentItemIdentifier];
-    v17 = [v7 identifier];
-    if ([v16 isEqualToString:v17])
+    parentItemIdentifier = [itemCopy parentItemIdentifier];
+    identifier3 = [dCopy identifier];
+    if ([parentItemIdentifier isEqualToString:identifier3])
     {
-      v18 = [v6 providerDomainID];
-      v19 = [v7 providerDomainID];
-      if ([v18 isEqualToString:v19])
+      providerDomainID = [itemCopy providerDomainID];
+      providerDomainID2 = [dCopy providerDomainID];
+      if ([providerDomainID isEqualToString:providerDomainID2])
       {
         v14 = 1;
       }
 
       else
       {
-        v20 = [v6 fp_parentDomainIdentifier];
-        v21 = [v7 domainIdentifier];
-        v14 = [v20 isEqualToString:v21];
+        fp_parentDomainIdentifier = [itemCopy fp_parentDomainIdentifier];
+        domainIdentifier = [dCopy domainIdentifier];
+        v14 = [fp_parentDomainIdentifier isEqualToString:domainIdentifier];
       }
     }
 
@@ -351,29 +351,29 @@ LABEL_5:
   return v14;
 }
 
-+ (BOOL)_item:(id)a3 isCollectionRootForObservedItemID:(id)a4
++ (BOOL)_item:(id)_item isCollectionRootForObservedItemID:(id)d
 {
-  v5 = a4;
-  v6 = [a3 itemID];
-  v7 = [v6 isEqualToItemID:v5];
+  dCopy = d;
+  itemID = [_item itemID];
+  v7 = [itemID isEqualToItemID:dCopy];
 
   return v7;
 }
 
-- (id)createDataSourceWithSortDescriptors:(id)a3
+- (id)createDataSourceWithSortDescriptors:(id)descriptors
 {
-  [(FPEnumerationSettings *)self->_settings setSortDescriptors:a3];
-  v4 = [(FPExtensionEnumerationSettings *)self->_settings enumeratedURL];
+  [(FPEnumerationSettings *)self->_settings setSortDescriptors:descriptors];
+  enumeratedURL = [(FPExtensionEnumerationSettings *)self->_settings enumeratedURL];
 
-  if (v4)
+  if (enumeratedURL)
   {
     [(FPExtensionEnumerationSettings *)self->_settings setNullableEnumeratedItemID:0];
-    v5 = self;
-    objc_sync_enter(v5);
-    alternateID = v5->_alternateID;
-    v5->_alternateID = 0;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    alternateID = selfCopy->_alternateID;
+    selfCopy->_alternateID = 0;
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   v7 = [FPExtensionDataSource alloc];
@@ -385,35 +385,35 @@ LABEL_5:
 
 - (id)scopedSearchQuery
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_alternateID;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_alternateID;
+  objc_sync_exit(selfCopy);
 
   v4 = [NSFileProviderSearchQuery alloc];
-  v5 = [(FPExtensionCollection *)v2 enumeratedItemID];
-  v6 = [(NSFileProviderSearchQuery *)v4 initWithSearchScopedToItemID:v5 alternateItemID:v3];
+  enumeratedItemID = [(FPExtensionCollection *)selfCopy enumeratedItemID];
+  v6 = [(NSFileProviderSearchQuery *)v4 initWithSearchScopedToItemID:enumeratedItemID alternateItemID:v3];
 
   return v6;
 }
 
-- (void)_failMonitoringWithError:(id)a3
+- (void)_failMonitoringWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(FPItemCollection *)self workingQueue];
-  dispatch_assert_queue_V2(v5);
+  errorCopy = error;
+  workingQueue = [(FPItemCollection *)self workingQueue];
+  dispatch_assert_queue_V2(workingQueue);
 
   v6 = fp_current_or_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(FPExtensionCollection *)self _failMonitoringWithError:v4, v6];
+    [(FPExtensionCollection *)self _failMonitoringWithError:errorCopy, v6];
   }
 
-  v7 = [(FPItemCollection *)self delegate];
+  delegate = [(FPItemCollection *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v4 fp_unwrappedInternalError];
-    [v7 collection:self didEncounterError:v8];
+    fp_unwrappedInternalError = [errorCopy fp_unwrappedInternalError];
+    [delegate collection:self didEncounterError:fp_unwrappedInternalError];
   }
 
   [(FPExtensionCollection *)self _stopMonitoringDomains];
@@ -595,34 +595,34 @@ void __55__FPExtensionCollection__startMonitoringDSCopyProgress__block_invoke_33
   [(FPItemCollection *)&v3 stopObserving];
 }
 
-- (BOOL)recoverFromError:(id)a3
+- (BOOL)recoverFromError:(id)error
 {
   v4.receiver = self;
   v4.super_class = FPExtensionCollection;
-  return [(FPItemCollection *)&v4 recoverFromError:a3];
+  return [(FPItemCollection *)&v4 recoverFromError:error];
 }
 
-- (BOOL)shouldRetryError:(id)a3
+- (BOOL)shouldRetryError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v8.receiver = self;
   v8.super_class = FPExtensionCollection;
-  if ([(FPItemCollection *)&v8 shouldRetryError:v4])
+  if ([(FPItemCollection *)&v8 shouldRetryError:errorCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v4 fp_unwrappedInternalError];
-    if ([v6 fp_isFileProviderInternalError:12])
+    fp_unwrappedInternalError = [errorCopy fp_unwrappedInternalError];
+    if ([fp_unwrappedInternalError fp_isFileProviderInternalError:12])
     {
       v5 = 1;
     }
 
     else
     {
-      v5 = [v6 fp_isFileProviderError:-2001];
+      v5 = [fp_unwrappedInternalError fp_isFileProviderError:-2001];
     }
   }
 

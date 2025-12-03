@@ -1,15 +1,15 @@
 @interface _UIPreviewPresentationAnimator
 - (CADisplayLink)displayLink;
-- (_UIPreviewPresentationAnimator)initWithDuration:(double)a3 advanceBlock:(id)a4;
-- (void)_advanceFromDisplayLink:(id)a3;
+- (_UIPreviewPresentationAnimator)initWithDuration:(double)duration advanceBlock:(id)block;
+- (void)_advanceFromDisplayLink:(id)link;
 - (void)stopAnimation;
 @end
 
 @implementation _UIPreviewPresentationAnimator
 
-- (_UIPreviewPresentationAnimator)initWithDuration:(double)a3 advanceBlock:(id)a4
+- (_UIPreviewPresentationAnimator)initWithDuration:(double)duration advanceBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = _UIPreviewPresentationAnimator;
   v7 = [(_UIPreviewPresentationAnimator *)&v14 init];
@@ -17,14 +17,14 @@
   if (v7)
   {
     [(_UIPreviewPresentationAnimator *)v7 setStartMediaTime:1.79769313e308];
-    [(_UIPreviewPresentationAnimator *)v8 setDuration:a3];
+    [(_UIPreviewPresentationAnimator *)v8 setDuration:duration];
     v9 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EA0]];
     [(_UIPreviewPresentationAnimator *)v8 setMediaTimingFunction:v9];
 
-    [(_UIPreviewPresentationAnimator *)v8 setAdvanceBlock:v6];
+    [(_UIPreviewPresentationAnimator *)v8 setAdvanceBlock:blockCopy];
     v10 = [MEMORY[0x1E6979330] displayLinkWithTarget:v8 selector:sel__advanceFromDisplayLink_];
-    v11 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [v10 addToRunLoop:v11 forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [v10 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
     [(_UIPreviewPresentationAnimator *)v8 setDisplayLink:v10];
     v12 = v8;
@@ -35,15 +35,15 @@
 
 - (void)stopAnimation
 {
-  v3 = [(_UIPreviewPresentationAnimator *)self displayLink];
-  [v3 invalidate];
+  displayLink = [(_UIPreviewPresentationAnimator *)self displayLink];
+  [displayLink invalidate];
 
   [(_UIPreviewPresentationAnimator *)self setDisplayLink:0];
 
   [(_UIPreviewPresentationAnimator *)self setAdvanceBlock:0];
 }
 
-- (void)_advanceFromDisplayLink:(id)a3
+- (void)_advanceFromDisplayLink:(id)link
 {
   v4 = CACurrentMediaTime();
   [(_UIPreviewPresentationAnimator *)self startMediaTime];
@@ -62,14 +62,14 @@
   }
 
   v9 = v8 / v7;
-  v10 = [(_UIPreviewPresentationAnimator *)self mediaTimingFunction];
+  mediaTimingFunction = [(_UIPreviewPresentationAnimator *)self mediaTimingFunction];
   *&v11 = v9;
-  [v10 _solveForInput:v11];
+  [mediaTimingFunction _solveForInput:v11];
   *&v9 = v12;
   v13 = v12;
 
-  v14 = [(_UIPreviewPresentationAnimator *)self advanceBlock];
-  v14[2](v13);
+  advanceBlock = [(_UIPreviewPresentationAnimator *)self advanceBlock];
+  advanceBlock[2](v13);
 
   if (*&v9 >= 1.0)
   {

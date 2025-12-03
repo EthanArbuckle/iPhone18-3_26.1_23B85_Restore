@@ -1,15 +1,15 @@
 @interface _ATXUnifiedActivityStreamConversions
-+ (id)sessionPublisherFromTransitionPublisher:(id)a3;
++ (id)sessionPublisherFromTransitionPublisher:(id)publisher;
 @end
 
 @implementation _ATXUnifiedActivityStreamConversions
 
-+ (id)sessionPublisherFromTransitionPublisher:(id)a3
++ (id)sessionPublisherFromTransitionPublisher:(id)publisher
 {
   v3 = MEMORY[0x277D42648];
-  v4 = a3;
+  publisherCopy = publisher;
   v5 = [v3 tupleWithFirst:0 second:0];
-  v6 = [v4 scanWithInitial:v5 nextPartialResult:&__block_literal_global_15];
+  v6 = [publisherCopy scanWithInitial:v5 nextPartialResult:&__block_literal_global_15];
 
   v7 = [v6 filterWithIsIncluded:&__block_literal_global_18_1];
   v8 = [v7 mapWithTransform:&__block_literal_global_21_2];

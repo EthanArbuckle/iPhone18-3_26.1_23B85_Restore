@@ -1,17 +1,17 @@
 @interface PKDiscoverySpacerShelf
-- (BOOL)isEqual:(id)a3;
-- (PKDiscoverySpacerShelf)initWithCoder:(id)a3;
-- (PKDiscoverySpacerShelf)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKDiscoverySpacerShelf)initWithCoder:(id)coder;
+- (PKDiscoverySpacerShelf)initWithDictionary:(id)dictionary;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKDiscoverySpacerShelf
 
-- (PKDiscoverySpacerShelf)initWithDictionary:(id)a3
+- (PKDiscoverySpacerShelf)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = PKDiscoverySpacerShelf;
   v5 = [(PKDiscoverySpacerShelf *)&v10 init];
@@ -19,7 +19,7 @@
   if (v5)
   {
     [(PKDiscoveryShelf *)v5 setType:3];
-    v7 = [v4 PKStringForKey:@"type"];
+    v7 = [dictionaryCopy PKStringForKey:@"type"];
     if ([@"cardSpacerA" isEqualToString:v7])
     {
       v8 = 1;
@@ -51,12 +51,12 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = PKDiscoverySpacerShelf;
-  v5 = [(PKDiscoveryShelf *)&v7 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_spacerType == v4[4];
+  v5 = [(PKDiscoveryShelf *)&v7 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_spacerType == equalCopy[4];
 
   return v5;
 }
@@ -79,24 +79,24 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKDiscoverySpacerShelf;
-  v4 = a3;
-  [(PKDiscoveryShelf *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_spacerType forKey:{@"type", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PKDiscoveryShelf *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_spacerType forKey:{@"type", v5.receiver, v5.super_class}];
 }
 
-- (PKDiscoverySpacerShelf)initWithCoder:(id)a3
+- (PKDiscoverySpacerShelf)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PKDiscoverySpacerShelf;
-  v5 = [(PKDiscoveryShelf *)&v7 initWithCoder:v4];
+  v5 = [(PKDiscoveryShelf *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_spacerType = [v4 decodeIntegerForKey:@"type"];
+    v5->_spacerType = [coderCopy decodeIntegerForKey:@"type"];
   }
 
   return v5;

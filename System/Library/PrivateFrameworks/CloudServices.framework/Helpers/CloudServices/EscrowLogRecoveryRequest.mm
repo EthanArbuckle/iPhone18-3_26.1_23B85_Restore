@@ -7,8 +7,8 @@
 
 - (id)urlString
 {
-  v2 = [(EscrowGenericRequest *)self baseURL];
-  v3 = [v2 stringByAppendingString:@"/escrowproxy/api/recovery_log"];
+  baseURL = [(EscrowGenericRequest *)self baseURL];
+  v3 = [baseURL stringByAppendingString:@"/escrowproxy/api/recovery_log"];
 
   return v3;
 }
@@ -17,12 +17,12 @@
 {
   v8.receiver = self;
   v8.super_class = EscrowLogRecoveryRequest;
-  v3 = [(EscrowGenericRequest *)&v8 bodyDictionary];
-  v4 = [(EscrowGenericRequest *)self recoveryUUID];
-  [v3 setObject:v4 forKeyedSubscript:@"recovery_uuid"];
+  bodyDictionary = [(EscrowGenericRequest *)&v8 bodyDictionary];
+  recoveryUUID = [(EscrowGenericRequest *)self recoveryUUID];
+  [bodyDictionary setObject:recoveryUUID forKeyedSubscript:@"recovery_uuid"];
 
-  v5 = [(EscrowGenericRequest *)self doubleRecoveryUUID];
-  [v3 setObject:v5 forKeyedSubscript:@"double_recovery_uuid"];
+  doubleRecoveryUUID = [(EscrowGenericRequest *)self doubleRecoveryUUID];
+  [bodyDictionary setObject:doubleRecoveryUUID forKeyedSubscript:@"double_recovery_uuid"];
 
   if ([(EscrowGenericRequest *)self recoveryResult])
   {
@@ -34,9 +34,9 @@
     v6 = &__kCFBooleanFalse;
   }
 
-  [v3 setObject:v6 forKeyedSubscript:@"recovery_result"];
+  [bodyDictionary setObject:v6 forKeyedSubscript:@"recovery_result"];
 
-  return v3;
+  return bodyDictionary;
 }
 
 @end

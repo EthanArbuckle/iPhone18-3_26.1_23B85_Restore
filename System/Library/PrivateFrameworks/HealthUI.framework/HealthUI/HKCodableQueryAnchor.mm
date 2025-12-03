@@ -1,11 +1,11 @@
 @interface HKCodableQueryAnchor
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableQueryAnchor
@@ -16,26 +16,26 @@
   v8.receiver = self;
   v8.super_class = HKCodableQueryAnchor;
   v4 = [(HKCodableQueryAnchor *)&v8 description];
-  v5 = [(HKCodableQueryAnchor *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableQueryAnchor *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   encodedQueryAnchorData = self->_encodedQueryAnchorData;
   if (encodedQueryAnchorData)
   {
-    [v3 setObject:encodedQueryAnchorData forKey:@"encodedQueryAnchorData"];
+    [dictionary setObject:encodedQueryAnchorData forKey:@"encodedQueryAnchorData"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_encodedQueryAnchorData)
   {
@@ -43,32 +43,32 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   encodedQueryAnchorData = self->_encodedQueryAnchorData;
   if (encodedQueryAnchorData)
   {
-    [a3 setEncodedQueryAnchorData:encodedQueryAnchorData];
+    [to setEncodedQueryAnchorData:encodedQueryAnchorData];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_encodedQueryAnchorData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_encodedQueryAnchorData copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     encodedQueryAnchorData = self->_encodedQueryAnchorData;
-    if (encodedQueryAnchorData | v4[1])
+    if (encodedQueryAnchorData | equalCopy[1])
     {
       v6 = [(NSData *)encodedQueryAnchorData isEqual:?];
     }
@@ -87,9 +87,9 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
     [(HKCodableQueryAnchor *)self setEncodedQueryAnchorData:?];
   }

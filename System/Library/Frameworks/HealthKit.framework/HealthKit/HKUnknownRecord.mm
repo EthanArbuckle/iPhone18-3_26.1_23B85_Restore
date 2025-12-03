@@ -1,34 +1,34 @@
 @interface HKUnknownRecord
-+ (id)_newUnknownRecordWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 sortDate:(id)a12 country:(id)a13 state:(unint64_t)a14 displayName:(id)a15 config:(id)a16;
++ (id)_newUnknownRecordWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 sortDate:(id)self2 country:(id)self3 state:(unint64_t)self4 displayName:(id)self5 config:(id)self6;
 + (id)defaultDisplayString;
-+ (id)unknownRecordWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 country:(id)a12 state:(unint64_t)a13 displayName:(id)a14;
-- (BOOL)isEquivalent:(id)a3;
++ (id)unknownRecordWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 country:(id)self2 state:(unint64_t)self3 displayName:(id)self4;
+- (BOOL)isEquivalent:(id)equivalent;
 - (HKUnknownRecord)init;
-- (HKUnknownRecord)initWithCoder:(id)a3;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
+- (HKUnknownRecord)initWithCoder:(id)coder;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
 - (id)description;
 - (id)fallbackDisplayString;
-- (void)_setDisplayName:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setDisplayName:(id)name;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKUnknownRecord
 
 - (id)fallbackDisplayString
 {
-  v2 = [(HKUnknownRecord *)self displayName];
-  v3 = v2;
-  if (v2)
+  displayName = [(HKUnknownRecord *)self displayName];
+  v3 = displayName;
+  if (displayName)
   {
-    v4 = v2;
+    defaultDisplayString = displayName;
   }
 
   else
   {
-    v4 = [objc_opt_class() defaultDisplayString];
+    defaultDisplayString = [objc_opt_class() defaultDisplayString];
   }
 
-  v5 = v4;
+  v5 = defaultDisplayString;
 
   return v5;
 }
@@ -41,32 +41,32 @@
   return v3;
 }
 
-+ (id)_newUnknownRecordWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 sortDate:(id)a12 country:(id)a13 state:(unint64_t)a14 displayName:(id)a15 config:(id)a16
++ (id)_newUnknownRecordWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 sortDate:(id)self2 country:(id)self3 state:(unint64_t)self4 displayName:(id)self5 config:(id)self6
 {
-  v35 = a5;
-  v20 = a15;
-  v21 = a16;
+  errorCopy = error;
+  nameCopy = name;
+  configCopy = config;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __178__HKUnknownRecord__newUnknownRecordWithType_note_enteredInError_modifiedDate_originIdentifier_locale_extractionVersion_device_metadata_sortDate_country_state_displayName_config___block_invoke;
   aBlock[3] = &unk_1E7379AD0;
-  v41 = v20;
-  v42 = v21;
-  v38 = v21;
-  v37 = v20;
-  v22 = a13;
-  v23 = a12;
-  v24 = a11;
-  v25 = a10;
-  v26 = a8;
-  v27 = a7;
-  v28 = a6;
-  v29 = a4;
-  v30 = a3;
+  v41 = nameCopy;
+  v42 = configCopy;
+  v38 = configCopy;
+  v37 = nameCopy;
+  countryCopy = country;
+  sortDateCopy = sortDate;
+  metadataCopy = metadata;
+  deviceCopy = device;
+  localeCopy = locale;
+  identifierCopy = identifier;
+  dateCopy = date;
+  noteCopy = note;
+  typeCopy = type;
   v31 = _Block_copy(aBlock);
-  v39.receiver = a1;
+  v39.receiver = self;
   v39.super_class = &OBJC_METACLASS___HKUnknownRecord;
-  v36 = objc_msgSendSuper2(&v39, sel__newMedicalRecordWithType_note_enteredInError_modifiedDate_originIdentifier_locale_extractionVersion_device_metadata_sortDate_country_state_config_, v30, v29, v35, v28, v27, v26, a9, v25, v24, v23, v22, a14, v31);
+  v36 = objc_msgSendSuper2(&v39, sel__newMedicalRecordWithType_note_enteredInError_modifiedDate_originIdentifier_locale_extractionVersion_device_metadata_sortDate_country_state_config_, typeCopy, noteCopy, errorCopy, dateCopy, identifierCopy, localeCopy, version, deviceCopy, metadataCopy, sortDateCopy, countryCopy, state, v31);
 
   return v36;
 }
@@ -108,24 +108,24 @@ void __178__HKUnknownRecord__newUnknownRecordWithType_note_enteredInError_modifi
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKUnknownRecord;
-  v4 = a3;
-  [(HKMedicalRecord *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_displayName forKey:{@"DisplayName", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(HKMedicalRecord *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_displayName forKey:{@"DisplayName", v5.receiver, v5.super_class}];
 }
 
-- (HKUnknownRecord)initWithCoder:(id)a3
+- (HKUnknownRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HKUnknownRecord;
-  v5 = [(HKMedicalRecord *)&v9 initWithCoder:v4];
+  v5 = [(HKMedicalRecord *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DisplayName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DisplayName"];
     displayName = v5->_displayName;
     v5->_displayName = v6;
   }
@@ -133,33 +133,33 @@ void __178__HKUnknownRecord__newUnknownRecordWithType_note_enteredInError_modifi
   return v5;
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
-  v4 = a3;
+  equivalentCopy = equivalent;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equivalentCopy;
     v16.receiver = self;
     v16.super_class = HKUnknownRecord;
     if ([(HKMedicalRecord *)&v16 isEquivalent:v5])
     {
-      v6 = [(HKUnknownRecord *)self displayName];
-      v7 = [v5 displayName];
-      v8 = v7;
-      if (v6 == v7)
+      displayName = [(HKUnknownRecord *)self displayName];
+      displayName2 = [v5 displayName];
+      v8 = displayName2;
+      if (displayName == displayName2)
       {
 
         goto LABEL_9;
       }
 
-      v9 = [v5 displayName];
-      if (v9)
+      displayName3 = [v5 displayName];
+      if (displayName3)
       {
-        v10 = v9;
-        v11 = [(HKUnknownRecord *)self displayName];
-        v12 = [v5 displayName];
-        v13 = [v11 isEqualToString:v12];
+        v10 = displayName3;
+        displayName4 = [(HKUnknownRecord *)self displayName];
+        displayName5 = [v5 displayName];
+        v13 = [displayName4 isEqualToString:displayName5];
 
         if ((v13 & 1) == 0)
         {
@@ -185,20 +185,20 @@ LABEL_13:
   return v14;
 }
 
-- (void)_setDisplayName:(id)a3
+- (void)_setDisplayName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   displayName = self->_displayName;
   self->_displayName = v4;
 
   MEMORY[0x1EEE66BB8](v4, displayName);
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
   v7.receiver = self;
   v7.super_class = HKUnknownRecord;
-  v3 = [(HKMedicalRecord *)&v7 _validateWithConfiguration:a3.var0, a3.var1];
+  v3 = [(HKMedicalRecord *)&v7 _validateWithConfiguration:configuration.var0, configuration.var1];
   v4 = v3;
   if (v3)
   {
@@ -208,21 +208,21 @@ LABEL_13:
   return v4;
 }
 
-+ (id)unknownRecordWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 country:(id)a12 state:(unint64_t)a13 displayName:(id)a14
++ (id)unknownRecordWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 country:(id)self2 state:(unint64_t)self3 displayName:(id)self4
 {
-  v31 = a5;
-  v18 = a6;
-  v19 = a14;
-  v20 = a12;
-  v21 = a11;
-  v22 = a10;
-  v23 = a8;
-  v24 = a7;
-  v25 = a4;
-  v26 = a3;
-  v30 = v18;
-  v27 = [HKSemanticDate semanticDateWithKeyPath:@"modifiedDate" date:v18];
-  v28 = [HKUnknownRecord unknownRecordWithType:v26 note:v25 enteredInError:v31 modifiedDate:v18 originIdentifier:v24 locale:v23 extractionVersion:a9 device:v22 metadata:v21 sortDate:v27 country:v20 state:a13 displayName:v19];
+  errorCopy = error;
+  dateCopy = date;
+  nameCopy = name;
+  countryCopy = country;
+  metadataCopy = metadata;
+  deviceCopy = device;
+  localeCopy = locale;
+  identifierCopy = identifier;
+  noteCopy = note;
+  typeCopy = type;
+  v30 = dateCopy;
+  v27 = [HKSemanticDate semanticDateWithKeyPath:@"modifiedDate" date:dateCopy];
+  v28 = [HKUnknownRecord unknownRecordWithType:typeCopy note:noteCopy enteredInError:errorCopy modifiedDate:dateCopy originIdentifier:identifierCopy locale:localeCopy extractionVersion:version device:deviceCopy metadata:metadataCopy sortDate:v27 country:countryCopy state:state displayName:nameCopy];
 
   return v28;
 }

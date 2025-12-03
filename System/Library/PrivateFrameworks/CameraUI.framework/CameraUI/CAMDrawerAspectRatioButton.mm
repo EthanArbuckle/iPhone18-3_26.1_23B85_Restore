@@ -1,48 +1,48 @@
 @interface CAMDrawerAspectRatioButton
-+ (id)localizedTitleForAspectRatio:(int64_t)a3 useBriefText:(BOOL)a4;
-- (BOOL)isMenuItemSelected:(id)a3;
-- (CAMDrawerAspectRatioButton)initWithLayoutStyle:(int64_t)a3;
-- (id)_imageForAspectRatio:(int64_t)a3;
-- (id)hudItemForAccessibilityHUDManager:(id)a3;
++ (id)localizedTitleForAspectRatio:(int64_t)ratio useBriefText:(BOOL)text;
+- (BOOL)isMenuItemSelected:(id)selected;
+- (CAMDrawerAspectRatioButton)initWithLayoutStyle:(int64_t)style;
+- (id)_imageForAspectRatio:(int64_t)ratio;
+- (id)hudItemForAccessibilityHUDManager:(id)manager;
 - (id)loadMenuItems;
-- (void)didSelectMenuItem:(id)a3;
-- (void)setAspectRatio:(int64_t)a3;
+- (void)didSelectMenuItem:(id)item;
+- (void)setAspectRatio:(int64_t)ratio;
 - (void)updateImage;
 @end
 
 @implementation CAMDrawerAspectRatioButton
 
-- (CAMDrawerAspectRatioButton)initWithLayoutStyle:(int64_t)a3
+- (CAMDrawerAspectRatioButton)initWithLayoutStyle:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = CAMDrawerAspectRatioButton;
-  v3 = [(CAMControlDrawerMenuButton *)&v7 initWithLayoutStyle:a3];
+  v3 = [(CAMControlDrawerMenuButton *)&v7 initWithLayoutStyle:style];
   if (v3)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     imagesByText = v3->__imagesByText;
-    v3->__imagesByText = v4;
+    v3->__imagesByText = dictionary;
   }
 
   return v3;
 }
 
-- (void)setAspectRatio:(int64_t)a3
+- (void)setAspectRatio:(int64_t)ratio
 {
-  if (self->_aspectRatio != a3)
+  if (self->_aspectRatio != ratio)
   {
-    self->_aspectRatio = a3;
+    self->_aspectRatio = ratio;
     [(CAMControlDrawerMenuButton *)self updateLabelsIfNeeded];
 
     [(CAMDrawerAspectRatioButton *)self updateImage];
   }
 }
 
-- (BOOL)isMenuItemSelected:(id)a3
+- (BOOL)isMenuItemSelected:(id)selected
 {
-  v4 = [a3 value];
-  v5 = [v4 integerValue];
-  LOBYTE(self) = v5 == [(CAMDrawerAspectRatioButton *)self aspectRatio];
+  value = [selected value];
+  integerValue = [value integerValue];
+  LOBYTE(self) = integerValue == [(CAMDrawerAspectRatioButton *)self aspectRatio];
 
   return self;
 }
@@ -52,13 +52,13 @@
   v21 = *MEMORY[0x1E69E9840];
   v2 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:4];
   v3 = +[CAMCaptureCapabilities capabilities];
-  v4 = [v3 supportedAspectRatioCropValues];
+  supportedAspectRatioCropValues = [v3 supportedAspectRatioCropValues];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  obj = v4;
+  obj = supportedAspectRatioCropValues;
   v5 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
@@ -73,10 +73,10 @@
           objc_enumerationMutation(obj);
         }
 
-        v9 = [*(*(&v16 + 1) + 8 * i) integerValue];
-        v10 = [objc_opt_class() localizedTitleForAspectRatio:v9 useBriefText:0];
+        integerValue = [*(*(&v16 + 1) + 8 * i) integerValue];
+        v10 = [objc_opt_class() localizedTitleForAspectRatio:integerValue useBriefText:0];
         v11 = [CAMControlDrawerMenuItem alloc];
-        v12 = [MEMORY[0x1E696AD98] numberWithInteger:v9];
+        v12 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
         v13 = [(CAMControlDrawerMenuItem *)v11 initWithTitle:v10 value:v12];
 
         [v2 addObject:v13];
@@ -91,34 +91,34 @@
   return v2;
 }
 
-- (void)didSelectMenuItem:(id)a3
+- (void)didSelectMenuItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CAMDrawerAspectRatioButton *)self aspectRatio];
-  v6 = [v4 value];
+  itemCopy = item;
+  aspectRatio = [(CAMDrawerAspectRatioButton *)self aspectRatio];
+  value = [itemCopy value];
 
-  v7 = [v6 integerValue];
-  if (v7 != v5)
+  integerValue = [value integerValue];
+  if (integerValue != aspectRatio)
   {
-    [(CAMDrawerAspectRatioButton *)self setAspectRatio:v7];
+    [(CAMDrawerAspectRatioButton *)self setAspectRatio:integerValue];
 
     [(CAMDrawerAspectRatioButton *)self sendActionsForControlEvents:4096];
   }
 }
 
-+ (id)localizedTitleForAspectRatio:(int64_t)a3 useBriefText:(BOOL)a4
++ (id)localizedTitleForAspectRatio:(int64_t)ratio useBriefText:(BOOL)text
 {
   v5 = 0;
-  if (a3 > 1)
+  if (ratio > 1)
   {
-    if (a3 == 2)
+    if (ratio == 2)
     {
       v6 = @"ASPECT_SIXTEEN_NINE";
     }
 
     else
     {
-      if (a3 != 3)
+      if (ratio != 3)
       {
         goto LABEL_13;
       }
@@ -127,14 +127,14 @@
     }
   }
 
-  else if (a3)
+  else if (ratio)
   {
-    if (a3 != 1)
+    if (ratio != 1)
     {
       goto LABEL_13;
     }
 
-    if (a4)
+    if (text)
     {
       v6 = @"ASPECT_SQUARE_BRIEF";
     }
@@ -156,23 +156,23 @@ LABEL_13:
   return v5;
 }
 
-- (id)_imageForAspectRatio:(int64_t)a3
+- (id)_imageForAspectRatio:(int64_t)ratio
 {
-  v4 = [objc_opt_class() localizedTitleForAspectRatio:a3 useBriefText:1];
-  v5 = [(CAMDrawerAspectRatioButton *)self _imagesByText];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v4 = [objc_opt_class() localizedTitleForAspectRatio:ratio useBriefText:1];
+  _imagesByText = [(CAMDrawerAspectRatioButton *)self _imagesByText];
+  v6 = [_imagesByText objectForKeyedSubscript:v4];
 
   if (!v6 && v4)
   {
     v7 = [CAMFont cameraFontOfSize:16.0];
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
-    v9 = [(CAMDrawerAspectRatioButton *)self window];
-    v10 = [v9 screen];
-    [v10 scale];
-    v6 = CAMImageWithTextColorFont(v4, v8, v7);
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    window = [(CAMDrawerAspectRatioButton *)self window];
+    screen = [window screen];
+    [screen scale];
+    v6 = CAMImageWithTextColorFont(v4, whiteColor, v7);
 
-    v11 = [(CAMDrawerAspectRatioButton *)self _imagesByText];
-    [v11 setObject:v6 forKeyedSubscript:v4];
+    _imagesByText2 = [(CAMDrawerAspectRatioButton *)self _imagesByText];
+    [_imagesByText2 setObject:v6 forKeyedSubscript:v4];
   }
 
   return v6;
@@ -181,23 +181,23 @@ LABEL_13:
 - (void)updateImage
 {
   v3 = [(CAMDrawerAspectRatioButton *)self _imageForAspectRatio:[(CAMDrawerAspectRatioButton *)self aspectRatio]];
-  v4 = [(CAMControlDrawerButton *)self _imageView];
-  [v4 setImage:v3];
+  _imageView = [(CAMControlDrawerButton *)self _imageView];
+  [_imageView setImage:v3];
 
   [(CAMDrawerAspectRatioButton *)self setNeedsLayout];
 }
 
-- (id)hudItemForAccessibilityHUDManager:(id)a3
+- (id)hudItemForAccessibilityHUDManager:(id)manager
 {
   v9.receiver = self;
   v9.super_class = CAMDrawerAspectRatioButton;
-  v4 = [(CAMControlDrawerMenuButton *)&v9 hudItemForAccessibilityHUDManager:a3];
+  v4 = [(CAMControlDrawerMenuButton *)&v9 hudItemForAccessibilityHUDManager:manager];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 title];
+    title = [v4 title];
 
-    if (!v6)
+    if (!title)
     {
       v7 = [objc_opt_class() localizedTitleForAspectRatio:-[CAMDrawerAspectRatioButton aspectRatio](self useBriefText:{"aspectRatio"), 1}];
       [v5 setTitle:v7];

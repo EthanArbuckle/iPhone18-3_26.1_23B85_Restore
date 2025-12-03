@@ -1,21 +1,21 @@
 @interface WFSelectFilesUIKitUserInterface
-- (id)supportedPickerContentTypesWithOptions:(unint64_t)a3;
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
-- (void)finishWithResults:(id)a3 error:(id)a4;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)retrieveFilesWithConsumingBundleID:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
+- (id)supportedPickerContentTypesWithOptions:(unint64_t)options;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
+- (void)finishWithResults:(id)results error:(id)error;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)retrieveFilesWithConsumingBundleID:(id)d options:(unint64_t)options completionHandler:(id)handler;
 @end
 
 @implementation WFSelectFilesUIKitUserInterface
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [MEMORY[0x277CCA9B8] userCancelledError];
-  [(WFSelectFilesUIKitUserInterface *)self finishWithResults:0 error:v4];
+  userCancelledError = [MEMORY[0x277CCA9B8] userCancelledError];
+  [(WFSelectFilesUIKitUserInterface *)self finishWithResults:0 error:userCancelledError];
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -27,7 +27,7 @@
   v4[2] = __73__WFSelectFilesUIKitUserInterface_documentPicker_didPickDocumentsAtURLs___block_invoke_2;
   v4[3] = &unk_278C376E0;
   v4[4] = self;
-  [a4 if_mapAsynchronously:v5 completionHandler:v4];
+  [ls if_mapAsynchronously:v5 completionHandler:v4];
 }
 
 void __73__WFSelectFilesUIKitUserInterface_documentPicker_didPickDocumentsAtURLs___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -40,18 +40,18 @@ void __73__WFSelectFilesUIKitUserInterface_documentPicker_didPickDocumentsAtURLs
   [v5 getResultWithFileURL:v8 consumingBundleID:v9 resultBlock:v7];
 }
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__WFSelectFilesUIKitUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C375C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFSelectFilesUIKitUserInterface;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFEmbeddableActionUserInterface *)&v6 cancelPresentationWithCompletionHandler:v7];
 }
 
@@ -66,25 +66,25 @@ uint64_t __75__WFSelectFilesUIKitUserInterface_cancelPresentationWithCompletionH
   return v4();
 }
 
-- (void)finishWithResults:(id)a3 error:(id)a4
+- (void)finishWithResults:(id)results error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(WFSelectFilesUIKitUserInterface *)self completionHandler];
+  resultsCopy = results;
+  errorCopy = error;
+  completionHandler = [(WFSelectFilesUIKitUserInterface *)self completionHandler];
 
-  if (v7)
+  if (completionHandler)
   {
-    v8 = [(WFSelectFilesUIKitUserInterface *)self completionHandler];
-    (v8)[2](v8, v9, v6);
+    completionHandler2 = [(WFSelectFilesUIKitUserInterface *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, resultsCopy, errorCopy);
   }
 
   [(WFSelectFilesUIKitUserInterface *)self setCompletionHandler:0];
 }
 
-- (id)supportedPickerContentTypesWithOptions:(unint64_t)a3
+- (id)supportedPickerContentTypesWithOptions:(unint64_t)options
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  if ((a3 & 8) != 0)
+  if ((options & 8) != 0)
   {
     v8[0] = *MEMORY[0x277CE1D80];
     v3 = v8;
@@ -102,24 +102,24 @@ uint64_t __75__WFSelectFilesUIKitUserInterface_cancelPresentationWithCompletionH
   return v4;
 }
 
-- (void)retrieveFilesWithConsumingBundleID:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)retrieveFilesWithConsumingBundleID:(id)d options:(unint64_t)options completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  if (!v10)
+  dCopy = d;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFSelectFilesActionUIKitUserInterface.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSelectFilesActionUIKitUserInterface.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  [(WFSelectFilesUIKitUserInterface *)self setCompletionHandler:v10];
-  [(WFSelectFilesUIKitUserInterface *)self setConsumingBundleID:v9];
+  [(WFSelectFilesUIKitUserInterface *)self setCompletionHandler:handlerCopy];
+  [(WFSelectFilesUIKitUserInterface *)self setConsumingBundleID:dCopy];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __96__WFSelectFilesUIKitUserInterface_retrieveFilesWithConsumingBundleID_options_completionHandler___block_invoke;
   block[3] = &unk_278C374C0;
   block[4] = self;
-  block[5] = a4;
+  block[5] = options;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

@@ -1,38 +1,38 @@
 @interface CCWalletExtractedOrderContentExtractedEmailShippingDetails
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCWalletExtractedOrderContentExtractedEmailShippingDetails)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCWalletExtractedOrderContentExtractedEmailShippingDetails)initWithStatus:(unsigned int)a3 trackingNumber:(id)a4 carrierName:(id)a5 error:(id *)a6;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCWalletExtractedOrderContentExtractedEmailShippingDetails)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCWalletExtractedOrderContentExtractedEmailShippingDetails)initWithStatus:(unsigned int)status trackingNumber:(id)number carrierName:(id)name error:(id *)error;
 - (NSString)carrierName;
 - (NSString)trackingNumber;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCWalletExtractedOrderContentExtractedEmailShippingDetails
 
-- (CCWalletExtractedOrderContentExtractedEmailShippingDetails)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCWalletExtractedOrderContentExtractedEmailShippingDetails)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"status"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"status"];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 unsignedIntegerValue];
+      unsignedIntegerValue = [v9 unsignedIntegerValue];
     }
 
     else
     {
-      v11 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"trackingNumber"];
-    v14 = [v6 objectForKeyedSubscript:@"carrierName"];
-    v12 = [[CCWalletExtractedOrderContentExtractedEmailShippingDetails alloc] initWithStatus:v11 trackingNumber:v13 carrierName:v14 error:a4];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"trackingNumber"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"carrierName"];
+    v12 = [[CCWalletExtractedOrderContentExtractedEmailShippingDetails alloc] initWithStatus:unsignedIntegerValue trackingNumber:v13 carrierName:v14 error:error];
   }
 
   else
@@ -52,14 +52,14 @@
 
   if (self->_trackingNumber)
   {
-    v5 = [(CCWalletExtractedOrderContentExtractedEmailShippingDetails *)self trackingNumber];
-    [v3 setObject:v5 forKeyedSubscript:@"trackingNumber"];
+    trackingNumber = [(CCWalletExtractedOrderContentExtractedEmailShippingDetails *)self trackingNumber];
+    [v3 setObject:trackingNumber forKeyedSubscript:@"trackingNumber"];
   }
 
   if (self->_carrierName)
   {
-    v6 = [(CCWalletExtractedOrderContentExtractedEmailShippingDetails *)self carrierName];
-    [v3 setObject:v6 forKeyedSubscript:@"carrierName"];
+    carrierName = [(CCWalletExtractedOrderContentExtractedEmailShippingDetails *)self carrierName];
+    [v3 setObject:carrierName forKeyedSubscript:@"carrierName"];
   }
 
   v7 = [v3 copy];
@@ -67,22 +67,22 @@
   return v7;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v8 = a3;
+  blockCopy = block;
   v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:8027 enumValue:self->_status];
-  v8[2](v8, v5);
+  blockCopy[2](blockCopy, v5);
 
   if (self->_trackingNumber)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:8028 stringValue:self->_trackingNumber];
-    v8[2](v8, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_carrierName)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:8029 stringValue:self->_carrierName];
-    v8[2](v8, v7);
+    blockCopy[2](blockCopy, v7);
   }
 }
 
@@ -100,10 +100,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   v10 = MEMORY[0x1E6993AA8];
@@ -114,7 +114,7 @@
 
   v11 = 0;
   v12 = MEMORY[0x1E6993AA0];
-  v45 = self;
+  selfCopy = self;
   while (2)
   {
     if (*&v7[*v10])
@@ -249,14 +249,14 @@ LABEL_41:
           {
             v35 = objc_opt_class();
             NSStringFromClass(v35);
-            v36 = v6;
-            v38 = v37 = a4;
+            v36 = dataCopy;
+            v38 = v37 = error;
             v39 = *&v7[*v10];
             v11 = CCSkipFieldErrorForMessage();
 
-            a4 = v37;
-            v6 = v36;
-            self = v45;
+            error = v37;
+            dataCopy = v36;
+            self = selfCopy;
             goto LABEL_41;
           }
 
@@ -305,12 +305,12 @@ LABEL_48:
   return v43;
 }
 
-- (CCWalletExtractedOrderContentExtractedEmailShippingDetails)initWithStatus:(unsigned int)a3 trackingNumber:(id)a4 carrierName:(id)a5 error:(id *)a6
+- (CCWalletExtractedOrderContentExtractedEmailShippingDetails)initWithStatus:(unsigned int)status trackingNumber:(id)number carrierName:(id)name error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  numberCopy = number;
+  nameCopy = name;
   v12 = objc_opt_new();
-  if (a3)
+  if (status)
   {
     v13 = CCValidateEnumField();
     v14 = 0;
@@ -327,7 +327,7 @@ LABEL_48:
     v14 = 0;
   }
 
-  if (v10)
+  if (numberCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -336,13 +336,13 @@ LABEL_48:
     if (!IsInstanceOfExpectedClass)
     {
       CCSetError();
-      v19 = 0;
+      selfCopy = 0;
       v14 = v16;
       goto LABEL_15;
     }
 
     CCPBDataWriterWriteStringField();
-    if (!v11)
+    if (!nameCopy)
     {
       goto LABEL_8;
     }
@@ -351,7 +351,7 @@ LABEL_48:
   }
 
   v16 = v14;
-  if (v11)
+  if (nameCopy)
   {
 LABEL_10:
     objc_opt_class();
@@ -366,20 +366,20 @@ LABEL_10:
 
 LABEL_13:
     CCSetError();
-    v19 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
 LABEL_8:
   v14 = v16;
 LABEL_12:
-  v18 = [v12 immutableData];
-  self = [(CCItemMessage *)self initWithData:v18 error:a6];
+  immutableData = [v12 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v19 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v19;
+  return selfCopy;
 }
 
 @end

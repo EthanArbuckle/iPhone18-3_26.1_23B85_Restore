@@ -7,16 +7,16 @@
 
 - (void)show
 {
-  v3 = [(ICDebugSpinner *)self windows];
+  windows = [(ICDebugSpinner *)self windows];
 
   v4 = os_log_create("com.apple.notes", "UI");
-  v5 = v4;
-  if (v3)
+  viewControllerManagers = v4;
+  if (windows)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Trying to show debug spinner, but it's already showing", buf, 2u);
+      _os_log_impl(&_mh_execute_header, viewControllerManagers, OS_LOG_TYPE_DEFAULT, "Trying to show debug spinner, but it's already showing", buf, 2u);
     }
   }
 
@@ -24,7 +24,7 @@
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      sub_1004DC90C(v5);
+      sub_1004DC90C(viewControllerManagers);
     }
 
     v6 = objc_alloc_init(NSMutableArray);
@@ -35,9 +35,9 @@
     v21 = 0u;
     v22 = 0u;
     v7 = +[ICAppDelegate sharedInstance];
-    v5 = [v7 viewControllerManagers];
+    viewControllerManagers = [v7 viewControllerManagers];
 
-    v8 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
+    v8 = [viewControllerManagers countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v8)
     {
       v9 = v8;
@@ -49,19 +49,19 @@
         {
           if (*v22 != v10)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(viewControllerManagers);
           }
 
-          v12 = [*(*(&v21 + 1) + 8 * v11) window];
-          v13 = [v12 windowScene];
+          window = [*(*(&v21 + 1) + 8 * v11) window];
+          windowScene = [window windowScene];
 
-          if (v13)
+          if (windowScene)
           {
             v14 = objc_alloc_init(UIWindow);
-            v15 = [(ICDebugSpinner *)self windows];
-            [v15 addObject:v14];
+            windows2 = [(ICDebugSpinner *)self windows];
+            [windows2 addObject:v14];
 
-            [v14 setWindowScene:v13];
+            [v14 setWindowScene:windowScene];
             v16 = [UIColor colorWithWhite:0.0 alpha:0.5];
             [v14 setBackgroundColor:v16];
 
@@ -93,7 +93,7 @@
         }
 
         while (v9 != v11);
-        v9 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v9 = [viewControllerManagers countByEnumeratingWithState:&v21 objects:v26 count:16];
       }
 
       while (v9);
@@ -113,9 +113,9 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v10 = self;
-  v4 = [(ICDebugSpinner *)self windows];
-  v5 = [v4 copy];
+  selfCopy = self;
+  windows = [(ICDebugSpinner *)self windows];
+  v5 = [windows copy];
 
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
@@ -150,7 +150,7 @@
     while (v7);
   }
 
-  [(ICDebugSpinner *)v10 setWindows:0];
+  [(ICDebugSpinner *)selfCopy setWindows:0];
 }
 
 @end

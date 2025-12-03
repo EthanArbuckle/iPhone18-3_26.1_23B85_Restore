@@ -1,32 +1,32 @@
 @interface MFMailQLAttachmentContext
-+ (MFMailQLAttachmentContext)contextWithUserActivity:(id)a3;
-- (MFMailQLAttachmentContext)initWithAttachmentBeingEdited:(id)a3;
-- (MFMailQLAttachmentContext)initWithAttachmentURL:(id)a3 editBehavior:(int64_t)a4 messageObjectID:(id)a5 mailboxObjectID:(id)a6 subject:(id)a7 senderDisplayName:(id)a8 shouldShowReplyAll:(BOOL)a9 contentManaged:(BOOL)a10;
++ (MFMailQLAttachmentContext)contextWithUserActivity:(id)activity;
+- (MFMailQLAttachmentContext)initWithAttachmentBeingEdited:(id)edited;
+- (MFMailQLAttachmentContext)initWithAttachmentURL:(id)l editBehavior:(int64_t)behavior messageObjectID:(id)d mailboxObjectID:(id)iD subject:(id)subject senderDisplayName:(id)name shouldShowReplyAll:(BOOL)all contentManaged:(BOOL)self0;
 - (NSUserActivity)userActivity;
 - (id)initForInsertingDrawing;
 @end
 
 @implementation MFMailQLAttachmentContext
 
-+ (MFMailQLAttachmentContext)contextWithUserActivity:(id)a3
++ (MFMailQLAttachmentContext)contextWithUserActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 activityType];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E69ADCB8]];
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
+  v6 = [activityType isEqualToString:*MEMORY[0x1E69ADCB8]];
 
   if (v6)
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69ADCC0]];
-    v9 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69ADCC8]];
-    v26 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69ADCD0]];
+    userInfo = [activityCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69ADCC0]];
+    v9 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69ADCC8]];
+    v26 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69ADCD0]];
     v10 = *MEMORY[0x1E69ADC40];
-    v25 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69ADC40]];
-    v11 = [v7 objectForKeyedSubscript:v10];
-    v12 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69ADC50]];
-    v13 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69ADCD8]];
-    v14 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69ADCE0]];
-    v15 = [v14 BOOLValue];
+    v25 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69ADC40]];
+    v11 = [userInfo objectForKeyedSubscript:v10];
+    v12 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69ADC50]];
+    v13 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69ADCD8]];
+    v14 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69ADCE0]];
+    bOOLValue = [v14 BOOLValue];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
@@ -45,13 +45,13 @@
           v24 = 0;
         }
 
-        v21 = [a1 alloc];
+        v21 = [self alloc];
         v22 = [MEMORY[0x1E695DFF8] URLWithString:v8];
-        v20 = [v9 integerValue];
+        integerValue = [v9 integerValue];
         v23 = [MEMORY[0x1E699ADA8] objectIDFromSerializedRepresentation:v25];
         BYTE1(v19) = [v26 BOOLValue];
-        LOBYTE(v19) = v15;
-        v17 = [v21 initWithAttachmentURL:v22 editBehavior:v20 messageObjectID:v23 mailboxObjectID:v24 subject:v12 senderDisplayName:v13 shouldShowReplyAll:v19 contentManaged:?];
+        LOBYTE(v19) = bOOLValue;
+        v17 = [v21 initWithAttachmentURL:v22 editBehavior:integerValue messageObjectID:v23 mailboxObjectID:v24 subject:v12 senderDisplayName:v13 shouldShowReplyAll:v19 contentManaged:?];
       }
 
       else
@@ -75,27 +75,27 @@
   return v17;
 }
 
-- (MFMailQLAttachmentContext)initWithAttachmentURL:(id)a3 editBehavior:(int64_t)a4 messageObjectID:(id)a5 mailboxObjectID:(id)a6 subject:(id)a7 senderDisplayName:(id)a8 shouldShowReplyAll:(BOOL)a9 contentManaged:(BOOL)a10
+- (MFMailQLAttachmentContext)initWithAttachmentURL:(id)l editBehavior:(int64_t)behavior messageObjectID:(id)d mailboxObjectID:(id)iD subject:(id)subject senderDisplayName:(id)name shouldShowReplyAll:(BOOL)all contentManaged:(BOOL)self0
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v25 = a8;
+  lCopy = l;
+  dCopy = d;
+  iDCopy = iD;
+  subjectCopy = subject;
+  nameCopy = name;
   v26.receiver = self;
   v26.super_class = MFMailQLAttachmentContext;
   v20 = [(MFMailQLAttachmentContext *)&v26 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_attachmentURL, a3);
-    v21->_contentManaged = a10;
-    v21->_editBehavior = a4;
-    objc_storeStrong(&v21->_messageObjectID, a5);
-    objc_storeStrong(&v21->_mailboxObjectID, a6);
-    objc_storeStrong(&v21->_subject, a7);
-    objc_storeStrong(&v21->_senderDisplayName, a8);
-    v21->_shouldShowReplyAll = a9;
+    objc_storeStrong(&v20->_attachmentURL, l);
+    v21->_contentManaged = managed;
+    v21->_editBehavior = behavior;
+    objc_storeStrong(&v21->_messageObjectID, d);
+    objc_storeStrong(&v21->_mailboxObjectID, iD);
+    objc_storeStrong(&v21->_subject, subject);
+    objc_storeStrong(&v21->_senderDisplayName, name);
+    v21->_shouldShowReplyAll = all;
     v21->_insertingDrawing = 0;
     attachmentBeingEdited = v21->_attachmentBeingEdited;
     v21->_attachmentBeingEdited = 0;
@@ -117,16 +117,16 @@
   return result;
 }
 
-- (MFMailQLAttachmentContext)initWithAttachmentBeingEdited:(id)a3
+- (MFMailQLAttachmentContext)initWithAttachmentBeingEdited:(id)edited
 {
-  v5 = a3;
+  editedCopy = edited;
   v9.receiver = self;
   v9.super_class = MFMailQLAttachmentContext;
   v6 = [(MFMailQLAttachmentContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_attachmentBeingEdited, a3);
+    objc_storeStrong(&v6->_attachmentBeingEdited, edited);
     v7->_insertingDrawing = 0;
   }
 
@@ -141,9 +141,9 @@
   v25 = [v3 initWithActivityType:*MEMORY[0x1E69ADCB8]];
   v5 = objc_alloc(MEMORY[0x1E695DF90]);
   v26[0] = *MEMORY[0x1E69ADCC0];
-  v24 = [(MFMailQLAttachmentContext *)self attachmentURL];
-  v6 = [v24 absoluteString];
-  v27[0] = v6;
+  attachmentURL = [(MFMailQLAttachmentContext *)self attachmentURL];
+  absoluteString = [attachmentURL absoluteString];
+  v27[0] = absoluteString;
   v26[1] = *MEMORY[0x1E69ADCC8];
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:{-[MFMailQLAttachmentContext editBehavior](self, "editBehavior")}];
   v27[1] = v7;
@@ -151,39 +151,39 @@
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[MFMailQLAttachmentContext isContentManaged](self, "isContentManaged")}];
   v27[2] = v8;
   v26[3] = *MEMORY[0x1E69ADC40];
-  v9 = [(MFMailQLAttachmentContext *)self messageObjectID];
-  v10 = [v9 serializedRepresentation];
-  v27[3] = v10;
+  messageObjectID = [(MFMailQLAttachmentContext *)self messageObjectID];
+  serializedRepresentation = [messageObjectID serializedRepresentation];
+  v27[3] = serializedRepresentation;
   v26[4] = *MEMORY[0x1E69ADC50];
-  v11 = [(MFMailQLAttachmentContext *)self subject];
+  subject = [(MFMailQLAttachmentContext *)self subject];
   v23 = v4;
-  v27[4] = v11;
+  v27[4] = subject;
   v26[5] = *MEMORY[0x1E69ADCE0];
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[MFMailQLAttachmentContext shouldShowReplyAll](self, "shouldShowReplyAll")}];
   v27[5] = v12;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:6];
   v14 = [v5 initWithDictionary:v13];
 
-  v15 = [(MFMailQLAttachmentContext *)self senderDisplayName];
+  senderDisplayName = [(MFMailQLAttachmentContext *)self senderDisplayName];
 
-  if (v15)
+  if (senderDisplayName)
   {
-    v16 = [(MFMailQLAttachmentContext *)self senderDisplayName];
-    [v14 setObject:v16 forKeyedSubscript:*MEMORY[0x1E69ADCD8]];
+    senderDisplayName2 = [(MFMailQLAttachmentContext *)self senderDisplayName];
+    [v14 setObject:senderDisplayName2 forKeyedSubscript:*MEMORY[0x1E69ADCD8]];
   }
 
-  v17 = [(MFMailQLAttachmentContext *)self mailboxObjectID];
-  v18 = [v17 serializedRepresentation];
+  mailboxObjectID = [(MFMailQLAttachmentContext *)self mailboxObjectID];
+  serializedRepresentation2 = [mailboxObjectID serializedRepresentation];
 
-  if (v18)
+  if (serializedRepresentation2)
   {
-    [v14 setObject:v18 forKeyedSubscript:*MEMORY[0x1E69ADC38]];
+    [v14 setObject:serializedRepresentation2 forKeyedSubscript:*MEMORY[0x1E69ADC38]];
   }
 
   [v25 setUserInfo:v14];
   v19 = MEMORY[0x1E696AEC0];
-  v20 = [(NSURL *)self->_attachmentURL absoluteString];
-  v21 = [v19 stringWithFormat:@"%@.%@", v23, v20];
+  absoluteString2 = [(NSURL *)self->_attachmentURL absoluteString];
+  v21 = [v19 stringWithFormat:@"%@.%@", v23, absoluteString2];
   [v25 setTargetContentIdentifier:v21];
 
   return v25;

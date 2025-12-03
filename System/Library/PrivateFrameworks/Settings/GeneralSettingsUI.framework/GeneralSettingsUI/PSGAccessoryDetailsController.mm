@@ -1,8 +1,8 @@
 @interface PSGAccessoryDetailsController
 - (PSGAccessoryDetailsController)init;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_accessoryDidUpdate:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_accessoryDidUpdate:(id)update;
 - (void)connect;
 - (void)dealloc;
 - (void)disconnect;
@@ -18,14 +18,14 @@
   v2 = [(PSGAccessoryDetailsController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel__accessoryDidUpdate_ name:*MEMORY[0x277CC5E88] object:0];
-    [v3 addObserver:v2 selector:sel__accessoryDidUpdate_ name:*MEMORY[0x277CC5EA0] object:0];
-    [v3 addObserver:v2 selector:sel__accessoryDidUpdate_ name:*MEMORY[0x277CC5E90] object:0];
-    [v3 addObserver:v2 selector:sel__accessoryDidUpdate_ name:*MEMORY[0x277CC5EB0] object:0];
-    [v3 addObserver:v2 selector:sel__accessoryDidUpdate_ name:*MEMORY[0x277CC5EC8] object:0];
-    [v3 addObserver:v2 selector:sel__accessoryDidUpdate_ name:*MEMORY[0x277CC5EB8] object:0];
-    [v3 addObserver:v2 selector:sel__accessoryDidUpdate_ name:*MEMORY[0x277CC5EC0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__accessoryDidUpdate_ name:*MEMORY[0x277CC5E88] object:0];
+    [defaultCenter addObserver:v2 selector:sel__accessoryDidUpdate_ name:*MEMORY[0x277CC5EA0] object:0];
+    [defaultCenter addObserver:v2 selector:sel__accessoryDidUpdate_ name:*MEMORY[0x277CC5E90] object:0];
+    [defaultCenter addObserver:v2 selector:sel__accessoryDidUpdate_ name:*MEMORY[0x277CC5EB0] object:0];
+    [defaultCenter addObserver:v2 selector:sel__accessoryDidUpdate_ name:*MEMORY[0x277CC5EC8] object:0];
+    [defaultCenter addObserver:v2 selector:sel__accessoryDidUpdate_ name:*MEMORY[0x277CC5EB8] object:0];
+    [defaultCenter addObserver:v2 selector:sel__accessoryDidUpdate_ name:*MEMORY[0x277CC5EC0] object:0];
   }
 
   return v2;
@@ -33,8 +33,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   accessory = self->_accessory;
   if (accessory)
@@ -52,26 +52,26 @@
 - (id)specifiers
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(PSGAccessoryDetailsController *)self specifier];
-  v5 = [v4 userInfo];
+  specifier = [(PSGAccessoryDetailsController *)self specifier];
+  userInfo = [specifier userInfo];
 
-  if ([v5 isMemberOfClass:objc_opt_class()])
+  if ([userInfo isMemberOfClass:objc_opt_class()])
   {
-    objc_storeStrong(&self->_accessory, v5);
+    objc_storeStrong(&self->_accessory, userInfo);
     [(EAAccessory *)self->_accessory setDelegate:self];
-    v6 = [(EAAccessory *)self->_accessory bonjourName];
-    if (v6)
+    bonjourName = [(EAAccessory *)self->_accessory bonjourName];
+    if (bonjourName)
     {
-      v7 = v6;
-      v8 = [(EAAccessory *)self->_accessory isAvailableOverBonjour];
+      v7 = bonjourName;
+      isAvailableOverBonjour = [(EAAccessory *)self->_accessory isAvailableOverBonjour];
 
-      if (v8)
+      if (isAvailableOverBonjour)
       {
-        v9 = [(EAAccessory *)self->_accessory hasIPConnection];
+        hasIPConnection = [(EAAccessory *)self->_accessory hasIPConnection];
         v10 = MEMORY[0x277D3FAD8];
         v11 = PSG_BundleForGeneralSettingsUIFramework();
         v12 = v11;
-        if (v9)
+        if (hasIPConnection)
         {
           v13 = @"DISCONNECT";
         }
@@ -81,7 +81,7 @@
           v13 = @"CONNECT";
         }
 
-        if (v9)
+        if (hasIPConnection)
         {
           v14 = &selRef_disconnect;
         }
@@ -102,8 +102,8 @@
 
     if ([(EAAccessory *)self->_accessory isConnected])
     {
-      v17 = [(EAAccessory *)self->_accessory manufacturer];
-      v18 = [v17 length];
+      manufacturer = [(EAAccessory *)self->_accessory manufacturer];
+      v18 = [manufacturer length];
 
       v19 = MEMORY[0x277D3FED8];
       if (v18)
@@ -118,8 +118,8 @@
         [v3 addObject:v23];
       }
 
-      v24 = [(EAAccessory *)self->_accessory modelNumber];
-      v25 = [v24 length];
+      modelNumber = [(EAAccessory *)self->_accessory modelNumber];
+      v25 = [modelNumber length];
 
       if (v25)
       {
@@ -133,8 +133,8 @@
         [v3 addObject:v29];
       }
 
-      v30 = [(EAAccessory *)self->_accessory serialNumber];
-      v31 = [v30 length];
+      serialNumber = [(EAAccessory *)self->_accessory serialNumber];
+      v31 = [serialNumber length];
 
       if (v31)
       {
@@ -148,8 +148,8 @@
         [v3 addObject:v35];
       }
 
-      v36 = [(EAAccessory *)self->_accessory firmwareRevision];
-      v37 = [v36 length];
+      firmwareRevision = [(EAAccessory *)self->_accessory firmwareRevision];
+      v37 = [firmwareRevision length];
 
       if (v37)
       {
@@ -163,8 +163,8 @@
         [v3 addObject:v41];
       }
 
-      v42 = [(EAAccessory *)self->_accessory hardwareRevision];
-      v43 = [v42 length];
+      hardwareRevision = [(EAAccessory *)self->_accessory hardwareRevision];
+      v43 = [hardwareRevision length];
 
       if (v43)
       {
@@ -205,16 +205,16 @@
 
 - (void)connect
 {
-  v4 = [MEMORY[0x277CC5FB0] sharedAccessoryManager];
-  v3 = [(EAAccessory *)self->_accessory bonjourName];
-  [v4 initiateConnectionToIPAccessory:v3];
+  mEMORY[0x277CC5FB0] = [MEMORY[0x277CC5FB0] sharedAccessoryManager];
+  bonjourName = [(EAAccessory *)self->_accessory bonjourName];
+  [mEMORY[0x277CC5FB0] initiateConnectionToIPAccessory:bonjourName];
 }
 
 - (void)disconnect
 {
-  v4 = [MEMORY[0x277CC5FB0] sharedAccessoryManager];
-  v3 = [(EAAccessory *)self->_accessory bonjourName];
-  [v4 disconnectIPAccessory:v3];
+  mEMORY[0x277CC5FB0] = [MEMORY[0x277CC5FB0] sharedAccessoryManager];
+  bonjourName = [(EAAccessory *)self->_accessory bonjourName];
+  [mEMORY[0x277CC5FB0] disconnectIPAccessory:bonjourName];
 }
 
 - (void)findAppForAccessory
@@ -225,7 +225,7 @@
   v5 = v3;
   [v3 addObject:v4];
 
-  v42 = self;
+  selfCopy = self;
   [(EAAccessory *)self->_accessory allPublicProtocolStrings];
   v46 = 0u;
   v47 = 0u;
@@ -267,43 +267,43 @@
   }
 
   v16 = MEMORY[0x277CCAD18];
-  v17 = [(EAAccessory *)v42->_accessory preferredApp];
-  v18 = [v16 queryItemWithName:@"bid" value:v17];
+  preferredApp = [(EAAccessory *)selfCopy->_accessory preferredApp];
+  v18 = [v16 queryItemWithName:@"bid" value:preferredApp];
   [v5 addObject:v18];
 
   v19 = MEMORY[0x277CCAD18];
-  v20 = [(EAAccessory *)v42->_accessory name];
-  v21 = [v19 queryItemWithName:@"accessoryName" value:v20];
+  name = [(EAAccessory *)selfCopy->_accessory name];
+  v21 = [v19 queryItemWithName:@"accessoryName" value:name];
   [v5 addObject:v21];
 
   v22 = MEMORY[0x277CCAD18];
-  v23 = [(EAAccessory *)v42->_accessory manufacturer];
-  v24 = [v22 queryItemWithName:@"manufacturer" value:v23];
+  manufacturer = [(EAAccessory *)selfCopy->_accessory manufacturer];
+  v24 = [v22 queryItemWithName:@"manufacturer" value:manufacturer];
   [v5 addObject:v24];
 
   v25 = MEMORY[0x277CCAD18];
-  v26 = [(EAAccessory *)v42->_accessory modelNumber];
-  v27 = [v25 queryItemWithName:@"modelNumber" value:v26];
+  modelNumber = [(EAAccessory *)selfCopy->_accessory modelNumber];
+  v27 = [v25 queryItemWithName:@"modelNumber" value:modelNumber];
   [v5 addObject:v27];
 
   v28 = MEMORY[0x277CCAD18];
-  v29 = [(EAAccessory *)v42->_accessory firmwareRevision];
-  v30 = [v28 queryItemWithName:@"firmwareVersion" value:v29];
+  firmwareRevision = [(EAAccessory *)selfCopy->_accessory firmwareRevision];
+  v30 = [v28 queryItemWithName:@"firmwareVersion" value:firmwareRevision];
   [v5 addObject:v30];
 
   v31 = MEMORY[0x277CCAD18];
-  v32 = [(EAAccessory *)v42->_accessory hardwareRevision];
-  v33 = [v31 queryItemWithName:@"hardwareVersion" value:v32];
+  hardwareRevision = [(EAAccessory *)selfCopy->_accessory hardwareRevision];
+  v33 = [v31 queryItemWithName:@"hardwareVersion" value:hardwareRevision];
   [v5 addObject:v33];
 
   v34 = MEMORY[0x277CCAD18];
-  v35 = [(EAAccessory *)v42->_accessory serialNumber];
-  v36 = [v34 queryItemWithName:@"serialNumber" value:v35];
+  serialNumber = [(EAAccessory *)selfCopy->_accessory serialNumber];
+  v36 = [v34 queryItemWithName:@"serialNumber" value:serialNumber];
   [v5 addObject:v36];
 
   v37 = [objc_alloc(MEMORY[0x277CCACE0]) initWithString:@"itms-apps://?"];
   [v37 setQueryItems:v5];
-  v38 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v39 = [v37 URL];
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
@@ -311,7 +311,7 @@
   v44[3] = &unk_278325070;
   v45 = v37;
   v40 = v37;
-  [v38 openURL:v39 options:MEMORY[0x277CBEC10] completionHandler:v44];
+  [mEMORY[0x277D75128] openURL:v39 options:MEMORY[0x277CBEC10] completionHandler:v44];
 
   v41 = *MEMORY[0x277D85DE8];
 }
@@ -325,49 +325,49 @@ void __52__PSGAccessoryDetailsController_findAppForAccessory__block_invoke(uint6
   }
 }
 
-- (void)_accessoryDidUpdate:(id)a3
+- (void)_accessoryDidUpdate:(id)update
 {
-  v98 = a3;
-  v4 = [v98 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277CC5E98]];
+  updateCopy = update;
+  userInfo = [updateCopy userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277CC5E98]];
 
   [v5 setDelegate:self];
   if (!v5)
   {
-    v8 = 0;
+    name = 0;
     goto LABEL_8;
   }
 
-  v6 = [v5 bonjourName];
+  bonjourName = [v5 bonjourName];
 
-  if (v6)
+  if (bonjourName)
   {
-    v7 = [v5 bonjourName];
+    bonjourName2 = [v5 bonjourName];
   }
 
   else
   {
-    v8 = [v5 name];
+    name = [v5 name];
 
-    if (!v8)
+    if (!name)
     {
       goto LABEL_8;
     }
 
-    v7 = [v5 name];
+    bonjourName2 = [v5 name];
   }
 
-  v8 = v7;
+  name = bonjourName2;
 LABEL_8:
-  v9 = [(EAAccessory *)self->_accessory name];
-  if ([v8 isEqualToString:v9])
+  name2 = [(EAAccessory *)self->_accessory name];
+  if ([name isEqualToString:name2])
   {
   }
 
   else
   {
-    v10 = [(EAAccessory *)self->_accessory bonjourName];
-    v11 = [v8 isEqualToString:v10];
+    bonjourName3 = [(EAAccessory *)self->_accessory bonjourName];
+    v11 = [name isEqualToString:bonjourName3];
 
     if (!v11)
     {
@@ -375,7 +375,7 @@ LABEL_8:
     }
   }
 
-  v94 = v8;
+  v94 = name;
   v12 = [(PSGAccessoryDetailsController *)self specifierForID:@"CONNECT_BUTTON"];
   v97 = [(PSGAccessoryDetailsController *)self specifierForID:@"MANUFACTURER"];
   v13 = [(PSGAccessoryDetailsController *)self specifierForID:@"MODELNUMBER"];
@@ -384,14 +384,14 @@ LABEL_8:
   v16 = [(PSGAccessoryDetailsController *)self specifierForID:@"HARDWAREREVISION"];
   v17 = [(PSGAccessoryDetailsController *)self specifierForID:@"FIND_APP_FOR_ACCESSORY"];
   [(PSGAccessoryDetailsController *)self beginUpdates];
-  v18 = [v98 name];
+  name3 = [updateCopy name];
   v95 = v15;
   v96 = v14;
-  if ([v18 isEqualToString:*MEMORY[0x277CC5E88]])
+  if ([name3 isEqualToString:*MEMORY[0x277CC5E88]])
   {
-    v19 = [v5 isConnected];
+    isConnected = [v5 isConnected];
 
-    if (v19)
+    if (isConnected)
     {
       v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v91 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -433,8 +433,8 @@ LABEL_8:
       }
 
       v90 = v20;
-      v22 = [v5 manufacturer];
-      v23 = [v22 length];
+      manufacturer = [v5 manufacturer];
+      v23 = [manufacturer length];
 
       v24 = MEMORY[0x277D3FED8];
       if (v23)
@@ -453,8 +453,8 @@ LABEL_8:
 
       v29 = v12;
       v97 = v21;
-      v30 = [v5 modelNumber];
-      v31 = [v30 length];
+      modelNumber = [v5 modelNumber];
+      v31 = [modelNumber length];
 
       if (v31)
       {
@@ -476,8 +476,8 @@ LABEL_8:
         v36 = v91;
       }
 
-      v43 = [v5 serialNumber];
-      v44 = [v43 length];
+      serialNumber = [v5 serialNumber];
+      v44 = [serialNumber length];
 
       if (v44)
       {
@@ -498,8 +498,8 @@ LABEL_8:
       }
 
       v96 = v48;
-      v49 = [v5 firmwareRevision];
-      v50 = [v49 length];
+      firmwareRevision = [v5 firmwareRevision];
+      v50 = [firmwareRevision length];
 
       if (v50)
       {
@@ -515,8 +515,8 @@ LABEL_8:
         v95 = v54;
       }
 
-      v55 = [v5 hardwareRevision];
-      v56 = [v55 length];
+      hardwareRevision = [v5 hardwareRevision];
+      v56 = [hardwareRevision length];
 
       if (v56)
       {
@@ -560,17 +560,17 @@ LABEL_64:
   {
   }
 
-  v37 = [v98 name];
-  if ([v37 isEqualToString:*MEMORY[0x277CC5E90]])
+  name4 = [updateCopy name];
+  if ([name4 isEqualToString:*MEMORY[0x277CC5E90]])
   {
-    v38 = [v5 isConnected];
+    isConnected2 = [v5 isConnected];
 
     v29 = v12;
-    if ((v38 & 1) == 0)
+    if ((isConnected2 & 1) == 0)
     {
-      v39 = [v5 bonjourName];
+      bonjourName4 = [v5 bonjourName];
 
-      if (v39)
+      if (bonjourName4)
       {
         v40 = objc_alloc_init(MEMORY[0x277CBEB18]);
         v41 = v40;
@@ -628,12 +628,12 @@ LABEL_64:
   v42 = 0;
   v29 = v12;
 LABEL_65:
-  v65 = [v5 bonjourName];
-  if (!v65 || (v66 = v65, v67 = [v5 isAvailableOverBonjour], v66, !v67))
+  bonjourName5 = [v5 bonjourName];
+  if (!bonjourName5 || (v66 = bonjourName5, v67 = [v5 isAvailableOverBonjour], v66, !v67))
   {
-    v73 = [v5 bonjourName];
+    bonjourName6 = [v5 bonjourName];
 
-    if (!v73)
+    if (!bonjourName6)
     {
       goto LABEL_78;
     }
@@ -655,12 +655,12 @@ LABEL_81:
     goto LABEL_94;
   }
 
-  v68 = [v98 name];
-  if ([v68 isEqualToString:*MEMORY[0x277CC5EB8]])
+  name5 = [updateCopy name];
+  if ([name5 isEqualToString:*MEMORY[0x277CC5EB8]])
   {
-    v69 = [v5 hasIPConnection];
+    hasIPConnection = [v5 hasIPConnection];
 
-    if (v69)
+    if (hasIPConnection)
     {
       v70 = v17;
       v71 = v16;
@@ -691,16 +691,16 @@ LABEL_81:
   {
   }
 
-  v74 = [v98 name];
-  if (![v74 isEqualToString:*MEMORY[0x277CC5EC0]])
+  name6 = [updateCopy name];
+  if (![name6 isEqualToString:*MEMORY[0x277CC5EC0]])
   {
 
     goto LABEL_81;
   }
 
-  v75 = [v5 hasIPConnection];
+  hasIPConnection2 = [v5 hasIPConnection];
 
-  if (v75)
+  if (hasIPConnection2)
   {
 LABEL_78:
     [(PSGAccessoryDetailsController *)self endUpdates];
@@ -745,39 +745,39 @@ LABEL_91:
   if (v42)
   {
 LABEL_92:
-    v86 = [(PSGAccessoryDetailsController *)self navigationController];
-    v87 = [v86 topViewController];
+    navigationController = [(PSGAccessoryDetailsController *)self navigationController];
+    topViewController = [navigationController topViewController];
 
-    if (v87 == self)
+    if (topViewController == self)
     {
-      v88 = [(PSGAccessoryDetailsController *)self navigationController];
-      v89 = [v88 popViewControllerAnimated:1];
+      navigationController2 = [(PSGAccessoryDetailsController *)self navigationController];
+      v89 = [navigationController2 popViewControllerAnimated:1];
     }
   }
 
 LABEL_94:
   objc_storeStrong(&self->_accessory, v5);
 
-  v8 = v94;
+  name = v94;
 LABEL_95:
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = PSGAccessoryDetailsController;
-  v6 = a4;
-  v7 = [(PSGAccessoryDetailsController *)&v13 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(PSGAccessoryDetailsController *)self indexForIndexPath:v6, v13.receiver, v13.super_class];
+  pathCopy = path;
+  v7 = [(PSGAccessoryDetailsController *)&v13 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(PSGAccessoryDetailsController *)self indexForIndexPath:pathCopy, v13.receiver, v13.super_class];
 
   v9 = [(PSGAccessoryDetailsController *)self specifierAtIndex:v8];
-  v10 = [v9 identifier];
-  LODWORD(v6) = [v10 isEqualToString:@"SERIALNUMBER"];
+  identifier = [v9 identifier];
+  LODWORD(pathCopy) = [identifier isEqualToString:@"SERIALNUMBER"];
 
-  if (v6)
+  if (pathCopy)
   {
-    v11 = [v7 detailTextLabel];
-    [v11 setAdjustsFontSizeToFitWidth:1];
+    detailTextLabel = [v7 detailTextLabel];
+    [detailTextLabel setAdjustsFontSizeToFitWidth:1];
   }
 
   return v7;

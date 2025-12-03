@@ -1,44 +1,44 @@
 @interface IASignalAnalyticsObject
-- (IASignalAnalyticsObject)initWithChannel:(id)a3 signal:(id)a4 sessionIdString:(id)a5 creationTimestamp:(id)a6 payload:(id)a7;
-- (IASignalAnalyticsObject)initWithChannel:(id)a3 signal:(id)a4 sessionIdString:(id)a5 payload:(id)a6;
-- (IASignalAnalyticsObject)initWithCoder:(id)a3;
+- (IASignalAnalyticsObject)initWithChannel:(id)channel signal:(id)signal sessionIdString:(id)string creationTimestamp:(id)timestamp payload:(id)payload;
+- (IASignalAnalyticsObject)initWithChannel:(id)channel signal:(id)signal sessionIdString:(id)string payload:(id)payload;
+- (IASignalAnalyticsObject)initWithCoder:(id)coder;
 - (id)creationTimestampWithFallback;
 - (id)description;
-- (id)obtainPayloadValueSafelyForKey:(id)a3 expectedClass:(Class)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)obtainPayloadValueSafelyForKey:(id)key expectedClass:(Class)class;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IASignalAnalyticsObject
 
-- (IASignalAnalyticsObject)initWithChannel:(id)a3 signal:(id)a4 sessionIdString:(id)a5 payload:(id)a6
+- (IASignalAnalyticsObject)initWithChannel:(id)channel signal:(id)signal sessionIdString:(id)string payload:(id)payload
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  channelCopy = channel;
+  signalCopy = signal;
+  stringCopy = string;
+  payloadCopy = payload;
   v21.receiver = self;
   v21.super_class = IASignalAnalyticsObject;
   v14 = [(IAXPCObject *)&v21 init];
   v16 = v14;
   if (v14)
   {
-    objc_msgSend_setChannelName_(v14, v15, v10);
-    objc_msgSend_setSignalName_(v16, v17, v11);
-    objc_msgSend_setAnalyticsSessionIdString_(v16, v18, v12);
-    objc_msgSend_setPayload_(v16, v19, v13);
+    objc_msgSend_setChannelName_(v14, v15, channelCopy);
+    objc_msgSend_setSignalName_(v16, v17, signalCopy);
+    objc_msgSend_setAnalyticsSessionIdString_(v16, v18, stringCopy);
+    objc_msgSend_setPayload_(v16, v19, payloadCopy);
   }
 
   return v16;
 }
 
-- (IASignalAnalyticsObject)initWithChannel:(id)a3 signal:(id)a4 sessionIdString:(id)a5 creationTimestamp:(id)a6 payload:(id)a7
+- (IASignalAnalyticsObject)initWithChannel:(id)channel signal:(id)signal sessionIdString:(id)string creationTimestamp:(id)timestamp payload:(id)payload
 {
-  v12 = a6;
-  v14 = objc_msgSend_initWithChannel_signal_sessionIdString_payload_(self, v13, a3, a4, a5, a7);
+  timestampCopy = timestamp;
+  v14 = objc_msgSend_initWithChannel_signal_sessionIdString_payload_(self, v13, channel, signal, string, payload);
   v16 = v14;
   if (v14)
   {
-    objc_msgSend_setCreationTimestamp_(v14, v15, v12);
+    objc_msgSend_setCreationTimestamp_(v14, v15, timestampCopy);
   }
 
   return v16;
@@ -91,31 +91,31 @@
   return v47;
 }
 
-- (id)obtainPayloadValueSafelyForKey:(id)a3 expectedClass:(Class)a4
+- (id)obtainPayloadValueSafelyForKey:(id)key expectedClass:(Class)class
 {
-  if (!a3)
+  if (!key)
   {
     v13 = 0;
     goto LABEL_14;
   }
 
-  v6 = a3;
+  keyCopy = key;
   v9 = objc_msgSend_payload(self, v7, v8);
-  v11 = objc_msgSend_objectForKeyedSubscript_(v9, v10, v6);
+  v11 = objc_msgSend_objectForKeyedSubscript_(v9, v10, keyCopy);
 
   if (objc_opt_isKindOfClass())
   {
     v12 = v11;
   }
 
-  else if (objc_opt_class() == a4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (objc_opt_class() == class && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v12 = objc_msgSend_UUIDString(v11, v14, v15);
   }
 
   else
   {
-    if (objc_opt_class() != a4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    if (objc_opt_class() != class || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v13 = 0;
       goto LABEL_13;
@@ -152,27 +152,27 @@ LABEL_14:
   return v9;
 }
 
-- (IASignalAnalyticsObject)initWithCoder:(id)a3
+- (IASignalAnalyticsObject)initWithCoder:(id)coder
 {
   v29[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = IASignalAnalyticsObject;
-  v5 = [(IAXPCObject *)&v28 initWithCoder:v4];
+  v5 = [(IAXPCObject *)&v28 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
-    v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"channelName");
+    v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"channelName");
     channelName = v5->_channelName;
     v5->_channelName = v8;
 
     v10 = objc_opt_class();
-    v12 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v10, @"signalName");
+    v12 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v10, @"signalName");
     signalName = v5->_signalName;
     v5->_signalName = v12;
 
     v14 = objc_opt_class();
-    v16 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v15, v14, @"analyticsSessionIdString");
+    v16 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v15, v14, @"analyticsSessionIdString");
     analyticsSessionIdString = v5->_analyticsSessionIdString;
     v5->_analyticsSessionIdString = v16;
 
@@ -184,7 +184,7 @@ LABEL_14:
     v29[4] = objc_opt_class();
     v20 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v19, v29, 5);
     v22 = objc_msgSend_initWithArray_(v18, v21, v20);
-    v24 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v23, v22, @"payload");
+    v24 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v23, v22, @"payload");
     payload = v5->_payload;
     v5->_payload = v24;
   }
@@ -193,16 +193,16 @@ LABEL_14:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = IASignalAnalyticsObject;
-  v4 = a3;
-  [(IAXPCObject *)&v9 encodeWithCoder:v4];
-  objc_msgSend_encodeObject_forKey_(v4, v5, self->_channelName, @"channelName", v9.receiver, v9.super_class);
-  objc_msgSend_encodeObject_forKey_(v4, v6, self->_signalName, @"signalName");
-  objc_msgSend_encodeObject_forKey_(v4, v7, self->_analyticsSessionIdString, @"analyticsSessionIdString");
-  objc_msgSend_encodeObject_forKey_(v4, v8, self->_payload, @"payload");
+  coderCopy = coder;
+  [(IAXPCObject *)&v9 encodeWithCoder:coderCopy];
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, self->_channelName, @"channelName", v9.receiver, v9.super_class);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v6, self->_signalName, @"signalName");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->_analyticsSessionIdString, @"analyticsSessionIdString");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, self->_payload, @"payload");
 }
 
 @end

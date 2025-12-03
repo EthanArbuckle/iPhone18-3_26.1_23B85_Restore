@@ -1,6 +1,6 @@
 @interface HKFitnessDiagnosticsRequestViewController
 + (BOOL)needsRequestedPermission;
-+ (void)presentInViewController:(id)a3 completion:(id)a4;
++ (void)presentInViewController:(id)controller completion:(id)completion;
 - (void)_disableDataCollection;
 - (void)_enableDataCollection;
 - (void)_showDataCollectionAdditionalInfo;
@@ -19,31 +19,31 @@
   self->_baseAutomationIdentifier = @"UIA.Health.Onboarding.ImproveHealthAndActivity";
 
   v4 = self->_baseAutomationIdentifier;
-  v5 = [(HKFitnessDiagnosticsRequestViewController *)self view];
-  [v5 setAccessibilityIdentifier:v4];
+  view = [(HKFitnessDiagnosticsRequestViewController *)self view];
+  [view setAccessibilityIdentifier:v4];
 
   v6 = MEMORY[0x1E69B7D10];
-  v7 = [(HKFitnessDiagnosticsRequestViewController *)self improveHealthPrivacyIdentifier];
-  v46 = [v6 bundleWithIdentifier:v7];
+  improveHealthPrivacyIdentifier = [(HKFitnessDiagnosticsRequestViewController *)self improveHealthPrivacyIdentifier];
+  v46 = [v6 bundleWithIdentifier:improveHealthPrivacyIdentifier];
 
-  v8 = [MEMORY[0x1E69B7D60] accessoryButton];
-  v9 = [v46 privacyFlow];
-  v10 = [v9 localizedButtonTitle];
-  [v8 setTitle:v10 forState:0];
+  accessoryButton = [MEMORY[0x1E69B7D60] accessoryButton];
+  privacyFlow = [v46 privacyFlow];
+  localizedButtonTitle = [privacyFlow localizedButtonTitle];
+  [accessoryButton setTitle:localizedButtonTitle forState:0];
 
-  v11 = [v8 titleLabel];
-  [v11 setNumberOfLines:0];
+  titleLabel = [accessoryButton titleLabel];
+  [titleLabel setNumberOfLines:0];
 
-  [v8 addTarget:self action:sel__showDataCollectionAdditionalInfo forControlEvents:64];
+  [accessoryButton addTarget:self action:sel__showDataCollectionAdditionalInfo forControlEvents:64];
   v50[0] = self->_baseAutomationIdentifier;
   v50[1] = @"LearnMoreButton";
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:2];
   v13 = HKUIJoinStringsForAutomationIdentifier(v12);
-  [v8 setAccessibilityIdentifier:v13];
+  [accessoryButton setAccessibilityIdentifier:v13];
 
   v14 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v15 = [v14 localizedStringForKey:@"DATA_COLLECTION_MESSAGE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-  [(OBTextWelcomeController *)self addSectionWithHeader:&stru_1F42FFBE0 content:v15 accessoryButton:v8];
+  [(OBTextWelcomeController *)self addSectionWithHeader:&stru_1F42FFBE0 content:v15 accessoryButton:accessoryButton];
 
   v16 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v17 = [v16 localizedStringForKey:@"DATA_COLLECTION_BODY_TITLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
@@ -77,55 +77,55 @@
   v31 = [v30 localizedStringForKey:@"DATA_COLLECTION_BODY_BULLET_7" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
   [(OBTextWelcomeController *)self addBulletedListItemWithTitle:v31 description:0];
 
-  v32 = [MEMORY[0x1E69B7D00] boldButton];
-  [v32 addTarget:self action:sel__enableDataCollection forControlEvents:64];
+  boldButton = [MEMORY[0x1E69B7D00] boldButton];
+  [boldButton addTarget:self action:sel__enableDataCollection forControlEvents:64];
   v33 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v34 = [v33 localizedStringForKey:@"DATA_COLLECTION_ENABLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-  [v32 setTitle:v34 forState:0];
+  [boldButton setTitle:v34 forState:0];
 
   v49[0] = self->_baseAutomationIdentifier;
   v49[1] = @"EnableButton";
   v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:2];
   v36 = HKUIJoinStringsForAutomationIdentifier(v35);
-  [v32 setAccessibilityIdentifier:v36];
+  [boldButton setAccessibilityIdentifier:v36];
 
-  v37 = [(HKFitnessDiagnosticsRequestViewController *)self buttonTray];
-  [v37 addButton:v32];
+  buttonTray = [(HKFitnessDiagnosticsRequestViewController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 
-  v38 = [MEMORY[0x1E69B7D38] linkButton];
-  [v38 addTarget:self action:sel__disableDataCollection forControlEvents:64];
+  linkButton = [MEMORY[0x1E69B7D38] linkButton];
+  [linkButton addTarget:self action:sel__disableDataCollection forControlEvents:64];
   v39 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v40 = [v39 localizedStringForKey:@"DATA_COLLECTION_DISABLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-  [v38 setTitle:v40 forState:0];
+  [linkButton setTitle:v40 forState:0];
 
   v48[0] = self->_baseAutomationIdentifier;
   v48[1] = @"DisableButton";
   v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:2];
   v42 = HKUIJoinStringsForAutomationIdentifier(v41);
-  [v38 setAccessibilityIdentifier:v42];
+  [linkButton setAccessibilityIdentifier:v42];
 
-  v43 = [(HKFitnessDiagnosticsRequestViewController *)self buttonTray];
-  [v43 addButton:v38];
+  buttonTray2 = [(HKFitnessDiagnosticsRequestViewController *)self buttonTray];
+  [buttonTray2 addButton:linkButton];
 
-  v44 = [(HKFitnessDiagnosticsRequestViewController *)self headerView];
+  headerView = [(HKFitnessDiagnosticsRequestViewController *)self headerView];
   LODWORD(v45) = 1045220557;
-  [v44 setTitleHyphenationFactor:v45];
+  [headerView setTitleHyphenationFactor:v45];
 }
 
-+ (void)presentInViewController:(id)a3 completion:(id)a4
++ (void)presentInViewController:(id)controller completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  controllerCopy = controller;
   v7 = [HKFitnessDiagnosticsRequestViewController alloc];
   v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v9 = [v8 localizedStringForKey:@"DATA_COLLECTION_TITLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
   v11 = [(OBTextWelcomeController *)v7 initWithTitle:v9];
 
-  [(HKFitnessDiagnosticsRequestViewController *)v11 setCompletion:v5];
+  [(HKFitnessDiagnosticsRequestViewController *)v11 setCompletion:completionCopy];
   v10 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v11];
   [v10 setModalInPresentation:1];
   [v10 setModalPresentationStyle:2];
-  [v6 presentViewController:v10 animated:1 completion:0];
+  [controllerCopy presentViewController:v10 animated:1 completion:0];
 }
 
 + (BOOL)needsRequestedPermission
@@ -137,8 +137,8 @@
 
   else
   {
-    v4 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    v5 = [v4 hasHealthDataSubmissionAllowedBeenSet] ^ 1;
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    v5 = [mEMORY[0x1E69ADFB8] hasHealthDataSubmissionAllowedBeenSet] ^ 1;
   }
 
   return v5;
@@ -152,7 +152,7 @@
   if (os_log_type_enabled(*MEMORY[0x1E696B940], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C3942000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Enabled Data Collection", buf, 0xCu);
   }
 
@@ -205,7 +205,7 @@ void __66__HKFitnessDiagnosticsRequestViewController__enableDataCollection__bloc
   if (os_log_type_enabled(*MEMORY[0x1E696B940], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C3942000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Disabled Data Collection", buf, 0xCu);
   }
 
@@ -258,16 +258,16 @@ void __67__HKFitnessDiagnosticsRequestViewController__disableDataCollection__blo
   if (os_log_type_enabled(*MEMORY[0x1E696B940], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C3942000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Presenting Privacy view controller", &v8, 0xCu);
   }
 
   v4 = MEMORY[0x1E69B7D58];
-  v5 = [(HKFitnessDiagnosticsRequestViewController *)self improveHealthPrivacyIdentifier];
-  v6 = [v4 presenterForPrivacySplashWithIdentifier:v5];
+  improveHealthPrivacyIdentifier = [(HKFitnessDiagnosticsRequestViewController *)self improveHealthPrivacyIdentifier];
+  v6 = [v4 presenterForPrivacySplashWithIdentifier:improveHealthPrivacyIdentifier];
 
-  v7 = [(HKFitnessDiagnosticsRequestViewController *)self navigationController];
-  [v6 presentInNavigationStack:v7];
+  navigationController = [(HKFitnessDiagnosticsRequestViewController *)self navigationController];
+  [v6 presentInNavigationStack:navigationController];
 }
 
 @end

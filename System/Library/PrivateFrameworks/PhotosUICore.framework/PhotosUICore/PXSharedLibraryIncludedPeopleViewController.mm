@@ -1,114 +1,114 @@
 @interface PXSharedLibraryIncludedPeopleViewController
-+ (double)heightForWidth:(double)a3 numberOfItems:(unint64_t)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (PXSharedLibraryIncludedPeopleViewController)initWithDataSourceManager:(id)a3;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (id)_infoAtIndexPath:(id)a3;
-- (id)_personAtIndexPath:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)_removeCell:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)picker:(id)a3 didFinishPicking:(id)a4;
++ (double)heightForWidth:(double)width numberOfItems:(unint64_t)items;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (PXSharedLibraryIncludedPeopleViewController)initWithDataSourceManager:(id)manager;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (id)_infoAtIndexPath:(id)path;
+- (id)_personAtIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)_removeCell:(id)cell;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)picker:(id)picker didFinishPicking:(id)picking;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation PXSharedLibraryIncludedPeopleViewController
 
-- (void)picker:(id)a3 didFinishPicking:(id)a4
+- (void)picker:(id)picker didFinishPicking:(id)picking
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if ([v8 count] >= 2)
+  pickerCopy = picker;
+  pickingCopy = picking;
+  if ([pickingCopy count] >= 2)
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleViewController.m" lineNumber:258 description:{@"Invalid parameter not satisfying: %@", @"results.count <= 1"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleViewController.m" lineNumber:258 description:{@"Invalid parameter not satisfying: %@", @"results.count <= 1"}];
   }
 
   [(PXSharedLibraryIncludedPeopleViewController *)self dismissViewControllerAnimated:1 completion:0];
-  v9 = [v8 firstObject];
+  firstObject = [pickingCopy firstObject];
 
-  v10 = [v9 itemIdentifier];
-  if ([v10 length])
+  itemIdentifier = [firstObject itemIdentifier];
+  if ([itemIdentifier length])
   {
-    v11 = [(PXSharedLibraryIncludedPeopleViewController *)self dataSourceManager];
-    v12 = [v11 dataSource];
-    v13 = [MEMORY[0x1E6978980] uuidFromLocalIdentifier:v10];
-    v14 = [v12 infoForPersonUUID:v13];
+    dataSourceManager = [(PXSharedLibraryIncludedPeopleViewController *)self dataSourceManager];
+    dataSource = [dataSourceManager dataSource];
+    v13 = [MEMORY[0x1E6978980] uuidFromLocalIdentifier:itemIdentifier];
+    v14 = [dataSource infoForPersonUUID:v13];
 
     if (v14)
     {
-      v15 = [v14 participant];
+      participant = [v14 participant];
 
-      if (!v15)
+      if (!participant)
       {
-        v16 = [(PXSharedLibraryIncludedPeopleViewController *)self currentSelectedIndexPath];
-        v17 = [(PXSharedLibraryIncludedPeopleViewController *)self _infoAtIndexPath:v16];
+        currentSelectedIndexPath = [(PXSharedLibraryIncludedPeopleViewController *)self currentSelectedIndexPath];
+        v17 = [(PXSharedLibraryIncludedPeopleViewController *)self _infoAtIndexPath:currentSelectedIndexPath];
 
-        v18 = [v17 participant];
+        participant2 = [v17 participant];
         v19 = [PXSharedLibraryIncludedPeopleInfo alloc];
         [v14 person];
-        v21 = v20 = v7;
-        v22 = [(PXSharedLibraryIncludedPeopleInfo *)v19 initWithParticipant:v18 person:v21];
+        v21 = v20 = pickerCopy;
+        v22 = [(PXSharedLibraryIncludedPeopleInfo *)v19 initWithParticipant:participant2 person:v21];
 
-        v7 = v20;
-        [v11 removeInfo:v14];
-        [v11 replaceInfo:v17 withInfo:v22];
+        pickerCopy = v20;
+        [dataSourceManager removeInfo:v14];
+        [dataSourceManager replaceInfo:v17 withInfo:v22];
       }
     }
 
     else
     {
-      v38 = v7;
-      v23 = [v7 configuration];
-      v24 = [v23 photoLibrary];
-      v25 = [v24 librarySpecificFetchOptions];
+      v38 = pickerCopy;
+      configuration = [pickerCopy configuration];
+      photoLibrary = [configuration photoLibrary];
+      librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-      [v25 setFetchLimit:1];
+      [librarySpecificFetchOptions setFetchLimit:1];
       v26 = MEMORY[0x1E6978980];
-      v39[0] = v10;
+      v39[0] = itemIdentifier;
       v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:1];
-      v28 = [v26 fetchPersonsWithLocalIdentifiers:v27 options:v25];
+      v28 = [v26 fetchPersonsWithLocalIdentifiers:v27 options:librarySpecificFetchOptions];
 
       v37 = v28;
-      v29 = [v28 firstObject];
-      if (!v29)
+      firstObject2 = [v28 firstObject];
+      if (!firstObject2)
       {
-        v36 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v36 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleViewController.m" lineNumber:282 description:{@"Invalid parameter not satisfying: %@", @"person"}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleViewController.m" lineNumber:282 description:{@"Invalid parameter not satisfying: %@", @"person"}];
       }
 
-      v30 = [(PXSharedLibraryIncludedPeopleViewController *)self currentSelectedIndexPath];
-      v31 = [(PXSharedLibraryIncludedPeopleViewController *)self _infoAtIndexPath:v30];
+      currentSelectedIndexPath2 = [(PXSharedLibraryIncludedPeopleViewController *)self currentSelectedIndexPath];
+      v31 = [(PXSharedLibraryIncludedPeopleViewController *)self _infoAtIndexPath:currentSelectedIndexPath2];
 
       v32 = [PXSharedLibraryIncludedPeopleInfo alloc];
-      v33 = [v31 participant];
-      v34 = [(PXSharedLibraryIncludedPeopleInfo *)v32 initWithParticipant:v33 person:v29];
+      participant3 = [v31 participant];
+      v34 = [(PXSharedLibraryIncludedPeopleInfo *)v32 initWithParticipant:participant3 person:firstObject2];
 
-      [v11 replaceInfo:v31 withInfo:v34];
-      v7 = v38;
+      [dataSourceManager replaceInfo:v31 withInfo:v34];
+      pickerCopy = v38;
     }
 
     [(PXSharedLibraryIncludedPeopleViewController *)self setCurrentSelectedIndexPath:0];
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 1) != 0 && PXSharedLibraryIncludedPeopleRulesObservationContext == a5)
+  if ((change & 1) != 0 && PXSharedLibraryIncludedPeopleRulesObservationContext == context)
   {
-    v6 = [(PXSharedLibraryIncludedPeopleViewController *)self collectionView];
-    [v6 reloadData];
+    collectionView = [(PXSharedLibraryIncludedPeopleViewController *)self collectionView];
+    [collectionView reloadData];
   }
 }
 
-- (void)_removeCell:(id)a3
+- (void)_removeCell:(id)cell
 {
-  v19 = a3;
-  if (v19)
+  cellCopy = cell;
+  if (cellCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -116,65 +116,65 @@
       goto LABEL_3;
     }
 
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = objc_opt_class();
     v16 = NSStringFromClass(v17);
-    v18 = [v19 px_descriptionForAssertionMessage];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleViewController.m" lineNumber:239 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"sender", v16, v18}];
+    px_descriptionForAssertionMessage = [cellCopy px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleViewController.m" lineNumber:239 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"sender", v16, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    [v14 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleViewController.m" lineNumber:239 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"sender", v16}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleViewController.m" lineNumber:239 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"sender", v16}];
   }
 
 LABEL_3:
-  v5 = [(PXSharedLibraryIncludedPeopleViewController *)self collectionView];
-  [v19 center];
+  collectionView = [(PXSharedLibraryIncludedPeopleViewController *)self collectionView];
+  [cellCopy center];
   v7 = v6;
   v9 = v8;
-  v10 = [v19 superview];
-  [v5 convertPoint:v10 fromView:{v7, v9}];
-  v11 = [v5 indexPathForItemAtPoint:?];
+  superview = [cellCopy superview];
+  [collectionView convertPoint:superview fromView:{v7, v9}];
+  v11 = [collectionView indexPathForItemAtPoint:?];
 
   v12 = [(PXSharedLibraryIncludedPeopleViewController *)self _infoAtIndexPath:v11];
-  v13 = [(PXSharedLibraryIncludedPeopleViewController *)self dataSourceManager];
-  [v13 removeInfo:v12];
+  dataSourceManager = [(PXSharedLibraryIncludedPeopleViewController *)self dataSourceManager];
+  [dataSourceManager removeInfo:v12];
 }
 
-- (id)_infoAtIndexPath:(id)a3
+- (id)_infoAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PXSharedLibraryIncludedPeopleViewController *)self dataSourceManager];
-  v6 = [v5 dataSource];
+  pathCopy = path;
+  dataSourceManager = [(PXSharedLibraryIncludedPeopleViewController *)self dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
 
-  v7 = [v6 identifier];
-  v8 = [v4 section];
-  v9 = [v4 item];
+  identifier = [dataSource identifier];
+  section = [pathCopy section];
+  item = [pathCopy item];
 
-  v12[0] = v7;
-  v12[1] = v8;
-  v12[2] = v9;
+  v12[0] = identifier;
+  v12[1] = section;
+  v12[2] = item;
   v12[3] = 0x7FFFFFFFFFFFFFFFLL;
-  v10 = [v6 infoAtItemIndexPath:v12];
+  v10 = [dataSource infoAtItemIndexPath:v12];
 
   return v10;
 }
 
-- (id)_personAtIndexPath:(id)a3
+- (id)_personAtIndexPath:(id)path
 {
-  v3 = [(PXSharedLibraryIncludedPeopleViewController *)self _infoAtIndexPath:a3];
-  v4 = [v3 person];
+  v3 = [(PXSharedLibraryIncludedPeopleViewController *)self _infoAtIndexPath:path];
+  person = [v3 person];
 
-  return v4;
+  return person;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  [a3 frame];
+  [view frame];
 
   [PXPeopleGridSizer cellSizeForGridClass:0 width:v5];
   result.height = v7;
@@ -182,9 +182,9 @@ LABEL_3:
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  [a3 frame];
+  [view frame];
   [PXPeopleGridSizer marginForGridClass:0 width:v5];
   v7 = v6;
   v8 = v6 * 0.85;
@@ -197,17 +197,17 @@ LABEL_3:
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(PXSharedLibraryIncludedPeopleViewController *)self _personAtIndexPath:v5];
+  pathCopy = path;
+  v6 = [(PXSharedLibraryIncludedPeopleViewController *)self _personAtIndexPath:pathCopy];
   if (!v6)
   {
-    v7 = [(PXSharedLibraryIncludedPeopleDataSourceManager *)self->_dataSourceManager viewModel];
-    v8 = [v7 sourceLibraryInfo];
+    viewModel = [(PXSharedLibraryIncludedPeopleDataSourceManager *)self->_dataSourceManager viewModel];
+    sourceLibraryInfo = [viewModel sourceLibraryInfo];
 
-    v9 = v8;
+    v9 = sourceLibraryInfo;
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v10 = v9;
@@ -218,14 +218,14 @@ LABEL_3:
       v10 = 0;
     }
 
-    v11 = [v10 photoLibrary];
+    photoLibrary = [v10 photoLibrary];
 
-    if (v11)
+    if (photoLibrary)
     {
-      v12 = [(PXSharedLibraryIncludedPeopleViewController *)self _infoAtIndexPath:v5];
-      v13 = [v12 name];
+      v12 = [(PXSharedLibraryIncludedPeopleViewController *)self _infoAtIndexPath:pathCopy];
+      name = [v12 name];
 
-      if ([v13 length])
+      if ([name length])
       {
         PXLocalizedSharedLibraryString(@"PXSharedLibraryAssistant_Rules_IdentifyPerson_Named");
         objc_claimAutoreleasedReturnValue();
@@ -233,8 +233,8 @@ LABEL_3:
       }
 
       v15 = PXLocalizedSharedLibraryString(@"PXSharedLibraryAssistant_Rules_IdentifyPerson_Unnamed");
-      [(PXSharedLibraryIncludedPeopleViewController *)self setCurrentSelectedIndexPath:v5];
-      v16 = [objc_alloc(MEMORY[0x1E69790E0]) initWithPhotoLibrary:v11];
+      [(PXSharedLibraryIncludedPeopleViewController *)self setCurrentSelectedIndexPath:pathCopy];
+      v16 = [objc_alloc(MEMORY[0x1E69790E0]) initWithPhotoLibrary:photoLibrary];
       [v16 setSelectionLimit:1];
       [v16 setPrompt:v15];
       [v16 _setSourceType:1];
@@ -258,12 +258,12 @@ LABEL_3:
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v67[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 dequeueReusableCellWithReuseIdentifier:@"PXSharedLibraryIncludedPeopleCellReuseIdentifier" forIndexPath:v8];
+  viewCopy = view;
+  pathCopy = path;
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"PXSharedLibraryIncludedPeopleCellReuseIdentifier" forIndexPath:pathCopy];
   if (v9)
   {
     objc_opt_class();
@@ -272,46 +272,46 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    v47 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v50 = objc_opt_class();
     v49 = NSStringFromClass(v50);
-    v51 = [v9 px_descriptionForAssertionMessage];
-    [v47 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleViewController.m" lineNumber:97 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"[collectionView dequeueReusableCellWithReuseIdentifier:PXSharedLibraryIncludedPeopleCellReuseIdentifier forIndexPath:indexPath]", v49, v51}];
+    px_descriptionForAssertionMessage = [v9 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleViewController.m" lineNumber:97 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"[collectionView dequeueReusableCellWithReuseIdentifier:PXSharedLibraryIncludedPeopleCellReuseIdentifier forIndexPath:indexPath]", v49, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v47 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v48 = objc_opt_class();
     v49 = NSStringFromClass(v48);
-    [v47 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleViewController.m" lineNumber:97 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"[collectionView dequeueReusableCellWithReuseIdentifier:PXSharedLibraryIncludedPeopleCellReuseIdentifier forIndexPath:indexPath]", v49}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleViewController.m" lineNumber:97 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"[collectionView dequeueReusableCellWithReuseIdentifier:PXSharedLibraryIncludedPeopleCellReuseIdentifier forIndexPath:indexPath]", v49}];
   }
 
 LABEL_3:
   [v9 setRemoveTarget:self];
   [v9 setRemoveAction:sel__removeCell_];
-  v10 = [(PXSharedLibraryIncludedPeopleViewController *)self _infoAtIndexPath:v8];
+  v10 = [(PXSharedLibraryIncludedPeopleViewController *)self _infoAtIndexPath:pathCopy];
 
-  v11 = [v10 person];
-  [v7 frame];
+  person = [v10 person];
+  [viewCopy frame];
   [PXPeopleGridSizer cellSizeForGridClass:0 width:v12];
   v14 = v13;
   v16 = v15;
-  [v7 px_screenScale];
+  [viewCopy px_screenScale];
   v18 = v17;
-  v19 = [v10 name];
+  name = [v10 name];
   v20 = [v9 tag] + 1;
   [v9 setTag:v20];
   v56 = v9;
-  if (v11)
+  if (person)
   {
-    v21 = [v9 nameLabel];
-    [v21 setText:v19];
+    nameLabel = [v9 nameLabel];
+    [nameLabel setText:name];
 
-    v22 = [v9 subtitleLabel];
-    [v22 setText:&stru_1F1741150];
+    subtitleLabel = [v9 subtitleLabel];
+    [subtitleLabel setText:&stru_1F1741150];
 
-    v52 = [[PXPeopleFaceCropFetchOptions alloc] initWithPerson:v11 targetSize:v14 displayScale:v16, v18];
+    v52 = [[PXPeopleFaceCropFetchOptions alloc] initWithPerson:person targetSize:v14 displayScale:v16, v18];
     v23 = +[PXPeopleFaceCropManager sharedManager];
     v64[0] = MEMORY[0x1E69E9820];
     v64[1] = 3221225472;
@@ -322,18 +322,18 @@ LABEL_3:
     v66 = v20;
     [v23 requestFaceCropForOptions:v52 resultHandler:v64];
 
-    v25 = [(PXSharedLibraryIncludedPeopleViewController *)self dataSourceManager];
-    v26 = [v25 viewModel];
+    dataSourceManager = [(PXSharedLibraryIncludedPeopleViewController *)self dataSourceManager];
+    viewModel = [dataSourceManager viewModel];
 
-    [v26 sourceLibraryInfo];
-    v27 = v54 = v7;
-    v28 = [v26 startDate];
-    [v11 uuid];
+    [viewModel sourceLibraryInfo];
+    v27 = v54 = viewCopy;
+    startDate = [viewModel startDate];
+    [person uuid];
     v30 = v29 = v20;
     v67[0] = v30;
     [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:1];
-    v31 = v19;
-    v32 = v11;
+    v31 = name;
+    v32 = person;
     v34 = v33 = v10;
     v61[0] = MEMORY[0x1E69E9820];
     v61[1] = 3221225472;
@@ -341,30 +341,30 @@ LABEL_3:
     v61[3] = &unk_1E774A868;
     v62 = v24;
     v63 = v29;
-    [v27 fetchEstimatedAssetsCountsForStartDate:v28 personUUIDs:v34 completion:v61];
+    [v27 fetchEstimatedAssetsCountsForStartDate:startDate personUUIDs:v34 completion:v61];
 
     v10 = v33;
-    v11 = v32;
-    v19 = v31;
-    v35 = v52;
+    person = v32;
+    name = v31;
+    nameComponents = v52;
 
-    v7 = v54;
-    v36 = v65;
+    viewCopy = v54;
+    subtitleLabel2 = v65;
   }
 
   else
   {
     v55 = v20;
-    v35 = [v10 nameComponents];
-    v37 = [v7 traitCollection];
-    v38 = [v37 layoutDirection];
+    nameComponents = [v10 nameComponents];
+    traitCollection = [viewCopy traitCollection];
+    layoutDirection = [traitCollection layoutDirection];
 
-    if (v35)
+    if (nameComponents)
     {
-      v53 = v38 == 1;
-      v39 = [v35 givenName];
-      [v35 familyName];
-      v40 = v35;
+      v53 = layoutDirection == 1;
+      givenName = [nameComponents givenName];
+      [nameComponents familyName];
+      v40 = nameComponents;
       v42 = v41 = v10;
       v59[0] = MEMORY[0x1E69E9820];
       v59[1] = 3221225472;
@@ -373,10 +373,10 @@ LABEL_3:
       v43 = v60;
       v60[0] = v9;
       v60[1] = v55;
-      [PXActivityUtilities requestMonogramForGivenName:v39 familyName:v42 targetSize:v53 displayScale:v59 isRTL:v14 completion:v16, v18];
+      [PXActivityUtilities requestMonogramForGivenName:givenName familyName:v42 targetSize:v53 displayScale:v59 isRTL:v14 completion:v16, v18];
 
       v10 = v41;
-      v35 = v40;
+      nameComponents = v40;
     }
 
     else
@@ -388,17 +388,17 @@ LABEL_3:
       v43 = v58;
       v58[0] = v9;
       v58[1] = v55;
-      [PXActivityUtilities requestMonogramForEmailAddress:v19 targetSize:v38 == 1 displayScale:v57 isRTL:v14 completion:v16, v18];
+      [PXActivityUtilities requestMonogramForEmailAddress:name targetSize:layoutDirection == 1 displayScale:v57 isRTL:v14 completion:v16, v18];
     }
 
-    v44 = [v9 minusImageView];
-    [v44 setHidden:1];
+    minusImageView = [v9 minusImageView];
+    [minusImageView setHidden:1];
 
-    v45 = [v9 nameLabel];
-    [v45 setText:v19];
+    nameLabel2 = [v9 nameLabel];
+    [nameLabel2 setText:name];
 
-    v36 = [v9 subtitleLabel];
-    [v36 setText:&stru_1F1741150];
+    subtitleLabel2 = [v9 subtitleLabel];
+    [subtitleLabel2 setText:&stru_1F1741150];
   }
 
   return v56;
@@ -476,11 +476,11 @@ void __85__PXSharedLibraryIncludedPeopleViewController_collectionView_cellForIte
   }
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v5 = [(PXSharedLibraryIncludedPeopleViewController *)self dataSourceManager];
-  v6 = [v5 dataSource];
-  v7 = [v6 numberOfItemsInSection:a4];
+  dataSourceManager = [(PXSharedLibraryIncludedPeopleViewController *)self dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
+  v7 = [dataSource numberOfItemsInSection:section];
 
   return v7;
 }
@@ -490,8 +490,8 @@ void __85__PXSharedLibraryIncludedPeopleViewController_collectionView_cellForIte
   v14.receiver = self;
   v14.super_class = PXSharedLibraryIncludedPeopleViewController;
   [(PXSharedLibraryIncludedPeopleViewController *)&v14 viewDidLayoutSubviews];
-  v3 = [(PXSharedLibraryIncludedPeopleViewController *)self collectionView];
-  [v3 bounds];
+  collectionView = [(PXSharedLibraryIncludedPeopleViewController *)self collectionView];
+  [collectionView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -507,8 +507,8 @@ void __85__PXSharedLibraryIncludedPeopleViewController_collectionView_cellForIte
     p_collectionViewBounds->origin.y = v7;
     p_collectionViewBounds->size.width = v9;
     p_collectionViewBounds->size.height = v11;
-    v13 = [v3 collectionViewLayout];
-    [v13 invalidateLayout];
+    collectionViewLayout = [collectionView collectionViewLayout];
+    [collectionViewLayout invalidateLayout];
   }
 }
 
@@ -517,26 +517,26 @@ void __85__PXSharedLibraryIncludedPeopleViewController_collectionView_cellForIte
   v10.receiver = self;
   v10.super_class = PXSharedLibraryIncludedPeopleViewController;
   [(PXSharedLibraryIncludedPeopleViewController *)&v10 viewDidLoad];
-  v3 = [(PXSharedLibraryIncludedPeopleViewController *)self collectionView];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  collectionView = [(PXSharedLibraryIncludedPeopleViewController *)self collectionView];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [collectionView setBackgroundColor:clearColor];
 
-  [v3 setDataSource:self];
-  [v3 setDelegate:self];
-  [v3 bounds];
+  [collectionView setDataSource:self];
+  [collectionView setDelegate:self];
+  [collectionView bounds];
   self->_collectionViewBounds.origin.x = v5;
   self->_collectionViewBounds.origin.y = v6;
   self->_collectionViewBounds.size.width = v7;
   self->_collectionViewBounds.size.height = v8;
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PXSharedLibraryIncludedPeopleCellReuseIdentifier"];
-  [v3 reloadData];
-  v9 = [(PXSharedLibraryIncludedPeopleViewController *)self dataSourceManager];
-  [v9 registerChangeObserver:self context:PXSharedLibraryIncludedPeopleRulesObservationContext];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PXSharedLibraryIncludedPeopleCellReuseIdentifier"];
+  [collectionView reloadData];
+  dataSourceManager = [(PXSharedLibraryIncludedPeopleViewController *)self dataSourceManager];
+  [dataSourceManager registerChangeObserver:self context:PXSharedLibraryIncludedPeopleRulesObservationContext];
 }
 
-- (PXSharedLibraryIncludedPeopleViewController)initWithDataSourceManager:(id)a3
+- (PXSharedLibraryIncludedPeopleViewController)initWithDataSourceManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v6 = objc_alloc_init(MEMORY[0x1E69DC840]);
   [v6 setMinimumLineSpacing:58.0];
   v10.receiver = self;
@@ -545,19 +545,19 @@ void __85__PXSharedLibraryIncludedPeopleViewController_collectionView_cellForIte
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_dataSourceManager, a3);
+    objc_storeStrong(&v7->_dataSourceManager, manager);
   }
 
   return v8;
 }
 
-+ (double)heightForWidth:(double)a3 numberOfItems:(unint64_t)a4
++ (double)heightForWidth:(double)width numberOfItems:(unint64_t)items
 {
   [PXPeopleGridSizer marginForGridClass:0 width:?];
   v7 = v6;
-  [PXPeopleGridSizer cellSizeForGridClass:0 width:a3];
+  [PXPeopleGridSizer cellSizeForGridClass:0 width:width];
   v9 = v8;
-  v10 = a4 / [PXPeopleGridSizer numberOfColumnsForGridClass:0 width:a3];
+  v10 = items / [PXPeopleGridSizer numberOfColumnsForGridClass:0 width:width];
   v11 = (v9 + 58.0) * vcvtps_u32_f32(v10);
   v12 = v7 + v11;
   v13 = v11 <= 0.0;

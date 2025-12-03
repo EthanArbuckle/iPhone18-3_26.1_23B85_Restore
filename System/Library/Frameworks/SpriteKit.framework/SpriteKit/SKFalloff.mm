@@ -1,11 +1,11 @@
 @interface SKFalloff
-+ (id)falloffBy:(double)a3 duration:(double)a4;
-+ (id)falloffTo:(double)a3 duration:(double)a4;
++ (id)falloffBy:(double)by duration:(double)duration;
++ (id)falloffTo:(double)to duration:(double)duration;
 - (SKFalloff)init;
-- (SKFalloff)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKFalloff)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)reversedAction;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKFalloff
@@ -22,12 +22,12 @@
   return 0;
 }
 
-- (SKFalloff)initWithCoder:(id)a3
+- (SKFalloff)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = SKFalloff;
-  if ([(SKAction *)&v6 initWithCoder:v4])
+  if ([(SKAction *)&v6 initWithCoder:coderCopy])
   {
     operator new();
   }
@@ -35,56 +35,56 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = SKFalloff;
-  [(SKAction *)&v13 encodeWithCoder:v4];
+  [(SKAction *)&v13 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mycaction->var19];
-  [v4 encodeObject:v5 forKey:@"_target"];
+  [coderCopy encodeObject:v5 forKey:@"_target"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mycaction->var20];
-  [v4 encodeObject:v6 forKey:@"_targetReversed"];
+  [coderCopy encodeObject:v6 forKey:@"_targetReversed"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mycaction->var23];
-  [v4 encodeObject:v7 forKey:@"_deltafalloff"];
+  [coderCopy encodeObject:v7 forKey:@"_deltafalloff"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mycaction->var21];
-  [v4 encodeObject:v8 forKey:@"_lastRatio"];
+  [coderCopy encodeObject:v8 forKey:@"_lastRatio"];
 
   LOBYTE(v9) = self->_mycaction->var24;
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:v9];
-  [v4 encodeObject:v10 forKey:@"_isReversed"];
+  [coderCopy encodeObject:v10 forKey:@"_isReversed"];
 
   LOBYTE(v11) = self->_mycaction->var25;
   v12 = [MEMORY[0x277CCABB0] numberWithDouble:v11];
-  [v4 encodeObject:v12 forKey:@"_isRelative"];
+  [coderCopy encodeObject:v12 forKey:@"_isRelative"];
 }
 
-+ (id)falloffTo:(double)a3 duration:(double)a4
++ (id)falloffTo:(double)to duration:(double)duration
 {
   v6 = objc_alloc_init(SKFalloff);
   mycaction = v6->_mycaction;
-  v8 = a3;
-  mycaction->var19 = v8;
-  mycaction->var20 = v8;
+  toCopy = to;
+  mycaction->var19 = toCopy;
+  mycaction->var20 = toCopy;
   mycaction->var25 = 0;
-  [(SKAction *)v6 setDuration:a4];
+  [(SKAction *)v6 setDuration:duration];
 
   return v6;
 }
 
-+ (id)falloffBy:(double)a3 duration:(double)a4
++ (id)falloffBy:(double)by duration:(double)duration
 {
   v6 = objc_alloc_init(SKFalloff);
   v7 = v6;
-  v8 = a3;
+  byCopy = by;
   mycaction = v6->_mycaction;
-  mycaction->var19 = v8;
-  if ((LODWORD(v8) & 0x60000000) != 0)
+  mycaction->var19 = byCopy;
+  if ((LODWORD(byCopy) & 0x60000000) != 0)
   {
-    v10 = 1.0 / a3;
+    v10 = 1.0 / by;
   }
 
   else
@@ -94,16 +94,16 @@
 
   mycaction->var20 = v10;
   mycaction->var25 = 1;
-  [(SKAction *)v6 setDuration:a4];
+  [(SKAction *)v6 setDuration:duration];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = SKFalloff;
-  result = [(SKAction *)&v7 copyWithZone:a3];
+  result = [(SKAction *)&v7 copyWithZone:zone];
   mycaction = self->_mycaction;
   v6 = *(result + 2);
   *(v6 + 120) = mycaction->var21;

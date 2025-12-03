@@ -1,48 +1,48 @@
 @interface PDSUser
-+ (PDSUser)userWithDSID:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToUser:(id)a3;
-- (PDSUser)initWithCoder:(id)a3;
-- (PDSUser)initWithUserID:(id)a3 userType:(char)a4;
++ (PDSUser)userWithDSID:(id)d;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToUser:(id)user;
+- (PDSUser)initWithCoder:(id)coder;
+- (PDSUser)initWithUserID:(id)d userType:(char)type;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PDSUser
 
 - (unint64_t)hash
 {
-  v3 = [(PDSUser *)self userID];
-  v4 = [v3 hash];
-  v5 = [(PDSUser *)self userType];
+  userID = [(PDSUser *)self userID];
+  v4 = [userID hash];
+  userType = [(PDSUser *)self userType];
 
-  return v4 ^ v5;
+  return v4 ^ userType;
 }
 
-+ (PDSUser)userWithDSID:(id)a3
++ (PDSUser)userWithDSID:(id)d
 {
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
-    [(PDSUser *)a2 userWithDSID:a1];
+    [(PDSUser *)a2 userWithDSID:self];
   }
 
-  v6 = [[a1 alloc] initWithUserID:v5 userType:1];
+  v6 = [[self alloc] initWithUserID:dCopy userType:1];
 
   return v6;
 }
 
-- (PDSUser)initWithUserID:(id)a3 userType:(char)a4
+- (PDSUser)initWithUserID:(id)d userType:(char)type
 {
-  v4 = a4;
-  v8 = a3;
-  if (!v8)
+  typeCopy = type;
+  dCopy = d;
+  if (!dCopy)
   {
     [PDSUser initWithUserID:a2 userType:self];
   }
 
-  if (v4 != 1)
+  if (typeCopy != 1)
   {
     [PDSUser initWithUserID:a2 userType:self];
   }
@@ -53,38 +53,38 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_userID, a3);
-    v10->_userType = v4;
+    objc_storeStrong(&v9->_userID, d);
+    v10->_userType = typeCopy;
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PDSUser *)self isEqualToUser:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PDSUser *)self isEqualToUser:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToUser:(id)a3
+- (BOOL)isEqualToUser:(id)user
 {
-  v4 = a3;
-  if (v4 == self)
+  userCopy = user;
+  if (userCopy == self)
   {
     v8 = 1;
   }
 
   else
   {
-    v5 = [(PDSUser *)self userType];
-    if (v5 == [(PDSUser *)v4 userType])
+    userType = [(PDSUser *)self userType];
+    if (userType == [(PDSUser *)userCopy userType])
     {
-      v6 = [(PDSUser *)self userID];
-      v7 = [(PDSUser *)v4 userID];
-      v8 = [v6 isEqualToString:v7];
+      userID = [(PDSUser *)self userID];
+      userID2 = [(PDSUser *)userCopy userID];
+      v8 = [userID isEqualToString:userID2];
     }
 
     else
@@ -96,20 +96,20 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(PDSUser *)self userID];
-  [v5 encodeObject:v4 forKey:@"userID"];
+  coderCopy = coder;
+  userID = [(PDSUser *)self userID];
+  [coderCopy encodeObject:userID forKey:@"userID"];
 
-  [v5 encodeInt32:-[PDSUser userType](self forKey:{"userType"), @"userType"}];
+  [coderCopy encodeInt32:-[PDSUser userType](self forKey:{"userType"), @"userType"}];
 }
 
-- (PDSUser)initWithCoder:(id)a3
+- (PDSUser)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userID"];
-  v6 = [v4 decodeIntForKey:@"userType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userID"];
+  v6 = [coderCopy decodeIntForKey:@"userType"];
 
   v7 = [(PDSUser *)self initWithUserID:v5 userType:v6];
   return v7;
@@ -119,8 +119,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(PDSUser *)self userID];
-  v6 = [v3 stringWithFormat:@"<%@: %p userID = %@; userType = %d>", v4, self, v5, -[PDSUser userType](self, "userType")];;
+  userID = [(PDSUser *)self userID];
+  v6 = [v3 stringWithFormat:@"<%@: %p userID = %@; userType = %d>", v4, self, userID, -[PDSUser userType](self, "userType")];;
 
   return v6;
 }

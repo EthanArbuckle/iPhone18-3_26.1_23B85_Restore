@@ -1,9 +1,9 @@
 @interface _LinkActionExecutorDelegate
 - (_TtC26VisualActionPredictionCoreP33_610E6787A62CF717964A8E858C6CA80327_LinkActionExecutorDelegate)init;
-- (void)executor:(id)a3 didCompleteExecutionWithResult:(id)a4 error:(id)a5;
-- (void)executor:(id)a3 needsConfirmationWithRequest:(id)a4;
-- (void)executor:(id)a3 needsDisambiguationWithRequest:(id)a4;
-- (void)executor:(id)a3 needsValueWithRequest:(id)a4;
+- (void)executor:(id)executor didCompleteExecutionWithResult:(id)result error:(id)error;
+- (void)executor:(id)executor needsConfirmationWithRequest:(id)request;
+- (void)executor:(id)executor needsDisambiguationWithRequest:(id)request;
+- (void)executor:(id)executor needsValueWithRequest:(id)request;
 @end
 
 @implementation _LinkActionExecutorDelegate
@@ -20,37 +20,37 @@
   return [(_LinkActionExecutorDelegate *)&v7 init];
 }
 
-- (void)executor:(id)a3 didCompleteExecutionWithResult:(id)a4 error:(id)a5
+- (void)executor:(id)executor didCompleteExecutionWithResult:(id)result error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_226315894(a4, a5);
+  executorCopy = executor;
+  resultCopy = result;
+  selfCopy = self;
+  errorCopy = error;
+  sub_226315894(result, error);
 }
 
-- (void)executor:(id)a3 needsValueWithRequest:(id)a4
+- (void)executor:(id)executor needsValueWithRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_226315ACC(v7, 2);
+  executorCopy = executor;
+  requestCopy = request;
+  selfCopy = self;
+  sub_226315ACC(requestCopy, 2);
 }
 
-- (void)executor:(id)a3 needsDisambiguationWithRequest:(id)a4
+- (void)executor:(id)executor needsDisambiguationWithRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_226315ACC(v7, 3);
+  executorCopy = executor;
+  requestCopy = request;
+  selfCopy = self;
+  sub_226315ACC(requestCopy, 3);
 }
 
-- (void)executor:(id)a3 needsConfirmationWithRequest:(id)a4
+- (void)executor:(id)executor needsConfirmationWithRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_226315ACC(v7, 4);
+  executorCopy = executor;
+  requestCopy = request;
+  selfCopy = self;
+  sub_226315ACC(requestCopy, 4);
 }
 
 @end

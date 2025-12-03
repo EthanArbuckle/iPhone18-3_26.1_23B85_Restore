@@ -1,37 +1,37 @@
 @interface MOBookmarkMO
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4;
-+ (void)setPropertiesOfBookmarkMO:(id)a3 withBookmark:(id)a4;
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context;
++ (void)setPropertiesOfBookmarkMO:(id)o withBookmark:(id)bookmark;
 @end
 
 @implementation MOBookmarkMO
 
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MOBookmarkMO alloc] initWithContext:v5];
+  contextCopy = context;
+  objectCopy = object;
+  v7 = [[MOBookmarkMO alloc] initWithContext:contextCopy];
 
-  [MOBookmarkMO setPropertiesOfBookmarkMO:v7 withBookmark:v6];
+  [MOBookmarkMO setPropertiesOfBookmarkMO:v7 withBookmark:objectCopy];
 
   return v7;
 }
 
-+ (void)setPropertiesOfBookmarkMO:(id)a3 withBookmark:(id)a4
++ (void)setPropertiesOfBookmarkMO:(id)o withBookmark:(id)bookmark
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 bookmarkIdentifier];
-  [v6 setBookmarkIdentifier:v7];
+  bookmarkCopy = bookmark;
+  oCopy = o;
+  bookmarkIdentifier = [bookmarkCopy bookmarkIdentifier];
+  [oCopy setBookmarkIdentifier:bookmarkIdentifier];
 
-  v8 = [v5 creationDate];
-  [v6 setCreationDate:v8];
+  creationDate = [bookmarkCopy creationDate];
+  [oCopy setCreationDate:creationDate];
 
-  v9 = [v5 deviceIdentifier];
-  [v6 setDeviceIdentifier:v9];
+  deviceIdentifier = [bookmarkCopy deviceIdentifier];
+  [oCopy setDeviceIdentifier:deviceIdentifier];
 
-  v10 = [v5 data];
+  data = [bookmarkCopy data];
 
-  [v6 setData:v10];
+  [oCopy setData:data];
 }
 
 @end

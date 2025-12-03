@@ -1,13 +1,13 @@
 @interface HAPDataWrapper
-+ (id)wrappertlv:(unint64_t)a3 name:(id)a4;
++ (id)wrappertlv:(unint64_t)wrappertlv name:(id)name;
 @end
 
 @implementation HAPDataWrapper
 
-+ (id)wrappertlv:(unint64_t)a3 name:(id)a4
++ (id)wrappertlv:(unint64_t)wrappertlv name:(id)name
 {
-  v5 = a4;
-  v6 = [(HAPFieldWrapper *)[HAPDataWrapper alloc] initWithTlvId:a3 name:v5];
+  nameCopy = name;
+  v6 = [(HAPFieldWrapper *)[HAPDataWrapper alloc] initWithTlvId:wrappertlv name:nameCopy];
 
   return v6;
 }

@@ -1,6 +1,6 @@
 @interface SharePlayWelcomeViewController
-- (_TtC18RemotePeoplePicker30SharePlayWelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC18RemotePeoplePicker30SharePlayWelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC18RemotePeoplePicker30SharePlayWelcomeViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC18RemotePeoplePicker30SharePlayWelcomeViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)didTapContinueButton;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -19,24 +19,24 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100002854();
 }
 
 - (void)didTapContinueButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_100002C50();
 }
 
-- (_TtC18RemotePeoplePicker30SharePlayWelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC18RemotePeoplePicker30SharePlayWelcomeViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   v9 = sub_1000074E4();
   v11 = v10;
-  if (!a4)
+  if (!text)
   {
     v13 = 0;
-    if (a5)
+    if (name)
     {
       goto LABEL_3;
     }
@@ -44,12 +44,12 @@
 LABEL_5:
     v14 = 0;
     v16 = 0;
-    return sub_100002D48(v9, v11, a4, v13, v14, v16, a6);
+    return sub_100002D48(v9, v11, text, v13, v14, v16, layout);
   }
 
-  a4 = sub_1000074E4();
+  text = sub_1000074E4();
   v13 = v12;
-  if (!a5)
+  if (!name)
   {
     goto LABEL_5;
   }
@@ -57,16 +57,16 @@ LABEL_5:
 LABEL_3:
   v14 = sub_1000074E4();
   v16 = v15;
-  return sub_100002D48(v9, v11, a4, v13, v14, v16, a6);
+  return sub_100002D48(v9, v11, text, v13, v14, v16, layout);
 }
 
-- (_TtC18RemotePeoplePicker30SharePlayWelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC18RemotePeoplePicker30SharePlayWelcomeViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   v9 = sub_1000074E4();
   v11 = v10;
-  if (a4)
+  if (text)
   {
-    a4 = sub_1000074E4();
+    text = sub_1000074E4();
     v13 = v12;
   }
 
@@ -75,8 +75,8 @@ LABEL_3:
     v13 = 0;
   }
 
-  v14 = a5;
-  return sub_100002F24(v9, v11, a4, v13, a5, a6);
+  iconCopy = icon;
+  return sub_100002F24(v9, v11, text, v13, icon, layout);
 }
 
 @end

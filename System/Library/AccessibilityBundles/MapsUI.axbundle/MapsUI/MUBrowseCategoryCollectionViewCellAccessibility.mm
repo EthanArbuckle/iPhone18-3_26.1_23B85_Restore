@@ -7,9 +7,9 @@
 - (id)accessibilityLabel
 {
   v2 = [(MUBrowseCategoryCollectionViewCellAccessibility *)self safeValueForKey:@"titleLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

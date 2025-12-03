@@ -1,16 +1,16 @@
 @interface TTRContainerWrappingView
-- (CGSize)calculateArrangedSizeFittingSize:(CGSize)a3;
-- (_TtC15RemindersUICore24TTRContainerWrappingView)initWithArrangedSubviews:(id)a3;
-- (void)layoutArrangedSubviewsInBounds:(CGRect)a3;
+- (CGSize)calculateArrangedSizeFittingSize:(CGSize)size;
+- (_TtC15RemindersUICore24TTRContainerWrappingView)initWithArrangedSubviews:(id)subviews;
+- (void)layoutArrangedSubviewsInBounds:(CGRect)bounds;
 @end
 
 @implementation TTRContainerWrappingView
 
-- (CGSize)calculateArrangedSizeFittingSize:(CGSize)a3
+- (CGSize)calculateArrangedSizeFittingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   sub_21DA32E0C(0.0, 0.0, width, height);
   TTRWrappingArrangement.computeLayout()(&v8);
 
@@ -22,19 +22,19 @@
   return result;
 }
 
-- (void)layoutArrangedSubviewsInBounds:(CGRect)a3
+- (void)layoutArrangedSubviewsInBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  selfCopy = self;
   sub_21DA32A74(x, y, width, height);
 }
 
-- (_TtC15RemindersUICore24TTRContainerWrappingView)initWithArrangedSubviews:(id)a3
+- (_TtC15RemindersUICore24TTRContainerWrappingView)initWithArrangedSubviews:(id)subviews
 {
-  if (a3)
+  if (subviews)
   {
     sub_21D114EC8();
     v3 = sub_21DBFA5EC();

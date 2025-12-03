@@ -1,27 +1,27 @@
 @interface NTKMapsSyncManager
-+ (BOOL)_mapsSyncObjectSet:(id)a3 containsItemWithMuid:(id)a4;
++ (BOOL)_mapsSyncObjectSet:(id)set containsItemWithMuid:(id)muid;
 + (NTKMapsSyncManager)sharedManager;
-+ (id)_fetchInStore:(id)a3 poiFilter:(id)a4 coordinate:(CLLocationCoordinate2D)a5 radius:(double)a6;
-+ (id)_fetchMSCollectionPlaceItemsInMSCollectionInStore:(id)a3 coordinate:(CLLocationCoordinate2D)a4 radius:(double)a5 poiFilter:(id)a6;
-+ (id)_fetchMSCollectionPlaceItemsInStore:(id)a3 coordinate:(CLLocationCoordinate2D)a4 radius:(double)a5;
-+ (id)_fetchMSCollectionsInStore:(id)a3 coordinate:(CLLocationCoordinate2D)a4 radius:(double)a5;
-+ (id)_fetchMSFavoriteItemInStore:(id)a3 coordinate:(CLLocationCoordinate2D)a4 radius:(double)a5;
-+ (id)_fetchMSUserRoutesInStore:(id)a3 coordinate:(CLLocationCoordinate2D)a4 radius:(double)a5;
-+ (id)_filterMapItems:(id)a3 bySearchRadius:(double)a4 fromCoordinate:(CLLocationCoordinate2D)a5;
-+ (id)_filterRequiredFromMSCollections:(id)a3;
++ (id)_fetchInStore:(id)store poiFilter:(id)filter coordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius;
++ (id)_fetchMSCollectionPlaceItemsInMSCollectionInStore:(id)store coordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius poiFilter:(id)filter;
++ (id)_fetchMSCollectionPlaceItemsInStore:(id)store coordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius;
++ (id)_fetchMSCollectionsInStore:(id)store coordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius;
++ (id)_fetchMSFavoriteItemInStore:(id)store coordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius;
++ (id)_fetchMSUserRoutesInStore:(id)store coordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius;
++ (id)_filterMapItems:(id)items bySearchRadius:(double)radius fromCoordinate:(CLLocationCoordinate2D)coordinate;
++ (id)_filterRequiredFromMSCollections:(id)collections;
 - (NSArray)waypoints;
 - (NTKMapsSyncManager)init;
 - (id)_query;
-- (id)_wrapperForPOI:(id)a3;
-- (void)_runQuery:(id)a3 completion:(id)a4;
-- (void)_setQuery:(id)a3;
-- (void)_setWaypoints:(id)a3;
+- (id)_wrapperForPOI:(id)i;
+- (void)_runQuery:(id)query completion:(id)completion;
+- (void)_setQuery:(id)query;
+- (void)_setWaypoints:(id)waypoints;
 - (void)_updateSubscriber;
-- (void)fetchUserGuidesWithCompletion:(id)a3;
-- (void)setQueryCenterLocation:(id)a3 radius:(double)a4 poiFilter:(id)a5 completion:(id)a6;
-- (void)startUpdatingDelegate:(id)a3;
+- (void)fetchUserGuidesWithCompletion:(id)completion;
+- (void)setQueryCenterLocation:(id)location radius:(double)radius poiFilter:(id)filter completion:(id)completion;
+- (void)startUpdatingDelegate:(id)delegate;
 - (void)stopUpdating;
-- (void)storeDidChange:(id)a3;
+- (void)storeDidChange:(id)change;
 @end
 
 @implementation NTKMapsSyncManager
@@ -69,10 +69,10 @@
   return v3;
 }
 
-- (id)_wrapperForPOI:(id)a3
+- (id)_wrapperForPOI:(id)i
 {
-  v4 = a3;
-  v8 = objc_msgSend_ntk_styleAttributes(v4, v5, v6);
+  iCopy = i;
+  v8 = objc_msgSend_ntk_styleAttributes(iCopy, v5, v6);
   if (v8)
   {
     styleAttributesCache = self->_styleAttributesCache;
@@ -92,7 +92,7 @@
       }
 
 LABEL_12:
-      v16 = objc_msgSend_ntk_defaultFillColor(v4, v14, v15);
+      v16 = objc_msgSend_ntk_defaultFillColor(iCopy, v14, v15);
       if (v11)
       {
         goto LABEL_5;
@@ -107,14 +107,14 @@ LABEL_12:
     v22 = NTKFoghornFaceBundleLogObject();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
-      sub_23BEE757C(v4, v22);
+      sub_23BEE757C(iCopy, v22);
     }
 
     v16 = 0;
     v11 = 0;
   }
 
-  v12 = objc_msgSend_ntk_defaultGlyphColor(v4, v14, v15);
+  v12 = objc_msgSend_ntk_defaultGlyphColor(iCopy, v14, v15);
   if (!v16)
   {
     goto LABEL_12;
@@ -127,25 +127,25 @@ LABEL_4:
   }
 
 LABEL_13:
-  v11 = objc_msgSend_ntk_defaultIconImage(v4, v14, v15);
+  v11 = objc_msgSend_ntk_defaultIconImage(iCopy, v14, v15);
 LABEL_5:
   v17 = [NTKMapsPOIWrapper alloc];
-  inited = objc_msgSend_initWithmapsPOI_image_glyphColor_fillColor_(v17, v18, v19, v4, v11, v12, v16);
+  inited = objc_msgSend_initWithmapsPOI_image_glyphColor_fillColor_(v17, v18, v19, iCopy, v11, v12, v16);
 
   return inited;
 }
 
-- (void)storeDidChange:(id)a3
+- (void)storeDidChange:(id)change
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = NTKFoghornFaceBundleLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315394;
     v12 = "[NTKMapsSyncManager storeDidChange:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = changeCopy;
     _os_log_impl(&dword_23BEB1000, v5, OS_LOG_TYPE_DEFAULT, "%s: types = %@", &v11, 0x16u);
   }
 
@@ -155,46 +155,46 @@ LABEL_5:
 
 - (id)_query
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_currentQuery;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_currentQuery;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_setQuery:(id)a3
+- (void)_setQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   obj = self;
   objc_sync_enter(obj);
   currentQuery = obj->_currentQuery;
-  obj->_currentQuery = v4;
+  obj->_currentQuery = queryCopy;
 
   objc_sync_exit(obj);
 }
 
 - (NSArray)waypoints
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_lastWaypoints;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_lastWaypoints;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_setWaypoints:(id)a3
+- (void)_setWaypoints:(id)waypoints
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  lastWaypoints = v5->_lastWaypoints;
-  v5->_lastWaypoints = v4;
+  waypointsCopy = waypoints;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  lastWaypoints = selfCopy->_lastWaypoints;
+  selfCopy->_lastWaypoints = waypointsCopy;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  objc_msgSend__updateSubscriber(v5, v7, v8);
+  objc_msgSend__updateSubscriber(selfCopy, v7, v8);
 }
 
 - (void)_updateSubscriber
@@ -210,10 +210,10 @@ LABEL_5:
   }
 }
 
-- (void)startUpdatingDelegate:(id)a3
+- (void)startUpdatingDelegate:(id)delegate
 {
-  objc_storeStrong(&self->_delegate, a3);
-  v7 = a3;
+  objc_storeStrong(&self->_delegate, delegate);
+  delegateCopy = delegate;
   objc_msgSend_subscribe_(self->_store, v5, v6, self);
 }
 
@@ -224,18 +224,18 @@ LABEL_5:
   self->_delegate = 0;
 }
 
-+ (id)_filterMapItems:(id)a3 bySearchRadius:(double)a4 fromCoordinate:(CLLocationCoordinate2D)a5
++ (id)_filterMapItems:(id)items bySearchRadius:(double)radius fromCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a5.longitude;
-  latitude = a5.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  itemsCopy = items;
   v38.latitude = latitude;
   v38.longitude = longitude;
   v9 = CLLocationCoordinate2DIsValid(v38);
-  if (a4 <= 0.0 || !v9)
+  if (radius <= 0.0 || !v9)
   {
-    v11 = v8;
+    v11 = itemsCopy;
   }
 
   else
@@ -245,7 +245,7 @@ LABEL_5:
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v13 = v8;
+    v13 = itemsCopy;
     v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v14, v15, &v31, v35, 16);
     if (v16)
     {
@@ -266,7 +266,7 @@ LABEL_5:
           objc_msgSend_ntk_longitude(v22, v25, v23);
           v27 = CLLocationCoordinate2DMake(v24, v26);
           v18 = ntk_CLLocationCoordinate2DDistanceToCoordinate(latitude, longitude, v27.latitude, v27.longitude);
-          if (v18 <= a4)
+          if (v18 <= radius)
           {
             objc_msgSend_addObject_(v12, v17, v18, v22);
           }
@@ -284,16 +284,16 @@ LABEL_5:
   return v11;
 }
 
-+ (id)_filterRequiredFromMSCollections:(id)a3
++ (id)_filterRequiredFromMSCollections:(id)collections
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  collectionsCopy = collections;
   v4 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v3;
+  v5 = collectionsCopy;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, v7, &v19, v23, 16);
   if (v8)
   {
@@ -326,15 +326,15 @@ LABEL_5:
   return v17;
 }
 
-+ (id)_fetchMSCollectionPlaceItemsInStore:(id)a3 coordinate:(CLLocationCoordinate2D)a4 radius:(double)a5
++ (id)_fetchMSCollectionPlaceItemsInStore:(id)store coordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v35[1] = *MEMORY[0x277D85DE8];
   v9 = MEMORY[0x277D26610];
-  v10 = a3;
+  storeCopy = store;
   v11 = [v9 alloc];
-  v14 = objc_msgSend_initWithStore_(v11, v12, v13, v10);
+  v14 = objc_msgSend_initWithStore_(v11, v12, v13, storeCopy);
 
   v15 = MEMORY[0x277D26680];
   v18 = objc_msgSend_numberWithShort_(MEMORY[0x277CCABB0], v16, v17, 6);
@@ -346,17 +346,17 @@ LABEL_5:
   v34 = 0;
   v30 = objc_msgSend_fetchSyncWithOptions_error_(v14, v28, v29, v27, &v34);
 
-  v32 = objc_msgSend__filterMapItems_bySearchRadius_fromCoordinate_(a1, v31, a5, v30, latitude, longitude);
+  v32 = objc_msgSend__filterMapItems_bySearchRadius_fromCoordinate_(self, v31, radius, v30, latitude, longitude);
 
   return v32;
 }
 
-+ (id)_fetchMSCollectionsInStore:(id)a3 coordinate:(CLLocationCoordinate2D)a4 radius:(double)a5
++ (id)_fetchMSCollectionsInStore:(id)store coordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius
 {
   v5 = MEMORY[0x277D26618];
-  v6 = a3;
+  storeCopy = store;
   v7 = [v5 alloc];
-  v10 = objc_msgSend_initWithStore_(v7, v8, v9, v6);
+  v10 = objc_msgSend_initWithStore_(v7, v8, v9, storeCopy);
 
   v13 = objc_msgSend_ntk_newest100(MEMORY[0x277D26678], v11, v12);
   v22 = 0;
@@ -368,21 +368,21 @@ LABEL_5:
   return v20;
 }
 
-+ (id)_fetchMSCollectionPlaceItemsInMSCollectionInStore:(id)a3 coordinate:(CLLocationCoordinate2D)a4 radius:(double)a5 poiFilter:(id)a6
++ (id)_fetchMSCollectionPlaceItemsInMSCollectionInStore:(id)store coordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius poiFilter:(id)filter
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v82 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a6;
+  storeCopy = store;
+  filterCopy = filter;
   v13 = objc_opt_new();
-  v65 = v11;
-  v15 = objc_msgSend__fetchMSCollectionsInStore_coordinate_radius_(a1, v14, latitude, v11, longitude, a5);
+  v65 = storeCopy;
+  v15 = objc_msgSend__fetchMSCollectionsInStore_coordinate_radius_(self, v14, latitude, storeCopy, longitude, radius);
   v84.latitude = latitude;
   v84.longitude = longitude;
   v16 = CLLocationCoordinate2DIsValid(v84);
   v17 = 0;
-  if (a5 > 0.0 && v16)
+  if (radius > 0.0 && v16)
   {
     v18 = objc_alloc(MEMORY[0x277CE41F8]);
     v17 = objc_msgSend_initWithLatitude_longitude_(v18, v19, latitude, longitude);
@@ -396,7 +396,7 @@ LABEL_5:
   v69 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v20, v21, &v76, v81, 16);
   if (v69)
   {
-    v67 = v12;
+    v67 = filterCopy;
     v68 = *v77;
     do
     {
@@ -409,7 +409,7 @@ LABEL_5:
 
         v25 = *(*(&v76 + 1) + 8 * i);
         v27 = objc_msgSend_title(v25, v22, v23);
-        if (!v12 || objc_msgSend_includesCategory_named_(v12, v26, v28, 2, v27))
+        if (!filterCopy || objc_msgSend_includesCategory_named_(filterCopy, v26, v28, 2, v27))
         {
           v70 = v27;
           v71 = i;
@@ -438,7 +438,7 @@ LABEL_5:
                 {
                   v38 = v35;
                   v41 = v38;
-                  if (!v17 || (objc_msgSend_latitude(v38, v39, v40), v42 = objc_claimAutoreleasedReturnValue(), objc_msgSend_doubleValue(v42, v43, v44), v46 = v45, v42, objc_msgSend_longitude(v41, v47, v48), v49 = objc_claimAutoreleasedReturnValue(), objc_msgSend_doubleValue(v49, v50, v51), v53 = v52, v49, v54 = objc_alloc(MEMORY[0x277CE41F8]), v56 = objc_msgSend_initWithLatitude_longitude_(v54, v55, v46, v53), objc_msgSend_distanceFromLocation_(v17, v57, v58, v56), v60 = v59, v56, v60 <= a5))
+                  if (!v17 || (objc_msgSend_latitude(v38, v39, v40), v42 = objc_claimAutoreleasedReturnValue(), objc_msgSend_doubleValue(v42, v43, v44), v46 = v45, v42, objc_msgSend_longitude(v41, v47, v48), v49 = objc_claimAutoreleasedReturnValue(), objc_msgSend_doubleValue(v49, v50, v51), v53 = v52, v49, v54 = objc_alloc(MEMORY[0x277CE41F8]), v56 = objc_msgSend_initWithLatitude_longitude_(v54, v55, v46, v53), objc_msgSend_distanceFromLocation_(v17, v57, v58, v56), v60 = v59, v56, v60 <= radius))
                   {
                     objc_msgSend_addObject_(v13, v39, v40, v41);
                   }
@@ -451,7 +451,7 @@ LABEL_5:
             while (v32);
           }
 
-          v12 = v67;
+          filterCopy = v67;
           v27 = v70;
           i = v71;
         }
@@ -468,56 +468,56 @@ LABEL_5:
   return v63;
 }
 
-+ (id)_fetchMSUserRoutesInStore:(id)a3 coordinate:(CLLocationCoordinate2D)a4 radius:(double)a5
++ (id)_fetchMSUserRoutesInStore:(id)store coordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v9 = MEMORY[0x277D26660];
-  v10 = a3;
+  storeCopy = store;
   v11 = [v9 alloc];
-  v14 = objc_msgSend_initWithStore_(v11, v12, v13, v10);
+  v14 = objc_msgSend_initWithStore_(v11, v12, v13, storeCopy);
 
   v17 = objc_msgSend_ntk_newest100(MEMORY[0x277D26678], v15, v16);
   v24 = 0;
   v20 = objc_msgSend_fetchSyncWithOptions_error_(v14, v18, v19, v17, &v24);
 
-  v22 = objc_msgSend__filterMapItems_bySearchRadius_fromCoordinate_(a1, v21, a5, v20, latitude, longitude);
+  v22 = objc_msgSend__filterMapItems_bySearchRadius_fromCoordinate_(self, v21, radius, v20, latitude, longitude);
 
   return v22;
 }
 
-+ (id)_fetchMSFavoriteItemInStore:(id)a3 coordinate:(CLLocationCoordinate2D)a4 radius:(double)a5
++ (id)_fetchMSFavoriteItemInStore:(id)store coordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v9 = MEMORY[0x277D26628];
-  v10 = a3;
+  storeCopy = store;
   v11 = [v9 alloc];
-  v14 = objc_msgSend_initWithStore_(v11, v12, v13, v10);
+  v14 = objc_msgSend_initWithStore_(v11, v12, v13, storeCopy);
 
   v17 = objc_msgSend_mapsFavoritesPredicateWithHidden_includeNearbyTransit_(MEMORY[0x277D26680], v15, v16, 0, 0);
   v20 = objc_msgSend_ntk_newest100WithPredicate_(MEMORY[0x277D26678], v18, v19, v17);
   v27 = 0;
   v23 = objc_msgSend_fetchSyncWithOptions_error_(v14, v21, v22, v20, &v27);
 
-  v25 = objc_msgSend__filterMapItems_bySearchRadius_fromCoordinate_(a1, v24, a5, v23, latitude, longitude);
+  v25 = objc_msgSend__filterMapItems_bySearchRadius_fromCoordinate_(self, v24, radius, v23, latitude, longitude);
 
   return v25;
 }
 
-+ (BOOL)_mapsSyncObjectSet:(id)a3 containsItemWithMuid:(id)a4
++ (BOOL)_mapsSyncObjectSet:(id)set containsItemWithMuid:(id)muid
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v9 = v6;
-  if (v6 && objc_msgSend_unsignedLongLongValue(v6, v7, v8))
+  setCopy = set;
+  muidCopy = muid;
+  v9 = muidCopy;
+  if (muidCopy && objc_msgSend_unsignedLongLongValue(muidCopy, v7, v8))
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v10 = v5;
+    v10 = setCopy;
     v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, v12, &v27, v31, 16);
     if (v13)
     {
@@ -574,19 +574,19 @@ LABEL_18:
   return v13;
 }
 
-+ (id)_fetchInStore:(id)a3 poiFilter:(id)a4 coordinate:(CLLocationCoordinate2D)a5 radius:(double)a6
++ (id)_fetchInStore:(id)store poiFilter:(id)filter coordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius
 {
-  longitude = a5.longitude;
-  latitude = a5.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v219 = *MEMORY[0x277D85DE8];
-  v187 = a3;
-  v10 = a4;
+  storeCopy = store;
+  filterCopy = filter;
   v11 = objc_opt_new();
-  v185 = v10;
-  if (objc_msgSend_includesCategory_(v10, v12, v13, 2))
+  v185 = filterCopy;
+  if (objc_msgSend_includesCategory_(filterCopy, v12, v13, 2))
   {
     v16 = objc_opt_class();
-    v18 = objc_msgSend__fetchMSCollectionPlaceItemsInMSCollectionInStore_coordinate_radius_poiFilter_(v16, v17, latitude, v187, v10, longitude, a6);
+    v18 = objc_msgSend__fetchMSCollectionPlaceItemsInMSCollectionInStore_coordinate_radius_poiFilter_(v16, v17, latitude, storeCopy, filterCopy, longitude, radius);
     v205 = 0u;
     v206 = 0u;
     v207 = 0u;
@@ -655,16 +655,16 @@ LABEL_18:
       while (v22);
     }
 
-    v10 = v185;
+    filterCopy = v185;
   }
 
-  v53 = objc_msgSend_includesCategory_(v10, v14, v15, 256, v185);
-  v56 = objc_msgSend_includesCategory_(v10, v54, v55, 8);
+  v53 = objc_msgSend_includesCategory_(filterCopy, v14, v15, 256, v185);
+  v56 = objc_msgSend_includesCategory_(filterCopy, v54, v55, 8);
   v59 = v56;
   v189 = v53;
   if ((v53 & 1) != 0 || v56)
   {
-    objc_msgSend__fetchMSCollectionPlaceItemsInStore_coordinate_radius_(a1, v57, latitude, v187, longitude, a6);
+    objc_msgSend__fetchMSCollectionPlaceItemsInStore_coordinate_radius_(self, v57, latitude, storeCopy, longitude, radius);
     v201 = 0u;
     v202 = 0u;
     v203 = 0u;
@@ -825,19 +825,19 @@ LABEL_40:
       {
 LABEL_45:
 
-        v10 = v186;
+        filterCopy = v186;
         break;
       }
     }
   }
 
-  v106 = objc_msgSend_includesCategory_(v10, v57, v58, 4);
-  v109 = objc_msgSend_includesCategory_(v10, v107, v108, 32);
+  v106 = objc_msgSend_includesCategory_(filterCopy, v57, v58, 4);
+  v109 = objc_msgSend_includesCategory_(filterCopy, v107, v108, 32);
   v112 = v109;
   v190 = v106;
   if ((v106 & 1) != 0 || v109)
   {
-    objc_msgSend__fetchMSFavoriteItemInStore_coordinate_radius_(a1, v110, latitude, v187, longitude, a6);
+    objc_msgSend__fetchMSFavoriteItemInStore_coordinate_radius_(self, v110, latitude, storeCopy, longitude, radius);
     v197 = 0u;
     v198 = 0u;
     v199 = 0u;
@@ -899,7 +899,7 @@ LABEL_45:
         v144 = v143;
 
         v148 = objc_msgSend_muid(v120, v145, v146);
-        if (v148 && objc_msgSend__mapsSyncObjectSet_containsItemWithMuid_(a1, v147, v149, v11, v148))
+        if (v148 && objc_msgSend__mapsSyncObjectSet_containsItemWithMuid_(self, v147, v149, v11, v148))
         {
           v150 = NTKFoghornFaceBundleLogObject();
           if (os_log_type_enabled(v150, OS_LOG_TYPE_DEFAULT))
@@ -949,15 +949,15 @@ LABEL_69:
       {
 LABEL_71:
 
-        v10 = v186;
+        filterCopy = v186;
         break;
       }
     }
   }
 
-  if (objc_msgSend_includesCategory_(v10, v110, v111, 16))
+  if (objc_msgSend_includesCategory_(filterCopy, v110, v111, 16))
   {
-    v156 = objc_msgSend__fetchMSUserRoutesInStore_coordinate_radius_(a1, v154, latitude, v187, longitude, a6);
+    v156 = objc_msgSend__fetchMSUserRoutesInStore_coordinate_radius_(self, v154, latitude, storeCopy, longitude, radius);
     v193 = 0u;
     v194 = 0u;
     v195 = 0u;
@@ -1010,7 +1010,7 @@ LABEL_71:
       while (v160);
     }
 
-    v10 = v186;
+    filterCopy = v186;
   }
 
   v183 = objc_msgSend_allObjects(v11, v154, v155);
@@ -1018,9 +1018,9 @@ LABEL_71:
   return v183;
 }
 
-- (void)fetchUserGuidesWithCompletion:(id)a3
+- (void)fetchUserGuidesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -1029,19 +1029,19 @@ LABEL_71:
   v7[3] = &unk_278BA1C40;
   objc_copyWeak(&v9, &location);
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(workQueue, v7);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)_runQuery:(id)a3 completion:(id)a4
+- (void)_runQuery:(id)query completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  objc_msgSend__setQuery_(self, v8, v9, v6);
+  queryCopy = query;
+  completionCopy = completion;
+  objc_msgSend__setQuery_(self, v8, v9, queryCopy);
   objc_initWeak(&location, self);
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1049,28 +1049,28 @@ LABEL_71:
   block[2] = sub_23BEE6720;
   block[3] = &unk_278BA1070;
   objc_copyWeak(&v16, &location);
-  v14 = v6;
-  v15 = v7;
+  v14 = queryCopy;
+  v15 = completionCopy;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
+  v11 = queryCopy;
+  v12 = completionCopy;
   dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 }
 
-- (void)setQueryCenterLocation:(id)a3 radius:(double)a4 poiFilter:(id)a5 completion:(id)a6
+- (void)setQueryCenterLocation:(id)location radius:(double)radius poiFilter:(id)filter completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v15 = v12;
-  if ((v10 || a4 <= 0.0) && (a4 <= 0.0 || (v14 = 50.0, a4 >= 50.0)))
+  locationCopy = location;
+  filterCopy = filter;
+  completionCopy = completion;
+  v15 = completionCopy;
+  if ((locationCopy || radius <= 0.0) && (radius <= 0.0 || (v14 = 50.0, radius >= 50.0)))
   {
-    v16 = objc_msgSend_copyIncludingCategories_(v11, v13, v14, 318);
+    v16 = objc_msgSend_copyIncludingCategories_(filterCopy, v13, v14, 318);
     v19 = objc_msgSend__query(self, v17, v18);
-    objc_msgSend_coordinate(v10, v20, v21);
+    objc_msgSend_coordinate(locationCopy, v20, v21);
     v24 = objc_msgSend_queryWithCenterCoordinate_radius_poiFilter_(NTKLeghornWaypointQuery, v22, v23, v16);
     if (objc_msgSend_matchesQuery_(v19, v25, v26, v24))
     {
@@ -1091,9 +1091,9 @@ LABEL_71:
     }
   }
 
-  else if (v12)
+  else if (completionCopy)
   {
-    (*(v12 + 2))(v12, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 

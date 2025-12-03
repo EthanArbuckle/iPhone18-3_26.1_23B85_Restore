@@ -1,10 +1,10 @@
 @interface ACDAccessPluginManager
 - (ACDAccessPluginManager)init;
-- (id)_authorizationPluginForAccountType:(id)a3;
-- (void)authorizeAccessToAccountsOfType:(id)a3 forClient:(id)a4 store:(id)a5 completion:(id)a6;
-- (void)handleAccessRequestToAccountsOfType:(id)a3 forClient:(id)a4 withOptions:(id)a5 store:(id)a6 allowUserInteraction:(BOOL)a7 completion:(id)a8;
-- (void)revokeAccessToAccountsOfType:(id)a3 forClient:(id)a4 store:(id)a5 completion:(id)a6;
-- (void)revokeAllAccessToAccountsOfType:(id)a3 store:(id)a4 withCompletion:(id)a5;
+- (id)_authorizationPluginForAccountType:(id)type;
+- (void)authorizeAccessToAccountsOfType:(id)type forClient:(id)client store:(id)store completion:(id)completion;
+- (void)handleAccessRequestToAccountsOfType:(id)type forClient:(id)client withOptions:(id)options store:(id)store allowUserInteraction:(BOOL)interaction completion:(id)completion;
+- (void)revokeAccessToAccountsOfType:(id)type forClient:(id)client store:(id)store completion:(id)completion;
+- (void)revokeAllAccessToAccountsOfType:(id)type store:(id)store withCompletion:(id)completion;
 @end
 
 @implementation ACDAccessPluginManager
@@ -25,33 +25,33 @@
   return v2;
 }
 
-- (void)handleAccessRequestToAccountsOfType:(id)a3 forClient:(id)a4 withOptions:(id)a5 store:(id)a6 allowUserInteraction:(BOOL)a7 completion:(id)a8
+- (void)handleAccessRequestToAccountsOfType:(id)type forClient:(id)client withOptions:(id)options store:(id)store allowUserInteraction:(BOOL)interaction completion:(id)completion
 {
   v52[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  v19 = [v14 identifier];
-  v20 = [MEMORY[0x277CB8F48] _obsoleteAccountTypeIDsToRemove];
-  v21 = [v20 containsObject:v19];
+  typeCopy = type;
+  clientCopy = client;
+  optionsCopy = options;
+  storeCopy = store;
+  completionCopy = completion;
+  identifier = [typeCopy identifier];
+  _obsoleteAccountTypeIDsToRemove = [MEMORY[0x277CB8F48] _obsoleteAccountTypeIDsToRemove];
+  v21 = [_obsoleteAccountTypeIDsToRemove containsObject:identifier];
 
   v22 = _ACDLogSystem();
   v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG);
   if (v21)
   {
-    v40 = v14;
-    v24 = v17;
-    v25 = v16;
-    v26 = v15;
+    v40 = typeCopy;
+    v24 = storeCopy;
+    v25 = optionsCopy;
+    v26 = clientCopy;
     if (v23)
     {
       [ACDAccessPluginManager handleAccessRequestToAccountsOfType:forClient:withOptions:store:allowUserInteraction:completion:];
     }
 
-    v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"No accounts found for account type %@", v19];
-    if ([v19 isEqualToString:*MEMORY[0x277CB8C18]])
+    v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"No accounts found for account type %@", identifier];
+    if ([identifier isEqualToString:*MEMORY[0x277CB8C18]])
     {
       v28 = 6;
     }
@@ -68,7 +68,7 @@
     v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:&v51 count:1];
     v32 = [v29 errorWithDomain:v30 code:v28 userInfo:v31];
 
-    v18[2](v18, 0, v32);
+    completionCopy[2](completionCopy, 0, v32);
     goto LABEL_15;
   }
 
@@ -77,14 +77,14 @@
     [ACDAccessPluginManager handleAccessRequestToAccountsOfType:forClient:withOptions:store:allowUserInteraction:completion:];
   }
 
-  v27 = [(ACDAccessPluginManager *)self _authorizationPluginForAccountType:v19];
+  v27 = [(ACDAccessPluginManager *)self _authorizationPluginForAccountType:identifier];
   if (!v27)
   {
-    v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"No access plugin was found that supports the account type %@", v19];
-    v40 = v14;
-    v24 = v17;
-    v25 = v16;
-    v26 = v15;
+    v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"No access plugin was found that supports the account type %@", identifier];
+    v40 = typeCopy;
+    v24 = storeCopy;
+    v25 = optionsCopy;
+    v26 = clientCopy;
     v35 = MEMORY[0x277CCA9B8];
     v36 = *MEMORY[0x277CB8DC0];
     v49 = *MEMORY[0x277CCA450];
@@ -92,12 +92,12 @@
     v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
     v38 = [v35 errorWithDomain:v36 code:1 userInfo:v37];
 
-    v18[2](v18, 0, v38);
+    completionCopy[2](completionCopy, 0, v38);
 LABEL_15:
-    v15 = v26;
-    v16 = v25;
-    v17 = v24;
-    v14 = v40;
+    clientCopy = v26;
+    optionsCopy = v25;
+    storeCopy = v24;
+    typeCopy = v40;
     goto LABEL_16;
   }
 
@@ -114,12 +114,12 @@ LABEL_15:
   block[3] = &unk_27848CD20;
   v27 = v27;
   v42 = v27;
-  v43 = v14;
-  v44 = v15;
-  v45 = v16;
-  v46 = v17;
-  v48 = a7;
-  v47 = v18;
+  v43 = typeCopy;
+  v44 = clientCopy;
+  v45 = optionsCopy;
+  v46 = storeCopy;
+  interactionCopy = interaction;
+  v47 = completionCopy;
   dispatch_async(accessPluginQueue, block);
 
   v32 = v42;
@@ -163,21 +163,21 @@ intptr_t __122__ACDAccessPluginManager_handleAccessRequestToAccountsOfType_forCl
   return dispatch_semaphore_signal(v2);
 }
 
-- (void)authorizeAccessToAccountsOfType:(id)a3 forClient:(id)a4 store:(id)a5 completion:(id)a6
+- (void)authorizeAccessToAccountsOfType:(id)type forClient:(id)client store:(id)store completion:(id)completion
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 identifier];
+  typeCopy = type;
+  clientCopy = client;
+  storeCopy = store;
+  completionCopy = completion;
+  identifier = [typeCopy identifier];
   v15 = _ACDLogSystem();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
     [ACDAccessPluginManager handleAccessRequestToAccountsOfType:forClient:withOptions:store:allowUserInteraction:completion:];
   }
 
-  v16 = [(ACDAccessPluginManager *)self _authorizationPluginForAccountType:v14];
+  v16 = [(ACDAccessPluginManager *)self _authorizationPluginForAccountType:identifier];
   if (v16)
   {
     v17 = _ACDLogSystem();
@@ -192,10 +192,10 @@ intptr_t __122__ACDAccessPluginManager_handleAccessRequestToAccountsOfType_forCl
     block[2] = __85__ACDAccessPluginManager_authorizeAccessToAccountsOfType_forClient_store_completion___block_invoke;
     block[3] = &unk_27848C380;
     v26 = v16;
-    v27 = v10;
-    v28 = v11;
-    v29 = v12;
-    v30 = v13;
+    v27 = typeCopy;
+    v28 = clientCopy;
+    v29 = storeCopy;
+    v30 = completionCopy;
     dispatch_async(accessPluginQueue, block);
 
     v19 = v26;
@@ -203,7 +203,7 @@ intptr_t __122__ACDAccessPluginManager_handleAccessRequestToAccountsOfType_forCl
 
   else
   {
-    v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"No access plugin was found that supports the account type %@", v14];
+    v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"No access plugin was found that supports the account type %@", identifier];
     v20 = MEMORY[0x277CCA9B8];
     v21 = *MEMORY[0x277CB8DC0];
     v31 = *MEMORY[0x277CCA450];
@@ -211,7 +211,7 @@ intptr_t __122__ACDAccessPluginManager_handleAccessRequestToAccountsOfType_forCl
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
     v23 = [v20 errorWithDomain:v21 code:1 userInfo:v22];
 
-    (*(v13 + 2))(v13, 0, v23);
+    (*(completionCopy + 2))(completionCopy, 0, v23);
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -255,21 +255,21 @@ intptr_t __85__ACDAccessPluginManager_authorizeAccessToAccountsOfType_forClient_
   return dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)revokeAccessToAccountsOfType:(id)a3 forClient:(id)a4 store:(id)a5 completion:(id)a6
+- (void)revokeAccessToAccountsOfType:(id)type forClient:(id)client store:(id)store completion:(id)completion
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 identifier];
+  typeCopy = type;
+  clientCopy = client;
+  storeCopy = store;
+  completionCopy = completion;
+  identifier = [typeCopy identifier];
   v15 = _ACDLogSystem();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
     [ACDAccessPluginManager revokeAccessToAccountsOfType:forClient:store:completion:];
   }
 
-  v16 = [(ACDAccessPluginManager *)self _authorizationPluginForAccountType:v14];
+  v16 = [(ACDAccessPluginManager *)self _authorizationPluginForAccountType:identifier];
   if (v16)
   {
     v17 = _ACDLogSystem();
@@ -284,10 +284,10 @@ intptr_t __85__ACDAccessPluginManager_authorizeAccessToAccountsOfType_forClient_
     block[2] = __82__ACDAccessPluginManager_revokeAccessToAccountsOfType_forClient_store_completion___block_invoke;
     block[3] = &unk_27848C380;
     v26 = v16;
-    v27 = v10;
-    v28 = v11;
-    v29 = v12;
-    v30 = v13;
+    v27 = typeCopy;
+    v28 = clientCopy;
+    v29 = storeCopy;
+    v30 = completionCopy;
     dispatch_async(accessPluginQueue, block);
 
     v19 = v26;
@@ -295,7 +295,7 @@ intptr_t __85__ACDAccessPluginManager_authorizeAccessToAccountsOfType_forClient_
 
   else
   {
-    v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"No access plugin was found that supports the account type %@", v14];
+    v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"No access plugin was found that supports the account type %@", identifier];
     v20 = MEMORY[0x277CCA9B8];
     v21 = *MEMORY[0x277CB8DC0];
     v31 = *MEMORY[0x277CCA450];
@@ -303,7 +303,7 @@ intptr_t __85__ACDAccessPluginManager_authorizeAccessToAccountsOfType_forClient_
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
     v23 = [v20 errorWithDomain:v21 code:1 userInfo:v22];
 
-    (*(v13 + 2))(v13, 0, v23);
+    (*(completionCopy + 2))(completionCopy, 0, v23);
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -346,20 +346,20 @@ intptr_t __82__ACDAccessPluginManager_revokeAccessToAccountsOfType_forClient_sto
   return dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)revokeAllAccessToAccountsOfType:(id)a3 store:(id)a4 withCompletion:(id)a5
+- (void)revokeAllAccessToAccountsOfType:(id)type store:(id)store withCompletion:(id)completion
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 identifier];
+  typeCopy = type;
+  storeCopy = store;
+  completionCopy = completion;
+  identifier = [typeCopy identifier];
   v12 = _ACDLogSystem();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     [ACDAccessPluginManager revokeAllAccessToAccountsOfType:store:withCompletion:];
   }
 
-  v13 = [(ACDAccessPluginManager *)self _authorizationPluginForAccountType:v11];
+  v13 = [(ACDAccessPluginManager *)self _authorizationPluginForAccountType:identifier];
   if (v13)
   {
     v14 = _ACDLogSystem();
@@ -374,9 +374,9 @@ intptr_t __82__ACDAccessPluginManager_revokeAccessToAccountsOfType_forClient_sto
     block[2] = __79__ACDAccessPluginManager_revokeAllAccessToAccountsOfType_store_withCompletion___block_invoke;
     block[3] = &unk_27848C358;
     v23 = v13;
-    v24 = v8;
-    v25 = v9;
-    v26 = v10;
+    v24 = typeCopy;
+    v25 = storeCopy;
+    v26 = completionCopy;
     dispatch_async(accessPluginQueue, block);
 
     v16 = v23;
@@ -384,7 +384,7 @@ intptr_t __82__ACDAccessPluginManager_revokeAccessToAccountsOfType_forClient_sto
 
   else
   {
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"No access plugin was found that supports the account type %@", v11];
+    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"No access plugin was found that supports the account type %@", identifier];
     v17 = MEMORY[0x277CCA9B8];
     v18 = *MEMORY[0x277CB8DC0];
     v27 = *MEMORY[0x277CCA450];
@@ -392,7 +392,7 @@ intptr_t __82__ACDAccessPluginManager_revokeAccessToAccountsOfType_forClient_sto
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
     v20 = [v17 errorWithDomain:v18 code:1 userInfo:v19];
 
-    (*(v10 + 2))(v10, 0, v20);
+    (*(completionCopy + 2))(completionCopy, 0, v20);
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -434,20 +434,20 @@ intptr_t __79__ACDAccessPluginManager_revokeAllAccessToAccountsOfType_store_with
   return dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_authorizationPluginForAccountType:(id)a3
+- (id)_authorizationPluginForAccountType:(id)type
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  accessPlugins = v5->_accessPlugins;
+  typeCopy = type;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  accessPlugins = selfCopy->_accessPlugins;
   if (!accessPlugins)
   {
     v7 = [(ACPluginLoader *)ACDPluginLoader pluginBundlesAtSubpath:@"Access"];
-    v8 = v5->_accessPlugins;
-    v5->_accessPlugins = v7;
+    v8 = selfCopy->_accessPlugins;
+    selfCopy->_accessPlugins = v7;
 
-    accessPlugins = v5->_accessPlugins;
+    accessPlugins = selfCopy->_accessPlugins;
   }
 
   v27 = 0u;
@@ -471,19 +471,19 @@ intptr_t __79__ACDAccessPluginManager_revokeAllAccessToAccountsOfType_store_with
         }
 
         v14 = *(*(&v25 + 1) + 8 * i);
-        v15 = [v14 principalClass];
+        principalClass = [v14 principalClass];
         v16 = _ACDLogSystem();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
-          v18 = [v14 bundleURL];
+          bundleURL = [v14 bundleURL];
           *buf = v22;
-          v30 = v18;
+          v30 = bundleURL;
           v31 = 2112;
-          v32 = v4;
+          v32 = typeCopy;
           _os_log_debug_impl(&dword_221D2F000, v16, OS_LOG_TYPE_DEBUG, "Testing if plugin %@ supports account type %@", buf, 0x16u);
         }
 
-        if ([(objc_class *)v15 supportsAccountTypeWithIdentifier:v4])
+        if ([(objc_class *)principalClass supportsAccountTypeWithIdentifier:typeCopy])
         {
           v19 = _ACDLogSystem();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -491,7 +491,7 @@ intptr_t __79__ACDAccessPluginManager_revokeAllAccessToAccountsOfType_store_with
             [ACDAccessPluginManager _authorizationPluginForAccountType:];
           }
 
-          v10 = objc_alloc_init(v15);
+          v10 = objc_alloc_init(principalClass);
           goto LABEL_19;
         }
 
@@ -514,7 +514,7 @@ intptr_t __79__ACDAccessPluginManager_revokeAllAccessToAccountsOfType_store_with
 
 LABEL_19:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v20 = *MEMORY[0x277D85DE8];
 
   return v10;

@@ -1,30 +1,30 @@
 @interface PPLPeopleEntitySceneSettings
 - (NSURL)url;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 @end
 
 @implementation PPLPeopleEntitySceneSettings
 
 - (NSURL)url
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:9000];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:9000];
 
   return v3;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [PPLMutablePeopleEntitySceneSettings alloc];
 
   return [(FBSSettings *)v4 initWithSettings:self];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 9000)
+  if (setting == 9000)
   {
     v5 = @"URL";
   }
@@ -41,18 +41,18 @@
   return v5;
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  if (a5 == 9000)
+  if (setting == 9000)
   {
-    v5 = PPLPeopleEntitySceneSettingValueDescription(9000, a4);
+    v5 = PPLPeopleEntitySceneSettingValueDescription(9000, object);
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = PPLPeopleEntitySceneSettings;
-    v5 = [(FBSSettings *)&v7 valueDescriptionForFlag:a3 object:a4 ofSetting:?];
+    v5 = [(FBSSettings *)&v7 valueDescriptionForFlag:flag object:object ofSetting:?];
   }
 
   return v5;

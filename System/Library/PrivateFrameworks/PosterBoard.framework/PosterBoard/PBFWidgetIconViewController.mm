@@ -1,7 +1,7 @@
 @interface PBFWidgetIconViewController
 - (CGRect)visibleBounds;
-- (void)setIconImageInfo:(SBIconImageInfo *)a3;
-- (void)setIconImageView:(id)a3;
+- (void)setIconImageInfo:(SBIconImageInfo *)info;
+- (void)setIconImageView:(id)view;
 - (void)viewDidLayoutSubviews;
 @end
 
@@ -12,25 +12,25 @@
   v5.receiver = self;
   v5.super_class = PBFWidgetIconViewController;
   [(PBFWidgetIconViewController *)&v5 viewDidLayoutSubviews];
-  v3 = [(PBFWidgetIconViewController *)self iconImageView];
-  v4 = [(PBFWidgetIconViewController *)self view];
-  [v4 bounds];
-  [v3 setFrame:?];
+  iconImageView = [(PBFWidgetIconViewController *)self iconImageView];
+  view = [(PBFWidgetIconViewController *)self view];
+  [view bounds];
+  [iconImageView setFrame:?];
 }
 
-- (void)setIconImageView:(id)a3
+- (void)setIconImageView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(UIImageView *)self->_iconImageView removeFromSuperview];
   iconImageView = self->_iconImageView;
-  self->_iconImageView = v4;
-  v6 = v4;
+  self->_iconImageView = viewCopy;
+  v6 = viewCopy;
 
-  v7 = [(PBFWidgetIconViewController *)self view];
-  [v7 addSubview:self->_iconImageView];
+  view = [(PBFWidgetIconViewController *)self view];
+  [view addSubview:self->_iconImageView];
 }
 
-- (void)setIconImageInfo:(SBIconImageInfo *)a3
+- (void)setIconImageInfo:(SBIconImageInfo *)info
 {
   self->_iconImageInfo.size.width = v3;
   self->_iconImageInfo.size.height = v4;

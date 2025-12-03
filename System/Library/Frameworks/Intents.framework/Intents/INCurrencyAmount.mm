@@ -1,27 +1,27 @@
 @interface INCurrencyAmount
-- (BOOL)_intents_compareValue:(id)a3 relation:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_intents_compareValue:(id)value relation:(unint64_t)relation;
+- (BOOL)isEqual:(id)equal;
 - (INCurrencyAmount)initWithAmount:(NSDecimalNumber *)amount currencyCode:(NSString *)currencyCode;
-- (INCurrencyAmount)initWithCoder:(id)a3;
+- (INCurrencyAmount)initWithCoder:(id)coder;
 - (id)_dictionaryRepresentation;
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata;
+- (id)descriptionAtIndent:(unint64_t)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INCurrencyAmount
 
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata
 {
-  v5 = [a3 locale];
+  locale = [localizer locale];
   v6 = objc_alloc_init(MEMORY[0x1E696ADA0]);
   [v6 setNumberStyle:2];
-  v7 = [(INCurrencyAmount *)self currencyCode];
-  [v6 setCurrencyCode:v7];
+  currencyCode = [(INCurrencyAmount *)self currencyCode];
+  [v6 setCurrencyCode:currencyCode];
 
-  [v6 setLocale:v5];
-  v8 = [(INCurrencyAmount *)self amount];
-  v9 = [v6 stringFromNumber:v8];
+  [v6 setLocale:locale];
+  amount = [(INCurrencyAmount *)self amount];
+  v9 = [v6 stringFromNumber:amount];
 
   return v9;
 }
@@ -31,22 +31,22 @@
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"amount";
   amount = self->_amount;
-  v4 = amount;
+  null = amount;
   if (!amount)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"currencyCode";
-  v11[0] = v4;
+  v11[0] = null;
   currencyCode = self->_currencyCode;
-  v6 = currencyCode;
+  null2 = currencyCode;
   if (!currencyCode)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
   if (currencyCode)
   {
@@ -71,44 +71,44 @@ LABEL_7:
   return v7;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INCurrencyAmount;
   v6 = [(INCurrencyAmount *)&v11 description];
-  v7 = [(INCurrencyAmount *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INCurrencyAmount *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   amount = self->_amount;
-  v5 = a3;
-  [v5 encodeObject:amount forKey:@"amount"];
-  [v5 encodeObject:self->_currencyCode forKey:@"currencyCode"];
+  coderCopy = coder;
+  [coderCopy encodeObject:amount forKey:@"amount"];
+  [coderCopy encodeObject:self->_currencyCode forKey:@"currencyCode"];
 }
 
-- (INCurrencyAmount)initWithCoder:(id)a3
+- (INCurrencyAmount)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
 
   v7 = [(INCurrencyAmount *)self initWithAmount:v5 currencyCode:v6];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     amount = self->_amount;
     v8 = 0;
     if (amount == v5[1] || [(NSDecimalNumber *)amount isEqual:?])
@@ -150,14 +150,14 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)_intents_compareValue:(id)a3 relation:(unint64_t)a4
+- (BOOL)_intents_compareValue:(id)value relation:(unint64_t)relation
 {
-  v6 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = MEMORY[0x1E696AD98];
-    v8 = v6;
+    v8 = valueCopy;
     if (v8)
     {
       objc_opt_class();
@@ -179,9 +179,9 @@ LABEL_7:
 
     v13 = v9;
 
-    v14 = [v13 amount];
+    amount = [v13 amount];
 
-    [v14 doubleValue];
+    [amount doubleValue];
     v15 = [v7 numberWithDouble:?];
 LABEL_16:
     v12 = v15;
@@ -192,7 +192,7 @@ LABEL_16:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v6;
+    v10 = valueCopy;
     if (v10)
     {
       objc_opt_class();
@@ -212,19 +212,19 @@ LABEL_16:
       v11 = 0;
     }
 
-    v14 = v11;
+    amount = v11;
 
-    v15 = [v14 if_flatMap:&__block_literal_global_31045];
+    v15 = [amount if_flatMap:&__block_literal_global_31045];
     goto LABEL_16;
   }
 
   v12 = 0;
 LABEL_17:
   v16 = MEMORY[0x1E696AD98];
-  v17 = [(INCurrencyAmount *)self amount];
-  [v17 doubleValue];
+  amount2 = [(INCurrencyAmount *)self amount];
+  [amount2 doubleValue];
   v18 = [v16 numberWithDouble:?];
-  v19 = [v18 _intents_compareValue:v12 relation:a4];
+  v19 = [v18 _intents_compareValue:v12 relation:relation];
 
   return v19;
 }

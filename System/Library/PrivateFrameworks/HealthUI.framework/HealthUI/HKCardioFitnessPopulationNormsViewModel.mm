@@ -1,14 +1,14 @@
 @interface HKCardioFitnessPopulationNormsViewModel
 - (id)ageBucketsTitle;
 - (id)chartTitle;
-- (id)classificationIdentifierForIndex:(unint64_t)a3;
-- (id)classificationIndexForSampleValue:(double)a3 age:(int64_t)a4 sex:(int64_t)a5;
+- (id)classificationIdentifierForIndex:(unint64_t)index;
+- (id)classificationIndexForSampleValue:(double)value age:(int64_t)age sex:(int64_t)sex;
 - (id)currentDataForBiologicalSex;
 - (id)footerText;
 - (id)levelsTitle;
-- (id)localizedClassificationDescriptionForIndex:(unint64_t)a3;
-- (id)localizedClassificationNameForIndex:(unint64_t)a3;
-- (id)localizedClassificationTitleForIndex:(unint64_t)a3;
+- (id)localizedClassificationDescriptionForIndex:(unint64_t)index;
+- (id)localizedClassificationNameForIndex:(unint64_t)index;
+- (id)localizedClassificationTitleForIndex:(unint64_t)index;
 - (id)quantityUnitTitle;
 - (id)seriesHighlightedSegmentColor;
 - (id)viewTitle;
@@ -17,9 +17,9 @@
 
 @implementation HKCardioFitnessPopulationNormsViewModel
 
-- (id)classificationIndexForSampleValue:(double)a3 age:(int64_t)a4 sex:(int64_t)a5
+- (id)classificationIndexForSampleValue:(double)value age:(int64_t)age sex:(int64_t)sex
 {
-  v6 = [HKCardioFitnessUtilities cardioFitnessLevelForVO2Max:a5 biologicalSex:a4 age:a3];
+  v6 = [HKCardioFitnessUtilities cardioFitnessLevelForVO2Max:sex biologicalSex:age age:value];
   if (v6 == -1)
   {
     v7 = 0;
@@ -90,49 +90,49 @@
   return v4;
 }
 
-- (id)localizedClassificationTitleForIndex:(unint64_t)a3
+- (id)localizedClassificationTitleForIndex:(unint64_t)index
 {
-  v3 = [(HKPopulationNormsAbstractViewModel *)self classificationIndexForLevelIndex:a3];
+  v3 = [(HKPopulationNormsAbstractViewModel *)self classificationIndexForLevelIndex:index];
 
   return [HKCardioFitnessUtilities localizedStringForCardioFitnessTitle:v3];
 }
 
-- (id)classificationIdentifierForIndex:(unint64_t)a3
+- (id)classificationIdentifierForIndex:(unint64_t)index
 {
-  v3 = [(HKPopulationNormsAbstractViewModel *)self classificationIndexForLevelIndex:a3];
+  v3 = [(HKPopulationNormsAbstractViewModel *)self classificationIndexForLevelIndex:index];
 
   return [HKCardioFitnessUtilities classificationIdentifierForIndex:v3];
 }
 
-- (id)localizedClassificationDescriptionForIndex:(unint64_t)a3
+- (id)localizedClassificationDescriptionForIndex:(unint64_t)index
 {
-  v4 = [(HKPopulationNormsAbstractViewModel *)self classificationIndexForLevelIndex:a3];
-  v5 = [(HKPopulationNormsAbstractViewModel *)self currentAgeInYears];
-  v6 = +[HKCardioFitnessUtilities localizedStringForCardioFitnessDescription:age:](HKCardioFitnessUtilities, "localizedStringForCardioFitnessDescription:age:", v4, [v5 integerValue]);
+  v4 = [(HKPopulationNormsAbstractViewModel *)self classificationIndexForLevelIndex:index];
+  currentAgeInYears = [(HKPopulationNormsAbstractViewModel *)self currentAgeInYears];
+  v6 = +[HKCardioFitnessUtilities localizedStringForCardioFitnessDescription:age:](HKCardioFitnessUtilities, "localizedStringForCardioFitnessDescription:age:", v4, [currentAgeInYears integerValue]);
 
   return v6;
 }
 
-- (id)localizedClassificationNameForIndex:(unint64_t)a3
+- (id)localizedClassificationNameForIndex:(unint64_t)index
 {
-  v3 = [(HKPopulationNormsAbstractViewModel *)self classificationIndexForLevelIndex:a3];
+  v3 = [(HKPopulationNormsAbstractViewModel *)self classificationIndexForLevelIndex:index];
 
   return [HKCardioFitnessUtilities localizedStringForCardioFitnessLevelName:v3];
 }
 
 - (id)currentDataForBiologicalSex
 {
-  v2 = [(HKPopulationNormsAbstractViewModel *)self currentBiologicalSex];
+  currentBiologicalSex = [(HKPopulationNormsAbstractViewModel *)self currentBiologicalSex];
 
-  return [HKCardioFitnessUtilities flattenedCardioFitnessDataForBiologicalSex:v2];
+  return [HKCardioFitnessUtilities flattenedCardioFitnessDataForBiologicalSex:currentBiologicalSex];
 }
 
 - (unint64_t)maximumUserAgeBucketIndex
 {
-  v2 = [(HKCardioFitnessPopulationNormsViewModel *)self currentDataForBiologicalSex];
-  if ([v2 count])
+  currentDataForBiologicalSex = [(HKCardioFitnessPopulationNormsViewModel *)self currentDataForBiologicalSex];
+  if ([currentDataForBiologicalSex count])
   {
-    v3 = [v2 count] - 1;
+    v3 = [currentDataForBiologicalSex count] - 1;
   }
 
   else

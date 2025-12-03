@@ -1,6 +1,6 @@
 @interface RAPQuestion
 + (id)RAPTitle;
-- (BOOL)_isParentQuestionKindOfClass:(Class)a3;
+- (BOOL)_isParentQuestionKindOfClass:(Class)class;
 - (BOOL)isAnonymous;
 - (NSString)localizedTitle;
 - (RAPAppStateProtocol)_context;
@@ -8,16 +8,16 @@
 - (RAPMapStateProtocol)_alternateMapViewContext;
 - (RAPMapStateProtocol)_alternatePlaceContext;
 - (RAPPlace)_reportedPlace;
-- (RAPQuestion)initWithReport:(id)a3 parentQuestion:(id)a4;
+- (RAPQuestion)initWithReport:(id)report parentQuestion:(id)question;
 - (RAPQuestion)parentQuestion;
 - (RAPReport)report;
-- (id)_parentQuestionOfClass:(Class)a3;
-- (void)_addChildQuestion:(id)a3;
+- (id)_parentQuestionOfClass:(Class)class;
+- (void)_addChildQuestion:(id)question;
 - (void)_didChange;
 - (void)_prepareForSubmission;
 - (void)_removeFromParentQuestion;
-- (void)_setComplete:(BOOL)a3 allowInvokingDidChange:(BOOL)a4;
-- (void)addObserver:(id)a3 changeHandler:(id)a4;
+- (void)_setComplete:(BOOL)complete allowInvokingDidChange:(BOOL)change;
+- (void)addObserver:(id)observer changeHandler:(id)handler;
 @end
 
 @implementation RAPQuestion
@@ -36,7 +36,7 @@
   return WeakRetained;
 }
 
-- (id)_parentQuestionOfClass:(Class)a3
+- (id)_parentQuestionOfClass:(Class)class
 {
   WeakRetained = objc_loadWeakRetained(&self->_parentQuestion);
   isKindOfClass = objc_opt_isKindOfClass();
@@ -45,7 +45,7 @@
   v8 = v7;
   if ((isKindOfClass & 1) == 0)
   {
-    v9 = [v7 _parentQuestionOfClass:a3];
+    v9 = [v7 _parentQuestionOfClass:class];
 
     v8 = v9;
   }
@@ -53,7 +53,7 @@
   return v8;
 }
 
-- (BOOL)_isParentQuestionKindOfClass:(Class)a3
+- (BOOL)_isParentQuestionKindOfClass:(Class)class
 {
   WeakRetained = objc_loadWeakRetained(&self->_parentQuestion);
   isKindOfClass = objc_opt_isKindOfClass();
@@ -64,31 +64,31 @@
   }
 
   v8 = objc_loadWeakRetained(&self->_parentQuestion);
-  v9 = [v8 _isParentQuestionKindOfClass:a3];
+  v9 = [v8 _isParentQuestionKindOfClass:class];
 
   return v9;
 }
 
 - (RAPPlace)_reportedPlace
 {
-  v2 = self;
-  v3 = v2;
+  selfCopy = self;
+  parentQuestion = selfCopy;
   do
   {
-    v4 = v3;
-    v5 = [v3 _alternatePlaceContext];
-    v3 = [v3 parentQuestion];
+    v4 = parentQuestion;
+    _alternatePlaceContext = [parentQuestion _alternatePlaceContext];
+    parentQuestion = [parentQuestion parentQuestion];
   }
 
-  while (!v5 && v3);
-  if (!v5)
+  while (!_alternatePlaceContext && parentQuestion);
+  if (!_alternatePlaceContext)
   {
-    v5 = [(RAPQuestion *)v2 _context];
+    _alternatePlaceContext = [(RAPQuestion *)selfCopy _context];
   }
 
-  v6 = [v5 reportedPlace];
+  reportedPlace = [_alternatePlaceContext reportedPlace];
 
-  return v6;
+  return reportedPlace;
 }
 
 - (RAPAuxiliaryControlsRecording)_alternateAuxiliaryControlsRecording
@@ -97,8 +97,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(NSHashTable *)self->_children allObjects];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allObjects = [(NSHashTable *)self->_children allObjects];
+  v3 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -109,18 +109,18 @@
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allObjects);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * i) _alternateAuxiliaryControlsRecording];
-        if (v7)
+        _alternateAuxiliaryControlsRecording = [*(*(&v10 + 1) + 8 * i) _alternateAuxiliaryControlsRecording];
+        if (_alternateAuxiliaryControlsRecording)
         {
-          v8 = v7;
+          v8 = _alternateAuxiliaryControlsRecording;
           goto LABEL_11;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -142,8 +142,8 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(NSHashTable *)self->_children allObjects];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allObjects = [(NSHashTable *)self->_children allObjects];
+  v3 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -154,18 +154,18 @@ LABEL_11:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allObjects);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * i) _alternatePlaceContext];
-        if (v7)
+        _alternatePlaceContext = [*(*(&v10 + 1) + 8 * i) _alternatePlaceContext];
+        if (_alternatePlaceContext)
         {
-          v8 = v7;
+          v8 = _alternatePlaceContext;
           goto LABEL_11;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -187,8 +187,8 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(NSHashTable *)self->_children allObjects];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allObjects = [(NSHashTable *)self->_children allObjects];
+  v3 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -199,18 +199,18 @@ LABEL_11:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allObjects);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * i) _alternateMapViewContext];
-        if (v7)
+        _alternateMapViewContext = [*(*(&v10 + 1) + 8 * i) _alternateMapViewContext];
+        if (_alternateMapViewContext)
         {
-          v8 = v7;
+          v8 = _alternateMapViewContext;
           goto LABEL_11;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -228,10 +228,10 @@ LABEL_11:
 
 - (RAPAppStateProtocol)_context
 {
-  v2 = [(RAPQuestion *)self report];
-  v3 = [v2 _context];
+  report = [(RAPQuestion *)self report];
+  _context = [report _context];
 
-  return v3;
+  return _context;
 }
 
 - (void)_prepareForSubmission
@@ -240,8 +240,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSHashTable *)self->_children allObjects];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  allObjects = [(NSHashTable *)self->_children allObjects];
+  v3 = [allObjects countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -253,7 +253,7 @@ LABEL_11:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allObjects);
         }
 
         [*(*(&v7 + 1) + 8 * v6) _prepareForSubmission];
@@ -261,19 +261,19 @@ LABEL_11:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [allObjects countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)_setComplete:(BOOL)a3 allowInvokingDidChange:(BOOL)a4
+- (void)_setComplete:(BOOL)complete allowInvokingDidChange:(BOOL)change
 {
-  if (self->_complete != a3)
+  if (self->_complete != complete)
   {
-    self->_complete = a3;
-    if (a4)
+    self->_complete = complete;
+    if (change)
     {
       [(RAPQuestion *)self _didChange];
     }
@@ -287,9 +287,9 @@ LABEL_11:
   v14 = 0u;
   v15 = 0u;
   v3 = [(NSMapTable *)self->_observers copy];
-  v4 = [v3 keyEnumerator];
+  keyEnumerator = [v3 keyEnumerator];
 
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [keyEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -300,7 +300,7 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -308,20 +308,20 @@ LABEL_11:
         (v10)[2](v10, self, v9);
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [keyEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  v11 = [(RAPQuestion *)self report];
-  [v11 _questionDidChange:self];
+  report = [(RAPQuestion *)self report];
+  [report _questionDidChange:self];
 }
 
-- (void)addObserver:(id)a3 changeHandler:(id)a4
+- (void)addObserver:(id)observer changeHandler:(id)handler
 {
-  v11 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  handlerCopy = handler;
   observers = self->_observers;
   if (!observers)
   {
@@ -332,8 +332,8 @@ LABEL_11:
     observers = self->_observers;
   }
 
-  v10 = [v6 copy];
-  [(NSMapTable *)observers setObject:v10 forKey:v11];
+  v10 = [handlerCopy copy];
+  [(NSMapTable *)observers setObject:v10 forKey:observerCopy];
 }
 
 - (void)_removeFromParentQuestion
@@ -344,37 +344,37 @@ LABEL_11:
   objc_storeWeak(&self->_parentQuestion, 0);
 }
 
-- (void)_addChildQuestion:(id)a3
+- (void)_addChildQuestion:(id)question
 {
-  v4 = a3;
+  questionCopy = question;
   children = self->_children;
-  v8 = v4;
+  v8 = questionCopy;
   if (!children)
   {
     v6 = +[NSHashTable weakObjectsHashTable];
     v7 = self->_children;
     self->_children = v6;
 
-    v4 = v8;
+    questionCopy = v8;
     children = self->_children;
   }
 
-  [(NSHashTable *)children addObject:v4];
+  [(NSHashTable *)children addObject:questionCopy];
 }
 
-- (RAPQuestion)initWithReport:(id)a3 parentQuestion:(id)a4
+- (RAPQuestion)initWithReport:(id)report parentQuestion:(id)question
 {
-  v6 = a3;
-  v7 = a4;
+  reportCopy = report;
+  questionCopy = question;
   v12.receiver = self;
   v12.super_class = RAPQuestion;
   v8 = [(RAPQuestion *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_report, v6);
-    v10 = objc_storeWeak(&v9->_parentQuestion, v7);
-    [v7 _addChildQuestion:v9];
+    objc_storeWeak(&v8->_report, reportCopy);
+    v10 = objc_storeWeak(&v9->_parentQuestion, questionCopy);
+    [questionCopy _addChildQuestion:v9];
   }
 
   return v9;
@@ -383,9 +383,9 @@ LABEL_11:
 - (BOOL)isAnonymous
 {
   v2 = +[UserProfileReportHistoryManager sharedInstance];
-  v3 = [v2 inChina];
+  inChina = [v2 inChina];
 
-  if (v3)
+  if (inChina)
   {
     return 0;
   }

@@ -1,6 +1,6 @@
 @interface PXPhotoKitAssetCollectionMoveOutActionPerformer
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4;
-+ (id)_grandParentOfCollection:(id)a3;
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)_grandParentOfCollection:(id)collection;
 - (void)performBackgroundTask;
 - (void)performUserInteractionTask;
 @end
@@ -10,10 +10,10 @@
 - (void)performBackgroundTask
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = [(PXAssetCollectionActionPerformer *)self assetCollectionReference];
-  v5 = [v4 assetCollection];
+  assetCollectionReference = [(PXAssetCollectionActionPerformer *)self assetCollectionReference];
+  assetCollection = [assetCollectionReference assetCollection];
 
-  if (v5)
+  if (assetCollection)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -21,51 +21,51 @@
       goto LABEL_3;
     }
 
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = objc_opt_class();
     v13 = NSStringFromClass(v14);
-    v15 = [v5 px_descriptionForAssertionMessage];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionMoveOutActionPerformer.m" lineNumber:78 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.assetCollectionReference.assetCollection", v13, v15}];
+    px_descriptionForAssertionMessage = [assetCollection px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionMoveOutActionPerformer.m" lineNumber:78 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.assetCollectionReference.assetCollection", v13, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    [v11 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionMoveOutActionPerformer.m" lineNumber:78 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.assetCollectionReference.assetCollection", v13}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionMoveOutActionPerformer.m" lineNumber:78 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.assetCollectionReference.assetCollection", v13}];
   }
 
 LABEL_3:
-  v6 = [PXPhotoKitAssetCollectionMoveOutActionPerformer _grandParentOfCollection:v5];
+  v6 = [PXPhotoKitAssetCollectionMoveOutActionPerformer _grandParentOfCollection:assetCollection];
   if (v6)
   {
     v7 = [PXMoveToCollectionListAction alloc];
-    v17[0] = v5;
+    v17[0] = assetCollection;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
     v9 = [(PXMoveToCollectionListAction *)v7 initWithCollections:v8 targetCollectionList:v6];
 
-    v10 = [(PXActionPerformer *)self undoManager];
+    undoManager = [(PXActionPerformer *)self undoManager];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __72__PXPhotoKitAssetCollectionMoveOutActionPerformer_performBackgroundTask__block_invoke;
     v16[3] = &unk_1E774C5C0;
     v16[4] = self;
-    [(PXAction *)v9 executeWithUndoManager:v10 completionHandler:v16];
+    [(PXAction *)v9 executeWithUndoManager:undoManager completionHandler:v16];
   }
 }
 
 - (void)performUserInteractionTask
 {
-  v4 = [(PXAssetCollectionActionPerformer *)self assetCollectionReference];
-  v5 = [v4 assetCollection];
+  assetCollectionReference = [(PXAssetCollectionActionPerformer *)self assetCollectionReference];
+  assetCollection = [assetCollectionReference assetCollection];
 
-  if (!v5)
+  if (!assetCollection)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
-    [v16 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionMoveOutActionPerformer.m" lineNumber:37 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.assetCollectionReference.assetCollection", v18}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionMoveOutActionPerformer.m" lineNumber:37 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.assetCollectionReference.assetCollection", v18}];
 LABEL_14:
 
     goto LABEL_3;
@@ -74,35 +74,35 @@ LABEL_14:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v19 = objc_opt_class();
     v18 = NSStringFromClass(v19);
-    v20 = [v5 px_descriptionForAssertionMessage];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionMoveOutActionPerformer.m" lineNumber:37 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.assetCollectionReference.assetCollection", v18, v20}];
+    px_descriptionForAssertionMessage = [assetCollection px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionMoveOutActionPerformer.m" lineNumber:37 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.assetCollectionReference.assetCollection", v18, px_descriptionForAssertionMessage}];
 
     goto LABEL_14;
   }
 
 LABEL_3:
-  v6 = [v5 photoLibrary];
-  v7 = [v6 librarySpecificFetchOptions];
+  photoLibrary = [assetCollection photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v7 setIncludeRootFolder:1];
-  v8 = [MEMORY[0x1E6978760] fetchCollectionListsContainingCollection:v5 options:v7];
-  v9 = [v8 firstObject];
+  [librarySpecificFetchOptions setIncludeRootFolder:1];
+  v8 = [MEMORY[0x1E6978760] fetchCollectionListsContainingCollection:assetCollection options:librarySpecificFetchOptions];
+  firstObject = [v8 firstObject];
 
-  if (v9 && ([MEMORY[0x1E6978760] fetchCollectionListsContainingCollection:v9 options:v7], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "firstObject"), v11 = objc_claimAutoreleasedReturnValue(), v10, v11))
+  if (firstObject && ([MEMORY[0x1E6978760] fetchCollectionListsContainingCollection:firstObject options:librarySpecificFetchOptions], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "firstObject"), v11 = objc_claimAutoreleasedReturnValue(), v10, v11))
   {
-    v12 = [(PXActionPerformer *)self presentationEnvironment];
+    presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __77__PXPhotoKitAssetCollectionMoveOutActionPerformer_performUserInteractionTask__block_invoke;
     v22[3] = &unk_1E7749210;
     v23 = v11;
-    v24 = v9;
-    v25 = self;
+    v24 = firstObject;
+    selfCopy = self;
     v13 = v11;
-    v14 = [v12 presentAlertWithConfigurationHandler:v22];
+    v14 = [presentationEnvironment presentAlertWithConfigurationHandler:v22];
 
     if (!v14)
     {
@@ -162,35 +162,35 @@ void __77__PXPhotoKitAssetCollectionMoveOutActionPerformer_performUserInteractio
   [v4 addActionWithTitle:v12 style:0 action:v13];
 }
 
-+ (id)_grandParentOfCollection:(id)a3
++ (id)_grandParentOfCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [v3 photoLibrary];
-  v5 = [v4 librarySpecificFetchOptions];
+  collectionCopy = collection;
+  photoLibrary = [collectionCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v5 setIncludeRootFolder:1];
-  v6 = [MEMORY[0x1E6978760] fetchCollectionListsContainingCollection:v3 options:v5];
+  [librarySpecificFetchOptions setIncludeRootFolder:1];
+  v6 = [MEMORY[0x1E6978760] fetchCollectionListsContainingCollection:collectionCopy options:librarySpecificFetchOptions];
 
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [MEMORY[0x1E6978760] fetchCollectionListsContainingCollection:v7 options:v5];
-    v9 = [v8 firstObject];
+    v8 = [MEMORY[0x1E6978760] fetchCollectionListsContainingCollection:firstObject options:librarySpecificFetchOptions];
+    firstObject2 = [v8 firstObject];
   }
 
   else
   {
-    v9 = 0;
+    firstObject2 = 0;
   }
 
-  return v9;
+  return firstObject2;
 }
 
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v6 = [a3 assetCollection];
-  if (v6)
+  assetCollection = [reference assetCollection];
+  if (assetCollection)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -198,25 +198,25 @@ void __77__PXPhotoKitAssetCollectionMoveOutActionPerformer_performUserInteractio
       goto LABEL_3;
     }
 
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = objc_opt_class();
     v12 = NSStringFromClass(v13);
-    v14 = [v6 px_descriptionForAssertionMessage];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionMoveOutActionPerformer.m" lineNumber:28 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollectionReference.assetCollection", v12, v14}];
+    px_descriptionForAssertionMessage = [assetCollection px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionMoveOutActionPerformer.m" lineNumber:28 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollectionReference.assetCollection", v12, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionMoveOutActionPerformer.m" lineNumber:28 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollectionReference.assetCollection", v12}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionMoveOutActionPerformer.m" lineNumber:28 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollectionReference.assetCollection", v12}];
   }
 
 LABEL_3:
-  if ([v6 px_isRegularAlbum])
+  if ([assetCollection px_isRegularAlbum])
   {
-    v7 = [PXPhotoKitAssetCollectionMoveOutActionPerformer _grandParentOfCollection:v6];
+    v7 = [PXPhotoKitAssetCollectionMoveOutActionPerformer _grandParentOfCollection:assetCollection];
     v8 = v7 != 0;
   }
 

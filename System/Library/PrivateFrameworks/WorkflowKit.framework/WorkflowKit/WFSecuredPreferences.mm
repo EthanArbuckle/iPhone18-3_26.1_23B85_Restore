@@ -1,58 +1,58 @@
 @interface WFSecuredPreferences
 + (WFSecuredPreferences)standardPreferences;
-- (BOOL)BOOLForKey:(id)a3;
+- (BOOL)BOOLForKey:(id)key;
 - (WFSecuredPreferences)init;
-- (id)objectForKey:(id)a3;
-- (void)registerDefaults:(id)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)userDefaultsDidChange:(id)a3;
+- (id)objectForKey:(id)key;
+- (void)registerDefaults:(id)defaults;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)userDefaultsDidChange:(id)change;
 @end
 
 @implementation WFSecuredPreferences
 
-- (void)userDefaultsDidChange:(id)a3
+- (void)userDefaultsDidChange:(id)change
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"WFSecuredPreferencesDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"WFSecuredPreferencesDidChangeNotification" object:self];
 }
 
-- (void)registerDefaults:(id)a3
+- (void)registerDefaults:(id)defaults
 {
-  v4 = a3;
-  v5 = [(WFSecuredPreferences *)self userDefaults];
-  [v5 registerDefaults:v4];
+  defaultsCopy = defaults;
+  userDefaults = [(WFSecuredPreferences *)self userDefaults];
+  [userDefaults registerDefaults:defaultsCopy];
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(WFSecuredPreferences *)self userDefaults];
-  v6 = [v5 BOOLForKey:v4];
+  keyCopy = key;
+  userDefaults = [(WFSecuredPreferences *)self userDefaults];
+  v6 = [userDefaults BOOLForKey:keyCopy];
 
   return v6;
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(WFSecuredPreferences *)self userDefaults];
-  [v5 removeObjectForKey:v4];
+  keyCopy = key;
+  userDefaults = [(WFSecuredPreferences *)self userDefaults];
+  [userDefaults removeObjectForKey:keyCopy];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFSecuredPreferences *)self userDefaults];
-  [v8 setObject:v7 forKey:v6];
+  keyCopy = key;
+  objectCopy = object;
+  userDefaults = [(WFSecuredPreferences *)self userDefaults];
+  [userDefaults setObject:objectCopy forKey:keyCopy];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(WFSecuredPreferences *)self userDefaults];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  userDefaults = [(WFSecuredPreferences *)self userDefaults];
+  v6 = [userDefaults objectForKey:keyCopy];
 
   return v6;
 }
@@ -64,14 +64,14 @@
   v2 = [(WFSecuredPreferences *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+    systemShortcutsUserDefaults = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
     userDefaults = v2->_userDefaults;
-    v2->_userDefaults = v3;
+    v2->_userDefaults = systemShortcutsUserDefaults;
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v6 = *MEMORY[0x1E696AA70];
-    v7 = [(WFSecuredPreferences *)v2 userDefaults];
-    [v5 addObserver:v2 selector:sel_userDefaultsDidChange_ name:v6 object:v7];
+    userDefaults = [(WFSecuredPreferences *)v2 userDefaults];
+    [defaultCenter addObserver:v2 selector:sel_userDefaultsDidChange_ name:v6 object:userDefaults];
 
     v8 = v2;
   }

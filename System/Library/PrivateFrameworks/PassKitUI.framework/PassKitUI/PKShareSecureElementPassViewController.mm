@@ -1,35 +1,35 @@
 @interface PKShareSecureElementPassViewController
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)result;
-- (PKShareSecureElementPassViewController)initWithSecureElementPass:(id)a3 environment:(unint64_t)a4 isFromPeopleScreen:(BOOL)a5 delegate:(id)a6;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)result;
+- (PKShareSecureElementPassViewController)initWithSecureElementPass:(id)pass environment:(unint64_t)environment isFromPeopleScreen:(BOOL)screen delegate:(id)delegate;
 - (id)delegate;
 - (void)_addRemoteVCToView;
 - (void)_remoteDidGetConfigured;
 - (void)dealloc;
-- (void)didCreateShareURL:(id)a3 activationCode:(id)a4 error:(id)a5;
-- (void)didFinishShareWithDidUserShare:(BOOL)a3 error:(id)a4;
+- (void)didCreateShareURL:(id)l activationCode:(id)code error:(id)error;
+- (void)didFinishShareWithDidUserShare:(BOOL)share error:(id)error;
 - (void)loadRemoteViewController;
 - (void)loadView;
 - (void)setPromptToShareURL:(BOOL)promptToShareURL;
-- (void)setRemoteVC:(id)a3 completionHandler:(id)a4;
+- (void)setRemoteVC:(id)c completionHandler:(id)handler;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKShareSecureElementPassViewController
 
-- (PKShareSecureElementPassViewController)initWithSecureElementPass:(id)a3 environment:(unint64_t)a4 isFromPeopleScreen:(BOOL)a5 delegate:(id)a6
+- (PKShareSecureElementPassViewController)initWithSecureElementPass:(id)pass environment:(unint64_t)environment isFromPeopleScreen:(BOOL)screen delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a6;
+  passCopy = pass;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = PKShareSecureElementPassViewController;
   v13 = [(PKShareSecureElementPassViewController *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_pass, a3);
-    v14->_environment = a4;
-    v14->_isFromPeopleScreen = a5;
-    objc_storeWeak(&v14->_delegate, v12);
+    objc_storeStrong(&v13->_pass, pass);
+    v14->_environment = environment;
+    v14->_isFromPeopleScreen = screen;
+    objc_storeWeak(&v14->_delegate, delegateCopy);
     v14->_promptToShareURL = 1;
     [(PKShareSecureElementPassViewController *)v14 loadRemoteViewController];
   }
@@ -39,7 +39,7 @@
 
 - (void)dealloc
 {
-  v3 = [(_UIAsyncInvocation *)self->_remoteVCRequest invoke];
+  invoke = [(_UIAsyncInvocation *)self->_remoteVCRequest invoke];
   remoteVCRequest = self->_remoteVCRequest;
   self->_remoteVCRequest = 0;
 
@@ -57,9 +57,9 @@
   v10[3] = &unk_1E8015460;
   v10[4] = self;
   [(PKShareSecureElementPassViewController *)self _beginDelayingPresentation:v10 cancellationHandler:10.0];
-  v3 = [(PKSecureElementPass *)self->_pass isCarKeyPass];
+  isCarKeyPass = [(PKSecureElementPass *)self->_pass isCarKeyPass];
   v4 = MEMORY[0x1E69BC530];
-  if (!v3)
+  if (!isCarKeyPass)
   {
     v4 = MEMORY[0x1E69BB800];
   }
@@ -154,27 +154,27 @@ void __66__PKShareSecureElementPassViewController_loadRemoteViewController__bloc
   }
 }
 
-- (void)setRemoteVC:(id)a3 completionHandler:(id)a4
+- (void)setRemoteVC:(id)c completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_remoteVC, a3);
+  cCopy = c;
+  handlerCopy = handler;
+  objc_storeStrong(&self->_remoteVC, c);
   remoteVC = self->_remoteVC;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __72__PKShareSecureElementPassViewController_setRemoteVC_completionHandler___block_invoke;
   v24[3] = &unk_1E8012C28;
-  v10 = v8;
+  v10 = handlerCopy;
   v25 = v10;
   v11 = [(_UIRemoteViewController *)remoteVC serviceViewControllerProxyWithErrorHandler:v24];
   if (v11)
   {
-    v12 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v13 = [v12 fixedCoordinateSpace];
-    [v13 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    fixedCoordinateSpace = [mainScreen fixedCoordinateSpace];
+    [fixedCoordinateSpace bounds];
     v15 = v14;
     v17 = v16;
-    [v12 scale];
+    [mainScreen scale];
     [v11 setDisplayPropertiesWithScreenSize:v15 scale:{v17, v18}];
 
     pass = self->_pass;
@@ -218,11 +218,11 @@ void __72__PKShareSecureElementPassViewController_setRemoteVC_completionHandler_
 - (void)_addRemoteVCToView
 {
   [(PKShareSecureElementPassViewController *)self addChildViewController:self->_remoteVC];
-  v4 = [(PKShareSecureElementPassRemoteViewController *)self->_remoteVC view];
-  v3 = [(PKShareSecureElementPassViewController *)self view];
-  [v3 addSubview:v4];
-  [v3 setNeedsLayout];
-  [v3 layoutIfNeeded];
+  view = [(PKShareSecureElementPassRemoteViewController *)self->_remoteVC view];
+  view2 = [(PKShareSecureElementPassViewController *)self view];
+  [view2 addSubview:view];
+  [view2 setNeedsLayout];
+  [view2 layoutIfNeeded];
   [(_UIRemoteViewController *)self->_remoteVC didMoveToParentViewController:self];
   [(PKShareSecureElementPassViewController *)self setNeedsStatusBarAppearanceUpdate];
 }
@@ -241,15 +241,15 @@ void __72__PKShareSecureElementPassViewController_setRemoteVC_completionHandler_
   self->_promptToShareURL = promptToShareURL;
   if (self->_remoteVCConfigured)
   {
-    v4 = [(_UIRemoteViewController *)self->_remoteVC serviceViewControllerProxy];
-    [v4 setShouldPromptUserToShare:self->_promptToShareURL];
+    serviceViewControllerProxy = [(_UIRemoteViewController *)self->_remoteVC serviceViewControllerProxy];
+    [serviceViewControllerProxy setShouldPromptUserToShare:self->_promptToShareURL];
   }
 }
 
-- (void)didCreateShareURL:(id)a3 activationCode:(id)a4 error:(id)a5
+- (void)didCreateShareURL:(id)l activationCode:(id)code error:(id)error
 {
-  v13 = a3;
-  v7 = a4;
+  lCopy = l;
+  codeCopy = code;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -260,21 +260,21 @@ void __72__PKShareSecureElementPassViewController_setRemoteVC_completionHandler_
     if (v11)
     {
       v12 = objc_loadWeakRetained(&self->_delegate);
-      [v12 shareSecureElementPassViewController:self didCreateShareURL:v13 activationCode:v7];
+      [v12 shareSecureElementPassViewController:self didCreateShareURL:lCopy activationCode:codeCopy];
     }
   }
 }
 
-- (void)didFinishShareWithDidUserShare:(BOOL)a3 error:(id)a4
+- (void)didFinishShareWithDidUserShare:(BOOL)share error:(id)error
 {
-  v4 = a3;
+  shareCopy = share;
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  errorCopy = error;
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"N";
-    if (v4)
+    if (shareCopy)
     {
       v8 = @"Y";
     }
@@ -282,37 +282,37 @@ void __72__PKShareSecureElementPassViewController_setRemoteVC_completionHandler_
     v12 = 138412546;
     v13 = v8;
     v14 = 2112;
-    v15 = v6;
+    v15 = errorCopy;
     _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "ShareSecureElementPass: didFinishShare didUserShare: %@ error: %@", &v12, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
-    if (v6)
+    if (errorCopy)
     {
       v10 = 2;
     }
 
     else
     {
-      v10 = v4;
+      v10 = shareCopy;
     }
 
-    v11 = objc_loadWeakRetained(&self->_delegate);
-    [v11 shareSecureElementPassViewController:self didFinishWithResult:v10];
+    presentingViewController = objc_loadWeakRetained(&self->_delegate);
+    [presentingViewController shareSecureElementPassViewController:self didFinishWithResult:v10];
   }
 
   else
   {
-    v11 = [(PKShareSecureElementPassViewController *)self presentingViewController];
-    [v11 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKShareSecureElementPassViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)result
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)result
 {
-  if (self->_remoteVC != a3)
+  if (self->_remoteVC != container)
   {
     v7 = v4;
     v8 = v5;
@@ -329,9 +329,9 @@ void __72__PKShareSecureElementPassViewController_setRemoteVC_completionHandler_
   v5.receiver = self;
   v5.super_class = PKShareSecureElementPassViewController;
   [(PKShareSecureElementPassViewController *)&v5 loadView];
-  v3 = [(PKShareSecureElementPassViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PKShareSecureElementPassViewController *)self view];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [view setBackgroundColor:clearColor];
 }
 
 - (void)viewWillLayoutSubviews
@@ -339,10 +339,10 @@ void __72__PKShareSecureElementPassViewController_setRemoteVC_completionHandler_
   v5.receiver = self;
   v5.super_class = PKShareSecureElementPassViewController;
   [(PKShareSecureElementPassViewController *)&v5 viewWillLayoutSubviews];
-  v3 = [(PKShareSecureElementPassViewController *)self view];
-  v4 = [(PKShareSecureElementPassRemoteViewController *)self->_remoteVC view];
-  [v3 bounds];
-  [v4 setFrame:?];
+  view = [(PKShareSecureElementPassViewController *)self view];
+  view2 = [(PKShareSecureElementPassRemoteViewController *)self->_remoteVC view];
+  [view bounds];
+  [view2 setFrame:?];
 }
 
 - (id)delegate

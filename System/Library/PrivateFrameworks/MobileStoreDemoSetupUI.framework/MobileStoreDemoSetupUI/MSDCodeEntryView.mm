@@ -2,11 +2,11 @@
 + (id)generatorFieldFont;
 - (BOOL)becomeFirstResponder;
 - (BOOL)hasText;
-- (MSDCodeEntryView)initWithDelegate:(id)a3;
+- (MSDCodeEntryView)initWithDelegate:(id)delegate;
 - (void)_syncStringValueToLabels;
 - (void)clearEntry;
 - (void)deleteBackward;
-- (void)insertText:(id)a3;
+- (void)insertText:(id)text;
 - (void)jiggleAView;
 - (void)updateConstraints;
 @end
@@ -26,9 +26,9 @@
   return v7;
 }
 
-- (MSDCodeEntryView)initWithDelegate:(id)a3
+- (MSDCodeEntryView)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = MSDCodeEntryView;
   v5 = *MEMORY[0x277CBF3A0];
@@ -42,16 +42,16 @@
     [(MSDCodeEntryView *)v9 setStringValue:v10];
 
     [(MSDCodeEntryView *)v9 setActiveConstraints:0];
-    [(MSDCodeEntryView *)v9 setDelegate:v4];
+    [(MSDCodeEntryView *)v9 setDelegate:delegateCopy];
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v12 = [objc_opt_class() generatorFieldFont];
+    generatorFieldFont = [objc_opt_class() generatorFieldFont];
     [(MSDCodeEntryView *)v9 setTranslatesAutoresizingMaskIntoConstraints:0];
     v13 = 6;
     do
     {
       v14 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v5, v6, v7, v8}];
       [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [v14 setFont:v12];
+      [v14 setFont:generatorFieldFont];
       [v14 setText:@"–"];
       [v14 setTextAlignment:1];
       [(MSDCodeEntryView *)v9 addSubview:v14];
@@ -79,87 +79,87 @@
 
 - (void)clearEntry
 {
-  v3 = [(MSDCodeEntryView *)self stringValue];
-  [v3 setString:&stru_286AE2298];
+  stringValue = [(MSDCodeEntryView *)self stringValue];
+  [stringValue setString:&stru_286AE2298];
 
   [(MSDCodeEntryView *)self _syncStringValueToLabels];
 }
 
 - (void)jiggleAView
 {
-  v13 = [(MSDCodeEntryView *)self layer];
-  v3 = [MEMORY[0x277CD9FA0] animation];
-  [v3 setMass:1.20000005];
-  [v3 setStiffness:1200.0];
-  [v3 setDamping:12.0];
-  [v3 setDuration:1.39999998];
-  [v3 setVelocity:0.0];
-  [v3 setFillMode:*MEMORY[0x277CDA228]];
-  [v3 setDelegate:self];
+  layer = [(MSDCodeEntryView *)self layer];
+  animation = [MEMORY[0x277CD9FA0] animation];
+  [animation setMass:1.20000005];
+  [animation setStiffness:1200.0];
+  [animation setDamping:12.0];
+  [animation setDuration:1.39999998];
+  [animation setVelocity:0.0];
+  [animation setFillMode:*MEMORY[0x277CDA228]];
+  [animation setDelegate:self];
   LODWORD(v4) = 30.0;
   v5 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setFromValue:v5];
+  [animation setFromValue:v5];
 
   v6 = [MEMORY[0x277CCABB0] numberWithFloat:0.0];
-  [v3 setToValue:v6];
+  [animation setToValue:v6];
 
   v7 = [MEMORY[0x277CDA008] functionWithName:*MEMORY[0x277CDA9C8]];
-  [v3 setValueFunction:v7];
+  [animation setValueFunction:v7];
 
   LODWORD(v8) = 1028389654;
   LODWORD(v9) = 990057071;
   LODWORD(v10) = 1059712716;
   LODWORD(v11) = 1.0;
   v12 = [MEMORY[0x277CD9EF8] functionWithControlPoints:v8 :v9 :v10 :v11];
-  [v3 setTimingFunction:v12];
+  [animation setTimingFunction:v12];
 
-  [v3 setKeyPath:@"transform"];
-  [v13 addAnimation:v3 forKey:@"shake"];
+  [animation setKeyPath:@"transform"];
+  [layer addAnimation:animation forKey:@"shake"];
 }
 
 - (BOOL)becomeFirstResponder
 {
   v5.receiver = self;
   v5.super_class = MSDCodeEntryView;
-  v2 = [(MSDCodeEntryView *)&v5 becomeFirstResponder];
-  if (v2)
+  becomeFirstResponder = [(MSDCodeEntryView *)&v5 becomeFirstResponder];
+  if (becomeFirstResponder)
   {
-    v3 = [MEMORY[0x277D75658] activeKeyboard];
-    [v3 setReturnKeyEnabled:0];
+    activeKeyboard = [MEMORY[0x277D75658] activeKeyboard];
+    [activeKeyboard setReturnKeyEnabled:0];
   }
 
-  return v2;
+  return becomeFirstResponder;
 }
 
 - (BOOL)hasText
 {
-  v2 = [(MSDCodeEntryView *)self stringValue];
-  v3 = [v2 length] != 0;
+  stringValue = [(MSDCodeEntryView *)self stringValue];
+  v3 = [stringValue length] != 0;
 
   return v3;
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v4 = a3;
-  v5 = [(MSDCodeEntryView *)self stringValue];
-  v6 = [v5 length];
+  textCopy = text;
+  stringValue = [(MSDCodeEntryView *)self stringValue];
+  v6 = [stringValue length];
 
-  if (v6 != 6 && ([v4 isEqualToString:@"\n"] & 1) == 0)
+  if (v6 != 6 && ([textCopy isEqualToString:@"\n"] & 1) == 0)
   {
-    v7 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-    v8 = [v7 invertedSet];
+    decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+    invertedSet = [decimalDigitCharacterSet invertedSet];
 
-    if ([v4 rangeOfCharacterFromSet:v8] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([textCopy rangeOfCharacterFromSet:invertedSet] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      if ([v4 length])
+      if ([textCopy length])
       {
-        v9 = [(MSDCodeEntryView *)self stringValue];
-        [v9 appendString:v4];
+        stringValue2 = [(MSDCodeEntryView *)self stringValue];
+        [stringValue2 appendString:textCopy];
 
         [(MSDCodeEntryView *)self _syncStringValueToLabels];
-        v10 = [(MSDCodeEntryView *)self stringValue];
-        v11 = [v10 length];
+        stringValue3 = [(MSDCodeEntryView *)self stringValue];
+        v11 = [stringValue3 length];
 
         if (v11 == 6)
         {
@@ -186,14 +186,14 @@ void __31__MSDCodeEntryView_insertText___block_invoke(uint64_t a1)
 
 - (void)deleteBackward
 {
-  v3 = [(MSDCodeEntryView *)self stringValue];
-  v4 = [v3 length];
+  stringValue = [(MSDCodeEntryView *)self stringValue];
+  v4 = [stringValue length];
 
   if (v4)
   {
-    v5 = [(MSDCodeEntryView *)self stringValue];
-    v6 = [(MSDCodeEntryView *)self stringValue];
-    [v5 deleteCharactersInRange:{objc_msgSend(v6, "length") - 1, 1}];
+    stringValue2 = [(MSDCodeEntryView *)self stringValue];
+    stringValue3 = [(MSDCodeEntryView *)self stringValue];
+    [stringValue2 deleteCharactersInRange:{objc_msgSend(stringValue3, "length") - 1, 1}];
 
     [(MSDCodeEntryView *)self _syncStringValueToLabels];
   }
@@ -205,14 +205,14 @@ void __31__MSDCodeEntryView_insertText___block_invoke(uint64_t a1)
   v32.receiver = self;
   v32.super_class = MSDCodeEntryView;
   [(MSDCodeEntryView *)&v32 updateConstraints];
-  v3 = [(MSDCodeEntryView *)self activeConstraints];
+  activeConstraints = [(MSDCodeEntryView *)self activeConstraints];
 
   v4 = 0x277CCA000uLL;
-  if (v3)
+  if (activeConstraints)
   {
     v5 = MEMORY[0x277CCAAD0];
-    v6 = [(MSDCodeEntryView *)self activeConstraints];
-    [v5 deactivateConstraints:v6];
+    activeConstraints2 = [(MSDCodeEntryView *)self activeConstraints];
+    [v5 deactivateConstraints:activeConstraints2];
   }
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -225,36 +225,36 @@ void __31__MSDCodeEntryView_insertText___block_invoke(uint64_t a1)
     v11 = *(v4 + 2768);
     if (v8)
     {
-      v12 = [(MSDCodeEntryView *)self generatorFields];
-      v13 = [v12 objectAtIndexedSubscript:v8];
-      v14 = [(MSDCodeEntryView *)self generatorFields];
-      v15 = [v14 firstObject];
-      v16 = [v11 constraintWithItem:v13 attribute:11 relatedBy:0 toItem:v15 attribute:11 multiplier:1.0 constant:0.0];
+      generatorFields = [(MSDCodeEntryView *)self generatorFields];
+      v13 = [generatorFields objectAtIndexedSubscript:v8];
+      generatorFields2 = [(MSDCodeEntryView *)self generatorFields];
+      firstObject = [generatorFields2 firstObject];
+      v16 = [v11 constraintWithItem:v13 attribute:11 relatedBy:0 toItem:firstObject attribute:11 multiplier:1.0 constant:0.0];
       [v7 addObject:v16];
     }
 
     else
     {
       v33 = @"generatorLabel";
-      v12 = [(MSDCodeEntryView *)self generatorFields];
-      v13 = [v12 objectAtIndexedSubscript:0];
+      generatorFields = [(MSDCodeEntryView *)self generatorFields];
+      v13 = [generatorFields objectAtIndexedSubscript:0];
       v34[0] = v13;
-      v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:&v33 count:1];
-      v15 = [v11 constraintsWithVisualFormat:@"V:|[generatorLabel]|" options:0 metrics:0 views:v14];
-      [v7 addObjectsFromArray:v15];
+      generatorFields2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:&v33 count:1];
+      firstObject = [v11 constraintsWithVisualFormat:@"V:|[generatorLabel]|" options:0 metrics:0 views:generatorFields2];
+      [v7 addObjectsFromArray:firstObject];
     }
 
     v4 = v10;
     v17 = *(v10 + 2768);
-    v18 = [(MSDCodeEntryView *)self generatorFields];
-    v19 = [v18 objectAtIndexedSubscript:v8];
+    generatorFields3 = [(MSDCodeEntryView *)self generatorFields];
+    v19 = [generatorFields3 objectAtIndexedSubscript:v8];
     v20 = [MEMORY[0x277D75520] metricsForTextStyle:v9];
     [v20 scaledValueForValue:14.5];
     v22 = [v17 constraintWithItem:v19 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v21];
     [v7 addObject:v22];
 
-    v23 = [(MSDCodeEntryView *)self generatorFields];
-    v24 = [v23 objectAtIndexedSubscript:v8];
+    generatorFields4 = [(MSDCodeEntryView *)self generatorFields];
+    v24 = [generatorFields4 objectAtIndexedSubscript:v8];
     v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"codeGeneratorLabel%d", v8];
     [v31 setObject:v24 forKey:v25];
 
@@ -268,8 +268,8 @@ void __31__MSDCodeEntryView_insertText___block_invoke(uint64_t a1)
   [(MSDCodeEntryView *)self setActiveConstraints:v27];
 
   v28 = *(v10 + 2768);
-  v29 = [(MSDCodeEntryView *)self activeConstraints];
-  [v28 activateConstraints:v29];
+  activeConstraints3 = [(MSDCodeEntryView *)self activeConstraints];
+  [v28 activateConstraints:activeConstraints3];
 
   v30 = *MEMORY[0x277D85DE8];
 }
@@ -278,22 +278,22 @@ void __31__MSDCodeEntryView_insertText___block_invoke(uint64_t a1)
 {
   for (i = 0; i != 6; ++i)
   {
-    v4 = [(MSDCodeEntryView *)self stringValue];
-    v5 = [v4 length];
+    stringValue = [(MSDCodeEntryView *)self stringValue];
+    v5 = [stringValue length];
 
     if (i >= v5)
     {
-      v6 = [(MSDCodeEntryView *)self generatorFields];
-      v7 = [v6 objectAtIndexedSubscript:i];
+      generatorFields = [(MSDCodeEntryView *)self generatorFields];
+      v7 = [generatorFields objectAtIndexedSubscript:i];
       [v7 setText:@"–"];
     }
 
     else
     {
-      v6 = [(MSDCodeEntryView *)self stringValue];
-      v7 = [v6 substringWithRange:{i, 1}];
-      v8 = [(MSDCodeEntryView *)self generatorFields];
-      v9 = [v8 objectAtIndexedSubscript:i];
+      generatorFields = [(MSDCodeEntryView *)self stringValue];
+      v7 = [generatorFields substringWithRange:{i, 1}];
+      generatorFields2 = [(MSDCodeEntryView *)self generatorFields];
+      v9 = [generatorFields2 objectAtIndexedSubscript:i];
       [v9 setText:v7];
     }
   }

@@ -1,18 +1,18 @@
 @interface PGParallelProgress
-- (PGParallelProgress)initWithParallelOperationCount:(unint64_t)a3 progressBlock:(id)a4;
-- (id)progressBlockForParallelOperationWithIndex:(unint64_t)a3;
+- (PGParallelProgress)initWithParallelOperationCount:(unint64_t)count progressBlock:(id)block;
+- (id)progressBlockForParallelOperationWithIndex:(unint64_t)index;
 @end
 
 @implementation PGParallelProgress
 
-- (id)progressBlockForParallelOperationWithIndex:(unint64_t)a3
+- (id)progressBlockForParallelOperationWithIndex:(unint64_t)index
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __65__PGParallelProgress_progressBlockForParallelOperationWithIndex___block_invoke;
   v5[3] = &unk_278886F70;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = index;
   v3 = _Block_copy(v5);
 
   return v3;
@@ -53,9 +53,9 @@ void __65__PGParallelProgress_progressBlockForParallelOperationWithIndex___block
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (PGParallelProgress)initWithParallelOperationCount:(unint64_t)a3 progressBlock:(id)a4
+- (PGParallelProgress)initWithParallelOperationCount:(unint64_t)count progressBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = PGParallelProgress;
   v7 = [(PGParallelProgress *)&v14 init];
@@ -63,11 +63,11 @@ void __65__PGParallelProgress_progressBlockForParallelOperationWithIndex___block
   if (v7)
   {
     v7->_lock._os_unfair_lock_opaque = 0;
-    v9 = _Block_copy(v6);
+    v9 = _Block_copy(blockCopy);
     progressBlock = v8->_progressBlock;
     v8->_progressBlock = v9;
 
-    v11 = [MEMORY[0x277D22C68] zerosOfCount:a3];
+    v11 = [MEMORY[0x277D22C68] zerosOfCount:count];
     progressValues = v8->_progressValues;
     v8->_progressValues = v11;
   }

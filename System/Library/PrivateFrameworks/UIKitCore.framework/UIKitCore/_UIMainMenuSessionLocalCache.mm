@@ -1,39 +1,39 @@
 @interface _UIMainMenuSessionLocalCache
 - (UIResponder)firstResponder;
-- (_UIMainMenuSessionLocalCache)initWithBaseMenuBookkeeping:(id)a3;
+- (_UIMainMenuSessionLocalCache)initWithBaseMenuBookkeeping:(id)bookkeeping;
 @end
 
 @implementation _UIMainMenuSessionLocalCache
 
-- (_UIMainMenuSessionLocalCache)initWithBaseMenuBookkeeping:(id)a3
+- (_UIMainMenuSessionLocalCache)initWithBaseMenuBookkeeping:(id)bookkeeping
 {
-  v4 = a3;
+  bookkeepingCopy = bookkeeping;
   v5 = [(_UIMainMenuSessionLocalCache *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [bookkeepingCopy copy];
     elementBookkeeping = v5->_elementBookkeeping;
     v5->_elementBookkeeping = v6;
 
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     validatedMenuLeavesForIdentifiers = v5->_validatedMenuLeavesForIdentifiers;
-    v5->_validatedMenuLeavesForIdentifiers = v8;
+    v5->_validatedMenuLeavesForIdentifiers = dictionary;
 
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     menuStates = v5->_menuStates;
-    v5->_menuStates = v10;
+    v5->_menuStates = dictionary2;
 
-    v12 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     deferredElementStates = v5->_deferredElementStates;
-    v5->_deferredElementStates = v12;
+    v5->_deferredElementStates = dictionary3;
 
-    v14 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
     commandStates = v5->_commandStates;
-    v5->_commandStates = v14;
+    v5->_commandStates = dictionary4;
 
-    v16 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary5 = [MEMORY[0x1E695DF90] dictionary];
     pendingDeferredElementRequestHandlers = v5->_pendingDeferredElementRequestHandlers;
-    v5->_pendingDeferredElementRequestHandlers = v16;
+    v5->_pendingDeferredElementRequestHandlers = dictionary5;
   }
 
   return v5;

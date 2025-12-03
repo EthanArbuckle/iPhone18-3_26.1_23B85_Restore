@@ -1,20 +1,20 @@
 @interface CPSClipStoreTableViewCell
-+ (id)specifierForBundleIdentifier:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CPSClipStoreTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
++ (id)specifierForBundleIdentifier:(id)identifier;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CPSClipStoreTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)preferredImageDescriptor;
-- (void)createLockupViewWithSpecifier:(id)a3;
+- (void)createLockupViewWithSpecifier:(id)specifier;
 - (void)layoutSubviews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation CPSClipStoreTableViewCell
 
-+ (id)specifierForBundleIdentifier:(id)a3
++ (id)specifierForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [PSSpecifier preferenceSpecifierNamed:&stru_14F50 target:0 set:0 get:0 detail:0 cell:3 edit:0];
-  if (![v3 length])
+  if (![identifierCopy length])
   {
     v5 = sub_59B0();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -23,7 +23,7 @@
     }
   }
 
-  [v4 cps_setBundleIdentifier:v3];
+  [v4 cps_setBundleIdentifier:identifierCopy];
   [v4 setProperty:objc_opt_class() forKey:PSCellClassKey];
   [v4 cps_isTestFlight];
   v6 = _CPSLocalizedString();
@@ -34,11 +34,11 @@
   return v4;
 }
 
-- (CPSClipStoreTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CPSClipStoreTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = CPSClipStoreTableViewCell;
-  v4 = [(CPSClipStoreTableViewCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CPSClipStoreTableViewCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -79,9 +79,9 @@
   return v7;
 }
 
-- (void)createLockupViewWithSpecifier:(id)a3
+- (void)createLockupViewWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   lockupView = self->_lockupView;
   if (lockupView)
   {
@@ -90,37 +90,37 @@
     self->_lockupView = 0;
   }
 
-  v7 = [v4 cps_bundleIdentifier];
-  v8 = [v4 cps_storeItemIdentifier];
-  v9 = [[ASCAdamID alloc] initWithInt64:v8];
+  cps_bundleIdentifier = [specifierCopy cps_bundleIdentifier];
+  cps_storeItemIdentifier = [specifierCopy cps_storeItemIdentifier];
+  v9 = [[ASCAdamID alloc] initWithInt64:cps_storeItemIdentifier];
   v10 = [[ASCLockupView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   v11 = self->_lockupView;
   self->_lockupView = v10;
 
   [(ASCLockupView *)self->_lockupView setSize:ASCLockupViewSizeSmall];
-  v12 = [v4 cps_isTestFlight];
-  if ((v12 & 1) == 0 && !v8)
+  cps_isTestFlight = [specifierCopy cps_isTestFlight];
+  if ((cps_isTestFlight & 1) == 0 && !cps_storeItemIdentifier)
   {
     v13 = sub_59B0();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      sub_A030(v7, v13);
+      sub_A030(cps_bundleIdentifier, v13);
     }
   }
 
   v14 = self->_lockupView;
-  if (v12)
+  if (cps_isTestFlight)
   {
     [(ASCLockupView *)v14 setUserInteractionEnabled:0];
-    v15 = [(CPSClipStoreTableViewCell *)self preferredImageDescriptor];
+    preferredImageDescriptor = [(CPSClipStoreTableViewCell *)self preferredImageDescriptor];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_3D24;
     v19[3] = &unk_148C0;
     v19[4] = self;
     v20 = v9;
-    v21 = v4;
-    [CPSAppClipRecord getApplicationIconForBundleIdentifier:v7 imageDescriptor:v15 resultHandler:v19];
+    v21 = specifierCopy;
+    [CPSAppClipRecord getApplicationIconForBundleIdentifier:cps_bundleIdentifier imageDescriptor:preferredImageDescriptor resultHandler:v19];
   }
 
   else
@@ -131,8 +131,8 @@
     [(ASCLockupView *)self->_lockupView setRequest:v17];
   }
 
-  v18 = [(CPSClipStoreTableViewCell *)self contentView];
-  [v18 addSubview:self->_lockupView];
+  contentView = [(CPSClipStoreTableViewCell *)self contentView];
+  [contentView addSubview:self->_lockupView];
 }
 
 - (void)layoutSubviews
@@ -161,10 +161,10 @@
   [(ASCLockupView *)self->_lockupView setFrame:v12, 15.0, v15, CGRectGetHeight(v18) + -30.0];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   lockupView = self->_lockupView;
-  [(CPSClipStoreTableViewCell *)self bounds:a3.width];
+  [(CPSClipStoreTableViewCell *)self bounds:fits.width];
   Width = CGRectGetWidth(v13);
   [(CPSClipStoreTableViewCell *)self layoutMargins];
   v7 = Width - v6;
@@ -176,14 +176,14 @@
   return result;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v8.receiver = self;
   v8.super_class = CPSClipStoreTableViewCell;
-  [(CPSClipStoreTableViewCell *)&v8 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 cps_bundleIdentifier];
-  v6 = [v5 length];
+  [(CPSClipStoreTableViewCell *)&v8 refreshCellContentsWithSpecifier:specifierCopy];
+  cps_bundleIdentifier = [specifierCopy cps_bundleIdentifier];
+  v6 = [cps_bundleIdentifier length];
 
   if (!v6)
   {
@@ -194,7 +194,7 @@
     }
   }
 
-  [(CPSClipStoreTableViewCell *)self createLockupViewWithSpecifier:v4];
+  [(CPSClipStoreTableViewCell *)self createLockupViewWithSpecifier:specifierCopy];
 }
 
 @end

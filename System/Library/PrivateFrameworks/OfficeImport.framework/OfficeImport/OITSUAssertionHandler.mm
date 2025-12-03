@@ -1,12 +1,12 @@
 @interface OITSUAssertionHandler
-+ (id)p_performBlockIgnoringAssertions:(id)a3 onlyFatal:(BOOL)a4;
++ (id)p_performBlockIgnoringAssertions:(id)assertions onlyFatal:(BOOL)fatal;
 + (void)logBacktrace;
-+ (void)logBacktraceWithCallStackSymbols:(id)a3;
++ (void)logBacktraceWithCallStackSymbols:(id)symbols;
 @end
 
 @implementation OITSUAssertionHandler
 
-+ (id)p_performBlockIgnoringAssertions:(id)a3 onlyFatal:(BOOL)a4
++ (id)p_performBlockIgnoringAssertions:(id)assertions onlyFatal:(BOOL)fatal
 {
   v10 = 0;
   v11 = &v10;
@@ -19,10 +19,10 @@
   v8[1] = 3221225472;
   v8[2] = __68__OITSUAssertionHandler_p_performBlockIgnoringAssertions_onlyFatal___block_invoke;
   v8[3] = &unk_2799C6148;
-  v9 = a4;
+  fatalCopy = fatal;
   v8[4] = &v10;
   _ignoreAssertionsCallback = v8;
-  (*(a3 + 2))(a3, a2);
+  (*(assertions + 2))(assertions, a2);
   _ignoreAssertionsCallback = v4;
   v5 = v11[5];
   v6 = v11[5];
@@ -75,24 +75,24 @@ os_log_t __68__OITSUAssertionHandler_p_performBlockIgnoringAssertions_onlyFatal_
   v5 = [objc_msgSend(MEMORY[0x277CCACC8] "callStackReturnAddresses")];
   if (v4 && [v4 isEqualToArray:v5])
   {
-    [a1 logBacktraceWithCallStackSymbols:&unk_286F6D218];
+    [self logBacktraceWithCallStackSymbols:&unk_286F6D218];
   }
 
   else
   {
-    [a1 logBacktraceWithCallStackSymbols:{objc_msgSend(MEMORY[0x277CCACC8], "callStackSymbols")}];
+    [self logBacktraceWithCallStackSymbols:{objc_msgSend(MEMORY[0x277CCACC8], "callStackSymbols")}];
     [v3 setObject:v5 forKeyedSubscript:@"logBacktrace_lastStackAddress"];
   }
 }
 
-+ (void)logBacktraceWithCallStackSymbols:(id)a3
++ (void)logBacktraceWithCallStackSymbols:(id)symbols
 {
   if (TSUDefaultCat_init_token != -1)
   {
     +[OITSUAssertionHandler logBacktraceWithCallStackSymbols:];
   }
 
-  [a1 simulateCrashWithMessage:@"+[TSUAssert logBacktrace]"];
+  [self simulateCrashWithMessage:@"+[TSUAssert logBacktrace]"];
 }
 
 os_log_t __58__OITSUAssertionHandler_logBacktraceWithCallStackSymbols___block_invoke()

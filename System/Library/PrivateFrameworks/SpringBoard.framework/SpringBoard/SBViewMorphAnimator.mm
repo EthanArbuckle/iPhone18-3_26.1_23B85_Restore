@@ -1,30 +1,30 @@
 @interface SBViewMorphAnimator
 - (BOOL)_isTargetSourcePinningFrameEquivalentToSourceViewFrame;
 - (BOOL)preflightCheck;
-- (BOOL)startTargetAnimations:(unint64_t)a3;
-- (CGPoint)_source:(id)a3 finalCenterWithFinalScale:(double)a4 contentFrame:(CGRect)a5 targetFinalFrame:(CGRect)a6;
+- (BOOL)startTargetAnimations:(unint64_t)animations;
+- (CGPoint)_source:(id)_source finalCenterWithFinalScale:(double)scale contentFrame:(CGRect)frame targetFinalFrame:(CGRect)finalFrame;
 - (CGPoint)sourceFinalCenter;
-- (CGRect)_sourceContentContainerFrameForSourceView:(id)a3 withTargetDataSource:(id)a4;
-- (CGRect)_targetInitialClippingBoundsWithSourceContentFrame:(CGRect)a3 sourceFinalScale:(double)a4 targetViewBounds:(CGRect)a5;
-- (CGRect)_targetSourcePinningFrameWithSourceContentFrame:(CGRect)a3 targetFinalFrame:(CGRect)a4;
-- (CGRect)_validatedSourceContentFrame:(CGRect)a3 withinSourceView:(id)a4 withSourceFinalScale:(double)a5;
+- (CGRect)_sourceContentContainerFrameForSourceView:(id)view withTargetDataSource:(id)source;
+- (CGRect)_targetInitialClippingBoundsWithSourceContentFrame:(CGRect)frame sourceFinalScale:(double)scale targetViewBounds:(CGRect)bounds;
+- (CGRect)_targetSourcePinningFrameWithSourceContentFrame:(CGRect)frame targetFinalFrame:(CGRect)finalFrame;
+- (CGRect)_validatedSourceContentFrame:(CGRect)frame withinSourceView:(id)view withSourceFinalScale:(double)scale;
 - (CGRect)sourceContentContainerFrame;
 - (CGRect)sourceContentFrame;
 - (CGRect)targetContentClippingViewInitialFrame;
 - (CGRect)targetFinalFrame;
 - (CGRect)targetSourcePinningFrame;
 - (SBViewMorphAnimator)init;
-- (SBViewMorphAnimator)initWithUUID:(id)a3 windowScene:(id)a4 direction:(int64_t)a5;
+- (SBViewMorphAnimator)initWithUUID:(id)d windowScene:(id)scene direction:(int64_t)direction;
 - (SBViewMorphAnimatorDataSource)dataSource;
 - (SBViewMorphAnimatorDelegate)delegate;
 - (SBWindowScene)windowScene;
 - (UIView)sourceView;
 - (UIView)targetContentView;
 - (UIView)targetView;
-- (double)_sourceFinalScaleWithContentFrame:(CGRect)a3 targetFinalFrame:(CGRect)a4;
-- (void)_checkAnimationsDependencies:(id)a3;
+- (double)_sourceFinalScaleWithContentFrame:(CGRect)frame targetFinalFrame:(CGRect)finalFrame;
+- (void)_checkAnimationsDependencies:(id)dependencies;
 - (void)_continueSourceAnimationsCompletionPendingBlock;
-- (void)_enumerateObserversRespondingToSelector:(SEL)a3 usingBlock:(id)a4;
+- (void)_enumerateObserversRespondingToSelector:(SEL)selector usingBlock:(id)block;
 - (void)_noteAnimatorWasCanceled;
 - (void)_noteAnimatorWasInterrupted;
 - (void)_removeBlackCurtainView;
@@ -34,41 +34,41 @@
 - (void)_resetAllAnimations;
 - (void)_startMorphAnimationTimeoutTimer;
 - (void)_updateParameters;
-- (void)addObserver:(id)a3;
-- (void)cancel:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)cancel:(id)cancel;
 - (void)dealloc;
-- (void)didEndSourceAnimations:(unint64_t)a3 finished:(BOOL)a4 continueBlock:(id)a5;
-- (void)didEndTargetAnimations:(unint64_t)a3 finished:(BOOL)a4 continueBlock:(id)a5;
-- (void)interrupt:(id)a3;
-- (void)noteSourceAnimationsDidEnd:(unint64_t)a3 finished:(BOOL)a4 continueBlock:(id)a5;
-- (void)noteSourceAnimationsWillStart:(unint64_t)a3;
-- (void)noteTargetAnimationsDidEnd:(unint64_t)a3 finished:(BOOL)a4 continueBlock:(id)a5;
-- (void)noteTargetAnimationsWillStart:(unint64_t)a3;
-- (void)noteWillRemoveTargeMatchMoveAnimationAtFrame:(CGRect)a3 withinSourceFrame:(CGRect)a4;
-- (void)setDataSource:(id)a3;
-- (void)setSourceAllAnimationsCompletionBlock:(id)a3;
-- (void)setSourceView:(id)a3;
-- (void)setTargetContentView:(id)a3;
-- (void)setTargetView:(id)a3;
-- (void)willStartSourceAnimations:(unint64_t)a3;
-- (void)willStartTargetAnimations:(unint64_t)a3;
+- (void)didEndSourceAnimations:(unint64_t)animations finished:(BOOL)finished continueBlock:(id)block;
+- (void)didEndTargetAnimations:(unint64_t)animations finished:(BOOL)finished continueBlock:(id)block;
+- (void)interrupt:(id)interrupt;
+- (void)noteSourceAnimationsDidEnd:(unint64_t)end finished:(BOOL)finished continueBlock:(id)block;
+- (void)noteSourceAnimationsWillStart:(unint64_t)start;
+- (void)noteTargetAnimationsDidEnd:(unint64_t)end finished:(BOOL)finished continueBlock:(id)block;
+- (void)noteTargetAnimationsWillStart:(unint64_t)start;
+- (void)noteWillRemoveTargeMatchMoveAnimationAtFrame:(CGRect)frame withinSourceFrame:(CGRect)sourceFrame;
+- (void)setDataSource:(id)source;
+- (void)setSourceAllAnimationsCompletionBlock:(id)block;
+- (void)setSourceView:(id)view;
+- (void)setTargetContentView:(id)view;
+- (void)setTargetView:(id)view;
+- (void)willStartSourceAnimations:(unint64_t)animations;
+- (void)willStartTargetAnimations:(unint64_t)animations;
 @end
 
 @implementation SBViewMorphAnimator
 
-- (SBViewMorphAnimator)initWithUUID:(id)a3 windowScene:(id)a4 direction:(int64_t)a5
+- (SBViewMorphAnimator)initWithUUID:(id)d windowScene:(id)scene direction:(int64_t)direction
 {
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  sceneCopy = scene;
   v14.receiver = self;
   v14.super_class = SBViewMorphAnimator;
   v11 = [(SBViewMorphAnimator *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_uuid, a3);
-    v12->_direction = a5;
-    objc_storeWeak(&v12->_windowScene, v10);
+    objc_storeStrong(&v11->_uuid, d);
+    v12->_direction = direction;
+    objc_storeWeak(&v12->_windowScene, sceneCopy);
     [(SBViewMorphAnimator *)v12 _reset];
   }
 
@@ -77,8 +77,8 @@
 
 - (SBViewMorphAnimator)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBViewMorphAnimator.m" lineNumber:104 description:{@"unavailable initializer, use -initWithUUID:"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBViewMorphAnimator.m" lineNumber:104 description:{@"unavailable initializer, use -initWithUUID:"}];
 
   return 0;
 }
@@ -90,7 +90,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "[Morph Animator][%p] dealloc", buf, 0xCu);
   }
 
@@ -133,15 +133,15 @@
   self->_sourceBlackCurtainView = 0;
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cancelCopy = cancel;
   v5 = SBLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[Layout][Morph Animator][%p] was canceled", &v7, 0xCu);
   }
 
@@ -159,29 +159,29 @@
     [(SBViewMorphAnimator *)self _continueSourceAnimationsCompletionPendingBlock];
   }
 
-  if (v4)
+  if (cancelCopy)
   {
-    v4[2](v4);
+    cancelCopy[2](cancelCopy);
   }
 }
 
-- (void)interrupt:(id)a3
+- (void)interrupt:(id)interrupt
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  interruptCopy = interrupt;
   v5 = SBLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[Layout][Morph Animator][%p] was interrupted", buf, 0xCu);
   }
 
   if (self->_invalidated)
   {
-    if (v4)
+    if (interruptCopy)
     {
-      v4[2](v4);
+      interruptCopy[2](interruptCopy);
     }
   }
 
@@ -193,7 +193,7 @@
     v6[2] = __33__SBViewMorphAnimator_interrupt___block_invoke;
     v6[3] = &unk_2783A98A0;
     v6[4] = self;
-    v7 = v4;
+    v7 = interruptCopy;
     [(SBViewMorphAnimator *)self cancel:v6];
   }
 }
@@ -253,7 +253,7 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "[Layout][Morph Animator][%p] did reset all animations", &v7, 0xCu);
   }
 }
@@ -265,8 +265,8 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
   if (targetContentClippingView)
   {
     v7 = WeakRetained;
-    v5 = [(SBViewMorphAnimatorContentClippingView *)targetContentClippingView superview];
-    [v5 insertSubview:v7 belowSubview:self->_targetContentClippingView];
+    superview = [(SBViewMorphAnimatorContentClippingView *)targetContentClippingView superview];
+    [superview insertSubview:v7 belowSubview:self->_targetContentClippingView];
 
     [(SBViewMorphAnimatorContentClippingView *)self->_targetContentClippingView frame];
     [v7 setFrame:?];
@@ -338,7 +338,7 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
       v38.size.height = v20;
       v24 = NSStringFromRect(v38);
       v26 = 134218754;
-      v27 = self;
+      selfCopy = self;
       v28 = 1024;
       v29 = v21;
       v30 = 2112;
@@ -357,31 +357,31 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
   return v21;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  objc_storeWeak(&self->_dataSource, a3);
+  objc_storeWeak(&self->_dataSource, source);
 
   [(SBViewMorphAnimator *)self _updateParameters];
 }
 
-- (void)setSourceView:(id)a3
+- (void)setSourceView:(id)view
 {
-  objc_storeWeak(&self->_sourceView, a3);
+  objc_storeWeak(&self->_sourceView, view);
   [(SBViewMorphAnimator *)self _updateParameters];
-  if (a3 && self->_automaticallyStartSourceAnimations)
+  if (view && self->_automaticallyStartSourceAnimations)
   {
 
     [(SBViewMorphAnimator *)self startSourceAnimations:15];
   }
 }
 
-- (void)setTargetView:(id)a3
+- (void)setTargetView:(id)view
 {
-  objc_storeWeak(&self->_targetView, a3);
+  objc_storeWeak(&self->_targetView, view);
   [(SBViewMorphAnimator *)self _updateParameters];
   if (self->_direction == 1)
   {
-    if (!a3)
+    if (!view)
     {
 
       [(SBViewMorphAnimator *)self noteTargetAnimationsDidEnd:4 finished:1 continueBlock:0];
@@ -394,7 +394,7 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
     [(SBViewMorphAnimator *)self noteTargetAnimationsDidEnd:4 finished:1 continueBlock:0];
   }
 
-  if (a3)
+  if (view)
   {
     if (self->_automaticallyStartTargetAnimations)
     {
@@ -409,15 +409,15 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)setTargetContentView:(id)a3
+- (void)setTargetContentView:(id)view
 {
-  objc_storeWeak(&self->_targetContentView, a3);
+  objc_storeWeak(&self->_targetContentView, view);
   [(SBViewMorphAnimator *)self _updateParameters];
   if (self->_automaticallyStartTargetAnimations)
   {
     WeakRetained = objc_loadWeakRetained(&self->_targetView);
 
-    if (a3)
+    if (view)
     {
       if (WeakRetained)
       {
@@ -432,7 +432,7 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
 {
   v87 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v4 = [(SBViewMorphAnimator *)self _isReversed];
+  _isReversed = [(SBViewMorphAnimator *)self _isReversed];
   v5 = objc_loadWeakRetained(&self->_sourceView);
   v6 = objc_loadWeakRetained(&self->_targetView);
   if (v5)
@@ -451,7 +451,7 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    if (v4)
+    if (_isReversed)
     {
       [v6 frame];
       x = v21;
@@ -474,7 +474,7 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
     self->_sourceContentFrame.origin.y = v31;
     self->_sourceContentFrame.size.width = v32;
     self->_sourceContentFrame.size.height = v33;
-    if (v4)
+    if (_isReversed)
     {
       [v6 frame];
       v35 = v34;
@@ -498,7 +498,7 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
     [(SBViewMorphAnimator *)self _sourceFinalScaleWithContentFrame:v30 targetFinalFrame:v31, v32, v33, v35, v37, v39, v41];
     v43 = v42;
     self->_sourceFinalScale = v42;
-    if (v4)
+    if (_isReversed)
     {
       [v6 frame];
     }
@@ -533,12 +533,12 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
       v61 = NSStringFromCGPoint(self->_sourceFinalCenter);
       v62 = NSStringFromCGRect(self->_targetSourcePinningFrame);
       v63 = NSStringFromCGRect(self->_sourceContentContainerFrame);
-      v64 = v4;
+      v64 = _isReversed;
       v65 = v6;
       v66 = v63;
       targetCornerRadius = self->_targetCornerRadius;
       *buf = 134220034;
-      v70 = self;
+      selfCopy = self;
       v71 = 2114;
       v72 = v68;
       v73 = 2114;
@@ -564,95 +564,95 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
 
 - (BOOL)_isTargetSourcePinningFrameEquivalentToSourceViewFrame
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_sourceView);
   [WeakRetained bounds];
   v9.origin.x = v4;
   v9.origin.y = v5;
   v9.size.width = v6;
   v9.size.height = v7;
-  LOBYTE(v2) = CGRectContainsRect(v2->_targetSourcePinningFrame, v9);
+  LOBYTE(selfCopy) = CGRectContainsRect(selfCopy->_targetSourcePinningFrame, v9);
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
     v6 = [objc_alloc(MEMORY[0x277CCAA50]) initWithOptions:5 capacity:2];
     v7 = self->_observers;
     self->_observers = v6;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  if (![(NSHashTable *)observers containsObject:v4])
+  if (![(NSHashTable *)observers containsObject:observerCopy])
   {
     [(NSHashTable *)self->_observers addObject:v8];
   }
 }
 
-- (void)noteSourceAnimationsWillStart:(unint64_t)a3
+- (void)noteSourceAnimationsWillStart:(unint64_t)start
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __53__SBViewMorphAnimator_noteSourceAnimationsWillStart___block_invoke;
   v3[3] = &__block_descriptor_40_e39_v16__0___SBViewMorphAnimatorObserver__8l;
-  v3[4] = a3;
+  v3[4] = start;
   [(SBViewMorphAnimator *)self _enumerateObserversRespondingToSelector:sel_willStartSourceAnimations_ usingBlock:v3];
 }
 
-- (void)noteSourceAnimationsDidEnd:(unint64_t)a3 finished:(BOOL)a4 continueBlock:(id)a5
+- (void)noteSourceAnimationsDidEnd:(unint64_t)end finished:(BOOL)finished continueBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __73__SBViewMorphAnimator_noteSourceAnimationsDidEnd_finished_continueBlock___block_invoke;
   v10[3] = &unk_2783B82C8;
-  v13 = a4;
-  v11 = v8;
-  v12 = a3;
-  v9 = v8;
+  finishedCopy = finished;
+  v11 = blockCopy;
+  endCopy = end;
+  v9 = blockCopy;
   [(SBViewMorphAnimator *)self _enumerateObserversRespondingToSelector:sel_didEndSourceAnimations_finished_continueBlock_ usingBlock:v10];
 }
 
-- (void)noteTargetAnimationsWillStart:(unint64_t)a3
+- (void)noteTargetAnimationsWillStart:(unint64_t)start
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __53__SBViewMorphAnimator_noteTargetAnimationsWillStart___block_invoke;
   v3[3] = &__block_descriptor_40_e39_v16__0___SBViewMorphAnimatorObserver__8l;
-  v3[4] = a3;
+  v3[4] = start;
   [(SBViewMorphAnimator *)self _enumerateObserversRespondingToSelector:sel_willStartTargetAnimations_ usingBlock:v3];
 }
 
-- (void)noteWillRemoveTargeMatchMoveAnimationAtFrame:(CGRect)a3 withinSourceFrame:(CGRect)a4
+- (void)noteWillRemoveTargeMatchMoveAnimationAtFrame:(CGRect)frame withinSourceFrame:(CGRect)sourceFrame
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __86__SBViewMorphAnimator_noteWillRemoveTargeMatchMoveAnimationAtFrame_withinSourceFrame___block_invoke;
   v4[3] = &__block_descriptor_96_e39_v16__0___SBViewMorphAnimatorObserver__8l;
-  v5 = a3;
-  v6 = a4;
+  frameCopy = frame;
+  sourceFrameCopy = sourceFrame;
   [(SBViewMorphAnimator *)self _enumerateObserversRespondingToSelector:sel_willRemoveTargeMatchMoveAnimationAtFrame_withinSourceFrame_ usingBlock:v4];
 }
 
-- (void)noteTargetAnimationsDidEnd:(unint64_t)a3 finished:(BOOL)a4 continueBlock:(id)a5
+- (void)noteTargetAnimationsDidEnd:(unint64_t)end finished:(BOOL)finished continueBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __73__SBViewMorphAnimator_noteTargetAnimationsDidEnd_finished_continueBlock___block_invoke;
   v10[3] = &unk_2783B82C8;
-  v13 = a4;
-  v11 = v8;
-  v12 = a3;
-  v9 = v8;
+  finishedCopy = finished;
+  v11 = blockCopy;
+  endCopy = end;
+  v9 = blockCopy;
   [(SBViewMorphAnimator *)self _enumerateObserversRespondingToSelector:sel_didEndTargetAnimations_finished_continueBlock_ usingBlock:v10];
 }
 
@@ -676,13 +676,13 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
   [(SBViewMorphAnimator *)self _enumerateObserversRespondingToSelector:sel_animatorWasInterrupted_ usingBlock:v2];
 }
 
-- (void)_enumerateObserversRespondingToSelector:(SEL)a3 usingBlock:(id)a4
+- (void)_enumerateObserversRespondingToSelector:(SEL)selector usingBlock:(id)block
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  blockCopy = block;
   if (objc_opt_respondsToSelector())
   {
-    v5[2](v5, self);
+    blockCopy[2](blockCopy, self);
   }
 
   if ([(NSHashTable *)self->_observers count])
@@ -691,8 +691,8 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(NSHashTable *)self->_observers allObjects];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v7 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -704,20 +704,20 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allObjects);
           }
 
           v11 = *(*(&v12 + 1) + 8 * v10);
           if (objc_opt_respondsToSelector())
           {
-            v5[2](v5, v11);
+            blockCopy[2](blockCopy, v11);
           }
 
           ++v10;
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -725,20 +725,20 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
   }
 }
 
-- (CGRect)_validatedSourceContentFrame:(CGRect)a3 withinSourceView:(id)a4 withSourceFinalScale:(double)a5
+- (CGRect)_validatedSourceContentFrame:(CGRect)frame withinSourceView:(id)view withSourceFinalScale:(double)scale
 {
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v35 = *MEMORY[0x277D85DE8];
   self->_sourceContentFrameWasAltered = 0;
-  if (a5 > 1.0 && self->_direction == 0)
+  if (scale > 1.0 && self->_direction == 0)
   {
-    aRect = a3.size.height;
-    v14 = a4;
-    [v14 bounds];
+    aRect = frame.size.height;
+    viewCopy = view;
+    [viewCopy bounds];
     v10 = v15;
-    [v14 bounds];
+    [viewCopy bounds];
     v17 = v16;
 
     v19 = self->_targetFinalFrame.size.width;
@@ -774,7 +774,7 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
       v37.size.height = v9;
       v23 = NSStringFromRect(v37);
       *buf = 134218498;
-      v30 = self;
+      selfCopy = self;
       v31 = 2114;
       v32 = v22;
       v33 = 2114;
@@ -785,10 +785,10 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
 
   else
   {
-    v9 = a3.size.height;
-    v10 = a3.size.width;
-    v11 = a3.origin.y;
-    v12 = a3.origin.x;
+    v9 = frame.size.height;
+    v10 = frame.size.width;
+    v11 = frame.origin.y;
+    v12 = frame.origin.x;
   }
 
   v24 = v12;
@@ -802,11 +802,11 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
   return result;
 }
 
-- (CGRect)_sourceContentContainerFrameForSourceView:(id)a3 withTargetDataSource:(id)a4
+- (CGRect)_sourceContentContainerFrameForSourceView:(id)view withTargetDataSource:(id)source
 {
-  if (a4)
+  if (source)
   {
-    [a4 sourceContentContainerFrameForAnimator:self];
+    [source sourceContentContainerFrameForAnimator:self];
     return CGRectInset(v4, -1.0, -1.0);
   }
 
@@ -816,18 +816,18 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
   }
 }
 
-- (double)_sourceFinalScaleWithContentFrame:(CGRect)a3 targetFinalFrame:(CGRect)a4
+- (double)_sourceFinalScaleWithContentFrame:(CGRect)frame targetFinalFrame:(CGRect)finalFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  rect = a4.origin.y;
-  x = a4.origin.x;
-  v7 = a3.size.height;
-  v8 = a3.size.width;
-  y = a3.origin.y;
-  v10 = a3.origin.x;
+  height = finalFrame.size.height;
+  width = finalFrame.size.width;
+  rect = finalFrame.origin.y;
+  x = finalFrame.origin.x;
+  v7 = frame.size.height;
+  v8 = frame.size.width;
+  y = frame.origin.y;
+  v10 = frame.origin.x;
   v11 = 0.0;
-  if (!CGRectIsNull(a3))
+  if (!CGRectIsNull(frame))
   {
     v14.origin.x = x;
     v14.origin.y = rect;
@@ -857,39 +857,39 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
   return v11;
 }
 
-- (CGPoint)_source:(id)a3 finalCenterWithFinalScale:(double)a4 contentFrame:(CGRect)a5 targetFinalFrame:(CGRect)a6
+- (CGPoint)_source:(id)_source finalCenterWithFinalScale:(double)scale contentFrame:(CGRect)frame targetFinalFrame:(CGRect)finalFrame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v43 = *MEMORY[0x277D85DE8];
-  v12 = a3;
+  _sourceCopy = _source;
   v13 = *MEMORY[0x277CBF348];
   v14 = *(MEMORY[0x277CBF348] + 8);
-  if (v12)
+  if (_sourceCopy)
   {
     v47.origin.x = x;
     v47.origin.y = y;
     v47.size.width = width;
     v47.size.height = height;
-    if (!CGRectIsNull(v47) && !CGRectIsNull(a6))
+    if (!CGRectIsNull(v47) && !CGRectIsNull(finalFrame))
     {
       UIRectGetCenter();
       v16 = v15;
       v32 = v17;
-      [v12 bounds];
+      [_sourceCopy bounds];
       UIRectGetCenter();
       v19 = v18;
       v21 = v20;
       UIRectGetCenter();
       v31 = v19;
-      v13 = v16 + (v19 - v22) * a4;
-      v14 = v32 + (v21 - v23) * a4;
+      v13 = v16 + (v19 - v22) * scale;
+      v14 = v32 + (v21 - v23) * scale;
       v24 = SBLogPIP();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
       {
-        v27 = NSStringFromCGRect(a6);
+        v27 = NSStringFromCGRect(finalFrame);
         v44.y = v21;
         v44.x = v31;
         v28 = NSStringFromCGPoint(v44);
@@ -902,7 +902,7 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
         v45.y = v14;
         v30 = NSStringFromCGPoint(v45);
         *buf = 134219010;
-        v34 = self;
+        selfCopy = self;
         v35 = 2114;
         v36 = v27;
         v37 = 2114;
@@ -923,15 +923,15 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
   return result;
 }
 
-- (CGRect)_targetSourcePinningFrameWithSourceContentFrame:(CGRect)a3 targetFinalFrame:(CGRect)a4
+- (CGRect)_targetSourcePinningFrameWithSourceContentFrame:(CGRect)frame targetFinalFrame:(CGRect)finalFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v22 = a3.size.width;
-  v23 = a3.size.height;
-  if (!CGRectIsNull(a3))
+  height = finalFrame.size.height;
+  width = finalFrame.size.width;
+  y = finalFrame.origin.y;
+  x = finalFrame.origin.x;
+  v22 = frame.size.width;
+  v23 = frame.size.height;
+  if (!CGRectIsNull(frame))
   {
     v26.origin.x = x;
     v26.origin.y = y;
@@ -978,26 +978,26 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
   return result;
 }
 
-- (CGRect)_targetInitialClippingBoundsWithSourceContentFrame:(CGRect)a3 sourceFinalScale:(double)a4 targetViewBounds:(CGRect)a5
+- (CGRect)_targetInitialClippingBoundsWithSourceContentFrame:(CGRect)frame sourceFinalScale:(double)scale targetViewBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectIsNull(a5))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (!CGRectIsNull(bounds))
   {
     v18.origin.x = x;
     v18.origin.y = y;
     v18.size.width = width;
     v18.size.height = height;
     IsNull = CGRectIsNull(v18);
-    if (a4 > 0.0 && !IsNull)
+    if (scale > 0.0 && !IsNull)
     {
       v11 = *(MEMORY[0x277CBF2C0] + 16);
       *&v16.a = *MEMORY[0x277CBF2C0];
       *&v16.c = v11;
       *&v16.tx = *(MEMORY[0x277CBF2C0] + 32);
-      CGAffineTransformScale(&v17, &v16, a4, a4);
+      CGAffineTransformScale(&v17, &v16, scale, scale);
       v19.origin.x = x;
       v19.origin.y = y;
       v19.size.width = width;
@@ -1015,7 +1015,7 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
   return result;
 }
 
-- (BOOL)startTargetAnimations:(unint64_t)a3
+- (BOOL)startTargetAnimations:(unint64_t)animations
 {
   invalidated = self->_invalidated;
   if (!invalidated)
@@ -1027,7 +1027,7 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
     v17[1] = 3221225472;
     v18 = __45__SBViewMorphAnimator_startTargetAnimations___block_invoke;
     v19 = &unk_2783B8358;
-    v20 = self;
+    selfCopy = self;
     v9 = WeakRetained;
     v21 = v9;
     v10 = v7;
@@ -1035,16 +1035,16 @@ uint64_t __33__SBViewMorphAnimator_interrupt___block_invoke_3(uint64_t a1)
     v11 = v8;
     v23 = v11;
     v12 = v17;
-    if (a3)
+    if (animations)
     {
       v13 = 0;
       v24 = 0;
-      v14 = vcnt_s8(a3);
+      v14 = vcnt_s8(animations);
       v14.i16[0] = vaddlv_u8(v14);
       v15 = v14.i32[0];
       do
       {
-        if (((1 << v13) & a3) != 0)
+        if (((1 << v13) & animations) != 0)
         {
           (v18)(v12);
           if (v24)
@@ -1412,7 +1412,7 @@ void __55__SBViewMorphAnimator__startMorphAnimationTimeoutTimer__block_invoke(ui
   }
 }
 
-- (void)willStartSourceAnimations:(unint64_t)a3
+- (void)willStartSourceAnimations:(unint64_t)animations
 {
   if (!self->_allAnimationsTimeoutTimer)
   {
@@ -1423,8 +1423,8 @@ void __55__SBViewMorphAnimator__startMorphAnimationTimeoutTimer__block_invoke(ui
       self->_sourceBlackCurtainView = v5;
 
       v7 = self->_sourceBlackCurtainView;
-      v8 = [MEMORY[0x277D75348] blackColor];
-      [(SBViewMorphAnimatorContentBlackCurtainView *)v7 setBackgroundColor:v8];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [(SBViewMorphAnimatorContentBlackCurtainView *)v7 setBackgroundColor:blackColor];
 
       v9 = self->_sourceBlackCurtainView;
       WeakRetained = objc_loadWeakRetained(&self->_dataSource);
@@ -1468,8 +1468,8 @@ void __55__SBViewMorphAnimator__startMorphAnimationTimeoutTimer__block_invoke(ui
   }
 
   startedSourceAnimations = self->_startedSourceAnimations;
-  self->_startedSourceAnimations = startedSourceAnimations | a3;
-  if ((startedSourceAnimations | a3) != startedSourceAnimations)
+  self->_startedSourceAnimations = startedSourceAnimations | animations;
+  if ((startedSourceAnimations | animations) != startedSourceAnimations)
   {
     [(SBViewMorphAnimator *)self _checkAnimationsDependencies:0];
   }
@@ -1490,67 +1490,67 @@ void __49__SBViewMorphAnimator_willStartSourceAnimations___block_invoke(uint64_t
   }
 }
 
-- (void)didEndSourceAnimations:(unint64_t)a3 finished:(BOOL)a4 continueBlock:(id)a5
+- (void)didEndSourceAnimations:(unint64_t)animations finished:(BOOL)finished continueBlock:(id)block
 {
-  v5 = a4;
-  v8 = a5;
-  if (v5)
+  finishedCopy = finished;
+  blockCopy = block;
+  if (finishedCopy)
   {
     completedSourceAnimations = self->_completedSourceAnimations;
-    self->_completedSourceAnimations = completedSourceAnimations | a3;
-    if ((completedSourceAnimations | a3) == completedSourceAnimations)
+    self->_completedSourceAnimations = completedSourceAnimations | animations;
+    if ((completedSourceAnimations | animations) == completedSourceAnimations)
     {
       goto LABEL_6;
     }
 
-    v10 = v8;
-    [(SBViewMorphAnimator *)self _checkAnimationsDependencies:v8];
+    v10 = blockCopy;
+    [(SBViewMorphAnimator *)self _checkAnimationsDependencies:blockCopy];
   }
 
   else
   {
-    v10 = v8;
-    [(SBViewMorphAnimator *)self interrupt:v8];
+    v10 = blockCopy;
+    [(SBViewMorphAnimator *)self interrupt:blockCopy];
   }
 
-  v8 = v10;
+  blockCopy = v10;
 LABEL_6:
 }
 
-- (void)willStartTargetAnimations:(unint64_t)a3
+- (void)willStartTargetAnimations:(unint64_t)animations
 {
   startedTargetAnimations = self->_startedTargetAnimations;
-  self->_startedTargetAnimations = startedTargetAnimations | a3;
-  if ((startedTargetAnimations | a3) != startedTargetAnimations)
+  self->_startedTargetAnimations = startedTargetAnimations | animations;
+  if ((startedTargetAnimations | animations) != startedTargetAnimations)
   {
     [(SBViewMorphAnimator *)self _checkAnimationsDependencies:0];
   }
 }
 
-- (void)didEndTargetAnimations:(unint64_t)a3 finished:(BOOL)a4 continueBlock:(id)a5
+- (void)didEndTargetAnimations:(unint64_t)animations finished:(BOOL)finished continueBlock:(id)block
 {
-  v5 = a4;
-  v8 = a5;
-  if (v5)
+  finishedCopy = finished;
+  blockCopy = block;
+  if (finishedCopy)
   {
     completedTargetAnimations = self->_completedTargetAnimations;
-    self->_completedTargetAnimations = completedTargetAnimations | a3;
-    if ((completedTargetAnimations | a3) == completedTargetAnimations)
+    self->_completedTargetAnimations = completedTargetAnimations | animations;
+    if ((completedTargetAnimations | animations) == completedTargetAnimations)
     {
       goto LABEL_6;
     }
 
-    v10 = v8;
-    [(SBViewMorphAnimator *)self _checkAnimationsDependencies:v8];
+    v10 = blockCopy;
+    [(SBViewMorphAnimator *)self _checkAnimationsDependencies:blockCopy];
   }
 
   else
   {
-    v10 = v8;
-    [(SBViewMorphAnimator *)self interrupt:v8];
+    v10 = blockCopy;
+    [(SBViewMorphAnimator *)self interrupt:blockCopy];
   }
 
-  v8 = v10;
+  blockCopy = v10;
 LABEL_6:
 }
 
@@ -1558,8 +1558,8 @@ LABEL_6:
 {
   [(SBViewMorphAnimator *)self _removeTargetClippingView];
   WeakRetained = objc_loadWeakRetained(&self->_targetView);
-  v3 = [WeakRetained layer];
-  v4 = [v3 animationForKey:@"SBMorphAnimatorLayerMatchMoveAnimationKey"];
+  layer = [WeakRetained layer];
+  v4 = [layer animationForKey:@"SBMorphAnimatorLayerMatchMoveAnimationKey"];
 
   if (v4)
   {
@@ -1569,8 +1569,8 @@ LABEL_6:
       [v5 frame];
       [(SBViewMorphAnimator *)self noteWillRemoveTargeMatchMoveAnimationAtFrame:self->_targetSourcePinningFrame.origin.x withinSourceFrame:self->_targetSourcePinningFrame.origin.y, self->_targetSourcePinningFrame.size.width, self->_targetSourcePinningFrame.size.height, v6, v7, v8, v9];
 
-      v10 = [WeakRetained layer];
-      [v10 removeAnimationForKey:@"SBMorphAnimatorLayerMatchMoveAnimationKey"];
+      layer2 = [WeakRetained layer];
+      [layer2 removeAnimationForKey:@"SBMorphAnimatorLayerMatchMoveAnimationKey"];
 
       [(BSAbsoluteMachTimer *)self->_morphAnimationTimeout invalidate];
       morphAnimationTimeout = self->_morphAnimationTimeout;
@@ -1585,23 +1585,23 @@ LABEL_6:
   }
 }
 
-- (void)_checkAnimationsDependencies:(id)a3
+- (void)_checkAnimationsDependencies:(id)dependencies
 {
   v66 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  dependenciesCopy = dependencies;
+  v5 = dependenciesCopy;
   if (self->_invalidated)
   {
-    if (v4)
+    if (dependenciesCopy)
     {
-      v4[2](v4);
+      dependenciesCopy[2](dependenciesCopy);
     }
 
     goto LABEL_61;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_targetView);
-  v7 = [(SBViewMorphAnimator *)self _isReversed];
+  _isReversed = [(SBViewMorphAnimator *)self _isReversed];
   startedSourceAnimations = self->_startedSourceAnimations;
   completedSourceAnimations = self->_completedSourceAnimations;
   completedTargetAnimations = self->_completedTargetAnimations;
@@ -1619,7 +1619,7 @@ LABEL_6:
     completedTargetAnimations = v14 = completedTargetAnimations;
     v15 = SBViewMorphAnimatorCompletedTargetAnimationsDescription(self->_completedTargetAnimations);
     *buf = 134219010;
-    v57 = self;
+    selfCopy7 = self;
     v58 = 2114;
     v59 = v12;
     v60 = 2114;
@@ -1637,7 +1637,7 @@ LABEL_6:
 
   v16 = completedTargetAnimations & 7;
 
-  if (!v7)
+  if (!_isReversed)
   {
     v31 = startedTargetAnimations;
     if (self->_automaticallyStartTargetAnimations && (startedTargetAnimations & 3) == 1)
@@ -1661,7 +1661,7 @@ LABEL_6:
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          v57 = self;
+          selfCopy7 = self;
           _os_log_impl(&dword_21ED4E000, v34, OS_LOG_TYPE_DEFAULT, "[Morph Animator][%p] Hiding source view since source clip ended and match move started.", buf, 0xCu);
         }
 
@@ -1687,7 +1687,7 @@ LABEL_6:
         if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          v57 = self;
+          selfCopy7 = self;
           _os_log_impl(&dword_21ED4E000, v39, OS_LOG_TYPE_DEFAULT, "[Morph Animator][%p] Removed target match move since all source animations ended and match move was started.", buf, 0xCu);
         }
 
@@ -1713,7 +1713,7 @@ LABEL_6:
           if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134217984;
-            v57 = self;
+            selfCopy7 = self;
             _os_log_impl(&dword_21ED4E000, v35, OS_LOG_TYPE_DEFAULT, "[Morph Animator][%p] Waiting for target match move animation to start before calling source scale and position ended continuation block.", buf, 0xCu);
           }
 
@@ -1757,17 +1757,17 @@ LABEL_6:
   {
     if (self->_sourceBlackCurtainView)
     {
-      v19 = [WeakRetained superview];
-      v20 = [(SBViewMorphAnimatorContentBlackCurtainView *)self->_sourceBlackCurtainView superview];
+      superview = [WeakRetained superview];
+      superview2 = [(SBViewMorphAnimatorContentBlackCurtainView *)self->_sourceBlackCurtainView superview];
       [(SBViewMorphAnimatorContentBlackCurtainView *)self->_sourceBlackCurtainView frame];
-      [v20 convertRect:v19 toView:?];
+      [superview2 convertRect:superview toView:?];
       v22 = v21;
       v24 = v23;
       v26 = v25;
       v28 = v27;
 
       v17 = startedTargetAnimations;
-      [v19 insertSubview:self->_sourceBlackCurtainView belowSubview:WeakRetained];
+      [superview insertSubview:self->_sourceBlackCurtainView belowSubview:WeakRetained];
       [(SBViewMorphAnimatorContentBlackCurtainView *)self->_sourceBlackCurtainView setFrame:v22, v24, v26, v28];
     }
 
@@ -1800,7 +1800,7 @@ LABEL_6:
             if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134217984;
-              v57 = self;
+              selfCopy7 = self;
               _os_log_impl(&dword_21ED4E000, v40, OS_LOG_TYPE_DEFAULT, "[Morph Animator][%p] Waiting for target external placeholder animations to complete before calling source scale and position ended continuation block.", buf, 0xCu);
             }
 
@@ -1821,7 +1821,7 @@ LABEL_6:
         if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          v57 = self;
+          selfCopy7 = self;
           _os_log_impl(&dword_21ED4E000, v42, OS_LOG_TYPE_DEFAULT, "[Morph Animator][%p] Removed target match move since all source animations ended and match move was started.", buf, 0xCu);
         }
       }
@@ -1845,7 +1845,7 @@ LABEL_6:
           if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134217984;
-            v57 = self;
+            selfCopy7 = self;
             _os_log_impl(&dword_21ED4E000, v30, OS_LOG_TYPE_DEFAULT, "[Morph Animator][%p] Waiting for target match move animation to start before calling source scale and position ended continuation block.", buf, 0xCu);
           }
 
@@ -1952,9 +1952,9 @@ uint64_t __52__SBViewMorphAnimator__checkAnimationsDependencies___block_invoke_7
   return result;
 }
 
-- (void)setSourceAllAnimationsCompletionBlock:(id)a3
+- (void)setSourceAllAnimationsCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = MEMORY[0x223D6F7F0]();
   sourceAllAnimationsCompletionBlock = self->_sourceAllAnimationsCompletionBlock;
   self->_sourceAllAnimationsCompletionBlock = v5;

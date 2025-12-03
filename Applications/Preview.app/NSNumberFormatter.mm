@@ -1,12 +1,12 @@
 @interface NSNumberFormatter
-- (void)_extractor_setFormat:(id)a3;
+- (void)_extractor_setFormat:(id)format;
 @end
 
 @implementation NSNumberFormatter
 
-- (void)_extractor_setFormat:(id)a3
+- (void)_extractor_setFormat:(id)format
 {
-  v13 = [a3 componentsSeparatedByString:@""];;
+  v13 = [format componentsSeparatedByString:@""];;
   v4 = [v13 count];
   if (v4 == 3)
   {

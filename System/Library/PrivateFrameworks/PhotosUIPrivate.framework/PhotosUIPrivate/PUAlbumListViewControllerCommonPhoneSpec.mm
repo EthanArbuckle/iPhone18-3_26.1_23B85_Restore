@@ -28,10 +28,10 @@
 
 - (double)sectionHeaderHeight
 {
-  v2 = [(PUAlbumListViewControllerSpec *)self _fontManager];
-  v3 = [v2 albumListSectionTitleLabelFont];
+  _fontManager = [(PUAlbumListViewControllerSpec *)self _fontManager];
+  albumListSectionTitleLabelFont = [_fontManager albumListSectionTitleLabelFont];
 
-  [v3 _scaledValueForValue:34.0];
+  [albumListSectionTitleLabelFont _scaledValueForValue:34.0];
   v5 = v4;
   if (PUMainScreenScale_onceToken != -1)
   {

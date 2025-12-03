@@ -1,14 +1,14 @@
 @interface MPSNDArrayACoshGradient
-- (MPSNDArrayACoshGradient)initWithDevice:(id)a3;
+- (MPSNDArrayACoshGradient)initWithDevice:(id)device;
 @end
 
 @implementation MPSNDArrayACoshGradient
 
-- (MPSNDArrayACoshGradient)initWithDevice:(id)a3
+- (MPSNDArrayACoshGradient)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = MPSNDArrayACoshGradient;
-  result = [(MPSNDArrayMathUnaryGradient *)&v4 initWithDevice:a3];
+  result = [(MPSNDArrayMathUnaryGradient *)&v4 initWithDevice:device];
   result->super.super.super.super._encodeGradient = EncodeArrayMathUnaryGradient;
   result->super.super.super.super._encodeData = result;
   result->super._opType = 29;

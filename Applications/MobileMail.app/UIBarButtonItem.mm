@@ -1,21 +1,21 @@
 @interface UIBarButtonItem
-+ (id)mf_newFixedSpaceItemWithWidth:(double)a3;
++ (id)mf_newFixedSpaceItemWithWidth:(double)width;
 + (id)mf_newFlexibleSpaceItem;
-+ (id)mf_newMultiBarButtonItemWithTarget:(id)a3 action:(SEL)a4;
-+ (id)mf_newSelectionBarButtonItemWithTarget:(id)a3 action:(SEL)a4;
-+ (void)mf_configureMultiBarButtonItem:(id)a3 usingStyle:(int64_t)a4;
-+ (void)mf_configureSelectionBarButtonItem:(id)a3 usingStyle:(unint64_t)a4;
++ (id)mf_newMultiBarButtonItemWithTarget:(id)target action:(SEL)action;
++ (id)mf_newSelectionBarButtonItemWithTarget:(id)target action:(SEL)action;
++ (void)mf_configureMultiBarButtonItem:(id)item usingStyle:(int64_t)style;
++ (void)mf_configureSelectionBarButtonItem:(id)item usingStyle:(unint64_t)style;
 @end
 
 @implementation UIBarButtonItem
 
-+ (id)mf_newMultiBarButtonItemWithTarget:(id)a3 action:(SEL)a4
++ (id)mf_newMultiBarButtonItemWithTarget:(id)target action:(SEL)action
 {
-  v5 = a3;
+  targetCopy = target;
   v6 = [UIBarButtonItem alloc];
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"EDIT" value:&stru_100662A88 table:@"Main"];
-  v9 = [v6 initWithTitle:v8 style:0 target:v5 action:a4];
+  v9 = [v6 initWithTitle:v8 style:0 target:targetCopy action:action];
 
   v10 = [NSSet alloc];
   v11 = +[NSBundle mainBundle];
@@ -34,14 +34,14 @@
   return v9;
 }
 
-+ (void)mf_configureMultiBarButtonItem:(id)a3 usingStyle:(int64_t)a4
++ (void)mf_configureMultiBarButtonItem:(id)item usingStyle:(int64_t)style
 {
-  v5 = a3;
+  itemCopy = item;
   v6 = 0;
-  v11 = v5;
-  if (a4 > 1)
+  v11 = itemCopy;
+  if (style > 1)
   {
-    if (a4 == 2)
+    if (style == 2)
     {
       v8 = +[NSBundle mainBundle];
       v9 = [v8 localizedStringForKey:@"CANCEL" value:&stru_100662A88 table:@"Main"];
@@ -52,7 +52,7 @@ LABEL_11:
     }
 
     v7 = 0;
-    if (a4 != 3)
+    if (style != 3)
     {
       goto LABEL_13;
     }
@@ -63,10 +63,10 @@ LABEL_11:
 
   else
   {
-    if (a4)
+    if (style)
     {
       v7 = 0;
-      if (a4 != 1)
+      if (style != 1)
       {
         goto LABEL_13;
       }
@@ -84,16 +84,16 @@ LABEL_11:
   v7 = 0;
 LABEL_12:
 
-  v5 = v11;
+  itemCopy = v11;
 LABEL_13:
-  [v5 setStyle:v7];
+  [itemCopy setStyle:v7];
   [v11 setTitle:v6];
 }
 
-+ (id)mf_newFixedSpaceItemWithWidth:(double)a3
++ (id)mf_newFixedSpaceItemWithWidth:(double)width
 {
   v4 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:6 target:0 action:0];
-  [v4 setWidth:a3];
+  [v4 setWidth:width];
 
   return v4;
 }
@@ -105,13 +105,13 @@ LABEL_13:
   return v2;
 }
 
-+ (id)mf_newSelectionBarButtonItemWithTarget:(id)a3 action:(SEL)a4
++ (id)mf_newSelectionBarButtonItemWithTarget:(id)target action:(SEL)action
 {
-  v5 = a3;
+  targetCopy = target;
   v6 = [UIBarButtonItem alloc];
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"SELECT_ALL_BUTTON" value:&stru_100662A88 table:@"Main"];
-  v9 = [v6 initWithTitle:v8 style:0 target:v5 action:a4];
+  v9 = [v6 initWithTitle:v8 style:0 target:targetCopy action:action];
 
   v10 = [NSSet alloc];
   v11 = +[NSBundle mainBundle];
@@ -127,26 +127,26 @@ LABEL_13:
   return v9;
 }
 
-+ (void)mf_configureSelectionBarButtonItem:(id)a3 usingStyle:(unint64_t)a4
++ (void)mf_configureSelectionBarButtonItem:(id)item usingStyle:(unint64_t)style
 {
-  v7 = a3;
-  if (a4 == 1)
+  itemCopy = item;
+  if (style == 1)
   {
     v5 = +[NSBundle mainBundle];
     v6 = [v5 localizedStringForKey:@"DESELECT_ALL_BUTTON" value:&stru_100662A88 table:@"Main"];
-    [v7 setTitle:v6];
+    [itemCopy setTitle:v6];
   }
 
   else
   {
-    if (a4)
+    if (style)
     {
       goto LABEL_6;
     }
 
     v5 = +[NSBundle mainBundle];
     v6 = [v5 localizedStringForKey:@"SELECT_ALL_BUTTON" value:&stru_100662A88 table:@"Main"];
-    [v7 setTitle:v6];
+    [itemCopy setTitle:v6];
   }
 
 LABEL_6:

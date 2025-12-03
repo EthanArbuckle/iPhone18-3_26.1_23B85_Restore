@@ -2,10 +2,10 @@
 - (CRLIngestibleItemImportableBoardItemProviderDelegate)delegate;
 - (NSError)error;
 - (_TtC8Freeform35CRLContentLanguageBoardItemProvider)init;
-- (void)provideBoardItemWithFactory:(_TtC8Freeform19CRLBoardItemFactory *)a3 completionHandler:(id)a4;
-- (void)setBoardItem:(id)a3;
-- (void)setError:(id)a3;
-- (void)setProgress:(id)a3;
+- (void)provideBoardItemWithFactory:(_TtC8Freeform19CRLBoardItemFactory *)factory completionHandler:(id)handler;
+- (void)setBoardItem:(id)item;
+- (void)setError:(id)error;
+- (void)setProgress:(id)progress;
 @end
 
 @implementation CRLContentLanguageBoardItemProvider
@@ -17,18 +17,18 @@
   return Strong;
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform35CRLContentLanguageBoardItemProvider_progress);
-  *(self + OBJC_IVAR____TtC8Freeform35CRLContentLanguageBoardItemProvider_progress) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform35CRLContentLanguageBoardItemProvider_progress) = progress;
+  progressCopy = progress;
 }
 
-- (void)setBoardItem:(id)a3
+- (void)setBoardItem:(id)item
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform35CRLContentLanguageBoardItemProvider_boardItem);
-  *(self + OBJC_IVAR____TtC8Freeform35CRLContentLanguageBoardItemProvider_boardItem) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform35CRLContentLanguageBoardItemProvider_boardItem) = item;
+  itemCopy = item;
 }
 
 - (NSError)error
@@ -47,21 +47,21 @@
   return v2;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  *(self + OBJC_IVAR____TtC8Freeform35CRLContentLanguageBoardItemProvider_error) = a3;
-  v5 = self;
-  v4 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform35CRLContentLanguageBoardItemProvider_error) = error;
+  selfCopy = self;
+  errorCopy = error;
 }
 
-- (void)provideBoardItemWithFactory:(_TtC8Freeform19CRLBoardItemFactory *)a3 completionHandler:(id)a4
+- (void)provideBoardItemWithFactory:(_TtC8Freeform19CRLBoardItemFactory *)factory completionHandler:(id)handler
 {
   v7 = sub_1005B981C(&qword_1019FB750);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = factory;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -76,8 +76,8 @@
   v14[3] = 0;
   v14[4] = &unk_1014938A0;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  factoryCopy = factory;
+  selfCopy = self;
   sub_10119D67C(0, 0, v9, &unk_101470870, v14);
 }
 

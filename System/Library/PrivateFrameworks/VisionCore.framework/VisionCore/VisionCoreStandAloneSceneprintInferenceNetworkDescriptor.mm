@@ -1,15 +1,15 @@
 @interface VisionCoreStandAloneSceneprintInferenceNetworkDescriptor
-+ (id)descriptorAndReturnError:(id *)a3;
++ (id)descriptorAndReturnError:(id *)error;
 - (VisionCoreTensorDescriptor)sceneprintOutput;
 @end
 
 @implementation VisionCoreStandAloneSceneprintInferenceNetworkDescriptor
 
-+ (id)descriptorAndReturnError:(id *)a3
++ (id)descriptorAndReturnError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:@"stand-alone sceneprint model is no longer supported"];
+    *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:@"stand-alone sceneprint model is no longer supported"];
   }
 
   return 0;
@@ -17,8 +17,8 @@
 
 - (VisionCoreTensorDescriptor)sceneprintOutput
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"VisionCoreStandAloneSceneprintInferenceNetworkDescriptor.m" lineNumber:28 description:@"sceneprint tensor descriptor not available"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"VisionCoreStandAloneSceneprintInferenceNetworkDescriptor.m" lineNumber:28 description:@"sceneprint tensor descriptor not available"];
 
   return 0;
 }

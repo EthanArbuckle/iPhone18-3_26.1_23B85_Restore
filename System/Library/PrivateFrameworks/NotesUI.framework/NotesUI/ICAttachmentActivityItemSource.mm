@@ -1,25 +1,25 @@
 @interface ICAttachmentActivityItemSource
 - (ICAttachment)attachment;
-- (ICAttachmentActivityItemSource)initWithAttachment:(id)a3;
+- (ICAttachmentActivityItemSource)initWithAttachment:(id)attachment;
 - (NSString)attachmentFileName;
 - (NSString)attachmentTypeUTI;
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewControllerLinkMetadata:(id)a3;
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
 @end
 
 @implementation ICAttachmentActivityItemSource
 
-- (ICAttachmentActivityItemSource)initWithAttachment:(id)a3
+- (ICAttachmentActivityItemSource)initWithAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   v8.receiver = self;
   v8.super_class = ICAttachmentActivityItemSource;
   v5 = [(ICAttachmentActivityItemSource *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ICAttachmentActivityItemSource *)v5 setAttachment:v4];
+    [(ICAttachmentActivityItemSource *)v5 setAttachment:attachmentCopy];
   }
 
   return v6;
@@ -27,16 +27,16 @@
 
 - (NSString)attachmentTypeUTI
 {
-  v2 = [(ICAttachmentActivityItemSource *)self attachment];
-  v3 = [v2 typeUTI];
+  attachment = [(ICAttachmentActivityItemSource *)self attachment];
+  typeUTI = [attachment typeUTI];
 
-  return v3;
+  return typeUTI;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v5 = [a4 isEqualToString:*MEMORY[0x1E69CDA90]];
+  v5 = [type isEqualToString:*MEMORY[0x1E69CDA90]];
   v6 = *MEMORY[0x1E69B7508];
   if (v5)
   {
@@ -55,14 +55,14 @@
 
   else
   {
-    v9 = [(ICAttachmentActivityItemSource *)self attachment];
-    v10 = [v9 pasteboardData];
+    attachment = [(ICAttachmentActivityItemSource *)self attachment];
+    pasteboardData = [attachment pasteboardData];
 
-    if (v10)
+    if (pasteboardData)
     {
       v13 = v6;
-      v11 = [v10 persistenceData];
-      v14[0] = v11;
+      persistenceData = [pasteboardData persistenceData];
+      v14[0] = persistenceData;
       v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
     }
 
@@ -75,9 +75,9 @@
   return v8;
 }
 
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type
 {
-  if ([a4 isEqualToString:*MEMORY[0x1E69CDA90]])
+  if ([type isEqualToString:*MEMORY[0x1E69CDA90]])
   {
     v4 = *MEMORY[0x1E69B7508];
   }
@@ -90,20 +90,20 @@
   return v4;
 }
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
-  v4 = [(ICAttachmentActivityItemSource *)self attachment];
-  if ([v4 isTable])
+  attachment = [(ICAttachmentActivityItemSource *)self attachment];
+  if ([attachment isTable])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(ICAttachmentActivityItemSource *)self attachment];
-    v7 = [v6 usesLinkPresentation];
+    attachment2 = [(ICAttachmentActivityItemSource *)self attachment];
+    usesLinkPresentation = [attachment2 usesLinkPresentation];
 
-    if (v7)
+    if (usesLinkPresentation)
     {
       v5 = 0;
       goto LABEL_7;
@@ -111,17 +111,17 @@
 
     gotLoadHelper_x8__OBJC_CLASS___LPLinkMetadata(v8);
     v5 = objc_alloc_init(*(v9 + 3232));
-    v10 = [(ICAttachmentActivityItemSource *)self attachment];
+    attachment3 = [(ICAttachmentActivityItemSource *)self attachment];
     [MEMORY[0x1E69DCEB0] ic_scale];
-    v4 = [v10 attachmentPreviewImageWithMinSize:*MEMORY[0x1E695F060] scale:{*(MEMORY[0x1E695F060] + 8), v11}];
+    attachment = [attachment3 attachmentPreviewImageWithMinSize:*MEMORY[0x1E695F060] scale:{*(MEMORY[0x1E695F060] + 8), v11}];
 
     v12 = objc_alloc(MEMORY[0x1E696ACA0]);
-    v13 = [v4 previewImageURL];
-    v14 = [v12 initWithContentsOfURL:v13];
+    previewImageURL = [attachment previewImageURL];
+    v14 = [v12 initWithContentsOfURL:previewImageURL];
     [v5 setIconProvider:v14];
 
-    v15 = [(ICAttachmentActivityItemSource *)self attachmentFileName];
-    [v5 setTitle:v15];
+    attachmentFileName = [(ICAttachmentActivityItemSource *)self attachmentFileName];
+    [v5 setTitle:attachmentFileName];
   }
 
 LABEL_7:
@@ -131,46 +131,46 @@ LABEL_7:
 
 - (NSString)attachmentFileName
 {
-  v3 = [(ICAttachmentActivityItemSource *)self attachment];
-  v4 = [v3 title];
+  attachment = [(ICAttachmentActivityItemSource *)self attachment];
+  title = [attachment title];
 
-  if (![v4 length])
+  if (![title length])
   {
-    v5 = [(ICAttachmentActivityItemSource *)self attachment];
-    v6 = [v5 note];
-    v7 = [v6 title];
+    attachment2 = [(ICAttachmentActivityItemSource *)self attachment];
+    note = [attachment2 note];
+    title2 = [note title];
 
-    v4 = v7;
+    title = title2;
   }
 
-  v8 = [(ICAttachmentActivityItemSource *)self attachmentTypeUTI];
-  if (![v4 length])
+  attachmentTypeUTI = [(ICAttachmentActivityItemSource *)self attachmentTypeUTI];
+  if (![title length])
   {
-    v9 = [MEMORY[0x1E69B7680] filenameFromUTI:v8];
+    v9 = [MEMORY[0x1E69B7680] filenameFromUTI:attachmentTypeUTI];
 
-    v4 = v9;
+    title = v9;
   }
 
-  if (![v4 length])
+  if (![title length])
   {
-    [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"name.length != 0" functionName:"-[ICAttachmentActivityItemSource attachmentFileName]" simulateCrash:1 showAlert:0 format:{@"Empty filename for uti %@", v8}];
+    [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"name.length != 0" functionName:"-[ICAttachmentActivityItemSource attachmentFileName]" simulateCrash:1 showAlert:0 format:{@"Empty filename for uti %@", attachmentTypeUTI}];
   }
 
-  v10 = [MEMORY[0x1E69B7680] filenameExtensionForUTI:v8];
+  v10 = [MEMORY[0x1E69B7680] filenameExtensionForUTI:attachmentTypeUTI];
   if (v10)
   {
-    v11 = [v4 pathExtension];
-    v12 = [v11 isEqual:v10];
+    pathExtension = [title pathExtension];
+    v12 = [pathExtension isEqual:v10];
 
     if ((v12 & 1) == 0)
     {
-      v13 = [v4 stringByAppendingPathExtension:v10];
+      v13 = [title stringByAppendingPathExtension:v10];
 
-      v4 = v13;
+      title = v13;
     }
   }
 
-  return v4;
+  return title;
 }
 
 - (ICAttachment)attachment

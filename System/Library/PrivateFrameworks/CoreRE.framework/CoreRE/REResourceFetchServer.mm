@@ -1,28 +1,28 @@
 @interface REResourceFetchServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (REResourceFetchServer)initWithResourceFetchManager:(void *)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (REResourceFetchServer)initWithResourceFetchManager:(void *)manager;
 @end
 
 @implementation REResourceFetchServer
 
-- (REResourceFetchServer)initWithResourceFetchManager:(void *)a3
+- (REResourceFetchServer)initWithResourceFetchManager:(void *)manager
 {
   v5.receiver = self;
   v5.super_class = REResourceFetchServer;
   result = [(REResourceFetchServer *)&v5 init];
   if (result)
   {
-    result->_resourceFetchManager = a3;
+    result->_resourceFetchManager = manager;
   }
 
   return result;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT);
   if (v8)
   {
@@ -35,11 +35,11 @@
   v10 = self->_resourceFetchManager;
   if (v10)
   {
-    v36 = v7;
+    v36 = connectionCopy;
     dispatch_assert_queue_V2(*(v10 + 4));
-    v11 = [v36 processIdentifier];
-    v12 = v11;
-    v13 = re::resourceSharingLogObjects(v11)[1];
+    processIdentifier = [v36 processIdentifier];
+    v12 = processIdentifier;
+    v13 = re::resourceSharingLogObjects(processIdentifier)[1];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
@@ -178,9 +178,9 @@
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
       v28 = v27;
-      v29 = [v7 processIdentifier];
+      processIdentifier2 = [connectionCopy processIdentifier];
       *buf = 67109120;
-      *&buf[4] = v29;
+      *&buf[4] = processIdentifier2;
       _os_log_error_impl(&dword_1E1C61000, v28, OS_LOG_TYPE_ERROR, "Rejecting attempted resource connection from client pid %d: service was deinited", buf, 8u);
     }
   }

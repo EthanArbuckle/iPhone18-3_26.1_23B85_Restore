@@ -1,14 +1,14 @@
 @interface EngagedCompletionSQLCache
-- (void)bagChangeNotificationWithNotification:(id)a3;
+- (void)bagChangeNotificationWithNotification:(id)notification;
 @end
 
 @implementation EngagedCompletionSQLCache
 
-- (void)bagChangeNotificationWithNotification:(id)a3
+- (void)bagChangeNotificationWithNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
 
-  sub_10005A050(v3);
+  sub_10005A050(notificationCopy);
 }
 
 @end

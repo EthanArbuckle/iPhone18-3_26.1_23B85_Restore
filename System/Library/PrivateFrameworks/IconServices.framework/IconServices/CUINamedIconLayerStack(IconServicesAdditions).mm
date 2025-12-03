@@ -9,36 +9,36 @@
 - (id)_IS_finalizedIconWithCompositingDescriptor:()IconServicesAdditions
 {
   v4 = a3;
-  v5 = [v4 CUINamedImageDeviceClass];
-  v6 = [v4 ICRAppearance];
-  v7 = [v4 ICRRenderingMode];
+  cUINamedImageDeviceClass = [v4 CUINamedImageDeviceClass];
+  iCRAppearance = [v4 ICRAppearance];
+  iCRRenderingMode = [v4 ICRRenderingMode];
   [v4 scale];
   *&v8 = v8;
   v9 = llroundf(*&v8);
   v10 = _ISDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [(CUINamedIconLayerStack(IconServicesAdditions) *)a1 _IS_finalizedIconWithCompositingDescriptor:v4, v10];
+    [(CUINamedIconLayerStack(IconServicesAdditions) *)self _IS_finalizedIconWithCompositingDescriptor:v4, v10];
   }
 
   if (objc_opt_respondsToSelector())
   {
     [v4 size];
-    v13 = [a1 finalizedIconWithSize:v9 scale:v5 deviceClass:v6 appearance:v7 renderingMode:objc_msgSend(v4 layoutDirection:"languageDirection") isLegacyContent:{objc_msgSend(v4, "useLegacyCompatibilityMode"), v11, v12}];
+    v13 = [self finalizedIconWithSize:v9 scale:cUINamedImageDeviceClass deviceClass:iCRAppearance appearance:iCRRenderingMode renderingMode:objc_msgSend(v4 layoutDirection:"languageDirection") isLegacyContent:{objc_msgSend(v4, "useLegacyCompatibilityMode"), v11, v12}];
   }
 
   else
   {
-    v14 = [v4 useLegacyCompatibilityMode];
+    useLegacyCompatibilityMode = [v4 useLegacyCompatibilityMode];
     [v4 size];
-    if (v14)
+    if (useLegacyCompatibilityMode)
     {
-      [a1 legacyFinalizedIconWithSize:v9 scale:v5 deviceClass:v6 appearance:v7 renderingMode:?];
+      [self legacyFinalizedIconWithSize:v9 scale:cUINamedImageDeviceClass deviceClass:iCRAppearance appearance:iCRRenderingMode renderingMode:?];
     }
 
     else
     {
-      [a1 finalizedIconWithSize:v9 scale:v5 deviceClass:v6 appearance:v7 renderingMode:?];
+      [self finalizedIconWithSize:v9 scale:cUINamedImageDeviceClass deviceClass:iCRAppearance appearance:iCRRenderingMode renderingMode:?];
     }
     v13 = ;
   }
@@ -64,7 +64,7 @@
 - (id)_IS_imageWithCompositingDescriptor:()IconServicesAdditions
 {
   v4 = a3;
-  v5 = [a1 _IS_finalizedIconWithCompositingDescriptor:v4];
+  v5 = [self _IS_finalizedIconWithCompositingDescriptor:v4];
   v6 = v5;
   if (v5)
   {
@@ -92,7 +92,7 @@
 
   [(ISCompositingDescriptor *)v20 setUseLegacyCompatibilityMode:a10];
   [(ISCompositingDescriptor *)v20 setBackground:a11];
-  v21 = [a1 _IS_imageWithCompositingDescriptor:v20];
+  v21 = [self _IS_imageWithCompositingDescriptor:v20];
 
   return v21;
 }

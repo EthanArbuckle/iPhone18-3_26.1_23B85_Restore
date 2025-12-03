@@ -1,64 +1,64 @@
 @interface SSMutableURLRequestProperties
-- (void)setAdditionalMetrics:(id)a3;
-- (void)setAllowedRetryCount:(int64_t)a3;
-- (void)setAllowsBootstrapCellularData:(BOOL)a3;
-- (void)setCachePolicy:(unint64_t)a3;
-- (void)setClientAuditBundleIdentifier:(id)a3;
-- (void)setClientAuditTokenData:(id)a3;
-- (void)setClientIdentifier:(id)a3;
-- (void)setExpectedContentLength:(int64_t)a3;
-- (void)setHTTPBody:(id)a3;
-- (void)setHTTPBodyStream:(id)a3;
-- (void)setHTTPHeaders:(id)a3;
-- (void)setHTTPMethod:(id)a3;
-- (void)setITunesStoreRequest:(BOOL)a3;
-- (void)setKBSyncType:(int64_t)a3;
-- (void)setLargeDownload:(BOOL)a3;
-- (void)setMachineDataStyle:(int64_t)a3;
-- (void)setMultiPartFormDataWithDictionary:(id)a3;
-- (void)setNetworkServiceType:(unint64_t)a3;
-- (void)setRequestParameters:(id)a3;
-- (void)setRequiresCellularDataNetwork:(BOOL)a3;
-- (void)setRequiresExtendedValidationCertificates:(BOOL)a3;
-- (void)setRequiresExternal:(BOOL)a3;
-- (void)setRequiresHTTPS:(BOOL)a3;
-- (void)setShouldAddKBSyncData:(BOOL)a3;
-- (void)setShouldDecodeResponse:(BOOL)a3;
-- (void)setShouldDisableCellular:(BOOL)a3;
-- (void)setShouldDisableCellularFallback:(BOOL)a3;
-- (void)setShouldDisableReversePush:(BOOL)a3;
-- (void)setShouldDisableReversePushSampling:(BOOL)a3;
-- (void)setShouldProcessProtocol:(BOOL)a3;
-- (void)setShouldSendSecureToken:(BOOL)a3;
-- (void)setShouldSetCookies:(BOOL)a3;
-- (void)setTimeoutInterval:(double)a3;
-- (void)setURL:(id)a3;
-- (void)setURLBagKey:(id)a3;
-- (void)setURLBagType:(int64_t)a3;
-- (void)setURLBagURLBlock:(id)a3;
-- (void)setURLs:(id)a3;
-- (void)setUserAgentComponents:(id)a3;
-- (void)setValue:(id)a3 forHTTPHeaderField:(id)a4;
-- (void)setValue:(id)a3 forRequestParameter:(id)a4;
+- (void)setAdditionalMetrics:(id)metrics;
+- (void)setAllowedRetryCount:(int64_t)count;
+- (void)setAllowsBootstrapCellularData:(BOOL)data;
+- (void)setCachePolicy:(unint64_t)policy;
+- (void)setClientAuditBundleIdentifier:(id)identifier;
+- (void)setClientAuditTokenData:(id)data;
+- (void)setClientIdentifier:(id)identifier;
+- (void)setExpectedContentLength:(int64_t)length;
+- (void)setHTTPBody:(id)body;
+- (void)setHTTPBodyStream:(id)stream;
+- (void)setHTTPHeaders:(id)headers;
+- (void)setHTTPMethod:(id)method;
+- (void)setITunesStoreRequest:(BOOL)request;
+- (void)setKBSyncType:(int64_t)type;
+- (void)setLargeDownload:(BOOL)download;
+- (void)setMachineDataStyle:(int64_t)style;
+- (void)setMultiPartFormDataWithDictionary:(id)dictionary;
+- (void)setNetworkServiceType:(unint64_t)type;
+- (void)setRequestParameters:(id)parameters;
+- (void)setRequiresCellularDataNetwork:(BOOL)network;
+- (void)setRequiresExtendedValidationCertificates:(BOOL)certificates;
+- (void)setRequiresExternal:(BOOL)external;
+- (void)setRequiresHTTPS:(BOOL)s;
+- (void)setShouldAddKBSyncData:(BOOL)data;
+- (void)setShouldDecodeResponse:(BOOL)response;
+- (void)setShouldDisableCellular:(BOOL)cellular;
+- (void)setShouldDisableCellularFallback:(BOOL)fallback;
+- (void)setShouldDisableReversePush:(BOOL)push;
+- (void)setShouldDisableReversePushSampling:(BOOL)sampling;
+- (void)setShouldProcessProtocol:(BOOL)protocol;
+- (void)setShouldSendSecureToken:(BOOL)token;
+- (void)setShouldSetCookies:(BOOL)cookies;
+- (void)setTimeoutInterval:(double)interval;
+- (void)setURL:(id)l;
+- (void)setURLBagKey:(id)key;
+- (void)setURLBagType:(int64_t)type;
+- (void)setURLBagURLBlock:(id)block;
+- (void)setURLs:(id)ls;
+- (void)setUserAgentComponents:(id)components;
+- (void)setValue:(id)value forHTTPHeaderField:(id)field;
+- (void)setValue:(id)value forRequestParameter:(id)parameter;
 @end
 
 @implementation SSMutableURLRequestProperties
 
-- (void)setAdditionalMetrics:(id)a3
+- (void)setAdditionalMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   dispatchQueue = self->super._dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__SSMutableURLRequestProperties_setAdditionalMetrics___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = metricsCopy;
+  v6 = metricsCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
-- (void)setAllowedRetryCount:(int64_t)a3
+- (void)setAllowedRetryCount:(int64_t)count
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -66,11 +66,11 @@
   v4[2] = __54__SSMutableURLRequestProperties_setAllowedRetryCount___block_invoke;
   v4[3] = &unk_1E84ADDB8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = count;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setCachePolicy:(unint64_t)a3
+- (void)setCachePolicy:(unint64_t)policy
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -78,21 +78,21 @@
   v4[2] = __48__SSMutableURLRequestProperties_setCachePolicy___block_invoke;
   v4[3] = &unk_1E84ADDB8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = policy;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setClientIdentifier:(id)a3
+- (void)setClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatchQueue = self->super._dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__SSMutableURLRequestProperties_setClientIdentifier___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
@@ -109,7 +109,7 @@ void __53__SSMutableURLRequestProperties_setClientIdentifier___block_invoke(uint
   }
 }
 
-- (void)setExpectedContentLength:(int64_t)a3
+- (void)setExpectedContentLength:(int64_t)length
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -117,21 +117,21 @@ void __53__SSMutableURLRequestProperties_setClientIdentifier___block_invoke(uint
   v4[2] = __58__SSMutableURLRequestProperties_setExpectedContentLength___block_invoke;
   v4[3] = &unk_1E84ADDB8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = length;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setHTTPBody:(id)a3
+- (void)setHTTPBody:(id)body
 {
-  v4 = a3;
+  bodyCopy = body;
   dispatchQueue = self->super._dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__SSMutableURLRequestProperties_setHTTPBody___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = bodyCopy;
+  v6 = bodyCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
@@ -148,17 +148,17 @@ void __45__SSMutableURLRequestProperties_setHTTPBody___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setHTTPHeaders:(id)a3
+- (void)setHTTPHeaders:(id)headers
 {
-  v4 = a3;
+  headersCopy = headers;
   dispatchQueue = self->super._dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__SSMutableURLRequestProperties_setHTTPHeaders___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = headersCopy;
+  v6 = headersCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
@@ -175,17 +175,17 @@ void __48__SSMutableURLRequestProperties_setHTTPHeaders___block_invoke(uint64_t 
   }
 }
 
-- (void)setHTTPMethod:(id)a3
+- (void)setHTTPMethod:(id)method
 {
-  v4 = a3;
+  methodCopy = method;
   dispatchQueue = self->super._dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__SSMutableURLRequestProperties_setHTTPMethod___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = methodCopy;
+  v6 = methodCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
@@ -202,7 +202,7 @@ void __47__SSMutableURLRequestProperties_setHTTPMethod___block_invoke(uint64_t a
   }
 }
 
-- (void)setITunesStoreRequest:(BOOL)a3
+- (void)setITunesStoreRequest:(BOOL)request
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -210,11 +210,11 @@ void __47__SSMutableURLRequestProperties_setHTTPMethod___block_invoke(uint64_t a
   v4[2] = __55__SSMutableURLRequestProperties_setITunesStoreRequest___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  requestCopy = request;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setMachineDataStyle:(int64_t)a3
+- (void)setMachineDataStyle:(int64_t)style
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -222,11 +222,11 @@ void __47__SSMutableURLRequestProperties_setHTTPMethod___block_invoke(uint64_t a
   v4[2] = __53__SSMutableURLRequestProperties_setMachineDataStyle___block_invoke;
   v4[3] = &unk_1E84ADDB8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = style;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setNetworkServiceType:(unint64_t)a3
+- (void)setNetworkServiceType:(unint64_t)type
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -234,21 +234,21 @@ void __47__SSMutableURLRequestProperties_setHTTPMethod___block_invoke(uint64_t a
   v4[2] = __55__SSMutableURLRequestProperties_setNetworkServiceType___block_invoke;
   v4[3] = &unk_1E84ADDB8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = type;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setRequestParameters:(id)a3
+- (void)setRequestParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   dispatchQueue = self->super._dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__SSMutableURLRequestProperties_setRequestParameters___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = parametersCopy;
+  v6 = parametersCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
@@ -265,7 +265,7 @@ void __54__SSMutableURLRequestProperties_setRequestParameters___block_invoke(uin
   }
 }
 
-- (void)setShouldDisableCellular:(BOOL)a3
+- (void)setShouldDisableCellular:(BOOL)cellular
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -273,11 +273,11 @@ void __54__SSMutableURLRequestProperties_setRequestParameters___block_invoke(uin
   v4[2] = __58__SSMutableURLRequestProperties_setShouldDisableCellular___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  cellularCopy = cellular;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setShouldDisableCellularFallback:(BOOL)a3
+- (void)setShouldDisableCellularFallback:(BOOL)fallback
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -285,11 +285,11 @@ void __54__SSMutableURLRequestProperties_setRequestParameters___block_invoke(uin
   v4[2] = __66__SSMutableURLRequestProperties_setShouldDisableCellularFallback___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  fallbackCopy = fallback;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setShouldDisableReversePush:(BOOL)a3
+- (void)setShouldDisableReversePush:(BOOL)push
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -297,11 +297,11 @@ void __54__SSMutableURLRequestProperties_setRequestParameters___block_invoke(uin
   v4[2] = __61__SSMutableURLRequestProperties_setShouldDisableReversePush___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  pushCopy = push;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setShouldDisableReversePushSampling:(BOOL)a3
+- (void)setShouldDisableReversePushSampling:(BOOL)sampling
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -309,11 +309,11 @@ void __54__SSMutableURLRequestProperties_setRequestParameters___block_invoke(uin
   v4[2] = __69__SSMutableURLRequestProperties_setShouldDisableReversePushSampling___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  samplingCopy = sampling;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setTimeoutInterval:(double)a3
+- (void)setTimeoutInterval:(double)interval
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -321,7 +321,7 @@ void __54__SSMutableURLRequestProperties_setRequestParameters___block_invoke(uin
   v4[2] = __52__SSMutableURLRequestProperties_setTimeoutInterval___block_invoke;
   v4[3] = &unk_1E84ADDB8;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = interval;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -332,17 +332,17 @@ double __52__SSMutableURLRequestProperties_setTimeoutInterval___block_invoke(uin
   return result;
 }
 
-- (void)setURLBagKey:(id)a3
+- (void)setURLBagKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   dispatchQueue = self->super._dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__SSMutableURLRequestProperties_setURLBagKey___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
@@ -359,26 +359,26 @@ void __46__SSMutableURLRequestProperties_setURLBagKey___block_invoke(uint64_t a1
   }
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithObjects:{v5, 0}];
+  lCopy = l;
+  v6 = [[v4 alloc] initWithObjects:{lCopy, 0}];
 
   [(SSMutableURLRequestProperties *)self setURLs:v6];
 }
 
-- (void)setUserAgentComponents:(id)a3
+- (void)setUserAgentComponents:(id)components
 {
-  v4 = a3;
+  componentsCopy = components;
   dispatchQueue = self->super._dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__SSMutableURLRequestProperties_setUserAgentComponents___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = componentsCopy;
+  v6 = componentsCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
@@ -395,20 +395,20 @@ void __56__SSMutableURLRequestProperties_setUserAgentComponents___block_invoke(u
   }
 }
 
-- (void)setValue:(id)a3 forHTTPHeaderField:(id)a4
+- (void)setValue:(id)value forHTTPHeaderField:(id)field
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  fieldCopy = field;
   dispatchQueue = self->super._dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__SSMutableURLRequestProperties_setValue_forHTTPHeaderField___block_invoke;
   block[3] = &unk_1E84AC078;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = valueCopy;
+  v13 = fieldCopy;
+  v9 = fieldCopy;
+  v10 = valueCopy;
   dispatch_sync(dispatchQueue, block);
 }
 
@@ -439,20 +439,20 @@ void __61__SSMutableURLRequestProperties_setValue_forHTTPHeaderField___block_inv
   *(v6 + 96) = v5;
 }
 
-- (void)setValue:(id)a3 forRequestParameter:(id)a4
+- (void)setValue:(id)value forRequestParameter:(id)parameter
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  parameterCopy = parameter;
   dispatchQueue = self->super._dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__SSMutableURLRequestProperties_setValue_forRequestParameter___block_invoke;
   block[3] = &unk_1E84AC078;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = valueCopy;
+  v13 = parameterCopy;
+  v9 = parameterCopy;
+  v10 = valueCopy;
   dispatch_sync(dispatchQueue, block);
 }
 
@@ -483,7 +483,7 @@ void __62__SSMutableURLRequestProperties_setValue_forRequestParameter___block_in
   *(v6 + 152) = v5;
 }
 
-- (void)setAllowsBootstrapCellularData:(BOOL)a3
+- (void)setAllowsBootstrapCellularData:(BOOL)data
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -491,21 +491,21 @@ void __62__SSMutableURLRequestProperties_setValue_forRequestParameter___block_in
   v4[2] = __64__SSMutableURLRequestProperties_setAllowsBootstrapCellularData___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  dataCopy = data;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setHTTPBodyStream:(id)a3
+- (void)setHTTPBodyStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   dispatchQueue = self->super._dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__SSMutableURLRequestProperties_setHTTPBodyStream___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = streamCopy;
+  v6 = streamCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
@@ -521,7 +521,7 @@ void __51__SSMutableURLRequestProperties_setHTTPBodyStream___block_invoke(uint64
   }
 }
 
-- (void)setKBSyncType:(int64_t)a3
+- (void)setKBSyncType:(int64_t)type
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -529,11 +529,11 @@ void __51__SSMutableURLRequestProperties_setHTTPBodyStream___block_invoke(uint64
   v4[2] = __47__SSMutableURLRequestProperties_setKBSyncType___block_invoke;
   v4[3] = &unk_1E84ADDB8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = type;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setLargeDownload:(BOOL)a3
+- (void)setLargeDownload:(BOOL)download
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -541,31 +541,31 @@ void __51__SSMutableURLRequestProperties_setHTTPBodyStream___block_invoke(uint64
   v4[2] = __50__SSMutableURLRequestProperties_setLargeDownload___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  downloadCopy = download;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setMultiPartFormDataWithDictionary:(id)a3
+- (void)setMultiPartFormDataWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  v6 = v5;
-  if (v5)
+  dictionaryCopy = dictionary;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v6 = uUID;
+  if (uUID)
   {
-    v7 = [v5 UUIDString];
-    if (v7)
+    uUIDString = [uUID UUIDString];
+    if (uUIDString)
     {
-      v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"multipart/form-data; boundary=%@", v7];
+      v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"multipart/form-data; boundary=%@", uUIDString];
       v9 = objc_alloc_init(MEMORY[0x1E696AD60]);
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __68__SSMutableURLRequestProperties_setMultiPartFormDataWithDictionary___block_invoke;
       v13[3] = &unk_1E84AFAA0;
       v14 = v9;
-      v10 = v7;
+      v10 = uUIDString;
       v15 = v10;
       v11 = v9;
-      [v4 enumerateKeysAndObjectsUsingBlock:v13];
+      [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v13];
       [v11 appendFormat:@"--%@--", v10];
       v12 = [v11 dataUsingEncoding:4];
       [(SSMutableURLRequestProperties *)self setHTTPBody:v12];
@@ -588,7 +588,7 @@ void __68__SSMutableURLRequestProperties_setMultiPartFormDataWithDictionary___bl
   [*(a1 + 32) appendFormat:@"%@\r\n", v8];
 }
 
-- (void)setRequiresCellularDataNetwork:(BOOL)a3
+- (void)setRequiresCellularDataNetwork:(BOOL)network
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -596,11 +596,11 @@ void __68__SSMutableURLRequestProperties_setMultiPartFormDataWithDictionary___bl
   v4[2] = __64__SSMutableURLRequestProperties_setRequiresCellularDataNetwork___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  networkCopy = network;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setRequiresExtendedValidationCertificates:(BOOL)a3
+- (void)setRequiresExtendedValidationCertificates:(BOOL)certificates
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -608,11 +608,11 @@ void __68__SSMutableURLRequestProperties_setMultiPartFormDataWithDictionary___bl
   v4[2] = __75__SSMutableURLRequestProperties_setRequiresExtendedValidationCertificates___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  certificatesCopy = certificates;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setRequiresExternal:(BOOL)a3
+- (void)setRequiresExternal:(BOOL)external
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -620,11 +620,11 @@ void __68__SSMutableURLRequestProperties_setMultiPartFormDataWithDictionary___bl
   v4[2] = __53__SSMutableURLRequestProperties_setRequiresExternal___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  externalCopy = external;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setRequiresHTTPS:(BOOL)a3
+- (void)setRequiresHTTPS:(BOOL)s
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -632,11 +632,11 @@ void __68__SSMutableURLRequestProperties_setMultiPartFormDataWithDictionary___bl
   v4[2] = __50__SSMutableURLRequestProperties_setRequiresHTTPS___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  sCopy = s;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setShouldAddKBSyncData:(BOOL)a3
+- (void)setShouldAddKBSyncData:(BOOL)data
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -644,11 +644,11 @@ void __68__SSMutableURLRequestProperties_setMultiPartFormDataWithDictionary___bl
   v4[2] = __56__SSMutableURLRequestProperties_setShouldAddKBSyncData___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  dataCopy = data;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setShouldDecodeResponse:(BOOL)a3
+- (void)setShouldDecodeResponse:(BOOL)response
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -656,11 +656,11 @@ void __68__SSMutableURLRequestProperties_setMultiPartFormDataWithDictionary___bl
   v4[2] = __57__SSMutableURLRequestProperties_setShouldDecodeResponse___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  responseCopy = response;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setShouldProcessProtocol:(BOOL)a3
+- (void)setShouldProcessProtocol:(BOOL)protocol
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -668,11 +668,11 @@ void __68__SSMutableURLRequestProperties_setMultiPartFormDataWithDictionary___bl
   v4[2] = __58__SSMutableURLRequestProperties_setShouldProcessProtocol___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  protocolCopy = protocol;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setShouldSendSecureToken:(BOOL)a3
+- (void)setShouldSendSecureToken:(BOOL)token
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -680,11 +680,11 @@ void __68__SSMutableURLRequestProperties_setMultiPartFormDataWithDictionary___bl
   v4[2] = __58__SSMutableURLRequestProperties_setShouldSendSecureToken___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  tokenCopy = token;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setShouldSetCookies:(BOOL)a3
+- (void)setShouldSetCookies:(BOOL)cookies
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -692,21 +692,21 @@ void __68__SSMutableURLRequestProperties_setMultiPartFormDataWithDictionary___bl
   v4[2] = __53__SSMutableURLRequestProperties_setShouldSetCookies___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  cookiesCopy = cookies;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setClientAuditBundleIdentifier:(id)a3
+- (void)setClientAuditBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatchQueue = self->super._dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__SSMutableURLRequestProperties_setClientAuditBundleIdentifier___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
@@ -723,17 +723,17 @@ void __64__SSMutableURLRequestProperties_setClientAuditBundleIdentifier___block_
   }
 }
 
-- (void)setClientAuditTokenData:(id)a3
+- (void)setClientAuditTokenData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   dispatchQueue = self->super._dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__SSMutableURLRequestProperties_setClientAuditTokenData___block_invoke;
   v7[3] = &unk_1E84AC028;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dataCopy;
+  selfCopy = self;
+  v6 = dataCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
@@ -749,7 +749,7 @@ void __57__SSMutableURLRequestProperties_setClientAuditTokenData___block_invoke(
   }
 }
 
-- (void)setURLBagType:(int64_t)a3
+- (void)setURLBagType:(int64_t)type
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -757,21 +757,21 @@ void __57__SSMutableURLRequestProperties_setClientAuditTokenData___block_invoke(
   v4[2] = __47__SSMutableURLRequestProperties_setURLBagType___block_invoke;
   v4[3] = &unk_1E84ADDB8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = type;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setURLBagURLBlock:(id)a3
+- (void)setURLBagURLBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatchQueue = self->super._dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__SSMutableURLRequestProperties_setURLBagURLBlock___block_invoke;
   v7[3] = &unk_1E84AC360;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
@@ -788,17 +788,17 @@ void __51__SSMutableURLRequestProperties_setURLBagURLBlock___block_invoke(uint64
   }
 }
 
-- (void)setURLs:(id)a3
+- (void)setURLs:(id)ls
 {
-  v4 = a3;
+  lsCopy = ls;
   dispatchQueue = self->super._dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__SSMutableURLRequestProperties_setURLs___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = lsCopy;
+  v6 = lsCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 

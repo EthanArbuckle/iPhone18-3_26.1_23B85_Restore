@@ -1,69 +1,69 @@
 @interface CPMLDB
-+ (id)getConfigurationFromPlist:(id)a3;
++ (id)getConfigurationFromPlist:(id)plist;
 - (BOOL)loadStatisticTable;
-- (BOOL)logBatchNSArray:(id)a3;
-- (BOOL)logBatchNSDictionary:(id)a3;
-- (BOOL)logCTypesV:(void *)a3;
-- (BOOL)logNSArray:(id)a3;
-- (BOOL)logNSDataDouble:(id)a3;
-- (BOOL)logNSDataFloat:(id)a3;
-- (BOOL)logNSDictionary:(id)a3;
-- (BOOL)logNSObjectV:(id)a3;
+- (BOOL)logBatchNSArray:(id)array;
+- (BOOL)logBatchNSDictionary:(id)dictionary;
+- (BOOL)logCTypesV:(void *)v;
+- (BOOL)logNSArray:(id)array;
+- (BOOL)logNSDataDouble:(id)double;
+- (BOOL)logNSDataFloat:(id)float;
+- (BOOL)logNSDictionary:(id)dictionary;
+- (BOOL)logNSObjectV:(id)v;
 - (BOOL)reset;
-- (double)columnQueryFor:(unsigned int)a3 withQuery:(id)a4;
-- (double)updateStatisticsString:(id)a3 colPosition:(unint64_t)a4;
-- (id)addValues:(int)a3;
-- (id)extractRow:(id)a3;
-- (id)fileProtectionClassRequest:(id)a3;
+- (double)columnQueryFor:(unsigned int)for withQuery:(id)query;
+- (double)updateStatisticsString:(id)string colPosition:(unint64_t)position;
+- (id)addValues:(int)values;
+- (id)extractRow:(id)row;
+- (id)fileProtectionClassRequest:(id)request;
 - (id)prepInsertStatementForMainTable;
-- (unint64_t)getCardinality:(unsigned int)a3;
+- (unint64_t)getCardinality:(unsigned int)cardinality;
 - (unint64_t)getRowCount;
-- (void)addColumnToTable:(id)a3 withNewColumn:(id)a4;
-- (void)createTable:(id)a3 withSchema:(id)a4 withExistingTable:(BOOL)a5;
+- (void)addColumnToTable:(id)table withNewColumn:(id)column;
+- (void)createTable:(id)table withSchema:(id)schema withExistingTable:(BOOL)existingTable;
 - (void)dealloc;
-- (void)deleteAllRows:(id)a3;
-- (void)deleteRow:(id)a3 whereMatch:(id)a4;
-- (void)doInitCommon:(id)a3 withDict:(id)a4 withFileExists:(BOOL *)a5 withWriteOptions:(int)a6;
-- (void)dropCommands:(id)a3;
-- (void)execSQLCommand:(id)a3;
+- (void)deleteAllRows:(id)rows;
+- (void)deleteRow:(id)row whereMatch:(id)match;
+- (void)doInitCommon:(id)common withDict:(id)dict withFileExists:(BOOL *)exists withWriteOptions:(int)options;
+- (void)dropCommands:(id)commands;
+- (void)execSQLCommand:(id)command;
 - (void)flushDB;
-- (void)indexTable:(id)a3 withColumn:(id)a4;
-- (void)initMaxSizeStatistics:(unint64_t)a3;
+- (void)indexTable:(id)table withColumn:(id)column;
+- (void)initMaxSizeStatistics:(unint64_t)statistics;
 - (void)initStatisticsTable;
-- (void)insertIntoTable:(id)a3 withTuple:(id)a4;
+- (void)insertIntoTable:(id)table withTuple:(id)tuple;
 - (void)loadTables;
-- (void)printFormat:(id)a3;
-- (void)queryDatabase:(id)a3 whereMatch:(id)a4;
-- (void)removeTrainingRow:(id)a3;
-- (void)removeTrainingRowData:(double)a3;
+- (void)printFormat:(id)format;
+- (void)queryDatabase:(id)database whereMatch:(id)match;
+- (void)removeTrainingRow:(id)row;
+- (void)removeTrainingRowData:(double)data;
 - (void)restart;
 - (void)updateStatistics;
-- (void)updateStatisticsReal:(double)a3 colPosition:(unint64_t)a4;
-- (void)updateTable:(id)a3 withAttribute:(id)a4 whereMatch:(id)a5;
+- (void)updateStatisticsReal:(double)real colPosition:(unint64_t)position;
+- (void)updateTable:(id)table withAttribute:(id)attribute whereMatch:(id)match;
 @end
 
 @implementation CPMLDB
 
-- (void)initMaxSizeStatistics:(unint64_t)a3
+- (void)initMaxSizeStatistics:(unint64_t)statistics
 {
-  self->maxFieldCount = a3;
+  self->maxFieldCount = statistics;
   self->rowCount = 0;
-  self->repFields = malloc_type_calloc(a3, 8uLL, 0x100004000313F17uLL);
-  self->cardinality = malloc_type_calloc(a3, 8uLL, 0x100004000313F17uLL);
-  self->min = malloc_type_calloc(a3, 8uLL, 0x100004000313F17uLL);
-  self->max = malloc_type_calloc(a3, 8uLL, 0x100004000313F17uLL);
-  self->mean = malloc_type_calloc(a3, 8uLL, 0x100004000313F17uLL);
-  self->sumOfX = malloc_type_calloc(a3, 8uLL, 0x100004000313F17uLL);
-  self->sumOfXX = malloc_type_calloc(a3, 8uLL, 0x100004000313F17uLL);
-  self->sigma = malloc_type_calloc(a3, 8uLL, 0x100004000313F17uLL);
+  self->repFields = malloc_type_calloc(statistics, 8uLL, 0x100004000313F17uLL);
+  self->cardinality = malloc_type_calloc(statistics, 8uLL, 0x100004000313F17uLL);
+  self->min = malloc_type_calloc(statistics, 8uLL, 0x100004000313F17uLL);
+  self->max = malloc_type_calloc(statistics, 8uLL, 0x100004000313F17uLL);
+  self->mean = malloc_type_calloc(statistics, 8uLL, 0x100004000313F17uLL);
+  self->sumOfX = malloc_type_calloc(statistics, 8uLL, 0x100004000313F17uLL);
+  self->sumOfXX = malloc_type_calloc(statistics, 8uLL, 0x100004000313F17uLL);
+  self->sigma = malloc_type_calloc(statistics, 8uLL, 0x100004000313F17uLL);
 }
 
-+ (id)getConfigurationFromPlist:(id)a3
++ (id)getConfigurationFromPlist:(id)plist
 {
-  v3 = a3;
-  if (v3)
+  plistCopy = plist;
+  if (plistCopy)
   {
-    v4 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v3];
+    v4 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:plistCopy];
     if (v4)
     {
       v7 = 0;
@@ -82,10 +82,10 @@ LABEL_6:
   return v5;
 }
 
-- (void)doInitCommon:(id)a3 withDict:(id)a4 withFileExists:(BOOL *)a5 withWriteOptions:(int)a6
+- (void)doInitCommon:(id)common withDict:(id)dict withFileExists:(BOOL *)exists withWriteOptions:(int)options
 {
-  v36 = a3;
-  v11 = a4;
+  commonCopy = common;
+  dictCopy = dict;
   if (!self->_dispatch_queue)
   {
     v12 = dispatch_queue_create("com.apple.coreprediction.tdb", 0);
@@ -94,8 +94,8 @@ LABEL_6:
   }
 
   *&self->commitCountMax = 1000;
-  objc_storeStrong(&self->_dbFileName, a3);
-  v14 = [v11 objectForKey:@"loggingMode"];
+  objc_storeStrong(&self->_dbFileName, common);
+  v14 = [dictCopy objectForKey:@"loggingMode"];
   v15 = v14;
   if (v14 || (v16 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.cpml"], objc_msgSend(v16, "objectForKey:", @"loggingMode"), v15 = objc_claimAutoreleasedReturnValue(), v16, v15))
   {
@@ -103,20 +103,20 @@ LABEL_6:
     CPMLLog[10] = [v15 longLongValue];
   }
 
-  v18 = [v11 objectForKey:@"commitCountMax"];
+  v18 = [dictCopy objectForKey:@"commitCountMax"];
   v19 = v18;
   if (v18)
   {
-    v20 = [v18 intValue];
+    intValue = [v18 intValue];
   }
 
   else
   {
-    v20 = 100;
+    intValue = 100;
   }
 
-  self->commitCountMax = v20;
-  v21 = [v11 objectForKey:@"minTimeToLogIndex"];
+  self->commitCountMax = intValue;
+  v21 = [dictCopy objectForKey:@"minTimeToLogIndex"];
   v22 = v21;
   if (v21)
   {
@@ -137,29 +137,29 @@ LABEL_6:
   dbTableName = self->dbTableName;
   self->dbTableName = v26;
 
-  v28 = [[CPMLSchema alloc] initWithPlist:v11];
+  v28 = [[CPMLSchema alloc] initWithPlist:dictCopy];
   cpSchema = self->cpSchema;
   self->cpSchema = v28;
 
-  if (sqlite3_open([v36 UTF8String], &self->db))
+  if (sqlite3_open([commonCopy UTF8String], &self->db))
   {
-    NSLog(&cfstr_CannotOpen.isa, v36);
+    NSLog(&cfstr_CannotOpen.isa, commonCopy);
     sqlite3_close(self->db);
   }
 
   else
   {
-    v30 = [MEMORY[0x277CCAA00] defaultManager];
-    *a5 = [v30 fileExistsAtPath:v36];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    *exists = [defaultManager fileExistsAtPath:commonCopy];
 
-    if (!*a5)
+    if (!*exists)
     {
       [(CPMLDB *)self createTable:@"version" withSchema:@"version TEXT" withExistingTable:0];
       [(CPMLDB *)self insertIntoTable:@"version" withTuple:@"(version) values(1.0.0);"];
     }
 
     [(CPMLDB *)self initMaxSizeStatistics:[(CPMLSchema *)self->cpSchema getTotalAttributes]];
-    if ((a6 & 0xFFFFFFFD) == 1)
+    if ((options & 0xFFFFFFFD) == 1)
     {
       if (![(CPMLDB *)self loadStatisticTable])
       {
@@ -168,21 +168,21 @@ LABEL_6:
 
       [(CPMLDB *)self createTable:@"DATEINDEX" withSchema:@"pkeyIndex INTEGER withExistingTable:date REAL", 1];
       v31 = self->dbTableName;
-      v32 = [(CPMLSchema *)self->cpSchema schemaHeaderWithType];
-      [(CPMLDB *)self createTable:v31 withSchema:v32 withExistingTable:1];
+      schemaHeaderWithType = [(CPMLSchema *)self->cpSchema schemaHeaderWithType];
+      [(CPMLDB *)self createTable:v31 withSchema:schemaHeaderWithType withExistingTable:1];
     }
 
     else
     {
       [(CPMLDB *)self createTable:@"DATEINDEX" withSchema:@"pkeyIndex INTEGER withExistingTable:date REAL", 0];
       v33 = self->dbTableName;
-      v32 = [(CPMLSchema *)self->cpSchema schemaHeaderWithType];
-      [(CPMLDB *)self createTable:v33 withSchema:v32 withExistingTable:0];
+      schemaHeaderWithType = [(CPMLSchema *)self->cpSchema schemaHeaderWithType];
+      [(CPMLDB *)self createTable:v33 withSchema:schemaHeaderWithType withExistingTable:0];
     }
 
     v34 = self->dbTableName;
-    v35 = [(CPMLSchema *)self->cpSchema indexColumnList];
-    [(CPMLDB *)self indexTable:v34 withColumn:v35];
+    indexColumnList = [(CPMLSchema *)self->cpSchema indexColumnList];
+    [(CPMLDB *)self indexTable:v34 withColumn:indexColumnList];
 
     [(CPMLDB *)self loadTables];
   }
@@ -329,12 +329,12 @@ void __17__CPMLDB_flushDB__block_invoke(uint64_t a1)
 - (id)prepInsertStatementForMainTable
 {
   v3 = objc_msgSend(objc_alloc(MEMORY[0x277CCAB68]), "initWithFormat:", @"INSERT INTO MAIN_TABLE VALUES(");
-  v4 = [(CPMLSchema *)self->cpSchema getTotalAttributes];
-  v5 = v4;
-  if (v4 >= 1)
+  getTotalAttributes = [(CPMLSchema *)self->cpSchema getTotalAttributes];
+  v5 = getTotalAttributes;
+  if (getTotalAttributes >= 1)
   {
     v6 = 1;
-    v7 = v4;
+    v7 = getTotalAttributes;
     do
     {
       if (v5 <= v6)
@@ -360,30 +360,30 @@ void __17__CPMLDB_flushDB__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (BOOL)logCTypesV:(void *)a3
+- (BOOL)logCTypesV:(void *)v
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v15 = &v16;
   v6 = 0;
-  if (a3)
+  if (v)
   {
-    v7 = a3;
+    vCopy = v;
     do
     {
-      if (a3 >= 2)
+      if (v >= 2)
       {
         v8 = [(CPMLSchema *)self->cpSchema getColumnName:v6];
         v9 = [(CPMLSchema *)self->cpSchema getSchemaType:v6];
         switch(v9)
         {
           case 3:
-            v10 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:*v7];
+            v10 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:*vCopy];
             break;
           case 4:
-            v10 = [objc_alloc(MEMORY[0x277CCABB0]) initWithDouble:*v7];
+            v10 = [objc_alloc(MEMORY[0x277CCABB0]) initWithDouble:*vCopy];
             break;
           case 5:
-            v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCString:v7 encoding:4];
+            v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCString:vCopy encoding:4];
             break;
           default:
             NSLog(&cfstr_SNoSupport.isa, "[CPMLDB logCTypesV:]");
@@ -399,7 +399,7 @@ LABEL_15:
       }
 
       v12 = v15++;
-      v7 = *v12;
+      vCopy = *v12;
     }
 
     while (*v12);
@@ -417,12 +417,12 @@ LABEL_16:
   return v13;
 }
 
-- (BOOL)logNSObjectV:(id)a3
+- (BOOL)logNSObjectV:(id)v
 {
-  v4 = a3;
+  vCopy = v;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v15 = &v16;
-  v6 = v4;
+  v6 = vCopy;
   v7 = v6;
   v8 = 0;
   if (v6)
@@ -463,16 +463,16 @@ LABEL_10:
   return v13;
 }
 
-- (BOOL)logNSArray:(id)a3
+- (BOOL)logNSArray:(id)array
 {
-  v4 = a3;
-  v5 = [v4 count];
+  arrayCopy = array;
+  v5 = [arrayCopy count];
   if (v5 <= [(CPMLSchema *)self->cpSchema getTotalAttributes])
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
     for (i = 0; ; ++i)
     {
-      v9 = [v4 count];
+      v9 = [arrayCopy count];
       cpSchema = self->cpSchema;
       if (i >= v9)
       {
@@ -480,12 +480,12 @@ LABEL_10:
       }
 
       v11 = [(CPMLSchema *)cpSchema getColumnName:i];
-      v12 = [v4 objectAtIndex:i];
+      v12 = [arrayCopy objectAtIndex:i];
       [v7 setObject:v12 forKey:v11];
     }
 
-    v13 = [(CPMLSchema *)cpSchema getTotalAttributes];
-    if (v13 == [v4 count])
+    getTotalAttributes = [(CPMLSchema *)cpSchema getTotalAttributes];
+    if (getTotalAttributes == [arrayCopy count])
     {
       v6 = [(CPMLDB *)self logNSDictionary:v7];
     }
@@ -506,15 +506,15 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)logBatchNSArray:(id)a3
+- (BOOL)logBatchNSArray:(id)array
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  arrayCopy = array;
+  v5 = [arrayCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -524,7 +524,7 @@ LABEL_10:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(arrayCopy);
         }
 
         if (![(CPMLDB *)self logNSArray:*(*(&v11 + 1) + 8 * i)])
@@ -535,7 +535,7 @@ LABEL_10:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [arrayCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -552,9 +552,9 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)logNSDictionary:(id)a3
+- (BOOL)logNSDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -564,8 +564,8 @@ LABEL_11:
   v14 = 3221225472;
   v15 = __26__CPMLDB_logNSDictionary___block_invoke;
   v16 = &unk_278E9EE88;
-  v17 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = dictionaryCopy;
   v18 = v6;
   v19 = &v20;
   dispatch_sync(dispatch_queue, &block);
@@ -577,8 +577,8 @@ LABEL_11:
   {
     self->currentTimeInterval = v7;
     v9 = objc_alloc(MEMORY[0x277CCACA8]);
-    v10 = [v9 initWithFormat:@"(%@) VALUES(%d, %f);", @"pKeyIndex, date", self->rowCount, *&v8, block, v14, v15, v16, v17];
-    [(CPMLDB *)self insertIntoTable:@"DATEINDEX" withTuple:v10];
+    selfCopy = [v9 initWithFormat:@"(%@) VALUES(%d, %f);", @"pKeyIndex, date", self->rowCount, *&v8, block, v14, v15, v16, selfCopy];
+    [(CPMLDB *)self insertIntoTable:@"DATEINDEX" withTuple:selfCopy];
   }
 
   v11 = *(v21 + 24);
@@ -808,15 +808,15 @@ void __26__CPMLDB_logNSDictionary___block_invoke_2(uint64_t a1, void *a2, void *
   }
 }
 
-- (BOOL)logBatchNSDictionary:(id)a3
+- (BOOL)logBatchNSDictionary:(id)dictionary
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -826,7 +826,7 @@ void __26__CPMLDB_logNSDictionary___block_invoke_2(uint64_t a1, void *a2, void *
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dictionaryCopy);
         }
 
         if (![(CPMLDB *)self logNSDictionary:*(*(&v11 + 1) + 8 * i)])
@@ -837,7 +837,7 @@ void __26__CPMLDB_logNSDictionary___block_invoke_2(uint64_t a1, void *a2, void *
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [dictionaryCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -854,11 +854,11 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)logNSDataFloat:(id)a3
+- (BOOL)logNSDataFloat:(id)float
 {
-  v4 = a3;
-  v5 = [(CPMLSchema *)self->cpSchema getTotalAttributes];
-  if (v5 == [v4 length] >> 2 && objc_msgSend(v4, "length"))
+  floatCopy = float;
+  getTotalAttributes = [(CPMLSchema *)self->cpSchema getTotalAttributes];
+  if (getTotalAttributes == [floatCopy length] >> 2 && objc_msgSend(floatCopy, "length"))
   {
     v6 = objc_opt_new();
     v10[0] = MEMORY[0x277D85DD0];
@@ -867,13 +867,13 @@ LABEL_11:
     v10[3] = &unk_278E9EF28;
     v7 = v6;
     v11 = v7;
-    [v4 enumerateByteRangesUsingBlock:v10];
+    [floatCopy enumerateByteRangesUsingBlock:v10];
     v8 = [(CPMLDB *)self logNSArray:v7];
   }
 
   else
   {
-    NSLog(&cfstr_SNumberOfAttri.isa, "-[CPMLDB logNSDataFloat:]", -[CPMLSchema getTotalAttributes](self->cpSchema, "getTotalAttributes"), [v4 length] >> 2);
+    NSLog(&cfstr_SNumberOfAttri.isa, "-[CPMLDB logNSDataFloat:]", -[CPMLSchema getTotalAttributes](self->cpSchema, "getTotalAttributes"), [floatCopy length] >> 2);
     v8 = 0;
   }
 
@@ -891,11 +891,11 @@ void __25__CPMLDB_logNSDataFloat___block_invoke(uint64_t a1, _DWORD *a2, double 
   }
 }
 
-- (BOOL)logNSDataDouble:(id)a3
+- (BOOL)logNSDataDouble:(id)double
 {
-  v4 = a3;
-  v5 = [(CPMLSchema *)self->cpSchema getTotalAttributes];
-  if (v5 == [v4 length] >> 3 && objc_msgSend(v4, "length"))
+  doubleCopy = double;
+  getTotalAttributes = [(CPMLSchema *)self->cpSchema getTotalAttributes];
+  if (getTotalAttributes == [doubleCopy length] >> 3 && objc_msgSend(doubleCopy, "length"))
   {
     v6 = objc_opt_new();
     v10[0] = MEMORY[0x277D85DD0];
@@ -904,13 +904,13 @@ void __25__CPMLDB_logNSDataFloat___block_invoke(uint64_t a1, _DWORD *a2, double 
     v10[3] = &unk_278E9EF28;
     v7 = v6;
     v11 = v7;
-    [v4 enumerateByteRangesUsingBlock:v10];
+    [doubleCopy enumerateByteRangesUsingBlock:v10];
     v8 = [(CPMLDB *)self logNSArray:v7];
   }
 
   else
   {
-    NSLog(&cfstr_SNumberOfAttri.isa, "-[CPMLDB logNSDataDouble:]", -[CPMLSchema getTotalAttributes](self->cpSchema, "getTotalAttributes"), [v4 length] >> 3);
+    NSLog(&cfstr_SNumberOfAttri.isa, "-[CPMLDB logNSDataDouble:]", -[CPMLSchema getTotalAttributes](self->cpSchema, "getTotalAttributes"), [doubleCopy length] >> 3);
     v8 = 0;
   }
 
@@ -927,17 +927,17 @@ void __26__CPMLDB_logNSDataDouble___block_invoke(uint64_t a1, double *a2, uint64
   }
 }
 
-- (void)execSQLCommand:(id)a3
+- (void)execSQLCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   dispatch_queue = self->_dispatch_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __25__CPMLDB_execSQLCommand___block_invoke;
   v7[3] = &unk_278E9EE60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = commandCopy;
+  v6 = commandCopy;
   dispatch_sync(dispatch_queue, v7);
 }
 
@@ -953,81 +953,81 @@ void __25__CPMLDB_execSQLCommand___block_invoke(uint64_t a1)
   }
 }
 
-- (void)createTable:(id)a3 withSchema:(id)a4 withExistingTable:(BOOL)a5
+- (void)createTable:(id)table withSchema:(id)schema withExistingTable:(BOOL)existingTable
 {
-  v5 = a5;
-  v11 = a3;
-  v8 = a4;
-  if (v5)
+  existingTableCopy = existingTable;
+  tableCopy = table;
+  schemaCopy = schema;
+  if (existingTableCopy)
   {
-    v9 = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@, pKey INTEGER PRIMARY KEY);", v11, v8];
+    schemaCopy = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@, pKey INTEGER PRIMARY KEY);", tableCopy, schemaCopy];
   }
 
   else
   {
-    v9 = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"DROP TABLE IF EXISTS %@; CREATE TABLE %@ (%@, pKey INTEGER PRIMARY KEY);", v11, v11, v8];
+    schemaCopy = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"DROP TABLE IF EXISTS %@; CREATE TABLE %@ (%@, pKey INTEGER PRIMARY KEY);", tableCopy, tableCopy, schemaCopy];
   }
 
-  v10 = v9;
-  [(CPMLDB *)self execSQLCommand:v9];
+  v10 = schemaCopy;
+  [(CPMLDB *)self execSQLCommand:schemaCopy];
 }
 
-- (void)addColumnToTable:(id)a3 withNewColumn:(id)a4
+- (void)addColumnToTable:(id)table withNewColumn:(id)column
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"ALTER TABLE %@ ADD COLUMN %@", v8, v6];
-  [(CPMLDB *)self execSQLCommand:v7];
+  tableCopy = table;
+  columnCopy = column;
+  columnCopy = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"ALTER TABLE %@ ADD COLUMN %@", tableCopy, columnCopy];
+  [(CPMLDB *)self execSQLCommand:columnCopy];
 }
 
-- (void)insertIntoTable:(id)a3 withTuple:(id)a4
+- (void)insertIntoTable:(id)table withTuple:(id)tuple
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"INSERT INTO %@ %@ ;", v8, v6];
-  [(CPMLDB *)self execSQLCommand:v7];
+  tableCopy = table;
+  tupleCopy = tuple;
+  tupleCopy = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"INSERT INTO %@ %@ ;", tableCopy, tupleCopy];
+  [(CPMLDB *)self execSQLCommand:tupleCopy];
 }
 
-- (void)queryDatabase:(id)a3 whereMatch:(id)a4
+- (void)queryDatabase:(id)database whereMatch:(id)match
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"SELECT * from %@ WHERE %@", v8, v6];
-  [(CPMLDB *)self execSQLCommand:v7];
+  databaseCopy = database;
+  matchCopy = match;
+  matchCopy = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"SELECT * from %@ WHERE %@", databaseCopy, matchCopy];
+  [(CPMLDB *)self execSQLCommand:matchCopy];
 }
 
-- (void)updateTable:(id)a3 withAttribute:(id)a4 whereMatch:(id)a5
+- (void)updateTable:(id)table withAttribute:(id)attribute whereMatch:(id)match
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"UPDATE %@ set %@ %@", v11, v8, v9];
-  [(CPMLDB *)self execSQLCommand:v10];
+  tableCopy = table;
+  attributeCopy = attribute;
+  matchCopy = match;
+  matchCopy = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"UPDATE %@ set %@ %@", tableCopy, attributeCopy, matchCopy];
+  [(CPMLDB *)self execSQLCommand:matchCopy];
 }
 
-- (void)deleteRow:(id)a3 whereMatch:(id)a4
+- (void)deleteRow:(id)row whereMatch:(id)match
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"DELETE from %@ where %@", v8, v6];
-  [(CPMLDB *)self execSQLCommand:v7];
+  rowCopy = row;
+  matchCopy = match;
+  matchCopy = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"DELETE from %@ where %@", rowCopy, matchCopy];
+  [(CPMLDB *)self execSQLCommand:matchCopy];
 }
 
-- (void)deleteAllRows:(id)a3
+- (void)deleteAllRows:(id)rows
 {
-  v5 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"DELETE from %@", v5];
-  [(CPMLDB *)self execSQLCommand:v4];
+  rowsCopy = rows;
+  rowsCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"DELETE from %@", rowsCopy];
+  [(CPMLDB *)self execSQLCommand:rowsCopy];
 }
 
-- (void)dropCommands:(id)a3
+- (void)dropCommands:(id)commands
 {
-  v5 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@" DROP TABLE IF EXISTS %@ ;", v5];
-  [(CPMLDB *)self execSQLCommand:v4];
+  commandsCopy = commands;
+  commandsCopy = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@" DROP TABLE IF EXISTS %@ ;", commandsCopy];
+  [(CPMLDB *)self execSQLCommand:commandsCopy];
 }
 
-- (unint64_t)getCardinality:(unsigned int)a3
+- (unint64_t)getCardinality:(unsigned int)cardinality
 {
   v8 = 0;
   v9 = &v8;
@@ -1040,7 +1040,7 @@ void __25__CPMLDB_execSQLCommand___block_invoke(uint64_t a1)
   block[3] = &unk_278E9EF50;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  cardinalityCopy = cardinality;
   dispatch_sync(dispatch_queue, block);
   v4 = v9[3];
   _Block_object_dispose(&v8, 8);
@@ -1147,13 +1147,13 @@ uint64_t __21__CPMLDB_getRowCount__block_invoke(uint64_t a1)
   return sqlite3_finalize(ppStmt);
 }
 
-- (double)columnQueryFor:(unsigned int)a3 withQuery:(id)a4
+- (double)columnQueryFor:(unsigned int)for withQuery:(id)query
 {
-  v6 = a4;
-  v7 = [(CPMLSchema *)self->cpSchema attribute];
-  v8 = [v7 count];
+  queryCopy = query;
+  attribute = [(CPMLSchema *)self->cpSchema attribute];
+  v8 = [attribute count];
 
-  if (v8 >= a3)
+  if (v8 >= for)
   {
     v15 = 0;
     v16 = &v15;
@@ -1165,7 +1165,7 @@ uint64_t __21__CPMLDB_getRowCount__block_invoke(uint64_t a1)
     block[2] = __35__CPMLDB_columnQueryFor_withQuery___block_invoke;
     block[3] = &unk_278E9EE88;
     block[4] = self;
-    v13 = v6;
+    v13 = queryCopy;
     v14 = &v15;
     dispatch_sync(dispatch_queue, block);
     v9 = v16[3];
@@ -1207,45 +1207,45 @@ uint64_t __35__CPMLDB_columnQueryFor_withQuery___block_invoke(uint64_t a1)
   return sqlite3_finalize(ppStmt);
 }
 
-- (void)updateStatisticsReal:(double)a3 colPosition:(unint64_t)a4
+- (void)updateStatisticsReal:(double)real colPosition:(unint64_t)position
 {
   mean = self->mean;
   sumOfX = self->sumOfX;
-  sumOfX[a4] = sumOfX[a4] + a3;
+  sumOfX[position] = sumOfX[position] + real;
   sumOfXX = self->sumOfXX;
-  v9 = sumOfXX[a4];
-  sumOfXX[a4] = v9 + a3 * a3;
+  v9 = sumOfXX[position];
+  sumOfXX[position] = v9 + real * real;
   LODWORD(v9) = self->rowCount;
   v10 = *&v9 + 1.0;
-  v11 = sumOfX[a4] / v10;
-  mean[a4] = v11;
-  v12 = sumOfXX[a4] / v10 - v11 * v11;
+  v11 = sumOfX[position] / v10;
+  mean[position] = v11;
+  v12 = sumOfXX[position] / v10 - v11 * v11;
   if (v12 < 0.0)
   {
     NSLog(&cfstr_SVeSigma2.isa, a2, "[CPMLDB updateStatisticsReal:colPosition:]");
     v12 = 1.0;
   }
 
-  self->sigma[a4] = sqrt(v12);
+  self->sigma[position] = sqrt(v12);
 }
 
-- (double)updateStatisticsString:(id)a3 colPosition:(unint64_t)a4
+- (double)updateStatisticsString:(id)string colPosition:(unint64_t)position
 {
-  v6 = a3;
-  if (v6)
+  stringCopy = string;
+  if (stringCopy)
   {
     v7 = objc_alloc_init(MEMORY[0x277CCABB8]);
     [v7 setNumberStyle:1];
-    v8 = [v7 numberFromString:v6];
+    v8 = [v7 numberFromString:stringCopy];
   }
 
   else
   {
-    v8 = [objc_alloc(MEMORY[0x277CCABB0]) initWithDouble:self->mean[a4]];
+    v8 = [objc_alloc(MEMORY[0x277CCABB0]) initWithDouble:self->mean[position]];
   }
 
   [v8 doubleValue];
-  [(CPMLDB *)self updateStatisticsReal:a4 colPosition:?];
+  [(CPMLDB *)self updateStatisticsReal:position colPosition:?];
   [v8 doubleValue];
   v10 = v9;
 
@@ -1369,37 +1369,37 @@ void __28__CPMLDB_loadStatisticTable__block_invoke(uint64_t a1)
   }
 }
 
-- (void)indexTable:(id)a3 withColumn:(id)a4
+- (void)indexTable:(id)table withColumn:(id)column
 {
-  v14 = a3;
-  v6 = a4;
-  for (i = 0; i < [v6 count]; ++i)
+  tableCopy = table;
+  columnCopy = column;
+  for (i = 0; i < [columnCopy count]; ++i)
   {
     v8 = objc_alloc(MEMORY[0x277CCACA8]);
-    v9 = [v6 objectAtIndex:i];
+    v9 = [columnCopy objectAtIndex:i];
     v10 = [v8 initWithFormat:@"%@ID%d", v9, i];
 
     v11 = objc_alloc(MEMORY[0x277CCAB68]);
-    v12 = [v6 objectAtIndex:i];
-    v13 = [v11 initWithFormat:@"CREATE INDEX IF NOT EXISTS %@ ON %@ (%@);", v10, v14, v12];
+    v12 = [columnCopy objectAtIndex:i];
+    v13 = [v11 initWithFormat:@"CREATE INDEX IF NOT EXISTS %@ ON %@ (%@);", v10, tableCopy, v12];
 
     [(CPMLDB *)self execSQLCommand:v13];
   }
 }
 
-- (void)printFormat:(id)a3
+- (void)printFormat:(id)format
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAB68] string];
+  formatCopy = format;
+  string = [MEMORY[0x277CCAB68] string];
   v10 = &v11;
-  v5 = v3;
+  v5 = formatCopy;
   v6 = v5;
   if (v5)
   {
     v7 = v5;
     do
     {
-      [v4 appendString:v7];
+      [string appendString:v7];
       NSLog(&stru_285928F78.isa, v7);
       v8 = v10++;
       v9 = *v8;
@@ -1410,13 +1410,13 @@ void __28__CPMLDB_loadStatisticTable__block_invoke(uint64_t a1)
     while (v9);
   }
 
-  NSLog(&stru_285928F98.isa, v4);
+  NSLog(&stru_285928F98.isa, string);
 }
 
-- (id)addValues:(int)a3
+- (id)addValues:(int)values
 {
   v11 = &v13;
-  if (a3 < 1)
+  if (values < 1)
   {
     v4 = 0;
     v5 = 0.0;
@@ -1424,7 +1424,7 @@ void __28__CPMLDB_loadStatisticTable__block_invoke(uint64_t a1)
 
   else
   {
-    v3 = a3;
+    valuesCopy = values;
     v4 = 0;
     v5 = 0.0;
     do
@@ -1435,10 +1435,10 @@ void __28__CPMLDB_loadStatisticTable__block_invoke(uint64_t a1)
 
       [v4 doubleValue];
       v5 = v5 + v8;
-      --v3;
+      --valuesCopy;
     }
 
-    while (v3);
+    while (valuesCopy);
   }
 
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:v5];
@@ -1446,10 +1446,10 @@ void __28__CPMLDB_loadStatisticTable__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (id)fileProtectionClassRequest:(id)a3
+- (id)fileProtectionClassRequest:(id)request
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NSFileProtectionCompleteUntilFirstUserAuthentication"])
+  requestCopy = request;
+  if ([requestCopy isEqualToString:@"NSFileProtectionCompleteUntilFirstUserAuthentication"])
   {
     v4 = MEMORY[0x277CCA1A0];
 LABEL_9:
@@ -1457,19 +1457,19 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:@"NSFileProtectionCompleteUnlessOpen"])
+  if ([requestCopy isEqualToString:@"NSFileProtectionCompleteUnlessOpen"])
   {
     v4 = MEMORY[0x277CCA198];
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"NSFileProtectionComplete"])
+  if ([requestCopy isEqualToString:@"NSFileProtectionComplete"])
   {
     v4 = MEMORY[0x277CCA190];
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"NSFileProtectionNone"])
+  if ([requestCopy isEqualToString:@"NSFileProtectionNone"])
   {
     v4 = MEMORY[0x277CCA1B8];
     goto LABEL_9;
@@ -1481,16 +1481,16 @@ LABEL_10:
   return v5;
 }
 
-- (id)extractRow:(id)a3
+- (id)extractRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__0;
   v17 = __Block_byref_object_dispose__0;
   v18 = objc_opt_new();
-  if (!v4)
+  if (!rowCopy)
   {
     if (![(CPMLDB *)self getRowCount])
     {
@@ -1503,8 +1503,8 @@ LABEL_5:
     block[1] = 3221225472;
     block[2] = __21__CPMLDB_extractRow___block_invoke;
     block[3] = &unk_278E9EE88;
-    v10 = v4;
-    v11 = self;
+    v10 = rowCopy;
+    selfCopy = self;
     v12 = &v13;
     dispatch_sync(dispatch_queue, block);
     v7 = v14[5];
@@ -1512,13 +1512,13 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v5 = [v4 intValue];
-  if ([(CPMLDB *)self getRowCount]>= v5)
+  intValue = [rowCopy intValue];
+  if ([(CPMLDB *)self getRowCount]>= intValue)
   {
     goto LABEL_5;
   }
 
-  NSLog(&cfstr_SRowidDGreater.isa, "-[CPMLDB extractRow:]", [v4 intValue]);
+  NSLog(&cfstr_SRowidDGreater.isa, "-[CPMLDB extractRow:]", [rowCopy intValue]);
 LABEL_6:
   v7 = v14[5];
 LABEL_7:
@@ -1651,23 +1651,23 @@ LABEL_28:
   return result;
 }
 
-- (void)removeTrainingRow:(id)a3
+- (void)removeTrainingRow:(id)row
 {
-  v4 = a3;
-  if (v4)
+  rowCopy = row;
+  if (rowCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 intValue];
-      if (v5)
+      intValue = [rowCopy intValue];
+      if (intValue)
       {
         dispatch_queue = self->_dispatch_queue;
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __28__CPMLDB_removeTrainingRow___block_invoke;
         block[3] = &unk_278E9EF78;
-        v8 = v5;
+        v8 = intValue;
         block[4] = self;
         dispatch_async(dispatch_queue, block);
       }
@@ -1716,14 +1716,14 @@ LABEL_8:
   return result;
 }
 
-- (void)removeTrainingRowData:(double)a3
+- (void)removeTrainingRowData:(double)data
 {
   dispatch_queue = self->_dispatch_queue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __32__CPMLDB_removeTrainingRowData___block_invoke;
   v4[3] = &unk_278E9EFA0;
-  *&v4[5] = a3;
+  *&v4[5] = data;
   v4[4] = self;
   dispatch_sync(dispatch_queue, v4);
 }

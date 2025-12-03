@@ -1,28 +1,28 @@
 @interface MTRPluginPBMDeviceNodeInvokeCommmandMessage
-+ (id)deviceNodeInvokeCommandMessageFromMessage:(id)a3;
-+ (id)deviceNodeInvokeCommandMessageWithNodeID:(id)a3 invokeCommandWithEndpointID:(id)a4 clusterID:(id)a5 commandID:(id)a6 commandFields:(id)a7 expectedValues:(id)a8 expectedValueInterval:(id)a9 timedInvokeTimeout:(id)a10 serverSideProcessingTimeout:(id)a11;
-- (BOOL)isEqual:(id)a3;
++ (id)deviceNodeInvokeCommandMessageFromMessage:(id)message;
++ (id)deviceNodeInvokeCommandMessageWithNodeID:(id)d invokeCommandWithEndpointID:(id)iD clusterID:(id)clusterID commandID:(id)commandID commandFields:(id)fields expectedValues:(id)values expectedValueInterval:(id)interval timedInvokeTimeout:(id)self0 serverSideProcessingTimeout:(id)self1;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasServerSideProcessingTimeout:(BOOL)a3;
-- (void)setHasTimedInvokeTimeout:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasServerSideProcessingTimeout:(BOOL)timeout;
+- (void)setHasTimedInvokeTimeout:(BOOL)timeout;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MTRPluginPBMDeviceNodeInvokeCommmandMessage
 
-+ (id)deviceNodeInvokeCommandMessageFromMessage:(id)a3
++ (id)deviceNodeInvokeCommandMessageFromMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [MTRPluginPBMDeviceNodeInvokeCommmandMessage alloc];
-  v5 = [v3 messageData];
+  messageData = [messageCopy messageData];
 
-  v6 = [(MTRPluginPBMDeviceNodeInvokeCommmandMessage *)v4 initWithData:v5];
+  v6 = [(MTRPluginPBMDeviceNodeInvokeCommmandMessage *)v4 initWithData:messageData];
   if ([(MTRPluginPBMDeviceNodeInvokeCommmandMessage *)v6 isValid])
   {
     v7 = v6;
@@ -36,49 +36,49 @@
   return v7;
 }
 
-+ (id)deviceNodeInvokeCommandMessageWithNodeID:(id)a3 invokeCommandWithEndpointID:(id)a4 clusterID:(id)a5 commandID:(id)a6 commandFields:(id)a7 expectedValues:(id)a8 expectedValueInterval:(id)a9 timedInvokeTimeout:(id)a10 serverSideProcessingTimeout:(id)a11
++ (id)deviceNodeInvokeCommandMessageWithNodeID:(id)d invokeCommandWithEndpointID:(id)iD clusterID:(id)clusterID commandID:(id)commandID commandFields:(id)fields expectedValues:(id)values expectedValueInterval:(id)interval timedInvokeTimeout:(id)self0 serverSideProcessingTimeout:(id)self1
 {
-  v16 = a7;
-  v30 = a8;
-  v17 = a9;
-  v18 = a10;
-  v19 = a11;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
+  fieldsCopy = fields;
+  valuesCopy = values;
+  intervalCopy = interval;
+  timeoutCopy = timeout;
+  processingTimeoutCopy = processingTimeout;
+  commandIDCopy = commandID;
+  clusterIDCopy = clusterID;
+  iDCopy = iD;
+  dCopy = d;
   v24 = objc_alloc_init(MTRPluginPBMDeviceNodeInvokeCommmandMessage);
-  v25 = [MTRPluginPBMDeviceNode deviceNodeWithNodeID:v23];
+  v25 = [MTRPluginPBMDeviceNode deviceNodeWithNodeID:dCopy];
 
   [(MTRPluginPBMDeviceNodeInvokeCommmandMessage *)v24 setNode:v25];
-  v26 = [MTRPluginPBMCommandPath commandPathWithEndpointID:v22 clusterID:v21 commandID:v20];
+  v26 = [MTRPluginPBMCommandPath commandPathWithEndpointID:iDCopy clusterID:clusterIDCopy commandID:commandIDCopy];
 
   [(MTRPluginPBMDeviceNodeInvokeCommmandMessage *)v24 setCommandPath:v26];
-  if (v16)
+  if (fieldsCopy)
   {
-    v27 = [[MTRPluginPBMVariableValue alloc] initWithObjectValue:v16];
+    v27 = [[MTRPluginPBMVariableValue alloc] initWithObjectValue:fieldsCopy];
     [(MTRPluginPBMDeviceNodeInvokeCommmandMessage *)v24 setCommandFields:v27];
   }
 
-  if (v30)
+  if (valuesCopy)
   {
-    v28 = [[MTRPluginPBMVariableValueList alloc] initWithArray:v30];
+    v28 = [[MTRPluginPBMVariableValueList alloc] initWithArray:valuesCopy];
     [(MTRPluginPBMDeviceNodeInvokeCommmandMessage *)v24 setExpectedValues:v28];
   }
 
-  if (v17)
+  if (intervalCopy)
   {
-    -[MTRPluginPBMDeviceNodeInvokeCommmandMessage setExpectedValueInterval:](v24, "setExpectedValueInterval:", [v17 unsignedLongLongValue]);
+    -[MTRPluginPBMDeviceNodeInvokeCommmandMessage setExpectedValueInterval:](v24, "setExpectedValueInterval:", [intervalCopy unsignedLongLongValue]);
   }
 
-  if (v18)
+  if (timeoutCopy)
   {
-    -[MTRPluginPBMDeviceNodeInvokeCommmandMessage setTimedInvokeTimeout:](v24, "setTimedInvokeTimeout:", [v18 unsignedLongLongValue]);
+    -[MTRPluginPBMDeviceNodeInvokeCommmandMessage setTimedInvokeTimeout:](v24, "setTimedInvokeTimeout:", [timeoutCopy unsignedLongLongValue]);
   }
 
-  if (v19)
+  if (processingTimeoutCopy)
   {
-    -[MTRPluginPBMDeviceNodeInvokeCommmandMessage setServerSideProcessingTimeout:](v24, "setServerSideProcessingTimeout:", [v19 unsignedLongLongValue]);
+    -[MTRPluginPBMDeviceNodeInvokeCommmandMessage setServerSideProcessingTimeout:](v24, "setServerSideProcessingTimeout:", [processingTimeoutCopy unsignedLongLongValue]);
   }
 
   return v24;
@@ -91,42 +91,42 @@
     return 0;
   }
 
-  v3 = [(MTRPluginPBMDeviceNodeInvokeCommmandMessage *)self header];
-  if ([v3 isValid] && -[MTRPluginPBMDeviceNodeInvokeCommmandMessage hasNode](self, "hasNode"))
+  header = [(MTRPluginPBMDeviceNodeInvokeCommmandMessage *)self header];
+  if ([header isValid] && -[MTRPluginPBMDeviceNodeInvokeCommmandMessage hasNode](self, "hasNode"))
   {
-    v4 = [(MTRPluginPBMDeviceNodeInvokeCommmandMessage *)self node];
-    if ([v4 isValid])
+    node = [(MTRPluginPBMDeviceNodeInvokeCommmandMessage *)self node];
+    if ([node isValid])
     {
-      v5 = [(MTRPluginPBMDeviceNodeInvokeCommmandMessage *)self commandPath];
-      if (v5)
+      commandPath = [(MTRPluginPBMDeviceNodeInvokeCommmandMessage *)self commandPath];
+      if (commandPath)
       {
-        v6 = [(MTRPluginPBMDeviceNodeInvokeCommmandMessage *)self commandPath];
-        v7 = [v6 isValid];
+        commandPath2 = [(MTRPluginPBMDeviceNodeInvokeCommmandMessage *)self commandPath];
+        isValid = [commandPath2 isValid];
       }
 
       else
       {
-        v7 = 0;
+        isValid = 0;
       }
     }
 
     else
     {
-      v7 = 0;
+      isValid = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    isValid = 0;
   }
 
-  return v7;
+  return isValid;
 }
 
-- (void)setHasTimedInvokeTimeout:(BOOL)a3
+- (void)setHasTimedInvokeTimeout:(BOOL)timeout
 {
-  if (a3)
+  if (timeout)
   {
     v3 = 4;
   }
@@ -139,9 +139,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasServerSideProcessingTimeout:(BOOL)a3
+- (void)setHasServerSideProcessingTimeout:(BOOL)timeout
 {
-  if (a3)
+  if (timeout)
   {
     v3 = 2;
   }
@@ -160,55 +160,55 @@
   v8.receiver = self;
   v8.super_class = MTRPluginPBMDeviceNodeInvokeCommmandMessage;
   v4 = [(MTRPluginPBMDeviceNodeInvokeCommmandMessage *)&v8 description];
-  v5 = [(MTRPluginPBMDeviceNodeInvokeCommmandMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MTRPluginPBMDeviceNodeInvokeCommmandMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   header = self->_header;
   if (header)
   {
-    v5 = [(MTRPluginPBMHeader *)header dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"header"];
+    dictionaryRepresentation = [(MTRPluginPBMHeader *)header dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"header"];
   }
 
   node = self->_node;
   if (node)
   {
-    v7 = [(MTRPluginPBMDeviceNode *)node dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"node"];
+    dictionaryRepresentation2 = [(MTRPluginPBMDeviceNode *)node dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"node"];
   }
 
   commandPath = self->_commandPath;
   if (commandPath)
   {
-    v9 = [(MTRPluginPBMCommandPath *)commandPath dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"commandPath"];
+    dictionaryRepresentation3 = [(MTRPluginPBMCommandPath *)commandPath dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"commandPath"];
   }
 
   commandFields = self->_commandFields;
   if (commandFields)
   {
-    v11 = [(MTRPluginPBMVariableValue *)commandFields dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"commandFields"];
+    dictionaryRepresentation4 = [(MTRPluginPBMVariableValue *)commandFields dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"commandFields"];
   }
 
   expectedValues = self->_expectedValues;
   if (expectedValues)
   {
-    v13 = [(MTRPluginPBMVariableValueList *)expectedValues dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"expectedValues"];
+    dictionaryRepresentation5 = [(MTRPluginPBMVariableValueList *)expectedValues dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"expectedValues"];
   }
 
   has = self->_has;
   if (has)
   {
     v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_expectedValueInterval];
-    [v3 setObject:v17 forKey:@"expectedValueInterval"];
+    [dictionary setObject:v17 forKey:@"expectedValueInterval"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -229,52 +229,52 @@ LABEL_13:
   }
 
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timedInvokeTimeout];
-  [v3 setObject:v18 forKey:@"timedInvokeTimeout"];
+  [dictionary setObject:v18 forKey:@"timedInvokeTimeout"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_14:
     v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_serverSideProcessingTimeout];
-    [v3 setObject:v15 forKey:@"serverSideProcessingTimeout"];
+    [dictionary setObject:v15 forKey:@"serverSideProcessingTimeout"];
   }
 
 LABEL_15:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_header)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_node)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_commandPath)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_commandFields)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_expectedValues)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -282,7 +282,7 @@ LABEL_15:
   {
     expectedValueInterval = self->_expectedValueInterval;
     PBDataWriterWriteUint64Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -303,57 +303,57 @@ LABEL_13:
 
   timedInvokeTimeout = self->_timedInvokeTimeout;
   PBDataWriterWriteUint64Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_14:
     serverSideProcessingTimeout = self->_serverSideProcessingTimeout;
     PBDataWriterWriteUint64Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_15:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_header)
   {
-    [v4 setHeader:?];
-    v4 = v6;
+    [toCopy setHeader:?];
+    toCopy = v6;
   }
 
   if (self->_node)
   {
     [v6 setNode:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_commandPath)
   {
     [v6 setCommandPath:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_commandFields)
   {
     [v6 setCommandFields:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_expectedValues)
   {
     [v6 setExpectedValues:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = self->_expectedValueInterval;
-    *(v4 + 72) |= 1u;
+    *(toCopy + 1) = self->_expectedValueInterval;
+    *(toCopy + 72) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -372,38 +372,38 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  *(v4 + 3) = self->_timedInvokeTimeout;
-  *(v4 + 72) |= 4u;
+  *(toCopy + 3) = self->_timedInvokeTimeout;
+  *(toCopy + 72) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_14:
-    *(v4 + 2) = self->_serverSideProcessingTimeout;
-    *(v4 + 72) |= 2u;
+    *(toCopy + 2) = self->_serverSideProcessingTimeout;
+    *(toCopy + 72) |= 2u;
   }
 
 LABEL_15:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(MTRPluginPBMHeader *)self->_header copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(MTRPluginPBMHeader *)self->_header copyWithZone:zone];
   v7 = *(v5 + 56);
   *(v5 + 56) = v6;
 
-  v8 = [(MTRPluginPBMDeviceNode *)self->_node copyWithZone:a3];
+  v8 = [(MTRPluginPBMDeviceNode *)self->_node copyWithZone:zone];
   v9 = *(v5 + 64);
   *(v5 + 64) = v8;
 
-  v10 = [(MTRPluginPBMCommandPath *)self->_commandPath copyWithZone:a3];
+  v10 = [(MTRPluginPBMCommandPath *)self->_commandPath copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
-  v12 = [(MTRPluginPBMVariableValue *)self->_commandFields copyWithZone:a3];
+  v12 = [(MTRPluginPBMVariableValue *)self->_commandFields copyWithZone:zone];
   v13 = *(v5 + 32);
   *(v5 + 32) = v12;
 
-  v14 = [(MTRPluginPBMVariableValueList *)self->_expectedValues copyWithZone:a3];
+  v14 = [(MTRPluginPBMVariableValueList *)self->_expectedValues copyWithZone:zone];
   v15 = *(v5 + 48);
   *(v5 + 48) = v14;
 
@@ -445,16 +445,16 @@ LABEL_4:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   header = self->_header;
-  if (header | *(v4 + 7))
+  if (header | *(equalCopy + 7))
   {
     if (![(MTRPluginPBMHeader *)header isEqual:?])
     {
@@ -463,7 +463,7 @@ LABEL_4:
   }
 
   node = self->_node;
-  if (node | *(v4 + 8))
+  if (node | *(equalCopy + 8))
   {
     if (![(MTRPluginPBMDeviceNode *)node isEqual:?])
     {
@@ -472,7 +472,7 @@ LABEL_4:
   }
 
   commandPath = self->_commandPath;
-  if (commandPath | *(v4 + 5))
+  if (commandPath | *(equalCopy + 5))
   {
     if (![(MTRPluginPBMCommandPath *)commandPath isEqual:?])
     {
@@ -481,7 +481,7 @@ LABEL_4:
   }
 
   commandFields = self->_commandFields;
-  if (commandFields | *(v4 + 4))
+  if (commandFields | *(equalCopy + 4))
   {
     if (![(MTRPluginPBMVariableValue *)commandFields isEqual:?])
     {
@@ -490,7 +490,7 @@ LABEL_4:
   }
 
   expectedValues = self->_expectedValues;
-  if (expectedValues | *(v4 + 6))
+  if (expectedValues | *(equalCopy + 6))
   {
     if (![(MTRPluginPBMVariableValueList *)expectedValues isEqual:?])
     {
@@ -500,13 +500,13 @@ LABEL_4:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_expectedValueInterval != *(v4 + 1))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_expectedValueInterval != *(equalCopy + 1))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
 LABEL_26:
     v10 = 0;
@@ -515,21 +515,21 @@ LABEL_26:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 72) & 4) == 0 || self->_timedInvokeTimeout != *(v4 + 3))
+    if ((*(equalCopy + 72) & 4) == 0 || self->_timedInvokeTimeout != *(equalCopy + 3))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 72) & 4) != 0)
+  else if ((*(equalCopy + 72) & 4) != 0)
   {
     goto LABEL_26;
   }
 
-  v10 = (*(v4 + 72) & 2) == 0;
+  v10 = (*(equalCopy + 72) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 72) & 2) == 0 || self->_serverSideProcessingTimeout != *(v4 + 2))
+    if ((*(equalCopy + 72) & 2) == 0 || self->_serverSideProcessingTimeout != *(equalCopy + 2))
     {
       goto LABEL_26;
     }
@@ -587,12 +587,12 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   header = self->_header;
-  v6 = v4[7];
-  v16 = v4;
+  v6 = fromCopy[7];
+  v16 = fromCopy;
   if (header)
   {
     if (!v6)
@@ -613,10 +613,10 @@ LABEL_4:
     [(MTRPluginPBMDeviceNodeInvokeCommmandMessage *)self setHeader:?];
   }
 
-  v4 = v16;
+  fromCopy = v16;
 LABEL_7:
   node = self->_node;
-  v8 = v4[8];
+  v8 = fromCopy[8];
   if (node)
   {
     if (!v8)
@@ -637,10 +637,10 @@ LABEL_7:
     [(MTRPluginPBMDeviceNodeInvokeCommmandMessage *)self setNode:?];
   }
 
-  v4 = v16;
+  fromCopy = v16;
 LABEL_13:
   commandPath = self->_commandPath;
-  v10 = v4[5];
+  v10 = fromCopy[5];
   if (commandPath)
   {
     if (!v10)
@@ -661,10 +661,10 @@ LABEL_13:
     [(MTRPluginPBMDeviceNodeInvokeCommmandMessage *)self setCommandPath:?];
   }
 
-  v4 = v16;
+  fromCopy = v16;
 LABEL_19:
   commandFields = self->_commandFields;
-  v12 = v4[4];
+  v12 = fromCopy[4];
   if (commandFields)
   {
     if (!v12)
@@ -685,10 +685,10 @@ LABEL_19:
     [(MTRPluginPBMDeviceNodeInvokeCommmandMessage *)self setCommandFields:?];
   }
 
-  v4 = v16;
+  fromCopy = v16;
 LABEL_25:
   expectedValues = self->_expectedValues;
-  v14 = v4[6];
+  v14 = fromCopy[6];
   if (expectedValues)
   {
     if (!v14)
@@ -709,14 +709,14 @@ LABEL_25:
     [(MTRPluginPBMDeviceNodeInvokeCommmandMessage *)self setExpectedValues:?];
   }
 
-  v4 = v16;
+  fromCopy = v16;
 LABEL_31:
-  v15 = *(v4 + 72);
+  v15 = *(fromCopy + 72);
   if (v15)
   {
-    self->_expectedValueInterval = v4[1];
+    self->_expectedValueInterval = fromCopy[1];
     *&self->_has |= 1u;
-    v15 = *(v4 + 72);
+    v15 = *(fromCopy + 72);
     if ((v15 & 4) == 0)
     {
 LABEL_33:
@@ -729,17 +729,17 @@ LABEL_33:
     }
   }
 
-  else if ((v4[9] & 4) == 0)
+  else if ((fromCopy[9] & 4) == 0)
   {
     goto LABEL_33;
   }
 
-  self->_timedInvokeTimeout = v4[3];
+  self->_timedInvokeTimeout = fromCopy[3];
   *&self->_has |= 4u;
-  if ((v4[9] & 2) != 0)
+  if ((fromCopy[9] & 2) != 0)
   {
 LABEL_34:
-    self->_serverSideProcessingTimeout = v4[2];
+    self->_serverSideProcessingTimeout = fromCopy[2];
     *&self->_has |= 2u;
   }
 

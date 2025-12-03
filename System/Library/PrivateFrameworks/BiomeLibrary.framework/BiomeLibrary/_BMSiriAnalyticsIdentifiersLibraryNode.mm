@@ -11,7 +11,7 @@
 + (id)storeConfigurationForUserAggregationId;
 + (id)storeConfigurationForUserSamplingId;
 + (id)storeConfigurationForUserSeed;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)syncPolicyForHomeSeed;
 + (id)syncPolicyForUserAggregationId;
 + (id)syncPolicyForUserSamplingId;
@@ -81,7 +81,7 @@
 + (id)UserSeed
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForUserSeed];
+  configurationForUserSeed = [self configurationForUserSeed];
   v3 = +[BMSiriUserSeed columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -93,7 +93,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Siri.AnalyticsIdentifiers.UserSeed" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.AnalyticsIdentifiers.UserSeed" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.AnalyticsIdentifiers.UserSeed" schema:v9 configuration:configurationForUserSeed];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -103,7 +103,7 @@
 + (id)HomeSeed
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForHomeSeed];
+  configurationForHomeSeed = [self configurationForHomeSeed];
   v3 = +[BMSiriHomeSeed columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -115,7 +115,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Siri.AnalyticsIdentifiers.HomeSeed" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.AnalyticsIdentifiers.HomeSeed" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.AnalyticsIdentifiers.HomeSeed" schema:v9 configuration:configurationForHomeSeed];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -124,13 +124,13 @@
 
 + (id)configurationForUserSeed
 {
-  v3 = [a1 storeConfigurationForUserSeed];
-  v4 = [a1 syncPolicyForUserSeed];
+  storeConfigurationForUserSeed = [self storeConfigurationForUserSeed];
+  syncPolicyForUserSeed = [self syncPolicyForUserSeed];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"C77E2ABD-DFCE-4DC4-9A62-D747818A3D9E"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Siri.AnalyticsIdentifiers.UserSeed" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Siri.AnalyticsIdentifiers.UserSeed" eventClass:objc_opt_class() storeConfig:storeConfigurationForUserSeed syncPolicy:syncPolicyForUserSeed legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -143,32 +143,32 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"HomeSeed"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"HomeSeed"])
   {
-    v5 = [a1 HomeSeed];
+    homeSeed = [self HomeSeed];
 LABEL_9:
-    v6 = v5;
+    v6 = homeSeed;
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:@"UserAggregationId"])
+  if ([nameCopy isEqualToString:@"UserAggregationId"])
   {
-    v5 = [a1 UserAggregationId];
+    homeSeed = [self UserAggregationId];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"UserSamplingId"])
+  if ([nameCopy isEqualToString:@"UserSamplingId"])
   {
-    v5 = [a1 UserSamplingId];
+    homeSeed = [self UserSamplingId];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"UserSeed"])
+  if ([nameCopy isEqualToString:@"UserSeed"])
   {
-    v5 = [a1 UserSeed];
+    homeSeed = [self UserSeed];
     goto LABEL_9;
   }
 
@@ -200,13 +200,13 @@ LABEL_10:
 
 + (id)configurationForUserSamplingId
 {
-  v3 = [a1 storeConfigurationForUserSamplingId];
-  v4 = [a1 syncPolicyForUserSamplingId];
+  storeConfigurationForUserSamplingId = [self storeConfigurationForUserSamplingId];
+  syncPolicyForUserSamplingId = [self syncPolicyForUserSamplingId];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"23F3900D-BC06-406F-A65B-536BF3205823"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Siri.AnalyticsIdentifiers.UserSamplingId" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Siri.AnalyticsIdentifiers.UserSamplingId" eventClass:objc_opt_class() storeConfig:storeConfigurationForUserSamplingId syncPolicy:syncPolicyForUserSamplingId legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -278,13 +278,13 @@ LABEL_10:
 
 + (id)configurationForUserAggregationId
 {
-  v3 = [a1 storeConfigurationForUserAggregationId];
-  v4 = [a1 syncPolicyForUserAggregationId];
+  storeConfigurationForUserAggregationId = [self storeConfigurationForUserAggregationId];
+  syncPolicyForUserAggregationId = [self syncPolicyForUserAggregationId];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"9B3BB3E8-DB19-4624-AA4A-50097329A86C"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Siri.AnalyticsIdentifiers.UserAggregationId" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Siri.AnalyticsIdentifiers.UserAggregationId" eventClass:objc_opt_class() storeConfig:storeConfigurationForUserAggregationId syncPolicy:syncPolicyForUserAggregationId legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -356,13 +356,13 @@ LABEL_10:
 
 + (id)configurationForHomeSeed
 {
-  v3 = [a1 storeConfigurationForHomeSeed];
-  v4 = [a1 syncPolicyForHomeSeed];
+  storeConfigurationForHomeSeed = [self storeConfigurationForHomeSeed];
+  syncPolicyForHomeSeed = [self syncPolicyForHomeSeed];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"35B696BC-2762-41E3-9498-C6CEE401ADB9"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Siri.AnalyticsIdentifiers.HomeSeed" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Siri.AnalyticsIdentifiers.HomeSeed" eventClass:objc_opt_class() storeConfig:storeConfigurationForHomeSeed syncPolicy:syncPolicyForHomeSeed legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -435,7 +435,7 @@ LABEL_10:
 + (id)UserSamplingId
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForUserSamplingId];
+  configurationForUserSamplingId = [self configurationForUserSamplingId];
   v3 = +[BMSiriUserSamplingId columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -447,7 +447,7 @@ LABEL_10:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Siri.AnalyticsIdentifiers.UserSamplingId" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.AnalyticsIdentifiers.UserSamplingId" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.AnalyticsIdentifiers.UserSamplingId" schema:v9 configuration:configurationForUserSamplingId];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -457,7 +457,7 @@ LABEL_10:
 + (id)UserAggregationId
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForUserAggregationId];
+  configurationForUserAggregationId = [self configurationForUserAggregationId];
   v3 = +[BMSiriUserAggregationId columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -469,7 +469,7 @@ LABEL_10:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Siri.AnalyticsIdentifiers.UserAggregationId" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.AnalyticsIdentifiers.UserAggregationId" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.AnalyticsIdentifiers.UserAggregationId" schema:v9 configuration:configurationForUserAggregationId];
 
   v11 = *MEMORY[0x1E69E9840];
 

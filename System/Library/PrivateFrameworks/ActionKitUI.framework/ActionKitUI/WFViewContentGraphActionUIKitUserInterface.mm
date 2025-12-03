@@ -1,20 +1,20 @@
 @interface WFViewContentGraphActionUIKitUserInterface
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
 - (void)done;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)showWithContentItems:(id)a3 completionHandler:(id)a4;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)showWithContentItems:(id)items completionHandler:(id)handler;
 @end
 
 @implementation WFViewContentGraphActionUIKitUserInterface
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [(WFViewContentGraphActionUIKitUserInterface *)self completionHandler];
+  completionHandler = [(WFViewContentGraphActionUIKitUserInterface *)self completionHandler];
 
-  if (v4)
+  if (completionHandler)
   {
-    v5 = [(WFViewContentGraphActionUIKitUserInterface *)self completionHandler];
-    v5[2](v5, 0);
+    completionHandler2 = [(WFViewContentGraphActionUIKitUserInterface *)self completionHandler];
+    completionHandler2[2](completionHandler2, 0);
   }
 
   [(WFViewContentGraphActionUIKitUserInterface *)self setCompletionHandler:0];
@@ -22,29 +22,29 @@
 
 - (void)done
 {
-  v3 = [(WFViewContentGraphActionUIKitUserInterface *)self completionHandler];
+  completionHandler = [(WFViewContentGraphActionUIKitUserInterface *)self completionHandler];
 
-  if (v3)
+  if (completionHandler)
   {
-    v4 = [(WFViewContentGraphActionUIKitUserInterface *)self completionHandler];
-    v4[2](v4, 0);
+    completionHandler2 = [(WFViewContentGraphActionUIKitUserInterface *)self completionHandler];
+    completionHandler2[2](completionHandler2, 0);
   }
 
   [(WFViewContentGraphActionUIKitUserInterface *)self setCompletionHandler:0];
 }
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __86__WFViewContentGraphActionUIKitUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C375C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFViewContentGraphActionUIKitUserInterface;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFEmbeddableActionUserInterface *)&v6 cancelPresentationWithCompletionHandler:v7];
 }
 
@@ -65,15 +65,15 @@ uint64_t __86__WFViewContentGraphActionUIKitUserInterface_cancelPresentationWith
   return v5();
 }
 
-- (void)showWithContentItems:(id)a3 completionHandler:(id)a4
+- (void)showWithContentItems:(id)items completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  itemsCopy = items;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (!itemsCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFViewContentGraphActionUIKitUserInterface.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"items"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFViewContentGraphActionUIKitUserInterface.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"items"}];
 
     if (v9)
     {
@@ -81,13 +81,13 @@ uint64_t __86__WFViewContentGraphActionUIKitUserInterface_cancelPresentationWith
     }
 
 LABEL_5:
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFViewContentGraphActionUIKitUserInterface.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFViewContentGraphActionUIKitUserInterface.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!handlerCopy)
   {
     goto LABEL_5;
   }
@@ -98,9 +98,9 @@ LABEL_3:
   block[1] = 3221225472;
   block[2] = __85__WFViewContentGraphActionUIKitUserInterface_showWithContentItems_completionHandler___block_invoke;
   block[3] = &unk_278C375A0;
-  v14 = v7;
-  v15 = self;
-  v10 = v7;
+  v14 = itemsCopy;
+  selfCopy = self;
+  v10 = itemsCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

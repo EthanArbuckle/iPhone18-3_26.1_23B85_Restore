@@ -1,18 +1,18 @@
 @interface PDASMExpandMissingGroupReferencesOperation
-- (BOOL)processResponseZone:(id)a3;
+- (BOOL)processResponseZone:(id)zone;
 - (BOOL)wantsToExecute;
-- (PDASMExpandMissingGroupReferencesOperation)initWithDatabase:(id)a3;
-- (id)generateFetchQueryForObjectIDs:(id)a3;
+- (PDASMExpandMissingGroupReferencesOperation)initWithDatabase:(id)database;
+- (id)generateFetchQueryForObjectIDs:(id)ds;
 - (id)requestData;
 @end
 
 @implementation PDASMExpandMissingGroupReferencesOperation
 
-- (PDASMExpandMissingGroupReferencesOperation)initWithDatabase:(id)a3
+- (PDASMExpandMissingGroupReferencesOperation)initWithDatabase:(id)database
 {
   v7.receiver = self;
   v7.super_class = PDASMExpandMissingGroupReferencesOperation;
-  v3 = [(PDASMSearchOperation *)&v7 initWithDatabase:a3];
+  v3 = [(PDASMSearchOperation *)&v7 initWithDatabase:database];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -25,8 +25,8 @@
 
 - (BOOL)wantsToExecute
 {
-  v2 = [(PDOperation *)self database];
-  v3 = [v2 count:objc_opt_class() where:0 bindings:0];
+  database = [(PDOperation *)self database];
+  v3 = [database count:objc_opt_class() where:0 bindings:0];
 
   return v3 > 0;
 }
@@ -35,14 +35,14 @@
 {
   if ([(PDOperation *)self isAborted])
   {
-    v3 = 0;
+    data = 0;
   }
 
   else
   {
-    v4 = [(PDOperation *)self database];
+    database = [(PDOperation *)self database];
     v5 = objc_autoreleasePoolPush();
-    v6 = sub_1000BA854(v4);
+    v6 = sub_1000BA854(database);
     v7 = v6;
     if (v6)
     {
@@ -59,7 +59,7 @@
     v19[2] = sub_10015367C;
     v19[3] = &unk_100206340;
     v19[4] = self;
-    [v4 selectAll:objc_opt_class() where:0 orderBy:0 limit:v8 offset:0 bindings:0 block:v19];
+    [database selectAll:objc_opt_class() where:0 orderBy:0 limit:v8 offset:0 bindings:0 block:v19];
 
     objc_autoreleasePoolPop(v5);
     if ([*(&self->super._personsRequiringFilterProcessing + 2) count])
@@ -71,42 +71,42 @@
 
       [(PDDPEESearchRequest *)v9 addSearchRequestZones:v12];
       CLSInitLog();
-      v13 = [(PDASMExpandMissingGroupReferencesOperation *)self logSubsystem];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+      logSubsystem = [(PDASMExpandMissingGroupReferencesOperation *)self logSubsystem];
+      if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
       {
         v15 = objc_opt_class();
         v16 = v15;
-        v17 = [(PDURLRequestOperation *)self operationID];
-        v18 = [(PDDPEESearchRequest *)v9 dictionaryRepresentation];
+        operationID = [(PDURLRequestOperation *)self operationID];
+        dictionaryRepresentation = [(PDDPEESearchRequest *)v9 dictionaryRepresentation];
         *buf = 138543874;
         v21 = v15;
         v22 = 2114;
-        v23 = v17;
+        v23 = operationID;
         v24 = 2114;
-        v25 = v18;
-        _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ Expand missing groups request: %{public}@", buf, 0x20u);
+        v25 = dictionaryRepresentation;
+        _os_log_debug_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ Expand missing groups request: %{public}@", buf, 0x20u);
       }
 
-      v3 = [(PDDPEESearchRequest *)v9 data];
+      data = [(PDDPEESearchRequest *)v9 data];
     }
 
     else
     {
-      v3 = 0;
+      data = 0;
     }
   }
 
-  return v3;
+  return data;
 }
 
-- (id)generateFetchQueryForObjectIDs:(id)a3
+- (id)generateFetchQueryForObjectIDs:(id)ds
 {
-  v4 = a3;
-  if ([v4 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     v5 = objc_alloc_init(PDDPSearchQuery);
     [(PDDPSearchQuery *)v5 setType:3];
-    v6 = [(PDASMSearchOperation *)self criteriaForFieldName:@"group_id" andValues:v4 withFormat:0];
+    v6 = [(PDASMSearchOperation *)self criteriaForFieldName:@"group_id" andValues:dsCopy withFormat:0];
     [(PDDPSearchQuery *)v5 setCriteria:v6];
   }
 
@@ -118,22 +118,22 @@
   return v5;
 }
 
-- (BOOL)processResponseZone:(id)a3
+- (BOOL)processResponseZone:(id)zone
 {
-  v4 = a3;
-  v5 = [v4 status];
-  v6 = [v5 code];
+  zoneCopy = zone;
+  status = [zoneCopy status];
+  code = [status code];
 
-  if (v6 == 1 && [*(&self->super._personsRequiringFilterProcessing + 2) count])
+  if (code == 1 && [*(&self->super._personsRequiringFilterProcessing + 2) count])
   {
     v7 = [PDDatabase whereSQLForArray:*(&self->super._personsRequiringFilterProcessing + 2) prefix:@"objectID in "];
-    v8 = [(PDOperation *)self database];
-    [v8 deleteAll:objc_opt_class() where:v7 bindings:*(&self->super._personsRequiringFilterProcessing + 2)];
+    database = [(PDOperation *)self database];
+    [database deleteAll:objc_opt_class() where:v7 bindings:*(&self->super._personsRequiringFilterProcessing + 2)];
   }
 
   v11.receiver = self;
   v11.super_class = PDASMExpandMissingGroupReferencesOperation;
-  v9 = [(PDASMSearchOperation *)&v11 processResponseZone:v4];
+  v9 = [(PDASMSearchOperation *)&v11 processResponseZone:zoneCopy];
 
   return v9;
 }

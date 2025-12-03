@@ -9,14 +9,14 @@
 - (NSDictionary)metadata
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC5Heart27DefaultSampleMetadataObject_sample);
-  v3 = self;
-  v4 = [v2 metadata];
-  if (v4)
+  selfCopy = self;
+  metadata = [v2 metadata];
+  if (metadata)
   {
-    v5 = v4;
+    v5 = metadata;
     sub_29D939C68();
 
-    v3 = v5;
+    selfCopy = v5;
   }
 
   v6 = sub_29D939C58();
@@ -32,8 +32,8 @@
   MEMORY[0x2A1C7C4A8](v3, v6);
   v8 = &v14 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   v9 = *(&self->super.isa + OBJC_IVAR____TtC5Heart27DefaultSampleMetadataObject_sample);
-  v10 = self;
-  v11 = [v9 startDate];
+  selfCopy = self;
+  startDate = [v9 startDate];
   sub_29D933998();
 
   v12 = sub_29D933958();

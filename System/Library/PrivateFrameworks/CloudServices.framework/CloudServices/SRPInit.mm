@@ -1,21 +1,21 @@
 @interface SRPInit
 - (NSString)dsid;
 - (NSString)recoveryPassphrase;
-- (SRPInit)initWithSecureBackup:(id)a3;
+- (SRPInit)initWithSecureBackup:(id)backup;
 @end
 
 @implementation SRPInit
 
-- (SRPInit)initWithSecureBackup:(id)a3
+- (SRPInit)initWithSecureBackup:(id)backup
 {
-  v5 = a3;
+  backupCopy = backup;
   v9.receiver = self;
   v9.super_class = SRPInit;
   v6 = [(SRPInit *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sb, a3);
+    objc_storeStrong(&v6->_sb, backup);
   }
 
   return v7;

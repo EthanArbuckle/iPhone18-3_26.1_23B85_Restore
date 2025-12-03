@@ -1,18 +1,18 @@
 @interface HMDWidgetMonitoredCharacteristic
-- (BOOL)isEqual:(id)a3;
-- (HMDWidgetMonitoredCharacteristic)initWithCharacteristic:(id)a3 reachabilityMonitored:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMDWidgetMonitoredCharacteristic)initWithCharacteristic:(id)characteristic reachabilityMonitored:(BOOL)monitored;
 - (unint64_t)hash;
 @end
 
 @implementation HMDWidgetMonitoredCharacteristic
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -23,12 +23,12 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMDWidgetMonitoredCharacteristic *)self characteristic];
-    v8 = [v6 characteristic];
-    if ([v7 isEqual:v8])
+    characteristic = [(HMDWidgetMonitoredCharacteristic *)self characteristic];
+    characteristic2 = [v6 characteristic];
+    if ([characteristic isEqual:characteristic2])
     {
-      v9 = [(HMDWidgetMonitoredCharacteristic *)self reachabilityMonitored];
-      v10 = v9 ^ [v6 reachabilityMonitored] ^ 1;
+      reachabilityMonitored = [(HMDWidgetMonitoredCharacteristic *)self reachabilityMonitored];
+      v10 = reachabilityMonitored ^ [v6 reachabilityMonitored] ^ 1;
     }
 
     else
@@ -47,23 +47,23 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMDWidgetMonitoredCharacteristic *)self characteristic];
-  v3 = [v2 hash];
+  characteristic = [(HMDWidgetMonitoredCharacteristic *)self characteristic];
+  v3 = [characteristic hash];
 
   return v3;
 }
 
-- (HMDWidgetMonitoredCharacteristic)initWithCharacteristic:(id)a3 reachabilityMonitored:(BOOL)a4
+- (HMDWidgetMonitoredCharacteristic)initWithCharacteristic:(id)characteristic reachabilityMonitored:(BOOL)monitored
 {
-  v7 = a3;
+  characteristicCopy = characteristic;
   v11.receiver = self;
   v11.super_class = HMDWidgetMonitoredCharacteristic;
   v8 = [(HMDWidgetMonitoredCharacteristic *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_characteristic, a3);
-    v9->_reachabilityMonitored = a4;
+    objc_storeStrong(&v8->_characteristic, characteristic);
+    v9->_reachabilityMonitored = monitored;
   }
 
   return v9;

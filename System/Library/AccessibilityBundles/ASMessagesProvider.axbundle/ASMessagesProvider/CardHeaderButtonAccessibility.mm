@@ -23,7 +23,7 @@
   {
     v3 = @"popover.view.dismiss.article";
 LABEL_5:
-    v4 = accessibilityAppStoreLocalizedString(v3);
+    accessibilityLabel = accessibilityAppStoreLocalizedString(v3);
     goto LABEL_7;
   }
 
@@ -35,27 +35,27 @@ LABEL_5:
 
   v6.receiver = self;
   v6.super_class = CardHeaderButtonAccessibility;
-  v4 = [(CardHeaderButtonAccessibility *)&v6 accessibilityLabel];
+  accessibilityLabel = [(CardHeaderButtonAccessibility *)&v6 accessibilityLabel];
 LABEL_7:
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityHint
 {
   if ([(CardHeaderButtonAccessibility *)self _axIsCloseButton])
   {
-    v3 = accessibilityAppStoreLocalizedString(@"popover.view.dismiss.article.hint");
+    accessibilityHint = accessibilityAppStoreLocalizedString(@"popover.view.dismiss.article.hint");
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = CardHeaderButtonAccessibility;
-    v3 = [(CardHeaderButtonAccessibility *)&v5 accessibilityHint];
+    accessibilityHint = [(CardHeaderButtonAccessibility *)&v5 accessibilityHint];
   }
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (id)accessibilityUserInputLabels
@@ -63,17 +63,17 @@ LABEL_7:
   if ([(CardHeaderButtonAccessibility *)self _axIsCloseButton])
   {
     v3 = accessibilityAppStoreLocalizedString(@"popover.view.dismiss.article.user.input");
-    v4 = MEMORY[0x29C2C5C10]();
+    accessibilityUserInputLabels = MEMORY[0x29C2C5C10]();
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = CardHeaderButtonAccessibility;
-    v4 = [(CardHeaderButtonAccessibility *)&v6 accessibilityUserInputLabels];
+    accessibilityUserInputLabels = [(CardHeaderButtonAccessibility *)&v6 accessibilityUserInputLabels];
   }
 
-  return v4;
+  return accessibilityUserInputLabels;
 }
 
 - (id)_imageAsset
@@ -82,8 +82,8 @@ LABEL_7:
   v3 = [(CardHeaderButtonAccessibility *)self safeSwiftValueForKey:@"vibrantImageView"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 image];
-  v6 = [v5 safeValueForKey:@"_imageAsset"];
+  image = [v4 image];
+  v6 = [image safeValueForKey:@"_imageAsset"];
   v7 = [v6 safeStringForKey:@"assetName"];
 
   return v7;
@@ -91,16 +91,16 @@ LABEL_7:
 
 - (BOOL)_axIsCloseButton
 {
-  v2 = [(CardHeaderButtonAccessibility *)self _imageAsset];
-  v3 = [v2 isEqualToString:@"xmark"];
+  _imageAsset = [(CardHeaderButtonAccessibility *)self _imageAsset];
+  v3 = [_imageAsset isEqualToString:@"xmark"];
 
   return v3;
 }
 
 - (BOOL)_axIsBackButton
 {
-  v2 = [(CardHeaderButtonAccessibility *)self _imageAsset];
-  v3 = [v2 isEqualToString:@"chevron.backward"];
+  _imageAsset = [(CardHeaderButtonAccessibility *)self _imageAsset];
+  v3 = [_imageAsset isEqualToString:@"chevron.backward"];
 
   return v3;
 }

@@ -1,7 +1,7 @@
 @interface DTGPUDataSource
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)run;
-- (DTGPUDataSource)initWithMTLDevice:(id)a3 workQueue:(id)a4;
+- (DTGPUDataSource)initWithMTLDevice:(id)device workQueue:(id)queue;
 - (DTGPUDataSourceDelegate)delegate;
 - (MTLDevice)device;
 - (NSArray)supportedCounterProfiles;
@@ -9,31 +9,31 @@
 - (NSString)deviceName;
 - (id).cxx_construct;
 - (id)_queryDisplayInfoDict;
-- (id)configure:(unsigned int)a3 interval:(unint64_t)a4 windowLimit:(unint64_t)a5;
+- (id)configure:(unsigned int)configure interval:(unint64_t)interval windowLimit:(unint64_t)limit;
 - (id)currentConsistentGPUPerformanceState;
 - (unint64_t)minSampleInterval;
 - (unint64_t)timestampOfFirstSample;
 - (void)_sampleCounters;
-- (void)getRemainingData:(id)a3;
+- (void)getRemainingData:(id)data;
 - (void)reset;
-- (void)setAPSCounterConfig:(id)a3;
+- (void)setAPSCounterConfig:(id)config;
 - (void)stop;
 @end
 
 @implementation DTGPUDataSource
 
-- (DTGPUDataSource)initWithMTLDevice:(id)a3 workQueue:(id)a4
+- (DTGPUDataSource)initWithMTLDevice:(id)device workQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = DTGPUDataSource;
   v8 = [(DTGPUDataSource *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_workQueue, a4);
-    objc_storeWeak(&v9->_device, v6);
+    objc_storeStrong(&v8->_workQueue, queue);
+    objc_storeWeak(&v9->_device, deviceCopy);
     while (1)
     {
       WeakRetained = objc_loadWeakRetained(&v9->_device);
@@ -45,12 +45,12 @@
       }
 
       v12 = objc_loadWeakRetained(&v9->_device);
-      v13 = [v12 baseObject];
-      objc_storeWeak(&v9->_device, v13);
+      baseObject = [v12 baseObject];
+      objc_storeWeak(&v9->_device, baseObject);
     }
 
-    v9->_isAGXDevice = [v6 supportsFamily:1001];
-    v14 = sub_247F7481C(v6);
+    v9->_isAGXDevice = [deviceCopy supportsFamily:1001];
+    v14 = sub_247F7481C(deviceCopy);
     perfStateControl = v9->_perfStateControl;
     v9->_perfStateControl = v14;
 
@@ -109,23 +109,23 @@ LABEL_28:
       }
 
       v18 = objc_loadWeakRetained(&self->_device);
-      v19 = [DTGPUCounterProfile_GPURawCounters create:v18 profile:2];
+      lowercaseString = [DTGPUCounterProfile_GPURawCounters create:v18 profile:2];
 
-      if (v19)
+      if (lowercaseString)
       {
-        [(NSArray *)v5 addObject:v19];
+        [(NSArray *)v5 addObject:lowercaseString];
       }
     }
 
     else
     {
-      v20 = [(DTGPUDataSource *)self device];
-      v21 = [v20 vendorName];
-      v19 = [v21 lowercaseString];
+      device = [(DTGPUDataSource *)self device];
+      vendorName = [device vendorName];
+      lowercaseString = [vendorName lowercaseString];
 
-      if ([v19 rangeOfString:@"intel"] == 0x7FFFFFFFFFFFFFFFLL)
+      if ([lowercaseString rangeOfString:@"intel"] == 0x7FFFFFFFFFFFFFFFLL)
       {
-        if ([v19 rangeOfString:@"amd"] != 0x7FFFFFFFFFFFFFFFLL)
+        if ([lowercaseString rangeOfString:@"amd"] != 0x7FFFFFFFFFFFFFFFLL)
         {
           v22 = objc_loadWeakRetained(&self->_device);
           v23 = [DTGPUCounterProfile_GPURawCounters create:v22 profile:12];
@@ -176,11 +176,11 @@ LABEL_29:
   return v5;
 }
 
-- (void)setAPSCounterConfig:(id)a3
+- (void)setAPSCounterConfig:(id)config
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"Profile"];
+  configCopy = config;
+  v5 = [configCopy objectForKeyedSubscript:@"Profile"];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
@@ -208,7 +208,7 @@ LABEL_29:
           v12 = v11;
           if (!v5 || (v13 = [v11 profile], v13 == objc_msgSend(v5, "unsignedIntValue")))
           {
-            [v12 setAPSCounterConfig:{v4, v15}];
+            [v12 setAPSCounterConfig:{configCopy, v15}];
           }
         }
 
@@ -253,10 +253,10 @@ LABEL_13:
         objc_enumerationMutation(v2);
       }
 
-      v7 = [*(*(&v10 + 1) + 8 * i) defaultSampleInterval];
-      if (v5 >= v7)
+      defaultSampleInterval = [*(*(&v10 + 1) + 8 * i) defaultSampleInterval];
+      if (v5 >= defaultSampleInterval)
       {
-        v5 = v7;
+        v5 = defaultSampleInterval;
       }
     }
 
@@ -316,8 +316,8 @@ LABEL_14:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v6 = [(DTGPUDataSource *)self supportedCounterProfiles];
-    v7 = [v6 countByEnumeratingWithState:&v32 objects:v38 count:16];
+    supportedCounterProfiles = [(DTGPUDataSource *)self supportedCounterProfiles];
+    v7 = [supportedCounterProfiles countByEnumeratingWithState:&v32 objects:v38 count:16];
     if (v7)
     {
       v8 = *v33;
@@ -327,18 +327,18 @@ LABEL_14:
         {
           if (*v33 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(supportedCounterProfiles);
           }
 
           v10 = *(*(&v32 + 1) + 8 * i);
           v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v10, "profile")}];
           [v4 addObject:v11];
 
-          v12 = [v10 counterProfileForHost];
-          [v5 addObject:v12];
+          counterProfileForHost = [v10 counterProfileForHost];
+          [v5 addObject:counterProfileForHost];
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v32 objects:v38 count:16];
+        v7 = [supportedCounterProfiles countByEnumeratingWithState:&v32 objects:v38 count:16];
       }
 
       while (v7);
@@ -359,17 +359,17 @@ LABEL_14:
     v26 = [v15 numberWithUnsignedLongLong:{objc_msgSend(v30, "registryID")}];
     v37[0] = v26;
     v36[1] = @"vendor-name";
-    v27 = [v31 vendorName];
-    v37[1] = v27;
+    vendorName = [v31 vendorName];
+    v37[1] = vendorName;
     v36[2] = @"family-name";
-    v16 = [v31 familyName];
-    v37[2] = v16;
+    familyName = [v31 familyName];
+    v37[2] = familyName;
     v36[3] = @"product-name";
-    v17 = [v31 productName];
-    v37[3] = v17;
+    productName = [v31 productName];
+    v37[3] = productName;
     v36[4] = @"device-name";
-    v18 = [(DTGPUDataSource *)self deviceName];
-    v37[4] = v18;
+    deviceName = [(DTGPUDataSource *)self deviceName];
+    v37[4] = deviceName;
     v37[5] = v4;
     v36[5] = @"supported-counter-profiles";
     v36[6] = @"counter-profile-configs";
@@ -389,13 +389,13 @@ LABEL_14:
     v20 = [MEMORY[0x277CCABB0] numberWithBool:self->_isAGXDevice];
     v37[12] = v20;
     v36[13] = @"displays";
-    v21 = [(DTGPUDataSource *)self _queryDisplayInfoDict];
-    v37[13] = v21;
+    _queryDisplayInfoDict = [(DTGPUDataSource *)self _queryDisplayInfoDict];
+    v37[13] = _queryDisplayInfoDict;
     v37[14] = v28;
     v36[14] = @"agx-tracecode-version";
     v36[15] = @"perf-state";
-    v22 = [(DTGPUDataSource *)self currentConsistentGPUPerformanceState];
-    v37[15] = v22;
+    currentConsistentGPUPerformanceState = [(DTGPUDataSource *)self currentConsistentGPUPerformanceState];
+    v37[15] = currentConsistentGPUPerformanceState;
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:16];
   }
 
@@ -409,7 +409,7 @@ LABEL_14:
   return v23;
 }
 
-- (id)configure:(unsigned int)a3 interval:(unint64_t)a4 windowLimit:(unint64_t)a5
+- (id)configure:(unsigned int)configure interval:(unint64_t)interval windowLimit:(unint64_t)limit
 {
   v47 = *MEMORY[0x277D85DE8];
   p_collectingProfile = &self->_collectingProfile;
@@ -429,7 +429,7 @@ LABEL_14:
     if (v11)
     {
       v12 = *v43;
-      v13 = a3;
+      configureCopy = configure;
       while (2)
       {
         for (i = 0; i != v11; ++i)
@@ -440,7 +440,7 @@ LABEL_14:
           }
 
           v15 = *(*(&v42 + 1) + 8 * i);
-          if ([v15 profile] == v13)
+          if ([v15 profile] == configureCopy)
           {
             objc_storeStrong(p_collectingProfile, v15);
             goto LABEL_13;
@@ -459,17 +459,17 @@ LABEL_14:
 
 LABEL_13:
 
-    v16 = [(DTGPUCounterProfile *)*p_collectingProfile prepare];
-    v17 = *p_collectingProfile;
-    if (v16)
+    prepare = [(DTGPUCounterProfile *)*p_collectingProfile prepare];
+    ringBufferCounts = *p_collectingProfile;
+    if (prepare)
     {
-      v17 = [(DTGPUCounterProfile *)*p_collectingProfile ringBufferCounts];
-      v18 = [(DTGPUCounterProfile *)*p_collectingProfile sampleSizes];
-      if ([v18 count] && objc_msgSend(v17, "count") && (v19 = objc_msgSend(v17, "count"), v19 == objc_msgSend(v18, "count")))
+      ringBufferCounts = [(DTGPUCounterProfile *)*p_collectingProfile ringBufferCounts];
+      sampleSizes = [(DTGPUCounterProfile *)*p_collectingProfile sampleSizes];
+      if ([sampleSizes count] && objc_msgSend(ringBufferCounts, "count") && (v19 = objc_msgSend(ringBufferCounts, "count"), v19 == objc_msgSend(sampleSizes, "count")))
       {
-        self->_windowLimit = a5;
-        v20 = [(DTGPUCounterProfile *)self->_collectingProfile defaultSampleInterval];
-        self->_sampleInterval = v20;
+        self->_windowLimit = limit;
+        defaultSampleInterval = [(DTGPUCounterProfile *)self->_collectingProfile defaultSampleInterval];
+        self->_sampleInterval = defaultSampleInterval;
         collectingProfile = self->_collectingProfile;
         if (collectingProfile)
         {
@@ -479,7 +479,7 @@ LABEL_13:
             windowLimit = self->_windowLimit;
           }
 
-          v23 = windowLimit / v20;
+          v23 = windowLimit / defaultSampleInterval;
           if (v23 >= 0x4E20)
           {
             v23 = 20000;
@@ -507,15 +507,15 @@ LABEL_13:
 
           v31 = 0;
           self->_sampleBuffers.__end_ = begin;
-          while (v31 < [v17 count])
+          while (v31 < [ringBufferCounts count])
           {
             memset(v41, 0, sizeof(v41));
-            v32 = [v17 objectAtIndexedSubscript:v31];
-            v33 = [v32 unsignedIntegerValue];
+            v32 = [ringBufferCounts objectAtIndexedSubscript:v31];
+            unsignedIntegerValue = [v32 unsignedIntegerValue];
 
-            for (; v33; --v33)
+            for (; unsignedIntegerValue; --unsignedIntegerValue)
             {
-              v34 = [v18 objectAtIndexedSubscript:v31];
+              v34 = [sampleSizes objectAtIndexedSubscript:v31];
               sub_247FBEB8C(v35, [v34 unsignedIntValue], v24);
               sub_247FBEB8C(&v38, 4, v24);
 
@@ -617,17 +617,17 @@ LABEL_13:
   dispatch_sync(workQueue, block);
 }
 
-- (void)getRemainingData:(id)a3
+- (void)getRemainingData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_247FBD500;
   v7[3] = &unk_278EF3178;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_sync(workQueue, v7);
 }
 
@@ -640,7 +640,7 @@ LABEL_13:
   block[3] = &unk_278EF3128;
   block[4] = self;
   dispatch_sync(workQueue, block);
-  v4 = [(DTGPUDataSource *)self disableConsistentGPUPerformanceState];
+  disableConsistentGPUPerformanceState = [(DTGPUDataSource *)self disableConsistentGPUPerformanceState];
 }
 
 - (void)_sampleCounters
@@ -669,16 +669,16 @@ LABEL_13:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(DTGPUDataSource *)self device];
-    v7 = [v5 device];
-    v8 = v6 == v7;
+    v5 = equalCopy;
+    device = [(DTGPUDataSource *)self device];
+    device2 = [v5 device];
+    v8 = device == device2;
   }
 
   else
@@ -755,25 +755,25 @@ LABEL_13:
             [v5 bounds];
             if (v7 != 0.0)
             {
-              v8 = [v5 displayId];
+              displayId = [v5 displayId];
               if ([v5 displayId])
               {
-                v9 = [v5 displayId] - 1;
+                displayId2 = [v5 displayId] - 1;
               }
 
               else
               {
-                v9 = [v5 displayId];
+                displayId2 = [v5 displayId];
               }
 
-              v45 = [v5 displayType];
+              displayType = [v5 displayType];
               v49 = 0u;
               v50 = 0u;
               v47 = 0u;
               v48 = 0u;
-              v10 = [v5 availableModes];
-              v11 = [v10 countByEnumeratingWithState:&v47 objects:v67 count:16];
-              v43 = v9;
+              availableModes = [v5 availableModes];
+              v11 = [availableModes countByEnumeratingWithState:&v47 objects:v67 count:16];
+              v43 = displayId2;
               v12 = 0;
               if (v11)
               {
@@ -784,7 +784,7 @@ LABEL_13:
                   {
                     if (*v48 != v13)
                     {
-                      objc_enumerationMutation(v10);
+                      objc_enumerationMutation(availableModes);
                     }
 
                     [*(*(&v47 + 1) + 8 * j) refreshRate];
@@ -800,7 +800,7 @@ LABEL_13:
                     }
                   }
 
-                  v11 = [v10 countByEnumeratingWithState:&v47 objects:v67 count:16];
+                  v11 = [availableModes countByEnumeratingWithState:&v47 objects:v67 count:16];
                 }
 
                 while (v11);
@@ -810,13 +810,13 @@ LABEL_13:
               v41 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:0];
               v57 = v41;
               v56[1] = @"display-id";
-              v58 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v8];
+              v58 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:displayId];
               v56[2] = @"device-name";
               v42 = v58;
-              if (v45)
+              if (displayType)
               {
-                v34 = [v5 deviceName];
-                v17 = v34;
+                deviceName = [v5 deviceName];
+                v17 = deviceName;
               }
 
               else
@@ -840,29 +840,29 @@ LABEL_13:
               v62 = v38;
               v56[6] = @"resolution";
               v22 = MEMORY[0x277CCABB0];
-              v39 = [v5 currentMode];
-              v36 = [v22 numberWithUnsignedLong:{objc_msgSend(v39, "width")}];
+              currentMode = [v5 currentMode];
+              v36 = [v22 numberWithUnsignedLong:{objc_msgSend(currentMode, "width")}];
               v55[0] = v36;
               v23 = MEMORY[0x277CCABB0];
-              v37 = [v5 currentMode];
-              v35 = [v23 numberWithUnsignedLong:{objc_msgSend(v37, "height")}];
+              currentMode2 = [v5 currentMode];
+              v35 = [v23 numberWithUnsignedLong:{objc_msgSend(currentMode2, "height")}];
               v55[1] = v35;
               v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:2];
               v63 = v24;
               v56[7] = @"built-in";
-              v25 = [MEMORY[0x277CCABB0] numberWithBool:v45 == 0];
+              v25 = [MEMORY[0x277CCABB0] numberWithBool:displayType == 0];
               v64 = v25;
               v56[8] = @"max-refresh-rate";
               v26 = [MEMORY[0x277CCABB0] numberWithInt:v12];
               v65 = v26;
               v56[9] = @"is-main-display";
               v27 = MEMORY[0x277CCABB0];
-              v28 = [MEMORY[0x277CD9E40] mainDisplay];
-              v29 = [v27 numberWithBool:v5 == v28];
+              mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
+              v29 = [v27 numberWithBool:v5 == mainDisplay];
               v66 = v29;
               v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v57 forKeys:v56 count:10];
 
-              if (v45)
+              if (displayType)
               {
               }
 
@@ -885,13 +885,13 @@ LABEL_13:
 
 - (id)currentConsistentGPUPerformanceState
 {
-  v2 = [(DTGPUPerformanceStateControl *)self->_perfStateControl currentState];
-  if (!v2)
+  currentState = [(DTGPUPerformanceStateControl *)self->_perfStateControl currentState];
+  if (!currentState)
   {
-    v2 = MEMORY[0x277CBEC10];
+    currentState = MEMORY[0x277CBEC10];
   }
 
-  return v2;
+  return currentState;
 }
 
 - (MTLDevice)device

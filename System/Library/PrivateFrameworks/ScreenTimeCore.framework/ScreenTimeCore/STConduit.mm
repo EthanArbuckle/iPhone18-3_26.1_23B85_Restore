@@ -1,43 +1,43 @@
 @interface STConduit
-- (STConduit)initWithOrganizationIdentifier:(id)a3 transport:(id)a4 localTransport:(id)a5 persistenceController:(id)a6;
+- (STConduit)initWithOrganizationIdentifier:(id)identifier transport:(id)transport localTransport:(id)localTransport persistenceController:(id)controller;
 - (STConduitDelegate)delegate;
 - (void)_finishInvalidating;
 - (void)dealloc;
-- (void)enqueueTransportPayload:(id)a3;
+- (void)enqueueTransportPayload:(id)payload;
 - (void)invalidate;
-- (void)payloadManager:(id)a3 didDeliverPayload:(id)a4;
-- (void)payloadManager:(id)a3 didReceivePayload:(id)a4;
-- (void)payloadManagerDidInvalidate:(id)a3;
+- (void)payloadManager:(id)manager didDeliverPayload:(id)payload;
+- (void)payloadManager:(id)manager didReceivePayload:(id)payload;
+- (void)payloadManagerDidInvalidate:(id)invalidate;
 - (void)resume;
 @end
 
 @implementation STConduit
 
-- (STConduit)initWithOrganizationIdentifier:(id)a3 transport:(id)a4 localTransport:(id)a5 persistenceController:(id)a6
+- (STConduit)initWithOrganizationIdentifier:(id)identifier transport:(id)transport localTransport:(id)localTransport persistenceController:(id)controller
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  transportCopy = transport;
+  localTransportCopy = localTransport;
+  controllerCopy = controller;
   v23.receiver = self;
   v23.super_class = STConduit;
   v14 = [(STConduit *)&v23 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     organizationIdentifier = v14->_organizationIdentifier;
     v14->_organizationIdentifier = v15;
 
-    objc_storeStrong(&v14->_persistenceController, a6);
+    objc_storeStrong(&v14->_persistenceController, controller);
     v17 = objc_opt_new();
     operationQueue = v14->_operationQueue;
     v14->_operationQueue = v17;
 
     [(NSOperationQueue *)v14->_operationQueue setMaxConcurrentOperationCount:1];
-    v19 = [NSString stringWithFormat:@"com.apple.ScreenTimeAgent.conduit (%@)", v10];
-    [(NSOperationQueue *)v14->_operationQueue setName:v19];
+    identifierCopy = [NSString stringWithFormat:@"com.apple.ScreenTimeAgent.conduit (%@)", identifierCopy];
+    [(NSOperationQueue *)v14->_operationQueue setName:identifierCopy];
 
-    v20 = [[STTransportPayloadManager alloc] initWithTransport:v11 localTransport:v12 persistenceController:v13];
+    v20 = [[STTransportPayloadManager alloc] initWithTransport:transportCopy localTransport:localTransportCopy persistenceController:controllerCopy];
     payloadManager = v14->_payloadManager;
     v14->_payloadManager = v20;
 
@@ -67,17 +67,17 @@
   }
 
   [(STConduit *)self setResumed:1];
-  v4 = [(STConduit *)self operationQueue];
-  [v4 setSuspended:0];
+  operationQueue = [(STConduit *)self operationQueue];
+  [operationQueue setSuspended:0];
 
-  v5 = [(STConduit *)self payloadManager];
-  [v5 resume];
+  payloadManager = [(STConduit *)self payloadManager];
+  [payloadManager resume];
 
   v6 = +[STLog conduit];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ : Resumed", &v7, 0xCu);
   }
 }
@@ -88,20 +88,20 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ : Invalidating", &v7, 0xCu);
   }
 
   [(STConduit *)self setInvalid:1];
-  v4 = [(STConduit *)self operationQueue];
-  [v4 setSuspended:1];
+  operationQueue = [(STConduit *)self operationQueue];
+  [operationQueue setSuspended:1];
 
-  v5 = [(STConduit *)self payloadManager];
+  payloadManager = [(STConduit *)self payloadManager];
 
-  if (v5)
+  if (payloadManager)
   {
-    v6 = [(STConduit *)self payloadManager];
-    [v6 invalidate];
+    payloadManager2 = [(STConduit *)self payloadManager];
+    [payloadManager2 invalidate];
   }
 
   else
@@ -110,11 +110,11 @@
   }
 }
 
-- (void)enqueueTransportPayload:(id)a3
+- (void)enqueueTransportPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(STConduit *)self payloadManager];
-  [v5 enqueuePayload:v4];
+  payloadCopy = payload;
+  payloadManager = [(STConduit *)self payloadManager];
+  [payloadManager enqueuePayload:payloadCopy];
 }
 
 - (void)_finishInvalidating
@@ -123,59 +123,59 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Invalidated: %@", &v5, 0xCu);
   }
 
-  v4 = [(STConduit *)self delegate];
-  [v4 conduitDidInvalidate:self];
+  delegate = [(STConduit *)self delegate];
+  [delegate conduitDidInvalidate:self];
 }
 
-- (void)payloadManager:(id)a3 didReceivePayload:(id)a4
+- (void)payloadManager:(id)manager didReceivePayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  payloadCopy = payload;
   v8 = +[STLog conduit];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
-    v11 = v6;
+    v11 = managerCopy;
     v12 = 2114;
-    v13 = v7;
+    v13 = payloadCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Payload manager “%{public}@” received payload “%{public}@”", &v10, 0x16u);
   }
 
-  v9 = [(STConduit *)self delegate];
-  [v9 conduit:self didReceiveTransportPayload:v7];
+  delegate = [(STConduit *)self delegate];
+  [delegate conduit:self didReceiveTransportPayload:payloadCopy];
 }
 
-- (void)payloadManager:(id)a3 didDeliverPayload:(id)a4
+- (void)payloadManager:(id)manager didDeliverPayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  payloadCopy = payload;
   v8 = +[STLog conduit];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 UUID];
+    uUID = [payloadCopy UUID];
     v11 = 138543618;
-    v12 = v6;
+    v12 = managerCopy;
     v13 = 2114;
-    v14 = v9;
+    v14 = uUID;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Payload manager “%{public}@” delivered payload “%{public}@”", &v11, 0x16u);
   }
 
-  v10 = [(STConduit *)self delegate];
-  [v10 conduit:self didDeliverTransportPayload:v7];
+  delegate = [(STConduit *)self delegate];
+  [delegate conduit:self didDeliverTransportPayload:payloadCopy];
 }
 
-- (void)payloadManagerDidInvalidate:(id)a3
+- (void)payloadManagerDidInvalidate:(id)invalidate
 {
-  v4 = a3;
+  invalidateCopy = invalidate;
   v5 = +[STLog conduit];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = invalidateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Payload manager did invalidate: %@", &v6, 0xCu);
   }
 

@@ -4,21 +4,21 @@
 - (BOOL)bootstrap;
 - (BOOL)hasNext;
 - (BOOL)rewind;
-- (MIBURaptorQPacketProvider)initWithPayloadSize:(unint64_t)a3 repairFactor:(unint64_t)a4 inputFile:(id)a5;
+- (MIBURaptorQPacketProvider)initWithPayloadSize:(unint64_t)size repairFactor:(unint64_t)factor inputFile:(id)file;
 - (void)_bootstrap;
 - (void)_invalidate;
-- (void)_provideOnePacketWithCompletion:(id)a3;
-- (void)_providePacketsOfCount:(unint64_t)a3 withCompletion:(id)a4 inQueue:(id)a5;
+- (void)_provideOnePacketWithCompletion:(id)completion;
+- (void)_providePacketsOfCount:(unint64_t)count withCompletion:(id)completion inQueue:(id)queue;
 - (void)invalidate;
-- (void)providePacketsOfCount:(unint64_t)a3 withCompletion:(id)a4 inQueue:(id)a5;
+- (void)providePacketsOfCount:(unint64_t)count withCompletion:(id)completion inQueue:(id)queue;
 @end
 
 @implementation MIBURaptorQPacketProvider
 
-- (MIBURaptorQPacketProvider)initWithPayloadSize:(unint64_t)a3 repairFactor:(unint64_t)a4 inputFile:(id)a5
+- (MIBURaptorQPacketProvider)initWithPayloadSize:(unint64_t)size repairFactor:(unint64_t)factor inputFile:(id)file
 {
   v24 = *MEMORY[0x277D85DE8];
-  v9 = a5;
+  fileCopy = file;
   v17.receiver = self;
   v17.super_class = MIBURaptorQPacketProvider;
   v10 = [(MIBURaptorQPacketProvider *)&v17 init];
@@ -33,11 +33,11 @@
     if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218498;
-      v19 = a3;
+      sizeCopy = size;
       v20 = 2048;
-      v21 = a4;
+      factorCopy = factor;
       v22 = 2114;
-      v23 = v9;
+      v23 = fileCopy;
       _os_log_impl(&dword_259B04000, v11, OS_LOG_TYPE_DEFAULT, "Initialize packet provider with payload size: %lu, repair factor: %lu , input file: %{public}@", buf, 0x20u);
     }
 
@@ -46,9 +46,9 @@
     queue = v10->_queue;
     v10->_queue = v13;
 
-    v10->_payloadSize = a3;
-    v10->_repairFactor = a4;
-    objc_storeStrong(&v10->_inputFile, a5);
+    v10->_payloadSize = size;
+    v10->_repairFactor = factor;
+    objc_storeStrong(&v10->_inputFile, file);
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -97,21 +97,21 @@ uint64_t __38__MIBURaptorQPacketProvider_bootstrap__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)providePacketsOfCount:(unint64_t)a3 withCompletion:(id)a4 inQueue:(id)a5
+- (void)providePacketsOfCount:(unint64_t)count withCompletion:(id)completion inQueue:(id)queue
 {
-  v8 = a4;
-  v9 = a5;
+  completionCopy = completion;
+  queueCopy = queue;
   queue = self->_queue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __74__MIBURaptorQPacketProvider_providePacketsOfCount_withCompletion_inQueue___block_invoke;
   v13[3] = &unk_2798EBB18;
-  v15 = v8;
-  v16 = a3;
+  v15 = completionCopy;
+  countCopy = count;
   v13[4] = self;
-  v14 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = queueCopy;
+  v11 = queueCopy;
+  v12 = completionCopy;
   dispatch_async(queue, v13);
 }
 
@@ -248,8 +248,8 @@ uint64_t __35__MIBURaptorQPacketProvider_rewind__block_invoke(uint64_t a1)
         v35 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v15 = [*location rqEncodedFileURLs];
-        v16 = [v15 countByEnumeratingWithState:&v32 objects:v54 count:16];
+        rqEncodedFileURLs = [*location rqEncodedFileURLs];
+        v16 = [rqEncodedFileURLs countByEnumeratingWithState:&v32 objects:v54 count:16];
         if (v16)
         {
           v17 = *v33;
@@ -259,7 +259,7 @@ uint64_t __35__MIBURaptorQPacketProvider_rewind__block_invoke(uint64_t a1)
             {
               if (*v33 != v17)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(rqEncodedFileURLs);
               }
 
               v19 = *(*(&v32 + 1) + 8 * i);
@@ -277,7 +277,7 @@ uint64_t __35__MIBURaptorQPacketProvider_rewind__block_invoke(uint64_t a1)
               [v14 addObject:v21];
             }
 
-            v16 = [v15 countByEnumeratingWithState:&v32 objects:v54 count:16];
+            v16 = [rqEncodedFileURLs countByEnumeratingWithState:&v32 objects:v54 count:16];
             if (v16)
             {
               continue;
@@ -308,12 +308,12 @@ uint64_t __35__MIBURaptorQPacketProvider_rewind__block_invoke(uint64_t a1)
         v23 = MIBUConnObj;
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [*location rqBasicParameters];
-          v25 = [*location rqExtendedParameters];
+          rqBasicParameters = [*location rqBasicParameters];
+          rqExtendedParameters = [*location rqExtendedParameters];
           *buf = 134218240;
-          v51 = v24;
+          v51 = rqBasicParameters;
           v52 = 1024;
-          v53 = v25;
+          v53 = rqExtendedParameters;
           _os_log_impl(&dword_259B04000, v23, OS_LOG_TYPE_DEFAULT, ">> rqBasicParameters=%llu, rqExtendedParameters=%u", buf, 0x12u);
         }
 
@@ -458,10 +458,10 @@ void __39__MIBURaptorQPacketProvider__bootstrap__block_invoke_22()
   }
 }
 
-- (void)_providePacketsOfCount:(unint64_t)a3 withCompletion:(id)a4 inQueue:(id)a5
+- (void)_providePacketsOfCount:(unint64_t)count withCompletion:(id)completion inQueue:(id)queue
 {
-  v8 = a4;
-  v9 = a5;
+  completionCopy = completion;
+  queueCopy = queue;
   dispatch_assert_queue_V2(self->_queue);
   v28[0] = 0;
   v28[1] = v28;
@@ -477,10 +477,10 @@ void __39__MIBURaptorQPacketProvider__bootstrap__block_invoke_22()
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  if (a3)
+  if (count)
   {
     v10 = MEMORY[0x277D85DD0];
-    v11 = a3 - 1;
+    v11 = count - 1;
     do
     {
       v12 = v11;
@@ -512,12 +512,12 @@ void __39__MIBURaptorQPacketProvider__bootstrap__block_invoke_22()
   v14[1] = 3221225472;
   v14[2] = __75__MIBURaptorQPacketProvider__providePacketsOfCount_withCompletion_inQueue___block_invoke_2;
   v14[3] = &unk_2798EBB90;
-  v15 = v8;
+  v15 = completionCopy;
   v16 = &v24;
   v17 = &v20;
   v18 = v28;
-  v13 = v8;
-  dispatch_async(v9, v14);
+  v13 = completionCopy;
+  dispatch_async(queueCopy, v14);
 
   _Block_object_dispose(&v20, 8);
   _Block_object_dispose(&v24, 8);
@@ -555,10 +555,10 @@ void __75__MIBURaptorQPacketProvider__providePacketsOfCount_withCompletion_inQue
   }
 }
 
-- (void)_provideOnePacketWithCompletion:(id)a3
+- (void)_provideOnePacketWithCompletion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_encoderSummary)
   {
@@ -574,23 +574,23 @@ void __75__MIBURaptorQPacketProvider__providePacketsOfCount_withCompletion_inQue
       _os_log_impl(&dword_259B04000, v16, OS_LOG_TYPE_DEFAULT, "RaptorQ encoder not created.", buf, 2u);
     }
 
-    (*(v4 + 2))(v4, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
     goto LABEL_38;
   }
 
   if (![(NSMutableArray *)self->_encodedFiles count])
   {
 LABEL_25:
-    (*(v4 + 2))(v4, 1, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 1, 0);
     goto LABEL_38;
   }
 
   [(NSMutableArray *)self->_encodedFiles popFirstObject:138543618];
   while (1)
     v6 = {;
-    v7 = [(MIBURaptorQPacketProvider *)self packetSize];
+    packetSize = [(MIBURaptorQPacketProvider *)self packetSize];
     v24 = 0;
-    v8 = [v6 readDataUpToLength:v7 error:&v24];
+    v8 = [v6 readDataUpToLength:packetSize error:&v24];
     v9 = v24;
     if (v9)
     {
@@ -600,7 +600,7 @@ LABEL_25:
         if (!os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
         {
 LABEL_29:
-          (*(v4 + 2))(v4, 0, 0, 0);
+          (*(completionCopy + 2))(completionCopy, 0, 0, 0);
           goto LABEL_37;
         }
       }
@@ -670,11 +670,11 @@ LABEL_12:
 
 LABEL_15:
       v14 = v13;
-      v15 = [v12 localizedDescription];
+      localizedDescription = [v12 localizedDescription];
       *buf = v21;
       v26 = v6;
       v27 = 2114;
-      v28 = v15;
+      v28 = localizedDescription;
       _os_log_error_impl(&dword_259B04000, v14, OS_LOG_TYPE_ERROR, "Failed to seek to offset 0 for file handle %{public}@: %{public}@", buf, 0x16u);
 
       goto LABEL_5;
@@ -698,8 +698,8 @@ LABEL_5:
   }
 
   [(NSMutableArray *)self->_encodedFiles addObject:v6];
-  v18 = [v8 _createDispatchData];
-  if (!v18)
+  _createDispatchData = [v8 _createDispatchData];
+  if (!_createDispatchData)
   {
     if (MIBUOnceToken == -1)
     {
@@ -707,7 +707,7 @@ LABEL_5:
       if (!os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
       {
 LABEL_35:
-        (*(v4 + 2))(v4, 0, 0, 0);
+        (*(completionCopy + 2))(completionCopy, 0, 0, 0);
         goto LABEL_36;
       }
     }
@@ -727,7 +727,7 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  (*(v4 + 2))(v4, 1, 0, v18);
+  (*(completionCopy + 2))(completionCopy, 1, 0, _createDispatchData);
 LABEL_36:
 
 LABEL_37:
@@ -827,7 +827,7 @@ void __61__MIBURaptorQPacketProvider__provideOnePacketWithCompletion___block_inv
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v18 = self;
+    selfCopy = self;
     encodedFiles = [(SKRaptorQEncoderSummary *)self->_encoderSummary rqEncodedFileURLs];
     v5 = [encodedFiles countByEnumeratingWithState:&v20 objects:v28 count:16];
     if (v5)
@@ -895,8 +895,8 @@ void __61__MIBURaptorQPacketProvider__provideOnePacketWithCompletion___block_inv
     }
 
     v14 = v3;
-    encodedFiles = v18->_encodedFiles;
-    v18->_encodedFiles = v14;
+    encodedFiles = selfCopy->_encodedFiles;
+    selfCopy->_encodedFiles = v14;
     v13 = 1;
 LABEL_19:
   }
@@ -983,7 +983,7 @@ void __36__MIBURaptorQPacketProvider__rewind__block_invoke()
 
   if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_ERROR))
   {
-    v11 = HIDWORD(*(*a1 + 40));
+    v11 = HIDWORD(*(*self + 40));
     OUTLINED_FUNCTION_1_0(&dword_259B04000, v4, v5, "Failed to initialize RaptorQ encoder: %{public}@", v6, v7, v8, v9, 2u);
   }
 

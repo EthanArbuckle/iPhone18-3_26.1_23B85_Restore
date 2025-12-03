@@ -10,11 +10,11 @@
 - (id)wfSerializedRepresentation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v3 = MEMORY[0x1E696ACC8];
-  v4 = [a1 value];
+  value = [self value];
   v12 = 0;
-  v5 = [v3 archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v12];
+  v5 = [v3 archivedDataWithRootObject:value requiringSecureCoding:1 error:&v12];
   v6 = v12;
 
   if (v6)
@@ -34,11 +34,11 @@
 
   else
   {
-    [v2 setObject:v5 forKey:@"WFLinkDynamicOptionValue"];
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "indentationLevel")}];
-    [v2 setObject:v9 forKey:@"WFLinkDynamicOptionIndentationLevel"];
+    [dictionary setObject:v5 forKey:@"WFLinkDynamicOptionValue"];
+    v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "indentationLevel")}];
+    [dictionary setObject:v9 forKey:@"WFLinkDynamicOptionIndentationLevel"];
 
-    v8 = v2;
+    v8 = dictionary;
   }
 
   v10 = *MEMORY[0x1E69E9840];
@@ -48,7 +48,7 @@
 
 - (uint64_t)containsSensitiveContent
 {
-  v1 = objc_getAssociatedObject(a1, LNDynamicOptionSensitiveContentKey);
+  v1 = objc_getAssociatedObject(self, LNDynamicOptionSensitiveContentKey);
   if (v1)
   {
     objc_opt_class();
@@ -70,15 +70,15 @@
 
   v3 = v2;
 
-  v4 = [v3 BOOLValue];
-  return v4;
+  bOOLValue = [v3 BOOLValue];
+  return bOOLValue;
 }
 
 - (void)setContainsSensitiveContent:()Serialization
 {
   v2 = LNDynamicOptionSensitiveContentKey;
   v3 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  objc_setAssociatedObject(a1, v2, v3, 1);
+  objc_setAssociatedObject(self, v2, v3, 1);
 }
 
 + (id)objectWithWFSerializedRepresentation:()Serialization
@@ -107,9 +107,9 @@
   else
   {
     v10 = [v4 objectForKey:@"WFLinkDynamicOptionIndentationLevel"];
-    v11 = [v10 unsignedIntegerValue];
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-    v9 = [[a1 alloc] initWithValue:v6 indentationLevel:v11];
+    v9 = [[self alloc] initWithValue:v6 indentationLevel:unsignedIntegerValue];
   }
 
   v12 = *MEMORY[0x1E69E9840];

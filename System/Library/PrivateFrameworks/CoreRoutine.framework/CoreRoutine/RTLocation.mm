@@ -1,89 +1,89 @@
 @interface RTLocation
-+ (id)sourceAccuracyToString:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLocation:(id)a3;
-- (RTLocation)initWithCoder:(id)a3;
-- (RTLocation)initWithDictionary:(id)a3;
-- (RTLocation)initWithFirstJSONDictionary:(id)a3;
-- (RTLocation)initWithLatitude:(double)a3 longitude:(double)a4 horizontalUncertainty:(double)a5 altitude:(double)a6 verticalUncertainty:(double)a7 date:(id)a8 referenceFrame:(int)a9 speed:(double)a10 sourceAccuracy:(unint64_t)a11;
++ (id)sourceAccuracyToString:(unint64_t)string;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLocation:(id)location;
+- (RTLocation)initWithCoder:(id)coder;
+- (RTLocation)initWithDictionary:(id)dictionary;
+- (RTLocation)initWithFirstJSONDictionary:(id)dictionary;
+- (RTLocation)initWithLatitude:(double)latitude longitude:(double)longitude horizontalUncertainty:(double)uncertainty altitude:(double)altitude verticalUncertainty:(double)verticalUncertainty date:(id)date referenceFrame:(int)frame speed:(double)self0 sourceAccuracy:(unint64_t)self1;
 - (id)coordinateToString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)outputToDictionaryReadableDate:(BOOL)a3;
+- (id)outputToDictionaryReadableDate:(BOOL)date;
 - (id)outputToFirstJSONDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTLocation
 
-- (RTLocation)initWithLatitude:(double)a3 longitude:(double)a4 horizontalUncertainty:(double)a5 altitude:(double)a6 verticalUncertainty:(double)a7 date:(id)a8 referenceFrame:(int)a9 speed:(double)a10 sourceAccuracy:(unint64_t)a11
+- (RTLocation)initWithLatitude:(double)latitude longitude:(double)longitude horizontalUncertainty:(double)uncertainty altitude:(double)altitude verticalUncertainty:(double)verticalUncertainty date:(id)date referenceFrame:(int)frame speed:(double)self0 sourceAccuracy:(unint64_t)self1
 {
-  v20 = a8;
+  dateCopy = date;
   v26.receiver = self;
   v26.super_class = RTLocation;
   v21 = [(RTLocation *)&v26 init];
   v22 = v21;
   if (v21)
   {
-    v21->_latitude = a3;
-    v21->_longitude = a4;
-    v21->_horizontalUncertainty = a5;
-    v21->_altitude = a6;
-    v21->_verticalUncertainty = a7;
-    v23 = [v20 copy];
+    v21->_latitude = latitude;
+    v21->_longitude = longitude;
+    v21->_horizontalUncertainty = uncertainty;
+    v21->_altitude = altitude;
+    v21->_verticalUncertainty = verticalUncertainty;
+    v23 = [dateCopy copy];
     date = v22->_date;
     v22->_date = v23;
 
-    v22->_referenceFrame = a9;
-    v22->_speed = a10;
-    v22->_sourceAccuracy = a11;
+    v22->_referenceFrame = frame;
+    v22->_speed = speed;
+    v22->_sourceAccuracy = accuracy;
   }
 
   return v22;
 }
 
-- (RTLocation)initWithCoder:(id)a3
+- (RTLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"latitude"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"latitude"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"longitude"];
+  [coderCopy decodeDoubleForKey:@"longitude"];
   v8 = v7;
-  [v4 decodeDoubleForKey:@"horizontalUncertainty"];
+  [coderCopy decodeDoubleForKey:@"horizontalUncertainty"];
   v10 = v9;
-  [v4 decodeDoubleForKey:@"altitude"];
+  [coderCopy decodeDoubleForKey:@"altitude"];
   v12 = v11;
-  [v4 decodeDoubleForKey:@"verticalUncertainty"];
+  [coderCopy decodeDoubleForKey:@"verticalUncertainty"];
   v14 = v13;
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
-  v16 = [v4 decodeIntForKey:@"referenceFrame"];
-  [v4 decodeDoubleForKey:@"speed"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+  v16 = [coderCopy decodeIntForKey:@"referenceFrame"];
+  [coderCopy decodeDoubleForKey:@"speed"];
   v18 = v17;
-  v19 = [v4 decodeIntegerForKey:@"sourceAccuracy"];
+  v19 = [coderCopy decodeIntegerForKey:@"sourceAccuracy"];
 
   v20 = [(RTLocation *)self initWithLatitude:v15 longitude:v16 horizontalUncertainty:v19 altitude:v6 verticalUncertainty:v8 date:v10 referenceFrame:v12 speed:v14 sourceAccuracy:v18];
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   latitude = self->_latitude;
-  v5 = a3;
-  [v5 encodeDouble:@"latitude" forKey:latitude];
-  [v5 encodeDouble:@"longitude" forKey:self->_longitude];
-  [v5 encodeDouble:@"horizontalUncertainty" forKey:self->_horizontalUncertainty];
-  [v5 encodeDouble:@"altitude" forKey:self->_altitude];
-  [v5 encodeDouble:@"verticalUncertainty" forKey:self->_verticalUncertainty];
-  [v5 encodeObject:self->_date forKey:@"date"];
-  [v5 encodeInt:self->_referenceFrame forKey:@"referenceFrame"];
-  [v5 encodeDouble:@"speed" forKey:self->_speed];
-  [v5 encodeInteger:self->_sourceAccuracy forKey:@"sourceAccuracy"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"latitude" forKey:latitude];
+  [coderCopy encodeDouble:@"longitude" forKey:self->_longitude];
+  [coderCopy encodeDouble:@"horizontalUncertainty" forKey:self->_horizontalUncertainty];
+  [coderCopy encodeDouble:@"altitude" forKey:self->_altitude];
+  [coderCopy encodeDouble:@"verticalUncertainty" forKey:self->_verticalUncertainty];
+  [coderCopy encodeObject:self->_date forKey:@"date"];
+  [coderCopy encodeInt:self->_referenceFrame forKey:@"referenceFrame"];
+  [coderCopy encodeDouble:@"speed" forKey:self->_speed];
+  [coderCopy encodeInteger:self->_sourceAccuracy forKey:@"sourceAccuracy"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   latitude = self->_latitude;
   longitude = self->_longitude;
   horizontalUncertainty = self->_horizontalUncertainty;
@@ -97,14 +97,14 @@
   return [v4 initWithLatitude:date longitude:referenceFrame horizontalUncertainty:sourceAccuracy altitude:latitude verticalUncertainty:longitude date:horizontalUncertainty referenceFrame:altitude speed:verticalUncertainty sourceAccuracy:speed];
 }
 
-- (RTLocation)initWithFirstJSONDictionary:(id)a3
+- (RTLocation)initWithFirstJSONDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 valueForKey:@"lat"];
-  v6 = [v4 valueForKey:@"lng"];
-  v7 = [v4 valueForKey:@"uncertainty"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy valueForKey:@"lat"];
+  v6 = [dictionaryCopy valueForKey:@"lng"];
+  v7 = [dictionaryCopy valueForKey:@"uncertainty"];
 
-  v8 = 0;
+  selfCopy = 0;
   if (v5 && v6 && v7)
   {
     [v5 doubleValue];
@@ -116,10 +116,10 @@
     v15 = [MEMORY[0x1E695DF00] now];
     self = [(RTLocation *)self initWithLatitude:v15 longitude:v10 horizontalUncertainty:v12 date:v14];
 
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)outputToFirstJSONDictionary
@@ -143,22 +143,22 @@
   return v3;
 }
 
-- (RTLocation)initWithDictionary:(id)a3
+- (RTLocation)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 valueForKey:@"latitude"];
-  v6 = [v4 valueForKey:@"longitude"];
-  v7 = [v4 valueForKey:@"horizontalUncertainty"];
-  v8 = [v4 valueForKey:@"altitude"];
-  v9 = [v4 valueForKey:@"verticalUncertainty"];
-  v10 = [v4 valueForKey:@"date"];
-  v11 = [v4 valueForKey:@"referenceFrame"];
-  v12 = [v4 valueForKey:@"speed"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy valueForKey:@"latitude"];
+  v6 = [dictionaryCopy valueForKey:@"longitude"];
+  v7 = [dictionaryCopy valueForKey:@"horizontalUncertainty"];
+  v8 = [dictionaryCopy valueForKey:@"altitude"];
+  v9 = [dictionaryCopy valueForKey:@"verticalUncertainty"];
+  v10 = [dictionaryCopy valueForKey:@"date"];
+  v11 = [dictionaryCopy valueForKey:@"referenceFrame"];
+  v12 = [dictionaryCopy valueForKey:@"speed"];
 
   v13 = 0;
   if (v5 && v6 && v7 && v8 && v9 && v10 && v11 && v12)
   {
-    v29 = self;
+    selfCopy = self;
     v14 = MEMORY[0x1E695DF00];
     [v10 doubleValue];
     v15 = [v14 dateWithTimeIntervalSince1970:?];
@@ -172,9 +172,9 @@
     v23 = v22;
     [v9 doubleValue];
     v25 = v24;
-    v26 = [v11 intValue];
+    intValue = [v11 intValue];
     [v12 doubleValue];
-    v13 = [(RTLocation *)v29 initWithLatitude:v15 longitude:v26 horizontalUncertainty:v17 altitude:v19 verticalUncertainty:v21 date:v23 referenceFrame:v25 speed:v27];
+    v13 = [(RTLocation *)selfCopy initWithLatitude:v15 longitude:intValue horizontalUncertainty:v17 altitude:v19 verticalUncertainty:v21 date:v23 referenceFrame:v25 speed:v27];
 
     self = v13;
   }
@@ -182,9 +182,9 @@
   return v13;
 }
 
-- (id)outputToDictionaryReadableDate:(BOOL)a3
+- (id)outputToDictionaryReadableDate:(BOOL)date
 {
-  v3 = a3;
+  dateCopy = date;
   v5 = objc_opt_new();
   v6 = MEMORY[0x1E696AD98];
   [(RTLocation *)self latitude];
@@ -212,16 +212,16 @@
   [v5 setObject:v15 forKey:@"verticalUncertainty"];
 
   v16 = MEMORY[0x1E696AD98];
-  v17 = [(RTLocation *)self date];
-  [v17 timeIntervalSince1970];
+  date = [(RTLocation *)self date];
+  [date timeIntervalSince1970];
   v18 = [v16 numberWithDouble:?];
   [v5 setObject:v18 forKey:@"date"];
 
-  if (v3)
+  if (dateCopy)
   {
-    v19 = [(RTLocation *)self date];
-    v20 = [v19 getFormattedDateString];
-    [v5 setObject:v20 forKey:@"dateAsString"];
+    date2 = [(RTLocation *)self date];
+    getFormattedDateString = [date2 getFormattedDateString];
+    [v5 setObject:getFormattedDateString forKey:@"dateAsString"];
   }
 
   v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[RTLocation referenceFrame](self, "referenceFrame")}];
@@ -248,11 +248,11 @@
   v11 = v10;
   [(RTLocation *)self verticalUncertainty];
   v13 = v12;
-  v14 = [(RTLocation *)self date];
-  v15 = [v14 stringFromDate];
-  v16 = [(RTLocation *)self referenceFrame];
+  date = [(RTLocation *)self date];
+  stringFromDate = [date stringFromDate];
+  referenceFrame = [(RTLocation *)self referenceFrame];
   v17 = [objc_opt_class() sourceAccuracyToString:self->_sourceAccuracy];
-  v18 = [v3 stringWithFormat:@"<%f, %f> +/- %f, alt, %f +/- %f, date, %@, referenceFrame, %d, sourceAccuracy, %@", v5, v7, v9, v11, v13, v15, v16, v17];
+  v18 = [v3 stringWithFormat:@"<%f, %f> +/- %f, alt, %f +/- %f, date, %@, referenceFrame, %d, sourceAccuracy, %@", v5, v7, v9, v11, v13, stringFromDate, referenceFrame, v17];
 
   return v18;
 }
@@ -266,15 +266,15 @@
   return [v3 stringWithFormat:@"<%+.6f, %+.6f>", v5, v6];
 }
 
-+ (id)sourceAccuracyToString:(unint64_t)a3
++ (id)sourceAccuracyToString:(unint64_t)string
 {
   v3 = @"Unknown";
-  if (a3 == 2)
+  if (string == 2)
   {
     v3 = @"High";
   }
 
-  if (a3 == 1)
+  if (string == 1)
   {
     return @"Low";
   }
@@ -285,19 +285,19 @@
   }
 }
 
-- (BOOL)isEqualToLocation:(id)a3
+- (BOOL)isEqualToLocation:(id)location
 {
-  v5 = a3;
+  locationCopy = location;
   latitude = self->_latitude;
-  [v5 latitude];
+  [locationCopy latitude];
   if (latitude != v7)
   {
     goto LABEL_15;
   }
 
   longitude = self->_longitude;
-  [v5 longitude];
-  if (longitude != v9 || (horizontalUncertainty = self->_horizontalUncertainty, [v5 horizontalUncertainty], horizontalUncertainty != v11) || (altitude = self->_altitude, objc_msgSend(v5, "altitude"), altitude != v13) || (verticalUncertainty = self->_verticalUncertainty, objc_msgSend(v5, "verticalUncertainty"), verticalUncertainty != v15))
+  [locationCopy longitude];
+  if (longitude != v9 || (horizontalUncertainty = self->_horizontalUncertainty, [locationCopy horizontalUncertainty], horizontalUncertainty != v11) || (altitude = self->_altitude, objc_msgSend(locationCopy, "altitude"), altitude != v13) || (verticalUncertainty = self->_verticalUncertainty, objc_msgSend(locationCopy, "verticalUncertainty"), verticalUncertainty != v15))
   {
 LABEL_15:
     v26 = 0;
@@ -309,8 +309,8 @@ LABEL_15:
   if (date)
   {
 LABEL_9:
-    v18 = [v5 date];
-    [(NSDate *)v17 timeIntervalSinceDate:v18];
+    date = [locationCopy date];
+    [(NSDate *)v17 timeIntervalSinceDate:date];
     v20 = v19;
 
     v21 = -v20;
@@ -327,8 +327,8 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  v3 = [v5 date];
-  if (v3)
+  date2 = [locationCopy date];
+  if (date2)
   {
     v17 = self->_date;
     goto LABEL_9;
@@ -336,10 +336,10 @@ LABEL_9:
 
 LABEL_12:
   referenceFrame = self->_referenceFrame;
-  if (referenceFrame == [v5 referenceFrame])
+  if (referenceFrame == [locationCopy referenceFrame])
   {
     speed = self->_speed;
-    [v5 speed];
+    [locationCopy speed];
     v25 = speed == v24;
     v26 = speed == v24;
     if (!date)
@@ -365,18 +365,18 @@ LABEL_16:
   return v26;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTLocation *)self isEqualToLocation:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTLocation *)self isEqualToLocation:v5];
   }
 
   return v6;

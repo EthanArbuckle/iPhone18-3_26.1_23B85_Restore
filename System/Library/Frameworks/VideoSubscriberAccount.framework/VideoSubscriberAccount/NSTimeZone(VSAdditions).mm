@@ -24,21 +24,21 @@
         [v3 raise:v4 format:{@"Unexpectedly, value was %@, instead of NSNumber.", v6}];
       }
 
-      v7 = [v2 BOOLValue];
+      bOOLValue = [v2 BOOLValue];
     }
 
     else
     {
-      v7 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 @end

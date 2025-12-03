@@ -8,14 +8,14 @@
 
 - (void)loadView
 {
-  v3 = self;
+  selfCopy = self;
   v2 = sub_100022CC0();
-  [(SuggestedRouteSystemApertureViewController *)v3 setView:v2];
+  [(SuggestedRouteSystemApertureViewController *)selfCopy setView:v2];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100022E6C();
 }
 

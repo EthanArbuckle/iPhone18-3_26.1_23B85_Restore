@@ -1,30 +1,30 @@
 @interface TextFieldCollectionViewCell.TextFieldCollectionViewCellInner
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (_TtCC18HealthExperienceUI27TextFieldCollectionViewCellP33_CA6334EB88576D7E5F1F357E76DAEE2F32TextFieldCollectionViewCellInner)init;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (id)forwardingTargetForSelector:(SEL)selector;
 @end
 
 @implementation TextFieldCollectionViewCell.TextFieldCollectionViewCellInner
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
-    v6 = [Strong respondsToSelector_];
+    respondsToSelector_ = [Strong respondsToSelector_];
     swift_unknownObjectRelease();
-    return v6;
+    return respondsToSelector_;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = type metadata accessor for TextFieldCollectionViewCell.TextFieldCollectionViewCellInner();
-    return [(TextFieldCollectionViewCell.TextFieldCollectionViewCellInner *)&v8 respondsToSelector:a3];
+    return [(TextFieldCollectionViewCell.TextFieldCollectionViewCellInner *)&v8 respondsToSelector:selector];
   }
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)

@@ -1,30 +1,30 @@
 @interface CKDMovePhotosURLRequest
-- (CKDMovePhotosURLRequest)initWithOperation:(id)a3 moveChanges:(id)a4 sourceDatabaseScope:(int64_t)a5 atomic:(BOOL)a6;
+- (CKDMovePhotosURLRequest)initWithOperation:(id)operation moveChanges:(id)changes sourceDatabaseScope:(int64_t)scope atomic:(BOOL)atomic;
 - (id)generateRequestOperations;
-- (id)recordIDsUsedInZones:(id)a3;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)recordIDsUsedInZones:(id)zones;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
 - (id)zoneIDsToLock;
 - (int)isolationLevel;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)fillOutRequestProperties:(id)a3;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)fillOutRequestProperties:(id)properties;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDMovePhotosURLRequest
 
-- (CKDMovePhotosURLRequest)initWithOperation:(id)a3 moveChanges:(id)a4 sourceDatabaseScope:(int64_t)a5 atomic:(BOOL)a6
+- (CKDMovePhotosURLRequest)initWithOperation:(id)operation moveChanges:(id)changes sourceDatabaseScope:(int64_t)scope atomic:(BOOL)atomic
 {
-  v11 = a4;
+  changesCopy = changes;
   v19.receiver = self;
   v19.super_class = CKDMovePhotosURLRequest;
-  v12 = [(CKDURLRequest *)&v19 initWithOperation:a3];
+  v12 = [(CKDURLRequest *)&v19 initWithOperation:operation];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_moveChanges, a4);
-    v13->_sourceDatabaseScope = a5;
-    v13->_atomic = a6;
+    objc_storeStrong(&v12->_moveChanges, changes);
+    v13->_sourceDatabaseScope = scope;
+    v13->_atomic = atomic;
     v14 = objc_opt_new();
     recordIDByRequestID = v13->_recordIDByRequestID;
     v13->_recordIDByRequestID = v14;
@@ -37,27 +37,27 @@
   return v13;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v22.receiver = self;
   v22.super_class = CKDMovePhotosURLRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v22 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v22 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v5 = MEMORY[0x277CBEB98];
   v8 = objc_msgSend_moveChanges(self, v6, v7, v22.receiver, v22.super_class);
   v11 = objc_msgSend_ckEquivalencyProperties(v8, v9, v10);
   v13 = objc_msgSend_setWithArray_(v5, v12, v11);
 
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v14, v13, @"moveChanges");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v14, v13, @"moveChanges");
   v15 = MEMORY[0x277CCABB0];
   v18 = objc_msgSend_sourceDatabaseScope(self, v16, v17);
   v20 = objc_msgSend_numberWithInteger_(v15, v19, v18);
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v21, v20, @"sourceDatabaseScope");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v21, v20, @"sourceDatabaseScope");
 }
 
-- (void)fillOutRequestProperties:(id)a3
+- (void)fillOutRequestProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v7 = objc_msgSend_moveChanges(self, v5, v6);
   v9 = objc_msgSend_CKCompactMap_(v7, v8, &unk_28385E560);
 
@@ -65,17 +65,17 @@
   v14 = objc_msgSend_CKCompactMap_(v12, v13, &unk_28385E580);
   v16 = objc_msgSend_CKCompactMap_(v14, v15, &unk_28385E5A0);
 
-  objc_msgSend_setModifyRecordIDs_(v4, v17, v16);
-  objc_msgSend_setDeleteRecordIDs_(v4, v18, v9);
+  objc_msgSend_setModifyRecordIDs_(propertiesCopy, v17, v16);
+  objc_msgSend_setDeleteRecordIDs_(propertiesCopy, v18, v9);
   v19.receiver = self;
   v19.super_class = CKDMovePhotosURLRequest;
-  [(CKDURLRequest *)&v19 fillOutRequestProperties:v4];
+  [(CKDURLRequest *)&v19 fillOutRequestProperties:propertiesCopy];
 }
 
-- (id)recordIDsUsedInZones:(id)a3
+- (id)recordIDsUsedInZones:(id)zones
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  zonesCopy = zones;
   v5 = objc_opt_new();
   v43 = 0u;
   v44 = 0u;
@@ -99,7 +99,7 @@
         v15 = *(*(&v43 + 1) + 8 * i);
         v16 = objc_msgSend_sourceRecordID(v15, v10, v11);
         v19 = objc_msgSend_zoneID(v16, v17, v18);
-        v21 = objc_msgSend_containsObject_(v4, v20, v19);
+        v21 = objc_msgSend_containsObject_(zonesCopy, v20, v19);
 
         if (v21)
         {
@@ -110,7 +110,7 @@
         v26 = objc_msgSend_destinationRecord(v15, v22, v23);
         v29 = objc_msgSend_recordID(v26, v27, v28);
         v32 = objc_msgSend_zoneID(v29, v30, v31);
-        v34 = objc_msgSend_containsObject_(v4, v33, v32);
+        v34 = objc_msgSend_containsObject_(zonesCopy, v33, v32);
 
         if (v34)
         {
@@ -330,18 +330,18 @@ LABEL_22:
   return v163;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
   v159 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   v7 = objc_msgSend_recordIDByRequestID(self, v5, v6);
-  v10 = objc_msgSend_response(v4, v8, v9);
+  v10 = objc_msgSend_response(objectCopy, v8, v9);
   v13 = objc_msgSend_operationUUID(v10, v11, v12);
   v15 = objc_msgSend_objectForKeyedSubscript_(v7, v14, v13);
 
-  if (objc_msgSend_hasRecordMoveResponse(v4, v16, v17))
+  if (objc_msgSend_hasRecordMoveResponse(objectCopy, v16, v17))
   {
-    v20 = objc_msgSend_result(v4, v18, v19);
+    v20 = objc_msgSend_result(objectCopy, v18, v19);
     v23 = objc_msgSend_error(v20, v21, v22);
     v26 = objc_msgSend_clientError(v23, v24, v25);
     v29 = objc_msgSend_oplockFailure(v26, v27, v28);
@@ -389,7 +389,7 @@ LABEL_22:
     }
 
     v54 = objc_msgSend_translator(self, v33, v34);
-    v57 = objc_msgSend_recordMoveResponse(v4, v55, v56);
+    v57 = objc_msgSend_recordMoveResponse(objectCopy, v55, v56);
     v60 = objc_msgSend_movedRecord(v57, v58, v59);
     v63 = objc_msgSend_zoneID(v15, v61, v62);
     v66 = objc_msgSend_anonymousCKUserID(v63, v64, v65);
@@ -425,7 +425,7 @@ LABEL_22:
     }
 
     v79 = objc_msgSend_translator(self, v77, v78);
-    v82 = objc_msgSend_recordMoveResponse(v4, v80, v81);
+    v82 = objc_msgSend_recordMoveResponse(objectCopy, v80, v81);
     v85 = objc_msgSend_moveMarker(v82, v83, v84);
     v88 = objc_msgSend_zoneID(v15, v86, v87);
     v91 = objc_msgSend_anonymousCKUserID(v88, v89, v90);
@@ -493,7 +493,7 @@ LABEL_22:
           _os_log_error_impl(&dword_22506F000, v144, OS_LOG_TYPE_ERROR, "req: %{public}@, Inlining fake response operation result for item id %{public}@", buf, 0x16u);
         }
 
-        objc_msgSend_setResult_(v4, v114, v112);
+        objc_msgSend_setResult_(objectCopy, v114, v112);
       }
     }
 
@@ -512,7 +512,7 @@ LABEL_22:
     if (v135)
     {
       v138 = objc_msgSend_recordPostedBlock(self, v136, v137);
-      v141 = objc_msgSend_result(v4, v139, v140);
+      v141 = objc_msgSend_result(objectCopy, v139, v140);
       (v138)[2](v138, v141, v15, v97, v96, v93);
     }
 
@@ -526,7 +526,7 @@ LABEL_22:
     if (v46)
     {
       v49 = objc_msgSend_recordPostedBlock(self, v47, v48);
-      v52 = objc_msgSend_result(v4, v50, v51);
+      v52 = objc_msgSend_result(objectCopy, v50, v51);
       (v49)[2](v49, v52, v15, 0, 0, 0);
     }
 
@@ -538,16 +538,16 @@ LABEL_22:
   return v53;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  failureCopy = failure;
   v7 = objc_msgSend_recordIDByRequestID(self, v5, v6);
-  v10 = objc_msgSend_response(v4, v8, v9);
+  v10 = objc_msgSend_response(failureCopy, v8, v9);
   v13 = objc_msgSend_operationUUID(v10, v11, v12);
   v15 = objc_msgSend_objectForKeyedSubscript_(v7, v14, v13);
 
-  v18 = objc_msgSend_result(v4, v16, v17);
+  v18 = objc_msgSend_result(failureCopy, v16, v17);
   v21 = objc_msgSend_error(v18, v19, v20);
   v24 = objc_msgSend_clientError(v21, v22, v23);
   v27 = objc_msgSend_oplockFailure(v24, v25, v26);
@@ -584,7 +584,7 @@ LABEL_22:
   if (v44)
   {
     v47 = objc_msgSend_recordPostedBlock(self, v45, v46);
-    v50 = objc_msgSend_result(v4, v48, v49);
+    v50 = objc_msgSend_result(failureCopy, v48, v49);
     (v47)[2](v47, v50, v15, 0, 0, 0);
   }
 

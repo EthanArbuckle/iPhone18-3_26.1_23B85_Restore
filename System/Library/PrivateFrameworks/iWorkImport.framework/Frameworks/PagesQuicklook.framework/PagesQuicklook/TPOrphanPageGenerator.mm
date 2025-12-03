@@ -1,23 +1,23 @@
 @interface TPOrphanPageGenerator
-- (BOOL)wantsPageInSectionHint:(id)a3 withState:(id)a4;
-- (TPOrphanPageGenerator)initWithDocumentRoot:(id)a3;
-- (void)createOrUpdatePageHintInSectionHint:(id)a3 withState:(id)a4;
+- (BOOL)wantsPageInSectionHint:(id)hint withState:(id)state;
+- (TPOrphanPageGenerator)initWithDocumentRoot:(id)root;
+- (void)createOrUpdatePageHintInSectionHint:(id)hint withState:(id)state;
 @end
 
 @implementation TPOrphanPageGenerator
 
-- (TPOrphanPageGenerator)initWithDocumentRoot:(id)a3
+- (TPOrphanPageGenerator)initWithDocumentRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   v32.receiver = self;
   v32.super_class = TPOrphanPageGenerator;
   v5 = [(TPOrphanPageGenerator *)&v32 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_documentRoot, v4);
+    v7 = objc_storeWeak(&v5->_documentRoot, rootCopy);
 
-    if (!v4)
+    if (!rootCopy)
     {
       v13 = MEMORY[0x277D81150];
       v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, v9, v10, v11, v12, "[TPOrphanPageGenerator initWithDocumentRoot:]");
@@ -32,18 +32,18 @@
   return v6;
 }
 
-- (BOOL)wantsPageInSectionHint:(id)a3 withState:(id)a4
+- (BOOL)wantsPageInSectionHint:(id)hint withState:(id)state
 {
-  v29 = objc_msgSend_onLastSection(v5, v6, v7, v8, v9, v10) && (WeakRetained = objc_loadWeakRetained(&self->_documentRoot), objc_msgSend_floatingDrawables(WeakRetained, v12, v13, v14, v15, v16), v17 = v5 = a4;
+  v29 = objc_msgSend_onLastSection(v5, v6, v7, v8, v9, v10) && (WeakRetained = objc_loadWeakRetained(&self->_documentRoot), objc_msgSend_floatingDrawables(WeakRetained, v12, v13, v14, v15, v16), v17 = v5 = state;
 
   return v29;
 }
 
-- (void)createOrUpdatePageHintInSectionHint:(id)a3 withState:(id)a4
+- (void)createOrUpdatePageHintInSectionHint:(id)hint withState:(id)state
 {
-  v5 = a3;
-  v11 = objc_msgSend_pageIndex(a4, v6, v7, v8, v9, v10);
-  v22 = objc_msgSend_pageHintForPageIndex_(v5, v12, v13, v14, v15, v16, v11);
+  hintCopy = hint;
+  v11 = objc_msgSend_pageIndex(state, v6, v7, v8, v9, v10);
+  v22 = objc_msgSend_pageHintForPageIndex_(hintCopy, v12, v13, v14, v15, v16, v11);
 
   objc_msgSend_setPageKind_(v22, v17, v18, v19, v20, v21, 3);
 }

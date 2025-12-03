@@ -1,20 +1,20 @@
 @interface OKMediaFeederPhotoKit
-+ (id)mediaFeederWithAllAssetsWithOptions:(id)a3;
-+ (id)mediaFeederWithAssetCollection:(id)a3 andOptions:(id)a4;
-+ (id)mediaFeederWithFetchResult:(id)a3;
++ (id)mediaFeederWithAllAssetsWithOptions:(id)options;
++ (id)mediaFeederWithAssetCollection:(id)collection andOptions:(id)options;
++ (id)mediaFeederWithFetchResult:(id)result;
 + (id)supportedSettings;
 - (BOOL)canBePersisted;
 - (OKMediaFeederPhotoKit)init;
-- (OKMediaFeederPhotoKit)initWithAllAssetsWithOptions:(id)a3;
-- (OKMediaFeederPhotoKit)initWithAssetCollection:(id)a3 andOptions:(id)a4;
-- (OKMediaFeederPhotoKit)initWithFetchResult:(id)a3;
-- (OKMediaFeederPhotoKit)initWithSettings:(id)a3;
+- (OKMediaFeederPhotoKit)initWithAllAssetsWithOptions:(id)options;
+- (OKMediaFeederPhotoKit)initWithAssetCollection:(id)collection andOptions:(id)options;
+- (OKMediaFeederPhotoKit)initWithFetchResult:(id)result;
+- (OKMediaFeederPhotoKit)initWithSettings:(id)settings;
 - (id)feederSettings;
-- (id)indexesForMediaObjects:(id)a3;
-- (id)mediaObjectURLsAtIndexes:(id)a3;
-- (id)mediaObjectsAtIndexes:(id)a3;
+- (id)indexesForMediaObjects:(id)objects;
+- (id)mediaObjectURLsAtIndexes:(id)indexes;
+- (id)mediaObjectsAtIndexes:(id)indexes;
 - (id)photoLibrary;
-- (id)reloadMediaObjectsWithCompletionHandler:(id)a3;
+- (id)reloadMediaObjectsWithCompletionHandler:(id)handler;
 - (unint64_t)numberOfMediaObjects;
 - (void)dealloc;
 @end
@@ -36,10 +36,10 @@
   return v3;
 }
 
-- (OKMediaFeederPhotoKit)initWithAssetCollection:(id)a3 andOptions:(id)a4
+- (OKMediaFeederPhotoKit)initWithAssetCollection:(id)collection andOptions:(id)options
 {
-  [(OKMediaFeederPhotoKit *)self setAssetCollection:a3];
-  [(OKMediaFeederPhotoKit *)self setOptions:a4];
+  [(OKMediaFeederPhotoKit *)self setAssetCollection:collection];
+  [(OKMediaFeederPhotoKit *)self setOptions:options];
   result = [(OKMediaFeederPhotoKit *)self init];
   if (result)
   {
@@ -70,16 +70,16 @@
   return result;
 }
 
-+ (id)mediaFeederWithAssetCollection:(id)a3 andOptions:(id)a4
++ (id)mediaFeederWithAssetCollection:(id)collection andOptions:(id)options
 {
-  v4 = [[OKMediaFeederPhotoKit alloc] initWithAssetCollection:a3 andOptions:a4];
+  v4 = [[OKMediaFeederPhotoKit alloc] initWithAssetCollection:collection andOptions:options];
 
   return v4;
 }
 
-- (OKMediaFeederPhotoKit)initWithAllAssetsWithOptions:(id)a3
+- (OKMediaFeederPhotoKit)initWithAllAssetsWithOptions:(id)options
 {
-  [(OKMediaFeederPhotoKit *)self setOptions:a3];
+  [(OKMediaFeederPhotoKit *)self setOptions:options];
   result = [(OKMediaFeederPhotoKit *)self init];
   if (result)
   {
@@ -89,16 +89,16 @@
   return result;
 }
 
-+ (id)mediaFeederWithAllAssetsWithOptions:(id)a3
++ (id)mediaFeederWithAllAssetsWithOptions:(id)options
 {
-  v3 = [[OKMediaFeederPhotoKit alloc] initWithAllAssetsWithOptions:a3];
+  v3 = [[OKMediaFeederPhotoKit alloc] initWithAllAssetsWithOptions:options];
 
   return v3;
 }
 
-- (OKMediaFeederPhotoKit)initWithFetchResult:(id)a3
+- (OKMediaFeederPhotoKit)initWithFetchResult:(id)result
 {
-  [(OKMediaFeederPhotoKit *)self setFetchResult:a3];
+  [(OKMediaFeederPhotoKit *)self setFetchResult:result];
   result = [(OKMediaFeederPhotoKit *)self init];
   if (result)
   {
@@ -108,27 +108,27 @@
   return result;
 }
 
-+ (id)mediaFeederWithFetchResult:(id)a3
++ (id)mediaFeederWithFetchResult:(id)result
 {
-  v3 = [[OKMediaFeederPhotoKit alloc] initWithFetchResult:a3];
+  v3 = [[OKMediaFeederPhotoKit alloc] initWithFetchResult:result];
 
   return v3;
 }
 
-- (OKMediaFeederPhotoKit)initWithSettings:(id)a3
+- (OKMediaFeederPhotoKit)initWithSettings:(id)settings
 {
   v7.receiver = self;
   v7.super_class = OKMediaFeederPhotoKit;
   v4 = [(OKMediaFeeder *)&v7 initWithSettings:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"type"];
+    v5 = [settings objectForKey:@"type"];
     if (v5)
     {
       v4->_type = [v5 unsignedIntegerValue];
     }
 
-    v4->_collectionIdentifier = [objc_msgSend(a3 objectForKey:{@"collectionIdentifier", "copy"}];
+    v4->_collectionIdentifier = [objc_msgSend(settings objectForKey:{@"collectionIdentifier", "copy"}];
   }
 
   return v4;
@@ -187,7 +187,7 @@
 + (id)supportedSettings
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___OKMediaFeederPhotoKit;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v5, sel_supportedSettings)}];
   v12[0] = @"type";
@@ -240,9 +240,9 @@
     if ([(OKMediaFeederPhotoKit *)self assetCollection])
     {
       v13 = @"collectionIdentifier";
-      v14 = [(PHAssetCollection *)[(OKMediaFeederPhotoKit *)self assetCollection] localIdentifier];
+      localIdentifier = [(PHAssetCollection *)[(OKMediaFeederPhotoKit *)self assetCollection] localIdentifier];
       v5 = MEMORY[0x277CBEAC0];
-      v6 = &v14;
+      v6 = &localIdentifier;
       v7 = &v13;
       goto LABEL_9;
     }
@@ -279,14 +279,14 @@ LABEL_9:
   return v3;
 }
 
-- (id)reloadMediaObjectsWithCompletionHandler:(id)a3
+- (id)reloadMediaObjectsWithCompletionHandler:(id)handler
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __65__OKMediaFeederPhotoKit_reloadMediaObjectsWithCompletionHandler___block_invoke;
   v4[3] = &unk_279C90DA0;
   v4[4] = self;
-  return [OKMediaFeeder operationWithBlock:v4 cancellationBlock:&__block_literal_global_28 completionHandler:a3];
+  return [OKMediaFeeder operationWithBlock:v4 cancellationBlock:&__block_literal_global_28 completionHandler:handler];
 }
 
 uint64_t __65__OKMediaFeederPhotoKit_reloadMediaObjectsWithCompletionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -353,29 +353,29 @@ LABEL_11:
 
 - (unint64_t)numberOfMediaObjects
 {
-  v2 = [(OKMediaFeederPhotoKit *)self fetchResult];
+  fetchResult = [(OKMediaFeederPhotoKit *)self fetchResult];
 
-  return [(PHFetchResult *)v2 count];
+  return [(PHFetchResult *)fetchResult count];
 }
 
-- (id)mediaObjectsAtIndexes:(id)a3
+- (id)mediaObjectsAtIndexes:(id)indexes
 {
-  v4 = [(OKMediaFeederPhotoKit *)self fetchResult];
+  fetchResult = [(OKMediaFeederPhotoKit *)self fetchResult];
 
-  return [(PHFetchResult *)v4 objectsAtIndexes:a3];
+  return [(PHFetchResult *)fetchResult objectsAtIndexes:indexes];
 }
 
-- (id)mediaObjectURLsAtIndexes:(id)a3
+- (id)mediaObjectURLsAtIndexes:(id)indexes
 {
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [(OKMediaFeederPhotoKit *)self fetchResult];
+  array = [MEMORY[0x277CBEB18] array];
+  fetchResult = [(OKMediaFeederPhotoKit *)self fetchResult];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __50__OKMediaFeederPhotoKit_mediaObjectURLsAtIndexes___block_invoke;
   v8[3] = &unk_279C90ED8;
-  v8[4] = v5;
-  [(PHFetchResult *)v6 enumerateObjectsAtIndexes:a3 options:0 usingBlock:v8];
-  return [MEMORY[0x277CBEA60] arrayWithArray:v5];
+  v8[4] = array;
+  [(PHFetchResult *)fetchResult enumerateObjectsAtIndexes:indexes options:0 usingBlock:v8];
+  return [MEMORY[0x277CBEA60] arrayWithArray:array];
 }
 
 uint64_t __50__OKMediaFeederPhotoKit_mediaObjectURLsAtIndexes___block_invoke(uint64_t a1, uint64_t a2)
@@ -386,15 +386,15 @@ uint64_t __50__OKMediaFeederPhotoKit_mediaObjectURLsAtIndexes___block_invoke(uin
   return [v2 addObject:v3];
 }
 
-- (id)indexesForMediaObjects:(id)a3
+- (id)indexesForMediaObjects:(id)objects
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [objects countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -406,7 +406,7 @@ uint64_t __50__OKMediaFeederPhotoKit_mediaObjectURLsAtIndexes___block_invoke(uin
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(objects);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
@@ -416,7 +416,7 @@ uint64_t __50__OKMediaFeederPhotoKit_mediaObjectURLsAtIndexes___block_invoke(uin
           v11 = [(PHFetchResult *)[(OKMediaFeederPhotoKit *)self fetchResult] indexOfObject:v10];
           if (v11 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            [v5 addIndex:v11];
+            [indexSet addIndex:v11];
           }
         }
 
@@ -424,13 +424,13 @@ uint64_t __50__OKMediaFeederPhotoKit_mediaObjectURLsAtIndexes___block_invoke(uin
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [objects countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 
-  return v5;
+  return indexSet;
 }
 
 @end

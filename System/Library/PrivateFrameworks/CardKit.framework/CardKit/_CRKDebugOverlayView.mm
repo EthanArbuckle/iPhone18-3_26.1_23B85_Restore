@@ -1,22 +1,22 @@
 @interface _CRKDebugOverlayView
-- (_CRKDebugOverlayView)initWithFrame:(CGRect)a3;
+- (_CRKDebugOverlayView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setColor:(id)a3;
-- (void)setDebugText:(id)a3;
+- (void)setColor:(id)color;
+- (void)setDebugText:(id)text;
 @end
 
 @implementation _CRKDebugOverlayView
 
-- (_CRKDebugOverlayView)initWithFrame:(CGRect)a3
+- (_CRKDebugOverlayView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = _CRKDebugOverlayView;
-  v3 = [(_CRKDebugOverlayView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_CRKDebugOverlayView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(_CRKDebugOverlayView *)v3 layer];
-    [v5 setBorderWidth:2.0];
+    layer = [(_CRKDebugOverlayView *)v3 layer];
+    [layer setBorderWidth:2.0];
 
     v6 = objc_alloc_init(MEMORY[0x277D756B8]);
     label = v4->_label;
@@ -34,28 +34,28 @@
   return v4;
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v7 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_color isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_color, a3);
-    v5 = [(_CRKDebugOverlayView *)self layer];
-    v6 = v7;
-    [v5 setBorderColor:{objc_msgSend(v7, "CGColor")}];
+    objc_storeStrong(&self->_color, color);
+    layer = [(_CRKDebugOverlayView *)self layer];
+    v6 = colorCopy;
+    [layer setBorderColor:{objc_msgSend(colorCopy, "CGColor")}];
 
-    [(UILabel *)self->_label setTextColor:v7];
+    [(UILabel *)self->_label setTextColor:colorCopy];
     [(_CRKDebugOverlayView *)self setNeedsLayout];
   }
 }
 
-- (void)setDebugText:(id)a3
+- (void)setDebugText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   if (([(NSString *)self->_debugText isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_debugText, a3);
-    [(UILabel *)self->_label setText:v5];
+    objc_storeStrong(&self->_debugText, text);
+    [(UILabel *)self->_label setText:textCopy];
     [(_CRKDebugOverlayView *)self setNeedsLayout];
   }
 }

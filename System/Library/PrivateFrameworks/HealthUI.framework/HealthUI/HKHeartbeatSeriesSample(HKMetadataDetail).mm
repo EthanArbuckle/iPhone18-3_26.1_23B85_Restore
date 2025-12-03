@@ -10,7 +10,7 @@
   v8 = a5;
   v9 = a4;
   v10 = a3;
-  v11 = [[HKDataMetadataBeatToBeatSection alloc] initWithSample:a1 healthStore:v10 displayTypeController:v9 unitController:v8];
+  v11 = [[HKDataMetadataBeatToBeatSection alloc] initWithSample:self healthStore:v10 displayTypeController:v9 unitController:v8];
 
   v14[0] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];

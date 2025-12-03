@@ -5,15 +5,15 @@
 - (NSPredicate)predicate;
 - (NSString)userDescription;
 - (_TtC18Feedback_Assistant16FBAFilterManager)init;
-- (_TtC18Feedback_Assistant16FBAFilterManager)initWithFilterGroups:(id)a3;
+- (_TtC18Feedback_Assistant16FBAFilterManager)initWithFilterGroups:(id)groups;
 - (_TtP18Feedback_Assistant24FBAFilterManagerDelegate_)filterDelegate;
-- (id)filterForIndexPath:(id)a3;
+- (id)filterForIndexPath:(id)path;
 - (void)activate;
 - (void)deactivate;
-- (void)setActive:(BOOL)a3;
-- (void)setFilterGroups:(id)a3;
-- (void)toggleFilterAtIndex:(int64_t)a3;
-- (void)toggleFilterAtIndexPath:(id)a3;
+- (void)setActive:(BOOL)active;
+- (void)setFilterGroups:(id)groups;
+- (void)toggleFilterAtIndex:(int64_t)index;
+- (void)toggleFilterAtIndexPath:(id)path;
 @end
 
 @implementation FBAFilterManager
@@ -28,7 +28,7 @@
   return v3.super.isa;
 }
 
-- (void)setFilterGroups:(id)a3
+- (void)setFilterGroups:(id)groups
 {
   type metadata accessor for FBAFilterGroup();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -43,15 +43,15 @@
   return Strong;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v4 = self;
-  sub_100071044(a3);
+  selfCopy = self;
+  sub_100071044(active);
 }
 
 - (NSPredicate)predicate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000716F8();
 
   return v3;
@@ -68,7 +68,7 @@
 
 - (NSString)userDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_100071B50();
 
   v3 = String._bridgeToObjectiveC()();
@@ -76,14 +76,14 @@
   return v3;
 }
 
-- (_TtC18Feedback_Assistant16FBAFilterManager)initWithFilterGroups:(id)a3
+- (_TtC18Feedback_Assistant16FBAFilterManager)initWithFilterGroups:(id)groups
 {
   type metadata accessor for FBAFilterGroup();
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   return sub_100071F38(v3);
 }
 
-- (id)filterForIndexPath:(id)a3
+- (id)filterForIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
@@ -91,7 +91,7 @@
   __chkstk_darwin(v4);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   sub_1000720D8();
   v11 = v10;
 
@@ -100,7 +100,7 @@
   return v11;
 }
 
-- (void)toggleFilterAtIndexPath:(id)a3
+- (void)toggleFilterAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
@@ -108,21 +108,21 @@
   __chkstk_darwin(v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   sub_1000722E4();
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)toggleFilterAtIndex:(int64_t)a3
+- (void)toggleFilterAtIndex:(int64_t)index
 {
-  v4 = self;
-  sub_1000725B4(a3);
+  selfCopy = self;
+  sub_1000725B4(index);
 }
 
 - (BOOL)toggleActive
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10007273C();
 
   return v3 & 1;
@@ -130,13 +130,13 @@
 
 - (void)activate
 {
-  v2 = self;
+  selfCopy = self;
   sub_100072864();
 }
 
 - (void)deactivate
 {
-  v2 = self;
+  selfCopy = self;
   sub_10007294C();
 }
 

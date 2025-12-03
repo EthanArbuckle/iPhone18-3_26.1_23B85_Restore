@@ -1,7 +1,7 @@
 @interface OSADailyTelemetryMonitor
 + (void)collectDeveloperOptIn;
 + (void)evaluateState;
-+ (void)sendRTCBeacon:(BOOL)a3;
++ (void)sendRTCBeacon:(BOOL)beacon;
 @end
 
 @implementation OSADailyTelemetryMonitor
@@ -31,14 +31,14 @@
   AnalyticsSendEventLazy();
 }
 
-+ (void)sendRTCBeacon:(BOOL)a3
++ (void)sendRTCBeacon:(BOOL)beacon
 {
-  v3 = a3;
+  beaconCopy = beacon;
   v4 = MGCopyAnswer();
   v5 = MGCopyAnswer();
   v6 = v5;
   v7 = +[OSASystemConfiguration sharedInstance];
-  v8 = [v7 hwModel];
+  hwModel = [v7 hwModel];
 
   if (v5)
   {
@@ -74,11 +74,11 @@
     v17[0] = v10;
     v16[0] = @"serial";
     v16[1] = @"hwModel";
-    v11 = [(__CFString *)v8 length];
+    v11 = [(__CFString *)hwModel length];
     v12 = @"no_hw_model";
     if (v11)
     {
-      v12 = v8;
+      v12 = hwModel;
     }
 
     v17[1] = v12;
@@ -87,7 +87,7 @@
     v17[2] = v13;
     v14 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:3];
 
-    if (v3)
+    if (beaconCopy)
     {
       rtcsc_send_realtime();
     }

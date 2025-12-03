@@ -1,33 +1,33 @@
 @interface SUManagedDeviceUpdateDelay
-- (SUManagedDeviceUpdateDelay)initWithCoder:(id)a3;
-- (SUManagedDeviceUpdateDelay)initWithDelay:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUManagedDeviceUpdateDelay)initWithCoder:(id)coder;
+- (SUManagedDeviceUpdateDelay)initWithDelay:(id)delay;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)delayEndDate;
 - (id)description;
 - (unint64_t)delayUnit;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUManagedDeviceUpdateDelay
 
-- (SUManagedDeviceUpdateDelay)initWithDelay:(id)a3
+- (SUManagedDeviceUpdateDelay)initWithDelay:(id)delay
 {
-  v4 = a3;
+  delayCopy = delay;
   v13.receiver = self;
   v13.super_class = SUManagedDeviceUpdateDelay;
   v5 = [(SUManagedDeviceUpdateDelay *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (delayCopy)
     {
-      v5->_isDelayed = [v4 isDelayed];
-      v7 = [v4 delayedStartDate];
-      v8 = [v7 copy];
+      v5->_isDelayed = [delayCopy isDelayed];
+      delayedStartDate = [delayCopy delayedStartDate];
+      v8 = [delayedStartDate copy];
       delayedStartDate = v6->_delayedStartDate;
       v6->_delayedStartDate = v8;
 
-      v10 = [v4 delayPeriod];
+      delayPeriod = [delayCopy delayPeriod];
     }
 
     else
@@ -36,10 +36,10 @@
       v11 = v5->_delayedStartDate;
       v5->_delayedStartDate = 0;
 
-      v10 = 0;
+      delayPeriod = 0;
     }
 
-    v6->_delayPeriod = v10;
+    v6->_delayPeriod = delayPeriod;
   }
 
   return v6;
@@ -47,11 +47,11 @@
 
 - (id)delayEndDate
 {
-  v3 = [(SUManagedDeviceUpdateDelay *)self delayUnit];
+  delayUnit = [(SUManagedDeviceUpdateDelay *)self delayUnit];
   delayPeriod = self->_delayPeriod;
   if (delayPeriod - 1 > 0x59)
   {
-    v12 = 30 * v3;
+    v12 = 30 * delayUnit;
     SULogInfo(@"delay interval is outside 1-90 day range. Defaulting to %d day delay interval", v4, v5, v6, v7, v8, v9, v10, 30);
   }
 
@@ -70,8 +70,8 @@
   v2 = MEMORY[0x277CCACA8];
   isDelayed = self->_isDelayed;
   delayedStartDate = self->_delayedStartDate;
-  v5 = [(SUManagedDeviceUpdateDelay *)self delayEndDate];
-  v6 = [v2 stringWithFormat:@"isDelayed:%d delayedStartDate: %@ delayedEndDate: %@", isDelayed, delayedStartDate, v5];
+  delayEndDate = [(SUManagedDeviceUpdateDelay *)self delayEndDate];
+  v6 = [v2 stringWithFormat:@"isDelayed:%d delayedStartDate: %@ delayedEndDate: %@", isDelayed, delayedStartDate, delayEndDate];
 
   return v6;
 }
@@ -79,9 +79,9 @@
 - (unint64_t)delayUnit
 {
   v2 = +[SUPreferences sharedInstance];
-  v3 = [v2 shouldDelayInMinutes];
+  shouldDelayInMinutes = [v2 shouldDelayInMinutes];
 
-  if (v3)
+  if (shouldDelayInMinutes)
   {
     return 60;
   }
@@ -92,42 +92,42 @@
   }
 }
 
-- (SUManagedDeviceUpdateDelay)initWithCoder:(id)a3
+- (SUManagedDeviceUpdateDelay)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = SUManagedDeviceUpdateDelay;
   v5 = [(SUManagedDeviceUpdateDelay *)&v8 init];
   if (v5)
   {
-    -[SUManagedDeviceUpdateDelay setIsDelayed:](v5, "setIsDelayed:", [v4 decodeBoolForKey:@"isDelayedKey"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"delayedStartDateKey"];
+    -[SUManagedDeviceUpdateDelay setIsDelayed:](v5, "setIsDelayed:", [coderCopy decodeBoolForKey:@"isDelayedKey"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"delayedStartDateKey"];
     [(SUManagedDeviceUpdateDelay *)v5 setDelayedStartDate:v6];
 
-    -[SUManagedDeviceUpdateDelay setDelayPeriod:](v5, "setDelayPeriod:", [v4 decodeIntegerForKey:@"delayedPeriod"]);
+    -[SUManagedDeviceUpdateDelay setDelayPeriod:](v5, "setDelayPeriod:", [coderCopy decodeIntegerForKey:@"delayedPeriod"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeBool:-[SUManagedDeviceUpdateDelay isDelayed](self forKey:{"isDelayed"), @"isDelayedKey"}];
-  v4 = [(SUManagedDeviceUpdateDelay *)self delayedStartDate];
-  [v5 encodeObject:v4 forKey:@"delayedStartDateKey"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[SUManagedDeviceUpdateDelay isDelayed](self forKey:{"isDelayed"), @"isDelayedKey"}];
+  delayedStartDate = [(SUManagedDeviceUpdateDelay *)self delayedStartDate];
+  [coderCopy encodeObject:delayedStartDate forKey:@"delayedStartDateKey"];
 
-  [v5 encodeInteger:-[SUManagedDeviceUpdateDelay delayPeriod](self forKey:{"delayPeriod"), @"delayedPeriod"}];
+  [coderCopy encodeInteger:-[SUManagedDeviceUpdateDelay delayPeriod](self forKey:{"delayPeriod"), @"delayedPeriod"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11 = objc_alloc_init(SUManagedDeviceUpdateDelay);
   if (v11)
   {
     [(SUManagedDeviceUpdateDelay *)v11 setIsDelayed:[(SUManagedDeviceUpdateDelay *)self isDelayed]];
-    v12 = [(SUManagedDeviceUpdateDelay *)self delayedStartDate];
-    [(SUManagedDeviceUpdateDelay *)v11 setDelayedStartDate:v12];
+    delayedStartDate = [(SUManagedDeviceUpdateDelay *)self delayedStartDate];
+    [(SUManagedDeviceUpdateDelay *)v11 setDelayedStartDate:delayedStartDate];
 
     [(SUManagedDeviceUpdateDelay *)v11 setDelayPeriod:[(SUManagedDeviceUpdateDelay *)self delayPeriod]];
     v13 = v11;

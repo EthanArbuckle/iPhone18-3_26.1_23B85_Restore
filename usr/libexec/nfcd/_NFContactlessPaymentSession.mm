@@ -1,56 +1,56 @@
 @interface _NFContactlessPaymentSession
-- (BOOL)_checkActiveAppletCompatibilityWithField:(id)a3;
-- (BOOL)_checkActiveVASCompatibilityWithField:(id)a3;
-- (BOOL)_checkDeferredActiveAppletCompatibilityWithField:(id)a3;
-- (BOOL)_isField:(id)a3 compatibleWithApplet:(id)a4;
-- (BOOL)_requiresDeferredActivation:(id)a3;
+- (BOOL)_checkActiveAppletCompatibilityWithField:(id)field;
+- (BOOL)_checkActiveVASCompatibilityWithField:(id)field;
+- (BOOL)_checkDeferredActiveAppletCompatibilityWithField:(id)field;
+- (BOOL)_isField:(id)field compatibleWithApplet:(id)applet;
+- (BOOL)_requiresDeferredActivation:(id)activation;
 - (BOOL)readyForPayment;
-- (BOOL)startCardEmulationWithType:(unint64_t)a3;
+- (BOOL)startCardEmulationWithType:(unint64_t)type;
 - (BOOL)startDefaultMode;
 - (BOOL)startFieldDetectMode;
 - (BOOL)startWiredMode;
-- (BOOL)suspendWithInfo:(id)a3;
-- (id)_authorize:(id)a3;
-- (id)_switchToBestGroupMemberOfHead:(id)a3 forField:(id)a4;
+- (BOOL)suspendWithInfo:(id)info;
+- (id)_authorize:(id)_authorize;
+- (id)_switchToBestGroupMemberOfHead:(id)head forField:(id)field;
 - (id)preloadApplets;
 - (unint64_t)defaultEmulationType;
 - (void)_deauthorize;
 - (void)_fireFelicaTransactionEndEvent;
 - (void)_fireFelicaTransactionStartEvent;
-- (void)_performAuthAndStartCardEmulation:(id)a3 fromDeferred:(BOOL)a4 completion:(id)a5;
-- (void)_performDeferredAuthIfNeeded:(id)a3;
-- (void)_sync_startDeferredCardEmulationWithAuthorization:(id)a3 completion:(id)a4;
+- (void)_performAuthAndStartCardEmulation:(id)emulation fromDeferred:(BOOL)deferred completion:(id)completion;
+- (void)_performDeferredAuthIfNeeded:(id)needed;
+- (void)_sync_startDeferredCardEmulationWithAuthorization:(id)authorization completion:(id)completion;
 - (void)cleanup;
-- (void)createHandoffTokenWithCompletion:(id)a3;
-- (void)didEndSession:(id)a3;
-- (void)didStartSession:(id)a3;
-- (void)enableDemoModeWithCompletion:(id)a3;
-- (void)enablePlasticCardMode:(BOOL)a3 completion:(id)a4;
-- (void)getAppletsWithCompletion:(id)a3;
-- (void)getFelicaAppletState:(id)a3 completion:(id)a4;
-- (void)getTransitAppletState:(id)a3 completion:(id)a4;
-- (void)handleAppletInactivityTimeout:(id)a3;
+- (void)createHandoffTokenWithCompletion:(id)completion;
+- (void)didEndSession:(id)session;
+- (void)didStartSession:(id)session;
+- (void)enableDemoModeWithCompletion:(id)completion;
+- (void)enablePlasticCardMode:(BOOL)mode completion:(id)completion;
+- (void)getAppletsWithCompletion:(id)completion;
+- (void)getFelicaAppletState:(id)state completion:(id)completion;
+- (void)getTransitAppletState:(id)state completion:(id)completion;
+- (void)handleAppletInactivityTimeout:(id)timeout;
 - (void)handleDeferredAuthTimeout;
 - (void)handleExpressModeExited;
 - (void)handleExpressModeStarted;
 - (void)handleExpressModeTimeout;
-- (void)handleFelicaStateEvent:(id)a3 appletAID:(id)a4;
-- (void)handleFieldNotification:(id)a3;
+- (void)handleFelicaStateEvent:(id)event appletAID:(id)d;
+- (void)handleFieldNotification:(id)notification;
 - (void)handleFieldReset;
 - (void)handlePendingServerRequest;
-- (void)handleRequestService:(id)a3;
+- (void)handleRequestService:(id)service;
 - (void)handleSecureElementEndOfOperation;
-- (void)handleTimerExpiredEvent:(id)a3;
-- (void)handleTransactionEndEvent:(id)a3 atlData:(id)a4;
-- (void)handleTransactionStartEvent:(id)a3 atlData:(id)a4;
-- (void)pauseExpressAndStartDefaultModeAfter:(double)a3;
-- (void)setActivePaymentApplet:(id)a3 keys:(id)a4 authorization:(id)a5 completion:(id)a6;
-- (void)setActivePaymentApplets:(id)a3 keyIdentifiers:(id)a4 authorization:(id)a5 completion:(id)a6;
-- (void)startCardEmulationWithAuthorization:(id)a3 completion:(id)a4;
-- (void)startDeferredCardEmulationWithAuthorization:(id)a3 completion:(id)a4;
-- (void)startExpressModeWithCompletion:(id)a3;
-- (void)startHostCardEmulationWithCompletion:(id)a3;
-- (void)stopCardEmulationWithCompletion:(id)a3;
+- (void)handleTimerExpiredEvent:(id)event;
+- (void)handleTransactionEndEvent:(id)event atlData:(id)data;
+- (void)handleTransactionStartEvent:(id)event atlData:(id)data;
+- (void)pauseExpressAndStartDefaultModeAfter:(double)after;
+- (void)setActivePaymentApplet:(id)applet keys:(id)keys authorization:(id)authorization completion:(id)completion;
+- (void)setActivePaymentApplets:(id)applets keyIdentifiers:(id)identifiers authorization:(id)authorization completion:(id)completion;
+- (void)startCardEmulationWithAuthorization:(id)authorization completion:(id)completion;
+- (void)startDeferredCardEmulationWithAuthorization:(id)authorization completion:(id)completion;
+- (void)startExpressModeWithCompletion:(id)completion;
+- (void)startHostCardEmulationWithCompletion:(id)completion;
+- (void)stopCardEmulationWithCompletion:(id)completion;
 - (void)waitForSafeTransactionCompletion;
 @end
 
@@ -122,9 +122,9 @@
     if ([(_NFContactlessSession *)self plasticCardMode])
     {
       [(_NFContactlessPaymentSession *)self startWiredMode];
-      v16 = [(_NFContactlessSession *)self secureElementWrapper];
-      v17 = [v16 handle];
-      v18 = [v17 enableGreenCarThreshold:1];
+      secureElementWrapper = [(_NFContactlessSession *)self secureElementWrapper];
+      handle = [secureElementWrapper handle];
+      v18 = [handle enableGreenCarThreshold:1];
 
       if ((v18 & 1) == 0)
       {
@@ -175,13 +175,13 @@
         }
       }
 
-      v30 = [(_NFContactlessSession *)self activeApplet];
+      activeApplet = [(_NFContactlessSession *)self activeApplet];
 
-      if (v30)
+      if (activeApplet)
       {
-        v31 = [(_NFContactlessSession *)self secureElementWrapper];
-        v32 = [(_NFContactlessSession *)self activeApplet];
-        v33 = sub_1002629A4(v31, 0, v32);
+        secureElementWrapper2 = [(_NFContactlessSession *)self secureElementWrapper];
+        activeApplet2 = [(_NFContactlessSession *)self activeApplet];
+        v33 = sub_1002629A4(secureElementWrapper2, 0, activeApplet2);
 
         if (v33)
         {
@@ -290,8 +290,8 @@
       }
 
       [(_NFContactlessPaymentSession *)self startWiredMode];
-      v55 = [(_NFXPCSession *)self expressModeManager];
-      sub_100035E30(v55, self->_delayExpressMode);
+      expressModeManager = [(_NFXPCSession *)self expressModeManager];
+      sub_100035E30(expressModeManager, self->_delayExpressMode);
     }
   }
 
@@ -306,11 +306,11 @@
   }
 }
 
-- (BOOL)suspendWithInfo:(id)a3
+- (BOOL)suspendWithInfo:(id)info
 {
   v39.receiver = self;
   v39.super_class = _NFContactlessPaymentSession;
-  v5 = [(_NFContactlessSession *)&v39 suspendWithInfo:a3];
+  v5 = [(_NFContactlessSession *)&v39 suspendWithInfo:info];
   if (v5)
   {
     self->_deferredAuthRequested = 0;
@@ -321,9 +321,9 @@
     if ([(_NFContactlessSession *)self plasticCardMode])
     {
       [(_NFContactlessPaymentSession *)self startWiredMode];
-      v6 = [(_NFContactlessSession *)self secureElementWrapper];
-      v7 = [v6 handle];
-      v8 = [v7 enableGreenCarThreshold:1];
+      secureElementWrapper = [(_NFContactlessSession *)self secureElementWrapper];
+      handle = [secureElementWrapper handle];
+      v8 = [handle enableGreenCarThreshold:1];
 
       if ((v8 & 1) == 0)
       {
@@ -374,13 +374,13 @@
         }
       }
 
-      v20 = [(_NFContactlessSession *)self activeApplet];
+      activeApplet = [(_NFContactlessSession *)self activeApplet];
 
-      if (v20)
+      if (activeApplet)
       {
-        v21 = [(_NFContactlessSession *)self secureElementWrapper];
-        v22 = [(_NFContactlessSession *)self activeApplet];
-        v23 = sub_1002629A4(v21, 0, v22);
+        secureElementWrapper2 = [(_NFContactlessSession *)self secureElementWrapper];
+        activeApplet2 = [(_NFContactlessSession *)self activeApplet];
+        v23 = sub_1002629A4(secureElementWrapper2, 0, activeApplet2);
 
         if (v23)
         {
@@ -468,11 +468,11 @@
 {
   v6.receiver = self;
   v6.super_class = _NFContactlessPaymentSession;
-  v2 = [(_NFContactlessSession *)&v6 preloadApplets];
-  v3 = v2;
-  if (v2)
+  preloadApplets = [(_NFContactlessSession *)&v6 preloadApplets];
+  v3 = preloadApplets;
+  if (preloadApplets)
   {
-    v4 = v2;
+    v4 = preloadApplets;
   }
 
   return v3;
@@ -480,8 +480,8 @@
 
 - (BOOL)readyForPayment
 {
-  v3 = [(_NFContactlessSession *)self activeApplet];
-  if (v3)
+  activeApplet = [(_NFContactlessSession *)self activeApplet];
+  if (activeApplet)
   {
     hasAuthorized = self->_hasAuthorized;
   }
@@ -494,20 +494,20 @@
   return hasAuthorized;
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
   v6.receiver = self;
   v6.super_class = _NFContactlessPaymentSession;
   [(_NFContactlessSession *)&v6 didStartSession:?];
-  if (!a3)
+  if (!session)
   {
     v5 = [(_NFContactlessSession *)self setActiveApplet:0];
   }
 }
 
-- (void)didEndSession:(id)a3
+- (void)didEndSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   if (![(_NFSession *)self didEnd])
   {
     self->_deferredAuthRequested = 0;
@@ -562,11 +562,11 @@
       }
 
       [(NFTimer *)self->_restartRoutingTimer stopTimer];
-      v16 = [(_NFXPCSession *)self expressModeManager];
-      v17 = v16;
-      if (v16)
+      expressModeManager = [(_NFXPCSession *)self expressModeManager];
+      v17 = expressModeManager;
+      if (expressModeManager)
       {
-        sub_100031A1C(v16, 0, 1);
+        sub_100031A1C(expressModeManager, 0, 1);
       }
 
       restartRoutingTimer = self->_restartRoutingTimer;
@@ -576,12 +576,12 @@
 
   v20.receiver = self;
   v20.super_class = _NFContactlessPaymentSession;
-  [(_NFSession *)&v20 didEndSession:v5];
+  [(_NFSession *)&v20 didEndSession:sessionCopy];
 }
 
-- (void)getAppletsWithCompletion:(id)a3
+- (void)getAppletsWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   kdebug_trace();
   v6 = NFSharedSignpostLog();
   if (os_signpost_enabled(v6))
@@ -592,37 +592,37 @@
 
   v12.receiver = self;
   v12.super_class = _NFContactlessPaymentSession;
-  v7 = [(_NFSession *)&v12 workQueue];
+  workQueue = [(_NFSession *)&v12 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100129CC4;
   block[3] = &unk_100316050;
-  v10 = v5;
+  v10 = completionCopy;
   v11 = a2;
   block[4] = self;
-  v8 = v5;
-  dispatch_async(v7, block);
+  v8 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)setActivePaymentApplet:(id)a3 keys:(id)a4 authorization:(id)a5 completion:(id)a6
+- (void)setActivePaymentApplet:(id)applet keys:(id)keys authorization:(id)authorization completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  appletCopy = applet;
+  keysCopy = keys;
+  authorizationCopy = authorization;
+  completionCopy = completion;
   kdebug_trace();
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_10012A208;
   v30[3] = &unk_1003192F0;
-  v15 = v13;
+  v15 = authorizationCopy;
   v31 = v15;
-  v32 = v14;
-  v16 = v14;
+  v32 = completionCopy;
+  v16 = completionCopy;
   v17 = objc_retainBlock(v30);
   v29.receiver = self;
   v29.super_class = _NFContactlessPaymentSession;
-  v18 = [(_NFSession *)&v29 workQueue];
+  workQueue = [(_NFSession *)&v29 workQueue];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10012A38C;
@@ -630,35 +630,35 @@
   v27 = v17;
   v28 = a2;
   v23[4] = self;
-  v24 = v11;
-  v25 = v12;
+  v24 = appletCopy;
+  v25 = keysCopy;
   v26 = v15;
   v19 = v15;
-  v20 = v12;
-  v21 = v11;
+  v20 = keysCopy;
+  v21 = appletCopy;
   v22 = v17;
-  dispatch_async(v18, v23);
+  dispatch_async(workQueue, v23);
 }
 
-- (void)setActivePaymentApplets:(id)a3 keyIdentifiers:(id)a4 authorization:(id)a5 completion:(id)a6
+- (void)setActivePaymentApplets:(id)applets keyIdentifiers:(id)identifiers authorization:(id)authorization completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  appletsCopy = applets;
+  identifiersCopy = identifiers;
+  authorizationCopy = authorization;
+  completionCopy = completion;
   kdebug_trace();
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_10012BC80;
   v30[3] = &unk_1003192F0;
-  v15 = v13;
+  v15 = authorizationCopy;
   v31 = v15;
-  v32 = v14;
-  v16 = v14;
+  v32 = completionCopy;
+  v16 = completionCopy;
   v17 = objc_retainBlock(v30);
   v29.receiver = self;
   v29.super_class = _NFContactlessPaymentSession;
-  v18 = [(_NFSession *)&v29 workQueue];
+  workQueue = [(_NFSession *)&v29 workQueue];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10012BE04;
@@ -666,43 +666,43 @@
   v27 = v17;
   v28 = a2;
   v23[4] = self;
-  v24 = v11;
-  v25 = v12;
+  v24 = appletsCopy;
+  v25 = identifiersCopy;
   v26 = v15;
   v19 = v15;
-  v20 = v12;
-  v21 = v11;
+  v20 = identifiersCopy;
+  v21 = appletsCopy;
   v22 = v17;
-  dispatch_async(v18, v23);
+  dispatch_async(workQueue, v23);
 }
 
-- (void)startCardEmulationWithAuthorization:(id)a3 completion:(id)a4
+- (void)startCardEmulationWithAuthorization:(id)authorization completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  authorizationCopy = authorization;
+  completionCopy = completion;
   kdebug_trace();
   v9 = NFSharedSignpostLog();
   if (os_signpost_enabled(v9))
   {
     *buf = 67109120;
-    v19 = v7 != 0;
+    v19 = authorizationCopy != 0;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v9, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CLIENT_AUTH_REQUEST", "startCardEmulationWithAuthorization, auth=%d", buf, 8u);
   }
 
   v17.receiver = self;
   v17.super_class = _NFContactlessPaymentSession;
-  v10 = [(_NFSession *)&v17 workQueue];
+  workQueue = [(_NFSession *)&v17 workQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10012DC88;
   v13[3] = &unk_1003165E8;
-  v15 = v8;
+  v15 = completionCopy;
   v16 = a2;
   v13[4] = self;
-  v14 = v7;
-  v11 = v7;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = authorizationCopy;
+  v11 = authorizationCopy;
+  v12 = completionCopy;
+  dispatch_async(workQueue, v13);
 }
 
 - (void)handleDeferredAuthTimeout
@@ -751,13 +751,13 @@
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Deferred authorization timeout", buf, 0x22u);
   }
 
-  v13 = [(_NFContactlessSession *)self activeApplet];
+  activeApplet = [(_NFContactlessSession *)self activeApplet];
 
-  if (v13)
+  if (activeApplet)
   {
-    v14 = [(_NFContactlessSession *)self activeApplet];
-    v15 = [v14 identifier];
-    v19 = v15;
+    activeApplet2 = [(_NFContactlessSession *)self activeApplet];
+    identifier = [activeApplet2 identifier];
+    v19 = identifier;
     v16 = [NSArray arrayWithObjects:&v19 count:1];
     [(_NFContactlessPaymentSession *)self handleTimerExpiredEvent:v16];
   }
@@ -772,16 +772,16 @@
   self->_deferredAuth = 0;
 }
 
-- (void)_sync_startDeferredCardEmulationWithAuthorization:(id)a3 completion:(id)a4
+- (void)_sync_startDeferredCardEmulationWithAuthorization:(id)authorization completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  authorizationCopy = authorization;
+  completionCopy = completion;
   kdebug_trace();
   v9 = NFSharedSignpostLog();
   if (os_signpost_enabled(v9))
   {
     LODWORD(buf) = 67109120;
-    HIDWORD(buf) = v7 != 0;
+    HIDWORD(buf) = authorizationCopy != 0;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v9, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CLIENT_DEFERRED_AUTH_REQUEST", "auth=%d", &buf, 8u);
   }
 
@@ -794,14 +794,14 @@
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v16 = [(_NFXPCSession *)self clientName];
+    clientName = [(_NFXPCSession *)self clientName];
     v17 = 45;
     if (isMetaClass)
     {
       v17 = 43;
     }
 
-    v11(6, "%c[%{public}s %{public}s]:%i %{public}@", v17, ClassName, Name, 619, v16);
+    v11(6, "%c[%{public}s %{public}s]:%i %{public}@", v17, ClassName, Name, 619, clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -821,7 +821,7 @@
 
     v21 = object_getClassName(self);
     v22 = sel_getName(a2);
-    v23 = [(_NFXPCSession *)self clientName];
+    clientName2 = [(_NFXPCSession *)self clientName];
     LODWORD(buf) = 67110146;
     HIDWORD(buf) = v20;
     v71 = 2082;
@@ -831,15 +831,15 @@
     v75 = 1024;
     v76 = 619;
     v77 = 2114;
-    v78 = v23;
+    v78 = clientName2;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", &buf, 0x2Cu);
   }
 
   self->_deferredAuthRequested = 1;
-  if (v7)
+  if (authorizationCopy)
   {
-    v24 = !self->_deferredAuth || ([v7 isEqual:?] & 1) == 0;
-    v25 = v7;
+    v24 = !self->_deferredAuth || ([authorizationCopy isEqual:?] & 1) == 0;
+    v25 = authorizationCopy;
     p_super = &self->_deferredAuth->super;
     self->_deferredAuth = v25;
   }
@@ -903,7 +903,7 @@
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v37, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CLIENT_CALLBACK", &unk_1002E8B7A, &buf, 2u);
   }
 
-  v8[2](v8, 0);
+  completionCopy[2](completionCopy, 0);
   if (self->_deferredAuthTimer)
   {
     if (v24)
@@ -970,8 +970,8 @@
     objc_copyWeak(&v69, &buf);
     v67.receiver = self;
     v67.super_class = _NFContactlessPaymentSession;
-    v50 = [(_NFSession *)&v67 workQueue];
-    v51 = [v49 initWithCallback:v68 queue:v50];
+    workQueue = [(_NFSession *)&v67 workQueue];
+    v51 = [v49 initWithCallback:v68 queue:workQueue];
     deferredAuthTimer = self->_deferredAuthTimer;
     self->_deferredAuthTimer = v51;
 
@@ -1037,99 +1037,99 @@
   }
 }
 
-- (void)startDeferredCardEmulationWithAuthorization:(id)a3 completion:(id)a4
+- (void)startDeferredCardEmulationWithAuthorization:(id)authorization completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  authorizationCopy = authorization;
+  completionCopy = completion;
   v16.receiver = self;
   v16.super_class = _NFContactlessPaymentSession;
-  v9 = [(_NFSession *)&v16 workQueue];
+  workQueue = [(_NFSession *)&v16 workQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10012EE50;
   v12[3] = &unk_1003165E8;
-  v14 = v8;
+  v14 = completionCopy;
   v15 = a2;
   v12[4] = self;
-  v13 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v13 = authorizationCopy;
+  v10 = authorizationCopy;
+  v11 = completionCopy;
+  dispatch_async(workQueue, v12);
 }
 
-- (void)enablePlasticCardMode:(BOOL)a3 completion:(id)a4
+- (void)enablePlasticCardMode:(BOOL)mode completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v14.receiver = self;
   v14.super_class = _NFContactlessPaymentSession;
-  v8 = [(_NFSession *)&v14 workQueue];
+  workQueue = [(_NFSession *)&v14 workQueue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10012F220;
   v10[3] = &unk_100316FA0;
-  v11 = v7;
+  v11 = completionCopy;
   v12 = a2;
   v10[4] = self;
-  v13 = a3;
-  v9 = v7;
-  dispatch_async(v8, v10);
+  modeCopy = mode;
+  v9 = completionCopy;
+  dispatch_async(workQueue, v10);
 }
 
-- (void)startExpressModeWithCompletion:(id)a3
+- (void)startExpressModeWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v11.receiver = self;
   v11.super_class = _NFContactlessPaymentSession;
-  v6 = [(_NFSession *)&v11 workQueue];
+  workQueue = [(_NFSession *)&v11 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10013044C;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)startHostCardEmulationWithCompletion:(id)a3
+- (void)startHostCardEmulationWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v11.receiver = self;
   v11.super_class = _NFContactlessPaymentSession;
-  v6 = [(_NFSession *)&v11 workQueue];
+  workQueue = [(_NFSession *)&v11 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100130BDC;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)stopCardEmulationWithCompletion:(id)a3
+- (void)stopCardEmulationWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v11.receiver = self;
   v11.super_class = _NFContactlessPaymentSession;
-  v6 = [(_NFSession *)&v11 workQueue];
+  workQueue = [(_NFSession *)&v11 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10013135C;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)getFelicaAppletState:(id)a3 completion:(id)a4
+- (void)getFelicaAppletState:(id)state completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   v9 = NFSharedSignpostLog();
   if (os_signpost_enabled(v9))
   {
@@ -1139,24 +1139,24 @@
 
   v17.receiver = self;
   v17.super_class = _NFContactlessPaymentSession;
-  v10 = [(_NFSession *)&v17 workQueue];
+  workQueue = [(_NFSession *)&v17 workQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100131A30;
   v13[3] = &unk_1003165E8;
-  v15 = v8;
+  v15 = completionCopy;
   v16 = a2;
   v13[4] = self;
-  v14 = v7;
-  v11 = v7;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = stateCopy;
+  v11 = stateCopy;
+  v12 = completionCopy;
+  dispatch_async(workQueue, v13);
 }
 
-- (void)getTransitAppletState:(id)a3 completion:(id)a4
+- (void)getTransitAppletState:(id)state completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   v9 = NFSharedSignpostLog();
   if (os_signpost_enabled(v9))
   {
@@ -1166,39 +1166,39 @@
 
   v17.receiver = self;
   v17.super_class = _NFContactlessPaymentSession;
-  v10 = [(_NFSession *)&v17 workQueue];
+  workQueue = [(_NFSession *)&v17 workQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100132270;
   v13[3] = &unk_1003165E8;
-  v15 = v8;
+  v15 = completionCopy;
   v16 = a2;
   v13[4] = self;
-  v14 = v7;
-  v11 = v7;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = stateCopy;
+  v11 = stateCopy;
+  v12 = completionCopy;
+  dispatch_async(workQueue, v13);
 }
 
-- (void)enableDemoModeWithCompletion:(id)a3
+- (void)enableDemoModeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9.receiver = self;
   v9.super_class = _NFContactlessPaymentSession;
-  v5 = [(_NFSession *)&v9 workQueue];
+  workQueue = [(_NFSession *)&v9 workQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100132AA0;
   v7[3] = &unk_100316700;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (id)_authorize:(id)a3
+- (id)_authorize:(id)_authorize
 {
-  v5 = a3;
+  _authorizeCopy = _authorize;
   kdebug_trace();
   v6 = NFSharedSignpostLog();
   if (os_signpost_enabled(v6))
@@ -1274,13 +1274,13 @@
     goto LABEL_31;
   }
 
-  if (v5)
+  if (_authorizeCopy)
   {
-    v7 = [(_NFContactlessSession *)self secureElementWrapper];
+    secureElementWrapper = [(_NFContactlessSession *)self secureElementWrapper];
     v8 = [(_NFSession *)self uid];
-    v9 = [(_NFContactlessSession *)self activeApplet];
-    v10 = [v9 instanceACL];
-    v11 = sub_1001F5428(v7, v5, v8, 0, v10, self->_demoMode);
+    activeApplet = [(_NFContactlessSession *)self activeApplet];
+    instanceACL = [activeApplet instanceACL];
+    v11 = sub_1001F5428(secureElementWrapper, _authorizeCopy, v8, 0, instanceACL, self->_demoMode);
 
     if (v11)
     {
@@ -1372,9 +1372,9 @@ LABEL_31:
     self->_hasAuthorized = 1;
   }
 
-  v48 = [(_NFContactlessSession *)self secureElementWrapper];
-  v49 = [v48 handle];
-  v50 = [v49 setAlwaysOn:1];
+  secureElementWrapper2 = [(_NFContactlessSession *)self secureElementWrapper];
+  handle = [secureElementWrapper2 handle];
+  v50 = [handle setAlwaysOn:1];
 
   if ((v50 & 1) == 0)
   {
@@ -1505,8 +1505,8 @@ LABEL_47:
     goto LABEL_23;
   }
 
-  v6 = [(_NFContactlessSession *)self secureElementWrapper];
-  v7 = sub_1001F76C0(v6);
+  secureElementWrapper = [(_NFContactlessSession *)self secureElementWrapper];
+  v7 = sub_1001F76C0(secureElementWrapper);
 
   if (!v7)
   {
@@ -1564,9 +1564,9 @@ LABEL_23:
 LABEL_24:
 
 LABEL_25:
-  v30 = [(_NFContactlessSession *)self secureElementWrapper];
-  v31 = [v30 handle];
-  v32 = [v31 setAlwaysOn:0];
+  secureElementWrapper2 = [(_NFContactlessSession *)self secureElementWrapper];
+  handle = [secureElementWrapper2 handle];
+  v32 = [handle setAlwaysOn:0];
 
   if ((v32 & 1) == 0)
   {
@@ -1628,7 +1628,7 @@ LABEL_25:
   }
 }
 
-- (BOOL)startCardEmulationWithType:(unint64_t)a3
+- (BOOL)startCardEmulationWithType:(unint64_t)type
 {
   kdebug_trace();
   v5 = NFSharedSignpostLog();
@@ -1641,7 +1641,7 @@ LABEL_25:
   self->_transactionState = 0;
   v8.receiver = self;
   v8.super_class = _NFContactlessPaymentSession;
-  v6 = [(_NFContactlessSession *)&v8 startCardEmulationWithType:a3];
+  v6 = [(_NFContactlessSession *)&v8 startCardEmulationWithType:type];
   if (v6)
   {
     self->_inWiredMode = 0;
@@ -1699,13 +1699,13 @@ LABEL_25:
   [(_NFContactlessPaymentSession *)self waitForSafeTransactionCompletion];
   v5.receiver = self;
   v5.super_class = _NFContactlessPaymentSession;
-  v3 = [(_NFContactlessSession *)&v5 startDefaultMode];
-  if (v3)
+  startDefaultMode = [(_NFContactlessSession *)&v5 startDefaultMode];
+  if (startDefaultMode)
   {
     self->_inWiredMode = 0;
   }
 
-  return v3;
+  return startDefaultMode;
 }
 
 - (BOOL)startFieldDetectMode
@@ -1721,13 +1721,13 @@ LABEL_25:
 
   v6.receiver = self;
   v6.super_class = _NFContactlessPaymentSession;
-  v4 = [(_NFContactlessSession *)&v6 startFieldDetectMode];
-  if (v4)
+  startFieldDetectMode = [(_NFContactlessSession *)&v6 startFieldDetectMode];
+  if (startFieldDetectMode)
   {
     self->_inWiredMode = 0;
   }
 
-  return v4;
+  return startFieldDetectMode;
 }
 
 - (void)waitForSafeTransactionCompletion
@@ -1737,11 +1737,11 @@ LABEL_25:
     transactionState = self->_transactionState;
     if (transactionState == 2)
     {
-      v49 = [(_NFContactlessSession *)self activeApplet];
-      v50 = [v49 moduleIdentifier];
+      activeApplet = [(_NFContactlessSession *)self activeApplet];
+      moduleIdentifier = [activeApplet moduleIdentifier];
       v51 = [[NSData alloc] initWithBytes:&unk_100297790 length:10];
-      v52 = [v51 NF_asHexString];
-      v53 = [v50 caseInsensitiveCompare:v52];
+      nF_asHexString = [v51 NF_asHexString];
+      v53 = [moduleIdentifier caseInsensitiveCompare:nF_asHexString];
 
       if (!v53)
       {
@@ -1798,20 +1798,20 @@ LABEL_68:
       v63 = -10;
       while (1)
       {
-        v64 = [(_NFContactlessSession *)self secureElementWrapper];
-        v65 = [v64 handle];
-        v66 = [v65 hasSentRAPDU];
+        secureElementWrapper = [(_NFContactlessSession *)self secureElementWrapper];
+        handle = [secureElementWrapper handle];
+        hasSentRAPDU = [handle hasSentRAPDU];
 
-        if (v66)
+        if (hasSentRAPDU)
         {
           break;
         }
 
-        v67 = [(_NFContactlessSession *)self secureElementWrapper];
-        v68 = [v67 handle];
-        v69 = [v68 hasTransactionEnded];
+        secureElementWrapper2 = [(_NFContactlessSession *)self secureElementWrapper];
+        handle2 = [secureElementWrapper2 handle];
+        hasTransactionEnded = [handle2 hasTransactionEnded];
 
-        if ((v69 & 1) == 0)
+        if ((hasTransactionEnded & 1) == 0)
         {
           usleep(0x2710u);
           v63 += 10;
@@ -1893,11 +1893,11 @@ LABEL_17:
           v31 = -50;
           while (1)
           {
-            v32 = [(_NFContactlessSession *)self secureElementWrapper];
-            v33 = [v32 handle];
-            v34 = [v33 hasTransactionEnded];
+            secureElementWrapper3 = [(_NFContactlessSession *)self secureElementWrapper];
+            handle3 = [secureElementWrapper3 handle];
+            hasTransactionEnded2 = [handle3 hasTransactionEnded];
 
-            if (v34)
+            if (hasTransactionEnded2)
             {
               break;
             }
@@ -2071,29 +2071,29 @@ LABEL_16:
   }
 }
 
-- (BOOL)_isField:(id)a3 compatibleWithApplet:(id)a4
+- (BOOL)_isField:(id)field compatibleWithApplet:(id)applet
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v7 isTypeF] & 1) == 0 && (objc_msgSend(v6, "rfTechnology") & 3) != 0 || objc_msgSend(v7, "isTypeF") && (objc_msgSend(v6, "rfTechnology") & 4) != 0)
+  fieldCopy = field;
+  appletCopy = applet;
+  if (([appletCopy isTypeF] & 1) == 0 && (objc_msgSend(fieldCopy, "rfTechnology") & 3) != 0 || objc_msgSend(appletCopy, "isTypeF") && (objc_msgSend(fieldCopy, "rfTechnology") & 4) != 0)
   {
     v10 = 1;
   }
 
   else
   {
-    v8 = [(_NFXPCSession *)self expressModeManager];
-    v9 = [v7 identifier];
-    v10 = sub_10003F2E0(v8, v9, v6);
+    expressModeManager = [(_NFXPCSession *)self expressModeManager];
+    identifier = [appletCopy identifier];
+    v10 = sub_10003F2E0(expressModeManager, identifier, fieldCopy);
   }
 
   return v10;
 }
 
-- (BOOL)_checkActiveAppletCompatibilityWithField:(id)a3
+- (BOOL)_checkActiveAppletCompatibilityWithField:(id)field
 {
-  v5 = a3;
-  if ([v5 rfTechnology] == 8)
+  fieldCopy = field;
+  if ([fieldCopy rfTechnology] == 8)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
@@ -2145,8 +2145,8 @@ LABEL_75:
     goto LABEL_76;
   }
 
-  v16 = [(_NFContactlessSession *)self activeApplet];
-  v17 = [(_NFContactlessPaymentSession *)self _isField:v5 compatibleWithApplet:v16];
+  activeApplet = [(_NFContactlessSession *)self activeApplet];
+  v17 = [(_NFContactlessPaymentSession *)self _isField:fieldCopy compatibleWithApplet:activeApplet];
 
   if ((v17 & 1) == 0)
   {
@@ -2194,8 +2194,8 @@ LABEL_75:
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Active applet not compatible with current field - checking for group members", buf, 0x22u);
     }
 
-    v27 = [(_NFContactlessSession *)self activeAppletGroupMembers];
-    v28 = [v27 copy];
+    activeAppletGroupMembers = [(_NFContactlessSession *)self activeAppletGroupMembers];
+    v28 = [activeAppletGroupMembers copy];
 
     if (v28)
     {
@@ -2268,7 +2268,7 @@ LABEL_36:
         }
 
         v43 = *(*(&v88 + 1) + 8 * v42);
-        if ([(_NFContactlessPaymentSession *)self _isField:v5 compatibleWithApplet:v43])
+        if ([(_NFContactlessPaymentSession *)self _isField:fieldCopy compatibleWithApplet:v43])
         {
           break;
         }
@@ -2388,8 +2388,8 @@ LABEL_36:
         _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Failed to switch to group applet - firing auth failure", buf, 0x22u);
       }
 
-      v67 = [(_NFXPCSession *)self remoteObject];
-      [v67 didFailDeferredAuthorization];
+      remoteObject = [(_NFXPCSession *)self remoteObject];
+      [remoteObject didFailDeferredAuthorization];
 
       [(_NFContactlessPaymentSession *)self startDefaultMode];
     }
@@ -2411,7 +2411,7 @@ LABEL_63:
         v72 = 43;
       }
 
-      v69(3, "%c[%{public}s %{public}s]:%i No compatible applet found for field: %{public}@", v72, v81, v87, 1177, v5);
+      v69(3, "%c[%{public}s %{public}s]:%i No compatible applet found for field: %{public}@", v72, v81, v87, 1177, fieldCopy);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2440,7 +2440,7 @@ LABEL_63:
       v99 = 1024;
       v100 = 1177;
       v101 = 2114;
-      v102 = v5;
+      v102 = fieldCopy;
       _os_log_impl(&_mh_execute_header, v73, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i No compatible applet found for field: %{public}@", buf, 0x2Cu);
     }
 
@@ -2456,11 +2456,11 @@ LABEL_76:
   return v15;
 }
 
-- (BOOL)_checkDeferredActiveAppletCompatibilityWithField:(id)a3
+- (BOOL)_checkDeferredActiveAppletCompatibilityWithField:(id)field
 {
-  v5 = a3;
-  v6 = [(_NFContactlessSession *)self deferredActivationApplet];
-  v7 = [(_NFContactlessPaymentSession *)self _switchToBestGroupMemberOfHead:v6 forField:v5];
+  fieldCopy = field;
+  deferredActivationApplet = [(_NFContactlessSession *)self deferredActivationApplet];
+  v7 = [(_NFContactlessPaymentSession *)self _switchToBestGroupMemberOfHead:deferredActivationApplet forField:fieldCopy];
 
   if (v7)
   {
@@ -2510,8 +2510,8 @@ LABEL_76:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Failed to _switchToBestGroupMember, back to defaultMode : %{public}@", buf, 0x2Cu);
     }
 
-    v16 = [(_NFXPCSession *)self remoteObject];
-    [v16 didFailDeferredAuthorization];
+    remoteObject = [(_NFXPCSession *)self remoteObject];
+    [remoteObject didFailDeferredAuthorization];
 
     [(_NFContactlessPaymentSession *)self startDefaultMode];
   }
@@ -2519,17 +2519,17 @@ LABEL_76:
   return v7 == 0;
 }
 
-- (BOOL)_checkActiveVASCompatibilityWithField:(id)a3
+- (BOOL)_checkActiveVASCompatibilityWithField:(id)field
 {
-  v4 = a3;
-  v5 = -[_NFContactlessPaymentSession readyForVAS](self, "readyForVAS") && [v4 notificationType] == 2 && objc_msgSend(v4, "terminalMode") < 3;
+  fieldCopy = field;
+  v5 = -[_NFContactlessPaymentSession readyForVAS](self, "readyForVAS") && [fieldCopy notificationType] == 2 && objc_msgSend(fieldCopy, "terminalMode") < 3;
 
   return v5;
 }
 
-- (void)_performDeferredAuthIfNeeded:(id)a3
+- (void)_performDeferredAuthIfNeeded:(id)needed
 {
-  v5 = a3;
+  neededCopy = needed;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -2545,7 +2545,7 @@ LABEL_76:
       v12 = 43;
     }
 
-    v7(6, "%c[%{public}s %{public}s]:%i deferred requested:%d - field:%{public}@", v12, ClassName, Name, 1211, self->_deferredAuthRequested, v5);
+    v7(6, "%c[%{public}s %{public}s]:%i deferred requested:%d - field:%{public}@", v12, ClassName, Name, 1211, self->_deferredAuthRequested, neededCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2577,7 +2577,7 @@ LABEL_76:
     v60 = 1024;
     v61 = deferredAuthRequested;
     v62 = 2114;
-    v63 = v5;
+    v63 = neededCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i deferred requested:%d - field:%{public}@", buf, 0x32u);
   }
 
@@ -2693,19 +2693,19 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v19 = [(_NFContactlessPaymentSession *)self _checkActiveVASCompatibilityWithField:v5];
-  v20 = [(_NFContactlessSession *)self activeApplet];
+  v19 = [(_NFContactlessPaymentSession *)self _checkActiveVASCompatibilityWithField:neededCopy];
+  activeApplet = [(_NFContactlessSession *)self activeApplet];
 
-  if (v20)
+  if (activeApplet)
   {
-    LODWORD(v20) = [(_NFContactlessPaymentSession *)self _checkActiveAppletCompatibilityWithField:v5];
+    LODWORD(activeApplet) = [(_NFContactlessPaymentSession *)self _checkActiveAppletCompatibilityWithField:neededCopy];
   }
 
-  v21 = [(_NFContactlessSession *)self deferredActivationApplet];
+  deferredActivationApplet = [(_NFContactlessSession *)self deferredActivationApplet];
 
-  if (v21)
+  if (deferredActivationApplet)
   {
-    v22 = [(_NFContactlessPaymentSession *)self _checkDeferredActiveAppletCompatibilityWithField:v5];
+    v22 = [(_NFContactlessPaymentSession *)self _checkDeferredActiveAppletCompatibilityWithField:neededCopy];
   }
 
   else
@@ -2713,7 +2713,7 @@ LABEL_35:
     v22 = 0;
   }
 
-  if ((v20 | v22 | v19))
+  if ((activeApplet | v22 | v19))
   {
     deferredAuth = self->_deferredAuth;
     v51[0] = _NSConcreteStackBlock;
@@ -2729,11 +2729,11 @@ LABEL_35:
 LABEL_36:
 }
 
-- (void)_performAuthAndStartCardEmulation:(id)a3 fromDeferred:(BOOL)a4 completion:(id)a5
+- (void)_performAuthAndStartCardEmulation:(id)emulation fromDeferred:(BOOL)deferred completion:(id)completion
 {
-  v86 = a4;
-  v8 = a3;
-  v9 = a5;
+  deferredCopy = deferred;
+  emulationCopy = emulation;
+  completionCopy = completion;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -2743,14 +2743,14 @@ LABEL_36:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v16 = [(_NFXPCSession *)self clientName];
+    clientName = [(_NFXPCSession *)self clientName];
     v17 = 45;
     if (isMetaClass)
     {
       v17 = 43;
     }
 
-    v11(6, "%c[%{public}s %{public}s]:%i %{public}@", v17, ClassName, Name, 1250, v16);
+    v11(6, "%c[%{public}s %{public}s]:%i %{public}@", v17, ClassName, Name, 1250, clientName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2770,7 +2770,7 @@ LABEL_36:
 
     v21 = object_getClassName(self);
     v22 = sel_getName(a2);
-    v23 = [(_NFXPCSession *)self clientName];
+    clientName2 = [(_NFXPCSession *)self clientName];
     *buf = 67110146;
     v91 = v20;
     v92 = 2082;
@@ -2780,7 +2780,7 @@ LABEL_36:
     v96 = 1024;
     v97 = 1250;
     v98 = 2114;
-    v99 = v23;
+    v99 = clientName2;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
@@ -2799,7 +2799,7 @@ LABEL_36:
       v28 = 43;
     }
 
-    v25(6, "%c[%{public}s %{public}s]:%i auth: %{public}@", v28, v83, v84, 1251, v8);
+    v25(6, "%c[%{public}s %{public}s]:%i auth: %{public}@", v28, v83, v84, 1251, emulationCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2828,7 +2828,7 @@ LABEL_36:
     v96 = 1024;
     v97 = 1251;
     v98 = 2114;
-    v99 = v8;
+    v99 = emulationCopy;
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i auth: %{public}@", buf, 0x2Cu);
   }
 
@@ -2841,11 +2841,11 @@ LABEL_36:
 
   self->_deferredAuthRequested = 0;
   [(NFTimer *)self->_deferredAuthTimer stopTimer];
-  v35 = [(_NFContactlessSession *)self secureElementWrapper];
+  secureElementWrapper = [(_NFContactlessSession *)self secureElementWrapper];
   v87.receiver = self;
   v87.super_class = _NFContactlessPaymentSession;
-  v36 = [(_NFContactlessSession *)&v87 activeApplet];
-  v37 = sub_10026369C(v35, v36);
+  activeApplet = [(_NFContactlessSession *)&v87 activeApplet];
+  v37 = sub_10026369C(secureElementWrapper, activeApplet);
 
   v38 = +[_NFHardwareManager sharedHardwareManager];
   v39 = v38;
@@ -2861,16 +2861,16 @@ LABEL_36:
 
   [v38 reconfigureDynamicTransitRF:v40 withOverride:1];
 
-  if (!v8)
+  if (!emulationCopy)
   {
     goto LABEL_47;
   }
 
-  if (v86)
+  if (deferredCopy)
   {
-    v41 = [(_NFContactlessSession *)self activeApplet];
+    activeApplet2 = [(_NFContactlessSession *)self activeApplet];
 
-    if (!v41)
+    if (!activeApplet2)
     {
       goto LABEL_47;
     }
@@ -2885,7 +2885,7 @@ LABEL_36:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v42, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "AUTHORIZE_APPLET", &unk_1002E8B7A, buf, 2u);
   }
 
-  v43 = [(_NFContactlessPaymentSession *)self _authorize:v8];
+  v43 = [(_NFContactlessPaymentSession *)self _authorize:emulationCopy];
   if (v43)
   {
     v44 = v43;
@@ -2905,7 +2905,7 @@ LABEL_36:
       v49 = class_isMetaClass(v48);
       v50 = object_getClassName(self);
       v51 = sel_getName(a2);
-      if (v86)
+      if (deferredCopy)
       {
         v52 = "yes";
       }
@@ -2944,7 +2944,7 @@ LABEL_36:
       v58 = sel_getName(a2);
       *buf = 67110402;
       v59 = "yes";
-      if (!v86)
+      if (!deferredCopy)
       {
         v59 = "no";
       }
@@ -2963,7 +2963,7 @@ LABEL_36:
       _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Authorization failed.  For deferred - [%s] : %@", buf, 0x36u);
     }
 
-    v9[2](v9, v44);
+    completionCopy[2](completionCopy, v44);
     [(_NFContactlessPaymentSession *)self startDefaultMode];
   }
 
@@ -2989,7 +2989,7 @@ LABEL_47:
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v61, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "performAuthAndStartCardEmulation", &unk_1002E8B7A, buf, 2u);
       }
 
-      if (!v86)
+      if (!deferredCopy)
       {
         kdebug_trace();
         v62 = NFSharedSignpostLog();
@@ -3000,7 +3000,7 @@ LABEL_47:
         }
       }
 
-      v9[2](v9, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     else
@@ -3014,7 +3014,7 @@ LABEL_47:
         v66 = class_isMetaClass(v65);
         v67 = object_getClassName(self);
         v68 = sel_getName(a2);
-        if (v86)
+        if (deferredCopy)
         {
           v69 = " (from) deferred";
         }
@@ -3051,7 +3051,7 @@ LABEL_47:
         v74 = object_getClassName(self);
         v75 = sel_getName(a2);
         *buf = 67110146;
-        if (v86)
+        if (deferredCopy)
         {
           v76 = " (from) deferred";
         }
@@ -3092,27 +3092,27 @@ LABEL_47:
       v89 = v80;
       v81 = [NSDictionary dictionaryWithObjects:&v89 forKeys:&v88 count:1];
       v82 = [v78 initWithDomain:v79 code:15 userInfo:v81];
-      v9[2](v9, v82);
+      completionCopy[2](completionCopy, v82);
 
       [(_NFContactlessPaymentSession *)self startDefaultMode];
     }
   }
 }
 
-- (id)_switchToBestGroupMemberOfHead:(id)a3 forField:(id)a4
+- (id)_switchToBestGroupMemberOfHead:(id)head forField:(id)field
 {
-  v6 = a3;
-  v64 = a4;
-  v7 = [(_NFSession *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  headCopy = head;
+  fieldCopy = field;
+  workQueue = [(_NFSession *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v67 = 0u;
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v62 = v6;
-  v8 = [v6 groupMemberIDs];
-  v9 = [v8 countByEnumeratingWithState:&v65 objects:v79 count:16];
+  v62 = headCopy;
+  groupMemberIDs = [headCopy groupMemberIDs];
+  v9 = [groupMemberIDs countByEnumeratingWithState:&v65 objects:v79 count:16];
   if (v9)
   {
     v10 = v9;
@@ -3123,19 +3123,19 @@ LABEL_47:
       {
         if (*v66 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(groupMemberIDs);
         }
 
         v13 = *(*(&v65 + 1) + 8 * i);
-        v14 = [(_NFContactlessSession *)self secureElementWrapper];
+        secureElementWrapper = [(_NFContactlessSession *)self secureElementWrapper];
         v15 = [NSData NF_dataWithHexString:v13];
-        v16 = sub_100257F24(v14, v15, 0);
+        v16 = sub_100257F24(secureElementWrapper, v15, 0);
 
         if (v16)
         {
-          v17 = [(_NFXPCSession *)self expressModeManager];
-          v18 = [v16 identifier];
-          v19 = sub_10003F2E0(v17, v18, v64);
+          expressModeManager = [(_NFXPCSession *)self expressModeManager];
+          identifier = [v16 identifier];
+          v19 = sub_10003F2E0(expressModeManager, identifier, fieldCopy);
 
           if (v19)
           {
@@ -3148,14 +3148,14 @@ LABEL_47:
               isMetaClass = class_isMetaClass(Class);
               ClassName = object_getClassName(self);
               Name = sel_getName(a2);
-              v51 = [v16 identifier];
+              identifier2 = [v16 identifier];
               v52 = 45;
               if (isMetaClass)
               {
                 v52 = 43;
               }
 
-              v46(6, "%c[%{public}s %{public}s]:%i Applet %{public}@ matches field, switching", v52, ClassName, Name, 1337, v51);
+              v46(6, "%c[%{public}s %{public}s]:%i Applet %{public}@ matches field, switching", v52, ClassName, Name, 1337, identifier2);
             }
 
             dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3176,7 +3176,7 @@ LABEL_47:
 
               v56 = object_getClassName(self);
               v57 = sel_getName(a2);
-              v58 = [v16 identifier];
+              identifier3 = [v16 identifier];
               *buf = 67110146;
               v70 = v55;
               v71 = 2082;
@@ -3186,7 +3186,7 @@ LABEL_47:
               v75 = 1024;
               v76 = 1337;
               v77 = 2114;
-              v78 = v58;
+              v78 = identifier3;
               _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Applet %{public}@ matches field, switching", buf, 0x2Cu);
             }
 
@@ -3248,7 +3248,7 @@ LABEL_47:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v65 objects:v79 count:16];
+      v10 = [groupMemberIDs countByEnumeratingWithState:&v65 objects:v79 count:16];
       if (v10)
       {
         continue;
@@ -3268,14 +3268,14 @@ LABEL_47:
     v33 = class_isMetaClass(v32);
     v34 = object_getClassName(self);
     v35 = sel_getName(a2);
-    v36 = [v62 identifier];
+    identifier4 = [v62 identifier];
     v37 = 45;
     if (v33)
     {
       v37 = 43;
     }
 
-    v31(6, "%c[%{public}s %{public}s]:%i No group members matched the field, using head applet %{public}@", v37, v34, v35, 1342, v36);
+    v31(6, "%c[%{public}s %{public}s]:%i No group members matched the field, using head applet %{public}@", v37, v34, v35, 1342, identifier4);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3295,7 +3295,7 @@ LABEL_47:
 
     v41 = object_getClassName(self);
     v42 = sel_getName(a2);
-    v43 = [v62 identifier];
+    identifier5 = [v62 identifier];
     *buf = 67110146;
     v70 = v40;
     v71 = 2082;
@@ -3305,7 +3305,7 @@ LABEL_47:
     v75 = 1024;
     v76 = 1342;
     v77 = 2114;
-    v78 = v43;
+    v78 = identifier5;
     _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i No group members matched the field, using head applet %{public}@", buf, 0x2Cu);
   }
 
@@ -3315,9 +3315,9 @@ LABEL_40:
   return v44;
 }
 
-- (void)handleFieldNotification:(id)a3
+- (void)handleFieldNotification:(id)notification
 {
-  v5 = a3;
+  notificationCopy = notification;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -3328,14 +3328,14 @@ LABEL_40:
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
     deferredAuthRequested = self->_deferredAuthRequested;
-    v13 = [(_NFContactlessSession *)self deferredActivationApplet];
+    deferredActivationApplet = [(_NFContactlessSession *)self deferredActivationApplet];
     v14 = 45;
     if (isMetaClass)
     {
       v14 = 43;
     }
 
-    v7(6, "%c[%{public}s %{public}s]:%i deferredAuth = %d : deferredActivation: %{public}@", v14, ClassName, Name, 1383, deferredAuthRequested, v13);
+    v7(6, "%c[%{public}s %{public}s]:%i deferredAuth = %d : deferredActivation: %{public}@", v14, ClassName, Name, 1383, deferredAuthRequested, deferredActivationApplet);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3356,7 +3356,7 @@ LABEL_40:
     v18 = object_getClassName(self);
     v19 = sel_getName(a2);
     v20 = self->_deferredAuthRequested;
-    v21 = [(_NFContactlessSession *)self deferredActivationApplet];
+    deferredActivationApplet2 = [(_NFContactlessSession *)self deferredActivationApplet];
     *buf = 67110402;
     v26 = v17;
     v27 = 2082;
@@ -3368,13 +3368,13 @@ LABEL_40:
     v33 = 1024;
     v34 = v20;
     v35 = 2114;
-    v36 = v21;
+    v36 = deferredActivationApplet2;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i deferredAuth = %d : deferredActivation: %{public}@", buf, 0x32u);
   }
 
   fieldNotification = self->_fieldNotification;
-  self->_fieldNotification = v5;
-  v23 = v5;
+  self->_fieldNotification = notificationCopy;
+  v23 = notificationCopy;
 
   v24.receiver = self;
   v24.super_class = _NFContactlessPaymentSession;
@@ -3488,9 +3488,9 @@ LABEL_40:
   }
 }
 
-- (void)handleTimerExpiredEvent:(id)a3
+- (void)handleTimerExpiredEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   kdebug_trace();
   v6 = NFSharedSignpostLog();
   if (os_signpost_enabled(v6))
@@ -3515,7 +3515,7 @@ LABEL_40:
       v11 = 43;
     }
 
-    v8(6, "%c[%{public}s %{public}s]:%i %{public}@", v11, ClassName, Name, 1411, v5);
+    v8(6, "%c[%{public}s %{public}s]:%i %{public}@", v11, ClassName, Name, 1411, eventCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3544,7 +3544,7 @@ LABEL_40:
     v55 = 1024;
     v56 = 1411;
     v57 = 2114;
-    v58 = v5;
+    v58 = eventCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
@@ -3552,7 +3552,7 @@ LABEL_40:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v17 = v5;
+  v17 = eventCopy;
   v18 = [(__CFString *)v17 countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (v18)
   {
@@ -3567,10 +3567,10 @@ LABEL_40:
           objc_enumerationMutation(v17);
         }
 
-        v22 = *(*(&v44 + 1) + 8 * i);
-        v23 = [(_NFContactlessSession *)self activeApplet];
-        v24 = [v23 identifier];
-        v25 = [(__CFString *)v22 isEqualToString:v24];
+        identifier3 = *(*(&v44 + 1) + 8 * i);
+        activeApplet = [(_NFContactlessSession *)self activeApplet];
+        identifier = [activeApplet identifier];
+        v25 = [(__CFString *)identifier3 isEqualToString:identifier];
 
         if (v25)
         {
@@ -3589,12 +3589,12 @@ LABEL_40:
               v34 = 43;
             }
 
-            v31(6, "%c[%{public}s %{public}s]:%i Firing timer expired event for %{public}@", v34, v41, v43, 1414, v22);
+            v31(6, "%c[%{public}s %{public}s]:%i Firing timer expired event for %{public}@", v34, v41, v43, 1414, identifier3);
           }
 
           dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
-          v28 = NFSharedLogGetLogger();
-          if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+          activeApplet3 = NFSharedLogGetLogger();
+          if (os_log_type_enabled(activeApplet3, OS_LOG_TYPE_DEFAULT))
           {
             v35 = object_getClass(self);
             if (class_isMetaClass(v35))
@@ -3618,8 +3618,8 @@ LABEL_40:
             v55 = 1024;
             v56 = 1414;
             v57 = 2114;
-            v58 = v22;
-            _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Firing timer expired event for %{public}@", buf, 0x2Cu);
+            v58 = identifier3;
+            _os_log_impl(&_mh_execute_header, activeApplet3, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Firing timer expired event for %{public}@", buf, 0x2Cu);
           }
 
           v29 = v17;
@@ -3637,38 +3637,38 @@ LABEL_40:
     }
   }
 
-  v26 = [(_NFContactlessSession *)self activeApplet];
-  v27 = [v26 identifier];
+  activeApplet2 = [(_NFContactlessSession *)self activeApplet];
+  identifier2 = [activeApplet2 identifier];
 
-  if (v27)
+  if (identifier2)
   {
-    v28 = [(_NFContactlessSession *)self activeApplet];
-    v22 = [v28 identifier];
-    v29 = v22;
+    activeApplet3 = [(_NFContactlessSession *)self activeApplet];
+    identifier3 = [activeApplet3 identifier];
+    v29 = identifier3;
 LABEL_32:
   }
 
   else
   {
-    v22 = &stru_10031EA18;
+    identifier3 = &stru_10031EA18;
     v29 = &stru_10031EA18;
   }
 
-  v39 = [(_NFXPCSession *)self remoteObject];
-  [v39 didExpireTransactionForApplet:v22];
+  remoteObject = [(_NFXPCSession *)self remoteObject];
+  [remoteObject didExpireTransactionForApplet:identifier3];
 
   [(_NFContactlessPaymentSession *)self startDefaultMode];
 }
 
-- (void)handleTransactionStartEvent:(id)a3 atlData:(id)a4
+- (void)handleTransactionStartEvent:(id)event atlData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 objectForKeyedSubscript:@"DelayExpressReentry"];
+  eventCopy = event;
+  dataCopy = data;
+  v10 = [dataCopy objectForKeyedSubscript:@"DelayExpressReentry"];
 
   if (v10)
   {
-    v11 = [v9 objectForKeyedSubscript:@"DelayExpressReentry"];
+    v11 = [dataCopy objectForKeyedSubscript:@"DelayExpressReentry"];
     [v11 doubleValue];
     self->_delayExpressMode = v12 / 1000.0;
   }
@@ -3689,20 +3689,20 @@ LABEL_32:
   PLLogRegisteredEvent();
   self->_dontWaitForEOT = 0;
   self->_ignoreRFEvents = 0;
-  if (v9)
+  if (dataCopy)
   {
-    v14 = [v9 valueForKey:@"DontWaitForEOT"];
-    v15 = [v14 BOOLValue];
+    v14 = [dataCopy valueForKey:@"DontWaitForEOT"];
+    bOOLValue = [v14 BOOLValue];
 
-    if (v15)
+    if (bOOLValue)
     {
       self->_dontWaitForEOT = 1;
     }
 
-    v16 = [v9 valueForKey:@"IgnoreRFEvents"];
-    v17 = [v16 BOOLValue];
+    v16 = [dataCopy valueForKey:@"IgnoreRFEvents"];
+    bOOLValue2 = [v16 BOOLValue];
 
-    if (v17)
+    if (bOOLValue2)
     {
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       Logger = NFLogGetLogger();
@@ -3754,10 +3754,10 @@ LABEL_32:
     }
   }
 
-  v29 = [v9 objectForKeyedSubscript:@"EoTCallbackExpected"];
-  v30 = [v29 BOOLValue];
+  v29 = [dataCopy objectForKeyedSubscript:@"EoTCallbackExpected"];
+  bOOLValue3 = [v29 BOOLValue];
 
-  if (v30)
+  if (bOOLValue3)
   {
     self->_endOfTransactionRequired = 1;
   }
@@ -3783,8 +3783,8 @@ LABEL_32:
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
-    v37 = NFSharedLogGetLogger();
-    if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
+    remoteObject2 = NFSharedLogGetLogger();
+    if (os_log_type_enabled(remoteObject2, OS_LOG_TYPE_DEFAULT))
     {
       v38 = object_getClass(self);
       if (class_isMetaClass(v38))
@@ -3809,43 +3809,43 @@ LABEL_32:
       v121 = 1465;
       v42 = "%c[%{public}s %{public}s]:%i Plastic card mode active - not handling start event";
 LABEL_32:
-      _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, v42, buf, 0x22u);
+      _os_log_impl(&_mh_execute_header, remoteObject2, OS_LOG_TYPE_DEFAULT, v42, buf, 0x22u);
       goto LABEL_82;
     }
 
     goto LABEL_82;
   }
 
-  v43 = [(_NFXPCSession *)self expressModeManager];
-  if (v43)
+  expressModeManager = [(_NFXPCSession *)self expressModeManager];
+  if (expressModeManager)
   {
-    v44 = v43[181];
+    v44 = expressModeManager[181];
 
     if (v44 == 1)
     {
-      v45 = [(_NFContactlessSession *)self secureElementWrapper];
-      v46 = [v8 appletIdentifier];
-      v47 = [NSData NF_dataWithHexString:v46];
-      v37 = sub_100257F24(v45, v47, 0);
+      secureElementWrapper = [(_NFContactlessSession *)self secureElementWrapper];
+      appletIdentifier = [eventCopy appletIdentifier];
+      v47 = [NSData NF_dataWithHexString:appletIdentifier];
+      remoteObject2 = sub_100257F24(secureElementWrapper, v47, 0);
 
-      v48 = [v37 moduleIdentifierAsData];
+      moduleIdentifierAsData = [remoteObject2 moduleIdentifierAsData];
       v49 = [[NSData alloc] initWithBytes:&unk_10029779A length:10];
-      if ([v48 isEqualToData:v49])
+      if ([moduleIdentifierAsData isEqualToData:v49])
       {
       }
 
       else
       {
         v50 = [[NSData alloc] initWithBytes:&unk_1002977A4 length:10];
-        v51 = [v48 isEqualToData:v50];
+        v51 = [moduleIdentifierAsData isEqualToData:v50];
 
         if (!v51)
         {
-          v64 = [v8 background];
+          background = [eventCopy background];
           dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
           v65 = NFLogGetLogger();
           v66 = v65;
-          if (!v64)
+          if (!background)
           {
             if (v65)
             {
@@ -3890,9 +3890,9 @@ LABEL_32:
               _os_log_impl(&_mh_execute_header, v79, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i firing express transaction started state", buf, 0x22u);
             }
 
-            v84 = [(_NFXPCSession *)self remoteObject];
-            v85 = [v8 appletIdentifier];
-            [v84 didExpressModeStateChange:2 withObject:v85];
+            remoteObject = [(_NFXPCSession *)self remoteObject];
+            appletIdentifier2 = [eventCopy appletIdentifier];
+            [remoteObject didExpressModeStateChange:2 withObject:appletIdentifier2];
 
             self->_sendExpressModeEnded = 0;
             goto LABEL_49;
@@ -4023,8 +4023,8 @@ LABEL_47:
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
-    v37 = NFSharedLogGetLogger();
-    if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
+    remoteObject2 = NFSharedLogGetLogger();
+    if (os_log_type_enabled(remoteObject2, OS_LOG_TYPE_DEFAULT))
     {
       v103 = object_getClass(self);
       if (class_isMetaClass(v103))
@@ -4101,18 +4101,18 @@ LABEL_47:
     }
 
     self->_transactionState = 1;
-    objc_storeStrong(&self->_transactionStartEvent, a3);
-    v37 = [(_NFXPCSession *)self remoteObject];
-    [v37 didStartTransaction:v8];
+    objc_storeStrong(&self->_transactionStartEvent, event);
+    remoteObject2 = [(_NFXPCSession *)self remoteObject];
+    [remoteObject2 didStartTransaction:eventCopy];
   }
 
 LABEL_82:
 }
 
-- (void)handleTransactionEndEvent:(id)a3 atlData:(id)a4
+- (void)handleTransactionEndEvent:(id)event atlData:(id)data
 {
-  v7 = a3;
-  v8 = a4;
+  eventCopy = event;
+  dataCopy = data;
   kdebug_trace();
   v9 = NFSharedSignpostLog();
   if (os_signpost_enabled(v9))
@@ -4122,11 +4122,11 @@ LABEL_82:
   }
 
   PLLogRegisteredEvent();
-  v10 = [v8 valueForKey:@"DontWaitForEOT"];
+  v10 = [dataCopy valueForKey:@"DontWaitForEOT"];
 
   if (v10)
   {
-    v11 = [v8 valueForKey:@"DontWaitForEOT"];
+    v11 = [dataCopy valueForKey:@"DontWaitForEOT"];
     self->_dontWaitForEOT = [v11 BOOLValue];
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -4231,32 +4231,32 @@ LABEL_82:
     goto LABEL_24;
   }
 
-  v37 = [(_NFXPCSession *)self expressModeManager];
-  if (v37)
+  expressModeManager = [(_NFXPCSession *)self expressModeManager];
+  if (expressModeManager)
   {
-    v38 = v37[181];
+    v38 = expressModeManager[181];
 
     if (v38 == 1)
     {
-      v39 = [(_NFContactlessSession *)self secureElementWrapper];
-      v40 = [v7 appletIdentifier];
-      v41 = [NSData NF_dataWithHexString:v40];
-      v31 = sub_100257F24(v39, v41, 0);
+      secureElementWrapper = [(_NFContactlessSession *)self secureElementWrapper];
+      appletIdentifier = [eventCopy appletIdentifier];
+      v41 = [NSData NF_dataWithHexString:appletIdentifier];
+      v31 = sub_100257F24(secureElementWrapper, v41, 0);
 
-      v42 = [v31 moduleIdentifierAsData];
+      moduleIdentifierAsData = [v31 moduleIdentifierAsData];
       v43 = [[NSData alloc] initWithBytes:&unk_10029779A length:10];
-      if ([v42 isEqualToData:v43])
+      if ([moduleIdentifierAsData isEqualToData:v43])
       {
       }
 
       else
       {
         v44 = [[NSData alloc] initWithBytes:&unk_1002977A4 length:10];
-        v45 = [v42 isEqualToData:v44];
+        v45 = [moduleIdentifierAsData isEqualToData:v44];
 
         if (!v45)
         {
-          if ([v7 background])
+          if ([eventCopy background])
           {
             dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
             v58 = NFLogGetLogger();
@@ -4309,19 +4309,19 @@ LABEL_82:
 
           else
           {
-            v68 = [(_NFXPCSession *)self expressModeManager];
-            if (v68 && v68[43] >= 6u)
+            expressModeManager2 = [(_NFXPCSession *)self expressModeManager];
+            if (expressModeManager2 && expressModeManager2[43] >= 6u)
             {
               sendExpressModeEnded = self->_sendExpressModeEnded;
 
               if (!sendExpressModeEnded)
               {
-                v70 = [(_NFXPCSession *)self remoteObject];
-                v71 = [(_NFXPCSession *)self expressModeManager];
-                v72 = v71;
-                if (v71)
+                remoteObject = [(_NFXPCSession *)self remoteObject];
+                expressModeManager3 = [(_NFXPCSession *)self expressModeManager];
+                v72 = expressModeManager3;
+                if (expressModeManager3)
                 {
-                  v73 = *(v71 + 172);
+                  v73 = *(expressModeManager3 + 172);
                 }
 
                 else
@@ -4329,8 +4329,8 @@ LABEL_82:
                   v73 = 0;
                 }
 
-                v74 = [v7 appletIdentifier];
-                [v70 didExpressModeStateChange:v73 withObject:v74];
+                appletIdentifier2 = [eventCopy appletIdentifier];
+                [remoteObject didExpressModeStateChange:v73 withObject:appletIdentifier2];
 
                 self->_sendExpressModeEnded = 1;
                 goto LABEL_41;
@@ -4562,12 +4562,12 @@ LABEL_42:
   if (transactionState == 4 && !self->_ignoreRFEvents)
   {
     v118 = [[NSMutableDictionary alloc] initWithDictionary:&off_100339968];
-    v119 = [(NFContactlessPaymentStartEvent *)self->_transactionStartEvent appletIdentifier];
+    appletIdentifier3 = [(NFContactlessPaymentStartEvent *)self->_transactionStartEvent appletIdentifier];
 
-    if (v119)
+    if (appletIdentifier3)
     {
-      v120 = [(NFContactlessPaymentStartEvent *)self->_transactionStartEvent appletIdentifier];
-      [v118 setObject:v120 forKey:@"appletIdentifier"];
+      appletIdentifier4 = [(NFContactlessPaymentStartEvent *)self->_transactionStartEvent appletIdentifier];
+      [v118 setObject:appletIdentifier4 forKey:@"appletIdentifier"];
     }
 
     v143 = v118;
@@ -4620,8 +4620,8 @@ LABEL_42:
       _os_log_impl(&_mh_execute_header, v127, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Field Lost before transaction ended: firing: %{public}@", buf, 0x2Cu);
     }
 
-    v132 = [(_NFXPCSession *)self remoteObject];
-    [v132 didEndTransaction:v121];
+    remoteObject2 = [(_NFXPCSession *)self remoteObject];
+    [remoteObject2 didEndTransaction:v121];
   }
 
   else
@@ -4673,8 +4673,8 @@ LABEL_42:
     }
 
     self->_transactionState = 2;
-    v97 = [(_NFXPCSession *)self remoteObject];
-    [v97 didEndTransaction:v7];
+    remoteObject3 = [(_NFXPCSession *)self remoteObject];
+    [remoteObject3 didEndTransaction:eventCopy];
   }
 
   transactionStartEvent = self->_transactionStartEvent;
@@ -4694,7 +4694,7 @@ LABEL_42:
 LABEL_43:
 }
 
-- (void)pauseExpressAndStartDefaultModeAfter:(double)a3
+- (void)pauseExpressAndStartDefaultModeAfter:(double)after
 {
   [(NFTimer *)self->_restartRoutingTimer stopTimer];
   objc_initWeak(&location, self);
@@ -4707,8 +4707,8 @@ LABEL_43:
   v26[1] = a2;
   v24.receiver = self;
   v24.super_class = _NFContactlessPaymentSession;
-  v7 = [(_NFSession *)&v24 workQueue];
-  v8 = [v6 initWithCallback:v25 queue:v7];
+  workQueue = [(_NFSession *)&v24 workQueue];
+  v8 = [v6 initWithCallback:v25 queue:workQueue];
   restartRoutingTimer = self->_restartRoutingTimer;
   self->_restartRoutingTimer = v8;
 
@@ -4758,29 +4758,29 @@ LABEL_43:
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Pausing express mode after ATL transaction", buf, 0x22u);
   }
 
-  v21 = [(_NFXPCSession *)self expressModeManager];
-  v22 = v21;
-  if (v21)
+  expressModeManager = [(_NFXPCSession *)self expressModeManager];
+  v22 = expressModeManager;
+  if (expressModeManager)
   {
-    sub_100031A1C(v21, 1, 1);
+    sub_100031A1C(expressModeManager, 1, 1);
   }
 
-  [(NFTimer *)self->_restartRoutingTimer startTimer:a3 leeway:0.5];
+  [(NFTimer *)self->_restartRoutingTimer startTimer:after leeway:0.5];
   objc_destroyWeak(v26);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)_requiresDeferredActivation:(id)a3
+- (BOOL)_requiresDeferredActivation:(id)activation
 {
-  v4 = a3;
+  activationCopy = activation;
   v5 = [[NSData alloc] initWithBytes:&unk_1002977AE length:16];
-  v6 = [v5 NF_asHexString];
+  nF_asHexString = [v5 NF_asHexString];
 
   v7 = [[NSData alloc] initWithBytes:&unk_100297790 length:10];
-  v38 = [v7 NF_asHexString];
+  nF_asHexString2 = [v7 NF_asHexString];
 
-  v8 = [v4 moduleIdentifier];
-  v9 = [v8 isEqualToString:v6];
+  moduleIdentifier = [activationCopy moduleIdentifier];
+  v9 = [moduleIdentifier isEqualToString:nF_asHexString];
 
   if (v9)
   {
@@ -4788,12 +4788,12 @@ LABEL_43:
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    obj = [v4 groupMemberIDs];
+    obj = [activationCopy groupMemberIDs];
     v10 = [obj countByEnumeratingWithState:&v39 objects:v53 count:16];
     if (v10)
     {
       v11 = v10;
-      v35 = v4;
+      v35 = activationCopy;
       v12 = *v40;
       while (2)
       {
@@ -4805,14 +4805,14 @@ LABEL_43:
           }
 
           v14 = *(*(&v39 + 1) + 8 * i);
-          v15 = [(_NFContactlessSession *)self secureElementWrapper];
+          secureElementWrapper = [(_NFContactlessSession *)self secureElementWrapper];
           v16 = [NSData NF_dataWithHexString:v14];
-          v17 = sub_100257F24(v15, v16, 0);
+          v17 = sub_100257F24(secureElementWrapper, v16, 0);
 
           if (v17)
           {
-            v18 = [v17 moduleIdentifier];
-            if ([v18 isEqualToString:v6])
+            moduleIdentifier2 = [v17 moduleIdentifier];
+            if ([moduleIdentifier2 isEqualToString:nF_asHexString])
             {
 
 LABEL_27:
@@ -4820,8 +4820,8 @@ LABEL_27:
               goto LABEL_28;
             }
 
-            v19 = [v17 moduleIdentifier];
-            v20 = [v19 isEqualToString:v38];
+            moduleIdentifier3 = [v17 moduleIdentifier];
+            v20 = [moduleIdentifier3 isEqualToString:nF_asHexString2];
 
             if (v20)
             {
@@ -4892,7 +4892,7 @@ LABEL_27:
 
       v31 = 0;
 LABEL_28:
-      v4 = v35;
+      activationCopy = v35;
     }
 
     else
@@ -4933,8 +4933,8 @@ LABEL_28:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v10 = [(_NFXPCSession *)self expressModeManager];
-    v11 = sub_10002BB54(v10);
+    expressModeManager = [(_NFXPCSession *)self expressModeManager];
+    v11 = sub_10002BB54(expressModeManager);
     v12 = 45;
     if (isMetaClass)
     {
@@ -4961,8 +4961,8 @@ LABEL_28:
 
     v16 = object_getClassName(self);
     v17 = sel_getName(a2);
-    v18 = [(_NFXPCSession *)self expressModeManager];
-    v19 = sub_10002BB54(v18);
+    expressModeManager2 = [(_NFXPCSession *)self expressModeManager];
+    v19 = sub_10002BB54(expressModeManager2);
     *buf = 67110146;
     v25 = v15;
     v26 = 2082;
@@ -4976,13 +4976,13 @@ LABEL_28:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@ express mode entered", buf, 0x2Cu);
   }
 
-  v20 = [(_NFXPCSession *)self expressModeManager];
-  v21 = sub_10002BB54(v20);
+  expressModeManager3 = [(_NFXPCSession *)self expressModeManager];
+  v21 = sub_10002BB54(expressModeManager3);
   expressType = self->_expressType;
   self->_expressType = v21;
 
-  v23 = [(_NFXPCSession *)self remoteObject];
-  [v23 didExpressModeStateChange:1 withObject:self->_expressType];
+  remoteObject = [(_NFXPCSession *)self remoteObject];
+  [remoteObject didExpressModeStateChange:1 withObject:self->_expressType];
 }
 
 - (void)handleExpressModeExited
@@ -5036,8 +5036,8 @@ LABEL_28:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@ express mode exited", buf, 0x2Cu);
   }
 
-  v17 = [(_NFXPCSession *)self remoteObject];
-  [v17 didExpressModeStateChange:4 withObject:self->_expressType];
+  remoteObject = [(_NFXPCSession *)self remoteObject];
+  [remoteObject didExpressModeStateChange:4 withObject:self->_expressType];
 
   v18 = self->_expressType;
   self->_expressType = 0;
@@ -5101,14 +5101,14 @@ LABEL_28:
 
   if (![(_NFContactlessSession *)self plasticCardMode])
   {
-    v17 = [(_NFXPCSession *)self remoteObject];
-    [v17 didExpressModeStateChange:3 withObject:self->_expressType];
+    remoteObject = [(_NFXPCSession *)self remoteObject];
+    [remoteObject didExpressModeStateChange:3 withObject:self->_expressType];
   }
 }
 
-- (void)handleAppletInactivityTimeout:(id)a3
+- (void)handleAppletInactivityTimeout:(id)timeout
 {
-  v5 = a3;
+  timeoutCopy = timeout;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -5124,7 +5124,7 @@ LABEL_28:
       v10 = 43;
     }
 
-    v7(6, "%c[%{public}s %{public}s]:%i Applet activity timeout: %{public}@", v10, ClassName, Name, 1714, v5);
+    v7(6, "%c[%{public}s %{public}s]:%i Applet activity timeout: %{public}@", v10, ClassName, Name, 1714, timeoutCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -5151,16 +5151,16 @@ LABEL_28:
     v27 = 1024;
     v28 = 1714;
     v29 = 2114;
-    v30 = v5;
+    v30 = timeoutCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Applet activity timeout: %{public}@", buf, 0x2Cu);
   }
 
   if (![(_NFContactlessSession *)self plasticCardMode])
   {
-    v14 = [(_NFXPCSession *)self expressModeManager];
-    if (v14)
+    expressModeManager = [(_NFXPCSession *)self expressModeManager];
+    if (expressModeManager)
     {
-      v15 = v14[181];
+      v15 = expressModeManager[181];
     }
 
     else
@@ -5168,24 +5168,24 @@ LABEL_28:
       v15 = 0;
     }
 
-    v16 = [(_NFXPCSession *)self remoteObject];
-    v17 = v16;
+    remoteObject = [(_NFXPCSession *)self remoteObject];
+    v17 = remoteObject;
     if (v15)
     {
-      v18 = [(NFContactlessPaymentStartEvent *)self->_transactionStartEvent appletIdentifier];
-      [v17 didExpressModeStateChange:3 withObject:v18];
+      appletIdentifier = [(NFContactlessPaymentStartEvent *)self->_transactionStartEvent appletIdentifier];
+      [v17 didExpressModeStateChange:3 withObject:appletIdentifier];
     }
 
     else
     {
-      [v16 didReceiveActivityTimeout:v5];
+      [remoteObject didReceiveActivityTimeout:timeoutCopy];
     }
   }
 }
 
-- (void)handleRequestService:(id)a3
+- (void)handleRequestService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -5201,7 +5201,7 @@ LABEL_28:
       v10 = 43;
     }
 
-    v7(6, "%c[%{public}s %{public}s]:%i %{public}@", v10, ClassName, Name, 1733, v5);
+    v7(6, "%c[%{public}s %{public}s]:%i %{public}@", v10, ClassName, Name, 1733, serviceCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -5228,26 +5228,26 @@ LABEL_28:
     v81 = 1024;
     v82 = 1733;
     v83 = 2114;
-    v84 = v5;
+    v84 = serviceCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
   if (![(_NFContactlessSession *)self plasticCardMode])
   {
-    v14 = [(_NFXPCSession *)self expressModeManager];
-    if (!v14 || (v15 = v14[181], v14, v15 != 1))
+    expressModeManager = [(_NFXPCSession *)self expressModeManager];
+    if (!expressModeManager || (v15 = expressModeManager[181], expressModeManager, v15 != 1))
     {
-      v35 = [(_NFContactlessSession *)self activeApplet];
+      activeApplet = [(_NFContactlessSession *)self activeApplet];
 
-      if (!v35)
+      if (!activeApplet)
       {
         transactionStartEvent = self->_transactionStartEvent;
         self->_transactionStartEvent = 0;
         goto LABEL_30;
       }
 
-      v36 = [(_NFContactlessSession *)self activeApplet];
-      transactionStartEvent = [v36 moduleIdentifierAsData];
+      activeApplet2 = [(_NFContactlessSession *)self activeApplet];
+      transactionStartEvent = [activeApplet2 moduleIdentifierAsData];
 
       v37 = [[NSData alloc] initWithBytes:&unk_10029779A length:10];
       if ([transactionStartEvent isEqualToData:v37])
@@ -5263,10 +5263,10 @@ LABEL_28:
         {
           v50 = [NSMutableDictionary alloc];
           v73[0] = @"appletIdentifier";
-          v51 = [(_NFContactlessSession *)self activeApplet];
-          v52 = [v51 identifier];
+          activeApplet3 = [(_NFContactlessSession *)self activeApplet];
+          identifier = [activeApplet3 identifier];
           v73[1] = @"paymentMode";
-          v74[0] = v52;
+          v74[0] = identifier;
           v74[1] = &off_100332118;
           v53 = [NSDictionary dictionaryWithObjects:v74 forKeys:v73 count:2];
           v17 = [v50 initWithDictionary:v53];
@@ -5324,8 +5324,8 @@ LABEL_28:
             _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i transaction started: %{public}@", buf, 0x2Cu);
           }
 
-          v69 = [(_NFXPCSession *)self remoteObject];
-          [v69 didStartTransaction:self->_transactionStartEvent];
+          remoteObject = [(_NFXPCSession *)self remoteObject];
+          [remoteObject didStartTransaction:self->_transactionStartEvent];
 
           goto LABEL_29;
         }
@@ -5383,8 +5383,8 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    v16 = [(_NFXPCSession *)self expressModeManager];
-    v17 = sub_10003A754(v16);
+    expressModeManager2 = [(_NFXPCSession *)self expressModeManager];
+    v17 = sub_10003A754(expressModeManager2);
 
     if ([(NSString *)self->_expressType isEqualToString:@"express.transit.cathay"])
     {
@@ -5457,8 +5457,8 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@ Express transaction started for %{public}@", buf, 0x36u);
     }
 
-    v34 = [(_NFXPCSession *)self remoteObject];
-    [v34 didExpressModeStateChange:2 withObject:transactionStartEvent];
+    remoteObject2 = [(_NFXPCSession *)self remoteObject];
+    [remoteObject2 didExpressModeStateChange:2 withObject:transactionStartEvent];
 
     goto LABEL_29;
   }
@@ -5470,14 +5470,14 @@ LABEL_31:
 {
   v6.receiver = self;
   v6.super_class = _NFContactlessPaymentSession;
-  v4 = [(_NFSession *)&v6 workQueue];
+  workQueue = [(_NFSession *)&v6 workQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10013A570;
   v5[3] = &unk_100315F58;
   v5[4] = self;
   v5[5] = a2;
-  dispatch_async(v4, v5);
+  dispatch_async(workQueue, v5);
 }
 
 - (void)_fireFelicaTransactionEndEvent
@@ -5488,18 +5488,18 @@ LABEL_31:
     return;
   }
 
-  v4 = [(NFContactlessPaymentStartEvent *)transactionStartEvent appletIdentifier];
-  v5 = [(_NFContactlessSession *)self activeApplet];
-  v6 = [v5 identifier];
-  if ([v4 caseInsensitiveCompare:v6])
+  appletIdentifier = [(NFContactlessPaymentStartEvent *)transactionStartEvent appletIdentifier];
+  activeApplet = [(_NFContactlessSession *)self activeApplet];
+  identifier = [activeApplet identifier];
+  if ([appletIdentifier caseInsensitiveCompare:identifier])
   {
-    v7 = [(_NFContactlessSession *)self secureElementWrapper];
-    v8 = [(NFContactlessPaymentStartEvent *)self->_transactionStartEvent appletIdentifier];
-    v9 = [NSData NF_dataWithHexString:v8];
-    v10 = sub_100257F24(v7, v9, 0);
-    v11 = [v10 isTypeF];
+    secureElementWrapper = [(_NFContactlessSession *)self secureElementWrapper];
+    appletIdentifier2 = [(NFContactlessPaymentStartEvent *)self->_transactionStartEvent appletIdentifier];
+    v9 = [NSData NF_dataWithHexString:appletIdentifier2];
+    v10 = sub_100257F24(secureElementWrapper, v9, 0);
+    isTypeF = [v10 isTypeF];
 
-    if (!v11)
+    if (!isTypeF)
     {
       return;
     }
@@ -5509,21 +5509,21 @@ LABEL_31:
   {
   }
 
-  v12 = [(NFContactlessPaymentStartEvent *)self->_transactionStartEvent appletIdentifier];
-  if (v12)
+  appletIdentifier3 = [(NFContactlessPaymentStartEvent *)self->_transactionStartEvent appletIdentifier];
+  if (appletIdentifier3)
   {
-    v13 = [(NFContactlessPaymentStartEvent *)self->_transactionStartEvent appletIdentifier];
+    appletIdentifier4 = [(NFContactlessPaymentStartEvent *)self->_transactionStartEvent appletIdentifier];
   }
 
   else
   {
-    v14 = [(_NFContactlessSession *)self activeApplet];
-    v13 = [v14 identifier];
+    activeApplet2 = [(_NFContactlessSession *)self activeApplet];
+    appletIdentifier4 = [activeApplet2 identifier];
   }
 
-  if (v13)
+  if (appletIdentifier4)
   {
-    v15 = v13;
+    v15 = appletIdentifier4;
   }
 
   else
@@ -5531,8 +5531,8 @@ LABEL_31:
     v15 = &stru_10031EA18;
   }
 
-  v16 = [(_NFXPCSession *)self expressModeManager];
-  v17 = sub_10003A6A0(v16, 0);
+  expressModeManager = [(_NFXPCSession *)self expressModeManager];
+  v17 = sub_10003A6A0(expressModeManager, 0);
 
   if (v17 && ([v17 containsObject:v15] & 1) == 0)
   {
@@ -5545,14 +5545,14 @@ LABEL_31:
     felicaEvents = self->_felicaEvents;
     if (felicaEvents && ![(NFFelicaStateEvent *)felicaEvents isEmpty])
     {
-      v22 = [(NFFelicaStateEvent *)self->_felicaEvents asDictionary];
+      asDictionary = [(NFFelicaStateEvent *)self->_felicaEvents asDictionary];
       v107[0] = _NSConcreteStackBlock;
       v107[1] = 3221225472;
       v107[2] = sub_10013B288;
       v107[3] = &unk_100319390;
       v107[4] = self;
       v107[5] = a2;
-      [v22 enumerateKeysAndObjectsUsingBlock:v107];
+      [asDictionary enumerateKeysAndObjectsUsingBlock:v107];
     }
 
     else
@@ -5566,9 +5566,9 @@ LABEL_31:
       v44 = [NSNumber numberWithUnsignedShort:0xFFFFLL];
       v110[2] = v44;
       v45 = [NSDictionary dictionaryWithObjects:v110 forKeys:v109 count:3];
-      v22 = [v43 initWithDictionary:v45];
+      asDictionary = [v43 initWithDictionary:v45];
 
-      v46 = [[NFContactlessPaymentEndEvent alloc] initWithDictionary:v22];
+      v46 = [[NFContactlessPaymentEndEvent alloc] initWithDictionary:asDictionary];
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       Logger = NFLogGetLogger();
       if (Logger)
@@ -5617,8 +5617,8 @@ LABEL_31:
         _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
       }
 
-      v57 = [(_NFXPCSession *)self remoteObject];
-      [v57 didEndTransaction:v46];
+      remoteObject = [(_NFXPCSession *)self remoteObject];
+      [remoteObject didEndTransaction:v46];
 
       v18 = &OBJC_IVAR___NFAppletExtraInfo__ssdAID;
     }
@@ -5647,8 +5647,8 @@ LABEL_31:
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
-    v22 = NFSharedLogGetLogger();
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    asDictionary = NFSharedLogGetLogger();
+    if (os_log_type_enabled(asDictionary, OS_LOG_TYPE_ERROR))
     {
       v64 = object_getClass(self);
       if (class_isMetaClass(v64))
@@ -5671,20 +5671,20 @@ LABEL_31:
       v116 = v67;
       v117 = 1024;
       v118 = 1843;
-      _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i failed to set wired mode", buf, 0x22u);
+      _os_log_impl(&_mh_execute_header, asDictionary, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i failed to set wired mode", buf, 0x22u);
     }
 
     goto LABEL_67;
   }
 
-  v19 = [(_NFContactlessSession *)self secureElementWrapper];
-  v20 = [(_NFContactlessSession *)self activeApplet];
+  secureElementWrapper2 = [(_NFContactlessSession *)self secureElementWrapper];
+  activeApplet3 = [(_NFContactlessSession *)self activeApplet];
   v108 = 0;
-  v21 = sub_1002641A4(v19, v20, &v108);
-  v22 = v108;
+  v21 = sub_1002641A4(secureElementWrapper2, activeApplet3, &v108);
+  asDictionary = v108;
 
   v105 = v21;
-  if (!v21 || v22)
+  if (!v21 || asDictionary)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v68 = NFLogGetLogger();
@@ -5701,7 +5701,7 @@ LABEL_31:
         v73 = 43;
       }
 
-      v69(3, "%c[%{public}s %{public}s]:%i processEndOfFelicaTransactionForApplet failed: %{public}@ or output dictionary is nil: %{public}@", v73, v72, v103, 1812, v22, v105);
+      v69(3, "%c[%{public}s %{public}s]:%i processEndOfFelicaTransactionForApplet failed: %{public}@ or output dictionary is nil: %{public}@", v73, v72, v103, 1812, asDictionary, v105);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -5730,7 +5730,7 @@ LABEL_31:
       v117 = 1024;
       v118 = 1812;
       v119 = 2114;
-      v120 = v22;
+      v120 = asDictionary;
       v121 = 2114;
       v122 = v105;
       _os_log_impl(&_mh_execute_header, &v23->super, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i processEndOfFelicaTransactionForApplet failed: %{public}@ or output dictionary is nil: %{public}@", buf, 0x36u);
@@ -5789,20 +5789,20 @@ LABEL_31:
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
-  v34 = [(_NFXPCSession *)self remoteObject];
-  [v34 didEndTransaction:v23];
+  remoteObject2 = [(_NFXPCSession *)self remoteObject];
+  [remoteObject2 didEndTransaction:v23];
 
-  v35 = [(_NFXPCSession *)self expressModeManager];
-  v36 = [(_NFContactlessSession *)self activeApplet];
-  v37 = [v36 identifier];
-  v38 = sub_1000354C4(v35, v37);
+  expressModeManager2 = [(_NFXPCSession *)self expressModeManager];
+  activeApplet4 = [(_NFContactlessSession *)self activeApplet];
+  identifier2 = [activeApplet4 identifier];
+  v38 = sub_1000354C4(expressModeManager2, identifier2);
   sub_100250520(NFHciTransactionEventCALogger, v105, v38);
 
-  v39 = [(NFContactlessPaymentEndEvent *)v23 felicaInfo];
-  v40 = v39;
-  if (v39)
+  felicaInfo = [(NFContactlessPaymentEndEvent *)v23 felicaInfo];
+  v40 = felicaInfo;
+  if (felicaInfo)
   {
-    v41 = [v39 objectForKeyedSubscript:@"NFServiceProviderID"];
+    v41 = [felicaInfo objectForKeyedSubscript:@"NFServiceProviderID"];
     if ([&off_100332130 isEqualToNumber:v41])
     {
 
@@ -5909,9 +5909,9 @@ LABEL_67:
   {
     v4 = [NSMutableDictionary alloc];
     v35 = @"appletIdentifier";
-    v5 = [(_NFContactlessSession *)self activeApplet];
-    v6 = [v5 identifier];
-    v36 = v6;
+    activeApplet = [(_NFContactlessSession *)self activeApplet];
+    identifier = [activeApplet identifier];
+    v36 = identifier;
     v7 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
     v8 = [v4 initWithDictionary:v7];
 
@@ -5968,19 +5968,19 @@ LABEL_67:
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
     }
 
-    v24 = [(_NFXPCSession *)self remoteObject];
-    [v24 didStartTransaction:self->_transactionStartEvent];
+    remoteObject = [(_NFXPCSession *)self remoteObject];
+    [remoteObject didStartTransaction:self->_transactionStartEvent];
   }
 }
 
-- (void)handleFelicaStateEvent:(id)a3 appletAID:(id)a4
+- (void)handleFelicaStateEvent:(id)event appletAID:(id)d
 {
-  v12 = a3;
-  v6 = a4;
+  eventCopy = event;
+  dCopy = d;
   if (![(_NFContactlessSession *)self plasticCardMode])
   {
-    v7 = [(_NFXPCSession *)self expressModeManager];
-    if (!v7 || (v8 = v7[181], v7, (v8 & 1) == 0))
+    expressModeManager = [(_NFXPCSession *)self expressModeManager];
+    if (!expressModeManager || (v8 = expressModeManager[181], expressModeManager, (v8 & 1) == 0))
     {
       if (!self->_felicaEvents)
       {
@@ -5990,29 +5990,29 @@ LABEL_67:
       }
 
       [(_NFContactlessPaymentSession *)self _fireFelicaTransactionStartEvent];
-      [(NFFelicaStateEvent *)self->_felicaEvents addStateInfo:v12 appletAID:v6];
+      [(NFFelicaStateEvent *)self->_felicaEvents addStateInfo:eventCopy appletAID:dCopy];
     }
   }
 
-  v11 = [(_NFXPCSession *)self remoteObject];
-  [v11 didFelicaStateChange:v12];
+  remoteObject = [(_NFXPCSession *)self remoteObject];
+  [remoteObject didFelicaStateChange:eventCopy];
 }
 
-- (void)createHandoffTokenWithCompletion:(id)a3
+- (void)createHandoffTokenWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v11.receiver = self;
   v11.super_class = _NFContactlessPaymentSession;
-  v6 = [(_NFSession *)&v11 workQueue];
+  workQueue = [(_NFSession *)&v11 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10013BA90;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
 @end

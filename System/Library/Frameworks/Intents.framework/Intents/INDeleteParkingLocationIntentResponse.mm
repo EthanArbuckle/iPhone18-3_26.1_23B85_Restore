@@ -1,19 +1,19 @@
 @interface INDeleteParkingLocationIntentResponse
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
 - (CLPlacemark)parkingLocation;
-- (INDeleteParkingLocationIntentResponse)initWithBackingStore:(id)a3;
-- (INDeleteParkingLocationIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (INDeleteParkingLocationIntentResponse)initWithCoder:(id)a3;
+- (INDeleteParkingLocationIntentResponse)initWithBackingStore:(id)store;
+- (INDeleteParkingLocationIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity;
+- (INDeleteParkingLocationIntentResponse)initWithCoder:(id)coder;
 - (NSString)parkingNote;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (int64_t)_codeWithName:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
 - (int64_t)code;
-- (void)encodeWithCoder:(id)a3;
-- (void)setParkingLocation:(id)a3;
-- (void)setParkingNote:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setParkingLocation:(id)location;
+- (void)setParkingNote:(id)note;
 @end
 
 @implementation INDeleteParkingLocationIntentResponse
@@ -22,45 +22,45 @@
 {
   v15[3] = *MEMORY[0x1E69E9840];
   v14[0] = @"code";
-  v3 = [(INDeleteParkingLocationIntentResponse *)self code];
-  v4 = v3;
-  if (v3 < 6)
+  code = [(INDeleteParkingLocationIntentResponse *)self code];
+  v4 = code;
+  if (code < 6)
   {
-    v5 = off_1E7287E90[v3];
-    v6 = v5;
+    null = off_1E7287E90[code];
+    v6 = null;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v6 = 0;
   }
 
-  v15[0] = v5;
+  v15[0] = null;
   v14[1] = @"parkingLocation";
-  v7 = [(INDeleteParkingLocationIntentResponse *)self parkingLocation];
-  v8 = v7;
-  if (!v7)
+  parkingLocation = [(INDeleteParkingLocationIntentResponse *)self parkingLocation];
+  null2 = parkingLocation;
+  if (!parkingLocation)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[1] = v8;
+  v15[1] = null2;
   v14[2] = @"parkingNote";
-  v9 = [(INDeleteParkingLocationIntentResponse *)self parkingNote];
-  v10 = v9;
-  if (!v9)
+  parkingNote = [(INDeleteParkingLocationIntentResponse *)self parkingNote];
+  null3 = parkingNote;
+  if (!parkingNote)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[2] = v10;
+  v15[2] = null3;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:3];
-  if (!v9)
+  if (!parkingNote)
   {
   }
 
-  if (!v7)
+  if (!parkingLocation)
   {
   }
 
@@ -73,64 +73,64 @@
   return v11;
 }
 
-- (void)setParkingNote:(id)a3
+- (void)setParkingNote:(id)note
 {
-  v4 = a3;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = INIntentSlotValueTransformToString(v4);
+  noteCopy = note;
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  v6 = INIntentSlotValueTransformToString(noteCopy);
 
-  [v5 setParkingNote:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setParkingNote:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
-- (void)setParkingLocation:(id)a3
+- (void)setParkingLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = INIntentSlotValueTransformToLocation(v4);
+  locationCopy = location;
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  v6 = INIntentSlotValueTransformToLocation(locationCopy);
 
-  [v5 setParkingLocation:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setParkingLocation:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (NSString)parkingNote
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 parkingNote];
-  v4 = INIntentSlotValueTransformFromString(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  parkingNote = [_responseMessagePBRepresentation parkingNote];
+  v4 = INIntentSlotValueTransformFromString(parkingNote);
 
   return v4;
 }
 
 - (CLPlacemark)parkingLocation
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 parkingLocation];
-  v4 = INIntentSlotValueTransformFromLocation(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  parkingLocation = [_responseMessagePBRepresentation parkingLocation];
+  v4 = INIntentSlotValueTransformFromLocation(parkingLocation);
 
   return v4;
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INDeleteParkingLocationIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INDeleteParkingLocationIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INDeleteParkingLocationIntentResponseCodeInProgress"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INDeleteParkingLocationIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INDeleteParkingLocationIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INDeleteParkingLocationIntentResponseCodeInProgress"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INDeleteParkingLocationIntentResponseCodeSuccess"])
+  if ([nameCopy isEqualToString:@"INDeleteParkingLocationIntentResponseCodeSuccess"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INDeleteParkingLocationIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INDeleteParkingLocationIntentResponseCodeFailure"])
   {
     v5 = 4;
   }
@@ -140,7 +140,7 @@
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INDeleteParkingLocationIntentResponseCodeFailureRequiringAppLaunch"];
+  v6 = [nameCopy isEqualToString:@"INDeleteParkingLocationIntentResponseCodeFailureRequiringAppLaunch"];
 
   if (v6)
   {
@@ -155,30 +155,30 @@
 
 - (int64_t)_intentResponseCode
 {
-  v2 = [(INDeleteParkingLocationIntentResponse *)self code];
-  if ((v2 - 1) > 4)
+  code = [(INDeleteParkingLocationIntentResponse *)self code];
+  if ((code - 1) > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_18EE5FDC8[v2 - 1];
+    return qword_18EE5FDC8[code - 1];
   }
 }
 
-- (INDeleteParkingLocationIntentResponse)initWithCoder:(id)a3
+- (INDeleteParkingLocationIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INDeleteParkingLocationIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INDeleteParkingLocationIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
 - (int64_t)code
@@ -188,97 +188,97 @@
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INDeleteParkingLocationIntentResponse)initWithBackingStore:(id)a3
+- (INDeleteParkingLocationIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INDeleteParkingLocationIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INDeleteParkingLocationIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
-- (INDeleteParkingLocationIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4
+- (INDeleteParkingLocationIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  activityCopy = activity;
   v7 = INSiriLogContextIntents;
   if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
   {
     v8 = v7;
-    if (a3 > 5)
+    if (code > 5)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = off_1E7287E90[a3];
+      v9 = off_1E7287E90[code];
     }
 
     v10 = v9;
     *buf = 136315906;
     v16 = "[INDeleteParkingLocationIntentResponse initWithCode:userActivity:]";
     v17 = 2048;
-    v18 = a3;
+    codeCopy = code;
     v19 = 2112;
     v20 = v10;
     v21 = 2112;
-    v22 = v6;
+    v22 = activityCopy;
     _os_log_impl(&dword_18E991000, v8, OS_LOG_TYPE_INFO, "%s code = %zd (%@), userActivity = %@", buf, 0x2Au);
   }
 
   v14.receiver = self;
   v14.super_class = INDeleteParkingLocationIntentResponse;
-  v11 = [(INIntentResponse *)&v14 _initWithCode:a3 userActivity:v6];
+  v11 = [(INIntentResponse *)&v14 _initWithCode:code userActivity:activityCopy];
 
   v12 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
-  if ((a3 - 1) > 4)
+  if ((code - 1) > 4)
   {
     return 3;
   }
 
   else
   {
-    return dword_18EE5FDB0[a3 - 1];
+    return dword_18EE5FDB0[code - 1];
   }
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
   v5 = 2;
-  if (a3 != 2)
+  if (type != 2)
   {
-    v5 = a3 == 5;
+    v5 = type == 5;
   }
 
   v6 = 3;
   v7 = 4;
-  if (a5)
+  if (requested)
   {
     v7 = 5;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v7 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     v6 = v7;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
     return v6;
   }

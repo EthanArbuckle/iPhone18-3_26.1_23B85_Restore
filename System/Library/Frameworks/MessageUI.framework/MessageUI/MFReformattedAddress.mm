@@ -1,24 +1,24 @@
 @interface MFReformattedAddress
-- (MFReformattedAddress)initWithAddress:(id)a3;
+- (MFReformattedAddress)initWithAddress:(id)address;
 - (NSString)domainPart;
 - (NSString)localPart;
 - (_NSRange)middleTruncationRange;
-- (double)widthWithFontSize:(double)a3 maximumWidth:(double)a4 options:(unint64_t)a5;
-- (id)attributedStringWithFontSize:(double)a3 maximumWidth:(double)a4 options:(unint64_t)a5;
+- (double)widthWithFontSize:(double)size maximumWidth:(double)width options:(unint64_t)options;
+- (id)attributedStringWithFontSize:(double)size maximumWidth:(double)width options:(unint64_t)options;
 - (id)description;
 @end
 
 @implementation MFReformattedAddress
 
-- (MFReformattedAddress)initWithAddress:(id)a3
+- (MFReformattedAddress)initWithAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v9.receiver = self;
   v9.super_class = MFReformattedAddress;
   v5 = [(MFReformattedAddress *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [addressCopy copy];
     address = v5->_address;
     v5->_address = v6;
 
@@ -34,8 +34,8 @@
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   address = self->_address;
-  v7 = [(MFReformattedAddress *)self middleTruncationRange];
-  v9 = [(NSString *)address mf_substringTruncatedInRange:v7, v8];
+  middleTruncationRange = [(MFReformattedAddress *)self middleTruncationRange];
+  v9 = [(NSString *)address mf_substringTruncatedInRange:middleTruncationRange, v8];
   v10 = [v3 stringWithFormat:@"<%@: %p: %@ (%@)>", v5, self, address, v9];
 
   return v10;
@@ -57,33 +57,33 @@
   return v3;
 }
 
-- (double)widthWithFontSize:(double)a3 maximumWidth:(double)a4 options:(unint64_t)a5
+- (double)widthWithFontSize:(double)size maximumWidth:(double)width options:(unint64_t)options
 {
-  v5 = [(MFReformattedAddress *)self attributedStringWithFontSize:a5 maximumWidth:a3 options:a4];
+  v5 = [(MFReformattedAddress *)self attributedStringWithFontSize:options maximumWidth:size options:width];
   [v5 size];
   v7 = v6;
 
   return v7;
 }
 
-- (id)attributedStringWithFontSize:(double)a3 maximumWidth:(double)a4 options:(unint64_t)a5
+- (id)attributedStringWithFontSize:(double)size maximumWidth:(double)width options:(unint64_t)options
 {
-  v5 = a5;
+  optionsCopy = options;
   v43[1] = *MEMORY[0x1E69E9840];
   v9 = self->_address;
-  v10 = [(MFReformattedAddress *)self middleTruncationRange];
-  v12 = [(NSString *)v9 mf_substringTruncatedInRange:v10, v11];
+  middleTruncationRange = [(MFReformattedAddress *)self middleTruncationRange];
+  v12 = [(NSString *)v9 mf_substringTruncatedInRange:middleTruncationRange, v11];
 
   v13 = objc_alloc(MEMORY[0x1E696AD40]);
   v42 = *MEMORY[0x1E69DB648];
-  v14 = [MEMORY[0x1E69DB878] systemFontOfSize:a3];
+  v14 = [MEMORY[0x1E69DB878] systemFontOfSize:size];
   v43[0] = v14;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:&v42 count:1];
   v16 = [v13 initWithString:v12 attributes:v15];
 
   [v16 size];
-  v18 = v17 > a4;
-  if ((v5 & 1) == 0 && v17 > a4)
+  v18 = v17 > width;
+  if ((optionsCopy & 1) == 0 && v17 > width)
   {
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
@@ -91,7 +91,7 @@
     v39[3] = &unk_1E806C700;
     v19 = v16;
     v40 = v19;
-    v41 = a4;
+    widthCopy = width;
     v20 = MFFirstIndexInRangePassingTest(0, 9uLL, v39);
     v18 = v20 == 0x7FFFFFFFFFFFFFFFLL;
     if (v20 == 0x7FFFFFFFFFFFFFFFLL)
@@ -108,10 +108,10 @@
     }
   }
 
-  if ((v5 & 2) == 0 && v18)
+  if ((optionsCopy & 2) == 0 && v18)
   {
-    v23 = [v16 string];
-    v24 = [v23 copy];
+    string = [v16 string];
+    v24 = [string copy];
 
     v25 = [v24 length] - 1;
     v32 = MEMORY[0x1E69E9820];
@@ -122,7 +122,7 @@
     v36 = v26;
     v27 = v16;
     v37 = v27;
-    v38 = a4;
+    widthCopy2 = width;
     v28 = MFLastIndexPassingTest(v25, &v32);
     if (v28 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -138,8 +138,8 @@
 
   if ((MFAddressHasSafeDomain(self->_address) & 1) == 0)
   {
-    v30 = [MEMORY[0x1E69DC888] systemRedColor];
-    [v16 mf_addAttribute:*MEMORY[0x1E69DB650] value:v30];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+    [v16 mf_addAttribute:*MEMORY[0x1E69DB650] value:systemRedColor];
   }
 
   return v16;

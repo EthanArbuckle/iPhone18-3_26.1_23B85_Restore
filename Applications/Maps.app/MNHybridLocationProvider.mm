@@ -10,7 +10,7 @@
   v8[1] = 3221225472;
   v8[2] = sub_100AFEAF0;
   v8[3] = &unk_1016611D0;
-  v8[4] = a1;
+  v8[4] = self;
   v2 = objc_retainBlock(v8);
   if (+[NSThread isMainThread])
   {

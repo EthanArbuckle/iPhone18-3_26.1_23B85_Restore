@@ -22,9 +22,9 @@
   v2 = [(SBHomeButtonPressSpeedMesaUnlockTrigger *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D02C20] rootSettings];
-    v4 = [v3 mesaSettings];
-    [v4 slowPressDuration];
+    rootSettings = [MEMORY[0x277D02C20] rootSettings];
+    mesaSettings = [rootSettings mesaSettings];
+    [mesaSettings slowPressDuration];
     v2->_slowPressDuration = v5;
   }
 
@@ -43,15 +43,15 @@
 {
   v11.receiver = self;
   v11.super_class = SBHomeButtonPressSpeedMesaUnlockTrigger;
-  v3 = [(SBMesaUnlockTrigger *)&v11 succinctDescriptionBuilder];
-  v4 = [v3 appendTimeInterval:@"slowPressDuration" withName:0 decomposeUnits:self->_slowPressDuration];
-  v5 = [v3 appendBool:self->_buttonIsDown withName:@"buttonIsDown"];
-  v6 = [v3 appendBool:self->_fingerIsOn withName:@"fingerIsOn"];
-  v7 = [v3 appendBool:self->_bioUnlockOccurred withName:@"bioUnlockOccurred"];
-  v8 = [v3 appendBool:self->_timerFired withName:@"timerFired"];
-  v9 = [v3 appendBool:-[SBHomeButtonPressSpeedMesaUnlockTrigger _isTimerRunning](self withName:{"_isTimerRunning"), @"isTimerRunning"}];
+  succinctDescriptionBuilder = [(SBMesaUnlockTrigger *)&v11 succinctDescriptionBuilder];
+  v4 = [succinctDescriptionBuilder appendTimeInterval:@"slowPressDuration" withName:0 decomposeUnits:self->_slowPressDuration];
+  v5 = [succinctDescriptionBuilder appendBool:self->_buttonIsDown withName:@"buttonIsDown"];
+  v6 = [succinctDescriptionBuilder appendBool:self->_fingerIsOn withName:@"fingerIsOn"];
+  v7 = [succinctDescriptionBuilder appendBool:self->_bioUnlockOccurred withName:@"bioUnlockOccurred"];
+  v8 = [succinctDescriptionBuilder appendBool:self->_timerFired withName:@"timerFired"];
+  v9 = [succinctDescriptionBuilder appendBool:-[SBHomeButtonPressSpeedMesaUnlockTrigger _isTimerRunning](self withName:{"_isTimerRunning"), @"isTimerRunning"}];
 
-  return v3;
+  return succinctDescriptionBuilder;
 }
 
 - (BOOL)bioUnlock
@@ -67,19 +67,19 @@
       _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_INFO, "[SBHomeButtonPressSpeedMesaUnlockTrigger] not unlocking because the timer is running", v8, 2u);
     }
 
-    LOBYTE(v4) = 0;
+    LOBYTE(_isPrimed) = 0;
   }
 
   else
   {
-    v4 = [(SBHomeButtonPressSpeedMesaUnlockTrigger *)self _isPrimed];
+    _isPrimed = [(SBHomeButtonPressSpeedMesaUnlockTrigger *)self _isPrimed];
     v3 = SBLogLockScreenMesaUnlockBehaviors();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       buttonIsDown = self->_buttonIsDown;
       fingerIsOn = self->_fingerIsOn;
       v8[0] = 67109632;
-      v8[1] = v4;
+      v8[1] = _isPrimed;
       v9 = 1024;
       v10 = buttonIsDown;
       v11 = 1024;
@@ -88,7 +88,7 @@
     }
   }
 
-  return v4;
+  return _isPrimed;
 }
 
 - (void)screenOff
@@ -203,8 +203,8 @@ void __54__SBHomeButtonPressSpeedMesaUnlockTrigger__startTimer__block_invoke(uin
       _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_INFO, "[SBHomeButtonPressSpeedMesaUnlockTrigger] unlocking | match occurred, timer fired, button is up, and finger is still on", v10, 2u);
     }
 
-    v4 = [(SBMesaUnlockTrigger *)self delegate];
-    [v4 mesaUnlockTriggerFired:self];
+    delegate = [(SBMesaUnlockTrigger *)self delegate];
+    [delegate mesaUnlockTriggerFired:self];
 
     [(SBHomeButtonPressSpeedMesaUnlockTrigger *)self _invalidateTimer];
   }

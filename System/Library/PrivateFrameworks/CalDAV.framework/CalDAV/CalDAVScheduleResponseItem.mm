@@ -1,7 +1,7 @@
 @interface CalDAVScheduleResponseItem
 - (id)copyParseRules;
 - (id)description;
-- (void)addNewTopLevelItem:(id)a3;
+- (void)addNewTopLevelItem:(id)item;
 @end
 
 @implementation CalDAVScheduleResponseItem
@@ -18,97 +18,97 @@
   return v7;
 }
 
-- (void)addNewTopLevelItem:(id)a3
+- (void)addNewTopLevelItem:(id)item
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CalDAVScheduleResponseItem *)self responses];
+    mEMORY[0x277CFDC18]2 = itemCopy;
+    responses = [(CalDAVScheduleResponseItem *)self responses];
 
-    if (!v6)
+    if (!responses)
     {
       v7 = [MEMORY[0x277CBEB58] set];
       [(CalDAVScheduleResponseItem *)self setResponses:v7];
     }
 
-    v8 = [(CalDAVScheduleResponseItem *)self responses];
-    [v8 addObject:v5];
+    responses2 = [(CalDAVScheduleResponseItem *)self responses];
+    [responses2 addObject:mEMORY[0x277CFDC18]2];
 
-    v9 = [v5 recipientHREF];
-    v10 = [v9 href];
-    v11 = [v10 payloadAsString];
-    v12 = [v11 length];
+    recipientHREF = [mEMORY[0x277CFDC18]2 recipientHREF];
+    href = [recipientHREF href];
+    payloadAsString = [href payloadAsString];
+    v12 = [payloadAsString length];
 
     if (v12)
     {
-      v13 = [v5 requestStatus];
-      v14 = [v13 payloadAsString];
+      requestStatus = [mEMORY[0x277CFDC18]2 requestStatus];
+      payloadAsString2 = [requestStatus payloadAsString];
 
-      if (([v14 hasPrefix:@"2."] & 1) != 0 || objc_msgSend(v14, "hasPrefix:", @"1."))
+      if (([payloadAsString2 hasPrefix:@"2."] & 1) != 0 || objc_msgSend(payloadAsString2, "hasPrefix:", @"1."))
       {
-        v15 = [v5 calendarData];
+        calendarData = [mEMORY[0x277CFDC18]2 calendarData];
 
-        if (!v15)
+        if (!calendarData)
         {
 LABEL_23:
 
           goto LABEL_24;
         }
 
-        v16 = [(CalDAVScheduleResponseItem *)self successfulICS];
+        successfulICS = [(CalDAVScheduleResponseItem *)self successfulICS];
 
-        if (!v16)
+        if (!successfulICS)
         {
           v17 = [MEMORY[0x277CBEB58] set];
           [(CalDAVScheduleResponseItem *)self setSuccessfulICS:v17];
         }
 
-        v18 = [(CalDAVScheduleResponseItem *)self successfulICS];
-        v19 = [v5 calendarData];
-        [v18 addObject:v19];
+        successfulICS2 = [(CalDAVScheduleResponseItem *)self successfulICS];
+        calendarData2 = [mEMORY[0x277CFDC18]2 calendarData];
+        [successfulICS2 addObject:calendarData2];
       }
 
       else
       {
-        v24 = [(CalDAVScheduleResponseItem *)self failedResponseItems];
+        failedResponseItems = [(CalDAVScheduleResponseItem *)self failedResponseItems];
 
-        if (!v24)
+        if (!failedResponseItems)
         {
           v25 = [MEMORY[0x277CBEB58] set];
           [(CalDAVScheduleResponseItem *)self setFailedResponseItems:v25];
         }
 
-        v18 = [(CalDAVScheduleResponseItem *)self failedResponseItems];
-        [v18 addObject:v5];
+        successfulICS2 = [(CalDAVScheduleResponseItem *)self failedResponseItems];
+        [successfulICS2 addObject:mEMORY[0x277CFDC18]2];
       }
 
       goto LABEL_23;
     }
 
-    v21 = [MEMORY[0x277CFDC18] sharedLogging];
-    v22 = [v21 logHandleForAccountInfoProvider:0];
+    mEMORY[0x277CFDC18] = [MEMORY[0x277CFDC18] sharedLogging];
+    v22 = [mEMORY[0x277CFDC18] logHandleForAccountInfoProvider:0];
     v23 = v22;
     if (v22 && os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
       v27 = 138412290;
-      v28 = v5;
+      v28 = mEMORY[0x277CFDC18]2;
       _os_log_impl(&dword_242742000, v23, OS_LOG_TYPE_DEBUG, "Ignoring strange response item with no parsed recipient %@", &v27, 0xCu);
     }
   }
 
   else
   {
-    v5 = [MEMORY[0x277CFDC18] sharedLogging];
-    v20 = [v5 logHandleForAccountInfoProvider:0];
-    v21 = v20;
+    mEMORY[0x277CFDC18]2 = [MEMORY[0x277CFDC18] sharedLogging];
+    v20 = [mEMORY[0x277CFDC18]2 logHandleForAccountInfoProvider:0];
+    mEMORY[0x277CFDC18] = v20;
     if (v20 && os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
       v27 = 138412290;
-      v28 = v4;
-      _os_log_impl(&dword_242742000, v21, OS_LOG_TYPE_DEBUG, "Dropping unexpected child %@", &v27, 0xCu);
+      v28 = itemCopy;
+      _os_log_impl(&dword_242742000, mEMORY[0x277CFDC18], OS_LOG_TYPE_DEBUG, "Dropping unexpected child %@", &v27, 0xCu);
     }
   }
 

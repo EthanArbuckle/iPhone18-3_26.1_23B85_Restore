@@ -1,22 +1,22 @@
 @interface SWSystemSleepMonitorAggregateState
-- (SWSystemSleepMonitorAggregateState)initWithSleepMonitorState:(unint64_t)a3 stateTimestamp:(unint64_t)a4 powerManagementPhase:(unint64_t)a5 phaseTimestamp:(unint64_t)a6;
+- (SWSystemSleepMonitorAggregateState)initWithSleepMonitorState:(unint64_t)state stateTimestamp:(unint64_t)timestamp powerManagementPhase:(unint64_t)phase phaseTimestamp:(unint64_t)phaseTimestamp;
 - (id)description;
-- (id)descriptionForTimestamp:(unint64_t)a3;
+- (id)descriptionForTimestamp:(unint64_t)timestamp;
 @end
 
 @implementation SWSystemSleepMonitorAggregateState
 
-- (SWSystemSleepMonitorAggregateState)initWithSleepMonitorState:(unint64_t)a3 stateTimestamp:(unint64_t)a4 powerManagementPhase:(unint64_t)a5 phaseTimestamp:(unint64_t)a6
+- (SWSystemSleepMonitorAggregateState)initWithSleepMonitorState:(unint64_t)state stateTimestamp:(unint64_t)timestamp powerManagementPhase:(unint64_t)phase phaseTimestamp:(unint64_t)phaseTimestamp
 {
   v11.receiver = self;
   v11.super_class = SWSystemSleepMonitorAggregateState;
   result = [(SWSystemSleepMonitorAggregateState *)&v11 init];
   if (result)
   {
-    result->_sleepMonitorState = a3;
-    result->_sleepMonitorStateTimestamp = a4;
-    result->_powerManagementPhase = a5;
-    result->_powerManagementPhaseTimestamp = a6;
+    result->_sleepMonitorState = state;
+    result->_sleepMonitorStateTimestamp = timestamp;
+    result->_powerManagementPhase = phase;
+    result->_powerManagementPhaseTimestamp = phaseTimestamp;
   }
 
   return result;
@@ -29,7 +29,7 @@
   return [(SWSystemSleepMonitorAggregateState *)self descriptionForTimestamp:v3];
 }
 
-- (id)descriptionForTimestamp:(unint64_t)a3
+- (id)descriptionForTimestamp:(unint64_t)timestamp
 {
   v5 = objc_opt_new();
   v9[0] = MEMORY[0x277D85DD0];
@@ -38,8 +38,8 @@
   v9[3] = &unk_279D43120;
   v6 = v5;
   v10 = v6;
-  v11 = self;
-  v12 = a3;
+  selfCopy = self;
+  timestampCopy = timestamp;
   [v6 appendProem:0 block:v9];
   v7 = [v6 description];
 

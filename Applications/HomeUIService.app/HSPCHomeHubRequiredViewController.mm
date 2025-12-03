@@ -1,22 +1,22 @@
 @interface HSPCHomeHubRequiredViewController
-- (HSPCHomeHubRequiredViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCHomeHubRequiredViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)handleLearnMoreURL;
 - (id)iconDescriptor;
 @end
 
 @implementation HSPCHomeHubRequiredViewController
 
-- (HSPCHomeHubRequiredViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCHomeHubRequiredViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v6 = a4;
+  configCopy = config;
   v15.receiver = self;
   v15.super_class = HSPCHomeHubRequiredViewController;
-  v7 = [(HSPCCenterIconViewController *)&v15 initWithCoordinator:a3 config:v6];
+  v7 = [(HSPCCenterIconViewController *)&v15 initWithCoordinator:coordinator config:configCopy];
   if (v7)
   {
-    v8 = [v6 home];
-    v9 = [v8 residentDevices];
-    [v9 count];
+    home = [configCopy home];
+    residentDevices = [home residentDevices];
+    [residentDevices count];
 
     v10 = HULocalizedString();
     [(HSPCHomeHubRequiredViewController *)v7 setTitle:v10];

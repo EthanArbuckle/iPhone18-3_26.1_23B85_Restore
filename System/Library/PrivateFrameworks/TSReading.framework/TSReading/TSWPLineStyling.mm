@@ -1,9 +1,9 @@
 @interface TSWPLineStyling
-+ (id)lineStylingWithLineCount:(int64_t)a3 options:(unint64_t)a4 additionalCharacterStylePropertyMap:(id)a5 overrideCharacterStylePropertyMap:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (TSWPLineStyling)initWithLineCount:(int64_t)a3 options:(unint64_t)a4 additionalCharacterStylePropertyMap:(id)a5 overrideCharacterStylePropertyMap:(id)a6;
++ (id)lineStylingWithLineCount:(int64_t)count options:(unint64_t)options additionalCharacterStylePropertyMap:(id)map overrideCharacterStylePropertyMap:(id)propertyMap;
+- (BOOL)isEqual:(id)equal;
+- (TSWPLineStyling)initWithLineCount:(int64_t)count options:(unint64_t)options additionalCharacterStylePropertyMap:(id)map overrideCharacterStylePropertyMap:(id)propertyMap;
 - (id)_optionsDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -11,14 +11,14 @@
 
 @implementation TSWPLineStyling
 
-+ (id)lineStylingWithLineCount:(int64_t)a3 options:(unint64_t)a4 additionalCharacterStylePropertyMap:(id)a5 overrideCharacterStylePropertyMap:(id)a6
++ (id)lineStylingWithLineCount:(int64_t)count options:(unint64_t)options additionalCharacterStylePropertyMap:(id)map overrideCharacterStylePropertyMap:(id)propertyMap
 {
-  v6 = [[a1 alloc] initWithLineCount:a3 options:a4 additionalCharacterStylePropertyMap:a5 overrideCharacterStylePropertyMap:a6];
+  v6 = [[self alloc] initWithLineCount:count options:options additionalCharacterStylePropertyMap:map overrideCharacterStylePropertyMap:propertyMap];
 
   return v6;
 }
 
-- (TSWPLineStyling)initWithLineCount:(int64_t)a3 options:(unint64_t)a4 additionalCharacterStylePropertyMap:(id)a5 overrideCharacterStylePropertyMap:(id)a6
+- (TSWPLineStyling)initWithLineCount:(int64_t)count options:(unint64_t)options additionalCharacterStylePropertyMap:(id)map overrideCharacterStylePropertyMap:(id)propertyMap
 {
   v13.receiver = self;
   v13.super_class = TSWPLineStyling;
@@ -26,10 +26,10 @@
   v11 = v10;
   if (v10)
   {
-    v10->_lineCount = a3;
-    v10->_options = a4;
-    v10->_additionalCharacterStylePropertyMap = [a5 copy];
-    v11->_overrideCharacterStylePropertyMap = [a6 copy];
+    v10->_lineCount = count;
+    v10->_options = options;
+    v10->_additionalCharacterStylePropertyMap = [map copy];
+    v11->_overrideCharacterStylePropertyMap = [propertyMap copy];
   }
 
   return v11;
@@ -42,7 +42,7 @@
   [(TSWPLineStyling *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   lineCount = self->_lineCount;
@@ -53,31 +53,31 @@
   return [v4 initWithLineCount:lineCount options:options additionalCharacterStylePropertyMap:additionalCharacterStylePropertyMap overrideCharacterStylePropertyMap:overrideCharacterStylePropertyMap];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
   if (v4)
   {
     v5 = v4;
-    v6 = [(TSWPLineStyling *)self lineCount];
-    if (v6 == [v5 lineCount] && (v7 = -[TSWPLineStyling options](self, "options"), v7 == objc_msgSend(v5, "options")))
+    lineCount = [(TSWPLineStyling *)self lineCount];
+    if (lineCount == [v5 lineCount] && (v7 = -[TSWPLineStyling options](self, "options"), v7 == objc_msgSend(v5, "options")))
     {
-      v8 = [(TSWPLineStyling *)self additionalCharacterStylePropertyMap];
-      if (v8 == [v5 additionalCharacterStylePropertyMap] || (LODWORD(v4) = -[TSSPropertyMap isEqual:](-[TSWPLineStyling additionalCharacterStylePropertyMap](self, "additionalCharacterStylePropertyMap"), "isEqual:", objc_msgSend(v5, "additionalCharacterStylePropertyMap")), v4))
+      additionalCharacterStylePropertyMap = [(TSWPLineStyling *)self additionalCharacterStylePropertyMap];
+      if (additionalCharacterStylePropertyMap == [v5 additionalCharacterStylePropertyMap] || (LODWORD(v4) = -[TSSPropertyMap isEqual:](-[TSWPLineStyling additionalCharacterStylePropertyMap](self, "additionalCharacterStylePropertyMap"), "isEqual:", objc_msgSend(v5, "additionalCharacterStylePropertyMap")), v4))
       {
-        v9 = [(TSWPLineStyling *)self overrideCharacterStylePropertyMap];
-        if (v9 == [v5 overrideCharacterStylePropertyMap])
+        overrideCharacterStylePropertyMap = [(TSWPLineStyling *)self overrideCharacterStylePropertyMap];
+        if (overrideCharacterStylePropertyMap == [v5 overrideCharacterStylePropertyMap])
         {
           LOBYTE(v4) = 1;
         }
 
         else
         {
-          v10 = [(TSWPLineStyling *)self overrideCharacterStylePropertyMap];
-          v11 = [v5 overrideCharacterStylePropertyMap];
+          overrideCharacterStylePropertyMap2 = [(TSWPLineStyling *)self overrideCharacterStylePropertyMap];
+          overrideCharacterStylePropertyMap3 = [v5 overrideCharacterStylePropertyMap];
 
-          LOBYTE(v4) = [(TSSPropertyMap *)v10 isEqual:v11];
+          LOBYTE(v4) = [(TSSPropertyMap *)overrideCharacterStylePropertyMap2 isEqual:overrideCharacterStylePropertyMap3];
         }
       }
     }
@@ -93,23 +93,23 @@
 
 - (unint64_t)hash
 {
-  v3 = [(TSWPLineStyling *)self lineCount];
-  v4 = [(TSWPLineStyling *)self options]^ v3;
+  lineCount = [(TSWPLineStyling *)self lineCount];
+  v4 = [(TSWPLineStyling *)self options]^ lineCount;
   v5 = v4 ^ (4 * [(TSSPropertyMap *)[(TSWPLineStyling *)self additionalCharacterStylePropertyMap] hash]);
   return v5 ^ ([(TSSPropertyMap *)[(TSWPLineStyling *)self overrideCharacterStylePropertyMap] hash]<< 10);
 }
 
 - (id)_optionsDescription
 {
-  v2 = [(TSWPLineStyling *)self options];
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = v3;
-  if (v2)
+  options = [(TSWPLineStyling *)self options];
+  string = [MEMORY[0x277CCAB68] string];
+  v4 = string;
+  if (options)
   {
-    [v3 appendString:@"LM+"];
+    [string appendString:@"LM+"];
   }
 
-  if ((v2 & 2) != 0)
+  if ((options & 2) != 0)
   {
     [v4 appendString:@"W+"];
   }

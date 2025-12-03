@@ -1,32 +1,32 @@
 @interface NBPBBackupListResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addBackups:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addBackups:(id)backups;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NBPBBackupListResponse
 
-- (void)addBackups:(id)a3
+- (void)addBackups:(id)backups
 {
-  v4 = a3;
+  backupsCopy = backups;
   backups = self->_backups;
-  v8 = v4;
+  v8 = backupsCopy;
   if (!backups)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_backups;
     self->_backups = v6;
 
-    v4 = v8;
+    backupsCopy = v8;
     backups = self->_backups;
   }
 
-  [(NSMutableArray *)backups addObject:v4];
+  [(NSMutableArray *)backups addObject:backupsCopy];
 }
 
 - (id)description
@@ -34,8 +34,8 @@
   v7.receiver = self;
   v7.super_class = NBPBBackupListResponse;
   v3 = [(NBPBBackupListResponse *)&v7 description];
-  v4 = [(NBPBBackupListResponse *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NBPBBackupListResponse *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -65,8 +65,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -87,9 +87,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -128,33 +128,33 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(NBPBBackupListResponse *)self backupsCount])
   {
-    [v8 clearBackups];
-    v4 = [(NBPBBackupListResponse *)self backupsCount];
-    if (v4)
+    [toCopy clearBackups];
+    backupsCount = [(NBPBBackupListResponse *)self backupsCount];
+    if (backupsCount)
     {
-      v5 = v4;
+      v5 = backupsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NBPBBackupListResponse *)self backupsAtIndex:i];
-        [v8 addBackups:v7];
+        [toCopy addBackups:v7];
       }
     }
   }
 
   if (self->_error)
   {
-    [v8 setError:?];
+    [toCopy setError:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -175,7 +175,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * v10) copyWithZone:{a3, v15}];
+        v11 = [*(*(&v15 + 1) + 8 * v10) copyWithZone:{zone, v15}];
         [v5 addBackups:v11];
 
         v10 = v10 + 1;
@@ -188,20 +188,20 @@
     while (v8);
   }
 
-  v12 = [(NSData *)self->_error copyWithZone:a3];
+  v12 = [(NSData *)self->_error copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((backups = self->_backups, !(backups | v4[1])) || -[NSMutableArray isEqual:](backups, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((backups = self->_backups, !(backups | equalCopy[1])) || -[NSMutableArray isEqual:](backups, "isEqual:")))
   {
     error = self->_error;
-    if (error | v4[2])
+    if (error | equalCopy[2])
     {
       v7 = [(NSData *)error isEqual:?];
     }
@@ -220,14 +220,14 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v4[1];
+  v5 = fromCopy[1];
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -251,7 +251,7 @@
     while (v7);
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(NBPBBackupListResponse *)self setError:?];
   }

@@ -1,12 +1,12 @@
 @interface CNPosterSetupAvatarPreviewConfiguration
-- (_TtC10ContactsUI39CNPosterSetupAvatarPreviewConfiguration)initWithImageData:(id)a3 cropRect:(CGRect)a4 imageType:(unint64_t)a5;
+- (_TtC10ContactsUI39CNPosterSetupAvatarPreviewConfiguration)initWithImageData:(id)data cropRect:(CGRect)rect imageType:(unint64_t)type;
 @end
 
 @implementation CNPosterSetupAvatarPreviewConfiguration
 
-- (_TtC10ContactsUI39CNPosterSetupAvatarPreviewConfiguration)initWithImageData:(id)a3 cropRect:(CGRect)a4 imageType:(unint64_t)a5
+- (_TtC10ContactsUI39CNPosterSetupAvatarPreviewConfiguration)initWithImageData:(id)data cropRect:(CGRect)rect imageType:(unint64_t)type
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = sub_199DF71FC();
   v8 = v7;
 

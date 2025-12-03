@@ -1,22 +1,22 @@
 @interface CBAdaptationClient
 + (BOOL)supportsAdaptation;
-- (BOOL)animateFromWeakestAdaptationModeInArray:(int *)a3 withLength:(int)a4 toWeakestInArray:(int *)a5 withLength:(int)a6 withProgress:(float)a7 andPeriod:(float)a8;
+- (BOOL)animateFromWeakestAdaptationModeInArray:(int *)array withLength:(int)length toWeakestInArray:(int *)inArray withLength:(int)withLength withProgress:(float)progress andPeriod:(float)period;
 - (BOOL)available;
 - (BOOL)getEnabled;
-- (BOOL)getStrengths:(float *)a3 nStrengths:(int)a4;
-- (BOOL)overrideStrengths:(float *)a3 forModes:(int *)a4 nModes:(int)a5;
-- (BOOL)registerNotificationCallbackBlock:(id)a3 withQueue:(id)a4;
-- (BOOL)registerNotificationForType:(unint64_t)a3;
-- (BOOL)setAdaptationMode:(int)a3 withPeriod:(float)a4;
-- (BOOL)setEnabled:(BOOL)a3;
-- (BOOL)setWeakestAdaptationModeFromArray:(int *)a3 withLength:(int)a4 andPeriod:(float)a5;
+- (BOOL)getStrengths:(float *)strengths nStrengths:(int)nStrengths;
+- (BOOL)overrideStrengths:(float *)strengths forModes:(int *)modes nModes:(int)nModes;
+- (BOOL)registerNotificationCallbackBlock:(id)block withQueue:(id)queue;
+- (BOOL)registerNotificationForType:(unint64_t)type;
+- (BOOL)setAdaptationMode:(int)mode withPeriod:(float)period;
+- (BOOL)setEnabled:(BOOL)enabled;
+- (BOOL)setWeakestAdaptationModeFromArray:(int *)array withLength:(int)length andPeriod:(float)period;
 - (CBAdaptationClient)init;
-- (CBAdaptationClient)initWithClientObj:(id)a3;
+- (CBAdaptationClient)initWithClientObj:(id)obj;
 - (int)getAdaptationMode;
 - (void)dealloc;
-- (void)handleBrightnessSystemNotificationForKey:(id)a3 withValue:(id)a4;
+- (void)handleBrightnessSystemNotificationForKey:(id)key withValue:(id)value;
 - (void)unregisterNotificationCallbackBlock;
-- (void)unregisterNotificationForType:(unint64_t)a3;
+- (void)unregisterNotificationForType:(unint64_t)type;
 @end
 
 @implementation CBAdaptationClient
@@ -40,25 +40,25 @@
   return v5 & 1;
 }
 
-- (CBAdaptationClient)initWithClientObj:(id)a3
+- (CBAdaptationClient)initWithClientObj:(id)obj
 {
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
-  v18 = a3;
-  if (!a3)
+  objCopy = obj;
+  if (!obj)
   {
     return 0;
   }
 
-  v17.receiver = v20;
+  v17.receiver = selfCopy;
   v17.super_class = CBAdaptationClient;
-  v20 = [(CBAdaptationClient *)&v17 init];
-  if (v20)
+  selfCopy = [(CBAdaptationClient *)&v17 init];
+  if (selfCopy)
   {
-    v20->bsc = v18;
-    MEMORY[0x1E69E5928](v20->bsc);
-    v20->_logHandle = os_log_create("com.apple.CoreBrightness.Client.Adaptation", "default");
-    if (!v20->_logHandle)
+    selfCopy->bsc = objCopy;
+    MEMORY[0x1E69E5928](selfCopy->bsc);
+    selfCopy->_logHandle = os_log_create("com.apple.CoreBrightness.Client.Adaptation", "default");
+    if (!selfCopy->_logHandle)
     {
       v6 = (_COREBRIGHTNESS_LOG_DEFAULT ? _COREBRIGHTNESS_LOG_DEFAULT : init_default_corebrightness_log());
       v16 = v6;
@@ -72,45 +72,45 @@
       }
     }
 
-    v13 = [(BrightnessSystemClient *)v20->bsc copyPropertyForKey:@"SupportedColorFX"];
+    v13 = [(BrightnessSystemClient *)selfCopy->bsc copyPropertyForKey:@"SupportedColorFX"];
     if (v13)
     {
-      v20->_supported = [objc_msgSend(v13 objectForKey:{@"SupportsAmbientColorAdaptation", "BOOLValue"}];
+      selfCopy->_supported = [objc_msgSend(v13 objectForKey:{@"SupportsAmbientColorAdaptation", "BOOLValue"}];
       MEMORY[0x1E69E5920](v13);
     }
 
-    v20->ownsClient = 0;
+    selfCopy->ownsClient = 0;
     v7[0] = 0;
     v7[1] = v7;
     v8 = 1375731712;
     v9 = 48;
     v10 = __Block_byref_object_copy__9;
     v11 = __Block_byref_object_dispose__9;
-    v12 = v20;
-    [(BrightnessSystemClient *)v20->bsc registerNotificationBlock:?];
+    v12 = selfCopy;
+    [(BrightnessSystemClient *)selfCopy->bsc registerNotificationBlock:?];
     _Block_object_dispose(v7, 8);
   }
 
-  return v20;
+  return selfCopy;
 }
 
 - (CBAdaptationClient)init
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
   v16.receiver = self;
   v16.super_class = CBAdaptationClient;
-  v18 = [(CBAdaptationClient *)&v16 init];
-  if (!v18)
+  selfCopy = [(CBAdaptationClient *)&v16 init];
+  if (!selfCopy)
   {
-    return v18;
+    return selfCopy;
   }
 
-  v18->bsc = objc_alloc_init(BrightnessSystemClient);
-  if (v18->bsc)
+  selfCopy->bsc = objc_alloc_init(BrightnessSystemClient);
+  if (selfCopy->bsc)
   {
-    v18->_logHandle = os_log_create("com.apple.CoreBrightness.Client.Adaptation", "default");
-    if (!v18->_logHandle)
+    selfCopy->_logHandle = os_log_create("com.apple.CoreBrightness.Client.Adaptation", "default");
+    if (!selfCopy->_logHandle)
     {
       v5 = (_COREBRIGHTNESS_LOG_DEFAULT ? _COREBRIGHTNESS_LOG_DEFAULT : init_default_corebrightness_log());
       v15 = v5;
@@ -124,24 +124,24 @@
       }
     }
 
-    v12 = [(BrightnessSystemClient *)v18->bsc copyPropertyForKey:@"SupportedColorFX"];
+    v12 = [(BrightnessSystemClient *)selfCopy->bsc copyPropertyForKey:@"SupportedColorFX"];
     if (v12)
     {
-      v18->_supported = [objc_msgSend(v12 objectForKey:{@"SupportsAmbientColorAdaptation", "BOOLValue"}];
+      selfCopy->_supported = [objc_msgSend(v12 objectForKey:{@"SupportsAmbientColorAdaptation", "BOOLValue"}];
       MEMORY[0x1E69E5920](v12);
     }
 
-    v18->ownsClient = 1;
+    selfCopy->ownsClient = 1;
     v6[0] = 0;
     v6[1] = v6;
     v7 = 1375731712;
     v8 = 48;
     v9 = __Block_byref_object_copy__9;
     v10 = __Block_byref_object_dispose__9;
-    v11 = v18;
-    [(BrightnessSystemClient *)v18->bsc registerNotificationBlock:?];
+    v11 = selfCopy;
+    [(BrightnessSystemClient *)selfCopy->bsc registerNotificationBlock:?];
     _Block_object_dispose(v6, 8);
-    return v18;
+    return selfCopy;
   }
 
   return 0;
@@ -149,28 +149,28 @@
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   objc_sync_enter(self);
-  if (v5->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    MEMORY[0x1E69E5920](v5->_logHandle);
-    v5->_logHandle = 0;
+    MEMORY[0x1E69E5920](selfCopy->_logHandle);
+    selfCopy->_logHandle = 0;
   }
 
-  if (v5->bsc)
+  if (selfCopy->bsc)
   {
-    [(BrightnessSystemClient *)v5->bsc registerNotificationBlock:0 forProperties:?];
-    MEMORY[0x1E69E5920](v5->bsc);
+    [(BrightnessSystemClient *)selfCopy->bsc registerNotificationBlock:0 forProperties:?];
+    MEMORY[0x1E69E5920](selfCopy->bsc);
   }
 
   objc_sync_exit(self);
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = CBAdaptationClient;
   [(CBAdaptationClient *)&v3 dealloc];
 }
 
-- (BOOL)setEnabled:(BOOL)a3
+- (BOOL)setEnabled:(BOOL)enabled
 {
   v5 = 0;
   if (!self->bsc)
@@ -179,7 +179,7 @@
   }
 
   objc_sync_enter(self);
-  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:a3];
+  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:enabled];
   if (v4)
   {
     v5 = [(BrightnessSystemClient *)self->bsc setProperty:v4 forKey:@"ColorAdaptationEnabled"];
@@ -202,13 +202,13 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v3 = 0;
+        available = 0;
         if ([v5 BOOLValue])
         {
-          v3 = [(CBAdaptationClient *)self available];
+          available = [(CBAdaptationClient *)self available];
         }
 
-        v7 = v3;
+        v7 = available;
       }
 
       MEMORY[0x1E69E5920](v5);
@@ -234,7 +234,7 @@
 
 - (BOOL)available
 {
-  v6 = 0;
+  bOOLValue = 0;
   objc_sync_enter(self);
   if (self->bsc)
   {
@@ -244,7 +244,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = [v4 BOOLValue];
+        bOOLValue = [v4 BOOLValue];
       }
 
       MEMORY[0x1E69E5920](v4);
@@ -262,7 +262,7 @@
   objc_sync_exit(self);
   if (!v5)
   {
-    v8 = v6 & 1;
+    v8 = bOOLValue & 1;
   }
 
   return v8 & 1;
@@ -314,22 +314,22 @@
   return v8;
 }
 
-- (BOOL)setWeakestAdaptationModeFromArray:(int *)a3 withLength:(int)a4 andPeriod:(float)a5
+- (BOOL)setWeakestAdaptationModeFromArray:(int *)array withLength:(int)length andPeriod:(float)period
 {
   v14 = 0;
   objc_sync_enter(self);
   if (self->bsc)
   {
-    if (a3)
+    if (array)
     {
-      if (a4 > 0)
+      if (length > 0)
       {
-        v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a4];
+        v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:length];
         if (v13)
         {
-          for (i = 0; i < a4; ++i)
+          for (i = 0; i < length; ++i)
           {
-            v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:a3[i]];
+            v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:array[i]];
             if (v11)
             {
               [v13 setObject:v11 atIndexedSubscript:i];
@@ -338,7 +338,7 @@
           }
 
           v8 = objc_alloc(MEMORY[0x1E696AD98]);
-          *&v5 = a5;
+          *&v5 = period;
           v7 = [v8 initWithFloat:v5];
           if (v7)
           {
@@ -363,30 +363,30 @@
   return v14;
 }
 
-- (BOOL)animateFromWeakestAdaptationModeInArray:(int *)a3 withLength:(int)a4 toWeakestInArray:(int *)a5 withLength:(int)a6 withProgress:(float)a7 andPeriod:(float)a8
+- (BOOL)animateFromWeakestAdaptationModeInArray:(int *)array withLength:(int)length toWeakestInArray:(int *)inArray withLength:(int)withLength withProgress:(float)progress andPeriod:(float)period
 {
-  v48 = self;
+  selfCopy = self;
   v47 = a2;
-  v46 = a3;
-  v45 = a4;
-  v44 = a5;
-  v43 = a6;
-  v42 = a7;
-  v41 = a8;
+  arrayCopy = array;
+  lengthCopy = length;
+  inArrayCopy = inArray;
+  withLengthCopy = withLength;
+  progressCopy = progress;
+  periodCopy = period;
   v40 = 0;
-  v30 = self;
+  selfCopy2 = self;
   objc_sync_enter(self);
-  if (v48->bsc && v44 && v43 > 0 && (!v45 || v46))
+  if (selfCopy->bsc && inArrayCopy && withLengthCopy > 0 && (!lengthCopy || arrayCopy))
   {
     v29 = objc_alloc(MEMORY[0x1E695DF70]);
-    v28 = [v29 initWithCapacity:v43];
+    v28 = [v29 initWithCapacity:withLengthCopy];
     v39 = v28;
     if (v28)
     {
-      for (i = 0; i < v43; ++i)
+      for (i = 0; i < withLengthCopy; ++i)
       {
         v27 = objc_alloc(MEMORY[0x1E696AD98]);
-        v26 = [v27 initWithInt:v44[i]];
+        v26 = [v27 initWithInt:inArrayCopy[i]];
         v37 = v26;
         if (v26)
         {
@@ -396,31 +396,31 @@
       }
 
       v25 = objc_alloc(MEMORY[0x1E696AD98]);
-      *&v8 = v41;
+      *&v8 = periodCopy;
       v24 = [v25 initWithFloat:v8];
       v36 = v24;
       if (v24)
       {
         v23 = objc_alloc(MEMORY[0x1E696AD98]);
-        *&v9 = v42;
+        *&v9 = progressCopy;
         v22 = [v23 initWithFloat:v9];
         v35 = v22;
         if (v22)
         {
           v34 = 0;
-          if (v45 > 0)
+          if (lengthCopy > 0)
           {
-            if (v46)
+            if (arrayCopy)
             {
               v21 = objc_alloc(MEMORY[0x1E695DF70]);
-              v20 = [v21 initWithCapacity:v45];
+              v20 = [v21 initWithCapacity:lengthCopy];
               v34 = v20;
               if (v20)
               {
-                for (j = 0; j < v45; ++j)
+                for (j = 0; j < lengthCopy; ++j)
                 {
                   v19 = objc_alloc(MEMORY[0x1E696AD98]);
-                  v18 = [v19 initWithInt:v46[j]];
+                  v18 = [v19 initWithInt:arrayCopy[j]];
                   v32 = v18;
                   if (v18)
                   {
@@ -450,9 +450,9 @@
 
           if (v31)
           {
-            v12 = [(BrightnessSystemClient *)v48->bsc setProperty:v31 forKey:@"WeakestColorAdaptationModeAnimated"];
+            v12 = [(BrightnessSystemClient *)selfCopy->bsc setProperty:v31 forKey:@"WeakestColorAdaptationModeAnimated"];
             v40 = v12;
-            v48->_modeSet = 0;
+            selfCopy->_modeSet = 0;
             MEMORY[0x1E69E5920](v31);
           }
 
@@ -471,50 +471,50 @@
     }
   }
 
-  objc_sync_exit(v30);
+  objc_sync_exit(selfCopy2);
   return v40;
 }
 
-- (BOOL)setAdaptationMode:(int)a3 withPeriod:(float)a4
+- (BOOL)setAdaptationMode:(int)mode withPeriod:(float)period
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
-  v9 = a3;
+  modeCopy = mode;
   objc_sync_enter(self);
-  *&v4 = a4;
-  v7 = [(CBAdaptationClient *)v11 setWeakestAdaptationModeFromArray:&v9 withLength:1 andPeriod:v4];
+  *&v4 = period;
+  v7 = [(CBAdaptationClient *)selfCopy setWeakestAdaptationModeFromArray:&modeCopy withLength:1 andPeriod:v4];
   if (v7)
   {
-    v11->_mode = v9;
-    v11->_modeSet = 1;
+    selfCopy->_mode = modeCopy;
+    selfCopy->_modeSet = 1;
   }
 
   objc_sync_exit(self);
   return v7;
 }
 
-- (BOOL)overrideStrengths:(float *)a3 forModes:(int *)a4 nModes:(int)a5
+- (BOOL)overrideStrengths:(float *)strengths forModes:(int *)modes nModes:(int)nModes
 {
   v13 = 0;
   objc_sync_enter(self);
   if (self->bsc)
   {
-    if (a3)
+    if (strengths)
     {
-      if (a4)
+      if (modes)
       {
-        if (a5 > 0 && a5 <= 6)
+        if (nModes > 0 && nModes <= 6)
         {
-          v12 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:a5];
+          v12 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:nModes];
           if (v12)
           {
-            for (i = 0; i < a5; ++i)
+            for (i = 0; i < nModes; ++i)
             {
-              v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:a4[i]];
+              v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:modes[i]];
               if (v10)
               {
                 v7 = objc_alloc(MEMORY[0x1E696AD98]);
-                *&v5 = a3[i];
+                *&v5 = strengths[i];
                 v9 = [v7 initWithFloat:v5];
                 if (v9)
                 {
@@ -538,11 +538,11 @@
   return v13;
 }
 
-- (BOOL)getStrengths:(float *)a3 nStrengths:(int)a4
+- (BOOL)getStrengths:(float *)strengths nStrengths:(int)nStrengths
 {
   v14 = 0;
   objc_sync_enter(self);
-  if (self->bsc && a3 && a4)
+  if (self->bsc && strengths && nStrengths)
   {
     __memset_chk();
     v12 = [(BrightnessSystemClient *)self->bsc copyPropertyForKey:@"ColorAdaptationModeMapping"];
@@ -551,7 +551,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = a4 <= 6 ? a4 : 6;
+        v6 = nStrengths <= 6 ? nStrengths : 6;
         v11 = 0;
         for (i = 0; i < v6; ++i)
         {
@@ -560,7 +560,7 @@
           {
             v8 = [v12 objectForKey:v9];
             [v8 floatValue];
-            a3[i] = v4;
+            strengths[i] = v4;
             ++v11;
           }
         }
@@ -595,48 +595,48 @@
   return v18 & 1;
 }
 
-- (void)handleBrightnessSystemNotificationForKey:(id)a3 withValue:(id)a4
+- (void)handleBrightnessSystemNotificationForKey:(id)key withValue:(id)value
 {
   v38 = *MEMORY[0x1E69E9840];
-  v35 = self;
+  selfCopy = self;
   v34 = a2;
-  v33 = a3;
-  v32 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v31 = 0;
   v30 = 0;
-  if ([a3 isEqualToString:@"ColorAdaptationAvailable"])
+  if ([key isEqualToString:@"ColorAdaptationAvailable"])
   {
     v31 = 1;
-    v30 = v32;
+    v30 = valueCopy;
   }
 
-  else if ([v33 isEqualToString:@"ColorAdaptationEnabled"])
+  else if ([keyCopy isEqualToString:@"ColorAdaptationEnabled"])
   {
     v31 = 2;
-    v30 = v32;
+    v30 = valueCopy;
   }
 
-  else if ([v33 isEqualToString:@"SupportedColorFX"])
+  else if ([keyCopy isEqualToString:@"SupportedColorFX"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v30 = [v32 objectForKey:@"SupportsAmbientColorAdaptation"];
+      v30 = [valueCopy objectForKey:@"SupportsAmbientColorAdaptation"];
       v31 = 3;
     }
   }
 
-  else if ([v33 isEqualToString:@"ColorAdaptationIntegratedSupport "])
+  else if ([keyCopy isEqualToString:@"ColorAdaptationIntegratedSupport "])
   {
     v31 = 4;
-    v30 = v32;
+    v30 = valueCopy;
   }
 
   else
   {
-    if (v35->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v35->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else
@@ -658,14 +658,14 @@
     v28 = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
-      __os_log_helper_16_2_1_8_64(v37, v33);
+      __os_log_helper_16_2_1_8_64(v37, keyCopy);
       _os_log_error_impl(&dword_1DE8E5000, v29, v28, "error: unknown notification type (%@)", v37, 0xCu);
     }
   }
 
-  if (v35->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    v11 = v35->_logHandle;
+    v11 = selfCopy->_logHandle;
   }
 
   else
@@ -687,16 +687,16 @@
   v26 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_5_8_64_8_0_8_64_8_0_8_0(v36, v33, v31, v30, v35->_notificationBlock, v35->_notificationQueue);
+    __os_log_helper_16_2_5_8_64_8_0_8_64_8_0_8_0(v36, keyCopy, v31, v30, selfCopy->_notificationBlock, selfCopy->_notificationQueue);
     _os_log_debug_impl(&dword_1DE8E5000, v27, v26, "key=%@ (type=%tu) value=%@  block=%p queue=%p", v36, 0x34u);
   }
 
-  obj = v35;
-  objc_sync_enter(v35);
-  if (v35->_notificationBlock && v35->_notificationQueue)
+  obj = selfCopy;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_notificationBlock && selfCopy->_notificationQueue)
   {
-    v25 = _Block_copy(v35->_notificationBlock);
-    notificationQueue = v35->_notificationQueue;
+    v25 = _Block_copy(selfCopy->_notificationBlock);
+    notificationQueue = selfCopy->_notificationQueue;
     block = MEMORY[0x1E69E9820];
     v18 = -1073741824;
     v19 = 0;
@@ -710,9 +710,9 @@
 
   else
   {
-    if (v35->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v8 = v35->_logHandle;
+      v8 = selfCopy->_logHandle;
     }
 
     else
@@ -753,29 +753,29 @@ void __73__CBAdaptationClient_handleBrightnessSystemNotificationForKey_withValue
   _Block_release(*(a1 + 40));
 }
 
-- (BOOL)registerNotificationCallbackBlock:(id)a3 withQueue:(id)a4
+- (BOOL)registerNotificationCallbackBlock:(id)block withQueue:(id)queue
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
-  v13 = a4;
-  if (a3 && v13)
+  blockCopy = block;
+  queueCopy = queue;
+  if (block && queueCopy)
   {
-    [(CBAdaptationClient *)v16 unregisterNotificationCallbackBlock];
-    obj = v16;
-    objc_sync_enter(v16);
-    v16->_notificationQueue = v13;
-    dispatch_retain(v13);
-    v16->_notificationBlock = _Block_copy(v14);
+    [(CBAdaptationClient *)selfCopy unregisterNotificationCallbackBlock];
+    obj = selfCopy;
+    objc_sync_enter(selfCopy);
+    selfCopy->_notificationQueue = queueCopy;
+    dispatch_retain(queueCopy);
+    selfCopy->_notificationBlock = _Block_copy(blockCopy);
     objc_sync_exit(obj);
     return 1;
   }
 
   else
   {
-    if (v16->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v16->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else
@@ -825,12 +825,12 @@ void __73__CBAdaptationClient_handleBrightnessSystemNotificationForKey_withValue
   objc_sync_exit(self);
 }
 
-- (BOOL)registerNotificationForType:(unint64_t)a3
+- (BOOL)registerNotificationForType:(unint64_t)type
 {
   v11 = *MEMORY[0x1E69E9840];
   v7 = 0;
   v6 = 0;
-  switch(a3)
+  switch(type)
   {
     case 1uLL:
       v6 = @"ColorAdaptationAvailable";
@@ -867,7 +867,7 @@ void __73__CBAdaptationClient_handleBrightnessSystemNotificationForKey_withValue
 
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
       {
-        __os_log_helper_16_0_1_8_0(v10, a3);
+        __os_log_helper_16_0_1_8_0(v10, type);
         _os_log_error_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_ERROR, "error: unknown notification type (%tu)", v10, 0xCu);
       }
 
@@ -885,11 +885,11 @@ void __73__CBAdaptationClient_handleBrightnessSystemNotificationForKey_withValue
   return v7 & 1;
 }
 
-- (void)unregisterNotificationForType:(unint64_t)a3
+- (void)unregisterNotificationForType:(unint64_t)type
 {
   v9 = *MEMORY[0x1E69E9840];
   v5 = 0;
-  switch(a3)
+  switch(type)
   {
     case 1uLL:
       v5 = @"ColorAdaptationAvailable";
@@ -926,7 +926,7 @@ void __73__CBAdaptationClient_handleBrightnessSystemNotificationForKey_withValue
 
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
       {
-        __os_log_helper_16_0_1_8_0(v8, a3);
+        __os_log_helper_16_0_1_8_0(v8, type);
         _os_log_error_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_ERROR, "error: unknown notification type (%tu)", v8, 0xCu);
       }
 

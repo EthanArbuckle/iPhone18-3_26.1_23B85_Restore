@@ -2,16 +2,16 @@
 + (double)decrementClientDelay;
 + (id)sharedInstance;
 + (id)singletonInstance;
-+ (void)setSharedInstance:(id)a3;
++ (void)setSharedInstance:(id)instance;
 - (TIUserDictionaryServer)init;
-- (id)addObserver:(id)a3;
+- (id)addObserver:(id)observer;
 - (void)dealloc;
 - (void)decrementRecentClientCountAfterDelay;
-- (void)getPhraseShortcutPairs:(id)a3;
+- (void)getPhraseShortcutPairs:(id)pairs;
 - (void)handleIdleTimeout;
-- (void)keyboardActivityDidTransition:(id)a3;
-- (void)loadPhraseShortcutPairs:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)keyboardActivityDidTransition:(id)transition;
+- (void)loadPhraseShortcutPairs:(id)pairs;
+- (void)removeObserver:(id)observer;
 - (void)resetCache;
 - (void)updateCache;
 @end
@@ -113,19 +113,19 @@
     }
   }
 
-  v4 = [(TIUserDictionaryServer *)self textReplacementServer];
-  [v4 cleanup];
+  textReplacementServer = [(TIUserDictionaryServer *)self textReplacementServer];
+  [textReplacementServer cleanup];
 
   [(TIUserDictionaryServer *)self resetCache];
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)keyboardActivityDidTransition:(id)a3
+- (void)keyboardActivityDidTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   dispatchQueue = self->_dispatchQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = transitionCopy;
+  v6 = transitionCopy;
   TIDispatchAsync();
 }
 
@@ -158,9 +158,9 @@ void *__62__TIUserDictionaryServer_decrementRecentClientCountAfterDelay__block_i
   return result;
 }
 
-- (void)loadPhraseShortcutPairs:(id)a3
+- (void)loadPhraseShortcutPairs:(id)pairs
 {
-  v4 = a3;
+  pairsCopy = pairs;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2050000000;
@@ -179,34 +179,34 @@ void *__62__TIUserDictionaryServer_decrementRecentClientCountAfterDelay__block_i
 
   v6 = v5;
   _Block_object_dispose(&v18, 8);
-  v7 = [v5 sharedConnection];
-  v8 = [v7 isKeyboardShortcutsAllowed];
+  sharedConnection = [v5 sharedConnection];
+  isKeyboardShortcutsAllowed = [sharedConnection isKeyboardShortcutsAllowed];
 
-  if (v8)
+  if (isKeyboardShortcutsAllowed)
   {
-    v9 = [(TIUserDictionaryServer *)self textReplacementServer];
+    textReplacementServer = [(TIUserDictionaryServer *)self textReplacementServer];
 
-    if (!v9)
+    if (!textReplacementServer)
     {
-      v4[2](v4, MEMORY[0x277CBEBF8]);
+      pairsCopy[2](pairsCopy, MEMORY[0x277CBEBF8]);
     }
 
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v11 = [(TIUserDictionaryServer *)self textReplacementServer];
+    textReplacementServer2 = [(TIUserDictionaryServer *)self textReplacementServer];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __50__TIUserDictionaryServer_loadPhraseShortcutPairs___block_invoke;
     v13[3] = &unk_2787320F8;
     v14 = v10;
-    v15 = self;
-    v16 = v4;
+    selfCopy = self;
+    v16 = pairsCopy;
     v12 = v10;
-    [v11 queryTextReplacementsWithCallback:v13];
+    [textReplacementServer2 queryTextReplacementsWithCallback:v13];
   }
 
   else
   {
-    v4[2](v4, MEMORY[0x277CBEBF8]);
+    pairsCopy[2](pairsCopy, MEMORY[0x277CBEBF8]);
   }
 }
 
@@ -335,12 +335,12 @@ void __37__TIUserDictionaryServer_updateCache__block_invoke(uint64_t a1, void *a
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getPhraseShortcutPairs:(id)a3
+- (void)getPhraseShortcutPairs:(id)pairs
 {
-  v4 = a3;
+  pairsCopy = pairs;
   dispatchQueue = self->_dispatchQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = pairsCopy;
+  v6 = pairsCopy;
   TIDispatchAsync();
 }
 
@@ -359,12 +359,12 @@ uint64_t __49__TIUserDictionaryServer_getPhraseShortcutPairs___block_invoke(uint
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   dispatchQueue = self->_dispatchQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = observerCopy;
+  v6 = observerCopy;
   TIDispatchAsync();
 }
 
@@ -382,9 +382,9 @@ void __41__TIUserDictionaryServer_removeObserver___block_invoke(uint64_t a1)
   }
 }
 
-- (id)addObserver:(id)a3
+- (id)addObserver:(id)observer
 {
-  v4 = [a3 copy];
+  v4 = [observer copy];
   dispatchQueue = self->_dispatchQueue;
   v9 = v4;
   v6 = v4;
@@ -510,8 +510,8 @@ void __37__TIUserDictionaryServer_startServer__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   v5 = getKSTextReplacementDidChangeNotification();
@@ -576,14 +576,14 @@ uint64_t __43__TIUserDictionaryServer_singletonInstance__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (void)setSharedInstance:(id)a3
++ (void)setSharedInstance:(id)instance
 {
-  v4 = a3;
-  if (__testingServer != v4)
+  instanceCopy = instance;
+  if (__testingServer != instanceCopy)
   {
-    v5 = v4;
-    objc_storeStrong(&__testingServer, a3);
-    v4 = v5;
+    v5 = instanceCopy;
+    objc_storeStrong(&__testingServer, instance);
+    instanceCopy = v5;
   }
 }
 

@@ -1,27 +1,27 @@
 @interface GameControllerDaemonAnalytics
-- (BOOL)sendEvent:(id)a3 withXPCPayloadBuilder:(id)a4;
-- (void)sendEvent:(id)a3 withXPCPayload:(id)a4;
+- (BOOL)sendEvent:(id)event withXPCPayloadBuilder:(id)builder;
+- (void)sendEvent:(id)event withXPCPayload:(id)payload;
 @end
 
 @implementation GameControllerDaemonAnalytics
 
-- (void)sendEvent:(id)a3 withXPCPayload:(id)a4
+- (void)sendEvent:(id)event withXPCPayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
-  [a3 UTF8String];
+  eventCopy = event;
+  payloadCopy = payload;
+  [event UTF8String];
   analytics_send_event();
 }
 
-- (BOOL)sendEvent:(id)a3 withXPCPayloadBuilder:(id)a4
+- (BOOL)sendEvent:(id)event withXPCPayloadBuilder:(id)builder
 {
-  v5 = a3;
-  v6 = a3;
-  v7 = a4;
-  [v5 UTF8String];
-  LOBYTE(v5) = analytics_send_event_lazy();
+  eventCopy = event;
+  eventCopy2 = event;
+  builderCopy = builder;
+  [eventCopy UTF8String];
+  LOBYTE(eventCopy) = analytics_send_event_lazy();
 
-  return v5;
+  return eventCopy;
 }
 
 @end

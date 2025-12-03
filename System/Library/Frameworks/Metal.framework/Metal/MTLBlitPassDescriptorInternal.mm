@@ -1,8 +1,8 @@
 @interface MTLBlitPassDescriptorInternal
 + (id)blitPassDescriptor;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLBlitPassDescriptorInternal)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -55,22 +55,22 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     return 0;
   }
 
   v7 = 0;
   p_private = &self->_private;
-  v9 = (a3 + 8);
+  v9 = (equal + 8);
   do
   {
     v10 = p_private->sampleBufferAttachments->_sampleDescriptors[v7];
@@ -140,15 +140,15 @@ LABEL_25:
   return 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   for (i = 0; i != 4; ++i)
   {
     v7 = self->_private.sampleBufferAttachments->_sampleDescriptors[i];
     if (v7)
     {
-      *(v5[1] + 8 + i * 8) = [(MTLBlitPassSampleBufferAttachmentDescriptorInternal *)v7 copyWithZone:a3];
+      *(v5[1] + 8 + i * 8) = [(MTLBlitPassSampleBufferAttachmentDescriptorInternal *)v7 copyWithZone:zone];
     }
   }
 

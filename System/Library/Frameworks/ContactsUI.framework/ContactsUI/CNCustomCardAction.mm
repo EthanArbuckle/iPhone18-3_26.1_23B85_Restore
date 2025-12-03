@@ -1,28 +1,28 @@
 @interface CNCustomCardAction
-+ (id)groupForActionGivenPlacement:(int64_t)a3 inContactContentViewController:(id)a4;
-+ (int64_t)placementForGroup:(id)a3 inContactContentViewController:(id)a4;
-- (BOOL)isValidForContact:(id)a3;
-- (BOOL)matchesTarget:(id)a3 selector:(SEL)a4 group:(id)a5 inContactContentViewController:(id)a6;
-- (CNCustomCardAction)initWithTitle:(id)a3 targetActionWrapper:(id)a4 contactIdentifier:(id)a5 placement:(int64_t)a6 isDestructive:(BOOL)a7 menuProvider:(id)a8;
++ (id)groupForActionGivenPlacement:(int64_t)placement inContactContentViewController:(id)controller;
++ (int64_t)placementForGroup:(id)group inContactContentViewController:(id)controller;
+- (BOOL)isValidForContact:(id)contact;
+- (BOOL)matchesTarget:(id)target selector:(SEL)selector group:(id)group inContactContentViewController:(id)controller;
+- (CNCustomCardAction)initWithTitle:(id)title targetActionWrapper:(id)wrapper contactIdentifier:(id)identifier placement:(int64_t)placement isDestructive:(BOOL)destructive menuProvider:(id)provider;
 @end
 
 @implementation CNCustomCardAction
 
-- (BOOL)matchesTarget:(id)a3 selector:(SEL)a4 group:(id)a5 inContactContentViewController:(id)a6
+- (BOOL)matchesTarget:(id)target selector:(SEL)selector group:(id)group inContactContentViewController:(id)controller
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = [objc_opt_class() placementForGroup:v12 inContactContentViewController:v11];
+  targetCopy = target;
+  controllerCopy = controller;
+  groupCopy = group;
+  v13 = [objc_opt_class() placementForGroup:groupCopy inContactContentViewController:controllerCopy];
 
   if (v13 == [(CNCustomCardAction *)self placement])
   {
-    v14 = [(CNCustomCardAction *)self targetActionWrapper];
-    v15 = [v14 target];
-    if (v15 == v10)
+    targetActionWrapper = [(CNCustomCardAction *)self targetActionWrapper];
+    target = [targetActionWrapper target];
+    if (target == targetCopy)
     {
-      v17 = [(CNCustomCardAction *)self targetActionWrapper];
-      v16 = [v17 action] == a4;
+      targetActionWrapper2 = [(CNCustomCardAction *)self targetActionWrapper];
+      v16 = [targetActionWrapper2 action] == selector;
     }
 
     else
@@ -39,25 +39,25 @@
   return v16;
 }
 
-- (BOOL)isValidForContact:(id)a3
+- (BOOL)isValidForContact:(id)contact
 {
-  v4 = [a3 identifier];
-  v5 = [(CNCustomCardAction *)self contactIdentifier];
-  v6 = [v4 isEqualToString:v5];
+  identifier = [contact identifier];
+  contactIdentifier = [(CNCustomCardAction *)self contactIdentifier];
+  v6 = [identifier isEqualToString:contactIdentifier];
 
   return v6;
 }
 
-- (CNCustomCardAction)initWithTitle:(id)a3 targetActionWrapper:(id)a4 contactIdentifier:(id)a5 placement:(int64_t)a6 isDestructive:(BOOL)a7 menuProvider:(id)a8
+- (CNCustomCardAction)initWithTitle:(id)title targetActionWrapper:(id)wrapper contactIdentifier:(id)identifier placement:(int64_t)placement isDestructive:(BOOL)destructive menuProvider:(id)provider
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  if (!a6)
+  titleCopy = title;
+  wrapperCopy = wrapper;
+  identifierCopy = identifier;
+  providerCopy = provider;
+  if (!placement)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"CNCustomCardAction.m" lineNumber:42 description:@"placement should not be undefined"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNCustomCardAction.m" lineNumber:42 description:@"placement should not be undefined"];
   }
 
   v27.receiver = self;
@@ -66,12 +66,12 @@
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_title, a3);
-    objc_storeStrong(&v20->_targetActionWrapper, a4);
-    objc_storeStrong(&v20->_contactIdentifier, a5);
-    v20->_placement = a6;
-    v20->_destructive = a7;
-    v21 = _Block_copy(v18);
+    objc_storeStrong(&v19->_title, title);
+    objc_storeStrong(&v20->_targetActionWrapper, wrapper);
+    objc_storeStrong(&v20->_contactIdentifier, identifier);
+    v20->_placement = placement;
+    v20->_destructive = destructive;
+    v21 = _Block_copy(providerCopy);
     menuProvider = v20->_menuProvider;
     v20->_menuProvider = v21;
 
@@ -81,22 +81,22 @@
   return v20;
 }
 
-+ (id)groupForActionGivenPlacement:(int64_t)a3 inContactContentViewController:(id)a4
++ (id)groupForActionGivenPlacement:(int64_t)placement inContactContentViewController:(id)controller
 {
-  v5 = a4;
-  v6 = v5;
-  switch(a3)
+  controllerCopy = controller;
+  v6 = controllerCopy;
+  switch(placement)
   {
     case 3:
-      v7 = [v5 cardFooterGroup];
+      cardFooterGroup = [controllerCopy cardFooterGroup];
       goto LABEL_7;
     case 2:
-      v7 = [v5 cardBottomGroup];
+      cardFooterGroup = [controllerCopy cardBottomGroup];
       goto LABEL_7;
     case 1:
-      v7 = [v5 cardTopGroup];
+      cardFooterGroup = [controllerCopy cardTopGroup];
 LABEL_7:
-      v8 = v7;
+      v8 = cardFooterGroup;
       goto LABEL_9;
   }
 
@@ -106,31 +106,31 @@ LABEL_9:
   return v8;
 }
 
-+ (int64_t)placementForGroup:(id)a3 inContactContentViewController:(id)a4
++ (int64_t)placementForGroup:(id)group inContactContentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 cardTopGroup];
+  groupCopy = group;
+  controllerCopy = controller;
+  cardTopGroup = [controllerCopy cardTopGroup];
 
-  if (v7 == v5)
+  if (cardTopGroup == groupCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    v8 = [v6 cardBottomGroup];
+    cardBottomGroup = [controllerCopy cardBottomGroup];
 
-    if (v8 == v5)
+    if (cardBottomGroup == groupCopy)
     {
       v10 = 2;
     }
 
     else
     {
-      v9 = [v6 cardFooterGroup];
+      cardFooterGroup = [controllerCopy cardFooterGroup];
 
-      if (v9 == v5)
+      if (cardFooterGroup == groupCopy)
       {
         v10 = 3;
       }

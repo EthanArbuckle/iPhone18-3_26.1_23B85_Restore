@@ -1,10 +1,10 @@
 @interface HKContextSyncRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKContextSyncRequest)init;
-- (HKContextSyncRequest)initWithCoder:(id)a3;
-- (HKContextSyncRequest)initWithPush:(BOOL)a3 pull:(BOOL)a4;
-- (id)requestByMergingRequest:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HKContextSyncRequest)initWithCoder:(id)coder;
+- (HKContextSyncRequest)initWithPush:(BOOL)push pull:(BOOL)pull;
+- (id)requestByMergingRequest:(id)request;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKContextSyncRequest
@@ -19,67 +19,67 @@
   return 0;
 }
 
-- (HKContextSyncRequest)initWithPush:(BOOL)a3 pull:(BOOL)a4
+- (HKContextSyncRequest)initWithPush:(BOOL)push pull:(BOOL)pull
 {
   v7.receiver = self;
   v7.super_class = HKContextSyncRequest;
   result = [(HKContextSyncRequest *)&v7 init];
   if (result)
   {
-    result->_push = a3;
-    result->_pull = a4;
+    result->_push = push;
+    result->_pull = pull;
   }
 
   return result;
 }
 
-- (id)requestByMergingRequest:(id)a3
+- (id)requestByMergingRequest:(id)request
 {
-  if (a3)
+  if (request)
   {
-    v4 = a3;
+    requestCopy = request;
     v5 = [HKContextSyncRequest alloc];
-    v6 = ([v4 push] & 1) != 0 || self->_push;
-    v8 = [v4 pull];
+    v6 = ([requestCopy push] & 1) != 0 || self->_push;
+    pull = [requestCopy pull];
 
-    v9 = (v8 & 1) != 0 || self->_pull;
-    v7 = [(HKContextSyncRequest *)v5 initWithPush:v6 pull:v9];
+    v9 = (pull & 1) != 0 || self->_pull;
+    selfCopy = [(HKContextSyncRequest *)v5 initWithPush:v6 pull:v9];
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()] && self->_push == objc_msgSend(v4, "push") && self->_pull == objc_msgSend(v4, "pull");
+  equalCopy = equal;
+  v5 = [equalCopy isMemberOfClass:objc_opt_class()] && self->_push == objc_msgSend(equalCopy, "push") && self->_pull == objc_msgSend(equalCopy, "pull");
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   push = self->_push;
-  v5 = a3;
-  [v5 encodeBool:push forKey:@"push"];
-  [v5 encodeBool:self->_pull forKey:@"pull"];
+  coderCopy = coder;
+  [coderCopy encodeBool:push forKey:@"push"];
+  [coderCopy encodeBool:self->_pull forKey:@"pull"];
 }
 
-- (HKContextSyncRequest)initWithCoder:(id)a3
+- (HKContextSyncRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = HKContextSyncRequest;
   v5 = [(HKContextSyncRequest *)&v7 init];
   if (v5)
   {
-    v5->_push = [v4 decodeBoolForKey:@"push"];
-    v5->_pull = [v4 decodeBoolForKey:@"pull"];
+    v5->_push = [coderCopy decodeBoolForKey:@"push"];
+    v5->_pull = [coderCopy decodeBoolForKey:@"pull"];
   }
 
   return v5;

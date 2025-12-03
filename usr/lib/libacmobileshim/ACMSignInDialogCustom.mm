@@ -8,23 +8,23 @@
 - (int64_t)widgetPasswordReturnKeyType;
 - (void)checkFields;
 - (void)dealloc;
-- (void)disableControls:(BOOL)a3;
-- (void)hideWithParentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)disableControls:(BOOL)controls;
+- (void)hideWithParentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)loadView;
-- (void)onIForgot:(id)a3;
-- (void)onSignIn:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setCancelBarButton:(id)a3;
-- (void)setCancelButton:(id)a3;
-- (void)setRequestedUserName:(id)a3;
-- (void)setShouldAuthenticateOnUserInput:(BOOL)a3;
-- (void)setSignInBarButton:(id)a3;
-- (void)setSignInButton:(id)a3;
-- (void)setWidgetAccountLabel:(id)a3;
-- (void)setWidgetPasswordReturnKeyType:(int64_t)a3;
-- (void)setWidgetPosition:(CGPoint)a3;
+- (void)onIForgot:(id)forgot;
+- (void)onSignIn:(id)in;
+- (void)setBackgroundColor:(id)color;
+- (void)setCancelBarButton:(id)button;
+- (void)setCancelButton:(id)button;
+- (void)setRequestedUserName:(id)name;
+- (void)setShouldAuthenticateOnUserInput:(BOOL)input;
+- (void)setSignInBarButton:(id)button;
+- (void)setSignInButton:(id)button;
+- (void)setWidgetAccountLabel:(id)label;
+- (void)setWidgetPasswordReturnKeyType:(int64_t)type;
+- (void)setWidgetPosition:(CGPoint)position;
 - (void)setupCustomView;
-- (void)showWithParentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)showWithParentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation ACMSignInDialogCustom
@@ -38,8 +38,8 @@
   [(ACMSignInDialogCustom *)self setCancelButton:0];
   [(ACMSignInDialogCustom *)self setCancelBarButton:0];
   [(ACMSignInDialogCustom *)self setView:0];
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x29EDC8250] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x29EDC8250] object:0];
 
   self->_widget = 0;
   v4.receiver = self;
@@ -57,13 +57,13 @@
   }
 
   [(ACMSignInDialog *)self setPasswordField:[(ACMSignInWidgetProtocol *)[(ACMSignInDialogCustom *)self widget] passwordField]];
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
   v4 = *MEMORY[0x29EDC8250];
-  [v3 addObserver:self selector:sel_checkFields name:*MEMORY[0x29EDC8250] object:{-[ACMSignInDialog passwordField](self, "passwordField")}];
-  v5 = [MEMORY[0x29EDBA068] defaultCenter];
-  v6 = [(ACMSignInDialog *)self accountNameField];
+  [defaultCenter addObserver:self selector:sel_checkFields name:*MEMORY[0x29EDC8250] object:{-[ACMSignInDialog passwordField](self, "passwordField")}];
+  defaultCenter2 = [MEMORY[0x29EDBA068] defaultCenter];
+  accountNameField = [(ACMSignInDialog *)self accountNameField];
 
-  [v5 addObserver:self selector:sel_checkFields name:v4 object:v6];
+  [defaultCenter2 addObserver:self selector:sel_checkFields name:v4 object:accountNameField];
 }
 
 - (void)loadView
@@ -73,12 +73,12 @@
   [(ACMSignInDialogCustom *)self setupCustomView];
 }
 
-- (void)setRequestedUserName:(id)a3
+- (void)setRequestedUserName:(id)name
 {
   v5.receiver = self;
   v5.super_class = ACMSignInDialogCustom;
   [(ACMSignInDialog *)&v5 setRequestedUserName:?];
-  [(UITextField *)[(ACMSignInDialog *)self accountNameField] setText:a3];
+  [(UITextField *)[(ACMSignInDialog *)self accountNameField] setText:name];
 }
 
 - (ACMSignInWidgetProtocol)widget
@@ -98,11 +98,11 @@
 
 - (void)checkFields
 {
-  v3 = [(ACMSignInDialogCustom *)self canSignIn];
-  [(UIButton *)[(ACMSignInDialogCustom *)self signInButton] setEnabled:v3];
-  v4 = [(ACMSignInDialogCustom *)self signInBarButton];
+  canSignIn = [(ACMSignInDialogCustom *)self canSignIn];
+  [(UIButton *)[(ACMSignInDialogCustom *)self signInButton] setEnabled:canSignIn];
+  signInBarButton = [(ACMSignInDialogCustom *)self signInBarButton];
 
-  [(UIBarButtonItem *)v4 setEnabled:v3];
+  [(UIBarButtonItem *)signInBarButton setEnabled:canSignIn];
 }
 
 - (BOOL)canSignIn
@@ -116,86 +116,86 @@
   return v3;
 }
 
-- (void)disableControls:(BOOL)a3
+- (void)disableControls:(BOOL)controls
 {
-  v3 = a3;
+  controlsCopy = controls;
   [(ACMSignInDialog *)self controlsWillChangeState:?];
-  [(ACMSignInWidgetProtocol *)[(ACMSignInDialogCustom *)self widget] disableControls:v3];
+  [(ACMSignInWidgetProtocol *)[(ACMSignInDialogCustom *)self widget] disableControls:controlsCopy];
   v5.receiver = self;
   v5.super_class = ACMSignInDialogCustom;
-  [(ACMSignInDialog *)&v5 disableControls:v3];
-  [(UIBarButtonItem *)[(ACMSignInDialogCustom *)self signInBarButton] setEnabled:v3 ^ 1];
-  [(UIBarButtonItem *)[(ACMSignInDialogCustom *)self cancelBarButton] setEnabled:v3 ^ 1];
-  [(UIButton *)[(ACMSignInDialogCustom *)self signInButton] setEnabled:v3 ^ 1];
-  [(UIButton *)[(ACMSignInDialogCustom *)self cancelButton] setEnabled:v3 ^ 1];
-  if (!v3)
+  [(ACMSignInDialog *)&v5 disableControls:controlsCopy];
+  [(UIBarButtonItem *)[(ACMSignInDialogCustom *)self signInBarButton] setEnabled:controlsCopy ^ 1];
+  [(UIBarButtonItem *)[(ACMSignInDialogCustom *)self cancelBarButton] setEnabled:controlsCopy ^ 1];
+  [(UIButton *)[(ACMSignInDialogCustom *)self signInButton] setEnabled:controlsCopy ^ 1];
+  [(UIButton *)[(ACMSignInDialogCustom *)self cancelButton] setEnabled:controlsCopy ^ 1];
+  if (!controlsCopy)
   {
     [(ACMSignInDialogCustom *)self checkFields];
   }
 
-  [(ACMSignInDialog *)self controlsDidChangeState:v3];
+  [(ACMSignInDialog *)self controlsDidChangeState:controlsCopy];
 }
 
-- (void)setSignInButton:(id)a3
+- (void)setSignInButton:(id)button
 {
   signInButton = self->_signInButton;
-  if (signInButton != a3)
+  if (signInButton != button)
   {
     [(UIButton *)signInButton removeTarget:0 action:0 forControlEvents:64];
 
-    v6 = a3;
-    self->_signInButton = v6;
-    [(UIButton *)v6 addTarget:self action:sel_onSignIn_ forControlEvents:64];
+    buttonCopy = button;
+    self->_signInButton = buttonCopy;
+    [(UIButton *)buttonCopy addTarget:self action:sel_onSignIn_ forControlEvents:64];
     [(UIButton *)self->_signInButton setExclusiveTouch:1];
 
     [(ACMSignInDialogCustom *)self checkFields];
   }
 }
 
-- (void)setCancelButton:(id)a3
+- (void)setCancelButton:(id)button
 {
   cancelButton = self->_cancelButton;
-  if (cancelButton != a3)
+  if (cancelButton != button)
   {
     [(UIButton *)cancelButton removeTarget:0 action:0 forControlEvents:64];
 
-    v6 = a3;
-    self->_cancelButton = v6;
-    [(UIButton *)v6 addTarget:self action:sel_onSignInCancel_ forControlEvents:64];
+    buttonCopy = button;
+    self->_cancelButton = buttonCopy;
+    [(UIButton *)buttonCopy addTarget:self action:sel_onSignInCancel_ forControlEvents:64];
     v7 = self->_cancelButton;
 
     [(UIButton *)v7 setExclusiveTouch:1];
   }
 }
 
-- (void)setSignInBarButton:(id)a3
+- (void)setSignInBarButton:(id)button
 {
   signInBarButton = self->_signInBarButton;
-  if (signInBarButton != a3)
+  if (signInBarButton != button)
   {
     [(UIBarButtonItem *)signInBarButton setTarget:0];
     [(UIBarButtonItem *)self->_signInBarButton setAction:0];
 
-    v6 = a3;
-    self->_signInBarButton = v6;
-    [(UIBarButtonItem *)v6 setTarget:self];
+    buttonCopy = button;
+    self->_signInBarButton = buttonCopy;
+    [(UIBarButtonItem *)buttonCopy setTarget:self];
     [(UIBarButtonItem *)self->_signInBarButton setAction:sel_onSignIn_];
 
     [(ACMSignInDialogCustom *)self checkFields];
   }
 }
 
-- (void)setCancelBarButton:(id)a3
+- (void)setCancelBarButton:(id)button
 {
   cancelBarButton = self->_cancelBarButton;
-  if (cancelBarButton != a3)
+  if (cancelBarButton != button)
   {
     [(UIBarButtonItem *)cancelBarButton setTarget:0];
     [(UIBarButtonItem *)self->_cancelBarButton setAction:0];
 
-    v6 = a3;
-    self->_cancelBarButton = v6;
-    [(UIBarButtonItem *)v6 setTarget:self];
+    buttonCopy = button;
+    self->_cancelBarButton = buttonCopy;
+    [(UIBarButtonItem *)buttonCopy setTarget:self];
     v7 = self->_cancelBarButton;
 
     [(UIBarButtonItem *)v7 setAction:sel_onSignInCancel_];
@@ -204,140 +204,140 @@
 
 - (UIColor)backgroundColor
 {
-  v2 = [(ACMSignInDialogCustom *)self widget];
+  widget = [(ACMSignInDialogCustom *)self widget];
 
-  return [(ACMSignInWidgetProtocol *)v2 backgroundColor];
+  return [(ACMSignInWidgetProtocol *)widget backgroundColor];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = [(ACMSignInDialogCustom *)self widget];
+  widget = [(ACMSignInDialogCustom *)self widget];
 
-  [(ACMSignInWidgetProtocol *)v4 setBackgroundColor:a3];
+  [(ACMSignInWidgetProtocol *)widget setBackgroundColor:color];
 }
 
-- (void)setShouldAuthenticateOnUserInput:(BOOL)a3
+- (void)setShouldAuthenticateOnUserInput:(BOOL)input
 {
-  v3 = a3;
-  v4 = [(ACMSignInDialogCustom *)self widget];
+  inputCopy = input;
+  widget = [(ACMSignInDialogCustom *)self widget];
 
-  [(ACMSignInWidgetProtocol *)v4 setShouldAuthenticateOnUserInput:v3];
+  [(ACMSignInWidgetProtocol *)widget setShouldAuthenticateOnUserInput:inputCopy];
 }
 
 - (BOOL)shouldAuthenticateOnUserInput
 {
-  v2 = [(ACMSignInDialogCustom *)self widget];
+  widget = [(ACMSignInDialogCustom *)self widget];
 
-  return [(ACMSignInWidgetProtocol *)v2 shouldAuthenticateOnUserInput];
+  return [(ACMSignInWidgetProtocol *)widget shouldAuthenticateOnUserInput];
 }
 
 - (CGPoint)widgetPosition
 {
-  v2 = [(ACMSignInDialogCustom *)self widget];
+  widget = [(ACMSignInDialogCustom *)self widget];
 
-  [(ACMSignInWidgetProtocol *)v2 position];
+  [(ACMSignInWidgetProtocol *)widget position];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (void)setWidgetPosition:(CGPoint)a3
+- (void)setWidgetPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(ACMSignInDialogCustom *)self widget];
+  y = position.y;
+  x = position.x;
+  widget = [(ACMSignInDialogCustom *)self widget];
 
-  [(ACMSignInWidgetProtocol *)v5 setPosition:x, y];
+  [(ACMSignInWidgetProtocol *)widget setPosition:x, y];
 }
 
 - (NSString)widgetAccountLabel
 {
-  v2 = [(ACMSignInDialogCustom *)self widget];
+  widget = [(ACMSignInDialogCustom *)self widget];
 
-  return [(ACMSignInWidgetProtocol *)v2 accountLabelText];
+  return [(ACMSignInWidgetProtocol *)widget accountLabelText];
 }
 
-- (void)setWidgetAccountLabel:(id)a3
+- (void)setWidgetAccountLabel:(id)label
 {
-  v4 = [(ACMSignInDialogCustom *)self widget];
+  widget = [(ACMSignInDialogCustom *)self widget];
 
-  [(ACMSignInWidgetProtocol *)v4 setAccountLabelText:a3];
+  [(ACMSignInWidgetProtocol *)widget setAccountLabelText:label];
 }
 
 - (int64_t)widgetPasswordReturnKeyType
 {
-  v2 = [(ACMSignInWidgetProtocol *)[(ACMSignInDialogCustom *)self widget] passwordField];
+  passwordField = [(ACMSignInWidgetProtocol *)[(ACMSignInDialogCustom *)self widget] passwordField];
 
-  return [v2 returnKeyType];
+  return [passwordField returnKeyType];
 }
 
-- (void)setWidgetPasswordReturnKeyType:(int64_t)a3
+- (void)setWidgetPasswordReturnKeyType:(int64_t)type
 {
-  v4 = [(ACMSignInWidgetProtocol *)[(ACMSignInDialogCustom *)self widget] passwordField];
+  passwordField = [(ACMSignInWidgetProtocol *)[(ACMSignInDialogCustom *)self widget] passwordField];
 
-  [v4 setReturnKeyType:a3];
+  [passwordField setReturnKeyType:type];
 }
 
-- (void)showWithParentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)showWithParentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
+  animatedCopy = animated;
   if ([(ACMSignInDialogCustom *)self standardViewController])
   {
     v10.receiver = self;
     v10.super_class = ACMSignInDialogCustom;
-    [(ACMDialog *)&v10 showWithParentViewController:a3 animated:v6 completion:a5];
+    [(ACMDialog *)&v10 showWithParentViewController:controller animated:animatedCopy completion:completion];
   }
 
   else
   {
-    [objc_msgSend(a3 "view")];
+    [objc_msgSend(controller "view")];
     [-[ACMSignInDialogCustom view](self "view")];
-    if (a5)
+    if (completion)
     {
-      v9 = *(a5 + 2);
+      v9 = *(completion + 2);
 
-      v9(a5);
+      v9(completion);
     }
   }
 }
 
-- (void)hideWithParentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)hideWithParentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
+  animatedCopy = animated;
   if ([(ACMSignInDialogCustom *)self standardViewController])
   {
     v10.receiver = self;
     v10.super_class = ACMSignInDialogCustom;
-    [(ACMDialog *)&v10 hideWithParentViewController:a3 animated:v6 completion:a5];
+    [(ACMDialog *)&v10 hideWithParentViewController:controller animated:animatedCopy completion:completion];
   }
 
   else if ([-[ACMSignInDialogCustom view](self "view")])
   {
     [-[ACMSignInDialogCustom view](self "view")];
-    if (a5)
+    if (completion)
     {
-      v9 = *(a5 + 2);
+      v9 = *(completion + 2);
 
-      v9(a5);
+      v9(completion);
     }
   }
 }
 
-- (void)onSignIn:(id)a3
+- (void)onSignIn:(id)in
 {
   if ([(ACMSignInDialogCustom *)self canSignIn])
   {
-    v5 = [(ACMSignInDialog *)self delegate];
+    delegate = [(ACMSignInDialog *)self delegate];
 
-    [(ACMSignInDialogDelegate *)v5 onSignIn:a3];
+    [(ACMSignInDialogDelegate *)delegate onSignIn:in];
   }
 }
 
-- (void)onIForgot:(id)a3
+- (void)onIForgot:(id)forgot
 {
-  v4 = [(ACMSignInDialog *)self delegate];
+  delegate = [(ACMSignInDialog *)self delegate];
 
-  [(ACMSignInDialogDelegate *)v4 onIForgot:a3];
+  [(ACMSignInDialogDelegate *)delegate onIForgot:forgot];
 }
 
 @end

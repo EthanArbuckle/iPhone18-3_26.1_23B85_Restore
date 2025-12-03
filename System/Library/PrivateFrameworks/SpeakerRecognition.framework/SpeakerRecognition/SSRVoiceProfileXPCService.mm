@@ -1,10 +1,10 @@
 @interface SSRVoiceProfileXPCService
 + (id)sharedService;
 - (SSRVoiceProfileXPCService)init;
-- (id)_createXPCClientConnectionIfNeeded:(id)a3;
+- (id)_createXPCClientConnectionIfNeeded:(id)needed;
 - (void)_teardownXPCClientIfNeeded;
-- (void)fetchEnrollmentStatusForSiriProfileId:(id)a3 forLanguageCode:(id)a4 completion:(id)a5;
-- (void)ssrVoiceProfileXPCClient:(id)a3 didDisconnect:(BOOL)a4;
+- (void)fetchEnrollmentStatusForSiriProfileId:(id)id forLanguageCode:(id)code completion:(id)completion;
+- (void)ssrVoiceProfileXPCClient:(id)client didDisconnect:(BOOL)disconnect;
 @end
 
 @implementation SSRVoiceProfileXPCService
@@ -33,7 +33,7 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)ssrVoiceProfileXPCClient:(id)a3 didDisconnect:(BOOL)a4
+- (void)ssrVoiceProfileXPCClient:(id)client didDisconnect:(BOOL)disconnect
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -60,14 +60,14 @@ uint64_t __68__SSRVoiceProfileXPCService_ssrVoiceProfileXPCClient_didDisconnect_
   return result;
 }
 
-- (id)_createXPCClientConnectionIfNeeded:(id)a3
+- (id)_createXPCClientConnectionIfNeeded:(id)needed
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  neededCopy = needed;
   dispatch_assert_queue_V2(self->_queue);
-  if (v4)
+  if (neededCopy)
   {
-    v5 = v4;
+    v5 = neededCopy;
 LABEL_6:
     v9 = v5;
     goto LABEL_7;
@@ -96,23 +96,23 @@ LABEL_7:
   return v9;
 }
 
-- (void)fetchEnrollmentStatusForSiriProfileId:(id)a3 forLanguageCode:(id)a4 completion:(id)a5
+- (void)fetchEnrollmentStatusForSiriProfileId:(id)id forLanguageCode:(id)code completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  codeCopy = code;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __94__SSRVoiceProfileXPCService_fetchEnrollmentStatusForSiriProfileId_forLanguageCode_completion___block_invoke;
   v15[3] = &unk_278579508;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = idCopy;
+  v17 = codeCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = codeCopy;
+  v14 = idCopy;
   dispatch_async(queue, v15);
 }
 

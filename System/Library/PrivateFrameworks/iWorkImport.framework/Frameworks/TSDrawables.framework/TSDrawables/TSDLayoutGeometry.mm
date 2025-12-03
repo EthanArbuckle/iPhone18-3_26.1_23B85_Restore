@@ -1,34 +1,34 @@
 @interface TSDLayoutGeometry
-+ (id)geometryFromFullTransform:(CGAffineTransform *)a3;
-- (BOOL)differsInMoreThanTranslationFrom:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)geometryFromFullTransform:(CGAffineTransform *)transform;
+- (BOOL)differsInMoreThanTranslationFrom:(id)from;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)fullTransform;
 - (CGAffineTransform)inverseTransform;
 - (CGAffineTransform)transform;
-- (CGAffineTransform)transformByConcatenatingTransformTo:(SEL)a3;
+- (CGAffineTransform)transformByConcatenatingTransformTo:(SEL)to;
 - (CGPoint)center;
 - (CGRect)frame;
 - (CGSize)size;
 - (TSDInfoGeometry)infoGeometry;
 - (TSDLayoutGeometry)init;
-- (TSDLayoutGeometry)initWithFrame:(CGRect)a3;
-- (TSDLayoutGeometry)initWithInfoGeometry:(id)a3;
-- (TSDLayoutGeometry)initWithSize:(CGSize)a3 transform:(CGAffineTransform *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSDLayoutGeometry)initWithFrame:(CGRect)frame;
+- (TSDLayoutGeometry)initWithInfoGeometry:(id)geometry;
+- (TSDLayoutGeometry)initWithSize:(CGSize)size transform:(CGAffineTransform *)transform;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)geometryByOutsettingBy:(CGSize)a3;
-- (id)geometryByTransformingBy:(CGAffineTransform *)a3;
-- (id)geometryByTranslatingBy:(CGPoint)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)i_setTransform:(CGAffineTransform *)a3;
+- (id)geometryByOutsettingBy:(CGSize)by;
+- (id)geometryByTransformingBy:(CGAffineTransform *)by;
+- (id)geometryByTranslatingBy:(CGPoint)by;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)i_setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation TSDLayoutGeometry
 
-- (TSDLayoutGeometry)initWithSize:(CGSize)a3 transform:(CGAffineTransform *)a4
+- (TSDLayoutGeometry)initWithSize:(CGSize)size transform:(CGAffineTransform *)transform
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = TSDLayoutGeometry;
   result = [(TSDLayoutGeometry *)&v10 init];
@@ -36,9 +36,9 @@
   {
     result->_size.width = width;
     result->_size.height = height;
-    v8 = *&a4->a;
-    v9 = *&a4->c;
-    *&result->_transform.tx = *&a4->tx;
+    v8 = *&transform->a;
+    v9 = *&transform->c;
+    *&result->_transform.tx = *&transform->tx;
     *&result->_transform.c = v9;
     *&result->_transform.a = v8;
   }
@@ -55,21 +55,21 @@
   return objc_msgSend_initWithSize_transform_(self, a2, v4, 100.0, 100.0);
 }
 
-- (TSDLayoutGeometry)initWithFrame:(CGRect)a3
+- (TSDLayoutGeometry)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  CGAffineTransformMakeTranslation(&v8, a3.origin.x, a3.origin.y);
+  height = frame.size.height;
+  width = frame.size.width;
+  CGAffineTransformMakeTranslation(&v8, frame.origin.x, frame.origin.y);
   return objc_msgSend_initWithSize_transform_(self, v6, &v8, width, height);
 }
 
-- (TSDLayoutGeometry)initWithInfoGeometry:(id)a3
+- (TSDLayoutGeometry)initWithInfoGeometry:(id)geometry
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  geometryCopy = geometry;
+  v7 = geometryCopy;
+  if (geometryCopy)
   {
-    if (!objc_msgSend_heightValid(v4, v5, v6) || (objc_msgSend_widthValid(v7, v8, v9) & 1) == 0)
+    if (!objc_msgSend_heightValid(geometryCopy, v5, v6) || (objc_msgSend_widthValid(v7, v8, v9) & 1) == 0)
     {
       v11 = MEMORY[0x277D81150];
       v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSDLayoutGeometry initWithInfoGeometry:]");
@@ -90,7 +90,7 @@
     v34[1] = v36;
     v34[2] = v37;
     self = objc_msgSend_initWithSize_transform_(self, v24, v34, v19, v21);
-    v25 = self;
+    selfCopy = self;
   }
 
   else
@@ -101,41 +101,41 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v26, v30, v27, v29, 53, 0, "invalid nil value for '%{public}s'", "infoGeometry");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v31, v32);
-    v25 = 0;
+    selfCopy = 0;
   }
 
-  return v25;
+  return selfCopy;
 }
 
-+ (id)geometryFromFullTransform:(CGAffineTransform *)a3
++ (id)geometryFromFullTransform:(CGAffineTransform *)transform
 {
-  v5 = *&a3->a;
-  v4 = *&a3->c;
+  v5 = *&transform->a;
+  v4 = *&transform->c;
   v6 = sqrt(COERCE_DOUBLE(*&vmulq_f64(v5, v5).f64[1]) + v5.f64[0] * v5.f64[0]);
   v7 = sqrt(COERCE_DOUBLE(*&vmulq_f64(v4, v4).f64[1]) + v4.f64[0] * v4.f64[0]);
   if (v6 > 0.01)
   {
-    *&a3->a = vdivq_f64(v5, vdupq_lane_s64(*&v6, 0));
+    *&transform->a = vdivq_f64(v5, vdupq_lane_s64(*&v6, 0));
   }
 
   v14 = v6;
   if (v7 > 0.01)
   {
-    *&a3->c = vdivq_f64(v4, vdupq_lane_s64(*&v7, 0));
+    *&transform->c = vdivq_f64(v4, vdupq_lane_s64(*&v7, 0));
   }
 
   v13 = v7;
   v8 = [TSDLayoutGeometry alloc];
-  v9 = *&a3->c;
-  v15[0] = *&a3->a;
+  v9 = *&transform->c;
+  v15[0] = *&transform->a;
   v15[1] = v9;
-  v15[2] = *&a3->tx;
+  v15[2] = *&transform->tx;
   v11 = objc_msgSend_initWithSize_transform_(v8, v10, v15, v14, v13);
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   width = self->_size.width;
@@ -147,7 +147,7 @@
   return objc_msgSend_initWithSize_transform_(v4, v8, v10, width, height);
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [TSDMutableLayoutGeometry alloc];
   width = self->_size.width;
@@ -159,16 +159,16 @@
   return objc_msgSend_initWithSize_transform_(v4, v8, v10, width, height);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_9;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v12 = 1;
     goto LABEL_13;
@@ -219,11 +219,11 @@ LABEL_13:
   return v16;
 }
 
-- (void)i_setTransform:(CGAffineTransform *)a3
+- (void)i_setTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_transform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_transform.tx = *&transform->tx;
   *&self->_transform.c = v4;
   *&self->_transform.a = v3;
 }
@@ -277,14 +277,14 @@ LABEL_13:
   return v9;
 }
 
-- (id)geometryByTransformingBy:(CGAffineTransform *)a3
+- (id)geometryByTransformingBy:(CGAffineTransform *)by
 {
   memset(&v24, 0, sizeof(v24));
-  objc_msgSend_transform(self, a2, a3);
-  v5 = *&a3->c;
-  *&v22.a = *&a3->a;
+  objc_msgSend_transform(self, a2, by);
+  v5 = *&by->c;
+  *&v22.a = *&by->a;
   *&v22.c = v5;
-  *&v22.tx = *&a3->tx;
+  *&v22.tx = *&by->tx;
   CGAffineTransformConcat(&v24, &t1, &v22);
   t1 = v24;
   TSUTransformXYScale();
@@ -304,25 +304,25 @@ LABEL_13:
   return v20;
 }
 
-- (id)geometryByTranslatingBy:(CGPoint)a3
+- (id)geometryByTranslatingBy:(CGPoint)by
 {
-  CGAffineTransformMakeTranslation(&v7, a3.x, a3.y);
+  CGAffineTransformMakeTranslation(&v7, by.x, by.y);
   v5 = objc_msgSend_geometryByTransformingBy_(self, v4, &v7);
 
   return v5;
 }
 
-- (id)geometryByOutsettingBy:(CGSize)a3
+- (id)geometryByOutsettingBy:(CGSize)by
 {
-  height = a3.height;
-  width = a3.width;
+  height = by.height;
+  width = by.width;
   v6 = objc_msgSend_mutableCopy(self, a2, v3);
   objc_msgSend_outsetBy_(v6, v7, v8, width, height);
 
   return v6;
 }
 
-- (CGAffineTransform)transformByConcatenatingTransformTo:(SEL)a3
+- (CGAffineTransform)transformByConcatenatingTransformTo:(SEL)to
 {
   v4 = *&a4->c;
   *&t1.a = *&a4->a;
@@ -335,13 +335,13 @@ LABEL_13:
   return CGAffineTransformConcat(retstr, &t1, &v7);
 }
 
-- (BOOL)differsInMoreThanTranslationFrom:(id)a3
+- (BOOL)differsInMoreThanTranslationFrom:(id)from
 {
-  v6 = a3;
-  if (v6 && (objc_msgSend_frame(self, v4, v5), objc_msgSend_frame(v6, v7, v8), TSUNearlyEqualSizes()))
+  fromCopy = from;
+  if (fromCopy && (objc_msgSend_frame(self, v4, v5), objc_msgSend_frame(fromCopy, v7, v8), TSUNearlyEqualSizes()))
   {
     objc_msgSend_transform(self, v9, v10);
-    objc_msgSend_transform(v6, v11, v12);
+    objc_msgSend_transform(fromCopy, v11, v12);
     v13 = TSUTransformsDifferOnlyByTranslation() ^ 1;
   }
 

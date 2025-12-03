@@ -1,11 +1,11 @@
 @interface AXMAssetManager
 + (id)defaultManager;
-- (id)_modelAssetNamesOfType:(unint64_t)a3 sources:(unint64_t)a4 compiled:(BOOL)a5;
-- (id)_modelAssetURLForModelNamed:(id)a3 ofType:(unint64_t)a4 sources:(unint64_t)a5 compiled:(BOOL)a6;
-- (id)_modelAssetURLsOfType:(unint64_t)a3 sources:(unint64_t)a4 compiled:(BOOL)a5;
-- (id)_modelsDirectoryForType:(unint64_t)a3 compiled:(BOOL)a4;
+- (id)_modelAssetNamesOfType:(unint64_t)type sources:(unint64_t)sources compiled:(BOOL)compiled;
+- (id)_modelAssetURLForModelNamed:(id)named ofType:(unint64_t)type sources:(unint64_t)sources compiled:(BOOL)compiled;
+- (id)_modelAssetURLsOfType:(unint64_t)type sources:(unint64_t)sources compiled:(BOOL)compiled;
+- (id)_modelsDirectoryForType:(unint64_t)type compiled:(BOOL)compiled;
 - (id)_photoCaptionAssetsDirectory;
-- (id)modelWithName:(id)a3 ofType:(unint64_t)a4 sources:(unint64_t)a5 compileIfNeeded:(BOOL)a6 persistCompiledModel:(BOOL)a7 error:(id *)a8;
+- (id)modelWithName:(id)name ofType:(unint64_t)type sources:(unint64_t)sources compileIfNeeded:(BOOL)needed persistCompiledModel:(BOOL)model error:(id *)error;
 @end
 
 @implementation AXMAssetManager
@@ -37,14 +37,14 @@ void __33__AXMAssetManager_defaultManager__block_invoke()
   return v3;
 }
 
-- (id)_modelsDirectoryForType:(unint64_t)a3 compiled:(BOOL)a4
+- (id)_modelsDirectoryForType:(unint64_t)type compiled:(BOOL)compiled
 {
-  if (a3 == 1)
+  if (type == 1)
   {
-    v4 = a4;
-    v5 = [(AXMAssetManager *)self _photoCaptionAssetsDirectory];
-    v6 = v5;
-    if (v4)
+    compiledCopy = compiled;
+    _photoCaptionAssetsDirectory = [(AXMAssetManager *)self _photoCaptionAssetsDirectory];
+    v6 = _photoCaptionAssetsDirectory;
+    if (compiledCopy)
     {
       v7 = @"CompiledModels";
     }
@@ -54,7 +54,7 @@ void __33__AXMAssetManager_defaultManager__block_invoke()
       v7 = @"UncompiledModels";
     }
 
-    v8 = [v5 URLByAppendingPathComponent:v7];
+    v8 = [_photoCaptionAssetsDirectory URLByAppendingPathComponent:v7];
   }
 
   else
@@ -65,18 +65,18 @@ void __33__AXMAssetManager_defaultManager__block_invoke()
   return v8;
 }
 
-- (id)_modelAssetURLsOfType:(unint64_t)a3 sources:(unint64_t)a4 compiled:(BOOL)a5
+- (id)_modelAssetURLsOfType:(unint64_t)type sources:(unint64_t)sources compiled:(BOOL)compiled
 {
-  v5 = a5;
-  v6 = a4;
+  compiledCopy = compiled;
+  sourcesCopy = sources;
   v34 = *MEMORY[0x1E69E9840];
-  v9 = [MEMORY[0x1E695DF70] array];
-  if (a3 == 1 && (v6 & 1) != 0)
+  array = [MEMORY[0x1E695DF70] array];
+  if (type == 1 && (sourcesCopy & 1) != 0)
   {
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
-    v11 = [(AXMAssetManager *)self _modelsDirectoryForType:1 compiled:v5];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v11 = [(AXMAssetManager *)self _modelsDirectoryForType:1 compiled:compiledCopy];
     v32 = 0;
-    v12 = [v10 contentsOfDirectoryAtURL:v11 includingPropertiesForKeys:0 options:1 error:&v32];
+    v12 = [defaultManager contentsOfDirectoryAtURL:v11 includingPropertiesForKeys:0 options:1 error:&v32];
     v13 = v32;
     if (v13)
     {
@@ -90,9 +90,9 @@ void __33__AXMAssetManager_defaultManager__block_invoke()
     else
     {
       v26 = v11;
-      v27 = v10;
+      v27 = defaultManager;
       v15 = @"mlmodel";
-      if (v5)
+      if (compiledCopy)
       {
         v15 = @"mlmodelc";
       }
@@ -119,12 +119,12 @@ void __33__AXMAssetManager_defaultManager__block_invoke()
             }
 
             v21 = *(*(&v28 + 1) + 8 * i);
-            v22 = [v21 pathExtension];
-            v23 = [v22 isEqualToString:v14];
+            pathExtension = [v21 pathExtension];
+            v23 = [pathExtension isEqualToString:v14];
 
             if (v23)
             {
-              [v9 addObject:v21];
+              [array addObject:v21];
             }
           }
 
@@ -135,24 +135,24 @@ void __33__AXMAssetManager_defaultManager__block_invoke()
       }
 
       v11 = v26;
-      v10 = v27;
+      defaultManager = v27;
       v12 = v25;
     }
   }
 
-  return v9;
+  return array;
 }
 
-- (id)_modelAssetNamesOfType:(unint64_t)a3 sources:(unint64_t)a4 compiled:(BOOL)a5
+- (id)_modelAssetNamesOfType:(unint64_t)type sources:(unint64_t)sources compiled:(BOOL)compiled
 {
-  v5 = a5;
+  compiledCopy = compiled;
   v23 = *MEMORY[0x1E69E9840];
-  v9 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [(AXMAssetManager *)self _modelAssetURLsOfType:a3 sources:a4 compiled:v5, 0];
+  v10 = [(AXMAssetManager *)self _modelAssetURLsOfType:type sources:sources compiled:compiledCopy, 0];
   v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
@@ -167,9 +167,9 @@ void __33__AXMAssetManager_defaultManager__block_invoke()
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * i) URLByDeletingPathExtension];
-        v16 = [v15 lastPathComponent];
-        [v9 addObject:v16];
+        uRLByDeletingPathExtension = [*(*(&v18 + 1) + 8 * i) URLByDeletingPathExtension];
+        lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
+        [array addObject:lastPathComponent];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -178,15 +178,15 @@ void __33__AXMAssetManager_defaultManager__block_invoke()
     while (v12);
   }
 
-  return v9;
+  return array;
 }
 
-- (id)_modelAssetURLForModelNamed:(id)a3 ofType:(unint64_t)a4 sources:(unint64_t)a5 compiled:(BOOL)a6
+- (id)_modelAssetURLForModelNamed:(id)named ofType:(unint64_t)type sources:(unint64_t)sources compiled:(BOOL)compiled
 {
-  v6 = a6;
+  compiledCopy = compiled;
   v24 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  [(AXMAssetManager *)self _modelAssetURLsOfType:a4 sources:a5 compiled:v6];
+  namedCopy = named;
+  [(AXMAssetManager *)self _modelAssetURLsOfType:type sources:sources compiled:compiledCopy];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -205,10 +205,10 @@ void __33__AXMAssetManager_defaultManager__block_invoke()
         }
 
         v15 = *(*(&v19 + 1) + 8 * i);
-        v16 = [v15 URLByDeletingPathExtension];
-        v17 = [v16 lastPathComponent];
+        uRLByDeletingPathExtension = [v15 URLByDeletingPathExtension];
+        lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
 
-        if ([v17 isEqualToString:v10])
+        if ([lastPathComponent isEqualToString:namedCopy])
         {
           v12 = v15;
 
@@ -231,13 +231,13 @@ LABEL_11:
   return v12;
 }
 
-- (id)modelWithName:(id)a3 ofType:(unint64_t)a4 sources:(unint64_t)a5 compileIfNeeded:(BOOL)a6 persistCompiledModel:(BOOL)a7 error:(id *)a8
+- (id)modelWithName:(id)name ofType:(unint64_t)type sources:(unint64_t)sources compileIfNeeded:(BOOL)needed persistCompiledModel:(BOOL)model error:(id *)error
 {
-  v9 = a7;
-  v10 = a6;
+  modelCopy = model;
+  neededCopy = needed;
   v53 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = [(AXMAssetManager *)self compiledModelAssetURLForModelNamed:v14 ofType:a4 sources:a5];
+  nameCopy = name;
+  v15 = [(AXMAssetManager *)self compiledModelAssetURLForModelNamed:nameCopy ofType:type sources:sources];
   if (v15)
   {
     v16 = v15;
@@ -247,10 +247,10 @@ LABEL_11:
     v19 = v18;
     if (v18)
     {
-      if (a8)
+      if (error)
       {
         v20 = v18;
-        *a8 = v19;
+        *error = v19;
       }
     }
 
@@ -260,7 +260,7 @@ LABEL_11:
       if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v50 = v14;
+        v50 = nameCopy;
         v51 = 2112;
         v52 = v16;
         _os_log_impl(&dword_1AE37B000, v34, OS_LOG_TYPE_INFO, "Using pre-compiled model for name '%@': %@", buf, 0x16u);
@@ -271,20 +271,20 @@ LABEL_11:
     goto LABEL_23;
   }
 
-  if (!v10)
+  if (!neededCopy)
   {
     goto LABEL_21;
   }
 
-  v21 = [(AXMAssetManager *)self uncompiledModelAssetURLForModelNamed:v14 ofType:a4 sources:a5];
+  v21 = [(AXMAssetManager *)self uncompiledModelAssetURLForModelNamed:nameCopy ofType:type sources:sources];
   if (!v21)
   {
-    if (a8)
+    if (error)
     {
-      _AXMMakeError(0, @"No uncompiled model found with name: %@", v22, v23, v24, v25, v26, v27, v14);
+      _AXMMakeError(0, @"No uncompiled model found with name: %@", v22, v23, v24, v25, v26, v27, nameCopy);
       v16 = 0;
       v36 = 0;
-      *a8 = v19 = 0;
+      *error = v19 = 0;
       goto LABEL_22;
     }
 
@@ -317,10 +317,10 @@ LABEL_21:
 
   if (v30)
   {
-    if (a8)
+    if (error)
     {
       v32 = v30;
-      *a8 = v30;
+      *error = v30;
     }
 
 LABEL_14:
@@ -330,23 +330,23 @@ LABEL_14:
     goto LABEL_24;
   }
 
-  if (v9)
+  if (modelCopy)
   {
-    v38 = [MEMORY[0x1E696AC08] defaultManager];
-    v39 = [(AXMAssetManager *)self _compiledModelsDirectoryForType:a4];
-    v40 = [v29 lastPathComponent];
-    v41 = [v39 URLByAppendingPathComponent:v40];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v39 = [(AXMAssetManager *)self _compiledModelsDirectoryForType:type];
+    lastPathComponent = [v29 lastPathComponent];
+    v41 = [v39 URLByAppendingPathComponent:lastPathComponent];
 
     v46 = 0;
-    LOBYTE(v39) = [v38 moveItemAtURL:v29 toURL:v41 error:&v46];
+    LOBYTE(v39) = [defaultManager moveItemAtURL:v29 toURL:v41 error:&v46];
     v42 = v46;
     v30 = v42;
     if ((v39 & 1) == 0)
     {
-      if (a8)
+      if (error)
       {
         v44 = v42;
-        *a8 = v30;
+        *error = v30;
       }
 
       goto LABEL_14;
@@ -364,10 +364,10 @@ LABEL_14:
   v36 = [MEMORY[0x1E695FE90] modelWithContentsOfURL:v29 error:&v45];
   v19 = v45;
 
-  if (a8 && v19)
+  if (error && v19)
   {
     v43 = v19;
-    *a8 = v19;
+    *error = v19;
   }
 
 LABEL_22:

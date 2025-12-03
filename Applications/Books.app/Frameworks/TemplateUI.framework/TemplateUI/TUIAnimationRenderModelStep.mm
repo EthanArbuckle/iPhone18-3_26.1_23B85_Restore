@@ -1,25 +1,25 @@
 @interface TUIAnimationRenderModelStep
-- (TUIAnimationRenderModelStep)initWithStepStartTime:(double)a3 duration:(double)a4 renderModel:(id)a5 animatedKeyPaths:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TUIAnimationRenderModelStep)initWithStepStartTime:(double)time duration:(double)duration renderModel:(id)model animatedKeyPaths:(id)paths;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation TUIAnimationRenderModelStep
 
-- (TUIAnimationRenderModelStep)initWithStepStartTime:(double)a3 duration:(double)a4 renderModel:(id)a5 animatedKeyPaths:(id)a6
+- (TUIAnimationRenderModelStep)initWithStepStartTime:(double)time duration:(double)duration renderModel:(id)model animatedKeyPaths:(id)paths
 {
-  v11 = a5;
-  v12 = a6;
+  modelCopy = model;
+  pathsCopy = paths;
   v18.receiver = self;
   v18.super_class = TUIAnimationRenderModelStep;
   v13 = [(TUIAnimationRenderModelStep *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    v13->_stepStartTime = a3;
-    v13->_stepDuration = a4;
-    objc_storeStrong(&v13->_renderModel, a5);
-    v15 = [v12 copy];
+    v13->_stepStartTime = time;
+    v13->_stepDuration = duration;
+    objc_storeStrong(&v13->_renderModel, model);
+    v15 = [pathsCopy copy];
     keyPaths = v14->_keyPaths;
     v14->_keyPaths = v15;
   }
@@ -27,9 +27,9 @@
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TUIAnimationRenderModelStep allocWithZone:a3];
+  v4 = [TUIAnimationRenderModelStep allocWithZone:zone];
   stepStartTime = self->_stepStartTime;
   stepDuration = self->_stepDuration;
   renderModel = self->_renderModel;

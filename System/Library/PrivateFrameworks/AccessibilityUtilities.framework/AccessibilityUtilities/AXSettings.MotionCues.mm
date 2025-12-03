@@ -3,68 +3,68 @@
 - (BOOL)motionCuesIncreasedSizeEnabled;
 - (float)motionCuesDotDensity;
 - (float)motionCuesDotSize;
-- (void)setMotionCuesDotDensity:(float)a3;
-- (void)setMotionCuesDotSize:(float)a3;
-- (void)setMotionCuesIncreasedDensityEnabled:(BOOL)a3;
-- (void)setMotionCuesIncreasedSizeEnabled:(BOOL)a3;
+- (void)setMotionCuesDotDensity:(float)density;
+- (void)setMotionCuesDotSize:(float)size;
+- (void)setMotionCuesIncreasedDensityEnabled:(BOOL)enabled;
+- (void)setMotionCuesIncreasedSizeEnabled:(BOOL)enabled;
 @end
 
 @implementation AXSettings.MotionCues
 
 - (float)motionCuesDotSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.MotionCues.dotSize.getter();
 
   return v3;
 }
 
-- (void)setMotionCuesDotSize:(float)a3
+- (void)setMotionCuesDotSize:(float)size
 {
-  v4 = self;
-  AXSettings.MotionCues.dotSize.setter(a3);
+  selfCopy = self;
+  AXSettings.MotionCues.dotSize.setter(size);
 }
 
 - (BOOL)motionCuesIncreasedSizeEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.MotionCues.increasedSizeEnabled.getter();
 
   return v3;
 }
 
-- (void)setMotionCuesIncreasedSizeEnabled:(BOOL)a3
+- (void)setMotionCuesIncreasedSizeEnabled:(BOOL)enabled
 {
-  v4 = self;
-  AXSettings.MotionCues.setIncreasedSizeEnabled(_:)(a3);
+  selfCopy = self;
+  AXSettings.MotionCues.setIncreasedSizeEnabled(_:)(enabled);
 }
 
 - (float)motionCuesDotDensity
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.MotionCues.dotDensity.getter();
 
   return v3;
 }
 
-- (void)setMotionCuesDotDensity:(float)a3
+- (void)setMotionCuesDotDensity:(float)density
 {
-  v4 = self;
-  AXSettings.MotionCues.dotDensity.setter(a3);
+  selfCopy = self;
+  AXSettings.MotionCues.dotDensity.setter(density);
 }
 
 - (BOOL)motionCuesIncreasedDensityEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.MotionCues.increasedDensityEnabled.getter();
 
   return v3;
 }
 
-- (void)setMotionCuesIncreasedDensityEnabled:(BOOL)a3
+- (void)setMotionCuesIncreasedDensityEnabled:(BOOL)enabled
 {
-  v4 = self;
-  AXSettings.MotionCues.setIncreasedDensityEnabled(_:)(a3);
+  selfCopy = self;
+  AXSettings.MotionCues.setIncreasedDensityEnabled(_:)(enabled);
 }
 
 @end

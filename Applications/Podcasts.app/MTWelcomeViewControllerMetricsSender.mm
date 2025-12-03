@@ -13,7 +13,7 @@
   v4 = *(v3 - 8);
   __chkstk_darwin();
   v6 = &v8 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
 
   MetricsController.observe(lifecycleEvent:)();
 
@@ -27,7 +27,7 @@
 
 - (void)welcomeControllerWillDisappear
 {
-  v2 = self;
+  selfCopy = self;
 
   MetricsController.observe(lifecycleEvent:)();
 }
@@ -37,7 +37,7 @@
   sub_100168088(&unk_1005815C0);
   __chkstk_darwin();
   v4 = &v7 - v3;
-  v5 = self;
+  selfCopy = self;
 
   MetricsController.observe(lifecycleEvent:)();
 

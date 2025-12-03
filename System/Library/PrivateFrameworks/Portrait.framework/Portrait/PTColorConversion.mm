@@ -1,37 +1,37 @@
 @interface PTColorConversion
-+ (BOOL2)getChromaSubsampledFromLuma:(id)a3 texChroma:(id)a4;
-+ (double)getChromaOffset:(void *)a3;
-+ (double)getChromaOffsetFromLuma:(void *)a3 texChroma:(uint64_t)a4;
-+ (int)getTransferFunction:(id)a3 toLinear:(BOOL)a4;
-+ (void)getColorMatrix:(unsigned int)a3@<W4> toRGB:(uint64_t)a4@<X5> fullRange:(void *)a5@<X8> colorYCbCrDepth:;
-+ (void)getColorMatrix:(void *)a3 toRGB:(uint64_t)a4;
-- (PTColorConversion)initWithMetalContext:(id)a3;
-- (int)convertRGB:(id)a3 inRGBA:(id)a4 outRGBA:(id)a5 toLinear:(BOOL)a6 transferFunction:(id)a7;
-- (int)convertRGB:(id)a3 inRGBA:(id)a4 outRGBA:(id)a5 toLinear:(BOOL)a6 transferFunction:(id)a7 outRect:;
-- (int)convertRGBLinearFromPTTexture:(id)a3 inPTTexture:(id)a4 outRGBA:(id)a5;
-- (int)convertRGBLinearToPTTexture:(id)a3 inRGBA:(id)a4 outPTTexture:(id)a5;
-- (int)convertRGBLinearToPTTexture:(id)a3 inRGBA:(id)a4 outPTTexture:(id)a5 outRect:;
-- (int)convertRGBtoYUV:(id)a3 inRGBA:(id)a4 outLuma:(id)a5 outChroma:(id)a6 toLinear:(BOOL)a7 transferFunction:(id)a8 colorYCbCrMatrix:(id)a9 colorYCbCrFullRange:(BOOL)a10 colorYCbCrDepthOut:(int64_t)a11;
-- (int)convertRGBtoYUV:(id)a3 inRGBA:(id)a4 outLuma:(id)a5 outChroma:(id)a6 toLinear:(BOOL)a7 transferFunction:(id)a8 colorYCbCrMatrix:(id)a9 colorYCbCrFullRange:(BOOL)a10 colorYCbCrDepthOut:(int64_t)a11 outRect:;
-- (int)convertYUVtoRGB:(id)a3 inLuma:(id)a4 inChroma:(id)a5 outRGBA:(id)a6 toLinear:(BOOL)a7 transferFunction:(id)a8 colorYCbCrMatrix:(id)a9 colorYCbCrFullRange:(BOOL)a10 colorYCbCrDepthIn:(int64_t)a11;
++ (BOOL2)getChromaSubsampledFromLuma:(id)luma texChroma:(id)chroma;
++ (double)getChromaOffset:(void *)offset;
++ (double)getChromaOffsetFromLuma:(void *)luma texChroma:(uint64_t)chroma;
++ (int)getTransferFunction:(id)function toLinear:(BOOL)linear;
++ (void)getColorMatrix:(unsigned int)matrix@<W4> toRGB:(uint64_t)b@<X5> fullRange:(void *)range@<X8> colorYCbCrDepth:;
++ (void)getColorMatrix:(void *)matrix toRGB:(uint64_t)b;
+- (PTColorConversion)initWithMetalContext:(id)context;
+- (int)convertRGB:(id)b inRGBA:(id)a outRGBA:(id)bA toLinear:(BOOL)linear transferFunction:(id)function;
+- (int)convertRGB:(id)b inRGBA:(id)a outRGBA:(id)bA toLinear:(BOOL)linear transferFunction:(id)function outRect:;
+- (int)convertRGBLinearFromPTTexture:(id)texture inPTTexture:(id)tTexture outRGBA:(id)a;
+- (int)convertRGBLinearToPTTexture:(id)texture inRGBA:(id)a outPTTexture:(id)tTexture;
+- (int)convertRGBLinearToPTTexture:(id)texture inRGBA:(id)a outPTTexture:(id)tTexture outRect:;
+- (int)convertRGBtoYUV:(id)v inRGBA:(id)a outLuma:(id)luma outChroma:(id)chroma toLinear:(BOOL)linear transferFunction:(id)function colorYCbCrMatrix:(id)matrix colorYCbCrFullRange:(BOOL)self0 colorYCbCrDepthOut:(int64_t)self1;
+- (int)convertRGBtoYUV:(id)v inRGBA:(id)a outLuma:(id)luma outChroma:(id)chroma toLinear:(BOOL)linear transferFunction:(id)function colorYCbCrMatrix:(id)matrix colorYCbCrFullRange:(BOOL)self0 colorYCbCrDepthOut:(int64_t)self1 outRect:;
+- (int)convertYUVtoRGB:(id)b inLuma:(id)luma inChroma:(id)chroma outRGBA:(id)a toLinear:(BOOL)linear transferFunction:(id)function colorYCbCrMatrix:(id)matrix colorYCbCrFullRange:(BOOL)self0 colorYCbCrDepthIn:(int64_t)self1;
 @end
 
 @implementation PTColorConversion
 
-- (PTColorConversion)initWithMetalContext:(id)a3
+- (PTColorConversion)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v29.receiver = self;
   v29.super_class = PTColorConversion;
   v6 = [(PTColorConversion *)&v29 init];
   p_isa = &v6->super.isa;
   if (v6)
   {
-    objc_storeStrong(&v6->_metalContext, a3);
+    objc_storeStrong(&v6->_metalContext, context);
     v8 = objc_opt_new();
-    v9 = [p_isa[1] imageblocksSupported];
+    imageblocksSupported = [p_isa[1] imageblocksSupported];
     v10 = @"NoImageBlocks";
-    if (v9)
+    if (imageblocksSupported)
     {
       v10 = &stru_2837D16E8;
     }
@@ -46,7 +46,7 @@
       [v8 reset];
       [v8 setConstantValue:&v28 type:29 withName:@"kColorTransferFunction"];
       v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"convertRGB%@", v11];
-      v16 = [v5 computePipelineStateFor:v15 withConstants:v8];
+      v16 = [contextCopy computePipelineStateFor:v15 withConstants:v8];
       v17 = v12[v28];
       v12[v28] = v16;
 
@@ -56,7 +56,7 @@
       }
 
       v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"convertRGBToYUV%@", v11];
-      v19 = [v5 computePipelineStateFor:v18 withConstants:v8];
+      v19 = [contextCopy computePipelineStateFor:v18 withConstants:v8];
       v20 = v13[v28];
       v13[v28] = v19;
 
@@ -72,7 +72,7 @@
       }
 
       v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"convertYUVToRGB%@", v11];
-      v22 = [v5 computePipelineStateFor:v21 withConstants:v8];
+      v22 = [contextCopy computePipelineStateFor:v21 withConstants:v8];
       v23 = v14[v28];
       v14[v28] = v22;
 
@@ -116,11 +116,11 @@ LABEL_18:
   return v25;
 }
 
-+ (void)getColorMatrix:(unsigned int)a3@<W4> toRGB:(uint64_t)a4@<X5> fullRange:(void *)a5@<X8> colorYCbCrDepth:
++ (void)getColorMatrix:(unsigned int)matrix@<W4> toRGB:(uint64_t)b@<X5> fullRange:(void *)range@<X8> colorYCbCrDepth:
 {
-  v9 = a1;
-  v10 = v9;
-  if (!v9)
+  selfCopy = self;
+  v10 = selfCopy;
+  if (!selfCopy)
   {
     v15 = _PTLogSystem();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -130,7 +130,7 @@ LABEL_18:
 
     v12 = xmmword_2244C60D0;
     v13 = 0.0722;
-    if (!a4)
+    if (!b)
     {
       goto LABEL_35;
     }
@@ -138,11 +138,11 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (CFStringCompare(v9, *MEMORY[0x277CC4D18], 0) == kCFCompareEqualTo)
+  if (CFStringCompare(selfCopy, *MEMORY[0x277CC4D18], 0) == kCFCompareEqualTo)
   {
     v12 = xmmword_2244C6100;
     v13 = 0.0593;
-    if (a4)
+    if (b)
     {
       goto LABEL_18;
     }
@@ -163,7 +163,7 @@ LABEL_18:
     v12 = xmmword_2244C60E0;
     v13 = 0.114;
 LABEL_17:
-    if (a4)
+    if (b)
     {
       goto LABEL_18;
     }
@@ -175,7 +175,7 @@ LABEL_17:
   {
     v12 = xmmword_2244C60F0;
     v13 = 0.087;
-    if (a4)
+    if (b)
     {
       goto LABEL_18;
     }
@@ -194,17 +194,17 @@ LABEL_35:
   }
 
   v12 = xmmword_2244C60D0;
-  if (!a4)
+  if (!b)
   {
     goto LABEL_35;
   }
 
 LABEL_18:
-  if (a4 == 8)
+  if (b == 8)
   {
-    _D2 = vbsl_s8(vcltz_s32(vshl_n_s32(vdup_n_s32(a3), 0x1FuLL)), vdup_n_s32(0x3F7EFEFFu), 0x3F60E0E13F5BDBDCLL);
+    _D2 = vbsl_s8(vcltz_s32(vshl_n_s32(vdup_n_s32(matrix), 0x1FuLL)), vdup_n_s32(0x3F7EFEFFu), 0x3F60E0E13F5BDBDCLL);
     v17 = 0.0;
-    if (!a3)
+    if (!matrix)
     {
       v17 = 0.062745;
     }
@@ -213,11 +213,11 @@ LABEL_18:
     goto LABEL_26;
   }
 
-  if (a4 == 10)
+  if (b == 10)
   {
-    _D2 = vbsl_s8(vcltz_s32(vshl_n_s32(vdup_n_s32(a3), 0x1FuLL)), vdup_n_s32(0x3F7FBFF0u), 0x3F60380E3F5B36CELL);
+    _D2 = vbsl_s8(vcltz_s32(vshl_n_s32(vdup_n_s32(matrix), 0x1FuLL)), vdup_n_s32(0x3F7FBFF0u), 0x3F60380E3F5B36CELL);
     v17 = 0.0;
-    if (!a3)
+    if (!matrix)
     {
       v17 = 0.062561;
     }
@@ -356,9 +356,9 @@ LABEL_36:
     }
 
     v68 = 0;
-    a5[1] = 0;
-    a5[2] = 0;
-    *a5 = 0;
+    range[1] = 0;
+    range[2] = 0;
+    *range = 0;
     do
     {
       v69 = 0;
@@ -369,12 +369,12 @@ LABEL_36:
         _S1 = *(&v73 & 0xFFFFFFFFFFFFFFF3 | (4 * (v69 & 3)));
         __asm { FCVT            H1, S1 }
 
-        *(a5 + v69++) = _S1;
+        *(range + v69++) = _S1;
       }
 
       while (v69 != 4);
       ++v68;
-      ++a5;
+      ++range;
     }
 
     while (v68 != 3);
@@ -394,9 +394,9 @@ LABEL_36:
   v79 = v78;
   v80 = v78;
   v81 = v78;
-  a5[1] = 0;
-  a5[2] = 0;
-  *a5 = 0;
+  range[1] = 0;
+  range[2] = 0;
+  *range = 0;
   do
   {
     v23 = 0;
@@ -407,34 +407,34 @@ LABEL_36:
       _S1 = *(&v72 & 0xFFFFFFFFFFFFFFF3 | (4 * (v23 & 3)));
       __asm { FCVT            H1, S1 }
 
-      *(a5 + v23++) = _S1;
+      *(range + v23++) = _S1;
     }
 
     while (v23 != 4);
     ++v21;
-    ++a5;
+    ++range;
   }
 
   while (v21 != 3);
 LABEL_50:
 }
 
-+ (void)getColorMatrix:(void *)a3 toRGB:(uint64_t)a4
++ (void)getColorMatrix:(void *)matrix toRGB:(uint64_t)b
 {
-  v5 = a3;
-  v8 = [v5 YCbCrMatrix];
-  v6 = [v5 YCbCrFullRange];
-  v7 = [v5 YCbCrColorDepth];
+  matrixCopy = matrix;
+  yCbCrMatrix = [matrixCopy YCbCrMatrix];
+  yCbCrFullRange = [matrixCopy YCbCrFullRange];
+  yCbCrColorDepth = [matrixCopy YCbCrColorDepth];
 
-  [PTColorConversion getColorMatrix:v8 toRGB:a4 fullRange:v6 colorYCbCrDepth:v7];
+  [PTColorConversion getColorMatrix:yCbCrMatrix toRGB:b fullRange:yCbCrFullRange colorYCbCrDepth:yCbCrColorDepth];
 }
 
-+ (int)getTransferFunction:(id)a3 toLinear:(BOOL)a4
++ (int)getTransferFunction:(id)function toLinear:(BOOL)linear
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  linearCopy = linear;
+  functionCopy = function;
+  v6 = functionCopy;
+  if (!functionCopy)
   {
     v7 = _PTLogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -445,12 +445,12 @@ LABEL_50:
     goto LABEL_11;
   }
 
-  if (CFStringCompare(v5, *MEMORY[0x277CC4CD0], 0))
+  if (CFStringCompare(functionCopy, *MEMORY[0x277CC4CD0], 0))
   {
     if (CFStringCompare(v6, *MEMORY[0x277CC4CD8], 0) == kCFCompareEqualTo)
     {
 LABEL_12:
-      v8 = !v4;
+      v8 = !linearCopy;
       v9 = 1;
       goto LABEL_17;
     }
@@ -476,20 +476,20 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v8 = !v4;
+      v8 = !linearCopy;
       v9 = 7;
     }
 
     else
     {
-      v8 = !v4;
+      v8 = !linearCopy;
       v9 = 5;
     }
   }
 
   else
   {
-    v8 = !v4;
+    v8 = !linearCopy;
     v9 = 3;
   }
 
@@ -509,34 +509,34 @@ LABEL_20:
   return v10;
 }
 
-+ (BOOL2)getChromaSubsampledFromLuma:(id)a3 texChroma:(id)a4
++ (BOOL2)getChromaSubsampledFromLuma:(id)luma texChroma:(id)chroma
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 width];
-  v8 = v7 / [v5 width] == 2;
-  v9 = [v6 height];
+  chromaCopy = chroma;
+  lumaCopy = luma;
+  width = [lumaCopy width];
+  v8 = width / [chromaCopy width] == 2;
+  height = [lumaCopy height];
 
-  v10 = [v5 height];
-  return (v8 | ((v9 / v10 == 2) << 8));
+  height2 = [chromaCopy height];
+  return (v8 | ((height / height2 == 2) << 8));
 }
 
-+ (double)getChromaOffset:(void *)a3
++ (double)getChromaOffset:(void *)offset
 {
-  v3 = a3;
-  v4 = [v3 texLuma];
-  v5 = [v3 texChroma];
+  offsetCopy = offset;
+  texLuma = [offsetCopy texLuma];
+  texChroma = [offsetCopy texChroma];
 
-  [PTColorConversion getChromaOffsetFromLuma:v4 texChroma:v5];
+  [PTColorConversion getChromaOffsetFromLuma:texLuma texChroma:texChroma];
   v7 = v6;
 
   return v7;
 }
 
-+ (double)getChromaOffsetFromLuma:(void *)a3 texChroma:(uint64_t)a4
++ (double)getChromaOffsetFromLuma:(void *)luma texChroma:(uint64_t)chroma
 {
-  v5 = a3;
-  v6 = [PTColorConversion getChromaSubsampledFromLuma:v5 texChroma:a4];
+  lumaCopy = luma;
+  v6 = [PTColorConversion getChromaSubsampledFromLuma:lumaCopy texChroma:chroma];
   v7 = 0.0;
   if (v6.var0)
   {
@@ -548,37 +548,37 @@ LABEL_20:
     v8 = 0.0;
   }
 
-  v10 = v8 / [v5 width];
+  v10 = v8 / [lumaCopy width];
   *&v10 = v10;
   if ((*&v6 & 0x100) != 0)
   {
     v7 = 0.5;
   }
 
-  v11 = [v5 height];
+  height = [lumaCopy height];
 
-  *&v12 = v7 / v11;
+  *&v12 = v7 / height;
   return COERCE_DOUBLE(__PAIR64__(v12, v14));
 }
 
-- (int)convertRGB:(id)a3 inRGBA:(id)a4 outRGBA:(id)a5 toLinear:(BOOL)a6 transferFunction:(id)a7 outRect:
+- (int)convertRGB:(id)b inRGBA:(id)a outRGBA:(id)bA toLinear:(BOOL)linear transferFunction:(id)function outRect:
 {
   v25 = v7;
-  v9 = a6;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  linearCopy = linear;
+  bCopy = b;
+  aCopy = a;
+  bACopy = bA;
+  functionCopy = function;
   if ([(PTMetalContext *)self->_metalContext imageblocksSupported]|| !v25)
   {
-    v19 = [PTColorConversion getTransferFunction:v16 toLinear:v9, v25];
+    v19 = [PTColorConversion getTransferFunction:functionCopy toLinear:linearCopy, v25];
     v20 = [PTImageblockConfig alloc];
-    v21 = [PTTexture createRGBA:v15];
+    v21 = [PTTexture createRGBA:bACopy];
     v17 = [(PTImageblockConfig *)v20 initWithPTTexture:v21 outRect:v26];
 
-    v29 = [v17 outOffset];
-    v22 = [v13 computeCommandEncoder];
-    if (!v22)
+    outOffset = [v17 outOffset];
+    computeCommandEncoder = [bCopy computeCommandEncoder];
+    if (!computeCommandEncoder)
     {
       v23 = _PTLogSystem();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -587,15 +587,15 @@ LABEL_20:
       }
     }
 
-    [v22 setComputePipelineState:self->_convertRGB[v19]];
+    [computeCommandEncoder setComputePipelineState:self->_convertRGB[v19]];
     if ([(PTMetalContext *)self->_metalContext imageblocksSupported])
     {
-      [v22 setImageblockWidth:-[NSObject imageblockSize](v17 height:{"imageblockSize"), -[NSObject imageblockSize](v17, "imageblockSize")}];
+      [computeCommandEncoder setImageblockWidth:-[NSObject imageblockSize](v17 height:{"imageblockSize"), -[NSObject imageblockSize](v17, "imageblockSize")}];
     }
 
-    [v22 setTexture:v14 atIndex:0];
-    [v22 setTexture:v15 atIndex:1];
-    [v22 setBytes:&v29 length:8 atIndex:0];
+    [computeCommandEncoder setTexture:aCopy atIndex:0];
+    [computeCommandEncoder setTexture:bACopy atIndex:1];
+    [computeCommandEncoder setBytes:&outOffset length:8 atIndex:0];
     if (v17)
     {
       [v17 threads];
@@ -608,8 +608,8 @@ LABEL_20:
       memset(v27, 0, sizeof(v27));
     }
 
-    [v22 dispatchThreads:v28 threadsPerThreadgroup:v27];
-    [v22 endEncoding];
+    [computeCommandEncoder dispatchThreads:v28 threadsPerThreadgroup:v27];
+    [computeCommandEncoder endEncoding];
 
     v18 = 0;
   }
@@ -628,55 +628,55 @@ LABEL_20:
   return v18;
 }
 
-- (int)convertRGB:(id)a3 inRGBA:(id)a4 outRGBA:(id)a5 toLinear:(BOOL)a6 transferFunction:(id)a7
+- (int)convertRGB:(id)b inRGBA:(id)a outRGBA:(id)bA toLinear:(BOOL)linear transferFunction:(id)function
 {
-  v7 = a6;
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [v13 width];
-  v17 = [v13 height];
+  linearCopy = linear;
+  functionCopy = function;
+  bACopy = bA;
+  aCopy = a;
+  bCopy = b;
+  width = [bACopy width];
+  height = [bACopy height];
   LODWORD(v18) = 0;
-  WORD2(v18) = v16;
-  HIWORD(v18) = v17;
-  LODWORD(v7) = [(PTColorConversion *)self convertRGB:v15 inRGBA:v14 outRGBA:v13 toLinear:v7 transferFunction:v12 outRect:v18];
+  WORD2(v18) = width;
+  HIWORD(v18) = height;
+  LODWORD(linearCopy) = [(PTColorConversion *)self convertRGB:bCopy inRGBA:aCopy outRGBA:bACopy toLinear:linearCopy transferFunction:functionCopy outRect:v18];
 
-  return v7;
+  return linearCopy;
 }
 
-- (int)convertRGBtoYUV:(id)a3 inRGBA:(id)a4 outLuma:(id)a5 outChroma:(id)a6 toLinear:(BOOL)a7 transferFunction:(id)a8 colorYCbCrMatrix:(id)a9 colorYCbCrFullRange:(BOOL)a10 colorYCbCrDepthOut:(int64_t)a11
+- (int)convertRGBtoYUV:(id)v inRGBA:(id)a outLuma:(id)luma outChroma:(id)chroma toLinear:(BOOL)linear transferFunction:(id)function colorYCbCrMatrix:(id)matrix colorYCbCrFullRange:(BOOL)self0 colorYCbCrDepthOut:(int64_t)self1
 {
-  v29 = a7;
-  v17 = a9;
-  v18 = a8;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
-  v23 = [v20 width];
-  v24 = [v20 height];
+  linearCopy = linear;
+  matrixCopy = matrix;
+  functionCopy = function;
+  chromaCopy = chroma;
+  lumaCopy = luma;
+  aCopy = a;
+  vCopy = v;
+  width = [lumaCopy width];
+  height = [lumaCopy height];
   LODWORD(v25) = 0;
-  WORD2(v25) = v23;
-  HIWORD(v25) = v24;
-  LOBYTE(v28) = a10;
-  v26 = [(PTColorConversion *)self convertRGBtoYUV:v22 inRGBA:v21 outLuma:v20 outChroma:v19 toLinear:v29 transferFunction:v18 colorYCbCrMatrix:v25 colorYCbCrFullRange:v17 colorYCbCrDepthOut:v28 outRect:a11];
+  WORD2(v25) = width;
+  HIWORD(v25) = height;
+  LOBYTE(v28) = range;
+  v26 = [(PTColorConversion *)self convertRGBtoYUV:vCopy inRGBA:aCopy outLuma:lumaCopy outChroma:chromaCopy toLinear:linearCopy transferFunction:functionCopy colorYCbCrMatrix:v25 colorYCbCrFullRange:matrixCopy colorYCbCrDepthOut:v28 outRect:out];
 
   return v26;
 }
 
-- (int)convertRGBtoYUV:(id)a3 inRGBA:(id)a4 outLuma:(id)a5 outChroma:(id)a6 toLinear:(BOOL)a7 transferFunction:(id)a8 colorYCbCrMatrix:(id)a9 colorYCbCrFullRange:(BOOL)a10 colorYCbCrDepthOut:(int64_t)a11 outRect:
+- (int)convertRGBtoYUV:(id)v inRGBA:(id)a outLuma:(id)luma outChroma:(id)chroma toLinear:(BOOL)linear transferFunction:(id)function colorYCbCrMatrix:(id)matrix colorYCbCrFullRange:(BOOL)self0 colorYCbCrDepthOut:(int64_t)self1 outRect:
 {
   v40 = v11;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a8;
-  v22 = a9;
-  v23 = [(PTMetalContext *)self->_metalContext imageblocksSupported];
+  vCopy = v;
+  aCopy = a;
+  lumaCopy = luma;
+  chromaCopy = chroma;
+  functionCopy = function;
+  matrixCopy = matrix;
+  imageblocksSupported = [(PTMetalContext *)self->_metalContext imageblocksSupported];
   v24 = LOBYTE(v40) | BYTE2(v40);
-  if (!v23)
+  if (!imageblocksSupported)
   {
     if (LODWORD(v40))
     {
@@ -706,26 +706,26 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v37 = v18;
-  v26 = v17;
-  v39 = v21;
+  v37 = aCopy;
+  v26 = vCopy;
+  v39 = functionCopy;
   v27 = [PTColorConversion getTransferFunction:"getTransferFunction:toLinear:" toLinear:?];
   v45 = 0;
   v46 = 0;
   v47 = 0;
-  v38 = v22;
-  [PTColorConversion getColorMatrix:v22 toRGB:0 fullRange:a10 colorYCbCrDepth:a11];
-  v44 = [PTColorConversion getChromaSubsampledFromLuma:v19 texChroma:v20];
+  v38 = matrixCopy;
+  [PTColorConversion getColorMatrix:matrixCopy toRGB:0 fullRange:range colorYCbCrDepth:out];
+  v44 = [PTColorConversion getChromaSubsampledFromLuma:lumaCopy texChroma:chromaCopy];
   v28 = [PTImageblockConfig alloc];
-  v29 = [PTTexture createYUV420:v19 chroma:v20];
+  v29 = [PTTexture createYUV420:lumaCopy chroma:chromaCopy];
   v30 = [(PTImageblockConfig *)v28 initWithPTTexture:v29 outRect:v40];
 
-  v43 = [(PTImageblockConfig *)v30 outOffset];
+  outOffset = [(PTImageblockConfig *)v30 outOffset];
   v31 = v26;
   v32 = v26;
-  v18 = v37;
-  v33 = [v32 computeCommandEncoder];
-  if (!v33)
+  aCopy = v37;
+  computeCommandEncoder = [v32 computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     v34 = _PTLogSystem();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -734,21 +734,21 @@ LABEL_19:
     }
   }
 
-  [v33 setComputePipelineState:self->_convertRGBToYUV[v27]];
+  [computeCommandEncoder setComputePipelineState:self->_convertRGBToYUV[v27]];
   if ([(PTMetalContext *)self->_metalContext imageblocksSupported])
   {
-    [v33 setImageblockWidth:-[PTImageblockConfig imageblockSize](v30 height:{"imageblockSize"), -[PTImageblockConfig imageblockSize](v30, "imageblockSize")}];
+    [computeCommandEncoder setImageblockWidth:-[PTImageblockConfig imageblockSize](v30 height:{"imageblockSize"), -[PTImageblockConfig imageblockSize](v30, "imageblockSize")}];
   }
 
-  [v33 setTexture:v37 atIndex:0];
-  [v33 setTexture:v19 atIndex:1];
-  [v33 setTexture:v20 atIndex:2];
-  [v33 setBytes:&v44 + 2 length:24 atIndex:0];
-  [v33 setBytes:&v44 length:2 atIndex:1];
-  v21 = v39;
+  [computeCommandEncoder setTexture:v37 atIndex:0];
+  [computeCommandEncoder setTexture:lumaCopy atIndex:1];
+  [computeCommandEncoder setTexture:chromaCopy atIndex:2];
+  [computeCommandEncoder setBytes:&v44 + 2 length:24 atIndex:0];
+  [computeCommandEncoder setBytes:&v44 length:2 atIndex:1];
+  functionCopy = v39;
   if ([(PTMetalContext *)self->_metalContext imageblocksSupported])
   {
-    [v33 setBytes:&v43 length:8 atIndex:2];
+    [computeCommandEncoder setBytes:&outOffset length:8 atIndex:2];
   }
 
   if (v30)
@@ -763,38 +763,38 @@ LABEL_19:
     memset(v41, 0, sizeof(v41));
   }
 
-  [v33 dispatchThreads:v42 threadsPerThreadgroup:v41];
-  [v33 endEncoding];
+  [computeCommandEncoder dispatchThreads:v42 threadsPerThreadgroup:v41];
+  [computeCommandEncoder endEncoding];
 
   v35 = 0;
-  v17 = v31;
-  v22 = v38;
+  vCopy = v31;
+  matrixCopy = v38;
 LABEL_22:
 
   return v35;
 }
 
-- (int)convertYUVtoRGB:(id)a3 inLuma:(id)a4 inChroma:(id)a5 outRGBA:(id)a6 toLinear:(BOOL)a7 transferFunction:(id)a8 colorYCbCrMatrix:(id)a9 colorYCbCrFullRange:(BOOL)a10 colorYCbCrDepthIn:(int64_t)a11
+- (int)convertYUVtoRGB:(id)b inLuma:(id)luma inChroma:(id)chroma outRGBA:(id)a toLinear:(BOOL)linear transferFunction:(id)function colorYCbCrMatrix:(id)matrix colorYCbCrFullRange:(BOOL)self0 colorYCbCrDepthIn:(int64_t)self1
 {
-  v12 = a7;
-  v27 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a9;
-  v20 = a3;
-  v21 = [PTColorConversion getTransferFunction:a8 toLinear:v12];
+  linearCopy = linear;
+  lumaCopy = luma;
+  chromaCopy = chroma;
+  aCopy = a;
+  matrixCopy = matrix;
+  bCopy = b;
+  v21 = [PTColorConversion getTransferFunction:function toLinear:linearCopy];
   v32 = 0;
   v33 = 0;
   v34 = 0;
-  [PTColorConversion getColorMatrix:v19 toRGB:1 fullRange:a10 colorYCbCrDepth:a11];
+  [PTColorConversion getColorMatrix:matrixCopy toRGB:1 fullRange:range colorYCbCrDepth:in];
 
-  v22 = v27;
-  v31 = [PTColorConversion getChromaSubsampledFromLuma:v27 texChroma:v17];
-  v23 = [[PTImageblockConfig alloc] initWithTexture:v18];
-  v30 = [(PTImageblockConfig *)v23 outOffset];
-  v24 = [v20 computeCommandEncoder];
+  v22 = lumaCopy;
+  v31 = [PTColorConversion getChromaSubsampledFromLuma:lumaCopy texChroma:chromaCopy];
+  v23 = [[PTImageblockConfig alloc] initWithTexture:aCopy];
+  outOffset = [(PTImageblockConfig *)v23 outOffset];
+  computeCommandEncoder = [bCopy computeCommandEncoder];
 
-  if (!v24)
+  if (!computeCommandEncoder)
   {
     v25 = _PTLogSystem();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -803,20 +803,20 @@ LABEL_22:
     }
   }
 
-  [v24 setComputePipelineState:{self->_convertYUVToRGB[v21], v27}];
+  [computeCommandEncoder setComputePipelineState:{self->_convertYUVToRGB[v21], lumaCopy}];
   if ([(PTMetalContext *)self->_metalContext imageblocksSupported])
   {
-    [v24 setImageblockWidth:-[PTImageblockConfig imageblockSize](v23 height:{"imageblockSize"), -[PTImageblockConfig imageblockSize](v23, "imageblockSize")}];
+    [computeCommandEncoder setImageblockWidth:-[PTImageblockConfig imageblockSize](v23 height:{"imageblockSize"), -[PTImageblockConfig imageblockSize](v23, "imageblockSize")}];
   }
 
-  [v24 setTexture:v22 atIndex:0];
-  [v24 setTexture:v17 atIndex:1];
-  [v24 setTexture:v18 atIndex:2];
-  [v24 setBytes:&v31 + 2 length:24 atIndex:0];
-  [v24 setBytes:&v31 length:2 atIndex:1];
+  [computeCommandEncoder setTexture:v22 atIndex:0];
+  [computeCommandEncoder setTexture:chromaCopy atIndex:1];
+  [computeCommandEncoder setTexture:aCopy atIndex:2];
+  [computeCommandEncoder setBytes:&v31 + 2 length:24 atIndex:0];
+  [computeCommandEncoder setBytes:&v31 length:2 atIndex:1];
   if ([(PTMetalContext *)self->_metalContext imageblocksSupported])
   {
-    [v24 setBytes:&v30 length:8 atIndex:2];
+    [computeCommandEncoder setBytes:&outOffset length:8 atIndex:2];
   }
 
   if (v23)
@@ -831,87 +831,87 @@ LABEL_22:
     memset(v28, 0, sizeof(v28));
   }
 
-  [v24 dispatchThreads:v29 threadsPerThreadgroup:v28];
-  [v24 endEncoding];
+  [computeCommandEncoder dispatchThreads:v29 threadsPerThreadgroup:v28];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (int)convertRGBLinearFromPTTexture:(id)a3 inPTTexture:(id)a4 outRGBA:(id)a5
+- (int)convertRGBLinearFromPTTexture:(id)texture inPTTexture:(id)tTexture outRGBA:(id)a
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  if ([v9 isRGB])
+  aCopy = a;
+  tTextureCopy = tTexture;
+  textureCopy = texture;
+  if ([tTextureCopy isRGB])
   {
-    v11 = [v9 texRGBA];
-    v12 = [v9 transferFunction];
+    texRGBA = [tTextureCopy texRGBA];
+    transferFunction = [tTextureCopy transferFunction];
 
-    v13 = [(PTColorConversion *)self convertRGB:v10 inRGBA:v11 outRGBA:v8 toLinear:1 transferFunction:v12];
+    v13 = [(PTColorConversion *)self convertRGB:textureCopy inRGBA:texRGBA outRGBA:aCopy toLinear:1 transferFunction:transferFunction];
   }
 
   else
   {
-    v11 = [v9 texLuma];
-    v12 = [v9 texChroma];
-    v14 = [v9 transferFunction];
-    v15 = [v9 YCbCrMatrix];
-    v16 = [v9 YCbCrFullRange];
-    v17 = [v9 YCbCrColorDepth];
+    texRGBA = [tTextureCopy texLuma];
+    transferFunction = [tTextureCopy texChroma];
+    transferFunction2 = [tTextureCopy transferFunction];
+    yCbCrMatrix = [tTextureCopy YCbCrMatrix];
+    yCbCrFullRange = [tTextureCopy YCbCrFullRange];
+    yCbCrColorDepth = [tTextureCopy YCbCrColorDepth];
 
-    LOBYTE(v19) = v16;
-    v13 = [(PTColorConversion *)self convertYUVtoRGB:v10 inLuma:v11 inChroma:v12 outRGBA:v8 toLinear:1 transferFunction:v14 colorYCbCrMatrix:v15 colorYCbCrFullRange:v19 colorYCbCrDepthIn:v17];
+    LOBYTE(v19) = yCbCrFullRange;
+    v13 = [(PTColorConversion *)self convertYUVtoRGB:textureCopy inLuma:texRGBA inChroma:transferFunction outRGBA:aCopy toLinear:1 transferFunction:transferFunction2 colorYCbCrMatrix:yCbCrMatrix colorYCbCrFullRange:v19 colorYCbCrDepthIn:yCbCrColorDepth];
 
-    v8 = v15;
-    v10 = v14;
+    aCopy = yCbCrMatrix;
+    textureCopy = transferFunction2;
   }
 
   return v13;
 }
 
-- (int)convertRGBLinearToPTTexture:(id)a3 inRGBA:(id)a4 outPTTexture:(id)a5
+- (int)convertRGBLinearToPTTexture:(id)texture inRGBA:(id)a outPTTexture:(id)tTexture
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 width];
-  v12 = [v8 height];
+  tTextureCopy = tTexture;
+  aCopy = a;
+  textureCopy = texture;
+  width = [tTextureCopy width];
+  height = [tTextureCopy height];
   LODWORD(v13) = 0;
-  WORD2(v13) = v11;
-  HIWORD(v13) = v12;
-  LODWORD(self) = [(PTColorConversion *)self convertRGBLinearToPTTexture:v10 inRGBA:v9 outPTTexture:v8 outRect:v13];
+  WORD2(v13) = width;
+  HIWORD(v13) = height;
+  LODWORD(self) = [(PTColorConversion *)self convertRGBLinearToPTTexture:textureCopy inRGBA:aCopy outPTTexture:tTextureCopy outRect:v13];
 
   return self;
 }
 
-- (int)convertRGBLinearToPTTexture:(id)a3 inRGBA:(id)a4 outPTTexture:(id)a5 outRect:
+- (int)convertRGBLinearToPTTexture:(id)texture inRGBA:(id)a outPTTexture:(id)tTexture outRect:
 {
   v6 = v5;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  if ([v10 isRGB])
+  tTextureCopy = tTexture;
+  aCopy = a;
+  textureCopy = texture;
+  if ([tTextureCopy isRGB])
   {
-    v13 = [v10 texRGBA];
-    v14 = [v10 transferFunction];
+    texRGBA = [tTextureCopy texRGBA];
+    transferFunction = [tTextureCopy transferFunction];
 
-    v15 = [(PTColorConversion *)self convertRGB:v12 inRGBA:v11 outRGBA:v13 toLinear:0 transferFunction:v14 outRect:v6];
+    v15 = [(PTColorConversion *)self convertRGB:textureCopy inRGBA:aCopy outRGBA:texRGBA toLinear:0 transferFunction:transferFunction outRect:v6];
   }
 
   else
   {
-    v13 = [v10 texLuma];
-    v14 = [v10 texChroma];
-    v16 = [v10 transferFunction];
-    v17 = [v10 YCbCrMatrix];
-    v18 = [v10 YCbCrFullRange];
-    v19 = [v10 YCbCrColorDepth];
+    texRGBA = [tTextureCopy texLuma];
+    transferFunction = [tTextureCopy texChroma];
+    transferFunction2 = [tTextureCopy transferFunction];
+    yCbCrMatrix = [tTextureCopy YCbCrMatrix];
+    yCbCrFullRange = [tTextureCopy YCbCrFullRange];
+    yCbCrColorDepth = [tTextureCopy YCbCrColorDepth];
 
-    LOBYTE(v21) = v18;
-    v15 = [(PTColorConversion *)self convertRGBtoYUV:v12 inRGBA:v11 outLuma:v13 outChroma:v14 toLinear:0 transferFunction:v16 colorYCbCrMatrix:v6 colorYCbCrFullRange:v17 colorYCbCrDepthOut:v21 outRect:v19];
+    LOBYTE(v21) = yCbCrFullRange;
+    v15 = [(PTColorConversion *)self convertRGBtoYUV:textureCopy inRGBA:aCopy outLuma:texRGBA outChroma:transferFunction toLinear:0 transferFunction:transferFunction2 colorYCbCrMatrix:v6 colorYCbCrFullRange:yCbCrMatrix colorYCbCrDepthOut:v21 outRect:yCbCrColorDepth];
 
-    v11 = v17;
-    v12 = v16;
+    aCopy = yCbCrMatrix;
+    textureCopy = transferFunction2;
   }
 
   return v15;

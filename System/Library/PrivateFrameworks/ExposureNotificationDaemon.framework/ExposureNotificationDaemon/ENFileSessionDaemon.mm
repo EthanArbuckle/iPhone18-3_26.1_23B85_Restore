@@ -1,14 +1,14 @@
 @interface ENFileSessionDaemon
-- (BOOL)_resetAndAdvanceArchive:(id)a3 toPathWithExtension:(id)a4 error:(id *)a5;
+- (BOOL)_resetAndAdvanceArchive:(id)archive toPathWithExtension:(id)extension error:(id *)error;
 - (ENFileSessionDaemon)init;
-- (id)_readTEKBatchAndReturnError:(id *)a3;
-- (id)readSignaturesAndReturnError:(id *)a3;
-- (id)readTEKBatchAndReturnError:(id *)a3;
+- (id)_readTEKBatchAndReturnError:(id *)error;
+- (id)readSignaturesAndReturnError:(id *)error;
+- (id)readTEKBatchAndReturnError:(id *)error;
 - (void)_createTransaction;
 - (void)dealloc;
 - (void)invalidate;
 - (void)prepareNextTEKBatchIfNecessary;
-- (void)setBatchSize:(unint64_t)a3;
+- (void)setBatchSize:(unint64_t)size;
 @end
 
 @implementation ENFileSessionDaemon
@@ -35,15 +35,15 @@
   return v3;
 }
 
-- (void)setBatchSize:(unint64_t)a3
+- (void)setBatchSize:(unint64_t)size
 {
-  v3 = 256;
-  if (a3)
+  sizeCopy = 256;
+  if (size)
   {
-    v3 = a3;
+    sizeCopy = size;
   }
 
-  self->_batchSize = v3;
+  self->_batchSize = sizeCopy;
 }
 
 - (void)_createTransaction
@@ -59,7 +59,7 @@
   LogPrintF_safe();
 }
 
-- (id)readSignaturesAndReturnError:(id *)a3
+- (id)readSignaturesAndReturnError:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = self->_signatures;
@@ -98,10 +98,10 @@
     }
   }
 
-  else if (a3)
+  else if (error)
   {
     ENErrorF();
-    *a3 = v5 = 0;
+    *error = v5 = 0;
   }
 
   else
@@ -114,7 +114,7 @@
   return v5;
 }
 
-- (id)readTEKBatchAndReturnError:(id *)a3
+- (id)readTEKBatchAndReturnError:(id *)error
 {
   v5 = self->_nextTEKBatch;
   if (v5)
@@ -126,23 +126,23 @@
 
   else
   {
-    v6 = [(ENFileSessionDaemon *)self _readTEKBatchAndReturnError:a3];
+    v6 = [(ENFileSessionDaemon *)self _readTEKBatchAndReturnError:error];
   }
 
   return v6;
 }
 
-- (id)_readTEKBatchAndReturnError:(id *)a3
+- (id)_readTEKBatchAndReturnError:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
   v5 = self->_file;
   if (v5)
   {
-    v6 = [(ENFile *)self->_file sha256Data];
+    sha256Data = [(ENFile *)self->_file sha256Data];
     v7 = objc_alloc_init(MEMORY[0x277CBEB10]);
     if (self->_batchSize)
     {
-      v29 = a3;
+      errorCopy = error;
       v8 = 0;
       v9 = 0;
       while (1)
@@ -163,31 +163,31 @@
 
         else
         {
-          v13 = [v10 keyData];
-          v14 = v13;
-          if (v13)
+          keyData = [v10 keyData];
+          v14 = keyData;
+          if (keyData)
           {
-            v15 = v13;
+            data = keyData;
           }
 
           else
           {
-            v15 = [MEMORY[0x277CBEA98] data];
+            data = [MEMORY[0x277CBEA98] data];
           }
 
-          v16 = v15;
+          v16 = data;
 
-          if (v6)
+          if (sha256Data)
           {
-            v17 = v6;
+            data2 = sha256Data;
           }
 
           else
           {
-            v17 = [MEMORY[0x277CBEA98] data];
+            data2 = [MEMORY[0x277CBEA98] data];
           }
 
-          v18 = v17;
+          v18 = data2;
           if (gLogCategory__ENFileSessionDaemon <= 90 && (gLogCategory__ENFileSessionDaemon != -1 || _LogCategory_Initialize()))
           {
             [ENFileSessionDaemon _readTEKBatchAndReturnError:];
@@ -204,11 +204,11 @@
 
       if (v11)
       {
-        if (v29)
+        if (errorCopy)
         {
           v28 = v11;
           v19 = 0;
-          *v29 = v12;
+          *errorCopy = v12;
         }
 
         else
@@ -269,10 +269,10 @@ LABEL_22:
     goto LABEL_31;
   }
 
-  if (a3)
+  if (error)
   {
     ENErrorF();
-    *a3 = v19 = 0;
+    *error = v19 = 0;
   }
 
   else
@@ -287,25 +287,25 @@ LABEL_32:
   return v19;
 }
 
-- (BOOL)_resetAndAdvanceArchive:(id)a3 toPathWithExtension:(id)a4 error:(id *)a5
+- (BOOL)_resetAndAdvanceArchive:(id)archive toPathWithExtension:(id)extension error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 resetAndReturnError:a5])
+  archiveCopy = archive;
+  extensionCopy = extension;
+  if ([archiveCopy resetAndReturnError:error])
   {
     while (1)
     {
-      v9 = [v7 advanceEntryAndReturnError:a5];
+      v9 = [archiveCopy advanceEntryAndReturnError:error];
       if (!v9)
       {
         break;
       }
 
-      if ([v7 entryFileType] == 0x8000)
+      if ([archiveCopy entryFileType] == 0x8000)
       {
-        v10 = [v7 entryPath];
-        v11 = [v10 pathExtension];
-        v12 = [v11 isEqualToString:v8];
+        entryPath = [archiveCopy entryPath];
+        pathExtension = [entryPath pathExtension];
+        v12 = [pathExtension isEqualToString:extensionCopy];
 
         if (v12)
         {
@@ -313,15 +313,15 @@ LABEL_32:
         }
       }
 
-      if ([v7 endOfArchive])
+      if ([archiveCopy endOfArchive])
       {
-        if (!a5)
+        if (!error)
         {
           goto LABEL_8;
         }
 
         ENErrorF();
-        *a5 = LOBYTE(v9) = 0;
+        *error = LOBYTE(v9) = 0;
         break;
       }
     }

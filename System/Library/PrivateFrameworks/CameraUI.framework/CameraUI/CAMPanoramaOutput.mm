@@ -1,39 +1,39 @@
 @interface CAMPanoramaOutput
 - (CAMCaptureEngine)_engine;
-- (CAMPanoramaOutput)initWithEngine:(id)a3;
-- (void)changeToDirection:(int64_t)a3;
-- (void)changeToEncodingBehavior:(int64_t)a3;
+- (CAMPanoramaOutput)initWithEngine:(id)engine;
+- (void)changeToDirection:(int64_t)direction;
+- (void)changeToEncodingBehavior:(int64_t)behavior;
 @end
 
 @implementation CAMPanoramaOutput
 
-- (CAMPanoramaOutput)initWithEngine:(id)a3
+- (CAMPanoramaOutput)initWithEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v9.receiver = self;
   v9.super_class = CAMPanoramaOutput;
   v5 = [(AVCaptureVideoDataOutput *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->__engine, v4);
+    objc_storeWeak(&v5->__engine, engineCopy);
     v7 = v6;
   }
 
   return v6;
 }
 
-- (void)changeToDirection:(int64_t)a3
+- (void)changeToDirection:(int64_t)direction
 {
-  v4 = [(CAMPanoramaOutput *)self _engine];
-  [v4 changeToPanoramaDirection:a3];
+  _engine = [(CAMPanoramaOutput *)self _engine];
+  [_engine changeToPanoramaDirection:direction];
 }
 
-- (void)changeToEncodingBehavior:(int64_t)a3
+- (void)changeToEncodingBehavior:(int64_t)behavior
 {
-  self->_photoEncodingBehavior = a3;
-  v4 = [(CAMPanoramaOutput *)self _engine];
-  [v4 changePanoramaEncodingBehaviorIfNeeded:a3];
+  self->_photoEncodingBehavior = behavior;
+  _engine = [(CAMPanoramaOutput *)self _engine];
+  [_engine changePanoramaEncodingBehaviorIfNeeded:behavior];
 }
 
 - (CAMCaptureEngine)_engine

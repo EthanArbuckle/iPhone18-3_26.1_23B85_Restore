@@ -1,38 +1,38 @@
 @interface CLKFallbackTextProvider
-+ (id)providerWithProviders:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CLKFallbackTextProvider)initWithCoder:(id)a3;
-- (CLKFallbackTextProvider)initWithTextProviders:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)providerWithProviders:(id)providers;
+- (BOOL)isEqual:(id)equal;
+- (CLKFallbackTextProvider)initWithCoder:(id)coder;
+- (CLKFallbackTextProvider)initWithTextProviders:(id)providers;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)_updateFrequency;
 - (int64_t)timeTravelUpdateFrequency;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLKFallbackTextProvider
 
-- (CLKFallbackTextProvider)initWithTextProviders:(id)a3
+- (CLKFallbackTextProvider)initWithTextProviders:(id)providers
 {
-  v4 = a3;
+  providersCopy = providers;
   v12.receiver = self;
   v12.super_class = CLKFallbackTextProvider;
-  v5 = [(CLKTextProvider *)&v12 initPrivate];
-  if (v5)
+  initPrivate = [(CLKTextProvider *)&v12 initPrivate];
+  if (initPrivate)
   {
-    v6 = [v4 copy];
-    textProviders = v5->_textProviders;
-    v5->_textProviders = v6;
+    v6 = [providersCopy copy];
+    textProviders = initPrivate->_textProviders;
+    initPrivate->_textProviders = v6;
 
-    v8 = v5->_textProviders;
+    v8 = initPrivate->_textProviders;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __49__CLKFallbackTextProvider_initWithTextProviders___block_invoke;
     v10[3] = &unk_278A1F168;
-    v11 = v5;
+    v11 = initPrivate;
     [(NSArray *)v8 enumerateObjectsUsingBlock:v10];
   }
 
-  return v5;
+  return initPrivate;
 }
 
 uint64_t __49__CLKFallbackTextProvider_initWithTextProviders___block_invoke(uint64_t a1, void *a2)
@@ -48,10 +48,10 @@ uint64_t __49__CLKFallbackTextProvider_initWithTextProviders___block_invoke(uint
   return result;
 }
 
-+ (id)providerWithProviders:(id)a3
++ (id)providerWithProviders:(id)providers
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithTextProviders:v4];
+  providersCopy = providers;
+  v5 = [[self alloc] initWithTextProviders:providersCopy];
 
   return v5;
 }
@@ -128,11 +128,11 @@ uint64_t __43__CLKFallbackTextProvider__updateFrequency__block_invoke(uint64_t a
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = CLKFallbackTextProvider;
-  v4 = [(CLKTextProvider *)&v8 copyWithZone:a3];
+  v4 = [(CLKTextProvider *)&v8 copyWithZone:zone];
   if (v4 != self)
   {
     v5 = [(NSArray *)self->_textProviders copy];
@@ -143,27 +143,27 @@ uint64_t __43__CLKFallbackTextProvider__updateFrequency__block_invoke(uint64_t a
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && (v7.receiver = self, v7.super_class = CLKFallbackTextProvider, [(CLKTextProvider *)&v7 isEqual:v4]) && [(NSArray *)self->_textProviders isEqualToArray:v4[16]];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && (v7.receiver = self, v7.super_class = CLKFallbackTextProvider, [(CLKTextProvider *)&v7 isEqual:equalCopy]) && [(NSArray *)self->_textProviders isEqualToArray:equalCopy[16]];
 
   return v5;
 }
 
-- (CLKFallbackTextProvider)initWithCoder:(id)a3
+- (CLKFallbackTextProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = CLKFallbackTextProvider;
-  v5 = [(CLKTextProvider *)&v12 initWithCoder:v4];
+  v5 = [(CLKTextProvider *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"textProviders"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"textProviders"];
     textProviders = v5->_textProviders;
     v5->_textProviders = v9;
   }
@@ -171,13 +171,13 @@ uint64_t __43__CLKFallbackTextProvider__updateFrequency__block_invoke(uint64_t a
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CLKFallbackTextProvider;
-  v4 = a3;
-  [(CLKTextProvider *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_textProviders forKey:{@"textProviders", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CLKTextProvider *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_textProviders forKey:{@"textProviders", v5.receiver, v5.super_class}];
 }
 
 @end

@@ -1,64 +1,64 @@
 @interface PIPortraitAutoCalculator
-+ (BOOL)canApplyPortraitEffectsWithMetadata:(id)a3;
-+ (BOOL)isTapToFocusEnabled:(id)a3;
-+ (id)depthEffectInfoDictionaryFromFaceObservations:(id)a3 metadata:(id)a4 orientation:(int64_t)a5 valuesAtCapture:(id)a6;
-+ (id)depthEffectInfoDictionaryFromFaceObservations:(id)a3 valuesAtCapture:(id)a4 lumaNoiseScale:(float)a5 orientation:(int64_t)a6;
-+ (id)focusRectDictionaryFromMetadata:(id)a3;
-+ (id)focusRectDictionaryFromRect:(CGRect)a3;
-+ (id)portraitEffectInfoDictionaryFromFaceObservations:(id)a3 orientation:(int64_t)a4 valuesAtCapture:(id)a5;
-+ (id)portraitInfoDictionaryFromCameraMetadata:(id)a3;
-+ (id)portraitInfoDictionaryFromFaceObservations:(id)a3 metadata:(id)a4 orientation:(int64_t)a5 valuesAtCapture:(id)a6;
-- (void)_calculateWithImageProperties:(id)a3 valuesAtCapture:(id)a4 completion:(id)a5;
-- (void)submit:(id)a3;
++ (BOOL)canApplyPortraitEffectsWithMetadata:(id)metadata;
++ (BOOL)isTapToFocusEnabled:(id)enabled;
++ (id)depthEffectInfoDictionaryFromFaceObservations:(id)observations metadata:(id)metadata orientation:(int64_t)orientation valuesAtCapture:(id)capture;
++ (id)depthEffectInfoDictionaryFromFaceObservations:(id)observations valuesAtCapture:(id)capture lumaNoiseScale:(float)scale orientation:(int64_t)orientation;
++ (id)focusRectDictionaryFromMetadata:(id)metadata;
++ (id)focusRectDictionaryFromRect:(CGRect)rect;
++ (id)portraitEffectInfoDictionaryFromFaceObservations:(id)observations orientation:(int64_t)orientation valuesAtCapture:(id)capture;
++ (id)portraitInfoDictionaryFromCameraMetadata:(id)metadata;
++ (id)portraitInfoDictionaryFromFaceObservations:(id)observations metadata:(id)metadata orientation:(int64_t)orientation valuesAtCapture:(id)capture;
+- (void)_calculateWithImageProperties:(id)properties valuesAtCapture:(id)capture completion:(id)completion;
+- (void)submit:(id)submit;
 @end
 
 @implementation PIPortraitAutoCalculator
 
-- (void)_calculateWithImageProperties:(id)a3 valuesAtCapture:(id)a4 completion:(id)a5
+- (void)_calculateWithImageProperties:(id)properties valuesAtCapture:(id)capture completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NURenderRequest *)self composition];
-  v12 = [v11 objectForKeyedSubscript:@"orientation"];
+  propertiesCopy = properties;
+  captureCopy = capture;
+  completionCopy = completion;
+  composition = [(NURenderRequest *)self composition];
+  v12 = [composition objectForKeyedSubscript:@"orientation"];
 
   v13 = [v12 objectForKeyedSubscript:@"value"];
-  v14 = [v13 intValue];
-  if (v14 <= 1)
+  intValue = [v13 intValue];
+  if (intValue <= 1)
   {
     v15 = 1;
   }
 
   else
   {
-    v15 = v14;
+    v15 = intValue;
   }
 
   v16 = v15;
 
   v17 = [PIFaceObservationCache faceRequestWithRequest:self];
-  v18 = [(NURenderRequest *)self responseQueue];
-  [v17 setResponseQueue:v18];
+  responseQueue = [(NURenderRequest *)self responseQueue];
+  [v17 setResponseQueue:responseQueue];
 
   [v17 setName:@"PIPortraitAutoCalculator-faceDetect"];
   v25 = MEMORY[0x1E69E9820];
   v26 = 3221225472;
   v27 = __85__PIPortraitAutoCalculator__calculateWithImageProperties_valuesAtCapture_completion___block_invoke;
   v28 = &unk_1E82AC9E0;
-  v29 = v8;
-  v30 = v9;
-  v31 = v10;
+  v29 = propertiesCopy;
+  v30 = captureCopy;
+  v31 = completionCopy;
   v32 = v16;
-  v19 = v10;
-  v20 = v9;
-  v21 = v8;
+  v19 = completionCopy;
+  v20 = captureCopy;
+  v21 = propertiesCopy;
   v22 = MEMORY[0x1CCA61740](&v25);
   v23 = [(PIPortraitAutoCalculator *)self faceObservationCache:v25];
 
   if (v23)
   {
-    v24 = [(PIPortraitAutoCalculator *)self faceObservationCache];
-    [v24 submit:v17 response:v22];
+    faceObservationCache = [(PIPortraitAutoCalculator *)self faceObservationCache];
+    [faceObservationCache submit:v17 response:v22];
   }
 
   else
@@ -92,11 +92,11 @@ void __85__PIPortraitAutoCalculator__calculateWithImageProperties_valuesAtCaptur
   }
 }
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  submitCopy = submit;
+  if (!submitCopy)
   {
     v13 = NUAssertLogger_27584();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -118,8 +118,8 @@ void __85__PIPortraitAutoCalculator__calculateWithImageProperties_valuesAtCaptur
         v21 = dispatch_get_specific(*v15);
         v22 = MEMORY[0x1E696AF00];
         v23 = v21;
-        v24 = [v22 callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v22 callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v30 = v21;
         v31 = 2114;
@@ -130,8 +130,8 @@ void __85__PIPortraitAutoCalculator__calculateWithImageProperties_valuesAtCaptur
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v20;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -140,13 +140,13 @@ void __85__PIPortraitAutoCalculator__calculateWithImageProperties_valuesAtCaptur
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
+  v5 = submitCopy;
   v6 = objc_alloc(MEMORY[0x1E69B3B30]);
-  v7 = [(NURenderRequest *)self composition];
-  v8 = [v6 initWithComposition:v7];
+  composition = [(NURenderRequest *)self composition];
+  v8 = [v6 initWithComposition:composition];
 
-  v9 = [(NURenderRequest *)self responseQueue];
-  [v8 setResponseQueue:v9];
+  responseQueue = [(NURenderRequest *)self responseQueue];
+  [v8 setResponseQueue:responseQueue];
 
   [v8 setName:@"PIPortraitAutoCalculator-getValuesAtCapture-imageProperties"];
   v10 = [MEMORY[0x1E69B3C30] stopAtTagFilter:@"pre-Adjustments"];
@@ -303,11 +303,11 @@ void __35__PIPortraitAutoCalculator_submit___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-+ (id)portraitInfoDictionaryFromCameraMetadata:(id)a3
++ (id)portraitInfoDictionaryFromCameraMetadata:(id)metadata
 {
   v65 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  metadataCopy = metadata;
+  if (!metadataCopy)
   {
     v43 = NUAssertLogger_27584();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -329,8 +329,8 @@ void __35__PIPortraitAutoCalculator_submit___block_invoke(uint64_t a1, void *a2)
         v50 = dispatch_get_specific(*v45);
         v51 = MEMORY[0x1E696AF00];
         v52 = v50;
-        v53 = [v51 callStackSymbols];
-        v54 = [v53 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v51 callStackSymbols];
+        v54 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v62 = v50;
         v63 = 2114;
@@ -341,8 +341,8 @@ void __35__PIPortraitAutoCalculator_submit___block_invoke(uint64_t a1, void *a2)
 
     else if (v47)
     {
-      v48 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v49 = [v48 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v49 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v62 = v49;
       _os_log_error_impl(&dword_1C7694000, v4, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -354,7 +354,7 @@ void __35__PIPortraitAutoCalculator_submit___block_invoke(uint64_t a1, void *a2)
     goto LABEL_40;
   }
 
-  v4 = v3;
+  v4 = metadataCopy;
   if (portraitInfoDictionaryFromCameraMetadata__onceToken != -1)
   {
     dispatch_once(&portraitInfoDictionaryFromCameraMetadata__onceToken, &__block_literal_global_27757);
@@ -362,9 +362,9 @@ void __35__PIPortraitAutoCalculator_submit___block_invoke(uint64_t a1, void *a2)
 
   v5 = MEMORY[0x1E696ACD0];
   v6 = portraitInfoDictionaryFromCameraMetadata__s_expectedClasses;
-  v7 = [v4 faceObservationsData];
+  faceObservationsData = [v4 faceObservationsData];
   v60 = 0;
-  v8 = [v5 unarchivedObjectOfClasses:v6 fromData:v7 error:&v60];
+  v8 = [v5 unarchivedObjectOfClasses:v6 fromData:faceObservationsData error:&v60];
   v56 = v60;
 
   if (!v8)
@@ -393,14 +393,14 @@ LABEL_40:
 
 LABEL_9:
   v10 = v8;
-  v59 = [v4 indexesOfShallowDepthOfFieldObservations];
+  indexesOfShallowDepthOfFieldObservations = [v4 indexesOfShallowDepthOfFieldObservations];
   v11 = v10;
-  if (v59)
+  if (indexesOfShallowDepthOfFieldObservations)
   {
-    v11 = [v10 objectsAtIndexes:v59];
+    v11 = [v10 objectsAtIndexes:indexesOfShallowDepthOfFieldObservations];
   }
 
-  v12 = [v4 faceOrientation];
+  faceOrientation = [v4 faceOrientation];
   if (NUOrientationIsValid())
   {
     goto LABEL_19;
@@ -408,10 +408,10 @@ LABEL_9:
 
   if (![v10 count])
   {
-    v12 = 1;
+    faceOrientation = 1;
 LABEL_19:
     [v4 focusRectangle];
-    v57 = [a1 focusRectDictionaryFromRect:?];
+    v57 = [self focusRectDictionaryFromRect:?];
     [v4 minimumApertureFocalRatio];
     if (v15 <= 0.0)
     {
@@ -436,7 +436,7 @@ LABEL_19:
       v20 = v19;
     }
 
-    v21 = [v4 SDOFRenderingVersion];
+    sDOFRenderingVersion = [v4 SDOFRenderingVersion];
     v22 = [PIValuesAtCapture alloc];
     [v4 apertureFocalRatio];
     v24 = v23;
@@ -445,11 +445,11 @@ LABEL_19:
     LODWORD(v27) = v17;
     LODWORD(v28) = v20;
     LODWORD(v29) = v24;
-    v30 = [(PIValuesAtCapture *)v22 initFromMinAperture:v57 maxAperture:v21 - (v21 > 3) aperture:0 focusRect:v27 portraitStrength:v28 SDOFRenderingVersion:v29 depthVersionInfo:v26];
+    v30 = [(PIValuesAtCapture *)v22 initFromMinAperture:v57 maxAperture:sDOFRenderingVersion - (sDOFRenderingVersion > 3) aperture:0 focusRect:v27 portraitStrength:v28 SDOFRenderingVersion:v29 depthVersionInfo:v26];
     v31 = [v30 portraitMajorVersion] >= 2 && objc_msgSend(v30, "portraitMinorVersion") != 0;
     v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [v4 luminanceNoiseAmplitude];
-    v32 = [a1 depthEffectInfoDictionaryFromFaceObservations:v11 valuesAtCapture:v30 lumaNoiseScale:v12 orientation:?];
+    v32 = [self depthEffectInfoDictionaryFromFaceObservations:v11 valuesAtCapture:v30 lumaNoiseScale:faceOrientation orientation:?];
     [v14 setObject:v32 forKeyedSubscript:@"depthInfo"];
 
     v33 = MEMORY[0x1E696AD98];
@@ -457,11 +457,11 @@ LABEL_19:
     v34 = [v33 numberWithFloat:?];
     [v14 setObject:v34 forKeyedSubscript:@"aperture"];
 
-    v35 = [v30 focusRect];
-    v36 = [v35 copy];
+    focusRect = [v30 focusRect];
+    v36 = [focusRect copy];
     [v14 setObject:v36 forKeyedSubscript:@"focusRect"];
 
-    v37 = [a1 portraitEffectInfoDictionaryFromFaceObservations:v10 orientation:v12 valuesAtCapture:v30];
+    v37 = [self portraitEffectInfoDictionaryFromFaceObservations:v10 orientation:faceOrientation valuesAtCapture:v30];
     [v14 setObject:v37 forKeyedSubscript:@"portraitInfo"];
 
     v38 = MEMORY[0x1E696AD98];
@@ -509,12 +509,12 @@ void __69__PIPortraitAutoCalculator_portraitInfoDictionaryFromCameraMetadata___b
   portraitInfoDictionaryFromCameraMetadata__s_expectedClasses = v2;
 }
 
-+ (id)portraitEffectInfoDictionaryFromFaceObservations:(id)a3 orientation:(int64_t)a4 valuesAtCapture:(id)a5
++ (id)portraitEffectInfoDictionaryFromFaceObservations:(id)observations orientation:(int64_t)orientation valuesAtCapture:(id)capture
 {
   v103 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v71 = a5;
-  if (!v7)
+  observationsCopy = observations;
+  captureCopy = capture;
+  if (!observationsCopy)
   {
     v48 = NUAssertLogger_27584();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
@@ -536,8 +536,8 @@ void __69__PIPortraitAutoCalculator_portraitInfoDictionaryFromCameraMetadata___b
         v61 = dispatch_get_specific(*v50);
         v62 = MEMORY[0x1E696AF00];
         v63 = v61;
-        v64 = [v62 callStackSymbols];
-        v65 = [v64 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v62 callStackSymbols];
+        v65 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v100 = v61;
         v101 = 2114;
@@ -549,8 +549,8 @@ void __69__PIPortraitAutoCalculator_portraitInfoDictionaryFromCameraMetadata___b
     else if (v53)
     {
 LABEL_37:
-      v59 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v60 = [v59 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v60 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v100 = v60;
       _os_log_error_impl(&dword_1C7694000, v52, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -592,8 +592,8 @@ LABEL_43:
       v66 = dispatch_get_specific(*v56);
       v67 = MEMORY[0x1E696AF00];
       v68 = v66;
-      v69 = [v67 callStackSymbols];
-      v70 = [v69 componentsJoinedByString:@"\n"];
+      callStackSymbols3 = [v67 callStackSymbols];
+      v70 = [callStackSymbols3 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v100 = v66;
       v101 = 2114;
@@ -604,13 +604,13 @@ LABEL_43:
     goto LABEL_43;
   }
 
-  v74 = a4;
-  v75 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v7, "count")}];
+  orientationCopy = orientation;
+  v75 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(observationsCopy, "count")}];
   v87 = 0u;
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
-  obj = v7;
+  obj = observationsCopy;
   v76 = [obj countByEnumeratingWithState:&v87 objects:v98 count:16];
   if (v76)
   {
@@ -664,7 +664,7 @@ LABEL_43:
         v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v97 forKeys:v96 count:4];
         [v79 setObject:v21 forKeyedSubscript:@"faceBoundingBox"];
 
-        v22 = [MEMORY[0x1E696AD98] numberWithInteger:v74];
+        v22 = [MEMORY[0x1E696AD98] numberWithInteger:orientationCopy];
         [v79 setObject:v22 forKeyedSubscript:@"orientation"];
 
         v23 = MEMORY[0x1E696AD98];
@@ -677,13 +677,13 @@ LABEL_43:
         v26 = [v25 numberWithFloat:?];
         [v79 setObject:v26 forKeyedSubscript:@"faceOrientationIndex"];
 
-        v27 = [v78 roll];
-        [v79 setObject:v27 forKeyedSubscript:@"roll"];
+        roll = [v78 roll];
+        [v79 setObject:roll forKeyedSubscript:@"roll"];
 
         v28 = [v78 yaw];
         [v79 setObject:v28 forKeyedSubscript:@"yaw"];
 
-        v81 = [v78 landmarks];
+        landmarks = [v78 landmarks];
         v85 = 0u;
         v86 = 0u;
         v83 = 0u;
@@ -703,17 +703,17 @@ LABEL_43:
               }
 
               v31 = *(*(&v83 + 1) + 8 * j);
-              v32 = [v81 valueForKey:v31];
+              v32 = [landmarks valueForKey:v31];
               v33 = v32;
               if (v32)
               {
-                v34 = [v32 pointCount];
+                pointCount = [v32 pointCount];
                 v35 = v33;
-                v36 = [v33 normalizedPoints];
-                v37 = v36;
-                if (v34 && v36 != 0)
+                normalizedPoints = [v33 normalizedPoints];
+                v37 = normalizedPoints;
+                if (pointCount && normalizedPoints != 0)
                 {
-                  v39 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v34];
+                  v39 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:pointCount];
                   v40 = (v37 + 8);
                   do
                   {
@@ -727,10 +727,10 @@ LABEL_43:
                     [v39 addObject:v43];
 
                     v40 += 2;
-                    --v34;
+                    --pointCount;
                   }
 
-                  while (v34);
+                  while (pointCount);
                   [v79 setObject:v39 forKeyedSubscript:v31];
                 }
               }
@@ -757,7 +757,7 @@ LABEL_43:
   v91[1] = @"capturedPortraitStrength";
   v92[0] = v75;
   v44 = MEMORY[0x1E696AD98];
-  [v71 portraitStrength];
+  [captureCopy portraitStrength];
   v45 = [v44 numberWithFloat:?];
   v92[1] = v45;
   v46 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v92 forKeys:v91 count:2];
@@ -765,13 +765,13 @@ LABEL_43:
   return v46;
 }
 
-+ (id)depthEffectInfoDictionaryFromFaceObservations:(id)a3 valuesAtCapture:(id)a4 lumaNoiseScale:(float)a5 orientation:(int64_t)a6
++ (id)depthEffectInfoDictionaryFromFaceObservations:(id)observations valuesAtCapture:(id)capture lumaNoiseScale:(float)scale orientation:(int64_t)orientation
 {
   v91 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v75 = a4;
+  observationsCopy = observations;
+  captureCopy = capture;
   v9 = NUOrientationInverse();
-  v10 = v8;
+  v10 = observationsCopy;
   v11 = v10;
   if ([v10 count] >= 5)
   {
@@ -799,57 +799,57 @@ LABEL_43:
         }
 
         v13 = *(*(&v82 + 1) + 8 * v12);
-        v14 = [MEMORY[0x1E695DF90] dictionary];
-        v15 = [v13 landmarks];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        landmarks = [v13 landmarks];
         [v13 boundingBox];
         v17 = v16;
         v19 = v18;
         v21 = v20;
         v23 = v22;
-        v24 = [v15 leftEye];
-        +[PIAutoCalculatorUtils averagePoints:pointCount:](PIAutoCalculatorUtils, "averagePoints:pointCount:", [v24 normalizedPoints], objc_msgSend(v24, "pointCount"));
+        leftEye = [landmarks leftEye];
+        +[PIAutoCalculatorUtils averagePoints:pointCount:](PIAutoCalculatorUtils, "averagePoints:pointCount:", [leftEye normalizedPoints], objc_msgSend(leftEye, "pointCount"));
         [PIAutoCalculatorUtils convertFacePoint:"convertFacePoint:toImagePointWithFaceRect:orientation:" toImagePointWithFaceRect:v9 orientation:?];
         v26 = v25;
         v27 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-        [v14 setObject:v27 forKeyedSubscript:@"leftEyeX"];
+        [dictionary setObject:v27 forKeyedSubscript:@"leftEyeX"];
 
         v28 = [MEMORY[0x1E696AD98] numberWithDouble:v26];
-        [v14 setObject:v28 forKeyedSubscript:@"leftEyeY"];
+        [dictionary setObject:v28 forKeyedSubscript:@"leftEyeY"];
 
-        v29 = [v15 rightEye];
+        rightEye = [landmarks rightEye];
 
-        +[PIAutoCalculatorUtils averagePoints:pointCount:](PIAutoCalculatorUtils, "averagePoints:pointCount:", [v29 normalizedPoints], objc_msgSend(v29, "pointCount"));
+        +[PIAutoCalculatorUtils averagePoints:pointCount:](PIAutoCalculatorUtils, "averagePoints:pointCount:", [rightEye normalizedPoints], objc_msgSend(rightEye, "pointCount"));
         [PIAutoCalculatorUtils convertFacePoint:"convertFacePoint:toImagePointWithFaceRect:orientation:" toImagePointWithFaceRect:v9 orientation:?];
         v31 = v30;
         v32 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-        [v14 setObject:v32 forKeyedSubscript:@"rightEyeX"];
+        [dictionary setObject:v32 forKeyedSubscript:@"rightEyeX"];
 
         v33 = [MEMORY[0x1E696AD98] numberWithDouble:v31];
-        [v14 setObject:v33 forKeyedSubscript:@"rightEyeY"];
+        [dictionary setObject:v33 forKeyedSubscript:@"rightEyeY"];
 
-        v34 = [v15 nose];
+        nose = [landmarks nose];
 
-        +[PIAutoCalculatorUtils averagePoints:pointCount:](PIAutoCalculatorUtils, "averagePoints:pointCount:", [v34 normalizedPoints], objc_msgSend(v34, "pointCount"));
+        +[PIAutoCalculatorUtils averagePoints:pointCount:](PIAutoCalculatorUtils, "averagePoints:pointCount:", [nose normalizedPoints], objc_msgSend(nose, "pointCount"));
         [PIAutoCalculatorUtils convertFacePoint:"convertFacePoint:toImagePointWithFaceRect:orientation:" toImagePointWithFaceRect:v9 orientation:?];
         v36 = v35;
         v37 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-        [v14 setObject:v37 forKeyedSubscript:@"noseX"];
+        [dictionary setObject:v37 forKeyedSubscript:@"noseX"];
 
         v38 = [MEMORY[0x1E696AD98] numberWithDouble:v36];
-        [v14 setObject:v38 forKeyedSubscript:@"noseY"];
+        [dictionary setObject:v38 forKeyedSubscript:@"noseY"];
 
-        v39 = [v15 allPoints];
+        allPoints = [landmarks allPoints];
 
-        if ([v39 pointCount] > 0x2E)
+        if ([allPoints pointCount] > 0x2E)
         {
-          v40 = [v39 normalizedPoints];
-          [PIAutoCalculatorUtils convertFacePoint:v9 toImagePointWithFaceRect:*(v40 + 736) orientation:*(v40 + 744), v17, v19, v21, v23];
+          normalizedPoints = [allPoints normalizedPoints];
+          [PIAutoCalculatorUtils convertFacePoint:v9 toImagePointWithFaceRect:*(normalizedPoints + 736) orientation:*(normalizedPoints + 744), v17, v19, v21, v23];
           v42 = v41;
           v43 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-          [v14 setObject:v43 forKeyedSubscript:@"chinX"];
+          [dictionary setObject:v43 forKeyedSubscript:@"chinX"];
 
           v44 = [MEMORY[0x1E696AD98] numberWithDouble:v42];
-          [v14 setObject:v44 forKeyedSubscript:@"chinY"];
+          [dictionary setObject:v44 forKeyedSubscript:@"chinY"];
 
           goto LABEL_23;
         }
@@ -885,8 +885,8 @@ LABEL_17:
               v52 = MEMORY[0x1E696AF00];
               v77 = specific;
               log = v50;
-              v53 = [v52 callStackSymbols];
-              v54 = [v53 componentsJoinedByString:@"\n"];
+              callStackSymbols = [v52 callStackSymbols];
+              v54 = [callStackSymbols componentsJoinedByString:@"\n"];
               *buf = 138543618;
               v87 = specific;
               v88 = 2114;
@@ -917,8 +917,8 @@ LABEL_26:
         {
           v57 = MEMORY[0x1E696AF00];
           v55 = v56;
-          v58 = [v57 callStackSymbols];
-          v59 = [v58 componentsJoinedByString:@"\n"];
+          callStackSymbols2 = [v57 callStackSymbols];
+          v59 = [callStackSymbols2 componentsJoinedByString:@"\n"];
           *buf = 138543362;
           v87 = v59;
           _os_log_error_impl(&dword_1C7694000, v55, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -929,7 +929,7 @@ LABEL_26:
 LABEL_22:
         _NUAssertContinueHandler();
 LABEL_23:
-        [v80 addObject:v14];
+        [v80 addObject:dictionary];
 
         ++v12;
       }
@@ -943,32 +943,32 @@ LABEL_23:
   }
 
   v61 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v62 = [v75 minimumAperture];
-  [v61 setObject:v62 forKeyedSubscript:@"minimumAperture"];
+  minimumAperture = [captureCopy minimumAperture];
+  [v61 setObject:minimumAperture forKeyedSubscript:@"minimumAperture"];
 
-  v63 = [v75 maximumAperture];
-  [v61 setObject:v63 forKeyedSubscript:@"maximumAperture"];
+  maximumAperture = [captureCopy maximumAperture];
+  [v61 setObject:maximumAperture forKeyedSubscript:@"maximumAperture"];
 
   v64 = MEMORY[0x1E696AD98];
-  [v75 aperture];
+  [captureCopy aperture];
   v65 = [v64 numberWithFloat:?];
   [v61 setObject:v65 forKeyedSubscript:@"capturedAperture"];
 
-  *&v66 = a5;
+  *&v66 = scale;
   v67 = [MEMORY[0x1E696AD98] numberWithFloat:v66];
   [v61 setObject:v67 forKeyedSubscript:@"lumaNoiseScale"];
 
-  v68 = [v75 focusRect];
+  focusRect = [captureCopy focusRect];
 
-  if (v68)
+  if (focusRect)
   {
-    v69 = [v75 focusRect];
-    v70 = [v69 copy];
+    focusRect2 = [captureCopy focusRect];
+    v70 = [focusRect2 copy];
     [v61 setObject:v70 forKeyedSubscript:@"focusRect"];
   }
 
   [v61 setObject:v80 forKeyedSubscript:@"faces"];
-  v71 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v75, "SDOFRenderingVersion")}];
+  v71 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(captureCopy, "SDOFRenderingVersion")}];
   [v61 setObject:v71 forKeyedSubscript:@"SDOFRenderingVersion"];
 
   v72 = [v61 copy];
@@ -976,11 +976,11 @@ LABEL_23:
   return v72;
 }
 
-+ (id)depthEffectInfoDictionaryFromFaceObservations:(id)a3 metadata:(id)a4 orientation:(int64_t)a5 valuesAtCapture:(id)a6
++ (id)depthEffectInfoDictionaryFromFaceObservations:(id)observations metadata:(id)metadata orientation:(int64_t)orientation valuesAtCapture:(id)capture
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [a4 objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
+  observationsCopy = observations;
+  captureCopy = capture;
+  v12 = [metadata objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
   v13 = [v12 objectForKeyedSubscript:*MEMORY[0x1E69867D0]];
   v15 = v13;
   if (v13)
@@ -993,18 +993,18 @@ LABEL_23:
     LODWORD(v14) = 1008981770;
   }
 
-  v16 = [a1 depthEffectInfoDictionaryFromFaceObservations:v10 valuesAtCapture:v11 lumaNoiseScale:a5 orientation:v14];
+  v16 = [self depthEffectInfoDictionaryFromFaceObservations:observationsCopy valuesAtCapture:captureCopy lumaNoiseScale:orientation orientation:v14];
 
   return v16;
 }
 
-+ (id)portraitInfoDictionaryFromFaceObservations:(id)a3 metadata:(id)a4 orientation:(int64_t)a5 valuesAtCapture:(id)a6
++ (id)portraitInfoDictionaryFromFaceObservations:(id)observations metadata:(id)metadata orientation:(int64_t)orientation valuesAtCapture:(id)capture
 {
   v70 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (!v10)
+  observationsCopy = observations;
+  metadataCopy = metadata;
+  captureCopy = capture;
+  if (!observationsCopy)
   {
     v34 = NUAssertLogger_27584();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -1015,7 +1015,7 @@ LABEL_23:
       _os_log_error_impl(&dword_1C7694000, v34, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v36 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v38 = NUAssertLogger_27584();
     v39 = os_log_type_enabled(v38, OS_LOG_TYPE_ERROR);
@@ -1023,11 +1023,11 @@ LABEL_23:
     {
       if (v39)
       {
-        v52 = dispatch_get_specific(*v36);
+        v52 = dispatch_get_specific(*callStackSymbols);
         v53 = MEMORY[0x1E696AF00];
         v54 = v52;
-        v36 = [v53 callStackSymbols];
-        v55 = [v36 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v53 callStackSymbols];
+        v55 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v67 = v52;
         v68 = 2114;
@@ -1038,10 +1038,10 @@ LABEL_23:
 
     else if (v39)
     {
-      v40 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v36 = [v40 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v67 = v36;
+      v67 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v38, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -1049,7 +1049,7 @@ LABEL_23:
     goto LABEL_31;
   }
 
-  if (!v11)
+  if (!metadataCopy)
   {
     v41 = NUAssertLogger_27584();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -1060,7 +1060,7 @@ LABEL_23:
       _os_log_error_impl(&dword_1C7694000, v41, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v36 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v43 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v38 = NUAssertLogger_27584();
     v44 = os_log_type_enabled(v38, OS_LOG_TYPE_ERROR);
@@ -1068,10 +1068,10 @@ LABEL_23:
     {
       if (v44)
       {
-        v45 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v36 = [v45 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v67 = v36;
+        v67 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v38, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -1084,11 +1084,11 @@ LABEL_33:
 LABEL_31:
     if (v44)
     {
-      v56 = dispatch_get_specific(*v36);
+      v56 = dispatch_get_specific(*callStackSymbols);
       v57 = MEMORY[0x1E696AF00];
       v58 = v56;
-      v36 = [v57 callStackSymbols];
-      v59 = [v36 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v57 callStackSymbols];
+      v59 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v67 = v56;
       v68 = 2114;
@@ -1099,7 +1099,7 @@ LABEL_31:
     goto LABEL_33;
   }
 
-  v13 = v12;
+  v13 = captureCopy;
   if ((NUOrientationIsValid() & 1) == 0)
   {
     v46 = NUAssertLogger_27584();
@@ -1111,7 +1111,7 @@ LABEL_31:
       _os_log_error_impl(&dword_1C7694000, v46, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v36 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v48 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v38 = NUAssertLogger_27584();
     v49 = os_log_type_enabled(v38, OS_LOG_TYPE_ERROR);
@@ -1119,8 +1119,8 @@ LABEL_31:
     {
       if (v49)
       {
-        v50 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v51 = [v50 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v51 = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v67 = v51;
         _os_log_error_impl(&dword_1C7694000, v38, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1132,11 +1132,11 @@ LABEL_31:
 LABEL_34:
     if (v49)
     {
-      v60 = dispatch_get_specific(*v36);
+      v60 = dispatch_get_specific(*callStackSymbols);
       v61 = MEMORY[0x1E696AF00];
       v62 = v60;
-      v63 = [v61 callStackSymbols];
-      v64 = [v63 componentsJoinedByString:@"\n"];
+      callStackSymbols5 = [v61 callStackSymbols];
+      v64 = [callStackSymbols5 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v67 = v60;
       v68 = 2114;
@@ -1149,9 +1149,9 @@ LABEL_36:
     _NUAssertFailHandler();
   }
 
-  if ([a1 canApplyPortraitEffectsWithMetadata:v11])
+  if ([self canApplyPortraitEffectsWithMetadata:metadataCopy])
   {
-    v14 = [a1 portraitEffectInfoDictionaryFromFaceObservations:v10 orientation:a5 valuesAtCapture:v13];
+    v14 = [self portraitEffectInfoDictionaryFromFaceObservations:observationsCopy orientation:orientation valuesAtCapture:v13];
   }
 
   else
@@ -1163,7 +1163,7 @@ LABEL_36:
   v65 = [PIPortraitAutoCalculator isTapToFocusEnabled:v13];
   v16 = [v13 portraitMajorVersion] >= 2 && objc_msgSend(v13, "portraitMinorVersion") != 0;
   v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v18 = [a1 depthEffectInfoDictionaryFromFaceObservations:v10 metadata:v11 orientation:a5 valuesAtCapture:v13];
+  v18 = [self depthEffectInfoDictionaryFromFaceObservations:observationsCopy metadata:metadataCopy orientation:orientation valuesAtCapture:v13];
   [v17 setObject:v18 forKeyedSubscript:@"depthInfo"];
 
   v19 = MEMORY[0x1E696AD98];
@@ -1171,8 +1171,8 @@ LABEL_36:
   v20 = [v19 numberWithFloat:?];
   [v17 setObject:v20 forKeyedSubscript:@"aperture"];
 
-  v21 = [v13 focusRect];
-  v22 = [v21 copy];
+  focusRect = [v13 focusRect];
+  v22 = [focusRect copy];
   [v17 setObject:v22 forKeyedSubscript:@"focusRect"];
 
   [v17 setObject:v14 forKeyedSubscript:@"portraitInfo"];
@@ -1208,39 +1208,39 @@ LABEL_36:
   return v17;
 }
 
-+ (BOOL)canApplyPortraitEffectsWithMetadata:(id)a3
++ (BOOL)canApplyPortraitEffectsWithMetadata:(id)metadata
 {
-  v3 = [a3 objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
+  v3 = [metadata objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
   v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E6986800]];
-  v5 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  return v5 & 1;
+  return unsignedIntegerValue & 1;
 }
 
-+ (BOOL)isTapToFocusEnabled:(id)a3
++ (BOOL)isTapToFocusEnabled:(id)enabled
 {
-  v3 = a3;
-  v4 = [v3 depthVersionInfo];
+  enabledCopy = enabled;
+  depthVersionInfo = [enabledCopy depthVersionInfo];
   v5 = 0;
-  if ((HIDWORD(v4) - 21000) >= 0x3E8 && (HIDWORD(v4) - 51000) >= 0x3E8)
+  if ((HIDWORD(depthVersionInfo) - 21000) >= 0x3E8 && (HIDWORD(depthVersionInfo) - 51000) >= 0x3E8)
   {
-    v6 = [v3 portraitMajorVersion];
-    v7 = [v3 SDOFRenderingVersion];
-    v5 = v6 > 1 && v7 > 5;
+    portraitMajorVersion = [enabledCopy portraitMajorVersion];
+    sDOFRenderingVersion = [enabledCopy SDOFRenderingVersion];
+    v5 = portraitMajorVersion > 1 && sDOFRenderingVersion > 5;
   }
 
   return v5;
 }
 
-+ (id)focusRectDictionaryFromRect:(CGRect)a3
++ (id)focusRectDictionaryFromRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v25[4] = *MEMORY[0x1E69E9840];
-  v7 = a3.origin.x < 0.0 || a3.origin.x > 1.0;
-  if (v7 || (a3.origin.y >= 0.0 ? (v8 = a3.origin.y > 1.0) : (v8 = 1), v8 || a3.size.width <= 0.0 || !NUIsRoughlyLessThan() || height <= 0.0 || !NUIsRoughlyLessThan()))
+  v7 = rect.origin.x < 0.0 || rect.origin.x > 1.0;
+  if (v7 || (rect.origin.y >= 0.0 ? (v8 = rect.origin.y > 1.0) : (v8 = 1), v8 || rect.size.width <= 0.0 || !NUIsRoughlyLessThan() || height <= 0.0 || !NUIsRoughlyLessThan()))
   {
     if (*MEMORY[0x1E69B3D78] != -1)
     {
@@ -1284,19 +1284,19 @@ LABEL_36:
   return v13;
 }
 
-+ (id)focusRectDictionaryFromMetadata:(id)a3
++ (id)focusRectDictionaryFromMetadata:(id)metadata
 {
   v64 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E696DED8]];
-  v6 = [v5 integerValue];
+  metadataCopy = metadata;
+  v5 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E696DED8]];
+  integerValue = [v5 integerValue];
 
-  v7 = [v4 objectForKeyedSubscript:*MEMORY[0x1E696DEC8]];
-  v8 = [v7 integerValue];
+  v7 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E696DEC8]];
+  integerValue2 = [v7 integerValue];
 
-  if (v6)
+  if (integerValue)
   {
-    v9 = v8 == 0;
+    v9 = integerValue2 == 0;
   }
 
   else
@@ -1306,7 +1306,7 @@ LABEL_36:
 
   if (!v9)
   {
-    v12 = [v4 objectForKeyedSubscript:*MEMORY[0x1E696D8B0]];
+    v12 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E696D8B0]];
     v13 = v12;
     if (!v12)
     {
@@ -1319,7 +1319,7 @@ LABEL_36:
       if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v63 = v4;
+        v63 = metadataCopy;
         _os_log_impl(&dword_1C7694000, v28, OS_LOG_TYPE_DEFAULT, "Cant get focusRect - Metadata dictionary missing exif aux dictionary:\n%@", buf, 0xCu);
       }
 
@@ -1352,7 +1352,7 @@ LABEL_36:
     v17 = v16;
     if (v16)
     {
-      v53 = a1;
+      selfCopy = self;
       v54 = v16;
       v55 = v15;
       v56 = v13;
@@ -1378,7 +1378,7 @@ LABEL_16:
           }
 
           v25 = *(*(&v57 + 1) + 8 * v24);
-          v26 = [v25 objectForKeyedSubscript:{v22, v53}];
+          v26 = [v25 objectForKeyedSubscript:{v22, selfCopy}];
           v27 = [v26 isEqualToString:v23];
 
           if (v27)
@@ -1464,7 +1464,7 @@ LABEL_16:
           }
 
           v13 = v56;
-          v11 = [v53 focusRectDictionaryFromRect:{v50, v51, v47, v49}];
+          v11 = [selfCopy focusRectDictionaryFromRect:{v50, v51, v47, v49}];
         }
 
         v17 = v54;
@@ -1531,7 +1531,7 @@ LABEL_70:
   if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v63 = v4;
+    v63 = metadataCopy;
     _os_log_impl(&dword_1C7694000, v10, OS_LOG_TYPE_DEFAULT, "Cant get focusRect - Metadata dictionary missing fullSizeWith or fullSizeHeight:\n%@", buf, 0xCu);
   }
 

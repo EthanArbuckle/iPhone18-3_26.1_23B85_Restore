@@ -1,13 +1,13 @@
 @interface GEOAPCurrentUploadDebugController
-- (_TtC4Maps33GEOAPCurrentUploadDebugController)initWithCoder:(id)a3;
-- (_TtC4Maps33GEOAPCurrentUploadDebugController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC4Maps33GEOAPCurrentUploadDebugController)initWithStyle:(int64_t)a3;
+- (_TtC4Maps33GEOAPCurrentUploadDebugController)initWithCoder:(id)coder;
+- (_TtC4Maps33GEOAPCurrentUploadDebugController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC4Maps33GEOAPCurrentUploadDebugController)initWithStyle:(int64_t)style;
 - (void)viewDidLoad;
 @end
 
 @implementation GEOAPCurrentUploadDebugController
 
-- (_TtC4Maps33GEOAPCurrentUploadDebugController)initWithCoder:(id)a3
+- (_TtC4Maps33GEOAPCurrentUploadDebugController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC4Maps33GEOAPCurrentUploadDebugController_dataModel;
   type metadata accessor for GEOAPCurrentUploadDataModel();
@@ -24,7 +24,7 @@
   return result;
 }
 
-- (_TtC4Maps33GEOAPCurrentUploadDebugController)initWithStyle:(int64_t)a3
+- (_TtC4Maps33GEOAPCurrentUploadDebugController)initWithStyle:(int64_t)style
 {
   v5 = OBJC_IVAR____TtC4Maps33GEOAPCurrentUploadDebugController_dataModel;
   type metadata accessor for GEOAPCurrentUploadDataModel();
@@ -38,16 +38,16 @@
   *(&self->super.super.super.super.isa + v5) = v6;
   v8.receiver = self;
   v8.super_class = type metadata accessor for GEOAPCurrentUploadDebugController();
-  return [(GEOAPCurrentUploadDebugController *)&v8 initWithStyle:a3];
+  return [(GEOAPCurrentUploadDebugController *)&v8 initWithStyle:style];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100231C94();
 }
 
-- (_TtC4Maps33GEOAPCurrentUploadDebugController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps33GEOAPCurrentUploadDebugController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

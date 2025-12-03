@@ -1,5 +1,5 @@
 @interface OS_mrcs_object
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)redactedDescription;
@@ -8,10 +8,10 @@
 
 @implementation OS_mrcs_object
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -19,9 +19,9 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (isa = self[2].super.super.isa, isa == v4[2].super.super.isa) && (v8 = *(isa + 4)) != 0)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (isa = self[2].super.super.isa, isa == equalCopy[2].super.super.isa) && (v8 = *(isa + 4)) != 0)
     {
-      v6 = v8(self, v4);
+      v6 = v8(self, equalCopy);
     }
 
     else

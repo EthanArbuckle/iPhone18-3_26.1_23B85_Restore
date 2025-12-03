@@ -1,35 +1,35 @@
 @interface VCCKLibrarySyncCoordinator
-+ (BOOL)handleSavedLibraryRecord:(id)a3 database:(id)a4 error:(id *)a5;
-+ (BOOL)handleUnknownItemErrorForRecord:(id)a3 database:(id)a4 error:(id *)a5;
-+ (id)reconcileWithLocalDatabase:(id)a3 with:(id)a4 error:(id *)a5;
++ (BOOL)handleSavedLibraryRecord:(id)record database:(id)database error:(id *)error;
++ (BOOL)handleUnknownItemErrorForRecord:(id)record database:(id)database error:(id *)error;
++ (id)reconcileWithLocalDatabase:(id)database with:(id)with error:(id *)error;
 @end
 
 @implementation VCCKLibrarySyncCoordinator
 
-+ (BOOL)handleSavedLibraryRecord:(id)a3 database:(id)a4 error:(id *)a5
++ (BOOL)handleSavedLibraryRecord:(id)record database:(id)database error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
-  sub_2310735A4(v6, v7);
+  recordCopy = record;
+  databaseCopy = database;
+  sub_2310735A4(recordCopy, databaseCopy);
 
   return 1;
 }
 
-+ (BOOL)handleUnknownItemErrorForRecord:(id)a3 database:(id)a4 error:(id *)a5
++ (BOOL)handleUnknownItemErrorForRecord:(id)record database:(id)database error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
-  sub_2310742FC(v7, v7);
+  recordCopy = record;
+  databaseCopy = database;
+  sub_2310742FC(databaseCopy, databaseCopy);
 
   return 1;
 }
 
-+ (id)reconcileWithLocalDatabase:(id)a3 with:(id)a4 error:(id *)a5
++ (id)reconcileWithLocalDatabase:(id)database with:(id)with error:(id *)error
 {
   swift_getObjCClassMetadata();
-  v7 = a3;
-  v8 = a4;
-  v9 = static VCCKLibrarySyncCoordinator.reconcile(localDatabase:with:)(v7, v8);
+  databaseCopy = database;
+  withCopy = with;
+  v9 = static VCCKLibrarySyncCoordinator.reconcile(localDatabase:with:)(databaseCopy, withCopy);
 
   return v9;
 }

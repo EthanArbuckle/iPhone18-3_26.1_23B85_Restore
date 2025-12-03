@@ -10,8 +10,8 @@
 {
   v2 = objc_opt_new();
   v3 = *MEMORY[0x1E6979E40];
-  v4 = [v2 layer];
-  [v4 setCornerRadius:v3];
+  layer = [v2 layer];
+  [layer setCornerRadius:v3];
 
   return v2;
 }

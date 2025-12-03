@@ -1,31 +1,31 @@
 @interface SUUIHorizontalLockupLayout
-+ (id)fontForButtonViewElement:(id)a3 context:(id)a4;
-+ (id)fontForLabelViewElement:(id)a3 context:(id)a4;
-+ (id)fontForOrdinalViewElement:(id)a3 context:(id)a4;
-- (CGSize)_sizeForRightAlignedColumn:(id)a3 width:(double)a4 context:(id)a5;
-- (CGSize)_sizeForViewElement:(id)a3 width:(int64_t)a4 context:(id)a5;
-- (SUUIHorizontalLockupLayout)initWithLockup:(id)a3 context:(id)a4;
++ (id)fontForButtonViewElement:(id)element context:(id)context;
++ (id)fontForLabelViewElement:(id)element context:(id)context;
++ (id)fontForOrdinalViewElement:(id)element context:(id)context;
+- (CGSize)_sizeForRightAlignedColumn:(id)column width:(double)width context:(id)context;
+- (CGSize)_sizeForViewElement:(id)element width:(int64_t)width context:(id)context;
+- (SUUIHorizontalLockupLayout)initWithLockup:(id)lockup context:(id)context;
 - (UIEdgeInsets)metadataColumnEdgeInsets;
-- (double)_heightForMetadataColumn:(id)a3 width:(double)a4 context:(id)a5;
-- (double)bottomPaddingForViewElement:(id)a3;
-- (double)columnSpacingForColumnIdentifier:(int64_t)a3;
-- (double)topPaddingForViewElement:(id)a3;
-- (void)sizeColumnsToFitWidth:(double)a3 context:(id)a4;
+- (double)_heightForMetadataColumn:(id)column width:(double)width context:(id)context;
+- (double)bottomPaddingForViewElement:(id)element;
+- (double)columnSpacingForColumnIdentifier:(int64_t)identifier;
+- (double)topPaddingForViewElement:(id)element;
+- (void)sizeColumnsToFitWidth:(double)width context:(id)context;
 @end
 
 @implementation SUUIHorizontalLockupLayout
 
-- (SUUIHorizontalLockupLayout)initWithLockup:(id)a3 context:(id)a4
+- (SUUIHorizontalLockupLayout)initWithLockup:(id)lockup context:(id)context
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lockupCopy = lockup;
+  contextCopy = context;
   v48.receiver = self;
   v48.super_class = SUUIHorizontalLockupLayout;
   v8 = [(SUUIHorizontalLockupLayout *)&v48 init];
   if (v8)
   {
-    v9 = [v6 containsElementGroups];
+    containsElementGroups = [lockupCopy containsElementGroups];
     v49[0] = xmmword_259FCC0E0;
     v49[1] = xmmword_259FCC0F0;
     v49[2] = xmmword_259FCC100;
@@ -47,13 +47,13 @@
     v42[1] = v42;
     v42[2] = 0x2020000000;
     v11 = 3;
-    if (v9)
+    if (containsElementGroups)
     {
       v11 = 4;
     }
 
     v42[3] = v11;
-    if ([v6 lockupViewType] == 6)
+    if ([lockupCopy lockupViewType] == 6)
     {
       v12 = 0.0;
     }
@@ -64,9 +64,9 @@
     }
 
     v41 = 0;
-    v13 = [v6 firstChildForElementType:49];
-    v14 = [v13 style];
-    SUUIViewElementMarginForStyle(v14, &v41);
+    v13 = [lockupCopy firstChildForElementType:49];
+    style = [v13 style];
+    SUUIViewElementMarginForStyle(style, &v41);
     v16 = v15;
 
     if (v41)
@@ -80,7 +80,7 @@
     }
 
     *(v8 + 2) = v17;
-    if ([v6 lockupViewType] == 7)
+    if ([lockupCopy lockupViewType] == 7)
     {
       *(v8 + 24) = xmmword_259FCC110;
       *(v8 + 40) = xmmword_259FCC120;
@@ -89,7 +89,7 @@
 
     else
     {
-      if ([v6 lockupViewType] == 6)
+      if ([lockupCopy lockupViewType] == 6)
       {
         __asm { FMOV            V0.2D, #15.0 }
 
@@ -113,11 +113,11 @@
     v31[2] = __53__SUUIHorizontalLockupLayout_initWithLockup_context___block_invoke;
     v31[3] = &unk_2798FDEA8;
     v35 = v42;
-    v40 = v9 ^ 1;
-    v32 = v6;
+    v40 = containsElementGroups ^ 1;
+    v32 = lockupCopy;
     v36 = v45;
     v37 = v43;
-    v33 = v7;
+    v33 = contextCopy;
     v38 = v47;
     v39 = 6;
     v25 = v10;
@@ -407,26 +407,26 @@ LABEL_48:
 LABEL_65:
 }
 
-+ (id)fontForButtonViewElement:(id)a3 context:(id)a4
++ (id)fontForButtonViewElement:(id)element context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 buttonTitleStyle];
-  v8 = v7;
-  if (v7)
+  elementCopy = element;
+  contextCopy = context;
+  buttonTitleStyle = [elementCopy buttonTitleStyle];
+  v8 = buttonTitleStyle;
+  if (buttonTitleStyle)
   {
-    v9 = SUUIViewElementFontWithStyle(v7);
+    v9 = SUUIViewElementFontWithStyle(buttonTitleStyle);
   }
 
   else
   {
-    v10 = [v5 style];
-    v9 = SUUIViewElementFontWithStyle(v10);
+    style = [elementCopy style];
+    v9 = SUUIViewElementFontWithStyle(style);
   }
 
   if (!v9)
   {
-    if ([v6 containerViewElementType] == 118)
+    if ([contextCopy containerViewElementType] == 118)
     {
       v11 = 8;
     }
@@ -442,26 +442,26 @@ LABEL_65:
   return v9;
 }
 
-+ (id)fontForLabelViewElement:(id)a3 context:(id)a4
++ (id)fontForLabelViewElement:(id)element context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
-  v8 = SUUIViewElementFontWithStyle(v7);
+  elementCopy = element;
+  contextCopy = context;
+  style = [elementCopy style];
+  v8 = SUUIViewElementFontWithStyle(style);
 
   if (!v8)
   {
-    v9 = [v5 labelViewStyle];
-    if (v9 > 5)
+    labelViewStyle = [elementCopy labelViewStyle];
+    if (labelViewStyle > 5)
     {
       v8 = 0;
     }
 
     else
     {
-      if (((1 << v9) & 0x1B) != 0)
+      if (((1 << labelViewStyle) & 0x1B) != 0)
       {
-        if ([v6 containerViewElementType] == 118)
+        if ([contextCopy containerViewElementType] == 118)
         {
           v10 = 8;
         }
@@ -472,7 +472,7 @@ LABEL_65:
         }
       }
 
-      else if ([v6 containerViewElementType] == 118)
+      else if ([contextCopy containerViewElementType] == 118)
       {
         v10 = 6;
       }
@@ -489,10 +489,10 @@ LABEL_65:
   return v8;
 }
 
-+ (id)fontForOrdinalViewElement:(id)a3 context:(id)a4
++ (id)fontForOrdinalViewElement:(id)element context:(id)context
 {
-  v4 = [a3 style];
-  v5 = SUUIViewElementFontWithStyle(v4);
+  style = [element style];
+  v5 = SUUIViewElementFontWithStyle(style);
 
   if (!v5)
   {
@@ -505,16 +505,16 @@ LABEL_65:
   return v5;
 }
 
-- (double)bottomPaddingForViewElement:(id)a3
+- (double)bottomPaddingForViewElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 elementType];
+  elementCopy = element;
+  elementType = [elementCopy elementType];
   v6 = 0.0;
-  if (v5 <= 76)
+  if (elementType <= 76)
   {
-    if (v5 == 8)
+    if (elementType == 8)
     {
-      if ([v4 badgeType] == 1)
+      if ([elementCopy badgeType] == 1)
       {
         v6 = 2.0;
       }
@@ -527,7 +527,7 @@ LABEL_65:
       goto LABEL_13;
     }
 
-    if (v5 != 13)
+    if (elementType != 13)
     {
       goto LABEL_13;
     }
@@ -537,12 +537,12 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  if (v5 == 77)
+  if (elementType == 77)
   {
     goto LABEL_9;
   }
 
-  if ((v5 == 135 || v5 == 138) && self->_tallestNonMetadataColumnHeight > 60.0)
+  if ((elementType == 135 || elementType == 138) && self->_tallestNonMetadataColumnHeight > 60.0)
   {
     v6 = 2.0;
   }
@@ -552,12 +552,12 @@ LABEL_13:
   return v6;
 }
 
-- (double)columnSpacingForColumnIdentifier:(int64_t)a3
+- (double)columnSpacingForColumnIdentifier:(int64_t)identifier
 {
   result = 0.0;
-  if ((a3 - 4) >= 3)
+  if ((identifier - 4) >= 3)
   {
-    if (a3)
+    if (identifier)
     {
       return 15.0;
     }
@@ -571,9 +571,9 @@ LABEL_13:
   return result;
 }
 
-- (void)sizeColumnsToFitWidth:(double)a3 context:(id)a4
+- (void)sizeColumnsToFitWidth:(double)width context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -584,7 +584,7 @@ LABEL_13:
   v26 = &v25;
   v27 = 0x3010000000;
   v28 = "";
-  v29 = a3;
+  widthCopy = width;
   v30 = 0;
   v21 = 0;
   v22 = &v21;
@@ -599,8 +599,8 @@ LABEL_13:
   v14[3] = &unk_2798FDED0;
   v19 = v7;
   v14[4] = self;
-  v20 = a3;
-  v9 = v6;
+  widthCopy2 = width;
+  v9 = contextCopy;
   v15 = v9;
   v16 = &v25;
   v17 = &v21;
@@ -738,10 +738,10 @@ LABEL_21:
 LABEL_25:
 }
 
-- (double)topPaddingForViewElement:(id)a3
+- (double)topPaddingForViewElement:(id)element
 {
-  v3 = a3;
-  if ([v3 elementType] != 8 || (v4 = 3.0, objc_msgSend(v3, "badgeType") != 1))
+  elementCopy = element;
+  if ([elementCopy elementType] != 8 || (v4 = 3.0, objc_msgSend(elementCopy, "badgeType") != 1))
   {
     v4 = 0.0;
   }
@@ -749,16 +749,16 @@ LABEL_25:
   return v4;
 }
 
-- (double)_heightForMetadataColumn:(id)a3 width:(double)a4 context:(id)a5
+- (double)_heightForMetadataColumn:(id)column width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  columnCopy = column;
+  contextCopy = context;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v10 = [v8 childViewElements];
-  v11 = [v10 count];
+  childViewElements = [columnCopy childViewElements];
+  v11 = [childViewElements count];
   if (v11 >= 1)
   {
     v14[0] = MEMORY[0x277D85DD0];
@@ -766,11 +766,11 @@ LABEL_25:
     v14[2] = __69__SUUIHorizontalLockupLayout__heightForMetadataColumn_width_context___block_invoke;
     v14[3] = &unk_2798FB010;
     v14[4] = self;
-    v17 = a4;
-    v15 = v9;
+    widthCopy = width;
+    v15 = contextCopy;
     v16 = &v19;
     v18 = v11;
-    [v10 enumerateObjectsUsingBlock:v14];
+    [childViewElements enumerateObjectsUsingBlock:v14];
   }
 
   v12 = v20[3];
@@ -804,18 +804,18 @@ uint64_t __69__SUUIHorizontalLockupLayout__heightForMetadataColumn_width_context
   return MEMORY[0x2821F9730](isKindOfClass);
 }
 
-- (CGSize)_sizeForRightAlignedColumn:(id)a3 width:(double)a4 context:(id)a5
+- (CGSize)_sizeForRightAlignedColumn:(id)column width:(double)width context:(id)context
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  columnCopy = column;
+  contextCopy = context;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3010000000;
   v36 = "";
   v37 = *MEMORY[0x277CBF3A8];
-  v10 = [v8 childViewElements];
-  v11 = [v10 count];
+  childViewElements = [columnCopy childViewElements];
+  v11 = [childViewElements count];
   if (v11 >= 1)
   {
     v28[0] = MEMORY[0x277D85DD0];
@@ -823,18 +823,18 @@ uint64_t __69__SUUIHorizontalLockupLayout__heightForMetadataColumn_width_context
     v28[2] = __71__SUUIHorizontalLockupLayout__sizeForRightAlignedColumn_width_context___block_invoke;
     v28[3] = &unk_2798FB010;
     v28[4] = self;
-    v31 = a4;
-    v12 = v9;
+    widthCopy = width;
+    v12 = contextCopy;
     v29 = v12;
     v30 = &v33;
     v32 = v11;
-    [v10 enumerateObjectsUsingBlock:v28];
-    v23 = v9;
+    [childViewElements enumerateObjectsUsingBlock:v28];
+    v23 = contextCopy;
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v13 = v10;
+    v13 = childViewElements;
     v14 = [v13 countByEnumeratingWithState:&v24 objects:v38 count:16];
     if (v14)
     {
@@ -851,7 +851,7 @@ uint64_t __69__SUUIHorizontalLockupLayout__heightForMetadataColumn_width_context
           v17 = *(*(&v24 + 1) + 8 * i);
           if ([v17 elementType] == 138)
           {
-            [(SUUIHorizontalLockupLayout *)self _sizeForViewElement:v17 width:a4 context:v12];
+            [(SUUIHorizontalLockupLayout *)self _sizeForViewElement:v17 width:width context:v12];
             v34[5] = v18 + v34[5];
           }
         }
@@ -862,7 +862,7 @@ uint64_t __69__SUUIHorizontalLockupLayout__heightForMetadataColumn_width_context
       while (v14);
     }
 
-    v9 = v23;
+    contextCopy = v23;
   }
 
   v19 = v34[4];
@@ -907,11 +907,11 @@ void __71__SUUIHorizontalLockupLayout__sizeForRightAlignedColumn_width_context__
   }
 }
 
-- (CGSize)_sizeForViewElement:(id)a3 width:(int64_t)a4 context:(id)a5
+- (CGSize)_sizeForViewElement:(id)element width:(int64_t)width context:(id)context
 {
-  v7 = a5;
-  v8 = a3;
-  if ([v8 elementType] == 90 && (objc_msgSend(v8, "flattenedChildren"), v9 = objc_claimAutoreleasedReturnValue(), v8, objc_msgSend(v9, "firstObject"), v8 = objc_claimAutoreleasedReturnValue(), v9, !v8))
+  contextCopy = context;
+  elementCopy = element;
+  if ([elementCopy elementType] == 90 && (objc_msgSend(elementCopy, "flattenedChildren"), v9 = objc_claimAutoreleasedReturnValue(), elementCopy, objc_msgSend(v9, "firstObject"), elementCopy = objc_claimAutoreleasedReturnValue(), v9, !elementCopy))
   {
     v11 = 29.0;
     v13 = 29.0;
@@ -919,7 +919,7 @@ void __71__SUUIHorizontalLockupLayout__sizeForRightAlignedColumn_width_context__
 
   else
   {
-    [v7 sizeForViewElement:v8 width:a4];
+    [contextCopy sizeForViewElement:elementCopy width:width];
     v11 = v10;
     v13 = v12;
   }

@@ -1,29 +1,29 @@
 @interface AVRoutingDepartureAnnouncingObjectMonitor
-+ (void)attachDepartureAnnouncingObjectMonitorToObject:(id)a3 monitoringObject:(id)a4;
-- (AVRoutingDepartureAnnouncingObjectMonitor)initWithMonitoringObject:(id)a3;
++ (void)attachDepartureAnnouncingObjectMonitorToObject:(id)object monitoringObject:(id)monitoringObject;
+- (AVRoutingDepartureAnnouncingObjectMonitor)initWithMonitoringObject:(id)object;
 - (void)dealloc;
 @end
 
 @implementation AVRoutingDepartureAnnouncingObjectMonitor
 
-- (AVRoutingDepartureAnnouncingObjectMonitor)initWithMonitoringObject:(id)a3
+- (AVRoutingDepartureAnnouncingObjectMonitor)initWithMonitoringObject:(id)object
 {
   v6.receiver = self;
   v6.super_class = AVRoutingDepartureAnnouncingObjectMonitor;
   v4 = [(AVRoutingDepartureAnnouncingObjectMonitor *)&v6 init];
   if (v4)
   {
-    v4->_weakReferenceToMonitoringObject = [[AVRoutingWeakReference alloc] initWithReferencedObject:a3];
+    v4->_weakReferenceToMonitoringObject = [[AVRoutingWeakReference alloc] initWithReferencedObject:object];
   }
 
   return v4;
 }
 
-+ (void)attachDepartureAnnouncingObjectMonitorToObject:(id)a3 monitoringObject:(id)a4
++ (void)attachDepartureAnnouncingObjectMonitorToObject:(id)object monitoringObject:(id)monitoringObject
 {
-  v5 = [[AVRoutingDepartureAnnouncingObjectMonitor alloc] initWithMonitoringObject:a4];
+  v5 = [[AVRoutingDepartureAnnouncingObjectMonitor alloc] initWithMonitoringObject:monitoringObject];
 
-  objc_setAssociatedObject(a3, @"AVRoutingDepartureAnnouncingObjectMonitorKey", v5, 0x301);
+  objc_setAssociatedObject(object, @"AVRoutingDepartureAnnouncingObjectMonitorKey", v5, 0x301);
 }
 
 - (void)dealloc

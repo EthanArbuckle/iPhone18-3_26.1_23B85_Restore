@@ -1,39 +1,39 @@
 @interface UINibDecoder
-+ (id)unarchiveObjectWithData:(id)a3;
-+ (id)unarchiveObjectWithFile:(id)a3;
-- (BOOL)containsValueForKey:(id)a3;
-- (BOOL)decodeArrayOfCGFloats:(double *)a3 count:(int64_t)a4 forKey:(id)a5;
-- (BOOL)decodeArrayOfDoubles:(double *)a3 count:(int64_t)a4 forKey:(id)a5;
-- (BOOL)decodeArrayOfFloats:(float *)a3 count:(int64_t)a4 forKey:(id)a5;
-- (BOOL)decodeBoolForKey:(id)a3;
-- (BOOL)validateAndIndexClasses:(const void *)a3 length:(unint64_t)a4;
-- (BOOL)validateAndIndexData:(id)a3 error:(id *)a4;
-- (BOOL)validateAndIndexKeys:(const void *)a3 length:(unint64_t)a4;
-- (BOOL)validateAndIndexObjects:(const void *)a3 length:(unint64_t)a4;
-- (BOOL)validateAndIndexValues:(const void *)a3 length:(unint64_t)a4;
-- (CGAffineTransform)decodeCGAffineTransformForKey:(SEL)a3;
-- (CGPoint)decodeCGPointForKey:(id)a3;
-- (CGRect)decodeCGRectForKey:(id)a3;
-- (CGSize)decodeCGSizeForKey:(id)a3;
-- (UIEdgeInsets)decodeUIEdgeInsetsForKey:(id)a3;
-- (const)decodeBytesForKey:(id)a3 returnedLength:(unint64_t *)a4;
-- (double)decodeDoubleForKey:(id)a3;
-- (float)decodeFloatForKey:(id)a3;
++ (id)unarchiveObjectWithData:(id)data;
++ (id)unarchiveObjectWithFile:(id)file;
+- (BOOL)containsValueForKey:(id)key;
+- (BOOL)decodeArrayOfCGFloats:(double *)floats count:(int64_t)count forKey:(id)key;
+- (BOOL)decodeArrayOfDoubles:(double *)doubles count:(int64_t)count forKey:(id)key;
+- (BOOL)decodeArrayOfFloats:(float *)floats count:(int64_t)count forKey:(id)key;
+- (BOOL)decodeBoolForKey:(id)key;
+- (BOOL)validateAndIndexClasses:(const void *)classes length:(unint64_t)length;
+- (BOOL)validateAndIndexData:(id)data error:(id *)error;
+- (BOOL)validateAndIndexKeys:(const void *)keys length:(unint64_t)length;
+- (BOOL)validateAndIndexObjects:(const void *)objects length:(unint64_t)length;
+- (BOOL)validateAndIndexValues:(const void *)values length:(unint64_t)length;
+- (CGAffineTransform)decodeCGAffineTransformForKey:(SEL)key;
+- (CGPoint)decodeCGPointForKey:(id)key;
+- (CGRect)decodeCGRectForKey:(id)key;
+- (CGSize)decodeCGSizeForKey:(id)key;
+- (UIEdgeInsets)decodeUIEdgeInsetsForKey:(id)key;
+- (const)decodeBytesForKey:(id)key returnedLength:(unint64_t *)length;
+- (double)decodeDoubleForKey:(id)key;
+- (float)decodeFloatForKey:(id)key;
 - (id)decodeObject;
-- (id)decodeObjectForKey:(id)a3;
-- (id)initForReadingWithData:(id)a3 error:(id *)a4;
+- (id)decodeObjectForKey:(id)key;
+- (id)initForReadingWithData:(id)data error:(id *)error;
 - (id)nextGenericKey;
-- (int)decodeInt32ForKey:(id)a3;
-- (int)decodeIntForKey:(id)a3;
-- (int64_t)decodeInt64ForKey:(id)a3;
-- (int64_t)decodeIntegerForKey:(id)a3;
-- (int64_t)versionForClassName:(id)a3;
+- (int)decodeInt32ForKey:(id)key;
+- (int)decodeIntForKey:(id)key;
+- (int64_t)decodeInt64ForKey:(id)key;
+- (int64_t)decodeIntegerForKey:(id)key;
+- (int64_t)versionForClassName:(id)name;
 - (void)dealloc;
-- (void)decodeArrayOfObjCType:(const char *)a3 count:(unint64_t)a4 at:(void *)a5;
-- (void)decodeValueOfObjCType:(const char *)a3 at:(void *)a4;
-- (void)decodeValuesOfObjCTypes:(const char *)a3;
+- (void)decodeArrayOfObjCType:(const char *)type count:(unint64_t)count at:(void *)at;
+- (void)decodeValueOfObjCType:(const char *)type at:(void *)at;
+- (void)decodeValuesOfObjCTypes:(const char *)types;
 - (void)finishDecoding;
-- (void)replaceObject:(id)a3 withObject:(id)a4;
+- (void)replaceObject:(id)object withObject:(id)withObject;
 @end
 
 @implementation UINibDecoder
@@ -100,7 +100,7 @@
   [(UINibDecoder *)&v6 dealloc];
 }
 
-- (id)initForReadingWithData:(id)a3 error:(id *)a4
+- (id)initForReadingWithData:(id)data error:(id *)error
 {
   v9.receiver = self;
   v9.super_class = UINibDecoder;
@@ -109,7 +109,7 @@
   v7 = v6;
   if (v6)
   {
-    if (a3 && [(UINibDecoder *)v6 validateAndIndexData:a3 error:&v10])
+    if (data && [(UINibDecoder *)v6 validateAndIndexData:data error:&v10])
     {
       v7->recursiveState.objectID = 0;
       v7->valueCache.previousKey = [(UINibStringIDTable *)v7->keyIDTable count]+ 1;
@@ -130,30 +130,30 @@
     }
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v10;
+    *error = v10;
   }
 
   return v7;
 }
 
-- (BOOL)validateAndIndexData:(id)a3 error:(id *)a4
+- (BOOL)validateAndIndexData:(id)data error:(id *)error
 {
-  v7 = [a3 bytes];
-  v8 = [a3 length];
-  if (v8 >= 0xA && (v9 = *v7, *&self->header.type[8] = *(v7 + 8), *self->header.type = v9, v8 - 14 <= 0xFFFFFFFFFFFFFFFBLL) && (self->header.formatVersion = *(v7 + 10), v8 >= 0x12) && (self->header.coderVersion = *(v7 + 14), v8 - 22 <= 0xFFFFFFFFFFFFFFFBLL) && (self->header.objects.count = *(v7 + 18), v8 >= 0x1A) && (self->header.objects.offset = *(v7 + 22), v8 - 30 <= 0xFFFFFFFFFFFFFFFBLL) && (self->header.keys.count = *(v7 + 26), v8 >= 0x22) && (self->header.keys.offset = *(v7 + 30), v8 - 38 <= 0xFFFFFFFFFFFFFFFBLL) && (self->header.values.count = *(v7 + 34), v8 >= 0x2A) && (self->header.values.offset = *(v7 + 38), v8 - 46 <= 0xFFFFFFFFFFFFFFFBLL) && (self->header.classes.count = *(v7 + 42), v8 >= 0x32) && ((self->header.classes.offset = *(v7 + 46), *self->header.type == *"NIBArchive") ? (v10 = *&self->header.type[8] == *"ve") : (v10 = 0), v10))
+  bytes = [data bytes];
+  v8 = [data length];
+  if (v8 >= 0xA && (v9 = *bytes, *&self->header.type[8] = *(bytes + 8), *self->header.type = v9, v8 - 14 <= 0xFFFFFFFFFFFFFFFBLL) && (self->header.formatVersion = *(bytes + 10), v8 >= 0x12) && (self->header.coderVersion = *(bytes + 14), v8 - 22 <= 0xFFFFFFFFFFFFFFFBLL) && (self->header.objects.count = *(bytes + 18), v8 >= 0x1A) && (self->header.objects.offset = *(bytes + 22), v8 - 30 <= 0xFFFFFFFFFFFFFFFBLL) && (self->header.keys.count = *(bytes + 26), v8 >= 0x22) && (self->header.keys.offset = *(bytes + 30), v8 - 38 <= 0xFFFFFFFFFFFFFFFBLL) && (self->header.values.count = *(bytes + 34), v8 >= 0x2A) && (self->header.values.offset = *(bytes + 38), v8 - 46 <= 0xFFFFFFFFFFFFFFFBLL) && (self->header.classes.count = *(bytes + 42), v8 >= 0x32) && ((self->header.classes.offset = *(bytes + 46), *self->header.type == *"NIBArchive") ? (v10 = *&self->header.type[8] == *"ve") : (v10 = 0), v10))
   {
     if (self->header.formatVersion <= 1)
     {
       v15 = v8;
-      if ([(UINibDecoder *)self validateAndIndexClasses:v7 length:v8])
+      if ([(UINibDecoder *)self validateAndIndexClasses:bytes length:v8])
       {
-        if ([(UINibDecoder *)self validateAndIndexKeys:v7 length:v15])
+        if ([(UINibDecoder *)self validateAndIndexKeys:bytes length:v15])
         {
-          if ([(UINibDecoder *)self validateAndIndexValues:v7 length:v15])
+          if ([(UINibDecoder *)self validateAndIndexValues:bytes length:v15])
           {
-            v12 = [(UINibDecoder *)self validateAndIndexObjects:v7 length:v15];
+            v12 = [(UINibDecoder *)self validateAndIndexObjects:bytes length:v15];
             v11 = @"The object data is invalid.";
             if (v12)
             {
@@ -195,7 +195,7 @@
     LOBYTE(v12) = 0;
   }
 
-  if (a4 && !v12)
+  if (error && !v12)
   {
     if (v11)
     {
@@ -207,16 +207,16 @@
       v13 = @"The NIB data is invalid.";
     }
 
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", v13, *MEMORY[0x1E696A578])}];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", v13, *MEMORY[0x1E696A578])}];
   }
 
   return v12;
 }
 
-- (BOOL)validateAndIndexClasses:(const void *)a3 length:(unint64_t)a4
+- (BOOL)validateAndIndexClasses:(const void *)classes length:(unint64_t)length
 {
   p_header = &self->header;
-  if (self->header.classes.offset > a4)
+  if (self->header.classes.offset > length)
   {
     v6 = 0;
     goto LABEL_56;
@@ -252,7 +252,7 @@
       self->missingClasses = malloc_type_realloc(self->missingClasses, 8 * v11, 0x80040B8603338uLL);
     }
 
-    if (!UIReadNibArchiveVInt32(a3, a4, &offset, &v37 + 1) || !UIReadNibArchiveVInt32(a3, a4, &offset, &v37) || a4 < offset || (v13 = 4 * v37, a4 - offset < v13) || (v14 = v13 + offset, v15 = a4 - (v13 + offset), a4 < v14) || v15 < HIDWORD(v37) || (offset = v14 + HIDWORD(v37), !HIDWORD(v37)) || (v16 = a3 + v14, v17 = (HIDWORD(v37) - 1), *(a3 + v14 + v17)))
+    if (!UIReadNibArchiveVInt32(classes, length, &offset, &v37 + 1) || !UIReadNibArchiveVInt32(classes, length, &offset, &v37) || length < offset || (v13 = 4 * v37, length - offset < v13) || (v14 = v13 + offset, v15 = length - (v13 + offset), length < v14) || v15 < HIDWORD(v37) || (offset = v14 + HIDWORD(v37), !HIDWORD(v37)) || (v16 = classes + v14, v17 = (HIDWORD(v37) - 1), *(classes + v14 + v17)))
     {
       v6 = v36;
       goto LABEL_56;
@@ -312,8 +312,8 @@ LABEL_56:
   }
 
   v24 = p_header->classes.offset;
-  result = v24 <= a4;
-  if (v24 > a4)
+  result = v24 <= length;
+  if (v24 > length)
   {
     v26 = 0;
   }
@@ -324,18 +324,18 @@ LABEL_56:
   }
 
   offset = v26;
-  if (count && v24 <= a4)
+  if (count && v24 <= length)
   {
     v27 = 0;
     while (1)
     {
       v37 = 0;
-      if (!UIReadNibArchiveVInt32(a3, a4, &offset, &v37 + 1))
+      if (!UIReadNibArchiveVInt32(classes, length, &offset, &v37 + 1))
       {
         return 0;
       }
 
-      v28 = UIReadNibArchiveVInt32(a3, a4, &offset, &v37);
+      v28 = UIReadNibArchiveVInt32(classes, length, &offset, &v37);
       v29 = v37;
       v30 = offset;
       v31 = 0;
@@ -350,13 +350,13 @@ LABEL_48:
         return 0;
       }
 
-      if (a4 < v30)
+      if (length < v30)
       {
         return 0;
       }
 
       v35 = 4 * (v29 - v31);
-      if (a4 - v30 < v35 || a4 < v30 + v35 || a4 - (v30 + v35) < HIDWORD(v37))
+      if (length - v30 < v35 || length < v30 + v35 || length - (v30 + v35) < HIDWORD(v37))
       {
         return 0;
       }
@@ -381,12 +381,12 @@ LABEL_48:
       if (v28)
       {
         v28 = 0;
-        if (a4 < v30 || a4 - v30 < 4)
+        if (length < v30 || length - v30 < 4)
         {
           goto LABEL_46;
         }
 
-        v33 = *(a3 + v30);
+        v33 = *(classes + v30);
         v30 += 4;
         if (v33 < p_header->classes.count)
         {
@@ -420,14 +420,14 @@ LABEL_46:
   return result;
 }
 
-- (BOOL)validateAndIndexObjects:(const void *)a3 length:(unint64_t)a4
+- (BOOL)validateAndIndexObjects:(const void *)objects length:(unint64_t)length
 {
   if (!self->keyIDTable || !self->values || !self->classes)
   {
     [UINibDecoder validateAndIndexObjects:length:];
   }
 
-  if (self->header.objects.offset > a4)
+  if (self->header.objects.offset > length)
   {
     return 0;
   }
@@ -436,7 +436,7 @@ LABEL_46:
   count = self->header.objects.count;
   if (count)
   {
-    v8 = a3;
+    objectsCopy2 = objects;
     v9 = 0;
     v10 = 0;
     while (1)
@@ -475,21 +475,21 @@ LABEL_46:
         *(&self->super.super.isa + v12) = malloc_type_realloc(longObjectClassIDs, v15, v16);
         self->keyMasks = malloc_type_realloc(self->keyMasks, 4 * v11, 0x100004052888210uLL);
         v10 = v14;
-        v8 = a3;
+        objectsCopy2 = objects;
       }
 
       v31 = 0;
-      if (!UIReadNibArchiveVInt32(v8, a4, &offset, &v31))
+      if (!UIReadNibArchiveVInt32(objectsCopy2, length, &offset, &v31))
       {
         return 0;
       }
 
-      if (!UIReadNibArchiveVInt32(v8, a4, &offset, &self->objects[v9]))
+      if (!UIReadNibArchiveVInt32(objectsCopy2, length, &offset, &self->objects[v9]))
       {
         return 0;
       }
 
-      if (!UIReadNibArchiveVInt32(v8, a4, &offset, &self->objects[v9].var1))
+      if (!UIReadNibArchiveVInt32(objectsCopy2, length, &offset, &self->objects[v9].var1))
       {
         return 0;
       }
@@ -582,16 +582,16 @@ LABEL_32:
   return 1;
 }
 
-- (BOOL)validateAndIndexValues:(const void *)a3 length:(unint64_t)a4
+- (BOOL)validateAndIndexValues:(const void *)values length:(unint64_t)length
 {
   if (!self->keyIDTable)
   {
     [UINibDecoder validateAndIndexValues:length:];
   }
 
-  v4 = a4;
+  lengthCopy2 = length;
   p_header = &self->header;
-  if (self->header.values.offset > a4)
+  if (self->header.values.offset > length)
   {
     return 0;
   }
@@ -603,7 +603,7 @@ LABEL_32:
     return 1;
   }
 
-  v9 = a3;
+  valuesCopy2 = values;
   v10 = 0;
   v44 = 0;
   v11 = 0;
@@ -627,17 +627,17 @@ LABEL_32:
       self->valueTypes = malloc_type_realloc(self->valueTypes, v12, 0x100004077774924uLL);
     }
 
-    if (UIReadNibArchiveVInt32(v9, v4, &offset, &self->values[v10]))
+    if (UIReadNibArchiveVInt32(valuesCopy2, lengthCopy2, &offset, &self->values[v10]))
     {
       v13 = offset;
-      if (offset >= v4)
+      if (offset >= lengthCopy2)
       {
         v14 = 0;
       }
 
       else
       {
-        self->valueTypes[v10] = v9[offset];
+        self->valueTypes[v10] = valuesCopy2[offset];
         offset = v13 + 1;
         v14 = 1;
       }
@@ -659,7 +659,7 @@ LABEL_32:
     v46 = 0;
     if (v15 == -1)
     {
-      if (!UIReadNibArchiveVInt32(v9, v4, &offset, &v46))
+      if (!UIReadNibArchiveVInt32(valuesCopy2, lengthCopy2, &offset, &v46))
       {
         return 0;
       }
@@ -675,13 +675,13 @@ LABEL_32:
     }
 
     v18 = offset;
-    if (v4 < offset)
+    if (lengthCopy2 < offset)
     {
       return 0;
     }
 
     v19 = v17;
-    if (v4 - offset < v17)
+    if (lengthCopy2 - offset < v17)
     {
       return 0;
     }
@@ -765,7 +765,7 @@ LABEL_32:
 
       memcpy(&valueData[v11], &__src, v33);
       v11 += v33;
-      v4 = a4;
+      lengthCopy2 = length;
       p_header = v41;
       v18 = v42;
     }
@@ -784,8 +784,8 @@ LABEL_32:
       v37 = v35 - v11;
     }
 
-    v9 = a3;
-    memcpy(&v38[v11], a3 + v18, v19);
+    valuesCopy2 = values;
+    memcpy(&v38[v11], values + v18, v19);
     v11 += v19;
     v10 = v45 + 1;
     count = p_header->values.count;
@@ -804,9 +804,9 @@ LABEL_32:
   return result;
 }
 
-- (BOOL)validateAndIndexKeys:(const void *)a3 length:(unint64_t)a4
+- (BOOL)validateAndIndexKeys:(const void *)keys length:(unint64_t)length
 {
-  (MEMORY[0x1EEE9AC00])(self, a2, a3, a4);
+  (MEMORY[0x1EEE9AC00])(self, a2, keys, length);
   v6 = v5;
   v8 = v7;
   v9 = v4;
@@ -909,22 +909,22 @@ LABEL_25:
   return v17;
 }
 
-+ (id)unarchiveObjectWithData:(id)a3
++ (id)unarchiveObjectWithData:(id)data
 {
-  v3 = [[a1 alloc] initForReadingWithData:a3 error:0];
+  v3 = [[self alloc] initForReadingWithData:data error:0];
   v4 = [v3 decodeObjectForKey:@"object"];
   [v3 finishDecoding];
 
   return v4;
 }
 
-+ (id)unarchiveObjectWithFile:(id)a3
++ (id)unarchiveObjectWithFile:(id)file
 {
-  result = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:a3];
+  result = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:file];
   if (result)
   {
 
-    return [a1 unarchiveObjectWithData:result];
+    return [self unarchiveObjectWithData:result];
   }
 
   return result;
@@ -938,15 +938,15 @@ LABEL_25:
   return [v2 stringWithFormat:@"$%ld", nextGenericKey];
 }
 
-- (void)replaceObject:(id)a3 withObject:(id)a4
+- (void)replaceObject:(id)object withObject:(id)withObject
 {
-  if (a3 != a4)
+  if (object != withObject)
   {
     objectsByObjectID = self->objectsByObjectID;
     objectID = self->recursiveState.objectID;
-    if (objectsByObjectID[objectID] == a3)
+    if (objectsByObjectID[objectID] == object)
     {
-      objectsByObjectID[objectID] = a4;
+      objectsByObjectID[objectID] = withObject;
       self->recursiveState.replaced = 1;
     }
 
@@ -957,10 +957,10 @@ LABEL_25:
   }
 }
 
-- (BOOL)containsValueForKey:(id)a3
+- (BOOL)containsValueForKey:(id)key
 {
   v18 = 0;
-  v4 = [(UINibStringIDTable *)self->keyIDTable lookupKey:a3 identifier:&v18];
+  v4 = [(UINibStringIDTable *)self->keyIDTable lookupKey:key identifier:&v18];
   if (v4)
   {
     objectID_low = LODWORD(self->recursiveState.objectID);
@@ -1050,10 +1050,10 @@ LABEL_19:
   return v4;
 }
 
-- (id)decodeObjectForKey:(id)a3
+- (id)decodeObjectForKey:(id)key
 {
   v17 = 0;
-  if (![(UINibStringIDTable *)self->keyIDTable lookupKey:a3 identifier:&v17])
+  if (![(UINibStringIDTable *)self->keyIDTable lookupKey:key identifier:&v17])
   {
     return 0;
   }
@@ -1141,11 +1141,11 @@ LABEL_11:
   return result;
 }
 
-- (const)decodeBytesForKey:(id)a3 returnedLength:(unint64_t *)a4
+- (const)decodeBytesForKey:(id)key returnedLength:(unint64_t *)length
 {
   v23 = 0;
   v22 = 0;
-  if (![(UINibStringIDTable *)self->keyIDTable lookupKey:a3 identifier:&v22])
+  if (![(UINibStringIDTable *)self->keyIDTable lookupKey:key identifier:&v22])
   {
     goto LABEL_22;
   }
@@ -1222,7 +1222,7 @@ LABEL_18:
     {
 LABEL_22:
       result = 0;
-      if (!a4)
+      if (!length)
       {
         return result;
       }
@@ -1234,13 +1234,13 @@ LABEL_22:
     valueData = self->valueData;
     UIReadNibArchiveVInt32(valueData, self->valueDataSize, &v21, &v23);
     result = &valueData[v21];
-    if (!a4)
+    if (!length)
     {
       return result;
     }
 
 LABEL_23:
-    *a4 = v23;
+    *length = v23;
     return result;
   }
 
@@ -1257,7 +1257,7 @@ LABEL_11:
   }
 
   self->recursiveState.nextValueSearchIndex = v16;
-  if (a4)
+  if (length)
   {
     goto LABEL_23;
   }
@@ -1265,10 +1265,10 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)decodeBoolForKey:(id)a3
+- (BOOL)decodeBoolForKey:(id)key
 {
   v22 = 0;
-  v4 = [(UINibStringIDTable *)self->keyIDTable lookupKey:a3 identifier:&v22];
+  v4 = [(UINibStringIDTable *)self->keyIDTable lookupKey:key identifier:&v22];
   if (!v4)
   {
     return v4;
@@ -1399,10 +1399,10 @@ LABEL_24:
   return v4;
 }
 
-- (float)decodeFloatForKey:(id)a3
+- (float)decodeFloatForKey:(id)key
 {
   v22 = 0;
-  v4 = [(UINibStringIDTable *)self->keyIDTable lookupKey:a3 identifier:&v22];
+  v4 = [(UINibStringIDTable *)self->keyIDTable lookupKey:key identifier:&v22];
   result = 0.0;
   if (!v4)
   {
@@ -1519,10 +1519,10 @@ LABEL_11:
   return result;
 }
 
-- (double)decodeDoubleForKey:(id)a3
+- (double)decodeDoubleForKey:(id)key
 {
   v22 = 0;
-  v4 = [(UINibStringIDTable *)self->keyIDTable lookupKey:a3 identifier:&v22];
+  v4 = [(UINibStringIDTable *)self->keyIDTable lookupKey:key identifier:&v22];
   result = 0.0;
   if (!v4)
   {
@@ -1639,10 +1639,10 @@ LABEL_11:
   return result;
 }
 
-- (int64_t)decodeInt64ForKey:(id)a3
+- (int64_t)decodeInt64ForKey:(id)key
 {
   v20 = 0;
-  if (![(UINibStringIDTable *)self->keyIDTable lookupKey:a3 identifier:&v20])
+  if (![(UINibStringIDTable *)self->keyIDTable lookupKey:key identifier:&v20])
   {
     return 0;
   }
@@ -1768,10 +1768,10 @@ LABEL_11:
   return result;
 }
 
-- (int64_t)decodeIntegerForKey:(id)a3
+- (int64_t)decodeIntegerForKey:(id)key
 {
   v20 = 0;
-  if (![(UINibStringIDTable *)self->keyIDTable lookupKey:a3 identifier:&v20])
+  if (![(UINibStringIDTable *)self->keyIDTable lookupKey:key identifier:&v20])
   {
     return 0;
   }
@@ -1897,10 +1897,10 @@ LABEL_11:
   return result;
 }
 
-- (int)decodeIntForKey:(id)a3
+- (int)decodeIntForKey:(id)key
 {
   v21 = 0;
-  LODWORD(v4) = [(UINibStringIDTable *)self->keyIDTable lookupKey:a3 identifier:&v21];
+  LODWORD(v4) = [(UINibStringIDTable *)self->keyIDTable lookupKey:key identifier:&v21];
   if (!v4)
   {
     return v4;
@@ -2027,10 +2027,10 @@ LABEL_22:
   return v4;
 }
 
-- (int)decodeInt32ForKey:(id)a3
+- (int)decodeInt32ForKey:(id)key
 {
   v21 = 0;
-  LODWORD(v4) = [(UINibStringIDTable *)self->keyIDTable lookupKey:a3 identifier:&v21];
+  LODWORD(v4) = [(UINibStringIDTable *)self->keyIDTable lookupKey:key identifier:&v21];
   if (!v4)
   {
     return v4;
@@ -2157,10 +2157,10 @@ LABEL_22:
   return v4;
 }
 
-- (BOOL)decodeArrayOfFloats:(float *)a3 count:(int64_t)a4 forKey:(id)a5
+- (BOOL)decodeArrayOfFloats:(float *)floats count:(int64_t)count forKey:(id)key
 {
   v17 = 0;
-  v7 = [(UINibDecoder *)self decodeBytesForKey:a5 returnedLength:&v17];
+  v7 = [(UINibDecoder *)self decodeBytesForKey:key returnedLength:&v17];
   v8 = 0;
   if (v7)
   {
@@ -2170,9 +2170,9 @@ LABEL_22:
       v10 = *v7;
       if (v10 == 7)
       {
-        if (v17 - 1 == 8 * a4)
+        if (v17 - 1 == 8 * count)
         {
-          if (a4 >= 1)
+          if (count >= 1)
           {
             v13 = 1;
             do
@@ -2185,20 +2185,20 @@ LABEL_22:
                 v14 = v15;
               }
 
-              *a3++ = v14;
-              --a4;
+              *floats++ = v14;
+              --count;
             }
 
-            while (a4);
+            while (count);
           }
 
           return 1;
         }
       }
 
-      else if (v10 == 6 && v17 - 1 == 4 * a4)
+      else if (v10 == 6 && v17 - 1 == 4 * count)
       {
-        if (a4 >= 1)
+        if (count >= 1)
         {
           v11 = 1;
           do
@@ -2210,11 +2210,11 @@ LABEL_22:
               v11 += 4;
             }
 
-            *a3++ = v12;
-            --a4;
+            *floats++ = v12;
+            --count;
           }
 
-          while (a4);
+          while (count);
         }
 
         return 1;
@@ -2227,10 +2227,10 @@ LABEL_22:
   return v8;
 }
 
-- (BOOL)decodeArrayOfDoubles:(double *)a3 count:(int64_t)a4 forKey:(id)a5
+- (BOOL)decodeArrayOfDoubles:(double *)doubles count:(int64_t)count forKey:(id)key
 {
   v17 = 0;
-  v7 = [(UINibDecoder *)self decodeBytesForKey:a5 returnedLength:&v17];
+  v7 = [(UINibDecoder *)self decodeBytesForKey:key returnedLength:&v17];
   v8 = 0;
   if (v7)
   {
@@ -2240,9 +2240,9 @@ LABEL_22:
       v10 = *v7;
       if (v10 == 7)
       {
-        if (v17 - 1 == 8 * a4)
+        if (v17 - 1 == 8 * count)
         {
-          if (a4 >= 1)
+          if (count >= 1)
           {
             v14 = 1;
             do
@@ -2254,20 +2254,20 @@ LABEL_22:
                 v14 += 8;
               }
 
-              *a3++ = v15;
-              --a4;
+              *doubles++ = v15;
+              --count;
             }
 
-            while (a4);
+            while (count);
           }
 
           return 1;
         }
       }
 
-      else if (v10 == 6 && v17 - 1 == 4 * a4)
+      else if (v10 == 6 && v17 - 1 == 4 * count)
       {
-        if (a4 >= 1)
+        if (count >= 1)
         {
           v11 = 1;
           do
@@ -2280,11 +2280,11 @@ LABEL_22:
               v12 = v13;
             }
 
-            *a3++ = v12;
-            --a4;
+            *doubles++ = v12;
+            --count;
           }
 
-          while (a4);
+          while (count);
         }
 
         return 1;
@@ -2297,10 +2297,10 @@ LABEL_22:
   return v8;
 }
 
-- (BOOL)decodeArrayOfCGFloats:(double *)a3 count:(int64_t)a4 forKey:(id)a5
+- (BOOL)decodeArrayOfCGFloats:(double *)floats count:(int64_t)count forKey:(id)key
 {
   v17 = 0;
-  v7 = [(UINibDecoder *)self decodeBytesForKey:a5 returnedLength:&v17];
+  v7 = [(UINibDecoder *)self decodeBytesForKey:key returnedLength:&v17];
   v8 = 0;
   if (v7)
   {
@@ -2310,9 +2310,9 @@ LABEL_22:
       v10 = *v7;
       if (v10 == 7)
       {
-        if (v17 - 1 == 8 * a4)
+        if (v17 - 1 == 8 * count)
         {
-          if (a4 >= 1)
+          if (count >= 1)
           {
             v14 = 1;
             do
@@ -2324,20 +2324,20 @@ LABEL_22:
                 v14 += 8;
               }
 
-              *a3++ = v15;
-              --a4;
+              *floats++ = v15;
+              --count;
             }
 
-            while (a4);
+            while (count);
           }
 
           return 1;
         }
       }
 
-      else if (v10 == 6 && v17 - 1 == 4 * a4)
+      else if (v10 == 6 && v17 - 1 == 4 * count)
       {
-        if (a4 >= 1)
+        if (count >= 1)
         {
           v11 = 1;
           do
@@ -2350,11 +2350,11 @@ LABEL_22:
               v12 = v13;
             }
 
-            *a3++ = v12;
-            --a4;
+            *floats++ = v12;
+            --count;
           }
 
-          while (a4);
+          while (count);
         }
 
         return 1;
@@ -2367,10 +2367,10 @@ LABEL_22:
   return v8;
 }
 
-- (CGPoint)decodeCGPointForKey:(id)a3
+- (CGPoint)decodeCGPointForKey:(id)key
 {
   v6[2] = *MEMORY[0x1E69E9840];
-  v3 = [(UINibDecoder *)self decodeArrayOfCGFloats:v6 count:2 forKey:a3];
+  v3 = [(UINibDecoder *)self decodeArrayOfCGFloats:v6 count:2 forKey:key];
   v4 = *v6;
   v5 = *&v6[1];
   if (!v3)
@@ -2384,10 +2384,10 @@ LABEL_22:
   return result;
 }
 
-- (CGSize)decodeCGSizeForKey:(id)a3
+- (CGSize)decodeCGSizeForKey:(id)key
 {
   v6[2] = *MEMORY[0x1E69E9840];
-  v3 = [(UINibDecoder *)self decodeArrayOfCGFloats:v6 count:2 forKey:a3];
+  v3 = [(UINibDecoder *)self decodeArrayOfCGFloats:v6 count:2 forKey:key];
   v4 = *v6;
   v5 = *&v6[1];
   if (!v3)
@@ -2401,10 +2401,10 @@ LABEL_22:
   return result;
 }
 
-- (CGRect)decodeCGRectForKey:(id)a3
+- (CGRect)decodeCGRectForKey:(id)key
 {
   v8[4] = *MEMORY[0x1E69E9840];
-  v3 = [(UINibDecoder *)self decodeArrayOfCGFloats:v8 count:4 forKey:a3];
+  v3 = [(UINibDecoder *)self decodeArrayOfCGFloats:v8 count:4 forKey:key];
   v4 = 0.0;
   v5 = 0.0;
   v6 = 0.0;
@@ -2424,7 +2424,7 @@ LABEL_22:
   return result;
 }
 
-- (CGAffineTransform)decodeCGAffineTransformForKey:(SEL)a3
+- (CGAffineTransform)decodeCGAffineTransformForKey:(SEL)key
 {
   v11 = *MEMORY[0x1E69E9840];
   result = [(UINibDecoder *)self decodeArrayOfCGFloats:v10 count:6 forKey:a4];
@@ -2449,10 +2449,10 @@ LABEL_22:
   return result;
 }
 
-- (UIEdgeInsets)decodeUIEdgeInsetsForKey:(id)a3
+- (UIEdgeInsets)decodeUIEdgeInsetsForKey:(id)key
 {
   v8[4] = *MEMORY[0x1E69E9840];
-  v3 = [(UINibDecoder *)self decodeArrayOfCGFloats:v8 count:4 forKey:a3];
+  v3 = [(UINibDecoder *)self decodeArrayOfCGFloats:v8 count:4 forKey:key];
   v4 = 0.0;
   v5 = 0.0;
   v6 = 0.0;
@@ -2472,20 +2472,20 @@ LABEL_22:
   return result;
 }
 
-- (void)decodeValueOfObjCType:(const char *)a3 at:(void *)a4
+- (void)decodeValueOfObjCType:(const char *)type at:(void *)at
 {
-  if (strlen(a3) == 1)
+  if (strlen(type) == 1)
   {
-    v8 = *a3;
+    v8 = *type;
     if (v8 <= 0x63)
     {
-      if (*a3 > 0x3Fu)
+      if (*type > 0x3Fu)
       {
         if (v8 != 64)
         {
           if (v8 == 66)
           {
-            *a4 = [(UINibDecoder *)self decodeBoolForKey:[(UINibDecoder *)self nextGenericKey]];
+            *at = [(UINibDecoder *)self decodeBoolForKey:[(UINibDecoder *)self nextGenericKey]];
             return;
           }
 
@@ -2517,9 +2517,9 @@ LABEL_22:
         if (v8 != 58)
         {
 LABEL_31:
-          v9 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v10 = a2;
-          v11 = self;
+          selfCopy2 = self;
           v12 = 1070;
           goto LABEL_9;
         }
@@ -2540,12 +2540,12 @@ LABEL_31:
 
     else
     {
-      if (*a3 <= 0x68u)
+      if (*type <= 0x68u)
       {
         if (v8 == 100)
         {
           [(UINibDecoder *)self decodeDoubleForKey:[(UINibDecoder *)self nextGenericKey]];
-          *a4 = v18;
+          *at = v18;
           return;
         }
 
@@ -2553,7 +2553,7 @@ LABEL_31:
         {
           [(UINibDecoder *)self decodeDoubleForKey:[(UINibDecoder *)self nextGenericKey]];
           *&v15 = v15;
-          *a4 = LODWORD(v15);
+          *at = LODWORD(v15);
           return;
         }
 
@@ -2562,7 +2562,7 @@ LABEL_31:
 
       if (v8 == 105)
       {
-        *a4 = [(UINibDecoder *)self decodeIntegerForKey:[(UINibDecoder *)self nextGenericKey]];
+        *at = [(UINibDecoder *)self decodeIntegerForKey:[(UINibDecoder *)self nextGenericKey]];
         return;
       }
 
@@ -2570,7 +2570,7 @@ LABEL_31:
       {
         if (v8 == 115)
         {
-          *a4 = [(UINibDecoder *)self decodeIntegerForKey:[(UINibDecoder *)self nextGenericKey]];
+          *at = [(UINibDecoder *)self decodeIntegerForKey:[(UINibDecoder *)self nextGenericKey]];
           return;
         }
 
@@ -2580,17 +2580,17 @@ LABEL_31:
       v14 = [(UINibDecoder *)self decodeIntegerForKey:[(UINibDecoder *)self nextGenericKey]];
     }
 
-    *a4 = v14;
+    *at = v14;
     return;
   }
 
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v10 = a2;
-  v11 = self;
+  selfCopy2 = self;
   v12 = 1073;
 LABEL_9:
 
-  [v9 handleFailureInMethod:v10 object:v11 file:@"UINibDecoder.m" lineNumber:v12 description:@"The UINibDecoder doesn't decode this type. Please switch your NSCoding implementation to using keyed archiving."];
+  [currentHandler handleFailureInMethod:v10 object:selfCopy2 file:@"UINibDecoder.m" lineNumber:v12 description:@"The UINibDecoder doesn't decode this type. Please switch your NSCoding implementation to using keyed archiving."];
 }
 
 - (id)decodeObject
@@ -2600,23 +2600,23 @@ LABEL_9:
   return v3;
 }
 
-- (void)decodeValuesOfObjCTypes:(const char *)a3
+- (void)decodeValuesOfObjCTypes:(const char *)types
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
 
-  [v5 handleFailureInMethod:a2 object:self file:@"UINibDecoder.m" lineNumber:1099 description:@"Unimplemented"];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UINibDecoder.m" lineNumber:1099 description:@"Unimplemented"];
 }
 
-- (void)decodeArrayOfObjCType:(const char *)a3 count:(unint64_t)a4 at:(void *)a5
+- (void)decodeArrayOfObjCType:(const char *)type count:(unint64_t)count at:(void *)at
 {
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
 
-  [v7 handleFailureInMethod:a2 object:self file:@"UINibDecoder.m" lineNumber:1103 description:@"Unimplemented"];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UINibDecoder.m" lineNumber:1103 description:@"Unimplemented"];
 }
 
-- (int64_t)versionForClassName:(id)a3
+- (int64_t)versionForClassName:(id)name
 {
-  v3 = NSClassFromString(a3);
+  v3 = NSClassFromString(name);
   if (!v3)
   {
     return 0x7FFFFFFFFFFFFFFFLL;

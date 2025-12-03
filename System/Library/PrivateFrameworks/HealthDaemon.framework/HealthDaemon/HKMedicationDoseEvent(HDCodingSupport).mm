@@ -13,11 +13,11 @@
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
-    v6 = [[a1 alloc] _init];
-    if ([v5 applyToObject:v6])
+    _init = [[self alloc] _init];
+    if ([v5 applyToObject:_init])
     {
       v7 = HKDefaultObjectValidationConfigurationIgnoringAllOptions();
-      v9 = [v6 _validateWithConfiguration:{v7, v8}];
+      v9 = [_init _validateWithConfiguration:{v7, v8}];
       if (v9)
       {
         v10 = 0;
@@ -25,7 +25,7 @@
 
       else
       {
-        v10 = v6;
+        v10 = _init;
       }
 
       v11 = v10;
@@ -48,60 +48,60 @@
 - (HDCodableMedicationDoseEvent)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableMedicationDoseEvent);
-  v18.receiver = a1;
+  v18.receiver = self;
   v18.super_class = &off_283D3DD80;
   v3 = objc_msgSendSuper2(&v18, sel_codableRepresentationForSync);
   [(HDCodableMedicationDoseEvent *)v2 setSample:v3];
 
-  -[HDCodableMedicationDoseEvent setLogOrigin:](v2, "setLogOrigin:", [a1 logOrigin]);
-  v4 = [a1 scheduleItemIdentifier];
+  -[HDCodableMedicationDoseEvent setLogOrigin:](v2, "setLogOrigin:", [self logOrigin]);
+  scheduleItemIdentifier = [self scheduleItemIdentifier];
 
-  if (v4)
+  if (scheduleItemIdentifier)
   {
-    v5 = [a1 scheduleItemIdentifier];
-    [(HDCodableMedicationDoseEvent *)v2 setScheduleItemIdentifier:v5];
+    scheduleItemIdentifier2 = [self scheduleItemIdentifier];
+    [(HDCodableMedicationDoseEvent *)v2 setScheduleItemIdentifier:scheduleItemIdentifier2];
   }
 
-  v6 = [a1 medicationUUID];
-  v7 = [v6 hk_dataForUUIDBytes];
-  [(HDCodableMedicationDoseEvent *)v2 setMedicationUuid:v7];
+  medicationUUID = [self medicationUUID];
+  hk_dataForUUIDBytes = [medicationUUID hk_dataForUUIDBytes];
+  [(HDCodableMedicationDoseEvent *)v2 setMedicationUuid:hk_dataForUUIDBytes];
 
-  v8 = [a1 medicationIdentifier];
-  [(HDCodableMedicationDoseEvent *)v2 setMedicationIdentifier:v8];
-  v9 = [a1 scheduledDoseQuantity];
+  medicationIdentifier = [self medicationIdentifier];
+  [(HDCodableMedicationDoseEvent *)v2 setMedicationIdentifier:medicationIdentifier];
+  scheduledDoseQuantity = [self scheduledDoseQuantity];
 
-  if (v9)
+  if (scheduledDoseQuantity)
   {
-    v10 = [a1 scheduledDoseQuantity];
-    [v10 doubleValue];
+    scheduledDoseQuantity2 = [self scheduledDoseQuantity];
+    [scheduledDoseQuantity2 doubleValue];
     [(HDCodableMedicationDoseEvent *)v2 setScheduledDoseQuantity:?];
   }
 
-  v11 = [a1 doseQuantity];
+  doseQuantity = [self doseQuantity];
 
-  if (v11)
+  if (doseQuantity)
   {
-    v12 = [a1 doseQuantity];
-    [v12 doubleValue];
+    doseQuantity2 = [self doseQuantity];
+    [doseQuantity2 doubleValue];
     [(HDCodableMedicationDoseEvent *)v2 setDoseQuantity:?];
   }
 
-  v13 = [a1 scheduledDate];
+  scheduledDate = [self scheduledDate];
 
-  if (v13)
+  if (scheduledDate)
   {
-    v14 = [a1 scheduledDate];
-    [v14 timeIntervalSinceReferenceDate];
+    scheduledDate2 = [self scheduledDate];
+    [scheduledDate2 timeIntervalSinceReferenceDate];
     [(HDCodableMedicationDoseEvent *)v2 setScheduledDate:?];
   }
 
-  -[HDCodableMedicationDoseEvent setStatus:](v2, "setStatus:", [a1 logStatus]);
-  v15 = [a1 doseUnitString];
+  -[HDCodableMedicationDoseEvent setStatus:](v2, "setStatus:", [self logStatus]);
+  doseUnitString = [self doseUnitString];
 
-  if (v15)
+  if (doseUnitString)
   {
-    v16 = [a1 doseUnitString];
-    [(HDCodableMedicationDoseEvent *)v2 setDoseUnitString:v16];
+    doseUnitString2 = [self doseUnitString];
+    [(HDCodableMedicationDoseEvent *)v2 setDoseUnitString:doseUnitString2];
   }
 
   return v2;
@@ -110,13 +110,13 @@
 - (BOOL)addCodableRepresentationToCollection:()HDCodingSupport
 {
   v4 = a3;
-  v5 = [a1 codableRepresentationForSync];
-  if (v5)
+  codableRepresentationForSync = [self codableRepresentationForSync];
+  if (codableRepresentationForSync)
   {
-    [v4 addMedicationDoseEvent:v5];
+    [v4 addMedicationDoseEvent:codableRepresentationForSync];
   }
 
-  return v5 != 0;
+  return codableRepresentationForSync != 0;
 }
 
 @end

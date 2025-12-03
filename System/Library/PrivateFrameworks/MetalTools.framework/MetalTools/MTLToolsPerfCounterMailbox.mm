@@ -1,15 +1,15 @@
 @interface MTLToolsPerfCounterMailbox
 - (id).cxx_construct;
-- (id)extractDataAndNumSamples:(unint64_t *)a3 forRequester:(void *)a4 isLast:(BOOL *)a5;
-- (void)insertData:(id)a3 andNumSamples:(unint64_t)a4 forRequester:(void *)a5;
+- (id)extractDataAndNumSamples:(unint64_t *)samples forRequester:(void *)requester isLast:(BOOL *)last;
+- (void)insertData:(id)data andNumSamples:(unint64_t)samples forRequester:(void *)requester;
 @end
 
 @implementation MTLToolsPerfCounterMailbox
 
-- (void)insertData:(id)a3 andNumSamples:(unint64_t)a4 forRequester:(void *)a5
+- (void)insertData:(id)data andNumSamples:(unint64_t)samples forRequester:(void *)requester
 {
-  self->_requester = a5;
-  v7 = a3;
+  self->_requester = requester;
+  dataCopy = data;
   end = self->_data.__end_;
   cap = self->_data.__cap_;
   if (end >= cap)
@@ -42,8 +42,8 @@
     }
 
     v18 = (16 * v13);
-    *v18 = v7;
-    v18[1] = a4;
+    *v18 = dataCopy;
+    v18[1] = samples;
     v10 = (16 * v13 + 16);
     memcpy(0, begin, v12);
     v19 = self->_data.__begin_;
@@ -58,8 +58,8 @@
 
   else
   {
-    *end = v7;
-    *(end + 1) = a4;
+    *end = dataCopy;
+    *(end + 1) = samples;
     v10 = end + 16;
   }
 
@@ -67,17 +67,17 @@
   self->_iterator.__i_ = self->_data.__begin_;
 }
 
-- (id)extractDataAndNumSamples:(unint64_t *)a3 forRequester:(void *)a4 isLast:(BOOL *)a5
+- (id)extractDataAndNumSamples:(unint64_t *)samples forRequester:(void *)requester isLast:(BOOL *)last
 {
   i = self->_iterator.__i_;
   result = *i;
   v8 = *(i + 1);
   i += 16;
-  *a3 = v8;
+  *samples = v8;
   self->_iterator.__i_ = i;
   if (i == self->_data.__end_)
   {
-    *a5 = 1;
+    *last = 1;
     self->_data.__end_ = self->_data.__begin_;
     self->_requester = 0;
   }

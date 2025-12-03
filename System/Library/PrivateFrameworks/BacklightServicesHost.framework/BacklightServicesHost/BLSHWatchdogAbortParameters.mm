@@ -1,29 +1,29 @@
 @interface BLSHWatchdogAbortParameters
-- (BLSHWatchdogAbortParameters)initWithDelegate:(id)a3 abortContext:(id)a4 isPotentialHang:(BOOL)a5 sleepMonitorAggregateState:(id)a6 sleepImminentSinceScheduled:(BOOL)a7 explanation:(id)a8;
+- (BLSHWatchdogAbortParameters)initWithDelegate:(id)delegate abortContext:(id)context isPotentialHang:(BOOL)hang sleepMonitorAggregateState:(id)state sleepImminentSinceScheduled:(BOOL)scheduled explanation:(id)explanation;
 - (BLSHWatchdogDelegate)delegate;
 @end
 
 @implementation BLSHWatchdogAbortParameters
 
-- (BLSHWatchdogAbortParameters)initWithDelegate:(id)a3 abortContext:(id)a4 isPotentialHang:(BOOL)a5 sleepMonitorAggregateState:(id)a6 sleepImminentSinceScheduled:(BOOL)a7 explanation:(id)a8
+- (BLSHWatchdogAbortParameters)initWithDelegate:(id)delegate abortContext:(id)context isPotentialHang:(BOOL)hang sleepMonitorAggregateState:(id)state sleepImminentSinceScheduled:(BOOL)scheduled explanation:(id)explanation
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a8;
+  delegateCopy = delegate;
+  contextCopy = context;
+  stateCopy = state;
+  explanationCopy = explanation;
   v23.receiver = self;
   v23.super_class = BLSHWatchdogAbortParameters;
   v18 = [(BLSHWatchdogAbortParameters *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeWeak(&v18->_delegate, v14);
-    objc_storeStrong(&v19->_abortContext, a4);
-    v19->_isPotentialHang = a5;
-    objc_storeStrong(&v19->_sleepMonitorAggregateState, a6);
-    v19->_sleepImminentSinceScheduled = a7;
+    objc_storeWeak(&v18->_delegate, delegateCopy);
+    objc_storeStrong(&v19->_abortContext, context);
+    v19->_isPotentialHang = hang;
+    objc_storeStrong(&v19->_sleepMonitorAggregateState, state);
+    v19->_sleepImminentSinceScheduled = scheduled;
     v19->_abortTimestamp = mach_continuous_time();
-    v20 = [v17 copy];
+    v20 = [explanationCopy copy];
     explanation = v19->_explanation;
     v19->_explanation = v20;
   }

@@ -1,7 +1,7 @@
 @interface UIInputViewPlacementTransition
-+ (id)transitionForExistingPlacement:(id)a3 animationStyle:(id)a4;
-+ (id)transitionFromPlacement:(id)a3 toPlacement:(id)a4 withAnimationStyle:(id)a5;
-- (BOOL)didAdvanceAnimationToState:(int)a3;
++ (id)transitionForExistingPlacement:(id)placement animationStyle:(id)style;
++ (id)transitionFromPlacement:(id)placement toPlacement:(id)toPlacement withAnimationStyle:(id)style;
+- (BOOL)didAdvanceAnimationToState:(int)state;
 - (void)dealloc;
 @end
 
@@ -19,42 +19,42 @@
   [(UIInputViewPlacementTransition *)&v3 dealloc];
 }
 
-+ (id)transitionFromPlacement:(id)a3 toPlacement:(id)a4 withAnimationStyle:(id)a5
++ (id)transitionFromPlacement:(id)placement toPlacement:(id)toPlacement withAnimationStyle:(id)style
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  styleCopy = style;
+  toPlacementCopy = toPlacement;
+  placementCopy = placement;
   v10 = objc_alloc_init(objc_opt_class());
-  [v10 setFromPlacement:v9];
+  [v10 setFromPlacement:placementCopy];
 
-  [v10 setToPlacement:v8];
-  [v10 setAnimationStyle:v7];
+  [v10 setToPlacement:toPlacementCopy];
+  [v10 setAnimationStyle:styleCopy];
 
   return v10;
 }
 
-+ (id)transitionForExistingPlacement:(id)a3 animationStyle:(id)a4
++ (id)transitionForExistingPlacement:(id)placement animationStyle:(id)style
 {
-  v5 = a4;
-  v6 = a3;
+  styleCopy = style;
+  placementCopy = placement;
   v7 = objc_alloc_init(objc_opt_class());
-  [v7 setFromPlacement:v6];
-  [v7 setToPlacement:v6];
+  [v7 setFromPlacement:placementCopy];
+  [v7 setToPlacement:placementCopy];
 
-  [v7 setAnimationStyle:v5];
+  [v7 setAnimationStyle:styleCopy];
 
   return v7;
 }
 
-- (BOOL)didAdvanceAnimationToState:(int)a3
+- (BOOL)didAdvanceAnimationToState:(int)state
 {
-  v3 = *&a3;
+  v3 = *&state;
   v5 = ![(UIInputViewPlacementTransition *)self cancelled]&& [(UIInputViewPlacementTransition *)self animationState]== v3 - 1;
-  v6 = [(UIInputViewPlacementTransition *)self fromPlacement];
-  if ([v6 isInteractive])
+  fromPlacement = [(UIInputViewPlacementTransition *)self fromPlacement];
+  if ([fromPlacement isInteractive])
   {
-    v7 = [(UIInputViewPlacementTransition *)self toPlacement];
-    v8 = [v7 isInteractive] ^ 1;
+    toPlacement = [(UIInputViewPlacementTransition *)self toPlacement];
+    v8 = [toPlacement isInteractive] ^ 1;
   }
 
   else

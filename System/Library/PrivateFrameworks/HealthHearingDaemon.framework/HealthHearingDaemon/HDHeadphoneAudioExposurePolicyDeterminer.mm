@@ -1,28 +1,28 @@
 @interface HDHeadphoneAudioExposurePolicyDeterminer
-+ (id)determinePreviousFireDateWithStore:(id)a3 error:(id *)a4;
++ (id)determinePreviousFireDateWithStore:(id)store error:(id *)error;
 @end
 
 @implementation HDHeadphoneAudioExposurePolicyDeterminer
 
-+ (id)determinePreviousFireDateWithStore:(id)a3 error:(id *)a4
++ (id)determinePreviousFireDateWithStore:(id)store error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  storeCopy = store;
   v27 = 0;
-  v6 = [v5 _fetchPreviousSevenDayLocalNotificationFireDateWithError:&v27];
+  v6 = [storeCopy _fetchPreviousSevenDayLocalNotificationFireDateWithError:&v27];
   v7 = v27;
   if (!v7)
   {
     v26 = 0;
-    v11 = [v5 _fetchPreviousSevenDayRemoteNotificationFireDateWithError:&v26];
+    v11 = [storeCopy _fetchPreviousSevenDayRemoteNotificationFireDateWithError:&v26];
     v8 = v26;
     if (v8)
     {
-      if (a4)
+      if (error)
       {
         v12 = v8;
         v10 = 0;
-        *a4 = v8;
+        *error = v8;
 LABEL_29:
 
         goto LABEL_30;
@@ -115,11 +115,11 @@ LABEL_26:
   }
 
   v8 = v7;
-  if (a4)
+  if (error)
   {
     v9 = v7;
     v10 = 0;
-    *a4 = v8;
+    *error = v8;
   }
 
   else

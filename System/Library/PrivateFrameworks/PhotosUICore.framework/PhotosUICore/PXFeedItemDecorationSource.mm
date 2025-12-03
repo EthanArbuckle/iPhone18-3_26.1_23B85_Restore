@@ -1,11 +1,11 @@
 @interface PXFeedItemDecorationSource
-- ($C28CD4A45FD07A4F97CC9D5F91F25271)overlayInsetsForSpriteIndex:(unsigned int)a3 inLayout:(id)a4;
+- ($C28CD4A45FD07A4F97CC9D5F91F25271)overlayInsetsForSpriteIndex:(unsigned int)index inLayout:(id)layout;
 - (PXGLayout)decoratedLayout;
-- (id)_spriteIndexesForItems:(id)a3 inLayout:(id)a4;
-- (id)selectedSpriteIndexesInLayout:(id)a3;
-- (void)setDataSource:(id)a3 section:(int64_t)a4;
-- (void)setDecoratedLayout:(id)a3;
-- (void)setSelectionSnapshot:(id)a3;
+- (id)_spriteIndexesForItems:(id)items inLayout:(id)layout;
+- (id)selectedSpriteIndexesInLayout:(id)layout;
+- (void)setDataSource:(id)source section:(int64_t)section;
+- (void)setDecoratedLayout:(id)layout;
+- (void)setSelectionSnapshot:(id)snapshot;
 @end
 
 @implementation PXFeedItemDecorationSource
@@ -17,15 +17,15 @@
   return WeakRetained;
 }
 
-- ($C28CD4A45FD07A4F97CC9D5F91F25271)overlayInsetsForSpriteIndex:(unsigned int)a3 inLayout:(id)a4
+- ($C28CD4A45FD07A4F97CC9D5F91F25271)overlayInsetsForSpriteIndex:(unsigned int)index inLayout:(id)layout
 {
-  v4 = *&a3;
-  v5 = a4;
+  v4 = *&index;
+  layoutCopy = layout;
   v6 = *off_1E7722000;
   v7 = *(off_1E7722000 + 1);
   v8 = *(off_1E7722000 + 2);
   v9 = *(off_1E7722000 + 3);
-  v10 = v5;
+  v10 = layoutCopy;
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v11 = v10;
@@ -58,43 +58,43 @@
   return result;
 }
 
-- (id)selectedSpriteIndexesInLayout:(id)a3
+- (id)selectedSpriteIndexesInLayout:(id)layout
 {
-  v5 = a3;
-  v6 = [(PXFeedItemDecorationSource *)self selectionSnapshot];
-  v7 = [v6 selectedIndexPaths];
-  if ([v7 count] < 1)
+  layoutCopy = layout;
+  selectionSnapshot = [(PXFeedItemDecorationSource *)self selectionSnapshot];
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+  if ([selectedIndexPaths count] < 1)
   {
     v13 = 0;
   }
 
   else
   {
-    v8 = [(PXFeedItemDecorationSource *)self dataSource];
-    v9 = [v8 identifier];
+    dataSource = [(PXFeedItemDecorationSource *)self dataSource];
+    identifier = [dataSource identifier];
 
-    v10 = [v6 dataSource];
-    v11 = [v10 identifier];
+    dataSource2 = [selectionSnapshot dataSource];
+    identifier2 = [dataSource2 identifier];
 
-    if (v9 != v11)
+    if (identifier != identifier2)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v19 handleFailureInMethod:a2 object:self file:@"PXFeedItemDecorationSource.m" lineNumber:79 description:{@"identifier mismatch between dataSource of %@ and selectionSnapshot %@", self, v6}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedItemDecorationSource.m" lineNumber:79 description:{@"identifier mismatch between dataSource of %@ and selectionSnapshot %@", self, selectionSnapshot}];
     }
 
-    v12 = [v7 itemIndexSetForDataSourceIdentifier:v9 section:{-[PXFeedItemDecorationSource section](self, "section")}];
+    v12 = [selectedIndexPaths itemIndexSetForDataSourceIdentifier:identifier section:{-[PXFeedItemDecorationSource section](self, "section")}];
     if (v12)
     {
-      v13 = [(PXFeedItemDecorationSource *)self _spriteIndexesForItems:v12 inLayout:v5];
+      v13 = [(PXFeedItemDecorationSource *)self _spriteIndexesForItems:v12 inLayout:layoutCopy];
     }
 
     else
     {
-      v14 = [v7 sectionIndexSetForDataSourceIdentifier:v9];
-      if ([v14 containsIndex:{-[PXFeedItemDecorationSource section](self, "section")}] && (objc_msgSend(v6, "dataSource"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "numberOfItemsInSection:", -[PXFeedItemDecorationSource section](self, "section")), v15, v16 >= 1))
+      v14 = [selectedIndexPaths sectionIndexSetForDataSourceIdentifier:identifier];
+      if ([v14 containsIndex:{-[PXFeedItemDecorationSource section](self, "section")}] && (objc_msgSend(selectionSnapshot, "dataSource"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "numberOfItemsInSection:", -[PXFeedItemDecorationSource section](self, "section")), v15, v16 >= 1))
       {
         v17 = [MEMORY[0x1E696AC90] indexSetWithIndex:0];
-        v13 = [(PXFeedItemDecorationSource *)self _spriteIndexesForItems:v17 inLayout:v5];
+        v13 = [(PXFeedItemDecorationSource *)self _spriteIndexesForItems:v17 inLayout:layoutCopy];
       }
 
       else
@@ -107,66 +107,66 @@
   return v13;
 }
 
-- (void)setSelectionSnapshot:(id)a3
+- (void)setSelectionSnapshot:(id)snapshot
 {
-  v5 = a3;
-  if (self->_selectionSnapshot != v5)
+  snapshotCopy = snapshot;
+  if (self->_selectionSnapshot != snapshotCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_selectionSnapshot, a3);
-    v6 = [(PXFeedItemDecorationSource *)self decoratedLayout];
-    [v6 invalidateDecoration];
+    v7 = snapshotCopy;
+    objc_storeStrong(&self->_selectionSnapshot, snapshot);
+    decoratedLayout = [(PXFeedItemDecorationSource *)self decoratedLayout];
+    [decoratedLayout invalidateDecoration];
 
-    v5 = v7;
+    snapshotCopy = v7;
   }
 }
 
-- (void)setDataSource:(id)a3 section:(int64_t)a4
+- (void)setDataSource:(id)source section:(int64_t)section
 {
-  v7 = a3;
-  if (*&self->_dataSource != __PAIR128__(a4, v7))
+  sourceCopy = source;
+  if (*&self->_dataSource != __PAIR128__(section, sourceCopy))
   {
-    self->_section = a4;
-    v9 = v7;
-    objc_storeStrong(&self->_dataSource, a3);
-    v8 = [(PXFeedItemDecorationSource *)self decoratedLayout];
-    [v8 invalidateDecoration];
+    self->_section = section;
+    v9 = sourceCopy;
+    objc_storeStrong(&self->_dataSource, source);
+    decoratedLayout = [(PXFeedItemDecorationSource *)self decoratedLayout];
+    [decoratedLayout invalidateDecoration];
 
-    v7 = v9;
+    sourceCopy = v9;
   }
 }
 
-- (void)setDecoratedLayout:(id)a3
+- (void)setDecoratedLayout:(id)layout
 {
-  obj = a3;
+  obj = layout;
   WeakRetained = objc_loadWeakRetained(&self->_decoratedLayout);
 
   v5 = obj;
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_decoratedLayout, obj);
-    v6 = [(PXFeedItemDecorationSource *)self decoratedLayout];
-    [v6 invalidateDecoration];
+    decoratedLayout = [(PXFeedItemDecorationSource *)self decoratedLayout];
+    [decoratedLayout invalidateDecoration];
 
     v5 = obj;
   }
 }
 
-- (id)_spriteIndexesForItems:(id)a3 inLayout:(id)a4
+- (id)_spriteIndexesForItems:(id)items inLayout:(id)layout
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  itemsCopy = items;
+  layoutCopy = layout;
+  if (itemsCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 spriteIndexesForItems:v5];
+      v7 = [layoutCopy spriteIndexesForItems:itemsCopy];
     }
 
     else
     {
-      v7 = v5;
+      v7 = itemsCopy;
     }
 
     v8 = v7;

@@ -1,5 +1,5 @@
 @interface CKKSFixupLocalReloadOperation
-- (CKKSFixupLocalReloadOperation)initWithOperationDependencies:(id)a3 fixupNumber:(unint64_t)a4 ckoperationGroup:(id)a5 entering:(id)a6;
+- (CKKSFixupLocalReloadOperation)initWithOperationDependencies:(id)dependencies fixupNumber:(unint64_t)number ckoperationGroup:(id)group entering:(id)entering;
 - (id)description;
 - (void)groupStart;
 @end
@@ -10,8 +10,8 @@
 {
   objc_initWeak(&location, self);
   v3 = [CKKSReloadAllItemsOperation alloc];
-  v4 = [(CKKSFixupLocalReloadOperation *)self deps];
-  v5 = [(CKKSReloadAllItemsOperation *)v3 initWithOperationDependencies:v4];
+  deps = [(CKKSFixupLocalReloadOperation *)self deps];
+  v5 = [(CKKSReloadAllItemsOperation *)v3 initWithOperationDependencies:deps];
 
   [(CKKSGroupOperation *)self runBeforeGroupFinished:v5];
   v8[0] = _NSConcreteStackBlock;
@@ -31,29 +31,29 @@
 
 - (id)description
 {
-  v3 = [(CKKSFixupLocalReloadOperation *)self fixupNumber];
-  v4 = [(CKKSFixupLocalReloadOperation *)self deps];
-  v5 = [v4 views];
-  v6 = [NSString stringWithFormat:@"<CKKSFixup:LocalReload (%d)(%@)>", v3, v5];
+  fixupNumber = [(CKKSFixupLocalReloadOperation *)self fixupNumber];
+  deps = [(CKKSFixupLocalReloadOperation *)self deps];
+  views = [deps views];
+  v6 = [NSString stringWithFormat:@"<CKKSFixup:LocalReload (%d)(%@)>", fixupNumber, views];
 
   return v6;
 }
 
-- (CKKSFixupLocalReloadOperation)initWithOperationDependencies:(id)a3 fixupNumber:(unint64_t)a4 ckoperationGroup:(id)a5 entering:(id)a6
+- (CKKSFixupLocalReloadOperation)initWithOperationDependencies:(id)dependencies fixupNumber:(unint64_t)number ckoperationGroup:(id)group entering:(id)entering
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  dependenciesCopy = dependencies;
+  groupCopy = group;
+  enteringCopy = entering;
   v17.receiver = self;
   v17.super_class = CKKSFixupLocalReloadOperation;
   v14 = [(CKKSGroupOperation *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_deps, a3);
-    v15->_fixupNumber = a4;
-    objc_storeStrong(&v15->_group, a5);
-    objc_storeStrong(&v15->_intendedState, a6);
+    objc_storeStrong(&v14->_deps, dependencies);
+    v15->_fixupNumber = number;
+    objc_storeStrong(&v15->_group, group);
+    objc_storeStrong(&v15->_intendedState, entering);
     objc_storeStrong(&v15->_nextState, @"error");
   }
 

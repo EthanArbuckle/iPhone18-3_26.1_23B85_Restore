@@ -1,37 +1,37 @@
 @interface CPAnalyticsAppStateDestination
-+ (BOOL)isValidSessionEndEvent:(id)a3;
-- (CPAnalyticsAppStateDestination)initWithConfig:(id)a3 cpAnalyticsInstance:(id)a4;
-- (id)_computeSessionData:(id)a3;
-- (id)_createCountersFromAppEvents:(id)a3;
-- (id)_createCountersFromConfig:(id)a3 withKey:(id)a4;
-- (id)_createCountersFromScreenNames:(id)a3;
-- (id)_validateAndParseAppEvents:(id)a3;
++ (BOOL)isValidSessionEndEvent:(id)event;
+- (CPAnalyticsAppStateDestination)initWithConfig:(id)config cpAnalyticsInstance:(id)instance;
+- (id)_computeSessionData:(id)data;
+- (id)_createCountersFromAppEvents:(id)events;
+- (id)_createCountersFromConfig:(id)config withKey:(id)key;
+- (id)_createCountersFromScreenNames:(id)names;
+- (id)_validateAndParseAppEvents:(id)events;
 - (id)allStandardProperties;
-- (id)getDynamicProperty:(id)a3 forEventName:(id)a4 payloadForSystemPropertyExtraction:(id)a5;
+- (id)getDynamicProperty:(id)property forEventName:(id)name payloadForSystemPropertyExtraction:(id)extraction;
 - (void)_resetCounters;
-- (void)_sendAppSessionEventFromSourceEvent:(id)a3 payload:(id)a4;
-- (void)_sendDashboardErrorEventIfNeededForEvent:(id)a3;
-- (void)_sendDashboardMediaEventIfNeededForEvent:(id)a3;
+- (void)_sendAppSessionEventFromSourceEvent:(id)event payload:(id)payload;
+- (void)_sendDashboardErrorEventIfNeededForEvent:(id)event;
+- (void)_sendDashboardMediaEventIfNeededForEvent:(id)event;
 - (void)_sendFeatureCounts;
-- (void)_updateDependenciesBeforeProcessingEvent:(id)a3;
-- (void)processEvent:(id)a3;
-- (void)sendDashboardAppEventForEvent:(id)a3;
-- (void)sendDashboardErrorEventForEvent:(id)a3;
-- (void)sendDashboardMediaEventForEvent:(id)a3;
-- (void)sendDashboardScreenViewEventForEvent:(id)a3;
-- (void)updateWithConfig:(id)a3;
+- (void)_updateDependenciesBeforeProcessingEvent:(id)event;
+- (void)processEvent:(id)event;
+- (void)sendDashboardAppEventForEvent:(id)event;
+- (void)sendDashboardErrorEventForEvent:(id)event;
+- (void)sendDashboardMediaEventForEvent:(id)event;
+- (void)sendDashboardScreenViewEventForEvent:(id)event;
+- (void)updateWithConfig:(id)config;
 @end
 
 @implementation CPAnalyticsAppStateDestination
 
-- (id)getDynamicProperty:(id)a3 forEventName:(id)a4 payloadForSystemPropertyExtraction:(id)a5
+- (id)getDynamicProperty:(id)property forEventName:(id)name payloadForSystemPropertyExtraction:(id)extraction
 {
-  v7 = a4;
-  if ([a3 isEqualToString:@"cpa_isAppEvent"])
+  nameCopy = name;
+  if ([property isEqualToString:@"cpa_isAppEvent"])
   {
     v8 = MEMORY[0x277CCABB0];
-    v9 = [(CPAnalyticsAppStateDestination *)self appEventNames];
-    v10 = [v8 numberWithBool:{objc_msgSend(v9, "containsObject:", v7)}];
+    appEventNames = [(CPAnalyticsAppStateDestination *)self appEventNames];
+    v10 = [v8 numberWithBool:{objc_msgSend(appEventNames, "containsObject:", nameCopy)}];
   }
 
   else
@@ -47,126 +47,126 @@
   v8[4] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = CPAnalyticsAppStateDestination;
-  v2 = [(CPAnalyticsDashboardDestination *)&v7 allStandardProperties];
+  allStandardProperties = [(CPAnalyticsDashboardDestination *)&v7 allStandardProperties];
   v8[0] = @"cpa_common_appSection";
   v8[1] = @"cpa_common_currentScreen";
   v8[2] = @"cpa_common_priorScreen";
   v8[3] = @"cpa_common_numScreensViewed";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:4];
-  v4 = [v2 arrayByAddingObjectsFromArray:v3];
+  v4 = [allStandardProperties arrayByAddingObjectsFromArray:v3];
 
   v5 = *MEMORY[0x277D85DE8];
 
   return v4;
 }
 
-- (void)sendDashboardErrorEventForEvent:(id)a3
+- (void)sendDashboardErrorEventForEvent:(id)event
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v12 = @"cpa_event_name";
-  v5 = [v4 name];
-  v13[0] = v5;
+  name = [eventCopy name];
+  v13[0] = name;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
-  v7 = [(CPAnalyticsDashboardDestination *)self allErrorProperties];
-  if ([(CPAnalyticsDashboardDestination *)self isMediaEvent:v4])
+  allErrorProperties = [(CPAnalyticsDashboardDestination *)self allErrorProperties];
+  if ([(CPAnalyticsDashboardDestination *)self isMediaEvent:eventCopy])
   {
-    v8 = [(CPAnalyticsDashboardDestination *)self allMediaProperties];
-    v9 = [v7 arrayByAddingObjectsFromArray:v8];
+    allMediaProperties = [(CPAnalyticsDashboardDestination *)self allMediaProperties];
+    v9 = [allErrorProperties arrayByAddingObjectsFromArray:allMediaProperties];
 
-    v7 = v9;
+    allErrorProperties = v9;
   }
 
-  v10 = [(CPAnalyticsDashboardDestination *)self buildCoreAnalyticsEventPayloadWithProperties:v7 fromSourceEvent:v4 intoTargetEventPayload:v6];
-  [(CPAnalyticsDashboardDestination *)self sendCoreAnalyticsEventWithStandardPropertiesForEventWithName:@"com.apple.photos.cpa.errorEvent" fromSourceEvent:v4 payload:v10];
+  v10 = [(CPAnalyticsDashboardDestination *)self buildCoreAnalyticsEventPayloadWithProperties:allErrorProperties fromSourceEvent:eventCopy intoTargetEventPayload:v6];
+  [(CPAnalyticsDashboardDestination *)self sendCoreAnalyticsEventWithStandardPropertiesForEventWithName:@"com.apple.photos.cpa.errorEvent" fromSourceEvent:eventCopy payload:v10];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendDashboardErrorEventIfNeededForEvent:(id)a3
+- (void)_sendDashboardErrorEventIfNeededForEvent:(id)event
 {
-  v5 = a3;
-  v4 = [v5 propertyForKey:@"cpa_error"];
+  eventCopy = event;
+  v4 = [eventCopy propertyForKey:@"cpa_error"];
   if (v4)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(CPAnalyticsAppStateDestination *)self sendDashboardErrorEventForEvent:v5];
+      [(CPAnalyticsAppStateDestination *)self sendDashboardErrorEventForEvent:eventCopy];
     }
 
     else
     {
-      [(CPAnalyticsDashboardDestination *)self reportMalformedEvent:v5 malformationDescriptionWithFormat:@"unexpected class for payload property %@", @"cpa_error"];
+      [(CPAnalyticsDashboardDestination *)self reportMalformedEvent:eventCopy malformationDescriptionWithFormat:@"unexpected class for payload property %@", @"cpa_error"];
     }
   }
 }
 
-- (void)sendDashboardMediaEventForEvent:(id)a3
+- (void)sendDashboardMediaEventForEvent:(id)event
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v10 = @"cpa_event_name";
-  v5 = [v4 name];
-  v11[0] = v5;
+  name = [eventCopy name];
+  v11[0] = name;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
-  v7 = [(CPAnalyticsDashboardDestination *)self allMediaProperties];
-  v8 = [(CPAnalyticsDashboardDestination *)self buildCoreAnalyticsEventPayloadWithProperties:v7 fromSourceEvent:v4 intoTargetEventPayload:v6];
+  allMediaProperties = [(CPAnalyticsDashboardDestination *)self allMediaProperties];
+  v8 = [(CPAnalyticsDashboardDestination *)self buildCoreAnalyticsEventPayloadWithProperties:allMediaProperties fromSourceEvent:eventCopy intoTargetEventPayload:v6];
 
-  [(CPAnalyticsDashboardDestination *)self sendCoreAnalyticsEventWithStandardPropertiesForEventWithName:@"com.apple.photos.cpa.mediaEvent" fromSourceEvent:v4 payload:v8];
+  [(CPAnalyticsDashboardDestination *)self sendCoreAnalyticsEventWithStandardPropertiesForEventWithName:@"com.apple.photos.cpa.mediaEvent" fromSourceEvent:eventCopy payload:v8];
   if ([(CPAnalyticsAppStateDestination *)self shouldSendSampleWithRate:30])
   {
-    [(CPAnalyticsDashboardDestination *)self sendCoreAnalyticsEventWithStandardPropertiesForEventWithName:@"com.apple.photos.cpa.mediaEvent.v2" fromSourceEvent:v4 payload:v8];
+    [(CPAnalyticsDashboardDestination *)self sendCoreAnalyticsEventWithStandardPropertiesForEventWithName:@"com.apple.photos.cpa.mediaEvent.v2" fromSourceEvent:eventCopy payload:v8];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendDashboardMediaEventIfNeededForEvent:(id)a3
+- (void)_sendDashboardMediaEventIfNeededForEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([(CPAnalyticsDashboardDestination *)self isMediaEvent:?])
   {
-    [(CPAnalyticsAppStateDestination *)self sendDashboardMediaEventForEvent:v4];
+    [(CPAnalyticsAppStateDestination *)self sendDashboardMediaEventForEvent:eventCopy];
   }
 }
 
-- (void)sendDashboardAppEventForEvent:(id)a3
+- (void)sendDashboardAppEventForEvent:(id)event
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v8 = @"cpa_event_name";
-  v5 = [v4 name];
-  v9[0] = v5;
+  name = [eventCopy name];
+  v9[0] = name;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
-  [(CPAnalyticsDashboardDestination *)self sendCoreAnalyticsEventWithStandardPropertiesForEventWithName:@"com.apple.photos.cpa.event" fromSourceEvent:v4 payload:v6];
+  [(CPAnalyticsDashboardDestination *)self sendCoreAnalyticsEventWithStandardPropertiesForEventWithName:@"com.apple.photos.cpa.event" fromSourceEvent:eventCopy payload:v6];
   if ([(CPAnalyticsAppStateDestination *)self shouldSendSampleWithRate:30])
   {
-    [(CPAnalyticsDashboardDestination *)self sendCoreAnalyticsEventWithStandardPropertiesForEventWithName:@"com.apple.photos.cpa.event.v2" fromSourceEvent:v4 payload:v6];
+    [(CPAnalyticsDashboardDestination *)self sendCoreAnalyticsEventWithStandardPropertiesForEventWithName:@"com.apple.photos.cpa.event.v2" fromSourceEvent:eventCopy payload:v6];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendDashboardScreenViewEventForEvent:(id)a3
+- (void)sendDashboardScreenViewEventForEvent:(id)event
 {
-  v5 = a3;
-  v4 = [v5 copyRawPayload];
-  [(CPAnalyticsDashboardDestination *)self sendCoreAnalyticsEventWithStandardPropertiesForEventWithName:@"com.apple.photos.cpa.screenView" fromSourceEvent:v5 payload:v4];
+  eventCopy = event;
+  copyRawPayload = [eventCopy copyRawPayload];
+  [(CPAnalyticsDashboardDestination *)self sendCoreAnalyticsEventWithStandardPropertiesForEventWithName:@"com.apple.photos.cpa.screenView" fromSourceEvent:eventCopy payload:copyRawPayload];
   if ([(CPAnalyticsAppStateDestination *)self shouldSendSampleWithRate:30])
   {
-    [(CPAnalyticsDashboardDestination *)self sendCoreAnalyticsEventWithStandardPropertiesForEventWithName:@"com.apple.photos.cpa.screenView.v2" fromSourceEvent:v5 payload:v4];
+    [(CPAnalyticsDashboardDestination *)self sendCoreAnalyticsEventWithStandardPropertiesForEventWithName:@"com.apple.photos.cpa.screenView.v2" fromSourceEvent:eventCopy payload:copyRawPayload];
   }
 }
 
 - (void)_sendFeatureCounts
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(CPAnalyticsAppStateDestination *)self featureCounters];
-  v4 = [v3 count];
+  featureCounters = [(CPAnalyticsAppStateDestination *)self featureCounters];
+  v4 = [featureCounters count];
 
   if (v4)
   {
@@ -175,8 +175,8 @@
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [(CPAnalyticsAppStateDestination *)self featureCounters];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    featureCounters2 = [(CPAnalyticsAppStateDestination *)self featureCounters];
+    v7 = [featureCounters2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -187,65 +187,65 @@
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(featureCounters2);
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
           v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v11, "count")}];
-          v13 = [v11 name];
-          [v5 setObject:v12 forKey:v13];
+          name = [v11 name];
+          [v5 setObject:v12 forKey:name];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [featureCounters2 countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v8);
     }
 
-    v14 = [(CPAnalyticsDashboardDestination *)self cpAnalyticsInstance];
-    [v14 sendEvent:@"com.apple.photos.CPAnalytics.featureUsageCounts" withPayload:v5];
+    cpAnalyticsInstance = [(CPAnalyticsDashboardDestination *)self cpAnalyticsInstance];
+    [cpAnalyticsInstance sendEvent:@"com.apple.photos.CPAnalytics.featureUsageCounts" withPayload:v5];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendAppSessionEventFromSourceEvent:(id)a3 payload:(id)a4
+- (void)_sendAppSessionEventFromSourceEvent:(id)event payload:(id)payload
 {
-  v6 = a4;
-  [(CPAnalyticsDashboardDestination *)self sendCoreAnalyticsEventWithStandardPropertiesForEventWithName:@"com.apple.photos.cpa.session" fromSourceEvent:a3 payload:v6];
-  v7 = [(CPAnalyticsDashboardDestination *)self cpAnalyticsInstance];
-  [v7 sendEvent:@"com.apple.photos.CPAnalytics.appSession" withPayload:v6];
+  payloadCopy = payload;
+  [(CPAnalyticsDashboardDestination *)self sendCoreAnalyticsEventWithStandardPropertiesForEventWithName:@"com.apple.photos.cpa.session" fromSourceEvent:event payload:payloadCopy];
+  cpAnalyticsInstance = [(CPAnalyticsDashboardDestination *)self cpAnalyticsInstance];
+  [cpAnalyticsInstance sendEvent:@"com.apple.photos.CPAnalytics.appSession" withPayload:payloadCopy];
 }
 
-- (id)_computeSessionData:(id)a3
+- (id)_computeSessionData:(id)data
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v6 = [(CPAnalyticsAppStateDestination *)self screenManager];
-  v7 = [v6 currentScreenViewName];
-  [v5 setObject:v7 forKey:@"cpa_session_exitScreen"];
+  screenManager = [(CPAnalyticsAppStateDestination *)self screenManager];
+  currentScreenViewName = [screenManager currentScreenViewName];
+  [v5 setObject:currentScreenViewName forKey:@"cpa_session_exitScreen"];
 
   v8 = MEMORY[0x277CCABB0];
-  v9 = [(CPAnalyticsAppStateDestination *)self screenManager];
-  v10 = [v8 numberWithInteger:{objc_msgSend(v9, "screensViewCount")}];
+  screenManager2 = [(CPAnalyticsAppStateDestination *)self screenManager];
+  v10 = [v8 numberWithInteger:{objc_msgSend(screenManager2, "screensViewCount")}];
   [v5 setObject:v10 forKey:@"cpa_session_screenViewCount"];
 
   v11 = MEMORY[0x277CCABB0];
-  [v4 doubleValue];
+  [dataCopy doubleValue];
   v13 = [v11 numberWithDouble:round(v12 * 100.0) / 100.0];
   [v5 setObject:v13 forKey:@"cpa_session_timeInApp"];
 
-  v14 = [MEMORY[0x277CCAD78] UUID];
-  v15 = [v14 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
-  [v5 setObject:v15 forKey:@"cpa_session_id"];
+  [v5 setObject:uUIDString forKey:@"cpa_session_id"];
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v16 = [(CPAnalyticsAppStateDestination *)self sessionCounters];
-  v17 = [v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  sessionCounters = [(CPAnalyticsAppStateDestination *)self sessionCounters];
+  v17 = [sessionCounters countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v17)
   {
     v18 = v17;
@@ -256,16 +256,16 @@
       {
         if (*v27 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(sessionCounters);
         }
 
         v21 = *(*(&v26 + 1) + 8 * i);
         v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v21, "count")}];
-        v23 = [v21 name];
-        [v5 setObject:v22 forKey:v23];
+        name = [v21 name];
+        [v5 setObject:v22 forKey:name];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v18 = [sessionCounters countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v18);
@@ -276,17 +276,17 @@
   return v5;
 }
 
-- (void)_updateDependenciesBeforeProcessingEvent:(id)a3
+- (void)_updateDependenciesBeforeProcessingEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(CPAnalyticsAppStateDestination *)self screenManager];
-  [v5 processEvent:v4];
+  eventCopy = event;
+  screenManager = [(CPAnalyticsAppStateDestination *)self screenManager];
+  [screenManager processEvent:eventCopy];
 }
 
-- (id)_validateAndParseAppEvents:(id)a3
+- (id)_validateAndParseAppEvents:(id)events
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [a3 objectForKey:@"appEvents"];
+  v3 = [events objectForKey:@"appEvents"];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v3, "count")}];
@@ -336,8 +336,8 @@
 - (void)_resetCounters
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(CPAnalyticsAppStateDestination *)self sessionCounters];
-  v4 = [v3 copy];
+  sessionCounters = [(CPAnalyticsAppStateDestination *)self sessionCounters];
+  v4 = [sessionCounters copy];
 
   v24 = 0u;
   v25 = 0u;
@@ -369,8 +369,8 @@
     while (v7);
   }
 
-  v10 = [(CPAnalyticsAppStateDestination *)self featureCounters];
-  v11 = [v10 copy];
+  featureCounters = [(CPAnalyticsAppStateDestination *)self featureCounters];
+  v11 = [featureCounters copy];
 
   v20 = 0u;
   v21 = 0u;
@@ -405,16 +405,16 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createCountersFromScreenNames:(id)a3
+- (id)_createCountersFromScreenNames:(id)names
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v22 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  namesCopy = names;
+  v22 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(namesCopy, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = v3;
+  v4 = namesCopy;
   v5 = [v4 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v5)
   {
@@ -481,16 +481,16 @@
   return v22;
 }
 
-- (id)_createCountersFromAppEvents:(id)a3
+- (id)_createCountersFromAppEvents:(id)events
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  eventsCopy = events;
+  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(eventsCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = eventsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v6)
   {
@@ -539,10 +539,10 @@
   return v4;
 }
 
-- (id)_createCountersFromConfig:(id)a3 withKey:(id)a4
+- (id)_createCountersFromConfig:(id)config withKey:(id)key
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKeyedSubscript:a4];
+  v4 = [config objectForKeyedSubscript:key];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -590,36 +590,36 @@
   return v5;
 }
 
-- (void)processEvent:(id)a3
+- (void)processEvent:(id)event
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(CPAnalyticsAppStateDestination *)self _updateDependenciesBeforeProcessingEvent:v4];
-  v5 = [v4 name];
-  v6 = [@"com.apple.photos.CPAnalytics.screenView" isEqualToString:v5];
+  eventCopy = event;
+  [(CPAnalyticsAppStateDestination *)self _updateDependenciesBeforeProcessingEvent:eventCopy];
+  name = [eventCopy name];
+  v6 = [@"com.apple.photos.CPAnalytics.screenView" isEqualToString:name];
 
   if (v6)
   {
-    [(CPAnalyticsAppStateDestination *)self sendDashboardScreenViewEventForEvent:v4];
+    [(CPAnalyticsAppStateDestination *)self sendDashboardScreenViewEventForEvent:eventCopy];
   }
 
-  v7 = [(CPAnalyticsAppStateDestination *)self appEventNames];
-  v8 = [v4 name];
-  v9 = [v7 containsObject:v8];
+  appEventNames = [(CPAnalyticsAppStateDestination *)self appEventNames];
+  name2 = [eventCopy name];
+  v9 = [appEventNames containsObject:name2];
 
   if (v9)
   {
-    [(CPAnalyticsAppStateDestination *)self sendDashboardAppEventForEvent:v4];
-    [(CPAnalyticsAppStateDestination *)self _sendDashboardMediaEventIfNeededForEvent:v4];
-    [(CPAnalyticsAppStateDestination *)self _sendDashboardErrorEventIfNeededForEvent:v4];
+    [(CPAnalyticsAppStateDestination *)self sendDashboardAppEventForEvent:eventCopy];
+    [(CPAnalyticsAppStateDestination *)self _sendDashboardMediaEventIfNeededForEvent:eventCopy];
+    [(CPAnalyticsAppStateDestination *)self _sendDashboardErrorEventIfNeededForEvent:eventCopy];
   }
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v10 = [(CPAnalyticsAppStateDestination *)self sessionCounters];
-  v11 = [v10 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  sessionCounters = [(CPAnalyticsAppStateDestination *)self sessionCounters];
+  v11 = [sessionCounters countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v11)
   {
     v12 = v11;
@@ -631,14 +631,14 @@
       {
         if (*v28 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(sessionCounters);
         }
 
-        [*(*(&v27 + 1) + 8 * v14++) countEvent:v4];
+        [*(*(&v27 + 1) + 8 * v14++) countEvent:eventCopy];
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v12 = [sessionCounters countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
     while (v12);
@@ -648,8 +648,8 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v15 = [(CPAnalyticsAppStateDestination *)self featureCounters];
-  v16 = [v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  featureCounters = [(CPAnalyticsAppStateDestination *)self featureCounters];
+  v16 = [featureCounters countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v16)
   {
     v17 = v16;
@@ -661,24 +661,24 @@
       {
         if (*v24 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(featureCounters);
         }
 
-        [*(*(&v23 + 1) + 8 * v19++) countEvent:v4];
+        [*(*(&v23 + 1) + 8 * v19++) countEvent:eventCopy];
       }
 
       while (v17 != v19);
-      v17 = [v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v17 = [featureCounters countByEnumeratingWithState:&v23 objects:v31 count:16];
     }
 
     while (v17);
   }
 
-  if ([CPAnalyticsAppStateDestination isValidSessionEndEvent:v4])
+  if ([CPAnalyticsAppStateDestination isValidSessionEndEvent:eventCopy])
   {
-    v20 = [v4 propertyForKey:@"signpostDuration"];
+    v20 = [eventCopy propertyForKey:@"signpostDuration"];
     v21 = [(CPAnalyticsAppStateDestination *)self _computeSessionData:v20];
-    [(CPAnalyticsAppStateDestination *)self _sendAppSessionEventFromSourceEvent:v4 payload:v21];
+    [(CPAnalyticsAppStateDestination *)self _sendAppSessionEventFromSourceEvent:eventCopy payload:v21];
     [(CPAnalyticsAppStateDestination *)self _sendFeatureCounts];
     [(CPAnalyticsAppStateDestination *)self _resetCounters];
   }
@@ -686,25 +686,25 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWithConfig:(id)a3
+- (void)updateWithConfig:(id)config
 {
   v94 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CPAnalyticsAppStateDestination *)self screenManager];
-  [v5 updateWithConfig:v4];
+  configCopy = config;
+  screenManager = [(CPAnalyticsAppStateDestination *)self screenManager];
+  [screenManager updateWithConfig:configCopy];
 
-  v6 = [(CPAnalyticsAppStateDestination *)self _validateAndParseAppEvents:v4];
-  v59 = v4;
+  v6 = [(CPAnalyticsAppStateDestination *)self _validateAndParseAppEvents:configCopy];
+  v59 = configCopy;
   v60 = v6;
-  v57 = self;
+  selfCopy = self;
   if ([v6 count])
   {
-    v7 = [(CPAnalyticsAppStateDestination *)self appEventNames];
-    v62 = [v7 copy];
+    appEventNames = [(CPAnalyticsAppStateDestination *)self appEventNames];
+    selfCopy = [appEventNames copy];
 
-    v61 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
-    v8 = [(CPAnalyticsAppStateDestination *)self featureCounters];
-    v9 = [v8 copy];
+    sessionCounters = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
+    featureCounters = [(CPAnalyticsAppStateDestination *)self featureCounters];
+    v9 = [featureCounters copy];
 
     v86 = 0u;
     v87 = 0u;
@@ -726,14 +726,14 @@
           }
 
           v15 = *(*(&v84 + 1) + 8 * i);
-          if ([v62 containsObject:{v15, v57}])
+          if ([selfCopy containsObject:{v15, selfCopy}])
           {
-            v39 = CPAnalyticsLog();
-            if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
+            featureCounters3 = CPAnalyticsLog();
+            if (os_log_type_enabled(featureCounters3, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
               *v90 = v15;
-              _os_log_error_impl(&dword_24260A000, v39, OS_LOG_TYPE_ERROR, "AppEvent, %@, already exists in AppState whitelist", buf, 0xCu);
+              _os_log_error_impl(&dword_24260A000, featureCounters3, OS_LOG_TYPE_ERROR, "AppEvent, %@, already exists in AppState whitelist", buf, 0xCu);
             }
 
             goto LABEL_62;
@@ -751,7 +751,7 @@
             if (v17)
             {
               p_super = &v17->super;
-              [v61 addObject:v17];
+              [sessionCounters addObject:v17];
             }
 
             else
@@ -792,26 +792,26 @@
       }
     }
 
-    v20 = [v62 setByAddingObjectsFromSet:v10];
-    self = v57;
-    appEventNames = v57->_appEventNames;
-    v57->_appEventNames = v20;
+    v20 = [selfCopy setByAddingObjectsFromSet:v10];
+    self = selfCopy;
+    appEventNames = selfCopy->_appEventNames;
+    selfCopy->_appEventNames = v20;
 
-    v22 = [(NSArray *)v57->_featureCounters arrayByAddingObjectsFromArray:v61];
-    featureCounters = v57->_featureCounters;
-    v57->_featureCounters = v22;
+    v22 = [(NSArray *)selfCopy->_featureCounters arrayByAddingObjectsFromArray:sessionCounters];
+    featureCounters = selfCopy->_featureCounters;
+    selfCopy->_featureCounters = v22;
   }
 
-  v62 = [(CPAnalyticsAppStateDestination *)self _createCountersFromConfig:v4 withKey:@"counters", v57];
-  if ([v62 count])
+  selfCopy = [(CPAnalyticsAppStateDestination *)self _createCountersFromConfig:configCopy withKey:@"counters", selfCopy];
+  if ([selfCopy count])
   {
-    v24 = v4;
-    v61 = [(CPAnalyticsAppStateDestination *)self sessionCounters];
+    v24 = configCopy;
+    sessionCounters = [(CPAnalyticsAppStateDestination *)self sessionCounters];
     v79 = 0u;
     v80 = 0u;
     v81 = 0u;
     v82 = 0u;
-    v9 = v62;
+    v9 = selfCopy;
     v25 = [v9 countByEnumeratingWithState:&v79 objects:v92 count:16];
     if (v25)
     {
@@ -826,14 +826,14 @@
             objc_enumerationMutation(v9);
           }
 
-          v29 = [*(*(&v79 + 1) + 8 * j) name];
+          name = [*(*(&v79 + 1) + 8 * j) name];
           v77[0] = MEMORY[0x277D85DD0];
           v77[1] = 3221225472;
           v77[2] = __51__CPAnalyticsAppStateDestination_updateWithConfig___block_invoke_49;
           v77[3] = &unk_278D61908;
-          v10 = v29;
+          v10 = name;
           v78 = v10;
-          if ([v61 indexOfObjectPassingTest:v77] != 0x7FFFFFFFFFFFFFFFLL)
+          if ([sessionCounters indexOfObjectPassingTest:v77] != 0x7FFFFFFFFFFFFFFFLL)
           {
             v53 = CPAnalyticsLog();
             if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
@@ -843,10 +843,10 @@
               _os_log_error_impl(&dword_24260A000, v53, OS_LOG_TYPE_ERROR, "Counter, %@, already exists in AppState config", buf, 0xCu);
             }
 
-            v39 = v78;
-            v62 = v9;
+            featureCounters3 = v78;
+            selfCopy = v9;
             v6 = v60;
-            v4 = v24;
+            configCopy = v24;
             goto LABEL_62;
           }
         }
@@ -861,24 +861,24 @@
       }
     }
 
-    v30 = [v61 arrayByAddingObjectsFromArray:v9];
+    v30 = [sessionCounters arrayByAddingObjectsFromArray:v9];
     self = v58;
     sessionCounters = v58->_sessionCounters;
     v58->_sessionCounters = v30;
 
     v6 = v60;
-    v4 = v24;
+    configCopy = v24;
   }
 
-  v61 = [(CPAnalyticsAppStateDestination *)self _createCountersFromConfig:v4 withKey:@"activeUserFeatures"];
-  if ([v61 count])
+  sessionCounters = [(CPAnalyticsAppStateDestination *)self _createCountersFromConfig:configCopy withKey:@"activeUserFeatures"];
+  if ([sessionCounters count])
   {
-    v32 = [(CPAnalyticsAppStateDestination *)self featureCounters];
+    featureCounters2 = [(CPAnalyticsAppStateDestination *)self featureCounters];
     v73 = 0u;
     v74 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v33 = v61;
+    v33 = sessionCounters;
     v34 = [v33 countByEnumeratingWithState:&v73 objects:v91 count:16];
     if (v34)
     {
@@ -893,27 +893,27 @@
             objc_enumerationMutation(v33);
           }
 
-          v38 = [*(*(&v73 + 1) + 8 * k) name];
+          name2 = [*(*(&v73 + 1) + 8 * k) name];
           v71[0] = MEMORY[0x277D85DD0];
           v71[1] = 3221225472;
           v71[2] = __51__CPAnalyticsAppStateDestination_updateWithConfig___block_invoke_50;
           v71[3] = &unk_278D61908;
-          v39 = v38;
-          v72 = v39;
-          if ([v32 indexOfObjectPassingTest:v71] != 0x7FFFFFFFFFFFFFFFLL)
+          featureCounters3 = name2;
+          v72 = featureCounters3;
+          if ([featureCounters2 indexOfObjectPassingTest:v71] != 0x7FFFFFFFFFFFFFFFLL)
           {
             v54 = CPAnalyticsLog();
             if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
-              *v90 = v39;
+              *v90 = featureCounters3;
               _os_log_error_impl(&dword_24260A000, v54, OS_LOG_TYPE_ERROR, "Feature, %@, already exists in AppState config", buf, 0xCu);
             }
 
             v52 = v72;
-            v4 = v59;
+            configCopy = v59;
             v6 = v60;
-            v9 = v32;
+            v9 = featureCounters2;
             v10 = v33;
             goto LABEL_61;
           }
@@ -940,22 +940,22 @@
       _os_log_debug_impl(&dword_24260A000, v40, OS_LOG_TYPE_DEBUG, "[AppStateDestination] Updated %d featureCounters %@", buf, 0x12u);
     }
 
-    v41 = [v32 arrayByAddingObjectsFromArray:v33];
+    v41 = [featureCounters2 arrayByAddingObjectsFromArray:v33];
     self = v58;
     v42 = v58->_featureCounters;
     v58->_featureCounters = v41;
 
-    v4 = v59;
+    configCopy = v59;
     v6 = v60;
   }
 
-  v43 = [(CPAnalyticsScreenManager *)self->_screenManager namesOfViewsToTrack];
-  v9 = [(CPAnalyticsAppStateDestination *)self _createCountersFromScreenNames:v43];
+  namesOfViewsToTrack = [(CPAnalyticsScreenManager *)self->_screenManager namesOfViewsToTrack];
+  v9 = [(CPAnalyticsAppStateDestination *)self _createCountersFromScreenNames:namesOfViewsToTrack];
 
   v63 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if ([v9 count])
   {
-    v39 = [(CPAnalyticsAppStateDestination *)self featureCounters];
+    featureCounters3 = [(CPAnalyticsAppStateDestination *)self featureCounters];
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
@@ -976,14 +976,14 @@
           }
 
           v48 = *(*(&v67 + 1) + 8 * m);
-          v49 = [v48 name];
+          name3 = [v48 name];
           v65[0] = MEMORY[0x277D85DD0];
           v65[1] = 3221225472;
           v65[2] = __51__CPAnalyticsAppStateDestination_updateWithConfig___block_invoke_51;
           v65[3] = &unk_278D61908;
-          v50 = v49;
+          v50 = name3;
           v66 = v50;
-          if ([v39 indexOfObjectPassingTest:v65]== 0x7FFFFFFFFFFFFFFFLL)
+          if ([featureCounters3 indexOfObjectPassingTest:v65]== 0x7FFFFFFFFFFFFFFFLL)
           {
             [v63 addObject:v48];
           }
@@ -998,8 +998,8 @@
     v9 = obj;
 
     v10 = v63;
-    v51 = [v39 arrayByAddingObjectsFromArray:v63];
-    v4 = v59;
+    v51 = [featureCounters3 arrayByAddingObjectsFromArray:v63];
+    configCopy = v59;
     v52 = v58->_featureCounters;
     v58->_featureCounters = v51;
     v6 = v60;
@@ -1052,25 +1052,25 @@ uint64_t __51__CPAnalyticsAppStateDestination_updateWithConfig___block_invoke_51
   return v4;
 }
 
-- (CPAnalyticsAppStateDestination)initWithConfig:(id)a3 cpAnalyticsInstance:(id)a4
+- (CPAnalyticsAppStateDestination)initWithConfig:(id)config cpAnalyticsInstance:(id)instance
 {
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  instanceCopy = instance;
   v27.receiver = self;
   v27.super_class = CPAnalyticsAppStateDestination;
-  v8 = [(CPAnalyticsDashboardDestination *)&v27 initWithConfig:v6 cpAnalyticsInstance:v7];
+  v8 = [(CPAnalyticsDashboardDestination *)&v27 initWithConfig:configCopy cpAnalyticsInstance:instanceCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [(CPAnalyticsAppStateDestination *)v8 _createCountersFromConfig:v6 withKey:@"counters"];
+    v10 = [(CPAnalyticsAppStateDestination *)v8 _createCountersFromConfig:configCopy withKey:@"counters"];
     sessionCounters = v9->_sessionCounters;
     v9->_sessionCounters = v10;
 
-    v12 = [(CPAnalyticsAppStateDestination *)v9 _createCountersFromConfig:v6 withKey:@"activeUserFeatures"];
+    v12 = [(CPAnalyticsAppStateDestination *)v9 _createCountersFromConfig:configCopy withKey:@"activeUserFeatures"];
     featureCounters = v9->_featureCounters;
     v9->_featureCounters = v12;
 
-    v14 = [(CPAnalyticsAppStateDestination *)v9 _validateAndParseAppEvents:v6];
+    v14 = [(CPAnalyticsAppStateDestination *)v9 _validateAndParseAppEvents:configCopy];
     appEventNames = v9->_appEventNames;
     v9->_appEventNames = v14;
 
@@ -1088,38 +1088,38 @@ uint64_t __51__CPAnalyticsAppStateDestination_updateWithConfig___block_invoke_51
       v9->_featureCounters = MEMORY[0x277CBEBF8];
     }
 
-    v19 = [[CPAnalyticsScreenManager alloc] initWithConfig:v6 cpAnalyticsInstance:v7];
+    v19 = [[CPAnalyticsScreenManager alloc] initWithConfig:configCopy cpAnalyticsInstance:instanceCopy];
     screenManager = v9->_screenManager;
     v9->_screenManager = v19;
 
-    v21 = [(CPAnalyticsScreenManager *)v9->_screenManager namesOfViewsToTrack];
-    v22 = [(CPAnalyticsAppStateDestination *)v9 _createCountersFromScreenNames:v21];
+    namesOfViewsToTrack = [(CPAnalyticsScreenManager *)v9->_screenManager namesOfViewsToTrack];
+    v22 = [(CPAnalyticsAppStateDestination *)v9 _createCountersFromScreenNames:namesOfViewsToTrack];
 
     v23 = [(NSArray *)v9->_featureCounters arrayByAddingObjectsFromArray:v22];
     v24 = v9->_featureCounters;
     v9->_featureCounters = v23;
 
-    v25 = [v7 systemProperties];
-    [(CPAnalyticsAppStateDestination *)v9 registerSystemProperties:v25];
+    systemProperties = [instanceCopy systemProperties];
+    [(CPAnalyticsAppStateDestination *)v9 registerSystemProperties:systemProperties];
   }
 
   return v9;
 }
 
-+ (BOOL)isValidSessionEndEvent:(id)a3
++ (BOOL)isValidSessionEndEvent:(id)event
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 name];
-  v5 = [@"com.apple.photos.CPAnalytics.signpost.appVisiblePeriod" isEqualToString:v4];
+  eventCopy = event;
+  name = [eventCopy name];
+  v5 = [@"com.apple.photos.CPAnalytics.signpost.appVisiblePeriod" isEqualToString:name];
 
   if (v5)
   {
-    v6 = [v3 propertyForKey:@"className"];
+    v6 = [eventCopy propertyForKey:@"className"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v3 propertyForKey:@"signpostDuration"];
+      v7 = [eventCopy propertyForKey:@"signpostDuration"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -1129,15 +1129,15 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v9 = CPAnalyticsLog();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+      name3 = CPAnalyticsLog();
+      if (os_log_type_enabled(name3, OS_LOG_TYPE_DEBUG))
       {
-        v12 = [v3 name];
+        name2 = [eventCopy name];
         v13 = 138412546;
         v14 = v7;
         v15 = 2112;
-        v16 = v12;
-        _os_log_debug_impl(&dword_24260A000, v9, OS_LOG_TYPE_DEBUG, "Signpost duration '%@' is not a number for event %@.", &v13, 0x16u);
+        v16 = name2;
+        _os_log_debug_impl(&dword_24260A000, name3, OS_LOG_TYPE_DEBUG, "Signpost duration '%@' is not a number for event %@.", &v13, 0x16u);
       }
     }
 
@@ -1151,11 +1151,11 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v9 = [v3 name];
+      name3 = [eventCopy name];
       v13 = 138412546;
       v14 = v6;
       v15 = 2112;
-      v16 = v9;
+      v16 = name3;
       _os_log_debug_impl(&dword_24260A000, v7, OS_LOG_TYPE_DEBUG, "Class name '%@' is not a string for event %@.", &v13, 0x16u);
     }
 

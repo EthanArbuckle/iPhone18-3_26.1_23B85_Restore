@@ -1,12 +1,12 @@
 @interface CKTranscriptBackgroundEnvironment
 - (_TtC7ChatKit33CKTranscriptBackgroundEnvironment)init;
-- (_TtC7ChatKit33CKTranscriptBackgroundEnvironment)initWithTranscriptLayoutDelegate:(id)a3;
+- (_TtC7ChatKit33CKTranscriptBackgroundEnvironment)initWithTranscriptLayoutDelegate:(id)delegate;
 - (_TtP7ChatKit46CKTranscriptBackgroundTranscriptLayoutDelegate_)transcriptLayoutDelegate;
 @end
 
 @implementation CKTranscriptBackgroundEnvironment
 
-- (_TtC7ChatKit33CKTranscriptBackgroundEnvironment)initWithTranscriptLayoutDelegate:(id)a3
+- (_TtC7ChatKit33CKTranscriptBackgroundEnvironment)initWithTranscriptLayoutDelegate:(id)delegate
 {
   swift_unknownObjectWeakInit();
   swift_beginAccess();

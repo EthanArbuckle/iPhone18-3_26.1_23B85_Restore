@@ -1,14 +1,14 @@
 @interface RTMetric
 + ($E278B6834D55977C8D8083A775B4AB36)event;
-+ (id)binForNumber:(id)a3 bins:(id)a4;
-+ (id)binsFromStart:(id)a3 toEnd:(id)a4 gap:(id)a5;
-+ (id)exponentialBinsFromStart:(double)a3 toEnd:(double)a4 binCount:(unint64_t)a5;
++ (id)binForNumber:(id)number bins:(id)bins;
++ (id)binsFromStart:(id)start toEnd:(id)end gap:(id)gap;
++ (id)exponentialBinsFromStart:(double)start toEnd:(double)end binCount:(unint64_t)count;
 + (id)metricName;
 + (id)supportedMetricKeys;
-- (BOOL)setAllMetrics:(id)a3 error:(id *)a4;
-- (BOOL)submitMetricsWithError:(id *)a3;
+- (BOOL)setAllMetrics:(id)metrics error:(id *)error;
+- (BOOL)submitMetricsWithError:(id *)error;
 - (NSString)description;
-- (RTMetric)initWithLoggingEnabled:(BOOL)a3;
+- (RTMetric)initWithLoggingEnabled:(BOOL)enabled;
 @end
 
 @implementation RTMetric
@@ -16,10 +16,10 @@
 + (id)metricName
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [objc_opt_class() event];
-  if (v3)
+  event = [objc_opt_class() event];
+  if (event)
   {
-    v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCString:v3 encoding:1];
+    v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCString:event encoding:1];
   }
 
   else
@@ -39,7 +39,7 @@
   return v4;
 }
 
-- (RTMetric)initWithLoggingEnabled:(BOOL)a3
+- (RTMetric)initWithLoggingEnabled:(BOOL)enabled
 {
   v9.receiver = self;
   v9.super_class = RTMetric;
@@ -47,10 +47,10 @@
   v5 = v4;
   if (v4)
   {
-    v4->_loggingEnabled = a3;
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    v4->_loggingEnabled = enabled;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     metrics = v5->_metrics;
-    v5->_metrics = v6;
+    v5->_metrics = dictionary;
 
     v5->_submitted = 0;
   }
@@ -72,12 +72,12 @@
   return 0;
 }
 
-+ (id)binForNumber:(id)a3 bins:(id)a4
++ (id)binForNumber:(id)number bins:(id)bins
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  numberCopy = number;
+  binsCopy = bins;
+  v7 = binsCopy;
+  if (!numberCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -96,7 +96,7 @@ LABEL_23:
     goto LABEL_13;
   }
 
-  if (![v6 count])
+  if (![binsCopy count])
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -126,7 +126,7 @@ LABEL_23:
       v12 = [v7 objectAtIndexedSubscript:v11];
       [v12 doubleValue];
       v14 = v13;
-      [v5 doubleValue];
+      [numberCopy doubleValue];
       v16 = v15;
 
       if (v14 >= v16)
@@ -134,7 +134,7 @@ LABEL_23:
         v17 = [v7 objectAtIndexedSubscript:(v10 + v9) >> 1];
         [v17 doubleValue];
         v19 = v18;
-        [v5 doubleValue];
+        [numberCopy doubleValue];
         v21 = v20;
 
         v9 = (v10 + v9) >> 1;
@@ -155,7 +155,7 @@ LABEL_23:
   }
 
 LABEL_15:
-  [v5 doubleValue];
+  [numberCopy doubleValue];
   v27 = v26;
   v28 = [v7 objectAtIndexedSubscript:v11];
   [v28 doubleValue];
@@ -177,13 +177,13 @@ LABEL_19:
   return v25;
 }
 
-+ (id)binsFromStart:(id)a3 toEnd:(id)a4 gap:(id)a5
++ (id)binsFromStart:(id)start toEnd:(id)end gap:(id)gap
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v7)
+  startCopy = start;
+  endCopy = end;
+  gapCopy = gap;
+  v10 = gapCopy;
+  if (!startCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -199,7 +199,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v8)
+  if (!endCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -213,7 +213,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (!v9)
+  if (!gapCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -226,24 +226,24 @@ LABEL_13:
 
 LABEL_14:
 
-    v11 = 0;
+    array = 0;
     goto LABEL_15;
   }
 
-  v11 = [MEMORY[0x277CBEB18] array];
-  [v7 doubleValue];
+  array = [MEMORY[0x277CBEB18] array];
+  [startCopy doubleValue];
   v13 = v12;
-  [v8 doubleValue];
+  [endCopy doubleValue];
   if (v13 <= v14)
   {
     do
     {
       v15 = [MEMORY[0x277CCABB0] numberWithDouble:v13];
-      [v11 addObject:v15];
+      [array addObject:v15];
 
       [v10 doubleValue];
       v13 = v13 + v16;
-      [v8 doubleValue];
+      [endCopy doubleValue];
     }
 
     while (v13 <= v17);
@@ -251,41 +251,41 @@ LABEL_14:
 
 LABEL_15:
 
-  return v11;
+  return array;
 }
 
-+ (id)exponentialBinsFromStart:(double)a3 toEnd:(double)a4 binCount:(unint64_t)a5
++ (id)exponentialBinsFromStart:(double)start toEnd:(double)end binCount:(unint64_t)count
 {
-  v6 = a3;
-  v7 = pow(a4 / a3, 1.0 / a5);
-  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:a5 + 1];
+  startCopy = start;
+  v7 = pow(end / start, 1.0 / count);
+  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:count + 1];
   v9 = 0;
   do
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithDouble:v6];
+    v10 = [MEMORY[0x277CCABB0] numberWithDouble:startCopy];
     [v8 addObject:v10];
 
-    v6 = v7 * v6;
+    startCopy = v7 * startCopy;
     ++v9;
   }
 
-  while (v9 <= a5);
+  while (v9 <= count);
 
   return v8;
 }
 
-- (BOOL)submitMetricsWithError:(id *)a3
+- (BOOL)submitMetricsWithError:(id *)error
 {
   v57[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (error)
   {
-    v6 = [objc_opt_class() event];
-    v7 = [objc_opt_class() metricName];
-    if (v7)
+    event = [objc_opt_class() event];
+    metricName = [objc_opt_class() metricName];
+    if (metricName)
     {
       if (self->_submitted)
       {
-        v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"metric, %@, has already been submitted", v7];
+        v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"metric, %@, has already been submitted", metricName];
         v9 = MEMORY[0x277CCA9B8];
         v10 = *MEMORY[0x277D01448];
         v54 = *MEMORY[0x277CCA450];
@@ -305,7 +305,7 @@ LABEL_15:
         }
 
         v14 = v12;
-        *a3 = v12;
+        *error = v12;
 
         v15 = 0;
       }
@@ -313,12 +313,12 @@ LABEL_15:
       else
       {
         v21 = MEMORY[0x277CBEB98];
-        v22 = [(NSMutableDictionary *)self->_metrics allKeys];
-        v8 = [v21 setWithArray:v22];
+        allKeys = [(NSMutableDictionary *)self->_metrics allKeys];
+        v8 = [v21 setWithArray:allKeys];
 
         v23 = MEMORY[0x277CBEB98];
-        v24 = [objc_opt_class() supportedMetricKeys];
-        v25 = [v23 setWithSet:v24];
+        supportedMetricKeys = [objc_opt_class() supportedMetricKeys];
+        v25 = [v23 setWithSet:supportedMetricKeys];
 
         v15 = [v8 isEqualToSet:v25];
         if (v15)
@@ -333,14 +333,14 @@ LABEL_15:
               *buf = 138412802;
               v47 = v27;
               v48 = 2112;
-              v49 = v7;
+              v49 = metricName;
               v50 = 2112;
               v51 = metrics;
               _os_log_impl(&dword_2304B3000, v26, OS_LOG_TYPE_INFO, "%@, submitting, %@, metrics, %@", buf, 0x20u);
             }
           }
 
-          v29 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCString:v6 encoding:1];
+          v29 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCString:event encoding:1];
           v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v29];
           AnalyticsSendEvent();
 
@@ -354,7 +354,7 @@ LABEL_15:
           v32 = [MEMORY[0x277CBEB58] setWithSet:v25];
           [v32 minusSet:v8];
           v45 = v31;
-          v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"metric keys set does not match with keys that metric, %@, supports.  Extra keys, %@, missing keys, %@", v7, v31, v32];
+          v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"metric keys set does not match with keys that metric, %@, supports.  Extra keys, %@, missing keys, %@", metricName, v31, v32];
           v34 = MEMORY[0x277CCA9B8];
           v35 = *MEMORY[0x277D01448];
           v52 = *MEMORY[0x277CCA450];
@@ -375,7 +375,7 @@ LABEL_15:
           }
 
           v39 = v37;
-          *a3 = v37;
+          *error = v37;
         }
       }
     }
@@ -402,17 +402,17 @@ LABEL_15:
 
       v20 = v8;
       v15 = 0;
-      *a3 = v8;
+      *error = v8;
     }
   }
 
   else
   {
-    v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    metricName = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(metricName, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_2304B3000, v7, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: outError", buf, 2u);
+      _os_log_error_impl(&dword_2304B3000, metricName, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: outError", buf, 2u);
     }
 
     v15 = 0;
@@ -421,24 +421,24 @@ LABEL_15:
   return v15;
 }
 
-- (BOOL)setAllMetrics:(id)a3 error:(id *)a4
+- (BOOL)setAllMetrics:(id)metrics error:(id *)error
 {
   v43[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = v7;
-  if (a4)
+  metricsCopy = metrics;
+  v8 = metricsCopy;
+  if (error)
   {
-    if (v7)
+    if (metricsCopy)
     {
-      v9 = [objc_opt_class() metricName];
-      if (v9)
+      metricName = [objc_opt_class() metricName];
+      if (metricName)
       {
         v10 = MEMORY[0x277CBEB98];
-        v11 = [v8 allKeys];
-        v12 = [v10 setWithArray:v11];
+        allKeys = [v8 allKeys];
+        v12 = [v10 setWithArray:allKeys];
 
-        v13 = [objc_opt_class() supportedMetricKeys];
-        v14 = [v12 isSubsetOfSet:v13];
+        supportedMetricKeys = [objc_opt_class() supportedMetricKeys];
+        v14 = [v12 isSubsetOfSet:supportedMetricKeys];
         if (v14)
         {
           v35[0] = MEMORY[0x277D85DD0];
@@ -452,9 +452,9 @@ LABEL_15:
         else
         {
           v22 = [MEMORY[0x277CBEB58] setWithSet:v12];
-          [v22 minusSet:v13];
+          [v22 minusSet:supportedMetricKeys];
           v34 = v22;
-          v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"metric keys contains keys that metric, %@, does not support.  Extra keys, %@", v9, v22];
+          v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"metric keys contains keys that metric, %@, does not support.  Extra keys, %@", metricName, v22];
           v24 = MEMORY[0x277CCA9B8];
           v25 = *MEMORY[0x277D01448];
           v36 = *MEMORY[0x277CCA450];
@@ -475,7 +475,7 @@ LABEL_15:
           }
 
           v29 = v27;
-          *a4 = v27;
+          *error = v27;
         }
       }
 
@@ -501,7 +501,7 @@ LABEL_15:
 
         v21 = v12;
         v14 = 0;
-        *a4 = v12;
+        *error = v12;
       }
     }
 
@@ -515,7 +515,7 @@ LABEL_15:
       }
 
       _RTErrorInvalidParameterCreate(@"metrics");
-      *a4 = v14 = 0;
+      *error = v14 = 0;
     }
   }
 
@@ -537,9 +537,9 @@ LABEL_15:
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() metricName];
-  v5 = [(RTMetric *)self metrics];
-  v6 = [v3 stringWithFormat:@"name, %@, metrics, %@", v4, v5];
+  metricName = [objc_opt_class() metricName];
+  metrics = [(RTMetric *)self metrics];
+  v6 = [v3 stringWithFormat:@"name, %@, metrics, %@", metricName, metrics];
 
   return v6;
 }

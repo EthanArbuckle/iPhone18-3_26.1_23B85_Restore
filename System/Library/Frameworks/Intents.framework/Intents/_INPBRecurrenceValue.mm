@@ -1,31 +1,31 @@
 @interface _INPBRecurrenceValue
-- (BOOL)isEqual:(id)a3;
-- (_INPBRecurrenceValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBRecurrenceValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsFrequency:(id)a3;
-- (int)StringAsWeeklyRecurrenceDays:(id)a3;
+- (int)StringAsFrequency:(id)frequency;
+- (int)StringAsWeeklyRecurrenceDays:(id)days;
 - (unint64_t)hash;
-- (void)addWeeklyRecurrenceDays:(int)a3;
+- (void)addWeeklyRecurrenceDays:(int)days;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setFrequency:(int)a3;
-- (void)setHasInterval:(BOOL)a3;
-- (void)setHasOrdinal:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setFrequency:(int)frequency;
+- (void)setHasInterval:(BOOL)interval;
+- (void)setHasOrdinal:(BOOL)ordinal;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBRecurrenceValue
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBRecurrenceValue *)self hasFrequency])
   {
-    v4 = [(_INPBRecurrenceValue *)self frequency];
-    if (v4 <= 49)
+    frequency = [(_INPBRecurrenceValue *)self frequency];
+    if (frequency <= 49)
     {
-      switch(v4)
+      switch(frequency)
       {
         case 0:
           v5 = @"UNKNOWN";
@@ -39,15 +39,15 @@
       }
     }
 
-    else if (v4 > 79)
+    else if (frequency > 79)
     {
-      if (v4 == 80)
+      if (frequency == 80)
       {
         v5 = @"MONTHLY";
         goto LABEL_19;
       }
 
-      if (v4 == 110)
+      if (frequency == 110)
       {
         v5 = @"YEARLY";
         goto LABEL_19;
@@ -56,23 +56,23 @@
 
     else
     {
-      if (v4 == 50)
+      if (frequency == 50)
       {
         v5 = @"DAILY";
         goto LABEL_19;
       }
 
-      if (v4 == 60)
+      if (frequency == 60)
       {
         v5 = @"WEEKLY";
 LABEL_19:
-        [v3 setObject:v5 forKeyedSubscript:@"frequency"];
+        [dictionary setObject:v5 forKeyedSubscript:@"frequency"];
 
         goto LABEL_20;
       }
     }
 
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", frequency];
     goto LABEL_19;
   }
 
@@ -80,13 +80,13 @@ LABEL_20:
   if ([(_INPBRecurrenceValue *)self hasInterval])
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[_INPBRecurrenceValue interval](self, "interval")}];
-    [v3 setObject:v6 forKeyedSubscript:@"interval"];
+    [dictionary setObject:v6 forKeyedSubscript:@"interval"];
   }
 
   if ([(_INPBRecurrenceValue *)self hasOrdinal])
   {
     v7 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[_INPBRecurrenceValue ordinal](self, "ordinal")}];
-    [v3 setObject:v7 forKeyedSubscript:@"ordinal"];
+    [dictionary setObject:v7 forKeyedSubscript:@"ordinal"];
   }
 
   if (self->_weeklyRecurrenceDays.count)
@@ -116,10 +116,10 @@ LABEL_20:
       while (v9 < [(_INPBRecurrenceValue *)self weeklyRecurrenceDaysCount]);
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"weeklyRecurrenceDays"];
+    [dictionary setObject:v8 forKeyedSubscript:@"weeklyRecurrenceDays"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -157,10 +157,10 @@ LABEL_20:
   return v4 ^ v3 ^ v5 ^ PBRepeatedInt32Hash();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (v5 = -[_INPBRecurrenceValue hasFrequency](self, "hasFrequency"), v5 == objc_msgSend(v4, "hasFrequency")) && (!-[_INPBRecurrenceValue hasFrequency](self, "hasFrequency") || !objc_msgSend(v4, "hasFrequency") || (frequency = self->_frequency, frequency == objc_msgSend(v4, "frequency"))) && (v7 = -[_INPBRecurrenceValue hasInterval](self, "hasInterval"), v7 == objc_msgSend(v4, "hasInterval")) && (!-[_INPBRecurrenceValue hasInterval](self, "hasInterval") || !objc_msgSend(v4, "hasInterval") || (interval = self->_interval, interval == objc_msgSend(v4, "interval"))) && (v9 = -[_INPBRecurrenceValue hasOrdinal](self, "hasOrdinal"), v9 == objc_msgSend(v4, "hasOrdinal")) && (!-[_INPBRecurrenceValue hasOrdinal](self, "hasOrdinal") || !objc_msgSend(v4, "hasOrdinal") || (ordinal = self->_ordinal, ordinal == objc_msgSend(v4, "ordinal"))))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (v5 = -[_INPBRecurrenceValue hasFrequency](self, "hasFrequency"), v5 == objc_msgSend(equalCopy, "hasFrequency")) && (!-[_INPBRecurrenceValue hasFrequency](self, "hasFrequency") || !objc_msgSend(equalCopy, "hasFrequency") || (frequency = self->_frequency, frequency == objc_msgSend(equalCopy, "frequency"))) && (v7 = -[_INPBRecurrenceValue hasInterval](self, "hasInterval"), v7 == objc_msgSend(equalCopy, "hasInterval")) && (!-[_INPBRecurrenceValue hasInterval](self, "hasInterval") || !objc_msgSend(equalCopy, "hasInterval") || (interval = self->_interval, interval == objc_msgSend(equalCopy, "interval"))) && (v9 = -[_INPBRecurrenceValue hasOrdinal](self, "hasOrdinal"), v9 == objc_msgSend(equalCopy, "hasOrdinal")) && (!-[_INPBRecurrenceValue hasOrdinal](self, "hasOrdinal") || !objc_msgSend(equalCopy, "hasOrdinal") || (ordinal = self->_ordinal, ordinal == objc_msgSend(equalCopy, "ordinal"))))
   {
     IsEqual = PBRepeatedInt32IsEqual();
   }
@@ -173,7 +173,7 @@ LABEL_20:
   return IsEqual;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_INPBRecurrenceValue allocWithZone:?]];
   if ([(_INPBRecurrenceValue *)self hasFrequency])
@@ -195,28 +195,28 @@ LABEL_20:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBRecurrenceValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBRecurrenceValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBRecurrenceValue)initWithCoder:(id)a3
+- (_INPBRecurrenceValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBRecurrenceValue *)self initWithData:v6];
+    self = [(_INPBRecurrenceValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -227,9 +227,9 @@ LABEL_20:
   [(_INPBRecurrenceValue *)&v3 dealloc];
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   if ([(_INPBRecurrenceValue *)self hasFrequency])
   {
     frequency = self->_frequency;
@@ -249,7 +249,7 @@ LABEL_20:
   }
 
   p_weeklyRecurrenceDays = &self->_weeklyRecurrenceDays;
-  v8 = v11;
+  v8 = toCopy;
   if (p_weeklyRecurrenceDays->count)
   {
     v9 = 0;
@@ -257,7 +257,7 @@ LABEL_20:
     {
       v10 = p_weeklyRecurrenceDays->list[v9];
       PBDataWriterWriteInt32Field();
-      v8 = v11;
+      v8 = toCopy;
       ++v9;
     }
 
@@ -265,45 +265,45 @@ LABEL_20:
   }
 }
 
-- (int)StringAsWeeklyRecurrenceDays:(id)a3
+- (int)StringAsWeeklyRecurrenceDays:(id)days
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  daysCopy = days;
+  if ([daysCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"MONDAY"])
+  else if ([daysCopy isEqualToString:@"MONDAY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"TUESDAY"])
+  else if ([daysCopy isEqualToString:@"TUESDAY"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"WEDNESDAY"])
+  else if ([daysCopy isEqualToString:@"WEDNESDAY"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"THURSDAY"])
+  else if ([daysCopy isEqualToString:@"THURSDAY"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"FRIDAY"])
+  else if ([daysCopy isEqualToString:@"FRIDAY"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SATURDAY"])
+  else if ([daysCopy isEqualToString:@"SATURDAY"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SUNDAY"])
+  else if ([daysCopy isEqualToString:@"SUNDAY"])
   {
     v4 = 7;
   }
@@ -316,17 +316,17 @@ LABEL_20:
   return v4;
 }
 
-- (void)addWeeklyRecurrenceDays:(int)a3
+- (void)addWeeklyRecurrenceDays:(int)days
 {
-  if (a3 != 0x7FFFFFFF)
+  if (days != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)setHasOrdinal:(BOOL)a3
+- (void)setHasOrdinal:(BOOL)ordinal
 {
-  if (a3)
+  if (ordinal)
   {
     v3 = 4;
   }
@@ -339,9 +339,9 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasInterval:(BOOL)a3
+- (void)setHasInterval:(BOOL)interval
 {
-  if (a3)
+  if (interval)
   {
     v3 = 2;
   }
@@ -354,40 +354,40 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsFrequency:(id)a3
+- (int)StringAsFrequency:(id)frequency
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  frequencyCopy = frequency;
+  if ([frequencyCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"MINUTE"])
+  else if ([frequencyCopy isEqualToString:@"MINUTE"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"HOURLY"])
+  else if ([frequencyCopy isEqualToString:@"HOURLY"])
   {
     v4 = 40;
   }
 
-  else if ([v3 isEqualToString:@"DAILY"])
+  else if ([frequencyCopy isEqualToString:@"DAILY"])
   {
     v4 = 50;
   }
 
-  else if ([v3 isEqualToString:@"WEEKLY"])
+  else if ([frequencyCopy isEqualToString:@"WEEKLY"])
   {
     v4 = 60;
   }
 
-  else if ([v3 isEqualToString:@"MONTHLY"])
+  else if ([frequencyCopy isEqualToString:@"MONTHLY"])
   {
     v4 = 80;
   }
 
-  else if ([v3 isEqualToString:@"YEARLY"])
+  else if ([frequencyCopy isEqualToString:@"YEARLY"])
   {
     v4 = 110;
   }
@@ -400,10 +400,10 @@ LABEL_20:
   return v4;
 }
 
-- (void)setFrequency:(int)a3
+- (void)setFrequency:(int)frequency
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (frequency == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -411,7 +411,7 @@ LABEL_20:
   else
   {
     *&self->_has = has | 1;
-    self->_frequency = a3;
+    self->_frequency = frequency;
   }
 }
 

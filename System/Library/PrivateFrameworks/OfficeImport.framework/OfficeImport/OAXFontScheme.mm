@@ -1,79 +1,79 @@
 @interface OAXFontScheme
-+ (void)readFontScheme:(_xmlNode *)a3 toFontScheme:(id)a4 drawingState:(id)a5;
-+ (void)readFontSchemeEntries:(_xmlNode *)a3 font:(id)a4;
-+ (void)writeFont:(id)a3 elementName:(id)a4 to:(id)a5 state:(id)a6;
-+ (void)writeFontScheme:(id)a3 to:(id)a4 state:(id)a5;
-+ (void)writeTypeface:(id)a3 elementName:(id)a4 to:(id)a5 state:(id)a6;
++ (void)readFontScheme:(_xmlNode *)scheme toFontScheme:(id)fontScheme drawingState:(id)state;
++ (void)readFontSchemeEntries:(_xmlNode *)entries font:(id)font;
++ (void)writeFont:(id)font elementName:(id)name to:(id)to state:(id)state;
++ (void)writeFontScheme:(id)scheme to:(id)to state:(id)state;
++ (void)writeTypeface:(id)typeface elementName:(id)name to:(id)to state:(id)state;
 @end
 
 @implementation OAXFontScheme
 
-+ (void)readFontScheme:(_xmlNode *)a3 toFontScheme:(id)a4 drawingState:(id)a5
++ (void)readFontScheme:(_xmlNode *)scheme toFontScheme:(id)fontScheme drawingState:(id)state
 {
-  v16 = a4;
-  v8 = a5;
-  v9 = CXDefaultStringAttribute(a3, CXNoNamespace, "name", 0);
-  [v16 setName:v9];
+  fontSchemeCopy = fontScheme;
+  stateCopy = state;
+  v9 = CXDefaultStringAttribute(scheme, CXNoNamespace, "name", 0);
+  [fontSchemeCopy setName:v9];
 
-  v10 = [v8 OAXMainNamespace];
-  v11 = OCXFindChild(a3, v10, "majorFont");
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v11 = OCXFindChild(scheme, oAXMainNamespace, "majorFont");
 
   if (v11)
   {
-    v12 = [v16 majorFont];
-    [a1 readFontSchemeEntries:v11 font:v12];
+    majorFont = [fontSchemeCopy majorFont];
+    [self readFontSchemeEntries:v11 font:majorFont];
   }
 
-  v13 = [v8 OAXMainNamespace];
-  v14 = OCXFindChild(a3, v13, "minorFont");
+  oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+  v14 = OCXFindChild(scheme, oAXMainNamespace2, "minorFont");
 
   if (v14)
   {
-    v15 = [v16 minorFont];
-    [a1 readFontSchemeEntries:v14 font:v15];
+    minorFont = [fontSchemeCopy minorFont];
+    [self readFontSchemeEntries:v14 font:minorFont];
   }
 }
 
-+ (void)readFontSchemeEntries:(_xmlNode *)a3 font:(id)a4
++ (void)readFontSchemeEntries:(_xmlNode *)entries font:(id)font
 {
-  v8 = a4;
-  for (i = OCXFirstChild(a3); i; i = OCXNextSibling(i))
+  fontCopy = font;
+  for (i = OCXFirstChild(entries); i; i = OCXNextSibling(i))
   {
     if (i->type == XML_ELEMENT_NODE)
     {
       v6 = CXRequiredStringAttribute(i, CXNoNamespace, "typeface");
       if (xmlStrEqual(i->name, "latin"))
       {
-        [v8 setLatinFont:v6];
+        [fontCopy setLatinFont:v6];
       }
 
       else if (xmlStrEqual(i->name, "ea"))
       {
-        [v8 setEastAsianFont:v6];
+        [fontCopy setEastAsianFont:v6];
       }
 
       else if (xmlStrEqual(i->name, "cs"))
       {
-        [v8 setComplexScriptFont:v6];
+        [fontCopy setComplexScriptFont:v6];
       }
 
       else if (xmlStrEqual(i->name, "font"))
       {
         v7 = CXRequiredStringAttribute(i, CXNoNamespace, "script");
-        [v8 setFont:v6 forScript:v7];
+        [fontCopy setFont:v6 forScript:v7];
       }
     }
   }
 }
 
-+ (void)writeTypeface:(id)a3 elementName:(id)a4 to:(id)a5 state:(id)a6
++ (void)writeTypeface:(id)typeface elementName:(id)name to:(id)to state:(id)state
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  typefaceCopy = typeface;
+  nameCopy = name;
+  toCopy = to;
+  if (typefaceCopy)
   {
-    v11 = v8;
+    v11 = typefaceCopy;
   }
 
   else
@@ -82,46 +82,46 @@
   }
 
   v12 = v11;
-  [v10 startElement:v9];
-  [v10 writeAttribute:@"typeface" content:v12];
-  [v10 endElement];
+  [toCopy startElement:nameCopy];
+  [toCopy writeAttribute:@"typeface" content:v12];
+  [toCopy endElement];
 }
 
-+ (void)writeFont:(id)a3 elementName:(id)a4 to:(id)a5 state:(id)a6
++ (void)writeFont:(id)font elementName:(id)name to:(id)to state:(id)state
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  [v11 startElement:v10];
-  v13 = [v16 latinFont];
-  [a1 writeTypeface:v13 elementName:@"latin" to:v11 state:v12];
+  fontCopy = font;
+  nameCopy = name;
+  toCopy = to;
+  stateCopy = state;
+  [toCopy startElement:nameCopy];
+  latinFont = [fontCopy latinFont];
+  [self writeTypeface:latinFont elementName:@"latin" to:toCopy state:stateCopy];
 
-  v14 = [v16 eastAsianFont];
-  [a1 writeTypeface:v14 elementName:@"ea" to:v11 state:v12];
+  eastAsianFont = [fontCopy eastAsianFont];
+  [self writeTypeface:eastAsianFont elementName:@"ea" to:toCopy state:stateCopy];
 
-  v15 = [v16 complexScriptFont];
-  [a1 writeTypeface:v15 elementName:@"cs" to:v11 state:v12];
+  complexScriptFont = [fontCopy complexScriptFont];
+  [self writeTypeface:complexScriptFont elementName:@"cs" to:toCopy state:stateCopy];
 
-  [v11 endElement];
+  [toCopy endElement];
 }
 
-+ (void)writeFontScheme:(id)a3 to:(id)a4 state:(id)a5
++ (void)writeFontScheme:(id)scheme to:(id)to state:(id)state
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v8 startElement:@"fontScheme"];
-  v10 = [v13 name];
-  [v8 writeAttribute:@"name" content:v10];
+  schemeCopy = scheme;
+  toCopy = to;
+  stateCopy = state;
+  [toCopy startElement:@"fontScheme"];
+  name = [schemeCopy name];
+  [toCopy writeAttribute:@"name" content:name];
 
-  v11 = [v13 majorFont];
-  [a1 writeFont:v11 elementName:@"majorFont" to:v8 state:v9];
+  majorFont = [schemeCopy majorFont];
+  [self writeFont:majorFont elementName:@"majorFont" to:toCopy state:stateCopy];
 
-  v12 = [v13 minorFont];
-  [a1 writeFont:v12 elementName:@"minorFont" to:v8 state:v9];
+  minorFont = [schemeCopy minorFont];
+  [self writeFont:minorFont elementName:@"minorFont" to:toCopy state:stateCopy];
 
-  [v8 endElement];
+  [toCopy endElement];
 }
 
 @end

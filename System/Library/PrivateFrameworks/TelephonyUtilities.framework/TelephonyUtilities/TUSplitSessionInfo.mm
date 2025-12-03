@@ -1,26 +1,26 @@
 @interface TUSplitSessionInfo
-- (TUSplitSessionInfo)initWithCoder:(id)a3;
-- (TUSplitSessionInfo)initWithConversationID:(id)a3 device:(id)a4 handoffContext:(id)a5;
+- (TUSplitSessionInfo)initWithCoder:(id)coder;
+- (TUSplitSessionInfo)initWithConversationID:(id)d device:(id)device handoffContext:(id)context;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUSplitSessionInfo
 
-- (TUSplitSessionInfo)initWithConversationID:(id)a3 device:(id)a4 handoffContext:(id)a5
+- (TUSplitSessionInfo)initWithConversationID:(id)d device:(id)device handoffContext:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  deviceCopy = device;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = TUSplitSessionInfo;
   v12 = [(TUSplitSessionInfo *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_conversationID, a3);
-    objc_storeStrong(&v13->_device, a4);
-    objc_storeStrong(&v13->_handoffContext, a5);
+    objc_storeStrong(&v12->_conversationID, d);
+    objc_storeStrong(&v13->_device, device);
+    objc_storeStrong(&v13->_handoffContext, context);
   }
 
   return v13;
@@ -33,8 +33,8 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@ %p", v5, self];
 
-  v7 = [(NSUUID *)self->_conversationID UUIDString];
-  [v6 appendFormat:@" conversationID=%@", v7];
+  uUIDString = [(NSUUID *)self->_conversationID UUIDString];
+  [v6 appendFormat:@" conversationID=%@", uUIDString];
 
   v8 = [(TUNearbyDeviceHandle *)self->_device description];
   [v6 appendFormat:@" device=%@", v8];
@@ -48,39 +48,39 @@
   return v10;
 }
 
-- (TUSplitSessionInfo)initWithCoder:(id)a3
+- (TUSplitSessionInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_conversationID);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_device);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v11 = objc_opt_class();
   v12 = NSStringFromSelector(sel_handoffContext);
-  v13 = [v4 decodeObjectOfClass:v11 forKey:v12];
+  v13 = [coderCopy decodeObjectOfClass:v11 forKey:v12];
 
   v14 = [(TUSplitSessionInfo *)self initWithConversationID:v7 device:v10 handoffContext:v13];
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   conversationID = self->_conversationID;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_conversationID);
-  [v5 encodeObject:conversationID forKey:v6];
+  [coderCopy encodeObject:conversationID forKey:v6];
 
   device = self->_device;
   v8 = NSStringFromSelector(sel_device);
-  [v5 encodeObject:device forKey:v8];
+  [coderCopy encodeObject:device forKey:v8];
 
   handoffContext = self->_handoffContext;
   v10 = NSStringFromSelector(sel_handoffContext);
-  [v5 encodeObject:handoffContext forKey:v10];
+  [coderCopy encodeObject:handoffContext forKey:v10];
 }
 
 @end

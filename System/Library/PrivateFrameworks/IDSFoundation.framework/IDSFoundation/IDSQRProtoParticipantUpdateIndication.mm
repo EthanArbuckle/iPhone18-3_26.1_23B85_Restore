@@ -1,16 +1,16 @@
 @interface IDSQRProtoParticipantUpdateIndication
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unint64_t)participantIdListAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unint64_t)participantIdListAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasOperationFlags:(BOOL)a3;
-- (void)setHasSessionStateCounter:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasOperationFlags:(BOOL)flags;
+- (void)setHasSessionStateCounter:(BOOL)counter;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoParticipantUpdateIndication
@@ -23,25 +23,25 @@
   [(IDSQRProtoParticipantUpdateIndication *)&v3 dealloc];
 }
 
-- (unint64_t)participantIdListAtIndex:(unint64_t)a3
+- (unint64_t)participantIdListAtIndex:(unint64_t)index
 {
   p_participantIdLists = &self->_participantIdLists;
   count = self->_participantIdLists.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_participantIdLists->list[a3];
+  return p_participantIdLists->list[index];
 }
 
-- (void)setHasOperationFlags:(BOOL)a3
+- (void)setHasOperationFlags:(BOOL)flags
 {
-  if (a3)
+  if (flags)
   {
     v3 = 2;
   }
@@ -54,9 +54,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSessionStateCounter:(BOOL)a3
+- (void)setHasSessionStateCounter:(BOOL)counter
 {
-  if (a3)
+  if (counter)
   {
     v3 = 4;
   }
@@ -75,23 +75,23 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoParticipantUpdateIndication;
   v4 = [(IDSQRProtoParticipantUpdateIndication *)&v8 description];
-  v5 = [(IDSQRProtoParticipantUpdateIndication *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoParticipantUpdateIndication *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = PBRepeatedUInt64NSArray();
-  [v3 setObject:v4 forKey:@"participant_id_list"];
+  [dictionary setObject:v4 forKey:@"participant_id_list"];
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_operationFlags];
-    [v3 setObject:v8 forKey:@"operation_flags"];
+    [dictionary setObject:v8 forKey:@"operation_flags"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -112,31 +112,31 @@ LABEL_3:
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_txnId];
-  [v3 setObject:v9 forKey:@"txn_id"];
+  [dictionary setObject:v9 forKey:@"txn_id"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_sessionStateCounter];
-    [v3 setObject:v6 forKey:@"session_state_counter"];
+    [dictionary setObject:v6 forKey:@"session_state_counter"];
   }
 
 LABEL_5:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_participantIdLists.count)
   {
     v5 = 0;
     do
     {
       PBDataWriterWriteUint64Field();
-      v4 = v7;
+      toCopy = v7;
       ++v5;
     }
 
@@ -147,7 +147,7 @@ LABEL_5:
   if ((has & 2) != 0)
   {
     PBDataWriterWriteUint32Field();
-    v4 = v7;
+    toCopy = v7;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -167,30 +167,30 @@ LABEL_6:
   }
 
   PBDataWriterWriteUint64Field();
-  v4 = v7;
+  toCopy = v7;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_7:
     PBDataWriterWriteUint32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
 LABEL_8:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(IDSQRProtoParticipantUpdateIndication *)self participantIdListsCount])
   {
-    [v8 clearParticipantIdLists];
-    v4 = [(IDSQRProtoParticipantUpdateIndication *)self participantIdListsCount];
-    if (v4)
+    [toCopy clearParticipantIdLists];
+    participantIdListsCount = [(IDSQRProtoParticipantUpdateIndication *)self participantIdListsCount];
+    if (participantIdListsCount)
     {
-      v5 = v4;
+      v5 = participantIdListsCount;
       for (i = 0; i != v5; ++i)
       {
-        [v8 addParticipantIdList:{-[IDSQRProtoParticipantUpdateIndication participantIdListAtIndex:](self, "participantIdListAtIndex:", i)}];
+        [toCopy addParticipantIdList:{-[IDSQRProtoParticipantUpdateIndication participantIdListAtIndex:](self, "participantIdListAtIndex:", i)}];
       }
     }
   }
@@ -198,8 +198,8 @@ LABEL_8:
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v8 + 10) = self->_operationFlags;
-    *(v8 + 48) |= 2u;
+    *(toCopy + 10) = self->_operationFlags;
+    *(toCopy + 48) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -218,21 +218,21 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v8 + 4) = self->_txnId;
-  *(v8 + 48) |= 1u;
+  *(toCopy + 4) = self->_txnId;
+  *(toCopy + 48) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_8:
-    *(v8 + 11) = self->_sessionStateCounter;
-    *(v8 + 48) |= 4u;
+    *(toCopy + 11) = self->_sessionStateCounter;
+    *(toCopy + 48) |= 4u;
   }
 
 LABEL_9:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   PBRepeatedUInt64Copy();
   has = self->_has;
   if ((has & 2) == 0)
@@ -272,23 +272,23 @@ LABEL_4:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || !PBRepeatedUInt64IsEqual())
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || !PBRepeatedUInt64IsEqual())
   {
     goto LABEL_17;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_operationFlags != *(v4 + 10))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_operationFlags != *(equalCopy + 10))
     {
       goto LABEL_17;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
 LABEL_17:
     v5 = 0;
@@ -297,21 +297,21 @@ LABEL_17:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_txnId != *(v4 + 4))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_txnId != *(equalCopy + 4))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_17;
   }
 
-  v5 = (*(v4 + 48) & 4) == 0;
+  v5 = (*(equalCopy + 48) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_sessionStateCounter != *(v4 + 11))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_sessionStateCounter != *(equalCopy + 11))
     {
       goto LABEL_17;
     }
@@ -365,25 +365,25 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v8 = a3;
-  v4 = [v8 participantIdListsCount];
-  if (v4)
+  fromCopy = from;
+  participantIdListsCount = [fromCopy participantIdListsCount];
+  if (participantIdListsCount)
   {
-    v5 = v4;
+    v5 = participantIdListsCount;
     for (i = 0; i != v5; ++i)
     {
-      -[IDSQRProtoParticipantUpdateIndication addParticipantIdList:](self, "addParticipantIdList:", [v8 participantIdListAtIndex:i]);
+      -[IDSQRProtoParticipantUpdateIndication addParticipantIdList:](self, "addParticipantIdList:", [fromCopy participantIdListAtIndex:i]);
     }
   }
 
-  v7 = *(v8 + 48);
+  v7 = *(fromCopy + 48);
   if ((v7 & 2) != 0)
   {
-    self->_operationFlags = *(v8 + 10);
+    self->_operationFlags = *(fromCopy + 10);
     *&self->_has |= 2u;
-    v7 = *(v8 + 48);
+    v7 = *(fromCopy + 48);
     if ((v7 & 1) == 0)
     {
 LABEL_6:
@@ -396,17 +396,17 @@ LABEL_6:
     }
   }
 
-  else if ((*(v8 + 48) & 1) == 0)
+  else if ((*(fromCopy + 48) & 1) == 0)
   {
     goto LABEL_6;
   }
 
-  self->_txnId = *(v8 + 4);
+  self->_txnId = *(fromCopy + 4);
   *&self->_has |= 1u;
-  if ((*(v8 + 48) & 4) != 0)
+  if ((*(fromCopy + 48) & 4) != 0)
   {
 LABEL_7:
-    self->_sessionStateCounter = *(v8 + 11);
+    self->_sessionStateCounter = *(fromCopy + 11);
     *&self->_has |= 4u;
   }
 

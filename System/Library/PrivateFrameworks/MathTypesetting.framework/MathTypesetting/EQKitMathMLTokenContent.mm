@@ -1,18 +1,18 @@
 @interface EQKitMathMLTokenContent
-- (EQKitMathMLTokenContent)initWithChildren:(id)a3;
+- (EQKitMathMLTokenContent)initWithChildren:(id)children;
 - (void)dealloc;
 @end
 
 @implementation EQKitMathMLTokenContent
 
-- (EQKitMathMLTokenContent)initWithChildren:(id)a3
+- (EQKitMathMLTokenContent)initWithChildren:(id)children
 {
   v6.receiver = self;
   v6.super_class = EQKitMathMLTokenContent;
   v4 = [(EQKitMathMLTokenContent *)&v6 init];
   if (v4)
   {
-    v4->mChildren = [a3 copy];
+    v4->mChildren = [children copy];
   }
 
   return v4;

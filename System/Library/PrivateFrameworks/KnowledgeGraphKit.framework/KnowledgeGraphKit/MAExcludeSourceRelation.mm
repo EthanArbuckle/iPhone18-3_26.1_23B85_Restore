@@ -1,20 +1,20 @@
 @interface MAExcludeSourceRelation
-+ (id)scanRelationWithScanner:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (MAExcludeSourceRelation)initWithBase:(id)a3;
-- (id)adjacencyByJoiningWithAdjacency:(id)a3 graph:(id)a4;
-- (id)adjacencyWithStartNodeIdentifiers:(id)a3 graph:(id)a4;
++ (id)scanRelationWithScanner:(id)scanner;
+- (BOOL)isEqual:(id)equal;
+- (MAExcludeSourceRelation)initWithBase:(id)base;
+- (id)adjacencyByJoiningWithAdjacency:(id)adjacency graph:(id)graph;
+- (id)adjacencyWithStartNodeIdentifiers:(id)identifiers graph:(id)graph;
 - (id)inverse;
 - (id)visualString;
-- (void)unionAdjacencySetFromSourceNodeIdentifiers:(id)a3 toTargetNodeIdentifiers:(id)a4 graph:(id)a5;
+- (void)unionAdjacencySetFromSourceNodeIdentifiers:(id)identifiers toTargetNodeIdentifiers:(id)nodeIdentifiers graph:(id)graph;
 @end
 
 @implementation MAExcludeSourceRelation
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -25,8 +25,8 @@
     if (v5 == objc_opt_class())
     {
       base = self->_base;
-      v8 = [(MAExcludeSourceRelation *)v4 base];
-      v6 = [(MARelation *)base isEqual:v8];
+      base = [(MAExcludeSourceRelation *)equalCopy base];
+      v6 = [(MARelation *)base isEqual:base];
     }
 
     else
@@ -41,93 +41,93 @@
 - (id)visualString
 {
   v3 = [@"-{" mutableCopy];
-  v4 = [(MARelation *)self->_base visualString];
-  [v3 appendString:v4];
+  visualString = [(MARelation *)self->_base visualString];
+  [v3 appendString:visualString];
 
   [v3 appendString:@"}!"];
 
   return v3;
 }
 
-- (id)adjacencyByJoiningWithAdjacency:(id)a3 graph:(id)a4
+- (id)adjacencyByJoiningWithAdjacency:(id)adjacency graph:(id)graph
 {
   base = self->_base;
-  v6 = a3;
-  v7 = [(MARelation *)base adjacencyByJoiningWithAdjacency:v6 graph:a4];
-  v8 = [v7 differenceWith:v6];
+  adjacencyCopy = adjacency;
+  v7 = [(MARelation *)base adjacencyByJoiningWithAdjacency:adjacencyCopy graph:graph];
+  v8 = [v7 differenceWith:adjacencyCopy];
 
   return v8;
 }
 
-- (id)adjacencyWithStartNodeIdentifiers:(id)a3 graph:(id)a4
+- (id)adjacencyWithStartNodeIdentifiers:(id)identifiers graph:(id)graph
 {
   base = self->_base;
-  v6 = a3;
-  v7 = [(MARelation *)base adjacencyWithStartNodeIdentifiers:v6 graph:a4];
-  v8 = [KGDirectedBinaryAdjacency identityWith:v6];
+  identifiersCopy = identifiers;
+  v7 = [(MARelation *)base adjacencyWithStartNodeIdentifiers:identifiersCopy graph:graph];
+  v8 = [KGDirectedBinaryAdjacency identityWith:identifiersCopy];
 
   v9 = [v7 differenceWith:v8];
 
   return v9;
 }
 
-- (void)unionAdjacencySetFromSourceNodeIdentifiers:(id)a3 toTargetNodeIdentifiers:(id)a4 graph:(id)a5
+- (void)unionAdjacencySetFromSourceNodeIdentifiers:(id)identifiers toTargetNodeIdentifiers:(id)nodeIdentifiers graph:(id)graph
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  graphCopy = graph;
+  nodeIdentifiersCopy = nodeIdentifiers;
+  identifiersCopy = identifiers;
   v11 = objc_alloc_init(KGMutableElementIdentifierSet);
-  [(MARelation *)self->_base unionAdjacencySetFromSourceNodeIdentifiers:v10 toTargetNodeIdentifiers:v11 graph:v8];
+  [(MARelation *)self->_base unionAdjacencySetFromSourceNodeIdentifiers:identifiersCopy toTargetNodeIdentifiers:v11 graph:graphCopy];
 
-  [(KGMutableElementIdentifierSet *)v11 subtractIdentifierSet:v10];
-  [v9 unionWithIdentifierSet:v11];
+  [(KGMutableElementIdentifierSet *)v11 subtractIdentifierSet:identifiersCopy];
+  [nodeIdentifiersCopy unionWithIdentifierSet:v11];
 }
 
 - (id)inverse
 {
-  v2 = [(MARelation *)self->_base inverse];
-  v3 = [v2 excludeSource];
+  inverse = [(MARelation *)self->_base inverse];
+  excludeSource = [inverse excludeSource];
 
-  return v3;
+  return excludeSource;
 }
 
-- (MAExcludeSourceRelation)initWithBase:(id)a3
+- (MAExcludeSourceRelation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = MAExcludeSourceRelation;
-  v6 = [(MARelation *)&v9 initForSubclassing];
-  v7 = v6;
-  if (v6)
+  initForSubclassing = [(MARelation *)&v9 initForSubclassing];
+  v7 = initForSubclassing;
+  if (initForSubclassing)
   {
-    objc_storeStrong(v6 + 1, a3);
+    objc_storeStrong(initForSubclassing + 1, base);
   }
 
   return v7;
 }
 
-+ (id)scanRelationWithScanner:(id)a3
++ (id)scanRelationWithScanner:(id)scanner
 {
-  v3 = a3;
-  v4 = [v3 scanLocation];
-  if ([v3 scanString:@"-{" intoString:0])
+  scannerCopy = scanner;
+  scanLocation = [scannerCopy scanLocation];
+  if ([scannerCopy scanString:@"-{" intoString:0])
   {
-    v5 = [MARelation scanRelationWithScanner:v3];
-    if (v5 && ([v3 scanString:@"}!" intoString:0] & 1) != 0)
+    v5 = [MARelation scanRelationWithScanner:scannerCopy];
+    if (v5 && ([scannerCopy scanString:@"}!" intoString:0] & 1) != 0)
     {
       v6 = [[MAExcludeSourceRelation alloc] initWithBase:v5];
     }
 
     else
     {
-      [v3 setScanLocation:v4];
+      [scannerCopy setScanLocation:scanLocation];
       v6 = 0;
     }
   }
 
   else
   {
-    [v3 setScanLocation:v4];
+    [scannerCopy setScanLocation:scanLocation];
     v6 = 0;
   }
 

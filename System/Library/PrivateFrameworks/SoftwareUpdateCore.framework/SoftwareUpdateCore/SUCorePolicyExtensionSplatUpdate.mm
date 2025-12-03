@@ -1,14 +1,14 @@
 @interface SUCorePolicyExtensionSplatUpdate
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SUCorePolicyExtensionSplatUpdate)init;
-- (SUCorePolicyExtensionSplatUpdate)initWithCoder:(id)a3;
-- (id)_stringRemovingParenthesis:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUCorePolicyExtensionSplatUpdate)initWithCoder:(id)coder;
+- (id)_stringRemovingParenthesis:(id)parenthesis;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)filterSoftwareUpdateAssetArray:(id)a3;
+- (id)filterSoftwareUpdateAssetArray:(id)array;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
-- (void)extendMASoftwareUpdateCatalogDownloadOptions:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)extendMASoftwareUpdateCatalogDownloadOptions:(id)options;
 @end
 
 @implementation SUCorePolicyExtensionSplatUpdate
@@ -20,59 +20,59 @@
   v2 = [(SUCorePolicyExtension *)&v37 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D64418] sharedDevice];
-    v4 = [v3 splatCryptex1RestoreVersion];
+    mEMORY[0x277D64418] = [MEMORY[0x277D64418] sharedDevice];
+    splatCryptex1RestoreVersion = [mEMORY[0x277D64418] splatCryptex1RestoreVersion];
     installedSplatRestoreVersion = v2->_installedSplatRestoreVersion;
-    v2->_installedSplatRestoreVersion = v4;
+    v2->_installedSplatRestoreVersion = splatCryptex1RestoreVersion;
 
-    v6 = [MEMORY[0x277D64418] sharedDevice];
-    v7 = [v6 splatCryptex1ProductVersion];
+    mEMORY[0x277D64418]2 = [MEMORY[0x277D64418] sharedDevice];
+    splatCryptex1ProductVersion = [mEMORY[0x277D64418]2 splatCryptex1ProductVersion];
     installedSplatProductVersion = v2->_installedSplatProductVersion;
-    v2->_installedSplatProductVersion = v7;
+    v2->_installedSplatProductVersion = splatCryptex1ProductVersion;
 
-    v9 = [MEMORY[0x277D64418] sharedDevice];
-    v10 = [v9 splatCryptex1ProductVersionExtra];
+    mEMORY[0x277D64418]3 = [MEMORY[0x277D64418] sharedDevice];
+    splatCryptex1ProductVersionExtra = [mEMORY[0x277D64418]3 splatCryptex1ProductVersionExtra];
     installedSplatProductVersionExtra = v2->_installedSplatProductVersionExtra;
-    v2->_installedSplatProductVersionExtra = v10;
+    v2->_installedSplatProductVersionExtra = splatCryptex1ProductVersionExtra;
 
-    v12 = [MEMORY[0x277D64418] sharedDevice];
-    v13 = [v12 splatCryptex1BuildVersion];
+    mEMORY[0x277D64418]4 = [MEMORY[0x277D64418] sharedDevice];
+    splatCryptex1BuildVersion = [mEMORY[0x277D64418]4 splatCryptex1BuildVersion];
     installedSplatBuildVersion = v2->_installedSplatBuildVersion;
-    v2->_installedSplatBuildVersion = v13;
+    v2->_installedSplatBuildVersion = splatCryptex1BuildVersion;
 
-    v15 = [MEMORY[0x277D64418] sharedDevice];
-    v16 = [v15 splatCryptex1ReleaseType];
+    mEMORY[0x277D64418]5 = [MEMORY[0x277D64418] sharedDevice];
+    splatCryptex1ReleaseType = [mEMORY[0x277D64418]5 splatCryptex1ReleaseType];
     installedSplatReleaseType = v2->_installedSplatReleaseType;
-    v2->_installedSplatReleaseType = v16;
+    v2->_installedSplatReleaseType = splatCryptex1ReleaseType;
 
-    v18 = [MEMORY[0x277D64418] sharedDevice];
-    v19 = [v18 releaseType];
-    if (v19)
+    mEMORY[0x277D64418]6 = [MEMORY[0x277D64418] sharedDevice];
+    releaseType = [mEMORY[0x277D64418]6 releaseType];
+    if (releaseType)
     {
       v20 = v2->_installedSplatReleaseType;
 
       if (v20)
       {
 LABEL_6:
-        v23 = [MEMORY[0x277D64418] sharedDevice];
-        v24 = [v23 restoreVersion];
+        mEMORY[0x277D64418]7 = [MEMORY[0x277D64418] sharedDevice];
+        restoreVersion = [mEMORY[0x277D64418]7 restoreVersion];
         installedBaseOSRestoreVersion = v2->_installedBaseOSRestoreVersion;
-        v2->_installedBaseOSRestoreVersion = v24;
+        v2->_installedBaseOSRestoreVersion = restoreVersion;
 
-        v26 = [MEMORY[0x277D64418] sharedDevice];
-        v27 = [v26 productVersion];
+        mEMORY[0x277D64418]8 = [MEMORY[0x277D64418] sharedDevice];
+        productVersion = [mEMORY[0x277D64418]8 productVersion];
         installedBaseOSProductVersion = v2->_installedBaseOSProductVersion;
-        v2->_installedBaseOSProductVersion = v27;
+        v2->_installedBaseOSProductVersion = productVersion;
 
-        v29 = [MEMORY[0x277D64418] sharedDevice];
-        v30 = [v29 buildVersion];
+        mEMORY[0x277D64418]9 = [MEMORY[0x277D64418] sharedDevice];
+        buildVersion = [mEMORY[0x277D64418]9 buildVersion];
         installedBaseOSBuildVersion = v2->_installedBaseOSBuildVersion;
-        v2->_installedBaseOSBuildVersion = v30;
+        v2->_installedBaseOSBuildVersion = buildVersion;
 
-        v32 = [MEMORY[0x277D64418] sharedDevice];
-        v33 = [v32 releaseType];
+        mEMORY[0x277D64418]10 = [MEMORY[0x277D64418] sharedDevice];
+        releaseType2 = [mEMORY[0x277D64418]10 releaseType];
         installedBaseOSReleaseType = v2->_installedBaseOSReleaseType;
-        v2->_installedBaseOSReleaseType = v33;
+        v2->_installedBaseOSReleaseType = releaseType2;
 
         requestedSplatRestoreVersion = v2->_requestedSplatRestoreVersion;
         v2->_requestedSplatRestoreVersion = 0;
@@ -81,10 +81,10 @@ LABEL_6:
         return v2;
       }
 
-      v18 = [MEMORY[0x277D64418] sharedDevice];
-      v21 = [v18 releaseType];
+      mEMORY[0x277D64418]6 = [MEMORY[0x277D64418] sharedDevice];
+      releaseType3 = [mEMORY[0x277D64418]6 releaseType];
       v22 = v2->_installedSplatReleaseType;
-      v2->_installedSplatReleaseType = v21;
+      v2->_installedSplatReleaseType = releaseType3;
     }
 
     goto LABEL_6;
@@ -93,13 +93,13 @@ LABEL_6:
   return v2;
 }
 
-- (id)_stringRemovingParenthesis:(id)a3
+- (id)_stringRemovingParenthesis:(id)parenthesis
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  parenthesisCopy = parenthesis;
+  v4 = parenthesisCopy;
+  if (parenthesisCopy)
   {
-    v5 = objc_msgSend(v3, "stringByReplacingOccurrencesOfString:withString:", @"("), &stru_28469CC48;
+    v5 = objc_msgSend(parenthesisCopy, "stringByReplacingOccurrencesOfString:withString:", @"("), &stru_28469CC48;
     v6 = [v5 stringByReplacingOccurrencesOfString:@"" withString:?], &stru_28469CC48);
   }
 
@@ -111,17 +111,17 @@ LABEL_6:
   return v6;
 }
 
-- (id)filterSoftwareUpdateAssetArray:(id)a3
+- (id)filterSoftwareUpdateAssetArray:(id)array
 {
   v122 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v89 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v90 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v104 = 0u;
   v105 = 0u;
   v106 = 0u;
   v107 = 0u;
-  v5 = v4;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v104 objects:v121 count:16];
   v91 = v5;
   if (!v6)
@@ -132,7 +132,7 @@ LABEL_6:
   v7 = v6;
   v8 = 0x277D28000uLL;
   v97 = *v105;
-  v92 = self;
+  selfCopy = self;
   do
   {
     v9 = 0;
@@ -149,30 +149,30 @@ LABEL_6:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [v10 attributes];
-        v13 = [v12 safeStringForKey:@"ReleaseType"];
+        attributes = [v10 attributes];
+        oslog4 = [attributes safeStringForKey:@"ReleaseType"];
 
         v14 = MEMORY[0x277D643F8];
-        v15 = [MEMORY[0x277D64418] sharedDevice];
-        v16 = [v15 releaseType];
-        LOBYTE(v14) = [v14 stringIsEqual:v13 to:v16];
+        mEMORY[0x277D64418] = [MEMORY[0x277D64418] sharedDevice];
+        releaseType = [mEMORY[0x277D64418] releaseType];
+        LOBYTE(v14) = [v14 stringIsEqual:oslog4 to:releaseType];
 
         if (v14)
         {
-          v17 = self;
+          selfCopy2 = self;
           v18 = v5;
-          v19 = [v10 attributes];
-          v20 = [v19 safeObjectForKey:@"Revoked" ofClass:objc_opt_class()];
+          attributes2 = [v10 attributes];
+          v20 = [attributes2 safeObjectForKey:@"Revoked" ofClass:objc_opt_class()];
 
           v94 = v20;
-          v21 = [v20 BOOLValue];
-          v22 = [v10 attributes];
-          v23 = [v22 safeStringForKey:@"RestoreVersion"];
+          bOOLValue = [v20 BOOLValue];
+          attributes3 = [v10 attributes];
+          v23 = [attributes3 safeStringForKey:@"RestoreVersion"];
 
           v24 = objc_alloc(MEMORY[0x277D64490]);
-          v25 = v17;
-          v26 = [(SUCorePolicyExtensionSplatUpdate *)v17 installedSplatRestoreVersion];
-          v27 = [v24 initWithRestoreVersion:v26];
+          v25 = selfCopy2;
+          installedSplatRestoreVersion = [(SUCorePolicyExtensionSplatUpdate *)selfCopy2 installedSplatRestoreVersion];
+          v27 = [v24 initWithRestoreVersion:installedSplatRestoreVersion];
 
           v28 = [objc_alloc(MEMORY[0x277D64490]) initWithRestoreVersion:v23];
           v93 = v27;
@@ -181,24 +181,24 @@ LABEL_6:
           {
             v29 = [v27 compare:v28];
             v30 = v29;
-            if (v21)
+            if (bOOLValue)
             {
               v5 = v18;
               if (v29)
               {
-                v31 = [MEMORY[0x277D64460] sharedLogger];
-                v32 = [v31 oslog];
+                mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+                oslog = [mEMORY[0x277D64460] oslog];
 
-                v33 = v94;
-                if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+                oslog3 = v94;
+                if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138543874;
-                  v110 = v23;
+                  selfCopy7 = v23;
                   v111 = 2114;
-                  v112 = v13;
+                  v112 = oslog4;
                   v113 = 2114;
                   v114 = @"NO";
-                  v34 = v32;
+                  v34 = oslog;
                   goto LABEL_26;
                 }
               }
@@ -206,19 +206,19 @@ LABEL_6:
               else
               {
                 [v89 addObject:v10];
-                v50 = [MEMORY[0x277D64460] sharedLogger];
-                v32 = [v50 oslog];
+                mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+                oslog = [mEMORY[0x277D64460]2 oslog];
 
-                v33 = v94;
-                if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+                oslog3 = v94;
+                if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138543874;
-                  v110 = v23;
+                  selfCopy7 = v23;
                   v111 = 2114;
-                  v112 = v13;
+                  v112 = oslog4;
                   v113 = 2114;
                   v114 = @"YES";
-                  v34 = v32;
+                  v34 = oslog;
 LABEL_26:
                   _os_log_impl(&dword_23193C000, v34, OS_LOG_TYPE_DEFAULT, "[POLICY] filtering revoked asset by restore version, restoreVersion=%{public}@, releaseType=%{public}@ | keep=%{public}@", buf, 0x20u);
                 }
@@ -227,8 +227,8 @@ LABEL_26:
 
             else
             {
-              v42 = [(SUCorePolicyExtensionSplatUpdate *)v25 installedSplatProductVersionExtra];
-              v43 = [(SUCorePolicyExtensionSplatUpdate *)v25 _stringRemovingParenthesis:v42];
+              installedSplatProductVersionExtra = [(SUCorePolicyExtensionSplatUpdate *)v25 installedSplatProductVersionExtra];
+              v43 = [(SUCorePolicyExtensionSplatUpdate *)v25 _stringRemovingParenthesis:installedSplatProductVersionExtra];
               v44 = v43;
               v45 = &stru_28469CC48;
               if (v43)
@@ -236,15 +236,15 @@ LABEL_26:
                 v45 = v43;
               }
 
-              v32 = v45;
+              oslog = v45;
 
-              v46 = [v10 attributes];
-              v47 = [v46 safeStringForKey:@"ProductVersionExtra"];
+              attributes4 = [v10 attributes];
+              v47 = [attributes4 safeStringForKey:@"ProductVersionExtra"];
               v48 = [(SUCorePolicyExtensionSplatUpdate *)v25 _stringRemovingParenthesis:v47];
 
               if (v48)
               {
-                v49 = [v32 compare:v48 options:1]== -1;
+                v49 = [oslog compare:v48 options:1]== -1;
               }
 
               else
@@ -252,8 +252,8 @@ LABEL_26:
                 v49 = 0;
               }
 
-              v33 = v94;
-              if (v30 == -1 || !v30 && ([(SUCorePolicyExtensionSplatUpdate *)v92 allowSameRestoreVersion]|| v49))
+              oslog3 = v94;
+              if (v30 == -1 || !v30 && ([(SUCorePolicyExtensionSplatUpdate *)selfCopy allowSameRestoreVersion]|| v49))
               {
                 [v90 addObject:v10];
                 v51 = 1;
@@ -264,15 +264,15 @@ LABEL_26:
                 v51 = 0;
               }
 
-              v52 = [MEMORY[0x277D64460] sharedLogger];
-              v53 = [v52 oslog];
+              mEMORY[0x277D64460]3 = [MEMORY[0x277D64460] sharedLogger];
+              oslog2 = [mEMORY[0x277D64460]3 oslog];
 
-              if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
+              if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
               {
-                v54 = [(SUCorePolicyExtensionSplatUpdate *)v92 allowSameRestoreVersion];
+                allowSameRestoreVersion = [(SUCorePolicyExtensionSplatUpdate *)selfCopy allowSameRestoreVersion];
                 *buf = 138544642;
                 v55 = @"YES";
-                if (v54)
+                if (allowSameRestoreVersion)
                 {
                   v56 = @"YES";
                 }
@@ -282,23 +282,23 @@ LABEL_26:
                   v56 = @"NO";
                 }
 
-                v110 = v23;
+                selfCopy7 = v23;
                 if (!v51)
                 {
                   v55 = @"NO";
                 }
 
                 v111 = 2114;
-                v112 = v13;
+                v112 = oslog4;
                 v113 = 2114;
-                v114 = v32;
+                v114 = oslog;
                 v115 = 2114;
                 v116 = v48;
                 v117 = 2114;
                 v118 = v56;
                 v119 = 2114;
                 v120 = v55;
-                _os_log_impl(&dword_23193C000, v53, OS_LOG_TYPE_DEFAULT, "[POLICY] filtering update asset by restore version, restoreVersion=%{public}@, releaseType=%{public}@ installedProductVersionExtra=%{public}@ targetProductVersionExtra=%{public}@ allowSameRestoreVersion=%{public}@ | keep=%{public}@", buf, 0x3Eu);
+                _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "[POLICY] filtering update asset by restore version, restoreVersion=%{public}@, releaseType=%{public}@ installedProductVersionExtra=%{public}@ targetProductVersionExtra=%{public}@ allowSameRestoreVersion=%{public}@ | keep=%{public}@", buf, 0x3Eu);
               }
 
               v5 = v91;
@@ -309,45 +309,45 @@ LABEL_26:
 
           else
           {
-            v41 = [MEMORY[0x277D64460] sharedLogger];
-            v32 = [v41 oslog];
+            mEMORY[0x277D64460]4 = [MEMORY[0x277D64460] sharedLogger];
+            oslog = [mEMORY[0x277D64460]4 oslog];
 
             v5 = v18;
-            if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543874;
-              v110 = v92;
+              selfCopy7 = selfCopy;
               v111 = 2114;
               v112 = v27;
               v113 = 2114;
               v114 = v96;
-              _os_log_impl(&dword_23193C000, v32, OS_LOG_TYPE_DEFAULT, "%{public}@ Incomparable RestoreVersion. Skipping asset for installedSplatRestoreVersion=%{public}@ targetSplatRestoreVersion=%{public}@", buf, 0x20u);
+              _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ Incomparable RestoreVersion. Skipping asset for installedSplatRestoreVersion=%{public}@ targetSplatRestoreVersion=%{public}@", buf, 0x20u);
             }
 
             v7 = v95;
-            v33 = v94;
+            oslog3 = v94;
           }
 
-          self = v92;
+          self = selfCopy;
         }
 
         else
         {
-          v38 = [MEMORY[0x277D64460] sharedLogger];
-          v33 = [v38 oslog];
+          mEMORY[0x277D64460]5 = [MEMORY[0x277D64460] sharedLogger];
+          oslog3 = [mEMORY[0x277D64460]5 oslog];
 
           v7 = v95;
-          if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
           {
-            v39 = [MEMORY[0x277D64418] sharedDevice];
-            v40 = [v39 releaseType];
+            mEMORY[0x277D64418]2 = [MEMORY[0x277D64418] sharedDevice];
+            releaseType2 = [mEMORY[0x277D64418]2 releaseType];
             *buf = 138543874;
-            v110 = self;
+            selfCopy7 = self;
             v111 = 2114;
-            v112 = v13;
+            v112 = oslog4;
             v113 = 2114;
-            v114 = v40;
-            _os_log_impl(&dword_23193C000, v33, OS_LOG_TYPE_DEFAULT, "%{public}@ Incompatible asset ReleaseType: %{public}@ Device ReleaseType: %{public}@", buf, 0x20u);
+            v114 = releaseType2;
+            _os_log_impl(&dword_23193C000, oslog3, OS_LOG_TYPE_DEFAULT, "%{public}@ Incompatible asset ReleaseType: %{public}@ Device ReleaseType: %{public}@", buf, 0x20u);
           }
         }
 
@@ -355,18 +355,18 @@ LABEL_26:
         goto LABEL_44;
       }
 
-      v35 = [MEMORY[0x277D64460] sharedLogger];
-      v13 = [v35 oslog];
+      mEMORY[0x277D64460]6 = [MEMORY[0x277D64460] sharedLogger];
+      oslog4 = [mEMORY[0x277D64460]6 oslog];
 
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
       {
         v36 = objc_opt_class();
         v37 = NSStringFromClass(v36);
         *buf = 138543618;
-        v110 = self;
+        selfCopy7 = self;
         v111 = 2112;
         v112 = v37;
-        _os_log_impl(&dword_23193C000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Unexpected type in MobileAsset asset array: %@", buf, 0x16u);
+        _os_log_impl(&dword_23193C000, oslog4, OS_LOG_TYPE_DEFAULT, "%{public}@ Unexpected type in MobileAsset asset array: %@", buf, 0x16u);
       }
 
 LABEL_44:
@@ -383,9 +383,9 @@ LABEL_46:
 
   v57 = objc_alloc(MEMORY[0x277D64408]);
   v58 = [v57 initWithProjectName:*MEMORY[0x277D64540]];
-  v59 = [v58 getStringConfigForKey:*MEMORY[0x277D64508]];
+  lastObject = [v58 getStringConfigForKey:*MEMORY[0x277D64508]];
 
-  if (v59)
+  if (lastObject)
   {
     goto LABEL_57;
   }
@@ -410,8 +410,8 @@ LABEL_46:
           objc_enumerationMutation(v61);
         }
 
-        v66 = [*(*(&v100 + 1) + 8 * i) attributes];
-        v67 = [v66 safeStringForKey:@"ProductVersionExtra"];
+        attributes5 = [*(*(&v100 + 1) + 8 * i) attributes];
+        v67 = [attributes5 safeStringForKey:@"ProductVersionExtra"];
 
         if (v67)
         {
@@ -426,22 +426,22 @@ LABEL_46:
   }
 
   v68 = [v60 sortedArrayUsingSelector:sel_compare_];
-  v59 = [v68 lastObject];
+  lastObject = [v68 lastObject];
 
-  if (v59)
+  if (lastObject)
   {
 LABEL_57:
-    v69 = [MEMORY[0x277D64460] sharedLogger];
-    v70 = [v69 oslog];
+    mEMORY[0x277D64460]7 = [MEMORY[0x277D64460] sharedLogger];
+    oslog5 = [mEMORY[0x277D64460]7 oslog];
 
-    if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog5, OS_LOG_TYPE_DEFAULT))
     {
       v71 = [v90 count];
       *buf = 134218242;
-      v110 = v71;
+      selfCopy7 = v71;
       v111 = 2114;
-      v112 = v59;
-      _os_log_impl(&dword_23193C000, v70, OS_LOG_TYPE_DEFAULT, "[POLICY] %lu update assets before filtering for productVersionExtra=%{public}@", buf, 0x16u);
+      v112 = lastObject;
+      _os_log_impl(&dword_23193C000, oslog5, OS_LOG_TYPE_DEFAULT, "[POLICY] %lu update assets before filtering for productVersionExtra=%{public}@", buf, 0x16u);
     }
 
     v72 = MEMORY[0x277CCAC30];
@@ -449,23 +449,23 @@ LABEL_57:
     v98[1] = 3221225472;
     v98[2] = __67__SUCorePolicyExtensionSplatUpdate_filterSoftwareUpdateAssetArray___block_invoke;
     v98[3] = &unk_27892C8F8;
-    v59 = v59;
-    v99 = v59;
+    lastObject = lastObject;
+    v99 = lastObject;
     v73 = [v72 predicateWithBlock:v98];
     v74 = [v90 filteredArrayUsingPredicate:v73];
 
     v61 = [v74 mutableCopy];
-    v75 = [MEMORY[0x277D64460] sharedLogger];
-    v76 = [v75 oslog];
+    mEMORY[0x277D64460]8 = [MEMORY[0x277D64460] sharedLogger];
+    oslog6 = [mEMORY[0x277D64460]8 oslog];
 
-    if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog6, OS_LOG_TYPE_DEFAULT))
     {
       v77 = [v61 count];
       *buf = 134218242;
-      v110 = v77;
+      selfCopy7 = v77;
       v111 = 2114;
-      v112 = v59;
-      _os_log_impl(&dword_23193C000, v76, OS_LOG_TYPE_DEFAULT, "[POLICY] %lu update assets left after filtering for productVersionExtra=%{public}@", buf, 0x16u);
+      v112 = lastObject;
+      _os_log_impl(&dword_23193C000, oslog6, OS_LOG_TYPE_DEFAULT, "[POLICY] %lu update assets left after filtering for productVersionExtra=%{public}@", buf, 0x16u);
     }
 
     v78 = v91;
@@ -479,22 +479,22 @@ LABEL_57:
   if (![v61 count])
   {
     v82 = [v89 count];
-    v83 = [MEMORY[0x277D64460] sharedLogger];
-    v80 = [v83 oslog];
+    mEMORY[0x277D64460]9 = [MEMORY[0x277D64460] sharedLogger];
+    oslog7 = [mEMORY[0x277D64460]9 oslog];
 
-    v84 = os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT);
+    v84 = os_log_type_enabled(oslog7, OS_LOG_TYPE_DEFAULT);
     if (v82)
     {
       v78 = v91;
       if (v84)
       {
         *buf = 138543618;
-        v110 = self;
+        selfCopy7 = self;
         v111 = 2082;
         v112 = "[SUCorePolicyExtensionSplatUpdate filterSoftwareUpdateAssetArray:]";
         v85 = "%{public}@ %{public}s - Returning splat rollback";
 LABEL_72:
-        _os_log_impl(&dword_23193C000, v80, OS_LOG_TYPE_DEFAULT, v85, buf, 0x16u);
+        _os_log_impl(&dword_23193C000, oslog7, OS_LOG_TYPE_DEFAULT, v85, buf, 0x16u);
       }
     }
 
@@ -504,7 +504,7 @@ LABEL_72:
       if (v84)
       {
         *buf = 138543618;
-        v110 = self;
+        selfCopy7 = self;
         v111 = 2082;
         v112 = "[SUCorePolicyExtensionSplatUpdate filterSoftwareUpdateAssetArray:]";
         v85 = "%{public}@ %{public}s - Returning empty asset set";
@@ -516,16 +516,16 @@ LABEL_72:
     goto LABEL_74;
   }
 
-  v79 = [MEMORY[0x277D64460] sharedLogger];
-  v80 = [v79 oslog];
+  mEMORY[0x277D64460]10 = [MEMORY[0x277D64460] sharedLogger];
+  oslog7 = [mEMORY[0x277D64460]10 oslog];
 
-  if (os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v110 = self;
+    selfCopy7 = self;
     v111 = 2082;
     v112 = "[SUCorePolicyExtensionSplatUpdate filterSoftwareUpdateAssetArray:]";
-    _os_log_impl(&dword_23193C000, v80, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}s - Returning splat updates", buf, 0x16u);
+    _os_log_impl(&dword_23193C000, oslog7, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}s - Returning splat updates", buf, 0x16u);
   }
 
   v81 = v61;
@@ -573,67 +573,67 @@ uint64_t __67__SUCorePolicyExtensionSplatUpdate_filterSoftwareUpdateAssetArray__
   return v7;
 }
 
-- (void)extendMASoftwareUpdateCatalogDownloadOptions:(id)a3
+- (void)extendMASoftwareUpdateCatalogDownloadOptions:(id)options
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [MEMORY[0x277D64418] sharedDevice];
-    v6 = [v5 hasSplat];
+    mEMORY[0x277D64418] = [MEMORY[0x277D64418] sharedDevice];
+    hasSplat = [mEMORY[0x277D64418] hasSplat];
 
-    if (v6)
+    if (hasSplat)
     {
-      v7 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSReleaseType];
-      [v4 setPrerequisiteReleaseType:v7];
+      installedBaseOSReleaseType = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSReleaseType];
+      [optionsCopy setPrerequisiteReleaseType:installedBaseOSReleaseType];
 
-      v8 = [v4 prerequisiteReleaseType];
-      v9 = [@"|" stringByAppendingFormat:@"releaseType:%@|", v8];
+      prerequisiteReleaseType = [optionsCopy prerequisiteReleaseType];
+      v9 = [@"|" stringByAppendingFormat:@"releaseType:%@|", prerequisiteReleaseType];
 
-      [v4 setAllowSameVersion:{-[SUCorePolicyExtensionSplatUpdate allowSameRestoreVersion](self, "allowSameRestoreVersion")}];
-      v10 = [v4 allowSameVersion];
+      [optionsCopy setAllowSameVersion:{-[SUCorePolicyExtensionSplatUpdate allowSameRestoreVersion](self, "allowSameRestoreVersion")}];
+      allowSameVersion = [optionsCopy allowSameVersion];
       v11 = @"NO";
-      if (v10)
+      if (allowSameVersion)
       {
         v11 = @"YES";
       }
 
       v12 = [v9 stringByAppendingFormat:@"allowSameVersion:%@|", v11];
 
-      v13 = [v4 additionalServerParams];
-      v14 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSBuildVersion];
-      [v13 setSafeObject:v14 forKey:@"Build"];
+      additionalServerParams = [optionsCopy additionalServerParams];
+      installedBaseOSBuildVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSBuildVersion];
+      [additionalServerParams setSafeObject:installedBaseOSBuildVersion forKey:@"Build"];
 
-      v15 = [v4 additionalServerParams];
-      v16 = [v15 safeStringForKey:@"Build"];
+      additionalServerParams2 = [optionsCopy additionalServerParams];
+      v16 = [additionalServerParams2 safeStringForKey:@"Build"];
       v17 = [v12 stringByAppendingFormat:@"%@:%@|", @"Build", v16];
 
-      v18 = [v4 additionalServerParams];
-      v19 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatProductVersionExtra];
-      [v18 setSafeObject:v19 forKey:@"ProductVersionExtra"];
+      additionalServerParams3 = [optionsCopy additionalServerParams];
+      installedSplatProductVersionExtra = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatProductVersionExtra];
+      [additionalServerParams3 setSafeObject:installedSplatProductVersionExtra forKey:@"ProductVersionExtra"];
 
-      v20 = [v4 additionalServerParams];
-      v21 = [v20 safeStringForKey:@"ProductVersionExtra"];
+      additionalServerParams4 = [optionsCopy additionalServerParams];
+      v21 = [additionalServerParams4 safeStringForKey:@"ProductVersionExtra"];
       v22 = [v17 stringByAppendingFormat:@"%@:%@|", @"ProductVersionExtra", v21];
 
-      v23 = [v4 additionalServerParams];
-      v24 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatRestoreVersion];
-      [v23 setSafeObject:v24 forKey:@"InstalledSplatRestoreVersion"];
+      additionalServerParams5 = [optionsCopy additionalServerParams];
+      installedSplatRestoreVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatRestoreVersion];
+      [additionalServerParams5 setSafeObject:installedSplatRestoreVersion forKey:@"InstalledSplatRestoreVersion"];
 
-      v25 = [v4 additionalServerParams];
-      v26 = [v25 safeStringForKey:@"InstalledSplatRestoreVersion"];
+      additionalServerParams6 = [optionsCopy additionalServerParams];
+      v26 = [additionalServerParams6 safeStringForKey:@"InstalledSplatRestoreVersion"];
       v27 = [v22 stringByAppendingFormat:@"%@:%@|", @"InstalledSplatRestoreVersion", v26];
 
-      v28 = [v4 additionalServerParams];
-      v29 = [(SUCorePolicyExtensionSplatUpdate *)self requestedSplatRestoreVersion];
-      [v28 setSafeObject:v29 forKey:@"RequestedRestoreVersion"];
+      additionalServerParams7 = [optionsCopy additionalServerParams];
+      requestedSplatRestoreVersion = [(SUCorePolicyExtensionSplatUpdate *)self requestedSplatRestoreVersion];
+      [additionalServerParams7 setSafeObject:requestedSplatRestoreVersion forKey:@"RequestedRestoreVersion"];
 
-      v30 = [v4 additionalServerParams];
-      v31 = [v30 safeStringForKey:@"RequestedRestoreVersion"];
+      additionalServerParams8 = [optionsCopy additionalServerParams];
+      v31 = [additionalServerParams8 safeStringForKey:@"RequestedRestoreVersion"];
       v32 = [v27 stringByAppendingFormat:@"%@:%@|", @"RequestedRestoreVersion", v31];
 
-      v33 = [v4 additionalServerParams];
+      additionalServerParams9 = [optionsCopy additionalServerParams];
       if ([(SUCorePolicyExtensionSplatUpdate *)self allowSameRestoreVersion])
       {
         v34 = @"true";
@@ -644,43 +644,43 @@ uint64_t __67__SUCorePolicyExtensionSplatUpdate_filterSoftwareUpdateAssetArray__
         v34 = @"false";
       }
 
-      [v33 setSafeObject:v34 forKey:@"AllowSameRestoreVersion"];
+      [additionalServerParams9 setSafeObject:v34 forKey:@"AllowSameRestoreVersion"];
 
-      v35 = [v4 additionalServerParams];
-      v36 = [v35 safeStringForKey:@"AllowSameRestoreVersion"];
+      additionalServerParams10 = [optionsCopy additionalServerParams];
+      v36 = [additionalServerParams10 safeStringForKey:@"AllowSameRestoreVersion"];
       v37 = [v32 stringByAppendingFormat:@"%@:%@|", @"AllowSameRestoreVersion", v36];
     }
 
     else
     {
-      v35 = [MEMORY[0x277D64428] sharedDiag];
+      additionalServerParams10 = [MEMORY[0x277D64428] sharedDiag];
       v36 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@ without hasSplat = YES, yet calling extendMASoftwareUpdateCatalogDownloadOptions (no extended download options will be added)", self];
-      [v35 trackAnomaly:@"[POLICY] DOWNLOAD_OPTIONS" forReason:v36 withResult:8102 withError:0];
+      [additionalServerParams10 trackAnomaly:@"[POLICY] DOWNLOAD_OPTIONS" forReason:v36 withResult:8102 withError:0];
       v37 = @"|";
     }
 
-    v40 = [MEMORY[0x277D64460] sharedLogger];
-    v39 = [v40 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v43 = self;
+      selfCopy = self;
       v44 = 2114;
       v45 = v37;
-      _os_log_impl(&dword_23193C000, v39, OS_LOG_TYPE_DEFAULT, "%{public}@ downloading software update catalog with extended download options: %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ downloading software update catalog with extended download options: %{public}@", buf, 0x16u);
     }
   }
 
   else
   {
-    v38 = [MEMORY[0x277D64460] sharedLogger];
-    v39 = [v38 oslog];
+    mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460]2 oslog];
 
-    if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_23193C000, v39, OS_LOG_TYPE_DEFAULT, "Options class is not MAMsuDownloadOptions, so unable to set splat options.", buf, 2u);
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "Options class is not MAMsuDownloadOptions, so unable to set splat options.", buf, 2u);
     }
 
     v37 = @"|";
@@ -689,100 +689,100 @@ uint64_t __67__SUCorePolicyExtensionSplatUpdate_filterSoftwareUpdateAssetArray__
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (SUCorePolicyExtensionSplatUpdate)initWithCoder:(id)a3
+- (SUCorePolicyExtensionSplatUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = SUCorePolicyExtensionSplatUpdate;
   v5 = [(SUCorePolicyExtension *)&v27 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installedSplatRestoreVersion"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installedSplatRestoreVersion"];
     installedSplatRestoreVersion = v5->_installedSplatRestoreVersion;
     v5->_installedSplatRestoreVersion = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installedSplatBuildVersion"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installedSplatBuildVersion"];
     installedSplatBuildVersion = v5->_installedSplatBuildVersion;
     v5->_installedSplatBuildVersion = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installedSplatProductVersion"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installedSplatProductVersion"];
     installedSplatProductVersion = v5->_installedSplatProductVersion;
     v5->_installedSplatProductVersion = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installedSplatProductVersionExtra"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installedSplatProductVersionExtra"];
     installedSplatProductVersionExtra = v5->_installedSplatProductVersionExtra;
     v5->_installedSplatProductVersionExtra = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installedSplatReleaseType"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installedSplatReleaseType"];
     installedSplatReleaseType = v5->_installedSplatReleaseType;
     v5->_installedSplatReleaseType = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installedBaseOSRestoreVersion"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installedBaseOSRestoreVersion"];
     installedBaseOSRestoreVersion = v5->_installedBaseOSRestoreVersion;
     v5->_installedBaseOSRestoreVersion = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installedBaseOSBuildVersion"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installedBaseOSBuildVersion"];
     installedBaseOSBuildVersion = v5->_installedBaseOSBuildVersion;
     v5->_installedBaseOSBuildVersion = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installedBaseOSProductVersion"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installedBaseOSProductVersion"];
     installedBaseOSProductVersion = v5->_installedBaseOSProductVersion;
     v5->_installedBaseOSProductVersion = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installedBaseOSReleaseType"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installedBaseOSReleaseType"];
     installedBaseOSReleaseType = v5->_installedBaseOSReleaseType;
     v5->_installedBaseOSReleaseType = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestedSplatRestoreVersion"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestedSplatRestoreVersion"];
     requestedSplatRestoreVersion = v5->_requestedSplatRestoreVersion;
     v5->_requestedSplatRestoreVersion = v24;
 
-    v5->_allowSameRestoreVersion = [v4 decodeBoolForKey:@"allowSameRestoreVersion"];
+    v5->_allowSameRestoreVersion = [coderCopy decodeBoolForKey:@"allowSameRestoreVersion"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v14 = a3;
-  v4 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatRestoreVersion];
-  [v14 encodeObject:v4 forKey:@"installedSplatRestoreVersion"];
+  coderCopy = coder;
+  installedSplatRestoreVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatRestoreVersion];
+  [coderCopy encodeObject:installedSplatRestoreVersion forKey:@"installedSplatRestoreVersion"];
 
-  v5 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatBuildVersion];
-  [v14 encodeObject:v5 forKey:@"installedSplatBuildVersion"];
+  installedSplatBuildVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatBuildVersion];
+  [coderCopy encodeObject:installedSplatBuildVersion forKey:@"installedSplatBuildVersion"];
 
-  v6 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatProductVersion];
-  [v14 encodeObject:v6 forKey:@"installedSplatProductVersion"];
+  installedSplatProductVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatProductVersion];
+  [coderCopy encodeObject:installedSplatProductVersion forKey:@"installedSplatProductVersion"];
 
-  v7 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatProductVersionExtra];
-  [v14 encodeObject:v7 forKey:@"installedSplatProductVersionExtra"];
+  installedSplatProductVersionExtra = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatProductVersionExtra];
+  [coderCopy encodeObject:installedSplatProductVersionExtra forKey:@"installedSplatProductVersionExtra"];
 
-  v8 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatReleaseType];
-  [v14 encodeObject:v8 forKey:@"installedSplatReleaseType"];
+  installedSplatReleaseType = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatReleaseType];
+  [coderCopy encodeObject:installedSplatReleaseType forKey:@"installedSplatReleaseType"];
 
-  v9 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSRestoreVersion];
-  [v14 encodeObject:v9 forKey:@"installedBaseOSRestoreVersion"];
+  installedBaseOSRestoreVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSRestoreVersion];
+  [coderCopy encodeObject:installedBaseOSRestoreVersion forKey:@"installedBaseOSRestoreVersion"];
 
-  v10 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSBuildVersion];
-  [v14 encodeObject:v10 forKey:@"installedBaseOSBuildVersion"];
+  installedBaseOSBuildVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSBuildVersion];
+  [coderCopy encodeObject:installedBaseOSBuildVersion forKey:@"installedBaseOSBuildVersion"];
 
-  v11 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSProductVersion];
-  [v14 encodeObject:v11 forKey:@"installedBaseOSProductVersion"];
+  installedBaseOSProductVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSProductVersion];
+  [coderCopy encodeObject:installedBaseOSProductVersion forKey:@"installedBaseOSProductVersion"];
 
-  v12 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSReleaseType];
-  [v14 encodeObject:v12 forKey:@"installedBaseOSReleaseType"];
+  installedBaseOSReleaseType = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSReleaseType];
+  [coderCopy encodeObject:installedBaseOSReleaseType forKey:@"installedBaseOSReleaseType"];
 
-  v13 = [(SUCorePolicyExtensionSplatUpdate *)self requestedSplatRestoreVersion];
-  [v14 encodeObject:v13 forKey:@"requestedSplatRestoreVersion"];
+  requestedSplatRestoreVersion = [(SUCorePolicyExtensionSplatUpdate *)self requestedSplatRestoreVersion];
+  [coderCopy encodeObject:requestedSplatRestoreVersion forKey:@"requestedSplatRestoreVersion"];
 
-  [v14 encodeBool:-[SUCorePolicyExtensionSplatUpdate allowSameRestoreVersion](self forKey:{"allowSameRestoreVersion"), @"allowSameRestoreVersion"}];
+  [coderCopy encodeBool:-[SUCorePolicyExtensionSplatUpdate allowSameRestoreVersion](self forKey:{"allowSameRestoreVersion"), @"allowSameRestoreVersion"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v34) = 1;
   }
@@ -792,70 +792,70 @@ uint64_t __67__SUCorePolicyExtensionSplatUpdate_filterSoftwareUpdateAssetArray__
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = MEMORY[0x277D643F8];
-      v7 = [(SUCorePolicyExtensionSplatUpdate *)v5 installedSplatRestoreVersion];
-      v8 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatRestoreVersion];
-      if ([v6 stringIsEqual:v7 to:v8])
+      installedSplatRestoreVersion = [(SUCorePolicyExtensionSplatUpdate *)v5 installedSplatRestoreVersion];
+      installedSplatRestoreVersion2 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatRestoreVersion];
+      if ([v6 stringIsEqual:installedSplatRestoreVersion to:installedSplatRestoreVersion2])
       {
         v9 = MEMORY[0x277D643F8];
-        v10 = [(SUCorePolicyExtensionSplatUpdate *)v5 installedSplatBuildVersion];
-        v11 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatBuildVersion];
-        if ([v9 stringIsEqual:v10 to:v11])
+        installedSplatBuildVersion = [(SUCorePolicyExtensionSplatUpdate *)v5 installedSplatBuildVersion];
+        installedSplatBuildVersion2 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatBuildVersion];
+        if ([v9 stringIsEqual:installedSplatBuildVersion to:installedSplatBuildVersion2])
         {
           v12 = MEMORY[0x277D643F8];
-          v13 = [(SUCorePolicyExtensionSplatUpdate *)v5 installedSplatProductVersion];
+          installedSplatProductVersion = [(SUCorePolicyExtensionSplatUpdate *)v5 installedSplatProductVersion];
           [(SUCorePolicyExtensionSplatUpdate *)self installedSplatProductVersion];
-          v48 = v49 = v13;
-          if ([v12 stringIsEqual:v13 to:v48])
+          v48 = v49 = installedSplatProductVersion;
+          if ([v12 stringIsEqual:installedSplatProductVersion to:v48])
           {
             v14 = MEMORY[0x277D643F8];
-            v15 = [(SUCorePolicyExtensionSplatUpdate *)v5 installedSplatProductVersionExtra];
-            v46 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatProductVersionExtra];
-            v47 = v15;
-            if ([v14 stringIsEqual:v15 to:v46])
+            installedSplatProductVersionExtra = [(SUCorePolicyExtensionSplatUpdate *)v5 installedSplatProductVersionExtra];
+            installedSplatProductVersionExtra2 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatProductVersionExtra];
+            v47 = installedSplatProductVersionExtra;
+            if ([v14 stringIsEqual:installedSplatProductVersionExtra to:installedSplatProductVersionExtra2])
             {
               v16 = MEMORY[0x277D643F8];
-              v17 = [(SUCorePolicyExtensionSplatUpdate *)v5 installedSplatReleaseType];
-              v44 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatReleaseType];
-              v45 = v17;
-              if ([v16 stringIsEqual:v17 to:v44])
+              installedSplatReleaseType = [(SUCorePolicyExtensionSplatUpdate *)v5 installedSplatReleaseType];
+              installedSplatReleaseType2 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatReleaseType];
+              v45 = installedSplatReleaseType;
+              if ([v16 stringIsEqual:installedSplatReleaseType to:installedSplatReleaseType2])
               {
                 v18 = MEMORY[0x277D643F8];
-                v19 = [(SUCorePolicyExtensionSplatUpdate *)v5 installedBaseOSRestoreVersion];
-                v42 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSRestoreVersion];
-                v43 = v19;
-                if ([v18 stringIsEqual:v19 to:v42])
+                installedBaseOSRestoreVersion = [(SUCorePolicyExtensionSplatUpdate *)v5 installedBaseOSRestoreVersion];
+                installedBaseOSRestoreVersion2 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSRestoreVersion];
+                v43 = installedBaseOSRestoreVersion;
+                if ([v18 stringIsEqual:installedBaseOSRestoreVersion to:installedBaseOSRestoreVersion2])
                 {
                   v20 = MEMORY[0x277D643F8];
-                  v21 = [(SUCorePolicyExtensionSplatUpdate *)v5 installedBaseOSBuildVersion];
-                  v40 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSBuildVersion];
-                  v41 = v21;
-                  if ([v20 stringIsEqual:v21 to:v40])
+                  installedBaseOSBuildVersion = [(SUCorePolicyExtensionSplatUpdate *)v5 installedBaseOSBuildVersion];
+                  installedBaseOSBuildVersion2 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSBuildVersion];
+                  v41 = installedBaseOSBuildVersion;
+                  if ([v20 stringIsEqual:installedBaseOSBuildVersion to:installedBaseOSBuildVersion2])
                   {
                     v22 = MEMORY[0x277D643F8];
-                    v23 = [(SUCorePolicyExtensionSplatUpdate *)v5 installedBaseOSProductVersion];
-                    v38 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSProductVersion];
-                    v39 = v23;
-                    if ([v22 stringIsEqual:v23 to:v38])
+                    installedBaseOSProductVersion = [(SUCorePolicyExtensionSplatUpdate *)v5 installedBaseOSProductVersion];
+                    installedBaseOSProductVersion2 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSProductVersion];
+                    v39 = installedBaseOSProductVersion;
+                    if ([v22 stringIsEqual:installedBaseOSProductVersion to:installedBaseOSProductVersion2])
                     {
                       v24 = MEMORY[0x277D643F8];
-                      v25 = [(SUCorePolicyExtensionSplatUpdate *)v5 installedBaseOSReleaseType];
-                      v26 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSReleaseType];
-                      v37 = v25;
-                      v27 = v25;
-                      v28 = v26;
-                      if ([v24 stringIsEqual:v27 to:v26])
+                      installedBaseOSReleaseType = [(SUCorePolicyExtensionSplatUpdate *)v5 installedBaseOSReleaseType];
+                      installedBaseOSReleaseType2 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSReleaseType];
+                      v37 = installedBaseOSReleaseType;
+                      v27 = installedBaseOSReleaseType;
+                      v28 = installedBaseOSReleaseType2;
+                      if ([v24 stringIsEqual:v27 to:installedBaseOSReleaseType2])
                       {
                         v29 = MEMORY[0x277D643F8];
-                        v30 = [(SUCorePolicyExtensionSplatUpdate *)v5 requestedSplatRestoreVersion];
-                        v31 = [(SUCorePolicyExtensionSplatUpdate *)self requestedSplatRestoreVersion];
+                        requestedSplatRestoreVersion = [(SUCorePolicyExtensionSplatUpdate *)v5 requestedSplatRestoreVersion];
+                        requestedSplatRestoreVersion2 = [(SUCorePolicyExtensionSplatUpdate *)self requestedSplatRestoreVersion];
                         v32 = v29;
-                        v33 = v31;
-                        if ([v32 stringIsEqual:v30 to:?])
+                        v33 = requestedSplatRestoreVersion2;
+                        if ([v32 stringIsEqual:requestedSplatRestoreVersion to:?])
                         {
-                          v36 = [(SUCorePolicyExtensionSplatUpdate *)v5 allowSameRestoreVersion];
-                          v34 = v36 ^ [(SUCorePolicyExtensionSplatUpdate *)self allowSameRestoreVersion]^ 1;
+                          allowSameRestoreVersion = [(SUCorePolicyExtensionSplatUpdate *)v5 allowSameRestoreVersion];
+                          v34 = allowSameRestoreVersion ^ [(SUCorePolicyExtensionSplatUpdate *)self allowSameRestoreVersion]^ 1;
                         }
 
                         else
@@ -929,13 +929,13 @@ uint64_t __67__SUCorePolicyExtensionSplatUpdate_filterSoftwareUpdateAssetArray__
 
 - (id)summary
 {
-  v3 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatRestoreVersion];
+  installedSplatRestoreVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatRestoreVersion];
 
-  if (v3)
+  if (installedSplatRestoreVersion)
   {
     v4 = objc_alloc(MEMORY[0x277CCACA8]);
-    v5 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatRestoreVersion];
-    v6 = [v4 initWithFormat:@"|installedSplatRestoreVersion=%@", v5];
+    installedSplatRestoreVersion2 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatRestoreVersion];
+    v6 = [v4 initWithFormat:@"|installedSplatRestoreVersion=%@", installedSplatRestoreVersion2];
     v7 = [&stru_28469CC48 stringByAppendingString:v6];
   }
 
@@ -944,118 +944,118 @@ uint64_t __67__SUCorePolicyExtensionSplatUpdate_filterSoftwareUpdateAssetArray__
     v7 = &stru_28469CC48;
   }
 
-  v8 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatProductVersion];
+  installedSplatProductVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatProductVersion];
 
-  if (v8)
+  if (installedSplatProductVersion)
   {
     v9 = objc_alloc(MEMORY[0x277CCACA8]);
-    v10 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatProductVersion];
-    v11 = [v9 initWithFormat:@"|installedSplatProductVersion=%@", v10];
+    installedSplatProductVersion2 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatProductVersion];
+    v11 = [v9 initWithFormat:@"|installedSplatProductVersion=%@", installedSplatProductVersion2];
     v12 = [(__CFString *)v7 stringByAppendingString:v11];
 
     v7 = v12;
   }
 
-  v13 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatProductVersionExtra];
+  installedSplatProductVersionExtra = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatProductVersionExtra];
 
-  if (v13)
+  if (installedSplatProductVersionExtra)
   {
     v14 = objc_alloc(MEMORY[0x277CCACA8]);
-    v15 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatProductVersionExtra];
-    v16 = [v14 initWithFormat:@"|installedSplatProductVersionExtra=%@", v15];
+    installedSplatProductVersionExtra2 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatProductVersionExtra];
+    v16 = [v14 initWithFormat:@"|installedSplatProductVersionExtra=%@", installedSplatProductVersionExtra2];
     v17 = [(__CFString *)v7 stringByAppendingString:v16];
 
     v7 = v17;
   }
 
-  v18 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatReleaseType];
+  installedSplatReleaseType = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatReleaseType];
 
-  if (v18)
+  if (installedSplatReleaseType)
   {
     v19 = objc_alloc(MEMORY[0x277CCACA8]);
-    v20 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatReleaseType];
-    v21 = [v19 initWithFormat:@"|installedSplatReleaseType=%@", v20];
+    installedSplatReleaseType2 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatReleaseType];
+    v21 = [v19 initWithFormat:@"|installedSplatReleaseType=%@", installedSplatReleaseType2];
     v22 = [(__CFString *)v7 stringByAppendingString:v21];
 
     v7 = v22;
   }
 
-  v23 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatBuildVersion];
+  installedSplatBuildVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatBuildVersion];
 
-  if (v23)
+  if (installedSplatBuildVersion)
   {
     v24 = objc_alloc(MEMORY[0x277CCACA8]);
-    v25 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatBuildVersion];
-    v26 = [v24 initWithFormat:@"|installedSplatBuildVersion=%@", v25];
+    installedSplatBuildVersion2 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatBuildVersion];
+    v26 = [v24 initWithFormat:@"|installedSplatBuildVersion=%@", installedSplatBuildVersion2];
     v27 = [(__CFString *)v7 stringByAppendingString:v26];
 
     v7 = v27;
   }
 
-  v28 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSRestoreVersion];
+  installedBaseOSRestoreVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSRestoreVersion];
 
-  if (v28)
+  if (installedBaseOSRestoreVersion)
   {
     v29 = objc_alloc(MEMORY[0x277CCACA8]);
-    v30 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSRestoreVersion];
-    v31 = [v29 initWithFormat:@"|installedBaseOSRestoreVersion=%@", v30];
+    installedBaseOSRestoreVersion2 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSRestoreVersion];
+    v31 = [v29 initWithFormat:@"|installedBaseOSRestoreVersion=%@", installedBaseOSRestoreVersion2];
     v32 = [(__CFString *)v7 stringByAppendingString:v31];
 
     v7 = v32;
   }
 
-  v33 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSProductVersion];
+  installedBaseOSProductVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSProductVersion];
 
-  if (v33)
+  if (installedBaseOSProductVersion)
   {
     v34 = objc_alloc(MEMORY[0x277CCACA8]);
-    v35 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSProductVersion];
-    v36 = [v34 initWithFormat:@"|installedBaseOSProductVersion=%@", v35];
+    installedBaseOSProductVersion2 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSProductVersion];
+    v36 = [v34 initWithFormat:@"|installedBaseOSProductVersion=%@", installedBaseOSProductVersion2];
     v37 = [(__CFString *)v7 stringByAppendingString:v36];
 
     v7 = v37;
   }
 
-  v38 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSReleaseType];
+  installedBaseOSReleaseType = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSReleaseType];
 
-  if (v38)
+  if (installedBaseOSReleaseType)
   {
     v39 = objc_alloc(MEMORY[0x277CCACA8]);
-    v40 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSReleaseType];
-    v41 = [v39 initWithFormat:@"|installedBaseOSReleaseType=%@", v40];
+    installedBaseOSReleaseType2 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSReleaseType];
+    v41 = [v39 initWithFormat:@"|installedBaseOSReleaseType=%@", installedBaseOSReleaseType2];
     v42 = [(__CFString *)v7 stringByAppendingString:v41];
 
     v7 = v42;
   }
 
-  v43 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSBuildVersion];
+  installedBaseOSBuildVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSBuildVersion];
 
-  if (v43)
+  if (installedBaseOSBuildVersion)
   {
     v44 = objc_alloc(MEMORY[0x277CCACA8]);
-    v45 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSBuildVersion];
-    v46 = [v44 initWithFormat:@"|installedBaseOSBuildVersion=%@", v45];
+    installedBaseOSBuildVersion2 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSBuildVersion];
+    v46 = [v44 initWithFormat:@"|installedBaseOSBuildVersion=%@", installedBaseOSBuildVersion2];
     v47 = [(__CFString *)v7 stringByAppendingString:v46];
 
     v7 = v47;
   }
 
-  v48 = [(SUCorePolicyExtensionSplatUpdate *)self requestedSplatRestoreVersion];
+  requestedSplatRestoreVersion = [(SUCorePolicyExtensionSplatUpdate *)self requestedSplatRestoreVersion];
 
-  if (v48)
+  if (requestedSplatRestoreVersion)
   {
     v49 = objc_alloc(MEMORY[0x277CCACA8]);
-    v50 = [(SUCorePolicyExtensionSplatUpdate *)self requestedSplatRestoreVersion];
-    v51 = [v49 initWithFormat:@"|requestedSplatRestoreVersion=%@", v50];
+    requestedSplatRestoreVersion2 = [(SUCorePolicyExtensionSplatUpdate *)self requestedSplatRestoreVersion];
+    v51 = [v49 initWithFormat:@"|requestedSplatRestoreVersion=%@", requestedSplatRestoreVersion2];
     v52 = [(__CFString *)v7 stringByAppendingString:v51];
 
     v7 = v52;
   }
 
   v53 = objc_alloc(MEMORY[0x277CCACA8]);
-  v54 = [(SUCorePolicyExtensionSplatUpdate *)self allowSameRestoreVersion];
+  allowSameRestoreVersion = [(SUCorePolicyExtensionSplatUpdate *)self allowSameRestoreVersion];
   v55 = @"NO";
-  if (v54)
+  if (allowSameRestoreVersion)
   {
     v55 = @"YES";
   }
@@ -1076,61 +1076,61 @@ uint64_t __67__SUCorePolicyExtensionSplatUpdate_filterSoftwareUpdateAssetArray__
 - (id)description
 {
   v17 = objc_alloc(MEMORY[0x277CCACA8]);
-  v16 = [(SUCorePolicyExtensionSplatUpdate *)self extensionName];
-  v3 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatRestoreVersion];
-  v4 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatBuildVersion];
-  v5 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatProductVersion];
-  v15 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatProductVersionExtra];
-  v6 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatReleaseType];
-  v7 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSRestoreVersion];
-  v8 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSBuildVersion];
-  v9 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSProductVersion];
-  v10 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSReleaseType];
-  v11 = [(SUCorePolicyExtensionSplatUpdate *)self requestedSplatRestoreVersion];
-  v12 = [(SUCorePolicyExtensionSplatUpdate *)self allowSameRestoreVersion];
+  extensionName = [(SUCorePolicyExtensionSplatUpdate *)self extensionName];
+  installedSplatRestoreVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatRestoreVersion];
+  installedSplatBuildVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatBuildVersion];
+  installedSplatProductVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatProductVersion];
+  installedSplatProductVersionExtra = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatProductVersionExtra];
+  installedSplatReleaseType = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatReleaseType];
+  installedBaseOSRestoreVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSRestoreVersion];
+  installedBaseOSBuildVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSBuildVersion];
+  installedBaseOSProductVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSProductVersion];
+  installedBaseOSReleaseType = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSReleaseType];
+  requestedSplatRestoreVersion = [(SUCorePolicyExtensionSplatUpdate *)self requestedSplatRestoreVersion];
+  allowSameRestoreVersion = [(SUCorePolicyExtensionSplatUpdate *)self allowSameRestoreVersion];
   v13 = @"NO";
-  if (v12)
+  if (allowSameRestoreVersion)
   {
     v13 = @"YES";
   }
 
-  v18 = [v17 initWithFormat:@"%@(installedSplatRestoreVersion:%@|installedSplatBuildVersion:%@|installedSplatProductVersion:%@|installedSplatProductVersionExtra:%@|installedSplatReleaseType:%@|installedBaseOSRestoreVersion:%@|installedBaseOSBuildVersion:%@|installedBaseOSProductVersion:%@|installedBaseOSReleaseType:%@|requestedSplatRestoreVersion:%@|allowSameRestoreVersion:%@)", v16, v3, v4, v5, v15, v6, v7, v8, v9, v10, v11, v13];
+  v18 = [v17 initWithFormat:@"%@(installedSplatRestoreVersion:%@|installedSplatBuildVersion:%@|installedSplatProductVersion:%@|installedSplatProductVersionExtra:%@|installedSplatReleaseType:%@|installedBaseOSRestoreVersion:%@|installedBaseOSBuildVersion:%@|installedBaseOSProductVersion:%@|installedBaseOSReleaseType:%@|requestedSplatRestoreVersion:%@|allowSameRestoreVersion:%@)", extensionName, installedSplatRestoreVersion, installedSplatBuildVersion, installedSplatProductVersion, installedSplatProductVersionExtra, installedSplatReleaseType, installedBaseOSRestoreVersion, installedBaseOSBuildVersion, installedBaseOSProductVersion, installedBaseOSReleaseType, requestedSplatRestoreVersion, v13];
 
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SUCorePolicyExtensionSplatUpdate);
-  v5 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatRestoreVersion];
-  [(SUCorePolicyExtensionSplatUpdate *)v4 setInstalledSplatRestoreVersion:v5];
+  installedSplatRestoreVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatRestoreVersion];
+  [(SUCorePolicyExtensionSplatUpdate *)v4 setInstalledSplatRestoreVersion:installedSplatRestoreVersion];
 
-  v6 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatBuildVersion];
-  [(SUCorePolicyExtensionSplatUpdate *)v4 setInstalledSplatBuildVersion:v6];
+  installedSplatBuildVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatBuildVersion];
+  [(SUCorePolicyExtensionSplatUpdate *)v4 setInstalledSplatBuildVersion:installedSplatBuildVersion];
 
-  v7 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatProductVersion];
-  [(SUCorePolicyExtensionSplatUpdate *)v4 setInstalledSplatProductVersion:v7];
+  installedSplatProductVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatProductVersion];
+  [(SUCorePolicyExtensionSplatUpdate *)v4 setInstalledSplatProductVersion:installedSplatProductVersion];
 
-  v8 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatProductVersionExtra];
-  [(SUCorePolicyExtensionSplatUpdate *)v4 setInstalledSplatProductVersionExtra:v8];
+  installedSplatProductVersionExtra = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatProductVersionExtra];
+  [(SUCorePolicyExtensionSplatUpdate *)v4 setInstalledSplatProductVersionExtra:installedSplatProductVersionExtra];
 
-  v9 = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatReleaseType];
-  [(SUCorePolicyExtensionSplatUpdate *)v4 setInstalledSplatReleaseType:v9];
+  installedSplatReleaseType = [(SUCorePolicyExtensionSplatUpdate *)self installedSplatReleaseType];
+  [(SUCorePolicyExtensionSplatUpdate *)v4 setInstalledSplatReleaseType:installedSplatReleaseType];
 
-  v10 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSRestoreVersion];
-  [(SUCorePolicyExtensionSplatUpdate *)v4 setInstalledBaseOSRestoreVersion:v10];
+  installedBaseOSRestoreVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSRestoreVersion];
+  [(SUCorePolicyExtensionSplatUpdate *)v4 setInstalledBaseOSRestoreVersion:installedBaseOSRestoreVersion];
 
-  v11 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSBuildVersion];
-  [(SUCorePolicyExtensionSplatUpdate *)v4 setInstalledBaseOSBuildVersion:v11];
+  installedBaseOSBuildVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSBuildVersion];
+  [(SUCorePolicyExtensionSplatUpdate *)v4 setInstalledBaseOSBuildVersion:installedBaseOSBuildVersion];
 
-  v12 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSProductVersion];
-  [(SUCorePolicyExtensionSplatUpdate *)v4 setInstalledBaseOSProductVersion:v12];
+  installedBaseOSProductVersion = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSProductVersion];
+  [(SUCorePolicyExtensionSplatUpdate *)v4 setInstalledBaseOSProductVersion:installedBaseOSProductVersion];
 
-  v13 = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSReleaseType];
-  [(SUCorePolicyExtensionSplatUpdate *)v4 setInstalledBaseOSReleaseType:v13];
+  installedBaseOSReleaseType = [(SUCorePolicyExtensionSplatUpdate *)self installedBaseOSReleaseType];
+  [(SUCorePolicyExtensionSplatUpdate *)v4 setInstalledBaseOSReleaseType:installedBaseOSReleaseType];
 
-  v14 = [(SUCorePolicyExtensionSplatUpdate *)self requestedSplatRestoreVersion];
-  [(SUCorePolicyExtensionSplatUpdate *)v4 setRequestedSplatRestoreVersion:v14];
+  requestedSplatRestoreVersion = [(SUCorePolicyExtensionSplatUpdate *)self requestedSplatRestoreVersion];
+  [(SUCorePolicyExtensionSplatUpdate *)v4 setRequestedSplatRestoreVersion:requestedSplatRestoreVersion];
 
   [(SUCorePolicyExtensionSplatUpdate *)v4 setAllowSameRestoreVersion:[(SUCorePolicyExtensionSplatUpdate *)self allowSameRestoreVersion]];
   return v4;

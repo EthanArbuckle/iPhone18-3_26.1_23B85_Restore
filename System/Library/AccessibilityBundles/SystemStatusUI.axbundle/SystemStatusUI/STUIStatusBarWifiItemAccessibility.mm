@@ -1,21 +1,21 @@
 @interface STUIStatusBarWifiItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (STUIStatusBarWifiItemAccessibility)init;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation STUIStatusBarWifiItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STUIStatusBarWifiItem" hasInstanceMethod:@"applyUpdate:toDisplayItem:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"STUIStatusBarWifiItem" hasInstanceMethod:@"signalView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarWifiItem" hasInstanceMethod:@"networkIconView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarItemUpdate" hasInstanceMethod:@"data" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STStatusBarData" hasInstanceMethod:@"wifiEntry" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STStatusBarDataWifiEntry" hasInstanceMethod:@"type" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STUIStatusBarWifiItem" hasInstanceMethod:@"applyUpdate:toDisplayItem:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarWifiItem" hasInstanceMethod:@"signalView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarWifiItem" hasInstanceMethod:@"networkIconView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarItemUpdate" hasInstanceMethod:@"data" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STStatusBarData" hasInstanceMethod:@"wifiEntry" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STStatusBarDataWifiEntry" hasInstanceMethod:@"type" withFullSignature:{"q", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -68,13 +68,13 @@
   return v3;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
   v9.receiver = self;
   v9.super_class = STUIStatusBarWifiItemAccessibility;
-  v6 = a3;
-  v7 = [(STUIStatusBarWifiItemAccessibility *)&v9 applyUpdate:v6 toDisplayItem:a4];
-  [(STUIStatusBarWifiItemAccessibility *)self _accessibilitySetRetainedValue:v6 forKey:@"AccessibilityStatusBarUpdateData", v9.receiver, v9.super_class];
+  updateCopy = update;
+  v7 = [(STUIStatusBarWifiItemAccessibility *)&v9 applyUpdate:updateCopy toDisplayItem:item];
+  [(STUIStatusBarWifiItemAccessibility *)self _accessibilitySetRetainedValue:updateCopy forKey:@"AccessibilityStatusBarUpdateData", v9.receiver, v9.super_class];
 
   [(STUIStatusBarWifiItemAccessibility *)self _accessibilityLoadAccessibilityInformation];
 

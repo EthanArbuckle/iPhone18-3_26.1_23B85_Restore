@@ -1,31 +1,31 @@
 @interface WCMessageRequest
-- (BOOL)isEqual:(id)a3;
-- (WCMessageRequest)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WCMessageRequest)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WCMessageRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = WCMessageRequest;
-  v4 = a3;
-  [(WCMessage *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_expectsResponse forKey:{@"expectsResponse", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(WCMessage *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_expectsResponse forKey:{@"expectsResponse", v5.receiver, v5.super_class}];
 }
 
-- (WCMessageRequest)initWithCoder:(id)a3
+- (WCMessageRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = WCMessageRequest;
-  v5 = [(WCMessage *)&v7 initWithCoder:v4];
+  v5 = [(WCMessage *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_expectsResponse = [v4 decodeBoolForKey:@"expectsResponse"];
+    v5->_expectsResponse = [coderCopy decodeBoolForKey:@"expectsResponse"];
   }
 
   return v5;
@@ -36,10 +36,10 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WCMessage *)self pairingID];
-  v7 = [(WCMessage *)self identifier];
-  v8 = [(WCMessage *)self data];
-  v9 = [v8 length];
+  pairingID = [(WCMessage *)self pairingID];
+  identifier = [(WCMessage *)self identifier];
+  data = [(WCMessage *)self data];
+  v9 = [data length];
   if ([(WCMessage *)self isDictionaryMessage])
   {
     v10 = "YES";
@@ -60,16 +60,16 @@
     v11 = "NO";
   }
 
-  v12 = [v3 stringWithFormat:@"<%@: %p, pairingID: %@, identifier: %@, dataLength: %lu, isDictionary:%s, expectsResponse: %s>", v5, self, v6, v7, v9, v10, v11];
+  v12 = [v3 stringWithFormat:@"<%@: %p, pairingID: %@, identifier: %@, dataLength: %lu, isDictionary:%s, expectsResponse: %s>", v5, self, pairingID, identifier, v9, v10, v11];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v4.receiver = self;
   v4.super_class = WCMessageRequest;
-  return [(WCMessage *)&v4 isEqual:a3];
+  return [(WCMessage *)&v4 isEqual:equal];
 }
 
 - (unint64_t)hash

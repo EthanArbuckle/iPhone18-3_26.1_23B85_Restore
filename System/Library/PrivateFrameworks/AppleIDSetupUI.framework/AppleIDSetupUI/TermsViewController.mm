@@ -1,9 +1,9 @@
 @interface TermsViewController
 - (_TtC14AppleIDSetupUI19TermsViewController)init;
-- (_TtC14AppleIDSetupUI19TermsViewController)initWithCoder:(id)a3;
-- (_TtC14AppleIDSetupUI19TermsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)genericTermsRemoteUI:(id)a3 acceptedTermsInfo:(id)a4;
-- (void)genericTermsRemoteUI:(id)a3 didFinishWithSuccess:(BOOL)a4;
+- (_TtC14AppleIDSetupUI19TermsViewController)initWithCoder:(id)coder;
+- (_TtC14AppleIDSetupUI19TermsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)genericTermsRemoteUI:(id)i acceptedTermsInfo:(id)info;
+- (void)genericTermsRemoteUI:(id)i didFinishWithSuccess:(BOOL)success;
 @end
 
 @implementation TermsViewController
@@ -22,7 +22,7 @@
   return [(TermsViewController *)&v7 initWithNibName:0 bundle:0];
 }
 
-- (_TtC14AppleIDSetupUI19TermsViewController)initWithCoder:(id)a3
+- (_TtC14AppleIDSetupUI19TermsViewController)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC14AppleIDSetupUI19TermsViewController_termsInfoHandler);
   *v3 = 0;
@@ -35,16 +35,16 @@
   return result;
 }
 
-- (void)genericTermsRemoteUI:(id)a3 didFinishWithSuccess:(BOOL)a4
+- (void)genericTermsRemoteUI:(id)i didFinishWithSuccess:(BOOL)success
 {
-  v6 = a3;
-  v7 = self;
-  sub_24097A698(a4);
+  iCopy = i;
+  selfCopy = self;
+  sub_24097A698(success);
 }
 
-- (void)genericTermsRemoteUI:(id)a3 acceptedTermsInfo:(id)a4
+- (void)genericTermsRemoteUI:(id)i acceptedTermsInfo:(id)info
 {
-  if (a4)
+  if (info)
   {
     v6 = sub_240A2BEBC();
   }
@@ -54,12 +54,12 @@
     v6 = 0;
   }
 
-  v7 = a3;
-  v8 = self;
+  iCopy = i;
+  selfCopy = self;
   sub_24097A8DC(v6);
 }
 
-- (_TtC14AppleIDSetupUI19TermsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC14AppleIDSetupUI19TermsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

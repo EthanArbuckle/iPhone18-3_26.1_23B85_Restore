@@ -1,9 +1,9 @@
 @interface WCRURLList
-+ (id)_formattedStringFromURLString:(id)a3 fromBrowser:(BOOL)a4 removePort:(BOOL)a5;
-- (BOOL)containsURLString:(id)a3;
++ (id)_formattedStringFromURLString:(id)string fromBrowser:(BOOL)browser removePort:(BOOL)port;
+- (BOOL)containsURLString:(id)string;
 - (WCRURLList)init;
 - (id)allowedURLStrings;
-- (void)addURLString:(id)a3;
+- (void)addURLString:(id)string;
 @end
 
 @implementation WCRURLList
@@ -25,55 +25,55 @@
 
 - (id)allowedURLStrings
 {
-  v2 = [(WCRURLList *)self urlStringList];
-  v3 = [v2 copy];
+  urlStringList = [(WCRURLList *)self urlStringList];
+  v3 = [urlStringList copy];
 
   return v3;
 }
 
-+ (id)_formattedStringFromURLString:(id)a3 fromBrowser:(BOOL)a4 removePort:(BOOL)a5
++ (id)_formattedStringFromURLString:(id)string fromBrowser:(BOOL)browser removePort:(BOOL)port
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 stringByRemovingPercentEncoding];
-  if (!v8)
+  portCopy = port;
+  browserCopy = browser;
+  stringCopy = string;
+  stringByRemovingPercentEncoding = [stringCopy stringByRemovingPercentEncoding];
+  if (!stringByRemovingPercentEncoding)
   {
-    v8 = v7;
+    stringByRemovingPercentEncoding = stringCopy;
   }
 
-  v9 = [v8 stringByAddingPercentEscapesUsingEncoding:4];
+  v9 = [stringByRemovingPercentEncoding stringByAddingPercentEscapesUsingEncoding:4];
 
-  v10 = [v9 lowercaseString];
-  v11 = [MEMORY[0x277CBEBC0] URLWithString:v10];
-  v12 = [v11 port];
+  lowercaseString = [v9 lowercaseString];
+  v11 = [MEMORY[0x277CBEBC0] URLWithString:lowercaseString];
+  port = [v11 port];
 
-  v13 = [v11 pathComponents];
-  v14 = [v13 count];
+  pathComponents = [v11 pathComponents];
+  v14 = [pathComponents count];
 
-  v15 = v10;
+  v15 = lowercaseString;
   v16 = v15;
   v17 = v15;
-  if (v5)
+  if (portCopy)
   {
     v17 = v15;
-    if (v12)
+    if (port)
     {
       v18 = MEMORY[0x277CCACA8];
-      v19 = [v11 port];
-      v20 = [v18 stringWithFormat:@":%@", v19];
+      port2 = [v11 port];
+      v20 = [v18 stringWithFormat:@":%@", port2];
 
       v17 = [v16 stringByReplacingOccurrencesOfString:v20 withString:&stru_288271F70];
     }
   }
 
-  v21 = [v11 scheme];
+  scheme = [v11 scheme];
 
-  if (v21)
+  if (scheme)
   {
     v22 = MEMORY[0x277CCACA8];
-    v23 = [v11 scheme];
-    v24 = [v22 stringWithFormat:@"%@://", v23];
+    scheme2 = [v11 scheme];
+    v24 = [v22 stringWithFormat:@"%@://", scheme2];
 
     v25 = [v17 stringByReplacingOccurrencesOfString:v24 withString:&stru_288271F70];
 
@@ -94,7 +94,7 @@
     v17 = v27;
   }
 
-  if ((v14 < 2 || v6) && ([v17 hasSuffix:@"/"] & 1) == 0)
+  if ((v14 < 2 || browserCopy) && ([v17 hasSuffix:@"/"] & 1) == 0)
   {
     v28 = [v17 stringByAppendingString:@"/"];
 
@@ -104,20 +104,20 @@
   return v17;
 }
 
-- (void)addURLString:(id)a3
+- (void)addURLString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v8 = v4;
-    if (([v4 isEqualToString:&stru_288271F70] & 1) == 0)
+    v8 = stringCopy;
+    if (([stringCopy isEqualToString:&stru_288271F70] & 1) == 0)
     {
       v5 = [objc_opt_class() _formattedStringFromURLString:v8 fromBrowser:0 removePort:0];
       if (v5)
       {
-        v6 = [(WCRURLList *)self urlStringList];
+        urlStringList = [(WCRURLList *)self urlStringList];
         v7 = [v5 copy];
-        [v6 addObject:v7];
+        [urlStringList addObject:v7];
       }
     }
   }
@@ -125,21 +125,21 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)containsURLString:(id)a3
+- (BOOL)containsURLString:(id)string
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WCRURLList *)self urlStringList];
-  v6 = [v5 count];
+  stringCopy = string;
+  urlStringList = [(WCRURLList *)self urlStringList];
+  v6 = [urlStringList count];
 
   if (v6)
   {
-    v7 = [objc_opt_class() _formattedStringFromURLString:v4 fromBrowser:1 removePort:0];
+    v7 = [objc_opt_class() _formattedStringFromURLString:stringCopy fromBrowser:1 removePort:0];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v26 = self;
+    selfCopy = self;
     obj = [(WCRURLList *)self urlStringList];
     v8 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v8)
@@ -168,7 +168,7 @@
               v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"http://%@", v12];
             }
 
-            v14 = v13;
+            urlStringList2 = v13;
             if ([v7 hasPrefix:@"http"])
             {
               v15 = v7;
@@ -180,13 +180,13 @@
             }
 
             v16 = v15;
-            v17 = [MEMORY[0x277CBEBC0] URLWithString:v14];
-            v18 = [v17 host];
+            v17 = [MEMORY[0x277CBEBC0] URLWithString:urlStringList2];
+            host = [v17 host];
 
             v19 = [MEMORY[0x277CBEBC0] URLWithString:v16];
-            v20 = [v19 host];
+            host2 = [v19 host];
 
-            if (v18 && ([v20 hasSuffix:v18] & 1) != 0)
+            if (host && ([host2 hasSuffix:host] & 1) != 0)
             {
 
               LOBYTE(v21) = 1;
@@ -205,7 +205,7 @@
       }
     }
 
-    obj = [objc_opt_class() _formattedStringFromURLString:v4 fromBrowser:1 removePort:1];
+    obj = [objc_opt_class() _formattedStringFromURLString:stringCopy fromBrowser:1 removePort:1];
     if ([obj isEqualToString:v7])
     {
       LOBYTE(v21) = 0;
@@ -217,8 +217,8 @@
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v14 = [(WCRURLList *)v26 urlStringList];
-      v21 = [v14 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      urlStringList2 = [(WCRURLList *)selfCopy urlStringList];
+      v21 = [urlStringList2 countByEnumeratingWithState:&v28 objects:v36 count:16];
       if (v21)
       {
         v24 = *v29;
@@ -228,7 +228,7 @@
           {
             if (*v29 != v24)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(urlStringList2);
             }
 
             if ([obj containsString:*(*(&v28 + 1) + 8 * j)])
@@ -238,7 +238,7 @@
             }
           }
 
-          v21 = [v14 countByEnumeratingWithState:&v28 objects:v36 count:16];
+          v21 = [urlStringList2 countByEnumeratingWithState:&v28 objects:v36 count:16];
           if (v21)
           {
             continue;

@@ -1,19 +1,19 @@
 @interface RTIInputViewInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
 - (NSEdgeInsets)insets;
-- (RTIInputViewInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RTIInputViewInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTIInputViewInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  if (([v8 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The coder must allow keyed coding."];
   }
@@ -21,28 +21,28 @@
   contextId = self->_contextId;
   if (contextId)
   {
-    [v8 encodeInt32:contextId forKey:@"cid"];
+    [coderCopy encodeInt32:contextId forKey:@"cid"];
   }
 
   if (self->_size.width != *MEMORY[0x1E695F060] || self->_size.height != *(MEMORY[0x1E695F060] + 8))
   {
     v6 = [MEMORY[0x1E696B098] valueWithSize:?];
-    [v8 encodeObject:v6 forKey:@"size"];
+    [coderCopy encodeObject:v6 forKey:@"size"];
   }
 
   if (!NSEdgeInsetsEqual(self->_insets, *MEMORY[0x1E696A2A0]))
   {
     v7 = [MEMORY[0x1E696B098] valueWithEdgeInsets:{self->_insets.top, self->_insets.left, self->_insets.bottom, self->_insets.right}];
-    [v8 encodeObject:v7 forKey:@"insets"];
+    [coderCopy encodeObject:v7 forKey:@"insets"];
   }
 
-  [v8 encodeBool:self->_shouldShowDockView forKey:@"dockView"];
+  [coderCopy encodeBool:self->_shouldShowDockView forKey:@"dockView"];
 }
 
-- (RTIInputViewInfo)initWithCoder:(id)a3
+- (RTIInputViewInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The decoder must allow keyed coding."];
   }
@@ -52,8 +52,8 @@
   v5 = [(RTIInputViewInfo *)&v17 init];
   if (v5)
   {
-    v5->_contextId = [v4 decodeInt32ForKey:@"cid"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"size"];
+    v5->_contextId = [coderCopy decodeInt32ForKey:@"cid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"size"];
     v7 = v6;
     if (v6)
     {
@@ -62,7 +62,7 @@
       v5->_size.height = v9;
     }
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"insets"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"insets"];
     v11 = v10;
     if (v10)
     {
@@ -73,13 +73,13 @@
       v5->_insets.right = v15;
     }
 
-    v5->_shouldShowDockView = [v4 decodeBoolForKey:@"dockView"];
+    v5->_shouldShowDockView = [coderCopy decodeBoolForKey:@"dockView"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[RTIInputViewInfo allocWithZone:?]];
   *(result + 3) = self->_contextId;
@@ -128,10 +128,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -141,9 +141,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RTIInputViewInfo *)self contextId];
-      if (v6 != [(RTIInputViewInfo *)v5 contextId])
+      v5 = equalCopy;
+      contextId = [(RTIInputViewInfo *)self contextId];
+      if (contextId != [(RTIInputViewInfo *)v5 contextId])
       {
         goto LABEL_10;
       }
@@ -174,8 +174,8 @@
       v28.right = v21;
       if (NSEdgeInsetsEqual(v28, v29))
       {
-        v26 = [(RTIInputViewInfo *)self shouldShowDockView];
-        v12 = v26 ^ [(RTIInputViewInfo *)v5 shouldShowDockView]^ 1;
+        shouldShowDockView = [(RTIInputViewInfo *)self shouldShowDockView];
+        v12 = shouldShowDockView ^ [(RTIInputViewInfo *)v5 shouldShowDockView]^ 1;
       }
 
       else

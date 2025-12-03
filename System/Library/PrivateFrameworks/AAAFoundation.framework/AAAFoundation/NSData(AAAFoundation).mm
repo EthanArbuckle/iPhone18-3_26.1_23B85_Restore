@@ -9,14 +9,14 @@
 
 - (id)aaf_toHexString
 {
-  v2 = [a1 length];
-  v3 = [a1 bytes];
+  v2 = [self length];
+  bytes = [self bytes];
   v4 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:2 * v2];
   if (v2 >= 1)
   {
     do
     {
-      v5 = *v3++;
+      v5 = *bytes++;
       [v4 appendFormat:@"%02X", v5];
       --v2;
     }
@@ -32,8 +32,8 @@
 + (__CFData)aaf_fromImageRef:()AAAFoundation
 {
   Mutable = CFDataCreateMutable(0, 0);
-  v5 = [*MEMORY[0x1E6982F28] identifier];
-  v6 = CGImageDestinationCreateWithData(Mutable, v5, 1uLL, 0);
+  identifier = [*MEMORY[0x1E6982F28] identifier];
+  v6 = CGImageDestinationCreateWithData(Mutable, identifier, 1uLL, 0);
 
   if (v6)
   {
@@ -57,7 +57,7 @@
 
 - (CFTypeRef)aaf_toImageRef
 {
-  v1 = CGImageSourceCreateWithData(a1, 0);
+  v1 = CGImageSourceCreateWithData(self, 0);
   if (!v1)
   {
     return 0;
@@ -76,7 +76,7 @@
 
 - (id)aaf_toCompressedData:()AAAFoundation
 {
-  v5 = [a1 length];
+  v5 = [self length];
   if (v5 < 0)
   {
     v11 = _AAFLogSystem();
@@ -104,7 +104,7 @@ LABEL_9:
   }
 
   v8 = v7;
-  v9 = compression_encode_buffer(v7, v6, [a1 bytes], objc_msgSend(a1, "length"), 0, a3);
+  v9 = compression_encode_buffer(v7, v6, [self bytes], objc_msgSend(self, "length"), 0, a3);
   if (v9)
   {
     v10 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:v8 length:v9 freeWhenDone:1];

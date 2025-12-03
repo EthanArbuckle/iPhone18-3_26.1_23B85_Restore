@@ -1,13 +1,13 @@
 @interface PXPlacesMapContainerConfiguration
 + (id)new;
 - (PXPlacesMapContainerConfiguration)init;
-- (PXPlacesMapContainerConfiguration)initWithConfiguration:(id)a3;
-- (void)setInitialCoordinateRegion:(id *)a3;
+- (PXPlacesMapContainerConfiguration)initWithConfiguration:(id)configuration;
+- (void)setInitialCoordinateRegion:(id *)region;
 @end
 
 @implementation PXPlacesMapContainerConfiguration
 
-- (void)setInitialCoordinateRegion:(id *)a3
+- (void)setInitialCoordinateRegion:(id *)region
 {
   self->_initialCoordinateRegion.center.latitude = v3;
   self->_initialCoordinateRegion.center.longitude = v4;
@@ -17,15 +17,15 @@
 
 - (PXPlacesMapContainerConfiguration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPlacesMapContainerConfiguration.m" lineNumber:43 description:{@"%s is not available as initializer", "-[PXPlacesMapContainerConfiguration init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPlacesMapContainerConfiguration.m" lineNumber:43 description:{@"%s is not available as initializer", "-[PXPlacesMapContainerConfiguration init]"}];
 
   abort();
 }
 
-- (PXPlacesMapContainerConfiguration)initWithConfiguration:(id)a3
+- (PXPlacesMapContainerConfiguration)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = PXPlacesMapContainerConfiguration;
   v5 = [(PXPlacesMapContainerConfiguration *)&v9 init];
@@ -35,7 +35,7 @@
     v7 = *(MEMORY[0x1E696F068] + 16);
     *(v5 + 24) = *MEMORY[0x1E696F068];
     *(v5 + 40) = v7;
-    v4[2](v4, v5);
+    configurationCopy[2](configurationCopy, v5);
   }
 
   return v6;
@@ -43,8 +43,8 @@
 
 + (id)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PXPlacesMapContainerConfiguration.m" lineNumber:39 description:{@"%s is not available as initializer", "+[PXPlacesMapContainerConfiguration new]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPlacesMapContainerConfiguration.m" lineNumber:39 description:{@"%s is not available as initializer", "+[PXPlacesMapContainerConfiguration new]"}];
 
   abort();
 }

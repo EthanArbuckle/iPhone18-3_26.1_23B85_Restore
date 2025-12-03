@@ -1,27 +1,27 @@
 @interface SXContainerComponentBlueprint
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setParentLayoutBlueprint:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setParentLayoutBlueprint:(id)blueprint;
 @end
 
 @implementation SXContainerComponentBlueprint
 
-- (void)setParentLayoutBlueprint:(id)a3
+- (void)setParentLayoutBlueprint:(id)blueprint
 {
   v6.receiver = self;
   v6.super_class = SXContainerComponentBlueprint;
-  v4 = a3;
-  [(SXComponentBlueprint *)&v6 setParentLayoutBlueprint:v4];
+  blueprintCopy = blueprint;
+  [(SXComponentBlueprint *)&v6 setParentLayoutBlueprint:blueprintCopy];
   v5 = [(SXContainerComponentBlueprint *)self layoutBlueprint:v6.receiver];
-  [v5 setParentLayoutBlueprint:v4];
+  [v5 setParentLayoutBlueprint:blueprintCopy];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = SXContainerComponentBlueprint;
   v5 = [(SXComponentBlueprint *)&v10 copyWithZone:?];
-  v6 = [(SXContainerComponentBlueprint *)self layoutBlueprint];
-  v7 = [v6 copyWithZone:a3];
+  layoutBlueprint = [(SXContainerComponentBlueprint *)self layoutBlueprint];
+  v7 = [layoutBlueprint copyWithZone:zone];
   v8 = v5[48];
   v5[48] = v7;
 

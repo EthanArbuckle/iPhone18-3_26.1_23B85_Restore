@@ -1,35 +1,35 @@
 @interface SACloneInfo
-+ (id)newWithDataSize:(int64_t)a3 cloneSize:(int64_t)a4 purgeableSize:(int64_t)a5 dirStatKey:(unint64_t)a6 attributionTag:(unint64_t)a7 clonePath:(id)a8;
-- (SACloneInfo)initWithDataSize:(int64_t)a3 cloneSize:(int64_t)a4 purgeableSize:(int64_t)a5 dirStatKey:(unint64_t)a6 attributionTag:(unint64_t)a7 clonePath:(id)a8;
++ (id)newWithDataSize:(int64_t)size cloneSize:(int64_t)cloneSize purgeableSize:(int64_t)purgeableSize dirStatKey:(unint64_t)key attributionTag:(unint64_t)tag clonePath:(id)path;
+- (SACloneInfo)initWithDataSize:(int64_t)size cloneSize:(int64_t)cloneSize purgeableSize:(int64_t)purgeableSize dirStatKey:(unint64_t)key attributionTag:(unint64_t)tag clonePath:(id)path;
 - (id)generateDictionary;
 @end
 
 @implementation SACloneInfo
 
-- (SACloneInfo)initWithDataSize:(int64_t)a3 cloneSize:(int64_t)a4 purgeableSize:(int64_t)a5 dirStatKey:(unint64_t)a6 attributionTag:(unint64_t)a7 clonePath:(id)a8
+- (SACloneInfo)initWithDataSize:(int64_t)size cloneSize:(int64_t)cloneSize purgeableSize:(int64_t)purgeableSize dirStatKey:(unint64_t)key attributionTag:(unint64_t)tag clonePath:(id)path
 {
-  v15 = a8;
+  pathCopy = path;
   v19.receiver = self;
   v19.super_class = SACloneInfo;
   v16 = [(SACloneInfo *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    v16->_dataSize = a3;
-    v16->_cloneSize = a4;
-    v16->_purgeableSize = a5;
-    objc_storeStrong(&v16->_clonePath, a8);
-    v17->_dirStatKey = a6;
-    v17->_attributionTagID = a7;
+    v16->_dataSize = size;
+    v16->_cloneSize = cloneSize;
+    v16->_purgeableSize = purgeableSize;
+    objc_storeStrong(&v16->_clonePath, path);
+    v17->_dirStatKey = key;
+    v17->_attributionTagID = tag;
   }
 
   return v17;
 }
 
-+ (id)newWithDataSize:(int64_t)a3 cloneSize:(int64_t)a4 purgeableSize:(int64_t)a5 dirStatKey:(unint64_t)a6 attributionTag:(unint64_t)a7 clonePath:(id)a8
++ (id)newWithDataSize:(int64_t)size cloneSize:(int64_t)cloneSize purgeableSize:(int64_t)purgeableSize dirStatKey:(unint64_t)key attributionTag:(unint64_t)tag clonePath:(id)path
 {
-  v14 = a8;
-  v15 = [[a1 alloc] initWithDataSize:a3 cloneSize:a4 purgeableSize:a5 dirStatKey:a6 attributionTag:a7 clonePath:v14];
+  pathCopy = path;
+  v15 = [[self alloc] initWithDataSize:size cloneSize:cloneSize purgeableSize:purgeableSize dirStatKey:key attributionTag:tag clonePath:pathCopy];
 
   return v15;
 }

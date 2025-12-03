@@ -1,20 +1,20 @@
 @interface SWDeclareSystemActivityResult
-- (SWDeclareSystemActivityResult)initWithReturnValue:(int)a3 assertionID:(unsigned int)a4 systemState:(int)a5;
+- (SWDeclareSystemActivityResult)initWithReturnValue:(int)value assertionID:(unsigned int)d systemState:(int)state;
 - (id)description;
 @end
 
 @implementation SWDeclareSystemActivityResult
 
-- (SWDeclareSystemActivityResult)initWithReturnValue:(int)a3 assertionID:(unsigned int)a4 systemState:(int)a5
+- (SWDeclareSystemActivityResult)initWithReturnValue:(int)value assertionID:(unsigned int)d systemState:(int)state
 {
   v9.receiver = self;
   v9.super_class = SWDeclareSystemActivityResult;
   result = [(SWDeclareSystemActivityResult *)&v9 init];
   if (result)
   {
-    result->_returnValue = a3;
-    result->_assertionID = a4;
-    result->_systemState = a5;
+    result->_returnValue = value;
+    result->_assertionID = d;
+    result->_systemState = state;
   }
 
   return result;
@@ -26,9 +26,9 @@
   v4 = [v3 appendInt:self->_returnValue withName:@"returnValue"];
   v5 = [v3 appendInt:self->_assertionID withName:@"assertionID"];
   v6 = [v3 appendInt:self->_systemState withName:@"systemState"];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface ICQCloudStorageGroupController
 - (BOOL)hasPurchasedMoreStorage;
 - (ICQCloudStorageGroupController)init;
-- (id)availableStorage:(id)a3;
-- (id)specifiersWithBuyMore:(BOOL)a3;
-- (id)totalStorage:(id)a3;
+- (id)availableStorage:(id)storage;
+- (id)specifiersWithBuyMore:(BOOL)more;
+- (id)totalStorage:(id)storage;
 - (void)cancelLoaders;
 - (void)clearQuotaCache;
 - (void)dealloc;
 - (void)enterBuyStorage;
 - (void)enterBuyStorageWhenPossible;
 - (void)enterManageStorageWhenPossible;
-- (void)enterManagedStorage:(id)a3;
+- (void)enterManagedStorage:(id)storage;
 - (void)getQuotaInfo;
 - (void)groupRemovedFromListController;
-- (void)loadFailed:(id)a3 withError:(id)a4;
-- (void)loadFinished:(id)a3;
-- (void)manager:(id)a3 loadDidFailWithError:(id)a4;
-- (void)manager:(id)a3 willPresentViewController:(id)a4;
+- (void)loadFailed:(id)failed withError:(id)error;
+- (void)loadFinished:(id)finished;
+- (void)manager:(id)manager loadDidFailWithError:(id)error;
+- (void)manager:(id)manager willPresentViewController:(id)controller;
 - (void)quotaInfoChanged;
-- (void)reachabilityChanged:(id)a3;
-- (void)remoteUIDelegate:(id)a3 didCreatePage:(id)a4 forAccount:(id)a5 inObjectModel:(id)a6;
-- (void)remoteUIDelegate:(id)a3 didCreatePage:(id)a4 inObjectModel:(id)a5;
-- (void)startSpinnerInCellForSpecifier:(id)a3;
+- (void)reachabilityChanged:(id)changed;
+- (void)remoteUIDelegate:(id)delegate didCreatePage:(id)page forAccount:(id)account inObjectModel:(id)model;
+- (void)remoteUIDelegate:(id)delegate didCreatePage:(id)page inObjectModel:(id)model;
+- (void)startSpinnerInCellForSpecifier:(id)specifier;
 - (void)stopSpinner;
 - (void)updateManagedStorageState;
 @end
@@ -35,19 +35,19 @@
   v2 = [(ICQCloudStorageGroupController *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_quotaInfoChanged name:@"QuotaInformationChanged" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_quotaInfoChanged name:@"QuotaInformationChanged" object:0];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v2 selector:sel_updateManagedStorageState name:@"PSProfileConnectionEffectiveSettingsChangedNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_updateManagedStorageState name:@"PSProfileConnectionEffectiveSettingsChangedNotification" object:0];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel_quotaInfoChanged name:*MEMORY[0x277D76758] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel_quotaInfoChanged name:*MEMORY[0x277D76758] object:0];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, backupStateChanged, *MEMORY[0x277D28A88], 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-    v7 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-    [v7 addNetworkReachableObserver:v2 selector:sel_reachabilityChanged_];
+    mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+    [mEMORY[0x277CEC5B8] addNetworkReachableObserver:v2 selector:sel_reachabilityChanged_];
   }
 
   return v2;
@@ -55,17 +55,17 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, *MEMORY[0x277D28A88], 0);
-  v5 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-  [v5 removeNetworkReachableObserver:self];
+  mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+  [mEMORY[0x277CEC5B8] removeNetworkReachableObserver:self];
 
-  v6 = [(ICQPreferencesRemoteUIDelegate *)self->_storageDelegate delegate];
+  delegate = [(ICQPreferencesRemoteUIDelegate *)self->_storageDelegate delegate];
 
-  if (v6 == self)
+  if (delegate == self)
   {
     [(ICQPreferencesRemoteUIDelegate *)self->_storageDelegate setDelegate:0];
   }
@@ -87,57 +87,57 @@
   objc_storeWeak(&self->_listController, 0);
 }
 
-- (id)totalStorage:(id)a3
+- (id)totalStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   if (self->_quotaCached)
   {
-    v5 = [(ICQQuotaInfoResponse *)self->_quotaInfo totalStorageText];
+    totalStorageText = [(ICQQuotaInfoResponse *)self->_quotaInfo totalStorageText];
   }
 
   else if (self->_quotaFailed)
   {
-    v5 = &stru_28844FC60;
+    totalStorageText = &stru_28844FC60;
   }
 
   else
   {
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v5 = [v6 localizedStringForKey:@"LOADING" value:&stru_28844FC60 table:@"CloudGroup"];
+    totalStorageText = [v6 localizedStringForKey:@"LOADING" value:&stru_28844FC60 table:@"CloudGroup"];
   }
 
-  return v5;
+  return totalStorageText;
 }
 
-- (id)availableStorage:(id)a3
+- (id)availableStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   if (self->_quotaCached)
   {
-    v5 = [(ICQQuotaInfoResponse *)self->_quotaInfo availableStorageText];
+    availableStorageText = [(ICQQuotaInfoResponse *)self->_quotaInfo availableStorageText];
   }
 
   else if (self->_quotaFailed)
   {
-    v5 = &stru_28844FC60;
+    availableStorageText = &stru_28844FC60;
   }
 
   else
   {
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v5 = [v6 localizedStringForKey:@"LOADING" value:&stru_28844FC60 table:@"CloudGroup"];
+    availableStorageText = [v6 localizedStringForKey:@"LOADING" value:&stru_28844FC60 table:@"CloudGroup"];
   }
 
-  return v5;
+  return availableStorageText;
 }
 
-- (void)reachabilityChanged:(id)a3
+- (void)reachabilityChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277CEC510]];
-  v6 = [v5 BOOLValue];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277CEC510]];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6 && self->_quotaFailed)
+  if (bOOLValue && self->_quotaFailed)
   {
 
     [(ICQCloudStorageGroupController *)self getQuotaInfo];
@@ -179,11 +179,11 @@
     goto LABEL_15;
   }
 
-  v10 = [(ICQQuotaInfoResponse *)self->_quotaInfo accountStatus];
-  v11 = v10;
-  if (v10)
+  accountStatus = [(ICQQuotaInfoResponse *)self->_quotaInfo accountStatus];
+  v11 = accountStatus;
+  if (accountStatus)
   {
-    v12 = [v10 objectForKey:@"account_status_header"];
+    v12 = [accountStatus objectForKey:@"account_status_header"];
     if (v12)
     {
       objc_opt_class();
@@ -210,17 +210,17 @@ LABEL_17:
   v33 = v3;
   if (self->_quotaCached)
   {
-    v14 = [MEMORY[0x277D262A0] sharedConnection];
-    if ([v14 effectiveBoolValueForSetting:*MEMORY[0x277D25CD0]] == 2)
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    if ([mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25CD0]] == 2)
     {
       v15 = 0;
     }
 
     else
     {
-      v16 = [MEMORY[0x277CEC748] sharedManager];
-      v17 = [v16 primaryAccount];
-      v15 = [v17 needsToVerifyTerms] ^ 1;
+      mEMORY[0x277CEC748] = [MEMORY[0x277CEC748] sharedManager];
+      primaryAccount = [mEMORY[0x277CEC748] primaryAccount];
+      v15 = [primaryAccount needsToVerifyTerms] ^ 1;
     }
   }
 
@@ -394,21 +394,21 @@ void __46__ICQCloudStorageGroupController_getQuotaInfo__block_invoke(uint64_t a1
 
   else
   {
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v6 = [v5 BOOLForKey:@"hasPurchasedMoreStorage"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v6 = [standardUserDefaults BOOLForKey:@"hasPurchasedMoreStorage"];
 
     return v6;
   }
 }
 
-- (id)specifiersWithBuyMore:(BOOL)a3
+- (id)specifiersWithBuyMore:(BOOL)more
 {
-  v3 = a3;
+  moreCopy = more;
   [(ICQCloudStorageGroupController *)self clearQuotaCache];
   specifiers = self->_specifiers;
-  if (!specifiers || self->_buyMore != v3 && (self->_specifiers = 0, specifiers, !self->_specifiers))
+  if (!specifiers || self->_buyMore != moreCopy && (self->_specifiers = 0, specifiers, !self->_specifiers))
   {
-    self->_buyMore = v3;
+    self->_buyMore = moreCopy;
     v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:4];
     v7 = self->_specifiers;
     self->_specifiers = v6;
@@ -460,8 +460,8 @@ void __46__ICQCloudStorageGroupController_getQuotaInfo__block_invoke(uint64_t a1
     if (self->_buyMore)
     {
       v29 = self->_specifiers;
-      v30 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-      [(NSMutableArray *)v29 addObject:v30];
+      emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+      [(NSMutableArray *)v29 addObject:emptyGroupSpecifier];
 
       v31 = MEMORY[0x277D3FAD8];
       v32 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -513,9 +513,9 @@ void __46__ICQCloudStorageGroupController_getQuotaInfo__block_invoke(uint64_t a1
   [(ICQCloudStorageGroupController *)self getQuotaInfo];
 }
 
-- (void)enterManagedStorage:(id)a3
+- (void)enterManagedStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   if (self->_quotaCached && !self->_loadingStorage)
   {
     [(ICQCloudStorageGroupController *)self cancelLoaders];
@@ -525,8 +525,8 @@ void __46__ICQCloudStorageGroupController_getQuotaInfo__block_invoke(uint64_t a1
     {
       v6 = [ICQPreferencesRemoteUIDelegate alloc];
       WeakRetained = objc_loadWeakRetained(&self->_listController);
-      v8 = [WeakRetained navigationController];
-      v9 = [(ICQPreferencesRemoteUIDelegate *)v6 initWithNavigationController:v8];
+      navigationController = [WeakRetained navigationController];
+      v9 = [(ICQPreferencesRemoteUIDelegate *)v6 initWithNavigationController:navigationController];
       v10 = self->_storageDelegate;
       self->_storageDelegate = v9;
 
@@ -534,20 +534,20 @@ void __46__ICQCloudStorageGroupController_getQuotaInfo__block_invoke(uint64_t a1
     }
 
     [(ICQPreferencesRemoteUIDelegate *)storageDelegate setDelegate:self];
-    v11 = [(ICQQuotaInfoResponse *)self->_quotaInfo manageStorageURLString];
-    v12 = [v11 stringByAddingPercentEscapesUsingEncoding:4];
+    manageStorageURLString = [(ICQQuotaInfoResponse *)self->_quotaInfo manageStorageURLString];
+    v12 = [manageStorageURLString stringByAddingPercentEscapesUsingEncoding:4];
 
     v13 = dispatch_get_global_queue(-2, 0);
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __54__ICQCloudStorageGroupController_enterManagedStorage___block_invoke;
     v18 = &unk_27A65A708;
-    v19 = self;
+    selfCopy = self;
     v20 = v12;
     v14 = v12;
     dispatch_async(v13, &v15);
 
-    [(ICQCloudStorageGroupController *)self startSpinnerInCellForSpecifier:v4, v15, v16, v17, v18, v19];
+    [(ICQCloudStorageGroupController *)self startSpinnerInCellForSpecifier:storageCopy, v15, v16, v17, v18, selfCopy];
   }
 }
 
@@ -605,21 +605,21 @@ void __54__ICQCloudStorageGroupController_enterManagedStorage___block_invoke_2(v
 
     v8 = self->_storageOffersManager;
     v10 = objc_loadWeakRetained(&self->_listController);
-    v9 = [v10 navigationController];
-    [(ICQUICloudStorageOffersManager *)v8 beginFlowWithNavigationController:v9 modally:1];
+    navigationController = [v10 navigationController];
+    [(ICQUICloudStorageOffersManager *)v8 beginFlowWithNavigationController:navigationController modally:1];
   }
 }
 
-- (void)startSpinnerInCellForSpecifier:(id)a3
+- (void)startSpinnerInCellForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   if (self->_remoteLoadingCell)
   {
     [ICQCloudStorageGroupController startSpinnerInCellForSpecifier:];
   }
 
-  v8 = v4;
-  v5 = [v4 propertyForKey:*MEMORY[0x277D40148]];
+  v8 = specifierCopy;
+  v5 = [specifierCopy propertyForKey:*MEMORY[0x277D40148]];
   remoteLoadingCell = self->_remoteLoadingCell;
   self->_remoteLoadingCell = v5;
 
@@ -642,74 +642,74 @@ void __54__ICQCloudStorageGroupController_enterManagedStorage___block_invoke_2(v
   }
 }
 
-- (void)manager:(id)a3 willPresentViewController:(id)a4
+- (void)manager:(id)manager willPresentViewController:(id)controller
 {
   if (self->_loadingCommerce)
   {
     self->_loadingCommerce = 0;
-    [(ICQCloudStorageGroupController *)self stopSpinner:a3];
+    [(ICQCloudStorageGroupController *)self stopSpinner:manager];
   }
 }
 
-- (void)manager:(id)a3 loadDidFailWithError:(id)a4
+- (void)manager:(id)manager loadDidFailWithError:(id)error
 {
   if (self->_loadingCommerce)
   {
     self->_loadingCommerce = 0;
-    [(ICQCloudStorageGroupController *)self stopSpinner:a3];
+    [(ICQCloudStorageGroupController *)self stopSpinner:manager];
   }
 }
 
-- (void)loadFinished:(id)a3
+- (void)loadFinished:(id)finished
 {
-  if (self->_storageDelegate == a3)
+  if (self->_storageDelegate == finished)
   {
     self->_loadingStorage = 0;
     [(ICQCloudStorageGroupController *)self stopSpinner];
   }
 }
 
-- (void)loadFailed:(id)a3 withError:(id)a4
+- (void)loadFailed:(id)failed withError:(id)error
 {
-  if (self->_storageDelegate == a3)
+  if (self->_storageDelegate == failed)
   {
     self->_loadingStorage = 0;
     [(ICQCloudStorageGroupController *)self stopSpinner];
   }
 }
 
-- (void)remoteUIDelegate:(id)a3 didCreatePage:(id)a4 inObjectModel:(id)a5
+- (void)remoteUIDelegate:(id)delegate didCreatePage:(id)page inObjectModel:(id)model
 {
   v8 = MEMORY[0x277CB8F48];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 defaultStore];
-  v13 = [v12 aa_primaryAppleAccount];
+  modelCopy = model;
+  pageCopy = page;
+  delegateCopy = delegate;
+  defaultStore = [v8 defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
 
-  [(ICQCloudStorageGroupController *)self remoteUIDelegate:v11 didCreatePage:v10 forAccount:v13 inObjectModel:v9];
+  [(ICQCloudStorageGroupController *)self remoteUIDelegate:delegateCopy didCreatePage:pageCopy forAccount:aa_primaryAppleAccount inObjectModel:modelCopy];
 }
 
-- (void)remoteUIDelegate:(id)a3 didCreatePage:(id)a4 forAccount:(id)a5 inObjectModel:(id)a6
+- (void)remoteUIDelegate:(id)delegate didCreatePage:(id)page forAccount:(id)account inObjectModel:(id)model
 {
-  v18 = a4;
-  v9 = a5;
-  v10 = [a6 identifier];
-  v11 = [v10 isEqualToString:@"iCloudManageStorage"];
+  pageCopy = page;
+  accountCopy = account;
+  identifier = [model identifier];
+  v11 = [identifier isEqualToString:@"iCloudManageStorage"];
 
   if (v11)
   {
     v12 = objc_alloc(MEMORY[0x277D46218]);
-    v13 = [v18 tableViewOM];
-    v14 = [v12 initWithAttributes:0 parent:v13];
+    tableViewOM = [pageCopy tableViewOM];
+    v14 = [v12 initWithAttributes:0 parent:tableViewOM];
 
-    v15 = [[ICQCloudStorageGraphTableViewRow alloc] initWithAccount:v9];
+    v15 = [[ICQCloudStorageGraphTableViewRow alloc] initWithAccount:accountCopy];
     [(RUITableViewRow *)v15 setAttributes:&unk_28847A130];
     [(RUITableViewRow *)v15 setDelegate:self];
     [v14 addRow:v15];
-    v16 = [v18 tableViewOM];
-    v17 = [v16 sections];
-    [v17 insertObject:v14 atIndex:0];
+    tableViewOM2 = [pageCopy tableViewOM];
+    sections = [tableViewOM2 sections];
+    [sections insertObject:v14 atIndex:0];
   }
 }
 

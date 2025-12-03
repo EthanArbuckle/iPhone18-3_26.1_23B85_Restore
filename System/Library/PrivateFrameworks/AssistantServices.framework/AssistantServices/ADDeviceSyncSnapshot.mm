@@ -1,47 +1,47 @@
 @interface ADDeviceSyncSnapshot
-+ (id)newWithBuilder:(id)a3;
-- (ADDeviceSyncSnapshot)initWithBuilder:(id)a3;
-- (ADDeviceSyncSnapshot)initWithCoder:(id)a3;
-- (ADDeviceSyncSnapshot)initWithGeneration:(unint64_t)a3 date:(id)a4 items:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (ADDeviceSyncSnapshot)initWithBuilder:(id)builder;
+- (ADDeviceSyncSnapshot)initWithCoder:(id)coder;
+- (ADDeviceSyncSnapshot)initWithGeneration:(unint64_t)generation date:(id)date items:(id)items;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ADDeviceSyncSnapshot
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   generation = self->_generation;
-  v6 = a3;
+  coderCopy = coder;
   v5 = [NSNumber numberWithUnsignedLongLong:generation];
-  [v6 encodeObject:v5 forKey:@"ADDeviceSyncSnapshot::generation"];
+  [coderCopy encodeObject:v5 forKey:@"ADDeviceSyncSnapshot::generation"];
 
-  [v6 encodeObject:self->_date forKey:@"ADDeviceSyncSnapshot::date"];
-  [v6 encodeObject:self->_items forKey:@"ADDeviceSyncSnapshot::items"];
+  [coderCopy encodeObject:self->_date forKey:@"ADDeviceSyncSnapshot::date"];
+  [coderCopy encodeObject:self->_items forKey:@"ADDeviceSyncSnapshot::items"];
 }
 
-- (ADDeviceSyncSnapshot)initWithCoder:(id)a3
+- (ADDeviceSyncSnapshot)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceSyncSnapshot::generation"];
-  v6 = [v5 unsignedLongLongValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceSyncSnapshot::generation"];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceSyncSnapshot::date"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceSyncSnapshot::date"];
   v8 = objc_opt_class();
   v9 = [NSSet setWithObjects:v8, objc_opt_class(), 0];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"ADDeviceSyncSnapshot::items"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"ADDeviceSyncSnapshot::items"];
 
-  v11 = [(ADDeviceSyncSnapshot *)self initWithGeneration:v6 date:v7 items:v10];
+  v11 = [(ADDeviceSyncSnapshot *)self initWithGeneration:unsignedLongLongValue date:v7 items:v10];
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -51,17 +51,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       generation = self->_generation;
       if (generation == [(ADDeviceSyncSnapshot *)v5 generation])
       {
-        v7 = [(ADDeviceSyncSnapshot *)v5 date];
+        date = [(ADDeviceSyncSnapshot *)v5 date];
         date = self->_date;
-        if (date == v7 || [(NSDate *)date isEqual:v7])
+        if (date == date || [(NSDate *)date isEqual:date])
         {
-          v9 = [(ADDeviceSyncSnapshot *)v5 items];
+          items = [(ADDeviceSyncSnapshot *)v5 items];
           items = self->_items;
-          v11 = items == v9 || [(NSArray *)items isEqual:v9];
+          v11 = items == items || [(NSArray *)items isEqual:items];
         }
 
         else
@@ -95,7 +95,7 @@
   return v6 ^ v4;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = [NSString alloc];
   v8.receiver = self;
@@ -106,44 +106,44 @@
   return v6;
 }
 
-- (ADDeviceSyncSnapshot)initWithGeneration:(unint64_t)a3 date:(id)a4 items:(id)a5
+- (ADDeviceSyncSnapshot)initWithGeneration:(unint64_t)generation date:(id)date items:(id)items
 {
-  v8 = a4;
+  dateCopy = date;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000A1D98;
   v13[3] = &unk_1005101B0;
-  v15 = a5;
-  v16 = a3;
-  v14 = v8;
-  v9 = v15;
-  v10 = v8;
+  itemsCopy = items;
+  generationCopy = generation;
+  v14 = dateCopy;
+  v9 = itemsCopy;
+  v10 = dateCopy;
   v11 = [(ADDeviceSyncSnapshot *)self initWithBuilder:v13];
 
   return v11;
 }
 
-- (ADDeviceSyncSnapshot)initWithBuilder:(id)a3
+- (ADDeviceSyncSnapshot)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v15.receiver = self;
   v15.super_class = ADDeviceSyncSnapshot;
   v5 = [(ADDeviceSyncSnapshot *)&v15 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_ADDeviceSyncSnapshotMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_ADDeviceSyncSnapshotMutation *)v7 isDirty])
     {
       v6->_generation = [(_ADDeviceSyncSnapshotMutation *)v7 getGeneration];
-      v8 = [(_ADDeviceSyncSnapshotMutation *)v7 getDate];
-      v9 = [v8 copy];
+      getDate = [(_ADDeviceSyncSnapshotMutation *)v7 getDate];
+      v9 = [getDate copy];
       date = v6->_date;
       v6->_date = v9;
 
-      v11 = [(_ADDeviceSyncSnapshotMutation *)v7 getItems];
-      v12 = [v11 copy];
+      getItems = [(_ADDeviceSyncSnapshotMutation *)v7 getItems];
+      v12 = [getItems copy];
       items = v6->_items;
       v6->_items = v12;
     }
@@ -152,32 +152,32 @@
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_ADDeviceSyncSnapshotMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_ADDeviceSyncSnapshotMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(ADDeviceSyncSnapshot);
       v6->_generation = [(_ADDeviceSyncSnapshotMutation *)v5 getGeneration];
-      v7 = [(_ADDeviceSyncSnapshotMutation *)v5 getDate];
-      v8 = [v7 copy];
+      getDate = [(_ADDeviceSyncSnapshotMutation *)v5 getDate];
+      v8 = [getDate copy];
       date = v6->_date;
       v6->_date = v8;
 
-      v10 = [(_ADDeviceSyncSnapshotMutation *)v5 getItems];
-      v11 = [v10 copy];
+      getItems = [(_ADDeviceSyncSnapshotMutation *)v5 getItems];
+      v11 = [getItems copy];
       items = v6->_items;
       v6->_items = v11;
     }

@@ -1,6 +1,6 @@
 @interface SSCalendarResultBuilder
-+ (BOOL)supportsResult:(id)a3;
-- (SSCalendarResultBuilder)initWithResult:(id)a3;
++ (BOOL)supportsResult:(id)result;
+- (SSCalendarResultBuilder)initWithResult:(id)result;
 - (id)buildBackgroundColor;
 - (id)buildCompactCardSection;
 - (id)buildInlineCardSection;
@@ -11,71 +11,71 @@
 
 @implementation SSCalendarResultBuilder
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
-  v4 = a3;
-  v8.receiver = a1;
+  resultCopy = result;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___SSCalendarResultBuilder;
-  if (objc_msgSendSuper2(&v8, sel_supportsResult_, v4))
+  if (objc_msgSendSuper2(&v8, sel_supportsResult_, resultCopy))
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v4 applicationBundleIdentifier];
-    v5 = [v6 isEqualToString:@"com.apple.mobilecal"];
+    applicationBundleIdentifier = [resultCopy applicationBundleIdentifier];
+    v5 = [applicationBundleIdentifier isEqualToString:@"com.apple.mobilecal"];
   }
 
   return v5;
 }
 
-- (SSCalendarResultBuilder)initWithResult:(id)a3
+- (SSCalendarResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v20.receiver = self;
   v20.super_class = SSCalendarResultBuilder;
-  v5 = [(SSResultBuilder *)&v20 initWithResult:v4];
+  v5 = [(SSResultBuilder *)&v20 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 valueForAttribute:*MEMORY[0x1E6964B30] withType:objc_opt_class()];
+    v6 = [resultCopy valueForAttribute:*MEMORY[0x1E6964B30] withType:objc_opt_class()];
     [(SSCalendarResultBuilder *)v5 setStartDate:v6];
 
-    v7 = [v4 valueForAttribute:*MEMORY[0x1E6963FE8] withType:objc_opt_class()];
+    v7 = [resultCopy valueForAttribute:*MEMORY[0x1E6963FE8] withType:objc_opt_class()];
     [(SSCalendarResultBuilder *)v5 setEndDate:v7];
 
-    v8 = [v4 valueForAttribute:*MEMORY[0x1E6963E58] withType:objc_opt_class()];
+    v8 = [resultCopy valueForAttribute:*MEMORY[0x1E6963E58] withType:objc_opt_class()];
     [(SSCalendarResultBuilder *)v5 setCalendarName:v8];
 
-    v9 = [v4 valueForAttribute:*MEMORY[0x1E6963D60] withType:objc_opt_class()];
+    v9 = [resultCopy valueForAttribute:*MEMORY[0x1E6963D60] withType:objc_opt_class()];
     [(SSCalendarResultBuilder *)v5 setDelegateCalendarName:v9];
 
-    v10 = [v4 valueForAttribute:*MEMORY[0x1E69644B0] withType:objc_opt_class()];
+    v10 = [resultCopy valueForAttribute:*MEMORY[0x1E69644B0] withType:objc_opt_class()];
     -[SSCalendarResultBuilder setIsAllDay:](v5, "setIsAllDay:", [v10 BOOLValue]);
 
-    v11 = [v4 valueForAttribute:*MEMORY[0x1E6964C28] withType:objc_opt_class()];
+    v11 = [resultCopy valueForAttribute:*MEMORY[0x1E6964C28] withType:objc_opt_class()];
     [(SSCalendarResultBuilder *)v5 setEventName:v11];
 
-    v12 = [v4 valueForAttribute:*MEMORY[0x1E6964600] withType:objc_opt_class()];
+    v12 = [resultCopy valueForAttribute:*MEMORY[0x1E6964600] withType:objc_opt_class()];
     [(SSCalendarResultBuilder *)v5 setLocation:v12];
 
-    v13 = [(SSCalendarResultBuilder *)v5 location];
-    v14 = [(SSCalendarResultBuilder *)v5 location];
-    v15 = [v13 stringByReplacingOccurrencesOfString:@"\\n+" withString:@" " options:1024 range:{0, objc_msgSend(v14, "length")}];
+    location = [(SSCalendarResultBuilder *)v5 location];
+    location2 = [(SSCalendarResultBuilder *)v5 location];
+    v15 = [location stringByReplacingOccurrencesOfString:@"\\n+" withString:@" " options:1024 range:{0, objc_msgSend(location2, "length")}];
     [(SSCalendarResultBuilder *)v5 setLocation:v15];
 
     if (isMacOS())
     {
-      v16 = [v4 valueForAttribute:*MEMORY[0x1E6964440] withType:objc_opt_class()];
-      [(SSCalendarResultBuilder *)v5 setEventIdentifier:v16];
+      identifier = [resultCopy valueForAttribute:*MEMORY[0x1E6964440] withType:objc_opt_class()];
+      [(SSCalendarResultBuilder *)v5 setEventIdentifier:identifier];
     }
 
     else
     {
-      v16 = [v4 identifier];
-      v17 = [v16 componentsSeparatedByString:@"."];
-      v18 = [v17 firstObject];
-      [(SSCalendarResultBuilder *)v5 setEventIdentifier:v18];
+      identifier = [resultCopy identifier];
+      v17 = [identifier componentsSeparatedByString:@"."];
+      firstObject = [v17 firstObject];
+      [(SSCalendarResultBuilder *)v5 setEventIdentifier:firstObject];
     }
   }
 
@@ -86,10 +86,10 @@
 {
   v31 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(SSCalendarResultBuilder *)self location];
-  if (v4)
+  location = [(SSCalendarResultBuilder *)self location];
+  if (location)
   {
-    [v3 addObject:v4];
+    [v3 addObject:location];
   }
 
   if (isMacOS())
@@ -102,12 +102,12 @@
     v5 = 0;
   }
 
-  v6 = [(SSCalendarResultBuilder *)self startDate];
-  if (v6)
+  startDate = [(SSCalendarResultBuilder *)self startDate];
+  if (startDate)
   {
     v7 = objc_opt_class();
-    v8 = [(SSCalendarResultBuilder *)self endDate];
-    v9 = [v7 stringWithStartDate:v6 endDate:v8 isAllDay:{-[SSCalendarResultBuilder isAllDay](self, "isAllDay")}];
+    endDate = [(SSCalendarResultBuilder *)self endDate];
+    v9 = [v7 stringWithStartDate:startDate endDate:endDate isAllDay:{-[SSCalendarResultBuilder isAllDay](self, "isAllDay")}];
     if (v5)
     {
 
@@ -125,16 +125,16 @@
   if ((v5 & 1) == 0)
   {
 LABEL_12:
-    v11 = [(SSCalendarResultBuilder *)self calendarName];
-    v12 = [(SSCalendarResultBuilder *)self delegateCalendarName];
-    if (v12)
+    calendarName = [(SSCalendarResultBuilder *)self calendarName];
+    delegateCalendarName = [(SSCalendarResultBuilder *)self delegateCalendarName];
+    if (delegateCalendarName)
     {
-      [v10 addObject:v12];
+      [v10 addObject:delegateCalendarName];
     }
 
-    if (v11)
+    if (calendarName)
     {
-      [v10 addObject:v11];
+      [v10 addObject:calendarName];
     }
   }
 
@@ -142,41 +142,41 @@ LABEL_12:
 LABEL_18:
   v29.receiver = self;
   v29.super_class = SSCalendarResultBuilder;
-  v13 = [(SSResultBuilder *)&v29 buildInlineCardSection];
+  buildInlineCardSection = [(SSResultBuilder *)&v29 buildInlineCardSection];
   if ([v9 length])
   {
     v14 = [MEMORY[0x1E69CA0F0] textWithString:v9];
-    [v13 setSecondaryTitle:v14];
+    [buildInlineCardSection setSecondaryTitle:v14];
   }
 
   else
   {
-    [v13 setSecondaryTitle:0];
+    [buildInlineCardSection setSecondaryTitle:0];
   }
 
-  v15 = [v13 title];
-  [v15 setMaxLines:1];
+  title = [buildInlineCardSection title];
+  [title setMaxLines:1];
 
-  v16 = [v13 secondaryTitle];
-  [v13 setIsSecondaryTitleDetached:v16 != 0];
+  secondaryTitle = [buildInlineCardSection secondaryTitle];
+  [buildInlineCardSection setIsSecondaryTitleDetached:secondaryTitle != 0];
 
   if ([v3 count])
   {
     v17 = [objc_opt_class() richTextsFromStrings:v3];
-    [v13 setDescriptions:v17];
+    [buildInlineCardSection setDescriptions:v17];
   }
 
   else
   {
-    [v13 setDescriptions:0];
+    [buildInlineCardSection setDescriptions:0];
   }
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v18 = [v13 descriptions];
-  v19 = [v18 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  descriptions = [buildInlineCardSection descriptions];
+  v19 = [descriptions countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v19)
   {
     v20 = v19;
@@ -187,13 +187,13 @@ LABEL_18:
       {
         if (*v26 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(descriptions);
         }
 
         [*(*(&v25 + 1) + 8 * i) setMaxLines:1];
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v20 = [descriptions countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v20);
@@ -201,73 +201,73 @@ LABEL_18:
 
   v23 = *MEMORY[0x1E69E9840];
 
-  return v13;
+  return buildInlineCardSection;
 }
 
 - (id)buildBackgroundColor
 {
-  v3 = [(SSCalendarResultBuilder *)self eventIdentifier];
+  eventIdentifier = [(SSCalendarResultBuilder *)self eventIdentifier];
 
-  if (v3)
+  if (eventIdentifier)
   {
-    v4 = objc_opt_new();
-    v5 = [(SSCalendarResultBuilder *)self eventIdentifier];
-    [v4 setEventIdentifier:v5];
+    buildBackgroundColor = objc_opt_new();
+    eventIdentifier2 = [(SSCalendarResultBuilder *)self eventIdentifier];
+    [buildBackgroundColor setEventIdentifier:eventIdentifier2];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SSCalendarResultBuilder;
-    v4 = [(SSResultBuilder *)&v7 buildBackgroundColor];
+    buildBackgroundColor = [(SSResultBuilder *)&v7 buildBackgroundColor];
   }
 
-  return v4;
+  return buildBackgroundColor;
 }
 
 - (id)buildCompactCardSection
 {
   v3 = objc_opt_new();
-  v4 = [(SSCalendarResultBuilder *)self startDate];
-  if (v4)
+  startDate = [(SSCalendarResultBuilder *)self startDate];
+  if (startDate)
   {
-    v5 = [(SSCalendarResultBuilder *)self endDate];
-    v6 = [SSDateFormatManager stringsFromDate:v4 toDate:v5 isAllDay:[(SSCalendarResultBuilder *)self isAllDay]];
+    endDate = [(SSCalendarResultBuilder *)self endDate];
+    v6 = [SSDateFormatManager stringsFromDate:startDate toDate:endDate isAllDay:[(SSCalendarResultBuilder *)self isAllDay]];
 
     [v3 addObjectsFromArray:v6];
   }
 
-  v7 = [(SSCalendarResultBuilder *)self location];
-  if (v7)
+  location = [(SSCalendarResultBuilder *)self location];
+  if (location)
   {
-    [v3 addObject:v7];
+    [v3 addObject:location];
   }
 
   v11.receiver = self;
   v11.super_class = SSCalendarResultBuilder;
-  v8 = [(SSResultBuilder *)&v11 buildCompactCardSection];
+  buildCompactCardSection = [(SSResultBuilder *)&v11 buildCompactCardSection];
   v9 = [objc_opt_class() richTextsFromStrings:v3];
-  [v8 setDescriptions:v9];
+  [buildCompactCardSection setDescriptions:v9];
 
-  return v8;
+  return buildCompactCardSection;
 }
 
 - (id)buildThumbnail
 {
-  v3 = [(SSCalendarResultBuilder *)self startDate];
-  if (v3)
+  startDate = [(SSCalendarResultBuilder *)self startDate];
+  if (startDate)
   {
-    v4 = [objc_alloc(MEMORY[0x1E69C9EF0]) initWithDate:v3];
+    buildThumbnail = [objc_alloc(MEMORY[0x1E69C9EF0]) initWithDate:startDate];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SSCalendarResultBuilder;
-    v4 = [(SSResultBuilder *)&v7 buildThumbnail];
+    buildThumbnail = [(SSResultBuilder *)&v7 buildThumbnail];
   }
 
-  v5 = v4;
+  v5 = buildThumbnail;
 
   return v5;
 }
@@ -276,23 +276,23 @@ LABEL_18:
 {
   v10.receiver = self;
   v10.super_class = SSCalendarResultBuilder;
-  v2 = [(SSResultBuilder *)&v10 buildTitle];
-  v3 = [v2 text];
-  if (v3)
+  buildTitle = [(SSResultBuilder *)&v10 buildTitle];
+  text = [buildTitle text];
+  if (text)
   {
-    v4 = v3;
-    v5 = [v2 formattedTextPieces];
+    v4 = text;
+    formattedTextPieces = [buildTitle formattedTextPieces];
 
-    if (!v5)
+    if (!formattedTextPieces)
     {
       v6 = objc_opt_class();
-      v7 = [v2 text];
-      v8 = [v6 whiteSpaceCondensedStringForString:v7];
-      [v2 setText:v8];
+      text2 = [buildTitle text];
+      v8 = [v6 whiteSpaceCondensedStringForString:text2];
+      [buildTitle setText:v8];
     }
   }
 
-  return v2;
+  return buildTitle;
 }
 
 - (unint64_t)numberOfLinesForDescriptions

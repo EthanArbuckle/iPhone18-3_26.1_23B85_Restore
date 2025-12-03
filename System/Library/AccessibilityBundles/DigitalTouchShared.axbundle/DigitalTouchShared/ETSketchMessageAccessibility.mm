@@ -1,31 +1,31 @@
 @interface ETSketchMessageAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityColorOfStroke:(unint64_t)a3;
-- (id)_accessibilityStringForColorCounts:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityColorOfStroke:(unint64_t)stroke;
+- (id)_accessibilityStringForColorCounts:(id)counts;
 - (id)_accessibilityStrokeDescription;
 - (id)accessibilityLabel;
-- (void)_accessibilityIncrementNumberOfKey:(id)a3 inDictionary:(id)a4;
+- (void)_accessibilityIncrementNumberOfKey:(id)key inDictionary:(id)dictionary;
 @end
 
 @implementation ETSketchMessageAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ETSketchMessage" isKindOfClass:@"ETMessage"];
-  [v3 validateClass:@"ETMessage" hasInstanceMethod:@"color" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ETSketchMessage" hasInstanceMethod:@"strokes" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ETSketchMessage" hasInstanceMethod:@"colorsInMessage" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ETSketchMessage" hasInstanceMethod:@"numberOfColors" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"ETSketchMessage" hasInstanceMethod:@"hasMultipleColors" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ETSketchMessage" isKindOfClass:@"ETMessage"];
+  [validationsCopy validateClass:@"ETMessage" hasInstanceMethod:@"color" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ETSketchMessage" hasInstanceMethod:@"strokes" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ETSketchMessage" hasInstanceMethod:@"colorsInMessage" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ETSketchMessage" hasInstanceMethod:@"numberOfColors" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"ETSketchMessage" hasInstanceMethod:@"hasMultipleColors" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v3 = MEMORY[0x29EDBA0F8];
   v4 = accessibilityLocalizedString(@"sketch.message");
-  v5 = [(ETSketchMessageAccessibility *)self _accessibilityStrokeDescription];
-  v6 = [v3 stringWithFormat:v4, v5];
+  _accessibilityStrokeDescription = [(ETSketchMessageAccessibility *)self _accessibilityStrokeDescription];
+  v6 = [v3 stringWithFormat:v4, _accessibilityStrokeDescription];
 
   return v6;
 }
@@ -58,9 +58,9 @@ void __63__ETSketchMessageAccessibility__accessibilityStrokeDescription__block_i
   [*(a1 + 32) _accessibilityIncrementNumberOfKey:v2 inDictionary:*(a1 + 40)];
 }
 
-- (id)_accessibilityStringForColorCounts:(id)a3
+- (id)_accessibilityStringForColorCounts:(id)counts
 {
-  v3 = a3;
+  countsCopy = counts;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -72,7 +72,7 @@ void __63__ETSketchMessageAccessibility__accessibilityStrokeDescription__block_i
   v6[2] = __67__ETSketchMessageAccessibility__accessibilityStringForColorCounts___block_invoke;
   v6[3] = &unk_29F2BAB90;
   v6[4] = &v7;
-  [v3 enumerateKeysAndObjectsUsingBlock:v6];
+  [countsCopy enumerateKeysAndObjectsUsingBlock:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
 
@@ -98,11 +98,11 @@ void __67__ETSketchMessageAccessibility__accessibilityStringForColorCounts___blo
   *(v13 + 40) = v12;
 }
 
-- (void)_accessibilityIncrementNumberOfKey:(id)a3 inDictionary:(id)a4
+- (void)_accessibilityIncrementNumberOfKey:(id)key inDictionary:(id)dictionary
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 objectForKey:v6];
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  v7 = [dictionaryCopy objectForKey:keyCopy];
   v8 = MEMORY[0x29EDBA070];
   v11 = v7;
   if (v7)
@@ -116,10 +116,10 @@ void __67__ETSketchMessageAccessibility__accessibilityStringForColorCounts___blo
   }
 
   v10 = [v8 numberWithInteger:v9];
-  [v5 setObject:v10 forKey:v6];
+  [dictionaryCopy setObject:v10 forKey:keyCopy];
 }
 
-- (id)_accessibilityColorOfStroke:(unint64_t)a3
+- (id)_accessibilityColorOfStroke:(unint64_t)stroke
 {
   if ([(ETSketchMessageAccessibility *)self safeBoolForKey:@"hasMultipleColors"])
   {

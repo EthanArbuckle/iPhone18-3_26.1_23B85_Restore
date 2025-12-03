@@ -1,7 +1,7 @@
 @interface TTRILocationQuickPickersTableCell
 + (Class)containerViewClass;
-- (_TtC15RemindersUICore33TTRILocationQuickPickersTableCell)initWithCoder:(id)a3;
-- (_TtC15RemindersUICore33TTRILocationQuickPickersTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC15RemindersUICore33TTRILocationQuickPickersTableCell)initWithCoder:(id)coder;
+- (_TtC15RemindersUICore33TTRILocationQuickPickersTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation TTRILocationQuickPickersTableCell
@@ -13,11 +13,11 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC15RemindersUICore33TTRILocationQuickPickersTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC15RemindersUICore33TTRILocationQuickPickersTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_21DBFA16C();
+    identifier = sub_21DBFA16C();
     v6 = v5;
   }
 
@@ -26,10 +26,10 @@
     v6 = 0;
   }
 
-  return TTRILocationQuickPickersTableCell.init(style:reuseIdentifier:)(a3, a4, v6);
+  return TTRILocationQuickPickersTableCell.init(style:reuseIdentifier:)(style, identifier, v6);
 }
 
-- (_TtC15RemindersUICore33TTRILocationQuickPickersTableCell)initWithCoder:(id)a3
+- (_TtC15RemindersUICore33TTRILocationQuickPickersTableCell)initWithCoder:(id)coder
 {
   result = sub_21DBFC31C();
   __break(1u);

@@ -1,42 +1,42 @@
 @interface SGDetectedAttributeMetrics
 + (id)instance;
-+ (id)nameForDataDetectorMatch:(id)a3 withValue:(id)a4;
-+ (id)tokenizeMessageContent:(id)a3;
-+ (void)recordBirthdayExtractionAccuracy:(unsigned __int8)a3 withOffset:(id)a4 withModelVersion:(id)a5 isFromCongratulation:(unsigned __int8)a6 didRegexTrigger:(unsigned __int8)a7 didResponseKitTrigger:(unsigned __int8)a8;
-+ (void)recordExtractionOutcome:(SGMContactDetailExtractionOutcome_)a3 forDetectionsInMessage:(id)a4 signatureRange:(_NSRange)a5 isDDSignature:(BOOL)a6;
-+ (void)recordSentContactDetailWithMessage:(id)a3 match:(id)a4 found:(SGMContactDetailFoundIn_)a5;
-- (SGDetectedAttributeMetrics)initWithTracker:(id)a3;
++ (id)nameForDataDetectorMatch:(id)match withValue:(id)value;
++ (id)tokenizeMessageContent:(id)content;
++ (void)recordBirthdayExtractionAccuracy:(unsigned __int8)accuracy withOffset:(id)offset withModelVersion:(id)version isFromCongratulation:(unsigned __int8)congratulation didRegexTrigger:(unsigned __int8)trigger didResponseKitTrigger:(unsigned __int8)kitTrigger;
++ (void)recordExtractionOutcome:(SGMContactDetailExtractionOutcome_)outcome forDetectionsInMessage:(id)message signatureRange:(_NSRange)range isDDSignature:(BOOL)signature;
++ (void)recordSentContactDetailWithMessage:(id)message match:(id)match found:(SGMContactDetailFoundIn_)found;
+- (SGDetectedAttributeMetrics)initWithTracker:(id)tracker;
 @end
 
 @implementation SGDetectedAttributeMetrics
 
-- (SGDetectedAttributeMetrics)initWithTracker:(id)a3
+- (SGDetectedAttributeMetrics)initWithTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v8.receiver = self;
   v8.super_class = SGDetectedAttributeMetrics;
   v5 = [(SGDetectedAttributeMetrics *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SGDetectedAttributeMetrics *)v5 setPet2Tracker:v4];
+    [(SGDetectedAttributeMetrics *)v5 setPet2Tracker:trackerCopy];
   }
 
   return v6;
 }
 
-+ (void)recordSentContactDetailWithMessage:(id)a3 match:(id)a4 found:(SGMContactDetailFoundIn_)a5
++ (void)recordSentContactDetailWithMessage:(id)message match:(id)match found:(SGMContactDetailFoundIn_)found
 {
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 senderIsAccountOwner])
+  messageCopy = message;
+  matchCopy = match;
+  if ([messageCopy senderIsAccountOwner])
   {
-    v10 = [v8 textContent];
-    v11 = [v9 valueRange];
-    v13 = [v10 stringByReplacingCharactersInRange:v11 withString:{v12, @"DDMATCH"}];
+    textContent = [messageCopy textContent];
+    valueRange = [matchCopy valueRange];
+    v13 = [textContent stringByReplacingCharactersInRange:valueRange withString:{v12, @"DDMATCH"}];
 
-    v14 = [a1 tokenizeMessageContent:v13];
+    v14 = [self tokenizeMessageContent:v13];
     v15 = [v14 count];
     if (v15 <= 1)
     {
@@ -77,7 +77,7 @@ LABEL_12:
         if (v19)
         {
           v20 = v19;
-          v39 = a1;
+          selfCopy = self;
           v40 = v17;
           v38 = v13;
           v21 = *v44;
@@ -111,7 +111,7 @@ LABEL_14:
 
 LABEL_21:
               v13 = v38;
-              a1 = v39;
+              self = selfCopy;
               v17 = v40;
               goto LABEL_23;
             }
@@ -119,35 +119,35 @@ LABEL_21:
 
           v17 = *MEMORY[0x277D02418];
           v13 = v38;
-          a1 = v39;
+          self = selfCopy;
         }
 
 LABEL_23:
 
-        if (*MEMORY[0x277D02270] == a5.var0)
+        if (*MEMORY[0x277D02270] == found.var0)
         {
           v24 = objc_autoreleasePoolPush();
-          v25 = [v9 valueString];
-          v26 = v25;
-          if (v25)
+          valueString = [matchCopy valueString];
+          v26 = valueString;
+          if (valueString)
           {
-            v27 = v25;
+            v27 = valueString;
           }
 
           else
           {
-            [v8 textContent];
+            [messageCopy textContent];
             v28 = v41 = v17;
-            v29 = [v9 valueRange];
-            v27 = [v28 substringWithRange:{v29, v30}];
+            valueRange2 = [matchCopy valueRange];
+            v27 = [v28 substringWithRange:{valueRange2, v30}];
 
             v17 = v41;
           }
 
-          v31 = [a1 nameForDataDetectorMatch:v9 withValue:v27];
+          v31 = [self nameForDataDetectorMatch:matchCopy withValue:v27];
           if (v31)
           {
-            a5.var0 = *MEMORY[0x277D02288];
+            found.var0 = *MEMORY[0x277D02288];
           }
 
           objc_autoreleasePoolPop(v24);
@@ -155,24 +155,24 @@ LABEL_23:
 
         v32 = objc_opt_new();
         [v32 setSource:*MEMORY[0x277D02330]];
-        v33 = [v9 matchType];
-        if (v33 > 2)
+        matchType = [matchCopy matchType];
+        if (matchType > 2)
         {
           v34 = MEMORY[0x277D022B8];
         }
 
         else
         {
-          v34 = qword_27894B638[v33];
+          v34 = qword_27894B638[matchType];
         }
 
         [v32 setDetail:*v34];
-        [v32 setFoundIn:a5.var0];
+        [v32 setFoundIn:found.var0];
         [v32 setHasName:v17 != 0];
         [v32 setTokens:v42];
-        v35 = [a1 instance];
-        v36 = [v35 pet2Tracker];
-        [v36 trackScalarForMessage:v32];
+        instance = [self instance];
+        pet2Tracker = [instance pet2Tracker];
+        [pet2Tracker trackScalarForMessage:v32];
 
         goto LABEL_34;
       }
@@ -187,11 +187,11 @@ LABEL_35:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)tokenizeMessageContent:(id)a3
++ (id)tokenizeMessageContent:(id)content
 {
-  v3 = a3;
+  contentCopy = content;
   v4 = objc_opt_new();
-  v5 = [v3 length];
+  v5 = [contentCopy length];
   v6 = *MEMORY[0x277CCA3F0];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -199,8 +199,8 @@ LABEL_35:
   v12[3] = &unk_27894B5F8;
   v7 = v4;
   v13 = v7;
-  v14 = v3;
-  v8 = v3;
+  v14 = contentCopy;
+  v8 = contentCopy;
   [v8 enumerateLinguisticTagsInRange:0 scheme:v5 options:v6 orthography:6 usingBlock:{0, v12}];
   v9 = v14;
   v10 = v7;
@@ -218,25 +218,25 @@ void __53__SGDetectedAttributeMetrics_tokenizeMessageContent___block_invoke(uint
   [v7 addObject:v9];
 }
 
-+ (id)nameForDataDetectorMatch:(id)a3 withValue:(id)a4
++ (id)nameForDataDetectorMatch:(id)match withValue:(id)value
 {
-  v5 = a4;
-  v6 = [a3 matchType];
-  if (v6 == 2)
+  valueCopy = value;
+  matchType = [match matchType];
+  if (matchType == 2)
   {
     v7 = SGNormalizeEmailAddress();
     v8 = 1;
     goto LABEL_5;
   }
 
-  if (!v6)
+  if (!matchType)
   {
     v7 = SGNormalizePhoneNumber();
     v8 = 0;
 LABEL_5:
     v9 = +[SGSqlEntityStore defaultHarvestStore];
-    v10 = [v9 kvCacheManager];
-    v11 = [v10 cacheOfType:v8];
+    kvCacheManager = [v9 kvCacheManager];
+    v11 = [kvCacheManager cacheOfType:v8];
 
     v12 = [v11 valueForKey:v7];
 
@@ -249,49 +249,49 @@ LABEL_7:
   return v12;
 }
 
-+ (void)recordBirthdayExtractionAccuracy:(unsigned __int8)a3 withOffset:(id)a4 withModelVersion:(id)a5 isFromCongratulation:(unsigned __int8)a6 didRegexTrigger:(unsigned __int8)a7 didResponseKitTrigger:(unsigned __int8)a8
++ (void)recordBirthdayExtractionAccuracy:(unsigned __int8)accuracy withOffset:(id)offset withModelVersion:(id)version isFromCongratulation:(unsigned __int8)congratulation didRegexTrigger:(unsigned __int8)trigger didResponseKitTrigger:(unsigned __int8)kitTrigger
 {
-  v8 = a8;
-  v9 = a7;
-  v10 = a6;
-  v12 = a3;
-  v22 = a5;
-  v14 = a4;
+  kitTriggerCopy = kitTrigger;
+  triggerCopy = trigger;
+  congratulationCopy = congratulation;
+  accuracyCopy = accuracy;
+  versionCopy = version;
+  offsetCopy = offset;
   v15 = objc_opt_new();
-  [v15 setDateIsCorrect:v12 != 0];
-  [v15 setIsFromCongratulation:v10 != 0];
-  v16 = [v15 StringAsOffset:v14];
+  [v15 setDateIsCorrect:accuracyCopy != 0];
+  [v15 setIsFromCongratulation:congratulationCopy != 0];
+  v16 = [v15 StringAsOffset:offsetCopy];
 
   [v15 setOffset:v16];
-  [v15 setDidRegexTrigger:v9 != 0];
-  if (v22)
+  [v15 setDidRegexTrigger:triggerCopy != 0];
+  if (versionCopy)
   {
-    [v15 setModelVersion:{objc_msgSend(v22, "unsignedIntValue")}];
+    [v15 setModelVersion:{objc_msgSend(versionCopy, "unsignedIntValue")}];
   }
 
-  [v15 setDidResponseKitTrigger:v8 != 0];
-  v17 = [a1 instance];
-  v18 = [v17 pet2Tracker];
-  [v18 trackScalarForMessage:v15];
+  [v15 setDidResponseKitTrigger:kitTriggerCopy != 0];
+  instance = [self instance];
+  pet2Tracker = [instance pet2Tracker];
+  [pet2Tracker trackScalarForMessage:v15];
 
   v19 = objc_alloc(MEMORY[0x277CCACA8]);
   v20 = [v19 initWithFormat:@"%@.%@", *MEMORY[0x277D02468], @"birthdaySupervision"];
-  v21 = [v15 dictionaryRepresentation];
+  dictionaryRepresentation = [v15 dictionaryRepresentation];
   AnalyticsSendEvent();
 }
 
-+ (void)recordExtractionOutcome:(SGMContactDetailExtractionOutcome_)a3 forDetectionsInMessage:(id)a4 signatureRange:(_NSRange)a5 isDDSignature:(BOOL)a6
++ (void)recordExtractionOutcome:(SGMContactDetailExtractionOutcome_)outcome forDetectionsInMessage:(id)message signatureRange:(_NSRange)range isDDSignature:(BOOL)signature
 {
-  v23 = a6;
+  signatureCopy = signature;
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  [v8 plainTextDetectedData];
+  messageCopy = message;
+  [messageCopy plainTextDetectedData];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v21 = v27 = 0u;
-  v9 = [v21 reverseObjectEnumerator];
-  v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  reverseObjectEnumerator = [v21 reverseObjectEnumerator];
+  v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
     v11 = v10;
@@ -304,26 +304,26 @@ LABEL_7:
       {
         if (*v25 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v16 = *(*(&v24 + 1) + 8 * i);
-        v17 = [v16 matchType];
+        matchType = [v16 matchType];
         v18 = v12;
-        if (v17 <= 2)
+        if (matchType <= 2)
         {
-          v18 = qword_27894B638[v17];
+          v18 = qword_27894B638[matchType];
         }
 
         if (*v18 != v14)
         {
           v30.location = [v16 range];
           LOBYTE(v20) = 0;
-          [a1 recordExtractionOutcome:a3.var0 fromMessage:v8 foundInSignature:NSIntersectionRange(v30 isDDSignature:a5).length != 0 match:v23 modelVersion:v16 isUnlikelyPhone:{&unk_284749248, v20}];
+          [self recordExtractionOutcome:outcome.var0 fromMessage:messageCopy foundInSignature:NSIntersectionRange(v30 isDDSignature:range).length != 0 match:signatureCopy modelVersion:v16 isUnlikelyPhone:{&unk_284749248, v20}];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v11 = [reverseObjectEnumerator countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v11);

@@ -1,31 +1,31 @@
 @interface SBUIPresentableWantsHomeGestureAction
 - (BOOL)wantsHomeGesture;
-- (SBUIPresentableWantsHomeGestureAction)initWithWantsHomeGesture:(BOOL)a3 handler:(id)a4;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (void)setSuccessful:(BOOL)a3;
+- (SBUIPresentableWantsHomeGestureAction)initWithWantsHomeGesture:(BOOL)gesture handler:(id)handler;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (void)setSuccessful:(BOOL)successful;
 @end
 
 @implementation SBUIPresentableWantsHomeGestureAction
 
-- (SBUIPresentableWantsHomeGestureAction)initWithWantsHomeGesture:(BOOL)a3 handler:(id)a4
+- (SBUIPresentableWantsHomeGestureAction)initWithWantsHomeGesture:(BOOL)gesture handler:(id)handler
 {
-  v4 = a3;
-  v7 = a4;
-  if (!v7)
+  gestureCopy = gesture;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [SBUIPresentableWantsHomeGestureAction initWithWantsHomeGesture:a2 handler:self];
   }
 
   v8 = objc_alloc_init(MEMORY[0x1E698E700]);
-  [v8 setFlag:v4 forSetting:1];
+  [v8 setFlag:gestureCopy forSetting:1];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __74__SBUIPresentableWantsHomeGestureAction_initWithWantsHomeGesture_handler___block_invoke;
   v13[3] = &unk_1E789E448;
-  v14 = v7;
+  v14 = handlerCopy;
   v12.receiver = self;
   v12.super_class = SBUIPresentableWantsHomeGestureAction;
-  v9 = v7;
+  v9 = handlerCopy;
   v10 = [(SBUIPresentableWantsHomeGestureAction *)&v12 initWithInfo:v8 timeout:0 forResponseOnQueue:v13 withHandler:0.0];
 
   return v10;
@@ -40,33 +40,33 @@ void __74__SBUIPresentableWantsHomeGestureAction_initWithWantsHomeGesture_handle
 
 - (BOOL)wantsHomeGesture
 {
-  v2 = [(SBUIPresentableWantsHomeGestureAction *)self info];
-  v3 = [v2 BOOLForSetting:1];
+  info = [(SBUIPresentableWantsHomeGestureAction *)self info];
+  v3 = [info BOOLForSetting:1];
 
   return v3;
 }
 
-- (void)setSuccessful:(BOOL)a3
+- (void)setSuccessful:(BOOL)successful
 {
-  v3 = a3;
+  successfulCopy = successful;
   if ([(SBUIPresentableWantsHomeGestureAction *)self isValid]&& [(SBUIPresentableWantsHomeGestureAction *)self canSendResponse])
   {
     v6 = objc_alloc_init(MEMORY[0x1E698E700]);
-    [v6 setFlag:v3 forSetting:2];
+    [v6 setFlag:successfulCopy forSetting:2];
     v5 = [objc_alloc(MEMORY[0x1E698E600]) initWithInfo:v6 error:0];
     [(SBUIPresentableWantsHomeGestureAction *)self sendResponse:v5];
   }
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
   v3 = @"success";
-  if (a3 != 2)
+  if (setting != 2)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"wantsHomeGesture";
   }

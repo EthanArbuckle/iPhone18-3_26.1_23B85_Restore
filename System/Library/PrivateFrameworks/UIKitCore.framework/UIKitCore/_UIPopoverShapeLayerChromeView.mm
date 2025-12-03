@@ -4,7 +4,7 @@
 - (BOOL)_shouldUseGlassBackground;
 - (CGSize)_shadowOffset;
 - (UIEdgeInsets)_shadowInsets;
-- (_UIPopoverShapeLayerChromeView)initWithFrame:(CGRect)a3;
+- (_UIPopoverShapeLayerChromeView)initWithFrame:(CGRect)frame;
 - (_UIPopoverShapePathParameters)_pathParameters;
 - (double)maxNonPinnedOffset;
 - (double)minNonPinnedOffset;
@@ -22,8 +22,8 @@
 - (void)_updateStrokeViewColor;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setArrowDirection:(unint64_t)a3;
-- (void)setArrowOffset:(double)a3;
+- (void)setArrowDirection:(unint64_t)direction;
+- (void)setArrowOffset:(double)offset;
 @end
 
 @implementation _UIPopoverShapeLayerChromeView
@@ -40,11 +40,11 @@
   return result;
 }
 
-- (_UIPopoverShapeLayerChromeView)initWithFrame:(CGRect)a3
+- (_UIPopoverShapeLayerChromeView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _UIPopoverShapeLayerChromeView;
-  v3 = [(_UIPopoverStandardChromeView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_UIPopoverStandardChromeView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(_UIPopoverShapeLayerView);
@@ -65,10 +65,10 @@
 
   [(UIView *)self->_shapeLayerStrokeView setAutoresizingMask:18];
   [(UIView *)self->_shapeLayerStrokeView setUserInteractionEnabled:0];
-  v9 = [(UIView *)self->_shapeLayerStrokeView layer];
-  [v9 setLineWidth:2.0];
+  layer = [(UIView *)self->_shapeLayerStrokeView layer];
+  [layer setLineWidth:2.0];
   v6 = +[UIColor clearColor];
-  [v9 setFillColor:{objc_msgSend(v6, "CGColor")}];
+  [layer setFillColor:{objc_msgSend(v6, "CGColor")}];
 
   v7 = +[UITraitCollection systemTraitsAffectingColorAppearance];
   v8 = [(UIView *)self registerForTraitChanges:v7 withAction:sel__updateStrokeViewColor];
@@ -81,10 +81,10 @@
 {
   if (self->_shapeLayerStrokeView)
   {
-    v3 = [(UIView *)self traitCollection];
-    v4 = [v3 userInterfaceStyle];
+    traitCollection = [(UIView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    v5 = v4 == 1000 || v4 == 2;
+    v5 = userInterfaceStyle == 1000 || userInterfaceStyle == 2;
     v6 = 0.1;
     if (!v5)
     {
@@ -92,36 +92,36 @@
     }
 
     v9 = [UIColor colorWithWhite:1.0 alpha:v6];
-    v7 = [(UIView *)self->_shapeLayerStrokeView layer];
+    layer = [(UIView *)self->_shapeLayerStrokeView layer];
     v8 = v9;
-    [v7 setStrokeColor:{objc_msgSend(v9, "CGColor")}];
+    [layer setStrokeColor:{objc_msgSend(v9, "CGColor")}];
   }
 }
 
 - (double)minNonPinnedOffset
 {
-  v3 = [(_UIPopoverStandardChromeView *)self arrowDirection];
+  arrowDirection = [(_UIPopoverStandardChromeView *)self arrowDirection];
   result = 0.0;
-  if (v3 > 3)
+  if (arrowDirection > 3)
   {
-    if (v3 == 4)
+    if (arrowDirection == 4)
     {
-      v7 = self;
+      selfCopy2 = self;
       v8 = 5;
     }
 
     else
     {
-      if (v3 != 8)
+      if (arrowDirection != 8)
       {
         return result;
       }
 
-      v7 = self;
+      selfCopy2 = self;
       v8 = 10;
     }
 
-    [(UIView *)v7 effectiveRadiusForCorner:v8, 0.0];
+    [(UIView *)selfCopy2 effectiveRadiusForCorner:v8, 0.0];
     v10 = v13;
     [(UIView *)self bounds];
     v12 = v14 * 0.5;
@@ -129,24 +129,24 @@
 
   else
   {
-    if (v3 == 1)
+    if (arrowDirection == 1)
     {
-      v5 = self;
+      selfCopy4 = self;
       v6 = 3;
     }
 
     else
     {
-      if (v3 != 2)
+      if (arrowDirection != 2)
       {
         return result;
       }
 
-      v5 = self;
+      selfCopy4 = self;
       v6 = 12;
     }
 
-    [(UIView *)v5 effectiveRadiusForCorner:v6, 0.0];
+    [(UIView *)selfCopy4 effectiveRadiusForCorner:v6, 0.0];
     v10 = v9;
     [(UIView *)self bounds];
     v12 = v11 * 0.5;
@@ -157,28 +157,28 @@
 
 - (double)maxNonPinnedOffset
 {
-  v3 = [(_UIPopoverStandardChromeView *)self arrowDirection];
+  arrowDirection = [(_UIPopoverStandardChromeView *)self arrowDirection];
   result = 0.0;
-  if (v3 > 3)
+  if (arrowDirection > 3)
   {
-    if (v3 == 4)
+    if (arrowDirection == 4)
     {
-      v7 = self;
+      selfCopy2 = self;
       v8 = 5;
     }
 
     else
     {
-      if (v3 != 8)
+      if (arrowDirection != 8)
       {
         return result;
       }
 
-      v7 = self;
+      selfCopy2 = self;
       v8 = 10;
     }
 
-    [(UIView *)v7 effectiveRadiusForCorner:v8, 0.0];
+    [(UIView *)selfCopy2 effectiveRadiusForCorner:v8, 0.0];
     v10 = v13;
     [(UIView *)self bounds];
     v12 = v14 * 0.5;
@@ -186,24 +186,24 @@
 
   else
   {
-    if (v3 == 1)
+    if (arrowDirection == 1)
     {
-      v5 = self;
+      selfCopy4 = self;
       v6 = 3;
     }
 
     else
     {
-      if (v3 != 2)
+      if (arrowDirection != 2)
       {
         return result;
       }
 
-      v5 = self;
+      selfCopy4 = self;
       v6 = 12;
     }
 
-    [(UIView *)v5 effectiveRadiusForCorner:v6, 0.0];
+    [(UIView *)selfCopy4 effectiveRadiusForCorner:v6, 0.0];
     v10 = v9;
     [(UIView *)self bounds];
     v12 = v11 * 0.5;
@@ -242,19 +242,19 @@
   [(_UIPopoverShapeLayerChromeView *)self _updateShapeLayerPath];
 }
 
-- (void)setArrowDirection:(unint64_t)a3
+- (void)setArrowDirection:(unint64_t)direction
 {
   v4.receiver = self;
   v4.super_class = _UIPopoverShapeLayerChromeView;
-  [(_UIPopoverStandardChromeView *)&v4 setArrowDirection:a3];
+  [(_UIPopoverStandardChromeView *)&v4 setArrowDirection:direction];
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)setArrowOffset:(double)a3
+- (void)setArrowOffset:(double)offset
 {
   v4.receiver = self;
   v4.super_class = _UIPopoverShapeLayerChromeView;
-  [(_UIPopoverStandardChromeView *)&v4 setArrowOffset:a3];
+  [(_UIPopoverStandardChromeView *)&v4 setArrowOffset:offset];
   [(UIView *)self setNeedsLayout];
 }
 
@@ -266,10 +266,10 @@
     return 0;
   }
 
-  v3 = [(_UIPopoverStandardChromeView *)self arrowDirection];
-  if (v3 - 1 >= 2)
+  arrowDirection = [(_UIPopoverStandardChromeView *)self arrowDirection];
+  if (arrowDirection - 1 >= 2)
   {
-    if (v3 == 4 || v3 == 8)
+    if (arrowDirection == 4 || arrowDirection == 8)
     {
       [(_UIPopoverStandardChromeView *)self arrowOffset];
       v5 = v4 < 0.0;
@@ -298,8 +298,8 @@
 
 - (id)createShapeLayerPath
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = +[_UIPopoverShapePathProvider defaultProviderForIdiom:](_UIPopoverShapePathProvider, "defaultProviderForIdiom:", [v3 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v4 = +[_UIPopoverShapePathProvider defaultProviderForIdiom:](_UIPopoverShapePathProvider, "defaultProviderForIdiom:", [traitCollection userInterfaceIdiom]);
 
   v18 = 0;
   v16 = 0u;
@@ -329,15 +329,15 @@
 
 - (void)_updateShapeLayerPath
 {
-  v5 = [(_UIPopoverShapeLayerChromeView *)self createShapeLayerPath];
+  createShapeLayerPath = [(_UIPopoverShapeLayerChromeView *)self createShapeLayerPath];
   if (_UISolariumEnabled())
   {
-    [(_UIPopoverGlassBackground *)self->_glassView setShapePath:v5];
+    [(_UIPopoverGlassBackground *)self->_glassView setShapePath:createShapeLayerPath];
   }
 
-  v3 = [(UIView *)self->_shapeLayerMaskView layer];
-  v4 = v5;
-  [v3 setPath:{objc_msgSend(v5, "CGPath")}];
+  layer = [(UIView *)self->_shapeLayerMaskView layer];
+  v4 = createShapeLayerPath;
+  [layer setPath:{objc_msgSend(createShapeLayerPath, "CGPath")}];
 }
 
 - (BOOL)_disableGlassForProcess
@@ -365,19 +365,19 @@
 
 - (id)_effectiveBackgroundEffect
 {
-  v3 = [(_UIPopoverStandardChromeView *)self backgroundEffect];
-  v4 = v3;
-  if (v3)
+  backgroundEffect = [(_UIPopoverStandardChromeView *)self backgroundEffect];
+  v4 = backgroundEffect;
+  if (backgroundEffect)
   {
-    v5 = v3;
+    legacyBackgroundEffect = backgroundEffect;
   }
 
   else
   {
-    v5 = [(_UIPopoverShapeLayerChromeView *)self legacyBackgroundEffect];
+    legacyBackgroundEffect = [(_UIPopoverShapeLayerChromeView *)self legacyBackgroundEffect];
   }
 
-  v6 = v5;
+  v6 = legacyBackgroundEffect;
 
   return v6;
 }
@@ -386,16 +386,16 @@
 {
   if (_UISolariumEnabled() && [(_UIPopoverShapeLayerChromeView *)self _shouldUseGlassBackground])
   {
-    v3 = [(_UIPopoverStandardChromeView *)self backgroundEffect];
-    if (v3)
+    backgroundEffect = [(_UIPopoverStandardChromeView *)self backgroundEffect];
+    if (backgroundEffect)
     {
     }
 
     else
     {
-      v4 = [(_UIPopoverStandardChromeView *)self popoverBackgroundColor];
+      popoverBackgroundColor = [(_UIPopoverStandardChromeView *)self popoverBackgroundColor];
 
-      if (!v4)
+      if (!popoverBackgroundColor)
       {
         p_glassView = &self->_glassView;
         if (self->_glassView)
@@ -410,8 +410,8 @@
         [*p_glassView setAutoresizingMask:18];
         [(UIView *)self bounds];
         [*p_glassView setFrame:?];
-        v16 = [(UIPopoverBackgroundView *)self _presentationController];
-        [*p_glassView setPresentationController:v16];
+        _presentationController = [(UIPopoverBackgroundView *)self _presentationController];
+        [*p_glassView setPresentationController:_presentationController];
 LABEL_14:
 
         goto LABEL_15;
@@ -423,41 +423,41 @@ LABEL_14:
   if (!self->_effectView)
   {
     v6 = [UIVisualEffectView alloc];
-    v7 = [(_UIPopoverShapeLayerChromeView *)self _effectiveBackgroundEffect];
-    v8 = [(UIVisualEffectView *)v6 initWithEffect:v7];
+    _effectiveBackgroundEffect = [(_UIPopoverShapeLayerChromeView *)self _effectiveBackgroundEffect];
+    v8 = [(UIVisualEffectView *)v6 initWithEffect:_effectiveBackgroundEffect];
     v9 = *p_glassView;
     *p_glassView = v8;
 
-    v10 = [(UIPopoverBackgroundView *)self _chromeHidden];
+    _chromeHidden = [(UIPopoverBackgroundView *)self _chromeHidden];
     v11 = 1.0;
-    if (v10)
+    if (_chromeHidden)
     {
       v11 = 0.0;
     }
 
     [*p_glassView setAlpha:v11];
     [*p_glassView _setUseLiveMasking:1];
-    v12 = [(_UIPopoverStandardChromeView *)self backgroundEffect];
+    backgroundEffect2 = [(_UIPopoverStandardChromeView *)self backgroundEffect];
 
-    if (!v12)
+    if (!backgroundEffect2)
     {
-      v13 = [(_UIPopoverStandardChromeView *)self popoverBackgroundColor];
-      v14 = [*p_glassView contentView];
-      [v14 setBackgroundColor:v13];
+      popoverBackgroundColor2 = [(_UIPopoverStandardChromeView *)self popoverBackgroundColor];
+      contentView = [*p_glassView contentView];
+      [contentView setBackgroundColor:popoverBackgroundColor2];
     }
 
     [*p_glassView setAutoresizingMask:18];
     [(UIView *)self bounds];
     [*p_glassView setFrame:?];
-    v15 = [objc_opt_class() visualEffectGroupName];
+    visualEffectGroupName = [objc_opt_class() visualEffectGroupName];
 
-    if (!v15)
+    if (!visualEffectGroupName)
     {
       goto LABEL_15;
     }
 
-    v16 = [objc_opt_class() visualEffectGroupName];
-    [*p_glassView _setGroupName:v16];
+    _presentationController = [objc_opt_class() visualEffectGroupName];
+    [*p_glassView _setGroupName:_presentationController];
     goto LABEL_14;
   }
 
@@ -524,9 +524,9 @@ LABEL_15:
 {
   if ([(UIPopoverBackgroundView *)self _backgroundBlurEffectStyle]!= 1000)
   {
-    v6 = [(UIPopoverBackgroundView *)self _backgroundBlurEffectStyle];
-    v4 = [(_UIPopoverStandardChromeView *)self popoverBackgroundColor];
-    v5 = v6;
+    _backgroundBlurEffectStyle = [(UIPopoverBackgroundView *)self _backgroundBlurEffectStyle];
+    popoverBackgroundColor = [(_UIPopoverStandardChromeView *)self popoverBackgroundColor];
+    v5 = _backgroundBlurEffectStyle;
     goto LABEL_7;
   }
 
@@ -534,18 +534,18 @@ LABEL_15:
   switch(backgroundStyle)
   {
     case 100:
-      v4 = [(_UIPopoverStandardChromeView *)self popoverBackgroundColor];
+      popoverBackgroundColor = [(_UIPopoverStandardChromeView *)self popoverBackgroundColor];
       v5 = 1200;
       goto LABEL_7;
     case 7:
-      v4 = [(_UIPopoverStandardChromeView *)self popoverBackgroundColor];
+      popoverBackgroundColor = [(_UIPopoverStandardChromeView *)self popoverBackgroundColor];
       v5 = 99;
       goto LABEL_7;
     case 6:
-      v4 = [(_UIPopoverStandardChromeView *)self popoverBackgroundColor];
+      popoverBackgroundColor = [(_UIPopoverStandardChromeView *)self popoverBackgroundColor];
       v5 = 0;
 LABEL_7:
-      v7 = [_UIPopoverBackgroundVisualEffect effectWithStyle:v5 tint:v4];
+      v7 = [_UIPopoverBackgroundVisualEffect effectWithStyle:v5 tint:popoverBackgroundColor];
 
       goto LABEL_8;
   }
@@ -568,10 +568,10 @@ LABEL_8:
 
     else
     {
-      v4 = [(UIView *)self traitCollection];
-      v5 = [v4 userInterfaceStyle];
+      traitCollection = [(UIView *)self traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-      if (v5 == 2)
+      if (userInterfaceStyle == 2)
       {
         return 7;
       }
@@ -588,14 +588,14 @@ LABEL_8:
 
 - (void)_updateBackgroundStyle
 {
-  v3 = [(_UIPopoverShapeLayerChromeView *)self _resolvedBackgroundStyle];
-  if (v3 != self->_backgroundStyle)
+  _resolvedBackgroundStyle = [(_UIPopoverShapeLayerChromeView *)self _resolvedBackgroundStyle];
+  if (_resolvedBackgroundStyle != self->_backgroundStyle)
   {
-    v4 = v3;
-    self->_backgroundStyle = v3;
-    v5 = [(UIView *)self window];
+    v4 = _resolvedBackgroundStyle;
+    self->_backgroundStyle = _resolvedBackgroundStyle;
+    window = [(UIView *)self window];
 
-    if (v5)
+    if (window)
     {
       if ((v4 - 6) < 2 || v4 == 100)
       {
@@ -616,13 +616,13 @@ LABEL_8:
 {
   [(_UIPopoverShapeLayerChromeView *)self _configureBackgroundView];
   [(_UIPopoverShapeLayerChromeView *)self _updateBackgroundStyle];
-  v3 = [(_UIPopoverStandardChromeView *)self viewToMaskWhenContentExtendsOverArrow];
+  viewToMaskWhenContentExtendsOverArrow = [(_UIPopoverStandardChromeView *)self viewToMaskWhenContentExtendsOverArrow];
 
   shapeLayerMaskView = self->_shapeLayerMaskView;
-  if (v3)
+  if (viewToMaskWhenContentExtendsOverArrow)
   {
-    v5 = [(_UIPopoverStandardChromeView *)self viewToMaskWhenContentExtendsOverArrow];
-    [v5 setMaskView:shapeLayerMaskView];
+    viewToMaskWhenContentExtendsOverArrow2 = [(_UIPopoverStandardChromeView *)self viewToMaskWhenContentExtendsOverArrow];
+    [viewToMaskWhenContentExtendsOverArrow2 setMaskView:shapeLayerMaskView];
   }
 
   else
@@ -638,9 +638,9 @@ LABEL_8:
   v5.receiver = self;
   v5.super_class = _UIPopoverShapeLayerChromeView;
   [(UIView *)&v5 didMoveToWindow];
-  v3 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (v3)
+  if (window)
   {
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;

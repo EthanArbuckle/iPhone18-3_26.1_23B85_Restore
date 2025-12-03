@@ -1,6 +1,6 @@
 @interface DBNowPlayingIcon
 - (_TtC9DashBoard16DBNowPlayingIcon)init;
-- (_TtC9DashBoard16DBNowPlayingIcon)initWithLeafIdentifier:(id)a3 applicationBundleID:(id)a4;
+- (_TtC9DashBoard16DBNowPlayingIcon)initWithLeafIdentifier:(id)identifier applicationBundleID:(id)d;
 @end
 
 @implementation DBNowPlayingIcon
@@ -18,24 +18,24 @@
   return v6;
 }
 
-- (_TtC9DashBoard16DBNowPlayingIcon)initWithLeafIdentifier:(id)a3 applicationBundleID:(id)a4
+- (_TtC9DashBoard16DBNowPlayingIcon)initWithLeafIdentifier:(id)identifier applicationBundleID:(id)d
 {
-  if (a4)
+  if (d)
   {
     sub_248383960();
-    v6 = a3;
+    identifierCopy = identifier;
     v7 = sub_248383930();
   }
 
   else
   {
-    v8 = a3;
+    identifierCopy2 = identifier;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for DBNowPlayingIcon();
-  v9 = [(SBLeafIcon *)&v11 initWithLeafIdentifier:a3 applicationBundleID:v7];
+  v9 = [(SBLeafIcon *)&v11 initWithLeafIdentifier:identifier applicationBundleID:v7];
 
   return v9;
 }

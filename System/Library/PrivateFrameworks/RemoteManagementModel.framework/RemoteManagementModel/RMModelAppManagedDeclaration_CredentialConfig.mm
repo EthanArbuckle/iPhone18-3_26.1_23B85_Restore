@@ -1,10 +1,10 @@
 @interface RMModelAppManagedDeclaration_CredentialConfig
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 assetReference:(id)a4;
-+ (id)buildWithIdentifier:(id)a3 assetReference:(id)a4;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier assetReference:(id)reference;
++ (id)buildWithIdentifier:(id)identifier assetReference:(id)reference;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
 @end
 
 @implementation RMModelAppManagedDeclaration_CredentialConfig
@@ -23,36 +23,36 @@
   return v4;
 }
 
-+ (id)buildWithIdentifier:(id)a3 assetReference:(id)a4
++ (id)buildWithIdentifier:(id)identifier assetReference:(id)reference
 {
-  v5 = a4;
-  v6 = a3;
+  referenceCopy = reference;
+  identifierCopy = identifier;
   v7 = objc_opt_new();
-  [v7 setPayloadIdentifier:v6];
+  [v7 setPayloadIdentifier:identifierCopy];
 
-  [v7 setPayloadAssetReference:v5];
+  [v7 setPayloadAssetReference:referenceCopy];
 
   return v7;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 assetReference:(id)a4
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier assetReference:(id)reference
 {
-  v5 = a4;
-  v6 = a3;
+  referenceCopy = reference;
+  identifierCopy = identifier;
   v7 = objc_opt_new();
-  [v7 setPayloadIdentifier:v6];
+  [v7 setPayloadIdentifier:identifierCopy];
 
-  [v7 setPayloadAssetReference:v5];
+  [v7 setPayloadAssetReference:referenceCopy];
 
   return v7;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelAppManagedDeclaration_CredentialConfig allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -60,9 +60,9 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  if ([(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"Identifier" forKeyPath:@"payloadIdentifier" isRequired:1 defaultValue:0 error:a5])
+  if ([(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"Identifier" forKeyPath:@"payloadIdentifier" isRequired:1 defaultValue:0 error:error])
   {
-    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"AssetReference" forKeyPath:@"payloadAssetReference" isRequired:1 defaultValue:0 error:a5];
+    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"AssetReference" forKeyPath:@"payloadAssetReference" isRequired:1 defaultValue:0 error:error];
   }
 
   else
@@ -73,25 +73,25 @@
   return v13;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelAppManagedDeclaration_CredentialConfig *)self payloadIdentifier];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Identifier" value:v5 isRequired:1 defaultValue:0];
+  payloadIdentifier = [(RMModelAppManagedDeclaration_CredentialConfig *)self payloadIdentifier];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Identifier" value:payloadIdentifier isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelAppManagedDeclaration_CredentialConfig *)self payloadAssetReference];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"AssetReference" value:v6 isRequired:1 defaultValue:0];
+  payloadAssetReference = [(RMModelAppManagedDeclaration_CredentialConfig *)self payloadAssetReference];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"AssetReference" value:payloadAssetReference isRequired:1 defaultValue:0];
 
   v7 = [v4 copy];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = RMModelAppManagedDeclaration_CredentialConfig;
-  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadIdentifier copy];
   v6 = v4[2];
   v4[2] = v5;

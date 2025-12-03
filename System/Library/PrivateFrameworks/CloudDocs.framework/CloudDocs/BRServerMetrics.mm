@@ -1,9 +1,9 @@
 @interface BRServerMetrics
-- (BRServerMetrics)initWithCoder:(id)a3;
-- (BRServerMetrics)initWithServerMetrics:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BRServerMetrics)initWithCoder:(id)coder;
+- (BRServerMetrics)initWithServerMetrics:(id)metrics;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BRServerMetrics
@@ -44,38 +44,70 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 initWithServerMetrics:self];
 }
 
-- (BRServerMetrics)initWithServerMetrics:(id)a3
+- (BRServerMetrics)initWithServerMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v17.receiver = self;
   v17.super_class = BRServerMetrics;
   v5 = [(BRServerMetrics *)&v17 init];
   if (v5)
   {
-    v6 = [v4 quotaUsed];
+    quotaUsed = [metricsCopy quotaUsed];
+    quotaUsed = v5->_quotaUsed;
+    v5->_quotaUsed = quotaUsed;
+
+    recursiveChildCount = [metricsCopy recursiveChildCount];
+    recursiveChildCount = v5->_recursiveChildCount;
+    v5->_recursiveChildCount = recursiveChildCount;
+
+    sharedByMeRecursiveCount = [metricsCopy sharedByMeRecursiveCount];
+    sharedByMeRecursiveCount = v5->_sharedByMeRecursiveCount;
+    v5->_sharedByMeRecursiveCount = sharedByMeRecursiveCount;
+
+    sharedAliasRecursiveCount = [metricsCopy sharedAliasRecursiveCount];
+    sharedAliasRecursiveCount = v5->_sharedAliasRecursiveCount;
+    v5->_sharedAliasRecursiveCount = sharedAliasRecursiveCount;
+
+    childCount = [metricsCopy childCount];
+    childCount = v5->_childCount;
+    v5->_childCount = childCount;
+  }
+
+  return v5;
+}
+
+- (BRServerMetrics)initWithCoder:(id)coder
+{
+  coderCopy = coder;
+  v17.receiver = self;
+  v17.super_class = BRServerMetrics;
+  v5 = [(BRServerMetrics *)&v17 init];
+  if (v5)
+  {
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"quota-used"];
     quotaUsed = v5->_quotaUsed;
     v5->_quotaUsed = v6;
 
-    v8 = [v4 recursiveChildCount];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rec-child-count"];
     recursiveChildCount = v5->_recursiveChildCount;
     v5->_recursiveChildCount = v8;
 
-    v10 = [v4 sharedByMeRecursiveCount];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shared-by-me"];
     sharedByMeRecursiveCount = v5->_sharedByMeRecursiveCount;
     v5->_sharedByMeRecursiveCount = v10;
 
-    v12 = [v4 sharedAliasRecursiveCount];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shared-alias"];
     sharedAliasRecursiveCount = v5->_sharedAliasRecursiveCount;
     v5->_sharedAliasRecursiveCount = v12;
 
-    v14 = [v4 childCount];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"child-count"];
     childCount = v5->_childCount;
     v5->_childCount = v14;
   }
@@ -83,47 +115,15 @@
   return v5;
 }
 
-- (BRServerMetrics)initWithCoder:(id)a3
-{
-  v4 = a3;
-  v17.receiver = self;
-  v17.super_class = BRServerMetrics;
-  v5 = [(BRServerMetrics *)&v17 init];
-  if (v5)
-  {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"quota-used"];
-    quotaUsed = v5->_quotaUsed;
-    v5->_quotaUsed = v6;
-
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rec-child-count"];
-    recursiveChildCount = v5->_recursiveChildCount;
-    v5->_recursiveChildCount = v8;
-
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shared-by-me"];
-    sharedByMeRecursiveCount = v5->_sharedByMeRecursiveCount;
-    v5->_sharedByMeRecursiveCount = v10;
-
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shared-alias"];
-    sharedAliasRecursiveCount = v5->_sharedAliasRecursiveCount;
-    v5->_sharedAliasRecursiveCount = v12;
-
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"child-count"];
-    childCount = v5->_childCount;
-    v5->_childCount = v14;
-  }
-
-  return v5;
-}
-
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   quotaUsed = self->_quotaUsed;
-  v5 = a3;
-  [v5 encodeObject:quotaUsed forKey:@"quota-used"];
-  [v5 encodeObject:self->_recursiveChildCount forKey:@"rec-child-count"];
-  [v5 encodeObject:self->_sharedByMeRecursiveCount forKey:@"shared-by-me"];
-  [v5 encodeObject:self->_sharedAliasRecursiveCount forKey:@"shared-alias"];
-  [v5 encodeObject:self->_childCount forKey:@"child-count"];
+  coderCopy = coder;
+  [coderCopy encodeObject:quotaUsed forKey:@"quota-used"];
+  [coderCopy encodeObject:self->_recursiveChildCount forKey:@"rec-child-count"];
+  [coderCopy encodeObject:self->_sharedByMeRecursiveCount forKey:@"shared-by-me"];
+  [coderCopy encodeObject:self->_sharedAliasRecursiveCount forKey:@"shared-alias"];
+  [coderCopy encodeObject:self->_childCount forKey:@"child-count"];
 }
 
 @end

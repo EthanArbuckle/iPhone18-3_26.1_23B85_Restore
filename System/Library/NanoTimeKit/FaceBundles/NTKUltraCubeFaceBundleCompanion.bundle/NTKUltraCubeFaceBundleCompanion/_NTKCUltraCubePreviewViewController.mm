@@ -1,9 +1,9 @@
 @interface _NTKCUltraCubePreviewViewController
-- (_NTKCUltraCubePreviewViewController)initWithPreviewProvider:(id)a3;
+- (_NTKCUltraCubePreviewViewController)initWithPreviewProvider:(id)provider;
 - (_NTKCUltraCubePreviewViewControllerDelegate)delegate;
-- (id)_toolbarItemsShowingRevert:(BOOL)a3;
-- (int64_t)_optionFromPosition:(int64_t)a3;
-- (int64_t)_positionFromOption:(int64_t)a3;
+- (id)_toolbarItemsShowingRevert:(BOOL)revert;
+- (int64_t)_optionFromPosition:(int64_t)position;
+- (int64_t)_positionFromOption:(int64_t)option;
 - (void)_cancelPressed;
 - (void)_deletePressed;
 - (void)_donePressed;
@@ -11,49 +11,49 @@
 - (void)_hideLoadingSpinner;
 - (void)_loadInitialCropPreview;
 - (void)_revertPressed;
-- (void)_setCropValidationState:(unint64_t)a3 animated:(BOOL)a4;
-- (void)_setPreview:(id)a3 animated:(BOOL)a4;
-- (void)_setupCenteredViewWithPhoto:(id)a3 maskedPhoto:(id)a4;
+- (void)_setCropValidationState:(unint64_t)state animated:(BOOL)animated;
+- (void)_setPreview:(id)preview animated:(BOOL)animated;
+- (void)_setupCenteredViewWithPhoto:(id)photo maskedPhoto:(id)maskedPhoto;
 - (void)_showLoadingLabel;
 - (void)_showLoadingSpinner;
 - (void)_updateAllButtonStates;
 - (void)_updateDeleteButtonEnabledState;
 - (void)_updateDoneButtonEnabledState;
-- (void)_validatePreview:(id)a3 withCrop:(CGRect)a4 animated:(BOOL)a5;
+- (void)_validatePreview:(id)preview withCrop:(CGRect)crop animated:(BOOL)animated;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewDidSettleFromInteracting:(id)a3;
-- (void)scrollViewWillBeginInteraction:(id)a3;
-- (void)setInitialPreviewState:(unint64_t)a3;
-- (void)ultracubeTimePlacementViewControllerDidUpdateSelectedOption:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewDidSettleFromInteracting:(id)interacting;
+- (void)scrollViewWillBeginInteraction:(id)interaction;
+- (void)setInitialPreviewState:(unint64_t)state;
+- (void)ultracubeTimePlacementViewControllerDidUpdateSelectedOption:(id)option;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation _NTKCUltraCubePreviewViewController
 
-- (_NTKCUltraCubePreviewViewController)initWithPreviewProvider:(id)a3
+- (_NTKCUltraCubePreviewViewController)initWithPreviewProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = _NTKCUltraCubePreviewViewController;
   v6 = [(_NTKCUltraCubePreviewViewController *)&v15 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    v8 = [(_NTKCUltraCubePreviewViewController *)v6 navigationItem];
-    [v8 setHidesBackButton:1];
+    navigationItem = [(_NTKCUltraCubePreviewViewController *)v6 navigationItem];
+    [navigationItem setHidesBackButton:1];
 
     v7->_initialPreviewState = 0;
-    objc_storeStrong(&v7->_previewProvider, a3);
+    objc_storeStrong(&v7->_previewProvider, provider);
     v7->_cropValidationState = 0;
     v9 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:16 target:v7 action:"_deletePressed"];
     deleteButton = v7->_deleteButton;
     v7->_deleteButton = v9;
 
-    -[UIBarButtonItem setEnabled:](v7->_deleteButton, "setEnabled:", [v5 ultracube_canDelete]);
+    -[UIBarButtonItem setEnabled:](v7->_deleteButton, "setEnabled:", [providerCopy ultracube_canDelete]);
     v11 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:v7 action:"_cancelPressed"];
     cancelButton = v7->_cancelButton;
     v7->_cancelButton = v11;
@@ -109,8 +109,8 @@
   v65.super_class = _NTKCUltraCubePreviewViewController;
   [(_NTKCUltraCubePreviewViewController *)&v65 viewDidLoad];
   v3 = +[UIColor systemBackgroundColor];
-  v4 = [(_NTKCUltraCubePreviewViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(_NTKCUltraCubePreviewViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = +[CAShapeLayer layer];
   reverseMask = self->_reverseMask;
@@ -119,12 +119,12 @@
   v7 = [UIColor colorWithWhite:0.2 alpha:1.0];
   -[CAShapeLayer setFillColor:](self->_reverseMask, "setFillColor:", [v7 CGColor]);
 
-  v8 = [(_NTKCUltraCubePreviewViewController *)self view];
-  v9 = [v8 layer];
-  [v9 addSublayer:self->_reverseMask];
+  view2 = [(_NTKCUltraCubePreviewViewController *)self view];
+  layer = [view2 layer];
+  [layer addSublayer:self->_reverseMask];
 
-  v10 = [(_NTKCUltraCubePreviewViewController *)self view];
-  [v10 bounds];
+  view3 = [(_NTKCUltraCubePreviewViewController *)self view];
+  [view3 bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -199,8 +199,8 @@
     [(UIBarButtonItem *)self->_cancelButton setEnabled:0];
   }
 
-  v33 = [(_NTKCUltraCubePreviewViewController *)self view];
-  [v33 addSubview:self->_scrollView];
+  view4 = [(_NTKCUltraCubePreviewViewController *)self view];
+  [view4 addSubview:self->_scrollView];
 
   v34 = [(_NTKCUltraCubePreviewViewController *)self _toolbarItemsShowingRevert:1];
   revertableToolbarItems = self->_revertableToolbarItems;
@@ -216,8 +216,8 @@
   self->_timeContainer = v38;
 
   [(UIView *)self->_timeContainer setUserInteractionEnabled:0];
-  v40 = [(_NTKCUltraCubePreviewViewController *)self view];
-  [v40 addSubview:self->_timeContainer];
+  view5 = [(_NTKCUltraCubePreviewViewController *)self view];
+  [view5 addSubview:self->_timeContainer];
 
   v41 = +[CLKDevice currentDevice];
   v42 = [NTKDigitalTimeLabel labelWithOptions:0 forDevice:v41];
@@ -229,13 +229,13 @@
   [(NTKDigitalTimeLabel *)self->_time setTextColor:v44];
 
   v45 = +[NTKDate faceDate];
-  v46 = [(NTKDigitalTimeLabel *)self->_time timeFormatter];
-  [v46 setOverrideDate:v45];
+  timeFormatter = [(NTKDigitalTimeLabel *)self->_time timeFormatter];
+  [timeFormatter setOverrideDate:v45];
 
   [(NTKDigitalTimeLabel *)self->_time setHidden:1];
   [(UIView *)self->_timeContainer addSubview:self->_time];
-  v47 = [(_NTKCUltraCubePreviewViewController *)self view];
-  [v47 insertSubview:self->_overlayScrollView aboveSubview:self->_timeContainer];
+  view6 = [(_NTKCUltraCubePreviewViewController *)self view];
+  [view6 insertSubview:self->_overlayScrollView aboveSubview:self->_timeContainer];
 
   v48 = +[CAShapeLayer layer];
   mask = self->_mask;
@@ -245,9 +245,9 @@
   v50 = [UIColor colorWithWhite:0.0 alpha:0.6];
   -[CAShapeLayer setFillColor:](self->_mask, "setFillColor:", [v50 CGColor]);
 
-  v51 = [(_NTKCUltraCubePreviewViewController *)self view];
-  v52 = [v51 layer];
-  [v52 addSublayer:self->_mask];
+  view7 = [(_NTKCUltraCubePreviewViewController *)self view];
+  layer2 = [view7 layer];
+  [layer2 addSublayer:self->_mask];
 
   v53 = objc_opt_new();
   placementGuideContainer = self->_placementGuideContainer;
@@ -255,8 +255,8 @@
 
   [(UIView *)self->_placementGuideContainer setAlpha:0.0];
   [(UIView *)self->_placementGuideContainer setUserInteractionEnabled:0];
-  v55 = [(_NTKCUltraCubePreviewViewController *)self view];
-  [v55 addSubview:self->_placementGuideContainer];
+  view8 = [(_NTKCUltraCubePreviewViewController *)self view];
+  [view8 addSubview:self->_placementGuideContainer];
 
   v56 = objc_opt_new();
   placementGuideLabel = self->_placementGuideLabel;
@@ -280,22 +280,22 @@
   v81.receiver = self;
   v81.super_class = _NTKCUltraCubePreviewViewController;
   [(_NTKCUltraCubePreviewViewController *)&v81 viewDidLayoutSubviews];
-  v3 = [(_NTKCUltraCubePreviewViewController *)self view];
-  [v3 bounds];
+  view = [(_NTKCUltraCubePreviewViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(_NTKCUltraCubePreviewViewController *)self previewProvider];
-  [v12 ultracube_screenBounds];
+  previewProvider = [(_NTKCUltraCubePreviewViewController *)self previewProvider];
+  [previewProvider ultracube_screenBounds];
   v75 = v14;
   v76 = v13;
   v73 = v16;
   v74 = v15;
 
-  v17 = [(_NTKCUltraCubePreviewViewController *)self previewProvider];
-  [v17 ultracube_screenCornerRadius];
+  previewProvider2 = [(_NTKCUltraCubePreviewViewController *)self previewProvider];
+  [previewProvider2 ultracube_screenCornerRadius];
   v71 = v18;
 
   v78 = v11;
@@ -389,8 +389,8 @@
   v88.size.width = v37;
   v88.size.height = v78;
   v56 = CGRectGetWidth(v88);
-  v57 = [(NTKCompanionUltraCubeTimePlacementViewController *)self->_timePlacementViewController view];
-  [v57 bounds];
+  view2 = [(NTKCompanionUltraCubeTimePlacementViewController *)self->_timePlacementViewController view];
+  [view2 bounds];
   v92.origin.x = 0.0;
   v92.origin.y = 0.0;
   v92.size.width = v56;
@@ -399,12 +399,12 @@
 
   if (!v58)
   {
-    v59 = [(NTKCompanionUltraCubeTimePlacementViewController *)self->_timePlacementViewController view];
-    [v59 setBounds:{0.0, 0.0, v56, v55}];
+    view3 = [(NTKCompanionUltraCubeTimePlacementViewController *)self->_timePlacementViewController view];
+    [view3 setBounds:{0.0, 0.0, v56, v55}];
   }
 
-  v60 = [(_NTKCUltraCubePreviewViewController *)self view];
-  [v60 safeAreaInsets];
+  view4 = [(_NTKCUltraCubePreviewViewController *)self view];
+  [view4 safeAreaInsets];
   v62 = v61;
 
   v90.origin.x = v22;
@@ -417,25 +417,25 @@
   v91.size.width = v37;
   v91.size.height = v78;
   v64 = CGRectGetMaxY(v91) - v55 * 0.5 - v62 + -16.0;
-  v65 = [(NTKCompanionUltraCubeTimePlacementViewController *)self->_timePlacementViewController view];
-  [v65 center];
+  view5 = [(NTKCompanionUltraCubeTimePlacementViewController *)self->_timePlacementViewController view];
+  [view5 center];
   v67 = v66;
   v69 = v68;
 
   if (v67 != v63 || v69 != v64)
   {
-    v70 = [(NTKCompanionUltraCubeTimePlacementViewController *)self->_timePlacementViewController view];
-    [v70 setCenter:{v63, v64}];
+    view6 = [(NTKCompanionUltraCubeTimePlacementViewController *)self->_timePlacementViewController view];
+    [view6 setCenter:{v63, v64}];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = _NTKCUltraCubePreviewViewController;
-  [(_NTKCUltraCubePreviewViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(_NTKCUltraCubePreviewViewController *)self delegate];
-  [v4 _ultracubePreviewViewControllerDidDismiss:self];
+  [(_NTKCUltraCubePreviewViewController *)&v5 viewDidDisappear:disappear];
+  delegate = [(_NTKCUltraCubePreviewViewController *)self delegate];
+  [delegate _ultracubePreviewViewControllerDidDismiss:self];
 }
 
 - (void)_loadInitialCropPreview
@@ -453,10 +453,10 @@
   objc_destroyWeak(&location);
 }
 
-- (void)setInitialPreviewState:(unint64_t)a3
+- (void)setInitialPreviewState:(unint64_t)state
 {
-  self->_initialPreviewState = a3;
-  switch(a3)
+  self->_initialPreviewState = state;
+  switch(state)
   {
     case 3uLL:
       [(_NTKCUltraCubePreviewViewController *)self _hideLoadingSpinner];
@@ -492,14 +492,14 @@
   }
 
   v6 = [[UIBarButtonItem alloc] initWithCustomView:self->_loadingSpinner];
-  v5 = [(_NTKCUltraCubePreviewViewController *)self navigationItem];
-  [v5 setRightBarButtonItem:v6];
+  navigationItem = [(_NTKCUltraCubePreviewViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v6];
 }
 
 - (void)_hideLoadingSpinner
 {
-  v3 = [(_NTKCUltraCubePreviewViewController *)self navigationItem];
-  [v3 setRightBarButtonItem:0];
+  navigationItem = [(_NTKCUltraCubePreviewViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:0];
 
   [(UIActivityIndicatorView *)self->_loadingSpinner stopAnimating];
   loadingSpinner = self->_loadingSpinner;
@@ -510,21 +510,21 @@
 {
   if (!self->_loadingLabel)
   {
-    v3 = [(_NTKCUltraCubePreviewViewController *)self view];
-    [v3 bounds];
+    view = [(_NTKCUltraCubePreviewViewController *)self view];
+    [view bounds];
     UIRectCenteredIntegralRectScale();
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
 
-    v12 = [(_NTKCUltraCubePreviewViewController *)self navigationController];
-    v13 = [v12 view];
-    [v13 safeAreaInsets];
+    navigationController = [(_NTKCUltraCubePreviewViewController *)self navigationController];
+    view2 = [navigationController view];
+    [view2 safeAreaInsets];
     v15 = v14;
-    v16 = [(_NTKCUltraCubePreviewViewController *)self navigationController];
-    v17 = [v16 view];
-    [v17 safeAreaInsets];
+    navigationController2 = [(_NTKCUltraCubePreviewViewController *)self navigationController];
+    view3 = [navigationController2 view];
+    [view3 safeAreaInsets];
     v19 = v15 - v18;
 
     v27.origin.x = v5;
@@ -547,8 +547,8 @@
     v24 = +[UIColor placeholderTextColor];
     [(UILabel *)self->_loadingLabel setTextColor:v24];
 
-    v25 = [(_NTKCUltraCubePreviewViewController *)self view];
-    [v25 addSubview:self->_loadingLabel];
+    view4 = [(_NTKCUltraCubePreviewViewController *)self view];
+    [view4 addSubview:self->_loadingLabel];
   }
 }
 
@@ -559,21 +559,21 @@
   self->_loadingLabel = 0;
 }
 
-- (void)_setupCenteredViewWithPhoto:(id)a3 maskedPhoto:(id)a4
+- (void)_setupCenteredViewWithPhoto:(id)photo maskedPhoto:(id)maskedPhoto
 {
-  v18 = a3;
-  v6 = a4;
-  v7 = [(NTKCCenteringScrollView *)self->_scrollView centeredView];
+  photoCopy = photo;
+  maskedPhotoCopy = maskedPhoto;
+  centeredView = [(NTKCCenteringScrollView *)self->_scrollView centeredView];
 
-  if (!v7)
+  if (!centeredView)
   {
-    v8 = [[UIImageView alloc] initWithImage:v18];
+    v8 = [[UIImageView alloc] initWithImage:photoCopy];
     [(NTKCCenteringScrollView *)self->_scrollView setCenteredView:v8];
 
-    [(NTKCCenteringScrollView *)self->_overlayScrollView setHidden:v6 == 0];
-    if (v6)
+    [(NTKCCenteringScrollView *)self->_overlayScrollView setHidden:maskedPhotoCopy == 0];
+    if (maskedPhotoCopy)
     {
-      v9 = [[UIImageView alloc] initWithImage:v6];
+      v9 = [[UIImageView alloc] initWithImage:maskedPhotoCopy];
       [(NTKCCenteringScrollView *)self->_overlayScrollView setCenteredView:v9];
 
       v10 = &off_4B420;
@@ -586,29 +586,29 @@
 
     v11 = [[NTKCompanionUltraCubeTimePlacementViewController alloc] initWithOptions:v10];
     v12 = BPSBridgeTintColor();
-    v13 = [(NTKCompanionUltraCubeTimePlacementViewController *)v11 view];
-    [v13 setTintColor:v12];
+    view = [(NTKCompanionUltraCubeTimePlacementViewController *)v11 view];
+    [view setTintColor:v12];
 
     [(NTKCompanionUltraCubeTimePlacementViewController *)v11 setDelegate:self];
     [(_NTKCUltraCubePreviewViewController *)self addChildViewController:v11];
-    v14 = [(_NTKCUltraCubePreviewViewController *)self view];
-    v15 = [(NTKCompanionUltraCubeTimePlacementViewController *)v11 view];
-    [v14 addSubview:v15];
+    view2 = [(_NTKCUltraCubePreviewViewController *)self view];
+    view3 = [(NTKCompanionUltraCubeTimePlacementViewController *)v11 view];
+    [view2 addSubview:view3];
 
     [(NTKCompanionUltraCubeTimePlacementViewController *)v11 didMoveToParentViewController:self];
     timePlacementViewController = self->_timePlacementViewController;
     self->_timePlacementViewController = v11;
 
-    v17 = [(_NTKCUltraCubePreviewViewController *)self view];
-    [v17 setNeedsLayout];
+    view4 = [(_NTKCUltraCubePreviewViewController *)self view];
+    [view4 setNeedsLayout];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_579B8 == a6)
+  if (off_579B8 == context)
   {
-    if ([a3 isEqualToString:{@"bounds", a4, a5}])
+    if ([path isEqualToString:{@"bounds", object, change}])
     {
       [(NTKCCenteringScrollView *)self->_scrollView zoomScale];
       [(NTKCCenteringScrollView *)self->_overlayScrollView setZoomScale:0 animated:?];
@@ -625,19 +625,19 @@
   {
     v8.receiver = self;
     v8.super_class = _NTKCUltraCubePreviewViewController;
-    [(_NTKCUltraCubePreviewViewController *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(_NTKCUltraCubePreviewViewController *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)scrollViewWillBeginInteraction:(id)a3
+- (void)scrollViewWillBeginInteraction:(id)interaction
 {
   [(_NTKCUltraCubePreviewViewController *)self setDidInteractWithCropView:1];
-  v4 = [(_NTKCUltraCubePreviewViewController *)self currentPreview];
+  currentPreview = [(_NTKCUltraCubePreviewViewController *)self currentPreview];
   [(NTKCCenteringScrollView *)self->_scrollView cropRect];
-  [(_NTKCUltraCubePreviewViewController *)self _validatePreview:v4 withCrop:0 animated:?];
+  [(_NTKCUltraCubePreviewViewController *)self _validatePreview:currentPreview withCrop:0 animated:?];
 
-  v5 = [(_NTKCUltraCubePreviewViewController *)self toolbarItems];
-  v6 = [v5 isEqualToArray:self->_revertableToolbarItems];
+  toolbarItems = [(_NTKCUltraCubePreviewViewController *)self toolbarItems];
+  v6 = [toolbarItems isEqualToArray:self->_revertableToolbarItems];
 
   if (v6)
   {
@@ -647,16 +647,16 @@
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = [(_NTKCUltraCubePreviewViewController *)self currentPreview];
+  currentPreview = [(_NTKCUltraCubePreviewViewController *)self currentPreview];
   [(NTKCCenteringScrollView *)self->_scrollView cropRect];
-  [(_NTKCUltraCubePreviewViewController *)self _validatePreview:v4 withCrop:0 animated:?];
+  [(_NTKCUltraCubePreviewViewController *)self _validatePreview:currentPreview withCrop:0 animated:?];
 }
 
-- (void)scrollViewDidSettleFromInteracting:(id)a3
+- (void)scrollViewDidSettleFromInteracting:(id)interacting
 {
-  v4 = [(_NTKCUltraCubePreviewViewController *)self currentPreview];
+  currentPreview = [(_NTKCUltraCubePreviewViewController *)self currentPreview];
   [(NTKCCenteringScrollView *)self->_scrollView cropRect];
   x = v5;
   y = v7;
@@ -678,34 +678,34 @@
   }
 
   v14 = [NTKUltraCubeCropPreview alloc];
-  v15 = [v4 photo];
-  v16 = [v4 maskedPhoto];
-  v17 = [v4 previewValidator];
-  v18 = -[NTKUltraCubeCropPreview initWithPhoto:maskedPhoto:previewValidator:crop:timeLabelPosition:revertable:](v14, "initWithPhoto:maskedPhoto:previewValidator:crop:timeLabelPosition:revertable:", v15, v16, v17, [v4 timeLabelPosition], 1, x, y, width, height);
+  photo = [currentPreview photo];
+  maskedPhoto = [currentPreview maskedPhoto];
+  previewValidator = [currentPreview previewValidator];
+  v18 = -[NTKUltraCubeCropPreview initWithPhoto:maskedPhoto:previewValidator:crop:timeLabelPosition:revertable:](v14, "initWithPhoto:maskedPhoto:previewValidator:crop:timeLabelPosition:revertable:", photo, maskedPhoto, previewValidator, [currentPreview timeLabelPosition], 1, x, y, width, height);
 
   [(_NTKCUltraCubePreviewViewController *)self _setPreview:v18 animated:1];
 }
 
-- (void)_setPreview:(id)a3 animated:(BOOL)a4
+- (void)_setPreview:(id)preview animated:(BOOL)animated
 {
-  v5 = a3;
+  previewCopy = preview;
   if ([(NTKDigitalTimeLabel *)self->_time isHidden])
   {
     [(NTKDigitalTimeLabel *)self->_time setHidden:0];
   }
 
-  [(NTKUltraCubeCropPreview *)v5 crop];
+  [(NTKUltraCubeCropPreview *)previewCopy crop];
   x = v6;
   y = v8;
   width = v10;
   height = v12;
-  v14 = [(NTKUltraCubeCropPreview *)v5 photo];
-  v15 = [(NTKUltraCubeCropPreview *)v5 maskedPhoto];
-  [v14 scale];
+  photo = [(NTKUltraCubeCropPreview *)previewCopy photo];
+  maskedPhoto = [(NTKUltraCubeCropPreview *)previewCopy maskedPhoto];
+  [photo scale];
   self->_photoScale = v16;
-  [(_NTKCUltraCubePreviewViewController *)self _setupCenteredViewWithPhoto:v14 maskedPhoto:v15];
-  v17 = [(NTKUltraCubeCropPreview *)v5 timeLabelPosition];
-  [(NTKCompanionUltraCubeTimePlacementViewController *)self->_timePlacementViewController setSelectedOption:[(_NTKCUltraCubePreviewViewController *)self _optionFromPosition:v17]];
+  [(_NTKCUltraCubePreviewViewController *)self _setupCenteredViewWithPhoto:photo maskedPhoto:maskedPhoto];
+  timeLabelPosition = [(NTKUltraCubeCropPreview *)previewCopy timeLabelPosition];
+  [(NTKCompanionUltraCubeTimePlacementViewController *)self->_timePlacementViewController setSelectedOption:[(_NTKCUltraCubePreviewViewController *)self _optionFromPosition:timeLabelPosition]];
   v32.origin.x = x;
   v32.origin.y = y;
   v32.size.width = width;
@@ -731,11 +731,11 @@
   [(NTKCCenteringScrollView *)self->_scrollView setCropRect:x, y, width, height];
   [(NTKCCenteringScrollView *)self->_overlayScrollView setCropRect:x, y, width, height];
   v19 = +[CLKDevice currentDevice];
-  v20 = [(NTKUltraCubePreviewProvider *)self->_previewProvider ultracube_timeLabelFont];
-  v21 = [(NTKUltraCubeCropPreview *)v5 timeLabelStyleForDevice:v19 font:v20];
+  ultracube_timeLabelFont = [(NTKUltraCubePreviewProvider *)self->_previewProvider ultracube_timeLabelFont];
+  v21 = [(NTKUltraCubeCropPreview *)previewCopy timeLabelStyleForDevice:v19 font:ultracube_timeLabelFont];
   [(NTKDigitalTimeLabel *)self->_time setStyle:v21];
   [(NTKDigitalTimeLabel *)self->_time setFrameUsingCurrentStyle];
-  v22 = [(_NTKCUltraCubePreviewViewController *)self _shouldPositionMaskLabel:v17];
+  v22 = [(_NTKCUltraCubePreviewViewController *)self _shouldPositionMaskLabel:timeLabelPosition];
   v23 = 0.0;
   if (v22)
   {
@@ -743,65 +743,65 @@
   }
 
   [(NTKCCenteringScrollView *)self->_overlayScrollView setAlpha:v23];
-  v24 = [(NTKUltraCubeCropPreview *)v5 isRevertable];
-  v25 = [(_NTKCUltraCubePreviewViewController *)self didInteractWithCropView];
+  isRevertable = [(NTKUltraCubeCropPreview *)previewCopy isRevertable];
+  didInteractWithCropView = [(_NTKCUltraCubePreviewViewController *)self didInteractWithCropView];
   v26 = &OBJC_IVAR____NTKCUltraCubePreviewViewController__revertableToolbarItems;
-  if (v25 & 1 | ((v24 & 1) == 0))
+  if (didInteractWithCropView & 1 | ((isRevertable & 1) == 0))
   {
     v26 = &OBJC_IVAR____NTKCUltraCubePreviewViewController__doneToolbarItems;
   }
 
   v27 = *(&self->super.super.super.isa + *v26);
-  v28 = [(_NTKCUltraCubePreviewViewController *)self toolbarItems];
+  toolbarItems = [(_NTKCUltraCubePreviewViewController *)self toolbarItems];
 
-  if (v28 != v27)
+  if (toolbarItems != v27)
   {
     [(_NTKCUltraCubePreviewViewController *)self setToolbarItems:v27 animated:0];
   }
 
-  [(_NTKCUltraCubePreviewViewController *)self _validatePreview:v5 withCrop:0 animated:x, y, width, height];
+  [(_NTKCUltraCubePreviewViewController *)self _validatePreview:previewCopy withCrop:0 animated:x, y, width, height];
   [(_NTKCUltraCubePreviewViewController *)self _updateAllButtonStates];
   currentPreview = self->_currentPreview;
-  self->_currentPreview = v5;
-  v30 = v5;
+  self->_currentPreview = previewCopy;
+  v30 = previewCopy;
 }
 
-- (int64_t)_positionFromOption:(int64_t)a3
+- (int64_t)_positionFromOption:(int64_t)option
 {
-  if ((a3 - 1) > 3)
+  if ((option - 1) > 3)
   {
     return 2;
   }
 
   else
   {
-    return qword_42B68[a3 - 1];
+    return qword_42B68[option - 1];
   }
 }
 
-- (int64_t)_optionFromPosition:(int64_t)a3
+- (int64_t)_optionFromPosition:(int64_t)position
 {
-  if ((a3 - 1) > 3)
+  if ((position - 1) > 3)
   {
     return 3;
   }
 
   else
   {
-    return qword_42B88[a3 - 1];
+    return qword_42B88[position - 1];
   }
 }
 
-- (void)_setCropValidationState:(unint64_t)a3 animated:(BOOL)a4
+- (void)_setCropValidationState:(unint64_t)state animated:(BOOL)animated
 {
-  self->_cropValidationState = a3;
+  self->_cropValidationState = state;
   v5 = 0.0;
   block[1] = 3221225472;
   block[0] = _NSConcreteStackBlock;
   block[2] = sub_3F78;
   block[3] = &unk_48C90;
-  v7 = a4;
-  if (a3 == 1)
+  animatedCopy = animated;
+  if (state == 1)
   {
     v5 = 1.0;
   }
@@ -812,27 +812,27 @@
   [(_NTKCUltraCubePreviewViewController *)self _updateDoneButtonEnabledState];
 }
 
-- (void)_validatePreview:(id)a3 withCrop:(CGRect)a4 animated:(BOOL)a5
+- (void)_validatePreview:(id)preview withCrop:(CGRect)crop animated:(BOOL)animated
 {
-  v5 = a5;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  if (-[_NTKCUltraCubePreviewViewController _timePositionRequiresCropValidation:](self, "_timePositionRequiresCropValidation:", [v9 timeLabelPosition]))
+  animatedCopy = animated;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  previewCopy = preview;
+  if (-[_NTKCUltraCubePreviewViewController _timePositionRequiresCropValidation:](self, "_timePositionRequiresCropValidation:", [previewCopy timeLabelPosition]))
   {
-    v10 = [v9 photo];
-    [v10 size];
+    photo = [previewCopy photo];
+    [photo size];
     v12 = v11;
     v14 = v13;
 
     [(NTKCCenteringScrollView *)self->_scrollView zoomScale];
     v16 = v15;
-    v17 = [(NTKDigitalTimeLabel *)self->_time font];
-    [v17 capHeight];
+    font = [(NTKDigitalTimeLabel *)self->_time font];
+    [font capHeight];
     v19 = v18;
 
-    v20 = [(NTKDigitalTimeLabel *)self->_time font];
-    [v20 ascender];
+    font2 = [(NTKDigitalTimeLabel *)self->_time font];
+    [font2 ascender];
     dy = y;
     v22 = x;
     v23 = floor(v21 - v19);
@@ -864,19 +864,19 @@
     v35 = v47.origin.y / v14;
     v36 = v47.size.width / v12;
     v37 = v47.size.height / v14;
-    v38 = [v9 previewValidator];
+    previewValidator = [previewCopy previewValidator];
     v40[0] = _NSConcreteStackBlock;
     v40[1] = 3221225472;
     v40[2] = sub_4274;
     v40[3] = &unk_48CB8;
     v40[4] = self;
-    v41 = v5;
-    [v38 validateTimeLabel:v40 completion:{v34, v35, v36, v37}];
+    v41 = animatedCopy;
+    [previewValidator validateTimeLabel:v40 completion:{v34, v35, v36, v37}];
   }
 
   else
   {
-    [(_NTKCUltraCubePreviewViewController *)self _setCropValidationState:0 animated:v5];
+    [(_NTKCUltraCubePreviewViewController *)self _setCropValidationState:0 animated:animatedCopy];
   }
 }
 
@@ -889,10 +889,10 @@
 
 - (void)_updateDeleteButtonEnabledState
 {
-  v3 = [(NTKUltraCubePreviewProvider *)self->_previewProvider ultracube_canDelete];
+  ultracube_canDelete = [(NTKUltraCubePreviewProvider *)self->_previewProvider ultracube_canDelete];
   if (self->_initialPreviewState == 3)
   {
-    v4 = v3;
+    v4 = ultracube_canDelete;
   }
 
   else
@@ -907,10 +907,10 @@
 
 - (void)_updateDoneButtonEnabledState
 {
-  v3 = [(NTKCCenteringScrollView *)self->_scrollView isDragging];
-  v4 = [(NTKCCenteringScrollView *)self->_scrollView isDecelerating];
+  isDragging = [(NTKCCenteringScrollView *)self->_scrollView isDragging];
+  isDecelerating = [(NTKCCenteringScrollView *)self->_scrollView isDecelerating];
   v5 = 0;
-  if ((v3 & 1) == 0 && (v4 & 1) == 0)
+  if ((isDragging & 1) == 0 && (isDecelerating & 1) == 0)
   {
     v5 = self->_cropValidationState != 1 && self->_initialPreviewState == 3;
   }
@@ -938,14 +938,14 @@
     v7 = [UIAlertAction actionWithTitle:v6 style:1 handler:0];
     [v3 addAction:v7];
 
-    v8 = [(_NTKCUltraCubePreviewViewController *)self parentViewController];
-    [v8 presentViewController:v3 animated:1 completion:0];
+    parentViewController = [(_NTKCUltraCubePreviewViewController *)self parentViewController];
+    [parentViewController presentViewController:v3 animated:1 completion:0];
   }
 
   else
   {
-    v9 = [(_NTKCUltraCubePreviewViewController *)self delegate];
-    [v9 _ultracubePreviewViewControllerWantsToCancel:self];
+    delegate = [(_NTKCUltraCubePreviewViewController *)self delegate];
+    [delegate _ultracubePreviewViewControllerWantsToCancel:self];
   }
 }
 
@@ -971,8 +971,8 @@
 
 - (void)_donePressed
 {
-  v3 = [(_NTKCUltraCubePreviewViewController *)self delegate];
-  [v3 _ultracubePreviewViewControllerWantsToSave:self];
+  delegate = [(_NTKCUltraCubePreviewViewController *)self delegate];
+  [delegate _ultracubePreviewViewControllerWantsToSave:self];
 }
 
 - (void)_revertPressed
@@ -998,9 +998,9 @@
   objc_destroyWeak(&location);
 }
 
-- (id)_toolbarItemsShowingRevert:(BOOL)a3
+- (id)_toolbarItemsShowingRevert:(BOOL)revert
 {
-  if (a3)
+  if (revert)
   {
     v4 = [NTKUltraCubeFaceBundle localizedStringForKey:@"REVERT" comment:@"Revert"];
     v5 = [[UIBarButtonItem alloc] initWithTitle:v4 style:0 target:self action:"_revertPressed"];
@@ -1036,20 +1036,20 @@
   return v13;
 }
 
-- (void)ultracubeTimePlacementViewControllerDidUpdateSelectedOption:(id)a3
+- (void)ultracubeTimePlacementViewControllerDidUpdateSelectedOption:(id)option
 {
-  v11 = a3;
-  v4 = [(_NTKCUltraCubePreviewViewController *)self currentPreview];
-  if (v4)
+  optionCopy = option;
+  currentPreview = [(_NTKCUltraCubePreviewViewController *)self currentPreview];
+  if (currentPreview)
   {
     [(_NTKCUltraCubePreviewViewController *)self setDidInteractWithCropView:1];
-    v5 = -[_NTKCUltraCubePreviewViewController _positionFromOption:](self, "_positionFromOption:", [v11 selectedOption]);
+    v5 = -[_NTKCUltraCubePreviewViewController _positionFromOption:](self, "_positionFromOption:", [optionCopy selectedOption]);
     v6 = [NTKUltraCubeCropPreview alloc];
-    v7 = [v4 photo];
-    v8 = [v4 maskedPhoto];
-    v9 = [v4 previewValidator];
-    [v4 crop];
-    v10 = [(NTKUltraCubeCropPreview *)v6 initWithPhoto:v7 maskedPhoto:v8 previewValidator:v9 crop:v5 timeLabelPosition:1 revertable:?];
+    photo = [currentPreview photo];
+    maskedPhoto = [currentPreview maskedPhoto];
+    previewValidator = [currentPreview previewValidator];
+    [currentPreview crop];
+    v10 = [(NTKUltraCubeCropPreview *)v6 initWithPhoto:photo maskedPhoto:maskedPhoto previewValidator:previewValidator crop:v5 timeLabelPosition:1 revertable:?];
 
     [(_NTKCUltraCubePreviewViewController *)self _setPreview:v10 animated:1];
   }

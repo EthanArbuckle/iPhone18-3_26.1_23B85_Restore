@@ -1,24 +1,24 @@
 @interface FindMyDeviceEmergencyCallInfoPublisherXPCService
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)_processServerStatusCode:(int64_t)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)_processServerStatusCode:(int64_t)code;
 - (id)_requestHeaders;
-- (id)_requestURLWithServerHostStr:(id)a3;
+- (id)_requestURLWithServerHostStr:(id)str;
 - (id)_session;
-- (void)_baaRequestWithServerHost:(id)a3 emergencyCallInfoDict:(id)a4 completionBlock:(id)a5;
-- (void)_requestWithInfo:(id)a3 completionBlock:(id)a4;
-- (void)publishInfo:(id)a3 completion:(id)a4;
+- (void)_baaRequestWithServerHost:(id)host emergencyCallInfoDict:(id)dict completionBlock:(id)block;
+- (void)_requestWithInfo:(id)info completionBlock:(id)block;
+- (void)publishInfo:(id)info completion:(id)completion;
 @end
 
 @implementation FindMyDeviceEmergencyCallInfoPublisherXPCService
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = sub_100001F6C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v5;
+    v15 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Received new XPC connection %@", buf, 0xCu);
   }
 
@@ -29,24 +29,24 @@
   v11 = objc_opt_class();
   v12 = [NSSet setWithObjects:v8, v9, v10, v11, objc_opt_class(), 0];
   [v7 setClasses:v12 forSelector:"publishInfo:completion:" argumentIndex:0 ofReply:0];
-  [v5 setExportedInterface:v7];
-  [v5 setExportedObject:self];
-  [v5 resume];
+  [connectionCopy setExportedInterface:v7];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (void)publishInfo:(id)a3 completion:(id)a4
+- (void)publishInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   v8 = sub_100001F6C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v13 = "[FindMyDeviceEmergencyCallInfoPublisherXPCService publishInfo:completion:]";
     v14 = 2112;
-    v15 = v6;
+    v15 = infoCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "FRAMEWORK API: %s with %@", buf, 0x16u);
   }
 
@@ -55,20 +55,20 @@
   v10[2] = sub_100002EC4;
   v10[3] = &unk_10000D088;
   v10[4] = self;
-  v11 = v7;
-  v9 = v7;
-  [(FindMyDeviceEmergencyCallInfoPublisherXPCService *)self _requestWithInfo:v6 completionBlock:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(FindMyDeviceEmergencyCallInfoPublisherXPCService *)self _requestWithInfo:infoCopy completionBlock:v10];
 }
 
-- (void)_requestWithInfo:(id)a3 completionBlock:(id)a4
+- (void)_requestWithInfo:(id)info completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectForKeyedSubscript:@"kFMDEmergencyCallInfoPublisherConfigKey"];
-  v9 = [v8 serverHost];
-  v10 = [v7 objectForKeyedSubscript:@"kFMDEmergencyCallInfoPublisherInfoKey"];
+  blockCopy = block;
+  infoCopy = info;
+  v8 = [infoCopy objectForKeyedSubscript:@"kFMDEmergencyCallInfoPublisherConfigKey"];
+  serverHost = [v8 serverHost];
+  v10 = [infoCopy objectForKeyedSubscript:@"kFMDEmergencyCallInfoPublisherInfoKey"];
 
-  if (v9)
+  if (serverHost)
   {
     v11 = v10 == 0;
   }
@@ -86,7 +86,7 @@
     v13 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
     v14 = [NSError errorWithDomain:v12 code:1 userInfo:v13];
 
-    v6[2](v6, 0, v14);
+    blockCopy[2](blockCopy, 0, v14);
   }
 
   else
@@ -95,15 +95,15 @@
     v15[1] = 3221225472;
     v15[2] = sub_1000033B0;
     v15[3] = &unk_10000D0B0;
-    v16 = v6;
-    [(FindMyDeviceEmergencyCallInfoPublisherXPCService *)self _baaRequestWithServerHost:v9 emergencyCallInfoDict:v10 completionBlock:v15];
+    v16 = blockCopy;
+    [(FindMyDeviceEmergencyCallInfoPublisherXPCService *)self _baaRequestWithServerHost:serverHost emergencyCallInfoDict:v10 completionBlock:v15];
     v14 = v16;
   }
 }
 
-- (id)_requestURLWithServerHostStr:(id)a3
+- (id)_requestURLWithServerHostStr:(id)str
 {
-  v3 = [NSString stringWithFormat:@"%@://%@%@", @"https", a3, @"/fmipservice/findme/test_path"];
+  v3 = [NSString stringWithFormat:@"%@://%@%@", @"https", str, @"/fmipservice/findme/test_path"];
   v4 = [NSURL URLWithString:v3];
 
   return v4;
@@ -113,27 +113,27 @@
 {
   v2 = objc_alloc_init(NSMutableDictionary);
   v3 = +[FMSystemInfo sharedInstance];
-  v4 = [v3 productType];
+  productType = [v3 productType];
   v5 = +[FMSystemInfo sharedInstance];
-  v6 = [v5 osBuildVersion];
-  v7 = [NSString stringWithFormat:@"FindMyDeviceEmergencyCallInfoPublisher/%@/%@", v4, v6];
+  osBuildVersion = [v5 osBuildVersion];
+  v7 = [NSString stringWithFormat:@"FindMyDeviceEmergencyCallInfoPublisher/%@/%@", productType, osBuildVersion];
   [v2 setObject:v7 forKeyedSubscript:@"User-Agent"];
 
   v8 = +[FMSystemInfo sharedInstance];
-  v9 = [v8 deviceUDID];
-  [v2 setObject:v9 forKeyedSubscript:@"X-Mme-Device-Id"];
+  deviceUDID = [v8 deviceUDID];
+  [v2 setObject:deviceUDID forKeyedSubscript:@"X-Mme-Device-Id"];
 
   v10 = +[FMSystemInfo sharedInstance];
-  v11 = [v10 osVersion];
-  [v2 setObject:v11 forKeyedSubscript:@"X-Apple-Find-API-Ver"];
+  osVersion = [v10 osVersion];
+  [v2 setObject:osVersion forKeyedSubscript:@"X-Apple-Find-API-Ver"];
 
   v12 = +[NSTimeZone systemTimeZone];
-  v13 = [v12 name];
-  [v2 setObject:v13 forKeyedSubscript:@"X-Apple-I-TimeZone"];
+  name = [v12 name];
+  [v2 setObject:name forKeyedSubscript:@"X-Apple-I-TimeZone"];
 
   v14 = +[NSLocale autoupdatingCurrentLocale];
-  v15 = [v14 localeIdentifier];
-  [v2 setObject:v15 forKeyedSubscript:@"X-Apple-I-Locale"];
+  localeIdentifier = [v14 localeIdentifier];
+  [v2 setObject:localeIdentifier forKeyedSubscript:@"X-Apple-I-Locale"];
 
   v16 = objc_alloc_init(NSDateFormatter);
   [v16 setDateStyle:2];
@@ -147,13 +147,13 @@
   return v19;
 }
 
-- (void)_baaRequestWithServerHost:(id)a3 emergencyCallInfoDict:(id)a4 completionBlock:(id)a5
+- (void)_baaRequestWithServerHost:(id)host emergencyCallInfoDict:(id)dict completionBlock:(id)block
 {
-  v20 = a3;
-  v8 = a4;
-  v9 = a5;
+  hostCopy = host;
+  dictCopy = dict;
+  blockCopy = block;
   v25 = 0;
-  v10 = [NSJSONSerialization dataWithJSONObject:v8 options:0 error:&v25];
+  v10 = [NSJSONSerialization dataWithJSONObject:dictCopy options:0 error:&v25];
   v11 = v25;
   if (v11)
   {
@@ -164,7 +164,7 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Error: Can't parse emergencyCallInfo", buf, 2u);
     }
 
-    v9[2](v9, 0, v11);
+    blockCopy[2](blockCopy, 0, v11);
   }
 
   else
@@ -188,9 +188,9 @@
     v21[2] = sub_1000039F4;
     v21[3] = &unk_10000D0D8;
     v21[4] = self;
-    v22 = v20;
+    v22 = hostCopy;
     v23 = v13;
-    v24 = v9;
+    v24 = blockCopy;
     v19 = v13;
     [v17 baaIdentityAttestationForSigningRequest:v16 completion:v21];
   }
@@ -204,19 +204,19 @@
   return v3;
 }
 
-- (id)_processServerStatusCode:(int64_t)a3
+- (id)_processServerStatusCode:(int64_t)code
 {
   v4 = sub_100001F6C();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v16 = a3;
+    codeCopy = code;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "FindMyDeviceEmergencyCallInfoPublisherXPCService response's status code %li", buf, 0xCu);
   }
 
-  if (a3 > 499)
+  if (code > 499)
   {
-    if (a3 == 500)
+    if (code == 500)
     {
       v11 = NSLocalizedFailureReasonErrorKey;
       v12 = @"Internal server error";
@@ -225,7 +225,7 @@
       goto LABEL_13;
     }
 
-    if (a3 == 503)
+    if (code == 503)
     {
       v9 = NSLocalizedFailureReasonErrorKey;
       v10 = @"Service unavailable";
@@ -239,13 +239,13 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  if (a3 == 200)
+  if (code == 200)
   {
     v7 = 0;
     goto LABEL_14;
   }
 
-  if (a3 != 400)
+  if (code != 400)
   {
     goto LABEL_10;
   }

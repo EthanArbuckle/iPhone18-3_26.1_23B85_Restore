@@ -1,31 +1,31 @@
 @interface PPPBScoredItemWithFeatures
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addFeatures:(id)a3;
-- (void)addFeedbackItems:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasScore:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addFeatures:(id)features;
+- (void)addFeedbackItems:(id)items;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasScore:(BOOL)score;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PPPBScoredItemWithFeatures
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 52))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 52))
   {
-    self->_topicId = v4[1];
+    self->_topicId = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(PPPBScoredItemWithFeatures *)self setNamedEntity:?];
   }
@@ -151,31 +151,31 @@
   return v11 ^ v12 ^ [(NSString *)self->_namedEntityWithFeedback hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   has = self->_has;
-  v6 = *(v4 + 52);
+  v6 = *(equalCopy + 52);
   if (has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_topicId != *(v4 + 1))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_topicId != *(equalCopy + 1))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_21;
   }
 
   namedEntity = self->_namedEntity;
-  if (namedEntity | *(v4 + 4))
+  if (namedEntity | *(equalCopy + 4))
   {
     if (![(NSString *)namedEntity isEqual:?])
     {
@@ -185,12 +185,12 @@ LABEL_21:
     }
 
     has = self->_has;
-    v6 = *(v4 + 52);
+    v6 = *(equalCopy + 52);
   }
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_score != *(v4 + 12))
+    if ((v6 & 2) == 0 || self->_score != *(equalCopy + 12))
     {
       goto LABEL_21;
     }
@@ -202,13 +202,13 @@ LABEL_21:
   }
 
   features = self->_features;
-  if (features | *(v4 + 2) && ![(NSMutableArray *)features isEqual:?])
+  if (features | *(equalCopy + 2) && ![(NSMutableArray *)features isEqual:?])
   {
     goto LABEL_21;
   }
 
   feedbackItems = self->_feedbackItems;
-  if (feedbackItems | *(v4 + 3))
+  if (feedbackItems | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)feedbackItems isEqual:?])
     {
@@ -217,7 +217,7 @@ LABEL_21:
   }
 
   namedEntityWithFeedback = self->_namedEntityWithFeedback;
-  if (namedEntityWithFeedback | *(v4 + 5))
+  if (namedEntityWithFeedback | *(equalCopy + 5))
   {
     v11 = [(NSString *)namedEntityWithFeedback isEqual:?];
   }
@@ -232,10 +232,10 @@ LABEL_22:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -243,7 +243,7 @@ LABEL_22:
     *(v5 + 52) |= 1u;
   }
 
-  v7 = [(NSString *)self->_namedEntity copyWithZone:a3];
+  v7 = [(NSString *)self->_namedEntity copyWithZone:zone];
   v8 = *(v6 + 32);
   *(v6 + 32) = v7;
 
@@ -273,7 +273,7 @@ LABEL_22:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v29 + 1) + 8 * v13) copyWithZone:a3];
+        v14 = [*(*(&v29 + 1) + 8 * v13) copyWithZone:zone];
         [v6 addFeatures:v14];
 
         ++v13;
@@ -306,7 +306,7 @@ LABEL_22:
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v25 + 1) + 8 * v19) copyWithZone:{a3, v25}];
+        v20 = [*(*(&v25 + 1) + 8 * v19) copyWithZone:{zone, v25}];
         [v6 addFeedbackItems:v20];
 
         ++v19;
@@ -319,7 +319,7 @@ LABEL_22:
     while (v17);
   }
 
-  v21 = [(NSString *)self->_namedEntityWithFeedback copyWithZone:a3];
+  v21 = [(NSString *)self->_namedEntityWithFeedback copyWithZone:zone];
   v22 = *(v6 + 40);
   *(v6 + 40) = v21;
 
@@ -327,35 +327,35 @@ LABEL_22:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_topicId;
-    *(v4 + 52) |= 1u;
+    toCopy[1] = self->_topicId;
+    *(toCopy + 52) |= 1u;
   }
 
-  v13 = v4;
+  v13 = toCopy;
   if (self->_namedEntity)
   {
-    [v4 setNamedEntity:?];
-    v4 = v13;
+    [toCopy setNamedEntity:?];
+    toCopy = v13;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 12) = LODWORD(self->_score);
-    *(v4 + 52) |= 2u;
+    *(toCopy + 12) = LODWORD(self->_score);
+    *(toCopy + 52) |= 2u;
   }
 
   if ([(PPPBScoredItemWithFeatures *)self featuresCount])
   {
     [v13 clearFeatures];
-    v5 = [(PPPBScoredItemWithFeatures *)self featuresCount];
-    if (v5)
+    featuresCount = [(PPPBScoredItemWithFeatures *)self featuresCount];
+    if (featuresCount)
     {
-      v6 = v5;
+      v6 = featuresCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(PPPBScoredItemWithFeatures *)self featuresAtIndex:i];
@@ -367,10 +367,10 @@ LABEL_22:
   if ([(PPPBScoredItemWithFeatures *)self feedbackItemsCount])
   {
     [v13 clearFeedbackItems];
-    v9 = [(PPPBScoredItemWithFeatures *)self feedbackItemsCount];
-    if (v9)
+    feedbackItemsCount = [(PPPBScoredItemWithFeatures *)self feedbackItemsCount];
+    if (feedbackItemsCount)
     {
-      v10 = v9;
+      v10 = feedbackItemsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(PPPBScoredItemWithFeatures *)self feedbackItemsAtIndex:j];
@@ -385,10 +385,10 @@ LABEL_22:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     topicId = self->_topicId;
@@ -481,30 +481,30 @@ LABEL_22:
 - (id)dictionaryRepresentation
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_topicId];
-    [v3 setObject:v5 forKey:@"topicId"];
+    [dictionary setObject:v5 forKey:@"topicId"];
   }
 
   namedEntity = self->_namedEntity;
   if (namedEntity)
   {
-    [v3 setObject:namedEntity forKey:@"namedEntity"];
+    [dictionary setObject:namedEntity forKey:@"namedEntity"];
   }
 
   namedEntityWithFeedback = self->_namedEntityWithFeedback;
   if (namedEntityWithFeedback)
   {
-    [v3 setObject:namedEntityWithFeedback forKey:@"namedEntityWithFeedback"];
+    [dictionary setObject:namedEntityWithFeedback forKey:@"namedEntityWithFeedback"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     *&v4 = self->_score;
     v8 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-    [v3 setObject:v8 forKey:@"score"];
+    [dictionary setObject:v8 forKey:@"score"];
   }
 
   if ([(NSMutableArray *)self->_features count])
@@ -529,8 +529,8 @@ LABEL_22:
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -539,7 +539,7 @@ LABEL_22:
       while (v12);
     }
 
-    [v3 setObject:v9 forKey:@"features"];
+    [dictionary setObject:v9 forKey:@"features"];
   }
 
   if ([(NSMutableArray *)self->_feedbackItems count])
@@ -564,8 +564,8 @@ LABEL_22:
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v25 + 1) + 8 * j) dictionaryRepresentation];
-          [v16 addObject:v22];
+          dictionaryRepresentation2 = [*(*(&v25 + 1) + 8 * j) dictionaryRepresentation];
+          [v16 addObject:dictionaryRepresentation2];
         }
 
         v19 = [(NSMutableArray *)v17 countByEnumeratingWithState:&v25 objects:v33 count:16];
@@ -574,12 +574,12 @@ LABEL_22:
       while (v19);
     }
 
-    [v3 setObject:v16 forKey:@"feedbackItems"];
+    [dictionary setObject:v16 forKey:@"feedbackItems"];
   }
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -588,51 +588,51 @@ LABEL_22:
   v8.receiver = self;
   v8.super_class = PPPBScoredItemWithFeatures;
   v4 = [(PPPBScoredItemWithFeatures *)&v8 description];
-  v5 = [(PPPBScoredItemWithFeatures *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PPPBScoredItemWithFeatures *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addFeedbackItems:(id)a3
+- (void)addFeedbackItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   feedbackItems = self->_feedbackItems;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!feedbackItems)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_feedbackItems;
     self->_feedbackItems = v6;
 
-    v4 = v8;
+    itemsCopy = v8;
     feedbackItems = self->_feedbackItems;
   }
 
-  [(NSMutableArray *)feedbackItems addObject:v4];
+  [(NSMutableArray *)feedbackItems addObject:itemsCopy];
 }
 
-- (void)addFeatures:(id)a3
+- (void)addFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   features = self->_features;
-  v8 = v4;
+  v8 = featuresCopy;
   if (!features)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_features;
     self->_features = v6;
 
-    v4 = v8;
+    featuresCopy = v8;
     features = self->_features;
   }
 
-  [(NSMutableArray *)features addObject:v4];
+  [(NSMutableArray *)features addObject:featuresCopy];
 }
 
-- (void)setHasScore:(BOOL)a3
+- (void)setHasScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }

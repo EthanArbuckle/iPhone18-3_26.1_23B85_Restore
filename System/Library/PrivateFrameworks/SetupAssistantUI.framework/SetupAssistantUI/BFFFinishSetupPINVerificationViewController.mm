@@ -1,6 +1,6 @@
 @interface BFFFinishSetupPINVerificationViewController
 - (id)stringsBundle;
-- (void)didAcceptEnteredPIN:(id)a3;
+- (void)didAcceptEnteredPIN:(id)n;
 - (void)didCancelEnteringPIN;
 - (void)loadView;
 @end
@@ -32,12 +32,12 @@
   return [v2 bundleForClass:v3];
 }
 
-- (void)didAcceptEnteredPIN:(id)a3
+- (void)didAcceptEnteredPIN:(id)n
 {
   completion = self->_completion;
   if (completion)
   {
-    completion[2](completion, a3);
+    completion[2](completion, n);
     v5 = self->_completion;
     self->_completion = 0;
   }

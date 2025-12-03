@@ -1,49 +1,49 @@
 @interface AXPageTurningReplayableGesture
-- (AXPageTurningReplayableGesture)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CGPoint)pointForFingerIdentifier:(id)a3 atEventIndex:(unint64_t)a4;
-- (id)initForLeftToRightSwipe:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AXPageTurningReplayableGesture)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (CGPoint)pointForFingerIdentifier:(id)identifier atEventIndex:(unint64_t)index;
+- (id)initForLeftToRightSwipe:(BOOL)swipe;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXPageTurningReplayableGesture
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[AXPageTurningReplayableGesture isLeftToRightSwipe](self forKey:{"isLeftToRightSwipe"), @"IsLeftToRightSwipe"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[AXPageTurningReplayableGesture isLeftToRightSwipe](self forKey:{"isLeftToRightSwipe"), @"IsLeftToRightSwipe"}];
 }
 
-- (AXPageTurningReplayableGesture)initWithCoder:(id)a3
+- (AXPageTurningReplayableGesture)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeBoolForKey:@"IsLeftToRightSwipe"];
+  v4 = [coder decodeBoolForKey:@"IsLeftToRightSwipe"];
 
   return [(AXPageTurningReplayableGesture *)self initForLeftToRightSwipe:v4];
 }
 
-- (id)initForLeftToRightSwipe:(BOOL)a3
+- (id)initForLeftToRightSwipe:(BOOL)swipe
 {
-  v3 = a3;
+  swipeCopy = swipe;
   v7.receiver = self;
   v7.super_class = AXPageTurningReplayableGesture;
   v4 = [(AXPageTurningReplayableGesture *)&v7 init];
   v5 = v4;
   if (v4)
   {
-    [(AXPageTurningReplayableGesture *)v4 setIsLeftToRightSwipe:v3];
+    [(AXPageTurningReplayableGesture *)v4 setIsLeftToRightSwipe:swipeCopy];
   }
 
   return v5;
 }
 
-- (CGPoint)pointForFingerIdentifier:(id)a3 atEventIndex:(unint64_t)a4
+- (CGPoint)pointForFingerIdentifier:(id)identifier atEventIndex:(unint64_t)index
 {
   MainScreenBounds = AXDeviceGetMainScreenBounds();
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(AXPageTurningReplayableGesture *)self isLandscape];
-  if (v13)
+  isLandscape = [(AXPageTurningReplayableGesture *)self isLandscape];
+  if (isLandscape)
   {
     v14 = v12;
   }
@@ -53,7 +53,7 @@
     v14 = v10;
   }
 
-  if (v13)
+  if (isLandscape)
   {
     v12 = v10;
   }
@@ -63,7 +63,7 @@
   v20.size.width = v14;
   v20.size.height = v12;
   MidY = CGRectGetMidY(v20);
-  v16 = a4 * 20.0 + 50.0;
+  v16 = index * 20.0 + 50.0;
   if (![(AXPageTurningReplayableGesture *)self isLeftToRightSwipe])
   {
     v21.origin.x = MainScreenBounds;
@@ -80,12 +80,12 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = *(&self->super._arePointsDeviceRelative + 1) == v4[17];
+    v5 = *(&self->super._arePointsDeviceRelative + 1) == equalCopy[17];
   }
 
   else

@@ -5,8 +5,8 @@
 - (void)_connectToRemoteServiceIfNecessary;
 - (void)_generateAlternatives;
 - (void)_generateAlternativesForWebKit;
-- (void)clearExistingAlternativesForTextInput:(void *)a1;
-- (void)scheduleGenerateAlternativesForTextInput:(void *)a3 localeIdentifiers:;
+- (void)clearExistingAlternativesForTextInput:(void *)input;
+- (void)scheduleGenerateAlternativesForTextInput:(void *)input localeIdentifiers:;
 @end
 
 @implementation PKEmojiAlternativesGenerator
@@ -47,37 +47,37 @@ void __46__PKEmojiAlternativesGenerator_sharedInstance__block_invoke()
 
 - (void)_connectToRemoteServiceIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    if (!*(a1 + 8))
+    if (!*(self + 8))
     {
       v2 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
       v3 = dispatch_queue_create("com.apple.pencilkit.emoji.xpc", v2);
       v4 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.TextInput.rdt" options:4096];
-      v5 = *(a1 + 8);
-      *(a1 + 8) = v4;
+      v5 = *(self + 8);
+      *(self + 8) = v4;
 
       v6 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F485D660];
-      [*(a1 + 8) setRemoteObjectInterface:v6];
+      [*(self + 8) setRemoteObjectInterface:v6];
 
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, self);
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __66__PKEmojiAlternativesGenerator__connectToRemoteServiceIfNecessary__block_invoke;
       v11[3] = &unk_1E82D69B8;
       objc_copyWeak(&v12, &location);
-      [*(a1 + 8) setInterruptionHandler:v11];
+      [*(self + 8) setInterruptionHandler:v11];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __66__PKEmojiAlternativesGenerator__connectToRemoteServiceIfNecessary__block_invoke_2;
       v9[3] = &unk_1E82D69B8;
       objc_copyWeak(&v10, &location);
-      [*(a1 + 8) setInvalidationHandler:v9];
-      [*(a1 + 8) _setQueue:v3];
-      [*(a1 + 8) resume];
-      v7 = [*(a1 + 8) remoteObjectProxyWithErrorHandler:&__block_literal_global_20_0];
-      v8 = *(a1 + 16);
-      *(a1 + 16) = v7;
+      [*(self + 8) setInvalidationHandler:v9];
+      [*(self + 8) _setQueue:v3];
+      [*(self + 8) resume];
+      v7 = [*(self + 8) remoteObjectProxyWithErrorHandler:&__block_literal_global_20_0];
+      v8 = *(self + 16);
+      *(self + 16) = v7;
 
       objc_destroyWeak(&v10);
       objc_destroyWeak(&v12);
@@ -162,42 +162,42 @@ void __66__PKEmojiAlternativesGenerator__connectToRemoteServiceIfNecessary__bloc
   }
 }
 
-- (void)clearExistingAlternativesForTextInput:(void *)a1
+- (void)clearExistingAlternativesForTextInput:(void *)input
 {
-  if (a1)
+  if (input)
   {
     [PKTextInputUtilities removeTextAlternativesForTextInput:a2];
-    v3 = a1[3];
-    a1[3] = 0;
+    v3 = input[3];
+    input[3] = 0;
 
-    v4 = a1[4];
-    a1[4] = 0;
+    v4 = input[4];
+    input[4] = 0;
 
-    v5 = a1[6];
-    a1[6] = 0;
+    v5 = input[6];
+    input[6] = 0;
 
-    v6 = a1[5];
-    a1[5] = 0;
+    v6 = input[5];
+    input[5] = 0;
 
-    v7 = a1[7];
-    a1[7] = 0;
+    v7 = input[7];
+    input[7] = 0;
 
-    v8 = a1[8];
-    a1[8] = 0;
+    v8 = input[8];
+    input[8] = 0;
 
-    v9 = a1[9];
-    a1[9] = 0;
+    v9 = input[9];
+    input[9] = 0;
   }
 }
 
-- (void)scheduleGenerateAlternativesForTextInput:(void *)a3 localeIdentifiers:
+- (void)scheduleGenerateAlternativesForTextInput:(void *)input localeIdentifiers:
 {
   v21 = a2;
-  v6 = a3;
-  if (a1)
+  inputCopy = input;
+  if (self)
   {
-    [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:a1 selector:sel__generateAlternatives object:0];
-    [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:a1 selector:sel__generateAlternativesForWebKit object:0];
+    [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__generateAlternatives object:0];
+    [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__generateAlternativesForWebKit object:0];
     v7 = v21;
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
@@ -206,10 +206,10 @@ void __66__PKEmojiAlternativesGenerator__connectToRemoteServiceIfNecessary__bloc
       goto LABEL_9;
     }
 
-    v8 = [v7 keyboardType];
+    keyboardType = [v7 keyboardType];
 
     objc_opt_self();
-    if ((v8 - 1) >= 8 && v8 != 11 && v8 != 13 && v8 != 123)
+    if ((keyboardType - 1) >= 8 && keyboardType != 11 && keyboardType != 13 && keyboardType != 123)
     {
 LABEL_9:
       v9 = v7;
@@ -220,15 +220,15 @@ LABEL_9:
         if (v10)
         {
           v11 = v10;
-          v12 = v6;
-          objc_storeStrong((a1 + 64), a2);
-          objc_storeStrong((a1 + 40), a3);
+          v12 = inputCopy;
+          objc_storeStrong((self + 64), a2);
+          objc_storeStrong((self + 40), input);
           v13 = objc_alloc_init(MEMORY[0x1E69DD2A8]);
           [v13 setFlags:2];
           [v13 setSurroundingGranularity:4];
           [v13 setGranularityCount:1];
-          objc_initWeak(&location, a1);
-          v14 = *(a1 + 64);
+          objc_initWeak(&location, self);
+          v14 = *(self + 64);
           v22[0] = MEMORY[0x1E69E9820];
           v22[1] = 3221225472;
           v22[2] = __89__PKEmojiAlternativesGenerator__scheduleGenerateAlternativesForWebKit_localeIdentifiers___block_invoke;
@@ -247,18 +247,18 @@ LABEL_14:
       {
       }
 
-      objc_storeStrong((a1 + 24), a2);
-      objc_storeStrong((a1 + 40), a3);
+      objc_storeStrong((self + 24), a2);
+      objc_storeStrong((self + 40), input);
       v15 = +[PKTextInputSettings sharedSettings];
       [v15 emojiConversionDelay];
       v17 = v16;
 
       v18 = [MEMORY[0x1E69D9590] documentStateOfDocumentWithParagraph:v9];
-      v19 = *(a1 + 32);
-      *(a1 + 32) = v18;
+      v19 = *(self + 32);
+      *(self + 32) = v18;
       v20 = v18;
 
-      [a1 performSelector:sel__generateAlternatives withObject:0 afterDelay:v17];
+      [self performSelector:sel__generateAlternatives withObject:0 afterDelay:v17];
       v11 = 0;
       goto LABEL_14;
     }
@@ -294,7 +294,7 @@ LABEL_15:
     }
 
     *buf = 138412290;
-    v18 = self;
+    selfCopy3 = self;
     v9 = "Error: missing XPC connection for %@";
 LABEL_13:
     _os_log_error_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_ERROR, v9, buf, 0xCu);
@@ -310,14 +310,14 @@ LABEL_13:
     }
 
     *buf = 138412290;
-    v18 = self;
+    selfCopy3 = self;
     v9 = "Error: Missing locale identifiers for %@";
     goto LABEL_13;
   }
 
-  v3 = [(TIDocumentState *)self->_documentState contextBeforeInput];
-  v4 = v3;
-  if (v3 && [v3 length])
+  contextBeforeInput = [(TIDocumentState *)self->_documentState contextBeforeInput];
+  v4 = contextBeforeInput;
+  if (contextBeforeInput && [contextBeforeInput length])
   {
     v5 = self->_textInput;
     [(TIEmojiAlternativesProtocol *)self->_remoteObject updateForActiveLocaleIdentifiers:self->_localeIdentifiers];
@@ -325,17 +325,17 @@ LABEL_13:
     v7 = v5;
     if (objc_opt_respondsToSelector())
     {
-      v8 = [(UITextInput *)v7 keyboardType];
+      keyboardType = [(UITextInput *)v7 keyboardType];
     }
 
     else
     {
-      v8 = 0;
+      keyboardType = 0;
     }
 
-    v11 = [MEMORY[0x1E696AAE8] mainBundle];
-    v12 = [v11 bundleIdentifier];
-    [(TIEmojiAlternativesProtocol *)remoteObject updateKeyboardType:v8 appIdentifier:v12];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    [(TIEmojiAlternativesProtocol *)remoteObject updateKeyboardType:keyboardType appIdentifier:bundleIdentifier];
 
     objc_initWeak(buf, self);
     v13 = self->_remoteObject;
@@ -358,7 +358,7 @@ LABEL_13:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v18 = self;
+      selfCopy3 = self;
       _os_log_error_impl(&dword_1C7CCA000, v10, OS_LOG_TYPE_ERROR, "Error: Attempting to find alternatives for nil or empty text. %@", buf, 0xCu);
     }
   }
@@ -580,7 +580,7 @@ void __89__PKEmojiAlternativesGenerator__scheduleGenerateAlternativesForWebKit_l
     }
 
     *buf = 138412290;
-    v20 = self;
+    selfCopy2 = self;
     v7 = "Error: missing XPC connection for %@";
 LABEL_9:
     _os_log_error_impl(&dword_1C7CCA000, v6, OS_LOG_TYPE_ERROR, v7, buf, 0xCu);
@@ -596,7 +596,7 @@ LABEL_9:
     }
 
     *buf = 138412290;
-    v20 = self;
+    selfCopy2 = self;
     v7 = "Error: Missing locale identifiers for %@";
     goto LABEL_9;
   }
@@ -606,26 +606,26 @@ LABEL_9:
   v4 = self->_wkInteractionView;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(UIWKInteractionViewProtocol *)v4 keyboardType];
+    keyboardType = [(UIWKInteractionViewProtocol *)v4 keyboardType];
   }
 
   else
   {
-    v5 = 0;
+    keyboardType = 0;
   }
 
-  v8 = [MEMORY[0x1E696AAE8] mainBundle];
-  v9 = [v8 bundleIdentifier];
-  [(TIEmojiAlternativesProtocol *)remoteObject updateKeyboardType:v5 appIdentifier:v9];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  [(TIEmojiAlternativesProtocol *)remoteObject updateKeyboardType:keyboardType appIdentifier:bundleIdentifier];
 
   v10 = self->_wkInteractionView;
   v11 = objc_opt_class();
-  v12 = [(UIWKDocumentContext *)self->_wkDocumentContext contextBefore];
-  v13 = PKDynamicCast(v11, v12);
+  contextBefore = [(UIWKDocumentContext *)self->_wkDocumentContext contextBefore];
+  v13 = PKDynamicCast(v11, contextBefore);
 
   objc_initWeak(buf, self);
   v14 = self->_remoteObject;
-  v15 = [v13 string];
+  string = [v13 string];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __62__PKEmojiAlternativesGenerator__generateAlternativesForWebKit__block_invoke;
@@ -633,7 +633,7 @@ LABEL_9:
   objc_copyWeak(&v18, buf);
   v6 = v10;
   v17 = v6;
-  [(TIEmojiAlternativesProtocol *)v14 alternativesForText:v15 completionHandler:v16];
+  [(TIEmojiAlternativesProtocol *)v14 alternativesForText:string completionHandler:v16];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(buf);

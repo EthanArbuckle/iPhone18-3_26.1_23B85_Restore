@@ -1,5 +1,5 @@
 @interface MCSingleAppPayload
-- (MCSingleAppPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCSingleAppPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (NSString)applicationBundleID;
 - (id)restrictions;
 - (id)subtitle1Description;
@@ -7,28 +7,28 @@
 
 @implementation MCSingleAppPayload
 
-- (MCSingleAppPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCSingleAppPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v93 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v86.receiver = self;
   v86.super_class = MCSingleAppPayload;
-  v10 = [(MCAppWhitelistPayloadBase *)&v86 initWithDictionary:v8 profile:v9 outError:a5];
+  v10 = [(MCAppWhitelistPayloadBase *)&v86 initWithDictionary:dictionaryCopy profile:profileCopy outError:error];
   if (!v10)
   {
     goto LABEL_71;
   }
 
-  if ([v9 isStub])
+  if ([profileCopy isStub])
   {
     v11 = 0;
     goto LABEL_67;
   }
 
-  v12 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v85 = 0;
-  v13 = [MCProfile removeRequiredObjectInDictionary:v8 key:@"App" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" missingDataCode:2002 missingDataErrorString:@"ERROR_PAYLOAD_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v85];
+  v13 = [MCProfile removeRequiredObjectInDictionary:dictionaryCopy key:@"App" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" missingDataCode:2002 missingDataErrorString:@"ERROR_PAYLOAD_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v85];
   v14 = v85;
   if (v14)
   {
@@ -37,10 +37,10 @@
 LABEL_62:
     v44 = [(MCPayload *)v10 malformedPayloadErrorWithError:v11];
     v45 = v44;
-    if (a5)
+    if (error)
     {
       v46 = v44;
-      *a5 = v45;
+      *error = v45;
     }
 
     v47 = _MCLogObjects;
@@ -49,11 +49,11 @@ LABEL_62:
       v48 = v47;
       v49 = objc_opt_class();
       v50 = v49;
-      v51 = [v45 MCVerboseDescription];
+      mCVerboseDescription = [v45 MCVerboseDescription];
       *buf = 138543618;
       v88 = v49;
       v89 = 2114;
-      v90 = v51;
+      v90 = mCVerboseDescription;
       _os_log_impl(&dword_1A795B000, v48, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
     }
 
@@ -62,7 +62,7 @@ LABEL_62:
   }
 
   v84 = 0;
-  v15 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"AllowLogout" isRequired:0 outError:&v84];
+  v15 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"AllowLogout" isRequired:0 outError:&v84];
   v11 = v84;
   if (!v11)
   {
@@ -78,40 +78,40 @@ LABEL_60:
     }
 
     v64 = v15;
-    v65 = v12;
+    v65 = array;
     v83 = 0;
     v18 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v17 allowPlaceholder:1 error:&v83];
     v62 = v83;
     v63 = v18;
     if (v18)
     {
-      v19 = [v18 appTags];
-      v71 = [v19 containsObject:@"hidden"];
+      appTags = [v18 appTags];
+      v71 = [appTags containsObject:@"hidden"];
 
-      v20 = [v18 compatibilityObject];
-      v21 = [v20 bundleType];
-      v22 = [v21 isEqualToString:*MEMORY[0x1E6963570]];
+      compatibilityObject = [v18 compatibilityObject];
+      bundleType = [compatibilityObject bundleType];
+      v22 = [bundleType isEqualToString:*MEMORY[0x1E6963570]];
 
-      v23 = [v18 applicationState];
-      v24 = [v23 isRestricted];
+      applicationState = [v18 applicationState];
+      isRestricted = [applicationState isRestricted];
 
       v17 = v74;
-      v25 = [v18 isLaunchProhibited];
-      if ((v71 & 1) != 0 || (v22 & 1) != 0 || (v24 & 1) != 0 || v25)
+      isLaunchProhibited = [v18 isLaunchProhibited];
+      if ((v71 & 1) != 0 || (v22 & 1) != 0 || (isRestricted & 1) != 0 || isLaunchProhibited)
       {
         v11 = [MCPayload badFieldValueErrorWithField:@"Identifier"];
         v15 = v64;
-        v12 = v65;
+        array = v65;
 LABEL_59:
 
         goto LABEL_60;
       }
     }
 
-    v61 = [MEMORY[0x1E695DF90] dictionary];
-    [v61 setObject:v17 forKey:@"Identifier"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:v17 forKey:@"Identifier"];
     v26 = [v13 objectForKey:@"Options"];
-    v12 = v65;
+    array = v65;
     if (v26)
     {
       objc_opt_class();
@@ -155,7 +155,7 @@ LABEL_58:
                 v11 = [MCPayload badFieldValueErrorWithField:v29];
 
                 v15 = v64;
-                v12 = v65;
+                array = v65;
                 v26 = v57;
                 goto LABEL_58;
               }
@@ -198,10 +198,10 @@ LABEL_58:
 
       if ([v66 count])
       {
-        [v61 setObject:v66 forKey:@"Options"];
+        [dictionary setObject:v66 forKey:@"Options"];
       }
 
-      v12 = v65;
+      array = v65;
       v26 = v57;
     }
 
@@ -252,7 +252,7 @@ LABEL_57:
                 v11 = [MCPayload badFieldValueErrorWithField:v39];
 
                 v15 = v64;
-                v12 = v65;
+                array = v65;
                 v26 = v58;
                 goto LABEL_57;
               }
@@ -292,15 +292,15 @@ LABEL_57:
 
       if ([v60 count])
       {
-        [v61 setObject:v60 forKey:@"UserEnabledOptions"];
+        [dictionary setObject:v60 forKey:@"UserEnabledOptions"];
       }
 
-      v12 = v65;
+      array = v65;
       v26 = v58;
     }
 
-    [v12 addObject:v61];
-    [(MCAppWhitelistPayloadBase *)v10 setWhitelistedAppsAndOptions:v12];
+    [array addObject:dictionary];
+    [(MCAppWhitelistPayloadBase *)v10 setWhitelistedAppsAndOptions:array];
     v11 = 0;
     goto LABEL_56;
   }
@@ -313,17 +313,17 @@ LABEL_61:
   }
 
 LABEL_67:
-  if ([v8 count])
+  if ([dictionaryCopy count])
   {
     v52 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
     {
       v53 = v52;
-      v54 = [(MCPayload *)v10 friendlyName];
+      friendlyName = [(MCPayload *)v10 friendlyName];
       *buf = 138543618;
-      v88 = v54;
+      v88 = friendlyName;
       v89 = 2114;
-      v90 = v8;
+      v90 = dictionaryCopy;
       _os_log_impl(&dword_1A795B000, v53, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
     }
   }
@@ -335,10 +335,10 @@ LABEL_71:
 
 - (NSString)applicationBundleID
 {
-  v2 = [(MCAppWhitelistPayloadBase *)self whitelistedAppsAndOptions];
-  v3 = [v2 firstObject];
+  whitelistedAppsAndOptions = [(MCAppWhitelistPayloadBase *)self whitelistedAppsAndOptions];
+  firstObject = [whitelistedAppsAndOptions firstObject];
 
-  v4 = [v3 objectForKeyedSubscript:@"Identifier"];
+  v4 = [firstObject objectForKeyedSubscript:@"Identifier"];
 
   return v4;
 }
@@ -348,8 +348,8 @@ LABEL_71:
   v17[2] = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = MCSingleAppPayload;
-  v3 = [(MCAppWhitelistPayloadBase *)&v11 restrictions];
-  v4 = [v3 MCMutableDeepCopy];
+  restrictions = [(MCAppWhitelistPayloadBase *)&v11 restrictions];
+  mCMutableDeepCopy = [restrictions MCMutableDeepCopy];
 
   v16[0] = @"allowMultipleAppsInAppLock";
   v14[0] = @"value";
@@ -367,25 +367,25 @@ LABEL_71:
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v17[1] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
-  [v4 setObject:v8 forKeyedSubscript:@"restrictedBool"];
+  [mCMutableDeepCopy setObject:v8 forKeyedSubscript:@"restrictedBool"];
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return mCMutableDeepCopy;
 }
 
 - (id)subtitle1Description
 {
-  v3 = [(MCAppWhitelistPayloadBase *)self whitelistedAppsAndOptions];
-  v4 = [v3 count];
+  whitelistedAppsAndOptions = [(MCAppWhitelistPayloadBase *)self whitelistedAppsAndOptions];
+  v4 = [whitelistedAppsAndOptions count];
 
   if (!v4)
   {
     goto LABEL_3;
   }
 
-  v12 = [(MCAppWhitelistPayloadBase *)self whitelistedAppsAndOptions];
-  v13 = [v12 objectAtIndex:0];
+  whitelistedAppsAndOptions2 = [(MCAppWhitelistPayloadBase *)self whitelistedAppsAndOptions];
+  v13 = [whitelistedAppsAndOptions2 objectAtIndex:0];
   v14 = [v13 objectForKey:@"Identifier"];
 
   if (!v14)

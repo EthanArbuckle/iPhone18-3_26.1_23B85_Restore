@@ -1,21 +1,21 @@
 @interface DMCEnrollmentDebuggingESSOApplicationInstallationViewController
-- (DMCEnrollmentDebuggingESSOApplicationInstallationViewController)initWithDelegate:(id)a3 appBundleIDs:(id)a4 requiredEntitlements:(id)a5;
+- (DMCEnrollmentDebuggingESSOApplicationInstallationViewController)initWithDelegate:(id)delegate appBundleIDs:(id)ds requiredEntitlements:(id)entitlements;
 - (DMCEnrollmentDebuggingESSOApplicationInstallationViewControllerDelegate)delegate;
-- (void)applicationsDidInstall:(id)a3;
-- (void)leftBarButtonTapped:(id)a3;
+- (void)applicationsDidInstall:(id)install;
+- (void)leftBarButtonTapped:(id)tapped;
 - (void)loadView;
 - (void)updateContinueButtonStatus;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation DMCEnrollmentDebuggingESSOApplicationInstallationViewController
 
-- (DMCEnrollmentDebuggingESSOApplicationInstallationViewController)initWithDelegate:(id)a3 appBundleIDs:(id)a4 requiredEntitlements:(id)a5
+- (DMCEnrollmentDebuggingESSOApplicationInstallationViewController)initWithDelegate:(id)delegate appBundleIDs:(id)ds requiredEntitlements:(id)entitlements
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  dsCopy = ds;
+  entitlementsCopy = entitlements;
   v11 = DMCLocalizedString();
   v30.receiver = self;
   v30.super_class = DMCEnrollmentDebuggingESSOApplicationInstallationViewController;
@@ -23,18 +23,18 @@
 
   if (v12)
   {
-    objc_storeWeak(&v12->_delegate, v8);
-    v13 = [v9 copy];
+    objc_storeWeak(&v12->_delegate, delegateCopy);
+    v13 = [dsCopy copy];
     bundleIDs = v12->_bundleIDs;
     v12->_bundleIDs = v13;
 
-    v15 = [v10 copy];
+    v15 = [entitlementsCopy copy];
     requiredEntitlements = v12->_requiredEntitlements;
     v12->_requiredEntitlements = v15;
 
-    v17 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     appWorkspace = v12->_appWorkspace;
-    v12->_appWorkspace = v17;
+    v12->_appWorkspace = defaultWorkspace;
 
     [(LSApplicationWorkspace *)v12->_appWorkspace addObserver:v12];
     v19 = [DMCEnrollmentTableViewTextCell alloc];
@@ -44,7 +44,7 @@
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
     [(DMCEnrollmentTemplateTableViewController *)v12 addCellData:v22 animated:0];
 
-    v23 = [[DMCEnrollmentNameListCell alloc] initWithNames:v9 numberOfColumns:1];
+    v23 = [[DMCEnrollmentNameListCell alloc] initWithNames:dsCopy numberOfColumns:1];
     v32 = v23;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v32 count:1];
     [(DMCEnrollmentTemplateTableViewController *)v12 addSectionWithCellData:v24 animated:0];
@@ -96,54 +96,54 @@ void __75__DMCEnrollmentDebuggingESSOApplicationInstallationViewController_loadV
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = DMCEnrollmentDebuggingESSOApplicationInstallationViewController;
-  [(DMCEnrollmentTemplateTableViewController *)&v4 viewWillAppear:a3];
+  [(DMCEnrollmentTemplateTableViewController *)&v4 viewWillAppear:appear];
   if (([(DMCEnrollmentDebuggingESSOApplicationInstallationViewController *)self isBeingPresented]& 1) != 0 || [(DMCEnrollmentDebuggingESSOApplicationInstallationViewController *)self isMovingToParentViewController])
   {
     [(DMCEnrollmentDebuggingESSOApplicationInstallationViewController *)self _setupNavigationBar];
   }
 }
 
-- (void)leftBarButtonTapped:(id)a3
+- (void)leftBarButtonTapped:(id)tapped
 {
-  v4 = [(DMCEnrollmentDebuggingESSOApplicationInstallationViewController *)self delegate];
-  [v4 debuggingApplicationInstallationViewController:self didReceiveUserAction:0];
+  delegate = [(DMCEnrollmentDebuggingESSOApplicationInstallationViewController *)self delegate];
+  [delegate debuggingApplicationInstallationViewController:self didReceiveUserAction:0];
 }
 
 - (void)updateContinueButtonStatus
 {
-  v3 = [(DMCEnrollmentTemplateTableViewController *)self inProgress];
-  v4 = [(DMCEnrollmentDebuggingESSOApplicationInstallationViewController *)self confirmationView];
-  v5 = v4;
-  if (v3)
+  inProgress = [(DMCEnrollmentTemplateTableViewController *)self inProgress];
+  confirmationView = [(DMCEnrollmentDebuggingESSOApplicationInstallationViewController *)self confirmationView];
+  confirmationView2 = confirmationView;
+  if (inProgress)
   {
-    [v4 setInProgress:1];
+    [confirmationView setInProgress:1];
   }
 
   else
   {
-    [v4 setInProgress:0];
+    [confirmationView setInProgress:0];
 
-    v6 = [(DMCEnrollmentDebuggingESSOApplicationInstallationViewController *)self requiredAppInstalled];
-    v5 = [(DMCEnrollmentDebuggingESSOApplicationInstallationViewController *)self confirmationView];
-    [v5 setConfirmationButtonEnabled:v6];
+    requiredAppInstalled = [(DMCEnrollmentDebuggingESSOApplicationInstallationViewController *)self requiredAppInstalled];
+    confirmationView2 = [(DMCEnrollmentDebuggingESSOApplicationInstallationViewController *)self confirmationView];
+    [confirmationView2 setConfirmationButtonEnabled:requiredAppInstalled];
   }
 
-  v7 = [(DMCEnrollmentDebuggingESSOApplicationInstallationViewController *)self view];
-  [v7 setNeedsDisplay];
+  view = [(DMCEnrollmentDebuggingESSOApplicationInstallationViewController *)self view];
+  [view setNeedsDisplay];
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v51 = *MEMORY[0x277D85DE8];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = a3;
+  obj = install;
   v4 = [obj countByEnumeratingWithState:&v41 objects:v50 count:16];
   if (!v4)
   {
@@ -154,7 +154,7 @@ void __75__DMCEnrollmentDebuggingESSOApplicationInstallationViewController_loadV
   v33 = 0;
   v6 = *v42;
   v30 = *v42;
-  v31 = self;
+  selfCopy = self;
   do
   {
     v7 = 0;
@@ -171,15 +171,15 @@ void __75__DMCEnrollmentDebuggingESSOApplicationInstallationViewController_loadV
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v10 = v9;
-        v11 = [v8 bundleIdentifier];
+        bundleIdentifier = [v8 bundleIdentifier];
         *buf = 138543362;
-        v46 = v11;
+        v46 = bundleIdentifier;
         _os_log_impl(&dword_247E7D000, v10, OS_LOG_TYPE_DEFAULT, "Application (%{public}@) installed.", buf, 0xCu);
       }
 
       v12 = [(DMCEnrollmentDebuggingESSOApplicationInstallationViewController *)self bundleIDs:v30];
-      v13 = [v8 bundleIdentifier];
-      v14 = [v12 containsObject:v13];
+      bundleIdentifier2 = [v8 bundleIdentifier];
+      v14 = [v12 containsObject:bundleIdentifier2];
 
       if (v14)
       {
@@ -187,16 +187,16 @@ void __75__DMCEnrollmentDebuggingESSOApplicationInstallationViewController_loadV
         v40 = 0u;
         v37 = 0u;
         v38 = 0u;
-        v15 = [(DMCEnrollmentDebuggingESSOApplicationInstallationViewController *)self requiredEntitlements];
-        v16 = [v15 countByEnumeratingWithState:&v37 objects:v49 count:16];
+        requiredEntitlements = [(DMCEnrollmentDebuggingESSOApplicationInstallationViewController *)self requiredEntitlements];
+        v16 = [requiredEntitlements countByEnumeratingWithState:&v37 objects:v49 count:16];
         if (!v16)
         {
 
 LABEL_23:
           [(DMCEnrollmentDebuggingESSOApplicationInstallationViewController *)self delegate];
           v28 = v27 = v7;
-          v29 = [v8 bundleIdentifier];
-          [v28 debuggingApplicationInstallationViewController:self didInstallApplication:v29];
+          bundleIdentifier3 = [v8 bundleIdentifier];
+          [v28 debuggingApplicationInstallationViewController:self didInstallApplication:bundleIdentifier3];
 
           v7 = v27;
           v33 = 1;
@@ -213,22 +213,22 @@ LABEL_23:
           {
             if (*v38 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(requiredEntitlements);
             }
 
             v21 = *(*(&v37 + 1) + 8 * i);
             v22 = [v8 entitlementValueForKey:v21 ofClass:objc_opt_class()];
-            v23 = [v22 BOOLValue];
+            bOOLValue = [v22 BOOLValue];
 
-            if ((v23 & 1) == 0)
+            if ((bOOLValue & 1) == 0)
             {
               v24 = *DMCLogObjects();
               if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
               {
                 v25 = v24;
-                v26 = [v8 bundleIdentifier];
+                bundleIdentifier4 = [v8 bundleIdentifier];
                 *buf = 138543618;
-                v46 = v26;
+                v46 = bundleIdentifier4;
                 v47 = 2114;
                 v48 = v21;
                 _os_log_impl(&dword_247E7D000, v25, OS_LOG_TYPE_ERROR, "Application (%{public}@) doesn't have the required entitlement: %{public}@", buf, 0x16u);
@@ -238,13 +238,13 @@ LABEL_23:
             }
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v37 objects:v49 count:16];
+          v17 = [requiredEntitlements countByEnumeratingWithState:&v37 objects:v49 count:16];
         }
 
         while (v17);
 
         v6 = v30;
-        self = v31;
+        self = selfCopy;
         v5 = v32;
         v7 = v35;
         if (v19)

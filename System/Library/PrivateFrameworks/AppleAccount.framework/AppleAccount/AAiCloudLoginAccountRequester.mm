@@ -1,7 +1,7 @@
 @interface AAiCloudLoginAccountRequester
 + (id)delegateParamsForAllDelegates;
 + (id)delegateParamsForiCloudOnly;
-- (void)loginWithAccount:(id)a3 forDelegates:(id)a4 completion:(id)a5;
+- (void)loginWithAccount:(id)account forDelegates:(id)delegates completion:(id)completion;
 @end
 
 @implementation AAiCloudLoginAccountRequester
@@ -32,23 +32,23 @@
   return v2;
 }
 
-- (void)loginWithAccount:(id)a3 forDelegates:(id)a4 completion:(id)a5
+- (void)loginWithAccount:(id)account forDelegates:(id)delegates completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[AALoginAccountRequest alloc] initWithAccount:v9 delegates:v8];
+  completionCopy = completion;
+  delegatesCopy = delegates;
+  accountCopy = account;
+  v10 = [[AALoginAccountRequest alloc] initWithAccount:accountCopy delegates:delegatesCopy];
 
-  v11 = [v9 _aa_termsServerInfo];
-  [(AALoginAccountRequest *)v10 setServerInfo:v11];
+  _aa_termsServerInfo = [accountCopy _aa_termsServerInfo];
+  [(AALoginAccountRequest *)v10 setServerInfo:_aa_termsServerInfo];
 
-  [v9 _aa_setTermsServerInfo:0];
+  [accountCopy _aa_setTermsServerInfo:0];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __74__AAiCloudLoginAccountRequester_loginWithAccount_forDelegates_completion___block_invoke;
   v13[3] = &unk_1E7C9BDB8;
-  v14 = v7;
-  v12 = v7;
+  v14 = completionCopy;
+  v12 = completionCopy;
   [(AARequest *)v10 performSignedRequestWithHandler:v13];
 }
 

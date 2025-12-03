@@ -1,33 +1,33 @@
 @interface ThroughputDelegate
-- (ThroughputDelegate)initWithExecution:(id)a3 testName:(id)a4 withQueue:(id)a5 testEndpoint:(id)a6 withConfig:(id)a7 resultsObject:(id)a8;
-- (id)createTaskWithRequest:(id)a3 session:(id)a4;
-- (int)executeTaskWithRequest:(id)a3 saturationHandler:(id)a4 completionHandler:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
-- (void)addNewThroughputMeasurement:(unint64_t)a3;
+- (ThroughputDelegate)initWithExecution:(id)execution testName:(id)name withQueue:(id)queue testEndpoint:(id)endpoint withConfig:(id)config resultsObject:(id)object;
+- (id)createTaskWithRequest:(id)request session:(id)session;
+- (int)executeTaskWithRequest:(id)request saturationHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
+- (void)addNewThroughputMeasurement:(unint64_t)measurement;
 - (void)addTasks;
-- (void)cancelWithCompletionHandler:(id)a3;
+- (void)cancelWithCompletionHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation ThroughputDelegate
 
-- (ThroughputDelegate)initWithExecution:(id)a3 testName:(id)a4 withQueue:(id)a5 testEndpoint:(id)a6 withConfig:(id)a7 resultsObject:(id)a8
+- (ThroughputDelegate)initWithExecution:(id)execution testName:(id)name withQueue:(id)queue testEndpoint:(id)endpoint withConfig:(id)config resultsObject:(id)object
 {
   v54 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  obj = a6;
-  v17 = a6;
-  v18 = a7;
-  v43 = a8;
-  v19 = a8;
+  executionCopy = execution;
+  nameCopy = name;
+  queueCopy = queue;
+  obj = endpoint;
+  endpointCopy = endpoint;
+  configCopy = config;
+  objectCopy = object;
+  objectCopy2 = object;
   v45.receiver = self;
   v45.super_class = ThroughputDelegate;
   v20 = [(ThroughputDelegate *)&v45 init];
@@ -49,22 +49,22 @@
     uploadStream = v20->_uploadStream;
     v20->_uploadStream = v27;
 
-    objc_storeStrong(&v20->_nqConfig, a7);
+    objc_storeStrong(&v20->_nqConfig, config);
     start = v20->_start;
     v20->_start = 0;
 
-    v30 = [[ThroughputSaturationDetection alloc] initWithConfig:v18];
+    v30 = [[ThroughputSaturationDetection alloc] initWithConfig:configCopy];
     saturation = v20->_saturation;
     v20->_saturation = &v30->super;
 
     v20->_saturationReached = 0;
-    objc_storeStrong(&v20->_queue, a5);
+    objc_storeStrong(&v20->_queue, queue);
     objc_storeStrong(&v20->_testEndpoint, obj);
     v32 = instance_id++;
     v20->_instanceId = v32;
-    objc_storeStrong(&v20->_results, v43);
-    objc_storeStrong(&v20->_execution, a3);
-    objc_storeStrong(&v20->_testName, a4);
+    objc_storeStrong(&v20->_results, objectCopy);
+    objc_storeStrong(&v20->_execution, execution);
+    objc_storeStrong(&v20->_testName, name);
     v33 = [MEMORY[0x277CBEAA8] now];
     lastUpdate = v20->_lastUpdate;
     v20->_lastUpdate = v33;
@@ -76,7 +76,7 @@
       instanceId = v20->_instanceId;
       testName = v20->_testName;
       v38 = v35;
-      v39 = [(NSString *)testName UTF8String];
+      uTF8String = [(NSString *)testName UTF8String];
       *buf = 136315906;
       v47 = "[ThroughputDelegate initWithExecution:testName:withQueue:testEndpoint:withConfig:resultsObject:]";
       v48 = 1024;
@@ -84,7 +84,7 @@
       v50 = 1024;
       v51 = instanceId;
       v52 = 2080;
-      v53 = v39;
+      v53 = uTF8String;
       _os_log_impl(&dword_25B962000, v38, OS_LOG_TYPE_DEFAULT, "%s:%u - [%d] - created Throughput instance with name %s", buf, 0x22u);
     }
   }
@@ -93,33 +93,33 @@
   return v20;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics
 {
-  v13 = a5;
-  v6 = [(NetworkQualityExecutionsResult *)self->_results mutableURLSessionMetrics];
-  v7 = [v6 valueForKey:self->_testName];
+  metricsCopy = metrics;
+  mutableURLSessionMetrics = [(NetworkQualityExecutionsResult *)self->_results mutableURLSessionMetrics];
+  v7 = [mutableURLSessionMetrics valueForKey:self->_testName];
 
   if (!v7)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v8 = [(NetworkQualityExecutionsResult *)self->_results mutableURLSessionMetrics];
-    [v8 setObject:v7 forKey:self->_testName];
+    mutableURLSessionMetrics2 = [(NetworkQualityExecutionsResult *)self->_results mutableURLSessionMetrics];
+    [mutableURLSessionMetrics2 setObject:v7 forKey:self->_testName];
 
-    v9 = [v13 transactionMetrics];
-    v10 = [v9 firstObject];
+    transactionMetrics = [metricsCopy transactionMetrics];
+    firstObject = [transactionMetrics firstObject];
 
-    v11 = [(NetworkQualityResult *)self->_results interfaceName];
+    interfaceName = [(NetworkQualityResult *)self->_results interfaceName];
 
-    if (!v11)
+    if (!interfaceName)
     {
-      v12 = [v10 _interfaceName];
-      [(NetworkQualityResult *)self->_results setInterfaceName:v12];
+      _interfaceName = [firstObject _interfaceName];
+      [(NetworkQualityResult *)self->_results setInterfaceName:_interfaceName];
 
-      -[NetworkQualityResult setIsCellular:](self->_results, "setIsCellular:", [v10 isCellular]);
+      -[NetworkQualityResult setIsCellular:](self->_results, "setIsCellular:", [firstObject isCellular]);
     }
   }
 
-  [v7 addObject:v13];
+  [v7 addObject:metricsCopy];
 }
 
 - (void)dealloc
@@ -164,15 +164,15 @@
 
   if ([(NSMutableArray *)self->_tasks count])
   {
-    v4 = 1;
+    minFlows = 1;
     goto LABEL_8;
   }
 
-  v4 = [(ThroughputDelegate *)self minFlows];
-  if (v4 >= 1)
+  minFlows = [(ThroughputDelegate *)self minFlows];
+  if (minFlows >= 1)
   {
 LABEL_8:
-    v22 = v4;
+    v22 = minFlows;
     do
     {
       v5 = [(NSMutableArray *)self->_tasks count];
@@ -181,8 +181,8 @@ LABEL_8:
         break;
       }
 
-      v6 = [(NetworkQualityExecutions *)self->_execution createDefaultNSURLSessionConfiguration];
-      v7 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v6 delegate:self delegateQueue:self->_queue];
+      createDefaultNSURLSessionConfiguration = [(NetworkQualityExecutions *)self->_execution createDefaultNSURLSessionConfiguration];
+      v7 = [MEMORY[0x277CCAD30] sessionWithConfiguration:createDefaultNSURLSessionConfiguration delegate:self delegateQueue:self->_queue];
       [(NSMutableArray *)self->_sessions addObject:v7];
       v8 = [(ThroughputDelegate *)self createTaskWithRequest:self->_request session:v7];
       [v8 set_hostOverride:self->_testEndpoint];
@@ -210,11 +210,11 @@ LABEL_8:
 
       [v8 resume];
 
-      --v4;
+      --minFlows;
     }
 
-    while (v4);
-    v4 = v22;
+    while (minFlows);
+    minFlows = v22;
   }
 
   [(ThroughputDelegate *)self updateResultsWithFlowCount];
@@ -223,7 +223,7 @@ LABEL_8:
   if (os_log_type_enabled(os_log_netqual, OS_LOG_TYPE_DEFAULT))
   {
     v13 = self->_instanceId;
-    if (v4 <= 1)
+    if (minFlows <= 1)
     {
       v14 = &unk_25B97FCC3;
     }
@@ -233,7 +233,7 @@ LABEL_8:
       v14 = "s";
     }
 
-    v15 = v4;
+    v15 = minFlows;
     tasks = self->_tasks;
     v17 = v12;
     v18 = [(NSMutableArray *)tasks count];
@@ -253,13 +253,13 @@ LABEL_8:
   }
 
   v19 = dispatch_time(0, 1000000000);
-  v20 = [(NSOperationQueue *)self->_queue underlyingQueue];
+  underlyingQueue = [(NSOperationQueue *)self->_queue underlyingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __30__ThroughputDelegate_addTasks__block_invoke;
   block[3] = &unk_279969378;
   block[4] = self;
-  dispatch_after(v19, v20, block);
+  dispatch_after(v19, underlyingQueue, block);
 
 LABEL_21:
   v21 = *MEMORY[0x277D85DE8];
@@ -273,10 +273,10 @@ uint64_t __30__ThroughputDelegate_addTasks__block_invoke(uint64_t a1)
   return [v2 shareProgress];
 }
 
-- (id)createTaskWithRequest:(id)a3 session:(id)a4
+- (id)createTaskWithRequest:(id)request session:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  sessionCopy = session;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -288,26 +288,26 @@ uint64_t __30__ThroughputDelegate_addTasks__block_invoke(uint64_t a1)
   objc_exception_throw(v13);
 }
 
-- (int)executeTaskWithRequest:(id)a3 saturationHandler:(id)a4 completionHandler:(id)a5
+- (int)executeTaskWithRequest:(id)request saturationHandler:(id)handler completionHandler:(id)completionHandler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  requestCopy = request;
   v9 = MEMORY[0x277CBEAA8];
-  v10 = a5;
-  v11 = a4;
-  v12 = [v9 date];
-  objc_storeStrong(&self->_start, v12);
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  date = [v9 date];
+  objc_storeStrong(&self->_start, date);
   objc_storeStrong(&self->_current, self->_start);
-  v13 = MEMORY[0x25F873620](v11);
+  v13 = MEMORY[0x25F873620](handlerCopy);
 
   saturationHandler = self->_saturationHandler;
   self->_saturationHandler = v13;
 
-  v15 = MEMORY[0x25F873620](v10);
+  v15 = MEMORY[0x25F873620](completionHandlerCopy);
   completionHandler = self->_completionHandler;
   self->_completionHandler = v15;
 
-  v17 = [(ThroughputDelegate *)self amendRequest:v8];
+  v17 = [(ThroughputDelegate *)self amendRequest:requestCopy];
   request = self->_request;
   self->_request = v17;
 
@@ -323,7 +323,7 @@ uint64_t __30__ThroughputDelegate_addTasks__block_invoke(uint64_t a1)
     v27 = 1024;
     v28 = instanceId;
     v29 = 2112;
-    v30 = v8;
+    v30 = requestCopy;
     _os_log_impl(&dword_25B962000, v19, OS_LOG_TYPE_DEFAULT, "%s:%u - [%d] Starting ... request: %@", &v23, 0x22u);
   }
 
@@ -333,14 +333,14 @@ uint64_t __30__ThroughputDelegate_addTasks__block_invoke(uint64_t a1)
   return 0;
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   netqual_log_init();
   v8 = os_log_netqual;
-  if (v7)
+  if (errorCopy)
   {
     if (os_log_type_enabled(os_log_netqual, OS_LOG_TYPE_ERROR))
     {
@@ -352,9 +352,9 @@ uint64_t __30__ThroughputDelegate_addTasks__block_invoke(uint64_t a1)
       v17 = 1024;
       v18 = instanceId;
       v19 = 2112;
-      v20 = v6;
+      v20 = sessionCopy;
       v21 = 2112;
-      v22 = v7;
+      v22 = errorCopy;
       _os_log_error_impl(&dword_25B962000, v8, OS_LOG_TYPE_ERROR, "%s:%u - [%d] Closing session %@ with error %@", &v13, 0x2Cu);
     }
   }
@@ -369,32 +369,32 @@ uint64_t __30__ThroughputDelegate_addTasks__block_invoke(uint64_t a1)
     v17 = 1024;
     v18 = v10;
     v19 = 2112;
-    v20 = v6;
+    v20 = sessionCopy;
     _os_log_impl(&dword_25B962000, v8, OS_LOG_TYPE_DEFAULT, "%s:%u - [%d] Closing session %@", &v13, 0x22u);
   }
 
-  [(NSMutableArray *)self->_sessions removeObject:v6];
-  [(NSMutableArray *)self->_probeSessions removeObject:v6];
+  [(NSMutableArray *)self->_sessions removeObject:sessionCopy];
+  [(NSMutableArray *)self->_probeSessions removeObject:sessionCopy];
   if (![(NSMutableArray *)self->_sessions count])
   {
     cancelCompletionHandler = self->_cancelCompletionHandler;
     if (cancelCompletionHandler)
     {
-      cancelCompletionHandler[2](cancelCompletionHandler, v7);
+      cancelCompletionHandler[2](cancelCompletionHandler, errorCopy);
     }
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v46 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v10)
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
+  v11 = errorCopy;
+  if (!errorCopy)
   {
 LABEL_4:
     netqual_log_init();
@@ -409,22 +409,22 @@ LABEL_4:
       v38 = 1024;
       v39 = instanceId;
       v40 = 2112;
-      v41 = v9;
+      v41 = taskCopy;
       v42 = 2112;
-      v43 = v8;
+      v43 = sessionCopy;
       v44 = 2112;
       v45 = v11;
       _os_log_impl(&dword_25B962000, v14, OS_LOG_TYPE_DEFAULT, "%s:%u - [%d] Closing task %@ of session %@ with error %@", &v34, 0x36u);
     }
 
-    [(NSMutableArray *)self->_tasks removeObject:v9];
+    [(NSMutableArray *)self->_tasks removeObject:taskCopy];
     if (!v11 && !self->_canceled && !self->_exitCriteriaMet && self->_saturationReached)
     {
-      v16 = [v9 response];
-      v17 = v16;
-      if (v16)
+      response = [taskCopy response];
+      v17 = response;
+      if (response)
       {
-        if ([v16 statusCode] == 200)
+        if ([response statusCode] == 200)
         {
           v18 = [(NSMutableArray *)self->_tasks count];
           if (v18 < [(ThroughputDelegate *)self maxFlows])
@@ -443,8 +443,8 @@ LABEL_4:
               _os_log_impl(&dword_25B962000, v19, OS_LOG_TYPE_DEFAULT, "%s:%u - [%d] Task completed successfully, respawning to maintain flow count", &v34, 0x18u);
             }
 
-            v21 = [(NetworkQualityExecutions *)self->_execution createDefaultNSURLSessionConfiguration];
-            v22 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v21 delegate:self delegateQueue:self->_queue];
+            createDefaultNSURLSessionConfiguration = [(NetworkQualityExecutions *)self->_execution createDefaultNSURLSessionConfiguration];
+            v22 = [MEMORY[0x277CCAD30] sessionWithConfiguration:createDefaultNSURLSessionConfiguration delegate:self delegateQueue:self->_queue];
             [(NSMutableArray *)self->_sessions addObject:v22];
             v23 = [(ThroughputDelegate *)self createTaskWithRequest:self->_request session:v22];
             [v23 set_hostOverride:self->_testEndpoint];
@@ -501,12 +501,12 @@ LABEL_4:
     goto LABEL_31;
   }
 
-  v12 = [(NSURLRequest *)v10 domain];
-  if ([v12 isEqualToString:*MEMORY[0x277CCA738]])
+  domain = [(NSURLRequest *)errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CCA738]])
   {
-    v13 = [(NSURLRequest *)v11 code];
+    code = [(NSURLRequest *)v11 code];
 
-    if (v13 == -999)
+    if (code == -999)
     {
       goto LABEL_4;
     }
@@ -528,23 +528,23 @@ LABEL_4:
     v38 = 1024;
     v39 = v33;
     v40 = 2112;
-    v41 = v9;
+    v41 = taskCopy;
     v42 = 2112;
-    v43 = v8;
+    v43 = sessionCopy;
     v44 = 2112;
     v45 = v11;
     _os_log_error_impl(&dword_25B962000, v31, OS_LOG_TYPE_ERROR, "%s:%u - [%d] Force-closing task %@ of session %@ with error %@", &v34, 0x36u);
   }
 
-  [(NSMutableArray *)self->_tasks removeObject:v9];
+  [(NSMutableArray *)self->_tasks removeObject:taskCopy];
   if (!self->_error)
   {
-    objc_storeStrong(&self->_error, a5);
+    objc_storeStrong(&self->_error, error);
   }
 
   if (!self->_canceled)
   {
-    objc_storeStrong(&self->_error, a5);
+    objc_storeStrong(&self->_error, error);
     completionHandler = self->_completionHandler;
     error = self->_error;
 LABEL_30:
@@ -556,19 +556,19 @@ LABEL_31:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
   v21[3] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a6;
-  if ([v8 statusCode] == 200)
+  responseCopy = response;
+  handlerCopy = handler;
+  if ([responseCopy statusCode] == 200)
   {
-    v9[2](v9, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 
   else
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected HTTP status code 200, got %lu", objc_msgSend(v8, "statusCode")];
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected HTTP status code 200, got %lu", objc_msgSend(responseCopy, "statusCode")];
     netqual_log_init();
     if (os_log_type_enabled(os_log_netqual, OS_LOG_TYPE_ERROR))
     {
@@ -577,9 +577,9 @@ LABEL_31:
 
     v11 = MEMORY[0x277CCA9B8];
     v20[0] = @"statusCode";
-    v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v8, "statusCode")}];
-    v13 = [v12 stringValue];
-    v21[0] = v13;
+    v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(responseCopy, "statusCode")}];
+    stringValue = [v12 stringValue];
+    v21[0] = stringValue;
     v20[1] = @"URL";
     v14 = [(NSURLRequest *)self->_request URL];
     v20[2] = *MEMORY[0x277CCA450];
@@ -596,23 +596,23 @@ LABEL_31:
       (*(self->_completionHandler + 2))();
     }
 
-    v9[2](v9, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addNewThroughputMeasurement:(unint64_t)a3
+- (void)addNewThroughputMeasurement:(unint64_t)measurement
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  self->_currentBytesTransferred += a3;
+  date = [MEMORY[0x277CBEAA8] date];
+  self->_currentBytesTransferred += measurement;
   [(ThroughputDelegate *)self updateResultsWithByteCount];
   if (![(ThroughputDelegate *)self checkLimits])
   {
     current = self->_current;
-    self->_byte_accumulator += a3;
-    [v5 timeIntervalSinceDate:current];
+    self->_byte_accumulator += measurement;
+    [date timeIntervalSinceDate:current];
     v8 = v7;
     if (v7 >= 0.2)
     {
@@ -647,7 +647,7 @@ LABEL_31:
       }
 
       self->_byte_accumulator = 0;
-      objc_storeStrong(&self->_current, v5);
+      objc_storeStrong(&self->_current, date);
       *&v11 = v9;
       if ([(SaturationDetection *)self->_saturation add:v11]&& !self->_saturationReached)
       {
@@ -695,57 +695,57 @@ LABEL_31:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v11 = a4;
-  v7 = a5;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   if ([(NetworkQualityConfiguration *)self->_nqConfig validateCertificate])
   {
-    v7[2](v7, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 
   else
   {
     v8 = MEMORY[0x277CCACF0];
-    v9 = [v11 protectionSpace];
-    v10 = [v8 credentialForTrust:{objc_msgSend(v9, "serverTrust")}];
-    (v7)[2](v7, 0, v10);
+    protectionSpace = [challengeCopy protectionSpace];
+    v10 = [v8 credentialForTrust:{objc_msgSend(protectionSpace, "serverTrust")}];
+    (handlerCopy)[2](handlerCopy, 0, v10);
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v12 = a5;
-  v8 = a6;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   if ([(NetworkQualityConfiguration *)self->_nqConfig validateCertificate])
   {
-    v8[2](v8, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 
   else
   {
     v9 = MEMORY[0x277CCACF0];
-    v10 = [v12 protectionSpace];
-    v11 = [v9 credentialForTrust:{objc_msgSend(v10, "serverTrust")}];
-    (v8)[2](v8, 0, v11);
+    protectionSpace = [challengeCopy protectionSpace];
+    v11 = [v9 credentialForTrust:{objc_msgSend(protectionSpace, "serverTrust")}];
+    (handlerCopy)[2](handlerCopy, 0, v11);
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a6;
-  v12 = a7;
+  taskCopy = task;
+  requestCopy = request;
+  handlerCopy = handler;
   netqual_log_init();
   v13 = os_log_netqual;
   if (os_log_type_enabled(os_log_netqual, OS_LOG_TYPE_ERROR))
   {
     instanceId = self->_instanceId;
     v16 = v13;
-    v17 = [v11 URL];
-    v18 = [v10 originalRequest];
-    v19 = [v18 URL];
+    v17 = [requestCopy URL];
+    originalRequest = [taskCopy originalRequest];
+    v19 = [originalRequest URL];
     v20 = 136316162;
     v21 = "[ThroughputDelegate URLSession:task:willPerformHTTPRedirection:newRequest:completionHandler:]";
     v22 = 1024;
@@ -759,16 +759,16 @@ LABEL_31:
     _os_log_error_impl(&dword_25B962000, v16, OS_LOG_TYPE_ERROR, "%s:%u - [%d] Unexpected redirect to %@ for %@", &v20, 0x2Cu);
   }
 
-  v12[2](v12, 0);
+  handlerCopy[2](handlerCopy, 0);
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelWithCompletionHandler:(id)a3
+- (void)cancelWithCompletionHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
   self->_canceled = 1;
-  v4 = MEMORY[0x25F873620](a3, a2);
+  v4 = MEMORY[0x25F873620](handler, a2);
   cancelCompletionHandler = self->_cancelCompletionHandler;
   self->_cancelCompletionHandler = v4;
 
@@ -810,13 +810,13 @@ LABEL_31:
 
   else if (self->_cancelCompletionHandler)
   {
-    v12 = [(NSOperationQueue *)self->_queue underlyingQueue];
+    underlyingQueue = [(NSOperationQueue *)self->_queue underlyingQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __50__ThroughputDelegate_cancelWithCompletionHandler___block_invoke;
     block[3] = &unk_279969378;
     block[4] = self;
-    dispatch_async(v12, block);
+    dispatch_async(underlyingQueue, block);
   }
 
   v13 = *MEMORY[0x277D85DE8];

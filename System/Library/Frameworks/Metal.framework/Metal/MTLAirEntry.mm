@@ -1,8 +1,8 @@
 @interface MTLAirEntry
-- (MTLAirEntry)initWithData:(id)a3;
-- (MTLAirEntry)initWithData:(id)a3 bitcode:(id)a4 airScript:(id)a5;
+- (MTLAirEntry)initWithData:(id)data;
+- (MTLAirEntry)initWithData:(id)data bitcode:(id)bitcode airScript:(id)script;
 - (void)dealloc;
-- (void)setLinkedBitcodes:(id)a3;
+- (void)setLinkedBitcodes:(id)bitcodes;
 @end
 
 @implementation MTLAirEntry
@@ -27,38 +27,38 @@
   [(MTLAirEntry *)&v5 dealloc];
 }
 
-- (MTLAirEntry)initWithData:(id)a3 bitcode:(id)a4 airScript:(id)a5
+- (MTLAirEntry)initWithData:(id)data bitcode:(id)bitcode airScript:(id)script
 {
   v10.receiver = self;
   v10.super_class = MTLAirEntry;
   v8 = [(MTLAirEntry *)&v10 init];
   if (v8)
   {
-    dispatch_retain(a3);
-    if (a4)
+    dispatch_retain(data);
+    if (bitcode)
     {
-      dispatch_retain(a4);
+      dispatch_retain(bitcode);
     }
 
-    dispatch_retain(a5);
-    v8->_data = a3;
-    v8->_bitcode = a4;
-    v8->_airScript = a5;
+    dispatch_retain(script);
+    v8->_data = data;
+    v8->_bitcode = bitcode;
+    v8->_airScript = script;
     v8->_linkedBitcodes = 0;
   }
 
   return v8;
 }
 
-- (MTLAirEntry)initWithData:(id)a3
+- (MTLAirEntry)initWithData:(id)data
 {
   v6.receiver = self;
   v6.super_class = MTLAirEntry;
   v4 = [(MTLAirEntry *)&v6 init];
   if (v4)
   {
-    dispatch_retain(a3);
-    v4->_data = a3;
+    dispatch_retain(data);
+    v4->_data = data;
     v4->_bitcode = 0;
     v4->_airScript = 0;
     v4->_linkedBitcodes = 0;
@@ -67,19 +67,19 @@
   return v4;
 }
 
-- (void)setLinkedBitcodes:(id)a3
+- (void)setLinkedBitcodes:(id)bitcodes
 {
   linkedBitcodes = self->_linkedBitcodes;
   if (linkedBitcodes)
   {
-    v6 = a3;
+    bitcodesCopy = bitcodes;
 
-    a3 = v6;
+    bitcodes = bitcodesCopy;
   }
 
-  self->_linkedBitcodes = a3;
+  self->_linkedBitcodes = bitcodes;
 
-  v5 = a3;
+  bitcodesCopy2 = bitcodes;
 }
 
 @end

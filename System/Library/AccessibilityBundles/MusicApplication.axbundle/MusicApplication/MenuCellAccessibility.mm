@@ -1,5 +1,5 @@
 @interface MenuCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)_axChildSwitch;
 - (id)accessibilityValue;
@@ -8,11 +8,11 @@
 
 @implementation MenuCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.MenuCell" hasInstanceMethod:@"titleText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.MenuCell" hasInstanceMethod:@"accessibilityIsDimmed" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.MenuCell" hasInstanceMethod:@"titleText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.MenuCell" hasInstanceMethod:@"accessibilityIsDimmed" withFullSignature:{"B", 0}];
 }
 
 - (id)_axChildSwitch
@@ -24,32 +24,32 @@
 
 - (id)accessibilityValue
 {
-  v3 = [(MenuCellAccessibility *)self _axChildSwitch];
+  _axChildSwitch = [(MenuCellAccessibility *)self _axChildSwitch];
 
-  if (v3)
+  if (_axChildSwitch)
   {
-    v4 = [(MenuCellAccessibility *)self _axChildSwitch];
-    v5 = [v4 accessibilityValue];
+    _axChildSwitch2 = [(MenuCellAccessibility *)self _axChildSwitch];
+    accessibilityValue = [_axChildSwitch2 accessibilityValue];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = MenuCellAccessibility;
-    v5 = [(MenuCellAccessibility *)&v7 accessibilityValue];
+    accessibilityValue = [(MenuCellAccessibility *)&v7 accessibilityValue];
   }
 
-  return v5;
+  return accessibilityValue;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v3 = [(MenuCellAccessibility *)self _axChildSwitch];
+  _axChildSwitch = [(MenuCellAccessibility *)self _axChildSwitch];
 
-  if (v3)
+  if (_axChildSwitch)
   {
-    v4 = [(MenuCellAccessibility *)self _axChildSwitch];
-    [v4 accessibilityActivationPoint];
+    _axChildSwitch2 = [(MenuCellAccessibility *)self _axChildSwitch];
+    [_axChildSwitch2 accessibilityActivationPoint];
     v6 = v5;
     v8 = v7;
 
@@ -74,10 +74,10 @@
   v10.receiver = self;
   v10.super_class = MenuCellAccessibility;
   v3 = *MEMORY[0x29EDC7F70] | [(MenuCellAccessibility *)&v10 accessibilityTraits];
-  v4 = [(MenuCellAccessibility *)self _axChildSwitch];
+  _axChildSwitch = [(MenuCellAccessibility *)self _axChildSwitch];
 
   v5 = *MEMORY[0x29EDC7FE8];
-  if (!v4)
+  if (!_axChildSwitch)
   {
     v5 = 0;
   }

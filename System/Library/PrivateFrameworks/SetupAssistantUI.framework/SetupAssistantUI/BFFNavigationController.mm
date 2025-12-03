@@ -4,26 +4,26 @@
 - (CGSize)forcedPreferredContentSize;
 - (CGSize)preferredContentSize;
 - (UIColor)backgroundColor;
-- (id)initIgnoringDismissals:(BOOL)a3;
+- (id)initIgnoringDismissals:(BOOL)dismissals;
 - (id)observers;
-- (id)popToRootViewControllerAnimated:(BOOL)a3;
-- (id)popToViewController:(id)a3 animated:(BOOL)a4;
-- (id)popViewControllerAnimated:(BOOL)a3;
+- (id)popToRootViewControllerAnimated:(BOOL)animated;
+- (id)popToViewController:(id)controller animated:(BOOL)animated;
+- (id)popViewControllerAnimated:(BOOL)animated;
 - (int64_t)preferredStatusBarStyle;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)addDelegateObserver:(id)a3;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)dismissViewControllerWithTransition:(int)a3 completion:(id)a4;
-- (void)popToViewController:(id)a3 completion:(id)a4;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)pushViewController:(id)a3 completion:(id)a4;
-- (void)pushViewController:(id)a3 usingShieldColor:(id)a4 completion:(id)a5;
+- (void)addDelegateObserver:(id)observer;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)dismissViewControllerWithTransition:(int)transition completion:(id)completion;
+- (void)popToViewController:(id)controller completion:(id)completion;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
+- (void)pushViewController:(id)controller completion:(id)completion;
+- (void)pushViewController:(id)controller usingShieldColor:(id)color completion:(id)completion;
 - (void)reapObservers;
-- (void)removeDelegateObserver:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setCustomAnimatorProviderBlock:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4;
+- (void)removeDelegateObserver:(id)observer;
+- (void)setBackgroundColor:(id)color;
+- (void)setCustomAnimatorProviderBlock:(id)block;
+- (void)setDelegate:(id)delegate;
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated;
 @end
 
 @implementation BFFNavigationController
@@ -49,9 +49,9 @@
     v2->_navigationControllerDelegate = v7;
 
     v9 = objc_opt_new();
-    v10 = [v9 isSolariumEnabled];
+    isSolariumEnabled = [v9 isSolariumEnabled];
 
-    if (v10)
+    if (isSolariumEnabled)
     {
       [(BFFNavigationController *)v2 _setBuiltinTransitionStyle:1];
       [(BFFNavigationController *)v2 _setBuiltinTransitionGap:0.0];
@@ -66,12 +66,12 @@
   return v2;
 }
 
-- (id)initIgnoringDismissals:(BOOL)a3
+- (id)initIgnoringDismissals:(BOOL)dismissals
 {
   result = [(BFFNavigationController *)self init];
   if (result)
   {
-    *(result + 1490) = a3;
+    *(result + 1490) = dismissals;
   }
 
   return result;
@@ -79,10 +79,10 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -93,18 +93,18 @@
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_backgroundColor != v5)
+  colorCopy = color;
+  if (self->_backgroundColor != colorCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_backgroundColor, a3);
-    v6 = [(BFFNavigationController *)self view];
-    v7 = [(BFFNavigationController *)self backgroundColor];
-    [v6 setBackgroundColor:v7];
+    v8 = colorCopy;
+    objc_storeStrong(&self->_backgroundColor, color);
+    view = [(BFFNavigationController *)self view];
+    backgroundColor = [(BFFNavigationController *)self backgroundColor];
+    [view setBackgroundColor:backgroundColor];
 
-    v5 = v8;
+    colorCopy = v8;
   }
 }
 
@@ -113,40 +113,40 @@
   backgroundColor = self->_backgroundColor;
   if (backgroundColor)
   {
-    v3 = backgroundColor;
+    backgroundColor = backgroundColor;
   }
 
   else
   {
     v4 = +[BFFStyle sharedStyle];
-    v3 = [v4 backgroundColor];
+    backgroundColor = [v4 backgroundColor];
   }
 
-  return v3;
+  return backgroundColor;
 }
 
 - (int64_t)preferredStatusBarStyle
 {
-  v3 = [(BFFNavigationController *)self topViewController];
-  v4 = [v3 preferredStatusBarStyle];
+  topViewController = [(BFFNavigationController *)self topViewController];
+  preferredStatusBarStyle = [topViewController preferredStatusBarStyle];
 
-  if (!v4)
+  if (!preferredStatusBarStyle)
   {
     return 0;
   }
 
-  v5 = [(BFFNavigationController *)self topViewController];
-  v6 = [v5 preferredStatusBarStyle];
+  topViewController2 = [(BFFNavigationController *)self topViewController];
+  preferredStatusBarStyle2 = [topViewController2 preferredStatusBarStyle];
 
-  return v6;
+  return preferredStatusBarStyle2;
 }
 
 - (BOOL)prefersStatusBarHidden
 {
-  v2 = [(BFFNavigationController *)self topViewController];
-  v3 = [v2 prefersStatusBarHidden];
+  topViewController = [(BFFNavigationController *)self topViewController];
+  prefersStatusBarHidden = [topViewController prefersStatusBarHidden];
 
-  return v3;
+  return prefersStatusBarHidden;
 }
 
 - (CGSize)preferredContentSize
@@ -170,29 +170,29 @@
   return result;
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  controllerCopy = controller;
   v7 = +[BFFStyle sharedStyle];
-  v8 = [v6 navigationItem];
-  [v7 applyAutomaticScrollToEdgeBehaviorOnNavigationItem:v8];
+  navigationItem = [controllerCopy navigationItem];
+  [v7 applyAutomaticScrollToEdgeBehaviorOnNavigationItem:navigationItem];
 
   self->_pendingShowOperation = 1;
-  v9 = [(BFFNavigationController *)self backgroundColor];
+  backgroundColor = [(BFFNavigationController *)self backgroundColor];
 
-  if (v9)
+  if (backgroundColor)
   {
-    v10 = [v6 view];
-    v11 = [(BFFNavigationController *)self backgroundColor];
-    [v10 setBackgroundColor:v11];
+    view = [controllerCopy view];
+    backgroundColor2 = [(BFFNavigationController *)self backgroundColor];
+    [view setBackgroundColor:backgroundColor2];
   }
 
-  v12 = [MEMORY[0x277D75128] sharedApplication];
-  v13 = [v12 applicationState];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  applicationState = [mEMORY[0x277D75128] applicationState];
 
-  if ([(BFFNavigationController *)self pushWithoutDeferringTransitionsWhileInBackground]&& v13)
+  if ([(BFFNavigationController *)self pushWithoutDeferringTransitionsWhileInBackground]&& applicationState)
   {
     v14 = _BYLoggingFacility();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -209,12 +209,12 @@
     v23[1] = 3221225472;
     v23[2] = __55__BFFNavigationController_pushViewController_animated___block_invoke;
     v23[3] = &unk_279BB4A70;
-    v24 = v6;
-    v25 = self;
+    v24 = controllerCopy;
+    selfCopy = self;
     [v17 _performWithoutDeferringTransitions:v23];
   }
 
-  else if (v13)
+  else if (applicationState)
   {
     v18 = _BYLoggingFacility();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -226,12 +226,12 @@
       _os_log_impl(&dword_265AC5000, v18, OS_LOG_TYPE_DEFAULT, "Will push %@ in background (will not animate)", buf, 0xCu);
     }
 
-    [(BFFNavigationController *)&v22 pushViewController:v6 animated:0, v21.receiver, v21.super_class, self, BFFNavigationController];
+    [(BFFNavigationController *)&v22 pushViewController:controllerCopy animated:0, v21.receiver, v21.super_class, self, BFFNavigationController];
   }
 
   else
   {
-    [(BFFNavigationController *)&v21 pushViewController:v6 animated:v4, self, BFFNavigationController, v22.receiver, v22.super_class];
+    [(BFFNavigationController *)&v21 pushViewController:controllerCopy animated:animatedCopy, self, BFFNavigationController, v22.receiver, v22.super_class];
   }
 }
 
@@ -243,40 +243,40 @@ id __55__BFFNavigationController_pushViewController_animated___block_invoke(uint
   return objc_msgSendSuper2(&v3, sel_pushViewController_animated_, v1, 0);
 }
 
-- (id)popViewControllerAnimated:(BOOL)a3
+- (id)popViewControllerAnimated:(BOOL)animated
 {
   self->_pendingShowOperation = 2;
   v5.receiver = self;
   v5.super_class = BFFNavigationController;
-  v3 = [(BFFNavigationController *)&v5 popViewControllerAnimated:a3];
+  v3 = [(BFFNavigationController *)&v5 popViewControllerAnimated:animated];
 
   return v3;
 }
 
-- (id)popToViewController:(id)a3 animated:(BOOL)a4
+- (id)popToViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(BFFNavigationController *)self viewControllers];
-  v8 = [v7 lastObject];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllers = [(BFFNavigationController *)self viewControllers];
+  lastObject = [viewControllers lastObject];
 
-  if (v8 != v6)
+  if (lastObject != controllerCopy)
   {
     self->_pendingShowOperation = 2;
   }
 
   v11.receiver = self;
   v11.super_class = BFFNavigationController;
-  v9 = [(BFFNavigationController *)&v11 popToViewController:v6 animated:v4];
+  v9 = [(BFFNavigationController *)&v11 popToViewController:controllerCopy animated:animatedCopy];
 
   return v9;
 }
 
-- (id)popToRootViewControllerAnimated:(BOOL)a3
+- (id)popToRootViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(BFFNavigationController *)self viewControllers];
-  v6 = [v5 count];
+  animatedCopy = animated;
+  viewControllers = [(BFFNavigationController *)self viewControllers];
+  v6 = [viewControllers count];
 
   if (v6 >= 2)
   {
@@ -285,17 +285,17 @@ id __55__BFFNavigationController_pushViewController_animated___block_invoke(uint
 
   v9.receiver = self;
   v9.super_class = BFFNavigationController;
-  v7 = [(BFFNavigationController *)&v9 popToRootViewControllerAnimated:v3];
+  v7 = [(BFFNavigationController *)&v9 popToRootViewControllerAnimated:animatedCopy];
 
   return v7;
 }
 
-- (void)pushViewController:(id)a3 completion:(id)a4
+- (void)pushViewController:(id)controller completion:(id)completion
 {
-  aBlock = a4;
+  aBlock = completion;
   v6 = MEMORY[0x277CCAE60];
-  v7 = a3;
-  v8 = [v6 valueWithPointer:v7];
+  controllerCopy = controller;
+  v8 = [v6 valueWithPointer:controllerCopy];
   appearanceHandlers = self->_appearanceHandlers;
   if (aBlock)
   {
@@ -308,56 +308,56 @@ id __55__BFFNavigationController_pushViewController_animated___block_invoke(uint
     [(NSMutableDictionary *)appearanceHandlers removeObjectForKey:v8];
   }
 
-  [(BFFNavigationController *)self pushViewController:v7 animated:1];
+  [(BFFNavigationController *)self pushViewController:controllerCopy animated:1];
 }
 
-- (void)pushViewController:(id)a3 usingShieldColor:(id)a4 completion:(id)a5
+- (void)pushViewController:(id)controller usingShieldColor:(id)color completion:(id)completion
 {
   v52 = *MEMORY[0x277D85DE8];
-  v28 = a3;
-  v30 = a4;
-  v27 = a5;
+  controllerCopy = controller;
+  colorCopy = color;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v7 = _BYLoggingFacility();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v51 = v30;
+    v51 = colorCopy;
     _os_log_impl(&dword_265AC5000, v7, OS_LOG_TYPE_DEFAULT, "will transition to shield color %@", buf, 0xCu);
   }
 
   v8 = objc_alloc_init(MEMORY[0x277D75D18]);
-  v9 = [MEMORY[0x277D75348] clearColor];
-  [v8 setBackgroundColor:v9];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v8 setBackgroundColor:clearColor];
 
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v10 = [(BFFNavigationController *)self view];
-  [v10 bounds];
+  view = [(BFFNavigationController *)self view];
+  [view bounds];
   [v8 setFrame:?];
 
-  v11 = [(BFFNavigationController *)self view];
-  [v11 addSubview:v8];
+  view2 = [(BFFNavigationController *)self view];
+  [view2 addSubview:v8];
 
   v29 = MEMORY[0x277CCAAD0];
-  v37 = [v8 topAnchor];
-  v38 = [(BFFNavigationController *)self view];
-  v36 = [v38 topAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  topAnchor = [v8 topAnchor];
+  view3 = [(BFFNavigationController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v35 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v49[0] = v35;
-  v33 = [v8 leftAnchor];
-  v34 = [(BFFNavigationController *)self view];
-  v32 = [v34 leftAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  leftAnchor = [v8 leftAnchor];
+  view4 = [(BFFNavigationController *)self view];
+  leftAnchor2 = [view4 leftAnchor];
+  v31 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v49[1] = v31;
-  v12 = [v8 widthAnchor];
-  v13 = [(BFFNavigationController *)self view];
-  v14 = [v13 widthAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  widthAnchor = [v8 widthAnchor];
+  view5 = [(BFFNavigationController *)self view];
+  widthAnchor2 = [view5 widthAnchor];
+  v15 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v49[2] = v15;
-  v16 = [v8 heightAnchor];
-  v17 = [(BFFNavigationController *)self view];
-  v18 = [v17 heightAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  heightAnchor = [v8 heightAnchor];
+  view6 = [(BFFNavigationController *)self view];
+  heightAnchor2 = [view6 heightAnchor];
+  v19 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v49[3] = v19;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:4];
   [v29 activateConstraints:v20];
@@ -370,7 +370,7 @@ id __55__BFFNavigationController_pushViewController_animated___block_invoke(uint
   v46[3] = &unk_279BB4A70;
   v22 = v8;
   v47 = v22;
-  v48 = v30;
+  v48 = colorCopy;
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __74__BFFNavigationController_pushViewController_usingShieldColor_completion___block_invoke_2;
@@ -378,9 +378,9 @@ id __55__BFFNavigationController_pushViewController_animated___block_invoke(uint
   v23 = v48;
   v41 = v23;
   objc_copyWeak(&v45, buf);
-  v24 = v28;
+  v24 = controllerCopy;
   v42 = v24;
-  v25 = v27;
+  v25 = completionCopy;
   v44 = v25;
   v26 = v22;
   v43 = v26;
@@ -460,15 +460,15 @@ uint64_t __74__BFFNavigationController_pushViewController_usingShieldColor_compl
   return [*(a1 + 40) removeFromSuperview];
 }
 
-- (void)popToViewController:(id)a3 completion:(id)a4
+- (void)popToViewController:(id)controller completion:(id)completion
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCAE60] valueWithPointer:v11];
+  controllerCopy = controller;
+  completionCopy = completion;
+  v7 = [MEMORY[0x277CCAE60] valueWithPointer:controllerCopy];
   appearanceHandlers = self->_appearanceHandlers;
-  if (v6)
+  if (completionCopy)
   {
-    v9 = _Block_copy(v6);
+    v9 = _Block_copy(completionCopy);
     [(NSMutableDictionary *)appearanceHandlers setObject:v9 forKey:v7];
   }
 
@@ -477,19 +477,19 @@ uint64_t __74__BFFNavigationController_pushViewController_usingShieldColor_compl
     [(NSMutableDictionary *)self->_appearanceHandlers removeObjectForKey:v7];
   }
 
-  v10 = [(BFFNavigationController *)self popToViewController:v11 animated:1];
+  v10 = [(BFFNavigationController *)self popToViewController:controllerCopy animated:1];
 }
 
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  controllersCopy = controllers;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  v7 = [controllersCopy countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v7)
   {
     v8 = v7;
@@ -500,39 +500,39 @@ uint64_t __74__BFFNavigationController_pushViewController_usingShieldColor_compl
       {
         if (*v32 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(controllersCopy);
         }
 
         v11 = *(*(&v31 + 1) + 8 * i);
         v12 = +[BFFStyle sharedStyle];
-        v13 = [v11 navigationItem];
-        [v12 applyAutomaticScrollToEdgeBehaviorOnNavigationItem:v13];
+        navigationItem = [v11 navigationItem];
+        [v12 applyAutomaticScrollToEdgeBehaviorOnNavigationItem:navigationItem];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v8 = [controllersCopy countByEnumeratingWithState:&v31 objects:v36 count:16];
     }
 
     while (v8);
   }
 
-  v14 = [(BFFNavigationController *)self viewControllers];
-  v15 = [v6 lastObject];
-  v16 = [v14 containsObject:v15];
+  viewControllers = [(BFFNavigationController *)self viewControllers];
+  lastObject = [controllersCopy lastObject];
+  v16 = [viewControllers containsObject:lastObject];
 
   if ((v16 & 1) == 0)
   {
     self->_pendingShowOperation = 1;
   }
 
-  v17 = [(BFFNavigationController *)self backgroundColor];
+  backgroundColor = [(BFFNavigationController *)self backgroundColor];
 
-  if (v17)
+  if (backgroundColor)
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v18 = v6;
+    v18 = controllersCopy;
     v19 = [v18 countByEnumeratingWithState:&v27 objects:v35 count:16];
     if (v19)
     {
@@ -550,9 +550,9 @@ uint64_t __74__BFFNavigationController_pushViewController_usingShieldColor_compl
           v23 = *(*(&v27 + 1) + 8 * j);
           if ([v23 isViewLoaded])
           {
-            v24 = [v23 view];
-            v25 = [(BFFNavigationController *)self backgroundColor];
-            [v24 setBackgroundColor:v25];
+            view = [v23 view];
+            backgroundColor2 = [(BFFNavigationController *)self backgroundColor];
+            [view setBackgroundColor:backgroundColor2];
           }
         }
 
@@ -565,27 +565,27 @@ uint64_t __74__BFFNavigationController_pushViewController_usingShieldColor_compl
 
   v26.receiver = self;
   v26.super_class = BFFNavigationController;
-  [(BFFNavigationController *)&v26 setViewControllers:v6 animated:v4];
+  [(BFFNavigationController *)&v26 setViewControllers:controllersCopy animated:animatedCopy];
 }
 
-- (void)dismissViewControllerWithTransition:(int)a3 completion:(id)a4
+- (void)dismissViewControllerWithTransition:(int)transition completion:(id)completion
 {
-  v4 = *&a3;
+  v4 = *&transition;
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   if ([(BFFNavigationController *)self ignoreDismissals]&& ([(BFFNavigationController *)self presentedViewController], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
   {
     v8 = _BYLoggingFacility();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_265AC5000, v8, OS_LOG_TYPE_DEFAULT, "Preventing dismissal of %@...", buf, 0xCu);
     }
 
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -593,28 +593,28 @@ uint64_t __74__BFFNavigationController_pushViewController_usingShieldColor_compl
   {
     v9.receiver = self;
     v9.super_class = BFFNavigationController;
-    [(BFFNavigationController *)&v9 dismissViewControllerWithTransition:v4 completion:v6];
+    [(BFFNavigationController *)&v9 dismissViewControllerWithTransition:v4 completion:completionCopy];
   }
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
+  animatedCopy = animated;
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   if ([(BFFNavigationController *)self ignoreDismissals]&& ([(BFFNavigationController *)self presentedViewController], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
   {
     v8 = _BYLoggingFacility();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_265AC5000, v8, OS_LOG_TYPE_DEFAULT, "Preventing dismissal of %@...", buf, 0xCu);
     }
 
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -622,36 +622,36 @@ uint64_t __74__BFFNavigationController_pushViewController_usingShieldColor_compl
   {
     v9.receiver = self;
     v9.super_class = BFFNavigationController;
-    [(BFFNavigationController *)&v9 dismissViewControllerAnimated:v4 completion:v6];
+    [(BFFNavigationController *)&v9 dismissViewControllerAnimated:animatedCopy completion:completionCopy];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
-    v4 = a3;
-    [(BFFNavigationController *)self removeDelegateObserver:v4];
-    [(BFFNavigationController *)self addDelegateObserver:v4];
+    delegateCopy = delegate;
+    [(BFFNavigationController *)self removeDelegateObserver:delegateCopy];
+    [(BFFNavigationController *)self addDelegateObserver:delegateCopy];
   }
 }
 
-- (void)addDelegateObserver:(id)a3
+- (void)addDelegateObserver:(id)observer
 {
   observers = self->_observers;
-  v4 = [BFFNavigationObserver observerWithObserver:a3];
+  v4 = [BFFNavigationObserver observerWithObserver:observer];
   [(NSMutableArray *)observers addObject:v4];
 }
 
-- (void)removeDelegateObserver:(id)a3
+- (void)removeDelegateObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __50__BFFNavigationController_removeDelegateObserver___block_invoke;
   v8[3] = &unk_279BB4EF0;
-  v6 = v4;
+  v6 = observerCopy;
   v9 = v6;
   v7 = [(NSMutableArray *)observers indexOfObjectPassingTest:v8];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
@@ -689,19 +689,19 @@ BOOL __40__BFFNavigationController_reapObservers__block_invoke(uint64_t a1, void
   return v3;
 }
 
-- (void)setCustomAnimatorProviderBlock:(id)a3
+- (void)setCustomAnimatorProviderBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(BFFNavigationController *)self navigationControllerDelegate];
+  blockCopy = block;
+  navigationControllerDelegate = [(BFFNavigationController *)self navigationControllerDelegate];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  if (v4)
+  if (blockCopy)
   {
     if (isKindOfClass)
     {
-      v7 = [(BFFNavigationController *)self navigationControllerDelegate];
-      [v7 setCustomAnimatorBlock:v4];
+      navigationControllerDelegate2 = [(BFFNavigationController *)self navigationControllerDelegate];
+      [navigationControllerDelegate2 setCustomAnimatorBlock:blockCopy];
 
 LABEL_7:
       v8 = 0;
@@ -709,7 +709,7 @@ LABEL_7:
     }
 
     v8 = [(BFFNavigationControllerDefaultDelegate *)[BFFNavigationControllerTransitionDelegate alloc] initWithNavigationController:self stateContainer:self];
-    [(BFFNavigationControllerTransitionDelegate *)v8 setCustomAnimatorBlock:v4];
+    [(BFFNavigationControllerTransitionDelegate *)v8 setCustomAnimatorBlock:blockCopy];
     if (!v8)
     {
       goto LABEL_11;
@@ -730,15 +730,15 @@ LABEL_7:
     }
   }
 
-  v9 = [(BFFNavigationController *)self navigationControllerDelegate];
+  navigationControllerDelegate3 = [(BFFNavigationController *)self navigationControllerDelegate];
 
-  if (v9 != v8)
+  if (navigationControllerDelegate3 != v8)
   {
     [(BFFNavigationController *)self setNavigationControllerDelegate:v8];
-    v10 = [(BFFNavigationController *)self navigationControllerDelegate];
+    navigationControllerDelegate4 = [(BFFNavigationController *)self navigationControllerDelegate];
     v11.receiver = self;
     v11.super_class = BFFNavigationController;
-    [(BFFNavigationController *)&v11 setDelegate:v10];
+    [(BFFNavigationController *)&v11 setDelegate:navigationControllerDelegate4];
   }
 
 LABEL_11:

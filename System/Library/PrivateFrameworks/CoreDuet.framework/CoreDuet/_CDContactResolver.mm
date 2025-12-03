@@ -1,56 +1,56 @@
 @interface _CDContactResolver
-+ (id)normalizedStringFromContactString:(id)a3;
-+ (id)resolveContact:(id)a3 usingStore:(id)a4;
-+ (id)resolveContactIdentifier:(id)a3 usingStore:(id)a4;
-+ (id)resolveContactIfPossibleFromContactIdentifierString:(id)a3;
-+ (id)resolveContactIfPossibleFromContactIdentifierString:(id)a3 usingStore:(id)a4;
++ (id)normalizedStringFromContactString:(id)string;
++ (id)resolveContact:(id)contact usingStore:(id)store;
++ (id)resolveContactIdentifier:(id)identifier usingStore:(id)store;
++ (id)resolveContactIfPossibleFromContactIdentifierString:(id)string;
++ (id)resolveContactIfPossibleFromContactIdentifierString:(id)string usingStore:(id)store;
 @end
 
 @implementation _CDContactResolver
 
-+ (id)resolveContactIdentifier:(id)a3 usingStore:(id)a4
++ (id)resolveContactIdentifier:(id)identifier usingStore:(id)store
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  v8 = 0;
-  if (v5 && v6)
+  identifierCopy = identifier;
+  storeCopy = store;
+  v7 = storeCopy;
+  identifier4 = 0;
+  if (identifierCopy && storeCopy)
   {
     if (!getuid())
     {
       goto LABEL_14;
     }
 
-    v9 = [v5 identifier];
+    identifier = [identifierCopy identifier];
 
-    if (!v9)
+    if (!identifier)
     {
       goto LABEL_14;
     }
 
-    v10 = [v5 identifier];
-    v11 = [v10 containsString:@"@"];
+    identifier2 = [identifierCopy identifier];
+    v11 = [identifier2 containsString:@"@"];
 
     CNContactClass = getCNContactClass();
     if (v11)
     {
-      v13 = [v5 identifier];
-      v14 = [CNContactClass predicateForContactsMatchingEmailAddress:v13];
+      identifier3 = [identifierCopy identifier];
+      v14 = [CNContactClass predicateForContactsMatchingEmailAddress:identifier3];
     }
 
     else
     {
       CNPhoneNumberClass = getCNPhoneNumberClass();
-      v13 = [v5 identifier];
-      v16 = [CNPhoneNumberClass phoneNumberWithStringValue:v13];
+      identifier3 = [identifierCopy identifier];
+      v16 = [CNPhoneNumberClass phoneNumberWithStringValue:identifier3];
       v14 = [CNContactClass predicateForContactsMatchingPhoneNumber:v16];
     }
 
     if (!v14)
     {
 LABEL_14:
-      v8 = 0;
+      identifier4 = 0;
       goto LABEL_18;
     }
 
@@ -72,14 +72,14 @@ LABEL_14:
 
     else if ([v19 count])
     {
-      v22 = [v19 firstObject];
-      v8 = [v22 identifier];
+      firstObject = [v19 firstObject];
+      identifier4 = [firstObject identifier];
       v20 = v19;
       goto LABEL_17;
     }
 
-    v8 = 0;
-    v22 = v19;
+    identifier4 = 0;
+    firstObject = v19;
 LABEL_17:
   }
 
@@ -87,29 +87,29 @@ LABEL_18:
 
   v23 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return identifier4;
 }
 
-+ (id)resolveContact:(id)a3 usingStore:(id)a4
++ (id)resolveContact:(id)contact usingStore:(id)store
 {
   v4 = 0;
-  if (a3 && a4)
+  if (contact && store)
   {
-    v7 = a4;
-    v8 = [a3 identifier];
-    v4 = [a1 resolveContactIfPossibleFromContactIdentifierString:v8 usingStore:v7];
+    storeCopy = store;
+    identifier = [contact identifier];
+    v4 = [self resolveContactIfPossibleFromContactIdentifierString:identifier usingStore:storeCopy];
   }
 
   return v4;
 }
 
-+ (id)normalizedStringFromContactString:(id)a3
++ (id)normalizedStringFromContactString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (stringCopy)
   {
-    if (([v3 containsString:@"@"] & 1) != 0 || (objc_msgSend(getCNPhoneNumberClass(), "phoneNumberWithStringValue:", v4), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "unformattedInternationalStringValue"), v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
+    if (([stringCopy containsString:@"@"] & 1) != 0 || (objc_msgSend(getCNPhoneNumberClass(), "phoneNumberWithStringValue:", v4), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "unformattedInternationalStringValue"), v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
     {
       v6 = v4;
     }
@@ -123,13 +123,13 @@ LABEL_18:
   return v6;
 }
 
-+ (id)resolveContactIfPossibleFromContactIdentifierString:(id)a3 usingStore:(id)a4
++ (id)resolveContactIfPossibleFromContactIdentifierString:(id)string usingStore:(id)store
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  stringCopy = string;
+  storeCopy = store;
+  v7 = storeCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (stringCopy && storeCopy)
   {
     if (!getuid())
     {
@@ -137,9 +137,9 @@ LABEL_18:
       goto LABEL_11;
     }
 
-    if ([v5 containsString:@"@"])
+    if ([stringCopy containsString:@"@"])
     {
-      v9 = [getCNContactClass() predicateForContactsMatchingEmailAddress:v5];
+      v9 = [getCNContactClass() predicateForContactsMatchingEmailAddress:stringCopy];
       if (v9)
       {
 LABEL_6:
@@ -152,11 +152,11 @@ LABEL_10:
 
     else
     {
-      v10 = [getCNPhoneNumberClass() phoneNumberWithStringValue:v5];
+      v10 = [getCNPhoneNumberClass() phoneNumberWithStringValue:stringCopy];
       CNContactClass = getCNContactClass();
       CNPhoneNumberClass = getCNPhoneNumberClass();
-      v13 = [v10 unformattedInternationalStringValue];
-      v14 = [CNPhoneNumberClass phoneNumberWithStringValue:v13];
+      unformattedInternationalStringValue = [v10 unformattedInternationalStringValue];
+      v14 = [CNPhoneNumberClass phoneNumberWithStringValue:unformattedInternationalStringValue];
       v9 = [CNContactClass predicateForContactsMatchingPhoneNumber:v14];
 
       if (v9)
@@ -174,13 +174,13 @@ LABEL_11:
   return v8;
 }
 
-+ (id)resolveContactIfPossibleFromContactIdentifierString:(id)a3
++ (id)resolveContactIfPossibleFromContactIdentifierString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v4 = a3;
+    stringCopy = string;
     v5 = objc_alloc_init(getCNContactStoreClass());
-    v6 = [a1 resolveContactIfPossibleFromContactIdentifierString:v4 usingStore:v5];
+    v6 = [self resolveContactIfPossibleFromContactIdentifierString:stringCopy usingStore:v5];
   }
 
   else

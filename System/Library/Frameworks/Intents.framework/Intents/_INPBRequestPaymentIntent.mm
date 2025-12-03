@@ -1,35 +1,35 @@
 @interface _INPBRequestPaymentIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBRequestPaymentIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBRequestPaymentIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBRequestPaymentIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBRequestPaymentIntent *)self currencyAmount];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"currencyAmount"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  currencyAmount = [(_INPBRequestPaymentIntent *)self currencyAmount];
+  dictionaryRepresentation = [currencyAmount dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"currencyAmount"];
 
-  v6 = [(_INPBRequestPaymentIntent *)self intentMetadata];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBRequestPaymentIntent *)self intentMetadata];
+  dictionaryRepresentation2 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"intentMetadata"];
 
-  v8 = [(_INPBRequestPaymentIntent *)self note];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"note"];
+  note = [(_INPBRequestPaymentIntent *)self note];
+  dictionaryRepresentation3 = [note dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"note"];
 
-  v10 = [(_INPBRequestPaymentIntent *)self payer];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"payer"];
+  payer = [(_INPBRequestPaymentIntent *)self payer];
+  dictionaryRepresentation4 = [payer dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"payer"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -40,28 +40,28 @@
   return v4 ^ v5 ^ [(_INPBContact *)self->_payer hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(_INPBRequestPaymentIntent *)self currencyAmount];
-  v6 = [v4 currencyAmount];
-  if ((v5 != 0) == (v6 == 0))
+  currencyAmount = [(_INPBRequestPaymentIntent *)self currencyAmount];
+  currencyAmount2 = [equalCopy currencyAmount];
+  if ((currencyAmount != 0) == (currencyAmount2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(_INPBRequestPaymentIntent *)self currencyAmount];
-  if (v7)
+  currencyAmount3 = [(_INPBRequestPaymentIntent *)self currencyAmount];
+  if (currencyAmount3)
   {
-    v8 = v7;
-    v9 = [(_INPBRequestPaymentIntent *)self currencyAmount];
-    v10 = [v4 currencyAmount];
-    v11 = [v9 isEqual:v10];
+    v8 = currencyAmount3;
+    currencyAmount4 = [(_INPBRequestPaymentIntent *)self currencyAmount];
+    currencyAmount5 = [equalCopy currencyAmount];
+    v11 = [currencyAmount4 isEqual:currencyAmount5];
 
     if (!v11)
     {
@@ -73,20 +73,20 @@
   {
   }
 
-  v5 = [(_INPBRequestPaymentIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  currencyAmount = [(_INPBRequestPaymentIntent *)self intentMetadata];
+  currencyAmount2 = [equalCopy intentMetadata];
+  if ((currencyAmount != 0) == (currencyAmount2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(_INPBRequestPaymentIntent *)self intentMetadata];
-  if (v12)
+  intentMetadata = [(_INPBRequestPaymentIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v13 = v12;
-    v14 = [(_INPBRequestPaymentIntent *)self intentMetadata];
-    v15 = [v4 intentMetadata];
-    v16 = [v14 isEqual:v15];
+    v13 = intentMetadata;
+    intentMetadata2 = [(_INPBRequestPaymentIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v16 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v16)
     {
@@ -98,20 +98,20 @@
   {
   }
 
-  v5 = [(_INPBRequestPaymentIntent *)self note];
-  v6 = [v4 note];
-  if ((v5 != 0) == (v6 == 0))
+  currencyAmount = [(_INPBRequestPaymentIntent *)self note];
+  currencyAmount2 = [equalCopy note];
+  if ((currencyAmount != 0) == (currencyAmount2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(_INPBRequestPaymentIntent *)self note];
-  if (v17)
+  note = [(_INPBRequestPaymentIntent *)self note];
+  if (note)
   {
-    v18 = v17;
-    v19 = [(_INPBRequestPaymentIntent *)self note];
-    v20 = [v4 note];
-    v21 = [v19 isEqual:v20];
+    v18 = note;
+    note2 = [(_INPBRequestPaymentIntent *)self note];
+    note3 = [equalCopy note];
+    v21 = [note2 isEqual:note3];
 
     if (!v21)
     {
@@ -123,12 +123,12 @@
   {
   }
 
-  v5 = [(_INPBRequestPaymentIntent *)self payer];
-  v6 = [v4 payer];
-  if ((v5 != 0) != (v6 == 0))
+  currencyAmount = [(_INPBRequestPaymentIntent *)self payer];
+  currencyAmount2 = [equalCopy payer];
+  if ((currencyAmount != 0) != (currencyAmount2 == 0))
   {
-    v22 = [(_INPBRequestPaymentIntent *)self payer];
-    if (!v22)
+    payer = [(_INPBRequestPaymentIntent *)self payer];
+    if (!payer)
     {
 
 LABEL_25:
@@ -136,10 +136,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(_INPBRequestPaymentIntent *)self payer];
-    v25 = [v4 payer];
-    v26 = [v24 isEqual:v25];
+    v23 = payer;
+    payer2 = [(_INPBRequestPaymentIntent *)self payer];
+    payer3 = [equalCopy payer];
+    v26 = [payer2 isEqual:payer3];
 
     if (v26)
     {
@@ -159,84 +159,84 @@ LABEL_23:
   return v27;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBRequestPaymentIntent allocWithZone:](_INPBRequestPaymentIntent init];
-  v6 = [(_INPBCurrencyAmount *)self->_currencyAmount copyWithZone:a3];
+  v6 = [(_INPBCurrencyAmount *)self->_currencyAmount copyWithZone:zone];
   [(_INPBRequestPaymentIntent *)v5 setCurrencyAmount:v6];
 
-  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBRequestPaymentIntent *)v5 setIntentMetadata:v7];
 
-  v8 = [(_INPBString *)self->_note copyWithZone:a3];
+  v8 = [(_INPBString *)self->_note copyWithZone:zone];
   [(_INPBRequestPaymentIntent *)v5 setNote:v8];
 
-  v9 = [(_INPBContact *)self->_payer copyWithZone:a3];
+  v9 = [(_INPBContact *)self->_payer copyWithZone:zone];
   [(_INPBRequestPaymentIntent *)v5 setPayer:v9];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBRequestPaymentIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBRequestPaymentIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBRequestPaymentIntent)initWithCoder:(id)a3
+- (_INPBRequestPaymentIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBRequestPaymentIntent *)self initWithData:v6];
+    self = [(_INPBRequestPaymentIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(_INPBRequestPaymentIntent *)self currencyAmount];
+  toCopy = to;
+  currencyAmount = [(_INPBRequestPaymentIntent *)self currencyAmount];
 
-  if (v4)
+  if (currencyAmount)
   {
-    v5 = [(_INPBRequestPaymentIntent *)self currencyAmount];
+    currencyAmount2 = [(_INPBRequestPaymentIntent *)self currencyAmount];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBRequestPaymentIntent *)self intentMetadata];
+  intentMetadata = [(_INPBRequestPaymentIntent *)self intentMetadata];
 
-  if (v6)
+  if (intentMetadata)
   {
-    v7 = [(_INPBRequestPaymentIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBRequestPaymentIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBRequestPaymentIntent *)self note];
+  note = [(_INPBRequestPaymentIntent *)self note];
 
-  if (v8)
+  if (note)
   {
-    v9 = [(_INPBRequestPaymentIntent *)self note];
+    note2 = [(_INPBRequestPaymentIntent *)self note];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_INPBRequestPaymentIntent *)self payer];
+  payer = [(_INPBRequestPaymentIntent *)self payer];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (payer)
   {
-    v12 = [(_INPBRequestPaymentIntent *)self payer];
+    payer2 = [(_INPBRequestPaymentIntent *)self payer];
     PBDataWriterWriteSubmessage();
 
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 

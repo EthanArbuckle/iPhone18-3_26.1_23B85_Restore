@@ -1,7 +1,7 @@
 @interface PassbookSettingsDeferredURLState
 - (NSDictionary)resourceDictionary;
 - (_TtC16PassbookSettings32PassbookSettingsDeferredURLState)init;
-- (void)setResourceDictionary:(id)a3;
+- (void)setResourceDictionary:(id)dictionary;
 @end
 
 @implementation PassbookSettingsDeferredURLState
@@ -23,9 +23,9 @@
   return v3.super.isa;
 }
 
-- (void)setResourceDictionary:(id)a3
+- (void)setResourceDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v4 = sub_A824();
   }

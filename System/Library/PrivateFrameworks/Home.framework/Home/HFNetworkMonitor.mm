@@ -4,14 +4,14 @@
 - (BOOL)isNetworkExpensive;
 - (HFNetworkMonitor)init;
 - (id)_observers;
-- (unint64_t)_addObserver:(id)a3;
-- (unint64_t)_removeObserver:(id)a3;
-- (void)_notifyObserver:(id)a3 networkIsAvailable:(BOOL)a4;
-- (void)_notifyObserver:(id)a3 networkIsExpensive:(BOOL)a4;
+- (unint64_t)_addObserver:(id)observer;
+- (unint64_t)_removeObserver:(id)observer;
+- (void)_notifyObserver:(id)observer networkIsAvailable:(BOOL)available;
+- (void)_notifyObserver:(id)observer networkIsExpensive:(BOOL)expensive;
 - (void)_startMonitoring;
 - (void)_stopMonitoring;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation HFNetworkMonitor
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __34__HFNetworkMonitor_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280E03C78 != -1)
   {
     dispatch_once(&qword_280E03C78, block);
@@ -56,22 +56,22 @@ void __34__HFNetworkMonitor_sharedInstance__block_invoke(uint64_t a1)
     accessQueue = v2->_accessQueue;
     v2->_accessQueue = v6;
 
-    v8 = [(HFNetworkMonitor *)v2 networkPathMonitor];
-    v9 = [(HFNetworkMonitor *)v2 accessQueue];
-    nw_path_monitor_set_queue(v8, v9);
+    networkPathMonitor = [(HFNetworkMonitor *)v2 networkPathMonitor];
+    accessQueue = [(HFNetworkMonitor *)v2 accessQueue];
+    nw_path_monitor_set_queue(networkPathMonitor, accessQueue);
 
-    v10 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v10;
+    v2->_observers = weakObjectsHashTable;
 
     objc_initWeak(&location, v2);
-    v12 = [(HFNetworkMonitor *)v2 networkPathMonitor];
+    networkPathMonitor2 = [(HFNetworkMonitor *)v2 networkPathMonitor];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __24__HFNetworkMonitor_init__block_invoke;
     v14[3] = &unk_277E011E0;
     objc_copyWeak(&v15, &location);
-    nw_path_monitor_set_update_handler(v12, v14);
+    nw_path_monitor_set_update_handler(networkPathMonitor2, v14);
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
@@ -164,20 +164,20 @@ void __24__HFNetworkMonitor_init__block_invoke(uint64_t a1, void *a2)
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFNetworkMonitor *)self _addObserver:v4];
-  v6 = [(HFNetworkMonitor *)self accessQueue];
+  observerCopy = observer;
+  v5 = [(HFNetworkMonitor *)self _addObserver:observerCopy];
+  accessQueue = [(HFNetworkMonitor *)self accessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __32__HFNetworkMonitor_addObserver___block_invoke;
   block[3] = &unk_277DF37C0;
-  v9 = v4;
+  v9 = observerCopy;
   v10 = v5;
   block[4] = self;
-  v7 = v4;
-  dispatch_async(v6, block);
+  v7 = observerCopy;
+  dispatch_async(accessQueue, block);
 }
 
 void __32__HFNetworkMonitor_addObserver___block_invoke(uint64_t a1)
@@ -193,17 +193,17 @@ void __32__HFNetworkMonitor_addObserver___block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = [(HFNetworkMonitor *)self _removeObserver:a3];
-  v5 = [(HFNetworkMonitor *)self accessQueue];
+  v4 = [(HFNetworkMonitor *)self _removeObserver:observer];
+  accessQueue = [(HFNetworkMonitor *)self accessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __35__HFNetworkMonitor_removeObserver___block_invoke;
   v6[3] = &unk_277DF5CD0;
   v6[4] = self;
   v6[5] = v4;
-  dispatch_async(v5, v6);
+  dispatch_async(accessQueue, v6);
 }
 
 uint64_t __35__HFNetworkMonitor_removeObserver___block_invoke(uint64_t result)
@@ -218,27 +218,27 @@ uint64_t __35__HFNetworkMonitor_removeObserver___block_invoke(uint64_t result)
 
 - (BOOL)isNetworkAvailable
 {
-  v3 = self;
-  v4 = [(HFNetworkMonitor *)self accessQueue];
-  dispatch_assert_queue_not_V2(v4);
+  selfCopy = self;
+  accessQueue = [(HFNetworkMonitor *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [(HFNetworkMonitor *)v3 accessQueue];
+  accessQueue2 = [(HFNetworkMonitor *)selfCopy accessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__HFNetworkMonitor_isNetworkAvailable__block_invoke;
   block[3] = &unk_277E01208;
   block[5] = &v8;
   block[6] = a2;
-  block[4] = v3;
-  dispatch_sync(v5, block);
+  block[4] = selfCopy;
+  dispatch_sync(accessQueue2, block);
 
-  LOBYTE(v3) = *(v9 + 24);
+  LOBYTE(selfCopy) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
-  return v3;
+  return selfCopy;
 }
 
 uint64_t __38__HFNetworkMonitor_isNetworkAvailable__block_invoke(uint64_t a1)
@@ -256,27 +256,27 @@ uint64_t __38__HFNetworkMonitor_isNetworkAvailable__block_invoke(uint64_t a1)
 
 - (BOOL)isNetworkExpensive
 {
-  v3 = self;
-  v4 = [(HFNetworkMonitor *)self accessQueue];
-  dispatch_assert_queue_not_V2(v4);
+  selfCopy = self;
+  accessQueue = [(HFNetworkMonitor *)self accessQueue];
+  dispatch_assert_queue_not_V2(accessQueue);
 
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [(HFNetworkMonitor *)v3 accessQueue];
+  accessQueue2 = [(HFNetworkMonitor *)selfCopy accessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__HFNetworkMonitor_isNetworkExpensive__block_invoke;
   block[3] = &unk_277E01208;
   block[5] = &v8;
   block[6] = a2;
-  block[4] = v3;
-  dispatch_sync(v5, block);
+  block[4] = selfCopy;
+  dispatch_sync(accessQueue2, block);
 
-  LOBYTE(v3) = *(v9 + 24);
+  LOBYTE(selfCopy) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
-  return v3;
+  return selfCopy;
 }
 
 void __38__HFNetworkMonitor_isNetworkExpensive__block_invoke(uint64_t a1)
@@ -291,22 +291,22 @@ void __38__HFNetworkMonitor_isNetworkExpensive__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v3 BOOLValue];
 }
 
-- (unint64_t)_addObserver:(id)a3
+- (unint64_t)_addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observersLock);
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
 
   v5 = [(NSHashTable *)self->_observers count];
   os_unfair_lock_unlock(&self->_observersLock);
   return v5;
 }
 
-- (unint64_t)_removeObserver:(id)a3
+- (unint64_t)_removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observersLock);
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   v5 = [(NSHashTable *)self->_observers count];
   os_unfair_lock_unlock(&self->_observersLock);
@@ -324,13 +324,13 @@ void __38__HFNetworkMonitor_isNetworkExpensive__block_invoke(uint64_t a1)
 
 - (void)_startMonitoring
 {
-  v3 = [(HFNetworkMonitor *)self accessQueue];
-  dispatch_assert_queue_V2(v3);
+  accessQueue = [(HFNetworkMonitor *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   if (![(HFNetworkMonitor *)self isMonitoringNetwork])
   {
-    v4 = [(HFNetworkMonitor *)self networkPathMonitor];
-    nw_path_monitor_start(v4);
+    networkPathMonitor = [(HFNetworkMonitor *)self networkPathMonitor];
+    nw_path_monitor_start(networkPathMonitor);
 
     [(HFNetworkMonitor *)self setIsMonitoringNetwork:1];
   }
@@ -338,13 +338,13 @@ void __38__HFNetworkMonitor_isNetworkExpensive__block_invoke(uint64_t a1)
 
 - (void)_stopMonitoring
 {
-  v3 = [(HFNetworkMonitor *)self accessQueue];
-  dispatch_assert_queue_V2(v3);
+  accessQueue = [(HFNetworkMonitor *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   if ([(HFNetworkMonitor *)self isMonitoringNetwork])
   {
-    v4 = [(HFNetworkMonitor *)self networkPathMonitor];
-    nw_path_monitor_cancel(v4);
+    networkPathMonitor = [(HFNetworkMonitor *)self networkPathMonitor];
+    nw_path_monitor_cancel(networkPathMonitor);
 
     [(HFNetworkMonitor *)self setIsMonitoringNetwork:0];
 
@@ -352,39 +352,39 @@ void __38__HFNetworkMonitor_isNetworkExpensive__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_notifyObserver:(id)a3 networkIsAvailable:(BOOL)a4
+- (void)_notifyObserver:(id)observer networkIsAvailable:(BOOL)available
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  availableCopy = available;
+  observerCopy = observer;
+  if (availableCopy)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v6 networkDidBecomeAvailable:self];
+      [observerCopy networkDidBecomeAvailable:self];
     }
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v6 networkDidBecomeUnavailable:self];
+    [observerCopy networkDidBecomeUnavailable:self];
   }
 }
 
-- (void)_notifyObserver:(id)a3 networkIsExpensive:(BOOL)a4
+- (void)_notifyObserver:(id)observer networkIsExpensive:(BOOL)expensive
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  expensiveCopy = expensive;
+  observerCopy = observer;
+  if (expensiveCopy)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v6 networkDidBecomeExpensive:self];
+      [observerCopy networkDidBecomeExpensive:self];
     }
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v6 networkDidBecomeInexpensive:self];
+    [observerCopy networkDidBecomeInexpensive:self];
   }
 }
 

@@ -1,24 +1,24 @@
 @interface DOCMoveOperation
-- (_TtC26DocumentManagerExecutables16DOCMoveOperation)initWithItems:(id)a3 destinationFolder:(id)a4;
-- (_TtC26DocumentManagerExecutables16DOCMoveOperation)initWithItems:(id)a3 destinationURL:(id)a4;
-- (_TtC26DocumentManagerExecutables16DOCMoveOperation)initWithSourceURLs:(id)a3 destinationFolder:(id)a4;
-- (_TtC26DocumentManagerExecutables16DOCMoveOperation)initWithSourceURLsAndNames:(id)a3 destinationFolder:(id)a4;
-- (_TtC26DocumentManagerExecutables16DOCMoveOperation)initWithURLs:(id)a3 destinationFolder:(id)a4;
+- (_TtC26DocumentManagerExecutables16DOCMoveOperation)initWithItems:(id)items destinationFolder:(id)folder;
+- (_TtC26DocumentManagerExecutables16DOCMoveOperation)initWithItems:(id)items destinationURL:(id)l;
+- (_TtC26DocumentManagerExecutables16DOCMoveOperation)initWithSourceURLs:(id)ls destinationFolder:(id)folder;
+- (_TtC26DocumentManagerExecutables16DOCMoveOperation)initWithSourceURLsAndNames:(id)names destinationFolder:(id)folder;
+- (_TtC26DocumentManagerExecutables16DOCMoveOperation)initWithURLs:(id)ls destinationFolder:(id)folder;
 - (id)operationForRedoing;
 - (id)operationForUndoing;
 - (void)actionMain;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)presendNotifications;
 - (void)registerUndo;
 @end
 
 @implementation DOCMoveOperation
 
-- (_TtC26DocumentManagerExecutables16DOCMoveOperation)initWithURLs:(id)a3 destinationFolder:(id)a4
+- (_TtC26DocumentManagerExecutables16DOCMoveOperation)initWithURLs:(id)ls destinationFolder:(id)folder
 {
   type metadata accessor for URL();
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  return DOCMoveOperation.init(urls:destinationFolder:)(v5, a4);
+  return DOCMoveOperation.init(urls:destinationFolder:)(v5, folder);
 }
 
 - (void)presendNotifications
@@ -27,27 +27,27 @@
   v4.super_class = type metadata accessor for DOCMoveOperation();
   v2 = v4.receiver;
   [(FPMoveOperation *)&v4 presendNotifications];
-  v3 = [objc_opt_self() defaultCenter];
+  defaultCenter = [objc_opt_self() defaultCenter];
   if (one-time initialization token for willBegin != -1)
   {
     swift_once();
   }
 
-  [v3 postNotificationName:static DOCMoveOperation.willBegin object:v2];
+  [defaultCenter postNotificationName:static DOCMoveOperation.willBegin object:v2];
 }
 
 - (void)actionMain
 {
-  v2 = self;
+  selfCopy = self;
   DOCMoveOperation.actionMain()();
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  if (a3)
+  if (result)
   {
-    v6 = a4;
-    v7 = self;
+    errorCopy = error;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -56,11 +56,11 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a4;
-    v9 = self;
+    errorCopy2 = error;
+    selfCopy2 = self;
   }
 
-  DOCMoveOperation.finish(withResult:error:)(v10, a4);
+  DOCMoveOperation.finish(withResult:error:)(v10, error);
 
   outlined destroy of Any?(v10);
 }
@@ -88,7 +88,7 @@
 
 - (id)operationForUndoing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCMoveOperation.operationForUndoing()();
 
   return v3;
@@ -103,14 +103,14 @@
   }
 }
 
-- (_TtC26DocumentManagerExecutables16DOCMoveOperation)initWithItems:(id)a3 destinationFolder:(id)a4
+- (_TtC26DocumentManagerExecutables16DOCMoveOperation)initWithItems:(id)items destinationFolder:(id)folder
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC26DocumentManagerExecutables16DOCMoveOperation)initWithItems:(id)a3 destinationURL:(id)a4
+- (_TtC26DocumentManagerExecutables16DOCMoveOperation)initWithItems:(id)items destinationURL:(id)l
 {
   v4 = type metadata accessor for URL();
   MEMORY[0x28223BE20](v4 - 8, v5);
@@ -120,14 +120,14 @@
   return result;
 }
 
-- (_TtC26DocumentManagerExecutables16DOCMoveOperation)initWithSourceURLs:(id)a3 destinationFolder:(id)a4
+- (_TtC26DocumentManagerExecutables16DOCMoveOperation)initWithSourceURLs:(id)ls destinationFolder:(id)folder
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC26DocumentManagerExecutables16DOCMoveOperation)initWithSourceURLsAndNames:(id)a3 destinationFolder:(id)a4
+- (_TtC26DocumentManagerExecutables16DOCMoveOperation)initWithSourceURLsAndNames:(id)names destinationFolder:(id)folder
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

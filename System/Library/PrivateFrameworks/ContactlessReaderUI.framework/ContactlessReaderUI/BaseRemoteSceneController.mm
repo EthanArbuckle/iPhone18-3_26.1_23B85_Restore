@@ -1,43 +1,43 @@
 @interface BaseRemoteSceneController
-- (_TtC19ContactlessReaderUI25BaseRemoteSceneController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)handlePanWithSender:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC19ContactlessReaderUI25BaseRemoteSceneController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)handlePanWithSender:(id)sender;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BaseRemoteSceneController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_2440238D8(a3);
+  selfCopy = self;
+  sub_2440238D8(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
-  v4 = self;
-  sub_244023AD4(v3);
+  appearCopy = appear;
+  selfCopy = self;
+  sub_244023AD4(appearCopy);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_244023EFC();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_244024350(a3);
+  selfCopy = self;
+  sub_244024350(disappear);
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   if (v5)
   {
     *(swift_allocObject() + 16) = v5;
@@ -49,21 +49,21 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_2440267A8();
   sub_243F7EE58(v6);
 }
 
-- (void)handlePanWithSender:(id)a3
+- (void)handlePanWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_2440255B0(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_2440255B0(senderCopy);
 }
 
-- (_TtC19ContactlessReaderUI25BaseRemoteSceneController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC19ContactlessReaderUI25BaseRemoteSceneController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_2440D2FB0();
     v7 = v6;
@@ -75,8 +75,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return BaseRemoteSceneController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return BaseRemoteSceneController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface PDDepthAndImageProcessor
-- (PDDepthAndImageProcessor)initWithPointCloudToImageTransform:(__n128)a3 imageCameraCalibration:(__n128)a4;
+- (PDDepthAndImageProcessor)initWithPointCloudToImageTransform:(__n128)transform imageCameraCalibration:(__n128)calibration;
 - (id).cxx_construct;
-- (id)checkSyncResults:(PushResults *)a3;
+- (id)checkSyncResults:(PushResults *)results;
 - (id)purgeAllQueuedImages;
-- (id)pushImage:(id)a3;
-- (id)pushPointCloud:(id)a3;
-- (void)setNumberOfPointCloudsPerImage:(int)a3;
+- (id)pushImage:(id)image;
+- (id)pushPointCloud:(id)cloud;
+- (void)setNumberOfPointCloudsPerImage:(int)image;
 @end
 
 @implementation PDDepthAndImageProcessor
@@ -29,15 +29,15 @@
   v6.var4[1] = 0;
   TimeSync::purgeAllImages(&self->_sync, &v6);
   v3 = [(PDDepthAndImageProcessor *)self checkSyncResults:&v6];
-  v4 = [v3 droppedImages];
+  droppedImages = [v3 droppedImages];
 
-  return v4;
+  return droppedImages;
 }
 
-- (id)checkSyncResults:(PushResults *)a3
+- (id)checkSyncResults:(PushResults *)results
 {
   v5 = objc_alloc_init(PDDepthAndImagePushResults);
-  if (a3->var0)
+  if (results->var0)
   {
     v41 = *&self[1].super.isa;
     v37 = *&self[1]._sync.m_pointClouds.__map_.__cap_;
@@ -47,18 +47,18 @@
     [(PDDepthAndImagePushResults *)v5 setMatch:v6];
 
     v7 = [PDTimestampedImage alloc];
-    var0 = a3->var0;
-    var1 = a3->var1;
-    time = a3->var2;
+    var0 = results->var0;
+    var1 = results->var1;
+    time = results->var2;
     v10 = [(PDTimestampedImage *)v7 initWithImage:var0 metadataDictionary:var1 andTimestamp:&time];
-    v11 = [(PDDepthAndImagePushResults *)v5 match];
-    [v11 setImage:v10];
+    match = [(PDDepthAndImagePushResults *)v5 match];
+    [match setImage:v10];
 
-    CVPixelBufferRelease(a3->var0);
-    v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:a3->var3];
+    CVPixelBufferRelease(results->var0);
+    v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:results->var3];
     v42 = v5;
-    v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:a3->var3];
-    if (a3->var3 < 1)
+    v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:results->var3];
+    if (results->var3 < 1)
     {
       v17 = 0.0;
     }
@@ -66,8 +66,8 @@
     else
     {
       v14 = 0;
-      var4 = a3->var4;
-      var5 = a3->var5;
+      var4 = results->var4;
+      var5 = results->var5;
       v17 = 0.0;
       do
       {
@@ -84,7 +84,7 @@
         ++var5;
       }
 
-      while (v14 < a3->var3);
+      while (v14 < results->var3);
     }
 
     v5 = v42;
@@ -94,22 +94,22 @@
     v22 = [MEMORY[0x277CED0A0] pointCloudByMergingPointClouds:v12];
     v23 = [v22 pointCloudByChangingPointOfViewByTransform:self->_imageCalibrationData to:{*&v41, v40, v38, v36}];
     memset(&time, 0, sizeof(time));
-    CMTimeMakeWithSeconds(&time, v17 / a3->var3, 1000000);
+    CMTimeMakeWithSeconds(&time, v17 / results->var3, 1000000);
     v24 = [PDTimestampedPointCloud alloc];
     v43 = time;
     v25 = [(PDTimestampedPointCloud *)v24 initWithPointCloud:v23 andTimestamp:&v43];
-    v26 = [(PDDepthAndImagePushResults *)v42 match];
-    [v26 setPointCloud:v25];
+    match2 = [(PDDepthAndImagePushResults *)v42 match];
+    [match2 setPointCloud:v25];
   }
 
-  if (a3->var6 >= 1)
+  if (results->var6 >= 1)
   {
     v27 = [MEMORY[0x277CBEB18] arrayWithCapacity:?];
-    if (a3->var6 >= 1)
+    if (results->var6 >= 1)
     {
       v28 = 0;
-      var7 = a3->var7;
-      var8 = a3->var8;
+      var7 = results->var7;
+      var8 = results->var8;
       do
       {
         v31 = [PDTimestampedImage alloc];
@@ -123,7 +123,7 @@
         ++var8;
       }
 
-      while (v28 < a3->var6);
+      while (v28 < results->var6);
     }
 
     [(PDDepthAndImagePushResults *)v5 setDroppedImages:v27];
@@ -132,16 +132,16 @@
   return v5;
 }
 
-- (id)pushImage:(id)a3
+- (id)pushImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v10.var4[0] = 0;
   v10.var4[1] = 0;
-  v5 = [v4 image];
-  v6 = [v4 metadataDictionary];
-  if (v4)
+  image = [imageCopy image];
+  metadataDictionary = [imageCopy metadataDictionary];
+  if (imageCopy)
   {
-    [v4 timestamp];
+    [imageCopy timestamp];
   }
 
   else
@@ -149,11 +149,11 @@
     memset(&v9, 0, sizeof(v9));
   }
 
-  TimeSync::pushImage(&self->_sync, v5, v6, &v9, &v10);
+  TimeSync::pushImage(&self->_sync, image, metadataDictionary, &v9, &v10);
 
   if (self->_retainImagesRemovedFromQueue)
   {
-    CVPixelBufferRetain([v4 image]);
+    CVPixelBufferRetain([imageCopy image]);
   }
 
   v7 = [(PDDepthAndImageProcessor *)self checkSyncResults:&v10, v9.value, *&v9.timescale, v9.epoch];
@@ -161,15 +161,15 @@
   return v7;
 }
 
-- (id)pushPointCloud:(id)a3
+- (id)pushPointCloud:(id)cloud
 {
-  v4 = a3;
+  cloudCopy = cloud;
   v9.var4[0] = 0;
   v9.var4[1] = 0;
-  v5 = [v4 pointCloud];
-  if (v4)
+  pointCloud = [cloudCopy pointCloud];
+  if (cloudCopy)
   {
-    [v4 timestamp];
+    [cloudCopy timestamp];
   }
 
   else
@@ -177,25 +177,25 @@
     memset(&v8, 0, sizeof(v8));
   }
 
-  TimeSync::pushPeridotPointCloud(&self->_sync, v5, &v8, &v9);
+  TimeSync::pushPeridotPointCloud(&self->_sync, pointCloud, &v8, &v9);
 
   v6 = [(PDDepthAndImageProcessor *)self checkSyncResults:&v9];
 
   return v6;
 }
 
-- (PDDepthAndImageProcessor)initWithPointCloudToImageTransform:(__n128)a3 imageCameraCalibration:(__n128)a4
+- (PDDepthAndImageProcessor)initWithPointCloudToImageTransform:(__n128)transform imageCameraCalibration:(__n128)calibration
 {
   v9 = a7;
-  v18.receiver = a1;
+  v18.receiver = self;
   v18.super_class = PDDepthAndImageProcessor;
   v10 = [(PDDepthAndImageProcessor *)&v18 init];
   v11 = v10;
   if (v10)
   {
     *&v10[1].super.isa = a2;
-    *&v10[1]._sync.m_pointClouds.__map_.__begin_ = a3;
-    *&v10[1]._sync.m_pointClouds.__map_.__cap_ = a4;
+    *&v10[1]._sync.m_pointClouds.__map_.__begin_ = transform;
+    *&v10[1]._sync.m_pointClouds.__map_.__cap_ = calibration;
     *&v10[1]._sync.m_pointClouds.__size_ = a5;
     objc_storeStrong(&v10->_imageCalibrationData, a7);
     *&v11->_pointCloudFiltering = 0;
@@ -205,22 +205,22 @@
   return v11;
 }
 
-- (void)setNumberOfPointCloudsPerImage:(int)a3
+- (void)setNumberOfPointCloudsPerImage:(int)image
 {
   v6 = *MEMORY[0x277D85DE8];
-  if ((a3 - 5) <= 0xFFFFFFFB)
+  if ((image - 5) <= 0xFFFFFFFB)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v5 = a3;
+      imageCopy = image;
       _os_log_error_impl(&dword_224668000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "ERROR: Bad configuration for timesync: does not know how to match %d banks per image", buf, 8u);
     }
 
     __assert_rtn("setNumberOfBanksToMatch", "TimeSync.mm", 55, "false");
   }
 
-  self->_sync.m_numberOfBanksToMatch = a3;
+  self->_sync.m_numberOfBanksToMatch = image;
 }
 
 @end

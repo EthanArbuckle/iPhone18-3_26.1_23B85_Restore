@@ -1,11 +1,11 @@
 @interface MUISenderHeaderColors
-- (MUISenderHeaderColors)initWithContrastingBackgroundColor:(id)a3 textColor:(id)a4 secondaryTextColor:(id)a5;
+- (MUISenderHeaderColors)initWithContrastingBackgroundColor:(id)color textColor:(id)textColor secondaryTextColor:(id)secondaryTextColor;
 - (UIColor)contrastingBackgroundColor;
 - (UIColor)secondaryTextColor;
 - (UIColor)textColor;
-- (void)setContrastingBackgroundColor:(id)a3;
-- (void)setSecondaryTextColor:(id)a3;
-- (void)setTextColor:(id)a3;
+- (void)setContrastingBackgroundColor:(id)color;
+- (void)setSecondaryTextColor:(id)color;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation MUISenderHeaderColors
@@ -20,12 +20,12 @@
   return v5;
 }
 
-- (void)setContrastingBackgroundColor:(id)a3
+- (void)setContrastingBackgroundColor:(id)color
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](color);
   MEMORY[0x277D82BE0](self);
-  sub_214C7CFB4(a3);
+  sub_214C7CFB4(color);
   MEMORY[0x277D82BD8](self);
 }
 
@@ -39,12 +39,12 @@
   return v5;
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](color);
   MEMORY[0x277D82BE0](self);
-  sub_214C7D2B4(a3);
+  sub_214C7D2B4(color);
   MEMORY[0x277D82BD8](self);
 }
 
@@ -58,22 +58,22 @@
   return v5;
 }
 
-- (void)setSecondaryTextColor:(id)a3
+- (void)setSecondaryTextColor:(id)color
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](color);
   MEMORY[0x277D82BE0](self);
-  sub_214C7D5B4(a3);
+  sub_214C7D5B4(color);
   MEMORY[0x277D82BD8](self);
 }
 
-- (MUISenderHeaderColors)initWithContrastingBackgroundColor:(id)a3 textColor:(id)a4 secondaryTextColor:(id)a5
+- (MUISenderHeaderColors)initWithContrastingBackgroundColor:(id)color textColor:(id)textColor secondaryTextColor:(id)secondaryTextColor
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
-  MEMORY[0x277D82BE0](a4);
-  MEMORY[0x277D82BE0](a5);
-  return MUISenderHeaderColors.init(contrastingBackgroundColor:textColor:secondaryTextColor:)(a3, a4, a5);
+  MEMORY[0x277D82BE0](color);
+  MEMORY[0x277D82BE0](textColor);
+  MEMORY[0x277D82BE0](secondaryTextColor);
+  return MUISenderHeaderColors.init(contrastingBackgroundColor:textColor:secondaryTextColor:)(color, textColor, secondaryTextColor);
 }
 
 @end

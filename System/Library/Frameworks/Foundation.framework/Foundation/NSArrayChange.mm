@@ -1,33 +1,33 @@
 @interface NSArrayChange
-+ (id)allocWithZone:(_NSZone *)a3;
-- (NSArrayChange)initWithType:(unint64_t)a3 sourceIndex:(unint64_t)a4 destinationIndex:(unint64_t)a5 value:(id)a6;
++ (id)allocWithZone:(_NSZone *)zone;
+- (NSArrayChange)initWithType:(unint64_t)type sourceIndex:(unint64_t)index destinationIndex:(unint64_t)destinationIndex value:(id)value;
 @end
 
 @implementation NSArrayChange
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v5 = *MEMORY[0x1E69E9840];
-  if (NSArrayChange == a1)
+  if (NSArrayChange == self)
   {
 
-    return [(NSArrayChange *)NSConcreteArrayChange allocWithZone:a3];
+    return [(NSArrayChange *)NSConcreteArrayChange allocWithZone:zone];
   }
 
   else
   {
-    v4.receiver = a1;
+    v4.receiver = self;
     v4.super_class = &OBJC_METACLASS___NSArrayChange;
-    return objc_msgSendSuper2(&v4, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v4, sel_allocWithZone_, zone);
   }
 }
 
-- (NSArrayChange)initWithType:(unint64_t)a3 sourceIndex:(unint64_t)a4 destinationIndex:(unint64_t)a5 value:(id)a6
+- (NSArrayChange)initWithType:(unint64_t)type sourceIndex:(unint64_t)index destinationIndex:(unint64_t)destinationIndex value:(id)value
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = NSArrayChange;
-  return [(NSArrayChange *)&v7 init:a3];
+  return [(NSArrayChange *)&v7 init:type];
 }
 
 @end

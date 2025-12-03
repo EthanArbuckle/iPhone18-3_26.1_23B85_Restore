@@ -6,14 +6,14 @@
 
 - (uint64_t)_feldsparAccessibilityPresentMenu
 {
-  if ([a1 showsMenuAsPrimaryAction])
+  if ([self showsMenuAsPrimaryAction])
   {
-    v2 = [a1 contextMenuInteraction];
+    contextMenuInteraction = [self contextMenuInteraction];
     v3 = objc_opt_respondsToSelector();
     if (v3)
     {
-      [a1 accessibilityActivationPoint];
-      [v2 _presentMenuAtLocation:?];
+      [self accessibilityActivationPoint];
+      [contextMenuInteraction _presentMenuAtLocation:?];
     }
   }
 

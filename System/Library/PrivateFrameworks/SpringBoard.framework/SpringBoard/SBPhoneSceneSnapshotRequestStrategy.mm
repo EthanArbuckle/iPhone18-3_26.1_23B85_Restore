@@ -1,17 +1,17 @@
 @interface SBPhoneSceneSnapshotRequestStrategy
-- (id)snapshotRequestsForSceneHandle:(id)a3 settings:(id)a4 snapshotRequestContext:(id)a5;
+- (id)snapshotRequestsForSceneHandle:(id)handle settings:(id)settings snapshotRequestContext:(id)context;
 @end
 
 @implementation SBPhoneSceneSnapshotRequestStrategy
 
-- (id)snapshotRequestsForSceneHandle:(id)a3 settings:(id)a4 snapshotRequestContext:(id)a5
+- (id)snapshotRequestsForSceneHandle:(id)handle settings:(id)settings snapshotRequestContext:(id)context
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v5 = [a5 lastAppearanceChangeTimestamp];
-  if (v5)
+  lastAppearanceChangeTimestamp = [context lastAppearanceChangeTimestamp];
+  if (lastAppearanceChangeTimestamp)
   {
     v6 = [MEMORY[0x277CBEAA8] now];
-    [v6 timeIntervalSinceDate:v5];
+    [v6 timeIntervalSinceDate:lastAppearanceChangeTimestamp];
     v8 = v7 < 604800.0;
   }
 

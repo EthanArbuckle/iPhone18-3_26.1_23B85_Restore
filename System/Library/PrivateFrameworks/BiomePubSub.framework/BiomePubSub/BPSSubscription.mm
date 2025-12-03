@@ -1,7 +1,7 @@
 @interface BPSSubscription
 - (NSArray)upstreamSubscriptions;
 - (void)cancel;
-- (void)requestDemand:(int64_t)a3;
+- (void)requestDemand:(int64_t)demand;
 @end
 
 @implementation BPSSubscription
@@ -14,7 +14,7 @@
   [v2 raise:v3 format:{@"Override method %@ in subclass %@", v4, objc_opt_class()}];
 }
 
-- (void)requestDemand:(int64_t)a3
+- (void)requestDemand:(int64_t)demand
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];

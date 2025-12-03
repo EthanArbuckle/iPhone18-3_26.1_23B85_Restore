@@ -1,9 +1,9 @@
 @interface AXSpeechActionDetailController
-- (BOOL)isActionAvailable:(int64_t)a3;
+- (BOOL)isActionAvailable:(int64_t)available;
 - (id)specifiers;
-- (int64_t)actionForSpecifier:(id)a3;
+- (int64_t)actionForSpecifier:(id)specifier;
 - (int64_t)currentAction;
-- (void)updateCurrentAction:(int64_t)a3;
+- (void)updateCurrentAction:(int64_t)action;
 @end
 
 @implementation AXSpeechActionDetailController
@@ -53,36 +53,36 @@
   return v4;
 }
 
-- (int64_t)actionForSpecifier:(id)a3
+- (int64_t)actionForSpecifier:(id)specifier
 {
-  v4 = a3;
-  if (self->_noneActionSpecifier == v4)
+  specifierCopy = specifier;
+  if (self->_noneActionSpecifier == specifierCopy)
   {
     v5 = 0;
   }
 
-  else if (self->_readAllActionSpecifier == v4)
+  else if (self->_readAllActionSpecifier == specifierCopy)
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = 2 * (self->_speakFingerActionSpecifier == v4);
+    v5 = 2 * (self->_speakFingerActionSpecifier == specifierCopy);
   }
 
   return v5;
 }
 
-- (BOOL)isActionAvailable:(int64_t)a3
+- (BOOL)isActionAvailable:(int64_t)available
 {
-  if (!a3 || [(AXSpeechActionDetailController *)self currentAction]== a3)
+  if (!available || [(AXSpeechActionDetailController *)self currentAction]== available)
   {
     return 1;
   }
 
   v5 = +[AXSettings sharedInstance];
-  if ([v5 speechControllerLongPressAction] == a3)
+  if ([v5 speechControllerLongPressAction] == available)
   {
     v4 = 0;
   }
@@ -90,7 +90,7 @@
   else
   {
     v6 = +[AXSettings sharedInstance];
-    v4 = [v6 speechControllerDoubleTapAction] != a3;
+    v4 = [v6 speechControllerDoubleTapAction] != available;
   }
 
   return v4;
@@ -98,13 +98,13 @@
 
 - (int64_t)currentAction
 {
-  v2 = [(AXSpeechActionDetailController *)self specifier];
-  v3 = [v2 propertyForKey:@"ControllerGesture"];
+  specifier = [(AXSpeechActionDetailController *)self specifier];
+  v3 = [specifier propertyForKey:@"ControllerGesture"];
 
   if ([v3 isEqualToString:@"LongPress"])
   {
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 speechControllerLongPressAction];
+    speechControllerLongPressAction = [v4 speechControllerLongPressAction];
   }
 
   else
@@ -116,30 +116,30 @@
     }
 
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 speechControllerDoubleTapAction];
+    speechControllerLongPressAction = [v4 speechControllerDoubleTapAction];
   }
 
-  v6 = v5;
+  v6 = speechControllerLongPressAction;
 
 LABEL_7:
   return v6;
 }
 
-- (void)updateCurrentAction:(int64_t)a3
+- (void)updateCurrentAction:(int64_t)action
 {
-  v4 = [(AXSpeechActionDetailController *)self specifier];
-  v7 = [v4 propertyForKey:@"ControllerGesture"];
+  specifier = [(AXSpeechActionDetailController *)self specifier];
+  v7 = [specifier propertyForKey:@"ControllerGesture"];
 
   if ([v7 isEqualToString:@"LongPress"])
   {
     v5 = +[AXSettings sharedInstance];
-    [v5 setSpeechControllerLongPressAction:a3];
+    [v5 setSpeechControllerLongPressAction:action];
   }
 
   if ([v7 isEqualToString:@"DoubleTap"])
   {
     v6 = +[AXSettings sharedInstance];
-    [v6 setSpeechControllerDoubleTapAction:a3];
+    [v6 setSpeechControllerDoubleTapAction:action];
   }
 }
 

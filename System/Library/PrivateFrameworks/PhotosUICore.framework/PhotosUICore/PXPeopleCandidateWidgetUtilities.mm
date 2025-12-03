@@ -1,54 +1,54 @@
 @interface PXPeopleCandidateWidgetUtilities
 + (BOOL)_pastMidnightBufferThreshold;
-+ (BOOL)shouldFetchCandidatesForPerson:(id)a3 forDaysDictionary:(id)a4;
-+ (id)_dateKeyForDay:(id)a3;
++ (BOOL)shouldFetchCandidatesForPerson:(id)person forDaysDictionary:(id)dictionary;
++ (id)_dateKeyForDay:(id)day;
 + (id)_dateKeyForToday;
 + (id)_dateKeyForTomorrow;
-+ (id)_localTimeZoneFormatStringForDate:(id)a3;
++ (id)_localTimeZoneFormatStringForDate:(id)date;
 + (id)_tomorrow;
-+ (id)insertPerson:(id)a3 forDaysDictionary:(id)a4;
-+ (id)removeAllPreviousNotNowPersonsIfNeededForDaysDictionary:(id)a3;
++ (id)insertPerson:(id)person forDaysDictionary:(id)dictionary;
++ (id)removeAllPreviousNotNowPersonsIfNeededForDaysDictionary:(id)dictionary;
 @end
 
 @implementation PXPeopleCandidateWidgetUtilities
 
 + (BOOL)_pastMidnightBufferThreshold
 {
-  v2 = [MEMORY[0x1E695DF00] date];
-  v3 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v4 = [v3 dateBySettingHour:0 minute:0 second:0 ofDate:v2 options:0];
-  v5 = [v3 components:32 fromDate:v4 toDate:v2 options:0];
+  date = [MEMORY[0x1E695DF00] date];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v4 = [currentCalendar dateBySettingHour:0 minute:0 second:0 ofDate:date options:0];
+  v5 = [currentCalendar components:32 fromDate:v4 toDate:date options:0];
   v6 = [v5 hour] > 21;
 
   return v6;
 }
 
-+ (id)_localTimeZoneFormatStringForDate:(id)a3
++ (id)_localTimeZoneFormatStringForDate:(id)date
 {
   v3 = MEMORY[0x1E696AB78];
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_alloc_init(v3);
-  v6 = [MEMORY[0x1E695DFE8] systemTimeZone];
-  [v5 setTimeZone:v6];
+  systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+  [v5 setTimeZone:systemTimeZone];
 
   [v5 setDateFormat:@"yyyy.MM.dd"];
-  v7 = [v5 stringFromDate:v4];
+  v7 = [v5 stringFromDate:dateCopy];
 
   return v7;
 }
 
 + (id)_tomorrow
 {
-  v2 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [v2 dateByAddingUnit:16 value:1 toDate:v3 options:0];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [currentCalendar dateByAddingUnit:16 value:1 toDate:date options:0];
 
   return v4;
 }
 
-+ (id)_dateKeyForDay:(id)a3
++ (id)_dateKeyForDay:(id)day
 {
-  v3 = [PXPeopleCandidateWidgetUtilities _localTimeZoneFormatStringForDate:a3];
+  v3 = [PXPeopleCandidateWidgetUtilities _localTimeZoneFormatStringForDate:day];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @"PXPeopleCandidateWidgetKey", v3];
 
   return v4;
@@ -64,23 +64,23 @@
 
 + (id)_dateKeyForToday
 {
-  v2 = [MEMORY[0x1E695DF00] date];
-  v3 = [PXPeopleCandidateWidgetUtilities _dateKeyForDay:v2];
+  date = [MEMORY[0x1E695DF00] date];
+  v3 = [PXPeopleCandidateWidgetUtilities _dateKeyForDay:date];
 
   return v3;
 }
 
-+ (id)removeAllPreviousNotNowPersonsIfNeededForDaysDictionary:(id)a3
++ (id)removeAllPreviousNotNowPersonsIfNeededForDaysDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = +[PXPeopleCandidateWidgetUtilities _dateKeyForToday];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [v4 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  allKeys = [dictionaryCopy allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -91,15 +91,15 @@
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         if ([v5 compare:*(*(&v19 + 1) + 8 * i)] == 1)
         {
 
-          v12 = v4;
+          v12 = dictionaryCopy;
           v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
-          if ([a1 _pastMidnightBufferThreshold])
+          if ([self _pastMidnightBufferThreshold])
           {
             v14 = +[PXPeopleCandidateWidgetUtilities _dateKeyForTomorrow];
             v15 = [v12 objectForKey:v14];
@@ -122,7 +122,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v8)
       {
         continue;
@@ -132,21 +132,21 @@
     }
   }
 
-  v11 = v4;
+  v11 = dictionaryCopy;
 LABEL_17:
 
   return v11;
 }
 
-+ (BOOL)shouldFetchCandidatesForPerson:(id)a3 forDaysDictionary:(id)a4
++ (BOOL)shouldFetchCandidatesForPerson:(id)person forDaysDictionary:(id)dictionary
 {
-  v5 = a4;
-  v6 = a3;
+  dictionaryCopy = dictionary;
+  personCopy = person;
   v7 = +[PXPeopleCandidateWidgetUtilities _dateKeyForToday];
-  v8 = [v5 objectForKeyedSubscript:v7];
-  v9 = [v6 px_localIdentifier];
+  v8 = [dictionaryCopy objectForKeyedSubscript:v7];
+  px_localIdentifier = [personCopy px_localIdentifier];
 
-  if ([v8 containsObject:v9])
+  if ([v8 containsObject:px_localIdentifier])
   {
     v10 = 0;
   }
@@ -154,8 +154,8 @@ LABEL_17:
   else
   {
     v11 = +[PXPeopleCandidateWidgetUtilities _dateKeyForTomorrow];
-    v12 = [v5 objectForKeyedSubscript:v11];
-    v13 = [v12 containsObject:v9];
+    v12 = [dictionaryCopy objectForKeyedSubscript:v11];
+    v13 = [v12 containsObject:px_localIdentifier];
 
     v10 = v13 ^ 1;
   }
@@ -163,15 +163,15 @@ LABEL_17:
   return v10;
 }
 
-+ (id)insertPerson:(id)a3 forDaysDictionary:(id)a4
++ (id)insertPerson:(id)person forDaysDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  personCopy = person;
+  dictionaryCopy = dictionary;
+  v8 = dictionaryCopy;
+  if (personCopy)
   {
-    v9 = [v7 mutableCopy];
-    if ([a1 _pastMidnightBufferThreshold])
+    v9 = [dictionaryCopy mutableCopy];
+    if ([self _pastMidnightBufferThreshold])
     {
       +[PXPeopleCandidateWidgetUtilities _dateKeyForTomorrow];
     }
@@ -188,10 +188,10 @@ LABEL_17:
       v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
 
-    v14 = [v6 px_localIdentifier];
-    if (([v13 containsObject:v14] & 1) == 0)
+    px_localIdentifier = [personCopy px_localIdentifier];
+    if (([v13 containsObject:px_localIdentifier] & 1) == 0)
     {
-      [v13 addObject:v14];
+      [v13 addObject:px_localIdentifier];
     }
 
     v15 = [v13 copy];
@@ -202,7 +202,7 @@ LABEL_17:
 
   else
   {
-    v10 = v7;
+    v10 = dictionaryCopy;
   }
 
   return v10;

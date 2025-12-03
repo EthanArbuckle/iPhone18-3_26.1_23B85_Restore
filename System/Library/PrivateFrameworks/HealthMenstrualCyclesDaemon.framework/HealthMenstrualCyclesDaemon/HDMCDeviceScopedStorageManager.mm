@@ -1,26 +1,26 @@
 @interface HDMCDeviceScopedStorageManager
-- (BOOL)updateLocalDeviceValuesNowWithError:(id *)a3;
-- (HDMCDeviceScopedStorageManager)initWithProfile:(id)a3 settingsManager:(id)a4;
-- (id)_updateLocalDeviceValuesNowWithError:(id *)a3;
-- (id)accountDevicesInfoWithError:(id *)a3;
-- (void)settingsManagerDidUpdateNotificationSettings:(id)a3;
+- (BOOL)updateLocalDeviceValuesNowWithError:(id *)error;
+- (HDMCDeviceScopedStorageManager)initWithProfile:(id)profile settingsManager:(id)manager;
+- (id)_updateLocalDeviceValuesNowWithError:(id *)error;
+- (id)accountDevicesInfoWithError:(id *)error;
+- (void)settingsManagerDidUpdateNotificationSettings:(id)settings;
 @end
 
 @implementation HDMCDeviceScopedStorageManager
 
-- (HDMCDeviceScopedStorageManager)initWithProfile:(id)a3 settingsManager:(id)a4
+- (HDMCDeviceScopedStorageManager)initWithProfile:(id)profile settingsManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  managerCopy = manager;
   v16.receiver = self;
   v16.super_class = HDMCDeviceScopedStorageManager;
   v8 = [(HDMCDeviceScopedStorageManager *)&v16 init];
   if (v8)
   {
-    v9 = [v6 deviceKeyValueStoreManager];
-    objc_storeWeak(&v8->_keyValueStore, v9);
+    deviceKeyValueStoreManager = [profileCopy deviceKeyValueStoreManager];
+    objc_storeWeak(&v8->_keyValueStore, deviceKeyValueStoreManager);
 
-    objc_storeStrong(&v8->_settingsManager, a4);
+    objc_storeStrong(&v8->_settingsManager, manager);
     v10 = objc_alloc(MEMORY[0x277CCD738]);
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
@@ -34,15 +34,15 @@
   return v8;
 }
 
-- (BOOL)updateLocalDeviceValuesNowWithError:(id *)a3
+- (BOOL)updateLocalDeviceValuesNowWithError:(id *)error
 {
-  v3 = [(HDMCDeviceScopedStorageManager *)self _updateLocalDeviceValuesNowWithError:a3];
+  v3 = [(HDMCDeviceScopedStorageManager *)self _updateLocalDeviceValuesNowWithError:error];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)_updateLocalDeviceValuesNowWithError:(id *)a3
+- (id)_updateLocalDeviceValuesNowWithError:(id *)error
 {
   v30[3] = *MEMORY[0x277D85DE8];
   v5 = [HDMCDeviceInfo localDeviceInfoWithSettingsManager:self->_settingsManager];
@@ -93,10 +93,10 @@
     v13 = v12;
     if (v12)
     {
-      if (a3)
+      if (error)
       {
         v14 = v12;
-        *a3 = v13;
+        *error = v13;
       }
 
       else
@@ -136,7 +136,7 @@ void __71__HDMCDeviceScopedStorageManager__updateLocalDeviceValuesNowWithError__
   }
 }
 
-- (id)accountDevicesInfoWithError:(id *)a3
+- (id)accountDevicesInfoWithError:(id *)error
 {
   v19 = 0;
   v5 = [(HDMCDeviceScopedStorageManager *)self _updateLocalDeviceValuesNowWithError:&v19];
@@ -147,11 +147,11 @@ void __71__HDMCDeviceScopedStorageManager__updateLocalDeviceValuesNowWithError__
     v9 = v6;
     if (v9)
     {
-      if (a3)
+      if (error)
       {
         v14 = v9;
         v15 = 0;
-        *a3 = v9;
+        *error = v9;
 LABEL_15:
         v10 = v9;
         goto LABEL_19;
@@ -193,7 +193,7 @@ LABEL_15:
     goto LABEL_17;
   }
 
-  if (!a3)
+  if (!error)
   {
     _HKLogDroppedError();
 LABEL_17:
@@ -203,7 +203,7 @@ LABEL_17:
 
   v16 = v11;
   v15 = 0;
-  *a3 = v11;
+  *error = v11;
 LABEL_18:
 
 LABEL_19:
@@ -230,7 +230,7 @@ id __62__HDMCDeviceScopedStorageManager_accountDevicesInfoWithError___block_invo
   return v6;
 }
 
-- (void)settingsManagerDidUpdateNotificationSettings:(id)a3
+- (void)settingsManagerDidUpdateNotificationSettings:(id)settings
 {
   v15 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();

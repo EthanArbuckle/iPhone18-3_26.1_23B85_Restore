@@ -1,9 +1,9 @@
 @interface CarSharedTripsCardViewController
-- (CarSharedTripsCardViewController)initWithSelectionHandler:(id)a3;
+- (CarSharedTripsCardViewController)initWithSelectionHandler:(id)handler;
 - (NSArray)focusOrderSubItems;
-- (void)_showDetailForSharedTrip:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)_showDetailForSharedTrip:(id)trip;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -13,32 +13,32 @@
 {
   if ([(CarSharedTripsCardViewController *)self isViewLoaded])
   {
-    v3 = [(CarTableView *)self->_tableView _car_visibleCells];
+    _car_visibleCells = [(CarTableView *)self->_tableView _car_visibleCells];
   }
 
   else
   {
-    v3 = &__NSArray0__struct;
+    _car_visibleCells = &__NSArray0__struct;
   }
 
-  return v3;
+  return _car_visibleCells;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v7 = [(SharedTripsTableDataSource *)self->_sharedTripsDataSource sharedTripAtIndexPath:a4];
+  v7 = [(SharedTripsTableDataSource *)self->_sharedTripsDataSource sharedTripAtIndexPath:path];
   [(SharedTripsTableDataSource *)self->_sharedTripsDataSource setSelectedTrip:v7];
   if ([v7 hasTransportType])
   {
-    v5 = [v7 transportType];
-    if (v5 >= 7)
+    transportType = [v7 transportType];
+    if (transportType >= 7)
     {
-      v6 = [NSString stringWithFormat:@"(unknown: %i)", v5];
+      v6 = [NSString stringWithFormat:@"(unknown: %i)", transportType];
     }
 
     else
     {
-      v6 = *(&off_101656CF8 + v5);
+      v6 = *(&off_101656CF8 + transportType);
     }
   }
 
@@ -52,20 +52,20 @@
   [(CarSharedTripsCardViewController *)self _showDetailForSharedTrip:v7];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v7 = [(SharedTripsTableDataSource *)self->_sharedTripsDataSource sharedTripAtIndexPath:a5, a4];
-  if ([v7 hasTransportType])
+  cell = [(SharedTripsTableDataSource *)self->_sharedTripsDataSource sharedTripAtIndexPath:path, cell];
+  if ([cell hasTransportType])
   {
-    v5 = [v7 transportType];
-    if (v5 >= 7)
+    transportType = [cell transportType];
+    if (transportType >= 7)
     {
-      v6 = [NSString stringWithFormat:@"(unknown: %i)", v5];
+      v6 = [NSString stringWithFormat:@"(unknown: %i)", transportType];
     }
 
     else
     {
-      v6 = *(&off_101656CF8 + v5);
+      v6 = *(&off_101656CF8 + transportType);
     }
   }
 
@@ -77,14 +77,14 @@
   [GEOAPPortal captureUserAction:9002 target:267 value:v6];
 }
 
-- (void)_showDetailForSharedTrip:(id)a3
+- (void)_showDetailForSharedTrip:(id)trip
 {
-  v5 = a3;
+  tripCopy = trip;
   [(SharedTripsTableDataSource *)self->_sharedTripsDataSource setSelectedTrip:?];
   selectionHandler = self->_selectionHandler;
   if (selectionHandler)
   {
-    selectionHandler[2](selectionHandler, v5);
+    selectionHandler[2](selectionHandler, tripCopy);
   }
 }
 
@@ -93,12 +93,12 @@
   v20.receiver = self;
   v20.super_class = CarSharedTripsCardViewController;
   [(CarSharedTripsCardViewController *)&v20 viewDidLoad];
-  v3 = [(CarSharedTripsCardViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"CarSharedTripsListCard"];
+  view = [(CarSharedTripsCardViewController *)self view];
+  [view setAccessibilityIdentifier:@"CarSharedTripsListCard"];
 
   v4 = [CarTableView alloc];
-  v5 = [(CarSharedTripsCardViewController *)self view];
-  [v5 bounds];
+  view2 = [(CarSharedTripsCardViewController *)self view];
+  [view2 bounds];
   v6 = [(CarTableView *)v4 initWithFrame:0 style:?];
   tableView = self->_tableView;
   self->_tableView = v6;
@@ -116,8 +116,8 @@
   v11 = +[CarShareTripContactCell reuseIdentifier];
   [(CarTableView *)v9 registerClass:v10 forCellReuseIdentifier:v11];
 
-  v12 = [(CarSharedTripsCardViewController *)self view];
-  [v12 addSubview:self->_tableView];
+  view3 = [(CarSharedTripsCardViewController *)self view];
+  [view3 addSubview:self->_tableView];
 
   objc_initWeak(&location, self);
   v13 = [SharedTripsTableDataSource alloc];
@@ -135,15 +135,15 @@
   objc_destroyWeak(&location);
 }
 
-- (CarSharedTripsCardViewController)initWithSelectionHandler:(id)a3
+- (CarSharedTripsCardViewController)initWithSelectionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = CarSharedTripsCardViewController;
   v5 = [(CarSharedTripsCardViewController *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [handlerCopy copy];
     selectionHandler = v5->_selectionHandler;
     v5->_selectionHandler = v6;
   }

@@ -1,22 +1,22 @@
 @interface SFDomainAssociationUtilities
-+ (BOOL)domainIsProhibitedForSavingCredentials:(id)a3;
-+ (BOOL)highLevelDomainHasSuiteOfAssociatedApps:(id)a3;
-+ (id)domainByStrippingSubdomainWildcardPrefixIfNecessary:(id)a3;
++ (BOOL)domainIsProhibitedForSavingCredentials:(id)credentials;
++ (BOOL)highLevelDomainHasSuiteOfAssociatedApps:(id)apps;
++ (id)domainByStrippingSubdomainWildcardPrefixIfNecessary:(id)necessary;
 @end
 
 @implementation SFDomainAssociationUtilities
 
-+ (id)domainByStrippingSubdomainWildcardPrefixIfNecessary:(id)a3
++ (id)domainByStrippingSubdomainWildcardPrefixIfNecessary:(id)necessary
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"*."])
+  necessaryCopy = necessary;
+  if ([necessaryCopy hasPrefix:@"*."])
   {
-    v4 = [v3 substringFromIndex:2];
+    v4 = [necessaryCopy substringFromIndex:2];
   }
 
   else
   {
-    v4 = v3;
+    v4 = necessaryCopy;
   }
 
   v5 = v4;
@@ -24,10 +24,10 @@
   return v5;
 }
 
-+ (BOOL)domainIsProhibitedForSavingCredentials:(id)a3
++ (BOOL)domainIsProhibitedForSavingCredentials:(id)credentials
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  credentialsCopy = credentials;
   if (domainIsProhibitedForSavingCredentials__onceToken != -1)
   {
     +[SFDomainAssociationUtilities domainIsProhibitedForSavingCredentials:];
@@ -54,13 +54,13 @@ LABEL_5:
 
       v9 = *(*(&v15 + 1) + 8 * v8);
       v10 = 1;
-      if ([v3 safari_hasCaseInsensitiveSuffix:{v9, v15}])
+      if ([credentialsCopy safari_hasCaseInsensitiveSuffix:{v9, v15}])
       {
         break;
       }
 
       v11 = [v9 substringFromIndex:1];
-      v12 = [v3 safari_isCaseInsensitiveEqualToString:v11];
+      v12 = [credentialsCopy safari_isCaseInsensitiveEqualToString:v11];
 
       if (v12)
       {
@@ -96,10 +96,10 @@ void __71__SFDomainAssociationUtilities_domainIsProhibitedForSavingCredentials__
   domainIsProhibitedForSavingCredentials__blocklist = &unk_287602148;
 }
 
-+ (BOOL)highLevelDomainHasSuiteOfAssociatedApps:(id)a3
++ (BOOL)highLevelDomainHasSuiteOfAssociatedApps:(id)apps
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  appsCopy = apps;
   if (highLevelDomainHasSuiteOfAssociatedApps__onceToken != -1)
   {
     +[SFDomainAssociationUtilities highLevelDomainHasSuiteOfAssociatedApps:];
@@ -123,7 +123,7 @@ void __71__SFDomainAssociationUtilities_domainIsProhibitedForSavingCredentials__
           objc_enumerationMutation(v4);
         }
 
-        if ([v3 safari_isCaseInsensitiveEqualToString:{*(*(&v10 + 1) + 8 * i), v10}])
+        if ([appsCopy safari_isCaseInsensitiveEqualToString:{*(*(&v10 + 1) + 8 * i), v10}])
         {
           LOBYTE(v5) = 1;
           goto LABEL_13;

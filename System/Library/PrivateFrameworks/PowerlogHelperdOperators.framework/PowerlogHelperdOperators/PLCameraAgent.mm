@@ -4,27 +4,27 @@
 + (id)entryEventForwardDefinitions;
 + (id)entryEventIntervalDefinitionSmartCamDetection;
 + (id)entryEventIntervalDefinitions;
-+ (int)checkCameraType:(int)a3;
++ (int)checkCameraType:(int)type;
 + (void)load;
 - (BOOL)allCamerasAreOff;
 - (PLCameraAgent)init;
-- (void)closeBackCameraAtDate:(id)a3;
-- (void)closeFrontCameraAtDate:(id)a3;
-- (void)closeOpenCameraEventsAtDate:(id)a3 withEntryKey:(id)a4;
-- (void)handleCameraEvent:(id)a3 withEntryKey:(id)a4;
-- (void)handleTorchEvent:(id)a3 withEntryKey:(id)a4;
+- (void)closeBackCameraAtDate:(id)date;
+- (void)closeFrontCameraAtDate:(id)date;
+- (void)closeOpenCameraEventsAtDate:(id)date withEntryKey:(id)key;
+- (void)handleCameraEvent:(id)event withEntryKey:(id)key;
+- (void)handleTorchEvent:(id)event withEntryKey:(id)key;
 - (void)initOperatorDependancies;
-- (void)logEventIntervalSmartCamDetection:(id)a3;
-- (void)modelBackCameraPowerWithEntry:(id)a3;
-- (void)modelFrontCameraPowerWithEntry:(id)a3;
-- (void)modelTorchPowerWithEntry:(id)a3;
+- (void)logEventIntervalSmartCamDetection:(id)detection;
+- (void)modelBackCameraPowerWithEntry:(id)entry;
+- (void)modelFrontCameraPowerWithEntry:(id)entry;
+- (void)modelTorchPowerWithEntry:(id)entry;
 @end
 
 @implementation PLCameraAgent
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLCameraAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -63,83 +63,83 @@
   v56[0] = v46;
   v55[1] = *MEMORY[0x277D3F540];
   v51[0] = @"State";
-  v45 = [MEMORY[0x277D3F198] sharedInstance];
-  v44 = [v45 commonTypeDict_BoolFormat];
-  v52[0] = v44;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v52[0] = commonTypeDict_BoolFormat;
   v51[1] = @"BundleId";
-  v43 = [MEMORY[0x277D3F198] sharedInstance];
-  v42 = [v43 commonTypeDict_StringFormat_withBundleID];
-  v52[1] = v42;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat_withBundleID];
+  v52[1] = commonTypeDict_StringFormat_withBundleID;
   v51[2] = @"PixelFormatIsTenBit";
-  v41 = [MEMORY[0x277D3F198] sharedInstance];
-  v40 = [v41 commonTypeDict_BoolFormat];
-  v52[2] = v40;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_BoolFormat];
+  v52[2] = commonTypeDict_BoolFormat2;
   v51[3] = @"MaximumSupportedFrameRate";
-  v39 = [MEMORY[0x277D3F198] sharedInstance];
-  v38 = [v39 commonTypeDict_RealFormat];
-  v52[3] = v38;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198]4 commonTypeDict_RealFormat];
+  v52[3] = commonTypeDict_RealFormat;
   v51[4] = @"SecondaryInterFrameReferenceEnabled";
-  v37 = [MEMORY[0x277D3F198] sharedInstance];
-  v36 = [v37 commonTypeDict_BoolFormat];
-  v52[4] = v36;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_BoolFormat];
+  v52[4] = commonTypeDict_BoolFormat3;
   v51[5] = @"SensorWidth";
-  v35 = [MEMORY[0x277D3F198] sharedInstance];
-  v34 = [v35 commonTypeDict_IntegerFormat];
-  v52[5] = v34;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v52[5] = commonTypeDict_IntegerFormat;
   v51[6] = @"SensorHeight";
-  v33 = [MEMORY[0x277D3F198] sharedInstance];
-  v32 = [v33 commonTypeDict_IntegerFormat];
-  v52[6] = v32;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v52[6] = commonTypeDict_IntegerFormat2;
   v51[7] = @"VideoCaptureWidth";
-  v31 = [MEMORY[0x277D3F198] sharedInstance];
-  v30 = [v31 commonTypeDict_IntegerFormat];
-  v52[7] = v30;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v52[7] = commonTypeDict_IntegerFormat3;
   v51[8] = @"VideoCaptureHeight";
-  v29 = [MEMORY[0x277D3F198] sharedInstance];
-  v28 = [v29 commonTypeDict_IntegerFormat];
-  v52[8] = v28;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v52[8] = commonTypeDict_IntegerFormat4;
   v51[9] = @"BackgroundBlurEnabled";
-  v27 = [MEMORY[0x277D3F198] sharedInstance];
-  v26 = [v27 commonTypeDict_BoolFormat];
-  v52[9] = v26;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat4 = [mEMORY[0x277D3F198]10 commonTypeDict_BoolFormat];
+  v52[9] = commonTypeDict_BoolFormat4;
   v51[10] = @"DeferredCount";
-  v25 = [MEMORY[0x277D3F198] sharedInstance];
-  v24 = [v25 commonTypeDict_IntegerFormat];
-  v52[10] = v24;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+  v52[10] = commonTypeDict_IntegerFormat5;
   v51[11] = @"CameraType";
-  v23 = [MEMORY[0x277D3F198] sharedInstance];
-  v22 = [v23 commonTypeDict_IntegerFormat];
-  v52[11] = v22;
+  mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+  v52[11] = commonTypeDict_IntegerFormat6;
   v51[12] = @"ContinuityCameraType";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_IntegerFormat];
-  v52[12] = v20;
+  mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+  v52[12] = commonTypeDict_IntegerFormat7;
   v51[13] = @"IsWired";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_BoolFormat];
-  v52[13] = v18;
+  mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat5 = [mEMORY[0x277D3F198]14 commonTypeDict_BoolFormat];
+  v52[13] = commonTypeDict_BoolFormat5;
   v51[14] = @"AverageFramerate";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_RealFormat];
-  v52[14] = v16;
+  mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]15 commonTypeDict_RealFormat];
+  v52[14] = commonTypeDict_RealFormat2;
   v51[15] = @"CenterStageEnabled";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_BoolFormat];
-  v52[15] = v5;
+  mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat6 = [mEMORY[0x277D3F198]16 commonTypeDict_BoolFormat];
+  v52[15] = commonTypeDict_BoolFormat6;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:v51 count:16];
   v56[1] = v6;
   v55[2] = *MEMORY[0x277D3F500];
   v49[0] = @"key";
   v47 = @"CaptureCount";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_StringFormat];
-  v48 = v8;
+  mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]17 commonTypeDict_StringFormat];
+  v48 = commonTypeDict_StringFormat;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
   v49[1] = @"value";
   v50[0] = v9;
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_IntegerFormat];
-  v50[1] = v11;
+  mEMORY[0x277D3F198]18 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]18 commonTypeDict_IntegerFormat];
+  v50[1] = commonTypeDict_IntegerFormat8;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:v49 count:2];
   v56[2] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v56 forKeys:v55 count:3];
@@ -171,13 +171,13 @@
   v20[1] = *MEMORY[0x277D3F540];
   v21[0] = v6;
   v15[0] = @"Level";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_BoolFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
   v15[1] = @"BundleId";
-  v16[0] = v8;
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_StringFormat_withBundleID];
-  v16[1] = v10;
+  v16[0] = commonTypeDict_BoolFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat_withBundleID];
+  v16[1] = commonTypeDict_StringFormat_withBundleID;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
   v21[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
@@ -210,33 +210,33 @@
   v26[0] = v20;
   v25[1] = *MEMORY[0x277D3F540];
   v21[0] = @"timestampEnd";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_DateFormat];
-  v22[0] = v18;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
+  v22[0] = commonTypeDict_DateFormat;
   v21[1] = @"GateID";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v22[1] = v16;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v22[1] = commonTypeDict_IntegerFormat;
   v21[2] = @"NumTrackedRegions";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v14 = [v15 commonTypeDict_IntegerFormat];
-  v22[2] = v14;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v22[2] = commonTypeDict_IntegerFormat2;
   v21[3] = @"NumBoxesPresented";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v22[3] = v3;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v22[3] = commonTypeDict_IntegerFormat3;
   v21[4] = @"NumFrames";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v22[4] = v5;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v22[4] = commonTypeDict_IntegerFormat4;
   v21[5] = @"NumEmptyFrames";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v22[5] = v7;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v22[5] = commonTypeDict_IntegerFormat5;
   v21[6] = @"NumClosingFrames";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v22[6] = v9;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v22[6] = commonTypeDict_IntegerFormat6;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:7];
   v26[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:2];
@@ -250,7 +250,7 @@
 {
   if (([MEMORY[0x277D3F208] isHomePod] & 1) != 0 || +[PLUtilities isPowerlogHelperd](PLUtilities, "isPowerlogHelperd") || +[PLUtilities isPerfPowerMetricd](PLUtilities, "isPerfPowerMetricd"))
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -258,10 +258,10 @@
     v5.receiver = self;
     v5.super_class = PLCameraAgent;
     self = [(PLAgent *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)initOperatorDependancies
@@ -287,12 +287,12 @@
 
   v9 = *MEMORY[0x277D3F5D0];
   v10 = [(PLOperator *)PLCameraAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"Camera"];
-  v11 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [(PLCameraAgent *)self closeOpenCameraEventsAtDate:v11 withEntryKey:v10];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [(PLCameraAgent *)self closeOpenCameraEventsAtDate:monotonicDate withEntryKey:v10];
 
   v12 = [(PLOperator *)PLCameraAgent entryKeyForType:v9 andName:@"Torch"];
-  v13 = [(PLOperator *)self storage];
-  v14 = [v13 lastEntryForKey:v12];
+  storage = [(PLOperator *)self storage];
+  v14 = [storage lastEntryForKey:v12];
 
   if (v14)
   {
@@ -409,12 +409,12 @@ void __41__PLCameraAgent_initOperatorDependancies__block_invoke_172(uint64_t a1,
   }
 }
 
-- (void)closeOpenCameraEventsAtDate:(id)a3 withEntryKey:(id)a4
+- (void)closeOpenCameraEventsAtDate:(id)date withEntryKey:(id)key
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v29 = a3;
-  v6 = a4;
-  v28 = [MEMORY[0x277CBEB18] array];
+  dateCopy = date;
+  keyCopy = key;
+  array = [MEMORY[0x277CBEB18] array];
   v7 = 0;
   v8 = @"CameraType";
   v9 = @"%@ = %d";
@@ -424,9 +424,9 @@ void __41__PLCameraAgent_initOperatorDependancies__block_invoke_172(uint64_t a1,
   {
     v31 = [*(v10 + 3240) stringWithFormat:v9, v8, v7];
     v12 = [*(v11 + 2656) arrayWithObject:?];
-    v13 = [(PLOperator *)self storage];
+    storage = [(PLOperator *)self storage];
     v30 = v12;
-    v14 = [v13 lastEntryForKey:v6 withFilters:v12];
+    v14 = [storage lastEntryForKey:keyCopy withFilters:v12];
 
     if (v14)
     {
@@ -436,40 +436,40 @@ void __41__PLCameraAgent_initOperatorDependancies__block_invoke_172(uint64_t a1,
         v16 = v15;
         [v14 objectForKeyedSubscript:@"State"];
         v17 = v10;
-        v18 = self;
-        v19 = v6;
+        selfCopy = self;
+        v19 = keyCopy;
         v20 = v9;
         v22 = v21 = v8;
-        v23 = [v22 BOOLValue];
+        bOOLValue = [v22 BOOLValue];
 
         v8 = v21;
         v9 = v20;
-        v6 = v19;
-        self = v18;
+        keyCopy = v19;
+        self = selfCopy;
         v10 = v17;
         v11 = 0x277CBE000;
 
-        if (v23)
+        if (bOOLValue)
         {
-          v24 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v6 withDate:v29];
+          v24 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:keyCopy withDate:dateCopy];
           [v24 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"State"];
           [v24 setObject:@"init" forKeyedSubscript:@"BundleId"];
           v25 = [MEMORY[0x277CCABB0] numberWithInt:v7];
           [v24 setObject:v25 forKeyedSubscript:v8];
 
-          [v28 addObject:v24];
+          [array addObject:v24];
           if (v7)
           {
             if (v7 == 2)
             {
-              [(PLCameraAgent *)self closeFrontCameraAtDate:v29];
+              [(PLCameraAgent *)self closeFrontCameraAtDate:dateCopy];
               [(PLCameraAgent *)self modelFrontCameraPowerWithEntry:v24];
             }
           }
 
           else
           {
-            [(PLCameraAgent *)self closeBackCameraAtDate:v29];
+            [(PLCameraAgent *)self closeBackCameraAtDate:dateCopy];
             [(PLCameraAgent *)self modelBackCameraPowerWithEntry:v24];
           }
         }
@@ -480,41 +480,41 @@ void __41__PLCameraAgent_initOperatorDependancies__block_invoke_172(uint64_t a1,
   }
 
   while (v7 != 8);
-  if ([v28 count])
+  if ([array count])
   {
-    v32 = v6;
-    v33[0] = v28;
+    v32 = keyCopy;
+    v33[0] = array;
     v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:&v32 count:1];
-    [(PLOperator *)self logEntries:v26 withGroupID:v6];
+    [(PLOperator *)self logEntries:v26 withGroupID:keyCopy];
   }
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleCameraEvent:(id)a3 withEntryKey:(id)a4
+- (void)handleCameraEvent:(id)event withEntryKey:(id)key
 {
   v134 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v104 = a4;
-  if (!v6)
+  eventCopy = event;
+  keyCopy = key;
+  if (!eventCopy)
   {
     goto LABEL_65;
   }
 
-  v7 = [v6 objectForKeyedSubscript:@"Events"];
+  v7 = [eventCopy objectForKeyedSubscript:@"Events"];
 
   if (!v7)
   {
     goto LABEL_65;
   }
 
-  v103 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v120 = 0u;
   v121 = 0u;
   v122 = 0u;
   v123 = 0u;
-  v101 = v6;
-  v8 = [v6 objectForKeyedSubscript:@"Events"];
+  v101 = eventCopy;
+  v8 = [eventCopy objectForKeyedSubscript:@"Events"];
   v9 = [v8 countByEnumeratingWithState:&v120 objects:v133 count:16];
   if (!v9)
   {
@@ -523,7 +523,7 @@ void __41__PLCameraAgent_initOperatorDependancies__block_invoke_172(uint64_t a1,
 
   v10 = v9;
   v11 = *v121;
-  v102 = self;
+  selfCopy = self;
   v105 = v8;
   v113 = *v121;
   do
@@ -583,50 +583,50 @@ void __41__PLCameraAgent_initOperatorDependancies__block_invoke_172(uint64_t a1,
           }
 
           v23 = [v13 objectForKeyedSubscript:@"Streaming"];
-          v24 = [v23 BOOLValue];
+          bOOLValue = [v23 BOOLValue];
 
-          if (v24)
+          if (bOOLValue)
           {
             v25 = [v13 objectForKeyedSubscript:@"BackgroundBlurEnabled"];
-            v26 = [v25 BOOLValue];
+            bOOLValue2 = [v25 BOOLValue];
           }
 
           else
           {
-            v26 = 0;
+            bOOLValue2 = 0;
           }
 
           v11 = v113;
           v27 = [v13 objectForKeyedSubscript:@"PID"];
-          v28 = (v27 == 0) & v24;
+          v28 = (v27 == 0) & bOOLValue;
 
           if ((v28 & 1) == 0)
           {
-            v106 = v26;
-            v29 = self;
-            v30 = [(PLCameraAgent *)self cameraState];
-            v31 = v24;
+            v106 = bOOLValue2;
+            selfCopy2 = self;
+            cameraState = [(PLCameraAgent *)self cameraState];
+            v31 = bOOLValue;
             v110 = v22;
             v32 = [MEMORY[0x277CCABB0] numberWithInt:v22];
-            v33 = [v30 objectForKeyedSubscript:v32];
+            v33 = [cameraState objectForKeyedSubscript:v32];
 
             v112 = v33;
-            v111 = v24;
-            if (v33 && v24 == [v33 BOOLValue])
+            v111 = bOOLValue;
+            if (v33 && bOOLValue == [v33 BOOLValue])
             {
-              if (v24)
+              if (bOOLValue)
               {
                 v34 = v10;
-                self = v29;
-                v35 = [(PLCameraAgent *)v29 backgroundBlurState];
+                self = selfCopy2;
+                backgroundBlurState = [(PLCameraAgent *)selfCopy2 backgroundBlurState];
                 v36 = [MEMORY[0x277CCABB0] numberWithInt:v110];
-                v37 = [v35 objectForKeyedSubscript:v36];
+                v37 = [backgroundBlurState objectForKeyedSubscript:v36];
 
                 if (!v37 || v106 != [v37 BOOLValue])
                 {
 
                   v11 = v113;
-                  v31 = v24;
+                  v31 = bOOLValue;
                   goto LABEL_28;
                 }
 
@@ -641,7 +641,7 @@ LABEL_55:
               {
                 v8 = v105;
                 v16 = v33;
-                self = v29;
+                self = selfCopy2;
               }
 
 LABEL_56:
@@ -651,16 +651,16 @@ LABEL_56:
 
 LABEL_28:
             v38 = [MEMORY[0x277CCABB0] numberWithBool:v31];
-            self = v29;
-            v39 = [(PLCameraAgent *)v29 cameraState];
+            self = selfCopy2;
+            cameraState2 = [(PLCameraAgent *)selfCopy2 cameraState];
             v40 = v110;
             v41 = [MEMORY[0x277CCABB0] numberWithInt:v110];
-            [v39 setObject:v38 forKeyedSubscript:v41];
+            [cameraState2 setObject:v38 forKeyedSubscript:v41];
 
-            v37 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v104];
+            v37 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:keyCopy];
             v108 = [v13 objectForKeyedSubscript:@"Timestamp"];
-            v42 = [v108 convertFromSystemToMonotonic];
-            [v37 setEntryDate:v42];
+            convertFromSystemToMonotonic = [v108 convertFromSystemToMonotonic];
+            [v37 setEntryDate:convertFromSystemToMonotonic];
 
             v43 = [v13 objectForKeyedSubscript:@"ApplicationID"];
             v107 = v43;
@@ -678,20 +678,20 @@ LABEL_28:
               }
 
               v45 = [v13 objectForKeyedSubscript:@"PID"];
-              v46 = [v45 intValue];
+              intValue = [v45 intValue];
 
-              v47 = [PLUtilities bundleIDFromPid:v46];
+              v47 = [PLUtilities bundleIDFromPid:intValue];
               [v37 setObject:v47 forKeyedSubscript:@"BundleId"];
             }
 
-            v48 = [MEMORY[0x277CCABB0] numberWithBool:v24];
+            v48 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
             [v37 setObject:v48 forKeyedSubscript:@"State"];
 
             v49 = [MEMORY[0x277CCABB0] numberWithInt:v110];
             [v37 setObject:v49 forKeyedSubscript:@"CameraType"];
 
             v50 = MEMORY[0x277CCABB0];
-            if (v24)
+            if (bOOLValue)
             {
               v51 = [v13 objectForKeyedSubscript:@"PixelFormatIsTenBit"];
               v52 = [v50 numberWithBool:{objc_msgSend(v51, "BOOLValue")}];
@@ -732,9 +732,9 @@ LABEL_28:
               [v37 setObject:v71 forKeyedSubscript:@"BackgroundBlurEnabled"];
 
               v72 = [MEMORY[0x277CCABB0] numberWithBool:v106];
-              v73 = [(PLCameraAgent *)v29 backgroundBlurState];
+              backgroundBlurState2 = [(PLCameraAgent *)selfCopy2 backgroundBlurState];
               v74 = [MEMORY[0x277CCABB0] numberWithInt:v110];
-              [v73 setObject:v72 forKeyedSubscript:v74];
+              [backgroundBlurState2 setObject:v72 forKeyedSubscript:v74];
 
               v75 = MEMORY[0x277CCABB0];
               v76 = [v13 objectForKeyedSubscript:@"ContinuityCameraIsWired"];
@@ -810,7 +810,7 @@ LABEL_28:
                 _os_log_debug_impl(&dword_25EE51000, v79, OS_LOG_TYPE_DEBUG, "dynamic table entry: %@", buf, 0xCu);
               }
 
-              self = v102;
+              self = selfCopy;
               v10 = v109;
               v11 = v113;
               v40 = v110;
@@ -839,7 +839,7 @@ LABEL_48:
               }
             }
 
-            [v103 addObject:v37];
+            [array addObject:v37];
 
             goto LABEL_55;
           }
@@ -858,28 +858,28 @@ LABEL_57:
   while (v98);
 LABEL_62:
 
-  if ([v103 count])
+  if ([array count])
   {
-    v124 = v104;
-    v125 = v103;
+    v124 = keyCopy;
+    v125 = array;
     v99 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v125 forKeys:&v124 count:1];
-    [(PLOperator *)self logEntries:v99 withGroupID:v104];
+    [(PLOperator *)self logEntries:v99 withGroupID:keyCopy];
   }
 
-  v6 = v101;
+  eventCopy = v101;
 LABEL_65:
 
   v100 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleTorchEvent:(id)a3 withEntryKey:(id)a4
+- (void)handleTorchEvent:(id)event withEntryKey:(id)key
 {
-  v6 = a3;
+  eventCopy = event;
   v7 = MEMORY[0x277D3F190];
-  v8 = a4;
-  v9 = [[v7 alloc] initWithEntryKey:v8 withRawData:v6];
+  keyCopy = key;
+  v9 = [[v7 alloc] initWithEntryKey:keyCopy withRawData:eventCopy];
 
-  v10 = [v6 objectForKeyedSubscript:@"ApplicationID"];
+  v10 = [eventCopy objectForKeyedSubscript:@"ApplicationID"];
   if (v10)
   {
     [v9 setObject:v10 forKeyedSubscript:@"BundleId"];
@@ -893,20 +893,20 @@ LABEL_65:
       [PLCameraAgent handleTorchEvent:v11 withEntryKey:?];
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"PID"];
+    v12 = [eventCopy objectForKeyedSubscript:@"PID"];
     v13 = +[PLUtilities bundleIDFromPid:](PLUtilities, "bundleIDFromPid:", [v12 intValue]);
     [v9 setObject:v13 forKeyedSubscript:@"BundleId"];
   }
 
-  v14 = [v6 objectForKeyedSubscript:@"State"];
+  v14 = [eventCopy objectForKeyedSubscript:@"State"];
   if (v14)
   {
     v15 = v14;
-    v16 = [v6 objectForKeyedSubscript:@"Level"];
+    v16 = [eventCopy objectForKeyedSubscript:@"Level"];
 
     if (!v16)
     {
-      v17 = [v6 objectForKeyedSubscript:@"State"];
+      v17 = [eventCopy objectForKeyedSubscript:@"State"];
       [v9 setObject:v17 forKeyedSubscript:@"Level"];
     }
   }
@@ -915,60 +915,60 @@ LABEL_65:
   [(PLCameraAgent *)self modelTorchPowerWithEntry:v9];
 }
 
-- (void)logEventIntervalSmartCamDetection:(id)a3
+- (void)logEventIntervalSmartCamDetection:(id)detection
 {
   v4 = *MEMORY[0x277D3F5D8];
-  v5 = a3;
+  detectionCopy = detection;
   v13 = [(PLOperator *)PLCameraAgent entryKeyForType:v4 andName:@"SmartCamDetection"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v13 withRawData:v5];
-  v7 = [v5 objectForKeyedSubscript:@"timestamp"];
-  v8 = [v7 convertFromSystemToMonotonic];
-  [v6 setEntryDate:v8];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v13 withRawData:detectionCopy];
+  v7 = [detectionCopy objectForKeyedSubscript:@"timestamp"];
+  convertFromSystemToMonotonic = [v7 convertFromSystemToMonotonic];
+  [v6 setEntryDate:convertFromSystemToMonotonic];
 
-  v9 = [v5 objectForKeyedSubscript:@"timestampEnd"];
+  v9 = [detectionCopy objectForKeyedSubscript:@"timestampEnd"];
 
-  v10 = [v9 convertFromSystemToMonotonic];
-  [v6 setObject:v10 forKeyedSubscript:@"timestampEnd"];
+  convertFromSystemToMonotonic2 = [v9 convertFromSystemToMonotonic];
+  [v6 setObject:convertFromSystemToMonotonic2 forKeyedSubscript:@"timestampEnd"];
 
   v11 = [v6 objectForKeyedSubscript:@"timestampEnd"];
 
   if (!v11)
   {
-    v12 = [MEMORY[0x277CBEAA8] monotonicDate];
-    [v6 setObject:v12 forKeyedSubscript:@"timestampEnd"];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    [v6 setObject:monotonicDate forKeyedSubscript:@"timestampEnd"];
   }
 
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)closeFrontCameraAtDate:(id)a3
+- (void)closeFrontCameraAtDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   if ([(PLCameraAgent *)self frontCameraIsOn])
   {
-    v4 = [MEMORY[0x277D3F0C0] sharedInstance];
-    [v4 createPowerEventForwardWithRootNodeID:17 withPower:v5 withStartDate:0.0];
+    mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+    [mEMORY[0x277D3F0C0] createPowerEventForwardWithRootNodeID:17 withPower:dateCopy withStartDate:0.0];
 
     [(PLCameraAgent *)self setFrontCameraIsOn:0];
   }
 }
 
-- (void)closeBackCameraAtDate:(id)a3
+- (void)closeBackCameraAtDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   if ([(PLCameraAgent *)self backCameraIsOn])
   {
-    v4 = [MEMORY[0x277D3F0C0] sharedInstance];
-    [v4 createPowerEventForwardWithRootNodeID:18 withPower:v5 withStartDate:0.0];
+    mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+    [mEMORY[0x277D3F0C0] createPowerEventForwardWithRootNodeID:18 withPower:dateCopy withStartDate:0.0];
 
     [(PLCameraAgent *)self setBackCameraIsOn:0];
   }
 }
 
-- (void)modelFrontCameraPowerWithEntry:(id)a3
+- (void)modelFrontCameraPowerWithEntry:(id)entry
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entryCopy = entry;
   v5 = 0.0;
   if ([(PLCameraAgent *)self frontCameraIsOn])
   {
@@ -981,13 +981,13 @@ LABEL_65:
     }
   }
 
-  v15 = [MEMORY[0x277D3F0C0] sharedInstance];
-  v16 = [v4 entryDate];
-  [v15 createPowerEventForwardWithRootNodeID:17 withPower:v16 withStartDate:v5];
+  mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+  entryDate = [entryCopy entryDate];
+  [mEMORY[0x277D3F0C0] createPowerEventForwardWithRootNodeID:17 withPower:entryDate withStartDate:v5];
 
   if ([(PLCameraAgent *)self frontCameraIsOn])
   {
-    v17 = [v4 objectForKeyedSubscript:@"BundleId"];
+    v17 = [entryCopy objectForKeyedSubscript:@"BundleId"];
     v18 = v17;
     v19 = @"com.apple.deadcanary";
     if (v17)
@@ -995,24 +995,24 @@ LABEL_65:
       v19 = v17;
     }
 
-    v20 = v19;
+    mEMORY[0x277D3F0C0]5 = v19;
 
-    if ([(__CFString *)v20 isEqualToString:@"com.apple.avconferenced"])
+    if ([(__CFString *)mEMORY[0x277D3F0C0]5 isEqualToString:@"com.apple.avconferenced"])
     {
 
-      v20 = @"avconferenced";
+      mEMORY[0x277D3F0C0]5 = @"avconferenced";
     }
 
-    v29 = v20;
+    v29 = mEMORY[0x277D3F0C0]5;
     v30[0] = &unk_28714B0A8;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:&v29 count:1];
-    v22 = [MEMORY[0x277D3F0C0] sharedInstance];
-    v23 = [v4 entryDate];
-    [v22 createDistributionEventForwardWithDistributionID:13 withChildNodeNameToWeight:v21 withStartDate:v23];
+    mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
+    entryDate2 = [entryCopy entryDate];
+    [mEMORY[0x277D3F0C0]2 createDistributionEventForwardWithDistributionID:13 withChildNodeNameToWeight:v21 withStartDate:entryDate2];
 
-    v24 = [MEMORY[0x277D3F0C0] sharedInstance];
-    v25 = [v4 entryDate];
-    [v24 createDistributionEventForwardWithDistributionID:43 withChildNodeNameToWeight:v21 withStartDate:v25];
+    mEMORY[0x277D3F0C0]3 = [MEMORY[0x277D3F0C0] sharedInstance];
+    entryDate3 = [entryCopy entryDate];
+    [mEMORY[0x277D3F0C0]3 createDistributionEventForwardWithDistributionID:43 withChildNodeNameToWeight:v21 withStartDate:entryDate3];
   }
 
   else
@@ -1023,24 +1023,24 @@ LABEL_65:
       goto LABEL_15;
     }
 
-    v26 = [MEMORY[0x277D3F0C0] sharedInstance];
-    v27 = [v4 entryDate];
+    mEMORY[0x277D3F0C0]4 = [MEMORY[0x277D3F0C0] sharedInstance];
+    entryDate4 = [entryCopy entryDate];
     v21 = MEMORY[0x277CBEC10];
-    [v26 createDistributionEventForwardWithDistributionID:13 withChildNodeNameToWeight:MEMORY[0x277CBEC10] withStartDate:v27];
+    [mEMORY[0x277D3F0C0]4 createDistributionEventForwardWithDistributionID:13 withChildNodeNameToWeight:MEMORY[0x277CBEC10] withStartDate:entryDate4];
 
-    v20 = [MEMORY[0x277D3F0C0] sharedInstance];
-    v24 = [v4 entryDate];
-    [(__CFString *)v20 createDistributionEventForwardWithDistributionID:43 withChildNodeNameToWeight:v21 withStartDate:v24];
+    mEMORY[0x277D3F0C0]5 = [MEMORY[0x277D3F0C0] sharedInstance];
+    mEMORY[0x277D3F0C0]3 = [entryCopy entryDate];
+    [(__CFString *)mEMORY[0x277D3F0C0]5 createDistributionEventForwardWithDistributionID:43 withChildNodeNameToWeight:v21 withStartDate:mEMORY[0x277D3F0C0]3];
   }
 
 LABEL_15:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)modelBackCameraPowerWithEntry:(id)a3
+- (void)modelBackCameraPowerWithEntry:(id)entry
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entryCopy = entry;
   v5 = 0.0;
   if ([(PLCameraAgent *)self backCameraIsOn])
   {
@@ -1053,13 +1053,13 @@ LABEL_15:
     }
   }
 
-  v15 = [MEMORY[0x277D3F0C0] sharedInstance];
-  v16 = [v4 entryDate];
-  [v15 createPowerEventForwardWithRootNodeID:18 withPower:v16 withStartDate:v5];
+  mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+  entryDate = [entryCopy entryDate];
+  [mEMORY[0x277D3F0C0] createPowerEventForwardWithRootNodeID:18 withPower:entryDate withStartDate:v5];
 
   if ([(PLCameraAgent *)self backCameraIsOn])
   {
-    v17 = [v4 objectForKeyedSubscript:@"BundleId"];
+    v17 = [entryCopy objectForKeyedSubscript:@"BundleId"];
     v18 = v17;
     v19 = @"com.apple.deadcanary";
     if (v17)
@@ -1067,24 +1067,24 @@ LABEL_15:
       v19 = v17;
     }
 
-    v20 = v19;
+    mEMORY[0x277D3F0C0]5 = v19;
 
-    if ([(__CFString *)v20 isEqualToString:@"com.apple.avconferenced"])
+    if ([(__CFString *)mEMORY[0x277D3F0C0]5 isEqualToString:@"com.apple.avconferenced"])
     {
 
-      v20 = @"avconferenced";
+      mEMORY[0x277D3F0C0]5 = @"avconferenced";
     }
 
-    v29 = v20;
+    v29 = mEMORY[0x277D3F0C0]5;
     v30[0] = &unk_28714B0A8;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:&v29 count:1];
-    v22 = [MEMORY[0x277D3F0C0] sharedInstance];
-    v23 = [v4 entryDate];
-    [v22 createDistributionEventForwardWithDistributionID:13 withChildNodeNameToWeight:v21 withStartDate:v23];
+    mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
+    entryDate2 = [entryCopy entryDate];
+    [mEMORY[0x277D3F0C0]2 createDistributionEventForwardWithDistributionID:13 withChildNodeNameToWeight:v21 withStartDate:entryDate2];
 
-    v24 = [MEMORY[0x277D3F0C0] sharedInstance];
-    v25 = [v4 entryDate];
-    [v24 createDistributionEventForwardWithDistributionID:43 withChildNodeNameToWeight:v21 withStartDate:v25];
+    mEMORY[0x277D3F0C0]3 = [MEMORY[0x277D3F0C0] sharedInstance];
+    entryDate3 = [entryCopy entryDate];
+    [mEMORY[0x277D3F0C0]3 createDistributionEventForwardWithDistributionID:43 withChildNodeNameToWeight:v21 withStartDate:entryDate3];
   }
 
   else
@@ -1095,37 +1095,37 @@ LABEL_15:
       goto LABEL_15;
     }
 
-    v26 = [MEMORY[0x277D3F0C0] sharedInstance];
-    v27 = [v4 entryDate];
+    mEMORY[0x277D3F0C0]4 = [MEMORY[0x277D3F0C0] sharedInstance];
+    entryDate4 = [entryCopy entryDate];
     v21 = MEMORY[0x277CBEC10];
-    [v26 createDistributionEventForwardWithDistributionID:13 withChildNodeNameToWeight:MEMORY[0x277CBEC10] withStartDate:v27];
+    [mEMORY[0x277D3F0C0]4 createDistributionEventForwardWithDistributionID:13 withChildNodeNameToWeight:MEMORY[0x277CBEC10] withStartDate:entryDate4];
 
-    v20 = [MEMORY[0x277D3F0C0] sharedInstance];
-    v24 = [v4 entryDate];
-    [(__CFString *)v20 createDistributionEventForwardWithDistributionID:43 withChildNodeNameToWeight:v21 withStartDate:v24];
+    mEMORY[0x277D3F0C0]5 = [MEMORY[0x277D3F0C0] sharedInstance];
+    mEMORY[0x277D3F0C0]3 = [entryCopy entryDate];
+    [(__CFString *)mEMORY[0x277D3F0C0]5 createDistributionEventForwardWithDistributionID:43 withChildNodeNameToWeight:v21 withStartDate:mEMORY[0x277D3F0C0]3];
   }
 
 LABEL_15:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)modelTorchPowerWithEntry:(id)a3
+- (void)modelTorchPowerWithEntry:(id)entry
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"Level"];
+  entryCopy = entry;
+  v5 = [entryCopy objectForKeyedSubscript:@"Level"];
   [v5 doubleValue];
   v7 = v6;
 
-  v8 = [(PLCameraAgent *)self torchPowerModel];
-  [PLUtilities scaledPowerBasedOnPoint:v8 withPowerModel:v7];
+  torchPowerModel = [(PLCameraAgent *)self torchPowerModel];
+  [PLUtilities scaledPowerBasedOnPoint:torchPowerModel withPowerModel:v7];
   v10 = v9;
 
-  v11 = [MEMORY[0x277D3F0C0] sharedInstance];
-  v12 = [v4 entryDate];
-  [v11 createPowerEventForwardWithRootNodeID:19 withPower:v12 withStartDate:v10];
+  mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+  entryDate = [entryCopy entryDate];
+  [mEMORY[0x277D3F0C0] createPowerEventForwardWithRootNodeID:19 withPower:entryDate withStartDate:v10];
 
-  v13 = [v4 objectForKeyedSubscript:@"BundleId"];
+  v13 = [entryCopy objectForKeyedSubscript:@"BundleId"];
   v14 = v13;
   v15 = @"Flashlight";
   if (v13 && [(__CFString *)v13 rangeOfString:@"com.apple.springboard"]== 0x7FFFFFFFFFFFFFFFLL)
@@ -1147,13 +1147,13 @@ LABEL_15:
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
   }
 
-  v18 = [MEMORY[0x277D3F0C0] sharedInstance];
-  v19 = [v4 entryDate];
-  [v18 createDistributionEventForwardWithDistributionID:16 withChildNodeNameToWeight:v17 withStartDate:v19];
+  mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
+  entryDate2 = [entryCopy entryDate];
+  [mEMORY[0x277D3F0C0]2 createDistributionEventForwardWithDistributionID:16 withChildNodeNameToWeight:v17 withStartDate:entryDate2];
 
-  v20 = [MEMORY[0x277D3F0C0] sharedInstance];
-  v21 = [v4 entryDate];
-  [v20 createDistributionEventForwardWithDistributionID:13 withChildNodeNameToWeight:v17 withStartDate:v21];
+  mEMORY[0x277D3F0C0]3 = [MEMORY[0x277D3F0C0] sharedInstance];
+  entryDate3 = [entryCopy entryDate];
+  [mEMORY[0x277D3F0C0]3 createDistributionEventForwardWithDistributionID:13 withChildNodeNameToWeight:v17 withStartDate:entryDate3];
 
   v22 = *MEMORY[0x277D85DE8];
 }
@@ -1171,21 +1171,21 @@ LABEL_15:
   }
 }
 
-+ (int)checkCameraType:(int)a3
++ (int)checkCameraType:(int)type
 {
-  v3 = a3;
-  if (a3 >= 8)
+  typeCopy = type;
+  if (type >= 8)
   {
     v4 = PLLogCamera();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      [(PLCameraAgent *)v3 checkCameraType:v4];
+      [(PLCameraAgent *)typeCopy checkCameraType:v4];
     }
 
     return -1;
   }
 
-  return v3;
+  return typeCopy;
 }
 
 void __41__PLCameraAgent_initOperatorDependancies__block_invoke_cold_1()

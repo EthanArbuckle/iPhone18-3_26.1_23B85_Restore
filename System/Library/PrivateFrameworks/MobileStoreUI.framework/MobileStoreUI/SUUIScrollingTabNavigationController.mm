@@ -1,24 +1,24 @@
 @interface SUUIScrollingTabNavigationController
 - (BOOL)isShowingNavigationStackRootContent;
 - (SUUINavigationStackObserver)navigationStackObserver;
-- (SUUIScrollingTabNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)_scrollViewBottomContentInsetForViewController:(id)a3;
+- (SUUIScrollingTabNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)_scrollViewBottomContentInsetForViewController:(id)controller;
 - (void)_observedNavigationStackDidChange;
-- (void)didShowViewController:(id)a3 animated:(BOOL)a4;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)popToNavigationStackRootContentAnimated:(BOOL)a3 withBehavior:(int64_t)a4;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)didShowViewController:(id)controller animated:(BOOL)animated;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)popToNavigationStackRootContentAnimated:(BOOL)animated withBehavior:(int64_t)behavior;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)scrollingTabBarBottomInsetAdjustmentDidChange;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation SUUIScrollingTabNavigationController
 
-- (SUUIScrollingTabNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (SUUIScrollingTabNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
   v6.receiver = self;
   v6.super_class = SUUIScrollingTabNavigationController;
-  v4 = [(SUNavigationController *)&v6 initWithNibName:a3 bundle:a4];
+  v4 = [(SUNavigationController *)&v6 initWithNibName:name bundle:bundle];
   if (v4)
   {
     [(SUUIScrollingTabNavigationController *)v4 setNavigationBarClass:objc_opt_class()];
@@ -27,20 +27,20 @@
   return v4;
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __81__SUUIScrollingTabNavigationController_dismissViewControllerAnimated_completion___block_invoke;
   v9[3] = &unk_2798F5D58;
   v9[4] = self;
-  v10 = v6;
+  v10 = completionCopy;
   v8.receiver = self;
   v8.super_class = SUUIScrollingTabNavigationController;
-  v7 = v6;
-  [(SUUIScrollingTabNavigationController *)&v8 dismissViewControllerAnimated:v4 completion:v9];
+  v7 = completionCopy;
+  [(SUUIScrollingTabNavigationController *)&v8 dismissViewControllerAnimated:animatedCopy completion:v9];
 }
 
 uint64_t __81__SUUIScrollingTabNavigationController_dismissViewControllerAnimated_completion___block_invoke(uint64_t a1)
@@ -56,45 +56,45 @@ uint64_t __81__SUUIScrollingTabNavigationController_dismissViewControllerAnimate
   return [v3 _observedNavigationStackDidChange];
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
   v6.receiver = self;
   v6.super_class = SUUIScrollingTabNavigationController;
-  [(SUUIScrollingTabNavigationController *)&v6 presentViewController:a3 animated:a4 completion:a5];
+  [(SUUIScrollingTabNavigationController *)&v6 presentViewController:controller animated:animated completion:completion];
   [(SUUIScrollingTabNavigationController *)self _observedNavigationStackDidChange];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SUUIScrollingTabNavigationController;
-  [(SUUIScrollingTabNavigationController *)&v4 viewDidAppear:a3];
+  [(SUUIScrollingTabNavigationController *)&v4 viewDidAppear:appear];
   [(SUUIScrollingTabNavigationController *)self _observedNavigationStackDidChange];
 }
 
-- (void)didShowViewController:(id)a3 animated:(BOOL)a4
+- (void)didShowViewController:(id)controller animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = SUUIScrollingTabNavigationController;
-  [(SUUINavigationController *)&v5 didShowViewController:a3 animated:a4];
+  [(SUUINavigationController *)&v5 didShowViewController:controller animated:animated];
   [(SUUIScrollingTabNavigationController *)self _observedNavigationStackDidChange];
 }
 
-- (double)_scrollViewBottomContentInsetForViewController:(id)a3
+- (double)_scrollViewBottomContentInsetForViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(UIViewController *)self scrollingTabBarController];
-  v6 = v5;
-  if (v5)
+  controllerCopy = controller;
+  scrollingTabBarController = [(UIViewController *)self scrollingTabBarController];
+  v6 = scrollingTabBarController;
+  if (scrollingTabBarController)
   {
-    [v5 contentViewControllerBottomInsetAdjustment];
+    [scrollingTabBarController contentViewControllerBottomInsetAdjustment];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = SUUIScrollingTabNavigationController;
-    [(SUUIScrollingTabNavigationController *)&v10 _scrollViewBottomContentInsetForViewController:v4];
+    [(SUUIScrollingTabNavigationController *)&v10 _scrollViewBottomContentInsetForViewController:controllerCopy];
   }
 
   v8 = v7;
@@ -104,35 +104,35 @@ uint64_t __81__SUUIScrollingTabNavigationController_dismissViewControllerAnimate
 
 - (BOOL)isShowingNavigationStackRootContent
 {
-  v3 = [(SUUIScrollingTabNavigationController *)self viewControllers];
-  v4 = [v3 count];
+  viewControllers = [(SUUIScrollingTabNavigationController *)self viewControllers];
+  v4 = [viewControllers count];
 
   if (v4 > 1)
   {
     return 0;
   }
 
-  v5 = [(SUUIScrollingTabNavigationController *)self presentedViewController];
-  v6 = v5 == 0;
+  presentedViewController = [(SUUIScrollingTabNavigationController *)self presentedViewController];
+  v6 = presentedViewController == 0;
 
   return v6;
 }
 
-- (void)popToNavigationStackRootContentAnimated:(BOOL)a3 withBehavior:(int64_t)a4
+- (void)popToNavigationStackRootContentAnimated:(BOOL)animated withBehavior:(int64_t)behavior
 {
-  v5 = a3;
-  v7 = [(SUUIScrollingTabNavigationController *)self presentedViewController];
-  v8 = v7;
-  if (!v7)
+  animatedCopy = animated;
+  presentedViewController = [(SUUIScrollingTabNavigationController *)self presentedViewController];
+  v8 = presentedViewController;
+  if (!presentedViewController)
   {
-    v10 = self;
-    v11 = v5;
+    selfCopy3 = self;
+    v11 = animatedCopy;
     goto LABEL_13;
   }
 
-  if (a4 == 1)
+  if (behavior == 1)
   {
-    if (v5)
+    if (animatedCopy)
     {
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
@@ -140,30 +140,30 @@ uint64_t __81__SUUIScrollingTabNavigationController_dismissViewControllerAnimate
       v16[3] = &unk_2798F5BE8;
       v16[4] = self;
       v12 = v16;
-      v13 = self;
+      selfCopy4 = self;
       v14 = 1;
 LABEL_11:
-      [(SUUIScrollingTabNavigationController *)v13 dismissViewControllerAnimated:v14 completion:v12];
+      [(SUUIScrollingTabNavigationController *)selfCopy4 dismissViewControllerAnimated:v14 completion:v12];
       goto LABEL_14;
     }
 
     [(SUUIScrollingTabNavigationController *)self dismissViewControllerAnimated:0 completion:0];
-    v10 = self;
+    selfCopy3 = self;
     v11 = 0;
 LABEL_13:
-    v15 = [(SUUINavigationController *)v10 popToRootViewControllerAnimated:v11];
+    v15 = [(SUUINavigationController *)selfCopy3 popToRootViewControllerAnimated:v11];
     goto LABEL_14;
   }
 
-  if (a4)
+  if (behavior)
   {
     goto LABEL_14;
   }
 
-  if (![v7 conformsToProtocol:&unk_286C23950])
+  if (![presentedViewController conformsToProtocol:&unk_286C23950])
   {
-    v13 = self;
-    v14 = v5;
+    selfCopy4 = self;
+    v14 = animatedCopy;
     v12 = 0;
     goto LABEL_11;
   }
@@ -171,12 +171,12 @@ LABEL_13:
   v9 = v8;
   if ([v9 isShowingNavigationStackRootContent])
   {
-    [(SUUIScrollingTabNavigationController *)self dismissViewControllerAnimated:v5 completion:0];
+    [(SUUIScrollingTabNavigationController *)self dismissViewControllerAnimated:animatedCopy completion:0];
   }
 
   else
   {
-    [v9 popToNavigationStackRootContentAnimated:v5 withBehavior:0];
+    [v9 popToNavigationStackRootContentAnimated:animatedCopy withBehavior:0];
   }
 
 LABEL_14:
@@ -186,21 +186,21 @@ LABEL_14:
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(SUUIScrollingTabNavigationController *)self topViewController];
-    [(SUUIScrollingTabNavigationController *)self _computeAndApplyScrollContentInsetDeltaForViewController:v3];
+    topViewController = [(SUUIScrollingTabNavigationController *)self topViewController];
+    [(SUUIScrollingTabNavigationController *)self _computeAndApplyScrollContentInsetDeltaForViewController:topViewController];
   }
 
   if ([(SUUIScrollingTabNavigationController *)self isViewLoaded])
   {
-    v4 = [(SUUIScrollingTabNavigationController *)self view];
-    [v4 setNeedsLayout];
+    view = [(SUUIScrollingTabNavigationController *)self view];
+    [view setNeedsLayout];
   }
 }
 
 - (void)_observedNavigationStackDidChange
 {
-  v3 = [(SUUIScrollingTabNavigationController *)self navigationStackObserver];
-  [v3 observedNavigationStackDidChange:self];
+  navigationStackObserver = [(SUUIScrollingTabNavigationController *)self navigationStackObserver];
+  [navigationStackObserver observedNavigationStackDidChange:self];
 }
 
 - (SUUINavigationStackObserver)navigationStackObserver

@@ -1,50 +1,50 @@
 @interface DCClientHandler
-- (BOOL)entitlementsValidatedForPID:(int)a3;
+- (BOOL)entitlementsValidatedForPID:(int)d;
 - (BOOL)isSupported;
-- (DCClientHandler)initWithConnection:(id)a3;
-- (id)_stringValueForEntitlement:(id)a3;
+- (DCClientHandler)initWithConnection:(id)connection;
+- (id)_stringValueForEntitlement:(id)entitlement;
 - (id)generateAppIDFromCurrentConnection;
-- (void)appAttestationAssert:(id)a3 keyId:(id)a4 clientDataHash:(id)a5 completion:(id)a6;
-- (void)appAttestationAssertWithTeamIdentifier:(id)a3 appUUID:(id)a4 keyId:(id)a5 clientDataHash:(id)a6 completion:(id)a7;
-- (void)appAttestationAttestKey:(id)a3 keyId:(id)a4 clientDataHash:(id)a5 completion:(id)a6;
-- (void)appAttestationAttestKeyWithTeamIdentifier:(id)a3 appUUID:(id)a4 keyId:(id)a5 clientDataHash:(id)a6 completion:(id)a7;
-- (void)appAttestationCreateKey:(id)a3 completion:(id)a4;
-- (void)appAttestationCreateKeyWithTeamIdentifier:(id)a3 appUUID:(id)a4 completion:(id)a5;
-- (void)appAttestationDeviceAttestKey:(id)a3 useSystemKeychain:(BOOL)a4 clientDataHash:(id)a5 options:(id)a6 completion:(id)a7;
-- (void)appAttestationDeviceIsSupportedWithCompletion:(id)a3;
-- (void)appAttestationIsSupportedWithCompletion:(id)a3;
-- (void)appAttestationPrivIsSupportedWithCompletion:(id)a3;
-- (void)appAttestationSign:(id)a3 appUUID:(id)a4 keyId:(id)a5 teamId:(id)a6 completion:(id)a7;
-- (void)appAttestationWebAttestKey:(id)a3 clientDataHash:(id)a4 authData:(id)a5 completion:(id)a6;
-- (void)appAttestationWebIsSupportedWithCompletion:(id)a3;
-- (void)baaSignatureForData:(id)a3 completion:(id)a4;
-- (void)baaSignaturesForData:(id)a3 completion:(id)a4;
-- (void)fetchOpaqueBlobWithCompletion:(id)a3;
-- (void)getKeyProxyEndpoint:(id)a3 keyId:(id)a4 teamIdentifier:(id)a5 completion:(id)a6;
-- (void)isSupportedDeviceWithCompletion:(id)a3;
-- (void)isSupportedForPrivService:(BOOL)a3 completion:(id)a4;
+- (void)appAttestationAssert:(id)assert keyId:(id)id clientDataHash:(id)hash completion:(id)completion;
+- (void)appAttestationAssertWithTeamIdentifier:(id)identifier appUUID:(id)d keyId:(id)id clientDataHash:(id)hash completion:(id)completion;
+- (void)appAttestationAttestKey:(id)key keyId:(id)id clientDataHash:(id)hash completion:(id)completion;
+- (void)appAttestationAttestKeyWithTeamIdentifier:(id)identifier appUUID:(id)d keyId:(id)id clientDataHash:(id)hash completion:(id)completion;
+- (void)appAttestationCreateKey:(id)key completion:(id)completion;
+- (void)appAttestationCreateKeyWithTeamIdentifier:(id)identifier appUUID:(id)d completion:(id)completion;
+- (void)appAttestationDeviceAttestKey:(id)key useSystemKeychain:(BOOL)keychain clientDataHash:(id)hash options:(id)options completion:(id)completion;
+- (void)appAttestationDeviceIsSupportedWithCompletion:(id)completion;
+- (void)appAttestationIsSupportedWithCompletion:(id)completion;
+- (void)appAttestationPrivIsSupportedWithCompletion:(id)completion;
+- (void)appAttestationSign:(id)sign appUUID:(id)d keyId:(id)id teamId:(id)teamId completion:(id)completion;
+- (void)appAttestationWebAttestKey:(id)key clientDataHash:(id)hash authData:(id)data completion:(id)completion;
+- (void)appAttestationWebIsSupportedWithCompletion:(id)completion;
+- (void)baaSignatureForData:(id)data completion:(id)completion;
+- (void)baaSignaturesForData:(id)data completion:(id)completion;
+- (void)fetchOpaqueBlobWithCompletion:(id)completion;
+- (void)getKeyProxyEndpoint:(id)endpoint keyId:(id)id teamIdentifier:(id)identifier completion:(id)completion;
+- (void)isSupportedDeviceWithCompletion:(id)completion;
+- (void)isSupportedForPrivService:(BOOL)service completion:(id)completion;
 @end
 
 @implementation DCClientHandler
 
-- (DCClientHandler)initWithConnection:(id)a3
+- (DCClientHandler)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v8.receiver = self;
   v8.super_class = DCClientHandler;
   v5 = [(DCClientHandler *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(DCClientHandler *)v5 setConnection:v4];
+    [(DCClientHandler *)v5 setConnection:connectionCopy];
   }
 
   return v6;
 }
 
-- (void)fetchOpaqueBlobWithCompletion:(id)a3
+- (void)fetchOpaqueBlobWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (qword_100010D08 != -1)
   {
     sub_1000062FC();
@@ -62,16 +62,16 @@
 
   if ([(DCClientHandler *)self isSupported])
   {
-    v6 = [(DCClientHandler *)self generateAppIDFromCurrentConnection];
-    if (v6)
+    generateAppIDFromCurrentConnection = [(DCClientHandler *)self generateAppIDFromCurrentConnection];
+    if (generateAppIDFromCurrentConnection)
     {
       v7 = objc_alloc_init(DCContext);
-      [v7 setClientAppID:v6];
+      [v7 setClientAppID:generateAppIDFromCurrentConnection];
       v8 = [DCDDeviceMetadata alloc];
       v9 = objc_alloc_init(DCCryptoProxyImpl);
       v10 = [v8 initWithContext:v7 cryptoProxy:v9];
 
-      [v10 generateEncryptedBlobWithCompletion:v4];
+      [v10 generateEncryptedBlobWithCompletion:completionCopy];
     }
 
     else
@@ -92,26 +92,26 @@
       }
 
       v7 = [NSError dc_errorWithCode:0];
-      v4[2](v4, 0, v7);
+      completionCopy[2](completionCopy, 0, v7);
     }
   }
 
   else
   {
-    v6 = [NSError dc_errorWithCode:1];
-    v4[2](v4, 0, v6);
+    generateAppIDFromCurrentConnection = [NSError dc_errorWithCode:1];
+    completionCopy[2](completionCopy, 0, generateAppIDFromCurrentConnection);
   }
 }
 
-- (void)isSupportedDeviceWithCompletion:(id)a3
+- (void)isSupportedDeviceWithCompletion:(id)completion
 {
-  v5 = a3;
-  (*(a3 + 2))(v5, [(DCClientHandler *)self isSupported], 0);
+  completionCopy = completion;
+  (*(completion + 2))(completionCopy, [(DCClientHandler *)self isSupported], 0);
 }
 
-- (id)_stringValueForEntitlement:(id)a3
+- (id)_stringValueForEntitlement:(id)entitlement
 {
-  v3 = [(NSXPCConnection *)self->_connection valueForEntitlement:a3];
+  v3 = [(NSXPCConnection *)self->_connection valueForEntitlement:entitlement];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -126,10 +126,10 @@
   return v4;
 }
 
-- (void)appAttestationCreateKey:(id)a3 completion:(id)a4
+- (void)appAttestationCreateKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v8 = sub_100000F04();
   v11[0] = _NSConcreteStackBlock;
@@ -137,21 +137,21 @@
   v11[2] = sub_100001C3C;
   v11[3] = &unk_10000C470;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = keyCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = keyCopy;
   dispatch_async(v8, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (void)appAttestationCreateKeyWithTeamIdentifier:(id)a3 appUUID:(id)a4 completion:(id)a5
+- (void)appAttestationCreateKeyWithTeamIdentifier:(id)identifier appUUID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  dCopy = d;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v11 = sub_100000F04();
   block[0] = _NSConcreteStackBlock;
@@ -159,24 +159,24 @@
   block[2] = sub_100001E9C;
   block[3] = &unk_10000C498;
   objc_copyWeak(&v19, &location);
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = identifierCopy;
+  v17 = dCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = dCopy;
+  v14 = identifierCopy;
   dispatch_async(v11, block);
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
 }
 
-- (void)appAttestationAttestKey:(id)a3 keyId:(id)a4 clientDataHash:(id)a5 completion:(id)a6
+- (void)appAttestationAttestKey:(id)key keyId:(id)id clientDataHash:(id)hash completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  keyCopy = key;
+  idCopy = id;
+  hashCopy = hash;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v14 = sub_100000F04();
   v19[0] = _NSConcreteStackBlock;
@@ -184,27 +184,27 @@
   v19[2] = sub_100002128;
   v19[3] = &unk_10000C4C0;
   objc_copyWeak(&v24, &location);
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = keyCopy;
+  v21 = idCopy;
+  v22 = hashCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = hashCopy;
+  v17 = idCopy;
+  v18 = keyCopy;
   dispatch_async(v14, v19);
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(&location);
 }
 
-- (void)appAttestationAttestKeyWithTeamIdentifier:(id)a3 appUUID:(id)a4 keyId:(id)a5 clientDataHash:(id)a6 completion:(id)a7
+- (void)appAttestationAttestKeyWithTeamIdentifier:(id)identifier appUUID:(id)d keyId:(id)id clientDataHash:(id)hash completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  dCopy = d;
+  idCopy = id;
+  hashCopy = hash;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v17 = sub_100000F04();
   block[0] = _NSConcreteStackBlock;
@@ -212,49 +212,49 @@
   block[2] = sub_1000023D8;
   block[3] = &unk_10000C4E8;
   objc_copyWeak(&v29, &location);
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
+  v24 = identifierCopy;
+  v25 = dCopy;
+  v26 = idCopy;
+  v27 = hashCopy;
+  v28 = completionCopy;
+  v18 = completionCopy;
+  v19 = hashCopy;
+  v20 = idCopy;
+  v21 = dCopy;
+  v22 = identifierCopy;
   dispatch_async(v17, block);
 
   objc_destroyWeak(&v29);
   objc_destroyWeak(&location);
 }
 
-- (void)appAttestationWebAttestKey:(id)a3 clientDataHash:(id)a4 authData:(id)a5 completion:(id)a6
+- (void)appAttestationWebAttestKey:(id)key clientDataHash:(id)hash authData:(id)data completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  keyCopy = key;
+  hashCopy = hash;
+  dataCopy = data;
+  completionCopy = completion;
   v13 = sub_100000F04();
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100002634;
   v18[3] = &unk_10000C558;
-  v19 = v9;
-  v20 = v11;
-  v21 = v10;
-  v22 = v12;
-  v14 = v12;
-  v15 = v10;
-  v16 = v11;
-  v17 = v9;
+  v19 = keyCopy;
+  v20 = dataCopy;
+  v21 = hashCopy;
+  v22 = completionCopy;
+  v14 = completionCopy;
+  v15 = hashCopy;
+  v16 = dataCopy;
+  v17 = keyCopy;
   dispatch_async(v13, v18);
 }
 
-- (void)appAttestationDeviceAttestKey:(id)a3 useSystemKeychain:(BOOL)a4 clientDataHash:(id)a5 options:(id)a6 completion:(id)a7
+- (void)appAttestationDeviceAttestKey:(id)key useSystemKeychain:(BOOL)keychain clientDataHash:(id)hash options:(id)options completion:(id)completion
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
+  keyCopy = key;
+  optionsCopy = options;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v14 = sub_100000F04();
   v18[0] = _NSConcreteStackBlock;
@@ -262,25 +262,25 @@
   v18[2] = sub_100002CB8;
   v18[3] = &unk_10000C580;
   objc_copyWeak(&v22, &location);
-  v23 = a4;
-  v19 = v11;
-  v20 = v12;
-  v21 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
+  keychainCopy = keychain;
+  v19 = keyCopy;
+  v20 = optionsCopy;
+  v21 = completionCopy;
+  v15 = completionCopy;
+  v16 = optionsCopy;
+  v17 = keyCopy;
   dispatch_async(v14, v18);
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&location);
 }
 
-- (void)appAttestationAssert:(id)a3 keyId:(id)a4 clientDataHash:(id)a5 completion:(id)a6
+- (void)appAttestationAssert:(id)assert keyId:(id)id clientDataHash:(id)hash completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  assertCopy = assert;
+  idCopy = id;
+  hashCopy = hash;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v14 = sub_100000F04();
   v19[0] = _NSConcreteStackBlock;
@@ -288,27 +288,27 @@
   v19[2] = sub_100003454;
   v19[3] = &unk_10000C4C0;
   objc_copyWeak(&v24, &location);
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = assertCopy;
+  v21 = idCopy;
+  v22 = hashCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = hashCopy;
+  v17 = idCopy;
+  v18 = assertCopy;
   dispatch_async(v14, v19);
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(&location);
 }
 
-- (void)appAttestationAssertWithTeamIdentifier:(id)a3 appUUID:(id)a4 keyId:(id)a5 clientDataHash:(id)a6 completion:(id)a7
+- (void)appAttestationAssertWithTeamIdentifier:(id)identifier appUUID:(id)d keyId:(id)id clientDataHash:(id)hash completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  dCopy = d;
+  idCopy = id;
+  hashCopy = hash;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v17 = sub_100000F04();
   block[0] = _NSConcreteStackBlock;
@@ -316,29 +316,29 @@
   block[2] = sub_100003704;
   block[3] = &unk_10000C4E8;
   objc_copyWeak(&v29, &location);
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
+  v24 = identifierCopy;
+  v25 = dCopy;
+  v26 = idCopy;
+  v27 = hashCopy;
+  v28 = completionCopy;
+  v18 = completionCopy;
+  v19 = hashCopy;
+  v20 = idCopy;
+  v21 = dCopy;
+  v22 = identifierCopy;
   dispatch_async(v17, block);
 
   objc_destroyWeak(&v29);
   objc_destroyWeak(&location);
 }
 
-- (void)appAttestationSign:(id)a3 appUUID:(id)a4 keyId:(id)a5 teamId:(id)a6 completion:(id)a7
+- (void)appAttestationSign:(id)sign appUUID:(id)d keyId:(id)id teamId:(id)teamId completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  signCopy = sign;
+  dCopy = d;
+  idCopy = id;
+  teamIdCopy = teamId;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v17 = sub_100000F04();
   block[0] = _NSConcreteStackBlock;
@@ -346,66 +346,66 @@
   block[2] = sub_1000039B8;
   block[3] = &unk_10000C4E8;
   objc_copyWeak(&v29, &location);
-  v24 = v13;
-  v25 = v14;
-  v26 = v15;
-  v27 = v12;
-  v28 = v16;
-  v18 = v16;
-  v19 = v12;
-  v20 = v15;
-  v21 = v14;
-  v22 = v13;
+  v24 = dCopy;
+  v25 = idCopy;
+  v26 = teamIdCopy;
+  v27 = signCopy;
+  v28 = completionCopy;
+  v18 = completionCopy;
+  v19 = signCopy;
+  v20 = teamIdCopy;
+  v21 = idCopy;
+  v22 = dCopy;
   dispatch_async(v17, block);
 
   objc_destroyWeak(&v29);
   objc_destroyWeak(&location);
 }
 
-- (void)appAttestationIsSupportedWithCompletion:(id)a3
+- (void)appAttestationIsSupportedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100000F04();
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100003BAC;
   v7[3] = &unk_10000C5A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)appAttestationPrivIsSupportedWithCompletion:(id)a3
+- (void)appAttestationPrivIsSupportedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100000F04();
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100003C6C;
   v7[3] = &unk_10000C5A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)appAttestationWebIsSupportedWithCompletion:(id)a3
+- (void)appAttestationWebIsSupportedWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = sub_100000F04();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100003D20;
   block[3] = &unk_10000C5D0;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(v4, block);
 }
 
-- (void)appAttestationDeviceIsSupportedWithCompletion:(id)a3
+- (void)appAttestationDeviceIsSupportedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = sub_100000F04();
   block[0] = _NSConcreteStackBlock;
@@ -413,20 +413,20 @@
   block[2] = sub_100003E40;
   block[3] = &unk_10000C5F8;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)getKeyProxyEndpoint:(id)a3 keyId:(id)a4 teamIdentifier:(id)a5 completion:(id)a6
+- (void)getKeyProxyEndpoint:(id)endpoint keyId:(id)id teamIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  endpointCopy = endpoint;
+  idCopy = id;
+  identifierCopy = identifier;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v14 = sub_100000F04();
   block[0] = _NSConcreteStackBlock;
@@ -434,25 +434,25 @@
   block[2] = sub_1000040E0;
   block[3] = &unk_10000C648;
   objc_copyWeak(&v25, &location);
-  v20 = v10;
-  v21 = v11;
-  v23 = self;
-  v24 = v13;
-  v22 = v12;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = endpointCopy;
+  v21 = idCopy;
+  selfCopy = self;
+  v24 = completionCopy;
+  v22 = identifierCopy;
+  v15 = completionCopy;
+  v16 = identifierCopy;
+  v17 = idCopy;
+  v18 = endpointCopy;
   dispatch_async(v14, block);
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(&location);
 }
 
-- (void)baaSignaturesForData:(id)a3 completion:(id)a4
+- (void)baaSignaturesForData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   if (qword_100010D08 != -1)
   {
     sub_1000062FC();
@@ -470,11 +470,11 @@
 
   if ([(DCClientHandler *)self isSupported])
   {
-    v9 = [(DCClientHandler *)self generateAppIDFromCurrentConnection];
-    if (v9)
+    generateAppIDFromCurrentConnection = [(DCClientHandler *)self generateAppIDFromCurrentConnection];
+    if (generateAppIDFromCurrentConnection)
     {
       v10 = objc_alloc_init(DCContext);
-      [v10 setClientAppID:v9];
+      [v10 setClientAppID:generateAppIDFromCurrentConnection];
       v11 = [DCDDeviceMetadata alloc];
       v12 = objc_alloc_init(DCCryptoProxyImpl);
       v13 = [v11 initWithContext:v10 cryptoProxy:v12];
@@ -483,8 +483,8 @@
       v15[1] = 3221225472;
       v15[2] = sub_1000047DC;
       v15[3] = &unk_10000C670;
-      v16 = v7;
-      [v13 baaSignaturesForData:v6 completion:v15];
+      v16 = completionCopy;
+      [v13 baaSignaturesForData:dataCopy completion:v15];
     }
 
     else
@@ -505,21 +505,21 @@
       }
 
       v10 = [NSError dc_errorWithCode:0];
-      (*(v7 + 2))(v7, 0, 0, v10);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v10);
     }
   }
 
   else
   {
-    v9 = [NSError errorWithDomain:@"com.apple.devicecheck.error.baa" code:-10000 userInfo:0];
-    (*(v7 + 2))(v7, 0, 0, v9);
+    generateAppIDFromCurrentConnection = [NSError errorWithDomain:@"com.apple.devicecheck.error.baa" code:-10000 userInfo:0];
+    (*(completionCopy + 2))(completionCopy, 0, 0, generateAppIDFromCurrentConnection);
   }
 }
 
-- (void)baaSignatureForData:(id)a3 completion:(id)a4
+- (void)baaSignatureForData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   if (qword_100010D08 != -1)
   {
     sub_1000062FC();
@@ -537,16 +537,16 @@
 
   if ([(DCClientHandler *)self isSupported])
   {
-    v9 = [(DCClientHandler *)self generateAppIDFromCurrentConnection];
-    if (v9)
+    generateAppIDFromCurrentConnection = [(DCClientHandler *)self generateAppIDFromCurrentConnection];
+    if (generateAppIDFromCurrentConnection)
     {
       v10 = objc_alloc_init(DCContext);
-      [v10 setClientAppID:v9];
+      [v10 setClientAppID:generateAppIDFromCurrentConnection];
       v11 = [DCDDeviceMetadata alloc];
       v12 = objc_alloc_init(DCCryptoProxyImpl);
       v13 = [v11 initWithContext:v10 cryptoProxy:v12];
 
-      [v13 baaSignatureForData:v6 completion:v7];
+      [v13 baaSignatureForData:dataCopy completion:completionCopy];
     }
 
     else
@@ -567,14 +567,14 @@
       }
 
       v10 = [NSError dc_errorWithCode:0];
-      (*(v7 + 2))(v7, 0, 0, v10);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v10);
     }
   }
 
   else
   {
-    v9 = [NSError errorWithDomain:@"com.apple.devicecheck.error.baa" code:-10000 userInfo:0];
-    (*(v7 + 2))(v7, 0, 0, v9);
+    generateAppIDFromCurrentConnection = [NSError errorWithDomain:@"com.apple.devicecheck.error.baa" code:-10000 userInfo:0];
+    (*(completionCopy + 2))(completionCopy, 0, 0, generateAppIDFromCurrentConnection);
   }
 }
 
@@ -623,11 +623,11 @@ LABEL_10:
   return IsSupported;
 }
 
-- (void)isSupportedForPrivService:(BOOL)a3 completion:(id)a4
+- (void)isSupportedForPrivService:(BOOL)service completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  if (!+[FeatureFlagsManager isMacEnabled]|| v4)
+  serviceCopy = service;
+  completionCopy = completion;
+  if (!+[FeatureFlagsManager isMacEnabled]|| serviceCopy)
   {
     connection = self->_connection;
     if (connection)
@@ -637,7 +637,7 @@ LABEL_10:
 
     IsSupported = AppAttest_AppAttestation_IsSupported();
     memset(buf, 0, sizeof(buf));
-    if (v4)
+    if (serviceCopy)
     {
       IsEligibleApplicationPriv = AppAttest_AppAttestation_IsEligibleApplicationPriv();
     }
@@ -671,7 +671,7 @@ LABEL_10:
       *&buf[24] = 1024;
       *&buf[26] = v12;
       *&buf[30] = 1024;
-      v17 = v4;
+      v17 = serviceCopy;
       v15 = "%25s:%-5d App attestation service is supported. { isSupportedHardware=%d, isEligibleApplication=%d, privService=%d }";
     }
 
@@ -697,13 +697,13 @@ LABEL_10:
       *&buf[24] = 1024;
       *&buf[26] = v12;
       *&buf[30] = 1024;
-      v17 = v4;
+      v17 = serviceCopy;
       v15 = "%25s:%-5d App attestation service is not supported. { isSupportedHardware=%d, isEligibleApplication=%d, privService=%d }";
     }
 
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, v15, buf, 0x24u);
 LABEL_21:
-    v6[2](v6, v13, 0);
+    completionCopy[2](completionCopy, v13, 0);
     goto LABEL_22;
   }
 
@@ -715,7 +715,7 @@ LABEL_21:
   }
 
   IsSupportedAndEligibleApplication = AppAttest_AppAttestation_IsSupportedAndEligibleApplication();
-  v6[2](v6, IsSupportedAndEligibleApplication, 0);
+  completionCopy[2](completionCopy, IsSupportedAndEligibleApplication, 0);
 LABEL_22:
 }
 
@@ -803,11 +803,11 @@ LABEL_22:
   return v13;
 }
 
-- (BOOL)entitlementsValidatedForPID:(int)a3
+- (BOOL)entitlementsValidatedForPID:(int)d
 {
   v15 = 0;
   memset(buffer, 0, sizeof(buffer));
-  v3 = proc_pidinfo(a3, 3, 0, buffer, 136);
+  v3 = proc_pidinfo(d, 3, 0, buffer, 136);
   if (v3 <= 0)
   {
     v5 = v3;

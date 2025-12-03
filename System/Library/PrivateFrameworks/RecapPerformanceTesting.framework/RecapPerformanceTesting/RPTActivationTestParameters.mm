@@ -1,38 +1,38 @@
 @interface RPTActivationTestParameters
-- (RPTActivationTestParameters)initWithTestName:(id)a3 window:(id)a4 completionHandler:(id)a5;
+- (RPTActivationTestParameters)initWithTestName:(id)name window:(id)window completionHandler:(id)handler;
 - (id)composerBlock;
-- (void)prepareWithComposer:(id)a3;
+- (void)prepareWithComposer:(id)composer;
 @end
 
 @implementation RPTActivationTestParameters
 
-- (RPTActivationTestParameters)initWithTestName:(id)a3 window:(id)a4 completionHandler:(id)a5
+- (RPTActivationTestParameters)initWithTestName:(id)name window:(id)window completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  windowCopy = window;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = RPTActivationTestParameters;
   v11 = [(RPTActivationTestParameters *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(RPTActivationTestParameters *)v11 setTestName:v8];
-    [(RPTActivationTestParameters *)v12 setWindow:v9];
-    [(RPTActivationTestParameters *)v12 setCompletionHandler:v10];
+    [(RPTActivationTestParameters *)v11 setTestName:nameCopy];
+    [(RPTActivationTestParameters *)v12 setWindow:windowCopy];
+    [(RPTActivationTestParameters *)v12 setCompletionHandler:handlerCopy];
   }
 
   return v12;
 }
 
-- (void)prepareWithComposer:(id)a3
+- (void)prepareWithComposer:(id)composer
 {
-  v4 = a3;
+  composerCopy = composer;
   v5 = [RPTActivationInteraction alloc];
-  v6 = [(RPTActivationTestParameters *)self window];
-  v7 = [(RPTActivationInteraction *)v5 initForAction:1 window:v6];
+  window = [(RPTActivationTestParameters *)self window];
+  v7 = [(RPTActivationInteraction *)v5 initForAction:1 window:window];
 
-  [v7 invokeWithComposer:v4 duration:1.0];
+  [v7 invokeWithComposer:composerCopy duration:1.0];
 }
 
 - (id)composerBlock

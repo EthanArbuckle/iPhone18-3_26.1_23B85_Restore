@@ -1,98 +1,98 @@
 @interface _SFPBMediaItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBMediaItem)initWithDictionary:(id)a3;
-- (_SFPBMediaItem)initWithFacade:(id)a3;
-- (_SFPBMediaItem)initWithJSON:(id)a3;
+- (_SFPBMediaItem)initWithDictionary:(id)dictionary;
+- (_SFPBMediaItem)initWithFacade:(id)facade;
+- (_SFPBMediaItem)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addBuyOptions:(id)a3;
-- (void)addSubtitleCustomLineBreaking:(id)a3;
-- (void)setBuyOptions:(id)a3;
-- (void)setContentAdvisory:(id)a3;
-- (void)setReviewText:(id)a3;
-- (void)setSubtitleCustomLineBreaking:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addBuyOptions:(id)options;
+- (void)addSubtitleCustomLineBreaking:(id)breaking;
+- (void)setBuyOptions:(id)options;
+- (void)setContentAdvisory:(id)advisory;
+- (void)setReviewText:(id)text;
+- (void)setSubtitleCustomLineBreaking:(id)breaking;
+- (void)setTitle:(id)title;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBMediaItem
 
-- (_SFPBMediaItem)initWithFacade:(id)a3
+- (_SFPBMediaItem)initWithFacade:(id)facade
 {
   v64 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBMediaItem *)self init];
   if (v5)
   {
-    v6 = [v4 title];
+    title = [facadeCopy title];
 
-    if (v6)
+    if (title)
     {
-      v7 = [v4 title];
-      [(_SFPBMediaItem *)v5 setTitle:v7];
+      title2 = [facadeCopy title];
+      [(_SFPBMediaItem *)v5 setTitle:title2];
     }
 
-    v8 = [v4 subtitleText];
+    subtitleText = [facadeCopy subtitleText];
 
-    if (v8)
+    if (subtitleText)
     {
       v9 = [_SFPBText alloc];
-      v10 = [v4 subtitleText];
-      v11 = [(_SFPBText *)v9 initWithFacade:v10];
+      subtitleText2 = [facadeCopy subtitleText];
+      v11 = [(_SFPBText *)v9 initWithFacade:subtitleText2];
       [(_SFPBMediaItem *)v5 setSubtitleText:v11];
     }
 
-    v12 = [v4 thumbnail];
+    thumbnail = [facadeCopy thumbnail];
 
-    if (v12)
+    if (thumbnail)
     {
       v13 = [_SFPBImage alloc];
-      v14 = [v4 thumbnail];
-      v15 = [(_SFPBImage *)v13 initWithFacade:v14];
+      thumbnail2 = [facadeCopy thumbnail];
+      v15 = [(_SFPBImage *)v13 initWithFacade:thumbnail2];
       [(_SFPBMediaItem *)v5 setThumbnail:v15];
     }
 
-    v16 = [v4 reviewGlyph];
+    reviewGlyph = [facadeCopy reviewGlyph];
 
-    if (v16)
+    if (reviewGlyph)
     {
       v17 = [_SFPBImage alloc];
-      v18 = [v4 reviewGlyph];
-      v19 = [(_SFPBImage *)v17 initWithFacade:v18];
+      reviewGlyph2 = [facadeCopy reviewGlyph];
+      v19 = [(_SFPBImage *)v17 initWithFacade:reviewGlyph2];
       [(_SFPBMediaItem *)v5 setReviewGlyph:v19];
     }
 
-    v20 = [v4 overlayImage];
+    overlayImage = [facadeCopy overlayImage];
 
-    if (v20)
+    if (overlayImage)
     {
       v21 = [_SFPBImage alloc];
-      v22 = [v4 overlayImage];
-      v23 = [(_SFPBImage *)v21 initWithFacade:v22];
+      overlayImage2 = [facadeCopy overlayImage];
+      v23 = [(_SFPBImage *)v21 initWithFacade:overlayImage2];
       [(_SFPBMediaItem *)v5 setOverlayImage:v23];
     }
 
-    v24 = [v4 reviewText];
+    reviewText = [facadeCopy reviewText];
 
-    if (v24)
+    if (reviewText)
     {
-      v25 = [v4 reviewText];
-      [(_SFPBMediaItem *)v5 setReviewText:v25];
+      reviewText2 = [facadeCopy reviewText];
+      [(_SFPBMediaItem *)v5 setReviewText:reviewText2];
     }
 
-    v26 = [v4 punchout];
+    punchout = [facadeCopy punchout];
 
-    if (v26)
+    if (punchout)
     {
       v27 = [_SFPBPunchout alloc];
-      v28 = [v4 punchout];
-      v29 = [(_SFPBPunchout *)v27 initWithFacade:v28];
+      punchout2 = [facadeCopy punchout];
+      v29 = [(_SFPBPunchout *)v27 initWithFacade:punchout2];
       [(_SFPBMediaItem *)v5 setPunchout:v29];
     }
 
-    v30 = [v4 subtitleCustomLineBreaking];
-    if (v30)
+    subtitleCustomLineBreaking = [facadeCopy subtitleCustomLineBreaking];
+    if (subtitleCustomLineBreaking)
     {
       v31 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -106,8 +106,8 @@
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v32 = [v4 subtitleCustomLineBreaking];
-    v33 = [v32 countByEnumeratingWithState:&v58 objects:v63 count:16];
+    subtitleCustomLineBreaking2 = [facadeCopy subtitleCustomLineBreaking];
+    v33 = [subtitleCustomLineBreaking2 countByEnumeratingWithState:&v58 objects:v63 count:16];
     if (v33)
     {
       v34 = v33;
@@ -118,7 +118,7 @@
         {
           if (*v59 != v35)
           {
-            objc_enumerationMutation(v32);
+            objc_enumerationMutation(subtitleCustomLineBreaking2);
           }
 
           if (*(*(&v58 + 1) + 8 * i))
@@ -127,15 +127,15 @@
           }
         }
 
-        v34 = [v32 countByEnumeratingWithState:&v58 objects:v63 count:16];
+        v34 = [subtitleCustomLineBreaking2 countByEnumeratingWithState:&v58 objects:v63 count:16];
       }
 
       while (v34);
     }
 
     [(_SFPBMediaItem *)v5 setSubtitleCustomLineBreakings:v31];
-    v37 = [v4 buyOptions];
-    if (v37)
+    buyOptions = [facadeCopy buyOptions];
+    if (buyOptions)
     {
       v38 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -149,8 +149,8 @@
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v39 = [v4 buyOptions];
-    v40 = [v39 countByEnumeratingWithState:&v54 objects:v62 count:16];
+    buyOptions2 = [facadeCopy buyOptions];
+    v40 = [buyOptions2 countByEnumeratingWithState:&v54 objects:v62 count:16];
     if (v40)
     {
       v41 = v40;
@@ -161,7 +161,7 @@
         {
           if (*v55 != v42)
           {
-            objc_enumerationMutation(v39);
+            objc_enumerationMutation(buyOptions2);
           }
 
           v44 = [[_SFPBMediaOffer alloc] initWithFacade:*(*(&v54 + 1) + 8 * j)];
@@ -171,28 +171,28 @@
           }
         }
 
-        v41 = [v39 countByEnumeratingWithState:&v54 objects:v62 count:16];
+        v41 = [buyOptions2 countByEnumeratingWithState:&v54 objects:v62 count:16];
       }
 
       while (v41);
     }
 
     [(_SFPBMediaItem *)v5 setBuyOptions:v38];
-    v45 = [v4 contentAdvisory];
+    contentAdvisory = [facadeCopy contentAdvisory];
 
-    if (v45)
+    if (contentAdvisory)
     {
-      v46 = [v4 contentAdvisory];
-      [(_SFPBMediaItem *)v5 setContentAdvisory:v46];
+      contentAdvisory2 = [facadeCopy contentAdvisory];
+      [(_SFPBMediaItem *)v5 setContentAdvisory:contentAdvisory2];
     }
 
-    v47 = [v4 contentAdvisoryImage];
+    contentAdvisoryImage = [facadeCopy contentAdvisoryImage];
 
-    if (v47)
+    if (contentAdvisoryImage)
     {
       v48 = [_SFPBImage alloc];
-      v49 = [v4 contentAdvisoryImage];
-      v50 = [(_SFPBImage *)v48 initWithFacade:v49];
+      contentAdvisoryImage2 = [facadeCopy contentAdvisoryImage];
+      v50 = [(_SFPBImage *)v48 initWithFacade:contentAdvisoryImage2];
       [(_SFPBMediaItem *)v5 setContentAdvisoryImage:v50];
     }
 
@@ -203,16 +203,16 @@
   return v5;
 }
 
-- (_SFPBMediaItem)initWithDictionary:(id)a3
+- (_SFPBMediaItem)initWithDictionary:(id)dictionary
 {
   v63 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v60.receiver = self;
   v60.super_class = _SFPBMediaItem;
   v5 = [(_SFPBMediaItem *)&v60 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"title"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -220,7 +220,7 @@
       [(_SFPBMediaItem *)v5 setTitle:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"subtitleText"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"subtitleText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -228,7 +228,7 @@
       [(_SFPBMediaItem *)v5 setSubtitleText:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"thumbnail"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"thumbnail"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -236,7 +236,7 @@
       [(_SFPBMediaItem *)v5 setThumbnail:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"reviewGlyph"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"reviewGlyph"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -244,7 +244,7 @@
       [(_SFPBMediaItem *)v5 setReviewGlyph:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"overlayImage"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"overlayImage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -252,7 +252,7 @@
       [(_SFPBMediaItem *)v5 setOverlayImage:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"reviewText"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"reviewText"];
     objc_opt_class();
     v51 = v16;
     if (objc_opt_isKindOfClass())
@@ -264,7 +264,7 @@
     v45 = v14;
     v46 = v12;
     v47 = v10;
-    v18 = [v4 objectForKeyedSubscript:@"punchout"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"punchout"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -273,7 +273,7 @@
     }
 
     v44 = v18;
-    v20 = [v4 objectForKeyedSubscript:@"subtitleCustomLineBreaking"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"subtitleCustomLineBreaking"];
     objc_opt_class();
     v48 = v8;
     v49 = v6;
@@ -319,7 +319,7 @@
       v20 = v43;
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"buyOptions"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"buyOptions"];
     objc_opt_class();
     v50 = v28;
     if (objc_opt_isKindOfClass())
@@ -363,7 +363,7 @@
       v20 = v43;
     }
 
-    v36 = [v4 objectForKeyedSubscript:@"contentAdvisory"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"contentAdvisory"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -371,7 +371,7 @@
       [(_SFPBMediaItem *)v5 setContentAdvisory:v37];
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"contentAdvisoryImage"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"contentAdvisoryImage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -386,30 +386,30 @@
   return v5;
 }
 
-- (_SFPBMediaItem)initWithJSON:(id)a3
+- (_SFPBMediaItem)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBMediaItem *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBMediaItem *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBMediaItem *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -423,10 +423,10 @@
 - (id)dictionaryRepresentation
 {
   v45 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_buyOptions count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
@@ -446,16 +446,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v40 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v40 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -465,136 +465,136 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"buyOptions"];
+    [dictionary setObject:array forKeyedSubscript:@"buyOptions"];
   }
 
   if (self->_contentAdvisory)
   {
-    v12 = [(_SFPBMediaItem *)self contentAdvisory];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"contentAdvisory"];
+    contentAdvisory = [(_SFPBMediaItem *)self contentAdvisory];
+    v13 = [contentAdvisory copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"contentAdvisory"];
   }
 
   if (self->_contentAdvisoryImage)
   {
-    v14 = [(_SFPBMediaItem *)self contentAdvisoryImage];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    contentAdvisoryImage = [(_SFPBMediaItem *)self contentAdvisoryImage];
+    dictionaryRepresentation2 = [contentAdvisoryImage dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"contentAdvisoryImage"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"contentAdvisoryImage"];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v16 forKeyedSubscript:@"contentAdvisoryImage"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"contentAdvisoryImage"];
     }
   }
 
   if (self->_overlayImage)
   {
-    v17 = [(_SFPBMediaItem *)self overlayImage];
-    v18 = [v17 dictionaryRepresentation];
-    if (v18)
+    overlayImage = [(_SFPBMediaItem *)self overlayImage];
+    dictionaryRepresentation3 = [overlayImage dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v18 forKeyedSubscript:@"overlayImage"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"overlayImage"];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v19 forKeyedSubscript:@"overlayImage"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"overlayImage"];
     }
   }
 
   if (self->_punchout)
   {
-    v20 = [(_SFPBMediaItem *)self punchout];
-    v21 = [v20 dictionaryRepresentation];
-    if (v21)
+    punchout = [(_SFPBMediaItem *)self punchout];
+    dictionaryRepresentation4 = [punchout dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v21 forKeyedSubscript:@"punchout"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"punchout"];
     }
 
     else
     {
-      v22 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v22 forKeyedSubscript:@"punchout"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"punchout"];
     }
   }
 
   if (self->_reviewGlyph)
   {
-    v23 = [(_SFPBMediaItem *)self reviewGlyph];
-    v24 = [v23 dictionaryRepresentation];
-    if (v24)
+    reviewGlyph = [(_SFPBMediaItem *)self reviewGlyph];
+    dictionaryRepresentation5 = [reviewGlyph dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v24 forKeyedSubscript:@"reviewGlyph"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"reviewGlyph"];
     }
 
     else
     {
-      v25 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v25 forKeyedSubscript:@"reviewGlyph"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"reviewGlyph"];
     }
   }
 
   if (self->_reviewText)
   {
-    v26 = [(_SFPBMediaItem *)self reviewText];
-    v27 = [v26 copy];
-    [v3 setObject:v27 forKeyedSubscript:@"reviewText"];
+    reviewText = [(_SFPBMediaItem *)self reviewText];
+    v27 = [reviewText copy];
+    [dictionary setObject:v27 forKeyedSubscript:@"reviewText"];
   }
 
   if (self->_subtitleCustomLineBreakings)
   {
-    v28 = [(_SFPBMediaItem *)self subtitleCustomLineBreakings];
-    v29 = [v28 copy];
-    [v3 setObject:v29 forKeyedSubscript:@"subtitleCustomLineBreaking"];
+    subtitleCustomLineBreakings = [(_SFPBMediaItem *)self subtitleCustomLineBreakings];
+    v29 = [subtitleCustomLineBreakings copy];
+    [dictionary setObject:v29 forKeyedSubscript:@"subtitleCustomLineBreaking"];
   }
 
   if (self->_subtitleText)
   {
-    v30 = [(_SFPBMediaItem *)self subtitleText];
-    v31 = [v30 dictionaryRepresentation];
-    if (v31)
+    subtitleText = [(_SFPBMediaItem *)self subtitleText];
+    dictionaryRepresentation6 = [subtitleText dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v31 forKeyedSubscript:@"subtitleText"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"subtitleText"];
     }
 
     else
     {
-      v32 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v32 forKeyedSubscript:@"subtitleText"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"subtitleText"];
     }
   }
 
   if (self->_thumbnail)
   {
-    v33 = [(_SFPBMediaItem *)self thumbnail];
-    v34 = [v33 dictionaryRepresentation];
-    if (v34)
+    thumbnail = [(_SFPBMediaItem *)self thumbnail];
+    dictionaryRepresentation7 = [thumbnail dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v34 forKeyedSubscript:@"thumbnail"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"thumbnail"];
     }
 
     else
     {
-      v35 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v35 forKeyedSubscript:@"thumbnail"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"thumbnail"];
     }
   }
 
   if (self->_title)
   {
-    v36 = [(_SFPBMediaItem *)self title];
-    v37 = [v36 copy];
-    [v3 setObject:v37 forKeyedSubscript:@"title"];
+    title = [(_SFPBMediaItem *)self title];
+    v37 = [title copy];
+    [dictionary setObject:v37 forKeyedSubscript:@"title"];
   }
 
   v38 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -612,28 +612,28 @@
   return v9 ^ v12 ^ [(_SFPBImage *)self->_contentAdvisoryImage hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_57;
   }
 
-  v5 = [(_SFPBMediaItem *)self title];
-  v6 = [v4 title];
-  if ((v5 != 0) == (v6 == 0))
+  title = [(_SFPBMediaItem *)self title];
+  title2 = [equalCopy title];
+  if ((title != 0) == (title2 == 0))
   {
     goto LABEL_56;
   }
 
-  v7 = [(_SFPBMediaItem *)self title];
-  if (v7)
+  title3 = [(_SFPBMediaItem *)self title];
+  if (title3)
   {
-    v8 = v7;
-    v9 = [(_SFPBMediaItem *)self title];
-    v10 = [v4 title];
-    v11 = [v9 isEqual:v10];
+    v8 = title3;
+    title4 = [(_SFPBMediaItem *)self title];
+    title5 = [equalCopy title];
+    v11 = [title4 isEqual:title5];
 
     if (!v11)
     {
@@ -645,20 +645,20 @@
   {
   }
 
-  v5 = [(_SFPBMediaItem *)self subtitleText];
-  v6 = [v4 subtitleText];
-  if ((v5 != 0) == (v6 == 0))
+  title = [(_SFPBMediaItem *)self subtitleText];
+  title2 = [equalCopy subtitleText];
+  if ((title != 0) == (title2 == 0))
   {
     goto LABEL_56;
   }
 
-  v12 = [(_SFPBMediaItem *)self subtitleText];
-  if (v12)
+  subtitleText = [(_SFPBMediaItem *)self subtitleText];
+  if (subtitleText)
   {
-    v13 = v12;
-    v14 = [(_SFPBMediaItem *)self subtitleText];
-    v15 = [v4 subtitleText];
-    v16 = [v14 isEqual:v15];
+    v13 = subtitleText;
+    subtitleText2 = [(_SFPBMediaItem *)self subtitleText];
+    subtitleText3 = [equalCopy subtitleText];
+    v16 = [subtitleText2 isEqual:subtitleText3];
 
     if (!v16)
     {
@@ -670,20 +670,20 @@
   {
   }
 
-  v5 = [(_SFPBMediaItem *)self thumbnail];
-  v6 = [v4 thumbnail];
-  if ((v5 != 0) == (v6 == 0))
+  title = [(_SFPBMediaItem *)self thumbnail];
+  title2 = [equalCopy thumbnail];
+  if ((title != 0) == (title2 == 0))
   {
     goto LABEL_56;
   }
 
-  v17 = [(_SFPBMediaItem *)self thumbnail];
-  if (v17)
+  thumbnail = [(_SFPBMediaItem *)self thumbnail];
+  if (thumbnail)
   {
-    v18 = v17;
-    v19 = [(_SFPBMediaItem *)self thumbnail];
-    v20 = [v4 thumbnail];
-    v21 = [v19 isEqual:v20];
+    v18 = thumbnail;
+    thumbnail2 = [(_SFPBMediaItem *)self thumbnail];
+    thumbnail3 = [equalCopy thumbnail];
+    v21 = [thumbnail2 isEqual:thumbnail3];
 
     if (!v21)
     {
@@ -695,20 +695,20 @@
   {
   }
 
-  v5 = [(_SFPBMediaItem *)self reviewGlyph];
-  v6 = [v4 reviewGlyph];
-  if ((v5 != 0) == (v6 == 0))
+  title = [(_SFPBMediaItem *)self reviewGlyph];
+  title2 = [equalCopy reviewGlyph];
+  if ((title != 0) == (title2 == 0))
   {
     goto LABEL_56;
   }
 
-  v22 = [(_SFPBMediaItem *)self reviewGlyph];
-  if (v22)
+  reviewGlyph = [(_SFPBMediaItem *)self reviewGlyph];
+  if (reviewGlyph)
   {
-    v23 = v22;
-    v24 = [(_SFPBMediaItem *)self reviewGlyph];
-    v25 = [v4 reviewGlyph];
-    v26 = [v24 isEqual:v25];
+    v23 = reviewGlyph;
+    reviewGlyph2 = [(_SFPBMediaItem *)self reviewGlyph];
+    reviewGlyph3 = [equalCopy reviewGlyph];
+    v26 = [reviewGlyph2 isEqual:reviewGlyph3];
 
     if (!v26)
     {
@@ -720,20 +720,20 @@
   {
   }
 
-  v5 = [(_SFPBMediaItem *)self overlayImage];
-  v6 = [v4 overlayImage];
-  if ((v5 != 0) == (v6 == 0))
+  title = [(_SFPBMediaItem *)self overlayImage];
+  title2 = [equalCopy overlayImage];
+  if ((title != 0) == (title2 == 0))
   {
     goto LABEL_56;
   }
 
-  v27 = [(_SFPBMediaItem *)self overlayImage];
-  if (v27)
+  overlayImage = [(_SFPBMediaItem *)self overlayImage];
+  if (overlayImage)
   {
-    v28 = v27;
-    v29 = [(_SFPBMediaItem *)self overlayImage];
-    v30 = [v4 overlayImage];
-    v31 = [v29 isEqual:v30];
+    v28 = overlayImage;
+    overlayImage2 = [(_SFPBMediaItem *)self overlayImage];
+    overlayImage3 = [equalCopy overlayImage];
+    v31 = [overlayImage2 isEqual:overlayImage3];
 
     if (!v31)
     {
@@ -745,20 +745,20 @@
   {
   }
 
-  v5 = [(_SFPBMediaItem *)self reviewText];
-  v6 = [v4 reviewText];
-  if ((v5 != 0) == (v6 == 0))
+  title = [(_SFPBMediaItem *)self reviewText];
+  title2 = [equalCopy reviewText];
+  if ((title != 0) == (title2 == 0))
   {
     goto LABEL_56;
   }
 
-  v32 = [(_SFPBMediaItem *)self reviewText];
-  if (v32)
+  reviewText = [(_SFPBMediaItem *)self reviewText];
+  if (reviewText)
   {
-    v33 = v32;
-    v34 = [(_SFPBMediaItem *)self reviewText];
-    v35 = [v4 reviewText];
-    v36 = [v34 isEqual:v35];
+    v33 = reviewText;
+    reviewText2 = [(_SFPBMediaItem *)self reviewText];
+    reviewText3 = [equalCopy reviewText];
+    v36 = [reviewText2 isEqual:reviewText3];
 
     if (!v36)
     {
@@ -770,20 +770,20 @@
   {
   }
 
-  v5 = [(_SFPBMediaItem *)self punchout];
-  v6 = [v4 punchout];
-  if ((v5 != 0) == (v6 == 0))
+  title = [(_SFPBMediaItem *)self punchout];
+  title2 = [equalCopy punchout];
+  if ((title != 0) == (title2 == 0))
   {
     goto LABEL_56;
   }
 
-  v37 = [(_SFPBMediaItem *)self punchout];
-  if (v37)
+  punchout = [(_SFPBMediaItem *)self punchout];
+  if (punchout)
   {
-    v38 = v37;
-    v39 = [(_SFPBMediaItem *)self punchout];
-    v40 = [v4 punchout];
-    v41 = [v39 isEqual:v40];
+    v38 = punchout;
+    punchout2 = [(_SFPBMediaItem *)self punchout];
+    punchout3 = [equalCopy punchout];
+    v41 = [punchout2 isEqual:punchout3];
 
     if (!v41)
     {
@@ -795,20 +795,20 @@
   {
   }
 
-  v5 = [(_SFPBMediaItem *)self subtitleCustomLineBreakings];
-  v6 = [v4 subtitleCustomLineBreakings];
-  if ((v5 != 0) == (v6 == 0))
+  title = [(_SFPBMediaItem *)self subtitleCustomLineBreakings];
+  title2 = [equalCopy subtitleCustomLineBreakings];
+  if ((title != 0) == (title2 == 0))
   {
     goto LABEL_56;
   }
 
-  v42 = [(_SFPBMediaItem *)self subtitleCustomLineBreakings];
-  if (v42)
+  subtitleCustomLineBreakings = [(_SFPBMediaItem *)self subtitleCustomLineBreakings];
+  if (subtitleCustomLineBreakings)
   {
-    v43 = v42;
-    v44 = [(_SFPBMediaItem *)self subtitleCustomLineBreakings];
-    v45 = [v4 subtitleCustomLineBreakings];
-    v46 = [v44 isEqual:v45];
+    v43 = subtitleCustomLineBreakings;
+    subtitleCustomLineBreakings2 = [(_SFPBMediaItem *)self subtitleCustomLineBreakings];
+    subtitleCustomLineBreakings3 = [equalCopy subtitleCustomLineBreakings];
+    v46 = [subtitleCustomLineBreakings2 isEqual:subtitleCustomLineBreakings3];
 
     if (!v46)
     {
@@ -820,20 +820,20 @@
   {
   }
 
-  v5 = [(_SFPBMediaItem *)self buyOptions];
-  v6 = [v4 buyOptions];
-  if ((v5 != 0) == (v6 == 0))
+  title = [(_SFPBMediaItem *)self buyOptions];
+  title2 = [equalCopy buyOptions];
+  if ((title != 0) == (title2 == 0))
   {
     goto LABEL_56;
   }
 
-  v47 = [(_SFPBMediaItem *)self buyOptions];
-  if (v47)
+  buyOptions = [(_SFPBMediaItem *)self buyOptions];
+  if (buyOptions)
   {
-    v48 = v47;
-    v49 = [(_SFPBMediaItem *)self buyOptions];
-    v50 = [v4 buyOptions];
-    v51 = [v49 isEqual:v50];
+    v48 = buyOptions;
+    buyOptions2 = [(_SFPBMediaItem *)self buyOptions];
+    buyOptions3 = [equalCopy buyOptions];
+    v51 = [buyOptions2 isEqual:buyOptions3];
 
     if (!v51)
     {
@@ -845,20 +845,20 @@
   {
   }
 
-  v5 = [(_SFPBMediaItem *)self contentAdvisory];
-  v6 = [v4 contentAdvisory];
-  if ((v5 != 0) == (v6 == 0))
+  title = [(_SFPBMediaItem *)self contentAdvisory];
+  title2 = [equalCopy contentAdvisory];
+  if ((title != 0) == (title2 == 0))
   {
     goto LABEL_56;
   }
 
-  v52 = [(_SFPBMediaItem *)self contentAdvisory];
-  if (v52)
+  contentAdvisory = [(_SFPBMediaItem *)self contentAdvisory];
+  if (contentAdvisory)
   {
-    v53 = v52;
-    v54 = [(_SFPBMediaItem *)self contentAdvisory];
-    v55 = [v4 contentAdvisory];
-    v56 = [v54 isEqual:v55];
+    v53 = contentAdvisory;
+    contentAdvisory2 = [(_SFPBMediaItem *)self contentAdvisory];
+    contentAdvisory3 = [equalCopy contentAdvisory];
+    v56 = [contentAdvisory2 isEqual:contentAdvisory3];
 
     if (!v56)
     {
@@ -870,12 +870,12 @@
   {
   }
 
-  v5 = [(_SFPBMediaItem *)self contentAdvisoryImage];
-  v6 = [v4 contentAdvisoryImage];
-  if ((v5 != 0) != (v6 == 0))
+  title = [(_SFPBMediaItem *)self contentAdvisoryImage];
+  title2 = [equalCopy contentAdvisoryImage];
+  if ((title != 0) != (title2 == 0))
   {
-    v57 = [(_SFPBMediaItem *)self contentAdvisoryImage];
-    if (!v57)
+    contentAdvisoryImage = [(_SFPBMediaItem *)self contentAdvisoryImage];
+    if (!contentAdvisoryImage)
     {
 
 LABEL_60:
@@ -883,10 +883,10 @@ LABEL_60:
       goto LABEL_58;
     }
 
-    v58 = v57;
-    v59 = [(_SFPBMediaItem *)self contentAdvisoryImage];
-    v60 = [v4 contentAdvisoryImage];
-    v61 = [v59 isEqual:v60];
+    v58 = contentAdvisoryImage;
+    contentAdvisoryImage2 = [(_SFPBMediaItem *)self contentAdvisoryImage];
+    contentAdvisoryImage3 = [equalCopy contentAdvisoryImage];
+    v61 = [contentAdvisoryImage2 isEqual:contentAdvisoryImage3];
 
     if (v61)
     {
@@ -906,58 +906,58 @@ LABEL_58:
   return v62;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBMediaItem *)self title];
-  if (v5)
+  toCopy = to;
+  title = [(_SFPBMediaItem *)self title];
+  if (title)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBMediaItem *)self subtitleText];
-  if (v6)
+  subtitleText = [(_SFPBMediaItem *)self subtitleText];
+  if (subtitleText)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_SFPBMediaItem *)self thumbnail];
-  if (v7)
+  thumbnail = [(_SFPBMediaItem *)self thumbnail];
+  if (thumbnail)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_SFPBMediaItem *)self reviewGlyph];
-  if (v8)
+  reviewGlyph = [(_SFPBMediaItem *)self reviewGlyph];
+  if (reviewGlyph)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(_SFPBMediaItem *)self overlayImage];
-  if (v9)
+  overlayImage = [(_SFPBMediaItem *)self overlayImage];
+  if (overlayImage)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_SFPBMediaItem *)self reviewText];
-  if (v10)
+  reviewText = [(_SFPBMediaItem *)self reviewText];
+  if (reviewText)
   {
     PBDataWriterWriteStringField();
   }
 
-  v11 = [(_SFPBMediaItem *)self punchout];
-  if (v11)
+  punchout = [(_SFPBMediaItem *)self punchout];
+  if (punchout)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(_SFPBMediaItem *)self subtitleCustomLineBreakings];
+  subtitleCustomLineBreakings = [(_SFPBMediaItem *)self subtitleCustomLineBreakings];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v13 = [v12 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  v13 = [subtitleCustomLineBreakings countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v13)
   {
     v14 = v13;
@@ -969,7 +969,7 @@ LABEL_58:
       {
         if (*v32 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(subtitleCustomLineBreakings);
         }
 
         v17 = *(*(&v31 + 1) + 8 * v16);
@@ -978,18 +978,18 @@ LABEL_58:
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v14 = [subtitleCustomLineBreakings countByEnumeratingWithState:&v31 objects:v36 count:16];
     }
 
     while (v14);
   }
 
-  v18 = [(_SFPBMediaItem *)self buyOptions];
+  buyOptions = [(_SFPBMediaItem *)self buyOptions];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v19 = [v18 countByEnumeratingWithState:&v27 objects:v35 count:16];
+  v19 = [buyOptions countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v19)
   {
     v20 = v19;
@@ -1001,7 +1001,7 @@ LABEL_58:
       {
         if (*v28 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(buyOptions);
         }
 
         v23 = *(*(&v27 + 1) + 8 * v22);
@@ -1010,20 +1010,20 @@ LABEL_58:
       }
 
       while (v20 != v22);
-      v20 = [v18 countByEnumeratingWithState:&v27 objects:v35 count:16];
+      v20 = [buyOptions countByEnumeratingWithState:&v27 objects:v35 count:16];
     }
 
     while (v20);
   }
 
-  v24 = [(_SFPBMediaItem *)self contentAdvisory];
-  if (v24)
+  contentAdvisory = [(_SFPBMediaItem *)self contentAdvisory];
+  if (contentAdvisory)
   {
     PBDataWriterWriteStringField();
   }
 
-  v25 = [(_SFPBMediaItem *)self contentAdvisoryImage];
-  if (v25)
+  contentAdvisoryImage = [(_SFPBMediaItem *)self contentAdvisoryImage];
+  if (contentAdvisoryImage)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -1031,81 +1031,81 @@ LABEL_58:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setContentAdvisory:(id)a3
+- (void)setContentAdvisory:(id)advisory
 {
-  v4 = [a3 copy];
+  v4 = [advisory copy];
   contentAdvisory = self->_contentAdvisory;
   self->_contentAdvisory = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addBuyOptions:(id)a3
+- (void)addBuyOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   buyOptions = self->_buyOptions;
-  v8 = v4;
+  v8 = optionsCopy;
   if (!buyOptions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_buyOptions;
-    self->_buyOptions = v6;
+    self->_buyOptions = array;
 
-    v4 = v8;
+    optionsCopy = v8;
     buyOptions = self->_buyOptions;
   }
 
-  [(NSArray *)buyOptions addObject:v4];
+  [(NSArray *)buyOptions addObject:optionsCopy];
 }
 
-- (void)setBuyOptions:(id)a3
+- (void)setBuyOptions:(id)options
 {
-  v4 = [a3 copy];
+  v4 = [options copy];
   buyOptions = self->_buyOptions;
   self->_buyOptions = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addSubtitleCustomLineBreaking:(id)a3
+- (void)addSubtitleCustomLineBreaking:(id)breaking
 {
-  v4 = a3;
+  breakingCopy = breaking;
   subtitleCustomLineBreakings = self->_subtitleCustomLineBreakings;
-  v8 = v4;
+  v8 = breakingCopy;
   if (!subtitleCustomLineBreakings)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_subtitleCustomLineBreakings;
-    self->_subtitleCustomLineBreakings = v6;
+    self->_subtitleCustomLineBreakings = array;
 
-    v4 = v8;
+    breakingCopy = v8;
     subtitleCustomLineBreakings = self->_subtitleCustomLineBreakings;
   }
 
-  [(NSArray *)subtitleCustomLineBreakings addObject:v4];
+  [(NSArray *)subtitleCustomLineBreakings addObject:breakingCopy];
 }
 
-- (void)setSubtitleCustomLineBreaking:(id)a3
+- (void)setSubtitleCustomLineBreaking:(id)breaking
 {
-  v4 = [a3 copy];
+  v4 = [breaking copy];
   subtitleCustomLineBreakings = self->_subtitleCustomLineBreakings;
   self->_subtitleCustomLineBreakings = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setReviewText:(id)a3
+- (void)setReviewText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   reviewText = self->_reviewText;
   self->_reviewText = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   title = self->_title;
   self->_title = v4;
 

@@ -1,38 +1,38 @@
 @interface BMUAFAssetMetadata
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMUAFAssetMetadata)initWithAssetName:(id)a3 assetSizeInBytes:(id)a4;
-- (BMUAFAssetMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMUAFAssetMetadata)initWithAssetName:(id)name assetSizeInBytes:(id)bytes;
+- (BMUAFAssetMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMUAFAssetMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMUAFAssetMetadata *)self assetName];
-    v7 = [v5 assetName];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    assetName = [(BMUAFAssetMetadata *)self assetName];
+    assetName2 = [v5 assetName];
+    v8 = assetName2;
+    if (assetName == assetName2)
     {
     }
 
     else
     {
-      v9 = [(BMUAFAssetMetadata *)self assetName];
-      v10 = [v5 assetName];
-      v11 = [v9 isEqual:v10];
+      assetName3 = [(BMUAFAssetMetadata *)self assetName];
+      assetName4 = [v5 assetName];
+      v11 = [assetName3 isEqual:assetName4];
 
       if (!v11)
       {
@@ -48,8 +48,8 @@
 
     if (-[BMUAFAssetMetadata hasAssetSizeInBytes](self, "hasAssetSizeInBytes") && [v5 hasAssetSizeInBytes])
     {
-      v13 = [(BMUAFAssetMetadata *)self assetSizeInBytes];
-      v12 = v13 == [v5 assetSizeInBytes];
+      assetSizeInBytes = [(BMUAFAssetMetadata *)self assetSizeInBytes];
+      v12 = assetSizeInBytes == [v5 assetSizeInBytes];
 LABEL_13:
 
       goto LABEL_14;
@@ -69,7 +69,7 @@ LABEL_14:
 - (id)jsonDictionary
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = [(BMUAFAssetMetadata *)self assetName];
+  assetName = [(BMUAFAssetMetadata *)self assetName];
   if ([(BMUAFAssetMetadata *)self hasAssetSizeInBytes])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[BMUAFAssetMetadata assetSizeInBytes](self, "assetSizeInBytes")}];
@@ -81,25 +81,25 @@ LABEL_14:
   }
 
   v10[0] = @"assetName";
-  v5 = v3;
-  if (!v3)
+  null = assetName;
+  if (!assetName)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"assetSizeInBytes";
-  v11[0] = v5;
-  v6 = v4;
+  v11[0] = null;
+  null2 = v4;
   if (!v4)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
   if (v4)
   {
-    if (v3)
+    if (assetName)
     {
       goto LABEL_10;
     }
@@ -108,7 +108,7 @@ LABEL_14:
   else
   {
 
-    if (v3)
+    if (assetName)
     {
       goto LABEL_10;
     }
@@ -120,20 +120,20 @@ LABEL_10:
   return v7;
 }
 
-- (BMUAFAssetMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMUAFAssetMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"assetName"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"assetName"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v8 = 0;
-        v11 = 0;
+        selfCopy = 0;
         goto LABEL_9;
       }
 
@@ -145,8 +145,8 @@ LABEL_10:
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
       v16 = [v14 initWithDomain:v15 code:2 userInfo:v9];
       v8 = 0;
-      v11 = 0;
-      *a4 = v16;
+      selfCopy = 0;
+      *error = v16;
       goto LABEL_8;
     }
 
@@ -158,13 +158,13 @@ LABEL_10:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"assetSizeInBytes"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"assetSizeInBytes"];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v17 = objc_alloc(MEMORY[0x1E696ABC0]);
         v18 = *MEMORY[0x1E698F240];
@@ -172,11 +172,11 @@ LABEL_10:
         v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"assetSizeInBytes"];
         v22 = v19;
         v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-        *a4 = [v17 initWithDomain:v18 code:2 userInfo:v20];
+        *error = [v17 initWithDomain:v18 code:2 userInfo:v20];
       }
 
       v10 = 0;
-      v11 = 0;
+      selfCopy = 0;
       goto LABEL_8;
     }
 
@@ -189,44 +189,44 @@ LABEL_10:
   }
 
   self = [(BMUAFAssetMetadata *)self initWithAssetName:v8 assetSizeInBytes:v10];
-  v11 = self;
+  selfCopy = self;
 LABEL_8:
 
 LABEL_9:
   v12 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMUAFAssetMetadata *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_assetName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_hasAssetSizeInBytes)
   {
     assetSizeInBytes = self->_assetSizeInBytes;
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v27.receiver = self;
   v27.super_class = BMUAFAssetMetadata;
   v5 = [(BMEventBase *)&v27 init];
@@ -235,12 +235,12 @@ LABEL_9:
     goto LABEL_39;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -251,18 +251,18 @@ LABEL_9:
       while (1)
       {
         v28 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v28 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v28 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v28 & 0x7F) << v7;
@@ -280,9 +280,9 @@ LABEL_9:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -296,18 +296,18 @@ LABEL_16:
         while (1)
         {
           v28 = 0;
-          v20 = [v4 position] + 1;
-          if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 1, v21 <= objc_msgSend(v4, "length")))
+          v20 = [fromCopy position] + 1;
+          if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 1, v21 <= objc_msgSend(fromCopy, "length")))
           {
-            v22 = [v4 data];
-            [v22 getBytes:&v28 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v28 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v19 |= (v28 & 0x7F) << v17;
@@ -325,7 +325,7 @@ LABEL_16:
           }
         }
 
-        v23 = [v4 hasError] ? 0 : v19;
+        v23 = [fromCopy hasError] ? 0 : v19;
 LABEL_35:
         v5->_assetSizeInBytes = v23;
       }
@@ -342,13 +342,13 @@ LABEL_35:
         goto LABEL_38;
       }
 
-      v24 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v24 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_38:
     v25 = 0;
@@ -366,37 +366,37 @@ LABEL_39:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMUAFAssetMetadata *)self assetName];
+  assetName = [(BMUAFAssetMetadata *)self assetName];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[BMUAFAssetMetadata assetSizeInBytes](self, "assetSizeInBytes")}];
-  v6 = [v3 initWithFormat:@"BMUAFAssetMetadata with assetName: %@, assetSizeInBytes: %@", v4, v5];
+  v6 = [v3 initWithFormat:@"BMUAFAssetMetadata with assetName: %@, assetSizeInBytes: %@", assetName, v5];
 
   return v6;
 }
 
-- (BMUAFAssetMetadata)initWithAssetName:(id)a3 assetSizeInBytes:(id)a4
+- (BMUAFAssetMetadata)initWithAssetName:(id)name assetSizeInBytes:(id)bytes
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  bytesCopy = bytes;
   v12.receiver = self;
   v12.super_class = BMUAFAssetMetadata;
   v9 = [(BMEventBase *)&v12 init];
   if (v9)
   {
     v9->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v9->_assetName, a3);
-    if (v8)
+    objc_storeStrong(&v9->_assetName, name);
+    if (bytesCopy)
     {
       v9->_hasAssetSizeInBytes = 1;
-      v10 = [v8 unsignedLongLongValue];
+      unsignedLongLongValue = [bytesCopy unsignedLongLongValue];
     }
 
     else
     {
-      v10 = 0;
+      unsignedLongLongValue = 0;
       v9->_hasAssetSizeInBytes = 0;
     }
 
-    v9->_assetSizeInBytes = v10;
+    v9->_assetSizeInBytes = unsignedLongLongValue;
   }
 
   return v9;
@@ -430,9 +430,9 @@ LABEL_39:
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -440,8 +440,8 @@ LABEL_39:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMUAFAssetMetadata alloc] initByReadFrom:v7];
     v4 = v8;

@@ -6,36 +6,36 @@
 
 - (id)outputImage
 {
-  v3 = [(NUHDRApplyToneMapFilter *)self inputImage];
-  v4 = [(NUHDRApplyToneMapFilter *)self inputColorSpace];
-  v5 = [v4 CGColorSpace];
+  inputImage = [(NUHDRApplyToneMapFilter *)self inputImage];
+  inputColorSpace = [(NUHDRApplyToneMapFilter *)self inputColorSpace];
+  cGColorSpace = [inputColorSpace CGColorSpace];
 
-  if (v5)
+  if (cGColorSpace)
   {
-    v6 = [v3 imageByTaggingWithColorSpace:v5];
+    v6 = [inputImage imageByTaggingWithColorSpace:cGColorSpace];
 
-    v3 = v6;
+    inputImage = v6;
   }
 
-  if (v3)
+  if (inputImage)
   {
-    v7 = [(NUHDRApplyToneMapFilter *)self inputSourceHeadroom];
-    [v7 floatValue];
+    inputSourceHeadroom = [(NUHDRApplyToneMapFilter *)self inputSourceHeadroom];
+    [inputSourceHeadroom floatValue];
     v9 = v8;
 
-    v10 = [(NUHDRApplyToneMapFilter *)self inputTargetHeadroom];
-    [v10 floatValue];
+    inputTargetHeadroom = [(NUHDRApplyToneMapFilter *)self inputTargetHeadroom];
+    [inputTargetHeadroom floatValue];
     v12 = v11;
 
     if (v9 == 0.0 && (-[NUHDRApplyToneMapFilter inputColorSpace](self, "inputColorSpace"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 isExtended], v13, v14))
     {
-      v15 = v3;
+      outputImage = inputImage;
     }
 
     else
     {
       v16 = [MEMORY[0x1E695F648] filterWithName:@"CIToneMapHeadroom"];
-      [v16 setValue:v3 forKey:*MEMORY[0x1E695FAB0]];
+      [v16 setValue:inputImage forKey:*MEMORY[0x1E695FAB0]];
       *&v17 = v9;
       v18 = [MEMORY[0x1E696AD98] numberWithFloat:v17];
       [v16 setValue:v18 forKey:@"inputSourceHeadroom"];
@@ -44,16 +44,16 @@
       v20 = [MEMORY[0x1E696AD98] numberWithFloat:v19];
       [v16 setValue:v20 forKey:@"inputTargetHeadroom"];
 
-      v15 = [v16 outputImage];
+      outputImage = [v16 outputImage];
     }
   }
 
   else
   {
-    v15 = 0;
+    outputImage = 0;
   }
 
-  return v15;
+  return outputImage;
 }
 
 @end

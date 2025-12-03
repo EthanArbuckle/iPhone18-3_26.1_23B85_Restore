@@ -1,21 +1,21 @@
 @interface IRReplayDatabaseHandler
-+ (id)exportDatabaseToPath:(id)a3;
-- (IRReplayDatabaseHandler)initWithPeristenceManager:(id)a3;
-- (IRReplayDatabaseHandler)initWithStoreDirectory:(id)a3;
-- (id)deviceAttributesFromCandidateIdentifier:(id)a3 withServiceIdentifier:(id)a4;
-- (id)deviceAttributesSetFromCandidateIdentifier:(id)a3 withServiceIdentifier:(id)a4;
++ (id)exportDatabaseToPath:(id)path;
+- (IRReplayDatabaseHandler)initWithPeristenceManager:(id)manager;
+- (IRReplayDatabaseHandler)initWithStoreDirectory:(id)directory;
+- (id)deviceAttributesFromCandidateIdentifier:(id)identifier withServiceIdentifier:(id)serviceIdentifier;
+- (id)deviceAttributesSetFromCandidateIdentifier:(id)identifier withServiceIdentifier:(id)serviceIdentifier;
 - (id)getAllServices;
-- (id)getEventsForServiceIdentifier:(id)a3;
-- (id)getSortedEventsForServiceIdentifier:(id)a3;
-- (id)getSortedHistoryEventsForServiceIdentifier:(id)a3;
-- (id)inspectEventByDate:(id)a3 andServiceIdentifier:(id)a4 historyEvents:(id)a5;
+- (id)getEventsForServiceIdentifier:(id)identifier;
+- (id)getSortedEventsForServiceIdentifier:(id)identifier;
+- (id)getSortedHistoryEventsForServiceIdentifier:(id)identifier;
+- (id)inspectEventByDate:(id)date andServiceIdentifier:(id)identifier historyEvents:(id)events;
 @end
 
 @implementation IRReplayDatabaseHandler
 
-- (IRReplayDatabaseHandler)initWithStoreDirectory:(id)a3
+- (IRReplayDatabaseHandler)initWithStoreDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   v14.receiver = self;
   v14.super_class = IRReplayDatabaseHandler;
   v5 = [(IRReplayDatabaseHandler *)&v14 init];
@@ -26,7 +26,7 @@
 
   v6 = [IRPersistenceManager alloc];
   v7 = +[IRPersistenceManager defaultModelsDirectory];
-  v8 = [(IRPersistenceManager *)v6 initWithModelsDirectory:v7 storesDirectory:v4];
+  v8 = [(IRPersistenceManager *)v6 initWithModelsDirectory:v7 storesDirectory:directoryCopy];
   persistanceManager = v5->_persistanceManager;
   v5->_persistanceManager = v8;
 
@@ -51,14 +51,14 @@ LABEL_3:
   return v10;
 }
 
-- (IRReplayDatabaseHandler)initWithPeristenceManager:(id)a3
+- (IRReplayDatabaseHandler)initWithPeristenceManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = IRReplayDatabaseHandler;
   v6 = [(IRReplayDatabaseHandler *)&v12 init];
   p_isa = &v6->super.isa;
-  if (v6 && (objc_storeStrong(&v6->_persistanceManager, a3), ([p_isa[1] connectToStore] & 1) == 0))
+  if (v6 && (objc_storeStrong(&v6->_persistanceManager, manager), ([p_isa[1] connectToStore] & 1) == 0))
   {
     v9 = *MEMORY[0x277D21260];
     if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_DEFAULT))
@@ -78,9 +78,9 @@ LABEL_3:
   return v8;
 }
 
-+ (id)exportDatabaseToPath:(id)a3
++ (id)exportDatabaseToPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = dispatch_semaphore_create(0);
   v27 = 0;
   v28 = &v27;
@@ -102,7 +102,7 @@ LABEL_3:
   v6 = v4;
   v17 = v6;
   v19 = &v27;
-  v7 = v3;
+  v7 = pathCopy;
   v18 = v7;
   v20 = &v21;
   [v5 databaseExportwithReply:&v13];
@@ -324,20 +324,20 @@ void __41__IRReplayDatabaseHandler_getAllServices__block_invoke(uint64_t a1, voi
   [v4 setObject:v6 forKeyedSubscript:v5];
 }
 
-- (id)getSortedEventsForServiceIdentifier:(id)a3
+- (id)getSortedEventsForServiceIdentifier:(id)identifier
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [[IRServiceStore alloc] initWithPersistenceManager:self->_persistanceManager serviceIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[IRServiceStore alloc] initWithPersistenceManager:self->_persistanceManager serviceIdentifier:identifierCopy];
 
-  v6 = [(IRServiceStore *)v5 fetchReplayEventsContainer];
-  if (v6)
+  fetchReplayEventsContainer = [(IRServiceStore *)v5 fetchReplayEventsContainer];
+  if (fetchReplayEventsContainer)
   {
     v7 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"date" ascending:1];
-    v8 = [v6 replayEvents];
+    replayEvents = [fetchReplayEventsContainer replayEvents];
     v13[0] = v7;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-    v10 = [v8 sortedArrayUsingDescriptors:v9];
+    v10 = [replayEvents sortedArrayUsingDescriptors:v9];
   }
 
   else
@@ -350,33 +350,33 @@ void __41__IRReplayDatabaseHandler_getAllServices__block_invoke(uint64_t a1, voi
   return v10;
 }
 
-- (id)getEventsForServiceIdentifier:(id)a3
+- (id)getEventsForServiceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[IRServiceStore alloc] initWithPersistenceManager:self->_persistanceManager serviceIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[IRServiceStore alloc] initWithPersistenceManager:self->_persistanceManager serviceIdentifier:identifierCopy];
 
-  v6 = [(IRServiceStore *)v5 getReplayEventDescriptors];
+  getReplayEventDescriptors = [(IRServiceStore *)v5 getReplayEventDescriptors];
 
-  return v6;
+  return getReplayEventDescriptors;
 }
 
-- (id)getSortedHistoryEventsForServiceIdentifier:(id)a3
+- (id)getSortedHistoryEventsForServiceIdentifier:(id)identifier
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [[IRServiceStore alloc] initWithPersistenceManager:self->_persistanceManager serviceIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[IRServiceStore alloc] initWithPersistenceManager:self->_persistanceManager serviceIdentifier:identifierCopy];
 
   v6 = +[IRPreferences shared];
-  v7 = [v6 numberOfEventsToSaveInDisk];
-  v8 = -[IRServiceStore fetchHistoryEventsContainerWithLimit:](v5, "fetchHistoryEventsContainerWithLimit:", [v7 unsignedIntValue]);
+  numberOfEventsToSaveInDisk = [v6 numberOfEventsToSaveInDisk];
+  v8 = -[IRServiceStore fetchHistoryEventsContainerWithLimit:](v5, "fetchHistoryEventsContainerWithLimit:", [numberOfEventsToSaveInDisk unsignedIntValue]);
 
   if (v8)
   {
     v9 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"date" ascending:1];
-    v10 = [v8 historyEvents];
+    historyEvents = [v8 historyEvents];
     v15[0] = v9;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-    v12 = [v10 sortedArrayUsingDescriptors:v11];
+    v12 = [historyEvents sortedArrayUsingDescriptors:v11];
   }
 
   else
@@ -394,30 +394,30 @@ void __41__IRReplayDatabaseHandler_getAllServices__block_invoke(uint64_t a1, voi
   return v12;
 }
 
-- (id)inspectEventByDate:(id)a3 andServiceIdentifier:(id)a4 historyEvents:(id)a5
+- (id)inspectEventByDate:(id)date andServiceIdentifier:(id)identifier historyEvents:(id)events
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [[IRServiceStore alloc] initWithPersistenceManager:self->_persistanceManager serviceIdentifier:v10];
+  dateCopy = date;
+  eventsCopy = events;
+  identifierCopy = identifier;
+  v11 = [[IRServiceStore alloc] initWithPersistenceManager:self->_persistanceManager serviceIdentifier:identifierCopy];
 
-  v12 = [(IRServiceStore *)v11 fetchReplayEventAtDate:v8];
+  v12 = [(IRServiceStore *)v11 fetchReplayEventAtDate:dateCopy];
   if (v12)
   {
-    v13 = [(IRServiceStore *)v11 fetchService];
-    if (v13)
+    fetchService = [(IRServiceStore *)v11 fetchService];
+    if (fetchService)
     {
-      v27 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K<=%@", @"date", v8];
-      v14 = [v9 filteredArrayUsingPredicate:v27];
+      dateCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K<=%@", @"date", dateCopy];
+      v14 = [eventsCopy filteredArrayUsingPredicate:dateCopy];
       v15 = +[IRPreferences shared];
-      v16 = [v15 numberOfHistoryEventsInCache];
-      v17 = [v16 unsignedIntValue];
+      numberOfHistoryEventsInCache = [v15 numberOfHistoryEventsInCache];
+      unsignedIntValue = [numberOfHistoryEventsInCache unsignedIntValue];
 
       v18 = [v14 count];
-      v19 = (v18 - v17) & ~((v18 - v17) >> 63);
-      if (v18 >= v17)
+      v19 = (v18 - unsignedIntValue) & ~((v18 - unsignedIntValue) >> 63);
+      if (v18 >= unsignedIntValue)
       {
-        v20 = v17;
+        v20 = unsignedIntValue;
       }
 
       else
@@ -429,9 +429,9 @@ void __41__IRReplayDatabaseHandler_getAllServices__block_invoke(uint64_t a1, voi
       v22 = [v14 subarrayWithRange:{v19, v20}];
       v23 = [(IRHistoryEventsContainerDO *)v21 initWithHistoryEvents:v22];
 
-      v24 = -[IRReplayEventRunner initWithServicePackage:]([IRReplayEventRunner alloc], "initWithServicePackage:", [v13 servicePackage]);
+      v24 = -[IRReplayEventRunner initWithServicePackage:]([IRReplayEventRunner alloc], "initWithServicePackage:", [fetchService servicePackage]);
       [(IRReplayEventRunner *)v24 runSingleReplayEvent:v12 withHistoryEventsContainer:v23];
-      v25 = [(IRReplayEventRunner *)v24 contextsInspection];
+      contextsInspection = [(IRReplayEventRunner *)v24 contextsInspection];
     }
 
     else
@@ -441,7 +441,7 @@ void __41__IRReplayDatabaseHandler_getAllServices__block_invoke(uint64_t a1, voi
         [IRReplayDatabaseHandler inspectEventByDate:andServiceIdentifier:historyEvents:];
       }
 
-      v25 = 0;
+      contextsInspection = 0;
     }
   }
 
@@ -452,35 +452,35 @@ void __41__IRReplayDatabaseHandler_getAllServices__block_invoke(uint64_t a1, voi
       [IRReplayDatabaseHandler inspectEventByDate:andServiceIdentifier:historyEvents:];
     }
 
-    v25 = 0;
+    contextsInspection = 0;
   }
 
-  return v25;
+  return contextsInspection;
 }
 
-- (id)deviceAttributesFromCandidateIdentifier:(id)a3 withServiceIdentifier:(id)a4
+- (id)deviceAttributesFromCandidateIdentifier:(id)identifier withServiceIdentifier:(id)serviceIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  serviceIdentifierCopy = serviceIdentifier;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__12;
   v22 = __Block_byref_object_dispose__12;
   v23 = 0;
-  v8 = [[IRServiceStore alloc] initWithPersistenceManager:self->_persistanceManager serviceIdentifier:v7];
-  v9 = [(IRServiceStore *)v8 fetchCandidatesContainer];
-  v10 = v9;
-  if (v9)
+  v8 = [[IRServiceStore alloc] initWithPersistenceManager:self->_persistanceManager serviceIdentifier:serviceIdentifierCopy];
+  fetchCandidatesContainer = [(IRServiceStore *)v8 fetchCandidatesContainer];
+  v10 = fetchCandidatesContainer;
+  if (fetchCandidatesContainer)
   {
-    v11 = [v9 candidates];
+    candidates = [fetchCandidatesContainer candidates];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __89__IRReplayDatabaseHandler_deviceAttributesFromCandidateIdentifier_withServiceIdentifier___block_invoke;
     v14[3] = &unk_2797E21B0;
-    v15 = v6;
+    v15 = identifierCopy;
     v16 = &v18;
-    [v11 enumerateObjectsUsingBlock:v14];
+    [candidates enumerateObjectsUsingBlock:v14];
 
     v12 = v19[5];
   }
@@ -559,27 +559,27 @@ LABEL_7:
 LABEL_8:
 }
 
-- (id)deviceAttributesSetFromCandidateIdentifier:(id)a3 withServiceIdentifier:(id)a4
+- (id)deviceAttributesSetFromCandidateIdentifier:(id)identifier withServiceIdentifier:(id)serviceIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  serviceIdentifierCopy = serviceIdentifier;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__12;
   v21 = __Block_byref_object_dispose__12;
   v22 = objc_opt_new();
-  v8 = [[IRServiceStore alloc] initWithPersistenceManager:self->_persistanceManager serviceIdentifier:v7];
-  v9 = [(IRServiceStore *)v8 fetchCandidatesContainer];
-  v10 = [v9 candidates];
+  v8 = [[IRServiceStore alloc] initWithPersistenceManager:self->_persistanceManager serviceIdentifier:serviceIdentifierCopy];
+  fetchCandidatesContainer = [(IRServiceStore *)v8 fetchCandidatesContainer];
+  candidates = [fetchCandidatesContainer candidates];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __92__IRReplayDatabaseHandler_deviceAttributesSetFromCandidateIdentifier_withServiceIdentifier___block_invoke;
   v14[3] = &unk_2797E21B0;
-  v11 = v6;
+  v11 = identifierCopy;
   v15 = v11;
   v16 = &v17;
-  [v10 enumerateObjectsUsingBlock:v14];
+  [candidates enumerateObjectsUsingBlock:v14];
 
   v12 = v18[5];
   _Block_object_dispose(&v17, 8);

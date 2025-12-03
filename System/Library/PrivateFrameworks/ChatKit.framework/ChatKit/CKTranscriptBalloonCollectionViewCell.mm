@@ -1,25 +1,25 @@
 @interface CKTranscriptBalloonCollectionViewCell
-- (id)_balloonViewForChatItem:(id)a3;
+- (id)_balloonViewForChatItem:(id)item;
 - (id)description;
-- (void)addFilter:(id)a3;
+- (void)addFilter:(id)filter;
 - (void)clearFilters;
-- (void)configureForChatItem:(id)a3 context:(id)a4;
+- (void)configureForChatItem:(id)item context:(id)context;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAnimationPauseReasons:(int64_t)a3;
-- (void)setBalloonView:(id)a3;
+- (void)setAnimationPauseReasons:(int64_t)reasons;
+- (void)setBalloonView:(id)view;
 @end
 
 @implementation CKTranscriptBalloonCollectionViewCell
 
 - (void)dealloc
 {
-  v3 = [(CKTranscriptBalloonCollectionViewCell *)self balloonView];
-  [v3 removeFromSuperview];
+  balloonView = [(CKTranscriptBalloonCollectionViewCell *)self balloonView];
+  [balloonView removeFromSuperview];
 
-  v4 = [(CKTranscriptBalloonCollectionViewCell *)self balloonView];
-  CKBalloonViewReuse(v4);
+  balloonView2 = [(CKTranscriptBalloonCollectionViewCell *)self balloonView];
+  CKBalloonViewReuse(balloonView2);
 
   [(CKTranscriptBalloonCollectionViewCell *)self setBalloonView:0];
   v5.receiver = self;
@@ -32,15 +32,15 @@
   v13.receiver = self;
   v13.super_class = CKTranscriptBalloonCollectionViewCell;
   [(CKTranscriptCollectionViewCell *)&v13 layoutSubviews];
-  v3 = [(CKTranscriptBalloonCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(CKTranscriptBalloonCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CKTranscriptBalloonCollectionViewCell *)self balloonView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  balloonView = [(CKTranscriptBalloonCollectionViewCell *)self balloonView];
+  [balloonView setFrame:{v5, v7, v9, v11}];
 }
 
 - (void)prepareForReuse
@@ -48,11 +48,11 @@
   v5.receiver = self;
   v5.super_class = CKTranscriptBalloonCollectionViewCell;
   [(CKTranscriptCollectionViewCell *)&v5 prepareForReuse];
-  v3 = [(CKTranscriptBalloonCollectionViewCell *)self balloonView];
-  [v3 removeFromSuperview];
+  balloonView = [(CKTranscriptBalloonCollectionViewCell *)self balloonView];
+  [balloonView removeFromSuperview];
 
-  v4 = [(CKTranscriptBalloonCollectionViewCell *)self balloonView];
-  CKBalloonViewReuse(v4);
+  balloonView2 = [(CKTranscriptBalloonCollectionViewCell *)self balloonView];
+  CKBalloonViewReuse(balloonView2);
 
   [(CKTranscriptBalloonCollectionViewCell *)self setBalloonView:0];
 }
@@ -63,39 +63,39 @@
   v8.receiver = self;
   v8.super_class = CKTranscriptBalloonCollectionViewCell;
   v4 = [(CKTranscriptCollectionViewCell *)&v8 description];
-  v5 = [(CKTranscriptBalloonCollectionViewCell *)self balloonView];
-  v6 = [v3 stringWithFormat:@"%@ balloonView:%@", v4, v5];
+  balloonView = [(CKTranscriptBalloonCollectionViewCell *)self balloonView];
+  v6 = [v3 stringWithFormat:@"%@ balloonView:%@", v4, balloonView];
 
   return v6;
 }
 
-- (void)setBalloonView:(id)a3
+- (void)setBalloonView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   balloonView = self->_balloonView;
-  if (balloonView != v5)
+  if (balloonView != viewCopy)
   {
-    v9 = v5;
+    v9 = viewCopy;
     [(CKBalloonView *)balloonView removeFromSuperview];
-    objc_storeStrong(&self->_balloonView, a3);
-    v7 = [(CKTranscriptBalloonCollectionViewCell *)self contentView];
-    [v7 addSubview:self->_balloonView];
+    objc_storeStrong(&self->_balloonView, view);
+    contentView = [(CKTranscriptBalloonCollectionViewCell *)self contentView];
+    [contentView addSubview:self->_balloonView];
 
-    v8 = [(CKTranscriptBalloonCollectionViewCell *)self layer];
-    [v8 setAllowsGroupOpacity:{-[CKBalloonView needsGroupOpacity](self->_balloonView, "needsGroupOpacity")}];
+    layer = [(CKTranscriptBalloonCollectionViewCell *)self layer];
+    [layer setAllowsGroupOpacity:{-[CKBalloonView needsGroupOpacity](self->_balloonView, "needsGroupOpacity")}];
 
     [(CKTranscriptBalloonCollectionViewCell *)self setNeedsLayout];
-    v5 = v9;
+    viewCopy = v9;
   }
 }
 
-- (void)configureForChatItem:(id)a3 context:(id)a4
+- (void)configureForChatItem:(id)item context:(id)context
 {
-  v5 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = itemCopy;
     v7 = [(CKTranscriptBalloonCollectionViewCell *)self _balloonViewForChatItem:v6];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -147,52 +147,52 @@
     v8 = IMLogHandleForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [CKTranscriptBalloonCollectionViewCell configureForChatItem:v5 context:v8];
+      [CKTranscriptBalloonCollectionViewCell configureForChatItem:itemCopy context:v8];
     }
   }
 }
 
-- (id)_balloonViewForChatItem:(id)a3
+- (id)_balloonViewForChatItem:(id)item
 {
-  v4 = [a3 balloonViewClass];
-  v5 = [(CKTranscriptBalloonCollectionViewCell *)self balloonView];
-  if (!v5 || objc_opt_class() != v4)
+  balloonViewClass = [item balloonViewClass];
+  balloonView = [(CKTranscriptBalloonCollectionViewCell *)self balloonView];
+  if (!balloonView || objc_opt_class() != balloonViewClass)
   {
-    v6 = CKBalloonViewForClass(v4);
+    v6 = CKBalloonViewForClass(balloonViewClass);
 
     [(CKTranscriptBalloonCollectionViewCell *)self setBalloonView:v6];
-    v5 = v6;
+    balloonView = v6;
   }
 
-  return v5;
+  return balloonView;
 }
 
-- (void)addFilter:(id)a3
+- (void)addFilter:(id)filter
 {
-  v4 = a3;
-  v5 = [(CKTranscriptBalloonCollectionViewCell *)self balloonView];
-  [v5 prepareForDisplayIfNeeded];
+  filterCopy = filter;
+  balloonView = [(CKTranscriptBalloonCollectionViewCell *)self balloonView];
+  [balloonView prepareForDisplayIfNeeded];
 
-  v6 = [(CKTranscriptBalloonCollectionViewCell *)self balloonView];
-  [v6 addFilter:v4];
+  balloonView2 = [(CKTranscriptBalloonCollectionViewCell *)self balloonView];
+  [balloonView2 addFilter:filterCopy];
 }
 
 - (void)clearFilters
 {
-  v2 = [(CKTranscriptBalloonCollectionViewCell *)self balloonView];
-  [v2 clearFilters];
+  balloonView = [(CKTranscriptBalloonCollectionViewCell *)self balloonView];
+  [balloonView clearFilters];
 }
 
-- (void)setAnimationPauseReasons:(int64_t)a3
+- (void)setAnimationPauseReasons:(int64_t)reasons
 {
-  if (self->_animationPauseReasons != a3)
+  if (self->_animationPauseReasons != reasons)
   {
-    self->_animationPauseReasons = a3;
-    v6 = [(CKTranscriptBalloonCollectionViewCell *)self balloonView];
-    [v6 setInvisibleInkEffectPaused:a3 != 0];
+    self->_animationPauseReasons = reasons;
+    balloonView = [(CKTranscriptBalloonCollectionViewCell *)self balloonView];
+    [balloonView setInvisibleInkEffectPaused:reasons != 0];
 
-    v7 = [(CKTranscriptBalloonCollectionViewCell *)self balloonView];
-    [v7 setAnimationPaused:(a3 >> 1) & 1];
+    balloonView2 = [(CKTranscriptBalloonCollectionViewCell *)self balloonView];
+    [balloonView2 setAnimationPaused:(reasons >> 1) & 1];
   }
 }
 

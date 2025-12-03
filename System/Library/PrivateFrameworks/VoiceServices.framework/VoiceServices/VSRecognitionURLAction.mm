@@ -1,7 +1,7 @@
 @interface VSRecognitionURLAction
 - (id)perform;
 - (void)dealloc;
-- (void)setURL:(id)a3;
+- (void)setURL:(id)l;
 @end
 
 @implementation VSRecognitionURLAction
@@ -20,14 +20,14 @@
       _os_log_impl(&dword_272850000, v3, OS_LOG_TYPE_INFO, "Dispatching open URL: %@", buf, 0xCu);
     }
 
-    v5 = [(VSRecognitionAction *)self _session];
+    _session = [(VSRecognitionAction *)self _session];
     v6 = self->_url;
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __33__VSRecognitionURLAction_perform__block_invoke;
     v12[3] = &unk_279E4F1B0;
     v12[4] = self;
-    [v5 _notifyDelegateOpenURL:v6 completion:v12];
+    [_session _notifyDelegateOpenURL:v6 completion:v12];
     v7 = 0;
   }
 
@@ -84,13 +84,13 @@ uint64_t __33__VSRecognitionURLAction_perform__block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
   url = self->_url;
-  if (url != a3)
+  if (url != l)
   {
 
-    self->_url = a3;
+    self->_url = l;
   }
 }
 

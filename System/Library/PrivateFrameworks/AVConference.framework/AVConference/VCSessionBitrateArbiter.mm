@@ -1,7 +1,7 @@
 @interface VCSessionBitrateArbiter
-- (BOOL)rangeCheck:(unsigned int)a3;
+- (BOOL)rangeCheck:(unsigned int)check;
 - (VCSessionBitrateArbiter)init;
-- (unsigned)bitrateForStoreBagKey:(id)a3 connectionType:(int)a4 currentBitrate:(unsigned int)a5 isExpensive:(BOOL)a6;
+- (unsigned)bitrateForStoreBagKey:(id)key connectionType:(int)type currentBitrate:(unsigned int)bitrate isExpensive:(BOOL)expensive;
 - (void)dealloc;
 - (void)readHardwareValues;
 - (void)readStoreBagValues;
@@ -34,16 +34,16 @@
   [(VCSessionBitrateArbiter *)&v3 dealloc];
 }
 
-- (BOOL)rangeCheck:(unsigned int)a3
+- (BOOL)rangeCheck:(unsigned int)check
 {
-  v3 = a3 - 100000;
-  if (a3 - 100000 >= 0x5F98A9 && VRTraceGetErrorLogLevelForModule() >= 3)
+  v3 = check - 100000;
+  if (check - 100000 >= 0x5F98A9 && VRTraceGetErrorLogLevelForModule() >= 3)
   {
     v5 = VRTraceErrorLogLevelToCSTR();
     v6 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
     {
-      [(VCSessionBitrateArbiter *)v5 rangeCheck:a3, v6];
+      [(VCSessionBitrateArbiter *)v5 rangeCheck:check, v6];
     }
   }
 
@@ -57,15 +57,15 @@
   *&self->_maxBitrateWiFiUplink = vdup_n_s32(0x611F48u);
 }
 
-- (unsigned)bitrateForStoreBagKey:(id)a3 connectionType:(int)a4 currentBitrate:(unsigned int)a5 isExpensive:(BOOL)a6
+- (unsigned)bitrateForStoreBagKey:(id)key connectionType:(int)type currentBitrate:(unsigned int)bitrate isExpensive:(BOOL)expensive
 {
-  v6 = a6;
+  expensiveCopy = expensive;
   v29 = *MEMORY[0x1E69E9840];
   v11 = 1000 * [-[NSDictionary objectForKeyedSubscript:](self->_currentSettings "objectForKeyedSubscript:"intValue"")];
   if ([(VCSessionBitrateArbiter *)self rangeCheck:v11])
   {
     ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
-    if (a5)
+    if (bitrate)
     {
       if (ErrorLogLevelForModule >= 7)
       {
@@ -80,11 +80,11 @@
           v22 = 1024;
           v23 = 93;
           v24 = 2112;
-          *v25 = a3;
+          *v25 = key;
           *&v25[8] = 1024;
-          *v26 = a4;
+          *v26 = type;
           *&v26[4] = 1024;
-          *&v26[6] = v6;
+          *&v26[6] = expensiveCopy;
           v27 = 1024;
           v28 = v11;
           _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Overriding %@ for connection type %d isExpensive %d with storebag value of %d", &v18, 0x38u);
@@ -107,11 +107,11 @@
           v22 = 1024;
           v23 = 96;
           v24 = 1024;
-          *v25 = a4;
+          *v25 = type;
           *&v25[4] = 1024;
-          *&v25[6] = v6;
+          *&v25[6] = expensiveCopy;
           *v26 = 2112;
-          *&v26[2] = a3;
+          *&v26[2] = key;
           v27 = 1024;
           v28 = v11;
           _os_log_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Hardware does not support connection type %d isExpensive %d, ignored %@ storebag value of %d", &v18, 0x38u);
@@ -124,7 +124,7 @@
 
   else
   {
-    LODWORD(v11) = a5;
+    LODWORD(v11) = bitrate;
   }
 
   return v11;
@@ -143,12 +143,12 @@
       currentSettings = self->_currentSettings;
       if (currentSettings)
       {
-        v6 = [(NSString *)[(NSDictionary *)currentSettings description] UTF8String];
+        uTF8String = [(NSString *)[(NSDictionary *)currentSettings description] UTF8String];
       }
 
       else
       {
-        v6 = "<nil>";
+        uTF8String = "<nil>";
       }
 
       v7 = 136315906;
@@ -158,7 +158,7 @@
       v11 = 1024;
       v12 = 106;
       v13 = 2080;
-      v14 = v6;
+      v14 = uTF8String;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Current bag settings: %s\n", &v7, 0x26u);
     }
   }

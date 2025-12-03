@@ -1,66 +1,66 @@
 @interface SBSecureMainDisplaySceneManager
-- (BOOL)_shouldAutoHostScene:(id)a3;
-- (id)newSceneIdentityForApplication:(id)a3;
-- (id)scene:(id)a3 handleActions:(id)a4;
-- (id)sceneIdentityForApplication:(id)a3;
-- (id)sceneIdentityForApplication:(id)a3 targetContentIdentifier:(id)a4;
-- (id)sceneIdentityForApplication:(id)a3 uniqueIdentifier:(id)a4;
-- (void)_noteDidChangeToVisibility:(unint64_t)a3 previouslyExisted:(BOOL)a4 forScene:(id)a5;
-- (void)addActionHandler:(id)a3 forScene:(id)a4;
-- (void)removeActionHandler:(id)a3 forScene:(id)a4;
+- (BOOL)_shouldAutoHostScene:(id)scene;
+- (id)newSceneIdentityForApplication:(id)application;
+- (id)scene:(id)scene handleActions:(id)actions;
+- (id)sceneIdentityForApplication:(id)application;
+- (id)sceneIdentityForApplication:(id)application targetContentIdentifier:(id)identifier;
+- (id)sceneIdentityForApplication:(id)application uniqueIdentifier:(id)identifier;
+- (void)_noteDidChangeToVisibility:(unint64_t)visibility previouslyExisted:(BOOL)existed forScene:(id)scene;
+- (void)addActionHandler:(id)handler forScene:(id)scene;
+- (void)removeActionHandler:(id)handler forScene:(id)scene;
 @end
 
 @implementation SBSecureMainDisplaySceneManager
 
-- (BOOL)_shouldAutoHostScene:(id)a3
+- (BOOL)_shouldAutoHostScene:(id)scene
 {
-  v3 = a3;
-  v4 = [v3 clientProcess];
-  if ([v4 isApplicationProcess])
+  sceneCopy = scene;
+  clientProcess = [sceneCopy clientProcess];
+  if ([clientProcess isApplicationProcess])
   {
-    v5 = [v3 clientProcess];
-    v6 = [v5 isCurrentProcess];
+    clientProcess2 = [sceneCopy clientProcess];
+    isCurrentProcess = [clientProcess2 isCurrentProcess];
   }
 
   else
   {
-    v6 = 1;
+    isCurrentProcess = 1;
   }
 
-  return v6;
+  return isCurrentProcess;
 }
 
-- (id)newSceneIdentityForApplication:(id)a3
+- (id)newSceneIdentityForApplication:(id)application
 {
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  v6 = [(SBSecureMainDisplaySceneManager *)self _sceneIdentifierForBundleIdentifier:v5];
+  applicationCopy = application;
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  v6 = [(SBSecureMainDisplaySceneManager *)self _sceneIdentifierForBundleIdentifier:bundleIdentifier];
 
-  v7 = [(SBSecureMainDisplaySceneManager *)self sceneIdentityForApplication:v4 uniqueIdentifier:v6];
+  v7 = [(SBSecureMainDisplaySceneManager *)self sceneIdentityForApplication:applicationCopy uniqueIdentifier:v6];
 
   return v7;
 }
 
-- (id)sceneIdentityForApplication:(id)a3
+- (id)sceneIdentityForApplication:(id)application
 {
-  v3 = [(SBSecureMainDisplaySceneManager *)self newSceneIdentityForApplication:a3];
+  v3 = [(SBSecureMainDisplaySceneManager *)self newSceneIdentityForApplication:application];
 
   return v3;
 }
 
-- (id)sceneIdentityForApplication:(id)a3 uniqueIdentifier:(id)a4
+- (id)sceneIdentityForApplication:(id)application uniqueIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (identifierCopy)
   {
-    v8 = v6;
+    v8 = identifierCopy;
   }
 
   else
   {
-    v9 = [a3 bundleIdentifier];
-    v8 = [(SBSecureMainDisplaySceneManager *)self _sceneIdentifierForBundleIdentifier:v9];
+    bundleIdentifier = [application bundleIdentifier];
+    v8 = [(SBSecureMainDisplaySceneManager *)self _sceneIdentifierForBundleIdentifier:bundleIdentifier];
   }
 
   v10 = [MEMORY[0x277D0ADC0] identityForIdentifier:v8];
@@ -68,19 +68,19 @@
   return v10;
 }
 
-- (id)sceneIdentityForApplication:(id)a3 targetContentIdentifier:(id)a4
+- (id)sceneIdentityForApplication:(id)application targetContentIdentifier:(id)identifier
 {
-  v4 = [(SBSecureMainDisplaySceneManager *)self newSceneIdentityForApplication:a3, a4];
+  identifier = [(SBSecureMainDisplaySceneManager *)self newSceneIdentityForApplication:application, identifier];
 
-  return v4;
+  return identifier;
 }
 
-- (id)scene:(id)a3 handleActions:(id)a4
+- (id)scene:(id)scene handleActions:(id)actions
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a4 mutableCopy];
-  v8 = [(NSMapTable *)self->_blsActionHandlersForScenes objectForKey:v6];
+  sceneCopy = scene;
+  v7 = [actions mutableCopy];
+  v8 = [(NSMapTable *)self->_blsActionHandlersForScenes objectForKey:sceneCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -99,7 +99,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * i) respondToActions:v7 forFBScene:v6];
+        v13 = [*(*(&v17 + 1) + 8 * i) respondToActions:v7 forFBScene:sceneCopy];
         [v7 intersectSet:v13];
       }
 
@@ -111,62 +111,62 @@
 
   v16.receiver = self;
   v16.super_class = SBSecureMainDisplaySceneManager;
-  v14 = [(SBSceneManager *)&v16 scene:v6 handleActions:v7];
+  v14 = [(SBSceneManager *)&v16 scene:sceneCopy handleActions:v7];
 
   return v14;
 }
 
-- (void)addActionHandler:(id)a3 forScene:(id)a4
+- (void)addActionHandler:(id)handler forScene:(id)scene
 {
-  v11 = a3;
-  v6 = a4;
+  handlerCopy = handler;
+  sceneCopy = scene;
   blsActionHandlersForScenes = self->_blsActionHandlersForScenes;
   if (!blsActionHandlersForScenes)
   {
-    v8 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     v9 = self->_blsActionHandlersForScenes;
-    self->_blsActionHandlersForScenes = v8;
+    self->_blsActionHandlersForScenes = weakToStrongObjectsMapTable;
 
     blsActionHandlersForScenes = self->_blsActionHandlersForScenes;
   }
 
-  v10 = [(NSMapTable *)blsActionHandlersForScenes objectForKey:v6];
+  v10 = [(NSMapTable *)blsActionHandlersForScenes objectForKey:sceneCopy];
   if (!v10)
   {
     v10 = objc_alloc_init(MEMORY[0x277CCAA50]);
-    [(NSMapTable *)self->_blsActionHandlersForScenes setObject:v10 forKey:v6];
+    [(NSMapTable *)self->_blsActionHandlersForScenes setObject:v10 forKey:sceneCopy];
   }
 
-  [v10 addObject:v11];
+  [v10 addObject:handlerCopy];
 }
 
-- (void)removeActionHandler:(id)a3 forScene:(id)a4
+- (void)removeActionHandler:(id)handler forScene:(id)scene
 {
   blsActionHandlersForScenes = self->_blsActionHandlersForScenes;
-  v6 = a3;
-  v7 = [(NSMapTable *)blsActionHandlersForScenes objectForKey:a4];
-  [v7 removeObject:v6];
+  handlerCopy = handler;
+  v7 = [(NSMapTable *)blsActionHandlersForScenes objectForKey:scene];
+  [v7 removeObject:handlerCopy];
 }
 
-- (void)_noteDidChangeToVisibility:(unint64_t)a3 previouslyExisted:(BOOL)a4 forScene:(id)a5
+- (void)_noteDidChangeToVisibility:(unint64_t)visibility previouslyExisted:(BOOL)existed forScene:(id)scene
 {
-  v7 = a5;
-  v13 = [(SBSceneManager *)self externalForegroundApplicationSceneHandles];
+  sceneCopy = scene;
+  externalForegroundApplicationSceneHandles = [(SBSceneManager *)self externalForegroundApplicationSceneHandles];
   v8 = +[SBBackgroundActivityAttributionManager sharedInstance];
-  [v8 updateForegroundApplicationSceneHandles:v13 withOptions:-1 completion:0];
+  [v8 updateForegroundApplicationSceneHandles:externalForegroundApplicationSceneHandles withOptions:-1 completion:0];
 
-  v9 = [v7 clientProcess];
+  clientProcess = [sceneCopy clientProcess];
 
-  if ([v9 isApplicationProcess])
+  if ([clientProcess isApplicationProcess])
   {
     v10 = +[SBApplicationController sharedInstance];
-    v11 = [v9 bundleIdentifier];
-    v12 = [v10 applicationWithBundleIdentifier:v11];
+    bundleIdentifier = [clientProcess bundleIdentifier];
+    v12 = [v10 applicationWithBundleIdentifier:bundleIdentifier];
 
     if (v12)
     {
       [v12 setHasProminentlyIndicatedLocationUseWhileForeground:0];
-      if (a3 == 1)
+      if (visibility == 1)
       {
         if ([v12 hasRegisteredBackgroundActivityWithIdentifier:*MEMORY[0x277D6BC00]])
         {

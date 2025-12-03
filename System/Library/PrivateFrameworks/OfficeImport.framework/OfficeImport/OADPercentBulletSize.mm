@@ -1,31 +1,31 @@
 @interface OADPercentBulletSize
-- (BOOL)isEqual:(id)a3;
-- (OADPercentBulletSize)initWithPercent:(float)a3;
+- (BOOL)isEqual:(id)equal;
+- (OADPercentBulletSize)initWithPercent:(float)percent;
 @end
 
 @implementation OADPercentBulletSize
 
-- (OADPercentBulletSize)initWithPercent:(float)a3
+- (OADPercentBulletSize)initWithPercent:(float)percent
 {
   v5.receiver = self;
   v5.super_class = OADPercentBulletSize;
   result = [(OADPercentBulletSize *)&v5 init];
   if (result)
   {
-    result->mPercent = a3;
+    result->mPercent = percent;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     mPercent = self->mPercent;
-    [v4 percent];
+    [equalCopy percent];
     v7 = mPercent == v6;
   }
 

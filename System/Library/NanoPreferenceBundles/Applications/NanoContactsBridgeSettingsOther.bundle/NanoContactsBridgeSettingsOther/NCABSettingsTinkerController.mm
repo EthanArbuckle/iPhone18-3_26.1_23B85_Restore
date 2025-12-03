@@ -1,16 +1,16 @@
 @interface NCABSettingsTinkerController
 - (CNUIFamilyMemberContactsController)familyMemberContactsController;
 - (NCABSettingsTinkerController)init;
-- (id)_localizedContactsManagementStringWithTinkerUserName:(id)a3;
-- (id)_localizedStringForKey:(id)a3 tinkerUserName:(id)a4;
+- (id)_localizedContactsManagementStringWithTinkerUserName:(id)name;
+- (id)_localizedStringForKey:(id)key tinkerUserName:(id)name;
 - (id)specifiers;
 - (void)_editContactsForFamilyMember;
-- (void)_fetchFamilyMember:(id)a3;
+- (void)_fetchFamilyMember:(id)member;
 - (void)_openScreenTimeForFamilyMember;
-- (void)_openScreenTimeForFamilyMember:(id)a3;
-- (void)dismissPresentedViewController:(id)a3;
-- (void)presentViewController:(id)a3;
-- (void)setTinkerFamilyMember:(id)a3;
+- (void)_openScreenTimeForFamilyMember:(id)member;
+- (void)dismissPresentedViewController:(id)controller;
+- (void)presentViewController:(id)controller;
+- (void)setTinkerFamilyMember:(id)member;
 @end
 
 @implementation NCABSettingsTinkerController
@@ -44,12 +44,12 @@
   return v2;
 }
 
-- (void)setTinkerFamilyMember:(id)a3
+- (void)setTinkerFamilyMember:(id)member
 {
-  v5 = a3;
-  if (self->_tinkerFamilyMember != v5)
+  memberCopy = member;
+  if (self->_tinkerFamilyMember != memberCopy)
   {
-    objc_storeStrong(&self->_tinkerFamilyMember, a3);
+    objc_storeStrong(&self->_tinkerFamilyMember, member);
     [(NCABSettingsTinkerController *)self setContactsManagementStateManager:0];
     v6 = NCBST_Tinker_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -76,7 +76,7 @@
       }
 
       objc_initWeak(buf, self);
-      v10 = [(NCABSettingsTinkerController *)self contactsManagementStateManager];
+      contactsManagementStateManager = [(NCABSettingsTinkerController *)self contactsManagementStateManager];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_45E8;
@@ -84,7 +84,7 @@
       objc_copyWeak(&v14, buf);
       v11 = v8;
       v13 = v11;
-      [v10 fetchContactsManagementStateWithCompletionHandler:v12];
+      [contactsManagementStateManager fetchContactsManagementStateWithCompletionHandler:v12];
 
       objc_destroyWeak(&v14);
       objc_destroyWeak(buf);
@@ -101,14 +101,14 @@
     v5 = +[NSMutableArray array];
     v6 = [PSSpecifier groupSpecifierWithID:@"NCABST_GROUP_ID"];
     [v5 addObject:v6];
-    v7 = [(NCABSettingsTinkerController *)self tinkerFamilyMember];
-    v8 = [(NCABSettingsTinkerController *)self contactsManagementStateManager];
-    v9 = [v8 lastKnownContactsManagementState];
+    tinkerFamilyMember = [(NCABSettingsTinkerController *)self tinkerFamilyMember];
+    contactsManagementStateManager = [(NCABSettingsTinkerController *)self contactsManagementStateManager];
+    lastKnownContactsManagementState = [contactsManagementStateManager lastKnownContactsManagementState];
 
-    if (v7)
+    if (tinkerFamilyMember)
     {
-      v10 = [v7 firstName];
-      if (v10)
+      firstName = [tinkerFamilyMember firstName];
+      if (firstName)
       {
         goto LABEL_8;
       }
@@ -116,25 +116,25 @@
       v11 = NCBST_Tinker_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        sub_6024(v7, v11);
+        sub_6024(tinkerFamilyMember, v11);
       }
     }
 
-    v10 = 0;
+    firstName = 0;
 LABEL_8:
-    if (v9 > 4)
+    if (lastKnownContactsManagementState > 4)
     {
-      if ((v9 - 100) >= 2)
+      if ((lastKnownContactsManagementState - 100) >= 2)
       {
-        if (v9 != 5 && v9 != 102)
+        if (lastKnownContactsManagementState != 5 && lastKnownContactsManagementState != 102)
         {
           goto LABEL_19;
         }
 
-        v13 = [(NCABSettingsTinkerController *)self familyMemberContactsController];
-        [v13 countOfFamilyMemberContacts];
+        familyMemberContactsController = [(NCABSettingsTinkerController *)self familyMemberContactsController];
+        [familyMemberContactsController countOfFamilyMemberContacts];
 
-        v12 = [(NCABSettingsTinkerController *)self _localizedStringForKey:@"TK_CONTACTS_SETTINGS_EDIT_SATELLITE_CONTACTS" tinkerUserName:v10];
+        v12 = [(NCABSettingsTinkerController *)self _localizedStringForKey:@"TK_CONTACTS_SETTINGS_EDIT_SATELLITE_CONTACTS" tinkerUserName:firstName];
         v14 = [PSSpecifier preferenceSpecifierNamed:v12 target:self set:0 get:0 detail:0 cell:13 edit:0];
         [v14 setIdentifier:@"NCABST_ACTION_ID"];
         v15 = "_editContactsForFamilyMember";
@@ -142,9 +142,9 @@ LABEL_8:
       }
     }
 
-    else if ((v9 - 2) >= 3)
+    else if ((lastKnownContactsManagementState - 2) >= 3)
     {
-      if (v9 >= 2)
+      if (lastKnownContactsManagementState >= 2)
       {
 LABEL_19:
         v16 = *&self->PSListController_opaque[v3];
@@ -154,14 +154,14 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v12 = [(NCABSettingsTinkerController *)self _localizedContactsManagementStringWithTinkerUserName:v10];
+      v12 = [(NCABSettingsTinkerController *)self _localizedContactsManagementStringWithTinkerUserName:firstName];
       [v6 setProperty:v12 forKey:PSFooterTextGroupKey];
 LABEL_18:
 
       goto LABEL_19;
     }
 
-    v12 = [(NCABSettingsTinkerController *)self _localizedStringForKey:@"TK_CONTACTS_SETUP_IN_SCREENTIME" tinkerUserName:v10];
+    v12 = [(NCABSettingsTinkerController *)self _localizedStringForKey:@"TK_CONTACTS_SETUP_IN_SCREENTIME" tinkerUserName:firstName];
     v14 = [PSSpecifier preferenceSpecifierNamed:v12 target:self set:0 get:0 detail:0 cell:13 edit:0];
     [v14 setIdentifier:@"NCABST_ACTION_ID"];
     v15 = "_openScreenTimeForFamilyMember";
@@ -178,35 +178,35 @@ LABEL_20:
   return v4;
 }
 
-- (id)_localizedStringForKey:(id)a3 tinkerUserName:(id)a4
+- (id)_localizedStringForKey:(id)key tinkerUserName:(id)name
 {
-  v5 = a4;
-  if (v5)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v6 = [NSString stringWithFormat:@"%@_USERNAME", a3];
+    v6 = [NSString stringWithFormat:@"%@_USERNAME", key];
     v7 = NanoContactsSettingsTinkerBundle();
     v8 = [v7 localizedStringForKey:v6 value:&stru_C610 table:@"NanoContactsBridgeSettingsTinker"];
-    v9 = [NSString stringWithValidatedFormat:v8 validFormatSpecifiers:@"%@" error:0, v5];
+    nameCopy = [NSString stringWithValidatedFormat:v8 validFormatSpecifiers:@"%@" error:0, nameCopy];
   }
 
   else
   {
-    v6 = [NSString stringWithFormat:@"%@_NO_USERNAME", a3];
+    v6 = [NSString stringWithFormat:@"%@_NO_USERNAME", key];
     v7 = NanoContactsSettingsTinkerBundle();
-    v9 = [v7 localizedStringForKey:v6 value:&stru_C610 table:@"NanoContactsBridgeSettingsTinker"];
+    nameCopy = [v7 localizedStringForKey:v6 value:&stru_C610 table:@"NanoContactsBridgeSettingsTinker"];
   }
 
-  return v9;
+  return nameCopy;
 }
 
-- (id)_localizedContactsManagementStringWithTinkerUserName:(id)a3
+- (id)_localizedContactsManagementStringWithTinkerUserName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = +[PDRRegistry sharedInstance];
   v6 = [v5 getDevicesExcluding:4];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  v8 = [v7 valueForProperty:PDRDevicePropertyKeyIsArchived];
+  v8 = [firstObject valueForProperty:PDRDevicePropertyKeyIsArchived];
   if ([v8 BOOLValue])
   {
     v9 = 0;
@@ -214,7 +214,7 @@ LABEL_20:
 
   else
   {
-    v9 = v7;
+    v9 = firstObject;
   }
 
   v10 = v9;
@@ -230,16 +230,16 @@ LABEL_20:
     v12 = @"TK_CONTACTS_SETTINGS_EDIT_ON_DEVICE_PHONEAPP";
   }
 
-  v13 = [(NCABSettingsTinkerController *)self _localizedStringForKey:v12 tinkerUserName:v4];
+  v13 = [(NCABSettingsTinkerController *)self _localizedStringForKey:v12 tinkerUserName:nameCopy];
 
   return v13;
 }
 
-- (void)_openScreenTimeForFamilyMember:(id)a3
+- (void)_openScreenTimeForFamilyMember:(id)member
 {
-  v3 = a3;
-  v4 = [v3 dsid];
-  v5 = [NSString stringWithValidatedFormat:@"prefs:root=SCREEN_TIME&path=CHILD_%@" validFormatSpecifiers:@"%@" error:0, v4];
+  memberCopy = member;
+  dsid = [memberCopy dsid];
+  v5 = [NSString stringWithValidatedFormat:@"prefs:root=SCREEN_TIME&path=CHILD_%@" validFormatSpecifiers:@"%@" error:0, dsid];
 
   v6 = [NSURL URLWithString:v5];
   v7 = NCBST_Tinker_log();
@@ -250,7 +250,7 @@ LABEL_20:
     v11 = 2114;
     v12 = v6;
     v13 = 2112;
-    v14 = v3;
+    v14 = memberCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%{public}s - Opening URL %{public}@ for familyMember %@", buf, 0x20u);
   }
 
@@ -260,21 +260,21 @@ LABEL_20:
 
 - (void)_openScreenTimeForFamilyMember
 {
-  v3 = [(NCABSettingsTinkerController *)self tinkerFamilyMember];
-  [(NCABSettingsTinkerController *)self _openScreenTimeForFamilyMember:v3];
+  tinkerFamilyMember = [(NCABSettingsTinkerController *)self tinkerFamilyMember];
+  [(NCABSettingsTinkerController *)self _openScreenTimeForFamilyMember:tinkerFamilyMember];
 }
 
 - (CNUIFamilyMemberContactsController)familyMemberContactsController
 {
   if (!self->_familyMemberContactsController)
   {
-    v3 = [(NCABSettingsTinkerController *)self tinkerFamilyMember];
+    tinkerFamilyMember = [(NCABSettingsTinkerController *)self tinkerFamilyMember];
 
-    if (v3)
+    if (tinkerFamilyMember)
     {
       v4 = [CNUIFamilyMemberContactsController alloc];
-      v5 = [(NCABSettingsTinkerController *)self tinkerFamilyMember];
-      v6 = [v4 initWithFamilyMember:v5 familyMemberContactsPresentation:self];
+      tinkerFamilyMember2 = [(NCABSettingsTinkerController *)self tinkerFamilyMember];
+      v6 = [v4 initWithFamilyMember:tinkerFamilyMember2 familyMemberContactsPresentation:self];
       familyMemberContactsController = self->_familyMemberContactsController;
       self->_familyMemberContactsController = v6;
     }
@@ -287,90 +287,90 @@ LABEL_20:
 
 - (void)_editContactsForFamilyMember
 {
-  v3 = [(NCABSettingsTinkerController *)self tinkerFamilyMember];
+  tinkerFamilyMember = [(NCABSettingsTinkerController *)self tinkerFamilyMember];
 
-  if (v3)
+  if (tinkerFamilyMember)
   {
     v4 = NCBST_Tinker_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(NCABSettingsTinkerController *)self familyMemberContactsController];
-      v6 = [(NCABSettingsTinkerController *)self tinkerFamilyMember];
+      familyMemberContactsController = [(NCABSettingsTinkerController *)self familyMemberContactsController];
+      tinkerFamilyMember2 = [(NCABSettingsTinkerController *)self tinkerFamilyMember];
       v8 = 136446722;
       v9 = "[NCABSettingsTinkerController _editContactsForFamilyMember]";
       v10 = 2112;
-      v11 = v5;
+      v11 = familyMemberContactsController;
       v12 = 2112;
-      v13 = v6;
+      v13 = tinkerFamilyMember2;
       _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "%{public}s - showing CNUIFamilyMemberContactsController: %@, familyMember: %@", &v8, 0x20u);
     }
 
-    v7 = [(NCABSettingsTinkerController *)self familyMemberContactsController];
-    [v7 performInteraction:3];
+    familyMemberContactsController2 = [(NCABSettingsTinkerController *)self familyMemberContactsController];
+    [familyMemberContactsController2 performInteraction:3];
   }
 }
 
-- (void)presentViewController:(id)a3
+- (void)presentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = NCBST_Tinker_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v10 = 136446466;
     v11 = "[NCABSettingsTinkerController presentViewController:]";
     v12 = 2112;
-    v13 = v4;
+    v13 = controllerCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "%{public}s: %@", &v10, 0x16u);
   }
 
-  v6 = [(NCABSettingsTinkerController *)self navigationController];
-  v7 = [v6 navigationBar];
-  v8 = [v7 tintColor];
-  v9 = [v4 view];
-  [v9 setTintColor:v8];
+  navigationController = [(NCABSettingsTinkerController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  tintColor = [navigationBar tintColor];
+  view = [controllerCopy view];
+  [view setTintColor:tintColor];
 
-  [(NCABSettingsTinkerController *)self presentViewController:v4 animated:1 completion:0];
+  [(NCABSettingsTinkerController *)self presentViewController:controllerCopy animated:1 completion:0];
 }
 
-- (void)dismissPresentedViewController:(id)a3
+- (void)dismissPresentedViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = NCBST_Tinker_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 136446466;
     v7 = "[NCABSettingsTinkerController dismissPresentedViewController:]";
     v8 = 2112;
-    v9 = v4;
+    v9 = controllerCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "%{public}s: %@", &v6, 0x16u);
   }
 
   [(NCABSettingsTinkerController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_fetchFamilyMember:(id)a3
+- (void)_fetchFamilyMember:(id)member
 {
-  v9 = a3;
-  v4 = [(NCABSettingsTinkerController *)self tinkerSupportHelper];
+  memberCopy = member;
+  tinkerSupportHelper = [(NCABSettingsTinkerController *)self tinkerSupportHelper];
 
-  if (!v4)
+  if (!tinkerSupportHelper)
   {
     v5 = +[BPSTinkerSupport sharedInstance];
     [(NCABSettingsTinkerController *)self setTinkerSupportHelper:v5];
   }
 
-  v6 = [(NCABSettingsTinkerController *)self tinkerSupportHelper];
-  v7 = [v6 cachedTinkerFamilyMemeber];
+  tinkerSupportHelper2 = [(NCABSettingsTinkerController *)self tinkerSupportHelper];
+  cachedTinkerFamilyMemeber = [tinkerSupportHelper2 cachedTinkerFamilyMemeber];
 
-  if (v7)
+  if (cachedTinkerFamilyMemeber)
   {
-    v9[2](v9, v7, 0);
+    memberCopy[2](memberCopy, cachedTinkerFamilyMemeber, 0);
   }
 
   else
   {
-    v8 = [(NCABSettingsTinkerController *)self tinkerSupportHelper];
-    [v8 getActiveTinkerFamilyMemberWithCompletion:v9];
+    tinkerSupportHelper3 = [(NCABSettingsTinkerController *)self tinkerSupportHelper];
+    [tinkerSupportHelper3 getActiveTinkerFamilyMemberWithCompletion:memberCopy];
   }
 }
 

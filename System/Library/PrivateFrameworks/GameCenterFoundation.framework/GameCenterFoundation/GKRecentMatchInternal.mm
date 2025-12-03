@@ -1,6 +1,6 @@
 @interface GKRecentMatchInternal
 + (id)secureCodedPropertyKeys;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
@@ -34,29 +34,29 @@ void __48__GKRecentMatchInternal_secureCodedPropertyKeys__block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(GKRecentMatchInternal *)self game];
-    v7 = [(GKRecentMatchInternal *)self player];
-    v8 = [(GKRecentMatchInternal *)self date];
-    v9 = [v5 game];
-    v10 = [v5 player];
-    v11 = [v5 date];
-    if ((v7 == v10 || [v7 isEqual:v10]) && (v6 == v9 || objc_msgSend(v6, "isEqual:", v9)))
+    v5 = equalCopy;
+    game = [(GKRecentMatchInternal *)self game];
+    player = [(GKRecentMatchInternal *)self player];
+    date = [(GKRecentMatchInternal *)self date];
+    game2 = [v5 game];
+    player2 = [v5 player];
+    date2 = [v5 date];
+    if ((player == player2 || [player isEqual:player2]) && (game == game2 || objc_msgSend(game, "isEqual:", game2)))
     {
-      if (v8 == v11)
+      if (date == date2)
       {
         v12 = 1;
       }
 
       else
       {
-        v12 = [v8 isEqual:v11];
+        v12 = [date isEqual:date2];
       }
     }
 
@@ -76,14 +76,14 @@ void __48__GKRecentMatchInternal_secureCodedPropertyKeys__block_invoke()
 
 - (unint64_t)hash
 {
-  v3 = [(GKRecentMatchInternal *)self player];
-  v4 = [v3 hash];
+  player = [(GKRecentMatchInternal *)self player];
+  v4 = [player hash];
 
-  v5 = [(GKRecentMatchInternal *)self game];
-  v6 = [v5 hash] ^ v4;
+  game = [(GKRecentMatchInternal *)self game];
+  v6 = [game hash] ^ v4;
 
-  v7 = [(GKRecentMatchInternal *)self date];
-  v8 = [v7 hash];
+  date = [(GKRecentMatchInternal *)self date];
+  v8 = [date hash];
 
   return v6 ^ v8;
 }

@@ -1,38 +1,38 @@
 @interface WFLinkResultDialogRequest
-- (WFLinkResultDialogRequest)initWithCoder:(id)a3;
-- (WFLinkResultDialogRequest)initWithSuccessResult:(id)a3 attribution:(id)a4 encodedSnippetActionToolInvocation:(id)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)getCATResultWithCompletionHandler:(id)a3;
+- (WFLinkResultDialogRequest)initWithCoder:(id)coder;
+- (WFLinkResultDialogRequest)initWithSuccessResult:(id)result attribution:(id)attribution encodedSnippetActionToolInvocation:(id)invocation;
+- (void)encodeWithCoder:(id)coder;
+- (void)getCATResultWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFLinkResultDialogRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = WFLinkResultDialogRequest;
-  v4 = a3;
-  [(WFDialogRequest *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFDialogRequest *)&v7 encodeWithCoder:coderCopy];
   v5 = [(WFLinkResultDialogRequest *)self result:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"result"];
+  [coderCopy encodeObject:v5 forKey:@"result"];
 
-  v6 = [(WFLinkResultDialogRequest *)self doneButton];
-  [v4 encodeObject:v6 forKey:@"doneButton"];
+  doneButton = [(WFLinkResultDialogRequest *)self doneButton];
+  [coderCopy encodeObject:doneButton forKey:@"doneButton"];
 }
 
-- (WFLinkResultDialogRequest)initWithCoder:(id)a3
+- (WFLinkResultDialogRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = WFLinkResultDialogRequest;
-  v5 = [(WFDialogRequest *)&v12 initWithCoder:v4];
+  v5 = [(WFDialogRequest *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"result"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"result"];
     v7 = v5->_result;
     v5->_result = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"doneButton"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"doneButton"];
     doneButton = v5->_doneButton;
     v5->_doneButton = v8;
 
@@ -42,46 +42,46 @@
   return v5;
 }
 
-- (void)getCATResultWithCompletionHandler:(id)a3
+- (void)getCATResultWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFLinkResultDialogRequest.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFLinkResultDialogRequest.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v6 = [(WFLinkResultDialogRequest *)self catResult];
+  catResult = [(WFLinkResultDialogRequest *)self catResult];
 
-  if (v6)
+  if (catResult)
   {
-    v7 = [(WFLinkResultDialogRequest *)self catResult];
-    v5[2](v5, v7);
+    catResult2 = [(WFLinkResultDialogRequest *)self catResult];
+    handlerCopy[2](handlerCopy, catResult2);
   }
 
   else
   {
-    v8 = [(WFLinkResultDialogRequest *)self result];
-    v9 = [v8 output];
-    v10 = [v9 dialog];
+    result = [(WFLinkResultDialogRequest *)self result];
+    output = [result output];
+    dialog = [output dialog];
 
-    if (v10)
+    if (dialog)
     {
-      v11 = [(WFLinkResultDialogRequest *)self result];
-      v12 = [v11 output];
-      v13 = [v12 dialog];
+      result2 = [(WFLinkResultDialogRequest *)self result];
+      output2 = [result2 output];
+      dialog2 = [output2 dialog];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __63__WFLinkResultDialogRequest_getCATResultWithCompletionHandler___block_invoke;
       v15[3] = &unk_1E83783B0;
       v15[4] = self;
-      v16 = v5;
-      [v13 getResultWithCompletionHandler:v15];
+      v16 = handlerCopy;
+      [dialog2 getResultWithCompletionHandler:v15];
     }
 
     else
     {
-      v5[2](v5, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 }
@@ -117,29 +117,29 @@ void __63__WFLinkResultDialogRequest_getCATResultWithCompletionHandler___block_i
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (WFLinkResultDialogRequest)initWithSuccessResult:(id)a3 attribution:(id)a4 encodedSnippetActionToolInvocation:(id)a5
+- (WFLinkResultDialogRequest)initWithSuccessResult:(id)result attribution:(id)attribution encodedSnippetActionToolInvocation:(id)invocation
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 output];
-  v12 = [v11 viewSnippet];
-  v13 = [v8 output];
-  v14 = [v13 snippetAction];
-  v15 = [v8 output];
+  resultCopy = result;
+  invocationCopy = invocation;
+  attributionCopy = attribution;
+  output = [resultCopy output];
+  viewSnippet = [output viewSnippet];
+  output2 = [resultCopy output];
+  snippetAction = [output2 snippetAction];
+  output3 = [resultCopy output];
   v23.receiver = self;
   v23.super_class = WFLinkResultDialogRequest;
-  v16 = -[WFLinkResultDialogRequest initWithViewSnippet:snippetAction:encodedSnippetActionToolInvocation:attribution:showPrompt:](&v23, sel_initWithViewSnippet_snippetAction_encodedSnippetActionToolInvocation_attribution_showPrompt_, v12, v14, v9, v10, [v15 shouldShowPrompt]);
+  v16 = -[WFLinkResultDialogRequest initWithViewSnippet:snippetAction:encodedSnippetActionToolInvocation:attribution:showPrompt:](&v23, sel_initWithViewSnippet_snippetAction_encodedSnippetActionToolInvocation_attribution_showPrompt_, viewSnippet, snippetAction, invocationCopy, attributionCopy, [output3 shouldShowPrompt]);
 
   if (v16)
   {
-    v17 = [v8 copy];
+    v17 = [resultCopy copy];
     v18 = v16->_result;
     v16->_result = v17;
 
-    v19 = [MEMORY[0x1E69E0AA0] doneButton];
+    doneButton = [MEMORY[0x1E69E0AA0] doneButton];
     doneButton = v16->_doneButton;
-    v16->_doneButton = v19;
+    v16->_doneButton = doneButton;
 
     v21 = v16;
   }

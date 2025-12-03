@@ -1,28 +1,28 @@
 @interface _SFPBOpenPunchoutCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBOpenPunchoutCommand)initWithDictionary:(id)a3;
-- (_SFPBOpenPunchoutCommand)initWithFacade:(id)a3;
-- (_SFPBOpenPunchoutCommand)initWithJSON:(id)a3;
+- (_SFPBOpenPunchoutCommand)initWithDictionary:(id)dictionary;
+- (_SFPBOpenPunchoutCommand)initWithFacade:(id)facade;
+- (_SFPBOpenPunchoutCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBOpenPunchoutCommand
 
-- (_SFPBOpenPunchoutCommand)initWithFacade:(id)a3
+- (_SFPBOpenPunchoutCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBOpenPunchoutCommand *)self init];
   if (v5)
   {
-    v6 = [v4 punchout];
+    punchout = [facadeCopy punchout];
 
-    if (v6)
+    if (punchout)
     {
       v7 = [_SFPBPunchout alloc];
-      v8 = [v4 punchout];
-      v9 = [(_SFPBPunchout *)v7 initWithFacade:v8];
+      punchout2 = [facadeCopy punchout];
+      v9 = [(_SFPBPunchout *)v7 initWithFacade:punchout2];
       [(_SFPBOpenPunchoutCommand *)v5 setPunchout:v9];
     }
 
@@ -32,15 +32,15 @@
   return v5;
 }
 
-- (_SFPBOpenPunchoutCommand)initWithDictionary:(id)a3
+- (_SFPBOpenPunchoutCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = _SFPBOpenPunchoutCommand;
   v5 = [(_SFPBOpenPunchoutCommand *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"punchout"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"punchout"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,30 +54,30 @@
   return v5;
 }
 
-- (_SFPBOpenPunchoutCommand)initWithJSON:(id)a3
+- (_SFPBOpenPunchoutCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBOpenPunchoutCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBOpenPunchoutCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBOpenPunchoutCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -90,38 +90,38 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_punchout)
   {
-    v4 = [(_SFPBOpenPunchoutCommand *)self punchout];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    punchout = [(_SFPBOpenPunchoutCommand *)self punchout];
+    dictionaryRepresentation = [punchout dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"punchout"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"punchout"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"punchout"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"punchout"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBOpenPunchoutCommand *)self punchout];
-    v6 = [v4 punchout];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    punchout = [(_SFPBOpenPunchoutCommand *)self punchout];
+    punchout2 = [equalCopy punchout];
+    v7 = punchout2;
+    if ((punchout != 0) != (punchout2 == 0))
     {
-      v8 = [(_SFPBOpenPunchoutCommand *)self punchout];
-      if (!v8)
+      punchout3 = [(_SFPBOpenPunchoutCommand *)self punchout];
+      if (!punchout3)
       {
 
 LABEL_10:
@@ -129,10 +129,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBOpenPunchoutCommand *)self punchout];
-      v11 = [v4 punchout];
-      v12 = [v10 isEqual:v11];
+      v9 = punchout3;
+      punchout4 = [(_SFPBOpenPunchoutCommand *)self punchout];
+      punchout5 = [equalCopy punchout];
+      v12 = [punchout4 isEqual:punchout5];
 
       if (v12)
       {
@@ -151,11 +151,11 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBOpenPunchoutCommand *)self punchout];
-  if (v4)
+  toCopy = to;
+  punchout = [(_SFPBOpenPunchoutCommand *)self punchout];
+  if (punchout)
   {
     PBDataWriterWriteSubmessage();
   }

@@ -1,22 +1,22 @@
 @interface SBHFocusMode
 - (BOOL)customizedHomeScreenPagesEnabled;
-- (BOOL)wantsListVisible:(id)a3;
+- (BOOL)wantsListVisible:(id)visible;
 - (NSArray)lists;
-- (SBHFocusMode)initWithIdentifier:(id)a3 folder:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBHFocusMode)initWithIdentifier:(id)identifier folder:(id)folder;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)addToList:(id)a3;
-- (void)removeFromList:(id)a3;
+- (void)addToList:(id)list;
+- (void)removeFromList:(id)list;
 @end
 
 @implementation SBHFocusMode
 
-- (SBHFocusMode)initWithIdentifier:(id)a3 folder:(id)a4
+- (SBHFocusMode)initWithIdentifier:(id)identifier folder:(id)folder
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7 && [v7 length])
+  identifierCopy = identifier;
+  folderCopy = folder;
+  if (identifierCopy && [identifierCopy length])
   {
     v13.receiver = self;
     v13.super_class = SBHFocusMode;
@@ -24,27 +24,27 @@
     p_isa = &v9->super.isa;
     if (v9)
     {
-      objc_storeStrong(&v9->_identifier, a3);
-      objc_storeStrong(p_isa + 10, a4);
+      objc_storeStrong(&v9->_identifier, identifier);
+      objc_storeStrong(p_isa + 10, folder);
     }
 
     self = p_isa;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (BOOL)customizedHomeScreenPagesEnabled
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(SBHFocusMode *)self folder];
-  [v3 lists];
+  folder = [(SBHFocusMode *)self folder];
+  [folder lists];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -86,33 +86,33 @@ LABEL_11:
   return v9;
 }
 
-- (void)addToList:(id)a3
+- (void)addToList:(id)list
 {
-  v4 = a3;
-  v7 = [v4 focusModeIdentifiers];
-  v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithSet:v7];
-  v6 = [(SBHFocusMode *)self identifier];
-  [v5 addObject:v6];
+  listCopy = list;
+  focusModeIdentifiers = [listCopy focusModeIdentifiers];
+  v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithSet:focusModeIdentifiers];
+  identifier = [(SBHFocusMode *)self identifier];
+  [v5 addObject:identifier];
 
-  [v4 setFocusModeIdentifiers:v5];
+  [listCopy setFocusModeIdentifiers:v5];
 }
 
-- (void)removeFromList:(id)a3
+- (void)removeFromList:(id)list
 {
-  v4 = a3;
-  v7 = [v4 focusModeIdentifiers];
-  v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithSet:v7];
-  v6 = [(SBHFocusMode *)self identifier];
-  [v5 removeObject:v6];
+  listCopy = list;
+  focusModeIdentifiers = [listCopy focusModeIdentifiers];
+  v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithSet:focusModeIdentifiers];
+  identifier = [(SBHFocusMode *)self identifier];
+  [v5 removeObject:identifier];
 
-  [v4 setFocusModeIdentifiers:v5];
+  [listCopy setFocusModeIdentifiers:v5];
 }
 
-- (BOOL)wantsListVisible:(id)a3
+- (BOOL)wantsListVisible:(id)visible
 {
-  v4 = [a3 focusModeIdentifiers];
-  v5 = [(SBHFocusMode *)self identifier];
-  v6 = [v4 containsObject:v5];
+  focusModeIdentifiers = [visible focusModeIdentifiers];
+  identifier = [(SBHFocusMode *)self identifier];
+  v6 = [focusModeIdentifiers containsObject:identifier];
 
   return v6;
 }
@@ -120,14 +120,14 @@ LABEL_11:
 - (NSArray)lists
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(SBHFocusMode *)self folder];
+  folder = [(SBHFocusMode *)self folder];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v3 lists];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  lists = [folder lists];
+  v6 = [lists countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -138,7 +138,7 @@ LABEL_11:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(lists);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -148,7 +148,7 @@ LABEL_11:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [lists countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -159,27 +159,27 @@ LABEL_11:
 
 - (id)succinctDescription
 {
-  v2 = [(SBHFocusMode *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHFocusMode *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHFocusMode *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHFocusMode *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBHFocusMode *)self succinctDescriptionBuilder];
-  v5 = [(SBHFocusMode *)self identifier];
-  [v4 appendString:v5 withName:@"identifier"];
+  succinctDescriptionBuilder = [(SBHFocusMode *)self succinctDescriptionBuilder];
+  identifier = [(SBHFocusMode *)self identifier];
+  [succinctDescriptionBuilder appendString:identifier withName:@"identifier"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

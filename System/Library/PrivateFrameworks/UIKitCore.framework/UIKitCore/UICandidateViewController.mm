@@ -1,43 +1,43 @@
 @interface UICandidateViewController
-+ (double)preferredCandidateBarHeightForTraitCollection:(id)a3;
++ (double)preferredCandidateBarHeightForTraitCollection:(id)collection;
 - (BOOL)extendsFromKeyplane;
-- (BOOL)isVisibleForInputDelegate:(id)a3 inputViews:(id)a4;
+- (BOOL)isVisibleForInputDelegate:(id)delegate inputViews:(id)views;
 - (NSArray)displayedCandidates;
 - (int64_t)overrideUserInterfaceStyle;
 - (void)loadView;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation UICandidateViewController
 
-- (BOOL)isVisibleForInputDelegate:(id)a3 inputViews:(id)a4
+- (BOOL)isVisibleForInputDelegate:(id)delegate inputViews:(id)views
 {
-  v4 = [UIKeyboardImpl activeInstance:a3];
-  v5 = [v4 _showsScribbleIconsInAssistantView];
+  v4 = [UIKeyboardImpl activeInstance:delegate];
+  _showsScribbleIconsInAssistantView = [v4 _showsScribbleIconsInAssistantView];
 
-  if (v5)
+  if (_showsScribbleIconsInAssistantView)
   {
     return 0;
   }
 
   v7 = +[UIKeyboardImpl activeInstance];
-  v8 = [v7 shouldShowCandidateBar];
+  shouldShowCandidateBar = [v7 shouldShowCandidateBar];
 
-  return v8;
+  return shouldShowCandidateBar;
 }
 
-+ (double)preferredCandidateBarHeightForTraitCollection:(id)a3
++ (double)preferredCandidateBarHeightForTraitCollection:(id)collection
 {
-  v3 = a3;
+  collectionCopy = collection;
   if (!+[UIKeyboardImpl isFloating])
   {
     SafeDeviceIdiom = UIKeyboardGetSafeDeviceIdiom();
     v9 = +[UIKeyboard activeKeyboard];
-    v10 = [v9 interfaceOrientation];
+    interfaceOrientation = [v9 interfaceOrientation];
 
     v11 = +[UIKeyboardImpl keyboardScreen];
-    v4 = [UIKBScreenTraits traitsWithScreen:v11 orientation:v10];
+    v4 = [UIKBScreenTraits traitsWithScreen:v11 orientation:interfaceOrientation];
 
     if (SafeDeviceIdiom == -1)
     {
@@ -47,40 +47,40 @@
     v12 = UIKeyboardComputeKeyboardIdiomFromScreenTraits(v4, SafeDeviceIdiom, 0);
     if ((v12 - 23) < 4 || v12 == 1)
     {
-      [UISystemInputAssistantViewController _defaultPreferredHeightForTraitCollection:v3];
+      [UISystemInputAssistantViewController _defaultPreferredHeightForTraitCollection:collectionCopy];
       v7 = v14;
       goto LABEL_11;
     }
 
     v16 = +[UIKeyboardImpl activeInstance];
-    v17 = [v16 candidateController];
-    v18 = [v17 screenTraits];
-    if ([v18 idiom] != 1)
+    candidateController = [v16 candidateController];
+    screenTraits = [candidateController screenTraits];
+    if ([screenTraits idiom] != 1)
     {
       v19 = +[UIKeyboardImpl activeInstance];
-      v20 = [v19 candidateController];
-      v21 = [v20 screenTraits];
-      if ([v21 idiom] == 24)
+      candidateController2 = [v19 candidateController];
+      screenTraits2 = [candidateController2 screenTraits];
+      if ([screenTraits2 idiom] == 24)
       {
       }
 
       else
       {
-        v42 = v21;
-        v43 = v20;
+        v42 = screenTraits2;
+        v43 = candidateController2;
         v44 = v19;
         v22 = +[UIKeyboardImpl activeInstance];
-        v23 = [v22 candidateController];
-        v24 = [v23 screenTraits];
-        if ([v24 idiom] != 25)
+        candidateController3 = [v22 candidateController];
+        screenTraits3 = [candidateController3 screenTraits];
+        if ([screenTraits3 idiom] != 25)
         {
-          v38 = v24;
-          v39 = v23;
+          v38 = screenTraits3;
+          v39 = candidateController3;
           v41 = v22;
           v37 = +[UIKeyboardImpl activeInstance];
-          v36 = [v37 candidateController];
-          v25 = [v36 screenTraits];
-          if ([v25 idiom] == 26)
+          candidateController4 = [v37 candidateController];
+          screenTraits4 = [candidateController4 screenTraits];
+          if ([screenTraits4 idiom] == 26)
           {
             v40 = 0;
           }
@@ -88,20 +88,20 @@
           else
           {
             v35 = +[UIKeyboardImpl activeInstance];
-            v26 = [v35 candidateController];
-            v27 = [v26 screenTraits];
-            v40 = [v27 idiom] != 23;
+            candidateController5 = [v35 candidateController];
+            screenTraits5 = [candidateController5 screenTraits];
+            v40 = [screenTraits5 idiom] != 23;
           }
 
           if (v40)
           {
             v28 = +[UIKeyboardImpl activeInstance];
-            v29 = [v28 candidateController];
-            [v29 candidateBarHeight];
+            candidateController6 = [v28 candidateController];
+            [candidateController6 candidateBarHeight];
             v31 = v30;
             v32 = +[UIKeyboardImpl activeInstance];
-            v33 = [v32 candidateController];
-            [v33 candidateBarEdgeInsetsForOrientation:v10];
+            candidateController7 = [v32 candidateController];
+            [candidateController7 candidateBarEdgeInsetsForOrientation:interfaceOrientation];
             v7 = v31 + v34;
 
             goto LABEL_11;
@@ -118,8 +118,8 @@ LABEL_18:
   }
 
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 candidateController];
-  [v5 candidateBarHeight];
+  candidateController8 = [v4 candidateController];
+  [candidateController8 candidateBarHeight];
   v7 = v6;
 
 LABEL_11:
@@ -129,19 +129,19 @@ LABEL_11:
 - (NSArray)displayedCandidates
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 candidateController];
-  v4 = [v3 candidateResultSet];
-  v5 = [v4 candidates];
+  candidateController = [v2 candidateController];
+  candidateResultSet = [candidateController candidateResultSet];
+  candidates = [candidateResultSet candidates];
 
-  return v5;
+  return candidates;
 }
 
 - (BOOL)extendsFromKeyplane
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 candidateController];
+  candidateController = [v2 candidateController];
 
-  v4 = ([v3 activeCandidateViewType] >> 1) & 1;
+  v4 = ([candidateController activeCandidateViewType] >> 1) & 1;
   return v4;
 }
 
@@ -152,24 +152,24 @@ LABEL_11:
   [(UIViewController *)self setView:v4];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4 = +[UIKeyboardImpl activeInstance];
-  v8 = [v4 candidateController];
+  candidateController = [v4 candidateController];
 
-  v5 = [v8 loadCandidateBar];
-  [(UICandidateViewController *)self setCandidateView:v5];
+  loadCandidateBar = [candidateController loadCandidateBar];
+  [(UICandidateViewController *)self setCandidateView:loadCandidateBar];
 
-  v6 = [(UIViewController *)self view];
-  v7 = [(UICandidateViewController *)self candidateView];
-  [v6 addSubview:v7];
+  view = [(UIViewController *)self view];
+  candidateView = [(UICandidateViewController *)self candidateView];
+  [view addSubview:candidateView];
 }
 
 - (int64_t)overrideUserInterfaceStyle
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 _inheritedRenderConfig];
-  if ([v3 lightKeyboard])
+  _inheritedRenderConfig = [v2 _inheritedRenderConfig];
+  if ([_inheritedRenderConfig lightKeyboard])
   {
     v4 = 1;
   }
@@ -185,13 +185,13 @@ LABEL_11:
 - (void)viewDidLayoutSubviews
 {
   v3 = +[UIKeyboardImpl activeInstance];
-  v44 = [v3 candidateController];
+  candidateController = [v3 candidateController];
 
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 _layout];
+  _layout = [v4 _layout];
 
-  v6 = [(UIViewController *)self view];
-  [v6 bounds];
+  view = [(UIViewController *)self view];
+  [view bounds];
   v8 = v7;
   v10 = v9;
   width = v11;
@@ -209,7 +209,7 @@ LABEL_11:
     v47.size.height = v14;
     if (!CGRectIsEmpty(v47))
     {
-      [v44 candidateBarEdgeInsetsForOrientation:{objc_msgSend(v5, "orientation")}];
+      [candidateController candidateBarEdgeInsetsForOrientation:{objc_msgSend(_layout, "orientation")}];
       v16 = v15;
       v18 = v17;
       v20 = v19;
@@ -225,15 +225,15 @@ LABEL_11:
         }
       }
 
-      if ([v5 idiom] || (objc_msgSend(v5, "orientation") - 3) > 1)
+      if ([_layout idiom] || (objc_msgSend(_layout, "orientation") - 3) > 1)
       {
         v14 = v14 - v16 - v20;
       }
 
       else
       {
-        v25 = [v5 currentKeyplane];
-        [v25 keyUnionPaddedFrame];
+        currentKeyplane = [_layout currentKeyplane];
+        [currentKeyplane keyUnionPaddedFrame];
         v27 = v26;
         v29 = v28;
         v31 = v30;
@@ -248,22 +248,22 @@ LABEL_11:
       }
 
       v34 = width - v18 - v22;
-      v35 = [(UIViewController *)self view];
-      [v35 bounds];
+      view2 = [(UIViewController *)self view];
+      [view2 bounds];
       v37 = (v36 - v34) * 0.5;
 
-      v38 = [(UICandidateViewController *)self candidateView];
-      [v38 setFrame:{v37, v16, v34, v14}];
+      candidateView = [(UICandidateViewController *)self candidateView];
+      [candidateView setFrame:{v37, v16, v34, v14}];
 
-      v39 = [(UICandidateViewController *)self candidateView];
-      v40 = [v39 superview];
-      v41 = [(UIViewController *)self view];
+      candidateView2 = [(UICandidateViewController *)self candidateView];
+      superview = [candidateView2 superview];
+      view3 = [(UIViewController *)self view];
 
-      if (v40 != v41)
+      if (superview != view3)
       {
-        v42 = [(UIViewController *)self view];
-        v43 = [(UICandidateViewController *)self candidateView];
-        [v42 addSubview:v43];
+        view4 = [(UIViewController *)self view];
+        candidateView3 = [(UICandidateViewController *)self candidateView];
+        [view4 addSubview:candidateView3];
       }
     }
   }

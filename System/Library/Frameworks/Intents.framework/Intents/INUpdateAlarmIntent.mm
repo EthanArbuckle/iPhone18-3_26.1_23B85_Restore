@@ -3,30 +3,30 @@
 - (INAlarmSearch)alarmSearch;
 - (INDateComponentsRange)proposedTime;
 - (INSpeakableString)proposedLabel;
-- (INUpdateAlarmIntent)initWithAlarmSearch:(id)a3 alarm:(id)a4 operation:(int64_t)a5 proposedTime:(id)a6 proposedLabel:(id)a7;
+- (INUpdateAlarmIntent)initWithAlarmSearch:(id)search alarm:(id)alarm operation:(int64_t)operation proposedTime:(id)time proposedLabel:(id)label;
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
 - (int64_t)operation;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setAlarm:(id)a3;
-- (void)setAlarmSearch:(id)a3;
-- (void)setOperation:(int64_t)a3;
-- (void)setProposedLabel:(id)a3;
-- (void)setProposedTime:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setAlarm:(id)alarm;
+- (void)setAlarmSearch:(id)search;
+- (void)setOperation:(int64_t)operation;
+- (void)setProposedLabel:(id)label;
+- (void)setProposedTime:(id)time;
 @end
 
 @implementation INUpdateAlarmIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = a4;
-  v7 = [(INUpdateAlarmIntent *)self _typedBackingStore];
-  v11 = v6;
-  v8 = [v7 copy];
-  v9 = [v7 proposedTime];
-  v10 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(v9, a3);
+  idCopy = id;
+  _typedBackingStore = [(INUpdateAlarmIntent *)self _typedBackingStore];
+  v11 = idCopy;
+  v8 = [_typedBackingStore copy];
+  proposedTime = [_typedBackingStore proposedTime];
+  v10 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(proposedTime, options);
 
   [v8 setProposedTime:v10];
   [(INIntent *)self setBackingStore:v8];
@@ -36,32 +36,32 @@
 {
   v18[5] = *MEMORY[0x1E69E9840];
   v17[0] = @"alarmSearch";
-  v3 = [(INUpdateAlarmIntent *)self alarmSearch];
-  v4 = v3;
-  if (!v3)
+  alarmSearch = [(INUpdateAlarmIntent *)self alarmSearch];
+  null = alarmSearch;
+  if (!alarmSearch)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[0] = v4;
+  v18[0] = null;
   v17[1] = @"alarm";
-  v5 = [(INUpdateAlarmIntent *)self alarm];
-  v6 = v5;
-  if (!v5)
+  alarm = [(INUpdateAlarmIntent *)self alarm];
+  null2 = alarm;
+  if (!alarm)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[1] = v6;
+  v18[1] = null2;
   v17[2] = @"operation";
-  v7 = [(INUpdateAlarmIntent *)self operation];
+  operation = [(INUpdateAlarmIntent *)self operation];
   v8 = @"unknown";
-  if (v7 == 2)
+  if (operation == 2)
   {
     v8 = @"updateTime";
   }
 
-  if (v7 == 1)
+  if (operation == 1)
   {
     v8 = @"updateLabel";
   }
@@ -69,37 +69,37 @@
   v9 = v8;
   v18[2] = v9;
   v17[3] = @"proposedTime";
-  v10 = [(INUpdateAlarmIntent *)self proposedTime];
-  v11 = v10;
-  if (!v10)
+  proposedTime = [(INUpdateAlarmIntent *)self proposedTime];
+  null3 = proposedTime;
+  if (!proposedTime)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[3] = v11;
+  v18[3] = null3;
   v17[4] = @"proposedLabel";
-  v12 = [(INUpdateAlarmIntent *)self proposedLabel];
-  v13 = v12;
-  if (!v12)
+  proposedLabel = [(INUpdateAlarmIntent *)self proposedLabel];
+  null4 = proposedLabel;
+  if (!proposedLabel)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[4] = v13;
+  v18[4] = null4;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:5];
-  if (!v12)
+  if (!proposedLabel)
   {
   }
 
-  if (!v10)
+  if (!proposedTime)
   {
   }
 
-  if (!v5)
+  if (!alarm)
   {
   }
 
-  if (!v3)
+  if (!alarmSearch)
   {
   }
 
@@ -108,45 +108,45 @@
   return v14;
 }
 
-- (void)setProposedLabel:(id)a3
+- (void)setProposedLabel:(id)label
 {
-  v4 = a3;
-  v6 = [(INUpdateAlarmIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDataString(v4);
+  labelCopy = label;
+  _typedBackingStore = [(INUpdateAlarmIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDataString(labelCopy);
 
-  [v6 setProposedLabel:v5];
+  [_typedBackingStore setProposedLabel:v5];
 }
 
 - (INSpeakableString)proposedLabel
 {
-  v2 = [(INUpdateAlarmIntent *)self _typedBackingStore];
-  v3 = [v2 proposedLabel];
-  v4 = INIntentSlotValueTransformFromDataString(v3);
+  _typedBackingStore = [(INUpdateAlarmIntent *)self _typedBackingStore];
+  proposedLabel = [_typedBackingStore proposedLabel];
+  v4 = INIntentSlotValueTransformFromDataString(proposedLabel);
 
   return v4;
 }
 
-- (void)setProposedTime:(id)a3
+- (void)setProposedTime:(id)time
 {
-  v4 = a3;
-  v6 = [(INUpdateAlarmIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDateTimeRange(v4);
+  timeCopy = time;
+  _typedBackingStore = [(INUpdateAlarmIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDateTimeRange(timeCopy);
 
-  [v6 setProposedTime:v5];
+  [_typedBackingStore setProposedTime:v5];
 }
 
 - (INDateComponentsRange)proposedTime
 {
-  v2 = [(INUpdateAlarmIntent *)self _typedBackingStore];
-  v3 = [v2 proposedTime];
-  v4 = INIntentSlotValueTransformFromDateTimeRange(v3);
+  _typedBackingStore = [(INUpdateAlarmIntent *)self _typedBackingStore];
+  proposedTime = [_typedBackingStore proposedTime];
+  v4 = INIntentSlotValueTransformFromDateTimeRange(proposedTime);
 
   return v4;
 }
 
-- (void)setOperation:(int64_t)a3
+- (void)setOperation:(int64_t)operation
 {
-  if (a3 == 1)
+  if (operation == 1)
   {
     v3 = 1;
   }
@@ -156,7 +156,7 @@
     v3 = 0x7FFFFFFF;
   }
 
-  if (a3 == 2)
+  if (operation == 2)
   {
     v4 = 2;
   }
@@ -166,32 +166,32 @@
     v4 = v3;
   }
 
-  v5 = [(INUpdateAlarmIntent *)self _typedBackingStore];
-  v6 = v5;
+  _typedBackingStore = [(INUpdateAlarmIntent *)self _typedBackingStore];
+  v6 = _typedBackingStore;
   if (v4 == 0x7FFFFFFF)
   {
-    [v5 setHasOperation:0];
+    [_typedBackingStore setHasOperation:0];
   }
 
   else
   {
-    [v5 setOperation:v4];
+    [_typedBackingStore setOperation:v4];
   }
 }
 
 - (int64_t)operation
 {
-  v3 = [(INUpdateAlarmIntent *)self _typedBackingStore];
-  v4 = [v3 hasOperation];
-  v5 = [(INUpdateAlarmIntent *)self _typedBackingStore];
-  v6 = [v5 operation];
-  v7 = 2 * (v6 == 2);
-  if (v6 == 1)
+  _typedBackingStore = [(INUpdateAlarmIntent *)self _typedBackingStore];
+  hasOperation = [_typedBackingStore hasOperation];
+  _typedBackingStore2 = [(INUpdateAlarmIntent *)self _typedBackingStore];
+  operation = [_typedBackingStore2 operation];
+  v7 = 2 * (operation == 2);
+  if (operation == 1)
   {
     v7 = 1;
   }
 
-  if (v4)
+  if (hasOperation)
   {
     v8 = v7;
   }
@@ -204,86 +204,86 @@
   return v8;
 }
 
-- (void)setAlarm:(id)a3
+- (void)setAlarm:(id)alarm
 {
-  v4 = a3;
-  v6 = [(INUpdateAlarmIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToAlarm(v4);
+  alarmCopy = alarm;
+  _typedBackingStore = [(INUpdateAlarmIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToAlarm(alarmCopy);
 
-  [v6 setAlarm:v5];
+  [_typedBackingStore setAlarm:v5];
 }
 
 - (INAlarm)alarm
 {
-  v2 = [(INUpdateAlarmIntent *)self _typedBackingStore];
-  v3 = [v2 alarm];
-  v4 = INIntentSlotValueTransformFromAlarm(v3);
+  _typedBackingStore = [(INUpdateAlarmIntent *)self _typedBackingStore];
+  alarm = [_typedBackingStore alarm];
+  v4 = INIntentSlotValueTransformFromAlarm(alarm);
 
   return v4;
 }
 
-- (void)setAlarmSearch:(id)a3
+- (void)setAlarmSearch:(id)search
 {
-  v4 = a3;
-  v6 = [(INUpdateAlarmIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToAlarmSearch(v4);
+  searchCopy = search;
+  _typedBackingStore = [(INUpdateAlarmIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToAlarmSearch(searchCopy);
 
-  [v6 setAlarmSearch:v5];
+  [_typedBackingStore setAlarmSearch:v5];
 }
 
 - (INAlarmSearch)alarmSearch
 {
-  v2 = [(INUpdateAlarmIntent *)self _typedBackingStore];
-  v3 = [v2 alarmSearch];
-  v4 = INIntentSlotValueTransformFromAlarmSearch(v3);
+  _typedBackingStore = [(INUpdateAlarmIntent *)self _typedBackingStore];
+  alarmSearch = [_typedBackingStore alarmSearch];
+  v4 = INIntentSlotValueTransformFromAlarmSearch(alarmSearch);
 
   return v4;
 }
 
-- (INUpdateAlarmIntent)initWithAlarmSearch:(id)a3 alarm:(id)a4 operation:(int64_t)a5 proposedTime:(id)a6 proposedLabel:(id)a7
+- (INUpdateAlarmIntent)initWithAlarmSearch:(id)search alarm:(id)alarm operation:(int64_t)operation proposedTime:(id)time proposedLabel:(id)label
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  searchCopy = search;
+  alarmCopy = alarm;
+  timeCopy = time;
+  labelCopy = label;
   v19.receiver = self;
   v19.super_class = INUpdateAlarmIntent;
   v16 = [(INIntent *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    [(INUpdateAlarmIntent *)v16 setAlarmSearch:v12];
-    [(INUpdateAlarmIntent *)v17 setAlarm:v13];
-    [(INUpdateAlarmIntent *)v17 setOperation:a5];
-    [(INUpdateAlarmIntent *)v17 setProposedTime:v14];
-    [(INUpdateAlarmIntent *)v17 setProposedLabel:v15];
+    [(INUpdateAlarmIntent *)v16 setAlarmSearch:searchCopy];
+    [(INUpdateAlarmIntent *)v17 setAlarm:alarmCopy];
+    [(INUpdateAlarmIntent *)v17 setOperation:operation];
+    [(INUpdateAlarmIntent *)v17 setProposedTime:timeCopy];
+    [(INUpdateAlarmIntent *)v17 setProposedLabel:labelCopy];
   }
 
   return v17;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INUpdateAlarmIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INUpdateAlarmIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INUpdateAlarmIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INUpdateAlarmIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

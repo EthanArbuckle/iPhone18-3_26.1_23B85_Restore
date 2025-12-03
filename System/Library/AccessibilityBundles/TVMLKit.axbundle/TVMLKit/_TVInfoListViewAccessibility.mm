@@ -1,23 +1,23 @@
 @interface _TVInfoListViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation _TVInfoListViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_TVInfoListView" hasInstanceMethod:@"groupedInfos" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_TVInfoListInfo"];
-  [v3 validateClass:@"_TVInfoListInfo" hasInstanceMethod:@"headerContentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_TVInfoListInfo" hasInstanceMethod:@"dataViews" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_TVInfoListView" hasInstanceMethod:@"groupedInfos" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_TVInfoListInfo"];
+  [validationsCopy validateClass:@"_TVInfoListInfo" hasInstanceMethod:@"headerContentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_TVInfoListInfo" hasInstanceMethod:@"dataViews" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityElements
 {
   v29 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -59,10 +59,10 @@
 
               v11 = *(*(&v19 + 1) + 8 * j);
               v12 = [v11 safeValueForKey:@"headerContentView"];
-              [v3 axSafelyAddObject:v12];
+              [array axSafelyAddObject:v12];
 
               v13 = [v11 safeArrayForKey:@"dataViews"];
-              [v3 axSafelyAddObjectsFromArray:v13];
+              [array axSafelyAddObjectsFromArray:v13];
             }
 
             v8 = [v6 countByEnumeratingWithState:&v19 objects:v27 count:16];
@@ -80,7 +80,7 @@
 
   v14 = *MEMORY[0x29EDCA608];
 
-  return v3;
+  return array;
 }
 
 @end

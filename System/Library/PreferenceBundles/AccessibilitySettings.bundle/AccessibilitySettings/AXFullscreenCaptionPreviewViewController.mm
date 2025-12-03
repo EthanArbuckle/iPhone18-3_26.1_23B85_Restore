@@ -2,11 +2,11 @@
 - (AXFullscreenCaptionPreviewViewController)init;
 - (id)_nextCludImage;
 - (int64_t)_nextCloudImageIndex;
-- (void)_handlePreviewTapped:(id)a3;
+- (void)_handlePreviewTapped:(id)tapped;
 - (void)_transitionToNextCloudImage;
 - (void)dealloc;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -36,14 +36,14 @@
   [(AXFullscreenCaptionPreviewViewController *)&v4 dealloc];
 }
 
-- (void)_handlePreviewTapped:(id)a3
+- (void)_handlePreviewTapped:(id)tapped
 {
   [(NSTimer *)self->_cloudTimer invalidate];
   cloudTimer = self->_cloudTimer;
   self->_cloudTimer = 0;
 
-  v5 = [(AXFullscreenCaptionPreviewViewController *)self presentingViewController];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(AXFullscreenCaptionPreviewViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (int64_t)_nextCloudImageIndex
@@ -69,13 +69,13 @@
 
 - (id)_nextCludImage
 {
-  v3 = [(AXFullscreenCaptionPreviewViewController *)self _nextCloudImageIndex];
+  _nextCloudImageIndex = [(AXFullscreenCaptionPreviewViewController *)self _nextCloudImageIndex];
   ++self->_visibleCloudImageIndex;
   v4 = +[AXCaptionPreviewView cloudImages];
   v5 = v4;
-  if (v3)
+  if (_nextCloudImageIndex)
   {
-    [v4 objectAtIndex:v3];
+    [v4 objectAtIndex:_nextCloudImageIndex];
   }
 
   else
@@ -89,48 +89,48 @@
 
 - (void)_transitionToNextCloudImage
 {
-  v3 = [(AXFullscreenCaptionPreviewViewController *)self _previewView];
-  v4 = [(AXFullscreenCaptionPreviewViewController *)self _previewView];
-  v5 = [v4 cloudsView1];
-  [v5 alpha];
+  _previewView = [(AXFullscreenCaptionPreviewViewController *)self _previewView];
+  _previewView2 = [(AXFullscreenCaptionPreviewViewController *)self _previewView];
+  cloudsView1 = [_previewView2 cloudsView1];
+  [cloudsView1 alpha];
   v7 = v6;
 
-  v8 = [(AXFullscreenCaptionPreviewViewController *)self _previewView];
-  v9 = v8;
+  _previewView3 = [(AXFullscreenCaptionPreviewViewController *)self _previewView];
+  v9 = _previewView3;
   if (v7 == 1.0)
   {
-    v10 = [v8 cloudsView2];
+    cloudsView2 = [_previewView3 cloudsView2];
 
-    v11 = [(AXFullscreenCaptionPreviewViewController *)self _previewView];
-    [v11 cloudsView1];
+    _previewView4 = [(AXFullscreenCaptionPreviewViewController *)self _previewView];
+    [_previewView4 cloudsView1];
   }
 
   else
   {
-    v10 = [v8 cloudsView1];
+    cloudsView2 = [_previewView3 cloudsView1];
 
-    v11 = [(AXFullscreenCaptionPreviewViewController *)self _previewView];
-    [v11 cloudsView2];
+    _previewView4 = [(AXFullscreenCaptionPreviewViewController *)self _previewView];
+    [_previewView4 cloudsView2];
   }
   v12 = ;
 
-  v13 = [(AXFullscreenCaptionPreviewViewController *)self _nextCludImage];
-  [v10 setImage:v13];
+  _nextCludImage = [(AXFullscreenCaptionPreviewViewController *)self _nextCludImage];
+  [cloudsView2 setImage:_nextCludImage];
 
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = __71__AXFullscreenCaptionPreviewViewController__transitionToNextCloudImage__block_invoke;
   v21[3] = &unk_2553B0;
-  v22 = v10;
+  v22 = cloudsView2;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = __71__AXFullscreenCaptionPreviewViewController__transitionToNextCloudImage__block_invoke_2;
   v17[3] = &unk_257818;
   v18 = v12;
-  v19 = v3;
+  v19 = _previewView;
   v20 = v22;
   v14 = v22;
-  v15 = v3;
+  v15 = _previewView;
   v16 = v12;
   [UIView animateWithDuration:v21 animations:v17 completion:2.0];
 }
@@ -169,20 +169,20 @@ id __71__AXFullscreenCaptionPreviewViewController__transitionToNextCloudImage__b
   [(AXFullscreenCaptionPreviewViewController *)&v8 viewDidLoad];
   [(AXFullscreenCaptionPreviewViewController *)self setModalPresentationCapturesStatusBarAppearance:1];
   v3 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_handlePreviewTapped:"];
-  v4 = [(AXFullscreenCaptionPreviewViewController *)self view];
-  [v4 addGestureRecognizer:v3];
+  view = [(AXFullscreenCaptionPreviewViewController *)self view];
+  [view addGestureRecognizer:v3];
 
-  v5 = [(AXFullscreenCaptionPreviewViewController *)self _previewView];
-  v6 = [v5 cloudsView1];
-  v7 = [(AXFullscreenCaptionPreviewViewController *)self _nextCludImage];
-  [v6 setImage:v7];
+  _previewView = [(AXFullscreenCaptionPreviewViewController *)self _previewView];
+  cloudsView1 = [_previewView cloudsView1];
+  _nextCludImage = [(AXFullscreenCaptionPreviewViewController *)self _nextCludImage];
+  [cloudsView1 setImage:_nextCludImage];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v14.receiver = self;
   v14.super_class = AXFullscreenCaptionPreviewViewController;
-  [(AXFullscreenCaptionPreviewViewController *)&v14 viewDidAppear:a3];
+  [(AXFullscreenCaptionPreviewViewController *)&v14 viewDidAppear:appear];
   objc_initWeak(&location, self);
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
@@ -194,8 +194,8 @@ id __71__AXFullscreenCaptionPreviewViewController__transitionToNextCloudImage__b
   self->_cloudTimer = v4;
 
   v6 = [(AXFullscreenCaptionPreviewViewController *)self view:v8];
-  v7 = [v6 captionSubtitlePreviewView];
-  [v7 update];
+  captionSubtitlePreviewView = [v6 captionSubtitlePreviewView];
+  [captionSubtitlePreviewView update];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);

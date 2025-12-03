@@ -1,7 +1,7 @@
 @interface _GCDevicePhysicalInputBase
 + (id)debugDescription;
-- (BOOL)view:(id)a3 testAndSetObjectValue:(id)a4 forSlot:(unint64_t *)a5 policy:(unint64_t)a6;
-- (BOOL)view:(id)a3 testAndSetPrimitiveValue:(unint64_t)a4 forSlot:(unint64_t *)a5;
+- (BOOL)view:(id)view testAndSetObjectValue:(id)value forSlot:(unint64_t *)slot policy:(unint64_t)policy;
+- (BOOL)view:(id)view testAndSetPrimitiveValue:(unint64_t)value forSlot:(unint64_t *)slot;
 - (GCDevice)device;
 - (NSString)debugDescription;
 - (NSString)description;
@@ -9,36 +9,36 @@
 - (double)debugDescription;
 - (double)lastEventLatency;
 - (double)lastEventTimestamp;
-- (id)_initWithFacadeTemplate:(id)a3 elementsTemplates:(id)a4 attributes:(id)a5 context:(id)a6;
-- (id)_stateTableForSlot:(SlotID)a3;
+- (id)_initWithFacadeTemplate:(id)template elementsTemplates:(id)templates attributes:(id)attributes context:(id)context;
+- (id)_stateTableForSlot:(SlotID)slot;
 - (id)elementsForProtocol:(id *)result;
-- (id)view:(id)a3 objectValueForSlot:(unint64_t *)a4;
-- (id)view:(id)a3 viewForSlot:(unint64_t *)a4;
+- (id)view:(id)view objectValueForSlot:(unint64_t *)slot;
+- (id)view:(id)view viewForSlot:(unint64_t *)slot;
 - (id)viewConfiguration;
 - (id)viewState;
 - (uint64_t)_elementAtIndex:(uint64_t)result;
-- (uint64_t)_elementForAlias:(uint64_t)a1;
+- (uint64_t)_elementForAlias:(uint64_t)alias;
 - (uint64_t)attributes;
 - (uint64_t)elements;
 - (uint64_t)facade;
 - (uint64_t)viewProperties;
-- (unint64_t)view:(id)a3 primitiveValueForSlot:(unint64_t *)a4;
+- (unint64_t)view:(id)view primitiveValueForSlot:(unint64_t *)slot;
 - (void)dealloc;
-- (void)setViewConfiguration:(void *)a1;
-- (void)setViewState:(void *)a1;
-- (void)view:(id)a3 setObjectValue:(id)a4 forSlot:(unint64_t *)a5 policy:(unint64_t)a6;
-- (void)view:(id)a3 setPrimitiveValue:(unint64_t)a4 forSlot:(unint64_t *)a5;
+- (void)setViewConfiguration:(void *)configuration;
+- (void)setViewState:(void *)state;
+- (void)view:(id)view setObjectValue:(id)value forSlot:(unint64_t *)slot policy:(unint64_t)policy;
+- (void)view:(id)view setPrimitiveValue:(unint64_t)value forSlot:(unint64_t *)slot;
 @end
 
 @implementation _GCDevicePhysicalInputBase
 
-- (id)_initWithFacadeTemplate:(id)a3 elementsTemplates:(id)a4 attributes:(id)a5 context:(id)a6
+- (id)_initWithFacadeTemplate:(id)template elementsTemplates:(id)templates attributes:(id)attributes context:(id)context
 {
-  v6 = a6;
+  contextCopy = context;
   v45 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (template)
   {
-    if (a6)
+    if (context)
     {
       goto LABEL_3;
     }
@@ -47,7 +47,7 @@
   else
   {
     [_GCDevicePhysicalInputBase _initWithFacadeTemplate:elementsTemplates:attributes:context:];
-    if (v6)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -58,18 +58,18 @@ LABEL_3:
   v42.receiver = self;
   v42.super_class = _GCDevicePhysicalInputBase;
   v11 = [(_GCDevicePhysicalInputBase *)&v42 init];
-  v12 = [a5 copy];
+  v12 = [attributes copy];
   if (!v12)
   {
     v12 = objc_opt_new();
   }
 
   v11->_attributes = v12;
-  *(v6 + 1) = v11;
-  v11->_viewConfiguration = *(v6 + 3);
-  v11->_viewProperties = *(v6 + 4);
-  v11->_viewState = *(v6 + 5);
-  v13 = [a4 mutableCopy];
+  *(contextCopy + 1) = v11;
+  v11->_viewConfiguration = *(contextCopy + 3);
+  v11->_viewProperties = *(contextCopy + 4);
+  v11->_viewState = *(contextCopy + 5);
+  v13 = [templates mutableCopy];
   [v13 sortUsingComparator:&__block_literal_global_5];
   v11->_elementCount = [v13 count];
   v11->_indexedElements = malloc_type_calloc([v13 count], 8uLL, 0x80040B8603338uLL);
@@ -84,7 +84,7 @@ LABEL_3:
   {
     v15 = 0;
     v31 = *v39;
-    v32 = v6;
+    v32 = contextCopy;
     do
     {
       for (i = 0; i != v33; ++i)
@@ -95,7 +95,7 @@ LABEL_3:
         }
 
         v17 = *(*(&v38 + 1) + 8 * i);
-        v11->_indexedElements[v15] = [objc_opt_class() withTemplate:v17 context:v6];
+        v11->_indexedElements[v15] = [objc_opt_class() withTemplate:v17 context:contextCopy];
         if (!v11->_indexedElements[v15])
         {
           [_GCDevicePhysicalInputBase _initWithFacadeTemplate:elementsTemplates:attributes:context:];
@@ -105,8 +105,8 @@ LABEL_3:
         v37 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v18 = [v17 aliases];
-        v19 = [v18 countByEnumeratingWithState:&v34 objects:v43 count:16];
+        aliases = [v17 aliases];
+        v19 = [aliases countByEnumeratingWithState:&v34 objects:v43 count:16];
         if (v19)
         {
           v20 = v19;
@@ -117,7 +117,7 @@ LABEL_3:
             {
               if (*v35 != v21)
               {
-                objc_enumerationMutation(v18);
+                objc_enumerationMutation(aliases);
               }
 
               v23 = *(*(&v34 + 1) + 8 * j);
@@ -129,14 +129,14 @@ LABEL_3:
               [v14 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", v15), v23}];
             }
 
-            v20 = [v18 countByEnumeratingWithState:&v34 objects:v43 count:16];
+            v20 = [aliases countByEnumeratingWithState:&v34 objects:v43 count:16];
           }
 
           while (v20);
         }
 
         ++v15;
-        v6 = v32;
+        contextCopy = v32;
       }
 
       v33 = [obj countByEnumeratingWithState:&v38 objects:v44 count:16];
@@ -147,23 +147,23 @@ LABEL_3:
 
   v11->_elementIndexByAlias = [v14 copy];
 
-  v11->_additionalViews = CFArrayCreateCopy(*MEMORY[0x1E695E480], *(v6 + 2));
+  v11->_additionalViews = CFArrayCreateCopy(*MEMORY[0x1E695E480], *(contextCopy + 2));
   v24 = [_GCDevicePhysicalInputElementsArray alloc];
   v11->_indexedElementViews = v24;
   v24->_implementation = v11;
   v25 = [_GCDevicePhysicalInputElementsCollection alloc];
   v11->_elementCollection = v25;
   v25->_implementation = v11;
-  v26 = [objc_opt_class() withTemplate:v29 context:v6];
+  v26 = [objc_opt_class() withTemplate:v29 context:contextCopy];
   v11->_facade = v26;
   if (!v26)
   {
     [_GCDevicePhysicalInputBase _initWithFacadeTemplate:elementsTemplates:attributes:context:];
   }
 
-  v11->_viewConfiguration = [*(v6 + 3) copy];
-  v11->_viewProperties = [*(v6 + 4) copy];
-  v11->_viewState = [*(v6 + 5) copy];
+  v11->_viewConfiguration = [*(contextCopy + 3) copy];
+  v11->_viewProperties = [*(contextCopy + 4) copy];
+  v11->_viewState = [*(contextCopy + 5) copy];
   v27 = *MEMORY[0x1E69E9840];
   return v11;
 }
@@ -282,9 +282,9 @@ LABEL_3:
 
 - (double)lastEventTimestamp
 {
-  v2 = [(_GCDevicePhysicalInputBase *)self lastEventHostTimestamp];
+  lastEventHostTimestamp = [(_GCDevicePhysicalInputBase *)self lastEventHostTimestamp];
 
-  return GCNSTimeIntervalFromMachAbsoluteTime(v2);
+  return GCNSTimeIntervalFromMachAbsoluteTime(lastEventHostTimestamp);
 }
 
 - (double)lastEventLatency
@@ -298,9 +298,9 @@ LABEL_3:
   return (mach_absolute_time() * lastEventLatency_sTimebaseInfo / dword_1EC735EC4) / 1000000000.0 - v3;
 }
 
-- (id)_stateTableForSlot:(SlotID)a3
+- (id)_stateTableForSlot:(SlotID)slot
 {
-  if (*(&a3.var1 + 4) == 3)
+  if (*(&slot.var1 + 4) == 3)
   {
     if (self)
     {
@@ -313,9 +313,9 @@ LABEL_10:
 
   else
   {
-    if (*(&a3.var1 + 4) == 2)
+    if (*(&slot.var1 + 4) == 2)
     {
-      if ((a3.var0 & 0xFF0000000000) != 0x20000000000)
+      if ((slot.var0 & 0xFF0000000000) != 0x20000000000)
       {
         [_GCDevicePhysicalInputBase _stateTableForSlot:];
       }
@@ -339,7 +339,7 @@ LABEL_10:
 LABEL_15:
   Property = 0;
 LABEL_11:
-  if (HIWORD(a3.var0) != [Property magic])
+  if (HIWORD(slot.var0) != [Property magic])
   {
     [_GCDevicePhysicalInputBase _stateTableForSlot:];
   }
@@ -347,12 +347,12 @@ LABEL_11:
   return Property;
 }
 
-- (unint64_t)view:(id)a3 primitiveValueForSlot:(unint64_t *)a4
+- (unint64_t)view:(id)view primitiveValueForSlot:(unint64_t *)slot
 {
-  v5 = *a4;
-  if ((*a4 & 0xFF0000000000) != 0x10000000000)
+  v5 = *slot;
+  if ((*slot & 0xFF0000000000) != 0x10000000000)
   {
-    v8 = *a4;
+    v8 = *slot;
     [_GCDevicePhysicalInputBase view:primitiveValueForSlot:];
   }
 
@@ -366,40 +366,40 @@ LABEL_11:
   return [v6 primitiveValueAtIndex:v5];
 }
 
-- (void)view:(id)a3 setPrimitiveValue:(unint64_t)a4 forSlot:(unint64_t *)a5
+- (void)view:(id)view setPrimitiveValue:(unint64_t)value forSlot:(unint64_t *)slot
 {
-  v7 = *a5;
-  if ((*a5 & 0xFF0000000000) != 0x10000000000)
+  v7 = *slot;
+  if ((*slot & 0xFF0000000000) != 0x10000000000)
   {
-    v9 = *a5;
+    v9 = *slot;
     [_GCDevicePhysicalInputBase view:setPrimitiveValue:forSlot:];
   }
 
   v8 = [(_GCDevicePhysicalInputBase *)self _stateTableForSlot:v7];
 
-  [v8 setPrimitiveValue:a4 atIndex:v7];
+  [v8 setPrimitiveValue:value atIndex:v7];
 }
 
-- (BOOL)view:(id)a3 testAndSetPrimitiveValue:(unint64_t)a4 forSlot:(unint64_t *)a5
+- (BOOL)view:(id)view testAndSetPrimitiveValue:(unint64_t)value forSlot:(unint64_t *)slot
 {
-  v7 = *a5;
-  if ((*a5 & 0xFF0000000000) != 0x10000000000)
+  v7 = *slot;
+  if ((*slot & 0xFF0000000000) != 0x10000000000)
   {
-    v10 = *a5;
+    v10 = *slot;
     [_GCDevicePhysicalInputBase view:testAndSetPrimitiveValue:forSlot:];
   }
 
   v8 = [(_GCDevicePhysicalInputBase *)self _stateTableForSlot:v7];
 
-  return [v8 testAndSetPrimitiveValue:a4 atIndex:v7 previous:0];
+  return [v8 testAndSetPrimitiveValue:value atIndex:v7 previous:0];
 }
 
-- (id)view:(id)a3 objectValueForSlot:(unint64_t *)a4
+- (id)view:(id)view objectValueForSlot:(unint64_t *)slot
 {
-  v5 = *a4;
-  if ((*a4 & 0xFF0000000000) != 0x20000000000)
+  v5 = *slot;
+  if ((*slot & 0xFF0000000000) != 0x20000000000)
   {
-    v8 = *a4;
+    v8 = *slot;
     [_GCDevicePhysicalInputBase view:objectValueForSlot:];
   }
 
@@ -413,49 +413,49 @@ LABEL_11:
   return [v6 objectValueAtIndex:v5];
 }
 
-- (void)view:(id)a3 setObjectValue:(id)a4 forSlot:(unint64_t *)a5 policy:(unint64_t)a6
+- (void)view:(id)view setObjectValue:(id)value forSlot:(unint64_t *)slot policy:(unint64_t)policy
 {
-  v9 = *a5;
-  if ((*a5 & 0xFF00000000) == 0x200000000)
+  v9 = *slot;
+  if ((*slot & 0xFF00000000) == 0x200000000)
   {
 
-    [_GCDevicePhysicalInputBase view:"view:testAndSetObjectValue:forSlot:policy:" testAndSetObjectValue:a3 forSlot:? policy:?];
+    [_GCDevicePhysicalInputBase view:"view:testAndSetObjectValue:forSlot:policy:" testAndSetObjectValue:view forSlot:? policy:?];
   }
 
   else
   {
     if ((v9 & 0xFF0000000000) != 0x20000000000)
     {
-      v11 = *a5;
+      v11 = *slot;
       [_GCDevicePhysicalInputBase view:setObjectValue:forSlot:policy:];
     }
 
     v10 = [(_GCDevicePhysicalInputBase *)self _stateTableForSlot:v9];
 
-    [v10 setObjectValue:a4 atIndex:v9 policy:a6];
+    [v10 setObjectValue:value atIndex:v9 policy:policy];
   }
 }
 
-- (BOOL)view:(id)a3 testAndSetObjectValue:(id)a4 forSlot:(unint64_t *)a5 policy:(unint64_t)a6
+- (BOOL)view:(id)view testAndSetObjectValue:(id)value forSlot:(unint64_t *)slot policy:(unint64_t)policy
 {
-  v9 = *a5;
-  if ((*a5 & 0xFF0000000000) != 0x20000000000)
+  v9 = *slot;
+  if ((*slot & 0xFF0000000000) != 0x20000000000)
   {
-    v12 = *a5;
+    v12 = *slot;
     [_GCDevicePhysicalInputBase view:testAndSetObjectValue:forSlot:policy:];
   }
 
   v10 = [(_GCDevicePhysicalInputBase *)self _stateTableForSlot:v9];
 
-  return [v10 testAndSetObjectValue:a4 atIndex:v9 policy:a6 compareObjects:1 previous:0];
+  return [v10 testAndSetObjectValue:value atIndex:v9 policy:policy compareObjects:1 previous:0];
 }
 
-- (id)view:(id)a3 viewForSlot:(unint64_t *)a4
+- (id)view:(id)view viewForSlot:(unint64_t *)slot
 {
-  v5 = *a4;
-  if ((*a4 & 0xFF0000000000) != 0x30000000000)
+  v5 = *slot;
+  if ((*slot & 0xFF0000000000) != 0x30000000000)
   {
-    v8 = *a4;
+    v8 = *slot;
     [_GCDevicePhysicalInputBase view:viewForSlot:];
   }
 
@@ -485,13 +485,13 @@ LABEL_11:
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v19 = *MEMORY[0x1E69E9840];
   if (self)
   {
     if ([(NSSet *)self->_attributes count])
     {
-      attributes = v2->_attributes;
+      attributes = selfCopy->_attributes;
 LABEL_4:
       v4 = [(NSArray *)[(NSSet *)attributes allObjects] componentsJoinedByString:@", "];
       goto LABEL_7;
@@ -508,15 +508,15 @@ LABEL_4:
 LABEL_7:
   v5 = MEMORY[0x1E696AD60];
   v6 = objc_opt_class();
-  v7 = [v5 stringWithFormat:@"<%@ %p> '%@' {", NSStringFromClass(v6), v2, v4];
-  if (v2)
+  v7 = [v5 stringWithFormat:@"<%@ %p> '%@' {", NSStringFromClass(v6), selfCopy, v4];
+  if (selfCopy)
   {
-    [v7 appendFormat:@"\n\t%@", objc_msgSend(-[_GCDevicePhysicalInputFacade debugDescription](v2->_facade, "debugDescription"), "stringByReplacingOccurrencesOfString:withString:", @"\n", @"\n\t"];
+    [v7 appendFormat:@"\n\t%@", objc_msgSend(-[_GCDevicePhysicalInputFacade debugDescription](selfCopy->_facade, "debugDescription"), "stringByReplacingOccurrencesOfString:withString:", @"\n", @"\n\t"];
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v2 = v2->_indexedElementViews;
+    selfCopy = selfCopy->_indexedElementViews;
   }
 
   else
@@ -524,7 +524,7 @@ LABEL_7:
     [_GCDevicePhysicalInputBase debugDescription];
   }
 
-  v8 = [(_GCDevicePhysicalInputBase *)v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v8 = [(_GCDevicePhysicalInputBase *)selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -535,13 +535,13 @@ LABEL_7:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(selfCopy);
         }
 
         [v7 appendFormat:@"\n\t%@", objc_msgSend(objc_msgSend(*(*(&v14 + 1) + 8 * i), "debugDescription"), "stringByReplacingOccurrencesOfString:withString:", @"\n", @"\n\t"];
       }
 
-      v9 = [(_GCDevicePhysicalInputBase *)v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [(_GCDevicePhysicalInputBase *)selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -552,22 +552,22 @@ LABEL_7:
   return v7;
 }
 
-- (uint64_t)_elementForAlias:(uint64_t)a1
+- (uint64_t)_elementForAlias:(uint64_t)alias
 {
-  if (!a1)
+  if (!alias)
   {
     return 0;
   }
 
-  v3 = [*(a1 + 40) objectForKey:a2];
+  v3 = [*(alias + 40) objectForKey:a2];
   if (!v3)
   {
     return 0;
   }
 
-  v4 = [v3 unsignedIntegerValue];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return [(_GCDevicePhysicalInputBase *)a1 _elementAtIndex:v4];
+  return [(_GCDevicePhysicalInputBase *)alias _elementAtIndex:unsignedIntegerValue];
 }
 
 - (uint64_t)elements
@@ -658,7 +658,7 @@ LABEL_4:
 LABEL_7:
   v6 = MEMORY[0x1E696AEC0];
   v7 = objc_opt_class();
-  v8 = [(_GCDevicePhysicalInputBase *)self isSnapshot];
+  isSnapshot = [(_GCDevicePhysicalInputBase *)self isSnapshot];
   if (self)
   {
     indexedElementViews = self->_indexedElementViews;
@@ -669,7 +669,7 @@ LABEL_7:
     indexedElementViews = 0;
   }
 
-  if (v8)
+  if (isSnapshot)
   {
     v10 = @" Snapshot";
   }
@@ -702,19 +702,19 @@ LABEL_7:
   return result;
 }
 
-- (void)setViewConfiguration:(void *)a1
+- (void)setViewConfiguration:(void *)configuration
 {
-  if (a1)
+  if (configuration)
   {
-    objc_setProperty_atomic(a1, newValue, newValue, 72);
+    objc_setProperty_atomic(configuration, newValue, newValue, 72);
   }
 }
 
-- (void)setViewState:(void *)a1
+- (void)setViewState:(void *)state
 {
-  if (a1)
+  if (state)
   {
-    objc_setProperty_atomic(a1, newValue, newValue, 88);
+    objc_setProperty_atomic(state, newValue, newValue, 88);
   }
 }
 

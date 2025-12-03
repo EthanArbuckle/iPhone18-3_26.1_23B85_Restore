@@ -1,19 +1,19 @@
 @interface NEByteParser
-- (BOOL)copyBytes:(void *)a3 to:;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)parseAddressWithFamily:(uint64_t)a1;
+- (BOOL)copyBytes:(void *)bytes to:;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)parseAddressWithFamily:(uint64_t)family;
 - (uint64_t)parse16Bits:(uint64_t)result;
 - (uint64_t)parse32Bits:(uint64_t)result;
-- (uint64_t)parseBytes:(uint64_t)a1;
-- (void)initWithData:(void *)a1;
+- (uint64_t)parseBytes:(uint64_t)bytes;
+- (void)initWithData:(void *)data;
 - (void)parseDomainName;
 @end
 
 @implementation NEByteParser
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [NEByteParser allocWithZone:a3];
+  v5 = [NEByteParser allocWithZone:zone];
   if (self)
   {
     Property = objc_getProperty(self, v4, 16, 1);
@@ -27,39 +27,39 @@
   return [(NEByteParser *)v5 initWithData:?];
 }
 
-- (void)initWithData:(void *)a1
+- (void)initWithData:(void *)data
 {
   v4 = a2;
-  if (a1)
+  if (data)
   {
-    v8.receiver = a1;
+    v8.receiver = data;
     v8.super_class = NEByteParser;
     v5 = objc_msgSendSuper2(&v8, sel_init);
-    a1 = v5;
+    data = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 2, a2);
-      v6 = [v4 bytes];
-      a1[1] = 0;
-      a1[3] = v6;
-      a1[4] = v6;
+      bytes = [v4 bytes];
+      data[1] = 0;
+      data[3] = bytes;
+      data[4] = bytes;
     }
   }
 
-  return a1;
+  return data;
 }
 
-- (BOOL)copyBytes:(void *)a3 to:
+- (BOOL)copyBytes:(void *)bytes to:
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = &a2[*(a1 + 8)];
-  v7 = [objc_getProperty(a1 a2];
+  v6 = &a2[*(self + 8)];
+  v7 = [objc_getProperty(self a2];
   if (v6 > v7)
   {
     v8 = ne_log_obj();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v11 = *(a1 + 8);
+      v11 = *(self + 8);
       v12 = 134218240;
       v13 = a2;
       v14 = 2048;
@@ -68,9 +68,9 @@
     }
   }
 
-  else if (a3)
+  else if (bytes)
   {
-    memcpy(a3, *(a1 + 32), a2);
+    memcpy(bytes, *(self + 32), a2);
   }
 
   result = v6 <= v7;
@@ -80,30 +80,30 @@
 
 - (void)parseDomainName
 {
-  v2 = self;
+  selfCopy = self;
   v13 = *MEMORY[0x1E69E9840];
   if (self)
   {
     v3 = objc_getProperty(self, a2, 16, 1);
     bzero(v12, 0x3F1uLL);
-    v4 = v2[3];
-    v11 = v2[4];
-    if (_NE_DNSMessageExtractDomainNameString(v4, [v3 length], v2[4], v12, &v11) || (v6 = v2[4], v7 = v11 - v6, v11 <= v6) || (v8 = v2[1] + v7, v8 > objc_msgSend(objc_getProperty(v2, v5, 16, 1), "length")))
+    v4 = selfCopy[3];
+    v11 = selfCopy[4];
+    if (_NE_DNSMessageExtractDomainNameString(v4, [v3 length], selfCopy[4], v12, &v11) || (v6 = selfCopy[4], v7 = v11 - v6, v11 <= v6) || (v8 = selfCopy[1] + v7, v8 > objc_msgSend(objc_getProperty(selfCopy, v5, 16, 1), "length")))
     {
-      v2 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      v2[1] += v7;
-      v2[4] = v11;
-      v2 = [MEMORY[0x1E696AEC0] stringWithCString:v12 encoding:4];
+      selfCopy[1] += v7;
+      selfCopy[4] = v11;
+      selfCopy = [MEMORY[0x1E696AEC0] stringWithCString:v12 encoding:4];
     }
   }
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return v2;
+  return selfCopy;
 }
 
 - (uint64_t)parse16Bits:(uint64_t)result
@@ -146,27 +146,27 @@
   return result;
 }
 
-- (uint64_t)parseBytes:(uint64_t)a1
+- (uint64_t)parseBytes:(uint64_t)bytes
 {
-  if (!a1)
+  if (!bytes)
   {
     return 0;
   }
 
-  v4 = *(a1 + 32);
-  if (![(NEByteParser *)a1 copyBytes:a2 to:0])
+  v4 = *(bytes + 32);
+  if (![(NEByteParser *)bytes copyBytes:a2 to:0])
   {
     return 0;
   }
 
-  *(a1 + 32) += a2;
-  *(a1 + 8) += a2;
+  *(bytes + 32) += a2;
+  *(bytes + 8) += a2;
   return v4;
 }
 
-- (id)parseAddressWithFamily:(uint64_t)a1
+- (id)parseAddressWithFamily:(uint64_t)family
 {
-  if (!a1)
+  if (!family)
   {
     goto LABEL_11;
   }
@@ -188,11 +188,11 @@
     v5 = 16;
   }
 
-  v6 = *(a1 + 32);
-  if ([(NEByteParser *)a1 copyBytes:v5 to:0])
+  v6 = *(family + 32);
+  if ([(NEByteParser *)family copyBytes:v5 to:0])
   {
-    *(a1 + 32) += v5;
-    *(a1 + 8) += v5;
+    *(family + 32) += v5;
+    *(family + 8) += v5;
     if (v6)
     {
       v7 = malloc_type_malloc(v4, 0x100004077774924uLL);

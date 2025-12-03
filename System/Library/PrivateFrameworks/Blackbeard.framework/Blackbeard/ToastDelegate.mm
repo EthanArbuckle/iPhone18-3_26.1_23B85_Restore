@@ -1,6 +1,6 @@
 @interface ToastDelegate
 - (_TtC10Blackbeard13ToastDelegate)init;
-- (void)didDismissBulletinWithReason:(unint64_t)a3;
+- (void)didDismissBulletinWithReason:(unint64_t)reason;
 @end
 
 @implementation ToastDelegate
@@ -12,10 +12,10 @@
   return result;
 }
 
-- (void)didDismissBulletinWithReason:(unint64_t)a3
+- (void)didDismissBulletinWithReason:(unint64_t)reason
 {
-  v4 = self;
-  sub_1E618946C(a3);
+  selfCopy = self;
+  sub_1E618946C(reason);
 }
 
 @end

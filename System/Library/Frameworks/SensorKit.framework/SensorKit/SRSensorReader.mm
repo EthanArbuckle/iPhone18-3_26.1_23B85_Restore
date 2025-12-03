@@ -1,48 +1,48 @@
 @interface SRSensorReader
-+ (id)createExportDataForServices:(id)a3 withCompletionHandler:(id)a4;
-+ (id)createExportDataWithCompletionHandler:(id)a3;
-+ (void)_requestAuthorizationMigrationForSensors:(id)a3 completion:(id)a4;
-+ (void)authorizationRequestStatusForBundle:(id)a3 sensors:(id)a4 completionHandler:(id)a5;
++ (id)createExportDataForServices:(id)services withCompletionHandler:(id)handler;
++ (id)createExportDataWithCompletionHandler:(id)handler;
++ (void)_requestAuthorizationMigrationForSensors:(id)sensors completion:(id)completion;
++ (void)authorizationRequestStatusForBundle:(id)bundle sensors:(id)sensors completionHandler:(id)handler;
 + (void)initialize;
-+ (void)requestAuthorizationForBundle:(id)a3 sensors:(id)a4 legacyPromptErrorBehavior:(BOOL)a5 withCompletionHandler:(id)a6;
++ (void)requestAuthorizationForBundle:(id)bundle sensors:(id)sensors legacyPromptErrorBehavior:(BOOL)behavior withCompletionHandler:(id)handler;
 + (void)requestAuthorizationForSensors:(NSSet *)sensors completion:(void *)completion;
-- (BOOL)_updateAuthorizationStatusWithAuthorizedServices:(id)a3 deniedServices:(id)a4 dataCollectionEnabled:(BOOL)a5 onboardingCompleted:(BOOL)a6 lastModifiedTimes:(id)a7 forBundleIdentifier:(id)a8 previousAuthorizationStatus:(int64_t)a9;
-- (BOOL)fetchingRequest:(id)a3 didFetchResult:(id)a4;
+- (BOOL)_updateAuthorizationStatusWithAuthorizedServices:(id)services deniedServices:(id)deniedServices dataCollectionEnabled:(BOOL)enabled onboardingCompleted:(BOOL)completed lastModifiedTimes:(id)times forBundleIdentifier:(id)identifier previousAuthorizationStatus:(int64_t)status;
+- (BOOL)fetchingRequest:(id)request didFetchResult:(id)result;
 - (BOOL)isAuthorized;
 - (SRAuthorizationStatus)authorizationStatus;
 - (SRSensor)sensor;
 - (SRSensorReader)init;
 - (SRSensorReader)initWithSensor:(SRSensor)sensor;
-- (SRSensorReader)initWithSensor:(id)a3 bundle:(id)a4;
-- (SRSensorReader)initWithSensor:(id)a3 sensorDescription:(id)a4 datastoreBackend:(id)a5 authorizationClient:(id)a6 bundleId:(id)a7;
+- (SRSensorReader)initWithSensor:(id)sensor bundle:(id)bundle;
+- (SRSensorReader)initWithSensor:(id)sensor sensorDescription:(id)description datastoreBackend:(id)backend authorizationClient:(id)client bundleId:(id)id;
 - (double)earliestEligibleTime;
 - (double)serviceStartTime;
-- (id)createExportDataWithCompletionHandler:(id)a3;
-- (void)_startRecordingWithSensorConfiguration:(id)a3 completionHandler:(id)a4;
+- (id)createExportDataWithCompletionHandler:(id)handler;
+- (void)_startRecordingWithSensorConfiguration:(id)configuration completionHandler:(id)handler;
 - (void)dealloc;
-- (void)didChangeAuthorizationStatus:(int64_t)a3;
-- (void)didCompleteFetch:(id)a3;
-- (void)didFetchDevices:(id)a3;
+- (void)didChangeAuthorizationStatus:(int64_t)status;
+- (void)didCompleteFetch:(id)fetch;
+- (void)didFetchDevices:(id)devices;
 - (void)fetch:(SRFetchRequest *)request;
-- (void)fetchDevices:(id)a3;
-- (void)fetchDevicesDidFailWithError:(id)a3;
-- (void)fetchDevicesWithRetryAttempt:(int)a3;
+- (void)fetchDevices:(id)devices;
+- (void)fetchDevicesDidFailWithError:(id)error;
+- (void)fetchDevicesWithRetryAttempt:(int)attempt;
 - (void)fetchReaderMetadata;
-- (void)fetchingRequest:(id)a3 failedWithError:(id)a4;
+- (void)fetchingRequest:(id)request failedWithError:(id)error;
 - (void)sensorReaderDidStopRecording;
 - (void)sensorReaderWillStartRecording;
-- (void)setExportingSampleFromDescription:(id)a3;
-- (void)setSampleClassFromDescription:(id)a3;
+- (void)setExportingSampleFromDescription:(id)description;
+- (void)setSampleClassFromDescription:(id)description;
 - (void)startRecording;
-- (void)startRecordingFailedWithError:(id)a3;
+- (void)startRecordingFailedWithError:(id)error;
 - (void)stopRecording;
-- (void)stopRecordingFailedWithError:(id)a3;
-- (void)stopRecordingWithCompletionHandler:(id)a3;
+- (void)stopRecordingFailedWithError:(id)error;
+- (void)stopRecordingWithCompletionHandler:(id)handler;
 @end
 
 @implementation SRSensorReader
 
-+ (id)createExportDataWithCompletionHandler:(id)a3
++ (id)createExportDataWithCompletionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E695DFA8] set];
@@ -51,8 +51,8 @@
   v25 = 0u;
   v26 = 0u;
   v6 = +[SRSensorsCache defaultCache];
-  v7 = [(SRSensorsCache *)v6 allSensorDescriptions];
-  v8 = [v7 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  allSensorDescriptions = [(SRSensorsCache *)v6 allSensorDescriptions];
+  v8 = [allSensorDescriptions countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v8)
   {
     v9 = v8;
@@ -64,14 +64,14 @@
       {
         if (*v24 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allSensorDescriptions);
         }
 
         [v5 addObject:{objc_msgSend(*(*(&v23 + 1) + 8 * v11++), "name")}];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v9 = [allSensorDescriptions countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v9);
@@ -108,12 +108,12 @@
   }
 
   [v5 unionSet:v12];
-  result = [a1 createExportDataForServices:objc_msgSend(MEMORY[0x1E695DFD8] withCompletionHandler:{"setWithSet:", v5), a3}];
+  result = [self createExportDataForServices:objc_msgSend(MEMORY[0x1E695DFD8] withCompletionHandler:{"setWithSet:", v5), handler}];
   v18 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-+ (id)createExportDataForServices:(id)a3 withCompletionHandler:(id)a4
++ (id)createExportDataForServices:(id)services withCompletionHandler:(id)handler
 {
   v6 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithServiceName:@"com.apple.SensorKitDataExport"];
   [v6 setRemoteObjectInterface:{objc_msgSend(MEMORY[0x1E696B0D0], "interfaceWithProtocol:", &unk_1F48D7AC8)}];
@@ -129,15 +129,15 @@
   v11[2] = __80__SRSensorReader_DataExport__createExportDataForServices_withCompletionHandler___block_invoke_2;
   v11[3] = &unk_1E8330258;
   v11[4] = v6;
-  v11[5] = a4;
+  v11[5] = handler;
   v7 = [v6 remoteObjectProxyWithErrorHandler:v11];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __80__SRSensorReader_DataExport__createExportDataForServices_withCompletionHandler___block_invoke_12;
   v10[3] = &unk_1E8330280;
   v10[4] = v6;
-  v10[5] = a4;
-  [v7 exportDataForSensors:a3 reply:v10];
+  v10[5] = handler;
+  [v7 exportDataForSensors:services reply:v10];
   v8 = [v12 copy];
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -197,17 +197,17 @@ void __80__SRSensorReader_DataExport__createExportDataForServices_withCompletion
   v2 = *(a1 + 32);
 }
 
-- (id)createExportDataWithCompletionHandler:(id)a3
+- (id)createExportDataWithCompletionHandler:(id)handler
 {
   v5 = objc_opt_class();
   v6 = [MEMORY[0x1E695DFD8] setWithObject:{-[SRSensorReader sensor](self, "sensor")}];
 
-  return [v5 createExportDataForServices:v6 withCompletionHandler:a3];
+  return [v5 createExportDataForServices:v6 withCompletionHandler:handler];
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_1EE02ABA8 = os_log_create("com.apple.SensorKit", "Reader");
   }
@@ -222,42 +222,42 @@ void __80__SRSensorReader_DataExport__createExportDataForServices_withCompletion
 
 - (SRSensorReader)initWithSensor:(SRSensor)sensor
 {
-  v5 = [MEMORY[0x1E696AAE8] mainBundle];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
 
-  return [(SRSensorReader *)self initWithSensor:sensor bundle:v5];
+  return [(SRSensorReader *)self initWithSensor:sensor bundle:mainBundle];
 }
 
-- (SRSensorReader)initWithSensor:(id)a3 bundle:(id)a4
+- (SRSensorReader)initWithSensor:(id)sensor bundle:(id)bundle
 {
   v22 = *MEMORY[0x1E69E9840];
   v7 = +[SRAuthorizationClient sharedInstance];
-  v8 = [SRSensorDescription sensorDescriptionForSensor:a3];
+  v8 = [SRSensorDescription sensorDescriptionForSensor:sensor];
   if (!v8)
   {
     v16 = qword_1EE02ABA8;
     if (os_log_type_enabled(qword_1EE02ABA8, OS_LOG_TYPE_FAULT))
     {
       *buf = 138543362;
-      v21 = a3;
+      sensorCopy = sensor;
       _os_log_fault_impl(&dword_1C914D000, v16, OS_LOG_TYPE_FAULT, "Failed to find description for sensor %{public}@", buf, 0xCu);
     }
 
     v17 = *MEMORY[0x1E695D930];
     v18 = @"RequestedSensor";
-    v19 = a3;
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:v17 reason:@"Failed to find description for sensor" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v19, &v18, 1)}]);
+    sensorCopy2 = sensor;
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:v17 reason:@"Failed to find description for sensor" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &sensorCopy2, &v18, 1)}]);
   }
 
   v9 = v8;
-  v10 = [v8 datastoreBackend];
-  if (v10 == 1)
+  datastoreBackend = [v8 datastoreBackend];
+  if (datastoreBackend == 1)
   {
     v11 = SRReaderLongTermBackend;
   }
 
   else
   {
-    if (v10)
+    if (datastoreBackend)
     {
       v12 = 0;
       goto LABEL_9;
@@ -269,17 +269,17 @@ void __80__SRSensorReader_DataExport__createExportDataForServices_withCompletion
   v12 = [v11 alloc];
   if (v12)
   {
-    v12 = [v12 initWithSensor:a3 xpcConnection:{objc_msgSend(objc_opt_class(), "connectionToEndpoint")}];
+    v12 = [v12 initWithSensor:sensor xpcConnection:{objc_msgSend(objc_opt_class(), "connectionToEndpoint")}];
   }
 
 LABEL_9:
-  v13 = -[SRSensorReader initWithSensor:sensorDescription:datastoreBackend:authorizationClient:bundleId:](self, "initWithSensor:sensorDescription:datastoreBackend:authorizationClient:bundleId:", a3, v9, v12, v7, [a4 bundleIdentifier]);
+  v13 = -[SRSensorReader initWithSensor:sensorDescription:datastoreBackend:authorizationClient:bundleId:](self, "initWithSensor:sensorDescription:datastoreBackend:authorizationClient:bundleId:", sensor, v9, v12, v7, [bundle bundleIdentifier]);
 
   v14 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (SRSensorReader)initWithSensor:(id)a3 sensorDescription:(id)a4 datastoreBackend:(id)a5 authorizationClient:(id)a6 bundleId:(id)a7
+- (SRSensorReader)initWithSensor:(id)sensor sensorDescription:(id)description datastoreBackend:(id)backend authorizationClient:(id)client bundleId:(id)id
 {
   v24 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
@@ -289,36 +289,36 @@ LABEL_9:
   if (v12)
   {
     [(SRSensorReader *)v12 setAuthorizationStatus:0xFFFFLL];
-    if (!a4)
+    if (!description)
     {
       v17 = qword_1EE02ABA8;
       if (os_log_type_enabled(qword_1EE02ABA8, OS_LOG_TYPE_FAULT))
       {
         *buf = 138543362;
-        v23 = a3;
+        sensorCopy = sensor;
         _os_log_fault_impl(&dword_1C914D000, v17, OS_LOG_TYPE_FAULT, "Failed to find description for sensor %{public}@", buf, 0xCu);
       }
 
       v18 = *MEMORY[0x1E695D930];
       v20 = @"RequestedSensor";
-      v21 = a3;
-      objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:v18 reason:@"Failed to find description for sensor" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v21, &v20, 1)}]);
+      sensorCopy2 = sensor;
+      objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:v18 reason:@"Failed to find description for sensor" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &sensorCopy2, &v20, 1)}]);
     }
 
-    [(SRSensorReader *)v13 setSampleClassFromDescription:a4];
-    [(SRSensorReader *)v13 setExportingSampleFromDescription:a4];
-    if (([objc_msgSend(a4 "name")] & 1) == 0)
+    [(SRSensorReader *)v13 setSampleClassFromDescription:description];
+    [(SRSensorReader *)v13 setExportingSampleFromDescription:description];
+    if (([objc_msgSend(description "name")] & 1) == 0)
     {
-      [(SRSensorReader *)v13 setRequestedSensor:a3];
+      [(SRSensorReader *)v13 setRequestedSensor:sensor];
     }
 
-    -[SRSensorReader setCanonicalSensor:](v13, "setCanonicalSensor:", [a4 name]);
-    [(SRSensorReader *)v13 setDatastoreBackend:a5];
+    -[SRSensorReader setCanonicalSensor:](v13, "setCanonicalSensor:", [description name]);
+    [(SRSensorReader *)v13 setDatastoreBackend:backend];
     [(SRReaderStorageBackend *)[(SRSensorReader *)v13 datastoreBackend] setupConnection];
-    v13->_bundleId = [a7 copy];
-    v14 = a6;
-    v13->_authorizationClient = v14;
-    [(SRAuthorizationClient *)v14 addListener:v13 forBundleId:a7];
+    v13->_bundleId = [id copy];
+    clientCopy = client;
+    v13->_authorizationClient = clientCopy;
+    [(SRAuthorizationClient *)clientCopy addListener:v13 forBundleId:id];
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -362,14 +362,14 @@ LABEL_9:
   return result;
 }
 
-- (void)setSampleClassFromDescription:(id)a3
+- (void)setSampleClassFromDescription:(id)description
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = [a3 sampleClass];
-  if (v4)
+  sampleClass = [description sampleClass];
+  if (sampleClass)
   {
-    v5 = v4;
-    v6 = NSClassFromString(v4);
+    v5 = sampleClass;
+    v6 = NSClassFromString(sampleClass);
     v7 = v6;
     if (v6)
     {
@@ -429,10 +429,10 @@ LABEL_10:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setExportingSampleFromDescription:(id)a3
+- (void)setExportingSampleFromDescription:(id)description
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = NSClassFromString([a3 exportingSampleClass]);
+  v4 = NSClassFromString([description exportingSampleClass]);
   if (v4 == objc_opt_class())
   {
     v4 = 0;
@@ -464,13 +464,13 @@ LABEL_10:
   [(SRReaderRequest *)v3 setBundleIdentifier:self->_bundleId];
   [(SRReaderRequest *)v3 setSensor:self->_canonicalSensor];
   objc_initWeak(&location, self);
-  v4 = [(SRSensorReader *)self datastoreBackend];
+  datastoreBackend = [(SRSensorReader *)self datastoreBackend];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __37__SRSensorReader_fetchReaderMetadata__block_invoke;
   v5[3] = &unk_1E8330920;
   objc_copyWeak(&v6, &location);
-  [(SRReaderStorageBackend *)v4 fetchReaderMetadata:v3 reply:v5];
+  [(SRReaderStorageBackend *)datastoreBackend fetchReaderMetadata:v3 reply:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -515,10 +515,10 @@ void *__37__SRSensorReader_fetchReaderMetadata__block_invoke(uint64_t a1, void *
   return result;
 }
 
-- (BOOL)fetchingRequest:(id)a3 didFetchResult:(id)a4
+- (BOOL)fetchingRequest:(id)request didFetchResult:(id)result
 {
   v16 = *MEMORY[0x1E69E9840];
-  v7 = [(SRSensorReader *)self delegate];
+  delegate = [(SRSensorReader *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v8 = qword_1EE02ABA8;
@@ -528,11 +528,11 @@ void *__37__SRSensorReader_fetchReaderMetadata__block_invoke(uint64_t a1, void *
       v12 = 138543618;
       v13 = canonicalSensor;
       v14 = 2050;
-      v15 = v7;
+      v15 = delegate;
       _os_log_debug_impl(&dword_1C914D000, v8, OS_LOG_TYPE_DEBUG, "[%{public}@] about to call delegate (%{public}p) with sensorReader:fetchingRequest:didFetchResult:", &v12, 0x16u);
     }
 
-    result = [v7 sensorReader:self fetchingRequest:a3 didFetchResult:a4];
+    result = [delegate sensorReader:self fetchingRequest:request didFetchResult:result];
   }
 
   else
@@ -544,10 +544,10 @@ void *__37__SRSensorReader_fetchReaderMetadata__block_invoke(uint64_t a1, void *
   return result;
 }
 
-- (void)didCompleteFetch:(id)a3
+- (void)didCompleteFetch:(id)fetch
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = [(SRSensorReader *)self delegate];
+  delegate = [(SRSensorReader *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v6 = qword_1EE02ABA8;
@@ -557,20 +557,20 @@ void *__37__SRSensorReader_fetchReaderMetadata__block_invoke(uint64_t a1, void *
       v9 = 138543618;
       v10 = canonicalSensor;
       v11 = 2050;
-      v12 = v5;
+      v12 = delegate;
       _os_log_debug_impl(&dword_1C914D000, v6, OS_LOG_TYPE_DEBUG, "[%{public}@] about to call delegate (%{public}p) with sensorReader:didCompleteFetch:", &v9, 0x16u);
     }
 
-    [v5 sensorReader:self didCompleteFetch:a3];
+    [delegate sensorReader:self didCompleteFetch:fetch];
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchingRequest:(id)a3 failedWithError:(id)a4
+- (void)fetchingRequest:(id)request failedWithError:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v7 = [(SRSensorReader *)self delegate];
+  delegate = [(SRSensorReader *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v8 = qword_1EE02ABA8;
@@ -580,20 +580,20 @@ void *__37__SRSensorReader_fetchReaderMetadata__block_invoke(uint64_t a1, void *
       v11 = 138543618;
       v12 = canonicalSensor;
       v13 = 2050;
-      v14 = v7;
+      v14 = delegate;
       _os_log_debug_impl(&dword_1C914D000, v8, OS_LOG_TYPE_DEBUG, "[%{public}@] about to call delegate (%{public}p) with sensorReader:fetchingRequest:failedWithError:", &v11, 0x16u);
     }
 
-    [v7 sensorReader:self fetchingRequest:a3 failedWithError:a4];
+    [delegate sensorReader:self fetchingRequest:request failedWithError:error];
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didFetchDevices:(id)a3
+- (void)didFetchDevices:(id)devices
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = [(SRSensorReader *)self delegate];
+  delegate = [(SRSensorReader *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v6 = qword_1EE02ABA8;
@@ -603,20 +603,20 @@ void *__37__SRSensorReader_fetchReaderMetadata__block_invoke(uint64_t a1, void *
       v9 = 138543618;
       v10 = canonicalSensor;
       v11 = 2050;
-      v12 = v5;
+      v12 = delegate;
       _os_log_debug_impl(&dword_1C914D000, v6, OS_LOG_TYPE_DEBUG, "[%{public}@] about to call delegate (%{public}p) with sensorReader:didFetchDevices:", &v9, 0x16u);
     }
 
-    [v5 sensorReader:self didFetchDevices:a3];
+    [delegate sensorReader:self didFetchDevices:devices];
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchDevicesDidFailWithError:(id)a3
+- (void)fetchDevicesDidFailWithError:(id)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = [(SRSensorReader *)self delegate];
+  delegate = [(SRSensorReader *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v6 = qword_1EE02ABA8;
@@ -626,11 +626,11 @@ void *__37__SRSensorReader_fetchReaderMetadata__block_invoke(uint64_t a1, void *
       v9 = 138543618;
       v10 = canonicalSensor;
       v11 = 2050;
-      v12 = v5;
+      v12 = delegate;
       _os_log_debug_impl(&dword_1C914D000, v6, OS_LOG_TYPE_DEBUG, "[%{public}@] about to call delegate (%{public}p) with sensorReader:fetchDevicesDidFailWithError:", &v9, 0x16u);
     }
 
-    [v5 sensorReader:self fetchDevicesDidFailWithError:a3];
+    [delegate sensorReader:self fetchDevicesDidFailWithError:error];
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -639,7 +639,7 @@ void *__37__SRSensorReader_fetchReaderMetadata__block_invoke(uint64_t a1, void *
 - (void)sensorReaderWillStartRecording
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(SRSensorReader *)self delegate];
+  delegate = [(SRSensorReader *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v4 = qword_1EE02ABA8;
@@ -649,20 +649,20 @@ void *__37__SRSensorReader_fetchReaderMetadata__block_invoke(uint64_t a1, void *
       v7 = 138543618;
       v8 = canonicalSensor;
       v9 = 2050;
-      v10 = v3;
+      v10 = delegate;
       _os_log_debug_impl(&dword_1C914D000, v4, OS_LOG_TYPE_DEBUG, "[%{public}@] about to call delegate (%{public}p) with sensorReaderWillStartRecording:", &v7, 0x16u);
     }
 
-    [v3 sensorReaderWillStartRecording:self];
+    [delegate sensorReaderWillStartRecording:self];
   }
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startRecordingFailedWithError:(id)a3
+- (void)startRecordingFailedWithError:(id)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = [(SRSensorReader *)self delegate];
+  delegate = [(SRSensorReader *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v6 = qword_1EE02ABA8;
@@ -672,11 +672,11 @@ void *__37__SRSensorReader_fetchReaderMetadata__block_invoke(uint64_t a1, void *
       v9 = 138543618;
       v10 = canonicalSensor;
       v11 = 2050;
-      v12 = v5;
+      v12 = delegate;
       _os_log_debug_impl(&dword_1C914D000, v6, OS_LOG_TYPE_DEBUG, "[%{public}@] about to call delegate (%{public}p) with sensorReader:startRecordingFailedWithError:", &v9, 0x16u);
     }
 
-    [v5 sensorReader:self startRecordingFailedWithError:a3];
+    [delegate sensorReader:self startRecordingFailedWithError:error];
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -685,7 +685,7 @@ void *__37__SRSensorReader_fetchReaderMetadata__block_invoke(uint64_t a1, void *
 - (void)sensorReaderDidStopRecording
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(SRSensorReader *)self delegate];
+  delegate = [(SRSensorReader *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v4 = qword_1EE02ABA8;
@@ -695,20 +695,20 @@ void *__37__SRSensorReader_fetchReaderMetadata__block_invoke(uint64_t a1, void *
       v7 = 138543618;
       v8 = canonicalSensor;
       v9 = 2050;
-      v10 = v3;
+      v10 = delegate;
       _os_log_debug_impl(&dword_1C914D000, v4, OS_LOG_TYPE_DEBUG, "[%{public}@] about to call delegate (%{public}p) with sensorReaderDidStopRecording:", &v7, 0x16u);
     }
 
-    [v3 sensorReaderDidStopRecording:self];
+    [delegate sensorReaderDidStopRecording:self];
   }
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopRecordingFailedWithError:(id)a3
+- (void)stopRecordingFailedWithError:(id)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = [(SRSensorReader *)self delegate];
+  delegate = [(SRSensorReader *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v6 = qword_1EE02ABA8;
@@ -718,20 +718,20 @@ void *__37__SRSensorReader_fetchReaderMetadata__block_invoke(uint64_t a1, void *
       v9 = 138543618;
       v10 = canonicalSensor;
       v11 = 2050;
-      v12 = v5;
+      v12 = delegate;
       _os_log_debug_impl(&dword_1C914D000, v6, OS_LOG_TYPE_DEBUG, "[%{public}@] about to call delegate (%{public}p) with sensorReader:stopRecordingFailedWithError:", &v9, 0x16u);
     }
 
-    [v5 sensorReader:self stopRecordingFailedWithError:a3];
+    [delegate sensorReader:self stopRecordingFailedWithError:error];
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didChangeAuthorizationStatus:(int64_t)a3
+- (void)didChangeAuthorizationStatus:(int64_t)status
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = [(SRSensorReader *)self delegate];
+  delegate = [(SRSensorReader *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v6 = qword_1EE02ABA8;
@@ -741,11 +741,11 @@ void *__37__SRSensorReader_fetchReaderMetadata__block_invoke(uint64_t a1, void *
       v9 = 138543618;
       v10 = canonicalSensor;
       v11 = 2050;
-      v12 = v5;
+      v12 = delegate;
       _os_log_impl(&dword_1C914D000, v6, OS_LOG_TYPE_INFO, "[%{public}@] about to call delegate (%{public}p) with sensorReader:didChangeAuthorizationStatus:", &v9, 0x16u);
     }
 
-    [v5 sensorReader:self didChangeAuthorizationStatus:a3];
+    [delegate sensorReader:self didChangeAuthorizationStatus:status];
   }
 
   v8 = *MEMORY[0x1E69E9840];
@@ -883,19 +883,19 @@ uint64_t __32__SRSensorReader_startRecording__block_invoke(uint64_t a1, uint64_t
   }
 }
 
-- (void)_startRecordingWithSensorConfiguration:(id)a3 completionHandler:(id)a4
+- (void)_startRecordingWithSensorConfiguration:(id)configuration completionHandler:(id)handler
 {
-  if (!a4)
+  if (!handler)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v7 = [(SRSensorReader *)self canonicalSensor];
+  canonicalSensor = [(SRSensorReader *)self canonicalSensor];
   v8 = objc_alloc_init(SRReaderRecordingRequest);
   [(SRReaderRecordingRequest *)v8 setBundleIdentifier:self->_bundleId];
-  [(SRReaderRecordingRequest *)v8 setSensor:v7];
-  [(SRReaderRecordingRequest *)v8 setSensorConfiguration:a3];
-  [(SRReaderStorageBackend *)[(SRSensorReader *)self datastoreBackend] startRecording:v8 reply:a4];
+  [(SRReaderRecordingRequest *)v8 setSensor:canonicalSensor];
+  [(SRReaderRecordingRequest *)v8 setSensorConfiguration:configuration];
+  [(SRReaderStorageBackend *)[(SRSensorReader *)self datastoreBackend] startRecording:v8 reply:handler];
 }
 
 - (void)stopRecording
@@ -927,21 +927,21 @@ uint64_t __31__SRSensorReader_stopRecording__block_invoke(uint64_t a1, uint64_t 
   }
 }
 
-- (void)stopRecordingWithCompletionHandler:(id)a3
+- (void)stopRecordingWithCompletionHandler:(id)handler
 {
-  if (!a3)
+  if (!handler)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v5 = [(SRSensorReader *)self canonicalSensor];
+  canonicalSensor = [(SRSensorReader *)self canonicalSensor];
   v6 = objc_alloc_init(SRReaderRequest);
   [(SRReaderRequest *)v6 setBundleIdentifier:self->_bundleId];
-  [(SRReaderRequest *)v6 setSensor:v5];
-  [(SRReaderStorageBackend *)[(SRSensorReader *)self datastoreBackend] stopRecording:v6 reply:a3];
+  [(SRReaderRequest *)v6 setSensor:canonicalSensor];
+  [(SRReaderStorageBackend *)[(SRSensorReader *)self datastoreBackend] stopRecording:v6 reply:handler];
 }
 
-- (void)fetchDevicesWithRetryAttempt:(int)a3
+- (void)fetchDevicesWithRetryAttempt:(int)attempt
 {
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
@@ -949,7 +949,7 @@ uint64_t __31__SRSensorReader_stopRecording__block_invoke(uint64_t a1, uint64_t 
   v5[2] = __47__SRSensorReader_fetchDevicesWithRetryAttempt___block_invoke;
   v5[3] = &unk_1E8331250;
   objc_copyWeak(&v6, &location);
-  v7 = a3;
+  attemptCopy = attempt;
   v5[4] = self;
   [(SRSensorReader *)self fetchDevices:v5];
   objc_destroyWeak(&v6);
@@ -997,18 +997,18 @@ uint64_t __47__SRSensorReader_fetchDevicesWithRetryAttempt___block_invoke(uint64
   return result;
 }
 
-- (void)fetchDevices:(id)a3
+- (void)fetchDevices:(id)devices
 {
   v5 = objc_alloc_init(SRReaderRequest);
   [(SRReaderRequest *)v5 setBundleIdentifier:self->_bundleId];
   [(SRReaderRequest *)v5 setSensor:self->_canonicalSensor];
-  v6 = [(SRSensorReader *)self datastoreBackend];
+  datastoreBackend = [(SRSensorReader *)self datastoreBackend];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31__SRSensorReader_fetchDevices___block_invoke;
   v7[3] = &unk_1E8330590;
-  v7[4] = a3;
-  [(SRReaderStorageBackend *)v6 fetchDevices:v5 reply:v7];
+  v7[4] = devices;
+  [(SRReaderStorageBackend *)datastoreBackend fetchDevices:v5 reply:v7];
 }
 
 uint64_t __31__SRSensorReader_fetchDevices___block_invoke(uint64_t a1, void *a2)
@@ -1061,10 +1061,10 @@ uint64_t __31__SRSensorReader_fetchDevices___block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)isAuthorized
 {
-  v3 = [(NSString *)self->_canonicalSensor sr_sensorByDeletingDeletionRecord];
+  sr_sensorByDeletingDeletionRecord = [(NSString *)self->_canonicalSensor sr_sensorByDeletingDeletionRecord];
   v4 = [(NSDictionary *)[(SRAuthorizationClient *)[(SRSensorReader *)self authorizationClient] authorizedServices] objectForKeyedSubscript:self->_bundleId];
 
-  return [v4 containsObject:v3];
+  return [v4 containsObject:sr_sensorByDeletingDeletionRecord];
 }
 
 - (SRAuthorizationStatus)authorizationStatus
@@ -1078,19 +1078,19 @@ uint64_t __31__SRSensorReader_fetchDevices___block_invoke(uint64_t a1, void *a2)
     if (os_log_type_enabled(qword_1EE02ABA8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v16 = [(SRSensorReader *)self sensor];
+      sensor = [(SRSensorReader *)self sensor];
       _os_log_impl(&dword_1C914D000, v5, OS_LOG_TYPE_INFO, "[%@] Fetching initial authorization state", buf, 0xCu);
     }
 
-    v6 = [(SRSensorReader *)self authorizationClient];
-    v7 = [(SRSensorReader *)self bundleId];
+    authorizationClient = [(SRSensorReader *)self authorizationClient];
+    bundleId = [(SRSensorReader *)self bundleId];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __37__SRSensorReader_authorizationStatus__block_invoke;
     v13[3] = &unk_1E8331278;
     v13[4] = self;
     v14 = 0;
-    [(SRAuthorizationClient *)v6 initialAuthorizationStateForBundleId:v7 authorizationState:v13];
+    [(SRAuthorizationClient *)authorizationClient initialAuthorizationStateForBundleId:bundleId authorizationState:v13];
   }
 
   v8 = atomic_load(p_authState);
@@ -1099,9 +1099,9 @@ uint64_t __31__SRSensorReader_fetchDevices___block_invoke(uint64_t a1, void *a2)
     v9 = qword_1EE02ABA8;
     if (os_log_type_enabled(qword_1EE02ABA8, OS_LOG_TYPE_FAULT))
     {
-      v12 = [(SRSensorReader *)self sensor];
+      sensor2 = [(SRSensorReader *)self sensor];
       *buf = 138412290;
-      v16 = v12;
+      sensor = sensor2;
       _os_log_fault_impl(&dword_1C914D000, v9, OS_LOG_TYPE_FAULT, "[%@] returning an unknown authorization state!", buf, 0xCu);
     }
   }
@@ -1142,25 +1142,25 @@ void __37__SRSensorReader_authorizationStatus__block_invoke(uint64_t a1, uint64_
 
 + (void)requestAuthorizationForSensors:(NSSet *)sensors completion:(void *)completion
 {
-  v6 = [MEMORY[0x1E696AAE8] mainBundle];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
 
-  [SRSensorReader requestAuthorizationForBundle:v6 sensors:sensors legacyPromptErrorBehavior:0 withCompletionHandler:completion];
+  [SRSensorReader requestAuthorizationForBundle:mainBundle sensors:sensors legacyPromptErrorBehavior:0 withCompletionHandler:completion];
 }
 
-+ (void)requestAuthorizationForBundle:(id)a3 sensors:(id)a4 legacyPromptErrorBehavior:(BOOL)a5 withCompletionHandler:(id)a6
++ (void)requestAuthorizationForBundle:(id)bundle sensors:(id)sensors legacyPromptErrorBehavior:(BOOL)behavior withCompletionHandler:(id)handler
 {
-  v9 = a3;
-  if (!a3)
+  bundleCopy = bundle;
+  if (!bundle)
   {
-    v9 = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleCopy = [MEMORY[0x1E696AAE8] mainBundle];
   }
 
-  if ([a4 count])
+  if ([sensors count])
   {
     v11 = MEMORY[0x1E69E9820];
-    LOBYTE(v12) = a5;
-    verifyPlist(v9, a4);
-    SRRequestAuthorizationForServices([v9 bundleIdentifier], a4, &v11);
+    LOBYTE(v12) = behavior;
+    verifyPlist(bundleCopy, sensors);
+    SRRequestAuthorizationForServices([bundleCopy bundleIdentifier], sensors, &v11);
   }
 
   else
@@ -1172,9 +1172,9 @@ void __37__SRSensorReader_authorizationStatus__block_invoke(uint64_t a1, uint64_
       _os_log_impl(&dword_1C914D000, v10, OS_LOG_TYPE_DEFAULT, "Asking for auth but not for any sensors", buf, 2u);
     }
 
-    if (a6)
+    if (handler)
     {
-      (*(a6 + 2))(a6, 0);
+      (*(handler + 2))(handler, 0);
     }
   }
 }
@@ -1215,19 +1215,19 @@ uint64_t __104__SRSensorReader_requestAuthorizationForBundle_sensors_legacyPromp
   return result;
 }
 
-+ (void)authorizationRequestStatusForBundle:(id)a3 sensors:(id)a4 completionHandler:(id)a5
++ (void)authorizationRequestStatusForBundle:(id)bundle sensors:(id)sensors completionHandler:(id)handler
 {
-  v7 = a3;
-  if (!a3)
+  bundleCopy = bundle;
+  if (!bundle)
   {
-    v7 = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleCopy = [MEMORY[0x1E696AAE8] mainBundle];
   }
 
-  if ([a4 count])
+  if ([sensors count])
   {
-    v8 = [v7 bundleIdentifier];
+    bundleIdentifier = [bundleCopy bundleIdentifier];
 
-    SRAuthorizationStatusForBundleIdentifier(v8, a4, a5);
+    SRAuthorizationStatusForBundleIdentifier(bundleIdentifier, sensors, handler);
   }
 
   else
@@ -1239,21 +1239,21 @@ uint64_t __104__SRSensorReader_requestAuthorizationForBundle_sensors_legacyPromp
       _os_log_impl(&dword_1C914D000, v9, OS_LOG_TYPE_DEFAULT, "Asking for auth but not for any sensors", v10, 2u);
     }
 
-    (*(a5 + 2))(a5, 0, 0);
+    (*(handler + 2))(handler, 0, 0);
   }
 }
 
-- (BOOL)_updateAuthorizationStatusWithAuthorizedServices:(id)a3 deniedServices:(id)a4 dataCollectionEnabled:(BOOL)a5 onboardingCompleted:(BOOL)a6 lastModifiedTimes:(id)a7 forBundleIdentifier:(id)a8 previousAuthorizationStatus:(int64_t)a9
+- (BOOL)_updateAuthorizationStatusWithAuthorizedServices:(id)services deniedServices:(id)deniedServices dataCollectionEnabled:(BOOL)enabled onboardingCompleted:(BOOL)completed lastModifiedTimes:(id)times forBundleIdentifier:(id)identifier previousAuthorizationStatus:(int64_t)status
 {
-  v10 = a6;
-  v11 = a5;
+  completedCopy = completed;
+  enabledCopy = enabled;
   v40 = *MEMORY[0x1E69E9840];
-  if (a8)
+  if (identifier)
   {
     bundleId = self->_bundleId;
     if (bundleId)
     {
-      if (![(NSString *)bundleId isEqualToString:a8])
+      if (![(NSString *)bundleId isEqualToString:identifier])
       {
         v23 = qword_1EE02ABA8;
         if (os_log_type_enabled(qword_1EE02ABA8, OS_LOG_TYPE_INFO))
@@ -1263,7 +1263,7 @@ uint64_t __104__SRSensorReader_requestAuthorizationForBundle_sensors_legacyPromp
           v35 = 138543874;
           v36 = canonicalSensor;
           v37 = 2114;
-          *v38 = a8;
+          *v38 = identifier;
           *&v38[8] = 2114;
           v39 = v25;
           _os_log_impl(&dword_1C914D000, v23, OS_LOG_TYPE_INFO, "[%{public}@] Ignoring authorization changed update for bundle %{public}@. I'm interested in %{public}@", &v35, 0x20u);
@@ -1274,8 +1274,8 @@ uint64_t __104__SRSensorReader_requestAuthorizationForBundle_sensors_legacyPromp
     }
   }
 
-  v17 = [(NSString *)self->_canonicalSensor sr_sensorByDeletingDeletionRecord];
-  v18 = [a7 objectForKeyedSubscript:v17];
+  sr_sensorByDeletingDeletionRecord = [(NSString *)self->_canonicalSensor sr_sensorByDeletingDeletionRecord];
+  v18 = [times objectForKeyedSubscript:sr_sensorByDeletingDeletionRecord];
   if (v18)
   {
     v19 = MEMORY[0x1E695DF00];
@@ -1289,16 +1289,16 @@ uint64_t __104__SRSensorReader_requestAuthorizationForBundle_sensors_legacyPromp
   }
 
   [(SRSensorReader *)self set_lastModifiedAuthorizationTime:v20];
-  if (!v10 || v11)
+  if (!completedCopy || enabledCopy)
   {
-    if (!v11 || v10)
+    if (!enabledCopy || completedCopy)
     {
-      if ([a3 containsObject:v17])
+      if ([services containsObject:sr_sensorByDeletingDeletionRecord])
       {
         v21 = 1;
       }
 
-      else if ([a4 containsObject:v17])
+      else if ([deniedServices containsObject:sr_sensorByDeletingDeletionRecord])
       {
         v21 = 2;
       }
@@ -1333,7 +1333,7 @@ uint64_t __104__SRSensorReader_requestAuthorizationForBundle_sensors_legacyPromp
     v21 = 2;
   }
 
-  if (v21 == a9)
+  if (v21 == status)
   {
 LABEL_23:
     v26 = 0;
@@ -1390,17 +1390,17 @@ LABEL_34:
   return v26;
 }
 
-+ (void)_requestAuthorizationMigrationForSensors:(id)a3 completion:(id)a4
++ (void)_requestAuthorizationMigrationForSensors:(id)sensors completion:(id)completion
 {
-  if ([a3 count])
+  if ([sensors count])
   {
-    v6 = [MEMORY[0x1E696AAE8] mainBundle];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __94__SRSensorReader_AuthorizationMigration___requestAuthorizationMigrationForSensors_completion___block_invoke;
     v8[3] = &unk_1E8330408;
-    v8[4] = a4;
-    SRRequestAuthorizationMigrationForServices(v6, a3, v8);
+    v8[4] = completion;
+    SRRequestAuthorizationMigrationForServices(mainBundle, sensors, v8);
   }
 
   else
@@ -1412,9 +1412,9 @@ LABEL_34:
       _os_log_impl(&dword_1C914D000, v7, OS_LOG_TYPE_DEFAULT, "Asking for auth but not for any sensors", buf, 2u);
     }
 
-    if (a4)
+    if (completion)
     {
-      (*(a4 + 2))(a4, 0);
+      (*(completion + 2))(completion, 0);
     }
   }
 }

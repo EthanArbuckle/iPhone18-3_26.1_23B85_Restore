@@ -1,7 +1,7 @@
 @interface SCRSSyncDaemon
 - (SCRSSyncDaemon)init;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context;
 @end
 
 @implementation SCRSSyncDaemon
@@ -26,20 +26,20 @@
   return v2;
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
-  v43 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  dataCopy = data;
+  dCopy = d;
+  contextCopy = context;
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     v17 = logger;
-    v18 = [v15 outgoingResponseIdentifier];
+    outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
     *buf = 138412290;
-    v50 = v18;
+    v50 = outgoingResponseIdentifier;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Received message with ID: %@,", buf, 0xCu);
   }
 
@@ -49,7 +49,7 @@
   v22 = objc_opt_class();
   v23 = [NSSet setWithObjects:v19, v20, v21, v22, objc_opt_class(), 0];
   v48 = 0;
-  v24 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v23 fromData:v13 error:&v48];
+  v24 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v23 fromData:dataCopy error:&v48];
   v25 = v48;
   if (v25)
   {
@@ -61,28 +61,28 @@
   }
 
   v27 = [v24 objectForKeyedSubscript:@"t"];
-  v28 = [v27 integerValue];
+  integerValue = [v27 integerValue];
 
-  if (v28 == 1)
+  if (integerValue == 1)
   {
     v36 = self->_logger;
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
-      sub_100001C28(v14, v15, v36);
+      sub_100001C28(dCopy, contextCopy, v36);
     }
 
     goto LABEL_16;
   }
 
-  if (v28)
+  if (integerValue)
   {
 LABEL_16:
     v35 = 0;
     goto LABEL_21;
   }
 
-  v42 = v14;
-  v29 = v12;
+  v42 = dCopy;
+  v29 = accountCopy;
   v30 = self->_logger;
   if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
   {
@@ -96,7 +96,7 @@ LABEL_16:
   v33 = self->_logger;
   if (v32)
   {
-    v12 = v29;
+    accountCopy = v29;
     if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
@@ -121,7 +121,7 @@ LABEL_16:
 
   else
   {
-    v12 = v29;
+    accountCopy = v29;
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
       sub_100001CB0(v33);
@@ -130,46 +130,46 @@ LABEL_16:
     v35 = 0;
   }
 
-  v14 = v42;
+  dCopy = v42;
 LABEL_21:
   v37 = self->_logger;
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
   {
     v38 = v37;
-    [v15 outgoingResponseIdentifier];
-    v39 = v14;
-    v41 = v40 = v12;
+    [contextCopy outgoingResponseIdentifier];
+    v39 = dCopy;
+    v41 = v40 = accountCopy;
     *buf = 138412290;
     v50 = v41;
     _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "Finished processing image from message with ID: %@,", buf, 0xCu);
 
-    v12 = v40;
-    v14 = v39;
+    accountCopy = v40;
+    dCopy = v39;
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  serviceCopy = service;
+  accountCopy = account;
+  lCopy = l;
+  metadataCopy = metadata;
+  dCopy = d;
+  contextCopy = context;
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     v21 = logger;
-    v22 = [v19 outgoingResponseIdentifier];
+    outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
     *buf = 138412290;
-    v38 = v22;
+    v38 = outgoingResponseIdentifier;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Received message with ID: %@,", buf, 0xCu);
   }
 
-  v23 = [v17 objectForKeyedSubscript:@"t"];
-  v24 = [v23 integerValue];
+  v23 = [metadataCopy objectForKeyedSubscript:@"t"];
+  integerValue = [v23 integerValue];
 
-  if (v24 == 2)
+  if (integerValue == 2)
   {
     v25 = self->_logger;
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
@@ -178,14 +178,14 @@ LABEL_21:
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "Message is screen recording. Sending to PhotoLibrary", buf, 2u);
     }
 
-    v26 = [[SCRSIncomingFile alloc] initWithIDSURL:v16];
+    v26 = [[SCRSIncomingFile alloc] initWithIDSURL:lCopy];
     v27 = +[PHPhotoLibrary sharedPhotoLibrary];
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
     v34[2] = sub_100001714;
     v34[3] = &unk_100004210;
     v35 = v26;
-    v36 = v17;
+    v36 = metadataCopy;
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
     v32[2] = sub_1000017B4;
@@ -200,9 +200,9 @@ LABEL_21:
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
     v30 = v29;
-    v31 = [v19 outgoingResponseIdentifier];
+    outgoingResponseIdentifier2 = [contextCopy outgoingResponseIdentifier];
     *buf = 138412290;
-    v38 = v31;
+    v38 = outgoingResponseIdentifier2;
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Finished processing video from message with ID: %@,", buf, 0xCu);
   }
 }

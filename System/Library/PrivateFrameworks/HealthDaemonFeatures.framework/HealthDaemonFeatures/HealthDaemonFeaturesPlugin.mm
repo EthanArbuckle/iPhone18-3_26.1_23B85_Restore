@@ -1,7 +1,7 @@
 @interface HealthDaemonFeaturesPlugin
 - (NSString)pluginIdentifier;
 - (_TtC20HealthDaemonFeatures26HealthDaemonFeaturesPlugin)init;
-- (id)extensionForProfile:(id)a3;
+- (id)extensionForProfile:(id)profile;
 @end
 
 @implementation HealthDaemonFeaturesPlugin
@@ -13,13 +13,13 @@
   return v2;
 }
 
-- (id)extensionForProfile:(id)a3
+- (id)extensionForProfile:(id)profile
 {
-  v3 = a3;
-  if ([v3 profileType] == 1)
+  profileCopy = profile;
+  if ([profileCopy profileType] == 1)
   {
     v4 = objc_allocWithZone(type metadata accessor for HealthDaemonFeaturesProfileExtension());
-    v5 = sub_25156189C(v3);
+    v5 = sub_25156189C(profileCopy);
   }
 
   else

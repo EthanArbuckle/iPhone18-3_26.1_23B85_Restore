@@ -7,47 +7,47 @@
 - (NSString)state;
 - (WCDSystemMonitor)init;
 - (_CDComplications)duetComplications;
-- (id)applicationStateStringForState:(unsigned int)a3;
-- (id)dataContainerURLForApplicationInfo:(id)a3;
+- (id)applicationStateStringForState:(unsigned int)state;
+- (id)dataContainerURLForApplicationInfo:(id)info;
 - (id)loadInstalledWatchApps;
 - (id)newSerialOperationQueue;
-- (id)notifyObserversQueued:(SEL)a3 completion:(id)a4;
-- (id)pairingIDForBTUUID:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)applicationWorkspace:(id)a3 didUpdateRunningIndependentlyWatchApps:(id)a4;
-- (void)applicationWorkspace:(id)a3 didUpdateStandaloneWatchApps:(id)a4;
-- (void)applicationWorkspace:(id)a3 didUpdateiOSApplicationsContainingComplications:(id)a4;
-- (void)applicationWorkspace:(id)a3 didUpdateiOSApplicationsContainingWatchApp:(id)a4;
-- (void)applicationWorkspace:(id)a3 didUpdateiOSApplicationsWithWatchAppInstalled:(id)a4;
+- (id)notifyObserversQueued:(SEL)queued completion:(id)completion;
+- (id)pairingIDForBTUUID:(id)d;
+- (void)addObserver:(id)observer;
+- (void)applicationWorkspace:(id)workspace didUpdateRunningIndependentlyWatchApps:(id)apps;
+- (void)applicationWorkspace:(id)workspace didUpdateStandaloneWatchApps:(id)apps;
+- (void)applicationWorkspace:(id)workspace didUpdateiOSApplicationsContainingComplications:(id)complications;
+- (void)applicationWorkspace:(id)workspace didUpdateiOSApplicationsContainingWatchApp:(id)app;
+- (void)applicationWorkspace:(id)workspace didUpdateiOSApplicationsWithWatchAppInstalled:(id)installed;
 - (void)copyVoucher;
 - (void)createDuetComplications;
 - (void)handleActiveComplicationsChanged;
-- (void)handleApplicationStateChange:(id)a3;
-- (void)handleCompanionApplicationsChanged:(id)a3;
-- (void)handleDeviceBecameActiveNotification:(id)a3;
-- (void)handleDeviceBecameInactiveNotification:(id)a3;
+- (void)handleApplicationStateChange:(id)change;
+- (void)handleCompanionApplicationsChanged:(id)changed;
+- (void)handleDeviceBecameActiveNotification:(id)notification;
+- (void)handleDeviceBecameInactiveNotification:(id)notification;
 - (void)handleInstalledApplicationsChanged;
-- (void)handlePairingChangedNotification:(id)a3;
+- (void)handlePairingChangedNotification:(id)notification;
 - (void)handleRemainingComplicationUserInfoTransfersReset;
 - (void)handleSwitchStartedByIDS;
-- (void)handleWatchAppUIStatesChanged:(id)a3 error:(id)a4;
-- (void)notifyObservers:(SEL)a3;
+- (void)handleWatchAppUIStatesChanged:(id)changed error:(id)error;
+- (void)notifyObservers:(SEL)observers;
 - (void)onqueue_handleSwitch;
-- (void)onqueue_retrievedInstalledAppsList:(id)a3;
+- (void)onqueue_retrievedInstalledAppsList:(id)list;
 - (void)onqueue_switchIfReady;
 - (void)releaseVoucher;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)resetInitialState;
 - (void)retryInstalledAppsUpdate;
-- (void)saveInstalledWatchApps:(id)a3;
-- (void)setActiveDeviceConnected:(BOOL)a3;
-- (void)setIOSApplicationsContainingActiveComplications:(id)a3;
-- (void)setIsPaired:(BOOL)a3 pairingID:(id)a4 pairedDeviceInformation:(id)a5 pairedDevicesPairingIDs:(id)a6;
-- (void)setRemoteFirstUnlocked:(BOOL)a3;
+- (void)saveInstalledWatchApps:(id)apps;
+- (void)setActiveDeviceConnected:(BOOL)connected;
+- (void)setIOSApplicationsContainingActiveComplications:(id)complications;
+- (void)setIsPaired:(BOOL)paired pairingID:(id)d pairedDeviceInformation:(id)information pairedDevicesPairingIDs:(id)ds;
+- (void)setRemoteFirstUnlocked:(BOOL)unlocked;
 - (void)setUpApplicationStateMonitor;
 - (void)setUpInitialState;
-- (void)startMonitoringBundleID:(id)a3;
-- (void)stopMonitoringBundleID:(id)a3;
+- (void)startMonitoringBundleID:(id)d;
+- (void)stopMonitoringBundleID:(id)d;
 - (void)subscribeToAllNotifications;
 @end
 
@@ -59,7 +59,7 @@
   block[1] = 3221225472;
   block[2] = sub_10001D764;
   block[3] = &unk_100048E08;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100054CE0 != -1)
   {
     dispatch_once(&qword_100054CE0, block);
@@ -80,19 +80,19 @@
     v3 = wc_log();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(WCDSystemMonitor *)v2 deviceInformation];
+      deviceInformation = [(WCDSystemMonitor *)v2 deviceInformation];
       *buf = 138543362;
-      v20 = v4;
+      v20 = deviceInformation;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Device Information: %{public}@", buf, 0xCu);
     }
 
-    v5 = [(WCDSystemMonitor *)v2 newSerialOperationQueue];
+    newSerialOperationQueue = [(WCDSystemMonitor *)v2 newSerialOperationQueue];
     operationQueue = v2->_operationQueue;
-    v2->_operationQueue = v5;
+    v2->_operationQueue = newSerialOperationQueue;
 
-    v7 = [(WCDSystemMonitor *)v2 newSerialOperationQueue];
+    newSerialOperationQueue2 = [(WCDSystemMonitor *)v2 newSerialOperationQueue];
     notifyOperationQueue = v2->_notifyOperationQueue;
-    v2->_notifyOperationQueue = v7;
+    v2->_notifyOperationQueue = newSerialOperationQueue2;
 
     v9 = +[NSHashTable weakObjectsHashTable];
     observers = v2->_observers;
@@ -182,14 +182,14 @@
   v9 = sub_10001DD14;
   v10 = &unk_100049208;
   objc_copyWeak(&v12, buf);
-  v11 = self;
+  selfCopy = self;
   objc_copyWeak(&v13, &location);
   [(WCDRetrieveInitialStateOperation *)v4 setCompletionBlock:&v7];
   v5 = [(WCDSystemMonitor *)self operationQueue:v7];
   [v5 addOperation:v4];
 
-  v6 = [(WCDSystemMonitor *)self operationQueue];
-  [v6 setSuspended:0];
+  operationQueue = [(WCDSystemMonitor *)self operationQueue];
+  [operationQueue setSuspended:0];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&v12);
@@ -199,17 +199,17 @@
 
 - (void)resetInitialState
 {
-  v3 = [(WCDSystemMonitor *)self operationQueue];
-  [v3 setSuspended:1];
+  operationQueue = [(WCDSystemMonitor *)self operationQueue];
+  [operationQueue setSuspended:1];
 
-  v4 = [(WCDSystemMonitor *)self notifyOperationQueue];
-  [v4 setSuspended:1];
+  notifyOperationQueue = [(WCDSystemMonitor *)self notifyOperationQueue];
+  [notifyOperationQueue setSuspended:1];
 
-  v5 = [(WCDSystemMonitor *)self operationQueue];
-  [v5 cancelAllOperations];
+  operationQueue2 = [(WCDSystemMonitor *)self operationQueue];
+  [operationQueue2 cancelAllOperations];
 
-  v6 = [(WCDSystemMonitor *)self notifyOperationQueue];
-  [v6 cancelAllOperations];
+  notifyOperationQueue2 = [(WCDSystemMonitor *)self notifyOperationQueue];
+  [notifyOperationQueue2 cancelAllOperations];
 
   self->_initialSetUpComplete = 0;
   self->_initialSetUpFailed = 0;
@@ -231,9 +231,9 @@
 {
   objc_initWeak(&location, self);
   monitor = self->_monitor;
-  v4 = [(WCDSystemMonitor *)self monitoredBundleIDs];
-  v5 = [v4 allKeys];
-  [(BKSApplicationStateMonitor *)monitor updateInterestedBundleIDs:v5];
+  monitoredBundleIDs = [(WCDSystemMonitor *)self monitoredBundleIDs];
+  allKeys = [monitoredBundleIDs allKeys];
+  [(BKSApplicationStateMonitor *)monitor updateInterestedBundleIDs:allKeys];
 
   v6 = self->_monitor;
   v7[0] = _NSConcreteStackBlock;
@@ -270,7 +270,7 @@
   NSAppendPrintF();
   v7 = v5;
 
-  v32 = [(WCDSystemMonitor *)self deviceInformation];
+  deviceInformation = [(WCDSystemMonitor *)self deviceInformation];
   NSAppendPrintF();
   v8 = v7;
 
@@ -321,29 +321,29 @@
   NSAppendPrintF();
   v15 = v13;
 
-  v16 = [(WCDSystemMonitor *)self operationQueue];
-  v17 = [(WCDSystemMonitor *)self operationQueue];
-  v18 = [v17 operations];
+  operationQueue = [(WCDSystemMonitor *)self operationQueue];
+  operationQueue2 = [(WCDSystemMonitor *)self operationQueue];
+  operations = [operationQueue2 operations];
   v41 = WCCompactStringFromCollection();
   NSAppendPrintF();
   v19 = v15;
 
-  v37 = [(WCDSystemMonitor *)self observers:v16];
+  v37 = [(WCDSystemMonitor *)self observers:operationQueue];
   NSAppendPrintF();
   v20 = v19;
 
-  v21 = [(WCDSystemMonitor *)self monitor];
-  v22 = [(WCDSystemMonitor *)self monitoredBundleIDs];
+  monitor = [(WCDSystemMonitor *)self monitor];
+  monitoredBundleIDs = [(WCDSystemMonitor *)self monitoredBundleIDs];
   v42 = WCCompactStringFromCollection();
   NSAppendPrintF();
   v23 = v20;
 
-  v24 = [(WCDSystemMonitor *)self applicationWorkspace:v21];
+  v24 = [(WCDSystemMonitor *)self applicationWorkspace:monitor];
   v38 = [v24 debugDescription];
   NSAppendPrintF();
   v25 = v23;
 
-  v26 = [(WCDSystemMonitor *)self iOSApplicationsContainingActiveComplications];
+  iOSApplicationsContainingActiveComplications = [(WCDSystemMonitor *)self iOSApplicationsContainingActiveComplications];
   NSAppendPrintF();
   v27 = v25;
 
@@ -369,7 +369,7 @@
     [NSArray arrayWithObjects:v34 count:7];
     v4 = MGCopyMultipleAnswers();
     v5 = [v4 objectForKeyedSubscript:@"IsSimulator"];
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
 
     v7 = [v4 objectForKeyedSubscript:@"ReleaseType"];
     v8 = v7;
@@ -383,7 +383,7 @@
     v32 = v10;
 
     v11 = @"Simulator";
-    if (!v6)
+    if (!bOOLValue)
     {
       v11 = v10;
     }
@@ -409,19 +409,19 @@
   [NSArray arrayWithObjects:v33 count:2];
   v21 = MGCopyMultipleAnswers();
   v22 = [v21 objectForKeyedSubscript:@"BatteryIsCharging"];
-  v23 = [v22 BOOLValue];
+  bOOLValue2 = [v22 BOOLValue];
 
   v24 = @"not charging";
-  if (v23)
+  if (bOOLValue2)
   {
     v24 = @"charging";
   }
 
   v25 = v24;
   v26 = [v21 objectForKeyedSubscript:@"BatteryCurrentCapacity"];
-  v27 = [v26 integerValue];
+  integerValue = [v26 integerValue];
 
-  v28 = [v3[207] stringWithFormat:@"%d%% (%@)", v27, v25];
+  v28 = [v3[207] stringWithFormat:@"%d%% (%@)", integerValue, v25];
 
   v29 = [(NSString *)self->_deviceInformation stringByAppendingString:v28];
 
@@ -430,26 +430,26 @@
 
 - (BOOL)isAltAccount
 {
-  v3 = [(WCDSystemMonitor *)self altAccountCache];
+  altAccountCache = [(WCDSystemMonitor *)self altAccountCache];
 
-  if (!v3)
+  if (!altAccountCache)
   {
     v4 = +[NRPairedDeviceRegistry sharedInstance];
     v5 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v6 = [v4 getAllDevicesWithArchivedAltAccountDevicesMatching:v5];
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
 
-    v8 = [v7 valueForProperty:NRDevicePropertyIsAltAccount];
-    v9 = [v8 BOOLValue];
+    v8 = [firstObject valueForProperty:NRDevicePropertyIsAltAccount];
+    bOOLValue = [v8 BOOLValue];
 
-    v10 = [NSNumber numberWithBool:v9];
+    v10 = [NSNumber numberWithBool:bOOLValue];
     [(WCDSystemMonitor *)self setAltAccountCache:v10];
   }
 
-  v11 = [(WCDSystemMonitor *)self altAccountCache];
-  v12 = [v11 BOOLValue];
+  altAccountCache2 = [(WCDSystemMonitor *)self altAccountCache];
+  bOOLValue2 = [altAccountCache2 BOOLValue];
 
-  return v12;
+  return bOOLValue2;
 }
 
 - (void)subscribeToAllNotifications
@@ -461,30 +461,30 @@
   [v3 addObserver:self selector:"handleDeviceBecameActiveNotification:" name:NRPairedDeviceRegistryDeviceDidBecomeActive object:0];
   objc_initWeak(location, self);
   out_token = 0;
-  v4 = [ACXApplicationsUpdatedDarwinNotification UTF8String];
+  uTF8String = [ACXApplicationsUpdatedDarwinNotification UTF8String];
   v5 = &_dispatch_main_q;
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_10001EE60;
   handler[3] = &unk_100048A70;
   objc_copyWeak(&v19, location);
-  notify_register_dispatch(v4, &out_token, &_dispatch_main_q, handler);
+  notify_register_dispatch(uTF8String, &out_token, &_dispatch_main_q, handler);
 
-  v6 = [SPActiveComplicationsDarwinNotificaton UTF8String];
+  uTF8String2 = [SPActiveComplicationsDarwinNotificaton UTF8String];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10001EEA0;
   v16[3] = &unk_100048A70;
   objc_copyWeak(&v17, location);
-  notify_register_dispatch(v6, &out_token, &_dispatch_main_q, v16);
+  notify_register_dispatch(uTF8String2, &out_token, &_dispatch_main_q, v16);
 
-  v7 = [CLKActiveComplicationsFromActiveWatchChangedNotification UTF8String];
+  uTF8String3 = [CLKActiveComplicationsFromActiveWatchChangedNotification UTF8String];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10001EEE0;
   v14[3] = &unk_100048A70;
   objc_copyWeak(&v15, location);
-  notify_register_dispatch(v7, &out_token, &_dispatch_main_q, v14);
+  notify_register_dispatch(uTF8String3, &out_token, &_dispatch_main_q, v14);
 
   v23 = 0;
   v24 = &v23;
@@ -531,20 +531,20 @@
   }
 }
 
-- (void)handlePairingChangedNotification:(id)a3
+- (void)handlePairingChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = wc_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [notificationCopy name];
     *buf = 138412290;
-    v19 = v6;
+    v19 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
-  v7 = [v4 name];
-  v8 = [v7 isEqual:NRPairedDeviceRegistryDeviceDidPairNotification];
+  name2 = [notificationCopy name];
+  v8 = [name2 isEqual:NRPairedDeviceRegistryDeviceDidPairNotification];
 
   if (v8)
   {
@@ -559,8 +559,8 @@
   else
   {
     v9 = [WCDRetrievePairedListOperation alloc];
-    v10 = [(WCDSystemMonitor *)self operationQueue];
-    v11 = [(WCDAsyncOperation *)v9 initWithDelegate:self queue:v10];
+    operationQueue = [(WCDSystemMonitor *)self operationQueue];
+    v11 = [(WCDAsyncOperation *)v9 initWithDelegate:self queue:operationQueue];
 
     objc_initWeak(buf, v11);
     objc_initWeak(&location, self);
@@ -572,8 +572,8 @@
     objc_copyWeak(&v15, &location);
     v13[4] = self;
     [(WCDRetrievePairedListOperation *)v11 setCompletionBlock:v13];
-    v12 = [(WCDSystemMonitor *)self operationQueue];
-    [v12 addOperation:v11];
+    operationQueue2 = [(WCDSystemMonitor *)self operationQueue];
+    [operationQueue2 addOperation:v11];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&v14);
@@ -582,7 +582,7 @@
   }
 }
 
-- (void)handleCompanionApplicationsChanged:(id)a3
+- (void)handleCompanionApplicationsChanged:(id)changed
 {
   v4 = wc_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -600,8 +600,8 @@
   {
     objc_initWeak(&location, self);
     v3 = [WCDRetrieveInstalledAppsListOperation alloc];
-    v4 = [(WCDSystemMonitor *)self operationQueue];
-    v5 = [(WCDAsyncOperation *)v3 initWithDelegate:self queue:v4];
+    operationQueue = [(WCDSystemMonitor *)self operationQueue];
+    v5 = [(WCDAsyncOperation *)v3 initWithDelegate:self queue:operationQueue];
 
     v7 = _NSConcreteStackBlock;
     v8 = 3221225472;
@@ -610,8 +610,8 @@
     objc_copyWeak(&v11, &location);
     [(WCDRetrieveInstalledAppsListOperation *)v5 setCompletionBlock:&v7];
     [(WCDRetrieveInstalledAppsListOperation *)v5 setQualityOfService:-1, v7, v8, v9, v10];
-    v6 = [(WCDSystemMonitor *)self operationQueue];
-    [v6 addOperation:v5];
+    operationQueue2 = [(WCDSystemMonitor *)self operationQueue];
+    [operationQueue2 addOperation:v5];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -623,11 +623,11 @@
   if (![(WCDSystemMonitor *)self retrySetupInitialStateIfNeeded])
   {
     v3 = [WCDRetrieveActiveComplicationsOperation alloc];
-    v4 = [(WCDSystemMonitor *)self operationQueue];
-    v6 = [(WCDAsyncOperation *)v3 initWithDelegate:self queue:v4];
+    operationQueue = [(WCDSystemMonitor *)self operationQueue];
+    v6 = [(WCDAsyncOperation *)v3 initWithDelegate:self queue:operationQueue];
 
-    v5 = [(WCDSystemMonitor *)self operationQueue];
-    [v5 addOperation:v6];
+    operationQueue2 = [(WCDSystemMonitor *)self operationQueue];
+    [operationQueue2 addOperation:v6];
   }
 }
 
@@ -644,9 +644,9 @@
   v4 = [(WCDSystemMonitor *)self notifyObserversQueued:"systemObserverRemainingComplicationUserInfoTransfersReset"];
 }
 
-- (void)handleDeviceBecameInactiveNotification:(id)a3
+- (void)handleDeviceBecameInactiveNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = wc_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -659,13 +659,13 @@
   v7[1] = 3221225472;
   v7[2] = sub_10001F77C;
   v7[3] = &unk_100048AE8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(&_dispatch_main_q, v7);
 }
 
-- (void)handleDeviceBecameActiveNotification:(id)a3
+- (void)handleDeviceBecameActiveNotification:(id)notification
 {
   v4 = wc_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -712,13 +712,13 @@
   }
 
   v4 = +[NRPairedDeviceRegistry sharedInstance];
-  v5 = [v4 getActivePairedDevice];
+  getActivePairedDevice = [v4 getActivePairedDevice];
 
-  v6 = [v5 pairingID];
-  v7 = [v6 UUIDString];
+  pairingID = [getActivePairedDevice pairingID];
+  uUIDString = [pairingID UUIDString];
 
-  v8 = [(WCDSystemMonitor *)self pairingID];
-  if (!v8)
+  pairingID2 = [(WCDSystemMonitor *)self pairingID];
+  if (!pairingID2)
   {
     v9 = wc_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -728,33 +728,33 @@
     }
   }
 
-  if ([v8 isEqualToString:v7])
+  if ([pairingID2 isEqualToString:uUIDString])
   {
-    v10 = wc_log();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    activeIDSDevice = wc_log();
+    if (os_log_type_enabled(activeIDSDevice, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412546;
-      v18 = v8;
+      v18 = pairingID2;
       v19 = 2112;
-      v20 = v7;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Pairing ID already set to active paired device (current %@, active %@)", &v17, 0x16u);
+      v20 = uUIDString;
+      _os_log_impl(&_mh_execute_header, activeIDSDevice, OS_LOG_TYPE_DEFAULT, "Pairing ID already set to active paired device (current %@, active %@)", &v17, 0x16u);
     }
   }
 
   else
   {
     v11 = +[WatchConnectivityDaemon sharedDaemon];
-    v10 = [v11 activeIDSDevice];
+    activeIDSDevice = [v11 activeIDSDevice];
 
     v12 = +[NRPairedDeviceRegistry sharedInstance];
-    v13 = [v12 deviceForIDSDevice:v10];
+    v13 = [v12 deviceForIDSDevice:activeIDSDevice];
 
     if (v13)
     {
-      v14 = [v13 pairingID];
-      v15 = [v14 UUIDString];
+      pairingID3 = [v13 pairingID];
+      uUIDString2 = [pairingID3 UUIDString];
 
-      if (([v15 isEqualToString:v7]& 1) != 0)
+      if (([uUIDString2 isEqualToString:uUIDString]& 1) != 0)
       {
         [(WCDSystemMonitor *)self onqueue_handleSwitch];
       }
@@ -765,9 +765,9 @@
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           v17 = 138412546;
-          v18 = v7;
+          v18 = uUIDString;
           v19 = 2112;
-          v20 = v15;
+          v20 = uUIDString2;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "IDS and NR devices don't match (NR %@, IDS %@)", &v17, 0x16u);
         }
       }
@@ -775,11 +775,11 @@
 
     else
     {
-      v15 = wc_log();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      uUIDString2 = wc_log();
+      if (os_log_type_enabled(uUIDString2, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v17) = 0;
-        _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "No matching NRDevice for active IDS device", &v17, 2u);
+        _os_log_impl(&_mh_execute_header, uUIDString2, OS_LOG_TYPE_DEFAULT, "No matching NRDevice for active IDS device", &v17, 2u);
       }
     }
   }
@@ -800,16 +800,16 @@
   [(WCDSystemMonitor *)self setUpInitialState];
 }
 
-- (void)onqueue_retrievedInstalledAppsList:(id)a3
+- (void)onqueue_retrievedInstalledAppsList:(id)list
 {
-  v4 = a3;
-  v5 = [(WCDSystemMonitor *)self applicationWorkspace];
-  [v5 setValidApplications:v4];
+  listCopy = list;
+  applicationWorkspace = [(WCDSystemMonitor *)self applicationWorkspace];
+  [applicationWorkspace setValidApplications:listCopy];
 }
 
-- (void)applicationWorkspace:(id)a3 didUpdateStandaloneWatchApps:(id)a4
+- (void)applicationWorkspace:(id)workspace didUpdateStandaloneWatchApps:(id)apps
 {
-  v4 = [a4 bs_map:&stru_100049278];
+  v4 = [apps bs_map:&stru_100049278];
   v5 = wc_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -819,9 +819,9 @@
   }
 }
 
-- (void)applicationWorkspace:(id)a3 didUpdateRunningIndependentlyWatchApps:(id)a4
+- (void)applicationWorkspace:(id)workspace didUpdateRunningIndependentlyWatchApps:(id)apps
 {
-  v5 = [a4 bs_map:&stru_100049298];
+  v5 = [apps bs_map:&stru_100049298];
   v6 = wc_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -833,11 +833,11 @@
   v7 = [(WCDSystemMonitor *)self notifyObserversQueued:"systemObserverRunningIndependentlyWatchApps"];
 }
 
-- (void)applicationWorkspace:(id)a3 didUpdateiOSApplicationsContainingWatchApp:(id)a4
+- (void)applicationWorkspace:(id)workspace didUpdateiOSApplicationsContainingWatchApp:(id)app
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 bs_map:&stru_1000492B8];
+  workspaceCopy = workspace;
+  appCopy = app;
+  v8 = [appCopy bs_map:&stru_1000492B8];
   v9 = wc_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -859,9 +859,9 @@
   objc_destroyWeak(buf);
 }
 
-- (void)applicationWorkspace:(id)a3 didUpdateiOSApplicationsWithWatchAppInstalled:(id)a4
+- (void)applicationWorkspace:(id)workspace didUpdateiOSApplicationsWithWatchAppInstalled:(id)installed
 {
-  v5 = [a4 bs_map:&stru_1000492D8];
+  v5 = [installed bs_map:&stru_1000492D8];
   v6 = wc_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -871,8 +871,8 @@
   }
 
   v7 = [(WCDSystemMonitor *)self notifyObserversQueued:"systemObserverWatchAppsInstalledChanged"];
-  v8 = [(WCDSystemMonitor *)self loadInstalledWatchApps];
-  if ([v5 isEqual:v8])
+  loadInstalledWatchApps = [(WCDSystemMonitor *)self loadInstalledWatchApps];
+  if ([v5 isEqual:loadInstalledWatchApps])
   {
     v9 = wc_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -889,9 +889,9 @@
   }
 }
 
-- (void)applicationWorkspace:(id)a3 didUpdateiOSApplicationsContainingComplications:(id)a4
+- (void)applicationWorkspace:(id)workspace didUpdateiOSApplicationsContainingComplications:(id)complications
 {
-  v5 = [a4 bs_map:&stru_1000492F8];
+  v5 = [complications bs_map:&stru_1000492F8];
   v6 = wc_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -903,34 +903,34 @@
   v7 = [(WCDSystemMonitor *)self notifyObserversQueued:"systemObserverComplicationsInstalledChanged"];
 }
 
-- (void)setIOSApplicationsContainingActiveComplications:(id)a3
+- (void)setIOSApplicationsContainingActiveComplications:(id)complications
 {
-  v5 = a3;
-  if (([(NSSet *)self->_iOSApplicationsContainingActiveComplications isEqual:v5]& 1) == 0)
+  complicationsCopy = complications;
+  if (([(NSSet *)self->_iOSApplicationsContainingActiveComplications isEqual:complicationsCopy]& 1) == 0)
   {
     v6 = wc_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138543362;
-      v9 = v5;
+      v9 = complicationsCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@", &v8, 0xCu);
     }
 
-    objc_storeStrong(&self->_iOSApplicationsContainingActiveComplications, a3);
+    objc_storeStrong(&self->_iOSApplicationsContainingActiveComplications, complications);
     v7 = [(WCDSystemMonitor *)self notifyObserversQueued:"systemObserverActiveComplicationsChanged"];
   }
 }
 
-- (void)setActiveDeviceConnected:(BOOL)a3
+- (void)setActiveDeviceConnected:(BOOL)connected
 {
-  if (self->_activeDeviceConnected != a3)
+  if (self->_activeDeviceConnected != connected)
   {
-    v3 = a3;
+    connectedCopy = connected;
     v5 = wc_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = "NO";
-      if (v3)
+      if (connectedCopy)
       {
         v6 = "YES";
       }
@@ -940,25 +940,25 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s", &v8, 0xCu);
     }
 
-    self->_activeDeviceConnected = v3;
+    self->_activeDeviceConnected = connectedCopy;
     v7 = [(WCDSystemMonitor *)self notifyObserversQueued:"systemObserverActiveDeviceConnectedChanged"];
   }
 }
 
-- (void)setIsPaired:(BOOL)a3 pairingID:(id)a4 pairedDeviceInformation:(id)a5 pairedDevicesPairingIDs:(id)a6
+- (void)setIsPaired:(BOOL)paired pairingID:(id)d pairedDeviceInformation:(id)information pairedDevicesPairingIDs:(id)ds
 {
-  v8 = a4;
-  v9 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  pairedCopy = paired;
+  dCopy2 = d;
+  informationCopy = information;
+  dsCopy = ds;
   v14 = wc_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = v11;
-    v16 = v8;
-    v17 = a6;
-    if (v9)
+    v15 = dCopy2;
+    v16 = dCopy;
+    dsCopy2 = ds;
+    if (pairedCopy)
     {
       v18 = "YES";
     }
@@ -969,40 +969,40 @@
     }
 
     WCCompactStringFromCollection();
-    v19 = v23 = v13;
+    v19 = v23 = dsCopy;
     *buf = 136315906;
     v25 = v18;
-    a6 = v17;
-    v8 = v16;
-    v11 = v15;
+    ds = dsCopy2;
+    dCopy = v16;
+    dCopy2 = v15;
     v26 = 2114;
     v27 = v15;
     v28 = 2114;
     v29 = v19;
     v30 = 2114;
-    v31 = v12;
+    v31 = informationCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "isPaired: %s, pairingID: %{public}@, pairedDevicesPairingIDs: %{public}@, pairedDeviceInformation: '%{public}@'", buf, 0x2Au);
 
-    v13 = v23;
+    dsCopy = v23;
   }
 
-  if (([(NSString *)self->_pairedDeviceInformation isEqual:v12]& 1) == 0)
+  if (([(NSString *)self->_pairedDeviceInformation isEqual:informationCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_pairedDeviceInformation, a5);
+    objc_storeStrong(&self->_pairedDeviceInformation, information);
   }
 
   isPaired = self->_isPaired;
-  if (isPaired != v9)
+  if (isPaired != pairedCopy)
   {
-    self->_isPaired = v9;
+    self->_isPaired = pairedCopy;
   }
 
-  if ([(NSString *)self->_pairingID isEqual:v11])
+  if ([(NSString *)self->_pairingID isEqual:dCopy2])
   {
     p_pairedDevicesPairingIDs = &self->_pairedDevicesPairingIDs;
-    if (([(NSSet *)self->_pairedDevicesPairingIDs isEqual:v13]& 1) != 0)
+    if (([(NSSet *)self->_pairedDevicesPairingIDs isEqual:dsCopy]& 1) != 0)
     {
-      if (isPaired == v9)
+      if (isPaired == pairedCopy)
       {
         goto LABEL_17;
       }
@@ -1013,12 +1013,12 @@
     goto LABEL_15;
   }
 
-  objc_storeStrong(&self->_pairingID, v8);
+  objc_storeStrong(&self->_pairingID, dCopy);
   p_pairedDevicesPairingIDs = &self->_pairedDevicesPairingIDs;
-  if (([(NSSet *)self->_pairedDevicesPairingIDs isEqual:v13]& 1) == 0)
+  if (([(NSSet *)self->_pairedDevicesPairingIDs isEqual:dsCopy]& 1) == 0)
   {
 LABEL_15:
-    objc_storeStrong(p_pairedDevicesPairingIDs, a6);
+    objc_storeStrong(p_pairedDevicesPairingIDs, ds);
   }
 
 LABEL_16:
@@ -1026,42 +1026,42 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)setRemoteFirstUnlocked:(BOOL)a3
+- (void)setRemoteFirstUnlocked:(BOOL)unlocked
 {
-  if (self->_remoteFirstUnlocked != a3)
+  if (self->_remoteFirstUnlocked != unlocked)
   {
-    self->_remoteFirstUnlocked = a3;
+    self->_remoteFirstUnlocked = unlocked;
     v5 = [(WCDSystemMonitor *)self notifyObserversQueued:"systemObserverRemoteFirstUnlockedChanged", v3, v4];
   }
 }
 
 - (BOOL)watchConnectivityServiceAvailable
 {
-  v2 = [(WCDSystemMonitor *)self pairingID];
-  v3 = v2 != 0;
+  pairingID = [(WCDSystemMonitor *)self pairingID];
+  v3 = pairingID != 0;
 
   return v3;
 }
 
-- (void)handleApplicationStateChange:(id)a3
+- (void)handleApplicationStateChange:(id)change
 {
-  v19 = a3;
-  v4 = [v19 objectForKeyedSubscript:BKSApplicationStateDisplayIDKey];
-  v5 = [v19 objectForKeyedSubscript:BKSApplicationStateKey];
-  v6 = [v5 unsignedIntegerValue];
+  changeCopy = change;
+  v4 = [changeCopy objectForKeyedSubscript:BKSApplicationStateDisplayIDKey];
+  v5 = [changeCopy objectForKeyedSubscript:BKSApplicationStateKey];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(WCDSystemMonitor *)v7 observers];
-  v9 = [v8 allObjects];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  observers = [(WCDSystemMonitor *)selfCopy observers];
+  allObjects = [observers allObjects];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
   v10 = wc_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(WCDSystemMonitor *)v7 applicationStateStringForState:v6];
+    v11 = [(WCDSystemMonitor *)selfCopy applicationStateStringForState:unsignedIntegerValue];
     *buf = 136315394;
-    v26 = [v11 UTF8String];
+    uTF8String = [v11 UTF8String];
     v27 = 2114;
     v28 = v4;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s for bundleID: %{public}@", buf, 0x16u);
@@ -1071,7 +1071,7 @@ LABEL_17:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v12 = v9;
+  v12 = allObjects;
   v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v13)
   {
@@ -1087,7 +1087,7 @@ LABEL_17:
         }
 
         v16 = *(*(&v20 + 1) + 8 * v15);
-        if (v6 == 1)
+        if (unsignedIntegerValue == 1)
         {
           v18 = *(*(&v20 + 1) + 8 * v15);
           if (objc_opt_respondsToSelector())
@@ -1096,7 +1096,7 @@ LABEL_17:
           }
         }
 
-        else if (v6 == 2)
+        else if (unsignedIntegerValue == 2)
         {
           v17 = *(*(&v20 + 1) + 8 * v15);
           if (objc_opt_respondsToSelector())
@@ -1121,139 +1121,139 @@ LABEL_17:
   }
 }
 
-- (void)startMonitoringBundleID:(id)a3
+- (void)startMonitoringBundleID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(WCDSystemMonitor *)self monitoredBundleIDs];
-    objc_sync_enter(v5);
-    v6 = [(WCDSystemMonitor *)self monitoredBundleIDs];
-    v7 = [v6 objectForKeyedSubscript:v4];
+    monitoredBundleIDs = [(WCDSystemMonitor *)self monitoredBundleIDs];
+    objc_sync_enter(monitoredBundleIDs);
+    monitoredBundleIDs2 = [(WCDSystemMonitor *)self monitoredBundleIDs];
+    v7 = [monitoredBundleIDs2 objectForKeyedSubscript:dCopy];
 
-    v8 = [(WCDSystemMonitor *)self monitoredBundleIDs];
+    monitoredBundleIDs3 = [(WCDSystemMonitor *)self monitoredBundleIDs];
     if (v7)
     {
-      v9 = [v8 objectForKeyedSubscript:v4];
-      v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v9 integerValue] + 1);
-      v11 = [(WCDSystemMonitor *)self monitoredBundleIDs];
-      [v11 setObject:v10 forKeyedSubscript:v4];
+      allKeys = [monitoredBundleIDs3 objectForKeyedSubscript:dCopy];
+      v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [allKeys integerValue] + 1);
+      monitoredBundleIDs4 = [(WCDSystemMonitor *)self monitoredBundleIDs];
+      [monitoredBundleIDs4 setObject:v10 forKeyedSubscript:dCopy];
     }
 
     else
     {
-      [v8 setObject:&off_10004AB70 forKeyedSubscript:v4];
+      [monitoredBundleIDs3 setObject:&off_10004AB70 forKeyedSubscript:dCopy];
 
       monitor = self->_monitor;
-      v8 = [(WCDSystemMonitor *)self monitoredBundleIDs];
-      v9 = [v8 allKeys];
-      [(BKSApplicationStateMonitor *)monitor updateInterestedBundleIDs:v9];
+      monitoredBundleIDs3 = [(WCDSystemMonitor *)self monitoredBundleIDs];
+      allKeys = [monitoredBundleIDs3 allKeys];
+      [(BKSApplicationStateMonitor *)monitor updateInterestedBundleIDs:allKeys];
     }
 
     v13 = wc_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(WCDSystemMonitor *)self monitoredBundleIDs];
-      v15 = [v14 objectForKeyedSubscript:v4];
+      monitoredBundleIDs5 = [(WCDSystemMonitor *)self monitoredBundleIDs];
+      v15 = [monitoredBundleIDs5 objectForKeyedSubscript:dCopy];
       v16 = 138543618;
-      v17 = v4;
+      v17 = dCopy;
       v18 = 2048;
-      v19 = [v15 integerValue];
+      integerValue = [v15 integerValue];
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@, numMonitored: %ld", &v16, 0x16u);
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(monitoredBundleIDs);
   }
 
   else
   {
-    v5 = wc_log();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    monitoredBundleIDs = wc_log();
+    if (os_log_type_enabled(monitoredBundleIDs, OS_LOG_TYPE_ERROR))
     {
       sub_10002C35C();
     }
   }
 }
 
-- (void)stopMonitoringBundleID:(id)a3
+- (void)stopMonitoringBundleID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(WCDSystemMonitor *)self monitoredBundleIDs];
-    objc_sync_enter(v5);
-    v6 = [(WCDSystemMonitor *)self monitoredBundleIDs];
-    v7 = [v6 objectForKeyedSubscript:v4];
-    v8 = [v7 integerValue];
+    monitoredBundleIDs = [(WCDSystemMonitor *)self monitoredBundleIDs];
+    objc_sync_enter(monitoredBundleIDs);
+    monitoredBundleIDs2 = [(WCDSystemMonitor *)self monitoredBundleIDs];
+    v7 = [monitoredBundleIDs2 objectForKeyedSubscript:dCopy];
+    integerValue = [v7 integerValue];
 
-    if (v8 >= 1)
+    if (integerValue >= 1)
     {
-      v9 = [(WCDSystemMonitor *)self monitoredBundleIDs];
-      v10 = [v9 objectForKeyedSubscript:v4];
-      v11 = [v10 integerValue];
+      monitoredBundleIDs3 = [(WCDSystemMonitor *)self monitoredBundleIDs];
+      v10 = [monitoredBundleIDs3 objectForKeyedSubscript:dCopy];
+      integerValue2 = [v10 integerValue];
 
       v12 = wc_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v19 = 138543618;
-        v20 = v4;
+        v20 = dCopy;
         v21 = 2048;
-        v22 = v11 - 1;
+        v22 = integerValue2 - 1;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@, numMonitored: %ld", &v19, 0x16u);
       }
 
-      if (v11 == 1)
+      if (integerValue2 == 1)
       {
-        v15 = [(WCDSystemMonitor *)self monitoredBundleIDs];
-        [v15 removeObjectForKey:v4];
+        monitoredBundleIDs4 = [(WCDSystemMonitor *)self monitoredBundleIDs];
+        [monitoredBundleIDs4 removeObjectForKey:dCopy];
 
         monitor = self->_monitor;
-        v17 = [(WCDSystemMonitor *)self monitoredBundleIDs];
-        v18 = [v17 allKeys];
-        [(BKSApplicationStateMonitor *)monitor updateInterestedBundleIDs:v18];
+        monitoredBundleIDs5 = [(WCDSystemMonitor *)self monitoredBundleIDs];
+        allKeys = [monitoredBundleIDs5 allKeys];
+        [(BKSApplicationStateMonitor *)monitor updateInterestedBundleIDs:allKeys];
 
         v13 = wc_log();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           v19 = 138543362;
-          v20 = v4;
+          v20 = dCopy;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "removed %{public}@", &v19, 0xCu);
         }
       }
 
       else
       {
-        v13 = [NSNumber numberWithInteger:v11 - 1];
-        v14 = [(WCDSystemMonitor *)self monitoredBundleIDs];
-        [v14 setObject:v13 forKeyedSubscript:v4];
+        v13 = [NSNumber numberWithInteger:integerValue2 - 1];
+        monitoredBundleIDs6 = [(WCDSystemMonitor *)self monitoredBundleIDs];
+        [monitoredBundleIDs6 setObject:v13 forKeyedSubscript:dCopy];
       }
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(monitoredBundleIDs);
   }
 
   else
   {
-    v5 = wc_log();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    monitoredBundleIDs = wc_log();
+    if (os_log_type_enabled(monitoredBundleIDs, OS_LOG_TYPE_ERROR))
     {
       sub_10002C35C();
     }
   }
 }
 
-- (id)applicationStateStringForState:(unsigned int)a3
+- (id)applicationStateStringForState:(unsigned int)state
 {
-  if (a3 <= 3)
+  if (state <= 3)
   {
-    if (!a3)
+    if (!state)
     {
       return @"BKSApplicationStateUnknown";
     }
 
-    if (a3 != 1)
+    if (state != 1)
     {
-      if (a3 == 2)
+      if (state == 2)
       {
         return @"BKSApplicationStateBackgroundTaskSuspended";
       }
@@ -1264,11 +1264,11 @@ LABEL_17:
     return @"BKSApplicationStateTerminated";
   }
 
-  else if (a3 > 15)
+  else if (state > 15)
   {
-    if (a3 != 16)
+    if (state != 16)
     {
-      if (a3 == 32)
+      if (state == 32)
       {
         return @"BKSApplicationStateForegroundRunningObscured";
       }
@@ -1281,9 +1281,9 @@ LABEL_17:
 
   else
   {
-    if (a3 != 4)
+    if (state != 4)
     {
-      if (a3 == 8)
+      if (state == 8)
       {
         return @"BKSApplicationStateForegroundRunning";
       }
@@ -1295,27 +1295,27 @@ LABEL_17:
   }
 }
 
-- (void)handleWatchAppUIStatesChanged:(id)a3 error:(id)a4
+- (void)handleWatchAppUIStatesChanged:(id)changed error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  changedCopy = changed;
+  errorCopy = error;
+  if (errorCopy)
   {
     v8 = wc_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_10002C390(v7, v8);
+      sub_10002C390(errorCopy, v8);
     }
   }
 
   else
   {
-    v9 = self;
-    objc_sync_enter(v9);
-    v10 = [(WCDSystemMonitor *)v9 observers];
-    v11 = [v10 allObjects];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    observers = [(WCDSystemMonitor *)selfCopy observers];
+    allObjects = [observers allObjects];
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
     v12 = wc_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -1327,7 +1327,7 @@ LABEL_17:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = v11;
+    v8 = allObjects;
     v13 = [v8 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v13)
     {
@@ -1344,7 +1344,7 @@ LABEL_17:
           v16 = *(*(&v17 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            [v16 systemObserverWatchAppUIStatesChanged:{v6, v17}];
+            [v16 systemObserverWatchAppUIStatesChanged:{changedCopy, v17}];
           }
         }
 
@@ -1356,50 +1356,50 @@ LABEL_17:
   }
 }
 
-- (id)dataContainerURLForApplicationInfo:(id)a3
+- (id)dataContainerURLForApplicationInfo:(id)info
 {
-  v3 = [a3 companionAppBundleIdentifier];
-  v4 = [LSApplicationProxy applicationProxyForIdentifier:v3];
+  companionAppBundleIdentifier = [info companionAppBundleIdentifier];
+  v4 = [LSApplicationProxy applicationProxyForIdentifier:companionAppBundleIdentifier];
 
-  v5 = [v4 dataContainerURL];
-  v6 = [v5 wc_URLWithLastPathComponentAsDirectory];
+  dataContainerURL = [v4 dataContainerURL];
+  wc_URLWithLastPathComponentAsDirectory = [dataContainerURL wc_URLWithLastPathComponentAsDirectory];
 
-  return v6;
+  return wc_URLWithLastPathComponentAsDirectory;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v6 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    [(NSHashTable *)v5->_observers addObject:v6];
-    objc_sync_exit(v5);
+    v6 = observerCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSHashTable *)selfCopy->_observers addObject:v6];
+    objc_sync_exit(selfCopy);
 
-    v4 = v6;
+    observerCopy = v6;
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v6 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    [(NSHashTable *)v5->_observers removeObject:v6];
-    objc_sync_exit(v5);
+    v6 = observerCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSHashTable *)selfCopy->_observers removeObject:v6];
+    objc_sync_exit(selfCopy);
 
-    v4 = v6;
+    observerCopy = v6;
   }
 }
 
-- (id)notifyObserversQueued:(SEL)a3 completion:(id)a4
+- (id)notifyObserversQueued:(SEL)queued completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = objc_opt_new();
   objc_initWeak(&location, v7);
   v12[0] = _NSConcreteStackBlock;
@@ -1408,15 +1408,15 @@ LABEL_17:
   v12[3] = &unk_100049348;
   objc_copyWeak(v14, &location);
   v12[4] = self;
-  v14[1] = a3;
-  v8 = v6;
+  v14[1] = queued;
+  v8 = completionCopy;
   v13 = v8;
   [v7 addExecutionBlock:v12];
-  v9 = NSStringFromSelector(a3);
+  v9 = NSStringFromSelector(queued);
   [v7 setName:v9];
 
-  v10 = [(WCDSystemMonitor *)self notifyOperationQueue];
-  [v10 addOperation:v7];
+  notifyOperationQueue = [(WCDSystemMonitor *)self notifyOperationQueue];
+  [notifyOperationQueue addOperation:v7];
 
   objc_destroyWeak(v14);
   objc_destroyWeak(&location);
@@ -1424,20 +1424,20 @@ LABEL_17:
   return v7;
 }
 
-- (void)notifyObservers:(SEL)a3
+- (void)notifyObservers:(SEL)observers
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(WCDSystemMonitor *)v4 observers];
-  v6 = [v5 allObjects];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  observers = [(WCDSystemMonitor *)selfCopy observers];
+  allObjects = [observers allObjects];
 
-  objc_sync_exit(v4);
-  v7 = NSStringFromSelector(a3);
+  objc_sync_exit(selfCopy);
+  v7 = NSStringFromSelector(observers);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = v6;
+  v8 = allObjects;
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v9)
   {
@@ -1464,7 +1464,7 @@ LABEL_17:
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ of %{public}@", buf, 0x16u);
           }
 
-          ([v12 methodForSelector:a3])(v12, a3);
+          ([v12 methodForSelector:observers])(v12, observers);
         }
       }
 
@@ -1477,9 +1477,9 @@ LABEL_17:
 
 - (void)copyVoucher
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_appChangedVoucher)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_appChangedVoucher)
   {
     v3 = wc_log();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1489,18 +1489,18 @@ LABEL_17:
     }
 
     v4 = voucher_copy();
-    appChangedVoucher = v2->_appChangedVoucher;
-    v2->_appChangedVoucher = v4;
+    appChangedVoucher = selfCopy->_appChangedVoucher;
+    selfCopy->_appChangedVoucher = v4;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)releaseVoucher
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_notifyingOfInstalledAppsChange && v2->_appChangedVoucher)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_notifyingOfInstalledAppsChange && selfCopy->_appChangedVoucher)
   {
     v3 = wc_log();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1509,25 +1509,25 @@ LABEL_17:
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Releasing voucher", v5, 2u);
     }
 
-    appChangedVoucher = v2->_appChangedVoucher;
-    v2->_appChangedVoucher = 0;
+    appChangedVoucher = selfCopy->_appChangedVoucher;
+    selfCopy->_appChangedVoucher = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)pairingIDForBTUUID:(id)a3
+- (id)pairingIDForBTUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[NRPairedDeviceRegistry sharedInstance];
-  v5 = [v3 UUIDString];
+  uUIDString = [dCopy UUIDString];
 
-  v6 = [v4 deviceForBTDeviceID:v5];
+  v6 = [v4 deviceForBTDeviceID:uUIDString];
 
   v7 = [v6 valueForProperty:NRDevicePropertyPairingID];
-  v8 = [v7 UUIDString];
+  uUIDString2 = [v7 UUIDString];
 
-  return v8;
+  return uUIDString2;
 }
 
 - (void)createDuetComplications
@@ -1570,13 +1570,13 @@ LABEL_17:
   return duetComplications;
 }
 
-- (void)saveInstalledWatchApps:(id)a3
+- (void)saveInstalledWatchApps:(id)apps
 {
-  if (a3)
+  if (apps)
   {
-    v5 = [a3 allObjects];
+    allObjects = [apps allObjects];
     v3 = +[NSUserDefaults standardUserDefaults];
-    [v3 setObject:v5 forKey:@"WCDStoredInstalledWatchApps"];
+    [v3 setObject:allObjects forKey:@"WCDStoredInstalledWatchApps"];
 
     v4 = +[NSUserDefaults standardUserDefaults];
     [v4 synchronize];

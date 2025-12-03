@@ -1,23 +1,23 @@
 @interface ICTTUndoManager_135534566
 - (BOOL)_shouldIgnoreUndoRedoBecauseWritingToolsIsActiveWithOpenGroup;
 - (ICTTTextStorage)textStorage;
-- (ICTTUndoManager_135534566)initWithTextStorage:(id)a3;
+- (ICTTUndoManager_135534566)initWithTextStorage:(id)storage;
 - (void)redo;
 - (void)undo;
 @end
 
 @implementation ICTTUndoManager_135534566
 
-- (ICTTUndoManager_135534566)initWithTextStorage:(id)a3
+- (ICTTUndoManager_135534566)initWithTextStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   v8.receiver = self;
   v8.super_class = ICTTUndoManager_135534566;
   v5 = [(ICTTUndoManager_135534566 *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_textStorage, v4);
+    objc_storeWeak(&v5->_textStorage, storageCopy);
   }
 
   return v6;
@@ -45,8 +45,8 @@
 
 - (BOOL)_shouldIgnoreUndoRedoBecauseWritingToolsIsActiveWithOpenGroup
 {
-  v3 = [(ICTTUndoManager_135534566 *)self textStorage];
-  if ([v3 isUndoCoalescingForWritingTools])
+  textStorage = [(ICTTUndoManager_135534566 *)self textStorage];
+  if ([textStorage isUndoCoalescingForWritingTools])
   {
     v4 = [(ICTTUndoManager_135534566 *)self groupingLevel]> 0;
   }

@@ -1,30 +1,30 @@
 @interface PLAWDBattery
 + (id)entryAggregateDefinitionAwdBattery;
 + (id)entryAggregateDefinitions;
-+ (id)getSharedObjWithOperator:(id)a3;
-- (BOOL)isDeviceCharging:(id)a3;
-- (BOOL)submitDataToAWDServer:(id)a3 withAwdConn:(id)a4;
-- (void)addEntryToBatteryTable:(id)a3 withValue:(double)a4;
++ (id)getSharedObjWithOperator:(id)operator;
+- (BOOL)isDeviceCharging:(id)charging;
+- (BOOL)submitDataToAWDServer:(id)server withAwdConn:(id)conn;
+- (void)addEntryToBatteryTable:(id)table withValue:(double)value;
 - (void)finalizeBatteryTable;
-- (void)handleBatteryCallback:(id)a3;
-- (void)handleDisplayCallback:(id)a3;
+- (void)handleBatteryCallback:(id)callback;
+- (void)handleDisplayCallback:(id)callback;
 - (void)initBatteryStats;
-- (void)processEnergyConsumedAndAddEntry:(double)a3 withVoltage:(double)a4;
+- (void)processEnergyConsumedAndAddEntry:(double)entry withVoltage:(double)voltage;
 - (void)reInitBatteryStats;
 - (void)resetBatteryTable;
-- (void)startMetricCollection:(id)a3;
-- (void)stopMetricCollection:(id)a3;
+- (void)startMetricCollection:(id)collection;
+- (void)stopMetricCollection:(id)collection;
 @end
 
 @implementation PLAWDBattery
 
-+ (id)getSharedObjWithOperator:(id)a3
++ (id)getSharedObjWithOperator:(id)operator
 {
   v3 = plAwdBattery;
   if (!plAwdBattery)
   {
-    v4 = a3;
-    v5 = [(PLAWDAuxMetrics *)[PLAWDBattery alloc] initWithOperator:v4];
+    operatorCopy = operator;
+    v5 = [(PLAWDAuxMetrics *)[PLAWDBattery alloc] initWithOperator:operatorCopy];
 
     v6 = plAwdBattery;
     plAwdBattery = v5;
@@ -39,8 +39,8 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"BatteryMetrics";
-  v2 = [a1 entryAggregateDefinitionAwdBattery];
-  v7[0] = v2;
+  entryAggregateDefinitionAwdBattery = [self entryAggregateDefinitionAwdBattery];
+  v7[0] = entryAggregateDefinitionAwdBattery;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -61,13 +61,13 @@
   v25[0] = v3;
   v24[1] = *MEMORY[0x277D3F540];
   v20[0] = @"BatteryMetricsKey";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
   v20[1] = @"BatteryMetricsValue";
-  v21[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_RealFormat_aggregateFunction_sum];
-  v21[1] = v7;
+  v21[0] = commonTypeDict_StringFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat_aggregateFunction_sum = [mEMORY[0x277D3F198]2 commonTypeDict_RealFormat_aggregateFunction_sum];
+  v21[1] = commonTypeDict_RealFormat_aggregateFunction_sum;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
   v25[1] = v8;
   v24[2] = *MEMORY[0x277D3F478];
@@ -89,32 +89,32 @@
   return v12;
 }
 
-- (void)startMetricCollection:(id)a3
+- (void)startMetricCollection:(id)collection
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PLAWDAuxMetrics *)self runningMetrics];
-  [v5 addObject:v4];
+  collectionCopy = collection;
+  runningMetrics = [(PLAWDAuxMetrics *)self runningMetrics];
+  [runningMetrics addObject:collectionCopy];
 
-  if ([v4 longValue] == 2031623)
+  if ([collectionCopy longValue] == 2031623)
   {
     [(PLAWDBattery *)self initBatteryStats];
-    v6 = [MEMORY[0x277D3F688] entryKeyForType:*MEMORY[0x277D3F5C8] andName:*MEMORY[0x277D3F750]];
+    collectionCopy = [MEMORY[0x277D3F688] entryKeyForType:*MEMORY[0x277D3F5C8] andName:*MEMORY[0x277D3F750]];
     v7 = objc_alloc(MEMORY[0x277D3F1A8]);
-    v8 = [(PLAWDAuxMetrics *)self operator];
+    operator = [(PLAWDAuxMetrics *)self operator];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __38__PLAWDBattery_startMetricCollection___block_invoke;
     v32[3] = &unk_279A58F10;
     v32[4] = self;
-    v9 = [v7 initWithOperator:v8 forEntryKey:v6 withBlock:v32];
+    v9 = [v7 initWithOperator:operator forEntryKey:collectionCopy withBlock:v32];
 
     [(PLAWDBattery *)self setBatteryEventCallback:v9];
     if ([MEMORY[0x277D3F6A0] shouldLogDisplay])
     {
       v10 = [MEMORY[0x277D3F6A0] entryKeyForType:*MEMORY[0x277D3F5E8] andName:*MEMORY[0x277D3F7B0]];
       v11 = objc_alloc(MEMORY[0x277D3F1A8]);
-      v12 = [(PLAWDAuxMetrics *)self operator];
+      operator2 = [(PLAWDAuxMetrics *)self operator];
       v33 = &unk_2870FEF80;
       v34 = @"Backlight";
       v35 = @"Block";
@@ -126,7 +126,7 @@
       v31[2] = __38__PLAWDBattery_startMetricCollection___block_invoke_53;
       v31[3] = &unk_279A58F10;
       v31[4] = self;
-      v15 = [v11 initWithOperator:v12 forEntryKey:v10 withFilter:v14 withBlock:v31];
+      v15 = [v11 initWithOperator:operator2 forEntryKey:v10 withFilter:v14 withBlock:v31];
 
       [(PLAWDBattery *)self setDisplayEventCallback:v15];
     }
@@ -149,9 +149,9 @@
         v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : Start Battery collection ", @"*******PLAWDMetricsService*******"];
         v18 = MEMORY[0x277D3F178];
         v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBattery.m"];
-        v20 = [v19 lastPathComponent];
+        lastPathComponent = [v19 lastPathComponent];
         v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBattery startMetricCollection:]"];
-        [v18 logMessage:v17 fromFile:v20 fromFunction:v21 fromLineNumber:104];
+        [v18 logMessage:v17 fromFile:lastPathComponent fromFunction:v21 fromLineNumber:104];
 
         v22 = PLLogCommon();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -181,12 +181,12 @@ LABEL_17:
 
     if (startMetricCollection__classDebugEnabled_66 == 1)
     {
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unsupported metric for battery class %@", v4];
+      collectionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Unsupported metric for battery class %@", collectionCopy];
       v24 = MEMORY[0x277D3F178];
       v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBattery.m"];
-      v26 = [v25 lastPathComponent];
+      lastPathComponent2 = [v25 lastPathComponent];
       v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBattery startMetricCollection:]"];
-      [v24 logMessage:v6 fromFile:v26 fromFunction:v27 fromLineNumber:108];
+      [v24 logMessage:collectionCopy fromFile:lastPathComponent2 fromFunction:v27 fromLineNumber:108];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -237,10 +237,10 @@ uint64_t __38__PLAWDBattery_startMetricCollection___block_invoke_67(uint64_t a1)
   return result;
 }
 
-- (void)stopMetricCollection:(id)a3
+- (void)stopMetricCollection:(id)collection
 {
-  v4 = a3;
-  if ([v4 longValue] == 2031623)
+  collectionCopy = collection;
+  if ([collectionCopy longValue] == 2031623)
   {
     [(PLAWDBattery *)self setBatteryEventCallback:0];
     [(PLAWDBattery *)self setDisplayEventCallback:0];
@@ -262,9 +262,9 @@ uint64_t __38__PLAWDBattery_startMetricCollection___block_invoke_67(uint64_t a1)
         v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : Stop Battery collection ", @"*******PLAWDMetricsService*******", block, v17, v18, v19, v20];
         v7 = MEMORY[0x277D3F178];
         v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBattery.m"];
-        v9 = [v8 lastPathComponent];
+        lastPathComponent = [v8 lastPathComponent];
         v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBattery stopMetricCollection:]"];
-        [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:119];
+        [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:119];
 
         v11 = PLLogCommon();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -275,11 +275,11 @@ uint64_t __38__PLAWDBattery_startMetricCollection___block_invoke_67(uint64_t a1)
     }
   }
 
-  v12 = [(PLAWDAuxMetrics *)self runningMetrics];
-  [v12 removeObject:v4];
+  runningMetrics = [(PLAWDAuxMetrics *)self runningMetrics];
+  [runningMetrics removeObject:collectionCopy];
 
-  v13 = [(PLAWDAuxMetrics *)self runningMetrics];
-  v14 = [v13 count];
+  runningMetrics2 = [(PLAWDAuxMetrics *)self runningMetrics];
+  v14 = [runningMetrics2 count];
 
   if (!v14)
   {
@@ -306,12 +306,12 @@ uint64_t __37__PLAWDBattery_stopMetricCollection___block_invoke(uint64_t a1)
   [(PLAWDBattery *)self setPrevDeviceCharging:0];
   [(PLAWDBattery *)self resetBatteryTable];
   v3 = [MEMORY[0x277D3F688] entryKeyForType:*MEMORY[0x277D3F5C8] andName:*MEMORY[0x277D3F750]];
-  v4 = [(PLAWDAuxMetrics *)self operator];
-  v5 = [v4 storage];
-  v6 = [v5 lastEntryForKey:v3];
+  operator = [(PLAWDAuxMetrics *)self operator];
+  storage = [operator storage];
+  v6 = [storage lastEntryForKey:v3];
 
-  v7 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [v7 timeIntervalSince1970];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [monotonicDate timeIntervalSince1970];
   [(PLAWDBattery *)self setPrevDispTimeStamp:?];
   if (v6)
   {
@@ -328,9 +328,9 @@ uint64_t __37__PLAWDBattery_stopMetricCollection___block_invoke(uint64_t a1)
   if ([MEMORY[0x277D3F6A0] shouldLogDisplay] && !-[PLAWDBattery prevDeviceCharging](self, "prevDeviceCharging"))
   {
     v10 = [MEMORY[0x277D3F6A0] entryKeyForType:*MEMORY[0x277D3F5E8] andName:*MEMORY[0x277D3F7B0]];
-    v11 = [(PLAWDAuxMetrics *)self operator];
-    v12 = [v11 storage];
-    v13 = [v12 lastEntryForKey:v10 withFilters:&unk_2870FF2C8];
+    operator2 = [(PLAWDAuxMetrics *)self operator];
+    storage2 = [operator2 storage];
+    v13 = [storage2 lastEntryForKey:v10 withFilters:&unk_2870FF2C8];
 
     if (v13)
     {
@@ -357,16 +357,16 @@ uint64_t __37__PLAWDBattery_stopMetricCollection___block_invoke(uint64_t a1)
       v16 = MEMORY[0x277CCACA8];
       [(PLAWDBattery *)self prevVoltage];
       v18 = v17;
-      v19 = [(PLAWDBattery *)self prevDeviceCharging];
+      prevDeviceCharging = [(PLAWDBattery *)self prevDeviceCharging];
       [(PLAWDBattery *)self prevCapacity];
       v21 = v20;
-      v22 = [(PLAWDBattery *)self prevDisplayON];
-      v23 = [v16 stringWithFormat:@"%@ : Initialize Battery metrics: prevVoltage=%f prevIsCharging=%d prevCapacity=%f prevDisplayOn=%d", @"*******PLAWDMetricsService*******", v18, v19, v21, v22, block, v30, v31, v32, v33];
+      prevDisplayON = [(PLAWDBattery *)self prevDisplayON];
+      v23 = [v16 stringWithFormat:@"%@ : Initialize Battery metrics: prevVoltage=%f prevIsCharging=%d prevCapacity=%f prevDisplayOn=%d", @"*******PLAWDMetricsService*******", v18, prevDeviceCharging, v21, prevDisplayON, block, v30, v31, v32, v33];
       v24 = MEMORY[0x277D3F178];
       v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBattery.m"];
-      v26 = [v25 lastPathComponent];
+      lastPathComponent = [v25 lastPathComponent];
       v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBattery initBatteryStats]"];
-      [v24 logMessage:v23 fromFile:v26 fromFunction:v27 fromLineNumber:166];
+      [v24 logMessage:v23 fromFile:lastPathComponent fromFunction:v27 fromLineNumber:166];
 
       v28 = PLLogCommon();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -388,8 +388,8 @@ uint64_t __32__PLAWDBattery_initBatteryStats__block_invoke(uint64_t a1)
 {
   [(PLAWDBattery *)self resetBatteryTable];
   [(PLAWDBattery *)self setDispOnOffCnt:0];
-  v3 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [v3 timeIntervalSince1970];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [monotonicDate timeIntervalSince1970];
   [(PLAWDBattery *)self setPrevDispTimeStamp:?];
 
   if ([MEMORY[0x277D3F180] debugEnabled])
@@ -410,16 +410,16 @@ uint64_t __32__PLAWDBattery_initBatteryStats__block_invoke(uint64_t a1)
       v5 = MEMORY[0x277CCACA8];
       [(PLAWDBattery *)self prevVoltage];
       v7 = v6;
-      v8 = [(PLAWDBattery *)self prevDeviceCharging];
+      prevDeviceCharging = [(PLAWDBattery *)self prevDeviceCharging];
       [(PLAWDBattery *)self prevCapacity];
       v10 = v9;
-      v11 = [(PLAWDBattery *)self prevDisplayON];
-      v12 = [v5 stringWithFormat:@"%@ : Re-Init Battery metrics: prevVoltage=%f prevIsCharging=%d prevCapacity=%f prevDisplayOn=%d", @"*******PLAWDMetricsService*******", v7, v8, v10, v11, block, v19, v20, v21, v22];
+      prevDisplayON = [(PLAWDBattery *)self prevDisplayON];
+      v12 = [v5 stringWithFormat:@"%@ : Re-Init Battery metrics: prevVoltage=%f prevIsCharging=%d prevCapacity=%f prevDisplayOn=%d", @"*******PLAWDMetricsService*******", v7, prevDeviceCharging, v10, prevDisplayON, block, v19, v20, v21, v22];
       v13 = MEMORY[0x277D3F178];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBattery.m"];
-      v15 = [v14 lastPathComponent];
+      lastPathComponent = [v14 lastPathComponent];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBattery reInitBatteryStats]"];
-      [v13 logMessage:v12 fromFile:v15 fromFunction:v16 fromLineNumber:178];
+      [v13 logMessage:v12 fromFile:lastPathComponent fromFunction:v16 fromLineNumber:178];
 
       v17 = PLLogCommon();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -437,25 +437,25 @@ uint64_t __34__PLAWDBattery_reInitBatteryStats__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)isDeviceCharging:(id)a3
+- (BOOL)isDeviceCharging:(id)charging
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"AdapterInfo"];
-  v6 = [v5 BOOLValue];
+  chargingCopy = charging;
+  v5 = [chargingCopy objectForKeyedSubscript:@"AdapterInfo"];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [v4 entryDate];
+  entryDate = [chargingCopy entryDate];
 
-  if (v6)
+  if (bOOLValue)
   {
-    [(PLAWDAuxMetrics *)&v10 handleChargerChangeWithState:1 withDate:v7, v9.receiver, v9.super_class, self, PLAWDBattery];
+    [(PLAWDAuxMetrics *)&v10 handleChargerChangeWithState:1 withDate:entryDate, v9.receiver, v9.super_class, self, PLAWDBattery];
   }
 
   else
   {
-    [(PLAWDAuxMetrics *)&v9 handleChargerChangeWithState:0 withDate:v7, self, PLAWDBattery, v10.receiver, v10.super_class];
+    [(PLAWDAuxMetrics *)&v9 handleChargerChangeWithState:0 withDate:entryDate, self, PLAWDBattery, v10.receiver, v10.super_class];
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 - (void)resetBatteryTable
@@ -466,34 +466,34 @@ uint64_t __34__PLAWDBattery_reInitBatteryStats__block_invoke(uint64_t a1)
   [(PLAWDAuxMetrics *)&v4 resetTableWithEntryKey:v3];
 }
 
-- (void)addEntryToBatteryTable:(id)a3 withValue:(double)a4
+- (void)addEntryToBatteryTable:(id)table withValue:(double)value
 {
   v6 = *MEMORY[0x277D3F5B8];
-  v7 = a3;
+  tableCopy = table;
   v11 = [(PLOperator *)PLAWDMetricsService entryKeyForType:v6 andName:@"BatteryMetrics"];
   v8 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v11];
-  [v8 setObject:v7 forKeyedSubscript:@"BatteryMetricsKey"];
+  [v8 setObject:tableCopy forKeyedSubscript:@"BatteryMetricsKey"];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v9 = [MEMORY[0x277CCABB0] numberWithDouble:value];
   [v8 setObject:v9 forKeyedSubscript:@"BatteryMetricsValue"];
 
-  v10 = [(PLAWDAuxMetrics *)self operator];
-  [v10 logEntry:v8];
+  operator = [(PLAWDAuxMetrics *)self operator];
+  [operator logEntry:v8];
 }
 
-- (void)processEnergyConsumedAndAddEntry:(double)a3 withVoltage:(double)a4
+- (void)processEnergyConsumedAndAddEntry:(double)entry withVoltage:(double)voltage
 {
-  v7 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [v7 timeIntervalSince1970];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [monotonicDate timeIntervalSince1970];
   v9 = v8;
 
   [(PLAWDBattery *)self prevDispTimeStamp];
   v11 = v9 - v10;
   if ([(PLAWDBattery *)self prevDisplayON]&& ![(PLAWDBattery *)self dispOnOffCnt])
   {
-    if (a3 > 0.0)
+    if (entry > 0.0)
     {
-      [(PLAWDBattery *)self addEntryToBatteryTable:@"DrainDisplayOn" withValue:a3 * a4];
+      [(PLAWDBattery *)self addEntryToBatteryTable:@"DrainDisplayOn" withValue:entry * voltage];
     }
 
     [(PLAWDBattery *)self addEntryToBatteryTable:@"DurationDispOn" withValue:v11];
@@ -515,9 +515,9 @@ uint64_t __34__PLAWDBattery_reInitBatteryStats__block_invoke(uint64_t a1)
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ Battery Event: EnergyConsumed: DurationDispOn =%f", @"*******PLAWDMetricsService*******", *&v11];
         v25 = MEMORY[0x277D3F178];
         v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBattery.m"];
-        v27 = [v26 lastPathComponent];
+        lastPathComponent = [v26 lastPathComponent];
         v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBattery processEnergyConsumedAndAddEntry:withVoltage:]"];
-        [v25 logMessage:v13 fromFile:v27 fromFunction:v28 fromLineNumber:217];
+        [v25 logMessage:v13 fromFile:lastPathComponent fromFunction:v28 fromLineNumber:217];
 
         v18 = PLLogCommon();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -532,9 +532,9 @@ uint64_t __34__PLAWDBattery_reInitBatteryStats__block_invoke(uint64_t a1)
 
   else if ([(PLAWDBattery *)self prevDisplayON]|| [(PLAWDBattery *)self dispOnOffCnt])
   {
-    if (a3 > 0.0)
+    if (entry > 0.0)
     {
-      [(PLAWDBattery *)self addEntryToBatteryTable:@"DrainPartialDisplayOn" withValue:a3 * a4];
+      [(PLAWDBattery *)self addEntryToBatteryTable:@"DrainPartialDisplayOn" withValue:entry * voltage];
     }
 
     if ([(PLAWDBattery *)self prevDisplayON])
@@ -558,9 +558,9 @@ uint64_t __34__PLAWDBattery_reInitBatteryStats__block_invoke(uint64_t a1)
           v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ Battery Event: EnergyConsumed: DurationPartialDispOn =%f", @"*******PLAWDMetricsService*******", *&v11];
           v14 = MEMORY[0x277D3F178];
           v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBattery.m"];
-          v16 = [v15 lastPathComponent];
+          lastPathComponent2 = [v15 lastPathComponent];
           v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBattery processEnergyConsumedAndAddEntry:withVoltage:]"];
-          [v14 logMessage:v13 fromFile:v16 fromFunction:v17 fromLineNumber:227];
+          [v14 logMessage:v13 fromFile:lastPathComponent2 fromFunction:v17 fromLineNumber:227];
 
           v18 = PLLogCommon();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -594,9 +594,9 @@ LABEL_28:
           v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ Battery Event: EnergyConsumed: DurationPartialDispOff =%f", @"*******PLAWDMetricsService*******", *&v11];
           v20 = MEMORY[0x277D3F178];
           v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBattery.m"];
-          v22 = [v21 lastPathComponent];
+          lastPathComponent3 = [v21 lastPathComponent];
           v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBattery processEnergyConsumedAndAddEntry:withVoltage:]"];
-          [v20 logMessage:v13 fromFile:v22 fromFunction:v23 fromLineNumber:231];
+          [v20 logMessage:v13 fromFile:lastPathComponent3 fromFunction:v23 fromLineNumber:231];
 
           v18 = PLLogCommon();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -610,9 +610,9 @@ LABEL_28:
     }
   }
 
-  else if (a3 > 0.0)
+  else if (entry > 0.0)
   {
-    [(PLAWDBattery *)self addEntryToBatteryTable:@"DrainDisplayOff" withValue:a3 * a4];
+    [(PLAWDBattery *)self addEntryToBatteryTable:@"DrainDisplayOff" withValue:entry * voltage];
   }
 
   if ([MEMORY[0x277D3F180] debugEnabled])
@@ -631,14 +631,14 @@ LABEL_28:
     if (processEnergyConsumedAndAddEntry_withVoltage__classDebugEnabled_117 == 1)
     {
       v30 = MEMORY[0x277CCACA8];
-      v31 = [(PLAWDBattery *)self prevDisplayON];
-      v32 = [(PLAWDBattery *)self dispOnOffCnt];
-      v33 = [v30 stringWithFormat:@"%@ Battery Event: EnergyConsumed=%f Display On=%d dispOnOffCnt=%lu ", @"*******PLAWDMetricsService*******", a3 * a4, v31, v32, block, v40, v41, v42, v43];
+      prevDisplayON = [(PLAWDBattery *)self prevDisplayON];
+      dispOnOffCnt = [(PLAWDBattery *)self dispOnOffCnt];
+      v33 = [v30 stringWithFormat:@"%@ Battery Event: EnergyConsumed=%f Display On=%d dispOnOffCnt=%lu ", @"*******PLAWDMetricsService*******", entry * voltage, prevDisplayON, dispOnOffCnt, block, v40, v41, v42, v43];
       v34 = MEMORY[0x277D3F178];
       v35 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBattery.m"];
-      v36 = [v35 lastPathComponent];
+      lastPathComponent4 = [v35 lastPathComponent];
       v37 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBattery processEnergyConsumedAndAddEntry:withVoltage:]"];
-      [v34 logMessage:v33 fromFile:v36 fromFunction:v37 fromLineNumber:234];
+      [v34 logMessage:v33 fromFile:lastPathComponent4 fromFunction:v37 fromLineNumber:234];
 
       v38 = PLLogCommon();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
@@ -680,9 +680,9 @@ uint64_t __61__PLAWDBattery_processEnergyConsumedAndAddEntry_withVoltage___block
   return result;
 }
 
-- (void)handleBatteryCallback:(id)a3
+- (void)handleBatteryCallback:(id)callback
 {
-  v4 = [a3 objectForKey:@"entry"];
+  v4 = [callback objectForKey:@"entry"];
   v5 = v4;
   if (v4)
   {
@@ -711,16 +711,16 @@ LABEL_18:
 
     v18 = vabdd_f64(v8, v14);
     v19 = (v11 + v16) / 2000.0;
-    v20 = [(PLAWDBattery *)self prevDeviceCharging];
+    prevDeviceCharging = [(PLAWDBattery *)self prevDeviceCharging];
     if (v12)
     {
-      if (!v20)
+      if (!prevDeviceCharging)
       {
         goto LABEL_5;
       }
     }
 
-    else if (!v20)
+    else if (!prevDeviceCharging)
     {
 LABEL_5:
       if (![(PLAWDBattery *)self prevDeviceCharging])
@@ -755,9 +755,9 @@ LABEL_5:
           v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : Battery Event: energyCharged=%f", @"*******PLAWDMetricsService*******", *&v22];
           v25 = MEMORY[0x277D3F178];
           v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBattery.m"];
-          v27 = [v26 lastPathComponent];
+          lastPathComponent = [v26 lastPathComponent];
           v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBattery handleBatteryCallback:]"];
-          [v25 logMessage:v24 fromFile:v27 fromFunction:v28 fromLineNumber:268];
+          [v25 logMessage:v24 fromFile:lastPathComponent fromFunction:v28 fromLineNumber:268];
 
           v29 = PLLogCommon();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
@@ -771,8 +771,8 @@ LABEL_5:
     if (!v12)
     {
       [(PLAWDBattery *)self setDispOnOffCnt:0, v21];
-      v30 = [MEMORY[0x277CBEAA8] monotonicDate];
-      [v30 timeIntervalSince1970];
+      monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+      [monotonicDate timeIntervalSince1970];
       [(PLAWDBattery *)self setPrevDispTimeStamp:?];
     }
 
@@ -789,27 +789,27 @@ uint64_t __38__PLAWDBattery_handleBatteryCallback___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)handleDisplayCallback:(id)a3
+- (void)handleDisplayCallback:(id)callback
 {
-  v4 = [a3 objectForKey:@"entry"];
+  v4 = [callback objectForKey:@"entry"];
   if (!v4)
   {
     goto LABEL_11;
   }
 
-  v5 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [v5 timeIntervalSince1970];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [monotonicDate timeIntervalSince1970];
   v7 = v6;
 
   v8 = [v4 objectForKeyedSubscript:@"Active"];
-  v9 = [v8 BOOLValue];
+  bOOLValue = [v8 BOOLValue];
 
   if (![(PLAWDBattery *)self prevDeviceCharging])
   {
-    v17 = [(PLAWDBattery *)self prevDisplayON];
-    if (v9)
+    prevDisplayON = [(PLAWDBattery *)self prevDisplayON];
+    if (bOOLValue)
     {
-      if (v17)
+      if (prevDisplayON)
       {
         goto LABEL_3;
       }
@@ -843,9 +843,9 @@ uint64_t __38__PLAWDBattery_handleBatteryCallback___block_invoke(uint64_t a1)
       v22 = [v20 stringWithFormat:@"%@ :DurationPartialDispOff =%f", @"*******PLAWDMetricsService*******", v7 - v21];
       v23 = MEMORY[0x277D3F178];
       v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBattery.m"];
-      v25 = [v24 lastPathComponent];
+      lastPathComponent = [v24 lastPathComponent];
       v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBattery handleDisplayCallback:]"];
-      [v23 logMessage:v22 fromFile:v25 fromFunction:v26 fromLineNumber:301];
+      [v23 logMessage:v22 fromFile:lastPathComponent fromFunction:v26 fromLineNumber:301];
 
       v27 = PLLogCommon();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -856,7 +856,7 @@ uint64_t __38__PLAWDBattery_handleBatteryCallback___block_invoke(uint64_t a1)
 
     else
     {
-      if (!v17)
+      if (!prevDisplayON)
       {
         goto LABEL_3;
       }
@@ -890,9 +890,9 @@ uint64_t __38__PLAWDBattery_handleBatteryCallback___block_invoke(uint64_t a1)
       v22 = [v30 stringWithFormat:@"%@ :DurationPartialDispOn =%f", @"*******PLAWDMetricsService*******", v7 - v31];
       v32 = MEMORY[0x277D3F178];
       v33 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBattery.m"];
-      v34 = [v33 lastPathComponent];
+      lastPathComponent2 = [v33 lastPathComponent];
       v35 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBattery handleDisplayCallback:]"];
-      [v32 logMessage:v22 fromFile:v34 fromFunction:v35 fromLineNumber:306];
+      [v32 logMessage:v22 fromFile:lastPathComponent2 fromFunction:v35 fromLineNumber:306];
 
       v27 = PLLogCommon();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -918,12 +918,12 @@ LABEL_3:
 
     if (handleDisplayCallback__classDebugEnabled_138 == 1)
     {
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ AWD-Battery:DisplayEvent: currDisplayOn=%d self.prevDisplayON=%d dispOnOffCnt=%lu", @"*******PLAWDMetricsService*******", v9, -[PLAWDBattery prevDisplayON](self, "prevDisplayON"), -[PLAWDBattery dispOnOffCnt](self, "dispOnOffCnt")];
+      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ AWD-Battery:DisplayEvent: currDisplayOn=%d self.prevDisplayON=%d dispOnOffCnt=%lu", @"*******PLAWDMetricsService*******", bOOLValue, -[PLAWDBattery prevDisplayON](self, "prevDisplayON"), -[PLAWDBattery dispOnOffCnt](self, "dispOnOffCnt")];
       v12 = MEMORY[0x277D3F178];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBattery.m"];
-      v14 = [v13 lastPathComponent];
+      lastPathComponent3 = [v13 lastPathComponent];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBattery handleDisplayCallback:]"];
-      [v12 logMessage:v11 fromFile:v14 fromFunction:v15 fromLineNumber:310];
+      [v12 logMessage:v11 fromFile:lastPathComponent3 fromFunction:v15 fromLineNumber:310];
 
       v16 = PLLogCommon();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -933,7 +933,7 @@ LABEL_3:
     }
   }
 
-  [(PLAWDBattery *)self setPrevDisplayON:v9];
+  [(PLAWDBattery *)self setPrevDisplayON:bOOLValue];
   [(PLAWDBattery *)self setPrevDispTimeStamp:v7];
 LABEL_11:
 }
@@ -961,8 +961,8 @@ uint64_t __38__PLAWDBattery_handleDisplayCallback___block_invoke_139(uint64_t a1
 
 - (void)finalizeBatteryTable
 {
-  v3 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [v3 timeIntervalSince1970];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [monotonicDate timeIntervalSince1970];
   v5 = v4;
 
   [(PLAWDBattery *)self prevDispTimeStamp];
@@ -973,11 +973,11 @@ uint64_t __38__PLAWDBattery_handleDisplayCallback___block_invoke_139(uint64_t a1
   }
 
   v15 = v5 - v7;
-  v16 = [(PLAWDBattery *)self prevDisplayON];
-  v17 = [(PLAWDBattery *)self dispOnOffCnt];
-  if (v16)
+  prevDisplayON = [(PLAWDBattery *)self prevDisplayON];
+  dispOnOffCnt = [(PLAWDBattery *)self dispOnOffCnt];
+  if (prevDisplayON)
   {
-    if (v17)
+    if (dispOnOffCnt)
     {
       if ([(PLAWDBattery *)self dispOnOffCnt]>= 1)
       {
@@ -1000,9 +1000,9 @@ uint64_t __38__PLAWDBattery_handleDisplayCallback___block_invoke_139(uint64_t a1
             v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : Finalize Battery table :DurationPartialDispOn =%f", @"*******PLAWDMetricsService*******", *&v15];
             v20 = MEMORY[0x277D3F178];
             v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBattery.m"];
-            v22 = [v21 lastPathComponent];
+            lastPathComponent = [v21 lastPathComponent];
             v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBattery finalizeBatteryTable]"];
-            [v20 logMessage:v19 fromFile:v22 fromFunction:v23 fromLineNumber:331];
+            [v20 logMessage:v19 fromFile:lastPathComponent fromFunction:v23 fromLineNumber:331];
 
             v24 = PLLogCommon();
             if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -1037,9 +1037,9 @@ LABEL_32:
           v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : Finalize Battery table :DurationDispOn =%f", @"*******PLAWDMetricsService*******", *&v15];
           v31 = MEMORY[0x277D3F178];
           v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBattery.m"];
-          v33 = [v32 lastPathComponent];
+          lastPathComponent2 = [v32 lastPathComponent];
           v34 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBattery finalizeBatteryTable]"];
-          [v31 logMessage:v19 fromFile:v33 fromFunction:v34 fromLineNumber:327];
+          [v31 logMessage:v19 fromFile:lastPathComponent2 fromFunction:v34 fromLineNumber:327];
 
           v24 = PLLogCommon();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -1053,7 +1053,7 @@ LABEL_32:
     }
   }
 
-  else if (v17 >= 1)
+  else if (dispOnOffCnt >= 1)
   {
     [(PLAWDBattery *)self addEntryToBatteryTable:@"DurationPartialDispOff" withValue:v15];
     if ([MEMORY[0x277D3F180] debugEnabled])
@@ -1074,9 +1074,9 @@ LABEL_32:
         v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : Finalize Battery table :DurationPartialDispOff =%f", @"*******PLAWDMetricsService*******", *&v15];
         v26 = MEMORY[0x277D3F178];
         v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBattery.m"];
-        v28 = [v27 lastPathComponent];
+        lastPathComponent3 = [v27 lastPathComponent];
         v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBattery finalizeBatteryTable]"];
-        [v26 logMessage:v19 fromFile:v28 fromFunction:v29 fromLineNumber:337];
+        [v26 logMessage:v19 fromFile:lastPathComponent3 fromFunction:v29 fromLineNumber:337];
 
         v24 = PLLogCommon();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -1108,9 +1108,9 @@ LABEL_2:
       v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : Finalize Battery table", @"*******PLAWDMetricsService*******"];
       v10 = MEMORY[0x277D3F178];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBattery.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent4 = [v11 lastPathComponent];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBattery finalizeBatteryTable]"];
-      [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:342];
+      [v10 logMessage:v9 fromFile:lastPathComponent4 fromFunction:v13 fromLineNumber:342];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -1149,28 +1149,28 @@ uint64_t __36__PLAWDBattery_finalizeBatteryTable__block_invoke_160(uint64_t a1)
   return result;
 }
 
-- (BOOL)submitDataToAWDServer:(id)a3 withAwdConn:(id)a4
+- (BOOL)submitDataToAWDServer:(id)server withAwdConn:(id)conn
 {
   v71 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 newMetricContainerWithIdentifier:{objc_msgSend(v6, "unsignedIntValue")}];
+  serverCopy = server;
+  connCopy = conn;
+  v8 = [connCopy newMetricContainerWithIdentifier:{objc_msgSend(serverCopy, "unsignedIntValue")}];
   v9 = [MEMORY[0x277CBEAA8] monotonicDateWithTimeIntervalSinceNow:-86400.0];
-  v10 = [MEMORY[0x277CBEAA8] monotonicDate];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
   [v9 timeIntervalSince1970];
   v12 = v11;
-  [v10 timeIntervalSince1970];
+  [monotonicDate timeIntervalSince1970];
   v14 = v13;
 
-  if ([v6 longValue] == 2031623)
+  if ([serverCopy longValue] == 2031623)
   {
     if (v8)
     {
       [(PLAWDBattery *)self finalizeBatteryTable];
       v15 = [(PLOperator *)PLAWDMetricsService entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"BatteryMetrics"];
-      v16 = [(PLAWDAuxMetrics *)self operator];
-      v17 = [v16 storage];
-      v18 = [v17 aggregateEntriesForKey:v15 withBucketLength:86400.0 inTimeIntervalRange:{v12, v14 - v12}];
+      operator = [(PLAWDAuxMetrics *)self operator];
+      storage = [operator storage];
+      v18 = [storage aggregateEntriesForKey:v15 withBucketLength:86400.0 inTimeIntervalRange:{v12, v14 - v12}];
 
       v19 = [MEMORY[0x277D3F190] summarizeAggregateEntries:v18];
       v20 = objc_opt_new();
@@ -1196,9 +1196,9 @@ uint64_t __36__PLAWDBattery_finalizeBatteryTable__block_invoke_160(uint64_t a1)
           v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : %@", @"*******PLAWDMetricsService*******", v19];
           v24 = MEMORY[0x277D3F178];
           v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBattery.m"];
-          v26 = [v25 lastPathComponent];
+          lastPathComponent = [v25 lastPathComponent];
           v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBattery submitDataToAWDServer:withAwdConn:]"];
-          [v24 logMessage:v23 fromFile:v26 fromFunction:v27 fromLineNumber:362];
+          [v24 logMessage:v23 fromFile:lastPathComponent fromFunction:v27 fromLineNumber:362];
 
           v28 = PLLogCommon();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -1218,8 +1218,8 @@ uint64_t __36__PLAWDBattery_finalizeBatteryTable__block_invoke_160(uint64_t a1)
         v59 = v18;
         v61 = v15;
         v63 = v8;
-        v56 = v7;
-        [v20 setTimestamp:{objc_msgSend(v7, "getAWDTimestamp")}];
+        v56 = connCopy;
+        [v20 setTimestamp:{objc_msgSend(connCopy, "getAWDTimestamp")}];
         [v20 setEnergyConsumedDisplayOnMicroWatt:0];
         [v20 setEnergyConsumedDisplayOffMicroWatt:0];
         [v20 setEnergyConsumedPartailDispOnMicrowatt:0];
@@ -1297,9 +1297,9 @@ uint64_t __36__PLAWDBattery_finalizeBatteryTable__block_invoke_160(uint64_t a1)
         }
 
         v39 = [MEMORY[0x277D3F688] entryKeyForType:*MEMORY[0x277D3F5C8] andName:*MEMORY[0x277D3F750]];
-        v40 = [(PLAWDAuxMetrics *)self operator];
-        v41 = [v40 storage];
-        v42 = [v41 lastEntryForKey:v39];
+        operator2 = [(PLAWDAuxMetrics *)self operator];
+        storage2 = [operator2 storage];
+        v42 = [storage2 lastEntryForKey:v39];
 
         if (v42)
         {
@@ -1331,9 +1331,9 @@ uint64_t __36__PLAWDBattery_finalizeBatteryTable__block_invoke_160(uint64_t a1)
             v47 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : Submit Battery stats: submit cnt=%ld", @"*******PLAWDMetricsService*******", -[PLAWDBattery batterySubmitCnt](self, "batterySubmitCnt")];
             v48 = MEMORY[0x277D3F178];
             v49 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBattery.m"];
-            v50 = [v49 lastPathComponent];
+            lastPathComponent2 = [v49 lastPathComponent];
             v51 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBattery submitDataToAWDServer:withAwdConn:]"];
-            [v48 logMessage:v47 fromFile:v50 fromFunction:v51 fromLineNumber:412];
+            [v48 logMessage:v47 fromFile:lastPathComponent2 fromFunction:v51 fromLineNumber:412];
 
             v52 = PLLogCommon();
             if (os_log_type_enabled(v52, OS_LOG_TYPE_DEBUG))
@@ -1348,14 +1348,14 @@ uint64_t __36__PLAWDBattery_finalizeBatteryTable__block_invoke_160(uint64_t a1)
 
         [v8 setMetric:v20];
 
-        v7 = v56;
+        connCopy = v56;
         v18 = v59;
         v15 = v61;
       }
     }
 
     [(PLAWDBattery *)self reInitBatteryStats];
-    v53 = [v7 submitMetric:v8];
+    v53 = [connCopy submitMetric:v8];
   }
 
   else

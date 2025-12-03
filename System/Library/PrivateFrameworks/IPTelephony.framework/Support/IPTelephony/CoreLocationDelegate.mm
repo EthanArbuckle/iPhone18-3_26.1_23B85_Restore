@@ -1,13 +1,13 @@
 @interface CoreLocationDelegate
-- (CoreLocationDelegate)initWithQueue:(id)a3;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (CoreLocationDelegate)initWithQueue:(id)queue;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 @end
 
 @implementation CoreLocationDelegate
 
-- (CoreLocationDelegate)initWithQueue:(id)a3
+- (CoreLocationDelegate)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = CoreLocationDelegate;
   v6 = [(CoreLocationDelegate *)&v11 init];
@@ -15,8 +15,8 @@
   if (v6)
   {
     atomic_store(0, &v6->_authStatus);
-    objc_storeStrong(&v6->_queue, a3);
-    v8 = [objc_alloc(MEMORY[0x1E695FBE8]) initWithEffectiveBundlePath:@"/System/Library/LocationBundles/WirelessDiagnostics.bundle" delegate:v7 onQueue:v5];
+    objc_storeStrong(&v6->_queue, queue);
+    v8 = [objc_alloc(MEMORY[0x1E695FBE8]) initWithEffectiveBundlePath:@"/System/Library/LocationBundles/WirelessDiagnostics.bundle" delegate:v7 onQueue:queueCopy];
     locationManager = v7->_locationManager;
     v7->_locationManager = v8;
   }
@@ -24,10 +24,10 @@
   return v7;
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
-  atomic_store([v4 authorizationStatus], &self->_authStatus);
+  authorizationCopy = authorization;
+  atomic_store([authorizationCopy authorizationStatus], &self->_authStatus);
   v12 = 7;
   strcpy(v11, "loc.del");
   v7[0] = 0;

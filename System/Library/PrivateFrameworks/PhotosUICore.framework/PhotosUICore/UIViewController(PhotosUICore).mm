@@ -15,15 +15,15 @@
 - (void)px_adjustAdditionalSafeAreaInsetsToKeepContentStableRegardlessOfStatusBarVisibility
 {
   v2 = +[PXWorkaroundSettings sharedInstance];
-  v3 = [v2 shouldWorkAround128269285];
+  shouldWorkAround128269285 = [v2 shouldWorkAround128269285];
 
-  if (v3)
+  if (shouldWorkAround128269285)
   {
-    v4 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v4 userInterfaceIdiom] == 1)
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom] == 1)
     {
-      v5 = [a1 presentingViewController];
-      v6 = v5 != 0;
+      presentingViewController = [self presentingViewController];
+      v6 = presentingViewController != 0;
     }
 
     else
@@ -35,7 +35,7 @@
     aBlock[1] = 3221225472;
     aBlock[2] = __117__UIViewController_PhotosUICore__px_adjustAdditionalSafeAreaInsetsToKeepContentStableRegardlessOfStatusBarVisibility__block_invoke;
     aBlock[3] = &unk_1E773AF88;
-    aBlock[4] = a1;
+    aBlock[4] = self;
     v7 = _Block_copy(aBlock);
     v8 = *(MEMORY[0x1E69DDCE0] + 8);
     v9 = *(MEMORY[0x1E69DDCE0] + 16);
@@ -43,30 +43,30 @@
     v11 = 0.0;
     if (v6)
     {
-      if ([a1 prefersStatusBarHidden])
+      if ([self prefersStatusBarHidden])
       {
         v11 = v7[2](v7);
       }
     }
 
-    [a1 setAdditionalSafeAreaInsets:{v11, v8, v9, v10}];
+    [self setAdditionalSafeAreaInsets:{v11, v8, v9, v10}];
   }
 }
 
 - (id)px_nextViewControllerInNavigationController
 {
-  v2 = [a1 navigationController];
-  v3 = [v2 viewControllers];
+  navigationController = [self navigationController];
+  viewControllers = [navigationController viewControllers];
 
-  v4 = [v3 indexOfObject:a1];
-  if (v4 == 0x7FFFFFFFFFFFFFFFLL || (v5 = v4 + 1, v4 + 1 >= [v3 count]))
+  v4 = [viewControllers indexOfObject:self];
+  if (v4 == 0x7FFFFFFFFFFFFFFFLL || (v5 = v4 + 1, v4 + 1 >= [viewControllers count]))
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [v3 objectAtIndexedSubscript:v5];
+    v6 = [viewControllers objectAtIndexedSubscript:v5];
   }
 
   return v6;
@@ -75,31 +75,31 @@
 - (BOOL)px_isDescendantOfOrPresentedByViewController:()PhotosUICore
 {
   v4 = a3;
-  v5 = a1;
-  v6 = v5;
-  v7 = v5 != 0;
-  if (v5 == v4 || !v5)
+  selfCopy = self;
+  v6 = selfCopy;
+  v7 = selfCopy != 0;
+  if (selfCopy == v4 || !selfCopy)
   {
-    v11 = v5;
+    v11 = selfCopy;
   }
 
   else
   {
     do
     {
-      v8 = [v6 parentViewController];
-      v9 = v8;
-      if (v8)
+      parentViewController = [v6 parentViewController];
+      v9 = parentViewController;
+      if (parentViewController)
       {
-        v10 = v8;
+        presentingViewController = parentViewController;
       }
 
       else
       {
-        v10 = [v6 presentingViewController];
+        presentingViewController = [v6 presentingViewController];
       }
 
-      v11 = v10;
+      v11 = presentingViewController;
 
       v7 = v11 != 0;
       if (v11 == v4)
@@ -121,12 +121,12 @@
   v4 = a3;
   if (v4)
   {
-    v5 = a1;
-    v6 = v5;
-    for (i = v5 != 0; v6 != v4 && v6; i = v6 != 0)
+    selfCopy = self;
+    parentViewController = selfCopy;
+    for (i = selfCopy != 0; parentViewController != v4 && parentViewController; i = parentViewController != 0)
     {
-      v8 = v6;
-      v6 = [v6 parentViewController];
+      v8 = parentViewController;
+      parentViewController = [parentViewController parentViewController];
     }
   }
 
@@ -140,20 +140,20 @@
 
 - (uint64_t)px_canPresentViewControllerAnimated:()PhotosUICore
 {
-  if (a3 && ![a1 px_isVisible])
+  if (a3 && ![self px_isVisible])
   {
     goto LABEL_8;
   }
 
-  v5 = [a1 presentedViewController];
-  v6 = v5;
-  if (!v5 || ([v5 isBeingDismissed] & 1) != 0 || (objc_msgSend(a1, "navigationItem"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "searchController"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v6 == v8))
+  presentedViewController = [self presentedViewController];
+  v6 = presentedViewController;
+  if (!presentedViewController || ([presentedViewController isBeingDismissed] & 1) != 0 || (objc_msgSend(self, "navigationItem"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "searchController"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v6 == v8))
   {
 
     goto LABEL_10;
   }
 
-  if (([a1 _mayForwardPresentationsToPresentedViewController] & 1) == 0)
+  if (([self _mayForwardPresentationsToPresentedViewController] & 1) == 0)
   {
     v10 = 0;
 LABEL_14:
@@ -166,12 +166,12 @@ LABEL_14:
   if (v9)
   {
 LABEL_10:
-    v11 = [a1 navigationController];
-    v6 = v11;
-    if (v11)
+    navigationController = [self navigationController];
+    v6 = navigationController;
+    if (navigationController)
     {
-      v12 = [v11 topViewController];
-      v10 = [a1 px_isDescendantOfViewController:v12];
+      topViewController = [navigationController topViewController];
+      v10 = [self px_isDescendantOfViewController:topViewController];
     }
 
     else
@@ -193,36 +193,36 @@ LABEL_8:
   v27 = a3;
   v3 = objc_alloc_init(PXStatusBarHiddenViewController);
   [(PXStatusBarHiddenViewController *)v3 addChildViewController:v27];
-  v4 = [v27 view];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(PXStatusBarHiddenViewController *)v3 view];
-  [v5 addSubview:v4];
+  view = [v27 view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  view2 = [(PXStatusBarHiddenViewController *)v3 view];
+  [view2 addSubview:view];
 
   v19 = MEMORY[0x1E696ACD8];
-  v25 = [v4 topAnchor];
-  v26 = [(PXStatusBarHiddenViewController *)v3 view];
-  v24 = [v26 topAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  topAnchor = [view topAnchor];
+  view3 = [(PXStatusBarHiddenViewController *)v3 view];
+  topAnchor2 = [view3 topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v29[0] = v23;
-  v21 = [v4 bottomAnchor];
-  v22 = [(PXStatusBarHiddenViewController *)v3 view];
-  v20 = [v22 bottomAnchor];
-  v18 = [v21 constraintEqualToAnchor:v20];
+  bottomAnchor = [view bottomAnchor];
+  view4 = [(PXStatusBarHiddenViewController *)v3 view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v29[1] = v18;
-  v17 = [v4 leadingAnchor];
-  v6 = [(PXStatusBarHiddenViewController *)v3 view];
-  v7 = [v6 leadingAnchor];
-  v8 = [v17 constraintEqualToAnchor:v7];
+  leadingAnchor = [view leadingAnchor];
+  view5 = [(PXStatusBarHiddenViewController *)v3 view];
+  leadingAnchor2 = [view5 leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v29[2] = v8;
-  v9 = [v4 trailingAnchor];
-  v10 = [(PXStatusBarHiddenViewController *)v3 view];
-  v11 = [v10 trailingAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  trailingAnchor = [view trailingAnchor];
+  view6 = [(PXStatusBarHiddenViewController *)v3 view];
+  trailingAnchor2 = [view6 trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v29[3] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:4];
   [v19 activateConstraints:v13];
 
-  [v27 didMoveToParentViewController:a1];
+  [v27 didMoveToParentViewController:self];
   v14 = [v27 contentScrollViewForEdge:1];
   v15 = [v27 contentScrollViewForEdge:4];
 
@@ -234,17 +234,17 @@ LABEL_8:
 
 - (uint64_t)px_dismissViewControllerIfAllowedAnimated:()PhotosUICore forced:
 {
-  v7 = [a1 presentedViewController];
-  if (!v7)
+  presentedViewController = [self presentedViewController];
+  if (!presentedViewController)
   {
-    v12 = 0;
+    presentedViewController2 = 0;
 LABEL_12:
-    [a1 dismissViewControllerAnimated:a3 completion:0];
+    [self dismissViewControllerAnimated:a3 completion:0];
     v13 = 1;
     goto LABEL_13;
   }
 
-  v8 = v7;
+  v8 = presentedViewController;
   do
   {
     if (objc_opt_respondsToSelector())
@@ -265,12 +265,12 @@ LABEL_12:
       [v8 setActive:0];
     }
 
-    v12 = [v8 presentedViewController];
+    presentedViewController2 = [v8 presentedViewController];
 
-    v8 = v12;
+    v8 = presentedViewController2;
   }
 
-  while (((v12 != 0) & v9) != 0);
+  while (((presentedViewController2 != 0) & v9) != 0);
   if (v9)
   {
     goto LABEL_12;
@@ -289,21 +289,21 @@ LABEL_13:
     return 0;
   }
 
-  return [a1 _isDelayingPresentation];
+  return [self _isDelayingPresentation];
 }
 
 + (id)px_windowContainingViewController:()PhotosUICore
 {
-  v3 = [a3 viewIfLoaded];
-  v4 = [v3 window];
+  viewIfLoaded = [a3 viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (!v4)
+  if (!window)
   {
-    v5 = [MEMORY[0x1E69DC668] sharedApplication];
-    v4 = [v5 px_firstKeyWindow];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    window = [mEMORY[0x1E69DC668] px_firstKeyWindow];
   }
 
-  return v4;
+  return window;
 }
 
 @end

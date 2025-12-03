@@ -1,31 +1,31 @@
 @interface PanoramaRectanglingStage
-- (CGRect)cropWithInitialRect:(CGRect)a3;
+- (CGRect)cropWithInitialRect:(CGRect)rect;
 - (CGRect)getCropRect;
-- (PanoramaRectanglingStage)initWithContext:(id)a3;
-- (int)cropAPI:(id)a3;
-- (int)cropAPI:(id)a3 initialRect:(CGRect)a4;
-- (int)getMaskAsBuffer:(id)a3 bufferOut:(char *)a4 widthOut:(int *)a5 heightOut:(int *)a6;
-- (int)prepareToProcess:(int)a3 sliceWidth:(unint64_t)a4 sliceHeight:(unint64_t)a5;
+- (PanoramaRectanglingStage)initWithContext:(id)context;
+- (int)cropAPI:(id)i;
+- (int)cropAPI:(id)i initialRect:(CGRect)rect;
+- (int)getMaskAsBuffer:(id)buffer bufferOut:(char *)out widthOut:(int *)widthOut heightOut:(int *)heightOut;
+- (int)prepareToProcess:(int)process sliceWidth:(unint64_t)width sliceHeight:(unint64_t)height;
 - (int)resetState;
 @end
 
 @implementation PanoramaRectanglingStage
 
-- (int)prepareToProcess:(int)a3 sliceWidth:(unint64_t)a4 sliceHeight:(unint64_t)a5
+- (int)prepareToProcess:(int)process sliceWidth:(unint64_t)width sliceHeight:(unint64_t)height
 {
-  self->_sliceWidth = a4;
-  self->_sliceHeight = a5;
+  self->_sliceWidth = width;
+  self->_sliceHeight = height;
   v5 = MEMORY[0x277CBF3A0];
-  self->_rectanglingMode = a3;
+  self->_rectanglingMode = process;
   v6 = *(v5 + 16);
   self->_cropRect.origin = *v5;
   self->_cropRect.size = v6;
   return 0;
 }
 
-- (PanoramaRectanglingStage)initWithContext:(id)a3
+- (PanoramaRectanglingStage)initWithContext:(id)context
 {
-  objc_storeStrong(&self->_metal, a3);
+  objc_storeStrong(&self->_metal, context);
   self->_direction = 1;
   fig_note_initialize_category_with_default_work();
   return self;
@@ -52,27 +52,27 @@
   return result;
 }
 
-- (int)cropAPI:(id)a3
+- (int)cropAPI:(id)i
 {
-  v4 = a3;
-  v8 = objc_msgSend_width(v4, v5, v6, v7);
-  v12 = objc_msgSend_height(v4, v9, v10, v11);
-  LODWORD(self) = objc_msgSend_cropAPI_initialRect_(self, v13, v4, v14, 0.0, 0.0, v8, v12);
+  iCopy = i;
+  v8 = objc_msgSend_width(iCopy, v5, v6, v7);
+  v12 = objc_msgSend_height(iCopy, v9, v10, v11);
+  LODWORD(self) = objc_msgSend_cropAPI_initialRect_(self, v13, iCopy, v14, 0.0, 0.0, v8, v12);
 
   return self;
 }
 
-- (int)cropAPI:(id)a3 initialRect:(CGRect)a4
+- (int)cropAPI:(id)i initialRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  objc_msgSend_getMaskAsBuffer_bufferOut_widthOut_heightOut_(self, v10, v9, &self->_mask, &self->_maskWidth, &self->_maskHeight);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  iCopy = i;
+  objc_msgSend_getMaskAsBuffer_bufferOut_widthOut_heightOut_(self, v10, iCopy, &self->_mask, &self->_maskWidth, &self->_maskHeight);
   if (self->_direction != 2)
   {
-    x = objc_msgSend_height(v9, v11, v12, v13) - x - height;
+    x = objc_msgSend_height(iCopy, v11, v12, v13) - x - height;
   }
 
   objc_msgSend_cropWithInitialRect_(self, v11, v12, v13, x, y, width, height);
@@ -84,12 +84,12 @@
   return 0;
 }
 
-- (CGRect)cropWithInitialRect:(CGRect)a3
+- (CGRect)cropWithInitialRect:(CGRect)rect
 {
-  x = a3.origin.x;
-  v4 = (a3.origin.x + a3.size.height + -1.0);
-  y = a3.origin.y;
-  v6 = (a3.origin.y + a3.size.width + -1.0);
+  x = rect.origin.x;
+  v4 = (rect.origin.x + rect.size.height + -1.0);
+  y = rect.origin.y;
+  v6 = (rect.origin.y + rect.size.width + -1.0);
   v7 = 0.0;
   v8 = 1.0;
   do
@@ -651,28 +651,28 @@
   return result;
 }
 
-- (int)getMaskAsBuffer:(id)a3 bufferOut:(char *)a4 widthOut:(int *)a5 heightOut:(int *)a6
+- (int)getMaskAsBuffer:(id)buffer bufferOut:(char *)out widthOut:(int *)widthOut heightOut:(int *)heightOut
 {
-  v10 = a3;
-  v14 = objc_msgSend_width(v10, v11, v12, v13);
-  v18 = objc_msgSend_height(v10, v15, v16, v17);
+  bufferCopy = buffer;
+  v14 = objc_msgSend_width(bufferCopy, v11, v12, v13);
+  v18 = objc_msgSend_height(bufferCopy, v15, v16, v17);
   v19 = malloc_type_calloc(v18 * v14, 1uLL, 0x100004077774924uLL);
   if (v19)
   {
     v23 = v19;
     objc_msgSend_waitForIdle(self->_metal, v20, v21, v22);
-    v27 = objc_msgSend_width(v10, v24, v25, v26);
-    v31 = objc_msgSend_width(v10, v28, v29, v30);
-    v35 = objc_msgSend_height(v10, v32, v33, v34) * v31;
+    v27 = objc_msgSend_width(bufferCopy, v24, v25, v26);
+    v31 = objc_msgSend_width(bufferCopy, v28, v29, v30);
+    v35 = objc_msgSend_height(bufferCopy, v32, v33, v34) * v31;
     memset(v51, 0, 24);
-    v51[3] = objc_msgSend_width(v10, v36, v37, v38);
-    v51[4] = objc_msgSend_height(v10, v39, v40, v41);
+    v51[3] = objc_msgSend_width(bufferCopy, v36, v37, v38);
+    v51[4] = objc_msgSend_height(bufferCopy, v39, v40, v41);
     v51[5] = 1;
-    objc_msgSend_getBytes_bytesPerRow_bytesPerImage_fromRegion_mipmapLevel_slice_(v10, v42, v23, v27, v35, v51, 0, 0);
-    *a4 = v23;
-    *a5 = objc_msgSend_width(v10, v43, v44, v45);
+    objc_msgSend_getBytes_bytesPerRow_bytesPerImage_fromRegion_mipmapLevel_slice_(bufferCopy, v42, v23, v27, v35, v51, 0, 0);
+    *out = v23;
+    *widthOut = objc_msgSend_width(bufferCopy, v43, v44, v45);
     v49 = 0;
-    *a6 = objc_msgSend_height(v10, v46, v47, v48);
+    *heightOut = objc_msgSend_height(bufferCopy, v46, v47, v48);
   }
 
   else

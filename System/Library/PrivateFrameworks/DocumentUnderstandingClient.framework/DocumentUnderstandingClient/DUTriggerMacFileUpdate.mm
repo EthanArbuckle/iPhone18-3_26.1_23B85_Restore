@@ -1,12 +1,12 @@
 @interface DUTriggerMacFileUpdate
-+ (id)findDocUConnectionWithUser:(unsigned int)a3;
++ (id)findDocUConnectionWithUser:(unsigned int)user;
 + (unsigned)beMobileUser;
 + (void)sendDUNotification;
 @end
 
 @implementation DUTriggerMacFileUpdate
 
-+ (id)findDocUConnectionWithUser:(unsigned int)a3
++ (id)findDocUConnectionWithUser:(unsigned int)user
 {
   v3 = dispatch_queue_create("testingDocumentUpdateHandlerQueue", 0);
   mach_service = xpc_connection_create_mach_service("com.apple.TextUnderstanding.DocumentUpdateHandler", v3, 0);
@@ -26,7 +26,7 @@
 + (void)sendDUNotification
 {
   v7 = *MEMORY[0x277D85DE8];
-  v2 = [a1 findDocUConnectionWithUser:{objc_msgSend(a1, "beMobileUser")}];
+  v2 = [self findDocUConnectionWithUser:{objc_msgSend(self, "beMobileUser")}];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;

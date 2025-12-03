@@ -3,8 +3,8 @@
 - (BOOL)return_server_info;
 - (NSString)resource_asset_path;
 - (NSString)voice_asset_path;
-- (Offset<siri::speech::schema_fb::TextToSpeechRequestDevConfig>)addObjectToBuffer:(void *)a3;
-- (QSSTextToSpeechRequestDevConfig)initWithFlatbuffData:(id)a3 root:(const TextToSpeechRequestDevConfig *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::TextToSpeechRequestDevConfig>)addObjectToBuffer:(void *)buffer;
+- (QSSTextToSpeechRequestDevConfig)initWithFlatbuffData:(id)data root:(const TextToSpeechRequestDevConfig *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 @end
 
@@ -39,42 +39,42 @@ flatbuffers::DetachedBuffer *__47__QSSTextToSpeechRequestDevConfig_flatbuffData_
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechRequestDevConfig>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechRequestDevConfig>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(QSSTextToSpeechRequestDevConfig *)self return_log];
-  v6 = [(QSSTextToSpeechRequestDevConfig *)self voice_asset_path];
-  v7 = v6;
-  if (!v6)
+  return_log = [(QSSTextToSpeechRequestDevConfig *)self return_log];
+  voice_asset_path = [(QSSTextToSpeechRequestDevConfig *)self voice_asset_path];
+  v7 = voice_asset_path;
+  if (!voice_asset_path)
   {
-    v6 = &stru_2879AE8E0;
+    voice_asset_path = &stru_2879AE8E0;
   }
 
-  v8 = [(__CFString *)v6 UTF8String];
-  v9 = strlen(v8);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v8, v9);
+  uTF8String = [(__CFString *)voice_asset_path UTF8String];
+  v9 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v9);
 
-  v11 = [(QSSTextToSpeechRequestDevConfig *)self resource_asset_path];
-  v12 = v11;
-  if (!v11)
+  resource_asset_path = [(QSSTextToSpeechRequestDevConfig *)self resource_asset_path];
+  v12 = resource_asset_path;
+  if (!resource_asset_path)
   {
-    v11 = &stru_2879AE8E0;
+    resource_asset_path = &stru_2879AE8E0;
   }
 
-  v13 = [(__CFString *)v11 UTF8String];
-  v14 = strlen(v13);
-  LODWORD(v13) = flatbuffers::FlatBufferBuilder::CreateString(a3, v13, v14);
+  uTF8String2 = [(__CFString *)resource_asset_path UTF8String];
+  v14 = strlen(uTF8String2);
+  LODWORD(uTF8String2) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v14);
 
-  v15 = [(QSSTextToSpeechRequestDevConfig *)self return_server_info];
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v16 = *(a3 + 10);
-  v17 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 4, v5);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 6, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 8, v13);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 10, v15);
+  return_server_info = [(QSSTextToSpeechRequestDevConfig *)self return_server_info];
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v16 = *(buffer + 10);
+  v17 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 4, return_log);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 6, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 8, uTF8String2);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 10, return_server_info);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v17 + v16);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v17 + v16);
 }
 
 - (BOOL)return_server_info
@@ -137,42 +137,42 @@ flatbuffers::DetachedBuffer *__47__QSSTextToSpeechRequestDevConfig_flatbuffData_
   return *v3->var0 >= 5u && (v4 = *v3[4].var0) != 0 && root[v4].var0[0] != 0;
 }
 
-- (QSSTextToSpeechRequestDevConfig)initWithFlatbuffData:(id)a3 root:(const TextToSpeechRequestDevConfig *)a4 verify:(BOOL)a5
+- (QSSTextToSpeechRequestDevConfig)initWithFlatbuffData:(id)data root:(const TextToSpeechRequestDevConfig *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSTextToSpeechRequestDevConfig;
   v10 = [(QSSTextToSpeechRequestDevConfig *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -194,9 +194,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

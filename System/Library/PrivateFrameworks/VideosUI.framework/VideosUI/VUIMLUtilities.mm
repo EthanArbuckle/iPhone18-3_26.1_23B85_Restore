@@ -1,31 +1,31 @@
 @interface VUIMLUtilities
-+ (int64_t)gridStyleConsideringAX:(int64_t)a3;
-+ (int64_t)gridStyleForCSSStyle:(id)a3;
++ (int64_t)gridStyleConsideringAX:(int64_t)x;
++ (int64_t)gridStyleForCSSStyle:(id)style;
 @end
 
 @implementation VUIMLUtilities
 
-+ (int64_t)gridStyleConsideringAX:(int64_t)a3
++ (int64_t)gridStyleConsideringAX:(int64_t)x
 {
   if ([MEMORY[0x1E69DF678] isAXLargeEnabled:0])
   {
-    v4 = 3;
-    if (a3 != 8)
+    xCopy = 3;
+    if (x != 8)
     {
-      v4 = a3;
+      xCopy = x;
     }
 
-    if (((1 << a3) & 0x40000C8) != 0)
+    if (((1 << x) & 0x40000C8) != 0)
     {
       v5 = 0;
     }
 
     else
     {
-      v5 = v4;
+      v5 = xCopy;
     }
 
-    if (((1 << a3) & 0x80230) != 0)
+    if (((1 << x) & 0x80230) != 0)
     {
       v6 = 6;
     }
@@ -35,14 +35,14 @@
       v6 = v5;
     }
 
-    if (a3 <= 0x1A)
+    if (x <= 0x1A)
     {
       return v6;
     }
 
     else
     {
-      return a3;
+      return x;
     }
   }
 
@@ -50,22 +50,22 @@
   {
     v8 = [MEMORY[0x1E69DF678] isAXSmallEnabled:0];
     v9 = 4;
-    if (a3 == 26)
+    if (x == 26)
     {
-      v10 = 0;
+      xCopy2 = 0;
     }
 
     else
     {
-      v10 = a3;
+      xCopy2 = x;
     }
 
-    if (a3 != 19)
+    if (x != 19)
     {
-      v9 = v10;
+      v9 = xCopy2;
     }
 
-    if (a3 == 4)
+    if (x == 4)
     {
       v9 = 3;
     }
@@ -77,32 +77,32 @@
 
     else
     {
-      return a3;
+      return x;
     }
   }
 }
 
-+ (int64_t)gridStyleForCSSStyle:(id)a3
++ (int64_t)gridStyleForCSSStyle:(id)style
 {
-  v3 = a3;
+  styleCopy = style;
   if (gridStyleForCSSStyle__onceToken != -1)
   {
     +[VUIMLUtilities gridStyleForCSSStyle:];
   }
 
-  v4 = [gridStyleForCSSStyle__sGridStyleMap objectForKeyedSubscript:v3];
+  v4 = [gridStyleForCSSStyle__sGridStyleMap objectForKeyedSubscript:styleCopy];
   if (v4)
   {
-    v5 = [gridStyleForCSSStyle__sGridStyleMap objectForKeyedSubscript:v3];
-    v6 = [v5 integerValue];
+    v5 = [gridStyleForCSSStyle__sGridStyleMap objectForKeyedSubscript:styleCopy];
+    integerValue = [v5 integerValue];
   }
 
   else
   {
-    v6 = -1;
+    integerValue = -1;
   }
 
-  return v6;
+  return integerValue;
 }
 
 void __39__VUIMLUtilities_gridStyleForCSSStyle___block_invoke()

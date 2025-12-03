@@ -1,5 +1,5 @@
 @interface TRSetupConfigurationOperation
-- (void)_handleResponse:(id)a3;
+- (void)_handleResponse:(id)response;
 - (void)execute;
 @end
 
@@ -10,8 +10,8 @@
   v17 = *MEMORY[0x277D85DE8];
   if ([(TRSetupConfigurationOperation *)self isCancelled])
   {
-    v10 = [objc_opt_class() userCancelledError];
-    [(TROperation *)self finishWithError:v10];
+    userCancelledError = [objc_opt_class() userCancelledError];
+    [(TROperation *)self finishWithError:userCancelledError];
     v3 = *MEMORY[0x277D85DE8];
   }
 
@@ -45,13 +45,13 @@
     v7 = objc_alloc_init(TRSetupConfigurationRequest);
     [(TRSetupConfigurationRequest *)v7 setDeviceName:v5];
     objc_initWeak(buf, self);
-    v8 = [(TROperation *)self session];
+    session = [(TROperation *)self session];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __40__TRSetupConfigurationOperation_execute__block_invoke;
     v11[3] = &unk_279DCECD0;
     objc_copyWeak(&v12, buf);
-    [v8 sendRequest:v7 withResponseHandler:v11];
+    [session sendRequest:v7 withResponseHandler:v11];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(buf);
@@ -82,10 +82,10 @@ void __40__TRSetupConfigurationOperation_execute__block_invoke(uint64_t a1, void
   }
 }
 
-- (void)_handleResponse:(id)a3
+- (void)_handleResponse:(id)response
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   if (_TRLogEnabled == 1)
   {
     v5 = TRLogHandle();
@@ -94,7 +94,7 @@ void __40__TRSetupConfigurationOperation_execute__block_invoke(uint64_t a1, void
       *buf = 136315394;
       v16 = "[TRSetupConfigurationOperation _handleResponse:]";
       v17 = 2112;
-      v18 = v4;
+      v18 = responseCopy;
       _os_log_impl(&dword_26F2A2000, v5, OS_LOG_TYPE_DEFAULT, "%s Handle Configuration Response: %@", buf, 0x16u);
     }
   }
@@ -103,12 +103,12 @@ void __40__TRSetupConfigurationOperation_execute__block_invoke(uint64_t a1, void
   if (objc_opt_isKindOfClass())
   {
     v6 = MEMORY[0x277CCABB0];
-    v7 = v4;
+    v7 = responseCopy;
     v8 = [v6 numberWithBool:{objc_msgSend(v7, "needsNetwork", @"TRSetupConfigurationOperationNeedsNetworkKey"}];
     v14[0] = v8;
     v13[1] = @"TRSetupConfigurationOperationUnauthenticatedServicesKey";
-    v9 = [v7 unauthenticatedAccountServices];
-    v14[1] = v9;
+    unauthenticatedAccountServices = [v7 unauthenticatedAccountServices];
+    v14[1] = unauthenticatedAccountServices;
     v13[2] = @"TRSetupConfigurationOperationUseAIDAKey";
     v10 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "useAIDA")}];
     v14[2] = v10;

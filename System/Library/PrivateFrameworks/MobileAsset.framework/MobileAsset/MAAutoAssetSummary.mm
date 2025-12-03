@@ -1,123 +1,123 @@
 @interface MAAutoAssetSummary
-+ (id)assetRepresentationName:(int64_t)a3;
++ (id)assetRepresentationName:(int64_t)name;
 + (id)summaryNewMaxColumnStrings;
-+ (id)summaryPaddedBanner:(id)a3;
-+ (id)summaryPaddedHeader:(id)a3;
-+ (id)summaryPaddedString:(id)a3 paddingToLenghtOfString:(id)a4 paddingWith:(id)a5 paddingBefore:(BOOL)a6;
-- (BOOL)getStringsForSummaryProps:(id *)a3 isPersonalized:(id *)a4 isPrePersonalized:(id *)a5 isGrafted:(id *)a6 graftPoint:(id *)a7 stageGroup:(id *)a8 targetOS:(id *)a9;
-- (MAAutoAssetSummary)initWithAssetSelector:(id)a3 withAssetRepresentation:(int64_t)a4 withAssetWasPatched:(BOOL)a5 withAssetIsStaged:(BOOL)a6 withJobStatus:(id)a7 withScheduledIntervalSecs:(int64_t)a8 withScheduledRemainingSecs:(int64_t)a9 withPushDelaySecs:(int64_t)a10 withActiveClientCount:(int64_t)a11 withActiveMonitorCount:(int64_t)a12 withMaximumClientCount:(int64_t)a13 withTotalClientCount:(int64_t)a14;
-- (MAAutoAssetSummary)initWithAssetSelector:(id)a3 withAssetRepresentation:(int64_t)a4 withAssetWasPatched:(BOOL)a5 withAssetIsStaged:(BOOL)a6 withJobStatus:(id)a7 withScheduledIntervalSecs:(int64_t)a8 withScheduledRemainingSecs:(int64_t)a9 withPushDelaySecs:(int64_t)a10 withActiveClientCount:(int64_t)a11 withActiveMonitorCount:(int64_t)a12 withMaximumClientCount:(int64_t)a13 withTotalClientCount:(int64_t)a14 withIsSecureMobileAsset:(BOOL)a15 withPersonalizationStatus:(BOOL)a16 withPrePersonalizationStatus:(BOOL)a17 withGraftStatus:(BOOL)a18 withGraftPoint:(id)a19 withStageGroupType:(unint64_t)a20 withTargetOS:(id)a21;
-- (MAAutoAssetSummary)initWithCoder:(id)a3;
++ (id)summaryPaddedBanner:(id)banner;
++ (id)summaryPaddedHeader:(id)header;
++ (id)summaryPaddedString:(id)string paddingToLenghtOfString:(id)ofString paddingWith:(id)with paddingBefore:(BOOL)before;
+- (BOOL)getStringsForSummaryProps:(id *)props isPersonalized:(id *)personalized isPrePersonalized:(id *)prePersonalized isGrafted:(id *)grafted graftPoint:(id *)point stageGroup:(id *)group targetOS:(id *)s;
+- (MAAutoAssetSummary)initWithAssetSelector:(id)selector withAssetRepresentation:(int64_t)representation withAssetWasPatched:(BOOL)patched withAssetIsStaged:(BOOL)staged withJobStatus:(id)status withScheduledIntervalSecs:(int64_t)secs withScheduledRemainingSecs:(int64_t)remainingSecs withPushDelaySecs:(int64_t)self0 withActiveClientCount:(int64_t)self1 withActiveMonitorCount:(int64_t)self2 withMaximumClientCount:(int64_t)self3 withTotalClientCount:(int64_t)self4;
+- (MAAutoAssetSummary)initWithAssetSelector:(id)selector withAssetRepresentation:(int64_t)representation withAssetWasPatched:(BOOL)patched withAssetIsStaged:(BOOL)staged withJobStatus:(id)status withScheduledIntervalSecs:(int64_t)secs withScheduledRemainingSecs:(int64_t)remainingSecs withPushDelaySecs:(int64_t)self0 withActiveClientCount:(int64_t)self1 withActiveMonitorCount:(int64_t)self2 withMaximumClientCount:(int64_t)self3 withTotalClientCount:(int64_t)self4 withIsSecureMobileAsset:(BOOL)self5 withPersonalizationStatus:(BOOL)self6 withPrePersonalizationStatus:(BOOL)self7 withGraftStatus:(BOOL)self8 withGraftPoint:(id)self9 withStageGroupType:(unint64_t)type withTargetOS:(id)s;
+- (MAAutoAssetSummary)initWithCoder:(id)coder;
 - (id)assetRepresentationName;
 - (id)description;
 - (id)newSummaryDictionary;
 - (id)summary;
-- (id)summaryPadded:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)summaryBuildMaxColumnStrings:(id)a3;
+- (id)summaryPadded:(id)padded;
+- (void)encodeWithCoder:(id)coder;
+- (void)summaryBuildMaxColumnStrings:(id)strings;
 @end
 
 @implementation MAAutoAssetSummary
 
-- (MAAutoAssetSummary)initWithAssetSelector:(id)a3 withAssetRepresentation:(int64_t)a4 withAssetWasPatched:(BOOL)a5 withAssetIsStaged:(BOOL)a6 withJobStatus:(id)a7 withScheduledIntervalSecs:(int64_t)a8 withScheduledRemainingSecs:(int64_t)a9 withPushDelaySecs:(int64_t)a10 withActiveClientCount:(int64_t)a11 withActiveMonitorCount:(int64_t)a12 withMaximumClientCount:(int64_t)a13 withTotalClientCount:(int64_t)a14
+- (MAAutoAssetSummary)initWithAssetSelector:(id)selector withAssetRepresentation:(int64_t)representation withAssetWasPatched:(BOOL)patched withAssetIsStaged:(BOOL)staged withJobStatus:(id)status withScheduledIntervalSecs:(int64_t)secs withScheduledRemainingSecs:(int64_t)remainingSecs withPushDelaySecs:(int64_t)self0 withActiveClientCount:(int64_t)self1 withActiveMonitorCount:(int64_t)self2 withMaximumClientCount:(int64_t)self3 withTotalClientCount:(int64_t)self4
 {
-  v21 = a3;
-  v22 = a7;
+  selectorCopy = selector;
+  statusCopy = status;
   v26.receiver = self;
   v26.super_class = MAAutoAssetSummary;
   v23 = [(MAAutoAssetSummary *)&v26 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_assetSelector, a3);
-    v24->_assetRepresentation = a4;
-    v24->_assetWasPatched = a5;
-    v24->_assetIsStaged = a6;
-    objc_storeStrong(&v24->_jobStatus, a7);
-    v24->_scheduledIntervalSecs = a8;
-    v24->_scheduledRemainingSecs = a9;
-    v24->_pushDelaySecs = a10;
-    v24->_activeClientCount = a11;
-    v24->_activeMonitorCount = a12;
-    v24->_maximumClientCount = a13;
-    v24->_totalClientCount = a14;
+    objc_storeStrong(&v23->_assetSelector, selector);
+    v24->_assetRepresentation = representation;
+    v24->_assetWasPatched = patched;
+    v24->_assetIsStaged = staged;
+    objc_storeStrong(&v24->_jobStatus, status);
+    v24->_scheduledIntervalSecs = secs;
+    v24->_scheduledRemainingSecs = remainingSecs;
+    v24->_pushDelaySecs = delaySecs;
+    v24->_activeClientCount = count;
+    v24->_activeMonitorCount = monitorCount;
+    v24->_maximumClientCount = clientCount;
+    v24->_totalClientCount = totalClientCount;
   }
 
   return v24;
 }
 
-- (MAAutoAssetSummary)initWithAssetSelector:(id)a3 withAssetRepresentation:(int64_t)a4 withAssetWasPatched:(BOOL)a5 withAssetIsStaged:(BOOL)a6 withJobStatus:(id)a7 withScheduledIntervalSecs:(int64_t)a8 withScheduledRemainingSecs:(int64_t)a9 withPushDelaySecs:(int64_t)a10 withActiveClientCount:(int64_t)a11 withActiveMonitorCount:(int64_t)a12 withMaximumClientCount:(int64_t)a13 withTotalClientCount:(int64_t)a14 withIsSecureMobileAsset:(BOOL)a15 withPersonalizationStatus:(BOOL)a16 withPrePersonalizationStatus:(BOOL)a17 withGraftStatus:(BOOL)a18 withGraftPoint:(id)a19 withStageGroupType:(unint64_t)a20 withTargetOS:(id)a21
+- (MAAutoAssetSummary)initWithAssetSelector:(id)selector withAssetRepresentation:(int64_t)representation withAssetWasPatched:(BOOL)patched withAssetIsStaged:(BOOL)staged withJobStatus:(id)status withScheduledIntervalSecs:(int64_t)secs withScheduledRemainingSecs:(int64_t)remainingSecs withPushDelaySecs:(int64_t)self0 withActiveClientCount:(int64_t)self1 withActiveMonitorCount:(int64_t)self2 withMaximumClientCount:(int64_t)self3 withTotalClientCount:(int64_t)self4 withIsSecureMobileAsset:(BOOL)self5 withPersonalizationStatus:(BOOL)self6 withPrePersonalizationStatus:(BOOL)self7 withGraftStatus:(BOOL)self8 withGraftPoint:(id)self9 withStageGroupType:(unint64_t)type withTargetOS:(id)s
 {
-  v25 = a3;
-  v26 = a7;
-  v27 = a19;
-  v28 = a21;
+  selectorCopy = selector;
+  statusCopy = status;
+  pointCopy = point;
+  sCopy = s;
   v35.receiver = self;
   v35.super_class = MAAutoAssetSummary;
   v29 = [(MAAutoAssetSummary *)&v35 init];
   v30 = v29;
   if (v29)
   {
-    objc_storeStrong(&v29->_assetSelector, a3);
-    v30->_assetRepresentation = a4;
-    v30->_assetWasPatched = a5;
-    v30->_assetIsStaged = a6;
-    objc_storeStrong(&v30->_jobStatus, a7);
-    v30->_scheduledIntervalSecs = a8;
-    v30->_scheduledRemainingSecs = a9;
-    v30->_pushDelaySecs = a10;
-    v30->_activeClientCount = a11;
-    v30->_activeMonitorCount = a12;
-    v30->_maximumClientCount = a13;
-    v30->_totalClientCount = a14;
-    v30->_assetIsSecureMobileAsset = a15;
-    v30->_secureMobileAssetIsPersonalized = a16;
-    v30->_secureMobileAssetIsPrePersonalized = a17;
-    v30->_secureMobileAssetIsGrafted = a18;
-    objc_storeStrong(&v30->_secureMobileAssetGraftPoint, a19);
-    v30->_stageGroup = a20;
-    objc_storeStrong(&v30->_targetOS, a21);
+    objc_storeStrong(&v29->_assetSelector, selector);
+    v30->_assetRepresentation = representation;
+    v30->_assetWasPatched = patched;
+    v30->_assetIsStaged = staged;
+    objc_storeStrong(&v30->_jobStatus, status);
+    v30->_scheduledIntervalSecs = secs;
+    v30->_scheduledRemainingSecs = remainingSecs;
+    v30->_pushDelaySecs = delaySecs;
+    v30->_activeClientCount = count;
+    v30->_activeMonitorCount = monitorCount;
+    v30->_maximumClientCount = clientCount;
+    v30->_totalClientCount = totalClientCount;
+    v30->_assetIsSecureMobileAsset = asset;
+    v30->_secureMobileAssetIsPersonalized = personalizationStatus;
+    v30->_secureMobileAssetIsPrePersonalized = prePersonalizationStatus;
+    v30->_secureMobileAssetIsGrafted = graftStatus;
+    objc_storeStrong(&v30->_secureMobileAssetGraftPoint, point);
+    v30->_stageGroup = type;
+    objc_storeStrong(&v30->_targetOS, s);
   }
 
   return v30;
 }
 
-- (MAAutoAssetSummary)initWithCoder:(id)a3
+- (MAAutoAssetSummary)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MAAutoAssetSummary;
   v5 = [(MAAutoAssetSummary *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetSelector"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetSelector"];
     assetSelector = v5->_assetSelector;
     v5->_assetSelector = v6;
 
-    v5->_assetRepresentation = [v4 decodeInt64ForKey:@"assetRepresentation"];
-    v5->_assetWasPatched = [v4 decodeBoolForKey:@"assetWasPatched"];
-    v5->_assetIsStaged = [v4 decodeBoolForKey:@"assetIsStaged"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"jobStatus"];
+    v5->_assetRepresentation = [coderCopy decodeInt64ForKey:@"assetRepresentation"];
+    v5->_assetWasPatched = [coderCopy decodeBoolForKey:@"assetWasPatched"];
+    v5->_assetIsStaged = [coderCopy decodeBoolForKey:@"assetIsStaged"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"jobStatus"];
     jobStatus = v5->_jobStatus;
     v5->_jobStatus = v8;
 
-    v5->_scheduledIntervalSecs = [v4 decodeIntegerForKey:@"scheduledIntervalSecs"];
-    v5->_scheduledRemainingSecs = [v4 decodeIntegerForKey:@"scheduledRemainingSecs"];
-    v5->_pushDelaySecs = [v4 decodeIntegerForKey:@"pushDelaySecs"];
-    v5->_activeClientCount = [v4 decodeIntegerForKey:@"activeClientCount"];
-    v5->_activeMonitorCount = [v4 decodeIntegerForKey:@"activeMonitorCount"];
-    v5->_maximumClientCount = [v4 decodeIntegerForKey:@"maximumClientCount"];
-    v5->_totalClientCount = [v4 decodeIntegerForKey:@"totalClientCount"];
-    v5->_assetIsSecureMobileAsset = [v4 decodeBoolForKey:@"assetIsSecureMobileAsset"];
-    v5->_secureMobileAssetIsPersonalized = [v4 decodeBoolForKey:@"secureMobileAssetIsPersonalized"];
-    v5->_secureMobileAssetIsPrePersonalized = [v4 decodeBoolForKey:@"secureMobileAssetIsPrePersonalized"];
-    v5->_secureMobileAssetIsGrafted = [v4 decodeBoolForKey:@"secureMobileAssetIsGrafted"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secureMobileAssetGraftPoint"];
+    v5->_scheduledIntervalSecs = [coderCopy decodeIntegerForKey:@"scheduledIntervalSecs"];
+    v5->_scheduledRemainingSecs = [coderCopy decodeIntegerForKey:@"scheduledRemainingSecs"];
+    v5->_pushDelaySecs = [coderCopy decodeIntegerForKey:@"pushDelaySecs"];
+    v5->_activeClientCount = [coderCopy decodeIntegerForKey:@"activeClientCount"];
+    v5->_activeMonitorCount = [coderCopy decodeIntegerForKey:@"activeMonitorCount"];
+    v5->_maximumClientCount = [coderCopy decodeIntegerForKey:@"maximumClientCount"];
+    v5->_totalClientCount = [coderCopy decodeIntegerForKey:@"totalClientCount"];
+    v5->_assetIsSecureMobileAsset = [coderCopy decodeBoolForKey:@"assetIsSecureMobileAsset"];
+    v5->_secureMobileAssetIsPersonalized = [coderCopy decodeBoolForKey:@"secureMobileAssetIsPersonalized"];
+    v5->_secureMobileAssetIsPrePersonalized = [coderCopy decodeBoolForKey:@"secureMobileAssetIsPrePersonalized"];
+    v5->_secureMobileAssetIsGrafted = [coderCopy decodeBoolForKey:@"secureMobileAssetIsGrafted"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secureMobileAssetGraftPoint"];
     secureMobileAssetGraftPoint = v5->_secureMobileAssetGraftPoint;
     v5->_secureMobileAssetGraftPoint = v10;
 
-    v5->_stageGroup = [v4 decodeIntegerForKey:@"stageGroup"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"targetOSKey"];
+    v5->_stageGroup = [coderCopy decodeIntegerForKey:@"stageGroup"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"targetOSKey"];
     targetOS = v5->_targetOS;
     v5->_targetOS = v12;
   }
@@ -125,42 +125,42 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MAAutoAssetSummary *)self assetSelector];
-  [v4 encodeObject:v5 forKey:@"assetSelector"];
+  coderCopy = coder;
+  assetSelector = [(MAAutoAssetSummary *)self assetSelector];
+  [coderCopy encodeObject:assetSelector forKey:@"assetSelector"];
 
-  [v4 encodeInteger:-[MAAutoAssetSummary assetRepresentation](self forKey:{"assetRepresentation"), @"assetRepresentation"}];
-  [v4 encodeBool:-[MAAutoAssetSummary assetWasPatched](self forKey:{"assetWasPatched"), @"assetWasPatched"}];
-  [v4 encodeBool:-[MAAutoAssetSummary assetIsStaged](self forKey:{"assetIsStaged"), @"assetIsStaged"}];
-  v6 = [(MAAutoAssetSummary *)self jobStatus];
-  [v4 encodeObject:v6 forKey:@"jobStatus"];
+  [coderCopy encodeInteger:-[MAAutoAssetSummary assetRepresentation](self forKey:{"assetRepresentation"), @"assetRepresentation"}];
+  [coderCopy encodeBool:-[MAAutoAssetSummary assetWasPatched](self forKey:{"assetWasPatched"), @"assetWasPatched"}];
+  [coderCopy encodeBool:-[MAAutoAssetSummary assetIsStaged](self forKey:{"assetIsStaged"), @"assetIsStaged"}];
+  jobStatus = [(MAAutoAssetSummary *)self jobStatus];
+  [coderCopy encodeObject:jobStatus forKey:@"jobStatus"];
 
-  [v4 encodeInteger:-[MAAutoAssetSummary scheduledIntervalSecs](self forKey:{"scheduledIntervalSecs"), @"scheduledIntervalSecs"}];
-  [v4 encodeInteger:-[MAAutoAssetSummary pushDelaySecs](self forKey:{"pushDelaySecs"), @"pushDelaySecs"}];
-  [v4 encodeInteger:-[MAAutoAssetSummary scheduledRemainingSecs](self forKey:{"scheduledRemainingSecs"), @"scheduledRemainingSecs"}];
-  [v4 encodeInteger:-[MAAutoAssetSummary activeClientCount](self forKey:{"activeClientCount"), @"activeClientCount"}];
-  [v4 encodeInteger:-[MAAutoAssetSummary activeMonitorCount](self forKey:{"activeMonitorCount"), @"activeMonitorCount"}];
-  [v4 encodeInteger:-[MAAutoAssetSummary maximumClientCount](self forKey:{"maximumClientCount"), @"maximumClientCount"}];
-  [v4 encodeInteger:-[MAAutoAssetSummary totalClientCount](self forKey:{"totalClientCount"), @"totalClientCount"}];
-  [v4 encodeBool:-[MAAutoAssetSummary assetIsSecureMobileAsset](self forKey:{"assetIsSecureMobileAsset"), @"assetIsSecureMobileAsset"}];
-  [v4 encodeBool:-[MAAutoAssetSummary secureMobileAssetIsPersonalized](self forKey:{"secureMobileAssetIsPersonalized"), @"secureMobileAssetIsPersonalized"}];
-  [v4 encodeBool:-[MAAutoAssetSummary secureMobileAssetIsPrePersonalized](self forKey:{"secureMobileAssetIsPrePersonalized"), @"secureMobileAssetIsPrePersonalized"}];
-  [v4 encodeBool:-[MAAutoAssetSummary secureMobileAssetIsGrafted](self forKey:{"secureMobileAssetIsGrafted"), @"secureMobileAssetIsGrafted"}];
-  v7 = [(MAAutoAssetSummary *)self secureMobileAssetGraftPoint];
-  [v4 encodeObject:v7 forKey:@"secureMobileAssetGraftPoint"];
+  [coderCopy encodeInteger:-[MAAutoAssetSummary scheduledIntervalSecs](self forKey:{"scheduledIntervalSecs"), @"scheduledIntervalSecs"}];
+  [coderCopy encodeInteger:-[MAAutoAssetSummary pushDelaySecs](self forKey:{"pushDelaySecs"), @"pushDelaySecs"}];
+  [coderCopy encodeInteger:-[MAAutoAssetSummary scheduledRemainingSecs](self forKey:{"scheduledRemainingSecs"), @"scheduledRemainingSecs"}];
+  [coderCopy encodeInteger:-[MAAutoAssetSummary activeClientCount](self forKey:{"activeClientCount"), @"activeClientCount"}];
+  [coderCopy encodeInteger:-[MAAutoAssetSummary activeMonitorCount](self forKey:{"activeMonitorCount"), @"activeMonitorCount"}];
+  [coderCopy encodeInteger:-[MAAutoAssetSummary maximumClientCount](self forKey:{"maximumClientCount"), @"maximumClientCount"}];
+  [coderCopy encodeInteger:-[MAAutoAssetSummary totalClientCount](self forKey:{"totalClientCount"), @"totalClientCount"}];
+  [coderCopy encodeBool:-[MAAutoAssetSummary assetIsSecureMobileAsset](self forKey:{"assetIsSecureMobileAsset"), @"assetIsSecureMobileAsset"}];
+  [coderCopy encodeBool:-[MAAutoAssetSummary secureMobileAssetIsPersonalized](self forKey:{"secureMobileAssetIsPersonalized"), @"secureMobileAssetIsPersonalized"}];
+  [coderCopy encodeBool:-[MAAutoAssetSummary secureMobileAssetIsPrePersonalized](self forKey:{"secureMobileAssetIsPrePersonalized"), @"secureMobileAssetIsPrePersonalized"}];
+  [coderCopy encodeBool:-[MAAutoAssetSummary secureMobileAssetIsGrafted](self forKey:{"secureMobileAssetIsGrafted"), @"secureMobileAssetIsGrafted"}];
+  secureMobileAssetGraftPoint = [(MAAutoAssetSummary *)self secureMobileAssetGraftPoint];
+  [coderCopy encodeObject:secureMobileAssetGraftPoint forKey:@"secureMobileAssetGraftPoint"];
 
-  [v4 encodeInteger:-[MAAutoAssetSummary stageGroup](self forKey:{"stageGroup"), @"stageGroup"}];
-  v8 = [(MAAutoAssetSummary *)self targetOS];
-  [v4 encodeObject:v8 forKey:@"targetOSKey"];
+  [coderCopy encodeInteger:-[MAAutoAssetSummary stageGroup](self forKey:{"stageGroup"), @"stageGroup"}];
+  targetOS = [(MAAutoAssetSummary *)self targetOS];
+  [coderCopy encodeObject:targetOS forKey:@"targetOSKey"];
 }
 
-- (BOOL)getStringsForSummaryProps:(id *)a3 isPersonalized:(id *)a4 isPrePersonalized:(id *)a5 isGrafted:(id *)a6 graftPoint:(id *)a7 stageGroup:(id *)a8 targetOS:(id *)a9
+- (BOOL)getStringsForSummaryProps:(id *)props isPersonalized:(id *)personalized isPrePersonalized:(id *)prePersonalized isGrafted:(id *)grafted graftPoint:(id *)point stageGroup:(id *)group targetOS:(id *)s
 {
-  if (a3)
+  if (props)
   {
-    v9 = a4 == 0;
+    v9 = personalized == 0;
   }
 
   else
@@ -168,7 +168,7 @@
     v9 = 1;
   }
 
-  v14 = v9 || a5 == 0 || a6 == 0 || a7 == 0 || a8 == 0 || a9 == 0;
+  v14 = v9 || prePersonalized == 0 || grafted == 0 || point == 0 || group == 0 || s == 0;
   v15 = !v14;
   if (v14)
   {
@@ -182,16 +182,16 @@
 
   else
   {
-    *a3 = @"N/A";
-    *a4 = @"N/A";
-    *a5 = @"N/A";
-    *a6 = @"N/A";
-    *a7 = @"N/A";
-    *a8 = @"N/A";
-    *a9 = @"N/A";
+    *props = @"N/A";
+    *personalized = @"N/A";
+    *prePersonalized = @"N/A";
+    *grafted = @"N/A";
+    *point = @"N/A";
+    *group = @"N/A";
+    *s = @"N/A";
     if ([(MAAutoAssetSummary *)self assetIsSecureMobileAsset])
     {
-      *a3 = @"YES";
+      *props = @"YES";
       if ([(MAAutoAssetSummary *)self secureMobileAssetIsPersonalized])
       {
         v23 = @"YES";
@@ -202,7 +202,7 @@
         v23 = @"NO";
       }
 
-      *a4 = v23;
+      *personalized = v23;
       if ([(MAAutoAssetSummary *)self secureMobileAssetIsPrePersonalized])
       {
         v24 = @"YES";
@@ -213,32 +213,32 @@
         v24 = @"NO";
       }
 
-      *a5 = v24;
+      *prePersonalized = v24;
       if ([(MAAutoAssetSummary *)self secureMobileAssetIsGrafted])
       {
-        *a6 = @"YES";
-        v25 = [(MAAutoAssetSummary *)self secureMobileAssetGraftPoint];
-        if (v25)
+        *grafted = @"YES";
+        secureMobileAssetGraftPoint = [(MAAutoAssetSummary *)self secureMobileAssetGraftPoint];
+        if (secureMobileAssetGraftPoint)
         {
-          v26 = [(MAAutoAssetSummary *)self secureMobileAssetGraftPoint];
-          *a7 = v26;
+          secureMobileAssetGraftPoint2 = [(MAAutoAssetSummary *)self secureMobileAssetGraftPoint];
+          *point = secureMobileAssetGraftPoint2;
         }
 
         else
         {
-          *a7 = @"Unknown(error)";
+          *point = @"Unknown(error)";
         }
       }
 
       else
       {
-        *a6 = @"NO";
+        *grafted = @"NO";
       }
     }
 
     else
     {
-      *a3 = @"NO";
+      *props = @"NO";
     }
 
     if ([(MAAutoAssetSummary *)self assetIsStaged])
@@ -250,25 +250,25 @@
 
       else
       {
-        v29 = [(MAAutoAssetSummary *)self stageGroup];
+        stageGroup = [(MAAutoAssetSummary *)self stageGroup];
         v28 = @"UNKNOWN";
-        if (v29 == 2)
+        if (stageGroup == 2)
         {
           v28 = @"OPTIONAL";
         }
       }
 
-      *a8 = v28;
-      v30 = [(MAAutoAssetSummary *)self targetOS];
-      if (v30)
+      *group = v28;
+      targetOS = [(MAAutoAssetSummary *)self targetOS];
+      if (targetOS)
       {
-        v31 = [(MAAutoAssetSummary *)self targetOS];
-        *a9 = v31;
+        targetOS2 = [(MAAutoAssetSummary *)self targetOS];
+        *s = targetOS2;
       }
 
       else
       {
-        *a9 = @"Unknown";
+        *s = @"Unknown";
       }
     }
   }
@@ -295,9 +295,9 @@
   v48 = v50;
   v47 = v49;
   v38 = MEMORY[0x1E696AEC0];
-  v40 = [(MAAutoAssetSummary *)self assetSelector];
-  v39 = [v40 summary];
-  v46 = [(MAAutoAssetSummary *)self assetRepresentationName];
+  assetSelector = [(MAAutoAssetSummary *)self assetSelector];
+  summary = [assetSelector summary];
+  assetRepresentationName = [(MAAutoAssetSummary *)self assetRepresentationName];
   if ([(MAAutoAssetSummary *)self assetWasPatched])
   {
     v4 = @"Y";
@@ -314,50 +314,50 @@
     v3 = @"Y";
   }
 
-  v5 = [(MAAutoAssetSummary *)self scheduledIntervalSecs];
-  v6 = [(MAAutoAssetSummary *)self scheduledRemainingSecs];
-  v7 = [(MAAutoAssetSummary *)self pushDelaySecs];
-  v8 = [(MAAutoAssetSummary *)self activeClientCount];
-  v9 = [(MAAutoAssetSummary *)self activeMonitorCount];
-  v10 = [(MAAutoAssetSummary *)self maximumClientCount];
-  v11 = [(MAAutoAssetSummary *)self totalClientCount];
-  v12 = [(MAAutoAssetSummary *)self jobStatus];
-  if (v12)
+  scheduledIntervalSecs = [(MAAutoAssetSummary *)self scheduledIntervalSecs];
+  scheduledRemainingSecs = [(MAAutoAssetSummary *)self scheduledRemainingSecs];
+  pushDelaySecs = [(MAAutoAssetSummary *)self pushDelaySecs];
+  activeClientCount = [(MAAutoAssetSummary *)self activeClientCount];
+  activeMonitorCount = [(MAAutoAssetSummary *)self activeMonitorCount];
+  maximumClientCount = [(MAAutoAssetSummary *)self maximumClientCount];
+  totalClientCount = [(MAAutoAssetSummary *)self totalClientCount];
+  jobStatus = [(MAAutoAssetSummary *)self jobStatus];
+  if (jobStatus)
   {
-    v13 = [(MAAutoAssetSummary *)self jobStatus];
-    v14 = [v13 description];
+    jobStatus2 = [(MAAutoAssetSummary *)self jobStatus];
+    v14 = [jobStatus2 description];
     v15 = v3;
     v16 = v14;
-    v35 = v11;
-    v31 = v9;
-    v33 = v10;
-    v27 = v7;
-    v29 = v8;
-    v25 = v6;
+    v35 = totalClientCount;
+    v31 = activeMonitorCount;
+    v33 = maximumClientCount;
+    v27 = pushDelaySecs;
+    v29 = activeClientCount;
+    v25 = scheduledRemainingSecs;
     v18 = v41;
     v17 = v42;
     v19 = v43;
     v20 = v44;
     v21 = v45;
-    v22 = v39;
-    v23 = [v38 stringWithFormat:@">>>\n                   assetSelector: %@\n             assetRepresentation: %@\n                 assetWasPatched: %@\n                   assetIsStaged: %@\n              assetIsSecureAsset: %@\n       secureAssetIsPersonalized: %@\n    secureAssetIsPrePersonalized: %@\n      secureMobileAssetIsGrafted: %@\n     secureMobileAssetGraftPoint: %@\n           scheduledIntervalSecs: %ld\n          scheduledRemainingSecs: %ld\n                   pushDelaySecs: %ld\n               activeClientCount: %ld\n              activeMonitorCount: %ld\n              maximumClientCount: %ld\n                totalClientCount: %ld\n                      stageGroup: %@\n                 targetOSVersion: %@\n%@<<<]", v39, v46, v37, v15, v45, v44, v43, v42, v41, v5, v25, v27, v29, v31, v33, v35, v48, v47, v14];
+    v22 = summary;
+    v23 = [v38 stringWithFormat:@">>>\n                   assetSelector: %@\n             assetRepresentation: %@\n                 assetWasPatched: %@\n                   assetIsStaged: %@\n              assetIsSecureAsset: %@\n       secureAssetIsPersonalized: %@\n    secureAssetIsPrePersonalized: %@\n      secureMobileAssetIsGrafted: %@\n     secureMobileAssetGraftPoint: %@\n           scheduledIntervalSecs: %ld\n          scheduledRemainingSecs: %ld\n                   pushDelaySecs: %ld\n               activeClientCount: %ld\n              activeMonitorCount: %ld\n              maximumClientCount: %ld\n                totalClientCount: %ld\n                      stageGroup: %@\n                 targetOSVersion: %@\n%@<<<]", summary, assetRepresentationName, v37, v15, v45, v44, v43, v42, v41, scheduledIntervalSecs, v25, v27, v29, v31, v33, v35, v48, v47, v14];
   }
 
   else
   {
-    v36 = v11;
-    v32 = v9;
-    v34 = v10;
-    v28 = v7;
-    v30 = v8;
-    v26 = v6;
+    v36 = totalClientCount;
+    v32 = activeMonitorCount;
+    v34 = maximumClientCount;
+    v28 = pushDelaySecs;
+    v30 = activeClientCount;
+    v26 = scheduledRemainingSecs;
     v18 = v41;
     v17 = v42;
     v19 = v43;
     v20 = v44;
     v21 = v45;
-    v22 = v39;
-    v23 = [v38 stringWithFormat:@">>>\n                   assetSelector: %@\n             assetRepresentation: %@\n                 assetWasPatched: %@\n                   assetIsStaged: %@\n              assetIsSecureAsset: %@\n       secureAssetIsPersonalized: %@\n    secureAssetIsPrePersonalized: %@\n      secureMobileAssetIsGrafted: %@\n     secureMobileAssetGraftPoint: %@\n           scheduledIntervalSecs: %ld\n          scheduledRemainingSecs: %ld\n                   pushDelaySecs: %ld\n               activeClientCount: %ld\n              activeMonitorCount: %ld\n              maximumClientCount: %ld\n                totalClientCount: %ld\n                      stageGroup: %@\n                 targetOSVersion: %@\n%@<<<]", v39, v46, v37, v3, v45, v44, v43, v42, v41, v5, v26, v28, v30, v32, v34, v36, v48, v47, @"                       jobStatus: N\n"];
+    v22 = summary;
+    v23 = [v38 stringWithFormat:@">>>\n                   assetSelector: %@\n             assetRepresentation: %@\n                 assetWasPatched: %@\n                   assetIsStaged: %@\n              assetIsSecureAsset: %@\n       secureAssetIsPersonalized: %@\n    secureAssetIsPrePersonalized: %@\n      secureMobileAssetIsGrafted: %@\n     secureMobileAssetGraftPoint: %@\n           scheduledIntervalSecs: %ld\n          scheduledRemainingSecs: %ld\n                   pushDelaySecs: %ld\n               activeClientCount: %ld\n              activeMonitorCount: %ld\n              maximumClientCount: %ld\n                totalClientCount: %ld\n                      stageGroup: %@\n                 targetOSVersion: %@\n%@<<<]", summary, assetRepresentationName, v37, v3, v45, v44, v43, v42, v41, scheduledIntervalSecs, v26, v28, v30, v32, v34, v36, v48, v47, @"                       jobStatus: N\n"];
   }
 
   return v23;
@@ -365,10 +365,10 @@
 
 - (id)summary
 {
-  v3 = [(MAAutoAssetSummary *)self assetSelector];
-  v28 = [v3 summary];
+  assetSelector = [(MAAutoAssetSummary *)self assetSelector];
+  summary = [assetSelector summary];
 
-  v27 = [(MAAutoAssetSummary *)self assetRepresentationName];
+  assetRepresentationName = [(MAAutoAssetSummary *)self assetRepresentationName];
   if ([(MAAutoAssetSummary *)self assetWasPatched])
   {
     v4 = @"Y";
@@ -391,16 +391,16 @@
   }
 
   v21 = v5;
-  v6 = [(MAAutoAssetSummary *)self jobStatus];
-  if (v6)
+  jobStatus = [(MAAutoAssetSummary *)self jobStatus];
+  if (jobStatus)
   {
-    v7 = [(MAAutoAssetSummary *)self jobStatus];
-    v25 = [v7 summary];
+    jobStatus2 = [(MAAutoAssetSummary *)self jobStatus];
+    summary2 = [jobStatus2 summary];
   }
 
   else
   {
-    v25 = @"NONE";
+    summary2 = @"NONE";
   }
 
   v24 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%lld", -[MAAutoAssetSummary scheduledIntervalSecs](self, "scheduledIntervalSecs")];
@@ -425,7 +425,7 @@
   v12 = v31;
   v13 = v30;
   v14 = v29;
-  v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"asset(%@)[%@]|patched:%@|staged:%@|secureMobileAsset:%@|personalized:%@|prePersonalized:%@|grafted:%@|graftPoint:%@|status:%@|interval:%@|remaining:%@|pushDelay:%@|clients:%@|monitors:%@|maxClients:%@|totalClients:%@|stageGroup:%@|targetOSVersion:%@", v28, v27, v26, v21, v8, v9, v10, v11, v12, v25, v24, v23, v22, v20, v19, v17, v16, v13, v14];
+  v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"asset(%@)[%@]|patched:%@|staged:%@|secureMobileAsset:%@|personalized:%@|prePersonalized:%@|grafted:%@|graftPoint:%@|status:%@|interval:%@|remaining:%@|pushDelay:%@|clients:%@|monitors:%@|maxClients:%@|totalClients:%@|stageGroup:%@|targetOSVersion:%@", summary, assetRepresentationName, v26, v21, v8, v9, v10, v11, v12, summary2, v24, v23, v22, v20, v19, v17, v16, v13, v14];
 
   return v18;
 }
@@ -448,12 +448,12 @@
   v8 = v29;
   v26 = v28;
   v25 = v27;
-  v9 = [(MAAutoAssetSummary *)self assetSelector];
-  v10 = [v9 newSummaryDictionary];
-  [v3 setSafeObject:v10 forKey:@"assetSelector"];
+  assetSelector = [(MAAutoAssetSummary *)self assetSelector];
+  newSummaryDictionary = [assetSelector newSummaryDictionary];
+  [v3 setSafeObject:newSummaryDictionary forKey:@"assetSelector"];
 
-  v11 = [(MAAutoAssetSummary *)self assetRepresentationName];
-  [v3 setSafeObject:v11 forKey:@"assetRepresentation"];
+  assetRepresentationName = [(MAAutoAssetSummary *)self assetRepresentationName];
+  [v3 setSafeObject:assetRepresentationName forKey:@"assetRepresentation"];
 
   if ([(MAAutoAssetSummary *)self assetWasPatched])
   {
@@ -482,18 +482,18 @@
   [v3 setSafeObject:v6 forKey:@"secureMobileAssetIsPrePersonalized"];
   [v3 setSafeObject:v7 forKey:@"secureMobileAssetIsGrafted"];
   [v3 setSafeObject:v8 forKey:@"secureMobileAssetGraftPoint"];
-  v14 = [(MAAutoAssetSummary *)self jobStatus];
-  if (v14)
+  jobStatus = [(MAAutoAssetSummary *)self jobStatus];
+  if (jobStatus)
   {
-    v15 = [(MAAutoAssetSummary *)self jobStatus];
-    v16 = [v15 newSummaryDictionary];
-    [v3 setSafeObject:v16 forKey:@"jobStatus"];
+    jobStatus2 = [(MAAutoAssetSummary *)self jobStatus];
+    newSummaryDictionary2 = [jobStatus2 newSummaryDictionary];
+    [v3 setSafeObject:newSummaryDictionary2 forKey:@"jobStatus"];
   }
 
   else
   {
-    v15 = objc_alloc_init(MEMORY[0x1E695DF20]);
-    [v3 setSafeObject:v15 forKey:@"jobStatus"];
+    jobStatus2 = objc_alloc_init(MEMORY[0x1E695DF20]);
+    [v3 setSafeObject:jobStatus2 forKey:@"jobStatus"];
   }
 
   v17 = [MEMORY[0x1E696AD98] numberWithInteger:{-[MAAutoAssetSummary scheduledIntervalSecs](self, "scheduledIntervalSecs")}];
@@ -523,13 +523,13 @@
   return v3;
 }
 
-- (void)summaryBuildMaxColumnStrings:(id)a3
+- (void)summaryBuildMaxColumnStrings:(id)strings
 {
-  v4 = a3;
-  v5 = [(MAAutoAssetSummary *)self assetSelector];
-  v6 = [v5 summary];
+  stringsCopy = strings;
+  assetSelector = [(MAAutoAssetSummary *)self assetSelector];
+  summary = [assetSelector summary];
 
-  v85 = [(MAAutoAssetSummary *)self assetRepresentationName];
+  assetRepresentationName = [(MAAutoAssetSummary *)self assetRepresentationName];
   if ([(MAAutoAssetSummary *)self assetWasPatched])
   {
     v7 = @"Y";
@@ -552,16 +552,16 @@
   }
 
   v75 = v8;
-  v9 = [(MAAutoAssetSummary *)self jobStatus];
-  if (v9)
+  jobStatus = [(MAAutoAssetSummary *)self jobStatus];
+  if (jobStatus)
   {
-    v10 = [(MAAutoAssetSummary *)self jobStatus];
-    v84 = [v10 summary];
+    jobStatus2 = [(MAAutoAssetSummary *)self jobStatus];
+    summary2 = [jobStatus2 summary];
   }
 
   else
   {
-    v84 = @"NONE";
+    summary2 = @"NONE";
   }
 
   v83 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%lld", -[MAAutoAssetSummary scheduledIntervalSecs](self, "scheduledIntervalSecs")];
@@ -586,186 +586,186 @@
   v14 = v89;
   v15 = v88;
   v16 = v87;
-  v74 = v6;
-  v17 = [v6 length];
-  v18 = [v4 safeStringForKey:@"assetSelector"];
+  v74 = summary;
+  v17 = [summary length];
+  v18 = [stringsCopy safeStringForKey:@"assetSelector"];
   v19 = [v18 length];
 
   if (v17 > v19)
   {
-    [v4 setSafeObject:v74 forKey:@"assetSelector"];
+    [stringsCopy setSafeObject:v74 forKey:@"assetSelector"];
   }
 
-  v20 = [v85 length];
-  v21 = [v4 safeStringForKey:@"assetRepresentation"];
+  v20 = [assetRepresentationName length];
+  v21 = [stringsCopy safeStringForKey:@"assetRepresentation"];
   v22 = [v21 length];
 
   if (v20 > v22)
   {
-    [v4 setSafeObject:v85 forKey:@"assetRepresentation"];
+    [stringsCopy setSafeObject:assetRepresentationName forKey:@"assetRepresentation"];
   }
 
   v23 = [(__CFString *)v86 length];
-  v24 = [v4 safeStringForKey:@"assetWasPatched"];
+  v24 = [stringsCopy safeStringForKey:@"assetWasPatched"];
   v25 = [v24 length];
 
   if (v23 > v25)
   {
-    [v4 setSafeObject:v86 forKey:@"assetWasPatched"];
+    [stringsCopy setSafeObject:v86 forKey:@"assetWasPatched"];
   }
 
   v26 = [(__CFString *)v75 length];
-  v27 = [v4 safeStringForKey:@"assetIsStaged"];
+  v27 = [stringsCopy safeStringForKey:@"assetIsStaged"];
   v28 = [v27 length];
 
   if (v26 > v28)
   {
-    [v4 setSafeObject:v86 forKey:@"assetIsStaged"];
+    [stringsCopy setSafeObject:v86 forKey:@"assetIsStaged"];
   }
 
   v29 = [(__CFString *)v76 length];
-  v30 = [v4 safeStringForKey:@"assetIsSecureMobileAsset"];
+  v30 = [stringsCopy safeStringForKey:@"assetIsSecureMobileAsset"];
   v31 = [v30 length];
 
   if (v29 > v31)
   {
-    [v4 setSafeObject:v76 forKey:@"assetIsSecureMobileAsset"];
+    [stringsCopy setSafeObject:v76 forKey:@"assetIsSecureMobileAsset"];
   }
 
   v32 = [(__CFString *)v11 length];
-  v33 = [v4 safeStringForKey:@"secureMobileAssetIsPersonalized"];
+  v33 = [stringsCopy safeStringForKey:@"secureMobileAssetIsPersonalized"];
   v34 = [v33 length];
 
   if (v32 > v34)
   {
-    [v4 setSafeObject:v11 forKey:@"secureMobileAssetIsPersonalized"];
+    [stringsCopy setSafeObject:v11 forKey:@"secureMobileAssetIsPersonalized"];
   }
 
   v35 = [(__CFString *)v12 length];
-  v36 = [v4 safeStringForKey:@"secureMobileAssetIsPrePersonalized"];
+  v36 = [stringsCopy safeStringForKey:@"secureMobileAssetIsPrePersonalized"];
   v37 = [v36 length];
 
   if (v35 > v37)
   {
-    [v4 setSafeObject:v12 forKey:@"secureMobileAssetIsPrePersonalized"];
+    [stringsCopy setSafeObject:v12 forKey:@"secureMobileAssetIsPrePersonalized"];
   }
 
   v38 = [(__CFString *)v13 length];
-  v39 = [v4 safeStringForKey:@"secureMobileAssetIsGrafted"];
+  v39 = [stringsCopy safeStringForKey:@"secureMobileAssetIsGrafted"];
   v40 = [v39 length];
 
   if (v38 > v40)
   {
-    [v4 setSafeObject:v13 forKey:@"secureMobileAssetIsGrafted"];
+    [stringsCopy setSafeObject:v13 forKey:@"secureMobileAssetIsGrafted"];
   }
 
   v41 = [(__CFString *)v14 length];
-  v42 = [v4 safeStringForKey:@"secureMobileAssetGraftPoint"];
+  v42 = [stringsCopy safeStringForKey:@"secureMobileAssetGraftPoint"];
   v43 = [v42 length];
 
   if (v41 > v43)
   {
-    [v4 setSafeObject:v14 forKey:@"secureMobileAssetGraftPoint"];
+    [stringsCopy setSafeObject:v14 forKey:@"secureMobileAssetGraftPoint"];
   }
 
-  v44 = [(__CFString *)v84 length];
-  v45 = [v4 safeStringForKey:@"jobStatus"];
+  v44 = [(__CFString *)summary2 length];
+  v45 = [stringsCopy safeStringForKey:@"jobStatus"];
   v46 = [v45 length];
 
   if (v44 > v46)
   {
-    [v4 setSafeObject:v84 forKey:@"jobStatus"];
+    [stringsCopy setSafeObject:summary2 forKey:@"jobStatus"];
   }
 
   v47 = [v83 length];
-  v48 = [v4 safeStringForKey:@"scheduledIntervalSecs"];
+  v48 = [stringsCopy safeStringForKey:@"scheduledIntervalSecs"];
   v49 = [v48 length];
 
   if (v47 > v49)
   {
-    [v4 setSafeObject:v83 forKey:@"scheduledIntervalSecs"];
+    [stringsCopy setSafeObject:v83 forKey:@"scheduledIntervalSecs"];
   }
 
   v50 = [v82 length];
-  v51 = [v4 safeStringForKey:@"scheduledRemainingSecs"];
+  v51 = [stringsCopy safeStringForKey:@"scheduledRemainingSecs"];
   v52 = [v51 length];
 
   if (v50 > v52)
   {
-    [v4 setSafeObject:v82 forKey:@"scheduledRemainingSecs"];
+    [stringsCopy setSafeObject:v82 forKey:@"scheduledRemainingSecs"];
   }
 
   v53 = [v81 length];
-  v54 = [v4 safeStringForKey:@"pushDelaySecs"];
+  v54 = [stringsCopy safeStringForKey:@"pushDelaySecs"];
   v55 = [v54 length];
 
   if (v53 > v55)
   {
-    [v4 setSafeObject:v81 forKey:@"pushDelaySecs"];
+    [stringsCopy setSafeObject:v81 forKey:@"pushDelaySecs"];
   }
 
   v56 = [v80 length];
-  v57 = [v4 safeStringForKey:@"activeClientCount"];
+  v57 = [stringsCopy safeStringForKey:@"activeClientCount"];
   v58 = [v57 length];
 
   if (v56 > v58)
   {
-    [v4 setSafeObject:v80 forKey:@"activeClientCount"];
+    [stringsCopy setSafeObject:v80 forKey:@"activeClientCount"];
   }
 
   v59 = [v79 length];
-  v60 = [v4 safeStringForKey:@"activeMonitorCount"];
+  v60 = [stringsCopy safeStringForKey:@"activeMonitorCount"];
   v61 = [v60 length];
 
   if (v59 > v61)
   {
-    [v4 setSafeObject:v79 forKey:@"activeMonitorCount"];
+    [stringsCopy setSafeObject:v79 forKey:@"activeMonitorCount"];
   }
 
   v62 = [v78 length];
-  v63 = [v4 safeStringForKey:@"maximumClientCount"];
+  v63 = [stringsCopy safeStringForKey:@"maximumClientCount"];
   v64 = [v63 length];
 
   if (v62 > v64)
   {
-    [v4 setSafeObject:v78 forKey:@"maximumClientCount"];
+    [stringsCopy setSafeObject:v78 forKey:@"maximumClientCount"];
   }
 
   v65 = [v77 length];
-  v66 = [v4 safeStringForKey:@"totalClientCount"];
+  v66 = [stringsCopy safeStringForKey:@"totalClientCount"];
   v67 = [v66 length];
 
   if (v65 > v67)
   {
-    [v4 setSafeObject:v77 forKey:@"totalClientCount"];
+    [stringsCopy setSafeObject:v77 forKey:@"totalClientCount"];
   }
 
   v68 = [(__CFString *)v15 length];
-  v69 = [v4 safeStringForKey:@"stageGroup"];
+  v69 = [stringsCopy safeStringForKey:@"stageGroup"];
   v70 = [v69 length];
 
   if (v68 < v70)
   {
-    [v4 setSafeObject:v15 forKey:@"stageGroup"];
+    [stringsCopy setSafeObject:v15 forKey:@"stageGroup"];
   }
 
   v71 = [(__CFString *)v16 length];
-  v72 = [v4 safeStringForKey:@"targetOSKey"];
+  v72 = [stringsCopy safeStringForKey:@"targetOSKey"];
   v73 = [v72 length];
 
   if (v71 < v73)
   {
-    [v4 setSafeObject:v16 forKey:@"targetOSKey"];
+    [stringsCopy setSafeObject:v16 forKey:@"targetOSKey"];
   }
 }
 
-- (id)summaryPadded:(id)a3
+- (id)summaryPadded:(id)padded
 {
-  v4 = a3;
-  v5 = [(MAAutoAssetSummary *)self assetSelector];
-  v6 = [v5 summary];
+  paddedCopy = padded;
+  assetSelector = [(MAAutoAssetSummary *)self assetSelector];
+  summary = [assetSelector summary];
 
-  v60 = [(MAAutoAssetSummary *)self assetRepresentationName];
+  assetRepresentationName = [(MAAutoAssetSummary *)self assetRepresentationName];
   if ([(MAAutoAssetSummary *)self assetWasPatched])
   {
     v7 = @"Y";
@@ -788,16 +788,16 @@
   }
 
   v69 = v8;
-  v9 = [(MAAutoAssetSummary *)self jobStatus];
-  if (v9)
+  jobStatus = [(MAAutoAssetSummary *)self jobStatus];
+  if (jobStatus)
   {
-    v10 = [(MAAutoAssetSummary *)self jobStatus];
-    v70 = [v10 summary];
+    jobStatus2 = [(MAAutoAssetSummary *)self jobStatus];
+    summary2 = [jobStatus2 summary];
   }
 
   else
   {
-    v70 = @"NONE";
+    summary2 = @"NONE";
   }
 
   v63 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%lld", -[MAAutoAssetSummary scheduledIntervalSecs](self, "scheduledIntervalSecs")];
@@ -823,44 +823,44 @@
   v59 = v72;
   v34 = v71;
   v36 = MEMORY[0x1E696AEC0];
-  v48 = [v4 safeStringForKey:@"assetSelector"];
-  v31 = v6;
-  v58 = [MAAutoAssetSummary summaryPaddedString:v6 paddingToLenghtOfString:v48 paddingWith:@" " paddingBefore:0];
-  v47 = [v4 safeStringForKey:@"assetRepresentation"];
-  v57 = [MAAutoAssetSummary summaryPaddedString:v60 paddingToLenghtOfString:v47 paddingWith:@" " paddingBefore:0];
-  v45 = [v4 safeStringForKey:@"assetWasPatched"];
+  v48 = [paddedCopy safeStringForKey:@"assetSelector"];
+  v31 = summary;
+  v58 = [MAAutoAssetSummary summaryPaddedString:summary paddingToLenghtOfString:v48 paddingWith:@" " paddingBefore:0];
+  v47 = [paddedCopy safeStringForKey:@"assetRepresentation"];
+  v57 = [MAAutoAssetSummary summaryPaddedString:assetRepresentationName paddingToLenghtOfString:v47 paddingWith:@" " paddingBefore:0];
+  v45 = [paddedCopy safeStringForKey:@"assetWasPatched"];
   v56 = [MAAutoAssetSummary summaryPaddedString:v61 paddingToLenghtOfString:v45 paddingWith:@" " paddingBefore:0];
-  v43 = [v4 safeStringForKey:@"assetIsStaged"];
+  v43 = [paddedCopy safeStringForKey:@"assetIsStaged"];
   v55 = [MAAutoAssetSummary summaryPaddedString:v69 paddingToLenghtOfString:v43 paddingWith:@" " paddingBefore:0];
-  v41 = [v4 safeStringForKey:@"assetIsSecureMobileAsset"];
+  v41 = [paddedCopy safeStringForKey:@"assetIsSecureMobileAsset"];
   v54 = [MAAutoAssetSummary summaryPaddedString:v46 paddingToLenghtOfString:v41 paddingWith:@" " paddingBefore:0];
-  v39 = [v4 safeStringForKey:@"secureMobileAssetIsPersonalized"];
+  v39 = [paddedCopy safeStringForKey:@"secureMobileAssetIsPersonalized"];
   v53 = [MAAutoAssetSummary summaryPaddedString:v44 paddingToLenghtOfString:v39 paddingWith:@" " paddingBefore:0];
-  v35 = [v4 safeStringForKey:@"secureMobileAssetIsPrePersonalized"];
+  v35 = [paddedCopy safeStringForKey:@"secureMobileAssetIsPrePersonalized"];
   v52 = [MAAutoAssetSummary summaryPaddedString:v42 paddingToLenghtOfString:v35 paddingWith:@" " paddingBefore:0];
-  v33 = [v4 safeStringForKey:@"secureMobileAssetIsGrafted"];
+  v33 = [paddedCopy safeStringForKey:@"secureMobileAssetIsGrafted"];
   v50 = [MAAutoAssetSummary summaryPaddedString:v40 paddingToLenghtOfString:v33 paddingWith:@" " paddingBefore:0];
-  v32 = [v4 safeStringForKey:@"secureMobileAssetGraftPoint"];
+  v32 = [paddedCopy safeStringForKey:@"secureMobileAssetGraftPoint"];
   v51 = [MAAutoAssetSummary summaryPaddedString:v38 paddingToLenghtOfString:v32 paddingWith:@" " paddingBefore:0];
-  v30 = [v4 safeStringForKey:@"jobStatus"];
-  v25 = [MAAutoAssetSummary summaryPaddedString:v70 paddingToLenghtOfString:v30 paddingWith:@" " paddingBefore:0];
-  v29 = [v4 safeStringForKey:@"scheduledIntervalSecs"];
+  v30 = [paddedCopy safeStringForKey:@"jobStatus"];
+  v25 = [MAAutoAssetSummary summaryPaddedString:summary2 paddingToLenghtOfString:v30 paddingWith:@" " paddingBefore:0];
+  v29 = [paddedCopy safeStringForKey:@"scheduledIntervalSecs"];
   v24 = [MAAutoAssetSummary summaryPaddedString:v63 paddingToLenghtOfString:v29 paddingWith:@" " paddingBefore:1];
-  v28 = [v4 safeStringForKey:@"scheduledRemainingSecs"];
+  v28 = [paddedCopy safeStringForKey:@"scheduledRemainingSecs"];
   v49 = [MAAutoAssetSummary summaryPaddedString:v68 paddingToLenghtOfString:v28 paddingWith:@" " paddingBefore:1];
-  v27 = [v4 safeStringForKey:@"pushDelaySecs"];
+  v27 = [paddedCopy safeStringForKey:@"pushDelaySecs"];
   v19 = [MAAutoAssetSummary summaryPaddedString:v67 paddingToLenghtOfString:v27 paddingWith:@" " paddingBefore:1];
-  v26 = [v4 safeStringForKey:@"activeClientCount"];
+  v26 = [paddedCopy safeStringForKey:@"activeClientCount"];
   v21 = [MAAutoAssetSummary summaryPaddedString:v66 paddingToLenghtOfString:v26 paddingWith:@" " paddingBefore:1];
-  v23 = [v4 safeStringForKey:@"activeMonitorCount"];
+  v23 = [paddedCopy safeStringForKey:@"activeMonitorCount"];
   v11 = [MAAutoAssetSummary summaryPaddedString:v65 paddingToLenghtOfString:v23 paddingWith:@" " paddingBefore:1];
-  v22 = [v4 safeStringForKey:@"maximumClientCount"];
+  v22 = [paddedCopy safeStringForKey:@"maximumClientCount"];
   v12 = [MAAutoAssetSummary summaryPaddedString:v64 paddingToLenghtOfString:v22 paddingWith:@" " paddingBefore:1];
-  v20 = [v4 safeStringForKey:@"totalClientCount"];
+  v20 = [paddedCopy safeStringForKey:@"totalClientCount"];
   v13 = [MAAutoAssetSummary summaryPaddedString:v62 paddingToLenghtOfString:v20 paddingWith:@" " paddingBefore:1];
-  v14 = [v4 safeStringForKey:@"stageGroup"];
+  v14 = [paddedCopy safeStringForKey:@"stageGroup"];
   v15 = [MAAutoAssetSummary summaryPaddedString:v59 paddingToLenghtOfString:v14 paddingWith:@" " paddingBefore:1];
-  v16 = [v4 safeStringForKey:@"targetOSKey"];
+  v16 = [paddedCopy safeStringForKey:@"targetOSKey"];
 
   v17 = [MAAutoAssetSummary summaryPaddedString:v34 paddingToLenghtOfString:v16 paddingWith:@" " paddingBefore:1];
 
@@ -871,50 +871,50 @@
 
 - (id)assetRepresentationName
 {
-  v2 = [(MAAutoAssetSummary *)self assetRepresentation];
+  assetRepresentation = [(MAAutoAssetSummary *)self assetRepresentation];
 
-  return [MAAutoAssetSummary assetRepresentationName:v2];
+  return [MAAutoAssetSummary assetRepresentationName:assetRepresentation];
 }
 
-+ (id)assetRepresentationName:(int64_t)a3
++ (id)assetRepresentationName:(int64_t)name
 {
   v3 = @"UNKNOWN";
-  if (a3 > 400)
+  if (name > 400)
   {
     v4 = @"AvailableForStaging";
     v8 = @"BeingStaged";
     v9 = @"Staged";
-    if (a3 != 603)
+    if (name != 603)
     {
       v9 = @"UNKNOWN";
     }
 
-    if (a3 != 602)
+    if (name != 602)
     {
       v8 = v9;
     }
 
-    if (a3 != 601)
+    if (name != 601)
     {
       v4 = v8;
     }
 
-    if (a3 == 600)
+    if (name == 600)
     {
       v3 = @"CandidateForStaging";
     }
 
-    if (a3 == 500)
+    if (name == 500)
     {
       v3 = @"VersionDownloaded";
     }
 
-    if (a3 == 401)
+    if (name == 401)
     {
       v3 = @"ScheduledPushed";
     }
 
-    v7 = a3 <= 600;
+    v7 = name <= 600;
   }
 
   else
@@ -922,37 +922,37 @@
     v4 = @"AwaitingUnlock";
     v5 = @"Active";
     v6 = @"Scheduled";
-    if (a3 != 400)
+    if (name != 400)
     {
       v6 = @"UNKNOWN";
     }
 
-    if (a3 != 300)
+    if (name != 300)
     {
       v5 = v6;
     }
 
-    if (a3 != 201)
+    if (name != 201)
     {
       v4 = v5;
     }
 
-    if (a3 == 200)
+    if (name == 200)
     {
       v3 = @"AwaitingSync";
     }
 
-    if (a3 == 100)
+    if (name == 100)
     {
       v3 = @"Monitor";
     }
 
-    if (!a3)
+    if (!name)
     {
       v3 = @"None";
     }
 
-    v7 = a3 <= 200;
+    v7 = name <= 200;
   }
 
   if (v7)
@@ -991,24 +991,24 @@
   return v2;
 }
 
-+ (id)summaryPaddedString:(id)a3 paddingToLenghtOfString:(id)a4 paddingWith:(id)a5 paddingBefore:(BOOL)a6
++ (id)summaryPaddedString:(id)string paddingToLenghtOfString:(id)ofString paddingWith:(id)with paddingBefore:(BOOL)before
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v9;
+  beforeCopy = before;
+  stringCopy = string;
+  ofStringCopy = ofString;
+  withCopy = with;
+  v12 = stringCopy;
   v13 = [v12 length];
   v14 = v12;
-  if (v13 < [v10 length])
+  if (v13 < [ofStringCopy length])
   {
-    v15 = [v10 length];
+    v15 = [ofStringCopy length];
     v16 = v15 - [v12 length];
-    v17 = [MEMORY[0x1E696AEC0] string];
-    v18 = [v17 stringByPaddingToLength:v16 withString:v11 startingAtIndex:0];
+    string = [MEMORY[0x1E696AEC0] string];
+    v18 = [string stringByPaddingToLength:v16 withString:withCopy startingAtIndex:0];
 
     v19 = objc_alloc(MEMORY[0x1E696AEC0]);
-    if (v6)
+    if (beforeCopy)
     {
       v20 = [v19 initWithFormat:@"%@%@", v18, v12];
     }
@@ -1024,45 +1024,45 @@
   return v14;
 }
 
-+ (id)summaryPaddedHeader:(id)a3
++ (id)summaryPaddedHeader:(id)header
 {
   v26 = MEMORY[0x1E696AEC0];
-  v3 = a3;
-  v33 = [v3 safeStringForKey:@"assetSelector"];
+  headerCopy = header;
+  v33 = [headerCopy safeStringForKey:@"assetSelector"];
   v42 = [MAAutoAssetSummary summaryPaddedString:@"assetSelector" paddingToLenghtOfString:v33 paddingWith:@" " paddingBefore:0];
-  v32 = [v3 safeStringForKey:@"assetRepresentation"];
+  v32 = [headerCopy safeStringForKey:@"assetRepresentation"];
   v41 = [MAAutoAssetSummary summaryPaddedString:@"assetRepresentation" paddingToLenghtOfString:v32 paddingWith:@" " paddingBefore:0];
-  v31 = [v3 safeStringForKey:@"assetWasPatched"];
+  v31 = [headerCopy safeStringForKey:@"assetWasPatched"];
   v40 = [MAAutoAssetSummary summaryPaddedString:@"assetWasPatched" paddingToLenghtOfString:v31 paddingWith:@" " paddingBefore:0];
-  v30 = [v3 safeStringForKey:@"assetIsStaged"];
+  v30 = [headerCopy safeStringForKey:@"assetIsStaged"];
   v39 = [MAAutoAssetSummary summaryPaddedString:@"assetIsStaged" paddingToLenghtOfString:v30 paddingWith:@" " paddingBefore:0];
-  v29 = [v3 safeStringForKey:@"assetIsSecureMobileAsset"];
+  v29 = [headerCopy safeStringForKey:@"assetIsSecureMobileAsset"];
   v38 = [MAAutoAssetSummary summaryPaddedString:@"assetIsSecureMobileAsset" paddingToLenghtOfString:v29 paddingWith:@" " paddingBefore:0];
-  v28 = [v3 safeStringForKey:@"secureMobileAssetIsPersonalized"];
+  v28 = [headerCopy safeStringForKey:@"secureMobileAssetIsPersonalized"];
   v37 = [MAAutoAssetSummary summaryPaddedString:@"secureMobileAssetIsPersonalized" paddingToLenghtOfString:v28 paddingWith:@" " paddingBefore:0];
-  v25 = [v3 safeStringForKey:@"secureMobileAssetIsPrePersonalized"];
+  v25 = [headerCopy safeStringForKey:@"secureMobileAssetIsPrePersonalized"];
   v36 = [MAAutoAssetSummary summaryPaddedString:@"secureMobileAssetIsPrePersonalized" paddingToLenghtOfString:v25 paddingWith:@" " paddingBefore:0];
-  v24 = [v3 safeStringForKey:@"secureMobileAssetIsGrafted"];
+  v24 = [headerCopy safeStringForKey:@"secureMobileAssetIsGrafted"];
   v35 = [MAAutoAssetSummary summaryPaddedString:@"secureMobileAssetIsGrafted" paddingToLenghtOfString:v24 paddingWith:@" " paddingBefore:0];
-  v23 = [v3 safeStringForKey:@"secureMobileAssetGraftPoint"];
+  v23 = [headerCopy safeStringForKey:@"secureMobileAssetGraftPoint"];
   v34 = [MAAutoAssetSummary summaryPaddedString:@"secureMobileAssetGraftPoint" paddingToLenghtOfString:v23 paddingWith:@" " paddingBefore:0];
-  v22 = [v3 safeStringForKey:@"jobStatus"];
+  v22 = [headerCopy safeStringForKey:@"jobStatus"];
   v18 = [MAAutoAssetSummary summaryPaddedString:@"jobStatus" paddingToLenghtOfString:v22 paddingWith:@" " paddingBefore:0];
-  v21 = [v3 safeStringForKey:@"scheduledIntervalSecs"];
+  v21 = [headerCopy safeStringForKey:@"scheduledIntervalSecs"];
   v16 = [MAAutoAssetSummary summaryPaddedString:@"scheduledIntervalSecs" paddingToLenghtOfString:v21 paddingWith:@" " paddingBefore:0];
-  v20 = [v3 safeStringForKey:@"scheduledRemainingSecs"];
+  v20 = [headerCopy safeStringForKey:@"scheduledRemainingSecs"];
   v14 = [MAAutoAssetSummary summaryPaddedString:@"scheduledRemainingSecs" paddingToLenghtOfString:v20 paddingWith:@" " paddingBefore:0];
-  v19 = [v3 safeStringForKey:@"activeClientCount"];
+  v19 = [headerCopy safeStringForKey:@"activeClientCount"];
   v13 = [MAAutoAssetSummary summaryPaddedString:@"activeClientCount" paddingToLenghtOfString:v19 paddingWith:@" " paddingBefore:0];
-  v17 = [v3 safeStringForKey:@"activeMonitorCount"];
+  v17 = [headerCopy safeStringForKey:@"activeMonitorCount"];
   v11 = [MAAutoAssetSummary summaryPaddedString:@"activeMonitorCount" paddingToLenghtOfString:v17 paddingWith:@" " paddingBefore:0];
-  v15 = [v3 safeStringForKey:@"maximumClientCount"];
+  v15 = [headerCopy safeStringForKey:@"maximumClientCount"];
   v10 = [MAAutoAssetSummary summaryPaddedString:@"maximumClientCount" paddingToLenghtOfString:v15 paddingWith:@" " paddingBefore:0];
-  v12 = [v3 safeStringForKey:@"totalClientCount"];
+  v12 = [headerCopy safeStringForKey:@"totalClientCount"];
   v4 = [MAAutoAssetSummary summaryPaddedString:@"totalClientCount" paddingToLenghtOfString:v12 paddingWith:@" " paddingBefore:0];
-  v5 = [v3 safeStringForKey:@"stageGroup"];
+  v5 = [headerCopy safeStringForKey:@"stageGroup"];
   v6 = [MAAutoAssetSummary summaryPaddedString:@"stageGroup" paddingToLenghtOfString:v5 paddingWith:@" " paddingBefore:0];
-  v7 = [v3 safeStringForKey:@"targetOSKey"];
+  v7 = [headerCopy safeStringForKey:@"targetOSKey"];
 
   v8 = [MAAutoAssetSummary summaryPaddedString:@"targetOSKey" paddingToLenghtOfString:v7 paddingWith:@" " paddingBefore:0];
   v27 = [v26 stringWithFormat:@"%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@", v42, v41, v40, v39, v38, v37, v36, v35, v34, v18, v16, v14, v13, v11, v10, v4, v6, v8];
@@ -1070,45 +1070,45 @@
   return v27;
 }
 
-+ (id)summaryPaddedBanner:(id)a3
++ (id)summaryPaddedBanner:(id)banner
 {
   v25 = MEMORY[0x1E696AEC0];
-  v3 = a3;
-  v32 = [v3 safeStringForKey:@"assetSelector"];
+  bannerCopy = banner;
+  v32 = [bannerCopy safeStringForKey:@"assetSelector"];
   v42 = [MAAutoAssetSummary summaryPaddedString:&stru_1F0C1B388 paddingToLenghtOfString:v32 paddingWith:@"=" paddingBefore:0];
-  v31 = [v3 safeStringForKey:@"assetRepresentation"];
+  v31 = [bannerCopy safeStringForKey:@"assetRepresentation"];
   v41 = [MAAutoAssetSummary summaryPaddedString:&stru_1F0C1B388 paddingToLenghtOfString:v31 paddingWith:@"=" paddingBefore:0];
-  v30 = [v3 safeStringForKey:@"assetWasPatched"];
+  v30 = [bannerCopy safeStringForKey:@"assetWasPatched"];
   v40 = [MAAutoAssetSummary summaryPaddedString:&stru_1F0C1B388 paddingToLenghtOfString:v30 paddingWith:@"=" paddingBefore:0];
-  v29 = [v3 safeStringForKey:@"assetIsStaged"];
+  v29 = [bannerCopy safeStringForKey:@"assetIsStaged"];
   v39 = [MAAutoAssetSummary summaryPaddedString:&stru_1F0C1B388 paddingToLenghtOfString:v29 paddingWith:@"=" paddingBefore:0];
-  v28 = [v3 safeStringForKey:@"assetIsSecureMobileAsset"];
+  v28 = [bannerCopy safeStringForKey:@"assetIsSecureMobileAsset"];
   v38 = [MAAutoAssetSummary summaryPaddedString:&stru_1F0C1B388 paddingToLenghtOfString:v28 paddingWith:@"=" paddingBefore:0];
-  v27 = [v3 safeStringForKey:@"secureMobileAssetIsPersonalized"];
+  v27 = [bannerCopy safeStringForKey:@"secureMobileAssetIsPersonalized"];
   v37 = [MAAutoAssetSummary summaryPaddedString:&stru_1F0C1B388 paddingToLenghtOfString:v27 paddingWith:@"=" paddingBefore:0];
-  v24 = [v3 safeStringForKey:@"secureMobileAssetIsPrePersonalized"];
+  v24 = [bannerCopy safeStringForKey:@"secureMobileAssetIsPrePersonalized"];
   v36 = [MAAutoAssetSummary summaryPaddedString:&stru_1F0C1B388 paddingToLenghtOfString:v24 paddingWith:@"=" paddingBefore:0];
-  v23 = [v3 safeStringForKey:@"secureMobileAssetIsGrafted"];
+  v23 = [bannerCopy safeStringForKey:@"secureMobileAssetIsGrafted"];
   v35 = [MAAutoAssetSummary summaryPaddedString:&stru_1F0C1B388 paddingToLenghtOfString:v23 paddingWith:@"=" paddingBefore:0];
-  v22 = [v3 safeStringForKey:@"secureMobileAssetGraftPoint"];
+  v22 = [bannerCopy safeStringForKey:@"secureMobileAssetGraftPoint"];
   v34 = [MAAutoAssetSummary summaryPaddedString:&stru_1F0C1B388 paddingToLenghtOfString:v22 paddingWith:@"=" paddingBefore:0];
-  v21 = [v3 safeStringForKey:@"jobStatus"];
+  v21 = [bannerCopy safeStringForKey:@"jobStatus"];
   v17 = [MAAutoAssetSummary summaryPaddedString:&stru_1F0C1B388 paddingToLenghtOfString:v21 paddingWith:@"=" paddingBefore:0];
-  v20 = [v3 safeStringForKey:@"scheduledIntervalSecs"];
+  v20 = [bannerCopy safeStringForKey:@"scheduledIntervalSecs"];
   v33 = [MAAutoAssetSummary summaryPaddedString:&stru_1F0C1B388 paddingToLenghtOfString:v20 paddingWith:@"=" paddingBefore:0];
-  v19 = [v3 safeStringForKey:@"scheduledRemainingSecs"];
+  v19 = [bannerCopy safeStringForKey:@"scheduledRemainingSecs"];
   v14 = [MAAutoAssetSummary summaryPaddedString:&stru_1F0C1B388 paddingToLenghtOfString:v19 paddingWith:@"=" paddingBefore:0];
-  v18 = [v3 safeStringForKey:@"activeClientCount"];
+  v18 = [bannerCopy safeStringForKey:@"activeClientCount"];
   v13 = [MAAutoAssetSummary summaryPaddedString:&stru_1F0C1B388 paddingToLenghtOfString:v18 paddingWith:@"=" paddingBefore:0];
-  v16 = [v3 safeStringForKey:@"activeMonitorCount"];
+  v16 = [bannerCopy safeStringForKey:@"activeMonitorCount"];
   v4 = [MAAutoAssetSummary summaryPaddedString:&stru_1F0C1B388 paddingToLenghtOfString:v16 paddingWith:@"=" paddingBefore:0];
-  v15 = [v3 safeStringForKey:@"maximumClientCount"];
+  v15 = [bannerCopy safeStringForKey:@"maximumClientCount"];
   v5 = [MAAutoAssetSummary summaryPaddedString:&stru_1F0C1B388 paddingToLenghtOfString:v15 paddingWith:@"=" paddingBefore:0];
-  v12 = [v3 safeStringForKey:@"totalClientCount"];
+  v12 = [bannerCopy safeStringForKey:@"totalClientCount"];
   v6 = [MAAutoAssetSummary summaryPaddedString:&stru_1F0C1B388 paddingToLenghtOfString:v12 paddingWith:@"=" paddingBefore:0];
-  v7 = [v3 safeStringForKey:@"stageGroup"];
+  v7 = [bannerCopy safeStringForKey:@"stageGroup"];
   v8 = [MAAutoAssetSummary summaryPaddedString:&stru_1F0C1B388 paddingToLenghtOfString:v7 paddingWith:@"=" paddingBefore:0];
-  v9 = [v3 safeStringForKey:@"targetOSKey"];
+  v9 = [bannerCopy safeStringForKey:@"targetOSKey"];
 
   v10 = [MAAutoAssetSummary summaryPaddedString:&stru_1F0C1B388 paddingToLenghtOfString:v9 paddingWith:@"=" paddingBefore:0];
   v26 = [v25 stringWithFormat:@"%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@", v42, v41, v40, v39, v38, v37, v36, v35, v34, v17, v33, v14, v13, v4, v5, v6, v8, v10];

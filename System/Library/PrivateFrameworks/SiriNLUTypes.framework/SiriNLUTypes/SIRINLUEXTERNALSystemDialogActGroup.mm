@@ -1,22 +1,22 @@
 @interface SIRINLUEXTERNALSystemDialogActGroup
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addChildActs:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addChildActs:(id)acts;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALSystemDialogActGroup
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   systemDialogAct = self->_systemDialogAct;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (systemDialogAct)
   {
     if (v6)
@@ -34,7 +34,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -61,13 +61,13 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((systemDialogAct = self->_systemDialogAct, !(systemDialogAct | v4[2])) || -[SIRINLUEXTERNALSystemDialogAct isEqual:](systemDialogAct, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((systemDialogAct = self->_systemDialogAct, !(systemDialogAct | equalCopy[2])) || -[SIRINLUEXTERNALSystemDialogAct isEqual:](systemDialogAct, "isEqual:")))
   {
     childActs = self->_childActs;
-    if (childActs | v4[1])
+    if (childActs | equalCopy[1])
     {
       v7 = [(NSMutableArray *)childActs isEqual:?];
     }
@@ -86,11 +86,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUEXTERNALSystemDialogAct *)self->_systemDialogAct copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUEXTERNALSystemDialogAct *)self->_systemDialogAct copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -114,7 +114,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addChildActs:v13];
 
         ++v12;
@@ -131,34 +131,34 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_systemDialogAct)
   {
-    [v8 setSystemDialogAct:?];
+    [toCopy setSystemDialogAct:?];
   }
 
   if ([(SIRINLUEXTERNALSystemDialogActGroup *)self childActsCount])
   {
-    [v8 clearChildActs];
-    v4 = [(SIRINLUEXTERNALSystemDialogActGroup *)self childActsCount];
-    if (v4)
+    [toCopy clearChildActs];
+    childActsCount = [(SIRINLUEXTERNALSystemDialogActGroup *)self childActsCount];
+    if (childActsCount)
     {
-      v5 = v4;
+      v5 = childActsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUEXTERNALSystemDialogActGroup *)self childActsAtIndex:i];
-        [v8 addChildActs:v7];
+        [toCopy addChildActs:v7];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_systemDialogAct)
   {
     PBDataWriterWriteSubmessage();
@@ -202,12 +202,12 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   systemDialogAct = self->_systemDialogAct;
   if (systemDialogAct)
   {
-    v5 = [(SIRINLUEXTERNALSystemDialogAct *)systemDialogAct dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"system_dialog_act"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALSystemDialogAct *)systemDialogAct dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"system_dialog_act"];
   }
 
   if ([(NSMutableArray *)self->_childActs count])
@@ -232,8 +232,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -242,12 +242,12 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"child_acts"];
+    [dictionary setObject:v6 forKey:@"child_acts"];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -256,28 +256,28 @@
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALSystemDialogActGroup;
   v4 = [(SIRINLUEXTERNALSystemDialogActGroup *)&v8 description];
-  v5 = [(SIRINLUEXTERNALSystemDialogActGroup *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALSystemDialogActGroup *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addChildActs:(id)a3
+- (void)addChildActs:(id)acts
 {
-  v4 = a3;
+  actsCopy = acts;
   childActs = self->_childActs;
-  v8 = v4;
+  v8 = actsCopy;
   if (!childActs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_childActs;
     self->_childActs = v6;
 
-    v4 = v8;
+    actsCopy = v8;
     childActs = self->_childActs;
   }
 
-  [(NSMutableArray *)childActs addObject:v4];
+  [(NSMutableArray *)childActs addObject:actsCopy];
 }
 
 @end

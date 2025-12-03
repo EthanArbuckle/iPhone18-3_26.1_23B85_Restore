@@ -1,18 +1,18 @@
 @interface CBPowerSource
-- (CBPowerSource)initWithBTStackDevice:(void *)a3 identifier:(id)a4 error:(id *)a5;
+- (CBPowerSource)initWithBTStackDevice:(void *)device identifier:(id)identifier error:(id *)error;
 @end
 
 @implementation CBPowerSource
 
-- (CBPowerSource)initWithBTStackDevice:(void *)a3 identifier:(id)a4 error:(id *)a5
+- (CBPowerSource)initWithBTStackDevice:(void *)device identifier:(id)identifier error:(id *)error
 {
-  v8 = a4;
+  identifierCopy = identifier;
   if (!self)
   {
-    if (a5)
+    if (error)
     {
       CBErrorF();
-      *a5 = v29 = 0;
+      *error = v29 = 0;
       goto LABEL_45;
     }
 
@@ -25,17 +25,17 @@ LABEL_50:
   v10 = v9;
   if (!v9)
   {
-    if (a5)
+    if (error)
     {
       v31 = [objc_opt_class() description];
-      *a5 = CBErrorF();
+      *error = CBErrorF();
     }
 
     goto LABEL_50;
   }
 
-  [(CBPowerSource *)v9 setAccessoryID:v8];
-  v11 = [[NSUUID alloc] initWithUUIDString:v8];
+  [(CBPowerSource *)v9 setAccessoryID:identifierCopy];
+  v11 = [[NSUUID alloc] initWithUUIDString:identifierCopy];
   if (v11)
   {
     if (qword_100B508D0 != -1)
@@ -46,12 +46,12 @@ LABEL_50:
     [(CBPowerSource *)v10 setAppearanceValue:sub_1000E30FC(off_100B508C8, v11)];
   }
 
-  [(CBPowerSource *)v10 setDeviceType:sub_1000DEB14(a3)];
+  [(CBPowerSource *)v10 setDeviceType:sub_1000DEB14(device)];
   [(CBPowerSource *)v10 setAccessoryCategory:CBDeviceTypeToAccessoryCategory()];
   [(CBPowerSource *)v10 setInternalFlags:[(CBPowerSource *)v10 internalFlags]| 1];
   [(CBPowerSource *)v10 setLowWarnLevel:20];
   [(CBPowerSource *)v10 setMaxCapacity:100.0];
-  sub_1000C23E0(a3, __p);
+  sub_1000C23E0(device, __p);
   if ((SBYTE7(v33) & 0x80u) == 0)
   {
     v12 = __p;
@@ -73,7 +73,7 @@ LABEL_50:
   [(CBPowerSource *)v10 setPresent:1];
   v34 = 0;
   v35 = 0;
-  if (sub_1000C2364(a3, &v35 + 1, &v35, &v34 + 1, &v34))
+  if (sub_1000C2364(device, &v35 + 1, &v35, &v34 + 1, &v34))
   {
     [(CBPowerSource *)v10 setProductID:HIDWORD(v34)];
     [(CBPowerSource *)v10 setVendorID:v35];
@@ -81,9 +81,9 @@ LABEL_50:
   }
 
   v14 = @"USB";
-  if ((*(a3 + 1360) & 1) == 0)
+  if ((*(device + 1360) & 1) == 0)
   {
-    v15 = sub_100540848(a3);
+    v15 = sub_100540848(device);
     v14 = @"Bluetooth";
     if (v15)
     {
@@ -96,7 +96,7 @@ LABEL_50:
   [(CBPowerSource *)v10 setType:@"Accessory Source"];
   *__p = 0u;
   v33 = 0u;
-  sub_1000DEB5C(a3, __p);
+  sub_1000DEB5C(device, __p);
   if (LODWORD(__p[1]) || v33 || DWORD2(v33))
   {
     v25 = objc_alloc_init(CBPowerSource);
@@ -159,8 +159,8 @@ LABEL_50:
     }
 
     v19 = BYTE4(__p[0]);
-    v20 = [(CBPowerSource *)v10 transportType];
-    if (v20 == @"USB" || (v21 = v20) != 0 && (v22 = [(__CFString *)v20 isEqual:@"USB"], v21, v21, v22))
+    transportType = [(CBPowerSource *)v10 transportType];
+    if (transportType == @"USB" || (v21 = transportType) != 0 && (v22 = [(__CFString *)transportType isEqual:@"USB"], v21, v21, v22))
     {
       v19 = 1;
     }

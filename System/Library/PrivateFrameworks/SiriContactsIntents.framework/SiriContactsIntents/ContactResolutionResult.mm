@@ -1,24 +1,24 @@
 @interface ContactResolutionResult
-+ (id)confirmationRequiredWithContactToConfirm:(id)a3;
-+ (id)confirmationRequiredWithObjectToConfirm:(id)a3;
-+ (id)disambiguationWithContactsToDisambiguate:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)successWithResolvedContact:(id)a3;
-+ (id)successWithResolvedObject:(id)a3;
++ (id)confirmationRequiredWithContactToConfirm:(id)confirm;
++ (id)confirmationRequiredWithObjectToConfirm:(id)confirm;
++ (id)disambiguationWithContactsToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedContact:(id)contact;
++ (id)successWithResolvedObject:(id)object;
 @end
 
 @implementation ContactResolutionResult
 
-+ (id)successWithResolvedContact:(id)a3
++ (id)successWithResolvedContact:(id)contact
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static ContactResolutionResult.success(with:)(v4);
+  contactCopy = contact;
+  v5 = static ContactResolutionResult.success(with:)(contactCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithContactsToDisambiguate:(id)a3
++ (id)disambiguationWithContactsToDisambiguate:(id)disambiguate
 {
   type metadata accessor for Contact();
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -28,23 +28,23 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithContactToConfirm:(id)a3
++ (id)confirmationRequiredWithContactToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static ContactResolutionResult.confirmationRequired(with:)(a3);
+  confirmCopy = confirm;
+  v5 = static ContactResolutionResult.confirmationRequired(with:)(confirm);
 
   return v5;
 }
 
-+ (id)successWithResolvedObject:(id)a3
++ (id)successWithResolvedObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   static ContactResolutionResult.success(with:)();
   return static ContactResolutionResult.disambiguation(with:)();
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   type metadata accessor for INObject();
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -52,9 +52,9 @@
   return static ContactResolutionResult.confirmationRequired(with:)();
 }
 
-+ (id)confirmationRequiredWithObjectToConfirm:(id)a3
++ (id)confirmationRequiredWithObjectToConfirm:(id)confirm
 {
-  v3 = a3;
+  confirmCopy = confirm;
   static ContactResolutionResult.confirmationRequired(with:)();
   return ContactResolutionResult.__allocating_init(JSONDictionary:intent:)();
 }

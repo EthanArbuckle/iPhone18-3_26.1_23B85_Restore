@@ -4,11 +4,11 @@
 - (BOOL)deviceIsPasswordConfigured;
 - (BOOL)isDataAvailableForClassC;
 - (_DKDataProtectionMonitor)init;
-- (id)registerStateChangeHandler:(uint64_t)a1;
-- (uint64_t)isDataAvailableFor:(uint64_t)a1;
+- (id)registerStateChangeHandler:(uint64_t)handler;
+- (uint64_t)isDataAvailableFor:(uint64_t)for;
 - (uint64_t)isDataAvailableForClassA;
 - (void)dealloc;
-- (void)deregisterStateChangeHandler:(uint64_t)a1;
+- (void)deregisterStateChangeHandler:(uint64_t)handler;
 - (void)handleKeyBagLockNotification;
 @end
 
@@ -39,13 +39,13 @@
   v2 = [(_DKDataProtectionMonitor *)&v30 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     handlers = v2->_handlers;
-    v2->_handlers = v3;
+    v2->_handlers = dictionary;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     availableState = v2->_availableState;
-    v2->_availableState = v5;
+    v2->_availableState = dictionary2;
 
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.coreduet.dp.state", v7);
@@ -106,7 +106,7 @@
 
 - (BOOL)deviceIsLocked
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -124,7 +124,7 @@
 - (void)handleKeyBagLockNotification
 {
   v42 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = _os_activity_create(&dword_191750000, "CoreDuet: _DKDataProtectionMonitor handleKeyBagLockNotification", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     state.opaque[0] = 0;
@@ -149,13 +149,13 @@
     v25 = 0x3032000000;
     v26 = __Block_byref_object_copy__26;
     v27 = __Block_byref_object_dispose__26;
-    v28 = [MEMORY[0x1E695DF90] dictionary];
-    v3 = *(a1 + 32);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v3 = *(self + 32);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __56___DKDataProtectionMonitor_handleKeyBagLockNotification__block_invoke;
     block[3] = &unk_1E736AA08;
-    block[4] = a1;
+    block[4] = self;
     block[5] = &state;
     block[6] = &v29;
     block[7] = &v23;
@@ -270,21 +270,21 @@
   [(_DKDataProtectionMonitor *)&v4 dealloc];
 }
 
-- (id)registerStateChangeHandler:(uint64_t)a1
+- (id)registerStateChangeHandler:(uint64_t)handler
 {
   v3 = a2;
   v4 = v3;
   v5 = 0;
-  if (a1 && v3)
+  if (handler && v3)
   {
-    v6 = [MEMORY[0x1E696AFB0] UUID];
-    v7 = *(a1 + 32);
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v7 = *(handler + 32);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __55___DKDataProtectionMonitor_registerStateChangeHandler___block_invoke;
     block[3] = &unk_1E7368368;
-    block[4] = a1;
-    v8 = v6;
+    block[4] = handler;
+    v8 = uUID;
     v12 = v8;
     v13 = v4;
     dispatch_sync(v7, block);
@@ -297,7 +297,7 @@
 
 - (BOOL)deviceIsPasswordConfigured
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -312,53 +312,53 @@
   return v2;
 }
 
-- (uint64_t)isDataAvailableFor:(uint64_t)a1
+- (uint64_t)isDataAvailableFor:(uint64_t)for
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (for)
   {
-    if (*(a1 + 16) == 1)
+    if (*(for + 16) == 1)
     {
       v10 = 0;
       v11 = &v10;
       v12 = 0x2020000000;
       v13 = 0;
-      v5 = *(a1 + 32);
+      v5 = *(for + 32);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __47___DKDataProtectionMonitor_isDataAvailableFor___block_invoke;
       block[3] = &unk_1E7368808;
-      block[4] = a1;
+      block[4] = for;
       v8 = v3;
       v9 = &v10;
       dispatch_sync(v5, block);
-      LOBYTE(a1) = *(v11 + 24);
+      LOBYTE(for) = *(v11 + 24);
 
       _Block_object_dispose(&v10, 8);
     }
 
     else
     {
-      LOBYTE(a1) = 1;
+      LOBYTE(for) = 1;
     }
   }
 
-  return a1 & 1;
+  return for & 1;
 }
 
-- (void)deregisterStateChangeHandler:(uint64_t)a1
+- (void)deregisterStateChangeHandler:(uint64_t)handler
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (handler)
   {
-    v5 = *(a1 + 32);
+    v5 = *(handler + 32);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __57___DKDataProtectionMonitor_deregisterStateChangeHandler___block_invoke;
     v6[3] = &unk_1E7367710;
-    v6[4] = a1;
+    v6[4] = handler;
     v7 = v3;
     dispatch_sync(v5, v6);
   }

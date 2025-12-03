@@ -1,13 +1,13 @@
 @interface AppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
 - (_TtC19CoreServicesUIAgent11AppDelegate)init;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
-- (void)application:(id)a3 didDiscardSceneSessions:(id)a4;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
+- (void)application:(id)application didDiscardSceneSessions:(id)sessions;
 @end
 
 @implementation AppDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -17,21 +17,21 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a4)
+  if (options)
   {
     type metadata accessor for LaunchOptionsKey();
     sub_1000049AC();
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v7 = a3;
-  v8 = self;
+  applicationCopy = application;
+  selfCopy = self;
   v9 = sub_100004608();
 
   return v9 & 1;
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -41,16 +41,16 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = self;
-  v13 = sub_1000046E4(v10, v11);
+  applicationCopy = application;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  v13 = sub_1000046E4(sessionCopy, optionsCopy);
 
   return v13;
 }
 
-- (void)application:(id)a3 didDiscardSceneSessions:(id)a4
+- (void)application:(id)application didDiscardSceneSessions:(id)sessions
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

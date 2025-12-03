@@ -1,63 +1,63 @@
 @interface HFTimerBasedTimeTriggerBuilder
-- (HFTimerBasedTimeTriggerBuilder)initWithExistingObject:(id)a3 inHome:(id)a4 context:(id)a5;
+- (HFTimerBasedTimeTriggerBuilder)initWithExistingObject:(id)object inHome:(id)home context:(id)context;
 - (id)_updateRecurrences;
 - (id)_updateTimeZone;
 - (id)commitCreateTrigger;
 - (id)commitEditTrigger;
 - (id)createNewTriggerBuilder;
-- (id)updateTriggerBuilder:(id)a3;
-- (void)_setupWithExistingTrigger:(id)a3;
-- (void)copyCurrentStateFromTriggerBuilder:(id)a3;
-- (void)triggerEnabledStateDidChange:(BOOL)a3;
+- (id)updateTriggerBuilder:(id)builder;
+- (void)_setupWithExistingTrigger:(id)trigger;
+- (void)copyCurrentStateFromTriggerBuilder:(id)builder;
+- (void)triggerEnabledStateDidChange:(BOOL)change;
 @end
 
 @implementation HFTimerBasedTimeTriggerBuilder
 
-- (HFTimerBasedTimeTriggerBuilder)initWithExistingObject:(id)a3 inHome:(id)a4 context:(id)a5
+- (HFTimerBasedTimeTriggerBuilder)initWithExistingObject:(id)object inHome:(id)home context:(id)context
 {
-  v9 = a3;
+  objectCopy = object;
   v14.receiver = self;
   v14.super_class = HFTimerBasedTimeTriggerBuilder;
-  v10 = [(HFTriggerBuilder *)&v14 initWithExistingObject:v9 inHome:a4 context:a5];
+  v10 = [(HFTriggerBuilder *)&v14 initWithExistingObject:objectCopy inHome:home context:context];
   v11 = v10;
-  if (v9 && v10)
+  if (objectCopy && v10)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v13 = [MEMORY[0x277CCA890] currentHandler];
-      [v13 handleFailureInMethod:a2 object:v11 file:@"HFConcreteTimeTriggerBuilder.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"[object isKindOfClass:[HMTimerTrigger class]]"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v11 file:@"HFConcreteTimeTriggerBuilder.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"[object isKindOfClass:[HMTimerTrigger class]]"}];
     }
 
-    [(HFTimerBasedTimeTriggerBuilder *)v11 _setupWithExistingTrigger:v9];
+    [(HFTimerBasedTimeTriggerBuilder *)v11 _setupWithExistingTrigger:objectCopy];
   }
 
   return v11;
 }
 
-- (void)_setupWithExistingTrigger:(id)a3
+- (void)_setupWithExistingTrigger:(id)trigger
 {
-  v16 = a3;
-  v4 = [v16 timeZone];
-  [(HFTimerBasedTimeTriggerBuilder *)self setTimeZone:v4];
+  triggerCopy = trigger;
+  timeZone = [triggerCopy timeZone];
+  [(HFTimerBasedTimeTriggerBuilder *)self setTimeZone:timeZone];
 
-  v5 = [v16 recurrences];
+  recurrences = [triggerCopy recurrences];
 
-  if (v5)
+  if (recurrences)
   {
-    v6 = [v16 recurrences];
-    [(HFTimerBasedTimeTriggerBuilder *)self setRecurrences:v6];
+    recurrences2 = [triggerCopy recurrences];
+    [(HFTimerBasedTimeTriggerBuilder *)self setRecurrences:recurrences2];
   }
 
   else
   {
-    v7 = [v16 recurrence];
+    recurrence = [triggerCopy recurrence];
 
-    if (v7)
+    if (recurrence)
     {
       v8 = MEMORY[0x277CBEA60];
-      v9 = [v16 recurrence];
-      v10 = [v8 na_arrayWithSafeObject:v9];
+      recurrence2 = [triggerCopy recurrence];
+      v10 = [v8 na_arrayWithSafeObject:recurrence2];
       [(HFTimerBasedTimeTriggerBuilder *)self setRecurrences:v10];
     }
 
@@ -67,30 +67,30 @@
     }
   }
 
-  v11 = [v16 fireDate];
+  fireDate = [triggerCopy fireDate];
 
-  if (v11)
+  if (fireDate)
   {
     v12 = objc_alloc_init(HFCalendarEventBuilder);
-    v13 = [v16 fireDate];
-    [(HFCalendarEventBuilder *)v12 setFireDate:v13];
+    fireDate2 = [triggerCopy fireDate];
+    [(HFCalendarEventBuilder *)v12 setFireDate:fireDate2];
   }
 
   else
   {
-    v14 = [v16 significantEvent];
+    significantEvent = [triggerCopy significantEvent];
 
-    if (!v14)
+    if (!significantEvent)
     {
       goto LABEL_11;
     }
 
     v12 = objc_alloc_init(HFSignificantTimeEventBuilder);
-    v15 = [v16 significantEvent];
-    [(HFCalendarEventBuilder *)v12 setSignificantEvent:v15];
+    significantEvent2 = [triggerCopy significantEvent];
+    [(HFCalendarEventBuilder *)v12 setSignificantEvent:significantEvent2];
 
-    v13 = [v16 significantEventOffset];
-    [(HFCalendarEventBuilder *)v12 setSignificantEventOffset:v13];
+    fireDate2 = [triggerCopy significantEventOffset];
+    [(HFCalendarEventBuilder *)v12 setSignificantEventOffset:fireDate2];
   }
 
   [(HFTimerBasedTimeTriggerBuilder *)self setEventBuilder:v12];
@@ -99,30 +99,30 @@ LABEL_11:
 
 - (id)commitCreateTrigger
 {
-  v3 = [(HFTriggerBuilder *)self trigger];
+  trigger = [(HFTriggerBuilder *)self trigger];
 
-  if (v3)
+  if (trigger)
   {
     NSLog(&cfstr_AttemptingToCr_0.isa);
   }
 
-  v4 = [(HFTimerBasedTimeTriggerBuilder *)self eventBuilder];
-  v5 = [HFTimerTriggerTimeEventAdapter adapterWithEventBuilder:v4];
+  eventBuilder = [(HFTimerBasedTimeTriggerBuilder *)self eventBuilder];
+  v5 = [HFTimerTriggerTimeEventAdapter adapterWithEventBuilder:eventBuilder];
 
-  v6 = [(HFTimerBasedTimeTriggerBuilder *)self recurrences];
-  if ([v6 count])
+  recurrences = [(HFTimerBasedTimeTriggerBuilder *)self recurrences];
+  if ([recurrences count])
   {
-    v7 = [(HFTimerBasedTimeTriggerBuilder *)self recurrences];
+    recurrences2 = [(HFTimerBasedTimeTriggerBuilder *)self recurrences];
   }
 
   else
   {
-    v7 = 0;
+    recurrences2 = 0;
   }
 
-  v8 = [(HFTriggerBuilder *)self name];
-  v9 = [(HFTimerBasedTimeTriggerBuilder *)self timeZone];
-  v10 = [v5 createTriggerWithName:v8 timeZone:v9 recurrences:v7];
+  name = [(HFTriggerBuilder *)self name];
+  timeZone = [(HFTimerBasedTimeTriggerBuilder *)self timeZone];
+  v10 = [v5 createTriggerWithName:name timeZone:timeZone recurrences:recurrences2];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __53__HFTimerBasedTimeTriggerBuilder_commitCreateTrigger__block_invoke;
@@ -135,18 +135,18 @@ LABEL_11:
 
 - (id)commitEditTrigger
 {
-  v3 = [(HFTriggerBuilder *)self trigger];
+  trigger = [(HFTriggerBuilder *)self trigger];
 
-  if (!v3)
+  if (!trigger)
   {
     NSLog(&cfstr_AttemptingToEd.isa);
   }
 
-  v4 = [(HFTimerBasedTimeTriggerBuilder *)self eventBuilder];
-  v5 = [HFTimerTriggerTimeEventAdapter adapterWithEventBuilder:v4];
+  eventBuilder = [(HFTimerBasedTimeTriggerBuilder *)self eventBuilder];
+  v5 = [HFTimerTriggerTimeEventAdapter adapterWithEventBuilder:eventBuilder];
 
-  v6 = [(HFTriggerBuilder *)self trigger];
-  v7 = [v5 updateTrigger:v6];
+  trigger2 = [(HFTriggerBuilder *)self trigger];
+  v7 = [v5 updateTrigger:trigger2];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __51__HFTimerBasedTimeTriggerBuilder_commitEditTrigger__block_invoke;
@@ -333,31 +333,31 @@ void __49__HFTimerBasedTimeTriggerBuilder__updateTimeZone__block_invoke_35(uint6
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyCurrentStateFromTriggerBuilder:(id)a3
+- (void)copyCurrentStateFromTriggerBuilder:(id)builder
 {
-  v4 = a3;
-  v5 = [v4 name];
-  [(HFTriggerBuilder *)self setName:v5];
+  builderCopy = builder;
+  name = [builderCopy name];
+  [(HFTriggerBuilder *)self setName:name];
 
-  v6 = [v4 eventBuilder];
-  [(HFTimerBasedTimeTriggerBuilder *)self setEventBuilder:v6];
+  eventBuilder = [builderCopy eventBuilder];
+  [(HFTimerBasedTimeTriggerBuilder *)self setEventBuilder:eventBuilder];
 
-  v7 = [v4 recurrences];
-  [(HFTimerBasedTimeTriggerBuilder *)self setRecurrences:v7];
+  recurrences = [builderCopy recurrences];
+  [(HFTimerBasedTimeTriggerBuilder *)self setRecurrences:recurrences];
 
-  v8 = [v4 timeZone];
+  timeZone = [builderCopy timeZone];
 
-  [(HFTimerBasedTimeTriggerBuilder *)self setTimeZone:v8];
+  [(HFTimerBasedTimeTriggerBuilder *)self setTimeZone:timeZone];
 }
 
-- (void)triggerEnabledStateDidChange:(BOOL)a3
+- (void)triggerEnabledStateDidChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   objc_opt_class();
-  v5 = [(HFTimerBasedTimeTriggerBuilder *)self eventBuilder];
+  eventBuilder = [(HFTimerBasedTimeTriggerBuilder *)self eventBuilder];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = eventBuilder;
   }
 
   else
@@ -368,12 +368,12 @@ void __49__HFTimerBasedTimeTriggerBuilder__updateTimeZone__block_invoke_35(uint6
   v10 = v6;
 
   v7 = v10;
-  if (v3)
+  if (changeCopy)
   {
     if (v10)
     {
-      v8 = [(HFTimerBasedTimeTriggerBuilder *)self recurrences];
-      v9 = [v8 count];
+      recurrences = [(HFTimerBasedTimeTriggerBuilder *)self recurrences];
+      v9 = [recurrences count];
 
       v7 = v10;
       if (!v9)
@@ -387,20 +387,20 @@ void __49__HFTimerBasedTimeTriggerBuilder__updateTimeZone__block_invoke_35(uint6
 
 - (id)createNewTriggerBuilder
 {
-  v2 = [(HFItemBuilder *)self home];
-  v3 = [v2 newTimerTriggerBuilder];
+  home = [(HFItemBuilder *)self home];
+  newTimerTriggerBuilder = [home newTimerTriggerBuilder];
 
-  return v3;
+  return newTimerTriggerBuilder;
 }
 
-- (id)updateTriggerBuilder:(id)a3
+- (id)updateTriggerBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v16.receiver = self;
   v16.super_class = HFTimerBasedTimeTriggerBuilder;
-  v6 = [(HFTriggerBuilder *)&v16 updateTriggerBuilder:v5];
+  v6 = [(HFTriggerBuilder *)&v16 updateTriggerBuilder:builderCopy];
   objc_opt_class();
-  v7 = v5;
+  v7 = builderCopy;
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
@@ -415,15 +415,15 @@ void __49__HFTimerBasedTimeTriggerBuilder__updateTimeZone__block_invoke_35(uint6
 
   if (v9)
   {
-    v10 = [(HFTimerBasedTimeTriggerBuilder *)self timeZone];
-    [v9 setTimeZone:v10];
+    timeZone = [(HFTimerBasedTimeTriggerBuilder *)self timeZone];
+    [v9 setTimeZone:timeZone];
 
-    v11 = [(HFTimerBasedTimeTriggerBuilder *)self eventBuilder];
-    v12 = [HFTimerTriggerTimeEventAdapter adapterWithEventBuilder:v11];
+    eventBuilder = [(HFTimerBasedTimeTriggerBuilder *)self eventBuilder];
+    v12 = [HFTimerTriggerTimeEventAdapter adapterWithEventBuilder:eventBuilder];
 
-    v13 = [(HFTimerBasedTimeTriggerBuilder *)self recurrences];
-    v14 = [(HFItemBuilder *)self home];
-    [v12 updateTriggerBuilder:v9 recurrences:v13 inHome:v14];
+    recurrences = [(HFTimerBasedTimeTriggerBuilder *)self recurrences];
+    home = [(HFItemBuilder *)self home];
+    [v12 updateTriggerBuilder:v9 recurrences:recurrences inHome:home];
   }
 
   else

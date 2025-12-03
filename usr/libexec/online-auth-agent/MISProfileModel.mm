@@ -1,40 +1,40 @@
 @interface MISProfileModel
-- (BOOL)isProfileInstalled:(id)a3;
-- (BOOL)queryCMSBlobForProfile:(id)a3 forcingXML:(BOOL)a4 handler:(id)a5;
-- (MISProfileModel)initWithDB:(id)a3;
-- (id)getCertPrimaryKey:(id)a3;
-- (int)insertProfile:(void *)a3;
-- (int)insertSigningIdentities:(id)a3 withProfileUUID:(id)a4;
-- (void)queryProfile:(id)a3;
+- (BOOL)isProfileInstalled:(id)installed;
+- (BOOL)queryCMSBlobForProfile:(id)profile forcingXML:(BOOL)l handler:(id)handler;
+- (MISProfileModel)initWithDB:(id)b;
+- (id)getCertPrimaryKey:(id)key;
+- (int)insertProfile:(void *)profile;
+- (int)insertSigningIdentities:(id)identities withProfileUUID:(id)d;
+- (void)queryProfile:(id)profile;
 @end
 
 @implementation MISProfileModel
 
-- (MISProfileModel)initWithDB:(id)a3
+- (MISProfileModel)initWithDB:(id)b
 {
-  v4 = a3;
+  bCopy = b;
   v9.receiver = self;
   v9.super_class = MISProfileModel;
   v5 = [(MISProfileModel *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_weak_db, v4);
+    objc_storeWeak(&v5->_weak_db, bCopy);
     v7 = v6;
   }
 
   return v6;
 }
 
-- (BOOL)queryCMSBlobForProfile:(id)a3 forcingXML:(BOOL)a4 handler:(id)a5
+- (BOOL)queryCMSBlobForProfile:(id)profile forcingXML:(BOOL)l handler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  profileCopy = profile;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_weak_db);
-  if (v8)
+  if (profileCopy)
   {
-    if (!v6)
+    if (!lCopy)
     {
       goto LABEL_4;
     }
@@ -47,13 +47,13 @@
     v20[1] = 3221225472;
     v20[2] = sub_1000089C8;
     v20[3] = &unk_10005D880;
-    v21 = v8;
+    v21 = profileCopy;
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100008A38;
     v17[3] = &unk_10005DD08;
     v19 = &v22;
-    v18 = v9;
+    v18 = handlerCopy;
     v11 = [WeakRetained executeQuery:@"SELECT cms_blob FROM xml_profiles_cache WHERE uuid = @uuid" withBind:v20 withResults:v17];
     v12 = *(v23 + 24);
     v13 = v11 == 0;
@@ -66,8 +66,8 @@ LABEL_4:
       v15[1] = 3221225472;
       v15[2] = sub_100008A58;
       v15[3] = &unk_10005D880;
-      v16 = v8;
-      v13 = [WeakRetained executeQuery:@"SELECT cms_blob FROM profiles WHERE uuid = @uuid" withBind:v15 withResults:v9] == 0;
+      v16 = profileCopy;
+      v13 = [WeakRetained executeQuery:@"SELECT cms_blob FROM profiles WHERE uuid = @uuid" withBind:v15 withResults:handlerCopy] == 0;
     }
   }
 
@@ -79,10 +79,10 @@ LABEL_4:
   return v13;
 }
 
-- (void)queryProfile:(id)a3
+- (void)queryProfile:(id)profile
 {
-  v4 = a3;
-  if (v4)
+  profileCopy = profile;
+  if (profileCopy)
   {
     v8 = 0;
     v9 = &v8;
@@ -93,7 +93,7 @@ LABEL_4:
     v7[2] = sub_100008BAC;
     v7[3] = &unk_10005D8A8;
     v7[4] = &v8;
-    [(MISProfileModel *)self queryCMSBlobForProfile:v4 forcingXML:0 handler:v7];
+    [(MISProfileModel *)self queryCMSBlobForProfile:profileCopy forcingXML:0 handler:v7];
     v5 = v9[3];
     _Block_object_dispose(&v8, 8);
   }
@@ -106,11 +106,11 @@ LABEL_4:
   return v5;
 }
 
-- (BOOL)isProfileInstalled:(id)a3
+- (BOOL)isProfileInstalled:(id)installed
 {
-  v4 = a3;
+  installedCopy = installed;
   WeakRetained = objc_loadWeakRetained(&self->_weak_db);
-  if (v4)
+  if (installedCopy)
   {
     v13 = 0;
     v14 = &v13;
@@ -120,7 +120,7 @@ LABEL_4:
     v11[1] = 3221225472;
     v11[2] = sub_100008DB0;
     v11[3] = &unk_10005D880;
-    v12 = v4;
+    v12 = installedCopy;
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100008E20;
@@ -141,17 +141,17 @@ LABEL_4:
   return v6 & 1;
 }
 
-- (int)insertSigningIdentities:(id)a3 withProfileUUID:(id)a4
+- (int)insertSigningIdentities:(id)identities withProfileUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  identitiesCopy = identities;
+  dCopy = d;
   v8 = objc_autoreleasePoolPush();
   WeakRetained = objc_loadWeakRetained(&self->_weak_db);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = v6;
+  v10 = identitiesCopy;
   v11 = [v10 countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v11)
   {
@@ -178,7 +178,7 @@ LABEL_4:
             v21[1] = 3221225472;
             v21[2] = sub_10000917C;
             v21[3] = &unk_10005D8D0;
-            v22 = v7;
+            v22 = dCopy;
             v17 = v17;
             v23 = v17;
             v18 = [WeakRetained executeQuery:@"INSERT OR IGNORE INTO signing_identities VALUES (NULL withBind:@uuid withResults:{@signing_identity)", v21, 0}];
@@ -196,7 +196,7 @@ LABEL_4:
             if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
-              v29 = v7;
+              v29 = dCopy;
               _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Couldn't get signing identity for %@", buf, 0xCu);
             }
           }
@@ -208,7 +208,7 @@ LABEL_4:
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v29 = v7;
+            v29 = dCopy;
             _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Couldn't create SecCertificate for %@", buf, 0xCu);
           }
         }
@@ -232,17 +232,17 @@ LABEL_19:
   return v18;
 }
 
-- (int)insertProfile:(void *)a3
+- (int)insertProfile:(void *)profile
 {
   WeakRetained = objc_loadWeakRetained(&self->_weak_db);
   v35 = MISProvisioningProfileGetUUID();
   v33 = MISProvisioningProfileGetName();
-  v30 = MISProvisioningProfileGetDeveloperCertificatesHashes(a3);
+  v30 = MISProvisioningProfileGetDeveloperCertificatesHashes(profile);
   v29 = MISXMLProvisioningProfileGetDeveloperCertificates();
   v32 = MISProvisioningProfileGetTeamIdentifier();
   v31 = MISProvisioningProfileGetExpirationDate();
   DataRepresentation = MISProfileCreateDataRepresentation();
-  v28 = MISProvisioningProfileGetEntitlements(a3);
+  v28 = MISProvisioningProfileGetEntitlements(profile);
   v37 = MISProvisioningProfileGetEmbeddedDER();
   v27 = MISProvisioningProfileProvisionsAllDevices();
   v26 = MISProvisioningProfileIsForLocalProvisioning();
@@ -291,7 +291,7 @@ LABEL_19:
   {
     v9 = MISProfileIsDEREncoded() != 0;
     IsAppleInternalProfile = MISProvisioningProfileIsAppleInternalProfile();
-    v11 = MISProvisioningProfileIsForBetaDeployment(a3) != 0;
+    v11 = MISProvisioningProfileIsForBetaDeployment(profile) != 0;
     v53[0] = _NSConcreteStackBlock;
     v53[1] = 3221225472;
     v53[2] = sub_1000099F0;
@@ -363,7 +363,7 @@ LABEL_19:
         }
       }
 
-      v19 = [WeakRetained Entitlements];
+      entitlements = [WeakRetained Entitlements];
       v42[0] = _NSConcreteStackBlock;
       v42[1] = 3221225472;
       v42[2] = sub_100009C7C;
@@ -373,7 +373,7 @@ LABEL_19:
       v43 = v20;
       v21 = v12;
       v44 = v21;
-      [v19 emitEntitlementPredicates:v28 predicateHandler:v42];
+      [entitlements emitEntitlementPredicates:v28 predicateHandler:v42];
 
       v22 = MISProvisioningProfileGetTeamName();
       v39[0] = _NSConcreteStackBlock;
@@ -403,9 +403,9 @@ LABEL_31:
   return v3;
 }
 
-- (id)getCertPrimaryKey:(id)a3
+- (id)getCertPrimaryKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   WeakRetained = objc_loadWeakRetained(&self->_weak_db);
   v14 = 0;
   v15 = &v14;
@@ -417,7 +417,7 @@ LABEL_31:
   v12[1] = 3221225472;
   v12[2] = sub_100009FD8;
   v12[3] = &unk_10005D880;
-  v6 = v4;
+  v6 = keyCopy;
   v13 = v6;
   if ([WeakRetained executeQuery:@"INSERT OR IGNORE INTO certificates VALUES (NULL withBind:@cert)" withResults:{v12, 0}])
   {

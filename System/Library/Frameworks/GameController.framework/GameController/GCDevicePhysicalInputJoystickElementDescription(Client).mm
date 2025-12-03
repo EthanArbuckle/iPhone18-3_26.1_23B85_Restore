@@ -6,17 +6,17 @@
 
 - (_BYTE)makeParameters
 {
-  v51.receiver = a1;
+  v51.receiver = self;
   v51.super_class = &off_1F4EA9EB8;
   v4 = objc_msgSendSuper2(&v51, sel_makeParameters);
-  v5 = [a1 xySources];
-  v8 = v5;
-  if (v5)
+  xySources = [self xySources];
+  v8 = xySources;
+  if (xySources)
   {
     [OUTLINED_FUNCTION_22() xySources];
     objc_claimAutoreleasedReturnValue();
-    v5 = [OUTLINED_FUNCTION_5_4() setWithArray:?];
-    v9 = v5;
+    xySources = [OUTLINED_FUNCTION_5_4() setWithArray:?];
+    v9 = xySources;
     if (!v4)
     {
       goto LABEL_4;
@@ -29,7 +29,7 @@
   if (v4)
   {
 LABEL_3:
-    OUTLINED_FUNCTION_36(v5, v6, v7, 48);
+    OUTLINED_FUNCTION_36(xySources, v6, v7, 48);
   }
 
 LABEL_4:
@@ -37,14 +37,14 @@ LABEL_4:
   {
   }
 
-  v10 = [a1 xSources];
-  v13 = v10;
-  if (v10)
+  xSources = [self xSources];
+  v13 = xSources;
+  if (xSources)
   {
     [OUTLINED_FUNCTION_22() xSources];
     objc_claimAutoreleasedReturnValue();
-    v10 = [OUTLINED_FUNCTION_5_4() setWithArray:?];
-    v14 = v10;
+    xSources = [OUTLINED_FUNCTION_5_4() setWithArray:?];
+    v14 = xSources;
     if (!v4)
     {
       goto LABEL_9;
@@ -57,7 +57,7 @@ LABEL_4:
   if (v4)
   {
 LABEL_8:
-    OUTLINED_FUNCTION_36(v10, v11, v12, 56);
+    OUTLINED_FUNCTION_36(xSources, v11, v12, 56);
   }
 
 LABEL_9:
@@ -65,14 +65,14 @@ LABEL_9:
   {
   }
 
-  v15 = [a1 ySources];
-  v18 = v15;
-  if (v15)
+  ySources = [self ySources];
+  v18 = ySources;
+  if (ySources)
   {
     [OUTLINED_FUNCTION_22() ySources];
     objc_claimAutoreleasedReturnValue();
-    v15 = [OUTLINED_FUNCTION_5_4() setWithArray:?];
-    v19 = v15;
+    ySources = [OUTLINED_FUNCTION_5_4() setWithArray:?];
+    v19 = ySources;
     if (!v4)
     {
       goto LABEL_14;
@@ -85,7 +85,7 @@ LABEL_9:
   if (v4)
   {
 LABEL_13:
-    OUTLINED_FUNCTION_36(v15, v16, v17, 64);
+    OUTLINED_FUNCTION_36(ySources, v16, v17, 64);
   }
 
 LABEL_14:
@@ -93,14 +93,14 @@ LABEL_14:
   {
   }
 
-  v20 = [a1 upSources];
-  v23 = v20;
-  if (v20)
+  upSources = [self upSources];
+  v23 = upSources;
+  if (upSources)
   {
     [OUTLINED_FUNCTION_22() upSources];
     objc_claimAutoreleasedReturnValue();
-    v20 = [OUTLINED_FUNCTION_5_4() setWithArray:?];
-    v24 = v20;
+    upSources = [OUTLINED_FUNCTION_5_4() setWithArray:?];
+    v24 = upSources;
     if (!v4)
     {
       goto LABEL_19;
@@ -113,7 +113,7 @@ LABEL_14:
   if (v4)
   {
 LABEL_18:
-    OUTLINED_FUNCTION_36(v20, v21, v22, 72);
+    OUTLINED_FUNCTION_36(upSources, v21, v22, 72);
   }
 
 LABEL_19:
@@ -121,14 +121,14 @@ LABEL_19:
   {
   }
 
-  v25 = [a1 rightSources];
-  v28 = v25;
-  if (v25)
+  rightSources = [self rightSources];
+  v28 = rightSources;
+  if (rightSources)
   {
     [OUTLINED_FUNCTION_22() rightSources];
     objc_claimAutoreleasedReturnValue();
-    v25 = [OUTLINED_FUNCTION_5_4() setWithArray:?];
-    v29 = v25;
+    rightSources = [OUTLINED_FUNCTION_5_4() setWithArray:?];
+    v29 = rightSources;
     if (!v4)
     {
       goto LABEL_24;
@@ -141,7 +141,7 @@ LABEL_19:
   if (v4)
   {
 LABEL_23:
-    OUTLINED_FUNCTION_36(v25, v26, v27, 96);
+    OUTLINED_FUNCTION_36(rightSources, v26, v27, 96);
   }
 
 LABEL_24:
@@ -149,14 +149,14 @@ LABEL_24:
   {
   }
 
-  v30 = [a1 downSources];
-  v33 = v30;
-  if (v30)
+  downSources = [self downSources];
+  v33 = downSources;
+  if (downSources)
   {
     [OUTLINED_FUNCTION_22() downSources];
     objc_claimAutoreleasedReturnValue();
-    v30 = [OUTLINED_FUNCTION_5_4() setWithArray:?];
-    v34 = v30;
+    downSources = [OUTLINED_FUNCTION_5_4() setWithArray:?];
+    v34 = downSources;
     if (!v4)
     {
       goto LABEL_29;
@@ -169,7 +169,7 @@ LABEL_24:
   if (v4)
   {
 LABEL_28:
-    OUTLINED_FUNCTION_36(v30, v31, v32, 88);
+    OUTLINED_FUNCTION_36(downSources, v31, v32, 88);
   }
 
 LABEL_29:
@@ -177,14 +177,14 @@ LABEL_29:
   {
   }
 
-  v35 = [a1 leftSources];
-  v38 = v35;
-  if (v35)
+  leftSources = [self leftSources];
+  v38 = leftSources;
+  if (leftSources)
   {
     [OUTLINED_FUNCTION_22() leftSources];
     objc_claimAutoreleasedReturnValue();
-    v35 = [OUTLINED_FUNCTION_5_4() setWithArray:?];
-    v39 = v35;
+    leftSources = [OUTLINED_FUNCTION_5_4() setWithArray:?];
+    v39 = leftSources;
     if (!v4)
     {
       goto LABEL_34;
@@ -197,7 +197,7 @@ LABEL_29:
   if (v4)
   {
 LABEL_33:
-    OUTLINED_FUNCTION_36(v35, v36, v37, 80);
+    OUTLINED_FUNCTION_36(leftSources, v36, v37, 80);
   }
 
 LABEL_34:
@@ -205,32 +205,32 @@ LABEL_34:
   {
   }
 
-  v40 = [a1 analogAxes];
+  analogAxes = [self analogAxes];
   if (v4)
   {
-    v4[40] = v40;
-    [a1 directionPressedThreshold];
+    v4[40] = analogAxes;
+    [self directionPressedThreshold];
     *(v4 + 11) = v41;
-    *(v4 + 15) = [a1 eventXValueField];
-    *(v4 + 16) = [a1 eventYValueField];
-    *(v4 + 17) = [a1 eventPressValueField];
-    *(v4 + 18) = [a1 eventTouchValueField];
+    *(v4 + 15) = [self eventXValueField];
+    *(v4 + 16) = [self eventYValueField];
+    *(v4 + 17) = [self eventPressValueField];
+    *(v4 + 18) = [self eventTouchValueField];
   }
 
   else
   {
-    [a1 directionPressedThreshold];
-    [a1 eventXValueField];
-    [a1 eventYValueField];
-    [a1 eventPressValueField];
-    [a1 eventTouchValueField];
+    [self directionPressedThreshold];
+    [self eventXValueField];
+    [self eventYValueField];
+    [self eventPressValueField];
+    [self eventTouchValueField];
   }
 
-  if ([a1 supportsPress])
+  if ([self supportsPress])
   {
     v43 = objc_opt_new();
-    v44 = [a1 pressSources];
-    if (v44)
+    pressSources = [self pressSources];
+    if (pressSources)
     {
       [OUTLINED_FUNCTION_22() pressSources];
       objc_claimAutoreleasedReturnValue();
@@ -243,17 +243,17 @@ LABEL_34:
       [(_GCDevicePhysicalInputPressInputParameters *)v43 setSources:?];
     }
 
-    -[_GCDevicePhysicalInputPressInputParameters setAnalog:](v43, [a1 analogPress]);
-    [a1 pressedThreshold];
+    -[_GCDevicePhysicalInputPressInputParameters setAnalog:](v43, [self analogPress]);
+    [self pressedThreshold];
     [(_GCDevicePhysicalInputPressInputParameters *)v43 setPressedThreshold:v48];
     [(_GCDevicePhysicalInputJoystickElementParameters *)v4 setPress:v43];
   }
 
-  if ([a1 supportsTouch])
+  if ([self supportsTouch])
   {
     v45 = objc_opt_new();
-    v46 = [a1 touchSources];
-    if (v46)
+    touchSources = [self touchSources];
+    if (touchSources)
     {
       [OUTLINED_FUNCTION_22() touchSources];
       objc_claimAutoreleasedReturnValue();
@@ -266,7 +266,7 @@ LABEL_34:
       [(_GCDevicePhysicalInputTouchInputParameters *)v45 setSources:?];
     }
 
-    [a1 touchedThreshold];
+    [self touchedThreshold];
     [(_GCDevicePhysicalInputTouchInputParameters *)v45 setTouchedThreshold:v50];
     [(_GCDevicePhysicalInputJoystickElementParameters *)v4 setTouch:v45];
   }

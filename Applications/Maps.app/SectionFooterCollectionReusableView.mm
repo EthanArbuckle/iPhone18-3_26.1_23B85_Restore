@@ -1,59 +1,59 @@
 @interface SectionFooterCollectionReusableView
-+ (double)heightForFooterViewWithTraitCollection:(id)a3;
-+ (id)_effectiveTraitCollectionWithTraitCollection:(id)a3;
++ (double)heightForFooterViewWithTraitCollection:(id)collection;
++ (id)_effectiveTraitCollectionWithTraitCollection:(id)collection;
 + (id)reuseIdentifier;
-- (SectionFooterCollectionReusableView)initWithFrame:(CGRect)a3;
+- (SectionFooterCollectionReusableView)initWithFrame:(CGRect)frame;
 - (void)_didTapActionButton;
 - (void)_updateFonts;
 - (void)prepareForReuse;
-- (void)setAccessibilityIdentifiersWithBaseString:(id)a3;
-- (void)setActionTitle:(id)a3 completionHandler:(id)a4;
+- (void)setAccessibilityIdentifiersWithBaseString:(id)string;
+- (void)setActionTitle:(id)title completionHandler:(id)handler;
 @end
 
 @implementation SectionFooterCollectionReusableView
 
-- (void)setActionTitle:(id)a3 completionHandler:(id)a4
+- (void)setActionTitle:(id)title completionHandler:(id)handler
 {
-  v8 = a4;
-  v6 = a3;
-  v7 = [(SectionFooterCollectionReusableView *)self actionButton];
-  [v7 setTitle:v6 forState:0];
+  handlerCopy = handler;
+  titleCopy = title;
+  actionButton = [(SectionFooterCollectionReusableView *)self actionButton];
+  [actionButton setTitle:titleCopy forState:0];
 
-  [(SectionFooterCollectionReusableView *)self setActionHandler:v8];
+  [(SectionFooterCollectionReusableView *)self setActionHandler:handlerCopy];
 }
 
-- (void)setAccessibilityIdentifiersWithBaseString:(id)a3
+- (void)setAccessibilityIdentifiersWithBaseString:(id)string
 {
-  v4 = a3;
-  v5 = [v4 stringByAppendingString:@"Section"];
+  stringCopy = string;
+  v5 = [stringCopy stringByAppendingString:@"Section"];
   [(SectionFooterCollectionReusableView *)self setAccessibilityIdentifier:v5];
 
-  v7 = [v4 stringByAppendingString:@"Action"];
+  v7 = [stringCopy stringByAppendingString:@"Action"];
 
-  v6 = [(SectionFooterCollectionReusableView *)self actionButton];
-  [v6 setAccessibilityIdentifier:v7];
+  actionButton = [(SectionFooterCollectionReusableView *)self actionButton];
+  [actionButton setAccessibilityIdentifier:v7];
 }
 
 - (void)_updateFonts
 {
   v3 = objc_opt_class();
-  v4 = [(SectionFooterCollectionReusableView *)self traitCollection];
-  v8 = [v3 _effectiveTraitCollectionWithTraitCollection:v4];
+  traitCollection = [(SectionFooterCollectionReusableView *)self traitCollection];
+  v8 = [v3 _effectiveTraitCollectionWithTraitCollection:traitCollection];
 
   v5 = [objc_opt_class() _fontWithTraitCollection:v8];
-  v6 = [(SectionFooterCollectionReusableView *)self actionButton];
-  v7 = [v6 titleLabel];
-  [v7 setFont:v5];
+  actionButton = [(SectionFooterCollectionReusableView *)self actionButton];
+  titleLabel = [actionButton titleLabel];
+  [titleLabel setFont:v5];
 }
 
 - (void)_didTapActionButton
 {
-  v3 = [(SectionFooterCollectionReusableView *)self actionHandler];
+  actionHandler = [(SectionFooterCollectionReusableView *)self actionHandler];
 
-  if (v3)
+  if (actionHandler)
   {
-    v4 = [(SectionFooterCollectionReusableView *)self actionHandler];
-    v4[2]();
+    actionHandler2 = [(SectionFooterCollectionReusableView *)self actionHandler];
+    actionHandler2[2]();
   }
 }
 
@@ -62,15 +62,15 @@
   v4.receiver = self;
   v4.super_class = SectionFooterCollectionReusableView;
   [(SectionFooterCollectionReusableView *)&v4 prepareForReuse];
-  v3 = [(SectionFooterCollectionReusableView *)self actionButton];
-  [v3 setTitle:&stru_1016631F0 forState:0];
+  actionButton = [(SectionFooterCollectionReusableView *)self actionButton];
+  [actionButton setTitle:&stru_1016631F0 forState:0];
 }
 
-- (SectionFooterCollectionReusableView)initWithFrame:(CGRect)a3
+- (SectionFooterCollectionReusableView)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = SectionFooterCollectionReusableView;
-  v3 = [(SectionFooterCollectionReusableView *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SectionFooterCollectionReusableView *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
@@ -83,21 +83,21 @@
     [(MapsThemeButton *)v3->_actionButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(MapsThemeButton *)v3->_actionButton setTitleColorProvider:&stru_101623CA0];
     [(SectionFooterCollectionReusableView *)v3 _updateFonts];
-    v7 = [(SectionFooterCollectionReusableView *)v3 actionButton];
-    [v7 addTarget:v3 action:"_didTapActionButton" forControlEvents:64];
+    actionButton = [(SectionFooterCollectionReusableView *)v3 actionButton];
+    [actionButton addTarget:v3 action:"_didTapActionButton" forControlEvents:64];
 
     [(SectionFooterCollectionReusableView *)v3 addSubview:v3->_actionButton];
-    v18 = [(MapsThemeButton *)v3->_actionButton leadingAnchor];
-    v8 = [(SectionFooterCollectionReusableView *)v3 leadingAnchor];
-    v9 = [v18 constraintEqualToAnchor:v8 constant:16.0];
+    leadingAnchor = [(MapsThemeButton *)v3->_actionButton leadingAnchor];
+    leadingAnchor2 = [(SectionFooterCollectionReusableView *)v3 leadingAnchor];
+    v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v20[0] = v9;
-    v10 = [(MapsThemeButton *)v3->_actionButton topAnchor];
-    v11 = [(SectionFooterCollectionReusableView *)v3 topAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    topAnchor = [(MapsThemeButton *)v3->_actionButton topAnchor];
+    topAnchor2 = [(SectionFooterCollectionReusableView *)v3 topAnchor];
+    v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v20[1] = v12;
-    v13 = [(MapsThemeButton *)v3->_actionButton bottomAnchor];
-    v14 = [(SectionFooterCollectionReusableView *)v3 bottomAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    bottomAnchor = [(MapsThemeButton *)v3->_actionButton bottomAnchor];
+    bottomAnchor2 = [(SectionFooterCollectionReusableView *)v3 bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v20[2] = v15;
     v16 = [NSArray arrayWithObjects:v20 count:3];
     [NSLayoutConstraint activateConstraints:v16];
@@ -106,9 +106,9 @@
   return v3;
 }
 
-+ (double)heightForFooterViewWithTraitCollection:(id)a3
++ (double)heightForFooterViewWithTraitCollection:(id)collection
 {
-  v3 = [a3 _maps_traitCollectionByClampingContentSizeCategoryWithMinimumContentSizeCategory:0 maximumContentSizeCategory:UIContentSizeCategoryAccessibilityLarge];
+  v3 = [collection _maps_traitCollectionByClampingContentSizeCategoryWithMinimumContentSizeCategory:0 maximumContentSizeCategory:UIContentSizeCategoryAccessibilityLarge];
   v4 = [objc_opt_class() _fontWithTraitCollection:v3];
   [v3 _maps_displayScaleOrMainScreenScale];
   [UILabel _maps_maximumHeightWithFont:v4 numberOfLines:1 displayScale:?];
@@ -117,11 +117,11 @@
   return v6;
 }
 
-+ (id)_effectiveTraitCollectionWithTraitCollection:(id)a3
++ (id)_effectiveTraitCollectionWithTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [a1 _maximumContentSizeCategory];
-  v6 = [v4 _maps_traitCollectionByClampingContentSizeCategoryWithMinimumContentSizeCategory:0 maximumContentSizeCategory:v5];
+  collectionCopy = collection;
+  _maximumContentSizeCategory = [self _maximumContentSizeCategory];
+  v6 = [collectionCopy _maps_traitCollectionByClampingContentSizeCategoryWithMinimumContentSizeCategory:0 maximumContentSizeCategory:_maximumContentSizeCategory];
 
   return v6;
 }

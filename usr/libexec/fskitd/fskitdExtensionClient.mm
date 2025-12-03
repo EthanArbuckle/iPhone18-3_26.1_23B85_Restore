@@ -1,109 +1,109 @@
 @interface fskitdExtensionClient
-+ (void)closeResource:(id)a3 andRevoke:(BOOL)a4;
-+ (void)postTaskStatusUpdate:(id)a3;
-- (void)closeResource:(id)a3 replyHandler:(id)a4;
-- (void)configureUserClient:(id)a3 replyHandler:(id)a4;
-- (void)isVolumeIDUsed:(id)a3 bundle:(id)a4 replyHandler:(id)a5;
-- (void)revokeResource:(id)a3 replyHandler:(id)a4;
-- (void)taskStatusUpdate:(id)a3;
-- (void)wipeResource:(id)a3 replyHandler:(id)a4;
++ (void)closeResource:(id)resource andRevoke:(BOOL)revoke;
++ (void)postTaskStatusUpdate:(id)update;
+- (void)closeResource:(id)resource replyHandler:(id)handler;
+- (void)configureUserClient:(id)client replyHandler:(id)handler;
+- (void)isVolumeIDUsed:(id)used bundle:(id)bundle replyHandler:(id)handler;
+- (void)revokeResource:(id)resource replyHandler:(id)handler;
+- (void)taskStatusUpdate:(id)update;
+- (void)wipeResource:(id)resource replyHandler:(id)handler;
 @end
 
 @implementation fskitdExtensionClient
 
-+ (void)postTaskStatusUpdate:(id)a3
++ (void)postTaskStatusUpdate:(id)update
 {
-  v3 = a3;
+  updateCopy = update;
   v4 = fskit_std_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [v3 taskID];
-    v6 = [v3 taskState];
-    v7 = [v3 taskPurpose];
+    taskID = [updateCopy taskID];
+    taskState = [updateCopy taskState];
+    taskPurpose = [updateCopy taskPurpose];
     *buf = 138412802;
-    v42 = v5;
+    v42 = taskID;
     v43 = 1024;
-    v44 = v6;
+    v44 = taskState;
     v45 = 2112;
-    v46 = v7;
+    v46 = taskPurpose;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Got task update id %@ state %d purpose %@", buf, 0x1Cu);
   }
 
-  v8 = v3;
-  v9 = [gSettings tasks];
-  objc_sync_enter(v9);
-  v10 = [gSettings tasks];
-  v11 = [v8 taskID];
-  v12 = [v10 objectForKey:v11];
+  v8 = updateCopy;
+  tasks = [gSettings tasks];
+  objc_sync_enter(tasks);
+  tasks2 = [gSettings tasks];
+  taskID2 = [v8 taskID];
+  v12 = [tasks2 objectForKey:taskID2];
 
   if (v12)
   {
-    v13 = [v8 taskState];
-    v14 = [v8 taskErrorState];
-    v15 = [v12 updatedDescriptionInState:v13 error:v14];
+    taskState2 = [v8 taskState];
+    taskErrorState = [v8 taskErrorState];
+    v15 = [v12 updatedDescriptionInState:taskState2 error:taskErrorState];
 
-    v16 = [gSettings tasks];
-    v17 = [v8 taskID];
-    [v16 setObject:v15 forKey:v17];
+    tasks3 = [gSettings tasks];
+    taskID3 = [v8 taskID];
+    [tasks3 setObject:v15 forKey:taskID3];
   }
 
   else
   {
-    v16 = fskit_std_log();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
+    tasks3 = fskit_std_log();
+    if (os_log_type_enabled(tasks3, OS_LOG_TYPE_FAULT))
     {
-      v18 = [v8 taskID];
-      sub_10000FE94(v18, buf, v16);
+      taskID4 = [v8 taskID];
+      sub_10000FE94(taskID4, buf, tasks3);
     }
 
     v15 = v8;
   }
 
-  objc_sync_exit(v9);
+  objc_sync_exit(tasks);
   if (v12)
   {
-    v19 = [v8 taskResource];
-    if (v19)
+    taskResource = [v8 taskResource];
+    if (taskResource)
     {
-      v20 = [v8 taskResource];
-      v21 = [v20 kind] == 1;
+      taskResource2 = [v8 taskResource];
+      v21 = [taskResource2 kind] == 1;
 
       if (v21)
       {
-        v22 = [v8 taskResource];
-        v23 = [FSBlockDeviceResource dynamicCast:v22];
+        taskResource3 = [v8 taskResource];
+        v23 = [FSBlockDeviceResource dynamicCast:taskResource3];
 
         if (v23)
         {
-          v19 = [v23 BSDName];
+          taskResource = [v23 BSDName];
         }
 
         else
         {
-          v19 = 0;
+          taskResource = 0;
         }
       }
 
       else
       {
-        v19 = 0;
+        taskResource = 0;
       }
     }
 
     if ([v8 taskState] == 3)
     {
       v24 = gSettings;
-      v25 = [v15 taskID];
-      [v24 removeReferencesToTask:v25];
+      taskID5 = [v15 taskID];
+      [v24 removeReferencesToTask:taskID5];
 
-      if (v19)
+      if (taskResource)
       {
         v38[0] = _NSConcreteStackBlock;
         v38[1] = 3221225472;
         v38[2] = sub_10000F030;
         v38[3] = &unk_1000610A8;
         v39 = v8;
-        v40 = v19;
+        v40 = taskResource;
         [fskitdDAOperations setFSKitAdditions:0 disk:v40 replyHandler:v38];
 
         v26 = v39;
@@ -111,71 +111,71 @@ LABEL_23:
       }
     }
 
-    else if (v19)
+    else if (taskResource)
     {
       v26 = +[NSMutableDictionary dictionary];
-      v27 = [v8 taskID];
-      v28 = [v27 description];
+      taskID6 = [v8 taskID];
+      v28 = [taskID6 description];
       [v26 setObject:v28 forKeyedSubscript:FSDADiskTaskIDKey];
 
-      v29 = [v8 taskPurpose];
-      [v26 setObject:v29 forKeyedSubscript:FSDADiskTaskPurposeKey];
+      taskPurpose2 = [v8 taskPurpose];
+      [v26 setObject:taskPurpose2 forKeyedSubscript:FSDADiskTaskPurposeKey];
 
-      v30 = [v8 taskBundleID];
-      [v26 setObject:v30 forKeyedSubscript:FSDADiskTaskBundleIDKey];
+      taskBundleID = [v8 taskBundleID];
+      [v26 setObject:taskBundleID forKeyedSubscript:FSDADiskTaskBundleIDKey];
 
-      v31 = [v8 taskExtensionInstanceID];
-      v32 = [v31 description];
+      taskExtensionInstanceID = [v8 taskExtensionInstanceID];
+      v32 = [taskExtensionInstanceID description];
       [v26 setObject:v32 forKeyedSubscript:FSDADiskTaskExtensionInstanceKey];
 
-      v33 = [v8 taskState];
-      if (v33 <= 3)
+      taskState3 = [v8 taskState];
+      if (taskState3 <= 3)
       {
-        [v26 setObject:**(&off_100061110 + v33) forKeyedSubscript:FSDADiskTaskStateKey];
+        [v26 setObject:**(&off_100061110 + taskState3) forKeyedSubscript:FSDADiskTaskStateKey];
       }
 
-      [fskitdDAOperations setFSKitAdditions:v26 disk:v19 replyHandler:&stru_1000610C8];
+      [fskitdDAOperations setFSKitAdditions:v26 disk:taskResource replyHandler:&stru_1000610C8];
       goto LABEL_23;
     }
 
-    v34 = [gSettings taskUpdateClients];
-    objc_sync_enter(v34);
-    v35 = [gSettings taskUpdateClients];
+    taskUpdateClients = [gSettings taskUpdateClients];
+    objc_sync_enter(taskUpdateClients);
+    taskUpdateClients2 = [gSettings taskUpdateClients];
     v36[0] = _NSConcreteStackBlock;
     v36[1] = 3221225472;
     v36[2] = sub_10000F0C8;
     v36[3] = &unk_1000610F0;
     v37 = v15;
-    [v35 enumerateObjectsUsingBlock:v36];
+    [taskUpdateClients2 enumerateObjectsUsingBlock:v36];
 
-    objc_sync_exit(v34);
+    objc_sync_exit(taskUpdateClients);
   }
 }
 
-+ (void)closeResource:(id)a3 andRevoke:(BOOL)a4
++ (void)closeResource:(id)resource andRevoke:(BOOL)revoke
 {
-  v4 = a4;
-  v5 = a3;
+  revokeCopy = revoke;
+  resourceCopy = resource;
   v6 = fskit_std_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    sub_10000FEEC(v5);
+    sub_10000FEEC(resourceCopy);
   }
 
-  v7 = [gSettings resourceManager];
-  objc_sync_enter(v7);
-  v8 = [gSettings resourceManager];
-  [v8 removeResource:v5];
+  resourceManager = [gSettings resourceManager];
+  objc_sync_enter(resourceManager);
+  resourceManager2 = [gSettings resourceManager];
+  [resourceManager2 removeResource:resourceCopy];
 
-  objc_sync_exit(v7);
-  if (v4)
+  objc_sync_exit(resourceManager);
+  if (revokeCopy)
   {
-    [v5 revoke];
+    [resourceCopy revoke];
   }
 
   else
   {
-    v9 = [FSBlockDeviceResource dynamicCast:v5];
+    v9 = [FSBlockDeviceResource dynamicCast:resourceCopy];
     v10 = v9;
     if (v9)
     {
@@ -184,39 +184,39 @@ LABEL_23:
   }
 }
 
-- (void)taskStatusUpdate:(id)a3
+- (void)taskStatusUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [gSettings tasks];
-  objc_sync_enter(v5);
-  v6 = [gSettings tasks];
-  v7 = [v4 taskID];
-  v8 = [v6 objectForKey:v7];
+  updateCopy = update;
+  tasks = [gSettings tasks];
+  objc_sync_enter(tasks);
+  tasks2 = [gSettings tasks];
+  taskID = [updateCopy taskID];
+  v8 = [tasks2 objectForKey:taskID];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(tasks);
   if (!v8)
   {
     v17 = fskit_std_log();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      sub_1000100FC(v4);
+      sub_1000100FC(updateCopy);
     }
 
     goto LABEL_14;
   }
 
-  v9 = [v4 taskExtensionInstanceID];
+  taskExtensionInstanceID = [updateCopy taskExtensionInstanceID];
   p_ourInstance = &self->_ourInstance;
-  v11 = [(fskitdExtensionInstance *)self->_ourInstance instanceID];
-  v12 = [v11 fs_containerIdentifier];
-  v13 = [v9 isEqual:v12];
+  instanceID = [(fskitdExtensionInstance *)self->_ourInstance instanceID];
+  fs_containerIdentifier = [instanceID fs_containerIdentifier];
+  v13 = [taskExtensionInstanceID isEqual:fs_containerIdentifier];
 
   if ((v13 & 1) == 0)
   {
     v17 = fskit_std_log();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      sub_10000FF80(v4, p_ourInstance, v17);
+      sub_10000FF80(updateCopy, p_ourInstance, v17);
     }
 
 LABEL_14:
@@ -224,14 +224,14 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  [objc_opt_class() postTaskStatusUpdate:v4];
-  if ([v4 taskState] == 3)
+  [objc_opt_class() postTaskStatusUpdate:updateCopy];
+  if ([updateCopy taskState] == 3)
   {
     v14 = *p_ourInstance;
     if (v14)
     {
-      v15 = [v4 taskID];
-      [(fskitdExtensionInstance *)v14 removeTaskID:v15];
+      taskID2 = [updateCopy taskID];
+      [(fskitdExtensionInstance *)v14 removeTaskID:taskID2];
     }
 
     if ([v8 terminateExtensionWhenFinished])
@@ -239,7 +239,7 @@ LABEL_14:
       v16 = fskit_std_log();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
-        sub_100010068(v4);
+        sub_100010068(updateCopy);
       }
 
       [(fskitdExtensionClient *)self terminateExtension];
@@ -249,17 +249,17 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)wipeResource:(id)a3 replyHandler:(id)a4
+- (void)wipeResource:(id)resource replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  resourceCopy = resource;
+  handlerCopy = handler;
   v8 = fskit_std_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     sub_100010190(v8, v9, v10, v11, v12, v13, v14, v15);
   }
 
-  if (!v6 || [v6 kind] != 1)
+  if (!resourceCopy || [resourceCopy kind] != 1)
   {
     v37 = fskit_std_log();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -273,43 +273,43 @@ LABEL_15:
   v16 = fskit_std_log();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    sub_100010208(v6);
+    sub_100010208(resourceCopy);
   }
 
-  v17 = [(fskitdExtensionInstance *)self->_ourInstance resourceIDs];
-  v18 = [v6 getResourceID];
-  v19 = [v17 containsObject:v18];
+  resourceIDs = [(fskitdExtensionInstance *)self->_ourInstance resourceIDs];
+  getResourceID = [resourceCopy getResourceID];
+  v19 = [resourceIDs containsObject:getResourceID];
 
   if ((v19 & 1) == 0)
   {
     v37 = fskit_std_log();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
-      sub_10001029C(v6);
+      sub_10001029C(resourceCopy);
     }
 
     goto LABEL_14;
   }
 
-  v20 = [gSettings resourceManager];
-  objc_sync_enter(v20);
-  v21 = [gSettings resourceManager];
-  v22 = [v6 getResourceID];
-  v23 = [v21 getResource:v22];
+  resourceManager = [gSettings resourceManager];
+  objc_sync_enter(resourceManager);
+  resourceManager2 = [gSettings resourceManager];
+  getResourceID2 = [resourceCopy getResourceID];
+  v23 = [resourceManager2 getResource:getResourceID2];
 
-  objc_sync_exit(v20);
+  objc_sync_exit(resourceManager);
   if (!v23)
   {
     v37 = fskit_std_log();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
-      sub_1000103A8(v6);
+      sub_1000103A8(resourceCopy);
     }
 
 LABEL_14:
 
     v23 = fs_errorForPOSIXError();
-    v7[2](v7, v23);
+    handlerCopy[2](handlerCopy, v23);
     goto LABEL_15;
   }
 
@@ -323,7 +323,7 @@ LABEL_14:
   v40[1] = 3221225472;
   v40[2] = sub_10000F7FC;
   v40[3] = &unk_100060E08;
-  v27 = v7;
+  v27 = handlerCopy;
   v41 = v27;
   v28 = [v25 remoteObjectProxyWithErrorHandler:v40];
   v38[0] = _NSConcreteStackBlock;
@@ -341,11 +341,11 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)isVolumeIDUsed:(id)a3 bundle:(id)a4 replyHandler:(id)a5
+- (void)isVolumeIDUsed:(id)used bundle:(id)bundle replyHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  bundleCopy = bundle;
+  usedCopy = used;
   v11 = fskit_std_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -353,8 +353,8 @@ LABEL_15:
   }
 
   v19 = gExtensionManager;
-  v20 = [(fskitdExtensionInstance *)self->_ourInstance initiatorAuditToken];
-  [v19 isVolumeIDUsed:v10 bundle:v9 user:v20 replyHandler:v8];
+  initiatorAuditToken = [(fskitdExtensionInstance *)self->_ourInstance initiatorAuditToken];
+  [v19 isVolumeIDUsed:usedCopy bundle:bundleCopy user:initiatorAuditToken replyHandler:handlerCopy];
 
   v21 = fskit_std_log();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -363,29 +363,29 @@ LABEL_15:
   }
 }
 
-- (void)configureUserClient:(id)a3 replyHandler:(id)a4
+- (void)configureUserClient:(id)client replyHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  clientCopy = client;
   v8 = fskit_std_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     sub_100010714(v8, v9, v10, v11, v12, v13, v14, v15);
   }
 
-  v16 = [(fskitdExtensionInstance *)self->_ourInstance attributes];
-  v17 = [v16 objectForKeyedSubscript:FSModuleIdentityAttributeSupportsBlockResources];
+  attributes = [(fskitdExtensionInstance *)self->_ourInstance attributes];
+  v17 = [attributes objectForKeyedSubscript:FSModuleIdentityAttributeSupportsBlockResources];
 
-  v18 = [(fskitdExtensionInstance *)self->_ourInstance instanceAuditToken];
+  instanceAuditToken = [(fskitdExtensionInstance *)self->_ourInstance instanceAuditToken];
   v19 = +[LiveFSUserClient defaultClient];
   if (v17)
   {
-    v20 = [v17 BOOLValue];
+    bOOLValue = [v17 BOOLValue];
   }
 
   else
   {
-    v20 = 0;
+    bOOLValue = 0;
   }
 
   v21 = fskit_std_log();
@@ -394,16 +394,16 @@ LABEL_15:
     v33 = 136315906;
     v34 = "[fskitdExtensionClient configureUserClient:replyHandler:]";
     v35 = 1024;
-    v36 = [v18 pid];
+    v36 = [instanceAuditToken pid];
     v37 = 1024;
-    v38 = [v18 pidversion];
+    pidversion = [instanceAuditToken pidversion];
     v39 = 1024;
-    v40 = v20;
+    v40 = bOOLValue;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%s: pid %d pidversion %d enableBlockResource %d", &v33, 0x1Eu);
   }
 
-  v22 = [v7 machPort];
-  v23 = [v19 configureUserClient:v22 pid:objc_msgSend(v18 pidversion:"pid") supportBlockResource:{objc_msgSend(v18, "pidversion"), v20}];
+  machPort = [clientCopy machPort];
+  v23 = [v19 configureUserClient:machPort pid:objc_msgSend(instanceAuditToken pidversion:"pid") supportBlockResource:{objc_msgSend(instanceAuditToken, "pidversion"), bOOLValue}];
   v24 = fskit_std_log();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
   {
@@ -413,61 +413,61 @@ LABEL_15:
   if (v23)
   {
     v32 = fs_errorForPOSIXError();
-    v6[2](v6, v32);
+    handlerCopy[2](handlerCopy, v32);
   }
 
   else
   {
-    v6[2](v6, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)revokeResource:(id)a3 replyHandler:(id)a4
+- (void)revokeResource:(id)resource replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  resourceCopy = resource;
+  handlerCopy = handler;
   v8 = fskit_std_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100010804(v6);
+    sub_100010804(resourceCopy);
   }
 
-  [objc_opt_class() closeResource:v6 andRevoke:1];
+  [objc_opt_class() closeResource:resourceCopy andRevoke:1];
   ourInstance = self->_ourInstance;
-  v10 = [v6 getResourceID];
-  [(fskitdExtensionInstance *)ourInstance removeResourceID:v10];
+  getResourceID = [resourceCopy getResourceID];
+  [(fskitdExtensionInstance *)ourInstance removeResourceID:getResourceID];
 
   v11 = fskit_std_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    sub_100010894(v6);
+    sub_100010894(resourceCopy);
   }
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)closeResource:(id)a3 replyHandler:(id)a4
+- (void)closeResource:(id)resource replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  resourceCopy = resource;
+  handlerCopy = handler;
   v8 = fskit_std_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100010924(v6);
+    sub_100010924(resourceCopy);
   }
 
-  [objc_opt_class() closeResource:v6 andRevoke:0];
+  [objc_opt_class() closeResource:resourceCopy andRevoke:0];
   ourInstance = self->_ourInstance;
-  v10 = [v6 getResourceID];
-  [(fskitdExtensionInstance *)ourInstance removeResourceID:v10];
+  getResourceID = [resourceCopy getResourceID];
+  [(fskitdExtensionInstance *)ourInstance removeResourceID:getResourceID];
 
   v11 = fskit_std_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000109B4(v6);
+    sub_1000109B4(resourceCopy);
   }
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
 @end

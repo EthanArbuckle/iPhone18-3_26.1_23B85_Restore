@@ -1,26 +1,26 @@
 @interface TUICompactVariantSelectorView
 - (UIEdgeInsets)stackLayoutMargins;
-- (id)heightConstraintsForVariantCell:(id)a3;
-- (id)variantCellWithString:(id)a3 annotation:(id)a4;
+- (id)heightConstraintsForVariantCell:(id)cell;
+- (id)variantCellWithString:(id)string annotation:(id)annotation;
 @end
 
 @implementation TUICompactVariantSelectorView
 
-- (id)heightConstraintsForVariantCell:(id)a3
+- (id)heightConstraintsForVariantCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   if ([(TUIKeyPopupView *)self isCharacterPreviewPaddle])
   {
     v8.receiver = self;
     v8.super_class = TUICompactVariantSelectorView;
-    v5 = [(TUIVariantSelectorView *)&v8 heightConstraintsForVariantCell:v4];
+    v5 = [(TUIVariantSelectorView *)&v8 heightConstraintsForVariantCell:cellCopy];
   }
 
   else
   {
-    v6 = [v4 heightAnchor];
+    heightAnchor = [cellCopy heightAnchor];
 
-    v5 = [v6 constraintEqualToConstant:30.0];
+    v5 = [heightAnchor constraintEqualToConstant:30.0];
   }
 
   return v5;
@@ -50,13 +50,13 @@
   return result;
 }
 
-- (id)variantCellWithString:(id)a3 annotation:(id)a4
+- (id)variantCellWithString:(id)string annotation:(id)annotation
 {
-  v6 = a4;
-  v7 = a3;
+  annotationCopy = annotation;
+  stringCopy = string;
   v8 = [TUICompactVariantCell alloc];
-  v9 = [(TUIKeyPopupView *)self renderTraits];
-  v10 = [(TUIVariantCell *)v8 initWithFrame:v7 string:v6 annotation:v9 traits:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  renderTraits = [(TUIKeyPopupView *)self renderTraits];
+  v10 = [(TUIVariantCell *)v8 initWithFrame:stringCopy string:annotationCopy annotation:renderTraits traits:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 
   return v10;
 }

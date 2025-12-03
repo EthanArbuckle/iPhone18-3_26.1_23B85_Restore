@@ -1,22 +1,22 @@
 @interface APPCControllerDaemonSettings
-+ (id)storageWithDefaultValues:(id)a3;
++ (id)storageWithDefaultValues:(id)values;
 - (BOOL)httpUseFixedHttpSessionManagerValue;
 - (BOOL)useAMSMescalValue;
 - (double)httpLookBackWindowValue;
 - (int64_t)cacheSizeLimitValue;
 - (int64_t)httpMaximumConnectionsPerHostTempSessionValue;
 - (int64_t)httpMaximumConnectionsPerHostValue;
-- (void)setCacheSizeLimitValue:(int64_t)a3;
-- (void)setHttpLookBackWindowValue:(double)a3;
-- (void)setHttpMaximumConnectionsPerHostTempSessionValue:(int64_t)a3;
-- (void)setHttpMaximumConnectionsPerHostValue:(int64_t)a3;
-- (void)setHttpUseFixedHttpSessionManagerValue:(BOOL)a3;
-- (void)setUseAMSMescalValue:(BOOL)a3;
+- (void)setCacheSizeLimitValue:(int64_t)value;
+- (void)setHttpLookBackWindowValue:(double)value;
+- (void)setHttpMaximumConnectionsPerHostTempSessionValue:(int64_t)value;
+- (void)setHttpMaximumConnectionsPerHostValue:(int64_t)value;
+- (void)setHttpUseFixedHttpSessionManagerValue:(BOOL)value;
+- (void)setUseAMSMescalValue:(BOOL)value;
 @end
 
 @implementation APPCControllerDaemonSettings
 
-+ (id)storageWithDefaultValues:(id)a3
++ (id)storageWithDefaultValues:(id)values
 {
   v3 = [[APSettingsStorageKeychain alloc] initWithDefaultValues:&off_100494758];
 
@@ -25,86 +25,86 @@
 
 - (BOOL)useAMSMescalValue
 {
-  v2 = [(APPCControllerDaemonSettings *)self useAMSMescal];
-  v3 = [v2 BOOLValue];
+  useAMSMescal = [(APPCControllerDaemonSettings *)self useAMSMescal];
+  bOOLValue = [useAMSMescal BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setUseAMSMescalValue:(BOOL)a3
+- (void)setUseAMSMescalValue:(BOOL)value
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:value];
   [(APPCControllerDaemonSettings *)self setUseAMSMescal:v4];
 }
 
 - (BOOL)httpUseFixedHttpSessionManagerValue
 {
-  v2 = [(APPCControllerDaemonSettings *)self httpUseFixedHttpSessionManager];
-  v3 = [v2 BOOLValue];
+  httpUseFixedHttpSessionManager = [(APPCControllerDaemonSettings *)self httpUseFixedHttpSessionManager];
+  bOOLValue = [httpUseFixedHttpSessionManager BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setHttpUseFixedHttpSessionManagerValue:(BOOL)a3
+- (void)setHttpUseFixedHttpSessionManagerValue:(BOOL)value
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:value];
   [(APPCControllerDaemonSettings *)self setHttpUseFixedHttpSessionManager:v4];
 }
 
 - (int64_t)httpMaximumConnectionsPerHostValue
 {
-  v2 = [(APPCControllerDaemonSettings *)self httpMaximumConnectionsPerHost];
-  v3 = [v2 integerValue];
+  httpMaximumConnectionsPerHost = [(APPCControllerDaemonSettings *)self httpMaximumConnectionsPerHost];
+  integerValue = [httpMaximumConnectionsPerHost integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setHttpMaximumConnectionsPerHostValue:(int64_t)a3
+- (void)setHttpMaximumConnectionsPerHostValue:(int64_t)value
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:value];
   [(APPCControllerDaemonSettings *)self setHttpMaximumConnectionsPerHost:v4];
 }
 
 - (int64_t)httpMaximumConnectionsPerHostTempSessionValue
 {
-  v2 = [(APPCControllerDaemonSettings *)self httpMaximumConnectionsPerHostTempSession];
-  v3 = [v2 integerValue];
+  httpMaximumConnectionsPerHostTempSession = [(APPCControllerDaemonSettings *)self httpMaximumConnectionsPerHostTempSession];
+  integerValue = [httpMaximumConnectionsPerHostTempSession integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setHttpMaximumConnectionsPerHostTempSessionValue:(int64_t)a3
+- (void)setHttpMaximumConnectionsPerHostTempSessionValue:(int64_t)value
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:value];
   [(APPCControllerDaemonSettings *)self setHttpMaximumConnectionsPerHostTempSession:v4];
 }
 
 - (double)httpLookBackWindowValue
 {
-  v2 = [(APPCControllerDaemonSettings *)self httpLookBackWindow];
-  [v2 doubleValue];
+  httpLookBackWindow = [(APPCControllerDaemonSettings *)self httpLookBackWindow];
+  [httpLookBackWindow doubleValue];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setHttpLookBackWindowValue:(double)a3
+- (void)setHttpLookBackWindowValue:(double)value
 {
-  v4 = [NSNumber numberWithDouble:a3];
+  v4 = [NSNumber numberWithDouble:value];
   [(APPCControllerDaemonSettings *)self setHttpLookBackWindow:v4];
 }
 
 - (int64_t)cacheSizeLimitValue
 {
-  v2 = [(APPCControllerDaemonSettings *)self cacheSizeLimit];
-  v3 = [v2 integerValue];
+  cacheSizeLimit = [(APPCControllerDaemonSettings *)self cacheSizeLimit];
+  integerValue = [cacheSizeLimit integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setCacheSizeLimitValue:(int64_t)a3
+- (void)setCacheSizeLimitValue:(int64_t)value
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:value];
   [(APPCControllerDaemonSettings *)self setCacheSizeLimit:v4];
 }
 

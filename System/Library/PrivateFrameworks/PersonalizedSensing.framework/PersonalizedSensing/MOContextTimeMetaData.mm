@@ -1,58 +1,58 @@
 @interface MOContextTimeMetaData
-- (MOContextTimeMetaData)initWithCoder:(id)a3;
-- (MOContextTimeMetaData)initWithStartDate:(id)a3 endDate:(id)a4 timeReferenceString:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MOContextTimeMetaData)initWithCoder:(id)coder;
+- (MOContextTimeMetaData)initWithStartDate:(id)date endDate:(id)endDate timeReferenceString:(id)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOContextTimeMetaData
 
-- (MOContextTimeMetaData)initWithStartDate:(id)a3 endDate:(id)a4 timeReferenceString:(id)a5
+- (MOContextTimeMetaData)initWithStartDate:(id)date endDate:(id)endDate timeReferenceString:(id)string
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  stringCopy = string;
   v15.receiver = self;
   v15.super_class = MOContextTimeMetaData;
   v12 = [(MOContextTimeMetaData *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_startDate, a3);
-    objc_storeStrong(&v13->_endDate, a4);
-    objc_storeStrong(&v13->_timeReferenceString, a5);
+    objc_storeStrong(&v12->_startDate, date);
+    objc_storeStrong(&v13->_endDate, endDate);
+    objc_storeStrong(&v13->_timeReferenceString, string);
   }
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MOContextTimeMetaData alloc];
-  v5 = [(MOContextTimeMetaData *)self startDate];
-  v6 = [(MOContextTimeMetaData *)self endDate];
-  v7 = [(MOContextTimeMetaData *)self timeReferenceString];
-  v8 = [(MOContextTimeMetaData *)v4 initWithStartDate:v5 endDate:v6 timeReferenceString:v7];
+  startDate = [(MOContextTimeMetaData *)self startDate];
+  endDate = [(MOContextTimeMetaData *)self endDate];
+  timeReferenceString = [(MOContextTimeMetaData *)self timeReferenceString];
+  v8 = [(MOContextTimeMetaData *)v4 initWithStartDate:startDate endDate:endDate timeReferenceString:timeReferenceString];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   timeReferenceString = self->_timeReferenceString;
-  v5 = a3;
-  [v5 encodeObject:timeReferenceString forKey:@"timeReferenceString"];
-  [v5 encodeObject:self->_startDate forKey:@"startDate"];
-  [v5 encodeObject:self->_endDate forKey:@"endDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:timeReferenceString forKey:@"timeReferenceString"];
+  [coderCopy encodeObject:self->_startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"endDate"];
 }
 
-- (MOContextTimeMetaData)initWithCoder:(id)a3
+- (MOContextTimeMetaData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeReferenceString"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeReferenceString"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
 
   v8 = [(MOContextTimeMetaData *)self initWithStartDate:v6 endDate:v7 timeReferenceString:v5];
   return v8;
@@ -61,9 +61,9 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(MOContextTimeMetaData *)self timeReferenceString];
-  v4 = [v3 mask];
-  v5 = [v2 stringWithFormat:@"time string, %@", v4];
+  timeReferenceString = [(MOContextTimeMetaData *)self timeReferenceString];
+  mask = [timeReferenceString mask];
+  v5 = [v2 stringWithFormat:@"time string, %@", mask];
 
   return v5;
 }

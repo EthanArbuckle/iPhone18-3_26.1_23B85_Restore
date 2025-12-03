@@ -1,7 +1,7 @@
 @interface VCMediaNegotiatorResults
 - (VCMediaNegotiatorResults)init;
-- (unsigned)maxBandwidthWithArbiterMode:(unsigned __int8)a3 connectionType:(int)a4;
-- (void)addBandwidthConfigurations:(id)a3;
+- (unsigned)maxBandwidthWithArbiterMode:(unsigned __int8)mode connectionType:(int)type;
+- (void)addBandwidthConfigurations:(id)configurations;
 - (void)dealloc;
 @end
 
@@ -31,17 +31,17 @@
   [(VCMediaNegotiatorResults *)&v3 dealloc];
 }
 
-- (void)addBandwidthConfigurations:(id)a3
+- (void)addBandwidthConfigurations:(id)configurations
 {
   bandwidthConfigurations = self->_bandwidthConfigurations;
-  v4 = [a3 allObjects];
+  allObjects = [configurations allObjects];
 
-  [(NSMutableSet *)bandwidthConfigurations addObjectsFromArray:v4];
+  [(NSMutableSet *)bandwidthConfigurations addObjectsFromArray:allObjects];
 }
 
-- (unsigned)maxBandwidthWithArbiterMode:(unsigned __int8)a3 connectionType:(int)a4
+- (unsigned)maxBandwidthWithArbiterMode:(unsigned __int8)mode connectionType:(int)type
 {
-  v5 = a3;
+  modeCopy = mode;
   v19 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
@@ -55,7 +55,7 @@
   }
 
   v8 = v7;
-  v9 = 0;
+  maxBandwidth = 0;
   v10 = *v16;
   while (2)
   {
@@ -67,16 +67,16 @@
       }
 
       v12 = *(*(&v15 + 1) + 8 * i);
-      if ([v12 connectionType] == a4)
+      if ([v12 connectionType] == type)
       {
-        if ([v12 mode] == v5)
+        if ([v12 mode] == modeCopy)
         {
           return [v12 maxBandwidth];
         }
 
         if ([v12 isDefaultMode])
         {
-          v9 = [v12 maxBandwidth];
+          maxBandwidth = [v12 maxBandwidth];
         }
       }
     }
@@ -90,7 +90,7 @@
     break;
   }
 
-  return v9;
+  return maxBandwidth;
 }
 
 @end

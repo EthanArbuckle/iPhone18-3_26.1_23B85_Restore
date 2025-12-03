@@ -1,41 +1,41 @@
 @interface GKServiceViewController
 - (GKServiceViewController)init;
 - (UIViewController)privateViewController;
-- (void)_addDoneButtonToViewController:(id)a3;
+- (void)_addDoneButtonToViewController:(id)controller;
 - (void)_startObservingChangesToProperties;
 - (void)_stopObservingChangesToProperties;
 - (void)cancelServiceViewController;
 - (void)constructPrivateViewController;
-- (void)dashboardDidChangeToLeaderboardTimeScope:(int64_t)a3;
-- (void)dashboardDidChangeToViewState:(int64_t)a3;
+- (void)dashboardDidChangeToLeaderboardTimeScope:(int64_t)scope;
+- (void)dashboardDidChangeToViewState:(int64_t)state;
 - (void)dealloc;
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3;
-- (void)finishAndPlayChallenge:(id)a3;
-- (void)finishWithTurnBasedMatch:(id)a3;
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation;
+- (void)finishAndPlayChallenge:(id)challenge;
+- (void)finishWithTurnBasedMatch:(id)match;
 - (void)nudge;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performSelectorOnHostController:(SEL)a3;
-- (void)performSelectorOnHostController:(SEL)a3 withObject:(id)a4;
-- (void)performSelectorOnHostController:(SEL)a3 withObject:(id)a4 withObject:(id)a5;
-- (void)presentInitialViewController:(id)a3;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)quitTurnBasedMatch:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performSelectorOnHostController:(SEL)controller;
+- (void)performSelectorOnHostController:(SEL)controller withObject:(id)object;
+- (void)performSelectorOnHostController:(SEL)controller withObject:(id)object withObject:(id)withObject;
+- (void)presentInitialViewController:(id)controller;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
+- (void)quitTurnBasedMatch:(id)match;
 - (void)remoteViewControllerDidCancel;
 - (void)remoteViewControllerDidFinish;
 - (void)remoteViewControllerIsCanceling;
 - (void)remoteViewControllerIsFinishing;
-- (void)requestDashboardLogoImageWithHandler:(id)a3;
-- (void)requestImagesForLeaderboardSetsWithHandler:(id)a3;
-- (void)requestImagesForLeaderboardsInSet:(id)a3 handler:(id)a4;
+- (void)requestDashboardLogoImageWithHandler:(id)handler;
+- (void)requestImagesForLeaderboardSetsWithHandler:(id)handler;
+- (void)requestImagesForLeaderboardsInSet:(id)set handler:(id)handler;
 - (void)resetPrivateViewController;
-- (void)serviceViewControllerCreated:(id)a3;
-- (void)setInitialState:(id)a3 withReply:(id)a4;
-- (void)setValue:(id)a3 forKeyPath:(id)a4 withReply:(id)a5;
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)serviceViewControllerCreated:(id)created;
+- (void)setInitialState:(id)state withReply:(id)reply;
+- (void)setValue:(id)value forKeyPath:(id)path withReply:(id)reply;
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation GKServiceViewController
@@ -47,14 +47,14 @@
   v2 = [(GKNavigationController *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v4 == 1)
+    if (userInterfaceIdiom == 1)
     {
       [(GKServiceViewController *)v2 setModalPresentationStyle:16];
-      v5 = [MEMORY[0x277D0C8C8] sharedTheme];
-      [v5 formSheetSize];
+      mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+      [mEMORY[0x277D0C8C8] formSheetSize];
       [(GKServiceViewController *)v2 setFormSheetSize:?];
 
       *MEMORY[0x277D0C8F0] = 0;
@@ -62,8 +62,8 @@
 
     v2->_alwaysShowDoneButton = 1;
     [(GKServiceViewController *)v2 _startObservingChangesToProperties];
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v2 selector:sel_serviceViewControllerCreated_ name:@"GKServiceViewControllerCreatedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_serviceViewControllerCreated_ name:@"GKServiceViewControllerCreatedNotification" object:0];
     objc_storeStrong(&GKServiceInterfaceController, v2);
   }
 
@@ -73,8 +73,8 @@
 - (void)dealloc
 {
   [(GKServiceViewController *)self _stopObservingChangesToProperties];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = GKServiceViewController;
@@ -93,8 +93,8 @@
     [GKServiceViewController remoteViewControllerIsFinishing];
   }
 
-  v4 = [(GKServiceViewController *)self _remoteViewControllerProxy];
-  [v4 remoteViewControllerIsFinishing];
+  _remoteViewControllerProxy = [(GKServiceViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy remoteViewControllerIsFinishing];
 }
 
 - (void)remoteViewControllerDidFinish
@@ -124,8 +124,8 @@
     [GKServiceViewController remoteViewControllerIsFinishing];
   }
 
-  v4 = [(GKServiceViewController *)self _remoteViewControllerProxy];
-  [v4 remoteViewControllerIsCanceling];
+  _remoteViewControllerProxy = [(GKServiceViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy remoteViewControllerIsCanceling];
 }
 
 - (void)remoteViewControllerDidCancel
@@ -156,12 +156,12 @@
   }
 }
 
-- (void)setValue:(id)a3 forKeyPath:(id)a4 withReply:(id)a5
+- (void)setValue:(id)value forKeyPath:(id)path withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(GKServiceViewController *)self setValue:v8 forKeyPath:v9];
+  valueCopy = value;
+  pathCopy = path;
+  replyCopy = reply;
+  [(GKServiceViewController *)self setValue:valueCopy forKeyPath:pathCopy];
   if (!*MEMORY[0x277D0C2A0])
   {
     v11 = GKOSLoggers();
@@ -170,7 +170,7 @@
   if (os_log_type_enabled(*MEMORY[0x277D0C2A8], OS_LOG_TYPE_DEBUG))
   {
     [GKServiceViewController setValue:forKeyPath:withReply:];
-    if (!v10)
+    if (!replyCopy)
     {
       goto LABEL_6;
     }
@@ -178,22 +178,22 @@
     goto LABEL_5;
   }
 
-  if (v10)
+  if (replyCopy)
   {
 LABEL_5:
-    v10[2](v10, 1);
+    replyCopy[2](replyCopy, 1);
   }
 
 LABEL_6:
 }
 
-- (void)setInitialState:(id)a3 withReply:(id)a4
+- (void)setInitialState:(id)state withReply:(id)reply
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:@"LocalPlayer"];
-  v9 = [v6 objectForKey:@"StatusBarHeight"];
+  stateCopy = state;
+  replyCopy = reply;
+  v8 = [stateCopy objectForKey:@"LocalPlayer"];
+  v9 = [stateCopy objectForKey:@"StatusBarHeight"];
   v10 = v9;
   if (v9)
   {
@@ -220,42 +220,42 @@ LABEL_6:
   if (v8)
   {
 LABEL_7:
-    v13 = [MEMORY[0x277D0C138] localPlayer];
-    [v13 updateFromLocalPlayer:v8];
+    localPlayer = [MEMORY[0x277D0C138] localPlayer];
+    [localPlayer updateFromLocalPlayer:v8];
   }
 
 LABEL_8:
-  v14 = [v6 objectForKeyedSubscript:@"HostPID"];
+  v14 = [stateCopy objectForKeyedSubscript:@"HostPID"];
   -[GKServiceViewController setHostPID:](self, "setHostPID:", [v14 integerValue]);
 
-  v15 = [(GKServiceViewController *)self daemonProxy];
-  [v15 setHostPID:{-[GKServiceViewController hostPID](self, "hostPID")}];
+  daemonProxy = [(GKServiceViewController *)self daemonProxy];
+  [daemonProxy setHostPID:{-[GKServiceViewController hostPID](self, "hostPID")}];
 
   if (!self->_privateViewController && [(GKServiceViewController *)self isViewLoaded])
   {
     [(GKServiceViewController *)self constructPrivateViewController];
   }
 
-  if (v7)
+  if (replyCopy)
   {
-    v7[2](v7, 1);
+    replyCopy[2](replyCopy, 1);
   }
 
-  v16 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v19 = @"GKServiceViewControllerNewHostPIDKey";
   v17 = [MEMORY[0x277CCABB0] numberWithInt:{-[GKServiceViewController hostPID](self, "hostPID")}];
   v20[0] = v17;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-  [v16 postNotificationName:@"GKServiceViewControllerCreatedNotification" object:self userInfo:v18];
+  [defaultCenter postNotificationName:@"GKServiceViewControllerCreatedNotification" object:self userInfo:v18];
 }
 
-- (void)serviceViewControllerCreated:(id)a3
+- (void)serviceViewControllerCreated:(id)created
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"GKServiceViewControllerNewHostPIDKey"];
-  v6 = [v5 integerValue];
+  userInfo = [created userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"GKServiceViewControllerNewHostPIDKey"];
+  integerValue = [v5 integerValue];
 
-  if (v6 != [(GKServiceViewController *)self hostPID])
+  if (integerValue != [(GKServiceViewController *)self hostPID])
   {
 
     [(GKServiceViewController *)self cancelServiceViewController];
@@ -274,8 +274,8 @@ LABEL_8:
     [GKServiceViewController nudge];
   }
 
-  v4 = [(GKServiceViewController *)self daemonProxy];
-  [v4 setHostPID:{-[GKServiceViewController hostPID](self, "hostPID")}];
+  daemonProxy = [(GKServiceViewController *)self daemonProxy];
+  [daemonProxy setHostPID:{-[GKServiceViewController hostPID](self, "hostPID")}];
 }
 
 - (UIViewController)privateViewController
@@ -290,19 +290,19 @@ LABEL_8:
   return privateViewController;
 }
 
-- (void)presentInitialViewController:(id)a3
+- (void)presentInitialViewController:(id)controller
 {
-  v5 = a3;
-  v4 = [(GKServiceViewController *)self shouldAnimatePresentationForPrivateViewController:v5];
+  controllerCopy = controller;
+  v4 = [(GKServiceViewController *)self shouldAnimatePresentationForPrivateViewController:controllerCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(GKServiceViewController *)self presentViewController:v5 animated:v4 completion:&__block_literal_global_21_0];
+    [(GKServiceViewController *)self presentViewController:controllerCopy animated:v4 completion:&__block_literal_global_21_0];
   }
 
   else
   {
-    [(GKServiceViewController *)self pushViewController:v5 animated:v4];
+    [(GKServiceViewController *)self pushViewController:controllerCopy animated:v4];
   }
 }
 
@@ -310,14 +310,14 @@ LABEL_8:
 {
   if (self->_privateViewController)
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v4 == 1)
+    if (userInterfaceIdiom == 1)
     {
       [(GKServiceViewController *)self setModalPresentationStyle:16];
-      v5 = [MEMORY[0x277D0C8C8] sharedTheme];
-      [v5 formSheetSize];
+      mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+      [mEMORY[0x277D0C8C8] formSheetSize];
       [(GKServiceViewController *)self setFormSheetSize:?];
     }
 
@@ -326,15 +326,15 @@ LABEL_8:
       [(GKServiceViewController *)self setModalPresentationStyle:17];
     }
 
-    v10 = [(GKServiceViewController *)self view];
-    [v10 setClipsToBounds:0];
-    v6 = [MEMORY[0x277D0C868] sharedPalette];
-    v7 = [v6 systemInteractionColor];
-    [v10 setTintColor:v7];
+    view = [(GKServiceViewController *)self view];
+    [view setClipsToBounds:0];
+    mEMORY[0x277D0C868] = [MEMORY[0x277D0C868] sharedPalette];
+    systemInteractionColor = [mEMORY[0x277D0C868] systemInteractionColor];
+    [view setTintColor:systemInteractionColor];
 
-    v8 = [(GKServiceViewController *)self visibleViewController];
+    visibleViewController = [(GKServiceViewController *)self visibleViewController];
 
-    if (v8)
+    if (visibleViewController)
     {
       v9 = [MEMORY[0x277CBEA60] arrayWithObject:self->_privateViewController];
       [(GKServiceViewController *)self setViewControllers:v9 animated:0];
@@ -349,16 +349,16 @@ LABEL_8:
   privateViewController = self->_privateViewController;
   if (privateViewController)
   {
-    v4 = [(UIViewController *)privateViewController view];
-    [v4 removeFromSuperview];
+    view = [(UIViewController *)privateViewController view];
+    [view removeFromSuperview];
 
     [(GKServiceViewController *)self setPrivateViewController:0];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = MEMORY[0x277D0C2A0];
   if (!*MEMORY[0x277D0C2A0])
   {
@@ -382,39 +382,39 @@ LABEL_8:
     [GKServiceViewController viewWillAppear:v9];
   }
 
-  v10 = [(GKServiceViewController *)self daemonProxy];
-  [v10 setHostPID:{-[GKServiceViewController hostPID](self, "hostPID")}];
+  daemonProxy = [(GKServiceViewController *)self daemonProxy];
+  [daemonProxy setHostPID:{-[GKServiceViewController hostPID](self, "hostPID")}];
 
-  v11 = [(GKServiceViewController *)self daemonProxy];
-  [v11 setDataUpdateDelegate:self];
+  daemonProxy2 = [(GKServiceViewController *)self daemonProxy];
+  [daemonProxy2 setDataUpdateDelegate:self];
 
   v17.receiver = self;
   v17.super_class = GKServiceViewController;
-  [(GKServiceViewController *)&v17 viewWillAppear:v3];
+  [(GKServiceViewController *)&v17 viewWillAppear:appearCopy];
   if ([(GKServiceViewController *)self _useBackdropViewForWindowBackground])
   {
-    v12 = [(GKServiceViewController *)self navigationBar];
-    v13 = [v12 _backdropViewLayerGroupName];
+    navigationBar = [(GKServiceViewController *)self navigationBar];
+    _backdropViewLayerGroupName = [navigationBar _backdropViewLayerGroupName];
 
-    v14 = [(GKServiceViewController *)self parentViewController];
-    v15 = [v14 view];
-    v16 = [v15 window];
-    [v16 _gkUseAsModalSheetBackgroundWithGroupName:v13];
+    parentViewController = [(GKServiceViewController *)self parentViewController];
+    view = [parentViewController view];
+    window = [view window];
+    [window _gkUseAsModalSheetBackgroundWithGroupName:_backdropViewLayerGroupName];
   }
 
   else
   {
-    v13 = [MEMORY[0x277D0C868] sharedPalette];
-    v14 = [v13 viewBackgroundColor];
-    v15 = [v14 colorWithAlphaComponent:1.0];
-    v16 = [(GKServiceViewController *)self view];
-    [v16 setBackgroundColor:v15];
+    _backdropViewLayerGroupName = [MEMORY[0x277D0C868] sharedPalette];
+    parentViewController = [_backdropViewLayerGroupName viewBackgroundColor];
+    view = [parentViewController colorWithAlphaComponent:1.0];
+    window = [(GKServiceViewController *)self view];
+    [window setBackgroundColor:view];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = MEMORY[0x277D0C2A0];
   if (!*MEMORY[0x277D0C2A0])
   {
@@ -440,12 +440,12 @@ LABEL_8:
 
   v10.receiver = self;
   v10.super_class = GKServiceViewController;
-  [(GKServiceViewController *)&v10 viewDidAppear:v3];
+  [(GKServiceViewController *)&v10 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = MEMORY[0x277D0C2A0];
   if (!*MEMORY[0x277D0C2A0])
   {
@@ -471,12 +471,12 @@ LABEL_8:
 
   v10.receiver = self;
   v10.super_class = GKServiceViewController;
-  [(GKServiceViewController *)&v10 viewWillDisappear:v3];
+  [(GKServiceViewController *)&v10 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = MEMORY[0x277D0C2A0];
   if (!*MEMORY[0x277D0C2A0])
   {
@@ -502,85 +502,85 @@ LABEL_8:
 
   v13.receiver = self;
   v13.super_class = GKServiceViewController;
-  [(GKServiceViewController *)&v13 viewDidDisappear:v3];
-  v10 = [(GKServiceViewController *)self daemonProxy];
-  v11 = [v10 dataUpdateDelegate];
+  [(GKServiceViewController *)&v13 viewDidDisappear:disappearCopy];
+  daemonProxy = [(GKServiceViewController *)self daemonProxy];
+  dataUpdateDelegate = [daemonProxy dataUpdateDelegate];
 
-  if (v11 == self)
+  if (dataUpdateDelegate == self)
   {
-    v12 = [(GKServiceViewController *)self daemonProxy];
-    [v12 setDataUpdateDelegate:0];
+    daemonProxy2 = [(GKServiceViewController *)self daemonProxy];
+    [daemonProxy2 setDataUpdateDelegate:0];
   }
 }
 
-- (void)finishAndPlayChallenge:(id)a3
+- (void)finishAndPlayChallenge:(id)challenge
 {
-  v4 = [a3 internal];
-  [(GKServiceViewController *)self performSelectorOnHostController:sel_playPressedForChallenge_ withObject:v4];
+  internal = [challenge internal];
+  [(GKServiceViewController *)self performSelectorOnHostController:sel_playPressedForChallenge_ withObject:internal];
 }
 
-- (void)finishWithTurnBasedMatch:(id)a3
+- (void)finishWithTurnBasedMatch:(id)match
 {
-  v4 = [a3 internal];
-  [(GKServiceViewController *)self performSelectorOnHostController:sel_finishWithMatch_ withObject:v4];
+  internal = [match internal];
+  [(GKServiceViewController *)self performSelectorOnHostController:sel_finishWithMatch_ withObject:internal];
 }
 
-- (void)quitTurnBasedMatch:(id)a3
+- (void)quitTurnBasedMatch:(id)match
 {
-  v4 = [a3 internal];
-  [(GKServiceViewController *)self performSelectorOnHostController:sel_playerQuitMatch_ withObject:v4];
+  internal = [match internal];
+  [(GKServiceViewController *)self performSelectorOnHostController:sel_playerQuitMatch_ withObject:internal];
 }
 
-- (void)dashboardDidChangeToViewState:(int64_t)a3
+- (void)dashboardDidChangeToViewState:(int64_t)state
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:state];
   [(GKServiceViewController *)self performSelectorOnHostController:sel_setViewState_ withObject:v4];
 }
 
-- (void)dashboardDidChangeToLeaderboardTimeScope:(int64_t)a3
+- (void)dashboardDidChangeToLeaderboardTimeScope:(int64_t)scope
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:scope];
   [(GKServiceViewController *)self performSelectorOnHostController:sel_setLeaderboardTimeScope_ withObject:v4];
 }
 
-- (void)requestDashboardLogoImageWithHandler:(id)a3
+- (void)requestDashboardLogoImageWithHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   [(GKServiceViewController *)self performSelectorOnHostController:sel_requestDashboardLogoImageWithHandler_ withObject:v4];
 }
 
-- (void)requestImagesForLeaderboardSetsWithHandler:(id)a3
+- (void)requestImagesForLeaderboardSetsWithHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   [(GKServiceViewController *)self performSelectorOnHostController:sel_requestImagesForLeaderboardSetsWithHandler_ withObject:v4];
 }
 
-- (void)requestImagesForLeaderboardsInSet:(id)a3 handler:(id)a4
+- (void)requestImagesForLeaderboardsInSet:(id)set handler:(id)handler
 {
-  v6 = a3;
-  v7 = _Block_copy(a4);
-  [(GKServiceViewController *)self performSelectorOnHostController:sel_requestImagesForLeaderboardsInSet_handler_ withObject:v6 withObject:v7];
+  setCopy = set;
+  v7 = _Block_copy(handler);
+  [(GKServiceViewController *)self performSelectorOnHostController:sel_requestImagesForLeaderboardsInSet_handler_ withObject:setCopy withObject:v7];
 }
 
-- (void)performSelectorOnHostController:(SEL)a3
+- (void)performSelectorOnHostController:(SEL)controller
 {
-  v4 = [(GKServiceViewController *)self _remoteViewControllerProxy];
-  [v4 _gkPerformSelector:a3];
+  _remoteViewControllerProxy = [(GKServiceViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy _gkPerformSelector:controller];
 }
 
-- (void)performSelectorOnHostController:(SEL)a3 withObject:(id)a4
+- (void)performSelectorOnHostController:(SEL)controller withObject:(id)object
 {
-  v6 = a4;
-  v7 = [(GKServiceViewController *)self _remoteViewControllerProxy];
-  [v7 _gkPerformSelector:a3 withObject:v6];
+  objectCopy = object;
+  _remoteViewControllerProxy = [(GKServiceViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy _gkPerformSelector:controller withObject:objectCopy];
 }
 
-- (void)performSelectorOnHostController:(SEL)a3 withObject:(id)a4 withObject:(id)a5
+- (void)performSelectorOnHostController:(SEL)controller withObject:(id)object withObject:(id)withObject
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(GKServiceViewController *)self _remoteViewControllerProxy];
-  [v10 _gkPerformSelector:a3 withObject:v9 withObject:v8];
+  withObjectCopy = withObject;
+  objectCopy = object;
+  _remoteViewControllerProxy = [(GKServiceViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy _gkPerformSelector:controller withObject:objectCopy withObject:withObjectCopy];
 }
 
 - (void)_startObservingChangesToProperties
@@ -592,8 +592,8 @@ LABEL_8:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v3 = [(GKServiceViewController *)self observedKeyPaths];
-    v4 = [v3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+    observedKeyPaths = [(GKServiceViewController *)self observedKeyPaths];
+    v4 = [observedKeyPaths countByEnumeratingWithState:&v15 objects:v21 count:16];
     if (v4)
     {
       v6 = v4;
@@ -608,7 +608,7 @@ LABEL_8:
         {
           if (*v16 != v7)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(observedKeyPaths);
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
@@ -627,7 +627,7 @@ LABEL_8:
           }
         }
 
-        v6 = [v3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+        v6 = [observedKeyPaths countByEnumeratingWithState:&v15 objects:v21 count:16];
       }
 
       while (v6);
@@ -642,8 +642,8 @@ LABEL_8:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(GKServiceViewController *)self observedKeyPaths];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  observedKeyPaths = [(GKServiceViewController *)self observedKeyPaths];
+  v4 = [observedKeyPaths countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -655,29 +655,29 @@ LABEL_8:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observedKeyPaths);
         }
 
         [(GKServiceViewController *)self removeObserver:self forKeyPath:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [observedKeyPaths countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = a3;
-  v8 = [(GKServiceViewController *)self observedKeyPaths];
-  v9 = [v8 containsObject:v7];
+  pathCopy = path;
+  observedKeyPaths = [(GKServiceViewController *)self observedKeyPaths];
+  v9 = [observedKeyPaths containsObject:pathCopy];
 
   if (v9)
   {
-    v10 = [(GKServiceViewController *)self valueForKeyPath:v7];
+    v10 = [(GKServiceViewController *)self valueForKeyPath:pathCopy];
     if (!*MEMORY[0x277D0C2A0])
     {
       v11 = GKOSLoggers();
@@ -690,44 +690,44 @@ LABEL_8:
   }
 }
 
-- (void)_addDoneButtonToViewController:(id)a3
+- (void)_addDoneButtonToViewController:(id)controller
 {
-  v9 = a3;
-  if (([v9 _gkServiceWantsCustomRightBarButtonItemInViewService] & 1) == 0)
+  controllerCopy = controller;
+  if (([controllerCopy _gkServiceWantsCustomRightBarButtonItemInViewService] & 1) == 0)
   {
     v4 = objc_alloc(MEMORY[0x277D751E0]);
     v5 = GKGameCenterUIFrameworkBundle();
     v6 = GKGetLocalizedStringFromTableInBundle();
     v7 = [v4 initWithTitle:v6 style:2 target:self action:sel_donePressed_];
-    v8 = [v9 navigationItem];
-    [v8 setRightBarButtonItem:v7];
+    navigationItem = [controllerCopy navigationItem];
+    [navigationItem setRightBarButtonItem:v7];
   }
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   if ([(GKServiceViewController *)self alwaysShowDoneButton])
   {
-    [(GKServiceViewController *)self _addDoneButtonToViewController:v6];
+    [(GKServiceViewController *)self _addDoneButtonToViewController:controllerCopy];
   }
 
   v7.receiver = self;
   v7.super_class = GKServiceViewController;
-  [(GKNavigationController *)&v7 pushViewController:v6 animated:v4];
+  [(GKNavigationController *)&v7 pushViewController:controllerCopy animated:animatedCopy];
 }
 
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  controllersCopy = controllers;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [controllersCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -739,7 +739,7 @@ LABEL_8:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(controllersCopy);
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
@@ -752,7 +752,7 @@ LABEL_8:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [controllersCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -760,10 +760,10 @@ LABEL_8:
 
   v12.receiver = self;
   v12.super_class = GKServiceViewController;
-  [(GKServiceViewController *)&v12 setViewControllers:v6 animated:v4];
+  [(GKServiceViewController *)&v12 setViewControllers:controllersCopy animated:animatedCopy];
 }
 
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation
 {
   if (!*MEMORY[0x277D0C2A0])
   {
@@ -773,12 +773,12 @@ LABEL_8:
   v6 = *MEMORY[0x277D0C2A8];
   if (os_log_type_enabled(*MEMORY[0x277D0C2A8], OS_LOG_TYPE_DEBUG))
   {
-    [(GKServiceViewController *)a3 didRotateFromInterfaceOrientation:v6, self];
+    [(GKServiceViewController *)orientation didRotateFromInterfaceOrientation:v6, self];
   }
 
   v7.receiver = self;
   v7.super_class = GKServiceViewController;
-  [(GKServiceViewController *)&v7 didRotateFromInterfaceOrientation:a3];
+  [(GKServiceViewController *)&v7 didRotateFromInterfaceOrientation:orientation];
 }
 
 - (void)setInitialState:withReply:.cold.1()

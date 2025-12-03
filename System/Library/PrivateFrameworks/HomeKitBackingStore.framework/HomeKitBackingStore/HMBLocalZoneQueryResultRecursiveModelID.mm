@@ -1,6 +1,6 @@
 @interface HMBLocalZoneQueryResultRecursiveModelID
-- (BOOL)bindPropertiesToStatement:(sqlite3_stmt *)a3 error:(id *)a4;
-- (HMBLocalZoneQueryResultRecursiveModelID)initWithLocalZone:(id)a3 modelID:(id)a4;
+- (BOOL)bindPropertiesToStatement:(sqlite3_stmt *)statement error:(id *)error;
+- (HMBLocalZoneQueryResultRecursiveModelID)initWithLocalZone:(id)zone modelID:(id)d;
 - (id)nextObject;
 @end
 
@@ -12,36 +12,36 @@
   {
     v14.receiver = self;
     v14.super_class = HMBLocalZoneQueryResultRecursiveModelID;
-    v3 = [(HMBSQLQueryIterator *)&v14 nextObject];
-    if (v3)
+    nextObject = [(HMBSQLQueryIterator *)&v14 nextObject];
+    if (nextObject)
     {
       break;
     }
 
-    v8 = [(HMBLocalZoneQueryResultRecursiveModelID *)self modelStack];
-    v4 = [v8 count];
+    modelStack = [(HMBLocalZoneQueryResultRecursiveModelID *)self modelStack];
+    v4 = [modelStack count];
 
     if (!v4)
     {
       goto LABEL_8;
     }
 
-    v9 = [(HMBLocalZoneQueryResultRecursiveModelID *)self modelStack];
-    v5 = [v9 objectAtIndex:0];
+    modelStack2 = [(HMBLocalZoneQueryResultRecursiveModelID *)self modelStack];
+    hmbModelID = [modelStack2 objectAtIndex:0];
 
-    v10 = [(HMBLocalZoneQueryResultRecursiveModelID *)self modelStack];
-    [v10 removeObjectAtIndex:0];
+    modelStack3 = [(HMBLocalZoneQueryResultRecursiveModelID *)self modelStack];
+    [modelStack3 removeObjectAtIndex:0];
 
-    [(HMBLocalZoneQueryResultRecursiveModelID *)self setParentModelID:v5];
+    [(HMBLocalZoneQueryResultRecursiveModelID *)self setParentModelID:hmbModelID];
     [(HMBSQLQueryIterator *)self setCurrentSequence:&unk_283EB9DF8];
     [(HMBSQLQueryIterator *)self setCachedResults:0];
 LABEL_6:
   }
 
-  v4 = v3;
-  v5 = [v3 hmbModelID];
-  v6 = [(HMBLocalZoneQueryResultRecursiveModelID *)self returnedModels];
-  v7 = [v6 containsObject:v5];
+  v4 = nextObject;
+  hmbModelID = [nextObject hmbModelID];
+  returnedModels = [(HMBLocalZoneQueryResultRecursiveModelID *)self returnedModels];
+  v7 = [returnedModels containsObject:hmbModelID];
 
   if (v7)
   {
@@ -49,41 +49,41 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v11 = [(HMBLocalZoneQueryResultRecursiveModelID *)self modelStack];
-  [v11 addObject:v5];
+  modelStack4 = [(HMBLocalZoneQueryResultRecursiveModelID *)self modelStack];
+  [modelStack4 addObject:hmbModelID];
 
-  v12 = [(HMBLocalZoneQueryResultRecursiveModelID *)self returnedModels];
-  [v12 addObject:v5];
+  returnedModels2 = [(HMBLocalZoneQueryResultRecursiveModelID *)self returnedModels];
+  [returnedModels2 addObject:hmbModelID];
 
 LABEL_8:
 
   return v4;
 }
 
-- (BOOL)bindPropertiesToStatement:(sqlite3_stmt *)a3 error:(id *)a4
+- (BOOL)bindPropertiesToStatement:(sqlite3_stmt *)statement error:(id *)error
 {
-  v7 = [(HMBLocalZoneQueryResult *)self zoneRowBindOffset];
-  v8 = [(HMBLocalZoneQueryResult *)self localZone];
-  hmbBindIntSQLite3(a3, v7, [v8 zoneRow], a4);
+  zoneRowBindOffset = [(HMBLocalZoneQueryResult *)self zoneRowBindOffset];
+  localZone = [(HMBLocalZoneQueryResult *)self localZone];
+  hmbBindIntSQLite3(statement, zoneRowBindOffset, [localZone zoneRow], error);
 
-  v9 = [(HMBLocalZoneQueryResultRecursiveModelID *)self parentModelIDOffset];
-  v10 = [(HMBLocalZoneQueryResultRecursiveModelID *)self parentModelID];
-  hmbBindUUIDSQLite3(a3, v9, v10, a4);
+  parentModelIDOffset = [(HMBLocalZoneQueryResultRecursiveModelID *)self parentModelIDOffset];
+  parentModelID = [(HMBLocalZoneQueryResultRecursiveModelID *)self parentModelID];
+  hmbBindUUIDSQLite3(statement, parentModelIDOffset, parentModelID, error);
 
   return 1;
 }
 
-- (HMBLocalZoneQueryResultRecursiveModelID)initWithLocalZone:(id)a3 modelID:(id)a4
+- (HMBLocalZoneQueryResultRecursiveModelID)initWithLocalZone:(id)zone modelID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  zoneCopy = zone;
+  dCopy = d;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
   v32 = __Block_byref_object_copy__3999;
   v33 = __Block_byref_object_dispose__4000;
   v34 = 0;
-  v8 = [v6 sql];
+  v8 = [zoneCopy sql];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __69__HMBLocalZoneQueryResultRecursiveModelID_initWithLocalZone_modelID___block_invoke;
@@ -95,26 +95,26 @@ LABEL_8:
   v11 = +[HMBSQLQueryIterator maximumRowsPerSelect];
   v27.receiver = self;
   v27.super_class = HMBLocalZoneQueryResultRecursiveModelID;
-  v12 = [(HMBLocalZoneQueryResult *)&v27 initWithLocalZone:v6 statement:v10 initialSequence:&unk_283EB9DF8 arguments:MEMORY[0x277CBEC10] maximumRowsPerSelect:v11];
+  v12 = [(HMBLocalZoneQueryResult *)&v27 initWithLocalZone:zoneCopy statement:v10 initialSequence:&unk_283EB9DF8 arguments:MEMORY[0x277CBEC10] maximumRowsPerSelect:v11];
   if (!v12)
   {
     goto LABEL_9;
   }
 
   v26 = 0;
-  v13 = [v6 fetchRecordRowWithModelID:v7 returning:2 error:&v26];
+  v13 = [zoneCopy fetchRecordRowWithModelID:dCopy returning:2 error:&v26];
   v14 = v26;
-  v15 = [MEMORY[0x277CBEB18] array];
-  [(HMBSQLQueryIterator *)v12 setCachedResults:v15];
+  array = [MEMORY[0x277CBEB18] array];
+  [(HMBSQLQueryIterator *)v12 setCachedResults:array];
 
   if (v13)
   {
-    v16 = [v13 modelID];
+    modelID = [v13 modelID];
     parentModelID = v12->_parentModelID;
-    v12->_parentModelID = v16;
+    v12->_parentModelID = modelID;
 
-    v18 = [(HMBSQLQueryIterator *)v12 cachedResults];
-    [v18 addObject:v13];
+    cachedResults = [(HMBSQLQueryIterator *)v12 cachedResults];
+    [cachedResults addObject:v13];
   }
 
   else if (v14)
@@ -123,16 +123,16 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v19 = [MEMORY[0x277CBEB40] orderedSet];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
   modelStack = v12->_modelStack;
-  v12->_modelStack = v19;
+  v12->_modelStack = orderedSet;
 
   v21 = [MEMORY[0x277CBEB58] set];
   returnedModels = v12->_returnedModels;
   v12->_returnedModels = v21;
 
-  v23 = [v30[5] arguments];
-  v24 = [v23 hmf_numberForKey:@"_parent_uuid"];
+  arguments = [v30[5] arguments];
+  v24 = [arguments hmf_numberForKey:@"_parent_uuid"];
 
   if (v24)
   {

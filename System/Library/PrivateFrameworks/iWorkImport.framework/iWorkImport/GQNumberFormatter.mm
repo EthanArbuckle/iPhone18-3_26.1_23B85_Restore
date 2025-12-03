@@ -1,72 +1,72 @@
 @interface GQNumberFormatter
 + (id)availableCurrencyCodes;
-+ (id)currencySymbolForCurrencyCode:(id)a3;
++ (id)currencySymbolForCurrencyCode:(id)code;
 + (id)currentLocaleCurrencyCode;
-+ (id)displayNameForCurrencyCode:(id)a3;
-+ (id)formatString:(id)a3 transformedForNegativeStyle:(int)a4;
-+ (id)formatterForLocale:(__CFLocale *)a3;
++ (id)displayNameForCurrencyCode:(id)code;
++ (id)formatString:(id)string transformedForNegativeStyle:(int)style;
++ (id)formatterForLocale:(__CFLocale *)locale;
 + (id)localizedPercentSymbol;
 + (id)numberFormatStringSpecialSymbols;
 + (id)userVisibleCurrencyCodes;
-+ (int)positionOfCurrencySymbolInNumberFormatSubpattern:(id)a3;
-+ (int)positionOfMinusSignInNumberFormatSubpattern:(id)a3;
-+ (int)positionOfSymbol:(id)a3 inNumberFormatSubpattern:(id)a4;
-+ (unsigned)defaultDecimalPlacesForCurrencyCode:(id)a3;
-+ (void)formatString:(id)a3 replaceOccurencesOfUnescapedString:(id)a4 withString:(id)a5;
-- (BOOL)currencyFromString:(__CFString *)a3 additionalCurrencyCode:(__CFString *)a4 value:(double *)a5 formatString:(const __CFString *)a6 currencyCode:(const __CFString *)a7;
-- (BOOL)findCurrencySymbolInString:(__CFString *)a3 additionalCurrencyCode:(__CFString *)a4 successfulString:(const __CFString *)a5;
-- (BOOL)fractionFromString:(__CFString *)a3 value:(double *)a4;
-- (BOOL)valueFromString:(__CFString *)a3 formatters:(__CFArray *)a4 value:(double *)a5 formatString:(const __CFString *)a6 currencyCode:(const __CFString *)a7;
-- (GQNumberFormatter)initWithLocale:(__CFLocale *)a3;
-- (id)currencySymbolForCurrencyCode:(id)a3;
++ (int)positionOfCurrencySymbolInNumberFormatSubpattern:(id)subpattern;
++ (int)positionOfMinusSignInNumberFormatSubpattern:(id)subpattern;
++ (int)positionOfSymbol:(id)symbol inNumberFormatSubpattern:(id)subpattern;
++ (unsigned)defaultDecimalPlacesForCurrencyCode:(id)code;
++ (void)formatString:(id)string replaceOccurencesOfUnescapedString:(id)unescapedString withString:(id)withString;
+- (BOOL)currencyFromString:(__CFString *)string additionalCurrencyCode:(__CFString *)code value:(double *)value formatString:(const __CFString *)formatString currencyCode:(const __CFString *)currencyCode;
+- (BOOL)findCurrencySymbolInString:(__CFString *)string additionalCurrencyCode:(__CFString *)code successfulString:(const __CFString *)successfulString;
+- (BOOL)fractionFromString:(__CFString *)string value:(double *)value;
+- (BOOL)valueFromString:(__CFString *)string formatters:(__CFArray *)formatters value:(double *)value formatString:(const __CFString *)formatString currencyCode:(const __CFString *)code;
+- (GQNumberFormatter)initWithLocale:(__CFLocale *)locale;
+- (id)currencySymbolForCurrencyCode:(id)code;
 - (id)currentLocaleCurrencyCode;
-- (id)defaultFormatStringForValueType:(int)a3;
-- (id)defaultFormatStringForValueType:(int)a3 negativeStyle:(int)a4;
-- (id)displayNameForCurrencyCode:(id)a3;
-- (id)halfWidthCurrencySymbolForCurrencyCode:(id)a3;
+- (id)defaultFormatStringForValueType:(int)type;
+- (id)defaultFormatStringForValueType:(int)type negativeStyle:(int)style;
+- (id)displayNameForCurrencyCode:(id)code;
+- (id)halfWidthCurrencySymbolForCurrencyCode:(id)code;
 - (void)dealloc;
 @end
 
 @implementation GQNumberFormatter
 
-+ (int)positionOfSymbol:(id)a3 inNumberFormatSubpattern:(id)a4
++ (int)positionOfSymbol:(id)symbol inNumberFormatSubpattern:(id)subpattern
 {
-  v5 = [a4 rangeOfString:a3];
+  v5 = [subpattern rangeOfString:symbol];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
   v7 = v5;
-  v8 = [a4 sfu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern];
-  return v8 != -1 && v7 >= v8;
+  sfu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern = [subpattern sfu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern];
+  return sfu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern != -1 && v7 >= sfu_indexOfFirstNonPrefixCharacterInNumberFormatSubpattern;
 }
 
-+ (int)positionOfCurrencySymbolInNumberFormatSubpattern:(id)a3
++ (int)positionOfCurrencySymbolInNumberFormatSubpattern:(id)subpattern
 {
   v5 = [NSString stringWithFormat:@"%C", 164];
 
-  return [a1 positionOfSymbol:v5 inNumberFormatSubpattern:a3];
+  return [self positionOfSymbol:v5 inNumberFormatSubpattern:subpattern];
 }
 
-+ (int)positionOfMinusSignInNumberFormatSubpattern:(id)a3
++ (int)positionOfMinusSignInNumberFormatSubpattern:(id)subpattern
 {
   v5 = [NSString stringWithFormat:@"-"];
 
-  return [a1 positionOfSymbol:v5 inNumberFormatSubpattern:a3];
+  return [self positionOfSymbol:v5 inNumberFormatSubpattern:subpattern];
 }
 
-+ (id)formatString:(id)a3 transformedForNegativeStyle:(int)a4
++ (id)formatString:(id)string transformedForNegativeStyle:(int)style
 {
   v7 = +[NSMutableString string];
   v8 = v7;
-  if (!a4)
+  if (!style)
   {
-    [v7 appendString:{objc_msgSend(a3, "sfu_positiveSubpatternOfNumberFormatPattern")}];
+    [v7 appendString:{objc_msgSend(string, "sfu_positiveSubpatternOfNumberFormatPattern")}];
     [v8 appendString:@";"];
-    v12 = [objc_msgSend(a3 "sfu_positiveSubpatternOfNumberFormatPattern")];
-    [a1 formatString:v12 replaceOccurencesOfUnescapedString:@"-" withString:&stru_85620];
-    v13 = +[GQNumberFormatter positionOfMinusSignInNumberFormatSubpattern:](GQNumberFormatter, "positionOfMinusSignInNumberFormatSubpattern:", [a3 sfu_negativeSubpatternOfNumberFormatPattern]);
+    v12 = [objc_msgSend(string "sfu_positiveSubpatternOfNumberFormatPattern")];
+    [self formatString:v12 replaceOccurencesOfUnescapedString:@"-" withString:&stru_85620];
+    v13 = +[GQNumberFormatter positionOfMinusSignInNumberFormatSubpattern:](GQNumberFormatter, "positionOfMinusSignInNumberFormatSubpattern:", [string sfu_negativeSubpatternOfNumberFormatPattern]);
     if (v13)
     {
       v14 = v13;
@@ -93,28 +93,28 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (a4 == 1)
+  if (style == 1)
   {
-    [v7 appendString:{objc_msgSend(a3, "sfu_positiveSubpatternOfNumberFormatPattern")}];
+    [v7 appendString:{objc_msgSend(string, "sfu_positiveSubpatternOfNumberFormatPattern")}];
     [v8 appendString:@";"];
-    v9 = [objc_msgSend(a3 "sfu_positiveSubpatternOfNumberFormatPattern")];
-    [a1 formatString:v9 replaceOccurencesOfUnescapedString:@"-" withString:&stru_85620];
+    v9 = [objc_msgSend(string "sfu_positiveSubpatternOfNumberFormatPattern")];
+    [self formatString:v9 replaceOccurencesOfUnescapedString:@"-" withString:&stru_85620];
     v10 = v8;
     v11 = v9;
   }
 
   else
   {
-    if ((a4 & 0xFFFFFFFE) != 2)
+    if ((style & 0xFFFFFFFE) != 2)
     {
-      [v7 appendString:a3];
+      [v7 appendString:string];
       return v8;
     }
 
-    [v7 appendString:{objc_msgSend(a3, "sfu_positiveSubpatternOfNumberFormatPattern")}];
+    [v7 appendString:{objc_msgSend(string, "sfu_positiveSubpatternOfNumberFormatPattern")}];
     [v8 appendString:@";"];
-    v9 = [objc_msgSend(a3 "sfu_positiveSubpatternOfNumberFormatPattern")];
-    [a1 formatString:v9 replaceOccurencesOfUnescapedString:@"-" withString:&stru_85620];
+    v9 = [objc_msgSend(string "sfu_positiveSubpatternOfNumberFormatPattern")];
+    [self formatString:v9 replaceOccurencesOfUnescapedString:@"-" withString:&stru_85620];
     objc_msgSend(v8, "appendString:", @"(");
     [v8 appendString:v9];
     v11 = @"");
@@ -126,40 +126,40 @@ LABEL_13:
   return v8;
 }
 
-+ (void)formatString:(id)a3 replaceOccurencesOfUnescapedString:(id)a4 withString:(id)a5
++ (void)formatString:(id)string replaceOccurencesOfUnescapedString:(id)unescapedString withString:(id)withString
 {
-  v19 = [a3 sfu_createRangesOfEscapedCharactersInNumberFormatPattern];
-  v8 = [a3 length];
-  if ([v19 count])
+  sfu_createRangesOfEscapedCharactersInNumberFormatPattern = [string sfu_createRangesOfEscapedCharactersInNumberFormatPattern];
+  v8 = [string length];
+  if ([sfu_createRangesOfEscapedCharactersInNumberFormatPattern count])
   {
-    [a3 replaceOccurrencesOfString:a4 withString:a5 options:0 range:{0, objc_msgSend(objc_msgSend(v19, "objectAtIndex:", 0), "rangeValue")}];
-    if ([v19 count] >= 2)
+    [string replaceOccurrencesOfString:unescapedString withString:withString options:0 range:{0, objc_msgSend(objc_msgSend(sfu_createRangesOfEscapedCharactersInNumberFormatPattern, "objectAtIndex:", 0), "rangeValue")}];
+    if ([sfu_createRangesOfEscapedCharactersInNumberFormatPattern count] >= 2)
     {
       v9 = 2;
       v10 = 1;
       do
       {
-        v11 = v8 - [a3 length];
-        v12 = [objc_msgSend(v19 objectAtIndex:{v9 - 2), "rangeValue"}];
-        [a3 replaceOccurrencesOfString:a4 withString:a5 options:0 range:{&v12[v13 - v11], objc_msgSend(objc_msgSend(v19, "objectAtIndex:", v10), "rangeValue") - &v12[v13]}];
+        v11 = v8 - [string length];
+        v12 = [objc_msgSend(sfu_createRangesOfEscapedCharactersInNumberFormatPattern objectAtIndex:{v9 - 2), "rangeValue"}];
+        [string replaceOccurrencesOfString:unescapedString withString:withString options:0 range:{&v12[v13 - v11], objc_msgSend(objc_msgSend(sfu_createRangesOfEscapedCharactersInNumberFormatPattern, "objectAtIndex:", v10), "rangeValue") - &v12[v13]}];
         v10 = v9;
       }
 
-      while ([v19 count] > v9++);
+      while ([sfu_createRangesOfEscapedCharactersInNumberFormatPattern count] > v9++);
     }
 
-    v15 = [objc_msgSend(v19 "lastObject")];
+    v15 = [objc_msgSend(sfu_createRangesOfEscapedCharactersInNumberFormatPattern "lastObject")];
     v17 = &v15[v16];
-    v18 = ([a3 length] - &v15[v16]);
+    v18 = ([string length] - &v15[v16]);
   }
 
   else
   {
-    v18 = [a3 length];
+    v18 = [string length];
     v17 = 0;
   }
 
-  [a3 replaceOccurrencesOfString:a4 withString:a5 options:0 range:{v17, v18}];
+  [string replaceOccurrencesOfString:unescapedString withString:withString options:0 range:{v17, v18}];
 }
 
 + (id)availableCurrencyCodes
@@ -169,25 +169,25 @@ LABEL_13:
   return v2;
 }
 
-+ (id)displayNameForCurrencyCode:(id)a3
++ (id)displayNameForCurrencyCode:(id)code
 {
-  v4 = [a1 formatterForLocale:0];
+  v4 = [self formatterForLocale:0];
 
-  return [v4 displayNameForCurrencyCode:a3];
+  return [v4 displayNameForCurrencyCode:code];
 }
 
-+ (id)currencySymbolForCurrencyCode:(id)a3
++ (id)currencySymbolForCurrencyCode:(id)code
 {
-  v4 = [a1 formatterForLocale:0];
+  v4 = [self formatterForLocale:0];
 
-  return [v4 currencySymbolForCurrencyCode:a3];
+  return [v4 currencySymbolForCurrencyCode:code];
 }
 
-+ (unsigned)defaultDecimalPlacesForCurrencyCode:(id)a3
++ (unsigned)defaultDecimalPlacesForCurrencyCode:(id)code
 {
   defaultFractionDigits = 0;
   v6 = 0.0;
-  DecimalInfoForCurrencyCode = CFNumberFormatterGetDecimalInfoForCurrencyCode(a3, &defaultFractionDigits, &v6);
+  DecimalInfoForCurrencyCode = CFNumberFormatterGetDecimalInfoForCurrencyCode(code, &defaultFractionDigits, &v6);
   v4 = defaultFractionDigits & ~(defaultFractionDigits >> 31);
   if (!DecimalInfoForCurrencyCode)
   {
@@ -199,7 +199,7 @@ LABEL_13:
 
 + (id)currentLocaleCurrencyCode
 {
-  v2 = [a1 formatterForLocale:0];
+  v2 = [self formatterForLocale:0];
 
   return [v2 currentLocaleCurrencyCode];
 }
@@ -213,7 +213,7 @@ LABEL_13:
 
 + (id)localizedPercentSymbol
 {
-  v2 = [a1 formatterForLocale:0];
+  v2 = [self formatterForLocale:0];
 
   return [v2 localizedPercentSymbol];
 }
@@ -240,11 +240,11 @@ LABEL_13:
   return v3;
 }
 
-+ (id)formatterForLocale:(__CFLocale *)a3
++ (id)formatterForLocale:(__CFLocale *)locale
 {
-  if (a3)
+  if (locale)
   {
-    v3 = [[a1 alloc] initWithLocale:a3];
+    v3 = [[self alloc] initWithLocale:locale];
 
     return v3;
   }
@@ -254,7 +254,7 @@ LABEL_13:
     v5 = qword_A45A8;
     if (!qword_A45A8)
     {
-      v5 = [[a1 alloc] initWithLocale:0];
+      v5 = [[self alloc] initWithLocale:0];
       qword_A45A8 = v5;
     }
 
@@ -262,16 +262,16 @@ LABEL_13:
   }
 }
 
-- (GQNumberFormatter)initWithLocale:(__CFLocale *)a3
+- (GQNumberFormatter)initWithLocale:(__CFLocale *)locale
 {
   v15.receiver = self;
   v15.super_class = GQNumberFormatter;
   v4 = [(GQNumberFormatter *)&v15 init];
   if (v4)
   {
-    if (a3)
+    if (locale)
     {
-      v5 = CFRetain(a3);
+      v5 = CFRetain(locale);
     }
 
     else
@@ -351,14 +351,14 @@ LABEL_13:
   [(GQNumberFormatter *)&v5 dealloc];
 }
 
-- (BOOL)currencyFromString:(__CFString *)a3 additionalCurrencyCode:(__CFString *)a4 value:(double *)a5 formatString:(const __CFString *)a6 currencyCode:(const __CFString *)a7
+- (BOOL)currencyFromString:(__CFString *)string additionalCurrencyCode:(__CFString *)code value:(double *)value formatString:(const __CFString *)formatString currencyCode:(const __CFString *)currencyCode
 {
   cf = 0;
-  if ([(GQNumberFormatter *)self findCurrencySymbolInString:a3 additionalCurrencyCode:a4 successfulString:&cf])
+  if ([(GQNumberFormatter *)self findCurrencySymbolInString:string additionalCurrencyCode:code successfulString:&cf])
   {
-    v12 = [(GQNumberFormatter *)self valueFromString:cf formatters:self->mCurrencyFormatters value:a5 formatString:a6 currencyCode:a7];
+    v12 = [(GQNumberFormatter *)self valueFromString:cf formatters:self->mCurrencyFormatters value:value formatString:formatString currencyCode:currencyCode];
     v13 = v12;
-    if (!a4 || (v12 & 1) != 0)
+    if (!code || (v12 & 1) != 0)
     {
       goto LABEL_14;
     }
@@ -366,11 +366,11 @@ LABEL_13:
     mAdditionalCurrencyCode = self->mAdditionalCurrencyCode;
     if (mAdditionalCurrencyCode)
     {
-      if (CFStringCompare(mAdditionalCurrencyCode, a4, 0) == kCFCompareEqualTo)
+      if (CFStringCompare(mAdditionalCurrencyCode, code, 0) == kCFCompareEqualTo)
       {
         mAdditionalCurrencyCodeFormatters = self->mAdditionalCurrencyCodeFormatters;
 LABEL_13:
-        v13 = [(GQNumberFormatter *)self valueFromString:cf formatters:mAdditionalCurrencyCodeFormatters value:a5 formatString:a6 currencyCode:a7];
+        v13 = [(GQNumberFormatter *)self valueFromString:cf formatters:mAdditionalCurrencyCodeFormatters value:value formatString:formatString currencyCode:currencyCode];
 LABEL_14:
         CFRelease(cf);
         return v13;
@@ -389,7 +389,7 @@ LABEL_14:
       CFRelease(v16);
     }
 
-    v17 = CFRetain(a4);
+    v17 = CFRetain(code);
     self->mAdditionalCurrencyCode = v17;
     mAdditionalCurrencyCodeFormatters = sub_528D8(self->mLocale, [NSArray arrayWithObject:v17]);
     self->mAdditionalCurrencyCodeFormatters = mAdditionalCurrencyCodeFormatters;
@@ -399,16 +399,16 @@ LABEL_14:
   return 0;
 }
 
-- (BOOL)fractionFromString:(__CFString *)a3 value:(double *)a4
+- (BOOL)fractionFromString:(__CFString *)string value:(double *)value
 {
-  v7 = CFStringFind(a3, @"/", 0);
+  v7 = CFStringFind(string, @"/", 0);
   if (v7.location != -1 && v7.length != 0)
   {
     v29.location = 0;
     v29.length = v7.location;
-    v10 = CFStringCreateWithSubstring(kCFAllocatorDefault, a3, v29);
+    v10 = CFStringCreateWithSubstring(kCFAllocatorDefault, string, v29);
     v11 = v7.location + 1;
-    if (v11 >= CFStringGetLength(a3))
+    if (v11 >= CFStringGetLength(string))
     {
       v18 = 0;
       v19 = 0;
@@ -420,9 +420,9 @@ LABEL_14:
       goto LABEL_24;
     }
 
-    v30.length = CFStringGetLength(a3) - v11;
+    v30.length = CFStringGetLength(string) - v11;
     v30.location = v7.location + 1;
-    v12 = CFStringCreateWithSubstring(kCFAllocatorDefault, a3, v30);
+    v12 = CFStringCreateWithSubstring(kCFAllocatorDefault, string, v30);
     MutableCopy = CFStringCreateMutableCopy(kCFAllocatorDefault, 0, v10);
     v14 = CFStringCreateMutableCopy(kCFAllocatorDefault, 0, v12);
     CFStringTrimWhitespace(MutableCopy);
@@ -492,7 +492,7 @@ LABEL_17:
       v21 = v20 + v28 / v27;
       if (__fpclassifyd(v21) != 2 && __fpclassifyd(v21) != 1)
       {
-        if (!a4)
+        if (!value)
         {
           v9 = 1;
           if (!v10)
@@ -506,7 +506,7 @@ LABEL_17:
         v22 = v20 + v28 / v27;
         v9 = 1;
 LABEL_25:
-        *a4 = v22;
+        *value = v22;
 LABEL_26:
         if (!v10)
         {
@@ -558,7 +558,7 @@ LABEL_27:
 LABEL_24:
     v9 = 0;
     v22 = 0.0;
-    if (!a4)
+    if (!value)
     {
       goto LABEL_26;
     }
@@ -567,37 +567,37 @@ LABEL_24:
   }
 
   v9 = 0;
-  if (a4)
+  if (value)
   {
-    *a4 = 0.0;
+    *value = 0.0;
   }
 
   return v9;
 }
 
-- (BOOL)valueFromString:(__CFString *)a3 formatters:(__CFArray *)a4 value:(double *)a5 formatString:(const __CFString *)a6 currencyCode:(const __CFString *)a7
+- (BOOL)valueFromString:(__CFString *)string formatters:(__CFArray *)formatters value:(double *)value formatString:(const __CFString *)formatString currencyCode:(const __CFString *)code
 {
-  Count = CFArrayGetCount(a4);
+  Count = CFArrayGetCount(formatters);
   if (Count >= 1)
   {
     v13 = Count;
-    ValueAtIndex = CFArrayGetValueAtIndex(a4, 0);
-    if (sub_5328C(ValueAtIndex, a3, a5))
+    ValueAtIndex = CFArrayGetValueAtIndex(formatters, 0);
+    if (sub_5328C(ValueAtIndex, string, value))
     {
       v15 = 1;
-      if (a6)
+      if (formatString)
       {
 LABEL_4:
         Format = CFNumberFormatterGetFormat(ValueAtIndex);
-        *a6 = CFRetain(Format);
+        *formatString = CFRetain(Format);
       }
 
 LABEL_5:
-      if (a7)
+      if (code)
       {
         v17 = CFNumberFormatterCopyProperty(ValueAtIndex, kCFNumberFormatterCurrencyCode);
 LABEL_16:
-        *a7 = v17;
+        *code = v17;
         return v15;
       }
 
@@ -607,11 +607,11 @@ LABEL_16:
     v18 = 1;
     while (v13 != v18)
     {
-      ValueAtIndex = CFArrayGetValueAtIndex(a4, v18++);
-      if (sub_5328C(ValueAtIndex, a3, a5))
+      ValueAtIndex = CFArrayGetValueAtIndex(formatters, v18++);
+      if (sub_5328C(ValueAtIndex, string, value))
       {
         v15 = v18 - 1 < v13;
-        if (a6)
+        if (formatString)
         {
           goto LABEL_4;
         }
@@ -621,13 +621,13 @@ LABEL_16:
     }
   }
 
-  if (a6)
+  if (formatString)
   {
-    *a6 = 0;
+    *formatString = 0;
   }
 
   v15 = 0;
-  if (a7)
+  if (code)
   {
     v17 = 0;
     goto LABEL_16;
@@ -636,17 +636,17 @@ LABEL_16:
   return v15;
 }
 
-- (BOOL)findCurrencySymbolInString:(__CFString *)a3 additionalCurrencyCode:(__CFString *)a4 successfulString:(const __CFString *)a5
+- (BOOL)findCurrencySymbolInString:(__CFString *)string additionalCurrencyCode:(__CFString *)code successfulString:(const __CFString *)successfulString
 {
-  Length = CFStringGetLength(a3);
+  Length = CFStringGetLength(string);
   v10 = Length;
-  if (!Length || (Length >= 8 ? (v11 = 8) : (v11 = Length), v12 = [NSArray arrayWithObjects:CFLocaleGetValue(self->mLocale, kCFLocaleCurrencyCode), @"USD", @"JPY", @"GBP", @"EUR", a4, 0], v13 = [(NSArray *)v12 count], v13 < 1))
+  if (!Length || (Length >= 8 ? (v11 = 8) : (v11 = Length), v12 = [NSArray arrayWithObjects:CFLocaleGetValue(self->mLocale, kCFLocaleCurrencyCode), @"USD", @"JPY", @"GBP", @"EUR", code, 0], v13 = [(NSArray *)v12 count], v13 < 1))
   {
     LOBYTE(v21) = 0;
     return v21;
   }
 
-  v25 = a5;
+  successfulStringCopy = successfulString;
   v14 = 0;
   v15 = v11;
   v16 = v10 - v11;
@@ -657,7 +657,7 @@ LABEL_16:
     v19 = [(GQNumberFormatter *)self currencySymbolForCurrencyCode:v18];
     v27.location = 0;
     v27.length = v15;
-    if (CFStringFindWithOptions(a3, v19, v27, 0, 0))
+    if (CFStringFindWithOptions(string, v19, v27, 0, 0))
     {
       break;
     }
@@ -666,7 +666,7 @@ LABEL_16:
     {
       v28.location = v16;
       v28.length = v15;
-      if (CFStringFindWithOptions(a3, v19, v28, 0, 0))
+      if (CFStringFindWithOptions(string, v19, v28, 0, 0))
       {
         break;
       }
@@ -677,7 +677,7 @@ LABEL_16:
     result.length = 0;
     v29.location = 0;
     v29.length = v15;
-    if (CFStringFindWithOptions(a3, v20, v29, 0, &result))
+    if (CFStringFindWithOptions(string, v20, v29, 0, &result))
     {
       v21 = 1;
     }
@@ -692,17 +692,17 @@ LABEL_16:
 
       v30.location = v16;
       v30.length = v15;
-      v21 = CFStringFindWithOptions(a3, v20, v30, 0, &result) != 0;
+      v21 = CFStringFindWithOptions(string, v20, v30, 0, &result) != 0;
     }
 
-    if (v25 && v21)
+    if (successfulStringCopy && v21)
     {
       LOBYTE(v21) = 1;
       result.length = 1;
-      MutableCopy = CFStringCreateMutableCopy(0, 0, a3);
+      MutableCopy = CFStringCreateMutableCopy(0, 0, string);
       v23 = [(GQNumberFormatter *)self currencySymbolForCurrencyCode:v18];
       CFStringReplace(MutableCopy, result, v23);
-      *v25 = MutableCopy;
+      *successfulStringCopy = MutableCopy;
       return v21;
     }
 
@@ -718,23 +718,23 @@ LABEL_17:
     }
   }
 
-  if (v25)
+  if (successfulStringCopy)
   {
-    *v25 = CFRetain(a3);
+    *successfulStringCopy = CFRetain(string);
   }
 
   LOBYTE(v21) = 1;
   return v21;
 }
 
-- (id)displayNameForCurrencyCode:(id)a3
+- (id)displayNameForCurrencyCode:(id)code
 {
-  v3 = CFLocaleCopyDisplayNameForPropertyValue(self->mLocale, kCFLocaleCurrencyCode, a3);
+  v3 = CFLocaleCopyDisplayNameForPropertyValue(self->mLocale, kCFLocaleCurrencyCode, code);
 
   return v3;
 }
 
-- (id)currencySymbolForCurrencyCode:(id)a3
+- (id)currencySymbolForCurrencyCode:(id)code
 {
   v5 = [(NSMutableDictionary *)self->mCurrencyCodeToSymbolMap objectForKey:?];
   if (!v5)
@@ -742,11 +742,11 @@ LABEL_17:
     Identifier = CFLocaleGetIdentifier(self->mLocale);
     ComponentsFromLocaleIdentifier = CFLocaleCreateComponentsFromLocaleIdentifier(0, Identifier);
     MutableCopy = CFDictionaryCreateMutableCopy(0, 0, ComponentsFromLocaleIdentifier);
-    CFDictionarySetValue(MutableCopy, kCFLocaleCurrencyCode, a3);
+    CFDictionarySetValue(MutableCopy, kCFLocaleCurrencyCode, code);
     LocaleIdentifierFromComponents = CFLocaleCreateLocaleIdentifierFromComponents(0, MutableCopy);
     v10 = CFLocaleCreate(0, LocaleIdentifierFromComponents);
     v5 = [CFLocaleGetValue(v10 kCFLocaleCurrencySymbol)];
-    [(NSMutableDictionary *)self->mCurrencyCodeToSymbolMap setObject:v5 forKey:a3];
+    [(NSMutableDictionary *)self->mCurrencyCodeToSymbolMap setObject:v5 forKey:code];
 
     CFRelease(v10);
     CFRelease(LocaleIdentifierFromComponents);
@@ -757,14 +757,14 @@ LABEL_17:
   return v5;
 }
 
-- (id)halfWidthCurrencySymbolForCurrencyCode:(id)a3
+- (id)halfWidthCurrencySymbolForCurrencyCode:(id)code
 {
   MutableCopy = [(NSMutableDictionary *)self->mCurrencyCodeToHalfWidthSymbolMap objectForKey:?];
   if (!MutableCopy)
   {
-    MutableCopy = CFStringCreateMutableCopy(0, 0, [(GQNumberFormatter *)self currencySymbolForCurrencyCode:a3]);
+    MutableCopy = CFStringCreateMutableCopy(0, 0, [(GQNumberFormatter *)self currencySymbolForCurrencyCode:code]);
     CFStringTransform(MutableCopy, 0, kCFStringTransformFullwidthHalfwidth, 0);
-    [(NSMutableDictionary *)self->mCurrencyCodeToHalfWidthSymbolMap setObject:MutableCopy forKey:a3];
+    [(NSMutableDictionary *)self->mCurrencyCodeToHalfWidthSymbolMap setObject:MutableCopy forKey:code];
     CFRelease(MutableCopy);
   }
 
@@ -778,23 +778,23 @@ LABEL_17:
   return v2;
 }
 
-- (id)defaultFormatStringForValueType:(int)a3 negativeStyle:(int)a4
+- (id)defaultFormatStringForValueType:(int)type negativeStyle:(int)style
 {
   v4 = 112;
-  if ((a3 - 1) < 3)
+  if ((type - 1) < 3)
   {
-    v4 = 8 * (a3 - 1) + 120;
+    v4 = 8 * (type - 1) + 120;
   }
 
-  return [*(&self->super.isa + v4) objectAtIndex:a4];
+  return [*(&self->super.isa + v4) objectAtIndex:style];
 }
 
-- (id)defaultFormatStringForValueType:(int)a3
+- (id)defaultFormatStringForValueType:(int)type
 {
   v3 = 96;
-  if ((a3 - 1) < 3)
+  if ((type - 1) < 3)
   {
-    v3 = 8 * (a3 - 1) + 72;
+    v3 = 8 * (type - 1) + 72;
   }
 
   return *(&self->super.isa + v3);

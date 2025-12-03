@@ -1,7 +1,7 @@
 @interface HDActivityDemoDataStore
 + (BOOL)shouldShowActivityDemoData;
-+ (id)demoStatisticsDataForTypeIdentifier:(id)a3;
-+ (id)demoValueForKey:(id)a3 withDataTypeIdentifier:(id)a4;
++ (id)demoStatisticsDataForTypeIdentifier:(id)identifier;
++ (id)demoValueForKey:(id)key withDataTypeIdentifier:(id)identifier;
 @end
 
 @implementation HDActivityDemoDataStore
@@ -14,11 +14,11 @@
   return v3;
 }
 
-+ (id)demoValueForKey:(id)a3 withDataTypeIdentifier:(id)a4
++ (id)demoValueForKey:(id)key withDataTypeIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = sub_3CFC(a1, a4);
-  v8 = [v7 stringByAppendingString:v6];
+  keyCopy = key;
+  v7 = sub_3CFC(self, identifier);
+  v8 = [v7 stringByAppendingString:keyCopy];
 
   v9 = +[NSUserDefaults standardUserDefaults];
   v10 = [v9 valueForKey:v8];
@@ -26,9 +26,9 @@
   return v10;
 }
 
-+ (id)demoStatisticsDataForTypeIdentifier:(id)a3
++ (id)demoStatisticsDataForTypeIdentifier:(id)identifier
 {
-  v3 = sub_3CFC(a1, a3);
+  v3 = sub_3CFC(self, identifier);
   v4 = [v3 stringByAppendingString:@".array"];
   v5 = +[NSUserDefaults standardUserDefaults];
   v6 = [v5 arrayForKey:v4];

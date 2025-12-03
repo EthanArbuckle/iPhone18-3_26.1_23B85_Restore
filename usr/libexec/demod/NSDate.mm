@@ -1,12 +1,12 @@
 @interface NSDate
-+ (id)dateFromString:(id)a3;
-- (BOOL)isEarlierDateThan:(id)a3;
-- (BOOL)isLaterDateThan:(id)a3;
++ (id)dateFromString:(id)string;
+- (BOOL)isEarlierDateThan:(id)than;
+- (BOOL)isLaterDateThan:(id)than;
 - (id)endOfDay;
 - (id)newDateByAddingOneDay;
 - (id)newDateByAddingOneWeek;
 - (id)startOfDay;
-- (id)timeZoneFromISO8601DateString:(id)a3;
+- (id)timeZoneFromISO8601DateString:(id)string;
 - (id)toString;
 @end
 
@@ -44,29 +44,29 @@
   return v4;
 }
 
-- (BOOL)isLaterDateThan:(id)a3
+- (BOOL)isLaterDateThan:(id)than
 {
-  v3 = self;
-  v4 = [(NSDate *)self laterDate:a3];
-  LOBYTE(v3) = [v4 isEqualToDate:v3];
+  selfCopy = self;
+  v4 = [(NSDate *)self laterDate:than];
+  LOBYTE(selfCopy) = [v4 isEqualToDate:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)isEarlierDateThan:(id)a3
+- (BOOL)isEarlierDateThan:(id)than
 {
-  v4 = a3;
-  v5 = [(NSDate *)self laterDate:v4];
-  v6 = [v5 isEqualToDate:v4];
+  thanCopy = than;
+  v5 = [(NSDate *)self laterDate:thanCopy];
+  v6 = [v5 isEqualToDate:thanCopy];
 
   return v6;
 }
 
-+ (id)dateFromString:(id)a3
++ (id)dateFromString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc_init(NSISO8601DateFormatter);
-  v5 = [v4 dateFromString:v3];
+  v5 = [v4 dateFromString:stringCopy];
 
   return v5;
 }
@@ -95,10 +95,10 @@ LABEL_5:
   return v7;
 }
 
-- (id)timeZoneFromISO8601DateString:(id)a3
+- (id)timeZoneFromISO8601DateString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 length];
+  stringCopy = string;
+  v4 = [stringCopy length];
   v5 = v4 - 6;
   if (v4 < 6)
   {
@@ -106,9 +106,9 @@ LABEL_5:
   }
 
   v7 = v4;
-  if ([v3 characterAtIndex:v4 - 1] != 90)
+  if ([stringCopy characterAtIndex:v4 - 1] != 90)
   {
-    v8 = [v3 characterAtIndex:v5];
+    v8 = [stringCopy characterAtIndex:v5];
     if (v8 == 43)
     {
       v9 = 1;
@@ -126,18 +126,18 @@ LABEL_2:
       v9 = -1;
     }
 
-    v10 = [v3 substringFromIndex:v7 - 5];
+    v10 = [stringCopy substringFromIndex:v7 - 5];
     v11 = [v10 componentsSeparatedByString:@":"];
 
     if ([v11 count] == 2)
     {
       v12 = [v11 objectAtIndexedSubscript:0];
-      v13 = [v12 integerValue];
+      integerValue = [v12 integerValue];
 
       v14 = [v11 objectAtIndexedSubscript:1];
-      v15 = [v14 integerValue];
+      integerValue2 = [v14 integerValue];
 
-      v6 = [NSTimeZone timeZoneForSecondsFromGMT:(3600 * v13 + 60 * v15) * v9];
+      v6 = [NSTimeZone timeZoneForSecondsFromGMT:(3600 * integerValue + 60 * integerValue2) * v9];
     }
 
     else

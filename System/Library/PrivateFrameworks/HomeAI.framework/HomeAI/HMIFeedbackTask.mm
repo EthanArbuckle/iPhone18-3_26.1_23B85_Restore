@@ -1,22 +1,22 @@
 @interface HMIFeedbackTask
-- (HMIFeedbackTask)initWithTaskID:(int)a3 cameraProfileUUID:(id)a4 clipUUID:(id)a5;
+- (HMIFeedbackTask)initWithTaskID:(int)d cameraProfileUUID:(id)iD clipUUID:(id)uID;
 - (void)mainInsideAutoreleasePool;
 @end
 
 @implementation HMIFeedbackTask
 
-- (HMIFeedbackTask)initWithTaskID:(int)a3 cameraProfileUUID:(id)a4 clipUUID:(id)a5
+- (HMIFeedbackTask)initWithTaskID:(int)d cameraProfileUUID:(id)iD clipUUID:(id)uID
 {
-  v6 = *&a3;
-  v8 = a4;
-  v9 = a5;
+  v6 = *&d;
+  iDCopy = iD;
+  uIDCopy = uID;
   v15.receiver = self;
   v15.super_class = HMIFeedbackTask;
   v10 = [(HMITask *)&v15 initWithTaskID:v6];
   if (v10)
   {
     v11 = objc_alloc_init(HMIFeedbackSession);
-    v12 = [[HMIFeedbackSubmitClipOperation alloc] initWithFeedbackSession:v11 cameraProfileUUID:v8 clipUUID:v9];
+    v12 = [[HMIFeedbackSubmitClipOperation alloc] initWithFeedbackSession:v11 cameraProfileUUID:iDCopy clipUUID:uIDCopy];
     operation = v10->_operation;
     v10->_operation = &v12->super;
   }

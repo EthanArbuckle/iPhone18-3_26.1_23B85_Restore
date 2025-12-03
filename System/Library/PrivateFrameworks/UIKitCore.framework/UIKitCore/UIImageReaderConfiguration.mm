@@ -1,14 +1,14 @@
 @interface UIImageReaderConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)preferredThumbnailSize;
 - (UIImageReaderConfiguration)init;
-- (double)_imageFromURL:(void *)a3 orData:(void *)a4 imageRequestOptions:;
+- (double)_imageFromURL:(void *)l orData:(void *)data imageRequestOptions:;
 - (double)_imageOptions;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_asyncImageFromURL:(void *)a3 orData:(void *)a4 imageRequestOptions:(void *)a5 completion:;
-- (void)_checkIsFileURL:(uint64_t)a1;
-- (void)_setSkipImageStats:(BOOL)a3;
+- (void)_asyncImageFromURL:(void *)l orData:(void *)data imageRequestOptions:(void *)options completion:;
+- (void)_checkIsFileURL:(uint64_t)l;
+- (void)_setSkipImageStats:(BOOL)stats;
 - (void)setPixelsPerInch:(CGFloat)pixelsPerInch;
 - (void)setPreferredThumbnailSize:(CGSize)preferredThumbnailSize;
 - (void)setPreparesImagesForDisplay:(BOOL)preparesImagesForDisplay;
@@ -44,9 +44,9 @@
   *&self->_flags = *&self->_flags & 0xFD | v3;
 }
 
-- (void)_setSkipImageStats:(BOOL)a3
+- (void)_setSkipImageStats:(BOOL)stats
 {
-  if (a3)
+  if (stats)
   {
     v3 = 8;
   }
@@ -80,14 +80,14 @@
 {
   if (pixelsPerInch < 0.0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"UIImageReader.m" lineNumber:80 description:{@"Invalid pixelsPerInch of %f", *&pixelsPerInch}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIImageReader.m" lineNumber:80 description:{@"Invalid pixelsPerInch of %f", *&pixelsPerInch}];
   }
 
   self->_pixelsPerInch = pixelsPerInch;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   result = objc_opt_new();
@@ -109,16 +109,16 @@
   return *&self->_flags & 3 | (4 * (self->_pixelsPerInch > 0.0)) | v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v8 = ((*&v6->_flags ^ *&self->_flags) & 0xB) == 0 && (self->_preferredThumbnailSize.width == v6->_preferredThumbnailSize.width ? (v7 = self->_preferredThumbnailSize.height == v6->_preferredThumbnailSize.height) : (v7 = 0), v7) && self->_pixelsPerInch == v6->_pixelsPerInch;
@@ -134,9 +134,9 @@
 
 - (double)_imageOptions
 {
-  v1 = a1;
+  selfCopy = self;
   v17[1] = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_16;
   }
@@ -144,15 +144,15 @@
   v2 = objc_opt_new();
   v3 = v2;
   v4 = MEMORY[0x1E695E118];
-  if ((v1[1] & 4) != 0)
+  if ((selfCopy[1] & 4) != 0)
   {
     v7 = MEMORY[0x1E695E118];
     [v2 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696DFF0]];
     [v3 setObject:v7 forKeyedSubscript:*MEMORY[0x1E696DFE8]];
-    v8 = v1[3];
-    if (v8 < v1[4])
+    v8 = selfCopy[3];
+    if (v8 < selfCopy[4])
     {
-      v8 = v1[4];
+      v8 = selfCopy[4];
     }
 
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v8];
@@ -164,7 +164,7 @@
 
   else
   {
-    if (v1[1])
+    if (selfCopy[1])
     {
 LABEL_9:
       [v3 setObject:*MEMORY[0x1E696E028] forKeyedSubscript:*MEMORY[0x1E696E018]];
@@ -173,7 +173,7 @@ LABEL_9:
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
       [v3 setObject:v11 forKeyedSubscript:*MEMORY[0x1E696E020]];
 
-      v10 = *(v1 + 8);
+      v10 = *(selfCopy + 8);
       goto LABEL_10;
     }
 
@@ -182,7 +182,7 @@ LABEL_9:
   }
 
   [v3 setObject:v5 forKeyedSubscript:*v6];
-  v10 = *(v1 + 8);
+  v10 = *(selfCopy + 8);
   if (v10)
   {
     goto LABEL_9;
@@ -195,7 +195,7 @@ LABEL_10:
     v13 = MEMORY[0x1E695E118];
     [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696E0A8]];
     [v3 setObject:v13 forKeyedSubscript:*MEMORY[0x1E696E0B8]];
-    v10 = *(v1 + 8);
+    v10 = *(selfCopy + 8);
   }
 
   if ((v10 & 8) != 0)
@@ -209,32 +209,32 @@ LABEL_10:
   }
 
   [v3 setObject:v14 forKeyedSubscript:*MEMORY[0x1E696D1C0]];
-  v1 = [v3 copy];
+  selfCopy = [v3 copy];
 
 LABEL_16:
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)_checkIsFileURL:(uint64_t)a1
+- (void)_checkIsFileURL:(uint64_t)l
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (l)
   {
     if (v3)
     {
       v8 = v3;
-      v5 = [v3 isFileURL];
+      isFileURL = [v3 isFileURL];
       v4 = v8;
-      if ((v5 & 1) == 0)
+      if ((isFileURL & 1) == 0)
       {
-        v6 = [v8 isFileReferenceURL];
+        isFileReferenceURL = [v8 isFileReferenceURL];
         v4 = v8;
-        if ((v6 & 1) == 0)
+        if ((isFileReferenceURL & 1) == 0)
         {
-          v7 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v7 handleFailureInMethod:sel__checkIsFileURL_ object:a1 file:@"UIImageReader.m" lineNumber:148 description:{@"Client Error: URL '%@' does not refer to a file", v8}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:sel__checkIsFileURL_ object:l file:@"UIImageReader.m" lineNumber:148 description:{@"Client Error: URL '%@' does not refer to a file", v8}];
 
           v4 = v8;
         }
@@ -243,13 +243,13 @@ LABEL_16:
   }
 }
 
-- (double)_imageFromURL:(void *)a3 orData:(void *)a4 imageRequestOptions:
+- (double)_imageFromURL:(void *)l orData:(void *)data imageRequestOptions:
 {
   v31[2] = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  lCopy = l;
+  dataCopy = data;
+  if (self)
   {
     v10 = v7;
     v11 = *MEMORY[0x1E696E0E8];
@@ -258,9 +258,9 @@ LABEL_16:
     v31[0] = MEMORY[0x1E695E110];
     v31[1] = MEMORY[0x1E695E118];
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:2];
-    if (v8)
+    if (lCopy)
     {
-      v13 = CGImageSourceCreateWithData(v8, v12);
+      v13 = CGImageSourceCreateWithData(lCopy, v12);
     }
 
     else
@@ -279,14 +279,14 @@ LABEL_16:
       if (CGImageSourceGetCount(v13))
       {
 
-        if (a1[3] * a1[4] == 0.0)
+        if (self[3] * self[4] == 0.0)
         {
-          ImageAtIndex = CGImageSourceCreateImageAtIndex(v14, 0, v9);
+          ImageAtIndex = CGImageSourceCreateImageAtIndex(v14, 0, dataCopy);
         }
 
         else
         {
-          ImageAtIndex = CGImageSourceCreateThumbnailAtIndex(v14, 0, v9);
+          ImageAtIndex = CGImageSourceCreateThumbnailAtIndex(v14, 0, dataCopy);
         }
 
         v16 = ImageAtIndex;
@@ -297,15 +297,15 @@ LABEL_16:
           v19 = v18;
           if (v18)
           {
-            v20 = [v18 integerValue];
-            if ((v20 - 1) >= 8)
+            integerValue = [v18 integerValue];
+            if ((integerValue - 1) >= 8)
             {
               v21 = 0;
             }
 
             else
             {
-              v21 = (0x27365140u >> (4 * v20 - 4)) & 7;
+              v21 = (0x27365140u >> (4 * integerValue - 4)) & 7;
             }
 
             v29 = v21;
@@ -317,7 +317,7 @@ LABEL_16:
           }
 
           v22 = 1.0;
-          if (a1[2] <= 0.0)
+          if (self[2] <= 0.0)
           {
             goto LABEL_27;
           }
@@ -339,21 +339,21 @@ LABEL_27:
               v27 = [[_UIImageCGImageContent alloc] initWithCGImageSource:v14 CGImage:v16 scale:v22];
               CFRelease(v14);
               CFRelease(v16);
-              a1 = [[UIImage alloc] _initWithContent:v27 orientation:v29];
+              self = [[UIImage alloc] _initWithContent:v27 orientation:v29];
 
               goto LABEL_28;
             }
           }
 
           [v24 doubleValue];
-          v22 = fmax(round(v26 / a1[2]), 1.0);
+          v22 = fmax(round(v26 / self[2]), 1.0);
 
           goto LABEL_27;
         }
 
         CFRelease(v14);
 LABEL_12:
-        a1 = 0;
+        self = 0;
         goto LABEL_28;
       }
 
@@ -367,16 +367,16 @@ LABEL_11:
 
 LABEL_28:
 
-  return a1;
+  return self;
 }
 
-- (void)_asyncImageFromURL:(void *)a3 orData:(void *)a4 imageRequestOptions:(void *)a5 completion:
+- (void)_asyncImageFromURL:(void *)l orData:(void *)data imageRequestOptions:(void *)options completion:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a1)
+  lCopy = l;
+  dataCopy = data;
+  optionsCopy = options;
+  if (self)
   {
     if (qword_1ED4A0A70 != -1)
     {
@@ -388,11 +388,11 @@ LABEL_28:
     block[1] = 3221225472;
     block[2] = __87__UIImageReaderConfiguration__asyncImageFromURL_orData_imageRequestOptions_completion___block_invoke_2;
     block[3] = &unk_1E7103108;
-    block[4] = a1;
+    block[4] = self;
     v15 = v9;
-    v16 = v10;
-    v17 = v11;
-    v18 = v12;
+    v16 = lCopy;
+    v17 = dataCopy;
+    v18 = optionsCopy;
     dispatch_async(v13, block);
   }
 }

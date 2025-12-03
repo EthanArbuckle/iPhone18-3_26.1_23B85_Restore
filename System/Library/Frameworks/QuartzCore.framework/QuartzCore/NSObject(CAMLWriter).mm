@@ -7,15 +7,15 @@
 
 - (void)encodeWithCAMLWriter:()CAMLWriter
 {
-  v4 = a1;
+  selfCopy = self;
   v24 = *MEMORY[0x1E69E9840];
-  v5 = CFGetTypeID(a1);
+  v5 = CFGetTypeID(self);
   if (v5 == CGColorGetTypeID())
   {
     v22 = 0u;
     v23 = 0u;
     memset(&v21, 0, sizeof(v21));
-    if (CGColorGetPattern(v4))
+    if (CGColorGetPattern(selfCopy))
     {
       Image = CGPatternGetImage();
       if (Image)
@@ -47,7 +47,7 @@ LABEL_33:
     else
     {
       v14 = CAGetColorSpace(35);
-      CA_CGColorGetRGBComponents(v4, v14, &v22);
+      CA_CGColorGetRGBComponents(selfCopy, v14, &v22);
       if (*(&v23 + 1) != 1.0)
       {
         v15 = CACreateStringWithDoubleArray(&v23 + 8, 1uLL, 0.001);
@@ -71,15 +71,15 @@ LABEL_33:
 
   else if (v5 == CGImageGetTypeID())
   {
-    if (v4)
+    if (selfCopy)
     {
-      v11 = CA_CGImageIsA8(v4);
+      v11 = CA_CGImageIsA8(selfCopy);
       if (v11)
       {
-        v4 = CA_copyA8CGImageAsL8(v4);
+        selfCopy = CA_copyA8CGImageAsL8(selfCopy);
       }
 
-      v12 = [a3 URLStringForResource:v4];
+      v12 = [a3 URLStringForResource:selfCopy];
       if (v12)
       {
         [a3 setElementAttribute:v12 forKey:@"src"];
@@ -88,7 +88,7 @@ LABEL_33:
           [a3 setElementAttribute:@"1" forKey:@"A8asL8"];
         }
 
-        CGImageGetColorSpace(v4);
+        CGImageGetColorSpace(selfCopy);
         if (CGColorSpaceContainsFlexGTCInfo())
         {
           [a3 setElementAttribute:@"1" forKey:@"loadAsHDR"];
@@ -98,14 +98,14 @@ LABEL_33:
       if (v11)
       {
 
-        CGImageRelease(v4);
+        CGImageRelease(selfCopy);
       }
     }
   }
 
   else if (v5 == CGImageSourceGetTypeID() || v5 == CGPDFDocumentGetTypeID())
   {
-    v13 = [a3 URLStringForResource:v4];
+    v13 = [a3 URLStringForResource:selfCopy];
     if (v13)
     {
 
@@ -116,7 +116,7 @@ LABEL_33:
   else if (v5 == CGPathGetTypeID())
   {
     v19 = objc_alloc_init(MEMORY[0x1E696AD60]);
-    CGPathApply(v4, v19, path_callback);
+    CGPathApply(selfCopy, v19, path_callback);
     [a3 setElementContent:v19];
   }
 
@@ -129,7 +129,7 @@ LABEL_33:
 
     if (v5 == CABackingStoreGetTypeID::type)
     {
-      v18 = [CATintedImage tintedImageWithCABackingStore:v4];
+      v18 = [CATintedImage tintedImageWithCABackingStore:selfCopy];
       if ([(CATintedImage *)v18 image])
       {
 
@@ -141,7 +141,7 @@ LABEL_33:
 
 - (__CFString)CAMLType
 {
-  v1 = CFGetTypeID(a1);
+  v1 = CFGetTypeID(self);
   if (v1 == CGColorGetTypeID())
   {
     return @"CGColor";

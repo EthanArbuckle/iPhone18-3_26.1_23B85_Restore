@@ -1,30 +1,30 @@
 @interface BLRestoreDownloadsOperation
-- (BLRestoreDownloadsOperation)initWithRestoreDownloadItems:(id)a3 authenticationQueue:(id)a4 responseItemBlock:(id)a5;
-- (id)_sortedAccountIDs:(id)a3;
-- (void)_applyResponses:(id)a3;
-- (void)_sanitizeRestoreItemAccountID:(id)a3 accountsHelper:(id)a4 error:(id *)a5;
-- (void)restoreDownloadItemsOperation:(id)a3 didReceiveResponse:(id)a4;
+- (BLRestoreDownloadsOperation)initWithRestoreDownloadItems:(id)items authenticationQueue:(id)queue responseItemBlock:(id)block;
+- (id)_sortedAccountIDs:(id)ds;
+- (void)_applyResponses:(id)responses;
+- (void)_sanitizeRestoreItemAccountID:(id)d accountsHelper:(id)helper error:(id *)error;
+- (void)restoreDownloadItemsOperation:(id)operation didReceiveResponse:(id)response;
 - (void)run;
 @end
 
 @implementation BLRestoreDownloadsOperation
 
-- (BLRestoreDownloadsOperation)initWithRestoreDownloadItems:(id)a3 authenticationQueue:(id)a4 responseItemBlock:(id)a5
+- (BLRestoreDownloadsOperation)initWithRestoreDownloadItems:(id)items authenticationQueue:(id)queue responseItemBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemsCopy = items;
+  queueCopy = queue;
+  blockCopy = block;
   v17.receiver = self;
   v17.super_class = BLRestoreDownloadsOperation;
   v11 = [(BLOperation *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [itemsCopy copy];
     downloadItems = v11->_downloadItems;
     v11->_downloadItems = v12;
 
-    objc_storeStrong(&v11->_authenticationQueue, a4);
-    v14 = [v10 copy];
+    objc_storeStrong(&v11->_authenticationQueue, queue);
+    v14 = [blockCopy copy];
     responseItemBlock = v11->_responseItemBlock;
     v11->_responseItemBlock = v14;
   }
@@ -36,26 +36,26 @@
 {
   v78 = objc_alloc_init(NSMutableDictionary);
   v3 = [BLRestoreAccountsHelper alloc];
-  v92 = self;
-  v4 = [(BLRestoreDownloadsOperation *)self authenticationQueue];
-  v5 = [(BLRestoreAccountsHelper *)v3 initWithAuthenticationQueue:v4];
+  selfCopy = self;
+  authenticationQueue = [(BLRestoreDownloadsOperation *)self authenticationQueue];
+  v5 = [(BLRestoreAccountsHelper *)v3 initWithAuthenticationQueue:authenticationQueue];
 
   v91 = v5;
   [(BLRestoreAccountsHelper *)v5 establishPrimaryAccount];
   v89 = objc_alloc_init(NSMutableDictionary);
   v6 = +[BUAccountsProvider sharedProvider];
-  v7 = [v6 activeStoreAccount];
+  activeStoreAccount = [v6 activeStoreAccount];
 
-  v85 = [v7 ams_DSID];
+  ams_DSID = [activeStoreAccount ams_DSID];
   v86 = objc_alloc_init(NSMutableArray);
-  v84 = v7;
-  if (v7)
+  v84 = activeStoreAccount;
+  if (activeStoreAccount)
   {
     v8 = +[BUBag defaultBag];
-    v9 = [[AMSFamilyInfoLookupTask alloc] initWithAccount:v7 bag:v8];
-    v10 = [v9 performFamilyInfoLookup];
+    v9 = [[AMSFamilyInfoLookupTask alloc] initWithAccount:activeStoreAccount bag:v8];
+    performFamilyInfoLookup = [v9 performFamilyInfoLookup];
     v111 = 0;
-    v11 = [v10 resultWithError:&v111];
+    v11 = [performFamilyInfoLookup resultWithError:&v111];
     v12 = v111;
     if (v12)
     {
@@ -75,13 +75,13 @@
     {
       v87 = v8;
       obj = v11;
-      v15 = [v11 familyMembers];
+      familyMembers = [v11 familyMembers];
       v90 = objc_alloc_init(NSMutableArray);
       v107 = 0u;
       v108 = 0u;
       v109 = 0u;
       v110 = 0u;
-      v13 = v15;
+      v13 = familyMembers;
       v16 = [v13 countByEnumeratingWithState:&v107 objects:v119 count:16];
       if (v16)
       {
@@ -97,10 +97,10 @@
             }
 
             v20 = *(*(&v107 + 1) + 8 * i);
-            if (v85)
+            if (ams_DSID)
             {
-              v21 = [*(*(&v107 + 1) + 8 * i) iTunesDSID];
-              v22 = [v21 isEqualToNumber:v85];
+              iTunesDSID = [*(*(&v107 + 1) + 8 * i) iTunesDSID];
+              v22 = [iTunesDSID isEqualToNumber:ams_DSID];
 
               if (v22)
               {
@@ -108,8 +108,8 @@
               }
             }
 
-            v23 = [v20 iTunesDSID];
-            [v90 addObject:v23];
+            iTunesDSID2 = [v20 iTunesDSID];
+            [v90 addObject:iTunesDSID2];
           }
 
           v17 = [v13 countByEnumeratingWithState:&v107 objects:v119 count:16];
@@ -120,7 +120,7 @@
 
       v14 = v78;
       v11 = obj;
-      v7 = v84;
+      activeStoreAccount = v84;
       v8 = v87;
     }
   }
@@ -131,7 +131,7 @@
     v14 = v78;
   }
 
-  [(BLRestoreDownloadsOperation *)v92 downloadItems];
+  [(BLRestoreDownloadsOperation *)selfCopy downloadItems];
   v103 = 0u;
   v104 = 0u;
   v105 = 0u;
@@ -153,39 +153,39 @@
 
         v27 = *(*(&v103 + 1) + 8 * j);
         v102 = 0;
-        [(BLRestoreDownloadsOperation *)v92 _sanitizeRestoreItemAccountID:v27 accountsHelper:v91 error:&v102];
+        [(BLRestoreDownloadsOperation *)selfCopy _sanitizeRestoreItemAccountID:v27 accountsHelper:v91 error:&v102];
         v28 = v102;
-        v29 = [v27 storeAccountID];
-        v30 = v29;
-        if (v7 && v29 && [v90 containsObject:v29])
+        storeAccountID = [v27 storeAccountID];
+        v30 = storeAccountID;
+        if (activeStoreAccount && storeAccountID && [v90 containsObject:storeAccountID])
         {
           [v27 setStoreOriginalPurchaserAccountID:v30];
-          [v27 setStoreAccountID:v85];
+          [v27 setStoreAccountID:ams_DSID];
         }
 
-        v31 = [v27 storeAccountID];
-        if (v31)
+        storeAccountID2 = [v27 storeAccountID];
+        if (storeAccountID2)
         {
-          v32 = v31;
+          v32 = storeAccountID2;
           v101 = 0;
           v33 = [v27 isEligibleForRestore:&v101];
           v34 = v101;
 
           if (v33)
           {
-            v35 = [v27 storeOriginalPurchaserAccountID];
-            v36 = v35;
-            if (v35)
+            storeOriginalPurchaserAccountID = [v27 storeOriginalPurchaserAccountID];
+            v36 = storeOriginalPurchaserAccountID;
+            if (storeOriginalPurchaserAccountID)
             {
-              v37 = v35;
+              storeAccountID3 = storeOriginalPurchaserAccountID;
             }
 
             else
             {
-              v37 = [v27 storeAccountID];
+              storeAccountID3 = [v27 storeAccountID];
             }
 
-            v39 = v37;
+            v39 = storeAccountID3;
 
             v40 = [v14 objectForKeyedSubscript:v39];
             if (!v40)
@@ -198,20 +198,20 @@
 
                 v40 = [[ACAccount alloc] initWithAccountType:v42];
                 [v40 ams_setDSID:v39];
-                v43 = [v40 username];
+                username = [v40 username];
 
-                if (!v43)
+                if (!username)
                 {
-                  v44 = [v27 storeAccountAppleID];
-                  [v40 setUsername:v44];
+                  storeAccountAppleID = [v27 storeAccountAppleID];
+                  [v40 setUsername:storeAccountAppleID];
                 }
 
-                v45 = [v40 ams_storefront];
+                ams_storefront = [v40 ams_storefront];
 
-                if (!v45)
+                if (!ams_storefront)
                 {
-                  v46 = [v27 storeFrontID];
-                  [v40 ams_setStorefront:v46];
+                  storeFrontID = [v27 storeFrontID];
+                  [v40 ams_setStorefront:storeFrontID];
                 }
 
                 v14 = v78;
@@ -229,7 +229,7 @@
 
             [v47 addObject:v27];
 
-            v7 = v84;
+            activeStoreAccount = v84;
             goto LABEL_48;
           }
         }
@@ -280,13 +280,13 @@ LABEL_48:
 
   if ([v48 count])
   {
-    [(BLRestoreDownloadsOperation *)v92 _applyResponses:v48];
+    [(BLRestoreDownloadsOperation *)selfCopy _applyResponses:v48];
   }
 
   if ([v89 count])
   {
     v77 = v48;
-    v53 = [(BLRestoreDownloadsOperation *)v92 _sortedAccountIDs:v89];
+    v53 = [(BLRestoreDownloadsOperation *)selfCopy _sortedAccountIDs:v89];
     v81 = objc_alloc_init(NSMutableArray);
     v97 = 0u;
     v98 = 0u;
@@ -355,7 +355,7 @@ LABEL_48:
             v68 = sub_1000A8F44(0, @"Missing account", 0);
             [(BLRestoreDownloadItemsResponse *)v67 setServerResponseWithError:v68];
 
-            [(BLRestoreDownloadsOperation *)v92 restoreDownloadItemsOperation:v64 didReceiveResponse:v67];
+            [(BLRestoreDownloadsOperation *)selfCopy restoreDownloadItemsOperation:v64 didReceiveResponse:v67];
             v57 = 0;
             v14 = v78;
           }
@@ -403,8 +403,8 @@ LABEL_48:
           }
 
           v76 = *(*(&v93 + 1) + 8 * m);
-          [v76 setDelegate:v92];
-          v57 &= [(BLOperation *)v92 runSubOperation:v76 returningError:0];
+          [v76 setDelegate:selfCopy];
+          v57 &= [(BLOperation *)selfCopy runSubOperation:v76 returningError:0];
         }
 
         v73 = [v71 countByEnumeratingWithState:&v93 objects:v112 count:16];
@@ -422,25 +422,25 @@ LABEL_48:
     LOBYTE(v57) = 0;
   }
 
-  [(BLOperation *)v92 setSuccess:v57 & 1];
+  [(BLOperation *)selfCopy setSuccess:v57 & 1];
 }
 
-- (void)restoreDownloadItemsOperation:(id)a3 didReceiveResponse:(id)a4
+- (void)restoreDownloadItemsOperation:(id)operation didReceiveResponse:(id)response
 {
-  v7 = a4;
-  v5 = a4;
-  v6 = [NSArray arrayWithObjects:&v7 count:1];
+  responseCopy = response;
+  responseCopy2 = response;
+  v6 = [NSArray arrayWithObjects:&responseCopy count:1];
 
-  [(BLRestoreDownloadsOperation *)self _applyResponses:v6, v7];
+  [(BLRestoreDownloadsOperation *)self _applyResponses:v6, responseCopy];
 }
 
-- (void)_applyResponses:(id)a3
+- (void)_applyResponses:(id)responses
 {
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  obj = a3;
+  obj = responses;
   v43 = [obj countByEnumeratingWithState:&v56 objects:v68 count:16];
   if (v43)
   {
@@ -460,17 +460,17 @@ LABEL_48:
 
         v7 = *(*(&v56 + 1) + 8 * v6);
         v8 = objc_alloc_init(NSMutableDictionary);
-        v9 = [v7 serverResponse];
+        serverResponse = [v7 serverResponse];
         v10 = BLServiceLog();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [v9 error];
-          v12 = [v9 downloads];
-          v13 = [v12 count];
+          error = [serverResponse error];
+          downloads = [serverResponse downloads];
+          v13 = [downloads count];
           *buf = v40;
-          v63 = v9;
+          v63 = serverResponse;
           v64 = 2112;
-          v65 = v11;
+          v65 = error;
           v66 = 2048;
           v67 = v13;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "ContentRestore: Server response: %@, error: %@. Got %ld download item(s)", buf, 0x20u);
@@ -478,13 +478,13 @@ LABEL_48:
 
         v45 = v6;
 
-        v46 = v9;
-        v14 = [v9 downloads];
+        v46 = serverResponse;
+        downloads2 = [serverResponse downloads];
         v52 = 0u;
         v53 = 0u;
         v54 = 0u;
         v55 = 0u;
-        v15 = [v14 countByEnumeratingWithState:&v52 objects:v61 count:16];
+        v15 = [downloads2 countByEnumeratingWithState:&v52 objects:v61 count:16];
         if (v15)
         {
           v16 = v15;
@@ -495,7 +495,7 @@ LABEL_48:
             {
               if (*v53 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(downloads2);
               }
 
               v19 = *(*(&v52 + 1) + 8 * i);
@@ -503,20 +503,20 @@ LABEL_48:
               [v8 setObject:v19 forKeyedSubscript:v20];
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v52 objects:v61 count:16];
+            v16 = [downloads2 countByEnumeratingWithState:&v52 objects:v61 count:16];
           }
 
           while (v16);
         }
 
-        v44 = v14;
-        v21 = [v7 requestItems];
+        v44 = downloads2;
+        requestItems = [v7 requestItems];
         v48 = 0u;
         v49 = 0u;
         v50 = 0u;
         v51 = 0u;
-        v47 = v21;
-        v22 = [v21 countByEnumeratingWithState:&v48 objects:v60 count:16];
+        v47 = requestItems;
+        v22 = [requestItems countByEnumeratingWithState:&v48 objects:v60 count:16];
         v23 = v46;
         if (v22)
         {
@@ -532,42 +532,42 @@ LABEL_48:
               }
 
               v27 = *(*(&v48 + 1) + 8 * j);
-              v28 = [v27 storeItemID];
-              v29 = [v8 objectForKeyedSubscript:v28];
-              v30 = [v23 error];
-              v31 = v30;
-              if (v30)
+              storeItemID = [v27 storeItemID];
+              v29 = [v8 objectForKeyedSubscript:storeItemID];
+              error2 = [v23 error];
+              v31 = error2;
+              if (error2)
               {
-                v32 = v30;
+                v32 = error2;
               }
 
               else
               {
                 v33 = v23;
-                v34 = self;
-                v35 = [v33 errorForItemIdentifier:v28];
+                selfCopy = self;
+                v35 = [v33 errorForItemIdentifier:storeItemID];
                 v36 = v35;
                 if (v35)
                 {
-                  v37 = v35;
+                  error3 = v35;
                 }
 
                 else
                 {
-                  v37 = [v27 error];
+                  error3 = [v27 error];
                 }
 
-                v32 = v37;
+                v32 = error3;
 
-                self = v34;
+                self = selfCopy;
                 v23 = v46;
               }
 
-              v38 = [(BLRestoreDownloadsOperation *)self responseItemBlock];
-              v39 = v38;
-              if (v38)
+              responseItemBlock = [(BLRestoreDownloadsOperation *)self responseItemBlock];
+              v39 = responseItemBlock;
+              if (responseItemBlock)
               {
-                (*(v38 + 16))(v38, v28, v29, v32);
+                (*(responseItemBlock + 16))(responseItemBlock, storeItemID, v29, v32);
               }
             }
 
@@ -589,40 +589,40 @@ LABEL_48:
   }
 }
 
-- (void)_sanitizeRestoreItemAccountID:(id)a3 accountsHelper:(id)a4 error:(id *)a5
+- (void)_sanitizeRestoreItemAccountID:(id)d accountsHelper:(id)helper error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 storeAccountID];
+  dCopy = d;
+  helperCopy = helper;
+  storeAccountID = [dCopy storeAccountID];
 
-  if (!v9)
+  if (!storeAccountID)
   {
-    v12 = [v7 storeAccountAppleID];
+    storeAccountAppleID = [dCopy storeAccountAppleID];
     v13 = +[BUAccountsProvider sharedProvider];
-    v14 = [v13 activeStoreAccount];
+    activeStoreAccount = [v13 activeStoreAccount];
 
-    if (v12)
+    if (storeAccountAppleID)
     {
       v21 = 0;
-      v15 = [v8 accountIDForAccountName:v12 error:&v21];
+      ams_DSID = [helperCopy accountIDForAccountName:storeAccountAppleID error:&v21];
       v10 = v21;
     }
 
     else
     {
-      if (!v14)
+      if (!activeStoreAccount)
       {
         v10 = 0;
 LABEL_12:
-        v19 = [v7 storeAccountID];
-        v20 = v19 | v10;
+        storeAccountID2 = [dCopy storeAccountID];
+        v20 = storeAccountID2 | v10;
 
         if (!v20)
         {
           v10 = sub_1000A8F44(119, 0, 0);
         }
 
-        if (a5)
+        if (error)
         {
           goto LABEL_3;
         }
@@ -633,52 +633,52 @@ LABEL_12:
       v16 = BLServiceLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v7 storeItemID];
+        storeItemID = [dCopy storeItemID];
         *buf = 138412290;
-        v23 = v17;
+        v23 = storeItemID;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "ContentRestore: Falling back to primary account to restore item: %@", buf, 0xCu);
       }
 
-      v18 = [v14 username];
-      [v7 setStoreAccountAppleID:v18];
+      username = [activeStoreAccount username];
+      [dCopy setStoreAccountAppleID:username];
 
-      v15 = [v14 ams_DSID];
+      ams_DSID = [activeStoreAccount ams_DSID];
       v10 = 0;
     }
 
-    [v7 setStoreAccountID:v15];
+    [dCopy setStoreAccountID:ams_DSID];
 
     goto LABEL_12;
   }
 
   v10 = 0;
-  if (a5)
+  if (error)
   {
 LABEL_3:
     v11 = v10;
-    *a5 = v10;
+    *error = v10;
   }
 
 LABEL_4:
 }
 
-- (id)_sortedAccountIDs:(id)a3
+- (id)_sortedAccountIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = +[BUAccountsProvider sharedProvider];
-  v5 = [v4 activeStoreAccount];
-  v6 = [v5 ams_DSID];
+  activeStoreAccount = [v4 activeStoreAccount];
+  ams_DSID = [activeStoreAccount ams_DSID];
 
-  v7 = [v3 allKeys];
+  allKeys = [dsCopy allKeys];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10006E428;
   v12[3] = &unk_10011D468;
-  v13 = v6;
-  v14 = v3;
-  v8 = v3;
-  v9 = v6;
-  v10 = [v7 sortedArrayUsingComparator:v12];
+  v13 = ams_DSID;
+  v14 = dsCopy;
+  v8 = dsCopy;
+  v9 = ams_DSID;
+  v10 = [allKeys sortedArrayUsingComparator:v12];
 
   return v10;
 }

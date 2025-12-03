@@ -9,8 +9,8 @@
   v2 = *MEMORY[0x277CBED50];
   v3 = *MEMORY[0x277CBEC40];
   v4 = [MEMORY[0x277CBEB98] setWithObjects:{*MEMORY[0x277CBED50], *MEMORY[0x277CBEC40], 0}];
-  v5 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v6 = [a1 localizedInfoPlistStringsForKeys:v4 fetchingFirstMatchingLocalizationInList:v5];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  v6 = [self localizedInfoPlistStringsForKeys:v4 fetchingFirstMatchingLocalizationInList:preferredLanguages];
 
   v7 = [v6 objectForKeyedSubscript:v3];
 
@@ -19,7 +19,7 @@
   {
     v9 = v3;
 LABEL_5:
-    v11 = [v8 objectForKeyedSubscript:v9];
+    applicationName = [v8 objectForKeyedSubscript:v9];
     goto LABEL_6;
   }
 
@@ -32,9 +32,9 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v11 = [a1 applicationName];
+  applicationName = [self applicationName];
 LABEL_6:
-  v12 = v11;
+  v12 = applicationName;
 
   return v12;
 }

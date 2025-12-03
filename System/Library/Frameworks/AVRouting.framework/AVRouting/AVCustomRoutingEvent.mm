@@ -24,15 +24,15 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AVCustomRoutingEvent *)self reason];
-  if (v4 > AVCustomRoutingEventReasonReactivate)
+  reason = [(AVCustomRoutingEvent *)self reason];
+  if (reason > AVCustomRoutingEventReasonReactivate)
   {
     v5 = @"?";
   }
 
   else
   {
-    v5 = off_1E794F790[v4];
+    v5 = off_1E794F790[reason];
   }
 
   return [v3 stringWithFormat:@"<reason: %@, route: %@>", v5, -[AVCustomRoutingEvent route](self, "route")];

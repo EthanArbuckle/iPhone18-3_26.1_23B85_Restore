@@ -1,6 +1,6 @@
 @interface MTEpisodeDeletionProcessor
 - (id)predicate;
-- (void)resultsChangedWithDeletedIds:(id)a3 insertIds:(id)a4 updatedIds:(id)a5;
+- (void)resultsChangedWithDeletedIds:(id)ids insertIds:(id)insertIds updatedIds:(id)updatedIds;
 @end
 
 @implementation MTEpisodeDeletionProcessor
@@ -14,9 +14,9 @@
   return v4;
 }
 
-- (void)resultsChangedWithDeletedIds:(id)a3 insertIds:(id)a4 updatedIds:(id)a5
+- (void)resultsChangedWithDeletedIds:(id)ids insertIds:(id)insertIds updatedIds:(id)updatedIds
 {
-  v5 = [MTMediaLibraryRestorePostflightUtil uuidsByRemovingDownloadCandidatesFromEpisodeUuids:a4];
+  v5 = [MTMediaLibraryRestorePostflightUtil uuidsByRemovingDownloadCandidatesFromEpisodeUuids:insertIds];
   if ([v5 count])
   {
     v6 = _MTLogCategoryDatabase();

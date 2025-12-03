@@ -1,20 +1,20 @@
 @interface SUBDescriptor
-- (BOOL)isEqual:(id)a3;
-- (BOOL)stringsMatch:(id)a3 second:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)stringsMatch:(id)match second:(id)second;
 - (NSString)humanReadableUpdateName;
-- (SUBDescriptor)initWithCoder:(id)a3;
+- (SUBDescriptor)initWithCoder:(id)coder;
 - (id)copy;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUBDescriptor
 
-- (SUBDescriptor)initWithCoder:(id)a3
+- (SUBDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v33.receiver = self;
   v33.super_class = SUBDescriptor;
   v5 = [(SUBDescriptor *)&v33 init];
@@ -27,62 +27,62 @@
     v6 = [NSArray arrayWithObjects:v34 count:4];
     v7 = [NSSet setWithArray:v6];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"documentation"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"documentation"];
     documentation = v5->_documentation;
     v5->_documentation = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productVersion"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productVersion"];
     productVersion = v5->_productVersion;
     v5->_productVersion = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productBuildVersion"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productBuildVersion"];
     productBuildVersion = v5->_productBuildVersion;
     v5->_productBuildVersion = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"documentationID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"documentationID"];
     documentationID = v5->_documentationID;
     v5->_documentationID = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MarketingVersion"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MarketingVersion"];
     marketingVersion = v5->_marketingVersion;
     v5->_marketingVersion = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"publisher"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"publisher"];
     publisher = v5->_publisher;
     v5->_publisher = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productSystemName"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productSystemName"];
     productSystemName = v5->_productSystemName;
     v5->_productSystemName = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"denialReasons"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"denialReasons"];
     denialReasons = v5->_denialReasons;
     v5->_denialReasons = v22;
 
-    v5->_downloadSize = [v4 decodeInt64ForKey:@"downloadSize"];
-    v5->_unarchivedSize = [v4 decodeInt64ForKey:@"unarchivedSize"];
-    v5->_msuPrepareSize = [v4 decodeInt64ForKey:@"msuPrepareSize"];
-    v5->_installationSize = [v4 decodeInt64ForKey:@"installationSize"];
-    v5->_totalRequiredFreeSpace = [v4 decodeInt64ForKey:@"TotalRequiredFreeSpace"];
-    v5->_userDidAcceptTermsAndConditions = [v4 decodeBoolForKey:@"userDidAcceptTermsAndConditions"];
-    v5->_willProceedWithInstallation = [v4 decodeBoolForKey:@"willProceedWithInstallation"];
-    v5->_isAwaitingAdmissionControlForInstallation = [v4 decodeBoolForKey:@"isAwaitingAdmissionControlForInstallation"];
-    v5->_userInstallRequestType = [v4 decodeIntegerForKey:@"userInstallRequestType"];
-    v5->_installTonightScheduled = [v4 decodeBoolForKey:@"installTonightScheduled"];
-    v5->_displayTermsRequested = [v4 decodeBoolForKey:@"displayTermsRequested"];
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"OSName"];
+    v5->_downloadSize = [coderCopy decodeInt64ForKey:@"downloadSize"];
+    v5->_unarchivedSize = [coderCopy decodeInt64ForKey:@"unarchivedSize"];
+    v5->_msuPrepareSize = [coderCopy decodeInt64ForKey:@"msuPrepareSize"];
+    v5->_installationSize = [coderCopy decodeInt64ForKey:@"installationSize"];
+    v5->_totalRequiredFreeSpace = [coderCopy decodeInt64ForKey:@"TotalRequiredFreeSpace"];
+    v5->_userDidAcceptTermsAndConditions = [coderCopy decodeBoolForKey:@"userDidAcceptTermsAndConditions"];
+    v5->_willProceedWithInstallation = [coderCopy decodeBoolForKey:@"willProceedWithInstallation"];
+    v5->_isAwaitingAdmissionControlForInstallation = [coderCopy decodeBoolForKey:@"isAwaitingAdmissionControlForInstallation"];
+    v5->_userInstallRequestType = [coderCopy decodeIntegerForKey:@"userInstallRequestType"];
+    v5->_installTonightScheduled = [coderCopy decodeBoolForKey:@"installTonightScheduled"];
+    v5->_displayTermsRequested = [coderCopy decodeBoolForKey:@"displayTermsRequested"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OSName"];
     osName = v5->_osName;
     v5->_osName = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"manifest"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"manifest"];
     manifest = v5->_manifest;
     v5->_manifest = v26;
 
-    v28 = [v4 decodeObjectOfClasses:v7 forKey:@"updatePowerPolicy"];
+    v28 = [coderCopy decodeObjectOfClasses:v7 forKey:@"updatePowerPolicy"];
     updatePowerPolicy = v5->_updatePowerPolicy;
     v5->_updatePowerPolicy = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SUCoreDescriptor"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SUCoreDescriptor"];
     coreDescriptor = v5->_coreDescriptor;
     v5->_coreDescriptor = v30;
   }
@@ -90,33 +90,33 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   documentation = self->_documentation;
-  v5 = a3;
-  [v5 encodeObject:documentation forKey:@"documentation"];
-  [v5 encodeObject:self->_productVersion forKey:@"productVersion"];
-  [v5 encodeObject:self->_productBuildVersion forKey:@"productBuildVersion"];
-  [v5 encodeObject:self->_documentationID forKey:@"documentationID"];
-  [v5 encodeObject:self->_marketingVersion forKey:@"MarketingVersion"];
-  [v5 encodeObject:self->_publisher forKey:@"publisher"];
-  [v5 encodeObject:self->_productSystemName forKey:@"productSystemName"];
-  [v5 encodeObject:self->_denialReasons forKey:@"denialReasons"];
-  [v5 encodeInt64:self->_downloadSize forKey:@"downloadSize"];
-  [v5 encodeInt64:self->_unarchivedSize forKey:@"unarchivedSize"];
-  [v5 encodeInt64:self->_msuPrepareSize forKey:@"msuPrepareSize"];
-  [v5 encodeInt64:self->_installationSize forKey:@"installationSize"];
-  [v5 encodeInt64:self->_totalRequiredFreeSpace forKey:@"TotalRequiredFreeSpace"];
-  [v5 encodeBool:self->_userDidAcceptTermsAndConditions forKey:@"userDidAcceptTermsAndConditions"];
-  [v5 encodeBool:self->_willProceedWithInstallation forKey:@"willProceedWithInstallation"];
-  [v5 encodeBool:self->_isAwaitingAdmissionControlForInstallation forKey:@"isAwaitingAdmissionControlForInstallation"];
-  [v5 encodeInteger:self->_userInstallRequestType forKey:@"userInstallRequestType"];
-  [v5 encodeBool:self->_installTonightScheduled forKey:@"installTonightScheduled"];
-  [v5 encodeBool:self->_displayTermsRequested forKey:@"displayTermsRequested"];
-  [v5 encodeObject:self->_osName forKey:@"OSName"];
-  [v5 encodeObject:self->_manifest forKey:@"manifest"];
-  [v5 encodeObject:self->_updatePowerPolicy forKey:@"updatePowerPolicy"];
-  [v5 encodeObject:self->_coreDescriptor forKey:@"SUCoreDescriptor"];
+  coderCopy = coder;
+  [coderCopy encodeObject:documentation forKey:@"documentation"];
+  [coderCopy encodeObject:self->_productVersion forKey:@"productVersion"];
+  [coderCopy encodeObject:self->_productBuildVersion forKey:@"productBuildVersion"];
+  [coderCopy encodeObject:self->_documentationID forKey:@"documentationID"];
+  [coderCopy encodeObject:self->_marketingVersion forKey:@"MarketingVersion"];
+  [coderCopy encodeObject:self->_publisher forKey:@"publisher"];
+  [coderCopy encodeObject:self->_productSystemName forKey:@"productSystemName"];
+  [coderCopy encodeObject:self->_denialReasons forKey:@"denialReasons"];
+  [coderCopy encodeInt64:self->_downloadSize forKey:@"downloadSize"];
+  [coderCopy encodeInt64:self->_unarchivedSize forKey:@"unarchivedSize"];
+  [coderCopy encodeInt64:self->_msuPrepareSize forKey:@"msuPrepareSize"];
+  [coderCopy encodeInt64:self->_installationSize forKey:@"installationSize"];
+  [coderCopy encodeInt64:self->_totalRequiredFreeSpace forKey:@"TotalRequiredFreeSpace"];
+  [coderCopy encodeBool:self->_userDidAcceptTermsAndConditions forKey:@"userDidAcceptTermsAndConditions"];
+  [coderCopy encodeBool:self->_willProceedWithInstallation forKey:@"willProceedWithInstallation"];
+  [coderCopy encodeBool:self->_isAwaitingAdmissionControlForInstallation forKey:@"isAwaitingAdmissionControlForInstallation"];
+  [coderCopy encodeInteger:self->_userInstallRequestType forKey:@"userInstallRequestType"];
+  [coderCopy encodeBool:self->_installTonightScheduled forKey:@"installTonightScheduled"];
+  [coderCopy encodeBool:self->_displayTermsRequested forKey:@"displayTermsRequested"];
+  [coderCopy encodeObject:self->_osName forKey:@"OSName"];
+  [coderCopy encodeObject:self->_manifest forKey:@"manifest"];
+  [coderCopy encodeObject:self->_updatePowerPolicy forKey:@"updatePowerPolicy"];
+  [coderCopy encodeObject:self->_coreDescriptor forKey:@"SUCoreDescriptor"];
 }
 
 - (id)copy
@@ -127,17 +127,17 @@
   return v3;
 }
 
-- (BOOL)stringsMatch:(id)a3 second:(id)a4
+- (BOOL)stringsMatch:(id)match second:(id)second
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 | v6)
+  matchCopy = match;
+  secondCopy = second;
+  v7 = secondCopy;
+  if (matchCopy | secondCopy)
   {
     v8 = 0;
-    if (v5 && v6)
+    if (matchCopy && secondCopy)
     {
-      v8 = [v5 isEqualToString:v6];
+      v8 = [matchCopy isEqualToString:secondCopy];
     }
   }
 
@@ -149,10 +149,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v17) = 1;
   }
@@ -162,24 +162,24 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SUBDescriptor *)v5 productVersion];
-      v7 = [(SUBDescriptor *)self stringsMatch:v6 second:self->_productVersion];
+      v5 = equalCopy;
+      productVersion = [(SUBDescriptor *)v5 productVersion];
+      v7 = [(SUBDescriptor *)self stringsMatch:productVersion second:self->_productVersion];
 
-      v8 = [(SUBDescriptor *)v5 productBuildVersion];
-      v9 = [(SUBDescriptor *)self stringsMatch:v8 second:self->_productBuildVersion];
+      productBuildVersion = [(SUBDescriptor *)v5 productBuildVersion];
+      v9 = [(SUBDescriptor *)self stringsMatch:productBuildVersion second:self->_productBuildVersion];
 
-      v10 = [(SUBDescriptor *)v5 marketingVersion];
-      v32 = [(SUBDescriptor *)self stringsMatch:v10 second:self->_marketingVersion];
+      marketingVersion = [(SUBDescriptor *)v5 marketingVersion];
+      v32 = [(SUBDescriptor *)self stringsMatch:marketingVersion second:self->_marketingVersion];
 
-      v11 = [(SUBDescriptor *)v5 documentationID];
-      v12 = [(SUBDescriptor *)self stringsMatch:v11 second:self->_documentationID];
+      documentationID = [(SUBDescriptor *)v5 documentationID];
+      v12 = [(SUBDescriptor *)self stringsMatch:documentationID second:self->_documentationID];
 
-      v13 = [(SUBDescriptor *)v5 publisher];
-      v14 = [(SUBDescriptor *)self stringsMatch:v13 second:self->_publisher];
+      publisher = [(SUBDescriptor *)v5 publisher];
+      v14 = [(SUBDescriptor *)self stringsMatch:publisher second:self->_publisher];
 
-      v15 = [(SUBDescriptor *)v5 productSystemName];
-      v16 = [(SUBDescriptor *)self stringsMatch:v15 second:self->_productSystemName];
+      productSystemName = [(SUBDescriptor *)v5 productSystemName];
+      v16 = [(SUBDescriptor *)self stringsMatch:productSystemName second:self->_productSystemName];
 
       v17 = 0;
       if (v7 && v9 && v32 && v12 && v14 && v16)
@@ -314,9 +314,9 @@
 
 - (id)description
 {
-  v3 = [(SUBDocumentation *)self->_documentation preferencesIcon];
+  preferencesIcon = [(SUBDocumentation *)self->_documentation preferencesIcon];
   v4 = @"YES";
-  if (!v3)
+  if (!preferencesIcon)
   {
     v4 = @"NO";
   }
@@ -332,7 +332,7 @@
   publisher = self->_publisher;
   productSystemName = self->_productSystemName;
   downloadSize = self->_downloadSize;
-  v28 = [(SUBDescriptor *)self preparationSize];
+  preparationSize = [(SUBDescriptor *)self preparationSize];
   totalRequiredFreeSpace = self->_totalRequiredFreeSpace;
   installationSize = self->_installationSize;
   documentationID = self->_documentationID;
@@ -340,12 +340,12 @@
   v5 = [(NSError *)self->_denialReasons description];
   osName = self->_osName;
   v7 = [(NSData *)self->_manifest length];
-  v8 = [(SUBDocumentation *)self->_documentation licenseAgreement];
-  v9 = [v8 length];
-  v10 = [(SUBDocumentation *)self->_documentation releaseNotes];
-  v11 = [v10 length];
-  v12 = [(SUBDocumentation *)self->_documentation releaseNotesSummary];
-  v13 = [v12 length];
+  licenseAgreement = [(SUBDocumentation *)self->_documentation licenseAgreement];
+  v9 = [licenseAgreement length];
+  releaseNotes = [(SUBDocumentation *)self->_documentation releaseNotes];
+  v11 = [releaseNotes length];
+  releaseNotesSummary = [(SUBDocumentation *)self->_documentation releaseNotesSummary];
+  v13 = [releaseNotesSummary length];
   if (objc_opt_respondsToSelector())
   {
     updatePowerPolicy = self->_updatePowerPolicy;
@@ -392,31 +392,31 @@
     v18 = @"Not present";
   }
 
-  v19 = [NSString stringWithFormat:@"\n            terms: %s userInstallRequestType: %s installTonightScheduled: %s displayTermsRequested: %s\n            ProductVersion: %@\n            ProductBuildVersion: %@\n            ProductSystemName: %@\n            Publisher: %@\n            DownloadSize: %lld\n            PreparationSize: %lld\n            InstallationSize: %lld\n            TotalRequiredFreeSpace: %lld\n            DocumentationID: %@\n            MarketingVersion: %@\n            CurrentDenialReasons: %@\n            OSName: %@\n            Manifest Length: %lu\n             Terms Length: %lu\n            Release Note Length: %lu\n            Release Note Summary Length: %lu \n            SUIconPresent: %@\n             Power Policy: %@\n             CoreDescriptor: %@", v15, v34, v17, v16, productVersion, productBuildVersion, productSystemName, publisher, downloadSize, v28, installationSize, totalRequiredFreeSpace, documentationID, marketingVersion, v5, osName, v7, v9, v11, v13, v35, updatePowerPolicy, v18];
+  v19 = [NSString stringWithFormat:@"\n            terms: %s userInstallRequestType: %s installTonightScheduled: %s displayTermsRequested: %s\n            ProductVersion: %@\n            ProductBuildVersion: %@\n            ProductSystemName: %@\n            Publisher: %@\n            DownloadSize: %lld\n            PreparationSize: %lld\n            InstallationSize: %lld\n            TotalRequiredFreeSpace: %lld\n            DocumentationID: %@\n            MarketingVersion: %@\n            CurrentDenialReasons: %@\n            OSName: %@\n            Manifest Length: %lu\n             Terms Length: %lu\n            Release Note Length: %lu\n            Release Note Summary Length: %lu \n            SUIconPresent: %@\n             Power Policy: %@\n             CoreDescriptor: %@", v15, v34, v17, v16, productVersion, productBuildVersion, productSystemName, publisher, downloadSize, preparationSize, installationSize, totalRequiredFreeSpace, documentationID, marketingVersion, v5, osName, v7, v9, v11, v13, v35, updatePowerPolicy, v18];
 
   return v19;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  compareCopy = compare;
+  v5 = compareCopy;
+  if (self == compareCopy)
   {
     v8 = 0;
   }
 
-  else if (v4)
+  else if (compareCopy)
   {
     productVersion = self->_productVersion;
-    v7 = [(SUBDescriptor *)v4 productVersion];
-    v8 = [(NSString *)productVersion compare:v7 options:64];
+    productVersion = [(SUBDescriptor *)compareCopy productVersion];
+    v8 = [(NSString *)productVersion compare:productVersion options:64];
 
     if (v8 != -1 && v8 != 1)
     {
       productBuildVersion = self->_productBuildVersion;
-      v11 = [(SUBDescriptor *)v5 productBuildVersion];
-      v8 = [(NSString *)productBuildVersion compare:v11 options:64];
+      productBuildVersion = [(SUBDescriptor *)v5 productBuildVersion];
+      v8 = [(NSString *)productBuildVersion compare:productBuildVersion options:64];
     }
   }
 
@@ -430,11 +430,11 @@
 
 - (NSString)humanReadableUpdateName
 {
-  v3 = [(SUBDocumentation *)self->_documentation humanReadableUpdateName];
+  humanReadableUpdateName = [(SUBDocumentation *)self->_documentation humanReadableUpdateName];
 
-  if (v3)
+  if (humanReadableUpdateName)
   {
-    v4 = [(SUBDocumentation *)self->_documentation humanReadableUpdateName];
+    humanReadableUpdateName2 = [(SUBDocumentation *)self->_documentation humanReadableUpdateName];
   }
 
   else
@@ -443,16 +443,16 @@
     if (osName && self->_productVersion)
     {
       v6 = [(NSString *)osName stringByReplacingOccurrencesOfString:@" " withString:&stru_10002D9A0];
-      v4 = [NSString stringWithFormat:@"%@ %@", v6, self->_productVersion];
+      humanReadableUpdateName2 = [NSString stringWithFormat:@"%@ %@", v6, self->_productVersion];
     }
 
     else
     {
-      v4 = @"Software Update";
+      humanReadableUpdateName2 = @"Software Update";
     }
   }
 
-  return v4;
+  return humanReadableUpdateName2;
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface EBEscherShape
-- (void)setChart:(id)a3;
+- (void)setChart:(id)chart;
 @end
 
 @implementation EBEscherShape
 
-- (void)setChart:(id)a3
+- (void)setChart:(id)chart
 {
-  v5 = a3;
-  if (self->mChart != v5)
+  chartCopy = chart;
+  if (self->mChart != chartCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mChart, a3);
-    v5 = v6;
+    v6 = chartCopy;
+    objc_storeStrong(&self->mChart, chart);
+    chartCopy = v6;
   }
 }
 

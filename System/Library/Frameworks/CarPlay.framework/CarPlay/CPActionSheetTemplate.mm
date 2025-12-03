@@ -1,8 +1,8 @@
 @interface CPActionSheetTemplate
-- (CPActionSheetTemplate)initWithCoder:(id)a3;
+- (CPActionSheetTemplate)initWithCoder:(id)coder;
 - (CPActionSheetTemplate)initWithTitle:(NSString *)title message:(NSString *)message actions:(NSArray *)actions;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleAlertActionForIdentifier:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleAlertActionForIdentifier:(id)identifier;
 @end
 
 @implementation CPActionSheetTemplate
@@ -65,26 +65,26 @@ void __55__CPActionSheetTemplate_initWithTitle_message_actions___block_invoke(ui
   }
 }
 
-- (CPActionSheetTemplate)initWithCoder:(id)a3
+- (CPActionSheetTemplate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = CPActionSheetTemplate;
-  v5 = [(CPTemplate *)&v16 initWithCoder:v4];
+  v5 = [(CPTemplate *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPActionSheetTitle"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPActionSheetTitle"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPActionSheetMessage"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPActionSheetMessage"];
     message = v5->_message;
     v5->_message = v8;
 
     v10 = MEMORY[0x277CBEB98];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"CPActionSheetActions"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"CPActionSheetActions"];
     actions = v5->_actions;
     v5->_actions = v13;
   }
@@ -92,44 +92,44 @@ void __55__CPActionSheetTemplate_initWithTitle_message_actions___block_invoke(ui
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = CPActionSheetTemplate;
-  v4 = a3;
-  [(CPTemplate *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CPTemplate *)&v8 encodeWithCoder:coderCopy];
   v5 = [(CPActionSheetTemplate *)self title:v8.receiver];
-  [v4 encodeObject:v5 forKey:@"CPActionSheetTitle"];
+  [coderCopy encodeObject:v5 forKey:@"CPActionSheetTitle"];
 
-  v6 = [(CPActionSheetTemplate *)self message];
-  [v4 encodeObject:v6 forKey:@"CPActionSheetMessage"];
+  message = [(CPActionSheetTemplate *)self message];
+  [coderCopy encodeObject:message forKey:@"CPActionSheetMessage"];
 
-  v7 = [(CPActionSheetTemplate *)self actions];
-  [v4 encodeObject:v7 forKey:@"CPActionSheetActions"];
+  actions = [(CPActionSheetTemplate *)self actions];
+  [coderCopy encodeObject:actions forKey:@"CPActionSheetActions"];
 }
 
-- (void)handleAlertActionForIdentifier:(id)a3
+- (void)handleAlertActionForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy_;
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
-  v5 = [(CPActionSheetTemplate *)self actions];
+  actions = [(CPActionSheetTemplate *)self actions];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __56__CPActionSheetTemplate_handleAlertActionForIdentifier___block_invoke;
   v13[3] = &unk_278A104B8;
-  v6 = v4;
+  v6 = identifierCopy;
   v14 = v6;
   v15 = &v16;
-  [v5 enumerateObjectsUsingBlock:v13];
+  [actions enumerateObjectsUsingBlock:v13];
 
-  v7 = [v17[5] handler];
+  handler = [v17[5] handler];
 
-  if (v7)
+  if (handler)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -139,14 +139,14 @@ void __55__CPActionSheetTemplate_initWithTitle_message_actions___block_invoke(ui
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
-  v8 = [(CPTemplate *)self templateDelegate];
+  templateDelegate = [(CPTemplate *)self templateDelegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(CPTemplate *)self templateDelegate];
-    v11 = [(CPTemplate *)self identifier];
-    [v10 templateDidDismissWithIdentifier:v11];
+    templateDelegate2 = [(CPTemplate *)self templateDelegate];
+    identifier = [(CPTemplate *)self identifier];
+    [templateDelegate2 templateDidDismissWithIdentifier:identifier];
   }
 
   _Block_object_dispose(&v16, 8);

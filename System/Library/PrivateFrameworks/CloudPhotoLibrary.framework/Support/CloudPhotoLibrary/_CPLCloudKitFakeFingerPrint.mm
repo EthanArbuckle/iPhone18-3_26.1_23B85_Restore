@@ -2,26 +2,26 @@
 - (CGSize)dimensions;
 - (CPLResourceIdentity)fakeIdentity;
 - (NSString)fingerPrint;
-- (_CPLCloudKitFakeFingerPrint)initWithFakeFingerPrint:(id)a3;
-- (_CPLCloudKitFakeFingerPrint)initWithFakeIdentity:(id)a3;
-- (_CPLCloudKitFakeFingerPrint)initWithRealResourceType:(unint64_t)a3 realFingerPrint:(id)a4 outputType:(id)a5 dimensions:(CGSize)a6;
+- (_CPLCloudKitFakeFingerPrint)initWithFakeFingerPrint:(id)print;
+- (_CPLCloudKitFakeFingerPrint)initWithFakeIdentity:(id)identity;
+- (_CPLCloudKitFakeFingerPrint)initWithRealResourceType:(unint64_t)type realFingerPrint:(id)print outputType:(id)outputType dimensions:(CGSize)dimensions;
 @end
 
 @implementation _CPLCloudKitFakeFingerPrint
 
-- (_CPLCloudKitFakeFingerPrint)initWithFakeIdentity:(id)a3
+- (_CPLCloudKitFakeFingerPrint)initWithFakeIdentity:(id)identity
 {
-  v4 = [a3 fingerPrint];
-  v5 = [(_CPLCloudKitFakeFingerPrint *)self initWithFakeFingerPrint:v4];
+  fingerPrint = [identity fingerPrint];
+  v5 = [(_CPLCloudKitFakeFingerPrint *)self initWithFakeFingerPrint:fingerPrint];
 
   return v5;
 }
 
-- (_CPLCloudKitFakeFingerPrint)initWithFakeFingerPrint:(id)a3
+- (_CPLCloudKitFakeFingerPrint)initWithFakeFingerPrint:(id)print
 {
-  v3 = a3;
-  v5 = a3;
-  v6 = [v5 componentsSeparatedByString:@"^"];
+  selfCopy = print;
+  printCopy2 = print;
+  v6 = [printCopy2 componentsSeparatedByString:@"^"];
   if ([v6 count] != 5)
   {
     goto LABEL_9;
@@ -45,37 +45,37 @@
     v15 = v14;
     if (v14)
     {
-      objc_storeStrong(&v14->_fingerPrint, v3);
+      objc_storeStrong(&v14->_fingerPrint, selfCopy);
     }
 
     self = v15;
-    v3 = self;
+    selfCopy = self;
   }
 
   if (!v13)
   {
 LABEL_9:
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (_CPLCloudKitFakeFingerPrint)initWithRealResourceType:(unint64_t)a3 realFingerPrint:(id)a4 outputType:(id)a5 dimensions:(CGSize)a6
+- (_CPLCloudKitFakeFingerPrint)initWithRealResourceType:(unint64_t)type realFingerPrint:(id)print outputType:(id)outputType dimensions:(CGSize)dimensions
 {
-  height = a6.height;
-  width = a6.width;
-  v12 = a4;
-  v13 = a5;
+  height = dimensions.height;
+  width = dimensions.width;
+  printCopy = print;
+  outputTypeCopy = outputType;
   v17.receiver = self;
   v17.super_class = _CPLCloudKitFakeFingerPrint;
   v14 = [(_CPLCloudKitFakeFingerPrint *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_realResourceType = a3;
-    objc_storeStrong(&v14->_realFingerPrint, a4);
-    objc_storeStrong(&v15->_outputType, a5);
+    v14->_realResourceType = type;
+    objc_storeStrong(&v14->_realFingerPrint, print);
+    objc_storeStrong(&v15->_outputType, outputType);
     v15->_dimensions.width = width;
     v15->_dimensions.height = height;
   }
@@ -107,8 +107,8 @@ LABEL_9:
 {
   v3 = objc_alloc_init(CPLResourceIdentity);
   [v3 setFileUTI:self->_outputType];
-  v4 = [(_CPLCloudKitFakeFingerPrint *)self fingerPrint];
-  [v3 setFingerPrint:v4];
+  fingerPrint = [(_CPLCloudKitFakeFingerPrint *)self fingerPrint];
+  [v3 setFingerPrint:fingerPrint];
 
   [v3 setImageDimensions:{self->_dimensions.width, self->_dimensions.height}];
   [v3 setAvailable:1];

@@ -3,8 +3,8 @@
 - (AKCarouselAlertClientConnection)init;
 - (id)connection;
 - (void)dealloc;
-- (void)dismissAlert:(id)a3;
-- (void)presentAlertWithDictionary:(id)a3 completion:(id)a4;
+- (void)dismissAlert:(id)alert;
+- (void)presentAlertWithDictionary:(id)dictionary completion:(id)completion;
 - (void)unsafe_invalidate;
 @end
 
@@ -68,49 +68,49 @@ uint64_t __51__AKCarouselAlertClientConnection_sharedConnection__block_invoke()
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(AKCarouselAlertClientConnection *)self unsafe_invalidate];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = AKCarouselAlertClientConnection;
   [(AKCarouselAlertClientConnection *)&v2 dealloc];
 }
 
 - (id)connection
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   if (!self->_xpcConnection)
   {
     v2 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.Carousel.authAlertXPCService" options:4096];
-    xpcConnection = v20->_xpcConnection;
-    v20->_xpcConnection = v2;
+    xpcConnection = selfCopy->_xpcConnection;
+    selfCopy->_xpcConnection = v2;
     MEMORY[0x1E69E5920](xpcConnection);
     v6 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F07DCB08];
-    [(NSXPCConnection *)v20->_xpcConnection setRemoteObjectInterface:?];
+    [(NSXPCConnection *)selfCopy->_xpcConnection setRemoteObjectInterface:?];
     MEMORY[0x1E69E5920](v6);
-    objc_initWeak(location, v20);
+    objc_initWeak(location, selfCopy);
     v13 = MEMORY[0x1E69E9820];
     v14 = -1073741824;
     v15 = 0;
     v16 = __45__AKCarouselAlertClientConnection_connection__block_invoke;
     v17 = &unk_1E73D34E8;
     objc_copyWeak(&v18, location);
-    [(NSXPCConnection *)v20->_xpcConnection setInterruptionHandler:&v13];
+    [(NSXPCConnection *)selfCopy->_xpcConnection setInterruptionHandler:&v13];
     v7 = MEMORY[0x1E69E9820];
     v8 = -1073741824;
     v9 = 0;
     v10 = __45__AKCarouselAlertClientConnection_connection__block_invoke_2;
     v11 = &unk_1E73D34E8;
     objc_copyWeak(&v12, location);
-    [(NSXPCConnection *)v20->_xpcConnection setInvalidationHandler:&v7];
-    [(NSXPCConnection *)v20->_xpcConnection resume];
+    [(NSXPCConnection *)selfCopy->_xpcConnection setInvalidationHandler:&v7];
+    [(NSXPCConnection *)selfCopy->_xpcConnection resume];
     objc_destroyWeak(&v12);
     objc_destroyWeak(&v18);
     objc_destroyWeak(location);
   }
 
-  v4 = v20->_xpcConnection;
+  v4 = selfCopy->_xpcConnection;
 
   return v4;
 }
@@ -189,16 +189,16 @@ void __45__AKCarouselAlertClientConnection_connection__block_invoke_2(id *a1)
   *MEMORY[0x1E69E9840];
 }
 
-- (void)presentAlertWithDictionary:(id)a3 completion:(id)a4
+- (void)presentAlertWithDictionary:(id)dictionary completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dictionary);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  objc_initWeak(&v14, v17);
-  queue = v17->_internalQueue;
+  objc_storeStrong(&v15, completion);
+  objc_initWeak(&v14, selfCopy);
+  queue = selfCopy->_internalQueue;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
@@ -277,14 +277,14 @@ void __73__AKCarouselAlertClientConnection_presentAlertWithDictionary_completion
   objc_storeStrong(location, 0);
 }
 
-- (void)dismissAlert:(id)a3
+- (void)dismissAlert:(id)alert
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_initWeak(&v11, v13);
-  queue = v13->_internalQueue;
+  objc_storeStrong(location, alert);
+  objc_initWeak(&v11, selfCopy);
+  queue = selfCopy->_internalQueue;
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;

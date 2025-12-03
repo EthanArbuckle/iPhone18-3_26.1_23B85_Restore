@@ -7,10 +7,10 @@
 - (uint64_t)numberOfWordsInText
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = objc_getAssociatedObject(a1, a2);
-  if (v4 && ([a1 text], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "text"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqualToString:", v6), v6, v5, v7))
+  v4 = objc_getAssociatedObject(self, a2);
+  if (v4 && ([self text], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "text"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqualToString:", v6), v6, v5, v7))
   {
-    v8 = [v4 number];
+    number = [v4 number];
   }
 
   else
@@ -21,15 +21,15 @@
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
     v12 = [v10 initWithTagSchemes:v11 options:30];
 
-    v13 = [a1 text];
-    [v12 setString:v13];
+    text = [self text];
+    [v12 setString:text];
 
     v20 = 0;
     v21 = &v20;
     v22 = 0x2020000000;
     v23 = 0;
-    v14 = [a1 text];
-    v15 = [v14 length];
+    text2 = [self text];
+    v15 = [text2 length];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __42__UILabel_Linguistic__numberOfWordsInText__block_invoke;
@@ -38,18 +38,18 @@
     [v12 enumerateTagsInRange:0 scheme:v15 options:v9 usingBlock:{30, v19}];
 
     v16 = objc_opt_new();
-    v17 = [a1 text];
-    [v16 setText:v17];
+    text3 = [self text];
+    [v16 setText:text3];
 
     [v16 setNumber:v21[3]];
-    objc_setAssociatedObject(a1, a2, v16, 1);
-    v8 = v21[3];
+    objc_setAssociatedObject(self, a2, v16, 1);
+    number = v21[3];
     _Block_object_dispose(&v20, 8);
 
     v4 = v16;
   }
 
-  return v8;
+  return number;
 }
 
 @end

@@ -1,47 +1,47 @@
 @interface TNChartFormulaHelper
-+ (id)cellRegionCullingToFirstFoundLevelFrom:(id)a3 inTable:(id)a4 byRows:(BOOL)a5;
-+ (id)chartFormulasForSummaryRegion:(id)a3 inTable:(id)a4;
-- (BOOL)p_addSeriesForRangeList:(id)a3 rowLabelRangeList:(id)a4 columnLabelRangeList:(id)a5 rowLabels:(id)a6 columnLabels:(id)a7 toFormulaMap:(id)a8;
-- (BOOL)p_extendExistingSeriesWithSeriesRangeList:(id *)a3 rowLabelRangeList:(id *)a4 columnLabelRangeList:(id *)a5 toFormulaMap:(id)a6 withLocale:(id)a7;
++ (id)cellRegionCullingToFirstFoundLevelFrom:(id)from inTable:(id)table byRows:(BOOL)rows;
++ (id)chartFormulasForSummaryRegion:(id)region inTable:(id)table;
+- (BOOL)p_addSeriesForRangeList:(id)list rowLabelRangeList:(id)rangeList columnLabelRangeList:(id)labelRangeList rowLabels:(id)labels columnLabels:(id)columnLabels toFormulaMap:(id)map;
+- (BOOL)p_extendExistingSeriesWithSeriesRangeList:(id *)list rowLabelRangeList:(id *)rangeList columnLabelRangeList:(id *)labelRangeList toFormulaMap:(id)map withLocale:(id)locale;
 - (BOOL)p_hasOneValuePerSeries;
-- (TNChartFormulaHelper)initWithMediator:(id)a3 createSpanningReferences:(BOOL)a4;
-- (id)chartFormulaByAppendingCategoryReferences:(vector<TSCECategoryRef *) toFormula:(std:(id)a4 :allocator<TSCECategoryRef *>> *)a3;
-- (id)chartFormulaByAppendingRangeReference:(TSCERangeRef *)a3 toFormula:(id)a4;
-- (id)chartFormulaByAppendingTractReference:(id)a3 toFormula:(id)a4;
-- (id)formulaStorageForChartGridDirection:(int)a3;
-- (id)formulaStorageTransformTable:(TSKUIDStruct)a3 toLevel:(unsigned __int8)a4;
-- (id)p_labelsOfType:(unint64_t)a3 formulaMap:(id)a4;
-- (id)p_rangeListsForFormula:(id)a3 argumentIndexes:(id)a4 byRow:(BOOL)a5 resolveSpanning:(BOOL)a6;
-- (id)p_rangeListsForFormulas:(id)a3 byRow:(BOOL)a4 resolveSpanning:(BOOL)a5;
-- (unsigned)p_addFormulasOfType:(unint64_t)a3 rangeList:(id)a4 byRow:(BOOL)a5 toFormulaMap:(id)a6 ofLevel:(unsigned __int8)a7;
-- (unsigned)p_firstDataCategoryLevelInFormulaMap:(id)a3 forTable:(TSKUIDStruct)a4;
-- (void)p_addStringFormulasOfType:(unint64_t)a3 rangeList:(id)a4 byRow:(BOOL)a5 labels:(id)a6 toFormulaMap:(id)a7;
-- (void)p_rangeListsForFormula:(id)a3 argumentIndexes:(id)a4 byRow:(BOOL)a5 resolveSpanning:(BOOL)a6 orderedListOfOwnerIDs:(id)a7 ownerIDToRangeList:(id)a8;
+- (TNChartFormulaHelper)initWithMediator:(id)mediator createSpanningReferences:(BOOL)references;
+- (id)chartFormulaByAppendingCategoryReferences:(vector<TSCECategoryRef *) toFormula:(std:(id)formula :allocator<TSCECategoryRef *>> *)a3;
+- (id)chartFormulaByAppendingRangeReference:(TSCERangeRef *)reference toFormula:(id)formula;
+- (id)chartFormulaByAppendingTractReference:(id)reference toFormula:(id)formula;
+- (id)formulaStorageForChartGridDirection:(int)direction;
+- (id)formulaStorageTransformTable:(TSKUIDStruct)table toLevel:(unsigned __int8)level;
+- (id)p_labelsOfType:(unint64_t)type formulaMap:(id)map;
+- (id)p_rangeListsForFormula:(id)formula argumentIndexes:(id)indexes byRow:(BOOL)row resolveSpanning:(BOOL)spanning;
+- (id)p_rangeListsForFormulas:(id)formulas byRow:(BOOL)row resolveSpanning:(BOOL)spanning;
+- (unsigned)p_addFormulasOfType:(unint64_t)type rangeList:(id)list byRow:(BOOL)row toFormulaMap:(id)map ofLevel:(unsigned __int8)level;
+- (unsigned)p_firstDataCategoryLevelInFormulaMap:(id)map forTable:(TSKUIDStruct)table;
+- (void)p_addStringFormulasOfType:(unint64_t)type rangeList:(id)list byRow:(BOOL)row labels:(id)labels toFormulaMap:(id)map;
+- (void)p_rangeListsForFormula:(id)formula argumentIndexes:(id)indexes byRow:(BOOL)row resolveSpanning:(BOOL)spanning orderedListOfOwnerIDs:(id)ds ownerIDToRangeList:(id)list;
 @end
 
 @implementation TNChartFormulaHelper
 
-- (TNChartFormulaHelper)initWithMediator:(id)a3 createSpanningReferences:(BOOL)a4
+- (TNChartFormulaHelper)initWithMediator:(id)mediator createSpanningReferences:(BOOL)references
 {
-  v7 = a3;
+  mediatorCopy = mediator;
   v11.receiver = self;
   v11.super_class = TNChartFormulaHelper;
   v8 = [(TNChartFormulaHelper *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_chartMediator, a3);
-    v9->_createSpanningReferences = a4;
+    objc_storeStrong(&v8->_chartMediator, mediator);
+    v9->_createSpanningReferences = references;
   }
 
   return v9;
 }
 
-- (id)formulaStorageForChartGridDirection:(int)a3
+- (id)formulaStorageForChartGridDirection:(int)direction
 {
-  v3 = *&a3;
+  v3 = *&direction;
   v65 = *MEMORY[0x277D85DE8];
-  v5 = objc_msgSend_chartMediator(self, a2, *&a3);
+  v5 = objc_msgSend_chartMediator(self, a2, *&direction);
   v8 = objc_msgSend_formulaStorage(v5, v6, v7);
   v11 = objc_msgSend_mutableCopy(v8, v9, v10);
 
@@ -123,12 +123,12 @@ LABEL_18:
   return v11;
 }
 
-- (id)formulaStorageTransformTable:(TSKUIDStruct)a3 toLevel:(unsigned __int8)a4
+- (id)formulaStorageTransformTable:(TSKUIDStruct)table toLevel:(unsigned __int8)level
 {
-  v4 = a4;
-  upper = a3._upper;
-  lower = a3._lower;
-  v8 = objc_msgSend_chartMediator(self, a2, a3._lower);
+  levelCopy = level;
+  upper = table._upper;
+  lower = table._lower;
+  v8 = objc_msgSend_chartMediator(self, a2, table._lower);
   v11 = objc_msgSend_calculationEngine(v8, v9, v10);
 
   v128 = upper;
@@ -151,7 +151,7 @@ LABEL_18:
   v170 = "";
   v171 = 0;
   v172 = 0;
-  if (v4 == 253)
+  if (levelCopy == 253)
   {
     v31 = objc_msgSend_numberOfBaseRows(v13, v29, v30);
     v36 = v31 - objc_msgSend_numberOfHeaderRows(v13, v32, v33);
@@ -160,7 +160,7 @@ LABEL_18:
   else
   {
     v37 = objc_msgSend_groupBy(v13, v29, v30);
-    v36 = objc_msgSend_numberOfGroupsAtLevel_(v37, v38, v4);
+    v36 = objc_msgSend_numberOfGroupsAtLevel_(v37, v38, levelCopy);
   }
 
   v39 = objc_msgSend_chartMediator(self, v34, v35);
@@ -196,7 +196,7 @@ LABEL_18:
     v156[3] = &unk_27A6A2DC0;
     v66 = v130;
     v157 = v66;
-    v158 = self;
+    selfCopy = self;
     v163 = lower;
     v164 = v128;
     v67 = v65;
@@ -212,7 +212,7 @@ LABEL_18:
     v147[1] = 3221225472;
     v147[2] = sub_275F22320;
     v147[3] = &unk_27A6A2E10;
-    v155 = v4;
+    v155 = levelCopy;
     v148 = v70;
     v153 = lower;
     v154 = v128;
@@ -234,7 +234,7 @@ LABEL_18:
   v140 = &v139;
   v141 = 0x2020000000;
   v142 = __C();
-  if (v4 == 253)
+  if (levelCopy == 253)
   {
     v75 = objc_msgSend_numberOfBaseHeaderColumns(v13, v73, v74);
     v78 = objc_msgSend_numberOfBaseHeaderRows(v13, v76, v77);
@@ -296,7 +296,7 @@ LABEL_18:
     v104 = objc_msgSend_groupBy(v102, v101, v103);
     v137 = objc_msgSend_topLevelGroupUid(v104, v105, v106);
     v138 = v107;
-    v86 = objc_msgSend_initWithGroupByUID_absGroupUid_columnUid_aggType_groupLevel_(v98, v107, v135, &v137, MEMORY[0x277D80D68], 7, v4);
+    v86 = objc_msgSend_initWithGroupByUID_absGroupUid_columnUid_aggType_groupLevel_(v98, v107, v135, &v137, MEMORY[0x277D80D68], 7, levelCopy);
 
     v90 = sub_275F11AB8(v140[3], v86, v108);
   }
@@ -349,11 +349,11 @@ LABEL_28:
   return v12 ^ 1;
 }
 
-- (id)chartFormulaByAppendingRangeReference:(TSCERangeRef *)a3 toFormula:(id)a4
+- (id)chartFormulaByAppendingRangeReference:(TSCERangeRef *)reference toFormula:(id)formula
 {
   v65 = *MEMORY[0x277D85DE8];
-  v57 = a4;
-  if (!v57 || (v8 = __C()) == 0)
+  formulaCopy = formula;
+  if (!formulaCopy || (v8 = __C()) == 0)
   {
     v47 = 0;
     goto LABEL_29;
@@ -365,7 +365,7 @@ LABEL_28:
   v15 = objc_msgSend_chartMediator(self, v13, v14);
   *&v58 = objc_msgSend_entityUID(v15, v16, v17);
   *(&v58 + 1) = v18;
-  v56 = objc_msgSend_argumentCollectionWithCalcEngine_inChart_(v57, v18, v12, &v58);
+  v56 = objc_msgSend_argumentCollectionWithCalcEngine_inChart_(formulaCopy, v18, v12, &v58);
 
   v60 = 0u;
   v61 = 0u;
@@ -445,9 +445,9 @@ LABEL_28:
   while (v26);
 LABEL_22:
 
-  topLeft = a3->range._topLeft;
-  bottomRight = a3->range._bottomRight;
-  v41 = sub_275F14DBC(v8, &a3->_tableUID, topLeft, bottomRight) + v23;
+  topLeft = reference->range._topLeft;
+  bottomRight = reference->range._bottomRight;
+  v41 = sub_275F14DBC(v8, &reference->_tableUID, topLeft, bottomRight) + v23;
   if (v41)
   {
     if (HIDWORD(v41))
@@ -479,12 +479,12 @@ LABEL_29:
   return v47;
 }
 
-- (id)chartFormulaByAppendingTractReference:(id)a3 toFormula:(id)a4
+- (id)chartFormulaByAppendingTractReference:(id)reference toFormula:(id)formula
 {
   v64 = *MEMORY[0x277D85DE8];
-  v55 = a3;
-  v56 = a4;
-  if (!v56 || (v8 = __C()) == 0)
+  referenceCopy = reference;
+  formulaCopy = formula;
+  if (!formulaCopy || (v8 = __C()) == 0)
   {
     v45 = 0;
     goto LABEL_29;
@@ -496,7 +496,7 @@ LABEL_29:
   v15 = objc_msgSend_chartMediator(self, v13, v14);
   *&v57 = objc_msgSend_entityUID(v15, v16, v17);
   *(&v57 + 1) = v18;
-  v54 = objc_msgSend_argumentCollectionWithCalcEngine_inChart_(v56, v18, v12, &v57);
+  v54 = objc_msgSend_argumentCollectionWithCalcEngine_inChart_(formulaCopy, v18, v12, &v57);
 
   v59 = 0u;
   v60 = 0u;
@@ -576,7 +576,7 @@ LABEL_29:
   while (v26);
 LABEL_22:
 
-  v39 = sub_275F11A20(v8, v55) + v23;
+  v39 = sub_275F11A20(v8, referenceCopy) + v23;
   if (v39)
   {
     if (HIDWORD(v39))
@@ -608,11 +608,11 @@ LABEL_29:
   return v45;
 }
 
-- (id)chartFormulaByAppendingCategoryReferences:(vector<TSCECategoryRef *) toFormula:(std:(id)a4 :allocator<TSCECategoryRef *>> *)a3
+- (id)chartFormulaByAppendingCategoryReferences:(vector<TSCECategoryRef *) toFormula:(std:(id)formula :allocator<TSCECategoryRef *>> *)a3
 {
   v68 = *MEMORY[0x277D85DE8];
-  v60 = a4;
-  if (v60 && (v8 = __C()) != 0)
+  formulaCopy = formula;
+  if (formulaCopy && (v8 = __C()) != 0)
   {
     v9 = objc_msgSend_chartMediator(self, v6, v7);
     v12 = objc_msgSend_calculationEngine(v9, v10, v11);
@@ -621,7 +621,7 @@ LABEL_29:
     v58 = a3;
     *&v61 = objc_msgSend_entityUID(v15, v16, v17);
     *(&v61 + 1) = v18;
-    v59 = objc_msgSend_argumentCollectionWithCalcEngine_inChart_(v60, v18, v12, &v61);
+    v59 = objc_msgSend_argumentCollectionWithCalcEngine_inChart_(formulaCopy, v18, v12, &v61);
 
     v63 = 0u;
     v64 = 0u;
@@ -744,25 +744,25 @@ LABEL_29:
   return v45;
 }
 
-- (void)p_rangeListsForFormula:(id)a3 argumentIndexes:(id)a4 byRow:(BOOL)a5 resolveSpanning:(BOOL)a6 orderedListOfOwnerIDs:(id)a7 ownerIDToRangeList:(id)a8
+- (void)p_rangeListsForFormula:(id)formula argumentIndexes:(id)indexes byRow:(BOOL)row resolveSpanning:(BOOL)spanning orderedListOfOwnerIDs:(id)ds ownerIDToRangeList:(id)list
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
+  formulaCopy = formula;
+  indexesCopy = indexes;
+  dsCopy = ds;
+  listCopy = list;
   v20 = objc_msgSend_chartMediator(self, v18, v19);
   v23 = objc_msgSend_calculationEngine(v20, v21, v22);
 
   v26 = objc_msgSend_chartMediator(self, v24, v25);
   v49[0] = objc_msgSend_entityUID(v26, v27, v28);
   v49[1] = v29;
-  v30 = objc_msgSend_argumentCollectionWithCalcEngine_inChart_(v14, v29, v23, v49);
+  v30 = objc_msgSend_argumentCollectionWithCalcEngine_inChart_(formulaCopy, v29, v23, v49);
 
-  if (!v15)
+  if (!indexesCopy)
   {
     v33 = MEMORY[0x277CCAA78];
     v34 = objc_msgSend_count(v30, v31, v32);
-    v15 = objc_msgSend_indexSetWithIndexesInRange_(v33, v35, 0, v34);
+    indexesCopy = objc_msgSend_indexSetWithIndexesInRange_(v33, v35, 0, v34);
   }
 
   v41[0] = MEMORY[0x277D85DD0];
@@ -771,28 +771,28 @@ LABEL_29:
   v41[3] = &unk_27A6A2F00;
   v36 = v30;
   v42 = v36;
-  v37 = v17;
+  v37 = listCopy;
   v43 = v37;
-  v38 = v16;
+  v38 = dsCopy;
   v44 = v38;
-  v45 = self;
-  v47 = a6;
-  v48 = a5;
+  selfCopy = self;
+  spanningCopy = spanning;
+  rowCopy = row;
   v39 = v23;
   v46 = v39;
-  objc_msgSend_enumerateIndexesUsingBlock_(v15, v40, v41);
+  objc_msgSend_enumerateIndexesUsingBlock_(indexesCopy, v40, v41);
 }
 
-- (id)p_rangeListsForFormula:(id)a3 argumentIndexes:(id)a4 byRow:(BOOL)a5 resolveSpanning:(BOOL)a6
+- (id)p_rangeListsForFormula:(id)formula argumentIndexes:(id)indexes byRow:(BOOL)row resolveSpanning:(BOOL)spanning
 {
-  v6 = a6;
-  v7 = a5;
+  spanningCopy = spanning;
+  rowCopy = row;
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  formulaCopy = formula;
+  indexesCopy = indexes;
   v14 = objc_msgSend_array(MEMORY[0x277CBEB18], v12, v13);
   v17 = objc_msgSend_dictionary(MEMORY[0x277D81278], v15, v16);
-  objc_msgSend_p_rangeListsForFormula_argumentIndexes_byRow_resolveSpanning_orderedListOfOwnerIDs_ownerIDToRangeList_(self, v18, v10, v11, v7, v6, v14, v17);
+  objc_msgSend_p_rangeListsForFormula_argumentIndexes_byRow_resolveSpanning_orderedListOfOwnerIDs_ownerIDToRangeList_(self, v18, formulaCopy, indexesCopy, rowCopy, spanningCopy, v14, v17);
   v21 = objc_msgSend_array(MEMORY[0x277CBEB18], v19, v20);
   v33 = 0u;
   v34 = 0u;
@@ -825,19 +825,19 @@ LABEL_29:
   return v21;
 }
 
-- (id)p_rangeListsForFormulas:(id)a3 byRow:(BOOL)a4 resolveSpanning:(BOOL)a5
+- (id)p_rangeListsForFormulas:(id)formulas byRow:(BOOL)row resolveSpanning:(BOOL)spanning
 {
-  v5 = a5;
-  v6 = a4;
+  spanningCopy = spanning;
+  rowCopy = row;
   v43 = *MEMORY[0x277D85DE8];
-  v32 = a3;
+  formulasCopy = formulas;
   v10 = objc_msgSend_array(MEMORY[0x277CBEB18], v8, v9);
   v13 = objc_msgSend_dictionary(MEMORY[0x277D81278], v11, v12);
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v14 = v32;
+  v14 = formulasCopy;
   v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(v14, v15, &v37, v42, 16);
   if (v17)
   {
@@ -851,7 +851,7 @@ LABEL_29:
           objc_enumerationMutation(v14);
         }
 
-        objc_msgSend_p_rangeListsForFormula_argumentIndexes_byRow_resolveSpanning_orderedListOfOwnerIDs_ownerIDToRangeList_(self, v16, *(*(&v37 + 1) + 8 * i), 0, v6, v5, v10, v13);
+        objc_msgSend_p_rangeListsForFormula_argumentIndexes_byRow_resolveSpanning_orderedListOfOwnerIDs_ownerIDToRangeList_(self, v16, *(*(&v37 + 1) + 8 * i), 0, rowCopy, spanningCopy, v10, v13);
       }
 
       v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(v14, v16, &v37, v42, 16);
@@ -892,12 +892,12 @@ LABEL_29:
   return v22;
 }
 
-- (unsigned)p_firstDataCategoryLevelInFormulaMap:(id)a3 forTable:(TSKUIDStruct)a4
+- (unsigned)p_firstDataCategoryLevelInFormulaMap:(id)map forTable:(TSKUIDStruct)table
 {
-  upper = a4._upper;
-  lower = a4._lower;
+  upper = table._upper;
+  lower = table._lower;
   v64 = *MEMORY[0x277D85DE8];
-  v48 = a3;
+  mapCopy = map;
   v9 = objc_msgSend_chartMediator(self, v7, v8);
   v12 = objc_msgSend_calculationEngine(v9, v10, v11);
 
@@ -905,7 +905,7 @@ LABEL_29:
   v61[0] = objc_msgSend_entityUID(v15, v16, v17);
   v61[1] = v18;
 
-  v47 = objc_msgSend_formulaListForType_(v48, v19, 1);
+  v47 = objc_msgSend_formulaListForType_(mapCopy, v19, 1);
   if (objc_msgSend_count(v47, v20, v21))
   {
     v59 = 0u;
@@ -1024,13 +1024,13 @@ LABEL_29:
   return v9;
 }
 
-- (unsigned)p_addFormulasOfType:(unint64_t)a3 rangeList:(id)a4 byRow:(BOOL)a5 toFormulaMap:(id)a6 ofLevel:(unsigned __int8)a7
+- (unsigned)p_addFormulasOfType:(unint64_t)type rangeList:(id)list byRow:(BOOL)row toFormulaMap:(id)map ofLevel:(unsigned __int8)level
 {
-  DataCategoryLevelInFormulaMap_forTable = a7;
-  v204 = a5;
-  v11 = a4;
-  v202 = a6;
-  if (objc_msgSend_direction(v202, v12, v13) == 2)
+  DataCategoryLevelInFormulaMap_forTable = level;
+  rowCopy = row;
+  listCopy = list;
+  mapCopy = map;
+  if (objc_msgSend_direction(mapCopy, v12, v13) == 2)
   {
     v16 = 2;
   }
@@ -1044,7 +1044,7 @@ LABEL_29:
   v20 = objc_msgSend_chartInfo(v17, v18, v19);
   v187 = objc_msgSend_chartType(v20, v21, v22);
 
-  if (v16 == a3)
+  if (v16 == type)
   {
     v191 = objc_msgSend_p_hasOneValuePerSeries(self, v23, v24) ^ 1;
   }
@@ -1054,14 +1054,14 @@ LABEL_29:
     v191 = 0;
   }
 
-  if (a3 - 4 < 4 || a3 == 1)
+  if (type - 4 < 4 || type == 1)
   {
     v25 = v187;
     v197 = objc_msgSend_maxCellsForAdding(v187, v23, v24);
     v200 = objc_msgSend_maxSeries(v187, v26, v27);
   }
 
-  else if (v16 == a3)
+  else if (v16 == type)
   {
     v197 = 0xFFFFLL;
     v200 = 0xFFFFLL;
@@ -1075,7 +1075,7 @@ LABEL_29:
     v200 = objc_msgSend_maxSeries(v187, v130, v131);
   }
 
-  v189 = objc_msgSend_formulaListForType_(v202, v23, a3);
+  v189 = objc_msgSend_formulaListForType_(mapCopy, v23, type);
   v30 = objc_msgSend_chartMediator(self, v28, v29);
   v190 = objc_msgSend_calculationEngine(v30, v31, v32);
 
@@ -1086,18 +1086,18 @@ LABEL_29:
   v43 = objc_msgSend_chartMediator(self, v41, v42);
   shouldSkipHiddenData = objc_msgSend_shouldSkipHiddenData(v43, v44, v45);
 
-  if (v191 && objc_msgSend_count(v189, v47, v48) && (objc_msgSend_formulasOfType_areAllStaticWithCalcEngine_inEntity_(v202, v47, v16, v190, v38, v40) & 1) != 0)
+  if (v191 && objc_msgSend_count(v189, v47, v48) && (objc_msgSend_formulasOfType_areAllStaticWithCalcEngine_inEntity_(mapCopy, v47, v16, v190, v38, v40) & 1) != 0)
   {
     v49 = -1;
     goto LABEL_195;
   }
 
-  v207 = v11;
+  v207 = listCopy;
   v203 = objc_msgSend_count(v189, v47, v48);
-  v205 = self;
-  v221._lower = objc_msgSend_tableUID(v11, v50, v51);
+  selfCopy = self;
+  v221._lower = objc_msgSend_tableUID(listCopy, v50, v51);
   v221._upper = v52;
-  v201 = objc_msgSend_unionRange(v11, v52, v53);
+  v201 = objc_msgSend_unionRange(listCopy, v52, v53);
   v55 = v54;
   v56 = objc_msgSend_tableInfoForTableUID_withCalcEngine_(MEMORY[0x277D80D40], v54, v221._lower, v221._upper, v190);
   if (!objc_msgSend_isCategorized(v56, v57, v58))
@@ -1111,7 +1111,7 @@ LABEL_45:
 
     if (v191)
     {
-      v64 = objc_msgSend_numberOfTotalCategoryLabelsWithCalcEngine_inEntity_shouldSkipHiddenData_(v202, v59, v190, v38, v40, shouldSkipHiddenData);
+      v64 = objc_msgSend_numberOfTotalCategoryLabelsWithCalcEngine_inEntity_shouldSkipHiddenData_(mapCopy, v59, v190, v38, v40, shouldSkipHiddenData);
       if (HIDWORD(v64))
       {
         v168 = MEMORY[0x277D81150];
@@ -1134,7 +1134,7 @@ LABEL_45:
       LODWORD(v64) = 0;
     }
 
-    if (v204)
+    if (rowCopy)
     {
       if (v55 == 0x7FFFFFFF || v201 == 0x7FFFFFFF)
       {
@@ -1180,7 +1180,7 @@ LABEL_45:
     }
 
     v193 = v74;
-    if (v204)
+    if (rowCopy)
     {
       v136 = 1;
     }
@@ -1195,7 +1195,7 @@ LABEL_45:
 LABEL_149:
     v138 = v137 << 32;
     v199 = v137;
-    if (v204)
+    if (rowCopy)
     {
       v139 = v137;
     }
@@ -1206,12 +1206,12 @@ LABEL_149:
     }
 
     v140 = (v139 + v201);
-    if (v204)
+    if (rowCopy)
     {
       v138 = 0;
     }
 
-    v142 = objc_msgSend_rangeStartingAtCell_direction_(v11, v59, v201 & 0xFFFF000000000000 | (v138 + v201) & 0xFFFF00000000 | v140, v136);
+    v142 = objc_msgSend_rangeStartingAtCell_direction_(listCopy, v59, v201 & 0xFFFF000000000000 | (v138 + v201) & 0xFFFF00000000 | v140, v136);
     v143 = v59;
     v144 = 0;
     v145 = 0;
@@ -1265,7 +1265,7 @@ LABEL_183:
             v156 = objc_msgSend_initWithNodeArray_(v154, v155, v144);
             TSCEASTNodeArray::freeNodeArray();
             v158 = objc_msgSend_chartFormulaWithFormulaObject_(TNChartFormulaWrapper, v157, v156);
-            objc_msgSend_addFormula_withFormulaID_(v202, v159, v158, v203++ | (a3 << 32));
+            objc_msgSend_addFormula_withFormulaID_(mapCopy, v159, v158, v203++ | (type << 32));
           }
         }
 
@@ -1289,9 +1289,9 @@ LABEL_174:
         v144 = __C();
       }
 
-      if (a3 == 1 && v205->_createSpanningReferences)
+      if (type == 1 && selfCopy->_createSpanningReferences)
       {
-        if (v204)
+        if (rowCopy)
         {
           v149 = (v143 & 0xFFFF0000FFFFFFFFLL | 0x7FFF00000000);
           LOWORD(v146) = 0x7FFF;
@@ -1313,14 +1313,14 @@ LABEL_174:
 
       v151 = ((v146 << 32) | v142 & 0xFFFF000000000000 | v150);
       v152 = sub_275F14DBC(v144, &v221, v151, v149);
-      v142 = objc_msgSend_rangeStartingAfterCell_direction_(v11, v153, v143, v136);
+      v142 = objc_msgSend_rangeStartingAfterCell_direction_(listCopy, v153, v143, v136);
       v143 = v59;
       v145 += v152;
       v49 = -3;
     }
   }
 
-  if (v204)
+  if (rowCopy)
   {
     v61 = v201 == 0x7FFFFFFF || v55 == 0x7FFFFFFF;
     v62 = !v61;
@@ -1345,14 +1345,14 @@ LABEL_174:
 
   v194 = v66;
   v67 = objc_msgSend_groupBy(v56, v59, v60);
-  v195 = objc_msgSend_cellRegion(v11, v68, v69);
+  v195 = objc_msgSend_cellRegion(listCopy, v68, v69);
   v192 = v67;
   if (DataCategoryLevelInFormulaMap_forTable == 255)
   {
-    DataCategoryLevelInFormulaMap_forTable = objc_msgSend_p_firstDataCategoryLevelInFormulaMap_forTable_(v205, v70, v202, v221._lower, v221._upper);
+    DataCategoryLevelInFormulaMap_forTable = objc_msgSend_p_firstDataCategoryLevelInFormulaMap_forTable_(selfCopy, v70, mapCopy, v221._lower, v221._upper);
     if (DataCategoryLevelInFormulaMap_forTable == 255)
     {
-      v71 = objc_msgSend_cellRegionCullingToFirstFoundLevelFrom_inTable_byRows_(TNChartFormulaHelper, v70, v195, v56, v204);
+      v71 = objc_msgSend_cellRegionCullingToFirstFoundLevelFrom_inTable_byRows_(TNChartFormulaHelper, v70, v195, v56, rowCopy);
 
       DataCategoryLevelInFormulaMap_forTable = 255;
       v195 = v71;
@@ -1368,7 +1368,7 @@ LABEL_174:
 
   if (v191)
   {
-    v72 = objc_msgSend_numberOfTotalCategoryLabelsWithCalcEngine_inEntity_shouldSkipHiddenData_(v202, v70, v190, v38, v40, shouldSkipHiddenData);
+    v72 = objc_msgSend_numberOfTotalCategoryLabelsWithCalcEngine_inEntity_shouldSkipHiddenData_(mapCopy, v70, v190, v38, v40, shouldSkipHiddenData);
     if (HIDWORD(v72))
     {
       v175 = MEMORY[0x277D81150];
@@ -1403,14 +1403,14 @@ LABEL_44:
   }
 
   v78 = v72;
-  v79 = a3;
+  typeCopy = type;
   v80 = 0;
   v198 = 0;
   v184 = 0;
-  v185 = v79;
-  v61 = v79 == 2;
-  v188 = v79 & 0xFFFFFFFFFFFFFFFELL;
-  v186 = v79 << 32;
+  v185 = typeCopy;
+  v61 = typeCopy == 2;
+  v188 = typeCopy & 0xFFFFFFFFFFFFFFFELL;
+  v186 = typeCopy << 32;
   v81 = v191;
   if (!v61)
   {
@@ -1422,7 +1422,7 @@ LABEL_44:
   v49 = -1;
   do
   {
-    if (v204)
+    if (rowCopy)
     {
       v82 = objc_msgSend_indexSetWithIndex_(MEMORY[0x277CCAA78], v70, (v80 + v201));
       objc_msgSend_regionByIntersectingRowIndices_(v195, v83, v82);
@@ -1539,7 +1539,7 @@ LABEL_82:
       v210[2] = sub_275F2659C;
       v210[3] = &unk_27A6A2728;
       v212 = &v214;
-      v213 = v204;
+      v213 = rowCopy;
       v98 = v56;
       v211 = v98;
       objc_msgSend_enumerateCellRangesUsingBlock_(v206, v99, v210);
@@ -1618,7 +1618,7 @@ LABEL_112:
       TSCEASTNodeArray::freeNodeArray();
       v116 = objc_msgSend_chartFormulaWithFormulaObject_(TNChartFormulaWrapper, v115, v114);
 
-      objc_msgSend_addFormula_withFormulaID_(v202, v117, v116, v203++ | v186);
+      objc_msgSend_addFormula_withFormulaID_(mapCopy, v117, v116, v203++ | v186);
       v198 = v116;
     }
 
@@ -1641,40 +1641,40 @@ LABEL_112:
   if (v126)
   {
     v128 = objc_msgSend_chartFormulaForTractReference_(TNChartFormulaWrapper, v70, v184);
-    objc_msgSend_addFormula_withFormulaID_(v202, v129, v128, v203 | 0x200000000);
+    objc_msgSend_addFormula_withFormulaID_(mapCopy, v129, v128, v203 | 0x200000000);
   }
 
 LABEL_193:
 
 LABEL_194:
-  v11 = v207;
+  listCopy = v207;
   v25 = v187;
 LABEL_195:
 
   return v49;
 }
 
-- (id)p_labelsOfType:(unint64_t)a3 formulaMap:(id)a4
+- (id)p_labelsOfType:(unint64_t)type formulaMap:(id)map
 {
   v58 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v50 = v6;
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) != 2)
+  mapCopy = map;
+  v50 = mapCopy;
+  if ((type & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
     v40 = MEMORY[0x277D81150];
     v41 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TNChartFormulaHelper p_labelsOfType:formulaMap:]");
     v44 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v42, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/numbers/Classes/TNChartFormulaHelper.mm");
     v45 = 0;
-    if (a3 > 5)
+    if (type > 5)
     {
-      if (a3 > 254)
+      if (type > 254)
       {
-        if (a3 == 255)
+        if (type == 255)
         {
           v45 = @"kTNChartFormulaHub";
         }
 
-        else if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+        else if (type == 0x7FFFFFFFFFFFFFFFLL)
         {
           objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v40, v43, v41, v44, 940, 0, "invalid label type: %@", @"kTNChartFormulaInvalid");
           goto LABEL_31;
@@ -1683,13 +1683,13 @@ LABEL_195:
 
       else
       {
-        if (a3 == 6)
+        if (type == 6)
         {
           objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v40, v43, v41, v44, 940, 0, "invalid label type: %@", @"kTNChartFormulaCustomPosXErrorBar");
           goto LABEL_31;
         }
 
-        if (a3 == 7)
+        if (type == 7)
         {
           objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v40, v43, v41, v44, 940, 0, "invalid label type: %@", @"kTNChartFormulaCustomNegXErrorBar");
           goto LABEL_31;
@@ -1699,9 +1699,9 @@ LABEL_195:
 
     else
     {
-      if (a3 > 3)
+      if (type > 3)
       {
-        if (a3 == 4)
+        if (type == 4)
         {
           objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v40, v43, v41, v44, 940, 0, "invalid label type: %@", @"kTNChartFormulaCustomPosYErrorBar");
         }
@@ -1714,13 +1714,13 @@ LABEL_195:
         goto LABEL_31;
       }
 
-      if (!a3)
+      if (!type)
       {
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v40, v43, v41, v44, 940, 0, "invalid label type: %@", @"kTNChartFormulaChartArea");
         goto LABEL_31;
       }
 
-      if (a3 == 1)
+      if (type == 1)
       {
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v40, v43, v41, v44, 940, 0, "invalid label type: %@", @"kTNChartFormulaChartData");
 LABEL_31:
@@ -1735,7 +1735,7 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v49 = objc_msgSend_formulaListForType_(v6, v7, a3);
+  v49 = objc_msgSend_formulaListForType_(mapCopy, v7, type);
   v10 = objc_msgSend_chartMediator(self, v8, v9);
   v13 = objc_msgSend_calculationEngine(v10, v11, v12);
 
@@ -1790,15 +1790,15 @@ LABEL_32:
   return v25;
 }
 
-- (void)p_addStringFormulasOfType:(unint64_t)a3 rangeList:(id)a4 byRow:(BOOL)a5 labels:(id)a6 toFormulaMap:(id)a7
+- (void)p_addStringFormulasOfType:(unint64_t)type rangeList:(id)list byRow:(BOOL)row labels:(id)labels toFormulaMap:(id)map
 {
-  v9 = a5;
-  v11 = a4;
-  v47 = a6;
-  v12 = a7;
-  v44 = v11;
-  v46 = v12;
-  if (objc_msgSend_direction(v12, v13, v14) == 2)
+  rowCopy = row;
+  listCopy = list;
+  labelsCopy = labels;
+  mapCopy = map;
+  v44 = listCopy;
+  v46 = mapCopy;
+  if (objc_msgSend_direction(mapCopy, v13, v14) == 2)
   {
     v16 = 2;
   }
@@ -1808,15 +1808,15 @@ LABEL_32:
     v16 = 3;
   }
 
-  v17 = objc_msgSend_formulaListForType_(v12, v15, a3);
+  v17 = objc_msgSend_formulaListForType_(mapCopy, v15, type);
   v18 = MEMORY[0x277CBEB58];
   v43 = v17;
-  v20 = objc_msgSend_p_labelsOfType_formulaMap_(self, v19, a3, v12);
+  v20 = objc_msgSend_p_labelsOfType_formulaMap_(self, v19, type, mapCopy);
   v22 = objc_msgSend_setWithArray_(v18, v21, v20);
 
   v25 = objc_msgSend_count(v17, v23, v24);
-  v28 = objc_msgSend_unionRange(v11, v26, v27);
-  if (v16 == a3)
+  v28 = objc_msgSend_unionRange(listCopy, v26, v27);
+  if (v16 == type)
   {
     v31 = 0;
   }
@@ -1827,7 +1827,7 @@ LABEL_32:
   }
 
   v48 = 1;
-  if (v9)
+  if (rowCopy)
   {
     if (v28 == 0x7FFFFFFF || v29 == 0x7FFFFFFF)
     {
@@ -1853,24 +1853,24 @@ LABEL_32:
     v34 = 0;
     do
     {
-      if (v16 != a3 || v31 + v34 >= v25)
+      if (v16 != type || v31 + v34 >= v25)
       {
-        if (v47 && v34 < objc_msgSend_count(v47, v29, v30))
+        if (labelsCopy && v34 < objc_msgSend_count(labelsCopy, v29, v30))
         {
-          v35 = objc_msgSend_objectAtIndex_(v47, v29, v34);
+          v35 = objc_msgSend_objectAtIndex_(labelsCopy, v29, v34);
           objc_msgSend_chartFormulaForString_(TNChartFormulaWrapper, v36, v35);
         }
 
         else
         {
           v37 = objc_msgSend_chartMediator(self, v29, v30);
-          v35 = objc_msgSend_untitledLabelOfType_formulaMap_existingLabels_runningIndex_(v37, v38, a3, v46, v22, &v48);
+          v35 = objc_msgSend_untitledLabelOfType_formulaMap_existingLabels_runningIndex_(v37, v38, type, v46, v22, &v48);
 
           objc_msgSend_addObject_(v22, v39, v35);
           objc_msgSend_chartFormulaForString_(TNChartFormulaWrapper, v40, v35);
         }
         v41 = ;
-        objc_msgSend_addFormula_withFormulaID_(v46, v42, v41, (v31 + v34) | (a3 << 32));
+        objc_msgSend_addFormula_withFormulaID_(v46, v42, v41, (v31 + v34) | (type << 32));
       }
 
       ++v34;
@@ -1882,20 +1882,20 @@ LABEL_32:
 LABEL_24:
 }
 
-- (BOOL)p_addSeriesForRangeList:(id)a3 rowLabelRangeList:(id)a4 columnLabelRangeList:(id)a5 rowLabels:(id)a6 columnLabels:(id)a7 toFormulaMap:(id)a8
+- (BOOL)p_addSeriesForRangeList:(id)list rowLabelRangeList:(id)rangeList columnLabelRangeList:(id)labelRangeList rowLabels:(id)labels columnLabels:(id)columnLabels toFormulaMap:(id)map
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v21 = a8;
-  if (!v15)
+  listCopy = list;
+  rangeListCopy = rangeList;
+  labelRangeListCopy = labelRangeList;
+  labelsCopy = labels;
+  columnLabelsCopy = columnLabels;
+  mapCopy = map;
+  if (!rangeListCopy)
   {
     goto LABEL_25;
   }
 
-  v22 = objc_msgSend_unionRange(v15, v19, v20);
+  v22 = objc_msgSend_unionRange(rangeListCopy, v19, v20);
   v23 = v22 & 0xFFFF00000000;
   if (v22 == 0x7FFFFFFFLL || v23 == 0x7FFF00000000)
   {
@@ -1924,15 +1924,15 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (!v17)
+  if (!labelsCopy)
   {
     v43 = objc_msgSend_chartMediator(self, v19, v20);
     v46 = objc_msgSend_calculationEngine(v43, v44, v45);
     v49 = objc_msgSend_chartMediator(self, v47, v48);
     v52 = objc_msgSend_entityUID(v49, v50, v51);
-    v54 = objc_msgSend_formulasOfType_areAllStaticWithCalcEngine_inEntity_(v21, v53, 2, v46, v52, v53);
+    v54 = objc_msgSend_formulasOfType_areAllStaticWithCalcEngine_inEntity_(mapCopy, v53, 2, v46, v52, v53);
 
-    v15 = 0;
+    rangeListCopy = 0;
     if (v54)
     {
       v26 = MEMORY[0x277CBEBF8];
@@ -1943,7 +1943,7 @@ LABEL_24:
       v26 = 0;
     }
 
-    if (!v16)
+    if (!labelRangeListCopy)
     {
       goto LABEL_50;
     }
@@ -1951,19 +1951,19 @@ LABEL_24:
     goto LABEL_26;
   }
 
-  v15 = 0;
+  rangeListCopy = 0;
 LABEL_25:
-  v26 = v17;
-  if (!v16)
+  v26 = labelsCopy;
+  if (!labelRangeListCopy)
   {
 LABEL_50:
-    v31 = v18;
+    v31 = columnLabelsCopy;
     v32 = 0;
     goto LABEL_51;
   }
 
 LABEL_26:
-  v27 = objc_msgSend_unionRange(v16, v19, v20);
+  v27 = objc_msgSend_unionRange(labelRangeListCopy, v19, v20);
   v28 = v27 & 0xFFFF00000000;
   if (v27 == 0x7FFFFFFFLL || v28 == 0x7FFF00000000)
   {
@@ -1992,8 +1992,8 @@ LABEL_26:
     }
 
 LABEL_48:
-    v31 = v18;
-    v32 = v16;
+    v31 = columnLabelsCopy;
+    v32 = labelRangeListCopy;
     goto LABEL_51;
   }
 
@@ -2004,7 +2004,7 @@ LABEL_48:
 
 LABEL_49:
 
-  if (v18)
+  if (columnLabelsCopy)
   {
     goto LABEL_50;
   }
@@ -2013,7 +2013,7 @@ LABEL_49:
   v58 = objc_msgSend_calculationEngine(v55, v56, v57);
   v61 = objc_msgSend_chartMediator(self, v59, v60);
   v64 = objc_msgSend_entityUID(v61, v62, v63);
-  v66 = objc_msgSend_formulasOfType_areAllStaticWithCalcEngine_inEntity_(v21, v65, 3, v58, v64, v65);
+  v66 = objc_msgSend_formulasOfType_areAllStaticWithCalcEngine_inEntity_(mapCopy, v65, 3, v58, v64, v65);
 
   v32 = 0;
   if (v66)
@@ -2027,56 +2027,56 @@ LABEL_49:
   }
 
 LABEL_51:
-  v33 = objc_msgSend_tableUID(v14, v19, v20);
-  DataCategoryLevelInFormulaMap_forTable = objc_msgSend_p_firstDataCategoryLevelInFormulaMap_forTable_(self, v34, v21, v33, v34);
-  v38 = objc_msgSend_direction(v21, v36, v37) == 1;
-  v40 = objc_msgSend_p_addFormulasOfType_rangeList_byRow_toFormulaMap_(self, v39, 1, v14, v38, v21);
+  v33 = objc_msgSend_tableUID(listCopy, v19, v20);
+  DataCategoryLevelInFormulaMap_forTable = objc_msgSend_p_firstDataCategoryLevelInFormulaMap_forTable_(self, v34, mapCopy, v33, v34);
+  v38 = objc_msgSend_direction(mapCopy, v36, v37) == 1;
+  v40 = objc_msgSend_p_addFormulasOfType_rangeList_byRow_toFormulaMap_(self, v39, 1, listCopy, v38, mapCopy);
   v42 = v40;
   if (v40 != 255 && (DataCategoryLevelInFormulaMap_forTable == 255 || DataCategoryLevelInFormulaMap_forTable == v40))
   {
-    if (v15)
+    if (rangeListCopy)
     {
-      objc_msgSend_p_addFormulasOfType_rangeList_byRow_toFormulaMap_ofLevel_(self, v41, 2, v15, 1, v21, v40);
+      objc_msgSend_p_addFormulasOfType_rangeList_byRow_toFormulaMap_ofLevel_(self, v41, 2, rangeListCopy, 1, mapCopy, v40);
     }
 
     else if (v26)
     {
-      objc_msgSend_p_addStringFormulasOfType_rangeList_byRow_labels_toFormulaMap_(self, v41, 2, v14, 1, v26, v21);
+      objc_msgSend_p_addStringFormulasOfType_rangeList_byRow_labels_toFormulaMap_(self, v41, 2, listCopy, 1, v26, mapCopy);
     }
 
     if (v32)
     {
-      objc_msgSend_p_addFormulasOfType_rangeList_byRow_toFormulaMap_ofLevel_(self, v41, 3, v32, 0, v21, v42);
+      objc_msgSend_p_addFormulasOfType_rangeList_byRow_toFormulaMap_ofLevel_(self, v41, 3, v32, 0, mapCopy, v42);
     }
 
     else if (v31)
     {
-      objc_msgSend_p_addStringFormulasOfType_rangeList_byRow_labels_toFormulaMap_(self, v41, 3, v14, 0, v31, v21);
+      objc_msgSend_p_addStringFormulasOfType_rangeList_byRow_labels_toFormulaMap_(self, v41, 3, listCopy, 0, v31, mapCopy);
     }
   }
 
   return v42 != 255;
 }
 
-- (BOOL)p_extendExistingSeriesWithSeriesRangeList:(id *)a3 rowLabelRangeList:(id *)a4 columnLabelRangeList:(id *)a5 toFormulaMap:(id)a6 withLocale:(id)a7
+- (BOOL)p_extendExistingSeriesWithSeriesRangeList:(id *)list rowLabelRangeList:(id *)rangeList columnLabelRangeList:(id *)labelRangeList toFormulaMap:(id)map withLocale:(id)locale
 {
   v211 = *MEMORY[0x277D85DE8];
-  v9 = a6;
-  v167 = a7;
-  v175 = v9;
-  v192 = objc_msgSend_direction(v9, v10, v11);
+  mapCopy = map;
+  localeCopy = locale;
+  v175 = mapCopy;
+  v192 = objc_msgSend_direction(mapCopy, v10, v11);
   v174 = 0;
-  if (!a3 || !v9 || !v192)
+  if (!list || !mapCopy || !v192)
   {
     goto LABEL_120;
   }
 
-  v14 = objc_msgSend_direction(v9, v12, v13);
+  v14 = objc_msgSend_direction(mapCopy, v12, v13);
   v208 = 0;
-  v208._lower = objc_msgSend_tableUID(*a3, v15, v16);
+  v208._lower = objc_msgSend_tableUID(*list, v15, v16);
   v208._upper = v17;
-  v166 = a3;
-  v170 = *a3;
+  listCopy = list;
+  v170 = *list;
   v20 = objc_msgSend_chartMediator(self, v18, v19);
   v193 = objc_msgSend_calculationEngine(v20, v21, v22);
 
@@ -2535,7 +2535,7 @@ LABEL_111:
   {
     v164 = v182;
     v174 = 0;
-    *v166 = v182;
+    *listCopy = v182;
     goto LABEL_119;
   }
 
@@ -2547,17 +2547,17 @@ LABEL_120:
   return v174 & 1;
 }
 
-+ (id)cellRegionCullingToFirstFoundLevelFrom:(id)a3 inTable:(id)a4 byRows:(BOOL)a5
++ (id)cellRegionCullingToFirstFoundLevelFrom:(id)from inTable:(id)table byRows:(BOOL)rows
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  rowsCopy = rows;
+  fromCopy = from;
+  tableCopy = table;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
   v40 = -1;
-  v11 = objc_msgSend_indexesForNonSummaryBodyRows(v8, v9, v10);
-  v14 = objc_msgSend_indexesForSummaryRows(v8, v12, v13);
+  v11 = objc_msgSend_indexesForNonSummaryBodyRows(tableCopy, v9, v10);
+  v14 = objc_msgSend_indexesForSummaryRows(tableCopy, v12, v13);
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = sub_275F2838C;
@@ -2567,12 +2567,12 @@ LABEL_120:
   v33 = v15;
   v16 = v14;
   v34 = v16;
-  v17 = v8;
+  v17 = tableCopy;
   v35 = v17;
   v19 = MEMORY[0x277C91D00](v32);
-  if (v5)
+  if (rowsCopy)
   {
-    objc_msgSend_iterateCellsInRegion_flags_searchFlags_usingBlock_(v17, v18, v7, 0, 4325376, v19);
+    objc_msgSend_iterateCellsInRegion_flags_searchFlags_usingBlock_(v17, v18, fromCopy, 0, 4325376, v19);
   }
 
   else
@@ -2582,7 +2582,7 @@ LABEL_120:
     v28[2] = sub_275F2857C;
     v28[3] = &unk_27A6A2FA0;
     v29 = v17;
-    v30 = v7;
+    v30 = fromCopy;
     v31 = v19;
     objc_msgSend_enumerateColumnsUsingBlock_(v30, v21, v28);
   }
@@ -2590,12 +2590,12 @@ LABEL_120:
   v22 = *(v38 + 24);
   if (v22 == 255 || (v22 != 253 ? (objc_msgSend_indexesForSummaryRowsAtGroupLevel_(v17, v20, v22), v23 = objc_claimAutoreleasedReturnValue()) : (v23 = v15), (v25 = v23) == 0))
   {
-    v26 = v7;
+    v26 = fromCopy;
   }
 
   else
   {
-    v26 = objc_msgSend_regionByIntersectingRowIndices_(v7, v24, v23);
+    v26 = objc_msgSend_regionByIntersectingRowIndices_(fromCopy, v24, v23);
   }
 
   _Block_object_dispose(&v37, 8);
@@ -2603,16 +2603,16 @@ LABEL_120:
   return v26;
 }
 
-+ (id)chartFormulasForSummaryRegion:(id)a3 inTable:(id)a4
++ (id)chartFormulasForSummaryRegion:(id)region inTable:(id)table
 {
   v96[3] = *MEMORY[0x277D85DE8];
-  v79 = a3;
-  v78 = a4;
-  v7 = objc_msgSend_groupBy(v78, v5, v6);
+  regionCopy = region;
+  tableCopy = table;
+  v7 = objc_msgSend_groupBy(tableCopy, v5, v6);
   v80 = v7;
   if (v7)
   {
-    objc_msgSend_captureCategoryRefsForViewRegion_atLevel_asSpanning_(v7, v8, v79, 255, 1);
+    objc_msgSend_captureCategoryRefsForViewRegion_atLevel_asSpanning_(v7, v8, regionCopy, 255, 1);
   }
 
   else

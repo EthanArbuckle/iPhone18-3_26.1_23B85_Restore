@@ -1,44 +1,44 @@
 @interface _RWIAutomaticInspectionSession
-- (BOOL)matchesPageId:(id)a3 applicationIdentifier:(id)a4;
+- (BOOL)matchesPageId:(id)id applicationIdentifier:(id)identifier;
 - (BOOL)receivedRejectResponse;
-- (_RWIAutomaticInspectionSession)initWithPageId:(id)a3 applicationIdentifier:(id)a4 applicationPID:(int)a5 debuggers:(id)a6 shouldAllowSameProcess:(BOOL)a7;
+- (_RWIAutomaticInspectionSession)initWithPageId:(id)id applicationIdentifier:(id)identifier applicationPID:(int)d debuggers:(id)debuggers shouldAllowSameProcess:(BOOL)process;
 - (void)_sendQuery;
 - (void)start;
 @end
 
 @implementation _RWIAutomaticInspectionSession
 
-- (_RWIAutomaticInspectionSession)initWithPageId:(id)a3 applicationIdentifier:(id)a4 applicationPID:(int)a5 debuggers:(id)a6 shouldAllowSameProcess:(BOOL)a7
+- (_RWIAutomaticInspectionSession)initWithPageId:(id)id applicationIdentifier:(id)identifier applicationPID:(int)d debuggers:(id)debuggers shouldAllowSameProcess:(BOOL)process
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  idCopy = id;
+  identifierCopy = identifier;
+  debuggersCopy = debuggers;
   v28.receiver = self;
   v28.super_class = _RWIAutomaticInspectionSession;
   v15 = [(_RWIAutomaticInspectionSession *)&v28 init];
   if (v15)
   {
-    v16 = [MEMORY[0x277CCAD78] UUID];
-    v17 = [v16 UUIDString];
-    v18 = [v17 copy];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v18 = [uUIDString copy];
     identifier = v15->_identifier;
     v15->_identifier = v18;
 
-    v20 = [v14 copy];
+    v20 = [debuggersCopy copy];
     debuggers = v15->_debuggers;
     v15->_debuggers = v20;
 
-    v22 = [v12 copy];
+    v22 = [idCopy copy];
     pageId = v15->_pageId;
     v15->_pageId = v22;
 
-    v24 = [v13 copy];
+    v24 = [identifierCopy copy];
     applicationIdentifier = v15->_applicationIdentifier;
     v15->_applicationIdentifier = v24;
 
-    v15->_applicationPID = a5;
+    v15->_applicationPID = d;
     v15->_currentDebuggerIndex = 0;
-    v15->_shouldAllowSameProcess = a7;
+    v15->_shouldAllowSameProcess = process;
     v26 = v15;
   }
 
@@ -122,12 +122,12 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)matchesPageId:(id)a3 applicationIdentifier:(id)a4
+- (BOOL)matchesPageId:(id)id applicationIdentifier:(id)identifier
 {
-  v6 = a4;
-  if ([(NSNumber *)self->_pageId isEqualToNumber:a3])
+  identifierCopy = identifier;
+  if ([(NSNumber *)self->_pageId isEqualToNumber:id])
   {
-    v7 = [(NSString *)self->_applicationIdentifier isEqualToString:v6];
+    v7 = [(NSString *)self->_applicationIdentifier isEqualToString:identifierCopy];
   }
 
   else

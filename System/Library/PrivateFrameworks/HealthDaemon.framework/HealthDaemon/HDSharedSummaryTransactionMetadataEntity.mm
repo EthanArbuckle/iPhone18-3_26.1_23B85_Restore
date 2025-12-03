@@ -1,7 +1,7 @@
 @interface HDSharedSummaryTransactionMetadataEntity
 + (id)foreignKeys;
-+ (id)insertWithTransactionID:(int64_t)a3 metadata:(id)a4 databaseTransaction:(id)a5 error:(id *)a6;
-+ (id)metadataForTransactionID:(int64_t)a3 databaseTransaction:(id)a4 error:(id *)a5;
++ (id)insertWithTransactionID:(int64_t)d metadata:(id)metadata databaseTransaction:(id)transaction error:(id *)error;
++ (id)metadataForTransactionID:(int64_t)d databaseTransaction:(id)transaction error:(id *)error;
 + (id)uniquedColumns;
 @end
 
@@ -31,10 +31,10 @@
   return v2;
 }
 
-+ (id)insertWithTransactionID:(int64_t)a3 metadata:(id)a4 databaseTransaction:(id)a5 error:(id *)a6
++ (id)insertWithTransactionID:(int64_t)d metadata:(id)metadata databaseTransaction:(id)transaction error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  metadataCopy = metadata;
+  transactionCopy = transaction;
   v12 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v27 = 0;
   v28 = &v27;
@@ -46,22 +46,22 @@
   v21[1] = 3221225472;
   v21[2] = __103__HDSharedSummaryTransactionMetadataEntity_insertWithTransactionID_metadata_databaseTransaction_error___block_invoke;
   v21[3] = &unk_278622DE8;
-  v25 = a1;
-  v26 = a3;
-  v13 = v11;
+  selfCopy = self;
+  dCopy = d;
+  v13 = transactionCopy;
   v22 = v13;
   v24 = &v27;
   v14 = v12;
   v23 = v14;
-  [v10 enumerateKeysAndObjectsUsingBlock:v21];
+  [metadataCopy enumerateKeysAndObjectsUsingBlock:v21];
   v15 = v28[5];
   v16 = v15;
   if (v15)
   {
-    if (a6)
+    if (error)
     {
       v17 = v15;
-      *a6 = v16;
+      *error = v16;
     }
 
     else
@@ -220,19 +220,19 @@ LABEL_12:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)metadataForTransactionID:(int64_t)a3 databaseTransaction:(id)a4 error:(id *)a5
++ (id)metadataForTransactionID:(int64_t)d databaseTransaction:(id)transaction error:(id *)error
 {
   v24[6] = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CBEB38];
-  v9 = a4;
+  transactionCopy = transaction;
   v10 = objc_alloc_init(v8);
   v11 = MEMORY[0x277D10B18];
-  v12 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v12 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
   v13 = [v11 predicateWithProperty:@"transaction_id" equalToValue:v12];
 
-  v14 = [v9 databaseForEntityClass:a1];
+  v14 = [transactionCopy databaseForEntityClass:self];
 
-  v15 = [a1 queryWithDatabase:v14 predicate:v13];
+  v15 = [self queryWithDatabase:v14 predicate:v13];
 
   v24[0] = @"key";
   v24[1] = @"value_type";
@@ -247,7 +247,7 @@ LABEL_12:
   v22[3] = &unk_27861E4C0;
   v23 = v10;
   v17 = v10;
-  if ([v15 enumerateProperties:v16 error:a5 enumerationHandler:v22])
+  if ([v15 enumerateProperties:v16 error:error enumerationHandler:v22])
   {
     v18 = v17;
   }

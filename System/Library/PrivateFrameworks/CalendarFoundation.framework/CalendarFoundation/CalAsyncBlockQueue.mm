@@ -1,16 +1,16 @@
 @interface CalAsyncBlockQueue
-- (CalAsyncBlockQueue)initWithBlockPerformer:(id)a3;
+- (CalAsyncBlockQueue)initWithBlockPerformer:(id)performer;
 - (void)cancelAllPendingBlocks;
-- (void)performAfterDelay:(double)a3 block:(id)a4;
-- (void)performAsync:(id)a3;
+- (void)performAfterDelay:(double)delay block:(id)block;
+- (void)performAsync:(id)async;
 @end
 
 @implementation CalAsyncBlockQueue
 
-- (CalAsyncBlockQueue)initWithBlockPerformer:(id)a3
+- (CalAsyncBlockQueue)initWithBlockPerformer:(id)performer
 {
-  v6 = a3;
-  if (!v6)
+  performerCopy = performer;
+  if (!performerCopy)
   {
     [(CalAsyncBlockQueue *)a2 initWithBlockPerformer:?];
   }
@@ -21,7 +21,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_blockPerformer, a3);
+    objc_storeStrong(&v7->_blockPerformer, performer);
     v9 = [MEMORY[0x1E695DFA8] set];
     pendingBlocks = v8->_pendingBlocks;
     v8->_pendingBlocks = v9;
@@ -30,18 +30,18 @@
   return v8;
 }
 
-- (void)performAsync:(id)a3
+- (void)performAsync:(id)async
 {
-  v4 = a3;
-  v5 = [(CalAsyncBlockQueue *)self blockPerformer];
+  asyncCopy = async;
+  blockPerformer = [(CalAsyncBlockQueue *)self blockPerformer];
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __35__CalAsyncBlockQueue_performAsync___block_invoke;
   v12 = &unk_1E7EC6A30;
-  v13 = self;
-  v14 = v4;
-  v6 = v4;
-  v7 = [v5 performAsync:&v9];
+  selfCopy = self;
+  v14 = asyncCopy;
+  v6 = asyncCopy;
+  v7 = [blockPerformer performAsync:&v9];
 
   v8 = [(CalAsyncBlockQueue *)self pendingBlocks:v9];
   [v8 addObject:v7];
@@ -59,18 +59,18 @@ uint64_t __35__CalAsyncBlockQueue_performAsync___block_invoke(uint64_t a1, void 
   return v6();
 }
 
-- (void)performAfterDelay:(double)a3 block:(id)a4
+- (void)performAfterDelay:(double)delay block:(id)block
 {
-  v6 = a4;
-  v7 = [(CalAsyncBlockQueue *)self blockPerformer];
+  blockCopy = block;
+  blockPerformer = [(CalAsyncBlockQueue *)self blockPerformer];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __46__CalAsyncBlockQueue_performAfterDelay_block___block_invoke;
   v14 = &unk_1E7EC6A30;
-  v15 = self;
-  v16 = v6;
-  v8 = v6;
-  v9 = [v7 performAfterDelay:&v11 block:a3];
+  selfCopy = self;
+  v16 = blockCopy;
+  v8 = blockCopy;
+  v9 = [blockPerformer performAfterDelay:&v11 block:delay];
 
   v10 = [(CalAsyncBlockQueue *)self pendingBlocks:v11];
   [v10 addObject:v9];
@@ -95,8 +95,8 @@ uint64_t __46__CalAsyncBlockQueue_performAfterDelay_block___block_invoke(uint64_
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(CalAsyncBlockQueue *)self pendingBlocks];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  pendingBlocks = [(CalAsyncBlockQueue *)self pendingBlocks];
+  v4 = [pendingBlocks countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -108,21 +108,21 @@ uint64_t __46__CalAsyncBlockQueue_performAfterDelay_block___block_invoke(uint64_
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pendingBlocks);
         }
 
         [*(*(&v10 + 1) + 8 * v7++) cancel];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [pendingBlocks countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(CalAsyncBlockQueue *)self pendingBlocks];
-  [v8 removeAllObjects];
+  pendingBlocks2 = [(CalAsyncBlockQueue *)self pendingBlocks];
+  [pendingBlocks2 removeAllObjects];
 
   v9 = *MEMORY[0x1E69E9840];
 }

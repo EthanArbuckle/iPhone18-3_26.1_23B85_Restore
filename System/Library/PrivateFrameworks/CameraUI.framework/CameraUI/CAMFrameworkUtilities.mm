@@ -5,25 +5,25 @@
 + (id)_devicePasscodeLockedStateMonitor;
 + (id)_notifyQueue;
 + (id)_photosAppLockedStateMonitor;
-+ (id)snapshotForCrossFadingView:(id)a3 fadeOutDuration:(double)a4 fadeOutDelay:(double)a5 fadeInDuration:(double)a6 fadeInDelay:(double)a7 embedSnapshot:(BOOL)a8;
++ (id)snapshotForCrossFadingView:(id)view fadeOutDuration:(double)duration fadeOutDelay:(double)delay fadeInDuration:(double)inDuration fadeInDelay:(double)inDelay embedSnapshot:(BOOL)snapshot;
 + (void)setPasscodeLockedNeedsUpdate;
 + (void)setPhotosAppLockedNeedsUpdate;
 @end
 
 @implementation CAMFrameworkUtilities
 
-+ (id)snapshotForCrossFadingView:(id)a3 fadeOutDuration:(double)a4 fadeOutDelay:(double)a5 fadeInDuration:(double)a6 fadeInDelay:(double)a7 embedSnapshot:(BOOL)a8
++ (id)snapshotForCrossFadingView:(id)view fadeOutDuration:(double)duration fadeOutDelay:(double)delay fadeInDuration:(double)inDuration fadeInDelay:(double)inDelay embedSnapshot:(BOOL)snapshot
 {
-  v8 = a8;
-  v13 = a3;
-  v14 = [v13 snapshotViewAfterScreenUpdates:0];
-  [v13 bounds];
+  snapshotCopy = snapshot;
+  viewCopy = view;
+  v14 = [viewCopy snapshotViewAfterScreenUpdates:0];
+  [viewCopy bounds];
   [v14 setBounds:?];
-  [v13 center];
+  [viewCopy center];
   [v14 setCenter:?];
-  if (v13)
+  if (viewCopy)
   {
-    [v13 transform];
+    [viewCopy transform];
   }
 
   else
@@ -37,10 +37,10 @@
   v29[1] = v31;
   v29[2] = v32;
   [v14 setTransform:v29];
-  if (v8)
+  if (snapshotCopy)
   {
-    v15 = [v13 superview];
-    [v15 addSubview:v14];
+    superview = [viewCopy superview];
+    [superview addSubview:v14];
   }
 
   v16 = MEMORY[0x1E69DD250];
@@ -55,16 +55,16 @@
   v25[3] = &unk_1E76F7988;
   v17 = v28;
   v26 = v17;
-  [v16 animateWithDuration:0 delay:v27 options:v25 animations:a4 completion:a5];
-  [v13 setAlpha:0.0];
+  [v16 animateWithDuration:0 delay:v27 options:v25 animations:duration completion:delay];
+  [viewCopy setAlpha:0.0];
   v18 = MEMORY[0x1E69DD250];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __122__CAMFrameworkUtilities_snapshotForCrossFadingView_fadeOutDuration_fadeOutDelay_fadeInDuration_fadeInDelay_embedSnapshot___block_invoke_3;
   v23[3] = &unk_1E76F77B0;
-  v24 = v13;
-  v19 = v13;
-  [v18 animateWithDuration:2 delay:v23 options:0 animations:a6 completion:a7];
+  v24 = viewCopy;
+  v19 = viewCopy;
+  [v18 animateWithDuration:2 delay:v23 options:0 animations:inDuration completion:inDelay];
   v20 = v24;
   v21 = v17;
 
@@ -111,16 +111,16 @@ BOOL __61__CAMFrameworkUtilities__deviceOrientationLockedStateMonitor__block_inv
 
 + (BOOL)isPasscodeLocked
 {
-  v2 = [a1 _devicePasscodeLockedStateMonitor];
-  v3 = [v2 monitoredValue];
+  _devicePasscodeLockedStateMonitor = [self _devicePasscodeLockedStateMonitor];
+  monitoredValue = [_devicePasscodeLockedStateMonitor monitoredValue];
 
-  return v3;
+  return monitoredValue;
 }
 
 + (void)setPasscodeLockedNeedsUpdate
 {
-  v2 = [a1 _devicePasscodeLockedStateMonitor];
-  [v2 setNeedsUpdate];
+  _devicePasscodeLockedStateMonitor = [self _devicePasscodeLockedStateMonitor];
+  [_devicePasscodeLockedStateMonitor setNeedsUpdate];
 }
 
 + (id)_devicePasscodeLockedStateMonitor
@@ -129,7 +129,7 @@ BOOL __61__CAMFrameworkUtilities__deviceOrientationLockedStateMonitor__block_inv
   block[1] = 3221225472;
   block[2] = __58__CAMFrameworkUtilities__devicePasscodeLockedStateMonitor__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_devicePasscodeLockedStateMonitor_onceToken != -1)
   {
     dispatch_once(&_devicePasscodeLockedStateMonitor_onceToken, block);
@@ -172,16 +172,16 @@ uint64_t __58__CAMFrameworkUtilities__devicePasscodeLockedStateMonitor__block_in
 
 + (BOOL)isPhotosAppLocked
 {
-  v2 = [a1 _photosAppLockedStateMonitor];
-  v3 = [v2 monitoredValue];
+  _photosAppLockedStateMonitor = [self _photosAppLockedStateMonitor];
+  monitoredValue = [_photosAppLockedStateMonitor monitoredValue];
 
-  return v3;
+  return monitoredValue;
 }
 
 + (void)setPhotosAppLockedNeedsUpdate
 {
-  v2 = [a1 _photosAppLockedStateMonitor];
-  [v2 setNeedsUpdate];
+  _photosAppLockedStateMonitor = [self _photosAppLockedStateMonitor];
+  [_photosAppLockedStateMonitor setNeedsUpdate];
 }
 
 + (id)_photosAppLockedStateMonitor
@@ -190,7 +190,7 @@ uint64_t __58__CAMFrameworkUtilities__devicePasscodeLockedStateMonitor__block_in
   block[1] = 3221225472;
   block[2] = __53__CAMFrameworkUtilities__photosAppLockedStateMonitor__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_photosAppLockedStateMonitor_onceToken != -1)
   {
     dispatch_once(&_photosAppLockedStateMonitor_onceToken, block);

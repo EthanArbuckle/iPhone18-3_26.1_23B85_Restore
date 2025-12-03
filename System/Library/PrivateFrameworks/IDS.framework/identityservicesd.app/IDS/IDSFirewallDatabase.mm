@@ -1,20 +1,20 @@
 @interface IDSFirewallDatabase
-- (IDSFirewallDatabase)initWithFilename:(id)a3;
+- (IDSFirewallDatabase)initWithFilename:(id)filename;
 - (void)deleteDatabase;
 @end
 
 @implementation IDSFirewallDatabase
 
-- (IDSFirewallDatabase)initWithFilename:(id)a3
+- (IDSFirewallDatabase)initWithFilename:(id)filename
 {
-  v4 = a3;
+  filenameCopy = filename;
   v8.receiver = self;
   v8.super_class = IDSFirewallDatabase;
   v5 = [(IDSFirewallDatabase *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(IDSFirewallDatabase *)v5 setFilename:v4];
+    [(IDSFirewallDatabase *)v5 setFilename:filenameCopy];
   }
 
   return v6;
@@ -22,11 +22,11 @@
 
 - (void)deleteDatabase
 {
-  v3 = [(IDSFirewallDatabase *)self filename];
+  filename = [(IDSFirewallDatabase *)self filename];
 
-  if (v3)
+  if (filename)
   {
-    v4 = [(IDSFirewallDatabase *)self filename];
+    filename2 = [(IDSFirewallDatabase *)self filename];
     CSDBSqliteDeleteDatabase();
   }
 }

@@ -1,21 +1,21 @@
 @interface PPTopicMetadata
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTopicMetadata:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTopicMetadata:(id)metadata;
 - (NSSet)featureNames;
-- (PPTopicMetadata)initWithCoder:(id)a3;
-- (PPTopicMetadata)initWithImpressionCount:(unsigned __int16)a3 occurrencesInSource:(unsigned __int16)a4 algorithmResultPosition:(unsigned __int16)a5 algorithmResultCount:(unsigned __int16)a6 exactMatchInSourceText:(BOOL)a7;
+- (PPTopicMetadata)initWithCoder:(id)coder;
+- (PPTopicMetadata)initWithImpressionCount:(unsigned __int16)count occurrencesInSource:(unsigned __int16)source algorithmResultPosition:(unsigned __int16)position algorithmResultCount:(unsigned __int16)resultCount exactMatchInSourceText:(BOOL)text;
 - (id)description;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPTopicMetadata
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"impressionCount"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"impressionCount"])
   {
     v5 = MEMORY[0x1E695FE60];
     impressionCount = self->_impressionCount;
@@ -24,28 +24,28 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:@"occurrencesInSource"])
+  if ([nameCopy isEqualToString:@"occurrencesInSource"])
   {
     v5 = MEMORY[0x1E695FE60];
     impressionCount = self->_occurrencesInSource;
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"algorithmResultPosition"])
+  if ([nameCopy isEqualToString:@"algorithmResultPosition"])
   {
     v5 = MEMORY[0x1E695FE60];
     impressionCount = self->_algorithmResultPosition;
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"algorithmResultCount"])
+  if ([nameCopy isEqualToString:@"algorithmResultCount"])
   {
     v5 = MEMORY[0x1E695FE60];
     impressionCount = self->_algorithmResultCount;
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"exactMatchInSourceText"])
+  if ([nameCopy isEqualToString:@"exactMatchInSourceText"])
   {
     v5 = MEMORY[0x1E695FE60];
     impressionCount = self->_exactMatchInSourceText;
@@ -100,10 +100,10 @@ void __31__PPTopicMetadata_featureNames__block_invoke()
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -111,22 +111,22 @@ void __31__PPTopicMetadata_featureNames__block_invoke()
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PPTopicMetadata *)self isEqualToTopicMetadata:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PPTopicMetadata *)self isEqualToTopicMetadata:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToTopicMetadata:(id)a3
+- (BOOL)isEqualToTopicMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  metadataCopy = metadata;
+  v5 = metadataCopy;
+  if (metadataCopy == self)
   {
     v11 = 1;
   }
 
-  else if (v4 && (impressionCount = self->_impressionCount, impressionCount == [(PPTopicMetadata *)v4 impressionCount]) && (occurrencesInSource = self->_occurrencesInSource, occurrencesInSource == [(PPTopicMetadata *)v5 occurrencesInSource]) && (algorithmResultPosition = self->_algorithmResultPosition, algorithmResultPosition == [(PPTopicMetadata *)v5 algorithmResultPosition]) && (algorithmResultCount = self->_algorithmResultCount, algorithmResultCount == [(PPTopicMetadata *)v5 algorithmResultCount]))
+  else if (metadataCopy && (impressionCount = self->_impressionCount, impressionCount == [(PPTopicMetadata *)metadataCopy impressionCount]) && (occurrencesInSource = self->_occurrencesInSource, occurrencesInSource == [(PPTopicMetadata *)v5 occurrencesInSource]) && (algorithmResultPosition = self->_algorithmResultPosition, algorithmResultPosition == [(PPTopicMetadata *)v5 algorithmResultPosition]) && (algorithmResultCount = self->_algorithmResultCount, algorithmResultCount == [(PPTopicMetadata *)v5 algorithmResultCount]))
   {
     exactMatchInSourceText = self->_exactMatchInSourceText;
     v11 = exactMatchInSourceText == [(PPTopicMetadata *)v5 exactMatchInSourceText];
@@ -148,47 +148,47 @@ void __31__PPTopicMetadata_featureNames__block_invoke()
   return self->_exactMatchInSourceText - v4 + 32 * v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   impressionCount = self->_impressionCount;
-  v5 = a3;
-  [v5 encodeInt32:impressionCount forKey:@"ict"];
-  [v5 encodeInt32:self->_occurrencesInSource forKey:@"ois"];
-  [v5 encodeInt32:self->_algorithmResultPosition forKey:@"arp"];
-  [v5 encodeInt32:self->_algorithmResultCount forKey:@"arc"];
-  [v5 encodeBool:self->_exactMatchInSourceText forKey:@"ext"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:impressionCount forKey:@"ict"];
+  [coderCopy encodeInt32:self->_occurrencesInSource forKey:@"ois"];
+  [coderCopy encodeInt32:self->_algorithmResultPosition forKey:@"arp"];
+  [coderCopy encodeInt32:self->_algorithmResultCount forKey:@"arc"];
+  [coderCopy encodeBool:self->_exactMatchInSourceText forKey:@"ext"];
 }
 
-- (PPTopicMetadata)initWithCoder:(id)a3
+- (PPTopicMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt32ForKey:@"ict"];
-  if (HIWORD(v5) || (v6 = v5, v7 = [v4 decodeInt32ForKey:@"ois"], HIWORD(v7)) || (v8 = v7, v9 = objc_msgSend(v4, "decodeInt32ForKey:", @"arp"), HIWORD(v9)) || (v10 = v9, v11 = objc_msgSend(v4, "decodeInt32ForKey:", @"arc"), HIWORD(v11)))
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt32ForKey:@"ict"];
+  if (HIWORD(v5) || (v6 = v5, v7 = [coderCopy decodeInt32ForKey:@"ois"], HIWORD(v7)) || (v8 = v7, v9 = objc_msgSend(coderCopy, "decodeInt32ForKey:", @"arp"), HIWORD(v9)) || (v10 = v9, v11 = objc_msgSend(coderCopy, "decodeInt32ForKey:", @"arc"), HIWORD(v11)))
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    self = -[PPTopicMetadata initWithImpressionCount:occurrencesInSource:algorithmResultPosition:algorithmResultCount:exactMatchInSourceText:](self, "initWithImpressionCount:occurrencesInSource:algorithmResultPosition:algorithmResultCount:exactMatchInSourceText:", v6, v8, v10, v11, [v4 decodeBoolForKey:@"ext"]);
-    v12 = self;
+    self = -[PPTopicMetadata initWithImpressionCount:occurrencesInSource:algorithmResultPosition:algorithmResultCount:exactMatchInSourceText:](self, "initWithImpressionCount:occurrencesInSource:algorithmResultPosition:algorithmResultCount:exactMatchInSourceText:", v6, v8, v10, v11, [coderCopy decodeBoolForKey:@"ext"]);
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (PPTopicMetadata)initWithImpressionCount:(unsigned __int16)a3 occurrencesInSource:(unsigned __int16)a4 algorithmResultPosition:(unsigned __int16)a5 algorithmResultCount:(unsigned __int16)a6 exactMatchInSourceText:(BOOL)a7
+- (PPTopicMetadata)initWithImpressionCount:(unsigned __int16)count occurrencesInSource:(unsigned __int16)source algorithmResultPosition:(unsigned __int16)position algorithmResultCount:(unsigned __int16)resultCount exactMatchInSourceText:(BOOL)text
 {
   v13.receiver = self;
   v13.super_class = PPTopicMetadata;
   result = [(PPTopicMetadata *)&v13 init];
   if (result)
   {
-    result->_impressionCount = a3;
-    result->_occurrencesInSource = a4;
-    result->_algorithmResultPosition = a5;
-    result->_algorithmResultCount = a6;
-    result->_exactMatchInSourceText = a7;
+    result->_impressionCount = count;
+    result->_occurrencesInSource = source;
+    result->_algorithmResultPosition = position;
+    result->_algorithmResultCount = resultCount;
+    result->_exactMatchInSourceText = text;
   }
 
   return result;

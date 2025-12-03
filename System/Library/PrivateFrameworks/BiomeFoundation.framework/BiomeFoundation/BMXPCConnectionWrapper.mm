@@ -1,5 +1,5 @@
 @interface BMXPCConnectionWrapper
-- (id)_initWithConnection:(id)a3;
+- (id)_initWithConnection:(id)connection;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -22,25 +22,25 @@
   [(NSXPCConnection *)connection invalidate];
 }
 
-- (id)_initWithConnection:(id)a3
+- (id)_initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v15.receiver = self;
   v15.super_class = BMXPCConnectionWrapper;
   v6 = [(BMXPCConnectionWrapper *)&v15 init];
   p_isa = &v6->super.isa;
   if (v6)
   {
-    v6->_isValid = v5 != 0;
-    objc_storeStrong(&v6->_connection, a3);
+    v6->_isValid = connectionCopy != 0;
+    objc_storeStrong(&v6->_connection, connection);
     objc_initWeak(&location, p_isa);
-    v8 = [p_isa[2] invalidationHandler];
+    invalidationHandler = [p_isa[2] invalidationHandler];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __46__BMXPCConnectionWrapper__initWithConnection___block_invoke;
     v11[3] = &unk_1E796B798;
     objc_copyWeak(&v13, &location);
-    v9 = v8;
+    v9 = invalidationHandler;
     v12 = v9;
     [p_isa[2] setInvalidationHandler:v11];
 

@@ -1,19 +1,19 @@
 @interface TPSCallingLineIdRestrictionRequestController
-- (void)executeFetchForRequest:(id)a3;
-- (void)executeRequest:(id)a3;
-- (void)executeSetForRequest:(id)a3;
-- (void)suppServicesEvent:(id)a3 event:(int)a4 settingsType:(int)a5 data:(id)a6;
+- (void)executeFetchForRequest:(id)request;
+- (void)executeRequest:(id)request;
+- (void)executeSetForRequest:(id)request;
+- (void)suppServicesEvent:(id)event event:(int)a4 settingsType:(int)type data:(id)data;
 @end
 
 @implementation TPSCallingLineIdRestrictionRequestController
 
-- (void)executeRequest:(id)a3
+- (void)executeRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(TPSCallingLineIdRestrictionRequestController *)self executeSetForRequest:v4];
+    [(TPSCallingLineIdRestrictionRequestController *)self executeSetForRequest:requestCopy];
   }
 
   else
@@ -21,24 +21,24 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(TPSCallingLineIdRestrictionRequestController *)self executeFetchForRequest:v4];
+      [(TPSCallingLineIdRestrictionRequestController *)self executeFetchForRequest:requestCopy];
     }
   }
 }
 
-- (void)executeFetchForRequest:(id)a3
+- (void)executeFetchForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(TPSRequestController *)self telephonyClient];
-  v6 = [v4 subscriptionContext];
+  requestCopy = request;
+  telephonyClient = [(TPSRequestController *)self telephonyClient];
+  subscriptionContext = [requestCopy subscriptionContext];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __71__TPSCallingLineIdRestrictionRequestController_executeFetchForRequest___block_invoke;
   v8[3] = &unk_2782E3BD8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v5 fetchCallingLineIdRestrictionValue:v6 completion:v8];
+  v9 = requestCopy;
+  v7 = requestCopy;
+  [telephonyClient fetchCallingLineIdRestrictionValue:subscriptionContext completion:v8];
 }
 
 void __71__TPSCallingLineIdRestrictionRequestController_executeFetchForRequest___block_invoke(uint64_t a1, void *a2)
@@ -53,20 +53,20 @@ void __71__TPSCallingLineIdRestrictionRequestController_executeFetchForRequest__
   }
 }
 
-- (void)executeSetForRequest:(id)a3
+- (void)executeSetForRequest:(id)request
 {
-  v4 = a3;
-  v5 = CTCallingLineIdRestrictionValueForState([v4 state]);
-  v6 = [(TPSRequestController *)self telephonyClient];
-  v7 = [v4 subscriptionContext];
+  requestCopy = request;
+  v5 = CTCallingLineIdRestrictionValueForState([requestCopy state]);
+  telephonyClient = [(TPSRequestController *)self telephonyClient];
+  subscriptionContext = [requestCopy subscriptionContext];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__TPSCallingLineIdRestrictionRequestController_executeSetForRequest___block_invoke;
   v9[3] = &unk_2782E3BD8;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v6 saveCallingLineIdRestrictionValue:v7 restrictionValue:v5 completion:v9];
+  v10 = requestCopy;
+  v8 = requestCopy;
+  [telephonyClient saveCallingLineIdRestrictionValue:subscriptionContext restrictionValue:v5 completion:v9];
 }
 
 void __69__TPSCallingLineIdRestrictionRequestController_executeSetForRequest___block_invoke(uint64_t a1, void *a2)
@@ -81,12 +81,12 @@ void __69__TPSCallingLineIdRestrictionRequestController_executeSetForRequest___b
   }
 }
 
-- (void)suppServicesEvent:(id)a3 event:(int)a4 settingsType:(int)a5 data:(id)a6
+- (void)suppServicesEvent:(id)event event:(int)a4 settingsType:(int)type data:(id)data
 {
   v38 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  if (a5 == 6)
+  eventCopy = event;
+  dataCopy = data;
+  if (type == 6)
   {
     v12 = TPSLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -98,13 +98,13 @@ void __69__TPSCallingLineIdRestrictionRequestController_executeSetForRequest___b
       v32 = 2112;
       v33 = v14;
       v34 = 2112;
-      v35 = v11;
+      v35 = dataCopy;
       v36 = 2112;
-      v37 = v10;
+      v37 = eventCopy;
       _os_log_impl(&dword_21B8E9000, v12, OS_LOG_TYPE_DEFAULT, "Received event %@, settings type %@, data %@ for context %@.", &v30, 0x2Au);
     }
 
-    v15 = [(TPSRequestController *)self pendingRequest];
+    pendingRequest = [(TPSRequestController *)self pendingRequest];
     if (a4 > 2)
     {
       if (a4 != 3)
@@ -135,13 +135,13 @@ LABEL_14:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
         v30 = 138412290;
-        v31 = v15;
+        v31 = pendingRequest;
         _os_log_impl(&dword_21B8E9000, v28, OS_LOG_TYPE_DEFAULT, "Calling Line ID Restriction save request succeeded for %@.", &v30, 0xCu);
       }
 
-      v27 = [v15 state];
-      v24 = self;
-      v25 = v10;
+      state = [pendingRequest state];
+      selfCopy2 = self;
+      v25 = eventCopy;
       v26 = 1;
     }
 
@@ -160,7 +160,7 @@ LABEL_14:
 
 LABEL_13:
 
-          [(TPSCallingLineIdRestrictionRequestController *)self respondWithSubscriptionContext:v10 editable:0 state:0 error:v16];
+          [(TPSCallingLineIdRestrictionRequestController *)self respondWithSubscriptionContext:eventCopy editable:0 state:0 error:v16];
 LABEL_24:
 
           goto LABEL_25;
@@ -173,25 +173,25 @@ LABEL_24:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v30 = 138412546;
-        v31 = v15;
+        v31 = pendingRequest;
         v32 = 2112;
-        v33 = v11;
+        v33 = dataCopy;
         _os_log_impl(&dword_21B8E9000, v19, OS_LOG_TYPE_DEFAULT, "Calling Line ID Restriction fetch request succeeded for %@; data value is %@.", &v30, 0x16u);
       }
 
-      v20 = [v11 callingLineIdRestrictionModification];
-      v21 = [v20 intValue] == 1;
+      callingLineIdRestrictionModification = [dataCopy callingLineIdRestrictionModification];
+      v21 = [callingLineIdRestrictionModification intValue] == 1;
 
-      v22 = [v11 callingLineIdRestriction];
-      v23 = TPSCallingLineIdRestrictionStateForValue([v22 intValue]);
+      callingLineIdRestriction = [dataCopy callingLineIdRestriction];
+      v23 = TPSCallingLineIdRestrictionStateForValue([callingLineIdRestriction intValue]);
 
-      v24 = self;
-      v25 = v10;
+      selfCopy2 = self;
+      v25 = eventCopy;
       v26 = v21;
-      v27 = v23;
+      state = v23;
     }
 
-    [(TPSCallingLineIdRestrictionRequestController *)v24 respondWithSubscriptionContext:v25 editable:v26 state:v27 error:0];
+    [(TPSCallingLineIdRestrictionRequestController *)selfCopy2 respondWithSubscriptionContext:v25 editable:v26 state:state error:0];
     goto LABEL_24;
   }
 

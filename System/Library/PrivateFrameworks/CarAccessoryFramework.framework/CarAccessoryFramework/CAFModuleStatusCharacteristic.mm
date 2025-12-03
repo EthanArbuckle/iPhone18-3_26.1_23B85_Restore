@@ -7,16 +7,16 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFModuleStatusCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFModuleStatusCharacteristic *)self moduleStatusValue];
+  moduleStatusValue = [(CAFModuleStatusCharacteristic *)self moduleStatusValue];
 
-  return NSStringFromModuleStatus(v2);
+  return NSStringFromModuleStatus(moduleStatusValue);
 }
 
 @end

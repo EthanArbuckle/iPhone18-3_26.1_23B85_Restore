@@ -1,14 +1,14 @@
 @interface _ICLexiconUtilities
-+ (BOOL)lexiconContainsEntry:(_LXLexicon *)a3 forString:(id)a4;
-+ (_LXEntry)copyEntry:(_LXLexicon *)a3 forString:(id)a4;
-+ (id)sortKeyEquivalents:(_LXLexicon *)a3 forString:(id)a4;
++ (BOOL)lexiconContainsEntry:(_LXLexicon *)entry forString:(id)string;
++ (_LXEntry)copyEntry:(_LXLexicon *)entry forString:(id)string;
++ (id)sortKeyEquivalents:(_LXLexicon *)equivalents forString:(id)string;
 @end
 
 @implementation _ICLexiconUtilities
 
-+ (BOOL)lexiconContainsEntry:(_LXLexicon *)a3 forString:(id)a4
++ (BOOL)lexiconContainsEntry:(_LXLexicon *)entry forString:(id)string
 {
-  v4 = a4;
+  stringCopy = string;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -20,19 +20,19 @@
   return v5;
 }
 
-+ (id)sortKeyEquivalents:(_LXLexicon *)a3 forString:(id)a4
++ (id)sortKeyEquivalents:(_LXLexicon *)equivalents forString:(id)string
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a4;
-  v7 = [v4 array];
+  stringCopy = string;
+  array = [v4 array];
   LXLexiconEnumerateEntriesForString();
 
-  return v7;
+  return array;
 }
 
-+ (_LXEntry)copyEntry:(_LXLexicon *)a3 forString:(id)a4
++ (_LXEntry)copyEntry:(_LXLexicon *)entry forString:(id)string
 {
-  v4 = a4;
+  stringCopy = string;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;

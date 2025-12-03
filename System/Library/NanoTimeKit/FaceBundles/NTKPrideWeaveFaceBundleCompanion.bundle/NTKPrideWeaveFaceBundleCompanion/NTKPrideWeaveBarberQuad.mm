@@ -1,11 +1,11 @@
 @interface NTKPrideWeaveBarberQuad
-- (BOOL)prepareForTime:(double)a3;
+- (BOOL)prepareForTime:(double)time;
 - (NTKPrideWeaveBarberQuad)init;
-- (id)screenEdgeTextureForDevice:(id)a3 named:(id)a4;
-- (int)generateCircleVerticesWithLevel:(int)a3 vertexBuffer:(id *)a4 indexBuffer:(id *)a5;
-- (void)performOffscreenPassesWithCommandBuffer:(id)a3;
-- (void)renderForDisplayWithEncoder:(id)a3;
-- (void)setupForQuadView:(id)a3;
+- (id)screenEdgeTextureForDevice:(id)device named:(id)named;
+- (int)generateCircleVerticesWithLevel:(int)level vertexBuffer:(id *)buffer indexBuffer:(id *)indexBuffer;
+- (void)performOffscreenPassesWithCommandBuffer:(id)buffer;
+- (void)renderForDisplayWithEncoder:(id)encoder;
+- (void)setupForQuadView:(id)view;
 @end
 
 @implementation NTKPrideWeaveBarberQuad
@@ -25,12 +25,12 @@
     v2->_timeScale = 1.0;
     v2->_thickness = 1.0;
     v5 = +[CLKDevice currentDevice];
-    v6 = [v5 deviceCategory];
+    deviceCategory = [v5 deviceCategory];
 
-    if (v6 <= 6)
+    if (deviceCategory <= 6)
     {
-      v7 = flt_1B1BC[v6];
-      LODWORD(v2->_maxWidthRect) = dword_1B1A0[v6];
+      v7 = flt_1B1BC[deviceCategory];
+      LODWORD(v2->_maxWidthRect) = dword_1B1A0[deviceCategory];
       v2->_screenEdgeBuffer = v7;
     }
 
@@ -77,21 +77,21 @@
   return v2;
 }
 
-- (id)screenEdgeTextureForDevice:(id)a3 named:(id)a4
+- (id)screenEdgeTextureForDevice:(id)device named:(id)named
 {
-  v5 = a4;
-  v6 = [a3 deviceCategory];
-  if ((v6 - 3) > 3)
+  namedCopy = named;
+  deviceCategory = [device deviceCategory];
+  if ((deviceCategory - 3) > 3)
   {
     v7 = &stru_24DF0;
   }
 
   else
   {
-    v7 = *(&off_249E8 + (v6 - 3));
+    v7 = *(&off_249E8 + (deviceCategory - 3));
   }
 
-  v8 = [NSString stringWithFormat:@"%@%@.png", v5, v7];
+  v8 = [NSString stringWithFormat:@"%@%@.png", namedCopy, v7];
 
   v9 = [NSBundle bundleForClass:objc_opt_class()];
   v10 = [UIImage imageNamed:v8 inBundle:v9 withConfiguration:0];
@@ -100,9 +100,9 @@
   return v11;
 }
 
-- (void)setupForQuadView:(id)a3
+- (void)setupForQuadView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = +[CLKUIMetalResourceManager sharedDevice];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = [v5 newDefaultLibraryWithBundle:v6 error:0];
@@ -113,15 +113,15 @@
   [v10 setLabel:@"WeaveBarberPipeline"];
   [v10 setVertexFunction:v8];
   [v10 setFragmentFunction:v9];
-  v65 = v4;
-  v11 = [v4 colorPixelFormat];
-  v12 = [v10 colorAttachments];
-  v13 = [v12 objectAtIndexedSubscript:0];
-  [v13 setPixelFormat:v11];
+  v65 = viewCopy;
+  colorPixelFormat = [viewCopy colorPixelFormat];
+  colorAttachments = [v10 colorAttachments];
+  v13 = [colorAttachments objectAtIndexedSubscript:0];
+  [v13 setPixelFormat:colorPixelFormat];
 
   [v10 setDepthAttachmentPixelFormat:252];
-  v14 = [v10 colorAttachments];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  colorAttachments2 = [v10 colorAttachments];
+  v15 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v15 setBlendingEnabled:0];
 
   [v10 setRasterSampleCount:4];
@@ -141,8 +141,8 @@
   }
 
   v20 = +[MTLRenderPassDescriptor renderPassDescriptor];
-  v21 = [(MTLRenderPassDescriptor *)v20 colorAttachments];
-  v22 = [v21 objectAtIndexedSubscript:0];
+  colorAttachments3 = [(MTLRenderPassDescriptor *)v20 colorAttachments];
+  v22 = [colorAttachments3 objectAtIndexedSubscript:0];
 
   [v22 setLoadAction:2];
   [v22 setClearColor:{0.0, 0.0, 0.0, 0.0}];
@@ -156,14 +156,14 @@
   [v26 setLabel:@"WeaveBarberCirclesPipeline"];
   [v26 setVertexFunction:v24];
   [v26 setFragmentFunction:v25];
-  v27 = [v65 colorPixelFormat];
-  v28 = [v26 colorAttachments];
-  v29 = [v28 objectAtIndexedSubscript:0];
-  [v29 setPixelFormat:v27];
+  colorPixelFormat2 = [v65 colorPixelFormat];
+  colorAttachments4 = [v26 colorAttachments];
+  v29 = [colorAttachments4 objectAtIndexedSubscript:0];
+  [v29 setPixelFormat:colorPixelFormat2];
 
   [v26 setDepthAttachmentPixelFormat:252];
-  v30 = [v26 colorAttachments];
-  v31 = [v30 objectAtIndexedSubscript:0];
+  colorAttachments5 = [v26 colorAttachments];
+  v31 = [colorAttachments5 objectAtIndexedSubscript:0];
   [v31 setBlendingEnabled:0];
 
   [v26 setRasterSampleCount:4];
@@ -255,26 +255,26 @@
   self->_circleIndexBuffer = v60;
 }
 
-- (int)generateCircleVerticesWithLevel:(int)a3 vertexBuffer:(id *)a4 indexBuffer:(id *)a5
+- (int)generateCircleVerticesWithLevel:(int)level vertexBuffer:(id *)buffer indexBuffer:(id *)indexBuffer
 {
-  v9 = ldexp(1.0, a3);
+  v9 = ldexp(1.0, level);
   v10 = (v9 * 3.0);
   v11 = (1.0 - (1.0 - v9) * 3.0);
   v12 = [(MTLDevice *)self->_device newBufferWithLength:8 * v10 options:0];
   v13 = [(MTLDevice *)self->_device newBufferWithLength:6 * v11 options:0];
-  v14 = [v12 contents];
-  v15 = [v13 contents];
+  contents = [v12 contents];
+  contents2 = [v13 contents];
   if (v10 >= 1)
   {
     for (i = 0; i != v10; ++i)
     {
       v17 = i * 6.28318531 / v10;
       v18 = __sincosf_stret(v17);
-      v14[i] = __PAIR64__(LODWORD(v18.__sinval), LODWORD(v18.__cosval));
+      contents[i] = __PAIR64__(LODWORD(v18.__sinval), LODWORD(v18.__cosval));
     }
   }
 
-  if (a3 < 0)
+  if (level < 0)
   {
     v20 = 0;
   }
@@ -283,7 +283,7 @@
   {
     v19 = 0;
     v20 = 0;
-    v21 = v15 + 2;
+    v21 = contents2 + 2;
     v22 = 0.0;
     do
     {
@@ -308,22 +308,22 @@
       v22 = v22 + 1.0;
     }
 
-    while (v19++ != a3);
+    while (v19++ != level);
   }
 
   v27 = v12;
-  *a4 = v12;
+  *buffer = v12;
   v28 = v13;
-  *a5 = v13;
+  *indexBuffer = v13;
 
   return v20;
 }
 
-- (BOOL)prepareForTime:(double)a3
+- (BOOL)prepareForTime:(double)time
 {
-  v4 = (a3 - self->_previousTime) * self->_timeScale;
+  v4 = (time - self->_previousTime) * self->_timeScale;
   v5 = v4 > 0.0833333333 || v4 < 0.0;
-  self->_previousTime = a3;
+  self->_previousTime = time;
   if (v5)
   {
     v6 = 0.0;
@@ -346,7 +346,7 @@
   {
     v9 = (self->_currentIndex + 1) % 3;
     self->_currentIndex = v9;
-    v10 = [(MTLBuffer *)self->_curvesBuffer[v9] contents];
+    contents = [(MTLBuffer *)self->_curvesBuffer[v9] contents];
     maxWidthRect = self->_maxWidthRect;
     viewMode = self->_viewMode;
     CLKInterpolateBetweenFloatsUnclipped();
@@ -380,7 +380,7 @@
       v25 = v20;
     }
 
-    v26 = v10 + 16;
+    v26 = contents + 16;
     do
     {
       *(v26 + 1) = LODWORD(self->_tritiumProgress);
@@ -410,14 +410,14 @@
   return thickness != 0.0;
 }
 
-- (void)performOffscreenPassesWithCommandBuffer:(id)a3
+- (void)performOffscreenPassesWithCommandBuffer:(id)buffer
 {
-  v4 = a3;
+  bufferCopy = buffer;
   rectEdgeTexture = self->_rectEdgeTexture;
   if (!rectEdgeTexture)
   {
-    v6 = [(NTKPromise *)self->_rectTextureLoaderPromise object];
-    v7 = (v6)[2](v6, v4);
+    object = [(NTKPromise *)self->_rectTextureLoaderPromise object];
+    v7 = (object)[2](object, bufferCopy);
     v8 = self->_rectEdgeTexture;
     self->_rectEdgeTexture = v7;
 
@@ -430,94 +430,94 @@
   v10 = rectEdgeTexture;
   currentIndex = self->_currentIndex;
   v12 = [(MTLDevice *)self->_device newBufferWithLength:88 options:0];
-  v13 = [v4 computeCommandEncoder];
-  [v13 setComputePipelineState:self->_computeBoundaryIntersectionsPipelineState];
-  [v13 setBuffer:self->_curvesBuffer[currentIndex] offset:0 atIndex:0];
-  [v13 setTexture:v10 atIndex:1];
-  [v13 setBytes:&self->_uniforms length:12 atIndex:2];
-  [v13 setBuffer:v12 offset:0 atIndex:3];
-  v14 = [(MTLComputePipelineState *)self->_computeBoundaryIntersectionsPipelineState threadExecutionWidth];
-  v15 = [(MTLComputePipelineState *)self->_computeBoundaryIntersectionsPipelineState maxTotalThreadsPerThreadgroup];
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_computeBoundaryIntersectionsPipelineState];
+  [computeCommandEncoder setBuffer:self->_curvesBuffer[currentIndex] offset:0 atIndex:0];
+  [computeCommandEncoder setTexture:v10 atIndex:1];
+  [computeCommandEncoder setBytes:&self->_uniforms length:12 atIndex:2];
+  [computeCommandEncoder setBuffer:v12 offset:0 atIndex:3];
+  threadExecutionWidth = [(MTLComputePipelineState *)self->_computeBoundaryIntersectionsPipelineState threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)self->_computeBoundaryIntersectionsPipelineState maxTotalThreadsPerThreadgroup];
   screenHeight = self->_uniforms.screenHeight;
   if (self->_supportsNonuniformThreadgroups)
   {
     *v24 = 22;
     *&v24[8] = screenHeight;
     *&v24[16] = 1;
-    v21 = v14;
-    v22 = v15 / v14;
+    v21 = threadExecutionWidth;
+    v22 = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
     v23 = 1;
-    [v13 dispatchThreads:v24 threadsPerThreadgroup:&v21];
+    [computeCommandEncoder dispatchThreads:v24 threadsPerThreadgroup:&v21];
   }
 
   else
   {
-    *v24 = (v14 + 21) / v14;
-    *&v24[8] = (v15 / v14 + screenHeight - 1) / (v15 / v14);
+    *v24 = (threadExecutionWidth + 21) / threadExecutionWidth;
+    *&v24[8] = (maxTotalThreadsPerThreadgroup / threadExecutionWidth + screenHeight - 1) / (maxTotalThreadsPerThreadgroup / threadExecutionWidth);
     *&v24[16] = 1;
-    v21 = v14;
-    v22 = v15 / v14;
+    v21 = threadExecutionWidth;
+    v22 = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
     v23 = 1;
-    [v13 dispatchThreadgroups:v24 threadsPerThreadgroup:&v21];
+    [computeCommandEncoder dispatchThreadgroups:v24 threadsPerThreadgroup:&v21];
   }
 
-  [v13 endEncoding];
+  [computeCommandEncoder endEncoding];
 
-  v17 = [v4 computeCommandEncoder];
-  [v17 setComputePipelineState:self->_sortBoundaryIntersectionsPipelineState];
-  [v17 setBuffer:self->_curvesBuffer[currentIndex] offset:0 atIndex:0];
-  [v17 setBytes:&self->_uniforms length:12 atIndex:2];
-  [v17 setBuffer:v12 offset:0 atIndex:3];
-  [v17 setTexture:v10 atIndex:1];
+  computeCommandEncoder2 = [bufferCopy computeCommandEncoder];
+  [computeCommandEncoder2 setComputePipelineState:self->_sortBoundaryIntersectionsPipelineState];
+  [computeCommandEncoder2 setBuffer:self->_curvesBuffer[currentIndex] offset:0 atIndex:0];
+  [computeCommandEncoder2 setBytes:&self->_uniforms length:12 atIndex:2];
+  [computeCommandEncoder2 setBuffer:v12 offset:0 atIndex:3];
+  [computeCommandEncoder2 setTexture:v10 atIndex:1];
   *[(MTLBuffer *)self->_indirectDrawBuffer[currentIndex] contents]= xmmword_1B180;
-  [v17 setBuffer:self->_indirectDrawBuffer[currentIndex] offset:4 atIndex:5];
-  [v17 setBuffer:self->_instanceMap[currentIndex] offset:0 atIndex:4];
-  v18 = [(MTLBuffer *)self->_circlesIndirectDrawBuffer[currentIndex] contents];
-  *(v18 + 12) = 0;
-  *(v18 + 4) = 0;
-  *v18 = self->_circleNumVertices;
-  [v17 setBuffer:self->_circlesIndirectDrawBuffer[currentIndex] offset:4 atIndex:7];
-  [v17 setBuffer:self->_circlesInstanceMap[currentIndex] offset:0 atIndex:6];
-  v19 = [(MTLComputePipelineState *)self->_sortBoundaryIntersectionsPipelineState threadExecutionWidth];
-  v20 = [(MTLComputePipelineState *)self->_sortBoundaryIntersectionsPipelineState maxTotalThreadsPerThreadgroup];
+  [computeCommandEncoder2 setBuffer:self->_indirectDrawBuffer[currentIndex] offset:4 atIndex:5];
+  [computeCommandEncoder2 setBuffer:self->_instanceMap[currentIndex] offset:0 atIndex:4];
+  contents = [(MTLBuffer *)self->_circlesIndirectDrawBuffer[currentIndex] contents];
+  *(contents + 12) = 0;
+  *(contents + 4) = 0;
+  *contents = self->_circleNumVertices;
+  [computeCommandEncoder2 setBuffer:self->_circlesIndirectDrawBuffer[currentIndex] offset:4 atIndex:7];
+  [computeCommandEncoder2 setBuffer:self->_circlesInstanceMap[currentIndex] offset:0 atIndex:6];
+  threadExecutionWidth2 = [(MTLComputePipelineState *)self->_sortBoundaryIntersectionsPipelineState threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup2 = [(MTLComputePipelineState *)self->_sortBoundaryIntersectionsPipelineState maxTotalThreadsPerThreadgroup];
   if (self->_supportsNonuniformThreadgroups)
   {
     *v24 = xmmword_1B190;
     *&v24[16] = 1;
-    v21 = v19;
-    v22 = v20 / v19;
+    v21 = threadExecutionWidth2;
+    v22 = maxTotalThreadsPerThreadgroup2 / threadExecutionWidth2;
     v23 = 1;
-    [v17 dispatchThreads:v24 threadsPerThreadgroup:&v21];
+    [computeCommandEncoder2 dispatchThreads:v24 threadsPerThreadgroup:&v21];
   }
 
   else
   {
     *&v24[8] = vdupq_n_s64(1uLL);
-    v21 = v19;
-    v22 = v20 / v19;
+    v21 = threadExecutionWidth2;
+    v22 = maxTotalThreadsPerThreadgroup2 / threadExecutionWidth2;
     v23 = 1;
-    *v24 = (v19 + 21) / v19;
-    [v17 dispatchThreadgroups:v24 threadsPerThreadgroup:&v21];
+    *v24 = (threadExecutionWidth2 + 21) / threadExecutionWidth2;
+    [computeCommandEncoder2 dispatchThreadgroups:v24 threadsPerThreadgroup:&v21];
   }
 
-  [v17 endEncoding];
+  [computeCommandEncoder2 endEncoding];
 }
 
-- (void)renderForDisplayWithEncoder:(id)a3
+- (void)renderForDisplayWithEncoder:(id)encoder
 {
   renderPipelineState = self->_renderPipelineState;
-  v5 = a3;
-  [v5 setRenderPipelineState:renderPipelineState];
-  [v5 setVertexBuffer:self->_curvesBuffer[self->_currentIndex] offset:0 atIndex:0];
-  [v5 setVertexBytes:&self->_uniforms length:12 atIndex:1];
-  [v5 setVertexBuffer:self->_instanceMap[self->_currentIndex] offset:0 atIndex:2];
-  [v5 drawPrimitives:4 indirectBuffer:self->_indirectDrawBuffer[self->_currentIndex] indirectBufferOffset:0];
-  [v5 setRenderPipelineState:self->_circlesPipelineState];
-  [v5 setVertexBuffer:self->_curvesBuffer[self->_currentIndex] offset:0 atIndex:0];
-  [v5 setVertexBytes:&self->_uniforms length:12 atIndex:1];
-  [v5 setVertexBuffer:self->_circlesInstanceMap[self->_currentIndex] offset:0 atIndex:2];
-  [v5 setVertexBuffer:self->_circleVertexBuffer offset:0 atIndex:3];
-  [v5 drawIndexedPrimitives:3 indexType:0 indexBuffer:self->_circleIndexBuffer indexBufferOffset:0 indirectBuffer:self->_circlesIndirectDrawBuffer[self->_currentIndex] indirectBufferOffset:0];
+  encoderCopy = encoder;
+  [encoderCopy setRenderPipelineState:renderPipelineState];
+  [encoderCopy setVertexBuffer:self->_curvesBuffer[self->_currentIndex] offset:0 atIndex:0];
+  [encoderCopy setVertexBytes:&self->_uniforms length:12 atIndex:1];
+  [encoderCopy setVertexBuffer:self->_instanceMap[self->_currentIndex] offset:0 atIndex:2];
+  [encoderCopy drawPrimitives:4 indirectBuffer:self->_indirectDrawBuffer[self->_currentIndex] indirectBufferOffset:0];
+  [encoderCopy setRenderPipelineState:self->_circlesPipelineState];
+  [encoderCopy setVertexBuffer:self->_curvesBuffer[self->_currentIndex] offset:0 atIndex:0];
+  [encoderCopy setVertexBytes:&self->_uniforms length:12 atIndex:1];
+  [encoderCopy setVertexBuffer:self->_circlesInstanceMap[self->_currentIndex] offset:0 atIndex:2];
+  [encoderCopy setVertexBuffer:self->_circleVertexBuffer offset:0 atIndex:3];
+  [encoderCopy drawIndexedPrimitives:3 indexType:0 indexBuffer:self->_circleIndexBuffer indexBufferOffset:0 indirectBuffer:self->_circlesIndirectDrawBuffer[self->_currentIndex] indirectBufferOffset:0];
 }
 
 @end

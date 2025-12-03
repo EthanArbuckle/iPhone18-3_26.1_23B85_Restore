@@ -1,6 +1,6 @@
 @interface CSRecieverState
 + (id)sharedInstance;
-- (BOOL)checkBundleIdentifier:(id)a3;
+- (BOOL)checkBundleIdentifier:(id)identifier;
 - (CSRecieverState)init;
 - (void)_updateFromPreferences;
 @end
@@ -23,7 +23,7 @@
 {
   v3 = objc_opt_new();
   v4 = objc_opt_new();
-  v5 = [(CSReceiverPreferences *)self->_receiverPreferences dictionary];
+  dictionary = [(CSReceiverPreferences *)self->_receiverPreferences dictionary];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __41__CSRecieverState__updateFromPreferences__block_invoke;
@@ -32,7 +32,7 @@
   v17 = v4;
   v6 = v4;
   v7 = v3;
-  [v5 enumerateKeysAndObjectsUsingBlock:&v12];
+  [dictionary enumerateKeysAndObjectsUsingBlock:&v12];
 
   v8 = [v7 copy];
   enabledBundleIdentifiers = self->_enabledBundleIdentifiers;
@@ -78,10 +78,10 @@ void __41__CSRecieverState__updateFromPreferences__block_invoke(uint64_t a1, voi
 
     if ([(CSReceiverPreferences *)v2->_receiverPreferences notifyStart])
     {
-      v5 = [(CSReceiverPreferences *)v2->_receiverPreferences notifyToken];
-      v2->_notifyToken = v5;
+      notifyToken = [(CSReceiverPreferences *)v2->_receiverPreferences notifyToken];
+      v2->_notifyToken = notifyToken;
       check = 0;
-      notify_check(v5, &check);
+      notify_check(notifyToken, &check);
       [(CSRecieverState *)v2 _updateFromPreferences];
     }
   }
@@ -98,25 +98,25 @@ uint64_t __33__CSRecieverState_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (BOOL)checkBundleIdentifier:(id)a3
+- (BOOL)checkBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   check = 0;
-  notify_check(v5->_notifyToken, &check);
+  notify_check(selfCopy->_notifyToken, &check);
   if (check == 1)
   {
-    [(CSRecieverState *)v5 _updateFromPreferences];
+    [(CSRecieverState *)selfCopy _updateFromPreferences];
   }
 
-  v6 = [(NSSet *)v5->_disabledBundleIdentifiers containsObject:v4];
-  if (!v6 && ![(NSSet *)v5->_enabledBundleIdentifiers containsObject:v4])
+  v6 = [(NSSet *)selfCopy->_disabledBundleIdentifiers containsObject:identifierCopy];
+  if (!v6 && ![(NSSet *)selfCopy->_enabledBundleIdentifiers containsObject:identifierCopy])
   {
-    [(CSReceiverPreferences *)v5->_receiverPreferences enableBundleIdentifier:v4];
+    [(CSReceiverPreferences *)selfCopy->_receiverPreferences enableBundleIdentifier:identifierCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return !v6;
 }

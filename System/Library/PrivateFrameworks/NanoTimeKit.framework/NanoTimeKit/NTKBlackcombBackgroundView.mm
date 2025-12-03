@@ -1,36 +1,36 @@
 @interface NTKBlackcombBackgroundView
 - (CGRect)_tickLayoutBounds;
-- (double)_innerDialRadiusAtLargeTick:(int64_t)a3 verticalLength:(double)a4 horizontalLength:(double)a5;
-- (double)_outerDialRadiusAtMediumTick:(int64_t)a3 verticalLength:(double)a4 horizontalLength:(double)a5;
-- (id)initForDevice:(id)a3;
-- (void)_applyBackgroundColor:(id)a3;
+- (double)_innerDialRadiusAtLargeTick:(int64_t)tick verticalLength:(double)length horizontalLength:(double)horizontalLength;
+- (double)_outerDialRadiusAtMediumTick:(int64_t)tick verticalLength:(double)length horizontalLength:(double)horizontalLength;
+- (id)initForDevice:(id)device;
+- (void)_applyBackgroundColor:(id)color;
 - (void)_layoutTopLargeTick;
 - (void)_setupTicks;
-- (void)applyPalette:(id)a3;
-- (void)applyTransitionFraction:(double)a3 fromPalette:(id)a4 toPalette:(id)a5;
-- (void)applyTransitionFractionToUsesLongSideTicks:(double)a3;
-- (void)configureTicksForStatus:(BOOL)a3;
-- (void)setUsesLongSideTicks:(BOOL)a3;
+- (void)applyPalette:(id)palette;
+- (void)applyTransitionFraction:(double)fraction fromPalette:(id)palette toPalette:(id)toPalette;
+- (void)applyTransitionFractionToUsesLongSideTicks:(double)ticks;
+- (void)configureTicksForStatus:(BOOL)status;
+- (void)setUsesLongSideTicks:(BOOL)ticks;
 @end
 
 @implementation NTKBlackcombBackgroundView
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = NTKBlackcombBackgroundView;
   v6 = [(NTKBlackcombBackgroundView *)&v11 init];
   p_isa = &v6->super.super.super.isa;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
-    v8 = [p_isa layer];
+    objc_storeStrong(&v6->_device, device);
+    layer = [p_isa layer];
     [p_isa[51] screenCornerRadius];
-    [v8 setCornerRadius:?];
+    [layer setCornerRadius:?];
 
-    v9 = [p_isa layer];
-    [v9 setCornerCurve:*MEMORY[0x277CDA138]];
+    layer2 = [p_isa layer];
+    [layer2 setCornerCurve:*MEMORY[0x277CDA138]];
 
     [p_isa _setupTicks];
     [p_isa _layoutTopLargeTick];
@@ -70,36 +70,36 @@
   v73 = 0u;
   v74 = 0u;
   ___LayoutConstants_block_invoke_18(self->_device, &v73);
-  v3 = [(NTKBlackcombBackgroundView *)self _tickLayoutBounds];
+  _tickLayoutBounds = [(NTKBlackcombBackgroundView *)self _tickLayoutBounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = MEMORY[0x2318D8E70](v3);
+  v12 = MEMORY[0x2318D8E70](_tickLayoutBounds);
   v14 = v13;
-  v15 = [MEMORY[0x277CD9ED0] layer];
+  layer = [MEMORY[0x277CD9ED0] layer];
   v66 = v5;
-  [v15 setBounds:{v5, v7, v9, v11}];
-  [v15 setPosition:{v12, v14}];
+  [layer setBounds:{v5, v7, v9, v11}];
+  [layer setPosition:{v12, v14}];
   [(CLKDevice *)self->_device screenCornerRadius];
   v17 = v16;
   [(CLKDevice *)self->_device screenBounds];
   v19 = v17 * (v18 + *&v73 * -2.0);
   [(CLKDevice *)self->_device screenBounds];
-  [v15 setCornerRadius:v19 / v20];
+  [layer setCornerRadius:v19 / v20];
   v21 = *MEMORY[0x277CDA138];
-  [v15 setCornerCurve:*MEMORY[0x277CDA138]];
-  [v15 setMasksToBounds:1];
+  [layer setCornerCurve:*MEMORY[0x277CDA138]];
+  [layer setMasksToBounds:1];
   if ([MEMORY[0x277D75128] isRunningInStoreDemoMode])
   {
-    [v15 setShouldRasterize:1];
+    [layer setShouldRasterize:1];
     [(CLKDevice *)self->_device screenScale];
-    [v15 setRasterizationScale:?];
+    [layer setRasterizationScale:?];
   }
 
   v22 = *(&v73 + 1);
   v71 = *(&v77 + 1);
-  v63 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (v22 >= 1)
   {
     v23 = 0;
@@ -108,17 +108,17 @@
     {
       if (v23 % (v22 / v71))
       {
-        v25 = [MEMORY[0x277CD9ED0] layer];
-        [v25 setBounds:{0.0, 0.0, v11, v24}];
-        [v25 setAnchorPoint:{0.0, 0.5}];
-        [v25 setPosition:{v12, v14}];
+        layer2 = [MEMORY[0x277CD9ED0] layer];
+        [layer2 setBounds:{0.0, 0.0, v11, v24}];
+        [layer2 setAnchorPoint:{0.0, 0.5}];
+        [layer2 setPosition:{v12, v14}];
         v26 = [MEMORY[0x277D75348] colorWithWhite:0.4 alpha:1.0];
-        [v25 setBackgroundColor:{objc_msgSend(v26, "CGColor")}];
+        [layer2 setBackgroundColor:{objc_msgSend(v26, "CGColor")}];
 
         CGAffineTransformMakeRotation(&v82, v23 * (6.28318531 / v22) + -1.57079633);
-        [v25 setAffineTransform:&v82];
-        [v15 addSublayer:v25];
-        [v63 addObject:v25];
+        [layer2 setAffineTransform:&v82];
+        [layer addSublayer:layer2];
+        [array addObject:layer2];
       }
 
       ++v23;
@@ -129,13 +129,13 @@
 
   v69 = v14;
   v70 = v12;
-  v27 = [v63 copy];
+  v27 = [array copy];
   smallTicks = self->_smallTicks;
   self->_smallTicks = v27;
 
-  v29 = [MEMORY[0x277CD9ED0] layer];
+  layer3 = [MEMORY[0x277CD9ED0] layer];
   smallTickCoveringLayer = self->_smallTickCoveringLayer;
-  self->_smallTickCoveringLayer = v29;
+  self->_smallTickCoveringLayer = layer3;
 
   v31 = self->_smallTickCoveringLayer;
   MEMORY[0x2318D8E70](v66, v7, v9, v11);
@@ -149,17 +149,17 @@
   v90 = CGRectInset(v89, *(&v74 + 1), *(&v74 + 1));
   [(CALayer *)v32 setBounds:v90.origin.x, v90.origin.y, v90.size.width, v90.size.height];
   v34 = self->_smallTickCoveringLayer;
-  v35 = [(NTKBlackcombColorPalette *)self->_palette background];
-  -[CALayer setBackgroundColor:](v34, "setBackgroundColor:", [v35 CGColor]);
+  background = [(NTKBlackcombColorPalette *)self->_palette background];
+  -[CALayer setBackgroundColor:](v34, "setBackgroundColor:", [background CGColor]);
 
   [(CLKDevice *)self->_device screenCornerRadius];
   [(CALayer *)self->_smallTickCoveringLayer setCornerRadius:v36 - v33];
   [(CALayer *)self->_smallTickCoveringLayer setCornerCurve:v21];
-  [v15 addSublayer:self->_smallTickCoveringLayer];
-  v37 = [(NTKBlackcombBackgroundView *)self layer];
-  [v37 addSublayer:v15];
+  [layer addSublayer:self->_smallTickCoveringLayer];
+  layer4 = [(NTKBlackcombBackgroundView *)self layer];
+  [layer4 addSublayer:layer];
 
-  v38 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v39 = v71;
   v62 = v71;
   if (v71 >= 1)
@@ -172,19 +172,19 @@
     do
     {
       v43 = _LargeOrMediumTickLengthAtIndex(v40, self->_device, *(&v41 + 1), *(&v41 + 1), v67);
-      v44 = [MEMORY[0x277CD9ED0] layer];
-      [v44 setBounds:{0.0, 0.0, *&v41, v43}];
-      [v44 setCornerRadius:v64];
+      layer5 = [MEMORY[0x277CD9ED0] layer];
+      [layer5 setBounds:{0.0, 0.0, *&v41, v43}];
+      [layer5 setCornerRadius:v64];
       CGAffineTransformMakeRotation(&v82, v40 * v42 + 3.14159265);
-      [v44 setAffineTransform:&v82];
+      [layer5 setAffineTransform:&v82];
       v45 = [MEMORY[0x277D75348] colorWithWhite:0.6 alpha:1.0];
-      [v44 setBackgroundColor:{objc_msgSend(v45, "CGColor")}];
+      [layer5 setBackgroundColor:{objc_msgSend(v45, "CGColor")}];
       [(NTKBlackcombBackgroundView *)self _outerDialRadiusAtMediumTick:v40 verticalLength:*(&v41 + 1) horizontalLength:*(&v41 + 1)];
-      [v44 setPosition:{_TickPosition(self->_device, v12, v14, v46, v40 * v42 + -1.57079633)}];
-      v47 = [(NTKBlackcombBackgroundView *)self layer];
-      [v47 addSublayer:v44];
+      [layer5 setPosition:{_TickPosition(self->_device, v12, v14, v46, v40 * v42 + -1.57079633)}];
+      layer6 = [(NTKBlackcombBackgroundView *)self layer];
+      [layer6 addSublayer:layer5];
 
-      [v38 addObject:v44];
+      [array2 addObject:layer5];
       v39 = v71;
 
       ++v40;
@@ -193,11 +193,11 @@
     while (v71 != v40);
   }
 
-  v48 = [v38 copy];
+  v48 = [array2 copy];
   mediumTicks = self->_mediumTicks;
   self->_mediumTicks = v48;
 
-  v50 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   if (v39 >= 1)
   {
     v51 = 0;
@@ -208,9 +208,9 @@
     do
     {
       v54 = _LargeOrMediumTickLengthAtIndex(v51, self->_device, v52, v53, 0.0);
-      v55 = [MEMORY[0x277CD9ED0] layer];
-      [v55 setBounds:{0.0, 0.0, v68, v54}];
-      [v55 setCornerRadius:v65];
+      layer7 = [MEMORY[0x277CD9ED0] layer];
+      [layer7 setBounds:{0.0, 0.0, v68, v54}];
+      [layer7 setCornerRadius:v65];
       device = self->_device;
       v88 = 0;
       v86 = 0u;
@@ -221,52 +221,52 @@
       memset(&v82, 0, sizeof(v82));
       ___LayoutConstants_block_invoke_18(device, &v82);
       CGAffineTransformMakeRotation(&v72, v51 * (6.28318531 / *(&v84 + 1)) + 3.14159265);
-      [v55 setAffineTransform:&v72];
-      v57 = [MEMORY[0x277D75348] whiteColor];
-      [v55 setBackgroundColor:{objc_msgSend(v57, "CGColor")}];
+      [layer7 setAffineTransform:&v72];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [layer7 setBackgroundColor:{objc_msgSend(whiteColor, "CGColor")}];
       [(NTKBlackcombBackgroundView *)self _innerDialRadiusAtLargeTick:v51 verticalLength:v52 horizontalLength:v53];
-      [v55 setPosition:{_TickPosition(self->_device, v70, v69, v58, v51 * (6.28318531 / v62) + -1.57079633)}];
-      v59 = [(NTKBlackcombBackgroundView *)self layer];
-      [v59 addSublayer:v55];
+      [layer7 setPosition:{_TickPosition(self->_device, v70, v69, v58, v51 * (6.28318531 / v62) + -1.57079633)}];
+      layer8 = [(NTKBlackcombBackgroundView *)self layer];
+      [layer8 addSublayer:layer7];
 
-      [v50 addObject:v55];
+      [array3 addObject:layer7];
       ++v51;
     }
 
     while (v71 != v51);
   }
 
-  v60 = [v50 copy];
+  v60 = [array3 copy];
   largeTicks = self->_largeTicks;
   self->_largeTicks = v60;
 }
 
-- (void)_applyBackgroundColor:(id)a3
+- (void)_applyBackgroundColor:(id)color
 {
   v4 = MEMORY[0x277CD9FF0];
-  v5 = a3;
+  colorCopy = color;
   [v4 begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
-  [(NTKBlackcombBackgroundView *)self setBackgroundColor:v5];
+  [(NTKBlackcombBackgroundView *)self setBackgroundColor:colorCopy];
   smallTickCoveringLayer = self->_smallTickCoveringLayer;
-  v7 = [v5 CGColor];
+  cGColor = [colorCopy CGColor];
 
-  [(CALayer *)smallTickCoveringLayer setBackgroundColor:v7];
+  [(CALayer *)smallTickCoveringLayer setBackgroundColor:cGColor];
   v8 = MEMORY[0x277CD9FF0];
 
   [v8 commit];
 }
 
-- (void)applyPalette:(id)a3
+- (void)applyPalette:(id)palette
 {
-  v5 = a3;
-  objc_storeStrong(&self->_palette, a3);
+  paletteCopy = palette;
+  objc_storeStrong(&self->_palette, palette);
   smallTicks = self->_smallTicks;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __43__NTKBlackcombBackgroundView_applyPalette___block_invoke;
   v17[3] = &unk_278781098;
-  v7 = v5;
+  v7 = paletteCopy;
   v18 = v7;
   [(NSArray *)smallTicks enumerateObjectsUsingBlock:v17];
   mediumTicks = self->_mediumTicks;
@@ -285,8 +285,8 @@
   v14 = v9;
   v11 = v9;
   [(NSArray *)largeTicks enumerateObjectsUsingBlock:v13];
-  v12 = [(NTKBlackcombColorPalette *)self->_palette background];
-  [(NTKBlackcombBackgroundView *)self _applyBackgroundColor:v12];
+  background = [(NTKBlackcombColorPalette *)self->_palette background];
+  [(NTKBlackcombBackgroundView *)self _applyBackgroundColor:background];
 }
 
 void __43__NTKBlackcombBackgroundView_applyPalette___block_invoke(uint64_t a1, void *a2)
@@ -316,34 +316,34 @@ void __43__NTKBlackcombBackgroundView_applyPalette___block_invoke_3(uint64_t a1,
   [v3 setBackgroundColor:{objc_msgSend(v5, "CGColor")}];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromPalette:(id)a4 toPalette:(id)a5
+- (void)applyTransitionFraction:(double)fraction fromPalette:(id)palette toPalette:(id)toPalette
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 identifier];
-  v11 = [v9 identifier];
-  v12 = [v10 isEqual:v11];
+  paletteCopy = palette;
+  toPaletteCopy = toPalette;
+  identifier = [paletteCopy identifier];
+  identifier2 = [toPaletteCopy identifier];
+  v12 = [identifier isEqual:identifier2];
 
   if (v12)
   {
-    [(NTKBlackcombBackgroundView *)self applyPalette:v8];
+    [(NTKBlackcombBackgroundView *)self applyPalette:paletteCopy];
   }
 
   else
   {
-    v13 = [v8 background];
-    v14 = [v9 background];
+    background = [paletteCopy background];
+    background2 = [toPaletteCopy background];
     v15 = NTKInterpolateBetweenColors();
     [(NTKBlackcombBackgroundView *)self _applyBackgroundColor:v15];
 
-    if (a3 <= 0.5)
+    if (fraction <= 0.5)
     {
-      v16 = v8;
+      v16 = paletteCopy;
     }
 
     else
     {
-      v16 = v9;
+      v16 = toPaletteCopy;
     }
 
     objc_storeStrong(&self->_palette, v16);
@@ -366,9 +366,9 @@ void __43__NTKBlackcombBackgroundView_applyPalette___block_invoke_3(uint64_t a1,
     v49[3] = &unk_2787810C0;
     v52 = v19 / v21;
     v53 = v20;
-    v23 = v9;
+    v23 = toPaletteCopy;
     v50 = v23;
-    v24 = v8;
+    v24 = paletteCopy;
     v51 = v24;
     [(NSArray *)smallTicks enumerateObjectsUsingBlock:v49];
     mediumTicks = self->_mediumTicks;
@@ -386,8 +386,8 @@ void __43__NTKBlackcombBackgroundView_applyPalette___block_invoke_3(uint64_t a1,
     [(NSArray *)mediumTicks enumerateObjectsUsingBlock:v44];
     v29 = MEMORY[0x2318D8E70]([(NTKBlackcombBackgroundView *)self _tickLayoutBounds]);
     v31 = v30;
-    v32 = [v28 hourMarker];
-    v33 = [v27 hourMarker];
+    hourMarker = [v28 hourMarker];
+    hourMarker2 = [v27 hourMarker];
     largeTicks = self->_largeTicks;
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
@@ -395,12 +395,12 @@ void __43__NTKBlackcombBackgroundView_applyPalette___block_invoke_3(uint64_t a1,
     v37[3] = &unk_2787810E8;
     v40 = v26;
     v41 = v20;
-    v38 = v32;
-    v39 = v33;
+    v38 = hourMarker;
+    v39 = hourMarker2;
     v42 = v29;
     v43 = v31;
-    v35 = v33;
-    v36 = v32;
+    v35 = hourMarker2;
+    v36 = hourMarker;
     [(NSArray *)largeTicks enumerateObjectsUsingBlock:v37];
   }
 }
@@ -561,16 +561,16 @@ void __76__NTKBlackcombBackgroundView_applyTransitionFraction_fromPalette_toPale
   [v11 setBounds:{0.0, 0.0, v10, _LargeOrMediumTickLengthAtIndex(0, self->_device, v3 - v4, 0.0, 0.0)}];
 }
 
-- (void)setUsesLongSideTicks:(BOOL)a3
+- (void)setUsesLongSideTicks:(BOOL)ticks
 {
-  if (self->_usesLongSideTicks != a3)
+  if (self->_usesLongSideTicks != ticks)
   {
     v37 = v6;
     v38 = v5;
     v39 = v3;
     v40 = v4;
-    v7 = a3;
-    self->_usesLongSideTicks = a3;
+    ticksCopy = ticks;
+    self->_usesLongSideTicks = ticks;
     v36 = 0;
     v34 = 0u;
     v35 = 0u;
@@ -582,7 +582,7 @@ void __76__NTKBlackcombBackgroundView_applyTransitionFraction_fromPalette_toPale
     v29 = 0u;
     ___LayoutConstants_block_invoke_18(self->_device, &v28);
     v9 = v34;
-    if (v7)
+    if (ticksCopy)
     {
       v10 = v34;
     }
@@ -634,7 +634,7 @@ void __51__NTKBlackcombBackgroundView_setUsesLongSideTicks___block_invoke(uint64
   }
 }
 
-- (void)applyTransitionFractionToUsesLongSideTicks:(double)a3
+- (void)applyTransitionFractionToUsesLongSideTicks:(double)ticks
 {
   v32 = 0;
   v30 = 0u;
@@ -690,41 +690,41 @@ void __73__NTKBlackcombBackgroundView_applyTransitionFractionToUsesLongSideTicks
   }
 }
 
-- (void)configureTicksForStatus:(BOOL)a3
+- (void)configureTicksForStatus:(BOOL)status
 {
-  v3 = a3;
-  self->_showingStatus = a3;
-  v5 = [(NSArray *)self->_mediumTicks firstObject];
-  [v5 setHidden:v3];
+  statusCopy = status;
+  self->_showingStatus = status;
+  firstObject = [(NSArray *)self->_mediumTicks firstObject];
+  [firstObject setHidden:statusCopy];
 
-  v6 = [(NSArray *)self->_smallTicks firstObject];
-  [v6 setHidden:v3];
+  firstObject2 = [(NSArray *)self->_smallTicks firstObject];
+  [firstObject2 setHidden:statusCopy];
 
-  v7 = [(NSArray *)self->_smallTicks lastObject];
-  [v7 setHidden:v3];
+  lastObject = [(NSArray *)self->_smallTicks lastObject];
+  [lastObject setHidden:statusCopy];
 
   [(NTKBlackcombBackgroundView *)self _layoutTopLargeTick];
 }
 
-- (double)_outerDialRadiusAtMediumTick:(int64_t)a3 verticalLength:(double)a4 horizontalLength:(double)a5
+- (double)_outerDialRadiusAtMediumTick:(int64_t)tick verticalLength:(double)length horizontalLength:(double)horizontalLength
 {
   [(NTKBlackcombBackgroundView *)self _tickLayoutBounds];
-  v10 = (v9 - a5) * 0.5;
-  v12 = (v11 - a4) * 0.5;
+  v10 = (v9 - horizontalLength) * 0.5;
+  v12 = (v11 - length) * 0.5;
   ___LayoutConstants_block_invoke_18(self->_device, v16);
   v13 = v17;
   ___LayoutConstants_block_invoke_18(self->_device, v15);
   result = 0.0;
-  if (a3 > 5)
+  if (tick > 5)
   {
-    if (a3 <= 8)
+    if (tick <= 8)
     {
-      if (a3 == 6)
+      if (tick == 6)
       {
         return v12 + v13;
       }
 
-      if (a3 != 7)
+      if (tick != 7)
       {
         return v13 + v10 / 0.866025404;
       }
@@ -732,14 +732,14 @@ void __73__NTKBlackcombBackgroundView_applyTransitionFractionToUsesLongSideTicks
       return v12 / 0.866025404 - v15[8];
     }
 
-    if (a3 != 9)
+    if (tick != 9)
     {
-      if (a3 == 10)
+      if (tick == 10)
       {
         return v13 + v10 / 0.866025404;
       }
 
-      if (a3 != 11)
+      if (tick != 11)
       {
         return result;
       }
@@ -750,11 +750,11 @@ void __73__NTKBlackcombBackgroundView_applyTransitionFractionToUsesLongSideTicks
     return v10 + v13;
   }
 
-  if (a3 > 2)
+  if (tick > 2)
   {
-    if (a3 != 3)
+    if (tick != 3)
     {
-      if (a3 == 4)
+      if (tick == 4)
       {
         return v13 + v10 / 0.866025404;
       }
@@ -765,7 +765,7 @@ void __73__NTKBlackcombBackgroundView_applyTransitionFractionToUsesLongSideTicks
     return v10 + v13;
   }
 
-  switch(a3)
+  switch(tick)
   {
     case 0:
       return v12 + v13;
@@ -778,25 +778,25 @@ void __73__NTKBlackcombBackgroundView_applyTransitionFractionToUsesLongSideTicks
   return result;
 }
 
-- (double)_innerDialRadiusAtLargeTick:(int64_t)a3 verticalLength:(double)a4 horizontalLength:(double)a5
+- (double)_innerDialRadiusAtLargeTick:(int64_t)tick verticalLength:(double)length horizontalLength:(double)horizontalLength
 {
   [(NTKBlackcombBackgroundView *)self _tickLayoutBounds];
   v10 = v9;
   v12 = v11;
   ___LayoutConstants_block_invoke_18(self->_device, v20);
-  v13 = (v10 - a5) * 0.5 - v21;
-  v14 = (v12 - a4) * 0.5 - v21;
+  v13 = (v10 - horizontalLength) * 0.5 - v21;
+  v14 = (v12 - length) * 0.5 - v21;
   result = 0.0;
-  if (a3 > 5)
+  if (tick > 5)
   {
-    if (a3 <= 8)
+    if (tick <= 8)
     {
-      if (a3 == 6)
+      if (tick == 6)
       {
         goto LABEL_19;
       }
 
-      if (a3 != 7)
+      if (tick != 7)
       {
         return v13 / 0.866025404;
       }
@@ -806,14 +806,14 @@ LABEL_17:
       return v14 / 0.866025404 - v17;
     }
 
-    if (a3 != 9)
+    if (tick != 9)
     {
-      if (a3 == 10)
+      if (tick == 10)
       {
         return v13 / 0.866025404;
       }
 
-      if (a3 != 11)
+      if (tick != 11)
       {
         return result;
       }
@@ -824,11 +824,11 @@ LABEL_17:
     return v13;
   }
 
-  if (a3 > 2)
+  if (tick > 2)
   {
-    if (a3 != 3)
+    if (tick != 3)
     {
-      if (a3 == 4)
+      if (tick == 4)
       {
         return v13 / 0.866025404;
       }
@@ -839,7 +839,7 @@ LABEL_17:
     return v13;
   }
 
-  switch(a3)
+  switch(tick)
   {
     case 0:
 LABEL_19:

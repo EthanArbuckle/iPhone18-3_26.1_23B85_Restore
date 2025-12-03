@@ -1,6 +1,6 @@
 @interface FMLHandle
-+ (FMLHandle)handleWithIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (FMLHandle)handleWithIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
 - (id)comparisonIdentifier;
 - (id)debugDescription;
 - (id)description;
@@ -9,26 +9,26 @@
 
 @implementation FMLHandle
 
-+ (FMLHandle)handleWithIdentifier:(id)a3
++ (FMLHandle)handleWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 setIdentifier:v3];
+  [v4 setIdentifier:identifierCopy];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(FMLHandle *)self comparisonIdentifier];
-    v7 = [v5 comparisonIdentifier];
+    v5 = equalCopy;
+    comparisonIdentifier = [(FMLHandle *)self comparisonIdentifier];
+    comparisonIdentifier2 = [v5 comparisonIdentifier];
 
-    v8 = [v6 isEqualToString:v7];
+    v8 = [comparisonIdentifier isEqualToString:comparisonIdentifier2];
   }
 
   else
@@ -41,16 +41,16 @@
 
 - (id)comparisonIdentifier
 {
-  v2 = [(FMLHandle *)self identifier];
-  v3 = [v2 lowercaseString];
+  identifier = [(FMLHandle *)self identifier];
+  lowercaseString = [identifier lowercaseString];
 
-  return v3;
+  return lowercaseString;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(FMLHandle *)self comparisonIdentifier];
-  v3 = [v2 hash];
+  comparisonIdentifier = [(FMLHandle *)self comparisonIdentifier];
+  v3 = [comparisonIdentifier hash];
 
   return v3;
 }
@@ -58,8 +58,8 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(FMLHandle *)self identifier];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  identifier = [(FMLHandle *)self identifier];
+  v4 = [v2 stringWithFormat:@"%@", identifier];
 
   return v4;
 }
@@ -68,8 +68,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(FMLHandle *)self identifier];
-  v6 = [v3 stringWithFormat:@"<%@ %p [%@]>", v4, self, v5];
+  identifier = [(FMLHandle *)self identifier];
+  v6 = [v3 stringWithFormat:@"<%@ %p [%@]>", v4, self, identifier];
 
   return v6;
 }

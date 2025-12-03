@@ -7,21 +7,21 @@
 
 - (void)_gkSaveStatusBarStyleAnimated:()StatusBarState setToStyle:
 {
-  v8 = [MEMORY[0x277D75128] sharedApplication];
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v8, "statusBarStyle")}];
-  objc_setAssociatedObject(a1, "_GKSavedStatusBarStyleKey", v7, 0x301);
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(mEMORY[0x277D75128], "statusBarStyle")}];
+  objc_setAssociatedObject(self, "_GKSavedStatusBarStyleKey", v7, 0x301);
 
-  [v8 setStatusBarStyle:a4 animated:a3];
+  [mEMORY[0x277D75128] setStatusBarStyle:a4 animated:a3];
 }
 
 - (void)_gkRestoreStatusBarStyle:()StatusBarState
 {
-  v5 = objc_getAssociatedObject(a1, "_GKSavedStatusBarStyleKey");
+  v5 = objc_getAssociatedObject(self, "_GKSavedStatusBarStyleKey");
   if (v5)
   {
-    v6 = [MEMORY[0x277D75128] sharedApplication];
-    [v6 setStatusBarStyle:objc_msgSend(v5 animated:{"intValue"), a3}];
-    objc_setAssociatedObject(a1, "_GKSavedStatusBarStyleKey", 0, 0x301);
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] setStatusBarStyle:objc_msgSend(v5 animated:{"intValue"), a3}];
+    objc_setAssociatedObject(self, "_GKSavedStatusBarStyleKey", 0, 0x301);
   }
 
   else

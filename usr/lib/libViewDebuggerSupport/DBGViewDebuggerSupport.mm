@@ -1,19 +1,19 @@
 @interface DBGViewDebuggerSupport
-+ (BOOL)_layerShouldSupersedeSnapshot:(id)a3;
-+ (id)_arrayEncodedIndexPath:(id)a3;
-+ (id)_collectSubviewInfoForView:(id)a3 encodeLayers:(BOOL)a4;
-+ (id)_layerInfo:(id)a3 view:(id)a4;
++ (BOOL)_layerShouldSupersedeSnapshot:(id)snapshot;
++ (id)_arrayEncodedIndexPath:(id)path;
++ (id)_collectSubviewInfoForView:(id)view encodeLayers:(BOOL)layers;
++ (id)_layerInfo:(id)info view:(id)view;
 + (id)classMap;
-+ (id)collectViewInfo:(id)a3;
++ (id)collectViewInfo:(id)info;
 + (id)fetchViewHierarchy;
-+ (id)fetchViewHierarchyWithOptions:(id)a3;
-+ (id)pathForClass:(Class)a3;
-+ (void)_populateConstraintInfosArray:(id)a3 forViewHierarchy:(id)a4;
-+ (void)_snapshotView:(id)a3 andAddDataToDictionary:(id)a4;
-+ (void)addObjectBasics:(id)a3 toDict:(id)a4;
-+ (void)addPathForClass:(Class)a3;
-+ (void)addViewLayerInfo:(id)a3 toDict:(id)a4;
-+ (void)addViewSubclassSpecificInfoForView:(id)a3 toDict:(id)a4;
++ (id)fetchViewHierarchyWithOptions:(id)options;
++ (id)pathForClass:(Class)class;
++ (void)_populateConstraintInfosArray:(id)array forViewHierarchy:(id)hierarchy;
++ (void)_snapshotView:(id)view andAddDataToDictionary:(id)dictionary;
++ (void)addObjectBasics:(id)basics toDict:(id)dict;
++ (void)addPathForClass:(Class)class;
++ (void)addViewLayerInfo:(id)info toDict:(id)dict;
++ (void)addViewSubclassSpecificInfoForView:(id)view toDict:(id)dict;
 @end
 
 @implementation DBGViewDebuggerSupport
@@ -30,28 +30,28 @@
   return result;
 }
 
-+ (void)addPathForClass:(Class)a3
++ (void)addPathForClass:(Class)class
 {
-  v5 = [a1 classMap];
-  v6 = NSStringFromClass(a3);
-  if (![v5 objectForKey:a3])
+  classMap = [self classMap];
+  v6 = NSStringFromClass(class);
+  if (![classMap objectForKey:class])
   {
-    v7 = [a1 pathForClass:a3];
+    v7 = [self pathForClass:class];
     if (v7)
     {
       if (v6)
       {
 
-        [v5 setObject:v7 forKey:v6];
+        [classMap setObject:v7 forKey:v6];
       }
     }
   }
 }
 
-+ (id)pathForClass:(Class)a3
++ (id)pathForClass:(Class)class
 {
-  v4 = NSStringFromClass(a3);
-  v5 = [(objc_class *)a3 superclass];
+  v4 = NSStringFromClass(class);
+  v5 = [(objc_class *)class superclass];
   if (v5)
   {
     v6 = v5;
@@ -79,31 +79,31 @@
   return v4;
 }
 
-+ (id)fetchViewHierarchyWithOptions:(id)a3
++ (id)fetchViewHierarchyWithOptions:(id)options
 {
   DBGViewDebuggerUseLayersAsSnapshots = 1;
-  if ([a3 objectForKey:@"DBGViewDebuggerUseLayersAsSnapshots"])
+  if ([options objectForKey:@"DBGViewDebuggerUseLayersAsSnapshots"])
   {
-    DBGViewDebuggerUseLayersAsSnapshots = [objc_msgSend(a3 objectForKeyedSubscript:{@"DBGViewDebuggerUseLayersAsSnapshots", "BOOLValue"}];
+    DBGViewDebuggerUseLayersAsSnapshots = [objc_msgSend(options objectForKeyedSubscript:{@"DBGViewDebuggerUseLayersAsSnapshots", "BOOLValue"}];
   }
 
   DBGViewDebuggerAlwaysEncodeLayers = 0;
-  if ([a3 objectForKey:@"DBGViewDebuggerAlwaysEncodeLayers"])
+  if ([options objectForKey:@"DBGViewDebuggerAlwaysEncodeLayers"])
   {
-    DBGViewDebuggerAlwaysEncodeLayers = [objc_msgSend(a3 objectForKeyedSubscript:{@"DBGViewDebuggerAlwaysEncodeLayers", "BOOLValue"}];
+    DBGViewDebuggerAlwaysEncodeLayers = [objc_msgSend(options objectForKeyedSubscript:{@"DBGViewDebuggerAlwaysEncodeLayers", "BOOLValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"DBGViewDebuggerEffectViewsToSnapshotAsImage"])
+  if ([options objectForKeyedSubscript:@"DBGViewDebuggerEffectViewsToSnapshotAsImage"])
   {
-    DBGViewDebuggerEffectViewsToSnapshotAsImage = [a3 objectForKeyedSubscript:@"DBGViewDebuggerEffectViewsToSnapshotAsImage"];
+    DBGViewDebuggerEffectViewsToSnapshotAsImage = [options objectForKeyedSubscript:@"DBGViewDebuggerEffectViewsToSnapshotAsImage"];
   }
 
-  if ([a3 objectForKeyedSubscript:@"DBGViewDebuggerEnableSceneDebugging"])
+  if ([options objectForKeyedSubscript:@"DBGViewDebuggerEnableSceneDebugging"])
   {
-    DBGViewDebuggerEnableSceneDebugging = [objc_msgSend(a3 objectForKeyedSubscript:{@"DBGViewDebuggerEnableSceneDebugging", "BOOLValue"}];
+    DBGViewDebuggerEnableSceneDebugging = [objc_msgSend(options objectForKeyedSubscript:{@"DBGViewDebuggerEnableSceneDebugging", "BOOLValue"}];
   }
 
-  return [a1 fetchViewHierarchy];
+  return [self fetchViewHierarchy];
 }
 
 + (id)fetchViewHierarchy
@@ -113,7 +113,7 @@
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = [a1 appWindows];
+  obj = [self appWindows];
   v4 = [obj countByEnumeratingWithState:&v28 objects:v37 count:16];
   if (v4)
   {
@@ -128,34 +128,34 @@
         }
 
         v7 = *(*(&v28 + 1) + 8 * i);
-        v8 = [a1 windowContentViewForWindow:v7];
+        v8 = [self windowContentViewForWindow:v7];
         if (v7 == v8)
         {
-          v9 = [a1 _collectSubviewInfoForView:v8 encodeLayers:1];
+          v9 = [self _collectSubviewInfoForView:v8 encodeLayers:1];
         }
 
         else
         {
-          v9 = [a1 collectViewInfo:v7];
-          v36 = [a1 _collectSubviewInfoForView:v8 encodeLayers:1];
+          v9 = [self collectViewInfo:v7];
+          v36 = [self _collectSubviewInfoForView:v8 encodeLayers:1];
           [v9 setObject:+[NSArray arrayWithObjects:count:](NSArray forKey:{"arrayWithObjects:count:", &v36, 1), @"subviews"}];
         }
 
-        [v9 setObject:+[NSNumber numberWithBool:](NSNumber forKey:{"numberWithBool:", objc_msgSend(a1, "isHiddenForWindow:", v7)), @"hidden"}];
+        [v9 setObject:+[NSNumber numberWithBool:](NSNumber forKey:{"numberWithBool:", objc_msgSend(self, "isHiddenForWindow:", v7)), @"hidden"}];
         v10 = +[NSMutableArray array];
-        [a1 _populateConstraintInfosArray:v10 forViewHierarchy:v8];
+        [self _populateConstraintInfosArray:v10 forViewHierarchy:v8];
         if ([v10 count])
         {
           [v9 setObject:v10 forKey:@"constraints"];
         }
 
-        v11 = [a1 titleForWindow:v7];
+        v11 = [self titleForWindow:v7];
         if ([v11 length])
         {
           [v9 setObject:v11 forKey:@"displayName"];
         }
 
-        [a1 screenBackingScaleForWindow:v7];
+        [self screenBackingScaleForWindow:v7];
         [v9 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"screenBackingScale"}];
         [v3 addObject:v9];
       }
@@ -166,12 +166,12 @@
     while (v4);
   }
 
-  v12 = [a1 additionalRootLevelViewsToArchive];
+  additionalRootLevelViewsToArchive = [self additionalRootLevelViewsToArchive];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v13 = [v12 countByEnumeratingWithState:&v24 objects:v35 count:16];
+  v13 = [additionalRootLevelViewsToArchive countByEnumeratingWithState:&v24 objects:v35 count:16];
   if (v13)
   {
     v14 = *v25;
@@ -181,27 +181,27 @@
       {
         if (*v25 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(additionalRootLevelViewsToArchive);
         }
 
         v16 = *(*(&v24 + 1) + 8 * j);
-        if ([a1 isViewSubclass:v16])
+        if ([self isViewSubclass:v16])
         {
-          v17 = [a1 _collectSubviewInfoForView:v16 encodeLayers:1];
+          v17 = [self _collectSubviewInfoForView:v16 encodeLayers:1];
           v18 = +[NSMutableArray array];
-          [a1 _populateConstraintInfosArray:v18 forViewHierarchy:v16];
+          [self _populateConstraintInfosArray:v18 forViewHierarchy:v16];
           if ([v18 count])
           {
             [v17 setObject:v18 forKey:@"constraints"];
           }
 
-          [a1 screenBackingScaleForView:v16];
+          [self screenBackingScaleForView:v16];
           [v17 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"screenBackingScale"}];
           [v3 addObject:v17];
         }
       }
 
-      v13 = [v12 countByEnumeratingWithState:&v24 objects:v35 count:16];
+      v13 = [additionalRootLevelViewsToArchive countByEnumeratingWithState:&v24 objects:v35 count:16];
     }
 
     while (v13);
@@ -209,8 +209,8 @@
 
   v19 = +[NSMutableDictionary dictionary];
   [v19 setObject:v3 forKey:@"views"];
-  [v19 setObject:objc_msgSend(a1 forKey:{"classMap"), @"classmap"}];
-  v20 = [a1 primaryWindowFromWindows:obj];
+  [v19 setObject:objc_msgSend(self forKey:{"classMap"), @"classmap"}];
+  v20 = [self primaryWindowFromWindows:obj];
   if (v20)
   {
     [v19 setObject:+[NSString stringWithFormat:](NSString forKey:{"stringWithFormat:", @"%p", v20), @"primaryWindow"}];
@@ -229,54 +229,54 @@
   return result;
 }
 
-+ (id)collectViewInfo:(id)a3
++ (id)collectViewInfo:(id)info
 {
   v5 = +[NSMutableDictionary dictionary];
-  [a1 addObjectBasics:a3 toDict:v5];
-  [a1 addFrameBasics:a3 toDict:v5];
-  if ([a1 isViewSubclass:a3])
+  [self addObjectBasics:info toDict:v5];
+  [self addFrameBasics:info toDict:v5];
+  if ([self isViewSubclass:info])
   {
-    [a1 addViewBasics:a3 toDict:v5];
-    [a1 addViewLayerInfo:a3 toDict:v5];
-    [a1 addLayoutInfoForView:a3 toDict:v5];
-    [a1 _snapshotView:a3 andAddDataToDictionary:v5];
-    [a1 addViewSubclassSpecificInfoForView:a3 toDict:v5];
+    [self addViewBasics:info toDict:v5];
+    [self addViewLayerInfo:info toDict:v5];
+    [self addLayoutInfoForView:info toDict:v5];
+    [self _snapshotView:info andAddDataToDictionary:v5];
+    [self addViewSubclassSpecificInfoForView:info toDict:v5];
   }
 
   return v5;
 }
 
-+ (void)addObjectBasics:(id)a3 toDict:(id)a4
++ (void)addObjectBasics:(id)basics toDict:(id)dict
 {
   v7 = objc_opt_class();
-  [a4 setObject:NSStringFromClass(v7) forKey:@"class"];
-  [a1 addPathForClass:v7];
-  v8 = [NSString stringWithFormat:@"%p", a3];
+  [dict setObject:NSStringFromClass(v7) forKey:@"class"];
+  [self addPathForClass:v7];
+  basics = [NSString stringWithFormat:@"%p", basics];
 
-  [a4 setObject:v8 forKey:@"address"];
+  [dict setObject:basics forKey:@"address"];
 }
 
-+ (void)addViewSubclassSpecificInfoForView:(id)a3 toDict:(id)a4
++ (void)addViewSubclassSpecificInfoForView:(id)view toDict:(id)dict
 {
   if (DBGViewDebuggerEnableSceneDebugging == 1)
   {
     NSClassFromString(&cfstr_Scnview.isa);
     if (objc_opt_isKindOfClass())
     {
-      v7 = [a3 scene];
-      if (v7)
+      scene = [view scene];
+      if (scene)
       {
-        v8 = v7;
+        v8 = scene;
         v9 = NSClassFromString(&cfstr_Scnkeyedarchiv.isa);
         if (objc_opt_respondsToSelector())
         {
-          [a4 setObject:-[objc_class archivedDataWithRootObject:options:](v9 forKey:{"archivedDataWithRootObject:options:", v8, &off_57D30), @"encodedDocumentData"}];
-          [a4 setObject:objc_msgSend(a1 forKey:{"pathForClass:", objc_opt_class()), @"classPathRepresentedByEncodedDocumentData"}];
+          [dict setObject:-[objc_class archivedDataWithRootObject:options:](v9 forKey:{"archivedDataWithRootObject:options:", v8, &off_57D30), @"encodedDocumentData"}];
+          [dict setObject:objc_msgSend(self forKey:{"pathForClass:", objc_opt_class()), @"classPathRepresentedByEncodedDocumentData"}];
         }
 
         if (objc_opt_respondsToSelector())
         {
-          v10 = [a3 valueForKey:@"pointOfView"];
+          v10 = [view valueForKey:@"pointOfView"];
           if (v10)
           {
             v11 = v10;
@@ -290,8 +290,8 @@
                 if (v14)
                 {
                   v15 = @"pointOfView";
-                  v16 = [a1 _arrayEncodedIndexPath:v14];
-                  [a4 setObject:+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary forKey:{"dictionaryWithObjects:forKeys:count:", &v16, &v15, 1), @"encodedDocumentInfo"}];
+                  v16 = [self _arrayEncodedIndexPath:v14];
+                  [dict setObject:+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary forKey:{"dictionaryWithObjects:forKeys:count:", &v16, &v15, 1), @"encodedDocumentInfo"}];
                 }
               }
             }
@@ -302,12 +302,12 @@
   }
 }
 
-+ (id)_arrayEncodedIndexPath:(id)a3
++ (id)_arrayEncodedIndexPath:(id)path
 {
-  v4 = [a3 length];
+  v4 = [path length];
   off_3C478();
   v6 = (&v10 - v5);
-  [a3 getIndexes:&v10 - v5 range:{0, v4}];
+  [path getIndexes:&v10 - v5 range:{0, v4}];
   for (i = &__NSArray0__struct; v4; --v4)
   {
     v8 = *v6++;
@@ -317,12 +317,12 @@
   return i;
 }
 
-+ (BOOL)_layerShouldSupersedeSnapshot:(id)a3
++ (BOOL)_layerShouldSupersedeSnapshot:(id)snapshot
 {
-  v5 = [a1 layerForView:?];
+  v5 = [self layerForView:?];
   if (v5)
   {
-    if ([a1 snapshotMethodForView:a3])
+    if ([self snapshotMethodForView:snapshot])
     {
 LABEL_3:
       LOBYTE(v5) = 0;
@@ -375,31 +375,31 @@ LABEL_7:
   return v5;
 }
 
-+ (void)_snapshotView:(id)a3 andAddDataToDictionary:(id)a4
++ (void)_snapshotView:(id)view andAddDataToDictionary:(id)dictionary
 {
-  if (DBGViewDebuggerUseLayersAsSnapshots != 1 || ([a1 _layerShouldSupersedeSnapshot:a3] & 1) == 0)
+  if (DBGViewDebuggerUseLayersAsSnapshots != 1 || ([self _layerShouldSupersedeSnapshot:view] & 1) == 0)
   {
     v8 = 0;
-    v7 = [a1 snapshotView:a3 errorString:&v8];
+    v7 = [self snapshotView:view errorString:&v8];
     if (v7)
     {
-      [a4 setObject:v7 forKey:@"imageData"];
+      [dictionary setObject:v7 forKey:@"imageData"];
     }
 
     if (v8)
     {
-      [a4 setObject:v8 forKey:@"snapshottingError"];
+      [dictionary setObject:v8 forKey:@"snapshottingError"];
     }
   }
 }
 
-+ (void)_populateConstraintInfosArray:(id)a3 forViewHierarchy:(id)a4
++ (void)_populateConstraintInfosArray:(id)array forViewHierarchy:(id)hierarchy
 {
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = [a4 constraints];
+  obj = [hierarchy constraints];
   v6 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v6)
   {
@@ -427,7 +427,7 @@ LABEL_7:
           [v13 setObject:+[NSNumber numberWithUnsignedLong:](NSNumber forKey:{"numberWithUnsignedLong:", objc_msgSend(v11, "firstAttribute")), @"firstAttribute"}];
           [v13 setObject:+[NSString stringWithFormat:](NSString forKey:{"stringWithFormat:", @"%p", objc_msgSend(v11, "secondItem")), @"secondItem"}];
           [v13 setObject:+[NSNumber numberWithUnsignedLong:](NSNumber forKey:{"numberWithUnsignedLong:", objc_msgSend(v11, "secondAttribute")), @"secondAttribute"}];
-          [v13 setObject:+[NSNumber numberWithUnsignedLong:](NSNumber forKey:{"numberWithUnsignedLong:", a4), @"container"}];
+          [v13 setObject:+[NSNumber numberWithUnsignedLong:](NSNumber forKey:{"numberWithUnsignedLong:", hierarchy), @"container"}];
           [v13 setObject:+[NSNumber numberWithUnsignedLong:](NSNumber forKey:{"numberWithUnsignedLong:", objc_msgSend(v11, "relation")), @"relation"}];
           [v11 constant];
           [v13 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"constant"}];
@@ -437,10 +437,10 @@ LABEL_7:
           [v13 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:", v14), @"priority"}];
           v15 = objc_opt_class();
           [v13 setObject:NSStringFromClass(v15) forKey:@"class"];
-          v16 = [v11 identifier];
-          if (v16)
+          identifier = [v11 identifier];
+          if (identifier)
           {
-            v17 = v16;
+            v17 = identifier;
           }
 
           else
@@ -450,8 +450,8 @@ LABEL_7:
 
           [v13 setObject:v17 forKey:@"identifier"];
           v8 = DebugHierarchyTargetHub_ptr;
-          [a3 addObject:v13];
-          [a1 addPathForClass:objc_opt_class()];
+          [array addObject:v13];
+          [self addPathForClass:objc_opt_class()];
         }
 
         v10 = v10 + 1;
@@ -468,8 +468,8 @@ LABEL_7:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v18 = [a4 subviews];
-  v19 = [v18 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  subviews = [hierarchy subviews];
+  v19 = [subviews countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v19)
   {
     v20 = v19;
@@ -481,36 +481,36 @@ LABEL_7:
       {
         if (*v26 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(subviews);
         }
 
-        [a1 _populateConstraintInfosArray:a3 forViewHierarchy:*(*(&v25 + 1) + 8 * v22)];
+        [self _populateConstraintInfosArray:array forViewHierarchy:*(*(&v25 + 1) + 8 * v22)];
         v22 = v22 + 1;
       }
 
       while (v20 != v22);
-      v20 = [v18 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v20 = [subviews countByEnumeratingWithState:&v25 objects:v33 count:16];
     }
 
     while (v20);
   }
 }
 
-+ (id)_collectSubviewInfoForView:(id)a3 encodeLayers:(BOOL)a4
++ (id)_collectSubviewInfoForView:(id)view encodeLayers:(BOOL)layers
 {
-  v4 = a4;
-  v7 = [a1 collectViewInfo:?];
+  layersCopy = layers;
+  v7 = [self collectViewInfo:?];
   v8 = +[NSMutableArray array];
-  v9 = [a3 layer];
-  v10 = v9;
-  if (v4 && v9 && [a1 _shouldEncodeLayers])
+  layer = [view layer];
+  v10 = layer;
+  if (layersCopy && layer && [self _shouldEncodeLayers])
   {
     v11 = CAEncodeLayerTree();
     [v7 setObject:v11 forKeyedSubscript:@"layerRoot"];
     v12 = v11;
   }
 
-  if ([objc_msgSend(a1 subviewsForView:{a3), "count"}])
+  if ([objc_msgSend(self subviewsForView:{view), "count"}])
   {
     v13 = 0;
     if (v10)
@@ -520,21 +520,21 @@ LABEL_7:
 
     else
     {
-      v14 = !v4;
+      v14 = !layersCopy;
     }
 
     v15 = 1;
     do
     {
-      v16 = [objc_msgSend(a1 subviewsForView:{a3), "objectAtIndexedSubscript:", v13}];
+      v16 = [objc_msgSend(self subviewsForView:{view), "objectAtIndexedSubscript:", v13}];
       if (v16)
       {
         v17 = v16;
         if (v14)
         {
-          v18 = [v16 layer];
+          layer2 = [v16 layer];
           v19 = 0;
-          if (v4 && v18)
+          if (layersCopy && layer2)
           {
             v19 = [objc_msgSend(v10 "sublayers")] ^ 1;
           }
@@ -545,73 +545,73 @@ LABEL_7:
           v19 = 1;
         }
 
-        [v8 addObject:{objc_msgSend(a1, "_collectSubviewInfoForView:encodeLayers:", v17, v19)}];
+        [v8 addObject:{objc_msgSend(self, "_collectSubviewInfoForView:encodeLayers:", v17, v19)}];
       }
 
       v13 = v15;
     }
 
-    while ([objc_msgSend(a1 subviewsForView:{a3), "count"}] > v15++);
+    while ([objc_msgSend(self subviewsForView:{view), "count"}] > v15++);
   }
 
   [v7 setObject:v8 forKey:@"subviews"];
   return v7;
 }
 
-+ (id)_layerInfo:(id)a3 view:(id)a4
++ (id)_layerInfo:(id)info view:(id)view
 {
-  if (!a3)
+  if (!info)
   {
     return 0;
   }
 
   v7 = objc_opt_class();
-  [a1 addPathForClass:v7];
-  v8 = [NSString stringWithFormat:@"%p", a3];
+  [self addPathForClass:v7];
+  info = [NSString stringWithFormat:@"%p", info];
   v10[0] = @"layerDelegate";
-  v11[0] = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%p", [a3 delegate]);
+  v11[0] = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%p", [info delegate]);
   v10[1] = @"viewIdentifier";
-  v11[1] = [NSString stringWithFormat:@"%p", a4];
+  v11[1] = [NSString stringWithFormat:@"%p", view];
   v10[2] = @"class";
   v10[3] = @"address";
   v11[2] = NSStringFromClass(v7);
-  v11[3] = v8;
+  v11[3] = info;
   return [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:4];
 }
 
-+ (void)addViewLayerInfo:(id)a3 toDict:(id)a4
++ (void)addViewLayerInfo:(id)info toDict:(id)dict
 {
-  v7 = [a1 layerForView:?];
+  v7 = [self layerForView:?];
   if (v7)
   {
     v8 = v7;
-    v9 = [a1 _layerInfo:v7 view:a3];
+    v9 = [self _layerInfo:v7 view:info];
     if (v9)
     {
-      [a4 setObject:v9 forKey:@"layer"];
+      [dict setObject:v9 forKey:@"layer"];
     }
 
-    [a4 setObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", objc_msgSend(objc_msgSend(objc_msgSend(v8, "superlayer"), "sublayers"), "indexOfObject:", v8)), @"layerIndex"}];
+    [dict setObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", objc_msgSend(objc_msgSend(objc_msgSend(v8, "superlayer"), "sublayers"), "indexOfObject:", v8)), @"layerIndex"}];
     v10 = objc_opt_class();
-    [a4 setObject:NSStringFromClass(v10) forKey:@"layerClass"];
-    [a4 setObject:+[NSNumber numberWithBool:](NSNumber forKey:{"numberWithBool:", objc_msgSend(v8, "masksToBounds")), @"masksToBounds"}];
-    [a4 setObject:__50__DBGViewDebuggerSupport_addViewLayerInfo_toDict___block_invoke(objc_msgSend(v8 forKey:{"transform"), &v15), @"transform"}];
-    [a4 setObject:__50__DBGViewDebuggerSupport_addViewLayerInfo_toDict___block_invoke(objc_msgSend(v8 forKey:{"sublayerTransform"), &v15), @"sublayerTransform"}];
+    [dict setObject:NSStringFromClass(v10) forKey:@"layerClass"];
+    [dict setObject:+[NSNumber numberWithBool:](NSNumber forKey:{"numberWithBool:", objc_msgSend(v8, "masksToBounds")), @"masksToBounds"}];
+    [dict setObject:__50__DBGViewDebuggerSupport_addViewLayerInfo_toDict___block_invoke(objc_msgSend(v8 forKey:{"transform"), &v15), @"transform"}];
+    [dict setObject:__50__DBGViewDebuggerSupport_addViewLayerInfo_toDict___block_invoke(objc_msgSend(v8 forKey:{"sublayerTransform"), &v15), @"sublayerTransform"}];
     [v8 position];
     v12 = v11;
     v15 = [NSNumber numberWithDouble:?];
     v16 = [NSNumber numberWithDouble:v12];
-    [a4 setObject:+[NSArray arrayWithObjects:count:](NSArray forKey:{"arrayWithObjects:count:", &v15, 2), @"position"}];
+    [dict setObject:+[NSArray arrayWithObjects:count:](NSArray forKey:{"arrayWithObjects:count:", &v15, 2), @"position"}];
     [v8 zPosition];
-    [a4 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"zPosition"}];
+    [dict setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"zPosition"}];
     [v8 anchorPoint];
     v14 = v13;
     v15 = [NSNumber numberWithDouble:?];
     v16 = [NSNumber numberWithDouble:v14];
-    [a4 setObject:+[NSArray arrayWithObjects:count:](NSArray forKey:{"arrayWithObjects:count:", &v15, 2), @"anchorPoint"}];
+    [dict setObject:+[NSArray arrayWithObjects:count:](NSArray forKey:{"arrayWithObjects:count:", &v15, 2), @"anchorPoint"}];
     [v8 anchorPointZ];
-    [a4 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"anchorPointZ"}];
-    [a4 setObject:+[NSNumber numberWithBool:](NSNumber forKey:{"numberWithBool:", objc_msgSend(v8, "isDoubleSided")), @"isDoubleSided"}];
+    [dict setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"anchorPointZ"}];
+    [dict setObject:+[NSNumber numberWithBool:](NSNumber forKey:{"numberWithBool:", objc_msgSend(v8, "isDoubleSided")), @"isDoubleSided"}];
   }
 }
 

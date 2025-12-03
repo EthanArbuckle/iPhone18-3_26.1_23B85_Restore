@@ -1,15 +1,15 @@
 @interface TPSSavedTipsManager
 + (TPSSavedTipsManager)sharedInstance;
 - (BOOL)isCurrentTipSaved;
-- (BOOL)isSavedWithTipIdentifier:(id)a3;
+- (BOOL)isSavedWithTipIdentifier:(id)identifier;
 - (TPSTip)currentTip;
 - (id)identifiers;
-- (id)savedDateWithCorrelationId:(id)a3;
+- (id)savedDateWithCorrelationId:(id)id;
 - (void)removeInvalidEntries;
-- (void)setCurrentTip:(id)a3;
-- (void)setIsCurrentTipSaved:(BOOL)a3;
-- (void)toggleSavedTipWithCorrelationId:(id)a3 tipIdentifier:(id)a4;
-- (void)updateSavedTipsWithCorrelationId:(id)a3 tipIdentifier:(id)a4 savedDate:(id)a5 lastUsedVersion:(id)a6;
+- (void)setCurrentTip:(id)tip;
+- (void)setIsCurrentTipSaved:(BOOL)saved;
+- (void)toggleSavedTipWithCorrelationId:(id)id tipIdentifier:(id)identifier;
+- (void)updateSavedTipsWithCorrelationId:(id)id tipIdentifier:(id)identifier savedDate:(id)date lastUsedVersion:(id)version;
 @end
 
 @implementation TPSSavedTipsManager
@@ -18,42 +18,42 @@
 {
   swift_getKeyPath();
   sub_1C0122EFC(&qword_1EBE06978, type metadata accessor for TPSSavedTipsManager);
-  v3 = self;
+  selfCopy = self;
   sub_1C014BF00();
 
   v4 = OBJC_IVAR___TPSSavedTipsManager__currentTip;
   swift_beginAccess();
-  v5 = *(&v3->super.isa + v4);
+  v5 = *(&selfCopy->super.isa + v4);
   v6 = v5;
 
   return v5;
 }
 
-- (void)setCurrentTip:(id)a3
+- (void)setCurrentTip:(id)tip
 {
-  v5 = a3;
-  v6 = self;
-  sub_1C011D034(a3);
+  tipCopy = tip;
+  selfCopy = self;
+  sub_1C011D034(tip);
 }
 
 - (BOOL)isCurrentTipSaved
 {
   swift_getKeyPath();
   sub_1C0122EFC(&qword_1EBE06978, type metadata accessor for TPSSavedTipsManager);
-  v3 = self;
+  selfCopy = self;
   sub_1C014BF00();
 
   v4 = OBJC_IVAR___TPSSavedTipsManager__isCurrentTipSaved;
   swift_beginAccess();
-  LOBYTE(v4) = *(&v3->super.isa + v4);
+  LOBYTE(v4) = *(&selfCopy->super.isa + v4);
 
   return v4;
 }
 
-- (void)setIsCurrentTipSaved:(BOOL)a3
+- (void)setIsCurrentTipSaved:(BOOL)saved
 {
-  v4 = self;
-  sub_1C011D754(a3);
+  selfCopy = self;
+  sub_1C011D754(saved);
 }
 
 + (TPSSavedTipsManager)sharedInstance
@@ -68,9 +68,9 @@
   return v3;
 }
 
-- (BOOL)isSavedWithTipIdentifier:(id)a3
+- (BOOL)isSavedWithTipIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_1C014C230();
   }
@@ -82,13 +82,13 @@
 
   v5 = *(&self->super.isa + OBJC_IVAR___TPSSavedTipsManager_queue);
   MEMORY[0x1EEE9AC00](v4);
-  v6 = self;
+  selfCopy = self;
   sub_1C014C5B0();
 
   return v8;
 }
 
-- (id)savedDateWithCorrelationId:(id)a3
+- (id)savedDateWithCorrelationId:(id)id
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBE06688, &qword_1C0156730);
   v5 = *(*(v4 - 8) + 64);
@@ -96,10 +96,10 @@
   v7 = &v18[-v6];
   v8 = sub_1C014C230();
   v9 = *(&self->super.isa + OBJC_IVAR___TPSSavedTipsManager_queue);
-  v19 = self;
+  selfCopy = self;
   v20 = v8;
   v21 = v10;
-  v11 = self;
+  selfCopy2 = self;
   sub_1C014C5B0();
 
   v12 = sub_1C014BD40();
@@ -116,17 +116,17 @@
   return v15;
 }
 
-- (void)toggleSavedTipWithCorrelationId:(id)a3 tipIdentifier:(id)a4
+- (void)toggleSavedTipWithCorrelationId:(id)id tipIdentifier:(id)identifier
 {
   v5 = sub_1C014C230();
   v7 = v6;
   v8 = sub_1C014C230();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   sub_1C011E654(v5, v7, v8, v10);
 }
 
-- (void)updateSavedTipsWithCorrelationId:(id)a3 tipIdentifier:(id)a4 savedDate:(id)a5 lastUsedVersion:(id)a6
+- (void)updateSavedTipsWithCorrelationId:(id)id tipIdentifier:(id)identifier savedDate:(id)date lastUsedVersion:(id)version
 {
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBE06688, &qword_1C0156730);
   v9 = *(*(v8 - 8) + 64);
@@ -136,7 +136,7 @@
   v14 = v13;
   v15 = sub_1C014C230();
   v17 = v16;
-  if (a5)
+  if (date)
   {
     sub_1C014BD00();
     v18 = sub_1C014BD40();
@@ -151,7 +151,7 @@
 
   v20 = sub_1C014C230();
   v22 = v21;
-  v23 = self;
+  selfCopy = self;
   sub_1C011EC38(v12, v14, v15, v17, v11, v20, v22);
 
   sub_1C012348C(v11);
@@ -160,7 +160,7 @@
 - (id)identifiers
 {
   v2 = *(&self->super.isa + OBJC_IVAR___TPSSavedTipsManager_queue);
-  v3 = self;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBE067C0, &qword_1C0157160);
   sub_1C014C5B0();
 
@@ -184,7 +184,7 @@
   v8[2] = sub_1C011EB80;
   v8[3] = &block_descriptor_54;
   v6 = _Block_copy(v8);
-  v7 = self;
+  selfCopy = self;
 
   dispatch_sync(v3, v6);
   _Block_release(v6);

@@ -1,15 +1,15 @@
 @interface EXUnsupportedSheet
-+ (id)edSheetWithState:(id)a3;
++ (id)edSheetWithState:(id)state;
 @end
 
 @implementation EXUnsupportedSheet
 
-+ (id)edSheetWithState:(id)a3
++ (id)edSheetWithState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = [EDUnsupportedSheet alloc];
-  v5 = [v3 workbook];
-  v6 = [(EDSheet *)v4 initWithWorkbook:v5];
+  workbook = [stateCopy workbook];
+  v6 = [(EDSheet *)v4 initWithWorkbook:workbook];
 
   return v6;
 }

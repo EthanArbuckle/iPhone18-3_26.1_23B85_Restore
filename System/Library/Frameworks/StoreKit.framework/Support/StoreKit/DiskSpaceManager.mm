@@ -1,24 +1,24 @@
 @interface DiskSpaceManager
-+ (BOOL)ensureAvailableDiskSpace:(int64_t)a3 atPath:(id)a4;
-+ (int64_t)availableDiskSpaceAtPath:(id)a3;
-+ (int64_t)recoverableDiskSpaceAtPath:(id)a3;
++ (BOOL)ensureAvailableDiskSpace:(int64_t)space atPath:(id)path;
++ (int64_t)availableDiskSpaceAtPath:(id)path;
++ (int64_t)recoverableDiskSpaceAtPath:(id)path;
 @end
 
 @implementation DiskSpaceManager
 
-+ (int64_t)availableDiskSpaceAtPath:(id)a3
++ (int64_t)availableDiskSpaceAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[NSFileManager defaultManager];
-  if (([v4 fileExistsAtPath:v3] & 1) == 0)
+  if (([v4 fileExistsAtPath:pathCopy] & 1) == 0)
   {
-    v5 = [v3 stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
 
-    v3 = v5;
+    pathCopy = stringByDeletingLastPathComponent;
   }
 
   v17 = 0;
-  v6 = [v4 attributesOfFileSystemForPath:v3 error:&v17];
+  v6 = [v4 attributesOfFileSystemForPath:pathCopy error:&v17];
   v7 = v17;
   v8 = v7;
   if (v6)
@@ -34,7 +34,7 @@
   if (v9)
   {
     v12 = [v6 objectForKey:NSFileSystemFreeSize];
-    v11 = [v12 unsignedLongLongValue];
+    unsignedLongLongValue = [v12 unsignedLongLongValue];
   }
 
   else
@@ -52,24 +52,24 @@
       *buf = 138543874;
       v19 = v15;
       v20 = 2114;
-      v21 = v3;
+      v21 = pathCopy;
       v22 = 2114;
       v23 = v8;
       v16 = v15;
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "[%{public}@] availableSpaceOnDiskAtPath:%{public}@ failed: %{public}@", buf, 0x20u);
     }
 
-    v11 = -1;
+    unsignedLongLongValue = -1;
   }
 
-  return v11;
+  return unsignedLongLongValue;
 }
 
-+ (BOOL)ensureAvailableDiskSpace:(int64_t)a3 atPath:(id)a4
++ (BOOL)ensureAvailableDiskSpace:(int64_t)space atPath:(id)path
 {
-  v6 = a4;
-  v7 = [a1 availableDiskSpaceAtPath:v6];
-  if (v7 < a3)
+  pathCopy = path;
+  v7 = [self availableDiskSpaceAtPath:pathCopy];
+  if (v7 < space)
   {
     v8 = v7;
     if (qword_1003D3E98 != -1)
@@ -86,15 +86,15 @@
       v38 = 2048;
       v39 = v8;
       v40 = 2048;
-      v41 = a3;
+      spaceCopy = space;
       v11 = v37;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Free space (%lld) is less than required (%lld). Checking cache delete.", buf, 0x20u);
     }
 
-    v35[0] = v6;
+    v35[0] = pathCopy;
     v34[0] = @"CACHE_DELETE_VOLUME";
     v34[1] = @"CACHE_DELETE_AMOUNT";
-    v12 = [NSNumber numberWithLongLong:a3];
+    v12 = [NSNumber numberWithLongLong:space];
     v34[2] = @"CACHE_DELETE_URGENCY";
     v35[1] = v12;
     v35[2] = &off_1003A13A8;
@@ -102,7 +102,7 @@
 
     v14 = CacheDeleteCopyPurgeableSpaceWithInfo();
     v15 = [v14 objectForKeyedSubscript:@"CACHE_DELETE_AMOUNT"];
-    if (v8 + [v15 longLongValue] < a3)
+    if (v8 + [v15 longLongValue] < space)
     {
       if (qword_1003D3E98 != -1)
       {
@@ -112,7 +112,7 @@
       v16 = qword_1003D3E50;
       if (os_log_type_enabled(qword_1003D3E50, OS_LOG_TYPE_ERROR))
       {
-        sub_1002C9C40(v16, a1, v15);
+        sub_1002C9C40(v16, self, v15);
       }
 
       v17 = 0;
@@ -155,8 +155,8 @@
         sub_1002C9B98(v25);
       }
 
-      v26 = [a1 availableDiskSpaceAtPath:v6];
-      if (v26 <= a3)
+      v26 = [self availableDiskSpaceAtPath:pathCopy];
+      if (v26 <= space)
       {
         v17 = 0;
         goto LABEL_29;
@@ -195,20 +195,20 @@ LABEL_31:
   return v17;
 }
 
-+ (int64_t)recoverableDiskSpaceAtPath:(id)a3
++ (int64_t)recoverableDiskSpaceAtPath:(id)path
 {
   v9[0] = @"CACHE_DELETE_VOLUME";
   v9[1] = @"CACHE_DELETE_URGENCY";
-  v10[0] = a3;
+  v10[0] = path;
   v10[1] = &off_1003A13A8;
-  v3 = a3;
+  pathCopy = path;
   v4 = [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:2];
 
   v5 = CacheDeleteCopyPurgeableSpaceWithInfo();
   v6 = [v5 objectForKeyedSubscript:@"CACHE_DELETE_AMOUNT"];
-  v7 = [v6 unsignedLongLongValue];
+  unsignedLongLongValue = [v6 unsignedLongLongValue];
 
-  return v7;
+  return unsignedLongLongValue;
 }
 
 @end

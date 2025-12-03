@@ -1,11 +1,11 @@
 @interface PARBagConfigFactory
-- (id)loadWithData:(id)a3 userAgent:(id)a4 userDefaults:(id)a5;
-- (id)loadWithUrl:(id)a3 userAgent:(id)a4 userDefaults:(id)a5;
+- (id)loadWithData:(id)data userAgent:(id)agent userDefaults:(id)defaults;
+- (id)loadWithUrl:(id)url userAgent:(id)agent userDefaults:(id)defaults;
 @end
 
 @implementation PARBagConfigFactory
 
-- (id)loadWithUrl:(id)a3 userAgent:(id)a4 userDefaults:(id)a5
+- (id)loadWithUrl:(id)url userAgent:(id)agent userDefaults:(id)defaults
 {
   v8 = type metadata accessor for URL();
   v9 = *(v8 - 8);
@@ -13,10 +13,10 @@
   __chkstk_darwin(v8);
   v12 = &v19 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a4)
+  if (agent)
   {
     v13 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a4 = v14;
+    agent = v14;
   }
 
   else
@@ -24,25 +24,25 @@
     v13 = 0;
   }
 
-  v15 = a5;
-  v16 = self;
-  v17 = sub_1001019D8(v12, v13, a4, a5);
+  defaultsCopy = defaults;
+  selfCopy = self;
+  v17 = sub_1001019D8(v12, v13, agent, defaults);
 
   (*(v9 + 8))(v12, v8);
 
   return v17;
 }
 
-- (id)loadWithData:(id)a3 userAgent:(id)a4 userDefaults:(id)a5
+- (id)loadWithData:(id)data userAgent:(id)agent userDefaults:(id)defaults
 {
-  v8 = a3;
-  v9 = self;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  selfCopy = self;
+  agentCopy = agent;
+  defaultsCopy = defaults;
   v12 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = v13;
 
-  if (v10)
+  if (agentCopy)
   {
     v15 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v17 = v16;
@@ -54,7 +54,7 @@
     v17 = 0;
   }
 
-  v18 = sub_100101C2C(v12, v14, v15, v17, v11);
+  v18 = sub_100101C2C(v12, v14, v15, v17, defaultsCopy);
 
   sub_100014A40(v12, v14);
 

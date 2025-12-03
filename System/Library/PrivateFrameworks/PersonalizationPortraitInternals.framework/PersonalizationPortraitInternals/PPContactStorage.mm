@@ -1,38 +1,38 @@
 @interface PPContactStorage
-+ (id)normalizeHandle:(id)a3;
-- (BOOL)iterAllNameRecordsFromAllSourcesWithError:(id *)a3 block:(id)a4;
-- (PPContactStorage)initWithDatabase:(id)a3 foundInAppsHarvestStoreGetter:(id)a4;
-- (id)_contactsContactsWithPredicate:(uint64_t)a1 explanationSet:(void *)a2 error:(void *)a3;
-- (id)_contactsFullTextSearchWithQuery:(uint64_t)a1 explanationSet:(uint64_t)a2 error:(void *)a3 filter:(void *)a4;
-- (id)_foundInAppsContactsQueryWithTerm:(void *)a3 explanationSet:(void *)a4 error:(void *)a5 filter:;
-- (id)_joinResults:(id)a3;
++ (id)normalizeHandle:(id)handle;
+- (BOOL)iterAllNameRecordsFromAllSourcesWithError:(id *)error block:(id)block;
+- (PPContactStorage)initWithDatabase:(id)database foundInAppsHarvestStoreGetter:(id)getter;
+- (id)_contactsContactsWithPredicate:(uint64_t)predicate explanationSet:(void *)set error:(void *)error;
+- (id)_contactsFullTextSearchWithQuery:(uint64_t)query explanationSet:(uint64_t)set error:(void *)error filter:(void *)filter;
+- (id)_foundInAppsContactsQueryWithTerm:(void *)term explanationSet:(void *)set error:(void *)error filter:;
+- (id)_joinResults:(id)results;
 - (id)_nameRecordKeysToFetch;
-- (id)_waitForGroup:(id)a3 results:(id)a4;
-- (id)_waitForGroup:(id)a3 results:(id)a4 timeoutSeconds:(double)a5 explanationSet:(id)a6;
+- (id)_waitForGroup:(id)group results:(id)results;
+- (id)_waitForGroup:(id)group results:(id)results timeoutSeconds:(double)seconds explanationSet:(id)set;
 - (id)cachedSignificantContactHandles;
-- (id)contactHandleSourceCountsWithMinimumSourceCount:(unint64_t)a3;
-- (id)contactHandlesForSource:(id)a3;
-- (id)contactHandlesForTopics:(id)a3;
-- (id)contactNameRecordsWithHistoryResult:(id)a3 truncated:(BOOL *)a4 error:(id *)a5;
-- (id)contactsChangeHistoryForClient:(id)a3 error:(id *)a4;
-- (id)contactsContactsWithQuery:(id)a3 explanationSet:(id)a4 error:(id *)a5;
-- (id)contactsWithQuery:(id)a3 explanationSet:(id)a4 timeoutSeconds:(id)a5 error:(id *)a6;
-- (id)emailFilterWithQuery:(id)a3;
+- (id)contactHandleSourceCountsWithMinimumSourceCount:(unint64_t)count;
+- (id)contactHandlesForSource:(id)source;
+- (id)contactHandlesForTopics:(id)topics;
+- (id)contactNameRecordsWithHistoryResult:(id)result truncated:(BOOL *)truncated error:(id *)error;
+- (id)contactsChangeHistoryForClient:(id)client error:(id *)error;
+- (id)contactsContactsWithQuery:(id)query explanationSet:(id)set error:(id *)error;
+- (id)contactsWithQuery:(id)query explanationSet:(id)set timeoutSeconds:(id)seconds error:(id *)error;
+- (id)emailFilterWithQuery:(id)query;
 - (id)meCard;
-- (id)nameFilterWithQuery:(id)a3;
-- (id)phoneFilterWithQuery:(id)a3;
-- (id)postalAddressFilterWithQuery:(id)a3;
-- (id)sourcesForContactHandle:(id)a3;
-- (int64_t)insertIfNeededAndFetchIdentifierWithHandle:(id)a3 txnWitness:(id)a4;
-- (unint64_t)pruneOrphanedHandlesWithTxnWitness:(id)a3;
-- (void)_addToCache:(void *)a3 records:;
-- (void)asyncFillResultsFromContactsWithQuery:(id)a3 explanationSet:(id)a4 group:(id)a5 results:(id)a6;
-- (void)asyncFillResultsFromFoundInAppsWithQuery:(id)a3 explanationSet:(id)a4 group:(id)a5 results:(id)a6;
-- (void)clearChangeHistoryForClient:(id)a3 historyResult:(id)a4;
+- (id)nameFilterWithQuery:(id)query;
+- (id)phoneFilterWithQuery:(id)query;
+- (id)postalAddressFilterWithQuery:(id)query;
+- (id)sourcesForContactHandle:(id)handle;
+- (int64_t)insertIfNeededAndFetchIdentifierWithHandle:(id)handle txnWitness:(id)witness;
+- (unint64_t)pruneOrphanedHandlesWithTxnWitness:(id)witness;
+- (void)_addToCache:(void *)cache records:;
+- (void)asyncFillResultsFromContactsWithQuery:(id)query explanationSet:(id)set group:(id)group results:(id)results;
+- (void)asyncFillResultsFromFoundInAppsWithQuery:(id)query explanationSet:(id)set group:(id)group results:(id)results;
+- (void)clearChangeHistoryForClient:(id)client historyResult:(id)result;
 - (void)loadChineseBirthdayFoundKVData;
-- (void)setCachedSignificantContactHandles:(id)a3;
+- (void)setCachedSignificantContactHandles:(id)handles;
 - (void)setChineseBirthdayFoundKVData;
-- (void)storeHandleSourceMapWithHandles:(id)a3 sourceId:(int64_t)a4 txnWitness:(id)a5;
+- (void)storeHandleSourceMapWithHandles:(id)handles sourceId:(int64_t)id txnWitness:(id)witness;
 @end
 
 @implementation PPContactStorage
@@ -89,11 +89,11 @@ uint64_t __51__PPContactStorage_cachedSignificantContactHandles__block_invoke_3(
   return *v5;
 }
 
-- (void)clearChangeHistoryForClient:(id)a3 historyResult:(id)a4
+- (void)clearChangeHistoryForClient:(id)client historyResult:(id)result
 {
-  v6 = a3;
-  v10 = [a4 currentHistoryToken];
-  v7 = v6;
+  clientCopy = client;
+  currentHistoryToken = [result currentHistoryToken];
+  v7 = clientCopy;
   v8 = v7;
   if (self)
   {
@@ -103,7 +103,7 @@ uint64_t __51__PPContactStorage_cachedSignificantContactHandles__block_invoke_3(
     v11[2] = __63__PPContactStorage_History___setHistoryToken_clientIdentifier___block_invoke;
     v11[3] = &unk_278977CD8;
     v12 = v7;
-    v13 = v10;
+    v13 = currentHistoryToken;
     [(PPSQLDatabase *)db writeTransactionWithClient:3 block:v11];
   }
 }
@@ -128,12 +128,12 @@ void __63__PPContactStorage_History___setHistoryToken_clientIdentifier___block_i
   [v4 bindNamedParam:":token" toNSData:*(a1 + 40)];
 }
 
-- (id)contactsChangeHistoryForClient:(id)a3 error:(id *)a4
+- (id)contactsChangeHistoryForClient:(id)client error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  clientCopy = client;
   v7 = objc_opt_new();
-  v8 = v6;
+  v8 = clientCopy;
   v9 = v8;
   if (self)
   {
@@ -172,7 +172,7 @@ void __63__PPContactStorage_History___setHistoryToken_clientIdentifier___block_i
     _os_log_impl(&dword_23224A000, v12, OS_LOG_TYPE_DEFAULT, "getting change history from contacts: %@", &buf, 0xCu);
   }
 
-  v13 = [(CNContactStore *)self->_contactsStore enumeratorForChangeHistoryFetchRequest:v7 error:a4];
+  v13 = [(CNContactStore *)self->_contactsStore enumeratorForChangeHistoryFetchRequest:v7 error:error];
 
   v14 = *MEMORY[0x277D85DE8];
 
@@ -205,15 +205,15 @@ uint64_t __62__PPContactStorage_History___historyTokenForClientIdentifier___bloc
   return *MEMORY[0x277D42698];
 }
 
-- (id)contactNameRecordsWithHistoryResult:(id)a3 truncated:(BOOL *)a4 error:(id *)a5
+- (id)contactNameRecordsWithHistoryResult:(id)result truncated:(BOOL *)truncated error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  resultCopy = result;
   v8 = [PPContactNameRecordChangeHistoryAccumulator alloc];
   contactsStore = self->_contactsStore;
-  v10 = [(PPContactStorage *)self _nameRecordKeysToFetch];
+  _nameRecordKeysToFetch = [(PPContactStorage *)self _nameRecordKeysToFetch];
   v11 = contactsStore;
-  v12 = v10;
+  v12 = _nameRecordKeysToFetch;
   if (v8)
   {
     v31.receiver = v8;
@@ -223,7 +223,7 @@ uint64_t __62__PPContactStorage_History___historyTokenForClientIdentifier___bloc
     if (v13)
     {
       objc_storeStrong(&v13->_contactsStore, contactsStore);
-      objc_storeStrong(&v8->_keysToFetch, v10);
+      objc_storeStrong(&v8->_keysToFetch, _nameRecordKeysToFetch);
       v14 = objc_opt_new();
       records = v8->_records;
       v8->_records = v14;
@@ -236,8 +236,8 @@ uint64_t __62__PPContactStorage_History___historyTokenForClientIdentifier___bloc
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v16 = [v7 value];
-  v17 = [v16 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  value = [resultCopy value];
+  v17 = [value countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v17)
   {
     v18 = v17;
@@ -248,7 +248,7 @@ uint64_t __62__PPContactStorage_History___historyTokenForClientIdentifier___bloc
       {
         if (*v28 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(value);
         }
 
         v21 = *(*(&v27 + 1) + 8 * i);
@@ -264,7 +264,7 @@ uint64_t __62__PPContactStorage_History___historyTokenForClientIdentifier___bloc
         objc_autoreleasePoolPop(v22);
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v18 = [value countByEnumeratingWithState:&v27 objects:v32 count:16];
       if (v18)
       {
         continue;
@@ -279,9 +279,9 @@ uint64_t __62__PPContactStorage_History___historyTokenForClientIdentifier___bloc
 LABEL_16:
     if (v8->_truncated)
     {
-      if (a4)
+      if (truncated)
       {
-        *a4 = v8->_truncated;
+        *truncated = v8->_truncated;
       }
 
       v24 = objc_opt_new();
@@ -308,7 +308,7 @@ LABEL_16:
 - (id)_nameRecordKeysToFetch
 {
   v9[12] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v1 = *MEMORY[0x277CBD0B0];
     v9[0] = *MEMORY[0x277CBD000];
@@ -328,18 +328,18 @@ LABEL_16:
     v6 = *MEMORY[0x277CBD080];
     v9[10] = *MEMORY[0x277CBD0C8];
     v9[11] = v6;
-    a1 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:12];
+    self = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:12];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return self;
 }
 
-- (BOOL)iterAllNameRecordsFromAllSourcesWithError:(id *)a3 block:(id)a4
+- (BOOL)iterAllNameRecordsFromAllSourcesWithError:(id *)error block:(id)block
 {
   v79 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  blockCopy = block;
   v57 = 0;
   v58 = &v57;
   v59 = 0x2020000000;
@@ -387,7 +387,7 @@ LABEL_16:
   v34[2] = __81__PPContactStorage_NameRecords__iterAllNameRecordsFromAllSourcesWithError_block___block_invoke_4;
   v34[3] = &unk_2789733A0;
   v36 = &v37;
-  v10 = v6;
+  v10 = blockCopy;
   v35 = v10;
   v11 = v34;
   v12 = v11;
@@ -408,7 +408,7 @@ LABEL_16:
     *(&buf + 1) = 3221225472;
     v73 = __87__PPContactStorage_NameRecords___iterContactsNameRecordsForAllContactsWithError_block___block_invoke;
     v74 = &unk_278973418;
-    v75 = self;
+    selfCopy = self;
     v77 = &v65;
     v78 = &v61;
     v76 = v11;
@@ -446,9 +446,9 @@ LABEL_16:
 
   if (self)
   {
-    v19 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v20 = v52[5];
-    v52[5] = v19;
+    v52[5] = date;
 
     atomic_store(1u, v58 + 24);
     [MEMORY[0x277D425A0] waitForBlock:v9];
@@ -500,10 +500,10 @@ LABEL_15:
     }
   }
 
-  else if (a3)
+  else if (error)
   {
     v27 = v16;
-    *a3 = v16;
+    *error = v16;
   }
 
   _Block_object_dispose(&v37, 8);
@@ -1199,23 +1199,23 @@ LABEL_42:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addToCache:(void *)a3 records:
+- (void)_addToCache:(void *)cache records:
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (a1)
+  cacheCopy = cache;
+  if (self)
   {
     v6 = a2;
     v7 = pp_contacts_log_handle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v15 = [v5 count];
+      v15 = [cacheCopy count];
       _os_log_impl(&dword_23224A000, v7, OS_LOG_TYPE_INFO, "PPContactStorage: _addToCache: flushing cache batch of size: %tu", buf, 0xCu);
     }
 
     v13 = 0;
-    v8 = [v6 addNameRecords:v5 error:&v13];
+    v8 = [v6 addNameRecords:cacheCopy error:&v13];
 
     v9 = v13;
     if ((v8 & 1) == 0)
@@ -1223,7 +1223,7 @@ LABEL_42:
       v10 = pp_contacts_log_handle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v12 = [v5 count];
+        v12 = [cacheCopy count];
         *buf = 134218242;
         v15 = v12;
         v16 = 2112;
@@ -1417,16 +1417,16 @@ LABEL_26:
   return v40;
 }
 
-- (id)contactsContactsWithQuery:(id)a3 explanationSet:(id)a4 error:(id *)a5
+- (id)contactsContactsWithQuery:(id)query explanationSet:(id)set error:(id *)error
 {
   v69 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v57 = a4;
+  queryCopy = query;
+  setCopy = set;
   v8 = pp_contacts_log_handle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v7;
+    *(&buf + 4) = queryCopy;
     _os_log_debug_impl(&dword_23224A000, v8, OS_LOG_TYPE_DEBUG, "PPLocalContactStore contactsContactsWithQuery: %@", &buf, 0xCu);
   }
 
@@ -1444,31 +1444,31 @@ LABEL_26:
   v63 = v56;
   v10 = _Block_copy(aBlock);
   v11 = objc_opt_new();
-  v12 = [v7 isEqual:v11];
+  v12 = [queryCopy isEqual:v11];
 
   if (v12)
   {
-    v13 = [PPContactStorage _contactsContactsWithPredicate:0 explanationSet:v57 error:?];
-    v10[2](v10, v13);
+    allObjects = [PPContactStorage _contactsContactsWithPredicate:0 explanationSet:setCopy error:?];
+    v10[2](v10, allObjects);
   }
 
   else
   {
-    v14 = [v7 matchingIdentifiers];
-    v15 = [v14 count] == 0;
+    matchingIdentifiers = [queryCopy matchingIdentifiers];
+    v15 = [matchingIdentifiers count] == 0;
 
     if (!v15)
     {
       v16 = objc_alloc(MEMORY[0x277CBEB18]);
-      v17 = [v7 matchingIdentifiers];
-      v18 = [v16 initWithCapacity:{objc_msgSend(v17, "count")}];
+      matchingIdentifiers2 = [queryCopy matchingIdentifiers];
+      v18 = [v16 initWithCapacity:{objc_msgSend(matchingIdentifiers2, "count")}];
 
       v60 = 0u;
       v61 = 0u;
       v58 = 0u;
       v59 = 0u;
-      v19 = [v7 matchingIdentifiers];
-      v20 = [v19 countByEnumeratingWithState:&v58 objects:v65 count:16];
+      matchingIdentifiers3 = [queryCopy matchingIdentifiers];
+      v20 = [matchingIdentifiers3 countByEnumeratingWithState:&v58 objects:v65 count:16];
       if (v20)
       {
         v21 = *v59;
@@ -1478,11 +1478,11 @@ LABEL_26:
           {
             if (*v59 != v21)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(matchingIdentifiers3);
             }
 
             v23 = *(*(&v58 + 1) + 8 * i);
-            if ([MEMORY[0x277D3A358] sourceFromSourceIdentifier:{v23, v56, v57}] != 2)
+            if ([MEMORY[0x277D3A358] sourceFromSourceIdentifier:{v23, v56, setCopy}] != 2)
             {
               v24 = [MEMORY[0x277D3A358] contactsContactIdentifierWithIdentifier:v23 error:0];
               if (v24)
@@ -1492,30 +1492,30 @@ LABEL_26:
             }
           }
 
-          v20 = [v19 countByEnumeratingWithState:&v58 objects:v65 count:16];
+          v20 = [matchingIdentifiers3 countByEnumeratingWithState:&v58 objects:v65 count:16];
         }
 
         while (v20);
       }
 
       v25 = [MEMORY[0x277CBDA58] predicateForContactsWithIdentifiers:v18];
-      v26 = [PPContactStorage _contactsContactsWithPredicate:v25 explanationSet:v57 error:?];
+      v26 = [PPContactStorage _contactsContactsWithPredicate:v25 explanationSet:setCopy error:?];
       v10[2](v10, v26);
     }
 
-    v27 = [v7 matchingName];
-    v28 = [v27 length] == 0;
+    matchingName = [queryCopy matchingName];
+    v28 = [matchingName length] == 0;
 
     if (!v28)
     {
       if (self)
       {
-        v29 = v57;
-        v30 = v7;
-        v31 = [v30 matchingName];
+        v29 = setCopy;
+        v30 = queryCopy;
+        matchingName2 = [v30 matchingName];
         v32 = [(PPContactStorage *)self nameFilterWithQuery:v30];
 
-        v33 = [PPContactStorage _contactsFullTextSearchWithQuery:v31 explanationSet:v29 error:v32 filter:?];
+        v33 = [PPContactStorage _contactsFullTextSearchWithQuery:matchingName2 explanationSet:v29 error:v32 filter:?];
       }
 
       else
@@ -1526,19 +1526,19 @@ LABEL_26:
       v10[2](v10, v33);
     }
 
-    v34 = [v7 matchingEmail];
-    v35 = [v34 length] == 0;
+    matchingEmail = [queryCopy matchingEmail];
+    v35 = [matchingEmail length] == 0;
 
     if (!v35)
     {
       if (self)
       {
-        v36 = v57;
-        v37 = v7;
-        v38 = [v37 matchingEmail];
+        v36 = setCopy;
+        v37 = queryCopy;
+        matchingEmail2 = [v37 matchingEmail];
         v39 = [(PPContactStorage *)self emailFilterWithQuery:v37];
 
-        v40 = [PPContactStorage _contactsFullTextSearchWithQuery:v38 explanationSet:v36 error:v39 filter:?];
+        v40 = [PPContactStorage _contactsFullTextSearchWithQuery:matchingEmail2 explanationSet:v36 error:v39 filter:?];
       }
 
       else
@@ -1549,19 +1549,19 @@ LABEL_26:
       v10[2](v10, v40);
     }
 
-    v41 = [v7 matchingPhone];
-    v42 = [v41 length] == 0;
+    matchingPhone = [queryCopy matchingPhone];
+    v42 = [matchingPhone length] == 0;
 
     if (!v42)
     {
       if (self)
       {
-        v43 = v57;
-        v44 = v7;
-        v45 = [v44 matchingPhone];
+        v43 = setCopy;
+        v44 = queryCopy;
+        matchingPhone2 = [v44 matchingPhone];
         v46 = [(PPContactStorage *)self phoneFilterWithQuery:v44];
 
-        v47 = [PPContactStorage _contactsFullTextSearchWithQuery:v45 explanationSet:v43 error:v46 filter:?];
+        v47 = [PPContactStorage _contactsFullTextSearchWithQuery:matchingPhone2 explanationSet:v43 error:v46 filter:?];
       }
 
       else
@@ -1572,31 +1572,31 @@ LABEL_26:
       v10[2](v10, v47);
     }
 
-    v48 = [v7 matchingPostalAddress];
-    v49 = [v48 length] == 0;
+    matchingPostalAddress = [queryCopy matchingPostalAddress];
+    v49 = [matchingPostalAddress length] == 0;
 
     if (!v49)
     {
       if (self)
       {
-        v50 = v57;
-        v51 = v7;
-        v52 = [v51 matchingPostalAddress];
+        v50 = setCopy;
+        v51 = queryCopy;
+        matchingPostalAddress2 = [v51 matchingPostalAddress];
         v53 = [(PPContactStorage *)self postalAddressFilterWithQuery:v51];
 
-        self = [PPContactStorage _contactsFullTextSearchWithQuery:v52 explanationSet:v50 error:v53 filter:?];
+        self = [PPContactStorage _contactsFullTextSearchWithQuery:matchingPostalAddress2 explanationSet:v50 error:v53 filter:?];
       }
 
       v10[2](v10, self);
     }
 
-    v13 = [v56 allObjects];
+    allObjects = [v56 allObjects];
   }
 
   _Block_object_dispose(&buf, 8);
   v54 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return allObjects;
 }
 
 uint64_t __77__PPContactStorage_Contacts__contactsContactsWithQuery_explanationSet_error___block_invoke(uint64_t a1, void *a2)
@@ -1621,18 +1621,18 @@ uint64_t __77__PPContactStorage_Contacts__contactsContactsWithQuery_explanationS
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_contactsContactsWithPredicate:(uint64_t)a1 explanationSet:(void *)a2 error:(void *)a3
+- (id)_contactsContactsWithPredicate:(uint64_t)predicate explanationSet:(void *)set error:(void *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a2;
-  v6 = a3;
-  if (a1)
+  setCopy = set;
+  errorCopy = error;
+  if (predicate)
   {
     v7 = pp_contacts_log_handle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v5;
+      *(&buf + 4) = setCopy;
       _os_log_debug_impl(&dword_23224A000, v7, OS_LOG_TYPE_DEBUG, "PPLocalContactStore contactsContactsWithPredicate: %@", &buf, 0xCu);
     }
 
@@ -1641,7 +1641,7 @@ uint64_t __77__PPContactStorage_Contacts__contactsContactsWithQuery_explanationS
     v10 = PPKeysToFetchPeople();
     v11 = [v9 initWithKeysToFetch:v10];
 
-    [v11 setPredicate:v5];
+    [v11 setPredicate:setCopy];
     [v11 setUnifyResults:1];
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -1649,7 +1649,7 @@ uint64_t __77__PPContactStorage_Contacts__contactsContactsWithQuery_explanationS
     v32 = __Block_byref_object_copy__9232;
     v33 = __Block_byref_object_dispose__9233;
     v34 = 0;
-    v12 = *(a1 + 8);
+    v12 = *(predicate + 8);
     v27 = 0;
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
@@ -1698,7 +1698,7 @@ uint64_t __77__PPContactStorage_Contacts__contactsContactsWithQuery_explanationS
         _os_log_error_impl(&dword_23224A000, v20, OS_LOG_TYPE_ERROR, "failed CNContacts name lookup: %@", v28, 0xCu);
       }
 
-      [v6 push:12];
+      [errorCopy push:12];
       +[PPQuickTypeMetrics frameworkError:errorCode:](PPQuickTypeMetrics, "frameworkError:errorCode:", @"CN_CS", [v15 code]);
       v19 = 0;
     }
@@ -1716,20 +1716,20 @@ uint64_t __77__PPContactStorage_Contacts__contactsContactsWithQuery_explanationS
   return v19;
 }
 
-- (id)_contactsFullTextSearchWithQuery:(uint64_t)a1 explanationSet:(uint64_t)a2 error:(void *)a3 filter:(void *)a4
+- (id)_contactsFullTextSearchWithQuery:(uint64_t)query explanationSet:(uint64_t)set error:(void *)error filter:(void *)filter
 {
-  v7 = a4;
+  filterCopy = filter;
   v8 = MEMORY[0x277CBDA58];
-  v9 = a3;
-  v10 = [v8 predicateForContactsMatchingFullTextSearch:a2 containerIdentifiers:0 groupIdentifiers:0];
-  v11 = [PPContactStorage _contactsContactsWithPredicate:a1 explanationSet:v10 error:v9];
+  errorCopy = error;
+  v10 = [v8 predicateForContactsMatchingFullTextSearch:set containerIdentifiers:0 groupIdentifiers:0];
+  v11 = [PPContactStorage _contactsContactsWithPredicate:query explanationSet:v10 error:errorCopy];
 
   v12 = MEMORY[0x277CCAC30];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __91__PPContactStorage_Contacts___contactsFullTextSearchWithQuery_explanationSet_error_filter___block_invoke;
   v17[3] = &unk_278974A28;
-  v13 = v7;
+  v13 = filterCopy;
   v18 = v13;
   v14 = [v12 predicateWithBlock:v17];
   v15 = [v11 filteredArrayUsingPredicate:v14];
@@ -1745,13 +1745,13 @@ void __82__PPContactStorage_Contacts___contactsContactsWithPredicate_explanation
   [v3 addObject:v4];
 }
 
-- (void)asyncFillResultsFromContactsWithQuery:(id)a3 explanationSet:(id)a4 group:(id)a5 results:(id)a6
+- (void)asyncFillResultsFromContactsWithQuery:(id)query explanationSet:(id)set group:(id)group results:(id)results
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  queryCopy = query;
+  setCopy = set;
+  resultsCopy = results;
   concurrentContactQueryThrottleSem = self->_concurrentContactQueryThrottleSem;
-  v14 = a5;
+  groupCopy = group;
   dispatch_semaphore_wait(concurrentContactQueryThrottleSem, 0xFFFFFFFFFFFFFFFFLL);
   concurrentContactQueryQueue = self->_concurrentContactQueryQueue;
   v19[0] = MEMORY[0x277D85DD0];
@@ -1759,13 +1759,13 @@ void __82__PPContactStorage_Contacts___contactsContactsWithPredicate_explanation
   v19[2] = __97__PPContactStorage_Contacts__asyncFillResultsFromContactsWithQuery_explanationSet_group_results___block_invoke;
   v19[3] = &unk_2789799D0;
   v19[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_group_async(v14, concurrentContactQueryQueue, v19);
+  v20 = queryCopy;
+  v21 = setCopy;
+  v22 = resultsCopy;
+  v16 = resultsCopy;
+  v17 = setCopy;
+  v18 = queryCopy;
+  dispatch_group_async(groupCopy, concurrentContactQueryQueue, v19);
 }
 
 void __97__PPContactStorage_Contacts__asyncFillResultsFromContactsWithQuery_explanationSet_group_results___block_invoke(void *a1)
@@ -1889,13 +1889,13 @@ void __36__PPContactStorage_Contacts__meCard__block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)asyncFillResultsFromFoundInAppsWithQuery:(id)a3 explanationSet:(id)a4 group:(id)a5 results:(id)a6
+- (void)asyncFillResultsFromFoundInAppsWithQuery:(id)query explanationSet:(id)set group:(id)group results:(id)results
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  queryCopy = query;
+  setCopy = set;
+  resultsCopy = results;
   concurrentContactQueryThrottleSem = self->_concurrentContactQueryThrottleSem;
-  v14 = a5;
+  groupCopy = group;
   dispatch_semaphore_wait(concurrentContactQueryThrottleSem, 0xFFFFFFFFFFFFFFFFLL);
   concurrentContactQueryQueue = self->_concurrentContactQueryQueue;
   v19[0] = MEMORY[0x277D85DD0];
@@ -1903,13 +1903,13 @@ void __36__PPContactStorage_Contacts__meCard__block_invoke(uint64_t a1, void *a2
   v19[2] = __103__PPContactStorage_FoundInApps__asyncFillResultsFromFoundInAppsWithQuery_explanationSet_group_results___block_invoke;
   v19[3] = &unk_2789799D0;
   v19[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_group_async(v14, concurrentContactQueryQueue, v19);
+  v20 = queryCopy;
+  v21 = setCopy;
+  v22 = resultsCopy;
+  v16 = resultsCopy;
+  v17 = setCopy;
+  v18 = queryCopy;
+  dispatch_group_async(groupCopy, concurrentContactQueryQueue, v19);
 }
 
 void __103__PPContactStorage_FoundInApps__asyncFillResultsFromFoundInAppsWithQuery_explanationSet_group_results___block_invoke(uint64_t a1)
@@ -2313,12 +2313,12 @@ uint64_t __84__PPContactStorage_FoundInApps___foundInAppsContactsWithQuery_expla
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_foundInAppsContactsQueryWithTerm:(void *)a3 explanationSet:(void *)a4 error:(void *)a5 filter:
+- (id)_foundInAppsContactsQueryWithTerm:(void *)term explanationSet:(void *)set error:(void *)error filter:
 {
   v59 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v34 = a3;
-  v33 = a5;
+  termCopy = term;
+  errorCopy = error;
   v10 = objc_opt_new();
   v11 = pp_contacts_log_handle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -2341,7 +2341,7 @@ uint64_t __84__PPContactStorage_FoundInApps___foundInAppsContactsWithQuery_expla
   v49 = __Block_byref_object_dispose__11638;
   v50 = 0;
   v12 = dispatch_semaphore_create(0);
-  v13 = *(a1 + 48);
+  v13 = *(self + 48);
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __95__PPContactStorage_FoundInApps___foundInAppsContactsQueryWithTerm_explanationSet_error_filter___block_invoke;
@@ -2354,12 +2354,12 @@ uint64_t __84__PPContactStorage_FoundInApps___foundInAppsContactsWithQuery_expla
   [MEMORY[0x277D425A0] waitForSemaphore:v14];
   if (v46[5])
   {
-    [v34 push:11];
+    [termCopy push:11];
     +[PPQuickTypeMetrics frameworkError:errorCode:](PPQuickTypeMetrics, "frameworkError:errorCode:", @"SG", [v46[5] code]);
     v15 = 0;
-    if (a4)
+    if (set)
     {
-      *a4 = v46[5];
+      *set = v46[5];
     }
   }
 
@@ -2402,13 +2402,13 @@ uint64_t __84__PPContactStorage_FoundInApps___foundInAppsContactsWithQuery_expla
           }
 
           v22 = *(*(&v37 + 1) + 8 * i);
-          v23 = [v22 contact];
+          contact = [v22 contact];
 
-          if (v23)
+          if (contact)
           {
             v24 = objc_alloc(MEMORY[0x277D3A358]);
-            v25 = [v22 contact];
-            v26 = [v24 initWithFoundInAppsContact:v25];
+            contact2 = [v22 contact];
+            v26 = [v24 initWithFoundInAppsContact:contact2];
             [v10 addObject:v26];
           }
         }
@@ -2424,7 +2424,7 @@ uint64_t __84__PPContactStorage_FoundInApps___foundInAppsContactsWithQuery_expla
     v35[1] = 3221225472;
     v35[2] = __95__PPContactStorage_FoundInApps___foundInAppsContactsQueryWithTerm_explanationSet_error_filter___block_invoke_15;
     v35[3] = &unk_278974A28;
-    v36 = v33;
+    v36 = errorCopy;
     v28 = [v27 predicateWithBlock:v35];
     v15 = [v10 filteredArrayUsingPredicate:v28];
   }
@@ -2543,18 +2543,18 @@ void __50__PPContactStorage_loadChineseBirthdayFoundKVData__block_invoke(uint64_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCachedSignificantContactHandles:(id)a3
+- (void)setCachedSignificantContactHandles:(id)handles
 {
-  v4 = a3;
+  handlesCopy = handles;
   db = self->_db;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__PPContactStorage_setCachedSignificantContactHandles___block_invoke;
   v7[3] = &unk_278977BC0;
   v8 = @"DELETE FROM significant_contacts WHERE handle NOT IN _pas_nsset(:significantHandles)";
-  v9 = v4;
+  v9 = handlesCopy;
   v10 = @"INSERT OR IGNORE INTO significant_contacts (handle) SELECT value FROM _pas_nsset(:significantHandles)";
-  v6 = v4;
+  v6 = handlesCopy;
   [(PPSQLDatabase *)db writeTransactionWithClient:3 block:v7];
 }
 
@@ -2581,7 +2581,7 @@ void __55__PPContactStorage_setCachedSignificantContactHandles___block_invoke(ui
   [v6 prepAndRunQuery:v7 onPrep:v8 onRow:&__block_literal_global_162_17845 onError:0];
 }
 
-- (id)contactHandleSourceCountsWithMinimumSourceCount:(unint64_t)a3
+- (id)contactHandleSourceCountsWithMinimumSourceCount:(unint64_t)count
 {
   v20 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
@@ -2591,7 +2591,7 @@ void __55__PPContactStorage_setCachedSignificantContactHandles___block_invoke(ui
   v14[2] = __68__PPContactStorage_contactHandleSourceCountsWithMinimumSourceCount___block_invoke;
   v14[3] = &unk_278976498;
   v15 = @"SELECT ch.value, COUNT(ch.id) as count FROM cn_handles ch LEFT JOIN cn_handles_sources chs ON ch.id = chs.cn_handle_id GROUP BY ch.id HAVING COUNT(ch.id) >= :minSourceCount";
-  v17 = a3;
+  countCopy = count;
   v7 = v5;
   v16 = v7;
   [(PPSQLDatabase *)db readTransactionWithClient:3 block:v14];
@@ -2641,35 +2641,35 @@ uint64_t __68__PPContactStorage_contactHandleSourceCountsWithMinimumSourceCount_
   return *v7;
 }
 
-- (unint64_t)pruneOrphanedHandlesWithTxnWitness:(id)a3
+- (unint64_t)pruneOrphanedHandlesWithTxnWitness:(id)witness
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 db];
+  witnessCopy = witness;
+  v4 = [witnessCopy db];
   v5 = [v4 numberOfRowsInTable:@"cn_handles"];
 
-  v6 = [v3 db];
+  v6 = [witnessCopy db];
   v12[0] = @"DELETE FROM cn_handles WHERE id NOT IN (SELECT DISTINCT cn_handle_id FROM cn_handles_sources)";
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
   [v6 prepAndRunNonDataQueries:v7 onError:0];
 
-  v8 = [v3 db];
+  v8 = [witnessCopy db];
 
   v9 = [v8 numberOfRowsInTable:@"cn_handles"];
   v10 = *MEMORY[0x277D85DE8];
   return v5 - v9;
 }
 
-- (void)storeHandleSourceMapWithHandles:(id)a3 sourceId:(int64_t)a4 txnWitness:(id)a5
+- (void)storeHandleSourceMapWithHandles:(id)handles sourceId:(int64_t)id txnWitness:(id)witness
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  handlesCopy = handles;
+  witnessCopy = witness;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v10 = [handlesCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -2680,21 +2680,21 @@ uint64_t __68__PPContactStorage_contactHandleSourceCountsWithMinimumSourceCount_
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(handlesCopy);
         }
 
-        v14 = [(PPContactStorage *)self insertIfNeededAndFetchIdentifierWithHandle:*(*(&v18 + 1) + 8 * i) txnWitness:v9];
-        v15 = [v9 db];
+        v14 = [(PPContactStorage *)self insertIfNeededAndFetchIdentifierWithHandle:*(*(&v18 + 1) + 8 * i) txnWitness:witnessCopy];
+        v15 = [witnessCopy db];
         v17[0] = MEMORY[0x277D85DD0];
         v17[1] = 3221225472;
         v17[2] = __72__PPContactStorage_storeHandleSourceMapWithHandles_sourceId_txnWitness___block_invoke;
         v17[3] = &__block_descriptor_48_e29_v16__0___PASSqliteStatement_8l;
         v17[4] = v14;
-        v17[5] = a4;
+        v17[5] = id;
         [v15 prepAndRunQuery:@"INSERT INTO cn_handles_sources (cn_handle_id onPrep:source_id) VALUES (:handleId onRow::sourceId)" onError:{v17, 0, 0}];
       }
 
-      v11 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [handlesCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v11);
@@ -2711,12 +2711,12 @@ void __72__PPContactStorage_storeHandleSourceMapWithHandles_sourceId_txnWitness_
   [v4 bindNamedParam:":sourceId" toInt64:*(a1 + 40)];
 }
 
-- (int64_t)insertIfNeededAndFetchIdentifierWithHandle:(id)a3 txnWitness:(id)a4
+- (int64_t)insertIfNeededAndFetchIdentifierWithHandle:(id)handle txnWitness:(id)witness
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [PPContactStorage normalizeHandle:v7];
-  v10 = [v8 db];
+  handleCopy = handle;
+  witnessCopy = witness;
+  v9 = [PPContactStorage normalizeHandle:handleCopy];
+  v10 = [witnessCopy db];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __74__PPContactStorage_insertIfNeededAndFetchIdentifierWithHandle_txnWitness___block_invoke;
@@ -2729,7 +2729,7 @@ void __72__PPContactStorage_storeHandleSourceMapWithHandles_sourceId_txnWitness_
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v12 = [v8 db];
+  v12 = [witnessCopy db];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __74__PPContactStorage_insertIfNeededAndFetchIdentifierWithHandle_txnWitness___block_invoke_2;
@@ -2746,8 +2746,8 @@ void __72__PPContactStorage_storeHandleSourceMapWithHandles_sourceId_txnWitness_
   v14 = v21[3];
   if (v14 <= 0)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PPContactStorage.m" lineNumber:340 description:@"Failed to find handle in cn_handles"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPContactStorage.m" lineNumber:340 description:@"Failed to find handle in cn_handles"];
 
     v14 = v21[3];
   }
@@ -2756,9 +2756,9 @@ void __72__PPContactStorage_storeHandleSourceMapWithHandles_sourceId_txnWitness_
   return v14;
 }
 
-- (id)sourcesForContactHandle:(id)a3
+- (id)sourcesForContactHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v5 = objc_opt_new();
   db = self->_db;
   v12[0] = MEMORY[0x277D85DD0];
@@ -2766,10 +2766,10 @@ void __72__PPContactStorage_storeHandleSourceMapWithHandles_sourceId_txnWitness_
   v12[2] = __44__PPContactStorage_sourcesForContactHandle___block_invoke;
   v12[3] = &unk_278976400;
   v13 = @"SELECT hs.source_id FROM cn_handles_sources hs LEFT JOIN cn_handles h ON h.id = hs.cn_handle_id WHERE h.value = :contactHandle";
-  v14 = v4;
+  v14 = handleCopy;
   v7 = v5;
   v15 = v7;
-  v8 = v4;
+  v8 = handleCopy;
   [(PPSQLDatabase *)db readTransactionWithClient:3 block:v12];
   v9 = v15;
   v10 = v7;
@@ -2815,9 +2815,9 @@ uint64_t __44__PPContactStorage_sourcesForContactHandle___block_invoke_3(uint64_
   return *v4;
 }
 
-- (id)contactHandlesForSource:(id)a3
+- (id)contactHandlesForSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_opt_new();
   db = self->_db;
@@ -2825,7 +2825,7 @@ uint64_t __44__PPContactStorage_sourcesForContactHandle___block_invoke_3(uint64_
   v13[1] = 3221225472;
   v13[2] = __44__PPContactStorage_contactHandlesForSource___block_invoke;
   v13[3] = &unk_278976428;
-  v8 = v4;
+  v8 = sourceCopy;
   v14 = v8;
   v9 = v6;
   v15 = v9;
@@ -2875,17 +2875,17 @@ uint64_t __44__PPContactStorage_contactHandlesForSource___block_invoke_3(uint64_
   return *v4;
 }
 
-- (id)contactHandlesForTopics:(id)a3
+- (id)contactHandlesForTopics:(id)topics
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  topicsCopy = topics;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = v4;
+  v7 = topicsCopy;
   v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v8)
   {
@@ -2901,8 +2901,8 @@ uint64_t __44__PPContactStorage_contactHandlesForSource___block_invoke_3(uint64_
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v24 + 1) + 8 * v11) topicIdentifier];
-        [v6 addObject:v12];
+        topicIdentifier = [*(*(&v24 + 1) + 8 * v11) topicIdentifier];
+        [v6 addObject:topicIdentifier];
 
         ++v11;
       }
@@ -2962,11 +2962,11 @@ uint64_t __44__PPContactStorage_contactHandlesForTopics___block_invoke_3(uint64_
   return *v4;
 }
 
-- (id)postalAddressFilterWithQuery:(id)a3
+- (id)postalAddressFilterWithQuery:(id)query
 {
   v3 = MEMORY[0x277D3A460];
-  v4 = [a3 matchingPostalAddress];
-  v5 = [v3 normalizeAddressString:v4];
+  matchingPostalAddress = [query matchingPostalAddress];
+  v5 = [v3 normalizeAddressString:matchingPostalAddress];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -3042,15 +3042,15 @@ LABEL_12:
   return v14;
 }
 
-- (id)phoneFilterWithQuery:(id)a3
+- (id)phoneFilterWithQuery:(id)query
 {
-  v3 = a3;
+  queryCopy = query;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __41__PPContactStorage_phoneFilterWithQuery___block_invoke;
   aBlock[3] = &unk_2789763D8;
-  v8 = v3;
-  v4 = v3;
+  v8 = queryCopy;
+  v4 = queryCopy;
   v5 = _Block_copy(aBlock);
 
   return v5;
@@ -3108,15 +3108,15 @@ LABEL_11:
   return v7;
 }
 
-- (id)nameFilterWithQuery:(id)a3
+- (id)nameFilterWithQuery:(id)query
 {
-  v3 = a3;
+  queryCopy = query;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __40__PPContactStorage_nameFilterWithQuery___block_invoke;
   aBlock[3] = &unk_2789763D8;
-  v8 = v3;
-  v4 = v3;
+  v8 = queryCopy;
+  v4 = queryCopy;
   v5 = _Block_copy(aBlock);
 
   return v5;
@@ -3131,15 +3131,15 @@ uint64_t __40__PPContactStorage_nameFilterWithQuery___block_invoke(uint64_t a1, 
   return v5;
 }
 
-- (id)emailFilterWithQuery:(id)a3
+- (id)emailFilterWithQuery:(id)query
 {
-  v3 = a3;
+  queryCopy = query;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __41__PPContactStorage_emailFilterWithQuery___block_invoke;
   aBlock[3] = &unk_2789763D8;
-  v8 = v3;
-  v4 = v3;
+  v8 = queryCopy;
+  v4 = queryCopy;
   v5 = _Block_copy(aBlock);
 
   return v5;
@@ -3203,11 +3203,11 @@ LABEL_11:
   return v14;
 }
 
-- (id)_waitForGroup:(id)a3 results:(id)a4 timeoutSeconds:(double)a5 explanationSet:(id)a6
+- (id)_waitForGroup:(id)group results:(id)results timeoutSeconds:(double)seconds explanationSet:(id)set
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  groupCopy = group;
+  resultsCopy = results;
+  setCopy = set;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -3221,18 +3221,18 @@ LABEL_11:
   v23[3] = &unk_278976388;
   v25 = &v26;
   v23[4] = self;
-  v24 = v11;
+  v24 = resultsCopy;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __72__PPContactStorage__waitForGroup_results_timeoutSeconds_explanationSet___block_invoke_2;
   v18[3] = &unk_2789763B0;
-  v14 = v12;
+  v14 = setCopy;
   v22 = &v26;
   v19 = v14;
-  v20 = self;
+  selfCopy = self;
   v15 = v24;
   v21 = v15;
-  [v13 waitForGroup:v10 timeoutSeconds:v23 onGroupComplete:v18 onTimeout:a5];
+  [v13 waitForGroup:groupCopy timeoutSeconds:v23 onGroupComplete:v18 onTimeout:seconds];
   v16 = v27[5];
 
   _Block_object_dispose(&v26, 8);
@@ -3266,19 +3266,19 @@ void __72__PPContactStorage__waitForGroup_results_timeoutSeconds_explanationSet_
   *(v4 + 40) = v3;
 }
 
-- (id)_waitForGroup:(id)a3 results:(id)a4
+- (id)_waitForGroup:(id)group results:(id)results
 {
   v6 = MEMORY[0x277D425A0];
-  v7 = a4;
-  [v6 waitForGroup:a3];
-  v8 = [(PPContactStorage *)self _joinResults:v7];
+  resultsCopy = results;
+  [v6 waitForGroup:group];
+  v8 = [(PPContactStorage *)self _joinResults:resultsCopy];
 
   return v8;
 }
 
-- (id)_joinResults:(id)a3
+- (id)_joinResults:(id)results
 {
-  v3 = a3;
+  resultsCopy = results;
   v4 = objc_opt_new();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -3286,7 +3286,7 @@ void __72__PPContactStorage__waitForGroup_results_timeoutSeconds_explanationSet_
   v7[3] = &unk_278976360;
   v5 = v4;
   v8 = v5;
-  [v3 runWithLockAcquired:v7];
+  [resultsCopy runWithLockAcquired:v7];
 
   return v5;
 }
@@ -3343,21 +3343,21 @@ void __33__PPContactStorage__joinResults___block_invoke(uint64_t a1, void *a2)
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)contactsWithQuery:(id)a3 explanationSet:(id)a4 timeoutSeconds:(id)a5 error:(id *)a6
+- (id)contactsWithQuery:(id)query explanationSet:(id)set timeoutSeconds:(id)seconds error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queryCopy = query;
+  setCopy = set;
+  secondsCopy = seconds;
   v12 = pp_contacts_log_handle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 138412802;
-    v21 = v9;
+    v21 = queryCopy;
     v22 = 2112;
-    v23 = v10;
+    v23 = setCopy;
     v24 = 2112;
-    v25 = v11;
+    v25 = secondsCopy;
     _os_log_impl(&dword_23224A000, v12, OS_LOG_TYPE_DEFAULT, "contactsWithQuery: %@ e:%@ t:%@", &v20, 0x20u);
   }
 
@@ -3366,12 +3366,12 @@ void __33__PPContactStorage__joinResults___block_invoke(uint64_t a1, void *a2)
   v15 = [v13 initWithGuardedData:v14];
 
   v16 = dispatch_group_create();
-  [(PPContactStorage *)self asyncFillResultsFromFoundInAppsWithQuery:v9 explanationSet:v10 group:v16 results:v15];
-  [(PPContactStorage *)self asyncFillResultsFromContactsWithQuery:v9 explanationSet:v10 group:v16 results:v15];
-  if (v11)
+  [(PPContactStorage *)self asyncFillResultsFromFoundInAppsWithQuery:queryCopy explanationSet:setCopy group:v16 results:v15];
+  [(PPContactStorage *)self asyncFillResultsFromContactsWithQuery:queryCopy explanationSet:setCopy group:v16 results:v15];
+  if (secondsCopy)
   {
-    [v11 doubleValue];
-    [(PPContactStorage *)self _waitForGroup:v16 results:v15 timeoutSeconds:v10 explanationSet:?];
+    [secondsCopy doubleValue];
+    [(PPContactStorage *)self _waitForGroup:v16 results:v15 timeoutSeconds:setCopy explanationSet:?];
   }
 
   else
@@ -3385,11 +3385,11 @@ void __33__PPContactStorage__joinResults___block_invoke(uint64_t a1, void *a2)
   return v17;
 }
 
-- (PPContactStorage)initWithDatabase:(id)a3 foundInAppsHarvestStoreGetter:(id)a4
+- (PPContactStorage)initWithDatabase:(id)database foundInAppsHarvestStoreGetter:(id)getter
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  databaseCopy = database;
+  getterCopy = getter;
   v46.receiver = self;
   v46.super_class = PPContactStorage;
   v9 = [(PPContactStorage *)&v46 init];
@@ -3415,9 +3415,9 @@ void __33__PPContactStorage__joinResults___block_invoke(uint64_t a1, void *a2)
     foundInAppsService = v9->_foundInAppsService;
     v9->_foundInAppsService = v19;
 
-    if (v8)
+    if (getterCopy)
     {
-      v21 = v8;
+      v21 = getterCopy;
     }
 
     else
@@ -3430,19 +3430,19 @@ void __33__PPContactStorage__joinResults___block_invoke(uint64_t a1, void *a2)
     v9->_foundInAppsHarvestStoreGetter = v22;
 
     v24 = objc_autoreleasePoolPush();
-    v25 = [v7 parentDirectory];
-    v26 = [v25 stringByAppendingPathComponent:@"Contacts"];
+    parentDirectory = [databaseCopy parentDirectory];
+    v26 = [parentDirectory stringByAppendingPathComponent:@"Contacts"];
 
     objc_autoreleasePoolPop(v24);
     path = v9->_path;
     v9->_path = v26;
 
-    v28 = [MEMORY[0x277CCAA00] defaultManager];
-    objc_sync_enter(v28);
-    v29 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    objc_sync_enter(defaultManager);
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v30 = v9->_path;
     v45 = 0;
-    v31 = [v29 createDirectoryAtPath:v30 withIntermediateDirectories:1 attributes:0 error:&v45];
+    v31 = [defaultManager2 createDirectoryAtPath:v30 withIntermediateDirectories:1 attributes:0 error:&v45];
     v32 = v45;
 
     if (v31)
@@ -3467,8 +3467,8 @@ void __33__PPContactStorage__joinResults___block_invoke(uint64_t a1, void *a2)
       }
     }
 
-    objc_sync_exit(v28);
-    objc_storeStrong(&v9->_db, a3);
+    objc_sync_exit(defaultManager);
+    objc_storeStrong(&v9->_db, database);
     objc_initWeak(location, v9);
     v37 = MEMORY[0x277D3A458];
     v40 = MEMORY[0x277D85DD0];
@@ -3497,25 +3497,25 @@ void __67__PPContactStorage_initWithDatabase_foundInAppsHarvestStoreGetter___blo
   }
 }
 
-+ (id)normalizeHandle:(id)a3
++ (id)normalizeHandle:(id)handle
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  handleCopy = handle;
+  v6 = handleCopy;
+  if (handleCopy)
   {
     v13 = 0;
   }
 
   else
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PPContactStorage.m" lineNumber:242 description:{@"Invalid parameter not satisfying: %@", @"handle"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPContactStorage.m" lineNumber:242 description:{@"Invalid parameter not satisfying: %@", @"handle"}];
 
     v13 = 0;
-    v5 = 0;
+    handleCopy = 0;
   }
 
-  PPStringNormalizationTypeCheck(v5, &v13, &v13 + 1);
+  PPStringNormalizationTypeCheck(handleCopy, &v13, &v13 + 1);
   if (v13 == 1)
   {
     v7 = PPNormalizeEmailAddress(v6);

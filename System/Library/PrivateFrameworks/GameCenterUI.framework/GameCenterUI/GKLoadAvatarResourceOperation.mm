@@ -1,20 +1,20 @@
 @interface GKLoadAvatarResourceOperation
-- (GKLoadAvatarResourceOperation)initWithPlayerId:(id)a3;
+- (GKLoadAvatarResourceOperation)initWithPlayerId:(id)id;
 - (id)makePlayerFetchError;
 - (void)main;
 @end
 
 @implementation GKLoadAvatarResourceOperation
 
-- (GKLoadAvatarResourceOperation)initWithPlayerId:(id)a3
+- (GKLoadAvatarResourceOperation)initWithPlayerId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v9.receiver = self;
   v9.super_class = GKLoadAvatarResourceOperation;
   v5 = [(GKLoadAvatarResourceOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [idCopy copy];
     playerId = v5->_playerId;
     v5->_playerId = v6;
   }
@@ -27,17 +27,17 @@
   v8[1] = *MEMORY[0x277D85DE8];
   if (([(GKLoadAvatarResourceOperation *)self isCancelled]& 1) == 0)
   {
-    v3 = [MEMORY[0x277D0C010] proxyForLocalPlayer];
-    v4 = [v3 profileServicePrivate];
-    v5 = [(GKLoadAvatarResourceOperation *)self playerId];
-    v8[0] = v5;
+    proxyForLocalPlayer = [MEMORY[0x277D0C010] proxyForLocalPlayer];
+    profileServicePrivate = [proxyForLocalPlayer profileServicePrivate];
+    playerId = [(GKLoadAvatarResourceOperation *)self playerId];
+    v8[0] = playerId;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __37__GKLoadAvatarResourceOperation_main__block_invoke;
     v7[3] = &unk_27966C3A8;
     v7[4] = self;
-    [v4 getProfilesForPlayerIDs:v6 handler:v7];
+    [profileServicePrivate getProfilesForPlayerIDs:v6 handler:v7];
   }
 }
 
@@ -105,8 +105,8 @@ uint64_t __37__GKLoadAvatarResourceOperation_main__block_invoke_2(uint64_t a1, u
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(GKLoadAvatarResourceOperation *)self playerId];
-  v4 = [v2 stringWithFormat:@"Unable to load player with Id: %@", v3];
+  playerId = [(GKLoadAvatarResourceOperation *)self playerId];
+  v4 = [v2 stringWithFormat:@"Unable to load player with Id: %@", playerId];
 
   v5 = MEMORY[0x277CCA9B8];
   v9 = *MEMORY[0x277CCA450];

@@ -1,14 +1,14 @@
 @interface AXInvertColors_StoreKit
-+ (void)performValidations:(id)a3;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_StoreKit
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKStoreProductViewController"];
-  [v3 validateClass:@"SKStoreProductViewController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKStoreProductViewController"];
+  [validationsCopy validateClass:@"SKStoreProductViewController" isKindOfClass:@"UIViewController"];
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface HeaderView
-- (_TtC20ProductPageExtensionP33_03F67F16EB9B4C87DFA8E646A61E036110HeaderView)initWithCoder:(id)a3;
-- (_TtC20ProductPageExtensionP33_03F67F16EB9B4C87DFA8E646A61E036110HeaderView)initWithReuseIdentifier:(id)a3;
-- (_TtC20ProductPageExtensionP33_3DA3DA2AB58A3471A361CB62A7A7354210HeaderView)initWithCoder:(id)a3;
-- (_TtC20ProductPageExtensionP33_3DA3DA2AB58A3471A361CB62A7A7354210HeaderView)initWithFrame:(CGRect)a3;
+- (_TtC20ProductPageExtensionP33_03F67F16EB9B4C87DFA8E646A61E036110HeaderView)initWithCoder:(id)coder;
+- (_TtC20ProductPageExtensionP33_03F67F16EB9B4C87DFA8E646A61E036110HeaderView)initWithReuseIdentifier:(id)identifier;
+- (_TtC20ProductPageExtensionP33_3DA3DA2AB58A3471A361CB62A7A7354210HeaderView)initWithCoder:(id)coder;
+- (_TtC20ProductPageExtensionP33_3DA3DA2AB58A3471A361CB62A7A7354210HeaderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -10,13 +10,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10055BA04();
 }
 
-- (_TtC20ProductPageExtensionP33_03F67F16EB9B4C87DFA8E646A61E036110HeaderView)initWithReuseIdentifier:(id)a3
+- (_TtC20ProductPageExtensionP33_03F67F16EB9B4C87DFA8E646A61E036110HeaderView)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     sub_10076FF9C();
     v4 = sub_10076FF6C();
@@ -34,12 +34,12 @@
   return v5;
 }
 
-- (_TtC20ProductPageExtensionP33_03F67F16EB9B4C87DFA8E646A61E036110HeaderView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtensionP33_03F67F16EB9B4C87DFA8E646A61E036110HeaderView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for HeaderView();
-  v4 = a3;
-  v5 = [(HeaderView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(HeaderView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -48,7 +48,7 @@
   return v5;
 }
 
-- (_TtC20ProductPageExtensionP33_3DA3DA2AB58A3471A361CB62A7A7354210HeaderView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtensionP33_3DA3DA2AB58A3471A361CB62A7A7354210HeaderView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtensionP33_3DA3DA2AB58A3471A361CB62A7A7354210HeaderView_mediaView;
   type metadata accessor for StoryCardMediaView();
@@ -61,7 +61,7 @@
   return result;
 }
 
-- (_TtC20ProductPageExtensionP33_3DA3DA2AB58A3471A361CB62A7A7354210HeaderView)initWithFrame:(CGRect)a3
+- (_TtC20ProductPageExtensionP33_3DA3DA2AB58A3471A361CB62A7A7354210HeaderView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

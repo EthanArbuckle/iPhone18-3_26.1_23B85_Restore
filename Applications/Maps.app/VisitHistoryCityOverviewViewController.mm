@@ -1,14 +1,14 @@
 @interface VisitHistoryCityOverviewViewController
-- (_TtC4Maps38VisitHistoryCityOverviewViewController)initWithCoder:(id)a3;
-- (_TtC4Maps38VisitHistoryCityOverviewViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC4Maps38VisitHistoryCityOverviewViewController)initWithCoder:(id)coder;
+- (_TtC4Maps38VisitHistoryCityOverviewViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)didResignCurrent;
 - (void)viewDidLoad;
-- (void)willBecomeCurrent:(BOOL)a3;
+- (void)willBecomeCurrent:(BOOL)current;
 @end
 
 @implementation VisitHistoryCityOverviewViewController
 
-- (_TtC4Maps38VisitHistoryCityOverviewViewController)initWithCoder:(id)a3
+- (_TtC4Maps38VisitHistoryCityOverviewViewController)initWithCoder:(id)coder
 {
   *(&self->super.super._cardPresentationController + OBJC_IVAR____TtC4Maps38VisitHistoryCityOverviewViewController_actionDelegate) = 0;
   swift_unknownObjectWeakInit();
@@ -17,19 +17,19 @@
   return result;
 }
 
-- (void)willBecomeCurrent:(BOOL)a3
+- (void)willBecomeCurrent:(BOOL)current
 {
-  v3 = a3;
+  currentCopy = current;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(ContaineeViewController *)&v5 willBecomeCurrent:v3];
+  [(ContaineeViewController *)&v5 willBecomeCurrent:currentCopy];
   sub_1000F4194();
 }
 
 - (void)didResignCurrent
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000F1378();
 }
 
@@ -39,17 +39,17 @@
   v7.super_class = swift_getObjectType();
   v2 = v7.receiver;
   [(MapsHostingContaineeViewController *)&v7 viewDidLoad];
-  v3 = [v2 cardPresentationController];
-  if (v3)
+  cardPresentationController = [v2 cardPresentationController];
+  if (cardPresentationController)
   {
-    v4 = v3;
-    [v3 setPresentedModally:1];
+    v4 = cardPresentationController;
+    [cardPresentationController setPresentedModally:1];
 
-    v5 = [v2 cardPresentationController];
-    if (v5)
+    cardPresentationController2 = [v2 cardPresentationController];
+    if (cardPresentationController2)
     {
-      v6 = v5;
-      [v5 setTakesAvailableHeight:1];
+      v6 = cardPresentationController2;
+      [cardPresentationController2 setTakesAvailableHeight:1];
 
       sub_1000F1488();
       return;
@@ -64,7 +64,7 @@
   __break(1u);
 }
 
-- (_TtC4Maps38VisitHistoryCityOverviewViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps38VisitHistoryCityOverviewViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

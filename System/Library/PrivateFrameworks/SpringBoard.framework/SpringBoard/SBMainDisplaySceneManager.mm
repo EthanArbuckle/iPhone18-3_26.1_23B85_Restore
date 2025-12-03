@@ -1,56 +1,56 @@
 @interface SBMainDisplaySceneManager
-- (BOOL)_handleAction:(id)a3 forScene:(id)a4;
-- (BOOL)_isExternalForegroundScene:(id)a3;
-- (BOOL)_isLockscreenHostingApp:(id)a3;
-- (BOOL)_shouldAutoHostScene:(id)a3;
-- (BOOL)_shouldFenceTransitionForScene:(id)a3 updatedClientSettingsDiff:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6;
+- (BOOL)_handleAction:(id)action forScene:(id)scene;
+- (BOOL)_isExternalForegroundScene:(id)scene;
+- (BOOL)_isLockscreenHostingApp:(id)app;
+- (BOOL)_shouldAutoHostScene:(id)scene;
+- (BOOL)_shouldFenceTransitionForScene:(id)scene updatedClientSettingsDiff:(id)diff oldClientSettings:(id)settings transitionContext:(id)context;
 - (BOOL)hasIdleTimerBehaviors;
 - (BOOL)isSuspendedUnderLock;
-- (BOOL)suspendedUnderLockManager:(id)a3 shouldPreventSuspendUnderLockForScene:(id)a4 settings:(id)a5;
-- (BOOL)suspendedUnderLockManager:(id)a3 shouldPreventUnderLockForScene:(id)a4;
+- (BOOL)suspendedUnderLockManager:(id)manager shouldPreventSuspendUnderLockForScene:(id)scene settings:(id)settings;
+- (BOOL)suspendedUnderLockManager:(id)manager shouldPreventUnderLockForScene:(id)scene;
 - (BOOL)wantsDisableIdleTimer;
 - (SBIdleTimerCoordinating)idleTimerCoordinator;
-- (SBMainDisplaySceneManager)initWithReference:(id)a3 sceneIdentityProvider:(id)a4 presentationBinder:(id)a5 snapshotBehavior:(unint64_t)a6;
+- (SBMainDisplaySceneManager)initWithReference:(id)reference sceneIdentityProvider:(id)provider presentationBinder:(id)binder snapshotBehavior:(unint64_t)behavior;
 - (id)_appSceneClientSettingsDiffInspector;
 - (id)_externalClientSettingsDiffInspector;
 - (id)_internalClientSettingsDiffInspector;
-- (id)_proposeIdleTimerBehaviorForReason:(id)a3;
+- (id)_proposeIdleTimerBehaviorForReason:(id)reason;
 - (id)_sceneHandlesDisablingIdleTimer;
 - (id)_windowScene;
-- (id)acquireIgnoreSuspendedUnderLockAssertionForSceneIdentifier:(id)a3 reason:(id)a4;
-- (id)coordinatorRequestedIdleTimerBehavior:(id)a3;
+- (id)acquireIgnoreSuspendedUnderLockAssertionForSceneIdentifier:(id)identifier reason:(id)reason;
+- (id)coordinatorRequestedIdleTimerBehavior:(id)behavior;
 - (id)currentLayoutState;
-- (id)existingSceneHandleForPersistenceIdentifier:(id)a3;
-- (id)existingSceneHandleForScene:(id)a3;
-- (id)existingSceneHandleForSceneIdentity:(id)a3;
+- (id)existingSceneHandleForPersistenceIdentifier:(id)identifier;
+- (id)existingSceneHandleForScene:(id)scene;
+- (id)existingSceneHandleForSceneIdentity:(id)identity;
 - (id)externalApplicationSceneHandles;
 - (id)externalForegroundApplicationSceneHandles;
-- (id)fetchOrCreateApplicationSceneHandleForRequest:(id)a3;
+- (id)fetchOrCreateApplicationSceneHandleForRequest:(id)request;
 - (id)layoutStateManager;
-- (id)scene:(id)a3 handleActions:(id)a4;
-- (id)sceneSnapshotRequestStrategyForSceneSnapshotRequestor:(id)a3;
-- (id)suspendedUnderLockManagerDisplayConfiguration:(id)a3;
-- (id)suspendedUnderLockManagerVisibleScenes:(id)a3;
+- (id)scene:(id)scene handleActions:(id)actions;
+- (id)sceneSnapshotRequestStrategyForSceneSnapshotRequestor:(id)requestor;
+- (id)suspendedUnderLockManagerDisplayConfiguration:(id)configuration;
+- (id)suspendedUnderLockManagerVisibleScenes:(id)scenes;
 - (id)switcherController;
-- (void)_keyboardWillChangeFrame:(id)a3;
-- (void)_noteDidChangeToVisibility:(unint64_t)a3 previouslyExisted:(BOOL)a4 forScene:(id)a5;
-- (void)_noteDidCommitUpdateForScene:(id)a3;
+- (void)_keyboardWillChangeFrame:(id)frame;
+- (void)_noteDidChangeToVisibility:(unint64_t)visibility previouslyExisted:(BOOL)existed forScene:(id)scene;
+- (void)_noteDidCommitUpdateForScene:(id)scene;
 - (void)_resetIdleTimerIfNeeded;
-- (void)_resetIdleTimerIfNeededForUpdateToScene:(id)a3 withHandle:(id)a4;
-- (void)_scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)_scene:(id)a3 willUpdateSettings:(id)a4;
-- (void)_scene:(id)a3 willUpdateWithSettings:(id)a4 transitionContext:(id)a5;
-- (void)_updateLevelAndBackgroundSettingsForScene:(id)a3 transitionContext:(id)a4;
-- (void)addActionHandler:(id)a3 forScene:(id)a4;
-- (void)addObserver:(id)a3;
+- (void)_resetIdleTimerIfNeededForUpdateToScene:(id)scene withHandle:(id)handle;
+- (void)_scene:(id)_scene didUpdateClientSettings:(id)settings;
+- (void)_scene:(id)_scene willUpdateSettings:(id)settings;
+- (void)_scene:(id)_scene willUpdateWithSettings:(id)settings transitionContext:(id)context;
+- (void)_updateLevelAndBackgroundSettingsForScene:(id)scene transitionContext:(id)context;
+- (void)addActionHandler:(id)handler forScene:(id)scene;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)displayReferenceModeStatusDidChangeForDisplayWithConfiguration:(id)a3 newStatus:(int64_t)a4;
-- (void)removeActionHandler:(id)a3 forScene:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)sceneManager:(id)a3 didDestroyScene:(id)a4;
-- (void)setSuspendedUnderLock:(BOOL)a3 alongsideWillChangeBlock:(id)a4 alongsideDidChangeBlock:(id)a5;
-- (void)windowSceneDidConnect:(id)a3;
-- (void)windowSceneDidDisconnect:(id)a3;
+- (void)displayReferenceModeStatusDidChangeForDisplayWithConfiguration:(id)configuration newStatus:(int64_t)status;
+- (void)removeActionHandler:(id)handler forScene:(id)scene;
+- (void)removeObserver:(id)observer;
+- (void)sceneManager:(id)manager didDestroyScene:(id)scene;
+- (void)setSuspendedUnderLock:(BOOL)lock alongsideWillChangeBlock:(id)block alongsideDidChangeBlock:(id)changeBlock;
+- (void)windowSceneDidConnect:(id)connect;
+- (void)windowSceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation SBMainDisplaySceneManager
@@ -59,9 +59,9 @@
 {
   v4.receiver = self;
   v4.super_class = SBMainDisplaySceneManager;
-  v2 = [(SBSceneManager *)&v4 externalForegroundApplicationSceneHandles];
+  externalForegroundApplicationSceneHandles = [(SBSceneManager *)&v4 externalForegroundApplicationSceneHandles];
 
-  return v2;
+  return externalForegroundApplicationSceneHandles;
 }
 
 - (id)_externalClientSettingsDiffInspector
@@ -114,15 +114,15 @@
   v11 = __Block_byref_object_copy__110;
   v12 = __Block_byref_object_dispose__110;
   v13 = 0;
-  v2 = [(SBMainDisplaySceneManager *)self _windowScene];
-  v3 = [v2 switcherController];
-  v4 = [v3 layoutStateApplicationSceneHandles];
+  _windowScene = [(SBMainDisplaySceneManager *)self _windowScene];
+  switcherController = [_windowScene switcherController];
+  layoutStateApplicationSceneHandles = [switcherController layoutStateApplicationSceneHandles];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__SBMainDisplaySceneManager__sceneHandlesDisablingIdleTimer__block_invoke;
   v7[3] = &unk_2783BFC98;
   v7[4] = &v8;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [layoutStateApplicationSceneHandles enumerateObjectsUsingBlock:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -132,9 +132,9 @@
 
 - (id)_windowScene
 {
-  v3 = [SBApp windowSceneManager];
-  v4 = [(SBSceneManager *)self displayIdentity];
-  v5 = [v3 windowSceneForDisplayIdentity:v4];
+  windowSceneManager = [SBApp windowSceneManager];
+  displayIdentity = [(SBSceneManager *)self displayIdentity];
+  v5 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
 
   return v5;
 }
@@ -233,28 +233,28 @@ LABEL_18:
 
 - (BOOL)hasIdleTimerBehaviors
 {
-  v3 = [(SBMainDisplaySceneManager *)self _windowScene];
-  v4 = [v3 switcherController];
-  v5 = [v4 layoutState];
-  v6 = [v5 unlockedEnvironmentMode];
+  _windowScene = [(SBMainDisplaySceneManager *)self _windowScene];
+  switcherController = [_windowScene switcherController];
+  layoutState = [switcherController layoutState];
+  unlockedEnvironmentMode = [layoutState unlockedEnvironmentMode];
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFELL) != 2)
+  if ((unlockedEnvironmentMode & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
     return 0;
   }
 
-  v7 = [(SBMainDisplaySceneManager *)self _windowScene];
-  if ([v7 activationState])
+  _windowScene2 = [(SBMainDisplaySceneManager *)self _windowScene];
+  if ([_windowScene2 activationState])
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [(SBMainDisplaySceneManager *)self _windowScene];
-    v10 = [v9 switcherController];
-    v11 = [v10 layoutStateApplicationSceneHandles];
-    v8 = [v11 count] != 0;
+    _windowScene3 = [(SBMainDisplaySceneManager *)self _windowScene];
+    switcherController2 = [_windowScene3 switcherController];
+    layoutStateApplicationSceneHandles = [switcherController2 layoutStateApplicationSceneHandles];
+    v8 = [layoutStateApplicationSceneHandles count] != 0;
   }
 
   return v8;
@@ -264,20 +264,20 @@ LABEL_18:
 {
   v4.receiver = self;
   v4.super_class = SBMainDisplaySceneManager;
-  v2 = [(SBSceneManager *)&v4 externalApplicationSceneHandles];
+  externalApplicationSceneHandles = [(SBSceneManager *)&v4 externalApplicationSceneHandles];
 
-  return v2;
+  return externalApplicationSceneHandles;
 }
 
 - (id)layoutStateManager
 {
-  v3 = [SBApp windowSceneManager];
-  v4 = [(SBSceneManager *)self displayIdentity];
-  v5 = [v3 windowSceneForDisplayIdentity:v4];
+  windowSceneManager = [SBApp windowSceneManager];
+  displayIdentity = [(SBSceneManager *)self displayIdentity];
+  v5 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
 
-  v6 = [v5 layoutStateManager];
+  layoutStateManager = [v5 layoutStateManager];
 
-  return v6;
+  return layoutStateManager;
 }
 
 - (id)_appSceneClientSettingsDiffInspector
@@ -350,10 +350,10 @@ LABEL_18:
     v35 = __65__SBMainDisplaySceneManager__appSceneClientSettingsDiffInspector__block_invoke(v34, &__block_literal_global_208_0);
     [(UIApplicationSceneClientSettingsDiffInspector *)v33 observeBrightnessLevelWithBlock:v35];
 
-    v36 = [MEMORY[0x277D75418] currentDevice];
-    v37 = [v36 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v37 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v38 = [(UIApplicationSceneClientSettingsDiffInspector *)self->_appClientSettingsDiffInspector observeActivationConditionsDataWithBlock:&__block_literal_global_210];
     }
@@ -388,30 +388,30 @@ void __65__SBMainDisplaySceneManager__appSceneClientSettingsDiffInspector__block
 {
   if ([(SBMainDisplaySceneManager *)self hasIdleTimerBehaviors])
   {
-    v3 = [(SBMainDisplaySceneManager *)self _sceneHandlesDisablingIdleTimer];
-    v4 = [v3 count] != 0;
+    _sceneHandlesDisablingIdleTimer = [(SBMainDisplaySceneManager *)self _sceneHandlesDisablingIdleTimer];
+    v4 = [_sceneHandlesDisablingIdleTimer count] != 0;
     v5 = +[SBDefaults localDefaults];
-    v6 = [v5 captureButtonDefaults];
-    v7 = [v6 captureButtonAssociatedAppBundleIdentifier];
+    captureButtonDefaults = [v5 captureButtonDefaults];
+    captureButtonAssociatedAppBundleIdentifier = [captureButtonDefaults captureButtonAssociatedAppBundleIdentifier];
 
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __52__SBMainDisplaySceneManager__resetIdleTimerIfNeeded__block_invoke;
     v16[3] = &unk_2783A9FA0;
-    v8 = v7;
+    v8 = captureButtonAssociatedAppBundleIdentifier;
     v17 = v8;
-    if ([v3 bs_containsObjectPassingTest:v16])
+    if ([_sceneHandlesDisablingIdleTimer bs_containsObjectPassingTest:v16])
     {
-      v9 = [SBApp accidentalActivationMitigationSessionCoordinator];
-      v4 = [v9 hasIdleTimerBehaviors] ^ 1;
+      accidentalActivationMitigationSessionCoordinator = [SBApp accidentalActivationMitigationSessionCoordinator];
+      v4 = [accidentalActivationMitigationSessionCoordinator hasIdleTimerBehaviors] ^ 1;
     }
 
     v10 = +[SBIdleTimerGlobalCoordinator sharedInstance];
-    v11 = [v10 isIdleTimerDisabled];
+    isIdleTimerDisabled = [v10 isIdleTimerDisabled];
 
-    if (v4 != v11)
+    if (v4 != isIdleTimerDisabled)
     {
-      v12 = [v3 bs_mapNoNulls:&__block_literal_global_236];
+      v12 = [_sceneHandlesDisablingIdleTimer bs_mapNoNulls:&__block_literal_global_236];
       v13 = [v12 componentsJoinedByString:{@", "}];
 
       v14 = +[SBIdleTimerGlobalCoordinator sharedInstance];
@@ -551,31 +551,31 @@ void __65__SBMainDisplaySceneManager__externalClientSettingsDiffInspector__block
 
 - (id)currentLayoutState
 {
-  v2 = [(SBMainDisplaySceneManager *)self _windowScene];
-  v3 = [v2 layoutStateProvider];
-  v4 = [v3 layoutState];
+  _windowScene = [(SBMainDisplaySceneManager *)self _windowScene];
+  layoutStateProvider = [_windowScene layoutStateProvider];
+  layoutState = [layoutStateProvider layoutState];
 
-  return v4;
+  return layoutState;
 }
 
-- (SBMainDisplaySceneManager)initWithReference:(id)a3 sceneIdentityProvider:(id)a4 presentationBinder:(id)a5 snapshotBehavior:(unint64_t)a6
+- (SBMainDisplaySceneManager)initWithReference:(id)reference sceneIdentityProvider:(id)provider presentationBinder:(id)binder snapshotBehavior:(unint64_t)behavior
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  referenceCopy = reference;
+  providerCopy = provider;
+  binderCopy = binder;
   v32.receiver = self;
   v32.super_class = SBMainDisplaySceneManager;
-  v13 = [(SBSceneManager *)&v32 initWithReference:v10 sceneIdentityProvider:v11 presentationBinder:v12 snapshotBehavior:a6];
+  v13 = [(SBSceneManager *)&v32 initWithReference:referenceCopy sceneIdentityProvider:providerCopy presentationBinder:binderCopy snapshotBehavior:behavior];
   v14 = v13;
   if (v13)
   {
     v13->_validInterfaceOrientation = 0;
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v14 selector:sel__keyboardWillChangeFrame_ name:*MEMORY[0x277D76C48] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v14 selector:sel__keyboardWillChangeFrame_ name:*MEMORY[0x277D76C48] object:0];
     v16 = [SBMainDisplayPolicyAggregator alloc];
     v17 = +[SBDefaults localDefaults];
-    v18 = [(SBSceneManager *)v14 displayIdentity];
-    v19 = [(SBMainDisplayPolicyAggregator *)v16 initWithDefaults:v17 displayIdentity:v18];
+    displayIdentity = [(SBSceneManager *)v14 displayIdentity];
+    v19 = [(SBMainDisplayPolicyAggregator *)v16 initWithDefaults:v17 displayIdentity:displayIdentity];
     policyAggregator = v14->_policyAggregator;
     v14->_policyAggregator = v19;
 
@@ -595,7 +595,7 @@ void __65__SBMainDisplaySceneManager__externalClientSettingsDiffInspector__block
     stateCaptureInvalidatable = v14->stateCaptureInvalidatable;
     v14->stateCaptureInvalidatable = v26;
 
-    [v11 setDataSource:{v14, v29, 3221225472, __105__SBMainDisplaySceneManager_initWithReference_sceneIdentityProvider_presentationBinder_snapshotBehavior___block_invoke, &unk_2783AB940}];
+    [providerCopy setDataSource:{v14, v29, 3221225472, __105__SBMainDisplaySceneManager_initWithReference_sceneIdentityProvider_presentationBinder_snapshotBehavior___block_invoke, &unk_2783AB940}];
     objc_destroyWeak(&v30);
     objc_destroyWeak(&location);
   }
@@ -690,8 +690,8 @@ id __105__SBMainDisplaySceneManager_initWithReference_sceneIdentityProvider_pres
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(UIApplicationSceneClientSettingsDiffInspector *)self->_internalClientSettingsDiffInspector removeAllObservers];
   [(UIApplicationSceneClientSettingsDiffInspector *)self->_appClientSettingsDiffInspector removeAllObservers];
@@ -701,53 +701,53 @@ id __105__SBMainDisplaySceneManager_initWithReference_sceneIdentityProvider_pres
   [(SBSceneManager *)&v4 dealloc];
 }
 
-- (void)windowSceneDidDisconnect:(id)a3
+- (void)windowSceneDidDisconnect:(id)disconnect
 {
   v4.receiver = self;
   v4.super_class = SBMainDisplaySceneManager;
-  [(SBSceneManager *)&v4 windowSceneDidDisconnect:a3];
+  [(SBSceneManager *)&v4 windowSceneDidDisconnect:disconnect];
   [(SBMainDisplaySceneManager *)self _resetIdleTimerIfNeeded];
 }
 
-- (id)existingSceneHandleForScene:(id)a3
+- (id)existingSceneHandleForScene:(id)scene
 {
   v5.receiver = self;
   v5.super_class = SBMainDisplaySceneManager;
-  v3 = [(SBSceneManager *)&v5 existingSceneHandleForScene:a3];
+  v3 = [(SBSceneManager *)&v5 existingSceneHandleForScene:scene];
 
   return v3;
 }
 
-- (id)existingSceneHandleForSceneIdentity:(id)a3
+- (id)existingSceneHandleForSceneIdentity:(id)identity
 {
   v5.receiver = self;
   v5.super_class = SBMainDisplaySceneManager;
-  v3 = [(SBSceneManager *)&v5 existingSceneHandleForSceneIdentity:a3];
+  v3 = [(SBSceneManager *)&v5 existingSceneHandleForSceneIdentity:identity];
 
   return v3;
 }
 
-- (id)existingSceneHandleForPersistenceIdentifier:(id)a3
+- (id)existingSceneHandleForPersistenceIdentifier:(id)identifier
 {
   v5.receiver = self;
   v5.super_class = SBMainDisplaySceneManager;
-  v3 = [(SBSceneManager *)&v5 existingSceneHandleForPersistenceIdentifier:a3];
+  v3 = [(SBSceneManager *)&v5 existingSceneHandleForPersistenceIdentifier:identifier];
 
   return v3;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = SBMainDisplaySceneManager;
-  [(SBSceneManager *)&v3 addObserver:a3];
+  [(SBSceneManager *)&v3 addObserver:observer];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = SBMainDisplaySceneManager;
-  [(SBSceneManager *)&v3 removeObserver:a3];
+  [(SBSceneManager *)&v3 removeObserver:observer];
 }
 
 - (BOOL)isSuspendedUnderLock
@@ -758,41 +758,41 @@ id __105__SBMainDisplaySceneManager_initWithReference_sceneIdentityProvider_pres
   return [(SBSuspendedUnderLockManager *)lazy_suspendedUnderLockManager isSuspendedUnderLock];
 }
 
-- (void)setSuspendedUnderLock:(BOOL)a3 alongsideWillChangeBlock:(id)a4 alongsideDidChangeBlock:(id)a5
+- (void)setSuspendedUnderLock:(BOOL)lock alongsideWillChangeBlock:(id)block alongsideDidChangeBlock:(id)changeBlock
 {
-  v6 = a3;
-  v15 = a4;
-  v8 = a5;
+  lockCopy = lock;
+  blockCopy = block;
+  changeBlockCopy = changeBlock;
   BSDispatchQueueAssertMain();
   lazy_suspendedUnderLockManager = self->_lazy_suspendedUnderLockManager;
   if (!lazy_suspendedUnderLockManager)
   {
     v10 = [SBSuspendedUnderLockManager alloc];
     v11 = +[SBWorkspace mainWorkspace];
-    v12 = [v11 eventQueue];
-    v13 = [(SBSuspendedUnderLockManager *)v10 initWithDelegate:self eventQueue:v12];
+    eventQueue = [v11 eventQueue];
+    v13 = [(SBSuspendedUnderLockManager *)v10 initWithDelegate:self eventQueue:eventQueue];
     v14 = self->_lazy_suspendedUnderLockManager;
     self->_lazy_suspendedUnderLockManager = v13;
 
     lazy_suspendedUnderLockManager = self->_lazy_suspendedUnderLockManager;
   }
 
-  [(SBSuspendedUnderLockManager *)lazy_suspendedUnderLockManager setSuspendedUnderLock:v6 alongsideWillChangeBlock:v15 alongsideDidChangeBlock:v8];
+  [(SBSuspendedUnderLockManager *)lazy_suspendedUnderLockManager setSuspendedUnderLock:lockCopy alongsideWillChangeBlock:blockCopy alongsideDidChangeBlock:changeBlockCopy];
 }
 
-- (void)windowSceneDidConnect:(id)a3
+- (void)windowSceneDidConnect:(id)connect
 {
   v5.receiver = self;
   v5.super_class = SBMainDisplaySceneManager;
-  v4 = a3;
-  [(SBSceneManager *)&v5 windowSceneDidConnect:v4];
-  [(SBPhysicalButtonSceneOverrideManager *)&self->_physicalButtonSceneOverrideManager->super.isa windowSceneDidConnect:v4];
+  connectCopy = connect;
+  [(SBSceneManager *)&v5 windowSceneDidConnect:connectCopy];
+  [(SBPhysicalButtonSceneOverrideManager *)&self->_physicalButtonSceneOverrideManager->super.isa windowSceneDidConnect:connectCopy];
 }
 
-- (id)acquireIgnoreSuspendedUnderLockAssertionForSceneIdentifier:(id)a3 reason:(id)a4
+- (id)acquireIgnoreSuspendedUnderLockAssertionForSceneIdentifier:(id)identifier reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  reasonCopy = reason;
   objc_initWeak(&location, self);
   v8 = objc_alloc(MEMORY[0x277CF0CE8]);
   v16[0] = MEMORY[0x277D85DD0];
@@ -800,13 +800,13 @@ id __105__SBMainDisplaySceneManager_initWithReference_sceneIdentityProvider_pres
   v16[2] = __95__SBMainDisplaySceneManager_acquireIgnoreSuspendedUnderLockAssertionForSceneIdentifier_reason___block_invoke;
   v16[3] = &unk_2783AEA48;
   objc_copyWeak(&v18, &location);
-  v9 = v6;
+  v9 = identifierCopy;
   v17 = v9;
-  v10 = [v8 initWithIdentifier:@"SBMainDisplaySceneManager.IgnoreSuspendedUnderLock" forReason:v7 invalidationBlock:v16];
-  v11 = [(NSMutableDictionary *)self->_sceneIdentifierToIgnoreSuspendedUnderLockAssertions objectForKey:v9];
-  if (!v11)
+  v10 = [v8 initWithIdentifier:@"SBMainDisplaySceneManager.IgnoreSuspendedUnderLock" forReason:reasonCopy invalidationBlock:v16];
+  weakObjectsHashTable = [(NSMutableDictionary *)self->_sceneIdentifierToIgnoreSuspendedUnderLockAssertions objectForKey:v9];
+  if (!weakObjectsHashTable)
   {
-    v11 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     sceneIdentifierToIgnoreSuspendedUnderLockAssertions = self->_sceneIdentifierToIgnoreSuspendedUnderLockAssertions;
     if (!sceneIdentifierToIgnoreSuspendedUnderLockAssertions)
     {
@@ -817,10 +817,10 @@ id __105__SBMainDisplaySceneManager_initWithReference_sceneIdentityProvider_pres
       sceneIdentifierToIgnoreSuspendedUnderLockAssertions = self->_sceneIdentifierToIgnoreSuspendedUnderLockAssertions;
     }
 
-    [(NSMutableDictionary *)sceneIdentifierToIgnoreSuspendedUnderLockAssertions setObject:v11 forKey:v9];
+    [(NSMutableDictionary *)sceneIdentifierToIgnoreSuspendedUnderLockAssertions setObject:weakObjectsHashTable forKey:v9];
   }
 
-  [v11 addObject:v10];
+  [weakObjectsHashTable addObject:v10];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
@@ -849,13 +849,13 @@ void __95__SBMainDisplaySceneManager_acquireIgnoreSuspendedUnderLockAssertionFor
   }
 }
 
-- (BOOL)_shouldAutoHostScene:(id)a3
+- (BOOL)_shouldAutoHostScene:(id)scene
 {
-  v3 = a3;
-  if (([MEMORY[0x277D75658] usesInputSystemUI] & 1) != 0 || (v4 = *MEMORY[0x277D22AC8], objc_msgSend(v3, "identifier"), v5 = objc_claimAutoreleasedReturnValue(), LOBYTE(v4) = objc_msgSend(v4, "isEqualToString:", v5), v5, (v4 & 1) == 0))
+  sceneCopy = scene;
+  if (([MEMORY[0x277D75658] usesInputSystemUI] & 1) != 0 || (v4 = *MEMORY[0x277D22AC8], objc_msgSend(sceneCopy, "identifier"), v5 = objc_claimAutoreleasedReturnValue(), LOBYTE(v4) = objc_msgSend(v4, "isEqualToString:", v5), v5, (v4 & 1) == 0))
   {
-    v7 = [v3 clientProcess];
-    v6 = ![v7 isApplicationProcess] || objc_msgSend(v7, "isCurrentProcess");
+    clientProcess = [sceneCopy clientProcess];
+    v6 = ![clientProcess isApplicationProcess] || objc_msgSend(clientProcess, "isCurrentProcess");
   }
 
   else
@@ -866,20 +866,20 @@ void __95__SBMainDisplaySceneManager_acquireIgnoreSuspendedUnderLockAssertionFor
   return v6;
 }
 
-- (BOOL)_handleAction:(id)a3 forScene:(id)a4
+- (BOOL)_handleAction:(id)action forScene:(id)scene
 {
   v45[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBMainDisplaySceneManager *)self _isExternalForegroundScene:v7];
-  v9 = [v6 UIActionType];
-  if (v9 > 14)
+  actionCopy = action;
+  sceneCopy = scene;
+  v8 = [(SBMainDisplaySceneManager *)self _isExternalForegroundScene:sceneCopy];
+  uIActionType = [actionCopy UIActionType];
+  if (uIActionType > 14)
   {
-    if (v9 == 15)
+    if (uIActionType == 15)
     {
       if (os_variant_has_internal_content())
       {
-        v25 = v6;
+        v25 = actionCopy;
         if ([v25 shouldChangeOrientation])
         {
           v26 = [v25 orientationRequested] - 1;
@@ -893,8 +893,8 @@ void __95__SBMainDisplaySceneManager_acquireIgnoreSuspendedUnderLockAssertionFor
             v45[1] = v28;
             v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:2];
 
-            v30 = [MEMORY[0x277CCA9A0] defaultCenter];
-            [v30 postNotificationName:*MEMORY[0x277CC1C00] object:0 userInfo:v29 deliverImmediately:1];
+            defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+            [defaultCenter postNotificationName:*MEMORY[0x277CC1C00] object:0 userInfo:v29 deliverImmediately:1];
           }
         }
       }
@@ -902,7 +902,7 @@ void __95__SBMainDisplaySceneManager_acquireIgnoreSuspendedUnderLockAssertionFor
       goto LABEL_31;
     }
 
-    if (v9 == 43)
+    if (uIActionType == 43)
     {
       v40 = 0;
       v41 = &v40;
@@ -922,13 +922,13 @@ void __95__SBMainDisplaySceneManager_acquireIgnoreSuspendedUnderLockAssertionFor
 
       v18 = v17;
       _Block_object_dispose(&v40, 8);
-      v19 = [v17 sharedListener];
+      sharedListener = [v17 sharedListener];
       v37[0] = MEMORY[0x277D85DD0];
       v37[1] = 3221225472;
       v37[2] = __52__SBMainDisplaySceneManager__handleAction_forScene___block_invoke;
       v37[3] = &unk_2783BBF98;
-      v38 = v6;
-      [v19 handleAction:v38 completionHandler:v37];
+      v38 = actionCopy;
+      [sharedListener handleAction:v38 completionHandler:v37];
 
       goto LABEL_31;
     }
@@ -936,7 +936,7 @@ void __95__SBMainDisplaySceneManager_acquireIgnoreSuspendedUnderLockAssertionFor
 LABEL_11:
     v36.receiver = self;
     v36.super_class = SBMainDisplaySceneManager;
-    if ([(SBSceneManager *)&v36 _handleAction:v6 forScene:v7])
+    if ([(SBSceneManager *)&v36 _handleAction:actionCopy forScene:sceneCopy])
     {
 LABEL_31:
       v24 = 1;
@@ -946,21 +946,21 @@ LABEL_31:
     goto LABEL_21;
   }
 
-  if (v9 != 1)
+  if (uIActionType != 1)
   {
-    if (v9 == 7)
+    if (uIActionType == 7)
     {
       if (v8)
       {
-        [v6 statusBarStyleOverride];
+        [actionCopy statusBarStyleOverride];
         v10 = STUIBackgroundActivityIdentifierForStyleOverride();
         v11 = +[SBApplicationController sharedInstance];
-        v12 = [v7 clientHandle];
-        v13 = [v12 bundleIdentifier];
-        v14 = [v11 applicationWithBundleIdentifier:v13];
-        v15 = [v7 identifier];
-        v16 = [(SBMainDisplaySceneManager *)self _windowScene];
-        SBWorkspaceHandleStatusBarReturnActionFromApp(v14, v15, v10, v16);
+        clientHandle = [sceneCopy clientHandle];
+        bundleIdentifier = [clientHandle bundleIdentifier];
+        v14 = [v11 applicationWithBundleIdentifier:bundleIdentifier];
+        identifier = [sceneCopy identifier];
+        _windowScene = [(SBMainDisplaySceneManager *)self _windowScene];
+        SBWorkspaceHandleStatusBarReturnActionFromApp(v14, identifier, v10, _windowScene);
       }
 
       goto LABEL_31;
@@ -969,14 +969,14 @@ LABEL_31:
     goto LABEL_11;
   }
 
-  v20 = [v7 clientProcess];
-  if ([v20 isCurrentProcess])
+  clientProcess = [sceneCopy clientProcess];
+  if ([clientProcess isCurrentProcess])
   {
     v21 = SBApp;
-    v22 = [v6 url];
-    v23 = [v20 handle];
+    v22 = [actionCopy url];
+    handle = [clientProcess handle];
     v24 = 1;
-    [v21 applicationOpenURL:v22 withApplication:0 animating:1 activationSettings:0 origin:v23 notifyLSOnFailure:1 withResult:0];
+    [v21 applicationOpenURL:v22 withApplication:0 animating:1 activationSettings:0 origin:handle notifyLSOnFailure:1 withResult:0];
 
     goto LABEL_32;
   }
@@ -985,25 +985,25 @@ LABEL_21:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v31 = [v7 settings];
+    settings = [sceneCopy settings];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v32 = [v31 underLock];
+      underLock = [settings underLock];
     }
 
     else
     {
-      v32 = 0;
+      underLock = 0;
     }
 
-    if ((v8 | v32))
+    if ((v8 | underLock))
     {
-      v33 = [v7 identifier];
-      if ([v33 length])
+      identifier2 = [sceneCopy identifier];
+      if ([identifier2 length])
       {
-        v34 = [(SBMainDisplaySceneManager *)self switcherController];
-        [v34 performKeyboardShortcutAction:19 forBundleIdentifier:0 orSceneIdentifier:v33];
+        switcherController = [(SBMainDisplaySceneManager *)self switcherController];
+        [switcherController performKeyboardShortcutAction:19 forBundleIdentifier:0 orSceneIdentifier:identifier2];
       }
     }
 
@@ -1025,25 +1025,25 @@ void __52__SBMainDisplaySceneManager__handleAction_forScene___block_invoke(uint6
   }
 }
 
-- (void)_scene:(id)a3 willUpdateSettings:(id)a4
+- (void)_scene:(id)_scene willUpdateSettings:(id)settings
 {
-  v24 = a3;
-  v6 = a4;
-  v7 = [(SBMainDisplaySceneManager *)self existingSceneHandleForScene:v24];
-  v8 = [v6 mutableSettings];
+  _sceneCopy = _scene;
+  settingsCopy = settings;
+  v7 = [(SBMainDisplaySceneManager *)self existingSceneHandleForScene:_sceneCopy];
+  mutableSettings = [settingsCopy mutableSettings];
 
   if (v7)
   {
-    [(SBSuspendedUnderLockManager *)self->_lazy_suspendedUnderLockManager interceptUpdateForScene:v24 withNewSettings:v8];
+    [(SBSuspendedUnderLockManager *)self->_lazy_suspendedUnderLockManager interceptUpdateForScene:_sceneCopy withNewSettings:mutableSettings];
   }
 
-  v9 = [v24 settings];
-  v10 = [v9 isForeground];
-  v11 = v10 ^ [v8 isForeground];
+  settings = [_sceneCopy settings];
+  isForeground = [settings isForeground];
+  v11 = isForeground ^ [mutableSettings isForeground];
 
   if (v11)
   {
-    if (([v8 isUISubclass] & 1) == 0)
+    if (([mutableSettings isUISubclass] & 1) == 0)
     {
       goto LABEL_12;
     }
@@ -1051,17 +1051,17 @@ void __52__SBMainDisplaySceneManager__handleAction_forScene___block_invoke(uint6
 
   else
   {
-    v9 = [v24 settings];
-    if (([v9 isForeground] & 1) == 0 || !objc_msgSend(v8, "isUISubclass"))
+    settings = [_sceneCopy settings];
+    if (([settings isForeground] & 1) == 0 || !objc_msgSend(mutableSettings, "isUISubclass"))
     {
 
       goto LABEL_12;
     }
   }
 
-  v12 = [(SBSceneManager *)self displayIdentity];
-  v13 = [v12 currentConfiguration];
-  v14 = [SBDisplayReferenceModeMonitor canAddObserverForDisplayWithConfiguration:v13];
+  displayIdentity = [(SBSceneManager *)self displayIdentity];
+  currentConfiguration = [displayIdentity currentConfiguration];
+  v14 = [SBDisplayReferenceModeMonitor canAddObserverForDisplayWithConfiguration:currentConfiguration];
 
   if (v11)
   {
@@ -1088,75 +1088,75 @@ void __52__SBMainDisplaySceneManager__handleAction_forScene___block_invoke(uint6
     self->_displayReferenceModeMonitor = v16;
 
     v18 = self->_displayReferenceModeMonitor;
-    v19 = [(SBSceneManager *)self displayIdentity];
-    v20 = [v19 currentConfiguration];
-    [(SBDisplayReferenceModeMonitor *)v18 addReferenceModeStatusObserver:self forDisplayWithConfiguration:v20];
+    displayIdentity2 = [(SBSceneManager *)self displayIdentity];
+    currentConfiguration2 = [displayIdentity2 currentConfiguration];
+    [(SBDisplayReferenceModeMonitor *)v18 addReferenceModeStatusObserver:self forDisplayWithConfiguration:currentConfiguration2];
 
     displayReferenceModeMonitor = self->_displayReferenceModeMonitor;
   }
 
-  v21 = [(SBSceneManager *)self displayIdentity];
-  v22 = [v21 currentConfiguration];
-  v23 = [(SBDisplayReferenceModeMonitor *)displayReferenceModeMonitor referenceModeStatusForDisplayWithConfiguration:v22];
+  displayIdentity3 = [(SBSceneManager *)self displayIdentity];
+  currentConfiguration3 = [displayIdentity3 currentConfiguration];
+  v23 = [(SBDisplayReferenceModeMonitor *)displayReferenceModeMonitor referenceModeStatusForDisplayWithConfiguration:currentConfiguration3];
 
   if (objc_opt_respondsToSelector())
   {
-    [v8 setScreenReferenceDisplayModeStatus:v23];
+    [mutableSettings setScreenReferenceDisplayModeStatus:v23];
   }
 
 LABEL_12:
 }
 
-- (void)_scene:(id)a3 willUpdateWithSettings:(id)a4 transitionContext:(id)a5
+- (void)_scene:(id)_scene willUpdateWithSettings:(id)settings transitionContext:(id)context
 {
-  v25 = a3;
-  v7 = a4;
+  _sceneCopy = _scene;
+  settingsCopy = settings;
   v8 = SBApp;
   v9 = MEMORY[0x277CCACA8];
-  v10 = [v25 identifier];
-  v11 = [v9 stringWithFormat:@"Workspace will update scene with identifier %@", v10];
+  identifier = [_sceneCopy identifier];
+  v11 = [v9 stringWithFormat:@"Workspace will update scene with identifier %@", identifier];
   [v8 updateMirroredDisplayOrientationWithLogMessage:v11];
 
-  v12 = [(SBMainDisplaySceneManager *)self existingSceneHandleForScene:v25];
-  v13 = [v25 settings];
-  v14 = [(SBMainDisplaySceneManager *)self externalForegroundApplicationSceneHandles];
-  v15 = [v14 containsObject:v12];
+  v12 = [(SBMainDisplaySceneManager *)self existingSceneHandleForScene:_sceneCopy];
+  settings = [_sceneCopy settings];
+  externalForegroundApplicationSceneHandles = [(SBMainDisplaySceneManager *)self externalForegroundApplicationSceneHandles];
+  v15 = [externalForegroundApplicationSceneHandles containsObject:v12];
 
   if (v12 && v15)
   {
-    v16 = [v13 isOccluded] ? objc_msgSend(v13, "isIgnoringOcclusions") : 1;
-    v17 = [v7 isOccluded] ? objc_msgSend(v7, "isIgnoringOcclusions") ^ 1 : 0;
+    v16 = [settings isOccluded] ? objc_msgSend(settings, "isIgnoringOcclusions") : 1;
+    v17 = [settingsCopy isOccluded] ? objc_msgSend(settingsCopy, "isIgnoringOcclusions") ^ 1 : 0;
     if (((v16 | v17) & 1) == 0)
     {
       v18 = [(SBMainDisplaySceneManager *)self _proposeIdleTimerBehaviorForReason:@"SBApplicationSceneHandle"];
     }
   }
 
-  v19 = [v13 isForeground];
-  v20 = [v7 isForeground];
+  isForeground = [settings isForeground];
+  isForeground2 = [settingsCopy isForeground];
   if (v12)
   {
-    v21 = v20;
-    v22 = [(SBMainDisplaySceneManager *)self externalApplicationSceneHandles];
-    v23 = [v22 containsObject:v12];
+    v21 = isForeground2;
+    externalApplicationSceneHandles = [(SBMainDisplaySceneManager *)self externalApplicationSceneHandles];
+    v23 = [externalApplicationSceneHandles containsObject:v12];
 
-    if (!(v21 & 1 | ((v19 & 1) == 0)) && v23 && ([v12 shouldAlwaysDisplayLiveContent] & 1) == 0)
+    if (!(v21 & 1 | ((isForeground & 1) == 0)) && v23 && ([v12 shouldAlwaysDisplayLiveContent] & 1) == 0)
     {
-      v24 = [v25 prepareSnapshot];
-      [v12 saveSuspendSnapshot:v24];
+      prepareSnapshot = [_sceneCopy prepareSnapshot];
+      [v12 saveSuspendSnapshot:prepareSnapshot];
     }
   }
 }
 
-- (void)_scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)_scene:(id)_scene didUpdateClientSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 settingsDiff];
-  v9 = [v7 previousSettings];
-  v10 = [v7 transitionContext];
-  v11 = [(SBSceneManager *)self daemonScenes];
-  if ([v11 containsObject:v6])
+  _sceneCopy = _scene;
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
+  previousSettings = [settingsCopy previousSettings];
+  transitionContext = [settingsCopy transitionContext];
+  daemonScenes = [(SBSceneManager *)self daemonScenes];
+  if ([daemonScenes containsObject:_sceneCopy])
   {
 
     goto LABEL_9;
@@ -1164,8 +1164,8 @@ LABEL_12:
 
   if (![MEMORY[0x277D75658] usesInputSystemUI])
   {
-    v12 = [v6 identifier];
-    v13 = [v12 isEqualToString:*MEMORY[0x277D22AC8]];
+    identifier = [_sceneCopy identifier];
+    v13 = [identifier isEqualToString:*MEMORY[0x277D22AC8]];
 
     if (!v13)
     {
@@ -1173,39 +1173,39 @@ LABEL_12:
     }
 
 LABEL_9:
-    v14 = objc_alloc_init(SBClientSettingObserverContext);
-    [(SBClientSettingObserverContext *)v14 setScene:v6];
-    v21 = [(SBMainDisplaySceneManager *)self existingSceneHandleForScene:v6];
-    [(SBClientSettingObserverContext *)v14 setSceneHandle:v21];
+    clientProcess = objc_alloc_init(SBClientSettingObserverContext);
+    [(SBClientSettingObserverContext *)clientProcess setScene:_sceneCopy];
+    v21 = [(SBMainDisplaySceneManager *)self existingSceneHandleForScene:_sceneCopy];
+    [(SBClientSettingObserverContext *)clientProcess setSceneHandle:v21];
 
-    [(SBClientSettingObserverContext *)v14 setOldClientSettings:v9];
-    [(SBAttentionAwarenessClient *)v14 setAttentionAwarenessClient:v10];
-    v17 = [(SBMainDisplaySceneManager *)self _externalClientSettingsDiffInspector];
-    [v8 evaluateWithInspector:v17 context:v14];
+    [(SBClientSettingObserverContext *)clientProcess setOldClientSettings:previousSettings];
+    [(SBAttentionAwarenessClient *)clientProcess setAttentionAwarenessClient:transitionContext];
+    _externalClientSettingsDiffInspector = [(SBMainDisplaySceneManager *)self _externalClientSettingsDiffInspector];
+    [settingsDiff evaluateWithInspector:_externalClientSettingsDiffInspector context:clientProcess];
     goto LABEL_10;
   }
 
 LABEL_5:
-  v14 = [v6 clientProcess];
-  if ([(SBClientSettingObserverContext *)v14 isCurrentProcess])
+  clientProcess = [_sceneCopy clientProcess];
+  if ([(SBClientSettingObserverContext *)clientProcess isCurrentProcess])
   {
-    v15 = [v6 clientSettings];
-    v16 = [v15 isUISubclass];
+    clientSettings = [_sceneCopy clientSettings];
+    isUISubclass = [clientSettings isUISubclass];
 
-    if (v16)
+    if (isUISubclass)
     {
-      v17 = objc_alloc_init(SBInternalClientSettingObserverContext);
-      [(SBClientSettingObserverContext *)v17 setScene:v6];
-      v18 = [(SBMainDisplaySceneManager *)self existingSceneHandleForScene:v6];
-      [(SBClientSettingObserverContext *)v17 setSceneHandle:v18];
+      _externalClientSettingsDiffInspector = objc_alloc_init(SBInternalClientSettingObserverContext);
+      [(SBClientSettingObserverContext *)_externalClientSettingsDiffInspector setScene:_sceneCopy];
+      v18 = [(SBMainDisplaySceneManager *)self existingSceneHandleForScene:_sceneCopy];
+      [(SBClientSettingObserverContext *)_externalClientSettingsDiffInspector setSceneHandle:v18];
 
-      [(SBClientSettingObserverContext *)v17 setOldClientSettings:v9];
-      v19 = [v6 uiClientSettings];
-      [(SBAttentionAwarenessClient *)v17 setAttentionAwarenessClient:v19];
+      [(SBClientSettingObserverContext *)_externalClientSettingsDiffInspector setOldClientSettings:previousSettings];
+      uiClientSettings = [_sceneCopy uiClientSettings];
+      [(SBAttentionAwarenessClient *)_externalClientSettingsDiffInspector setAttentionAwarenessClient:uiClientSettings];
 
-      [(SBCameraHardwareButton *)v17 setPhysicalButtonOverrideObserver:v10];
-      v20 = [(SBMainDisplaySceneManager *)self _internalClientSettingsDiffInspector];
-      [v8 evaluateWithInspector:v20 context:v17];
+      [(SBCameraHardwareButton *)_externalClientSettingsDiffInspector setPhysicalButtonOverrideObserver:transitionContext];
+      _internalClientSettingsDiffInspector = [(SBMainDisplaySceneManager *)self _internalClientSettingsDiffInspector];
+      [settingsDiff evaluateWithInspector:_internalClientSettingsDiffInspector context:_externalClientSettingsDiffInspector];
 
 LABEL_10:
     }
@@ -1213,30 +1213,30 @@ LABEL_10:
 
   v22.receiver = self;
   v22.super_class = SBMainDisplaySceneManager;
-  [(SBSceneManager *)&v22 _scene:v6 didUpdateClientSettings:v7];
+  [(SBSceneManager *)&v22 _scene:_sceneCopy didUpdateClientSettings:settingsCopy];
 }
 
-- (BOOL)_shouldFenceTransitionForScene:(id)a3 updatedClientSettingsDiff:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6
+- (BOOL)_shouldFenceTransitionForScene:(id)scene updatedClientSettingsDiff:(id)diff oldClientSettings:(id)settings transitionContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (![(SBMainDisplaySceneManager *)self _isExternalForegroundScene:v10])
+  sceneCopy = scene;
+  diffCopy = diff;
+  settingsCopy = settings;
+  contextCopy = context;
+  if (![(SBMainDisplaySceneManager *)self _isExternalForegroundScene:sceneCopy])
   {
     goto LABEL_7;
   }
 
-  v14 = [v10 settings];
-  [v14 deactivationReasons];
+  settings = [sceneCopy settings];
+  [settings deactivationReasons];
   if (!UIApplicationSceneDeactivationReasonMaskContainsReason())
   {
 
 LABEL_7:
     v18.receiver = self;
     v18.super_class = SBMainDisplaySceneManager;
-    v16 = [(SBSceneManager *)&v18 _shouldFenceTransitionForScene:v10 updatedClientSettingsDiff:v11 oldClientSettings:v12 transitionContext:v13];
+    v16 = [(SBSceneManager *)&v18 _shouldFenceTransitionForScene:sceneCopy updatedClientSettingsDiff:diffCopy oldClientSettings:settingsCopy transitionContext:contextCopy];
     goto LABEL_8;
   }
 
@@ -1244,7 +1244,7 @@ LABEL_7:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v20 = v10;
+    v20 = sceneCopy;
     _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_INFO, "Not fencing scene transistion with scene: %{public}@ because it is deactivated for system gestures", buf, 0xCu);
   }
 
@@ -1254,16 +1254,16 @@ LABEL_8:
   return v16;
 }
 
-- (void)_noteDidChangeToVisibility:(unint64_t)a3 previouslyExisted:(BOOL)a4 forScene:(id)a5
+- (void)_noteDidChangeToVisibility:(unint64_t)visibility previouslyExisted:(BOOL)existed forScene:(id)scene
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [v8 clientProcess];
-  if ([v9 isApplicationProcess])
+  existedCopy = existed;
+  sceneCopy = scene;
+  clientProcess = [sceneCopy clientProcess];
+  if ([clientProcess isApplicationProcess])
   {
     v10 = +[SBApplicationController sharedInstance];
-    v11 = [v9 bundleIdentifier];
-    v12 = [v10 applicationWithBundleIdentifier:v11];
+    bundleIdentifier = [clientProcess bundleIdentifier];
+    v12 = [v10 applicationWithBundleIdentifier:bundleIdentifier];
   }
 
   else
@@ -1271,7 +1271,7 @@ LABEL_8:
     v12 = 0;
   }
 
-  v13 = [(SBMainDisplaySceneManager *)self existingSceneHandleForScene:v8];
+  v13 = [(SBMainDisplaySceneManager *)self existingSceneHandleForScene:sceneCopy];
   v14 = SBWorkspaceApplicationSceneHandlesInLockedOrUnlockedEnvironmentLayoutState();
   v15 = v14;
   if (v14)
@@ -1294,7 +1294,7 @@ LABEL_8:
     [v12 setHasProminentlyIndicatedLocationUseWhileForeground:0];
   }
 
-  if (a3 == 1)
+  if (visibility == 1)
   {
     if (v12)
     {
@@ -1316,10 +1316,10 @@ LABEL_8:
     }
   }
 
-  else if (!a3 && v12)
+  else if (!visibility && v12)
   {
     [v13 _setIdleTimerCoordinator:0];
-    if (v5)
+    if (existedCopy)
     {
       objc_initWeak(&location, self);
       block[0] = MEMORY[0x277D85DD0];
@@ -1332,8 +1332,8 @@ LABEL_8:
       objc_destroyWeak(&location);
     }
 
-    v19 = [SBApp audioRecordingManager];
-    [v19 verifyBackgroundAudioActivityForApplication:v12];
+    audioRecordingManager = [SBApp audioRecordingManager];
+    [audioRecordingManager verifyBackgroundAudioActivityForApplication:v12];
   }
 }
 
@@ -1349,28 +1349,28 @@ void __83__SBMainDisplaySceneManager__noteDidChangeToVisibility_previouslyExiste
   v1 = [WeakRetained _proposeIdleTimerBehaviorForReason:@"SBAppDidEnterForeground"];
 }
 
-- (void)_noteDidCommitUpdateForScene:(id)a3
+- (void)_noteDidCommitUpdateForScene:(id)scene
 {
-  v15 = a3;
+  sceneCopy = scene;
   if (([MEMORY[0x277D75658] usesInputSystemUI] & 1) == 0)
   {
-    v4 = [v15 identifier];
-    v5 = [v4 isEqualToString:*MEMORY[0x277D22AC8]];
+    identifier = [sceneCopy identifier];
+    v5 = [identifier isEqualToString:*MEMORY[0x277D22AC8]];
 
     if (v5)
     {
-      [(SBMainDisplaySceneManager *)self _updateLevelAndBackgroundSettingsForScene:v15 transitionContext:0];
+      [(SBMainDisplaySceneManager *)self _updateLevelAndBackgroundSettingsForScene:sceneCopy transitionContext:0];
     }
   }
 
-  if ([(SBMainDisplaySceneManager *)self _isExternalForegroundScene:v15])
+  if ([(SBMainDisplaySceneManager *)self _isExternalForegroundScene:sceneCopy])
   {
-    v6 = [v15 clientProcess];
-    if ([v6 isApplicationProcess])
+    clientProcess = [sceneCopy clientProcess];
+    if ([clientProcess isApplicationProcess])
     {
       v7 = +[SBApplicationController sharedInstance];
-      v8 = [v6 bundleIdentifier];
-      v9 = [v7 applicationWithBundleIdentifier:v8];
+      bundleIdentifier = [clientProcess bundleIdentifier];
+      v9 = [v7 applicationWithBundleIdentifier:bundleIdentifier];
     }
 
     else
@@ -1378,23 +1378,23 @@ void __83__SBMainDisplaySceneManager__noteDidChangeToVisibility_previouslyExiste
       v9 = 0;
     }
 
-    v11 = [SBApp appsRegisteredForVolumeEvents];
-    v12 = [v11 containsObject:v9];
+    appsRegisteredForVolumeEvents = [SBApp appsRegisteredForVolumeEvents];
+    v12 = [appsRegisteredForVolumeEvents containsObject:v9];
 
     if (v12)
     {
       [SBApp setAppRegisteredForVolumeEvents:v9 isActive:1];
     }
 
-    v13 = [SBApp appsRegisteredForLockButtonEvents];
-    v14 = [v13 containsObject:v9];
+    appsRegisteredForLockButtonEvents = [SBApp appsRegisteredForLockButtonEvents];
+    v14 = [appsRegisteredForLockButtonEvents containsObject:v9];
 
     if (v14)
     {
       [SBApp setAppRegisteredForLockButtonEvents:v9 isActive:1];
     }
 
-    v10 = [(SBMainDisplaySceneManager *)self existingSceneHandleForScene:v15];
+    v10 = [(SBMainDisplaySceneManager *)self existingSceneHandleForScene:sceneCopy];
     [v10 setHasMainSceneBeenForegroundAtLeastOnce:1];
   }
 
@@ -1403,28 +1403,28 @@ void __83__SBMainDisplaySceneManager__noteDidChangeToVisibility_previouslyExiste
     v10 = 0;
   }
 
-  [(SBMainDisplaySceneManager *)self _resetIdleTimerIfNeededForUpdateToScene:v15 withHandle:v10];
+  [(SBMainDisplaySceneManager *)self _resetIdleTimerIfNeededForUpdateToScene:sceneCopy withHandle:v10];
   [(SBFaceContactExpectationManager *)self->_faceContactExpectationManager updateFaceContactExpectation];
 }
 
-- (void)sceneManager:(id)a3 didDestroyScene:(id)a4
+- (void)sceneManager:(id)manager didDestroyScene:(id)scene
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBMainDisplaySceneManager *)self existingSceneHandleForScene:v7];
+  managerCopy = manager;
+  sceneCopy = scene;
+  v8 = [(SBMainDisplaySceneManager *)self existingSceneHandleForScene:sceneCopy];
   if (v8)
   {
-    v9 = [v7 settings];
-    v10 = [v9 isForeground];
+    settings = [sceneCopy settings];
+    isForeground = [settings isForeground];
 
-    if (v10)
+    if (isForeground)
     {
       v11 = SBLogIdleTimer();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v15 = v7;
+        v15 = sceneCopy;
         _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "[SBMainDisplaySceneManager sceneManager:didDestroyScene: %{public}@] - proposing IdleTimerBehavior.", buf, 0xCu);
       }
 
@@ -1434,59 +1434,59 @@ void __83__SBMainDisplaySceneManager__noteDidChangeToVisibility_previouslyExiste
 
   v13.receiver = self;
   v13.super_class = SBMainDisplaySceneManager;
-  [(SBMainDisplaySceneManager *)&v13 sceneManager:v6 didDestroyScene:v7];
+  [(SBMainDisplaySceneManager *)&v13 sceneManager:managerCopy didDestroyScene:sceneCopy];
 }
 
-- (id)suspendedUnderLockManagerDisplayConfiguration:(id)a3
+- (id)suspendedUnderLockManagerDisplayConfiguration:(id)configuration
 {
-  v3 = [(SBSceneManager *)self displayIdentity];
-  v4 = [v3 currentConfiguration];
+  displayIdentity = [(SBSceneManager *)self displayIdentity];
+  currentConfiguration = [displayIdentity currentConfiguration];
 
-  return v4;
+  return currentConfiguration;
 }
 
-- (id)suspendedUnderLockManagerVisibleScenes:(id)a3
+- (id)suspendedUnderLockManagerVisibleScenes:(id)scenes
 {
   v4 = [MEMORY[0x277CBEB58] set];
-  v5 = [(SBMainDisplaySceneManager *)self _windowScene];
-  v6 = [v5 switcherController];
-  v7 = [v6 layoutStateApplicationSceneHandles];
-  [v4 unionSet:v7];
+  _windowScene = [(SBMainDisplaySceneManager *)self _windowScene];
+  switcherController = [_windowScene switcherController];
+  layoutStateApplicationSceneHandles = [switcherController layoutStateApplicationSceneHandles];
+  [v4 unionSet:layoutStateApplicationSceneHandles];
 
   v8 = +[SBWorkspace mainWorkspace];
-  v9 = [v8 pipCoordinator];
-  v10 = [v9 hostedAppSceneHandles];
-  [v4 addObjectsFromArray:v10];
+  pipCoordinator = [v8 pipCoordinator];
+  hostedAppSceneHandles = [pipCoordinator hostedAppSceneHandles];
+  [v4 addObjectsFromArray:hostedAppSceneHandles];
 
   return v4;
 }
 
-- (BOOL)suspendedUnderLockManager:(id)a3 shouldPreventUnderLockForScene:(id)a4
+- (BOOL)suspendedUnderLockManager:(id)manager shouldPreventUnderLockForScene:(id)scene
 {
-  v4 = [a4 clientHandle];
-  v5 = [v4 bundleIdentifier];
+  clientHandle = [scene clientHandle];
+  bundleIdentifier = [clientHandle bundleIdentifier];
 
-  LOBYTE(v4) = [v5 isEqualToString:@"com.apple.PosterBoard"];
-  return v4;
+  LOBYTE(clientHandle) = [bundleIdentifier isEqualToString:@"com.apple.PosterBoard"];
+  return clientHandle;
 }
 
-- (BOOL)suspendedUnderLockManager:(id)a3 shouldPreventSuspendUnderLockForScene:(id)a4 settings:(id)a5
+- (BOOL)suspendedUnderLockManager:(id)manager shouldPreventSuspendUnderLockForScene:(id)scene settings:(id)settings
 {
-  v7 = a4;
-  v8 = [a5 sb_displayIdentityForSceneManagers];
-  v9 = [v8 isContinuityDisplay];
+  sceneCopy = scene;
+  sb_displayIdentityForSceneManagers = [settings sb_displayIdentityForSceneManagers];
+  isContinuityDisplay = [sb_displayIdentityForSceneManagers isContinuityDisplay];
 
-  if (v9)
+  if (isContinuityDisplay)
   {
     v10 = 1;
   }
 
   else
   {
-    v11 = [v7 identifier];
-    if (v11)
+    identifier = [sceneCopy identifier];
+    if (identifier)
     {
-      v12 = [(NSMutableDictionary *)self->_sceneIdentifierToIgnoreSuspendedUnderLockAssertions objectForKey:v11];
+      v12 = [(NSMutableDictionary *)self->_sceneIdentifierToIgnoreSuspendedUnderLockAssertions objectForKey:identifier];
       v10 = [v12 count] != 0;
     }
 
@@ -1499,21 +1499,21 @@ void __83__SBMainDisplaySceneManager__noteDidChangeToVisibility_previouslyExiste
   return v10;
 }
 
-- (id)fetchOrCreateApplicationSceneHandleForRequest:(id)a3
+- (id)fetchOrCreateApplicationSceneHandleForRequest:(id)request
 {
   v5.receiver = self;
   v5.super_class = SBMainDisplaySceneManager;
-  v3 = [(SBSceneManager *)&v5 fetchOrCreateApplicationSceneHandleForRequest:a3];
+  v3 = [(SBSceneManager *)&v5 fetchOrCreateApplicationSceneHandleForRequest:request];
 
   return v3;
 }
 
-- (id)scene:(id)a3 handleActions:(id)a4
+- (id)scene:(id)scene handleActions:(id)actions
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a4 mutableCopy];
-  v8 = [(NSMapTable *)self->_blsActionHandlersForScenes objectForKey:v6];
+  sceneCopy = scene;
+  v7 = [actions mutableCopy];
+  v8 = [(NSMapTable *)self->_blsActionHandlersForScenes objectForKey:sceneCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -1532,7 +1532,7 @@ void __83__SBMainDisplaySceneManager__noteDidChangeToVisibility_previouslyExiste
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * i) respondToActions:v7 forFBScene:v6];
+        v13 = [*(*(&v17 + 1) + 8 * i) respondToActions:v7 forFBScene:sceneCopy];
         [v7 intersectSet:v13];
       }
 
@@ -1544,58 +1544,58 @@ void __83__SBMainDisplaySceneManager__noteDidChangeToVisibility_previouslyExiste
 
   v16.receiver = self;
   v16.super_class = SBMainDisplaySceneManager;
-  v14 = [(SBSceneManager *)&v16 scene:v6 handleActions:v7];
+  v14 = [(SBSceneManager *)&v16 scene:sceneCopy handleActions:v7];
 
   return v14;
 }
 
-- (void)addActionHandler:(id)a3 forScene:(id)a4
+- (void)addActionHandler:(id)handler forScene:(id)scene
 {
-  v11 = a3;
-  v6 = a4;
+  handlerCopy = handler;
+  sceneCopy = scene;
   blsActionHandlersForScenes = self->_blsActionHandlersForScenes;
   if (!blsActionHandlersForScenes)
   {
-    v8 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     v9 = self->_blsActionHandlersForScenes;
-    self->_blsActionHandlersForScenes = v8;
+    self->_blsActionHandlersForScenes = weakToStrongObjectsMapTable;
 
     blsActionHandlersForScenes = self->_blsActionHandlersForScenes;
   }
 
-  v10 = [(NSMapTable *)blsActionHandlersForScenes objectForKey:v6];
+  v10 = [(NSMapTable *)blsActionHandlersForScenes objectForKey:sceneCopy];
   if (!v10)
   {
     v10 = objc_alloc_init(MEMORY[0x277CCAA50]);
-    [(NSMapTable *)self->_blsActionHandlersForScenes setObject:v10 forKey:v6];
+    [(NSMapTable *)self->_blsActionHandlersForScenes setObject:v10 forKey:sceneCopy];
   }
 
-  [v10 addObject:v11];
+  [v10 addObject:handlerCopy];
 }
 
-- (void)removeActionHandler:(id)a3 forScene:(id)a4
+- (void)removeActionHandler:(id)handler forScene:(id)scene
 {
   blsActionHandlersForScenes = self->_blsActionHandlersForScenes;
-  v6 = a3;
-  v7 = [(NSMapTable *)blsActionHandlersForScenes objectForKey:a4];
-  [v7 removeObject:v6];
+  handlerCopy = handler;
+  v7 = [(NSMapTable *)blsActionHandlersForScenes objectForKey:scene];
+  [v7 removeObject:handlerCopy];
 }
 
 - (id)switcherController
 {
-  v2 = [(SBMainDisplaySceneManager *)self _windowScene];
-  v3 = [v2 switcherController];
+  _windowScene = [(SBMainDisplaySceneManager *)self _windowScene];
+  switcherController = [_windowScene switcherController];
 
-  return v3;
+  return switcherController;
 }
 
-- (BOOL)_isExternalForegroundScene:(id)a3
+- (BOOL)_isExternalForegroundScene:(id)scene
 {
-  v4 = [(SBMainDisplaySceneManager *)self existingSceneHandleForScene:a3];
+  v4 = [(SBMainDisplaySceneManager *)self existingSceneHandleForScene:scene];
   if (v4)
   {
-    v5 = [(SBMainDisplaySceneManager *)self externalForegroundApplicationSceneHandles];
-    v6 = [v5 containsObject:v4];
+    externalForegroundApplicationSceneHandles = [(SBMainDisplaySceneManager *)self externalForegroundApplicationSceneHandles];
+    v6 = [externalForegroundApplicationSceneHandles containsObject:v4];
   }
 
   else
@@ -1935,22 +1935,22 @@ void __65__SBMainDisplaySceneManager__appSceneClientSettingsDiffInspector__block
   [v10 clientWithSceneIdentifier:v5 prefersPointerLockStatus:v3];
 }
 
-- (BOOL)_isLockscreenHostingApp:(id)a3
+- (BOOL)_isLockscreenHostingApp:(id)app
 {
-  v3 = a3;
+  appCopy = app;
   v4 = +[SBLockScreenManager sharedInstance];
-  v5 = [v4 lockScreenEnvironment];
-  v6 = [v5 applicationHoster];
+  lockScreenEnvironment = [v4 lockScreenEnvironment];
+  applicationHoster = [lockScreenEnvironment applicationHoster];
 
   if ([v4 isLockScreenActive])
   {
-    v7 = [v6 isHostingAnApp];
-    v8 = v7;
-    if (v3 && v7)
+    isHostingAnApp = [applicationHoster isHostingAnApp];
+    v8 = isHostingAnApp;
+    if (appCopy && isHostingAnApp)
     {
-      v9 = [v6 hostedAppSceneHandle];
-      v10 = [v9 application];
-      v8 = v10 == v3;
+      hostedAppSceneHandle = [applicationHoster hostedAppSceneHandle];
+      application = [hostedAppSceneHandle application];
+      v8 = application == appCopy;
     }
   }
 
@@ -1995,7 +1995,7 @@ void __65__SBMainDisplaySceneManager__externalClientSettingsDiffInspector__block
   [v2 _updateLevelAndBackgroundSettingsForScene:a2 transitionContext:v4];
 }
 
-- (void)_keyboardWillChangeFrame:(id)a3
+- (void)_keyboardWillChangeFrame:(id)frame
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v4 = NSClassFromString(&cfstr_Uikeyboardarbi.isa);
@@ -2013,25 +2013,25 @@ void __65__SBMainDisplaySceneManager__externalClientSettingsDiffInspector__block
   if (self->_isKeyboardDocked != v6)
   {
     self->_isKeyboardDocked = v6;
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v10 = @"SBKeyboardDockedKey";
     v8 = [MEMORY[0x277CCABB0] numberWithBool:self->_isKeyboardDocked];
     v11[0] = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    [v7 postNotificationName:@"SBKeyboardDockedChangedNotification" object:0 userInfo:v9];
+    [defaultCenter postNotificationName:@"SBKeyboardDockedChangedNotification" object:0 userInfo:v9];
   }
 }
 
-- (void)_updateLevelAndBackgroundSettingsForScene:(id)a3 transitionContext:(id)a4
+- (void)_updateLevelAndBackgroundSettingsForScene:(id)scene transitionContext:(id)context
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 clientSettings];
-  [v7 preferredLevel];
+  sceneCopy = scene;
+  contextCopy = context;
+  clientSettings = [sceneCopy clientSettings];
+  [clientSettings preferredLevel];
   v9 = v8;
-  v10 = [v5 settings];
-  v11 = [v10 isForeground];
+  settings = [sceneCopy settings];
+  isForeground = [settings isForeground];
 
   v12 = fmax(v9, 0.0);
   if (*MEMORY[0x277D0AC88] <= v12)
@@ -2044,14 +2044,14 @@ void __65__SBMainDisplaySceneManager__externalClientSettingsDiffInspector__block
     v13 = v12;
   }
 
-  v14 = [v5 settings];
-  [v14 level];
+  settings2 = [sceneCopy settings];
+  [settings2 level];
   if (v15 == v13)
   {
-    v16 = [v5 settings];
-    v17 = [v16 isForeground];
+    settings3 = [sceneCopy settings];
+    isForeground2 = [settings3 isForeground];
 
-    if (v11 == v17)
+    if (isForeground == isForeground2)
     {
       goto LABEL_11;
     }
@@ -2065,23 +2065,23 @@ void __65__SBMainDisplaySceneManager__externalClientSettingsDiffInspector__block
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v24 = v5;
+    v24 = sceneCopy;
     v25 = 2048;
     v26 = v13;
     _os_log_impl(&dword_21ED4E000, v18, OS_LOG_TYPE_INFO, "Scene %{public}@ is changing level to: %f", buf, 0x16u);
   }
 
   v19 = MEMORY[0x277D75940];
-  v20 = [v6 animationFence];
-  [v19 _synchronizeDrawingWithFence:v20];
+  animationFence = [contextCopy animationFence];
+  [v19 _synchronizeDrawingWithFence:animationFence];
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __89__SBMainDisplaySceneManager__updateLevelAndBackgroundSettingsForScene_transitionContext___block_invoke;
   v21[3] = &__block_descriptor_41_e33_v16__0__FBSMutableSceneSettings_8l;
   *&v21[4] = v13;
-  v22 = v11;
-  [v5 updateSettingsWithBlock:v21];
+  v22 = isForeground;
+  [sceneCopy updateSettingsWithBlock:v21];
 LABEL_11:
 }
 
@@ -2093,35 +2093,35 @@ void __89__SBMainDisplaySceneManager__updateLevelAndBackgroundSettingsForScene_t
   [v4 setForeground:*(a1 + 40)];
 }
 
-- (id)_proposeIdleTimerBehaviorForReason:(id)a3
+- (id)_proposeIdleTimerBehaviorForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = [(SBMainDisplaySceneManager *)self coordinatorRequestedIdleTimerBehavior:self];
-  v6 = [(SBMainDisplaySceneManager *)self idleTimerCoordinator];
-  v7 = [v6 idleTimerProvider:self didProposeBehavior:v5 forReason:v4];
+  idleTimerCoordinator = [(SBMainDisplaySceneManager *)self idleTimerCoordinator];
+  v7 = [idleTimerCoordinator idleTimerProvider:self didProposeBehavior:v5 forReason:reasonCopy];
 
   return v7;
 }
 
-- (void)_resetIdleTimerIfNeededForUpdateToScene:(id)a3 withHandle:(id)a4
+- (void)_resetIdleTimerIfNeededForUpdateToScene:(id)scene withHandle:(id)handle
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [v15 clientProcess];
-  v8 = [v15 uiClientSettings];
-  v9 = [v8 idleTimerDisabled];
-  if (v9)
+  sceneCopy = scene;
+  handleCopy = handle;
+  clientProcess = [sceneCopy clientProcess];
+  uiClientSettings = [sceneCopy uiClientSettings];
+  idleTimerDisabled = [uiClientSettings idleTimerDisabled];
+  if (idleTimerDisabled)
   {
-    v10 = v9;
-    v11 = [v15 settings];
-    if ([v11 isForeground] && !objc_msgSend(v6, "sceneFullyOccluded"))
+    v10 = idleTimerDisabled;
+    settings = [sceneCopy settings];
+    if ([settings isForeground] && !objc_msgSend(handleCopy, "sceneFullyOccluded"))
     {
-      v12 = 1;
+      isBeingDebugged = 1;
     }
 
-    else if ([v7 isApplicationProcess])
+    else if ([clientProcess isApplicationProcess])
     {
-      v12 = [v7 isBeingDebugged];
+      isBeingDebugged = [clientProcess isBeingDebugged];
       if ((v10 & 1) == 0)
       {
         goto LABEL_13;
@@ -2130,28 +2130,28 @@ void __89__SBMainDisplaySceneManager__updateLevelAndBackgroundSettingsForScene_t
 
     else
     {
-      v12 = 0;
+      isBeingDebugged = 0;
     }
 
     goto LABEL_13;
   }
 
-  if ([v7 isApplicationProcess])
+  if ([clientProcess isApplicationProcess])
   {
-    v12 = [v7 isBeingDebugged];
+    isBeingDebugged = [clientProcess isBeingDebugged];
   }
 
   else
   {
-    v12 = 0;
+    isBeingDebugged = 0;
   }
 
 LABEL_13:
 
   v13 = +[SBIdleTimerGlobalCoordinator sharedInstance];
-  v14 = [v13 isIdleTimerDisabled];
+  isIdleTimerDisabled = [v13 isIdleTimerDisabled];
 
-  if (v12 != v14)
+  if (isBeingDebugged != isIdleTimerDisabled)
   {
     [(SBMainDisplaySceneManager *)self _resetIdleTimerIfNeeded];
   }
@@ -2174,14 +2174,14 @@ id __52__SBMainDisplaySceneManager__resetIdleTimerIfNeeded__block_invoke_2(uint6
   return v3;
 }
 
-- (id)coordinatorRequestedIdleTimerBehavior:(id)a3
+- (id)coordinatorRequestedIdleTimerBehavior:(id)behavior
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(SBMainDisplaySceneManager *)self _sceneHandlesDisablingIdleTimer];
-  v4 = [v3 bs_mapNoNulls:&__block_literal_global_245_0];
+  _sceneHandlesDisablingIdleTimer = [(SBMainDisplaySceneManager *)self _sceneHandlesDisablingIdleTimer];
+  v4 = [_sceneHandlesDisablingIdleTimer bs_mapNoNulls:&__block_literal_global_245_0];
   v5 = [v4 componentsJoinedByString:{@", "}];
 
-  v6 = [v3 count];
+  v6 = [_sceneHandlesDisablingIdleTimer count];
   v7 = SBLogIdleTimer();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -2216,21 +2216,21 @@ id __52__SBMainDisplaySceneManager__resetIdleTimerIfNeeded__block_invoke_2(uint6
 
 - (BOOL)wantsDisableIdleTimer
 {
-  v2 = [(SBMainDisplaySceneManager *)self _sceneHandlesDisablingIdleTimer];
-  v3 = [v2 count] != 0;
+  _sceneHandlesDisablingIdleTimer = [(SBMainDisplaySceneManager *)self _sceneHandlesDisablingIdleTimer];
+  v3 = [_sceneHandlesDisablingIdleTimer count] != 0;
 
   return v3;
 }
 
-- (void)displayReferenceModeStatusDidChangeForDisplayWithConfiguration:(id)a3 newStatus:(int64_t)a4
+- (void)displayReferenceModeStatusDidChangeForDisplayWithConfiguration:(id)configuration newStatus:(int64_t)status
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(SBMainDisplaySceneManager *)self externalForegroundApplicationSceneHandles];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  externalForegroundApplicationSceneHandles = [(SBMainDisplaySceneManager *)self externalForegroundApplicationSceneHandles];
+  v6 = [externalForegroundApplicationSceneHandles countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2242,22 +2242,22 @@ id __52__SBMainDisplaySceneManager__resetIdleTimerIfNeeded__block_invoke_2(uint6
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(externalForegroundApplicationSceneHandles);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * v9) sceneIfExists];
+        sceneIfExists = [*(*(&v12 + 1) + 8 * v9) sceneIfExists];
         v11[0] = MEMORY[0x277D85DD0];
         v11[1] = 3221225472;
         v11[2] = __102__SBMainDisplaySceneManager_displayReferenceModeStatusDidChangeForDisplayWithConfiguration_newStatus___block_invoke;
         v11[3] = &__block_descriptor_40_e63_v24__0__FBSMutableSceneSettings_8__FBSSceneTransitionContext_16l;
-        v11[4] = a4;
-        [v10 performUpdate:v11];
+        v11[4] = status;
+        [sceneIfExists performUpdate:v11];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [externalForegroundApplicationSceneHandles countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -2273,7 +2273,7 @@ void __102__SBMainDisplaySceneManager_displayReferenceModeStatusDidChangeForDisp
   }
 }
 
-- (id)sceneSnapshotRequestStrategyForSceneSnapshotRequestor:(id)a3
+- (id)sceneSnapshotRequestStrategyForSceneSnapshotRequestor:(id)requestor
 {
   if (__sb__runningInSpringBoard())
   {
@@ -2287,10 +2287,10 @@ LABEL_3:
 
   else
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v5 == 1)
+    if (userInterfaceIdiom == 1)
     {
       goto LABEL_3;
     }

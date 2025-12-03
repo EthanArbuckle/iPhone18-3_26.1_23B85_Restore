@@ -1,36 +1,36 @@
 @interface MBServiceCache
 + (id)systemPath;
-- (MBServiceCache)initWithPath:(id)a3 domainManager:(id)a4;
-- (id)_prepare:(id)a3;
-- (id)_snapshotWithStmt:(id)a3;
-- (id)backupForUDID:(id)a3 lastModified:(int64_t *)a4;
+- (MBServiceCache)initWithPath:(id)path domainManager:(id)manager;
+- (id)_prepare:(id)_prepare;
+- (id)_snapshotWithStmt:(id)stmt;
+- (id)backupForUDID:(id)d lastModified:(int64_t *)modified;
 - (id)configuration;
-- (id)pathsForFilesMissingEncryptionKeyWithOffset:(unint64_t)a3 limit:(unint64_t)a4;
-- (id)propertyForKey:(id)a3;
-- (id)protectionClassesToRestoreByPathWithOffset:(unint64_t)a3 limit:(unint64_t)a4;
-- (id)restoreFailuresForDataClass:(id)a3 assetType:(id)a4 range:(_NSRange)a5;
-- (id)snapshotsForBackupUDID:(id)a3;
-- (unint64_t)countOfRestoreFailuresForDataclass:(id)a3 assetType:(id)a4;
-- (void)_exec:(id)a3;
+- (id)pathsForFilesMissingEncryptionKeyWithOffset:(unint64_t)offset limit:(unint64_t)limit;
+- (id)propertyForKey:(id)key;
+- (id)protectionClassesToRestoreByPathWithOffset:(unint64_t)offset limit:(unint64_t)limit;
+- (id)restoreFailuresForDataClass:(id)class assetType:(id)type range:(_NSRange)range;
+- (id)snapshotsForBackupUDID:(id)d;
+- (unint64_t)countOfRestoreFailuresForDataclass:(id)dataclass assetType:(id)type;
+- (void)_exec:(id)_exec;
 - (void)_logProfile;
-- (void)_profile:(id)a3 time:(double)a4;
-- (void)_raise:(id)a3;
+- (void)_profile:(id)_profile time:(double)time;
+- (void)_raise:(id)_raise;
 - (void)_remove;
-- (void)_removeSnapshotForID:(unint64_t)a3 backupUDID:(id)a4;
-- (void)addRestoreFailure:(id)a3;
+- (void)_removeSnapshotForID:(unint64_t)d backupUDID:(id)iD;
+- (void)addRestoreFailure:(id)failure;
 - (void)close;
 - (void)dealloc;
 - (void)open;
 - (void)removeAllDisabledDomains;
 - (void)removeAllProtectionClassesToRestore;
-- (void)removeBackupForUDID:(id)a3;
-- (void)removeFileMissingEncryptionKeyWithPath:(id)a3;
-- (void)removePropertyForKey:(id)a3;
-- (void)removeSnapshotForID:(unint64_t)a3 backupUDID:(id)a4 lastModified:(int64_t)a5;
-- (void)setDisabledDomainNames:(id)a3 restrictedDomainNames:(id)a4;
-- (void)setFileEncryptionKey:(id)a3 forInodeNumber:(unint64_t)a4;
-- (void)setLastModified:(int64_t)a3 forBackupUDID:(id)a4;
-- (void)setProperty:(id)a3 forKey:(id)a4;
+- (void)removeBackupForUDID:(id)d;
+- (void)removeFileMissingEncryptionKeyWithPath:(id)path;
+- (void)removePropertyForKey:(id)key;
+- (void)removeSnapshotForID:(unint64_t)d backupUDID:(id)iD lastModified:(int64_t)modified;
+- (void)setDisabledDomainNames:(id)names restrictedDomainNames:(id)domainNames;
+- (void)setFileEncryptionKey:(id)key forInodeNumber:(unint64_t)number;
+- (void)setLastModified:(int64_t)modified forBackupUDID:(id)d;
+- (void)setProperty:(id)property forKey:(id)key;
 @end
 
 @implementation MBServiceCache
@@ -42,9 +42,9 @@
   return [v2 stringByAppendingPathComponent:@"cache.db"];
 }
 
-- (MBServiceCache)initWithPath:(id)a3 domainManager:(id)a4
+- (MBServiceCache)initWithPath:(id)path domainManager:(id)manager
 {
-  if (!a4)
+  if (!manager)
   {
     __assert_rtn("[MBServiceCache initWithPath:domainManager:]", "MBServiceCache.m", 263, "domainManager");
   }
@@ -54,8 +54,8 @@
   v6 = [(MBServiceCache *)&v13 init];
   if (v6)
   {
-    v6->_path = a3;
-    v6->_domainManager = a4;
+    v6->_path = path;
+    v6->_domainManager = manager;
     v6->_stmtsBySQL = objc_alloc_init(NSMutableDictionary);
     v7 = MBGetSQLLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -70,13 +70,13 @@
 
     v8 = qword_100421950;
     objc_sync_enter(qword_100421950);
-    v9 = [qword_100421950 objectForKeyedSubscript:a3];
+    v9 = [qword_100421950 objectForKeyedSubscript:path];
     v6->_upToDateBackupUDIDs = v9;
     if (!v9)
     {
       v10 = objc_alloc_init(NSMutableSet);
       v6->_upToDateBackupUDIDs = v10;
-      [qword_100421950 setObject:v10 forKeyedSubscript:a3];
+      [qword_100421950 setObject:v10 forKeyedSubscript:path];
     }
 
     objc_sync_exit(v8);
@@ -141,9 +141,9 @@
   }
 }
 
-- (void)_raise:(id)a3
+- (void)_raise:(id)_raise
 {
-  v4 = [[NSString alloc] initWithFormat:a3 arguments:&v15];
+  v4 = [[NSString alloc] initWithFormat:_raise arguments:&v15];
   db = self->_db;
   if (db)
   {
@@ -174,28 +174,28 @@
   [NSException raise:NSGenericException format:@"%@", v4];
 }
 
-- (void)_profile:(id)a3 time:(double)a4
+- (void)_profile:(id)_profile time:(double)time
 {
   v7 = MBGetSQLLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = [(NSMutableDictionary *)self->_countAndTimeBySQL objectForKeyedSubscript:a3];
+    v8 = [(NSMutableDictionary *)self->_countAndTimeBySQL objectForKeyedSubscript:_profile];
     if (v8)
     {
       v9 = v8;
       [v8 setObject:+[NSNumber numberWithInteger:](NSNumber atIndexedSubscript:{"numberWithInteger:", objc_msgSend(objc_msgSend(v8, "objectAtIndexedSubscript:", 0), "integerValue") + 1), 0}];
       [objc_msgSend(v9 objectAtIndexedSubscript:{1), "doubleValue"}];
-      v11 = [NSNumber numberWithDouble:v10 + a4];
+      time = [NSNumber numberWithDouble:v10 + time];
 
-      [v9 setObject:v11 atIndexedSubscript:1];
+      [v9 setObject:time atIndexedSubscript:1];
     }
 
     else
     {
-      v12 = [NSMutableArray arrayWithObjects:[NSNumber numberWithInteger:1], [NSNumber numberWithDouble:a4], 0];
+      v12 = [NSMutableArray arrayWithObjects:[NSNumber numberWithInteger:1], [NSNumber numberWithDouble:time], 0];
       countAndTimeBySQL = self->_countAndTimeBySQL;
 
-      [(NSMutableDictionary *)countAndTimeBySQL setObject:v12 forKeyedSubscript:a3];
+      [(NSMutableDictionary *)countAndTimeBySQL setObject:v12 forKeyedSubscript:_profile];
     }
   }
 }
@@ -213,13 +213,13 @@
       _MBLog();
     }
 
-    v5 = [(NSMutableDictionary *)self->_countAndTimeBySQL allKeys];
+    allKeys = [(NSMutableDictionary *)self->_countAndTimeBySQL allKeys];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_1001925B4;
     v25[3] = &unk_1003C0680;
     v25[4] = self;
-    v6 = [v5 sortedArrayUsingComparator:v25];
+    v6 = [allKeys sortedArrayUsingComparator:v25];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -269,7 +269,7 @@
   }
 }
 
-- (void)_exec:(id)a3
+- (void)_exec:(id)_exec
 {
   if (!self->_db)
   {
@@ -278,45 +278,45 @@
 
   +[NSDate timeIntervalSinceReferenceDate];
   v6 = v5;
-  if (sqlite3_exec(self->_db, [a3 UTF8String], 0, 0, 0))
+  if (sqlite3_exec(self->_db, [_exec UTF8String], 0, 0, 0))
   {
-    [(MBServiceCache *)self _raise:@"Error executing SQL: %@", a3];
+    [(MBServiceCache *)self _raise:@"Error executing SQL: %@", _exec];
   }
 
   +[NSDate timeIntervalSinceReferenceDate];
   v8 = v7 - v6;
 
-  [(MBServiceCache *)self _profile:a3 time:v8];
+  [(MBServiceCache *)self _profile:_exec time:v8];
 }
 
-- (id)_prepare:(id)a3
+- (id)_prepare:(id)_prepare
 {
   if (!self->_db)
   {
     [(MBServiceCache *)self _raise:@"Database is closed"];
   }
 
-  v6 = [(NSMutableDictionary *)self->_stmtsBySQL objectForKeyedSubscript:a3];
+  v6 = [(NSMutableDictionary *)self->_stmtsBySQL objectForKeyedSubscript:_prepare];
   if (v6)
   {
     v7 = v6;
     if (![(MBSCacheStmt *)v6 isReset])
     {
-      [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"MBServiceCache.m" description:407, @"Statement not reset after last use: %@", a3];
+      [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"MBServiceCache.m" description:407, @"Statement not reset after last use: %@", _prepare];
     }
   }
 
   else
   {
     ppStmt = 0;
-    if (sqlite3_prepare_v2(self->_db, [a3 UTF8String], -1, &ppStmt, 0))
+    if (sqlite3_prepare_v2(self->_db, [_prepare UTF8String], -1, &ppStmt, 0))
     {
-      [(MBServiceCache *)self _raise:@"Error preparing statement: %@", a3];
+      [(MBServiceCache *)self _raise:@"Error preparing statement: %@", _prepare];
     }
 
     v8 = [MBSCacheStmt alloc];
-    v7 = [(MBSCacheStmt *)v8 initWithCache:self SQL:a3 stmt:ppStmt];
-    [(NSMutableDictionary *)self->_stmtsBySQL setObject:v7 forKeyedSubscript:a3];
+    v7 = [(MBSCacheStmt *)v8 initWithCache:self SQL:_prepare stmt:ppStmt];
+    [(NSMutableDictionary *)self->_stmtsBySQL setObject:v7 forKeyedSubscript:_prepare];
   }
 
   return v7;
@@ -327,10 +327,10 @@
   v12 = 0;
   if (self->_openCount < 1)
   {
-    v3 = [(NSString *)self->_path stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [(NSString *)self->_path stringByDeletingLastPathComponent];
     if (![+[NSFileManager createDirectoryAtPath:"createDirectoryAtPath:withIntermediateDirectories:attributes:error:"]
     {
-      [(MBServiceCache *)self _raise:@"Error creating cache dir at %@: %@", v3, v12];
+      [(MBServiceCache *)self _raise:@"Error creating cache dir at %@: %@", stringByDeletingLastPathComponent, v12];
     }
 
     v4 = MBGetDefaultLog();
@@ -442,15 +442,15 @@ LABEL_22:
   }
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
-  if (!a3)
+  if (!key)
   {
     [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"MBServiceCache.m" description:530, @"Null key"];
   }
 
   v5 = [(MBServiceCache *)self _prepare:@"select value from Properties where key = ?"];
-  [v5 bindText:a3 atIndex:1];
+  [v5 bindText:key atIndex:1];
   if ([v5 step])
   {
     v6 = [v5 textColumn:0];
@@ -465,16 +465,16 @@ LABEL_22:
   return v6;
 }
 
-- (void)setProperty:(id)a3 forKey:(id)a4
+- (void)setProperty:(id)property forKey:(id)key
 {
-  if (a4)
+  if (key)
   {
-    if (a3)
+    if (property)
     {
 LABEL_3:
       v7 = [(MBServiceCache *)self _prepare:@"insert or replace into Properties (key, value) values (?, ?)"];
-      [v7 bindText:a4 atIndex:1];
-      [v7 bindText:a3 atIndex:2];
+      [v7 bindText:key atIndex:1];
+      [v7 bindText:property atIndex:2];
       [v7 step];
 
       [v7 reset];
@@ -485,24 +485,24 @@ LABEL_3:
   else
   {
     [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"MBServiceCache.m" description:545, @"Null key"];
-    if (a3)
+    if (property)
     {
       goto LABEL_3;
     }
   }
 
-  [(MBServiceCache *)self removePropertyForKey:a4];
+  [(MBServiceCache *)self removePropertyForKey:key];
 }
 
-- (void)removePropertyForKey:(id)a3
+- (void)removePropertyForKey:(id)key
 {
-  if (!a3)
+  if (!key)
   {
     [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"MBServiceCache.m" description:559, @"Null key"];
   }
 
   v5 = [(MBServiceCache *)self _prepare:@"delete from Properties where key = ?"];
-  [v5 bindText:a3 atIndex:1];
+  [v5 bindText:key atIndex:1];
   [v5 step];
 
   [v5 reset];
@@ -546,15 +546,15 @@ LABEL_8:
   return result;
 }
 
-- (id)backupForUDID:(id)a3 lastModified:(int64_t *)a4
+- (id)backupForUDID:(id)d lastModified:(int64_t *)modified
 {
-  if (!a3)
+  if (!d)
   {
     [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"MBServiceCache.m" description:590, @"Null backup UDID"];
   }
 
   v8 = [(MBServiceCache *)self _prepare:@"select lastModified, attributes from Backups where backupUDID = ?"];
-  [v8 bindText:a3 atIndex:1];
+  [v8 bindText:d atIndex:1];
   if (![v8 step])
   {
     v9 = 0;
@@ -565,8 +565,8 @@ LABEL_8:
   [(MBSBackup *)v9 setBackupUDID:MBDataWithString()];
   if (![(MBSBackup *)v9 backupUDID])
   {
-    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"MBServiceCache.m" description:599, @"Failed to convert backup UDID: %@", a3];
-    if (!a4)
+    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"MBServiceCache.m" description:599, @"Failed to convert backup UDID: %@", d];
+    if (!modified)
     {
       goto LABEL_7;
     }
@@ -574,69 +574,69 @@ LABEL_8:
     goto LABEL_6;
   }
 
-  if (a4)
+  if (modified)
   {
 LABEL_6:
-    *a4 = [v8 int64Column:0];
+    *modified = [v8 int64Column:0];
   }
 
 LABEL_7:
   -[MBSBackup setAttributes:](v9, "setAttributes:", -[MBSBackupAttributes initWithData:]([MBSBackupAttributes alloc], "initWithData:", [v8 blobColumn:1]));
-  -[MBSBackup setSnapshots:](v9, "setSnapshots:", [-[MBServiceCache snapshotsForBackupUDID:](self snapshotsForBackupUDID:{a3), "mutableCopy"}]);
+  -[MBSBackup setSnapshots:](v9, "setSnapshots:", [-[MBServiceCache snapshotsForBackupUDID:](self snapshotsForBackupUDID:{d), "mutableCopy"}]);
 LABEL_9:
   [v8 reset];
   return v9;
 }
 
-- (void)setLastModified:(int64_t)a3 forBackupUDID:(id)a4
+- (void)setLastModified:(int64_t)modified forBackupUDID:(id)d
 {
-  if (!a4)
+  if (!d)
   {
     [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"MBServiceCache.m" description:610, @"Null backup UDID"];
   }
 
   v7 = [(MBServiceCache *)self _prepare:@"update Backups set lastModified = ? where backupUDID = ?"];
-  [v7 bindInt64:a3 atIndex:1];
-  [v7 bindText:a4 atIndex:2];
+  [v7 bindInt64:modified atIndex:1];
+  [v7 bindText:d atIndex:2];
   [v7 step];
 
   [v7 reset];
 }
 
-- (void)removeBackupForUDID:(id)a3
+- (void)removeBackupForUDID:(id)d
 {
-  if (!a3)
+  if (!d)
   {
     [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"MBServiceCache.m" description:620, @"Null backup UDID"];
   }
 
   v5 = [(MBServiceCache *)self _prepare:@"delete from Backups where backupUDID = ?"];
-  [v5 bindText:a3 atIndex:1];
+  [v5 bindText:d atIndex:1];
   [v5 step];
 
   [v5 reset];
 }
 
-- (id)_snapshotWithStmt:(id)a3
+- (id)_snapshotWithStmt:(id)stmt
 {
   v4 = objc_alloc_init(MBSSnapshot);
-  -[MBSSnapshot setSnapshotID:](v4, "setSnapshotID:", [a3 intColumn:1]);
-  -[MBSSnapshot setLastModified:](v4, "setLastModified:", [a3 int64Column:2]);
-  -[MBSSnapshot setCommitted:](v4, "setCommitted:", [a3 int64Column:3]);
-  -[MBSSnapshot setAttributes:](v4, "setAttributes:", -[MBSSnapshotAttributes initWithData:]([MBSSnapshotAttributes alloc], "initWithData:", [a3 blobColumn:6]));
+  -[MBSSnapshot setSnapshotID:](v4, "setSnapshotID:", [stmt intColumn:1]);
+  -[MBSSnapshot setLastModified:](v4, "setLastModified:", [stmt int64Column:2]);
+  -[MBSSnapshot setCommitted:](v4, "setCommitted:", [stmt int64Column:3]);
+  -[MBSSnapshot setAttributes:](v4, "setAttributes:", -[MBSSnapshotAttributes initWithData:]([MBSSnapshotAttributes alloc], "initWithData:", [stmt blobColumn:6]));
   return v4;
 }
 
-- (id)snapshotsForBackupUDID:(id)a3
+- (id)snapshotsForBackupUDID:(id)d
 {
-  if (!a3)
+  if (!d)
   {
     [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"MBServiceCache.m" description:642, @"Null backup UDID"];
   }
 
   v5 = +[NSMutableArray array];
   v6 = [(MBServiceCache *)self _prepare:@"select * from Snapshots where backupUDID = ?"];
-  [v6 bindText:a3 atIndex:1];
+  [v6 bindText:d atIndex:1];
   if ([v6 step])
   {
     do
@@ -652,26 +652,26 @@ LABEL_9:
   return v5;
 }
 
-- (void)_removeSnapshotForID:(unint64_t)a3 backupUDID:(id)a4
+- (void)_removeSnapshotForID:(unint64_t)d backupUDID:(id)iD
 {
   v6 = [(MBServiceCache *)self _prepare:@"delete from Snapshots where backupUDID = ? and snapshotID = ?"];
-  [v6 bindText:a4 atIndex:1];
-  [v6 bindInteger:a3 atIndex:2];
+  [v6 bindText:iD atIndex:1];
+  [v6 bindInteger:d atIndex:2];
   [v6 step];
 
   [v6 reset];
 }
 
-- (void)removeSnapshotForID:(unint64_t)a3 backupUDID:(id)a4 lastModified:(int64_t)a5
+- (void)removeSnapshotForID:(unint64_t)d backupUDID:(id)iD lastModified:(int64_t)modified
 {
-  v9 = [(MBServiceCache *)self snapshotsForBackupUDID:a4];
+  v9 = [(MBServiceCache *)self snapshotsForBackupUDID:iD];
   if ([v9 count])
   {
     v10 = 0;
     while (1)
     {
       v11 = [v9 objectAtIndexedSubscript:v10];
-      if ([v11 snapshotID] == a3)
+      if ([v11 snapshotID] == d)
       {
         break;
       }
@@ -691,25 +691,25 @@ LABEL_9:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
           *buf = 134218240;
-          v25 = a3;
+          dCopy = d;
           v26 = 2048;
           v27 = v12;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Merging snapshot %lu into snapshot %lu", buf, 0x16u);
-          v21 = a3;
+          dCopy2 = d;
           v23 = v12;
           _MBLog();
         }
 
-        v14 = [(MBServiceCache *)self _prepare:@"update or ignore Files set snapshotID = ? where backupUDID = ? and snapshotID = ?", v21, v23];
+        v14 = [(MBServiceCache *)self _prepare:@"update or ignore Files set snapshotID = ? where backupUDID = ? and snapshotID = ?", dCopy2, v23];
         [v14 bindInteger:v12 atIndex:1];
-        [v14 bindText:a4 atIndex:2];
-        [v14 bindInteger:a3 atIndex:3];
+        [v14 bindText:iD atIndex:2];
+        [v14 bindInteger:d atIndex:3];
         [v14 step];
         [v14 reset];
         v15 = [(MBServiceCache *)self _prepare:@"update Files set duplicateFileID = null, duplicateSnapshotID = 0 where backupUDID = ? and snapshotID = ? and duplicateSnapshotID = ?"];
-        [v15 bindText:a4 atIndex:1];
+        [v15 bindText:iD atIndex:1];
         [v15 bindInteger:v12 atIndex:2];
-        [v15 bindInteger:a3 atIndex:3];
+        [v15 bindInteger:d atIndex:3];
         [v15 step];
         [v15 reset];
         if (!v10)
@@ -718,22 +718,22 @@ LABEL_9:
           if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
           {
             *buf = 134217984;
-            v25 = v12;
+            dCopy = v12;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Discarding deleted files from snapshot %lu", buf, 0xCu);
             v22 = v12;
             _MBLog();
           }
 
           v17 = [(MBServiceCache *)self _prepare:@"delete from Files where backupUDID = ? and snapshotID = ? and deleted = 1", v22];
-          [v17 bindText:a4 atIndex:1];
+          [v17 bindText:iD atIndex:1];
           [v17 bindInteger:v12 atIndex:2];
           [v17 step];
           [v17 reset];
         }
 
         v18 = [(MBServiceCache *)self _prepare:@"update Snapshots set lastModified = ? where backupUDID = ? and snapshotID = ?"];
-        [v18 bindInt64:a5 atIndex:1];
-        [v18 bindText:a4 atIndex:2];
+        [v18 bindInt64:modified atIndex:1];
+        [v18 bindText:iD atIndex:2];
         [v18 bindInteger:v12 atIndex:3];
         [v18 step];
         [v18 reset];
@@ -762,17 +762,17 @@ LABEL_19:
     }
 
 LABEL_20:
-    [(MBServiceCache *)self _removeSnapshotForID:a3 backupUDID:a4];
+    [(MBServiceCache *)self _removeSnapshotForID:d backupUDID:iD];
   }
 }
 
-- (void)setDisabledDomainNames:(id)a3 restrictedDomainNames:(id)a4
+- (void)setDisabledDomainNames:(id)names restrictedDomainNames:(id)domainNames
 {
   self->_disabledDomainNames = objc_alloc_init(NSMutableSet);
   [(MBServiceCache *)self begin];
   [(MBServiceCache *)self removeAllDisabledDomains];
-  [(MBServiceCache *)self addDisabledDomainNames:a3 restricted:0];
-  [(MBServiceCache *)self addDisabledDomainNames:a4 restricted:1];
+  [(MBServiceCache *)self addDisabledDomainNames:names restricted:0];
+  [(MBServiceCache *)self addDisabledDomainNames:domainNames restricted:1];
   -[MBServiceCache addDisabledDomainNames:restricted:](self, "addDisabledDomainNames:restricted:", [-[MBServiceCache configuration](self "configuration")], 1);
 
   [(MBServiceCache *)self end];
@@ -788,12 +788,12 @@ LABEL_20:
   [(NSMutableSet *)disabledDomainNames removeAllObjects];
 }
 
-- (id)pathsForFilesMissingEncryptionKeyWithOffset:(unint64_t)a3 limit:(unint64_t)a4
+- (id)pathsForFilesMissingEncryptionKeyWithOffset:(unint64_t)offset limit:(unint64_t)limit
 {
   v7 = +[NSMutableArray array];
   v8 = [(MBServiceCache *)self _prepare:@"select path from FilesMissingEncryptionKey limit ? offset ?"];
-  [v8 bindInteger:a4 atIndex:1];
-  [v8 bindInteger:a3 atIndex:2];
+  [v8 bindInteger:limit atIndex:1];
+  [v8 bindInteger:offset atIndex:2];
   if ([v8 step])
   {
     do
@@ -808,31 +808,31 @@ LABEL_20:
   return v7;
 }
 
-- (void)removeFileMissingEncryptionKeyWithPath:(id)a3
+- (void)removeFileMissingEncryptionKeyWithPath:(id)path
 {
   v4 = [(MBServiceCache *)self _prepare:@"delete from FilesMissingEncryptionKey where path = ?"];
-  [v4 bindText:a3 atIndex:1];
+  [v4 bindText:path atIndex:1];
   [v4 step];
 
   [v4 reset];
 }
 
-- (void)setFileEncryptionKey:(id)a3 forInodeNumber:(unint64_t)a4
+- (void)setFileEncryptionKey:(id)key forInodeNumber:(unint64_t)number
 {
   v6 = [(MBServiceCache *)self _prepare:@"insert or replace into FileEncryptionKeys values (?, ?)"];
-  [v6 bindInt64:a4 atIndex:1];
-  [v6 bindBlob:a3 atIndex:2];
+  [v6 bindInt64:number atIndex:1];
+  [v6 bindBlob:key atIndex:2];
   [v6 step];
 
   [v6 reset];
 }
 
-- (id)protectionClassesToRestoreByPathWithOffset:(unint64_t)a3 limit:(unint64_t)a4
+- (id)protectionClassesToRestoreByPathWithOffset:(unint64_t)offset limit:(unint64_t)limit
 {
   v7 = +[NSMutableDictionary dictionary];
   v8 = [(MBServiceCache *)self _prepare:@"select domainName, relativePath, protectionClass from FileProtectionClassesToRestore limit ? offset ?"];
-  [v8 bindInteger:a4 atIndex:1];
-  [v8 bindInteger:a3 atIndex:2];
+  [v8 bindInteger:limit atIndex:1];
+  [v8 bindInteger:offset atIndex:2];
   if ([v8 step])
   {
     do
@@ -897,17 +897,17 @@ LABEL_8:
   [v2 reset];
 }
 
-- (void)addRestoreFailure:(id)a3
+- (void)addRestoreFailure:(id)failure
 {
   v4 = [(MBServiceCache *)self _prepare:@"insert or replace into RestoreFailures values (?, ?, ?, ?, ?, ?)"];
-  [v4 bindText:objc_msgSend(a3 atIndex:{"identifier"), 1}];
-  [v4 bindText:objc_msgSend(a3 atIndex:{"dataclass"), 2}];
-  [v4 bindText:objc_msgSend(a3 atIndex:{"assetType"), 3}];
-  [v4 bindText:objc_msgSend(a3 atIndex:{"displayName"), 4}];
-  [v4 bindBlob:objc_msgSend(a3 atIndex:{"icon"), 5}];
-  if ([a3 error])
+  [v4 bindText:objc_msgSend(failure atIndex:{"identifier"), 1}];
+  [v4 bindText:objc_msgSend(failure atIndex:{"dataclass"), 2}];
+  [v4 bindText:objc_msgSend(failure atIndex:{"assetType"), 3}];
+  [v4 bindText:objc_msgSend(failure atIndex:{"displayName"), 4}];
+  [v4 bindBlob:objc_msgSend(failure atIndex:{"icon"), 5}];
+  if ([failure error])
   {
-    [v4 bindBlob:+[NSKeyedArchiver archivedDataWithRootObject:requiringSecureCoding:error:](NSKeyedArchiver atIndex:{"archivedDataWithRootObject:requiringSecureCoding:error:", objc_msgSend(a3, "error"), 1, 0), 6}];
+    [v4 bindBlob:+[NSKeyedArchiver archivedDataWithRootObject:requiringSecureCoding:error:](NSKeyedArchiver atIndex:{"archivedDataWithRootObject:requiringSecureCoding:error:", objc_msgSend(failure, "error"), 1, 0), 6}];
   }
 
   [v4 step];
@@ -915,27 +915,27 @@ LABEL_8:
   [v4 reset];
 }
 
-- (unint64_t)countOfRestoreFailuresForDataclass:(id)a3 assetType:(id)a4
+- (unint64_t)countOfRestoreFailuresForDataclass:(id)dataclass assetType:(id)type
 {
   v6 = @"and dataclass = ?";
   v7 = &stru_1003C3430;
-  if (!a3)
+  if (!dataclass)
   {
     v6 = &stru_1003C3430;
   }
 
-  if (a4)
+  if (type)
   {
     v7 = @"and assetType = ?";
   }
 
   v8 = [(MBServiceCache *)self _prepare:[NSString stringWithFormat:@"select count(*) from RestoreFailures where 1 %@ %@", v6, v7]];
   v9 = v8;
-  if (a3)
+  if (dataclass)
   {
-    [v8 bindText:a3 atIndex:1];
+    [v8 bindText:dataclass atIndex:1];
     v10 = 2;
-    if (!a4)
+    if (!type)
     {
       goto LABEL_8;
     }
@@ -944,10 +944,10 @@ LABEL_8:
   }
 
   v10 = 1;
-  if (a4)
+  if (type)
   {
 LABEL_7:
-    [v9 bindText:a4 atIndex:v10];
+    [v9 bindText:type atIndex:v10];
   }
 
 LABEL_8:
@@ -965,30 +965,30 @@ LABEL_8:
   return v11;
 }
 
-- (id)restoreFailuresForDataClass:(id)a3 assetType:(id)a4 range:(_NSRange)a5
+- (id)restoreFailuresForDataClass:(id)class assetType:(id)type range:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v10 = +[NSMutableArray array];
   v11 = @"and dataclass = ?";
   v12 = &stru_1003C3430;
-  if (!a3)
+  if (!class)
   {
     v11 = &stru_1003C3430;
   }
 
-  if (a4)
+  if (type)
   {
     v12 = @"and assetType = ?";
   }
 
   v13 = [(MBServiceCache *)self _prepare:[NSString stringWithFormat:@"select identifier, dataclass, assetType, displayName, icon, error from RestoreFailures where 1 %@ %@ order by dataclass, identifier limit ? offset ?", v11, v12]];
   v14 = v13;
-  if (a3)
+  if (class)
   {
-    [v13 bindText:a3 atIndex:1];
+    [v13 bindText:class atIndex:1];
     v15 = 2;
-    if (!a4)
+    if (!type)
     {
       goto LABEL_8;
     }
@@ -997,10 +997,10 @@ LABEL_8:
   }
 
   v15 = 1;
-  if (a4)
+  if (type)
   {
 LABEL_7:
-    [v14 bindText:a4 atIndex:v15];
+    [v14 bindText:type atIndex:v15];
     v15 = (v15 + 1);
   }
 

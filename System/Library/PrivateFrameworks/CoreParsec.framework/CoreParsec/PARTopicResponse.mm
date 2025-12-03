@@ -1,37 +1,37 @@
 @interface PARTopicResponse
-+ (id)responseFromReply:(id)a3;
-- (PARTopicResponse)initWithReply:(id)a3 factory:(id)a4 dataZKW:(id)a5;
++ (id)responseFromReply:(id)reply;
+- (PARTopicResponse)initWithReply:(id)reply factory:(id)factory dataZKW:(id)w;
 @end
 
 @implementation PARTopicResponse
 
-- (PARTopicResponse)initWithReply:(id)a3 factory:(id)a4 dataZKW:(id)a5
+- (PARTopicResponse)initWithReply:(id)reply factory:(id)factory dataZKW:(id)w
 {
-  v7 = a3;
+  replyCopy = reply;
   swift_unknownObjectRetain();
-  v8 = a5;
+  wCopy = w;
   sub_1B11218CC();
 
-  return PARTopicResponse.init(reply:factory:dataZKW:)(v7, a4);
+  return PARTopicResponse.init(reply:factory:dataZKW:)(replyCopy, factory);
 }
 
-+ (id)responseFromReply:(id)a3
++ (id)responseFromReply:(id)reply
 {
-  v3 = a3;
-  v4 = [v3 task];
-  v5 = [v4 request];
+  replyCopy = reply;
+  task = [replyCopy task];
+  request = [task request];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v4 session];
-    v8 = [v7 configuration];
-    v9 = [v8 factory];
-    v10 = v9;
-    if (v9)
+    session = [task session];
+    configuration = [session configuration];
+    factory = [configuration factory];
+    v10 = factory;
+    if (factory)
     {
-      v11 = v9;
+      v11 = factory;
     }
 
     else
@@ -42,8 +42,8 @@
     v13 = v11;
 
     v14 = [PARTopicResponse alloc];
-    v15 = [v3 data];
-    v12 = [(PARTopicResponse *)v14 initWithReply:v3 factory:v13 dataZKW:v15];
+    data = [replyCopy data];
+    v12 = [(PARTopicResponse *)v14 initWithReply:replyCopy factory:v13 dataZKW:data];
   }
 
   else

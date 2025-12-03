@@ -1,36 +1,36 @@
 @interface PKPassAuxiliaryRegistrationSignatureRequirement
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPassAuxiliaryRegistrationSignatureRequirement:(id)a3;
-- (PKPassAuxiliaryRegistrationSignatureRequirement)initWithCoder:(id)a3;
-- (PKPassAuxiliaryRegistrationSignatureRequirement)initWithDictionary:(id)a3;
-- (PKPassAuxiliaryRegistrationSignatureRequirement)initWithType:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPassAuxiliaryRegistrationSignatureRequirement:(id)requirement;
+- (PKPassAuxiliaryRegistrationSignatureRequirement)initWithCoder:(id)coder;
+- (PKPassAuxiliaryRegistrationSignatureRequirement)initWithDictionary:(id)dictionary;
+- (PKPassAuxiliaryRegistrationSignatureRequirement)initWithType:(unint64_t)type;
 - (id)_mutableDictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_decorateDescription:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_decorateDescription:(id)description;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassAuxiliaryRegistrationSignatureRequirement
 
-- (PKPassAuxiliaryRegistrationSignatureRequirement)initWithDictionary:(id)a3
+- (PKPassAuxiliaryRegistrationSignatureRequirement)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = PKPassAuxiliaryRegistrationSignatureRequirement;
-  v5 = [(PKPassAuxiliaryRegistrationRequirement *)&v15 initWithDictionary:v4];
+  v5 = [(PKPassAuxiliaryRegistrationRequirement *)&v15 initWithDictionary:dictionaryCopy];
   if (!v5)
   {
     goto LABEL_14;
   }
 
-  v6 = [v4 PKStringForKey:@"type"];
+  v6 = [dictionaryCopy PKStringForKey:@"type"];
   v5->_type = PKDeviceSignatureTypeFromString(v6);
 
-  v7 = [v4 PKStringForKey:@"version"];
+  v7 = [dictionaryCopy PKStringForKey:@"version"];
   v5->_signatureSchemeVersion = PKSignatureSchemeVersionFromString(v7);
 
-  v8 = [v4 PKStringForKey:@"source"];
+  v8 = [dictionaryCopy PKStringForKey:@"source"];
   if (v8 == @"applePayTrust" || (v9 = v8) != 0 && (v10 = [(__CFString *)v8 isEqualToString:@"applePayTrust"], v9, v9, v10))
   {
     v5->_type = 4;
@@ -40,15 +40,15 @@
   if (v5->_type == 4)
   {
 LABEL_7:
-    v11 = [(PKPassAuxiliaryRegistrationRequirement *)v5 identifier];
+    identifier = [(PKPassAuxiliaryRegistrationRequirement *)v5 identifier];
 
-    if (!v11)
+    if (!identifier)
     {
       [(PKPassAuxiliaryRegistrationRequirement *)v5 setIdentifier:@"deviceSignature"];
     }
   }
 
-  v12 = [v4 PKDictionaryForKey:@"metadata"];
+  v12 = [dictionaryCopy PKDictionaryForKey:@"metadata"];
   if (v12)
   {
     v13 = [PKPassAuxiliaryCapabilityKeyCreationMetadata createMetadataFromDictionary:v12 forSignatureCapabilityType:v5->_type];
@@ -62,17 +62,17 @@ LABEL_14:
   return v5;
 }
 
-- (PKPassAuxiliaryRegistrationSignatureRequirement)initWithType:(unint64_t)a3
+- (PKPassAuxiliaryRegistrationSignatureRequirement)initWithType:(unint64_t)type
 {
   v5 = objc_alloc_init(MEMORY[0x1E696AFB0]);
-  v6 = [v5 UUIDString];
+  uUIDString = [v5 UUIDString];
   v9.receiver = self;
   v9.super_class = PKPassAuxiliaryRegistrationSignatureRequirement;
-  v7 = [(PKPassAuxiliaryRegistrationRequirement *)&v9 _initWithIdentifier:v6 numberOfKeys:0 canLocallyInvalidateRegistrationState:0 canLocallyValidateRegistrationState:0];
+  v7 = [(PKPassAuxiliaryRegistrationRequirement *)&v9 _initWithIdentifier:uUIDString numberOfKeys:0 canLocallyInvalidateRegistrationState:0 canLocallyValidateRegistrationState:0];
 
   if (v7)
   {
-    v7->_type = a3;
+    v7->_type = type;
   }
 
   return v7;
@@ -82,9 +82,9 @@ LABEL_14:
 {
   v7.receiver = self;
   v7.super_class = PKPassAuxiliaryRegistrationSignatureRequirement;
-  v3 = [(PKPassAuxiliaryRegistrationRequirement *)&v7 _mutableDictionaryRepresentation];
+  _mutableDictionaryRepresentation = [(PKPassAuxiliaryRegistrationRequirement *)&v7 _mutableDictionaryRepresentation];
   v4 = PKDeviceSignatureTypeToString(self->_type);
-  [v3 setObject:v4 forKeyedSubscript:@"type"];
+  [_mutableDictionaryRepresentation setObject:v4 forKeyedSubscript:@"type"];
 
   if (self->_signatureSchemeVersion == 1)
   {
@@ -96,50 +96,50 @@ LABEL_14:
     v5 = 0;
   }
 
-  [v3 setObject:v5 forKeyedSubscript:@"version"];
+  [_mutableDictionaryRepresentation setObject:v5 forKeyedSubscript:@"version"];
 
-  return v3;
+  return _mutableDictionaryRepresentation;
 }
 
-- (PKPassAuxiliaryRegistrationSignatureRequirement)initWithCoder:(id)a3
+- (PKPassAuxiliaryRegistrationSignatureRequirement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKPassAuxiliaryRegistrationSignatureRequirement;
-  v5 = [(PKPassAuxiliaryRegistrationRequirement *)&v9 initWithCoder:v4];
+  v5 = [(PKPassAuxiliaryRegistrationRequirement *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v5->_type = [v6 unsignedIntegerValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signatureSchemeVersion"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signatureSchemeVersion"];
     v5->_signatureSchemeVersion = [v7 unsignedIntegerValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = PKPassAuxiliaryRegistrationSignatureRequirement;
-  v4 = a3;
-  [(PKPassAuxiliaryRegistrationRequirement *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(PKPassAuxiliaryRegistrationRequirement *)&v7 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{self->_type, v7.receiver, v7.super_class}];
-  [v4 encodeObject:v5 forKey:@"type"];
+  [coderCopy encodeObject:v5 forKey:@"type"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_signatureSchemeVersion];
-  [v4 encodeObject:v6 forKey:@"signatureSchemeVersion"];
+  [coderCopy encodeObject:v6 forKey:@"signatureSchemeVersion"];
 }
 
-- (void)_decorateDescription:(id)a3
+- (void)_decorateDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v8.receiver = self;
   v8.super_class = PKPassAuxiliaryRegistrationSignatureRequirement;
-  [(PKPassAuxiliaryRegistrationRequirement *)&v8 _decorateDescription:v4];
+  [(PKPassAuxiliaryRegistrationRequirement *)&v8 _decorateDescription:descriptionCopy];
   v5 = PKDeviceSignatureTypeToString(self->_type);
-  [v4 appendFormat:@"type: '%@'; ", v5];
+  [descriptionCopy appendFormat:@"type: '%@'; ", v5];
 
   signatureSchemeVersion = self->_signatureSchemeVersion;
   if (signatureSchemeVersion)
@@ -154,48 +154,48 @@ LABEL_14:
       v7 = 0;
     }
 
-    [v4 appendFormat:@"signatureSchemeVersion: '%@'; ", v7];
+    [descriptionCopy appendFormat:@"signatureSchemeVersion: '%@'; ", v7];
   }
 
-  [v4 appendFormat:@"backoff: '%lu'; ", -[PKPassAuxiliaryRegistrationRequirement registrationBackoffCounter](self, "registrationBackoffCounter")];
+  [descriptionCopy appendFormat:@"backoff: '%lu'; ", -[PKPassAuxiliaryRegistrationRequirement registrationBackoffCounter](self, "registrationBackoffCounter")];
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_type - v4 + 32 * v4;
   v6 = self->_signatureSchemeVersion - v5 + 32 * v5;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPassAuxiliaryRegistrationSignatureRequirement *)self isEqualToPassAuxiliaryRegistrationSignatureRequirement:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPassAuxiliaryRegistrationSignatureRequirement *)self isEqualToPassAuxiliaryRegistrationSignatureRequirement:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPassAuxiliaryRegistrationSignatureRequirement:(id)a3
+- (BOOL)isEqualToPassAuxiliaryRegistrationSignatureRequirement:(id)requirement
 {
-  v4 = a3;
-  v5 = v4 && self->_type == v4[7] && self->_signatureSchemeVersion == v4[8];
+  requirementCopy = requirement;
+  v5 = requirementCopy && self->_type == requirementCopy[7] && self->_signatureSchemeVersion == requirementCopy[8];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PKPassAuxiliaryRegistrationSignatureRequirement);
   [(PKPassAuxiliaryRegistrationRequirement *)self _copyInto:v4];

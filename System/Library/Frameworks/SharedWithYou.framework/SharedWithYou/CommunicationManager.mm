@@ -1,13 +1,13 @@
 @interface CommunicationManager
 - (_TtC13SharedWithYou20CommunicationManager)init;
-- (void)serviceProxyDidConnect:(id)a3;
+- (void)serviceProxyDidConnect:(id)connect;
 @end
 
 @implementation CommunicationManager
 
-- (void)serviceProxyDidConnect:(id)a3
+- (void)serviceProxyDidConnect:(id)connect
 {
-  v3 = self;
+  selfCopy = self;
   sub_1BBC36218();
 }
 

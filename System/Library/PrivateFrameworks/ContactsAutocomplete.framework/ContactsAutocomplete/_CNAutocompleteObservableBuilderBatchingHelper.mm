@@ -1,30 +1,30 @@
 @interface _CNAutocompleteObservableBuilderBatchingHelper
-- (_CNAutocompleteObservableBuilderBatchingHelper)initWithBatchCount:(unint64_t)a3;
+- (_CNAutocompleteObservableBuilderBatchingHelper)initWithBatchCount:(unint64_t)count;
 - (id)batchedObservables;
-- (void)addObservable:(id)a3 toBatchAtIndex:(unint64_t)a4;
+- (void)addObservable:(id)observable toBatchAtIndex:(unint64_t)index;
 @end
 
 @implementation _CNAutocompleteObservableBuilderBatchingHelper
 
 - (id)batchedObservables
 {
-  v2 = [(_CNAutocompleteObservableBuilderBatchingHelper *)self batches];
-  v3 = [v2 copy];
+  batches = [(_CNAutocompleteObservableBuilderBatchingHelper *)self batches];
+  v3 = [batches copy];
 
   return v3;
 }
 
-- (_CNAutocompleteObservableBuilderBatchingHelper)initWithBatchCount:(unint64_t)a3
+- (_CNAutocompleteObservableBuilderBatchingHelper)initWithBatchCount:(unint64_t)count
 {
   v11.receiver = self;
   v11.super_class = _CNAutocompleteObservableBuilderBatchingHelper;
   v4 = [(_CNAutocompleteObservableBuilderBatchingHelper *)&v11 init];
   if (v4)
   {
-    for (i = [MEMORY[0x277CBEB18] arrayWithCapacity:a3];
+    for (i = [MEMORY[0x277CBEB18] arrayWithCapacity:count];
     {
-      v6 = [MEMORY[0x277CBEB18] array];
-      [i addObject:v6];
+      array = [MEMORY[0x277CBEB18] array];
+      [i addObject:array];
     }
 
     v7 = [i copy];
@@ -37,13 +37,13 @@
   return v4;
 }
 
-- (void)addObservable:(id)a3 toBatchAtIndex:(unint64_t)a4
+- (void)addObservable:(id)observable toBatchAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(_CNAutocompleteObservableBuilderBatchingHelper *)self batches];
-  v8 = [v7 objectAtIndex:a4];
+  observableCopy = observable;
+  batches = [(_CNAutocompleteObservableBuilderBatchingHelper *)self batches];
+  v8 = [batches objectAtIndex:index];
 
-  [v8 _cn_addNonNilObject:v6];
+  [v8 _cn_addNonNilObject:observableCopy];
 }
 
 @end

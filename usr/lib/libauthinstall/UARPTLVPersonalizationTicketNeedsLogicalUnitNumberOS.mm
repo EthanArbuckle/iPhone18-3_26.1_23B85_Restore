@@ -1,12 +1,12 @@
 @interface UARPTLVPersonalizationTicketNeedsLogicalUnitNumberOS
 + (id)metaDataTableEntry;
-+ (id)tlvFromPropertyListValue:(id)a3;
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4;
++ (id)tlvFromPropertyListValue:(id)value;
++ (id)tlvWithLength:(unint64_t)length value:(void *)value;
 - (UARPTLVPersonalizationTicketNeedsLogicalUnitNumberOS)init;
 - (id)description;
 - (id)generateTLV;
 - (id)tlvValue;
-- (void)setTicketNeedsLogicalUnitNumber:(unsigned __int8)a3;
+- (void)setTicketNeedsLogicalUnitNumber:(unsigned __int8)number;
 @end
 
 @implementation UARPTLVPersonalizationTicketNeedsLogicalUnitNumberOS
@@ -18,12 +18,12 @@
   return [(UARPMetaDataTLV8OS *)&v3 init];
 }
 
-- (void)setTicketNeedsLogicalUnitNumber:(unsigned __int8)a3
+- (void)setTicketNeedsLogicalUnitNumber:(unsigned __int8)number
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  *(&v4->super.super._tlvLength + 4) = a3;
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  *(&selfCopy->super.super._tlvLength + 4) = number;
+  objc_sync_exit(selfCopy);
 }
 
 - (id)description
@@ -83,17 +83,17 @@
   return v3;
 }
 
-+ (id)tlvFromPropertyListValue:(id)a3
++ (id)tlvFromPropertyListValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = valueCopy;
     v5 = objc_opt_new();
-    v6 = [v4 unsignedCharValue];
+    unsignedCharValue = [v4 unsignedCharValue];
 
-    [v5 setTicketNeedsLogicalUnitNumber:v6];
+    [v5 setTicketNeedsLogicalUnitNumber:unsignedCharValue];
   }
 
   else
@@ -104,12 +104,12 @@
   return v5;
 }
 
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4
++ (id)tlvWithLength:(unint64_t)length value:(void *)value
 {
-  if (a3 == 1)
+  if (length == 1)
   {
     v5 = objc_opt_new();
-    [v5 setTicketNeedsLogicalUnitNumber:*a4];
+    [v5 setTicketNeedsLogicalUnitNumber:*value];
   }
 
   else

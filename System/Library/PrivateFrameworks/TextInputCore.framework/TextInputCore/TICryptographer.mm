@@ -1,10 +1,10 @@
 @interface TICryptographer
 + (id)sharedCryptographer;
 + (id)singletonInstance;
-+ (void)setSharedCryptographer:(id)a3;
++ (void)setSharedCryptographer:(id)cryptographer;
 - (NSData)deviceSalt;
 - (TICryptographer)init;
-- (id)stringDigestForName:(id)a3;
+- (id)stringDigestForName:(id)name;
 @end
 
 @implementation TICryptographer
@@ -36,18 +36,18 @@
   return v3;
 }
 
-- (id)stringDigestForName:(id)a3
+- (id)stringDigestForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__23863;
   v14 = __Block_byref_object_dispose__23864;
   v15 = 0;
-  v5 = [(TICryptographer *)self dispatchQueue];
-  v9 = v4;
-  v6 = v4;
+  dispatchQueue = [(TICryptographer *)self dispatchQueue];
+  v9 = nameCopy;
+  v6 = nameCopy;
   TIDispatchSync();
 
   v7 = v11[5];
@@ -230,14 +230,14 @@ uint64_t __36__TICryptographer_singletonInstance__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (void)setSharedCryptographer:(id)a3
++ (void)setSharedCryptographer:(id)cryptographer
 {
-  v4 = a3;
-  if (__testingInstance_23886 != v4)
+  cryptographerCopy = cryptographer;
+  if (__testingInstance_23886 != cryptographerCopy)
   {
-    v5 = v4;
-    objc_storeStrong(&__testingInstance_23886, a3);
-    v4 = v5;
+    v5 = cryptographerCopy;
+    objc_storeStrong(&__testingInstance_23886, cryptographer);
+    cryptographerCopy = v5;
   }
 }
 

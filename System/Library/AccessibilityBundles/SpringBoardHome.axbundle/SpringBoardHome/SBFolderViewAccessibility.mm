@@ -1,5 +1,5 @@
 @interface SBFolderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (id)automationElements;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -8,19 +8,19 @@
 
 @implementation SBFolderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBFolderView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"SBFolderView" hasInstanceMethod:@"folder" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFolderView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBFolderView" hasInstanceMethod:@"pageControl" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFolderView" hasInstanceMethod:@"scalingView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFolderView" hasInstanceMethod:@"_titleTextField" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHIconManager"];
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"hasOpenFolder" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"closingFolder" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"closeFolderAnimated:withCompletion:" withFullSignature:{"v", "B", "@?", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBFolderView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"SBFolderView" hasInstanceMethod:@"folder" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFolderView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBFolderView" hasInstanceMethod:@"pageControl" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFolderView" hasInstanceMethod:@"scalingView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFolderView" hasInstanceMethod:@"_titleTextField" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHIconManager"];
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"hasOpenFolder" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"closingFolder" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"closeFolderAnimated:withCompletion:" withFullSignature:{"v", "B", "@?", 0}];
 }
 
 - (void)layoutSubviews
@@ -45,28 +45,28 @@
   if (AXProcessIsCarPlay())
   {
     objc_opt_class();
-    v3 = __UIAccessibilityCastAsClass();
-    v4 = [v3 _allSubviews];
+    automationElements = __UIAccessibilityCastAsClass();
+    _allSubviews = [automationElements _allSubviews];
   }
 
   else
   {
     v5 = [(SBFolderViewAccessibility *)self safeValueForKey:@"folder"];
-    v3 = [v5 automationElements];
+    automationElements = [v5 automationElements];
 
     v6 = [(SBFolderViewAccessibility *)self safeUIViewForKey:@"pageControl"];
-    v4 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:{objc_msgSend(v3, "count") + 1}];
+    _allSubviews = [MEMORY[0x29EDB8DE8] arrayWithCapacity:{objc_msgSend(automationElements, "count") + 1}];
     v7 = [(SBFolderViewAccessibility *)self safeUIViewForKey:@"_titleTextField"];
-    [v4 axSafelyAddObject:v7];
+    [_allSubviews axSafelyAddObject:v7];
 
-    [v4 axSafelyAddObjectsFromArray:v3];
+    [_allSubviews axSafelyAddObjectsFromArray:automationElements];
     if ([v6 _accessibilityViewIsVisible])
     {
-      [v4 axSafelyAddObject:v6];
+      [_allSubviews axSafelyAddObject:v6];
     }
   }
 
-  return v4;
+  return _allSubviews;
 }
 
 - (BOOL)accessibilityPerformEscape

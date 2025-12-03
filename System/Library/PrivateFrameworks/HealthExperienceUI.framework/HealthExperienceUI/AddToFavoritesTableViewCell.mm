@@ -1,13 +1,13 @@
 @interface AddToFavoritesTableViewCell
-- (_TtC18HealthExperienceUI27AddToFavoritesTableViewCell)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI27AddToFavoritesTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC18HealthExperienceUI27AddToFavoritesTableViewCell)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI27AddToFavoritesTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation AddToFavoritesTableViewCell
 
-- (_TtC18HealthExperienceUI27AddToFavoritesTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC18HealthExperienceUI27AddToFavoritesTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     _sSo19HKFeatureIdentifiera18HealthExperienceUIE2idSSvg_0();
     v6 = v5;
@@ -41,7 +41,7 @@
   return v9;
 }
 
-- (_TtC18HealthExperienceUI27AddToFavoritesTableViewCell)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI27AddToFavoritesTableViewCell)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC18HealthExperienceUI27AddToFavoritesTableViewCell_item;
   *v3 = 0u;

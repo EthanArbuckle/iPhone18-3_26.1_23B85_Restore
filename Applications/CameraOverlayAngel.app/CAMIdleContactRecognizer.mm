@@ -1,11 +1,11 @@
 @interface CAMIdleContactRecognizer
 - (CAMIdleContactRecognizer)init;
 - (CAMIdleContactRecognizerDelegate)delegate;
-- (void)contactBeganWithAction:(id)a3;
-- (void)contactEndedWithAction:(id)a3;
-- (void)contactUpdatedWithAction:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setIsEnabled:(BOOL)a3;
+- (void)contactBeganWithAction:(id)action;
+- (void)contactEndedWithAction:(id)action;
+- (void)contactUpdatedWithAction:(id)action;
+- (void)setDelegate:(id)delegate;
+- (void)setIsEnabled:(BOOL)enabled;
 @end
 
 @implementation CAMIdleContactRecognizer
@@ -18,39 +18,39 @@
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v3 = *(&self->super.isa + OBJC_IVAR___CAMIdleContactRecognizer_delegate);
-  *(&self->super.isa + OBJC_IVAR___CAMIdleContactRecognizer_delegate) = a3;
+  *(&self->super.isa + OBJC_IVAR___CAMIdleContactRecognizer_delegate) = delegate;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
 }
 
-- (void)setIsEnabled:(BOOL)a3
+- (void)setIsEnabled:(BOOL)enabled
 {
-  *(&self->super.isa + OBJC_IVAR___CAMIdleContactRecognizer_isEnabled) = a3;
-  v3 = self;
+  *(&self->super.isa + OBJC_IVAR___CAMIdleContactRecognizer_isEnabled) = enabled;
+  selfCopy = self;
   sub_10001CF10();
 }
 
-- (void)contactBeganWithAction:(id)a3
+- (void)contactBeganWithAction:(id)action
 {
-  v5 = self;
+  selfCopy = self;
   static Date.timeIntervalSinceReferenceDate.getter();
-  v3 = v5 + OBJC_IVAR___CAMIdleContactRecognizer_lastNonIdleTimestamp;
+  v3 = selfCopy + OBJC_IVAR___CAMIdleContactRecognizer_lastNonIdleTimestamp;
   *v3 = v4;
   v3[8] = 0;
 }
 
-- (void)contactUpdatedWithAction:(id)a3
+- (void)contactUpdatedWithAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
-  sub_10001D428(v4);
+  actionCopy = action;
+  selfCopy = self;
+  sub_10001D428(actionCopy);
 }
 
-- (void)contactEndedWithAction:(id)a3
+- (void)contactEndedWithAction:(id)action
 {
   v3 = self + OBJC_IVAR___CAMIdleContactRecognizer_lastNonIdleTimestamp;
   *v3 = 0;

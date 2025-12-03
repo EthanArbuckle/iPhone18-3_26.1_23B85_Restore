@@ -1,18 +1,18 @@
 @interface _EARContextualData
 + (void)initialize;
-- (BOOL)addNamedEntity:(id)a3 metadata:(id)a4;
+- (BOOL)addNamedEntity:(id)entity metadata:(id)metadata;
 - (BOOL)containsEntity;
 - (BOOL)hasVisualContext;
-- (_EARContextualData)initWithConfiguration:(id)a3 overrides:(id)a4;
+- (_EARContextualData)initWithConfiguration:(id)configuration overrides:(id)overrides;
 - (id).cxx_construct;
 - (id)metrics;
 - (map<std::string,)getWords;
 - (unordered_map<std::string,)getTemplateToAverageCost;
 - (unordered_map<std::string,)getTemplateToDeviationCost;
-- (void)iterNamedEntitySourceWithApplication:(id)a3 block:(id)a4;
-- (void)iterNamedEntitySourceWithApplication:(id)a3 task:(id)a4 block:(id)a5;
-- (void)iterRankedContactSourceWithApplication:(id)a3 block:(id)a4;
-- (void)iterRankedContactSourceWithApplication:(id)a3 task:(id)a4 block:(id)a5;
+- (void)iterNamedEntitySourceWithApplication:(id)application block:(id)block;
+- (void)iterNamedEntitySourceWithApplication:(id)application task:(id)task block:(id)block;
+- (void)iterRankedContactSourceWithApplication:(id)application block:(id)block;
+- (void)iterRankedContactSourceWithApplication:(id)application task:(id)task block:(id)block;
 @end
 
 @implementation _EARContextualData
@@ -20,24 +20,24 @@
 + (void)initialize
 {
   v3 = objc_opt_class();
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     EARLogger::initializeLogging(v3);
   }
 }
 
-- (_EARContextualData)initWithConfiguration:(id)a3 overrides:(id)a4
+- (_EARContextualData)initWithConfiguration:(id)configuration overrides:(id)overrides
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  overridesCopy = overrides;
   v31.receiver = self;
   v31.super_class = _EARContextualData;
   v8 = [(_EARContextualData *)&v31 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
-    v10 = [v9 fileExistsAtPath:v6];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v10 = [defaultManager fileExistsAtPath:configurationCopy];
 
     if (v10)
     {
@@ -55,10 +55,10 @@
       v13[2] = __54___EARContextualData_initWithConfiguration_overrides___block_invoke;
       v13[3] = &unk_1E7C1AA50;
       v13[4] = &v14;
-      [v7 enumerateKeysAndObjectsUsingBlock:v13];
-      if (v6)
+      [overridesCopy enumerateKeysAndObjectsUsingBlock:v13];
+      if (configurationCopy)
       {
-        [v6 ear_toString];
+        [configurationCopy ear_toString];
       }
 
       operator new();
@@ -99,19 +99,19 @@
   return v11;
 }
 
-- (BOOL)addNamedEntity:(id)a3 metadata:(id)a4
+- (BOOL)addNamedEntity:(id)entity metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
-  v46 = v6;
+  entityCopy = entity;
+  metadataCopy = metadata;
+  v46 = entityCopy;
   EARHelpers::truncateFromFirstNull(&v46);
   v8 = v46;
 
-  v9 = [v7 valueForKey:@"category"];
+  v9 = [metadataCopy valueForKey:@"category"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v7 valueForKey:@"category"];
+    v10 = [metadataCopy valueForKey:@"category"];
   }
 
   else
@@ -119,11 +119,11 @@
     v10 = 0;
   }
 
-  v11 = [v7 valueForKey:@"language"];
+  v11 = [metadataCopy valueForKey:@"language"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v7 valueForKey:@"language"];
+    v12 = [metadataCopy valueForKey:@"language"];
   }
 
   else
@@ -131,11 +131,11 @@
     v12 = 0;
   }
 
-  v13 = [v7 valueForKey:@"score"];
+  v13 = [metadataCopy valueForKey:@"score"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v7 valueForKey:@"score"];
+    v14 = [metadataCopy valueForKey:@"score"];
   }
 
   else
@@ -143,11 +143,11 @@
     v14 = 0;
   }
 
-  v15 = [v7 valueForKey:@"sourceFramework"];
+  v15 = [metadataCopy valueForKey:@"sourceFramework"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [v7 valueForKey:@"sourceFramework"];
+    v16 = [metadataCopy valueForKey:@"sourceFramework"];
   }
 
   else
@@ -164,7 +164,7 @@
     v23 = 0u;
     *v24 = 0u;
     memset(v25, 0, sizeof(v25));
-    v26 = 0;
+    intValue = 0;
     if ([v16 intValue] == 1)
     {
       if (v10 && [v12 length])
@@ -185,7 +185,7 @@
           operator delete(__p[0]);
         }
 
-        v26 = [v10 intValue];
+        intValue = [v10 intValue];
         if (v12)
         {
           [v12 ear_toString];
@@ -344,14 +344,14 @@ LABEL_58:
   return v17;
 }
 
-- (void)iterNamedEntitySourceWithApplication:(id)a3 block:(id)a4
+- (void)iterNamedEntitySourceWithApplication:(id)application block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  blockCopy = block;
   ptr = self->_contextualData.__ptr_;
-  if (v6)
+  if (applicationCopy)
   {
-    [v6 ear_toString];
+    [applicationCopy ear_toString];
   }
 
   else
@@ -385,7 +385,7 @@ LABEL_58:
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v10];
     v13 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-*(i + 11)];
     v14 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-*(i + 12)];
-    v7[2](v7, v12, v13, v14);
+    blockCopy[2](blockCopy, v12, v13, v14);
 
     objc_autoreleasePoolPop(v11);
   }
@@ -393,16 +393,16 @@ LABEL_58:
   std::__hash_table<std::string,std::hash<std::string>,std::equal_to<std::string>,std::allocator<std::string>>::~__hash_table(v19);
 }
 
-- (void)iterNamedEntitySourceWithApplication:(id)a3 task:(id)a4 block:(id)a5
+- (void)iterNamedEntitySourceWithApplication:(id)application task:(id)task block:(id)block
 {
-  v8 = a3;
-  v25 = a4;
-  v9 = a5;
+  applicationCopy = application;
+  taskCopy = task;
+  blockCopy = block;
   ptr = self->_contextualData.__ptr_;
-  v24 = v8;
-  if (v8)
+  v24 = applicationCopy;
+  if (applicationCopy)
   {
-    [v8 ear_toString];
+    [applicationCopy ear_toString];
   }
 
   else
@@ -412,9 +412,9 @@ LABEL_58:
     v30 = 0;
   }
 
-  if (v25)
+  if (taskCopy)
   {
-    [v25 ear_toString];
+    [taskCopy ear_toString];
   }
 
   else
@@ -457,7 +457,7 @@ LABEL_58:
 LABEL_40:
           v22 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-*(v11 + 11)];
           v23 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-*(v11 + 12)];
-          v9[2](v9, v13, v22, v23, *(v11 + 10));
+          blockCopy[2](blockCopy, v13, v22, v23, *(v11 + 10));
 
           goto LABEL_41;
         }
@@ -526,14 +526,14 @@ LABEL_42:
   std::__hash_table<std::string,std::hash<std::string>,std::equal_to<std::string>,std::allocator<std::string>>::~__hash_table(v31);
 }
 
-- (void)iterRankedContactSourceWithApplication:(id)a3 block:(id)a4
+- (void)iterRankedContactSourceWithApplication:(id)application block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  blockCopy = block;
   ptr = self->_contextualData.__ptr_;
-  if (v6)
+  if (applicationCopy)
   {
-    [v6 ear_toString];
+    [applicationCopy ear_toString];
   }
 
   else
@@ -566,7 +566,7 @@ LABEL_42:
 
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v10];
     v13 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:0.0];
-    v7[2](v7, v12, v13, *(i + 52));
+    blockCopy[2](blockCopy, v12, v13, *(i + 52));
 
     objc_autoreleasePoolPop(v11);
   }
@@ -574,19 +574,19 @@ LABEL_42:
   std::__hash_table<std::string,std::hash<std::string>,std::equal_to<std::string>,std::allocator<std::string>>::~__hash_table(v18);
 }
 
-- (void)iterRankedContactSourceWithApplication:(id)a3 task:(id)a4 block:(id)a5
+- (void)iterRankedContactSourceWithApplication:(id)application task:(id)task block:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  applicationCopy = application;
+  taskCopy = task;
+  blockCopy = block;
   ptr = self->_contextualData.__ptr_;
-  if (v8)
+  if (applicationCopy)
   {
-    [v8 ear_toString];
-    if (v9)
+    [applicationCopy ear_toString];
+    if (taskCopy)
     {
 LABEL_3:
-      [v9 ear_toString];
+      [taskCopy ear_toString];
       goto LABEL_6;
     }
   }
@@ -596,7 +596,7 @@ LABEL_3:
     v19[0] = 0;
     v19[1] = 0;
     v20 = 0;
-    if (v9)
+    if (taskCopy)
     {
       goto LABEL_3;
     }
@@ -628,7 +628,7 @@ LABEL_6:
 
     v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v13];
     v16 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:0.0];
-    (*(v10 + 2))(v10, v15, v16, *(i + 52), *(i + 10));
+    (*(blockCopy + 2))(blockCopy, v15, v16, *(i + 52), *(i + 10));
 
     objc_autoreleasePoolPop(v14);
   }

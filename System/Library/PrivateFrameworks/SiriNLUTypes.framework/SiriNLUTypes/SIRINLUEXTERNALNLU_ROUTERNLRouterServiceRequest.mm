@@ -1,28 +1,28 @@
 @interface SIRINLUEXTERNALNLU_ROUTERNLRouterServiceRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addConversationHistory:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addConversationHistory:(id)history;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALNLU_ROUTERNLRouterServiceRequest
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(SIRINLUEXTERNALNLU_ROUTERNLRouterServiceRequest *)self setCurrentUserQuery:?];
   }
 
   turnContext = self->_turnContext;
-  v6 = *(v4 + 7);
+  v6 = *(fromCopy + 7);
   if (turnContext)
   {
     if (v6)
@@ -40,7 +40,7 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -64,18 +64,18 @@
     while (v9);
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(SIRINLUEXTERNALNLU_ROUTERNLRouterServiceRequest *)self setRequestId:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(SIRINLUEXTERNALNLU_ROUTERNLRouterServiceRequest *)self setTrpCandidateId:?];
   }
 
   probingResult = self->_probingResult;
-  v13 = *(v4 + 3);
+  v13 = *(fromCopy + 3);
   if (probingResult)
   {
     if (v13)
@@ -90,7 +90,7 @@
   }
 
   queryDecorationOutput = self->_queryDecorationOutput;
-  v15 = *(v4 + 4);
+  v15 = *(fromCopy + 4);
   if (queryDecorationOutput)
   {
     if (v15)
@@ -118,13 +118,13 @@
   return v6 ^ v8 ^ [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self->_queryDecorationOutput hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((currentUserQuery = self->_currentUserQuery, !(currentUserQuery | v4[2])) || -[NSString isEqual:](currentUserQuery, "isEqual:")) && ((turnContext = self->_turnContext, !(turnContext | v4[7])) || -[SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext isEqual:](turnContext, "isEqual:")) && ((conversationHistorys = self->_conversationHistorys, !(conversationHistorys | v4[1])) || -[NSMutableArray isEqual:](conversationHistorys, "isEqual:")) && ((requestId = self->_requestId, !(requestId | v4[5])) || -[NSString isEqual:](requestId, "isEqual:")) && ((trpCandidateId = self->_trpCandidateId, !(trpCandidateId | v4[6])) || -[NSString isEqual:](trpCandidateId, "isEqual:")) && ((probingResult = self->_probingResult, !(probingResult | v4[3])) || -[SIRINLUEXTERNALNLU_ROUTERNLRouterTurnProbingResult isEqual:](probingResult, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((currentUserQuery = self->_currentUserQuery, !(currentUserQuery | equalCopy[2])) || -[NSString isEqual:](currentUserQuery, "isEqual:")) && ((turnContext = self->_turnContext, !(turnContext | equalCopy[7])) || -[SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext isEqual:](turnContext, "isEqual:")) && ((conversationHistorys = self->_conversationHistorys, !(conversationHistorys | equalCopy[1])) || -[NSMutableArray isEqual:](conversationHistorys, "isEqual:")) && ((requestId = self->_requestId, !(requestId | equalCopy[5])) || -[NSString isEqual:](requestId, "isEqual:")) && ((trpCandidateId = self->_trpCandidateId, !(trpCandidateId | equalCopy[6])) || -[NSString isEqual:](trpCandidateId, "isEqual:")) && ((probingResult = self->_probingResult, !(probingResult | equalCopy[3])) || -[SIRINLUEXTERNALNLU_ROUTERNLRouterTurnProbingResult isEqual:](probingResult, "isEqual:")))
   {
     queryDecorationOutput = self->_queryDecorationOutput;
-    if (queryDecorationOutput | v4[4])
+    if (queryDecorationOutput | equalCopy[4])
     {
       v12 = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)queryDecorationOutput isEqual:?];
     }
@@ -143,15 +143,15 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_currentUserQuery copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_currentUserQuery copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext *)self->_turnContext copyWithZone:a3];
+  v8 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext *)self->_turnContext copyWithZone:zone];
   v9 = v5[7];
   v5[7] = v8;
 
@@ -175,7 +175,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v26 + 1) + 8 * v14) copyWithZone:{a3, v26}];
+        v15 = [*(*(&v26 + 1) + 8 * v14) copyWithZone:{zone, v26}];
         [v5 addConversationHistory:v15];
 
         ++v14;
@@ -188,19 +188,19 @@
     while (v12);
   }
 
-  v16 = [(NSString *)self->_requestId copyWithZone:a3];
+  v16 = [(NSString *)self->_requestId copyWithZone:zone];
   v17 = v5[5];
   v5[5] = v16;
 
-  v18 = [(NSString *)self->_trpCandidateId copyWithZone:a3];
+  v18 = [(NSString *)self->_trpCandidateId copyWithZone:zone];
   v19 = v5[6];
   v5[6] = v18;
 
-  v20 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnProbingResult *)self->_probingResult copyWithZone:a3];
+  v20 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnProbingResult *)self->_probingResult copyWithZone:zone];
   v21 = v5[3];
   v5[3] = v20;
 
-  v22 = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self->_queryDecorationOutput copyWithZone:a3];
+  v22 = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)self->_queryDecorationOutput copyWithZone:zone];
   v23 = v5[4];
   v5[4] = v22;
 
@@ -208,63 +208,63 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_currentUserQuery)
   {
-    [v9 setCurrentUserQuery:?];
+    [toCopy setCurrentUserQuery:?];
   }
 
   if (self->_turnContext)
   {
-    [v9 setTurnContext:?];
+    [toCopy setTurnContext:?];
   }
 
   if ([(SIRINLUEXTERNALNLU_ROUTERNLRouterServiceRequest *)self conversationHistorysCount])
   {
-    [v9 clearConversationHistorys];
-    v4 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterServiceRequest *)self conversationHistorysCount];
-    if (v4)
+    [toCopy clearConversationHistorys];
+    conversationHistorysCount = [(SIRINLUEXTERNALNLU_ROUTERNLRouterServiceRequest *)self conversationHistorysCount];
+    if (conversationHistorysCount)
     {
-      v5 = v4;
+      v5 = conversationHistorysCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterServiceRequest *)self conversationHistoryAtIndex:i];
-        [v9 addConversationHistory:v7];
+        [toCopy addConversationHistory:v7];
       }
     }
   }
 
   if (self->_requestId)
   {
-    [v9 setRequestId:?];
+    [toCopy setRequestId:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_trpCandidateId)
   {
-    [v9 setTrpCandidateId:?];
-    v8 = v9;
+    [toCopy setTrpCandidateId:?];
+    v8 = toCopy;
   }
 
   if (self->_probingResult)
   {
-    [v9 setProbingResult:?];
-    v8 = v9;
+    [toCopy setProbingResult:?];
+    v8 = toCopy;
   }
 
   if (self->_queryDecorationOutput)
   {
-    [v9 setQueryDecorationOutput:?];
-    v8 = v9;
+    [toCopy setQueryDecorationOutput:?];
+    v8 = toCopy;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_currentUserQuery)
   {
     PBDataWriterWriteStringField();
@@ -333,19 +333,19 @@
 - (id)dictionaryRepresentation
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   currentUserQuery = self->_currentUserQuery;
   if (currentUserQuery)
   {
-    [v3 setObject:currentUserQuery forKey:@"current_user_query"];
+    [dictionary setObject:currentUserQuery forKey:@"current_user_query"];
   }
 
   turnContext = self->_turnContext;
   if (turnContext)
   {
-    v7 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext *)turnContext dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"turn_context"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnContext *)turnContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"turn_context"];
   }
 
   if ([(NSMutableArray *)self->_conversationHistorys count])
@@ -370,8 +370,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation2 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation2];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -398,15 +398,15 @@
   probingResult = self->_probingResult;
   if (probingResult)
   {
-    v18 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnProbingResult *)probingResult dictionaryRepresentation];
-    [v4 setObject:v18 forKey:@"probing_result"];
+    dictionaryRepresentation3 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnProbingResult *)probingResult dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"probing_result"];
   }
 
   queryDecorationOutput = self->_queryDecorationOutput;
   if (queryDecorationOutput)
   {
-    v20 = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)queryDecorationOutput dictionaryRepresentation];
-    [v4 setObject:v20 forKey:@"query_decoration_output"];
+    dictionaryRepresentation4 = [(SIRINLUEXTERNALNLU_ROUTERQueryDecorationOutput *)queryDecorationOutput dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"query_decoration_output"];
   }
 
   v21 = *MEMORY[0x1E69E9840];
@@ -420,28 +420,28 @@
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALNLU_ROUTERNLRouterServiceRequest;
   v4 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterServiceRequest *)&v8 description];
-  v5 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterServiceRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALNLU_ROUTERNLRouterServiceRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addConversationHistory:(id)a3
+- (void)addConversationHistory:(id)history
 {
-  v4 = a3;
+  historyCopy = history;
   conversationHistorys = self->_conversationHistorys;
-  v8 = v4;
+  v8 = historyCopy;
   if (!conversationHistorys)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_conversationHistorys;
     self->_conversationHistorys = v6;
 
-    v4 = v8;
+    historyCopy = v8;
     conversationHistorys = self->_conversationHistorys;
   }
 
-  [(NSMutableArray *)conversationHistorys addObject:v4];
+  [(NSMutableArray *)conversationHistorys addObject:historyCopy];
 }
 
 @end

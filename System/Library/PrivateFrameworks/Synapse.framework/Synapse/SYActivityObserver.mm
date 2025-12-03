@@ -3,19 +3,19 @@
 + (void)loadSynapseObserver;
 - (SYActivityObserver)init;
 - (id)_defaultActivityObserverContext;
-- (void)_discoverAndProcessActiveUserActivityWithContext:(id)a3;
-- (void)_handleAppBecomeActive:(id)a3;
-- (void)_handleAppResignActive:(id)a3;
-- (void)_q_reportActiveUserActivityChangeIfNeeded:(id)a3 context:(id)a4;
-- (void)_reportActiveUserActivityChangeIfNeeded:(id)a3 context:(id)a4;
+- (void)_discoverAndProcessActiveUserActivityWithContext:(id)context;
+- (void)_handleAppBecomeActive:(id)active;
+- (void)_handleAppResignActive:(id)active;
+- (void)_q_reportActiveUserActivityChangeIfNeeded:(id)needed context:(id)context;
+- (void)_reportActiveUserActivityChangeIfNeeded:(id)needed context:(id)context;
 - (void)indexedContentItemsDidChange;
-- (void)q_processActiveUserActivity:(id)a3 identifier:(id)a4 linkable:(BOOL)a5 context:(id)a6;
+- (void)q_processActiveUserActivity:(id)activity identifier:(id)identifier linkable:(BOOL)linkable context:(id)context;
 - (void)registerForAppStateNotifications;
-- (void)userActivityCanonicalURLWasChanged:(id)a3;
-- (void)userActivityDidBecomeCurrent:(id)a3 current:(BOOL)a4;
-- (void)userActivityPersistentIdentifierWasChanged:(id)a3 persistentIdentifier:(id)a4 previousValue:(id)a5;
-- (void)userActivityTargetContentIdentifierWasChanged:(id)a3 targetContentIdentifier:(id)a4 previousValue:(id)a5;
-- (void)userActivityWebpageURLWasChanged:(id)a3 webpageURL:(id)a4 previousValue:(id)a5;
+- (void)userActivityCanonicalURLWasChanged:(id)changed;
+- (void)userActivityDidBecomeCurrent:(id)current current:(BOOL)a4;
+- (void)userActivityPersistentIdentifierWasChanged:(id)changed persistentIdentifier:(id)identifier previousValue:(id)value;
+- (void)userActivityTargetContentIdentifierWasChanged:(id)changed targetContentIdentifier:(id)identifier previousValue:(id)value;
+- (void)userActivityWebpageURLWasChanged:(id)changed webpageURL:(id)l previousValue:(id)value;
 @end
 
 @implementation SYActivityObserver
@@ -206,66 +206,66 @@ void __50__SYActivityObserver_indexedContentItemsDidChange__block_invoke(uint64_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportActiveUserActivityChangeIfNeeded:(id)a3 context:(id)a4
+- (void)_reportActiveUserActivityChangeIfNeeded:(id)needed context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SYActivityObserver *)self _observerQueue];
+  neededCopy = needed;
+  contextCopy = context;
+  _observerQueue = [(SYActivityObserver *)self _observerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__SYActivityObserver__reportActiveUserActivityChangeIfNeeded_context___block_invoke;
   block[3] = &unk_27856B578;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = neededCopy;
+  v13 = contextCopy;
+  v9 = contextCopy;
+  v10 = neededCopy;
+  dispatch_async(_observerQueue, block);
 }
 
-- (void)_q_reportActiveUserActivityChangeIfNeeded:(id)a3 context:(id)a4
+- (void)_q_reportActiveUserActivityChangeIfNeeded:(id)needed context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SYActivityObserver *)self _observerQueue];
-  dispatch_assert_queue_V2(v8);
+  neededCopy = needed;
+  contextCopy = context;
+  _observerQueue = [(SYActivityObserver *)self _observerQueue];
+  dispatch_assert_queue_V2(_observerQueue);
 
-  if (v6)
+  if (neededCopy)
   {
-    v9 = SYIsLinkableUserActivity(v6);
-    v10 = [v6 _uniqueIdentifier];
-    v11 = [[SYUserActivityIdentifierInfo alloc] initWithUserActivity:v6];
+    v9 = SYIsLinkableUserActivity(neededCopy);
+    _uniqueIdentifier = [neededCopy _uniqueIdentifier];
+    v11 = [[SYUserActivityIdentifierInfo alloc] initWithUserActivity:neededCopy];
   }
 
   else
   {
     v9 = 0;
-    v10 = 0;
+    _uniqueIdentifier = 0;
     v11 = 0;
   }
 
-  v12 = [(SYActivityObserver *)self _defaultsClient];
+  _defaultsClient = [(SYActivityObserver *)self _defaultsClient];
 
-  if (!v12)
+  if (!_defaultsClient)
   {
     v13 = objc_alloc_init(SYDefaultsClient);
     [(SYActivityObserver *)self set_defaultsClient:v13];
   }
 
-  v14 = [(SYActivityObserver *)self _defaultsClient];
+  _defaultsClient2 = [(SYActivityObserver *)self _defaultsClient];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __72__SYActivityObserver__q_reportActiveUserActivityChangeIfNeeded_context___block_invoke;
   v18[3] = &unk_27856C588;
   v19 = v11;
-  v20 = self;
+  selfCopy = self;
   v23 = v9;
-  v21 = v10;
-  v22 = v7;
-  v15 = v7;
-  v16 = v10;
+  v21 = _uniqueIdentifier;
+  v22 = contextCopy;
+  v15 = contextCopy;
+  v16 = _uniqueIdentifier;
   v17 = v11;
-  [v14 indicatorCoverageWithCompletion:v18];
+  [_defaultsClient2 indicatorCoverageWithCompletion:v18];
 }
 
 void __72__SYActivityObserver__q_reportActiveUserActivityChangeIfNeeded_context___block_invoke(uint64_t a1, uint64_t a2)
@@ -309,17 +309,17 @@ void __72__SYActivityObserver__q_reportActiveUserActivityChangeIfNeeded_context_
   }
 }
 
-- (void)_discoverAndProcessActiveUserActivityWithContext:(id)a3
+- (void)_discoverAndProcessActiveUserActivityWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = MEMORY[0x277CC1EF0];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__SYActivityObserver__discoverAndProcessActiveUserActivityWithContext___block_invoke;
   v7[3] = &unk_27856C5B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = contextCopy;
+  v6 = contextCopy;
   [v5 _syFetchCurrentUserActivityWithCompletion:v7];
 }
 
@@ -333,15 +333,15 @@ uint64_t __71__SYActivityObserver__discoverAndProcessActiveUserActivityWithConte
   return result;
 }
 
-- (void)q_processActiveUserActivity:(id)a3 identifier:(id)a4 linkable:(BOOL)a5 context:(id)a6
+- (void)q_processActiveUserActivity:(id)activity identifier:(id)identifier linkable:(BOOL)linkable context:(id)context
 {
   v42 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(SYActivityObserver *)self _delayedEvaluationBlock];
+  activityCopy = activity;
+  identifierCopy = identifier;
+  contextCopy = context;
+  _delayedEvaluationBlock = [(SYActivityObserver *)self _delayedEvaluationBlock];
 
-  if (v13)
+  if (_delayedEvaluationBlock)
   {
     v14 = os_log_create("com.apple.synapse", "BacklinkMonitor");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -350,20 +350,20 @@ uint64_t __71__SYActivityObserver__discoverAndProcessActiveUserActivityWithConte
       _os_log_impl(&dword_225901000, v14, OS_LOG_TYPE_INFO, "ActivityObserver: Cancelled previous scheduled request.", buf, 2u);
     }
 
-    v15 = [(SYActivityObserver *)self _delayedEvaluationBlock];
-    dispatch_block_cancel(v15);
+    _delayedEvaluationBlock2 = [(SYActivityObserver *)self _delayedEvaluationBlock];
+    dispatch_block_cancel(_delayedEvaluationBlock2);
 
     [(SYActivityObserver *)self set_delayedEvaluationBlock:0];
   }
 
-  v16 = [(SYActivityObserver *)self _lastReportedActivityTime];
+  _lastReportedActivityTime = [(SYActivityObserver *)self _lastReportedActivityTime];
 
-  if (v16)
+  if (_lastReportedActivityTime)
   {
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     v18 = v17;
-    v19 = [(SYActivityObserver *)self _lastReportedActivityTime];
-    [v19 timeIntervalSinceReferenceDate];
+    _lastReportedActivityTime2 = [(SYActivityObserver *)self _lastReportedActivityTime];
+    [_lastReportedActivityTime2 timeIntervalSinceReferenceDate];
     v21 = v20;
 
     if (v21 - v18 + 2.0 >= 0.1)
@@ -387,13 +387,13 @@ uint64_t __71__SYActivityObserver__discoverAndProcessActiveUserActivityWithConte
   block[2] = __78__SYActivityObserver_q_processActiveUserActivity_identifier_linkable_context___block_invoke;
   block[3] = &unk_27856C538;
   block[4] = self;
-  v37 = a5;
-  v23 = v11;
+  linkableCopy = linkable;
+  v23 = identifierCopy;
   v34 = v23;
-  v35 = v10;
-  v36 = v12;
-  v24 = v12;
-  v25 = v10;
+  v35 = activityCopy;
+  v36 = contextCopy;
+  v24 = contextCopy;
+  v25 = activityCopy;
   v26 = dispatch_block_create(0, block);
   [(SYActivityObserver *)self set_delayedEvaluationBlock:v26];
 
@@ -414,9 +414,9 @@ uint64_t __71__SYActivityObserver__discoverAndProcessActiveUserActivityWithConte
   }
 
   v29 = dispatch_time(0, (v22 * 1000000000.0));
-  v30 = [(SYActivityObserver *)self _observerQueue];
-  v31 = [(SYActivityObserver *)self _delayedEvaluationBlock];
-  dispatch_after(v29, v30, v31);
+  _observerQueue = [(SYActivityObserver *)self _observerQueue];
+  _delayedEvaluationBlock3 = [(SYActivityObserver *)self _delayedEvaluationBlock];
+  dispatch_after(v29, _observerQueue, _delayedEvaluationBlock3);
 
   v32 = *MEMORY[0x277D85DE8];
 }
@@ -542,10 +542,10 @@ void __78__SYActivityObserver_q_processActiveUserActivity_identifier_linkable_co
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)userActivityDidBecomeCurrent:(id)a3 current:(BOOL)a4
+- (void)userActivityDidBecomeCurrent:(id)current current:(BOOL)a4
 {
   v4 = a4;
-  v6 = a3;
+  currentCopy = current;
   v7 = os_log_create("com.apple.synapse", "BacklinkMonitor");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -555,7 +555,7 @@ void __78__SYActivityObserver_q_processActiveUserActivity_identifier_linkable_co
 
   if (v4)
   {
-    v8 = v6;
+    v8 = currentCopy;
   }
 
   else
@@ -564,14 +564,14 @@ void __78__SYActivityObserver_q_processActiveUserActivity_identifier_linkable_co
   }
 
   v9 = v8;
-  v10 = [(SYActivityObserver *)self _defaultActivityObserverContext];
-  [v10 setNeedsCacheUpdate:1];
-  [(SYActivityObserver *)self _reportActiveUserActivityChangeIfNeeded:v9 context:v10];
+  _defaultActivityObserverContext = [(SYActivityObserver *)self _defaultActivityObserverContext];
+  [_defaultActivityObserverContext setNeedsCacheUpdate:1];
+  [(SYActivityObserver *)self _reportActiveUserActivityChangeIfNeeded:v9 context:_defaultActivityObserverContext];
 }
 
-- (void)userActivityPersistentIdentifierWasChanged:(id)a3 persistentIdentifier:(id)a4 previousValue:(id)a5
+- (void)userActivityPersistentIdentifierWasChanged:(id)changed persistentIdentifier:(id)identifier previousValue:(id)value
 {
-  v6 = a3;
+  changedCopy = changed;
   v7 = os_log_create("com.apple.synapse", "BacklinkMonitor");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -579,16 +579,16 @@ void __78__SYActivityObserver_q_processActiveUserActivity_identifier_linkable_co
     _os_log_impl(&dword_225901000, v7, OS_LOG_TYPE_INFO, "ActivityObserver: userActivityPersistentIdentifierWasChanged", v9, 2u);
   }
 
-  if (SYIsCurrentLocalUserActivity(v6))
+  if (SYIsCurrentLocalUserActivity(changedCopy))
   {
-    v8 = [(SYActivityObserver *)self _defaultActivityObserverContext];
-    [(SYActivityObserver *)self _reportActiveUserActivityChangeIfNeeded:v6 context:v8];
+    _defaultActivityObserverContext = [(SYActivityObserver *)self _defaultActivityObserverContext];
+    [(SYActivityObserver *)self _reportActiveUserActivityChangeIfNeeded:changedCopy context:_defaultActivityObserverContext];
   }
 }
 
-- (void)userActivityTargetContentIdentifierWasChanged:(id)a3 targetContentIdentifier:(id)a4 previousValue:(id)a5
+- (void)userActivityTargetContentIdentifierWasChanged:(id)changed targetContentIdentifier:(id)identifier previousValue:(id)value
 {
-  v6 = a3;
+  changedCopy = changed;
   v7 = os_log_create("com.apple.synapse", "BacklinkMonitor");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -596,16 +596,16 @@ void __78__SYActivityObserver_q_processActiveUserActivity_identifier_linkable_co
     _os_log_impl(&dword_225901000, v7, OS_LOG_TYPE_INFO, "ActivityObserver: userActivityTargetContentIdentifierWasChanged", v9, 2u);
   }
 
-  if (SYIsCurrentLocalUserActivity(v6))
+  if (SYIsCurrentLocalUserActivity(changedCopy))
   {
-    v8 = [(SYActivityObserver *)self _defaultActivityObserverContext];
-    [(SYActivityObserver *)self _reportActiveUserActivityChangeIfNeeded:v6 context:v8];
+    _defaultActivityObserverContext = [(SYActivityObserver *)self _defaultActivityObserverContext];
+    [(SYActivityObserver *)self _reportActiveUserActivityChangeIfNeeded:changedCopy context:_defaultActivityObserverContext];
   }
 }
 
-- (void)userActivityWebpageURLWasChanged:(id)a3 webpageURL:(id)a4 previousValue:(id)a5
+- (void)userActivityWebpageURLWasChanged:(id)changed webpageURL:(id)l previousValue:(id)value
 {
-  v6 = a3;
+  changedCopy = changed;
   v7 = os_log_create("com.apple.synapse", "BacklinkMonitor");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -613,17 +613,17 @@ void __78__SYActivityObserver_q_processActiveUserActivity_identifier_linkable_co
     _os_log_impl(&dword_225901000, v7, OS_LOG_TYPE_INFO, "ActivityObserver: userActivityWebpageURLWasChanged", v9, 2u);
   }
 
-  if (SYIsCurrentLocalUserActivity(v6))
+  if (SYIsCurrentLocalUserActivity(changedCopy))
   {
-    v8 = [(SYActivityObserver *)self _defaultActivityObserverContext];
-    [v8 setNeedsCacheUpdate:1];
-    [(SYActivityObserver *)self _reportActiveUserActivityChangeIfNeeded:v6 context:v8];
+    _defaultActivityObserverContext = [(SYActivityObserver *)self _defaultActivityObserverContext];
+    [_defaultActivityObserverContext setNeedsCacheUpdate:1];
+    [(SYActivityObserver *)self _reportActiveUserActivityChangeIfNeeded:changedCopy context:_defaultActivityObserverContext];
   }
 }
 
-- (void)userActivityCanonicalURLWasChanged:(id)a3
+- (void)userActivityCanonicalURLWasChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = os_log_create("com.apple.synapse", "BacklinkMonitor");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -631,45 +631,45 @@ void __78__SYActivityObserver_q_processActiveUserActivity_identifier_linkable_co
     _os_log_impl(&dword_225901000, v5, OS_LOG_TYPE_INFO, "ActivityObserver: userActivityCanonicalURLWasChanged", v7, 2u);
   }
 
-  if (SYIsCurrentLocalUserActivity(v4))
+  if (SYIsCurrentLocalUserActivity(changedCopy))
   {
-    v6 = [(SYActivityObserver *)self _defaultActivityObserverContext];
-    [(SYActivityObserver *)self _reportActiveUserActivityChangeIfNeeded:v4 context:v6];
+    _defaultActivityObserverContext = [(SYActivityObserver *)self _defaultActivityObserverContext];
+    [(SYActivityObserver *)self _reportActiveUserActivityChangeIfNeeded:changedCopy context:_defaultActivityObserverContext];
   }
 }
 
-- (void)_handleAppBecomeActive:(id)a3
+- (void)_handleAppBecomeActive:(id)active
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activeCopy = active;
   v5 = os_log_create("com.apple.synapse", "BacklinkMonitor");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = activeCopy;
     _os_log_impl(&dword_225901000, v5, OS_LOG_TYPE_INFO, "ActivityObserver: app is active %@", &v8, 0xCu);
   }
 
-  v6 = [(SYActivityObserver *)self _defaultActivityObserverContext];
-  [(SYActivityObserver *)self _discoverAndProcessActiveUserActivityWithContext:v6];
+  _defaultActivityObserverContext = [(SYActivityObserver *)self _defaultActivityObserverContext];
+  [(SYActivityObserver *)self _discoverAndProcessActiveUserActivityWithContext:_defaultActivityObserverContext];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleAppResignActive:(id)a3
+- (void)_handleAppResignActive:(id)active
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activeCopy = active;
   v5 = os_log_create("com.apple.synapse", "BacklinkMonitor");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = activeCopy;
     _os_log_impl(&dword_225901000, v5, OS_LOG_TYPE_INFO, "ActivityObserver: app is inactive %@", &v8, 0xCu);
   }
 
-  v6 = [(SYActivityObserver *)self _defaultActivityObserverContext];
-  [(SYActivityObserver *)self _reportActiveUserActivityChangeIfNeeded:0 context:v6];
+  _defaultActivityObserverContext = [(SYActivityObserver *)self _defaultActivityObserverContext];
+  [(SYActivityObserver *)self _reportActiveUserActivityChangeIfNeeded:0 context:_defaultActivityObserverContext];
 
   v7 = *MEMORY[0x277D85DE8];
 }

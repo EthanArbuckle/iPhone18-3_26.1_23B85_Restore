@@ -1,6 +1,6 @@
 @interface AgeRatingBadgeView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)drawRect:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
 - (void)tintColorDidChange;
 @end
@@ -10,27 +10,27 @@
 - (void)tintColorDidChange
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore18AgeRatingBadgeView_ageLabel);
-  v4 = self;
-  v3 = [(AgeRatingBadgeView *)v4 tintColor];
-  [v2 setTextColor:v3];
+  selfCopy = self;
+  tintColor = [(AgeRatingBadgeView *)selfCopy tintColor];
+  [v2 setTextColor:tintColor];
 
-  [(AgeRatingBadgeView *)v4 setNeedsDisplay];
+  [(AgeRatingBadgeView *)selfCopy setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_1005A6FA8(x, y, width, height);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_1005A72A0(width);
   v7 = v6;
 

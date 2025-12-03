@@ -1,20 +1,20 @@
 @interface WFDebouncer
-- (WFDebouncer)initWithDelay:(double)a3 maximumDelay:(double)a4 queue:(id)a5 userInfo:(id)a6 unboundedFiringReasons:(BOOL)a7;
-- (void)addTarget:(id)a3 action:(SEL)a4;
+- (WFDebouncer)initWithDelay:(double)delay maximumDelay:(double)maximumDelay queue:(id)queue userInfo:(id)info unboundedFiringReasons:(BOOL)reasons;
+- (void)addTarget:(id)target action:(SEL)action;
 - (void)dealloc;
 - (void)fire;
 - (void)poke;
-- (void)pokeWithReason:(id)a3 userInfo:(id)a4;
-- (void)removeTarget:(id)a3 action:(SEL)a4;
+- (void)pokeWithReason:(id)reason userInfo:(id)info;
+- (void)removeTarget:(id)target action:(SEL)action;
 - (void)resetDelayTimer;
-- (void)setPendingFire:(uint64_t)a1;
+- (void)setPendingFire:(uint64_t)fire;
 @end
 
 @implementation WFDebouncer
 
-- (void)removeTarget:(id)a3 action:(SEL)a4
+- (void)removeTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   if (self)
   {
     queue = self->_queue;
@@ -29,10 +29,10 @@
   block[1] = 3221225472;
   block[2] = __35__WFDebouncer_removeTarget_action___block_invoke;
   block[3] = &unk_1E7B021A8;
-  v10 = v6;
-  v11 = a4;
+  v10 = targetCopy;
+  actionCopy = action;
   block[4] = self;
-  v8 = v6;
+  v8 = targetCopy;
   dispatch_async(queue, block);
 }
 
@@ -74,19 +74,19 @@ void __35__WFDebouncer_removeTarget_action___block_invoke(uint64_t a1)
   }
 }
 
-- (void)addTarget:(id)a3 action:(SEL)a4
+- (void)addTarget:(id)target action:(SEL)action
 {
-  v7 = a3;
-  if (v7)
+  targetCopy = target;
+  if (targetCopy)
   {
-    if (a4)
+    if (action)
     {
       goto LABEL_3;
     }
 
 LABEL_7:
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFDebouncer.mm" lineNumber:191 description:{@"Invalid parameter not satisfying: %@", @"action"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDebouncer.mm" lineNumber:191 description:{@"Invalid parameter not satisfying: %@", @"action"}];
 
     if (self)
     {
@@ -98,10 +98,10 @@ LABEL_8:
     goto LABEL_5;
   }
 
-  v10 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v10 handleFailureInMethod:a2 object:self file:@"WFDebouncer.mm" lineNumber:190 description:{@"Invalid parameter not satisfying: %@", @"target"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFDebouncer.mm" lineNumber:190 description:{@"Invalid parameter not satisfying: %@", @"target"}];
 
-  if (!a4)
+  if (!action)
   {
     goto LABEL_7;
   }
@@ -120,9 +120,9 @@ LABEL_5:
   block[2] = __32__WFDebouncer_addTarget_action___block_invoke;
   block[3] = &unk_1E7B021A8;
   block[4] = self;
-  v13 = v7;
-  v14 = a4;
-  v9 = v7;
+  v13 = targetCopy;
+  actionCopy = action;
+  v9 = targetCopy;
   dispatch_async(queue, block);
 }
 
@@ -285,25 +285,25 @@ void __32__WFDebouncer_addTarget_action___block_invoke(uint64_t a1)
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPendingFire:(uint64_t)a1
+- (void)setPendingFire:(uint64_t)fire
 {
-  if (!a1)
+  if (!fire)
   {
     return;
   }
 
   v2 = a2;
-  if (*(a1 + 9) != a2)
+  if (*(fire + 9) != a2)
   {
-    v5 = *(a1 + 64);
+    v5 = *(fire + 64);
     if (a2)
     {
       if (!v5)
       {
         v6 = os_transaction_create();
-        v5 = *(a1 + 64);
+        v5 = *(fire + 64);
 LABEL_12:
-        *(a1 + 64) = v6;
+        *(fire + 64) = v6;
       }
     }
 
@@ -313,13 +313,13 @@ LABEL_12:
       goto LABEL_12;
     }
 
-    *(a1 + 9) = v2;
+    *(fire + 9) = v2;
     return;
   }
 
   if (a2)
   {
-    v4 = *(a1 + 64);
+    v4 = *(fire + 64);
 
     MEMORY[0x1EEE74830](v4);
   }
@@ -327,26 +327,26 @@ LABEL_12:
 
 - (void)resetDelayTimer
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 80);
+    v2 = *(self + 80);
     if (v2)
     {
       dispatch_source_cancel(v2);
-      v2 = *(a1 + 80);
+      v2 = *(self + 80);
     }
 
-    *(a1 + 80) = 0;
+    *(self + 80) = 0;
   }
 }
 
-- (void)pokeWithReason:(id)a3 userInfo:(id)a4
+- (void)pokeWithReason:(id)reason userInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
+  reasonCopy = reason;
+  infoCopy = info;
   v9 = [WFDebouncerPokeReason alloc];
-  v10 = v7;
-  v11 = v8;
+  v10 = reasonCopy;
+  v11 = infoCopy;
   if (v9)
   {
     v17.receiver = v9;
@@ -355,8 +355,8 @@ LABEL_12:
     v9 = v12;
     if (v12)
     {
-      objc_storeStrong(v12 + 1, a3);
-      objc_storeStrong(&v9->_userInfo, a4);
+      objc_storeStrong(v12 + 1, reason);
+      objc_storeStrong(&v9->_userInfo, info);
     }
   }
 
@@ -601,10 +601,10 @@ void __32__WFDebouncer_restartDelayTimer__block_invoke(uint64_t a1)
   [(WFDebouncer *)&v5 dealloc];
 }
 
-- (WFDebouncer)initWithDelay:(double)a3 maximumDelay:(double)a4 queue:(id)a5 userInfo:(id)a6 unboundedFiringReasons:(BOOL)a7
+- (WFDebouncer)initWithDelay:(double)delay maximumDelay:(double)maximumDelay queue:(id)queue userInfo:(id)info unboundedFiringReasons:(BOOL)reasons
 {
-  v12 = a5;
-  v13 = a6;
+  queueCopy = queue;
+  infoCopy = info;
   v26.receiver = self;
   v26.super_class = WFDebouncer;
   v14 = [(WFDebouncer *)&v26 init];
@@ -612,11 +612,11 @@ void __32__WFDebouncer_restartDelayTimer__block_invoke(uint64_t a1)
   v16 = v14;
   if (v14)
   {
-    v14->_delay = a3;
-    v14->_maximumDelay = a4;
-    if (v12)
+    v14->_delay = delay;
+    v14->_maximumDelay = maximumDelay;
+    if (queueCopy)
     {
-      v17 = v12;
+      v17 = queueCopy;
       queue = v16->_queue;
       v16->_queue = v17;
     }
@@ -630,12 +630,12 @@ void __32__WFDebouncer_restartDelayTimer__block_invoke(uint64_t a1)
       v16->_queue = v20;
     }
 
-    v22 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     targetTable = v16->_targetTable;
-    v16->_targetTable = v22;
+    v16->_targetTable = weakToStrongObjectsMapTable;
 
-    objc_storeStrong(&v15->_userInfo, a6);
-    v16->_unboundedFiringReasons = a7;
+    objc_storeStrong(&v15->_userInfo, info);
+    v16->_unboundedFiringReasons = reasons;
     v24 = v16;
   }
 

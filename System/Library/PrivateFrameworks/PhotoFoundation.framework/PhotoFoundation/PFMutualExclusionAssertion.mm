@@ -1,16 +1,16 @@
 @interface PFMutualExclusionAssertion
 - (void)enterCriticalSection;
 - (void)leaveCriticalSection;
-- (void)performCriticalSection:(id)a3;
+- (void)performCriticalSection:(id)section;
 @end
 
 @implementation PFMutualExclusionAssertion
 
-- (void)performCriticalSection:(id)a3
+- (void)performCriticalSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   [(PFMutualExclusionAssertion *)self enterCriticalSection];
-  v4[2](v4);
+  sectionCopy[2](sectionCopy);
 
   [(PFMutualExclusionAssertion *)self leaveCriticalSection];
 }

@@ -1,57 +1,57 @@
 @interface HULinkedApplicationLibraryItem
 - (HULinkedApplicationLibraryItem)init;
-- (HULinkedApplicationLibraryItem)initWithApplicationProxy:(id)a3;
-- (HULinkedApplicationLibraryItem)initWithApplicationProxy:(id)a3 associatedAccessories:(id)a4;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HULinkedApplicationLibraryItem)initWithApplicationProxy:(id)proxy;
+- (HULinkedApplicationLibraryItem)initWithApplicationProxy:(id)proxy associatedAccessories:(id)accessories;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)bundleIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HULinkedApplicationLibraryItem
 
 - (HULinkedApplicationLibraryItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithApplicationProxy_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HULinkedApplicationItem.m" lineNumber:133 description:{@"%s is unavailable; use %@ instead", "-[HULinkedApplicationLibraryItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HULinkedApplicationItem.m" lineNumber:133 description:{@"%s is unavailable; use %@ instead", "-[HULinkedApplicationLibraryItem init]", v5}];
 
   return 0;
 }
 
-- (HULinkedApplicationLibraryItem)initWithApplicationProxy:(id)a3
+- (HULinkedApplicationLibraryItem)initWithApplicationProxy:(id)proxy
 {
-  v5 = a3;
+  proxyCopy = proxy;
   v9.receiver = self;
   v9.super_class = HULinkedApplicationLibraryItem;
   v6 = [(HULinkedApplicationItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_applicationProxy, a3);
+    objc_storeStrong(&v6->_applicationProxy, proxy);
   }
 
   return v7;
 }
 
-- (HULinkedApplicationLibraryItem)initWithApplicationProxy:(id)a3 associatedAccessories:(id)a4
+- (HULinkedApplicationLibraryItem)initWithApplicationProxy:(id)proxy associatedAccessories:(id)accessories
 {
-  v6 = a4;
-  v7 = [(HULinkedApplicationLibraryItem *)self initWithApplicationProxy:a3];
+  accessoriesCopy = accessories;
+  v7 = [(HULinkedApplicationLibraryItem *)self initWithApplicationProxy:proxy];
   v8 = v7;
   if (v7)
   {
-    [(HULinkedApplicationItem *)v7 setAssociatedAccessories:v6];
+    [(HULinkedApplicationItem *)v7 setAssociatedAccessories:accessoriesCopy];
   }
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HULinkedApplicationLibraryItem *)self applicationProxy];
-  v6 = [(HULinkedApplicationItem *)self associatedAccessories];
-  v7 = [v4 initWithApplicationProxy:v5 associatedAccessories:v6];
+  applicationProxy = [(HULinkedApplicationLibraryItem *)self applicationProxy];
+  associatedAccessories = [(HULinkedApplicationItem *)self associatedAccessories];
+  v7 = [v4 initWithApplicationProxy:applicationProxy associatedAccessories:associatedAccessories];
 
   [v7 copyLatestResultsFromItem:self];
   return v7;
@@ -59,17 +59,17 @@
 
 - (id)bundleIdentifier
 {
-  v2 = [(HULinkedApplicationLibraryItem *)self applicationProxy];
-  v3 = [v2 bundleIdentifier];
+  applicationProxy = [(HULinkedApplicationLibraryItem *)self applicationProxy];
+  bundleIdentifier = [applicationProxy bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v8.receiver = self;
   v8.super_class = HULinkedApplicationLibraryItem;
-  v4 = [(HULinkedApplicationItem *)&v8 _subclass_updateWithOptions:a3];
+  v4 = [(HULinkedApplicationItem *)&v8 _subclass_updateWithOptions:options];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__HULinkedApplicationLibraryItem__subclass_updateWithOptions___block_invoke;

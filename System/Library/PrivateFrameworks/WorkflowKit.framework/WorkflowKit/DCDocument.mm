@@ -1,23 +1,23 @@
 @interface DCDocument
-+ (id)documentWithURL:(id)a3;
-+ (id)documentWithURL:(id)a3 annotation:(id)a4;
-- (DCDocument)initWithURL:(id)a3 annotation:(id)a4;
-- (void)openInDefaultAppWithCompletionHandler:(id)a3;
-- (void)openWithAppBundleIdentifier:(id)a3 completionHandler:(id)a4;
++ (id)documentWithURL:(id)l;
++ (id)documentWithURL:(id)l annotation:(id)annotation;
+- (DCDocument)initWithURL:(id)l annotation:(id)annotation;
+- (void)openInDefaultAppWithCompletionHandler:(id)handler;
+- (void)openWithAppBundleIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation DCDocument
 
-- (void)openInDefaultAppWithCompletionHandler:(id)a3
+- (void)openInDefaultAppWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__DCDocument_openInDefaultAppWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E837E1F8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -64,19 +64,19 @@ uint64_t __52__DCDocument_openInDefaultAppWithCompletionHandler___block_invoke_2
   return result;
 }
 
-- (void)openWithAppBundleIdentifier:(id)a3 completionHandler:(id)a4
+- (void)openWithAppBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__DCDocument_openWithAppBundleIdentifier_completionHandler___block_invoke;
   block[3] = &unk_1E837ECE0;
-  v11 = v6;
-  v12 = v7;
+  v11 = identifierCopy;
+  v12 = handlerCopy;
   block[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = identifierCopy;
+  v9 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -126,14 +126,14 @@ uint64_t __60__DCDocument_openWithAppBundleIdentifier_completionHandler___block_
   return result;
 }
 
-- (DCDocument)initWithURL:(id)a3 annotation:(id)a4
+- (DCDocument)initWithURL:(id)l annotation:(id)annotation
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  lCopy = l;
+  annotationCopy = annotation;
+  if (!lCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"DCDocument.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"fileURL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"DCDocument.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"fileURL"}];
   }
 
   v15.receiver = self;
@@ -141,30 +141,30 @@ uint64_t __60__DCDocument_openWithAppBundleIdentifier_completionHandler___block_
   v9 = [(DCDocument *)&v15 init];
   if (v9)
   {
-    v10 = [v7 copy];
+    v10 = [lCopy copy];
     fileURL = v9->_fileURL;
     v9->_fileURL = v10;
 
-    objc_storeStrong(&v9->_annotation, a4);
+    objc_storeStrong(&v9->_annotation, annotation);
     v12 = v9;
   }
 
   return v9;
 }
 
-+ (id)documentWithURL:(id)a3 annotation:(id)a4
++ (id)documentWithURL:(id)l annotation:(id)annotation
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[DCDocument alloc] initWithURL:v6 annotation:v5];
+  annotationCopy = annotation;
+  lCopy = l;
+  v7 = [[DCDocument alloc] initWithURL:lCopy annotation:annotationCopy];
 
   return v7;
 }
 
-+ (id)documentWithURL:(id)a3
++ (id)documentWithURL:(id)l
 {
-  v3 = a3;
-  v4 = [[DCDocument alloc] initWithURL:v3 annotation:0];
+  lCopy = l;
+  v4 = [[DCDocument alloc] initWithURL:lCopy annotation:0];
 
   return v4;
 }

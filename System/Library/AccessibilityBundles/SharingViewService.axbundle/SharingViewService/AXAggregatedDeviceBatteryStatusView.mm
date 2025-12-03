@@ -1,37 +1,37 @@
 @interface AXAggregatedDeviceBatteryStatusView
-- (AXAggregatedDeviceBatteryStatusView)initWithAccessibilityContainer:(id)a3 representedElements:(id)a4 primaryTitle:(id)a5 batteryLevelLabel:(id)a6 chargingImage:(id)a7 warningImage:(id)a8;
+- (AXAggregatedDeviceBatteryStatusView)initWithAccessibilityContainer:(id)container representedElements:(id)elements primaryTitle:(id)title batteryLevelLabel:(id)label chargingImage:(id)image warningImage:(id)warningImage;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 @end
 
 @implementation AXAggregatedDeviceBatteryStatusView
 
-- (AXAggregatedDeviceBatteryStatusView)initWithAccessibilityContainer:(id)a3 representedElements:(id)a4 primaryTitle:(id)a5 batteryLevelLabel:(id)a6 chargingImage:(id)a7 warningImage:(id)a8
+- (AXAggregatedDeviceBatteryStatusView)initWithAccessibilityContainer:(id)container representedElements:(id)elements primaryTitle:(id)title batteryLevelLabel:(id)label chargingImage:(id)image warningImage:(id)warningImage
 {
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  titleCopy = title;
+  labelCopy = label;
+  imageCopy = image;
+  warningImageCopy = warningImage;
   v21.receiver = self;
   v21.super_class = AXAggregatedDeviceBatteryStatusView;
-  v18 = [(UIAccessibilityAggregateElement *)&v21 initWithAccessibilityContainer:self representedElements:a4];
+  v18 = [(UIAccessibilityAggregateElement *)&v21 initWithAccessibilityContainer:self representedElements:elements];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_primaryTitle, a5);
-    if (([v15 isHidden] & 1) == 0)
+    objc_storeStrong(&v18->_primaryTitle, title);
+    if (([labelCopy isHidden] & 1) == 0)
     {
-      objc_storeStrong(&v19->_batteryLevelLabel, a6);
+      objc_storeStrong(&v19->_batteryLevelLabel, label);
     }
 
-    if (([v16 isHidden] & 1) == 0)
+    if (([imageCopy isHidden] & 1) == 0)
     {
-      objc_storeStrong(&v19->_chargingImage, a7);
+      objc_storeStrong(&v19->_chargingImage, image);
     }
 
-    if (([v17 isHidden] & 1) == 0)
+    if (([warningImageCopy isHidden] & 1) == 0)
     {
-      objc_storeStrong(&v19->_warningImage, a8);
+      objc_storeStrong(&v19->_warningImage, warningImage);
     }
   }
 
@@ -54,12 +54,12 @@
   batteryLevelLabel = self->_batteryLevelLabel;
   if (batteryLevelLabel)
   {
-    v4 = [self->_batteryLevelLabel accessibilityLabel];
+    accessibilityLabel = [self->_batteryLevelLabel accessibilityLabel];
   }
 
   else
   {
-    v4 = 0;
+    accessibilityLabel = 0;
   }
 
   chargingImage = self->_chargingImage;

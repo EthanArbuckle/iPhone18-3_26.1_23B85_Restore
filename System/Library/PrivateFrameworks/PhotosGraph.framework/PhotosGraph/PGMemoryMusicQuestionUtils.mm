@@ -1,26 +1,26 @@
 @interface PGMemoryMusicQuestionUtils
-+ (id)extractKeySongInfoForMemory:(id)a3 isAppleMusicSubscriber:(BOOL)a4;
-+ (id)extractStoryRecipeForMemory:(id)a3;
-+ (void)enumerateMemoryMusicSuggestionsInPhotoLibrary:(id)a3 block:(id)a4;
++ (id)extractKeySongInfoForMemory:(id)memory isAppleMusicSubscriber:(BOOL)subscriber;
++ (id)extractStoryRecipeForMemory:(id)memory;
++ (void)enumerateMemoryMusicSuggestionsInPhotoLibrary:(id)library block:(id)block;
 @end
 
 @implementation PGMemoryMusicQuestionUtils
 
-+ (id)extractKeySongInfoForMemory:(id)a3 isAppleMusicSubscriber:(BOOL)a4
++ (id)extractKeySongInfoForMemory:(id)memory isAppleMusicSubscriber:(BOOL)subscriber
 {
-  v4 = a4;
+  subscriberCopy = subscriber;
   v43[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a1 extractStoryRecipeForMemory:v6];
+  memoryCopy = memory;
+  v7 = [self extractStoryRecipeForMemory:memoryCopy];
   v8 = v7;
   if (!v7)
   {
     v11 = PLStoryGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [v6 uuid];
+      uuid = [memoryCopy uuid];
       v32 = 138412290;
-      v33 = v12;
+      v33 = uuid;
       v13 = "[MusicQualityQuestion] Unable to extractStoryRecipeForMemory for PHMemory %@";
       v14 = v11;
       v15 = OS_LOG_TYPE_ERROR;
@@ -32,17 +32,17 @@ LABEL_8:
     goto LABEL_21;
   }
 
-  v9 = [v7 currentStyle];
-  v10 = [v9 isCustomized];
+  currentStyle = [v7 currentStyle];
+  isCustomized = [currentStyle isCustomized];
 
-  if (v10)
+  if (isCustomized)
   {
     v11 = PLStoryGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [v6 uuid];
+      uuid = [memoryCopy uuid];
       v32 = 138412290;
-      v33 = v12;
+      v33 = uuid;
       v13 = "[MusicQualityQuestion] PHMemory %@ has a customized recipie so don't use for PhotosChallenge.";
       v14 = v11;
       v15 = OS_LOG_TYPE_DEBUG;
@@ -60,18 +60,18 @@ LABEL_7:
   v18 = *MEMORY[0x277D3B5D8];
   v19 = [v8 seedSongAssetForCatalog:*MEMORY[0x277D3B5D8]];
   v20 = v19;
-  if (v4 && v11)
+  if (subscriberCopy && v11)
   {
     v42[0] = *MEMORY[0x277D3C970];
-    v21 = [v11 identifier];
-    v43[0] = v21;
+    identifier = [v11 identifier];
+    v43[0] = identifier;
     v42[1] = *MEMORY[0x277D3C978];
-    v22 = [v11 title];
-    v43[1] = v22;
+    title = [v11 title];
+    v43[1] = title;
     v42[2] = *MEMORY[0x277D3C960];
-    v23 = [v11 subtitle];
+    subtitle = [v11 subtitle];
     v42[3] = *MEMORY[0x277D3C968];
-    v43[2] = v23;
+    v43[2] = subtitle;
     v43[3] = v17;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:v42 count:4];
 
@@ -93,15 +93,15 @@ LABEL_16:
       v24 = PLStoryGetLog();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
-        v29 = [v6 uuid];
+        uuid2 = [memoryCopy uuid];
         v32 = 138413058;
-        v33 = v29;
+        v33 = uuid2;
         v34 = 2112;
         v35 = 0;
         v36 = 2112;
         v37 = 0;
         v38 = 1024;
-        v39 = v4;
+        v39 = subscriberCopy;
         _os_log_impl(&dword_22F0FC000, v24, OS_LOG_TYPE_ERROR, "[MusicQualityQuestion] PHMemory %@: Unable to get songInfo. \n keySongFlexMusic=%@ keySongFlexMusic=%@ _isAppleMusicSubscriber=%d", &v32, 0x26u);
       }
 
@@ -110,15 +110,15 @@ LABEL_16:
     }
 
     v40[0] = *MEMORY[0x277D3C970];
-    v26 = [v19 identifier];
-    v41[0] = v26;
+    identifier2 = [v19 identifier];
+    v41[0] = identifier2;
     v40[1] = *MEMORY[0x277D3C978];
-    v27 = [v20 title];
-    v41[1] = v27;
+    title2 = [v20 title];
+    v41[1] = title2;
     v40[2] = *MEMORY[0x277D3C960];
-    v28 = [v20 subtitle];
+    subtitle2 = [v20 subtitle];
     v40[3] = *MEMORY[0x277D3C968];
-    v41[2] = v28;
+    v41[2] = subtitle2;
     v41[3] = v18;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:v40 count:4];
 
@@ -140,12 +140,12 @@ LABEL_21:
   return v16;
 }
 
-+ (id)extractStoryRecipeForMemory:(id)a3
++ (id)extractStoryRecipeForMemory:(id)memory
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 photosGraphProperties];
-  v5 = [v4 objectForKeyedSubscript:@"storyRecipeData"];
+  memoryCopy = memory;
+  photosGraphProperties = [memoryCopy photosGraphProperties];
+  v5 = [photosGraphProperties objectForKeyedSubscript:@"storyRecipeData"];
 
   if (v5)
   {
@@ -164,7 +164,7 @@ LABEL_21:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v16 = v3;
+        v16 = memoryCopy;
         v17 = 2112;
         v18 = v8;
         _os_log_impl(&dword_22F0FC000, v11, OS_LOG_TYPE_ERROR, "[MusicQualityQuestion] Failed to unarchive recipe for %@: %@", buf, 0x16u);
@@ -177,9 +177,9 @@ LABEL_21:
     v6 = PLStoryGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v10 = [v3 uuid];
+      uuid = [memoryCopy uuid];
       *buf = 138412290;
-      v16 = v10;
+      v16 = uuid;
       _os_log_impl(&dword_22F0FC000, v6, OS_LOG_TYPE_ERROR, "[MusicQualityQuestion] Unable to extract the StoryRecipeData for memory uuid=%@", buf, 0xCu);
     }
 
@@ -191,11 +191,11 @@ LABEL_21:
   return v7;
 }
 
-+ (void)enumerateMemoryMusicSuggestionsInPhotoLibrary:(id)a3 block:(id)a4
++ (void)enumerateMemoryMusicSuggestionsInPhotoLibrary:(id)library block:(id)block
 {
   v27[3] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [a3 librarySpecificFetchOptions];
+  blockCopy = block;
+  librarySpecificFetchOptions = [library librarySpecificFetchOptions];
   v7 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"score" ascending:1];
   v27[0] = v7;
   v8 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:0];
@@ -203,15 +203,15 @@ LABEL_21:
   v9 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"objectID" ascending:0];
   v27[2] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:3];
-  [v6 setSortDescriptors:v10];
+  [librarySpecificFetchOptions setSortDescriptors:v10];
 
-  v11 = [MEMORY[0x277CBEAA8] date];
-  v12 = [v11 dateByAddingTimeInterval:-31557600.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v12 = [date dateByAddingTimeInterval:-31557600.0];
 
   v13 = [MEMORY[0x277CCAC30] predicateWithFormat:@"creationDate >= %@", v12];
-  [v6 setPredicate:v13];
+  [librarySpecificFetchOptions setPredicate:v13];
 
-  v14 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v6];
+  v14 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:librarySpecificFetchOptions];
   if ([v14 count])
   {
     v25 = 0;
@@ -239,7 +239,7 @@ LABEL_4:
           break;
         }
 
-        (*(v5 + 2))(v5, *(*(&v21 + 1) + 8 * v19++), 0, &v25);
+        (*(blockCopy + 2))(blockCopy, *(*(&v21 + 1) + 8 * v19++), 0, &v25);
         if (v17 == v19)
         {
           v17 = [v15 countByEnumeratingWithState:&v21 objects:v26 count:16];

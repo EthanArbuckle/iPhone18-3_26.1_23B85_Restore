@@ -1,77 +1,77 @@
 @interface HMDRemovedUser
-+ (id)removedUserWithUser:(id)a3;
-- (BOOL)isEqualToUser:(id)a3;
-- (BOOL)isEqualToUserID:(id)a3;
++ (id)removedUserWithUser:(id)user;
+- (BOOL)isEqualToUser:(id)user;
+- (BOOL)isEqualToUserID:(id)d;
 - (BOOL)isExpired;
-- (HMDRemovedUser)initWithCoder:(id)a3;
-- (HMDRemovedUser)initWithUser:(id)a3 expiration:(id)a4;
+- (HMDRemovedUser)initWithCoder:(id)coder;
+- (HMDRemovedUser)initWithUser:(id)user expiration:(id)expiration;
 - (NSString)mergeID;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDRemovedUser
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDRemovedUser *)self user];
-  [v4 encodeObject:v5 forKey:@"HM.user"];
+  coderCopy = coder;
+  user = [(HMDRemovedUser *)self user];
+  [coderCopy encodeObject:user forKey:@"HM.user"];
 
-  v6 = [(HMDRemovedUser *)self expirationDate];
-  [v4 encodeObject:v6 forKey:@"HM.expiry"];
+  expirationDate = [(HMDRemovedUser *)self expirationDate];
+  [coderCopy encodeObject:expirationDate forKey:@"HM.expiry"];
 }
 
-- (HMDRemovedUser)initWithCoder:(id)a3
+- (HMDRemovedUser)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.user"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.expiry"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.user"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.expiry"];
 
   v7 = [(HMDRemovedUser *)self initWithUser:v5 expiration:v6];
   return v7;
 }
 
-- (BOOL)isEqualToUser:(id)a3
+- (BOOL)isEqualToUser:(id)user
 {
-  v4 = a3;
-  v5 = [(HMDRemovedUser *)self user];
+  userCopy = user;
+  user = [(HMDRemovedUser *)self user];
 
-  if (v5 == v4)
+  if (user == userCopy)
   {
     v7 = 1;
   }
 
   else
   {
-    v6 = [v4 userID];
-    v7 = [(HMDRemovedUser *)self isEqualToUserID:v6];
+    userID = [userCopy userID];
+    v7 = [(HMDRemovedUser *)self isEqualToUserID:userID];
   }
 
   return v7;
 }
 
-- (BOOL)isEqualToUserID:(id)a3
+- (BOOL)isEqualToUserID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMDRemovedUser *)self user];
-  v6 = [v5 userID];
-  v7 = [v6 isEqualToString:v4];
+  dCopy = d;
+  user = [(HMDRemovedUser *)self user];
+  userID = [user userID];
+  v7 = [userID isEqualToString:dCopy];
 
   return v7;
 }
 
 - (BOOL)isExpired
 {
-  v3 = [(HMDRemovedUser *)self user];
+  user = [(HMDRemovedUser *)self user];
 
-  if (!v3)
+  if (!user)
   {
     return 1;
   }
 
-  v4 = [(HMDRemovedUser *)self expirationDate];
-  [v4 timeIntervalSinceNow];
+  expirationDate = [(HMDRemovedUser *)self expirationDate];
+  [expirationDate timeIntervalSinceNow];
   v6 = v5 < 0.0;
 
   return v6;
@@ -79,48 +79,48 @@
 
 - (NSString)mergeID
 {
-  v2 = [(HMDRemovedUser *)self user];
-  v3 = [v2 account];
-  v4 = [v3 senderCorrelationIdentifier];
+  user = [(HMDRemovedUser *)self user];
+  account = [user account];
+  senderCorrelationIdentifier = [account senderCorrelationIdentifier];
 
-  return v4;
+  return senderCorrelationIdentifier;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HMDRemovedUser *)self user];
-  v6 = [(HMDRemovedUser *)self expirationDate];
-  v7 = [v3 stringWithFormat:@"<%@, User = %@, Expiration = %@>", v4, v5, v6];
+  user = [(HMDRemovedUser *)self user];
+  expirationDate = [(HMDRemovedUser *)self expirationDate];
+  v7 = [v3 stringWithFormat:@"<%@, User = %@, Expiration = %@>", v4, user, expirationDate];
 
   return v7;
 }
 
-- (HMDRemovedUser)initWithUser:(id)a3 expiration:(id)a4
+- (HMDRemovedUser)initWithUser:(id)user expiration:(id)expiration
 {
-  v7 = a3;
-  v8 = a4;
+  userCopy = user;
+  expirationCopy = expiration;
   v12.receiver = self;
   v12.super_class = HMDRemovedUser;
   v9 = [(HMDRemovedUser *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_user, a3);
-    objc_storeStrong(&v10->_expirationDate, a4);
+    objc_storeStrong(&v9->_user, user);
+    objc_storeStrong(&v10->_expirationDate, expiration);
     v10->_removalInProgress = 0;
   }
 
   return v10;
 }
 
-+ (id)removedUserWithUser:(id)a3
++ (id)removedUserWithUser:(id)user
 {
-  v3 = a3;
+  userCopy = user;
   v4 = [HMDRemovedUser alloc];
   v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:2592000.0];
-  v6 = [(HMDRemovedUser *)v4 initWithUser:v3 expiration:v5];
+  v6 = [(HMDRemovedUser *)v4 initWithUser:userCopy expiration:v5];
 
   return v6;
 }

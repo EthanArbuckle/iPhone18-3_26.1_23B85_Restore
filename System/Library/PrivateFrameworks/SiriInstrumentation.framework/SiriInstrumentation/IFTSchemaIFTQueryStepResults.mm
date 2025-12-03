@@ -1,33 +1,33 @@
 @interface IFTSchemaIFTQueryStepResults
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTQueryStepResults)initWithDictionary:(id)a3;
-- (IFTSchemaIFTQueryStepResults)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTQueryStepResults)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTQueryStepResults)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTQueryStepResults
 
-- (IFTSchemaIFTQueryStepResults)initWithDictionary:(id)a3
+- (IFTSchemaIFTQueryStepResults)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = IFTSchemaIFTQueryStepResults;
   v5 = [(IFTSchemaIFTQueryStepResults *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"exists"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"exists"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTQueryStepResults setExists:](v5, "setExists:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"originProgramStatementId"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"originProgramStatementId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(IFTSchemaIFTQueryStepResults *)v5 setOriginProgramStatementId:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"queryResults"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"queryResults"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTQueryStepResults)initWithJSON:(id)a3
+- (IFTSchemaIFTQueryStepResults)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTQueryStepResults *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTQueryStepResults *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTQueryStepResults *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,48 +85,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTQueryStepResults exists](self, "exists")}];
-    [v3 setObject:v4 forKeyedSubscript:@"exists"];
+    [dictionary setObject:v4 forKeyedSubscript:@"exists"];
   }
 
   if (self->_originProgramStatementId)
   {
-    v5 = [(IFTSchemaIFTQueryStepResults *)self originProgramStatementId];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    originProgramStatementId = [(IFTSchemaIFTQueryStepResults *)self originProgramStatementId];
+    dictionaryRepresentation = [originProgramStatementId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"originProgramStatementId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"originProgramStatementId"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"originProgramStatementId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"originProgramStatementId"];
     }
   }
 
   if (self->_queryResults)
   {
-    v8 = [(IFTSchemaIFTQueryStepResults *)self queryResults];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    queryResults = [(IFTSchemaIFTQueryStepResults *)self queryResults];
+    dictionaryRepresentation2 = [queryResults dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"queryResults"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"queryResults"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"queryResults"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"queryResults"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -145,15 +145,15 @@
   return v4 ^ [(IFTSchemaIFTQueryResults *)self->_queryResults hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -161,26 +161,26 @@
   if (*&self->_has)
   {
     exists = self->_exists;
-    if (exists != [v4 exists])
+    if (exists != [equalCopy exists])
     {
       goto LABEL_15;
     }
   }
 
-  v6 = [(IFTSchemaIFTQueryStepResults *)self originProgramStatementId];
-  v7 = [v4 originProgramStatementId];
-  if ((v6 != 0) == (v7 == 0))
+  originProgramStatementId = [(IFTSchemaIFTQueryStepResults *)self originProgramStatementId];
+  originProgramStatementId2 = [equalCopy originProgramStatementId];
+  if ((originProgramStatementId != 0) == (originProgramStatementId2 == 0))
   {
     goto LABEL_14;
   }
 
-  v8 = [(IFTSchemaIFTQueryStepResults *)self originProgramStatementId];
-  if (v8)
+  originProgramStatementId3 = [(IFTSchemaIFTQueryStepResults *)self originProgramStatementId];
+  if (originProgramStatementId3)
   {
-    v9 = v8;
-    v10 = [(IFTSchemaIFTQueryStepResults *)self originProgramStatementId];
-    v11 = [v4 originProgramStatementId];
-    v12 = [v10 isEqual:v11];
+    v9 = originProgramStatementId3;
+    originProgramStatementId4 = [(IFTSchemaIFTQueryStepResults *)self originProgramStatementId];
+    originProgramStatementId5 = [equalCopy originProgramStatementId];
+    v12 = [originProgramStatementId4 isEqual:originProgramStatementId5];
 
     if (!v12)
     {
@@ -192,12 +192,12 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTQueryStepResults *)self queryResults];
-  v7 = [v4 queryResults];
-  if ((v6 != 0) != (v7 == 0))
+  originProgramStatementId = [(IFTSchemaIFTQueryStepResults *)self queryResults];
+  originProgramStatementId2 = [equalCopy queryResults];
+  if ((originProgramStatementId != 0) != (originProgramStatementId2 == 0))
   {
-    v13 = [(IFTSchemaIFTQueryStepResults *)self queryResults];
-    if (!v13)
+    queryResults = [(IFTSchemaIFTQueryStepResults *)self queryResults];
+    if (!queryResults)
     {
 
 LABEL_18:
@@ -205,10 +205,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(IFTSchemaIFTQueryStepResults *)self queryResults];
-    v16 = [v4 queryResults];
-    v17 = [v15 isEqual:v16];
+    v14 = queryResults;
+    queryResults2 = [(IFTSchemaIFTQueryStepResults *)self queryResults];
+    queryResults3 = [equalCopy queryResults];
+    v17 = [queryResults2 isEqual:queryResults3];
 
     if (v17)
     {
@@ -228,54 +228,54 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
   }
 
-  v4 = [(IFTSchemaIFTQueryStepResults *)self originProgramStatementId];
+  originProgramStatementId = [(IFTSchemaIFTQueryStepResults *)self originProgramStatementId];
 
-  if (v4)
+  if (originProgramStatementId)
   {
-    v5 = [(IFTSchemaIFTQueryStepResults *)self originProgramStatementId];
+    originProgramStatementId2 = [(IFTSchemaIFTQueryStepResults *)self originProgramStatementId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(IFTSchemaIFTQueryStepResults *)self queryResults];
+  queryResults = [(IFTSchemaIFTQueryStepResults *)self queryResults];
 
-  v7 = v9;
-  if (v6)
+  v7 = toCopy;
+  if (queryResults)
   {
-    v8 = [(IFTSchemaIFTQueryStepResults *)self queryResults];
+    queryResults2 = [(IFTSchemaIFTQueryStepResults *)self queryResults];
     PBDataWriterWriteSubmessage();
 
-    v7 = v9;
+    v7 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = IFTSchemaIFTQueryStepResults;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(IFTSchemaIFTQueryStepResults *)self originProgramStatementId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  originProgramStatementId = [(IFTSchemaIFTQueryStepResults *)self originProgramStatementId];
+  v7 = [originProgramStatementId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTQueryStepResults *)self deleteOriginProgramStatementId];
   }
 
-  v9 = [(IFTSchemaIFTQueryStepResults *)self queryResults];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  queryResults = [(IFTSchemaIFTQueryStepResults *)self queryResults];
+  v10 = [queryResults applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(IFTSchemaIFTQueryStepResults *)self deleteQueryResults];
   }

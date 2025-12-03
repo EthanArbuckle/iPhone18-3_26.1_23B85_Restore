@@ -1,21 +1,21 @@
 @interface AVMobileTitlebarView
-- (AVMobileTitlebarView)initWithStyleSheet:(id)a3;
+- (AVMobileTitlebarView)initWithStyleSheet:(id)sheet;
 - (AVMobileTitlebarViewDelegate)delegate;
 - (CGSize)intrinsicContentSize;
 - (double)titleLabelCenterYOffset;
-- (void)_infoAffordancePressed:(id)a3;
+- (void)_infoAffordancePressed:(id)pressed;
 - (void)_setUpInfoAffordanceIfNeeded;
 - (void)_setUpSubtitleLabelIfNeeded;
 - (void)_setUpTitleLabelIfNeeded;
 - (void)_updateFonts;
-- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)a3;
+- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)invalidated;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setContentTag:(id)a3;
-- (void)setShowsInfoAffordance:(BOOL)a3;
-- (void)setStyleSheet:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setContentTag:(id)tag;
+- (void)setShowsInfoAffordance:(BOOL)affordance;
+- (void)setStyleSheet:(id)sheet;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 @end
 
 @implementation AVMobileTitlebarView
@@ -27,23 +27,23 @@
   return WeakRetained;
 }
 
-- (void)_infoAffordancePressed:(id)a3
+- (void)_infoAffordancePressed:(id)pressed
 {
-  v4 = [(AVMobileTitlebarView *)self delegate];
+  delegate = [(AVMobileTitlebarView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(AVMobileTitlebarView *)self delegate];
-    [v6 titleBarViewInfoAffordanceWasPressed:self];
+    delegate2 = [(AVMobileTitlebarView *)self delegate];
+    [delegate2 titleBarViewInfoAffordanceWasPressed:self];
   }
 }
 
-- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)a3
+- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)invalidated
 {
   [(AVMobileTitlebarView *)self setNeedsLayout];
-  v4 = [(AVMobileTitlebarView *)self superview];
-  [v4 avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
+  superview = [(AVMobileTitlebarView *)self superview];
+  [superview avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
 }
 
 - (void)layoutSubviews
@@ -56,7 +56,7 @@
   v4 = v3;
   v6 = v5;
   v7 = v3;
-  v8 = [(AVMobileTitlebarView *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(AVMobileTitlebarView *)self effectiveUserInterfaceLayoutDirection];
   v9 = *MEMORY[0x1E695F060];
   v10 = *(MEMORY[0x1E695F060] + 8);
   v11 = 0.0;
@@ -72,10 +72,10 @@
       if (v15 <= v6)
       {
         v94 = v14 + 5.0;
-        v79 = [(AVMobileContentTag *)self->_contentTag placement];
-        if (v79)
+        placement = [(AVMobileContentTag *)self->_contentTag placement];
+        if (placement)
         {
-          if (v79 == 1)
+          if (placement == 1)
           {
             v16 = 0;
             v17 = 0;
@@ -92,9 +92,9 @@
           v80 = _AVLog();
           if (os_log_type_enabled(v80, OS_LOG_TYPE_ERROR))
           {
-            v82 = [(AVMobileContentTag *)self->_contentTag placement];
+            placement2 = [(AVMobileContentTag *)self->_contentTag placement];
             LODWORD(buf) = 134217984;
-            *(&buf + 4) = v82;
+            *(&buf + 4) = placement2;
             _os_log_error_impl(&dword_18B49C000, v80, OS_LOG_TYPE_ERROR, "Error: Unrecognized content tag placement - %ld", &buf, 0xCu);
           }
         }
@@ -172,7 +172,7 @@ LABEL_7:
   }
 
   v21 = 0x1EA9C0000uLL;
-  v91 = v8;
+  v91 = effectiveUserInterfaceLayoutDirection;
   if ([(AVMobileTitlebarView *)self showsTitle]&& !((v17 | v16) & 1 | (self->_titleLabelString == 0)))
   {
     [(UILabel *)self->_titleLabel intrinsicContentSize];
@@ -279,30 +279,30 @@ LABEL_33:
 
   v92 = v6 - v26;
   v95 = v46;
-  [(UIView *)self->_contentContainerView avkit_setFrame:v8 inLayoutDirection:0.0, *&v83];
-  v47 = [(AVMobileTitlebarView *)self effectiveUserInterfaceLayoutDirection];
-  v48 = [MEMORY[0x1E69DC888] blackColor];
-  v49 = [v48 CGColor];
+  [(UIView *)self->_contentContainerView avkit_setFrame:effectiveUserInterfaceLayoutDirection inLayoutDirection:0.0, *&v83];
+  effectiveUserInterfaceLayoutDirection2 = [(AVMobileTitlebarView *)self effectiveUserInterfaceLayoutDirection];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  cGColor = [blackColor CGColor];
 
-  v50 = [MEMORY[0x1E69DC888] clearColor];
-  v51 = [v50 CGColor];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  cGColor2 = [clearColor CGColor];
 
   [(UIView *)self->_contentContainerView bounds];
   v53 = v52;
   v55 = v54;
   v56 = 20.0 / v52;
   v57 = v56;
-  if (v47)
+  if (effectiveUserInterfaceLayoutDirection2)
   {
-    *&buf = v51;
-    v58 = v49;
+    *&buf = cGColor2;
+    v58 = cGColor;
   }
 
   else
   {
     v43 = 1.0 - v57;
-    *&buf = v49;
-    v58 = v51;
+    *&buf = cGColor;
+    v58 = cGColor2;
     v57 = 1.0;
   }
 
@@ -321,7 +321,7 @@ LABEL_33:
   if ((v22 & 1) == 0)
   {
     v12 = 0x1EA9C0000;
-    v8 = v91;
+    effectiveUserInterfaceLayoutDirection = v91;
     v4 = v84;
     v21 = 0x1EA9C0000;
     if (((v18 | v19 ^ 1) & 1) == 0 && [(AVMobileContentTag *)self->_contentTag placement]== 1)
@@ -349,7 +349,7 @@ LABEL_57:
   {
     v29 = 0;
     v25 = 1;
-    v8 = v91;
+    effectiveUserInterfaceLayoutDirection = v91;
 LABEL_49:
     v60 = 0x1EA9C0000uLL;
     if ((v19 & 1) == 0)
@@ -369,23 +369,23 @@ LABEL_49:
 
   v25 = 1;
 LABEL_67:
-  v73 = [(AVMobileContentTag *)self->_contentTag placement];
-  if (!v73)
+  placement3 = [(AVMobileContentTag *)self->_contentTag placement];
+  if (!placement3)
   {
 LABEL_75:
     v74 = (v98 - v89) * 0.5 + v28;
     goto LABEL_76;
   }
 
-  if (v73 != 1)
+  if (placement3 != 1)
   {
     v75 = v12;
     v76 = _AVLog();
     if (os_log_type_enabled(v76, OS_LOG_TYPE_ERROR))
     {
-      v81 = [(AVMobileContentTag *)self->_contentTag placement];
+      placement4 = [(AVMobileContentTag *)self->_contentTag placement];
       LODWORD(buf) = 134217984;
-      *(&buf + 4) = v81;
+      *(&buf + 4) = placement4;
       _os_log_error_impl(&dword_18B49C000, v76, OS_LOG_TYPE_ERROR, "Error: Unrecognized content tag placement - %ld", &buf, 0xCu);
     }
 
@@ -401,13 +401,13 @@ LABEL_75:
   }
 
 LABEL_76:
-  v8 = v91;
+  effectiveUserInterfaceLayoutDirection = v91;
   [*(&self->super.super.super.super.isa + *(v12 + 3672)) avkit_setFrame:v91 inLayoutDirection:{0.0, v74, v87}];
   if ((v19 & 1) == 0)
   {
 LABEL_50:
     v90 = v25;
-    v61 = v8;
+    v61 = effectiveUserInterfaceLayoutDirection;
     v62 = v29;
     v63 = v19;
     v64 = v12;
@@ -423,9 +423,9 @@ LABEL_50:
     v12 = v64;
     v19 = v63;
     v29 = v62;
-    v8 = v61;
+    effectiveUserInterfaceLayoutDirection = v61;
     v25 = v90;
-    [v69 avkit_setFrame:v8 inLayoutDirection:{v94, (v98 - v86) * 0.5 + v28, v95}];
+    [v69 avkit_setFrame:effectiveUserInterfaceLayoutDirection inLayoutDirection:{v94, (v98 - v86) * 0.5 + v28, v95}];
     if ((v90 & 1) == 0)
     {
       goto LABEL_51;
@@ -447,7 +447,7 @@ LABEL_77:
   }
 
 LABEL_51:
-  [(UILabel *)self->_titleLabel avkit_setFrame:v8 inLayoutDirection:v97, v27, v95, v23];
+  [(UILabel *)self->_titleLabel avkit_setFrame:effectiveUserInterfaceLayoutDirection inLayoutDirection:v97, v27, v95, v23];
   if (v24)
   {
     goto LABEL_82;
@@ -460,7 +460,7 @@ LABEL_79:
     v77 = v4 - v88;
   }
 
-  [*(&self->super.super.super.super.isa + *(v21 + 3676)) avkit_setFrame:v8 inLayoutDirection:{v77, v27 + v92 + (v93 - v23) * -0.5 + 1.0}];
+  [*(&self->super.super.super.super.isa + *(v21 + 3676)) avkit_setFrame:effectiveUserInterfaceLayoutDirection inLayoutDirection:{v77, v27 + v92 + (v93 - v23) * -0.5 + 1.0}];
 LABEL_82:
   [(UIView *)self->_contentContainerView setHidden:v29];
   [*(&self->super.super.super.super.isa + *(v12 + 3672)) setHidden:v18];
@@ -519,9 +519,9 @@ LABEL_82:
 
   if (self->_contentTagView)
   {
-    v22 = [(AVMobileContentTag *)self->_contentTag placement];
+    placement = [(AVMobileContentTag *)self->_contentTag placement];
     v23 = v21 >= v6 ? v21 : v6;
-    if (v22 == 1)
+    if (placement == 1)
     {
       v21 = v23;
       v8 = v4 + 5.0 + 2.0 + v8;
@@ -565,41 +565,41 @@ LABEL_82:
 
 - (void)_setUpTitleLabelIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    if (!*(a1 + 504))
+    if (!*(self + 504))
     {
-      v2 = [a1 window];
-      if (v2)
+      window = [self window];
+      if (window)
       {
-        v3 = *(a1 + 528);
+        v3 = *(self + 528);
 
         if (v3)
         {
           v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-          v5 = *(a1 + 504);
-          *(a1 + 504) = v4;
+          v5 = *(self + 504);
+          *(self + 504) = v4;
 
-          [*(a1 + 504) setAccessibilityIdentifier:@"Title"];
-          v6 = *(a1 + 504);
+          [*(self + 504) setAccessibilityIdentifier:@"Title"];
+          v6 = *(self + 504);
           v7 = AVLocalizedString(@"Title");
           [v6 setAccessibilityLabel:v7];
 
-          [*(a1 + 504) setIsAccessibilityElement:1];
-          [*(a1 + 504) setLineBreakMode:2];
-          [*(a1 + 504) setAutoresizingMask:0];
-          [*(a1 + 504) setHidden:1];
-          [*(a1 + 504) setAttributedText:*(a1 + 528)];
-          v8 = *(a1 + 504);
-          v9 = [*(a1 + 560) titleFont];
-          [v8 setFont:v9];
+          [*(self + 504) setIsAccessibilityElement:1];
+          [*(self + 504) setLineBreakMode:2];
+          [*(self + 504) setAutoresizingMask:0];
+          [*(self + 504) setHidden:1];
+          [*(self + 504) setAttributedText:*(self + 528)];
+          v8 = *(self + 504);
+          titleFont = [*(self + 560) titleFont];
+          [v8 setFont:titleFont];
 
-          v10 = *(a1 + 504);
-          v11 = [MEMORY[0x1E69DC888] whiteColor];
-          [v10 setTextColor:v11];
+          v10 = *(self + 504);
+          whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+          [v10 setTextColor:whiteColor];
 
-          v12 = *(a1 + 480);
-          v13 = *(a1 + 504);
+          v12 = *(self + 480);
+          v13 = *(self + 504);
 
           [v12 addSubview:v13];
         }
@@ -610,42 +610,42 @@ LABEL_82:
 
 - (void)_setUpSubtitleLabelIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    if (!*(a1 + 512))
+    if (!*(self + 512))
     {
-      v2 = [a1 window];
-      if (v2)
+      window = [self window];
+      if (window)
       {
-        v3 = *(a1 + 536);
+        v3 = *(self + 536);
 
         if (v3)
         {
           v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-          v5 = *(a1 + 512);
-          *(a1 + 512) = v4;
+          v5 = *(self + 512);
+          *(self + 512) = v4;
 
-          [*(a1 + 512) setAccessibilityIdentifier:@"Sub-title"];
-          v6 = *(a1 + 512);
+          [*(self + 512) setAccessibilityIdentifier:@"Sub-title"];
+          v6 = *(self + 512);
           v7 = AVLocalizedString(@"Sub-title");
           [v6 setAccessibilityLabel:v7];
 
-          [*(a1 + 512) setIsAccessibilityElement:1];
-          [*(a1 + 512) setAutoresizingMask:0];
-          [*(a1 + 512) setHidden:1];
-          [*(a1 + 512) setAttributedText:*(a1 + 536)];
-          v8 = *(a1 + 512);
-          v9 = [*(a1 + 560) subtitleFont];
-          [v8 setFont:v9];
+          [*(self + 512) setIsAccessibilityElement:1];
+          [*(self + 512) setAutoresizingMask:0];
+          [*(self + 512) setHidden:1];
+          [*(self + 512) setAttributedText:*(self + 536)];
+          v8 = *(self + 512);
+          subtitleFont = [*(self + 560) subtitleFont];
+          [v8 setFont:subtitleFont];
 
-          v10 = *(a1 + 512);
-          v11 = [MEMORY[0x1E69DC888] whiteColor];
-          [v10 setTextColor:v11];
+          v10 = *(self + 512);
+          whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+          [v10 setTextColor:whiteColor];
 
-          [*(a1 + 512) setNumberOfLines:2];
-          [*(a1 + 512) setLineBreakMode:0];
-          v12 = *(a1 + 480);
-          v13 = *(a1 + 512);
+          [*(self + 512) setNumberOfLines:2];
+          [*(self + 512) setLineBreakMode:0];
+          v12 = *(self + 480);
+          v13 = *(self + 512);
 
           [v12 addSubview:v13];
         }
@@ -656,38 +656,38 @@ LABEL_82:
 
 - (void)_setUpInfoAffordanceIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    if (!*(a1 + 520))
+    if (!*(self + 520))
     {
-      v2 = [a1 window];
-      if (v2)
+      window = [self window];
+      if (window)
       {
-        v3 = *(a1 + 544);
+        v3 = *(self + 544);
 
         if (v3 == 1)
         {
           v4 = [AVButton buttonWithAccessibilityIdentifier:@"More Info" isFirstGeneration:0];
-          v5 = *(a1 + 520);
-          *(a1 + 520) = v4;
+          v5 = *(self + 520);
+          *(self + 520) = v4;
 
-          [*(a1 + 520) setAppliesTransformToImageViewWhenHighlighted:1];
-          [*(a1 + 520) setAutoresizingMask:0];
-          [*(a1 + 520) setTranslatesAutoresizingMaskIntoConstraints:1];
-          v6 = *(a1 + 520);
-          v7 = [MEMORY[0x1E69DC888] whiteColor];
-          [v6 setTintColor:v7];
+          [*(self + 520) setAppliesTransformToImageViewWhenHighlighted:1];
+          [*(self + 520) setAutoresizingMask:0];
+          [*(self + 520) setTranslatesAutoresizingMaskIntoConstraints:1];
+          v6 = *(self + 520);
+          whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+          [v6 setTintColor:whiteColor];
 
-          [*(a1 + 520) setHidden:1];
-          v8 = *(a1 + 520);
-          v9 = [*(a1 + 560) infoAffordanceButtonFont];
-          [v8 setInlineFont:v9];
+          [*(self + 520) setHidden:1];
+          v8 = *(self + 520);
+          infoAffordanceButtonFont = [*(self + 560) infoAffordanceButtonFont];
+          [v8 setInlineFont:infoAffordanceButtonFont];
 
-          [*(a1 + 520) setImageName:@"chevron.right"];
-          [*(a1 + 520) addTarget:a1 action:sel__infoAffordancePressed_ forControlEvents:64];
-          v10 = *(a1 + 520);
+          [*(self + 520) setImageName:@"chevron.right"];
+          [*(self + 520) addTarget:self action:sel__infoAffordancePressed_ forControlEvents:64];
+          v10 = *(self + 520);
 
-          [a1 addSubview:v10];
+          [self addSubview:v10];
         }
       }
     }
@@ -696,15 +696,15 @@ LABEL_82:
 
 - (void)_updateFonts
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 504);
-    v3 = [*(a1 + 560) titleFont];
-    [v2 setFont:v3];
+    v2 = *(self + 504);
+    titleFont = [*(self + 560) titleFont];
+    [v2 setFont:titleFont];
 
-    v4 = *(a1 + 512);
-    v5 = [*(a1 + 560) subtitleFont];
-    [v4 setFont:v5];
+    v4 = *(self + 512);
+    subtitleFont = [*(self + 560) subtitleFont];
+    [v4 setFont:subtitleFont];
   }
 }
 
@@ -722,21 +722,21 @@ LABEL_82:
   return CGRectGetMidY(*&v9);
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v12 = a3;
+  titleCopy = title;
   if (![(NSAttributedString *)self->_title isEqualToAttributedString:?])
   {
-    objc_storeStrong(&self->_title, a3);
+    objc_storeStrong(&self->_title, title);
     v5 = [(NSAttributedString *)self->_title mutableCopy];
     titleLabelString = self->_titleLabelString;
     self->_titleLabelString = v5;
 
-    v7 = [(NSMutableAttributedString *)self->_titleLabelString mutableString];
-    v8 = [(NSMutableAttributedString *)self->_titleLabelString string];
-    v9 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v10 = [v8 stringByTrimmingCharactersInSet:v9];
-    [v7 setString:v10];
+    mutableString = [(NSMutableAttributedString *)self->_titleLabelString mutableString];
+    string = [(NSMutableAttributedString *)self->_titleLabelString string];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v10 = [string stringByTrimmingCharactersInSet:whitespaceCharacterSet];
+    [mutableString setString:v10];
 
     if (![(NSMutableAttributedString *)self->_titleLabelString length])
     {
@@ -750,21 +750,21 @@ LABEL_82:
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v12 = a3;
+  subtitleCopy = subtitle;
   if (![(NSAttributedString *)self->_subtitle isEqualToAttributedString:?])
   {
-    objc_storeStrong(&self->_subtitle, a3);
+    objc_storeStrong(&self->_subtitle, subtitle);
     v5 = [(NSAttributedString *)self->_subtitle mutableCopy];
     subtitleLabelString = self->_subtitleLabelString;
     self->_subtitleLabelString = v5;
 
-    v7 = [(NSMutableAttributedString *)self->_subtitleLabelString mutableString];
-    v8 = [(NSMutableAttributedString *)self->_subtitleLabelString string];
-    v9 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v10 = [v8 stringByTrimmingCharactersInSet:v9];
-    [v7 setString:v10];
+    mutableString = [(NSMutableAttributedString *)self->_subtitleLabelString mutableString];
+    string = [(NSMutableAttributedString *)self->_subtitleLabelString string];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v10 = [string stringByTrimmingCharactersInSet:whitespaceCharacterSet];
+    [mutableString setString:v10];
 
     if (![(NSMutableAttributedString *)self->_subtitleLabelString length])
     {
@@ -778,24 +778,24 @@ LABEL_82:
   }
 }
 
-- (void)setStyleSheet:(id)a3
+- (void)setStyleSheet:(id)sheet
 {
-  v5 = a3;
-  if (self->_styleSheet != v5)
+  sheetCopy = sheet;
+  if (self->_styleSheet != sheetCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_styleSheet, a3);
+    v6 = sheetCopy;
+    objc_storeStrong(&self->_styleSheet, sheet);
     [(AVMobileTitlebarView *)self _updateFonts];
     [(AVMobileTitlebarView *)self avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
-    v5 = v6;
+    sheetCopy = v6;
   }
 }
 
-- (void)setShowsInfoAffordance:(BOOL)a3
+- (void)setShowsInfoAffordance:(BOOL)affordance
 {
-  if (self->_showsInfoAffordance != a3)
+  if (self->_showsInfoAffordance != affordance)
   {
-    self->_showsInfoAffordance = a3;
+    self->_showsInfoAffordance = affordance;
     [(AVMobileTitlebarView *)self _setUpInfoAffordanceIfNeeded];
     infoAffordance = self->_infoAffordance;
 
@@ -803,19 +803,19 @@ LABEL_82:
   }
 }
 
-- (void)setContentTag:(id)a3
+- (void)setContentTag:(id)tag
 {
-  v5 = a3;
-  if (self->_contentTag != v5)
+  tagCopy = tag;
+  if (self->_contentTag != tagCopy)
   {
-    v10 = v5;
-    objc_storeStrong(&self->_contentTag, a3);
+    v10 = tagCopy;
+    objc_storeStrong(&self->_contentTag, tag);
     if (self->_contentTag)
     {
       if (!self->_contentTagView)
       {
-        v6 = [(AVMobileTitlebarView *)self window];
-        if (v6)
+        window = [(AVMobileTitlebarView *)self window];
+        if (window)
         {
           contentTag = self->_contentTag;
 
@@ -836,13 +836,13 @@ LABEL_82:
     }
 
     [(AVMobileTitlebarView *)self avkit_intrinsicContentSizeOfSubviewWasInvalidated:self->_contentTagView];
-    v5 = v10;
+    tagCopy = v10;
   }
 }
 
-- (AVMobileTitlebarView)initWithStyleSheet:(id)a3
+- (AVMobileTitlebarView)initWithStyleSheet:(id)sheet
 {
-  v5 = a3;
+  sheetCopy = sheet;
   v14.receiver = self;
   v14.super_class = AVMobileTitlebarView;
   v6 = [(AVView *)&v14 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -853,7 +853,7 @@ LABEL_82:
     v6->_showsSubtitle = 1;
     v6->_showsTitle = 1;
     v6->_showsInfoAffordance = 0;
-    objc_storeStrong(&v6->_styleSheet, a3);
+    objc_storeStrong(&v6->_styleSheet, sheet);
     v8 = objc_alloc_init(MEMORY[0x1E6979380]);
     contentContainerViewMask = v7->_contentContainerViewMask;
     v7->_contentContainerViewMask = v8;
@@ -863,8 +863,8 @@ LABEL_82:
     v7->_contentContainerView = v10;
 
     [(UIView *)v7->_contentContainerView setAutoresizingMask:0];
-    v12 = [(UIView *)v7->_contentContainerView layer];
-    [v12 setMask:v7->_contentContainerViewMask];
+    layer = [(UIView *)v7->_contentContainerView layer];
+    [layer setMask:v7->_contentContainerViewMask];
 
     [(AVMobileTitlebarView *)v7 addSubview:v7->_contentContainerView];
     [(AVView *)v7 setIgnoresTouches:1];

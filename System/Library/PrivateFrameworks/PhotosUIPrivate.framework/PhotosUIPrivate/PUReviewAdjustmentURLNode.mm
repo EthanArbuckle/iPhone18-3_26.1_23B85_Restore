@@ -1,5 +1,5 @@
 @interface PUReviewAdjustmentURLNode
-- (PUReviewAdjustmentURLNode)initWithReviewAsset:(id)a3 directory:(id)a4 contentEditingOutput:(id)a5;
+- (PUReviewAdjustmentURLNode)initWithReviewAsset:(id)asset directory:(id)directory contentEditingOutput:(id)output;
 - (void)run;
 @end
 
@@ -7,15 +7,15 @@
 
 - (void)run
 {
-  v3 = [(PUReviewAdjustmentURLNode *)self contentEditingOutput];
-  v9 = [v3 assetAdjustmentsWithEditorBundleID:0];
+  contentEditingOutput = [(PUReviewAdjustmentURLNode *)self contentEditingOutput];
+  v9 = [contentEditingOutput assetAdjustmentsWithEditorBundleID:0];
 
   if (!v9)
   {
     if ([(PUReviewAsset *)self->_reviewAsset isHighFramerateVideo])
     {
-      v4 = [(PUReviewAsset *)self->_reviewAsset providedVideoURL];
-      v5 = [MEMORY[0x1E6988168] assetWithURL:v4];
+      providedVideoURL = [(PUReviewAsset *)self->_reviewAsset providedVideoURL];
+      v5 = [MEMORY[0x1E6988168] assetWithURL:providedVideoURL];
       v9 = [MEMORY[0x1E69C0910] defaultSlowMotionAdjustmentsForAsset:v5];
     }
 
@@ -25,8 +25,8 @@
     }
   }
 
-  v6 = [(PUReviewAdjustmentURLNode *)self directory];
-  v7 = [PUReviewAsset fileURLForAdjustmentsInDirectory:v6];
+  directory = [(PUReviewAdjustmentURLNode *)self directory];
+  v7 = [PUReviewAsset fileURLForAdjustmentsInDirectory:directory];
 
   [v9 writeToURL:v7 atomically:0];
   adjustmentURL = self->_adjustmentURL;
@@ -35,15 +35,15 @@
   [(PXRunNode *)self complete];
 }
 
-- (PUReviewAdjustmentURLNode)initWithReviewAsset:(id)a3 directory:(id)a4 contentEditingOutput:(id)a5
+- (PUReviewAdjustmentURLNode)initWithReviewAsset:(id)asset directory:(id)directory contentEditingOutput:(id)output
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10 || !v11)
+  assetCopy = asset;
+  directoryCopy = directory;
+  outputCopy = output;
+  if (!assetCopy || !directoryCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PUReviewAdjustmentURLNode.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"reviewAsset && directory"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUReviewAdjustmentURLNode.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"reviewAsset && directory"}];
   }
 
   v17.receiver = self;
@@ -52,9 +52,9 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_reviewAsset, a3);
-    objc_storeStrong(&v14->_contentEditingOutput, a5);
-    objc_storeStrong(&v14->_directory, a4);
+    objc_storeStrong(&v13->_reviewAsset, asset);
+    objc_storeStrong(&v14->_contentEditingOutput, output);
+    objc_storeStrong(&v14->_directory, directory);
   }
 
   return v14;

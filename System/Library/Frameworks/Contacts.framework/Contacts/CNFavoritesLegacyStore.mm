@@ -1,8 +1,8 @@
 @interface CNFavoritesLegacyStore
-- (BOOL)_saveEntries:(id)a3;
-- (BOOL)_savePropertyListData:(id)a3 toPath:(id)a4 entriesCount:(int64_t)a5;
-- (BOOL)shouldSimulateCrashReportForError:(id)a3;
-- (CNFavoritesLegacyStore)initWithContactStore:(id)a3;
+- (BOOL)_saveEntries:(id)entries;
+- (BOOL)_savePropertyListData:(id)data toPath:(id)path entriesCount:(int64_t)count;
+- (BOOL)shouldSimulateCrashReportForError:(id)error;
+- (CNFavoritesLegacyStore)initWithContactStore:(id)store;
 - (id)XPCDataMapper;
 - (id)_entryDictionaries;
 - (id)_fetchEntries;
@@ -10,16 +10,16 @@
 
 @implementation CNFavoritesLegacyStore
 
-- (CNFavoritesLegacyStore)initWithContactStore:(id)a3
+- (CNFavoritesLegacyStore)initWithContactStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v10.receiver = self;
   v10.super_class = CNFavoritesLegacyStore;
   v6 = [(CNFavoritesLegacyStore *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contactStore, a3);
+    objc_storeStrong(&v6->_contactStore, store);
     v8 = v7;
   }
 
@@ -28,13 +28,13 @@
 
 - (id)_fetchEntries
 {
-  v3 = [(CNFavoritesLegacyStore *)self _entryDictionaries];
+  _entryDictionaries = [(CNFavoritesLegacyStore *)self _entryDictionaries];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39__CNFavoritesLegacyStore__fetchEntries__block_invoke;
   v6[3] = &unk_1E7417C78;
   v6[4] = self;
-  v4 = [v3 _cn_map:v6];
+  v4 = [_entryDictionaries _cn_map:v6];
 
   return v4;
 }
@@ -52,23 +52,23 @@ CNFavoritesEntry *__39__CNFavoritesLegacyStore__fetchEntries__block_invoke(uint6
 - (id)_entryDictionaries
 {
   v3 = +[CNFavorites favoritesPath];
-  v4 = [(CNFavoritesLegacyStore *)self XPCDataMapper];
-  v5 = v4;
-  if (v4)
+  xPCDataMapper = [(CNFavoritesLegacyStore *)self XPCDataMapper];
+  v5 = xPCDataMapper;
+  if (xPCDataMapper)
   {
     v14 = 0;
-    v6 = [v4 favoritesEntryDictionariesAtPath:v3 error:&v14];
+    v6 = [xPCDataMapper favoritesEntryDictionariesAtPath:v3 error:&v14];
     v7 = v14;
-    v8 = [(CNFavoritesLegacyStore *)self logger];
-    v9 = v8;
+    logger = [(CNFavoritesLegacyStore *)self logger];
+    v9 = logger;
     if (v6)
     {
-      [v8 finishedReadingRemoteFavorites];
+      [logger finishedReadingRemoteFavorites];
     }
 
     else
     {
-      [v8 failedToReadRemoteFavorites:v7 willRetry:0];
+      [logger failedToReadRemoteFavorites:v7 willRetry:0];
     }
   }
 
@@ -80,25 +80,25 @@ CNFavoritesEntry *__39__CNFavoritesLegacyStore__fetchEntries__block_invoke(uint6
     v7 = v13;
     if (v6)
     {
-      v10 = [(CNFavoritesLegacyStore *)self logger];
-      [v10 finishedReadingFavoritesFromPath:v3 entriesCount:{objc_msgSend(v6, "count")}];
+      logger2 = [(CNFavoritesLegacyStore *)self logger];
+      [logger2 finishedReadingFavoritesFromPath:v3 entriesCount:{objc_msgSend(v6, "count")}];
     }
 
     else
     {
       v11 = [(CNFavoritesLegacyStore *)self shouldSimulateCrashReportForError:v7];
-      v10 = [(CNFavoritesLegacyStore *)self logger];
-      [v10 failedToReadFavoritesFromPath:v3 error:v7 simulateCrashReport:v11];
+      logger2 = [(CNFavoritesLegacyStore *)self logger];
+      [logger2 failedToReadFavoritesFromPath:v3 error:v7 simulateCrashReport:v11];
     }
   }
 
   return v6;
 }
 
-- (BOOL)_saveEntries:(id)a3
+- (BOOL)_saveEntries:(id)entries
 {
-  v4 = a3;
-  v5 = [v4 _cn_map:&__block_literal_global_14_3];
+  entriesCopy = entries;
+  v5 = [entriesCopy _cn_map:&__block_literal_global_14_3];
   v6 = v5;
   v7 = MEMORY[0x1E695E0F0];
   if (v5)
@@ -116,8 +116,8 @@ CNFavoritesEntry *__39__CNFavoritesLegacyStore__fetchEntries__block_invoke(uint6
   v13 = v25;
   if (v12(v11, v10))
   {
-    v14 = [(CNFavoritesLegacyStore *)self logger];
-    [v14 failedToConvertFavoritesToPropertyList:v13];
+    logger = [(CNFavoritesLegacyStore *)self logger];
+    [logger failedToConvertFavoritesToPropertyList:v13];
     v15 = 0;
   }
 
@@ -131,13 +131,13 @@ CNFavoritesEntry *__39__CNFavoritesLegacyStore__fetchEntries__block_invoke(uint6
     v17 = v10;
     v21 = v17;
     v22 = v8;
-    v23 = self;
-    v18 = v4;
+    selfCopy = self;
+    v18 = entriesCopy;
     v24 = v18;
     dispatch_async(v16, block);
 
     v15 = -[CNFavoritesLegacyStore _savePropertyListData:toPath:entriesCount:](self, "_savePropertyListData:toPath:entriesCount:", v17, v9, [v18 count]);
-    v14 = v21;
+    logger = v21;
   }
 
   return v15;
@@ -156,52 +156,52 @@ void __39__CNFavoritesLegacyStore__saveEntries___block_invoke_2(uint64_t a1)
   }
 }
 
-- (BOOL)_savePropertyListData:(id)a3 toPath:(id)a4 entriesCount:(int64_t)a5
+- (BOOL)_savePropertyListData:(id)data toPath:(id)path entriesCount:(int64_t)count
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CNFavoritesLegacyStore *)self XPCDataMapper];
-  v11 = v10;
-  if (v10)
+  pathCopy = path;
+  dataCopy = data;
+  xPCDataMapper = [(CNFavoritesLegacyStore *)self XPCDataMapper];
+  v11 = xPCDataMapper;
+  if (xPCDataMapper)
   {
     v22 = 0;
-    LODWORD(v12) = [v10 writeFavoritesPropertyListData:v9 toPath:v8 error:&v22];
+    LODWORD(v12) = [xPCDataMapper writeFavoritesPropertyListData:dataCopy toPath:pathCopy error:&v22];
 
     v13 = v22;
-    v14 = [(CNFavoritesLegacyStore *)self logger];
-    v15 = v14;
+    logger = [(CNFavoritesLegacyStore *)self logger];
+    logger3 = logger;
     if (v12)
     {
-      [v14 finishedWritingRemoteFavorites];
+      [logger finishedWritingRemoteFavorites];
     }
 
     else
     {
-      [v14 failedToWriteRemoteFavorites:v13 willRetry:0];
+      [logger failedToWriteRemoteFavorites:v13 willRetry:0];
     }
   }
 
   else
   {
     v21 = 0;
-    v16 = [v9 writeToFile:v8 options:1073741825 error:&v21];
+    v16 = [dataCopy writeToFile:pathCopy options:1073741825 error:&v21];
 
     v13 = v21;
     if (v16)
     {
-      v17 = [MEMORY[0x1E696AC08] defaultManager];
-      v18 = [v17 fileExistsAtPath:v8];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v18 = [defaultManager fileExistsAtPath:pathCopy];
 
-      v19 = [(CNFavoritesLegacyStore *)self logger];
-      v15 = v19;
+      logger2 = [(CNFavoritesLegacyStore *)self logger];
+      logger3 = logger2;
       if (v18)
       {
-        [v19 finishedWritingFavoritesToPath:v8 entriesCount:a5];
+        [logger2 finishedWritingFavoritesToPath:pathCopy entriesCount:count];
       }
 
       else
       {
-        [v19 failedToVerifyWrittenFavoritesExistsAtPath:v8];
+        [logger2 failedToVerifyWrittenFavoritesExistsAtPath:pathCopy];
       }
 
       LOBYTE(v12) = 1;
@@ -210,8 +210,8 @@ void __39__CNFavoritesLegacyStore__saveEntries___block_invoke_2(uint64_t a1)
     else
     {
       v12 = [(CNFavoritesLegacyStore *)self shouldSimulateCrashReportForError:v13];
-      v15 = [(CNFavoritesLegacyStore *)self logger];
-      [v15 failedToWriteFavoritesToPath:v8 error:v13 simulateCrashReport:v12];
+      logger3 = [(CNFavoritesLegacyStore *)self logger];
+      [logger3 failedToWriteFavoritesToPath:pathCopy error:v13 simulateCrashReport:v12];
       LOBYTE(v12) = 0;
     }
   }
@@ -222,10 +222,10 @@ void __39__CNFavoritesLegacyStore__saveEntries___block_invoke_2(uint64_t a1)
 - (id)XPCDataMapper
 {
   objc_opt_class();
-  v3 = [(CNFavoritesLegacyStore *)self contactStore];
+  contactStore = [(CNFavoritesLegacyStore *)self contactStore];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = contactStore;
   }
 
   else
@@ -260,11 +260,11 @@ void __39__CNFavoritesLegacyStore__saveEntries___block_invoke_2(uint64_t a1)
   v9 = v8;
 
   objc_opt_class();
-  v10 = [v9 mapper];
+  mapper = [v9 mapper];
 
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = mapper;
   }
 
   else
@@ -277,39 +277,39 @@ void __39__CNFavoritesLegacyStore__saveEntries___block_invoke_2(uint64_t a1)
   return v11;
 }
 
-- (BOOL)shouldSimulateCrashReportForError:(id)a3
+- (BOOL)shouldSimulateCrashReportForError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
-    v5 = [v3 domain];
+    domain = [errorCopy domain];
     v6 = *MEMORY[0x1E696A250];
-    if ([v5 isEqualToString:*MEMORY[0x1E696A250]] && objc_msgSend(v4, "code") == 260)
+    if ([domain isEqualToString:*MEMORY[0x1E696A250]] && objc_msgSend(v4, "code") == 260)
     {
       v7 = 0;
     }
 
     else
     {
-      v8 = [v4 domain];
-      if ([v8 isEqualToString:v6] && objc_msgSend(v4, "code") == 257)
+      domain2 = [v4 domain];
+      if ([domain2 isEqualToString:v6] && objc_msgSend(v4, "code") == 257)
       {
         v7 = 0;
       }
 
       else
       {
-        v9 = [v4 domain];
-        if ([v9 isEqualToString:v6] && objc_msgSend(v4, "code") == 513)
+        domain3 = [v4 domain];
+        if ([domain3 isEqualToString:v6] && objc_msgSend(v4, "code") == 513)
         {
           v7 = 0;
         }
 
         else
         {
-          v10 = [v4 domain];
-          if ([v10 isEqualToString:v6])
+          domain4 = [v4 domain];
+          if ([domain4 isEqualToString:v6])
           {
             v7 = [v4 code] != 259;
           }

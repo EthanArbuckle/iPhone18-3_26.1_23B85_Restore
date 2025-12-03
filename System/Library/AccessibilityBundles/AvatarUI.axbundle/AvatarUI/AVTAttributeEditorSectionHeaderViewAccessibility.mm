@@ -1,5 +1,5 @@
 @interface AVTAttributeEditorSectionHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryHeaderViews;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -8,12 +8,12 @@
 
 @implementation AVTAttributeEditorSectionHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVTAttributeEditorSectionHeaderView" hasInstanceMethod:@"displayString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAttributeEditorSectionHeaderView" hasInstanceMethod:@"accessoryButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAttributeEditorSectionHeaderView" hasInstanceMethod:@"createAccessoryButtonIfNeeded" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVTAttributeEditorSectionHeaderView" hasInstanceMethod:@"displayString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAttributeEditorSectionHeaderView" hasInstanceMethod:@"accessoryButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAttributeEditorSectionHeaderView" hasInstanceMethod:@"createAccessoryButtonIfNeeded" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -61,17 +61,17 @@ id __94__AVTAttributeEditorSectionHeaderViewAccessibility__accessibilityLoadAcce
   if (v3)
   {
     v10[0] = v3;
-    v5 = [MEMORY[0x29EDB8D80] arrayWithObjects:v10 count:1];
+    _accessibilitySupplementaryHeaderViews = [MEMORY[0x29EDB8D80] arrayWithObjects:v10 count:1];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = AVTAttributeEditorSectionHeaderViewAccessibility;
-    v5 = [(AVTAttributeEditorSectionHeaderViewAccessibility *)&v9 _accessibilitySupplementaryHeaderViews];
+    _accessibilitySupplementaryHeaderViews = [(AVTAttributeEditorSectionHeaderViewAccessibility *)&v9 _accessibilitySupplementaryHeaderViews];
   }
 
-  v6 = v5;
+  v6 = _accessibilitySupplementaryHeaderViews;
 
   v7 = *MEMORY[0x29EDCA608];
 

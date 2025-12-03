@@ -1,15 +1,15 @@
 @interface SearchUIInfoCardSectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation SearchUIInfoCardSectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SearchUIInfoCardSectionView" hasProperty:@"contentView" withType:"@"];
-  [v3 validateClass:@"NUIContainerGridView" hasInstanceMethod:@"arrangedSubviewRows" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SearchUIInfoCardSectionView" hasProperty:@"contentView" withType:"@"];
+  [validationsCopy validateClass:@"NUIContainerGridView" hasInstanceMethod:@"arrangedSubviewRows" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

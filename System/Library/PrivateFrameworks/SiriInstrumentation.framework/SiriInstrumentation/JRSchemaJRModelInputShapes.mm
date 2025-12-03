@@ -1,38 +1,38 @@
 @interface JRSchemaJRModelInputShapes
-- (BOOL)isEqual:(id)a3;
-- (JRSchemaJRModelInputShapes)initWithDictionary:(id)a3;
-- (JRSchemaJRModelInputShapes)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (JRSchemaJRModelInputShapes)initWithDictionary:(id)dictionary;
+- (JRSchemaJRModelInputShapes)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (unsigned)candidateInteractionsShapesAtIndex:(unint64_t)a3;
-- (unsigned)candidateTuplesShapesAtIndex:(unint64_t)a3;
-- (unsigned)deviceContextShapesAtIndex:(unint64_t)a3;
-- (unsigned)similarityScoresShapesAtIndex:(unint64_t)a3;
-- (unsigned)tupleInteractionsAlignmentShapesAtIndex:(unint64_t)a3;
-- (unsigned)tupleInteractionsCandidatesShapesAtIndex:(unint64_t)a3;
-- (void)addCandidateInteractionsShapes:(unsigned int)a3;
-- (void)addCandidateTuplesShapes:(unsigned int)a3;
-- (void)addDeviceContextShapes:(unsigned int)a3;
-- (void)addSimilarityScoresShapes:(unsigned int)a3;
-- (void)addTupleInteractionsAlignmentShapes:(unsigned int)a3;
-- (void)addTupleInteractionsCandidatesShapes:(unsigned int)a3;
-- (void)writeTo:(id)a3;
+- (unsigned)candidateInteractionsShapesAtIndex:(unint64_t)index;
+- (unsigned)candidateTuplesShapesAtIndex:(unint64_t)index;
+- (unsigned)deviceContextShapesAtIndex:(unint64_t)index;
+- (unsigned)similarityScoresShapesAtIndex:(unint64_t)index;
+- (unsigned)tupleInteractionsAlignmentShapesAtIndex:(unint64_t)index;
+- (unsigned)tupleInteractionsCandidatesShapesAtIndex:(unint64_t)index;
+- (void)addCandidateInteractionsShapes:(unsigned int)shapes;
+- (void)addCandidateTuplesShapes:(unsigned int)shapes;
+- (void)addDeviceContextShapes:(unsigned int)shapes;
+- (void)addSimilarityScoresShapes:(unsigned int)shapes;
+- (void)addTupleInteractionsAlignmentShapes:(unsigned int)shapes;
+- (void)addTupleInteractionsCandidatesShapes:(unsigned int)shapes;
+- (void)writeTo:(id)to;
 @end
 
 @implementation JRSchemaJRModelInputShapes
 
-- (JRSchemaJRModelInputShapes)initWithDictionary:(id)a3
+- (JRSchemaJRModelInputShapes)initWithDictionary:(id)dictionary
 {
   v85 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v78.receiver = self;
   v78.super_class = JRSchemaJRModelInputShapes;
   v5 = [(JRSchemaJRModelInputShapes *)&v78 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"candidateTuplesShapes"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"candidateTuplesShapes"];
     objc_opt_class();
     v53 = v6;
     if (objc_opt_isKindOfClass())
@@ -71,7 +71,7 @@
       }
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"deviceContextShapes"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"deviceContextShapes"];
     objc_opt_class();
     v52 = v13;
     if (objc_opt_isKindOfClass())
@@ -110,7 +110,7 @@
       }
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"candidateInteractionsShapes"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"candidateInteractionsShapes"];
     objc_opt_class();
     v51 = v20;
     if (objc_opt_isKindOfClass())
@@ -149,7 +149,7 @@
       }
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"tupleInteractionsCandidatesShapes"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"tupleInteractionsCandidatesShapes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -187,7 +187,7 @@
       }
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"tupleInteractionsAlignmentShapes"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"tupleInteractionsAlignmentShapes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -225,7 +225,7 @@
       }
     }
 
-    v41 = [v4 objectForKeyedSubscript:{@"similarityScoresShapes", v27}];
+    v41 = [dictionaryCopy objectForKeyedSubscript:{@"similarityScoresShapes", v27}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -271,30 +271,30 @@
   return v5;
 }
 
-- (JRSchemaJRModelInputShapes)initWithJSON:(id)a3
+- (JRSchemaJRModelInputShapes)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(JRSchemaJRModelInputShapes *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(JRSchemaJRModelInputShapes *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(JRSchemaJRModelInputShapes *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -307,52 +307,52 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_candidateInteractionsShapes count])
   {
-    v4 = [(JRSchemaJRModelInputShapes *)self candidateInteractionsShapes];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"candidateInteractionsShapes"];
+    candidateInteractionsShapes = [(JRSchemaJRModelInputShapes *)self candidateInteractionsShapes];
+    v5 = [candidateInteractionsShapes copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"candidateInteractionsShapes"];
   }
 
   if ([(NSArray *)self->_candidateTuplesShapes count])
   {
-    v6 = [(JRSchemaJRModelInputShapes *)self candidateTuplesShapes];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"candidateTuplesShapes"];
+    candidateTuplesShapes = [(JRSchemaJRModelInputShapes *)self candidateTuplesShapes];
+    v7 = [candidateTuplesShapes copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"candidateTuplesShapes"];
   }
 
   if ([(NSArray *)self->_deviceContextShapes count])
   {
-    v8 = [(JRSchemaJRModelInputShapes *)self deviceContextShapes];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"deviceContextShapes"];
+    deviceContextShapes = [(JRSchemaJRModelInputShapes *)self deviceContextShapes];
+    v9 = [deviceContextShapes copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"deviceContextShapes"];
   }
 
   if ([(NSArray *)self->_similarityScoresShapes count])
   {
-    v10 = [(JRSchemaJRModelInputShapes *)self similarityScoresShapes];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"similarityScoresShapes"];
+    similarityScoresShapes = [(JRSchemaJRModelInputShapes *)self similarityScoresShapes];
+    v11 = [similarityScoresShapes copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"similarityScoresShapes"];
   }
 
   if ([(NSArray *)self->_tupleInteractionsAlignmentShapes count])
   {
-    v12 = [(JRSchemaJRModelInputShapes *)self tupleInteractionsAlignmentShapes];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"tupleInteractionsAlignmentShapes"];
+    tupleInteractionsAlignmentShapes = [(JRSchemaJRModelInputShapes *)self tupleInteractionsAlignmentShapes];
+    v13 = [tupleInteractionsAlignmentShapes copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"tupleInteractionsAlignmentShapes"];
   }
 
   if ([(NSArray *)self->_tupleInteractionsCandidatesShapes count])
   {
-    v14 = [(JRSchemaJRModelInputShapes *)self tupleInteractionsCandidatesShapes];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"tupleInteractionsCandidatesShapes"];
+    tupleInteractionsCandidatesShapes = [(JRSchemaJRModelInputShapes *)self tupleInteractionsCandidatesShapes];
+    v15 = [tupleInteractionsCandidatesShapes copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"tupleInteractionsCandidatesShapes"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -365,28 +365,28 @@
   return v6 ^ v7 ^ [(NSArray *)self->_similarityScoresShapes hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
-  v5 = [(JRSchemaJRModelInputShapes *)self candidateTuplesShapes];
-  v6 = [v4 candidateTuplesShapes];
-  if ((v5 != 0) == (v6 == 0))
+  candidateTuplesShapes = [(JRSchemaJRModelInputShapes *)self candidateTuplesShapes];
+  candidateTuplesShapes2 = [equalCopy candidateTuplesShapes];
+  if ((candidateTuplesShapes != 0) == (candidateTuplesShapes2 == 0))
   {
     goto LABEL_31;
   }
 
-  v7 = [(JRSchemaJRModelInputShapes *)self candidateTuplesShapes];
-  if (v7)
+  candidateTuplesShapes3 = [(JRSchemaJRModelInputShapes *)self candidateTuplesShapes];
+  if (candidateTuplesShapes3)
   {
-    v8 = v7;
-    v9 = [(JRSchemaJRModelInputShapes *)self candidateTuplesShapes];
-    v10 = [v4 candidateTuplesShapes];
-    v11 = [v9 isEqual:v10];
+    v8 = candidateTuplesShapes3;
+    candidateTuplesShapes4 = [(JRSchemaJRModelInputShapes *)self candidateTuplesShapes];
+    candidateTuplesShapes5 = [equalCopy candidateTuplesShapes];
+    v11 = [candidateTuplesShapes4 isEqual:candidateTuplesShapes5];
 
     if (!v11)
     {
@@ -398,20 +398,20 @@
   {
   }
 
-  v5 = [(JRSchemaJRModelInputShapes *)self deviceContextShapes];
-  v6 = [v4 deviceContextShapes];
-  if ((v5 != 0) == (v6 == 0))
+  candidateTuplesShapes = [(JRSchemaJRModelInputShapes *)self deviceContextShapes];
+  candidateTuplesShapes2 = [equalCopy deviceContextShapes];
+  if ((candidateTuplesShapes != 0) == (candidateTuplesShapes2 == 0))
   {
     goto LABEL_31;
   }
 
-  v12 = [(JRSchemaJRModelInputShapes *)self deviceContextShapes];
-  if (v12)
+  deviceContextShapes = [(JRSchemaJRModelInputShapes *)self deviceContextShapes];
+  if (deviceContextShapes)
   {
-    v13 = v12;
-    v14 = [(JRSchemaJRModelInputShapes *)self deviceContextShapes];
-    v15 = [v4 deviceContextShapes];
-    v16 = [v14 isEqual:v15];
+    v13 = deviceContextShapes;
+    deviceContextShapes2 = [(JRSchemaJRModelInputShapes *)self deviceContextShapes];
+    deviceContextShapes3 = [equalCopy deviceContextShapes];
+    v16 = [deviceContextShapes2 isEqual:deviceContextShapes3];
 
     if (!v16)
     {
@@ -423,20 +423,20 @@
   {
   }
 
-  v5 = [(JRSchemaJRModelInputShapes *)self candidateInteractionsShapes];
-  v6 = [v4 candidateInteractionsShapes];
-  if ((v5 != 0) == (v6 == 0))
+  candidateTuplesShapes = [(JRSchemaJRModelInputShapes *)self candidateInteractionsShapes];
+  candidateTuplesShapes2 = [equalCopy candidateInteractionsShapes];
+  if ((candidateTuplesShapes != 0) == (candidateTuplesShapes2 == 0))
   {
     goto LABEL_31;
   }
 
-  v17 = [(JRSchemaJRModelInputShapes *)self candidateInteractionsShapes];
-  if (v17)
+  candidateInteractionsShapes = [(JRSchemaJRModelInputShapes *)self candidateInteractionsShapes];
+  if (candidateInteractionsShapes)
   {
-    v18 = v17;
-    v19 = [(JRSchemaJRModelInputShapes *)self candidateInteractionsShapes];
-    v20 = [v4 candidateInteractionsShapes];
-    v21 = [v19 isEqual:v20];
+    v18 = candidateInteractionsShapes;
+    candidateInteractionsShapes2 = [(JRSchemaJRModelInputShapes *)self candidateInteractionsShapes];
+    candidateInteractionsShapes3 = [equalCopy candidateInteractionsShapes];
+    v21 = [candidateInteractionsShapes2 isEqual:candidateInteractionsShapes3];
 
     if (!v21)
     {
@@ -448,20 +448,20 @@
   {
   }
 
-  v5 = [(JRSchemaJRModelInputShapes *)self tupleInteractionsCandidatesShapes];
-  v6 = [v4 tupleInteractionsCandidatesShapes];
-  if ((v5 != 0) == (v6 == 0))
+  candidateTuplesShapes = [(JRSchemaJRModelInputShapes *)self tupleInteractionsCandidatesShapes];
+  candidateTuplesShapes2 = [equalCopy tupleInteractionsCandidatesShapes];
+  if ((candidateTuplesShapes != 0) == (candidateTuplesShapes2 == 0))
   {
     goto LABEL_31;
   }
 
-  v22 = [(JRSchemaJRModelInputShapes *)self tupleInteractionsCandidatesShapes];
-  if (v22)
+  tupleInteractionsCandidatesShapes = [(JRSchemaJRModelInputShapes *)self tupleInteractionsCandidatesShapes];
+  if (tupleInteractionsCandidatesShapes)
   {
-    v23 = v22;
-    v24 = [(JRSchemaJRModelInputShapes *)self tupleInteractionsCandidatesShapes];
-    v25 = [v4 tupleInteractionsCandidatesShapes];
-    v26 = [v24 isEqual:v25];
+    v23 = tupleInteractionsCandidatesShapes;
+    tupleInteractionsCandidatesShapes2 = [(JRSchemaJRModelInputShapes *)self tupleInteractionsCandidatesShapes];
+    tupleInteractionsCandidatesShapes3 = [equalCopy tupleInteractionsCandidatesShapes];
+    v26 = [tupleInteractionsCandidatesShapes2 isEqual:tupleInteractionsCandidatesShapes3];
 
     if (!v26)
     {
@@ -473,20 +473,20 @@
   {
   }
 
-  v5 = [(JRSchemaJRModelInputShapes *)self tupleInteractionsAlignmentShapes];
-  v6 = [v4 tupleInteractionsAlignmentShapes];
-  if ((v5 != 0) == (v6 == 0))
+  candidateTuplesShapes = [(JRSchemaJRModelInputShapes *)self tupleInteractionsAlignmentShapes];
+  candidateTuplesShapes2 = [equalCopy tupleInteractionsAlignmentShapes];
+  if ((candidateTuplesShapes != 0) == (candidateTuplesShapes2 == 0))
   {
     goto LABEL_31;
   }
 
-  v27 = [(JRSchemaJRModelInputShapes *)self tupleInteractionsAlignmentShapes];
-  if (v27)
+  tupleInteractionsAlignmentShapes = [(JRSchemaJRModelInputShapes *)self tupleInteractionsAlignmentShapes];
+  if (tupleInteractionsAlignmentShapes)
   {
-    v28 = v27;
-    v29 = [(JRSchemaJRModelInputShapes *)self tupleInteractionsAlignmentShapes];
-    v30 = [v4 tupleInteractionsAlignmentShapes];
-    v31 = [v29 isEqual:v30];
+    v28 = tupleInteractionsAlignmentShapes;
+    tupleInteractionsAlignmentShapes2 = [(JRSchemaJRModelInputShapes *)self tupleInteractionsAlignmentShapes];
+    tupleInteractionsAlignmentShapes3 = [equalCopy tupleInteractionsAlignmentShapes];
+    v31 = [tupleInteractionsAlignmentShapes2 isEqual:tupleInteractionsAlignmentShapes3];
 
     if (!v31)
     {
@@ -498,12 +498,12 @@
   {
   }
 
-  v5 = [(JRSchemaJRModelInputShapes *)self similarityScoresShapes];
-  v6 = [v4 similarityScoresShapes];
-  if ((v5 != 0) != (v6 == 0))
+  candidateTuplesShapes = [(JRSchemaJRModelInputShapes *)self similarityScoresShapes];
+  candidateTuplesShapes2 = [equalCopy similarityScoresShapes];
+  if ((candidateTuplesShapes != 0) != (candidateTuplesShapes2 == 0))
   {
-    v32 = [(JRSchemaJRModelInputShapes *)self similarityScoresShapes];
-    if (!v32)
+    similarityScoresShapes = [(JRSchemaJRModelInputShapes *)self similarityScoresShapes];
+    if (!similarityScoresShapes)
     {
 
 LABEL_35:
@@ -511,10 +511,10 @@ LABEL_35:
       goto LABEL_33;
     }
 
-    v33 = v32;
-    v34 = [(JRSchemaJRModelInputShapes *)self similarityScoresShapes];
-    v35 = [v4 similarityScoresShapes];
-    v36 = [v34 isEqual:v35];
+    v33 = similarityScoresShapes;
+    similarityScoresShapes2 = [(JRSchemaJRModelInputShapes *)self similarityScoresShapes];
+    similarityScoresShapes3 = [equalCopy similarityScoresShapes];
+    v36 = [similarityScoresShapes2 isEqual:similarityScoresShapes3];
 
     if (v36)
     {
@@ -534,10 +534,10 @@ LABEL_33:
   return v37;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v65 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
@@ -731,23 +731,23 @@ LABEL_33:
   }
 }
 
-- (unsigned)similarityScoresShapesAtIndex:(unint64_t)a3
+- (unsigned)similarityScoresShapesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_similarityScoresShapes objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedIntValue];
+  v3 = [(NSArray *)self->_similarityScoresShapes objectAtIndexedSubscript:index];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
-- (void)addSimilarityScoresShapes:(unsigned int)a3
+- (void)addSimilarityScoresShapes:(unsigned int)shapes
 {
-  v3 = *&a3;
+  v3 = *&shapes;
   similarityScoresShapes = self->_similarityScoresShapes;
   if (!similarityScoresShapes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_similarityScoresShapes;
-    self->_similarityScoresShapes = v6;
+    self->_similarityScoresShapes = array;
 
     similarityScoresShapes = self->_similarityScoresShapes;
   }
@@ -756,23 +756,23 @@ LABEL_33:
   [(NSArray *)similarityScoresShapes addObject:v8];
 }
 
-- (unsigned)tupleInteractionsAlignmentShapesAtIndex:(unint64_t)a3
+- (unsigned)tupleInteractionsAlignmentShapesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_tupleInteractionsAlignmentShapes objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedIntValue];
+  v3 = [(NSArray *)self->_tupleInteractionsAlignmentShapes objectAtIndexedSubscript:index];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
-- (void)addTupleInteractionsAlignmentShapes:(unsigned int)a3
+- (void)addTupleInteractionsAlignmentShapes:(unsigned int)shapes
 {
-  v3 = *&a3;
+  v3 = *&shapes;
   tupleInteractionsAlignmentShapes = self->_tupleInteractionsAlignmentShapes;
   if (!tupleInteractionsAlignmentShapes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_tupleInteractionsAlignmentShapes;
-    self->_tupleInteractionsAlignmentShapes = v6;
+    self->_tupleInteractionsAlignmentShapes = array;
 
     tupleInteractionsAlignmentShapes = self->_tupleInteractionsAlignmentShapes;
   }
@@ -781,23 +781,23 @@ LABEL_33:
   [(NSArray *)tupleInteractionsAlignmentShapes addObject:v8];
 }
 
-- (unsigned)tupleInteractionsCandidatesShapesAtIndex:(unint64_t)a3
+- (unsigned)tupleInteractionsCandidatesShapesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_tupleInteractionsCandidatesShapes objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedIntValue];
+  v3 = [(NSArray *)self->_tupleInteractionsCandidatesShapes objectAtIndexedSubscript:index];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
-- (void)addTupleInteractionsCandidatesShapes:(unsigned int)a3
+- (void)addTupleInteractionsCandidatesShapes:(unsigned int)shapes
 {
-  v3 = *&a3;
+  v3 = *&shapes;
   tupleInteractionsCandidatesShapes = self->_tupleInteractionsCandidatesShapes;
   if (!tupleInteractionsCandidatesShapes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_tupleInteractionsCandidatesShapes;
-    self->_tupleInteractionsCandidatesShapes = v6;
+    self->_tupleInteractionsCandidatesShapes = array;
 
     tupleInteractionsCandidatesShapes = self->_tupleInteractionsCandidatesShapes;
   }
@@ -806,23 +806,23 @@ LABEL_33:
   [(NSArray *)tupleInteractionsCandidatesShapes addObject:v8];
 }
 
-- (unsigned)candidateInteractionsShapesAtIndex:(unint64_t)a3
+- (unsigned)candidateInteractionsShapesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_candidateInteractionsShapes objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedIntValue];
+  v3 = [(NSArray *)self->_candidateInteractionsShapes objectAtIndexedSubscript:index];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
-- (void)addCandidateInteractionsShapes:(unsigned int)a3
+- (void)addCandidateInteractionsShapes:(unsigned int)shapes
 {
-  v3 = *&a3;
+  v3 = *&shapes;
   candidateInteractionsShapes = self->_candidateInteractionsShapes;
   if (!candidateInteractionsShapes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_candidateInteractionsShapes;
-    self->_candidateInteractionsShapes = v6;
+    self->_candidateInteractionsShapes = array;
 
     candidateInteractionsShapes = self->_candidateInteractionsShapes;
   }
@@ -831,23 +831,23 @@ LABEL_33:
   [(NSArray *)candidateInteractionsShapes addObject:v8];
 }
 
-- (unsigned)deviceContextShapesAtIndex:(unint64_t)a3
+- (unsigned)deviceContextShapesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_deviceContextShapes objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedIntValue];
+  v3 = [(NSArray *)self->_deviceContextShapes objectAtIndexedSubscript:index];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
-- (void)addDeviceContextShapes:(unsigned int)a3
+- (void)addDeviceContextShapes:(unsigned int)shapes
 {
-  v3 = *&a3;
+  v3 = *&shapes;
   deviceContextShapes = self->_deviceContextShapes;
   if (!deviceContextShapes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_deviceContextShapes;
-    self->_deviceContextShapes = v6;
+    self->_deviceContextShapes = array;
 
     deviceContextShapes = self->_deviceContextShapes;
   }
@@ -856,23 +856,23 @@ LABEL_33:
   [(NSArray *)deviceContextShapes addObject:v8];
 }
 
-- (unsigned)candidateTuplesShapesAtIndex:(unint64_t)a3
+- (unsigned)candidateTuplesShapesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_candidateTuplesShapes objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedIntValue];
+  v3 = [(NSArray *)self->_candidateTuplesShapes objectAtIndexedSubscript:index];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
-- (void)addCandidateTuplesShapes:(unsigned int)a3
+- (void)addCandidateTuplesShapes:(unsigned int)shapes
 {
-  v3 = *&a3;
+  v3 = *&shapes;
   candidateTuplesShapes = self->_candidateTuplesShapes;
   if (!candidateTuplesShapes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_candidateTuplesShapes;
-    self->_candidateTuplesShapes = v6;
+    self->_candidateTuplesShapes = array;
 
     candidateTuplesShapes = self->_candidateTuplesShapes;
   }

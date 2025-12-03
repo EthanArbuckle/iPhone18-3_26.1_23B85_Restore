@@ -1,55 +1,55 @@
 @interface CSVTUITwoPassKeywordDetectorHelper
 - (_TtC18SpeakerRecognition34CSVTUITwoPassKeywordDetectorHelper)init;
-- (_TtC18SpeakerRecognition34CSVTUITwoPassKeywordDetectorHelper)initWithAsset:(id)a3;
-- (_TtC18SpeakerRecognition34CSVTUITwoPassKeywordDetectorHelper)initWithSecureAsset:(id)a3 supportMph:(BOOL)a4;
-- (id)analyzeWithBuffer:(id)a3;
-- (id)triggeredUtteranceWithVoiceTriggerEventInfo:(id)a3;
+- (_TtC18SpeakerRecognition34CSVTUITwoPassKeywordDetectorHelper)initWithAsset:(id)asset;
+- (_TtC18SpeakerRecognition34CSVTUITwoPassKeywordDetectorHelper)initWithSecureAsset:(id)asset supportMph:(BOOL)mph;
+- (id)analyzeWithBuffer:(id)buffer;
+- (id)triggeredUtteranceWithVoiceTriggerEventInfo:(id)info;
 - (void)reset;
 @end
 
 @implementation CSVTUITwoPassKeywordDetectorHelper
 
-- (_TtC18SpeakerRecognition34CSVTUITwoPassKeywordDetectorHelper)initWithAsset:(id)a3
+- (_TtC18SpeakerRecognition34CSVTUITwoPassKeywordDetectorHelper)initWithAsset:(id)asset
 {
-  v4 = a3;
-  CSVTUITwoPassKeywordDetectorHelper.init(asset:)(a3);
+  assetCopy = asset;
+  CSVTUITwoPassKeywordDetectorHelper.init(asset:)(asset);
   return 0;
 }
 
-- (_TtC18SpeakerRecognition34CSVTUITwoPassKeywordDetectorHelper)initWithSecureAsset:(id)a3 supportMph:(BOOL)a4
+- (_TtC18SpeakerRecognition34CSVTUITwoPassKeywordDetectorHelper)initWithSecureAsset:(id)asset supportMph:(BOOL)mph
 {
-  v4 = a4;
-  v6 = a3;
-  return CSVTUITwoPassKeywordDetectorHelper.init(secureAsset:supportMph:)(a3, v4);
+  mphCopy = mph;
+  assetCopy = asset;
+  return CSVTUITwoPassKeywordDetectorHelper.init(secureAsset:supportMph:)(asset, mphCopy);
 }
 
 - (void)reset
 {
-  v4 = self;
+  selfCopy = self;
   sub_225E18BD8();
   v2 = *MEMORY[0x277D015D8];
   sub_225EA272C();
   sub_225EA268C();
 
-  v3 = *(&v4->super.isa + OBJC_IVAR____TtC18SpeakerRecognition34CSVTUITwoPassKeywordDetectorHelper_audioBuffer);
+  v3 = *(&selfCopy->super.isa + OBJC_IVAR____TtC18SpeakerRecognition34CSVTUITwoPassKeywordDetectorHelper_audioBuffer);
   [v3 reset];
 }
 
-- (id)analyzeWithBuffer:(id)a3
+- (id)analyzeWithBuffer:(id)buffer
 {
-  v4 = a3;
-  v5 = self;
-  sub_225E18DD4(v4);
+  bufferCopy = buffer;
+  selfCopy = self;
+  sub_225E18DD4(bufferCopy);
   v7 = v6;
 
   return v7;
 }
 
-- (id)triggeredUtteranceWithVoiceTriggerEventInfo:(id)a3
+- (id)triggeredUtteranceWithVoiceTriggerEventInfo:(id)info
 {
-  v4 = a3;
-  v5 = self;
-  sub_225E1B3D0(v4);
+  infoCopy = info;
+  selfCopy = self;
+  sub_225E1B3D0(infoCopy);
   v7 = v6;
   v9 = v8;
 

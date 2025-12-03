@@ -35,13 +35,13 @@ uint64_t __70__SiriUILegacyStocksChartCardSectionViewController_cardSectionClass
   v4 = [(SiriUICardSectionView *)v3 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   [(SiriUILegacyStocksChartCardSectionViewController *)self setView:v4];
 
-  v5 = [(CRKCardSectionViewController *)self cardSection];
-  v6 = [v5 backingCardSection];
+  cardSection = [(CRKCardSectionViewController *)self cardSection];
+  backingCardSection = [cardSection backingCardSection];
 
   v7 = objc_alloc_init(MEMORY[0x277D47958]);
   v8 = objc_alloc(MEMORY[0x277CCACA8]);
-  v9 = [v6 chartData];
-  v10 = [v8 initWithData:v9 encoding:4];
+  chartData = [backingCardSection chartData];
+  v10 = [v8 initWithData:chartData encoding:4];
   [v7 setChartData:v10];
 
   v11 = objc_alloc_init(MEMORY[0x277D47960]);
@@ -56,9 +56,9 @@ uint64_t __70__SiriUILegacyStocksChartCardSectionViewController_cardSectionClass
 
   [(SiriUILegacyStocksChartCardSectionViewController *)self _updateContentSize];
   [(SiriUILegacyStocksChartCardSectionViewController *)self addChildViewController:self->_snippetViewController];
-  v16 = [(SiriUILegacyStocksChartCardSectionViewController *)self view];
-  v17 = [(SiriUISnippetViewController *)self->_snippetViewController view];
-  [v16 setContentView:v17];
+  view = [(SiriUILegacyStocksChartCardSectionViewController *)self view];
+  view2 = [(SiriUISnippetViewController *)self->_snippetViewController view];
+  [view setContentView:view2];
 
   [(SiriUISnippetViewController *)self->_snippetViewController didMoveToParentViewController:self];
 }
@@ -73,23 +73,23 @@ uint64_t __70__SiriUILegacyStocksChartCardSectionViewController_cardSectionClass
 
 - (void)_updateContentSize
 {
-  v3 = [(CRKCardSectionViewController *)self delegate];
-  [v3 boundingSizeForCardSectionViewController:self];
+  delegate = [(CRKCardSectionViewController *)self delegate];
+  [delegate boundingSizeForCardSectionViewController:self];
   v5 = v4;
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(SiriUILegacyStocksChartCardSectionViewController *)self view];
+    view = [(SiriUILegacyStocksChartCardSectionViewController *)self view];
     [(SiriUISnippetViewController *)self->_snippetViewController desiredHeightForWidth:v5];
   }
 
   else
   {
-    v7 = [(SiriUILegacyStocksChartCardSectionViewController *)self view];
+    view = [(SiriUILegacyStocksChartCardSectionViewController *)self view];
     [(SiriUIBaseSnippetViewController *)self->_snippetViewController desiredHeight];
   }
 
-  [v7 setContentSize:{v5, v6}];
+  [view setContentSize:{v5, v6}];
 }
 
 @end

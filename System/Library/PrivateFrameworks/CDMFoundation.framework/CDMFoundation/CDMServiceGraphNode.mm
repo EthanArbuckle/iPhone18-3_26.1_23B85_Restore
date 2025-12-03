@@ -1,13 +1,13 @@
 @interface CDMServiceGraphNode
-+ (CDMServiceGraphNode)initWithName:(id)a3 forHandler:(id)a4 usingFunction:(id)a5 withError:(id)a6 cancellationBlock:(id)a7 requestId:(id)a8 dataDispatcherContext:(id)a9 serviceMetricsArray:(id)a10;
++ (CDMServiceGraphNode)initWithName:(id)name forHandler:(id)handler usingFunction:(id)function withError:(id)error cancellationBlock:(id)block requestId:(id)id dataDispatcherContext:(id)context serviceMetricsArray:(id)self0;
 - (BOOL)isAsynchronous;
 - (BOOL)isExecuting;
 - (BOOL)isFinished;
 - (id)getSuccessors;
-- (void)addDependency:(id)a3;
+- (void)addDependency:(id)dependency;
 - (void)asyncMarkNodeAsFinished;
 - (void)cancel;
-- (void)removeDependency:(id)a3;
+- (void)removeDependency:(id)dependency;
 - (void)willUseAsyncMarkNodeAsFinished;
 @end
 
@@ -41,54 +41,54 @@
 
 - (BOOL)isAsynchronous
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CDMServiceGraphNode *)v2 nodeIsUsingAsync];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  nodeIsUsingAsync = [(CDMServiceGraphNode *)selfCopy nodeIsUsingAsync];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return nodeIsUsingAsync;
 }
 
 - (BOOL)isExecuting
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(CDMServiceGraphNode *)v2 nodeIsUsingAsync])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(CDMServiceGraphNode *)selfCopy nodeIsUsingAsync])
   {
-    v3 = [(CDMServiceGraphNode *)v2 nodeIsExecutingAsync];
+    nodeIsExecutingAsync = [(CDMServiceGraphNode *)selfCopy nodeIsExecutingAsync];
   }
 
   else
   {
-    v6.receiver = v2;
+    v6.receiver = selfCopy;
     v6.super_class = CDMServiceGraphNode;
-    v3 = [(CDMServiceGraphNode *)&v6 isExecuting];
+    nodeIsExecutingAsync = [(CDMServiceGraphNode *)&v6 isExecuting];
   }
 
-  v4 = v3;
-  objc_sync_exit(v2);
+  v4 = nodeIsExecutingAsync;
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (BOOL)isFinished
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(CDMServiceGraphNode *)v2 nodeIsUsingAsync])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(CDMServiceGraphNode *)selfCopy nodeIsUsingAsync])
   {
-    v3 = [(CDMServiceGraphNode *)v2 asyncIsFinished];
+    asyncIsFinished = [(CDMServiceGraphNode *)selfCopy asyncIsFinished];
   }
 
   else
   {
-    v6.receiver = v2;
+    v6.receiver = selfCopy;
     v6.super_class = CDMServiceGraphNode;
-    v3 = [(CDMServiceGraphNode *)&v6 isFinished];
+    asyncIsFinished = [(CDMServiceGraphNode *)&v6 isFinished];
   }
 
-  v4 = v3;
-  objc_sync_exit(v2);
+  v4 = asyncIsFinished;
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -96,33 +96,33 @@
 - (id)getSuccessors
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(NSHashTable *)self->_successors allObjects];
-  v4 = [v2 setWithArray:v3];
+  allObjects = [(NSHashTable *)self->_successors allObjects];
+  v4 = [v2 setWithArray:allObjects];
 
   return v4;
 }
 
-- (void)removeDependency:(id)a3
+- (void)removeDependency:(id)dependency
 {
-  v4 = a3;
+  dependencyCopy = dependency;
   v5 = self->_successors;
   objc_sync_enter(v5);
   v6.receiver = self;
   v6.super_class = CDMServiceGraphNode;
-  [(CDMServiceGraphNode *)&v6 removeDependency:v4];
-  [v4 removeSuccessor:self];
+  [(CDMServiceGraphNode *)&v6 removeDependency:dependencyCopy];
+  [dependencyCopy removeSuccessor:self];
   objc_sync_exit(v5);
 }
 
-- (void)addDependency:(id)a3
+- (void)addDependency:(id)dependency
 {
-  v4 = a3;
+  dependencyCopy = dependency;
   v5 = self->_successors;
   objc_sync_enter(v5);
   v6.receiver = self;
   v6.super_class = CDMServiceGraphNode;
-  [(CDMServiceGraphNode *)&v6 addDependency:v4];
-  [v4 addSuccessor:self];
+  [(CDMServiceGraphNode *)&v6 addDependency:dependencyCopy];
+  [dependencyCopy addSuccessor:self];
   objc_sync_exit(v5);
 }
 
@@ -142,21 +142,21 @@
   }
 }
 
-+ (CDMServiceGraphNode)initWithName:(id)a3 forHandler:(id)a4 usingFunction:(id)a5 withError:(id)a6 cancellationBlock:(id)a7 requestId:(id)a8 dataDispatcherContext:(id)a9 serviceMetricsArray:(id)a10
++ (CDMServiceGraphNode)initWithName:(id)name forHandler:(id)handler usingFunction:(id)function withError:(id)error cancellationBlock:(id)block requestId:(id)id dataDispatcherContext:(id)context serviceMetricsArray:(id)self0
 {
-  v16 = a3;
-  v37 = a4;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v39 = a7;
-  v38 = a8;
-  v20 = a9;
-  v21 = a10;
+  nameCopy = name;
+  handlerCopy = handler;
+  handlerCopy2 = handler;
+  functionCopy = function;
+  errorCopy = error;
+  blockCopy = block;
+  idCopy = id;
+  contextCopy = context;
+  arrayCopy = array;
   v22 = CDMOSLoggerForCategory(4);
   v23 = os_signpost_id_generate(v22);
 
-  v48.receiver = a1;
+  v48.receiver = self;
   v48.super_class = &OBJC_METACLASS___CDMServiceGraphNode;
   v24 = [objc_msgSendSuper2(&v48 alloc)];
   objc_initWeak(&location, v24);
@@ -167,31 +167,31 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __141__CDMServiceGraphNode_initWithName_forHandler_usingFunction_withError_cancellationBlock_requestId_dataDispatcherContext_serviceMetricsArray___block_invoke;
   aBlock[3] = &unk_1E862EFE8;
-  v25 = v16;
+  v25 = nameCopy;
   v41 = v25;
   v46[1] = v23;
-  v26 = v18;
+  v26 = functionCopy;
   v44 = v26;
   objc_copyWeak(v46, &location);
-  v27 = v17;
+  v27 = handlerCopy2;
   v42 = v27;
-  v28 = v19;
+  v28 = errorCopy;
   v45 = v28;
-  v29 = v21;
+  v29 = arrayCopy;
   v43 = v29;
   v30 = _Block_copy(aBlock);
   [v24 addExecutionBlock:v30];
   if (v24)
   {
-    v31 = _Block_copy(v39);
+    v31 = _Block_copy(blockCopy);
     v32 = *(v24 + 264);
     *(v24 + 264) = v31;
 
-    objc_storeStrong((v24 + 272), a3);
-    objc_storeStrong((v24 + 280), v37);
-    v33 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    objc_storeStrong((v24 + 272), name);
+    objc_storeStrong((v24 + 280), handlerCopy);
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v34 = *(v24 + 288);
-    *(v24 + 288) = v33;
+    *(v24 + 288) = weakObjectsHashTable;
   }
 
   objc_destroyWeak(v46);

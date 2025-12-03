@@ -20,8 +20,8 @@
 
   else
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"UTAdditions.mm" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"partialName != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UTAdditions.mm" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"partialName != nil"}];
 
     if (v9)
     {
@@ -29,12 +29,12 @@
     }
   }
 
-  v14 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v14 handleFailureInMethod:a2 object:a1 file:@"UTAdditions.mm" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"contentType != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UTAdditions.mm" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"contentType != nil"}];
 
 LABEL_3:
   v10 = [v7 stringByAppendingPathExtensionForType:v9];
-  v11 = [a1 stringByAppendingPathComponent:v10];
+  v11 = [self stringByAppendingPathComponent:v10];
 
   return v11;
 }
@@ -45,8 +45,8 @@ LABEL_3:
   v5 = a3;
   if (!v5)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"UTAdditions.mm" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"contentType != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UTAdditions.mm" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"contentType != nil"}];
   }
 
   v6 = objc_autoreleasePoolPush();
@@ -61,20 +61,20 @@ LABEL_3:
   v7 = v18[5];
   if (!v7)
   {
-    v8 = [v5 preferredFilenameExtension];
+    preferredFilenameExtension = [v5 preferredFilenameExtension];
     v9 = v18[5];
-    v18[5] = v8;
+    v18[5] = preferredFilenameExtension;
 
     v7 = v18[5];
     if ((v5 & 0x8000000000000000) == 0 && !v7)
     {
-      v10 = [v5 _typeRecord];
+      _typeRecord = [v5 _typeRecord];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __63__NSString_UTAdditions__stringByAppendingPathExtensionForType___block_invoke;
       v15[3] = &unk_1E796F018;
       v15[4] = &v17;
-      [v10 enumeratePedigreeWithBlock:v15];
+      [_typeRecord enumeratePedigreeWithBlock:v15];
 
       v7 = v18[5];
     }
@@ -87,7 +87,7 @@ LABEL_3:
 
   if (([v7 isEqual:0] & 1) == 0)
   {
-    v11 = [a1 stringByAppendingPathExtension:v18[5]];
+    v11 = [self stringByAppendingPathExtension:v18[5]];
   }
 
   else
@@ -100,7 +100,7 @@ LABEL_9:
   objc_autoreleasePoolPop(v6);
   if (!v11)
   {
-    v11 = [a1 copy];
+    v11 = [self copy];
   }
 
   v12 = *MEMORY[0x1E69E9840];

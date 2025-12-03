@@ -1,41 +1,41 @@
 @interface SADSchemaSADImmediateDownloadTriggered
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SADSchemaSADImmediateDownloadTriggered)initWithDictionary:(id)a3;
-- (SADSchemaSADImmediateDownloadTriggered)initWithJSON:(id)a3;
+- (SADSchemaSADImmediateDownloadTriggered)initWithDictionary:(id)dictionary;
+- (SADSchemaSADImmediateDownloadTriggered)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasExistingAssets:(BOOL)a3;
-- (void)setHasRetryCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasExistingAssets:(BOOL)assets;
+- (void)setHasRetryCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SADSchemaSADImmediateDownloadTriggered
 
-- (SADSchemaSADImmediateDownloadTriggered)initWithDictionary:(id)a3
+- (SADSchemaSADImmediateDownloadTriggered)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = SADSchemaSADImmediateDownloadTriggered;
   v5 = [(SADSchemaSADImmediateDownloadTriggered *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"locale"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"locale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SADSchemaSADImmediateDownloadTriggered setLocale:](v5, "setLocale:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"existingAssets"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"existingAssets"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SADSchemaSADImmediateDownloadTriggered setExistingAssets:](v5, "setExistingAssets:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"retryCount"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"retryCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (SADSchemaSADImmediateDownloadTriggered)initWithJSON:(id)a3
+- (SADSchemaSADImmediateDownloadTriggered)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SADSchemaSADImmediateDownloadTriggered *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SADSchemaSADImmediateDownloadTriggered *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SADSchemaSADImmediateDownloadTriggered *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,12 +84,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[SADSchemaSADImmediateDownloadTriggered existingAssets](self, "existingAssets")}];
-    [v3 setObject:v7 forKeyedSubscript:@"existingAssets"];
+    [dictionary setObject:v7 forKeyedSubscript:@"existingAssets"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -120,7 +120,7 @@ LABEL_3:
     v9 = off_1E78E2408[v8];
   }
 
-  [v3 setObject:v9 forKeyedSubscript:@"locale"];
+  [dictionary setObject:v9 forKeyedSubscript:@"locale"];
   if ((*&self->_has & 4) == 0)
   {
     goto LABEL_5;
@@ -128,12 +128,12 @@ LABEL_3:
 
 LABEL_4:
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SADSchemaSADImmediateDownloadTriggered retryCount](self, "retryCount")}];
-  [v3 setObject:v5 forKeyedSubscript:@"retryCount"];
+  [dictionary setObject:v5 forKeyedSubscript:@"retryCount"];
 
 LABEL_5:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -176,16 +176,16 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[20];
+  v6 = equalCopy[20];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -194,13 +194,13 @@ LABEL_4:
   if (*&has)
   {
     locale = self->_locale;
-    if (locale != [v4 locale])
+    if (locale != [equalCopy locale])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[20];
+    v6 = equalCopy[20];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -212,10 +212,10 @@ LABEL_4:
   if (v8)
   {
     existingAssets = self->_existingAssets;
-    if (existingAssets == [v4 existingAssets])
+    if (existingAssets == [equalCopy existingAssets])
     {
       has = self->_has;
-      v6 = v4[20];
+      v6 = equalCopy[20];
       goto LABEL_10;
     }
 
@@ -234,7 +234,7 @@ LABEL_10:
   if (v10)
   {
     retryCount = self->_retryCount;
-    if (retryCount != [v4 retryCount])
+    if (retryCount != [equalCopy retryCount])
     {
       goto LABEL_14;
     }
@@ -246,15 +246,15 @@ LABEL_15:
   return v12;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -274,20 +274,20 @@ LABEL_3:
   }
 
   PBDataWriterWriteBOOLField();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
 }
 
-- (void)setHasRetryCount:(BOOL)a3
+- (void)setHasRetryCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -300,9 +300,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasExistingAssets:(BOOL)a3
+- (void)setHasExistingAssets:(BOOL)assets
 {
-  if (a3)
+  if (assets)
   {
     v3 = 2;
   }

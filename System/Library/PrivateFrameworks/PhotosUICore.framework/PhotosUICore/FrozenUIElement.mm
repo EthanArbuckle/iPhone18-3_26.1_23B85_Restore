@@ -1,13 +1,13 @@
 @interface FrozenUIElement
-- (void)unfreezeAnimated:(BOOL)a3;
+- (void)unfreezeAnimated:(BOOL)animated;
 @end
 
 @implementation FrozenUIElement
 
-- (void)unfreezeAnimated:(BOOL)a3
+- (void)unfreezeAnimated:(BOOL)animated
 {
 
-  sub_1A45FEA48(a3);
+  sub_1A45FEA48(animated);
 }
 
 @end

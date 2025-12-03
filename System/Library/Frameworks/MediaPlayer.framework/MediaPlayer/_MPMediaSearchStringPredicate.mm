@@ -1,13 +1,13 @@
 @interface _MPMediaSearchStringPredicate
-+ (id)predicateWithSearchString:(id)a3 forProperties:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (_MPMediaSearchStringPredicate)initWithCoder:(id)a3;
-- (_MPMediaSearchStringPredicate)initWithProtobufferDecodableObject:(id)a3 library:(id)a4;
++ (id)predicateWithSearchString:(id)string forProperties:(id)properties;
+- (BOOL)isEqual:(id)equal;
+- (_MPMediaSearchStringPredicate)initWithCoder:(id)coder;
+- (_MPMediaSearchStringPredicate)initWithProtobufferDecodableObject:(id)object library:(id)library;
 - (id)ML3PredicateForContainer;
 - (id)ML3PredicateForTrack;
-- (id)_ML3PredicateForEntityClass:(Class)a3;
-- (id)protobufferEncodableObjectFromLibrary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)_ML3PredicateForEntityClass:(Class)class;
+- (id)protobufferEncodableObjectFromLibrary:(id)library;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _MPMediaSearchStringPredicate
@@ -26,16 +26,16 @@
   return [(_MPMediaSearchStringPredicate *)self _ML3PredicateForEntityClass:v3];
 }
 
-- (id)_ML3PredicateForEntityClass:(Class)a3
+- (id)_ML3PredicateForEntityClass:(Class)class
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = [(_MPMediaSearchStringPredicate *)self properties];
-  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  properties = [(_MPMediaSearchStringPredicate *)self properties];
+  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(properties, "count")}];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = v5;
+  v7 = properties;
   v8 = [v7 countByEnumeratingWithState:&v32 objects:v39 count:16];
   if (v8)
   {
@@ -50,10 +50,10 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [(objc_class *)a3 spotlightPropertyForMPMediaEntityProperty:*(*(&v32 + 1) + 8 * i)];
+        v12 = [(objc_class *)class spotlightPropertyForMPMediaEntityProperty:*(*(&v32 + 1) + 8 * i)];
         if (!v12)
         {
-          v27 = self;
+          selfCopy = self;
           [v6 removeAllObjects];
 
           v30 = 0u;
@@ -76,7 +76,7 @@
                 }
 
                 v22 = *(*(&v28 + 1) + 8 * j);
-                v23 = [(objc_class *)a3 propertyForMPMediaEntityProperty:v22];
+                v23 = [(objc_class *)class propertyForMPMediaEntityProperty:v22];
                 if (v23)
                 {
                   [v6 addObject:v23];
@@ -101,8 +101,8 @@
           }
 
           v25 = MEMORY[0x1E69B3518];
-          v15 = [(_MPMediaSearchStringPredicate *)v27 searchString];
-          v16 = [v25 predicateWithConcatenatedProperties:v6 searchString:v15];
+          searchString = [(_MPMediaSearchStringPredicate *)selfCopy searchString];
+          v16 = [v25 predicateWithConcatenatedProperties:v6 searchString:searchString];
           goto LABEL_23;
         }
 
@@ -121,19 +121,19 @@
   }
 
   v14 = MEMORY[0x1E69B3520];
-  v15 = [(_MPMediaSearchStringPredicate *)self searchString];
-  v16 = [v14 predicateWithProperties:v6 searchString:v15];
+  searchString = [(_MPMediaSearchStringPredicate *)self searchString];
+  v16 = [v14 predicateWithProperties:v6 searchString:searchString];
 LABEL_23:
 
   return v16;
 }
 
-- (id)protobufferEncodableObjectFromLibrary:(id)a3
+- (id)protobufferEncodableObjectFromLibrary:(id)library
 {
   v4 = objc_alloc_init(MPPSearchStringPredicate);
   [(MPPSearchStringPredicate *)v4 setSearchString:self->_searchString];
-  v5 = [(NSSet *)self->_properties allObjects];
-  v6 = [v5 mutableCopy];
+  allObjects = [(NSSet *)self->_properties allObjects];
+  v6 = [allObjects mutableCopy];
   [(MPPSearchStringPredicate *)v4 setProperties:v6];
 
   v7 = objc_alloc_init(MPPMediaPredicate);
@@ -143,14 +143,14 @@ LABEL_23:
   return v7;
 }
 
-- (_MPMediaSearchStringPredicate)initWithProtobufferDecodableObject:(id)a3 library:(id)a4
+- (_MPMediaSearchStringPredicate)initWithProtobufferDecodableObject:(id)object library:(id)library
 {
-  v6 = a3;
+  objectCopy = object;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"MPMediaQuery.m" lineNumber:1945 description:{@"Cannot decode object of type %@", objc_opt_class()}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaQuery.m" lineNumber:1945 description:{@"Cannot decode object of type %@", objc_opt_class()}];
   }
 
   v19.receiver = self;
@@ -158,19 +158,19 @@ LABEL_23:
   v7 = [(_MPMediaSearchStringPredicate *)&v19 init];
   if (v7)
   {
-    v8 = [v6 searchStringPredicate];
-    v9 = [v8 searchString];
-    v10 = [v9 copy];
+    searchStringPredicate = [objectCopy searchStringPredicate];
+    searchString = [searchStringPredicate searchString];
+    v10 = [searchString copy];
     searchString = v7->_searchString;
     v7->_searchString = v10;
 
-    v12 = [v8 properties];
+    properties = [searchStringPredicate properties];
 
-    if (v12)
+    if (properties)
     {
       v13 = objc_alloc(MEMORY[0x1E695DFD8]);
-      v14 = [v8 properties];
-      v15 = [v13 initWithArray:v14];
+      properties2 = [searchStringPredicate properties];
+      v15 = [v13 initWithArray:properties2];
       properties = v7->_properties;
       v7->_properties = v15;
     }
@@ -179,12 +179,12 @@ LABEL_23:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && objc_msgSend(v4[1], "isEqual:", self->_searchString))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && objc_msgSend(equalCopy[1], "isEqual:", self->_searchString))
   {
-    v5 = [v4[2] isEqual:self->_properties];
+    v5 = [equalCopy[2] isEqual:self->_properties];
   }
 
   else
@@ -195,42 +195,42 @@ LABEL_23:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [v6 allowsKeyedCoding];
+  coderCopy = coder;
+  allowsKeyedCoding = [coderCopy allowsKeyedCoding];
   searchString = self->_searchString;
-  if (v4)
+  if (allowsKeyedCoding)
   {
-    [v6 encodeObject:searchString forKey:@"MPSearchString"];
-    [v6 encodeObject:self->_properties forKey:@"MPProperties"];
+    [coderCopy encodeObject:searchString forKey:@"MPSearchString"];
+    [coderCopy encodeObject:self->_properties forKey:@"MPProperties"];
   }
 
   else
   {
-    [v6 encodeObject:searchString];
-    [v6 encodeObject:self->_properties];
+    [coderCopy encodeObject:searchString];
+    [coderCopy encodeObject:self->_properties];
   }
 }
 
-- (_MPMediaSearchStringPredicate)initWithCoder:(id)a3
+- (_MPMediaSearchStringPredicate)initWithCoder:(id)coder
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = _MPMediaSearchStringPredicate;
   v5 = [(_MPMediaSearchStringPredicate *)&v22 init];
   if (v5)
   {
-    if ([v4 allowsKeyedCoding])
+    if ([coderCopy allowsKeyedCoding])
     {
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPSearchString"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPSearchString"];
       [(_MPMediaSearchStringPredicate *)v5 setSearchString:v6];
 
       v7 = MEMORY[0x1E695DFD8];
       v8 = objc_opt_class();
       v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-      v10 = [v4 decodeObjectOfClasses:v9 forKey:@"MPProperties"];
+      decodeObject2 = [coderCopy decodeObjectOfClasses:v9 forKey:@"MPProperties"];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -244,8 +244,8 @@ LABEL_15:
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v10 = v10;
-      v11 = [v10 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      decodeObject2 = decodeObject2;
+      v11 = [decodeObject2 countByEnumeratingWithState:&v18 objects:v23 count:16];
       if (v11)
       {
         v12 = v11;
@@ -257,14 +257,14 @@ LABEL_15:
           {
             if (*v19 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(decodeObject2);
             }
 
             objc_opt_class();
             v14 &= objc_opt_isKindOfClass();
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v18 objects:v23 count:16];
+          v12 = [decodeObject2 countByEnumeratingWithState:&v18 objects:v23 count:16];
         }
 
         while (v12);
@@ -282,13 +282,13 @@ LABEL_15:
 
     else
     {
-      v16 = [v4 decodeObject];
-      [(_MPMediaSearchStringPredicate *)v5 setSearchString:v16];
+      decodeObject = [coderCopy decodeObject];
+      [(_MPMediaSearchStringPredicate *)v5 setSearchString:decodeObject];
 
-      v10 = [v4 decodeObject];
+      decodeObject2 = [coderCopy decodeObject];
     }
 
-    [(_MPMediaSearchStringPredicate *)v5 setProperties:v10];
+    [(_MPMediaSearchStringPredicate *)v5 setProperties:decodeObject2];
     goto LABEL_15;
   }
 
@@ -297,25 +297,25 @@ LABEL_16:
   return v5;
 }
 
-+ (id)predicateWithSearchString:(id)a3 forProperties:(id)a4
++ (id)predicateWithSearchString:(id)string forProperties:(id)properties
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  stringCopy = string;
+  propertiesCopy = properties;
+  if (!stringCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"MPMediaQuery.m" lineNumber:1883 description:&stru_1F149ECA8];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaQuery.m" lineNumber:1883 description:&stru_1F149ECA8];
   }
 
-  if (![v8 count])
+  if (![propertiesCopy count])
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"MPMediaQuery.m" lineNumber:1884 description:&stru_1F149ECA8];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPMediaQuery.m" lineNumber:1884 description:&stru_1F149ECA8];
   }
 
   v9 = objc_alloc_init(_MPMediaSearchStringPredicate);
-  [(_MPMediaSearchStringPredicate *)v9 setSearchString:v7];
-  [(_MPMediaSearchStringPredicate *)v9 setProperties:v8];
+  [(_MPMediaSearchStringPredicate *)v9 setSearchString:stringCopy];
+  [(_MPMediaSearchStringPredicate *)v9 setProperties:propertiesCopy];
 
   return v9;
 }

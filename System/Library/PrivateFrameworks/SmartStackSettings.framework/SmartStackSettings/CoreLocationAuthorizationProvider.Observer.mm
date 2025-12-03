@@ -1,11 +1,11 @@
 @interface CoreLocationAuthorizationProvider.Observer
 - (_TtCC18SmartStackSettings33CoreLocationAuthorizationProvider8Observer)init;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 @end
 
 @implementation CoreLocationAuthorizationProvider.Observer
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_280369340, &qword_26A09F530);
   v6 = *(*(v5 - 8) + 64);
@@ -20,8 +20,8 @@
   v12[3] = 0;
   v12[4] = v11;
   v12[5] = v10;
-  v12[6] = a3;
-  v13 = a3;
+  v12[6] = authorization;
+  authorizationCopy = authorization;
 
   sub_26A06B90C(0, 0, v8, &unk_26A09FB78, v12);
 }

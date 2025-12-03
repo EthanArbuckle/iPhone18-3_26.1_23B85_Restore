@@ -1,7 +1,7 @@
 @interface NEIKEv2PrivateNotify
-- (BOOL)isEqual:(id)a3;
-- (NEIKEv2PrivateNotify)initWithNotifyStatus:(unsigned __int16)a3 notifyData:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NEIKEv2PrivateNotify)initWithNotifyStatus:(unsigned __int16)status notifyData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -10,34 +10,34 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(NEIKEv2PrivateNotify *)self notifyStatus];
-  v5 = [(NEIKEv2PrivateNotify *)self notifyData];
-  v6 = [v3 initWithFormat:@"[Private Notify %u %@]", v4, v5];
+  notifyStatus = [(NEIKEv2PrivateNotify *)self notifyStatus];
+  notifyData = [(NEIKEv2PrivateNotify *)self notifyData];
+  v6 = [v3 initWithFormat:@"[Private Notify %u %@]", notifyStatus, notifyData];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && [v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (equalCopy && [equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(NEIKEv2PrivateNotify *)self notifyStatus];
-    if (v6 == [v5 notifyStatus])
+    v5 = equalCopy;
+    notifyStatus = [(NEIKEv2PrivateNotify *)self notifyStatus];
+    if (notifyStatus == [v5 notifyStatus])
     {
-      v7 = [(NEIKEv2PrivateNotify *)self notifyData];
-      v8 = [v5 notifyData];
-      if (v7 == v8)
+      notifyData = [(NEIKEv2PrivateNotify *)self notifyData];
+      notifyData2 = [v5 notifyData];
+      if (notifyData == notifyData2)
       {
         v11 = 1;
       }
 
       else
       {
-        v9 = [(NEIKEv2PrivateNotify *)self notifyData];
-        v10 = [v5 notifyData];
-        v11 = [v9 isEqual:v10];
+        notifyData3 = [(NEIKEv2PrivateNotify *)self notifyData];
+        notifyData4 = [v5 notifyData];
+        v11 = [notifyData3 isEqual:notifyData4];
       }
     }
 
@@ -55,29 +55,29 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(NEIKEv2PrivateNotify *)self notifyStatus];
-  v6 = [(NEIKEv2PrivateNotify *)self notifyData];
-  v7 = [v6 copy];
-  v8 = [v4 initWithNotifyStatus:v5 notifyData:v7];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  notifyStatus = [(NEIKEv2PrivateNotify *)self notifyStatus];
+  notifyData = [(NEIKEv2PrivateNotify *)self notifyData];
+  v7 = [notifyData copy];
+  v8 = [v4 initWithNotifyStatus:notifyStatus notifyData:v7];
 
   return v8;
 }
 
-- (NEIKEv2PrivateNotify)initWithNotifyStatus:(unsigned __int16)a3 notifyData:(id)a4
+- (NEIKEv2PrivateNotify)initWithNotifyStatus:(unsigned __int16)status notifyData:(id)data
 {
-  v4 = a3;
+  statusCopy = status;
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v4 >> 13 <= 4)
+  dataCopy = data;
+  if (statusCopy >> 13 <= 4)
   {
     v10 = ne_log_obj();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v15 = v4;
+      v15 = statusCopy;
       _os_log_error_impl(&dword_1BA83C000, v10, OS_LOG_TYPE_ERROR, "Invalid private notify status %u", buf, 8u);
     }
 
@@ -102,8 +102,8 @@ LABEL_7:
   }
 
   v8 = v7;
-  v7->_notifyStatus = v4;
-  v9 = v6;
+  v7->_notifyStatus = statusCopy;
+  v9 = dataCopy;
   self = v8->_notifyData;
   v8->_notifyData = v9;
 LABEL_8:

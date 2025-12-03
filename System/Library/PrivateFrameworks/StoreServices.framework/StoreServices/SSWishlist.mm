@@ -1,16 +1,16 @@
 @interface SSWishlist
-+ (BOOL)existsForAccountIdentifier:(int64_t)a3;
++ (BOOL)existsForAccountIdentifier:(int64_t)identifier;
 - (BOOL)deleteBackingStore;
 - (NSNumber)lastSyncTime;
-- (SSWishlist)initWithAccountIdentifier:(int64_t)a3;
+- (SSWishlist)initWithAccountIdentifier:(int64_t)identifier;
 - (void)dealloc;
-- (void)performTransactionWithBlock:(id)a3;
-- (void)setLastSyncTime:(id)a3;
+- (void)performTransactionWithBlock:(id)block;
+- (void)setLastSyncTime:(id)time;
 @end
 
 @implementation SSWishlist
 
-- (SSWishlist)initWithAccountIdentifier:(int64_t)a3
+- (SSWishlist)initWithAccountIdentifier:(int64_t)identifier
 {
   v12.receiver = self;
   v12.super_class = SSWishlist;
@@ -18,8 +18,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_accountIdentifier = a3;
-    v6 = [SSWishlistDatabaseSchema databasePathWithAccountIdentifier:a3];
+    v4->_accountIdentifier = identifier;
+    v6 = [SSWishlistDatabaseSchema databasePathWithAccountIdentifier:identifier];
     v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:v6];
     v8 = objc_alloc_init(MEMORY[0x1E696AC08]);
     [v8 createDirectoryAtPath:objc_msgSend(v6 withIntermediateDirectories:"stringByDeletingLastPathComponent") attributes:1 error:{0, 0}];
@@ -41,12 +41,12 @@
   [(SSWishlist *)&v3 dealloc];
 }
 
-+ (BOOL)existsForAccountIdentifier:(int64_t)a3
++ (BOOL)existsForAccountIdentifier:(int64_t)identifier
 {
   v4 = objc_alloc_init(MEMORY[0x1E696AC08]);
-  LOBYTE(a3) = [v4 fileExistsAtPath:{+[SSWishlistDatabaseSchema databasePathWithAccountIdentifier:](SSWishlistDatabaseSchema, "databasePathWithAccountIdentifier:", a3)}];
+  LOBYTE(identifier) = [v4 fileExistsAtPath:{+[SSWishlistDatabaseSchema databasePathWithAccountIdentifier:](SSWishlistDatabaseSchema, "databasePathWithAccountIdentifier:", identifier)}];
 
-  return a3;
+  return identifier;
 }
 
 - (BOOL)deleteBackingStore
@@ -137,7 +137,7 @@ void __26__SSWishlist_lastSyncTime__block_invoke_2(uint64_t a1, sqlite3_stmt *a2
   }
 }
 
-- (void)performTransactionWithBlock:(id)a3
+- (void)performTransactionWithBlock:(id)block
 {
   database = self->_database;
   v4[0] = MEMORY[0x1E69E9820];
@@ -145,18 +145,18 @@ void __26__SSWishlist_lastSyncTime__block_invoke_2(uint64_t a1, sqlite3_stmt *a2
   v4[2] = __42__SSWishlist_performTransactionWithBlock___block_invoke;
   v4[3] = &unk_1E84B3630;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = block;
   [(SSSQLiteDatabase *)database performTransactionWithBlock:v4];
 }
 
-- (void)setLastSyncTime:(id)a3
+- (void)setLastSyncTime:(id)time
 {
   database = self->_database;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __30__SSWishlist_setLastSyncTime___block_invoke;
   v4[3] = &unk_1E84B3658;
-  v4[4] = a3;
+  v4[4] = time;
   v4[5] = self;
   [(SSSQLiteDatabase *)database performTransactionWithBlock:v4];
 }

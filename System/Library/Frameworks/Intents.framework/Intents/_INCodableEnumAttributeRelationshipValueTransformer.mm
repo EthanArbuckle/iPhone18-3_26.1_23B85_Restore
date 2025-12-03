@@ -1,21 +1,21 @@
 @interface _INCodableEnumAttributeRelationshipValueTransformer
-- (id)_transformedNumberValue:(id)a3;
-- (id)_transformedStringValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)_transformedNumberValue:(id)value;
+- (id)_transformedStringValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation _INCodableEnumAttributeRelationshipValueTransformer
 
-- (id)_transformedNumberValue:(id)a3
+- (id)_transformedNumberValue:(id)value
 {
-  v4 = a3;
-  v5 = [(_INCodableAttributeRelationshipValueTransformer *)self codableAttribute];
-  if (v5)
+  valueCopy = value;
+  codableAttribute = [(_INCodableAttributeRelationshipValueTransformer *)self codableAttribute];
+  if (codableAttribute)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = codableAttribute;
     }
 
     else
@@ -31,17 +31,17 @@
 
   v7 = v6;
 
-  v8 = [v7 codableEnum];
+  codableEnum = [v7 codableEnum];
 
-  if (v8)
+  if (codableEnum)
   {
-    v9 = [v8 values];
+    values = [codableEnum values];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __79___INCodableEnumAttributeRelationshipValueTransformer__transformedNumberValue___block_invoke;
     v12[3] = &unk_1E727DD40;
-    v13 = v4;
-    v10 = [v9 if_firstObjectPassingTest:v12];
+    v13 = valueCopy;
+    v10 = [values if_firstObjectPassingTest:v12];
   }
 
   else
@@ -52,16 +52,16 @@
   return v10;
 }
 
-- (id)_transformedStringValue:(id)a3
+- (id)_transformedStringValue:(id)value
 {
-  v4 = a3;
-  v5 = [(_INCodableAttributeRelationshipValueTransformer *)self codableAttribute];
-  if (v5)
+  valueCopy = value;
+  codableAttribute = [(_INCodableAttributeRelationshipValueTransformer *)self codableAttribute];
+  if (codableAttribute)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = codableAttribute;
     }
 
     else
@@ -77,17 +77,17 @@
 
   v7 = v6;
 
-  v8 = [v7 codableEnum];
+  codableEnum = [v7 codableEnum];
 
-  if (v8)
+  if (codableEnum)
   {
-    v9 = [v8 values];
+    values = [codableEnum values];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __79___INCodableEnumAttributeRelationshipValueTransformer__transformedStringValue___block_invoke;
     v12[3] = &unk_1E727DD40;
-    v13 = v4;
-    v10 = [v9 if_firstObjectPassingTest:v12];
+    v13 = valueCopy;
+    v10 = [values if_firstObjectPassingTest:v12];
   }
 
   else
@@ -98,10 +98,10 @@
   return v10;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v4 = a3;
-  if (!v4)
+  valueCopy = value;
+  if (!valueCopy)
   {
 LABEL_6:
     v5 = 0;
@@ -112,7 +112,7 @@ LABEL_6:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
-    v6 = v4;
+    v6 = valueCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -123,9 +123,9 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v5 = [(_INCodableEnumAttributeRelationshipValueTransformer *)self _transformedStringValue:v4];
+  v5 = [(_INCodableEnumAttributeRelationshipValueTransformer *)self _transformedStringValue:valueCopy];
 LABEL_7:
-  v6 = v4;
+  v6 = valueCopy;
 LABEL_8:
 
   return v5;

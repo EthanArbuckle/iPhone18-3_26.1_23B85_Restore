@@ -2,14 +2,14 @@
 - (NSArray)allSectionIdentifiers;
 - (NSArray)sectionIdentifiers;
 - (_TtC9PassKitUI47PKPassDetailAccountCredentialsSectionController)init;
-- (_TtC9PassKitUI47PKPassDetailAccountCredentialsSectionController)initWithPass:(id)a3 delegate:(id)a4 throwsError:(id *)a5;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
-- (int64_t)tableView:(id)a3 numberOfRowsInSectionIdentifier:(id)a4;
-- (void)bankConnectAccountDidChange:(id)a3;
-- (void)bankConnectConsentStatusDidChange:(unint64_t)a3;
-- (void)fetchPaymentInformationWithCompletion:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
-- (void)updatePass:(id)a3;
+- (_TtC9PassKitUI47PKPassDetailAccountCredentialsSectionController)initWithPass:(id)pass delegate:(id)delegate throwsError:(id *)error;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
+- (int64_t)tableView:(id)view numberOfRowsInSectionIdentifier:(id)identifier;
+- (void)bankConnectAccountDidChange:(id)change;
+- (void)bankConnectConsentStatusDidChange:(unint64_t)change;
+- (void)fetchPaymentInformationWithCompletion:(id)completion;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
+- (void)updatePass:(id)pass;
 @end
 
 @implementation PKPassDetailAccountCredentialsSectionController
@@ -23,7 +23,7 @@
 
 - (NSArray)sectionIdentifiers
 {
-  v2 = self;
+  selfCopy = self;
   PKPassDetailAccountCredentialsSectionController.sectionIdentifiers.getter();
 
   v3 = sub_1BE052724();
@@ -31,19 +31,19 @@
   return v3;
 }
 
-- (_TtC9PassKitUI47PKPassDetailAccountCredentialsSectionController)initWithPass:(id)a3 delegate:(id)a4 throwsError:(id *)a5
+- (_TtC9PassKitUI47PKPassDetailAccountCredentialsSectionController)initWithPass:(id)pass delegate:(id)delegate throwsError:(id *)error
 {
-  v5 = a3;
+  passCopy = pass;
   swift_unknownObjectRetain();
-  return PKPassDetailAccountCredentialsSectionController.init(pass:delegate:)(v5);
+  return PKPassDetailAccountCredentialsSectionController.init(pass:delegate:)(passCopy);
 }
 
-- (void)fetchPaymentInformationWithCompletion:(id)a3
+- (void)fetchPaymentInformationWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBD3E580);
   MEMORY[0x1EEE9AC00](v5 - 8, v6);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -59,15 +59,15 @@
   v13[3] = 0;
   v13[4] = &unk_1BE107FA0;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1BD992D04(0, 0, v8, &unk_1BE0C7F30, v13);
 }
 
-- (void)updatePass:(id)a3
+- (void)updatePass:(id)pass
 {
-  v4 = a3;
-  v5 = self;
-  PKPassDetailAccountCredentialsSectionController.update(pass:)(v4);
+  passCopy = pass;
+  selfCopy = self;
+  PKPassDetailAccountCredentialsSectionController.update(pass:)(passCopy);
 }
 
 - (_TtC9PassKitUI47PKPassDetailAccountCredentialsSectionController)init
@@ -77,7 +77,7 @@
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
   v7 = sub_1BE04B414();
   v8 = *(v7 - 8);
@@ -86,16 +86,16 @@
   sub_1BE04B3D4();
   v12 = sub_1BE052434();
   v14 = v13;
-  v15 = a3;
-  v16 = self;
-  v18 = PKPassDetailAccountCredentialsSectionController.tableView(_:cellForRowAt:sectionIdentifier:)(v15, v17, v12, v14);
+  viewCopy = view;
+  selfCopy = self;
+  v18 = PKPassDetailAccountCredentialsSectionController.tableView(_:cellForRowAt:sectionIdentifier:)(viewCopy, v17, v12, v14);
 
   (*(v8 + 8))(v11, v7);
 
   return v18;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSectionIdentifier:(id)a4
+- (int64_t)tableView:(id)view numberOfRowsInSectionIdentifier:(id)identifier
 {
   if (sub_1BE052434() == 0xD000000000000019 && 0x80000001BE117570 == v4)
   {
@@ -111,31 +111,31 @@
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
   v7 = sub_1BE04B414();
   v8 = *(v7 - 8);
   MEMORY[0x1EEE9AC00](v7, v9);
   v11 = &v14 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1BE04B3D4();
-  v12 = a3;
-  v13 = self;
-  _s9PassKitUI47PKPassDetailAccountCredentialsSectionControllerC9tableView_14didSelectRowAt17sectionIdentifierySo07UITableK0C_10Foundation9IndexPathVSStF_0(v12, v11);
+  viewCopy = view;
+  selfCopy = self;
+  _s9PassKitUI47PKPassDetailAccountCredentialsSectionControllerC9tableView_14didSelectRowAt17sectionIdentifierySo07UITableK0C_10Foundation9IndexPathVSStF_0(viewCopy, v11);
 
   (*(v8 + 8))(v11, v7);
 }
 
-- (void)bankConnectAccountDidChange:(id)a3
+- (void)bankConnectAccountDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  PKPassDetailAccountCredentialsSectionController.accountDidChange(to:)(a3);
+  changeCopy = change;
+  selfCopy = self;
+  PKPassDetailAccountCredentialsSectionController.accountDidChange(to:)(change);
 }
 
-- (void)bankConnectConsentStatusDidChange:(unint64_t)a3
+- (void)bankConnectConsentStatusDidChange:(unint64_t)change
 {
-  v4 = self;
-  PKPassDetailAccountCredentialsSectionController.consentStatusDidChange(to:)(a3);
+  selfCopy = self;
+  PKPassDetailAccountCredentialsSectionController.consentStatusDidChange(to:)(change);
 }
 
 @end

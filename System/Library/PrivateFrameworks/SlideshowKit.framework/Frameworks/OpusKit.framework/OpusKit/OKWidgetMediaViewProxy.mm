@@ -1,30 +1,30 @@
 @interface OKWidgetMediaViewProxy
 + (BOOL)shouldDrawRegionOfInterest;
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
-- (BOOL)canPerformAction:(id)a3;
-- (BOOL)endAllEditing:(BOOL)a3;
-- (BOOL)prepareForDisplay:(BOOL)a3;
-- (BOOL)prepareForUnload:(BOOL)a3;
-- (BOOL)prepareForWarmup:(BOOL)a3;
++ (void)setupJavascriptContext:(id)context;
+- (BOOL)canPerformAction:(id)action;
+- (BOOL)endAllEditing:(BOOL)editing;
+- (BOOL)prepareForDisplay:(BOOL)display;
+- (BOOL)prepareForUnload:(BOOL)unload;
+- (BOOL)prepareForWarmup:(BOOL)warmup;
 - (CGPoint)settingOffset;
 - (CGRect)thumbnailRect;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (OKWidgetMediaViewProxy)initWithWidget:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (OKWidgetMediaViewProxy)initWithWidget:(id)widget;
 - (UIEdgeInsets)settingMediaEdgeInsets;
 - (double)_localReadyProgress;
 - (double)remainingPlayDuration;
 - (float)contentAspectRatio;
 - (id)layoutSettingsKeys;
 - (id)settingUrl;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)valueForUndefinedKey:(id)key;
 - (void)_beginAudioDucking;
 - (void)_cancelThumbnailOperations;
 - (void)_cleanupVideo;
 - (void)_hideVideoButton;
 - (void)_reloadThumbnailContent;
-- (void)_reloadThumbnailContent:(BOOL)a3 loadVideo:(BOOL)a4;
-- (void)_setVideoContentMode:(int64_t)a3;
+- (void)_reloadThumbnailContent:(BOOL)content loadVideo:(BOOL)video;
+- (void)_setVideoContentMode:(int64_t)mode;
 - (void)_setupVideo;
 - (void)_setupVideoPlayButton;
 - (void)_showVideoButton;
@@ -37,42 +37,42 @@
 - (void)instantPause;
 - (void)instantResume;
 - (void)layoutSubviews;
-- (void)networkStatusDidChange:(int64_t)a3;
-- (void)pauseVideo:(id)a3;
+- (void)networkStatusDidChange:(int64_t)change;
+- (void)pauseVideo:(id)video;
 - (void)play;
-- (void)playVideo:(id)a3;
+- (void)playVideo:(id)video;
 - (void)prepareForRefresh;
 - (void)prepareForReload;
 - (void)resetVideo;
-- (void)setAntialiasing:(BOOL)a3;
-- (void)setPlaybackAudioVolume:(double)a3;
-- (void)setSettingAudioVolume:(float)a3;
-- (void)setSettingAutoplay:(BOOL)a3;
-- (void)setSettingContentMode:(int64_t)a3;
-- (void)setSettingDidFinishPlayingActionScript:(id)a3;
-- (void)setSettingLoop:(BOOL)a3;
-- (void)setSettingMediaEdgeInsets:(UIEdgeInsets)a3;
-- (void)setSettingOffset:(CGPoint)a3;
-- (void)setSettingSeekToTime:(double)a3;
-- (void)setSettingShouldFitRegionOfInterest:(BOOL)a3;
-- (void)setSettingUrl:(id)a3;
-- (void)setVideoAsset:(id)a3;
-- (void)setVideoURL:(id)a3;
-- (void)showVideoActivityIndicator:(BOOL)a3;
+- (void)setAntialiasing:(BOOL)antialiasing;
+- (void)setPlaybackAudioVolume:(double)volume;
+- (void)setSettingAudioVolume:(float)volume;
+- (void)setSettingAutoplay:(BOOL)autoplay;
+- (void)setSettingContentMode:(int64_t)mode;
+- (void)setSettingDidFinishPlayingActionScript:(id)script;
+- (void)setSettingLoop:(BOOL)loop;
+- (void)setSettingMediaEdgeInsets:(UIEdgeInsets)insets;
+- (void)setSettingOffset:(CGPoint)offset;
+- (void)setSettingSeekToTime:(double)time;
+- (void)setSettingShouldFitRegionOfInterest:(BOOL)interest;
+- (void)setSettingUrl:(id)url;
+- (void)setVideoAsset:(id)asset;
+- (void)setVideoURL:(id)l;
+- (void)showVideoActivityIndicator:(BOOL)indicator;
 - (void)updateOffset;
 - (void)videoBecomesReady;
-- (void)videoPlayerController:(id)a3 bufferingStateDidChange:(unint64_t)a4;
-- (void)videoPlayerController:(id)a3 didFailToPlayItem:(id)a4;
-- (void)videoPlayerController:(id)a3 didFinishPlayingItem:(id)a4;
+- (void)videoPlayerController:(id)controller bufferingStateDidChange:(unint64_t)change;
+- (void)videoPlayerController:(id)controller didFailToPlayItem:(id)item;
+- (void)videoPlayerController:(id)controller didFinishPlayingItem:(id)item;
 @end
 
 @implementation OKWidgetMediaViewProxy
 
-- (OKWidgetMediaViewProxy)initWithWidget:(id)a3
+- (OKWidgetMediaViewProxy)initWithWidget:(id)widget
 {
   v5.receiver = self;
   v5.super_class = OKWidgetMediaViewProxy;
-  v3 = [(OKWidgetViewProxy *)&v5 initWithWidget:a3];
+  v3 = [(OKWidgetViewProxy *)&v5 initWithWidget:widget];
   if (v3)
   {
     *(v3 + 187) = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:0];
@@ -165,7 +165,7 @@
   [(OKWidgetView *)&v11 dealloc];
 }
 
-- (BOOL)canPerformAction:(id)a3
+- (BOOL)canPerformAction:(id)action
 {
   v10.receiver = self;
   v10.super_class = OKWidgetMediaViewProxy;
@@ -179,7 +179,7 @@
     return 1;
   }
 
-  [a3 location];
+  [action location];
   [(OKWidgetMediaViewProxy *)self convertPoint:0 fromView:?];
   v6 = v5;
   v8 = v7;
@@ -237,7 +237,7 @@
 + (id)supportedSettings
 {
   v37[14] = *MEMORY[0x277D85DE8];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___OKWidgetMediaViewProxy;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v7, sel_supportedSettings)}];
   v36[0] = @"contentMode";
@@ -258,9 +258,9 @@
   v31[0] = &unk_287AF0C20;
   v30[0] = @"type";
   v30[1] = @"default";
-  v3 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
   v30[2] = @"jsExport";
-  v31[1] = v3;
+  v31[1] = null;
   v31[2] = @"readwrite";
   v37[2] = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:3];
   v36[3] = @"autoplay";
@@ -341,10 +341,10 @@
   return v2;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if ([(UIImageView *)self->_thumbnailView contentMode]== 1 && [(UIImageView *)self->_thumbnailView image])
   {
     [[(UIImageView *)self->_thumbnailView image] size];
@@ -360,30 +360,30 @@
   return result;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v4.receiver = self;
   v4.super_class = OKWidgetMediaViewProxy;
-  return [(OKWidgetViewProxy *)&v4 valueForUndefinedKey:a3];
+  return [(OKWidgetViewProxy *)&v4 valueForUndefinedKey:key];
 }
 
 - (id)settingUrl
 {
-  v2 = [(OKWidgetViewProxy *)self mediaURLs];
+  mediaURLs = [(OKWidgetViewProxy *)self mediaURLs];
 
-  return [(NSMutableArray *)v2 firstObject];
+  return [(NSMutableArray *)mediaURLs firstObject];
 }
 
-- (void)setSettingUrl:(id)a3
+- (void)setSettingUrl:(id)url
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v5 = [(NSMutableArray *)[(OKWidgetViewProxy *)self mediaURLs] count];
-  if (!a3 && v5 || a3 && (v6 = -[OKWidgetViewProxy mediaURLs](self, "mediaURLs"), v8[0] = a3, (-[NSMutableArray isEqualToArray:](v6, "isEqualToArray:", [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1]) & 1) == 0))
+  if (!url && v5 || url && (v6 = -[OKWidgetViewProxy mediaURLs](self, "mediaURLs"), v8[0] = url, (-[NSMutableArray isEqualToArray:](v6, "isEqualToArray:", [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1]) & 1) == 0))
   {
     [(NSMutableArray *)[(OKWidgetViewProxy *)self mediaURLs] removeAllObjects];
-    if (a3)
+    if (url)
     {
-      [(NSMutableArray *)[(OKWidgetViewProxy *)self mediaURLs] addObject:a3];
+      [(NSMutableArray *)[(OKWidgetViewProxy *)self mediaURLs] addObject:url];
     }
 
     v7[0] = MEMORY[0x277D85DD0];
@@ -391,7 +391,7 @@
     v7[2] = __40__OKWidgetMediaViewProxy_setSettingUrl___block_invoke;
     v7[3] = &unk_279C90078;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = url;
     [OKSettings applyUpdateBlockOnce:v7 forKey:@"updateMediaContent"];
   }
 }
@@ -428,12 +428,12 @@ uint64_t __40__OKWidgetMediaViewProxy_setSettingUrl___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setSettingMediaEdgeInsets:(UIEdgeInsets)a3
+- (void)setSettingMediaEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   [(OKWidgetViewProxy *)self layoutFactor];
   self->_mediaEdgeInsets.top = top * v8;
   self->_mediaEdgeInsets.left = left * v9;
@@ -447,37 +447,37 @@ uint64_t __40__OKWidgetMediaViewProxy_setSettingUrl___block_invoke(uint64_t a1)
   [OKSettings applyUpdateBlockOnce:v10 forKey:@"updateLayout"];
 }
 
-- (void)setSettingAutoplay:(BOOL)a3
+- (void)setSettingAutoplay:(BOOL)autoplay
 {
-  if (self->_autoplay != a3)
+  if (self->_autoplay != autoplay)
   {
-    self->_autoplay = a3;
+    self->_autoplay = autoplay;
   }
 }
 
-- (void)setSettingLoop:(BOOL)a3
+- (void)setSettingLoop:(BOOL)loop
 {
-  if (self->_loop != a3)
+  if (self->_loop != loop)
   {
-    self->_loop = a3;
+    self->_loop = loop;
   }
 }
 
-- (void)setSettingSeekToTime:(double)a3
+- (void)setSettingSeekToTime:(double)time
 {
-  if (a3 >= 0.0)
+  if (time >= 0.0)
   {
-    self->_seekToTime = a3;
+    self->_seekToTime = time;
     [(OKWidgetMediaViewProxy *)self seekToTime:?];
   }
 }
 
-- (void)setSettingContentMode:(int64_t)a3
+- (void)setSettingContentMode:(int64_t)mode
 {
-  if ([(UIImageView *)self->_thumbnailView contentMode]!= a3)
+  if ([(UIImageView *)self->_thumbnailView contentMode]!= mode)
   {
-    [(UIImageView *)self->_thumbnailView setContentMode:a3];
-    [(OKWidgetMediaViewProxy *)self _setVideoContentMode:a3];
+    [(UIImageView *)self->_thumbnailView setContentMode:mode];
+    [(OKWidgetMediaViewProxy *)self _setVideoContentMode:mode];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __48__OKWidgetMediaViewProxy_setSettingContentMode___block_invoke;
@@ -499,13 +499,13 @@ uint64_t __48__OKWidgetMediaViewProxy_setSettingContentMode___block_invoke(uint6
   return [v2 prepareForRefresh];
 }
 
-- (void)_setVideoContentMode:(int64_t)a3
+- (void)_setVideoContentMode:(int64_t)mode
 {
   if ([(UIImageView *)self->_thumbnailView contentMode])
   {
-    v4 = [(UIImageView *)self->_thumbnailView contentMode];
+    contentMode = [(UIImageView *)self->_thumbnailView contentMode];
     v5 = MEMORY[0x277CE5DD8];
-    if (v4 == 1)
+    if (contentMode == 1)
     {
       v5 = MEMORY[0x277CE5DD0];
     }
@@ -518,9 +518,9 @@ uint64_t __48__OKWidgetMediaViewProxy_setSettingContentMode___block_invoke(uint6
 
   videoPlayerController = self->_videoPlayerController;
   v7 = *v5;
-  v8 = [(OKVideoPlayerController *)videoPlayerController playerLayer];
+  playerLayer = [(OKVideoPlayerController *)videoPlayerController playerLayer];
 
-  [(AVPlayerLayer *)v8 setVideoGravity:v7];
+  [(AVPlayerLayer *)playerLayer setVideoGravity:v7];
 }
 
 - (CGPoint)settingOffset
@@ -533,10 +533,10 @@ uint64_t __48__OKWidgetMediaViewProxy_setSettingContentMode___block_invoke(uint6
   return result;
 }
 
-- (void)setSettingOffset:(CGPoint)a3
+- (void)setSettingOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   [(OKWidgetViewProxy *)self layoutFactor];
   self->_shouldFitRegionOfInterest = 0;
   self->_offset.x = x * v6;
@@ -670,9 +670,9 @@ uint64_t __52__OKWidgetMediaViewProxy_shouldDrawRegionOfInterest__block_invoke()
   }
 }
 
-- (void)setSettingShouldFitRegionOfInterest:(BOOL)a3
+- (void)setSettingShouldFitRegionOfInterest:(BOOL)interest
 {
-  if (!a3 || [(UIImageView *)self->_thumbnailView contentMode]== 1 || [(NSMutableDictionary *)[(OKPresentationCanvas *)[(OKWidgetViewProxy *)self widget] settings] objectForKey:@"offset"])
+  if (!interest || [(UIImageView *)self->_thumbnailView contentMode]== 1 || [(NSMutableDictionary *)[(OKPresentationCanvas *)[(OKWidgetViewProxy *)self widget] settings] objectForKey:@"offset"])
   {
     self->_shouldFitRegionOfInterest = 0;
   }
@@ -696,9 +696,9 @@ uint64_t __52__OKWidgetMediaViewProxy_shouldDrawRegionOfInterest__block_invoke()
   return [-[OKWidgetViewProxy layoutSettingsKeys](&v3 layoutSettingsKeys)];
 }
 
-- (void)setSettingAudioVolume:(float)a3
+- (void)setSettingAudioVolume:(float)volume
 {
-  self->_volume = a3;
+  self->_volume = volume;
   audioDucker = self->_audioDucker;
   if (audioDucker)
   {
@@ -706,7 +706,7 @@ uint64_t __52__OKWidgetMediaViewProxy_shouldDrawRegionOfInterest__block_invoke()
   }
 }
 
-- (void)setSettingDidFinishPlayingActionScript:(id)a3
+- (void)setSettingDidFinishPlayingActionScript:(id)script
 {
   didFinishPlayingActionScript = self->_didFinishPlayingActionScript;
   if (didFinishPlayingActionScript)
@@ -715,26 +715,26 @@ uint64_t __52__OKWidgetMediaViewProxy_shouldDrawRegionOfInterest__block_invoke()
     self->_didFinishPlayingActionScript = 0;
   }
 
-  self->_didFinishPlayingActionScript = [a3 copy];
+  self->_didFinishPlayingActionScript = [script copy];
 }
 
 - (void)_cancelThumbnailOperations
 {
-  v3 = [(OKWidgetViewProxy *)self delegate];
+  delegate = [(OKWidgetViewProxy *)self delegate];
 
-  [(OKWidgetViewDelegate *)v3 widgetViewCancelAllOperations:self withIdentifier:@"thumbnail"];
+  [(OKWidgetViewDelegate *)delegate widgetViewCancelAllOperations:self withIdentifier:@"thumbnail"];
 }
 
-- (void)_reloadThumbnailContent:(BOOL)a3 loadVideo:(BOOL)a4
+- (void)_reloadThumbnailContent:(BOOL)content loadVideo:(BOOL)video
 {
-  v5 = a3;
+  contentCopy = content;
   [(OKWidgetMediaViewProxy *)self thumbnailRect];
   v8 = v7;
   v10 = v9;
-  v11 = [(NSMutableArray *)[(OKWidgetViewProxy *)self mediaURLs] firstObject];
-  if (v11)
+  firstObject = [(NSMutableArray *)[(OKWidgetViewProxy *)self mediaURLs] firstObject];
+  if (firstObject)
   {
-    v12 = v11;
+    v12 = firstObject;
     if ([(OKWidgetViewProxy *)self prepareMode]== 1)
     {
       [(OKWidgetViewProxy *)self startShowingProgressIndicator];
@@ -742,8 +742,8 @@ uint64_t __52__OKWidgetMediaViewProxy_shouldDrawRegionOfInterest__block_invoke()
 
     self->_needsReloadThumbnail = 0;
     v13 = [MEMORY[0x277D62800] weakReferenceHolderWithObject:self];
-    v14 = [(UIImageView *)self->_thumbnailView contentMode];
-    v15 = !v5 || [(UIImageView *)self->_thumbnailView image]== 0;
+    contentMode = [(UIImageView *)self->_thumbnailView contentMode];
+    v15 = !contentCopy || [(UIImageView *)self->_thumbnailView image]== 0;
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __60__OKWidgetMediaViewProxy__reloadThumbnailContent_loadVideo___block_invoke;
@@ -753,10 +753,10 @@ uint64_t __52__OKWidgetMediaViewProxy_shouldDrawRegionOfInterest__block_invoke()
     v16[1] = 3221225472;
     v16[2] = __60__OKWidgetMediaViewProxy__reloadThumbnailContent_loadVideo___block_invoke_3;
     v16[3] = &unk_279C90D58;
-    v17 = a4;
+    videoCopy = video;
     v16[4] = v13;
     v16[5] = self;
-    [(OKWidgetViewProxy *)self reloadMediaURL:v12 size:v14 mode:v15 lowQuality:v5 highQuality:@"thumbnail" identifier:v18 progressHandler:v8 completionHandler:v10, v16];
+    [(OKWidgetViewProxy *)self reloadMediaURL:v12 size:contentMode mode:v15 lowQuality:contentCopy highQuality:@"thumbnail" identifier:v18 progressHandler:v8 completionHandler:v10, v16];
   }
 }
 
@@ -1025,13 +1025,13 @@ LABEL_12:
   [(UIImageView *)thumbnailView setImage:0];
 }
 
-- (void)setAntialiasing:(BOOL)a3
+- (void)setAntialiasing:(BOOL)antialiasing
 {
-  v3 = a3;
+  antialiasingCopy = antialiasing;
   v6.receiver = self;
   v6.super_class = OKWidgetMediaViewProxy;
   [(OKWidgetViewProxy *)&v6 setAntialiasing:?];
-  if (v3)
+  if (antialiasingCopy)
   {
     v5 = 15;
   }
@@ -1063,11 +1063,11 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)prepareForDisplay:(BOOL)a3
+- (BOOL)prepareForDisplay:(BOOL)display
 {
   v6.receiver = self;
   v6.super_class = OKWidgetMediaViewProxy;
-  v4 = [(OKWidgetViewProxy *)&v6 prepareForDisplay:a3];
+  v4 = [(OKWidgetViewProxy *)&v6 prepareForDisplay:display];
   if (v4)
   {
     self->_needsReloadThumbnail = 0;
@@ -1081,11 +1081,11 @@ LABEL_12:
   return v4;
 }
 
-- (BOOL)prepareForWarmup:(BOOL)a3
+- (BOOL)prepareForWarmup:(BOOL)warmup
 {
   v6.receiver = self;
   v6.super_class = OKWidgetMediaViewProxy;
-  v4 = [(OKWidgetViewProxy *)&v6 prepareForWarmup:a3];
+  v4 = [(OKWidgetViewProxy *)&v6 prepareForWarmup:warmup];
   if (v4)
   {
     self->_needsReloadThumbnail = 0;
@@ -1100,11 +1100,11 @@ LABEL_12:
   return v4;
 }
 
-- (BOOL)prepareForUnload:(BOOL)a3
+- (BOOL)prepareForUnload:(BOOL)unload
 {
   v6.receiver = self;
   v6.super_class = OKWidgetMediaViewProxy;
-  v4 = [(OKWidgetViewProxy *)&v6 prepareForUnload:a3];
+  v4 = [(OKWidgetViewProxy *)&v6 prepareForUnload:unload];
   if (v4)
   {
     self->_needsReloadThumbnail = 0;
@@ -1169,9 +1169,9 @@ LABEL_12:
   if (!self->_videoPlayButton)
   {
     v3 = [MEMORY[0x277D755B8] imageNamed:@"playOverlay" inBundle:{+[OKRuntime opusKitBundle](OKRuntime, "opusKitBundle")}];
-    v4 = [MEMORY[0x277D627E8] button];
-    self->_videoPlayButton = v4;
-    [(OFUIButton *)v4 setImage:v3];
+    button = [MEMORY[0x277D627E8] button];
+    self->_videoPlayButton = button;
+    [(OFUIButton *)button setImage:v3];
     [v3 size];
     v6 = v5;
     [v3 size];
@@ -1180,10 +1180,10 @@ LABEL_12:
     [(OFUIButton *)self->_videoPlayButton setCenter:?];
     [(OFUIButton *)self->_videoPlayButton setHidden:1];
     [(OFUIButton *)self->_videoPlayButton setTarget:self action:sel_playVideo_];
-    v8 = [(OKWidgetViewProxy *)self contentView];
+    contentView = [(OKWidgetViewProxy *)self contentView];
     videoPlayButton = self->_videoPlayButton;
 
-    [(OFUIView *)v8 addSubview:videoPlayButton];
+    [(OFUIView *)contentView addSubview:videoPlayButton];
   }
 }
 
@@ -1278,7 +1278,7 @@ LABEL_12:
   }
 }
 
-- (void)setVideoURL:(id)a3
+- (void)setVideoURL:(id)l
 {
   [(OKWidgetMediaViewProxy *)self _cleanupVideo];
   videoURL = self->_videoURL;
@@ -1288,11 +1288,11 @@ LABEL_12:
     self->_videoURL = 0;
   }
 
-  v6 = a3;
-  self->_videoURL = v6;
-  if (v6)
+  lCopy = l;
+  self->_videoURL = lCopy;
+  if (lCopy)
   {
-    v7 = [MEMORY[0x277CE6650] assetWithURL:v6];
+    v7 = [MEMORY[0x277CE6650] assetWithURL:lCopy];
 
     [(OKWidgetMediaViewProxy *)self setVideoAsset:v7];
   }
@@ -1304,9 +1304,9 @@ LABEL_12:
   }
 }
 
-- (void)setVideoAsset:(id)a3
+- (void)setVideoAsset:(id)asset
 {
-  if (self->_videoAsset != a3)
+  if (self->_videoAsset != asset)
   {
     [(OKWidgetMediaViewProxy *)self _cleanupVideo];
     [(OKWidgetMediaViewProxy *)self _setupVideo];
@@ -1317,7 +1317,7 @@ LABEL_12:
       self->_videoAsset = 0;
     }
 
-    self->_videoAsset = a3;
+    self->_videoAsset = asset;
     [MEMORY[0x277CBEA60] arrayWithObjects:{@"tracks", @"duration", 0}];
     [AVAsset loadValuesAsynchronouslyForKeys:"loadValuesAsynchronouslyForKeys:completionHandler:" completionHandler:?];
   }
@@ -1424,7 +1424,7 @@ LABEL_17:
   return objc_sync_exit(v10);
 }
 
-- (void)playVideo:(id)a3
+- (void)playVideo:(id)video
 {
   self->_shouldPlayVideoWhenAvailable = 1;
   [(OKWidgetMediaViewProxy *)self _hideVideoButton];
@@ -1435,7 +1435,7 @@ LABEL_17:
   }
 }
 
-- (void)pauseVideo:(id)a3
+- (void)pauseVideo:(id)video
 {
   [(OKVideoPlayerController *)self->_videoPlayerController pause];
 
@@ -1500,9 +1500,9 @@ LABEL_17:
   {
     if (!self->_audioTrackID)
     {
-      v3 = [(OKWidgetViewProxy *)self presentationViewController];
+      presentationViewController = [(OKWidgetViewProxy *)self presentationViewController];
       *&v4 = self->_volume;
-      self->_audioTrackID = [(OKPresentationViewControllerProxy *)v3 beginAudioForController:self withAVAsset:self->_videoAsset andVolume:v4];
+      self->_audioTrackID = [(OKPresentationViewControllerProxy *)presentationViewController beginAudioForController:self withAVAsset:self->_videoAsset andVolume:v4];
     }
   }
 }
@@ -1582,7 +1582,7 @@ LABEL_17:
   [(OKWidgetMediaViewProxy *)self drawRegionOfInterestContainerBounds];
 }
 
-- (BOOL)endAllEditing:(BOOL)a3
+- (BOOL)endAllEditing:(BOOL)editing
 {
   v14[2] = *MEMORY[0x277D85DE8];
   isEditingPanning = self->_isEditingPanning;
@@ -1597,7 +1597,7 @@ LABEL_17:
     v14[0] = [MEMORY[0x277CCAE60] valueWithCGPoint:{v8, y / v9}];
     v14[1] = &unk_287AF2338;
     v10 = [objc_msgSend(MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:{2), "mutableCopy"}];
-    if (a3 || (v11 = v10, ![(OKPresentationViewControllerProxy *)[(OKWidgetViewProxy *)self presentationViewController] validatePanningMediaInWidget:self toState:v10]))
+    if (editing || (v11 = v10, ![(OKPresentationViewControllerProxy *)[(OKWidgetViewProxy *)self presentationViewController] validatePanningMediaInWidget:self toState:v10]))
     {
       v11 = 0;
     }
@@ -1608,12 +1608,12 @@ LABEL_17:
   return isEditingPanning;
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
   v23[4] = *MEMORY[0x277D85DE8];
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetMediaView"];
-  [OKSettings exportClassSettings:objc_opt_class() toJavaScriptContext:a3];
-  v4 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetMediaView", "objectForKeyedSubscript:", @"prototype"}];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetMediaView"];
+  [OKSettings exportClassSettings:objc_opt_class() toJavaScriptContext:context];
+  v4 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetMediaView", "objectForKeyedSubscript:", @"prototype"}];
   v6 = *MEMORY[0x277CD4638];
   v20[0] = *MEMORY[0x277CD4630];
   v5 = v20[0];
@@ -1629,7 +1629,7 @@ LABEL_17:
   v23[2] = MEMORY[0x277CBEC28];
   v23[3] = MEMORY[0x277CBEC38];
   [v4 defineProperty:@"playVideo" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v23, v20, 4)}];
-  v11 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetMediaView", "objectForKeyedSubscript:", @"prototype"}];
+  v11 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetMediaView", "objectForKeyedSubscript:", @"prototype"}];
   v18[0] = v5;
   v18[1] = v6;
   v19[0] = &__block_literal_global_204_0;
@@ -1639,7 +1639,7 @@ LABEL_17:
   v19[2] = v9;
   v19[3] = v7;
   [v11 defineProperty:@"pauseVideo" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v19, v18, 4)}];
-  v12 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetMediaView", "objectForKeyedSubscript:", @"prototype"}];
+  v12 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetMediaView", "objectForKeyedSubscript:", @"prototype"}];
   v16[0] = v5;
   v16[1] = v6;
   v17[0] = &__block_literal_global_207_0;
@@ -1649,7 +1649,7 @@ LABEL_17:
   v17[2] = MEMORY[0x277CBEC28];
   v17[3] = v7;
   [v12 defineProperty:@"duration" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v17, v16, 4)}];
-  v13 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetMediaView", "objectForKeyedSubscript:", @"prototype"}];
+  v13 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetMediaView", "objectForKeyedSubscript:", @"prototype"}];
   v14[0] = v5;
   v14[1] = v6;
   v15[0] = &__block_literal_global_212;
@@ -1690,9 +1690,9 @@ uint64_t __49__OKWidgetMediaViewProxy_setupJavascriptContext___block_invoke_4()
   return [v0 currentTime];
 }
 
-- (void)setPlaybackAudioVolume:(double)a3
+- (void)setPlaybackAudioVolume:(double)volume
 {
-  v3 = self->_volume * a3;
+  v3 = self->_volume * volume;
   *&v3 = v3;
   [(OKAudioDucker *)self->_audioDucker setVolume:v3];
 }
@@ -1708,9 +1708,9 @@ uint64_t __49__OKWidgetMediaViewProxy_setupJavascriptContext___block_invoke_4()
   {
     if (self->_videoAsset)
     {
-      v6 = [(OKVideoPlayerController *)self->_videoPlayerController bufferingState];
+      bufferingState = [(OKVideoPlayerController *)self->_videoPlayerController bufferingState];
       v7 = 1.0;
-      if ((v6 & 1) == 0)
+      if ((bufferingState & 1) == 0)
       {
         v7 = 0.0;
       }
@@ -1730,16 +1730,16 @@ uint64_t __49__OKWidgetMediaViewProxy_setupJavascriptContext___block_invoke_4()
   return result;
 }
 
-- (void)networkStatusDidChange:(int64_t)a3
+- (void)networkStatusDidChange:(int64_t)change
 {
-  if (a3 >= 1 && self->_needsReloadThumbnail)
+  if (change >= 1 && self->_needsReloadThumbnail)
   {
     self->_needsReloadThumbnail = 0;
     [(OKWidgetMediaViewProxy *)self prepareForRefresh];
   }
 }
 
-- (void)showVideoActivityIndicator:(BOOL)a3
+- (void)showVideoActivityIndicator:(BOOL)indicator
 {
   if (*MEMORY[0x277D62808] >= 4)
   {
@@ -1747,7 +1747,7 @@ uint64_t __49__OKWidgetMediaViewProxy_setupJavascriptContext___block_invoke_4()
   }
 }
 
-- (void)videoPlayerController:(id)a3 didFailToPlayItem:(id)a4
+- (void)videoPlayerController:(id)controller didFailToPlayItem:(id)item
 {
   if (*MEMORY[0x277D62808] >= 4)
   {
@@ -1767,11 +1767,11 @@ uint64_t __49__OKWidgetMediaViewProxy_setupJavascriptContext___block_invoke_4()
   }
 }
 
-- (void)videoPlayerController:(id)a3 didFinishPlayingItem:(id)a4
+- (void)videoPlayerController:(id)controller didFinishPlayingItem:(id)item
 {
   if (self->_loop)
   {
-    [(OKVideoPlayerController *)self->_videoPlayerController setCurrentTime:a3, a4, 0.0];
+    [(OKVideoPlayerController *)self->_videoPlayerController setCurrentTime:controller, item, 0.0];
     videoPlayerController = self->_videoPlayerController;
 
     [(OKVideoPlayerController *)videoPlayerController play];
@@ -1779,7 +1779,7 @@ uint64_t __49__OKWidgetMediaViewProxy_setupJavascriptContext___block_invoke_4()
 
   else
   {
-    [(OKWidgetMediaViewProxy *)self _stopAudioDucking:a3];
+    [(OKWidgetMediaViewProxy *)self _stopAudioDucking:controller];
     self->_shouldPlayVideoWhenAvailable = 0;
   }
 }
@@ -1796,20 +1796,20 @@ uint64_t __49__OKWidgetMediaViewProxy_setupJavascriptContext___block_invoke_4()
   [(OKVideoPlayerController *)self->_videoPlayerController play];
 }
 
-- (void)videoPlayerController:(id)a3 bufferingStateDidChange:(unint64_t)a4
+- (void)videoPlayerController:(id)controller bufferingStateDidChange:(unint64_t)change
 {
-  v4 = a4;
+  changeCopy = change;
   if (*MEMORY[0x277D62808] >= 5)
   {
-    [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Widgets/OKWidgetMediaView.m" line:1703 andFormat:@"%s - %@", "-[OKWidgetMediaViewProxy videoPlayerController:bufferingStateDidChange:]", a3];
+    [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Widgets/OKWidgetMediaView.m" line:1703 andFormat:@"%s - %@", "-[OKWidgetMediaViewProxy videoPlayerController:bufferingStateDidChange:]", controller];
   }
 
-  if ((v4 & 4) != 0 && (self->_shouldPlayVideoWhenAvailable || self->_autoplay))
+  if ((changeCopy & 4) != 0 && (self->_shouldPlayVideoWhenAvailable || self->_autoplay))
   {
     [(OKWidgetMediaViewProxy *)self showVideoActivityIndicator:1];
   }
 
-  if ((~v4 & 3) == 0)
+  if ((~changeCopy & 3) == 0)
   {
     [(OKWidgetMediaViewProxy *)self videoBecomesReady];
     [(OKWidgetMediaViewProxy *)self showVideoActivityIndicator:0];

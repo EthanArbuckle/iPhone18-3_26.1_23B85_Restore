@@ -8,19 +8,19 @@
 {
   v36[1] = *MEMORY[0x1E69E9840];
   v19 = objc_alloc_init(MEMORY[0x1E695B918]);
-  v20 = self;
-  v3 = [(FCHCZoneContentsExpectation *)self zoneID];
-  v36[0] = v3;
+  selfCopy = self;
+  zoneID = [(FCHCZoneContentsExpectation *)self zoneID];
+  v36[0] = zoneID;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
   [v19 setRecordZoneIDs:v4];
 
   [v19 setFetchAllChanges:1];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __39__FCHCZoneContentsExpectation_validate__block_invoke;
   v33[3] = &unk_1E7C37FE0;
-  v6 = v5;
+  v6 = array;
   v34 = v6;
   [v19 setRecordChangedBlock:v33];
   v27 = 0;
@@ -35,8 +35,8 @@
   v26[3] = &unk_1E7C38008;
   v26[4] = &v27;
   [v19 setFetchRecordZoneChangesCompletionBlock:v26];
-  v7 = [(FCHCZoneContentsExpectation *)self database];
-  [v7 addOperation:v19];
+  database = [(FCHCZoneContentsExpectation *)self database];
+  [database addOperation:v19];
 
   [v19 waitUntilFinished];
   [MEMORY[0x1E696AF00] isMainThread];
@@ -50,8 +50,8 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [(FCHCZoneContentsExpectation *)self recordTests];
-  v10 = [v9 countByEnumeratingWithState:&v22 objects:v35 count:16];
+  recordTests = [(FCHCZoneContentsExpectation *)self recordTests];
+  v10 = [recordTests countByEnumeratingWithState:&v22 objects:v35 count:16];
   if (v10)
   {
     v11 = *v23;
@@ -62,7 +62,7 @@
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(recordTests);
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
@@ -76,12 +76,12 @@
         if ((v15 & 1) == 0)
         {
           v16 = MEMORY[0x1E695DF30];
-          v17 = [(FCHCZoneContentsExpectation *)v20 zoneID];
-          [v16 raise:v12 format:{@"missing records in zone: %@\nfound: %@", v17, v6}];
+          zoneID2 = [(FCHCZoneContentsExpectation *)selfCopy zoneID];
+          [v16 raise:v12 format:{@"missing records in zone: %@\nfound: %@", zoneID2, v6}];
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v22 objects:v35 count:16];
+      v10 = [recordTests countByEnumeratingWithState:&v22 objects:v35 count:16];
     }
 
     while (v10);

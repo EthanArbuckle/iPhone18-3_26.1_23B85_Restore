@@ -1,115 +1,115 @@
 @interface _UISceneKeyboardProxyLayerForwardingHostingViewService
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)_keyboardOwnerIdentityTokensForLayers:(id)a3;
-- (id)initWithViewServiceOperator:(id *)a1;
-- (void)addLayers:(id)a3;
-- (void)addObserver:(id)a3;
+- (id)_keyboardOwnerIdentityTokensForLayers:(id)layers;
+- (id)initWithViewServiceOperator:(id *)operator;
+- (void)addLayers:(id)layers;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeLayers:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)viewServiceWillInvalidate:(id)a3;
+- (void)removeLayers:(id)layers;
+- (void)removeObserver:(id)observer;
+- (void)viewServiceWillInvalidate:(id)invalidate;
 @end
 
 @implementation _UISceneKeyboardProxyLayerForwardingHostingViewService
 
-- (id)initWithViewServiceOperator:(id *)a1
+- (id)initWithViewServiceOperator:(id *)operator
 {
   v3 = a2;
-  if (a1)
+  if (operator)
   {
-    v7.receiver = a1;
+    v7.receiver = operator;
     v7.super_class = _UISceneKeyboardProxyLayerForwardingHostingViewService;
     v4 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v4;
+    operator = v4;
     if (v4)
     {
       objc_storeWeak(v4 + 2, v3);
-      v5 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v5 addObserver:a1 selector:sel_viewServiceWillInvalidate_ name:@"_UIViewServiceSessionDidInvalidateNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:operator selector:sel_viewServiceWillInvalidate_ name:@"_UIViewServiceSessionDidInvalidateNotification" object:0];
     }
   }
 
-  return a1;
+  return operator;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"_UIViewServiceSessionDidInvalidateNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"_UIViewServiceSessionDidInvalidateNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = _UISceneKeyboardProxyLayerForwardingHostingViewService;
   [(_UISceneKeyboardProxyLayerForwardingHostingViewService *)&v4 dealloc];
 }
 
-- (void)addLayers:(id)a3
+- (void)addLayers:(id)layers
 {
-  v4 = a3;
+  layersCopy = layers;
   WeakRetained = objc_loadWeakRetained(&self->_viewControllerOperator);
-  v5 = [(_UISceneKeyboardProxyLayerForwardingHostingViewService *)self _keyboardOwnerIdentityTokensForLayers:v4];
+  v5 = [(_UISceneKeyboardProxyLayerForwardingHostingViewService *)self _keyboardOwnerIdentityTokensForLayers:layersCopy];
 
   [WeakRetained _addSceneForwardingLayersForOwners:v5];
 }
 
-- (void)removeLayers:(id)a3
+- (void)removeLayers:(id)layers
 {
-  v4 = a3;
+  layersCopy = layers;
   WeakRetained = objc_loadWeakRetained(&self->_viewControllerOperator);
-  v5 = [(_UISceneKeyboardProxyLayerForwardingHostingViewService *)self _keyboardOwnerIdentityTokensForLayers:v4];
+  v5 = [(_UISceneKeyboardProxyLayerForwardingHostingViewService *)self _keyboardOwnerIdentityTokensForLayers:layersCopy];
 
   [WeakRetained _removeSceneForwardingLayersForOwners:v5];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v9 = a3;
-  if (!v9)
+  observerCopy = observer;
+  if (!observerCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"_UISceneKeyboardProxyLayerForwardingHostingViewService.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISceneKeyboardProxyLayerForwardingHostingViewService.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
   }
 
   BSDispatchQueueAssertMain();
   observers = self->_observers;
   if (!observers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v9];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   BSDispatchQueueAssertMain();
-  v4 = v7;
-  if (v7)
+  v4 = observerCopy;
+  if (observerCopy)
   {
-    [(NSHashTable *)self->_observers removeObject:v7];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
     v5 = [(NSHashTable *)self->_observers count];
-    v4 = v7;
+    v4 = observerCopy;
     if (!v5)
     {
       observers = self->_observers;
       self->_observers = 0;
 
-      v4 = v7;
+      v4 = observerCopy;
     }
   }
 }
 
-- (void)viewServiceWillInvalidate:(id)a3
+- (void)viewServiceWillInvalidate:(id)invalidate
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = [a3 object];
+  object = [invalidate object];
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = object;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -142,9 +142,9 @@
 
   v10 = v9;
   WeakRetained = objc_loadWeakRetained(&self->_viewControllerOperator);
-  v12 = [WeakRetained _sessionIdentifier];
+  _sessionIdentifier = [WeakRetained _sessionIdentifier];
   v13 = v10;
-  v14 = v12;
+  v14 = _sessionIdentifier;
   v15 = v14;
   if (v13 == v14)
   {
@@ -201,13 +201,13 @@
 LABEL_25:
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     WeakRetained = objc_loadWeakRetained(&self->_viewControllerOperator);
     if (v5)
     {
@@ -234,21 +234,21 @@ LABEL_25:
 {
   v2 = MEMORY[0x1E696AEC0];
   WeakRetained = objc_loadWeakRetained(&self->_viewControllerOperator);
-  v4 = [v2 stringWithFormat:@"_UIViewServiceViewControllerOperator:%p", WeakRetained];
+  weakRetained = [v2 stringWithFormat:@"_UIViewServiceViewControllerOperator:%p", WeakRetained];
 
-  return v4;
+  return weakRetained;
 }
 
-- (id)_keyboardOwnerIdentityTokensForLayers:(id)a3
+- (id)_keyboardOwnerIdentityTokensForLayers:(id)layers
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  layersCopy = layers;
   v6 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [v5 copy];
+  v7 = [layersCopy copy];
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -269,18 +269,18 @@ LABEL_25:
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           [MEMORY[0x1E696AAA8] currentHandler];
-          v19 = v5;
-          v14 = self;
+          v19 = layersCopy;
+          selfCopy = self;
           v16 = v15 = a2;
-          [v16 handleFailureInMethod:v15 object:v14 file:@"_UISceneKeyboardProxyLayerForwardingHostingViewService.m" lineNumber:97 description:{@"%@ is not a FBSKeyboardProxyLayer", v12}];
+          [v16 handleFailureInMethod:v15 object:selfCopy file:@"_UISceneKeyboardProxyLayerForwardingHostingViewService.m" lineNumber:97 description:{@"%@ is not a FBSKeyboardProxyLayer", v12}];
 
           a2 = v15;
-          self = v14;
-          v5 = v19;
+          self = selfCopy;
+          layersCopy = v19;
         }
 
-        v13 = [v12 keyboardOwner];
-        [v6 addObject:v13];
+        keyboardOwner = [v12 keyboardOwner];
+        [v6 addObject:keyboardOwner];
 
         ++v11;
       }

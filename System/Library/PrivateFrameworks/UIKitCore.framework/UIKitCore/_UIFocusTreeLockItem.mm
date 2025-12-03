@@ -1,9 +1,9 @@
 @interface _UIFocusTreeLockItem
 - (BOOL)unlock;
 - (UIFocusEnvironment)environment;
-- (_UIFocusTreeLockItem)initWithEnvironment:(id)a3 finalUnlockHandler:(id)a4;
+- (_UIFocusTreeLockItem)initWithEnvironment:(id)environment finalUnlockHandler:(id)handler;
 - (id)description;
-- (void)_cleanup:(BOOL)a3;
+- (void)_cleanup:(BOOL)_cleanup;
 - (void)dealloc;
 - (void)lock;
 - (void)validate;
@@ -11,22 +11,22 @@
 
 @implementation _UIFocusTreeLockItem
 
-- (_UIFocusTreeLockItem)initWithEnvironment:(id)a3 finalUnlockHandler:(id)a4
+- (_UIFocusTreeLockItem)initWithEnvironment:(id)environment finalUnlockHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  environmentCopy = environment;
+  handlerCopy = handler;
   v27.receiver = self;
   v27.super_class = _UIFocusTreeLockItem;
   v8 = [(_UIFocusTreeLockItem *)&v27 init];
   if (v8)
   {
-    v9 = _Block_copy(v7);
+    v9 = _Block_copy(handlerCopy);
     finalUnlockHandler = v8->_finalUnlockHandler;
     v8->_finalUnlockHandler = v9;
 
-    objc_storeWeak(&v8->_environment, v6);
-    v8->_unsafeEnvironment = v6;
-    v11 = v6;
+    objc_storeWeak(&v8->_environment, environmentCopy);
+    v8->_unsafeEnvironment = environmentCopy;
+    v11 = environmentCopy;
     if (v11)
     {
       v12 = MEMORY[0x1E696AEC0];
@@ -86,8 +86,8 @@
   lockCallStackSymbols = self->_lockCallStackSymbols;
   if (lockCallStackSymbols)
   {
-    v4 = [MEMORY[0x1E696AF00] callStackSymbols];
-    [(NSMutableArray *)lockCallStackSymbols addObject:v4];
+    callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+    [(NSMutableArray *)lockCallStackSymbols addObject:callStackSymbols];
   }
 
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("UIFocus", &lock___s_category);
@@ -113,8 +113,8 @@
   lockCount = self->_lockCount;
   if (!lockCount)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"_UIFocusTreeLock.m" lineNumber:285 description:{@"Overreleasing a lock. This is a UIKit bug. Additional info:\n%@", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusTreeLock.m" lineNumber:285 description:{@"Overreleasing a lock. This is a UIKit bug. Additional info:\n%@", self}];
 
     lockCount = self->_lockCount;
   }
@@ -124,8 +124,8 @@
   unlockCallStackSymbols = self->_unlockCallStackSymbols;
   if (unlockCallStackSymbols)
   {
-    v6 = [MEMORY[0x1E696AF00] callStackSymbols];
-    [(NSMutableArray *)unlockCallStackSymbols addObject:v6];
+    callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+    [(NSMutableArray *)unlockCallStackSymbols addObject:callStackSymbols];
 
     v4 = self->_lockCount;
   }
@@ -174,13 +174,13 @@
   return self->_lockCount == 0;
 }
 
-- (void)_cleanup:(BOOL)a3
+- (void)_cleanup:(BOOL)_cleanup
 {
   v24 = *MEMORY[0x1E69E9840];
   didCleanup = self->_didCleanup;
-  if (!didCleanup || a3)
+  if (!didCleanup || _cleanup)
   {
-    if (a3 && !didCleanup)
+    if (_cleanup && !didCleanup)
     {
       CategoryCachedImpl = __UILogGetCategoryCachedImpl("UIFocus", &qword_1ED49D688);
       if (*CategoryCachedImpl)
@@ -191,13 +191,13 @@
           environmentDescription = self->_environmentDescription;
           v15 = MEMORY[0x1E696AF00];
           v16 = v13;
-          v17 = [v15 callStackSymbols];
+          callStackSymbols = [v15 callStackSymbols];
           v18 = 138412802;
           v19 = environmentDescription;
           v20 = 2112;
-          v21 = v17;
+          v21 = callStackSymbols;
           v22 = 2112;
-          v23 = self;
+          selfCopy2 = self;
           _os_log_impl(&dword_188A29000, v16, OS_LOG_TYPE_ERROR, "Cleaning up environment lock for %@ from dealloc. Cleanup from dealloc might indicate an unbalanced lock call. Stack trace:\n%@\nAdditional info:\n%@", &v18, 0x20u);
         }
       }
@@ -212,8 +212,8 @@
       goto LABEL_12;
     }
 
-    v10 = objc_getAssociatedObject(WeakRetained, self);
-    [v10 invalidate];
+    callStackSymbols2 = objc_getAssociatedObject(WeakRetained, self);
+    [callStackSymbols2 invalidate];
     objc_setAssociatedObject(v9, self, 0, 1);
 LABEL_11:
 
@@ -230,13 +230,13 @@ LABEL_12:
       v7 = self->_environmentDescription;
       v8 = MEMORY[0x1E696AF00];
       v9 = v6;
-      v10 = [v8 callStackSymbols];
+      callStackSymbols2 = [v8 callStackSymbols];
       v18 = 138412802;
       v19 = v7;
       v20 = 2112;
-      v21 = v10;
+      v21 = callStackSymbols2;
       v22 = 2112;
-      v23 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_ERROR, "Ignoring call to cleanup environment lock for %@. Cleanup has already happened. Stack trace:\n%@\nAdditional info:\n%@", &v18, 0x20u);
       goto LABEL_11;
     }
@@ -261,11 +261,11 @@ LABEL_12:
           {
             environmentDescription = self->_environmentDescription;
             v17 = 138412802;
-            v18 = environmentDescription;
+            selfCopy4 = environmentDescription;
             v19 = 2048;
             v20 = v4;
             v21 = 2112;
-            v22 = self;
+            selfCopy2 = self;
             _os_log_fault_impl(&dword_188A29000, v15, OS_LOG_TYPE_FAULT, "Lock for environment %@ was aquired %.2f seconds ago and might be stuck. This can have a serious impact on focus updates. Additional info:\n%@", &v17, 0x20u);
           }
         }
@@ -277,11 +277,11 @@ LABEL_12:
           {
             v13 = self->_environmentDescription;
             v17 = 138412802;
-            v18 = v13;
+            selfCopy4 = v13;
             v19 = 2048;
             v20 = v4;
             v21 = 2112;
-            v22 = self;
+            selfCopy2 = self;
             _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_ERROR, "Lock for environment %@ was aquired %.2f seconds ago and might be stuck. This can have a serious impact on focus updates. Additional info:\n%@", &v17, 0x20u);
           }
         }
@@ -300,7 +300,7 @@ LABEL_12:
         {
           v11 = self->_environmentDescription;
           v17 = 138412546;
-          v18 = v11;
+          selfCopy4 = v11;
           v19 = 2048;
           v20 = v4;
           v7 = "Lock for environment %@ was aquired %.2f seconds ago and might be stuck or take very long to be unlocked.";
@@ -318,7 +318,7 @@ LABEL_12:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
     {
       v17 = 138412290;
-      v18 = self;
+      selfCopy4 = self;
       _os_log_fault_impl(&dword_188A29000, v14, OS_LOG_TYPE_FAULT, "Found a nil focus environment in the list of locked environments. This is a UIKit bug. Additional info:\n%@", &v17, 0xCu);
     }
   }
@@ -329,7 +329,7 @@ LABEL_12:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v17 = 138412290;
-      v18 = self;
+      selfCopy4 = self;
       v7 = "Found a nil focus environment in the list of locked environments. This is a UIKit bug. Additional info:\n%@";
       v8 = v6;
       v9 = 12;
@@ -374,9 +374,9 @@ LABEL_14:
     v17 = [v3 appendObject:unlockCallStackSymbols withName:@"UNLOCK call stacks"];
   }
 
-  v18 = [v3 build];
+  build = [v3 build];
 
-  return v18;
+  return build;
 }
 
 - (UIFocusEnvironment)environment

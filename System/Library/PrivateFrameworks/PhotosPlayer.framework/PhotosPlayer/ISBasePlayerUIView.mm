@@ -1,41 +1,41 @@
 @interface ISBasePlayerUIView
 + (id)audioSessionQueue;
 + (id)livePhotoAudioSession;
-+ (void)_handleAVResourceReclamationEvent:(id)a3;
++ (void)_handleAVResourceReclamationEvent:(id)event;
 - (BOOL)isDisplayingPhoto;
 - (BOOL)isVideoReadyForDisplay;
 - (CGPoint)scaleAnchorOffset;
 - (CGRect)contentsRect;
-- (ISBasePlayerUIView)initWithCoder:(id)a3;
-- (ISBasePlayerUIView)initWithFrame:(CGRect)a3;
+- (ISBasePlayerUIView)initWithCoder:(id)coder;
+- (ISBasePlayerUIView)initWithFrame:(CGRect)frame;
 - (ISBasePlayerUIViewChangeObserver)_changeObserver;
 - (id)generateSnapshotImage;
 - (void)_performCommonInitialization;
-- (void)_setChangeObserver:(id)a3;
-- (void)_setWrappedAudioSession:(id)a3;
-- (void)_signalChange:(unint64_t)a3 withAnimationDuration:(double)a4;
+- (void)_setChangeObserver:(id)observer;
+- (void)_setWrappedAudioSession:(id)session;
+- (void)_signalChange:(unint64_t)change withAnimationDuration:(double)duration;
 - (void)_updateAudioSession;
 - (void)_updatePhotoView;
 - (void)_updatePhotoViewDynamicRange;
 - (void)_updatePlayerAudioSession;
-- (void)_updateVideoViewsFrameWithContainerBounds:(CGRect)a3;
+- (void)_updateVideoViewsFrameWithContainerBounds:(CGRect)bounds;
 - (void)_videoViewReadyForDisplayDidChange;
-- (void)applyOutputInfo:(id)a3 withTransitionOptions:(id)a4 completion:(id)a5;
-- (void)applyScale:(double)a3 withTransitionOptions:(id)a4 completion:(id)a5;
+- (void)applyOutputInfo:(id)info withTransitionOptions:(id)options completion:(id)completion;
+- (void)applyScale:(double)scale withTransitionOptions:(id)options completion:(id)completion;
 - (void)layoutSubviews;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)registerChangeObserver:(id)a3;
-- (void)setContent:(id)a3;
-- (void)setContentMode:(int64_t)a3;
-- (void)setContentsRect:(CGRect)a3;
-- (void)setCustomPhotoView:(id)a3;
-- (void)setOverrideImage:(id)a3;
-- (void)setPlayer:(id)a3;
-- (void)setPreferredImageDynamicRange:(int64_t)a3;
-- (void)setScaleAnchorOffset:(CGPoint)a3;
-- (void)setVideoFilter:(id)a3;
-- (void)setVideoTransform:(id)a3;
-- (void)unregisterChangeObserver:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)registerChangeObserver:(id)observer;
+- (void)setContent:(id)content;
+- (void)setContentMode:(int64_t)mode;
+- (void)setContentsRect:(CGRect)rect;
+- (void)setCustomPhotoView:(id)view;
+- (void)setOverrideImage:(id)image;
+- (void)setPlayer:(id)player;
+- (void)setPreferredImageDynamicRange:(int64_t)range;
+- (void)setScaleAnchorOffset:(CGPoint)offset;
+- (void)setVideoFilter:(id)filter;
+- (void)setVideoTransform:(id)transform;
+- (void)unregisterChangeObserver:(id)observer;
 @end
 
 @implementation ISBasePlayerUIView
@@ -69,9 +69,9 @@
   return result;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 4) != 0 && ISBasePlayerUIViewPlayerObservationContext == a5)
+  if ((change & 4) != 0 && ISBasePlayerUIViewPlayerObservationContext == context)
   {
     [(ISBasePlayerUIView *)self _updatePlayerAudioSession];
   }
@@ -79,37 +79,37 @@
 
 - (void)_updatePhotoView
 {
-  v11 = [(ISBasePlayerUIView *)self photoView];
-  v3 = [(ISBasePlayerUIView *)self customPhotoView];
-  v4 = [(ISBasePlayerUIView *)self containerView];
+  photoView = [(ISBasePlayerUIView *)self photoView];
+  customPhotoView = [(ISBasePlayerUIView *)self customPhotoView];
+  containerView = [(ISBasePlayerUIView *)self containerView];
   v5 = self->_content;
   v6 = v5;
-  if (v3 && (!v5 || [(ISPlayerOutputContent *)v5 photoIsOriginal]))
+  if (customPhotoView && (!v5 || [(ISPlayerOutputContent *)v5 photoIsOriginal]))
   {
-    [v11 removeFromSuperview];
-    v7 = [v3 superview];
+    [photoView removeFromSuperview];
+    superview = [customPhotoView superview];
 
-    if (v7 == v4)
+    if (superview == containerView)
     {
       goto LABEL_9;
     }
 
-    v8 = v4;
-    v9 = v3;
+    v8 = containerView;
+    v9 = customPhotoView;
   }
 
   else
   {
-    v10 = [v11 superview];
+    superview2 = [photoView superview];
 
-    if (v10)
+    if (superview2)
     {
       goto LABEL_9;
     }
 
-    [v3 removeFromSuperview];
-    v8 = v4;
-    v9 = v11;
+    [customPhotoView removeFromSuperview];
+    v8 = containerView;
+    v9 = photoView;
   }
 
   [v8 insertSubview:v9 atIndex:0];
@@ -117,24 +117,24 @@ LABEL_9:
   [(ISBasePlayerUIView *)self setNeedsLayout];
 }
 
-- (void)setOverrideImage:(id)a3
+- (void)setOverrideImage:(id)image
 {
-  v5 = a3;
-  if (self->_overrideImage != v5)
+  imageCopy = image;
+  if (self->_overrideImage != imageCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_overrideImage, a3);
-    v6 = [(ISBasePlayerUIView *)self photoView];
-    [v6 setImage:v7];
+    v7 = imageCopy;
+    objc_storeStrong(&self->_overrideImage, image);
+    photoView = [(ISBasePlayerUIView *)self photoView];
+    [photoView setImage:v7];
 
-    v5 = v7;
+    imageCopy = v7;
   }
 }
 
 - (BOOL)isDisplayingPhoto
 {
-  v2 = [(ISBasePlayerUIView *)self videoContainerView];
-  [v2 alpha];
+  videoContainerView = [(ISBasePlayerUIView *)self videoContainerView];
+  [videoContainerView alpha];
   v4 = v3 == 0.0;
 
   return v4;
@@ -142,45 +142,45 @@ LABEL_9:
 
 - (id)generateSnapshotImage
 {
-  v3 = [(ISBasePlayerUIView *)self videoView];
-  v4 = [(ISBasePlayerUIView *)self videoContainerView];
-  [v4 alpha];
+  videoView = [(ISBasePlayerUIView *)self videoView];
+  videoContainerView = [(ISBasePlayerUIView *)self videoContainerView];
+  [videoContainerView alpha];
   v6 = v5;
 
   if (v6 <= 0.0)
   {
-    v7 = [(ISBasePlayerUIView *)self photoView];
-    v24 = [v7 image];
+    photoView = [(ISBasePlayerUIView *)self photoView];
+    image = [photoView image];
   }
 
   else
   {
-    v7 = [v3 videoPlayer];
-    v8 = [v7 currentItem];
-    v9 = [v8 asset];
+    photoView = [videoView videoPlayer];
+    currentItem = [photoView currentItem];
+    asset = [currentItem asset];
 
-    v10 = [v7 currentItem];
-    v11 = [v10 videoComposition];
+    currentItem2 = [photoView currentItem];
+    videoComposition = [currentItem2 videoComposition];
 
     v29 = 0uLL;
     v30 = 0;
-    if (v7)
+    if (photoView)
     {
-      [v7 currentTime];
+      [photoView currentTime];
     }
 
-    v12 = [objc_alloc(MEMORY[0x277CE6408]) initWithAsset:v9];
+    v12 = [objc_alloc(MEMORY[0x277CE6408]) initWithAsset:asset];
     [(ISBasePlayerUIView *)self bounds];
     v14 = v13;
     v16 = v15;
-    v17 = [(ISBasePlayerUIView *)self traitCollection];
-    [v17 displayScale];
+    traitCollection = [(ISBasePlayerUIView *)self traitCollection];
+    [traitCollection displayScale];
     v19 = v18;
 
     if (v19 == 0.0)
     {
-      v20 = [MEMORY[0x277D759A0] mainScreen];
-      [v20 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       v19 = v21;
     }
 
@@ -194,69 +194,69 @@ LABEL_9:
     v27 = v26;
     v28 = v22;
     [v12 setRequestedTimeToleranceBefore:&v27];
-    [v12 setVideoComposition:v11];
+    [v12 setVideoComposition:videoComposition];
     [v12 setApertureMode:*MEMORY[0x277CE5CB0]];
     v27 = v29;
     v28 = v30;
     v23 = [MEMORY[0x277D3B450] copyCGImageFromImageGenerator:v12 atTime:&v27 actualTime:0 error:0];
-    v24 = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:v23];
+    image = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:v23];
     CGImageRelease(v23);
   }
 
-  return v24;
+  return image;
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_content != v5)
+  contentCopy = content;
+  v6 = contentCopy;
+  if (self->_content != contentCopy)
   {
-    v18 = v5;
-    v5 = [(ISPlayerOutputContent *)v5 isEqual:?];
+    v18 = contentCopy;
+    contentCopy = [(ISPlayerOutputContent *)contentCopy isEqual:?];
     v6 = v18;
-    if ((v5 & 1) == 0)
+    if ((contentCopy & 1) == 0)
     {
-      objc_storeStrong(&self->_content, a3);
-      v7 = [(ISBasePlayerUIView *)self photoView];
-      v8 = [(ISBasePlayerUIView *)self videoView];
-      v9 = [(ISBasePlayerUIView *)self overrideImage];
+      objc_storeStrong(&self->_content, content);
+      photoView = [(ISBasePlayerUIView *)self photoView];
+      videoView = [(ISBasePlayerUIView *)self videoView];
+      overrideImage = [(ISBasePlayerUIView *)self overrideImage];
 
-      if (v9)
+      if (overrideImage)
       {
-        v10 = [(ISBasePlayerUIView *)self overrideImage];
+        overrideImage2 = [(ISBasePlayerUIView *)self overrideImage];
       }
 
       else
       {
-        v15 = [(ISPlayerOutputContent *)v18 photo];
-        v16 = [v7 image];
-        v17 = [v16 CGImage];
+        photo = [(ISPlayerOutputContent *)v18 photo];
+        image = [photoView image];
+        cGImage = [image CGImage];
 
-        if (v15 == v17)
+        if (photo == cGImage)
         {
           goto LABEL_6;
         }
 
-        if (!v15)
+        if (!photo)
         {
-          [v7 setImage:0];
+          [photoView setImage:0];
           goto LABEL_6;
         }
 
         [(ISPlayerOutputContent *)v18 photoEXIFOrientation];
-        v10 = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:v15 scale:PLImageOrientationFromExifOrientation() orientation:1.0];
+        overrideImage2 = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:photo scale:PLImageOrientationFromExifOrientation() orientation:1.0];
       }
 
-      v11 = v10;
-      [v7 setImage:v10];
+      v11 = overrideImage2;
+      [photoView setImage:overrideImage2];
 
 LABEL_6:
-      v12 = [(ISPlayerOutputContent *)v18 videoPlayer];
-      [v8 setVideoPlayer:v12];
-      v13 = [(ISPlayerOutputContent *)v18 videoPlayer];
-      v14 = [(ISBasePlayerUIView *)self videoBlurView];
-      [v14 setVideoPlayer:v13];
+      videoPlayer = [(ISPlayerOutputContent *)v18 videoPlayer];
+      [videoView setVideoPlayer:videoPlayer];
+      videoPlayer2 = [(ISPlayerOutputContent *)v18 videoPlayer];
+      videoBlurView = [(ISBasePlayerUIView *)self videoBlurView];
+      [videoBlurView setVideoPlayer:videoPlayer2];
 
       [(ISBasePlayerUIView *)self _updatePhotoView];
       [(ISBasePlayerUIView *)self setNeedsLayout];
@@ -265,105 +265,105 @@ LABEL_6:
     }
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](contentCopy, v6);
 }
 
-- (void)applyOutputInfo:(id)a3 withTransitionOptions:(id)a4 completion:(id)a5
+- (void)applyOutputInfo:(id)info withTransitionOptions:(id)options completion:(id)completion
 {
-  v26 = a4;
-  v8 = a5;
-  v9 = a3;
+  optionsCopy = options;
+  completionCopy = completion;
+  infoCopy = info;
   [(ISBasePlayerUIView *)self layoutIfNeeded];
-  v10 = [(ISBasePlayerUIView *)self videoContainerView];
-  v11 = [(ISBasePlayerUIView *)self photoView];
-  v12 = [(ISBasePlayerUIView *)self customPhotoView];
-  v13 = [(ISBasePlayerUIView *)self isDisplayingPhoto];
-  v14 = [v12 layer];
-  v15 = v14;
-  if (v14)
+  videoContainerView = [(ISBasePlayerUIView *)self videoContainerView];
+  photoView = [(ISBasePlayerUIView *)self photoView];
+  customPhotoView = [(ISBasePlayerUIView *)self customPhotoView];
+  isDisplayingPhoto = [(ISBasePlayerUIView *)self isDisplayingPhoto];
+  layer = [customPhotoView layer];
+  v15 = layer;
+  if (layer)
   {
-    v16 = v14;
+    layer2 = layer;
   }
 
   else
   {
-    v16 = [v11 layer];
+    layer2 = [photoView layer];
   }
 
-  v17 = v16;
+  v17 = layer2;
 
   v18 = +[ISTransitionApplier defaultApplier];
-  v19 = [v10 layer];
-  [v18 applyOutputInfo:v9 withTransitionOptions:v26 toPhotoLayer:v17 videoLayer:v19 completion:v8];
+  layer3 = [videoContainerView layer];
+  [v18 applyOutputInfo:infoCopy withTransitionOptions:optionsCopy toPhotoLayer:v17 videoLayer:layer3 completion:completionCopy];
 
   v20 = MEMORY[0x277CCABB0];
-  [v9 videoAlpha];
+  [infoCopy videoAlpha];
   v22 = v21;
 
   v23 = [v20 numberWithDouble:v22];
-  v24 = [(ISBasePlayerUIView *)self videoBlurView];
-  v25 = [v24 layer];
-  [v18 setValue:v23 forKeyPath:@"opacity" ofLayer:v25 withTransitionOptions:v26 completion:0];
+  videoBlurView = [(ISBasePlayerUIView *)self videoBlurView];
+  layer4 = [videoBlurView layer];
+  [v18 setValue:v23 forKeyPath:@"opacity" ofLayer:layer4 withTransitionOptions:optionsCopy completion:0];
 
-  if (v13 != [(ISBasePlayerUIView *)self isDisplayingPhoto])
+  if (isDisplayingPhoto != [(ISBasePlayerUIView *)self isDisplayingPhoto])
   {
-    [v26 transitionDuration];
+    [optionsCopy transitionDuration];
     [(ISBasePlayerUIView *)self _signalChange:1 withAnimationDuration:?];
   }
 }
 
-- (void)applyScale:(double)a3 withTransitionOptions:(id)a4 completion:(id)a5
+- (void)applyScale:(double)scale withTransitionOptions:(id)options completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
+  completionCopy = completion;
+  optionsCopy = options;
   [(ISBasePlayerUIView *)self layoutIfNeeded];
-  v18 = [(ISBasePlayerUIView *)self videoContainerView];
-  v10 = [(ISBasePlayerUIView *)self photoView];
-  v11 = [(ISBasePlayerUIView *)self customPhotoView];
-  v12 = [v11 layer];
-  v13 = v12;
-  if (v12)
+  videoContainerView = [(ISBasePlayerUIView *)self videoContainerView];
+  photoView = [(ISBasePlayerUIView *)self photoView];
+  customPhotoView = [(ISBasePlayerUIView *)self customPhotoView];
+  layer = [customPhotoView layer];
+  v13 = layer;
+  if (layer)
   {
-    v14 = v12;
+    layer2 = layer;
   }
 
   else
   {
-    v14 = [v10 layer];
+    layer2 = [photoView layer];
   }
 
-  v15 = v14;
+  v15 = layer2;
 
   v16 = +[ISTransitionApplier defaultApplier];
-  v17 = [v18 layer];
-  [v16 applyScale:v9 withTransitionOptions:v15 toPhotoLayer:v17 videoLayer:v8 completion:a3];
+  layer3 = [videoContainerView layer];
+  [v16 applyScale:optionsCopy withTransitionOptions:v15 toPhotoLayer:layer3 videoLayer:completionCopy completion:scale];
 }
 
 - (void)_updatePhotoViewDynamicRange
 {
-  v3 = [(ISBasePlayerUIView *)self preferredImageDynamicRange];
-  v4 = [(ISBasePlayerUIView *)self photoView];
-  [v4 setPreferredImageDynamicRange:v3];
+  preferredImageDynamicRange = [(ISBasePlayerUIView *)self preferredImageDynamicRange];
+  photoView = [(ISBasePlayerUIView *)self photoView];
+  [photoView setPreferredImageDynamicRange:preferredImageDynamicRange];
 }
 
-- (void)setPreferredImageDynamicRange:(int64_t)a3
+- (void)setPreferredImageDynamicRange:(int64_t)range
 {
-  if (self->_preferredImageDynamicRange != a3)
+  if (self->_preferredImageDynamicRange != range)
   {
-    self->_preferredImageDynamicRange = a3;
+    self->_preferredImageDynamicRange = range;
     [(ISBasePlayerUIView *)self _updatePhotoViewDynamicRange];
   }
 }
 
-- (void)_updateVideoViewsFrameWithContainerBounds:(CGRect)a3
+- (void)_updateVideoViewsFrameWithContainerBounds:(CGRect)bounds
 {
-  v4 = [(ISBasePlayerUIView *)self containerView];
-  [v4 bounds];
+  containerView = [(ISBasePlayerUIView *)self containerView];
+  [containerView bounds];
   v6 = v5;
   v8 = v7;
 
-  v9 = [(ISPlayerOutputContent *)self->_content aspectRatio];
-  [v9 doubleValue];
+  aspectRatio = [(ISPlayerOutputContent *)self->_content aspectRatio];
+  [aspectRatio doubleValue];
   v11 = v10;
   if (v10 == 0.0)
   {
@@ -384,14 +384,14 @@ LABEL_6:
     }
   }
 
-  v14 = [(ISBasePlayerUIView *)self traitCollection];
-  [v14 displayScale];
+  traitCollection = [(ISBasePlayerUIView *)self traitCollection];
+  [traitCollection displayScale];
   v16 = v15;
 
   if (v16 <= 0.0)
   {
-    v17 = [MEMORY[0x277D759A0] mainScreen];
-    [v17 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v16 = v18;
   }
 
@@ -404,44 +404,44 @@ LABEL_6:
   v27 = [(ISBasePlayerUIView *)self videoView:*&v11];
   [v27 setFrame:{v20, v22, v24, v26}];
 
-  v28 = [(ISBasePlayerUIView *)self videoBlurView];
-  [v28 setFrame:{v20, v22, v24, v26}];
+  videoBlurView = [(ISBasePlayerUIView *)self videoBlurView];
+  [videoBlurView setFrame:{v20, v22, v24, v26}];
 }
 
-- (void)_signalChange:(unint64_t)a3 withAnimationDuration:(double)a4
+- (void)_signalChange:(unint64_t)change withAnimationDuration:(double)duration
 {
   if (self->_changeObserverRespondsTo.didChangeWithAnimationDuration)
   {
-    v8 = [(ISBasePlayerUIView *)self _changeObserver];
-    [v8 basePlayerUIView:self didChange:a3 withAnimationDuration:a4];
+    _changeObserver = [(ISBasePlayerUIView *)self _changeObserver];
+    [_changeObserver basePlayerUIView:self didChange:change withAnimationDuration:duration];
   }
 }
 
 - (void)_updatePlayerAudioSession
 {
-  v3 = [(ISBasePlayerUIView *)self wrappedAudioSession];
-  if (v3)
+  wrappedAudioSession = [(ISBasePlayerUIView *)self wrappedAudioSession];
+  if (wrappedAudioSession)
   {
-    v6 = v3;
-    v4 = [(ISBasePlayerUIView *)self player];
-    v5 = [v4 videoPlayer];
-    [v5 setWrappedAudioSession:v6];
+    v6 = wrappedAudioSession;
+    player = [(ISBasePlayerUIView *)self player];
+    videoPlayer = [player videoPlayer];
+    [videoPlayer setWrappedAudioSession:v6];
 
-    v3 = v6;
+    wrappedAudioSession = v6;
   }
 }
 
 - (void)_updateAudioSession
 {
   objc_initWeak(&location, self);
-  v3 = [objc_opt_class() audioSessionQueue];
+  audioSessionQueue = [objc_opt_class() audioSessionQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__ISBasePlayerUIView__updateAudioSession__block_invoke;
   block[3] = &unk_279A2A1A8;
   block[4] = self;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, block);
+  dispatch_async(audioSessionQueue, block);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -469,112 +469,112 @@ void __41__ISBasePlayerUIView__updateAudioSession__block_invoke_2(uint64_t a1)
   [WeakRetained _setWrappedAudioSession:*(a1 + 32)];
 }
 
-- (void)setPlayer:(id)a3
+- (void)setPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   player = self->_player;
-  if (player != v5)
+  if (player != playerCopy)
   {
-    v7 = v5;
+    v7 = playerCopy;
     [(ISObservable *)player unregisterChangeObserver:self context:ISBasePlayerUIViewPlayerObservationContext];
     [(ISBasePlayer *)self->_player removeOutput:self];
     [(ISBasePlayerUIView *)self setContent:0];
-    objc_storeStrong(&self->_player, a3);
+    objc_storeStrong(&self->_player, player);
     [(ISBasePlayer *)self->_player addOutput:self];
     [(ISObservable *)self->_player registerChangeObserver:self context:ISBasePlayerUIViewPlayerObservationContext];
     player = [(ISBasePlayerUIView *)self playerDidChange];
-    v5 = v7;
+    playerCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](player, v5);
+  MEMORY[0x2821F96F8](player, playerCopy);
 }
 
-- (void)setContentsRect:(CGRect)a3
+- (void)setContentsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_contentsRect = &self->_contentsRect;
-  if (!CGRectEqualToRect(a3, self->_contentsRect))
+  if (!CGRectEqualToRect(rect, self->_contentsRect))
   {
     p_contentsRect->origin.x = x;
     p_contentsRect->origin.y = y;
     p_contentsRect->size.width = width;
     p_contentsRect->size.height = height;
     [(ISBasePlayerUIView *)self setNeedsLayout];
-    v9 = [(ISBasePlayerUIView *)self photoView];
-    v10 = [v9 layer];
-    [v10 setContentsRect:{x, y, width, height}];
+    photoView = [(ISBasePlayerUIView *)self photoView];
+    layer = [photoView layer];
+    [layer setContentsRect:{x, y, width, height}];
 
-    v11 = [(ISBasePlayerUIView *)self videoView];
-    [v11 setContentsRect:{x, y, width, height}];
+    videoView = [(ISBasePlayerUIView *)self videoView];
+    [videoView setContentsRect:{x, y, width, height}];
   }
 }
 
-- (void)setScaleAnchorOffset:(CGPoint)a3
+- (void)setScaleAnchorOffset:(CGPoint)offset
 {
-  if (a3.x != self->_scaleAnchorOffset.x || a3.y != self->_scaleAnchorOffset.y)
+  if (offset.x != self->_scaleAnchorOffset.x || offset.y != self->_scaleAnchorOffset.y)
   {
-    self->_scaleAnchorOffset = a3;
+    self->_scaleAnchorOffset = offset;
     [(ISBasePlayerUIView *)self setNeedsLayout];
   }
 }
 
 - (void)_videoViewReadyForDisplayDidChange
 {
-  v3 = [(ISBasePlayerUIView *)self videoLayerReadyForDisplayChangeHandler];
+  videoLayerReadyForDisplayChangeHandler = [(ISBasePlayerUIView *)self videoLayerReadyForDisplayChangeHandler];
 
-  if (v3)
+  if (videoLayerReadyForDisplayChangeHandler)
   {
-    v4 = [(ISBasePlayerUIView *)self videoLayerReadyForDisplayChangeHandler];
-    v4[2]();
+    videoLayerReadyForDisplayChangeHandler2 = [(ISBasePlayerUIView *)self videoLayerReadyForDisplayChangeHandler];
+    videoLayerReadyForDisplayChangeHandler2[2]();
   }
 }
 
 - (BOOL)isVideoReadyForDisplay
 {
-  v2 = [(ISBasePlayerUIView *)self videoView];
-  v3 = [v2 videoLayerReadyForDisplay];
+  videoView = [(ISBasePlayerUIView *)self videoView];
+  videoLayerReadyForDisplay = [videoView videoLayerReadyForDisplay];
 
-  return v3;
+  return videoLayerReadyForDisplay;
 }
 
-- (void)_setWrappedAudioSession:(id)a3
+- (void)_setWrappedAudioSession:(id)session
 {
-  v5 = a3;
-  if (self->_wrappedAudioSession != v5)
+  sessionCopy = session;
+  if (self->_wrappedAudioSession != sessionCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_wrappedAudioSession, a3);
+    v6 = sessionCopy;
+    objc_storeStrong(&self->_wrappedAudioSession, session);
     [(ISBasePlayerUIView *)self audioSessionDidChange];
-    v5 = v6;
+    sessionCopy = v6;
   }
 }
 
-- (void)setCustomPhotoView:(id)a3
+- (void)setCustomPhotoView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   customPhotoView = self->_customPhotoView;
-  if (customPhotoView != v5)
+  if (customPhotoView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)customPhotoView removeFromSuperview];
-    objc_storeStrong(&self->_customPhotoView, a3);
+    objc_storeStrong(&self->_customPhotoView, view);
     customPhotoView = [(ISBasePlayerUIView *)self _updatePhotoView];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](customPhotoView, v5);
+  MEMORY[0x2821F96F8](customPhotoView, viewCopy);
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
-  if ([(ISBasePlayerUIView *)self contentMode]!= a3)
+  if ([(ISBasePlayerUIView *)self contentMode]!= mode)
   {
     v5.receiver = self;
     v5.super_class = ISBasePlayerUIView;
-    [(ISBasePlayerUIView *)&v5 setContentMode:a3];
+    [(ISBasePlayerUIView *)&v5 setContentMode:mode];
     [(ISBasePlayerUIView *)self setNeedsLayout];
   }
 }
@@ -589,22 +589,22 @@ void __41__ISBasePlayerUIView__updateAudioSession__block_invoke_2(uint64_t a1)
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(ISBasePlayerUIView *)self containerView];
-  v12 = [(ISBasePlayerUIView *)self photoView];
-  v13 = [(ISBasePlayerUIView *)self customPhotoView];
-  v14 = [(ISBasePlayerUIView *)self videoView];
-  v15 = [(ISBasePlayerUIView *)self videoContainerView];
-  v16 = [(ISBasePlayerUIView *)self videoBlurView];
-  v17 = [(ISBasePlayerUIView *)self contentMode];
-  v18 = [v14 layer];
-  [v18 setMeshTransform:0];
+  containerView = [(ISBasePlayerUIView *)self containerView];
+  photoView = [(ISBasePlayerUIView *)self photoView];
+  customPhotoView = [(ISBasePlayerUIView *)self customPhotoView];
+  videoView = [(ISBasePlayerUIView *)self videoView];
+  videoContainerView = [(ISBasePlayerUIView *)self videoContainerView];
+  videoBlurView = [(ISBasePlayerUIView *)self videoBlurView];
+  contentMode = [(ISBasePlayerUIView *)self contentMode];
+  layer = [videoView layer];
+  [layer setMeshTransform:0];
 
-  v19 = [v12 image];
-  [v19 size];
-  if (v19)
+  image = [photoView image];
+  [image size];
+  if (image)
   {
     v22 = v21 == *(MEMORY[0x277CBF3A8] + 8) && v20 == *MEMORY[0x277CBF3A8];
-    if (!v22 && v17 != 2)
+    if (!v22 && contentMode != 2)
     {
       v24 = v20 / v21;
       v58.origin.x = v4;
@@ -632,8 +632,8 @@ void __41__ISBasePlayerUIView__updateAudioSession__block_invoke_2(uint64_t a1)
     }
   }
 
-  [v11 setFrame:{v4, v6, v8, v10}];
-  [v11 bounds];
+  [containerView setFrame:{v4, v6, v8, v10}];
+  [containerView bounds];
   x = v60.origin.x;
   y = v60.origin.y;
   width = v60.size.width;
@@ -644,20 +644,20 @@ void __41__ISBasePlayerUIView__updateAudioSession__block_invoke_2(uint64_t a1)
   v61.size.width = width;
   v61.size.height = height;
   v32 = CGRectGetMidY(v61);
-  [v12 setCenter:{v31, v32}];
-  [v12 setBounds:{x, y, width, height}];
-  [v12 setContentMode:v17];
-  [v13 setCenter:{v31, v32}];
-  [v13 setBounds:{x, y, width, height}];
-  [v15 setCenter:{v31, v32}];
-  [v15 setBounds:{x, y, width, height}];
-  [v15 setContentMode:v17];
-  [v14 setCenter:{v31, v32}];
-  [v14 setBounds:{x, y, width, height}];
-  [v14 setContentMode:v17];
-  [v16 setCenter:{v31, v32}];
-  [v16 setBounds:{x, y, width, height}];
-  [v16 setContentMode:v17];
+  [photoView setCenter:{v31, v32}];
+  [photoView setBounds:{x, y, width, height}];
+  [photoView setContentMode:contentMode];
+  [customPhotoView setCenter:{v31, v32}];
+  [customPhotoView setBounds:{x, y, width, height}];
+  [videoContainerView setCenter:{v31, v32}];
+  [videoContainerView setBounds:{x, y, width, height}];
+  [videoContainerView setContentMode:contentMode];
+  [videoView setCenter:{v31, v32}];
+  [videoView setBounds:{x, y, width, height}];
+  [videoView setContentMode:contentMode];
+  [videoBlurView setCenter:{v31, v32}];
+  [videoBlurView setBounds:{x, y, width, height}];
+  [videoBlurView setContentMode:contentMode];
   [(ISBasePlayerUIView *)self _updateVideoViewsFrameWithContainerBounds:x, y, width, height];
   [(ISBasePlayerUIView *)self scaleAnchorOffset];
   v34 = v33;
@@ -682,73 +682,73 @@ void __41__ISBasePlayerUIView__updateAudioSession__block_invoke_2(uint64_t a1)
     v37 = v36 / CGRectGetHeight(v64) + 0.5;
   }
 
-  v39 = [v12 layer];
-  [v39 setAnchorPoint:{v38, v37}];
+  layer2 = [photoView layer];
+  [layer2 setAnchorPoint:{v38, v37}];
 
-  [v12 center];
-  [v12 setCenter:{v40 + v34, v41 + v36}];
-  v42 = [v13 layer];
-  [v42 setAnchorPoint:{v38, v37}];
+  [photoView center];
+  [photoView setCenter:{v40 + v34, v41 + v36}];
+  layer3 = [customPhotoView layer];
+  [layer3 setAnchorPoint:{v38, v37}];
 
-  [v13 center];
-  [v13 setCenter:{v43 + v34, v44 + v36}];
-  v45 = [v14 layer];
-  [v45 setAnchorPoint:{v38, v37}];
+  [customPhotoView center];
+  [customPhotoView setCenter:{v43 + v34, v44 + v36}];
+  layer4 = [videoView layer];
+  [layer4 setAnchorPoint:{v38, v37}];
 
-  [v14 center];
-  [v14 setCenter:{v46 + v34, v47 + v36}];
-  v48 = [v16 layer];
-  [v48 setAnchorPoint:{v38, v37}];
+  [videoView center];
+  [videoView setCenter:{v46 + v34, v47 + v36}];
+  layer5 = [videoBlurView layer];
+  [layer5 setAnchorPoint:{v38, v37}];
 
-  [v16 center];
-  [v16 setCenter:{v49 + v34, v50 + v36}];
-  v51 = [v15 layer];
-  [v51 setAnchorPoint:{v38, v37}];
+  [videoBlurView center];
+  [videoBlurView setCenter:{v49 + v34, v50 + v36}];
+  layer6 = [videoContainerView layer];
+  [layer6 setAnchorPoint:{v38, v37}];
 
-  [v15 center];
-  [v15 setCenter:{v52 + v34, v53 + v36}];
-  v54 = [(ISBasePlayerUIView *)self videoTransform];
-  v55 = [v14 layer];
-  [v55 setMeshTransform:v54];
+  [videoContainerView center];
+  [videoContainerView setCenter:{v52 + v34, v53 + v36}];
+  videoTransform = [(ISBasePlayerUIView *)self videoTransform];
+  layer7 = [videoView layer];
+  [layer7 setMeshTransform:videoTransform];
 
-  v56 = [(ISBasePlayerUIView *)self videoTransform];
-  [v16 setHidden:v56 == 0];
+  videoTransform2 = [(ISBasePlayerUIView *)self videoTransform];
+  [videoBlurView setHidden:videoTransform2 == 0];
 }
 
-- (void)setVideoFilter:(id)a3
+- (void)setVideoFilter:(id)filter
 {
-  v5 = a3;
-  if (self->_videoFilter != v5)
+  filterCopy = filter;
+  if (self->_videoFilter != filterCopy)
   {
-    v8 = v5;
-    v6 = [(ISBasePlayerUIView *)self videoView];
-    v7 = [v6 layer];
+    v8 = filterCopy;
+    videoView = [(ISBasePlayerUIView *)self videoView];
+    layer = [videoView layer];
 
     if (self->_videoFilter)
     {
-      [v7 is_removeFilter:?];
+      [layer is_removeFilter:?];
     }
 
-    objc_storeStrong(&self->_videoFilter, a3);
+    objc_storeStrong(&self->_videoFilter, filter);
     if (v8)
     {
-      [v7 is_addFilter:v8];
+      [layer is_addFilter:v8];
     }
 
-    v5 = v8;
+    filterCopy = v8;
   }
 }
 
-- (void)setVideoTransform:(id)a3
+- (void)setVideoTransform:(id)transform
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_videoTransform != v4)
+  transformCopy = transform;
+  v5 = transformCopy;
+  if (self->_videoTransform != transformCopy)
   {
-    v17 = v4;
-    v4 = [v4 isEqual:?];
+    v17 = transformCopy;
+    transformCopy = [transformCopy isEqual:?];
     v5 = v17;
-    if ((v4 & 1) == 0)
+    if ((transformCopy & 1) == 0)
     {
       v6 = [v17 copy];
       videoTransform = self->_videoTransform;
@@ -756,32 +756,32 @@ void __41__ISBasePlayerUIView__updateAudioSession__block_invoke_2(uint64_t a1)
 
       [MEMORY[0x277CD9FF0] begin];
       [MEMORY[0x277CD9FF0] disableActions];
-      v8 = [(ISBasePlayerUIView *)self videoView];
-      v9 = [v8 layer];
-      [v9 setMeshTransform:v17];
+      videoView = [(ISBasePlayerUIView *)self videoView];
+      layer = [videoView layer];
+      [layer setMeshTransform:v17];
 
-      v10 = [MEMORY[0x277D759A0] mainScreen];
-      [v10 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       v12 = v11;
-      v13 = [(ISBasePlayerUIView *)self videoView];
-      v14 = [v13 layer];
-      [v14 setRasterizationScale:v12];
+      videoView2 = [(ISBasePlayerUIView *)self videoView];
+      layer2 = [videoView2 layer];
+      [layer2 setRasterizationScale:v12];
 
-      v15 = [(ISBasePlayerUIView *)self videoTransform];
-      v16 = [(ISBasePlayerUIView *)self videoBlurView];
-      [v16 setHidden:v15 == 0];
+      videoTransform = [(ISBasePlayerUIView *)self videoTransform];
+      videoBlurView = [(ISBasePlayerUIView *)self videoBlurView];
+      [videoBlurView setHidden:videoTransform == 0];
 
-      v4 = [MEMORY[0x277CD9FF0] commit];
+      transformCopy = [MEMORY[0x277CD9FF0] commit];
       v5 = v17;
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](transformCopy, v5);
 }
 
-- (void)_setChangeObserver:(id)a3
+- (void)_setChangeObserver:(id)observer
 {
-  obj = a3;
+  obj = observer;
   WeakRetained = objc_loadWeakRetained(&self->__changeObserver);
 
   if (WeakRetained != obj)
@@ -791,25 +791,25 @@ void __41__ISBasePlayerUIView__updateAudioSession__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)unregisterChangeObserver:(id)a3
+- (void)unregisterChangeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(ISBasePlayerUIView *)self _changeObserver];
+  observerCopy = observer;
+  _changeObserver = [(ISBasePlayerUIView *)self _changeObserver];
 
-  if (v5 == v4)
+  if (_changeObserver == observerCopy)
   {
 
     [(ISBasePlayerUIView *)self _setChangeObserver:0];
   }
 }
 
-- (void)registerChangeObserver:(id)a3
+- (void)registerChangeObserver:(id)observer
 {
-  v5 = a3;
-  v4 = [(ISBasePlayerUIView *)self _changeObserver];
-  if (v4 != v5)
+  observerCopy = observer;
+  _changeObserver = [(ISBasePlayerUIView *)self _changeObserver];
+  if (_changeObserver != observerCopy)
   {
-    [(ISBasePlayerUIView *)self _setChangeObserver:v5];
+    [(ISBasePlayerUIView *)self _setChangeObserver:observerCopy];
   }
 }
 
@@ -840,8 +840,8 @@ void __41__ISBasePlayerUIView__updateAudioSession__block_invoke_2(uint64_t a1)
   y = p_contentsRect->origin.y;
   width = p_contentsRect->size.width;
   height = p_contentsRect->size.height;
-  v14 = [(UIImageView *)self->_photoView layer];
-  [v14 setContentsRect:{x, y, width, height}];
+  layer = [(UIImageView *)self->_photoView layer];
+  [layer setContentsRect:{x, y, width, height}];
 
   v15 = objc_alloc_init(ISVideoPlayerUIView);
   videoView = self->_videoView;
@@ -851,8 +851,8 @@ void __41__ISBasePlayerUIView__updateAudioSession__block_invoke_2(uint64_t a1)
   v18 = p_contentsRect->origin.y;
   v19 = p_contentsRect->size.width;
   v20 = p_contentsRect->size.height;
-  v21 = [(ISVideoPlayerUIView *)self->_videoView layer];
-  [v21 setContentsRect:{v17, v18, v19, v20}];
+  layer2 = [(ISVideoPlayerUIView *)self->_videoView layer];
+  [layer2 setContentsRect:{v17, v18, v19, v20}];
 
   objc_initWeak(&location, self);
   v35 = MEMORY[0x277D85DD0];
@@ -880,8 +880,8 @@ void __41__ISBasePlayerUIView__updateAudioSession__block_invoke_2(uint64_t a1)
   [v29 setValue:@"medium" forKey:@"inputQuality"];
   v41[0] = v29;
   v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:1];
-  v31 = [(ISVideoPlayerUIView *)self->_videoBlurView layer];
-  [v31 setFilters:v30];
+  layer3 = [(ISVideoPlayerUIView *)self->_videoBlurView layer];
+  [layer3 setFilters:v30];
 
   v32 = objc_alloc_init(MEMORY[0x277D75D18]);
   videoContainerView = self->_videoContainerView;
@@ -904,11 +904,11 @@ void __50__ISBasePlayerUIView__performCommonInitialization__block_invoke(uint64_
   [WeakRetained _videoViewReadyForDisplayDidChange];
 }
 
-- (ISBasePlayerUIView)initWithCoder:(id)a3
+- (ISBasePlayerUIView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ISBasePlayerUIView;
-  v3 = [(ISBasePlayerUIView *)&v6 initWithCoder:a3];
+  v3 = [(ISBasePlayerUIView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -918,11 +918,11 @@ void __50__ISBasePlayerUIView__performCommonInitialization__block_invoke(uint64_
   return v4;
 }
 
-- (ISBasePlayerUIView)initWithFrame:(CGRect)a3
+- (ISBasePlayerUIView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ISBasePlayerUIView;
-  v3 = [(ISBasePlayerUIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ISBasePlayerUIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -932,10 +932,10 @@ void __50__ISBasePlayerUIView__performCommonInitialization__block_invoke(uint64_
   return v4;
 }
 
-+ (void)_handleAVResourceReclamationEvent:(id)a3
++ (void)_handleAVResourceReclamationEvent:(id)event
 {
-  v3 = [a1 audioSessionQueue];
-  dispatch_async(v3, &__block_literal_global_10);
+  audioSessionQueue = [self audioSessionQueue];
+  dispatch_async(audioSessionQueue, &__block_literal_global_10);
 }
 
 void __56__ISBasePlayerUIView__handleAVResourceReclamationEvent___block_invoke()
@@ -947,8 +947,8 @@ void __56__ISBasePlayerUIView__handleAVResourceReclamationEvent___block_invoke()
 + (id)livePhotoAudioSession
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [a1 audioSessionQueue];
-  dispatch_assert_queue_V2(v3);
+  audioSessionQueue = [self audioSessionQueue];
+  dispatch_assert_queue_V2(audioSessionQueue);
 
   v4 = SharedAudioSession;
   if (!SharedAudioSession)
@@ -957,7 +957,7 @@ void __56__ISBasePlayerUIView__handleAVResourceReclamationEvent___block_invoke()
     v6 = livePhotoAudioSession_resourceReclamationController;
     livePhotoAudioSession_resourceReclamationController = v5;
 
-    v7 = [livePhotoAudioSession_resourceReclamationController observationWithWeakTarget:a1 selector:sel__handleAVResourceReclamationEvent_];
+    v7 = [livePhotoAudioSession_resourceReclamationController observationWithWeakTarget:self selector:sel__handleAVResourceReclamationEvent_];
     v8 = livePhotoAudioSession_reclamationObservation;
     livePhotoAudioSession_reclamationObservation = v7;
 

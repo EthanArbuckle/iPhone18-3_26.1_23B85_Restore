@@ -1,24 +1,24 @@
 @interface HFDemoModeAccessoryItemProvider
 - (HFDemoModeAccessoryItemProvider)init;
-- (HFDemoModeAccessoryItemProvider)initWithHome:(id)a3;
+- (HFDemoModeAccessoryItemProvider)initWithHome:(id)home;
 - (NSSet)demoItems;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HFDemoModeAccessoryItemProvider
 
-- (HFDemoModeAccessoryItemProvider)initWithHome:(id)a3
+- (HFDemoModeAccessoryItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v9.receiver = self;
   v9.super_class = HFDemoModeAccessoryItemProvider;
   v6 = [(HFItemProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
   }
 
   return v7;
@@ -26,40 +26,40 @@
 
 - (HFDemoModeAccessoryItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFDemoModeAccessoryItemProvider.m" lineNumber:36 description:{@"%s is unavailable; use %@ instead", "-[HFDemoModeAccessoryItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFDemoModeAccessoryItemProvider.m" lineNumber:36 description:{@"%s is unavailable; use %@ instead", "-[HFDemoModeAccessoryItemProvider init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFDemoModeAccessoryItemProvider *)self home];
-  v6 = [v4 initWithHome:v5];
+  home = [(HFDemoModeAccessoryItemProvider *)self home];
+  v6 = [v4 initWithHome:home];
 
   return v6;
 }
 
 - (id)reloadItems
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [(HFDemoModeAccessoryItemProvider *)self demoItems];
+  array = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  demoItems = [(HFDemoModeAccessoryItemProvider *)self demoItems];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __46__HFDemoModeAccessoryItemProvider_reloadItems__block_invoke;
   v26[3] = &unk_277DF9D90;
-  v27 = v3;
-  v6 = v4;
+  v27 = array;
+  v6 = dictionary;
   v28 = v6;
-  v7 = v3;
-  [v5 enumerateObjectsUsingBlock:v26];
+  v7 = array;
+  [demoItems enumerateObjectsUsingBlock:v26];
 
   v8 = [MEMORY[0x277CBEB58] set];
-  v9 = [(HFDemoModeAccessoryItemProvider *)self filter];
-  v10 = [v7 na_filter:v9];
+  filter = [(HFDemoModeAccessoryItemProvider *)self filter];
+  v10 = [v7 na_filter:filter];
 
   v20 = MEMORY[0x277D85DD0];
   v21 = 3221225472;
@@ -115,11 +115,11 @@ void __46__HFDemoModeAccessoryItemProvider_reloadItems__block_invoke_2(uint64_t 
   v8[2] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HFDemoModeAccessoryItemProvider;
-  v2 = [(HFItemProvider *)&v7 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v7 invalidationReasons];
   v8[0] = @"accessory";
   v8[1] = @"service";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
-  v4 = [v2 setByAddingObjectsFromArray:v3];
+  v4 = [invalidationReasons setByAddingObjectsFromArray:v3];
 
   v5 = *MEMORY[0x277D85DE8];
 
@@ -148,7 +148,7 @@ LABEL_5:
 
   v8 = [MEMORY[0x277CBEB58] set];
   v9 = +[HFDemoModeAccessoryManager sharedManager];
-  v10 = [v9 accessories];
+  accessories = [v9 accessories];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -156,7 +156,7 @@ LABEL_5:
   v14[3] = &unk_277DF9DE0;
   v15 = v8;
   v11 = v8;
-  [v10 enumerateObjectsUsingBlock:v14];
+  [accessories enumerateObjectsUsingBlock:v14];
   v12 = [objc_alloc(MEMORY[0x277CBEB98]) initWithSet:v11];
   v13 = self->_demoItems;
   self->_demoItems = v12;

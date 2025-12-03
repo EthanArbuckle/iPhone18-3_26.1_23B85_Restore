@@ -1,19 +1,19 @@
 @interface CCSetSyncPolicy
-- (CCSetSyncPolicy)initWithPolicyDictionary:(id)a3 forSetIdentifier:(id)a4;
+- (CCSetSyncPolicy)initWithPolicyDictionary:(id)dictionary forSetIdentifier:(id)identifier;
 @end
 
 @implementation CCSetSyncPolicy
 
-- (CCSetSyncPolicy)initWithPolicyDictionary:(id)a3 forSetIdentifier:(id)a4
+- (CCSetSyncPolicy)initWithPolicyDictionary:(id)dictionary forSetIdentifier:(id)identifier
 {
-  v7 = a4;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = CCSetSyncPolicy;
-  v8 = [(BMResourceSyncPolicy *)&v11 initWithPolicyDictionary:a3];
+  v8 = [(BMResourceSyncPolicy *)&v11 initWithPolicyDictionary:dictionary];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_setIdentifier, a4);
+    objc_storeStrong(&v8->_setIdentifier, identifier);
   }
 
   return v9;

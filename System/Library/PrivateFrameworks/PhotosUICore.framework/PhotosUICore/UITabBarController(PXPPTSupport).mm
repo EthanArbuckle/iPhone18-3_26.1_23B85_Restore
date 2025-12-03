@@ -20,7 +20,7 @@
     dispatch_after(v8, MEMORY[0x1E69E96A0], block);
   }
 
-  [a1 setSelectedTab:v6];
+  [self setSelectedTab:v6];
 }
 
 - (void)ppt_runTabSwitchingTestWithName:()PXPPTSupport options:delegate:completionHandler:
@@ -39,8 +39,8 @@
   }
 
   v14 = _Block_copy(v13);
-  v15 = [a1 selectedTab];
-  if (v15)
+  selectedTab = [self selectedTab];
+  if (selectedTab)
   {
     v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v17 = [v11 objectForKeyedSubscript:@"tab"];
@@ -48,25 +48,25 @@
     if (v17)
     {
       v19 = [v17 isEqualToString:@"all"];
-      v20 = [a1 tabs];
+      tabs = [self tabs];
       if (!v19)
       {
         v18;
         PXFind();
       }
 
-      [v16 addObjectsFromArray:v20];
+      [v16 addObjectsFromArray:tabs];
 
-      [v16 removeObject:v15];
-      [v16 insertObject:v15 atIndex:0];
-      [v16 addObject:v15];
+      [v16 removeObject:selectedTab];
+      [v16 insertObject:selectedTab atIndex:0];
+      [v16 addObject:selectedTab];
       if ([v16 count])
       {
         [v12 startedTest:v10];
         v16;
         v22 = v12;
         v23 = v10;
-        v15;
+        selectedTab;
         v22;
         v23;
         v14;

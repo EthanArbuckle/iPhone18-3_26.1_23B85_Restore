@@ -1,20 +1,20 @@
 @interface BKFlowingBookFontSizeConfiguration
-+ (double)fontSizeFactorForViewportSize:(CGSize)a3 useOldFontStepsAndSpacing:(BOOL)a4;
-- (BKFlowingBookFontSizeConfiguration)initWithViewController:(id)a3 configurationEnvironment:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFlowingBookFontSizeConfiguration:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (double)fontSizeFactorForViewportSize:(CGSize)size useOldFontStepsAndSpacing:(BOOL)spacing;
+- (BKFlowingBookFontSizeConfiguration)initWithViewController:(id)controller configurationEnvironment:(id)environment;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFlowingBookFontSizeConfiguration:(id)configuration;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)_reloadFontSizes;
 @end
 
 @implementation BKFlowingBookFontSizeConfiguration
 
-- (BKFlowingBookFontSizeConfiguration)initWithViewController:(id)a3 configurationEnvironment:(id)a4
+- (BKFlowingBookFontSizeConfiguration)initWithViewController:(id)controller configurationEnvironment:(id)environment
 {
   v7.receiver = self;
   v7.super_class = BKFlowingBookFontSizeConfiguration;
-  v4 = [(BKFlowingBookFontSizeConfiguration *)&v7 initWithViewController:a3 configurationEnvironment:a4];
+  v4 = [(BKFlowingBookFontSizeConfiguration *)&v7 initWithViewController:controller configurationEnvironment:environment];
   v5 = v4;
   if (v4)
   {
@@ -33,8 +33,8 @@
   sizes = self->_sizes;
   *self->_sizes = xmmword_1938A0;
   self->_sizes[2] = 1.0;
-  v5 = [(BKFlowingBookFontSizeConfiguration *)self environment];
-  [v5 size];
+  environment = [(BKFlowingBookFontSizeConfiguration *)self environment];
+  [environment size];
   v7 = v6;
   v9 = v8;
 
@@ -77,23 +77,23 @@
   self->_sizes[2] = v13 * self->_sizes[2];
 }
 
-+ (double)fontSizeFactorForViewportSize:(CGSize)a3 useOldFontStepsAndSpacing:(BOOL)a4
++ (double)fontSizeFactorForViewportSize:(CGSize)size useOldFontStepsAndSpacing:(BOOL)spacing
 {
-  if (a4)
+  if (spacing)
   {
     v4 = 1.0;
-    if (a3.width >= 1366.0)
+    if (size.width >= 1366.0)
     {
       return 1.13;
     }
   }
 
-  else if (a3.width >= 375.0)
+  else if (size.width >= 375.0)
   {
     v4 = 1.0;
-    if (a3.width >= 768.0)
+    if (size.width >= 768.0)
     {
-      return dbl_1938E0[a3.width < 1024.0];
+      return dbl_1938E0[size.width < 1024.0];
     }
   }
 
@@ -105,11 +105,11 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = BKFlowingBookFontSizeConfiguration;
-  v4 = [(BKFlowingBookFontSizeConfiguration *)&v7 copyWithZone:a3];
+  v4 = [(BKFlowingBookFontSizeConfiguration *)&v7 copyWithZone:zone];
   if (v4)
   {
     [(BKFlowingBookFontSizeConfiguration *)self largeSizeFactor];
@@ -122,21 +122,21 @@
   return v4;
 }
 
-- (BOOL)isEqualToFlowingBookFontSizeConfiguration:(id)a3
+- (BOOL)isEqualToFlowingBookFontSizeConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   [(BKFlowingBookFontSizeConfiguration *)self largeSizeFactor];
   v6 = v5;
-  [v4 largeSizeFactor];
-  v10 = v6 == v7 && *&self->_sizes[0] == v4[2] && *&self->_sizes[1] == v4[3] && *&self->_sizes[2] == v4[4];
+  [configurationCopy largeSizeFactor];
+  v10 = v6 == v7 && *&self->_sizes[0] == configurationCopy[2] && *&self->_sizes[1] == configurationCopy[3] && *&self->_sizes[2] == configurationCopy[4];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -146,7 +146,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(BKFlowingBookFontSizeConfiguration *)self isEqualToFlowingBookFontSizeConfiguration:v4];
+      v5 = [(BKFlowingBookFontSizeConfiguration *)self isEqualToFlowingBookFontSizeConfiguration:equalCopy];
     }
 
     else

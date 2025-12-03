@@ -1,21 +1,21 @@
 @interface EMDEBeamPath
-- (EMDEBeamPath)initWithState:(__CFArray *)a3 allowedWords:()basic_string<char;
+- (EMDEBeamPath)initWithState:(__CFArray *)state allowedWords:()basic_string<char;
 - (basic_string<char,)allowedWords;
 - (basic_string<char,)currentPrediction;
 - (basic_string<char,)currentWord;
 - (id).cxx_construct;
-- (id)initFinishedBeamFrom:(id)a3 additionalToken:()pair<int lengthPenalty:(float>)a4 validate:(float)a5;
-- (unsigned)createBeamForPrefixBasedTokeniserFrom:(id)a3 additionalToken:()pair<int validate:(float>)a4;
-- (unsigned)createBeamForSuffixBasedTokeniserFrom:(id)a3 additionalToken:()pair<int validate:(float>)a4;
+- (id)initFinishedBeamFrom:(id)from additionalToken:()pair<int lengthPenalty:(float>)penalty validate:(float)validate;
+- (unsigned)createBeamForPrefixBasedTokeniserFrom:(id)from additionalToken:()pair<int validate:(float>)validate;
+- (unsigned)createBeamForSuffixBasedTokeniserFrom:(id)from additionalToken:()pair<int validate:(float>)validate;
 - (vector<int,)tokens;
 @end
 
 @implementation EMDEBeamPath
 
-- (EMDEBeamPath)initWithState:(__CFArray *)a3 allowedWords:()basic_string<char
+- (EMDEBeamPath)initWithState:(__CFArray *)state allowedWords:()basic_string<char
 {
-  v4 = self;
-  if (a3)
+  selfCopy = self;
+  if (state)
   {
     v14.receiver = self;
     v14.super_class = EMDEBeamPath;
@@ -27,13 +27,13 @@
 
     std::string::assign((v7 + 56), "");
     std::string::assign((v7 + 80), "");
-    *(v7 + 3) = a3;
+    *(v7 + 3) = state;
     *(v7 + 3) = 0;
     *(v7 + 4) = 0;
     std::string::operator=((v7 + 104), a4);
     v7[8] = 0;
-    v4 = v7;
-    v10 = v4;
+    selfCopy = v7;
+    v10 = selfCopy;
   }
 
   else
@@ -50,12 +50,12 @@
   return v10;
 }
 
-- (id)initFinishedBeamFrom:(id)a3 additionalToken:()pair<int lengthPenalty:(float>)a4 validate:(float)a5
+- (id)initFinishedBeamFrom:(id)from additionalToken:()pair<int lengthPenalty:(float>)penalty validate:(float)validate
 {
   v6 = a6;
-  v37 = a4;
-  v9 = a3;
-  if (!v9)
+  penaltyCopy = penalty;
+  fromCopy = from;
+  if (!fromCopy)
   {
     v14 = modelLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -70,7 +70,7 @@
   v36.super_class = EMDEBeamPath;
   v10 = [(EMDEBeamPath *)&v36 init];
   self = v10;
-  [v9 tokens];
+  [fromCopy tokens];
   v11 = *(v10 + 4);
   if (v11)
   {
@@ -82,8 +82,8 @@
   }
 
   *(v10 + 32) = v35;
-  sub_100011D60(v10 + 4, &v37);
-  [v9 allowedWords];
+  sub_100011D60(v10 + 4, &penaltyCopy);
+  [fromCopy allowedWords];
   if (v10[127] < 0)
   {
     operator delete(*(v10 + 13));
@@ -93,7 +93,7 @@
   *(v10 + 3) = 0;
   if (v6)
   {
-    [v9 currentWord];
+    [fromCopy currentWord];
     v12 = [EMDEUtils validateAndUpdateAllowedWords:v10 + 104 forWord:&__p isComplete:1];
     v13 = v12;
     if (v34 < 0)
@@ -102,7 +102,7 @@
       if (!v13)
       {
 LABEL_13:
-        v15 = 0;
+        selfCopy = 0;
         goto LABEL_38;
       }
     }
@@ -113,7 +113,7 @@ LABEL_13:
     }
   }
 
-  [v9 currentWord];
+  [fromCopy currentWord];
   if (SHIBYTE(v35.__r_.__value_.__r.__words[2]) < 0)
   {
     v24 = *&v35.__r_.__value_.__l.__data_;
@@ -124,7 +124,7 @@ LABEL_13:
     }
 
 LABEL_32:
-    [v9 currentPrediction];
+    [fromCopy currentPrediction];
     if (v10[79] < 0)
     {
       operator delete(*(v10 + 7));
@@ -140,7 +140,7 @@ LABEL_32:
   }
 
 LABEL_17:
-  [v9 currentPrediction];
+  [fromCopy currentPrediction];
   v16 = std::string::append(&v32, " ");
   v17 = *&v16->__r_.__value_.__l.__data_;
   v35.__r_.__value_.__r.__words[2] = v16->__r_.__value_.__r.__words[2];
@@ -148,7 +148,7 @@ LABEL_17:
   v16->__r_.__value_.__l.__size_ = 0;
   v16->__r_.__value_.__r.__words[2] = 0;
   v16->__r_.__value_.__r.__words[0] = 0;
-  [v9 currentWord];
+  [fromCopy currentWord];
   if ((v31 & 0x80u) == 0)
   {
     v18 = v30;
@@ -203,12 +203,12 @@ LABEL_17:
   }
 
 LABEL_35:
-  [v9 score];
-  v26 = v25 + v37.var1;
-  *(v10 + 3) = v25 + v37.var1;
+  [fromCopy score];
+  v26 = v25 + penaltyCopy.var1;
+  *(v10 + 3) = v25 + penaltyCopy.var1;
   [v10 tokens];
   v27 = v35.__r_.__value_.__r.__words[0];
-  v28 = v26 / pow((((v35.__r_.__value_.__l.__size_ - v35.__r_.__value_.__r.__words[0]) >> 2) - 1), a5);
+  v28 = v26 / pow((((v35.__r_.__value_.__l.__size_ - v35.__r_.__value_.__r.__words[0]) >> 2) - 1), validate);
   *(v10 + 4) = v28;
   if (v27)
   {
@@ -218,31 +218,31 @@ LABEL_35:
 
   std::string::assign((v10 + 104), "");
   self = v10;
-  v15 = self;
+  selfCopy = self;
 LABEL_38:
 
-  return v15;
+  return selfCopy;
 }
 
-- (unsigned)createBeamForSuffixBasedTokeniserFrom:(id)a3 additionalToken:()pair<int validate:(float>)a4
+- (unsigned)createBeamForSuffixBasedTokeniserFrom:(id)from additionalToken:()pair<int validate:(float>)validate
 {
   v5 = a5;
-  v8 = a3;
-  [EMDEUtils getTokenForTokenID:a4];
+  fromCopy = from;
+  [EMDEUtils getTokenForTokenID:validate];
   v9 = +[EMDEUtils config];
   v10 = [v9 objectForKeyedSubscript:@"EMDE_TOKENISER_UPPERCASE_TOKEN_ID"];
   if (v10)
   {
     v11 = +[EMDEUtils config];
     v12 = [v11 objectForKeyedSubscript:@"EMDE_TOKENISER_UPPERCASE_TOKEN_ID"];
-    v13 = [v12 intValue] == a4.var0;
+    v13 = [v12 intValue] == validate.var0;
 
     if (v13)
     {
       self->_capitaliseNextWord = 1;
-      if (v8)
+      if (fromCopy)
       {
-        [v8 currentWord];
+        [fromCopy currentWord];
       }
 
       else
@@ -265,7 +265,7 @@ LABEL_38:
   {
   }
 
-  if ([v8 capitaliseNextWord])
+  if ([fromCopy capitaliseNextWord])
   {
     if ((__str.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
     {
@@ -301,9 +301,9 @@ LABEL_38:
     }
 
 LABEL_23:
-    if (v8)
+    if (fromCopy)
     {
-      [v8 currentWord];
+      [fromCopy currentWord];
       LOBYTE(v17) = *(&__str.__r_.__value_.__s + 23);
     }
 
@@ -355,9 +355,9 @@ LABEL_18:
     goto LABEL_23;
   }
 
-  if (v8)
+  if (fromCopy)
   {
-    [v8 currentWord];
+    [fromCopy currentWord];
     LOBYTE(v17) = *(&__str.__r_.__value_.__s + 23);
   }
 
@@ -579,11 +579,11 @@ LABEL_95:
   return v24;
 }
 
-- (unsigned)createBeamForPrefixBasedTokeniserFrom:(id)a3 additionalToken:()pair<int validate:(float>)a4
+- (unsigned)createBeamForPrefixBasedTokeniserFrom:(id)from additionalToken:()pair<int validate:(float>)validate
 {
   v5 = a5;
-  v8 = a3;
-  [EMDEUtils getTokenForTokenID:a4];
+  fromCopy = from;
+  [EMDEUtils getTokenForTokenID:validate];
   v9 = HIBYTE(__str.__r_.__value_.__r.__words[2]);
   if ((SHIBYTE(__str.__r_.__value_.__r.__words[2]) & 0x80000000) == 0)
   {
@@ -596,9 +596,9 @@ LABEL_95:
 LABEL_10:
     if (v5)
     {
-      if (v8)
+      if (fromCopy)
       {
-        [v8 currentWord];
+        [fromCopy currentWord];
         v9 = HIBYTE(__str.__r_.__value_.__r.__words[2]);
       }
 
@@ -660,9 +660,9 @@ LABEL_10:
       LOBYTE(v11) = 1;
     }
 
-    if (v8)
+    if (fromCopy)
     {
-      [v8 currentWord];
+      [fromCopy currentWord];
     }
 
     else
@@ -734,9 +734,9 @@ LABEL_6:
     goto LABEL_49;
   }
 
-  if (v8)
+  if (fromCopy)
   {
-    [v8 currentWord];
+    [fromCopy currentWord];
   }
 
   else
@@ -819,9 +819,9 @@ LABEL_49:
       }
 
       *(&v27->__r_.__value_.__l.__data_ + v26) = 32;
-      if (v8)
+      if (fromCopy)
       {
-        [v8 currentWord];
+        [fromCopy currentWord];
         v29 = HIBYTE(v41);
         v31 = v39;
         v30 = v40;
@@ -865,9 +865,9 @@ LABEL_49:
 
     else
     {
-      if (v8)
+      if (fromCopy)
       {
-        [v8 currentWord];
+        [fromCopy currentWord];
 LABEL_76:
         if (*(&self->_currentPrediction.__rep_.__l + 23) < 0)
         {

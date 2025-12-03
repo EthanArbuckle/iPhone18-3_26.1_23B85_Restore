@@ -6,7 +6,7 @@
 
 - (__n64)avt_simdViewport
 {
-  [a1 _viewport];
+  [self _viewport];
   result.n64_u32[1] = v1;
   return result;
 }

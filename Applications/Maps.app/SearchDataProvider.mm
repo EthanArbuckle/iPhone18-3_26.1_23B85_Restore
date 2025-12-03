@@ -1,36 +1,36 @@
 @interface SearchDataProvider
 - (BOOL)_shouldShowResults;
 - (BOOL)hasResults;
-- (BOOL)shouldShowRapCellWithResultsCount:(unint64_t)a3;
+- (BOOL)shouldShowRapCellWithResultsCount:(unint64_t)count;
 - (SearchDataProvider)init;
 - (SearchDataProviderDelegate)delegate;
-- (id)autocompleteAnalyticsSuggestionsFromSections:(id)a3 context:(id)a4 selectedChildItemIndexPath:(id)a5 indexOfResultWithSelectedChildItem:(id)a6;
+- (id)autocompleteAnalyticsSuggestionsFromSections:(id)sections context:(id)context selectedChildItemIndexPath:(id)path indexOfResultWithSelectedChildItem:(id)item;
 - (id)buildContent;
-- (int)mifRankerResponseStatus:(int64_t)a3;
-- (void)_completerWasThrottled:(id)a3 queryFragment:(id)a4;
+- (int)mifRankerResponseStatus:(int64_t)status;
+- (void)_completerWasThrottled:(id)throttled queryFragment:(id)fragment;
 - (void)_dataChanged;
-- (void)_processNewAutocompleteItems:(id)a3 itemGroups:(id)a4;
-- (void)autocompleteContext:(id)a3 didUpdateMatchInfo:(id)a4;
+- (void)_processNewAutocompleteItems:(id)items itemGroups:(id)groups;
+- (void)autocompleteContext:(id)context didUpdateMatchInfo:(id)info;
 - (void)clearAutocompleteResults;
-- (void)completer:(id)a3 didFailWithError:(id)a4 forQueryFragment:(id)a5;
-- (void)completer:(id)a3 didUpdateResultsWithSections:(id)a4 forQueryFragment:(id)a5;
-- (void)ensureTraitsHaveDefaultValues:(id)a3;
+- (void)completer:(id)completer didFailWithError:(id)error forQueryFragment:(id)fragment;
+- (void)completer:(id)completer didUpdateResultsWithSections:(id)sections forQueryFragment:(id)fragment;
+- (void)ensureTraitsHaveDefaultValues:(id)values;
 - (void)populateContext;
-- (void)receivedSearchResults:(id)a3 forContext:(id)a4;
+- (void)receivedSearchResults:(id)results forContext:(id)context;
 - (void)refreshAnalyticsState;
 - (void)reset;
-- (void)setActive:(BOOL)a3;
-- (void)setFinishedLocalCompletions:(BOOL)a3;
-- (void)setFinishedServerCompletions:(BOOL)a3;
-- (void)setInputText:(id)a3 tappedQuerySuggestionCompletion:(id)a4 isRetainQuery:(BOOL)a5 traits:(id)a6 source:(int)a7;
-- (void)setLastTicket:(id)a3;
-- (void)setLocalCompletionsItemSource:(id)a3;
-- (void)setMapPersonalizedItems:(id)a3;
-- (void)setResultTypes:(unint64_t)a3;
-- (void)setSearchMode:(unsigned int)a3;
-- (void)setServerCompletionsItemSource:(id)a3;
-- (void)setUserLocationSearchResult:(id)a3;
-- (void)updateAnalyticsStateWithContext:(id)a3 suggestionEntries:(id)a4;
+- (void)setActive:(BOOL)active;
+- (void)setFinishedLocalCompletions:(BOOL)completions;
+- (void)setFinishedServerCompletions:(BOOL)completions;
+- (void)setInputText:(id)text tappedQuerySuggestionCompletion:(id)completion isRetainQuery:(BOOL)query traits:(id)traits source:(int)source;
+- (void)setLastTicket:(id)ticket;
+- (void)setLocalCompletionsItemSource:(id)source;
+- (void)setMapPersonalizedItems:(id)items;
+- (void)setResultTypes:(unint64_t)types;
+- (void)setSearchMode:(unsigned int)mode;
+- (void)setServerCompletionsItemSource:(id)source;
+- (void)setUserLocationSearchResult:(id)result;
+- (void)updateAnalyticsStateWithContext:(id)context suggestionEntries:(id)entries;
 - (void)updateDeduper;
 @end
 
@@ -43,11 +43,11 @@
   return WeakRetained;
 }
 
-- (int)mifRankerResponseStatus:(int64_t)a3
+- (int)mifRankerResponseStatus:(int64_t)status
 {
-  if ((a3 - 1) < 5)
+  if ((status - 1) < 5)
   {
-    return a3;
+    return status;
   }
 
   else
@@ -56,10 +56,10 @@
   }
 }
 
-- (void)_processNewAutocompleteItems:(id)a3 itemGroups:(id)a4
+- (void)_processNewAutocompleteItems:(id)items itemGroups:(id)groups
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  groupsCopy = groups;
   v8 = sub_100067540();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -67,25 +67,25 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "SearchDataProvider - process new AC list", buf, 2u);
   }
 
-  v9 = [(SearchDataProvider *)self exclusiveIncrementAutocompleteChangeCounter];
+  exclusiveIncrementAutocompleteChangeCounter = [(SearchDataProvider *)self exclusiveIncrementAutocompleteChangeCounter];
   v10 = dispatch_get_global_queue(25, 0);
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10060B0E4;
   v13[3] = &unk_101623EA0;
-  v16 = v9;
+  v16 = exclusiveIncrementAutocompleteChangeCounter;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = itemsCopy;
+  v15 = groupsCopy;
+  v11 = groupsCopy;
+  v12 = itemsCopy;
   dispatch_async(v10, v13);
 }
 
-- (void)_completerWasThrottled:(id)a3 queryFragment:(id)a4
+- (void)_completerWasThrottled:(id)throttled queryFragment:(id)fragment
 {
-  v6 = a3;
-  v7 = a4;
+  throttledCopy = throttled;
+  fragmentCopy = fragment;
   v8 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -95,28 +95,28 @@
 
   if (objc_opt_respondsToSelector())
   {
-    [(SearchDataProvider *)self completerDidUpdateResults:v6];
+    [(SearchDataProvider *)self completerDidUpdateResults:throttledCopy];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [(SearchDataProvider *)self completer:v6 didUpdateResultsWithSections:&__NSArray0__struct forQueryFragment:v7];
+    [(SearchDataProvider *)self completer:throttledCopy didUpdateResultsWithSections:&__NSArray0__struct forQueryFragment:fragmentCopy];
   }
 }
 
-- (void)completer:(id)a3 didFailWithError:(id)a4 forQueryFragment:(id)a5
+- (void)completer:(id)completer didFailWithError:(id)error forQueryFragment:(id)fragment
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 domain];
-  if ([v11 isEqualToString:MKErrorDomain])
+  completerCopy = completer;
+  errorCopy = error;
+  fragmentCopy = fragment;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:MKErrorDomain])
   {
-    v12 = [v9 code];
+    code = [errorCopy code];
 
-    if (v12 == 3)
+    if (code == 3)
     {
-      [(SearchDataProvider *)self _completerWasThrottled:v8 queryFragment:v10];
+      [(SearchDataProvider *)self _completerWasThrottled:completerCopy queryFragment:fragmentCopy];
       goto LABEL_8;
     }
   }
@@ -128,9 +128,9 @@
   v13 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v14 = [v9 localizedDescription];
+    localizedDescription = [errorCopy localizedDescription];
     v15 = 138412290;
-    v16 = v14;
+    v16 = localizedDescription;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "MKLocalSearchCompleter didFailWithError: %@", &v15, 0xCu);
   }
 
@@ -149,14 +149,14 @@
 LABEL_8:
 }
 
-- (void)completer:(id)a3 didUpdateResultsWithSections:(id)a4 forQueryFragment:(id)a5
+- (void)completer:(id)completer didUpdateResultsWithSections:(id)sections forQueryFragment:(id)fragment
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completerCopy = completer;
+  sectionsCopy = sections;
+  fragmentCopy = fragment;
   if (GEOConfigGetBOOL())
   {
-    if (!v10 || ![(NSString *)self->_inputText hasPrefix:v10])
+    if (!fragmentCopy || ![(NSString *)self->_inputText hasPrefix:fragmentCopy])
     {
       v11 = sub_100067540();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -165,7 +165,7 @@ LABEL_8:
         v36 = 138412546;
         v37 = inputText;
         v38 = 2112;
-        v39 = v10;
+        v39 = fragmentCopy;
         v13 = "SearchDataProvider - Not showing results as they are too old. input text: %@, query: %@";
 LABEL_18:
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, v13, &v36, 0x16u);
@@ -179,31 +179,31 @@ LABEL_7:
     v14 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [v8 results];
+      results = [completerCopy results];
       v36 = 134217984;
-      v37 = [v15 count];
+      v37 = [results count];
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "MKLocalSearchCompleter didUpdateResults: with %lu result(s)", &v36, 0xCu);
     }
 
     [(SearchDataProvider *)self setFinishedServerCompletions:1];
-    v16 = [v8 results];
-    if ([v16 count] || self->_contentUpdatedOnNoResults)
+    results2 = [completerCopy results];
+    if ([results2 count] || self->_contentUpdatedOnNoResults)
     {
     }
 
     else
     {
-      v35 = [v8 _shouldDisplayNoResults];
+      _shouldDisplayNoResults = [completerCopy _shouldDisplayNoResults];
 
-      if ((v35 & 1) == 0)
+      if ((_shouldDisplayNoResults & 1) == 0)
       {
         goto LABEL_27;
       }
     }
 
     v17 = [NSMutableArray alloc];
-    v18 = [v8 results];
-    v11 = [v17 initWithArray:v18];
+    results3 = [completerCopy results];
+    v11 = [v17 initWithArray:results3];
 
     if (self->_searchMode == 2)
     {
@@ -211,11 +211,11 @@ LABEL_7:
       [v11 filterUsingPredicate:v19];
     }
 
-    v20 = [v8 _clientRankingModel];
-    if (v20)
+    _clientRankingModel = [completerCopy _clientRankingModel];
+    if (_clientRankingModel)
     {
-      v21 = [v8 _clientRankingModel];
-      v22 = [PersonalizedItemClientRankingFunction clientRankingFunctionForGEOClientRankingModel:v21];
+      _clientRankingModel2 = [completerCopy _clientRankingModel];
+      v22 = [PersonalizedItemClientRankingFunction clientRankingFunctionForGEOClientRankingModel:_clientRankingModel2];
       p_deduplicator = &self->_deduplicator;
       [(PersonalizedItemManager *)self->_deduplicator setClientRankingFunction:v22];
     }
@@ -226,11 +226,11 @@ LABEL_7:
       [(PersonalizedItemManager *)self->_deduplicator setClientRankingFunction:0];
     }
 
-    v25 = [v8 _sortPriorityMapping];
-    if (v25)
+    _sortPriorityMapping = [completerCopy _sortPriorityMapping];
+    if (_sortPriorityMapping)
     {
-      v26 = [v8 _sortPriorityMapping];
-      v27 = [PersonalizedItemPriorityFunction priorityFunctionForGEOSortPriorityMapping:v26];
+      _sortPriorityMapping2 = [completerCopy _sortPriorityMapping];
+      v27 = [PersonalizedItemPriorityFunction priorityFunctionForGEOSortPriorityMapping:_sortPriorityMapping2];
       [(AutocompleteItemManager *)*p_deduplicator setPriorityFunction:v27];
     }
 
@@ -239,37 +239,37 @@ LABEL_7:
       [(AutocompleteItemManager *)*p_deduplicator setPriorityFunction:0];
     }
 
-    v28 = [v9 copy];
+    v28 = [sectionsCopy copy];
     [(AutocompleteItemManager *)self->_deduplicator setCompletionSections:v28];
 
-    -[AutocompleteItemManager setTopSectionIsQuerySuggestions:](self->_deduplicator, "setTopSectionIsQuerySuggestions:", [v8 _autocompleteTopSectionIsQuerySuggestions]);
-    -[AutocompleteItemManager setShouldUseDistanceFeatureServerResults:](self->_deduplicator, "setShouldUseDistanceFeatureServerResults:", [v8 _shouldUseDistanceFeatureServerResults]);
-    v29 = [[AutocompleteItemSource alloc] initWithServerCompletions:v11 serverSections:v9];
+    -[AutocompleteItemManager setTopSectionIsQuerySuggestions:](self->_deduplicator, "setTopSectionIsQuerySuggestions:", [completerCopy _autocompleteTopSectionIsQuerySuggestions]);
+    -[AutocompleteItemManager setShouldUseDistanceFeatureServerResults:](self->_deduplicator, "setShouldUseDistanceFeatureServerResults:", [completerCopy _shouldUseDistanceFeatureServerResults]);
+    v29 = [[AutocompleteItemSource alloc] initWithServerCompletions:v11 serverSections:sectionsCopy];
     [(SearchDataProvider *)self setServerCompletionsItemSource:v29];
 
-    self->_showAutocompleteClientSource = [v8 _showAutocompleteClientSource];
+    self->_showAutocompleteClientSource = [completerCopy _showAutocompleteClientSource];
     self->_hasShowAutocompleteClientSource = 1;
-    self->_shouldEnableRAPForNoResults = [v8 _shouldEnableRAPForNoResults];
-    self->_shouldEnableGrayscaleHighlighting = [v8 _shouldEnableGrayscaleHighlighting];
-    self->_highlightType = [v8 _highlightType];
-    v30 = [v8 _placeSummaryLayoutMetadata];
-    if (v30)
+    self->_shouldEnableRAPForNoResults = [completerCopy _shouldEnableRAPForNoResults];
+    self->_shouldEnableGrayscaleHighlighting = [completerCopy _shouldEnableGrayscaleHighlighting];
+    self->_highlightType = [completerCopy _highlightType];
+    _placeSummaryLayoutMetadata = [completerCopy _placeSummaryLayoutMetadata];
+    if (_placeSummaryLayoutMetadata)
     {
-      v31 = [[_TtC4Maps20PlaceSummaryMetadata alloc] initWithMetadata:v30];
+      v31 = [[_TtC4Maps20PlaceSummaryMetadata alloc] initWithMetadata:_placeSummaryLayoutMetadata];
       placeSummaryMetadata = self->_placeSummaryMetadata;
       self->_placeSummaryMetadata = v31;
     }
 
-    self->_enableStructuredRAPAffordance = [v8 _enableStructuredRAPAffordance];
-    v33 = [v8 _recentAutocompleteSessionData];
+    self->_enableStructuredRAPAffordance = [completerCopy _enableStructuredRAPAffordance];
+    _recentAutocompleteSessionData = [completerCopy _recentAutocompleteSessionData];
     recentAutocompleteSessionData = self->_recentAutocompleteSessionData;
-    self->_recentAutocompleteSessionData = v33;
+    self->_recentAutocompleteSessionData = _recentAutocompleteSessionData;
 
     [(SearchDataProvider *)self updateDeduper];
     goto LABEL_26;
   }
 
-  if ([(NSString *)self->_inputText isEqualToString:v10])
+  if ([(NSString *)self->_inputText isEqualToString:fragmentCopy])
   {
     goto LABEL_7;
   }
@@ -281,7 +281,7 @@ LABEL_7:
     v36 = 138412546;
     v37 = v24;
     v38 = 2112;
-    v39 = v10;
+    v39 = fragmentCopy;
     v13 = "SearchDataProvider - Not showing results due to text mismatch. input text: %@, query: %@";
     goto LABEL_18;
   }
@@ -291,27 +291,27 @@ LABEL_26:
 LABEL_27:
 }
 
-- (void)receivedSearchResults:(id)a3 forContext:(id)a4
+- (void)receivedSearchResults:(id)results forContext:(id)context
 {
-  v9 = a3;
-  v6 = a4;
+  resultsCopy = results;
+  contextCopy = context;
   inputText = self->_inputText;
-  v8 = [v6 queryString];
-  LODWORD(inputText) = [(NSString *)inputText isEqualToString:v8];
+  queryString = [contextCopy queryString];
+  LODWORD(inputText) = [(NSString *)inputText isEqualToString:queryString];
 
   if (inputText)
   {
     [(AutocompleteContext *)self->_autocompleteContext setDelegate:0];
-    objc_storeStrong(&self->_autocompleteContext, a4);
+    objc_storeStrong(&self->_autocompleteContext, context);
     [(AutocompleteContext *)self->_autocompleteContext setDelegate:self];
     [(AutocompleteItemManager *)self->_deduplicator setAutocompleteContext:self->_autocompleteContext];
     [(SearchDataProvider *)self setFinishedLocalCompletions:1];
-    [(SearchDataProvider *)self setLocalCompletionsItemSource:v9];
+    [(SearchDataProvider *)self setLocalCompletionsItemSource:resultsCopy];
     [(SearchDataProvider *)self updateDeduper];
   }
 }
 
-- (BOOL)shouldShowRapCellWithResultsCount:(unint64_t)a3
+- (BOOL)shouldShowRapCellWithResultsCount:(unint64_t)count
 {
   IsEnabled_RAPSydney = _MKRAPIsAvailable();
   if (IsEnabled_RAPSydney)
@@ -323,7 +323,7 @@ LABEL_27:
       if (IsEnabled_RAPSydney)
       {
         LOBYTE(IsEnabled_RAPSydney) = [(SearchDataProvider *)self enableStructuredRAPAffordance];
-        if (!a3)
+        if (!count)
         {
           LOBYTE(IsEnabled_RAPSydney) = 0;
         }
@@ -334,32 +334,32 @@ LABEL_27:
   return IsEnabled_RAPSydney;
 }
 
-- (void)ensureTraitsHaveDefaultValues:(id)a3
+- (void)ensureTraitsHaveDefaultValues:(id)values
 {
-  v3 = a3;
-  if (![v3 supportedAutocompleteResultCellTypesCount])
+  valuesCopy = values;
+  if (![valuesCopy supportedAutocompleteResultCellTypesCount])
   {
-    [v3 addSupportedAutocompleteResultCellType:0];
-    [v3 addSupportedAutocompleteResultCellType:3];
+    [valuesCopy addSupportedAutocompleteResultCellType:0];
+    [valuesCopy addSupportedAutocompleteResultCellType:3];
   }
 
   v4 = +[SearchVirtualGarageManager sharedSearchVirtualGarageManager];
-  v5 = [v4 updatedTraitsForCurrentGarageState:v3];
+  v5 = [v4 updatedTraitsForCurrentGarageState:valuesCopy];
 }
 
-- (void)setLocalCompletionsItemSource:(id)a3
+- (void)setLocalCompletionsItemSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   localCompletionsItemSource = self->_localCompletionsItemSource;
-  v7 = v5;
-  if (localCompletionsItemSource != v5)
+  v7 = sourceCopy;
+  if (localCompletionsItemSource != sourceCopy)
   {
     if (localCompletionsItemSource)
     {
       [(PersonalizedItemManager *)self->_deduplicator removeItemSource:?];
     }
 
-    objc_storeStrong(&self->_localCompletionsItemSource, a3);
+    objc_storeStrong(&self->_localCompletionsItemSource, source);
     if (self->_localCompletionsItemSource)
     {
       [(PersonalizedItemManager *)self->_deduplicator addItemSource:?];
@@ -367,19 +367,19 @@ LABEL_27:
   }
 }
 
-- (void)setServerCompletionsItemSource:(id)a3
+- (void)setServerCompletionsItemSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   serverCompletionsItemSource = self->_serverCompletionsItemSource;
-  v7 = v5;
-  if (serverCompletionsItemSource != v5)
+  v7 = sourceCopy;
+  if (serverCompletionsItemSource != sourceCopy)
   {
     if (serverCompletionsItemSource)
     {
       [(PersonalizedItemManager *)self->_deduplicator removeItemSource:?];
     }
 
-    objc_storeStrong(&self->_serverCompletionsItemSource, a3);
+    objc_storeStrong(&self->_serverCompletionsItemSource, source);
     if (self->_serverCompletionsItemSource)
     {
       [(PersonalizedItemManager *)self->_deduplicator addItemSource:?];
@@ -451,27 +451,27 @@ LABEL_27:
   }
 }
 
-- (void)updateAnalyticsStateWithContext:(id)a3 suggestionEntries:(id)a4
+- (void)updateAnalyticsStateWithContext:(id)context suggestionEntries:(id)entries
 {
-  v17 = a4;
-  v6 = a3;
-  v7 = [v6 queryString];
-  v8 = v7;
+  entriesCopy = entries;
+  contextCopy = context;
+  queryString = [contextCopy queryString];
+  v8 = queryString;
   v9 = &stru_1016631F0;
-  if (v7)
+  if (queryString)
   {
-    v9 = v7;
+    v9 = queryString;
   }
 
   v10 = v9;
 
-  v11 = [v6 query];
+  query = [contextCopy query];
 
-  v12 = [v11 queryTerms];
-  v13 = v12;
-  if (v12)
+  queryTerms = [query queryTerms];
+  v13 = queryTerms;
+  if (queryTerms)
   {
-    v14 = v12;
+    v14 = queryTerms;
   }
 
   else
@@ -481,9 +481,9 @@ LABEL_27:
 
   v15 = v14;
 
-  if (v17)
+  if (entriesCopy)
   {
-    v16 = v17;
+    v16 = entriesCopy;
   }
 
   else
@@ -494,15 +494,15 @@ LABEL_27:
   [(MKAutocompleteAnalyticsProvider *)self->_autocompleteAnalyticsState updateStateWithQuery:v10 queryTokens:v15 visibleSuggestionEntries:v16];
 }
 
-- (void)setInputText:(id)a3 tappedQuerySuggestionCompletion:(id)a4 isRetainQuery:(BOOL)a5 traits:(id)a6 source:(int)a7
+- (void)setInputText:(id)text tappedQuerySuggestionCompletion:(id)completion isRetainQuery:(BOOL)query traits:(id)traits source:(int)source
 {
-  v7 = *&a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  if (self->_inputText == v12)
+  v7 = *&source;
+  textCopy = text;
+  completionCopy = completion;
+  traitsCopy = traits;
+  if (self->_inputText == textCopy)
   {
-    if (!v13)
+    if (!completionCopy)
     {
       goto LABEL_37;
     }
@@ -510,8 +510,8 @@ LABEL_27:
 
   else
   {
-    v15 = [(NSString *)v12 isEqualToString:?];
-    if (!v13 && (v15 & 1) != 0)
+    v15 = [(NSString *)textCopy isEqualToString:?];
+    if (!completionCopy && (v15 & 1) != 0)
     {
       goto LABEL_37;
     }
@@ -521,28 +521,28 @@ LABEL_27:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v30 = 138412290;
-    v31 = v12;
+    v31 = textCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "SearchDataProvider starting collecting data for query %@", &v30, 0xCu);
   }
 
   self->_inputTextTimestamp = CFAbsoluteTimeGetCurrent();
   [(PersonalizedItemManager *)self->_deduplicator setUpdatesPaused:1];
-  self->_lastRequestIsRetainQuery = a5;
+  self->_lastRequestIsRetainQuery = query;
   [(SearchDataProvider *)self setFinishedLocalCompletions:0];
   [(SearchDataProvider *)self setFinishedServerCompletions:0];
   [(SearchBarSearchManager *)self->_localSearchManager cancelCurrentSearch];
-  v17 = [(NSString *)v12 copy];
+  v17 = [(NSString *)textCopy copy];
   inputText = self->_inputText;
   self->_inputText = v17;
 
-  v19 = [(NSString *)self->_inputText _maps_stringByTrimmingLeadingWhitespace];
-  if (![v19 length])
+  _maps_stringByTrimmingLeadingWhitespace = [(NSString *)self->_inputText _maps_stringByTrimmingLeadingWhitespace];
+  if (![_maps_stringByTrimmingLeadingWhitespace length])
   {
 
-    v19 = 0;
+    _maps_stringByTrimmingLeadingWhitespace = 0;
   }
 
-  objc_storeStrong(&self->_trimmedInputText, v19);
+  objc_storeStrong(&self->_trimmedInputText, _maps_stringByTrimmingLeadingWhitespace);
   v20 = [AutocompleteContext alloc];
   if (self->_inputText)
   {
@@ -559,8 +559,8 @@ LABEL_27:
   self->_autocompleteInputContext = v22;
 
   [(SearchDataProvider *)self updateAnalyticsStateWithContext:self->_autocompleteInputContext suggestionEntries:self->_autocompleteAnalyticsSuggestions];
-  [(SearchDataProvider *)self ensureTraitsHaveDefaultValues:v14];
-  objc_storeStrong(&self->_traits, a6);
+  [(SearchDataProvider *)self ensureTraitsHaveDefaultValues:traitsCopy];
+  objc_storeStrong(&self->_traits, traits);
   if ([(NSString *)self->_trimmedInputText length])
   {
     [(SearchDataProvider *)self setFinishedServerCompletions:self->_trimmedInputText == 0];
@@ -577,18 +577,18 @@ LABEL_27:
     }
 
     [(MKLocalSearchCompleter *)self->_searchCompleter setQueryFragment:trimmedInputText];
-    [(MKLocalSearchCompleter *)self->_searchCompleter _setTappedQuerySuggestionCompletion:v13];
-    if ([v14 hasMapRegion])
+    [(MKLocalSearchCompleter *)self->_searchCompleter _setTappedQuerySuggestionCompletion:completionCopy];
+    if ([traitsCopy hasMapRegion])
     {
-      v25 = [v14 mapRegion];
+      mapRegion = [traitsCopy mapRegion];
       GEOMapRectForMapRegion();
       v33 = MKCoordinateRegionForMapRect(v32);
       [(MKLocalSearchCompleter *)self->_searchCompleter setRegion:v33.center.latitude, v33.center.longitude, v33.span.latitudeDelta, v33.span.longitudeDelta];
     }
 
-    if ([v14 hasMode])
+    if ([traitsCopy hasMode])
     {
-      v26 = [v14 mode] - 1;
+      v26 = [traitsCopy mode] - 1;
       if (v26 > 3)
       {
         v27 = 103;
@@ -602,18 +602,18 @@ LABEL_27:
       [(MKLocalSearchCompleter *)self->_searchCompleter setMapType:v27];
     }
 
-    if ([v14 hasTimeSinceMapViewportChanged])
+    if ([traitsCopy hasTimeSinceMapViewportChanged])
     {
-      -[MKLocalSearchCompleter setTimeSinceLastInBoundingRegion:](self->_searchCompleter, "setTimeSinceLastInBoundingRegion:", [v14 timeSinceMapViewportChanged]);
+      -[MKLocalSearchCompleter setTimeSinceLastInBoundingRegion:](self->_searchCompleter, "setTimeSinceLastInBoundingRegion:", [traitsCopy timeSinceMapViewportChanged]);
     }
 
-    if ([v14 hasSequenceNumber])
+    if ([traitsCopy hasSequenceNumber])
     {
-      self->_searchRequestAnalyticsSequenceNumber = [v14 sequenceNumber];
+      self->_searchRequestAnalyticsSequenceNumber = [traitsCopy sequenceNumber];
     }
 
-    [(MKLocalSearchCompleter *)self->_searchCompleter setTraits:v14];
-    if ([v14 autocompleteOriginationEditingServerWaypoints])
+    [(MKLocalSearchCompleter *)self->_searchCompleter setTraits:traitsCopy];
+    if ([traitsCopy autocompleteOriginationEditingServerWaypoints])
     {
       [(PersonalizedItemManager *)self->_deduplicator removeItemSource:self->_personalizedItemsFilter];
       objc_storeStrong(&self->_autocompleteContext, self->_autocompleteInputContext);
@@ -633,7 +633,7 @@ LABEL_27:
         [(NSString *)self->_trimmedInputText _navigation_isCJK];
       }
 
-      -[SearchBarSearchManager searchName:forSearchMode:backfill:context:originationType:](self->_localSearchManager, "searchName:forSearchMode:backfill:context:originationType:", self->_inputText, self->_searchMode, GEOConfigGetInteger(), self->_autocompleteInputContext, [v14 autocompleteOriginationType]);
+      -[SearchBarSearchManager searchName:forSearchMode:backfill:context:originationType:](self->_localSearchManager, "searchName:forSearchMode:backfill:context:originationType:", self->_inputText, self->_searchMode, GEOConfigGetInteger(), self->_autocompleteInputContext, [traitsCopy autocompleteOriginationType]);
     }
 
     [(SearchDataProvider *)self updateDeduper];
@@ -641,14 +641,14 @@ LABEL_27:
 
   else
   {
-    v28 = [(MKAutocompleteAnalyticsProvider *)self->_autocompleteAnalyticsState captureNewMetrics];
-    [v28 submitWithStatus:4];
+    captureNewMetrics = [(MKAutocompleteAnalyticsProvider *)self->_autocompleteAnalyticsState captureNewMetrics];
+    [captureNewMetrics submitWithStatus:4];
   }
 
 LABEL_37:
 }
 
-- (void)setFinishedServerCompletions:(BOOL)a3
+- (void)setFinishedServerCompletions:(BOOL)completions
 {
   v5 = sub_100067540();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -662,11 +662,11 @@ LABEL_37:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Finished collecting server results: %@ for query %@", &v8, 0x16u);
   }
 
-  self->_finishedServerCompletions = a3;
+  self->_finishedServerCompletions = completions;
   [(SearchDataProvider *)self incrementAutocompleteChangeCounter];
 }
 
-- (void)setFinishedLocalCompletions:(BOOL)a3
+- (void)setFinishedLocalCompletions:(BOOL)completions
 {
   v5 = sub_100067540();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -680,24 +680,24 @@ LABEL_37:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Finished collecting local results: %@ for query : %@", &v8, 0x16u);
   }
 
-  self->_finishedLocalCompletions = a3;
+  self->_finishedLocalCompletions = completions;
   [(SearchDataProvider *)self incrementAutocompleteChangeCounter];
 }
 
-- (void)setLastTicket:(id)a3
+- (void)setLastTicket:(id)ticket
 {
-  v5 = a3;
-  v7 = v5;
-  if (self->_lastTicket != v5)
+  ticketCopy = ticket;
+  v7 = ticketCopy;
+  if (self->_lastTicket != ticketCopy)
   {
-    objc_storeStrong(&self->_lastTicket, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_lastTicket, ticket);
+    ticketCopy = v7;
   }
 
-  if (v5)
+  if (ticketCopy)
   {
-    [(GEOMapServiceCompletionTicket *)v5 retainSearchTime];
-    v5 = v7;
+    [(GEOMapServiceCompletionTicket *)ticketCopy retainSearchTime];
+    ticketCopy = v7;
     self->_lastTicketRetainSearchTime = v6;
   }
 }
@@ -729,15 +729,15 @@ LABEL_37:
   [(AutocompleteItemManager *)self->_deduplicator setAutocompleteContext:0];
   [(AutocompleteItemManager *)self->_deduplicator setTraits:0];
   self->_enableStructuredRAPAffordance = 0;
-  v7 = [(SearchDataProvider *)self delegate];
-  [v7 searchDataProviderDidUpdate:self];
+  delegate = [(SearchDataProvider *)self delegate];
+  [delegate searchDataProviderDidUpdate:self];
 
   [(SearchDataProvider *)self updateAnalyticsStateWithContext:0 suggestionEntries:&__NSArray0__struct];
 }
 
-- (void)autocompleteContext:(id)a3 didUpdateMatchInfo:(id)a4
+- (void)autocompleteContext:(id)context didUpdateMatchInfo:(id)info
 {
-  if (self->_autocompleteContext == a3)
+  if (self->_autocompleteContext == context)
   {
     [(SearchDataProvider *)self refreshAnalyticsState];
   }
@@ -755,13 +755,13 @@ LABEL_37:
   [(SearchDataProvider *)self updateAnalyticsStateWithContext:autocompleteContext suggestionEntries:v6];
 }
 
-- (id)autocompleteAnalyticsSuggestionsFromSections:(id)a3 context:(id)a4 selectedChildItemIndexPath:(id)a5 indexOfResultWithSelectedChildItem:(id)a6
+- (id)autocompleteAnalyticsSuggestionsFromSections:(id)sections context:(id)context selectedChildItemIndexPath:(id)path indexOfResultWithSelectedChildItem:(id)item
 {
   v8 = &__NSArray0__struct;
-  if (a3 && a4)
+  if (sections && context)
   {
     LOWORD(v10) = 1;
-    v8 = [MapsAnalyticsHelper acSuggestionEntriesFromSections:"acSuggestionEntriesFromSections:personalizedItems:context:mapsSuggestionsInsights:skipReportASearchItems:selectedChildItemIndexPath:indexOfResultWithSelectedChildItem:traits:usedForLogging:shouldUseDistanceFeatureServerResults:placeSummaryMetadata:" personalizedItems:a6 context:self->_traits mapsSuggestionsInsights:v10 skipReportASearchItems:self->_placeSummaryMetadata selectedChildItemIndexPath:? indexOfResultWithSelectedChildItem:? traits:? usedForLogging:? shouldUseDistanceFeatureServerResults:? placeSummaryMetadata:?];
+    v8 = [MapsAnalyticsHelper acSuggestionEntriesFromSections:"acSuggestionEntriesFromSections:personalizedItems:context:mapsSuggestionsInsights:skipReportASearchItems:selectedChildItemIndexPath:indexOfResultWithSelectedChildItem:traits:usedForLogging:shouldUseDistanceFeatureServerResults:placeSummaryMetadata:" personalizedItems:item context:self->_traits mapsSuggestionsInsights:v10 skipReportASearchItems:self->_placeSummaryMetadata selectedChildItemIndexPath:? indexOfResultWithSelectedChildItem:? traits:? usedForLogging:? shouldUseDistanceFeatureServerResults:? placeSummaryMetadata:?];
     v6 = vars8;
   }
 
@@ -779,9 +779,9 @@ LABEL_37:
 
   if ([(SearchDataProvider *)self _shouldShowResults])
   {
-    v4 = [(SearchDataProvider *)self buildContent];
+    buildContent = [(SearchDataProvider *)self buildContent];
     sections = self->_sections;
-    self->_sections = v4;
+    self->_sections = buildContent;
 
     [(SearchDataProvider *)self refreshAnalyticsState];
     if (self->_hasShowAutocompleteClientSource)
@@ -804,25 +804,25 @@ LABEL_37:
       v7 = [NSNumber numberWithDouble:(CFAbsoluteTimeGetCurrent() - self->_inputTextTimestamp) * 1000.0];
     }
 
-    v8 = [(AutocompleteContext *)self->_autocompleteContext queryString];
-    v9 = [(AutocompleteContext *)self->_autocompleteContext query];
-    v10 = [v9 queryTerms];
+    queryString = [(AutocompleteContext *)self->_autocompleteContext queryString];
+    query = [(AutocompleteContext *)self->_autocompleteContext query];
+    queryTerms = [query queryTerms];
     autocompleteAnalyticsSuggestions = self->_autocompleteAnalyticsSuggestions;
     v12 = [NSNumber numberWithBool:[(AutocompleteItemManager *)self->_deduplicator clientRankingScoreInfluencedResults]];
     v13 = [NSNumber numberWithBool:self->_lastRequestIsRetainQuery];
-    [GEOAPPortal captureClientACResponseWithQuery:v8 queryTokens:v10 entries:autocompleteAnalyticsSuggestions shouldDifferentiateClientAndServerResults:v6 overallLatencyInMs:v7 isRerankerTriggered:v12 isRetainedQuery:v13];
+    [GEOAPPortal captureClientACResponseWithQuery:queryString queryTokens:queryTerms entries:autocompleteAnalyticsSuggestions shouldDifferentiateClientAndServerResults:v6 overallLatencyInMs:v7 isRerankerTriggered:v12 isRetainedQuery:v13];
 
     v14 = sub_100067540();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [(AutocompleteContext *)self->_autocompleteContext queryString];
+      queryString2 = [(AutocompleteContext *)self->_autocompleteContext queryString];
       *buf = 138412290;
-      v25 = v15;
+      v25 = queryString2;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "SearchDataProvider - Notify SearchDataSource of updated AC list for query %@", buf, 0xCu);
     }
 
-    v16 = [(SearchDataProvider *)self delegate];
-    [v16 searchDataProviderDidUpdate:self];
+    delegate = [(SearchDataProvider *)self delegate];
+    [delegate searchDataProviderDidUpdate:self];
 
     if (self->_inputText)
     {
@@ -862,8 +862,8 @@ LABEL_37:
 
   else if (GEOConfigGetBOOL() && self->_finishedLocalCompletions && [(NSString *)self->_trimmedInputText length]== 1)
   {
-    v6 = [(SearchDataProvider *)self localCompletionsItemSource];
-    v4 = [v6 count] != 0;
+    localCompletionsItemSource = [(SearchDataProvider *)self localCompletionsItemSource];
+    v4 = [localCompletionsItemSource count] != 0;
 
     v3 = sub_100067540();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -898,7 +898,7 @@ LABEL_37:
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v25 = self;
+  selfCopy = self;
   obj = self->_sortedCombinedResults;
   v3 = [(NSArray *)obj countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v3)
@@ -916,15 +916,15 @@ LABEL_37:
         }
 
         v8 = *(*(&v32 + 1) + 8 * i);
-        v9 = [v8 items];
-        v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v9 count]);
+        items = [v8 items];
+        v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [items count]);
 
         v30 = 0u;
         v31 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v11 = [v8 items];
-        v12 = [v11 countByEnumeratingWithState:&v28 objects:v37 count:16];
+        items2 = [v8 items];
+        v12 = [items2 countByEnumeratingWithState:&v28 objects:v37 count:16];
         if (v12)
         {
           v13 = v12;
@@ -935,7 +935,7 @@ LABEL_37:
             {
               if (*v29 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(items2);
               }
 
               if (*(*(&v28 + 1) + 8 * j))
@@ -945,7 +945,7 @@ LABEL_37:
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v28 objects:v37 count:16];
+            v13 = [items2 countByEnumeratingWithState:&v28 objects:v37 count:16];
           }
 
           while (v13);
@@ -953,9 +953,9 @@ LABEL_37:
 
         if ([v10 count])
         {
-          v16 = [v8 title];
+          title = [v8 title];
           v17 = [v10 copy];
-          v18 = +[AutocompleteSection sectionWithTitle:items:isQuerySuggestionsSection:](AutocompleteSection, "sectionWithTitle:items:isQuerySuggestionsSection:", v16, v17, [v8 isQuerySuggestionsSection]);
+          v18 = +[AutocompleteSection sectionWithTitle:items:isQuerySuggestionsSection:](AutocompleteSection, "sectionWithTitle:items:isQuerySuggestionsSection:", title, v17, [v8 isQuerySuggestionsSection]);
           [v27 addObject:v18];
         }
       }
@@ -971,11 +971,11 @@ LABEL_37:
     v5 = 0;
   }
 
-  if ([(SearchDataProvider *)v25 shouldShowRapCellWithResultsCount:v5])
+  if ([(SearchDataProvider *)selfCopy shouldShowRapCellWithResultsCount:v5])
   {
     v19 = [ReportASearchAutocompleteResult alloc];
-    v20 = [(AutocompleteContext *)v25->_autocompleteContext queryString];
-    v21 = [(ReportASearchAutocompleteResult *)v19 initWithTitle:v20];
+    queryString = [(AutocompleteContext *)selfCopy->_autocompleteContext queryString];
+    v21 = [(ReportASearchAutocompleteResult *)v19 initWithTitle:queryString];
     v36 = v21;
     v22 = [NSArray arrayWithObjects:&v36 count:1];
 
@@ -1016,8 +1016,8 @@ LABEL_37:
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v7 = [v6 items];
-        v8 = [v7 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        items = [v6 items];
+        v8 = [items countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v8)
         {
           v9 = v8;
@@ -1028,36 +1028,36 @@ LABEL_37:
             {
               if (*v23 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(items);
               }
 
               v12 = *(*(&v22 + 1) + 8 * i);
-              v13 = [v12 autocompleteObject];
-              if (v13)
+              autocompleteObject = [v12 autocompleteObject];
+              if (autocompleteObject)
               {
-                v14 = [v12 matchInfo];
-                v15 = [v14 copy];
+                matchInfo = [v12 matchInfo];
+                v15 = [matchInfo copy];
 
                 [v15 setShownToUser:0];
                 if (v4)
                 {
-                  v16 = [(PersonalizedItemManager *)self->_deduplicator _priorityFunction];
+                  _priorityFunction = [(PersonalizedItemManager *)self->_deduplicator _priorityFunction];
 
-                  if (v16)
+                  if (_priorityFunction)
                   {
-                    v17 = [(PersonalizedItemManager *)self->_deduplicator _priorityFunction];
-                    [v15 setSortPriorityDebug:{objc_msgSend(v17, "priorityForPersonalizedAutocompleteItem:", v12)}];
+                    _priorityFunction2 = [(PersonalizedItemManager *)self->_deduplicator _priorityFunction];
+                    [v15 setSortPriorityDebug:{objc_msgSend(_priorityFunction2, "priorityForPersonalizedAutocompleteItem:", v12)}];
                   }
                 }
 
                 if (v15)
                 {
-                  [(AutocompleteContext *)self->_autocompleteContext setMatchInfo:v15 forObject:v13];
+                  [(AutocompleteContext *)self->_autocompleteContext setMatchInfo:v15 forObject:autocompleteObject];
                 }
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v9 = [items countByEnumeratingWithState:&v22 objects:v30 count:16];
           }
 
           while (v9);
@@ -1094,8 +1094,8 @@ LABEL_37:
           objc_enumerationMutation(v2);
         }
 
-        v6 = [*(*(&v9 + 1) + 8 * i) items];
-        v7 = [v6 count];
+        items = [*(*(&v9 + 1) + 8 * i) items];
+        v7 = [items count];
 
         if (v7)
         {
@@ -1119,33 +1119,33 @@ LABEL_11:
   return v3;
 }
 
-- (void)setUserLocationSearchResult:(id)a3
+- (void)setUserLocationSearchResult:(id)result
 {
-  v5 = a3;
-  if (self->_userLocationSearchResult != v5)
+  resultCopy = result;
+  if (self->_userLocationSearchResult != resultCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_userLocationSearchResult, a3);
+    v6 = resultCopy;
+    objc_storeStrong(&self->_userLocationSearchResult, result);
     [(SearchDataProvider *)self _dataChanged];
-    v5 = v6;
+    resultCopy = v6;
   }
 }
 
-- (void)setMapPersonalizedItems:(id)a3
+- (void)setMapPersonalizedItems:(id)items
 {
-  v5 = a3;
-  if (self->_mapPersonalizedItems != v5)
+  itemsCopy = items;
+  if (self->_mapPersonalizedItems != itemsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_mapPersonalizedItems, a3);
+    v6 = itemsCopy;
+    objc_storeStrong(&self->_mapPersonalizedItems, items);
     [(PersonalizedItemAutocompleteFilter *)self->_personalizedItemsFilter setInputItems:self->_mapPersonalizedItems];
-    v5 = v6;
+    itemsCopy = v6;
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  self->_active = a3;
+  self->_active = active;
   if ([(SearchDataProvider *)self isActive])
   {
 
@@ -1171,21 +1171,21 @@ LABEL_11:
   }
 }
 
-- (void)setResultTypes:(unint64_t)a3
+- (void)setResultTypes:(unint64_t)types
 {
-  if (self->_resultTypes != a3)
+  if (self->_resultTypes != types)
   {
-    self->_resultTypes = a3;
+    self->_resultTypes = types;
     [(MKLocalSearchCompleter *)self->_searchCompleter setResultTypes:?];
   }
 }
 
-- (void)setSearchMode:(unsigned int)a3
+- (void)setSearchMode:(unsigned int)mode
 {
-  if (self->_searchMode != a3)
+  if (self->_searchMode != mode)
   {
-    self->_searchMode = a3;
-    [(PersonalizedItemAutocompleteFilter *)self->_personalizedItemsFilter setHasItemsWhenSearchStringIsEmpty:a3 == 2];
+    self->_searchMode = mode;
+    [(PersonalizedItemAutocompleteFilter *)self->_personalizedItemsFilter setHasItemsWhenSearchStringIsEmpty:mode == 2];
   }
 }
 

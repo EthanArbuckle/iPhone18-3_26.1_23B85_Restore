@@ -1,12 +1,12 @@
 @interface STStorageTip
 - (STStorageTip)init;
 - (STStorageTipUIDelegate)uiDelegate;
-- (id)propertyForKey:(id)a3;
+- (id)propertyForKey:(id)key;
 - (int64_t)size;
-- (void)_reload:(id)a3;
+- (void)_reload:(id)_reload;
 - (void)reload;
-- (void)setProperty:(id)a3 forKey:(id)a4;
-- (void)setSize:(int64_t)a3;
+- (void)setProperty:(id)property forKey:(id)key;
+- (void)setSize:(int64_t)size;
 @end
 
 @implementation STStorageTip
@@ -30,58 +30,58 @@
   return v3;
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_specLock);
-  v5 = [(PSSpecifier *)self->_specifier propertyForKey:v4];
+  v5 = [(PSSpecifier *)self->_specifier propertyForKey:keyCopy];
 
   os_unfair_lock_unlock(&self->_specLock);
 
   return v5;
 }
 
-- (void)setProperty:(id)a3 forKey:(id)a4
+- (void)setProperty:(id)property forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_specLock);
   specifier = self->_specifier;
-  if (v8)
+  if (propertyCopy)
   {
-    [(PSSpecifier *)specifier setProperty:v8 forKey:v6];
-    [(PSSpecifier *)self->_infoSpecifier setProperty:v8 forKey:v6];
+    [(PSSpecifier *)specifier setProperty:propertyCopy forKey:keyCopy];
+    [(PSSpecifier *)self->_infoSpecifier setProperty:propertyCopy forKey:keyCopy];
   }
 
   else
   {
-    [(PSSpecifier *)specifier removePropertyForKey:v6];
-    [(PSSpecifier *)self->_infoSpecifier removePropertyForKey:v6];
+    [(PSSpecifier *)specifier removePropertyForKey:keyCopy];
+    [(PSSpecifier *)self->_infoSpecifier removePropertyForKey:keyCopy];
   }
 
   os_unfair_lock_unlock(&self->_specLock);
   [(STStorageTip *)self reload];
 }
 
-- (void)setSize:(int64_t)a3
+- (void)setSize:(int64_t)size
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithLongLong:size];
   [(STStorageTip *)self setProperty:v4 forKey:@"stSize"];
 }
 
 - (int64_t)size
 {
   v2 = [(STStorageTip *)self propertyForKey:@"stSize"];
-  v3 = [v2 longLongValue];
+  longLongValue = [v2 longLongValue];
 
-  return v3;
+  return longLongValue;
 }
 
-- (void)_reload:(id)a3
+- (void)_reload:(id)_reload
 {
   os_unfair_lock_lock(&self->_specLock);
-  v13 = [(STStorageTip *)self specifier];
-  v4 = [(STStorageTip *)self infoSpecifier];
+  specifier = [(STStorageTip *)self specifier];
+  infoSpecifier = [(STStorageTip *)self infoSpecifier];
   WeakRetained = objc_loadWeakRetained(&self->_uiDelegate);
   v6 = objc_opt_respondsToSelector();
 
@@ -92,18 +92,18 @@
   }
 
   v8 = *MEMORY[0x277D40148];
-  v9 = [v13 propertyForKey:*MEMORY[0x277D40148]];
+  v9 = [specifier propertyForKey:*MEMORY[0x277D40148]];
   v10 = v9;
   if (v9)
   {
-    [v9 refreshCellContentsWithSpecifier:v13];
+    [v9 refreshCellContentsWithSpecifier:specifier];
   }
 
-  v11 = [v4 propertyForKey:v8];
+  v11 = [infoSpecifier propertyForKey:v8];
   v12 = v11;
   if (v11)
   {
-    [v11 refreshCellContentsWithSpecifier:v4];
+    [v11 refreshCellContentsWithSpecifier:infoSpecifier];
   }
 
   os_unfair_lock_unlock(&self->_specLock);

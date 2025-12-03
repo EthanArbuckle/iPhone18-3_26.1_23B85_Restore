@@ -1,37 +1,37 @@
 @interface SBHSearchTextField
-+ (id)borderColorForUserInterfaceStyle:(int64_t)a3;
-+ (int64_t)_derivedTextAlignmentForBehavior:(int64_t)a3 hasSearchText:(BOOL)a4 isEditing:(BOOL)a5;
++ (id)borderColorForUserInterfaceStyle:(int64_t)style;
++ (int64_t)_derivedTextAlignmentForBehavior:(int64_t)behavior hasSearchText:(BOOL)text isEditing:(BOOL)editing;
 - (BOOL)_hasSearchText;
-- (CGRect)_adjustedTextOrEditingRect:(CGRect)a3 forBounds:(CGRect)a4;
-- (CGRect)_calculateEditingRectForBounds:(CGRect)a3 alignment:(int64_t)a4 isRTL:(BOOL)a5;
-- (CGRect)_calculatePlaceholderRectForBounds:(CGRect)a3 alignment:(int64_t)a4 isRTL:(BOOL)a5;
-- (CGRect)_calculateTextRectForBounds:(CGRect)a3 alignment:(int64_t)a4 isRTL:(BOOL)a5;
-- (CGRect)_frameForLeftViewWithinBounds:(CGRect)a3 alignment:(int64_t)a4;
-- (CGRect)_frameForPlaceholderRectForBounds:(CGRect)a3 alignment:(int64_t)a4 isRTL:(BOOL)a5 willOverflow:(BOOL *)a6;
-- (CGRect)_frameForRightViewWithinBounds:(CGRect)a3 alignment:(int64_t)a4;
-- (CGRect)clearButtonRectForBounds:(CGRect)a3;
-- (CGRect)editingRectForBounds:(CGRect)a3;
-- (CGRect)leftViewRectForBounds:(CGRect)a3;
-- (CGRect)placeholderRectForBounds:(CGRect)a3;
-- (CGRect)rightViewRectForBounds:(CGRect)a3;
-- (CGRect)textRectForBounds:(CGRect)a3;
+- (CGRect)_adjustedTextOrEditingRect:(CGRect)rect forBounds:(CGRect)bounds;
+- (CGRect)_calculateEditingRectForBounds:(CGRect)bounds alignment:(int64_t)alignment isRTL:(BOOL)l;
+- (CGRect)_calculatePlaceholderRectForBounds:(CGRect)bounds alignment:(int64_t)alignment isRTL:(BOOL)l;
+- (CGRect)_calculateTextRectForBounds:(CGRect)bounds alignment:(int64_t)alignment isRTL:(BOOL)l;
+- (CGRect)_frameForLeftViewWithinBounds:(CGRect)bounds alignment:(int64_t)alignment;
+- (CGRect)_frameForPlaceholderRectForBounds:(CGRect)bounds alignment:(int64_t)alignment isRTL:(BOOL)l willOverflow:(BOOL *)overflow;
+- (CGRect)_frameForRightViewWithinBounds:(CGRect)bounds alignment:(int64_t)alignment;
+- (CGRect)clearButtonRectForBounds:(CGRect)bounds;
+- (CGRect)editingRectForBounds:(CGRect)bounds;
+- (CGRect)leftViewRectForBounds:(CGRect)bounds;
+- (CGRect)placeholderRectForBounds:(CGRect)bounds;
+- (CGRect)rightViewRectForBounds:(CGRect)bounds;
+- (CGRect)textRectForBounds:(CGRect)bounds;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SBHSearchTextField)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SBHSearchTextField)initWithFrame:(CGRect)frame;
 - (double)_calculateHeightWithFont;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (int64_t)_derivedTextAlignment;
-- (int64_t)_derivedTextAlignmentIfEditing:(BOOL)a3;
+- (int64_t)_derivedTextAlignmentIfEditing:(BOOL)editing;
 - (void)_effectiveAppearanceDidChange;
-- (void)_textDidChange:(id)a3;
-- (void)_updateTextAlignmentForEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)buildMenuWithBuilder:(id)a3;
+- (void)_textDidChange:(id)change;
+- (void)_updateTextAlignmentForEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)buildMenuWithBuilder:(id)builder;
 - (void)layoutSubviews;
-- (void)setAlignmentBehavior:(int64_t)a3 animated:(BOOL)a4;
-- (void)setFont:(id)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setReturnKeyType:(int64_t)a3;
+- (void)setAlignmentBehavior:(int64_t)behavior animated:(BOOL)animated;
+- (void)setFont:(id)font;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setReturnKeyType:(int64_t)type;
 - (void)updateStyleForClearButton;
 - (void)updateStyleForLeftView;
 - (void)updateStyleForPlaceholderView;
@@ -51,10 +51,10 @@
 
 - (void)updateVisualStyling
 {
-  v3 = [(SBHSearchTextField *)self traitCollection];
+  traitCollection = [(SBHSearchTextField *)self traitCollection];
   v4 = MEMORY[0x1E69DD1B8];
-  v31 = v3;
-  v5 = [v3 preferredContentSizeCategory];
+  v31 = traitCollection;
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
   v6 = UIContentSizeCategoryClip();
   v7 = [v4 traitCollectionWithPreferredContentSizeCategory:v6];
 
@@ -66,8 +66,8 @@
 
   else
   {
-    v9 = [v7 preferredContentSizeCategory];
-    self->_alwaysHideLeadingView = UIContentSizeCategoryIsAccessibilityCategory(v9);
+    preferredContentSizeCategory2 = [v7 preferredContentSizeCategory];
+    self->_alwaysHideLeadingView = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory2);
   }
 
   [(SBHSearchTextField *)self setFont:v8];
@@ -84,11 +84,11 @@
     dispatch_once(&updateVisualStyling_onceToken, block);
   }
 
-  v12 = [MEMORY[0x1E69DC888] whiteColor];
-  [(SBHSearchTextField *)self setTintColor:v12];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(SBHSearchTextField *)self setTintColor:whiteColor];
 
-  v13 = [MEMORY[0x1E69DC888] whiteColor];
-  [(SBHSearchTextField *)self setTextColor:v13];
+  whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+  [(SBHSearchTextField *)self setTextColor:whiteColor2];
 
   legibilitySettings = self->_legibilitySettings;
   if (legibilitySettings)
@@ -102,16 +102,16 @@
   }
   v15 = ;
   objc_opt_class();
-  v16 = [(SBHSearchTextField *)self leftView];
+  leftView = [(SBHSearchTextField *)self leftView];
   v17 = SBFSafeCast();
 
   objc_opt_class();
-  v18 = [(SBHSearchTextField *)self rightView];
+  rightView = [(SBHSearchTextField *)self rightView];
   v19 = SBFSafeCast();
 
-  v20 = [(SBHSearchTextField *)self _clearButton];
-  v21 = [(SBHSearchTextField *)self _placeholderLabel];
-  [v21 setTextColor:v15];
+  _clearButton = [(SBHSearchTextField *)self _clearButton];
+  _placeholderLabel = [(SBHSearchTextField *)self _placeholderLabel];
+  [_placeholderLabel setTextColor:v15];
   v22 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"magnifyingglass" withConfiguration:v11];
   v23 = [v22 imageWithTintColor:v15 renderingMode:1];
   magnifyingGlassImage = self->_magnifyingGlassImage;
@@ -129,10 +129,10 @@
 
   [v25 setImage:self->_magnifyingGlassImage];
   objc_storeStrong(&self->_cancelButtonImage, updateVisualStyling_cancelImage);
-  [v20 setImage:self->_cancelButtonImage forState:0];
-  v26 = [(SBHSearchTextField *)self _background];
+  [_clearButton setImage:self->_cancelButtonImage forState:0];
+  _background = [(SBHSearchTextField *)self _background];
 
-  if (!v26)
+  if (!_background)
   {
     v27 = [objc_alloc(MEMORY[0x1E69DD818]) initWithVariant:1];
     [v27 setFlexible:1];
@@ -146,32 +146,32 @@
   [(SBHSearchTextField *)self updateStyleForRightView];
   [(SBHSearchTextField *)self updateStyleForClearButton];
   [(SBHSearchTextField *)self updateStyleForPlaceholderView];
-  v29 = [(SBHSearchTextField *)self layer];
-  [v29 setAllowsGroupBlending:0];
+  layer = [(SBHSearchTextField *)self layer];
+  [layer setAllowsGroupBlending:0];
 }
 
 - (int64_t)_derivedTextAlignment
 {
-  v3 = [(SBHSearchTextField *)self isEditing];
+  isEditing = [(SBHSearchTextField *)self isEditing];
 
-  return [(SBHSearchTextField *)self _derivedTextAlignmentIfEditing:v3];
+  return [(SBHSearchTextField *)self _derivedTextAlignmentIfEditing:isEditing];
 }
 
 - (BOOL)_hasSearchText
 {
-  v2 = [(UISearchTextField *)self text];
-  v3 = [v2 length] != 0;
+  text = [(UISearchTextField *)self text];
+  v3 = [text length] != 0;
 
   return v3;
 }
 
 - (void)updateStyleForLeftView
 {
-  v4 = [(SBHSearchTextField *)self leftView];
+  leftView = [(SBHSearchTextField *)self leftView];
   if (![(NSHashTable *)self->_styledViews containsObject:?])
   {
-    [v4 setContentMode:1];
-    [(NSHashTable *)self->_styledViews addObject:v4];
+    [leftView setContentMode:1];
+    [(NSHashTable *)self->_styledViews addObject:leftView];
   }
 
   if ([*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] != 1)
@@ -192,11 +192,11 @@
 
 - (void)updateStyleForRightView
 {
-  v4 = [(SBHSearchTextField *)self rightView];
+  rightView = [(SBHSearchTextField *)self rightView];
   if (![(NSHashTable *)self->_styledViews containsObject:?])
   {
-    [v4 setContentMode:1];
-    [(NSHashTable *)self->_styledViews addObject:v4];
+    [rightView setContentMode:1];
+    [(NSHashTable *)self->_styledViews addObject:rightView];
   }
 
   if ([*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1)
@@ -217,24 +217,24 @@
 
 - (void)updateStyleForClearButton
 {
-  v5 = [(SBHSearchTextField *)self _clearButton];
+  _clearButton = [(SBHSearchTextField *)self _clearButton];
   if (![(NSHashTable *)self->_styledViews containsObject:?])
   {
-    v3 = [v5 layer];
+    layer = [_clearButton layer];
     v4 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CF8]];
-    [v3 setCompositingFilter:v4];
+    [layer setCompositingFilter:v4];
 
-    [v5 setContentMode:1];
-    [(NSHashTable *)self->_styledViews addObject:v5];
+    [_clearButton setContentMode:1];
+    [(NSHashTable *)self->_styledViews addObject:_clearButton];
   }
 }
 
 - (void)updateStyleForPlaceholderView
 {
-  v4 = [(SBHSearchTextField *)self _placeholderView];
+  _placeholderView = [(SBHSearchTextField *)self _placeholderView];
   if (![(NSHashTable *)self->_styledViews containsObject:?])
   {
-    [(NSHashTable *)self->_styledViews addObject:v4];
+    [(NSHashTable *)self->_styledViews addObject:_placeholderView];
   }
 
   objc_opt_class();
@@ -257,13 +257,13 @@
 
 - (double)_calculateHeightWithFont
 {
-  v3 = [(SBHSearchTextField *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(SBHSearchTextField *)self traitCollection];
+  [traitCollection displayScale];
 
-  v4 = [(SBHSearchTextField *)self font];
-  [v4 lineHeight];
+  font = [(SBHSearchTextField *)self font];
+  [font lineHeight];
   v6 = v5 + 26.0;
-  [v4 descender];
+  [font descender];
   v8 = v6 + v7;
   v9 = 48.0;
   if (v8 >= 48.0)
@@ -275,12 +275,12 @@
   return v9;
 }
 
-- (SBHSearchTextField)initWithFrame:(CGRect)a3
+- (SBHSearchTextField)initWithFrame:(CGRect)frame
 {
   v16[2] = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = SBHSearchTextField;
-  v3 = [(SBHSearchTextField *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBHSearchTextField *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -293,18 +293,18 @@
     [(SBHSearchTextField *)v4 setEnablesReturnKeyAutomatically:1];
     [(SBHSearchTextField *)v4 setMinimumFontSize:10.0];
     [(SBHSearchTextField *)v4 updateVisualStyling];
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     styledViews = v4->_styledViews;
-    v4->_styledViews = v5;
+    v4->_styledViews = weakObjectsHashTable;
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v4 selector:sel__didEndEditing_ name:*MEMORY[0x1E69DE5C8] object:v4];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__didEndEditing_ name:*MEMORY[0x1E69DE5C8] object:v4];
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v4 selector:sel__didBeginEditing_ name:*MEMORY[0x1E69DE5B8] object:v4];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v4 selector:sel__didBeginEditing_ name:*MEMORY[0x1E69DE5B8] object:v4];
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v4 selector:sel__textDidChange_ name:*MEMORY[0x1E69DE5C0] object:v4];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v4 selector:sel__textDidChange_ name:*MEMORY[0x1E69DE5C0] object:v4];
 
     v4->_alignmentBehavior = 0;
     [(SBHSearchTextField *)v4 _updateTextAlignmentForEditing:0 animated:0];
@@ -319,12 +319,12 @@
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v15.receiver = self;
   v15.super_class = SBHSearchTextField;
-  [(SBHSearchTextField *)&v15 sizeThatFits:a3.width, a3.height];
+  [(SBHSearchTextField *)&v15 sizeThatFits:fits.width, fits.height];
   v6 = v5;
   v8 = v7;
   [(SBHSearchTextField *)self _calculateHeightWithFont];
@@ -343,19 +343,19 @@
   return result;
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v5 = a3;
-  if (self->_legibilitySettings != v5)
+  settingsCopy = settings;
+  if (self->_legibilitySettings != settingsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    v6 = settingsCopy;
+    objc_storeStrong(&self->_legibilitySettings, settings);
     [(SBHSearchTextField *)self updateVisualStyling];
-    v5 = v6;
+    settingsCopy = v6;
   }
 }
 
-- (void)_textDidChange:(id)a3
+- (void)_textDidChange:(id)change
 {
   if ([(SBHSearchTextField *)self _hasSearchText])
   {
@@ -370,21 +370,21 @@
   [(SBHSearchTextField *)self setClearButtonMode:v4];
 }
 
-- (void)setAlignmentBehavior:(int64_t)a3 animated:(BOOL)a4
+- (void)setAlignmentBehavior:(int64_t)behavior animated:(BOOL)animated
 {
-  if (self->_alignmentBehavior != a3)
+  if (self->_alignmentBehavior != behavior)
   {
-    v5 = a4;
-    self->_alignmentBehavior = a3;
-    v7 = [(SBHSearchTextField *)self isEditing];
+    animatedCopy = animated;
+    self->_alignmentBehavior = behavior;
+    isEditing = [(SBHSearchTextField *)self isEditing];
 
-    [(SBHSearchTextField *)self _updateTextAlignmentForEditing:v7 animated:v5];
+    [(SBHSearchTextField *)self _updateTextAlignmentForEditing:isEditing animated:animatedCopy];
   }
 }
 
-+ (int64_t)_derivedTextAlignmentForBehavior:(int64_t)a3 hasSearchText:(BOOL)a4 isEditing:(BOOL)a5
++ (int64_t)_derivedTextAlignmentForBehavior:(int64_t)behavior hasSearchText:(BOOL)text isEditing:(BOOL)editing
 {
-  if (a5)
+  if (editing)
   {
     v5 = 4;
   }
@@ -394,7 +394,7 @@
     v5 = 1;
   }
 
-  if (a3)
+  if (behavior)
   {
     return 4;
   }
@@ -405,20 +405,20 @@
   }
 }
 
-- (int64_t)_derivedTextAlignmentIfEditing:(BOOL)a3
+- (int64_t)_derivedTextAlignmentIfEditing:(BOOL)editing
 {
-  v3 = a3;
-  v5 = [(SBHSearchTextField *)self _hasSearchText];
+  editingCopy = editing;
+  _hasSearchText = [(SBHSearchTextField *)self _hasSearchText];
   alignmentBehavior = self->_alignmentBehavior;
   v7 = objc_opt_class();
 
-  return [v7 _derivedTextAlignmentForBehavior:alignmentBehavior hasSearchText:v5 isEditing:v3];
+  return [v7 _derivedTextAlignmentForBehavior:alignmentBehavior hasSearchText:_hasSearchText isEditing:editingCopy];
 }
 
-- (void)_updateTextAlignmentForEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)_updateTextAlignmentForEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(SBHSearchTextField *)self _derivedTextAlignmentIfEditing:a3];
+  animatedCopy = animated;
+  v6 = [(SBHSearchTextField *)self _derivedTextAlignmentIfEditing:editing];
   if (v6 != [(SBHSearchTextField *)self textAlignment])
   {
     v9[0] = MEMORY[0x1E69E9820];
@@ -429,7 +429,7 @@
     v9[5] = v6;
     v7 = _Block_copy(v9);
     v8 = v7;
-    if (v4)
+    if (animatedCopy)
     {
       [MEMORY[0x1E69DD250] _animateUsingDefaultTimingWithOptions:6 animations:v7 completion:0];
     }
@@ -454,9 +454,9 @@ uint64_t __62__SBHSearchTextField__updateTextAlignmentForEditing_animated___bloc
 {
   [(NSHashTable *)self->_styledViews removeAllObjects];
   [(SBHSearchTextField *)self updateVisualStyling];
-  v3 = [(SBHSearchTextField *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(SBHSearchTextField *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -474,46 +474,46 @@ void __41__SBHSearchTextField_updateVisualStyling__block_invoke(uint64_t a1)
   updateVisualStyling_cancelImage = v2;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v4 = a3;
+  fontCopy = font;
   v8.receiver = self;
   v8.super_class = SBHSearchTextField;
-  v5 = [(SBHSearchTextField *)&v8 font];
-  v6 = [v5 isEqual:v4];
+  font = [(SBHSearchTextField *)&v8 font];
+  v6 = [font isEqual:fontCopy];
 
   if ((v6 & 1) == 0)
   {
     v7.receiver = self;
     v7.super_class = SBHSearchTextField;
-    [(SBHSearchTextField *)&v7 setFont:v4];
+    [(SBHSearchTextField *)&v7 setFont:fontCopy];
     [(SBHSearchTextField *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setReturnKeyType:(int64_t)a3
+- (void)setReturnKeyType:(int64_t)type
 {
-  if ([(SBHSearchTextField *)self returnKeyType]!= a3)
+  if ([(SBHSearchTextField *)self returnKeyType]!= type)
   {
     v6.receiver = self;
     v6.super_class = SBHSearchTextField;
-    [(SBHSearchTextField *)&v6 setReturnKeyType:a3];
-    v5 = [MEMORY[0x1E69DCBE0] activeInstance];
-    [v5 takeTextInputTraitsFromDelegate];
-    [v5 updateReturnKey:1];
+    [(SBHSearchTextField *)&v6 setReturnKeyType:type];
+    activeInstance = [MEMORY[0x1E69DCBE0] activeInstance];
+    [activeInstance takeTextInputTraitsFromDelegate];
+    [activeInstance updateReturnKey:1];
   }
 }
 
-- (CGRect)placeholderRectForBounds:(CGRect)a3
+- (CGRect)placeholderRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(SBHSearchTextField *)self _derivedTextAlignment];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _derivedTextAlignment = [(SBHSearchTextField *)self _derivedTextAlignment];
   v9 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1;
 
-  [(SBHSearchTextField *)self _calculatePlaceholderRectForBounds:v8 alignment:v9 isRTL:x, y, width, height];
+  [(SBHSearchTextField *)self _calculatePlaceholderRectForBounds:_derivedTextAlignment alignment:v9 isRTL:x, y, width, height];
   result.size.height = v13;
   result.size.width = v12;
   result.origin.y = v11;
@@ -521,14 +521,14 @@ void __41__SBHSearchTextField_updateVisualStyling__block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGRect)textRectForBounds:(CGRect)a3
+- (CGRect)textRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(SBHSearchTextField *)self _derivedTextAlignment];
-  -[SBHSearchTextField _calculateTextRectForBounds:alignment:isRTL:](self, "_calculateTextRectForBounds:alignment:isRTL:", v8, [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1, x, y, width, height);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _derivedTextAlignment = [(SBHSearchTextField *)self _derivedTextAlignment];
+  -[SBHSearchTextField _calculateTextRectForBounds:alignment:isRTL:](self, "_calculateTextRectForBounds:alignment:isRTL:", _derivedTextAlignment, [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1, x, y, width, height);
 
   [SBHSearchTextField _adjustedTextOrEditingRect:"_adjustedTextOrEditingRect:forBounds:" forBounds:?];
   result.size.height = v12;
@@ -538,14 +538,14 @@ void __41__SBHSearchTextField_updateVisualStyling__block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGRect)editingRectForBounds:(CGRect)a3
+- (CGRect)editingRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(SBHSearchTextField *)self _derivedTextAlignment];
-  -[SBHSearchTextField _calculateEditingRectForBounds:alignment:isRTL:](self, "_calculateEditingRectForBounds:alignment:isRTL:", v8, [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1, x, y, width, height);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _derivedTextAlignment = [(SBHSearchTextField *)self _derivedTextAlignment];
+  -[SBHSearchTextField _calculateEditingRectForBounds:alignment:isRTL:](self, "_calculateEditingRectForBounds:alignment:isRTL:", _derivedTextAlignment, [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1, x, y, width, height);
 
   [SBHSearchTextField _adjustedTextOrEditingRect:"_adjustedTextOrEditingRect:forBounds:" forBounds:?];
   result.size.height = v12;
@@ -555,21 +555,21 @@ void __41__SBHSearchTextField_updateVisualStyling__block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGRect)clearButtonRectForBounds:(CGRect)a3
+- (CGRect)clearButtonRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(SBHSearchTextField *)self _derivedTextAlignment];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _derivedTextAlignment = [(SBHSearchTextField *)self _derivedTextAlignment];
   if ([*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1)
   {
-    [(SBHSearchTextField *)self _frameForLeftViewWithinBounds:v8 alignment:x, y, width, height];
+    [(SBHSearchTextField *)self _frameForLeftViewWithinBounds:_derivedTextAlignment alignment:x, y, width, height];
   }
 
   else
   {
-    [(SBHSearchTextField *)self _frameForRightViewWithinBounds:v8 alignment:x, y, width, height];
+    [(SBHSearchTextField *)self _frameForRightViewWithinBounds:_derivedTextAlignment alignment:x, y, width, height];
   }
 
   result.size.height = v12;
@@ -579,15 +579,15 @@ void __41__SBHSearchTextField_updateVisualStyling__block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGRect)leftViewRectForBounds:(CGRect)a3
+- (CGRect)leftViewRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(SBHSearchTextField *)self _derivedTextAlignment];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _derivedTextAlignment = [(SBHSearchTextField *)self _derivedTextAlignment];
 
-  [(SBHSearchTextField *)self _frameForLeftViewWithinBounds:v8 alignment:x, y, width, height];
+  [(SBHSearchTextField *)self _frameForLeftViewWithinBounds:_derivedTextAlignment alignment:x, y, width, height];
   result.size.height = v12;
   result.size.width = v11;
   result.origin.y = v10;
@@ -595,15 +595,15 @@ void __41__SBHSearchTextField_updateVisualStyling__block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGRect)rightViewRectForBounds:(CGRect)a3
+- (CGRect)rightViewRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(SBHSearchTextField *)self _derivedTextAlignment];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _derivedTextAlignment = [(SBHSearchTextField *)self _derivedTextAlignment];
 
-  [(SBHSearchTextField *)self _frameForRightViewWithinBounds:v8 alignment:x, y, width, height];
+  [(SBHSearchTextField *)self _frameForRightViewWithinBounds:_derivedTextAlignment alignment:x, y, width, height];
   result.size.height = v12;
   result.size.width = v11;
   result.origin.y = v10;
@@ -611,9 +611,9 @@ void __41__SBHSearchTextField_updateVisualStyling__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v6 = a5;
+  regionCopy = region;
   [(SBHSearchTextField *)self bounds];
   v8 = v7;
   v10 = v9;
@@ -635,16 +635,16 @@ void __41__SBHSearchTextField_updateVisualStyling__block_invoke(uint64_t a1)
   }
 
   v19 = MEMORY[0x1E69DCDC0];
-  v20 = [v6 identifier];
-  v21 = [v19 regionWithRect:v20 identifier:{v8, v10, v12, Height}];
+  identifier = [regionCopy identifier];
+  v21 = [v19 regionWithRect:identifier identifier:{v8, v10, v12, Height}];
 
   return v21;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v4 = MEMORY[0x1E69DCDC8];
-  v5 = [(SBHSearchTextField *)self font:a3];
+  v5 = [(SBHSearchTextField *)self font:interaction];
   [v5 lineHeight];
   v6 = [v4 beamWithPreferredLength:2 axis:?];
 
@@ -653,18 +653,18 @@ void __41__SBHSearchTextField_updateVisualStyling__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (CGRect)_frameForLeftViewWithinBounds:(CGRect)a3 alignment:(int64_t)a4
+- (CGRect)_frameForLeftViewWithinBounds:(CGRect)bounds alignment:(int64_t)alignment
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(SBHSearchTextField *)self traitCollection];
-  [v10 displayScale];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  traitCollection = [(SBHSearchTextField *)self traitCollection];
+  [traitCollection displayScale];
   v12 = v11;
 
   UIRectCenteredYInRectScale();
-  if (a4 == 1)
+  if (alignment == 1)
   {
     [(SBHSearchTextField *)self _calculatePlaceholderRectForBounds:1 alignment:0 isRTL:x, y, width, height, v12];
   }
@@ -686,18 +686,18 @@ void __41__SBHSearchTextField_updateVisualStyling__block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGRect)_frameForRightViewWithinBounds:(CGRect)a3 alignment:(int64_t)a4
+- (CGRect)_frameForRightViewWithinBounds:(CGRect)bounds alignment:(int64_t)alignment
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(SBHSearchTextField *)self traitCollection];
-  [v10 displayScale];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  traitCollection = [(SBHSearchTextField *)self traitCollection];
+  [traitCollection displayScale];
   v12 = v11;
 
   UIRectCenteredYInRectScale();
-  if (a4 == 1)
+  if (alignment == 1)
   {
     [(SBHSearchTextField *)self _calculatePlaceholderRectForBounds:1 alignment:1 isRTL:x, y, width, height, v12];
   }
@@ -719,9 +719,9 @@ void __41__SBHSearchTextField_updateVisualStyling__block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGRect)_calculateEditingRectForBounds:(CGRect)a3 alignment:(int64_t)a4 isRTL:(BOOL)a5
+- (CGRect)_calculateEditingRectForBounds:(CGRect)bounds alignment:(int64_t)alignment isRTL:(BOOL)l
 {
-  v5 = a3.size.height + -26.0;
+  v5 = bounds.size.height + -26.0;
   v6 = 0.0;
   if (v5 >= 0.0)
   {
@@ -734,9 +734,9 @@ void __41__SBHSearchTextField_updateVisualStyling__block_invoke(uint64_t a1)
     v7 = 16.0;
   }
 
-  v8 = a3.origin.x + v7;
-  v9 = a3.origin.y + 13.0;
-  v10 = a3.size.width - (v7 + v7);
+  v8 = bounds.origin.x + v7;
+  v9 = bounds.origin.y + 13.0;
+  v10 = bounds.size.width - (v7 + v7);
   result.size.height = v5;
   result.size.width = v10;
   result.origin.y = v9;
@@ -744,16 +744,16 @@ void __41__SBHSearchTextField_updateVisualStyling__block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGRect)_calculateTextRectForBounds:(CGRect)a3 alignment:(int64_t)a4 isRTL:(BOOL)a5
+- (CGRect)_calculateTextRectForBounds:(CGRect)bounds alignment:(int64_t)alignment isRTL:(BOOL)l
 {
-  if (a4 == 1)
+  if (alignment == 1)
   {
-    [(SBHSearchTextField *)self _frameForPlaceholderRectForBounds:a4 alignment:a5 isRTL:0 willOverflow:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, v5, v6];
+    [(SBHSearchTextField *)self _frameForPlaceholderRectForBounds:alignment alignment:l isRTL:0 willOverflow:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height, v5, v6];
   }
 
   else
   {
-    v10 = a3.size.height + -26.0;
+    v10 = bounds.size.height + -26.0;
     v11 = 0.0;
     if (v10 >= 0.0)
     {
@@ -766,9 +766,9 @@ void __41__SBHSearchTextField_updateVisualStyling__block_invoke(uint64_t a1)
       v12 = 16.0;
     }
 
-    v7 = a3.origin.x + v12;
-    v8 = a3.origin.y + 13.0;
-    v9 = a3.size.width - (v12 + v12);
+    v7 = bounds.origin.x + v12;
+    v8 = bounds.origin.y + 13.0;
+    v9 = bounds.size.width - (v12 + v12);
   }
 
   result.size.height = v10;
@@ -778,21 +778,21 @@ void __41__SBHSearchTextField_updateVisualStyling__block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGRect)_calculatePlaceholderRectForBounds:(CGRect)a3 alignment:(int64_t)a4 isRTL:(BOOL)a5
+- (CGRect)_calculatePlaceholderRectForBounds:(CGRect)bounds alignment:(int64_t)alignment isRTL:(BOOL)l
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = [(SBHSearchTextField *)self traitCollection];
-  [v12 displayScale];
+  lCopy = l;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  traitCollection = [(SBHSearchTextField *)self traitCollection];
+  [traitCollection displayScale];
 
-  [(SBHSearchTextField *)self _frameForPlaceholderRectForBounds:a4 alignment:v5 isRTL:0 willOverflow:x, y, width, height];
+  [(SBHSearchTextField *)self _frameForPlaceholderRectForBounds:alignment alignment:lCopy isRTL:0 willOverflow:x, y, width, height];
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  if (a4 == 1)
+  if (alignment == 1)
   {
     v19 = height + -26.0;
     if (height + -26.0 < 0.0)
@@ -805,13 +805,13 @@ void __41__SBHSearchTextField_updateVisualStyling__block_invoke(uint64_t a1)
     v14 = v23;
     v18 = v24;
     v25 = -2.0;
-    if (v5)
+    if (lCopy)
     {
       v25 = 2.0;
     }
 
     MinX = v25 + v21;
-    if (!v5)
+    if (!lCopy)
     {
       MinX = v20 + MinX;
     }
@@ -821,8 +821,8 @@ void __41__SBHSearchTextField_updateVisualStyling__block_invoke(uint64_t a1)
 
   else
   {
-    [(SBHSearchTextField *)self _calculateTextRectForBounds:a4 alignment:v5 isRTL:x, y, width, height];
-    if (v5)
+    [(SBHSearchTextField *)self _calculateTextRectForBounds:alignment alignment:lCopy isRTL:x, y, width, height];
+    if (lCopy)
     {
       MinX = CGRectGetMaxX(*&v27) - (v16 + 8.0);
     }
@@ -843,12 +843,12 @@ void __41__SBHSearchTextField_updateVisualStyling__block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGRect)_frameForPlaceholderRectForBounds:(CGRect)a3 alignment:(int64_t)a4 isRTL:(BOOL)a5 willOverflow:(BOOL *)a6
+- (CGRect)_frameForPlaceholderRectForBounds:(CGRect)bounds alignment:(int64_t)alignment isRTL:(BOOL)l willOverflow:(BOOL *)overflow
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = bounds.size.height;
+  width = bounds.size.width;
   v22[1] = *MEMORY[0x1E69E9840];
-  v10 = [(SBHSearchTextField *)self traitCollection:a4];
+  v10 = [(SBHSearchTextField *)self traitCollection:alignment];
   [v10 displayScale];
 
   v11 = height + -26.0;
@@ -858,17 +858,17 @@ void __41__SBHSearchTextField_updateVisualStyling__block_invoke(uint64_t a1)
   }
 
   v12 = width - (v11 * 2.0 + 16.0);
-  v13 = [(SBHSearchTextField *)self placeholder];
+  placeholder = [(SBHSearchTextField *)self placeholder];
   v21 = *MEMORY[0x1E69DB648];
-  v14 = [(SBHSearchTextField *)self font];
-  v22[0] = v14;
+  font = [(SBHSearchTextField *)self font];
+  v22[0] = font;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-  [v13 boundingRectWithSize:0 options:v15 attributes:0 context:{width, height}];
+  [placeholder boundingRectWithSize:0 options:v15 attributes:0 context:{width, height}];
 
   BSSizeCeilForScale();
-  if (a6)
+  if (overflow)
   {
-    *a6 = v16 > v12;
+    *overflow = v16 > v12;
   }
 
   UIRectCenteredIntegralRectScale();
@@ -879,30 +879,30 @@ void __41__SBHSearchTextField_updateVisualStyling__block_invoke(uint64_t a1)
   return result;
 }
 
-+ (id)borderColorForUserInterfaceStyle:(int64_t)a3
++ (id)borderColorForUserInterfaceStyle:(int64_t)style
 {
-  if (a3 > 2)
+  if (style > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69DC888] colorWithWhite:dbl_1BEE89C60[a3] alpha:{0.08, v3}];
+    v5 = [MEMORY[0x1E69DC888] colorWithWhite:dbl_1BEE89C60[style] alpha:{0.08, v3}];
   }
 
   return v5;
 }
 
-- (CGRect)_adjustedTextOrEditingRect:(CGRect)a3 forBounds:(CGRect)a4
+- (CGRect)_adjustedTextOrEditingRect:(CGRect)rect forBounds:(CGRect)bounds
 {
-  v5 = [(SBHSearchTextField *)self traitCollection];
-  [v5 displayScale];
+  traitCollection = [(SBHSearchTextField *)self traitCollection];
+  [traitCollection displayScale];
 
   [(SBHSearchTextField *)self bounds];
   [(SBHSearchTextField *)self _padding];
-  v6 = [(SBHSearchTextField *)self font];
-  [v6 lineHeight];
+  font = [(SBHSearchTextField *)self font];
+  [font lineHeight];
 
   BSFloatFloorForScale();
   UIRectCenteredYInRectScale();
@@ -913,18 +913,18 @@ void __41__SBHSearchTextField_updateVisualStyling__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v7.receiver = self;
   v7.super_class = SBHSearchTextField;
-  [(SBHSearchTextField *)&v7 buildMenuWithBuilder:v4];
+  [(SBHSearchTextField *)&v7 buildMenuWithBuilder:builderCopy];
   v5 = +[SBAssessmentModeMonitor sharedInstance];
-  v6 = [v5 isActive];
+  isActive = [v5 isActive];
 
-  if (v6)
+  if (isActive)
   {
-    [v4 removeMenuForIdentifier:*MEMORY[0x1E69DE0C8]];
+    [builderCopy removeMenuForIdentifier:*MEMORY[0x1E69DE0C8]];
   }
 }
 

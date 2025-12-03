@@ -1,7 +1,7 @@
 @interface MADProgressReporterBackgroundSystemTask
 + (id)producedResultIdentifiers;
 + (id)sharedTask;
-- (void)executeWithSystemTask:(id)a3 cancelBlock:(id)a4 completionHandler:(id)a5;
+- (void)executeWithSystemTask:(id)task cancelBlock:(id)block completionHandler:(id)handler;
 @end
 
 @implementation MADProgressReporterBackgroundSystemTask
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001A6890;
   block[3] = &unk_100282998;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B8518 != -1)
   {
     dispatch_once(&qword_1002B8518, block);
@@ -30,13 +30,13 @@
   return v2;
 }
 
-- (void)executeWithSystemTask:(id)a3 cancelBlock:(id)a4 completionHandler:(id)a5
+- (void)executeWithSystemTask:(id)task cancelBlock:(id)block completionHandler:(id)handler
 {
-  v26 = a3;
-  v30 = a4;
-  v28 = a5;
-  v25 = [objc_opt_class() identifier];
-  v27 = [NSString stringWithFormat:@"[ReportProgress][%@][ExecuteTask]", v25];
+  taskCopy = task;
+  blockCopy = block;
+  handlerCopy = handler;
+  identifier = [objc_opt_class() identifier];
+  v27 = [NSString stringWithFormat:@"[ReportProgress][%@][ExecuteTask]", identifier];
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
@@ -49,8 +49,8 @@
   v41[2] = 0x3032000000;
   v41[3] = sub_1001A70D4;
   v41[4] = sub_1001A70E4;
-  v7 = [objc_opt_class() identifier];
-  v42 = VCPTransactionWithName(v7);
+  identifier2 = [objc_opt_class() identifier];
+  v42 = VCPTransactionWithName(identifier2);
 
   v40[0] = 0;
   v40[1] = v40;
@@ -70,11 +70,11 @@
   v31[3] = &unk_1002885F0;
   v9 = v8;
   v32 = v9;
-  v10 = v26;
+  v10 = taskCopy;
   v33 = v10;
   v35 = &v43;
   v36 = v41;
-  v11 = v28;
+  v11 = handlerCopy;
   v34 = v11;
   v12 = objc_retainBlock(v31);
   v13 = objc_autoreleasePoolPush();
@@ -96,7 +96,7 @@
 
   else
   {
-    [MADProgressReporterProcessingTask taskWithCancelBlock:v30 progressHandler:v29 completionHandler:v12];
+    [MADProgressReporterProcessingTask taskWithCancelBlock:blockCopy progressHandler:v29 completionHandler:v12];
   }
   v15 = ;
   if (v15)

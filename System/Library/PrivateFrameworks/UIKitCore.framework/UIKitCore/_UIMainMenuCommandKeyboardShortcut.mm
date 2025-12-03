@@ -1,41 +1,41 @@
 @interface _UIMainMenuCommandKeyboardShortcut
-+ (_UIMainMenuCommandKeyboardShortcut)shortcutWithModifierFlags:(int64_t)a3 keyEquivalent:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (_UIMainMenuCommandKeyboardShortcut)initWithCoder:(id)a3;
++ (_UIMainMenuCommandKeyboardShortcut)shortcutWithModifierFlags:(int64_t)flags keyEquivalent:(id)equivalent;
+- (BOOL)isEqual:(id)equal;
+- (_UIMainMenuCommandKeyboardShortcut)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIMainMenuCommandKeyboardShortcut
 
-+ (_UIMainMenuCommandKeyboardShortcut)shortcutWithModifierFlags:(int64_t)a3 keyEquivalent:(id)a4
++ (_UIMainMenuCommandKeyboardShortcut)shortcutWithModifierFlags:(int64_t)flags keyEquivalent:(id)equivalent
 {
-  v5 = a4;
+  equivalentCopy = equivalent;
   v6 = objc_opt_new();
   v7 = v6[2];
-  v6[1] = a3;
-  v6[2] = v5;
+  v6[1] = flags;
+  v6[2] = equivalentCopy;
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   modifierFlags = self->_modifierFlags;
-  v5 = a3;
-  [v5 encodeInteger:modifierFlags forKey:@"ModifierFlags"];
-  [v5 encodeObject:self->_keyEquivalent forKey:@"KeyEquivalent"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:modifierFlags forKey:@"ModifierFlags"];
+  [coderCopy encodeObject:self->_keyEquivalent forKey:@"KeyEquivalent"];
 }
 
-- (_UIMainMenuCommandKeyboardShortcut)initWithCoder:(id)a3
+- (_UIMainMenuCommandKeyboardShortcut)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_UIMainMenuCommandKeyboardShortcut *)self init];
   if (v5)
   {
-    v5->_modifierFlags = [v4 decodeIntegerForKey:@"ModifierFlags"];
+    v5->_modifierFlags = [coderCopy decodeIntegerForKey:@"ModifierFlags"];
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"KeyEquivalent"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"KeyEquivalent"];
     keyEquivalent = v5->_keyEquivalent;
     v5->_keyEquivalent = v7;
   }
@@ -43,10 +43,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -58,7 +58,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       v8 = v7;
       if (self->_modifierFlags == v7->_modifierFlags)
       {
@@ -104,9 +104,9 @@
   [v3 appendString:v4 withName:@"modifierFlags"];
 
   [v3 appendString:self->_keyEquivalent withName:@"keyEquivalent"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 @end

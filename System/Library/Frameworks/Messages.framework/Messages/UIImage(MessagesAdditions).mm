@@ -12,7 +12,7 @@
   if (v3)
   {
     v4 = v3;
-    CGImageDestinationAddImage(v3, [a1 CGImage], 0);
+    CGImageDestinationAddImage(v3, [self CGImage], 0);
     CGImageDestinationFinalize(v4);
     CFRelease(v4);
   }
@@ -41,7 +41,7 @@
     v8 = *MEMORY[0x1E696D338];
     v9[0] = &unk_1F4AC7108;
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-    CGImageDestinationAddImage(v4, [a1 CGImage], v5);
+    CGImageDestinationAddImage(v4, [self CGImage], v5);
     CGImageDestinationFinalize(v4);
     CFAutorelease(v4);
     v6 = [(__CFData *)v2 copy];

@@ -1,20 +1,20 @@
 @interface _NMRMediaRemoteSetArtworkMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasOriginIdentifier:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasOriginIdentifier:(BOOL)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _NMRMediaRemoteSetArtworkMessage
 
-- (void)setHasOriginIdentifier:(BOOL)a3
+- (void)setHasOriginIdentifier:(BOOL)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = 2;
   }
@@ -32,8 +32,8 @@
   v7.receiver = self;
   v7.super_class = _NMRMediaRemoteSetArtworkMessage;
   v3 = [(_NMRMediaRemoteSetArtworkMessage *)&v7 description];
-  v4 = [(_NMRMediaRemoteSetArtworkMessage *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(_NMRMediaRemoteSetArtworkMessage *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -69,70 +69,70 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_jpegData)
   {
     PBDataWriterWriteDataField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_originalDigest)
   {
     PBDataWriterWriteDataField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     originIdentifier = self->_originIdentifier;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_jpegData)
   {
-    [v4 setJpegData:?];
-    v4 = v5;
+    [toCopy setJpegData:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_timestamp;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = *&self->_timestamp;
+    *(toCopy + 40) |= 1u;
   }
 
   if (self->_originalDigest)
   {
     [v5 setOriginalDigest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 6) = self->_originIdentifier;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 6) = self->_originIdentifier;
+    *(toCopy + 40) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_jpegData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_jpegData copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -142,7 +142,7 @@
     *(v5 + 40) |= 1u;
   }
 
-  v8 = [(NSData *)self->_originalDigest copyWithZone:a3];
+  v8 = [(NSData *)self->_originalDigest copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
@@ -155,16 +155,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   jpegData = self->_jpegData;
-  if (jpegData | *(v4 + 2))
+  if (jpegData | *(equalCopy + 2))
   {
     if (![(NSData *)jpegData isEqual:?])
     {
@@ -173,22 +173,22 @@
   }
 
   has = self->_has;
-  v7 = *(v4 + 40);
+  v7 = *(equalCopy + 40);
   if (has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_16;
   }
 
   originalDigest = self->_originalDigest;
-  if (originalDigest | *(v4 + 4))
+  if (originalDigest | *(equalCopy + 4))
   {
     if (![(NSData *)originalDigest isEqual:?])
     {
@@ -200,10 +200,10 @@ LABEL_16:
     has = self->_has;
   }
 
-  v9 = (*(v4 + 40) & 2) == 0;
+  v9 = (*(equalCopy + 40) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_originIdentifier != *(v4 + 6))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_originIdentifier != *(equalCopy + 6))
     {
       goto LABEL_16;
     }
@@ -266,31 +266,31 @@ LABEL_17:
   return v6 ^ v3 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(_NMRMediaRemoteSetArtworkMessage *)self setJpegData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(_NMRMediaRemoteSetArtworkMessage *)self setOriginalDigest:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 40) & 2) != 0)
+  if ((*(fromCopy + 40) & 2) != 0)
   {
-    self->_originIdentifier = *(v4 + 6);
+    self->_originIdentifier = *(fromCopy + 6);
     *&self->_has |= 2u;
   }
 }

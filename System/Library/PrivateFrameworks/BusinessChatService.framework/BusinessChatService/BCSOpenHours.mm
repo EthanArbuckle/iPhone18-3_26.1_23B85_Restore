@@ -1,36 +1,36 @@
 @interface BCSOpenHours
-- (BCSOpenHours)initWithCoder:(id)a3;
-- (BCSOpenHours)initWithHoursMessages:(id)a3 timeZone:(id)a4;
-- (BCSOpenHours)initWithHoursPeriodMessage:(id)a3 timeZone:(id)a4;
-- (BCSOpenHours)initWithJSONObj:(id)a3 timeZone:(id)a4;
-- (BCSOpenHours)initWithOpenHours:(id)a3 timeZone:(id)a4;
-- (BCSOpenHours)initWithTimeRanges:(id)a3 timeZone:(id)a4;
-- (BOOL)_validTimeRange:(void *)a1;
-- (BOOL)isOpenAtDate:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dateWhenOpenNextAfterDate:(id)a3;
+- (BCSOpenHours)initWithCoder:(id)coder;
+- (BCSOpenHours)initWithHoursMessages:(id)messages timeZone:(id)zone;
+- (BCSOpenHours)initWithHoursPeriodMessage:(id)message timeZone:(id)zone;
+- (BCSOpenHours)initWithJSONObj:(id)obj timeZone:(id)zone;
+- (BCSOpenHours)initWithOpenHours:(id)hours timeZone:(id)zone;
+- (BCSOpenHours)initWithTimeRanges:(id)ranges timeZone:(id)zone;
+- (BOOL)_validTimeRange:(void *)range;
+- (BOOL)isOpenAtDate:(id)date;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dateWhenOpenNextAfterDate:(id)date;
 - (id)debugDescription;
-- (uint64_t)_totalSecondsInLocalTimeFromPreviousMidnightWithDate:(void *)a1 timeZone:(void *)a2;
-- (uint64_t)_weekdayOrdinalFromDate:(void *)a1 timeZone:(void *)a2;
-- (void)encodeWithCoder:(id)a3;
+- (uint64_t)_totalSecondsInLocalTimeFromPreviousMidnightWithDate:(void *)date timeZone:(void *)zone;
+- (uint64_t)_weekdayOrdinalFromDate:(void *)date timeZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BCSOpenHours
 
-- (BCSOpenHours)initWithTimeRanges:(id)a3 timeZone:(id)a4
+- (BCSOpenHours)initWithTimeRanges:(id)ranges timeZone:(id)zone
 {
-  v6 = a3;
-  v7 = a4;
+  rangesCopy = ranges;
+  zoneCopy = zone;
   v14.receiver = self;
   v14.super_class = BCSOpenHours;
   v8 = [(BCSOpenHours *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [rangesCopy copy];
     timeRanges = v8->_timeRanges;
     v8->_timeRanges = v9;
 
-    v11 = [MEMORY[0x277CBEBB0] timeZoneWithName:v7];
+    v11 = [MEMORY[0x277CBEBB0] timeZoneWithName:zoneCopy];
     localTimeZone = v8->_localTimeZone;
     v8->_localTimeZone = v11;
   }
@@ -38,44 +38,44 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   timeRanges = self->_timeRanges;
-  v5 = a3;
-  [v5 encodeObject:timeRanges forKey:@"kBCSOpenHoursCoderTimeRangeKey"];
-  [v5 encodeObject:self->_localTimeZone forKey:@"kBCSOpenHoursCodertimeZoneKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:timeRanges forKey:@"kBCSOpenHoursCoderTimeRangeKey"];
+  [coderCopy encodeObject:self->_localTimeZone forKey:@"kBCSOpenHoursCodertimeZoneKey"];
 }
 
-- (BCSOpenHours)initWithCoder:(id)a3
+- (BCSOpenHours)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = [v4 setWithObjects:{v6, v7, v8, objc_opt_class(), 0}];
-  v10 = [v5 decodeObjectOfClasses:v9 forKey:@"kBCSOpenHoursCoderTimeRangeKey"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"kBCSOpenHoursCoderTimeRangeKey"];
 
-  v11 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"kBCSOpenHoursCodertimeZoneKey"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kBCSOpenHoursCodertimeZoneKey"];
 
-  v12 = [v11 name];
-  v13 = [(BCSOpenHours *)self initWithTimeRanges:v10 timeZone:v12];
+  name = [v11 name];
+  v13 = [(BCSOpenHours *)self initWithTimeRanges:v10 timeZone:name];
 
   return v13;
 }
 
-- (BOOL)isOpenAtDate:(id)a3
+- (BOOL)isOpenAtDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v41 = *MEMORY[0x277D85DE8];
   if (self)
   {
     localTimeZone = self->_localTimeZone;
-    v6 = a3;
+    dateCopy2 = date;
     v7 = localTimeZone;
     if ([(NSDictionary *)self->_timeRanges count])
     {
-      v8 = [BCSOpenHours _weekdayOrdinalFromDate:v6 timeZone:v7];
+      v8 = [BCSOpenHours _weekdayOrdinalFromDate:dateCopy2 timeZone:v7];
       timeRanges = self->_timeRanges;
       v10 = MEMORY[0x277CCABB0];
       v11 = timeRanges;
@@ -93,7 +93,7 @@
       {
         v15 = v14;
         v33 = *v35;
-        v31 = v3;
+        v31 = dateCopy;
         while (2)
         {
           for (i = 0; i != v15; ++i)
@@ -108,7 +108,7 @@
             if (!v18)
             {
               v19 = ABSLogCommon();
-              v3 = v31;
+              dateCopy = v31;
               if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
               {
                 *buf = 134217984;
@@ -121,15 +121,15 @@
 
             v19 = [v17 objectForKey:@"from"];
             v20 = [v17 objectForKey:@"to"];
-            v21 = v6;
+            v21 = dateCopy2;
             v22 = v7;
-            v23 = [BCSOpenHours _totalSecondsInLocalTimeFromPreviousMidnightWithDate:v6 timeZone:v7];
-            v24 = [v19 integerValue];
-            v25 = [v20 integerValue];
+            v23 = [BCSOpenHours _totalSecondsInLocalTimeFromPreviousMidnightWithDate:dateCopy2 timeZone:v7];
+            integerValue = [v19 integerValue];
+            integerValue2 = [v20 integerValue];
 
-            if (v23 >= v24 && v23 <= v25)
+            if (v23 >= integerValue && v23 <= integerValue2)
             {
-              v3 = v31;
+              dateCopy = v31;
               v7 = v22;
 LABEL_21:
 
@@ -137,12 +137,12 @@ LABEL_21:
             }
 
             v7 = v22;
-            v6 = v21;
+            dateCopy2 = v21;
           }
 
           v15 = [obj countByEnumeratingWithState:&v34 objects:v40 count:16];
           v18 = 0;
-          v3 = v31;
+          dateCopy = v31;
           if (v15)
           {
             continue;
@@ -168,7 +168,7 @@ LABEL_22:
 
   else
   {
-    v29 = a3;
+    dateCopy3 = date;
     v7 = 0;
     v18 = 0;
   }
@@ -177,63 +177,63 @@ LABEL_22:
   return v18;
 }
 
-- (uint64_t)_weekdayOrdinalFromDate:(void *)a1 timeZone:(void *)a2
+- (uint64_t)_weekdayOrdinalFromDate:(void *)date timeZone:(void *)zone
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a2;
-  v5 = a1;
-  v6 = [v3 currentCalendar];
-  [v6 setTimeZone:v4];
+  zoneCopy = zone;
+  dateCopy = date;
+  currentCalendar = [v3 currentCalendar];
+  [currentCalendar setTimeZone:zoneCopy];
 
-  v7 = [v6 components:512 fromDate:v5];
+  v7 = [currentCalendar components:512 fromDate:dateCopy];
 
-  v8 = [v7 weekday];
-  return v8 - 1;
+  weekday = [v7 weekday];
+  return weekday - 1;
 }
 
-- (BOOL)_validTimeRange:(void *)a1
+- (BOOL)_validTimeRange:(void *)range
 {
-  v1 = a1;
-  v2 = [MEMORY[0x277CBEB68] null];
+  rangeCopy = range;
+  null = [MEMORY[0x277CBEB68] null];
 
   v3 = 0;
-  if (v1 && v2 != v1)
+  if (rangeCopy && null != rangeCopy)
   {
-    v4 = [v1 allKeys];
-    v3 = [v4 count] == 2;
+    allKeys = [rangeCopy allKeys];
+    v3 = [allKeys count] == 2;
   }
 
   return v3;
 }
 
-- (uint64_t)_totalSecondsInLocalTimeFromPreviousMidnightWithDate:(void *)a1 timeZone:(void *)a2
+- (uint64_t)_totalSecondsInLocalTimeFromPreviousMidnightWithDate:(void *)date timeZone:(void *)zone
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a2;
-  v5 = a1;
-  v6 = [v3 currentCalendar];
-  [v6 setTimeZone:v4];
+  zoneCopy = zone;
+  dateCopy = date;
+  currentCalendar = [v3 currentCalendar];
+  [currentCalendar setTimeZone:zoneCopy];
 
-  v7 = [v6 components:96 fromDate:v5];
+  v7 = [currentCalendar components:96 fromDate:dateCopy];
 
-  v8 = [v7 hour];
-  v9 = [v7 minute];
+  hour = [v7 hour];
+  minute = [v7 minute];
 
-  return 60 * (v9 + 60 * v8);
+  return 60 * (minute + 60 * hour);
 }
 
-- (id)dateWhenOpenNextAfterDate:(id)a3
+- (id)dateWhenOpenNextAfterDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v48 = *MEMORY[0x277D85DE8];
   if (self)
   {
-    v4 = self;
+    selfCopy = self;
     localTimeZone = self->_localTimeZone;
-    v6 = a3;
+    dateCopy2 = date;
     v7 = localTimeZone;
-    v38 = [BCSOpenHours _weekdayOrdinalFromDate:v6 timeZone:v7];
-    v8 = [BCSOpenHours _totalSecondsInLocalTimeFromPreviousMidnightWithDate:v6 timeZone:v4->_localTimeZone];
+    v38 = [BCSOpenHours _weekdayOrdinalFromDate:dateCopy2 timeZone:v7];
+    v8 = [BCSOpenHours _totalSecondsInLocalTimeFromPreviousMidnightWithDate:dateCopy2 timeZone:selfCopy->_localTimeZone];
     if ([BCSOpenHours _validTimeRange:?])
     {
       v9 = 0;
@@ -242,18 +242,18 @@ LABEL_22:
 
     else
     {
-      v34 = v6;
-      v35 = v3;
+      v34 = dateCopy2;
+      v35 = dateCopy;
       v10 = 0;
       v36 = 0;
       v11 = 0;
-      v37 = v4;
+      v37 = selfCopy;
       do
       {
         v12 = ((v11 + v38) * 0x2492492492492493uLL) >> 64;
         v13 = -7 * ((v12 + ((v11 + v38 - v12) >> 1)) >> 2);
         v14 = MEMORY[0x277CCABB0];
-        v15 = v4->_timeRanges;
+        v15 = selfCopy->_timeRanges;
         v16 = [v14 numberWithUnsignedInteger:v11 + v38 + v13];
         v17 = [(NSDictionary *)v15 objectForKey:v16];
 
@@ -299,7 +299,7 @@ LABEL_22:
 
 LABEL_19:
 
-        v4 = v37;
+        selfCopy = v37;
         if ([BCSOpenHours _validTimeRange:v10])
         {
           break;
@@ -308,14 +308,14 @@ LABEL_19:
 
       while (v11++ < 7);
       v9 = 86400 * v36;
-      v3 = v35;
-      v6 = v34;
+      dateCopy = v35;
+      dateCopy2 = v34;
     }
 
     if ([BCSOpenHours _validTimeRange:v10])
     {
       v28 = [v10 objectForKey:@"from"];
-      [v6 timeIntervalSince1970];
+      [dateCopy2 timeIntervalSince1970];
       v30 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{(v9 - v8 + -[NSObject integerValue](v28, "integerValue") + v29)}];
     }
 
@@ -325,7 +325,7 @@ LABEL_19:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v44 = v6;
+        v44 = dateCopy2;
         v45 = 2048;
         v46 = v38;
         _os_log_error_impl(&dword_242072000, v28, OS_LOG_TYPE_ERROR, "Valid date not found for open next after date:%@ weekdayIndex:%lu", buf, 0x16u);
@@ -337,7 +337,7 @@ LABEL_19:
 
   else
   {
-    v33 = a3;
+    dateCopy3 = date;
     v7 = 0;
     v30 = 0;
   }
@@ -347,15 +347,15 @@ LABEL_19:
   return v30;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
     if (self)
     {
       v6 = self->_localTimeZone;
-      v7 = [(NSTimeZone *)v6 copyWithZone:a3];
+      v7 = [(NSTimeZone *)v6 copyWithZone:zone];
       v8 = v5[2];
       v5[2] = v7;
 
@@ -364,7 +364,7 @@ LABEL_19:
 
     else
     {
-      v14 = [0 copyWithZone:a3];
+      v14 = [0 copyWithZone:zone];
       v15 = v5[2];
       v5[2] = v14;
 
@@ -372,7 +372,7 @@ LABEL_19:
     }
 
     v10 = timeRanges;
-    v11 = [(NSDictionary *)v10 copyWithZone:a3];
+    v11 = [(NSDictionary *)v10 copyWithZone:zone];
     v12 = v5[1];
     v5[1] = v11;
   }
@@ -382,15 +382,15 @@ LABEL_19:
 
 - (id)debugDescription
 {
-  v2 = self;
+  selfCopy2 = self;
   v3 = 0;
   v4 = &stru_28544C2A0;
   v34 = *MEMORY[0x277D85DE8];
   do
   {
-    if (v2)
+    if (selfCopy2)
     {
-      timeRanges = v2->_timeRanges;
+      timeRanges = selfCopy2->_timeRanges;
     }
 
     else
@@ -403,7 +403,7 @@ LABEL_19:
     v8 = [v6 numberWithInt:v3];
     v9 = [(NSDictionary *)v7 objectForKey:v8];
 
-    if (v2)
+    if (selfCopy2)
     {
       v10 = @"Invalid week index";
       if (v3 <= 6)
@@ -468,7 +468,7 @@ LABEL_19:
     }
 
     v3 = (v28 + 1);
-    v2 = self;
+    selfCopy2 = self;
   }
 
   while (v28 != 6);
@@ -477,27 +477,27 @@ LABEL_19:
   return v4;
 }
 
-- (BCSOpenHours)initWithHoursPeriodMessage:(id)a3 timeZone:(id)a4
+- (BCSOpenHours)initWithHoursPeriodMessage:(id)message timeZone:(id)zone
 {
-  v6 = a4;
-  v7 = [a3 hours];
-  v8 = [(BCSOpenHours *)self initWithHoursMessages:v7 timeZone:v6];
+  zoneCopy = zone;
+  hours = [message hours];
+  v8 = [(BCSOpenHours *)self initWithHoursMessages:hours timeZone:zoneCopy];
 
   return v8;
 }
 
-- (BCSOpenHours)initWithHoursMessages:(id)a3 timeZone:(id)a4
+- (BCSOpenHours)initWithHoursMessages:(id)messages timeZone:(id)zone
 {
-  v24 = self;
+  selfCopy = self;
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v25 = a4;
+  messagesCopy = messages;
+  zoneCopy = zone;
   v28 = objc_opt_new();
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v5;
+  obj = messagesCopy;
   v29 = [obj countByEnumeratingWithState:&v36 objects:v43 count:16];
   if (v29)
   {
@@ -514,14 +514,14 @@ LABEL_19:
 
         v31 = v6;
         v7 = *(*(&v36 + 1) + 8 * v6);
-        v8 = [v7 timeRanges];
+        timeRanges = [v7 timeRanges];
         v30 = *[v7 days];
         v9 = objc_opt_new();
         v32 = 0u;
         v33 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v10 = v8;
+        v10 = timeRanges;
         v11 = [v10 countByEnumeratingWithState:&v32 objects:v42 count:16];
         if (v11)
         {
@@ -577,50 +577,50 @@ LABEL_19:
   }
 
   v20 = [v28 copy];
-  v21 = [(BCSOpenHours *)v24 initWithTimeRanges:v20 timeZone:v25];
+  v21 = [(BCSOpenHours *)selfCopy initWithTimeRanges:v20 timeZone:zoneCopy];
 
   v22 = *MEMORY[0x277D85DE8];
   return v21;
 }
 
-- (BCSOpenHours)initWithJSONObj:(id)a3 timeZone:(id)a4
+- (BCSOpenHours)initWithJSONObj:(id)obj timeZone:(id)zone
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  objCopy = obj;
+  zoneCopy = zone;
+  if ([objCopy length])
   {
-    v8 = [v6 dataUsingEncoding:4];
+    v8 = [objCopy dataUsingEncoding:4];
     v12 = 0;
     v9 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v8 options:1 error:&v12];
     if (v12)
     {
-      v10 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      self = [(BCSOpenHours *)self initWithOpenHours:v9 timeZone:v7];
-      v10 = self;
+      self = [(BCSOpenHours *)self initWithOpenHours:v9 timeZone:zoneCopy];
+      selfCopy = self;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (BCSOpenHours)initWithOpenHours:(id)a3 timeZone:(id)a4
+- (BCSOpenHours)initWithOpenHours:(id)hours timeZone:(id)zone
 {
   v55 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v31 = a4;
+  hoursCopy = hours;
+  zoneCopy = zone;
   v34 = objc_opt_new();
-  v32 = v5;
-  v6 = [v5 firstObject];
-  v7 = [v6 objectForKeyedSubscript:@"hours"];
+  v32 = hoursCopy;
+  firstObject = [hoursCopy firstObject];
+  v7 = [firstObject objectForKeyedSubscript:@"hours"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -634,7 +634,7 @@ LABEL_19:
     }
   }
 
-  [v6 objectForKeyedSubscript:{@"hours", v6}];
+  [firstObject objectForKeyedSubscript:{@"hours", firstObject}];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
@@ -654,12 +654,12 @@ LABEL_19:
 
         v11 = *(*(&v46 + 1) + 8 * i);
         v12 = [v11 objectForKeyedSubscript:@"day"];
-        v13 = [v12 firstObject];
-        v14 = [(BCSOpenHours *)self _weekdayIndexFromWeekdayString:v13];
+        firstObject2 = [v12 firstObject];
+        v14 = [(BCSOpenHours *)self _weekdayIndexFromWeekdayString:firstObject2];
         if (v14 != -1)
         {
           v38 = v14;
-          v39 = v13;
+          v39 = firstObject2;
           v40 = v12;
           v41 = i;
           v15 = objc_opt_new();
@@ -704,7 +704,7 @@ LABEL_19:
 
           v12 = v40;
           i = v41;
-          v13 = v39;
+          firstObject2 = v39;
         }
       }
 
@@ -715,7 +715,7 @@ LABEL_19:
   }
 
   v26 = [v34 copy];
-  v27 = [(BCSOpenHours *)self initWithTimeRanges:v26 timeZone:v31];
+  v27 = [(BCSOpenHours *)self initWithTimeRanges:v26 timeZone:zoneCopy];
 
   v28 = *MEMORY[0x277D85DE8];
   return v27;

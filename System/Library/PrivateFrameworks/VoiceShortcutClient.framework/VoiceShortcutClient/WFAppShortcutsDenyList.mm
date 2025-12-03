@@ -1,5 +1,5 @@
 @interface WFAppShortcutsDenyList
-+ (BOOL)isAppShortcutDenyListed:(id)a3 inEnvironment:(unint64_t)a4;
++ (BOOL)isAppShortcutDenyListed:(id)listed inEnvironment:(unint64_t)environment;
 + (id)denyList;
 + (id)spotlightBonusSPI;
 @end
@@ -46,14 +46,14 @@ void __34__WFAppShortcutsDenyList_denyList__block_invoke()
   v2 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)isAppShortcutDenyListed:(id)a3 inEnvironment:(unint64_t)a4
++ (BOOL)isAppShortcutDenyListed:(id)listed inEnvironment:(unint64_t)environment
 {
-  v6 = a3;
-  v7 = [v6 bundleIdentifier];
-  if ([v7 isEqualToString:@"com.apple.ShortcutsActions"])
+  listedCopy = listed;
+  bundleIdentifier = [listedCopy bundleIdentifier];
+  if ([bundleIdentifier isEqualToString:@"com.apple.ShortcutsActions"])
   {
-    v8 = [v6 actionIdentifier];
-    v9 = [v8 isEqualToString:@"StartCallTopHitAction"];
+    actionIdentifier = [listedCopy actionIdentifier];
+    v9 = [actionIdentifier isEqualToString:@"StartCallTopHitAction"];
 
     if (v9)
     {
@@ -71,27 +71,27 @@ void __34__WFAppShortcutsDenyList_denyList__block_invoke()
   {
   }
 
-  v12 = [v6 bundleIdentifier];
-  if (([v12 isEqualToString:@"com.apple.ShortcutsActions"] & 1) == 0)
+  bundleIdentifier2 = [listedCopy bundleIdentifier];
+  if (([bundleIdentifier2 isEqualToString:@"com.apple.ShortcutsActions"] & 1) == 0)
   {
 
     goto LABEL_11;
   }
 
-  v13 = [v6 actionIdentifier];
-  v14 = [v13 isEqualToString:@"StartFaceTimeAudioCallTopHitAction"];
+  actionIdentifier2 = [listedCopy actionIdentifier];
+  v14 = [actionIdentifier2 isEqualToString:@"StartFaceTimeAudioCallTopHitAction"];
 
   if (!v14 || (+[WFDevice currentDevice](WFDevice, "currentDevice"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 isChineseRegionDevice], v15, (v16 & 1) == 0))
   {
 LABEL_11:
-    if (a4 == 2)
+    if (environment == 2)
     {
-      v18 = [v6 bundleIdentifier];
-      if ([v18 isEqualToString:@"com.apple.ShortcutsActions"])
+      bundleIdentifier3 = [listedCopy bundleIdentifier];
+      if ([bundleIdentifier3 isEqualToString:@"com.apple.ShortcutsActions"])
       {
-        v19 = [a1 spotlightBonusSPI];
-        v20 = [v6 actionIdentifier];
-        v21 = [v19 containsObject:v20];
+        spotlightBonusSPI = [self spotlightBonusSPI];
+        actionIdentifier3 = [listedCopy actionIdentifier];
+        v21 = [spotlightBonusSPI containsObject:actionIdentifier3];
 
         if (v21)
         {
@@ -105,12 +105,12 @@ LABEL_11:
       }
     }
 
-    v22 = [a1 denyList];
-    v23 = [v6 bundleIdentifier];
-    v24 = [v22 objectForKey:v23];
-    v25 = [v6 actionIdentifier];
-    v26 = [v24 objectForKey:v25];
-    v17 = ([v26 unsignedIntegerValue] & a4) != 0;
+    denyList = [self denyList];
+    bundleIdentifier4 = [listedCopy bundleIdentifier];
+    v24 = [denyList objectForKey:bundleIdentifier4];
+    actionIdentifier4 = [listedCopy actionIdentifier];
+    v26 = [v24 objectForKey:actionIdentifier4];
+    v17 = ([v26 unsignedIntegerValue] & environment) != 0;
 
     goto LABEL_17;
   }

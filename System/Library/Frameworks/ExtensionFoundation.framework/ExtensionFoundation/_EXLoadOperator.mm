@@ -1,25 +1,25 @@
 @interface _EXLoadOperator
-+ (id)allocWithZone:(_NSZone *)a3;
-- (_EXLoadOperator)initWithCoder:(id)a3;
-- (_EXLoadOperator)initWithItemProvider:(id)a3;
++ (id)allocWithZone:(_NSZone *)zone;
+- (_EXLoadOperator)initWithCoder:(id)coder;
+- (_EXLoadOperator)initWithItemProvider:(id)provider;
 - (id)_init;
-- (void)encodeWithCoder:(id)a3;
-- (void)loadItemForTypeIdentifier:(id)a3 completionHandler:(id)a4 expectedValueClass:(Class)a5 options:(id)a6;
-- (void)loadPreviewImageWithCompletionHandler:(id)a3 expectedValueClass:(Class)a4 options:(id)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)loadItemForTypeIdentifier:(id)identifier completionHandler:(id)handler expectedValueClass:(Class)class options:(id)options;
+- (void)loadPreviewImageWithCompletionHandler:(id)handler expectedValueClass:(Class)class options:(id)options;
 @end
 
 @implementation _EXLoadOperator
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __33___EXLoadOperator_allocWithZone___block_invoke;
     block[3] = &__block_descriptor_48_e5_v8__0l;
-    block[4] = a3;
-    block[5] = a1;
+    block[4] = zone;
+    block[5] = self;
     if (allocWithZone__onceToken != -1)
     {
       dispatch_once(&allocWithZone__onceToken, block);
@@ -32,9 +32,9 @@
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS____EXLoadOperator;
-    return objc_msgSendSuper2(&v7, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v7, sel_allocWithZone_, zone);
   }
 }
 
@@ -45,17 +45,17 @@
   return [(_EXLoadOperator *)&v3 init];
 }
 
-- (_EXLoadOperator)initWithItemProvider:(id)a3
+- (_EXLoadOperator)initWithItemProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [[_EXSourceLoadOperator alloc] initWithItemProvider:v4];
+  providerCopy = provider;
+  v5 = [[_EXSourceLoadOperator alloc] initWithItemProvider:providerCopy];
 
   return &v5->super;
 }
 
-- (_EXLoadOperator)initWithCoder:(id)a3
+- (_EXLoadOperator)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = _EXDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
   {
@@ -71,9 +71,9 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = _EXDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
   {
@@ -88,23 +88,23 @@
   __break(1u);
 }
 
-- (void)loadItemForTypeIdentifier:(id)a3 completionHandler:(id)a4 expectedValueClass:(Class)a5 options:(id)a6
+- (void)loadItemForTypeIdentifier:(id)identifier completionHandler:(id)handler expectedValueClass:(Class)class options:(id)options
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  optionsCopy = options;
   v12 = _EXDefaultLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v13 = NSStringFromClass(a5);
+    v13 = NSStringFromClass(class);
     v15 = 136315906;
     v16 = "[_EXLoadOperator loadItemForTypeIdentifier:completionHandler:expectedValueClass:options:]";
     v17 = 2112;
-    *v18 = v9;
+    *v18 = identifierCopy;
     *&v18[8] = 2112;
     *&v18[10] = v13;
     v19 = 2112;
-    v20 = v11;
+    v20 = optionsCopy;
     _os_log_debug_impl(&dword_1847D1000, v12, OS_LOG_TYPE_DEBUG, "%s typeIdentifier: %@ expectedValueClass: %@ options: %@", &v15, 0x2Au);
   }
 
@@ -122,20 +122,20 @@
   __break(1u);
 }
 
-- (void)loadPreviewImageWithCompletionHandler:(id)a3 expectedValueClass:(Class)a4 options:(id)a5
+- (void)loadPreviewImageWithCompletionHandler:(id)handler expectedValueClass:(Class)class options:(id)options
 {
-  v7 = a3;
-  v8 = a5;
+  handlerCopy = handler;
+  optionsCopy = options;
   v9 = _EXDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = NSStringFromClass(a4);
+    v10 = NSStringFromClass(class);
     v12 = 136315650;
     v13 = "[_EXLoadOperator loadPreviewImageWithCompletionHandler:expectedValueClass:options:]";
     v14 = 2112;
     *v15 = v10;
     *&v15[8] = 2112;
-    *&v15[10] = v8;
+    *&v15[10] = optionsCopy;
     _os_log_debug_impl(&dword_1847D1000, v9, OS_LOG_TYPE_DEBUG, "%s expectedValueClass: %@ options: %@", &v12, 0x20u);
   }
 

@@ -1,18 +1,18 @@
 @interface CUFileResponse
-- (CUFileResponse)initWithDictionary:(id)a3 error:(id *)a4;
-- (void)encodeWithDictionary:(id)a3;
+- (CUFileResponse)initWithDictionary:(id)dictionary error:(id *)error;
+- (void)encodeWithDictionary:(id)dictionary;
 @end
 
 @implementation CUFileResponse
 
-- (void)encodeWithDictionary:(id)a3
+- (void)encodeWithDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = self->_fileItems;
   if ([(NSArray *)v5 count])
   {
-    v15 = v4;
+    v15 = dictionaryCopy;
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v16 = 0u;
     v17 = 0u;
@@ -49,28 +49,28 @@
       while (v9);
     }
 
-    v4 = v15;
+    dictionaryCopy = v15;
     [v15 setObject:v6 forKeyedSubscript:@"fIts"];
   }
 
   if (self->_flags)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
-    [v4 setObject:v14 forKeyedSubscript:&unk_1F06A2F80];
+    [dictionaryCopy setObject:v14 forKeyedSubscript:&unk_1F06A2F80];
   }
 }
 
-- (CUFileResponse)initWithDictionary:(id)a3 error:(id *)a4
+- (CUFileResponse)initWithDictionary:(id)dictionary error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v12 = [(CUFileResponse *)self init];
   if (!v12)
   {
-    if (a4)
+    if (error)
     {
       NSErrorF_safe(*MEMORY[0x1E696A768], 4294960596, "Init failed", v7, v8, v9, v10, v11, v36);
-      *a4 = v33 = 0;
+      *error = v33 = 0;
     }
 
     else
@@ -82,7 +82,7 @@
   }
 
   TypeID = CFArrayGetTypeID();
-  v14 = CFDictionaryGetTypedValue(v6, @"fIts", TypeID, 0);
+  v14 = CFDictionaryGetTypedValue(dictionaryCopy, @"fIts", TypeID, 0);
   if (!v14)
   {
     goto LABEL_13;
@@ -117,9 +117,9 @@
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v14 = v37;
-        if (a4)
+        if (error)
         {
-          *a4 = NSErrorF_safe(*MEMORY[0x1E696A768], 4294960540, "Non-dict file item", v22, v23, v24, v25, v26, v36);
+          *error = NSErrorF_safe(*MEMORY[0x1E696A768], 4294960540, "Non-dict file item", v22, v23, v24, v25, v26, v36);
         }
 
         goto LABEL_23;
@@ -133,10 +133,10 @@
       if (!v28)
       {
         v14 = v37;
-        if (a4)
+        if (error)
         {
           v35 = v29;
-          *a4 = v30;
+          *error = v30;
         }
 
 LABEL_23:
@@ -164,7 +164,7 @@ LABEL_12:
   v14 = v37;
 LABEL_13:
   v38 = 0;
-  Int64Ranged = CFDictionaryGetInt64Ranged(v6, &unk_1F06A2F80, 0, 0xFFFFFFFFLL, &v38);
+  Int64Ranged = CFDictionaryGetInt64Ranged(dictionaryCopy, &unk_1F06A2F80, 0, 0xFFFFFFFFLL, &v38);
   if (!v38)
   {
     v12->_flags = Int64Ranged;

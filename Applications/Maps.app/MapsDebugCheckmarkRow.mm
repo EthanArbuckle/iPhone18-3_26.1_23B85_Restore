@@ -4,17 +4,17 @@
 - (id)_createAccessoryView;
 - (id)reuseIdentifier;
 - (id)selectionAction;
-- (void)_configureCellForCheckedValue:(id)a3;
-- (void)_configureCollectionViewCellForCheckedValue:(id)a3;
-- (void)_configureTapGestureOnCell:(id)a3;
-- (void)_didTapCell:(id)a3;
+- (void)_configureCellForCheckedValue:(id)value;
+- (void)_configureCollectionViewCellForCheckedValue:(id)value;
+- (void)_configureTapGestureOnCell:(id)cell;
+- (void)_didTapCell:(id)cell;
 - (void)_fireControlSelectionAction;
-- (void)configureCell:(id)a3;
-- (void)configureCollectionViewCell:(id)a3;
+- (void)configureCell:(id)cell;
+- (void)configureCollectionViewCell:(id)cell;
 - (void)invalidate;
-- (void)setCurrentCollectionViewCell:(id)a3;
-- (void)setSelectionAction:(id)a3;
-- (void)setValue:(id)a3;
+- (void)setCurrentCollectionViewCell:(id)cell;
+- (void)setSelectionAction:(id)action;
+- (void)setValue:(id)value;
 - (void)update;
 - (void)updateChecked;
 - (void)updateConfiguration;
@@ -26,35 +26,35 @@
 {
   if ([(MapsDebugCheckmarkRow *)self isDisabled])
   {
-    v3 = 0;
+    selectionAction = 0;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = MapsDebugCheckmarkRow;
-    v3 = [(MapsDebugTableRow *)&v5 selectionAction];
+    selectionAction = [(MapsDebugTableRow *)&v5 selectionAction];
   }
 
-  return v3;
+  return selectionAction;
 }
 
 - (void)updateConfiguration
 {
-  v3 = [(MapsDebugTableRow *)self currentCell];
+  currentCell = [(MapsDebugTableRow *)self currentCell];
 
-  if (v3)
+  if (currentCell)
   {
-    v4 = [(MapsDebugTableRow *)self currentCell];
-    [(MapsDebugCheckmarkRow *)self _configureCellForCheckedValue:v4];
+    currentCell2 = [(MapsDebugTableRow *)self currentCell];
+    [(MapsDebugCheckmarkRow *)self _configureCellForCheckedValue:currentCell2];
   }
 
-  v5 = [(MapsDebugTableRow *)self currentCollectionViewCell];
+  currentCollectionViewCell = [(MapsDebugTableRow *)self currentCollectionViewCell];
 
-  if (v5)
+  if (currentCollectionViewCell)
   {
-    v6 = [(MapsDebugTableRow *)self currentCollectionViewCell];
-    [(MapsDebugCheckmarkRow *)self _configureCollectionViewCellForCheckedValue:v6];
+    currentCollectionViewCell2 = [(MapsDebugTableRow *)self currentCollectionViewCell];
+    [(MapsDebugCheckmarkRow *)self _configureCollectionViewCellForCheckedValue:currentCollectionViewCell2];
   }
 }
 
@@ -67,8 +67,8 @@
     v4 = [(MapsDebugCheckmarkRow *)self get];
     v12 = v4[2]();
 
-    v5 = [(MapsDebugCheckmarkRow *)self value];
-    if (v5 == v12)
+    value = [(MapsDebugCheckmarkRow *)self value];
+    if (value == v12)
     {
       p_checked = &self->_checked;
       self->_checked = 1;
@@ -76,24 +76,24 @@
 
     else
     {
-      v6 = [(MapsDebugCheckmarkRow *)self value];
+      value2 = [(MapsDebugCheckmarkRow *)self value];
       p_checked = &self->_checked;
-      self->_checked = [v6 isEqual:v12];
+      self->_checked = [value2 isEqual:v12];
     }
 
     if (!*p_checked)
     {
-      v8 = [(MapsDebugCheckmarkRow *)self rowsGroup];
-      v9 = [v8 allowsMultipleSelection];
+      rowsGroup = [(MapsDebugCheckmarkRow *)self rowsGroup];
+      allowsMultipleSelection = [rowsGroup allowsMultipleSelection];
 
-      if (v9)
+      if (allowsMultipleSelection)
       {
         v10 = v12;
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [(MapsDebugCheckmarkRow *)self value];
-          *p_checked = [v10 containsObject:v11];
+          value3 = [(MapsDebugCheckmarkRow *)self value];
+          *p_checked = [v10 containsObject:value3];
         }
 
         else
@@ -117,30 +117,30 @@
   [(MapsDebugCheckmarkRow *)self updateConfiguration];
 }
 
-- (void)setCurrentCollectionViewCell:(id)a3
+- (void)setCurrentCollectionViewCell:(id)cell
 {
   v4.receiver = self;
   v4.super_class = MapsDebugCheckmarkRow;
-  [(MapsDebugTableRow *)&v4 setCurrentCollectionViewCell:a3];
+  [(MapsDebugTableRow *)&v4 setCurrentCollectionViewCell:cell];
   [(MapsDebugCheckmarkRow *)self update];
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v5 = a3;
-  if (self->_value != v5)
+  valueCopy = value;
+  if (self->_value != valueCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_value, a3);
+    v6 = valueCopy;
+    objc_storeStrong(&self->_value, value);
     [(MapsDebugCheckmarkRow *)self update];
-    v5 = v6;
+    valueCopy = v6;
   }
 }
 
 - (void)invalidate
 {
-  v3 = [(MapsDebugCheckmarkRow *)self rowsGroup];
-  [v3 checkmarkRowWillInvalidate:self];
+  rowsGroup = [(MapsDebugCheckmarkRow *)self rowsGroup];
+  [rowsGroup checkmarkRowWillInvalidate:self];
 
   [(MapsDebugCheckmarkRow *)self setRowsGroup:0];
   v4.receiver = self;
@@ -176,22 +176,22 @@
   return v2;
 }
 
-- (void)configureCollectionViewCell:(id)a3
+- (void)configureCollectionViewCell:(id)cell
 {
   v5.receiver = self;
   v5.super_class = MapsDebugCheckmarkRow;
-  v4 = a3;
-  [(MapsDebugTableRow *)&v5 configureCollectionViewCell:v4];
-  [(MapsDebugCheckmarkRow *)self _configureCollectionViewCellForCheckedValue:v4, v5.receiver, v5.super_class];
+  cellCopy = cell;
+  [(MapsDebugTableRow *)&v5 configureCollectionViewCell:cellCopy];
+  [(MapsDebugCheckmarkRow *)self _configureCollectionViewCellForCheckedValue:cellCopy, v5.receiver, v5.super_class];
 }
 
-- (void)configureCell:(id)a3
+- (void)configureCell:(id)cell
 {
   v5.receiver = self;
   v5.super_class = MapsDebugCheckmarkRow;
-  v4 = a3;
-  [(MapsDebugTableRow *)&v5 configureCell:v4];
-  [(MapsDebugCheckmarkRow *)self _configureCellForCheckedValue:v4, v5.receiver, v5.super_class];
+  cellCopy = cell;
+  [(MapsDebugTableRow *)&v5 configureCell:cellCopy];
+  [(MapsDebugCheckmarkRow *)self _configureCellForCheckedValue:cellCopy, v5.receiver, v5.super_class];
 }
 
 - (void)_fireControlSelectionAction
@@ -208,26 +208,26 @@ LABEL_5:
       return;
     }
 
-    v4 = [(MapsDebugCheckmarkRow *)self rowsGroup];
-    v5 = [v4 canDeselectRows];
+    rowsGroup = [(MapsDebugCheckmarkRow *)self rowsGroup];
+    canDeselectRows = [rowsGroup canDeselectRows];
 
-    if (v5)
+    if (canDeselectRows)
     {
       controlSelectionAction = self->_controlSelectionAction;
       goto LABEL_5;
     }
   }
 
-  v7 = [(MapsDebugCheckmarkRow *)self selectionAction];
+  selectionAction = [(MapsDebugCheckmarkRow *)self selectionAction];
 
-  if (v7)
+  if (selectionAction)
   {
-    v8 = [(MapsDebugCheckmarkRow *)self selectionAction];
-    v8[2]();
+    selectionAction2 = [(MapsDebugCheckmarkRow *)self selectionAction];
+    selectionAction2[2]();
   }
 }
 
-- (void)_didTapCell:(id)a3
+- (void)_didTapCell:(id)cell
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -239,10 +239,10 @@ LABEL_5:
 
 - (id)_createAccessoryView
 {
-  v3 = [(MapsDebugCheckmarkRow *)self rowsGroup];
-  v4 = [v3 allowsMultipleSelection];
+  rowsGroup = [(MapsDebugCheckmarkRow *)self rowsGroup];
+  allowsMultipleSelection = [rowsGroup allowsMultipleSelection];
 
-  if (v4)
+  if (allowsMultipleSelection)
   {
     v5 = [[NonFocusableSwitch alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
     [(NonFocusableSwitch *)v5 addTarget:self action:"_didSelectAccessory:" forControlEvents:4096];
@@ -251,9 +251,9 @@ LABEL_5:
 
   else
   {
-    v6 = [(MapsDebugCheckmarkRow *)self rowsGroup];
-    v7 = [v6 groupIdentifier];
-    v5 = [MapsRadioButton buttonWithGroupIdentifier:v7];
+    rowsGroup2 = [(MapsDebugCheckmarkRow *)self rowsGroup];
+    groupIdentifier = [rowsGroup2 groupIdentifier];
+    v5 = [MapsRadioButton buttonWithGroupIdentifier:groupIdentifier];
 
     [(NonFocusableSwitch *)v5 addTarget:self action:"_didSelectAccessory:" forControlEvents:4096];
     [(NonFocusableSwitch *)v5 setSelected:self->_checked];
@@ -264,17 +264,17 @@ LABEL_5:
   return v5;
 }
 
-- (void)_configureTapGestureOnCell:(id)a3
+- (void)_configureTapGestureOnCell:(id)cell
 {
-  v4 = a3;
-  if (v4)
+  cellCopy = cell;
+  if (cellCopy)
   {
-    v9 = v4;
+    v9 = cellCopy;
     tapGestureRecognizer = self->_tapGestureRecognizer;
     if (tapGestureRecognizer)
     {
-      v6 = [(UITapGestureRecognizer *)tapGestureRecognizer view];
-      [v6 removeGestureRecognizer:self->_tapGestureRecognizer];
+      view = [(UITapGestureRecognizer *)tapGestureRecognizer view];
+      [view removeGestureRecognizer:self->_tapGestureRecognizer];
     }
 
     v7 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_didTapCell:"];
@@ -283,27 +283,27 @@ LABEL_5:
 
     [v9 setUserInteractionEnabled:1];
     [v9 addGestureRecognizer:self->_tapGestureRecognizer];
-    v4 = v9;
+    cellCopy = v9;
   }
 }
 
-- (void)_configureCollectionViewCellForCheckedValue:(id)a3
+- (void)_configureCollectionViewCellForCheckedValue:(id)value
 {
-  v4 = a3;
-  v5 = [v4 traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  valueCopy = value;
+  traitCollection = [valueCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v6 == 5)
+  if (userInterfaceIdiom == 5)
   {
-    [v4 setBackgroundConfiguration:0];
-    v7 = [(MapsDebugCheckmarkRow *)self _createAccessoryView];
-    v8 = [[_UICellAccessoryConfigurationCustomView alloc] initWithCustomView:v7];
+    [valueCopy setBackgroundConfiguration:0];
+    _createAccessoryView = [(MapsDebugCheckmarkRow *)self _createAccessoryView];
+    v8 = [[_UICellAccessoryConfigurationCustomView alloc] initWithCustomView:_createAccessoryView];
     v23 = v8;
     v9 = [NSArray arrayWithObjects:&v23 count:1];
-    [v4 setLeadingAccessoryConfigurations:v9];
+    [valueCopy setLeadingAccessoryConfigurations:v9];
 
-    v10 = [v4 contentView];
-    [(MapsDebugCheckmarkRow *)self _configureTapGestureOnCell:v10];
+    contentView = [valueCopy contentView];
+    [(MapsDebugCheckmarkRow *)self _configureTapGestureOnCell:contentView];
   }
 
   else
@@ -325,40 +325,40 @@ LABEL_5:
 
       v22 = v11;
       v13 = [NSArray arrayWithObjects:&v22 count:1];
-      [v4 setTrailingAccessoryConfigurations:v13];
+      [valueCopy setTrailingAccessoryConfigurations:v13];
     }
 
     else
     {
-      [v4 setTrailingAccessoryConfigurations:&__NSArray0__struct];
+      [valueCopy setTrailingAccessoryConfigurations:&__NSArray0__struct];
     }
 
-    v7 = 0;
+    _createAccessoryView = 0;
   }
 
   if ([(MapsDebugCheckmarkRow *)self isDisabled])
   {
     v14 = +[UIColor systemGrayColor];
-    v15 = [v4 textLabel];
-    [v15 setTintColor:v14];
+    textLabel = [valueCopy textLabel];
+    [textLabel setTintColor:v14];
 
-    v16 = [v4 contentView];
-    [v16 setAlpha:0.5];
+    contentView2 = [valueCopy contentView];
+    [contentView2 setAlpha:0.5];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v7 setEnabled:0];
+      [_createAccessoryView setEnabled:0];
     }
   }
 
   else
   {
-    v17 = [v4 textLabel];
-    [v17 setTintColor:0];
+    textLabel2 = [valueCopy textLabel];
+    [textLabel2 setTintColor:0];
 
-    v18 = [v4 contentView];
-    [v18 setAlpha:1.0];
+    contentView3 = [valueCopy contentView];
+    [contentView3 setAlpha:1.0];
   }
 
   v19 = [(MapsDebugCheckmarkRow *)self get];
@@ -373,23 +373,23 @@ LABEL_5:
     +[UIColor secondaryLabelColor];
   }
   v20 = ;
-  v21 = [v4 textLabel];
-  [v21 setTextColor:v20];
+  textLabel3 = [valueCopy textLabel];
+  [textLabel3 setTextColor:v20];
 }
 
-- (void)_configureCellForCheckedValue:(id)a3
+- (void)_configureCellForCheckedValue:(id)value
 {
-  v15 = a3;
-  v4 = [v15 traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  valueCopy = value;
+  traitCollection = [valueCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v5 == 5)
+  if (userInterfaceIdiom == 5)
   {
-    v6 = [(MapsDebugCheckmarkRow *)self _createAccessoryView];
-    [v15 setAccessoryView:v6];
+    _createAccessoryView = [(MapsDebugCheckmarkRow *)self _createAccessoryView];
+    [valueCopy setAccessoryView:_createAccessoryView];
 
-    v7 = [v15 contentView];
-    [(MapsDebugCheckmarkRow *)self _configureTapGestureOnCell:v7];
+    contentView = [valueCopy contentView];
+    [(MapsDebugCheckmarkRow *)self _configureTapGestureOnCell:contentView];
   }
 
   else
@@ -404,7 +404,7 @@ LABEL_5:
       v8 = 0;
     }
 
-    [v15 setAccessoryType:v8];
+    [valueCopy setAccessoryType:v8];
   }
 
   v9 = [(MapsDebugCheckmarkRow *)self get];
@@ -419,36 +419,36 @@ LABEL_5:
     +[UIColor secondaryLabelColor];
   }
   v10 = ;
-  v11 = [v15 textLabel];
-  [v11 setTextColor:v10];
+  textLabel = [valueCopy textLabel];
+  [textLabel setTextColor:v10];
 
   if ([(MapsDebugCheckmarkRow *)self isDisabled])
   {
     v12 = +[UIColor systemGrayColor];
-    [v15 setTintColor:v12];
+    [valueCopy setTintColor:v12];
 
     v13 = 0.5;
   }
 
   else
   {
-    [v15 setTintColor:0];
+    [valueCopy setTintColor:0];
     v13 = 1.0;
   }
 
-  v14 = [v15 contentView];
-  [v14 setAlpha:v13];
+  contentView2 = [valueCopy contentView];
+  [contentView2 setAlpha:v13];
 }
 
-- (void)setSelectionAction:(id)a3
+- (void)setSelectionAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = +[UIDevice currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  userInterfaceIdiom = [v5 userInterfaceIdiom];
 
-  if (v6 == 5)
+  if (userInterfaceIdiom == 5)
   {
-    v7 = [v4 copy];
+    v7 = [actionCopy copy];
 
     controlSelectionAction = self->_controlSelectionAction;
     self->_controlSelectionAction = v7;
@@ -458,7 +458,7 @@ LABEL_5:
   {
     v9.receiver = self;
     v9.super_class = MapsDebugCheckmarkRow;
-    [(MapsDebugTableRow *)&v9 setSelectionAction:v4];
+    [(MapsDebugTableRow *)&v9 setSelectionAction:actionCopy];
   }
 }
 
@@ -466,11 +466,11 @@ LABEL_5:
 {
   if (self->_checked)
   {
-    v3 = [(MapsDebugCheckmarkRow *)self rowsGroup];
-    if ([v3 allowsMultipleSelection])
+    rowsGroup = [(MapsDebugCheckmarkRow *)self rowsGroup];
+    if ([rowsGroup allowsMultipleSelection])
     {
-      v4 = [(MapsDebugCheckmarkRow *)self rowsGroup];
-      v5 = [v4 canDeselectRows] ^ 1;
+      rowsGroup2 = [(MapsDebugCheckmarkRow *)self rowsGroup];
+      v5 = [rowsGroup2 canDeselectRows] ^ 1;
     }
 
     else

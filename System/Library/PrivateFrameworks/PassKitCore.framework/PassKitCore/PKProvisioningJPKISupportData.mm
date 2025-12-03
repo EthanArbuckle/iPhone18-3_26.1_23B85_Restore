@@ -1,22 +1,22 @@
 @interface PKProvisioningJPKISupportData
-+ (id)_decryptEncryptedSupportDataDictionary:(id)a3 withGroupIdentifier:(id)a4 sid:(id)a5;
-- (BOOL)decryptEncryptedSupportDataForPass:(id)a3;
-- (PKProvisioningJPKISupportData)initWithCoder:(id)a3;
-- (PKProvisioningJPKISupportData)initWithEncryptedSupportDataDictionary:(id)a3 sid:(id)a4;
-- (PKProvisioningJPKISupportData)initWithPIN:(id)a3 password:(id)a4 type:(unint64_t)a5 sid:(id)a6;
++ (id)_decryptEncryptedSupportDataDictionary:(id)dictionary withGroupIdentifier:(id)identifier sid:(id)sid;
+- (BOOL)decryptEncryptedSupportDataForPass:(id)pass;
+- (PKProvisioningJPKISupportData)initWithCoder:(id)coder;
+- (PKProvisioningJPKISupportData)initWithEncryptedSupportDataDictionary:(id)dictionary sid:(id)sid;
+- (PKProvisioningJPKISupportData)initWithPIN:(id)n password:(id)password type:(unint64_t)type sid:(id)sid;
 - (id)_dictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initByUnarchivingData:(id)a3 ofType:(unint64_t)a4 forPass:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initByUnarchivingData:(id)data ofType:(unint64_t)type forPass:(id)pass;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKProvisioningJPKISupportData
 
-- (PKProvisioningJPKISupportData)initWithEncryptedSupportDataDictionary:(id)a3 sid:(id)a4
+- (PKProvisioningJPKISupportData)initWithEncryptedSupportDataDictionary:(id)dictionary sid:(id)sid
 {
   v5.receiver = self;
   v5.super_class = PKProvisioningJPKISupportData;
-  result = [(PKProvisioningSupportData *)&v5 initWithEncryptedSupportDataDictionary:a3 sid:a4];
+  result = [(PKProvisioningSupportData *)&v5 initWithEncryptedSupportDataDictionary:dictionary sid:sid];
   if (result)
   {
     result->_type = 1;
@@ -25,39 +25,39 @@
   return result;
 }
 
-- (PKProvisioningJPKISupportData)initWithPIN:(id)a3 password:(id)a4 type:(unint64_t)a5 sid:(id)a6
+- (PKProvisioningJPKISupportData)initWithPIN:(id)n password:(id)password type:(unint64_t)type sid:(id)sid
 {
   v24 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v10 | v11)
+  nCopy = n;
+  passwordCopy = password;
+  sidCopy = sid;
+  if (nCopy | passwordCopy)
   {
     v21.receiver = self;
     v21.super_class = PKProvisioningJPKISupportData;
     v13 = [(PKProvisioningJPKISupportData *)&v21 init];
     if (v13)
     {
-      if (v10)
+      if (nCopy)
       {
-        v14 = [v10 pk_zString];
+        pk_zString = [nCopy pk_zString];
         pin = v13->_pin;
-        v13->_pin = v14;
+        v13->_pin = pk_zString;
       }
 
-      if (v11)
+      if (passwordCopy)
       {
-        v16 = [v11 pk_zString];
+        pk_zString2 = [passwordCopy pk_zString];
         password = v13->_password;
-        v13->_password = v16;
+        v13->_password = pk_zString2;
       }
 
-      v13->_type = a5;
-      [(PKProvisioningSupportData *)v13 setSid:v12];
+      v13->_type = type;
+      [(PKProvisioningSupportData *)v13 setSid:sidCopy];
     }
 
     self = v13;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
@@ -66,27 +66,27 @@
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = v12;
+      v23 = sidCopy;
       _os_log_impl(&dword_1AD337000, v19, OS_LOG_TYPE_DEFAULT, "[%@] PKProvisioningJPKISupportData failed init - PIN and Password not provided", buf, 0xCu);
     }
 
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (id)initByUnarchivingData:(id)a3 ofType:(unint64_t)a4 forPass:(id)a5
+- (id)initByUnarchivingData:(id)data ofType:(unint64_t)type forPass:(id)pass
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  passCopy = pass;
   v9 = MEMORY[0x1E696ACD0];
   v10 = MEMORY[0x1E695DFD8];
-  v11 = a3;
+  dataCopy = data;
   v12 = objc_opt_class();
   v13 = [v10 setWithObjects:{v12, objc_opt_class(), 0}];
   v30 = 0;
-  v14 = [v9 unarchivedObjectOfClasses:v13 fromData:v11 error:&v30];
+  v14 = [v9 unarchivedObjectOfClasses:v13 fromData:dataCopy error:&v30];
 
   v15 = v30;
   v16 = [v14 objectForKeyedSubscript:@"SID"];
@@ -112,7 +112,7 @@
     if (!v15)
     {
 LABEL_10:
-      if (!a4)
+      if (!type)
       {
         v23 = [v14 objectForKeyedSubscript:@"userPIN"];
         v24 = @"userPassword";
@@ -121,14 +121,14 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      if (a4 != 1)
+      if (type != 1)
       {
         v23 = 0;
         v25 = 0;
 LABEL_22:
-        self = [(PKProvisioningJPKISupportData *)self initWithPIN:v23 password:v25 type:a4 sid:v16];
+        self = [(PKProvisioningJPKISupportData *)self initWithPIN:v23 password:v25 type:type sid:v16];
 
-        v26 = self;
+        selfCopy = self;
 LABEL_23:
 
         goto LABEL_24;
@@ -138,8 +138,8 @@ LABEL_23:
       if (v19)
       {
         v20 = objc_opt_class();
-        v21 = [v8 longTermPrivacyKeyGroupIdentifier];
-        v22 = [v20 _decryptEncryptedSupportDataDictionary:v19 withGroupIdentifier:v21 sid:v16];
+        longTermPrivacyKeyGroupIdentifier = [passCopy longTermPrivacyKeyGroupIdentifier];
+        v22 = [v20 _decryptEncryptedSupportDataDictionary:v19 withGroupIdentifier:longTermPrivacyKeyGroupIdentifier sid:v16];
 
         v14 = v22;
       }
@@ -161,14 +161,14 @@ LABEL_23:
               _os_log_impl(&dword_1AD337000, v23, OS_LOG_TYPE_DEFAULT, "[%@] PKProvisioningJPKISupportData failed init - temporary type lacked expected values", buf, 0xCu);
             }
 
-            v26 = 0;
+            selfCopy = 0;
             goto LABEL_23;
           }
 
           goto LABEL_20;
         }
 
-        v21 = v27;
+        longTermPrivacyKeyGroupIdentifier = v27;
       }
 
 LABEL_20:
@@ -193,36 +193,36 @@ LABEL_20:
     goto LABEL_10;
   }
 
-  v26 = 0;
+  selfCopy = 0;
 LABEL_24:
 
-  return v26;
+  return selfCopy;
 }
 
-- (BOOL)decryptEncryptedSupportDataForPass:(id)a3
+- (BOOL)decryptEncryptedSupportDataForPass:(id)pass
 {
-  v4 = a3;
-  v5 = [(PKProvisioningSupportData *)self encryptedSupportDataDictionary];
+  passCopy = pass;
+  encryptedSupportDataDictionary = [(PKProvisioningSupportData *)self encryptedSupportDataDictionary];
 
-  if (v5)
+  if (encryptedSupportDataDictionary)
   {
     v6 = objc_opt_class();
-    v7 = [(PKProvisioningSupportData *)self encryptedSupportDataDictionary];
-    v8 = [v4 longTermPrivacyKeyGroupIdentifier];
+    encryptedSupportDataDictionary2 = [(PKProvisioningSupportData *)self encryptedSupportDataDictionary];
+    longTermPrivacyKeyGroupIdentifier = [passCopy longTermPrivacyKeyGroupIdentifier];
     v9 = [(PKProvisioningSupportData *)self sid];
-    v10 = [v6 _decryptEncryptedSupportDataDictionary:v7 withGroupIdentifier:v8 sid:v9];
+    v10 = [v6 _decryptEncryptedSupportDataDictionary:encryptedSupportDataDictionary2 withGroupIdentifier:longTermPrivacyKeyGroupIdentifier sid:v9];
 
     if (v10)
     {
       v11 = [v10 PKStringForKey:@"temporaryPin"];
-      v12 = [v11 pk_zString];
+      pk_zString = [v11 pk_zString];
       pin = self->_pin;
-      self->_pin = v12;
+      self->_pin = pk_zString;
 
       v14 = [v10 PKStringForKey:@"temporaryPassword"];
-      v15 = [v14 pk_zString];
+      pk_zString2 = [v14 pk_zString];
       password = self->_password;
-      self->_password = v15;
+      self->_password = pk_zString2;
 
       if (self->_pin)
       {
@@ -249,53 +249,53 @@ LABEL_24:
   return v17;
 }
 
-- (PKProvisioningJPKISupportData)initWithCoder:(id)a3
+- (PKProvisioningJPKISupportData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKProvisioningJPKISupportData;
-  v5 = [(PKProvisioningSupportData *)&v13 initWithCoder:v4];
+  v5 = [(PKProvisioningSupportData *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"JPKIPIN"];
-    v7 = [v6 pk_zString];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"JPKIPIN"];
+    pk_zString = [v6 pk_zString];
     pin = v5->_pin;
-    v5->_pin = v7;
+    v5->_pin = pk_zString;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"JPKIpassword"];
-    v10 = [v9 pk_zString];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"JPKIpassword"];
+    pk_zString2 = [v9 pk_zString];
     password = v5->_password;
-    v5->_password = v10;
+    v5->_password = pk_zString2;
 
-    v5->_type = [v4 decodeIntegerForKey:@"JPKISupportDataType"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"JPKISupportDataType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKProvisioningJPKISupportData;
-  v4 = a3;
-  [(PKProvisioningSupportData *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_pin forKey:{@"JPKIPIN", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_password forKey:@"JPKIpassword"];
-  [v4 encodeInteger:self->_type forKey:@"JPKISupportDataType"];
+  coderCopy = coder;
+  [(PKProvisioningSupportData *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_pin forKey:{@"JPKIPIN", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_password forKey:@"JPKIpassword"];
+  [coderCopy encodeInteger:self->_type forKey:@"JPKISupportDataType"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = PKProvisioningJPKISupportData;
-  v4 = [(PKProvisioningSupportData *)&v10 copyWithZone:a3];
-  v5 = [(NSString *)self->_pin pk_zString];
+  v4 = [(PKProvisioningSupportData *)&v10 copyWithZone:zone];
+  pk_zString = [(NSString *)self->_pin pk_zString];
   v6 = v4[3];
-  v4[3] = v5;
+  v4[3] = pk_zString;
 
-  v7 = [(NSString *)self->_password pk_zString];
+  pk_zString2 = [(NSString *)self->_password pk_zString];
   v8 = v4[4];
-  v4[4] = v7;
+  v4[4] = pk_zString2;
 
   v4[5] = self->_type;
   return v4;
@@ -305,11 +305,11 @@ LABEL_24:
 {
   v12.receiver = self;
   v12.super_class = PKProvisioningJPKISupportData;
-  v3 = [(PKProvisioningSupportData *)&v12 _dictionaryRepresentation];
-  v4 = v3;
-  if (v3)
+  _dictionaryRepresentation = [(PKProvisioningSupportData *)&v12 _dictionaryRepresentation];
+  v4 = _dictionaryRepresentation;
+  if (_dictionaryRepresentation)
   {
-    v5 = v3;
+    v5 = _dictionaryRepresentation;
   }
 
   else
@@ -356,15 +356,15 @@ LABEL_24:
   return v9;
 }
 
-+ (id)_decryptEncryptedSupportDataDictionary:(id)a3 withGroupIdentifier:(id)a4 sid:(id)a5
++ (id)_decryptEncryptedSupportDataDictionary:(id)dictionary withGroupIdentifier:(id)identifier sid:(id)sid
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  sidCopy = sid;
+  identifierCopy = identifier;
   v10 = objc_alloc_init(PKDAManager);
   v22 = 0;
-  v11 = [(PKDAManager *)v10 decryptPayload:v7 groupIdentifier:v9 outError:&v22];
+  v11 = [(PKDAManager *)v10 decryptPayload:dictionaryCopy groupIdentifier:identifierCopy outError:&v22];
 
   v12 = v22;
   if (v11)
@@ -384,9 +384,9 @@ LABEL_24:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v24 = v8;
+      v24 = sidCopy;
       v25 = 2112;
-      v26 = v7;
+      v26 = dictionaryCopy;
       v27 = 2112;
       v28 = v14;
       _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "[%@] PKProvisioningJPKISupportData - Unable to decrypt encrypted support data dict %@ with error: %@", buf, 0x20u);
@@ -419,7 +419,7 @@ LABEL_8:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v24 = v8;
+      v24 = sidCopy;
       v25 = 2112;
       v26 = v14;
       _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "[%@] PKProvisioningJPKISupportData - Issue serializing decrypted data: %@", buf, 0x16u);

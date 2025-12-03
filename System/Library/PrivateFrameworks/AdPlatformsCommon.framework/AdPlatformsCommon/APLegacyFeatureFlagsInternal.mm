@@ -1,15 +1,15 @@
 @interface APLegacyFeatureFlagsInternal
-+ (BOOL)isFeatureEnabledWithFeatureName:(id)a3 enabledByDefault:(BOOL)a4;
++ (BOOL)isFeatureEnabledWithFeatureName:(id)name enabledByDefault:(BOOL)default;
 + (_TtC17AdPlatformsCommon22DeviceCapabilityEngine)deviceCapabilityEngine;
 - (APLegacyFeatureFlagsInternal)init;
 @end
 
 @implementation APLegacyFeatureFlagsInternal
 
-+ (BOOL)isFeatureEnabledWithFeatureName:(id)a3 enabledByDefault:(BOOL)a4
++ (BOOL)isFeatureEnabledWithFeatureName:(id)name enabledByDefault:(BOOL)default
 {
   v5 = sub_1BB014B48();
-  v7 = sub_1BAFEC5E8(v5, v6, a4);
+  v7 = sub_1BAFEC5E8(v5, v6, default);
 
   return v7 & 1;
 }

@@ -1,58 +1,58 @@
 @interface HAP2AccessoryServerSecureTransportBase
 + (id)defaultEncryptedSession;
-- (BOOL)mergeWithNewTransport:(id)a3;
-- (HAP2AccessoryServerSecureTransportBase)initWithOperationQueue:(id)a3 delegateQueue:(id)a4 transport:(id)a5;
-- (HAP2AccessoryServerSecureTransportBase)initWithOperationQueue:(id)a3 delegateQueue:(id)a4 transport:(id)a5 encryptedSession:(id)a6;
+- (BOOL)mergeWithNewTransport:(id)transport;
+- (HAP2AccessoryServerSecureTransportBase)initWithOperationQueue:(id)queue delegateQueue:(id)delegateQueue transport:(id)transport;
+- (HAP2AccessoryServerSecureTransportBase)initWithOperationQueue:(id)queue delegateQueue:(id)delegateQueue transport:(id)transport encryptedSession:(id)session;
 - (HAP2AccessoryServerSecureTransportDelegate)delegate;
 - (HAPEncryptedSession)encryptedSession;
-- (id)decryptData:(id)a3 type:(unint64_t)a4 error:(id *)a5;
-- (id)encryptData:(id)a3 error:(id *)a4;
-- (id)endpointForCharacteristic:(id)a3;
-- (id)endpointForCharacteristics:(id)a3;
+- (id)decryptData:(id)data type:(unint64_t)type error:(id *)error;
+- (id)encryptData:(id)data error:(id *)error;
+- (id)endpointForCharacteristic:(id)characteristic;
+- (id)endpointForCharacteristics:(id)characteristics;
 - (id)mimeTypeForCharacteristicRequests;
-- (id)mimeTypeForWellKnownEndpoint:(unint64_t)a3;
-- (id)wellKnownEndpoint:(unint64_t)a3;
-- (unint64_t)protocolFeaturesForVersion:(id)a3;
-- (void)_decryptResponse:(id)a3 request:(id)a4 completion:(id)a5;
-- (void)_encryptRequest:(id)a3 completion:(id)a4;
-- (void)_sendRequest:(id)a3 completion:(id)a4;
-- (void)didChangeStateWithError:(id)a3;
-- (void)doCloseWithError:(id)a3 completion:(id)a4;
-- (void)doOpenWithCompletion:(id)a3;
-- (void)doSendRequest:(id)a3 completion:(id)a4;
-- (void)doUpdateMaxRequestTimeout:(double)a3;
-- (void)setDelegate:(id)a3;
-- (void)setEncryptedSession:(id)a3;
-- (void)transport:(id)a3 didChangeState:(unint64_t)a4 error:(id)a5;
-- (void)transport:(id)a3 didReceiveEvent:(id)a4;
+- (id)mimeTypeForWellKnownEndpoint:(unint64_t)endpoint;
+- (id)wellKnownEndpoint:(unint64_t)endpoint;
+- (unint64_t)protocolFeaturesForVersion:(id)version;
+- (void)_decryptResponse:(id)response request:(id)request completion:(id)completion;
+- (void)_encryptRequest:(id)request completion:(id)completion;
+- (void)_sendRequest:(id)request completion:(id)completion;
+- (void)didChangeStateWithError:(id)error;
+- (void)doCloseWithError:(id)error completion:(id)completion;
+- (void)doOpenWithCompletion:(id)completion;
+- (void)doSendRequest:(id)request completion:(id)completion;
+- (void)doUpdateMaxRequestTimeout:(double)timeout;
+- (void)setDelegate:(id)delegate;
+- (void)setEncryptedSession:(id)session;
+- (void)transport:(id)transport didChangeState:(unint64_t)state error:(id)error;
+- (void)transport:(id)transport didReceiveEvent:(id)event;
 @end
 
 @implementation HAP2AccessoryServerSecureTransportBase
 
-- (void)_decryptResponse:(id)a3 request:(id)a4 completion:(id)a5
+- (void)_decryptResponse:(id)response request:(id)request completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v11 assertCurrentQueue];
+  responseCopy = response;
+  completionCopy = completion;
+  requestCopy = request;
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  LODWORD(v11) = [v10 isEncrypted];
-  if (!v11)
+  LODWORD(operationQueue) = [requestCopy isEncrypted];
+  if (!operationQueue)
   {
-    v12 = v8;
+    v12 = responseCopy;
     v13 = 0;
     goto LABEL_9;
   }
 
   v16 = 0;
-  v12 = [(HAP2AccessoryServerSecureTransportBase *)self decryptData:v8 type:0 error:&v16];
+  v12 = [(HAP2AccessoryServerSecureTransportBase *)self decryptData:responseCopy type:0 error:&v16];
   v13 = v16;
   if (v12)
   {
 LABEL_9:
-    v9[2](v9, v12, 0);
+    completionCopy[2](completionCopy, v12, 0);
 
     goto LABEL_10;
   }
@@ -66,36 +66,36 @@ LABEL_9:
   if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
     v20 = v13;
     _os_log_error_impl(&dword_22AADC000, v14, OS_LOG_TYPE_ERROR, "%@ (SecureBase) Failed to decrypt response: %@", buf, 0x16u);
   }
 
-  (v9)[2](v9, 0, v13);
+  (completionCopy)[2](completionCopy, 0, v13);
 LABEL_10:
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendRequest:(id)a3 completion:(id)a4
+- (void)_sendRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v8 assertCurrentQueue];
+  requestCopy = request;
+  completionCopy = completion;
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  v9 = [(HAP2AccessoryServerSecureTransportBase *)self transport];
+  transport = [(HAP2AccessoryServerSecureTransportBase *)self transport];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __66__HAP2AccessoryServerSecureTransportBase__sendRequest_completion___block_invoke;
   v12[3] = &unk_2786D5C70;
-  v13 = v6;
-  v14 = v7;
+  v13 = requestCopy;
+  v14 = completionCopy;
   v12[4] = self;
-  v10 = v6;
-  v11 = v7;
-  [v9 sendRequest:v10 completion:v12];
+  v10 = requestCopy;
+  v11 = completionCopy;
+  [transport sendRequest:v10 completion:v12];
 }
 
 void __66__HAP2AccessoryServerSecureTransportBase__sendRequest_completion___block_invoke(id *a1, void *a2, void *a3)
@@ -179,25 +179,25 @@ void __66__HAP2AccessoryServerSecureTransportBase__sendRequest_completion___bloc
   }
 }
 
-- (void)_encryptRequest:(id)a3 completion:(id)a4
+- (void)_encryptRequest:(id)request completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v8 assertCurrentQueue];
+  requestCopy = request;
+  completionCopy = completion;
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  LODWORD(v8) = [v6 isEncrypted];
-  v9 = [v6 data];
-  v10 = v9;
-  if (!v8)
+  LODWORD(operationQueue) = [requestCopy isEncrypted];
+  data = [requestCopy data];
+  v10 = data;
+  if (!operationQueue)
   {
-    v12 = v9;
+    v12 = data;
     goto LABEL_5;
   }
 
   v23 = 0;
-  v11 = [(HAP2AccessoryServerSecureTransportBase *)self encryptData:v9 error:&v23];
+  v11 = [(HAP2AccessoryServerSecureTransportBase *)self encryptData:data error:&v23];
   v12 = v23;
 
   if (v11)
@@ -205,25 +205,25 @@ void __66__HAP2AccessoryServerSecureTransportBase__sendRequest_completion___bloc
 
     v12 = v11;
 LABEL_5:
-    v13 = [v6 isForReading];
+    isForReading = [requestCopy isForReading];
     v14 = [HAP2AccessoryServerTransportRequest alloc];
-    v15 = [v6 endpoint];
-    v16 = [v6 isEncrypted];
-    v17 = [v6 mimeType];
-    v18 = [v6 dscpPriority];
-    if (v13)
+    endpoint = [requestCopy endpoint];
+    isEncrypted = [requestCopy isEncrypted];
+    mimeType = [requestCopy mimeType];
+    dscpPriority = [requestCopy dscpPriority];
+    if (isForReading)
     {
-      v19 = [(HAP2AccessoryServerTransportRequest *)v14 initForReadingWithEndpoint:v15 data:v12 encrypted:v16 mimeType:v17 dscpPriority:v18];
+      v19 = [(HAP2AccessoryServerTransportRequest *)v14 initForReadingWithEndpoint:endpoint data:v12 encrypted:isEncrypted mimeType:mimeType dscpPriority:dscpPriority];
     }
 
     else
     {
-      v19 = [(HAP2AccessoryServerTransportRequest *)v14 initForWritingWithEndpoint:v15 data:v12 encrypted:v16 mimeType:v17 dscpPriority:v18];
+      v19 = [(HAP2AccessoryServerTransportRequest *)v14 initForWritingWithEndpoint:endpoint data:v12 encrypted:isEncrypted mimeType:mimeType dscpPriority:dscpPriority];
     }
 
     v20 = v19;
 
-    [(HAP2AccessoryServerSecureTransportBase *)self _sendRequest:v20 completion:v7];
+    [(HAP2AccessoryServerSecureTransportBase *)self _sendRequest:v20 completion:completionCopy];
     goto LABEL_9;
   }
 
@@ -236,25 +236,25 @@ LABEL_5:
   if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v25 = self;
+    selfCopy = self;
     v26 = 2112;
     v27 = v12;
     _os_log_error_impl(&dword_22AADC000, v22, OS_LOG_TYPE_ERROR, "%@ (SecureBase) Failed to encrypt request: %@", buf, 0x16u);
   }
 
-  v7[2](v7, 0, v12);
+  completionCopy[2](completionCopy, 0, v12);
 LABEL_9:
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transport:(id)a3 didReceiveEvent:(id)a4
+- (void)transport:(id)transport didReceiveEvent:(id)event
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HAP2AccessoryServerSecureTransportBase *)self transport];
-  v9 = [v7 isEqual:v8];
+  eventCopy = event;
+  transportCopy = transport;
+  transport = [(HAP2AccessoryServerSecureTransportBase *)self transport];
+  v9 = [transportCopy isEqual:transport];
 
   if (v9)
   {
@@ -267,7 +267,7 @@ LABEL_9:
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v21 = self;
+      selfCopy = self;
       _os_log_debug_impl(&dword_22AADC000, v10, OS_LOG_TYPE_DEBUG, "%@ (SecureBase) Received an event", buf, 0xCu);
     }
 
@@ -275,8 +275,8 @@ LABEL_9:
     v15 = 3221225472;
     v16 = __68__HAP2AccessoryServerSecureTransportBase_transport_didReceiveEvent___block_invoke;
     v17 = &unk_2786D7050;
-    v18 = self;
-    v19 = v6;
+    selfCopy2 = self;
+    v19 = eventCopy;
     v11 = MEMORY[0x231885210](&v14);
     v12 = [(HAP2AccessoryServerTransportBase *)self operationQueue:v14];
     [v12 addBlock:v11];
@@ -362,13 +362,13 @@ void __68__HAP2AccessoryServerSecureTransportBase_transport_didReceiveEvent___bl
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transport:(id)a3 didChangeState:(unint64_t)a4 error:(id)a5
+- (void)transport:(id)transport didChangeState:(unint64_t)state error:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a3;
-  v10 = [(HAP2AccessoryServerSecureTransportBase *)self transport];
-  v11 = [v9 isEqual:v10];
+  errorCopy = error;
+  transportCopy = transport;
+  transport = [(HAP2AccessoryServerSecureTransportBase *)self transport];
+  v11 = [transportCopy isEqual:transport];
 
   if (v11)
   {
@@ -378,31 +378,31 @@ void __68__HAP2AccessoryServerSecureTransportBase_transport_didReceiveEvent___bl
     }
 
     v12 = hap2Log_accessory;
-    if (v8)
+    if (errorCopy)
     {
       if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
       {
         v14 = 138412802;
-        v15 = self;
+        selfCopy2 = self;
         v16 = 2048;
-        v17 = a4;
+        stateCopy2 = state;
         v18 = 2112;
-        v19 = v8;
+        v19 = errorCopy;
         _os_log_error_impl(&dword_22AADC000, v12, OS_LOG_TYPE_ERROR, "%@ (SecureBase) Transport state changed to %lu with error: %@", &v14, 0x20u);
       }
 
-      if (a4 == 3 || !a4)
+      if (state == 3 || !state)
       {
-        [(HAP2AccessoryServerTransportBase *)self didDisconnectWithError:v8];
+        [(HAP2AccessoryServerTransportBase *)self didDisconnectWithError:errorCopy];
       }
     }
 
     else if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
     {
       v14 = 138412546;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2048;
-      v17 = a4;
+      stateCopy2 = state;
       _os_log_impl(&dword_22AADC000, v12, OS_LOG_TYPE_INFO, "%@ (SecureBase) Transport state changed to %lu", &v14, 0x16u);
     }
   }
@@ -410,55 +410,55 @@ void __68__HAP2AccessoryServerSecureTransportBase_transport_didReceiveEvent___bl
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)decryptData:(id)a3 type:(unint64_t)a4 error:(id *)a5
+- (id)decryptData:(id)data type:(unint64_t)type error:(id *)error
 {
-  v7 = a3;
-  v8 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v8 assertCurrentQueue];
+  dataCopy = data;
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  v9 = [(HAP2AccessoryServerSecureTransportBase *)self encryptedSession];
-  v10 = [v9 decryptData:v7 additionalAuthenticatedData:0 error:a5];
+  encryptedSession = [(HAP2AccessoryServerSecureTransportBase *)self encryptedSession];
+  v10 = [encryptedSession decryptData:dataCopy additionalAuthenticatedData:0 error:error];
 
   return v10;
 }
 
-- (id)encryptData:(id)a3 error:(id *)a4
+- (id)encryptData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v7 assertCurrentQueue];
+  dataCopy = data;
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  v8 = [(HAP2AccessoryServerSecureTransportBase *)self encryptedSession];
-  v9 = [v8 encryptData:v6 additionalAuthenticatedData:0 error:a4];
+  encryptedSession = [(HAP2AccessoryServerSecureTransportBase *)self encryptedSession];
+  v9 = [encryptedSession encryptData:dataCopy additionalAuthenticatedData:0 error:error];
 
   return v9;
 }
 
-- (void)doUpdateMaxRequestTimeout:(double)a3
+- (void)doUpdateMaxRequestTimeout:(double)timeout
 {
-  v5 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v5 assertCurrentQueue];
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  v6 = [(HAP2AccessoryServerSecureTransportBase *)self transport];
-  [v6 updateMaxRequestTimeout:a3];
+  transport = [(HAP2AccessoryServerSecureTransportBase *)self transport];
+  [transport updateMaxRequestTimeout:timeout];
 }
 
-- (void)doCloseWithError:(id)a3 completion:(id)a4
+- (void)doCloseWithError:(id)error completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v8 assertCurrentQueue];
+  completionCopy = completion;
+  errorCopy = error;
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  v9 = [(HAP2AccessoryServerSecureTransportBase *)self transport];
+  transport = [(HAP2AccessoryServerSecureTransportBase *)self transport];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __70__HAP2AccessoryServerSecureTransportBase_doCloseWithError_completion___block_invoke;
   v11[3] = &unk_2786D5D70;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [v9 closeWithError:v7 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [transport closeWithError:errorCopy completion:v11];
 }
 
 void __70__HAP2AccessoryServerSecureTransportBase_doCloseWithError_completion___block_invoke(uint64_t a1, char a2, void *a3, void *a4)
@@ -481,31 +481,31 @@ void __70__HAP2AccessoryServerSecureTransportBase_doCloseWithError_completion___
   [v13 addConcurrentBlock:v12];
 }
 
-- (void)doSendRequest:(id)a3 completion:(id)a4
+- (void)doSendRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v7 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v7 assertCurrentQueue];
+  completionCopy = completion;
+  requestCopy = request;
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  [(HAP2AccessoryServerSecureTransportBase *)self _encryptRequest:v8 completion:v6];
+  [(HAP2AccessoryServerSecureTransportBase *)self _encryptRequest:requestCopy completion:completionCopy];
 }
 
-- (void)doOpenWithCompletion:(id)a3
+- (void)doOpenWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v5 assertCurrentQueue];
+  completionCopy = completion;
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  v6 = [(HAP2AccessoryServerSecureTransportBase *)self transport];
+  transport = [(HAP2AccessoryServerSecureTransportBase *)self transport];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __63__HAP2AccessoryServerSecureTransportBase_doOpenWithCompletion___block_invoke;
   v8[3] = &unk_2786D5D70;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 openWithCompletion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [transport openWithCompletion:v8];
 }
 
 void __63__HAP2AccessoryServerSecureTransportBase_doOpenWithCompletion___block_invoke(uint64_t a1, char a2, void *a3, void *a4)
@@ -528,106 +528,106 @@ void __63__HAP2AccessoryServerSecureTransportBase_doOpenWithCompletion___block_i
   [v13 addConcurrentBlock:v12];
 }
 
-- (void)didChangeStateWithError:(id)a3
+- (void)didChangeStateWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v5 assertCurrentQueue];
+  errorCopy = error;
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  v6 = [(HAP2AccessoryServerSecureTransportBase *)self delegate];
-  if (v6)
+  delegate = [(HAP2AccessoryServerSecureTransportBase *)self delegate];
+  if (delegate)
   {
-    v7 = [(HAP2AccessoryServerTransportBase *)self state];
-    v8 = [(HAP2AccessoryServerTransportBase *)self delegateQueue];
+    state = [(HAP2AccessoryServerTransportBase *)self state];
+    delegateQueue = [(HAP2AccessoryServerTransportBase *)self delegateQueue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __66__HAP2AccessoryServerSecureTransportBase_didChangeStateWithError___block_invoke;
     v9[3] = &unk_2786D6E88;
-    v10 = v6;
-    v11 = self;
-    v13 = v7;
-    v12 = v4;
-    dispatch_async(v8, v9);
+    v10 = delegate;
+    selfCopy = self;
+    v13 = state;
+    v12 = errorCopy;
+    dispatch_async(delegateQueue, v9);
   }
 }
 
-- (BOOL)mergeWithNewTransport:(id)a3
+- (BOOL)mergeWithNewTransport:(id)transport
 {
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerSecureTransportBase *)self transport];
-  v6 = [v5 mergeWithNewTransport:v4];
+  transportCopy = transport;
+  transport = [(HAP2AccessoryServerSecureTransportBase *)self transport];
+  v6 = [transport mergeWithNewTransport:transportCopy];
 
   return v6;
 }
 
 - (id)mimeTypeForCharacteristicRequests
 {
-  v2 = [(HAP2AccessoryServerSecureTransportBase *)self transport];
-  v3 = [v2 mimeTypeForCharacteristicRequests];
+  transport = [(HAP2AccessoryServerSecureTransportBase *)self transport];
+  mimeTypeForCharacteristicRequests = [transport mimeTypeForCharacteristicRequests];
 
-  return v3;
+  return mimeTypeForCharacteristicRequests;
 }
 
-- (id)mimeTypeForWellKnownEndpoint:(unint64_t)a3
+- (id)mimeTypeForWellKnownEndpoint:(unint64_t)endpoint
 {
-  v4 = [(HAP2AccessoryServerSecureTransportBase *)self transport];
-  v5 = [v4 mimeTypeForWellKnownEndpoint:a3];
+  transport = [(HAP2AccessoryServerSecureTransportBase *)self transport];
+  v5 = [transport mimeTypeForWellKnownEndpoint:endpoint];
 
   return v5;
 }
 
-- (id)endpointForCharacteristics:(id)a3
+- (id)endpointForCharacteristics:(id)characteristics
 {
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerSecureTransportBase *)self transport];
-  v6 = [v5 endpointForCharacteristics:v4];
+  characteristicsCopy = characteristics;
+  transport = [(HAP2AccessoryServerSecureTransportBase *)self transport];
+  v6 = [transport endpointForCharacteristics:characteristicsCopy];
 
   return v6;
 }
 
-- (id)endpointForCharacteristic:(id)a3
+- (id)endpointForCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerSecureTransportBase *)self transport];
-  v6 = [v5 endpointForCharacteristic:v4];
+  characteristicCopy = characteristic;
+  transport = [(HAP2AccessoryServerSecureTransportBase *)self transport];
+  v6 = [transport endpointForCharacteristic:characteristicCopy];
 
   return v6;
 }
 
-- (id)wellKnownEndpoint:(unint64_t)a3
+- (id)wellKnownEndpoint:(unint64_t)endpoint
 {
-  v4 = [(HAP2AccessoryServerSecureTransportBase *)self transport];
-  v5 = [v4 wellKnownEndpoint:a3];
+  transport = [(HAP2AccessoryServerSecureTransportBase *)self transport];
+  v5 = [transport wellKnownEndpoint:endpoint];
 
   return v5;
 }
 
-- (unint64_t)protocolFeaturesForVersion:(id)a3
+- (unint64_t)protocolFeaturesForVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerSecureTransportBase *)self transport];
-  v6 = [v5 protocolFeaturesForVersion:v4];
+  versionCopy = version;
+  transport = [(HAP2AccessoryServerSecureTransportBase *)self transport];
+  v6 = [transport protocolFeaturesForVersion:versionCopy];
 
   return v6;
 }
 
-- (void)setEncryptedSession:(id)a3
+- (void)setEncryptedSession:(id)session
 {
-  v4 = a3;
-  if (!v4)
+  sessionCopy = session;
+  if (!sessionCopy)
   {
-    v4 = [objc_opt_class() defaultEncryptedSession];
+    sessionCopy = [objc_opt_class() defaultEncryptedSession];
   }
 
-  v5 = [(HAP2AccessoryServerTransportBase *)self propertyLock];
+  propertyLock = [(HAP2AccessoryServerTransportBase *)self propertyLock];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__HAP2AccessoryServerSecureTransportBase_setEncryptedSession___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performWritingBlock:v7];
+  v8 = sessionCopy;
+  v6 = sessionCopy;
+  [propertyLock performWritingBlock:v7];
 }
 
 - (HAPEncryptedSession)encryptedSession
@@ -638,14 +638,14 @@ void __63__HAP2AccessoryServerSecureTransportBase_doOpenWithCompletion___block_i
   v10 = __Block_byref_object_copy__10722;
   v11 = __Block_byref_object_dispose__10723;
   v12 = 0;
-  v3 = [(HAP2AccessoryServerTransportBase *)self propertyLock];
+  propertyLock = [(HAP2AccessoryServerTransportBase *)self propertyLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__HAP2AccessoryServerSecureTransportBase_encryptedSession__block_invoke;
   v6[3] = &unk_2786D6E60;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performReadingBlock:v6];
+  [propertyLock performReadingBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -653,18 +653,18 @@ void __63__HAP2AccessoryServerSecureTransportBase_doOpenWithCompletion___block_i
   return v4;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerTransportBase *)self propertyLock];
+  delegateCopy = delegate;
+  propertyLock = [(HAP2AccessoryServerTransportBase *)self propertyLock];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__HAP2AccessoryServerSecureTransportBase_setDelegate___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performWritingBlock:v7];
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  [propertyLock performWritingBlock:v7];
 }
 
 - (HAP2AccessoryServerSecureTransportDelegate)delegate
@@ -675,14 +675,14 @@ void __63__HAP2AccessoryServerSecureTransportBase_doOpenWithCompletion___block_i
   v10 = __Block_byref_object_copy__10722;
   v11 = __Block_byref_object_dispose__10723;
   v12 = 0;
-  v3 = [(HAP2AccessoryServerTransportBase *)self propertyLock];
+  propertyLock = [(HAP2AccessoryServerTransportBase *)self propertyLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__HAP2AccessoryServerSecureTransportBase_delegate__block_invoke;
   v6[3] = &unk_2786D6E60;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performReadingBlock:v6];
+  [propertyLock performReadingBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -700,30 +700,30 @@ uint64_t __50__HAP2AccessoryServerSecureTransportBase_delegate__block_invoke(uin
   return MEMORY[0x2821F96F8]();
 }
 
-- (HAP2AccessoryServerSecureTransportBase)initWithOperationQueue:(id)a3 delegateQueue:(id)a4 transport:(id)a5
+- (HAP2AccessoryServerSecureTransportBase)initWithOperationQueue:(id)queue delegateQueue:(id)delegateQueue transport:(id)transport
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_opt_class() defaultEncryptedSession];
-  v12 = [(HAP2AccessoryServerSecureTransportBase *)self initWithOperationQueue:v10 delegateQueue:v9 transport:v8 encryptedSession:v11];
+  transportCopy = transport;
+  delegateQueueCopy = delegateQueue;
+  queueCopy = queue;
+  defaultEncryptedSession = [objc_opt_class() defaultEncryptedSession];
+  v12 = [(HAP2AccessoryServerSecureTransportBase *)self initWithOperationQueue:queueCopy delegateQueue:delegateQueueCopy transport:transportCopy encryptedSession:defaultEncryptedSession];
 
   return v12;
 }
 
-- (HAP2AccessoryServerSecureTransportBase)initWithOperationQueue:(id)a3 delegateQueue:(id)a4 transport:(id)a5 encryptedSession:(id)a6
+- (HAP2AccessoryServerSecureTransportBase)initWithOperationQueue:(id)queue delegateQueue:(id)delegateQueue transport:(id)transport encryptedSession:(id)session
 {
-  v11 = a5;
-  v12 = a6;
+  transportCopy = transport;
+  sessionCopy = session;
   v16.receiver = self;
   v16.super_class = HAP2AccessoryServerSecureTransportBase;
-  v13 = [(HAP2AccessoryServerTransportBase *)&v16 initWithOperationQueue:a3 delegateQueue:a4];
+  v13 = [(HAP2AccessoryServerTransportBase *)&v16 initWithOperationQueue:queue delegateQueue:delegateQueue];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_transport, a5);
-    objc_storeStrong(&v14->_encryptedSession, a6);
-    [v11 setDelegate:v14];
+    objc_storeStrong(&v13->_transport, transport);
+    objc_storeStrong(&v14->_encryptedSession, session);
+    [transportCopy setDelegate:v14];
   }
 
   return v14;

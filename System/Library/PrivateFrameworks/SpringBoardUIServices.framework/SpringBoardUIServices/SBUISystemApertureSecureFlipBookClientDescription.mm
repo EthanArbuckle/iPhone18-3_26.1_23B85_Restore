@@ -1,99 +1,99 @@
 @interface SBUISystemApertureSecureFlipBookClientDescription
-- (CGRect)_captureBoundsFromDescription:(id)a3;
+- (CGRect)_captureBoundsFromDescription:(id)description;
 - (CGRect)captureBounds;
-- (SBUISystemApertureSecureFlipBookClientDescription)initWithBSXPCCoder:(id)a3;
-- (SBUISystemApertureSecureFlipBookClientDescription)initWithClientDescription:(id)a3;
-- (SBUISystemApertureSecureFlipBookClientDescription)initWithFlipBookName:(id)a3 states:(id)a4 stateToAllowedNextStates:(id)a5 initialState:(id)a6 stateToSecureSequence:(id)a7 stateToDelayedSequence:(id)a8 captureBounds:(CGRect)a9 stateToMaximumExitLatency:(id)a10 stateToSupportedConcurrentComposedSequences:(id)a11;
-- (id)_stateToAllowedNextStatesFromDescription:(id)a3;
-- (id)_stateToDelayedSequenceFromDescription:(id)a3;
-- (id)_stateToMaximumExitLatencyFromDescription:(id)a3;
-- (id)_stateToSecureSequenceFromDescription:(id)a3;
-- (id)_supportedConcurrentComposedSequencesFromDescription:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (SBUISystemApertureSecureFlipBookClientDescription)initWithBSXPCCoder:(id)coder;
+- (SBUISystemApertureSecureFlipBookClientDescription)initWithClientDescription:(id)description;
+- (SBUISystemApertureSecureFlipBookClientDescription)initWithFlipBookName:(id)name states:(id)states stateToAllowedNextStates:(id)nextStates initialState:(id)state stateToSecureSequence:(id)sequence stateToDelayedSequence:(id)delayedSequence captureBounds:(CGRect)bounds stateToMaximumExitLatency:(id)self0 stateToSupportedConcurrentComposedSequences:(id)self1;
+- (id)_stateToAllowedNextStatesFromDescription:(id)description;
+- (id)_stateToDelayedSequenceFromDescription:(id)description;
+- (id)_stateToMaximumExitLatencyFromDescription:(id)description;
+- (id)_stateToSecureSequenceFromDescription:(id)description;
+- (id)_supportedConcurrentComposedSequencesFromDescription:(id)description;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation SBUISystemApertureSecureFlipBookClientDescription
 
-- (SBUISystemApertureSecureFlipBookClientDescription)initWithClientDescription:(id)a3
+- (SBUISystemApertureSecureFlipBookClientDescription)initWithClientDescription:(id)description
 {
-  v4 = a3;
-  v5 = [v4 flipBookName];
-  v6 = [v5 copy];
+  descriptionCopy = description;
+  flipBookName = [descriptionCopy flipBookName];
+  v6 = [flipBookName copy];
 
-  v7 = [v4 states];
-  v8 = [v7 copy];
+  states = [descriptionCopy states];
+  v8 = [states copy];
 
-  v9 = [(SBUISystemApertureSecureFlipBookClientDescription *)self _stateToAllowedNextStatesFromDescription:v4];
-  v10 = [v4 initialState];
-  v11 = [v10 copy];
+  v9 = [(SBUISystemApertureSecureFlipBookClientDescription *)self _stateToAllowedNextStatesFromDescription:descriptionCopy];
+  initialState = [descriptionCopy initialState];
+  v11 = [initialState copy];
 
-  v12 = [(SBUISystemApertureSecureFlipBookClientDescription *)self _stateToSecureSequenceFromDescription:v4];
-  v13 = [(SBUISystemApertureSecureFlipBookClientDescription *)self _stateToDelayedSequenceFromDescription:v4];
-  v14 = [(SBUISystemApertureSecureFlipBookClientDescription *)self _stateToMaximumExitLatencyFromDescription:v4];
-  [(SBUISystemApertureSecureFlipBookClientDescription *)self _captureBoundsFromDescription:v4];
+  v12 = [(SBUISystemApertureSecureFlipBookClientDescription *)self _stateToSecureSequenceFromDescription:descriptionCopy];
+  v13 = [(SBUISystemApertureSecureFlipBookClientDescription *)self _stateToDelayedSequenceFromDescription:descriptionCopy];
+  v14 = [(SBUISystemApertureSecureFlipBookClientDescription *)self _stateToMaximumExitLatencyFromDescription:descriptionCopy];
+  [(SBUISystemApertureSecureFlipBookClientDescription *)self _captureBoundsFromDescription:descriptionCopy];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(SBUISystemApertureSecureFlipBookClientDescription *)self _supportedConcurrentComposedSequencesFromDescription:v4];
+  v23 = [(SBUISystemApertureSecureFlipBookClientDescription *)self _supportedConcurrentComposedSequencesFromDescription:descriptionCopy];
 
   v24 = [(SBUISystemApertureSecureFlipBookClientDescription *)self initWithFlipBookName:v6 states:v8 stateToAllowedNextStates:v9 initialState:v11 stateToSecureSequence:v12 stateToDelayedSequence:v13 captureBounds:v16 stateToMaximumExitLatency:v18 stateToSupportedConcurrentComposedSequences:v20, v22, v14, v23];
   return v24;
 }
 
-- (SBUISystemApertureSecureFlipBookClientDescription)initWithFlipBookName:(id)a3 states:(id)a4 stateToAllowedNextStates:(id)a5 initialState:(id)a6 stateToSecureSequence:(id)a7 stateToDelayedSequence:(id)a8 captureBounds:(CGRect)a9 stateToMaximumExitLatency:(id)a10 stateToSupportedConcurrentComposedSequences:(id)a11
+- (SBUISystemApertureSecureFlipBookClientDescription)initWithFlipBookName:(id)name states:(id)states stateToAllowedNextStates:(id)nextStates initialState:(id)state stateToSecureSequence:(id)sequence stateToDelayedSequence:(id)delayedSequence captureBounds:(CGRect)bounds stateToMaximumExitLatency:(id)self0 stateToSupportedConcurrentComposedSequences:(id)self1
 {
-  height = a9.size.height;
-  width = a9.size.width;
-  y = a9.origin.y;
-  x = a9.origin.x;
-  v21 = a3;
-  v34 = a4;
-  v33 = a5;
-  v22 = a6;
-  v32 = a7;
-  v31 = a8;
-  v30 = a10;
-  v23 = a11;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  nameCopy = name;
+  statesCopy = states;
+  nextStatesCopy = nextStates;
+  stateCopy = state;
+  sequenceCopy = sequence;
+  delayedSequenceCopy = delayedSequence;
+  latencyCopy = latency;
+  sequencesCopy = sequences;
   v35.receiver = self;
   v35.super_class = SBUISystemApertureSecureFlipBookClientDescription;
   v24 = [(SBUISystemApertureSecureFlipBookClientDescription *)&v35 init];
   if (v24)
   {
-    v25 = [v21 copy];
+    v25 = [nameCopy copy];
     flipBookName = v24->_flipBookName;
     v24->_flipBookName = v25;
 
-    objc_storeStrong(&v24->_states, a4);
-    objc_storeStrong(&v24->_stateToAllowedNextStates, a5);
-    v27 = [v22 copy];
+    objc_storeStrong(&v24->_states, states);
+    objc_storeStrong(&v24->_stateToAllowedNextStates, nextStates);
+    v27 = [stateCopy copy];
     initialState = v24->_initialState;
     v24->_initialState = v27;
 
-    objc_storeStrong(&v24->_stateToSecureSequence, a7);
-    objc_storeStrong(&v24->_stateToDelayedSequence, a8);
-    objc_storeStrong(&v24->_stateToMaximumExitLatency, a10);
+    objc_storeStrong(&v24->_stateToSecureSequence, sequence);
+    objc_storeStrong(&v24->_stateToDelayedSequence, delayedSequence);
+    objc_storeStrong(&v24->_stateToMaximumExitLatency, latency);
     v24->_captureBounds.origin.x = x;
     v24->_captureBounds.origin.y = y;
     v24->_captureBounds.size.width = width;
     v24->_captureBounds.size.height = height;
-    objc_storeStrong(&v24->_stateToSupportedConcurrentComposedSequences, a11);
+    objc_storeStrong(&v24->_stateToSupportedConcurrentComposedSequences, sequences);
   }
 
   return v24;
 }
 
-- (id)_stateToAllowedNextStatesFromDescription:(id)a3
+- (id)_stateToAllowedNextStatesFromDescription:(id)description
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  descriptionCopy = description;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v3 states];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  states = [descriptionCopy states];
+  v6 = [states countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -104,35 +104,35 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(states);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v3 allowedNextStatesForState:v10];
+        v11 = [descriptionCopy allowedNextStatesForState:v10];
         if (v11)
         {
-          [v4 setObject:v11 forKeyedSubscript:v10];
+          [dictionary setObject:v11 forKeyedSubscript:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [states countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  v12 = [v4 copy];
+  v12 = [dictionary copy];
 
   return v12;
 }
 
-- (id)_stateToSecureSequenceFromDescription:(id)a3
+- (id)_stateToSecureSequenceFromDescription:(id)description
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v19 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [v3 states];
-  v5 = [v4 copy];
+  descriptionCopy = description;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  states = [descriptionCopy states];
+  v5 = [states copy];
 
   v27 = 0u;
   v28 = 0u;
@@ -153,7 +153,7 @@
         }
 
         v8 = *(*(&v25 + 1) + 8 * i);
-        v9 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
@@ -174,9 +174,9 @@
               }
 
               v15 = *(*(&v21 + 1) + 8 * j);
-              if ([v3 isSequenceSecure:v8 toState:v15])
+              if ([descriptionCopy isSequenceSecure:v8 toState:v15])
               {
-                [v9 addObject:v15];
+                [array addObject:v15];
               }
             }
 
@@ -186,7 +186,7 @@
           while (v12);
         }
 
-        [v19 setObject:v9 forKeyedSubscript:v8];
+        [dictionary setObject:array forKeyedSubscript:v8];
       }
 
       v20 = [v10 countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -195,18 +195,18 @@
     while (v20);
   }
 
-  v16 = [v19 copy];
+  v16 = [dictionary copy];
 
   return v16;
 }
 
-- (id)_stateToDelayedSequenceFromDescription:(id)a3
+- (id)_stateToDelayedSequenceFromDescription:(id)description
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v19 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [v3 states];
-  v5 = [v4 copy];
+  descriptionCopy = description;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  states = [descriptionCopy states];
+  v5 = [states copy];
 
   v27 = 0u;
   v28 = 0u;
@@ -227,7 +227,7 @@
         }
 
         v8 = *(*(&v25 + 1) + 8 * i);
-        v9 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
@@ -248,9 +248,9 @@
               }
 
               v15 = *(*(&v21 + 1) + 8 * j);
-              if ([v3 isSequenceDelayed:v8 toState:v15])
+              if ([descriptionCopy isSequenceDelayed:v8 toState:v15])
               {
-                [v9 addObject:v15];
+                [array addObject:v15];
               }
             }
 
@@ -260,7 +260,7 @@
           while (v12);
         }
 
-        [v19 setObject:v9 forKeyedSubscript:v8];
+        [dictionary setObject:array forKeyedSubscript:v8];
       }
 
       v20 = [v10 countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -269,22 +269,22 @@
     while (v20);
   }
 
-  v16 = [v19 copy];
+  v16 = [dictionary copy];
 
   return v16;
 }
 
-- (id)_stateToMaximumExitLatencyFromDescription:(id)a3
+- (id)_stateToMaximumExitLatencyFromDescription:(id)description
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  descriptionCopy = description;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v3 states];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  states = [descriptionCopy states];
+  v6 = [states countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -295,40 +295,40 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(states);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        [v3 maximumLatencyToExitLoopingState:v10];
+        [descriptionCopy maximumLatencyToExitLoopingState:v10];
         v11 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-        [v4 setObject:v11 forKeyedSubscript:v10];
+        [dictionary setObject:v11 forKeyedSubscript:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [states countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  v12 = [v4 copy];
+  v12 = [dictionary copy];
 
   return v12;
 }
 
-- (CGRect)_captureBoundsFromDescription:(id)a3
+- (CGRect)_captureBoundsFromDescription:(id)description
 {
-  v3 = a3;
-  v4 = [v3 referenceView];
-  [v3 captureBounds];
+  descriptionCopy = description;
+  referenceView = [descriptionCopy referenceView];
+  [descriptionCopy captureBounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [v4 window];
-  v14 = [v13 windowScene];
-  v15 = [v14 coordinateSpace];
-  [v15 convertRect:v4 fromCoordinateSpace:{v6, v8, v10, v12}];
+  window = [referenceView window];
+  windowScene = [window windowScene];
+  coordinateSpace = [windowScene coordinateSpace];
+  [coordinateSpace convertRect:referenceView fromCoordinateSpace:{v6, v8, v10, v12}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -345,18 +345,18 @@
   return result;
 }
 
-- (id)_supportedConcurrentComposedSequencesFromDescription:(id)a3
+- (id)_supportedConcurrentComposedSequencesFromDescription:(id)description
 {
   v92[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  descriptionCopy = description;
   v92[0] = @"hidden";
   v92[1] = @"presented";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v92 count:2];
-  v58 = v3;
-  v52 = [v3 states];
-  v5 = [MEMORY[0x1E695DF70] array];
-  v59 = [MEMORY[0x1E695DF70] array];
-  v54 = [MEMORY[0x1E695DF70] array];
+  v58 = descriptionCopy;
+  states = [descriptionCopy states];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
@@ -400,7 +400,7 @@
               v89[0] = v9;
               v89[1] = v15;
               v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v89 count:2];
-              [v5 addObject:v16];
+              [array addObject:v16];
             }
 
             v12 = [v10 countByEnumeratingWithState:&v76 objects:v90 count:16];
@@ -420,7 +420,7 @@
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v50 = v52;
+  v50 = states;
   v17 = [v50 countByEnumeratingWithState:&v72 objects:v88 count:16];
   if (v17)
   {
@@ -459,7 +459,7 @@
               v86[0] = v20;
               v86[1] = v26;
               v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v86 count:2];
-              [v59 addObject:v27];
+              [array2 addObject:v27];
             }
 
             v23 = [v21 countByEnumeratingWithState:&v68 objects:v87 count:16];
@@ -479,7 +479,7 @@
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v47 = v5;
+  v47 = array;
   v49 = [v47 countByEnumeratingWithState:&v64 objects:v85 count:16];
   if (v49)
   {
@@ -500,7 +500,7 @@
         v61 = 0u;
         v62 = 0u;
         v63 = 0u;
-        v57 = v59;
+        v57 = array2;
         v30 = [v57 countByEnumeratingWithState:&v60 objects:v84 count:16];
         if (v30)
         {
@@ -530,7 +530,7 @@
                 v43 = [v29 objectAtIndexedSubscript:1];
                 v44 = SBUISystemApertureSecureFlipBookClientComposedSequence(v40, v41, v42, v43);
 
-                [v54 addObject:v44];
+                [array3 addObject:v44];
               }
             }
 
@@ -550,46 +550,46 @@
     while (v49);
   }
 
-  v45 = [v54 copy];
+  v45 = [array3 copy];
 
   return v45;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   flipBookName = self->_flipBookName;
-  v6 = a3;
-  [v6 encodeObject:flipBookName forKey:@"flipBookName"];
-  [v6 encodeCollection:self->_states forKey:@"states"];
-  [v6 encodeDictionary:self->_stateToAllowedNextStates forKey:@"stateToAllowedNextStates"];
+  coderCopy = coder;
+  [coderCopy encodeObject:flipBookName forKey:@"flipBookName"];
+  [coderCopy encodeCollection:self->_states forKey:@"states"];
+  [coderCopy encodeDictionary:self->_stateToAllowedNextStates forKey:@"stateToAllowedNextStates"];
   v5 = [(NSString *)self->_initialState copy];
-  [v6 encodeObject:v5 forKey:@"initialState"];
+  [coderCopy encodeObject:v5 forKey:@"initialState"];
 
-  [v6 encodeDictionary:self->_stateToSecureSequence forKey:@"stateToSecureSequence"];
-  [v6 encodeDictionary:self->_stateToDelayedSequence forKey:@"stateToDelayedSequence"];
-  [v6 encodeDictionary:self->_stateToMaximumExitLatency forKey:@"stateToMaximumExitLatency"];
-  [v6 encodeCGRect:@"captureBounds" forKey:{self->_captureBounds.origin.x, self->_captureBounds.origin.y, self->_captureBounds.size.width, self->_captureBounds.size.height}];
-  [v6 encodeCollection:self->_stateToSupportedConcurrentComposedSequences forKey:@"stateToSupportedConcurrentComposedSequences"];
+  [coderCopy encodeDictionary:self->_stateToSecureSequence forKey:@"stateToSecureSequence"];
+  [coderCopy encodeDictionary:self->_stateToDelayedSequence forKey:@"stateToDelayedSequence"];
+  [coderCopy encodeDictionary:self->_stateToMaximumExitLatency forKey:@"stateToMaximumExitLatency"];
+  [coderCopy encodeCGRect:@"captureBounds" forKey:{self->_captureBounds.origin.x, self->_captureBounds.origin.y, self->_captureBounds.size.width, self->_captureBounds.size.height}];
+  [coderCopy encodeCollection:self->_stateToSupportedConcurrentComposedSequences forKey:@"stateToSupportedConcurrentComposedSequences"];
 }
 
-- (SBUISystemApertureSecureFlipBookClientDescription)initWithBSXPCCoder:(id)a3
+- (SBUISystemApertureSecureFlipBookClientDescription)initWithBSXPCCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeStringForKey:@"flipBookName"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeStringForKey:@"flipBookName"];
   v5 = objc_opt_class();
-  v6 = [v3 decodeCollectionOfClass:v5 containingClass:objc_opt_class() forKey:@"states"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"stateToAllowedNextStates"];
-  v8 = [v3 decodeStringForKey:@"initialState"];
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"stateToSecureSequence"];
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"stateToDelayedSequence"];
-  v11 = [v3 decodeDictionaryOfClass:objc_opt_class() forKey:@"stateToMaximumExitLatency"];
-  [v3 decodeCGRectForKey:@"captureBounds"];
+  v6 = [coderCopy decodeCollectionOfClass:v5 containingClass:objc_opt_class() forKey:@"states"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stateToAllowedNextStates"];
+  v8 = [coderCopy decodeStringForKey:@"initialState"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stateToSecureSequence"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stateToDelayedSequence"];
+  v11 = [coderCopy decodeDictionaryOfClass:objc_opt_class() forKey:@"stateToMaximumExitLatency"];
+  [coderCopy decodeCGRectForKey:@"captureBounds"];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v20 = objc_opt_class();
-  v21 = [v3 decodeCollectionOfClass:v20 containingClass:objc_opt_class() forKey:@"stateToSupportedConcurrentComposedSequences"];
+  v21 = [coderCopy decodeCollectionOfClass:v20 containingClass:objc_opt_class() forKey:@"stateToSupportedConcurrentComposedSequences"];
 
   v22 = [(SBUISystemApertureSecureFlipBookClientDescription *)self initWithFlipBookName:v4 states:v6 stateToAllowedNextStates:v7 initialState:v8 stateToSecureSequence:v9 stateToDelayedSequence:v10 captureBounds:v13 stateToMaximumExitLatency:v15 stateToSupportedConcurrentComposedSequences:v17, v19, v11, v21];
   return v22;

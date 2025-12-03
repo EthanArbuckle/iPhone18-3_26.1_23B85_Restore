@@ -1,8 +1,8 @@
 @interface RTStoredLocationOfInterestEnumerationOptions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (RTStoredLocationOfInterestEnumerationOptions)init;
-- (RTStoredLocationOfInterestEnumerationOptions)initWithAscendingVisitEntryDate:(BOOL)a3 batchSize:(unint64_t)a4 dateInterval:(id)a5 singleVisit:(BOOL)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RTStoredLocationOfInterestEnumerationOptions)initWithAscendingVisitEntryDate:(BOOL)date batchSize:(unint64_t)size dateInterval:(id)interval singleVisit:(BOOL)visit;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -11,27 +11,27 @@
 - (RTStoredLocationOfInterestEnumerationOptions)init
 {
   v3 = objc_alloc(MEMORY[0x277CCA970]);
-  v4 = [MEMORY[0x277CBEAA8] distantPast];
-  v5 = [MEMORY[0x277CBEAA8] distantFuture];
-  v6 = [v3 initWithStartDate:v4 endDate:v5];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v6 = [v3 initWithStartDate:distantPast endDate:distantFuture];
 
   v7 = [(RTStoredLocationOfInterestEnumerationOptions *)self initWithAscendingVisitEntryDate:1 batchSize:0 dateInterval:v6 singleVisit:0];
   return v7;
 }
 
-- (RTStoredLocationOfInterestEnumerationOptions)initWithAscendingVisitEntryDate:(BOOL)a3 batchSize:(unint64_t)a4 dateInterval:(id)a5 singleVisit:(BOOL)a6
+- (RTStoredLocationOfInterestEnumerationOptions)initWithAscendingVisitEntryDate:(BOOL)date batchSize:(unint64_t)size dateInterval:(id)interval singleVisit:(BOOL)visit
 {
-  v10 = a5;
+  intervalCopy = interval;
   v20.receiver = self;
   v20.super_class = RTStoredLocationOfInterestEnumerationOptions;
   v11 = [(RTStoredLocationOfInterestEnumerationOptions *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    v11->_ascendingVisitEntryDate = a3;
-    if (v10)
+    v11->_ascendingVisitEntryDate = date;
+    if (intervalCopy)
     {
-      v13 = v10;
+      v13 = intervalCopy;
       dateInterval = v12->_dateInterval;
       v12->_dateInterval = v13;
     }
@@ -40,23 +40,23 @@
     {
       v15 = objc_alloc(MEMORY[0x277CCA970]);
       dateInterval = [MEMORY[0x277CBEAA8] distantPast];
-      v16 = [MEMORY[0x277CBEAA8] distantFuture];
-      v17 = [v15 initWithStartDate:dateInterval endDate:v16];
+      distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+      v17 = [v15 initWithStartDate:dateInterval endDate:distantFuture];
       v18 = v12->_dateInterval;
       v12->_dateInterval = v17;
     }
 
-    v12->_batchSize = a4;
-    v12->_singleVisit = a6;
+    v12->_batchSize = size;
+    v12->_singleVisit = visit;
   }
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -66,23 +66,23 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RTStoredLocationOfInterestEnumerationOptions *)self ascendingVisitEntryDate];
-      v7 = [(RTStoredLocationOfInterestEnumerationOptions *)v5 ascendingVisitEntryDate];
-      v8 = [(RTStoredLocationOfInterestEnumerationOptions *)self batchSize];
-      v9 = [(RTStoredLocationOfInterestEnumerationOptions *)v5 batchSize];
-      v10 = [(RTStoredLocationOfInterestEnumerationOptions *)self dateInterval];
-      v11 = [(RTStoredLocationOfInterestEnumerationOptions *)v5 dateInterval];
-      v12 = [v10 isEqualToDateInterval:v11];
+      v5 = equalCopy;
+      ascendingVisitEntryDate = [(RTStoredLocationOfInterestEnumerationOptions *)self ascendingVisitEntryDate];
+      ascendingVisitEntryDate2 = [(RTStoredLocationOfInterestEnumerationOptions *)v5 ascendingVisitEntryDate];
+      batchSize = [(RTStoredLocationOfInterestEnumerationOptions *)self batchSize];
+      batchSize2 = [(RTStoredLocationOfInterestEnumerationOptions *)v5 batchSize];
+      dateInterval = [(RTStoredLocationOfInterestEnumerationOptions *)self dateInterval];
+      dateInterval2 = [(RTStoredLocationOfInterestEnumerationOptions *)v5 dateInterval];
+      v12 = [dateInterval isEqualToDateInterval:dateInterval2];
 
-      v13 = [(RTStoredLocationOfInterestEnumerationOptions *)self singleVisit];
-      v14 = v12 & (v13 ^ [(RTStoredLocationOfInterestEnumerationOptions *)v5 singleVisit]^ 1);
-      if (v8 != v9)
+      singleVisit = [(RTStoredLocationOfInterestEnumerationOptions *)self singleVisit];
+      v14 = v12 & (singleVisit ^ [(RTStoredLocationOfInterestEnumerationOptions *)v5 singleVisit]^ 1);
+      if (batchSize != batchSize2)
       {
         LOBYTE(v14) = 0;
       }
 
-      v15 = v6 == v7 && v14;
+      v15 = ascendingVisitEntryDate == ascendingVisitEntryDate2 && v14;
     }
 
     else
@@ -107,9 +107,9 @@
   return v6 ^ v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   ascendingVisitEntryDate = self->_ascendingVisitEntryDate;
   batchSize = self->_batchSize;
   dateInterval = self->_dateInterval;

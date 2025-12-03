@@ -1,15 +1,15 @@
 @interface _SNVGGishFrontEndProcessingCustomModel
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5;
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error;
 @end
 
 @implementation _SNVGGishFrontEndProcessingCustomModel
 
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error
 {
   swift_unknownObjectRetain();
-  v8 = a4;
-  v9 = self;
-  v10 = sub_1C99CDFA8(a3);
+  optionsCopy = options;
+  selfCopy = self;
+  v10 = sub_1C99CDFA8(features);
 
   swift_unknownObjectRelease();
 

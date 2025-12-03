@@ -1,38 +1,38 @@
 @interface NANowPlayingTitleView
 - (BOOL)hasPublisherLogo;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NANowPlayingTitleView)initWithFrame:(CGRect)a3 layoutSpecProvider:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NANowPlayingTitleView)initWithFrame:(CGRect)frame layoutSpecProvider:(id)provider;
 - (NANowPlayingTitleViewDelegate)delegate;
 - (NANowPlayingTitleViewLayoutSpecProvider)layoutSpecProvider;
 - (double)publisherLogoHeight;
-- (void)_setPublisherImage:(id)a3;
-- (void)ellipsisButtonTapped:(id)a3;
+- (void)_setPublisherImage:(id)image;
+- (void)ellipsisButtonTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)setMarqueeRunning:(BOOL)a3;
-- (void)setPublisherImage:(id)a3 fallbackName:(id)a4;
-- (void)setTitle:(id)a3;
+- (void)setMarqueeRunning:(BOOL)running;
+- (void)setPublisherImage:(id)image fallbackName:(id)name;
+- (void)setTitle:(id)title;
 @end
 
 @implementation NANowPlayingTitleView
 
-- (NANowPlayingTitleView)initWithFrame:(CGRect)a3 layoutSpecProvider:(id)a4
+- (NANowPlayingTitleView)initWithFrame:(CGRect)frame layoutSpecProvider:(id)provider
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  providerCopy = provider;
   v35.receiver = self;
   v35.super_class = NANowPlayingTitleView;
-  v10 = [(NANowPlayingTitleView *)&v35 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(NANowPlayingTitleView *)&v35 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __58__NANowPlayingTitleView_initWithFrame_layoutSpecProvider___block_invoke;
     v33[3] = &unk_1E84EA1C0;
-    v12 = v10;
+    v12 = height;
     v34 = v12;
     v13 = __58__NANowPlayingTitleView_initWithFrame_layoutSpecProvider___block_invoke(v33);
     publisherImageView = v12->_publisherImageView;
@@ -72,7 +72,7 @@
     v25 = v23[55];
     v23[55] = v24;
 
-    objc_storeWeak(v23 + 57, v9);
+    objc_storeWeak(v23 + 57, providerCopy);
   }
 
   return v11;
@@ -177,28 +177,28 @@ id __58__NANowPlayingTitleView_initWithFrame_layoutSpecProvider___block_invoke_5
   v54.receiver = self;
   v54.super_class = NANowPlayingTitleView;
   [(NANowPlayingTitleView *)&v54 layoutSubviews];
-  v7 = [(NANowPlayingTitleView *)self ellipsisButton];
-  [v7 sizeToFit];
+  ellipsisButton = [(NANowPlayingTitleView *)self ellipsisButton];
+  [ellipsisButton sizeToFit];
 
-  v8 = [(NANowPlayingTitleView *)self ellipsisButton];
-  [v8 frame];
+  ellipsisButton2 = [(NANowPlayingTitleView *)self ellipsisButton];
+  [ellipsisButton2 frame];
   Width = CGRectGetWidth(v55);
 
   [(NANowPlayingTitleView *)self bounds];
   v10 = CGRectGetWidth(v56) + -16.0;
-  v11 = [(NANowPlayingTitleView *)self hasPublisherLogo];
-  if (v11)
+  hasPublisherLogo = [(NANowPlayingTitleView *)self hasPublisherLogo];
+  if (hasPublisherLogo)
   {
-    v8 = [(NANowPlayingTitleView *)self layoutSpecProvider];
-    [v8 publisherLogoHeight];
+    ellipsisButton2 = [(NANowPlayingTitleView *)self layoutSpecProvider];
+    [ellipsisButton2 publisherLogoHeight];
     v13 = v12;
-    v2 = [(NANowPlayingTitleView *)self publisherImageView];
-    v3 = [v2 image];
-    [v3 size];
+    publisherImageView = [(NANowPlayingTitleView *)self publisherImageView];
+    image = [publisherImageView image];
+    [image size];
     v15 = v13 * v14;
-    v4 = [(NANowPlayingTitleView *)self publisherImageView];
-    v5 = [v4 image];
-    [v5 size];
+    publisherImageView2 = [(NANowPlayingTitleView *)self publisherImageView];
+    image2 = [publisherImageView2 image];
+    [image2 size];
     v17 = v15 / v16;
   }
 
@@ -208,87 +208,87 @@ id __58__NANowPlayingTitleView_initWithFrame_layoutSpecProvider___block_invoke_5
   }
 
   v18 = v10 - Width;
-  v19 = [(NANowPlayingTitleView *)self layoutSpecProvider];
-  [v19 publisherLogoHeight];
+  layoutSpecProvider = [(NANowPlayingTitleView *)self layoutSpecProvider];
+  [layoutSpecProvider publisherLogoHeight];
   v21 = v20;
 
-  if (v11)
+  if (hasPublisherLogo)
   {
   }
 
-  v22 = [(NANowPlayingTitleView *)self publisherMarqueeContainer];
-  [v22 setContentSize:{v17, v21}];
+  publisherMarqueeContainer = [(NANowPlayingTitleView *)self publisherMarqueeContainer];
+  [publisherMarqueeContainer setContentSize:{v17, v21}];
 
-  v23 = [(NANowPlayingTitleView *)self publisherImageView];
-  [v23 setFrame:{0.0, 0.0, v17, v21}];
+  publisherImageView3 = [(NANowPlayingTitleView *)self publisherImageView];
+  [publisherImageView3 setFrame:{0.0, 0.0, v17, v21}];
 
-  v24 = [(NANowPlayingTitleView *)self publisherMarqueeContainer];
-  [v24 setFrame:{0.0, 0.0, v18, v21}];
+  publisherMarqueeContainer2 = [(NANowPlayingTitleView *)self publisherMarqueeContainer];
+  [publisherMarqueeContainer2 setFrame:{0.0, 0.0, v18, v21}];
 
-  v25 = [(NANowPlayingTitleView *)self publisherMarqueeContainer];
-  [v25 frame];
+  publisherMarqueeContainer3 = [(NANowPlayingTitleView *)self publisherMarqueeContainer];
+  [publisherMarqueeContainer3 frame];
   MaxY = CGRectGetMaxY(v57);
 
   if ([(NANowPlayingTitleView *)self hasPublisherLogo])
   {
-    v27 = [(NANowPlayingTitleView *)self layoutSpecProvider];
-    [v27 publisherLogoBottomMargin];
+    layoutSpecProvider2 = [(NANowPlayingTitleView *)self layoutSpecProvider];
+    [layoutSpecProvider2 publisherLogoBottomMargin];
     MaxY = MaxY + v28;
   }
 
-  v29 = [(NANowPlayingTitleView *)self titleLabel];
-  [v29 bounds];
+  titleLabel = [(NANowPlayingTitleView *)self titleLabel];
+  [titleLabel bounds];
   Height = CGRectGetHeight(v58);
-  v31 = [(NANowPlayingTitleView *)self titleMarqueeContainer];
-  [v31 setFrame:{0.0, MaxY, v18, Height}];
+  titleMarqueeContainer = [(NANowPlayingTitleView *)self titleMarqueeContainer];
+  [titleMarqueeContainer setFrame:{0.0, MaxY, v18, Height}];
 
-  v32 = [(NANowPlayingTitleView *)self ellipsisButton];
-  [v32 bounds];
+  ellipsisButton3 = [(NANowPlayingTitleView *)self ellipsisButton];
+  [ellipsisButton3 bounds];
   v33 = CGRectGetHeight(v59);
 
   if ([(NANowPlayingTitleView *)self hasPublisherLogo])
   {
-    v34 = [(NANowPlayingTitleView *)self publisherMarqueeContainer];
-    [v34 frame];
+    publisherMarqueeContainer4 = [(NANowPlayingTitleView *)self publisherMarqueeContainer];
+    [publisherMarqueeContainer4 frame];
     v35 = CGRectGetMaxY(v60);
-    v36 = [(NANowPlayingTitleView *)self layoutSpecProvider];
-    [v36 publisherLogoBottomMargin];
+    layoutSpecProvider3 = [(NANowPlayingTitleView *)self layoutSpecProvider];
+    [layoutSpecProvider3 publisherLogoBottomMargin];
     MidY = v35 + v37 * 0.5;
   }
 
   else
   {
-    v34 = [(NANowPlayingTitleView *)self titleMarqueeContainer];
-    [v34 frame];
+    publisherMarqueeContainer4 = [(NANowPlayingTitleView *)self titleMarqueeContainer];
+    [publisherMarqueeContainer4 frame];
     MidY = CGRectGetMidY(v61);
   }
 
   v39 = v33 * -0.5;
   [(NANowPlayingTitleView *)self bounds];
   v40 = CGRectGetWidth(v62);
-  v41 = [(NANowPlayingTitleView *)self ellipsisButton];
-  [v41 bounds];
+  ellipsisButton4 = [(NANowPlayingTitleView *)self ellipsisButton];
+  [ellipsisButton4 bounds];
   v42 = v40 - CGRectGetWidth(v63);
   v43 = MidY + v39;
-  v44 = [(NANowPlayingTitleView *)self ellipsisButton];
-  [v44 bounds];
+  ellipsisButton5 = [(NANowPlayingTitleView *)self ellipsisButton];
+  [ellipsisButton5 bounds];
   v45 = CGRectGetWidth(v64);
-  v46 = [(NANowPlayingTitleView *)self ellipsisButton];
-  [v46 bounds];
+  ellipsisButton6 = [(NANowPlayingTitleView *)self ellipsisButton];
+  [ellipsisButton6 bounds];
   v47 = CGRectGetHeight(v65);
-  v48 = [(NANowPlayingTitleView *)self ellipsisButton];
-  [v48 setFrame:{v42, v43, v45, v47}];
+  ellipsisButton7 = [(NANowPlayingTitleView *)self ellipsisButton];
+  [ellipsisButton7 setFrame:{v42, v43, v45, v47}];
 
-  v49 = [(NANowPlayingTitleView *)self ellipsisButton];
-  [v49 bounds];
+  ellipsisButton8 = [(NANowPlayingTitleView *)self ellipsisButton];
+  [ellipsisButton8 bounds];
   [(NATouchInsetsButton *)self->_ellipsisButton setTouchInsets:NAInsetsToMinimumTapTargetForFrame(v50, v51, v52, v53)];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v5 = MEMORY[0x1E69DB878];
-  v6 = [(NANowPlayingTitleView *)self layoutSpecProvider:a3.width];
+  v6 = [(NANowPlayingTitleView *)self layoutSpecProvider:fits.width];
   [v6 titleLabelFontSize];
   v7 = [v5 systemFontOfSize:? weight:?];
   [v7 pointSize];
@@ -296,11 +296,11 @@ id __58__NANowPlayingTitleView_initWithFrame_layoutSpecProvider___block_invoke_5
 
   if ([(NANowPlayingTitleView *)self hasPublisherLogo])
   {
-    v10 = [(NANowPlayingTitleView *)self layoutSpecProvider];
-    [v10 publisherLogoHeight];
+    layoutSpecProvider = [(NANowPlayingTitleView *)self layoutSpecProvider];
+    [layoutSpecProvider publisherLogoHeight];
     v12 = v11;
-    v13 = [(NANowPlayingTitleView *)self layoutSpecProvider];
-    [v13 publisherLogoBottomMargin];
+    layoutSpecProvider2 = [(NANowPlayingTitleView *)self layoutSpecProvider];
+    [layoutSpecProvider2 publisherLogoBottomMargin];
     v9 = v9 + v12 + v14;
   }
 
@@ -311,25 +311,25 @@ id __58__NANowPlayingTitleView_initWithFrame_layoutSpecProvider___block_invoke_5
   return result;
 }
 
-- (void)setPublisherImage:(id)a3 fallbackName:(id)a4
+- (void)setPublisherImage:(id)image fallbackName:(id)name
 {
   v28[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  imageCopy = image;
+  nameCopy = name;
+  v8 = nameCopy;
+  if (imageCopy)
   {
-    v9 = self;
-    v10 = v6;
+    selfCopy2 = self;
+    v10 = imageCopy;
   }
 
   else
   {
-    if (v7)
+    if (nameCopy)
     {
       v11 = MEMORY[0x1E69DB878];
-      v12 = [(NANowPlayingTitleView *)self layoutSpecProvider];
-      [v12 publisherLogoHeight];
+      layoutSpecProvider = [(NANowPlayingTitleView *)self layoutSpecProvider];
+      [layoutSpecProvider publisherLogoHeight];
       v13 = [v11 systemFontOfSize:? weight:?];
 
       v14 = *MEMORY[0x1E6965A88];
@@ -338,15 +338,15 @@ id __58__NANowPlayingTitleView_initWithFrame_layoutSpecProvider___block_invoke_5
       v28[0] = v13;
       v28[1] = &unk_1F52DE098;
       v27[2] = *MEMORY[0x1E69DB650];
-      v15 = [MEMORY[0x1E69DC888] whiteColor];
-      v28[2] = v15;
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      v28[2] = whiteColor;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:3];
 
       [v8 sizeWithAttributes:v16];
       v18 = v17;
       v20 = v19;
-      v21 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v21 scale];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen scale];
       v23 = v22;
       v29.width = v18;
       v29.height = v20;
@@ -364,27 +364,27 @@ id __58__NANowPlayingTitleView_initWithFrame_layoutSpecProvider___block_invoke_5
       goto LABEL_6;
     }
 
-    v9 = self;
+    selfCopy2 = self;
     v10 = 0;
   }
 
-  [(NANowPlayingTitleView *)v9 _setPublisherImage:v10];
+  [(NANowPlayingTitleView *)selfCopy2 _setPublisherImage:v10];
 LABEL_6:
 }
 
-- (void)_setPublisherImage:(id)a3
+- (void)_setPublisherImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = MEMORY[0x1E69DD250];
-  v6 = [(NANowPlayingTitleView *)self publisherImageView];
+  publisherImageView = [(NANowPlayingTitleView *)self publisherImageView];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __44__NANowPlayingTitleView__setPublisherImage___block_invoke;
   v8[3] = &unk_1E84EA210;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v5 transitionWithView:v6 duration:5242880 options:v8 animations:0 completion:0.25];
+  v9 = imageCopy;
+  v7 = imageCopy;
+  [v5 transitionWithView:publisherImageView duration:5242880 options:v8 animations:0 completion:0.25];
 }
 
 uint64_t __44__NANowPlayingTitleView__setPublisherImage___block_invoke(uint64_t a1)
@@ -406,13 +406,13 @@ uint64_t __44__NANowPlayingTitleView__setPublisherImage___block_invoke(uint64_t 
   return [v8 setNeedsLayout];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v21[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  titleCopy = title;
   v5 = MEMORY[0x1E69DB878];
-  v6 = [(NANowPlayingTitleView *)self layoutSpecProvider];
-  [v6 titleLabelFontSize];
+  layoutSpecProvider = [(NANowPlayingTitleView *)self layoutSpecProvider];
+  [layoutSpecProvider titleLabelFontSize];
   v7 = [v5 systemFontOfSize:? weight:?];
 
   v8 = [MEMORY[0x1E69DCA40] metricsForTextStyle:*MEMORY[0x1E69DDDC0]];
@@ -424,22 +424,22 @@ uint64_t __44__NANowPlayingTitleView__setPublisherImage___block_invoke(uint64_t 
   v21[0] = v9;
   v21[1] = &unk_1F52DE098;
   v20[2] = *MEMORY[0x1E69DB650];
-  v11 = [MEMORY[0x1E69DC888] whiteColor];
-  v21[2] = v11;
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v21[2] = whiteColor;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:3];
 
   v13 = MEMORY[0x1E69DD250];
-  v14 = [(NANowPlayingTitleView *)self titleLabel];
+  titleLabel = [(NANowPlayingTitleView *)self titleLabel];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __34__NANowPlayingTitleView_setTitle___block_invoke;
   v17[3] = &unk_1E84EA2D8;
   v17[4] = self;
-  v18 = v4;
+  v18 = titleCopy;
   v19 = v12;
   v15 = v12;
-  v16 = v4;
-  [v13 transitionWithView:v14 duration:5242880 options:v17 animations:0 completion:0.25];
+  v16 = titleCopy;
+  [v13 transitionWithView:titleLabel duration:5242880 options:v17 animations:0 completion:0.25];
 }
 
 uint64_t __34__NANowPlayingTitleView_setTitle___block_invoke(uint64_t a1)
@@ -456,20 +456,20 @@ uint64_t __34__NANowPlayingTitleView_setTitle___block_invoke(uint64_t a1)
   return [v5 setNeedsLayout];
 }
 
-- (void)setMarqueeRunning:(BOOL)a3
+- (void)setMarqueeRunning:(BOOL)running
 {
-  v3 = a3;
-  v5 = [(NANowPlayingTitleView *)self publisherMarqueeContainer];
-  [v5 setMarqueeEnabled:v3];
+  runningCopy = running;
+  publisherMarqueeContainer = [(NANowPlayingTitleView *)self publisherMarqueeContainer];
+  [publisherMarqueeContainer setMarqueeEnabled:runningCopy];
 
-  v6 = [(NANowPlayingTitleView *)self titleMarqueeContainer];
-  [v6 setMarqueeEnabled:v3];
+  titleMarqueeContainer = [(NANowPlayingTitleView *)self titleMarqueeContainer];
+  [titleMarqueeContainer setMarqueeEnabled:runningCopy];
 }
 
 - (double)publisherLogoHeight
 {
-  v2 = [(NANowPlayingTitleView *)self layoutSpecProvider];
-  [v2 publisherLogoHeight];
+  layoutSpecProvider = [(NANowPlayingTitleView *)self layoutSpecProvider];
+  [layoutSpecProvider publisherLogoHeight];
   v4 = v3;
 
   return v4;
@@ -477,15 +477,15 @@ uint64_t __34__NANowPlayingTitleView_setTitle___block_invoke(uint64_t a1)
 
 - (BOOL)hasPublisherLogo
 {
-  v2 = [(NANowPlayingTitleView *)self publisherImageView];
-  v3 = [v2 image];
-  [v3 size];
+  publisherImageView = [(NANowPlayingTitleView *)self publisherImageView];
+  image = [publisherImageView image];
+  [image size];
   v5 = v4 > 0.0;
 
   return v5;
 }
 
-- (void)ellipsisButtonTapped:(id)a3
+- (void)ellipsisButtonTapped:(id)tapped
 {
   v4 = NANowPlayingLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -494,8 +494,8 @@ uint64_t __34__NANowPlayingTitleView_setTitle___block_invoke(uint64_t a1)
     _os_log_impl(&dword_1D7987000, v4, OS_LOG_TYPE_DEFAULT, "ellipsisButtonTouchUpInside:", v6, 2u);
   }
 
-  v5 = [(NANowPlayingTitleView *)self delegate];
-  [v5 nowPlayingTitleViewDidTapEllipsis:self];
+  delegate = [(NANowPlayingTitleView *)self delegate];
+  [delegate nowPlayingTitleViewDidTapEllipsis:self];
 }
 
 - (NANowPlayingTitleViewDelegate)delegate

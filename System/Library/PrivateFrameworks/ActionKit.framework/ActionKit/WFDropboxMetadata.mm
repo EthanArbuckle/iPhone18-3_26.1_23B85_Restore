@@ -7,17 +7,17 @@
 
 - (id)wfFileType
 {
-  v3 = [(WFDropboxMetadata *)self wfIsDirectory];
+  wfIsDirectory = [(WFDropboxMetadata *)self wfIsDirectory];
   v4 = MEMORY[0x277D79F68];
-  if (v3)
+  if (wfIsDirectory)
   {
     v5 = [MEMORY[0x277D79F68] typeWithUTType:*MEMORY[0x277CE1D80]];
   }
 
   else
   {
-    v6 = [(WFDropboxMetadata *)self name];
-    v5 = [v4 typeFromFilename:v6];
+    name = [(WFDropboxMetadata *)self name];
+    v5 = [v4 typeFromFilename:name];
   }
 
   return v5;
@@ -25,19 +25,19 @@
 
 - (id)wfLastModifiedDate
 {
-  v3 = [(WFDropboxMetadata *)self clientModifiedDate];
-  v4 = v3;
-  if (v3)
+  clientModifiedDate = [(WFDropboxMetadata *)self clientModifiedDate];
+  v4 = clientModifiedDate;
+  if (clientModifiedDate)
   {
-    v5 = v3;
+    serverModifiedDate = clientModifiedDate;
   }
 
   else
   {
-    v5 = [(WFDropboxMetadata *)self serverModifiedDate];
+    serverModifiedDate = [(WFDropboxMetadata *)self serverModifiedDate];
   }
 
-  v6 = v5;
+  v6 = serverModifiedDate;
 
   return v6;
 }

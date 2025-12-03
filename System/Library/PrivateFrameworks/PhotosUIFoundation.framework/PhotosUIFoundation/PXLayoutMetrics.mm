@@ -1,8 +1,8 @@
 @interface PXLayoutMetrics
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)referenceSize;
 - (NSString)diagnosticDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PXLayoutMetrics
@@ -26,10 +26,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -39,7 +39,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(PXLayoutMetrics *)v4 referenceSize];
+      [(PXLayoutMetrics *)equalCopy referenceSize];
       v6 = v5;
       v8 = v7;
       [(PXLayoutMetrics *)self referenceSize];
@@ -55,7 +55,7 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   *(result + 8) = self->_referenceSize;

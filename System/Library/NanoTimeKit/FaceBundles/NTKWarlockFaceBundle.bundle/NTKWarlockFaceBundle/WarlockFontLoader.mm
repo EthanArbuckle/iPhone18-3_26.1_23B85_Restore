@@ -1,22 +1,22 @@
 @interface WarlockFontLoader
 + (id)sharedInstance;
-+ (id)solidFontDescriptorWithAttributes:(id)a3;
-+ (id)stencilFontDescriptorWithAttributes:(id)a3;
++ (id)solidFontDescriptorWithAttributes:(id)attributes;
++ (id)stencilFontDescriptorWithAttributes:(id)attributes;
 - (WarlockFontLoader)init;
-- (id)solidFontCacheKeyWithAttributes:(id)a3;
-- (id)solidFontTypographicBoundsWithAttributes:(id)a3;
-- (id)solidFontWithAttributes:(id)a3;
-- (id)stencilFontCacheKeyWithAttributes:(id)a3;
-- (id)stencilFontTypographicBoundsWithAttributes:(id)a3;
-- (id)stencilFontWithAttributes:(id)a3;
+- (id)solidFontCacheKeyWithAttributes:(id)attributes;
+- (id)solidFontTypographicBoundsWithAttributes:(id)attributes;
+- (id)solidFontWithAttributes:(id)attributes;
+- (id)stencilFontCacheKeyWithAttributes:(id)attributes;
+- (id)stencilFontTypographicBoundsWithAttributes:(id)attributes;
+- (id)stencilFontWithAttributes:(id)attributes;
 @end
 
 @implementation WarlockFontLoader
 
 + (id)sharedInstance
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   WeakRetained = objc_loadWeakRetained(&qword_5A540);
   if (!WeakRetained)
   {
@@ -24,7 +24,7 @@
     objc_storeWeak(&qword_5A540, WeakRetained);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return WeakRetained;
 }
@@ -48,15 +48,15 @@
   return v2;
 }
 
-- (id)stencilFontWithAttributes:(id)a3
+- (id)stencilFontWithAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(WarlockFontLoader *)self stencilFontCacheKeyWithAttributes:v4];
+  attributesCopy = attributes;
+  v5 = [(WarlockFontLoader *)self stencilFontCacheKeyWithAttributes:attributesCopy];
   v6 = [(NSMutableDictionary *)self->_fontCache objectForKey:v5];
   if (!v6)
   {
-    v7 = [objc_opt_class() stencilFontDescriptorWithAttributes:v4];
-    [v4 fontSize];
+    v7 = [objc_opt_class() stencilFontDescriptorWithAttributes:attributesCopy];
+    [attributesCopy fontSize];
     v6 = [CLKFont fontWithDescriptor:v7 size:?];
     [(NSMutableDictionary *)self->_fontCache setObject:v6 forKey:v5];
   }
@@ -64,15 +64,15 @@
   return v6;
 }
 
-- (id)solidFontWithAttributes:(id)a3
+- (id)solidFontWithAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(WarlockFontLoader *)self solidFontCacheKeyWithAttributes:v4];
+  attributesCopy = attributes;
+  v5 = [(WarlockFontLoader *)self solidFontCacheKeyWithAttributes:attributesCopy];
   v6 = [(NSMutableDictionary *)self->_fontCache objectForKey:v5];
   if (!v6)
   {
-    v7 = [objc_opt_class() solidFontDescriptorWithAttributes:v4];
-    [v4 fontSize];
+    v7 = [objc_opt_class() solidFontDescriptorWithAttributes:attributesCopy];
+    [attributesCopy fontSize];
     v6 = [CLKFont fontWithDescriptor:v7 size:?];
     [(NSMutableDictionary *)self->_fontCache setObject:v6 forKey:v5];
   }
@@ -80,14 +80,14 @@
   return v6;
 }
 
-- (id)stencilFontTypographicBoundsWithAttributes:(id)a3
+- (id)stencilFontTypographicBoundsWithAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(WarlockFontLoader *)self stencilFontCacheKeyWithAttributes:v4];
+  attributesCopy = attributes;
+  v5 = [(WarlockFontLoader *)self stencilFontCacheKeyWithAttributes:attributesCopy];
   v6 = [(NSMutableDictionary *)self->_typographicCache objectForKey:v5];
   if (!v6)
   {
-    v7 = [(WarlockFontLoader *)self stencilFontWithAttributes:v4];
+    v7 = [(WarlockFontLoader *)self stencilFontWithAttributes:attributesCopy];
     v6 = [[NTKTimeFontTypographicBounds alloc] initWithText:@"00" font:v7];
     [(NSMutableDictionary *)self->_typographicCache setObject:v6 forKey:v5];
   }
@@ -95,14 +95,14 @@
   return v6;
 }
 
-- (id)solidFontTypographicBoundsWithAttributes:(id)a3
+- (id)solidFontTypographicBoundsWithAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(WarlockFontLoader *)self solidFontCacheKeyWithAttributes:v4];
+  attributesCopy = attributes;
+  v5 = [(WarlockFontLoader *)self solidFontCacheKeyWithAttributes:attributesCopy];
   v6 = [(NSMutableDictionary *)self->_typographicCache objectForKey:v5];
   if (!v6)
   {
-    v7 = [(WarlockFontLoader *)self solidFontWithAttributes:v4];
+    v7 = [(WarlockFontLoader *)self solidFontWithAttributes:attributesCopy];
     v6 = [[NTKTimeFontTypographicBounds alloc] initWithText:@"00" font:v7];
     [(NSMutableDictionary *)self->_typographicCache setObject:v6 forKey:v5];
   }
@@ -110,35 +110,35 @@
   return v6;
 }
 
-- (id)stencilFontCacheKeyWithAttributes:(id)a3
+- (id)stencilFontCacheKeyWithAttributes:(id)attributes
 {
-  v3 = [a3 cacheKey];
-  v4 = [NSString stringWithFormat:@"%@-%@", @"stencil", v3];
+  cacheKey = [attributes cacheKey];
+  v4 = [NSString stringWithFormat:@"%@-%@", @"stencil", cacheKey];
 
   return v4;
 }
 
-- (id)solidFontCacheKeyWithAttributes:(id)a3
+- (id)solidFontCacheKeyWithAttributes:(id)attributes
 {
-  v3 = [a3 cacheKey];
-  v4 = [NSString stringWithFormat:@"%@-%@", @"solid", v3];
+  cacheKey = [attributes cacheKey];
+  v4 = [NSString stringWithFormat:@"%@-%@", @"solid", cacheKey];
 
   return v4;
 }
 
-+ (id)stencilFontDescriptorWithAttributes:(id)a3
++ (id)stencilFontDescriptorWithAttributes:(id)attributes
 {
   v3 = qword_5A550;
-  v4 = a3;
+  attributesCopy = attributes;
   if (v3 != -1)
   {
     sub_36C28();
   }
 
   v5 = qword_5A548;
-  v6 = [v4 fontAttributes];
+  fontAttributes = [attributesCopy fontAttributes];
 
-  v7 = [v5 fontDescriptorByAddingAttributes:v6];
+  v7 = [v5 fontDescriptorByAddingAttributes:fontAttributes];
   v8 = qword_5A548;
   qword_5A548 = v7;
 
@@ -147,19 +147,19 @@
   return v9;
 }
 
-+ (id)solidFontDescriptorWithAttributes:(id)a3
++ (id)solidFontDescriptorWithAttributes:(id)attributes
 {
   v3 = qword_5A560[0];
-  v4 = a3;
+  attributesCopy = attributes;
   if (v3 != -1)
   {
     sub_36C3C();
   }
 
   v5 = qword_5A558;
-  v6 = [v4 fontAttributes];
+  fontAttributes = [attributesCopy fontAttributes];
 
-  v7 = [v5 fontDescriptorByAddingAttributes:v6];
+  v7 = [v5 fontDescriptorByAddingAttributes:fontAttributes];
   v8 = qword_5A558;
   qword_5A558 = v7;
 

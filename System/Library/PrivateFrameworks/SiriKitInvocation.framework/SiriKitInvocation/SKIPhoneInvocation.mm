@@ -1,43 +1,43 @@
 @interface SKIPhoneInvocation
-+ (id)announceDropInCallForType:(int64_t)a3;
-+ (id)announceGroupFaceTimeRequestForAnnounceDirectInvocationPayload:(id)a3;
-+ (id)announceHomeAnnouncementRequestFromApp:(id)a3 withAnnouncementIdentifier:(id)a4 withUserNotificationType:(int64_t)a5 synchronousBurstIndex:(id)a6;
-+ (id)announceIncomingCallNotificationRequest:(id)a3;
-+ (id)announcePayloadFromUserData:(id)a3;
-+ (id)announceVoicemailRequestForAnnounceDirectInvocationPayload:(id)a3;
-+ (id)readHomeAnnouncementRequestFromApp:(id)a3;
-+ (id)startPhoneCallRequestFromApp:(id)a3;
++ (id)announceDropInCallForType:(int64_t)type;
++ (id)announceGroupFaceTimeRequestForAnnounceDirectInvocationPayload:(id)payload;
++ (id)announceHomeAnnouncementRequestFromApp:(id)app withAnnouncementIdentifier:(id)identifier withUserNotificationType:(int64_t)type synchronousBurstIndex:(id)index;
++ (id)announceIncomingCallNotificationRequest:(id)request;
++ (id)announcePayloadFromUserData:(id)data;
++ (id)announceVoicemailRequestForAnnounceDirectInvocationPayload:(id)payload;
++ (id)readHomeAnnouncementRequestFromApp:(id)app;
++ (id)startPhoneCallRequestFromApp:(id)app;
 @end
 
 @implementation SKIPhoneInvocation
 
-+ (id)announceHomeAnnouncementRequestFromApp:(id)a3 withAnnouncementIdentifier:(id)a4 withUserNotificationType:(int64_t)a5 synchronousBurstIndex:(id)a6
++ (id)announceHomeAnnouncementRequestFromApp:(id)app withAnnouncementIdentifier:(id)identifier withUserNotificationType:(int64_t)type synchronousBurstIndex:(id)index
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  appCopy = app;
+  identifierCopy = identifier;
+  indexCopy = index;
   v12 = [[SKIDirectInvocationPayload alloc] initWithIdentifier:@"com.apple.siri.directInvocation.homeCommunication.announce.notification"];
-  v13 = [MEMORY[0x277CBEB38] dictionary];
-  if ([v9 length])
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if ([appCopy length])
   {
-    [v13 setObject:v9 forKeyedSubscript:@"appBundleId"];
+    [dictionary setObject:appCopy forKeyedSubscript:@"appBundleId"];
   }
 
-  if ([v10 length])
+  if ([identifierCopy length])
   {
-    [v13 setObject:v10 forKeyedSubscript:@"announcementId"];
+    [dictionary setObject:identifierCopy forKeyedSubscript:@"announcementId"];
   }
 
-  v14 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
-  [v13 setObject:v14 forKeyedSubscript:@"notificationType"];
+  v14 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+  [dictionary setObject:v14 forKeyedSubscript:@"notificationType"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [v13 setObject:v11 forKeyedSubscript:@"synchronousBurstIndex"];
+    [dictionary setObject:indexCopy forKeyedSubscript:@"synchronousBurstIndex"];
   }
 
-  [(SKIDirectInvocationPayload *)v12 setUserData:v13];
+  [(SKIDirectInvocationPayload *)v12 setUserData:dictionary];
   v15 = +[SKIDirectInvocationContext contextForAnnounceNotifications];
   v16 = [SKIDirectInvocation runSiriKitExecutorCommandWithContext:v15 payload:v12];
   v17 = [SKIDirectInvocation wrapCommandInStartLocalRequest:v16];
@@ -45,15 +45,15 @@
   return v17;
 }
 
-+ (id)readHomeAnnouncementRequestFromApp:(id)a3
++ (id)readHomeAnnouncementRequestFromApp:(id)app
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  appCopy = app;
   v4 = [[SKIDirectInvocationPayload alloc] initWithIdentifier:@"com.apple.siri.directInvocation.homeCommunication.read"];
-  if ([v3 length])
+  if ([appCopy length])
   {
     v11 = @"appBundleId";
-    v12[0] = v3;
+    v12[0] = appCopy;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
     [(SKIDirectInvocationPayload *)v4 setUserData:v5];
   }
@@ -67,20 +67,20 @@
   return v8;
 }
 
-+ (id)announceIncomingCallNotificationRequest:(id)a3
++ (id)announceIncomingCallNotificationRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = +[SKIDirectInvocationContext contextForAnnounceNotifications];
   v5 = [[SKIDirectInvocationPayload alloc] initWithIdentifier:@"com.apple.siri.directInvocation.phone.announceIncomingCallNotification"];
   v6 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:8];
-  v7 = [v3 notification];
+  notification = [requestCopy notification];
 
-  if (v7)
+  if (notification)
   {
     v8 = MEMORY[0x277CCAAB0];
-    v9 = [v3 notification];
+    notification2 = [requestCopy notification];
     v31 = 0;
-    v10 = [v8 archivedDataWithRootObject:v9 requiringSecureCoding:1 error:&v31];
+    v10 = [v8 archivedDataWithRootObject:notification2 requiringSecureCoding:1 error:&v31];
     v11 = v31;
 
     if (v11)
@@ -95,40 +95,40 @@
     [v6 setValue:v10 forKey:@"notification"];
   }
 
-  v13 = [v3 appBundleId];
-  v14 = [v13 length];
+  appBundleId = [requestCopy appBundleId];
+  v14 = [appBundleId length];
 
   if (v14)
   {
-    v15 = [v3 appBundleId];
-    [v6 setValue:v15 forKey:@"appBundleId"];
+    appBundleId2 = [requestCopy appBundleId];
+    [v6 setValue:appBundleId2 forKey:@"appBundleId"];
   }
 
-  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "synchronousBurstIndex")}];
+  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(requestCopy, "synchronousBurstIndex")}];
   [v6 setValue:v16 forKey:@"synchronousBurstIndex"];
 
-  v17 = [v3 appBundleIdOfLastAnnouncement];
-  v18 = [v17 length];
+  appBundleIdOfLastAnnouncement = [requestCopy appBundleIdOfLastAnnouncement];
+  v18 = [appBundleIdOfLastAnnouncement length];
 
   if (v18)
   {
-    v19 = [v3 appBundleIdOfLastAnnouncement];
-    [v6 setValue:v19 forKey:@"appBundleIdOfLastAnnouncement"];
+    appBundleIdOfLastAnnouncement2 = [requestCopy appBundleIdOfLastAnnouncement];
+    [v6 setValue:appBundleIdOfLastAnnouncement2 forKey:@"appBundleIdOfLastAnnouncement"];
   }
 
-  v20 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "isSameTypeAsLastAnnouncement")}];
+  v20 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(requestCopy, "isSameTypeAsLastAnnouncement")}];
   [v6 setValue:v20 forKey:@"isSameTypeAsLastAnnouncement"];
 
   v21 = MEMORY[0x277CCABB0];
-  [v3 timeSinceLastAnnouncement];
+  [requestCopy timeSinceLastAnnouncement];
   v22 = [v21 numberWithDouble:?];
   [v6 setValue:v22 forKey:@"timeSinceLastAnnouncement"];
 
-  v23 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v3, "announcementPlatform")}];
+  v23 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(requestCopy, "announcementPlatform")}];
   [v6 setValue:v23 forKey:@"announcePlatform"];
 
   v30 = 0;
-  v24 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v30];
+  v24 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:requestCopy requiringSecureCoding:1 error:&v30];
   v25 = v30;
   if (v24)
   {
@@ -151,15 +151,15 @@
   return v28;
 }
 
-+ (id)startPhoneCallRequestFromApp:(id)a3
++ (id)startPhoneCallRequestFromApp:(id)app
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  appCopy = app;
   v4 = [[SKIDirectInvocationPayload alloc] initWithIdentifier:@"com.apple.siri.directInvocation.phone.startPhoneCall"];
-  if ([v3 length])
+  if ([appCopy length])
   {
     v11 = @"appBundleId";
-    v12[0] = v3;
+    v12[0] = appCopy;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
     [(SKIDirectInvocationPayload *)v4 setUserData:v5];
   }
@@ -173,26 +173,26 @@
   return v8;
 }
 
-+ (id)announceVoicemailRequestForAnnounceDirectInvocationPayload:(id)a3
++ (id)announceVoicemailRequestForAnnounceDirectInvocationPayload:(id)payload
 {
-  v3 = a3;
+  payloadCopy = payload;
   v30 = +[SKIDirectInvocationContext contextForAnnounceNotifications];
   v4 = [[SKIDirectInvocationPayload alloc] initWithIdentifier:@"com.apple.siri.directInvocation.phone.announceVoicemail"];
   v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:9];
-  v6 = [v3 notification];
-  v7 = [v6 request];
-  v8 = [v7 content];
+  notification = [payloadCopy notification];
+  request = [notification request];
+  content = [request content];
 
-  v29 = v8;
-  v9 = [v8 userInfo];
-  v10 = [v9 valueForKey:@"VMVoicemailIdentifier"];
+  v29 = content;
+  userInfo = [content userInfo];
+  v10 = [userInfo valueForKey:@"VMVoicemailIdentifier"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [v5 setValue:v10 forKey:@"VMVoicemailIdentifier"];
   }
 
-  v11 = [v9 valueForKey:@"MessageIdentifier"];
+  v11 = [userInfo valueForKey:@"MessageIdentifier"];
   if ([v11 length])
   {
     [v5 setValue:v11 forKey:@"MessageIdentifier"];
@@ -200,37 +200,37 @@
 
   v27 = v11;
   v28 = v10;
-  v12 = [v9 valueForKey:@"contactInfo"];
+  v12 = [userInfo valueForKey:@"contactInfo"];
   if ([v12 length])
   {
     [v5 setValue:v12 forKey:@"contactInfo"];
   }
 
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "synchronousBurstIndex")}];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(payloadCopy, "synchronousBurstIndex")}];
   [v5 setValue:v13 forKey:@"synchronousBurstIndex"];
 
-  v14 = [v3 appBundleIdOfLastAnnouncement];
-  v15 = [v14 length];
+  appBundleIdOfLastAnnouncement = [payloadCopy appBundleIdOfLastAnnouncement];
+  v15 = [appBundleIdOfLastAnnouncement length];
 
   if (v15)
   {
-    v16 = [v3 appBundleIdOfLastAnnouncement];
-    [v5 setValue:v16 forKey:@"appBundleIdOfLastAnnouncement"];
+    appBundleIdOfLastAnnouncement2 = [payloadCopy appBundleIdOfLastAnnouncement];
+    [v5 setValue:appBundleIdOfLastAnnouncement2 forKey:@"appBundleIdOfLastAnnouncement"];
   }
 
-  v17 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "isSameTypeAsLastAnnouncement")}];
+  v17 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(payloadCopy, "isSameTypeAsLastAnnouncement")}];
   [v5 setValue:v17 forKey:@"isSameTypeAsLastAnnouncement"];
 
   v18 = MEMORY[0x277CCABB0];
-  [v3 timeSinceLastAnnouncement];
+  [payloadCopy timeSinceLastAnnouncement];
   v19 = [v18 numberWithDouble:?];
   [v5 setValue:v19 forKey:@"timeSinceLastAnnouncement"];
 
-  v20 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v3, "announcementPlatform")}];
+  v20 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(payloadCopy, "announcementPlatform")}];
   [v5 setValue:v20 forKey:@"announcePlatform"];
 
   v31 = 0;
-  v21 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v31];
+  v21 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:payloadCopy requiringSecureCoding:1 error:&v31];
   v22 = v31;
   if (v21)
   {
@@ -253,82 +253,82 @@
   return v25;
 }
 
-+ (id)announceGroupFaceTimeRequestForAnnounceDirectInvocationPayload:(id)a3
++ (id)announceGroupFaceTimeRequestForAnnounceDirectInvocationPayload:(id)payload
 {
-  v3 = a3;
+  payloadCopy = payload;
   v4 = +[SKIDirectInvocationContext contextForAnnounceNotifications];
   v5 = [[SKIDirectInvocationPayload alloc] initWithIdentifier:@"com.apple.siri.directInvocation.phone.announceGroupFaceTimeInvite"];
   v6 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:11];
-  v7 = [v3 notification];
-  v8 = [v7 request];
+  notification = [payloadCopy notification];
+  request = [notification request];
 
-  v9 = [v8 content];
-  v10 = [v9 userInfo];
-  v11 = [v10 valueForKey:@"remoteParticipantHandles"];
+  content = [request content];
+  userInfo = [content userInfo];
+  v11 = [userInfo valueForKey:@"remoteParticipantHandles"];
   if ([v11 count])
   {
     [v6 setValue:v11 forKey:@"remoteParticipantHandles"];
   }
 
-  v37 = v10;
-  v12 = [v10 valueForKey:@"activeParticipantHandles"];
+  v37 = userInfo;
+  v12 = [userInfo valueForKey:@"activeParticipantHandles"];
   if ([v12 count])
   {
     [v6 setValue:v12 forKey:@"activeParticipantHandles"];
   }
 
   v36 = v12;
-  v13 = [v9 defaultActionURL];
-  v14 = [v13 absoluteString];
+  defaultActionURL = [content defaultActionURL];
+  absoluteString = [defaultActionURL absoluteString];
 
-  if ([v14 length])
+  if ([absoluteString length])
   {
-    [v6 setValue:v14 forKey:@"defaultActionURL"];
+    [v6 setValue:absoluteString forKey:@"defaultActionURL"];
   }
 
-  v15 = [v9 subtitle];
-  if ([v15 length])
+  subtitle = [content subtitle];
+  if ([subtitle length])
   {
-    [v6 setValue:v15 forKey:@"subtitle"];
+    [v6 setValue:subtitle forKey:@"subtitle"];
   }
 
-  v35 = v14;
-  v38 = v9;
-  v39 = v8;
-  v16 = [v8 identifier];
-  if ([v16 length])
+  v35 = absoluteString;
+  v38 = content;
+  v39 = request;
+  identifier = [request identifier];
+  if ([identifier length])
   {
-    [v6 setValue:v16 forKey:@"identifier"];
+    [v6 setValue:identifier forKey:@"identifier"];
   }
 
-  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "synchronousBurstIndex")}];
+  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(payloadCopy, "synchronousBurstIndex")}];
   [v6 setValue:v17 forKey:@"synchronousBurstIndex"];
 
-  v18 = [v3 appBundleIdOfLastAnnouncement];
-  v19 = [v18 length];
+  appBundleIdOfLastAnnouncement = [payloadCopy appBundleIdOfLastAnnouncement];
+  v19 = [appBundleIdOfLastAnnouncement length];
 
   if (v19)
   {
-    v20 = [v3 appBundleIdOfLastAnnouncement];
-    [v6 setValue:v20 forKey:@"appBundleIdOfLastAnnouncement"];
+    appBundleIdOfLastAnnouncement2 = [payloadCopy appBundleIdOfLastAnnouncement];
+    [v6 setValue:appBundleIdOfLastAnnouncement2 forKey:@"appBundleIdOfLastAnnouncement"];
   }
 
-  v34 = v16;
-  v21 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "isSameTypeAsLastAnnouncement")}];
+  v34 = identifier;
+  v21 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(payloadCopy, "isSameTypeAsLastAnnouncement")}];
   [v6 setValue:v21 forKey:@"isSameTypeAsLastAnnouncement"];
 
   v22 = MEMORY[0x277CCABB0];
-  [v3 timeSinceLastAnnouncement];
+  [payloadCopy timeSinceLastAnnouncement];
   v23 = [v22 numberWithDouble:?];
   [v6 setValue:v23 forKey:@"timeSinceLastAnnouncement"];
 
-  v24 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v3, "announcementPlatform")}];
+  v24 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(payloadCopy, "announcementPlatform")}];
   [v6 setValue:v24 forKey:@"announcePlatform"];
 
   v40 = 0;
-  v25 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v40];
+  v25 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:payloadCopy requiringSecureCoding:1 error:&v40];
   v26 = v40;
-  v27 = v15;
+  v27 = subtitle;
   if (v25)
   {
     v28 = v11;
@@ -354,14 +354,14 @@
   return v32;
 }
 
-+ (id)announceDropInCallForType:(int64_t)a3
++ (id)announceDropInCallForType:(int64_t)type
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v4 = [[SKIDirectInvocationPayload alloc] initWithIdentifier:@"com.apple.siri.directInvocation.phone.announceCallBell"];
-  if (a3)
+  if (type)
   {
     v12 = @"announcementType";
-    v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v5 = [MEMORY[0x277CCABB0] numberWithInteger:type];
     v13[0] = v5;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     [(SKIDirectInvocationPayload *)v4 setUserData:v6];
@@ -376,9 +376,9 @@
   return v9;
 }
 
-+ (id)announcePayloadFromUserData:(id)a3
++ (id)announcePayloadFromUserData:(id)data
 {
-  v3 = [a3 objectForKeyedSubscript:@"announcePayload"];
+  v3 = [data objectForKeyedSubscript:@"announcePayload"];
   v8 = 0;
   v4 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:&v8];
   v5 = v8;

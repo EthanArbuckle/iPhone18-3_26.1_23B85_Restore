@@ -2,7 +2,7 @@
 - (WKWebView)webView;
 - (void)cancel;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation _WKDataTask
@@ -42,15 +42,15 @@
   return v5;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
-    v5 = a3;
+    delegateCopy = delegate;
   }
 
   m_ptr = self->_delegate.m_ptr;
-  self->_delegate.m_ptr = a3;
+  self->_delegate.m_ptr = delegate;
   if (m_ptr)
   {
   }
@@ -69,7 +69,7 @@
   *(NonCompact + 8) = 1;
   *NonCompact = &unk_1F10FB330;
   *(NonCompact + 16) = 0;
-  objc_initWeak((NonCompact + 16), a3);
+  objc_initWeak((NonCompact + 16), delegate);
   *(v8 + 24) = *(v8 + 24) & 0xFE | objc_opt_respondsToSelector() & 1;
   if (objc_opt_respondsToSelector())
   {

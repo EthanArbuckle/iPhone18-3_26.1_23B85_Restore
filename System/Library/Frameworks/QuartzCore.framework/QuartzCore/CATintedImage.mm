@@ -1,15 +1,15 @@
 @interface CATintedImage
-+ (id)tintedImageWithCABackingStore:(CABackingStore *)a3;
-+ (id)tintedImageWithCGImage:(CGImage *)a3 tint:(CGColor *)a4 copyFlags:(unsigned int)a5;
-+ (void)CAMLParserStartElement:(id)a3;
-- (CATintedImage)initWithCoder:(id)a3;
-- (id)CAMLTypeForKey:(id)a3;
-- (void)CAMLParser:(id)a3 setValue:(id)a4 forKey:(id)a5;
++ (id)tintedImageWithCABackingStore:(CABackingStore *)store;
++ (id)tintedImageWithCGImage:(CGImage *)image tint:(CGColor *)tint copyFlags:(unsigned int)flags;
++ (void)CAMLParserStartElement:(id)element;
+- (CATintedImage)initWithCoder:(id)coder;
+- (id)CAMLTypeForKey:(id)key;
+- (void)CAMLParser:(id)parser setValue:(id)value forKey:(id)key;
 - (void)CA_copyRenderValue;
 - (void)CA_prepareRenderValue;
 - (void)dealloc;
-- (void)encodeWithCAMLWriter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCAMLWriter:(id)writer;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CATintedImage
@@ -82,14 +82,14 @@
   [(CATintedImage *)&v3 dealloc];
 }
 
-- (id)CAMLTypeForKey:(id)a3
+- (id)CAMLTypeForKey:(id)key
 {
-  if ([a3 isEqualToString:@"image"])
+  if ([key isEqualToString:@"image"])
   {
     return @"CGImage";
   }
 
-  if ([a3 isEqualToString:@"tint"])
+  if ([key isEqualToString:@"tint"])
   {
     return @"CGColor";
   }
@@ -97,40 +97,40 @@
   return 0;
 }
 
-- (void)encodeWithCAMLWriter:(id)a3
+- (void)encodeWithCAMLWriter:(id)writer
 {
   if (self->_image)
   {
-    [a3 beginPropertyElement:@"image"];
-    [a3 encodeObject:self->_image];
-    [a3 endElement];
+    [writer beginPropertyElement:@"image"];
+    [writer encodeObject:self->_image];
+    [writer endElement];
   }
 
   if (self->_tint)
   {
-    [a3 beginPropertyElement:@"tint"];
-    [a3 encodeObject:self->_tint];
+    [writer beginPropertyElement:@"tint"];
+    [writer encodeObject:self->_tint];
 
-    [a3 endElement];
+    [writer endElement];
   }
 }
 
-- (void)CAMLParser:(id)a3 setValue:(id)a4 forKey:(id)a5
+- (void)CAMLParser:(id)parser setValue:(id)value forKey:(id)key
 {
-  if ([a5 isEqualToString:@"image"])
+  if ([key isEqualToString:@"image"])
   {
 
-    [(CATintedImage *)self setImage:a4];
+    [(CATintedImage *)self setImage:value];
   }
 
-  else if ([a5 isEqualToString:@"tint"])
+  else if ([key isEqualToString:@"tint"])
   {
 
-    [(CATintedImage *)self setTint:a4];
+    [(CATintedImage *)self setTint:value];
   }
 }
 
-- (CATintedImage)initWithCoder:(id)a3
+- (CATintedImage)initWithCoder:(id)coder
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -138,7 +138,7 @@
   v4 = [(CATintedImage *)&v8 init];
   if (v4)
   {
-    if ((-[CATintedImage setImage:](v4, "setImage:", [a3 CA_decodeObjectForKey:@"image"]), -[CATintedImage setTint:](v4, "setTint:", objc_msgSend(a3, "CA_decodeObjectForKey:", @"tint")), -[CATintedImage image](v4, "image")) && (v5 = CFGetTypeID(-[CATintedImage image](v4, "image")), v5 != CGImageGetTypeID()) || -[CATintedImage tint](v4, "tint") && (v6 = CFGetTypeID(-[CATintedImage tint](v4, "tint")), v6 != CGColorGetTypeID()))
+    if ((-[CATintedImage setImage:](v4, "setImage:", [coder CA_decodeObjectForKey:@"image"]), -[CATintedImage setTint:](v4, "setTint:", objc_msgSend(coder, "CA_decodeObjectForKey:", @"tint")), -[CATintedImage image](v4, "image")) && (v5 = CFGetTypeID(-[CATintedImage image](v4, "image")), v5 != CGImageGetTypeID()) || -[CATintedImage tint](v4, "tint") && (v6 = CFGetTypeID(-[CATintedImage tint](v4, "tint")), v6 != CGColorGetTypeID()))
     {
 
       return 0;
@@ -148,41 +148,41 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   image = self->_image;
   if (image)
   {
-    [a3 CA_encodeObject:image forKey:@"image" conditional:0];
+    [coder CA_encodeObject:image forKey:@"image" conditional:0];
     if (self->_tint)
     {
 
-      [a3 CA_encodeObject:? forKey:? conditional:?];
+      [coder CA_encodeObject:? forKey:? conditional:?];
     }
   }
 }
 
-+ (void)CAMLParserStartElement:(id)a3
++ (void)CAMLParserStartElement:(id)element
 {
   v4 = objc_opt_new();
-  [a3 setElementValue:v4];
+  [element setElementValue:v4];
 }
 
-+ (id)tintedImageWithCABackingStore:(CABackingStore *)a3
++ (id)tintedImageWithCABackingStore:(CABackingStore *)store
 {
   v4 = objc_opt_new();
-  v4[1] = CABackingStoreCopyCGImage(a3);
-  v4[2] = CABackingStoreCopyTintColor(a3);
+  v4[1] = CABackingStoreCopyCGImage(store);
+  v4[2] = CABackingStoreCopyTintColor(store);
 
   return v4;
 }
 
-+ (id)tintedImageWithCGImage:(CGImage *)a3 tint:(CGColor *)a4 copyFlags:(unsigned int)a5
++ (id)tintedImageWithCGImage:(CGImage *)image tint:(CGColor *)tint copyFlags:(unsigned int)flags
 {
   v8 = objc_opt_new();
-  *(v8 + 8) = CGImageRetain(a3);
-  *(v8 + 16) = CGColorRetain(a4);
-  *(v8 + 24) = a5;
+  *(v8 + 8) = CGImageRetain(image);
+  *(v8 + 16) = CGColorRetain(tint);
+  *(v8 + 24) = flags;
 
   return v8;
 }

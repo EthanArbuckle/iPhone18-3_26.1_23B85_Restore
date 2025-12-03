@@ -1,10 +1,10 @@
 @interface NSConcreteMapTable
-- (BOOL)containsKeys:(const void *)a3 values:(const void *)a4 count:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)mapMember:(const void *)a3 originalKey:(const void *)a4 value:(const void *)a5;
-- (NSConcreteMapTable)initWithCoder:(id)a3;
-- (NSConcreteMapTable)initWithKeyOptions:(unint64_t)a3 valueOptions:(unint64_t)a4 capacity:(unint64_t)a5;
-- (NSConcreteMapTable)initWithKeyPointerFunctions:(id)a3 valuePointerFunctions:(id)a4 capacity:(unint64_t)a5;
+- (BOOL)containsKeys:(const void *)keys values:(const void *)values count:(unint64_t)count;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)mapMember:(const void *)member originalKey:(const void *)key value:(const void *)value;
+- (NSConcreteMapTable)initWithCoder:(id)coder;
+- (NSConcreteMapTable)initWithKeyOptions:(unint64_t)options valueOptions:(unint64_t)valueOptions capacity:(unint64_t)capacity;
+- (NSConcreteMapTable)initWithKeyPointerFunctions:(id)functions valuePointerFunctions:(id)pointerFunctions capacity:(unint64_t)capacity;
 - (id)allKeys;
 - (id)allValues;
 - (id)copy;
@@ -12,28 +12,28 @@
 - (id)dump;
 - (id)keyEnumerator;
 - (id)keyPointerFunctions;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (id)valuePointerFunctions;
 - (unint64_t)count;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (unint64_t)getKeys:(const void *)a3 values:(const void *)a4;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (unint64_t)getKeys:(const void *)keys values:(const void *)values;
 - (unint64_t)hash;
 - (unint64_t)realCount;
-- (unint64_t)rehashAround:(unint64_t)a3;
+- (unint64_t)rehashAround:(unint64_t)around;
 - (void)_setBackingStore;
-- (void)assign:(unint64_t)a3 key:(const void *)a4 value:(const void *)a5 isNew:(BOOL)a6;
-- (void)checkCount:(const char *)a3;
+- (void)assign:(unint64_t)assign key:(const void *)key value:(const void *)value isNew:(BOOL)new;
+- (void)checkCount:(const char *)count;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)existingItemForSetItem:(const void *)a3 forAbsentKey:(const void *)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)existingItemForSetItem:(const void *)item forAbsentKey:(const void *)key;
 - (void)grow;
 - (void)rehash;
 - (void)removeAllItems;
-- (void)removeObjectForKey:(id)a3;
-- (void)replaceItem:(const void *)a3 forExistingKey:(const void *)a4;
-- (void)setItem:(const void *)a3 forAbsentKey:(const void *)a4;
-- (void)setItem:(const void *)a3 forKnownAbsentKey:(const void *)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)replaceItem:(const void *)item forExistingKey:(const void *)key;
+- (void)setItem:(const void *)item forAbsentKey:(const void *)key;
+- (void)setItem:(const void *)item forKnownAbsentKey:(const void *)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation NSConcreteMapTable
@@ -325,7 +325,7 @@
 
 - (id)allValues
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (self->capacity)
   {
     v4 = 0;
@@ -347,7 +347,7 @@
 
       if (!v9)
       {
-        [v3 addObject:v7];
+        [array addObject:v7];
       }
 
       (*(self->keys.internalProps + 4))(v6);
@@ -359,12 +359,12 @@
     while (v5 < self->capacity);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)allKeys
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (self->capacity)
   {
     v4 = 0;
@@ -386,7 +386,7 @@
 
       if (!v9)
       {
-        [v3 addObject:v6];
+        [array addObject:v6];
       }
 
       (*(self->keys.internalProps + 4))(v6);
@@ -398,7 +398,7 @@
     while (v5 < self->capacity);
   }
 
-  return v3;
+  return array;
 }
 
 - (unint64_t)hash
@@ -494,57 +494,57 @@
   return v4;
 }
 
-- (void)checkCount:(const char *)a3
+- (void)checkCount:(const char *)count
 {
-  v4 = [(NSConcreteMapTable *)self realCount];
+  realCount = [(NSConcreteMapTable *)self realCount];
   count = self->count;
-  if (v4 > count && !self->shouldRehash)
+  if (realCount > count && !self->shouldRehash)
   {
-    v6 = [NSString stringWithFormat:@"*** [NSMapTable %@] real count %ld exceeds count %ld when it shouldn't", self, v4, count];
+    v6 = [NSString stringWithFormat:@"*** [NSMapTable %@] real count %ld exceeds count %ld when it shouldn't", self, realCount, count];
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:v6 userInfo:0]);
   }
 }
 
-- (NSConcreteMapTable)initWithKeyOptions:(unint64_t)a3 valueOptions:(unint64_t)a4 capacity:(unint64_t)a5
+- (NSConcreteMapTable)initWithKeyOptions:(unint64_t)options valueOptions:(unint64_t)valueOptions capacity:(unint64_t)capacity
 {
-  if (a5 >= 5)
+  if (capacity >= 5)
   {
-    if ((a5 & (a5 - 1)) != 0)
+    if ((capacity & (capacity - 1)) != 0)
     {
       v7 = 0;
       do
       {
         v8 = v7 + 1;
-        if (a5 < 2)
+        if (capacity < 2)
         {
           break;
         }
 
-        a5 >>= 1;
+        capacity >>= 1;
       }
 
       while (v7++ < 0x17);
       v10 = 1 << v8;
       if (v10 <= 4)
       {
-        a5 = 4;
+        capacity = 4;
       }
 
       else
       {
-        a5 = v10;
+        capacity = v10;
       }
     }
   }
 
   else
   {
-    a5 = 4;
+    capacity = 4;
   }
 
-  self->capacity = a5;
-  self->keyOptions = a3;
-  self->valueOptions = a4;
+  self->capacity = capacity;
+  self->keyOptions = options;
+  self->valueOptions = valueOptions;
   self->count = 0;
   self->mutations = 0;
   self->growLock._os_unfair_lock_opaque = 0;
@@ -561,54 +561,54 @@
   return self;
 }
 
-- (NSConcreteMapTable)initWithKeyPointerFunctions:(id)a3 valuePointerFunctions:(id)a4 capacity:(unint64_t)a5
+- (NSConcreteMapTable)initWithKeyPointerFunctions:(id)functions valuePointerFunctions:(id)pointerFunctions capacity:(unint64_t)capacity
 {
-  if (!a3 || !a4)
+  if (!functions || !pointerFunctions)
   {
     v13 = [NSString stringWithFormat:@"*** [NSMapTable %@] Requested configuration not supported.", NSStringFromSelector(a2)];
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:v13 userInfo:0]);
   }
 
-  NSSliceInitWithSlice(&self->keys.items, a3 + 1);
-  NSSliceInitWithSlice(&self->values.items, a4 + 1);
+  NSSliceInitWithSlice(&self->keys.items, functions + 1);
+  NSSliceInitWithSlice(&self->values.items, pointerFunctions + 1);
   self->hasDynamicSlices = 1;
-  if (a5 >= 5)
+  if (capacity >= 5)
   {
-    if ((a5 & (a5 - 1)) != 0)
+    if ((capacity & (capacity - 1)) != 0)
     {
       v8 = 0;
       do
       {
         v9 = v8 + 1;
-        if (a5 < 2)
+        if (capacity < 2)
         {
           break;
         }
 
-        a5 >>= 1;
+        capacity >>= 1;
       }
 
       while (v8++ < 0x17);
       v11 = 1 << v9;
       if (v11 <= 4)
       {
-        a5 = 4;
+        capacity = 4;
       }
 
       else
       {
-        a5 = v11;
+        capacity = v11;
       }
     }
   }
 
   else
   {
-    a5 = 4;
+    capacity = 4;
   }
 
-  self->capacity = a5;
+  self->capacity = capacity;
   self->count = 0;
   self->mutations = 0;
   self->keyOptions = 0x20000;
@@ -620,16 +620,16 @@
   return self;
 }
 
-- (NSConcreteMapTable)initWithCoder:(id)a3
+- (NSConcreteMapTable)initWithCoder:(id)coder
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [a3 containsValueForKey:@"NS.count"])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [coder containsValueForKey:@"NS.count"])
   {
-    v5 = [a3 decodeInt64ForKey:@"NS.count"];
+    v5 = [coder decodeInt64ForKey:@"NS.count"];
     if (v5 < 0)
     {
 
-      [a3 failWithError:{+[NSError _readCorruptErrorWithFormat:](NSError, "_readCorruptErrorWithFormat:", @"NSMapTable archive contains negative count"}];
+      [coder failWithError:{+[NSError _readCorruptErrorWithFormat:](NSError, "_readCorruptErrorWithFormat:", @"NSMapTable archive contains negative count"}];
       return 0;
     }
 
@@ -644,13 +644,13 @@
   }
 
   v21[0] = 0;
-  [a3 decodeValueOfObjCType:"i" at:v21 + 4 size:4];
-  [a3 decodeValueOfObjCType:"i" at:v21 size:4];
+  [coder decodeValueOfObjCType:"i" at:v21 + 4 size:4];
+  [coder decodeValueOfObjCType:"i" at:v21 size:4];
   v8 = SHIDWORD(v21[0]);
   if ((_NSPointerFunctionCoding_isValidOptions(SWORD2(v21[0])) & 1) == 0)
   {
 
-    [a3 failWithError:{+[NSError _readCorruptErrorWithFormat:](NSError, "_readCorruptErrorWithFormat:", @"Decoded unsupported NSMapTable key options %x", HIDWORD(v21[0]))}];
+    [coder failWithError:{+[NSError _readCorruptErrorWithFormat:](NSError, "_readCorruptErrorWithFormat:", @"Decoded unsupported NSMapTable key options %x", HIDWORD(v21[0]))}];
     return 0;
   }
 
@@ -658,7 +658,7 @@
   if ((_NSPointerFunctionCoding_isValidOptions(v21[0]) & 1) == 0)
   {
 
-    [a3 failWithError:{+[NSError _readCorruptErrorWithFormat:](NSError, "_readCorruptErrorWithFormat:", @"Decoded unsupported NSMapTable value options %x", LODWORD(v21[0]))}];
+    [coder failWithError:{+[NSError _readCorruptErrorWithFormat:](NSError, "_readCorruptErrorWithFormat:", @"Decoded unsupported NSMapTable value options %x", LODWORD(v21[0]))}];
     return 0;
   }
 
@@ -674,36 +674,36 @@
     v12 = v21[0] & 5;
     while (1)
     {
-      if (([a3 _containsNextUnkeyedObject] & 1) == 0)
+      if (([coder _containsNextUnkeyedObject] & 1) == 0)
       {
         v18 = [NSError _readCorruptErrorWithFormat:@"Missing expected key for key while decoding NSMapTable"];
 
-        [a3 failWithError:v18];
+        [coder failWithError:v18];
         return 0;
       }
 
-      v13 = [a3 decodeObject];
-      if (([a3 _containsNextUnkeyedObject] & 1) == 0)
+      decodeObject = [coder decodeObject];
+      if (([coder _containsNextUnkeyedObject] & 1) == 0)
       {
         v19 = [NSError _readCorruptErrorWithFormat:@"Missing expected key for value while decoding NSMapTable"];
 
-        [a3 failWithError:v19];
+        [coder failWithError:v19];
         return 0;
       }
 
-      v14 = [a3 decodeObject];
-      if (v13)
+      decodeObject2 = [coder decodeObject];
+      if (decodeObject)
       {
-        if (v14)
+        if (decodeObject2)
         {
-          [(NSConcreteMapTable *)v10 setObject:v14 forKey:v13];
+          [(NSConcreteMapTable *)v10 setObject:decodeObject2 forKey:decodeObject];
         }
 
         else if (!v12)
         {
 LABEL_31:
 
-          [a3 failWithError:{+[NSError _readCorruptErrorWithFormat:](NSError, "_readCorruptErrorWithFormat:", @"Missing key while decoding NSMapTable"}];
+          [coder failWithError:{+[NSError _readCorruptErrorWithFormat:](NSError, "_readCorruptErrorWithFormat:", @"Missing key while decoding NSMapTable"}];
           return 0;
         }
       }
@@ -720,7 +720,7 @@ LABEL_31:
     }
   }
 
-  for (i = [a3 decodeObject]; ; i = objc_msgSend(a3, "decodeObject"))
+  for (i = [coder decodeObject]; ; i = objc_msgSend(coder, "decodeObject"))
   {
     v16 = i;
     if (!i)
@@ -728,26 +728,26 @@ LABEL_31:
       break;
     }
 
-    v17 = [a3 decodeObject];
-    if (!v17)
+    decodeObject3 = [coder decodeObject];
+    if (!decodeObject3)
     {
 
-      [a3 failWithError:{+[NSError _readCorruptErrorWithFormat:](NSError, "_readCorruptErrorWithFormat:", @"Missing object for non-nil key %@ while decoding NSMapTable", v16)}];
+      [coder failWithError:{+[NSError _readCorruptErrorWithFormat:](NSError, "_readCorruptErrorWithFormat:", @"Missing object for non-nil key %@ while decoding NSMapTable", v16)}];
       return 0;
     }
 
-    [(NSConcreteMapTable *)v10 setObject:v17 forKey:v16];
+    [(NSConcreteMapTable *)v10 setObject:decodeObject3 forKey:v16];
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v38 = *MEMORY[0x1E69E9840];
   keyOptions = self->keyOptions;
   valueOptions = self->valueOptions;
-  v7 = [a3 allowsKeyedCoding];
+  allowsKeyedCoding = [coder allowsKeyedCoding];
   if ((_NSPointerFunctionCoding_isValidOptions(self->keyOptions) & 1) == 0)
   {
     v27 = MEMORY[0x1E695DF30];
@@ -776,7 +776,7 @@ LABEL_31:
   v10 = v9;
   v31 = valueOptions;
   v32 = keyOptions;
-  v30 = v7;
+  v30 = allowsKeyedCoding;
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
@@ -849,7 +849,7 @@ LABEL_46:
 
   if ((v32 & 7) != 5)
   {
-    v7 = 0;
+    allowsKeyedCoding = 0;
   }
 
   if (v19 == 5)
@@ -862,8 +862,8 @@ LABEL_46:
     v22 = 0;
   }
 
-  [a3 encodeValueOfObjCType:"i" at:&self->keyOptions];
-  [a3 encodeValueOfObjCType:"i" at:&self->valueOptions];
+  [coder encodeValueOfObjCType:"i" at:&self->keyOptions];
+  [coder encodeValueOfObjCType:"i" at:&self->valueOptions];
   if (v13)
   {
     v23 = v10;
@@ -871,25 +871,25 @@ LABEL_46:
     do
     {
       v25 = *v23;
-      if (v7)
+      if (allowsKeyedCoding)
       {
-        [a3 encodeConditionalObject:v25];
+        [coder encodeConditionalObject:v25];
       }
 
       else
       {
-        [a3 encodeObject:v25];
+        [coder encodeObject:v25];
       }
 
       v26 = v23[count];
       if (v22)
       {
-        [a3 encodeConditionalObject:v26];
+        [coder encodeConditionalObject:v26];
       }
 
       else
       {
-        [a3 encodeObject:v26];
+        [coder encodeObject:v26];
       }
 
       ++v23;
@@ -899,11 +899,11 @@ LABEL_46:
     while (v24);
   }
 
-  [a3 encodeObject:0];
+  [coder encodeObject:0];
   free(v10);
   if (v30)
   {
-    [a3 encodeInt64:v13 forKey:@"NS.count"];
+    [coder encodeInt64:v13 forKey:@"NS.count"];
   }
 }
 
@@ -923,33 +923,33 @@ LABEL_46:
   return v3;
 }
 
-- (BOOL)containsKeys:(const void *)a3 values:(const void *)a4 count:(unint64_t)a5
+- (BOOL)containsKeys:(const void *)keys values:(const void *)values count:(unint64_t)count
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a5)
+  if (count)
   {
     v9 = 0;
     v10 = 0;
-    while ([(NSConcreteMapTable *)self objectForKey:a3[v10]])
+    while ([(NSConcreteMapTable *)self objectForKey:keys[v10]])
     {
       v14 = 0;
-      v11 = probeGC(self, a3[v10], &v14, 0, 0);
+      v11 = probeGC(self, keys[v10], &v14, 0, 0);
       v12 = (*(self->values.internalProps + 3))(&self->values.items[v11], 0);
-      if (v14 != 1 || ((*(self->values.personalityProps + 3))(a4[v10], v12, *(self->values.personalityProps + 1)) & 1) == 0)
+      if (v14 != 1 || ((*(self->values.personalityProps + 3))(values[v10], v12, *(self->values.personalityProps + 1)) & 1) == 0)
       {
         (*(self->values.internalProps + 4))(v12);
         return v9;
       }
 
       (*(self->values.internalProps + 4))(v12);
-      v9 = ++v10 >= a5;
-      if (a5 == v10)
+      v9 = ++v10 >= count;
+      if (count == v10)
       {
         return 1;
       }
     }
 
-    NSLog(@"*** not a member: %p\n", a3[v10]);
+    NSLog(@"*** not a member: %p\n", keys[v10]);
   }
 
   else
@@ -987,20 +987,20 @@ LABEL_46:
   return v3;
 }
 
-- (void)assign:(unint64_t)a3 key:(const void *)a4 value:(const void *)a5 isNew:(BOOL)a6
+- (void)assign:(unint64_t)assign key:(const void *)key value:(const void *)value isNew:(BOOL)new
 {
   ++self->mutations;
-  if (a6)
+  if (new)
   {
     p_keys = &self->keys;
     acquisitionProps = self->keys.acquisitionProps;
     v12 = *(acquisitionProps + 1);
     if (v12)
     {
-      a4 = v12(a4, *(self->keys.personalityProps + 1), *(acquisitionProps + 4));
+      key = v12(key, *(self->keys.personalityProps + 1), *(acquisitionProps + 4));
     }
 
-    (*(self->keys.internalProps + 7))(p_keys->items, a3, a4);
+    (*(self->keys.internalProps + 7))(p_keys->items, assign, key);
   }
 
   p_values = &self->values;
@@ -1008,37 +1008,37 @@ LABEL_46:
   v15 = *(v14 + 1);
   if (v15)
   {
-    a5 = v15(a5, *(p_values->personalityProps + 1), *(v14 + 4), a4);
+    value = v15(value, *(p_values->personalityProps + 1), *(v14 + 4), key);
   }
 
-  if (!a6)
+  if (!new)
   {
     if (*(p_values->acquisitionProps + 2))
     {
-      v16 = (*(p_values->internalProps + 3))(&p_values->items[a3], 0, a3, a4);
+      v16 = (*(p_values->internalProps + 3))(&p_values->items[assign], 0, assign, key);
       (*(p_values->acquisitionProps + 2))(v16, *(p_values->personalityProps + 1));
       (*(p_values->internalProps + 4))(v16);
     }
 
-    (*(p_values->internalProps + 6))(&p_values->items[a3], a2, a3, a4);
+    (*(p_values->internalProps + 6))(&p_values->items[assign], a2, assign, key);
   }
 
   v17 = *(p_values->internalProps + 7);
   items = p_values->items;
 
-  v17(items, a3, a5);
+  v17(items, assign, value);
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!key)
   {
     return 0;
   }
 
   v8 = 0;
-  v4 = probeGC(self, a3, &v8, 0, 0);
+  v4 = probeGC(self, key, &v8, 0, 0);
   v5 = 0;
   if (v8 == 1)
   {
@@ -1050,16 +1050,16 @@ LABEL_46:
   return v5;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (object)
   {
-    if (a4)
+    if (key)
     {
       v9 = 0;
-      v7 = probeGC(self, a4, &v9, 0, 1);
-      [(NSConcreteMapTable *)self assign:v7 key:a4 value:a3 isNew:(v9 & 1) == 0];
+      v7 = probeGC(self, key, &v9, 0, 1);
+      [(NSConcreteMapTable *)self assign:v7 key:key value:object isNew:(v9 & 1) == 0];
       if ((v9 & 1) == 0)
       {
         v8 = self->count + 1;
@@ -1073,18 +1073,18 @@ LABEL_46:
   }
 }
 
-- (void)setItem:(const void *)a3 forAbsentKey:(const void *)a4
+- (void)setItem:(const void *)item forAbsentKey:(const void *)key
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (item)
   {
-    if (a4)
+    if (key)
     {
       v9 = 0;
-      v7 = probeGC(self, a4, &v9, 0, 1);
+      v7 = probeGC(self, key, &v9, 0, 1);
       if ((v9 & 1) == 0)
       {
-        [(NSConcreteMapTable *)self assign:v7 key:a4 value:a3 isNew:1];
+        [(NSConcreteMapTable *)self assign:v7 key:key value:item isNew:1];
         v8 = self->count + 1;
         self->count = v8;
         if (self->capacity < 2 * v8)
@@ -1096,19 +1096,19 @@ LABEL_46:
   }
 }
 
-- (void)setItem:(const void *)a3 forKnownAbsentKey:(const void *)a4
+- (void)setItem:(const void *)item forKnownAbsentKey:(const void *)key
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3 && a4)
+  if (item && key)
   {
     v9 = 0;
-    v7 = probeGC(self, a4, &v9, 0, 1);
+    v7 = probeGC(self, key, &v9, 0, 1);
     if (v9 == 1)
     {
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:@"value not absent" reason:@"value not absent" userInfo:0]);
     }
 
-    [(NSConcreteMapTable *)self assign:v7 key:a4 value:a3 isNew:1];
+    [(NSConcreteMapTable *)self assign:v7 key:key value:item isNew:1];
     v8 = self->count + 1;
     self->count = v8;
     if (self->capacity < 2 * v8)
@@ -1118,21 +1118,21 @@ LABEL_46:
   }
 }
 
-- (void)existingItemForSetItem:(const void *)a3 forAbsentKey:(const void *)a4
+- (void)existingItemForSetItem:(const void *)item forAbsentKey:(const void *)key
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!key)
   {
     return 0;
   }
 
   v12 = 0;
-  v7 = probeGC(self, a4, &v12, 0, 1);
+  v7 = probeGC(self, key, &v12, 0, 1);
   if (v12 != 1)
   {
-    if (a3)
+    if (item)
     {
-      [(NSConcreteMapTable *)self assign:v7 key:a4 value:a3 isNew:1];
+      [(NSConcreteMapTable *)self assign:v7 key:key value:item isNew:1];
       v10 = self->count + 1;
       self->count = v10;
       if (self->capacity < 2 * v10)
@@ -1150,30 +1150,30 @@ LABEL_46:
   return v9;
 }
 
-- (BOOL)mapMember:(const void *)a3 originalKey:(const void *)a4 value:(const void *)a5
+- (BOOL)mapMember:(const void *)member originalKey:(const void *)key value:(const void *)value
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!member)
   {
     return 0;
   }
 
   v13 = 0;
-  v8 = probeGC(self, a3, &v13, 0, 0);
+  v8 = probeGC(self, member, &v13, 0, 0);
   v9 = v13;
   if (v13)
   {
     v10 = v8;
-    if (a5)
+    if (value)
     {
-      *a5 = (*(self->values.internalProps + 3))(&self->values.items[v8], 0);
+      *value = (*(self->values.internalProps + 3))(&self->values.items[v8], 0);
       (*(self->values.internalProps + 5))();
     }
 
-    if (a4)
+    if (key)
     {
       p_keys = &self->keys;
-      *a4 = (*(p_keys->internalProps + 3))(&p_keys->items[v10], 0);
+      *key = (*(p_keys->internalProps + 3))(&p_keys->items[v10], 0);
       (*(p_keys->internalProps + 5))();
     }
   }
@@ -1181,31 +1181,31 @@ LABEL_46:
   return v9;
 }
 
-- (void)replaceItem:(const void *)a3 forExistingKey:(const void *)a4
+- (void)replaceItem:(const void *)item forExistingKey:(const void *)key
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (item)
   {
-    if (a4)
+    if (key)
     {
       v9 = 0;
-      v7 = probeGC(self, a4, &v9, 0, 1);
+      v7 = probeGC(self, key, &v9, 0, 1);
       if (v9 == 1)
       {
         v8 = v7;
         if ((*(self->values.internalProps + 3))(&self->values.items[v7], 0))
         {
           (*(self->values.internalProps + 4))();
-          [(NSConcreteMapTable *)self assign:v8 key:a4 value:a3 isNew:0];
+          [(NSConcreteMapTable *)self assign:v8 key:key value:item isNew:0];
         }
       }
     }
   }
 }
 
-- (unint64_t)rehashAround:(unint64_t)a3
+- (unint64_t)rehashAround:(unint64_t)around
 {
-  v3 = a3;
+  aroundCopy = around;
   v23 = *MEMORY[0x1E69E9840];
   p_keys = &self->keys;
   internalProps = self->keys.internalProps;
@@ -1213,24 +1213,24 @@ LABEL_46:
   items = self->keys.items;
   do
   {
-    v3 = (v3 - 1) & (capacity - 1);
+    aroundCopy = (aroundCopy - 1) & (capacity - 1);
   }
 
-  while (items[v3] != *(internalProps + 3));
+  while (items[aroundCopy] != *(internalProps + 3));
   while (1)
   {
-    v3 = (v3 + 1) & (capacity - 1);
+    aroundCopy = (aroundCopy + 1) & (capacity - 1);
     v22 = 0;
-    v9 = (*(internalProps + 3))(&items[v3], &v22);
+    v9 = (*(internalProps + 3))(&items[aroundCopy], &v22);
     p_values = &self->values;
-    v11 = (*(self->values.internalProps + 3))(&self->values.items[v3], 0);
+    v11 = (*(self->values.internalProps + 3))(&self->values.items[aroundCopy], 0);
     v12 = v11;
     if (v9)
     {
       if (v11)
       {
-        (*(p_keys->internalProps + 6))(&p_keys->items[v3]);
-        (*(self->values.internalProps + 6))(&p_values->items[v3]);
+        (*(p_keys->internalProps + 6))(&p_keys->items[aroundCopy]);
+        (*(self->values.internalProps + 6))(&p_values->items[aroundCopy]);
         v13 = probeGC(self, v9, 0, 0, 0);
         (*(p_keys->internalProps + 7))(p_keys->items, v13, v9);
         (*(self->values.internalProps + 7))(p_values->items, v13, v12);
@@ -1248,7 +1248,7 @@ LABEL_25:
 
       v16 = 0;
 LABEL_17:
-      (*(p_keys->internalProps + 6))(&p_keys->items[v3]);
+      (*(p_keys->internalProps + 6))(&p_keys->items[aroundCopy]);
       v17 = *(self->values.acquisitionProps + 2);
       if (v17)
       {
@@ -1265,7 +1265,7 @@ LABEL_17:
         v17(v12, *(self->values.personalityProps + 1));
       }
 
-      (*(self->values.internalProps + 6))(&p_values->items[v3]);
+      (*(self->values.internalProps + 6))(&p_values->items[aroundCopy]);
       count = self->count;
       if (count)
       {
@@ -1288,21 +1288,21 @@ LABEL_17:
 
     if (v11)
     {
-      NSLog(@"NSMaptable %p isEmpty key but not value %p at index %ld", self, v11, v3);
+      NSLog(@"NSMaptable %p isEmpty key but not value %p at index %ld", self, v11, aroundCopy);
       v14 = *(self->values.acquisitionProps + 2);
       if (v14)
       {
         v14(v12, *(self->values.personalityProps + 1));
       }
 
-      (*(self->values.internalProps + 6))(&p_values->items[v3]);
+      (*(self->values.internalProps + 6))(&p_values->items[aroundCopy]);
     }
 
     (*(p_keys->internalProps + 4))(0);
     (*(self->values.internalProps + 4))(v12);
-    if (v3 != a3)
+    if (aroundCopy != around)
     {
-      return v3;
+      return aroundCopy;
     }
 
 LABEL_26:
@@ -1312,14 +1312,14 @@ LABEL_26:
   }
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (key)
   {
     v10 = 0;
     v9 = 0;
-    v4 = probeGC(self, a3, &v10, &v9, 1);
+    v4 = probeGC(self, key, &v10, &v9, 1);
     if (v10 == 1)
     {
       v5 = v4;
@@ -1346,16 +1346,16 @@ LABEL_26:
   }
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   p_mutations = &self->mutations;
-  a3->var2 = &self->mutations;
-  if (a3->var0)
+  state->var2 = &self->mutations;
+  if (state->var0)
   {
-    if (a3->var3[0] == *p_mutations)
+    if (state->var3[0] == *p_mutations)
     {
-      (*(self->keys.internalProps + 4))(a3->var3[1], a2);
-      (*(self->values.internalProps + 4))(a3->var3[2]);
+      (*(self->keys.internalProps + 4))(state->var3[1], a2);
+      (*(self->values.internalProps + 4))(state->var3[2]);
     }
 
     else
@@ -1366,16 +1366,16 @@ LABEL_26:
 
   else
   {
-    a3->var3[0] = *p_mutations;
+    state->var3[0] = *p_mutations;
   }
 
-  var0 = a3->var0;
+  var0 = state->var0;
   while (var0 < self->capacity)
   {
     v9 = (*(self->keys.internalProps + 3))(&self->keys.items[var0], 0);
-    v10 = (*(self->values.internalProps + 3))(&self->values.items[a3->var0], 0);
-    var0 = a3->var0 + 1;
-    a3->var0 = var0;
+    v10 = (*(self->values.internalProps + 3))(&self->values.items[state->var0], 0);
+    var0 = state->var0 + 1;
+    state->var0 = var0;
     if (v9)
     {
       v11 = v10 == 0;
@@ -1388,8 +1388,8 @@ LABEL_26:
 
     if (!v11)
     {
-      a3->var3[1] = v9;
-      v12 = &a3->var3[1];
+      state->var3[1] = v9;
+      v12 = &state->var3[1];
       *(v12 - 3) = v12;
       v12[1] = v10;
       return 1;
@@ -1399,7 +1399,7 @@ LABEL_26:
   return 0;
 }
 
-- (unint64_t)getKeys:(const void *)a3 values:(const void *)a4
+- (unint64_t)getKeys:(const void *)keys values:(const void *)values
 {
   if (self->capacity)
   {
@@ -1425,8 +1425,8 @@ LABEL_26:
 
       if (!v11)
       {
-        a3[v6] = v9;
-        a4[v6++] = v10;
+        keys[v6] = v9;
+        values[v6++] = v10;
       }
 
       ++v7;
@@ -1441,23 +1441,23 @@ LABEL_26:
     v6 = 0;
   }
 
-  v12 = &a3[v6];
-  if (v12 != a4)
+  v12 = &keys[v6];
+  if (v12 != values)
   {
-    memmove(v12, a4, 8 * v6);
+    memmove(v12, values, 8 * v6);
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v10) = 1;
   }
 
-  else if (a3 && (v5 = objc_opt_class(), v5 == objc_opt_class()) && (*(self->keys.internalProps + 1) & 1) == 0 && (*(self->values.internalProps + 1) & 1) == 0 && self->count == *(a3 + 9) && (personalityProps = self->keys.personalityProps, v7 = *(a3 + 3), *(personalityProps + 3) == *(v7 + 24)) && (v8 = self->values.personalityProps, v9 = *(a3 + 7), *(v8 + 3) == *(v9 + 24)) && *(personalityProps + 1) == *(v7 + 8) && *(v8 + 1) == *(v9 + 8))
+  else if (equal && (v5 = objc_opt_class(), v5 == objc_opt_class()) && (*(self->keys.internalProps + 1) & 1) == 0 && (*(self->values.internalProps + 1) & 1) == 0 && self->count == *(equal + 9) && (personalityProps = self->keys.personalityProps, v7 = *(equal + 3), *(personalityProps + 3) == *(v7 + 24)) && (v8 = self->values.personalityProps, v9 = *(equal + 7), *(v8 + 3) == *(v9 + 24)) && *(personalityProps + 1) == *(v7 + 8) && *(v8 + 1) == *(v9 + 8))
   {
     capacity = self->capacity;
     if (capacity)
@@ -1467,7 +1467,7 @@ LABEL_26:
       {
         if (self->keys.items[v12])
         {
-          v10 = [a3 objectForKey:?];
+          v10 = [equal objectForKey:?];
           if (!v10)
           {
             return v10;

@@ -1,20 +1,20 @@
 @interface OFAudioCaptureManager
 - (BOOL)openSession;
-- (OFAudioCaptureManager)initWithOutputFileURL:(id)a3;
+- (OFAudioCaptureManager)initWithOutputFileURL:(id)l;
 - (float)meanAudioLevel;
 - (id)_audioDevice;
 - (id)_tempFileURL;
 - (unint64_t)micCount;
-- (void)_removeFile:(id)a3;
+- (void)_removeFile:(id)file;
 - (void)dealloc;
-- (void)recorder:(id)a3 recordingDidFinishToOutputFileURL:(id)a4 error:(id)a5;
-- (void)recorderRecordingDidBegin:(id)a3;
+- (void)recorder:(id)recorder recordingDidFinishToOutputFileURL:(id)l error:(id)error;
+- (void)recorderRecordingDidBegin:(id)begin;
 - (void)startRecording;
 @end
 
 @implementation OFAudioCaptureManager
 
-- (OFAudioCaptureManager)initWithOutputFileURL:(id)a3
+- (OFAudioCaptureManager)initWithOutputFileURL:(id)l
 {
   v11.receiver = self;
   v11.super_class = OFAudioCaptureManager;
@@ -25,13 +25,13 @@
     v4->_session = 0;
     v4->_audioInput = 0;
     v4->_recorder = 0;
-    [(OFAudioCaptureManager *)v4 setOutputFileURL:a3];
+    [(OFAudioCaptureManager *)v4 setOutputFileURL:l];
     v5->_isCancelled = 0;
     v5->_delegate = 0;
     v6 = [OFWeakReferenceHolder weakReferenceHolderWithObject:v5];
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    v5->_deviceConnectedObserver = [v7 addObserverForName:*MEMORY[0x277CE5898] object:0 queue:0 usingBlock:&v10];
-    v5->_deviceDisconnectedObserver = [v7 addObserverForName:*MEMORY[0x277CE58A0] object:0 queue:0 usingBlock:&v9];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    v5->_deviceConnectedObserver = [defaultCenter addObserverForName:*MEMORY[0x277CE5898] object:0 queue:0 usingBlock:&v10];
+    v5->_deviceDisconnectedObserver = [defaultCenter addObserverForName:*MEMORY[0x277CE58A0] object:0 queue:0 usingBlock:&v9];
   }
 
   return v5;
@@ -155,14 +155,14 @@ uint64_t __47__OFAudioCaptureManager_initWithOutputFileURL___block_invoke_2(uint
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self->_deviceConnectedObserver];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_deviceConnectedObserver];
   if (self->_deviceConnectedObserver)
   {
     self->_deviceConnectedObserver = 0;
   }
 
-  [v3 removeObserver:self->_deviceDisconnectedObserver];
+  [defaultCenter removeObserver:self->_deviceDisconnectedObserver];
   if (self->_deviceDisconnectedObserver)
   {
     self->_deviceDisconnectedObserver = 0;
@@ -229,8 +229,8 @@ uint64_t __47__OFAudioCaptureManager_initWithOutputFileURL___block_invoke_2(uint
       [(OFAudioCaptureManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        v6 = [(OFAudioCaptureManager *)self delegate];
-        -[OFAudioCaptureManagerDelegate captureManager:didFailWithError:](v6, "captureManager:didFailWithError:", self, [MEMORY[0x277CCA9B8] errorWithDescription:@"Audio recording unavailable"]);
+        delegate = [(OFAudioCaptureManager *)self delegate];
+        -[OFAudioCaptureManagerDelegate captureManager:didFailWithError:](delegate, "captureManager:didFailWithError:", self, [MEMORY[0x277CCA9B8] errorWithDescription:@"Audio recording unavailable"]);
       }
     }
   }
@@ -299,8 +299,8 @@ uint64_t __47__OFAudioCaptureManager_initWithOutputFileURL___block_invoke_2(uint
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v6 = [v5 connections];
-      v7 = [v6 countByEnumeratingWithState:&v26 objects:v35 count:16];
+      connections = [v5 connections];
+      v7 = [connections countByEnumeratingWithState:&v26 objects:v35 count:16];
       if (v7)
       {
         v8 = v7;
@@ -311,7 +311,7 @@ uint64_t __47__OFAudioCaptureManager_initWithOutputFileURL___block_invoke_2(uint
           {
             if (*v27 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(connections);
             }
 
             v11 = *(*(&v26 + 1) + 8 * j);
@@ -323,8 +323,8 @@ uint64_t __47__OFAudioCaptureManager_initWithOutputFileURL___block_invoke_2(uint
                 v25 = 0u;
                 v22 = 0u;
                 v23 = 0u;
-                v12 = [v11 audioChannels];
-                v13 = [v12 countByEnumeratingWithState:&v22 objects:v34 count:16];
+                audioChannels = [v11 audioChannels];
+                v13 = [audioChannels countByEnumeratingWithState:&v22 objects:v34 count:16];
                 if (v13)
                 {
                   v14 = v13;
@@ -335,7 +335,7 @@ uint64_t __47__OFAudioCaptureManager_initWithOutputFileURL___block_invoke_2(uint
                     {
                       if (*v23 != v15)
                       {
-                        objc_enumerationMutation(v12);
+                        objc_enumerationMutation(audioChannels);
                       }
 
                       [*(*(&v22 + 1) + 8 * k) averagePowerLevel];
@@ -343,7 +343,7 @@ uint64_t __47__OFAudioCaptureManager_initWithOutputFileURL___block_invoke_2(uint
                     }
 
                     v2 += v14;
-                    v14 = [v12 countByEnumeratingWithState:&v22 objects:v34 count:16];
+                    v14 = [audioChannels countByEnumeratingWithState:&v22 objects:v34 count:16];
                   }
 
                   while (v14);
@@ -352,7 +352,7 @@ uint64_t __47__OFAudioCaptureManager_initWithOutputFileURL___block_invoke_2(uint
             }
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v26 objects:v35 count:16];
+          v8 = [connections countByEnumeratingWithState:&v26 objects:v35 count:16];
         }
 
         while (v8);
@@ -395,60 +395,60 @@ uint64_t __47__OFAudioCaptureManager_initWithOutputFileURL___block_invoke_2(uint
   return [v2 fileURLWithPath:v3];
 }
 
-- (void)_removeFile:(id)a3
+- (void)_removeFile:(id)file
 {
-  v4 = [a3 path];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  if ([v5 fileExistsAtPath:v4])
+  path = [file path];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if ([defaultManager fileExistsAtPath:path])
   {
     v7 = 0;
-    if (([v5 removeItemAtPath:v4 error:&v7] & 1) == 0)
+    if (([defaultManager removeItemAtPath:path error:&v7] & 1) == 0)
     {
       if ([(OFAudioCaptureManager *)self delegate])
       {
         [(OFAudioCaptureManager *)self delegate];
         if (objc_opt_respondsToSelector())
         {
-          v6 = [(OFAudioCaptureManager *)self delegate];
-          [(OFAudioCaptureManagerDelegate *)v6 captureManager:self didFailWithError:v7];
+          delegate = [(OFAudioCaptureManager *)self delegate];
+          [(OFAudioCaptureManagerDelegate *)delegate captureManager:self didFailWithError:v7];
         }
       }
     }
   }
 }
 
-- (void)recorderRecordingDidBegin:(id)a3
+- (void)recorderRecordingDidBegin:(id)begin
 {
   if ([(OFAudioCaptureManager *)self delegate])
   {
     [(OFAudioCaptureManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v4 = [(OFAudioCaptureManager *)self delegate];
+      delegate = [(OFAudioCaptureManager *)self delegate];
 
-      [(OFAudioCaptureManagerDelegate *)v4 captureManagerRecordingBegan:self];
+      [(OFAudioCaptureManagerDelegate *)delegate captureManagerRecordingBegan:self];
     }
   }
 }
 
-- (void)recorder:(id)a3 recordingDidFinishToOutputFileURL:(id)a4 error:(id)a5
+- (void)recorder:(id)recorder recordingDidFinishToOutputFileURL:(id)l error:(id)error
 {
-  if (a5)
+  if (error)
   {
-    [(OFAudioCaptureManager *)self _removeFile:self->_outputFileURL, a4];
+    [(OFAudioCaptureManager *)self _removeFile:self->_outputFileURL, l];
     if ([(OFAudioCaptureManager *)self delegate])
     {
       [(OFAudioCaptureManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        [(OFAudioCaptureManagerDelegate *)[(OFAudioCaptureManager *)self delegate] captureManager:self didFailWithError:a5];
+        [(OFAudioCaptureManagerDelegate *)[(OFAudioCaptureManager *)self delegate] captureManager:self didFailWithError:error];
       }
     }
   }
 
   if (self->_isCancelled)
   {
-    [(OFAudioCaptureManager *)self _removeFile:self->_outputFileURL, a4];
+    [(OFAudioCaptureManager *)self _removeFile:self->_outputFileURL, l];
   }
 
   if ([objc_msgSend(MEMORY[0x277D75418] "currentDevice")])
@@ -456,16 +456,16 @@ uint64_t __47__OFAudioCaptureManager_initWithOutputFileURL___block_invoke_2(uint
     [objc_msgSend(MEMORY[0x277D75128] "sharedApplication")];
   }
 
-  if (!a5)
+  if (!error)
   {
     if ([(OFAudioCaptureManager *)self delegate])
     {
       [(OFAudioCaptureManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        v7 = [(OFAudioCaptureManager *)self delegate];
+        delegate = [(OFAudioCaptureManager *)self delegate];
 
-        [(OFAudioCaptureManagerDelegate *)v7 captureManagerRecordingFinished:self];
+        [(OFAudioCaptureManagerDelegate *)delegate captureManagerRecordingFinished:self];
       }
     }
   }

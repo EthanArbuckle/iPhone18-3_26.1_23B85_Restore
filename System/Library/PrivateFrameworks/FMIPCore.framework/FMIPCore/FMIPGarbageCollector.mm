@@ -1,14 +1,14 @@
 @interface FMIPGarbageCollector
-- (void)scheduleAccountVerificationWithNotification:(id)a3;
+- (void)scheduleAccountVerificationWithNotification:(id)notification;
 @end
 
 @implementation FMIPGarbageCollector
 
-- (void)scheduleAccountVerificationWithNotification:(id)a3
+- (void)scheduleAccountVerificationWithNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
 
-  sub_24A78E504(v3);
+  sub_24A78E504(notificationCopy);
 }
 
 @end

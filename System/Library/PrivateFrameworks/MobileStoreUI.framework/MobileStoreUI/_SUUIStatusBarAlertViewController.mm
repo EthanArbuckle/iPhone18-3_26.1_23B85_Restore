@@ -1,25 +1,25 @@
 @interface _SUUIStatusBarAlertViewController
 - (UIView)statusBarView;
-- (_SUUIStatusBarAlertViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_SUUIStatusBarAlertViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_SUUIStatusBarAlertViewControllerDelegate)delegate;
 - (unint64_t)defaultInterfaceOrientations;
 - (void)endAllAnimations;
-- (void)handleLabelTap:(id)a3;
-- (void)setMessage:(id)a3;
-- (void)setOnScreen:(BOOL)a3;
-- (void)setStyle:(int64_t)a3;
+- (void)handleLabelTap:(id)tap;
+- (void)setMessage:(id)message;
+- (void)setOnScreen:(BOOL)screen;
+- (void)setStyle:(int64_t)style;
 - (void)updateLabelFrame;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation _SUUIStatusBarAlertViewController
 
-- (_SUUIStatusBarAlertViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_SUUIStatusBarAlertViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = _SUUIStatusBarAlertViewController;
-  v4 = [(_SUUIStatusBarAlertViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(_SUUIStatusBarAlertViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -41,59 +41,59 @@
   [(UILabel *)self->_label setTextAlignment:1];
   [(UILabel *)self->_label setNumberOfLines:1];
   [(UILabel *)self->_label setMarqueeEnabled:1];
-  v5 = [MEMORY[0x277D75348] whiteColor];
-  [(UILabel *)self->_label setTextColor:v5];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [(UILabel *)self->_label setTextColor:whiteColor];
 
-  v6 = [(_SUUIStatusBarAlertViewController *)self isOnScreen];
+  isOnScreen = [(_SUUIStatusBarAlertViewController *)self isOnScreen];
   v7 = 0.0;
-  if (v6)
+  if (isOnScreen)
   {
     v7 = 1.0;
   }
 
   [(UILabel *)self->_label setAlpha:v7];
   v8 = SUUIStatusBarAlertStyleGetColor([(_SUUIStatusBarAlertViewController *)self style]);
-  v9 = [v8 CGColor];
-  v10 = [(UILabel *)self->_label layer];
-  [v10 setBackgroundColor:v9];
+  cGColor = [v8 CGColor];
+  layer = [(UILabel *)self->_label layer];
+  [layer setBackgroundColor:cGColor];
 
   [(UILabel *)self->_label setUserInteractionEnabled:1];
   v11 = self->_label;
   v12 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_handleLabelTap_];
   [(UILabel *)v11 addGestureRecognizer:v12];
 
-  v13 = [(_SUUIStatusBarAlertViewController *)self view];
-  [v13 addSubview:self->_label];
+  view = [(_SUUIStatusBarAlertViewController *)self view];
+  [view addSubview:self->_label];
 
   [(_SUUIStatusBarAlertViewController *)self updateLabelFrame];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   label = self->_label;
-  v6 = a4;
+  coordinatorCopy = coordinator;
   [(UILabel *)label setHidden:1];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __88___SUUIStatusBarAlertViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v7[3] = &unk_2798F5A88;
   v7[4] = self;
-  [v6 animateAlongsideTransition:0 completion:v7];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v7];
 }
 
 - (void)updateLabelFrame
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  [v3 statusBarFrame];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] statusBarFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(_SUUIStatusBarAlertViewController *)self view];
-  v13 = [(_SUUIStatusBarAlertViewController *)self view];
-  v14 = [v13 window];
-  [v12 convertRect:v14 fromCoordinateSpace:{v5, v7, v9, v11}];
+  view = [(_SUUIStatusBarAlertViewController *)self view];
+  view2 = [(_SUUIStatusBarAlertViewController *)self view];
+  window = [view2 window];
+  [view convertRect:window fromCoordinateSpace:{v5, v7, v9, v11}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -110,16 +110,16 @@
 
 - (void)endAllAnimations
 {
-  v2 = [(UILabel *)self->_label layer];
-  [v2 removeAllAnimations];
+  layer = [(UILabel *)self->_label layer];
+  [layer removeAllAnimations];
 }
 
-- (void)handleLabelTap:(id)a3
+- (void)handleLabelTap:(id)tap
 {
-  if ([a3 state] == 3)
+  if ([tap state] == 3)
   {
-    v4 = [(_SUUIStatusBarAlertViewController *)self delegate];
-    [v4 statusBarAlertViewControllerWasTapped:self];
+    delegate = [(_SUUIStatusBarAlertViewController *)self delegate];
+    [delegate statusBarAlertViewControllerWasTapped:self];
   }
 }
 
@@ -131,16 +131,16 @@
   return label;
 }
 
-- (void)setOnScreen:(BOOL)a3
+- (void)setOnScreen:(BOOL)screen
 {
-  if (self->_onScreen != a3)
+  if (self->_onScreen != screen)
   {
     v13 = v4;
     v14 = v3;
-    v9 = a3;
-    self->_onScreen = a3;
+    screenCopy = screen;
+    self->_onScreen = screen;
     v11 = 0.0;
-    if (a3)
+    if (screen)
     {
       v11 = 1.0;
     }
@@ -148,33 +148,33 @@
     [(UILabel *)self->_label setAlpha:v11, v6, v5, v13, v14, v7];
     label = self->_label;
 
-    [(UILabel *)label setMarqueeRunning:v9];
+    [(UILabel *)label setMarqueeRunning:screenCopy];
   }
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
-    v8 = SUUIStatusBarAlertStyleGetColor(a3);
+    self->_style = style;
+    v8 = SUUIStatusBarAlertStyleGetColor(style);
     v5 = v8;
-    v6 = [v8 CGColor];
-    v7 = [(UILabel *)self->_label layer];
-    [v7 setBackgroundColor:v6];
+    cGColor = [v8 CGColor];
+    layer = [(UILabel *)self->_label layer];
+    [layer setBackgroundColor:cGColor];
   }
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   [(_SUUIStatusBarAlertViewController *)self loadViewIfNeeded];
-  [(UILabel *)self->_label setText:v4];
+  [(UILabel *)self->_label setText:messageCopy];
 
-  v5 = [(_SUUIStatusBarAlertViewController *)self isOnScreen];
+  isOnScreen = [(_SUUIStatusBarAlertViewController *)self isOnScreen];
   label = self->_label;
 
-  [(UILabel *)label setMarqueeRunning:v5];
+  [(UILabel *)label setMarqueeRunning:isOnScreen];
 }
 
 - (unint64_t)defaultInterfaceOrientations

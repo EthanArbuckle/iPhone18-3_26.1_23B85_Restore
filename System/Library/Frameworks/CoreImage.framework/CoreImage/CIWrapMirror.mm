@@ -32,7 +32,7 @@
 
     else
     {
-      v8 = [CIVector vectorWithCGRect:x, y, width, height];
+      height = [CIVector vectorWithCGRect:x, y, width, height];
       v18.origin.x = x;
       v18.origin.y = y;
       v18.size.width = width;
@@ -52,7 +52,7 @@
       *&v15[6] = width;
       *&v15[7] = height;
       inputImage = self->inputImage;
-      v16[0] = v8;
+      v16[0] = height;
       return -[CIWarpKernel applyWithExtent:roiCallback:inputImage:arguments:](v13, "applyWithExtent:roiCallback:inputImage:arguments:", v15, inputImage, [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:{1, MEMORY[0x1E69E9820], 3221225472, __27__CIWrapMirror_outputImage__block_invoke, &__block_descriptor_64_e73__CGRect__CGPoint_dd__CGSize_dd__44__0i8_CGRect__CGPoint_dd__CGSize_dd__12l, *&x, *&y, *&width, *&height}], v9, v10, v11, v12);
     }
   }

@@ -1,107 +1,107 @@
 @interface JavaNioMemoryBlock
-+ (id)wrapFromJniWithLong:(int64_t)a3 withLong:(int64_t)a4;
-- (JavaNioMemoryBlock)initWithLong:(int64_t)a3 withLong:(int64_t)a4;
++ (id)wrapFromJniWithLong:(int64_t)long withLong:(int64_t)withLong;
+- (JavaNioMemoryBlock)initWithLong:(int64_t)long withLong:(int64_t)withLong;
 - (id)description;
-- (int)peekIntWithInt:(int)a3 withJavaNioByteOrder:(id)a4;
-- (int64_t)peekLongWithInt:(int)a3 withJavaNioByteOrder:(id)a4;
-- (signed)peekShortWithInt:(int)a3 withJavaNioByteOrder:(id)a4;
-- (void)pokeIntWithInt:(int)a3 withInt:(int)a4 withJavaNioByteOrder:(id)a5;
-- (void)pokeLongWithInt:(int)a3 withLong:(int64_t)a4 withJavaNioByteOrder:(id)a5;
-- (void)pokeShortWithInt:(int)a3 withShort:(signed __int16)a4 withJavaNioByteOrder:(id)a5;
+- (int)peekIntWithInt:(int)int withJavaNioByteOrder:(id)order;
+- (int64_t)peekLongWithInt:(int)int withJavaNioByteOrder:(id)order;
+- (signed)peekShortWithInt:(int)int withJavaNioByteOrder:(id)order;
+- (void)pokeIntWithInt:(int)int withInt:(int)withInt withJavaNioByteOrder:(id)order;
+- (void)pokeLongWithInt:(int)int withLong:(int64_t)long withJavaNioByteOrder:(id)order;
+- (void)pokeShortWithInt:(int)int withShort:(signed __int16)short withJavaNioByteOrder:(id)order;
 @end
 
 @implementation JavaNioMemoryBlock
 
-+ (id)wrapFromJniWithLong:(int64_t)a3 withLong:(int64_t)a4
++ (id)wrapFromJniWithLong:(int64_t)long withLong:(int64_t)withLong
 {
   v6 = [JavaNioMemoryBlock_UnmanagedBlock alloc];
-  v6->super.address_ = a3;
-  v6->super.size_ = a4;
+  v6->super.address_ = long;
+  v6->super.size_ = withLong;
 
   return v6;
 }
 
-- (JavaNioMemoryBlock)initWithLong:(int64_t)a3 withLong:(int64_t)a4
+- (JavaNioMemoryBlock)initWithLong:(int64_t)long withLong:(int64_t)withLong
 {
-  self->address_ = a3;
-  self->size_ = a4;
+  self->address_ = long;
+  self->size_ = withLong;
   return self;
 }
 
-- (void)pokeShortWithInt:(int)a3 withShort:(signed __int16)a4 withJavaNioByteOrder:(id)a5
+- (void)pokeShortWithInt:(int)int withShort:(signed __int16)short withJavaNioByteOrder:(id)order
 {
-  if (!a5)
+  if (!order)
   {
     JreThrowNullPointerException();
   }
 
-  v6 = self->address_ + a3;
-  v7 = *(a5 + 8);
+  v6 = self->address_ + int;
+  v7 = *(order + 8);
 
-  LibcoreIoMemory_pokeShortWithLong_withShort_withBoolean_(v6, a4, v7);
+  LibcoreIoMemory_pokeShortWithLong_withShort_withBoolean_(v6, short, v7);
 }
 
-- (signed)peekShortWithInt:(int)a3 withJavaNioByteOrder:(id)a4
+- (signed)peekShortWithInt:(int)int withJavaNioByteOrder:(id)order
 {
-  if (!a4)
+  if (!order)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = (self->address_ + a3);
-  v6 = *(a4 + 8);
+  v5 = (self->address_ + int);
+  v6 = *(order + 8);
 
   return LibcoreIoMemory_peekShortWithLong_withBoolean_(v5, v6);
 }
 
-- (void)pokeIntWithInt:(int)a3 withInt:(int)a4 withJavaNioByteOrder:(id)a5
+- (void)pokeIntWithInt:(int)int withInt:(int)withInt withJavaNioByteOrder:(id)order
 {
-  if (!a5)
+  if (!order)
   {
     JreThrowNullPointerException();
   }
 
-  v6 = self->address_ + a3;
-  v7 = *(a5 + 8);
+  v6 = self->address_ + int;
+  v7 = *(order + 8);
 
-  LibcoreIoMemory_pokeIntWithLong_withInt_withBoolean_(v6, a4, v7);
+  LibcoreIoMemory_pokeIntWithLong_withInt_withBoolean_(v6, withInt, v7);
 }
 
-- (int)peekIntWithInt:(int)a3 withJavaNioByteOrder:(id)a4
+- (int)peekIntWithInt:(int)int withJavaNioByteOrder:(id)order
 {
-  if (!a4)
+  if (!order)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = (self->address_ + a3);
-  v6 = *(a4 + 8);
+  v5 = (self->address_ + int);
+  v6 = *(order + 8);
 
   return LibcoreIoMemory_peekIntWithLong_withBoolean_(v5, v6);
 }
 
-- (void)pokeLongWithInt:(int)a3 withLong:(int64_t)a4 withJavaNioByteOrder:(id)a5
+- (void)pokeLongWithInt:(int)int withLong:(int64_t)long withJavaNioByteOrder:(id)order
 {
-  if (!a5)
+  if (!order)
   {
     JreThrowNullPointerException();
   }
 
-  v6 = self->address_ + a3;
-  v7 = *(a5 + 8);
+  v6 = self->address_ + int;
+  v7 = *(order + 8);
 
-  LibcoreIoMemory_pokeLongWithLong_withLong_withBoolean_(v6, a4, v7);
+  LibcoreIoMemory_pokeLongWithLong_withLong_withBoolean_(v6, long, v7);
 }
 
-- (int64_t)peekLongWithInt:(int)a3 withJavaNioByteOrder:(id)a4
+- (int64_t)peekLongWithInt:(int)int withJavaNioByteOrder:(id)order
 {
-  if (!a4)
+  if (!order)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = (self->address_ + a3);
-  v6 = *(a4 + 8);
+  v5 = (self->address_ + int);
+  v6 = *(order + 8);
 
   return LibcoreIoMemory_peekLongWithLong_withBoolean_(v5, v6);
 }

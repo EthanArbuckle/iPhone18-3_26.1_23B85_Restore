@@ -1,44 +1,44 @@
 @interface TUConversationActivity
-+ (id)lookupApplicationNameForBundleIdentifier:(id)a3;
++ (id)lookupApplicationNameForBundleIdentifier:(id)identifier;
 + (id)placeholderActivity;
 - (BOOL)isEligibleForHandoff;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConversationActivity:(id)a3;
-- (BOOL)isEquivalentToActivity:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConversationActivity:(id)activity;
+- (BOOL)isEquivalentToActivity:(id)activity;
 - (BOOL)isPlaceholderActivity;
 - (BOOL)isScreenSharingActivity;
 - (BOOL)isStaticActivity;
 - (NSString)representativeBundleIdentifier;
-- (TUConversationActivity)initWithBundleIdentifier:(id)a3 metadata:(id)a4 applicationContext:(id)a5 uuid:(id)a6 activityIdentifier:(id)a7;
-- (TUConversationActivity)initWithBundleIdentifier:(id)a3 metadata:(id)a4 applicationContext:(id)a5 uuid:(id)a6 activityIdentifier:(id)a7 fallbackApplicationName:(id)a8;
-- (TUConversationActivity)initWithCoder:(id)a3;
-- (TUConversationActivity)initWithCreationRequest:(id)a3 bundleIdentifier:(id)a4 systemActivity:(BOOL)a5 requiresParticipantTranslation:(BOOL)a6;
+- (TUConversationActivity)initWithBundleIdentifier:(id)identifier metadata:(id)metadata applicationContext:(id)context uuid:(id)uuid activityIdentifier:(id)activityIdentifier;
+- (TUConversationActivity)initWithBundleIdentifier:(id)identifier metadata:(id)metadata applicationContext:(id)context uuid:(id)uuid activityIdentifier:(id)activityIdentifier fallbackApplicationName:(id)name;
+- (TUConversationActivity)initWithCoder:(id)coder;
+- (TUConversationActivity)initWithCreationRequest:(id)request bundleIdentifier:(id)identifier systemActivity:(BOOL)activity requiresParticipantTranslation:(BOOL)translation;
 - (TUConversationActivityContext)activityContext;
 - (id)concatenatedDescription;
 - (id)concatenatedMetadataDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)localizedApplicationName;
 - (id)representativeDisplayName;
-- (id)sanitizedCopyWithZone:(_NSZone *)a3;
+- (id)sanitizedCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setActivityContext:(id)a3;
-- (void)setBundleIdentifier:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setActivityContext:(id)context;
+- (void)setBundleIdentifier:(id)identifier;
 @end
 
 @implementation TUConversationActivity
 
-- (TUConversationActivity)initWithBundleIdentifier:(id)a3 metadata:(id)a4 applicationContext:(id)a5 uuid:(id)a6 activityIdentifier:(id)a7
+- (TUConversationActivity)initWithBundleIdentifier:(id)identifier metadata:(id)metadata applicationContext:(id)context uuid:(id)uuid activityIdentifier:(id)activityIdentifier
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v12)
+  identifierCopy = identifier;
+  metadataCopy = metadata;
+  contextCopy = context;
+  uuidCopy = uuid;
+  activityIdentifierCopy = activityIdentifier;
+  if (identifierCopy)
   {
-    v17 = [objc_opt_class() lookupApplicationNameForBundleIdentifier:v12];
+    v17 = [objc_opt_class() lookupApplicationNameForBundleIdentifier:identifierCopy];
   }
 
   else
@@ -46,41 +46,41 @@
     v17 = 0;
   }
 
-  v18 = [(TUConversationActivity *)self initWithBundleIdentifier:v12 metadata:v13 applicationContext:v14 uuid:v15 activityIdentifier:v16 fallbackApplicationName:v17];
+  v18 = [(TUConversationActivity *)self initWithBundleIdentifier:identifierCopy metadata:metadataCopy applicationContext:contextCopy uuid:uuidCopy activityIdentifier:activityIdentifierCopy fallbackApplicationName:v17];
 
   return v18;
 }
 
-- (TUConversationActivity)initWithBundleIdentifier:(id)a3 metadata:(id)a4 applicationContext:(id)a5 uuid:(id)a6 activityIdentifier:(id)a7 fallbackApplicationName:(id)a8
+- (TUConversationActivity)initWithBundleIdentifier:(id)identifier metadata:(id)metadata applicationContext:(id)context uuid:(id)uuid activityIdentifier:(id)activityIdentifier fallbackApplicationName:(id)name
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  identifierCopy = identifier;
+  metadataCopy = metadata;
+  contextCopy = context;
+  uuidCopy = uuid;
+  activityIdentifierCopy = activityIdentifier;
+  nameCopy = name;
   v36.receiver = self;
   v36.super_class = TUConversationActivity;
   v20 = [(TUConversationActivity *)&v36 init];
   if (v20)
   {
-    v21 = [v17 copy];
+    v21 = [uuidCopy copy];
     v22 = *(v20 + 2);
     *(v20 + 2) = v21;
 
-    v23 = [v18 copy];
+    v23 = [activityIdentifierCopy copy];
     v24 = *(v20 + 5);
     *(v20 + 5) = v23;
 
-    v25 = [v14 copy];
+    v25 = [identifierCopy copy];
     v26 = *(v20 + 4);
     *(v20 + 4) = v25;
 
-    v27 = [v16 copy];
+    v27 = [contextCopy copy];
     v28 = *(v20 + 3);
     *(v20 + 3) = v27;
 
-    v29 = [v15 copy];
+    v29 = [metadataCopy copy];
     v30 = *(v20 + 6);
     *(v20 + 6) = v29;
 
@@ -89,7 +89,7 @@
     v32 = *(v20 + 9);
     *(v20 + 9) = v31;
 
-    v33 = [v19 copy];
+    v33 = [nameCopy copy];
     v34 = *(v20 + 10);
     *(v20 + 10) = v33;
 
@@ -100,24 +100,24 @@
   return v20;
 }
 
-- (TUConversationActivity)initWithCreationRequest:(id)a3 bundleIdentifier:(id)a4 systemActivity:(BOOL)a5 requiresParticipantTranslation:(BOOL)a6
+- (TUConversationActivity)initWithCreationRequest:(id)request bundleIdentifier:(id)identifier systemActivity:(BOOL)activity requiresParticipantTranslation:(BOOL)translation
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [v11 metadata];
-  v13 = [v12 sanitizedCopy];
+  identifierCopy = identifier;
+  requestCopy = request;
+  metadata = [requestCopy metadata];
+  sanitizedCopy = [metadata sanitizedCopy];
 
-  v14 = [v11 applicationContext];
-  v15 = [v11 UUID];
-  v16 = [v11 activityIdentifier];
-  v17 = [(TUConversationActivity *)self initWithBundleIdentifier:v10 metadata:v13 applicationContext:v14 uuid:v15 activityIdentifier:v16];
+  applicationContext = [requestCopy applicationContext];
+  uUID = [requestCopy UUID];
+  activityIdentifier = [requestCopy activityIdentifier];
+  v17 = [(TUConversationActivity *)self initWithBundleIdentifier:identifierCopy metadata:sanitizedCopy applicationContext:applicationContext uuid:uUID activityIdentifier:activityIdentifier];
 
-  v17->_requiresParticipantTranslation = a6;
-  v17->_systemActivity = a5;
-  v18 = [v11 staticIdentifier];
+  v17->_requiresParticipantTranslation = translation;
+  v17->_systemActivity = activity;
+  staticIdentifier = [requestCopy staticIdentifier];
 
   staticIdentifier = v17->_staticIdentifier;
-  v17->_staticIdentifier = v18;
+  v17->_staticIdentifier = staticIdentifier;
 
   return v17;
 }
@@ -125,9 +125,9 @@
 + (id)placeholderActivity
 {
   v2 = [TUConversationActivity alloc];
-  v3 = [MEMORY[0x1E695DEF0] data];
-  v4 = [MEMORY[0x1E696AFB0] UUID];
-  v5 = [(TUConversationActivity *)v2 initWithMetadata:0 applicationContext:v3 uuid:v4 activityIdentifier:@"com.apple.groupactivities.placeholder"];
+  data = [MEMORY[0x1E695DEF0] data];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v5 = [(TUConversationActivity *)v2 initWithMetadata:0 applicationContext:data uuid:uUID activityIdentifier:@"com.apple.groupactivities.placeholder"];
 
   return v5;
 }
@@ -135,66 +135,66 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(TUConversationActivity *)self UUID];
-  [v3 appendFormat:@" UUID=%@", v4];
+  uUID = [(TUConversationActivity *)self UUID];
+  [v3 appendFormat:@" UUID=%@", uUID];
 
-  v5 = [(TUConversationActivity *)self bundleIdentifier];
-  [v3 appendFormat:@" bundleIdentifier=%@", v5];
+  bundleIdentifier = [(TUConversationActivity *)self bundleIdentifier];
+  [v3 appendFormat:@" bundleIdentifier=%@", bundleIdentifier];
 
-  v6 = [(TUConversationActivity *)self activityIdentifier];
-  [v3 appendFormat:@" activityIdentifier=%@", v6];
+  activityIdentifier = [(TUConversationActivity *)self activityIdentifier];
+  [v3 appendFormat:@" activityIdentifier=%@", activityIdentifier];
 
-  v7 = [(TUConversationActivity *)self metadata];
-  [v3 appendFormat:@" metadata=%@", v7];
+  metadata = [(TUConversationActivity *)self metadata];
+  [v3 appendFormat:@" metadata=%@", metadata];
 
   [v3 appendFormat:@" isSupported=%d", -[TUConversationActivity isSupported](self, "isSupported")];
-  v8 = [(TUConversationActivity *)self originator];
-  [v3 appendFormat:@" originator=%@", v8];
+  originator = [(TUConversationActivity *)self originator];
+  [v3 appendFormat:@" originator=%@", originator];
 
-  v9 = [(TUConversationActivity *)self timestamp];
-  [v3 appendFormat:@" timestamp=%@", v9];
+  timestamp = [(TUConversationActivity *)self timestamp];
+  [v3 appendFormat:@" timestamp=%@", timestamp];
 
-  v10 = [(TUConversationActivity *)self trustedFromHandle];
-  [v3 appendFormat:@" trustedFromHandle=%@", v10];
+  trustedFromHandle = [(TUConversationActivity *)self trustedFromHandle];
+  [v3 appendFormat:@" trustedFromHandle=%@", trustedFromHandle];
 
-  v11 = [(TUConversationActivity *)self fallbackApplicationName];
+  fallbackApplicationName = [(TUConversationActivity *)self fallbackApplicationName];
 
-  if (v11)
+  if (fallbackApplicationName)
   {
-    v12 = [(TUConversationActivity *)self fallbackApplicationName];
-    [v3 appendFormat:@" fallbackApplicationName=%@", v12];
+    fallbackApplicationName2 = [(TUConversationActivity *)self fallbackApplicationName];
+    [v3 appendFormat:@" fallbackApplicationName=%@", fallbackApplicationName2];
   }
 
-  v13 = [(TUConversationActivity *)self activationSceneIdentifier];
+  activationSceneIdentifier = [(TUConversationActivity *)self activationSceneIdentifier];
 
-  if (v13)
+  if (activationSceneIdentifier)
   {
-    v14 = [(TUConversationActivity *)self activationSceneIdentifier];
-    [v3 appendFormat:@" activationSceneIdentifier=%@", v14];
+    activationSceneIdentifier2 = [(TUConversationActivity *)self activationSceneIdentifier];
+    [v3 appendFormat:@" activationSceneIdentifier=%@", activationSceneIdentifier2];
   }
 
   v15 = objc_opt_self();
-  v16 = [v15 isSystemActivity];
+  isSystemActivity = [v15 isSystemActivity];
 
-  if (v16)
+  if (isSystemActivity)
   {
     v17 = objc_opt_self();
     [v3 appendFormat:@" self.isSystemActivity=%d", objc_msgSend(v17, "isSystemActivity")];
   }
 
   v18 = objc_opt_self();
-  v19 = [v18 isPlaceholderActivity];
+  isPlaceholderActivity = [v18 isPlaceholderActivity];
 
-  if (v19)
+  if (isPlaceholderActivity)
   {
     v20 = objc_opt_self();
     [v3 appendFormat:@" self.isPlaceholderActivity=%d", objc_msgSend(v20, "isPlaceholderActivity")];
   }
 
   v21 = objc_opt_self();
-  v22 = [v21 startWhenStaged];
+  startWhenStaged = [v21 startWhenStaged];
 
-  if (v22)
+  if (startWhenStaged)
   {
     v23 = objc_opt_self();
     [v3 appendFormat:@" self.startWhenStaged=%d", objc_msgSend(v23, "startWhenStaged")];
@@ -206,9 +206,9 @@
   }
 
   v24 = objc_opt_self();
-  v25 = [v24 requiresParticipantTranslation];
+  requiresParticipantTranslation = [v24 requiresParticipantTranslation];
 
-  if ((v25 & 1) == 0)
+  if ((requiresParticipantTranslation & 1) == 0)
   {
     v26 = objc_opt_self();
     [v3 appendFormat:@" self.requiresParticipantTranslation=%d", objc_msgSend(v26, "requiresParticipantTranslation")];
@@ -220,46 +220,46 @@
   return v27;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationActivity *)self isEqualToConversationActivity:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationActivity *)self isEqualToConversationActivity:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEquivalentToActivity:(id)a3
+- (BOOL)isEquivalentToActivity:(id)activity
 {
-  v7 = a3;
-  v8 = [(TUConversationActivity *)self bundleIdentifier];
-  v9 = [v7 bundleIdentifier];
-  if (!TUObjectsAreEqualOrNil(v8, v9))
+  activityCopy = activity;
+  bundleIdentifier = [(TUConversationActivity *)self bundleIdentifier];
+  bundleIdentifier2 = [activityCopy bundleIdentifier];
+  if (!TUObjectsAreEqualOrNil(bundleIdentifier, bundleIdentifier2))
   {
     LOBYTE(v11) = 0;
     goto LABEL_21;
   }
 
-  v10 = [(TUConversationActivity *)self metadata];
-  if (!v10)
+  metadata = [(TUConversationActivity *)self metadata];
+  if (!metadata)
   {
-    v3 = [v7 metadata];
-    if (!v3)
+    metadata2 = [activityCopy metadata];
+    if (!metadata2)
     {
       v22 = 0;
 LABEL_9:
-      v12 = [(TUConversationActivity *)self applicationContext];
-      v13 = [v7 applicationContext];
-      if ([v12 isEqual:v13])
+      applicationContext = [(TUConversationActivity *)self applicationContext];
+      applicationContext2 = [activityCopy applicationContext];
+      if ([applicationContext isEqual:applicationContext2])
       {
-        v21 = v3;
-        v14 = [(TUConversationActivity *)self activityIdentifier];
-        v19 = [v7 activityIdentifier];
-        v20 = v14;
-        if ([v14 isEqual:?] && (v15 = -[TUConversationActivity isPlaceholderActivity](self, "isPlaceholderActivity"), v15 == objc_msgSend(v7, "isPlaceholderActivity")) && (v16 = -[TUConversationActivity startWhenStaged](self, "startWhenStaged"), v16 == objc_msgSend(v7, "startWhenStaged")))
+        v21 = metadata2;
+        activityIdentifier = [(TUConversationActivity *)self activityIdentifier];
+        activityIdentifier2 = [activityCopy activityIdentifier];
+        v20 = activityIdentifier;
+        if ([activityIdentifier isEqual:?] && (v15 = -[TUConversationActivity isPlaceholderActivity](self, "isPlaceholderActivity"), v15 == objc_msgSend(activityCopy, "isPlaceholderActivity")) && (v16 = -[TUConversationActivity startWhenStaged](self, "startWhenStaged"), v16 == objc_msgSend(activityCopy, "startWhenStaged")))
         {
-          v18 = [(TUConversationActivity *)self requiresParticipantTranslation];
-          v11 = v18 ^ [v7 requiresParticipantTranslation] ^ 1;
+          requiresParticipantTranslation = [(TUConversationActivity *)self requiresParticipantTranslation];
+          v11 = requiresParticipantTranslation ^ [activityCopy requiresParticipantTranslation] ^ 1;
         }
 
         else
@@ -267,7 +267,7 @@ LABEL_9:
           LOBYTE(v11) = 0;
         }
 
-        v3 = v21;
+        metadata2 = v21;
       }
 
       else
@@ -284,9 +284,9 @@ LABEL_9:
     }
   }
 
-  v4 = [(TUConversationActivity *)self metadata];
-  v5 = [v7 metadata];
-  if ([v4 isEquivalentToActivityMetadata:v5])
+  metadata3 = [(TUConversationActivity *)self metadata];
+  metadata4 = [activityCopy metadata];
+  if ([metadata3 isEquivalentToActivityMetadata:metadata4])
   {
     v22 = 1;
     goto LABEL_9;
@@ -296,7 +296,7 @@ LABEL_9:
 LABEL_17:
 
 LABEL_18:
-  if (!v10)
+  if (!metadata)
   {
   }
 
@@ -304,16 +304,16 @@ LABEL_21:
   return v11;
 }
 
-- (BOOL)isEqualToConversationActivity:(id)a3
+- (BOOL)isEqualToConversationActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(TUConversationActivity *)self bundleIdentifier];
-  v6 = [v4 bundleIdentifier];
-  if (TUObjectsAreEqualOrNil(v5, v6))
+  activityCopy = activity;
+  bundleIdentifier = [(TUConversationActivity *)self bundleIdentifier];
+  bundleIdentifier2 = [activityCopy bundleIdentifier];
+  if (TUObjectsAreEqualOrNil(bundleIdentifier, bundleIdentifier2))
   {
-    v7 = [(TUConversationActivity *)self metadata];
-    v8 = [v4 metadata];
-    if (!TUObjectsAreEqualOrNil(v7, v8))
+    metadata = [(TUConversationActivity *)self metadata];
+    metadata2 = [activityCopy metadata];
+    if (!TUObjectsAreEqualOrNil(metadata, metadata2))
     {
       v15 = 0;
 LABEL_40:
@@ -321,9 +321,9 @@ LABEL_40:
       goto LABEL_41;
     }
 
-    v9 = [(TUConversationActivity *)self applicationContext];
-    v10 = [v4 applicationContext];
-    if (![v9 isEqualToData:v10])
+    applicationContext = [(TUConversationActivity *)self applicationContext];
+    applicationContext2 = [activityCopy applicationContext];
+    if (![applicationContext isEqualToData:applicationContext2])
     {
       v15 = 0;
 LABEL_39:
@@ -331,9 +331,9 @@ LABEL_39:
       goto LABEL_40;
     }
 
-    v11 = [(TUConversationActivity *)self UUID];
-    v12 = [v4 UUID];
-    if (![v11 isEqual:v12])
+    uUID = [(TUConversationActivity *)self UUID];
+    uUID2 = [activityCopy UUID];
+    if (![uUID isEqual:uUID2])
     {
       v15 = 0;
 LABEL_38:
@@ -341,48 +341,48 @@ LABEL_38:
       goto LABEL_39;
     }
 
-    v42 = v12;
-    v13 = [(TUConversationActivity *)self activityIdentifier];
-    [v4 activityIdentifier];
-    v41 = v43 = v13;
-    if ([v13 isEqualToString:?])
+    v42 = uUID2;
+    activityIdentifier = [(TUConversationActivity *)self activityIdentifier];
+    [activityCopy activityIdentifier];
+    v41 = v43 = activityIdentifier;
+    if ([activityIdentifier isEqualToString:?])
     {
-      v40 = v11;
-      v14 = [(TUConversationActivity *)self isSupported];
-      if (v14 == [v4 isSupported])
+      v40 = uUID;
+      isSupported = [(TUConversationActivity *)self isSupported];
+      if (isSupported == [activityCopy isSupported])
       {
-        v16 = [(TUConversationActivity *)self originator];
-        v38 = [v4 originator];
-        v39 = v16;
-        if (TUObjectsAreEqualOrNil(v16, v38))
+        originator = [(TUConversationActivity *)self originator];
+        originator2 = [activityCopy originator];
+        v39 = originator;
+        if (TUObjectsAreEqualOrNil(originator, originator2))
         {
-          v17 = [(TUConversationActivity *)self timestamp];
-          v36 = [v4 timestamp];
-          v37 = v17;
-          if ([v17 isEqualToDate:?])
+          timestamp = [(TUConversationActivity *)self timestamp];
+          timestamp2 = [activityCopy timestamp];
+          v37 = timestamp;
+          if ([timestamp isEqualToDate:?])
           {
-            v18 = [(TUConversationActivity *)self fallbackApplicationName];
-            v34 = [v4 fallbackApplicationName];
-            v35 = v18;
-            if (TUObjectsAreEqualOrNil(v18, v34) && (v19 = -[TUConversationActivity isSystemActivity](self, "isSystemActivity"), v19 == [v4 isSystemActivity]))
+            fallbackApplicationName = [(TUConversationActivity *)self fallbackApplicationName];
+            fallbackApplicationName2 = [activityCopy fallbackApplicationName];
+            v35 = fallbackApplicationName;
+            if (TUObjectsAreEqualOrNil(fallbackApplicationName, fallbackApplicationName2) && (v19 = -[TUConversationActivity isSystemActivity](self, "isSystemActivity"), v19 == [activityCopy isSystemActivity]))
             {
-              v20 = [(TUConversationActivity *)self staticIdentifier];
-              v32 = [v4 staticIdentifier];
-              v33 = v20;
-              if (TUObjectsAreEqualOrNil(v20, v32) && (v21 = -[TUConversationActivity isPlaceholderActivity](self, "isPlaceholderActivity"), v21 == [v4 isPlaceholderActivity]))
+              staticIdentifier = [(TUConversationActivity *)self staticIdentifier];
+              staticIdentifier2 = [activityCopy staticIdentifier];
+              v33 = staticIdentifier;
+              if (TUObjectsAreEqualOrNil(staticIdentifier, staticIdentifier2) && (v21 = -[TUConversationActivity isPlaceholderActivity](self, "isPlaceholderActivity"), v21 == [activityCopy isPlaceholderActivity]))
               {
-                v22 = [(TUConversationActivity *)self trustedFromHandle];
-                v30 = [v4 trustedFromHandle];
-                v31 = v22;
-                if (TUObjectsAreEqualOrNil(v22, v30) && (v23 = -[TUConversationActivity startWhenStaged](self, "startWhenStaged"), v23 == [v4 startWhenStaged]))
+                trustedFromHandle = [(TUConversationActivity *)self trustedFromHandle];
+                trustedFromHandle2 = [activityCopy trustedFromHandle];
+                v31 = trustedFromHandle;
+                if (TUObjectsAreEqualOrNil(trustedFromHandle, trustedFromHandle2) && (v23 = -[TUConversationActivity startWhenStaged](self, "startWhenStaged"), v23 == [activityCopy startWhenStaged]))
                 {
-                  v24 = [(TUConversationActivity *)self activationSceneIdentifier];
-                  v29 = [v4 activationSceneIdentifier];
-                  if (TUObjectsAreEqualOrNil(v24, v29) && (v25 = -[TUConversationActivity requiresParticipantTranslation](self, "requiresParticipantTranslation"), v25 == [v4 requiresParticipantTranslation]))
+                  activationSceneIdentifier = [(TUConversationActivity *)self activationSceneIdentifier];
+                  activationSceneIdentifier2 = [activityCopy activationSceneIdentifier];
+                  if (TUObjectsAreEqualOrNil(activationSceneIdentifier, activationSceneIdentifier2) && (v25 = -[TUConversationActivity requiresParticipantTranslation](self, "requiresParticipantTranslation"), v25 == [activityCopy requiresParticipantTranslation]))
                   {
-                    v28 = [(TUConversationActivity *)self screenShareAttributes];
-                    v26 = [v4 screenShareAttributes];
-                    v15 = TUObjectsAreEqualOrNil(v28, v26);
+                    screenShareAttributes = [(TUConversationActivity *)self screenShareAttributes];
+                    screenShareAttributes2 = [activityCopy screenShareAttributes];
+                    v15 = TUObjectsAreEqualOrNil(screenShareAttributes, screenShareAttributes2);
                   }
 
                   else
@@ -396,46 +396,46 @@ LABEL_38:
                   v15 = 0;
                 }
 
-                v11 = v40;
-                v12 = v42;
+                uUID = v40;
+                uUID2 = v42;
               }
 
               else
               {
                 v15 = 0;
-                v11 = v40;
-                v12 = v42;
+                uUID = v40;
+                uUID2 = v42;
               }
             }
 
             else
             {
               v15 = 0;
-              v11 = v40;
-              v12 = v42;
+              uUID = v40;
+              uUID2 = v42;
             }
           }
 
           else
           {
             v15 = 0;
-            v11 = v40;
-            v12 = v42;
+            uUID = v40;
+            uUID2 = v42;
           }
         }
 
         else
         {
           v15 = 0;
-          v11 = v40;
-          v12 = v42;
+          uUID = v40;
+          uUID2 = v42;
         }
 
         goto LABEL_37;
       }
 
       v15 = 0;
-      v11 = v40;
+      uUID = v40;
     }
 
     else
@@ -443,7 +443,7 @@ LABEL_38:
       v15 = 0;
     }
 
-    v12 = v42;
+    uUID2 = v42;
 LABEL_37:
 
     goto LABEL_38;
@@ -457,16 +457,16 @@ LABEL_41:
 
 - (unint64_t)hash
 {
-  v36 = [(TUConversationActivity *)self bundleIdentifier];
-  v3 = [v36 hash];
-  v35 = [(TUConversationActivity *)self metadata];
-  v4 = [v35 hash] ^ v3;
-  v34 = [(TUConversationActivity *)self applicationContext];
-  v5 = [v34 hash];
-  v33 = [(TUConversationActivity *)self UUID];
-  v6 = v4 ^ v5 ^ [v33 hash];
-  v32 = [(TUConversationActivity *)self activityIdentifier];
-  v7 = [v32 hash];
+  bundleIdentifier = [(TUConversationActivity *)self bundleIdentifier];
+  v3 = [bundleIdentifier hash];
+  metadata = [(TUConversationActivity *)self metadata];
+  v4 = [metadata hash] ^ v3;
+  applicationContext = [(TUConversationActivity *)self applicationContext];
+  v5 = [applicationContext hash];
+  uUID = [(TUConversationActivity *)self UUID];
+  v6 = v4 ^ v5 ^ [uUID hash];
+  activityIdentifier = [(TUConversationActivity *)self activityIdentifier];
+  v7 = [activityIdentifier hash];
   if ([(TUConversationActivity *)self isSupported])
   {
     v8 = 1231;
@@ -478,12 +478,12 @@ LABEL_41:
   }
 
   v9 = v6 ^ v7 ^ v8;
-  v10 = [(TUConversationActivity *)self originator];
-  v11 = [v10 hash];
-  v12 = [(TUConversationActivity *)self timestamp];
-  v13 = v11 ^ [v12 hash];
-  v14 = [(TUConversationActivity *)self fallbackApplicationName];
-  v15 = v13 ^ [v14 hash];
+  originator = [(TUConversationActivity *)self originator];
+  v11 = [originator hash];
+  timestamp = [(TUConversationActivity *)self timestamp];
+  v13 = v11 ^ [timestamp hash];
+  fallbackApplicationName = [(TUConversationActivity *)self fallbackApplicationName];
+  v15 = v13 ^ [fallbackApplicationName hash];
   if ([(TUConversationActivity *)self isSystemActivity])
   {
     v16 = 1231;
@@ -495,8 +495,8 @@ LABEL_41:
   }
 
   v17 = v9 ^ v15 ^ v16;
-  v18 = [(TUConversationActivity *)self staticIdentifier];
-  v19 = [v18 hash];
+  staticIdentifier = [(TUConversationActivity *)self staticIdentifier];
+  v19 = [staticIdentifier hash];
   if ([(TUConversationActivity *)self isPlaceholderActivity])
   {
     v20 = 1231;
@@ -508,8 +508,8 @@ LABEL_41:
   }
 
   v21 = v19 ^ v20;
-  v22 = [(TUConversationActivity *)self trustedFromHandle];
-  v23 = v21 ^ [v22 hash];
+  trustedFromHandle = [(TUConversationActivity *)self trustedFromHandle];
+  v23 = v21 ^ [trustedFromHandle hash];
   if ([(TUConversationActivity *)self startWhenStaged])
   {
     v24 = 1231;
@@ -521,161 +521,161 @@ LABEL_41:
   }
 
   v25 = v17 ^ v23 ^ v24;
-  v26 = [(TUConversationActivity *)self activationSceneIdentifier];
-  v27 = [v26 hash];
+  activationSceneIdentifier = [(TUConversationActivity *)self activationSceneIdentifier];
+  v27 = [activationSceneIdentifier hash];
   v28 = v27 ^ [(TUConversationActivity *)self requiresParticipantTranslation];
-  v29 = [(TUConversationActivity *)self screenShareAttributes];
-  v30 = v28 ^ [v29 hash];
+  screenShareAttributes = [(TUConversationActivity *)self screenShareAttributes];
+  v30 = v28 ^ [screenShareAttributes hash];
 
   return v25 ^ v30;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(TUConversationActivity *)self bundleIdentifier];
-  v6 = [(TUConversationActivity *)self metadata];
-  v7 = [(TUConversationActivity *)self applicationContext];
-  v8 = [(TUConversationActivity *)self UUID];
-  v9 = [(TUConversationActivity *)self activityIdentifier];
-  v10 = [(TUConversationActivity *)self fallbackApplicationName];
-  v11 = [v4 initWithBundleIdentifier:v5 metadata:v6 applicationContext:v7 uuid:v8 activityIdentifier:v9 fallbackApplicationName:v10];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  bundleIdentifier = [(TUConversationActivity *)self bundleIdentifier];
+  metadata = [(TUConversationActivity *)self metadata];
+  applicationContext = [(TUConversationActivity *)self applicationContext];
+  uUID = [(TUConversationActivity *)self UUID];
+  activityIdentifier = [(TUConversationActivity *)self activityIdentifier];
+  fallbackApplicationName = [(TUConversationActivity *)self fallbackApplicationName];
+  v11 = [v4 initWithBundleIdentifier:bundleIdentifier metadata:metadata applicationContext:applicationContext uuid:uUID activityIdentifier:activityIdentifier fallbackApplicationName:fallbackApplicationName];
 
   [v11 setSupported:{-[TUConversationActivity isSupported](self, "isSupported")}];
-  v12 = [(TUConversationActivity *)self originator];
-  [v11 setOriginator:v12];
+  originator = [(TUConversationActivity *)self originator];
+  [v11 setOriginator:originator];
 
-  v13 = [(TUConversationActivity *)self timestamp];
-  [v11 setTimestamp:v13];
+  timestamp = [(TUConversationActivity *)self timestamp];
+  [v11 setTimestamp:timestamp];
 
   [v11 setSystemActivity:{-[TUConversationActivity isSystemActivity](self, "isSystemActivity")}];
-  v14 = [(TUConversationActivity *)self staticIdentifier];
-  [v11 setStaticIdentifier:v14];
+  staticIdentifier = [(TUConversationActivity *)self staticIdentifier];
+  [v11 setStaticIdentifier:staticIdentifier];
 
-  v15 = [(TUConversationActivity *)self trustedFromHandle];
-  [v11 setTrustedFromHandle:v15];
+  trustedFromHandle = [(TUConversationActivity *)self trustedFromHandle];
+  [v11 setTrustedFromHandle:trustedFromHandle];
 
   [v11 setStartWhenStaged:{-[TUConversationActivity startWhenStaged](self, "startWhenStaged")}];
-  v16 = [(TUConversationActivity *)self activationSceneIdentifier];
-  [v11 setActivationSceneIdentifier:v16];
+  activationSceneIdentifier = [(TUConversationActivity *)self activationSceneIdentifier];
+  [v11 setActivationSceneIdentifier:activationSceneIdentifier];
 
   [v11 setRequiresParticipantTranslation:{-[TUConversationActivity requiresParticipantTranslation](self, "requiresParticipantTranslation")}];
-  v17 = [(TUConversationActivity *)self screenShareAttributes];
-  [v11 setScreenShareAttributes:v17];
+  screenShareAttributes = [(TUConversationActivity *)self screenShareAttributes];
+  [v11 setScreenShareAttributes:screenShareAttributes];
 
   return v11;
 }
 
-- (id)sanitizedCopyWithZone:(_NSZone *)a3
+- (id)sanitizedCopyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(TUConversationActivity *)self bundleIdentifier];
-  v6 = [(TUConversationActivity *)self metadata];
-  v7 = [v6 sanitizedCopy];
-  v8 = [(TUConversationActivity *)self applicationContext];
-  v9 = [(TUConversationActivity *)self UUID];
-  v10 = [(TUConversationActivity *)self activityIdentifier];
-  v11 = [(TUConversationActivity *)self fallbackApplicationName];
-  v12 = [v4 initWithBundleIdentifier:v5 metadata:v7 applicationContext:v8 uuid:v9 activityIdentifier:v10 fallbackApplicationName:v11];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  bundleIdentifier = [(TUConversationActivity *)self bundleIdentifier];
+  metadata = [(TUConversationActivity *)self metadata];
+  sanitizedCopy = [metadata sanitizedCopy];
+  applicationContext = [(TUConversationActivity *)self applicationContext];
+  uUID = [(TUConversationActivity *)self UUID];
+  activityIdentifier = [(TUConversationActivity *)self activityIdentifier];
+  fallbackApplicationName = [(TUConversationActivity *)self fallbackApplicationName];
+  v12 = [v4 initWithBundleIdentifier:bundleIdentifier metadata:sanitizedCopy applicationContext:applicationContext uuid:uUID activityIdentifier:activityIdentifier fallbackApplicationName:fallbackApplicationName];
 
   [v12 setSupported:{-[TUConversationActivity isSupported](self, "isSupported")}];
-  v13 = [(TUConversationActivity *)self originator];
-  [v12 setOriginator:v13];
+  originator = [(TUConversationActivity *)self originator];
+  [v12 setOriginator:originator];
 
-  v14 = [(TUConversationActivity *)self timestamp];
-  [v12 setTimestamp:v14];
+  timestamp = [(TUConversationActivity *)self timestamp];
+  [v12 setTimestamp:timestamp];
 
   [v12 setSystemActivity:{-[TUConversationActivity isSystemActivity](self, "isSystemActivity")}];
-  v15 = [(TUConversationActivity *)self staticIdentifier];
-  [v12 setStaticIdentifier:v15];
+  staticIdentifier = [(TUConversationActivity *)self staticIdentifier];
+  [v12 setStaticIdentifier:staticIdentifier];
 
-  v16 = [(TUConversationActivity *)self trustedFromHandle];
-  [v12 setTrustedFromHandle:v16];
+  trustedFromHandle = [(TUConversationActivity *)self trustedFromHandle];
+  [v12 setTrustedFromHandle:trustedFromHandle];
 
   [v12 setStartWhenStaged:{-[TUConversationActivity startWhenStaged](self, "startWhenStaged")}];
-  v17 = [(TUConversationActivity *)self activationSceneIdentifier];
-  [v12 setActivationSceneIdentifier:v17];
+  activationSceneIdentifier = [(TUConversationActivity *)self activationSceneIdentifier];
+  [v12 setActivationSceneIdentifier:activationSceneIdentifier];
 
   [v12 setRequiresParticipantTranslation:{-[TUConversationActivity requiresParticipantTranslation](self, "requiresParticipantTranslation")}];
-  v18 = [(TUConversationActivity *)self screenShareAttributes];
-  [v12 setScreenShareAttributes:v18];
+  screenShareAttributes = [(TUConversationActivity *)self screenShareAttributes];
+  [v12 setScreenShareAttributes:screenShareAttributes];
 
   return v12;
 }
 
-- (TUConversationActivity)initWithCoder:(id)a3
+- (TUConversationActivity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_bundleIdentifier);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_metadata);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v11 = objc_opt_class();
   v12 = NSStringFromSelector(sel_applicationContext);
-  v13 = [v4 decodeObjectOfClass:v11 forKey:v12];
+  v13 = [coderCopy decodeObjectOfClass:v11 forKey:v12];
 
   if (v13)
   {
     v14 = objc_opt_class();
     v15 = NSStringFromSelector(sel_UUID);
-    v16 = [v4 decodeObjectOfClass:v14 forKey:v15];
+    v16 = [coderCopy decodeObjectOfClass:v14 forKey:v15];
 
     if (v16)
     {
       v17 = objc_opt_class();
       v18 = NSStringFromSelector(sel_activityIdentifier);
-      v19 = [v4 decodeObjectOfClass:v17 forKey:v18];
+      v19 = [coderCopy decodeObjectOfClass:v17 forKey:v18];
 
       if (v19)
       {
         v60 = v19;
         v20 = NSStringFromSelector(sel_isSupported);
-        v57 = [v4 decodeBoolForKey:v20];
+        v57 = [coderCopy decodeBoolForKey:v20];
 
         v21 = objc_opt_class();
         v22 = NSStringFromSelector(sel_originator);
-        obj = [v4 decodeObjectOfClass:v21 forKey:v22];
+        obj = [coderCopy decodeObjectOfClass:v21 forKey:v22];
 
         v23 = objc_opt_class();
         v24 = NSStringFromSelector(sel_timestamp);
-        v25 = [v4 decodeObjectOfClass:v23 forKey:v24];
+        selfCopy = [coderCopy decodeObjectOfClass:v23 forKey:v24];
 
-        v26 = v25;
-        if (v25)
+        v26 = selfCopy;
+        if (selfCopy)
         {
-          v58 = v25;
+          v58 = selfCopy;
           v27 = objc_opt_class();
           v28 = NSStringFromSelector(sel_fallbackApplicationName);
-          v56 = [v4 decodeObjectOfClass:v27 forKey:v28];
+          v56 = [coderCopy decodeObjectOfClass:v27 forKey:v28];
 
           v29 = NSStringFromSelector(sel_isSystemActivity);
-          v55 = [v4 decodeBoolForKey:v29];
+          v55 = [coderCopy decodeBoolForKey:v29];
 
           v30 = objc_opt_class();
           v31 = NSStringFromSelector(sel_staticIdentifier);
-          v54 = [v4 decodeObjectOfClass:v30 forKey:v31];
+          v54 = [coderCopy decodeObjectOfClass:v30 forKey:v31];
 
           v32 = objc_opt_class();
           v33 = NSStringFromSelector(sel_trustedFromHandle);
-          v53 = [v4 decodeObjectOfClass:v32 forKey:v33];
+          v53 = [coderCopy decodeObjectOfClass:v32 forKey:v33];
 
           v34 = NSStringFromSelector(sel_startWhenStaged);
-          v52 = [v4 decodeBoolForKey:v34];
+          v52 = [coderCopy decodeBoolForKey:v34];
 
           v35 = objc_opt_class();
           v36 = NSStringFromSelector(sel_activationSceneIdentifier);
-          v37 = [v4 decodeObjectOfClass:v35 forKey:v36];
+          v37 = [coderCopy decodeObjectOfClass:v35 forKey:v36];
 
           v38 = NSStringFromSelector(sel_requiresParticipantTranslation);
-          v51 = [v4 decodeBoolForKey:v38];
+          v51 = [coderCopy decodeBoolForKey:v38];
 
           v39 = objc_opt_class();
           v40 = NSStringFromSelector(sel_screenShareAttributes);
-          v50 = [v4 decodeObjectOfClass:v39 forKey:v40];
+          v50 = [coderCopy decodeObjectOfClass:v39 forKey:v40];
 
           v41 = [(TUConversationActivity *)self initWithBundleIdentifier:v7 metadata:v10 applicationContext:v13 uuid:v16 activityIdentifier:v60 fallbackApplicationName:v56];
           v41->_supported = v57;
@@ -701,7 +701,7 @@ LABEL_41:
 
           self = v41;
           v26 = v58;
-          v25 = self;
+          selfCopy = self;
         }
 
         v19 = v60;
@@ -709,90 +709,90 @@ LABEL_41:
 
       else
       {
-        v25 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v25 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v25 = 0;
+    selfCopy = 0;
   }
 
-  return v25;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TUConversationActivity *)self bundleIdentifier];
+  coderCopy = coder;
+  bundleIdentifier = [(TUConversationActivity *)self bundleIdentifier];
   v6 = NSStringFromSelector(sel_bundleIdentifier);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:bundleIdentifier forKey:v6];
 
-  v7 = [(TUConversationActivity *)self metadata];
+  metadata = [(TUConversationActivity *)self metadata];
   v8 = NSStringFromSelector(sel_metadata);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:metadata forKey:v8];
 
-  v9 = [(TUConversationActivity *)self applicationContext];
+  applicationContext = [(TUConversationActivity *)self applicationContext];
   v10 = NSStringFromSelector(sel_applicationContext);
-  [v4 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:applicationContext forKey:v10];
 
-  v11 = [(TUConversationActivity *)self UUID];
+  uUID = [(TUConversationActivity *)self UUID];
   v12 = NSStringFromSelector(sel_UUID);
-  [v4 encodeObject:v11 forKey:v12];
+  [coderCopy encodeObject:uUID forKey:v12];
 
-  v13 = [(TUConversationActivity *)self activityIdentifier];
+  activityIdentifier = [(TUConversationActivity *)self activityIdentifier];
   v14 = NSStringFromSelector(sel_activityIdentifier);
-  [v4 encodeObject:v13 forKey:v14];
+  [coderCopy encodeObject:activityIdentifier forKey:v14];
 
-  v15 = [(TUConversationActivity *)self isSupported];
+  isSupported = [(TUConversationActivity *)self isSupported];
   v16 = NSStringFromSelector(sel_isSupported);
-  [v4 encodeBool:v15 forKey:v16];
+  [coderCopy encodeBool:isSupported forKey:v16];
 
-  v17 = [(TUConversationActivity *)self originator];
+  originator = [(TUConversationActivity *)self originator];
   v18 = NSStringFromSelector(sel_originator);
-  [v4 encodeObject:v17 forKey:v18];
+  [coderCopy encodeObject:originator forKey:v18];
 
-  v19 = [(TUConversationActivity *)self timestamp];
+  timestamp = [(TUConversationActivity *)self timestamp];
   v20 = NSStringFromSelector(sel_timestamp);
-  [v4 encodeObject:v19 forKey:v20];
+  [coderCopy encodeObject:timestamp forKey:v20];
 
-  v21 = [(TUConversationActivity *)self fallbackApplicationName];
+  fallbackApplicationName = [(TUConversationActivity *)self fallbackApplicationName];
   v22 = NSStringFromSelector(sel_fallbackApplicationName);
-  [v4 encodeObject:v21 forKey:v22];
+  [coderCopy encodeObject:fallbackApplicationName forKey:v22];
 
-  v23 = [(TUConversationActivity *)self isSystemActivity];
+  isSystemActivity = [(TUConversationActivity *)self isSystemActivity];
   v24 = NSStringFromSelector(sel_isSystemActivity);
-  [v4 encodeBool:v23 forKey:v24];
+  [coderCopy encodeBool:isSystemActivity forKey:v24];
 
-  v25 = [(TUConversationActivity *)self staticIdentifier];
+  staticIdentifier = [(TUConversationActivity *)self staticIdentifier];
   v26 = NSStringFromSelector(sel_staticIdentifier);
-  [v4 encodeObject:v25 forKey:v26];
+  [coderCopy encodeObject:staticIdentifier forKey:v26];
 
-  v27 = [(TUConversationActivity *)self trustedFromHandle];
+  trustedFromHandle = [(TUConversationActivity *)self trustedFromHandle];
   v28 = NSStringFromSelector(sel_trustedFromHandle);
-  [v4 encodeObject:v27 forKey:v28];
+  [coderCopy encodeObject:trustedFromHandle forKey:v28];
 
-  v29 = [(TUConversationActivity *)self startWhenStaged];
+  startWhenStaged = [(TUConversationActivity *)self startWhenStaged];
   v30 = NSStringFromSelector(sel_startWhenStaged);
-  [v4 encodeBool:v29 forKey:v30];
+  [coderCopy encodeBool:startWhenStaged forKey:v30];
 
-  v31 = [(TUConversationActivity *)self activationSceneIdentifier];
+  activationSceneIdentifier = [(TUConversationActivity *)self activationSceneIdentifier];
   v32 = NSStringFromSelector(sel_activationSceneIdentifier);
-  [v4 encodeObject:v31 forKey:v32];
+  [coderCopy encodeObject:activationSceneIdentifier forKey:v32];
 
-  v33 = [(TUConversationActivity *)self requiresParticipantTranslation];
+  requiresParticipantTranslation = [(TUConversationActivity *)self requiresParticipantTranslation];
   v34 = NSStringFromSelector(sel_requiresParticipantTranslation);
-  [v4 encodeBool:v33 forKey:v34];
+  [coderCopy encodeBool:requiresParticipantTranslation forKey:v34];
 
-  v36 = [(TUConversationActivity *)self screenShareAttributes];
+  screenShareAttributes = [(TUConversationActivity *)self screenShareAttributes];
   v35 = NSStringFromSelector(sel_screenShareAttributes);
-  [v4 encodeObject:v36 forKey:v35];
+  [coderCopy encodeObject:screenShareAttributes forKey:v35];
 }
 
 - (NSString)representativeBundleIdentifier
@@ -821,35 +821,35 @@ LABEL_41:
 
 - (BOOL)isEligibleForHandoff
 {
-  v2 = [(TUConversationActivity *)self metadata];
-  v3 = [v2 supportsContinuationOnTV];
+  metadata = [(TUConversationActivity *)self metadata];
+  supportsContinuationOnTV = [metadata supportsContinuationOnTV];
 
-  return v3;
+  return supportsContinuationOnTV;
 }
 
 - (BOOL)isPlaceholderActivity
 {
-  v2 = [(TUConversationActivity *)self activityIdentifier];
-  v3 = [v2 isEqual:@"com.apple.groupactivities.placeholder"];
+  activityIdentifier = [(TUConversationActivity *)self activityIdentifier];
+  v3 = [activityIdentifier isEqual:@"com.apple.groupactivities.placeholder"];
 
   return v3;
 }
 
 - (BOOL)isStaticActivity
 {
-  v2 = [(TUConversationActivity *)self staticIdentifier];
-  v3 = v2 != 0;
+  staticIdentifier = [(TUConversationActivity *)self staticIdentifier];
+  v3 = staticIdentifier != 0;
 
   return v3;
 }
 
-- (void)setBundleIdentifier:(id)a3
+- (void)setBundleIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (self->_bundleIdentifier != v5)
+  identifierCopy = identifier;
+  if (self->_bundleIdentifier != identifierCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_bundleIdentifier, a3);
+    v8 = identifierCopy;
+    objc_storeStrong(&self->_bundleIdentifier, identifier);
     if (self->_bundleIdentifier)
     {
       v6 = [objc_opt_class() lookupApplicationNameForBundleIdentifier:v8];
@@ -863,85 +863,85 @@ LABEL_41:
     fallbackApplicationName = self->_fallbackApplicationName;
     self->_fallbackApplicationName = v6;
 
-    v5 = v8;
+    identifierCopy = v8;
   }
 }
 
 - (id)localizedApplicationName
 {
-  v3 = [(TUConversationActivity *)self bundleIdentifier];
+  bundleIdentifier = [(TUConversationActivity *)self bundleIdentifier];
 
-  if (v3)
+  if (bundleIdentifier)
   {
     v4 = objc_opt_class();
-    v5 = [(TUConversationActivity *)self bundleIdentifier];
-    v3 = [v4 lookupApplicationNameForBundleIdentifier:v5];
+    bundleIdentifier2 = [(TUConversationActivity *)self bundleIdentifier];
+    bundleIdentifier = [v4 lookupApplicationNameForBundleIdentifier:bundleIdentifier2];
 
-    if (![v3 length])
+    if (![bundleIdentifier length])
     {
-      v6 = [(TUConversationActivity *)self fallbackApplicationName];
-      v7 = [v6 length];
+      fallbackApplicationName = [(TUConversationActivity *)self fallbackApplicationName];
+      v7 = [fallbackApplicationName length];
 
       if (v7)
       {
-        v8 = [(TUConversationActivity *)self fallbackApplicationName];
-        v9 = [v8 copy];
+        fallbackApplicationName2 = [(TUConversationActivity *)self fallbackApplicationName];
+        v9 = [fallbackApplicationName2 copy];
 
-        v3 = v9;
+        bundleIdentifier = v9;
       }
     }
   }
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (id)representativeDisplayName
 {
   if ([(TUConversationActivity *)self isEligibleForWebBrowser])
   {
-    v3 = [(TUConversationActivity *)self metadata];
-    v4 = [v3 fallbackURL];
-    v5 = [v4 host];
+    metadata = [(TUConversationActivity *)self metadata];
+    fallbackURL = [metadata fallbackURL];
+    host = [fallbackURL host];
   }
 
   else
   {
-    v5 = [(TUConversationActivity *)self localizedApplicationName];
+    host = [(TUConversationActivity *)self localizedApplicationName];
   }
 
-  return v5;
+  return host;
 }
 
-+ (id)lookupApplicationNameForBundleIdentifier:(id)a3
++ (id)lookupApplicationNameForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.TelephonyUtilities"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"com.apple.TelephonyUtilities"])
   {
     v4 = 0;
     goto LABEL_11;
   }
 
   v10 = 0;
-  v5 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v3 allowPlaceholder:1 error:&v10];
+  v5 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:identifierCopy allowPlaceholder:1 error:&v10];
   v6 = v10;
   if (v6)
   {
     v7 = TUDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(TUConversationActivity *)v3 lookupApplicationNameForBundleIdentifier:v6, v7];
+      [(TUConversationActivity *)identifierCopy lookupApplicationNameForBundleIdentifier:v6, v7];
     }
   }
 
   else if (v5)
   {
-    v8 = [v5 localizedName];
+    localizedName = [v5 localizedName];
     goto LABEL_10;
   }
 
-  v8 = 0;
+  localizedName = 0;
 LABEL_10:
-  v4 = v8;
+  v4 = localizedName;
 
 LABEL_11:
 
@@ -950,23 +950,23 @@ LABEL_11:
 
 - (BOOL)isScreenSharingActivity
 {
-  v3 = [(TUConversationActivity *)self activityIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.FaceTime.ScreenSharing"];
+  activityIdentifier = [(TUConversationActivity *)self activityIdentifier];
+  v4 = [activityIdentifier isEqualToString:@"com.apple.FaceTime.ScreenSharing"];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(TUConversationActivity *)self bundleIdentifier];
-  if ([v5 isEqualToString:@"com.apple.TelephonyUtilities"])
+  bundleIdentifier = [(TUConversationActivity *)self bundleIdentifier];
+  if ([bundleIdentifier isEqualToString:@"com.apple.TelephonyUtilities"])
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [v5 isEqualToString:@"com.apple.InCallService"];
+    v6 = [bundleIdentifier isEqualToString:@"com.apple.InCallService"];
   }
 
   return v6;
@@ -974,28 +974,28 @@ LABEL_11:
 
 - (id)concatenatedMetadataDescription
 {
-  v3 = [(TUConversationActivity *)self metadata];
+  metadata = [(TUConversationActivity *)self metadata];
 
-  if (!v3)
+  if (!metadata)
   {
     goto LABEL_7;
   }
 
-  v4 = [(TUConversationActivity *)self metadata];
-  v5 = [v4 title];
+  metadata2 = [(TUConversationActivity *)self metadata];
+  title = [metadata2 title];
 
-  v6 = [(TUConversationActivity *)self metadata];
-  v7 = [v6 subTitle];
+  metadata3 = [(TUConversationActivity *)self metadata];
+  subTitle = [metadata3 subTitle];
 
-  if (!v5)
+  if (!title)
   {
-    if (v7)
+    if (subTitle)
     {
-      v9 = [(TUConversationActivity *)self metadata];
-      v14 = [v9 subTitle];
+      metadata4 = [(TUConversationActivity *)self metadata];
+      subTitle2 = [metadata4 subTitle];
 LABEL_9:
-      v10 = v14;
-      v13 = [v14 copy];
+      title2 = subTitle2;
+      v13 = [subTitle2 copy];
       goto LABEL_10;
     }
 
@@ -1004,19 +1004,19 @@ LABEL_7:
     goto LABEL_11;
   }
 
-  if (!v7)
+  if (!subTitle)
   {
-    v9 = [(TUConversationActivity *)self metadata];
-    v14 = [v9 title];
+    metadata4 = [(TUConversationActivity *)self metadata];
+    subTitle2 = [metadata4 title];
     goto LABEL_9;
   }
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(TUConversationActivity *)self metadata];
-  v10 = [v9 title];
-  v11 = [(TUConversationActivity *)self metadata];
-  v12 = [v11 subTitle];
-  v13 = [v8 stringWithFormat:@"%@ ⋅ %@", v10, v12];
+  metadata4 = [(TUConversationActivity *)self metadata];
+  title2 = [metadata4 title];
+  metadata5 = [(TUConversationActivity *)self metadata];
+  subTitle3 = [metadata5 subTitle];
+  v13 = [v8 stringWithFormat:@"%@ ⋅ %@", title2, subTitle3];
 
 LABEL_10:
 LABEL_11:
@@ -1026,11 +1026,11 @@ LABEL_11:
 
 - (id)concatenatedDescription
 {
-  v2 = [(TUConversationActivity *)self concatenatedMetadataDescription];
-  v3 = v2;
-  if (v2)
+  concatenatedMetadataDescription = [(TUConversationActivity *)self concatenatedMetadataDescription];
+  v3 = concatenatedMetadataDescription;
+  if (concatenatedMetadataDescription)
   {
-    v4 = v2;
+    v4 = concatenatedMetadataDescription;
   }
 
   else
@@ -1044,21 +1044,21 @@ LABEL_11:
 
 - (TUConversationActivityContext)activityContext
 {
-  v2 = [(TUConversationActivity *)self metadata];
-  v3 = [v2 context];
+  metadata = [(TUConversationActivity *)self metadata];
+  context = [metadata context];
 
-  return v3;
+  return context;
 }
 
-- (void)setActivityContext:(id)a3
+- (void)setActivityContext:(id)context
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextCopy = context;
   v4 = TUDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = contextCopy;
     _os_log_impl(&dword_1956FD000, v4, OS_LOG_TYPE_DEFAULT, "[WARN] Not setting activity context: %@", &v6, 0xCu);
   }
 

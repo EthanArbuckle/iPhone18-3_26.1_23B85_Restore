@@ -5,26 +5,26 @@
 - (id)currentNikePhoneAppBundleID;
 - (id)currentNikeWatchAppBundleID;
 - (void)appConduitTimerFired;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)checkForCompletionOfVictoryAppInstallationOnPhone;
 - (void)checkIfAppConduitKnowsAboutVictoryWatchApp;
 - (void)coordinateNikeAppInstallation;
-- (void)didFetchInfoForApplication:(id)a3 error:(id)a4;
-- (void)didInstallVictoryAppOnWatchWithState:(int64_t)a3 error:(id)a4;
-- (void)didUpdateVictoryAppInstallationStateOntoWatch:(int64_t)a3;
+- (void)didFetchInfoForApplication:(id)application error:(id)error;
+- (void)didInstallVictoryAppOnWatchWithState:(int64_t)state error:(id)error;
+- (void)didUpdateVictoryAppInstallationStateOntoWatch:(int64_t)watch;
 - (void)installVictoryAppOntoWatch;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)reportSyncCompletionWithError:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)reportSyncCompletionWithError:(id)error;
 - (void)startAppConduitTimer;
 - (void)startMonitoringAppConduitNotification;
 - (void)startMonitoringVictoryAppInstallationOnPhone;
 - (void)stopAppConduitTimer;
 - (void)stopMonitoringAppConduitNotification;
 - (void)stopMonitoringVictoryAppInstallationOnPhone;
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4;
-- (void)syncCoordinator:(id)a3 didInvalidateSyncSession:(id)a4;
-- (void)updateInstallStateForApplication:(id)a3 installState:(int64_t)a4;
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session;
+- (void)syncCoordinator:(id)coordinator didInvalidateSyncSession:(id)session;
+- (void)updateInstallStateForApplication:(id)application installState:(int64_t)state;
 @end
 
 @implementation NSSCompanionSyncManager
@@ -68,8 +68,8 @@
 
 - (id)currentNikeWatchAppBundleID
 {
-  v2 = [(NSSCompanionSyncManager *)self currentNikePhoneAppBundleID];
-  v3 = [v2 stringByAppendingString:@".watchkitapp"];
+  currentNikePhoneAppBundleID = [(NSSCompanionSyncManager *)self currentNikePhoneAppBundleID];
+  v3 = [currentNikePhoneAppBundleID stringByAppendingString:@".watchkitapp"];
 
   return v3;
 }
@@ -77,7 +77,7 @@
 + (void)blockUntilPaired
 {
   v3 = +[NRPairedDeviceRegistry sharedInstance];
-  v2 = [v3 waitForActivePairedOrAltAccountDevice];
+  waitForActivePairedOrAltAccountDevice = [v3 waitForActivePairedOrAltAccountDevice];
 }
 
 + (unint64_t)pairedWatchVictoryBehavior
@@ -86,7 +86,7 @@
   block[1] = 3221225472;
   block[2] = sub_100011FFC;
   block[3] = &unk_100034E60;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10003DD08 != -1)
   {
     dispatch_once(&qword_10003DD08, block);
@@ -95,13 +95,13 @@
   v2 = +[NRPairedDeviceRegistry sharedInstance];
   v3 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v4 = [v2 getAllDevicesWithArchivedAltAccountDevicesMatching:v3];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  v6 = [v5 valueForProperty:NRDevicePropertyDeviceBrand];
+  v6 = [firstObject valueForProperty:NRDevicePropertyDeviceBrand];
   if ([v6 intValue] == 2)
   {
     v7 = [[NSUUID alloc] initWithUUIDString:@"E7995851-D32D-4A4F-B12C-3DD8D0252581"];
-    v8 = [v5 supportsCapability:v7];
+    v8 = [firstObject supportsCapability:v7];
 
     if (v8)
     {
@@ -122,15 +122,15 @@
   return v9;
 }
 
-- (void)reportSyncCompletionWithError:(id)a3
+- (void)reportSyncCompletionWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   syncSession = self->_syncSession;
   if (syncSession)
   {
-    if (v4)
+    if (errorCopy)
     {
-      [(PSYServiceSyncSession *)syncSession syncDidFailWithError:v4];
+      [(PSYServiceSyncSession *)syncSession syncDidFailWithError:errorCopy];
     }
 
     else
@@ -188,19 +188,19 @@
 
 - (void)checkForCompletionOfVictoryAppInstallationOnPhone
 {
-  v3 = [(NSProgress *)self->_victoryAppInstallProgress installState];
+  installState = [(NSProgress *)self->_victoryAppInstallProgress installState];
   v4 = NSSLogForType();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     [(NSProgress *)self->_victoryAppInstallProgress fractionCompleted];
-    if (v3 > 5)
+    if (installState > 5)
     {
       v6 = "Unknown";
     }
 
     else
     {
-      v6 = off_100034F70[v3];
+      v6 = off_100034F70[installState];
     }
 
     v8 = 134218498;
@@ -208,13 +208,13 @@
     v10 = 2080;
     v11 = v6;
     v12 = 2048;
-    v13 = v3;
+    v13 = installState;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Victory app install progress on Phone: (%f); Install state: (%s - %lu)", &v8, 0x20u);
   }
 
-  if (v3 - 2 >= 3)
+  if (installState - 2 >= 3)
   {
-    if (v3 == 5)
+    if (installState == 5)
     {
       [(NSSCompanionSyncManager *)self stopMonitoringVictoryAppInstallationOnPhone];
       [(NSSCompanionSyncManager *)self checkIfAppConduitKnowsAboutVictoryWatchApp];
@@ -241,7 +241,7 @@
     v3 = +[NRPairedDeviceRegistry sharedInstance];
     v4 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v5 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v4];
-    v6 = [v5 firstObject];
+    firstObject = [v5 firstObject];
 
     [(NSSCompanionSyncManager *)self startMonitoringAppConduitNotification];
     v7 = NSSLogForType();
@@ -253,42 +253,42 @@
 
     objc_initWeak(buf, self);
     v8 = +[ACXDeviceConnection sharedDeviceConnection];
-    v9 = [(NSSCompanionSyncManager *)self currentNikeWatchAppBundleID];
+    currentNikeWatchAppBundleID = [(NSSCompanionSyncManager *)self currentNikeWatchAppBundleID];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100012528;
     v10[3] = &unk_100034EB0;
     objc_copyWeak(&v11, buf);
-    [v8 fetchInfoForApplicationWithBundleID:v9 forPairedDevice:v6 completion:v10];
+    [v8 fetchInfoForApplicationWithBundleID:currentNikeWatchAppBundleID forPairedDevice:firstObject completion:v10];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(buf);
   }
 }
 
-- (void)didFetchInfoForApplication:(id)a3 error:(id)a4
+- (void)didFetchInfoForApplication:(id)application error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  errorCopy = error;
   v8 = NSSLogForType();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412546;
-    v22 = v6;
+    v22 = applicationCopy;
     v23 = 2112;
-    v24 = v7;
+    v24 = errorCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "application: (%@); error: (%@)", &v21, 0x16u);
   }
 
   self->_isCheckingIfAppConduitKnowsAboutVictoryWatchApp = 0;
-  if (v7)
+  if (errorCopy)
   {
-    v9 = [v7 domain];
-    if ([v9 isEqualToString:ACXErrorDomain])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:ACXErrorDomain])
     {
-      v10 = [v7 code];
+      code = [errorCopy code];
 
-      if (v10 == 19)
+      if (code == 19)
       {
         if (self->_shouldCheckAgainIfAppConduitKnowsAboutVictoryWatchApp)
         {
@@ -314,30 +314,30 @@
     {
     }
 
-    v14 = self;
-    v15 = v7;
+    selfCopy2 = self;
+    v15 = errorCopy;
 LABEL_15:
-    [(NSSCompanionSyncManager *)v14 reportSyncCompletionWithError:v15];
+    [(NSSCompanionSyncManager *)selfCopy2 reportSyncCompletionWithError:v15];
     goto LABEL_29;
   }
 
-  if ([v6 count])
+  if ([applicationCopy count])
   {
     [(NSSCompanionSyncManager *)self stopMonitoringAppConduitNotification];
-    v11 = [v6 objectForKey:ACXServerStatusKey];
-    v12 = [v11 integerValue];
+    v11 = [applicationCopy objectForKey:ACXServerStatusKey];
+    integerValue = [v11 integerValue];
 
-    if (v12 == 2)
+    if (integerValue == 2)
     {
-      v13 = [objc_opt_class() pairedWatchVictoryBehavior];
-      if (v13 != 2)
+      pairedWatchVictoryBehavior = [objc_opt_class() pairedWatchVictoryBehavior];
+      if (pairedWatchVictoryBehavior != 2)
       {
-        if (v13 != 1)
+        if (pairedWatchVictoryBehavior != 1)
         {
           goto LABEL_29;
         }
 
-        v14 = self;
+        selfCopy2 = self;
         v15 = 0;
         goto LABEL_15;
       }
@@ -363,7 +363,7 @@ LABEL_15:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 134217984;
-        v22 = v12;
+        v22 = integerValue;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Watch app not yet installed. Installation state: (%ld). Triggering installation!", &v21, 0xCu);
       }
 
@@ -443,15 +443,15 @@ LABEL_29:
   p_appConduitNotifyToken = &self->_appConduitNotifyToken;
   if (self->_appConduitNotifyToken == -1)
   {
-    v3 = self;
-    v4 = [ACXApplicationsUpdatedDarwinNotification UTF8String];
-    workQueue = v3->_workQueue;
+    selfCopy = self;
+    uTF8String = [ACXApplicationsUpdatedDarwinNotification UTF8String];
+    workQueue = selfCopy->_workQueue;
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100012D74;
     handler[3] = &unk_100034F00;
-    handler[4] = v3;
-    v6 = notify_register_dispatch(v4, p_appConduitNotifyToken, workQueue, handler);
+    handler[4] = selfCopy;
+    v6 = notify_register_dispatch(uTF8String, p_appConduitNotifyToken, workQueue, handler);
     if (v6)
     {
       v7 = v6;
@@ -464,7 +464,7 @@ LABEL_29:
       }
     }
 
-    [(NSSCompanionSyncManager *)v3 startAppConduitTimer];
+    [(NSSCompanionSyncManager *)selfCopy startAppConduitTimer];
   }
 }
 
@@ -493,17 +493,17 @@ LABEL_29:
 
 - (void)installVictoryAppOntoWatch
 {
-  v3 = [(NSSCompanionSyncManager *)self currentNikeWatchAppBundleID];
+  currentNikeWatchAppBundleID = [(NSSCompanionSyncManager *)self currentNikeWatchAppBundleID];
   v4 = +[NRPairedDeviceRegistry sharedInstance];
   v5 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v6 = [v4 getAllDevicesWithArchivedAltAccountDevicesMatching:v5];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
   v8 = NSSLogForType();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v3;
+    v13 = currentNikeWatchAppBundleID;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Installing Victory app onto Watch (%@)", buf, 0xCu);
   }
 
@@ -514,51 +514,51 @@ LABEL_29:
   v10[2] = sub_1000130C8;
   v10[3] = &unk_100034F28;
   objc_copyWeak(&v11, buf);
-  [v9 installApplication:v3 onPairedDevice:v7 completion:v10];
+  [v9 installApplication:currentNikeWatchAppBundleID onPairedDevice:firstObject completion:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(buf);
 }
 
-- (void)didInstallVictoryAppOnWatchWithState:(int64_t)a3 error:(id)a4
+- (void)didInstallVictoryAppOnWatchWithState:(int64_t)state error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v7 = NSSLogForType();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134218242;
-    v10 = a3;
+    stateCopy = state;
     v11 = 2112;
-    v12 = v6;
+    v12 = errorCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "ACXExportedApplicationInstallState: (%ld); error: (%@)", &v9, 0x16u);
   }
 
-  if (v6)
+  if (errorCopy)
   {
-    [(NSSCompanionSyncManager *)self reportSyncCompletionWithError:v6];
+    [(NSSCompanionSyncManager *)self reportSyncCompletionWithError:errorCopy];
   }
 
-  else if ((a3 - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+  else if ((state - 3) <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v8 = [NSError errorWithDomain:@"NSSErrorDomain" code:7 userInfo:0];
     [(NSSCompanionSyncManager *)self reportSyncCompletionWithError:v8];
   }
 }
 
-- (void)didUpdateVictoryAppInstallationStateOntoWatch:(int64_t)a3
+- (void)didUpdateVictoryAppInstallationStateOntoWatch:(int64_t)watch
 {
   v5 = NSSLogForType();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134217984;
-    v10 = a3;
+    watchCopy = watch;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ACXExportedApplicationInstallState: (%ld)", &v9, 0xCu);
   }
 
-  if (a3 == 2)
+  if (watch == 2)
   {
-    v6 = [objc_opt_class() pairedWatchVictoryBehavior];
-    if (v6 == 2)
+    pairedWatchVictoryBehavior = [objc_opt_class() pairedWatchVictoryBehavior];
+    if (pairedWatchVictoryBehavior == 2)
     {
       if (!self->_installState)
       {
@@ -567,7 +567,7 @@ LABEL_29:
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
           v9 = 136315138;
-          v10 = "[NSSCompanionSyncManager didUpdateVictoryAppInstallationStateOntoWatch:]";
+          watchCopy = "[NSSCompanionSyncManager didUpdateVictoryAppInstallationStateOntoWatch:]";
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s Moving to Next Install Phase...", &v9, 0xCu);
         }
 
@@ -575,30 +575,30 @@ LABEL_29:
       }
     }
 
-    else if (v6 == 1)
+    else if (pairedWatchVictoryBehavior == 1)
     {
       [(NSSCompanionSyncManager *)self reportSyncCompletionWithError:0];
     }
   }
 
-  else if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 8)
+  else if ((watch & 0xFFFFFFFFFFFFFFFDLL) == 8)
   {
     v7 = [NSError errorWithDomain:@"NSSErrorDomain" code:7 userInfo:0];
     [(NSSCompanionSyncManager *)self reportSyncCompletionWithError:v7];
   }
 }
 
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  sessionCopy = session;
   v9 = NSSLogForType();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412546;
-    v17 = v7;
+    v17 = coordinatorCopy;
     v18 = 2112;
-    v19 = v8;
+    v19 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "coordinator: (%@); syncSession: (%@)", &v16, 0x16u);
   }
 
@@ -614,8 +614,8 @@ LABEL_29:
       [(NSSCompanionSyncManager *)self reportSyncCompletionWithError:v12];
     }
 
-    objc_storeStrong(&self->_syncSession, a4);
-    objc_storeStrong(&self->_syncCoordinator, a3);
+    objc_storeStrong(&self->_syncSession, session);
+    objc_storeStrong(&self->_syncCoordinator, coordinator);
     v13 = +[LSApplicationWorkspace defaultWorkspace];
     applicationWorkspace = self->_applicationWorkspace;
     self->_applicationWorkspace = v13;
@@ -629,7 +629,7 @@ LABEL_29:
 
   else
   {
-    [v8 syncDidComplete];
+    [sessionCopy syncDidComplete];
   }
 }
 
@@ -642,13 +642,13 @@ LABEL_29:
     self->_victoryAppInstallProgress = 0;
   }
 
-  v4 = [(NSSCompanionSyncManager *)self currentNikePhoneAppBundleID];
-  v5 = [LSApplicationProxy applicationProxyForIdentifier:v4];
+  currentNikePhoneAppBundleID = [(NSSCompanionSyncManager *)self currentNikePhoneAppBundleID];
+  v5 = [LSApplicationProxy applicationProxyForIdentifier:currentNikePhoneAppBundleID];
 
-  v6 = [v5 appState];
-  v7 = [v6 isInstalled];
+  appState = [v5 appState];
+  isInstalled = [appState isInstalled];
 
-  if (v7)
+  if (isInstalled)
   {
     v8 = NSSLogForType();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -662,12 +662,12 @@ LABEL_29:
 
   else
   {
-    v9 = [v5 appState];
-    v10 = [v9 isPlaceholder];
+    appState2 = [v5 appState];
+    isPlaceholder = [appState2 isPlaceholder];
 
     v11 = NSSLogForType();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-    if (v10)
+    if (isPlaceholder)
     {
       if (v12)
       {
@@ -675,10 +675,10 @@ LABEL_29:
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Victory App is installing on Phone.", &v17, 2u);
       }
 
-      v13 = [v5 installProgress];
+      installProgress = [v5 installProgress];
       v14 = NSSLogForType();
       v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-      if (v13)
+      if (installProgress)
       {
         if (v15)
         {
@@ -686,7 +686,7 @@ LABEL_29:
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Monitoring Victory App installation progress.", &v17, 2u);
         }
 
-        objc_storeStrong(&self->_victoryAppInstallProgress, v13);
+        objc_storeStrong(&self->_victoryAppInstallProgress, installProgress);
         [(NSSCompanionSyncManager *)self startMonitoringVictoryAppInstallationOnPhone];
       }
 
@@ -713,32 +713,32 @@ LABEL_29:
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Victory App not installed or installing on the Phone (proxy %@).", &v17, 0xCu);
       }
 
-      v13 = [NSError errorWithDomain:@"NSSErrorDomain" code:6 userInfo:0];
-      [(NSSCompanionSyncManager *)self reportSyncCompletionWithError:v13];
+      installProgress = [NSError errorWithDomain:@"NSSErrorDomain" code:6 userInfo:0];
+      [(NSSCompanionSyncManager *)self reportSyncCompletionWithError:installProgress];
     }
   }
 }
 
-- (void)syncCoordinator:(id)a3 didInvalidateSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator didInvalidateSyncSession:(id)session
 {
-  v5 = a3;
-  v6 = a4;
+  coordinatorCopy = coordinator;
+  sessionCopy = session;
   v7 = NSSLogForType();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = v5;
+    v9 = coordinatorCopy;
     v10 = 2112;
-    v11 = v6;
+    v11 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "coordinator: (%@); syncSession: (%@)", &v8, 0x16u);
   }
 }
 
-- (void)updateInstallStateForApplication:(id)a3 installState:(int64_t)a4
+- (void)updateInstallStateForApplication:(id)application installState:(int64_t)state
 {
-  v6 = a3;
-  v7 = [(NSSCompanionSyncManager *)self currentNikeWatchAppBundleID];
-  v8 = [v6 isEqualToString:v7];
+  applicationCopy = application;
+  currentNikeWatchAppBundleID = [(NSSCompanionSyncManager *)self currentNikeWatchAppBundleID];
+  v8 = [applicationCopy isEqualToString:currentNikeWatchAppBundleID];
 
   if (v8)
   {
@@ -748,12 +748,12 @@ LABEL_29:
     v10[2] = sub_100013AF0;
     v10[3] = &unk_100034F50;
     v10[4] = self;
-    v10[5] = a4;
+    v10[5] = state;
     dispatch_async(workQueue, v10);
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -764,14 +764,14 @@ LABEL_29:
   dispatch_async(workQueue, block);
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
-  v4 = a3;
+  installCopy = install;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [installCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -783,12 +783,12 @@ LABEL_29:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(installCopy);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * v8) applicationIdentifier];
-        v10 = [(NSSCompanionSyncManager *)self currentNikePhoneAppBundleID];
-        v11 = [v9 isEqualToString:v10];
+        applicationIdentifier = [*(*(&v14 + 1) + 8 * v8) applicationIdentifier];
+        currentNikePhoneAppBundleID = [(NSSCompanionSyncManager *)self currentNikePhoneAppBundleID];
+        v11 = [applicationIdentifier isEqualToString:currentNikePhoneAppBundleID];
 
         if (v11)
         {
@@ -805,21 +805,21 @@ LABEL_29:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [installCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [uninstallCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -831,12 +831,12 @@ LABEL_29:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(uninstallCopy);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * v8) applicationIdentifier];
-        v10 = [(NSSCompanionSyncManager *)self currentNikePhoneAppBundleID];
-        v11 = [v9 isEqualToString:v10];
+        applicationIdentifier = [*(*(&v14 + 1) + 8 * v8) applicationIdentifier];
+        currentNikePhoneAppBundleID = [(NSSCompanionSyncManager *)self currentNikePhoneAppBundleID];
+        v11 = [applicationIdentifier isEqualToString:currentNikePhoneAppBundleID];
 
         if (v11)
         {
@@ -853,7 +853,7 @@ LABEL_29:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [uninstallCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);

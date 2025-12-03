@@ -1,13 +1,13 @@
 @interface CEUpgradeFlowManager
 - (CEUpgradeFlowManager)init;
 - (CEUpgradeFlowManagerDelegate)delegate;
-- (void)beginAppleOneUpgradeFlowWithPresenter:(id)a3 url:(id)a4;
-- (void)beginLiftUIUpgradeFlowWithPresenter:(id)a3 url:(id)a4;
-- (void)beginRemoteUIUpgradeFlowWithPresenter:(id)a3 url:(id)a4;
-- (void)upgradeFlowManager:(id)a3 didPresentViewController:(id)a4;
-- (void)upgradeFlowManagerDidCancel:(id)a3;
-- (void)upgradeFlowManagerDidComplete:(id)a3;
-- (void)upgradeFlowManagerDidFail:(id)a3 error:(id)a4;
+- (void)beginAppleOneUpgradeFlowWithPresenter:(id)presenter url:(id)url;
+- (void)beginLiftUIUpgradeFlowWithPresenter:(id)presenter url:(id)url;
+- (void)beginRemoteUIUpgradeFlowWithPresenter:(id)presenter url:(id)url;
+- (void)upgradeFlowManager:(id)manager didPresentViewController:(id)controller;
+- (void)upgradeFlowManagerDidCancel:(id)cancel;
+- (void)upgradeFlowManagerDidComplete:(id)complete;
+- (void)upgradeFlowManagerDidFail:(id)fail error:(id)error;
 @end
 
 @implementation CEUpgradeFlowManager
@@ -45,14 +45,14 @@
   return v2;
 }
 
-- (void)beginLiftUIUpgradeFlowWithPresenter:(id)a3 url:(id)a4
+- (void)beginLiftUIUpgradeFlowWithPresenter:(id)presenter url:(id)url
 {
-  if (a4)
+  if (url)
   {
     offer = self->_offer;
-    v7 = a4;
-    v8 = a3;
-    [(ICQOffer *)offer _updateRequestedServerUIURLWithURL:v7];
+    urlCopy = url;
+    presenterCopy = presenter;
+    [(ICQOffer *)offer _updateRequestedServerUIURLWithURL:urlCopy];
     upgradeFlowManager = self->_upgradeFlowManager;
     if (!upgradeFlowManager)
     {
@@ -64,20 +64,20 @@
     }
 
     [(ICQUpgradeFlowManager *)upgradeFlowManager setDelegate:self];
-    v12 = [objc_alloc(getICQLinkClass()) initWithAction:115 url:v7];
+    v12 = [objc_alloc(getICQLinkClass()) initWithAction:115 url:urlCopy];
 
-    [(ICQUpgradeFlowManager *)self->_upgradeFlowManager beginRemoteUpgradeFlowWithICQLink:v12 presenter:v8];
+    [(ICQUpgradeFlowManager *)self->_upgradeFlowManager beginRemoteUpgradeFlowWithICQLink:v12 presenter:presenterCopy];
   }
 }
 
-- (void)beginRemoteUIUpgradeFlowWithPresenter:(id)a3 url:(id)a4
+- (void)beginRemoteUIUpgradeFlowWithPresenter:(id)presenter url:(id)url
 {
-  if (a4)
+  if (url)
   {
     offer = self->_offer;
-    v7 = a4;
-    v8 = a3;
-    [(ICQOffer *)offer _updateRequestedServerUIURLWithURL:v7];
+    urlCopy = url;
+    presenterCopy = presenter;
+    [(ICQOffer *)offer _updateRequestedServerUIURLWithURL:urlCopy];
     upgradeFlowManager = self->_upgradeFlowManager;
     if (!upgradeFlowManager)
     {
@@ -89,20 +89,20 @@
     }
 
     [(ICQUpgradeFlowManager *)upgradeFlowManager setDelegate:self];
-    v12 = [objc_alloc(getICQLinkClass()) initWithAction:112 url:v7];
+    v12 = [objc_alloc(getICQLinkClass()) initWithAction:112 url:urlCopy];
 
-    [(ICQUpgradeFlowManager *)self->_upgradeFlowManager beginRemoteUpgradeFlowWithICQLink:v12 presenter:v8];
+    [(ICQUpgradeFlowManager *)self->_upgradeFlowManager beginRemoteUpgradeFlowWithICQLink:v12 presenter:presenterCopy];
   }
 }
 
-- (void)beginAppleOneUpgradeFlowWithPresenter:(id)a3 url:(id)a4
+- (void)beginAppleOneUpgradeFlowWithPresenter:(id)presenter url:(id)url
 {
-  if (a4)
+  if (url)
   {
     offer = self->_offer;
-    v7 = a4;
-    v8 = a3;
-    [(ICQOffer *)offer _updateRequestedServerUIURLWithURL:v7];
+    urlCopy = url;
+    presenterCopy = presenter;
+    [(ICQOffer *)offer _updateRequestedServerUIURLWithURL:urlCopy];
     upgradeFlowManager = self->_upgradeFlowManager;
     if (!upgradeFlowManager)
     {
@@ -114,36 +114,36 @@
     }
 
     [(ICQUpgradeFlowManager *)upgradeFlowManager setDelegate:self];
-    v12 = [objc_alloc(getICQLinkClass()) initWithAction:122 url:v7];
+    v12 = [objc_alloc(getICQLinkClass()) initWithAction:122 url:urlCopy];
 
-    [(ICQUpgradeFlowManager *)self->_upgradeFlowManager beginRemoteUpgradeFlowWithICQLink:v12 presenter:v8];
+    [(ICQUpgradeFlowManager *)self->_upgradeFlowManager beginRemoteUpgradeFlowWithICQLink:v12 presenter:presenterCopy];
   }
 }
 
-- (void)upgradeFlowManager:(id)a3 didPresentViewController:(id)a4
+- (void)upgradeFlowManager:(id)manager didPresentViewController:(id)controller
 {
-  v5 = a4;
-  v6 = [(CEUpgradeFlowManager *)self delegate];
-  [v6 upgradeFlowManager:self didPresentViewController:v5];
+  controllerCopy = controller;
+  delegate = [(CEUpgradeFlowManager *)self delegate];
+  [delegate upgradeFlowManager:self didPresentViewController:controllerCopy];
 }
 
-- (void)upgradeFlowManagerDidFail:(id)a3 error:(id)a4
+- (void)upgradeFlowManagerDidFail:(id)fail error:(id)error
 {
-  v5 = a4;
-  v6 = [(CEUpgradeFlowManager *)self delegate];
-  [v6 upgradeFlowManagerDidFail:self error:v5];
+  errorCopy = error;
+  delegate = [(CEUpgradeFlowManager *)self delegate];
+  [delegate upgradeFlowManagerDidFail:self error:errorCopy];
 }
 
-- (void)upgradeFlowManagerDidComplete:(id)a3
+- (void)upgradeFlowManagerDidComplete:(id)complete
 {
-  v4 = [(CEUpgradeFlowManager *)self delegate];
-  [v4 upgradeFlowManagerDidComplete:self];
+  delegate = [(CEUpgradeFlowManager *)self delegate];
+  [delegate upgradeFlowManagerDidComplete:self];
 }
 
-- (void)upgradeFlowManagerDidCancel:(id)a3
+- (void)upgradeFlowManagerDidCancel:(id)cancel
 {
-  v4 = [(CEUpgradeFlowManager *)self delegate];
-  [v4 upgradeFlowManagerDidCancel:self];
+  delegate = [(CEUpgradeFlowManager *)self delegate];
+  [delegate upgradeFlowManagerDidCancel:self];
 }
 
 - (CEUpgradeFlowManagerDelegate)delegate

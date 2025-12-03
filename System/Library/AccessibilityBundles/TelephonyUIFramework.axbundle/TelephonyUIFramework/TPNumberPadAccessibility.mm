@@ -1,18 +1,18 @@
 @interface TPNumberPadAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)canBecomeFocused;
 - (id)_accessibilityScannerGroupElements;
 @end
 
 @implementation TPNumberPadAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TPSimpleNumberPad"];
-  [v3 validateClass:@"TPSimpleNumberPad" hasInstanceVariable:@"_deleteButton" withType:"UIButton"];
-  [v3 validateClass:@"TPSimpleNumberPad" isKindOfClass:@"UIControl"];
-  [v3 validateClass:@"UIControl" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TPSimpleNumberPad"];
+  [validationsCopy validateClass:@"TPSimpleNumberPad" hasInstanceVariable:@"_deleteButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"TPSimpleNumberPad" isKindOfClass:@"UIControl"];
+  [validationsCopy validateClass:@"UIControl" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
 }
 
 - (id)_accessibilityScannerGroupElements
@@ -51,8 +51,8 @@
     v8 = [(TPNumberPadAccessibility *)self safeValueForKey:@"_deleteButton"];
     if ([v8 isAccessibilityElement] && objc_msgSend(v8, "_accessibilityViewIsVisible"))
     {
-      v9 = [v3 lastObject];
-      v10 = [v9 mutableCopy];
+      lastObject = [v3 lastObject];
+      v10 = [lastObject mutableCopy];
 
       v11 = [v10 objectForKey:@"GroupElements"];
       v12 = [v11 arrayByAddingObject:v8];

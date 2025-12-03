@@ -1,11 +1,11 @@
 @interface LSInstallProgressList
 - (LSInstallProgressList)init;
-- (id)progressForBundleID:(id)a3;
-- (id)subscriberForBundleID:(id)a3 andPublishingKey:(id)a4;
-- (void)addSubscriber:(id)a3 forPublishingKey:(id)a4 andBundleID:(id)a5;
-- (void)removeProgressForBundleID:(id)a3;
-- (void)removeSubscriberForPublishingKey:(id)a3 andBundleID:(id)a4;
-- (void)setProgress:(id)a3 forBundleID:(id)a4;
+- (id)progressForBundleID:(id)d;
+- (id)subscriberForBundleID:(id)d andPublishingKey:(id)key;
+- (void)addSubscriber:(id)subscriber forPublishingKey:(id)key andBundleID:(id)d;
+- (void)removeProgressForBundleID:(id)d;
+- (void)removeSubscriberForPublishingKey:(id)key andBundleID:(id)d;
+- (void)setProgress:(id)progress forBundleID:(id)d;
 @end
 
 @implementation LSInstallProgressList
@@ -29,12 +29,12 @@
   return v2;
 }
 
-- (id)progressForBundleID:(id)a3
+- (id)progressForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_progresses objectForKey:v4];
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_progresses objectForKey:dCopy];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = v6;
@@ -45,21 +45,21 @@
     v7 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)setProgress:(id)a3 forBundleID:(id)a4
+- (void)setProgress:(id)progress forBundleID:(id)d
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
+  progressCopy = progress;
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if ([__LSDefaultsGetSharedInstance() isServer])
   {
-    v8 = [(NSMutableDictionary *)v7->_progresses allKeys];
-    v9 = [v8 containsObject:v6];
+    allKeys = [(NSMutableDictionary *)selfCopy->_progresses allKeys];
+    v9 = [allKeys containsObject:dCopy];
 
     if ((v9 & 1) == 0)
     {
@@ -67,61 +67,61 @@
     }
   }
 
-  [(NSMutableDictionary *)v7->_progresses setObject:v10 forKey:v6];
-  objc_sync_exit(v7);
+  [(NSMutableDictionary *)selfCopy->_progresses setObject:progressCopy forKey:dCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addSubscriber:(id)a3 forPublishingKey:(id)a4 andBundleID:(id)a5
+- (void)addSubscriber:(id)subscriber forPublishingKey:(id)key andBundleID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
+  subscriberCopy = subscriber;
+  keyCopy = key;
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v12 = _LSProgressLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412546;
-    v16 = v8;
+    v16 = subscriberCopy;
     v17 = 2112;
-    v18 = v9;
+    v18 = keyCopy;
     _os_log_impl(&dword_18162D000, v12, OS_LOG_TYPE_DEFAULT, "#LSInstallProgressList add subscriber: %@ publishingString: %@", &v15, 0x16u);
   }
 
-  v13 = [(NSMutableDictionary *)v11->_subscriptions objectForKey:v9];
-  if (!v13)
+  array = [(NSMutableDictionary *)selfCopy->_subscriptions objectForKey:keyCopy];
+  if (!array)
   {
-    v13 = [MEMORY[0x1E695DF70] array];
-    [(NSMutableDictionary *)v11->_subscriptions setObject:v13 forKey:v9];
+    array = [MEMORY[0x1E695DF70] array];
+    [(NSMutableDictionary *)selfCopy->_subscriptions setObject:array forKey:keyCopy];
   }
 
-  [v13 addObject:v8];
+  [array addObject:subscriberCopy];
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)subscriberForBundleID:(id)a3 andPublishingKey:(id)a4
+- (id)subscriberForBundleID:(id)d andPublishingKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(NSMutableDictionary *)v8->_subscriptions objectForKeyedSubscript:v7];
-  objc_sync_exit(v8);
+  dCopy = d;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(NSMutableDictionary *)selfCopy->_subscriptions objectForKeyedSubscript:keyCopy];
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (void)removeSubscriberForPublishingKey:(id)a3 andBundleID:(id)a4
+- (void)removeSubscriberForPublishingKey:(id)key andBundleID:(id)d
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v15 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  [(NSMutableDictionary *)v7->_subscriptions objectForKeyedSubscript:v6];
+  keyCopy = key;
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_subscriptions objectForKeyedSubscript:keyCopy];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
@@ -146,11 +146,11 @@
           *buf = 138412546;
           v21 = v12;
           v22 = 2112;
-          v23 = v6;
+          v23 = keyCopy;
           _os_log_impl(&dword_18162D000, v13, OS_LOG_TYPE_DEFAULT, "#LSInstallProgressList remove subscriber: %@ publishingString: %@", buf, 0x16u);
         }
 
-        [MEMORY[0x1E696AE38] _removeSubscriber:{v12, v15}];
+        [MEMORY[0x1E696AE38] _removeSubscriber:{v12, dCopy}];
       }
 
       v9 = [v8 countByEnumeratingWithState:&v16 objects:v24 count:16];
@@ -159,21 +159,21 @@
     while (v9);
   }
 
-  [(NSMutableDictionary *)v7->_subscriptions removeObjectForKey:v6];
-  objc_sync_exit(v7);
+  [(NSMutableDictionary *)selfCopy->_subscriptions removeObjectForKey:keyCopy];
+  objc_sync_exit(selfCopy);
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeProgressForBundleID:(id)a3
+- (void)removeProgressForBundleID:(id)d
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if ([__LSDefaultsGetSharedInstance() isServer])
   {
-    v5 = [(NSMutableDictionary *)v4->_progresses allKeys];
-    v6 = [v5 containsObject:v7];
+    allKeys = [(NSMutableDictionary *)selfCopy->_progresses allKeys];
+    v6 = [allKeys containsObject:dCopy];
 
     if (v6)
     {
@@ -181,8 +181,8 @@
     }
   }
 
-  [(NSMutableDictionary *)v4->_progresses removeObjectForKey:v7];
-  objc_sync_exit(v4);
+  [(NSMutableDictionary *)selfCopy->_progresses removeObjectForKey:dCopy];
+  objc_sync_exit(selfCopy);
 }
 
 @end

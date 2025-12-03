@@ -8,32 +8,32 @@
 - (uint64_t)mpc_setTag:()MPCHelper
 {
   v7 = a3;
-  v4 = objc_opt_respondsToSelector();
+  enableRequestNotifications = objc_opt_respondsToSelector();
   v5 = v7;
-  if (v4)
+  if (enableRequestNotifications)
   {
-    v4 = [a1 setTag:v7];
+    enableRequestNotifications = [self setTag:v7];
     v5 = v7;
     if (v7)
     {
-      v4 = objc_opt_respondsToSelector();
+      enableRequestNotifications = objc_opt_respondsToSelector();
       v5 = v7;
-      if (v4)
+      if (enableRequestNotifications)
       {
-        v4 = [a1 enableRequestNotifications];
+        enableRequestNotifications = [self enableRequestNotifications];
         v5 = v7;
       }
     }
   }
 
-  return MEMORY[0x1EEE66BB8](v4, v5);
+  return MEMORY[0x1EEE66BB8](enableRequestNotifications, v5);
 }
 
 - (id)mpc_tag
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 tag];
+    v2 = [self tag];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

@@ -1,19 +1,19 @@
 @interface CRLScenesViewController_iv
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (NSArray)keyCommands;
 - (UIResponder)nextResponder;
-- (_TtC8Freeform26CRLScenesViewController_iv)initWithCoder:(id)a3;
-- (_TtC8Freeform26CRLScenesViewController_iv)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)delete:(id)a3;
-- (void)deleteForward:(id)a3;
-- (void)dismissScenesPopoverWithAnimated:(BOOL)a3 completion:(id)a4;
-- (void)presentScenesPopoverWith:(id)a3 at:(id)a4 passthroughViews:(id)a5;
+- (_TtC8Freeform26CRLScenesViewController_iv)initWithCoder:(id)coder;
+- (_TtC8Freeform26CRLScenesViewController_iv)initWithNibName:(id)name bundle:(id)bundle;
+- (void)delete:(id)delete;
+- (void)deleteForward:(id)forward;
+- (void)dismissScenesPopoverWithAnimated:(BOOL)animated completion:(id)completion;
+- (void)presentScenesPopoverWith:(id)with at:(id)at passthroughViews:(id)views;
 - (void)viewDidLoad;
 @end
 
 @implementation CRLScenesViewController_iv
 
-- (_TtC8Freeform26CRLScenesViewController_iv)initWithCoder:(id)a3
+- (_TtC8Freeform26CRLScenesViewController_iv)initWithCoder:(id)coder
 {
   *&self->hostingController[OBJC_IVAR____TtC8Freeform26CRLScenesViewController_iv_scenesDelegate] = 0;
   swift_unknownObjectWeakInit();
@@ -25,15 +25,15 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100696BA4();
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -42,20 +42,20 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = sub_10069742C(a3, v10);
+  v8 = sub_10069742C(action, v10);
 
   sub_1005E09AC(v10);
   return v8 & 1;
 }
 
-- (void)delete:(id)a3
+- (void)delete:(id)delete
 {
-  if (a3)
+  if (delete)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -64,7 +64,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_10069762C();
@@ -72,11 +72,11 @@
   sub_1005E09AC(v6);
 }
 
-- (void)deleteForward:(id)a3
+- (void)deleteForward:(id)forward
 {
-  if (a3)
+  if (forward)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -85,7 +85,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_10069778C(v6);
@@ -99,7 +99,7 @@
   v3 = swift_allocObject();
   *(v3 + 16) = xmmword_10146CE00;
   v4 = objc_opt_self();
-  v5 = self;
+  selfCopy = self;
   *(v3 + 32) = [v4 keyCommandWithInput:UIKeyInputDelete modifierFlags:0 action:"delete:"];
   v6 = String._bridgeToObjectiveC()();
   v7 = [v4 keyCommandWithInput:v6 modifierFlags:0 action:"deleteForward:"];
@@ -114,17 +114,17 @@
 - (UIResponder)nextResponder
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8Freeform26CRLScenesViewController_iv_icc);
-  v3 = self;
-  v4 = [v2 layerHost];
-  if (v4)
+  selfCopy = self;
+  layerHost = [v2 layerHost];
+  if (layerHost)
   {
-    v5 = v4;
-    if ([v4 respondsToSelector:"asiOSCVC"])
+    v5 = layerHost;
+    if ([layerHost respondsToSelector:"asiOSCVC"])
     {
-      v6 = [v5 asiOSCVC];
+      asiOSCVC = [v5 asiOSCVC];
 
       swift_unknownObjectRelease();
-      v7 = v6;
+      v7 = asiOSCVC;
       goto LABEL_7;
     }
 
@@ -141,24 +141,24 @@ LABEL_7:
   return v7;
 }
 
-- (void)presentScenesPopoverWith:(id)a3 at:(id)a4 passthroughViews:(id)a5
+- (void)presentScenesPopoverWith:(id)with at:(id)at passthroughViews:(id)views
 {
-  v5 = a5;
-  if (a5)
+  viewsCopy = views;
+  if (views)
   {
     sub_100006370(0, &qword_1019F6D00);
-    v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    viewsCopy = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_100697B40(v9, v10, v5);
+  withCopy = with;
+  atCopy = at;
+  selfCopy = self;
+  sub_100697B40(withCopy, atCopy, viewsCopy);
 }
 
-- (void)dismissScenesPopoverWithAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissScenesPopoverWithAnimated:(BOOL)animated completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -171,12 +171,12 @@ LABEL_7:
     v7 = 0;
   }
 
-  v8 = self;
-  sub_100697F30(a3, v6, v7);
+  selfCopy = self;
+  sub_100697F30(animated, v6, v7);
   sub_1000C1014(v6);
 }
 
-- (_TtC8Freeform26CRLScenesViewController_iv)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8Freeform26CRLScenesViewController_iv)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

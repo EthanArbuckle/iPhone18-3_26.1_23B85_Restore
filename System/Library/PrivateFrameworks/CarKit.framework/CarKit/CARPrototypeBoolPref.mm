@@ -1,74 +1,74 @@
 @interface CARPrototypeBoolPref
-+ (CARPrototypeBoolPref)prefWithDomain:(id)a3 key:(id)a4 title:(id)a5 invertValueForState:(BOOL)a6 valueChangedBlock:(id)a7;
++ (CARPrototypeBoolPref)prefWithDomain:(id)domain key:(id)key title:(id)title invertValueForState:(BOOL)state valueChangedBlock:(id)block;
 - (BOOL)cachedValueBool;
 - (BOOL)invertValueForState;
 - (BOOL)valueBool;
 - (id)description;
-- (void)setCachedState:(BOOL)a3;
-- (void)setState:(BOOL)a3;
+- (void)setCachedState:(BOOL)state;
+- (void)setState:(BOOL)state;
 @end
 
 @implementation CARPrototypeBoolPref
 
 - (BOOL)valueBool
 {
-  v2 = [(CARPrototypePref *)self valueOrDefault];
-  v3 = [v2 BOOLValue];
+  valueOrDefault = [(CARPrototypePref *)self valueOrDefault];
+  bOOLValue = [valueOrDefault BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-+ (CARPrototypeBoolPref)prefWithDomain:(id)a3 key:(id)a4 title:(id)a5 invertValueForState:(BOOL)a6 valueChangedBlock:(id)a7
++ (CARPrototypeBoolPref)prefWithDomain:(id)domain key:(id)key title:(id)title invertValueForState:(BOOL)state valueChangedBlock:(id)block
 {
-  v7 = a6;
+  stateCopy = state;
   v12 = MEMORY[0x1E696AD98];
-  v13 = a7;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [v12 numberWithBool:v7];
-  v18 = [a1 prefWithDomain:v16 key:v15 title:v14 defaultValue:v17 valueChangedBlock:v13];
+  blockCopy = block;
+  titleCopy = title;
+  keyCopy = key;
+  domainCopy = domain;
+  v17 = [v12 numberWithBool:stateCopy];
+  v18 = [self prefWithDomain:domainCopy key:keyCopy title:titleCopy defaultValue:v17 valueChangedBlock:blockCopy];
 
   return v18;
 }
 
 - (BOOL)invertValueForState
 {
-  v2 = [(CARPrototypePref *)self defaultValue];
-  v3 = [v2 BOOLValue];
+  defaultValue = [(CARPrototypePref *)self defaultValue];
+  bOOLValue = [defaultValue BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)cachedValueBool
 {
-  v2 = [(CARPrototypePref *)self cachedValueOrDefault];
-  v3 = [v2 BOOLValue];
+  cachedValueOrDefault = [(CARPrototypePref *)self cachedValueOrDefault];
+  bOOLValue = [cachedValueOrDefault BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setState:(BOOL)a3
+- (void)setState:(BOOL)state
 {
-  v3 = a3;
-  v5 = [(CARPrototypeBoolPref *)self invertValueForState];
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v5 ^ v3];
-  [(CARPrototypePref *)self setValue:v6];
+  stateCopy = state;
+  invertValueForState = [(CARPrototypeBoolPref *)self invertValueForState];
+  stateCopy = [MEMORY[0x1E696AD98] numberWithBool:invertValueForState ^ stateCopy];
+  [(CARPrototypePref *)self setValue:stateCopy];
 }
 
-- (void)setCachedState:(BOOL)a3
+- (void)setCachedState:(BOOL)state
 {
-  v3 = a3;
-  v5 = [(CARPrototypeBoolPref *)self invertValueForState];
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v5 ^ v3];
-  [(CARPrototypePref *)self setCachedValue:v6];
+  stateCopy = state;
+  invertValueForState = [(CARPrototypeBoolPref *)self invertValueForState];
+  stateCopy = [MEMORY[0x1E696AD98] numberWithBool:invertValueForState ^ stateCopy];
+  [(CARPrototypePref *)self setCachedValue:stateCopy];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CARPrototypePref *)self domain];
+  domain = [(CARPrototypePref *)self domain];
   v6 = [(CARPrototypePref *)self key];
   if ([(CARPrototypeBoolPref *)self valueBool])
   {
@@ -100,7 +100,7 @@
     v9 = @"NO";
   }
 
-  v10 = [v3 stringWithFormat:@"<%@: %p %@-%@=%@ invertValueForState=%@ state=%@>", v4, self, v5, v6, v7, v8, v9];
+  v10 = [v3 stringWithFormat:@"<%@: %p %@-%@=%@ invertValueForState=%@ state=%@>", v4, self, domain, v6, v7, v8, v9];
 
   return v10;
 }

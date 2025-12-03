@@ -1,23 +1,23 @@
 @interface ButtonSwitchInputs
-- (BOOL)validateAndInitializeParameters:(id)a3;
-- (BOOL)validateAndInitializePredicates:(id)a3;
-- (BOOL)validateAndInitializeSpecifications:(id)a3;
+- (BOOL)validateAndInitializeParameters:(id)parameters;
+- (BOOL)validateAndInitializePredicates:(id)predicates;
+- (BOOL)validateAndInitializeSpecifications:(id)specifications;
 @end
 
 @implementation ButtonSwitchInputs
 
-- (BOOL)validateAndInitializePredicates:(id)a3
+- (BOOL)validateAndInitializePredicates:(id)predicates
 {
-  v4 = a3;
+  predicatesCopy = predicates;
   v26 = 0;
-  [(ButtonSwitchInputs *)self setPredicates:v4];
+  [(ButtonSwitchInputs *)self setPredicates:predicatesCopy];
   v5 = [NSSet setWithObjects:@"Button", @"TouchButton", @"Switch", 0];
-  v6 = [v4 dk_stringFromRequiredKey:@"type" inSet:v5 failed:&v26];
+  v6 = [predicatesCopy dk_stringFromRequiredKey:@"type" inSet:v5 failed:&v26];
   [(ButtonSwitchInputs *)self setType:v6];
 
   v7 = +[NSSet set];
-  v8 = [(ButtonSwitchInputs *)self type];
-  v9 = [v8 isEqualToString:@"Button"];
+  type = [(ButtonSwitchInputs *)self type];
+  v9 = [type isEqualToString:@"Button"];
 
   if (v9)
   {
@@ -28,8 +28,8 @@
     goto LABEL_9;
   }
 
-  v10 = [(ButtonSwitchInputs *)self type];
-  v11 = [v10 isEqualToString:@"TouchButton"];
+  type2 = [(ButtonSwitchInputs *)self type];
+  v11 = [type2 isEqualToString:@"TouchButton"];
 
   if (v11)
   {
@@ -39,8 +39,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v13 = [(ButtonSwitchInputs *)self type];
-  v14 = [v13 isEqualToString:@"Switch"];
+  type3 = [(ButtonSwitchInputs *)self type];
+  v14 = [type3 isEqualToString:@"Switch"];
 
   if (v14)
   {
@@ -49,58 +49,58 @@ LABEL_7:
   }
 
 LABEL_9:
-  v16 = [v4 dk_stringFromRequiredKey:@"identifier" inSet:v7 failed:&v26];
+  v16 = [predicatesCopy dk_stringFromRequiredKey:@"identifier" inSet:v7 failed:&v26];
   [(ButtonSwitchInputs *)self setIdentifier:v16];
 
   v17 = v26;
   return (v17 & 1) == 0;
 }
 
-- (BOOL)validateAndInitializeSpecifications:(id)a3
+- (BOOL)validateAndInitializeSpecifications:(id)specifications
 {
-  v4 = a3;
-  [(ButtonSwitchInputs *)self setSpecifications:v4];
-  v5 = [[DAButtonSwitchSpecification alloc] initWithDictionary:v4];
+  specificationsCopy = specifications;
+  [(ButtonSwitchInputs *)self setSpecifications:specificationsCopy];
+  v5 = [[DAButtonSwitchSpecification alloc] initWithDictionary:specificationsCopy];
 
   [(ButtonSwitchInputs *)self setButtonSwitchSpecification:v5];
-  v6 = [(ButtonSwitchInputs *)self buttonSwitchSpecification];
-  LOBYTE(self) = v6 != 0;
+  buttonSwitchSpecification = [(ButtonSwitchInputs *)self buttonSwitchSpecification];
+  LOBYTE(self) = buttonSwitchSpecification != 0;
 
   return self;
 }
 
-- (BOOL)validateAndInitializeParameters:(id)a3
+- (BOOL)validateAndInitializeParameters:(id)parameters
 {
-  v4 = a3;
-  [(ButtonSwitchInputs *)self setParameters:v4];
-  v5 = [(ButtonSwitchInputs *)self type];
-  v6 = [v5 isEqualToString:@"Button"];
+  parametersCopy = parameters;
+  [(ButtonSwitchInputs *)self setParameters:parametersCopy];
+  type = [(ButtonSwitchInputs *)self type];
+  v6 = [type isEqualToString:@"Button"];
 
   if (v6)
   {
-    v7 = [[DAButtonParameters alloc] initWithDictionary:v4];
+    v7 = [[DAButtonParameters alloc] initWithDictionary:parametersCopy];
     [(ButtonSwitchInputs *)self setButtonParameters:v7];
 
-    v8 = [(ButtonSwitchInputs *)self buttonParameters];
+    buttonParameters = [(ButtonSwitchInputs *)self buttonParameters];
   }
 
   else
   {
-    v9 = [(ButtonSwitchInputs *)self type];
-    v10 = [v9 isEqualToString:@"TouchButton"];
+    type2 = [(ButtonSwitchInputs *)self type];
+    v10 = [type2 isEqualToString:@"TouchButton"];
 
     if (v10)
     {
-      v11 = [[DATouchButtonParameters alloc] initWithDictionary:v4];
+      v11 = [[DATouchButtonParameters alloc] initWithDictionary:parametersCopy];
       [(ButtonSwitchInputs *)self setTouchButtonParameters:v11];
 
-      v8 = [(ButtonSwitchInputs *)self touchButtonParameters];
+      buttonParameters = [(ButtonSwitchInputs *)self touchButtonParameters];
     }
 
     else
     {
-      v12 = [(ButtonSwitchInputs *)self type];
-      v13 = [v12 isEqualToString:@"Switch"];
+      type3 = [(ButtonSwitchInputs *)self type];
+      v13 = [type3 isEqualToString:@"Switch"];
 
       if (!v13)
       {
@@ -108,14 +108,14 @@ LABEL_9:
         goto LABEL_8;
       }
 
-      v14 = [[DASwitchParameters alloc] initWithDictionary:v4];
+      v14 = [[DASwitchParameters alloc] initWithDictionary:parametersCopy];
       [(ButtonSwitchInputs *)self setSwitchParameters:v14];
 
-      v8 = [(ButtonSwitchInputs *)self switchParameters];
+      buttonParameters = [(ButtonSwitchInputs *)self switchParameters];
     }
   }
 
-  v15 = v8 != 0;
+  v15 = buttonParameters != 0;
 
 LABEL_8:
   return v15;

@@ -7,9 +7,9 @@
 - (int64_t)preferredStatusBarStyle
 {
   v2 = +[PSListController appearance];
-  v3 = [v2 usesDarkTheme];
+  usesDarkTheme = [v2 usesDarkTheme];
 
-  return v3;
+  return usesDarkTheme;
 }
 
 @end

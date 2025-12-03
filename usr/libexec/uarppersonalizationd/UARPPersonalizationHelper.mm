@@ -1,7 +1,7 @@
 @interface UARPPersonalizationHelper
 - (NSMutableArray)tssRequests;
-- (UARPPersonalizationHelper)initWithMachServiceName:(id)a3 updaterName:(id)a4;
-- (void)completedTssResponse:(id)a3;
+- (UARPPersonalizationHelper)initWithMachServiceName:(id)name updaterName:(id)updaterName;
+- (void)completedTssResponse:(id)response;
 - (void)dealloc;
 - (void)queryOutstandingTssRequests;
 - (void)start;
@@ -9,20 +9,20 @@
 
 @implementation UARPPersonalizationHelper
 
-- (UARPPersonalizationHelper)initWithMachServiceName:(id)a3 updaterName:(id)a4
+- (UARPPersonalizationHelper)initWithMachServiceName:(id)name updaterName:(id)updaterName
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  updaterNameCopy = updaterName;
   v18.receiver = self;
   v18.super_class = UARPPersonalizationHelper;
   v8 = [(UARPPersonalizationHelper *)&v18 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     serviceName = v8->_serviceName;
     v8->_serviceName = v9;
 
-    v11 = [v7 copy];
+    v11 = [updaterNameCopy copy];
     updaterName = v8->_updaterName;
     v8->_updaterName = v11;
 
@@ -133,20 +133,20 @@
   return v2;
 }
 
-- (void)completedTssResponse:(id)a3
+- (void)completedTssResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315394;
     v7 = "[UARPPersonalizationHelper completedTssResponse:]";
     v8 = 2112;
-    v9 = v4;
+    v9 = responseCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "%s: Tatsu Response is %@", &v6, 0x16u);
   }
 
-  [self->_proxy personalizationResponse:v4 updaterName:self->_updaterName];
+  [self->_proxy personalizationResponse:responseCopy updaterName:self->_updaterName];
 }
 
 @end

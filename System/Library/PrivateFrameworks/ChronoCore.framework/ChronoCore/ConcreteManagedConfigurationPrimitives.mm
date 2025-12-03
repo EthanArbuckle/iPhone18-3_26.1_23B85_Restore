@@ -1,6 +1,6 @@
 @interface ConcreteManagedConfigurationPrimitives
 - (_TtC10ChronoCore38ConcreteManagedConfigurationPrimitives)init;
-- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)notification userInfo:(id)info;
 @end
 
 @implementation ConcreteManagedConfigurationPrimitives
@@ -32,15 +32,15 @@
   return result;
 }
 
-- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)notification userInfo:(id)info
 {
-  if (a4)
+  if (info)
   {
     sub_224DAECE8();
   }
 
-  v6 = a3;
-  v7 = self;
+  notificationCopy = notification;
+  selfCopy = self;
   sub_224C4E7FC();
 }
 

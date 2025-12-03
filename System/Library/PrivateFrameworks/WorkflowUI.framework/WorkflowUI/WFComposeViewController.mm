@@ -1,12 +1,12 @@
 @interface WFComposeViewController
 - (BOOL)accessibilityPerformEscape;
 - (BOOL)accessibilityPerformMagicTap;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)willDeleteWhenClosed;
 - (NSString)cachedNavigationTitle;
 - (NSUndoManager)undoManager;
-- (WFComposeViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (WFComposeViewController)initWithWorkflow:(id)a3 isAutomation:(BOOL)a4 home:(id)a5 triggerInputType:(Class)a6 hideRunnerToolbar:(BOOL)a7;
+- (WFComposeViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (WFComposeViewController)initWithWorkflow:(id)workflow isAutomation:(BOOL)automation home:(id)home triggerInputType:(Class)type hideRunnerToolbar:(BOOL)toolbar;
 - (WFComposeViewControllerDelegate)delegate;
 - (WFWorkflow)workflow;
 - (void)addAskForInputActionFromKeyPress;
@@ -17,24 +17,24 @@
 - (void)addRepeatEachActionFromKeyPress;
 - (void)addSetVariableActionFromKeyPress;
 - (void)addShowResultActionFromKeyPress;
-- (void)appendActionWithIdentifier:(id)a3;
+- (void)appendActionWithIdentifier:(id)identifier;
 - (void)exitSelectVariableMode;
-- (void)find:(id)a3;
+- (void)find:(id)find;
 - (void)prepareToDismiss;
 - (void)presentIconPicker;
 - (void)renameWorkflow;
 - (void)requestDismissal;
 - (void)runWorkflowFromKeyPress;
-- (void)scrollToAction:(id)a3;
-- (void)setCachedNavigationTitle:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)scrollToAction:(id)action;
+- (void)setCachedNavigationTitle:(id)title;
+- (void)setDelegate:(id)delegate;
 - (void)showActionDrawer;
-- (void)showActionError:(id)a3 for:(id)a4;
+- (void)showActionError:(id)error for:(id)for;
 - (void)showShortcutDetails;
 - (void)stopWorkflow;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -56,9 +56,9 @@
   return v3;
 }
 
-- (void)setCachedNavigationTitle:(id)a3
+- (void)setCachedNavigationTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = _sSo32WFShortcutConcerningReportReasona10WorkflowUIE2idSSvg_0();
     v6 = v5;
@@ -70,13 +70,13 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_2748AFEFC(v4, v6);
 }
 
-- (WFComposeViewController)initWithWorkflow:(id)a3 isAutomation:(BOOL)a4 home:(id)a5 triggerInputType:(Class)a6 hideRunnerToolbar:(BOOL)a7
+- (WFComposeViewController)initWithWorkflow:(id)workflow isAutomation:(BOOL)automation home:(id)home triggerInputType:(Class)type hideRunnerToolbar:(BOOL)toolbar
 {
-  if (a6)
+  if (type)
   {
     ObjCClassMetadata = swift_getObjCClassMetadata();
   }
@@ -86,9 +86,9 @@
     ObjCClassMetadata = 0;
   }
 
-  v12 = a3;
-  v13 = a5;
-  return sub_2748AFF50(v12, a4, a5, ObjCClassMetadata, a7);
+  workflowCopy = workflow;
+  homeCopy = home;
+  return sub_2748AFF50(workflowCopy, automation, home, ObjCClassMetadata, toolbar);
 }
 
 - (WFWorkflow)workflow
@@ -105,10 +105,10 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   WFComposeViewController.delegate.setter();
 }
 
@@ -121,33 +121,33 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   WFComposeViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  WFComposeViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  WFComposeViewController.viewWillAppear(_:)(appear);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   WFComposeViewController.viewWillLayoutSubviews()();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   WFComposeViewController.viewDidLayoutSubviews()();
 }
 
-- (void)find:(id)a3
+- (void)find:(id)find
 {
-  if (a3)
+  if (find)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_2749FD774();
     swift_unknownObjectRelease();
@@ -156,7 +156,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   WFComposeViewController.find(_:)();
@@ -166,7 +166,7 @@
 
 - (BOOL)willDeleteWhenClosed
 {
-  v2 = self;
+  selfCopy = self;
   v3 = WFComposeViewController.willDeleteWhenClosed.getter();
 
   return v3 & 1;
@@ -174,48 +174,48 @@
 
 - (void)presentIconPicker
 {
-  v2 = self;
+  selfCopy = self;
   WFComposeViewController.presentIconPicker()();
 }
 
-- (void)scrollToAction:(id)a3
+- (void)scrollToAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
+  actionCopy = action;
+  selfCopy = self;
   WFComposeViewController.scroll(to:)();
 }
 
-- (void)showActionError:(id)a3 for:(id)a4
+- (void)showActionError:(id)error for:(id)for
 {
   _sSo32WFShortcutConcerningReportReasona10WorkflowUIE2idSSvg_0();
-  v6 = a4;
-  v7 = self;
+  forCopy = for;
+  selfCopy = self;
   WFComposeViewController.showActionError(_:for:)();
 }
 
 - (void)prepareToDismiss
 {
-  v2 = self;
+  selfCopy = self;
   WFComposeViewController.prepareToDismiss()();
 }
 
 - (void)showActionDrawer
 {
-  v2 = self;
+  selfCopy = self;
   sub_2748B3AD8(0);
 }
 
 - (void)showShortcutDetails
 {
-  v2 = self;
+  selfCopy = self;
   sub_2748B3AD8(1);
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_2749FD774();
     swift_unknownObjectRelease();
@@ -224,10 +224,10 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = WFComposeViewController.canPerformAction(_:withSender:)(a3, v10);
+  v8 = WFComposeViewController.canPerformAction(_:withSender:)(action, v10);
 
   sub_2747BC7EC(v10, &qword_28096D550);
   return v8 & 1;
@@ -235,7 +235,7 @@
 
 - (BOOL)accessibilityPerformMagicTap
 {
-  v2 = self;
+  selfCopy = self;
   WFComposeViewController.accessibilityPerformMagicTap()();
 
   return 1;
@@ -243,7 +243,7 @@
 
 - (BOOL)accessibilityPerformEscape
 {
-  v2 = self;
+  selfCopy = self;
   WFComposeViewController.accessibilityPerformEscape()();
 
   return 1;
@@ -251,97 +251,97 @@
 
 - (void)runWorkflowFromKeyPress
 {
-  v2 = self;
+  selfCopy = self;
   sub_2748B3F48();
 }
 
 - (void)stopWorkflow
 {
-  v2 = self;
+  selfCopy = self;
   sub_2748B3FC8();
 }
 
 - (void)renameWorkflow
 {
-  v2 = self;
+  selfCopy = self;
   sub_2748B403C();
 }
 
 - (void)addCommentActionFromKeyPress
 {
-  v2 = self;
+  selfCopy = self;
   WFComposeViewController.addCommentActionFromKeyPress()();
 }
 
 - (void)addSetVariableActionFromKeyPress
 {
-  v2 = self;
+  selfCopy = self;
   WFComposeViewController.addSetVariableActionFromKeyPress()();
 }
 
 - (void)addAskForInputActionFromKeyPress
 {
-  v2 = self;
+  selfCopy = self;
   WFComposeViewController.addAskForInputActionFromKeyPress()();
 }
 
 - (void)addShowResultActionFromKeyPress
 {
-  v2 = self;
+  selfCopy = self;
   WFComposeViewController.addShowResultActionFromKeyPress()();
 }
 
 - (void)addChooseFromMenuActionFromKeyPress
 {
-  v2 = self;
+  selfCopy = self;
   WFComposeViewController.addChooseFromMenuActionFromKeyPress()();
 }
 
 - (void)addConditionalActionFromKeyPress
 {
-  v2 = self;
+  selfCopy = self;
   WFComposeViewController.addConditionalActionFromKeyPress()();
 }
 
 - (void)addRepeatCountActionFromKeyPress
 {
-  v2 = self;
+  selfCopy = self;
   WFComposeViewController.addRepeatCountActionFromKeyPress()();
 }
 
 - (void)addRepeatEachActionFromKeyPress
 {
-  v2 = self;
+  selfCopy = self;
   WFComposeViewController.addRepeatEachActionFromKeyPress()();
 }
 
-- (void)appendActionWithIdentifier:(id)a3
+- (void)appendActionWithIdentifier:(id)identifier
 {
   _sSo32WFShortcutConcerningReportReasona10WorkflowUIE2idSSvg_0();
-  v4 = self;
+  selfCopy = self;
   sub_2748B463C();
 }
 
 - (void)requestDismissal
 {
-  v2 = self;
+  selfCopy = self;
   sub_2748B4764();
 }
 
-- (WFComposeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (WFComposeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     _sSo32WFShortcutConcerningReportReasona10WorkflowUIE2idSSvg_0();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   WFComposeViewController.init(nibName:bundle:)();
 }
 
 - (void)exitSelectVariableMode
 {
-  v2 = self;
+  selfCopy = self;
   sub_2748B55C4();
 }
 

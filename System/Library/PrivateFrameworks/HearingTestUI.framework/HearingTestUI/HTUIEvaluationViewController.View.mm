@@ -1,18 +1,18 @@
 @interface HTUIEvaluationViewController.View
-- (_TtCC13HearingTestUI28HTUIEvaluationViewController4View)initWithCoder:(id)a3;
-- (_TtCC13HearingTestUI28HTUIEvaluationViewController4View)initWithFrame:(CGRect)a3;
+- (_TtCC13HearingTestUI28HTUIEvaluationViewController4View)initWithCoder:(id)coder;
+- (_TtCC13HearingTestUI28HTUIEvaluationViewController4View)initWithFrame:(CGRect)frame;
 - (void)didTapHear;
-- (void)updateProgressTo:(double)a3 immediately:(BOOL)a4;
+- (void)updateProgressTo:(double)to immediately:(BOOL)immediately;
 @end
 
 @implementation HTUIEvaluationViewController.View
 
-- (_TtCC13HearingTestUI28HTUIEvaluationViewController4View)initWithFrame:(CGRect)a3
+- (_TtCC13HearingTestUI28HTUIEvaluationViewController4View)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_20CE13B84();
   sub_20CE13B74();
   sub_20CE13B24();
@@ -26,7 +26,7 @@
   return v7;
 }
 
-- (_TtCC13HearingTestUI28HTUIEvaluationViewController4View)initWithCoder:(id)a3
+- (_TtCC13HearingTestUI28HTUIEvaluationViewController4View)initWithCoder:(id)coder
 {
   sub_20CE13B84();
   sub_20CE13B74();
@@ -36,11 +36,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   sub_20CDA09C4();
 }
 
-- (void)updateProgressTo:(double)a3 immediately:(BOOL)a4
+- (void)updateProgressTo:(double)to immediately:(BOOL)immediately
 {
   sub_20CE13B84();
   sub_20CE13B74();
@@ -51,8 +51,8 @@
   }
 
   v6 = *(&self->super.super.super.isa + OBJC_IVAR____TtCC13HearingTestUI28HTUIEvaluationViewController4View_progressViewModel);
-  v7 = self;
-  sub_20CDB6D08(a4);
+  selfCopy = self;
+  sub_20CDB6D08(immediately);
 }
 
 - (void)didTapHear
@@ -69,7 +69,7 @@
   if (v2)
   {
     v3 = *(&self->super.super._responderFlags + OBJC_IVAR____TtCC13HearingTestUI28HTUIEvaluationViewController4View_didTapHearHandler);
-    v4 = self;
+    selfCopy = self;
     v5 = sub_20CD84E14(v2);
     v2(v5);
     sub_20CD84E24(v2);
@@ -77,7 +77,7 @@
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
   }
 
   v7 = *(&self->super.super.super.isa + OBJC_IVAR____TtCC13HearingTestUI28HTUIEvaluationViewController4View_metalAnimation);

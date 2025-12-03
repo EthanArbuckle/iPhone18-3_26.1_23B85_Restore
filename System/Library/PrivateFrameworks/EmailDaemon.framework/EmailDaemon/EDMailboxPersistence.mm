@@ -1,42 +1,42 @@
 @interface EDMailboxPersistence
 + (id)log;
-- (BOOL)createMailbox:(id)a3 parentMailboxID:(id)a4;
-- (BOOL)deleteMailbox:(id)a3;
-- (BOOL)mailboxURLIsGmailLabel:(id)a3;
-- (BOOL)moveMailbox:(id)a3 newParentMailboxID:(id)a4;
-- (BOOL)renameMailbox:(id)a3 newName:(id)a4;
-- (EDMailboxPersistence)initWithMailboxProvider:(id)a3 database:(id)a4 hookRegistry:(id)a5;
-- (EDMailboxRowID_s)insertDatabaseRowForMailboxURL:(id)a3;
-- (EDMailboxRowID_s)mailboxDatabaseIDForMailboxURL:(id)a3;
+- (BOOL)createMailbox:(id)mailbox parentMailboxID:(id)d;
+- (BOOL)deleteMailbox:(id)mailbox;
+- (BOOL)mailboxURLIsGmailLabel:(id)label;
+- (BOOL)moveMailbox:(id)mailbox newParentMailboxID:(id)d;
+- (BOOL)renameMailbox:(id)mailbox newName:(id)name;
+- (EDMailboxPersistence)initWithMailboxProvider:(id)provider database:(id)database hookRegistry:(id)registry;
+- (EDMailboxRowID_s)insertDatabaseRowForMailboxURL:(id)l;
+- (EDMailboxRowID_s)mailboxDatabaseIDForMailboxURL:(id)l;
 - (NSIndexSet)frecentMailboxes;
 - (NSSet)allMailboxObjectIDs;
 - (id)allMailboxes;
-- (id)initForTesting:(BOOL)a3;
-- (id)legacyMailboxForMailboxURL:(id)a3;
-- (id)legacyMailboxForObjectID:(id)a3;
-- (id)mailboxDatabaseIDsForMailboxObjectIDs:(id)a3 createIfNecessary:(BOOL)a4;
-- (id)mailboxDatabaseIDsForMailboxURLStrings:(id)a3;
-- (id)mailboxObjectIDsForMailboxType:(int64_t)a3;
+- (id)initForTesting:(BOOL)testing;
+- (id)legacyMailboxForMailboxURL:(id)l;
+- (id)legacyMailboxForObjectID:(id)d;
+- (id)mailboxDatabaseIDsForMailboxObjectIDs:(id)ds createIfNecessary:(BOOL)necessary;
+- (id)mailboxDatabaseIDsForMailboxURLStrings:(id)strings;
+- (id)mailboxObjectIDsForMailboxType:(int64_t)type;
 - (id)userCreatedMailboxObjectIDs;
-- (int64_t)mailboxTypeForMailboxObjectID:(id)a3;
-- (unsigned)uidNextForMailbox:(EDMailboxRowID_s)a3;
-- (unsigned)uidValidityForMailbox:(EDMailboxRowID_s)a3;
-- (void)_reportPersistenceStatistics:(id)a3;
-- (void)_sendCoreAnalyticsForLargestMailbox:(int64_t)a3 messageCountInSecondLargestMailbox:(int64_t)a4;
-- (void)_sendCoreAnalyticsForMailboxesPerAccount:(id)a3 accountTypePerAccount:(id)a4;
-- (void)_sendCoreAnalyticsForMessagesPerAccount:(id)a3 accountTypePerAccount:(id)a4;
-- (void)_sendCoreAnalyticsForMessagesPerInbox:(id)a3 accountTypePerAccount:(id)a4 accountPerInbox:(id)a5;
-- (void)_sendEventToCoreAnalytics:(id)a3 withEventDictionary:(id)a4;
+- (int64_t)mailboxTypeForMailboxObjectID:(id)d;
+- (unsigned)uidNextForMailbox:(EDMailboxRowID_s)mailbox;
+- (unsigned)uidValidityForMailbox:(EDMailboxRowID_s)mailbox;
+- (void)_reportPersistenceStatistics:(id)statistics;
+- (void)_sendCoreAnalyticsForLargestMailbox:(int64_t)mailbox messageCountInSecondLargestMailbox:(int64_t)largestMailbox;
+- (void)_sendCoreAnalyticsForMailboxesPerAccount:(id)account accountTypePerAccount:(id)perAccount;
+- (void)_sendCoreAnalyticsForMessagesPerAccount:(id)account accountTypePerAccount:(id)perAccount;
+- (void)_sendCoreAnalyticsForMessagesPerInbox:(id)inbox accountTypePerAccount:(id)account accountPerInbox:(id)perInbox;
+- (void)_sendEventToCoreAnalytics:(id)analytics withEventDictionary:(id)dictionary;
 - (void)_startReportingPersistenceStatistics;
 - (void)_stopReportingPersistenceStatistics;
-- (void)addChangeObserver:(id)a3 withIdentifier:(id)a4;
-- (void)allMailboxesWithCompletionHandler:(id)a3;
+- (void)addChangeObserver:(id)observer withIdentifier:(id)identifier;
+- (void)allMailboxesWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)fetchMailboxListsWithKind:(int64_t)a3;
+- (void)fetchMailboxListsWithKind:(int64_t)kind;
 - (void)mailboxListInvalidated;
-- (void)recordFrecencyEventWithMailboxesWithIDs:(id)a3;
-- (void)removeChangeObserverWithIdentifier:(id)a3;
-- (void)serverCountsForMailboxScope:(id)a3 block:(id)a4;
+- (void)recordFrecencyEventWithMailboxesWithIDs:(id)ds;
+- (void)removeChangeObserverWithIdentifier:(id)identifier;
+- (void)serverCountsForMailboxScope:(id)scope block:(id)block;
 - (void)test_tearDown;
 @end
 
@@ -44,10 +44,10 @@
 
 - (id)allMailboxes
 {
-  v2 = [(EDMailboxPersistence *)self mailboxProvider];
-  v3 = [v2 allMailboxes];
+  mailboxProvider = [(EDMailboxPersistence *)self mailboxProvider];
+  allMailboxes = [mailboxProvider allMailboxes];
 
-  return v3;
+  return allMailboxes;
 }
 
 + (id)log
@@ -56,7 +56,7 @@
   block[1] = 3221225472;
   block[2] = __27__EDMailboxPersistence_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_51 != -1)
   {
     dispatch_once(&log_onceToken_51, block);
@@ -75,21 +75,21 @@ void __27__EDMailboxPersistence_log__block_invoke(uint64_t a1)
   log_log_51 = v1;
 }
 
-- (EDMailboxPersistence)initWithMailboxProvider:(id)a3 database:(id)a4 hookRegistry:(id)a5
+- (EDMailboxPersistence)initWithMailboxProvider:(id)provider database:(id)database hookRegistry:(id)registry
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  databaseCopy = database;
+  registryCopy = registry;
   v17.receiver = self;
   v17.super_class = EDMailboxPersistence;
   v12 = [(EDMailboxPersistence *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_mailboxProvider, a3);
-    objc_storeStrong(&v13->_database, a4);
-    objc_storeStrong(&v13->_hookRegistry, a5);
-    [v9 setDelegate:v13];
+    objc_storeStrong(&v12->_mailboxProvider, provider);
+    objc_storeStrong(&v13->_database, database);
+    objc_storeStrong(&v13->_hookRegistry, registry);
+    [providerCopy setDelegate:v13];
     v13->_changeObserversByIdentifierLock._os_unfair_lock_opaque = 0;
     v14 = objc_alloc_init(MEMORY[0x1E699AC70]);
     analyticsCollector = v13->_analyticsCollector;
@@ -107,12 +107,12 @@ void __27__EDMailboxPersistence_log__block_invoke(uint64_t a1)
   [(EDMailboxPersistence *)&v3 dealloc];
 }
 
-- (id)initForTesting:(BOOL)a3
+- (id)initForTesting:(BOOL)testing
 {
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"EDMailboxPersistence.m" lineNumber:60 description:{@"%s can only be called from unit tests", "-[EDMailboxPersistence initForTesting:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDMailboxPersistence.m" lineNumber:60 description:{@"%s can only be called from unit tests", "-[EDMailboxPersistence initForTesting:]"}];
   }
 
   v7.receiver = self;
@@ -124,12 +124,12 @@ void __27__EDMailboxPersistence_log__block_invoke(uint64_t a1)
 {
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"EDMailboxPersistence.m" lineNumber:65 description:{@"%s can only be called from unit tests", "-[EDMailboxPersistence test_tearDown]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDMailboxPersistence.m" lineNumber:65 description:{@"%s can only be called from unit tests", "-[EDMailboxPersistence test_tearDown]"}];
   }
 
-  v4 = [(EDMailboxPersistence *)self mailboxProvider];
-  [v4 test_tearDown];
+  mailboxProvider = [(EDMailboxPersistence *)self mailboxProvider];
+  [mailboxProvider test_tearDown];
 
   [(EDMailboxPersistence *)self _stopReportingPersistenceStatistics];
 }
@@ -138,16 +138,16 @@ void __27__EDMailboxPersistence_log__block_invoke(uint64_t a1)
 {
   v16 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_changeObserversByIdentifierLock);
-  v3 = [(EDMailboxPersistence *)self changeObserversByIdentifier];
-  v4 = [v3 allValues];
+  changeObserversByIdentifier = [(EDMailboxPersistence *)self changeObserversByIdentifier];
+  allValues = [changeObserversByIdentifier allValues];
 
   os_unfair_lock_unlock(&self->_changeObserversByIdentifierLock);
-  v5 = [(EDMailboxPersistence *)self allMailboxes];
+  allMailboxes = [(EDMailboxPersistence *)self allMailboxes];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = v4;
+  v6 = allValues;
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
@@ -162,7 +162,7 @@ void __27__EDMailboxPersistence_log__block_invoke(uint64_t a1)
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) mailboxListChanged:{v5, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) mailboxListChanged:{allMailboxes, v11}];
       }
 
       while (v7 != v9);
@@ -175,17 +175,17 @@ void __27__EDMailboxPersistence_log__block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)allMailboxesWithCompletionHandler:(id)a3
+- (void)allMailboxesWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v4 = [(EDMailboxPersistence *)self allMailboxes];
-  v5[2](v5, v4);
+  handlerCopy = handler;
+  allMailboxes = [(EDMailboxPersistence *)self allMailboxes];
+  handlerCopy[2](handlerCopy, allMailboxes);
 }
 
 - (id)userCreatedMailboxObjectIDs
 {
-  v2 = [(EDMailboxPersistence *)self allMailboxes];
-  v3 = [v2 ef_compactMap:&__block_literal_global_41];
+  allMailboxes = [(EDMailboxPersistence *)self allMailboxes];
+  v3 = [allMailboxes ef_compactMap:&__block_literal_global_41];
 
   return v3;
 }
@@ -224,57 +224,57 @@ id __51__EDMailboxPersistence_userCreatedMailboxObjectIDs__block_invoke(uint64_t
   return v3;
 }
 
-- (void)fetchMailboxListsWithKind:(int64_t)a3
+- (void)fetchMailboxListsWithKind:(int64_t)kind
 {
-  v4 = [(EDMailboxPersistence *)self mailboxProvider];
-  [v4 fetchMailboxesWithKind:a3];
+  mailboxProvider = [(EDMailboxPersistence *)self mailboxProvider];
+  [mailboxProvider fetchMailboxesWithKind:kind];
 }
 
-- (id)legacyMailboxForMailboxURL:(id)a3
+- (id)legacyMailboxForMailboxURL:(id)l
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E699AD20]) initWithURL:v4];
+  lCopy = l;
+  v5 = [objc_alloc(MEMORY[0x1E699AD20]) initWithURL:lCopy];
   v6 = [(EDMailboxPersistence *)self legacyMailboxForObjectID:v5];
 
   return v6;
 }
 
-- (id)legacyMailboxForObjectID:(id)a3
+- (id)legacyMailboxForObjectID:(id)d
 {
-  v4 = a3;
-  v5 = [(EDMailboxPersistence *)self mailboxProvider];
-  v6 = [v5 legacyMailboxForObjectID:v4];
+  dCopy = d;
+  mailboxProvider = [(EDMailboxPersistence *)self mailboxProvider];
+  v6 = [mailboxProvider legacyMailboxForObjectID:dCopy];
 
   return v6;
 }
 
-- (id)mailboxDatabaseIDsForMailboxObjectIDs:(id)a3 createIfNecessary:(BOOL)a4
+- (id)mailboxDatabaseIDsForMailboxObjectIDs:(id)ds createIfNecessary:(BOOL)necessary
 {
-  v6 = a3;
+  dsCopy = ds;
   [(EDMailboxPersistence *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDMailboxPersistence mailboxDatabaseIDsForMailboxObjectIDs:createIfNecessary:]", "EDMailboxPersistence.m", 122, "0");
 }
 
-- (id)mailboxDatabaseIDsForMailboxURLStrings:(id)a3
+- (id)mailboxDatabaseIDsForMailboxURLStrings:(id)strings
 {
-  v5 = a3;
+  stringsCopy = strings;
   [(EDMailboxPersistence *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDMailboxPersistence mailboxDatabaseIDsForMailboxURLStrings:]", "EDMailboxPersistence.m", 126, "0");
 }
 
-- (EDMailboxRowID_s)mailboxDatabaseIDForMailboxURL:(id)a3
+- (EDMailboxRowID_s)mailboxDatabaseIDForMailboxURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
     v5 = objc_autoreleasePoolPush();
     v6 = MEMORY[0x1E695DFD8];
-    v7 = [v4 absoluteString];
-    v8 = [v6 setWithObject:v7];
+    absoluteString = [lCopy absoluteString];
+    v8 = [v6 setWithObject:absoluteString];
     v9 = [(EDMailboxPersistence *)self mailboxDatabaseIDsForMailboxURLStrings:v8];
 
-    v10 = [v4 absoluteString];
-    v11 = [v9 objectForKeyedSubscript:v10];
+    absoluteString2 = [lCopy absoluteString];
+    v11 = [v9 objectForKeyedSubscript:absoluteString2];
 
     v12.var0 = [v11 unsignedLongLongValue];
     objc_autoreleasePoolPop(v5);
@@ -288,24 +288,24 @@ id __51__EDMailboxPersistence_userCreatedMailboxObjectIDs__block_invoke(uint64_t
   return v12;
 }
 
-- (EDMailboxRowID_s)insertDatabaseRowForMailboxURL:(id)a3
+- (EDMailboxRowID_s)insertDatabaseRowForMailboxURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   [(EDMailboxPersistence *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDMailboxPersistence insertDatabaseRowForMailboxURL:]", "EDMailboxPersistence.m", 143, "0");
 }
 
-- (void)serverCountsForMailboxScope:(id)a3 block:(id)a4
+- (void)serverCountsForMailboxScope:(id)scope block:(id)block
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   v20 = 0;
-  v7 = [a3 allMailboxObjectIDsWithMailboxTypeResolver:self forExclusion:&v20];
+  v7 = [scope allMailboxObjectIDsWithMailboxTypeResolver:self forExclusion:&v20];
   v8 = v7;
   if (v20 == 1)
   {
-    v9 = [(EDMailboxPersistence *)self allMailboxObjectIDs];
-    v10 = [v9 mutableCopy];
+    allMailboxObjectIDs = [(EDMailboxPersistence *)self allMailboxObjectIDs];
+    v10 = [allMailboxObjectIDs mutableCopy];
 
     [v10 minusSet:v8];
   }
@@ -333,7 +333,7 @@ id __51__EDMailboxPersistence_userCreatedMailboxObjectIDs__block_invoke(uint64_t
           objc_enumerationMutation(v11);
         }
 
-        (*(v6 + 2))(v6, *(*(&v16 + 1) + 8 * i), 0, 0, 0);
+        (*(blockCopy + 2))(blockCopy, *(*(&v16 + 1) + 8 * i), 0, 0, 0);
       }
 
       v12 = [v11 countByEnumeratingWithState:&v16 objects:v21 count:16];
@@ -345,9 +345,9 @@ id __51__EDMailboxPersistence_userCreatedMailboxObjectIDs__block_invoke(uint64_t
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)mailboxURLIsGmailLabel:(id)a3
+- (BOOL)mailboxURLIsGmailLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   [(EDMailboxPersistence *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDMailboxPersistence mailboxURLIsGmailLabel:]", "EDMailboxPersistence.m", 171, "0");
 }
@@ -361,22 +361,22 @@ id __51__EDMailboxPersistence_userCreatedMailboxObjectIDs__block_invoke(uint64_t
     _os_log_impl(&dword_1C61EF000, v3, OS_LOG_TYPE_INFO, "Starting to report mailbox persistence statistics.", buf, 2u);
   }
 
-  v4 = [(EDMailboxPersistence *)self statisticsReportingScheduler];
-  if (!v4)
+  statisticsReportingScheduler = [(EDMailboxPersistence *)self statisticsReportingScheduler];
+  if (!statisticsReportingScheduler)
   {
-    v4 = [objc_alloc(MEMORY[0x1E696AAD0]) initWithIdentifier:@"com.apple.mail.mailboxPersistence.statisticsReportingScheduler"];
-    [v4 setQualityOfService:9];
-    [v4 setRepeats:1];
-    [v4 setInterval:86400.0];
-    [v4 setTolerance:3600.0];
+    statisticsReportingScheduler = [objc_alloc(MEMORY[0x1E696AAD0]) initWithIdentifier:@"com.apple.mail.mailboxPersistence.statisticsReportingScheduler"];
+    [statisticsReportingScheduler setQualityOfService:9];
+    [statisticsReportingScheduler setRepeats:1];
+    [statisticsReportingScheduler setInterval:86400.0];
+    [statisticsReportingScheduler setTolerance:3600.0];
     objc_initWeak(buf, self);
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __60__EDMailboxPersistence__startReportingPersistenceStatistics__block_invoke;
     v5[3] = &unk_1E82532E0;
     objc_copyWeak(&v6, buf);
-    [v4 scheduleWithBlock:v5];
-    [(EDMailboxPersistence *)self setStatisticsReportingScheduler:v4];
+    [statisticsReportingScheduler scheduleWithBlock:v5];
+    [(EDMailboxPersistence *)self setStatisticsReportingScheduler:statisticsReportingScheduler];
     objc_destroyWeak(&v6);
     objc_destroyWeak(buf);
   }
@@ -396,52 +396,52 @@ void __60__EDMailboxPersistence__startReportingPersistenceStatistics__block_invo
   }
 }
 
-- (void)_reportPersistenceStatistics:(id)a3
+- (void)_reportPersistenceStatistics:(id)statistics
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E699B7B0] currentDevice];
-  v6 = [v5 isInternal];
+  statisticsCopy = statistics;
+  currentDevice = [MEMORY[0x1E699B7B0] currentDevice];
+  isInternal = [currentDevice isInternal];
 
-  if (v6)
+  if (isInternal)
   {
     v7 = +[EDMailboxPersistence log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [v4 debugDescription];
+      v8 = [statisticsCopy debugDescription];
       v17 = 138412290;
       v18 = v8;
       _os_log_impl(&dword_1C61EF000, v7, OS_LOG_TYPE_INFO, "Collected mailbox persistence statistics.\n%@", &v17, 0xCu);
     }
   }
 
-  v9 = [v4 mailboxesPerAccount];
-  v10 = [v4 accountTypePerAccount];
-  [(EDMailboxPersistence *)self _sendCoreAnalyticsForMailboxesPerAccount:v9 accountTypePerAccount:v10];
+  mailboxesPerAccount = [statisticsCopy mailboxesPerAccount];
+  accountTypePerAccount = [statisticsCopy accountTypePerAccount];
+  [(EDMailboxPersistence *)self _sendCoreAnalyticsForMailboxesPerAccount:mailboxesPerAccount accountTypePerAccount:accountTypePerAccount];
 
-  v11 = [v4 messagesPerAccount];
-  v12 = [v4 accountTypePerAccount];
-  [(EDMailboxPersistence *)self _sendCoreAnalyticsForMessagesPerAccount:v11 accountTypePerAccount:v12];
+  messagesPerAccount = [statisticsCopy messagesPerAccount];
+  accountTypePerAccount2 = [statisticsCopy accountTypePerAccount];
+  [(EDMailboxPersistence *)self _sendCoreAnalyticsForMessagesPerAccount:messagesPerAccount accountTypePerAccount:accountTypePerAccount2];
 
-  v13 = [v4 messagesPerInbox];
-  v14 = [v4 accountTypePerAccount];
-  v15 = [v4 accountPerInbox];
-  [(EDMailboxPersistence *)self _sendCoreAnalyticsForMessagesPerInbox:v13 accountTypePerAccount:v14 accountPerInbox:v15];
+  messagesPerInbox = [statisticsCopy messagesPerInbox];
+  accountTypePerAccount3 = [statisticsCopy accountTypePerAccount];
+  accountPerInbox = [statisticsCopy accountPerInbox];
+  [(EDMailboxPersistence *)self _sendCoreAnalyticsForMessagesPerInbox:messagesPerInbox accountTypePerAccount:accountTypePerAccount3 accountPerInbox:accountPerInbox];
 
-  -[EDMailboxPersistence _sendCoreAnalyticsForLargestMailbox:messageCountInSecondLargestMailbox:](self, "_sendCoreAnalyticsForLargestMailbox:messageCountInSecondLargestMailbox:", [v4 messagesInLargestMailbox], objc_msgSend(v4, "messagesInSecondLargestMailbox"));
+  -[EDMailboxPersistence _sendCoreAnalyticsForLargestMailbox:messageCountInSecondLargestMailbox:](self, "_sendCoreAnalyticsForLargestMailbox:messageCountInSecondLargestMailbox:", [statisticsCopy messagesInLargestMailbox], objc_msgSend(statisticsCopy, "messagesInSecondLargestMailbox"));
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendCoreAnalyticsForMailboxesPerAccount:(id)a3 accountTypePerAccount:(id)a4
+- (void)_sendCoreAnalyticsForMailboxesPerAccount:(id)account accountTypePerAccount:(id)perAccount
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v19 = a4;
+  accountCopy = account;
+  perAccountCopy = perAccount;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v6;
+  v7 = accountCopy;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -464,7 +464,7 @@ void __60__EDMailboxPersistence__startReportingPersistenceStatistics__block_invo
         v16 = [v13 numberWithInteger:{objc_msgSend(v14, "roundedInteger:", objc_msgSend(v15, "count"))}];
         [v12 setObject:v16 forKeyedSubscript:@"mailboxesPerAccount"];
 
-        v17 = [v19 objectForKeyedSubscript:v11];
+        v17 = [perAccountCopy objectForKeyedSubscript:v11];
         [v12 setObject:v17 forKeyedSubscript:@"accountType"];
 
         [(EDMailboxPersistence *)self _sendEventToCoreAnalytics:@"com.apple.mail.MailboxStatistics.mailboxesPerAccount" withEventDictionary:v12];
@@ -481,29 +481,29 @@ void __60__EDMailboxPersistence__startReportingPersistenceStatistics__block_invo
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendCoreAnalyticsForLargestMailbox:(int64_t)a3 messageCountInSecondLargestMailbox:(int64_t)a4
+- (void)_sendCoreAnalyticsForLargestMailbox:(int64_t)mailbox messageCountInSecondLargestMailbox:(int64_t)largestMailbox
 {
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(MEMORY[0x1E699B858], "roundedInteger:", a3)}];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(MEMORY[0x1E699B858], "roundedInteger:", mailbox)}];
   [v9 setObject:v7 forKeyedSubscript:@"messageCountInLargestMailbox"];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(MEMORY[0x1E699B858], "roundedInteger:", a4)}];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(MEMORY[0x1E699B858], "roundedInteger:", largestMailbox)}];
   [v9 setObject:v8 forKeyedSubscript:@"messageCountInSecondLargestMailbox"];
 
   [(EDMailboxPersistence *)self _sendEventToCoreAnalytics:@"com.apple.mail.MailboxStatistics.messagesCountInLargestMailbox" withEventDictionary:v9];
 }
 
-- (void)_sendCoreAnalyticsForMessagesPerInbox:(id)a3 accountTypePerAccount:(id)a4 accountPerInbox:(id)a5
+- (void)_sendCoreAnalyticsForMessagesPerInbox:(id)inbox accountTypePerAccount:(id)account accountPerInbox:(id)perInbox
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v22 = a4;
-  v23 = a5;
+  inboxCopy = inbox;
+  accountCopy = account;
+  perInboxCopy = perInbox;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v9 = v8;
+  v9 = inboxCopy;
   v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
@@ -526,8 +526,8 @@ void __60__EDMailboxPersistence__startReportingPersistenceStatistics__block_invo
         v18 = [v15 numberWithInteger:{objc_msgSend(v16, "roundedInteger:", objc_msgSend(v17, "integerValue"))}];
         [v14 setObject:v18 forKeyedSubscript:@"messagesPerInbox"];
 
-        v19 = [v23 objectForKeyedSubscript:v13];
-        v20 = [v22 objectForKeyedSubscript:v19];
+        v19 = [perInboxCopy objectForKeyedSubscript:v13];
+        v20 = [accountCopy objectForKeyedSubscript:v19];
         [v14 setObject:v20 forKeyedSubscript:@"accountType"];
 
         [(EDMailboxPersistence *)self _sendEventToCoreAnalytics:@"com.apple.mail.MailboxStatistics.messagesPerInbox" withEventDictionary:v14];
@@ -544,16 +544,16 @@ void __60__EDMailboxPersistence__startReportingPersistenceStatistics__block_invo
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendCoreAnalyticsForMessagesPerAccount:(id)a3 accountTypePerAccount:(id)a4
+- (void)_sendCoreAnalyticsForMessagesPerAccount:(id)account accountTypePerAccount:(id)perAccount
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v19 = a4;
+  accountCopy = account;
+  perAccountCopy = perAccount;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v6;
+  v7 = accountCopy;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -576,7 +576,7 @@ void __60__EDMailboxPersistence__startReportingPersistenceStatistics__block_invo
         v16 = [v13 numberWithInteger:{objc_msgSend(v14, "roundedInteger:", objc_msgSend(v15, "integerValue"))}];
         [v12 setObject:v16 forKeyedSubscript:@"messagesPerAccount"];
 
-        v17 = [v19 objectForKeyedSubscript:v11];
+        v17 = [perAccountCopy objectForKeyedSubscript:v11];
         [v12 setObject:v17 forKeyedSubscript:@"accountType"];
 
         [(EDMailboxPersistence *)self _sendEventToCoreAnalytics:@"com.apple.mail.MailboxStatistics.messagesPerAccount" withEventDictionary:v12];
@@ -593,13 +593,13 @@ void __60__EDMailboxPersistence__startReportingPersistenceStatistics__block_invo
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendEventToCoreAnalytics:(id)a3 withEventDictionary:(id)a4
+- (void)_sendEventToCoreAnalytics:(id)analytics withEventDictionary:(id)dictionary
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x1E699AC78]) initWithEventName:v9 collectionData:v6];
-  v8 = [(EDMailboxPersistence *)self analyticsCollector];
-  [v8 logOneTimeEvent:v7];
+  analyticsCopy = analytics;
+  dictionaryCopy = dictionary;
+  v7 = [objc_alloc(MEMORY[0x1E699AC78]) initWithEventName:analyticsCopy collectionData:dictionaryCopy];
+  analyticsCollector = [(EDMailboxPersistence *)self analyticsCollector];
+  [analyticsCollector logOneTimeEvent:v7];
 }
 
 - (void)_stopReportingPersistenceStatistics
@@ -616,85 +616,85 @@ void __60__EDMailboxPersistence__startReportingPersistenceStatistics__block_invo
 
 - (NSSet)allMailboxObjectIDs
 {
-  v2 = [(EDMailboxPersistence *)self mailboxProvider];
-  v3 = [v2 allMailboxObjectIDs];
+  mailboxProvider = [(EDMailboxPersistence *)self mailboxProvider];
+  allMailboxObjectIDs = [mailboxProvider allMailboxObjectIDs];
 
-  return v3;
+  return allMailboxObjectIDs;
 }
 
-- (id)mailboxObjectIDsForMailboxType:(int64_t)a3
+- (id)mailboxObjectIDsForMailboxType:(int64_t)type
 {
-  v4 = [(EDMailboxPersistence *)self mailboxProvider];
-  v5 = [v4 mailboxObjectIDsForMailboxType:a3];
+  mailboxProvider = [(EDMailboxPersistence *)self mailboxProvider];
+  v5 = [mailboxProvider mailboxObjectIDsForMailboxType:type];
 
   return v5;
 }
 
-- (int64_t)mailboxTypeForMailboxObjectID:(id)a3
+- (int64_t)mailboxTypeForMailboxObjectID:(id)d
 {
-  v4 = a3;
-  v5 = [(EDMailboxPersistence *)self mailboxProvider];
-  v6 = [v5 mailboxTypeForMailboxObjectID:v4];
+  dCopy = d;
+  mailboxProvider = [(EDMailboxPersistence *)self mailboxProvider];
+  v6 = [mailboxProvider mailboxTypeForMailboxObjectID:dCopy];
 
   return v6;
 }
 
-- (void)addChangeObserver:(id)a3 withIdentifier:(id)a4
+- (void)addChangeObserver:(id)observer withIdentifier:(id)identifier
 {
-  v10 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_changeObserversByIdentifierLock);
-  v7 = [(EDMailboxPersistence *)self changeObserversByIdentifier];
+  changeObserversByIdentifier = [(EDMailboxPersistence *)self changeObserversByIdentifier];
 
-  if (!v7)
+  if (!changeObserversByIdentifier)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
-    [(EDMailboxPersistence *)self setChangeObserversByIdentifier:v8];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(EDMailboxPersistence *)self setChangeObserversByIdentifier:dictionary];
   }
 
-  v9 = [(EDMailboxPersistence *)self changeObserversByIdentifier];
-  [v9 setObject:v10 forKeyedSubscript:v6];
+  changeObserversByIdentifier2 = [(EDMailboxPersistence *)self changeObserversByIdentifier];
+  [changeObserversByIdentifier2 setObject:observerCopy forKeyedSubscript:identifierCopy];
 
   os_unfair_lock_unlock(&self->_changeObserversByIdentifierLock);
 }
 
-- (void)removeChangeObserverWithIdentifier:(id)a3
+- (void)removeChangeObserverWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_changeObserversByIdentifierLock);
-  v4 = [(EDMailboxPersistence *)self changeObserversByIdentifier];
-  [v4 removeObjectForKey:v5];
+  changeObserversByIdentifier = [(EDMailboxPersistence *)self changeObserversByIdentifier];
+  [changeObserversByIdentifier removeObjectForKey:identifierCopy];
 
   os_unfair_lock_unlock(&self->_changeObserversByIdentifierLock);
 }
 
-- (BOOL)createMailbox:(id)a3 parentMailboxID:(id)a4
+- (BOOL)createMailbox:(id)mailbox parentMailboxID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  mailboxCopy = mailbox;
+  dCopy = d;
   [(EDMailboxPersistence *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDMailboxPersistence createMailbox:parentMailboxID:]", "EDMailboxPersistence.m", 304, "0");
 }
 
-- (BOOL)deleteMailbox:(id)a3
+- (BOOL)deleteMailbox:(id)mailbox
 {
-  v5 = a3;
+  mailboxCopy = mailbox;
   [(EDMailboxPersistence *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDMailboxPersistence deleteMailbox:]", "EDMailboxPersistence.m", 308, "0");
 }
 
-- (BOOL)moveMailbox:(id)a3 newParentMailboxID:(id)a4
+- (BOOL)moveMailbox:(id)mailbox newParentMailboxID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  mailboxCopy = mailbox;
+  dCopy = d;
   [(EDMailboxPersistence *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDMailboxPersistence moveMailbox:newParentMailboxID:]", "EDMailboxPersistence.m", 312, "0");
 }
 
-- (BOOL)renameMailbox:(id)a3 newName:(id)a4
+- (BOOL)renameMailbox:(id)mailbox newName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  mailboxCopy = mailbox;
+  nameCopy = name;
   [(EDMailboxPersistence *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDMailboxPersistence renameMailbox:newName:]", "EDMailboxPersistence.m", 316, "0");
 }
@@ -706,27 +706,27 @@ void __60__EDMailboxPersistence__startReportingPersistenceStatistics__block_invo
   return v2;
 }
 
-- (void)recordFrecencyEventWithMailboxesWithIDs:(id)a3
+- (void)recordFrecencyEventWithMailboxesWithIDs:(id)ds
 {
-  v5 = a3;
+  dsCopy = ds;
   [(EDMailboxPersistence *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDMailboxPersistence recordFrecencyEventWithMailboxesWithIDs:]", "EDMailboxPersistence.m", 324, "0");
 }
 
-- (unsigned)uidValidityForMailbox:(EDMailboxRowID_s)a3
+- (unsigned)uidValidityForMailbox:(EDMailboxRowID_s)mailbox
 {
-  v4 = self;
-  LODWORD(a3.var0) = sub_1C640E560(a3.var0);
+  selfCopy = self;
+  LODWORD(mailbox.var0) = sub_1C640E560(mailbox.var0);
 
-  return a3.var0;
+  return mailbox.var0;
 }
 
-- (unsigned)uidNextForMailbox:(EDMailboxRowID_s)a3
+- (unsigned)uidNextForMailbox:(EDMailboxRowID_s)mailbox
 {
-  v4 = self;
-  LODWORD(a3.var0) = sub_1C640EE68(a3.var0);
+  selfCopy = self;
+  LODWORD(mailbox.var0) = sub_1C640EE68(mailbox.var0);
 
-  return a3.var0;
+  return mailbox.var0;
 }
 
 @end

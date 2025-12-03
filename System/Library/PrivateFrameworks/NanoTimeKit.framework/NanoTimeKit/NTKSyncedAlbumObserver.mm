@@ -1,9 +1,9 @@
 @interface NTKSyncedAlbumObserver
 + (id)sharedInstance;
 - (NTKSyncedAlbumObserver)init;
-- (id)syncedAlbumNameForDevice:(id)a3;
-- (void)addObserver:(id)a3 forDevice:(id)a4;
-- (void)removeObserver:(id)a3 forDevice:(id)a4;
+- (id)syncedAlbumNameForDevice:(id)device;
+- (void)addObserver:(id)observer forDevice:(id)device;
+- (void)removeObserver:(id)observer forDevice:(id)device;
 @end
 
 @implementation NTKSyncedAlbumObserver
@@ -44,69 +44,69 @@ void __40__NTKSyncedAlbumObserver_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)addObserver:(id)a3 forDevice:(id)a4
+- (void)addObserver:(id)observer forDevice:(id)device
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v6 pairingID];
-  if (v7)
+  observerCopy = observer;
+  deviceCopy = device;
+  pairingID = [deviceCopy pairingID];
+  if (pairingID)
   {
     os_unfair_lock_lock(&self->_observersLock);
-    v8 = [(NSMutableDictionary *)self->_deviceAlbumObservers objectForKey:v7];
+    v8 = [(NSMutableDictionary *)self->_deviceAlbumObservers objectForKey:pairingID];
     if (!v8)
     {
       v9 = [_NTKDeviceSyncedAlbumObserver alloc];
-      v10 = [v6 nrDevice];
-      v8 = [(_NTKDeviceSyncedAlbumObserver *)v9 initWithDevice:v10];
+      nrDevice = [deviceCopy nrDevice];
+      v8 = [(_NTKDeviceSyncedAlbumObserver *)v9 initWithDevice:nrDevice];
 
-      [(NSMutableDictionary *)self->_deviceAlbumObservers setObject:v8 forKey:v7];
+      [(NSMutableDictionary *)self->_deviceAlbumObservers setObject:v8 forKey:pairingID];
     }
 
     os_unfair_lock_unlock(&self->_observersLock);
-    [(_NTKDeviceSyncedAlbumObserver *)v8 addObserver:v11];
+    [(_NTKDeviceSyncedAlbumObserver *)v8 addObserver:observerCopy];
   }
 }
 
-- (void)removeObserver:(id)a3 forDevice:(id)a4
+- (void)removeObserver:(id)observer forDevice:(id)device
 {
-  v8 = a3;
-  v6 = [a4 pairingID];
-  if (v6)
+  observerCopy = observer;
+  pairingID = [device pairingID];
+  if (pairingID)
   {
     os_unfair_lock_lock(&self->_observersLock);
-    v7 = [(NSMutableDictionary *)self->_deviceAlbumObservers objectForKey:v6];
+    v7 = [(NSMutableDictionary *)self->_deviceAlbumObservers objectForKey:pairingID];
     os_unfair_lock_unlock(&self->_observersLock);
-    [v7 removeObserver:v8];
+    [v7 removeObserver:observerCopy];
   }
 }
 
-- (id)syncedAlbumNameForDevice:(id)a3
+- (id)syncedAlbumNameForDevice:(id)device
 {
-  v4 = [a3 pairingID];
-  if (v4)
+  pairingID = [device pairingID];
+  if (pairingID)
   {
     os_unfair_lock_lock(&self->_observersLock);
-    v5 = [(NSMutableDictionary *)self->_deviceAlbumObservers objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_deviceAlbumObservers objectForKey:pairingID];
     os_unfair_lock_unlock(&self->_observersLock);
     if (v5)
     {
-      v6 = [v5 syncedAlbumName];
+      syncedAlbumName = [v5 syncedAlbumName];
     }
 
     else
     {
-      v6 = 0;
+      syncedAlbumName = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    syncedAlbumName = 0;
   }
 
-  if (v6)
+  if (syncedAlbumName)
   {
-    v7 = v6;
+    v7 = syncedAlbumName;
   }
 
   else

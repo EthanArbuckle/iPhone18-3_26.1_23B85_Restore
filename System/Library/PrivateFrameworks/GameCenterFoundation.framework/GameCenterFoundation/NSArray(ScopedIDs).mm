@@ -7,10 +7,10 @@
 - (void)_gkUpdateInternalPlayersScopedIDs:()ScopedIDs
 {
   v4 = a3;
-  v5 = [a1 _gkMapWithBlock:&__block_literal_global_372];
+  v5 = [self _gkMapWithBlock:&__block_literal_global_372];
   if ([v5 count])
   {
-    v6 = [v5 _gkPlayersIDsFromInternals];
+    _gkPlayersIDsFromInternals = [v5 _gkPlayersIDsFromInternals];
     v7 = +[GKPlayer gameBundleID];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
@@ -18,7 +18,7 @@
     v8[3] = &unk_2785DFE68;
     v9 = v5;
     v10 = v4;
-    [GKPlayer loadScopedIDsForPlayerIDs:v6 gameBundleID:v7 handler:v8];
+    [GKPlayer loadScopedIDsForPlayerIDs:_gkPlayersIDsFromInternals gameBundleID:v7 handler:v8];
   }
 
   else

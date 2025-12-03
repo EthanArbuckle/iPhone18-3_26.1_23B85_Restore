@@ -1,28 +1,28 @@
 @interface LNSuggestionsRequest
-- (LNSuggestionsRequest)initWithBundleIdentifier:(id)a3 onScreen:(BOOL)a4 explicitRequest:(BOOL)a5;
-- (LNSuggestionsRequest)initWithCoder:(id)a3;
+- (LNSuggestionsRequest)initWithBundleIdentifier:(id)identifier onScreen:(BOOL)screen explicitRequest:(BOOL)request;
+- (LNSuggestionsRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNSuggestionsRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(LNSuggestionsRequest *)self bundleIdentifier];
-  [v5 encodeObject:v4 forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  bundleIdentifier = [(LNSuggestionsRequest *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 
-  [v5 encodeBool:-[LNSuggestionsRequest isOnScreen](self forKey:{"isOnScreen"), @"onScreen"}];
-  [v5 encodeBool:-[LNSuggestionsRequest isExplicitRequest](self forKey:{"isExplicitRequest"), @"explicitRequest"}];
+  [coderCopy encodeBool:-[LNSuggestionsRequest isOnScreen](self forKey:{"isOnScreen"), @"onScreen"}];
+  [coderCopy encodeBool:-[LNSuggestionsRequest isExplicitRequest](self forKey:{"isExplicitRequest"), @"explicitRequest"}];
 }
 
-- (LNSuggestionsRequest)initWithCoder:(id)a3
+- (LNSuggestionsRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
-  v6 = [v4 decodeBoolForKey:@"onScreen"];
-  v7 = [v4 decodeBoolForKey:@"explicitRequest"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  v6 = [coderCopy decodeBoolForKey:@"onScreen"];
+  v7 = [coderCopy decodeBoolForKey:@"explicitRequest"];
 
   v8 = [(LNSuggestionsRequest *)self initWithBundleIdentifier:v5 onScreen:v6 explicitRequest:v7];
   return v8;
@@ -33,26 +33,26 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNSuggestionsRequest *)self bundleIdentifier];
-  v7 = [v3 stringWithFormat:@"<%@: %p, bundleIdentifier: %@, onScreen: %d, explicitRequest: %d>", v5, self, v6, -[LNSuggestionsRequest isOnScreen](self, "isOnScreen"), -[LNSuggestionsRequest isExplicitRequest](self, "isExplicitRequest")];
+  bundleIdentifier = [(LNSuggestionsRequest *)self bundleIdentifier];
+  v7 = [v3 stringWithFormat:@"<%@: %p, bundleIdentifier: %@, onScreen: %d, explicitRequest: %d>", v5, self, bundleIdentifier, -[LNSuggestionsRequest isOnScreen](self, "isOnScreen"), -[LNSuggestionsRequest isExplicitRequest](self, "isExplicitRequest")];
 
   return v7;
 }
 
-- (LNSuggestionsRequest)initWithBundleIdentifier:(id)a3 onScreen:(BOOL)a4 explicitRequest:(BOOL)a5
+- (LNSuggestionsRequest)initWithBundleIdentifier:(id)identifier onScreen:(BOOL)screen explicitRequest:(BOOL)request
 {
-  v8 = a3;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = LNSuggestionsRequest;
   v9 = [(LNSuggestionsRequest *)&v14 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [identifierCopy copy];
     bundleIdentifier = v9->_bundleIdentifier;
     v9->_bundleIdentifier = v10;
 
-    v9->_onScreen = a4;
-    v9->_explicitRequest = a5;
+    v9->_onScreen = screen;
+    v9->_explicitRequest = request;
     v12 = v9;
   }
 

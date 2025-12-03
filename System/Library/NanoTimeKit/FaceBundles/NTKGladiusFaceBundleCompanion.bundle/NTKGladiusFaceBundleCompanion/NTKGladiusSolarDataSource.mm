@@ -1,25 +1,25 @@
 @interface NTKGladiusSolarDataSource
-- (NTKGladiusSolarDataSource)initWithDevice:(id)a3;
+- (NTKGladiusSolarDataSource)initWithDevice:(id)device;
 - (void)_updateSolarCurveData;
 - (void)updateLocation;
-- (void)updateNightFractionForDate:(id)a3;
+- (void)updateNightFractionForDate:(id)date;
 @end
 
 @implementation NTKGladiusSolarDataSource
 
-- (NTKGladiusSolarDataSource)initWithDevice:(id)a3
+- (NTKGladiusSolarDataSource)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v21.receiver = self;
   v21.super_class = NTKGladiusSolarDataSource;
   v6 = [(NTKGladiusSolarDataSource *)&v21 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = +[NTKDate faceDate];
     v9 = +[NTKLocationManager sharedLocationManager];
-    v10 = [v9 anyLocation];
+    anyLocation = [v9 anyLocation];
 
     v11 = +[NTKGladiusFaceBundle logObject];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -29,11 +29,11 @@
       v26 = 2112;
       v27 = v8;
       v28 = 2112;
-      v29 = v10;
+      v29 = anyLocation;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "%s date:%@, location:%@", buf, 0x20u);
     }
 
-    v12 = [[NTKSolarTimeModel alloc] initWithReferenceDate:v8 referenceLocation:v10 twilightType:2];
+    v12 = [[NTKSolarTimeModel alloc] initWithReferenceDate:v8 referenceLocation:anyLocation twilightType:2];
     solarTimeModel = v7->_solarTimeModel;
     v7->_solarTimeModel = v12;
 
@@ -59,16 +59,16 @@
   return v7;
 }
 
-- (void)updateNightFractionForDate:(id)a3
+- (void)updateNightFractionForDate:(id)date
 {
-  v4 = a3;
-  if (([(NTKSolarTimeModel *)self->_solarTimeModel includesDate:v4]& 1) == 0)
+  dateCopy = date;
+  if (([(NTKSolarTimeModel *)self->_solarTimeModel includesDate:dateCopy]& 1) == 0)
   {
-    [(NTKSolarTimeModel *)self->_solarTimeModel updateModelWithDate:v4];
+    [(NTKSolarTimeModel *)self->_solarTimeModel updateModelWithDate:dateCopy];
     [(NTKGladiusSolarDataSource *)self _updateSolarCurveData];
   }
 
-  [(NTKSolarTimeModel *)self->_solarTimeModel percentageThroughPeriodInCurrentSolarDayForDate:v4];
+  [(NTKSolarTimeModel *)self->_solarTimeModel percentageThroughPeriodInCurrentSolarDayForDate:dateCopy];
   v6 = v5;
   [(NTKSolarPath *)self->_solarPath altitudeAtPercentage:?];
   v8 = v7;
@@ -87,7 +87,7 @@
     v13 = 136316162;
     v14 = "[NTKGladiusSolarDataSource updateNightFractionForDate:]";
     v15 = 2112;
-    v16 = v4;
+    v16 = dateCopy;
     v17 = 2048;
     v18 = v6;
     v19 = 2048;
@@ -101,7 +101,7 @@
 - (void)updateLocation
 {
   v3 = +[NTKLocationManager sharedLocationManager];
-  v4 = [v3 anyLocation];
+  anyLocation = [v3 anyLocation];
 
   v5 = +[NTKGladiusFaceBundle logObject];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -109,11 +109,11 @@
     v6 = 136315394;
     v7 = "[NTKGladiusSolarDataSource updateLocation]";
     v8 = 2112;
-    v9 = v4;
+    v9 = anyLocation;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%s %@", &v6, 0x16u);
   }
 
-  [(NTKSolarTimeModel *)self->_solarTimeModel setReferenceLocation:v4];
+  [(NTKSolarTimeModel *)self->_solarTimeModel setReferenceLocation:anyLocation];
   [(NTKGladiusSolarDataSource *)self _updateSolarCurveData];
 }
 
@@ -123,8 +123,8 @@
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v3 = [(NSDictionary *)self->_solarWaypoints allValues];
-  v4 = [v3 countByEnumeratingWithState:&v46 objects:v62 count:16];
+  allValues = [(NSDictionary *)self->_solarWaypoints allValues];
+  v4 = [allValues countByEnumeratingWithState:&v46 objects:v62 count:16];
   if (v4)
   {
     v5 = v4;
@@ -136,7 +136,7 @@
       {
         if (*v47 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v46 + 1) + 8 * v7) updateDependentValues];
@@ -144,7 +144,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v46 objects:v62 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v46 objects:v62 count:16];
     }
 
     while (v5);

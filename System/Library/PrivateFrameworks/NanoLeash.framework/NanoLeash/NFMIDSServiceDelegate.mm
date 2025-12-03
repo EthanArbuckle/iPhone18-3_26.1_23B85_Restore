@@ -1,9 +1,9 @@
 @interface NFMIDSServiceDelegate
 - (NFMIDSServiceDelegate)init;
-- (id)_sendProtoBuf:(id)a3 service:(id)a4 priority:(int64_t)a5 responseIdentifier:(id)a6 expectsResponse:(BOOL)a7;
-- (void)_enqueueMessage:(id)a3 service:(id)a4 priority:(int64_t)a5 responseIdentifier:(id)a6 expectsResponse:(BOOL)a7 retryCount:(int64_t)a8 retryInterval:(double)a9 idsIdentifier:(id)a10;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7;
+- (id)_sendProtoBuf:(id)buf service:(id)service priority:(int64_t)priority responseIdentifier:(id)identifier expectsResponse:(BOOL)response;
+- (void)_enqueueMessage:(id)message service:(id)service priority:(int64_t)priority responseIdentifier:(id)identifier expectsResponse:(BOOL)response retryCount:(int64_t)count retryInterval:(double)interval idsIdentifier:(id)self0;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context;
 @end
 
 @implementation NFMIDSServiceDelegate
@@ -27,13 +27,13 @@
   return v2;
 }
 
-- (id)_sendProtoBuf:(id)a3 service:(id)a4 priority:(int64_t)a5 responseIdentifier:(id)a6 expectsResponse:(BOOL)a7
+- (id)_sendProtoBuf:(id)buf service:(id)service priority:(int64_t)priority responseIdentifier:(id)identifier expectsResponse:(BOOL)response
 {
-  v7 = a7;
+  responseCopy = response;
   v27 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a6;
-  v13 = a4;
+  bufCopy = buf;
+  identifierCopy = identifier;
+  serviceCopy = service;
   v14 = nfm_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -48,11 +48,11 @@
   v20[1] = 3221225472;
   v20[2] = __91__NFMIDSServiceDelegate__sendProtoBuf_service_priority_responseIdentifier_expectsResponse___block_invoke;
   v20[3] = &unk_2799338B8;
-  v21 = v12;
-  v22 = v11;
-  v15 = v11;
-  v16 = v12;
-  v17 = NFMProtoSend(v13, v15, a5, v16, v7, v20);
+  v21 = identifierCopy;
+  v22 = bufCopy;
+  v15 = bufCopy;
+  v16 = identifierCopy;
+  v17 = NFMProtoSend(serviceCopy, v15, priority, v16, responseCopy, v20);
 
   v18 = *MEMORY[0x277D85DE8];
 
@@ -69,13 +69,13 @@ void __91__NFMIDSServiceDelegate__sendProtoBuf_service_priority_responseIdentifi
   }
 }
 
-- (void)_enqueueMessage:(id)a3 service:(id)a4 priority:(int64_t)a5 responseIdentifier:(id)a6 expectsResponse:(BOOL)a7 retryCount:(int64_t)a8 retryInterval:(double)a9 idsIdentifier:(id)a10
+- (void)_enqueueMessage:(id)message service:(id)service priority:(int64_t)priority responseIdentifier:(id)identifier expectsResponse:(BOOL)response retryCount:(int64_t)count retryInterval:(double)interval idsIdentifier:(id)self0
 {
   v42 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  v19 = a6;
-  v20 = a10;
+  messageCopy = message;
+  serviceCopy = service;
+  identifierCopy = identifier;
+  idsIdentifierCopy = idsIdentifier;
   v21 = nfm_log();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
@@ -91,24 +91,24 @@ void __91__NFMIDSServiceDelegate__sendProtoBuf_service_priority_responseIdentifi
   v32 = __132__NFMIDSServiceDelegate__enqueueMessage_service_priority_responseIdentifier_expectsResponse_retryCount_retryInterval_idsIdentifier___block_invoke;
   v33 = &unk_2799338E0;
   objc_copyWeak(v37, &buf);
-  v22 = v17;
+  v22 = messageCopy;
   v34 = v22;
-  v23 = v18;
+  v23 = serviceCopy;
   v35 = v23;
-  v37[1] = a5;
-  v24 = v19;
+  v37[1] = priority;
+  v24 = identifierCopy;
   v36 = v24;
-  v38 = a7;
+  responseCopy = response;
   v25 = MEMORY[0x25F8637B0](&v30);
   inflightMessages = self->_inflightMessages;
-  v27 = 0.0;
-  if (a9 >= 0.0)
+  intervalCopy = 0.0;
+  if (interval >= 0.0)
   {
-    v27 = a9;
+    intervalCopy = interval;
   }
 
-  v28 = [NFMIDSMessageInstance newMessageInstanceWithAction:v25 retryCount:a8 & ~(a8 >> 63) retryInterval:v27, v30, v31, v32, v33];
-  [(NSMutableDictionary *)inflightMessages setObject:v28 forKey:v20];
+  v28 = [NFMIDSMessageInstance newMessageInstanceWithAction:v25 retryCount:count & ~(count >> 63) retryInterval:intervalCopy, v30, v31, v32, v33];
+  [(NSMutableDictionary *)inflightMessages setObject:v28 forKey:idsIdentifierCopy];
 
   objc_destroyWeak(v37);
   objc_destroyWeak(&buf);
@@ -133,54 +133,54 @@ uint64_t __115__NFMIDSServiceDelegate_sendProtoBuf_service_priority_responseIden
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = a6;
-  v11 = a7;
+  protobufCopy = protobuf;
+  dCopy = d;
+  contextCopy = context;
   v12 = nfm_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     v14 = 138413058;
-    v15 = v9;
+    v15 = protobufCopy;
     v16 = 2112;
-    v17 = v10;
+    v17 = dCopy;
     v18 = 2112;
-    v19 = v11;
+    v19 = contextCopy;
     v20 = 1024;
-    v21 = [v9 type];
+    type = [protobufCopy type];
     _os_log_error_impl(&dword_25B17F000, v12, OS_LOG_TYPE_ERROR, "########### incomingUnhandledProtobuf: %@ from: %@ context: %@ type: %d", &v14, 0x26u);
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
   v16 = nfm_log();
   v17 = v16;
-  if (v15 || !a6)
+  if (errorCopy || !success)
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138413058;
-      v30 = v14;
+      v30 = identifierCopy;
       v31 = 2112;
-      v32 = v12;
+      v32 = serviceCopy;
       v33 = 2112;
-      v34 = v13;
+      v34 = accountCopy;
       v35 = 2112;
-      v36 = v15;
+      v36 = errorCopy;
       _os_log_error_impl(&dword_25B17F000, v17, OS_LOG_TYPE_ERROR, "########### Failed to send message ID: %@ (%@ -- %@) Error: %@", buf, 0x2Au);
     }
 
-    v18 = [(NSMutableDictionary *)self->_inflightMessages objectForKey:v14];
+    v18 = [(NSMutableDictionary *)self->_inflightMessages objectForKey:identifierCopy];
     if ([v18 retryCount] < 1)
     {
       if (!v18)
@@ -194,13 +194,13 @@ LABEL_16:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
         *buf = 138413058;
-        v30 = v14;
+        v30 = identifierCopy;
         v31 = 2112;
-        v32 = v12;
+        v32 = serviceCopy;
         v33 = 2112;
-        v34 = v13;
+        v34 = accountCopy;
         v35 = 2112;
-        v36 = v15;
+        v36 = errorCopy;
         _os_log_error_impl(&dword_25B17F000, v22, OS_LOG_TYPE_ERROR, "########### Failed fallback attempt(s) for message ID: %@ (%@ -- %@) Error: %@", buf, 0x2Au);
       }
     }
@@ -211,29 +211,29 @@ LABEL_16:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138413058;
-        v30 = v14;
+        v30 = identifierCopy;
         v31 = 2112;
-        v32 = v12;
+        v32 = serviceCopy;
         v33 = 2112;
-        v34 = v13;
+        v34 = accountCopy;
         v35 = 2112;
-        v36 = v15;
+        v36 = errorCopy;
         _os_log_impl(&dword_25B17F000, v19, OS_LOG_TYPE_DEFAULT, "########### Attempt fallback message send for ID: %@ (%@ -- %@) Error: %@", buf, 0x2Au);
       }
 
-      [(NSMutableDictionary *)self->_inflightMessages removeObjectForKey:v14];
+      [(NSMutableDictionary *)self->_inflightMessages removeObjectForKey:identifierCopy];
       [v18 setRetryCount:{objc_msgSend(v18, "retryCount") - 1}];
-      [(NSMutableDictionary *)self->_pendingMessages setObject:v18 forKey:v14];
+      [(NSMutableDictionary *)self->_pendingMessages setObject:v18 forKey:identifierCopy];
       [v18 retryInterval];
       v21 = dispatch_time(0, (v20 * 1000000000.0));
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __77__NFMIDSServiceDelegate_service_account_identifier_didSendWithSuccess_error___block_invoke;
       v24[3] = &unk_279933930;
-      v25 = v14;
-      v26 = v12;
-      v27 = v13;
-      v28 = self;
+      v25 = identifierCopy;
+      v26 = serviceCopy;
+      v27 = accountCopy;
+      selfCopy = self;
       dispatch_after(v21, MEMORY[0x277D85CD0], v24);
 
       v22 = v25;
@@ -245,12 +245,12 @@ LABEL_16:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v30 = v14;
+    v30 = identifierCopy;
     _os_log_impl(&dword_25B17F000, v17, OS_LOG_TYPE_DEFAULT, "########### Success Sending Message ID: %@", buf, 0xCu);
   }
 
-  [(NSMutableDictionary *)self->_inflightMessages removeObjectForKey:v14];
-  [(NSMutableDictionary *)self->_pendingMessages removeObjectForKey:v14];
+  [(NSMutableDictionary *)self->_inflightMessages removeObjectForKey:identifierCopy];
+  [(NSMutableDictionary *)self->_pendingMessages removeObjectForKey:identifierCopy];
 LABEL_17:
 
   v23 = *MEMORY[0x277D85DE8];

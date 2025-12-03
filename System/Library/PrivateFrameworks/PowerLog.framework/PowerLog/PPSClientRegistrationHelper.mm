@@ -1,5 +1,5 @@
 @interface PPSClientRegistrationHelper
-- (BOOL)permissionsForSubsystem:(id)a3 category:(id)a4;
+- (BOOL)permissionsForSubsystem:(id)subsystem category:(id)category;
 - (id)createXPCConnection;
 @end
 
@@ -60,10 +60,10 @@ void __50__PPSClientRegistrationHelper_createXPCConnection__block_invoke_9_cold_
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)permissionsForSubsystem:(id)a3 category:(id)a4
+- (BOOL)permissionsForSubsystem:(id)subsystem category:(id)category
 {
-  v6 = a3;
-  v7 = a4;
+  subsystemCopy = subsystem;
+  categoryCopy = category;
   if (os_variant_is_darwinos())
   {
     v8 = 0;
@@ -71,7 +71,7 @@ void __50__PPSClientRegistrationHelper_createXPCConnection__block_invoke_9_cold_
 
   else
   {
-    v9 = [(PPSClientRegistrationHelper *)self createXPCConnection];
+    createXPCConnection = [(PPSClientRegistrationHelper *)self createXPCConnection];
     v12 = 0;
     v13 = &v12;
     v14 = 0x2020000000;
@@ -81,7 +81,7 @@ void __50__PPSClientRegistrationHelper_createXPCConnection__block_invoke_9_cold_
     v11[2] = __64__PPSClientRegistrationHelper_permissionsForSubsystem_category___block_invoke;
     v11[3] = &unk_1E7F18AE8;
     v11[4] = &v12;
-    [v9 checkPermissionForSubsystem:v6 category:v7 withReply:v11];
+    [createXPCConnection checkPermissionForSubsystem:subsystemCopy category:categoryCopy withReply:v11];
     [(PPSClientRegistrationHelper *)self closeXPCConnection];
     v8 = *(v13 + 24);
     _Block_object_dispose(&v12, 8);

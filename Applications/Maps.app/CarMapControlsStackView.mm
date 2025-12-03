@@ -15,13 +15,13 @@
 
   else
   {
-    v5 = self;
+    selfCopy = self;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(CarMapControlsStackView *)v5 arrangedSubviews];
+      arrangedSubviews = [(CarMapControlsStackView *)selfCopy arrangedSubviews];
       v7 = +[NSMutableArray array];
-      v8 = [v6 sortedArrayUsingComparator:&stru_1016329C8];
+      v8 = [arrangedSubviews sortedArrayUsingComparator:&stru_1016329C8];
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
@@ -43,8 +43,8 @@
             v13 = *(*(&v22 + 1) + 8 * i);
             if (objc_opt_respondsToSelector())
             {
-              v14 = [v13 focusOrderSubItems];
-              [v7 addObjectsFromArray:v14];
+              focusOrderSubItems = [v13 focusOrderSubItems];
+              [v7 addObjectsFromArray:focusOrderSubItems];
             }
 
             else
@@ -62,9 +62,9 @@
 
     else
     {
-      v6 = [(CarMapControlsStackView *)v5 subviews];
+      arrangedSubviews = [(CarMapControlsStackView *)selfCopy subviews];
       v7 = +[NSMutableArray array];
-      v8 = [v6 sortedArrayUsingComparator:&stru_1016329C8];
+      v8 = [arrangedSubviews sortedArrayUsingComparator:&stru_1016329C8];
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
@@ -86,8 +86,8 @@
             v19 = *(*(&v22 + 1) + 8 * j);
             if (objc_opt_respondsToSelector())
             {
-              v20 = [v19 focusOrderSubItems];
-              [v7 addObjectsFromArray:v20];
+              focusOrderSubItems2 = [v19 focusOrderSubItems];
+              [v7 addObjectsFromArray:focusOrderSubItems2];
             }
 
             else
@@ -119,13 +119,13 @@
 
   else
   {
-    v5 = self;
+    selfCopy = self;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(CarMapControlsStackView *)v5 arrangedSubviews];
+      arrangedSubviews = [(CarMapControlsStackView *)selfCopy arrangedSubviews];
       v7 = +[NSMutableArray array];
-      v8 = [v6 sortedArrayUsingComparator:&stru_1016329C8];
+      v8 = [arrangedSubviews sortedArrayUsingComparator:&stru_1016329C8];
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
@@ -147,8 +147,8 @@
             v13 = *(*(&v24 + 1) + 8 * i);
             if (objc_opt_respondsToSelector())
             {
-              v14 = [v13 focusOrderSubItems];
-              [v7 addObjectsFromArray:v14];
+              focusOrderSubItems = [v13 focusOrderSubItems];
+              [v7 addObjectsFromArray:focusOrderSubItems];
             }
 
             else
@@ -166,9 +166,9 @@
 
     else
     {
-      v6 = [(CarMapControlsStackView *)v5 subviews];
+      arrangedSubviews = [(CarMapControlsStackView *)selfCopy subviews];
       v7 = +[NSMutableArray array];
-      v8 = [v6 sortedArrayUsingComparator:&stru_1016329C8];
+      v8 = [arrangedSubviews sortedArrayUsingComparator:&stru_1016329C8];
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
@@ -190,8 +190,8 @@
             v19 = *(*(&v24 + 1) + 8 * j);
             if (objc_opt_respondsToSelector())
             {
-              v20 = [v19 focusOrderSubItems];
-              [v7 addObjectsFromArray:v20];
+              focusOrderSubItems2 = [v19 focusOrderSubItems];
+              [v7 addObjectsFromArray:focusOrderSubItems2];
             }
 
             else
@@ -211,8 +211,8 @@
 
     if ([v21 count])
     {
-      v22 = [v21 firstObject];
-      v28 = v22;
+      firstObject = [v21 firstObject];
+      v28 = firstObject;
       v4 = [NSArray arrayWithObjects:&v28 count:1];
     }
 

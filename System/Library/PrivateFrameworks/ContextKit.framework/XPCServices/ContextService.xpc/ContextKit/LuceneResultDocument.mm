@@ -1,24 +1,24 @@
 @interface LuceneResultDocument
 - (LuceneContextRequest)request;
-- (LuceneResultDocument)initWithDocId:(int)a3 withLuceneContextRequest:(id)a4;
-- (id)bestTitleWithSeeOtherDocIdRelative:(int *)a3;
+- (LuceneResultDocument)initWithDocId:(int)id withLuceneContextRequest:(id)request;
+- (id)bestTitleWithSeeOtherDocIdRelative:(int *)relative;
 - (id)getDocument;
 - (id)titleField;
 @end
 
 @implementation LuceneResultDocument
 
-- (LuceneResultDocument)initWithDocId:(int)a3 withLuceneContextRequest:(id)a4
+- (LuceneResultDocument)initWithDocId:(int)id withLuceneContextRequest:(id)request
 {
-  v6 = a4;
+  requestCopy = request;
   v10.receiver = self;
   v10.super_class = LuceneResultDocument;
   v7 = [(LuceneResultDocument *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->_docId = a3;
-    objc_storeWeak(&v7->_request, v6);
+    v7->_docId = id;
+    objc_storeWeak(&v7->_request, requestCopy);
   }
 
   return v8;
@@ -30,25 +30,25 @@
   doc = self->_doc;
   if (doc)
   {
-    v4 = doc;
+    getDocument = doc;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_request);
-    v7 = [WeakRetained docVisitor];
+    docVisitor = [WeakRetained docVisitor];
 
-    v4 = [v7 getDocument];
-    [(OrgApacheLuceneDocumentDocument *)v4 removeAllFields];
+    getDocument = [docVisitor getDocument];
+    [(OrgApacheLuceneDocumentDocument *)getDocument removeAllFields];
     v8 = objc_loadWeakRetained(&self->_request);
-    v9 = [v8 engine];
-    v10 = [v9 reader];
-    [v10 documentWithInt:self->_docId withOrgApacheLuceneIndexStoredFieldVisitor:v7];
+    engine = [v8 engine];
+    reader = [engine reader];
+    [reader documentWithInt:self->_docId withOrgApacheLuceneIndexStoredFieldVisitor:docVisitor];
 
-    objc_storeStrong(p_doc, v4);
+    objc_storeStrong(p_doc, getDocument);
   }
 
-  return v4;
+  return getDocument;
 }
 
 - (id)titleField
@@ -61,8 +61,8 @@
     goto LABEL_18;
   }
 
-  v6 = [(LuceneResultDocument *)self getDocument];
-  p_isa = [v6 getWithNSString:@"title"];
+  getDocument = [(LuceneResultDocument *)self getDocument];
+  p_isa = [getDocument getWithNSString:@"title"];
 
   if (![(NSString *)p_isa length])
   {
@@ -120,11 +120,11 @@ LABEL_18:
   return p_isa;
 }
 
-- (id)bestTitleWithSeeOtherDocIdRelative:(int *)a3
+- (id)bestTitleWithSeeOtherDocIdRelative:(int *)relative
 {
-  v39 = [(LuceneResultDocument *)self titleField];
-  v5 = v39;
-  if (([v39 indexOf:10] & 0x80000000) == 0)
+  titleField = [(LuceneResultDocument *)self titleField];
+  v5 = titleField;
+  if (([titleField indexOf:10] & 0x80000000) == 0)
   {
     v87 = 0;
     v88 = &v87;
@@ -149,24 +149,24 @@ LABEL_18:
     v82[4] = sub_1002AA120;
     v83 = 0;
     WeakRetained = objc_loadWeakRetained(&self->_request);
-    v7 = [WeakRetained simplifiedDesiredLanguageTags];
+    simplifiedDesiredLanguageTags = [WeakRetained simplifiedDesiredLanguageTags];
 
-    if ([v7 count])
+    if ([simplifiedDesiredLanguageTags count])
     {
-      v8 = [v7 firstObject];
+      firstObject = [simplifiedDesiredLanguageTags firstObject];
     }
 
     else
     {
-      v8 = @"en";
+      firstObject = @"en";
     }
 
-    v10 = [v7 count] > 1;
+    v10 = [simplifiedDesiredLanguageTags count] > 1;
     v11 = objc_loadWeakRetained(&self->_request);
-    v12 = [v11 response];
-    v38 = [v12 languageTag];
+    response = [v11 response];
+    languageTag = [response languageTag];
 
-    v13 = [LanguageUtilities simplifyLanguageTag:v38];
+    v13 = [LanguageUtilities simplifyLanguageTag:languageTag];
     v78 = 0;
     v79 = &v78;
     v80 = 0x2020000000;
@@ -185,8 +185,8 @@ LABEL_18:
     v65 = &v64;
     v66 = 0x2020000000;
     v67 = 0;
-    v14 = [(LuceneResultDocument *)self request];
-    v15 = [v14 charBuffer];
+    request = [(LuceneResultDocument *)self request];
+    charBuffer = [request charBuffer];
 
     v48[0] = _NSConcreteStackBlock;
     v48[1] = 3221225472;
@@ -195,30 +195,30 @@ LABEL_18:
     v53 = v82;
     v54 = &v74;
     v55 = &v64;
-    v61 = v15;
-    v36 = v8;
+    v61 = charBuffer;
+    v36 = firstObject;
     v49 = v36;
     v37 = v13;
     v50 = v37;
     v63 = v10;
     v56 = &v68;
     v57 = &v78;
-    v35 = v7;
+    v35 = simplifiedDesiredLanguageTags;
     v51 = v35;
-    v52 = self;
+    selfCopy = self;
     v58 = v84;
     v59 = v86;
-    v62 = a3;
+    relativeCopy = relative;
     v60 = &v87;
-    [v39 enumerateLinesUsingBlock:v48];
-    if (a3)
+    [titleField enumerateLinesUsingBlock:v48];
+    if (relative)
     {
-      *a3 = *(v79 + 6);
+      *relative = *(v79 + 6);
     }
 
     if (*(v65 + 24) == 1 && *(v75 + 24) != 1)
     {
-      v9 = 0;
+      firstObject2 = 0;
       goto LABEL_35;
     }
 
@@ -243,8 +243,8 @@ LABEL_18:
             }
 
             v20 = *(*(&v44 + 1) + 8 * i);
-            v21 = [v20 title];
-            v22 = [LanguageUtilities transliterateTextToLanguageScript:v21 withSimplifiedLanguage:v69[5]];
+            title = [v20 title];
+            v22 = [LanguageUtilities transliterateTextToLanguageScript:title withSimplifiedLanguage:v69[5]];
             [v20 setTitle:v22];
           }
 
@@ -260,12 +260,12 @@ LABEL_18:
     if ([v23 debug])
     {
       v24 = objc_loadWeakRetained(&self->_request);
-      v25 = [v24 debugLogEnabled];
+      debugLogEnabled = [v24 debugLogEnabled];
 
-      if (!v25)
+      if (!debugLogEnabled)
       {
 LABEL_33:
-        v9 = [v88[5] firstObject];
+        firstObject2 = [v88[5] firstObject];
 LABEL_35:
 
         _Block_object_dispose(&v64, 8);
@@ -326,20 +326,20 @@ LABEL_35:
     goto LABEL_33;
   }
 
-  if (![v39 length] || objc_msgSend(v39, "characterAtIndex:", 0) == 92)
+  if (![titleField length] || objc_msgSend(titleField, "characterAtIndex:", 0) == 92)
   {
-    v9 = 0;
+    firstObject2 = 0;
     goto LABEL_37;
   }
 
   v34 = objc_loadWeakRetained(&self->_request);
-  v9 = [v34 inspectTitle:v39 titleForTokenization:0 conditionals:0];
+  firstObject2 = [v34 inspectTitle:titleField titleForTokenization:0 conditionals:0];
 
 LABEL_36:
-  v5 = v39;
+  v5 = titleField;
 LABEL_37:
 
-  return v9;
+  return firstObject2;
 }
 
 - (LuceneContextRequest)request

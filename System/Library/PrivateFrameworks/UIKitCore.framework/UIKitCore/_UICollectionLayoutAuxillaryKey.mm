@@ -1,6 +1,6 @@
 @interface _UICollectionLayoutAuxillaryKey
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -20,9 +20,9 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_UICollectionLayoutAuxillaryKey allocWithZone:a3];
+  v4 = [_UICollectionLayoutAuxillaryKey allocWithZone:zone];
   if (v4)
   {
     elementKind = self->_elementKind;
@@ -31,8 +31,8 @@
     isSupplementary = self->_isSupplementary;
     if (![(NSString *)elementKind length])
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:sel_initWithElementKind_index_auxillaryKind_isSupplementary_ object:v4 file:@"_UICollectionLayoutHelpers.m" lineNumber:1905 description:{@"Invalid parameter not satisfying: %@", @"elementKind.length"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_initWithElementKind_index_auxillaryKind_isSupplementary_ object:v4 file:@"_UICollectionLayoutHelpers.m" lineNumber:1905 description:{@"Invalid parameter not satisfying: %@", @"elementKind.length"}];
     }
 
     v13.receiver = v4;
@@ -53,18 +53,18 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
-  if (a3 != self)
+  if (equal != self)
   {
-    if (self->_index == *(a3 + 3))
+    if (self->_index == *(equal + 3))
     {
-      return [(NSString *)self->_elementKind isEqualToString:*(a3 + 2)];
+      return [(NSString *)self->_elementKind isEqualToString:*(equal + 2)];
     }
 
     return 0;

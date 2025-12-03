@@ -1,13 +1,13 @@
 @interface TUICandidateBackdropView
 - (BOOL)_needsBackdropView;
-- (TUICandidateBackdropView)initWithCoder:(id)a3;
-- (TUICandidateBackdropView)initWithFrame:(CGRect)a3;
+- (TUICandidateBackdropView)initWithCoder:(id)coder;
+- (TUICandidateBackdropView)initWithFrame:(CGRect)frame;
 - (TUICandidateBackdropViewDelegate)delegate;
 - (int64_t)backdropViewStyle;
-- (void)_setRenderConfig:(id)a3;
+- (void)_setRenderConfig:(id)config;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setStyle:(id)a3;
+- (void)setStyle:(id)style;
 @end
 
 @implementation TUICandidateBackdropView
@@ -19,32 +19,32 @@
   return WeakRetained;
 }
 
-- (void)_setRenderConfig:(id)a3
+- (void)_setRenderConfig:(id)config
 {
   v7.receiver = self;
   v7.super_class = TUICandidateBackdropView;
-  v4 = a3;
-  [(TUICandidateBackdropView *)&v7 _setRenderConfig:v4];
-  v5 = [v4 animatedBackground];
+  configCopy = config;
+  [(TUICandidateBackdropView *)&v7 _setRenderConfig:configCopy];
+  animatedBackground = [configCopy animatedBackground];
 
-  if (v5)
+  if (animatedBackground)
   {
-    v6 = [(TUICandidateBackdropView *)self backdropView];
-    [v6 transitionToStyle:{-[TUICandidateBackdropView backdropViewStyle](self, "backdropViewStyle")}];
+    backdropView = [(TUICandidateBackdropView *)self backdropView];
+    [backdropView transitionToStyle:{-[TUICandidateBackdropView backdropViewStyle](self, "backdropViewStyle")}];
   }
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v3 = a3;
-  v8 = a3;
+  styleCopy = style;
+  styleCopy2 = style;
   v5 = self->_style;
-  objc_storeStrong(&self->_style, v3);
-  LODWORD(v3) = [(TUICandidateViewStyle *)v5 darkBackdrop];
-  if (v3 != [v8 darkBackdrop] || (v6 = objc_msgSend(v8, "columnsCount"), v6 != -[TUICandidateViewStyle columnsCount](v5, "columnsCount")))
+  objc_storeStrong(&self->_style, styleCopy);
+  LODWORD(styleCopy) = [(TUICandidateViewStyle *)v5 darkBackdrop];
+  if (styleCopy != [styleCopy2 darkBackdrop] || (v6 = objc_msgSend(styleCopy2, "columnsCount"), v6 != -[TUICandidateViewStyle columnsCount](v5, "columnsCount")))
   {
-    v7 = [(TUICandidateBackdropView *)self backdropView];
-    [v7 transitionToStyle:{-[TUICandidateBackdropView backdropViewStyle](self, "backdropViewStyle")}];
+    backdropView = [(TUICandidateBackdropView *)self backdropView];
+    [backdropView transitionToStyle:{-[TUICandidateBackdropView backdropViewStyle](self, "backdropViewStyle")}];
   }
 }
 
@@ -53,23 +53,23 @@
   v5.receiver = self;
   v5.super_class = TUICandidateBackdropView;
   [(TUICandidateBackdropView *)&v5 didMoveToWindow];
-  v3 = [(TUICandidateBackdropView *)self _inheritedRenderConfig];
+  _inheritedRenderConfig = [(TUICandidateBackdropView *)self _inheritedRenderConfig];
 
-  if (v3)
+  if (_inheritedRenderConfig)
   {
-    v4 = [(TUICandidateBackdropView *)self backdropView];
-    [v4 transitionToStyle:{-[TUICandidateBackdropView backdropViewStyle](self, "backdropViewStyle")}];
+    backdropView = [(TUICandidateBackdropView *)self backdropView];
+    [backdropView transitionToStyle:{-[TUICandidateBackdropView backdropViewStyle](self, "backdropViewStyle")}];
   }
 }
 
 - (BOOL)_needsBackdropView
 {
   v3 = UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL;
-  v4 = [(TUICandidateBackdropView *)self delegate];
-  if (v4)
+  delegate = [(TUICandidateBackdropView *)self delegate];
+  if (delegate)
   {
-    v5 = [(TUICandidateBackdropView *)self delegate];
-    v6 = [v5 candidateBackdropViewShouldShowBackdropView:self];
+    delegate2 = [(TUICandidateBackdropView *)self delegate];
+    v6 = [delegate2 candidateBackdropViewShouldShowBackdropView:self];
   }
 
   else
@@ -79,8 +79,8 @@
 
   if (v3 == 1 || v6)
   {
-    v8 = [(TUICandidateBackdropView *)self _inheritedRenderConfig];
-    v7 = [v8 isFloating] ^ 1;
+    _inheritedRenderConfig = [(TUICandidateBackdropView *)self _inheritedRenderConfig];
+    v7 = [_inheritedRenderConfig isFloating] ^ 1;
   }
 
   else
@@ -93,8 +93,8 @@
 
 - (int64_t)backdropViewStyle
 {
-  v3 = [(TUICandidateBackdropView *)self style];
-  if ([v3 darkBackdrop])
+  style = [(TUICandidateBackdropView *)self style];
+  if ([style darkBackdrop])
   {
     v4 = 2030;
   }
@@ -104,21 +104,21 @@
     v4 = 3901;
   }
 
-  v5 = [(TUICandidateBackdropView *)self _inheritedRenderConfig];
+  _inheritedRenderConfig = [(TUICandidateBackdropView *)self _inheritedRenderConfig];
 
-  if (v5)
+  if (_inheritedRenderConfig)
   {
-    v6 = [(TUICandidateBackdropView *)self _inheritedRenderConfig];
-    v7 = [v6 backdropStyle];
+    _inheritedRenderConfig2 = [(TUICandidateBackdropView *)self _inheritedRenderConfig];
+    backdropStyle = [_inheritedRenderConfig2 backdropStyle];
 
-    if (v7 == 3904)
+    if (backdropStyle == 3904)
     {
       v4 = 3903;
     }
 
     else
     {
-      v4 = v7;
+      v4 = backdropStyle;
     }
 
     if (v4 == 3908)
@@ -143,42 +143,42 @@
   v14.receiver = self;
   v14.super_class = TUICandidateBackdropView;
   [(TUICandidateBackdropView *)&v14 layoutSubviews];
-  v3 = [(TUICandidateBackdropView *)self backdropView];
+  backdropView = [(TUICandidateBackdropView *)self backdropView];
 
-  if (!v3)
+  if (!backdropView)
   {
-    v4 = [(TUICandidateBackdropView *)self backdropViewStyle];
+    backdropViewStyle = [(TUICandidateBackdropView *)self backdropViewStyle];
     v5 = objc_alloc(MEMORY[0x1E69DCB90]);
     [(TUICandidateBackdropView *)self bounds];
-    v6 = [v5 initWithFrame:v4 style:?];
+    v6 = [v5 initWithFrame:backdropViewStyle style:?];
     [(TUICandidateBackdropView *)self setBackdropView:v6];
 
-    v7 = [(TUICandidateBackdropView *)self _inheritedRenderConfig];
-    v8 = [v7 colorAdaptiveBackground];
+    _inheritedRenderConfig = [(TUICandidateBackdropView *)self _inheritedRenderConfig];
+    colorAdaptiveBackground = [_inheritedRenderConfig colorAdaptiveBackground];
 
-    if (v8)
+    if (colorAdaptiveBackground)
     {
-      v9 = [(TUICandidateBackdropView *)self backdropView];
-      v10 = [v9 layer];
-      [v10 setHitTestsAsOpaque:1];
+      backdropView2 = [(TUICandidateBackdropView *)self backdropView];
+      layer = [backdropView2 layer];
+      [layer setHitTestsAsOpaque:1];
     }
 
-    v11 = [(TUICandidateBackdropView *)self backdropView];
-    [v11 transitionToStyle:v4];
+    backdropView3 = [(TUICandidateBackdropView *)self backdropView];
+    [backdropView3 transitionToStyle:backdropViewStyle];
 
-    v12 = [(TUICandidateBackdropView *)self backdropView];
-    [(TUICandidateBackdropView *)self addSubview:v12];
+    backdropView4 = [(TUICandidateBackdropView *)self backdropView];
+    [(TUICandidateBackdropView *)self addSubview:backdropView4];
 
-    v13 = [(TUICandidateBackdropView *)self backdropView];
-    [v13 setAutoresizingMask:18];
+    backdropView5 = [(TUICandidateBackdropView *)self backdropView];
+    [backdropView5 setAutoresizingMask:18];
   }
 }
 
-- (TUICandidateBackdropView)initWithCoder:(id)a3
+- (TUICandidateBackdropView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TUICandidateBackdropView;
-  v3 = [(TUICandidateBackdropView *)&v6 initWithCoder:a3];
+  v3 = [(TUICandidateBackdropView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -188,11 +188,11 @@
   return v4;
 }
 
-- (TUICandidateBackdropView)initWithFrame:(CGRect)a3
+- (TUICandidateBackdropView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TUICandidateBackdropView;
-  v3 = [(TUICandidateBackdropView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUICandidateBackdropView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

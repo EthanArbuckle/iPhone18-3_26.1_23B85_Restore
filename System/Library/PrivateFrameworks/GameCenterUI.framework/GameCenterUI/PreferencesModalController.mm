@@ -1,7 +1,7 @@
 @interface PreferencesModalController
-- (_TtC12GameCenterUIP33_C2AB98B87AF2030AFF6D71CAC9E6FA9326PreferencesModalController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
+- (_TtC12GameCenterUIP33_C2AB98B87AF2030AFF6D71CAC9E6FA9326PreferencesModalController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
 - (void)didTapDone;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
@@ -9,36 +9,36 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E057C1C();
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_24E057D28(v7, v8);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  sub_24E057D28(controllerCopy, viewControllerCopy);
 }
 
 - (void)didTapDone
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E057EAC();
 }
 
-- (_TtC12GameCenterUIP33_C2AB98B87AF2030AFF6D71CAC9E6FA9326PreferencesModalController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC12GameCenterUIP33_C2AB98B87AF2030AFF6D71CAC9E6FA9326PreferencesModalController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
-  if (a3)
+  if (class)
   {
     swift_getObjCClassMetadata();
-    if (!a4)
+    if (!toolbarClass)
     {
       goto LABEL_5;
     }
   }
 
-  else if (!a4)
+  else if (!toolbarClass)
   {
 LABEL_5:
     sub_24E058048();

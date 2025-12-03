@@ -1,23 +1,23 @@
 @interface RequestContextData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RequestContextData
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
+  coderCopy = coder;
+  selfCopy = self;
   sub_2230DB5E8();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_223200314();
     swift_unknownObjectRelease();
@@ -26,7 +26,7 @@
   else
   {
     memset(v9, 0, sizeof(v9));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_223182F7C();
@@ -38,7 +38,7 @@
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_223183630();
 
   v3 = sub_2232000A4();

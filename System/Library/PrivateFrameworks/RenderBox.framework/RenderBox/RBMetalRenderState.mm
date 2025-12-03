@@ -3,8 +3,8 @@
 - (CGAffineTransform)CTM;
 - (CGSize)size;
 - (void)dealloc;
-- (void)setBounds:(id *)a3;
-- (void)setCTM:(CGAffineTransform *)a3;
+- (void)setBounds:(id *)bounds;
+- (void)setCTM:(CGAffineTransform *)m;
 @end
 
 @implementation RBMetalRenderState
@@ -33,10 +33,10 @@
   return self;
 }
 
-- (void)setBounds:(id *)a3
+- (void)setBounds:(id *)bounds
 {
-  v3 = *&a3->var0;
-  *&self->_bounds.width = *&a3->var2;
+  v3 = *&bounds->var0;
+  *&self->_bounds.width = *&bounds->var2;
   *&self->_bounds.x = v3;
 }
 
@@ -49,11 +49,11 @@
   return self;
 }
 
-- (void)setCTM:(CGAffineTransform *)a3
+- (void)setCTM:(CGAffineTransform *)m
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_CTM.tx = *&a3->tx;
+  v3 = *&m->a;
+  v4 = *&m->c;
+  *&self->_CTM.tx = *&m->tx;
   *&self->_CTM.c = v4;
   *&self->_CTM.a = v3;
 }

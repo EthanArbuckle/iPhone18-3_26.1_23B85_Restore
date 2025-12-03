@@ -1,7 +1,7 @@
 @interface PKAppProtectionCoordinator
 + (id)shared;
-+ (id)sharedInstanceForApp:(id)a3;
-- (id)_initWithUnderlyingInstance:(id)a3;
++ (id)sharedInstanceForApp:(id)app;
+- (id)_initWithUnderlyingInstance:(id)instance;
 @end
 
 @implementation PKAppProtectionCoordinator
@@ -27,24 +27,24 @@ void __36__PKAppProtectionCoordinator_shared__block_invoke()
   _MergedGlobals_254 = v1;
 }
 
-+ (id)sharedInstanceForApp:(id)a3
++ (id)sharedInstanceForApp:(id)app
 {
-  v3 = [_PKAppProtectionCoordinator sharedInstanceForApp:a3];
+  v3 = [_PKAppProtectionCoordinator sharedInstanceForApp:app];
   v4 = [[PKAppProtectionCoordinator alloc] _initWithUnderlyingInstance:v3];
 
   return v4;
 }
 
-- (id)_initWithUnderlyingInstance:(id)a3
+- (id)_initWithUnderlyingInstance:(id)instance
 {
-  v5 = a3;
+  instanceCopy = instance;
   v9.receiver = self;
   v9.super_class = PKAppProtectionCoordinator;
   v6 = [(PKAppProtectionCoordinator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_internalInstance, a3);
+    objc_storeStrong(&v6->_internalInstance, instance);
   }
 
   return v7;

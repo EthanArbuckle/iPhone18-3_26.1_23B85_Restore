@@ -1,14 +1,14 @@
 @interface BEContentCleanupJSOptions
-+ (id)cleanupJSOptionsForBookInfoSnapshot:(id)a3 withConfiguration:(id)a4;
++ (id)cleanupJSOptionsForBookInfoSnapshot:(id)snapshot withConfiguration:(id)configuration;
 @end
 
 @implementation BEContentCleanupJSOptions
 
-+ (id)cleanupJSOptionsForBookInfoSnapshot:(id)a3 withConfiguration:(id)a4
++ (id)cleanupJSOptionsForBookInfoSnapshot:(id)snapshot withConfiguration:(id)configuration
 {
-  v5 = a4;
-  v6 = a3;
-  if ([v6 isFixedLayout])
+  configurationCopy = configuration;
+  snapshotCopy = snapshot;
+  if ([snapshotCopy isFixedLayout])
   {
     v7 = 3;
   }
@@ -18,23 +18,23 @@
     v7 = 2;
   }
 
-  v8 = [v5 style];
-  v9 = [v8 justification];
+  style = [configurationCopy style];
+  justification = [style justification];
 
-  v10 = v9;
+  v10 = justification;
   v11 = [BEContentCleanupJSOptions alloc];
-  v12 = [v5 style];
+  style2 = [configurationCopy style];
 
-  v13 = [v12 fontFamily];
-  v14 = [v6 bookLanguage];
-  v15 = [v6 respectImageSizeClass];
-  v16 = [v6 respectImageSizeClassIsPrefix];
-  v17 = [v6 hasBuiltInFonts];
+  fontFamily = [style2 fontFamily];
+  bookLanguage = [snapshotCopy bookLanguage];
+  respectImageSizeClass = [snapshotCopy respectImageSizeClass];
+  respectImageSizeClassIsPrefix = [snapshotCopy respectImageSizeClassIsPrefix];
+  hasBuiltInFonts = [snapshotCopy hasBuiltInFonts];
 
   BYTE2(v21) = 0;
   LOWORD(v21) = 0;
-  LOBYTE(v20) = v17;
-  v18 = [v11 initWithMode:v7 useNewTextStyling:0 fontFamily:v13 language:v14 respectImageSizeClass:v15 respectImageSizeClassIsPrefix:v16 hasBuiltInFonts:v20 justification:v10 fontWeight:0 overrideLineHeight:v21 overrideLetterSpacing:0 overrideWordSpacing:? readingMode:?];
+  LOBYTE(v20) = hasBuiltInFonts;
+  v18 = [v11 initWithMode:v7 useNewTextStyling:0 fontFamily:fontFamily language:bookLanguage respectImageSizeClass:respectImageSizeClass respectImageSizeClassIsPrefix:respectImageSizeClassIsPrefix hasBuiltInFonts:v20 justification:v10 fontWeight:0 overrideLineHeight:v21 overrideLetterSpacing:0 overrideWordSpacing:? readingMode:?];
 
   return v18;
 }

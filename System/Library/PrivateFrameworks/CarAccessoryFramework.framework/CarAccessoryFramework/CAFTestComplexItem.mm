@@ -1,22 +1,22 @@
 @interface CAFTestComplexItem
-- (CAFTestComplexItem)initWithDictionary:(id)a3;
-- (CAFTestComplexItem)initWithKey:(id)a3 value:(unsigned int)a4;
+- (CAFTestComplexItem)initWithDictionary:(id)dictionary;
+- (CAFTestComplexItem)initWithKey:(id)key value:(unsigned int)value;
 - (NSDictionary)dictionaryRepresentation;
 - (id)description;
 @end
 
 @implementation CAFTestComplexItem
 
-- (CAFTestComplexItem)initWithDictionary:(id)a3
+- (CAFTestComplexItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = CAFTestComplexItem;
   v5 = [(CAFTestComplexItem *)&v12 init];
   if (v5)
   {
     objc_opt_class();
-    v6 = [v4 objectForKey:@"key"];
+    v6 = [dictionaryCopy objectForKey:@"key"];
     if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v7 = v6;
@@ -31,7 +31,7 @@
     v5->_key = v7;
 
     objc_opt_class();
-    v9 = [v4 objectForKey:@"value"];
+    v9 = [dictionaryCopy objectForKey:@"value"];
     if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v10 = v9;
@@ -48,17 +48,17 @@
   return v5;
 }
 
-- (CAFTestComplexItem)initWithKey:(id)a3 value:(unsigned int)a4
+- (CAFTestComplexItem)initWithKey:(id)key value:(unsigned int)value
 {
-  v7 = a3;
+  keyCopy = key;
   v11.receiver = self;
   v11.super_class = CAFTestComplexItem;
   v8 = [(CAFTestComplexItem *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_key, a3);
-    v9->_value = a4;
+    objc_storeStrong(&v8->_key, key);
+    v9->_value = value;
   }
 
   return v9;
@@ -69,14 +69,14 @@
   v10[2] = *MEMORY[0x277D85DE8];
   v9[0] = @"key";
   v3 = [(CAFTestComplexItem *)self key];
-  v4 = v3;
+  null = v3;
   if (!v3)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
   v9[1] = @"value";
-  v10[0] = v4;
+  v10[0] = null;
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[CAFTestComplexItem value](self, "value")}];
   v10[1] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2];

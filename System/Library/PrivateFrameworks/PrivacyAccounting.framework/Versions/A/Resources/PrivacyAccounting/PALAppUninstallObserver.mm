@@ -1,9 +1,9 @@
 @interface PALAppUninstallObserver
 - (PALAppUninstallDelegateProtocol)delegate;
 - (PALAppUninstallObserver)init;
-- (void)_didReceiveApplicationUnregisteredNotification:(id)a3;
-- (void)_handleNewUninstalledAppsWithBundleIDs:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
+- (void)_didReceiveApplicationUnregisteredNotification:(id)notification;
+- (void)_handleNewUninstalledAppsWithBundleIDs:(id)ds;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)dealloc;
 - (void)startObserving;
 - (void)stopObserving;
@@ -53,17 +53,17 @@
   [(PALAppUninstallObserver *)&v3 dealloc];
 }
 
-- (void)_handleNewUninstalledAppsWithBundleIDs:(id)a3
+- (void)_handleNewUninstalledAppsWithBundleIDs:(id)ds
 {
-  v21 = a3;
-  v4 = [(PALAppUninstallObserver *)self delegate];
+  dsCopy = ds;
+  delegate = [(PALAppUninstallObserver *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v21 count]);
+    v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [dsCopy count]);
     os_unfair_lock_lock(&self->_lock);
-    v7 = [v21 count];
+    v7 = [dsCopy count];
     v27 = 0u;
     v28 = 0u;
     if (v7 <= 0xA)
@@ -78,7 +78,7 @@
 
     v25 = 0uLL;
     v26 = 0uLL;
-    v9 = v21;
+    v9 = dsCopy;
     v10 = [v9 countByEnumeratingWithState:&v25 objects:v31 count:16];
     if (v10)
     {
@@ -129,30 +129,30 @@
     }
 
     os_unfair_lock_unlock(&self->_lock);
-    v18 = [(PALAppUninstallObserver *)self delegate];
-    v19 = [v18 queue];
+    delegate2 = [(PALAppUninstallObserver *)self delegate];
+    queue = [delegate2 queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100005DF0;
     block[3] = &unk_100018708;
     v23 = v6;
-    v24 = self;
+    selfCopy = self;
     v20 = v6;
-    dispatch_async(v19, block);
+    dispatch_async(queue, block);
   }
 }
 
-- (void)_didReceiveApplicationUnregisteredNotification:(id)a3
+- (void)_didReceiveApplicationUnregisteredNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 name];
-  if (([v5 isEqualToString:@"com.apple.LaunchServices.applicationUnregistered"] & 1) == 0)
+  notificationCopy = notification;
+  name = [notificationCopy name];
+  if (([name isEqualToString:@"com.apple.LaunchServices.applicationUnregistered"] & 1) == 0)
   {
     sub_100006190();
   }
 
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"bundleIDs"];
+  userInfo = [notificationCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"bundleIDs"];
   logger = self->_logger;
   if (v7)
   {
@@ -168,13 +168,13 @@
 
   else if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_ERROR))
   {
-    sub_1000061BC(v6, logger);
+    sub_1000061BC(userInfo, logger);
   }
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v4 = [a3 valueForKey:@"bundleIdentifier"];
+  v4 = [uninstall valueForKey:@"bundleIdentifier"];
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_INFO))
   {

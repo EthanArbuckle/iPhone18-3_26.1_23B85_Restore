@@ -1,84 +1,84 @@
 @interface MDMServicerCore
-- (BOOL)_remoteProcess:(id)a3 hasEntitlement:(id)a4;
-- (MDMServicerCore)initWithXPCConnection:(id)a3 server:(id)a4;
+- (BOOL)_remoteProcess:(id)process hasEntitlement:(id)entitlement;
+- (MDMServicerCore)initWithXPCConnection:(id)connection server:(id)server;
 - (NSXPCConnection)xpcConnection;
-- (id)_MDMAccessEntitlementForChannelType:(unint64_t)a3;
-- (id)_lacksEntitlementError:(id)a3;
-- (void)blockAppInstallsWithCompletion:(id)a3;
-- (void)blockMDMCommandsWithCompletion:(id)a3;
+- (id)_MDMAccessEntitlementForChannelType:(unint64_t)type;
+- (id)_lacksEntitlementError:(id)error;
+- (void)blockAppInstallsWithCompletion:(id)completion;
+- (void)blockMDMCommandsWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)deleteBootstrapTokenWithToken:(id)a3 devicePasscode:(id)a4 completionHandler:(id)a5;
-- (void)deleteBootstrapTokenWithToken:(id)a3 devicePasscodeContext:(id)a4 completionHandler:(id)a5;
-- (void)depPushTokenWithCompletion:(id)a3;
-- (void)disablePushWakeWithCompletion:(id)a3;
-- (void)enablePushWakeWithCompletion:(id)a3;
-- (void)generateAndSyncBootstrapTokenWithDevicePasscode:(id)a3 completionHandler:(id)a4;
-- (void)generateAndSyncBootstrapTokenWithDevicePasscodeContext:(id)a3 completionHandler:(id)a4;
-- (void)generateBootstrapTokenWithDevicePasscode:(id)a3 completionHandler:(id)a4;
-- (void)generateBootstrapTokenWithDevicePasscodeContext:(id)a3 completionHandler:(id)a4;
-- (void)getAssertionDescriptionsWithCompletion:(id)a3;
-- (void)getOrgTokenForMAIDWithCompletionHandler:(id)a3;
-- (void)getWatchPairingTokenForPhoneID:(id)a3 watchID:(id)a4 securityToken:(id)a5 completionHandler:(id)a6;
-- (void)isAwaitingUserConfiguredWithCompletion:(id)a3;
-- (void)monitorDEPPushTokenIfNeededWithCompletion:(id)a3;
-- (void)monitorDEPPushTokenWithCompletion:(id)a3;
-- (void)nagForMigrationWithHardCodedValuesWithCompletion:(id)a3;
-- (void)nagWithID:(id)a3 clientID:(id)a4 schedule:(id)a5 title:(id)a6 message:(id)a7 notificationTitle:(id)a8 notificationMessage:(id)a9 actionTitle:(id)a10 actionURL:(id)a11 dismissTitle:(id)a12 dismissURL:(id)a13 deadlineURL:(id)a14 completion:(id)a15;
-- (void)notifyNewConfigurationWithCompletion:(id)a3;
-- (void)preserveAppsWithCompletion:(id)a3;
-- (void)pushTokenWithCompletion:(id)a3;
-- (void)reauthenticationCompleteWithCompletion:(id)a3;
-- (void)removeUnusedPreservedAppsWithCompletion:(id)a3;
-- (void)requestInstallOfAppsInRestoreWithCompletion:(id)a3;
-- (void)requestRRTSCheckInAndValidationWithCompletionHandler:(id)a3;
-- (void)retryNotNowWithCompletion:(id)a3;
-- (void)scheduleTokenUpdateIfNecessaryWithCompletion:(id)a3;
-- (void)scheduleTokenUpdateWithCompletion:(id)a3;
-- (void)sendMDMAuthenticationRequestWithCompletionHandler:(id)a3;
-- (void)sendMDMCheckOutRequestWithCompletionHandler:(id)a3;
-- (void)simulateDEPPushWithCompletion:(id)a3;
-- (void)simulatePushIfNetworkTetheredWithCompletion:(id)a3;
-- (void)simulatePushWithCompletion:(id)a3;
-- (void)stopNaggingForMigrationWithCompletion:(id)a3;
-- (void)syncBootstrapTokenToMDMWithToken:(id)a3 completionHandler:(id)a4;
-- (void)syncDEPPushTokenWithDelay:(double)a3 completion:(id)a4;
-- (void)touchWithCompletion:(id)a3;
-- (void)unblockAppInstallsWithCompletion:(id)a3;
-- (void)unblockMDMCommandsWithCompletion:(id)a3;
-- (void)uprootMDMWithCompletion:(id)a3;
+- (void)deleteBootstrapTokenWithToken:(id)token devicePasscode:(id)passcode completionHandler:(id)handler;
+- (void)deleteBootstrapTokenWithToken:(id)token devicePasscodeContext:(id)context completionHandler:(id)handler;
+- (void)depPushTokenWithCompletion:(id)completion;
+- (void)disablePushWakeWithCompletion:(id)completion;
+- (void)enablePushWakeWithCompletion:(id)completion;
+- (void)generateAndSyncBootstrapTokenWithDevicePasscode:(id)passcode completionHandler:(id)handler;
+- (void)generateAndSyncBootstrapTokenWithDevicePasscodeContext:(id)context completionHandler:(id)handler;
+- (void)generateBootstrapTokenWithDevicePasscode:(id)passcode completionHandler:(id)handler;
+- (void)generateBootstrapTokenWithDevicePasscodeContext:(id)context completionHandler:(id)handler;
+- (void)getAssertionDescriptionsWithCompletion:(id)completion;
+- (void)getOrgTokenForMAIDWithCompletionHandler:(id)handler;
+- (void)getWatchPairingTokenForPhoneID:(id)d watchID:(id)iD securityToken:(id)token completionHandler:(id)handler;
+- (void)isAwaitingUserConfiguredWithCompletion:(id)completion;
+- (void)monitorDEPPushTokenIfNeededWithCompletion:(id)completion;
+- (void)monitorDEPPushTokenWithCompletion:(id)completion;
+- (void)nagForMigrationWithHardCodedValuesWithCompletion:(id)completion;
+- (void)nagWithID:(id)d clientID:(id)iD schedule:(id)schedule title:(id)title message:(id)message notificationTitle:(id)notificationTitle notificationMessage:(id)notificationMessage actionTitle:(id)self0 actionURL:(id)self1 dismissTitle:(id)self2 dismissURL:(id)self3 deadlineURL:(id)self4 completion:(id)self5;
+- (void)notifyNewConfigurationWithCompletion:(id)completion;
+- (void)preserveAppsWithCompletion:(id)completion;
+- (void)pushTokenWithCompletion:(id)completion;
+- (void)reauthenticationCompleteWithCompletion:(id)completion;
+- (void)removeUnusedPreservedAppsWithCompletion:(id)completion;
+- (void)requestInstallOfAppsInRestoreWithCompletion:(id)completion;
+- (void)requestRRTSCheckInAndValidationWithCompletionHandler:(id)handler;
+- (void)retryNotNowWithCompletion:(id)completion;
+- (void)scheduleTokenUpdateIfNecessaryWithCompletion:(id)completion;
+- (void)scheduleTokenUpdateWithCompletion:(id)completion;
+- (void)sendMDMAuthenticationRequestWithCompletionHandler:(id)handler;
+- (void)sendMDMCheckOutRequestWithCompletionHandler:(id)handler;
+- (void)simulateDEPPushWithCompletion:(id)completion;
+- (void)simulatePushIfNetworkTetheredWithCompletion:(id)completion;
+- (void)simulatePushWithCompletion:(id)completion;
+- (void)stopNaggingForMigrationWithCompletion:(id)completion;
+- (void)syncBootstrapTokenToMDMWithToken:(id)token completionHandler:(id)handler;
+- (void)syncDEPPushTokenWithDelay:(double)delay completion:(id)completion;
+- (void)touchWithCompletion:(id)completion;
+- (void)unblockAppInstallsWithCompletion:(id)completion;
+- (void)unblockMDMCommandsWithCompletion:(id)completion;
+- (void)uprootMDMWithCompletion:(id)completion;
 @end
 
 @implementation MDMServicerCore
 
-- (MDMServicerCore)initWithXPCConnection:(id)a3 server:(id)a4
+- (MDMServicerCore)initWithXPCConnection:(id)connection server:(id)server
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  serverCopy = server;
   v17.receiver = self;
   v17.super_class = MDMServicerCore;
   v8 = [(MDMServicerCore *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_xpcConnection, v6);
-    v10 = [[MDMDaemonXPCInvalidationManager alloc] initWithXPCConnection:v6];
+    objc_storeWeak(&v8->_xpcConnection, connectionCopy);
+    v10 = [[MDMDaemonXPCInvalidationManager alloc] initWithXPCConnection:connectionCopy];
     invalidationHandler = v9->_invalidationHandler;
     v9->_invalidationHandler = v10;
 
-    v9->_channelType = [v7 channelType];
-    objc_storeStrong(&v9->_server, a4);
+    v9->_channelType = [serverCopy channelType];
+    objc_storeStrong(&v9->_server, server);
     v15 = 0u;
     v16 = 0u;
-    if (v6)
+    if (connectionCopy)
     {
-      [v6 auditToken];
+      [connectionCopy auditToken];
     }
 
     v12 = [MEMORY[0x277D034C0] bundleIDFromAuditToken:&v15];
     clientBundleID = v9->_clientBundleID;
     v9->_clientBundleID = v12;
 
-    v9->_clientPID = [v6 processIdentifier];
+    v9->_clientPID = [connectionCopy processIdentifier];
   }
 
   return v9;
@@ -94,372 +94,372 @@
   [(MDMServicerCore *)&v4 dealloc];
 }
 
-- (void)getAssertionDescriptionsWithCompletion:(id)a3
+- (void)getAssertionDescriptionsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v8 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  v6 = [(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v8];
+  completionCopy = completion;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v6 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v6)
   {
 
-    v8 = [(MDMServicerCore *)self server];
-    [v8 getAssertionDescriptionsWithCompletion:v4];
+    server = [(MDMServicerCore *)self server];
+    [server getAssertionDescriptionsWithCompletion:completionCopy];
   }
 
   else
   {
-    v7 = [(MDMServicerCore *)self _lacksEntitlementError:v8];
-    v4[2](v4, 0, v7);
+    v7 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    completionCopy[2](completionCopy, 0, v7);
 
-    v4 = v7;
+    completionCopy = v7;
   }
 }
 
-- (void)scheduleTokenUpdateWithCompletion:(id)a3
+- (void)scheduleTokenUpdateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v8 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  v6 = [(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v8];
+  completionCopy = completion;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v6 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v6)
   {
 
-    v8 = [(MDMServicerCore *)self server];
-    [v8 scheduleTokenUpdateWithCompletion:v4];
+    server = [(MDMServicerCore *)self server];
+    [server scheduleTokenUpdateWithCompletion:completionCopy];
   }
 
   else
   {
-    v7 = [(MDMServicerCore *)self _lacksEntitlementError:v8];
-    v4[2](v4, v7);
+    v7 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    completionCopy[2](completionCopy, v7);
 
-    v4 = v7;
+    completionCopy = v7;
   }
 }
 
-- (void)scheduleTokenUpdateIfNecessaryWithCompletion:(id)a3
+- (void)scheduleTokenUpdateIfNecessaryWithCompletion:(id)completion
 {
-  v4 = a3;
-  v8 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  v6 = [(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v8];
+  completionCopy = completion;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v6 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v6)
   {
 
-    v8 = [(MDMServicerCore *)self server];
-    [v8 scheduleTokenUpdateIfNecessaryWithCompletion:v4];
+    server = [(MDMServicerCore *)self server];
+    [server scheduleTokenUpdateIfNecessaryWithCompletion:completionCopy];
   }
 
   else
   {
-    v7 = [(MDMServicerCore *)self _lacksEntitlementError:v8];
-    v4[2](v4, v7);
+    v7 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    completionCopy[2](completionCopy, v7);
 
-    v4 = v7;
+    completionCopy = v7;
   }
 }
 
-- (void)simulatePushWithCompletion:(id)a3
+- (void)simulatePushWithCompletion:(id)completion
 {
-  v4 = a3;
-  v8 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  v6 = [(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v8];
+  completionCopy = completion;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v6 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v6)
   {
 
-    v8 = [(MDMServicerCore *)self server];
-    [v8 simulatePushWithCompletion:v4];
+    server = [(MDMServicerCore *)self server];
+    [server simulatePushWithCompletion:completionCopy];
   }
 
   else
   {
-    v7 = [(MDMServicerCore *)self _lacksEntitlementError:v8];
-    v4[2](v4, v7);
+    v7 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    completionCopy[2](completionCopy, v7);
 
-    v4 = v7;
+    completionCopy = v7;
   }
 }
 
-- (void)simulatePushIfNetworkTetheredWithCompletion:(id)a3
+- (void)simulatePushIfNetworkTetheredWithCompletion:(id)completion
 {
-  v9 = a3;
-  v4 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  if ([(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v4])
+  completionCopy = completion;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  if ([(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server])
   {
 
 LABEL_4:
-    v4 = [(MDMServicerCore *)self server];
-    [v4 simulatePushIfNetworkTetheredWithCompletion:v9];
+    server = [(MDMServicerCore *)self server];
+    [server simulatePushIfNetworkTetheredWithCompletion:completionCopy];
     goto LABEL_6;
   }
 
-  v6 = [(MDMServicerCore *)self xpcConnection];
-  v7 = [(MDMServicerCore *)self _remoteProcess:v6 hasEntitlement:@"com.apple.managedconfiguration.mdmd.push"];
+  xpcConnection2 = [(MDMServicerCore *)self xpcConnection];
+  v7 = [(MDMServicerCore *)self _remoteProcess:xpcConnection2 hasEntitlement:@"com.apple.managedconfiguration.mdmd.push"];
 
   if (v7)
   {
     goto LABEL_4;
   }
 
-  v8 = [(MDMServicerCore *)self _lacksEntitlementError:v4];
-  v9[2](v9, v8);
+  v8 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+  completionCopy[2](completionCopy, v8);
 
 LABEL_6:
 }
 
-- (void)notifyNewConfigurationWithCompletion:(id)a3
+- (void)notifyNewConfigurationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v8 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  v6 = [(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v8];
+  completionCopy = completion;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v6 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v6)
   {
 
-    v8 = [(MDMServicerCore *)self server];
-    [v8 notifyNewConfigurationWithCompletion:v4];
+    server = [(MDMServicerCore *)self server];
+    [server notifyNewConfigurationWithCompletion:completionCopy];
   }
 
   else
   {
-    v7 = [(MDMServicerCore *)self _lacksEntitlementError:v8];
-    v4[2](v4, v7);
+    v7 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    completionCopy[2](completionCopy, v7);
 
-    v4 = v7;
+    completionCopy = v7;
   }
 }
 
-- (void)retryNotNowWithCompletion:(id)a3
+- (void)retryNotNowWithCompletion:(id)completion
 {
-  v4 = a3;
-  v8 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  v6 = [(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v8];
+  completionCopy = completion;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v6 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v6)
   {
 
-    v8 = [(MDMServicerCore *)self server];
-    [v8 retryNotNowWithCompletion:v4];
+    server = [(MDMServicerCore *)self server];
+    [server retryNotNowWithCompletion:completionCopy];
   }
 
   else
   {
-    v7 = [(MDMServicerCore *)self _lacksEntitlementError:v8];
-    v4[2](v4, v7);
+    v7 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    completionCopy[2](completionCopy, v7);
 
-    v4 = v7;
+    completionCopy = v7;
   }
 }
 
-- (void)reauthenticationCompleteWithCompletion:(id)a3
+- (void)reauthenticationCompleteWithCompletion:(id)completion
 {
-  v4 = a3;
-  v8 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  v6 = [(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v8];
+  completionCopy = completion;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v6 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v6)
   {
 
-    v8 = [(MDMServicerCore *)self server];
-    [v8 reauthenticationCompleteWithCompletion:v4];
+    server = [(MDMServicerCore *)self server];
+    [server reauthenticationCompleteWithCompletion:completionCopy];
   }
 
   else
   {
-    v7 = [(MDMServicerCore *)self _lacksEntitlementError:v8];
-    v4[2](v4, v7);
+    v7 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    completionCopy[2](completionCopy, v7);
 
-    v4 = v7;
+    completionCopy = v7;
   }
 }
 
-- (void)pushTokenWithCompletion:(id)a3
+- (void)pushTokenWithCompletion:(id)completion
 {
-  v4 = a3;
-  v8 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  v6 = [(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v8];
+  completionCopy = completion;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v6 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v6)
   {
 
-    v8 = [(MDMServicerCore *)self server];
-    [v8 pushTokenWithCompletion:v4];
+    server = [(MDMServicerCore *)self server];
+    [server pushTokenWithCompletion:completionCopy];
   }
 
   else
   {
-    v7 = [(MDMServicerCore *)self _lacksEntitlementError:v8];
-    v4[2](v4, 0, v7);
+    v7 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    completionCopy[2](completionCopy, 0, v7);
 
-    v4 = v7;
+    completionCopy = v7;
   }
 }
 
-- (void)touchWithCompletion:(id)a3
+- (void)touchWithCompletion:(id)completion
 {
-  v4 = a3;
-  v8 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  v6 = [(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v8];
+  completionCopy = completion;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v6 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v6)
   {
 
-    v8 = [(MDMServicerCore *)self server];
-    [v8 touchWithCompletion:v4];
+    server = [(MDMServicerCore *)self server];
+    [server touchWithCompletion:completionCopy];
   }
 
   else
   {
-    v7 = [(MDMServicerCore *)self _lacksEntitlementError:v8];
-    v4[2](v4, v7);
+    v7 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    completionCopy[2](completionCopy, v7);
 
-    v4 = v7;
+    completionCopy = v7;
   }
 }
 
-- (void)nagWithID:(id)a3 clientID:(id)a4 schedule:(id)a5 title:(id)a6 message:(id)a7 notificationTitle:(id)a8 notificationMessage:(id)a9 actionTitle:(id)a10 actionURL:(id)a11 dismissTitle:(id)a12 dismissURL:(id)a13 deadlineURL:(id)a14 completion:(id)a15
+- (void)nagWithID:(id)d clientID:(id)iD schedule:(id)schedule title:(id)title message:(id)message notificationTitle:(id)notificationTitle notificationMessage:(id)notificationMessage actionTitle:(id)self0 actionURL:(id)self1 dismissTitle:(id)self2 dismissURL:(id)self3 deadlineURL:(id)self4 completion:(id)self5
 {
-  v47 = a3;
-  v46 = a4;
-  v44 = a5;
-  v43 = a6;
-  v42 = a7;
-  v41 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
-  v25 = a13;
-  v45 = a14;
-  v26 = a15;
-  v27 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v28 = [(MDMServicerCore *)self xpcConnection];
-  v29 = [(MDMServicerCore *)self _remoteProcess:v28 hasEntitlement:v27];
+  dCopy = d;
+  iDCopy = iD;
+  scheduleCopy = schedule;
+  titleCopy = title;
+  messageCopy = message;
+  notificationTitleCopy = notificationTitle;
+  notificationMessageCopy = notificationMessage;
+  actionTitleCopy = actionTitle;
+  lCopy = l;
+  dismissTitleCopy = dismissTitle;
+  rLCopy = rL;
+  uRLCopy = uRL;
+  completionCopy = completion;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v29 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
-  v40 = v23;
+  v40 = lCopy;
   if (v29)
   {
 
-    v27 = [(MDMServicerCore *)self server];
-    v30 = v44;
-    v39 = v25;
-    v38 = v23;
-    v37 = v21;
-    v31 = v43;
-    v32 = v21;
-    v33 = v25;
-    v34 = v41;
-    v35 = v42;
-    [v27 nagWithID:v47 clientID:v46 schedule:v44 title:v43 message:v42 notificationTitle:v41 notificationMessage:v37 actionTitle:v22 actionURL:v38 dismissTitle:v24 dismissURL:v39 deadlineURL:v45 completion:{v26, v40}];
+    server = [(MDMServicerCore *)self server];
+    v30 = scheduleCopy;
+    v39 = rLCopy;
+    v38 = lCopy;
+    v37 = notificationMessageCopy;
+    v31 = titleCopy;
+    v32 = notificationMessageCopy;
+    v33 = rLCopy;
+    v34 = notificationTitleCopy;
+    v35 = messageCopy;
+    [server nagWithID:dCopy clientID:iDCopy schedule:scheduleCopy title:titleCopy message:messageCopy notificationTitle:notificationTitleCopy notificationMessage:v37 actionTitle:actionTitleCopy actionURL:v38 dismissTitle:dismissTitleCopy dismissURL:v39 deadlineURL:uRLCopy completion:{completionCopy, v40}];
   }
 
   else
   {
-    v36 = [(MDMServicerCore *)self _lacksEntitlementError:v27];
-    v26[2](v26, v36);
+    v36 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    completionCopy[2](completionCopy, v36);
 
-    v26 = v36;
-    v31 = v43;
-    v30 = v44;
-    v32 = v21;
-    v33 = v25;
-    v34 = v41;
-    v35 = v42;
+    completionCopy = v36;
+    v31 = titleCopy;
+    v30 = scheduleCopy;
+    v32 = notificationMessageCopy;
+    v33 = rLCopy;
+    v34 = notificationTitleCopy;
+    v35 = messageCopy;
   }
 }
 
-- (void)nagForMigrationWithHardCodedValuesWithCompletion:(id)a3
+- (void)nagForMigrationWithHardCodedValuesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v8 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  v6 = [(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v8];
+  completionCopy = completion;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v6 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v6)
   {
 
-    v8 = [(MDMServicerCore *)self server];
-    [v8 nagForMigrationWithHardCodedValuesWithCompletion:v4];
+    server = [(MDMServicerCore *)self server];
+    [server nagForMigrationWithHardCodedValuesWithCompletion:completionCopy];
   }
 
   else
   {
-    v7 = [(MDMServicerCore *)self _lacksEntitlementError:v8];
-    v4[2](v4, v7);
+    v7 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    completionCopy[2](completionCopy, v7);
 
-    v4 = v7;
+    completionCopy = v7;
   }
 }
 
-- (void)stopNaggingForMigrationWithCompletion:(id)a3
+- (void)stopNaggingForMigrationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v8 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  v6 = [(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v8];
+  completionCopy = completion;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v6 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v6)
   {
 
-    v8 = [(MDMServicerCore *)self server];
-    [v8 stopNaggingForMigrationWithCompletion:v4];
+    server = [(MDMServicerCore *)self server];
+    [server stopNaggingForMigrationWithCompletion:completionCopy];
   }
 
   else
   {
-    v7 = [(MDMServicerCore *)self _lacksEntitlementError:v8];
-    v4[2](v4, v7);
+    v7 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    completionCopy[2](completionCopy, v7);
 
-    v4 = v7;
+    completionCopy = v7;
   }
 }
 
-- (void)blockMDMCommandsWithCompletion:(id)a3
+- (void)blockMDMCommandsWithCompletion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v6 = [(MDMServicerCore *)self xpcConnection];
-  v7 = [(MDMServicerCore *)self _remoteProcess:v6 hasEntitlement:v5];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v7 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:v5];
 
   if (v7)
   {
 
     objc_initWeak(&location, self);
-    v8 = [(MDMServicerCore *)self invalidationHandler];
+    invalidationHandler = [(MDMServicerCore *)self invalidationHandler];
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __50__MDMServicerCore_blockMDMCommandsWithCompletion___block_invoke;
     v18 = &unk_27982D568;
     objc_copyWeak(&v19, &location);
-    [v8 registerInvalidationHandlerForTask:@"Block MDM Command" handler:&v15];
+    [invalidationHandler registerInvalidationHandlerForTask:@"Block MDM Command" handler:&v15];
 
     v9 = *(DMCLogObjects() + 8);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = [(MDMServicerCore *)self clientBundleID:v15];
-      v11 = [(MDMServicerCore *)self clientPID];
+      clientPID = [(MDMServicerCore *)self clientPID];
       *buf = 138543618;
       v22 = v10;
       v23 = 1024;
-      v24 = v11;
+      v24 = clientPID;
       _os_log_impl(&dword_2561F5000, v9, OS_LOG_TYPE_DEFAULT, "Client %{public}@ (%d) is asking to block MDM commands", buf, 0x12u);
     }
 
-    v12 = [(MDMServicerCore *)self server];
-    [v12 blockMDMCommandsWithCompletion:v4];
+    server = [(MDMServicerCore *)self server];
+    [server blockMDMCommandsWithCompletion:completionCopy];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -468,7 +468,7 @@ LABEL_6:
   else
   {
     v13 = [(MDMServicerCore *)self _lacksEntitlementError:v5];
-    v4[2](v4, v13);
+    completionCopy[2](completionCopy, v13);
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -496,66 +496,66 @@ void __50__MDMServicerCore_blockMDMCommandsWithCompletion___block_invoke_2(uint6
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unblockMDMCommandsWithCompletion:(id)a3
+- (void)unblockMDMCommandsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v9 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  v6 = [(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v9];
+  completionCopy = completion;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v6 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v6)
   {
 
-    v7 = [(MDMServicerCore *)self invalidationHandler];
-    [v7 unregisterInvalidationHandlerForTask:@"Block MDM Command"];
+    invalidationHandler = [(MDMServicerCore *)self invalidationHandler];
+    [invalidationHandler unregisterInvalidationHandlerForTask:@"Block MDM Command"];
 
-    v9 = [(MDMServicerCore *)self server];
-    [v9 unblockMDMCommandsWithCompletion:v4];
+    server = [(MDMServicerCore *)self server];
+    [server unblockMDMCommandsWithCompletion:completionCopy];
   }
 
   else
   {
-    v8 = [(MDMServicerCore *)self _lacksEntitlementError:v9];
-    v4[2](v4, v8);
+    v8 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    completionCopy[2](completionCopy, v8);
 
-    v4 = v8;
+    completionCopy = v8;
   }
 }
 
-- (void)enablePushWakeWithCompletion:(id)a3
+- (void)enablePushWakeWithCompletion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v6 = [(MDMServicerCore *)self xpcConnection];
-  v7 = [(MDMServicerCore *)self _remoteProcess:v6 hasEntitlement:v5];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v7 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:v5];
 
   if (v7)
   {
 
     objc_initWeak(&location, self);
-    v8 = [(MDMServicerCore *)self invalidationHandler];
+    invalidationHandler = [(MDMServicerCore *)self invalidationHandler];
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __48__MDMServicerCore_enablePushWakeWithCompletion___block_invoke;
     v18 = &unk_27982D568;
     objc_copyWeak(&v19, &location);
-    [v8 registerInvalidationHandlerForTask:@"Enable Push Wake" handler:&v15];
+    [invalidationHandler registerInvalidationHandlerForTask:@"Enable Push Wake" handler:&v15];
 
     v9 = *(DMCLogObjects() + 8);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = [(MDMServicerCore *)self clientBundleID:v15];
-      v11 = [(MDMServicerCore *)self clientPID];
+      clientPID = [(MDMServicerCore *)self clientPID];
       *buf = 138543618;
       v22 = v10;
       v23 = 1024;
-      v24 = v11;
+      v24 = clientPID;
       _os_log_impl(&dword_2561F5000, v9, OS_LOG_TYPE_DEFAULT, "Client %{public}@ (%d) is asking to enable push wake", buf, 0x12u);
     }
 
-    v12 = [(MDMServicerCore *)self server];
-    [v12 enablePushWakeWithCompletion:v4];
+    server = [(MDMServicerCore *)self server];
+    [server enablePushWakeWithCompletion:completionCopy];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -564,7 +564,7 @@ void __50__MDMServicerCore_blockMDMCommandsWithCompletion___block_invoke_2(uint6
   else
   {
     v13 = [(MDMServicerCore *)self _lacksEntitlementError:v5];
-    v4[2](v4, v13);
+    completionCopy[2](completionCopy, v13);
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -592,178 +592,178 @@ void __48__MDMServicerCore_enablePushWakeWithCompletion___block_invoke_2(uint64_
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)disablePushWakeWithCompletion:(id)a3
+- (void)disablePushWakeWithCompletion:(id)completion
 {
-  v4 = a3;
-  v9 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  v6 = [(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v9];
+  completionCopy = completion;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v6 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v6)
   {
 
-    v7 = [(MDMServicerCore *)self invalidationHandler];
-    [v7 unregisterInvalidationHandlerForTask:@"Enable Push Wake"];
+    invalidationHandler = [(MDMServicerCore *)self invalidationHandler];
+    [invalidationHandler unregisterInvalidationHandlerForTask:@"Enable Push Wake"];
 
-    v9 = [(MDMServicerCore *)self server];
-    [v9 disablePushWakeWithCompletion:v4];
+    server = [(MDMServicerCore *)self server];
+    [server disablePushWakeWithCompletion:completionCopy];
   }
 
   else
   {
-    v8 = [(MDMServicerCore *)self _lacksEntitlementError:v9];
-    v4[2](v4, v8);
+    v8 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    completionCopy[2](completionCopy, v8);
 
-    v4 = v8;
+    completionCopy = v8;
   }
 }
 
-- (void)sendMDMAuthenticationRequestWithCompletionHandler:(id)a3
+- (void)sendMDMAuthenticationRequestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v8 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  v6 = [(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v8];
+  handlerCopy = handler;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v6 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v6)
   {
 
-    v8 = [(MDMServicerCore *)self server];
-    [v8 sendMDMAuthenticationRequestWithCompletionHandler:v4];
+    server = [(MDMServicerCore *)self server];
+    [server sendMDMAuthenticationRequestWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v7 = [(MDMServicerCore *)self _lacksEntitlementError:v8];
-    v4[2](v4, v7);
+    v7 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    handlerCopy[2](handlerCopy, v7);
 
-    v4 = v7;
+    handlerCopy = v7;
   }
 }
 
-- (void)sendMDMCheckOutRequestWithCompletionHandler:(id)a3
+- (void)sendMDMCheckOutRequestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v8 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  v6 = [(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v8];
+  handlerCopy = handler;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v6 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v6)
   {
 
-    v8 = [(MDMServicerCore *)self server];
-    [v8 sendMDMCheckOutRequestWithCompletionHandler:v4];
+    server = [(MDMServicerCore *)self server];
+    [server sendMDMCheckOutRequestWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v7 = [(MDMServicerCore *)self _lacksEntitlementError:v8];
-    v4[2](v4, v7);
+    v7 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    handlerCopy[2](handlerCopy, v7);
 
-    v4 = v7;
+    handlerCopy = v7;
   }
 }
 
-- (void)preserveAppsWithCompletion:(id)a3
+- (void)preserveAppsWithCompletion:(id)completion
 {
-  v9 = a3;
-  v4 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  if ([(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v4])
+  completionCopy = completion;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  if ([(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server])
   {
 
 LABEL_4:
-    v4 = [(MDMServicerCore *)self server];
-    [v4 preserveAppsWithCompletion:v9];
+    server = [(MDMServicerCore *)self server];
+    [server preserveAppsWithCompletion:completionCopy];
     goto LABEL_6;
   }
 
-  v6 = [(MDMServicerCore *)self xpcConnection];
-  v7 = [(MDMServicerCore *)self _remoteProcess:v6 hasEntitlement:@"com.apple.managedconfiguration.profiled-access"];
+  xpcConnection2 = [(MDMServicerCore *)self xpcConnection];
+  v7 = [(MDMServicerCore *)self _remoteProcess:xpcConnection2 hasEntitlement:@"com.apple.managedconfiguration.profiled-access"];
 
   if (v7)
   {
     goto LABEL_4;
   }
 
-  v8 = [(MDMServicerCore *)self _lacksEntitlementError:v4];
-  v9[2](v9, v8);
+  v8 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+  completionCopy[2](completionCopy, v8);
 
 LABEL_6:
 }
 
-- (void)removeUnusedPreservedAppsWithCompletion:(id)a3
+- (void)removeUnusedPreservedAppsWithCompletion:(id)completion
 {
-  v9 = a3;
-  v4 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  if ([(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v4])
+  completionCopy = completion;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  if ([(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server])
   {
 
 LABEL_4:
-    v4 = [(MDMServicerCore *)self server];
-    [v4 removeUnusedPreservedAppsWithCompletion:v9];
+    server = [(MDMServicerCore *)self server];
+    [server removeUnusedPreservedAppsWithCompletion:completionCopy];
     goto LABEL_6;
   }
 
-  v6 = [(MDMServicerCore *)self xpcConnection];
-  v7 = [(MDMServicerCore *)self _remoteProcess:v6 hasEntitlement:@"com.apple.managedconfiguration.profiled-access"];
+  xpcConnection2 = [(MDMServicerCore *)self xpcConnection];
+  v7 = [(MDMServicerCore *)self _remoteProcess:xpcConnection2 hasEntitlement:@"com.apple.managedconfiguration.profiled-access"];
 
   if (v7)
   {
     goto LABEL_4;
   }
 
-  v8 = [(MDMServicerCore *)self _lacksEntitlementError:v4];
-  v9[2](v9, v8);
+  v8 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+  completionCopy[2](completionCopy, v8);
 
 LABEL_6:
 }
 
-- (void)uprootMDMWithCompletion:(id)a3
+- (void)uprootMDMWithCompletion:(id)completion
 {
-  v4 = a3;
-  v8 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  v6 = [(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v8];
+  completionCopy = completion;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v6 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v6)
   {
 
-    v8 = [(MDMServicerCore *)self server];
-    [v8 uprootMDMWithCompletion:v4];
+    server = [(MDMServicerCore *)self server];
+    [server uprootMDMWithCompletion:completionCopy];
   }
 
   else
   {
-    v7 = [(MDMServicerCore *)self _lacksEntitlementError:v8];
-    v4[2](v4, v7);
+    v7 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    completionCopy[2](completionCopy, v7);
 
-    v4 = v7;
+    completionCopy = v7;
   }
 }
 
-- (void)requestInstallOfAppsInRestoreWithCompletion:(id)a3
+- (void)requestInstallOfAppsInRestoreWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MDMServicerCore *)self server];
-  [v5 requestInstallOfAppsInRestoreWithCompletion:v4];
+  completionCopy = completion;
+  server = [(MDMServicerCore *)self server];
+  [server requestInstallOfAppsInRestoreWithCompletion:completionCopy];
 }
 
-- (void)blockAppInstallsWithCompletion:(id)a3
+- (void)blockAppInstallsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(MDMServicerCore *)self invalidationHandler];
+  invalidationHandler = [(MDMServicerCore *)self invalidationHandler];
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
   v9 = __50__MDMServicerCore_blockAppInstallsWithCompletion___block_invoke;
   v10 = &unk_27982D568;
   objc_copyWeak(&v11, &location);
-  [v5 registerInvalidationHandlerForTask:@"Block App Installation" handler:&v7];
+  [invalidationHandler registerInvalidationHandlerForTask:@"Block App Installation" handler:&v7];
 
   v6 = [(MDMServicerCore *)self server:v7];
-  [v6 blockAppInstallsWithCompletion:v4];
+  [v6 blockAppInstallsWithCompletion:completionCopy];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -791,399 +791,399 @@ void __50__MDMServicerCore_blockAppInstallsWithCompletion___block_invoke_2(uint6
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unblockAppInstallsWithCompletion:(id)a3
+- (void)unblockAppInstallsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MDMServicerCore *)self invalidationHandler];
-  [v5 unregisterInvalidationHandlerForTask:@"Block App Installation"];
+  completionCopy = completion;
+  invalidationHandler = [(MDMServicerCore *)self invalidationHandler];
+  [invalidationHandler unregisterInvalidationHandlerForTask:@"Block App Installation"];
 
-  v6 = [(MDMServicerCore *)self server];
-  [v6 unblockAppInstallsWithCompletion:v4];
+  server = [(MDMServicerCore *)self server];
+  [server unblockAppInstallsWithCompletion:completionCopy];
 }
 
-- (void)depPushTokenWithCompletion:(id)a3
+- (void)depPushTokenWithCompletion:(id)completion
 {
-  v4 = a3;
-  v8 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  v6 = [(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v8];
+  completionCopy = completion;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v6 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v6)
   {
 
-    v8 = [(MDMServicerCore *)self server];
-    [v8 depPushTokenWithCompletion:v4];
+    server = [(MDMServicerCore *)self server];
+    [server depPushTokenWithCompletion:completionCopy];
   }
 
   else
   {
-    v7 = [(MDMServicerCore *)self _lacksEntitlementError:v8];
-    v4[2](v4, 0, v7);
+    v7 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    completionCopy[2](completionCopy, 0, v7);
 
-    v4 = v7;
+    completionCopy = v7;
   }
 }
 
-- (void)syncDEPPushTokenWithDelay:(double)a3 completion:(id)a4
+- (void)syncDEPPushTokenWithDelay:(double)delay completion:(id)completion
 {
-  v6 = a4;
-  v10 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v7 = [(MDMServicerCore *)self xpcConnection];
-  v8 = [(MDMServicerCore *)self _remoteProcess:v7 hasEntitlement:v10];
+  completionCopy = completion;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v8 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v8)
   {
 
-    v10 = [(MDMServicerCore *)self server];
-    [v10 syncDEPPushTokenWithDelay:v6 completion:a3];
+    server = [(MDMServicerCore *)self server];
+    [server syncDEPPushTokenWithDelay:completionCopy completion:delay];
   }
 
   else
   {
-    v9 = [(MDMServicerCore *)self _lacksEntitlementError:v10];
-    v6[2](v6, 0, v9);
+    v9 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    completionCopy[2](completionCopy, 0, v9);
 
-    v6 = v9;
+    completionCopy = v9;
   }
 }
 
-- (void)monitorDEPPushTokenIfNeededWithCompletion:(id)a3
+- (void)monitorDEPPushTokenIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
-  v8 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  v6 = [(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v8];
+  completionCopy = completion;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v6 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v6)
   {
 
-    v8 = [(MDMServicerCore *)self server];
-    [v8 monitorDEPPushTokenIfNeededWithCompletion:v4];
+    server = [(MDMServicerCore *)self server];
+    [server monitorDEPPushTokenIfNeededWithCompletion:completionCopy];
   }
 
   else
   {
-    v7 = [(MDMServicerCore *)self _lacksEntitlementError:v8];
-    v4[2](v4, v7);
+    v7 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    completionCopy[2](completionCopy, v7);
 
-    v4 = v7;
+    completionCopy = v7;
   }
 }
 
-- (void)monitorDEPPushTokenWithCompletion:(id)a3
+- (void)monitorDEPPushTokenWithCompletion:(id)completion
 {
-  v4 = a3;
-  v8 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  v6 = [(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v8];
+  completionCopy = completion;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v6 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v6)
   {
 
-    v8 = [(MDMServicerCore *)self server];
-    [v8 monitorDEPPushTokenWithCompletion:v4];
+    server = [(MDMServicerCore *)self server];
+    [server monitorDEPPushTokenWithCompletion:completionCopy];
   }
 
   else
   {
-    v7 = [(MDMServicerCore *)self _lacksEntitlementError:v8];
-    v4[2](v4, v7);
+    v7 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    completionCopy[2](completionCopy, v7);
 
-    v4 = v7;
+    completionCopy = v7;
   }
 }
 
-- (void)simulateDEPPushWithCompletion:(id)a3
+- (void)simulateDEPPushWithCompletion:(id)completion
 {
-  v4 = a3;
-  v8 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  v6 = [(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v8];
+  completionCopy = completion;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v6 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v6)
   {
 
-    v8 = [(MDMServicerCore *)self server];
-    [v8 simulateDEPPushWithCompletion:v4];
+    server = [(MDMServicerCore *)self server];
+    [server simulateDEPPushWithCompletion:completionCopy];
   }
 
   else
   {
-    v7 = [(MDMServicerCore *)self _lacksEntitlementError:v8];
-    v4[2](v4, v7);
+    v7 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    completionCopy[2](completionCopy, v7);
 
-    v4 = v7;
+    completionCopy = v7;
   }
 }
 
-- (void)requestRRTSCheckInAndValidationWithCompletionHandler:(id)a3
+- (void)requestRRTSCheckInAndValidationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v8 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  v6 = [(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v8];
+  handlerCopy = handler;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v6 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v6)
   {
 
-    v8 = [(MDMServicerCore *)self server];
-    [v8 requestRRTSCheckInAndValidationWithCompletionHandler:v4];
+    server = [(MDMServicerCore *)self server];
+    [server requestRRTSCheckInAndValidationWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v7 = [(MDMServicerCore *)self _lacksEntitlementError:v8];
-    (*(v4 + 2))(v4, 0, 0, 0, v7);
+    v7 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, v7);
 
-    v4 = v7;
+    handlerCopy = v7;
   }
 }
 
-- (void)generateBootstrapTokenWithDevicePasscode:(id)a3 completionHandler:(id)a4
+- (void)generateBootstrapTokenWithDevicePasscode:(id)passcode completionHandler:(id)handler
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v8 = [(MDMServicerCore *)self xpcConnection];
-  v9 = [(MDMServicerCore *)self _remoteProcess:v8 hasEntitlement:v7];
+  passcodeCopy = passcode;
+  handlerCopy = handler;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v9 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v9)
   {
 
-    v7 = [(MDMServicerCore *)self server];
-    [v7 generateBootstrapTokenWithDevicePasscode:v11 completionHandler:v6];
+    server = [(MDMServicerCore *)self server];
+    [server generateBootstrapTokenWithDevicePasscode:passcodeCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v10 = [(MDMServicerCore *)self _lacksEntitlementError:v7];
-    v6[2](v6, 0, v10);
+    v10 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    handlerCopy[2](handlerCopy, 0, v10);
 
-    v6 = v10;
+    handlerCopy = v10;
   }
 }
 
-- (void)generateBootstrapTokenWithDevicePasscodeContext:(id)a3 completionHandler:(id)a4
+- (void)generateBootstrapTokenWithDevicePasscodeContext:(id)context completionHandler:(id)handler
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v8 = [(MDMServicerCore *)self xpcConnection];
-  v9 = [(MDMServicerCore *)self _remoteProcess:v8 hasEntitlement:v7];
+  contextCopy = context;
+  handlerCopy = handler;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v9 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v9)
   {
 
-    v7 = [(MDMServicerCore *)self server];
-    [v7 generateBootstrapTokenWithDevicePasscodeContext:v11 completionHandler:v6];
+    server = [(MDMServicerCore *)self server];
+    [server generateBootstrapTokenWithDevicePasscodeContext:contextCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v10 = [(MDMServicerCore *)self _lacksEntitlementError:v7];
-    v6[2](v6, 0, v10);
+    v10 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    handlerCopy[2](handlerCopy, 0, v10);
 
-    v6 = v10;
+    handlerCopy = v10;
   }
 }
 
-- (void)syncBootstrapTokenToMDMWithToken:(id)a3 completionHandler:(id)a4
+- (void)syncBootstrapTokenToMDMWithToken:(id)token completionHandler:(id)handler
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v8 = [(MDMServicerCore *)self xpcConnection];
-  v9 = [(MDMServicerCore *)self _remoteProcess:v8 hasEntitlement:v7];
+  tokenCopy = token;
+  handlerCopy = handler;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v9 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v9)
   {
 
-    v7 = [(MDMServicerCore *)self server];
-    [v7 syncBootstrapTokenToMDMWithToken:v11 completionHandler:v6];
+    server = [(MDMServicerCore *)self server];
+    [server syncBootstrapTokenToMDMWithToken:tokenCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v10 = [(MDMServicerCore *)self _lacksEntitlementError:v7];
-    v6[2](v6, v10);
+    v10 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    handlerCopy[2](handlerCopy, v10);
 
-    v6 = v10;
+    handlerCopy = v10;
   }
 }
 
-- (void)deleteBootstrapTokenWithToken:(id)a3 devicePasscode:(id)a4 completionHandler:(id)a5
+- (void)deleteBootstrapTokenWithToken:(id)token devicePasscode:(id)passcode completionHandler:(id)handler
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v11 = [(MDMServicerCore *)self xpcConnection];
-  v12 = [(MDMServicerCore *)self _remoteProcess:v11 hasEntitlement:v10];
+  tokenCopy = token;
+  passcodeCopy = passcode;
+  handlerCopy = handler;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v12 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v12)
   {
 
-    v10 = [(MDMServicerCore *)self server];
-    [v10 deleteBootstrapTokenWithToken:v14 devicePasscode:v8 completionHandler:v9];
+    server = [(MDMServicerCore *)self server];
+    [server deleteBootstrapTokenWithToken:tokenCopy devicePasscode:passcodeCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v13 = [(MDMServicerCore *)self _lacksEntitlementError:v10];
-    v9[2](v9, v13);
+    v13 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    handlerCopy[2](handlerCopy, v13);
 
-    v9 = v13;
+    handlerCopy = v13;
   }
 }
 
-- (void)deleteBootstrapTokenWithToken:(id)a3 devicePasscodeContext:(id)a4 completionHandler:(id)a5
+- (void)deleteBootstrapTokenWithToken:(id)token devicePasscodeContext:(id)context completionHandler:(id)handler
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v11 = [(MDMServicerCore *)self xpcConnection];
-  v12 = [(MDMServicerCore *)self _remoteProcess:v11 hasEntitlement:v10];
+  tokenCopy = token;
+  contextCopy = context;
+  handlerCopy = handler;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v12 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v12)
   {
 
-    v10 = [(MDMServicerCore *)self server];
-    [v10 deleteBootstrapTokenWithToken:v14 devicePasscodeContext:v8 completionHandler:v9];
+    server = [(MDMServicerCore *)self server];
+    [server deleteBootstrapTokenWithToken:tokenCopy devicePasscodeContext:contextCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v13 = [(MDMServicerCore *)self _lacksEntitlementError:v10];
-    v9[2](v9, v13);
+    v13 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    handlerCopy[2](handlerCopy, v13);
 
-    v9 = v13;
+    handlerCopy = v13;
   }
 }
 
-- (void)generateAndSyncBootstrapTokenWithDevicePasscode:(id)a3 completionHandler:(id)a4
+- (void)generateAndSyncBootstrapTokenWithDevicePasscode:(id)passcode completionHandler:(id)handler
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v8 = [(MDMServicerCore *)self xpcConnection];
-  v9 = [(MDMServicerCore *)self _remoteProcess:v8 hasEntitlement:v7];
+  passcodeCopy = passcode;
+  handlerCopy = handler;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v9 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v9)
   {
 
-    v7 = [(MDMServicerCore *)self server];
-    [v7 generateAndSyncBootstrapTokenWithDevicePasscode:v11 completionHandler:v6];
+    server = [(MDMServicerCore *)self server];
+    [server generateAndSyncBootstrapTokenWithDevicePasscode:passcodeCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v10 = [(MDMServicerCore *)self _lacksEntitlementError:v7];
-    v6[2](v6, 0, v10);
+    v10 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    handlerCopy[2](handlerCopy, 0, v10);
 
-    v6 = v10;
+    handlerCopy = v10;
   }
 }
 
-- (void)generateAndSyncBootstrapTokenWithDevicePasscodeContext:(id)a3 completionHandler:(id)a4
+- (void)generateAndSyncBootstrapTokenWithDevicePasscodeContext:(id)context completionHandler:(id)handler
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v8 = [(MDMServicerCore *)self xpcConnection];
-  v9 = [(MDMServicerCore *)self _remoteProcess:v8 hasEntitlement:v7];
+  contextCopy = context;
+  handlerCopy = handler;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v9 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v9)
   {
 
-    v7 = [(MDMServicerCore *)self server];
-    [v7 generateAndSyncBootstrapTokenWithDevicePasscodeContext:v11 completionHandler:v6];
+    server = [(MDMServicerCore *)self server];
+    [server generateAndSyncBootstrapTokenWithDevicePasscodeContext:contextCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v10 = [(MDMServicerCore *)self _lacksEntitlementError:v7];
-    v6[2](v6, 0, v10);
+    v10 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    handlerCopy[2](handlerCopy, 0, v10);
 
-    v6 = v10;
+    handlerCopy = v10;
   }
 }
 
-- (void)getWatchPairingTokenForPhoneID:(id)a3 watchID:(id)a4 securityToken:(id)a5 completionHandler:(id)a6
+- (void)getWatchPairingTokenForPhoneID:(id)d watchID:(id)iD securityToken:(id)token completionHandler:(id)handler
 {
-  v17 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v14 = [(MDMServicerCore *)self xpcConnection];
-  v15 = [(MDMServicerCore *)self _remoteProcess:v14 hasEntitlement:v13];
+  dCopy = d;
+  iDCopy = iD;
+  tokenCopy = token;
+  handlerCopy = handler;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v15 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v15)
   {
 
-    v13 = [(MDMServicerCore *)self server];
-    [v13 getWatchPairingTokenForPhoneID:v17 watchID:v10 securityToken:v11 completionHandler:v12];
+    server = [(MDMServicerCore *)self server];
+    [server getWatchPairingTokenForPhoneID:dCopy watchID:iDCopy securityToken:tokenCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v16 = [(MDMServicerCore *)self _lacksEntitlementError:v13];
-    v12[2](v12, 0, v16);
+    v16 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    handlerCopy[2](handlerCopy, 0, v16);
 
-    v12 = v16;
+    handlerCopy = v16;
   }
 }
 
-- (void)getOrgTokenForMAIDWithCompletionHandler:(id)a3
+- (void)getOrgTokenForMAIDWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v8 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  v6 = [(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v8];
+  handlerCopy = handler;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v6 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v6)
   {
 
-    v8 = [(MDMServicerCore *)self server];
-    [v8 getOrgTokenForMAIDWithCompletionHandler:v4];
+    server = [(MDMServicerCore *)self server];
+    [server getOrgTokenForMAIDWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v7 = [(MDMServicerCore *)self _lacksEntitlementError:v8];
-    v4[2](v4, 0, v7);
+    v7 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    handlerCopy[2](handlerCopy, 0, v7);
 
-    v4 = v7;
+    handlerCopy = v7;
   }
 }
 
-- (void)isAwaitingUserConfiguredWithCompletion:(id)a3
+- (void)isAwaitingUserConfiguredWithCompletion:(id)completion
 {
-  v4 = a3;
-  v8 = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
-  v5 = [(MDMServicerCore *)self xpcConnection];
-  v6 = [(MDMServicerCore *)self _remoteProcess:v5 hasEntitlement:v8];
+  completionCopy = completion;
+  server = [(MDMServicerCore *)self _MDMAccessEntitlementForChannelType:[(MDMServicerCore *)self channelType]];
+  xpcConnection = [(MDMServicerCore *)self xpcConnection];
+  v6 = [(MDMServicerCore *)self _remoteProcess:xpcConnection hasEntitlement:server];
 
   if (v6)
   {
 
-    v8 = [(MDMServicerCore *)self server];
-    [v8 isAwaitingUserConfiguredWithCompletion:v4];
+    server = [(MDMServicerCore *)self server];
+    [server isAwaitingUserConfiguredWithCompletion:completionCopy];
   }
 
   else
   {
-    v7 = [(MDMServicerCore *)self _lacksEntitlementError:v8];
-    v4[2](v4, 0, v7);
+    v7 = [(MDMServicerCore *)self _lacksEntitlementError:server];
+    completionCopy[2](completionCopy, 0, v7);
 
-    v4 = v7;
+    completionCopy = v7;
   }
 }
 
-- (id)_MDMAccessEntitlementForChannelType:(unint64_t)a3
+- (id)_MDMAccessEntitlementForChannelType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     return @"com.apple.managedconfiguration.mdmuserd-access";
   }
@@ -1194,9 +1194,9 @@ void __50__MDMServicerCore_blockAppInstallsWithCompletion___block_invoke_2(uint6
   }
 }
 
-- (BOOL)_remoteProcess:(id)a3 hasEntitlement:(id)a4
+- (BOOL)_remoteProcess:(id)process hasEntitlement:(id)entitlement
 {
-  v4 = [a3 valueForEntitlement:a4];
+  v4 = [process valueForEntitlement:entitlement];
   v5 = 0;
   if (v4)
   {
@@ -1210,12 +1210,12 @@ void __50__MDMServicerCore_blockAppInstallsWithCompletion___block_invoke_2(uint6
   return v5;
 }
 
-- (id)_lacksEntitlementError:(id)a3
+- (id)_lacksEntitlementError:(id)error
 {
   v3 = MEMORY[0x277CCA9B8];
   v4 = *MEMORY[0x277D03470];
   v5 = DMCErrorArray();
-  v6 = [v3 DMCErrorWithDomain:v4 code:39000 descriptionArray:v5 errorType:{*MEMORY[0x277D032F8], a3, 0}];
+  v6 = [v3 DMCErrorWithDomain:v4 code:39000 descriptionArray:v5 errorType:{*MEMORY[0x277D032F8], error, 0}];
 
   return v6;
 }

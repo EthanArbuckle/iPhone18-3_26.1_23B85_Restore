@@ -8,18 +8,18 @@
 - (void)fr_accessibilityUndoInvertColorsIfNecessary
 {
   IsInvertColorsEnabled = UIAccessibilityIsInvertColorsEnabled();
-  v4 = [(CALayer *)self _fr_undoInvertColorsFilter];
+  _fr_undoInvertColorsFilter = [(CALayer *)self _fr_undoInvertColorsFilter];
   if (IsInvertColorsEnabled)
   {
-    if (v4)
+    if (_fr_undoInvertColorsFilter)
     {
       goto LABEL_9;
     }
 
     v8 = [CAFilter filterWithType:kCAFilterColorInvert];
     [v8 setName:@"kFRAXUndoInvertColorsFilter"];
-    v5 = [(CALayer *)self filters];
-    v6 = [v5 mutableCopy];
+    filters = [(CALayer *)self filters];
+    v6 = [filters mutableCopy];
 
     if (!v6)
     {
@@ -31,28 +31,28 @@
 
   else
   {
-    if (!v4)
+    if (!_fr_undoInvertColorsFilter)
     {
       goto LABEL_9;
     }
 
-    v8 = v4;
-    v7 = [(CALayer *)self filters];
-    v6 = [v7 mutableCopy];
+    v8 = _fr_undoInvertColorsFilter;
+    filters2 = [(CALayer *)self filters];
+    v6 = [filters2 mutableCopy];
 
     [v6 removeObject:v8];
   }
 
   [(CALayer *)self setFilters:v6];
 
-  v4 = v8;
+  _fr_undoInvertColorsFilter = v8;
 LABEL_9:
 }
 
 - (id)_fr_undoInvertColorsFilter
 {
-  v2 = [(CALayer *)self filters];
-  v3 = [v2 fc_firstObjectPassingTest:&stru_1000C2578];
+  filters = [(CALayer *)self filters];
+  v3 = [filters fc_firstObjectPassingTest:&stru_1000C2578];
 
   return v3;
 }

@@ -8,24 +8,24 @@
 
 - (BOOL)sf_isEmpty
 {
-  v2 = [a1 title];
-  if ([v2 length])
+  title = [self title];
+  if ([title length])
   {
     v3 = 0;
   }
 
   else
   {
-    v4 = [a1 leftBarButtonItems];
-    if ([v4 count])
+    leftBarButtonItems = [self leftBarButtonItems];
+    if ([leftBarButtonItems count])
     {
       v3 = 0;
     }
 
     else
     {
-      v5 = [a1 rightBarButtonItems];
-      v3 = [v5 count] == 0;
+      rightBarButtonItems = [self rightBarButtonItems];
+      v3 = [rightBarButtonItems count] == 0;
     }
   }
 
@@ -34,14 +34,14 @@
 
 - (id)sf_preferredDismissOrDoneButtonItem
 {
-  if ([a1 _sf_prefersDismissOrDoneButtonOnLeft])
+  if ([self _sf_prefersDismissOrDoneButtonOnLeft])
   {
-    [a1 leftBarButtonItem];
+    [self leftBarButtonItem];
   }
 
   else
   {
-    [a1 rightBarButtonItem];
+    [self rightBarButtonItem];
   }
   v2 = ;
 
@@ -51,14 +51,14 @@
 - (void)sf_setPreferredDismissOrDoneButtonItem:()MobileSafariFrameworkExtras
 {
   v4 = a3;
-  if ([a1 _sf_prefersDismissOrDoneButtonOnLeft])
+  if ([self _sf_prefersDismissOrDoneButtonOnLeft])
   {
-    [a1 setLeftBarButtonItem:v4];
+    [self setLeftBarButtonItem:v4];
   }
 
   else
   {
-    [a1 setRightBarButtonItem:v4];
+    [self setRightBarButtonItem:v4];
   }
 }
 

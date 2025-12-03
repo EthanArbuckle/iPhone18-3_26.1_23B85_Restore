@@ -1,50 +1,50 @@
 @interface MPSGraphViewerNodePortSPI
-- (MPSGraphViewerNodePortSPI)initWithJSONDictionary:(id)a3;
-- (MPSGraphViewerNodePortSPI)initWithName:(id)a3 dataType:(unsigned int)a4 shape:(id)a5 valueRef:(unint64_t)a6;
+- (MPSGraphViewerNodePortSPI)initWithJSONDictionary:(id)dictionary;
+- (MPSGraphViewerNodePortSPI)initWithName:(id)name dataType:(unsigned int)type shape:(id)shape valueRef:(unint64_t)ref;
 - (id)jsonDictionary;
 @end
 
 @implementation MPSGraphViewerNodePortSPI
 
-- (MPSGraphViewerNodePortSPI)initWithName:(id)a3 dataType:(unsigned int)a4 shape:(id)a5 valueRef:(unint64_t)a6
+- (MPSGraphViewerNodePortSPI)initWithName:(id)name dataType:(unsigned int)type shape:(id)shape valueRef:(unint64_t)ref
 {
-  v11 = a3;
-  v12 = a5;
+  nameCopy = name;
+  shapeCopy = shape;
   v16.receiver = self;
   v16.super_class = MPSGraphViewerNodePortSPI;
   v13 = [(MPSGraphViewerNodePortSPI *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_name, a3);
-    v14->_dataType = a4;
-    objc_storeStrong(&v14->_shape, a5);
-    v14->_valueRef = a6;
+    objc_storeStrong(&v13->_name, name);
+    v14->_dataType = type;
+    objc_storeStrong(&v14->_shape, shape);
+    v14->_valueRef = ref;
   }
 
   return v14;
 }
 
-- (MPSGraphViewerNodePortSPI)initWithJSONDictionary:(id)a3
+- (MPSGraphViewerNodePortSPI)initWithJSONDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = MPSGraphViewerNodePortSPI;
   v5 = [(MPSGraphViewerNodePortSPI *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"name"];
+    v6 = [dictionaryCopy objectForKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 objectForKey:@"dataType"];
+    v8 = [dictionaryCopy objectForKey:@"dataType"];
     v5->_dataType = [v8 unsignedIntValue];
 
-    v9 = [v4 objectForKey:@"shape"];
+    v9 = [dictionaryCopy objectForKey:@"shape"];
     shape = v5->_shape;
     v5->_shape = v9;
 
-    v11 = [v4 objectForKey:@"valueRef"];
+    v11 = [dictionaryCopy objectForKey:@"valueRef"];
     v5->_valueRef = [v11 unsignedIntValue];
   }
 
@@ -53,30 +53,30 @@
 
 - (id)jsonDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(MPSGraphViewerNodePortSPI *)self name];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  name = [(MPSGraphViewerNodePortSPI *)self name];
 
-  if (v4)
+  if (name)
   {
-    v5 = [(MPSGraphViewerNodePortSPI *)self name];
-    [v3 setObject:v5 forKey:@"name"];
+    name2 = [(MPSGraphViewerNodePortSPI *)self name];
+    [dictionary setObject:name2 forKey:@"name"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MPSGraphViewerNodePortSPI dataType](self, "dataType")}];
-  [v3 setObject:v6 forKey:@"dataType"];
+  [dictionary setObject:v6 forKey:@"dataType"];
 
-  v7 = [(MPSGraphViewerNodePortSPI *)self shape];
+  shape = [(MPSGraphViewerNodePortSPI *)self shape];
 
-  if (v7)
+  if (shape)
   {
-    v8 = [(MPSGraphViewerNodePortSPI *)self shape];
-    [v3 setObject:v8 forKey:@"shape"];
+    shape2 = [(MPSGraphViewerNodePortSPI *)self shape];
+    [dictionary setObject:shape2 forKey:@"shape"];
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[MPSGraphViewerNodePortSPI valueRef](self, "valueRef")}];
-  [v3 setObject:v9 forKey:@"valueRef"];
+  [dictionary setObject:v9 forKey:@"valueRef"];
 
-  v10 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v3];
+  v10 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
 
   return v10;
 }

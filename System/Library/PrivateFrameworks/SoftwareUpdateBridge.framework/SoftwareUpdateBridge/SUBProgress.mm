@@ -1,29 +1,29 @@
 @interface SUBProgress
-- (SUBProgress)initWithCoder:(id)a3;
+- (SUBProgress)initWithCoder:(id)coder;
 - (id)copy;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUBProgress
 
-- (SUBProgress)initWithCoder:(id)a3
+- (SUBProgress)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = SUBProgress;
   v5 = [(SUBProgress *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phase"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phase"];
     phase = v5->_phase;
     v5->_phase = v6;
 
-    [v4 decodeFloatForKey:@"portionComplete"];
+    [coderCopy decodeFloatForKey:@"portionComplete"];
     v5->_portionComplete = v8;
-    [v4 decodeFloatForKey:@"estimatedTimeRemaining"];
+    [coderCopy decodeFloatForKey:@"estimatedTimeRemaining"];
     v5->_estimatedTimeRemaining = v9;
-    v5->_isDone = [v4 decodeBoolForKey:@"isDone"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"taskID"];
+    v5->_isDone = [coderCopy decodeBoolForKey:@"isDone"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"taskID"];
     taskID = v5->_taskID;
     v5->_taskID = v10;
   }
@@ -31,18 +31,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   phase = self->_phase;
-  v7 = a3;
-  [v7 encodeObject:phase forKey:@"phase"];
+  coderCopy = coder;
+  [coderCopy encodeObject:phase forKey:@"phase"];
   *&v5 = self->_portionComplete;
-  [v7 encodeFloat:@"portionComplete" forKey:v5];
+  [coderCopy encodeFloat:@"portionComplete" forKey:v5];
   estimatedTimeRemaining = self->_estimatedTimeRemaining;
   *&estimatedTimeRemaining = estimatedTimeRemaining;
-  [v7 encodeFloat:@"estimatedTimeRemaining" forKey:estimatedTimeRemaining];
-  [v7 encodeBool:self->_isDone forKey:@"isDone"];
-  [v7 encodeObject:self->_taskID forKey:@"taskID"];
+  [coderCopy encodeFloat:@"estimatedTimeRemaining" forKey:estimatedTimeRemaining];
+  [coderCopy encodeBool:self->_isDone forKey:@"isDone"];
+  [coderCopy encodeObject:self->_taskID forKey:@"taskID"];
 }
 
 - (id)copy

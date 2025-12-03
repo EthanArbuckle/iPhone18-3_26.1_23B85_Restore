@@ -1,9 +1,9 @@
 @interface THWReviewSummaryRep
-- (THWReviewSummaryRep)initWithLayout:(id)a3 canvas:(id)a4;
-- (void)control:(id)a3 repWasAdded:(id)a4;
-- (void)controlContainer:(id)a3 addChildLayersToArray:(id)a4;
+- (THWReviewSummaryRep)initWithLayout:(id)layout canvas:(id)canvas;
+- (void)control:(id)control repWasAdded:(id)added;
+- (void)controlContainer:(id)container addChildLayersToArray:(id)array;
 - (void)dealloc;
-- (void)didUpdateLayer:(id)a3;
+- (void)didUpdateLayer:(id)layer;
 - (void)p_updateWantsSpinner;
 - (void)viewScrollWillChange;
 @end
@@ -17,11 +17,11 @@
   [(THWReviewSummaryRep *)&v3 dealloc];
 }
 
-- (THWReviewSummaryRep)initWithLayout:(id)a3 canvas:(id)a4
+- (THWReviewSummaryRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v7.receiver = self;
   v7.super_class = THWReviewSummaryRep;
-  v4 = [(THWReviewSummaryRep *)&v7 initWithLayout:a3 canvas:a4];
+  v4 = [(THWReviewSummaryRep *)&v7 initWithLayout:layout canvas:canvas];
   v5 = v4;
   if (v4)
   {
@@ -35,9 +35,9 @@
 - (void)viewScrollWillChange
 {
   self->_wantsSpinner = 1;
-  v2 = [(THWReviewSummaryRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWReviewSummaryRep *)self interactiveCanvasController];
 
-  [v2 invalidateLayers];
+  [interactiveCanvasController invalidateLayers];
 }
 
 - (void)p_updateWantsSpinner
@@ -69,20 +69,20 @@
   if (self->_wantsSpinner != v3)
   {
     self->_wantsSpinner = v3;
-    v16 = [(THWReviewSummaryRep *)self interactiveCanvasController];
+    interactiveCanvasController = [(THWReviewSummaryRep *)self interactiveCanvasController];
 
-    [v16 invalidateLayers];
+    [interactiveCanvasController invalidateLayers];
   }
 }
 
-- (void)didUpdateLayer:(id)a3
+- (void)didUpdateLayer:(id)layer
 {
-  v5 = [(THWReviewSummaryRep *)self layout];
+  layout = [(THWReviewSummaryRep *)self layout];
   v6 = [-[THWReviewSummaryRep canvas](self "canvas")];
   v7 = [-[THWReviewSummaryRep canvas](self "canvas")];
   v8 = [-[THWReviewSummaryRep interactiveCanvasController](self "interactiveCanvasController")];
   v9 = [-[THWReviewSummaryRep interactiveCanvasController](self "interactiveCanvasController")];
-  v10 = [objc_msgSend(v5 "delegate")];
+  v10 = [objc_msgSend(layout "delegate")];
   [v8 setHidden:v10 ^ 1];
   [v9 setHidden:v10];
   if (self->_showingResults != v10)
@@ -100,14 +100,14 @@
     [v11 setBeginTime:CACurrentMediaTime() + 0.25];
     [v11 setDuration:0.25];
     [v11 setFillMode:kCAFillModeBoth];
-    [a3 addAnimation:v11 forKey:@"fadeAnimation"];
+    [layer addAnimation:v11 forKey:@"fadeAnimation"];
     +[CATransaction commit];
   }
 }
 
-- (void)control:(id)a3 repWasAdded:(id)a4
+- (void)control:(id)control repWasAdded:(id)added
 {
-  if ([a3 tag] == &dword_4 + 2)
+  if ([control tag] == &dword_4 + 2)
   {
     objc_opt_class();
     v5 = TSUDynamicCast();
@@ -116,9 +116,9 @@
   }
 }
 
-- (void)controlContainer:(id)a3 addChildLayersToArray:(id)a4
+- (void)controlContainer:(id)container addChildLayersToArray:(id)array
 {
-  if ([objc_msgSend(a3 "layout")] == &dword_4 + 2)
+  if ([objc_msgSend(container "layout")] == &dword_4 + 2)
   {
     spinnerLayer = self->_spinnerLayer;
     if (self->_wantsSpinner)
@@ -181,7 +181,7 @@
       [(CALayer *)self->_spinnerLayer setPosition:v29, CGRectGetMidY(v32)];
       if (self->_spinnerLayer)
       {
-        [a4 addObject:?];
+        [array addObject:?];
       }
     }
 

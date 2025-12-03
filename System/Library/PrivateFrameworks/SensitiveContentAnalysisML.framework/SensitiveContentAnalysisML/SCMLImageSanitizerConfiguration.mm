@@ -1,5 +1,5 @@
 @interface SCMLImageSanitizerConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SCMLImageSanitizerConfiguration)init;
 - (unint64_t)hash;
 @end
@@ -31,10 +31,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -44,7 +44,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       v7 = self->_trackPerformance == v5->_trackPerformance && self->_granularity == v5->_granularity && [(NSString *)self->_clipClassifierConfig isEqualToString:v5->_clipClassifierConfig]&& self->_mode == v6->_mode && self->_backends == v6->_backends && self->_region == v6->_region && [(NSString *)self->_modelManagerServicesUseCaseID isEqualToString:v6->_modelManagerServicesUseCaseID]&& self->_onBehalfOfProcessID == v6->_onBehalfOfProcessID;
     }

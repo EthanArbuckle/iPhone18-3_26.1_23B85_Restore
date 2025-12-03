@@ -3,11 +3,11 @@
 - (_TtC34SpeechRecognitionCommandAndControl26CACElementNumberStabilizer)init;
 - (int64_t)maxAdditionsToStabilize;
 - (int64_t)maxDeletionsToStabilize;
-- (void)setMaxAdditionsToStabilize:(int64_t)a3;
-- (void)setMaxDeletionsToStabilize:(int64_t)a3;
+- (void)setMaxAdditionsToStabilize:(int64_t)stabilize;
+- (void)setMaxDeletionsToStabilize:(int64_t)stabilize;
 - (void)stabilizeElements;
 - (void)willBeginPresentingElements;
-- (void)willPresentElementGroup:(id)a3;
+- (void)willPresentElementGroup:(id)group;
 @end
 
 @implementation CACElementNumberStabilizer
@@ -19,11 +19,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setMaxAdditionsToStabilize:(int64_t)a3
+- (void)setMaxAdditionsToStabilize:(int64_t)stabilize
 {
   v5 = OBJC_IVAR____TtC34SpeechRecognitionCommandAndControl26CACElementNumberStabilizer_maxAdditionsToStabilize;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = stabilize;
 }
 
 - (int64_t)maxDeletionsToStabilize
@@ -33,11 +33,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setMaxDeletionsToStabilize:(int64_t)a3
+- (void)setMaxDeletionsToStabilize:(int64_t)stabilize
 {
   v5 = OBJC_IVAR____TtC34SpeechRecognitionCommandAndControl26CACElementNumberStabilizer_maxDeletionsToStabilize;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = stabilize;
 }
 
 + (_TtC34SpeechRecognitionCommandAndControl26CACElementNumberStabilizer)shared
@@ -55,18 +55,18 @@
 - (void)willBeginPresentingElements
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.isa) + 0xC0);
-  v3 = self;
+  selfCopy = self;
   v2(MEMORY[0x277D84F90]);
 }
 
-- (void)willPresentElementGroup:(id)a3
+- (void)willPresentElementGroup:(id)group
 {
   v4 = *((*MEMORY[0x277D85000] & self->super.isa) + 0xC8);
-  v5 = a3;
-  v6 = self;
+  groupCopy = group;
+  selfCopy = self;
   v7 = v4(v11);
   v9 = v8;
-  v10 = v5;
+  v10 = groupCopy;
   MEMORY[0x26D675E00]();
   if (*((*v9 & 0xFFFFFFFFFFFFFF8) + 0x10) >= *((*v9 & 0xFFFFFFFFFFFFFF8) + 0x18) >> 1)
   {
@@ -79,7 +79,7 @@
 
 - (void)stabilizeElements
 {
-  v2 = self;
+  selfCopy = self;
   CACElementNumberStabilizer.stabilizeElements()();
 }
 

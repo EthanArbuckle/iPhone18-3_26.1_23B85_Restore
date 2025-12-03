@@ -1,83 +1,83 @@
 @interface _TUIRenderModelVideo
-- (BOOL)isEqualToRenderModel:(id)a3;
+- (BOOL)isEqualToRenderModel:(id)model;
 - (CGSize)size;
-- (_TUIRenderModelVideo)initWithUrl:(id)a3 posterFrameResource:(id)a4 videoId:(id)a5 loop:(BOOL)a6 muted:(BOOL)a7 allowFullScreen:(BOOL)a8 autoPlay:(BOOL)a9 showPlaybackControls:(BOOL)a10 gravity:(id)a11 cornerRadius:(double)a12 topTriggerName:(id)a13 bottomTriggerName:(id)a14 leftTriggerName:(id)a15 rightTriggerName:(id)a16 actionHandler:(id)a17;
-- (void)appendResourcesToCollector:(id)a3 transform:(CGAffineTransform *)a4;
+- (_TUIRenderModelVideo)initWithUrl:(id)url posterFrameResource:(id)resource videoId:(id)id loop:(BOOL)loop muted:(BOOL)muted allowFullScreen:(BOOL)screen autoPlay:(BOOL)play showPlaybackControls:(BOOL)self0 gravity:(id)self1 cornerRadius:(double)self2 topTriggerName:(id)self3 bottomTriggerName:(id)self4 leftTriggerName:(id)self5 rightTriggerName:(id)self6 actionHandler:(id)self7;
+- (void)appendResourcesToCollector:(id)collector transform:(CGAffineTransform *)transform;
 @end
 
 @implementation _TUIRenderModelVideo
 
-- (_TUIRenderModelVideo)initWithUrl:(id)a3 posterFrameResource:(id)a4 videoId:(id)a5 loop:(BOOL)a6 muted:(BOOL)a7 allowFullScreen:(BOOL)a8 autoPlay:(BOOL)a9 showPlaybackControls:(BOOL)a10 gravity:(id)a11 cornerRadius:(double)a12 topTriggerName:(id)a13 bottomTriggerName:(id)a14 leftTriggerName:(id)a15 rightTriggerName:(id)a16 actionHandler:(id)a17
+- (_TUIRenderModelVideo)initWithUrl:(id)url posterFrameResource:(id)resource videoId:(id)id loop:(BOOL)loop muted:(BOOL)muted allowFullScreen:(BOOL)screen autoPlay:(BOOL)play showPlaybackControls:(BOOL)self0 gravity:(id)self1 cornerRadius:(double)self2 topTriggerName:(id)self3 bottomTriggerName:(id)self4 leftTriggerName:(id)self5 rightTriggerName:(id)self6 actionHandler:(id)self7
 {
-  v37 = a3;
-  obj = a4;
-  v22 = a4;
-  v32 = a5;
-  v23 = a5;
-  v24 = a11;
-  v38 = a13;
-  v25 = a14;
-  v26 = a15;
-  v27 = a16;
-  v36 = a17;
+  urlCopy = url;
+  obj = resource;
+  resourceCopy = resource;
+  idCopy = id;
+  idCopy2 = id;
+  gravityCopy = gravity;
+  nameCopy = name;
+  triggerNameCopy = triggerName;
+  leftTriggerNameCopy = leftTriggerName;
+  rightTriggerNameCopy = rightTriggerName;
+  handlerCopy = handler;
   v39.receiver = self;
   v39.super_class = _TUIRenderModelVideo;
   v28 = [(_TUIRenderModelVideo *)&v39 init];
   v29 = v28;
   if (v28)
   {
-    objc_storeStrong(&v28->_url, a3);
+    objc_storeStrong(&v28->_url, url);
     objc_storeStrong(&v29->_posterFrameResource, obj);
-    objc_storeStrong(&v29->_videoId, v32);
-    v29->_loop = a6;
-    v29->_muted = a7;
-    v29->_allowFullScreen = a8;
-    v29->_autoPlay = a9;
-    v29->_showPlaybackControls = a10;
-    objc_storeStrong(&v29->_gravity, a11);
-    v29->_cornerRadius = a12;
-    objc_storeStrong(&v29->_topTriggerName, a13);
-    objc_storeStrong(&v29->_bottomTriggerName, a14);
-    objc_storeStrong(&v29->_leftTriggerName, a15);
-    objc_storeStrong(&v29->_rightTriggerName, a16);
-    objc_storeStrong(&v29->_actionHandler, a17);
+    objc_storeStrong(&v29->_videoId, idCopy);
+    v29->_loop = loop;
+    v29->_muted = muted;
+    v29->_allowFullScreen = screen;
+    v29->_autoPlay = play;
+    v29->_showPlaybackControls = controls;
+    objc_storeStrong(&v29->_gravity, gravity);
+    v29->_cornerRadius = radius;
+    objc_storeStrong(&v29->_topTriggerName, name);
+    objc_storeStrong(&v29->_bottomTriggerName, triggerName);
+    objc_storeStrong(&v29->_leftTriggerName, leftTriggerName);
+    objc_storeStrong(&v29->_rightTriggerName, rightTriggerName);
+    objc_storeStrong(&v29->_actionHandler, handler);
   }
 
   return v29;
 }
 
-- (void)appendResourcesToCollector:(id)a3 transform:(CGAffineTransform *)a4
+- (void)appendResourcesToCollector:(id)collector transform:(CGAffineTransform *)transform
 {
   posterFrameResource = self->_posterFrameResource;
-  v7 = a3;
-  v6 = [(TUIImageResource *)posterFrameResource resource];
-  [v7 collectResource:v6];
+  collectorCopy = collector;
+  resource = [(TUIImageResource *)posterFrameResource resource];
+  [collectorCopy collectResource:resource];
 
-  [v7 collectImageResource:self->_posterFrameResource];
+  [collectorCopy collectImageResource:self->_posterFrameResource];
 }
 
-- (BOOL)isEqualToRenderModel:(id)a3
+- (BOOL)isEqualToRenderModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = [(_TUIRenderModelVideo *)self url];
-  v6 = [v4 url];
+  v6 = [modelCopy url];
   if ([v5 isEqual:v6])
   {
-    v7 = [(_TUIRenderModelVideo *)self videoId];
-    v8 = [v4 videoId];
-    if ([v7 isEqualToString:v8])
+    videoId = [(_TUIRenderModelVideo *)self videoId];
+    videoId2 = [modelCopy videoId];
+    if ([videoId isEqualToString:videoId2])
     {
-      v9 = [(_TUIRenderModelVideo *)self posterFrameResource];
-      v10 = [v4 posterFrameResource];
-      if (v9 == v10 && (v11 = -[_TUIRenderModelVideo loop](self, "loop"), v11 == [v4 loop]) && (v12 = -[_TUIRenderModelVideo muted](self, "muted"), v12 == objc_msgSend(v4, "muted")) && (v13 = -[_TUIRenderModelVideo allowFullScreen](self, "allowFullScreen"), v13 == objc_msgSend(v4, "allowFullScreen")) && (v14 = -[_TUIRenderModelVideo autoPlay](self, "autoPlay"), v14 == objc_msgSend(v4, "autoPlay")) && (v15 = -[_TUIRenderModelVideo showPlaybackControls](self, "showPlaybackControls"), v15 == objc_msgSend(v4, "showPlaybackControls")))
+      posterFrameResource = [(_TUIRenderModelVideo *)self posterFrameResource];
+      posterFrameResource2 = [modelCopy posterFrameResource];
+      if (posterFrameResource == posterFrameResource2 && (v11 = -[_TUIRenderModelVideo loop](self, "loop"), v11 == [modelCopy loop]) && (v12 = -[_TUIRenderModelVideo muted](self, "muted"), v12 == objc_msgSend(modelCopy, "muted")) && (v13 = -[_TUIRenderModelVideo allowFullScreen](self, "allowFullScreen"), v13 == objc_msgSend(modelCopy, "allowFullScreen")) && (v14 = -[_TUIRenderModelVideo autoPlay](self, "autoPlay"), v14 == objc_msgSend(modelCopy, "autoPlay")) && (v15 = -[_TUIRenderModelVideo showPlaybackControls](self, "showPlaybackControls"), v15 == objc_msgSend(modelCopy, "showPlaybackControls")))
       {
-        v18 = [(_TUIRenderModelVideo *)self gravity];
-        v19 = [v4 gravity];
-        if (v18 == v19 && (-[_TUIRenderModelVideo cornerRadius](self, "cornerRadius"), v21 = v20, [v4 cornerRadius], v21 == v22))
+        gravity = [(_TUIRenderModelVideo *)self gravity];
+        gravity2 = [modelCopy gravity];
+        if (gravity == gravity2 && (-[_TUIRenderModelVideo cornerRadius](self, "cornerRadius"), v21 = v20, [modelCopy cornerRadius], v21 == v22))
         {
-          v24 = [(_TUIRenderModelVideo *)self actionHandler];
-          v23 = [v4 actionHandler];
-          v16 = v24 == v23;
+          actionHandler = [(_TUIRenderModelVideo *)self actionHandler];
+          actionHandler2 = [modelCopy actionHandler];
+          v16 = actionHandler == actionHandler2;
         }
 
         else

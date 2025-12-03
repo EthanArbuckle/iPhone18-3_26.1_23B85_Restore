@@ -1,19 +1,19 @@
 @interface PhoneViewController
 - ($1FF454C5B48E436092D281DABF654916)badge;
-- (PhoneViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PhoneViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_loadOffsetDefaultForKey:(id)a3 withScrollView:(id)a4;
-- (void)_saveOffsetDefaultForKey:(id)a3 withScrollView:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)_loadOffsetDefaultForKey:(id)key withScrollView:(id)view;
+- (void)_saveOffsetDefaultForKey:(id)key withScrollView:(id)view;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation PhoneViewController
 
-- (PhoneViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PhoneViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = PhoneViewController;
-  v4 = [(PhoneViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(PhoneViewController *)&v7 initWithNibName:name bundle:bundle];
   if (v4)
   {
     InitializeIconAndTitle();
@@ -41,11 +41,11 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = PhoneViewController;
-  [(PhoneViewController *)&v3 viewDidAppear:a3];
+  [(PhoneViewController *)&v3 viewDidAppear:appear];
 }
 
 - ($1FF454C5B48E436092D281DABF654916)badge
@@ -57,13 +57,13 @@
   return result;
 }
 
-- (void)_saveOffsetDefaultForKey:(id)a3 withScrollView:(id)a4
+- (void)_saveOffsetDefaultForKey:(id)key withScrollView:(id)view
 {
-  v7 = a4;
-  v8 = a3;
+  viewCopy = view;
+  keyCopy = key;
   if (([(PhoneViewController *)self isViewLoaded]& 1) != 0 || ([NSString stringWithFormat:@"View must be loaded before you call _saveOffsetDefaultForKey:withScrollView:"], v9 = objc_claimAutoreleasedReturnValue(), NSLog(@"** TUAssertion failure: %@", v9), v9, !_TUAssertShouldCrashApplication()) || ([(PhoneViewController *)self isViewLoaded]& 1) != 0)
   {
-    if (v8)
+    if (keyCopy)
     {
       goto LABEL_7;
     }
@@ -72,7 +72,7 @@
   else
   {
     sub_1000C3FFC(a2, self);
-    if (v8)
+    if (keyCopy)
     {
       goto LABEL_7;
     }
@@ -88,7 +88,7 @@
   }
 
 LABEL_7:
-  if (!v7)
+  if (!viewCopy)
   {
     v12 = [NSString stringWithFormat:@"Passed nil scrollView to _saveOffsetDefaultForKey:withScrollView:"];
     NSLog(@"** TUAssertion failure: %@", v12);
@@ -100,9 +100,9 @@ LABEL_7:
     }
   }
 
-  [v7 contentOffset];
+  [viewCopy contentOffset];
   v15 = v14;
-  [v7 contentInset];
+  [viewCopy contentInset];
   v17 = v16;
 
   v18 = v15 + v17;
@@ -111,10 +111,10 @@ LABEL_7:
   PHPreferencesSetValueInDomain();
 }
 
-- (void)_loadOffsetDefaultForKey:(id)a3 withScrollView:(id)a4
+- (void)_loadOffsetDefaultForKey:(id)key withScrollView:(id)view
 {
-  v16 = a3;
-  v7 = a4;
+  keyCopy = key;
+  viewCopy = view;
   if (([(PhoneViewController *)self isViewLoaded]& 1) == 0)
   {
     v8 = [NSString stringWithFormat:@"View must be loaded before you call _loadOffsetDefaultForKey:withScrollView:"];
@@ -129,7 +129,7 @@ LABEL_7:
     }
   }
 
-  if (!v16)
+  if (!keyCopy)
   {
     v9 = [NSString stringWithFormat:@"Passed nil key to _saveOffsetDefaultForKey:withScrollView:"];
     NSLog(@"** TUAssertion failure: %@", v9);
@@ -141,7 +141,7 @@ LABEL_7:
     }
   }
 
-  if (!v7)
+  if (!viewCopy)
   {
     v11 = [NSString stringWithFormat:@"Passed nil scrollView to _loadOffsetDefaultForKey:withScrollView:"];
     NSLog(@"** TUAssertion failure: %@", v11);
@@ -163,7 +163,7 @@ LABEL_7:
       v15 = 0.0;
     }
 
-    [v7 setContentOffset:{0.0, v15}];
+    [viewCopy setContentOffset:{0.0, v15}];
   }
 }
 

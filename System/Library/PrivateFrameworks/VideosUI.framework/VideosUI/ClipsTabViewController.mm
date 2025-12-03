@@ -1,7 +1,7 @@
 @interface ClipsTabViewController
 - (CGSize)preferredContentSize;
-- (void)setPreferredContentSize:(CGSize)a3;
-- (void)vui_viewDidDisappear:(BOOL)a3;
+- (void)setPreferredContentSize:(CGSize)size;
+- (void)vui_viewDidDisappear:(BOOL)disappear;
 - (void)vui_viewDidLoad;
 @end
 
@@ -16,21 +16,21 @@
   return result;
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  v3 = self;
+  selfCopy = self;
   sub_1E3840FD4();
 }
 
-- (void)vui_viewDidDisappear:(BOOL)a3
+- (void)vui_viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1E3841184(a3);
+  selfCopy = self;
+  sub_1E3841184(disappear);
 }
 
 - (void)vui_viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E384140C();
 }
 

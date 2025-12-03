@@ -1,40 +1,40 @@
 @interface TLDMobileAssetManager
 - (TLDMobileAssetManager)init;
-- (void)downloadAsset:(id)a3;
-- (void)findBestAssetFrom:(id)a3 skipDownload:(BOOL)a4;
-- (void)moveFileAtomically:(id)a3 toLocation:(id)a4;
-- (void)moveInstalledAsset:(id)a3 withVersion:(unint64_t)a4;
+- (void)downloadAsset:(id)asset;
+- (void)findBestAssetFrom:(id)from skipDownload:(BOOL)download;
+- (void)moveFileAtomically:(id)atomically toLocation:(id)location;
+- (void)moveInstalledAsset:(id)asset withVersion:(unint64_t)version;
 @end
 
 @implementation TLDMobileAssetManager
 
-- (void)moveInstalledAsset:(id)a3 withVersion:(unint64_t)a4
+- (void)moveInstalledAsset:(id)asset withVersion:(unint64_t)version
 {
-  v6 = a3;
-  [(TLDMobileAssetManager *)self setInstalledAssetVersion:a4];
+  assetCopy = asset;
+  [(TLDMobileAssetManager *)self setInstalledAssetVersion:version];
   v7 = sub_1000581D4();
   if (v7)
   {
-    v8 = [v6 getLocalFileUrl];
+    getLocalFileUrl = [assetCopy getLocalFileUrl];
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
       v10 = 138412290;
-      v11 = v8;
+      v11 = getLocalFileUrl;
       _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "Read Asset at %@", &v10, 0xCu);
-      if (!v8)
+      if (!getLocalFileUrl)
       {
         goto LABEL_5;
       }
     }
 
-    else if (!v8)
+    else if (!getLocalFileUrl)
     {
 LABEL_5:
 
       goto LABEL_6;
     }
 
-    v9 = [v8 URLByAppendingPathComponent:@"DafsaData.bin" isDirectory:0];
+    v9 = [getLocalFileUrl URLByAppendingPathComponent:@"DafsaData.bin" isDirectory:0];
     [(TLDMobileAssetManager *)self moveFileAtomically:v9 toLocation:v7];
 
     goto LABEL_5;
@@ -43,30 +43,30 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)moveFileAtomically:(id)a3 toLocation:(id)a4
+- (void)moveFileAtomically:(id)atomically toLocation:(id)location
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 URLByAppendingPathExtension:@"tmp"];
+  atomicallyCopy = atomically;
+  locationCopy = location;
+  v7 = [locationCopy URLByAppendingPathExtension:@"tmp"];
   v8 = +[NSFileManager defaultManager];
   [v8 removeItemAtURL:v7 error:0];
 
   v9 = +[NSFileManager defaultManager];
   v16 = 0;
-  v10 = [v9 copyItemAtURL:v5 toURL:v7 error:&v16];
+  v10 = [v9 copyItemAtURL:atomicallyCopy toURL:v7 error:&v16];
   v11 = v16;
 
   if (v10)
   {
     v12 = +[NSFileManager defaultManager];
     v15 = v11;
-    v13 = [v12 replaceItemAtURL:v6 withItemAtURL:v7 backupItemName:0 options:1 resultingItemURL:0 error:&v15];
+    v13 = [v12 replaceItemAtURL:locationCopy withItemAtURL:v7 backupItemName:0 options:1 resultingItemURL:0 error:&v15];
     v14 = v15;
 
     if ((v13 & 1) == 0 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412546;
-      v18 = v6;
+      v18 = locationCopy;
       v19 = 2112;
       v20 = v14;
       _os_log_fault_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_FAULT, "Replacing a file at location %@ failed. Error %@", buf, 0x16u);
@@ -78,19 +78,19 @@ LABEL_6:
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
   {
     *buf = 138412546;
-    v18 = v5;
+    v18 = atomicallyCopy;
     v19 = 2112;
     v20 = v11;
     _os_log_fault_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_FAULT, "Copying from a file at location %@ failed. Error %@", buf, 0x16u);
   }
 }
 
-- (void)downloadAsset:(id)a3
+- (void)downloadAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 attributes];
-  v6 = [v5 objectForKeyedSubscript:ASAttributeContentVersion];
-  v7 = [v6 intValue];
+  assetCopy = asset;
+  attributes = [assetCopy attributes];
+  v6 = [attributes objectForKeyedSubscript:ASAttributeContentVersion];
+  intValue = [v6 intValue];
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
@@ -103,20 +103,20 @@ LABEL_6:
   v8[2] = sub_100058830;
   v8[3] = &unk_1000D5958;
   v8[4] = self;
-  v9 = v7;
-  [v4 startDownload:v8];
+  v9 = intValue;
+  [assetCopy startDownload:v8];
 }
 
-- (void)findBestAssetFrom:(id)a3 skipDownload:(BOOL)a4
+- (void)findBestAssetFrom:(id)from skipDownload:(BOOL)download
 {
-  v5 = a3;
-  v28 = self;
-  v33 = [(TLDMobileAssetManager *)self installedAssetVersion];
+  fromCopy = from;
+  selfCopy = self;
+  installedAssetVersion = [(TLDMobileAssetManager *)self installedAssetVersion];
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v5;
+  obj = fromCopy;
   v6 = [obj countByEnumeratingWithState:&v36 objects:v50 count:16];
   if (v6)
   {
@@ -136,37 +136,37 @@ LABEL_6:
         }
 
         v11 = *(*(&v36 + 1) + 8 * i);
-        v12 = [v11 attributes];
-        v13 = [v12 objectForKeyedSubscript:v8];
-        v14 = [v13 intValue];
+        attributes = [v11 attributes];
+        v13 = [attributes objectForKeyedSubscript:v8];
+        intValue = [v13 intValue];
 
-        v15 = [v11 attributes];
-        v16 = [v15 objectForKeyedSubscript:v9];
-        v17 = [v16 intValue];
+        attributes2 = [v11 attributes];
+        v16 = [attributes2 objectForKeyedSubscript:v9];
+        intValue2 = [v16 intValue];
 
-        v18 = v17;
+        v18 = intValue2;
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
         {
-          v24 = [v11 state];
-          v25 = [(TLDMobileAssetManager *)v28 installedAssetVersion];
+          state = [v11 state];
+          installedAssetVersion2 = [(TLDMobileAssetManager *)selfCopy installedAssetVersion];
           *buf = 134219008;
-          v41 = v24;
+          v41 = state;
           v42 = 2048;
           v43 = v18;
           v44 = 2048;
-          v45 = v25;
+          v45 = installedAssetVersion2;
           v46 = 2048;
-          v47 = v33;
+          v47 = installedAssetVersion;
           v48 = 2048;
           v49 = v32;
           _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "Asset (state %ld  Version %ld),  Current version %ld,  best installed version %ld,  best not installed version %ld", buf, 0x34u);
         }
 
-        if (v14 == 3)
+        if (intValue == 3)
         {
           if ([v11 state] == 2)
           {
-            if (v33 < v18)
+            if (installedAssetVersion < v18)
             {
               v19 = v11;
               if (v32 <= v18)
@@ -178,8 +178,8 @@ LABEL_6:
 
               if (v30)
               {
-                v20 = [v30 attributes];
-                v21 = [v20 objectForKeyedSubscript:v9];
+                attributes3 = [v30 attributes];
+                v21 = [attributes3 objectForKeyedSubscript:v9];
 
                 if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
                 {
@@ -198,11 +198,11 @@ LABEL_6:
               }
 
               v30 = v19;
-              v33 = v18;
+              installedAssetVersion = v18;
             }
           }
 
-          else if (v32 < v18 && v33 < v18)
+          else if (v32 < v18 && installedAssetVersion < v18)
           {
             v23 = v11;
 
@@ -216,7 +216,7 @@ LABEL_6:
           *buf = 134218240;
           v41 = v18;
           v42 = 2048;
-          v43 = v14;
+          v43 = intValue;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Asset version %lu has compatibilty version set to %lu. Not supported on the current OS", buf, 0x16u);
         }
       }
@@ -226,7 +226,7 @@ LABEL_6:
 
     while (v6);
 
-    if (v29 && !a4)
+    if (v29 && !download)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
       {
@@ -235,7 +235,7 @@ LABEL_6:
         _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "Download best not installed asset ver %lu", buf, 0xCu);
       }
 
-      [(TLDMobileAssetManager *)v28 downloadAsset:v29];
+      [(TLDMobileAssetManager *)selfCopy downloadAsset:v29];
     }
 
     if (v30)
@@ -243,11 +243,11 @@ LABEL_6:
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134217984;
-        v41 = v33;
+        v41 = installedAssetVersion;
         _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "Read installed asset ver %lu", buf, 0xCu);
       }
 
-      [(TLDMobileAssetManager *)v28 moveInstalledAsset:v30 withVersion:v33];
+      [(TLDMobileAssetManager *)selfCopy moveInstalledAsset:v30 withVersion:installedAssetVersion];
     }
 
     else

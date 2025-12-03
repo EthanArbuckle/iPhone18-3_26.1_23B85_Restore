@@ -2,7 +2,7 @@
 - (UIScene)_scene;
 - (UITraitCollection)_traitOverrides;
 - (_DWORD)appearance;
-- (_UISystemIconAppearanceSceneComponent)initWithScene:(id)a3;
+- (_UISystemIconAppearanceSceneComponent)initWithScene:(id)scene;
 - (id)_getCurrentIconAppearance;
 - (void)_beginObservingSystemIconAppearanceChanges;
 - (void)_stopObservingSystemIconAppearanceChanges;
@@ -11,16 +11,16 @@
 
 @implementation _UISystemIconAppearanceSceneComponent
 
-- (_UISystemIconAppearanceSceneComponent)initWithScene:(id)a3
+- (_UISystemIconAppearanceSceneComponent)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v8.receiver = self;
   v8.super_class = _UISystemIconAppearanceSceneComponent;
   v5 = [(_UISystemIconAppearanceSceneComponent *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scene, v4);
+    objc_storeWeak(&v5->_scene, sceneCopy);
   }
 
   return v6;
@@ -53,8 +53,8 @@
 
   if (v6)
   {
-    v7 = [v6 traitCollection];
-    v8 = [v7 objectForTrait:getSBSUITraitHomeScreenIconStyleClass()];
+    traitCollection = [v6 traitCollection];
+    v8 = [traitCollection objectForTrait:getSBSUITraitHomeScreenIconStyleClass()];
 
     if (v8)
     {
@@ -77,32 +77,32 @@
 
 - (_DWORD)appearance
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    if (!a1[4])
+    selfCopy = self;
+    if (!self[4])
     {
-      v3 = [a1 _getCurrentIconAppearance];
-      v4 = *(v2 + 4);
-      *(v2 + 4) = v3;
+      _getCurrentIconAppearance = [self _getCurrentIconAppearance];
+      v4 = *(selfCopy + 4);
+      *(selfCopy + 4) = _getCurrentIconAppearance;
 
-      [v2 _beginObservingSystemIconAppearanceChanges];
-      v2[4] = 1;
+      [selfCopy _beginObservingSystemIconAppearanceChanges];
+      selfCopy[4] = 1;
     }
 
-    a1 = *(v2 + 4);
+    self = *(selfCopy + 4);
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_beginObservingSystemIconAppearanceChanges
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(_UISystemIconAppearanceSceneComponent *)self _scene];
+  _scene = [(_UISystemIconAppearanceSceneComponent *)self _scene];
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = _scene;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -168,9 +168,9 @@
 
 - (void)_systemIconAppearanceDidChange
 {
-  v3 = [(_UISystemIconAppearanceSceneComponent *)self _getCurrentIconAppearance];
+  _getCurrentIconAppearance = [(_UISystemIconAppearanceSceneComponent *)self _getCurrentIconAppearance];
   v4 = self->_appearance;
-  v5 = v3;
+  v5 = _getCurrentIconAppearance;
   v9 = v5;
   if (v4 == v5)
   {
@@ -190,7 +190,7 @@ LABEL_10:
   if (!v6)
   {
 LABEL_8:
-    objc_storeStrong(&self->_appearance, v3);
+    objc_storeStrong(&self->_appearance, _getCurrentIconAppearance);
     WeakRetained = objc_loadWeakRetained(&self->_scene);
     v8 = objc_opt_respondsToSelector();
 

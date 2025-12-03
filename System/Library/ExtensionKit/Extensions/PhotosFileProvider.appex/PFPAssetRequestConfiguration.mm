@@ -1,6 +1,6 @@
 @interface PFPAssetRequestConfiguration
-+ (id)analyticsActivityTypeFromFileProviderURL:(id)a3;
-- (PFPAssetRequestConfiguration)initWithFileProviderURL:(id)a3;
++ (id)analyticsActivityTypeFromFileProviderURL:(id)l;
+- (PFPAssetRequestConfiguration)initWithFileProviderURL:(id)l;
 - (id)debugDescription;
 @end
 
@@ -8,17 +8,17 @@
 
 - (id)debugDescription
 {
-  v3 = [(PFPAssetRequestConfiguration *)self UUID];
-  v4 = [(PFPAssetRequestConfiguration *)self photoLibrary];
-  v5 = [(PFPAssetRequestConfiguration *)self exportConfiguration];
-  v6 = [NSString stringWithFormat:@"UUID: %@, PhotoLibrary: %@, ExportConfiguration: %@", v3, v4, v5];
+  uUID = [(PFPAssetRequestConfiguration *)self UUID];
+  photoLibrary = [(PFPAssetRequestConfiguration *)self photoLibrary];
+  exportConfiguration = [(PFPAssetRequestConfiguration *)self exportConfiguration];
+  v6 = [NSString stringWithFormat:@"UUID: %@, PhotoLibrary: %@, ExportConfiguration: %@", uUID, photoLibrary, exportConfiguration];
 
   return v6;
 }
 
-- (PFPAssetRequestConfiguration)initWithFileProviderURL:(id)a3
+- (PFPAssetRequestConfiguration)initWithFileProviderURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v61.receiver = self;
   v61.super_class = PFPAssetRequestConfiguration;
   v5 = [(PFPAssetRequestConfiguration *)&v61 init];
@@ -30,21 +30,21 @@
 
   v52 = v5;
   v7 = objc_alloc_init(NSURLComponents);
-  v53 = v4;
-  v8 = [v4 URLByDeletingPathExtension];
-  v9 = [v8 lastPathComponent];
-  [v7 setQuery:v9];
+  v53 = lCopy;
+  uRLByDeletingPathExtension = [lCopy URLByDeletingPathExtension];
+  lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
+  [v7 setQuery:lastPathComponent];
 
   v59 = 0u;
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
   v51 = v7;
-  v10 = [v7 queryItems];
-  v11 = [v10 countByEnumeratingWithState:&v57 objects:v66 count:16];
+  queryItems = [v7 queryItems];
+  v11 = [queryItems countByEnumeratingWithState:&v57 objects:v66 count:16];
   if (!v11)
   {
-    v54 = 0;
+    integerValue = 0;
     v55 = 0;
     v13 = 0;
     v14 = 0;
@@ -52,7 +52,7 @@
   }
 
   v12 = v11;
-  v54 = 0;
+  integerValue = 0;
   v55 = 0;
   v13 = 0;
   v14 = 0;
@@ -64,54 +64,54 @@
     {
       if (*v58 != v15)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(queryItems);
       }
 
       v17 = *(*(&v57 + 1) + 8 * v16);
-      v18 = [v17 name];
+      name = [v17 name];
       v19 = PXPhotosFileProviderURLQueryItemUUIDKey();
-      v20 = [v18 isEqualToString:v19];
+      v20 = [name isEqualToString:v19];
 
       if (v20)
       {
-        v21 = [v17 value];
+        value = [v17 value];
 
-        v14 = v21;
+        v14 = value;
         goto LABEL_17;
       }
 
-      v22 = [v17 name];
+      name2 = [v17 name];
       v23 = PXPhotosFileProviderURLQueryItemIdentifierCodeKey();
-      v24 = [v22 isEqualToString:v23];
+      v24 = [name2 isEqualToString:v23];
 
       if (v24)
       {
-        v25 = [v17 value];
+        value2 = [v17 value];
 
-        v13 = v25;
+        v13 = value2;
         goto LABEL_17;
       }
 
-      v26 = [v17 name];
+      name3 = [v17 name];
       v27 = PXPhotosFileProviderURLQueryItemLibraryIdentifierKey();
-      v28 = [v26 isEqualToString:v27];
+      v28 = [name3 isEqualToString:v27];
 
       if (v28)
       {
-        v29 = [v17 value];
+        value3 = [v17 value];
 
-        v55 = v29;
+        v55 = value3;
         goto LABEL_17;
       }
 
-      v30 = [v17 name];
+      name4 = [v17 name];
       v31 = PXPhotosFileProviderURLQueryItemThumbnailSizeKey();
-      v32 = [v30 isEqualToString:v31];
+      v32 = [name4 isEqualToString:v31];
 
       if (v32)
       {
-        v33 = [v17 value];
-        v54 = [v33 integerValue];
+        value4 = [v17 value];
+        integerValue = [value4 integerValue];
 LABEL_15:
 
         goto LABEL_17;
@@ -119,12 +119,12 @@ LABEL_15:
 
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
-        v33 = [v17 name];
-        v34 = [v17 value];
+        value4 = [v17 name];
+        value5 = [v17 value];
         *buf = 138412546;
-        v63 = v33;
+        v63 = value4;
         v64 = 2112;
-        v65 = v34;
+        v65 = value5;
         _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Unknown URL query item (name: %@, value: %@)", buf, 0x16u);
 
         goto LABEL_15;
@@ -135,7 +135,7 @@ LABEL_17:
     }
 
     while (v12 != v16);
-    v35 = [v10 countByEnumeratingWithState:&v57 objects:v66 count:16];
+    v35 = [queryItems countByEnumeratingWithState:&v57 objects:v66 count:16];
     v12 = v35;
   }
 
@@ -147,7 +147,7 @@ LABEL_23:
     v36 = +[PHPhotoLibrary sharedMomentSharePhotoLibrary];
     v37 = 0;
     v6 = v52;
-    v4 = v53;
+    lCopy = v53;
     if (!v36)
     {
       goto LABEL_30;
@@ -156,17 +156,17 @@ LABEL_23:
 
   else
   {
-    v38 = [v55 integerValue];
+    integerValue2 = [v55 integerValue];
     v6 = v52;
-    v4 = v53;
-    if ((v38 - 1) > 2)
+    lCopy = v53;
+    if ((integerValue2 - 1) > 2)
     {
       v37 = 0;
       goto LABEL_30;
     }
 
     v56 = 0;
-    v36 = [PHPhotoLibrary openPhotoLibraryWithWellKnownIdentifier:v38 error:&v56];
+    v36 = [PHPhotoLibrary openPhotoLibraryWithWellKnownIdentifier:integerValue2 error:&v56];
     v37 = v56;
     if (!v36)
     {
@@ -184,14 +184,14 @@ LABEL_30:
     }
   }
 
-  v39 = [v4 pathExtension];
-  v40 = [PFUniformTypeUtilities typeWithFilenameExtension:v39];
+  pathExtension = [lCopy pathExtension];
+  v40 = [PFUniformTypeUtilities typeWithFilenameExtension:pathExtension];
 
   if (!v40 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
-    v50 = [v4 pathExtension];
+    pathExtension2 = [lCopy pathExtension];
     *buf = 138412290;
-    v63 = v50;
+    v63 = pathExtension2;
     _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Can't find possible content type with extension: %@", buf, 0xCu);
   }
 
@@ -213,41 +213,41 @@ LABEL_30:
   v6->_photoLibrary = v36;
   v44 = v36;
 
-  v6->_thumbnailSize = v54;
-  v45 = [v51 queryItems];
-  v46 = [PXPhotosExportConfiguration configurationWithQueryItems:v45 possibleContentType:v40];
+  v6->_thumbnailSize = integerValue;
+  queryItems2 = [v51 queryItems];
+  v46 = [PXPhotosExportConfiguration configurationWithQueryItems:queryItems2 possibleContentType:v40];
   exportConfiguration = v6->_exportConfiguration;
   v6->_exportConfiguration = v46;
 
-  v48 = [objc_opt_class() analyticsActivityTypeFromFileProviderURL:v4];
+  v48 = [objc_opt_class() analyticsActivityTypeFromFileProviderURL:lCopy];
   [(PXPhotosExportConfiguration *)v6->_exportConfiguration setActivityTypeForAssetExportAnalytics:v48];
 
 LABEL_40:
   return v6;
 }
 
-+ (id)analyticsActivityTypeFromFileProviderURL:(id)a3
++ (id)analyticsActivityTypeFromFileProviderURL:(id)l
 {
-  v3 = [a3 URLByDeletingLastPathComponent];
-  v4 = [v3 lastPathComponent];
-  if (![(__CFString *)v4 length])
+  uRLByDeletingLastPathComponent = [l URLByDeletingLastPathComponent];
+  lastPathComponent = [uRLByDeletingLastPathComponent lastPathComponent];
+  if (![(__CFString *)lastPathComponent length])
   {
 
-    v4 = @"unknown";
+    lastPathComponent = @"unknown";
   }
 
-  v5 = [(__CFString *)v4 lowercaseString];
+  lowercaseString = [(__CFString *)lastPathComponent lowercaseString];
 
   v6 = +[NSBundle mainBundle];
-  v7 = [v6 bundleIdentifier];
+  bundleIdentifier = [v6 bundleIdentifier];
 
-  if (![(__CFString *)v7 length])
+  if (![(__CFString *)bundleIdentifier length])
   {
 
-    v7 = @"com.apple.PhotosFileProvider";
+    bundleIdentifier = @"com.apple.PhotosFileProvider";
   }
 
-  v8 = [NSString stringWithFormat:@"%@.%@", v7, v5];
+  v8 = [NSString stringWithFormat:@"%@.%@", bundleIdentifier, lowercaseString];
 
   return v8;
 }

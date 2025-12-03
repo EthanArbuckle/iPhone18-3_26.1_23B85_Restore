@@ -1,42 +1,42 @@
 @interface MAGraphChangeRequest
 - (MAGraphChangeRequest)init;
 - (unint64_t)numberOfChanges;
-- (void)removeEdge:(id)a3;
-- (void)removeEdges:(id)a3;
-- (void)removeNode:(id)a3;
-- (void)removeNodes:(id)a3;
+- (void)removeEdge:(id)edge;
+- (void)removeEdges:(id)edges;
+- (void)removeNode:(id)node;
+- (void)removeNodes:(id)nodes;
 @end
 
 @implementation MAGraphChangeRequest
 
-- (void)removeEdges:(id)a3
+- (void)removeEdges:(id)edges
 {
   edgeIdentifiersToRemove = self->_edgeIdentifiersToRemove;
-  v4 = [a3 elementIdentifiers];
-  [(KGMutableElementIdentifierSet *)edgeIdentifiersToRemove unionWithIdentifierSet:v4];
+  elementIdentifiers = [edges elementIdentifiers];
+  [(KGMutableElementIdentifierSet *)edgeIdentifiersToRemove unionWithIdentifierSet:elementIdentifiers];
 }
 
-- (void)removeEdge:(id)a3
+- (void)removeEdge:(id)edge
 {
   edgeIdentifiersToRemove = self->_edgeIdentifiersToRemove;
-  v4 = [a3 identifier];
+  identifier = [edge identifier];
 
-  [(KGMutableElementIdentifierSet *)edgeIdentifiersToRemove addIdentifier:v4];
+  [(KGMutableElementIdentifierSet *)edgeIdentifiersToRemove addIdentifier:identifier];
 }
 
-- (void)removeNodes:(id)a3
+- (void)removeNodes:(id)nodes
 {
   nodeIdentifiersToRemove = self->_nodeIdentifiersToRemove;
-  v4 = [a3 elementIdentifiers];
-  [(KGMutableElementIdentifierSet *)nodeIdentifiersToRemove unionWithIdentifierSet:v4];
+  elementIdentifiers = [nodes elementIdentifiers];
+  [(KGMutableElementIdentifierSet *)nodeIdentifiersToRemove unionWithIdentifierSet:elementIdentifiers];
 }
 
-- (void)removeNode:(id)a3
+- (void)removeNode:(id)node
 {
   nodeIdentifiersToRemove = self->_nodeIdentifiersToRemove;
-  v4 = [a3 identifier];
+  identifier = [node identifier];
 
-  [(KGMutableElementIdentifierSet *)nodeIdentifiersToRemove addIdentifier:v4];
+  [(KGMutableElementIdentifierSet *)nodeIdentifiersToRemove addIdentifier:identifier];
 }
 
 - (unint64_t)numberOfChanges

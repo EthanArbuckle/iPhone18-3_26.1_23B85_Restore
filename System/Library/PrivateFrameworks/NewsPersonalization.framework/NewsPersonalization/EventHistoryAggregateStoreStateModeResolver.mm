@@ -15,7 +15,7 @@
 
 - (id)generateDerivedData
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C6C0C894();
 
   return v3;
@@ -23,7 +23,7 @@
 
 - (id)aggregateStore
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C6C0C5F0();
   v5 = v4;
 

@@ -1,22 +1,22 @@
 @interface NTKParmesanGalleryPlaceholderConfiguration
 - (NSString)uniqueSnapshotIdentifier;
 - (NTKParmesanGalleryPlaceholderConfiguration)init;
-- (void)applyToFace:(id)a3 forDevice:(id)a4;
+- (void)applyToFace:(id)face forDevice:(id)device;
 @end
 
 @implementation NTKParmesanGalleryPlaceholderConfiguration
 
-- (void)applyToFace:(id)a3 forDevice:(id)a4
+- (void)applyToFace:(id)face forDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_23BFBE330(v6, v7);
+  faceCopy = face;
+  deviceCopy = device;
+  selfCopy = self;
+  sub_23BFBE330(faceCopy, deviceCopy);
 }
 
 - (NSString)uniqueSnapshotIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   sub_23BFBE774();
 
   v3 = sub_23BFFA2C0();

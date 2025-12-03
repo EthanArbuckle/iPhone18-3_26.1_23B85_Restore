@@ -1,21 +1,21 @@
 @interface PPTStoreProductPageTest
-- (PPTStoreProductPageTest)initWithName:(id)a3 options:(id)a4 testDefinition:(id)a5 isMainTest:(BOOL)a6;
-- (void)_handleTestEnd:(id)a3;
-- (void)_startTestWithRootBarCoordinating:(id)a3;
-- (void)startBooksUITestWithRootBarCoordinator:(id)a3;
+- (PPTStoreProductPageTest)initWithName:(id)name options:(id)options testDefinition:(id)definition isMainTest:(BOOL)test;
+- (void)_handleTestEnd:(id)end;
+- (void)_startTestWithRootBarCoordinating:(id)coordinating;
+- (void)startBooksUITestWithRootBarCoordinator:(id)coordinator;
 - (void)startTest;
 @end
 
 @implementation PPTStoreProductPageTest
 
-- (PPTStoreProductPageTest)initWithName:(id)a3 options:(id)a4 testDefinition:(id)a5 isMainTest:(BOOL)a6
+- (PPTStoreProductPageTest)initWithName:(id)name options:(id)options testDefinition:(id)definition isMainTest:(BOOL)test
 {
   v7.receiver = self;
   v7.super_class = PPTStoreProductPageTest;
-  return [(PPTStoreDependentTest *)&v7 initWithName:a3 options:a4 testDefinition:a5 isMainTest:a6];
+  return [(PPTStoreDependentTest *)&v7 initWithName:name options:options testDefinition:definition isMainTest:test];
 }
 
-- (void)_handleTestEnd:(id)a3
+- (void)_handleTestEnd:(id)end
 {
   if ([(PPTStoreProductPageTest *)self startPPTTestCalled])
   {
@@ -36,9 +36,9 @@
   v5 = sub_1001E65B0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(PPTBasicTest *)self name];
+    name = [(PPTBasicTest *)self name];
     *buf = 138543362;
-    v10 = v6;
+    v10 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Starting test named: %{public}@ and waiting for tab bar", buf, 0xCu);
   }
 
@@ -51,34 +51,34 @@
   [v7 requestTabBarSceneController:v8];
 }
 
-- (void)_startTestWithRootBarCoordinating:(id)a3
+- (void)_startTestWithRootBarCoordinating:(id)coordinating
 {
-  v4 = a3;
+  coordinatingCopy = coordinating;
   v5 = sub_1001E65B0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(PPTBasicTest *)self name];
+    name = [(PPTBasicTest *)self name];
     *buf = 138543362;
-    v45 = v6;
+    v45 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "With tab bar controller, starting test named: %{public}@", buf, 0xCu);
   }
 
   v7 = +[BKRootBarItemsProvider BooksIdentifier];
-  [v4 selectWithIdentifier:v7 isUserAction:0];
+  [coordinatingCopy selectWithIdentifier:v7 isUserAction:0];
 
   objc_opt_class();
-  v8 = [v4 selectedNavigationController];
-  v9 = [v8 topViewController];
+  selectedNavigationController = [coordinatingCopy selectedNavigationController];
+  topViewController = [selectedNavigationController topViewController];
   v10 = BUDynamicCast();
 
-  v11 = [v10 content];
-  v12 = [v11 entries];
+  content = [v10 content];
+  entries = [content entries];
 
-  if (!v12)
+  if (!entries)
   {
     if (!v10)
     {
-      [(PPTStoreProductPageTest *)self startBooksUITestWithRootBarCoordinator:v4];
+      [(PPTStoreProductPageTest *)self startBooksUITestWithRootBarCoordinator:coordinatingCopy];
       goto LABEL_25;
     }
 
@@ -91,7 +91,7 @@
     goto LABEL_10;
   }
 
-  v13 = [v12 indexOfObjectPassingTest:&stru_100A092F8];
+  v13 = [entries indexOfObjectPassingTest:&stru_100A092F8];
   if (v13 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v14 = sub_1001E65B0();
@@ -106,11 +106,11 @@ LABEL_10:
     goto LABEL_25;
   }
 
-  v15 = [v12 objectAtIndexedSubscript:v13];
-  v16 = [v15 data];
-  v17 = [v16 dictionary];
+  v15 = [entries objectAtIndexedSubscript:v13];
+  data = [v15 data];
+  dictionary = [data dictionary];
 
-  v36 = [v17 valueForKey:@"swooshConfig"];
+  v36 = [dictionary valueForKey:@"swooshConfig"];
   v35 = [v36 valueForKey:@"swooshBodyConfig"];
   v18 = [v35 valueForKey:@"items"];
   v19 = [v18 objectAtIndexedSubscript:0];
@@ -148,14 +148,14 @@ LABEL_10:
   v28 = v27;
   if (v27)
   {
-    v34 = v17;
+    v34 = dictionary;
     v42[0] = @"swooshIndex";
     v42[1] = @"url";
     v43[0] = &off_100A436B0;
     v43[1] = v27;
     v29 = [NSDictionary dictionaryWithObjects:v43 forKeys:v42 count:2];
-    v30 = [v15 delegate];
-    [v30 feedEntry:v15 handleBehavior:0 name:@"GOTO_BOOK" arguments:v29];
+    delegate = [v15 delegate];
+    [delegate feedEntry:v15 handleBehavior:0 name:@"GOTO_BOOK" arguments:v29];
 
     v31 = sub_1001E65B0();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
@@ -169,14 +169,14 @@ LABEL_10:
     block[1] = 3221225472;
     block[2] = sub_100170ABC;
     block[3] = &unk_100A03C78;
-    v38 = v4;
-    v39 = self;
+    v38 = coordinatingCopy;
+    selfCopy = self;
     v40 = v15;
     v41 = v29;
     v33 = v29;
     dispatch_after(v32, &_dispatch_main_q, block);
 
-    v17 = v34;
+    dictionary = v34;
   }
 
   else
@@ -192,11 +192,11 @@ LABEL_10:
 LABEL_25:
 }
 
-- (void)startBooksUITestWithRootBarCoordinator:(id)a3
+- (void)startBooksUITestWithRootBarCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  PPTStoreProductPageTest.startBooksUITest(rootBarCoordinator:)(a3);
+  selfCopy = self;
+  PPTStoreProductPageTest.startBooksUITest(rootBarCoordinator:)(coordinator);
   swift_unknownObjectRelease();
 }
 

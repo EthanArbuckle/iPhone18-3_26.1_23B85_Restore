@@ -1,22 +1,22 @@
 @interface PXPhotoKitAssetFilePromise
-+ (id)filePromiseWithAsset:(id)a3 error:(id *)a4;
-- (id)fileNameForType:(id)a3;
-- (void)writeToURL:(id)a3 completionHandler:(id)a4;
++ (id)filePromiseWithAsset:(id)asset error:(id *)error;
+- (id)fileNameForType:(id)type;
+- (void)writeToURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation PXPhotoKitAssetFilePromise
 
-+ (id)filePromiseWithAsset:(id)a3 error:(id *)a4
++ (id)filePromiseWithAsset:(id)asset error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  assetCopy = asset;
   v20 = 0;
-  v8 = [MEMORY[0x1E69786A8] exportRequestForAsset:v7 error:&v20];
+  v8 = [MEMORY[0x1E69786A8] exportRequestForAsset:assetCopy error:&v20];
   v9 = v20;
   if (v8)
   {
-    v10 = [v8 variants];
-    v11 = [v10 objectForKeyedSubscript:&unk_1F190AA20];
+    variants = [v8 variants];
+    v11 = [variants objectForKeyedSubscript:&unk_1F190AA20];
     if (v11)
     {
       v12 = 2;
@@ -27,23 +27,23 @@
       v12 = 1;
     }
 
-    if ([v7 isRAW])
+    if ([assetCopy isRAW])
     {
-      v13 = [*MEMORY[0x1E6982E58] identifier];
+      identifier = [*MEMORY[0x1E6982E58] identifier];
     }
 
     else
     {
       v17 = [MEMORY[0x1E696AD98] numberWithInteger:v12];
-      v13 = [v10 objectForKeyedSubscript:v17];
+      identifier = [variants objectForKeyedSubscript:v17];
     }
 
-    v16 = objc_alloc_init(a1);
-    objc_storeStrong(v16 + 4, a3);
+    v16 = objc_alloc_init(self);
+    objc_storeStrong(v16 + 4, asset);
     objc_storeStrong(v16 + 1, v8);
     v16[2] = v12;
     v18 = v16[5];
-    v16[5] = v13;
+    v16[5] = identifier;
   }
 
   else
@@ -52,17 +52,17 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v22 = v7;
+      v22 = assetCopy;
       v23 = 2112;
       v24 = v9;
       _os_log_impl(&dword_1A3C1C000, v14, OS_LOG_TYPE_ERROR, "No export request for asset %@ with error %@.", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v15 = v9;
       v16 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -74,11 +74,11 @@
   return v16;
 }
 
-- (void)writeToURL:(id)a3 completionHandler:(id)a4
+- (void)writeToURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXPhotoKitAssetFilePromise *)self asset];
+  lCopy = l;
+  handlerCopy = handler;
+  asset = [(PXPhotoKitAssetFilePromise *)self asset];
   v9 = objc_alloc_init(MEMORY[0x1E69786B0]);
   [v9 setTreatLivePhotoAsStill:1];
   [v9 setFlattenSlomoVideos:1];
@@ -89,12 +89,12 @@
   v14[1] = 3221225472;
   v14[2] = __59__PXPhotoKitAssetFilePromise_writeToURL_completionHandler___block_invoke;
   v14[3] = &unk_1E7731DD8;
-  v15 = v8;
-  v16 = v6;
-  v17 = v7;
-  v11 = v7;
-  v12 = v6;
-  v13 = v8;
+  v15 = asset;
+  v16 = lCopy;
+  v17 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = lCopy;
+  v13 = asset;
   [(PHAssetExportRequest *)exportRequest exportWithOptions:v9 completionHandler:v14];
 }
 
@@ -156,15 +156,15 @@ LABEL_11:
 LABEL_15:
 }
 
-- (id)fileNameForType:(id)a3
+- (id)fileNameForType:(id)type
 {
-  v4 = [(PXPhotoKitAssetFilePromise *)self asset];
+  asset = [(PXPhotoKitAssetFilePromise *)self asset];
   v5 = MEMORY[0x1E69C08F0];
-  v6 = [(PXPhotoKitAssetFilePromise *)self fileType];
-  v7 = [v5 typeWithIdentifier:v6];
+  fileType = [(PXPhotoKitAssetFilePromise *)self fileType];
+  v7 = [v5 typeWithIdentifier:fileType];
 
-  v8 = [v4 px_exportFilename];
-  v9 = [v8 stringByDeletingPathExtension];
+  px_exportFilename = [asset px_exportFilename];
+  stringByDeletingPathExtension = [px_exportFilename stringByDeletingPathExtension];
   if (v7)
   {
     v10 = [MEMORY[0x1E69C08F0] preferredOrFallbackFilenameExtensionForType:v7];
@@ -175,7 +175,7 @@ LABEL_15:
     v10 = @"data";
   }
 
-  v11 = [v9 stringByAppendingPathExtension:v10];
+  v11 = [stringByDeletingPathExtension stringByAppendingPathExtension:v10];
 
   return v11;
 }

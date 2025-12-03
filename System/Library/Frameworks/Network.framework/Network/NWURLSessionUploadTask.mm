@@ -1,12 +1,12 @@
 @interface NWURLSessionUploadTask
-+ (BOOL)isSubclassOfClass:(Class)a3;
-- (BOOL)isKindOfClass:(Class)a3;
++ (BOOL)isSubclassOfClass:(Class)class;
+- (BOOL)isKindOfClass:(Class)class;
 - (BOOL)supportsResumableUpload;
 - (NSURL)resumeURL;
-- (id)errorWithResumeData:(id)a3;
-- (id)initWithUploadResumeInfo:(int)a3 identifier:(void *)a4 session:;
+- (id)errorWithResumeData:(id)data;
+- (id)initWithUploadResumeInfo:(int)info identifier:(void *)identifier session:;
 - (id)uploadResumeURL;
-- (void)cancelByProducingResumeData:(id)a3;
+- (void)cancelByProducingResumeData:(id)data;
 @end
 
 @implementation NWURLSessionUploadTask
@@ -24,56 +24,56 @@
 
 - (BOOL)supportsResumableUpload
 {
-  v2 = self;
-  v3 = [(NWURLSessionTask *)self currentRequest];
-  v4 = [v3 valueForHTTPHeaderField:@"Upload-Complete"];
+  selfCopy = self;
+  currentRequest = [(NWURLSessionTask *)self currentRequest];
+  v4 = [currentRequest valueForHTTPHeaderField:@"Upload-Complete"];
   if (v4)
   {
     goto LABEL_2;
   }
 
-  v5 = [(NWURLSessionTask *)v2 currentRequest];
-  v6 = [v5 valueForHTTPHeaderField:@"Upload-Draft-Interop-Version"];
+  currentRequest2 = [(NWURLSessionTask *)selfCopy currentRequest];
+  v6 = [currentRequest2 valueForHTTPHeaderField:@"Upload-Draft-Interop-Version"];
 
   if (v6)
   {
-    LOBYTE(v2) = 0;
-    return v2;
+    LOBYTE(selfCopy) = 0;
+    return selfCopy;
   }
 
-  if (!v2)
+  if (!selfCopy)
   {
     v4 = 0;
-    v3 = 0;
+    currentRequest = 0;
     goto LABEL_3;
   }
 
-  v8 = v2->super.super._requestBody;
-  v3 = v8;
+  v8 = selfCopy->super.super._requestBody;
+  currentRequest = v8;
   if (v8 && (v8->_data || v8->_fileURL))
   {
-    LOBYTE(v2) = 1;
+    LOBYTE(selfCopy) = 1;
     goto LABEL_4;
   }
 
   v9 = 248;
-  if (!v2->super.super._internalDelegateWrapper)
+  if (!selfCopy->super.super._internalDelegateWrapper)
   {
     v9 = 240;
   }
 
-  v4 = *(&v2->super.super.super.isa + v9);
+  v4 = *(&selfCopy->super.super.super.isa + v9);
   if (!v4)
   {
 LABEL_2:
-    LOBYTE(v2) = 0;
+    LOBYTE(selfCopy) = 0;
   }
 
   else
   {
     v11 = v4;
-    v12 = [(NWURLSessionDelegateWrapper *)v4 delegateFor_needNewBodyStreamFromOffset];
-    LOBYTE(v2) = v12 != 0;
+    delegateFor_needNewBodyStreamFromOffset = [(NWURLSessionDelegateWrapper *)v4 delegateFor_needNewBodyStreamFromOffset];
+    LOBYTE(selfCopy) = delegateFor_needNewBodyStreamFromOffset != 0;
 
     v4 = v11;
   }
@@ -81,12 +81,12 @@ LABEL_2:
 LABEL_3:
 
 LABEL_4:
-  return v2;
+  return selfCopy;
 }
 
-- (void)cancelByProducingResumeData:(id)a3
+- (void)cancelByProducingResumeData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (self)
   {
     queue = self->super.super._queue;
@@ -102,8 +102,8 @@ LABEL_4:
   v7[2] = __54__NWURLSessionUploadTask_cancelByProducingResumeData___block_invoke;
   v7[3] = &unk_1E6A3D710;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(queue, v7);
 }
 
@@ -198,30 +198,30 @@ void __54__NWURLSessionUploadTask_cancelByProducingResumeData___block_invoke(uin
   [v18 task:v15 deliverData:0 complete:1 error:v17 completionHandler:{&__block_literal_global_541, v19, v20, v21, v22}];
 }
 
-- (id)errorWithResumeData:(id)a3
+- (id)errorWithResumeData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = v4;
+  dataCopy = data;
+  v5 = dataCopy;
+  serialize = dataCopy;
   if (self)
   {
-    v6 = v4;
-    if (v4)
+    serialize = dataCopy;
+    if (dataCopy)
     {
-      v6 = v4;
-      if ([v4 code] != -999)
+      serialize = dataCopy;
+      if ([dataCopy code] != -999)
       {
-        v7 = [v5 uploadTaskResumeData];
+        uploadTaskResumeData = [v5 uploadTaskResumeData];
 
-        if (v7)
+        if (uploadTaskResumeData)
         {
           goto LABEL_7;
         }
 
         v8 = [NWURLSessionUploadResumeInfo infoWithTask:self];
-        v6 = [v8 serialize];
+        serialize = [v8 serialize];
 
-        [v5 setUploadTaskResumeData:v6];
+        [v5 setUploadTaskResumeData:serialize];
       }
     }
   }
@@ -240,9 +240,9 @@ LABEL_7:
     goto LABEL_52;
   }
 
-  v5 = [(NWURLSessionTask *)self clientMetadata];
-  v6 = v5;
-  if (!v5)
+  clientMetadata = [(NWURLSessionTask *)self clientMetadata];
+  v6 = clientMetadata;
+  if (!clientMetadata)
   {
     v17 = __nwlog_obj();
     *buf = 136446210;
@@ -326,7 +326,7 @@ LABEL_46:
   }
 
   v7 = nw_protocol_copy_http_client_definition_onceToken;
-  v8 = v5;
+  v8 = clientMetadata;
   if (v7 != -1)
   {
     dispatch_once(&nw_protocol_copy_http_client_definition_onceToken, &__block_literal_global_85);
@@ -459,7 +459,7 @@ LABEL_52:
   return v4;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v5.receiver = self;
   v5.super_class = NWURLSessionUploadTask;
@@ -470,13 +470,13 @@ LABEL_52:
 
   else
   {
-    return [(objc_class *)a3 isEqual:objc_opt_class()];
+    return [(objc_class *)class isEqual:objc_opt_class()];
   }
 }
 
-+ (BOOL)isSubclassOfClass:(Class)a3
++ (BOOL)isSubclassOfClass:(Class)class
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___NWURLSessionUploadTask;
   if (objc_msgSendSuper2(&v5, sel_isSubclassOfClass_))
   {
@@ -485,27 +485,27 @@ LABEL_52:
 
   else
   {
-    return [(objc_class *)a3 isEqual:objc_opt_class()];
+    return [(objc_class *)class isEqual:objc_opt_class()];
   }
 }
 
-- (id)initWithUploadResumeInfo:(int)a3 identifier:(void *)a4 session:
+- (id)initWithUploadResumeInfo:(int)info identifier:(void *)identifier session:
 {
   v7 = a2;
-  if (a1)
+  if (self)
   {
-    v8 = [(NWURLSessionTask *)a1 initWithResumeInfo:v7 identifier:a3 session:a4];
+    v8 = [(NWURLSessionTask *)self initWithResumeInfo:v7 identifier:info session:identifier];
     if (v8)
     {
-      v9 = [v7 resumeURL];
-      objc_setProperty_atomic(v8, v10, v9, 496);
+      resumeURL = [v7 resumeURL];
+      objc_setProperty_atomic(v8, v10, resumeURL, 496);
 
-      v11 = [v7 data];
+      data = [v7 data];
 
-      if (v11)
+      if (data)
       {
         v12 = [NWURLSessionRequestBodyInfo alloc];
-        v13 = [v7 data];
+        data2 = [v7 data];
         if (v12)
         {
           v23.receiver = v12;
@@ -513,11 +513,11 @@ LABEL_52:
           v12 = objc_msgSendSuper2(&v23, sel_init);
           if (v12)
           {
-            v14 = [v13 _createDispatchData];
+            _createDispatchData = [data2 _createDispatchData];
             data = v12->_data;
-            v12->_data = v14;
+            v12->_data = _createDispatchData;
 
-            v12->_knownSize = [v13 length];
+            v12->_knownSize = [data2 length];
           }
         }
 
@@ -527,22 +527,22 @@ LABEL_52:
 
       else
       {
-        v17 = [v7 fileURL];
+        fileURL = [v7 fileURL];
 
         v18 = [NWURLSessionRequestBodyInfo alloc];
-        if (v17)
+        if (fileURL)
         {
-          v13 = [v7 fileURL];
+          data2 = [v7 fileURL];
           v16 = v8[29];
-          v19 = [(NWURLSessionRequestBodyInfo *)&v18->super.isa initWithFileURL:v13 queue:v16];
+          v19 = [(NWURLSessionRequestBodyInfo *)&v18->super.isa initWithFileURL:data2 queue:v16];
           v20 = v8[54];
           v8[54] = v19;
         }
 
         else
         {
-          v13 = v8[29];
-          v21 = [NWURLSessionRequestBodyInfo initWithStream:v13 queue:?];
+          data2 = v8[29];
+          v21 = [NWURLSessionRequestBodyInfo initWithStream:data2 queue:?];
           v16 = v8[54];
           v8[54] = v21;
         }

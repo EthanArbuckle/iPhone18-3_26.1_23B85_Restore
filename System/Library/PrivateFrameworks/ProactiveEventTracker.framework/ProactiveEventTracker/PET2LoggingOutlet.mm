@@ -1,12 +1,12 @@
 @interface PET2LoggingOutlet
 + (id)sharedInstance;
 - (PET2LoggingOutlet)init;
-- (id)_findBucketsForKey:(id)a3;
-- (void)_dispatchBatchForKey:(id)a3 value:(unint64_t)a4 isUpdate:(BOOL)a5;
-- (void)logDoubleValue:(double)a3 forEvent:(id)a4 featureId:(id)a5 stringifiedProperties:(id)a6 metaData:(id)a7;
-- (void)logErrorForEvent:(id)a3 featureId:(id)a4 reason:(id)a5;
-- (void)logUnsignedIntegerValue:(unint64_t)a3 forEvent:(id)a4 featureId:(id)a5 stringifiedProperties:(id)a6 metaData:(id)a7;
-- (void)setUnsignedIntegerValue:(unint64_t)a3 forEvent:(id)a4 featureId:(id)a5 stringifiedProperties:(id)a6 metaData:(id)a7;
+- (id)_findBucketsForKey:(id)key;
+- (void)_dispatchBatchForKey:(id)key value:(unint64_t)value isUpdate:(BOOL)update;
+- (void)logDoubleValue:(double)value forEvent:(id)event featureId:(id)id stringifiedProperties:(id)properties metaData:(id)data;
+- (void)logErrorForEvent:(id)event featureId:(id)id reason:(id)reason;
+- (void)logUnsignedIntegerValue:(unint64_t)value forEvent:(id)event featureId:(id)id stringifiedProperties:(id)properties metaData:(id)data;
+- (void)setUnsignedIntegerValue:(unint64_t)value forEvent:(id)event featureId:(id)id stringifiedProperties:(id)properties metaData:(id)data;
 @end
 
 @implementation PET2LoggingOutlet
@@ -58,23 +58,23 @@ void __35__PET2LoggingOutlet_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)logErrorForEvent:(id)a3 featureId:(id)a4 reason:(id)a5
+- (void)logErrorForEvent:(id)event featureId:(id)id reason:(id)reason
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventCopy = event;
+  idCopy = id;
+  reasonCopy = reason;
   loggingQueue = self->_loggingQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __55__PET2LoggingOutlet_logErrorForEvent_featureId_reason___block_invoke;
   v15[3] = &unk_1E86C2BF8;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v19 = self;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = eventCopy;
+  v17 = idCopy;
+  v18 = reasonCopy;
+  selfCopy = self;
+  v12 = reasonCopy;
+  v13 = idCopy;
+  v14 = eventCopy;
   dispatch_async(loggingQueue, v15);
 }
 
@@ -93,27 +93,27 @@ void __55__PET2LoggingOutlet_logErrorForEvent_featureId_reason___block_invoke(ui
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logDoubleValue:(double)a3 forEvent:(id)a4 featureId:(id)a5 stringifiedProperties:(id)a6 metaData:(id)a7
+- (void)logDoubleValue:(double)value forEvent:(id)event featureId:(id)id stringifiedProperties:(id)properties metaData:(id)data
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  eventCopy = event;
+  idCopy = id;
+  propertiesCopy = properties;
+  dataCopy = data;
   loggingQueue = self->_loggingQueue;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __86__PET2LoggingOutlet_logDoubleValue_forEvent_featureId_stringifiedProperties_metaData___block_invoke;
   v21[3] = &unk_1E86C27A8;
   v21[4] = self;
-  v22 = v12;
-  v23 = v13;
-  v24 = v14;
-  v25 = v15;
-  v26 = a3;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
+  v22 = eventCopy;
+  v23 = idCopy;
+  v24 = propertiesCopy;
+  v25 = dataCopy;
+  valueCopy = value;
+  v17 = dataCopy;
+  v18 = propertiesCopy;
+  v19 = idCopy;
+  v20 = eventCopy;
   dispatch_async(loggingQueue, v21);
 }
 
@@ -176,10 +176,10 @@ void __86__PET2LoggingOutlet_logDoubleValue_forEvent_featureId_stringifiedProper
   }
 }
 
-- (id)_findBucketsForKey:(id)a3
+- (id)_findBucketsForKey:(id)key
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -200,7 +200,7 @@ void __86__PET2LoggingOutlet_logDoubleValue_forEvent_featureId_stringifiedProper
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        if ([v4 hasPrefix:{v10, v14}])
+        if ([keyCopy hasPrefix:{v10, v14}])
         {
           v11 = [(NSDictionary *)self->_pet1HistogramBuckets objectForKeyedSubscript:v10];
           goto LABEL_11;
@@ -225,27 +225,27 @@ LABEL_11:
   return v11;
 }
 
-- (void)setUnsignedIntegerValue:(unint64_t)a3 forEvent:(id)a4 featureId:(id)a5 stringifiedProperties:(id)a6 metaData:(id)a7
+- (void)setUnsignedIntegerValue:(unint64_t)value forEvent:(id)event featureId:(id)id stringifiedProperties:(id)properties metaData:(id)data
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  eventCopy = event;
+  idCopy = id;
+  propertiesCopy = properties;
+  dataCopy = data;
   loggingQueue = self->_loggingQueue;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __95__PET2LoggingOutlet_setUnsignedIntegerValue_forEvent_featureId_stringifiedProperties_metaData___block_invoke;
   v21[3] = &unk_1E86C27A8;
-  v22 = v12;
-  v23 = v13;
-  v24 = v14;
-  v25 = v15;
-  v26 = self;
-  v27 = a3;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
+  v22 = eventCopy;
+  v23 = idCopy;
+  v24 = propertiesCopy;
+  v25 = dataCopy;
+  selfCopy = self;
+  valueCopy = value;
+  v17 = dataCopy;
+  v18 = propertiesCopy;
+  v19 = idCopy;
+  v20 = eventCopy;
   dispatch_async(loggingQueue, v21);
 }
 
@@ -255,27 +255,27 @@ void __95__PET2LoggingOutlet_setUnsignedIntegerValue_forEvent_featureId_stringif
   [*(a1 + 64) _dispatchBatchForKey:v2 value:*(a1 + 72) isUpdate:1];
 }
 
-- (void)logUnsignedIntegerValue:(unint64_t)a3 forEvent:(id)a4 featureId:(id)a5 stringifiedProperties:(id)a6 metaData:(id)a7
+- (void)logUnsignedIntegerValue:(unint64_t)value forEvent:(id)event featureId:(id)id stringifiedProperties:(id)properties metaData:(id)data
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  eventCopy = event;
+  idCopy = id;
+  propertiesCopy = properties;
+  dataCopy = data;
   loggingQueue = self->_loggingQueue;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __95__PET2LoggingOutlet_logUnsignedIntegerValue_forEvent_featureId_stringifiedProperties_metaData___block_invoke;
   v21[3] = &unk_1E86C27A8;
-  v22 = v12;
-  v23 = v13;
-  v24 = v14;
-  v25 = v15;
-  v26 = self;
-  v27 = a3;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
+  v22 = eventCopy;
+  v23 = idCopy;
+  v24 = propertiesCopy;
+  v25 = dataCopy;
+  selfCopy = self;
+  valueCopy = value;
+  v17 = dataCopy;
+  v18 = propertiesCopy;
+  v19 = idCopy;
+  v20 = eventCopy;
   dispatch_async(loggingQueue, v21);
 }
 
@@ -285,20 +285,20 @@ void __95__PET2LoggingOutlet_logUnsignedIntegerValue_forEvent_featureId_stringif
   [*(a1 + 64) _dispatchBatchForKey:v2 value:*(a1 + 72) isUpdate:0];
 }
 
-- (void)_dispatchBatchForKey:(id)a3 value:(unint64_t)a4 isUpdate:(BOOL)a5
+- (void)_dispatchBatchForKey:(id)key value:(unint64_t)value isUpdate:(BOOL)update
 {
-  v5 = a5;
-  v8 = a3;
-  if (v5)
+  updateCopy = update;
+  keyCopy = key;
+  if (updateCopy)
   {
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    value = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:value];
     p_updateKeys = &self->_updateKeys;
   }
 
   else
   {
     p_updateKeys = &self->_addKeys;
-    v11 = [(NSMutableDictionary *)self->_addKeys objectForKeyedSubscript:v8];
+    v11 = [(NSMutableDictionary *)self->_addKeys objectForKeyedSubscript:keyCopy];
     v12 = v11;
     v13 = &unk_1F5AB6C18;
     if (v11)
@@ -309,12 +309,12 @@ void __95__PET2LoggingOutlet_logUnsignedIntegerValue_forEvent_featureId_stringif
     v14 = v13;
 
     v15 = MEMORY[0x1E696AD98];
-    v16 = [v14 unsignedIntegerValue];
+    unsignedIntegerValue = [v14 unsignedIntegerValue];
 
-    v9 = [v15 numberWithUnsignedInteger:v16 + a4];
+    value = [v15 numberWithUnsignedInteger:unsignedIntegerValue + value];
   }
 
-  [(NSMutableDictionary *)*p_updateKeys setObject:v9 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)*p_updateKeys setObject:value forKeyedSubscript:keyCopy];
 
   if (!self->_batchTxn)
   {

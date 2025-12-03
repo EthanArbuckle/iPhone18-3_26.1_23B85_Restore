@@ -1,5 +1,5 @@
 @interface ARPAnalyticsEvent
-+ (id)feedbackEventsFromAppUsageEvents:(id)a3 playingEvents:(id)a4 microLocationEvents:(id)a5 feedbackEvents:(id)a6;
++ (id)feedbackEventsFromAppUsageEvents:(id)events playingEvents:(id)playingEvents microLocationEvents:(id)locationEvents feedbackEvents:(id)feedbackEvents;
 - (ARPAnalyticsEvent)init;
 - (id)analyticsDictionary;
 - (id)description;
@@ -46,33 +46,33 @@
   return v3;
 }
 
-+ (id)feedbackEventsFromAppUsageEvents:(id)a3 playingEvents:(id)a4 microLocationEvents:(id)a5 feedbackEvents:(id)a6
++ (id)feedbackEventsFromAppUsageEvents:(id)events playingEvents:(id)playingEvents microLocationEvents:(id)locationEvents feedbackEvents:(id)feedbackEvents
 {
   v113 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v90 = a4;
-  v10 = a5;
-  v89 = a6;
+  eventsCopy = events;
+  playingEventsCopy = playingEvents;
+  locationEventsCopy = locationEvents;
+  feedbackEventsCopy = feedbackEvents;
   v82 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:&UUID_NULL_0];
   v83 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v11 = objc_alloc_init(ARPAnalyticsEvent);
-  v88 = [(ARPAnalyticsEvent *)v11 analyticsDictionary];
+  analyticsDictionary = [(ARPAnalyticsEvent *)v11 analyticsDictionary];
 
-  v12 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
   v107 = 0u;
   v108 = 0u;
   v109 = 0u;
   v110 = 0u;
-  obj = v9;
+  obj = eventsCopy;
   v91 = [obj countByEnumeratingWithState:&v107 objects:v112 count:16];
   if (v91)
   {
     v86 = *v108;
-    v87 = v10;
+    v87 = locationEventsCopy;
     do
     {
       v13 = 0;
-      v98 = v12;
+      v98 = distantPast;
       do
       {
         if (*v108 != v86)
@@ -88,7 +88,7 @@
         v106[3] = &unk_278C64888;
         v96 = v14;
         v106[4] = v14;
-        v16 = [v90 indexOfObjectPassingTest:v106];
+        v16 = [playingEventsCopy indexOfObjectPassingTest:v106];
         v94 = v13;
         if (v16 == 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -97,12 +97,12 @@
 
         else
         {
-          v17 = [v90 objectAtIndexedSubscript:v16];
+          v17 = [playingEventsCopy objectAtIndexedSubscript:v16];
         }
 
-        v18 = [v17 metadata];
-        v19 = [MEMORY[0x277CFE248] outputDeviceIDs];
-        v20 = [v18 objectForKeyedSubscript:v19];
+        metadata = [v17 metadata];
+        outputDeviceIDs = [MEMORY[0x277CFE248] outputDeviceIDs];
+        v20 = [metadata objectForKeyedSubscript:outputDeviceIDs];
 
         v21 = ARPExtractLongFormVideoOutputDeviceIDs(v20);
         v99 = objc_alloc_init(MEMORY[0x277CBEB98]);
@@ -150,8 +150,8 @@
         v105[2] = __103__ARPAnalyticsEvent_feedbackEventsFromAppUsageEvents_playingEvents_microLocationEvents_feedbackEvents___block_invoke_60;
         v105[3] = &unk_278C64888;
         v105[4] = v96;
-        v32 = [v10 indexOfObjectPassingTest:v105];
-        if (v32 == 0x7FFFFFFFFFFFFFFFLL || ([v10 objectAtIndexedSubscript:v32], (v33 = objc_claimAutoreleasedReturnValue()) == 0))
+        v32 = [locationEventsCopy indexOfObjectPassingTest:v105];
+        if (v32 == 0x7FFFFFFFFFFFFFFFLL || ([locationEventsCopy objectAtIndexedSubscript:v32], (v33 = objc_claimAutoreleasedReturnValue()) == 0))
         {
           v92 = 0;
         }
@@ -159,9 +159,9 @@
         else
         {
           v92 = v33;
-          v34 = [v33 metadata];
-          v35 = [MEMORY[0x277CFE230] probabilityVector];
-          v36 = [v34 objectForKeyedSubscript:v35];
+          metadata2 = [v33 metadata];
+          probabilityVector = [MEMORY[0x277CFE230] probabilityVector];
+          v36 = [metadata2 objectForKeyedSubscript:probabilityVector];
 
           v37 = [v36 count];
           v38 = [v36 objectForKeyedSubscript:v82];
@@ -171,19 +171,19 @@
         }
 
         v40 = MEMORY[0x277CCAC30];
-        v41 = [v17 startDate];
-        v42 = v41;
-        if (!v41)
+        startDate = [v17 startDate];
+        v42 = startDate;
+        if (!startDate)
         {
-          v85 = [v96 endDate];
-          v42 = v85;
+          endDate = [v96 endDate];
+          v42 = endDate;
         }
 
         v93 = v20;
         v43 = [v40 predicateWithFormat:@"%@ <= startDate && endDate <= %@", v98, v42];
-        v44 = [v89 filteredArrayUsingPredicate:v43];
+        v44 = [feedbackEventsCopy filteredArrayUsingPredicate:v43];
 
-        if (!v41)
+        if (!startDate)
         {
         }
 
@@ -221,23 +221,23 @@
             }
 
             v54 = *(*(&v101 + 1) + 8 * i);
-            v55 = [v54 integerValue];
-            if (!v49 && v55 <= 1)
+            integerValue = [v54 integerValue];
+            if (!v49 && integerValue <= 1)
             {
-              v48 = v55 == 1;
+              v48 = integerValue == 1;
               v49 = v54;
 LABEL_46:
               v58 = v51;
               goto LABEL_47;
             }
 
-            if (v55 == 2 && v50 == 0)
+            if (integerValue == 2 && v50 == 0)
             {
               v50 = v54;
               goto LABEL_46;
             }
 
-            v57 = v55 == 3 && v51 == 0;
+            v57 = integerValue == 3 && v51 == 0;
             v58 = v54;
             if (!v57)
             {
@@ -270,25 +270,25 @@ LABEL_48:
         while (v47);
 LABEL_54:
 
-        v60 = [v97 endDate];
-        v61 = v60;
-        if (v60)
+        endDate2 = [v97 endDate];
+        v61 = endDate2;
+        if (endDate2)
         {
-          v62 = v60;
+          endDate3 = endDate2;
         }
 
         else
         {
-          v62 = [v96 endDate];
+          endDate3 = [v96 endDate];
         }
 
-        v12 = v62;
+        distantPast = endDate3;
 
         if (v49)
         {
-          v63 = [v49 metadata];
-          v64 = [MEMORY[0x277CFE130] subtype];
-          v65 = [v63 objectForKeyedSubscript:v64];
+          metadata3 = [v49 metadata];
+          subtype = [MEMORY[0x277CFE130] subtype];
+          v65 = [metadata3 objectForKeyedSubscript:subtype];
 
           if (v48)
           {
@@ -304,9 +304,9 @@ LABEL_54:
           }
 
           [(ARPAnalyticsEvent *)v66 setPrediction:v67];
-          v68 = [v49 metadata];
-          v69 = [MEMORY[0x277CFE130] outputDeviceID];
-          v70 = [v68 objectForKeyedSubscript:v69];
+          metadata4 = [v49 metadata];
+          outputDeviceID = [MEMORY[0x277CFE130] outputDeviceID];
+          v70 = [metadata4 objectForKeyedSubscript:outputDeviceID];
 
           if (v70 && [v99 containsObject:v70])
           {
@@ -316,22 +316,22 @@ LABEL_54:
 
         if (v50)
         {
-          v71 = [v50 metadata];
-          v72 = [MEMORY[0x277CFE130] subtype];
-          v73 = [v71 objectForKeyedSubscript:v72];
+          metadata5 = [v50 metadata];
+          subtype2 = [MEMORY[0x277CFE130] subtype];
+          v73 = [metadata5 objectForKeyedSubscript:subtype2];
           [(ARPAnalyticsEvent *)v100 setCorrection:v73];
         }
 
         if (v51)
         {
-          v74 = [v50 metadata];
-          v75 = [MEMORY[0x277CFE130] subtype];
-          v76 = [v74 objectForKeyedSubscript:v75];
+          metadata6 = [v50 metadata];
+          subtype3 = [MEMORY[0x277CFE130] subtype];
+          v76 = [metadata6 objectForKeyedSubscript:subtype3];
           [(ARPAnalyticsEvent *)v100 setFailure:v76];
         }
 
-        v77 = [(ARPAnalyticsEvent *)v100 analyticsDictionary];
-        v78 = [v77 isEqualToDictionary:v88];
+        analyticsDictionary2 = [(ARPAnalyticsEvent *)v100 analyticsDictionary];
+        v78 = [analyticsDictionary2 isEqualToDictionary:analyticsDictionary];
 
         if ((v78 & 1) == 0)
         {
@@ -339,8 +339,8 @@ LABEL_54:
         }
 
         v13 = v94 + 1;
-        v98 = v12;
-        v10 = v87;
+        v98 = distantPast;
+        locationEventsCopy = v87;
       }
 
       while (v94 + 1 != v91);
@@ -402,17 +402,17 @@ BOOL __103__ARPAnalyticsEvent_feedbackEventsFromAppUsageEvents_playingEvents_mic
 {
   v16 = MEMORY[0x277CCACA8];
   v15 = objc_opt_class();
-  v14 = [(ARPAnalyticsEvent *)self prediction];
-  v13 = [(ARPAnalyticsEvent *)self predictionReason];
-  v3 = [(ARPAnalyticsEvent *)self suppressionReason];
+  prediction = [(ARPAnalyticsEvent *)self prediction];
+  predictionReason = [(ARPAnalyticsEvent *)self predictionReason];
+  suppressionReason = [(ARPAnalyticsEvent *)self suppressionReason];
   v4 = [MEMORY[0x277CCABB0] numberWithBool:{-[ARPAnalyticsEvent predictionCorrect](self, "predictionCorrect")}];
-  v5 = [(ARPAnalyticsEvent *)self predictedDevice];
-  v6 = [(ARPAnalyticsEvent *)self actualDevice];
-  v7 = [(ARPAnalyticsEvent *)self correction];
-  v8 = [(ARPAnalyticsEvent *)self correctionTiming];
-  v9 = [(ARPAnalyticsEvent *)self failure];
+  predictedDevice = [(ARPAnalyticsEvent *)self predictedDevice];
+  actualDevice = [(ARPAnalyticsEvent *)self actualDevice];
+  correction = [(ARPAnalyticsEvent *)self correction];
+  correctionTiming = [(ARPAnalyticsEvent *)self correctionTiming];
+  failure = [(ARPAnalyticsEvent *)self failure];
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ARPAnalyticsEvent numberOfMicrolocations](self, "numberOfMicrolocations")}];
-  v11 = [v16 stringWithFormat:@"<%@ %p> prediction: %@, predictionReason: %@, suppressionReason: %@, predictionCorrect: %@, predictedDevice: %@, actualDevice: %@, correction: %@, correctionTiming: %@, failure: %@, numberOfMicrolocations: %@", v15, self, v14, v13, v3, v4, v5, v6, v7, v8, v9, v10];
+  v11 = [v16 stringWithFormat:@"<%@ %p> prediction: %@, predictionReason: %@, suppressionReason: %@, predictionCorrect: %@, predictedDevice: %@, actualDevice: %@, correction: %@, correctionTiming: %@, failure: %@, numberOfMicrolocations: %@", v15, self, prediction, predictionReason, suppressionReason, v4, predictedDevice, actualDevice, correction, correctionTiming, failure, v10];
 
   return v11;
 }
@@ -421,11 +421,11 @@ BOOL __103__ARPAnalyticsEvent_feedbackEventsFromAppUsageEvents_playingEvents_mic
 {
   v21[10] = *MEMORY[0x277D85DE8];
   v20[0] = @"predicted";
-  v3 = [(ARPAnalyticsEvent *)self prediction];
-  v4 = v3;
-  if (v3)
+  prediction = [(ARPAnalyticsEvent *)self prediction];
+  v4 = prediction;
+  if (prediction)
   {
-    v5 = v3;
+    v5 = prediction;
   }
 
   else
@@ -435,11 +435,11 @@ BOOL __103__ARPAnalyticsEvent_feedbackEventsFromAppUsageEvents_playingEvents_mic
 
   v21[0] = v5;
   v20[1] = @"suppression_reason";
-  v6 = [(ARPAnalyticsEvent *)self suppressionReason];
-  v7 = v6;
-  if (v6)
+  suppressionReason = [(ARPAnalyticsEvent *)self suppressionReason];
+  v7 = suppressionReason;
+  if (suppressionReason)
   {
-    v8 = v6;
+    v8 = suppressionReason;
   }
 
   else
@@ -452,11 +452,11 @@ BOOL __103__ARPAnalyticsEvent_feedbackEventsFromAppUsageEvents_playingEvents_mic
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[ARPAnalyticsEvent predictionCorrect](self, "predictionCorrect")}];
   v21[2] = v9;
   v20[3] = @"actual_device";
-  v10 = [(ARPAnalyticsEvent *)self actualDevice];
-  v11 = v10;
-  if (v10)
+  actualDevice = [(ARPAnalyticsEvent *)self actualDevice];
+  v11 = actualDevice;
+  if (actualDevice)
   {
-    v12 = v10;
+    v12 = actualDevice;
   }
 
   else
@@ -466,11 +466,11 @@ BOOL __103__ARPAnalyticsEvent_feedbackEventsFromAppUsageEvents_playingEvents_mic
 
   v21[3] = v12;
   v20[4] = @"failure";
-  v13 = [(ARPAnalyticsEvent *)self failure];
-  v14 = v13;
-  if (v13)
+  failure = [(ARPAnalyticsEvent *)self failure];
+  v14 = failure;
+  if (failure)
   {
-    v15 = v13;
+    v15 = failure;
   }
 
   else

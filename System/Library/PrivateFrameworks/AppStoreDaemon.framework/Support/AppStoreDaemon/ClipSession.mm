@@ -1,9 +1,9 @@
 @interface ClipSession
-- (void)coordinator:(id)a3 canceledWithReason:(id)a4 client:(unint64_t)a5;
-- (void)coordinatorDidCompleteSuccessfully:(id)a3 forApplicationRecord:(id)a4;
-- (void)coordinatorDidInstallPlaceholder:(id)a3 forApplicationRecord:(id)a4;
+- (void)coordinator:(id)coordinator canceledWithReason:(id)reason client:(unint64_t)client;
+- (void)coordinatorDidCompleteSuccessfully:(id)successfully forApplicationRecord:(id)record;
+- (void)coordinatorDidInstallPlaceholder:(id)placeholder forApplicationRecord:(id)record;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation ClipSession
@@ -16,9 +16,9 @@
   [(ClipSession *)&v3 dealloc];
 }
 
-- (void)coordinator:(id)a3 canceledWithReason:(id)a4 client:(unint64_t)a5
+- (void)coordinator:(id)coordinator canceledWithReason:(id)reason client:(unint64_t)client
 {
-  v6 = a4;
+  reasonCopy = reason;
   v7 = ASDLogHandleForCategory();
   v8 = v7;
   signpostID = self->_logContext.signpostID;
@@ -34,8 +34,8 @@
   v13[2] = sub_1001C966C;
   v13[3] = &unk_10051B570;
   v13[4] = self;
-  v14 = v6;
-  v11 = v6;
+  v14 = reasonCopy;
+  v11 = reasonCopy;
   v12 = v11;
   if (dispatchQueue)
   {
@@ -44,7 +44,7 @@
   }
 }
 
-- (void)coordinatorDidCompleteSuccessfully:(id)a3 forApplicationRecord:(id)a4
+- (void)coordinatorDidCompleteSuccessfully:(id)successfully forApplicationRecord:(id)record
 {
   v5 = ASDLogHandleForCategory();
   v6 = v5;
@@ -67,7 +67,7 @@
   }
 }
 
-- (void)coordinatorDidInstallPlaceholder:(id)a3 forApplicationRecord:(id)a4
+- (void)coordinatorDidInstallPlaceholder:(id)placeholder forApplicationRecord:(id)record
 {
   v5 = ASDLogHandleForCategory();
   v6 = v5;
@@ -99,10 +99,10 @@
   sub_1001C9B28(self, 1);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a4;
-  v9 = a3;
+  objectCopy = object;
+  pathCopy = path;
   v10 = ASDLogHandleForCategory();
   v11 = v10;
   signpostID = self->_logContext.signpostID;
@@ -112,10 +112,10 @@
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v11, OS_SIGNPOST_EVENT, signpostID, "Clip::Event/Download/Progress", "", v15, 2u);
   }
 
-  v13 = [v9 isEqualToString:@"fractionCompleted"];
+  v13 = [pathCopy isEqualToString:@"fractionCompleted"];
   if (v13)
   {
-    [v8 fractionCompleted];
+    [objectCopy fractionCompleted];
     sub_1001C9E74(self, v14);
   }
 }

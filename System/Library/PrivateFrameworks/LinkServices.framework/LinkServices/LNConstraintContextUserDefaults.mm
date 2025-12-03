@@ -1,18 +1,18 @@
 @interface LNConstraintContextUserDefaults
-- (LNConstraintContextUserDefaults)initWithIdentifier:(id)a3;
-- (id)valueForKeyPath:(id)a3;
+- (LNConstraintContextUserDefaults)initWithIdentifier:(id)identifier;
+- (id)valueForKeyPath:(id)path;
 @end
 
 @implementation LNConstraintContextUserDefaults
 
-- (id)valueForKeyPath:(id)a3
+- (id)valueForKeyPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = self->_container;
-  v6 = [v4 componentsSeparatedByString:@"."];
+  v6 = [pathCopy componentsSeparatedByString:@"."];
   if ([v6 count] == 1)
   {
-    v7 = v4;
+    lastObject = pathCopy;
     v8 = self->_identifier;
     if (!v5)
     {
@@ -29,7 +29,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v7 = [v6 lastObject];
+  lastObject = [v6 lastObject];
   v9 = [v6 subarrayWithRange:{0, objc_msgSend(v6, "count") - 1}];
   v8 = [v9 componentsJoinedByString:@"."];
 
@@ -45,14 +45,14 @@ LABEL_7:
   return v10;
 }
 
-- (LNConstraintContextUserDefaults)initWithIdentifier:(id)a3
+- (LNConstraintContextUserDefaults)initWithIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"LNActionConstraint+Evaluation.m" lineNumber:167 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNActionConstraint+Evaluation.m" lineNumber:167 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
   v20.receiver = self;
@@ -60,11 +60,11 @@ LABEL_7:
   v6 = [(LNConstraintContextUserDefaults *)&v20 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [identifierCopy copy];
     identifier = v6->_identifier;
     v6->_identifier = v7;
 
-    v9 = v5;
+    v9 = identifierCopy;
     container_query_create();
     container_query_set_class();
     v10 = xpc_string_create([v9 UTF8String]);
@@ -85,7 +85,7 @@ LABEL_7:
         v13 = getLNLogCategoryExecution();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
-          v14 = [v9 UTF8String];
+          uTF8String = [v9 UTF8String];
           v15 = "<null>";
           if (v12)
           {
@@ -93,7 +93,7 @@ LABEL_7:
           }
 
           *buf = 136315394;
-          v22 = v14;
+          v22 = uTF8String;
           v23 = 2080;
           v24 = v15;
           _os_log_impl(&dword_19763D000, v13, OS_LOG_TYPE_ERROR, "failed to lookup container for %s: %s\n", buf, 0x16u);

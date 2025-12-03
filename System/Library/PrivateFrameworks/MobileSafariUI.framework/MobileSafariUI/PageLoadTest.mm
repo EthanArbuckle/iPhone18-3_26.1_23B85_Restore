@@ -1,28 +1,28 @@
 @interface PageLoadTest
-- (PageLoadTest)initWithTabDocument:(id)a3 pagesNeedingMemoryWarningSent:(id)a4;
+- (PageLoadTest)initWithTabDocument:(id)document pagesNeedingMemoryWarningSent:(id)sent;
 - (void)_enablePageLoadMeasurementCollection;
 - (void)_invalidateRemoteObjects;
 - (void)_setUpPageLoadTestEventsListener;
 - (void)_setUpWebProcessForPageLoadMeasurementCollection;
 - (void)dealloc;
-- (void)didFinishPageLoadWithLoadData:(id)a3;
+- (void)didFinishPageLoadWithLoadData:(id)data;
 - (void)resetAfterWebProcessCrash;
 @end
 
 @implementation PageLoadTest
 
-- (PageLoadTest)initWithTabDocument:(id)a3 pagesNeedingMemoryWarningSent:(id)a4
+- (PageLoadTest)initWithTabDocument:(id)document pagesNeedingMemoryWarningSent:(id)sent
 {
-  v7 = a3;
-  v8 = a4;
+  documentCopy = document;
+  sentCopy = sent;
   v13.receiver = self;
   v13.super_class = PageLoadTest;
   v9 = [(PageLoadTest *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_pagesNeedingMemoryWarningSent, a4);
-    objc_storeStrong(&v10->_tabDocument, a3);
+    objc_storeStrong(&v9->_pagesNeedingMemoryWarningSent, sent);
+    objc_storeStrong(&v10->_tabDocument, document);
     [(PageLoadTest *)v10 _setUpWebProcessForPageLoadMeasurementCollection];
     v11 = v10;
   }
@@ -40,10 +40,10 @@
 
 - (void)_invalidateRemoteObjects
 {
-  v3 = [(TabDocument *)self->_tabDocument webView];
-  v5 = [v3 _remoteObjectRegistry];
+  webView = [(TabDocument *)self->_tabDocument webView];
+  _remoteObjectRegistry = [webView _remoteObjectRegistry];
 
-  [v5 unregisterExportedObject:self interface:self->_eventsListenerInterface];
+  [_remoteObjectRegistry unregisterExportedObject:self interface:self->_eventsListenerInterface];
   eventsListenerInterface = self->_eventsListenerInterface;
   self->_eventsListenerInterface = 0;
 }
@@ -57,23 +57,23 @@
 
 - (void)_setUpPageLoadTestEventsListener
 {
-  v3 = [(TabDocument *)self->_tabDocument webView];
-  v6 = [v3 _remoteObjectRegistry];
+  webView = [(TabDocument *)self->_tabDocument webView];
+  _remoteObjectRegistry = [webView _remoteObjectRegistry];
 
   v4 = [MEMORY[0x277CE3898] remoteObjectInterfaceWithProtocol:&unk_2828EF078];
   eventsListenerInterface = self->_eventsListenerInterface;
   self->_eventsListenerInterface = v4;
 
-  [v6 registerExportedObject:self interface:self->_eventsListenerInterface];
+  [_remoteObjectRegistry registerExportedObject:self interface:self->_eventsListenerInterface];
 }
 
 - (void)_enablePageLoadMeasurementCollection
 {
-  v3 = [(TabDocument *)self->_tabDocument webView];
-  v7 = [v3 _remoteObjectRegistry];
+  webView = [(TabDocument *)self->_tabDocument webView];
+  _remoteObjectRegistry = [webView _remoteObjectRegistry];
 
   v4 = [MEMORY[0x277CE3898] remoteObjectInterfaceWithProtocol:&unk_2828EF0D8];
-  v5 = [v7 remoteObjectProxyWithInterface:v4];
+  v5 = [_remoteObjectRegistry remoteObjectProxyWithInterface:v4];
   v6 = v5;
   if (self->_pagesNeedingMemoryWarningSent)
   {
@@ -88,12 +88,12 @@
   [(PageLoadTest *)self _setUpWebProcessForPageLoadMeasurementCollection];
 }
 
-- (void)didFinishPageLoadWithLoadData:(id)a3
+- (void)didFinishPageLoadWithLoadData:(id)data
 {
   tabDocument = self->_tabDocument;
-  v4 = a3;
-  v5 = [(TabDocument *)tabDocument pageLoadStatistics];
-  [v5 pageLoadFinishedForTestsWK2WithLoadData:v4];
+  dataCopy = data;
+  pageLoadStatistics = [(TabDocument *)tabDocument pageLoadStatistics];
+  [pageLoadStatistics pageLoadFinishedForTestsWK2WithLoadData:dataCopy];
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface LPFetcherResponse
-- (LPFetcherResponse)initWithState:(int64_t)a3 fetcher:(id)a4;
+- (LPFetcherResponse)initWithState:(int64_t)state fetcher:(id)fetcher;
 @end
 
 @implementation LPFetcherResponse
 
-- (LPFetcherResponse)initWithState:(int64_t)a3 fetcher:(id)a4
+- (LPFetcherResponse)initWithState:(int64_t)state fetcher:(id)fetcher
 {
-  v6 = a4;
+  fetcherCopy = fetcher;
   v13.receiver = self;
   v13.super_class = LPFetcherResponse;
   v7 = [(LPFetcherResponse *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    v7->_state = a3;
-    v9 = [v6 userData];
+    v7->_state = state;
+    userData = [fetcherCopy userData];
     userData = v8->_userData;
-    v8->_userData = v9;
+    v8->_userData = userData;
 
     v11 = v8;
   }

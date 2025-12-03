@@ -1,15 +1,15 @@
 @interface SBUIImageDataProvider
-- (SBUIImageDataProvider)initWithImage:(id)a3 context:(id)a4 scaleFactor:(double)a5;
-- (id)fetchImageForFormat:(int64_t)a3;
+- (SBUIImageDataProvider)initWithImage:(id)image context:(id)context scaleFactor:(double)factor;
+- (id)fetchImageForFormat:(int64_t)format;
 @end
 
 @implementation SBUIImageDataProvider
 
-- (SBUIImageDataProvider)initWithImage:(id)a3 context:(id)a4 scaleFactor:(double)a5
+- (SBUIImageDataProvider)initWithImage:(id)image context:(id)context scaleFactor:(double)factor
 {
-  v10 = a3;
-  v11 = a4;
-  if (!v10)
+  imageCopy = image;
+  contextCopy = context;
+  if (!imageCopy)
   {
     [SBUIImageDataProvider initWithImage:a2 context:self scaleFactor:?];
   }
@@ -20,15 +20,15 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_image, a3);
-    objc_storeStrong(&v13->_context, a4);
-    v13->_scaleFactor = a5;
+    objc_storeStrong(&v12->_image, image);
+    objc_storeStrong(&v13->_context, context);
+    v13->_scaleFactor = factor;
   }
 
   return v13;
 }
 
-- (id)fetchImageForFormat:(int64_t)a3
+- (id)fetchImageForFormat:(int64_t)format
 {
   v4 = self->_image;
   if ((BSFloatIsOne() & 1) == 0)

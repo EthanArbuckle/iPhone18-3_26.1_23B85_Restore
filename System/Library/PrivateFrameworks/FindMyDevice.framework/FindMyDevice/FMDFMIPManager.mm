@@ -11,97 +11,97 @@
 - (BOOL)needsLostModeExitAuth;
 - (FMDFMIPManager)init;
 - (id)_postWipePrefPath;
-- (id)disableFMIPUsingToken:(id)a3 inContext:(unint64_t)a4;
-- (id)enableFMIPInContext:(unint64_t)a3;
-- (id)enableLostModeWithInfo:(id)a3;
+- (id)disableFMIPUsingToken:(id)token inContext:(unint64_t)context;
+- (id)enableFMIPInContext:(unint64_t)context;
+- (id)enableLostModeWithInfo:(id)info;
 - (id)fmipAccount;
 - (id)getManagedLostModeFileURL;
 - (id)getNeedsLocateAckLostModeFileURL;
 - (id)lostModeInfo;
-- (id)newErrorForCode:(int)a3 message:(id)a4;
+- (id)newErrorForCode:(int)code message:(id)message;
 - (id)pathsToPreserveAcrossWipe;
 - (unint64_t)_managedLostModeType;
 - (unint64_t)_needsAckLostModeType;
-- (void)_disableFMIPUsingToken:(id)a3 inContext:(unint64_t)a4 completion:(id)a5;
-- (void)_forceFMWUpgradeAlertWithCompletion:(id)a3;
-- (void)_getAccessoriesWithFilter:(id)a3 completion:(id)a4;
-- (void)_initiateLostModeExitAuthForIDSDeviceID:(id)a3 withCompletion:(id)a4;
+- (void)_disableFMIPUsingToken:(id)token inContext:(unint64_t)context completion:(id)completion;
+- (void)_forceFMWUpgradeAlertWithCompletion:(id)completion;
+- (void)_getAccessoriesWithFilter:(id)filter completion:(id)completion;
+- (void)_initiateLostModeExitAuthForIDSDeviceID:(id)d withCompletion:(id)completion;
 - (void)_managedLostModeType;
 - (void)_needsAckLostModeType;
 - (void)_stopAlarm;
-- (void)_updateManagedLostModeWithInfo:(id)a3 completion:(id)a4;
-- (void)_updateNeedsLocateAckLostModeWithInfo:(id)a3 completion:(id)a4;
-- (void)activationLockAuthInfoWithCompletion:(id)a3;
-- (void)activationLockInfoFromDeviceWithCompletion:(id)a3;
-- (void)activationLockVersionWithCompletion:(id)a3;
-- (void)addNotificationRequest:(id)a3 completion:(id)a4;
-- (void)attemptUCRTHealing:(id)a3 completion:(id)a4;
-- (void)audioAccessorySerialNumbersWithCompletion:(id)a3;
-- (void)clearData:(unint64_t)a3 completion:(id)a4;
-- (void)clearMaskedAppleIDWithCompletion:(id)a3;
-- (void)clearOfflineFindingInfoWithCompletion:(id)a3;
+- (void)_updateManagedLostModeWithInfo:(id)info completion:(id)completion;
+- (void)_updateNeedsLocateAckLostModeWithInfo:(id)info completion:(id)completion;
+- (void)activationLockAuthInfoWithCompletion:(id)completion;
+- (void)activationLockInfoFromDeviceWithCompletion:(id)completion;
+- (void)activationLockVersionWithCompletion:(id)completion;
+- (void)addNotificationRequest:(id)request completion:(id)completion;
+- (void)attemptUCRTHealing:(id)healing completion:(id)completion;
+- (void)audioAccessorySerialNumbersWithCompletion:(id)completion;
+- (void)clearData:(unint64_t)data completion:(id)completion;
+- (void)clearMaskedAppleIDWithCompletion:(id)completion;
+- (void)clearOfflineFindingInfoWithCompletion:(id)completion;
 - (void)deviceActivationDidSucceed;
-- (void)deviceEligibleForRepairWithContext:(id)a3 completion:(id)a4;
-- (void)didAddLocalFindableAccessory:(id)a3 completion:(id)a4;
-- (void)didChangeFMIPAccountInfo:(id)a3;
-- (void)didReceiveLostModeExitAuthToken:(id)a3;
-- (void)didRemoveLocalFindableAccessory:(id)a3 completion:(id)a4;
-- (void)disableBiometricIDForLostModeWithCompletion:(id)a3;
-- (void)disableFMIPForAccount:(id)a3 pairedDeviceWithUDID:(id)a4 withCompletion:(id)a5;
-- (void)disableFMIPUsingToken:(id)a3 forPairedDeviceWithUDID:(id)a4 withCompletion:(id)a5;
-- (void)disableFMIPUsingToken:(id)a3 inContext:(unint64_t)a4 completion:(id)a5;
-- (void)disableLocationDisplayWithCompletion:(id)a3;
+- (void)deviceEligibleForRepairWithContext:(id)context completion:(id)completion;
+- (void)didAddLocalFindableAccessory:(id)accessory completion:(id)completion;
+- (void)didChangeFMIPAccountInfo:(id)info;
+- (void)didReceiveLostModeExitAuthToken:(id)token;
+- (void)didRemoveLocalFindableAccessory:(id)accessory completion:(id)completion;
+- (void)disableBiometricIDForLostModeWithCompletion:(id)completion;
+- (void)disableFMIPForAccount:(id)account pairedDeviceWithUDID:(id)d withCompletion:(id)completion;
+- (void)disableFMIPUsingToken:(id)token forPairedDeviceWithUDID:(id)d withCompletion:(id)completion;
+- (void)disableFMIPUsingToken:(id)token inContext:(unint64_t)context completion:(id)completion;
+- (void)disableLocationDisplayWithCompletion:(id)completion;
 - (void)disableLostMode;
-- (void)disableManagedLostModeWithLocatedMessage:(id)a3 completion:(id)a4;
-- (void)enableActivationLockWithCompletion:(id)a3;
-- (void)enableManagedLostModeWithInfo:(id)a3 completion:(id)a4;
-- (void)enableRepairWithContext:(id)a3 completion:(id)a4;
-- (void)fetchAPNSTokenWithCompletion:(id)a3;
-- (void)fetchAccessoryConfigurations:(id)a3;
-- (void)fetchOfflineFindingInfoWithCompletion:(id)a3;
+- (void)disableManagedLostModeWithLocatedMessage:(id)message completion:(id)completion;
+- (void)enableActivationLockWithCompletion:(id)completion;
+- (void)enableManagedLostModeWithInfo:(id)info completion:(id)completion;
+- (void)enableRepairWithContext:(id)context completion:(id)completion;
+- (void)fetchAPNSTokenWithCompletion:(id)completion;
+- (void)fetchAccessoryConfigurations:(id)configurations;
+- (void)fetchOfflineFindingInfoWithCompletion:(id)completion;
 - (void)fmipAccount;
-- (void)fmipAccountWithCompletion:(id)a3;
-- (void)fmipStateWithCompletion:(id)a3;
-- (void)getConnectedAccessoriesDiscoveryIds:(id)a3;
-- (void)initiateLostModeExitAuthForIDSDeviceID:(id)a3 withCompletion:(id)a4;
-- (void)initiateLostModeExitAuthWithCompletion:(id)a3;
-- (void)isActivationLockAllowedWithCompletion:(id)a3;
-- (void)isActivationLockEnabledWithCompletion:(id)a3;
-- (void)isActivationLockedWithCompletion:(id)a3;
+- (void)fmipAccountWithCompletion:(id)completion;
+- (void)fmipStateWithCompletion:(id)completion;
+- (void)getConnectedAccessoriesDiscoveryIds:(id)ids;
+- (void)initiateLostModeExitAuthForIDSDeviceID:(id)d withCompletion:(id)completion;
+- (void)initiateLostModeExitAuthWithCompletion:(id)completion;
+- (void)isActivationLockAllowedWithCompletion:(id)completion;
+- (void)isActivationLockEnabledWithCompletion:(id)completion;
+- (void)isActivationLockedWithCompletion:(id)completion;
 - (void)lostModeInfo;
-- (void)lowBatteryLocateEnabledWithCompletion:(id)a3;
-- (void)markAsMissingSupportedForPairedDeviceWithUDID:(id)a3 withCompletion:(id)a4;
-- (void)markPairedDeviceWithUDID:(id)a3 asMissingUsingToken:(id)a4 withCompletion:(id)a5;
-- (void)pairingCheckWith:(id)a3 completion:(id)a4;
-- (void)playSoundWithMessage:(id)a3 completion:(id)a4;
-- (void)playSoundWithOptions:(id)a3 completion:(id)a4;
+- (void)lowBatteryLocateEnabledWithCompletion:(id)completion;
+- (void)markAsMissingSupportedForPairedDeviceWithUDID:(id)d withCompletion:(id)completion;
+- (void)markPairedDeviceWithUDID:(id)d asMissingUsingToken:(id)token withCompletion:(id)completion;
+- (void)pairingCheckWith:(id)with completion:(id)completion;
+- (void)playSoundWithMessage:(id)message completion:(id)completion;
+- (void)playSoundWithOptions:(id)options completion:(id)completion;
 - (void)primaryAppleAccountRemoved;
-- (void)registerDeviceForPairingLock:(id)a3 completion:(id)a4;
-- (void)removeAccessoryWithDiscoveryId:(id)a3 completion:(id)a4;
-- (void)removeNotificationWithIdentifier:(id)a3 completion:(id)a4;
-- (void)requireDisableLocationWithCompletion:(id)a3;
-- (void)setPhoneNumber:(id)a3 toAccessoryWithDiscoveryId:(id)a4 completion:(id)a5;
+- (void)registerDeviceForPairingLock:(id)lock completion:(id)completion;
+- (void)removeAccessoryWithDiscoveryId:(id)id completion:(id)completion;
+- (void)removeNotificationWithIdentifier:(id)identifier completion:(id)completion;
+- (void)requireDisableLocationWithCompletion:(id)completion;
+- (void)setPhoneNumber:(id)number toAccessoryWithDiscoveryId:(id)id completion:(id)completion;
 - (void)showDailyLocateReport;
-- (void)signatureHeadersWithData:(id)a3 completion:(id)a4;
-- (void)simulatePushWithPayload:(id)a3 completion:(id)a4;
-- (void)soundStoppedForAccessoryIdentifier:(id)a3;
-- (void)startLocationMonitoring:(id)a3;
-- (void)startLocationMonitoringWithContext:(id)a3 completion:(id)a4;
-- (void)startLocationMonitoringWithOptions:(id)a3 completion:(id)a4;
-- (void)startPlayingSoundForAccessory:(id)a3 duration:(double)a4 rampUpDuration:(double)a5 channels:(id)a6 completion:(id)a7;
-- (void)stopLocationMonitoring:(id)a3;
-- (void)stopLocationMonitoringWithContext:(id)a3 completion:(id)a4;
-- (void)stopLocationMonitoringWithOptions:(id)a3 completion:(id)a4;
-- (void)stopPlayingSoundForAccessory:(id)a3 rampDownDuration:(double)a4 completion:(id)a5;
-- (void)stopSoundMessageWithCompletion:(id)a3;
-- (void)storeOfflineFindingInfo:(id)a3 completion:(id)a4;
-- (void)updateMaskedAppleIDWith:(id)a3 completion:(id)a4;
-- (void)updatePairingLockInfo:(id)a3 completion:(id)a4;
-- (void)updatedConfigReceived:(id)a3 completion:(id)a4;
-- (void)userDidAckManagedLostModeLocateWithCompletion:(id)a3;
+- (void)signatureHeadersWithData:(id)data completion:(id)completion;
+- (void)simulatePushWithPayload:(id)payload completion:(id)completion;
+- (void)soundStoppedForAccessoryIdentifier:(id)identifier;
+- (void)startLocationMonitoring:(id)monitoring;
+- (void)startLocationMonitoringWithContext:(id)context completion:(id)completion;
+- (void)startLocationMonitoringWithOptions:(id)options completion:(id)completion;
+- (void)startPlayingSoundForAccessory:(id)accessory duration:(double)duration rampUpDuration:(double)upDuration channels:(id)channels completion:(id)completion;
+- (void)stopLocationMonitoring:(id)monitoring;
+- (void)stopLocationMonitoringWithContext:(id)context completion:(id)completion;
+- (void)stopLocationMonitoringWithOptions:(id)options completion:(id)completion;
+- (void)stopPlayingSoundForAccessory:(id)accessory rampDownDuration:(double)duration completion:(id)completion;
+- (void)stopSoundMessageWithCompletion:(id)completion;
+- (void)storeOfflineFindingInfo:(id)info completion:(id)completion;
+- (void)updateMaskedAppleIDWith:(id)with completion:(id)completion;
+- (void)updatePairingLockInfo:(id)info completion:(id)completion;
+- (void)updatedConfigReceived:(id)received completion:(id)completion;
+- (void)userDidAckManagedLostModeLocateWithCompletion:(id)completion;
 - (void)userNotifiedOfActivationLockForAllPairedDevices;
-- (void)userNotifiedOfActivationLockForPairedDevices:(id)a3;
-- (void)waitForRoutableAccessory:(id)a3 timeout:(double)a4 completion:(id)a5;
+- (void)userNotifiedOfActivationLockForPairedDevices:(id)devices;
+- (void)waitForRoutableAccessory:(id)accessory timeout:(double)timeout completion:(id)completion;
 @end
 
 @implementation FMDFMIPManager
@@ -161,9 +161,9 @@ uint64_t __32__FMDFMIPManager_sharedInstance__block_invoke()
     if (v5)
     {
       v7 = [v5 objectForKey:@"lostModeEnabled"];
-      v8 = [v7 BOOLValue];
+      bOOLValue = [v7 BOOLValue];
 
-      if (v8)
+      if (bOOLValue)
       {
         goto LABEL_11;
       }
@@ -174,9 +174,9 @@ uint64_t __32__FMDFMIPManager_sharedInstance__block_invoke()
     {
       v10 = v9;
       v11 = [v9 objectForKey:@"lostModeEnabled"];
-      v12 = [v11 BOOLValue];
+      bOOLValue2 = [v11 BOOLValue];
 
-      if (v12)
+      if (bOOLValue2)
       {
         goto LABEL_11;
       }
@@ -188,9 +188,9 @@ uint64_t __32__FMDFMIPManager_sharedInstance__block_invoke()
     {
       v14 = v13;
       v15 = [v13 objectForKey:@"lostModeEnabled"];
-      v16 = [v15 BOOLValue];
+      bOOLValue3 = [v15 BOOLValue];
 
-      if (v16)
+      if (bOOLValue3)
       {
         goto LABEL_11;
       }
@@ -258,12 +258,12 @@ LABEL_11:
   }
 
   fmdFMIPLastOperationResult = 0;
-  v5 = [(FMDFMIPManager *)self _checkLostModeInSharedContainer];
+  _checkLostModeInSharedContainer = [(FMDFMIPManager *)self _checkLostModeInSharedContainer];
   v6 = LogCategory_Unspecified();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"NO";
-    if (v5)
+    if (_checkLostModeInSharedContainer)
     {
       v7 = @"YES";
     }
@@ -277,13 +277,13 @@ LABEL_11:
 
   objc_autoreleasePoolPop(v3);
   v8 = *MEMORY[0x1E69E9840];
-  return v5;
+  return _checkLostModeInSharedContainer;
 }
 
 - (unint64_t)_managedLostModeType
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [(FMDFMIPManager *)self getManagedLostModeFileURL];
+  getManagedLostModeFileURL = [(FMDFMIPManager *)self getManagedLostModeFileURL];
   v3 = LogCategory_Unspecified();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
@@ -291,7 +291,7 @@ LABEL_11:
   }
 
   v16 = 0;
-  v4 = [MEMORY[0x1E695DF20] fm_dictionaryWithContentsOfURL:v2 error:&v16];
+  v4 = [MEMORY[0x1E695DF20] fm_dictionaryWithContentsOfURL:getManagedLostModeFileURL error:&v16];
   v5 = v16;
   v6 = v5;
   if (v5)
@@ -306,7 +306,7 @@ LABEL_11:
         _os_log_impl(&dword_1DF650000, v7, OS_LOG_TYPE_DEFAULT, "Could not read managed lost mode file %@", buf, 0xCu);
       }
 
-      v8 = 0;
+      integerValue = 0;
 LABEL_18:
 
       goto LABEL_19;
@@ -322,27 +322,27 @@ LABEL_18:
     }
 
     v10 = [v4 objectForKey:@"lostModeEnabled"];
-    v11 = [v10 BOOLValue];
+    bOOLValue = [v10 BOOLValue];
 
-    if (v11)
+    if (bOOLValue)
     {
       v12 = [v4 objectForKey:@"lostModeType"];
       v7 = v12;
       if (v12)
       {
-        v8 = [v12 integerValue];
+        integerValue = [v12 integerValue];
       }
 
       else
       {
-        v8 = 3;
+        integerValue = 3;
       }
 
       v13 = LogCategory_Unspecified();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v18 = v8;
+        v18 = integerValue;
         _os_log_impl(&dword_1DF650000, v13, OS_LOG_TYPE_DEFAULT, "Managed lost mode type? %lu", buf, 0xCu);
       }
 
@@ -350,17 +350,17 @@ LABEL_18:
     }
   }
 
-  v8 = 0;
+  integerValue = 0;
 LABEL_19:
 
   v14 = *MEMORY[0x1E69E9840];
-  return v8;
+  return integerValue;
 }
 
 - (unint64_t)_needsAckLostModeType
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [(FMDFMIPManager *)self getNeedsLocateAckLostModeFileURL];
+  getNeedsLocateAckLostModeFileURL = [(FMDFMIPManager *)self getNeedsLocateAckLostModeFileURL];
   v3 = LogCategory_Unspecified();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
@@ -368,7 +368,7 @@ LABEL_19:
   }
 
   v15 = 0;
-  v4 = [MEMORY[0x1E695DF20] fm_dictionaryWithContentsOfURL:v2 error:&v15];
+  v4 = [MEMORY[0x1E695DF20] fm_dictionaryWithContentsOfURL:getNeedsLocateAckLostModeFileURL error:&v15];
   v5 = v15;
   v6 = v5;
   if (!v5)
@@ -380,18 +380,18 @@ LABEL_19:
     }
 
     v10 = [v4 objectForKey:@"lostModeEnabled"];
-    v11 = [v10 BOOLValue];
+    bOOLValue = [v10 BOOLValue];
 
-    if (v11)
+    if (bOOLValue)
     {
       v12 = [v4 objectForKey:@"lostModeType"];
-      v8 = [v12 integerValue];
+      integerValue = [v12 integerValue];
 
       v7 = LogCategory_Unspecified();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v17 = v8;
+        v17 = integerValue;
         _os_log_impl(&dword_1DF650000, v7, OS_LOG_TYPE_DEFAULT, "NeedsLocateAck lost mode type? %lu", buf, 0xCu);
       }
 
@@ -399,7 +399,7 @@ LABEL_19:
     }
 
 LABEL_14:
-    v8 = 0;
+    integerValue = 0;
     goto LABEL_15;
   }
 
@@ -416,12 +416,12 @@ LABEL_14:
     _os_log_impl(&dword_1DF650000, v7, OS_LOG_TYPE_DEFAULT, "Could not read NeedsLocateAck lost mode file %@", buf, 0xCu);
   }
 
-  v8 = 0;
+  integerValue = 0;
 LABEL_13:
 
 LABEL_15:
   v13 = *MEMORY[0x1E69E9840];
-  return v8;
+  return integerValue;
 }
 
 - (id)lostModeInfo
@@ -440,9 +440,9 @@ LABEL_15:
   v5 = 0;
   if ([(FMDFMIPManager *)self _isRunningAsMobileUser])
   {
-    v6 = [(FMDFMIPManager *)self getManagedLostModeFileURL];
+    getManagedLostModeFileURL = [(FMDFMIPManager *)self getManagedLostModeFileURL];
     v45 = 0;
-    v7 = [MEMORY[0x1E695DF20] fm_dictionaryWithContentsOfURL:v6 error:&v45];
+    v7 = [MEMORY[0x1E695DF20] fm_dictionaryWithContentsOfURL:getManagedLostModeFileURL error:&v45];
     v8 = v45;
     v9 = v8;
     if (v7)
@@ -455,21 +455,21 @@ LABEL_15:
       }
 
       v11 = [v7 objectForKey:@"lostModeEnabled"];
-      v12 = [v11 BOOLValue];
+      bOOLValue = [v11 BOOLValue];
 
-      if (v12)
+      if (bOOLValue)
       {
         v13 = [v7 objectForKey:@"lostModeType"];
-        v14 = [v13 integerValue];
+        integerValue = [v13 integerValue];
 
-        if (v14)
+        if (integerValue)
         {
-          v15 = v14;
+          integerValue2 = integerValue;
         }
 
         else
         {
-          v15 = 3;
+          integerValue2 = 3;
         }
 
         goto LABEL_36;
@@ -500,11 +500,11 @@ LABEL_15:
     if (v18)
     {
       v19 = [v18 objectForKey:@"lostModeEnabled"];
-      v20 = [v19 BOOLValue];
+      bOOLValue2 = [v19 BOOLValue];
 
-      if (v20)
+      if (bOOLValue2)
       {
-        v15 = 1;
+        integerValue2 = 1;
         v7 = v18;
 LABEL_36:
         v34 = LogCategory_Unspecified();
@@ -531,7 +531,7 @@ LABEL_36:
         v39 = [v7 objectForKey:@"disableSlideToUnlock"];
         -[FMDLostModeInfo setDisableSlideToUnlock:](v5, "setDisableSlideToUnlock:", [v39 BOOLValue]);
 
-        [(FMDLostModeInfo *)v5 setLostModeType:v15];
+        [(FMDLostModeInfo *)v5 setLostModeType:integerValue2];
         goto LABEL_39;
       }
     }
@@ -548,11 +548,11 @@ LABEL_36:
     if (v7)
     {
       v22 = [v7 objectForKey:@"lostModeEnabled"];
-      v23 = [v22 BOOLValue];
+      bOOLValue3 = [v22 BOOLValue];
 
-      if (v23)
+      if (bOOLValue3)
       {
-        v15 = 2;
+        integerValue2 = 2;
         goto LABEL_36;
       }
     }
@@ -570,19 +570,19 @@ LABEL_36:
     if (v25)
     {
       v26 = [v25 objectForKey:@"lostModeEnabled"];
-      v27 = [v26 BOOLValue];
+      bOOLValue4 = [v26 BOOLValue];
 
-      if (v27)
+      if (bOOLValue4)
       {
-        v15 = 4;
+        integerValue2 = 4;
         v7 = v25;
         goto LABEL_36;
       }
     }
 
-    v28 = [(FMDFMIPManager *)self getNeedsLocateAckLostModeFileURL];
+    getNeedsLocateAckLostModeFileURL = [(FMDFMIPManager *)self getNeedsLocateAckLostModeFileURL];
     v44 = 0;
-    v7 = [MEMORY[0x1E695DF20] fm_dictionaryWithContentsOfURL:v28 error:&v44];
+    v7 = [MEMORY[0x1E695DF20] fm_dictionaryWithContentsOfURL:getNeedsLocateAckLostModeFileURL error:&v44];
     v29 = v44;
 
     if (v7)
@@ -595,14 +595,14 @@ LABEL_36:
       }
 
       v31 = [v7 objectForKey:@"lostModeEnabled"];
-      v32 = [v31 BOOLValue];
+      bOOLValue5 = [v31 BOOLValue];
 
-      if (v32)
+      if (bOOLValue5)
       {
         v33 = [v7 objectForKey:@"lostModeType"];
-        v15 = [v33 integerValue];
+        integerValue2 = [v33 integerValue];
 
-        if (v15)
+        if (integerValue2)
         {
           goto LABEL_36;
         }
@@ -641,15 +641,15 @@ LABEL_42:
   return v5;
 }
 
-- (id)enableLostModeWithInfo:(id)a3
+- (id)enableLostModeWithInfo:(id)info
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   v5 = objc_autoreleasePoolPush();
   v6 = LogCategory_Unspecified();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 description];
+    v7 = [infoCopy description];
     *buf = 136315394;
     *&buf[4] = "[FMDFMIPManager enableLostModeWithInfo:]";
     *&buf[12] = 2112;
@@ -678,7 +678,7 @@ LABEL_42:
   v13 = v9;
   v27 = v13;
   [v12 addFailureBlock:v26];
-  v14 = [v12 remoteObjectProxy];
+  remoteObjectProxy = [v12 remoteObjectProxy];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __41__FMDFMIPManager_enableLostModeWithInfo___block_invoke_21;
@@ -688,7 +688,7 @@ LABEL_42:
   v23 = v15;
   v16 = v12;
   v24 = v16;
-  [v14 enableLostModeWithInfo:v4 usingCallback:v22];
+  [remoteObjectProxy enableLostModeWithInfo:infoCopy usingCallback:v22];
   [v15 wait];
   if ([v15 timeoutOccurred])
   {
@@ -761,14 +761,14 @@ void __41__FMDFMIPManager_enableLostModeWithInfo___block_invoke_21(uint64_t a1, 
   v6 = [v4 resumeConnectionWithConfiguration:v5];
 
   [v6 addFailureBlock:&__block_literal_global_27];
-  v7 = [v6 remoteObjectProxy];
+  remoteObjectProxy = [v6 remoteObjectProxy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __33__FMDFMIPManager_disableLostMode__block_invoke_28;
   v10[3] = &unk_1E86BD2A8;
   v11 = v6;
   v8 = v6;
-  [v7 disableLostModeUsingCallback:v10];
+  [remoteObjectProxy disableLostModeUsingCallback:v10];
 
   objc_autoreleasePoolPop(v2);
   v9 = *MEMORY[0x1E69E9840];
@@ -799,11 +799,11 @@ void __33__FMDFMIPManager_disableLostMode__block_invoke_28(uint64_t a1, void *a2
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enableManagedLostModeWithInfo:(id)a3 completion:(id)a4
+- (void)enableManagedLostModeWithInfo:(id)info completion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   v8 = LogCategory_Unspecified();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -812,16 +812,16 @@ void __33__FMDFMIPManager_disableLostMode__block_invoke_28(uint64_t a1, void *a2
     _os_log_impl(&dword_1DF650000, v8, OS_LOG_TYPE_DEFAULT, "FRAMEWORK API: %s", buf, 0xCu);
   }
 
-  if ([v6 lostModeEnabled])
+  if ([infoCopy lostModeEnabled])
   {
-    [v6 setDisableSlideToUnlock:1];
-    [v6 setLostModeType:3];
+    [infoCopy setDisableSlideToUnlock:1];
+    [infoCopy setLostModeType:3];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __59__FMDFMIPManager_enableManagedLostModeWithInfo_completion___block_invoke;
     v22[3] = &unk_1E86BD2D0;
-    v23 = v7;
-    [(FMDFMIPManager *)self _updateManagedLostModeWithInfo:v6 completion:v22];
+    v23 = completionCopy;
+    [(FMDFMIPManager *)self _updateManagedLostModeWithInfo:infoCopy completion:v22];
     v9 = v23;
 LABEL_9:
 
@@ -834,7 +834,7 @@ LABEL_9:
     [(FMDFMIPManager *)v10 enableManagedLostModeWithInfo:v11 completion:v12, v13, v14, v15, v16, v17];
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v18 = objc_alloc(MEMORY[0x1E696ABC0]);
     v19 = kFMDErrorDomain;
@@ -842,7 +842,7 @@ LABEL_9:
     v25 = @"You have passed in lostModeEnabled as NO. This is invalid";
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
     v20 = [v18 initWithDomain:v19 code:0 userInfo:v9];
-    (*(v7 + 2))(v7, v20);
+    (*(completionCopy + 2))(completionCopy, v20);
 
     goto LABEL_9;
   }
@@ -881,11 +881,11 @@ void __59__FMDFMIPManager_enableManagedLostModeWithInfo_completion___block_invok
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.private.restrict-post.fmip.lostmode.enable", 0, 0, 1u);
 }
 
-- (void)disableManagedLostModeWithLocatedMessage:(id)a3 completion:(id)a4
+- (void)disableManagedLostModeWithLocatedMessage:(id)message completion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   v8 = LogCategory_Unspecified();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -894,14 +894,14 @@ void __59__FMDFMIPManager_enableManagedLostModeWithInfo_completion___block_invok
     _os_log_impl(&dword_1DF650000, v8, OS_LOG_TYPE_DEFAULT, "FRAMEWORK API: %s", buf, 0xCu);
   }
 
-  v9 = [(FMDFMIPManager *)self lostModeInfo];
-  if ([v9 lostModeType] == 3)
+  lostModeInfo = [(FMDFMIPManager *)self lostModeInfo];
+  if ([lostModeInfo lostModeType] == 3)
   {
     [(FMDFMIPManager *)self _stopAlarm];
-    if (v6)
+    if (messageCopy)
     {
       v10 = objc_alloc_init(FMDLostModeInfo);
-      [(FMDLostModeInfo *)v10 setMessage:v6];
+      [(FMDLostModeInfo *)v10 setMessage:messageCopy];
       [(FMDLostModeInfo *)v10 setLostModeType:5];
       [(FMDLostModeInfo *)v10 setLostModeEnabled:1];
       [(FMDLostModeInfo *)v10 setDisableSlideToUnlock:1];
@@ -909,21 +909,21 @@ void __59__FMDFMIPManager_enableManagedLostModeWithInfo_completion___block_invok
       v25[1] = 3221225472;
       v25[2] = __70__FMDFMIPManager_disableManagedLostModeWithLocatedMessage_completion___block_invoke;
       v25[3] = &unk_1E86BD2F8;
-      v28 = v7;
-      v26 = v9;
-      v27 = self;
+      v28 = completionCopy;
+      v26 = lostModeInfo;
+      selfCopy = self;
       [(FMDFMIPManager *)self _updateNeedsLocateAckLostModeWithInfo:v10 completion:v25];
     }
 
     else
     {
-      [v9 setLostModeEnabled:0];
+      [lostModeInfo setLostModeEnabled:0];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __70__FMDFMIPManager_disableManagedLostModeWithLocatedMessage_completion___block_invoke_38;
       v23[3] = &unk_1E86BD2D0;
-      v24 = v7;
-      [(FMDFMIPManager *)self _updateManagedLostModeWithInfo:v9 completion:v23];
+      v24 = completionCopy;
+      [(FMDFMIPManager *)self _updateManagedLostModeWithInfo:lostModeInfo completion:v23];
       v10 = v24;
     }
 
@@ -936,7 +936,7 @@ void __59__FMDFMIPManager_enableManagedLostModeWithInfo_completion___block_invok
     [(FMDFMIPManager *)v11 disableManagedLostModeWithLocatedMessage:v12 completion:v13, v14, v15, v16, v17, v18];
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v19 = objc_alloc(MEMORY[0x1E696ABC0]);
     v20 = kFMDErrorDomain;
@@ -944,7 +944,7 @@ void __59__FMDFMIPManager_enableManagedLostModeWithInfo_completion___block_invok
     v30 = @"Device is not in managed lost mode. Cannot disable it.";
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
     v21 = [v19 initWithDomain:v20 code:2 userInfo:v10];
-    (*(v7 + 2))(v7, v21);
+    (*(completionCopy + 2))(completionCopy, v21);
 
 LABEL_11:
   }
@@ -1036,10 +1036,10 @@ void __70__FMDFMIPManager_disableManagedLostModeWithLocatedMessage_completion___
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.private.restrict-post.fmip.lostmode.enable", 0, 0, 1u);
 }
 
-- (void)userDidAckManagedLostModeLocateWithCompletion:(id)a3
+- (void)userDidAckManagedLostModeLocateWithCompletion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = LogCategory_Unspecified();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1048,17 +1048,17 @@ void __70__FMDFMIPManager_disableManagedLostModeWithLocatedMessage_completion___
     _os_log_impl(&dword_1DF650000, v5, OS_LOG_TYPE_DEFAULT, "FRAMEWORK API: %s", buf, 0xCu);
   }
 
-  v6 = [(FMDFMIPManager *)self lostModeInfo];
-  if ([v6 lostModeType] == 5)
+  lostModeInfo = [(FMDFMIPManager *)self lostModeInfo];
+  if ([lostModeInfo lostModeType] == 5)
   {
     [(FMDFMIPManager *)self _stopAlarm];
-    [v6 setLostModeEnabled:0];
+    [lostModeInfo setLostModeEnabled:0];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __64__FMDFMIPManager_userDidAckManagedLostModeLocateWithCompletion___block_invoke;
     v20[3] = &unk_1E86BD2D0;
-    v21 = v4;
-    [(FMDFMIPManager *)self _updateNeedsLocateAckLostModeWithInfo:v6 completion:v20];
+    v21 = completionCopy;
+    [(FMDFMIPManager *)self _updateNeedsLocateAckLostModeWithInfo:lostModeInfo completion:v20];
     v7 = v21;
 LABEL_9:
 
@@ -1071,7 +1071,7 @@ LABEL_9:
     [(FMDFMIPManager *)v8 userDidAckManagedLostModeLocateWithCompletion:v9, v10, v11, v12, v13, v14, v15];
   }
 
-  if (v4)
+  if (completionCopy)
   {
     v16 = objc_alloc(MEMORY[0x1E696ABC0]);
     v17 = kFMDErrorDomain;
@@ -1079,7 +1079,7 @@ LABEL_9:
     v23 = @"Device is not waiting for locate ack. Invalid state.";
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
     v18 = [v16 initWithDomain:v17 code:2 userInfo:v7];
-    (*(v4 + 2))(v4, v18);
+    (*(completionCopy + 2))(completionCopy, v18);
 
     goto LABEL_9;
   }
@@ -1118,11 +1118,11 @@ void __64__FMDFMIPManager_userDidAckManagedLostModeLocateWithCompletion___block_
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.private.restrict-post.fmip.lostmode.enable", 0, 0, 1u);
 }
 
-- (void)playSoundWithOptions:(id)a3 completion:(id)a4
+- (void)playSoundWithOptions:(id)options completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v7 = objc_autoreleasePoolPush();
   v8 = LogCategory_Unspecified();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1140,10 +1140,10 @@ void __64__FMDFMIPManager_userDidAckManagedLostModeLocateWithCompletion___block_
   v20[1] = 3221225472;
   v20[2] = __50__FMDFMIPManager_playSoundWithOptions_completion___block_invoke;
   v20[3] = &unk_1E86BD0E0;
-  v12 = v6;
+  v12 = completionCopy;
   v21 = v12;
   [v11 addFailureBlock:v20];
-  v13 = [v11 remoteObjectProxy];
+  remoteObjectProxy = [v11 remoteObjectProxy];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __50__FMDFMIPManager_playSoundWithOptions_completion___block_invoke_42;
@@ -1152,7 +1152,7 @@ void __64__FMDFMIPManager_userDidAckManagedLostModeLocateWithCompletion___block_
   v18 = v11;
   v19 = v14;
   v15 = v11;
-  [v13 playSoundWithOptions:v5 completion:v17];
+  [remoteObjectProxy playSoundWithOptions:optionsCopy completion:v17];
 
   objc_autoreleasePoolPop(v7);
   v16 = *MEMORY[0x1E69E9840];
@@ -1204,14 +1204,14 @@ uint64_t __50__FMDFMIPManager_playSoundWithOptions_completion___block_invoke_42(
   v6 = [v4 resumeConnectionWithConfiguration:v5];
 
   [v6 addFailureBlock:&__block_literal_global_44];
-  v7 = [v6 remoteObjectProxy];
+  remoteObjectProxy = [v6 remoteObjectProxy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __44__FMDFMIPManager_deviceActivationDidSucceed__block_invoke_45;
   v10[3] = &unk_1E86BD2A8;
   v11 = v6;
   v8 = v6;
-  [v7 deviceActivationDidSucceedUsingCallback:v10];
+  [remoteObjectProxy deviceActivationDidSucceedUsingCallback:v10];
 
   objc_autoreleasePoolPop(v2);
   v9 = *MEMORY[0x1E69E9840];
@@ -1256,11 +1256,11 @@ void __44__FMDFMIPManager_deviceActivationDidSucceed__block_invoke_45(uint64_t a
 
   fmdFMIPLastOperationResult = 0;
   v4 = +[FMDFMIPSharedStateManager sharedInstance];
-  v5 = [v4 fmipActive];
+  fmipActive = [v4 fmipActive];
 
   v6 = LogCategory_Unspecified();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (fmipActive)
   {
     if (!v7)
     {
@@ -1289,7 +1289,7 @@ LABEL_9:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = @"NO";
-    if (v5)
+    if (fmipActive)
     {
       v10 = @"YES";
     }
@@ -1303,7 +1303,7 @@ LABEL_9:
 
   objc_autoreleasePoolPop(v2);
   v11 = *MEMORY[0x1E69E9840];
-  return v5;
+  return fmipActive;
 }
 
 - (BOOL)lockdownShouldDisableDevicePairing
@@ -1319,12 +1319,12 @@ LABEL_9:
   }
 
   fmdFMIPLastOperationResult = 0;
-  v5 = [(FMDFMIPManager *)self _checkLostModeInSharedContainer];
+  _checkLostModeInSharedContainer = [(FMDFMIPManager *)self _checkLostModeInSharedContainer];
   v6 = LogCategory_Unspecified();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"NO";
-    if (v5)
+    if (_checkLostModeInSharedContainer)
     {
       v7 = @"YES";
     }
@@ -1338,32 +1338,32 @@ LABEL_9:
 
   objc_autoreleasePoolPop(v3);
   v8 = *MEMORY[0x1E69E9840];
-  return v5;
+  return _checkLostModeInSharedContainer;
 }
 
 - (BOOL)_checkLostModeInSharedContainer
 {
   v9 = *MEMORY[0x1E69E9840];
   v2 = +[FMDFMIPSharedStateManager sharedInstance];
-  v3 = [v2 lostModeType];
+  lostModeType = [v2 lostModeType];
 
   v4 = LogCategory_Unspecified();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = v3;
+    v8 = lostModeType;
     _os_log_impl(&dword_1DF650000, v4, OS_LOG_TYPE_DEFAULT, "FMiP shared info has lost mode type - %lu", &v7, 0xCu);
   }
 
-  result = (v3 - 1) < 3;
+  result = (lostModeType - 1) < 3;
   v6 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (void)fmipStateWithCompletion:(id)a3
+- (void)fmipStateWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_autoreleasePoolPush();
   v5 = LogCategory_Unspecified();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1382,10 +1382,10 @@ LABEL_9:
   v17[1] = 3221225472;
   v17[2] = __42__FMDFMIPManager_fmipStateWithCompletion___block_invoke;
   v17[3] = &unk_1E86BD0E0;
-  v9 = v3;
+  v9 = completionCopy;
   v18 = v9;
   [v8 addFailureBlock:v17];
-  v10 = [v8 remoteObjectProxy];
+  remoteObjectProxy = [v8 remoteObjectProxy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __42__FMDFMIPManager_fmipStateWithCompletion___block_invoke_47;
@@ -1394,7 +1394,7 @@ LABEL_9:
   v15 = v8;
   v16 = v11;
   v12 = v8;
-  [v10 getFMIPStateUsingCallback:v14];
+  [remoteObjectProxy getFMIPStateUsingCallback:v14];
 
   objc_autoreleasePoolPop(v4);
   v13 = *MEMORY[0x1E69E9840];
@@ -1458,10 +1458,10 @@ void __42__FMDFMIPManager_fmipStateWithCompletion___block_invoke_47(uint64_t a1,
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fmipAccountWithCompletion:(id)a3
+- (void)fmipAccountWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_autoreleasePoolPush();
   v5 = LogCategory_Unspecified();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1476,15 +1476,15 @@ void __42__FMDFMIPManager_fmipStateWithCompletion___block_invoke_47(uint64_t a1,
   v7 = +[FMNSXPCConnectionConfiguration fmipConfiguration];
   v8 = [v6 resumeConnectionWithConfiguration:v7];
 
-  objc_initWeak(buf, v3);
+  objc_initWeak(buf, completionCopy);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __44__FMDFMIPManager_fmipAccountWithCompletion___block_invoke;
   v17[3] = &unk_1E86BD0E0;
-  v9 = v3;
+  v9 = completionCopy;
   v18 = v9;
   [v8 addFailureBlock:v17];
-  v10 = [v8 remoteObjectProxy];
+  remoteObjectProxy = [v8 remoteObjectProxy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __44__FMDFMIPManager_fmipAccountWithCompletion___block_invoke_49;
@@ -1493,7 +1493,7 @@ void __42__FMDFMIPManager_fmipStateWithCompletion___block_invoke_47(uint64_t a1,
   v16 = v11;
   v12 = v8;
   v15 = v12;
-  [v10 getFmipAccountUsingCallback:v14];
+  [remoteObjectProxy getFmipAccountUsingCallback:v14];
 
   objc_destroyWeak(buf);
   objc_autoreleasePoolPop(v4);
@@ -1668,10 +1668,10 @@ void __29__FMDFMIPManager_fmipAccount__block_invoke(uint64_t a1, void *a2, void 
   [*(a1 + 32) signal];
 }
 
-- (void)didChangeFMIPAccountInfo:(id)a3
+- (void)didChangeFMIPAccountInfo:(id)info
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  infoCopy = info;
   v4 = objc_autoreleasePoolPush();
   v5 = LogCategory_Unspecified();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1686,14 +1686,14 @@ void __29__FMDFMIPManager_fmipAccount__block_invoke(uint64_t a1, void *a2, void 
   v8 = [v6 resumeConnectionWithConfiguration:v7];
 
   [v8 addFailureBlock:&__block_literal_global_52];
-  v9 = [v8 remoteObjectProxy];
+  remoteObjectProxy = [v8 remoteObjectProxy];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __43__FMDFMIPManager_didChangeFMIPAccountInfo___block_invoke_53;
   v12[3] = &unk_1E86BD2A8;
   v13 = v8;
   v10 = v8;
-  [v9 didChangeFMIPAccountInfo:v3 usingCallback:v12];
+  [remoteObjectProxy didChangeFMIPAccountInfo:infoCopy usingCallback:v12];
 
   objc_autoreleasePoolPop(v4);
   v11 = *MEMORY[0x1E69E9840];
@@ -1724,7 +1724,7 @@ void __43__FMDFMIPManager_didChangeFMIPAccountInfo___block_invoke_53(uint64_t a1
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)enableFMIPInContext:(unint64_t)a3
+- (id)enableFMIPInContext:(unint64_t)context
 {
   v32 = *MEMORY[0x1E69E9840];
   v5 = objc_autoreleasePoolPush();
@@ -1734,7 +1734,7 @@ void __43__FMDFMIPManager_didChangeFMIPAccountInfo___block_invoke_53(uint64_t a1
     *buf = 136315394;
     *&buf[4] = "[FMDFMIPManager enableFMIPInContext:]";
     *&buf[12] = 2048;
-    *&buf[14] = a3;
+    *&buf[14] = context;
     _os_log_impl(&dword_1DF650000, v6, OS_LOG_TYPE_DEFAULT, "%s in context %lu", buf, 0x16u);
   }
 
@@ -1759,7 +1759,7 @@ void __43__FMDFMIPManager_didChangeFMIPAccountInfo___block_invoke_53(uint64_t a1
   v12 = v8;
   v26 = v12;
   [v11 addFailureBlock:v25];
-  v13 = [v11 remoteObjectProxy];
+  remoteObjectProxy = [v11 remoteObjectProxy];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __38__FMDFMIPManager_enableFMIPInContext___block_invoke_54;
@@ -1769,7 +1769,7 @@ void __43__FMDFMIPManager_didChangeFMIPAccountInfo___block_invoke_53(uint64_t a1
   v22 = v14;
   v15 = v11;
   v23 = v15;
-  [v13 enableFMIPInContext:a3 usingCallback:v21];
+  [remoteObjectProxy enableFMIPInContext:context usingCallback:v21];
   [v14 wait];
   if ([v14 timeoutOccurred])
   {
@@ -1824,15 +1824,15 @@ void __38__FMDFMIPManager_enableFMIPInContext___block_invoke_54(uint64_t a1, voi
   [*(a1 + 40) invalidate];
 }
 
-- (id)disableFMIPUsingToken:(id)a3 inContext:(unint64_t)a4
+- (id)disableFMIPUsingToken:(id)token inContext:(unint64_t)context
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  tokenCopy = token;
   v7 = LogCategory_Unspecified();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = "non-nil";
-    if (!v6)
+    if (!tokenCopy)
     {
       v8 = "nil";
     }
@@ -1858,7 +1858,7 @@ void __38__FMDFMIPManager_enableFMIPInContext___block_invoke_54(uint64_t a1, voi
   v24 = buf;
   v10 = v9;
   v23 = v10;
-  [(FMDFMIPManager *)self _disableFMIPUsingToken:v6 inContext:a4 completion:&v19];
+  [(FMDFMIPManager *)self _disableFMIPUsingToken:tokenCopy inContext:context completion:&v19];
   [v10 wait];
   if ([v10 timeoutOccurred])
   {
@@ -1896,16 +1896,16 @@ void __50__FMDFMIPManager_disableFMIPUsingToken_inContext___block_invoke(uint64_
   [*(a1 + 32) signal];
 }
 
-- (void)disableFMIPUsingToken:(id)a3 inContext:(unint64_t)a4 completion:(id)a5
+- (void)disableFMIPUsingToken:(id)token inContext:(unint64_t)context completion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a3;
+  completionCopy = completion;
+  tokenCopy = token;
   v10 = LogCategory_Unspecified();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = "non-nil";
-    if (!v9)
+    if (!tokenCopy)
     {
       v11 = "nil";
     }
@@ -1917,16 +1917,16 @@ void __50__FMDFMIPManager_disableFMIPUsingToken_inContext___block_invoke(uint64_
     _os_log_impl(&dword_1DF650000, v10, OS_LOG_TYPE_DEFAULT, "%s with %s token", &v13, 0x16u);
   }
 
-  [(FMDFMIPManager *)self _disableFMIPUsingToken:v9 inContext:a4 completion:v8];
+  [(FMDFMIPManager *)self _disableFMIPUsingToken:tokenCopy inContext:context completion:completionCopy];
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)disableFMIPUsingToken:(id)a3 forPairedDeviceWithUDID:(id)a4 withCompletion:(id)a5
+- (void)disableFMIPUsingToken:(id)token forPairedDeviceWithUDID:(id)d withCompletion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  tokenCopy = token;
+  dCopy = d;
+  completionCopy = completion;
   v10 = objc_autoreleasePoolPush();
   v11 = LogCategory_Unspecified();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1934,13 +1934,13 @@ void __50__FMDFMIPManager_disableFMIPUsingToken_inContext___block_invoke(uint64_
     v12 = "non-nil";
     v28 = "[FMDFMIPManager disableFMIPUsingToken:forPairedDeviceWithUDID:withCompletion:]";
     *buf = 136315650;
-    if (!v7)
+    if (!tokenCopy)
     {
       v12 = "nil";
     }
 
     v29 = 2112;
-    v30 = v8;
+    v30 = dCopy;
     v31 = 2080;
     v32 = v12;
     _os_log_impl(&dword_1DF650000, v11, OS_LOG_TYPE_DEFAULT, "%s for paired device %@ with %s token", buf, 0x20u);
@@ -1951,7 +1951,7 @@ void __50__FMDFMIPManager_disableFMIPUsingToken_inContext___block_invoke(uint64_
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v28) = v7 != 0;
+    LODWORD(v28) = tokenCopy != 0;
     _os_log_impl(&dword_1DF650000, v13, OS_LOG_TYPE_DEFAULT, "disableFMIPUsingToken: token present: %i", buf, 8u);
   }
 
@@ -1963,10 +1963,10 @@ void __50__FMDFMIPManager_disableFMIPUsingToken_inContext___block_invoke(uint64_
   v25[1] = 3221225472;
   v25[2] = __79__FMDFMIPManager_disableFMIPUsingToken_forPairedDeviceWithUDID_withCompletion___block_invoke;
   v25[3] = &unk_1E86BD0E0;
-  v17 = v9;
+  v17 = completionCopy;
   v26 = v17;
   [v16 addFailureBlock:v25];
-  v18 = [v16 remoteObjectProxy];
+  remoteObjectProxy = [v16 remoteObjectProxy];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __79__FMDFMIPManager_disableFMIPUsingToken_forPairedDeviceWithUDID_withCompletion___block_invoke_60;
@@ -1975,7 +1975,7 @@ void __50__FMDFMIPManager_disableFMIPUsingToken_inContext___block_invoke(uint64_
   v23 = v16;
   v24 = v19;
   v20 = v16;
-  [v18 disableFMIPUsingToken:v7 forPairedDeviceWithUDID:v8 usingCallback:v22];
+  [remoteObjectProxy disableFMIPUsingToken:tokenCopy forPairedDeviceWithUDID:dCopy usingCallback:v22];
 
   objc_autoreleasePoolPop(v10);
   v21 = *MEMORY[0x1E69E9840];
@@ -2029,27 +2029,27 @@ void __79__FMDFMIPManager_disableFMIPUsingToken_forPairedDeviceWithUDID_withComp
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)disableFMIPForAccount:(id)a3 pairedDeviceWithUDID:(id)a4 withCompletion:(id)a5
+- (void)disableFMIPForAccount:(id)account pairedDeviceWithUDID:(id)d withCompletion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  accountCopy = account;
+  dCopy = d;
+  completionCopy = completion;
   v10 = objc_autoreleasePoolPush();
   v11 = LogCategory_Unspecified();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v7 oneTimeRemoveAuthToken];
+    oneTimeRemoveAuthToken = [accountCopy oneTimeRemoveAuthToken];
     v13 = "non-nil";
     v29 = "[FMDFMIPManager disableFMIPForAccount:pairedDeviceWithUDID:withCompletion:]";
     *buf = 136315650;
-    if (!v12)
+    if (!oneTimeRemoveAuthToken)
     {
       v13 = "nil";
     }
 
     v30 = 2112;
-    v31 = v8;
+    v31 = dCopy;
     v32 = 2080;
     v33 = v13;
     _os_log_impl(&dword_1DF650000, v11, OS_LOG_TYPE_DEFAULT, "%s for paired device %@ with %s token", buf, 0x20u);
@@ -2060,7 +2060,7 @@ void __79__FMDFMIPManager_disableFMIPUsingToken_forPairedDeviceWithUDID_withComp
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v29) = v7 != 0;
+    LODWORD(v29) = accountCopy != 0;
     _os_log_impl(&dword_1DF650000, v14, OS_LOG_TYPE_DEFAULT, "disableFMIPForAccount: Account present: %i", buf, 8u);
   }
 
@@ -2072,10 +2072,10 @@ void __79__FMDFMIPManager_disableFMIPUsingToken_forPairedDeviceWithUDID_withComp
   v26[1] = 3221225472;
   v26[2] = __76__FMDFMIPManager_disableFMIPForAccount_pairedDeviceWithUDID_withCompletion___block_invoke;
   v26[3] = &unk_1E86BD0E0;
-  v18 = v9;
+  v18 = completionCopy;
   v27 = v18;
   [v17 addFailureBlock:v26];
-  v19 = [v17 remoteObjectProxy];
+  remoteObjectProxy = [v17 remoteObjectProxy];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __76__FMDFMIPManager_disableFMIPForAccount_pairedDeviceWithUDID_withCompletion___block_invoke_61;
@@ -2084,7 +2084,7 @@ void __79__FMDFMIPManager_disableFMIPUsingToken_forPairedDeviceWithUDID_withComp
   v24 = v17;
   v25 = v20;
   v21 = v17;
-  [v19 disableFMIPForAccount:v7 pairedDeviceWithUDID:v8 usingCallback:v23];
+  [remoteObjectProxy disableFMIPForAccount:accountCopy pairedDeviceWithUDID:dCopy usingCallback:v23];
 
   objc_autoreleasePoolPop(v10);
   v22 = *MEMORY[0x1E69E9840];
@@ -2138,11 +2138,11 @@ void __76__FMDFMIPManager_disableFMIPForAccount_pairedDeviceWithUDID_withComplet
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)markAsMissingSupportedForPairedDeviceWithUDID:(id)a3 withCompletion:(id)a4
+- (void)markAsMissingSupportedForPairedDeviceWithUDID:(id)d withCompletion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v7 = objc_autoreleasePoolPush();
   v8 = LogCategory_Unspecified();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -2150,7 +2150,7 @@ void __76__FMDFMIPManager_disableFMIPForAccount_pairedDeviceWithUDID_withComplet
     *buf = 136315394;
     v23 = "[FMDFMIPManager markAsMissingSupportedForPairedDeviceWithUDID:withCompletion:]";
     v24 = 2112;
-    v25 = v5;
+    v25 = dCopy;
     _os_log_impl(&dword_1DF650000, v8, OS_LOG_TYPE_DEFAULT, "%s for paired device %@", buf, 0x16u);
   }
 
@@ -2163,10 +2163,10 @@ void __76__FMDFMIPManager_disableFMIPForAccount_pairedDeviceWithUDID_withComplet
   v20[1] = 3221225472;
   v20[2] = __79__FMDFMIPManager_markAsMissingSupportedForPairedDeviceWithUDID_withCompletion___block_invoke;
   v20[3] = &unk_1E86BD0E0;
-  v12 = v6;
+  v12 = completionCopy;
   v21 = v12;
   [v11 addFailureBlock:v20];
-  v13 = [v11 remoteObjectProxy];
+  remoteObjectProxy = [v11 remoteObjectProxy];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __79__FMDFMIPManager_markAsMissingSupportedForPairedDeviceWithUDID_withCompletion___block_invoke_62;
@@ -2175,7 +2175,7 @@ void __76__FMDFMIPManager_disableFMIPForAccount_pairedDeviceWithUDID_withComplet
   v18 = v11;
   v19 = v14;
   v15 = v11;
-  [v13 markAsMissingSupportedForPairedDeviceWithUDID:v5 usingCallback:v17];
+  [remoteObjectProxy markAsMissingSupportedForPairedDeviceWithUDID:dCopy usingCallback:v17];
 
   objc_autoreleasePoolPop(v7);
   v16 = *MEMORY[0x1E69E9840];
@@ -2229,12 +2229,12 @@ void __79__FMDFMIPManager_markAsMissingSupportedForPairedDeviceWithUDID_withComp
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)markPairedDeviceWithUDID:(id)a3 asMissingUsingToken:(id)a4 withCompletion:(id)a5
+- (void)markPairedDeviceWithUDID:(id)d asMissingUsingToken:(id)token withCompletion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  tokenCopy = token;
+  completionCopy = completion;
   v10 = objc_autoreleasePoolPush();
   v11 = LogCategory_Unspecified();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -2242,13 +2242,13 @@ void __79__FMDFMIPManager_markAsMissingSupportedForPairedDeviceWithUDID_withComp
     v12 = "non-nil";
     v28 = "[FMDFMIPManager markPairedDeviceWithUDID:asMissingUsingToken:withCompletion:]";
     *buf = 136315650;
-    if (!v8)
+    if (!tokenCopy)
     {
       v12 = "nil";
     }
 
     v29 = 2112;
-    v30 = v7;
+    v30 = dCopy;
     v31 = 2080;
     v32 = v12;
     _os_log_impl(&dword_1DF650000, v11, OS_LOG_TYPE_DEFAULT, "%s for paired device %@ with %s token", buf, 0x20u);
@@ -2259,7 +2259,7 @@ void __79__FMDFMIPManager_markAsMissingSupportedForPairedDeviceWithUDID_withComp
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v28) = v8 != 0;
+    LODWORD(v28) = tokenCopy != 0;
     _os_log_impl(&dword_1DF650000, v13, OS_LOG_TYPE_DEFAULT, "markPairedDeviceWithUDID: token present: %i", buf, 8u);
   }
 
@@ -2271,10 +2271,10 @@ void __79__FMDFMIPManager_markAsMissingSupportedForPairedDeviceWithUDID_withComp
   v25[1] = 3221225472;
   v25[2] = __78__FMDFMIPManager_markPairedDeviceWithUDID_asMissingUsingToken_withCompletion___block_invoke;
   v25[3] = &unk_1E86BD0E0;
-  v17 = v9;
+  v17 = completionCopy;
   v26 = v17;
   [v16 addFailureBlock:v25];
-  v18 = [v16 remoteObjectProxy];
+  remoteObjectProxy = [v16 remoteObjectProxy];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __78__FMDFMIPManager_markPairedDeviceWithUDID_asMissingUsingToken_withCompletion___block_invoke_64;
@@ -2283,7 +2283,7 @@ void __79__FMDFMIPManager_markAsMissingSupportedForPairedDeviceWithUDID_withComp
   v23 = v16;
   v24 = v19;
   v20 = v16;
-  [v18 markPairedDeviceWithUDID:v7 asMissingUsingToken:v8 callback:v22];
+  [remoteObjectProxy markPairedDeviceWithUDID:dCopy asMissingUsingToken:tokenCopy callback:v22];
 
   objc_autoreleasePoolPop(v10);
   v21 = *MEMORY[0x1E69E9840];
@@ -2337,10 +2337,10 @@ void __78__FMDFMIPManager_markPairedDeviceWithUDID_asMissingUsingToken_withCompl
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)isActivationLockAllowedWithCompletion:(id)a3
+- (void)isActivationLockAllowedWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_autoreleasePoolPush();
   v5 = LogCategory_Unspecified();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2359,10 +2359,10 @@ void __78__FMDFMIPManager_markPairedDeviceWithUDID_asMissingUsingToken_withCompl
   v17[1] = 3221225472;
   v17[2] = __56__FMDFMIPManager_isActivationLockAllowedWithCompletion___block_invoke;
   v17[3] = &unk_1E86BD0E0;
-  v9 = v3;
+  v9 = completionCopy;
   v18 = v9;
   [v8 addFailureBlock:v17];
-  v10 = [v8 remoteObjectProxy];
+  remoteObjectProxy = [v8 remoteObjectProxy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __56__FMDFMIPManager_isActivationLockAllowedWithCompletion___block_invoke_65;
@@ -2371,7 +2371,7 @@ void __78__FMDFMIPManager_markPairedDeviceWithUDID_asMissingUsingToken_withCompl
   v15 = v8;
   v16 = v11;
   v12 = v8;
-  [v10 isActivationLockAllowedUsingCallback:v14];
+  [remoteObjectProxy isActivationLockAllowedUsingCallback:v14];
 
   objc_autoreleasePoolPop(v4);
   v13 = *MEMORY[0x1E69E9840];
@@ -2425,10 +2425,10 @@ void __56__FMDFMIPManager_isActivationLockAllowedWithCompletion___block_invoke_6
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)isActivationLockEnabledWithCompletion:(id)a3
+- (void)isActivationLockEnabledWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_autoreleasePoolPush();
   v5 = LogCategory_Unspecified();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2447,10 +2447,10 @@ void __56__FMDFMIPManager_isActivationLockAllowedWithCompletion___block_invoke_6
   v17[1] = 3221225472;
   v17[2] = __56__FMDFMIPManager_isActivationLockEnabledWithCompletion___block_invoke;
   v17[3] = &unk_1E86BD0E0;
-  v9 = v3;
+  v9 = completionCopy;
   v18 = v9;
   [v8 addFailureBlock:v17];
-  v10 = [v8 remoteObjectProxy];
+  remoteObjectProxy = [v8 remoteObjectProxy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __56__FMDFMIPManager_isActivationLockEnabledWithCompletion___block_invoke_66;
@@ -2459,7 +2459,7 @@ void __56__FMDFMIPManager_isActivationLockAllowedWithCompletion___block_invoke_6
   v15 = v8;
   v16 = v11;
   v12 = v8;
-  [v10 isActivationLockEnabledUsingCallback:v14];
+  [remoteObjectProxy isActivationLockEnabledUsingCallback:v14];
 
   objc_autoreleasePoolPop(v4);
   v13 = *MEMORY[0x1E69E9840];
@@ -2513,10 +2513,10 @@ void __56__FMDFMIPManager_isActivationLockEnabledWithCompletion___block_invoke_6
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)isActivationLockedWithCompletion:(id)a3
+- (void)isActivationLockedWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_autoreleasePoolPush();
   v5 = LogCategory_Unspecified();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2535,10 +2535,10 @@ void __56__FMDFMIPManager_isActivationLockEnabledWithCompletion___block_invoke_6
   v17[1] = 3221225472;
   v17[2] = __51__FMDFMIPManager_isActivationLockedWithCompletion___block_invoke;
   v17[3] = &unk_1E86BD0E0;
-  v9 = v3;
+  v9 = completionCopy;
   v18 = v9;
   [v8 addFailureBlock:v17];
-  v10 = [v8 remoteObjectProxy];
+  remoteObjectProxy = [v8 remoteObjectProxy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __51__FMDFMIPManager_isActivationLockedWithCompletion___block_invoke_67;
@@ -2547,7 +2547,7 @@ void __56__FMDFMIPManager_isActivationLockEnabledWithCompletion___block_invoke_6
   v15 = v8;
   v16 = v11;
   v12 = v8;
-  [v10 isActivationLockedUsingCallback:v14];
+  [remoteObjectProxy isActivationLockedUsingCallback:v14];
 
   objc_autoreleasePoolPop(v4);
   v13 = *MEMORY[0x1E69E9840];
@@ -2601,10 +2601,10 @@ void __51__FMDFMIPManager_isActivationLockedWithCompletion___block_invoke_67(uin
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enableActivationLockWithCompletion:(id)a3
+- (void)enableActivationLockWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_autoreleasePoolPush();
   v5 = LogCategory_Unspecified();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2623,10 +2623,10 @@ void __51__FMDFMIPManager_isActivationLockedWithCompletion___block_invoke_67(uin
   v17[1] = 3221225472;
   v17[2] = __53__FMDFMIPManager_enableActivationLockWithCompletion___block_invoke;
   v17[3] = &unk_1E86BD0E0;
-  v9 = v3;
+  v9 = completionCopy;
   v18 = v9;
   [v8 addFailureBlock:v17];
-  v10 = [v8 remoteObjectProxy];
+  remoteObjectProxy = [v8 remoteObjectProxy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __53__FMDFMIPManager_enableActivationLockWithCompletion___block_invoke_68;
@@ -2635,7 +2635,7 @@ void __51__FMDFMIPManager_isActivationLockedWithCompletion___block_invoke_67(uin
   v15 = v8;
   v16 = v11;
   v12 = v8;
-  [v10 enableActivationLockUsingCallback:v14];
+  [remoteObjectProxy enableActivationLockUsingCallback:v14];
 
   objc_autoreleasePoolPop(v4);
   v13 = *MEMORY[0x1E69E9840];
@@ -2714,16 +2714,16 @@ void __53__FMDFMIPManager_enableActivationLockWithCompletion___block_invoke_68(u
   return v5;
 }
 
-- (void)didReceiveLostModeExitAuthToken:(id)a3
+- (void)didReceiveLostModeExitAuthToken:(id)token
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  tokenCopy = token;
   v4 = objc_autoreleasePoolPush();
   v5 = LogCategory_Unspecified();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = "non-nil";
-    if (!v3)
+    if (!tokenCopy)
     {
       v6 = "nil";
     }
@@ -2740,7 +2740,7 @@ void __53__FMDFMIPManager_enableActivationLockWithCompletion___block_invoke_68(u
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v17) = v3 != 0;
+    LODWORD(v17) = tokenCopy != 0;
     _os_log_impl(&dword_1DF650000, v7, OS_LOG_TYPE_DEFAULT, "didReceiveLostModeExitAuthToken: token present: %i", buf, 8u);
   }
 
@@ -2749,14 +2749,14 @@ void __53__FMDFMIPManager_enableActivationLockWithCompletion___block_invoke_68(u
   v10 = [v8 resumeConnectionWithConfiguration:v9];
 
   [v10 addFailureBlock:&__block_literal_global_70];
-  v11 = [v10 remoteObjectProxy];
+  remoteObjectProxy = [v10 remoteObjectProxy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __50__FMDFMIPManager_didReceiveLostModeExitAuthToken___block_invoke_71;
   v14[3] = &unk_1E86BD2A8;
   v15 = v10;
   v12 = v10;
-  [v11 didReceiveLostModeExitAuthToken:v3 usingCallback:v14];
+  [remoteObjectProxy didReceiveLostModeExitAuthToken:tokenCopy usingCallback:v14];
 
   objc_autoreleasePoolPop(v4);
   v13 = *MEMORY[0x1E69E9840];
@@ -2787,10 +2787,10 @@ void __50__FMDFMIPManager_didReceiveLostModeExitAuthToken___block_invoke_71(uint
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)initiateLostModeExitAuthWithCompletion:(id)a3
+- (void)initiateLostModeExitAuthWithCompletion:(id)completion
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_autoreleasePoolPush();
   v6 = LogCategory_Unspecified();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2800,17 +2800,17 @@ void __50__FMDFMIPManager_didReceiveLostModeExitAuthToken___block_invoke_71(uint
     _os_log_impl(&dword_1DF650000, v6, OS_LOG_TYPE_DEFAULT, "%s", &v8, 0xCu);
   }
 
-  [(FMDFMIPManager *)self _initiateLostModeExitAuthForIDSDeviceID:0 withCompletion:v4];
+  [(FMDFMIPManager *)self _initiateLostModeExitAuthForIDSDeviceID:0 withCompletion:completionCopy];
   objc_autoreleasePoolPop(v5);
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)initiateLostModeExitAuthForIDSDeviceID:(id)a3 withCompletion:(id)a4
+- (void)initiateLostModeExitAuthForIDSDeviceID:(id)d withCompletion:(id)completion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
   v9 = LogCategory_Unspecified();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -2820,16 +2820,16 @@ void __50__FMDFMIPManager_didReceiveLostModeExitAuthToken___block_invoke_71(uint
     _os_log_impl(&dword_1DF650000, v9, OS_LOG_TYPE_DEFAULT, "%s", &v11, 0xCu);
   }
 
-  [(FMDFMIPManager *)self _initiateLostModeExitAuthForIDSDeviceID:v6 withCompletion:v7];
+  [(FMDFMIPManager *)self _initiateLostModeExitAuthForIDSDeviceID:dCopy withCompletion:completionCopy];
   objc_autoreleasePoolPop(v8);
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)lowBatteryLocateEnabledWithCompletion:(id)a3
+- (void)lowBatteryLocateEnabledWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_autoreleasePoolPush();
   v5 = LogCategory_Unspecified();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2848,10 +2848,10 @@ void __50__FMDFMIPManager_didReceiveLostModeExitAuthToken___block_invoke_71(uint
   v17[1] = 3221225472;
   v17[2] = __56__FMDFMIPManager_lowBatteryLocateEnabledWithCompletion___block_invoke;
   v17[3] = &unk_1E86BD0E0;
-  v9 = v3;
+  v9 = completionCopy;
   v18 = v9;
   [v8 addFailureBlock:v17];
-  v10 = [v8 remoteObjectProxy];
+  remoteObjectProxy = [v8 remoteObjectProxy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __56__FMDFMIPManager_lowBatteryLocateEnabledWithCompletion___block_invoke_72;
@@ -2860,7 +2860,7 @@ void __50__FMDFMIPManager_didReceiveLostModeExitAuthToken___block_invoke_71(uint
   v15 = v8;
   v16 = v11;
   v12 = v8;
-  [v10 lowBatteryLocateEnabledUsingCallback:v14];
+  [remoteObjectProxy lowBatteryLocateEnabledUsingCallback:v14];
 
   objc_autoreleasePoolPop(v4);
   v13 = *MEMORY[0x1E69E9840];
@@ -2969,10 +2969,10 @@ void __60__FMDFMIPManager_setLowBatteryLocateEnabled_withCompletion___block_invo
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)userNotifiedOfActivationLockForPairedDevices:(id)a3
+- (void)userNotifiedOfActivationLockForPairedDevices:(id)devices
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  devicesCopy = devices;
   v4 = objc_autoreleasePoolPush();
   v5 = LogCategory_Unspecified();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2980,7 +2980,7 @@ void __60__FMDFMIPManager_setLowBatteryLocateEnabled_withCompletion___block_invo
     v7 = 136315394;
     v8 = "[FMDFMIPManager userNotifiedOfActivationLockForPairedDevices:]";
     v9 = 2112;
-    v10 = v3;
+    v10 = devicesCopy;
     _os_log_impl(&dword_1DF650000, v5, OS_LOG_TYPE_DEFAULT, "%s for paired devices %@", &v7, 0x16u);
   }
 
@@ -2993,11 +2993,11 @@ void __60__FMDFMIPManager_setLowBatteryLocateEnabled_withCompletion___block_invo
 - (id)pathsToPreserveAcrossWipe
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v2 = [(FMDFMIPManager *)self _postWipePrefPath];
-  v3 = v2;
-  if (v2)
+  _postWipePrefPath = [(FMDFMIPManager *)self _postWipePrefPath];
+  v3 = _postWipePrefPath;
+  if (_postWipePrefPath)
   {
-    v7[0] = v2;
+    v7[0] = _postWipePrefPath;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   }
 
@@ -3011,11 +3011,11 @@ void __60__FMDFMIPManager_setLowBatteryLocateEnabled_withCompletion___block_invo
   return v4;
 }
 
-- (void)signatureHeadersWithData:(id)a3 completion:(id)a4
+- (void)signatureHeadersWithData:(id)data completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   v7 = objc_autoreleasePoolPush();
   v8 = LogCategory_Unspecified();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -3034,10 +3034,10 @@ void __60__FMDFMIPManager_setLowBatteryLocateEnabled_withCompletion___block_invo
   v20[1] = 3221225472;
   v20[2] = __54__FMDFMIPManager_signatureHeadersWithData_completion___block_invoke;
   v20[3] = &unk_1E86BD0E0;
-  v12 = v6;
+  v12 = completionCopy;
   v21 = v12;
   [v11 addFailureBlock:v20];
-  v13 = [v11 remoteObjectProxy];
+  remoteObjectProxy = [v11 remoteObjectProxy];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __54__FMDFMIPManager_signatureHeadersWithData_completion___block_invoke_77;
@@ -3046,7 +3046,7 @@ void __60__FMDFMIPManager_setLowBatteryLocateEnabled_withCompletion___block_invo
   v18 = v11;
   v19 = v14;
   v15 = v11;
-  [v13 signatureHeadersWithData:v5 completion:v17];
+  [remoteObjectProxy signatureHeadersWithData:dataCopy completion:v17];
 
   objc_autoreleasePoolPop(v7);
   v16 = *MEMORY[0x1E69E9840];
@@ -3090,12 +3090,12 @@ void __54__FMDFMIPManager_signatureHeadersWithData_completion___block_invoke_77(
   [*(a1 + 32) invalidate];
 }
 
-- (void)startPlayingSoundForAccessory:(id)a3 duration:(double)a4 rampUpDuration:(double)a5 channels:(id)a6 completion:(id)a7
+- (void)startPlayingSoundForAccessory:(id)accessory duration:(double)duration rampUpDuration:(double)upDuration channels:(id)channels completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a7;
-  v13 = a6;
+  accessoryCopy = accessory;
+  completionCopy = completion;
+  channelsCopy = channels;
   v14 = +[FMNSXPCConnectionCache sharedCache];
   v15 = +[FMNSXPCConnectionConfiguration helperConfiguration];
   v16 = [v14 resumeConnectionWithConfiguration:v15];
@@ -3104,10 +3104,10 @@ void __54__FMDFMIPManager_signatureHeadersWithData_completion___block_invoke_77(
   v28[1] = 3221225472;
   v28[2] = __92__FMDFMIPManager_startPlayingSoundForAccessory_duration_rampUpDuration_channels_completion___block_invoke;
   v28[3] = &unk_1E86BD0E0;
-  v17 = v12;
+  v17 = completionCopy;
   v29 = v17;
   [v16 addFailureBlock:v28];
-  v18 = [v16 remoteObjectProxy];
+  remoteObjectProxy = [v16 remoteObjectProxy];
   v19 = LogCategory_Unspecified();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
@@ -3117,7 +3117,7 @@ void __54__FMDFMIPManager_signatureHeadersWithData_completion___block_invoke_77(
     _os_log_impl(&dword_1DF650000, v19, OS_LOG_TYPE_DEFAULT, "accessory %@", buf, 0xCu);
   }
 
-  v21 = [FMDGenericAudioAccessory copyAccessory:v11];
+  v21 = [FMDGenericAudioAccessory copyAccessory:accessoryCopy];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __92__FMDFMIPManager_startPlayingSoundForAccessory_duration_rampUpDuration_channels_completion___block_invoke_80;
@@ -3126,7 +3126,7 @@ void __54__FMDFMIPManager_signatureHeadersWithData_completion___block_invoke_77(
   v27 = v17;
   v22 = v16;
   v23 = v17;
-  [v18 startPlayingSoundForAccessory:v21 duration:v13 rampUpDuration:v25 channels:a4 completion:a5];
+  [remoteObjectProxy startPlayingSoundForAccessory:v21 duration:channelsCopy rampUpDuration:v25 channels:duration completion:upDuration];
 
   v24 = *MEMORY[0x1E69E9840];
 }
@@ -3175,10 +3175,10 @@ void __92__FMDFMIPManager_startPlayingSoundForAccessory_duration_rampUpDuration_
   [*(a1 + 32) invalidate];
 }
 
-- (void)stopPlayingSoundForAccessory:(id)a3 rampDownDuration:(double)a4 completion:(id)a5
+- (void)stopPlayingSoundForAccessory:(id)accessory rampDownDuration:(double)duration completion:(id)completion
 {
-  v7 = a5;
-  v8 = a3;
+  completionCopy = completion;
+  accessoryCopy = accessory;
   v9 = +[FMNSXPCConnectionCache sharedCache];
   v10 = +[FMNSXPCConnectionConfiguration helperConfiguration];
   v11 = [v9 resumeConnectionWithConfiguration:v10];
@@ -3187,11 +3187,11 @@ void __92__FMDFMIPManager_startPlayingSoundForAccessory_duration_rampUpDuration_
   v20[1] = 3221225472;
   v20[2] = __75__FMDFMIPManager_stopPlayingSoundForAccessory_rampDownDuration_completion___block_invoke;
   v20[3] = &unk_1E86BD0E0;
-  v12 = v7;
+  v12 = completionCopy;
   v21 = v12;
   [v11 addFailureBlock:v20];
-  v13 = [v11 remoteObjectProxy];
-  v14 = [FMDGenericAudioAccessory copyAccessory:v8];
+  remoteObjectProxy = [v11 remoteObjectProxy];
+  v14 = [FMDGenericAudioAccessory copyAccessory:accessoryCopy];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -3201,7 +3201,7 @@ void __92__FMDFMIPManager_startPlayingSoundForAccessory_duration_rampUpDuration_
   v19 = v12;
   v15 = v11;
   v16 = v12;
-  [v13 stopPlayingForAccessory:v14 rampDownDuration:v17 completion:a4];
+  [remoteObjectProxy stopPlayingForAccessory:v14 rampDownDuration:v17 completion:duration];
 }
 
 void __75__FMDFMIPManager_stopPlayingSoundForAccessory_rampDownDuration_completion___block_invoke(uint64_t a1)
@@ -3248,10 +3248,10 @@ void __75__FMDFMIPManager_stopPlayingSoundForAccessory_rampDownDuration_completi
   [*(a1 + 32) invalidate];
 }
 
-- (void)waitForRoutableAccessory:(id)a3 timeout:(double)a4 completion:(id)a5
+- (void)waitForRoutableAccessory:(id)accessory timeout:(double)timeout completion:(id)completion
 {
-  v7 = a5;
-  v8 = a3;
+  completionCopy = completion;
+  accessoryCopy = accessory;
   v9 = +[FMNSXPCConnectionCache sharedCache];
   v10 = +[FMNSXPCConnectionConfiguration helperConfiguration];
   v11 = [v9 resumeConnectionWithConfiguration:v10];
@@ -3260,11 +3260,11 @@ void __75__FMDFMIPManager_stopPlayingSoundForAccessory_rampDownDuration_completi
   v22[1] = 3221225472;
   v22[2] = __62__FMDFMIPManager_waitForRoutableAccessory_timeout_completion___block_invoke;
   v22[3] = &unk_1E86BD0E0;
-  v12 = v7;
+  v12 = completionCopy;
   v23 = v12;
   [v11 addFailureBlock:v22];
-  v13 = [v11 remoteObjectProxy];
-  v14 = [FMDGenericAudioAccessory copyAccessory:v8];
+  remoteObjectProxy = [v11 remoteObjectProxy];
+  v14 = [FMDGenericAudioAccessory copyAccessory:accessoryCopy];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -3276,7 +3276,7 @@ void __75__FMDFMIPManager_stopPlayingSoundForAccessory_rampDownDuration_completi
   v15 = v11;
   v16 = v12;
   v17 = v14;
-  [v13 waitForRoutableAccessory:v17 timeout:v18 completion:a4];
+  [remoteObjectProxy waitForRoutableAccessory:v17 timeout:v18 completion:timeout];
 }
 
 void __62__FMDFMIPManager_waitForRoutableAccessory_timeout_completion___block_invoke(uint64_t a1)
@@ -3328,10 +3328,10 @@ void __62__FMDFMIPManager_waitForRoutableAccessory_timeout_completion___block_in
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)soundStoppedForAccessoryIdentifier:(id)a3
+- (void)soundStoppedForAccessoryIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_autoreleasePoolPush();
   v5 = LogCategory_Unspecified();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -3347,8 +3347,8 @@ void __62__FMDFMIPManager_waitForRoutableAccessory_timeout_completion___block_in
   v8 = [v6 resumeConnectionWithConfiguration:v7];
 
   [v8 addFailureBlock:&__block_literal_global_84];
-  v9 = [v8 remoteObjectProxy];
-  [v9 soundStoppedForAccessoryIdentifier:v3];
+  remoteObjectProxy = [v8 remoteObjectProxy];
+  [remoteObjectProxy soundStoppedForAccessoryIdentifier:identifierCopy];
   [v8 invalidate];
 
   objc_autoreleasePoolPop(v4);
@@ -3364,10 +3364,10 @@ void __53__FMDFMIPManager_soundStoppedForAccessoryIdentifier___block_invoke()
   }
 }
 
-- (void)clearData:(unint64_t)a3 completion:(id)a4
+- (void)clearData:(unint64_t)data completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  completionCopy = completion;
   v6 = objc_autoreleasePoolPush();
   v7 = LogCategory_Unspecified();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -3383,16 +3383,16 @@ void __53__FMDFMIPManager_soundStoppedForAccessoryIdentifier___block_invoke()
   v10 = [v8 resumeConnectionWithConfiguration:v9];
 
   [v10 addFailureBlock:&__block_literal_global_86];
-  v11 = [v10 remoteObjectProxy];
+  remoteObjectProxy = [v10 remoteObjectProxy];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __39__FMDFMIPManager_clearData_completion___block_invoke_87;
   v15[3] = &unk_1E86BD320;
-  v12 = v5;
+  v12 = completionCopy;
   v16 = v10;
   v17 = v12;
   v13 = v10;
-  [v11 clearData:a3 completion:v15];
+  [remoteObjectProxy clearData:data completion:v15];
 
   objc_autoreleasePoolPop(v6);
   v14 = *MEMORY[0x1E69E9840];
@@ -3420,15 +3420,15 @@ uint64_t __39__FMDFMIPManager_clearData_completion___block_invoke_87(uint64_t a1
   return [v3 invalidate];
 }
 
-- (void)audioAccessorySerialNumbersWithCompletion:(id)a3
+- (void)audioAccessorySerialNumbersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__FMDFMIPManager_audioAccessorySerialNumbersWithCompletion___block_invoke_2;
   v6[3] = &unk_1E86BD4A0;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(FMDFMIPManager *)self _getAccessoriesWithFilter:&__block_literal_global_90 completion:v6];
 }
 
@@ -3439,11 +3439,11 @@ void __60__FMDFMIPManager_audioAccessorySerialNumbersWithCompletion___block_invo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)attemptUCRTHealing:(id)a3 completion:(id)a4
+- (void)attemptUCRTHealing:(id)healing completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  healingCopy = healing;
   v7 = LogCategory_Unspecified();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -3461,11 +3461,11 @@ void __60__FMDFMIPManager_audioAccessorySerialNumbersWithCompletion___block_invo
   v14[1] = 3221225472;
   v14[2] = __48__FMDFMIPManager_attemptUCRTHealing_completion___block_invoke;
   v14[3] = &unk_1E86BD0E0;
-  v15 = v5;
-  v11 = v5;
+  v15 = completionCopy;
+  v11 = completionCopy;
   [v10 addFailureBlock:v14];
-  v12 = [v10 remoteObjectProxy];
-  [v12 attemptUCRTHealing:v6 completion:v11];
+  remoteObjectProxy = [v10 remoteObjectProxy];
+  [remoteObjectProxy attemptUCRTHealing:healingCopy completion:v11];
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -3486,10 +3486,10 @@ void __48__FMDFMIPManager_attemptUCRTHealing_completion___block_invoke(uint64_t 
   }
 }
 
-- (void)fetchAccessoryConfigurations:(id)a3
+- (void)fetchAccessoryConfigurations:(id)configurations
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  configurationsCopy = configurations;
   v4 = objc_autoreleasePoolPush();
   v5 = LogCategory_Unspecified();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -3508,10 +3508,10 @@ void __48__FMDFMIPManager_attemptUCRTHealing_completion___block_invoke(uint64_t 
   v17[1] = 3221225472;
   v17[2] = __47__FMDFMIPManager_fetchAccessoryConfigurations___block_invoke;
   v17[3] = &unk_1E86BD0E0;
-  v9 = v3;
+  v9 = configurationsCopy;
   v18 = v9;
   [v8 addFailureBlock:v17];
-  v10 = [v8 remoteObjectProxy];
+  remoteObjectProxy = [v8 remoteObjectProxy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __47__FMDFMIPManager_fetchAccessoryConfigurations___block_invoke_164;
@@ -3520,7 +3520,7 @@ void __48__FMDFMIPManager_attemptUCRTHealing_completion___block_invoke(uint64_t 
   v15 = v8;
   v16 = v11;
   v12 = v8;
-  [v10 fetchAccessoryConfigurations:v14];
+  [remoteObjectProxy fetchAccessoryConfigurations:v14];
 
   objc_autoreleasePoolPop(v4);
   v13 = *MEMORY[0x1E69E9840];
@@ -3555,11 +3555,11 @@ uint64_t __47__FMDFMIPManager_fetchAccessoryConfigurations___block_invoke_164(ui
   return [v3 invalidate];
 }
 
-- (void)removeAccessoryWithDiscoveryId:(id)a3 completion:(id)a4
+- (void)removeAccessoryWithDiscoveryId:(id)id completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  idCopy = id;
+  completionCopy = completion;
   v7 = objc_autoreleasePoolPush();
   v8 = LogCategory_Unspecified();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -3578,10 +3578,10 @@ uint64_t __47__FMDFMIPManager_fetchAccessoryConfigurations___block_invoke_164(ui
   v20[1] = 3221225472;
   v20[2] = __60__FMDFMIPManager_removeAccessoryWithDiscoveryId_completion___block_invoke;
   v20[3] = &unk_1E86BD0E0;
-  v12 = v6;
+  v12 = completionCopy;
   v21 = v12;
   [v11 addFailureBlock:v20];
-  v13 = [v11 remoteObjectProxy];
+  remoteObjectProxy = [v11 remoteObjectProxy];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __60__FMDFMIPManager_removeAccessoryWithDiscoveryId_completion___block_invoke_165;
@@ -3590,7 +3590,7 @@ uint64_t __47__FMDFMIPManager_fetchAccessoryConfigurations___block_invoke_164(ui
   v18 = v11;
   v19 = v14;
   v15 = v11;
-  [v13 removeAccessoryWithDiscoveryId:v5 completion:v17];
+  [remoteObjectProxy removeAccessoryWithDiscoveryId:idCopy completion:v17];
 
   objc_autoreleasePoolPop(v7);
   v16 = *MEMORY[0x1E69E9840];
@@ -3625,12 +3625,12 @@ uint64_t __60__FMDFMIPManager_removeAccessoryWithDiscoveryId_completion___block_
   return [v3 invalidate];
 }
 
-- (void)setPhoneNumber:(id)a3 toAccessoryWithDiscoveryId:(id)a4 completion:(id)a5
+- (void)setPhoneNumber:(id)number toAccessoryWithDiscoveryId:(id)id completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  numberCopy = number;
+  idCopy = id;
+  completionCopy = completion;
   v10 = objc_autoreleasePoolPush();
   v11 = LogCategory_Unspecified();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -3649,10 +3649,10 @@ uint64_t __60__FMDFMIPManager_removeAccessoryWithDiscoveryId_completion___block_
   v23[1] = 3221225472;
   v23[2] = __71__FMDFMIPManager_setPhoneNumber_toAccessoryWithDiscoveryId_completion___block_invoke;
   v23[3] = &unk_1E86BD0E0;
-  v15 = v9;
+  v15 = completionCopy;
   v24 = v15;
   [v14 addFailureBlock:v23];
-  v16 = [v14 remoteObjectProxy];
+  remoteObjectProxy = [v14 remoteObjectProxy];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __71__FMDFMIPManager_setPhoneNumber_toAccessoryWithDiscoveryId_completion___block_invoke_166;
@@ -3661,7 +3661,7 @@ uint64_t __60__FMDFMIPManager_removeAccessoryWithDiscoveryId_completion___block_
   v21 = v14;
   v22 = v17;
   v18 = v14;
-  [v16 setPhoneNumber:v7 toAccessoryWithDiscoveryId:v8 completion:v20];
+  [remoteObjectProxy setPhoneNumber:numberCopy toAccessoryWithDiscoveryId:idCopy completion:v20];
 
   objc_autoreleasePoolPop(v10);
   v19 = *MEMORY[0x1E69E9840];
@@ -3696,10 +3696,10 @@ uint64_t __71__FMDFMIPManager_setPhoneNumber_toAccessoryWithDiscoveryId_completi
   return [v3 invalidate];
 }
 
-- (void)getConnectedAccessoriesDiscoveryIds:(id)a3
+- (void)getConnectedAccessoriesDiscoveryIds:(id)ids
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  idsCopy = ids;
   v4 = objc_autoreleasePoolPush();
   v5 = LogCategory_Unspecified();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -3718,10 +3718,10 @@ uint64_t __71__FMDFMIPManager_setPhoneNumber_toAccessoryWithDiscoveryId_completi
   v17[1] = 3221225472;
   v17[2] = __54__FMDFMIPManager_getConnectedAccessoriesDiscoveryIds___block_invoke;
   v17[3] = &unk_1E86BD0E0;
-  v9 = v3;
+  v9 = idsCopy;
   v18 = v9;
   [v8 addFailureBlock:v17];
-  v10 = [v8 remoteObjectProxy];
+  remoteObjectProxy = [v8 remoteObjectProxy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __54__FMDFMIPManager_getConnectedAccessoriesDiscoveryIds___block_invoke_167;
@@ -3730,7 +3730,7 @@ uint64_t __71__FMDFMIPManager_setPhoneNumber_toAccessoryWithDiscoveryId_completi
   v15 = v8;
   v16 = v11;
   v12 = v8;
-  [v10 getConnectedAccessoriesDiscoveryIds:v14];
+  [remoteObjectProxy getConnectedAccessoriesDiscoveryIds:v14];
 
   objc_autoreleasePoolPop(v4);
   v13 = *MEMORY[0x1E69E9840];
@@ -3765,11 +3765,11 @@ uint64_t __54__FMDFMIPManager_getConnectedAccessoriesDiscoveryIds___block_invoke
   return [v3 invalidate];
 }
 
-- (void)registerDeviceForPairingLock:(id)a3 completion:(id)a4
+- (void)registerDeviceForPairingLock:(id)lock completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  lockCopy = lock;
   v7 = LogCategory_Unspecified();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -3787,10 +3787,10 @@ uint64_t __54__FMDFMIPManager_getConnectedAccessoriesDiscoveryIds___block_invoke
   v19[1] = 3221225472;
   v19[2] = __58__FMDFMIPManager_registerDeviceForPairingLock_completion___block_invoke;
   v19[3] = &unk_1E86BD0E0;
-  v11 = v5;
+  v11 = completionCopy;
   v20 = v11;
   [v10 addFailureBlock:v19];
-  v12 = [v10 remoteObjectProxy];
+  remoteObjectProxy = [v10 remoteObjectProxy];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __58__FMDFMIPManager_registerDeviceForPairingLock_completion___block_invoke_169;
@@ -3799,7 +3799,7 @@ uint64_t __54__FMDFMIPManager_getConnectedAccessoriesDiscoveryIds___block_invoke
   v18 = v11;
   v13 = v10;
   v14 = v11;
-  [v12 registerDeviceForPairingLock:v6 completion:v16];
+  [remoteObjectProxy registerDeviceForPairingLock:lockCopy completion:v16];
 
   v15 = *MEMORY[0x1E69E9840];
 }
@@ -3833,11 +3833,11 @@ uint64_t __58__FMDFMIPManager_registerDeviceForPairingLock_completion___block_in
   return [v3 invalidate];
 }
 
-- (void)updatePairingLockInfo:(id)a3 completion:(id)a4
+- (void)updatePairingLockInfo:(id)info completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  infoCopy = info;
   v7 = LogCategory_Unspecified();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -3855,10 +3855,10 @@ uint64_t __58__FMDFMIPManager_registerDeviceForPairingLock_completion___block_in
   v19[1] = 3221225472;
   v19[2] = __51__FMDFMIPManager_updatePairingLockInfo_completion___block_invoke;
   v19[3] = &unk_1E86BD0E0;
-  v11 = v5;
+  v11 = completionCopy;
   v20 = v11;
   [v10 addFailureBlock:v19];
-  v12 = [v10 remoteObjectProxy];
+  remoteObjectProxy = [v10 remoteObjectProxy];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __51__FMDFMIPManager_updatePairingLockInfo_completion___block_invoke_171;
@@ -3867,7 +3867,7 @@ uint64_t __58__FMDFMIPManager_registerDeviceForPairingLock_completion___block_in
   v18 = v11;
   v13 = v10;
   v14 = v11;
-  [v12 updatePairingLockInfo:v6 completion:v16];
+  [remoteObjectProxy updatePairingLockInfo:infoCopy completion:v16];
 
   v15 = *MEMORY[0x1E69E9840];
 }
@@ -3901,11 +3901,11 @@ uint64_t __51__FMDFMIPManager_updatePairingLockInfo_completion___block_invoke_17
   return [v3 invalidate];
 }
 
-- (void)pairingCheckWith:(id)a3 completion:(id)a4
+- (void)pairingCheckWith:(id)with completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  withCopy = with;
   v7 = LogCategory_Unspecified();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -3923,10 +3923,10 @@ uint64_t __51__FMDFMIPManager_updatePairingLockInfo_completion___block_invoke_17
   v19[1] = 3221225472;
   v19[2] = __46__FMDFMIPManager_pairingCheckWith_completion___block_invoke;
   v19[3] = &unk_1E86BD0E0;
-  v11 = v5;
+  v11 = completionCopy;
   v20 = v11;
   [v10 addFailureBlock:v19];
-  v12 = [v10 remoteObjectProxy];
+  remoteObjectProxy = [v10 remoteObjectProxy];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __46__FMDFMIPManager_pairingCheckWith_completion___block_invoke_172;
@@ -3935,7 +3935,7 @@ uint64_t __51__FMDFMIPManager_updatePairingLockInfo_completion___block_invoke_17
   v18 = v11;
   v13 = v10;
   v14 = v11;
-  [v12 pairingCheckWith:v6 completion:v16];
+  [remoteObjectProxy pairingCheckWith:withCopy completion:v16];
 
   v15 = *MEMORY[0x1E69E9840];
 }
@@ -3969,11 +3969,11 @@ uint64_t __46__FMDFMIPManager_pairingCheckWith_completion___block_invoke_172(uin
   return [v3 invalidate];
 }
 
-- (void)_getAccessoriesWithFilter:(id)a3 completion:(id)a4
+- (void)_getAccessoriesWithFilter:(id)filter completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  filterCopy = filter;
+  completionCopy = completion;
   v7 = objc_autoreleasePoolPush();
   v8 = LogCategory_Unspecified();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -3992,21 +3992,21 @@ uint64_t __46__FMDFMIPManager_pairingCheckWith_completion___block_invoke_172(uin
   v22[1] = 3221225472;
   v22[2] = __55__FMDFMIPManager__getAccessoriesWithFilter_completion___block_invoke;
   v22[3] = &unk_1E86BD0E0;
-  v12 = v6;
+  v12 = completionCopy;
   v23 = v12;
   [v11 addFailureBlock:v22];
-  v13 = [v11 remoteObjectProxy];
+  remoteObjectProxy = [v11 remoteObjectProxy];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __55__FMDFMIPManager__getAccessoriesWithFilter_completion___block_invoke_174;
   v18[3] = &unk_1E86BD560;
-  v14 = v5;
+  v14 = filterCopy;
   v20 = v14;
   v15 = v12;
   v21 = v15;
   v19 = v11;
   v16 = v11;
-  [v13 getAccessoriesWithCompletion:v18];
+  [remoteObjectProxy getAccessoriesWithCompletion:v18];
 
   objc_autoreleasePoolPop(v7);
   v17 = *MEMORY[0x1E69E9840];
@@ -4062,10 +4062,10 @@ void __55__FMDFMIPManager__getAccessoriesWithFilter_completion___block_invoke_17
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_forceFMWUpgradeAlertWithCompletion:(id)a3
+- (void)_forceFMWUpgradeAlertWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_autoreleasePoolPush();
   v5 = LogCategory_Unspecified();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -4081,16 +4081,16 @@ void __55__FMDFMIPManager__getAccessoriesWithFilter_completion___block_invoke_17
   v8 = [v6 resumeConnectionWithConfiguration:v7];
 
   [v8 addFailureBlock:&__block_literal_global_176];
-  v9 = [v8 remoteObjectProxy];
+  remoteObjectProxy = [v8 remoteObjectProxy];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __54__FMDFMIPManager__forceFMWUpgradeAlertWithCompletion___block_invoke_177;
   v13[3] = &unk_1E86BD320;
-  v10 = v3;
+  v10 = completionCopy;
   v14 = v8;
   v15 = v10;
   v11 = v8;
-  [v9 _forceFMWUpgradeAlertUsingCallback:v13];
+  [remoteObjectProxy _forceFMWUpgradeAlertUsingCallback:v13];
 
   objc_autoreleasePoolPop(v4);
   v12 = *MEMORY[0x1E69E9840];
@@ -4131,15 +4131,15 @@ uint64_t __54__FMDFMIPManager__forceFMWUpgradeAlertWithCompletion___block_invoke
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.icloud.fmip.lostmode.stopAlarm", 0, 0, 1u);
 }
 
-- (id)newErrorForCode:(int)a3 message:(id)a4
+- (id)newErrorForCode:(int)code message:(id)message
 {
   v5 = MEMORY[0x1E696ABC0];
-  v6 = a4;
+  messageCopy = message;
   v7 = [v5 alloc];
   v8 = kFMDErrorDomain;
-  v9 = [MEMORY[0x1E695DF20] dictionaryWithObject:v6 forKey:*MEMORY[0x1E696A588]];
+  v9 = [MEMORY[0x1E695DF20] dictionaryWithObject:messageCopy forKey:*MEMORY[0x1E696A588]];
 
-  v10 = [v7 initWithDomain:v8 code:a3 userInfo:v9];
+  v10 = [v7 initWithDomain:v8 code:code userInfo:v9];
   return v10;
 }
 
@@ -4179,10 +4179,10 @@ uint64_t __54__FMDFMIPManager__forceFMWUpgradeAlertWithCompletion___block_invoke
   return result;
 }
 
-- (void)_updateManagedLostModeWithInfo:(id)a3 completion:(id)a4
+- (void)_updateManagedLostModeWithInfo:(id)info completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  infoCopy = info;
   v7 = +[FMNSXPCConnectionCache sharedCache];
   v8 = +[FMNSXPCConnectionConfiguration helperConfiguration];
   v9 = [v7 resumeConnectionWithConfiguration:v8];
@@ -4191,10 +4191,10 @@ uint64_t __54__FMDFMIPManager__forceFMWUpgradeAlertWithCompletion___block_invoke
   v17[1] = 3221225472;
   v17[2] = __60__FMDFMIPManager__updateManagedLostModeWithInfo_completion___block_invoke;
   v17[3] = &unk_1E86BD0E0;
-  v10 = v5;
+  v10 = completionCopy;
   v18 = v10;
   [v9 addFailureBlock:v17];
-  v11 = [v9 remoteObjectProxy];
+  remoteObjectProxy = [v9 remoteObjectProxy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __60__FMDFMIPManager__updateManagedLostModeWithInfo_completion___block_invoke_178;
@@ -4203,7 +4203,7 @@ uint64_t __54__FMDFMIPManager__forceFMWUpgradeAlertWithCompletion___block_invoke
   v16 = v10;
   v12 = v9;
   v13 = v10;
-  [v11 updateManagedLostModeInfo:v6 completion:v14];
+  [remoteObjectProxy updateManagedLostModeInfo:infoCopy completion:v14];
 }
 
 void __60__FMDFMIPManager__updateManagedLostModeWithInfo_completion___block_invoke(uint64_t a1)
@@ -4250,10 +4250,10 @@ void __60__FMDFMIPManager__updateManagedLostModeWithInfo_completion___block_invo
   [*(a1 + 32) invalidate];
 }
 
-- (void)_updateNeedsLocateAckLostModeWithInfo:(id)a3 completion:(id)a4
+- (void)_updateNeedsLocateAckLostModeWithInfo:(id)info completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  infoCopy = info;
   v7 = +[FMNSXPCConnectionCache sharedCache];
   v8 = +[FMNSXPCConnectionConfiguration helperConfiguration];
   v9 = [v7 resumeConnectionWithConfiguration:v8];
@@ -4262,10 +4262,10 @@ void __60__FMDFMIPManager__updateManagedLostModeWithInfo_completion___block_invo
   v17[1] = 3221225472;
   v17[2] = __67__FMDFMIPManager__updateNeedsLocateAckLostModeWithInfo_completion___block_invoke;
   v17[3] = &unk_1E86BD0E0;
-  v10 = v5;
+  v10 = completionCopy;
   v18 = v10;
   [v9 addFailureBlock:v17];
-  v11 = [v9 remoteObjectProxy];
+  remoteObjectProxy = [v9 remoteObjectProxy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __67__FMDFMIPManager__updateNeedsLocateAckLostModeWithInfo_completion___block_invoke_179;
@@ -4274,7 +4274,7 @@ void __60__FMDFMIPManager__updateManagedLostModeWithInfo_completion___block_invo
   v16 = v10;
   v12 = v9;
   v13 = v10;
-  [v11 updateNeedsLocateAckLostModeInfo:v6 completion:v14];
+  [remoteObjectProxy updateNeedsLocateAckLostModeInfo:infoCopy completion:v14];
 }
 
 void __67__FMDFMIPManager__updateNeedsLocateAckLostModeWithInfo_completion___block_invoke(uint64_t a1)
@@ -4321,11 +4321,11 @@ void __67__FMDFMIPManager__updateNeedsLocateAckLostModeWithInfo_completion___blo
   [*(a1 + 32) invalidate];
 }
 
-- (void)_initiateLostModeExitAuthForIDSDeviceID:(id)a3 withCompletion:(id)a4
+- (void)_initiateLostModeExitAuthForIDSDeviceID:(id)d withCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   fmdFMIPLastOperationResult = 0;
-  v6 = a3;
+  dCopy = d;
   v7 = +[FMNSXPCConnectionCache sharedCache];
   v8 = +[FMNSXPCConnectionConfiguration fmipConfiguration];
   v9 = [v7 resumeConnectionWithConfiguration:v8];
@@ -4334,12 +4334,12 @@ void __67__FMDFMIPManager__updateNeedsLocateAckLostModeWithInfo_completion___blo
   v20[1] = 3221225472;
   v20[2] = __73__FMDFMIPManager__initiateLostModeExitAuthForIDSDeviceID_withCompletion___block_invoke;
   v20[3] = &unk_1E86BD0E0;
-  v10 = v5;
+  v10 = completionCopy;
   v21 = v10;
   [v9 addFailureBlock:v20];
-  v11 = [v9 remoteObjectProxy];
-  v12 = [MEMORY[0x1E696AAE8] mainBundle];
-  v13 = [v12 bundleIdentifier];
+  remoteObjectProxy = [v9 remoteObjectProxy];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -4350,7 +4350,7 @@ void __67__FMDFMIPManager__updateNeedsLocateAckLostModeWithInfo_completion___blo
   v14 = v9;
   v15 = v10;
   v16 = MEMORY[0x1E12DA360](v17);
-  [v11 initiateLostModeExitAuthForApp:v13 idsDeviceID:v6 usingCallback:v16];
+  [remoteObjectProxy initiateLostModeExitAuthForApp:bundleIdentifier idsDeviceID:dCopy usingCallback:v16];
 }
 
 void __73__FMDFMIPManager__initiateLostModeExitAuthForIDSDeviceID_withCompletion___block_invoke(uint64_t a1)
@@ -4392,10 +4392,10 @@ void __73__FMDFMIPManager__initiateLostModeExitAuthForIDSDeviceID_withCompletion
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_disableFMIPUsingToken:(id)a3 inContext:(unint64_t)a4 completion:(id)a5
+- (void)_disableFMIPUsingToken:(id)token inContext:(unint64_t)context completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  tokenCopy = token;
+  completionCopy = completion;
   v9 = objc_autoreleasePoolPush();
   fmdFMIPLastOperationResult = 0;
   v10 = LogCategory_Unspecified();
@@ -4405,7 +4405,7 @@ void __73__FMDFMIPManager__initiateLostModeExitAuthForIDSDeviceID_withCompletion
     _os_log_impl(&dword_1DF650000, v10, OS_LOG_TYPE_DEFAULT, "Disabling FMIP...", buf, 2u);
   }
 
-  if ([v7 length])
+  if ([tokenCopy length])
   {
     v11 = +[FMNSXPCConnectionCache sharedCache];
     v12 = +[FMNSXPCConnectionConfiguration fmipConfiguration];
@@ -4415,10 +4415,10 @@ void __73__FMDFMIPManager__initiateLostModeExitAuthForIDSDeviceID_withCompletion
     v21[1] = 3221225472;
     v21[2] = __62__FMDFMIPManager__disableFMIPUsingToken_inContext_completion___block_invoke;
     v21[3] = &unk_1E86BD0E0;
-    v14 = v8;
+    v14 = completionCopy;
     v22 = v14;
     [v13 addFailureBlock:v21];
-    v15 = [v13 remoteObjectProxy];
+    remoteObjectProxy = [v13 remoteObjectProxy];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __62__FMDFMIPManager__disableFMIPUsingToken_inContext_completion___block_invoke_182;
@@ -4426,7 +4426,7 @@ void __73__FMDFMIPManager__initiateLostModeExitAuthForIDSDeviceID_withCompletion
     v19 = v13;
     v20 = v14;
     v16 = v13;
-    [v15 disableFMIPUsingToken:v7 inContext:a4 usingCallback:v18];
+    [remoteObjectProxy disableFMIPUsingToken:tokenCopy inContext:context usingCallback:v18];
   }
 
   else
@@ -4438,9 +4438,9 @@ void __73__FMDFMIPManager__initiateLostModeExitAuthForIDSDeviceID_withCompletion
     }
 
     v16 = [MEMORY[0x1E696ABC0] errorWithDomain:kFMDErrorDomain code:1 userInfo:0];
-    if (v8)
+    if (completionCopy)
     {
-      (*(v8 + 2))(v8, v16);
+      (*(completionCopy + 2))(completionCopy, v16);
     }
   }
 
@@ -4578,11 +4578,11 @@ void __50__FMDFMIPManager_getNeedsLocateAckLostModeFileURL__block_invoke(uint64_
   *(v9 + 40) = v8;
 }
 
-- (void)playSoundWithMessage:(id)a3 completion:(id)a4
+- (void)playSoundWithMessage:(id)message completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   v7 = +[FMNSXPCConnectionCache sharedCache];
   v8 = +[FMNSXPCConnectionConfiguration helperConfiguration];
   v9 = [v7 resumeConnectionWithConfiguration:v8];
@@ -4591,10 +4591,10 @@ void __50__FMDFMIPManager_getNeedsLocateAckLostModeFileURL__block_invoke(uint64_
   v20[1] = 3221225472;
   v20[2] = __50__FMDFMIPManager_playSoundWithMessage_completion___block_invoke;
   v20[3] = &unk_1E86BD0E0;
-  v10 = v6;
+  v10 = completionCopy;
   v21 = v10;
   [v9 addFailureBlock:v20];
-  v11 = [v9 remoteObjectProxy];
+  remoteObjectProxy = [v9 remoteObjectProxy];
   v12 = LogCategory_Unspecified();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -4612,7 +4612,7 @@ void __50__FMDFMIPManager_getNeedsLocateAckLostModeFileURL__block_invoke(uint64_
   v19 = v10;
   v14 = v9;
   v15 = v10;
-  [v11 startPlayingSoundForMessage:v5 completion:v17];
+  [remoteObjectProxy startPlayingSoundForMessage:messageCopy completion:v17];
 
   v16 = *MEMORY[0x1E69E9840];
 }
@@ -4661,9 +4661,9 @@ void __50__FMDFMIPManager_playSoundWithMessage_completion___block_invoke_184(uin
   [*(a1 + 32) invalidate];
 }
 
-- (void)stopSoundMessageWithCompletion:(id)a3
+- (void)stopSoundMessageWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[FMNSXPCConnectionCache sharedCache];
   v5 = +[FMNSXPCConnectionConfiguration helperConfiguration];
   v6 = [v4 resumeConnectionWithConfiguration:v5];
@@ -4672,10 +4672,10 @@ void __50__FMDFMIPManager_playSoundWithMessage_completion___block_invoke_184(uin
   v16[1] = 3221225472;
   v16[2] = __49__FMDFMIPManager_stopSoundMessageWithCompletion___block_invoke;
   v16[3] = &unk_1E86BD0E0;
-  v7 = v3;
+  v7 = completionCopy;
   v17 = v7;
   [v6 addFailureBlock:v16];
-  v8 = [v6 remoteObjectProxy];
+  remoteObjectProxy = [v6 remoteObjectProxy];
   v9 = LogCategory_Unspecified();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -4691,7 +4691,7 @@ void __50__FMDFMIPManager_playSoundWithMessage_completion___block_invoke_184(uin
   v14 = v7;
   v10 = v6;
   v11 = v7;
-  [v8 stopSoundMessageWithCompletion:v12];
+  [remoteObjectProxy stopSoundMessageWithCompletion:v12];
 }
 
 void __49__FMDFMIPManager_stopSoundMessageWithCompletion___block_invoke(uint64_t a1)
@@ -4738,10 +4738,10 @@ void __49__FMDFMIPManager_stopSoundMessageWithCompletion___block_invoke_185(uint
   [*(a1 + 32) invalidate];
 }
 
-- (void)deviceEligibleForRepairWithContext:(id)a3 completion:(id)a4
+- (void)deviceEligibleForRepairWithContext:(id)context completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  contextCopy = context;
   v7 = +[FMNSXPCConnectionCache sharedCache];
   v8 = +[FMNSXPCConnectionConfiguration fmipConfiguration];
   v9 = [v7 resumeConnectionWithConfiguration:v8];
@@ -4750,11 +4750,11 @@ void __49__FMDFMIPManager_stopSoundMessageWithCompletion___block_invoke_185(uint
   v12[1] = 3221225472;
   v12[2] = __64__FMDFMIPManager_deviceEligibleForRepairWithContext_completion___block_invoke;
   v12[3] = &unk_1E86BD0E0;
-  v13 = v5;
-  v10 = v5;
+  v13 = completionCopy;
+  v10 = completionCopy;
   [v9 addFailureBlock:v12];
-  v11 = [v9 remoteObjectProxy];
-  [v11 deviceEligibleForRepairWithContext:v6 completion:v10];
+  remoteObjectProxy = [v9 remoteObjectProxy];
+  [remoteObjectProxy deviceEligibleForRepairWithContext:contextCopy completion:v10];
 }
 
 void __64__FMDFMIPManager_deviceEligibleForRepairWithContext_completion___block_invoke(uint64_t a1)
@@ -4773,10 +4773,10 @@ void __64__FMDFMIPManager_deviceEligibleForRepairWithContext_completion___block_
   }
 }
 
-- (void)enableRepairWithContext:(id)a3 completion:(id)a4
+- (void)enableRepairWithContext:(id)context completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  contextCopy = context;
   v7 = +[FMNSXPCConnectionCache sharedCache];
   v8 = +[FMNSXPCConnectionConfiguration fmipConfiguration];
   v9 = [v7 resumeConnectionWithConfiguration:v8];
@@ -4785,11 +4785,11 @@ void __64__FMDFMIPManager_deviceEligibleForRepairWithContext_completion___block_
   v12[1] = 3221225472;
   v12[2] = __53__FMDFMIPManager_enableRepairWithContext_completion___block_invoke;
   v12[3] = &unk_1E86BD0E0;
-  v13 = v5;
-  v10 = v5;
+  v13 = completionCopy;
+  v10 = completionCopy;
   [v9 addFailureBlock:v12];
-  v11 = [v9 remoteObjectProxy];
-  [v11 enableRepairWithContext:v6 completion:v10];
+  remoteObjectProxy = [v9 remoteObjectProxy];
+  [remoteObjectProxy enableRepairWithContext:contextCopy completion:v10];
 }
 
 void __53__FMDFMIPManager_enableRepairWithContext_completion___block_invoke(uint64_t a1)
@@ -4808,9 +4808,9 @@ void __53__FMDFMIPManager_enableRepairWithContext_completion___block_invoke(uint
   }
 }
 
-- (void)activationLockInfoFromDeviceWithCompletion:(id)a3
+- (void)activationLockInfoFromDeviceWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = LogCategory_Unspecified();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -4826,11 +4826,11 @@ void __53__FMDFMIPManager_enableRepairWithContext_completion___block_invoke(uint
   v10[1] = 3221225472;
   v10[2] = __61__FMDFMIPManager_activationLockInfoFromDeviceWithCompletion___block_invoke;
   v10[3] = &unk_1E86BD0E0;
-  v11 = v3;
-  v8 = v3;
+  v11 = completionCopy;
+  v8 = completionCopy;
   [v7 addFailureBlock:v10];
-  v9 = [v7 remoteObjectProxy];
-  [v9 activationLockInfoFromDeviceWithCompletion:v8];
+  remoteObjectProxy = [v7 remoteObjectProxy];
+  [remoteObjectProxy activationLockInfoFromDeviceWithCompletion:v8];
 }
 
 void __61__FMDFMIPManager_activationLockInfoFromDeviceWithCompletion___block_invoke(uint64_t a1)
@@ -4849,10 +4849,10 @@ void __61__FMDFMIPManager_activationLockInfoFromDeviceWithCompletion___block_inv
   }
 }
 
-- (void)storeOfflineFindingInfo:(id)a3 completion:(id)a4
+- (void)storeOfflineFindingInfo:(id)info completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  infoCopy = info;
   v7 = +[FMNSXPCConnectionCache sharedCache];
   v8 = +[FMNSXPCConnectionConfiguration fmipConfiguration];
   v9 = [v7 resumeConnectionWithConfiguration:v8];
@@ -4861,11 +4861,11 @@ void __61__FMDFMIPManager_activationLockInfoFromDeviceWithCompletion___block_inv
   v12[1] = 3221225472;
   v12[2] = __53__FMDFMIPManager_storeOfflineFindingInfo_completion___block_invoke;
   v12[3] = &unk_1E86BD0E0;
-  v13 = v5;
-  v10 = v5;
+  v13 = completionCopy;
+  v10 = completionCopy;
   [v9 addFailureBlock:v12];
-  v11 = [v9 remoteObjectProxy];
-  [v11 storeOfflineFindingInfo:v6 completion:v10];
+  remoteObjectProxy = [v9 remoteObjectProxy];
+  [remoteObjectProxy storeOfflineFindingInfo:infoCopy completion:v10];
 }
 
 void __53__FMDFMIPManager_storeOfflineFindingInfo_completion___block_invoke(uint64_t a1)
@@ -4884,9 +4884,9 @@ void __53__FMDFMIPManager_storeOfflineFindingInfo_completion___block_invoke(uint
   }
 }
 
-- (void)fetchOfflineFindingInfoWithCompletion:(id)a3
+- (void)fetchOfflineFindingInfoWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = LogCategory_Unspecified();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -4902,11 +4902,11 @@ void __53__FMDFMIPManager_storeOfflineFindingInfo_completion___block_invoke(uint
   v10[1] = 3221225472;
   v10[2] = __56__FMDFMIPManager_fetchOfflineFindingInfoWithCompletion___block_invoke;
   v10[3] = &unk_1E86BD0E0;
-  v11 = v3;
-  v8 = v3;
+  v11 = completionCopy;
+  v8 = completionCopy;
   [v7 addFailureBlock:v10];
-  v9 = [v7 remoteObjectProxy];
-  [v9 fetchOfflineFindingInfoWithCompletion:v8];
+  remoteObjectProxy = [v7 remoteObjectProxy];
+  [remoteObjectProxy fetchOfflineFindingInfoWithCompletion:v8];
 }
 
 void __56__FMDFMIPManager_fetchOfflineFindingInfoWithCompletion___block_invoke(uint64_t a1)
@@ -4925,9 +4925,9 @@ void __56__FMDFMIPManager_fetchOfflineFindingInfoWithCompletion___block_invoke(u
   }
 }
 
-- (void)clearOfflineFindingInfoWithCompletion:(id)a3
+- (void)clearOfflineFindingInfoWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[FMNSXPCConnectionCache sharedCache];
   v5 = +[FMNSXPCConnectionConfiguration fmipConfiguration];
   v6 = [v4 resumeConnectionWithConfiguration:v5];
@@ -4936,11 +4936,11 @@ void __56__FMDFMIPManager_fetchOfflineFindingInfoWithCompletion___block_invoke(u
   v9[1] = 3221225472;
   v9[2] = __56__FMDFMIPManager_clearOfflineFindingInfoWithCompletion___block_invoke;
   v9[3] = &unk_1E86BD0E0;
-  v10 = v3;
-  v7 = v3;
+  v10 = completionCopy;
+  v7 = completionCopy;
   [v6 addFailureBlock:v9];
-  v8 = [v6 remoteObjectProxy];
-  [v8 clearOfflineFindingInfoWithCompletion:v7];
+  remoteObjectProxy = [v6 remoteObjectProxy];
+  [remoteObjectProxy clearOfflineFindingInfoWithCompletion:v7];
 }
 
 void __56__FMDFMIPManager_clearOfflineFindingInfoWithCompletion___block_invoke(uint64_t a1)
@@ -4959,9 +4959,9 @@ void __56__FMDFMIPManager_clearOfflineFindingInfoWithCompletion___block_invoke(u
   }
 }
 
-- (void)activationLockAuthInfoWithCompletion:(id)a3
+- (void)activationLockAuthInfoWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = LogCategory_Unspecified();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -4977,11 +4977,11 @@ void __56__FMDFMIPManager_clearOfflineFindingInfoWithCompletion___block_invoke(u
   v10[1] = 3221225472;
   v10[2] = __55__FMDFMIPManager_activationLockAuthInfoWithCompletion___block_invoke;
   v10[3] = &unk_1E86BD0E0;
-  v11 = v3;
-  v8 = v3;
+  v11 = completionCopy;
+  v8 = completionCopy;
   [v7 addFailureBlock:v10];
-  v9 = [v7 remoteObjectProxy];
-  [v9 activationLockAuthInfoWithCompletion:v8];
+  remoteObjectProxy = [v7 remoteObjectProxy];
+  [remoteObjectProxy activationLockAuthInfoWithCompletion:v8];
 }
 
 void __55__FMDFMIPManager_activationLockAuthInfoWithCompletion___block_invoke(uint64_t a1)
@@ -5000,9 +5000,9 @@ void __55__FMDFMIPManager_activationLockAuthInfoWithCompletion___block_invoke(ui
   }
 }
 
-- (void)fetchAPNSTokenWithCompletion:(id)a3
+- (void)fetchAPNSTokenWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = LogCategory_Unspecified();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -5018,11 +5018,11 @@ void __55__FMDFMIPManager_activationLockAuthInfoWithCompletion___block_invoke(ui
   v10[1] = 3221225472;
   v10[2] = __47__FMDFMIPManager_fetchAPNSTokenWithCompletion___block_invoke;
   v10[3] = &unk_1E86BD0E0;
-  v11 = v3;
-  v8 = v3;
+  v11 = completionCopy;
+  v8 = completionCopy;
   [v7 addFailureBlock:v10];
-  v9 = [v7 remoteObjectProxy];
-  [v9 fetchAPNSTokenWithCompletion:v8];
+  remoteObjectProxy = [v7 remoteObjectProxy];
+  [remoteObjectProxy fetchAPNSTokenWithCompletion:v8];
 }
 
 void __47__FMDFMIPManager_fetchAPNSTokenWithCompletion___block_invoke(uint64_t a1)
@@ -5041,9 +5041,9 @@ void __47__FMDFMIPManager_fetchAPNSTokenWithCompletion___block_invoke(uint64_t a
   }
 }
 
-- (void)startLocationMonitoring:(id)a3
+- (void)startLocationMonitoring:(id)monitoring
 {
-  v3 = a3;
+  monitoringCopy = monitoring;
   v4 = LogCategory_SecureLocations();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -5059,11 +5059,11 @@ void __47__FMDFMIPManager_fetchAPNSTokenWithCompletion___block_invoke(uint64_t a
   v10[1] = 3221225472;
   v10[2] = __42__FMDFMIPManager_startLocationMonitoring___block_invoke;
   v10[3] = &unk_1E86BD0E0;
-  v11 = v3;
-  v8 = v3;
+  v11 = monitoringCopy;
+  v8 = monitoringCopy;
   [v7 addFailureBlock:v10];
-  v9 = [v7 remoteObjectProxy];
-  [v9 startLocationMonitoring:v8];
+  remoteObjectProxy = [v7 remoteObjectProxy];
+  [remoteObjectProxy startLocationMonitoring:v8];
 }
 
 void __42__FMDFMIPManager_startLocationMonitoring___block_invoke(uint64_t a1)
@@ -5082,9 +5082,9 @@ void __42__FMDFMIPManager_startLocationMonitoring___block_invoke(uint64_t a1)
   }
 }
 
-- (void)stopLocationMonitoring:(id)a3
+- (void)stopLocationMonitoring:(id)monitoring
 {
-  v3 = a3;
+  monitoringCopy = monitoring;
   v4 = LogCategory_SecureLocations();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -5100,11 +5100,11 @@ void __42__FMDFMIPManager_startLocationMonitoring___block_invoke(uint64_t a1)
   v10[1] = 3221225472;
   v10[2] = __41__FMDFMIPManager_stopLocationMonitoring___block_invoke;
   v10[3] = &unk_1E86BD0E0;
-  v11 = v3;
-  v8 = v3;
+  v11 = monitoringCopy;
+  v8 = monitoringCopy;
   [v7 addFailureBlock:v10];
-  v9 = [v7 remoteObjectProxy];
-  [v9 stopLocationMonitoring:v8];
+  remoteObjectProxy = [v7 remoteObjectProxy];
+  [remoteObjectProxy stopLocationMonitoring:v8];
 }
 
 void __41__FMDFMIPManager_stopLocationMonitoring___block_invoke(uint64_t a1)
@@ -5123,10 +5123,10 @@ void __41__FMDFMIPManager_stopLocationMonitoring___block_invoke(uint64_t a1)
   }
 }
 
-- (void)updatedConfigReceived:(id)a3 completion:(id)a4
+- (void)updatedConfigReceived:(id)received completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  receivedCopy = received;
   v7 = LogCategory_SecureLocations();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -5142,11 +5142,11 @@ void __41__FMDFMIPManager_stopLocationMonitoring___block_invoke(uint64_t a1)
   v13[1] = 3221225472;
   v13[2] = __51__FMDFMIPManager_updatedConfigReceived_completion___block_invoke;
   v13[3] = &unk_1E86BD0E0;
-  v14 = v5;
-  v11 = v5;
+  v14 = completionCopy;
+  v11 = completionCopy;
   [v10 addFailureBlock:v13];
-  v12 = [v10 remoteObjectProxy];
-  [v12 updatedConfigReceived:v6 completion:v11];
+  remoteObjectProxy = [v10 remoteObjectProxy];
+  [remoteObjectProxy updatedConfigReceived:receivedCopy completion:v11];
 }
 
 void __51__FMDFMIPManager_updatedConfigReceived_completion___block_invoke(uint64_t a1)
@@ -5165,16 +5165,16 @@ void __51__FMDFMIPManager_updatedConfigReceived_completion___block_invoke(uint64
   }
 }
 
-- (void)startLocationMonitoringWithContext:(id)a3 completion:(id)a4
+- (void)startLocationMonitoringWithContext:(id)context completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v7 = LogCategory_SecureLocations();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v5;
+    v17 = contextCopy;
     _os_log_impl(&dword_1DF650000, v7, OS_LOG_TYPE_DEFAULT, "Framework: startLocationMonitoringWith %@", buf, 0xCu);
   }
 
@@ -5186,11 +5186,11 @@ void __51__FMDFMIPManager_updatedConfigReceived_completion___block_invoke(uint64
   v14[1] = 3221225472;
   v14[2] = __64__FMDFMIPManager_startLocationMonitoringWithContext_completion___block_invoke;
   v14[3] = &unk_1E86BD0E0;
-  v15 = v6;
-  v11 = v6;
+  v15 = completionCopy;
+  v11 = completionCopy;
   [v10 addFailureBlock:v14];
-  v12 = [v10 remoteObjectProxy];
-  [v12 startLocationMonitoringWithContext:v5 completion:v11];
+  remoteObjectProxy = [v10 remoteObjectProxy];
+  [remoteObjectProxy startLocationMonitoringWithContext:contextCopy completion:v11];
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -5227,16 +5227,16 @@ void __77__FMDFMIPManager_startLocationMonitoringWithContext_forcePublish_comple
   }
 }
 
-- (void)stopLocationMonitoringWithContext:(id)a3 completion:(id)a4
+- (void)stopLocationMonitoringWithContext:(id)context completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v7 = LogCategory_SecureLocations();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v5;
+    v17 = contextCopy;
     _os_log_impl(&dword_1DF650000, v7, OS_LOG_TYPE_DEFAULT, "Framework: stopLocationMonitoringWith %@", buf, 0xCu);
   }
 
@@ -5248,11 +5248,11 @@ void __77__FMDFMIPManager_startLocationMonitoringWithContext_forcePublish_comple
   v14[1] = 3221225472;
   v14[2] = __63__FMDFMIPManager_stopLocationMonitoringWithContext_completion___block_invoke;
   v14[3] = &unk_1E86BD0E0;
-  v15 = v6;
-  v11 = v6;
+  v15 = completionCopy;
+  v11 = completionCopy;
   [v10 addFailureBlock:v14];
-  v12 = [v10 remoteObjectProxy];
-  [v12 stopLocationMonitoringWithContext:v5 completion:v11];
+  remoteObjectProxy = [v10 remoteObjectProxy];
+  [remoteObjectProxy stopLocationMonitoringWithContext:contextCopy completion:v11];
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -5273,38 +5273,38 @@ void __63__FMDFMIPManager_stopLocationMonitoringWithContext_completion___block_i
   }
 }
 
-- (void)startLocationMonitoringWithOptions:(id)a3 completion:(id)a4
+- (void)startLocationMonitoringWithOptions:(id)options completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  optionsCopy = options;
   v10 = objc_alloc_init(FMDSecureLocationContext);
-  v8 = [v7 objectForKeyedSubscript:@"mode"];
+  v8 = [optionsCopy objectForKeyedSubscript:@"mode"];
   [(FMDSecureLocationContext *)v10 setMode:v8];
 
-  v9 = [v7 objectForKeyedSubscript:@"findMyId"];
+  v9 = [optionsCopy objectForKeyedSubscript:@"findMyId"];
 
   [(FMDSecureLocationContext *)v10 setFindMyId:v9];
-  [(FMDFMIPManager *)self startLocationMonitoringWithContext:v10 completion:v6];
+  [(FMDFMIPManager *)self startLocationMonitoringWithContext:v10 completion:completionCopy];
 }
 
-- (void)stopLocationMonitoringWithOptions:(id)a3 completion:(id)a4
+- (void)stopLocationMonitoringWithOptions:(id)options completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  optionsCopy = options;
   v10 = objc_alloc_init(FMDSecureLocationContext);
-  v8 = [v7 objectForKeyedSubscript:@"mode"];
+  v8 = [optionsCopy objectForKeyedSubscript:@"mode"];
   [(FMDSecureLocationContext *)v10 setMode:v8];
 
-  v9 = [v7 objectForKeyedSubscript:@"findMyId"];
+  v9 = [optionsCopy objectForKeyedSubscript:@"findMyId"];
 
   [(FMDSecureLocationContext *)v10 setFindMyId:v9];
-  [(FMDFMIPManager *)self stopLocationMonitoringWithContext:v10 completion:v6];
+  [(FMDFMIPManager *)self stopLocationMonitoringWithContext:v10 completion:completionCopy];
 }
 
-- (void)didAddLocalFindableAccessory:(id)a3 completion:(id)a4
+- (void)didAddLocalFindableAccessory:(id)accessory completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  accessoryCopy = accessory;
   v7 = LogCategory_SecureLocations();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -5320,11 +5320,11 @@ void __63__FMDFMIPManager_stopLocationMonitoringWithContext_completion___block_i
   v13[1] = 3221225472;
   v13[2] = __58__FMDFMIPManager_didAddLocalFindableAccessory_completion___block_invoke;
   v13[3] = &unk_1E86BD0E0;
-  v14 = v5;
-  v11 = v5;
+  v14 = completionCopy;
+  v11 = completionCopy;
   [v10 addFailureBlock:v13];
-  v12 = [v10 remoteObjectProxy];
-  [v12 didAddLocalFindableAccessory:v6 completion:v11];
+  remoteObjectProxy = [v10 remoteObjectProxy];
+  [remoteObjectProxy didAddLocalFindableAccessory:accessoryCopy completion:v11];
 }
 
 void __58__FMDFMIPManager_didAddLocalFindableAccessory_completion___block_invoke(uint64_t a1)
@@ -5343,10 +5343,10 @@ void __58__FMDFMIPManager_didAddLocalFindableAccessory_completion___block_invoke
   }
 }
 
-- (void)didRemoveLocalFindableAccessory:(id)a3 completion:(id)a4
+- (void)didRemoveLocalFindableAccessory:(id)accessory completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  accessoryCopy = accessory;
   v7 = LogCategory_SecureLocations();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -5362,11 +5362,11 @@ void __58__FMDFMIPManager_didAddLocalFindableAccessory_completion___block_invoke
   v13[1] = 3221225472;
   v13[2] = __61__FMDFMIPManager_didRemoveLocalFindableAccessory_completion___block_invoke;
   v13[3] = &unk_1E86BD0E0;
-  v14 = v5;
-  v11 = v5;
+  v14 = completionCopy;
+  v11 = completionCopy;
   [v10 addFailureBlock:v13];
-  v12 = [v10 remoteObjectProxy];
-  [v12 didRemoveLocalFindableAccessory:v6 completion:v11];
+  remoteObjectProxy = [v10 remoteObjectProxy];
+  [remoteObjectProxy didRemoveLocalFindableAccessory:accessoryCopy completion:v11];
 }
 
 void __61__FMDFMIPManager_didRemoveLocalFindableAccessory_completion___block_invoke(uint64_t a1)
@@ -5385,9 +5385,9 @@ void __61__FMDFMIPManager_didRemoveLocalFindableAccessory_completion___block_inv
   }
 }
 
-- (void)requireDisableLocationWithCompletion:(id)a3
+- (void)requireDisableLocationWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = LogCategory_DisableLocationDisplay();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -5403,11 +5403,11 @@ void __61__FMDFMIPManager_didRemoveLocalFindableAccessory_completion___block_inv
   v10[1] = 3221225472;
   v10[2] = __55__FMDFMIPManager_requireDisableLocationWithCompletion___block_invoke;
   v10[3] = &unk_1E86BD0E0;
-  v11 = v3;
-  v8 = v3;
+  v11 = completionCopy;
+  v8 = completionCopy;
   [v7 addFailureBlock:v10];
-  v9 = [v7 remoteObjectProxy];
-  [v9 requireDisableLocationWithCompletion:v8];
+  remoteObjectProxy = [v7 remoteObjectProxy];
+  [remoteObjectProxy requireDisableLocationWithCompletion:v8];
 }
 
 void __55__FMDFMIPManager_requireDisableLocationWithCompletion___block_invoke(uint64_t a1)
@@ -5426,9 +5426,9 @@ void __55__FMDFMIPManager_requireDisableLocationWithCompletion___block_invoke(ui
   }
 }
 
-- (void)disableLocationDisplayWithCompletion:(id)a3
+- (void)disableLocationDisplayWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = LogCategory_DisableLocationDisplay();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -5444,11 +5444,11 @@ void __55__FMDFMIPManager_requireDisableLocationWithCompletion___block_invoke(ui
   v10[1] = 3221225472;
   v10[2] = __55__FMDFMIPManager_disableLocationDisplayWithCompletion___block_invoke;
   v10[3] = &unk_1E86BD0E0;
-  v11 = v3;
-  v8 = v3;
+  v11 = completionCopy;
+  v8 = completionCopy;
   [v7 addFailureBlock:v10];
-  v9 = [v7 remoteObjectProxy];
-  [v9 disableLocationDisplayWithCompletion:v8];
+  remoteObjectProxy = [v7 remoteObjectProxy];
+  [remoteObjectProxy disableLocationDisplayWithCompletion:v8];
 }
 
 void __55__FMDFMIPManager_disableLocationDisplayWithCompletion___block_invoke(uint64_t a1)
@@ -5467,11 +5467,11 @@ void __55__FMDFMIPManager_disableLocationDisplayWithCompletion___block_invoke(ui
   }
 }
 
-- (void)simulatePushWithPayload:(id)a3 completion:(id)a4
+- (void)simulatePushWithPayload:(id)payload completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  payloadCopy = payload;
   v7 = LogCategory_Unspecified();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -5488,10 +5488,10 @@ void __55__FMDFMIPManager_disableLocationDisplayWithCompletion___block_invoke(ui
   v19[1] = 3221225472;
   v19[2] = __53__FMDFMIPManager_simulatePushWithPayload_completion___block_invoke;
   v19[3] = &unk_1E86BD0E0;
-  v11 = v5;
+  v11 = completionCopy;
   v20 = v11;
   [v10 addFailureBlock:v19];
-  v12 = [v10 remoteObjectProxy];
+  remoteObjectProxy = [v10 remoteObjectProxy];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __53__FMDFMIPManager_simulatePushWithPayload_completion___block_invoke_193;
@@ -5500,7 +5500,7 @@ void __55__FMDFMIPManager_disableLocationDisplayWithCompletion___block_invoke(ui
   v18 = v11;
   v13 = v10;
   v14 = v11;
-  [v12 simulatePushWithPayload:v6 completion:v16];
+  [remoteObjectProxy simulatePushWithPayload:payloadCopy completion:v16];
 
   v15 = *MEMORY[0x1E69E9840];
 }
@@ -5536,8 +5536,8 @@ uint64_t __53__FMDFMIPManager_simulatePushWithPayload_completion___block_invoke_
 
 - (BOOL)_quickFetchFMIPEnabledstate
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 fileExistsAtPath:@"/var/mobile/Library/Preferences/com.apple.icloud.findmydeviced.FMIPAccounts.plist"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v3 = [defaultManager fileExistsAtPath:@"/var/mobile/Library/Preferences/com.apple.icloud.findmydeviced.FMIPAccounts.plist"];
 
   return v3;
 }
@@ -5549,7 +5549,7 @@ uint64_t __53__FMDFMIPManager_simulatePushWithPayload_completion___block_invoke_
   {
     v3 = [MEMORY[0x1E695DFF8] fileURLWithPath:v2 isDirectory:1];
     v4 = [v3 fm_preferencesPathURLForDomain:kFMDPostWipePrefDomain];
-    v5 = [v4 path];
+    path = [v4 path];
   }
 
   else
@@ -5560,16 +5560,16 @@ uint64_t __53__FMDFMIPManager_simulatePushWithPayload_completion___block_invoke_
       [(FMDFMIPManager(Private) *)v6 _postWipePrefPath];
     }
 
-    v5 = 0;
+    path = 0;
   }
 
-  return v5;
+  return path;
 }
 
-- (void)disableBiometricIDForLostModeWithCompletion:(id)a3
+- (void)disableBiometricIDForLostModeWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_autoreleasePoolPush();
   v5 = LogCategory_Unspecified();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -5588,10 +5588,10 @@ uint64_t __53__FMDFMIPManager_simulatePushWithPayload_completion___block_invoke_
   v17[1] = 3221225472;
   v17[2] = __71__FMDFMIPManager_Private__disableBiometricIDForLostModeWithCompletion___block_invoke;
   v17[3] = &unk_1E86BD0E0;
-  v9 = v3;
+  v9 = completionCopy;
   v18 = v9;
   [v8 addFailureBlock:v17];
-  v10 = [v8 remoteObjectProxy];
+  remoteObjectProxy = [v8 remoteObjectProxy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __71__FMDFMIPManager_Private__disableBiometricIDForLostModeWithCompletion___block_invoke_12;
@@ -5600,7 +5600,7 @@ uint64_t __53__FMDFMIPManager_simulatePushWithPayload_completion___block_invoke_
   v15 = v8;
   v16 = v11;
   v12 = v8;
-  [v10 disableBiometricIDWithCompletion:v14];
+  [remoteObjectProxy disableBiometricIDWithCompletion:v14];
 
   objc_autoreleasePoolPop(v4);
   v13 = *MEMORY[0x1E69E9840];
@@ -5681,8 +5681,8 @@ void __55__FMDFMIPManager_Private__setDailyLocateReportEnabled___block_invoke()
   v6 = [v4 resumeConnectionWithConfiguration:v5];
 
   [v6 addFailureBlock:&__block_literal_global_15];
-  v7 = [v6 remoteObjectProxy];
-  [v7 showDailyLocateReport];
+  remoteObjectProxy = [v6 remoteObjectProxy];
+  [remoteObjectProxy showDailyLocateReport];
 
   objc_autoreleasePoolPop(v2);
   v8 = *MEMORY[0x1E69E9840];
@@ -5697,11 +5697,11 @@ void __48__FMDFMIPManager_Private__showDailyLocateReport__block_invoke()
   }
 }
 
-- (void)addNotificationRequest:(id)a3 completion:(id)a4
+- (void)addNotificationRequest:(id)request completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  requestCopy = request;
   v7 = LogCategory_Unspecified();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -5718,10 +5718,10 @@ void __48__FMDFMIPManager_Private__showDailyLocateReport__block_invoke()
   v19[1] = 3221225472;
   v19[2] = __61__FMDFMIPManager_Private__addNotificationRequest_completion___block_invoke;
   v19[3] = &unk_1E86BD0E0;
-  v11 = v5;
+  v11 = completionCopy;
   v20 = v11;
   [v10 addFailureBlock:v19];
-  v12 = [v10 remoteObjectProxy];
+  remoteObjectProxy = [v10 remoteObjectProxy];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __61__FMDFMIPManager_Private__addNotificationRequest_completion___block_invoke_16;
@@ -5730,7 +5730,7 @@ void __48__FMDFMIPManager_Private__showDailyLocateReport__block_invoke()
   v18 = v11;
   v13 = v10;
   v14 = v11;
-  [v12 addNotificationRequest:v6 completion:v16];
+  [remoteObjectProxy addNotificationRequest:requestCopy completion:v16];
 
   v15 = *MEMORY[0x1E69E9840];
 }
@@ -5783,11 +5783,11 @@ void __61__FMDFMIPManager_Private__addNotificationRequest_completion___block_inv
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeNotificationWithIdentifier:(id)a3 completion:(id)a4
+- (void)removeNotificationWithIdentifier:(id)identifier completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v7 = LogCategory_Unspecified();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -5804,10 +5804,10 @@ void __61__FMDFMIPManager_Private__addNotificationRequest_completion___block_inv
   v19[1] = 3221225472;
   v19[2] = __71__FMDFMIPManager_Private__removeNotificationWithIdentifier_completion___block_invoke;
   v19[3] = &unk_1E86BD0E0;
-  v11 = v5;
+  v11 = completionCopy;
   v20 = v11;
   [v10 addFailureBlock:v19];
-  v12 = [v10 remoteObjectProxy];
+  remoteObjectProxy = [v10 remoteObjectProxy];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __71__FMDFMIPManager_Private__removeNotificationWithIdentifier_completion___block_invoke_17;
@@ -5816,7 +5816,7 @@ void __61__FMDFMIPManager_Private__addNotificationRequest_completion___block_inv
   v18 = v11;
   v13 = v10;
   v14 = v11;
-  [v12 removeNotificationWithIdentifier:v6 completion:v16];
+  [remoteObjectProxy removeNotificationWithIdentifier:identifierCopy completion:v16];
 
   v15 = *MEMORY[0x1E69E9840];
 }
@@ -5869,9 +5869,9 @@ void __71__FMDFMIPManager_Private__removeNotificationWithIdentifier_completion__
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)activationLockVersionWithCompletion:(id)a3
+- (void)activationLockVersionWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_autoreleasePoolPush();
   v5 = LogCategory_Unspecified();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -5886,8 +5886,8 @@ void __71__FMDFMIPManager_Private__removeNotificationWithIdentifier_completion__
   v8 = [v6 resumeConnectionWithConfiguration:v7];
 
   [v8 addFailureBlock:&__block_literal_global_19];
-  v9 = [v8 remoteObjectProxy];
-  [v9 activationLockVersionWithCompletion:v3];
+  remoteObjectProxy = [v8 remoteObjectProxy];
+  [remoteObjectProxy activationLockVersionWithCompletion:completionCopy];
 
   objc_autoreleasePoolPop(v4);
 }
@@ -5901,10 +5901,10 @@ void __63__FMDFMIPManager_Private__activationLockVersionWithCompletion___block_i
   }
 }
 
-- (void)updateMaskedAppleIDWith:(id)a3 completion:(id)a4
+- (void)updateMaskedAppleIDWith:(id)with completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  withCopy = with;
   v7 = LogCategory_Unspecified();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -5918,8 +5918,8 @@ void __63__FMDFMIPManager_Private__activationLockVersionWithCompletion___block_i
   v10 = [v8 resumeConnectionWithConfiguration:v9];
 
   [v10 addFailureBlock:&__block_literal_global_21];
-  v11 = [v10 remoteObjectProxy];
-  [v11 updateMaskedAppleIDWith:v6 completion:v5];
+  remoteObjectProxy = [v10 remoteObjectProxy];
+  [remoteObjectProxy updateMaskedAppleIDWith:withCopy completion:completionCopy];
 }
 
 void __62__FMDFMIPManager_Private__updateMaskedAppleIDWith_completion___block_invoke()
@@ -5931,9 +5931,9 @@ void __62__FMDFMIPManager_Private__updateMaskedAppleIDWith_completion___block_in
   }
 }
 
-- (void)clearMaskedAppleIDWithCompletion:(id)a3
+- (void)clearMaskedAppleIDWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = LogCategory_Unspecified();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -5947,8 +5947,8 @@ void __62__FMDFMIPManager_Private__updateMaskedAppleIDWith_completion___block_in
   v7 = [v5 resumeConnectionWithConfiguration:v6];
 
   [v7 addFailureBlock:&__block_literal_global_23_0];
-  v8 = [v7 remoteObjectProxy];
-  [v8 clearMaskedAppleIDWithCompletion:v3];
+  remoteObjectProxy = [v7 remoteObjectProxy];
+  [remoteObjectProxy clearMaskedAppleIDWithCompletion:completionCopy];
 }
 
 void __60__FMDFMIPManager_Private__clearMaskedAppleIDWithCompletion___block_invoke()
@@ -5975,8 +5975,8 @@ void __60__FMDFMIPManager_Private__clearMaskedAppleIDWithCompletion___block_invo
   v5 = [v3 resumeConnectionWithConfiguration:v4];
 
   [v5 addFailureBlock:&__block_literal_global_25];
-  v6 = [v5 remoteObjectProxy];
-  [v6 primaryAppleAccountRemoved];
+  remoteObjectProxy = [v5 remoteObjectProxy];
+  [remoteObjectProxy primaryAppleAccountRemoved];
 }
 
 void __53__FMDFMIPManager_Private__primaryAppleAccountRemoved__block_invoke()
@@ -6007,7 +6007,7 @@ void __53__FMDFMIPManager_Private__primaryAppleAccountRemoved__block_invoke()
 - (void)lostModeInfo
 {
   v10 = *MEMORY[0x1E69E9840];
-  v1 = [a1 description];
+  v1 = [self description];
   OUTLINED_FUNCTION_3();
   OUTLINED_FUNCTION_5(&dword_1DF650000, v2, v3, "lostModeInfo = %@", v4, v5, v6, v7, v9);
 
@@ -6135,7 +6135,7 @@ void __44__FMDFMIPManager_fmipAccountWithCompletion___block_invoke_49_cold_1()
 - (void)fmipAccount
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = *(*a1 + 40);
+  v3 = *(*self + 40);
   v4 = *(*a2 + 40);
   v6 = 138412546;
   v7 = v3;

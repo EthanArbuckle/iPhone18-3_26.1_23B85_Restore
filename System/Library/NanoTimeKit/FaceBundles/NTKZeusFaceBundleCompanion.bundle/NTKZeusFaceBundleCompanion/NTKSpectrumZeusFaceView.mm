@@ -1,26 +1,26 @@
 @interface NTKSpectrumZeusFaceView
 + (id)_supportedComplicationSlots;
-- (NTKSpectrumZeusFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_complicationAlphaForEditMode:(int64_t)a3;
-- (double)_contentAlphaForEditMode:(int64_t)a3;
-- (double)_handAlphaForEditMode:(int64_t)a3;
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
-- (id)_snapshotWithStyle:(unint64_t)a3 size:(CGSize)a4;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (NTKSpectrumZeusFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_complicationAlphaForEditMode:(int64_t)mode;
+- (double)_contentAlphaForEditMode:(int64_t)mode;
+- (double)_handAlphaForEditMode:(int64_t)mode;
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
+- (id)_snapshotWithStyle:(unint64_t)style size:(CGSize)size;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyFrozen;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_cleanupAfterEditing;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
-- (void)_configureTimeView:(id)a3;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
+- (void)_configureTimeView:(id)view;
 - (void)_loadActiveViews;
 - (void)_loadCommonViews;
 - (void)_loadLayoutRules;
 - (void)_loadSnapshotContentViews;
 - (void)_prepareForEditing;
-- (void)_renderSynchronouslyWithImageQueueDiscard:(BOOL)a3 inGroup:(id)a4;
+- (void)_renderSynchronouslyWithImageQueueDiscard:(BOOL)discard inGroup:(id)group;
 - (void)_reorderSwitcherSnapshotView;
 - (void)_unloadActiveViews;
 - (void)_unloadCommonViews;
@@ -30,17 +30,17 @@
 - (void)_updateFramerate;
 - (void)_updateStyle;
 - (void)dealloc;
-- (void)setDataMode:(int64_t)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
+- (void)setDataMode:(int64_t)mode;
+- (void)setOverrideDate:(id)date duration:(double)duration;
 @end
 
 @implementation NTKSpectrumZeusFaceView
 
-- (NTKSpectrumZeusFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKSpectrumZeusFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = NTKSpectrumZeusFaceView;
-  v5 = [(NTKSpectrumZeusFaceView *)&v9 initWithFaceStyle:a3 forDevice:a4 clientIdentifier:a5];
+  v5 = [(NTKSpectrumZeusFaceView *)&v9 initWithFaceStyle:style forDevice:device clientIdentifier:identifier];
   if (v5)
   {
     v6 = objc_alloc_init(NTKSpectrumZeusColorPalette);
@@ -79,14 +79,14 @@
   [(NTKSpectrumZeusFaceView *)self _unloadActiveViews];
 }
 
-- (void)_renderSynchronouslyWithImageQueueDiscard:(BOOL)a3 inGroup:(id)a4
+- (void)_renderSynchronouslyWithImageQueueDiscard:(BOOL)discard inGroup:(id)group
 {
-  v4 = a3;
+  discardCopy = discard;
   v7.receiver = self;
   v7.super_class = NTKSpectrumZeusFaceView;
-  v6 = a4;
-  [(NTKSpectrumZeusFaceView *)&v7 _renderSynchronouslyWithImageQueueDiscard:v4 inGroup:v6];
-  [(CLKUIQuadView *)self->_conicQuadView renderSynchronouslyWithImageQueueDiscard:v4 inGroup:v6, v7.receiver, v7.super_class];
+  groupCopy = group;
+  [(NTKSpectrumZeusFaceView *)&v7 _renderSynchronouslyWithImageQueueDiscard:discardCopy inGroup:groupCopy];
+  [(CLKUIQuadView *)self->_conicQuadView renderSynchronouslyWithImageQueueDiscard:discardCopy inGroup:groupCopy, v7.receiver, v7.super_class];
 }
 
 - (void)_applyFrozen
@@ -97,11 +97,11 @@
   [(NTKSpectrumZeusFaceView *)self _updateFramerate];
 }
 
-- (void)setDataMode:(int64_t)a3
+- (void)setDataMode:(int64_t)mode
 {
   v4.receiver = self;
   v4.super_class = NTKSpectrumZeusFaceView;
-  [(NTKSpectrumZeusFaceView *)&v4 setDataMode:a3];
+  [(NTKSpectrumZeusFaceView *)&v4 setDataMode:mode];
   [(NTKSpectrumZeusFaceView *)self _updateFramerate];
 }
 
@@ -128,10 +128,10 @@
 
   else
   {
-    v4 = [(NTKSpectrumZeusFaceView *)self dataMode];
-    v5 = [(NTKSpectrumZeusFaceView *)self isFrozen];
-    v7 = v4 != 3 && (v4 & 0xFFFFFFFFFFFFFFFBLL) != 1;
-    v3 = (v5 & 1) != 0 || v7;
+    dataMode = [(NTKSpectrumZeusFaceView *)self dataMode];
+    isFrozen = [(NTKSpectrumZeusFaceView *)self isFrozen];
+    v7 = dataMode != 3 && (dataMode & 0xFFFFFFFFFFFFFFFBLL) != 1;
+    v3 = (isFrozen & 1) != 0 || v7;
   }
 
   conicQuadView = self->_conicQuadView;
@@ -139,33 +139,33 @@
   [(CLKUIQuadView *)conicQuadView setPaused:v3];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   v7.receiver = self;
   v7.super_class = NTKSpectrumZeusFaceView;
-  v6 = a3;
-  [(NTKSpectrumZeusFaceView *)&v7 setOverrideDate:v6 duration:a4];
-  [(NTKSpectrumConicQuad *)self->_conicActiveQuad setOverrideDate:v6 duration:a4, v7.receiver, v7.super_class];
+  dateCopy = date;
+  [(NTKSpectrumZeusFaceView *)&v7 setOverrideDate:dateCopy duration:duration];
+  [(NTKSpectrumConicQuad *)self->_conicActiveQuad setOverrideDate:dateCopy duration:duration, v7.receiver, v7.super_class];
 }
 
-- (void)_configureTimeView:(id)a3
+- (void)_configureTimeView:(id)view
 {
   v3.receiver = self;
   v3.super_class = NTKSpectrumZeusFaceView;
-  [(NTKSpectrumZeusFaceView *)&v3 _configureTimeView:a3];
+  [(NTKSpectrumZeusFaceView *)&v3 _configureTimeView:view];
 }
 
 - (void)_loadLayoutRules
 {
-  v3 = [(NTKSpectrumZeusFaceView *)self device];
+  device = [(NTKSpectrumZeusFaceView *)self device];
   v14 = 0.0;
   v13 = 0u;
   memset(v12, 0, sizeof(v12));
-  sub_5934(v3, v12);
+  sub_5934(device, v12);
   [(NTKSpectrumZeusFaceView *)self bounds];
   v5 = v4 * 0.5;
   [(NTKSpectrumZeusFaceView *)self bounds];
-  v7 = [NTKComplicationLayoutRule layoutRuleForDevice:v3 withReferenceFrame:3 horizontalLayout:3 verticalLayout:v5 - *&v13 * 0.5, v14 + v6 * 0.5 - *(&v13 + 1) * 0.5];
+  v7 = [NTKComplicationLayoutRule layoutRuleForDevice:device withReferenceFrame:3 horizontalLayout:3 verticalLayout:v5 - *&v13 * 0.5, v14 + v6 * 0.5 - *(&v13 + 1) * 0.5];
   v10 = [(NTKSpectrumZeusFaceView *)self complicationLayoutforSlot:NTKComplicationSlotBottom];
   v11 = v7;
   v8 = v7;
@@ -173,16 +173,16 @@
   NTKEnumerateComplicationStates();
 }
 
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
-  v7 = a3;
-  if ([a5 isEqualToString:NTKComplicationSlotBottom])
+  complicationCopy = complication;
+  if ([slot isEqualToString:NTKComplicationSlotBottom])
   {
     v8 = [NTKZeusComplicationBackgroundView alloc];
-    v9 = [(NTKSpectrumZeusFaceView *)self device];
-    v10 = [(NTKZeusComplicationBackgroundView *)v8 initWithDevice:v9];
+    device = [(NTKSpectrumZeusFaceView *)self device];
+    v10 = [(NTKZeusComplicationBackgroundView *)v8 initWithDevice:device];
 
-    v11 = +[NTKZeusComplicationView viewForComplicationType:backgroundView:](NTKZeusComplicationView, "viewForComplicationType:backgroundView:", [v7 complicationType], v10);
+    v11 = +[NTKZeusComplicationView viewForComplicationType:backgroundView:](NTKZeusComplicationView, "viewForComplicationType:backgroundView:", [complicationCopy complicationType], v10);
     if ([v11 conformsToProtocol:&OBJC_PROTOCOL___NTKZeudleComplicationDisplay])
     {
       v12 = v11;
@@ -203,8 +203,8 @@
 - (void)_updateDateComplicationPositionIfNecessary
 {
   [(NTKSpectrumZeusFaceView *)self _loadLayoutRules];
-  v3 = [(NTKSpectrumZeusFaceView *)self delegate];
-  [v3 faceViewWantsComplicationKeylineFramesReloaded];
+  delegate = [(NTKSpectrumZeusFaceView *)self delegate];
+  [delegate faceViewWantsComplicationKeylineFramesReloaded];
 }
 
 + (id)_supportedComplicationSlots
@@ -215,52 +215,52 @@
   return v2;
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a4 == 15)
+  if (mode == 15)
   {
-    v7 = [a3 style];
+    style = [option style];
 
-    [(NTKSpectrumZeusFaceView *)self _setStyle:v7];
+    [(NTKSpectrumZeusFaceView *)self _setStyle:style];
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a6 == 15)
+  if (mode == 15)
   {
-    v11 = a5;
-    v12 = [a4 style];
-    v13 = [v11 style];
+    toOptionCopy = toOption;
+    style = [option style];
+    style2 = [toOptionCopy style];
 
-    [(NTKSpectrumZeusFaceView *)self _applyTransitionFraction:v12 fromStyle:v13 toStyle:a3];
+    [(NTKSpectrumZeusFaceView *)self _applyTransitionFraction:style fromStyle:style2 toStyle:fraction];
   }
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
-  v8 = [(NTKSpectrumZeusFaceView *)self timeView];
-  [(NTKSpectrumZeusFaceView *)self _handAlphaForEditMode:a4];
-  [(NTKSpectrumZeusFaceView *)self _handAlphaForEditMode:a5];
+  timeView = [(NTKSpectrumZeusFaceView *)self timeView];
+  [(NTKSpectrumZeusFaceView *)self _handAlphaForEditMode:mode];
+  [(NTKSpectrumZeusFaceView *)self _handAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
-  [v8 setAlpha:?];
+  [timeView setAlpha:?];
 
   conicQuadView = self->_conicQuadView;
-  [(NTKSpectrumZeusFaceView *)self _contentAlphaForEditMode:a4];
-  [(NTKSpectrumZeusFaceView *)self _contentAlphaForEditMode:a5];
+  [(NTKSpectrumZeusFaceView *)self _contentAlphaForEditMode:mode];
+  [(NTKSpectrumZeusFaceView *)self _contentAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   [(CLKUIQuadView *)conicQuadView setAlpha:?];
-  v10 = [(NTKSpectrumZeusFaceView *)self complicationContainerView];
-  [(NTKSpectrumZeusFaceView *)self _complicationAlphaForEditMode:a4];
-  [(NTKSpectrumZeusFaceView *)self _complicationAlphaForEditMode:a5];
+  complicationContainerView = [(NTKSpectrumZeusFaceView *)self complicationContainerView];
+  [(NTKSpectrumZeusFaceView *)self _complicationAlphaForEditMode:mode];
+  [(NTKSpectrumZeusFaceView *)self _complicationAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
-  [v10 setAlpha:?];
+  [complicationContainerView setAlpha:?];
 }
 
-- (double)_complicationAlphaForEditMode:(int64_t)a3
+- (double)_complicationAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 15)
+  if (mode != 15)
   {
     return 1.0;
   }
@@ -268,94 +268,94 @@
   return result;
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v19.receiver = self;
   v19.super_class = NTKSpectrumZeusFaceView;
-  [(NTKSpectrumZeusFaceView *)&v19 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 == 15)
+  [(NTKSpectrumZeusFaceView *)&v19 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode == 15)
   {
     NTKScaleForRubberBandingFraction();
     memset(&v18, 0, sizeof(v18));
     CGAffineTransformMakeScale(&v18, v7, v7);
-    v8 = [(NTKSpectrumZeusFaceView *)self contentView];
+    contentView = [(NTKSpectrumZeusFaceView *)self contentView];
     v17 = v18;
-    [v8 setTransform:&v17];
+    [contentView setTransform:&v17];
 
-    v9 = [(NTKSpectrumZeusFaceView *)self timeView];
+    timeView = [(NTKSpectrumZeusFaceView *)self timeView];
     v17 = v18;
-    [v9 setTransform:&v17];
+    [timeView setTransform:&v17];
 
-    v10 = [(NTKSpectrumZeusFaceView *)self dialComplicationContainerView];
+    dialComplicationContainerView = [(NTKSpectrumZeusFaceView *)self dialComplicationContainerView];
     v17 = v18;
-    [v10 setTransform:&v17];
+    [dialComplicationContainerView setTransform:&v17];
 
     NTKAlphaForRubberBandingFraction();
     v12 = v11;
     [(NTKSpectrumZeusFaceView *)self _contentAlphaForEditMode:15];
     v14 = v12 * v13;
-    v15 = [(NTKSpectrumZeusFaceView *)self contentView];
-    [v15 setAlpha:v14];
+    contentView2 = [(NTKSpectrumZeusFaceView *)self contentView];
+    [contentView2 setAlpha:v14];
 
-    v16 = [(NTKSpectrumZeusFaceView *)self dialComplicationContainerView];
-    [v16 setAlpha:v14];
+    dialComplicationContainerView2 = [(NTKSpectrumZeusFaceView *)self dialComplicationContainerView];
+    [dialComplicationContainerView2 setAlpha:v14];
   }
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v13.receiver = self;
   v13.super_class = NTKSpectrumZeusFaceView;
-  [(NTKSpectrumZeusFaceView *)&v13 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 == 15)
+  [(NTKSpectrumZeusFaceView *)&v13 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode == 15)
   {
     NTKLargeElementScaleForBreathingFraction();
     memset(&v12, 0, sizeof(v12));
     CGAffineTransformMakeScale(&v12, v7, v7);
-    v8 = [(NTKSpectrumZeusFaceView *)self contentView];
+    contentView = [(NTKSpectrumZeusFaceView *)self contentView];
     v11 = v12;
-    [v8 setTransform:&v11];
+    [contentView setTransform:&v11];
 
-    v9 = [(NTKSpectrumZeusFaceView *)self timeView];
+    timeView = [(NTKSpectrumZeusFaceView *)self timeView];
     v11 = v12;
-    [v9 setTransform:&v11];
+    [timeView setTransform:&v11];
 
-    v10 = [(NTKSpectrumZeusFaceView *)self dialComplicationContainerView];
+    dialComplicationContainerView = [(NTKSpectrumZeusFaceView *)self dialComplicationContainerView];
     v11 = v12;
-    [v10 setTransform:&v11];
+    [dialComplicationContainerView setTransform:&v11];
   }
 }
 
 - (void)_updateColor
 {
   conicActiveQuad = self->_conicActiveQuad;
-  v4 = [(NTKSpectrumZeusColorPalette *)self->_palette backgroundColor];
-  v5 = [(NTKSpectrumZeusColorPalette *)self->_palette splitColor];
-  [(NTKSpectrumConicQuad *)conicActiveQuad setFromColor:v4 toColor:v5];
+  backgroundColor = [(NTKSpectrumZeusColorPalette *)self->_palette backgroundColor];
+  splitColor = [(NTKSpectrumZeusColorPalette *)self->_palette splitColor];
+  [(NTKSpectrumConicQuad *)conicActiveQuad setFromColor:backgroundColor toColor:splitColor];
 
-  v17 = [(NTKSpectrumZeusFaceView *)self timeView];
-  v6 = [(NTKSpectrumZeusColorPalette *)self->_palette handInlayColor];
-  v7 = [(NTKSpectrumZeusColorPalette *)self->_palette minuteHandDotColor];
-  v8 = [v17 minuteHandView];
-  [v8 setInlayColor:v6];
-  v9 = [(NTKSpectrumZeusColorPalette *)self->_palette minuteHandColor];
-  [v8 setColor:v9];
+  timeView = [(NTKSpectrumZeusFaceView *)self timeView];
+  handInlayColor = [(NTKSpectrumZeusColorPalette *)self->_palette handInlayColor];
+  minuteHandDotColor = [(NTKSpectrumZeusColorPalette *)self->_palette minuteHandDotColor];
+  minuteHandView = [timeView minuteHandView];
+  [minuteHandView setInlayColor:handInlayColor];
+  minuteHandColor = [(NTKSpectrumZeusColorPalette *)self->_palette minuteHandColor];
+  [minuteHandView setColor:minuteHandColor];
 
-  v10 = [v17 hourHandView];
-  [v10 setInlayColor:v6];
-  v11 = [(NTKSpectrumZeusColorPalette *)self->_palette hourHandColor];
-  [v10 setColor:v11];
+  hourHandView = [timeView hourHandView];
+  [hourHandView setInlayColor:handInlayColor];
+  hourHandColor = [(NTKSpectrumZeusColorPalette *)self->_palette hourHandColor];
+  [hourHandView setColor:hourHandColor];
 
   logoView1 = self->_logoView1;
-  v13 = [(NTKSpectrumZeusColorPalette *)self->_palette bottomComplication];
-  [(UIImageView *)logoView1 setTintColor:v13];
+  bottomComplication = [(NTKSpectrumZeusColorPalette *)self->_palette bottomComplication];
+  [(UIImageView *)logoView1 setTintColor:bottomComplication];
 
   logoView2 = self->_logoView2;
-  v15 = [(NTKSpectrumZeusColorPalette *)self->_palette bottomComplication];
-  [(UIImageView *)logoView2 setTintColor:v15];
+  bottomComplication2 = [(NTKSpectrumZeusColorPalette *)self->_palette bottomComplication];
+  [(UIImageView *)logoView2 setTintColor:bottomComplication2];
 
-  v16 = [v17 minuteHandView];
-  [v16 setHandDotColor:v7];
+  minuteHandView2 = [timeView minuteHandView];
+  [minuteHandView2 setHandDotColor:minuteHandDotColor];
 }
 
 - (void)_updateStyle
@@ -367,10 +367,10 @@
   [(NTKSpectrumConicQuad *)conicInactiveQuad setStyle:style];
 }
 
-- (double)_handAlphaForEditMode:(int64_t)a3
+- (double)_handAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (!a3)
+  if (!mode)
   {
     return 1.0;
   }
@@ -378,10 +378,10 @@
   return result;
 }
 
-- (double)_contentAlphaForEditMode:(int64_t)a3
+- (double)_contentAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -391,19 +391,19 @@
 
 - (void)_reorderSwitcherSnapshotView
 {
-  v3 = [(NTKSpectrumZeusFaceView *)self switcherSnapshotView];
+  switcherSnapshotView = [(NTKSpectrumZeusFaceView *)self switcherSnapshotView];
 
-  if (v3)
+  if (switcherSnapshotView)
   {
-    v4 = [(NTKSpectrumZeusFaceView *)self switcherSnapshotView];
-    [(NTKSpectrumZeusFaceView *)self bringSubviewToFront:v4];
+    switcherSnapshotView2 = [(NTKSpectrumZeusFaceView *)self switcherSnapshotView];
+    [(NTKSpectrumZeusFaceView *)self bringSubviewToFront:switcherSnapshotView2];
   }
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  v9 = a5;
+  optionCopy = option;
+  optionsCopy = options;
   if (!qword_585C8)
   {
     v10 = objc_opt_new();
@@ -411,19 +411,19 @@
     qword_585C8 = v10;
   }
 
-  if (a4 == 15)
+  if (mode == 15)
   {
-    v12 = [NSString stringWithFormat:@"%@", v8];
-    v13 = [qword_585C8 objectForKey:v12];
+    optionCopy = [NSString stringWithFormat:@"%@", optionCopy];
+    v13 = [qword_585C8 objectForKey:optionCopy];
     if (!v13)
     {
-      v14 = v8;
-      v15 = [v14 style];
-      v16 = [v14 swatchStyle];
+      v14 = optionCopy;
+      style = [v14 style];
+      swatchStyle = [v14 swatchStyle];
 
-      [NTKEditOption sizeForSwatchStyle:v16];
-      v13 = [(NTKSpectrumZeusFaceView *)self _snapshotWithStyle:v15 size:?];
-      [qword_585C8 setObject:v13 forKey:v12];
+      [NTKEditOption sizeForSwatchStyle:swatchStyle];
+      v13 = [(NTKSpectrumZeusFaceView *)self _snapshotWithStyle:style size:?];
+      [qword_585C8 setObject:v13 forKey:optionCopy];
     }
   }
 
@@ -431,28 +431,28 @@
   {
     v18.receiver = self;
     v18.super_class = NTKSpectrumZeusFaceView;
-    v13 = [(NTKSpectrumZeusFaceView *)&v18 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:v9];
+    v13 = [(NTKSpectrumZeusFaceView *)&v18 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy];
   }
 
   return v13;
 }
 
-- (id)_snapshotWithStyle:(unint64_t)a3 size:(CGSize)a4
+- (id)_snapshotWithStyle:(unint64_t)style size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   y = CGPointZero.y;
-  v9 = [CLKUIQuadView quadViewWithFrame:@"HmSb" identifier:CGPointZero.x, y, a4.width, a4.height];
+  v9 = [CLKUIQuadView quadViewWithFrame:@"HmSb" identifier:CGPointZero.x, y, size.width, size.height];
   v10 = +[UIScreen mainScreen];
   [v10 scale];
   v12 = v11;
 
   v13 = [[NTKSpectrumConicQuad alloc] initWithRole:0 screenScale:v12];
   [v13 setOpaque:1];
-  [v13 setStyle:a3];
-  v14 = [(NTKSpectrumZeusColorPalette *)self->_palette backgroundColor];
-  v15 = [(NTKSpectrumZeusColorPalette *)self->_palette splitColor];
-  [v13 setFromColor:v14 toColor:v15];
+  [v13 setStyle:style];
+  backgroundColor = [(NTKSpectrumZeusColorPalette *)self->_palette backgroundColor];
+  splitColor = [(NTKSpectrumZeusColorPalette *)self->_palette splitColor];
+  [v13 setFromColor:backgroundColor toColor:splitColor];
 
   [v9 addQuad:v13];
   v16 = [v9 snapshotInRect:CGPointZero.x scale:y time:{width, height, v12, 0.0}];
@@ -464,12 +464,12 @@
 {
   v33 = 0;
   memset(v32, 0, sizeof(v32));
-  v3 = [(NTKSpectrumZeusFaceView *)self device];
-  sub_5934(v3, v32);
+  device = [(NTKSpectrumZeusFaceView *)self device];
+  sub_5934(device, v32);
 
-  v31 = [(NTKSpectrumZeusFaceView *)self timeView];
-  v4 = [v31 secondHandView];
-  [v4 setHidden:1];
+  timeView = [(NTKSpectrumZeusFaceView *)self timeView];
+  secondHandView = [timeView secondHandView];
+  [secondHandView setHidden:1];
 
   [(NTKSpectrumZeusFaceView *)self bounds];
   v6 = v5;
@@ -480,15 +480,15 @@
   conicQuadView = self->_conicQuadView;
   self->_conicQuadView = v13;
 
-  v15 = [(NTKSpectrumZeusFaceView *)self contentView];
-  v16 = [(NTKSpectrumZeusFaceView *)self device];
-  v17 = [[NTKRoundedCornerOverlayView alloc] initWithFrame:v16 forDeviceCornerRadius:{v6, v8, v10, v12}];
+  contentView = [(NTKSpectrumZeusFaceView *)self contentView];
+  device2 = [(NTKSpectrumZeusFaceView *)self device];
+  v17 = [[NTKRoundedCornerOverlayView alloc] initWithFrame:device2 forDeviceCornerRadius:{v6, v8, v10, v12}];
   cornerView = self->_cornerView;
   self->_cornerView = v17;
 
-  [v15 addSubview:self->_cornerView];
-  [v15 addSubview:self->_conicQuadView];
-  [v15 sendSubviewToBack:self->_conicQuadView];
+  [contentView addSubview:self->_cornerView];
+  [contentView addSubview:self->_conicQuadView];
+  [contentView sendSubviewToBack:self->_conicQuadView];
   v19 = [UIImageView alloc];
   v20 = [NTKZeusSpectrumFaceBundle imageWithName:@"ZeusSpectrumLogo1"];
   v21 = [v20 imageWithRenderingMode:2];
@@ -512,8 +512,8 @@
   [(UIImageView *)v30 ntk_setBoundsAndPositionFromFrame:?];
   _NTKZeusApplyLegibilityToView(self->_logoView1);
   _NTKZeusApplyLegibilityToView(self->_logoView2);
-  [v15 insertSubview:self->_logoView1 aboveSubview:self->_conicQuadView];
-  [v15 insertSubview:self->_logoView2 aboveSubview:self->_conicQuadView];
+  [contentView insertSubview:self->_logoView1 aboveSubview:self->_conicQuadView];
+  [contentView insertSubview:self->_logoView2 aboveSubview:self->_conicQuadView];
 }
 
 - (void)_unloadCommonViews
@@ -526,8 +526,8 @@
 - (void)_loadActiveViews
 {
   v3 = [NTKSpectrumConicQuad alloc];
-  v4 = [(NTKSpectrumZeusFaceView *)self device];
-  [v4 screenScale];
+  device = [(NTKSpectrumZeusFaceView *)self device];
+  [device screenScale];
   v5 = [v3 initWithRole:0 screenScale:?];
   conicActiveQuad = self->_conicActiveQuad;
   self->_conicActiveQuad = v5;

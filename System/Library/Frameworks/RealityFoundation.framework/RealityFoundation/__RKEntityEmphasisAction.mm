@@ -1,10 +1,10 @@
 @interface __RKEntityEmphasisAction
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation __RKEntityEmphasisAction
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
 
   __RKEntityEmphasisAction.copy(with:)(v5);

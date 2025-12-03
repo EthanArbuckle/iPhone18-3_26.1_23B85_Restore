@@ -1,31 +1,31 @@
 @interface _INPBJoinCallIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBJoinCallIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBJoinCallIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBJoinCallIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBJoinCallIntent *)self groupConversation];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"groupConversation"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  groupConversation = [(_INPBJoinCallIntent *)self groupConversation];
+  dictionaryRepresentation = [groupConversation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"groupConversation"];
 
-  v6 = [(_INPBJoinCallIntent *)self groupConversationFilter];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"groupConversationFilter"];
+  groupConversationFilter = [(_INPBJoinCallIntent *)self groupConversationFilter];
+  dictionaryRepresentation2 = [groupConversationFilter dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"groupConversationFilter"];
 
-  v8 = [(_INPBJoinCallIntent *)self intentMetadata];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBJoinCallIntent *)self intentMetadata];
+  dictionaryRepresentation3 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"intentMetadata"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -35,28 +35,28 @@
   return v4 ^ [(_INPBIntentMetadata *)self->_intentMetadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_INPBJoinCallIntent *)self groupConversation];
-  v6 = [v4 groupConversation];
-  if ((v5 != 0) == (v6 == 0))
+  groupConversation = [(_INPBJoinCallIntent *)self groupConversation];
+  groupConversation2 = [equalCopy groupConversation];
+  if ((groupConversation != 0) == (groupConversation2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_INPBJoinCallIntent *)self groupConversation];
-  if (v7)
+  groupConversation3 = [(_INPBJoinCallIntent *)self groupConversation];
+  if (groupConversation3)
   {
-    v8 = v7;
-    v9 = [(_INPBJoinCallIntent *)self groupConversation];
-    v10 = [v4 groupConversation];
-    v11 = [v9 isEqual:v10];
+    v8 = groupConversation3;
+    groupConversation4 = [(_INPBJoinCallIntent *)self groupConversation];
+    groupConversation5 = [equalCopy groupConversation];
+    v11 = [groupConversation4 isEqual:groupConversation5];
 
     if (!v11)
     {
@@ -68,20 +68,20 @@
   {
   }
 
-  v5 = [(_INPBJoinCallIntent *)self groupConversationFilter];
-  v6 = [v4 groupConversationFilter];
-  if ((v5 != 0) == (v6 == 0))
+  groupConversation = [(_INPBJoinCallIntent *)self groupConversationFilter];
+  groupConversation2 = [equalCopy groupConversationFilter];
+  if ((groupConversation != 0) == (groupConversation2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_INPBJoinCallIntent *)self groupConversationFilter];
-  if (v12)
+  groupConversationFilter = [(_INPBJoinCallIntent *)self groupConversationFilter];
+  if (groupConversationFilter)
   {
-    v13 = v12;
-    v14 = [(_INPBJoinCallIntent *)self groupConversationFilter];
-    v15 = [v4 groupConversationFilter];
-    v16 = [v14 isEqual:v15];
+    v13 = groupConversationFilter;
+    groupConversationFilter2 = [(_INPBJoinCallIntent *)self groupConversationFilter];
+    groupConversationFilter3 = [equalCopy groupConversationFilter];
+    v16 = [groupConversationFilter2 isEqual:groupConversationFilter3];
 
     if (!v16)
     {
@@ -93,12 +93,12 @@
   {
   }
 
-  v5 = [(_INPBJoinCallIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) != (v6 == 0))
+  groupConversation = [(_INPBJoinCallIntent *)self intentMetadata];
+  groupConversation2 = [equalCopy intentMetadata];
+  if ((groupConversation != 0) != (groupConversation2 == 0))
   {
-    v17 = [(_INPBJoinCallIntent *)self intentMetadata];
-    if (!v17)
+    intentMetadata = [(_INPBJoinCallIntent *)self intentMetadata];
+    if (!intentMetadata)
     {
 
 LABEL_20:
@@ -106,10 +106,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_INPBJoinCallIntent *)self intentMetadata];
-    v20 = [v4 intentMetadata];
-    v21 = [v19 isEqual:v20];
+    v18 = intentMetadata;
+    intentMetadata2 = [(_INPBJoinCallIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v21 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (v21)
     {
@@ -129,73 +129,73 @@ LABEL_18:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBJoinCallIntent allocWithZone:](_INPBJoinCallIntent init];
-  v6 = [(_INPBCallGroupConversation *)self->_groupConversation copyWithZone:a3];
+  v6 = [(_INPBCallGroupConversation *)self->_groupConversation copyWithZone:zone];
   [(_INPBJoinCallIntent *)v5 setGroupConversation:v6];
 
-  v7 = [(_INPBCallGroupConversationFilter *)self->_groupConversationFilter copyWithZone:a3];
+  v7 = [(_INPBCallGroupConversationFilter *)self->_groupConversationFilter copyWithZone:zone];
   [(_INPBJoinCallIntent *)v5 setGroupConversationFilter:v7];
 
-  v8 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v8 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBJoinCallIntent *)v5 setIntentMetadata:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBJoinCallIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBJoinCallIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBJoinCallIntent)initWithCoder:(id)a3
+- (_INPBJoinCallIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBJoinCallIntent *)self initWithData:v6];
+    self = [(_INPBJoinCallIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(_INPBJoinCallIntent *)self groupConversation];
+  toCopy = to;
+  groupConversation = [(_INPBJoinCallIntent *)self groupConversation];
 
-  if (v4)
+  if (groupConversation)
   {
-    v5 = [(_INPBJoinCallIntent *)self groupConversation];
+    groupConversation2 = [(_INPBJoinCallIntent *)self groupConversation];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBJoinCallIntent *)self groupConversationFilter];
+  groupConversationFilter = [(_INPBJoinCallIntent *)self groupConversationFilter];
 
-  if (v6)
+  if (groupConversationFilter)
   {
-    v7 = [(_INPBJoinCallIntent *)self groupConversationFilter];
+    groupConversationFilter2 = [(_INPBJoinCallIntent *)self groupConversationFilter];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBJoinCallIntent *)self intentMetadata];
+  intentMetadata = [(_INPBJoinCallIntent *)self intentMetadata];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (intentMetadata)
   {
-    v10 = [(_INPBJoinCallIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBJoinCallIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 

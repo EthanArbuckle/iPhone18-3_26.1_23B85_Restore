@@ -1,18 +1,18 @@
 @interface STSHeaderView
-- (STSHeaderView)initWithFrame:(CGRect)a3;
+- (STSHeaderView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInsets;
-- (void)setContentInsets:(UIEdgeInsets)a3;
-- (void)setTitle:(id)a3;
+- (void)setContentInsets:(UIEdgeInsets)insets;
+- (void)setTitle:(id)title;
 - (void)updateConstraints;
 @end
 
 @implementation STSHeaderView
 
-- (STSHeaderView)initWithFrame:(CGRect)a3
+- (STSHeaderView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = STSHeaderView;
-  v3 = [(STSHeaderView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(STSHeaderView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D756B8]);
@@ -72,25 +72,25 @@
   self->_constraints = 0;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   if (![(NSString *)self->_title isEqualToString:?])
   {
-    objc_storeStrong(&self->_title, a3);
+    objc_storeStrong(&self->_title, title);
     [(UILabel *)self->_label setText:self->_title];
   }
 }
 
-- (void)setContentInsets:(UIEdgeInsets)a3
+- (void)setContentInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInsets.top, v3), vceqq_f64(*&self->_contentInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInsets = a3;
+    self->_contentInsets = insets;
     [(STSHeaderView *)self setNeedsUpdateConstraints];
   }
 }

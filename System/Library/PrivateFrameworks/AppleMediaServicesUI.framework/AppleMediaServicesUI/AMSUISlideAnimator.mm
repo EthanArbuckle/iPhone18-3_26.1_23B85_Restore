@@ -1,20 +1,20 @@
 @interface AMSUISlideAnimator
-- (double)transitionDuration:(id)a3;
-- (void)animateTransition:(id)a3;
+- (double)transitionDuration:(id)duration;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation AMSUISlideAnimator
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
   v3 = *MEMORY[0x1E69DE768];
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:v3];
-  v6 = [v4 viewControllerForKey:*MEMORY[0x1E69DE778]];
+  durationCopy = duration;
+  v5 = [durationCopy viewControllerForKey:v3];
+  v6 = [durationCopy viewControllerForKey:*MEMORY[0x1E69DE778]];
 
-  v7 = [v5 presentedViewController];
+  presentedViewController = [v5 presentedViewController];
 
-  if (v7 == v6)
+  if (presentedViewController == v6)
   {
     v9 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"position.y"];
     [v9 setMass:1.0];
@@ -33,30 +33,30 @@
   return v8;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:*MEMORY[0x1E69DE768]];
-  v6 = [v4 viewControllerForKey:*MEMORY[0x1E69DE778]];
-  v7 = [v5 presentedViewController];
+  transitionCopy = transition;
+  v5 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE768]];
+  v6 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE778]];
+  presentedViewController = [v5 presentedViewController];
 
-  v8 = [v4 containerView];
-  [(AMSUISlideAnimator *)self transitionDuration:v4];
+  containerView = [transitionCopy containerView];
+  [(AMSUISlideAnimator *)self transitionDuration:transitionCopy];
   v10 = v9;
-  if (v7 == v6)
+  if (presentedViewController == v6)
   {
-    [v4 finalFrameForViewController:v6];
+    [transitionCopy finalFrameForViewController:v6];
     v26 = v25;
     v28 = v27;
     v30 = v29;
     v32 = v31;
-    [v8 frame];
+    [containerView frame];
     v34 = v33;
-    v35 = [v6 view];
-    [v35 setFrame:{v26, v34, v30, v32}];
+    view = [v6 view];
+    [view setFrame:{v26, v34, v30, v32}];
 
-    v36 = [v6 view];
-    [v8 addSubview:v36];
+    view2 = [v6 view];
+    [containerView addSubview:view2];
 
     v19 = [objc_alloc(MEMORY[0x1E69DCF88]) initWithMass:1.0 stiffness:150.0 damping:19.0 initialVelocity:{0.0, 0.0}];
     v20 = [objc_alloc(MEMORY[0x1E69DD278]) initWithDuration:v19 timingParameters:v10];
@@ -76,18 +76,18 @@
     v45[2] = __40__AMSUISlideAnimator_animateTransition___block_invoke_2;
     v45[3] = &unk_1E7F24DA0;
     v22 = &v46;
-    v46 = v4;
-    v37 = v4;
+    v46 = transitionCopy;
+    v37 = transitionCopy;
     v24 = v45;
   }
 
   else
   {
-    [v4 initialFrameForViewController:v5];
+    [transitionCopy initialFrameForViewController:v5];
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    [v8 frame];
+    [containerView frame];
     v18 = v17;
     v19 = [objc_alloc(MEMORY[0x1E69DC908]) initWithControlPoint1:0.33 controlPoint2:{0.0, 0.65, 0.0}];
     v20 = [objc_alloc(MEMORY[0x1E69DD278]) initWithDuration:v19 timingParameters:v10];
@@ -107,8 +107,8 @@
     v40 = __40__AMSUISlideAnimator_animateTransition___block_invoke_4;
     v41 = &unk_1E7F24DA0;
     v22 = &v42;
-    v42 = v4;
-    v23 = v4;
+    v42 = transitionCopy;
+    v23 = transitionCopy;
     v24 = &v38;
   }
 

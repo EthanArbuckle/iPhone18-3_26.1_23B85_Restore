@@ -1,21 +1,21 @@
 @interface HMDPendingSocketRequest
-- (HMDPendingSocketRequest)initWithApplicationProtocolName:(id)a3 completion:(id)a4;
+- (HMDPendingSocketRequest)initWithApplicationProtocolName:(id)name completion:(id)completion;
 @end
 
 @implementation HMDPendingSocketRequest
 
-- (HMDPendingSocketRequest)initWithApplicationProtocolName:(id)a3 completion:(id)a4
+- (HMDPendingSocketRequest)initWithApplicationProtocolName:(id)name completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  completionCopy = completion;
   v14.receiver = self;
   v14.super_class = HMDPendingSocketRequest;
   v9 = [(HMDPendingSocketRequest *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_applicationProtocolName, a3);
-    v11 = _Block_copy(v8);
+    objc_storeStrong(&v9->_applicationProtocolName, name);
+    v11 = _Block_copy(completionCopy);
     completion = v10->_completion;
     v10->_completion = v11;
   }

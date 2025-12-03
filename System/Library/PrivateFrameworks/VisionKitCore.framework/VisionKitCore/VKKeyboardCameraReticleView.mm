@@ -1,19 +1,19 @@
 @interface VKKeyboardCameraReticleView
-- (VKKeyboardCameraReticleView)initWithFrame:(CGRect)a3;
+- (VKKeyboardCameraReticleView)initWithFrame:(CGRect)frame;
 - (double)spotlightBlurRadius;
 - (void)collapseReticleRect;
 - (void)layoutSubviews;
-- (void)setReticleRect:(CGRect)a3 angle:(double)a4;
-- (void)setSpotlightBlurRadius:(double)a3;
+- (void)setReticleRect:(CGRect)rect angle:(double)angle;
+- (void)setSpotlightBlurRadius:(double)radius;
 @end
 
 @implementation VKKeyboardCameraReticleView
 
-- (VKKeyboardCameraReticleView)initWithFrame:(CGRect)a3
+- (VKKeyboardCameraReticleView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = VKKeyboardCameraReticleView;
-  v3 = [(VKKeyboardCameraReticleView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VKKeyboardCameraReticleView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E6993898]);
@@ -59,38 +59,38 @@
 
 - (double)spotlightBlurRadius
 {
-  v2 = [(UIView *)self->_spotlightView layer];
-  [v2 shadowRadius];
+  layer = [(UIView *)self->_spotlightView layer];
+  [layer shadowRadius];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setSpotlightBlurRadius:(double)a3
+- (void)setSpotlightBlurRadius:(double)radius
 {
-  v4 = [(UIView *)self->_spotlightView layer];
-  [v4 setShadowRadius:a3];
+  layer = [(UIView *)self->_spotlightView layer];
+  [layer setShadowRadius:radius];
 }
 
-- (void)setReticleRect:(CGRect)a3 angle:(double)a4
+- (void)setReticleRect:(CGRect)rect angle:(double)angle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (!self->_hasSetReticleRect)
   {
     [(CEKSubjectIndicatorView *)self->_reticleView setHidden:0];
     [(UIView *)self->_spotlightView setHidden:0];
-    v10 = [(UIView *)self->_spotlightView layer];
+    layer = [(UIView *)self->_spotlightView layer];
     [(UIView *)self->_spotlightView _setContinuousCornerRadius:20.0];
-    v11 = [MEMORY[0x1E69DC888] blackColor];
-    [v10 setShadowColor:{objc_msgSend(v11, "CGColor")}];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [layer setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
     LODWORD(v12) = 1.0;
-    [v10 setShadowOpacity:v12];
-    [v10 setShadowPathIsBounds:1];
-    [v10 setInvertsShadow:1];
+    [layer setShadowOpacity:v12];
+    [layer setShadowPathIsBounds:1];
+    [layer setInvertsShadow:1];
     self->_hasSetReticleRect = 1;
   }
 
@@ -147,7 +147,7 @@
   [(CEKSubjectIndicatorView *)self->_reticleView setFrame:v15, v20, v21, v22];
   [(UIView *)self->_spotlightView setFrame:x, y, width, height];
   memset(&v30, 0, sizeof(v30));
-  CGAffineTransformMakeRotation(&v30, a4);
+  CGAffineTransformMakeRotation(&v30, angle);
   v29 = v30;
   [(CEKSubjectIndicatorView *)self->_reticleView setTransform:&v29];
   v29 = v30;

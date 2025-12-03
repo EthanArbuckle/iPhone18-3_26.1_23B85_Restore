@@ -1,13 +1,13 @@
 @interface OnBoardingPresenter
-- (void)siriDataSharingOptInRequestsDismissalFromPresenter:(id)a3;
+- (void)siriDataSharingOptInRequestsDismissalFromPresenter:(id)presenter;
 @end
 
 @implementation OnBoardingPresenter
 
-- (void)siriDataSharingOptInRequestsDismissalFromPresenter:(id)a3
+- (void)siriDataSharingOptInRequestsDismissalFromPresenter:(id)presenter
 {
-  v4 = a3;
-  v5 = self;
+  presenterCopy = presenter;
+  selfCopy = self;
   sub_10019E188();
 }
 

@@ -1,15 +1,15 @@
 @interface HMDUserAccessCodeModel
-+ (id)modelUUIDWithUUID:(id)a3;
++ (id)modelUUIDWithUUID:(id)d;
 + (id)properties;
-- (HMDUserAccessCodeModel)initWithUserUUID:(id)a3;
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5;
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5;
-- (void)cd_populateParentRelationshipInContext:(id)a3 error:(id *)a4;
+- (HMDUserAccessCodeModel)initWithUserUUID:(id)d;
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info;
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context;
+- (void)cd_populateParentRelationshipInContext:(id)context error:(id *)error;
 @end
 
 @implementation HMDUserAccessCodeModel
 
-- (void)cd_populateParentRelationshipInContext:(id)a3 error:(id *)a4
+- (void)cd_populateParentRelationshipInContext:(id)context error:(id *)error
 {
   v13.receiver = self;
   v13.super_class = HMDUserAccessCodeModel;
@@ -17,8 +17,8 @@
   if (v6)
   {
     v7 = v6;
-    v8 = [(HMDBackingStoreModelObject *)self managedObject];
-    v9 = v8;
+    managedObject = [(HMDBackingStoreModelObject *)self managedObject];
+    v9 = managedObject;
     v10 = @"user";
   }
 
@@ -26,99 +26,99 @@
   {
     v12.receiver = self;
     v12.super_class = HMDUserAccessCodeModel;
-    v11 = [(HMDBackingStoreModelObject *)&v12 cd_fetchParentForManagedObjectUsingParentReferenceName:@"guest" error:a4];
+    v11 = [(HMDBackingStoreModelObject *)&v12 cd_fetchParentForManagedObjectUsingParentReferenceName:@"guest" error:error];
     if (!v11)
     {
       return;
     }
 
     v7 = v11;
-    v8 = [(HMDBackingStoreModelObject *)self managedObject];
-    v9 = v8;
+    managedObject = [(HMDBackingStoreModelObject *)self managedObject];
+    v9 = managedObject;
     v10 = @"guest";
   }
 
-  [v8 setValue:v7 forKey:v10];
+  [managedObject setValue:v7 forKey:v10];
 }
 
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"accessCode"])
+  propertyCopy = property;
+  fieldCopy = field;
+  contextCopy = context;
+  if ([fieldCopy isEqualToString:@"accessCode"])
   {
     if (![(HMDBackingStoreModelObject *)self propertyWasSet:@"value"])
     {
-      v14 = 0;
+      home = 0;
       goto LABEL_11;
     }
 
-    v11 = [(HMDUserAccessCodeModel *)self value];
+    value = [(HMDUserAccessCodeModel *)self value];
   }
 
   else
   {
-    if ([v9 isEqualToString:@"home"])
+    if ([fieldCopy isEqualToString:@"home"])
     {
-      v12 = [(HMDBackingStoreModelObject *)self parentUUID];
-      v13 = [HMDUserModel cd_getMKFUserFromUUID:v12];
+      parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
+      v13 = [HMDUserModel cd_getMKFUserFromUUID:parentUUID];
 
-      v14 = [v13 home];
+      home = [v13 home];
 
       goto LABEL_11;
     }
 
-    if ([v9 isEqualToString:@"modelID"])
+    if ([fieldCopy isEqualToString:@"modelID"])
     {
-      v11 = [(HMDBackingStoreModelObject *)self uuid];
+      value = [(HMDBackingStoreModelObject *)self uuid];
     }
 
     else
     {
       v16.receiver = self;
       v16.super_class = HMDUserAccessCodeModel;
-      v11 = [(HMDBackingStoreModelObject *)&v16 cd_generateValueForProperty:v8 managedObjectField:v9 context:v10];
+      value = [(HMDBackingStoreModelObject *)&v16 cd_generateValueForProperty:propertyCopy managedObjectField:fieldCopy context:contextCopy];
     }
   }
 
-  v14 = v11;
+  home = value;
 LABEL_11:
 
-  return v14;
+  return home;
 }
 
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  if ([v8 isEqualToString:@"value"])
+  fieldCopy = field;
+  infoCopy = info;
+  objectCopy = object;
+  if ([fieldCopy isEqualToString:@"value"])
   {
-    v11 = [v10 accessCode];
+    accessCode = [objectCopy accessCode];
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = HMDUserAccessCodeModel;
-    v11 = [(HMDBackingStoreModelObject *)&v14 cd_generateValueForModelObjectFromManagedObject:v10 modelObjectField:v8 modelFieldInfo:v9];
+    accessCode = [(HMDBackingStoreModelObject *)&v14 cd_generateValueForModelObjectFromManagedObject:objectCopy modelObjectField:fieldCopy modelFieldInfo:infoCopy];
   }
 
-  v12 = v11;
+  v12 = accessCode;
 
   return v12;
 }
 
-+ (id)modelUUIDWithUUID:(id)a3
++ (id)modelUUIDWithUUID:(id)d
 {
   v3 = MEMORY[0x277CCAD78];
-  v4 = a3;
+  dCopy = d;
   v5 = [[v3 alloc] initWithUUIDString:@"9DB6E60C-3E4F-44A3-94F6-14DB51D3E800"];
   v6 = MEMORY[0x277CCAD78];
-  v7 = [v4 hm_convertToData];
+  hm_convertToData = [dCopy hm_convertToData];
 
-  v8 = [v6 hmf_UUIDWithNamespace:v5 data:v7];
+  v8 = [v6 hmf_UUIDWithNamespace:v5 data:hm_convertToData];
 
   return v8;
 }
@@ -154,14 +154,14 @@ void __36__HMDUserAccessCodeModel_properties__block_invoke()
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDUserAccessCodeModel)initWithUserUUID:(id)a3
+- (HMDUserAccessCodeModel)initWithUserUUID:(id)d
 {
-  v4 = a3;
-  v5 = [objc_opt_class() modelUUIDWithUUID:v4];
-  v6 = [MEMORY[0x277CCAD78] UUID];
-  [(HMDUserAccessCodeModel *)self setHh2ModelID:v6];
+  dCopy = d;
+  v5 = [objc_opt_class() modelUUIDWithUUID:dCopy];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  [(HMDUserAccessCodeModel *)self setHh2ModelID:uUID];
 
-  v7 = [(HMDBackingStoreModelObject *)self initWithObjectChangeType:1 uuid:v5 parentUUID:v4];
+  v7 = [(HMDBackingStoreModelObject *)self initWithObjectChangeType:1 uuid:v5 parentUUID:dCopy];
   return v7;
 }
 

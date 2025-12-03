@@ -1,10 +1,10 @@
 @interface ATXNotificationSmartPauseManager
 - (ATXNotificationSmartPauseManager)init;
-- (ATXNotificationSmartPauseManager)initWithNotificationAndSuggestionDataStore:(id)a3;
-- (id)_dictionaryForQueryResults:(id)a3;
-- (id)_proposeSmartPauseForNotification:(id)a3 threadData:(id)a4 bundleData:(id)a5;
+- (ATXNotificationSmartPauseManager)initWithNotificationAndSuggestionDataStore:(id)store;
+- (id)_dictionaryForQueryResults:(id)results;
+- (id)_proposeSmartPauseForNotification:(id)notification threadData:(id)data bundleData:(id)bundleData;
 - (id)activeSuggestions;
-- (id)currentSuggestionsGivenCandiateNotifications:(id)a3;
+- (id)currentSuggestionsGivenCandiateNotifications:(id)notifications;
 @end
 
 @implementation ATXNotificationSmartPauseManager
@@ -17,34 +17,34 @@
   return v4;
 }
 
-- (ATXNotificationSmartPauseManager)initWithNotificationAndSuggestionDataStore:(id)a3
+- (ATXNotificationSmartPauseManager)initWithNotificationAndSuggestionDataStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = ATXNotificationSmartPauseManager;
   v6 = [(ATXNotificationSmartPauseManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataStore, a3);
-    v8 = [MEMORY[0x277CEB710] sharedInstance];
+    objc_storeStrong(&v6->_dataStore, store);
+    mEMORY[0x277CEB710] = [MEMORY[0x277CEB710] sharedInstance];
     notificationManagementMAConstants = v7->_notificationManagementMAConstants;
-    v7->_notificationManagementMAConstants = v8;
+    v7->_notificationManagementMAConstants = mEMORY[0x277CEB710];
   }
 
   return v7;
 }
 
-- (id)_dictionaryForQueryResults:(id)a3
+- (id)_dictionaryForQueryResults:(id)results
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   v5 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = resultsCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -60,9 +60,9 @@
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 bundleId];
-        v13 = [v11 threadId];
-        v14 = [(ATXNotificationSmartPauseManager *)self _queryResultIdentifierForBundleId:v12 threadId:v13];
+        bundleId = [v11 bundleId];
+        threadId = [v11 threadId];
+        v14 = [(ATXNotificationSmartPauseManager *)self _queryResultIdentifierForBundleId:bundleId threadId:threadId];
         [v5 setObject:v11 forKeyedSubscript:v14];
       }
 
@@ -77,28 +77,28 @@
   return v5;
 }
 
-- (id)_proposeSmartPauseForNotification:(id)a3 threadData:(id)a4 bundleData:(id)a5
+- (id)_proposeSmartPauseForNotification:(id)notification threadData:(id)data bundleData:(id)bundleData
 {
   v53 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 threadID];
+  notificationCopy = notification;
+  dataCopy = data;
+  bundleDataCopy = bundleData;
+  threadID = [notificationCopy threadID];
 
-  if (!v11)
+  if (!threadID)
   {
-    if (v10)
+    if (bundleDataCopy)
     {
-      v31 = [v10 countLastFiveMinutesPositiveEngagements];
-      v32 = v31 / [v10 countLastFiveMinutesNotifications];
+      countLastFiveMinutesPositiveEngagements = [bundleDataCopy countLastFiveMinutesPositiveEngagements];
+      v32 = countLastFiveMinutesPositiveEngagements / [bundleDataCopy countLastFiveMinutesNotifications];
       v33 = __atxlog_handle_notification_management();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
       {
-        [ATXNotificationSmartPauseManager _proposeSmartPauseForNotification:v10 threadData:v33 bundleData:v32];
+        [ATXNotificationSmartPauseManager _proposeSmartPauseForNotification:bundleDataCopy threadData:v33 bundleData:v32];
       }
 
-      v34 = [v10 countLastFiveMinutesNotifications];
-      if (v34 > [(ATXNotificationManagementMAConstants *)self->_notificationManagementMAConstants smartPauseManagerThresholdForNumNotificationsReceivedInLastFiveMinutesForApp])
+      countLastFiveMinutesNotifications = [bundleDataCopy countLastFiveMinutesNotifications];
+      if (countLastFiveMinutesNotifications > [(ATXNotificationManagementMAConstants *)self->_notificationManagementMAConstants smartPauseManagerThresholdForNumNotificationsReceivedInLastFiveMinutesForApp])
       {
         [(ATXNotificationManagementMAConstants *)self->_notificationManagementMAConstants smartPauseManagerEngagementRateThresholdForApp];
         if (v32 <= v35)
@@ -117,13 +117,13 @@
           v21 = [v40 initWithSuggestionExpiration:v42 pauseDuration:?];
 
           v43 = objc_alloc(MEMORY[0x277CEB6F0]);
-          v23 = [MEMORY[0x277CCAD78] UUID];
-          v24 = [v8 bundleID];
+          uUID = [MEMORY[0x277CCAD78] UUID];
+          bundleID = [notificationCopy bundleID];
           v25 = [MEMORY[0x277CBEAA8] now];
-          v26 = [v8 uuid];
+          uuid = [notificationCopy uuid];
           v27 = v43;
           v28 = v21;
-          v29 = v23;
+          v29 = uUID;
           v30 = 1;
           goto LABEL_22;
         }
@@ -135,30 +135,30 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!v9)
+  if (!dataCopy)
   {
     goto LABEL_15;
   }
 
-  v12 = [v9 countLastFiveMinutesPositiveEngagements];
-  v13 = v12 / [v9 countLastFiveMinutesNotifications];
+  countLastFiveMinutesPositiveEngagements2 = [dataCopy countLastFiveMinutesPositiveEngagements];
+  v13 = countLastFiveMinutesPositiveEngagements2 / [dataCopy countLastFiveMinutesNotifications];
   v14 = __atxlog_handle_notification_management();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v44 = [v8 threadID];
+    threadID2 = [notificationCopy threadID];
     v45 = 136315906;
     v46 = "[ATXNotificationSmartPauseManager _proposeSmartPauseForNotification:threadData:bundleData:]";
     v47 = 2112;
-    v48 = v44;
+    v48 = threadID2;
     v49 = 2048;
-    v50 = [v9 countLastFiveMinutesNotifications];
+    countLastFiveMinutesNotifications2 = [dataCopy countLastFiveMinutesNotifications];
     v51 = 2048;
     v52 = v13;
     _os_log_debug_impl(&dword_2263AA000, v14, OS_LOG_TYPE_DEBUG, "%s: Considering SmartPause suggestion for thread: %@ countLastFiveMinutesNotifications: %ld lastFiveMinutesEngagementRate: %f", &v45, 0x2Au);
   }
 
-  v15 = [v9 countLastFiveMinutesNotifications];
-  if (v15 <= [(ATXNotificationManagementMAConstants *)self->_notificationManagementMAConstants smartPauseManagerThresholdForNumNotificationsReceivedInLastFiveMinutesForThread])
+  countLastFiveMinutesNotifications3 = [dataCopy countLastFiveMinutesNotifications];
+  if (countLastFiveMinutesNotifications3 <= [(ATXNotificationManagementMAConstants *)self->_notificationManagementMAConstants smartPauseManagerThresholdForNumNotificationsReceivedInLastFiveMinutesForThread])
   {
     goto LABEL_15;
   }
@@ -183,16 +183,16 @@ LABEL_15:
   v21 = [v18 initWithSuggestionExpiration:v20 pauseDuration:?];
 
   v22 = objc_alloc(MEMORY[0x277CEB6F0]);
-  v23 = [MEMORY[0x277CCAD78] UUID];
-  v24 = [v8 threadID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  bundleID = [notificationCopy threadID];
   v25 = [MEMORY[0x277CBEAA8] now];
-  v26 = [v8 uuid];
+  uuid = [notificationCopy uuid];
   v27 = v22;
   v28 = v21;
-  v29 = v23;
+  v29 = uUID;
   v30 = 2;
 LABEL_22:
-  v36 = [v27 initWithSmartPauseSuggestion:v28 uuid:v29 scope:v30 entityIdentifier:v24 timestamp:v25 triggerNotificationUUID:v26];
+  v36 = [v27 initWithSmartPauseSuggestion:v28 uuid:v29 scope:v30 entityIdentifier:bundleID timestamp:v25 triggerNotificationUUID:uuid];
 
 LABEL_16:
   v37 = *MEMORY[0x277D85DE8];
@@ -200,17 +200,17 @@ LABEL_16:
   return v36;
 }
 
-- (id)currentSuggestionsGivenCandiateNotifications:(id)a3
+- (id)currentSuggestionsGivenCandiateNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   v5 = __atxlog_handle_notification_management();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(ATXNotificationSmartPauseManager *)v4 currentSuggestionsGivenCandiateNotifications:v5];
+    [(ATXNotificationSmartPauseManager *)notificationsCopy currentSuggestionsGivenCandiateNotifications:v5];
   }
 
   dataStore = self->_dataStore;
-  v7 = [v4 _pas_mappedArrayWithTransform:&__block_literal_global_111];
+  v7 = [notificationsCopy _pas_mappedArrayWithTransform:&__block_literal_global_111];
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v9 = [(ATXNotificationAndSuggestionDatastore *)dataStore getSmartPauseFeaturesForBundleIds:v7 sinceTimestamp:v8 + -2592000.0];
 
@@ -227,8 +227,8 @@ LABEL_16:
   v14 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:v13 endDate:0 maxEvents:0 lastN:0 reversed:0];
   v15 = BiomeLibrary();
   v16 = [v15 App];
-  v17 = [v16 InFocus];
-  v18 = [v17 publisherWithUseCase:*MEMORY[0x277CEBB48] options:v14];
+  inFocus = [v16 InFocus];
+  v18 = [inFocus publisherWithUseCase:*MEMORY[0x277CEBB48] options:v14];
 
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
@@ -250,9 +250,9 @@ LABEL_16:
     v26[3] = &unk_27859D110;
     v27 = v19;
     v28 = v25;
-    v29 = self;
+    selfCopy = self;
     v30 = v24;
-    v21 = [v4 _pas_mappedArrayWithTransform:v26];
+    v21 = [notificationsCopy _pas_mappedArrayWithTransform:v26];
 
     v22 = v27;
   }

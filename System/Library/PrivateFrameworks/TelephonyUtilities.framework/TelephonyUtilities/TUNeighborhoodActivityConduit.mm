@@ -1,43 +1,43 @@
 @interface TUNeighborhoodActivityConduit
 + (BOOL)isConduitAvailable;
 - (BOOL)_shouldReconnect;
-- (BOOL)canPullBackConversation:(id)a3;
+- (BOOL)canPullBackConversation:(id)conversation;
 - (BOOL)isRingingFaceTimeCallsOnConnectedTVDevice;
 - (NSDictionary)nearbyTVDevices;
 - (NSSet)nearbyTVDeviceHandles;
-- (TUNeighborhoodActivityConduit)initWithConversationManager:(id)a3;
-- (TUNeighborhoodActivityConduit)initWithConversationManager:(id)a3 xpcClient:(id)a4;
+- (TUNeighborhoodActivityConduit)initWithConversationManager:(id)manager;
+- (TUNeighborhoodActivityConduit)initWithConversationManager:(id)manager xpcClient:(id)client;
 - (TUNeighborhoodActivityConduitApprovalDelegate)approvalDelegate;
-- (id)_findConversationForUUID:(id)a3;
+- (id)_findConversationForUUID:(id)d;
 - (id)_osStateDictionary;
-- (void)_forEachDelegate:(id)a3;
+- (void)_forEachDelegate:(id)delegate;
 - (void)_requestInitialState;
-- (void)addDelegate:(id)a3;
-- (void)addDelegate:(id)a3 queue:(id)a4;
-- (void)approveSplitSessionForConversation:(id)a3 device:(id)a4 pullContext:(int64_t)a5 completion:(id)a6;
-- (void)callStatusChanged:(id)a3;
+- (void)addDelegate:(id)delegate;
+- (void)addDelegate:(id)delegate queue:(id)queue;
+- (void)approveSplitSessionForConversation:(id)conversation device:(id)device pullContext:(int64_t)context completion:(id)completion;
+- (void)callStatusChanged:(id)changed;
 - (void)cancelSplitSessionApproval;
-- (void)connectionEstablishedForClient:(id)a3;
-- (void)connectionLostForClient:(id)a3;
+- (void)connectionEstablishedForClient:(id)client;
+- (void)connectionLostForClient:(id)client;
 - (void)continuityCameraDidConnect;
 - (void)dealloc;
-- (void)disconnectTVDevice:(id)a3 completion:(id)a4;
-- (void)ensureConduitInitialized:(id)a3;
-- (void)handoffConversation:(id)a3 toTVDevice:(id)a4 completion:(id)a5;
-- (void)inviteTVDevice:(id)a3 toConversation:(id)a4 completion:(id)a5;
-- (void)pullConversation:(id)a3 fromTVDevice:(id)a4 completion:(id)a5;
-- (void)removeDelegate:(id)a3;
-- (void)respondToSuggestionWithResult:(id)a3 completion:(id)a4;
-- (void)setActiveSplitSessionTV:(id)a3;
-- (void)setApprovalDelegate:(id)a3;
-- (void)setSuggestedTVDeviceName:(id)a3 completion:(id)a4;
-- (void)setSuggestion:(id)a3;
+- (void)disconnectTVDevice:(id)device completion:(id)completion;
+- (void)ensureConduitInitialized:(id)initialized;
+- (void)handoffConversation:(id)conversation toTVDevice:(id)device completion:(id)completion;
+- (void)inviteTVDevice:(id)device toConversation:(id)conversation completion:(id)completion;
+- (void)pullConversation:(id)conversation fromTVDevice:(id)device completion:(id)completion;
+- (void)removeDelegate:(id)delegate;
+- (void)respondToSuggestionWithResult:(id)result completion:(id)completion;
+- (void)setActiveSplitSessionTV:(id)v;
+- (void)setApprovalDelegate:(id)delegate;
+- (void)setSuggestedTVDeviceName:(id)name completion:(id)completion;
+- (void)setSuggestion:(id)suggestion;
 - (void)splitSessionUpdated;
-- (void)splitSessionUpdated:(id)a3;
-- (void)startConversationWith:(id)a3 on:(id)a4 completion:(id)a5;
-- (void)suggestionUpdated:(id)a3;
-- (void)tvDeviceAppeared:(id)a3;
-- (void)tvDeviceDisappeared:(id)a3;
+- (void)splitSessionUpdated:(id)updated;
+- (void)startConversationWith:(id)with on:(id)on completion:(id)completion;
+- (void)suggestionUpdated:(id)updated;
+- (void)tvDeviceAppeared:(id)appeared;
+- (void)tvDeviceDisappeared:(id)disappeared;
 @end
 
 @implementation TUNeighborhoodActivityConduit
@@ -62,14 +62,14 @@
   v3 = [MEMORY[0x1E695DF90] dictionaryWithSharedKeySet:_osStateDictionary___keyset];
   v4 = [(NSMutableSet *)self->_nearbyTVs copy];
   v5 = [v4 valueForKey:@"plistRepresentation"];
-  v6 = [v5 allObjects];
-  [v3 setObject:v6 forKeyedSubscript:@"nearbyTVs"];
+  allObjects = [v5 allObjects];
+  [v3 setObject:allObjects forKeyedSubscript:@"nearbyTVs"];
 
   activeSplitSessionTV = self->_activeSplitSessionTV;
   if (activeSplitSessionTV)
   {
-    v8 = [(TUNearbyDeviceHandle *)activeSplitSessionTV plistRepresentation];
-    [v3 setObject:v8 forKeyedSubscript:@"currentSplitSessionTV"];
+    plistRepresentation = [(TUNearbyDeviceHandle *)activeSplitSessionTV plistRepresentation];
+    [v3 setObject:plistRepresentation forKeyedSubscript:@"currentSplitSessionTV"];
   }
 
   suggestion = self->_suggestion;
@@ -79,11 +79,11 @@
     [v3 setObject:v10 forKeyedSubscript:@"suggestion"];
   }
 
-  v11 = [(TUNeighborhoodActivityConduit *)self approvalDelegate];
-  v12 = v11;
-  if (v11)
+  approvalDelegate = [(TUNeighborhoodActivityConduit *)self approvalDelegate];
+  v12 = approvalDelegate;
+  if (approvalDelegate)
   {
-    v13 = [v11 description];
+    v13 = [approvalDelegate description];
     [v3 setObject:v13 forKeyedSubscript:@"approvalDelegate"];
   }
 
@@ -97,19 +97,19 @@
   return WeakRetained;
 }
 
-- (TUNeighborhoodActivityConduit)initWithConversationManager:(id)a3
+- (TUNeighborhoodActivityConduit)initWithConversationManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = objc_alloc_init(TUNeighborhoodActivityConduitXPCClient);
-  v6 = [(TUNeighborhoodActivityConduit *)self initWithConversationManager:v4 xpcClient:v5];
+  v6 = [(TUNeighborhoodActivityConduit *)self initWithConversationManager:managerCopy xpcClient:v5];
 
   return v6;
 }
 
-- (TUNeighborhoodActivityConduit)initWithConversationManager:(id)a3 xpcClient:(id)a4
+- (TUNeighborhoodActivityConduit)initWithConversationManager:(id)manager xpcClient:(id)client
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  clientCopy = client;
   v20.receiver = self;
   v20.super_class = TUNeighborhoodActivityConduit;
   v9 = [(TUNeighborhoodActivityConduit *)&v20 init];
@@ -119,13 +119,13 @@
     nearbyTVs = v9->_nearbyTVs;
     v9->_nearbyTVs = v10;
 
-    objc_storeStrong(&v9->_xpcClient, a4);
+    objc_storeStrong(&v9->_xpcClient, client);
     [(TUNeighborhoodActivityConduitXPCClient *)v9->_xpcClient setDelegate:v9];
     v12 = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:517 valueOptions:0 capacity:0];
     delegates = v9->_delegates;
     v9->_delegates = v12;
 
-    objc_storeStrong(&v9->_conversationManager, a3);
+    objc_storeStrong(&v9->_conversationManager, manager);
     [(TUNeighborhoodActivityConduitXPCClient *)v9->_xpcClient ensureConnection];
     objc_initWeak(&location, v9);
     v14 = dispatch_get_global_queue(0, 0);
@@ -219,13 +219,13 @@ uint64_t __51__TUNeighborhoodActivityConduit__osStateDictionary__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  delegateCopy = delegate;
+  queueCopy = queue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = TUConduitLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -234,20 +234,20 @@ uint64_t __51__TUNeighborhoodActivityConduit__osStateDictionary__block_invoke()
     [(TUNeighborhoodActivityConduit *)v11 addDelegate:v13 queue:v9];
   }
 
-  [(NSMapTable *)v8->_delegates setObject:v7 forKey:v6];
-  objc_sync_exit(v8);
+  [(NSMapTable *)selfCopy->_delegates setObject:queueCopy forKey:delegateCopy];
+  objc_sync_exit(selfCopy);
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
   v4 = addDelegate__onceToken;
-  v5 = a3;
-  v7 = v5;
+  delegateCopy = delegate;
+  v7 = delegateCopy;
   if (v4 == -1)
   {
-    v6 = v5;
+    v6 = delegateCopy;
   }
 
   else
@@ -266,12 +266,12 @@ uint64_t __45__TUNeighborhoodActivityConduit_addDelegate___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  delegateCopy = delegate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = TUConduitLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -280,16 +280,16 @@ uint64_t __45__TUNeighborhoodActivityConduit_addDelegate___block_invoke()
     [(TUNeighborhoodActivityConduit *)v8 removeDelegate:v10, v6];
   }
 
-  [(NSMapTable *)v5->_delegates removeObjectForKey:v4];
-  objc_sync_exit(v5);
+  [(NSMapTable *)selfCopy->_delegates removeObjectForKey:delegateCopy];
+  objc_sync_exit(selfCopy);
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setApprovalDelegate:(id)a3
+- (void)setApprovalDelegate:(id)delegate
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = TUConduitLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -300,17 +300,17 @@ uint64_t __45__TUNeighborhoodActivityConduit_addDelegate___block_invoke()
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Setting approval delegate: %{public}@", &v10, 0xCu);
   }
 
-  objc_storeWeak(&self->_approvalDelegate, v4);
-  v8 = [(TUNeighborhoodActivityConduit *)self xpcClient];
-  [v8 registerApprovalClientEnabled:v4 != 0];
+  objc_storeWeak(&self->_approvalDelegate, delegateCopy);
+  xpcClient = [(TUNeighborhoodActivityConduit *)self xpcClient];
+  [xpcClient registerApprovalClientEnabled:delegateCopy != 0];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setActiveSplitSessionTV:(id)a3
+- (void)setActiveSplitSessionTV:(id)v
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  vCopy = v;
   v6 = TUConduitLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -318,68 +318,68 @@ uint64_t __45__TUNeighborhoodActivityConduit_addDelegate___block_invoke()
     v9 = 138412546;
     v10 = activeSplitSessionTV;
     v11 = 2112;
-    v12 = v5;
+    v12 = vCopy;
     _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Setting activeSplitSessionTV: oldValue: %@, newValue: %@", &v9, 0x16u);
   }
 
-  if (![(TUNearbyDeviceHandle *)self->_activeSplitSessionTV isEqual:v5])
+  if (![(TUNearbyDeviceHandle *)self->_activeSplitSessionTV isEqual:vCopy])
   {
     [(TUNeighborhoodActivityConduit *)self willChangeValueForKey:@"activeSplitSessionTV"];
-    objc_storeStrong(&self->_activeSplitSessionTV, a3);
+    objc_storeStrong(&self->_activeSplitSessionTV, v);
     [(TUNeighborhoodActivityConduit *)self didChangeValueForKey:@"activeSplitSessionTV"];
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSuggestion:(id)a3
+- (void)setSuggestion:(id)suggestion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  suggestionCopy = suggestion;
   v6 = TUConduitLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     suggestion = self->_suggestion;
     v9 = 138412546;
-    v10 = suggestion;
+    suggestionCopy2 = suggestion;
     v11 = 2112;
-    v12 = v5;
+    v12 = suggestionCopy;
     _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Setting suggestion: oldValue: %@, newValue: %@", &v9, 0x16u);
   }
 
-  if (![(TUNearbySuggestion *)self->_suggestion isEqual:v5])
+  if (![(TUNearbySuggestion *)self->_suggestion isEqual:suggestionCopy])
   {
     [(TUNeighborhoodActivityConduit *)self willChangeValueForKey:@"suggestion"];
-    objc_storeStrong(&self->_suggestion, a3);
+    objc_storeStrong(&self->_suggestion, suggestion);
     [(TUNeighborhoodActivityConduit *)self didChangeValueForKey:@"suggestion"];
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSuggestedTVDeviceName:(id)a3 completion:(id)a4
+- (void)setSuggestedTVDeviceName:(id)name completion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  completionCopy = completion;
   v8 = TUConduitLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = nameCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Called to force suggested tv device name banner: %@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v9 = [(TUNeighborhoodActivityConduit *)self xpcClient];
+  xpcClient = [(TUNeighborhoodActivityConduit *)self xpcClient];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __69__TUNeighborhoodActivityConduit_setSuggestedTVDeviceName_completion___block_invoke;
   v12[3] = &unk_1E74259B8;
   objc_copyWeak(&v14, buf);
-  v10 = v7;
+  v10 = completionCopy;
   v13 = v10;
-  [v9 setSuggestedTVDeviceName:v6 completion:v12];
+  [xpcClient setSuggestedTVDeviceName:nameCopy completion:v12];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(buf);
@@ -405,41 +405,41 @@ void __69__TUNeighborhoodActivityConduit_setSuggestedTVDeviceName_completion___b
 
 - (void)_requestInitialState
 {
-  v3 = [(TUNeighborhoodActivityConduit *)self xpcClient];
+  xpcClient = [(TUNeighborhoodActivityConduit *)self xpcClient];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __53__TUNeighborhoodActivityConduit__requestInitialState__block_invoke;
   v12[3] = &unk_1E7425A08;
   v12[4] = self;
-  [v3 nearbyTVDevicesWithCompletion:v12];
+  [xpcClient nearbyTVDevicesWithCompletion:v12];
 
-  v4 = [(TUNeighborhoodActivityConduit *)self xpcClient];
+  xpcClient2 = [(TUNeighborhoodActivityConduit *)self xpcClient];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __53__TUNeighborhoodActivityConduit__requestInitialState__block_invoke_2;
   v11[3] = &unk_1E7425A58;
   v11[4] = self;
-  [v4 activeSplitSessionTVDeviceWithCompletion:v11];
+  [xpcClient2 activeSplitSessionTVDeviceWithCompletion:v11];
 
-  v5 = [(TUNeighborhoodActivityConduit *)self xpcClient];
+  xpcClient3 = [(TUNeighborhoodActivityConduit *)self xpcClient];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __53__TUNeighborhoodActivityConduit__requestInitialState__block_invoke_2_236;
   v10[3] = &unk_1E7425A80;
   v10[4] = self;
-  [v5 suggestionWithCompletion:v10];
+  [xpcClient3 suggestionWithCompletion:v10];
 
-  v6 = [(TUNeighborhoodActivityConduit *)self xpcClient];
+  xpcClient4 = [(TUNeighborhoodActivityConduit *)self xpcClient];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __53__TUNeighborhoodActivityConduit__requestInitialState__block_invoke_2_240;
   v9[3] = &unk_1E7425AA8;
   v9[4] = self;
-  [v6 isRingingFaceTimeCallsOnConnectedTVDeviceWithCompletion:v9];
+  [xpcClient4 isRingingFaceTimeCallsOnConnectedTVDeviceWithCompletion:v9];
 
-  v7 = [(TUNeighborhoodActivityConduit *)self xpcClient];
-  v8 = [(TUNeighborhoodActivityConduit *)self approvalDelegate];
-  [v7 registerApprovalClientEnabled:v8 != 0];
+  xpcClient5 = [(TUNeighborhoodActivityConduit *)self xpcClient];
+  approvalDelegate = [(TUNeighborhoodActivityConduit *)self approvalDelegate];
+  [xpcClient5 registerApprovalClientEnabled:approvalDelegate != 0];
 }
 
 void __53__TUNeighborhoodActivityConduit__requestInitialState__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -636,20 +636,20 @@ void __53__TUNeighborhoodActivityConduit__requestInitialState__block_invoke_2_24
   }
 }
 
-- (void)_forEachDelegate:(id)a3
+- (void)_forEachDelegate:(id)delegate
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  delegateCopy = delegate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [(TUNeighborhoodActivityConduit *)v5 delegates];
-  v7 = [v6 keyEnumerator];
+  delegates = [(TUNeighborhoodActivityConduit *)selfCopy delegates];
+  keyEnumerator = [delegates keyEnumerator];
 
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v8 = [keyEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = *v19;
@@ -660,12 +660,12 @@ void __53__TUNeighborhoodActivityConduit__requestInitialState__block_invoke_2_24
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v11 = *(*(&v18 + 1) + 8 * v10);
-        v12 = [(TUNeighborhoodActivityConduit *)v5 delegates];
-        v13 = [v12 objectForKey:v11];
+        delegates2 = [(TUNeighborhoodActivityConduit *)selfCopy delegates];
+        v13 = [delegates2 objectForKey:v11];
 
         if (v13)
         {
@@ -673,7 +673,7 @@ void __53__TUNeighborhoodActivityConduit__requestInitialState__block_invoke_2_24
           v16[1] = 3221225472;
           v16[2] = __50__TUNeighborhoodActivityConduit__forEachDelegate___block_invoke;
           v16[3] = &unk_1E7425540;
-          v14 = v4;
+          v14 = delegateCopy;
           v16[4] = v11;
           v17 = v14;
           dispatch_async(v13, v16);
@@ -683,30 +683,30 @@ void __53__TUNeighborhoodActivityConduit__requestInitialState__block_invoke_2_24
       }
 
       while (v8 != v10);
-      v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [keyEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_findConversationForUUID:(id)a3
+- (id)_findConversationForUUID:(id)d
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [(TUNeighborhoodActivityConduit *)self conversationManager];
-    v6 = [v5 activeConversations];
+    conversationManager = [(TUNeighborhoodActivityConduit *)self conversationManager];
+    activeConversations = [conversationManager activeConversations];
 
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v7 = [activeConversations countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = *v16;
@@ -716,12 +716,12 @@ void __53__TUNeighborhoodActivityConduit__requestInitialState__block_invoke_2_24
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(activeConversations);
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [v10 UUID];
-          v12 = [v11 isEqual:v4];
+          uUID = [v10 UUID];
+          v12 = [uUID isEqual:dCopy];
 
           if (v12)
           {
@@ -730,7 +730,7 @@ void __53__TUNeighborhoodActivityConduit__requestInitialState__block_invoke_2_24
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [activeConversations countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v7)
         {
           continue;
@@ -756,18 +756,18 @@ LABEL_12:
 - (BOOL)_shouldReconnect
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [(TUNeighborhoodActivityConduit *)self conduitLifecycleController];
+  conduitLifecycleController = [(TUNeighborhoodActivityConduit *)self conduitLifecycleController];
 
-  if (v3)
+  if (conduitLifecycleController)
   {
-    v4 = [(TUNeighborhoodActivityConduit *)self conduitLifecycleController];
-    LODWORD(v3) = [v4 shouldKeepConduitAlive];
+    conduitLifecycleController2 = [(TUNeighborhoodActivityConduit *)self conduitLifecycleController];
+    LODWORD(conduitLifecycleController) = [conduitLifecycleController2 shouldKeepConduitAlive];
 
     v5 = TUConduitLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8[0] = 67109120;
-      v8[1] = v3;
+      v8[1] = conduitLifecycleController;
       _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Process does initialize conduitLifeCycleController, are we keeping NAC alive? %d", v8, 8u);
     }
   }
@@ -779,21 +779,21 @@ LABEL_12:
     {
       LOWORD(v8[0]) = 0;
       _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Process does not initialize conduitLifecycleController, deferring to processes that do", v8, 2u);
-      LOBYTE(v3) = 0;
+      LOBYTE(conduitLifecycleController) = 0;
     }
   }
 
   v6 = *MEMORY[0x1E69E9840];
-  return v3;
+  return conduitLifecycleController;
 }
 
 - (NSSet)nearbyTVDeviceHandles
 {
-  v3 = [(TUNeighborhoodActivityConduit *)self xpcClient];
-  [v3 ensureConnection];
+  xpcClient = [(TUNeighborhoodActivityConduit *)self xpcClient];
+  [xpcClient ensureConnection];
 
-  v4 = [(TUNeighborhoodActivityConduit *)self nearbyTVs];
-  v5 = [v4 copy];
+  nearbyTVs = [(TUNeighborhoodActivityConduit *)self nearbyTVs];
+  v5 = [nearbyTVs copy];
 
   return v5;
 }
@@ -802,15 +802,15 @@ LABEL_12:
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DF90]);
-  v4 = [(TUNeighborhoodActivityConduit *)self nearbyTVs];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  nearbyTVs = [(TUNeighborhoodActivityConduit *)self nearbyTVs];
+  v5 = [v3 initWithCapacity:{objc_msgSend(nearbyTVs, "count")}];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(TUNeighborhoodActivityConduit *)self nearbyTVs];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  nearbyTVs2 = [(TUNeighborhoodActivityConduit *)self nearbyTVs];
+  v7 = [nearbyTVs2 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -821,12 +821,12 @@ LABEL_12:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(nearbyTVs2);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 knownIdentifiersByHandleType];
-        v13 = [v12 objectForKey:&unk_1F09C5E90];
+        knownIdentifiersByHandleType = [v11 knownIdentifiersByHandleType];
+        v13 = [knownIdentifiersByHandleType objectForKey:&unk_1F09C5E90];
 
         if (v13)
         {
@@ -834,7 +834,7 @@ LABEL_12:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [nearbyTVs2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -848,25 +848,25 @@ LABEL_12:
 
 - (BOOL)isRingingFaceTimeCallsOnConnectedTVDevice
 {
-  v3 = [(TUNeighborhoodActivityConduit *)self xpcClient];
-  [v3 ensureConnection];
+  xpcClient = [(TUNeighborhoodActivityConduit *)self xpcClient];
+  [xpcClient ensureConnection];
 
   return self->_isRingingFaceTimeCallsOnConnectedTVDevice;
 }
 
-- (BOOL)canPullBackConversation:(id)a3
+- (BOOL)canPullBackConversation:(id)conversation
 {
-  v3 = a3;
-  v4 = [v3 mergedRemoteMembers];
-  v5 = [v4 count];
+  conversationCopy = conversation;
+  mergedRemoteMembers = [conversationCopy mergedRemoteMembers];
+  v5 = [mergedRemoteMembers count];
 
-  v6 = [v3 mergedActiveRemoteParticipants];
-  v7 = [v6 count];
+  mergedActiveRemoteParticipants = [conversationCopy mergedActiveRemoteParticipants];
+  v7 = [mergedActiveRemoteParticipants count];
 
-  if (v3 && [v3 isContinuitySession])
+  if (conversationCopy && [conversationCopy isContinuitySession])
   {
-    v8 = [v3 state];
-    v11 = (v5 > 1 || v7 != 0) && v8 == 3;
+    state = [conversationCopy state];
+    v11 = (v5 > 1 || v7 != 0) && state == 3;
   }
 
   else
@@ -877,69 +877,69 @@ LABEL_12:
   return v11;
 }
 
-- (void)inviteTVDevice:(id)a3 toConversation:(id)a4 completion:(id)a5
+- (void)inviteTVDevice:(id)device toConversation:(id)conversation completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(TUNeighborhoodActivityConduit *)self xpcClient];
-  [v11 inviteTVDevice:v10 toConversationWithUUID:v9 completion:v8];
+  completionCopy = completion;
+  conversationCopy = conversation;
+  deviceCopy = device;
+  xpcClient = [(TUNeighborhoodActivityConduit *)self xpcClient];
+  [xpcClient inviteTVDevice:deviceCopy toConversationWithUUID:conversationCopy completion:completionCopy];
 }
 
-- (void)disconnectTVDevice:(id)a3 completion:(id)a4
+- (void)disconnectTVDevice:(id)device completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TUNeighborhoodActivityConduit *)self xpcClient];
-  [v8 disconnectTVDevice:v7 completion:v6];
+  completionCopy = completion;
+  deviceCopy = device;
+  xpcClient = [(TUNeighborhoodActivityConduit *)self xpcClient];
+  [xpcClient disconnectTVDevice:deviceCopy completion:completionCopy];
 }
 
-- (void)respondToSuggestionWithResult:(id)a3 completion:(id)a4
+- (void)respondToSuggestionWithResult:(id)result completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TUNeighborhoodActivityConduit *)self xpcClient];
-  [v8 respondToSuggestionWithResult:v7 completion:v6];
+  completionCopy = completion;
+  resultCopy = result;
+  xpcClient = [(TUNeighborhoodActivityConduit *)self xpcClient];
+  [xpcClient respondToSuggestionWithResult:resultCopy completion:completionCopy];
 }
 
-- (void)handoffConversation:(id)a3 toTVDevice:(id)a4 completion:(id)a5
+- (void)handoffConversation:(id)conversation toTVDevice:(id)device completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(TUNeighborhoodActivityConduit *)self xpcClient];
-  [v11 handoffConversation:v10 toTVDevice:v9 completion:v8];
+  completionCopy = completion;
+  deviceCopy = device;
+  conversationCopy = conversation;
+  xpcClient = [(TUNeighborhoodActivityConduit *)self xpcClient];
+  [xpcClient handoffConversation:conversationCopy toTVDevice:deviceCopy completion:completionCopy];
 }
 
-- (void)pullConversation:(id)a3 fromTVDevice:(id)a4 completion:(id)a5
+- (void)pullConversation:(id)conversation fromTVDevice:(id)device completion:(id)completion
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(TUNeighborhoodActivityConduit *)self _findConversationForUUID:v12];
+  conversationCopy = conversation;
+  deviceCopy = device;
+  completionCopy = completion;
+  v10 = [(TUNeighborhoodActivityConduit *)self _findConversationForUUID:conversationCopy];
   if (v10 && [(TUNeighborhoodActivityConduit *)self canPullBackConversation:v10])
   {
-    v11 = [(TUNeighborhoodActivityConduit *)self xpcClient];
-    [v11 pullConversation:v12 fromTVDevice:v8 completion:v9];
+    xpcClient = [(TUNeighborhoodActivityConduit *)self xpcClient];
+    [xpcClient pullConversation:conversationCopy fromTVDevice:deviceCopy completion:completionCopy];
   }
 
   else
   {
-    v11 = TUMakeNeighborhoodConduitError(11, 0);
-    v9[2](v9, 0, v11);
+    xpcClient = TUMakeNeighborhoodConduitError(11, 0);
+    completionCopy[2](completionCopy, 0, xpcClient);
   }
 }
 
-- (void)startConversationWith:(id)a3 on:(id)a4 completion:(id)a5
+- (void)startConversationWith:(id)with on:(id)on completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(TUNeighborhoodActivityConduit *)self xpcClient];
-  [v11 startConversationWith:v10 on:v9 completion:v8];
+  completionCopy = completion;
+  onCopy = on;
+  withCopy = with;
+  xpcClient = [(TUNeighborhoodActivityConduit *)self xpcClient];
+  [xpcClient startConversationWith:withCopy on:onCopy completion:completionCopy];
 }
 
-- (void)connectionEstablishedForClient:(id)a3
+- (void)connectionEstablishedForClient:(id)client
 {
   v4 = TUConduitLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -950,9 +950,9 @@ LABEL_12:
   [(TUNeighborhoodActivityConduit *)self _requestInitialState];
 }
 
-- (void)connectionLostForClient:(id)a3
+- (void)connectionLostForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v5 = TUConduitLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -960,14 +960,14 @@ LABEL_12:
   }
 
   self->_isRingingFaceTimeCallsOnConnectedTVDevice = 0;
-  v6 = [MEMORY[0x1E698E740] processHandle];
-  v7 = [v6 hasEntitlement:@"com.apple.NeighborhoodActivityConduitService"];
+  processHandle = [MEMORY[0x1E698E740] processHandle];
+  v7 = [processHandle hasEntitlement:@"com.apple.NeighborhoodActivityConduitService"];
 
   if (v7)
   {
     if ([(TUNeighborhoodActivityConduit *)self _shouldReconnect])
     {
-      [v4 ensureConnection];
+      [clientCopy ensureConnection];
     }
 
     else
@@ -981,23 +981,23 @@ LABEL_12:
   }
 }
 
-- (void)tvDeviceAppeared:(id)a3
+- (void)tvDeviceAppeared:(id)appeared
 {
-  v4 = a3;
-  v5 = [(TUNeighborhoodActivityConduit *)self nearbyTVs];
+  appearedCopy = appeared;
+  nearbyTVs = [(TUNeighborhoodActivityConduit *)self nearbyTVs];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __50__TUNeighborhoodActivityConduit_tvDeviceAppeared___block_invoke;
   v13[3] = &unk_1E7425AD0;
-  v6 = v4;
+  v6 = appearedCopy;
   v14 = v6;
-  v7 = [v5 bs_filter:v13];
+  v7 = [nearbyTVs bs_filter:v13];
 
-  v8 = [(TUNeighborhoodActivityConduit *)self nearbyTVs];
-  [v8 minusSet:v7];
+  nearbyTVs2 = [(TUNeighborhoodActivityConduit *)self nearbyTVs];
+  [nearbyTVs2 minusSet:v7];
 
-  v9 = [(TUNeighborhoodActivityConduit *)self nearbyTVs];
-  [v9 addObject:v6];
+  nearbyTVs3 = [(TUNeighborhoodActivityConduit *)self nearbyTVs];
+  [nearbyTVs3 addObject:v6];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -1009,20 +1009,20 @@ LABEL_12:
   [(TUNeighborhoodActivityConduit *)self _forEachDelegate:v11];
 }
 
-- (void)tvDeviceDisappeared:(id)a3
+- (void)tvDeviceDisappeared:(id)disappeared
 {
-  v4 = a3;
-  v5 = [(TUNeighborhoodActivityConduit *)self nearbyTVs];
+  disappearedCopy = disappeared;
+  nearbyTVs = [(TUNeighborhoodActivityConduit *)self nearbyTVs];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __53__TUNeighborhoodActivityConduit_tvDeviceDisappeared___block_invoke;
   v12[3] = &unk_1E7425AD0;
-  v6 = v4;
+  v6 = disappearedCopy;
   v13 = v6;
-  v7 = [v5 bs_filter:v12];
+  v7 = [nearbyTVs bs_filter:v12];
 
-  v8 = [(TUNeighborhoodActivityConduit *)self nearbyTVs];
-  [v8 minusSet:v7];
+  nearbyTVs2 = [(TUNeighborhoodActivityConduit *)self nearbyTVs];
+  [nearbyTVs2 minusSet:v7];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -1036,13 +1036,13 @@ LABEL_12:
 
 - (void)splitSessionUpdated
 {
-  v3 = [(TUNeighborhoodActivityConduit *)self xpcClient];
+  xpcClient = [(TUNeighborhoodActivityConduit *)self xpcClient];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __52__TUNeighborhoodActivityConduit_splitSessionUpdated__block_invoke;
   v4[3] = &unk_1E7425A58;
   v4[4] = self;
-  [v3 activeSplitSessionTVDeviceWithCompletion:v4];
+  [xpcClient activeSplitSessionTVDeviceWithCompletion:v4];
 }
 
 void __52__TUNeighborhoodActivityConduit_splitSessionUpdated__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1063,45 +1063,45 @@ void __52__TUNeighborhoodActivityConduit_splitSessionUpdated__block_invoke(uint6
   }
 }
 
-- (void)splitSessionUpdated:(id)a3
+- (void)splitSessionUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [(TUNeighborhoodActivityConduit *)self activeSplitSessionTV];
-  [(TUNeighborhoodActivityConduit *)self setActiveSplitSessionTV:v4];
-  if (v5 && ([v5 isEqual:v4] & 1) == 0)
+  updatedCopy = updated;
+  activeSplitSessionTV = [(TUNeighborhoodActivityConduit *)self activeSplitSessionTV];
+  [(TUNeighborhoodActivityConduit *)self setActiveSplitSessionTV:updatedCopy];
+  if (activeSplitSessionTV && ([activeSplitSessionTV isEqual:updatedCopy] & 1) == 0)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __53__TUNeighborhoodActivityConduit_splitSessionUpdated___block_invoke;
     v8[3] = &unk_1E7425A30;
     v8[4] = self;
-    v9 = v5;
+    v9 = activeSplitSessionTV;
     [(TUNeighborhoodActivityConduit *)self _forEachDelegate:v8];
   }
 
-  if (v4)
+  if (updatedCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __53__TUNeighborhoodActivityConduit_splitSessionUpdated___block_invoke_2;
     v6[3] = &unk_1E7425A30;
     v6[4] = self;
-    v7 = v4;
+    v7 = updatedCopy;
     [(TUNeighborhoodActivityConduit *)self _forEachDelegate:v6];
   }
 }
 
-- (void)suggestionUpdated:(id)a3
+- (void)suggestionUpdated:(id)updated
 {
-  v4 = a3;
-  [(TUNeighborhoodActivityConduit *)self setSuggestion:v4];
+  updatedCopy = updated;
+  [(TUNeighborhoodActivityConduit *)self setSuggestion:updatedCopy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__TUNeighborhoodActivityConduit_suggestionUpdated___block_invoke;
   v6[3] = &unk_1E7425A30;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = updatedCopy;
+  v5 = updatedCopy;
   [(TUNeighborhoodActivityConduit *)self _forEachDelegate:v6];
 }
 
@@ -1114,14 +1114,14 @@ void __51__TUNeighborhoodActivityConduit_suggestionUpdated___block_invoke(uint64
   }
 }
 
-- (void)approveSplitSessionForConversation:(id)a3 device:(id)a4 pullContext:(int64_t)a5 completion:(id)a6
+- (void)approveSplitSessionForConversation:(id)conversation device:(id)device pullContext:(int64_t)context completion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(TUNeighborhoodActivityConduit *)self approvalDelegate];
-  if (!v13)
+  conversationCopy = conversation;
+  deviceCopy = device;
+  completionCopy = completion;
+  approvalDelegate = [(TUNeighborhoodActivityConduit *)self approvalDelegate];
+  if (!approvalDelegate)
   {
     v26 = TUConduitLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -1132,27 +1132,27 @@ void __51__TUNeighborhoodActivityConduit_suggestionUpdated___block_invoke(uint64
     v25 = 8;
 LABEL_19:
     v23 = TUMakeNeighborhoodConduitError(v25, 0);
-    v12[2](v12, 0, v23);
+    completionCopy[2](completionCopy, 0, v23);
     goto LABEL_20;
   }
 
-  v28 = a5;
-  v29 = v11;
+  contextCopy = context;
+  v29 = deviceCopy;
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v14 = [(TUNeighborhoodActivityConduit *)self conversationManager];
-  v15 = [v14 activeConversations];
+  conversationManager = [(TUNeighborhoodActivityConduit *)self conversationManager];
+  activeConversations = [conversationManager activeConversations];
 
-  v16 = [v15 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  v16 = [activeConversations countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (!v16)
   {
 LABEL_10:
 
 LABEL_13:
     v24 = TUConduitLog();
-    v11 = v29;
+    deviceCopy = v29;
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       [TUNeighborhoodActivityConduit approveSplitSessionForConversation:device:pullContext:completion:];
@@ -1170,12 +1170,12 @@ LABEL_4:
   {
     if (*v31 != v18)
     {
-      objc_enumerationMutation(v15);
+      objc_enumerationMutation(activeConversations);
     }
 
     v20 = *(*(&v30 + 1) + 8 * v19);
-    v21 = [v20 UUID];
-    v22 = [v21 isEqual:v10];
+    uUID = [v20 UUID];
+    v22 = [uUID isEqual:conversationCopy];
 
     if (v22)
     {
@@ -1184,7 +1184,7 @@ LABEL_4:
 
     if (v17 == ++v19)
     {
-      v17 = [v15 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v17 = [activeConversations countByEnumeratingWithState:&v30 objects:v34 count:16];
       if (v17)
       {
         goto LABEL_4;
@@ -1201,8 +1201,8 @@ LABEL_4:
     goto LABEL_13;
   }
 
-  v11 = v29;
-  [v13 approveSplitSessionForConversation:v23 requestedFromDevice:v29 pullContext:v28 completion:v12];
+  deviceCopy = v29;
+  [approvalDelegate approveSplitSessionForConversation:v23 requestedFromDevice:v29 pullContext:contextCopy completion:completionCopy];
 LABEL_20:
 
   v27 = *MEMORY[0x1E69E9840];
@@ -1210,41 +1210,41 @@ LABEL_20:
 
 - (void)cancelSplitSessionApproval
 {
-  v2 = [(TUNeighborhoodActivityConduit *)self approvalDelegate];
-  [v2 cancelSplitSessionApproval];
+  approvalDelegate = [(TUNeighborhoodActivityConduit *)self approvalDelegate];
+  [approvalDelegate cancelSplitSessionApproval];
 }
 
-- (void)ensureConduitInitialized:(id)a3
+- (void)ensureConduitInitialized:(id)initialized
 {
-  v4 = a3;
-  v5 = [(TUNeighborhoodActivityConduit *)self xpcClient];
-  [v5 ensureConduitInitialized:v4];
+  initializedCopy = initialized;
+  xpcClient = [(TUNeighborhoodActivityConduit *)self xpcClient];
+  [xpcClient ensureConduitInitialized:initializedCopy];
 }
 
 - (void)continuityCameraDidConnect
 {
-  v2 = [(TUNeighborhoodActivityConduit *)self xpcClient];
-  [v2 ensureConnection];
+  xpcClient = [(TUNeighborhoodActivityConduit *)self xpcClient];
+  [xpcClient ensureConnection];
 }
 
-- (void)callStatusChanged:(id)a3
+- (void)callStatusChanged:(id)changed
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changedCopy = changed;
   v5 = TUConduitLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = v4;
+    v9 = changedCopy;
     v10 = 1024;
-    v11 = [v4 status];
+    status = [changedCopy status];
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "TULifecycleController received call status change for call %@. Status: %d", &v8, 0x12u);
   }
 
-  if ([v4 status] - 4 <= 2)
+  if ([changedCopy status] - 4 <= 2)
   {
-    v6 = [(TUNeighborhoodActivityConduit *)self xpcClient];
-    [v6 ensureConnection];
+    xpcClient = [(TUNeighborhoodActivityConduit *)self xpcClient];
+    [xpcClient ensureConnection];
   }
 
   v7 = *MEMORY[0x1E69E9840];

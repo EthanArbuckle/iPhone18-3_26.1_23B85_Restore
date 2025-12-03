@@ -1,21 +1,21 @@
 @interface HMDNetworkActivityWrapper
 - (BOOL)isActivated;
-- (HMDNetworkActivityWrapper)initWithLabel:(unint64_t)a3;
+- (HMDNetworkActivityWrapper)initWithLabel:(unint64_t)label;
 - (HMDNetworkActivityWrapper)parent;
 - (NSSet)children;
-- (id)childActivityWithLabel:(unint64_t)a3 createIfNeeded:(BOOL)a4;
+- (id)childActivityWithLabel:(unint64_t)label createIfNeeded:(BOOL)needed;
 - (unint64_t)label;
 - (void)activate;
-- (void)completeWithSuccess:(BOOL)a3;
-- (void)setParent:(id)a3;
-- (void)submitMetrics:(id)a3 withName:(id)a4;
+- (void)completeWithSuccess:(BOOL)success;
+- (void)setParent:(id)parent;
+- (void)submitMetrics:(id)metrics withName:(id)name;
 @end
 
 @implementation HMDNetworkActivityWrapper
 
 - (unint64_t)label
 {
-  v2 = [(HMDNetworkActivityWrapper *)self activity];
+  activity = [(HMDNetworkActivityWrapper *)self activity];
   label = nw_activity_get_label();
 
   return label;
@@ -28,16 +28,16 @@
   return WeakRetained;
 }
 
-- (id)childActivityWithLabel:(unint64_t)a3 createIfNeeded:(BOOL)a4
+- (id)childActivityWithLabel:(unint64_t)label createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
+  neededCopy = needed;
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [(HMDNetworkActivityWrapper *)self mutableChildren];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  mutableChildren = [(HMDNetworkActivityWrapper *)self mutableChildren];
+  v8 = [mutableChildren countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -48,11 +48,11 @@
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(mutableChildren);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        if ([v12 label] == a3)
+        if ([v12 label] == label)
         {
           v13 = v12;
 
@@ -60,7 +60,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [mutableChildren countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v9)
       {
         continue;
@@ -70,9 +70,9 @@
     }
   }
 
-  if (v4)
+  if (neededCopy)
   {
-    v13 = [[HMDNetworkActivityWrapper alloc] initWithLabel:a3];
+    v13 = [[HMDNetworkActivityWrapper alloc] initWithLabel:label];
     [(HMDNetworkActivityWrapper *)v13 setParent:self];
   }
 
@@ -87,15 +87,15 @@ LABEL_13:
   return v13;
 }
 
-- (void)submitMetrics:(id)a3 withName:(id)a4
+- (void)submitMetrics:(id)metrics withName:(id)name
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  metricsCopy = metrics;
+  nameCopy = name;
   if (self->_completed)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -117,9 +117,9 @@ LABEL_13:
     v16[3] = &unk_2786866F8;
     v17 = v12;
     v13 = v12;
-    [v6 enumerateKeysAndObjectsUsingBlock:v16];
-    v14 = [(HMDNetworkActivityWrapper *)self activity];
-    [v7 UTF8String];
+    [metricsCopy enumerateKeysAndObjectsUsingBlock:v16];
+    activity = [(HMDNetworkActivityWrapper *)self activity];
+    [nameCopy UTF8String];
     nw_activity_submit_metrics();
   }
 
@@ -170,52 +170,52 @@ void __52__HMDNetworkActivityWrapper_submitMetrics_withName___block_invoke(uint6
   }
 }
 
-- (void)completeWithSuccess:(BOOL)a3
+- (void)completeWithSuccess:(BOOL)success
 {
   if (!self->_completed)
   {
     self->_completed = 1;
-    v4 = [(HMDNetworkActivityWrapper *)self activity];
+    activity = [(HMDNetworkActivityWrapper *)self activity];
     nw_activity_complete_with_reason();
   }
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  v4 = a3;
-  objc_storeWeak(&self->_parent, v4);
-  v5 = [(HMDNetworkActivityWrapper *)self activity];
-  v6 = [v4 activity];
+  parentCopy = parent;
+  objc_storeWeak(&self->_parent, parentCopy);
+  activity = [(HMDNetworkActivityWrapper *)self activity];
+  activity2 = [parentCopy activity];
   nw_activity_set_parent_activity();
 
-  v7 = [v4 mutableChildren];
+  mutableChildren = [parentCopy mutableChildren];
 
-  [v7 addObject:self];
+  [mutableChildren addObject:self];
 }
 
 - (void)activate
 {
-  v2 = [(HMDNetworkActivityWrapper *)self activity];
+  activity = [(HMDNetworkActivityWrapper *)self activity];
   nw_activity_activate();
 }
 
 - (NSSet)children
 {
-  v2 = [(HMDNetworkActivityWrapper *)self mutableChildren];
-  v3 = [v2 copy];
+  mutableChildren = [(HMDNetworkActivityWrapper *)self mutableChildren];
+  v3 = [mutableChildren copy];
 
   return v3;
 }
 
 - (BOOL)isActivated
 {
-  v2 = [(HMDNetworkActivityWrapper *)self activity];
+  activity = [(HMDNetworkActivityWrapper *)self activity];
   is_activated = nw_activity_is_activated();
 
   return is_activated;
 }
 
-- (HMDNetworkActivityWrapper)initWithLabel:(unint64_t)a3
+- (HMDNetworkActivityWrapper)initWithLabel:(unint64_t)label
 {
   v9.receiver = self;
   v9.super_class = HMDNetworkActivityWrapper;

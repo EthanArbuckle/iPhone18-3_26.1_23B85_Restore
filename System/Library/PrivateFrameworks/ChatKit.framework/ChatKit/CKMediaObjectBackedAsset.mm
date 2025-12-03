@@ -1,21 +1,21 @@
 @interface CKMediaObjectBackedAsset
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSpatialMedia;
-- (CGSize)_previewPxSize:(BOOL *)a3;
-- (CGSize)_transcoderGeneratedPxSize:(BOOL *)a3;
+- (CGSize)_previewPxSize:(BOOL *)size;
+- (CGSize)_transcoderGeneratedPxSize:(BOOL *)size;
 - (CKAggregateAcknowledgmentChatItem)acknowledgmentChatItem;
 - (CKMediaObject)mediaObject;
-- (CKMediaObjectBackedAsset)initWithChatItem:(id)a3;
+- (CKMediaObjectBackedAsset)initWithChatItem:(id)item;
 - (NSArray)visibleAssociatedMessageChatItems;
 - (NSDate)creationDate;
 - (double)aspectRatio;
 - (double)duration;
 - (id)_mediaObjectPreview;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)localCreationDate;
 - (id)url;
 - (id)uuid;
-- (int64_t)isContentEqualTo:(id)a3;
+- (int64_t)isContentEqualTo:(id)to;
 - (int64_t)mediaType;
 - (int64_t)playbackStyle;
 - (unint64_t)pixelHeight;
@@ -25,18 +25,18 @@
 
 @implementation CKMediaObjectBackedAsset
 
-- (CKMediaObjectBackedAsset)initWithChatItem:(id)a3
+- (CKMediaObjectBackedAsset)initWithChatItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = CKMediaObjectBackedAsset;
   v5 = [(CKMediaObjectBackedAsset *)&v9 initWithConfiguration:&__block_literal_global_251];
   v6 = v5;
   if (v5)
   {
-    [(CKMediaObjectBackedAsset *)v5 setChatItem:v4];
-    v7 = [v4 mediaObject];
-    [v7 isMonoskiAsset];
+    [(CKMediaObjectBackedAsset *)v5 setChatItem:itemCopy];
+    mediaObject = [itemCopy mediaObject];
+    [mediaObject isMonoskiAsset];
   }
 
   return v6;
@@ -44,19 +44,19 @@
 
 - (CKMediaObject)mediaObject
 {
-  v2 = [(CKMediaObjectBackedAsset *)self chatItem];
-  v3 = [v2 mediaObject];
+  chatItem = [(CKMediaObjectBackedAsset *)self chatItem];
+  mediaObject = [chatItem mediaObject];
 
-  return v3;
+  return mediaObject;
 }
 
 - (NSArray)visibleAssociatedMessageChatItems
 {
-  v2 = [(CKMediaObjectBackedAsset *)self chatItem];
-  v3 = [v2 IMChatItem];
-  v4 = [v3 visibleAssociatedMessageChatItems];
+  chatItem = [(CKMediaObjectBackedAsset *)self chatItem];
+  iMChatItem = [chatItem IMChatItem];
+  visibleAssociatedMessageChatItems = [iMChatItem visibleAssociatedMessageChatItems];
 
-  return v4;
+  return visibleAssociatedMessageChatItems;
 }
 
 - (CKAggregateAcknowledgmentChatItem)acknowledgmentChatItem
@@ -66,10 +66,10 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(CKMediaObjectBackedAsset *)self chatItem];
-  v3 = [v2 visibleAssociatedMessageChatItems];
+  chatItem = [(CKMediaObjectBackedAsset *)self chatItem];
+  visibleAssociatedMessageChatItems = [chatItem visibleAssociatedMessageChatItems];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [visibleAssociatedMessageChatItems countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -79,7 +79,7 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(visibleAssociatedMessageChatItems);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -92,7 +92,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [visibleAssociatedMessageChatItems countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -107,15 +107,15 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 mediaObject];
-    v6 = [(CKMediaObjectBackedAsset *)self mediaObject];
-    v7 = [v5 isEqual:v6];
+    mediaObject = [equalCopy mediaObject];
+    mediaObject2 = [(CKMediaObjectBackedAsset *)self mediaObject];
+    v7 = [mediaObject isEqual:mediaObject2];
   }
 
   else
@@ -128,31 +128,31 @@ LABEL_11:
 
 - (int64_t)mediaType
 {
-  v2 = [(CKMediaObjectBackedAsset *)self mediaObject];
-  v3 = [v2 mediaType];
+  mediaObject = [(CKMediaObjectBackedAsset *)self mediaObject];
+  mediaType = [mediaObject mediaType];
 
-  if (v3 == 3)
+  if (mediaType == 3)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (v3 == 2);
+    return 2 * (mediaType == 2);
   }
 }
 
 - (int64_t)playbackStyle
 {
-  v3 = [(CKMediaObjectBackedAsset *)self mediaObject];
+  mediaObject = [(CKMediaObjectBackedAsset *)self mediaObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v5 = [(CKMediaObjectBackedAsset *)self mediaObject];
-  v6 = v5;
+  mediaObject2 = [(CKMediaObjectBackedAsset *)self mediaObject];
+  mediaObject3 = mediaObject2;
   if (isKindOfClass)
   {
-    if ([v5 isIrisAsset])
+    if ([mediaObject2 isIrisAsset])
     {
       v7 = 3;
     }
@@ -173,8 +173,8 @@ LABEL_11:
       return 0;
     }
 
-    v6 = [(CKMediaObjectBackedAsset *)self mediaObject];
-    if ([v6 isAutoloopVideo])
+    mediaObject3 = [(CKMediaObjectBackedAsset *)self mediaObject];
+    if ([mediaObject3 isAutoloopVideo])
     {
       v7 = 5;
     }
@@ -190,34 +190,34 @@ LABEL_11:
 
 - (BOOL)isSpatialMedia
 {
-  v2 = [(CKMediaObjectBackedAsset *)self mediaObject];
-  v3 = [v2 isMonoskiAsset];
+  mediaObject = [(CKMediaObjectBackedAsset *)self mediaObject];
+  isMonoskiAsset = [mediaObject isMonoskiAsset];
 
-  return v3;
+  return isMonoskiAsset;
 }
 
 - (id)url
 {
-  v2 = [(CKMediaObjectBackedAsset *)self mediaObject];
-  v3 = [v2 fileURL];
+  mediaObject = [(CKMediaObjectBackedAsset *)self mediaObject];
+  fileURL = [mediaObject fileURL];
 
-  return v3;
+  return fileURL;
 }
 
 - (NSDate)creationDate
 {
-  v2 = [(CKMediaObjectBackedAsset *)self mediaObject];
-  v3 = [v2 time];
+  mediaObject = [(CKMediaObjectBackedAsset *)self mediaObject];
+  time = [mediaObject time];
 
-  return v3;
+  return time;
 }
 
 - (id)localCreationDate
 {
-  v2 = [(CKMediaObjectBackedAsset *)self mediaObject];
-  v3 = [v2 time];
+  mediaObject = [(CKMediaObjectBackedAsset *)self mediaObject];
+  time = [mediaObject time];
 
-  return v3;
+  return time;
 }
 
 - (unint64_t)pixelWidth
@@ -266,8 +266,8 @@ LABEL_11:
 {
   if ([(CKMediaObjectBackedAsset *)self pixelHeight])
   {
-    v3 = [(CKMediaObjectBackedAsset *)self pixelWidth];
-    return v3 / [(CKMediaObjectBackedAsset *)self pixelHeight];
+    pixelWidth = [(CKMediaObjectBackedAsset *)self pixelWidth];
+    return pixelWidth / [(CKMediaObjectBackedAsset *)self pixelHeight];
   }
 
   else
@@ -284,28 +284,28 @@ LABEL_11:
 
 - (id)uuid
 {
-  v3 = [(CKMediaObjectBackedAsset *)self mediaObject];
-  v4 = [v3 transfer];
-  v5 = [v4 attributionInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x1E69A6FC0]];
+  mediaObject = [(CKMediaObjectBackedAsset *)self mediaObject];
+  transfer = [mediaObject transfer];
+  attributionInfo = [transfer attributionInfo];
+  v6 = [attributionInfo objectForKey:*MEMORY[0x1E69A6FC0]];
 
   if (v6)
   {
-    v7 = v6;
+    transferGUID = v6;
   }
 
   else
   {
-    v8 = [(CKMediaObjectBackedAsset *)self mediaObject];
-    v7 = [v8 transferGUID];
+    mediaObject2 = [(CKMediaObjectBackedAsset *)self mediaObject];
+    transferGUID = [mediaObject2 transferGUID];
   }
 
-  return v7;
+  return transferGUID;
 }
 
 - (double)duration
 {
-  v3 = [(CKMediaObjectBackedAsset *)self mediaObject];
+  mediaObject = [(CKMediaObjectBackedAsset *)self mediaObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -314,20 +314,20 @@ LABEL_11:
     return 0.0;
   }
 
-  v5 = [(CKMediaObjectBackedAsset *)self mediaObject];
-  [v5 duration];
+  mediaObject2 = [(CKMediaObjectBackedAsset *)self mediaObject];
+  [mediaObject2 duration];
   v7 = v6;
 
   return v7;
 }
 
-- (int64_t)isContentEqualTo:(id)a3
+- (int64_t)isContentEqualTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([(CKMediaObjectBackedAsset *)self isEqual:v4])
+    if ([(CKMediaObjectBackedAsset *)self isEqual:toCopy])
     {
       v5 = 2;
     }
@@ -346,23 +346,23 @@ LABEL_11:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CKMediaObjectBackedAsset alloc];
-  v5 = [(CKMediaObjectBackedAsset *)self chatItem];
-  v6 = [(CKMediaObjectBackedAsset *)v4 initWithChatItem:v5];
+  chatItem = [(CKMediaObjectBackedAsset *)self chatItem];
+  v6 = [(CKMediaObjectBackedAsset *)v4 initWithChatItem:chatItem];
 
   return v6;
 }
 
-- (CGSize)_transcoderGeneratedPxSize:(BOOL *)a3
+- (CGSize)_transcoderGeneratedPxSize:(BOOL *)size
 {
   [(CKMediaObjectBackedAsset *)self _clientPreviewConstraints];
-  v5 = [(CKMediaObjectBackedAsset *)self mediaObject];
-  v6 = v5;
-  if (v5)
+  mediaObject = [(CKMediaObjectBackedAsset *)self mediaObject];
+  v6 = mediaObject;
+  if (mediaObject)
   {
-    [v5 transcodingPreviewConstraints];
+    [mediaObject transcodingPreviewConstraints];
   }
 
   if (IMPreviewConstraintsEqualToConstraints())
@@ -372,7 +372,7 @@ LABEL_11:
     v9 = v8;
     v11 = v10;
 
-    if (a3)
+    if (size)
     {
       v12 = v9 != *MEMORY[0x1E695F060];
       if (v11 != *(MEMORY[0x1E695F060] + 8))
@@ -380,15 +380,15 @@ LABEL_11:
         v12 = 1;
       }
 
-      *a3 = v12;
+      *size = v12;
     }
   }
 
   else
   {
-    if (a3)
+    if (size)
     {
-      *a3 = 0;
+      *size = 0;
     }
 
     v9 = *MEMORY[0x1E695F060];
@@ -402,18 +402,18 @@ LABEL_11:
   return result;
 }
 
-- (CGSize)_previewPxSize:(BOOL *)a3
+- (CGSize)_previewPxSize:(BOOL *)size
 {
-  v5 = [(CKMediaObjectBackedAsset *)self _mediaObjectPreview];
-  if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  _mediaObjectPreview = [(CKMediaObjectBackedAsset *)self _mediaObjectPreview];
+  if (_mediaObjectPreview && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    if (a3)
+    if (size)
     {
-      *a3 = 1;
+      *size = 1;
     }
 
     v20 = 0u;
-    v6 = v5;
+    v6 = _mediaObjectPreview;
     v7 = [(CKMediaObjectBackedAsset *)self mediaObject:0];
     v8 = v7;
     if (v7)
@@ -430,8 +430,8 @@ LABEL_11:
     v11 = *(&v20 + 1);
     if (*(&v20 + 1) <= 0.0)
     {
-      v12 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v12 scale];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen scale];
       v11 = v13;
     }
 
@@ -445,9 +445,9 @@ LABEL_11:
 
   else
   {
-    if (a3)
+    if (size)
     {
-      *a3 = 0;
+      *size = 0;
     }
 
     v10 = *MEMORY[0x1E695F060];
@@ -463,10 +463,10 @@ LABEL_11:
 
 - (id)_mediaObjectPreview
 {
-  v2 = [(CKMediaObjectBackedAsset *)self mediaObject];
+  mediaObject = [(CKMediaObjectBackedAsset *)self mediaObject];
   v3 = +[CKUIBehavior sharedBehaviors];
   [v3 previewMaxWidth];
-  v4 = [v2 previewForWidth:0 orientation:?];
+  v4 = [mediaObject previewForWidth:0 orientation:?];
 
   return v4;
 }

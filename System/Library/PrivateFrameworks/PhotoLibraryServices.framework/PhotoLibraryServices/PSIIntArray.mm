@@ -1,10 +1,10 @@
 @interface PSIIntArray
-- (PSIIntArray)initWithLabel:(id)a3 database:(sqlite3 *)a4;
-- (void)_prepareForNumberOfElements:(unint64_t)a3;
+- (PSIIntArray)initWithLabel:(id)label database:(sqlite3 *)database;
+- (void)_prepareForNumberOfElements:(unint64_t)elements;
 - (void)_unprepare;
-- (void)bindElements:(__CFArray *)a3 range:(_NSRange)a4;
-- (void)bindElements:(__CFSet *)a3;
-- (void)bindElements:(const int64_t *)a3 numberOfElements:(unint64_t)a4;
+- (void)bindElements:(__CFArray *)elements range:(_NSRange)range;
+- (void)bindElements:(__CFSet *)elements;
+- (void)bindElements:(const int64_t *)elements numberOfElements:(unint64_t)ofElements;
 - (void)dealloc;
 - (void)unbind;
 @end
@@ -32,7 +32,7 @@
   }
 }
 
-- (void)bindElements:(const int64_t *)a3 numberOfElements:(unint64_t)a4
+- (void)bindElements:(const int64_t *)elements numberOfElements:(unint64_t)ofElements
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = sqlite3_intarray_bind();
@@ -48,15 +48,15 @@
   }
 }
 
-- (void)bindElements:(__CFArray *)a3 range:(_NSRange)a4
+- (void)bindElements:(__CFArray *)elements range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v11 = *MEMORY[0x1E69E9840];
-  [(PSIIntArray *)self _prepareForNumberOfElements:a4.length];
+  [(PSIIntArray *)self _prepareForNumberOfElements:range.length];
   v12.location = location;
   v12.length = length;
-  CFArrayGetValues(a3, v12, self->_elementBuffer);
+  CFArrayGetValues(elements, v12, self->_elementBuffer);
   v8 = sqlite3_intarray_bind();
   if (v8)
   {
@@ -70,11 +70,11 @@
   }
 }
 
-- (void)bindElements:(__CFSet *)a3
+- (void)bindElements:(__CFSet *)elements
 {
   v8 = *MEMORY[0x1E69E9840];
-  [(PSIIntArray *)self _prepareForNumberOfElements:CFSetGetCount(a3)];
-  CFSetGetValues(a3, self->_elementBuffer);
+  [(PSIIntArray *)self _prepareForNumberOfElements:CFSetGetCount(elements)];
+  CFSetGetValues(elements, self->_elementBuffer);
   v5 = sqlite3_intarray_bind();
   if (v5)
   {
@@ -113,9 +113,9 @@
   *(p_elementBuffer + 16) = 0;
 }
 
-- (void)_prepareForNumberOfElements:(unint64_t)a3
+- (void)_prepareForNumberOfElements:(unint64_t)elements
 {
-  v4 = 8 * a3;
+  v4 = 8 * elements;
   elementBuffer = self->_elementBuffer;
   if (elementBuffer)
   {
@@ -126,7 +126,7 @@
 
     if (elementBuffer != self->_staticElementBuffer)
     {
-      v6 = malloc_type_realloc(elementBuffer, 8 * a3, 0xBF781ADCuLL);
+      v6 = malloc_type_realloc(elementBuffer, 8 * elements, 0xBF781ADCuLL);
 LABEL_7:
       self->_elementBuffer = v6;
       self->_elementBufferSize = v4;
@@ -134,7 +134,7 @@ LABEL_7:
     }
 
 LABEL_6:
-    v6 = malloc_type_malloc(8 * a3, 0x100004000313F17uLL);
+    v6 = malloc_type_malloc(8 * elements, 0x100004000313F17uLL);
     goto LABEL_7;
   }
 
@@ -166,16 +166,16 @@ LABEL_6:
   [(PSIIntArray *)&v3 dealloc];
 }
 
-- (PSIIntArray)initWithLabel:(id)a3 database:(sqlite3 *)a4
+- (PSIIntArray)initWithLabel:(id)label database:(sqlite3 *)database
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  labelCopy = label;
   v10.receiver = self;
   v10.super_class = PSIIntArray;
   v6 = [(PSIIntArray *)&v10 init];
   if (v6)
   {
-    [v5 UTF8String];
+    [labelCopy UTF8String];
     v7 = sqlite3_intarray_create();
     if (v7)
     {

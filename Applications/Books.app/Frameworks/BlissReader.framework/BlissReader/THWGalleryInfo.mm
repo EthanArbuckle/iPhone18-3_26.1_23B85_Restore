@@ -1,24 +1,24 @@
 @interface THWGalleryInfo
 - (CGPoint)captionPosition;
 - (NSString)titleString;
-- (THWGalleryInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 stageGeometry:(id)a6;
+- (THWGalleryInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style stageGeometry:(id)stageGeometry;
 - (id)childEnumerator;
-- (id)itemAtIndex:(unint64_t)a3;
-- (void)addItem:(id)a3;
+- (id)itemAtIndex:(unint64_t)index;
+- (void)addItem:(id)item;
 - (void)dealloc;
 @end
 
 @implementation THWGalleryInfo
 
-- (THWGalleryInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 stageGeometry:(id)a6
+- (THWGalleryInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style stageGeometry:(id)stageGeometry
 {
   v10.receiver = self;
   v10.super_class = THWGalleryInfo;
-  v8 = [(THWGalleryInfo *)&v10 initWithContext:a3 geometry:a4];
+  v8 = [(THWGalleryInfo *)&v10 initWithContext:context geometry:geometry];
   if (v8)
   {
-    v8->_style = a5;
-    v8->_stageGeometry = a6;
+    v8->_style = style;
+    v8->_stageGeometry = stageGeometry;
   }
 
   return v8;
@@ -31,9 +31,9 @@
   [(THWGalleryInfo *)&v3 dealloc];
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  if (a3)
+  if (item)
   {
     items = self->_items;
     if (!items)
@@ -42,19 +42,19 @@
       self->_items = items;
     }
 
-    [(NSMutableArray *)items addObject:a3];
-    [objc_msgSend(a3 "imageInfo")];
-    v6 = [a3 captionStorage];
+    [(NSMutableArray *)items addObject:item];
+    [objc_msgSend(item "imageInfo")];
+    captionStorage = [item captionStorage];
 
-    [v6 setParentInfo:self];
+    [captionStorage setParentInfo:self];
   }
 }
 
 - (CGPoint)captionPosition
 {
-  v2 = [(TSWPShapeInfo *)[(THWWidgetAdornmentInfo *)[(THWGalleryInfo *)self adornmentInfo] caption] geometry];
+  geometry = [(TSWPShapeInfo *)[(THWWidgetAdornmentInfo *)[(THWGalleryInfo *)self adornmentInfo] caption] geometry];
 
-  [v2 position];
+  [geometry position];
   result.y = v4;
   result.x = v3;
   return result;
@@ -62,21 +62,21 @@
 
 - (NSString)titleString
 {
-  v2 = [(THWWidgetAdornmentInfo *)[(THWGalleryInfo *)self adornmentInfo] titleStorage];
+  titleStorage = [(THWWidgetAdornmentInfo *)[(THWGalleryInfo *)self adornmentInfo] titleStorage];
 
-  return [(TSWPStorage *)v2 string];
+  return [(TSWPStorage *)titleStorage string];
 }
 
-- (id)itemAtIndex:(unint64_t)a3
+- (id)itemAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_items count]<= a3)
+  if ([(NSMutableArray *)self->_items count]<= index)
   {
     return 0;
   }
 
   items = self->_items;
 
-  return [(NSMutableArray *)items objectAtIndex:a3];
+  return [(NSMutableArray *)items objectAtIndex:index];
 }
 
 - (id)childEnumerator

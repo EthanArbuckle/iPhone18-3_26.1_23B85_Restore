@@ -1,8 +1,8 @@
 @interface CTBundle
-- (CTBundle)initWithBundleType:(int64_t)a3;
-- (CTBundle)initWithCoder:(id)a3;
+- (CTBundle)initWithBundleType:(int64_t)type;
+- (CTBundle)initWithCoder:(id)coder;
 - (NSString)ct_shortDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -11,18 +11,18 @@
 - (NSString)ct_shortDescription
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(CTBundle *)self ct_shortName];
-  v5 = [v3 stringWithFormat:@"<%@", v4];
+  ct_shortName = [(CTBundle *)self ct_shortName];
+  v5 = [v3 stringWithFormat:@"<%@", ct_shortName];
 
-  v6 = [(CTBundle *)self type];
-  if ((v6 - 1) > 5)
+  type = [(CTBundle *)self type];
+  if ((type - 1) > 5)
   {
     v7 = "u";
   }
 
   else
   {
-    v7 = off_1E6A48548[v6 - 1];
+    v7 = off_1E6A48548[type - 1];
   }
 
   [v5 appendFormat:@" type=%s", v7];
@@ -31,14 +31,14 @@
   return v5;
 }
 
-- (CTBundle)initWithBundleType:(int64_t)a3
+- (CTBundle)initWithBundleType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = CTBundle;
   result = [(CTBundle *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
@@ -47,15 +47,15 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTBundle *)self type];
-  if ((v4 - 1) > 5)
+  type = [(CTBundle *)self type];
+  if ((type - 1) > 5)
   {
     v5 = "CTBundleTypeUnknown";
   }
 
   else
   {
-    v5 = off_1E6A48518[v4 - 1];
+    v5 = off_1E6A48518[type - 1];
   }
 
   [v3 appendFormat:@" Bundle Type=%s", v5];
@@ -64,18 +64,18 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(CTBundle *)self type];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  type = [(CTBundle *)self type];
 
-  return [v4 initWithBundleType:v5];
+  return [v4 initWithBundleType:type];
 }
 
-- (CTBundle)initWithCoder:(id)a3
+- (CTBundle)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = -[CTBundle initWithBundleType:](self, "initWithBundleType:", [v4 decodeIntegerForKey:@"bundletype"]);
+  coderCopy = coder;
+  v5 = -[CTBundle initWithBundleType:](self, "initWithBundleType:", [coderCopy decodeIntegerForKey:@"bundletype"]);
 
   return v5;
 }

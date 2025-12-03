@@ -1,11 +1,11 @@
 @interface LegacyInlineTranslationTabErrorView
-- (_TtC17SequoiaTranslator35LegacyInlineTranslationTabErrorView)initWithCoder:(id)a3;
+- (_TtC17SequoiaTranslator35LegacyInlineTranslationTabErrorView)initWithCoder:(id)coder;
 - (void)onDeviceLinkTapped;
 @end
 
 @implementation LegacyInlineTranslationTabErrorView
 
-- (_TtC17SequoiaTranslator35LegacyInlineTranslationTabErrorView)initWithCoder:(id)a3
+- (_TtC17SequoiaTranslator35LegacyInlineTranslationTabErrorView)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC17SequoiaTranslator35LegacyInlineTranslationTabErrorView_errorType;
   *v3 = 0;
@@ -25,7 +25,7 @@
     v4 = *(v3 + 1);
     ObjectType = swift_getObjectType();
     v6 = *(v4 + 8);
-    v7 = self;
+    selfCopy = self;
     v6(ObjectType, v4);
     swift_unknownObjectRelease();
   }

@@ -1,40 +1,40 @@
 @interface PKHoverController
 - ($FF38E1E694A259ECA75E65D4243A6BF6)currentInputPoint;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (BOOL)isInEdgeOfScreen:(_BOOL8)result;
 - (BOOL)isInExteriorOfScreen:(_BOOL8)result;
-- (double)adjustedZLimitFromLimit:(double)a3 inputPoint:;
+- (double)adjustedZLimitFromLimit:(double)limit inputPoint:;
 - (double)currentMovementSpeed;
-- (double)distanceFromEdgeOfScreen:(void *)a3 view:;
-- (double)inputPointFilter:(id)a3 distanceToEdge:(id *)a4;
+- (double)distanceFromEdgeOfScreen:(void *)screen view:;
+- (double)inputPointFilter:(id)filter distanceToEdge:(id *)edge;
 - (id).cxx_construct;
 - (id)hoverDebugLayerColor;
 - (id)hoverGestureRecognizer;
-- (id)initWithDelegate:(void *)a3 view:;
+- (id)initWithDelegate:(void *)delegate view:;
 - (void)_endIntentionalHoverTracking;
-- (void)_handleHoverInputPoint:(id *)a3;
-- (void)_hoverGesture:(id)a3;
-- (void)_sendDidUpdateNow:(id *)a3;
-- (void)_setupHoverGestureRecognizerInView:(id)a3;
-- (void)_setupPredictorForNewPoint:(BOOL)a3;
-- (void)_trackIntentionalHover:(id *)a3;
+- (void)_handleHoverInputPoint:(id *)point;
+- (void)_hoverGesture:(id)gesture;
+- (void)_sendDidUpdateNow:(id *)now;
+- (void)_setupHoverGestureRecognizerInView:(id)view;
+- (void)_setupPredictorForNewPoint:(BOOL)point;
+- (void)_trackIntentionalHover:(id *)hover;
 - (void)_triggerHoldGestureIfNecessary;
 - (void)_updateInputPointFilters;
-- (void)alphaFactorFromMovementSpeed:(uint64_t)a1;
+- (void)alphaFactorFromMovementSpeed:(uint64_t)speed;
 - (void)checkDidLiftAfterGestureEnd;
 - (void)dealloc;
-- (void)didReceiveNormalTouch:(uint64_t)a1;
+- (void)didReceiveNormalTouch:(uint64_t)touch;
 - (void)hideLabel;
-- (void)logInputPoint:(id *)a3;
+- (void)logInputPoint:(id *)point;
 - (void)pauseDisplayLink;
 - (void)reset;
 - (void)resetHoverHold;
-- (void)setShouldGenerate120HzEvents:(uint64_t)a1;
-- (void)showAttributedLabel:(double)a3 atLocation:(double)a4;
-- (void)showLabel:(double)a3 atLocation:(double)a4;
+- (void)setShouldGenerate120HzEvents:(uint64_t)events;
+- (void)showAttributedLabel:(double)label atLocation:(double)location;
+- (void)showLabel:(double)label atLocation:(double)location;
 - (void)startDisplayLink;
-- (void)updateCurrentInputPointWithInputPoint:(id *)a3;
-- (void)updateShapeLayer:(double *)a3 inputPoint:;
+- (void)updateCurrentInputPointWithInputPoint:(id *)point;
+- (void)updateShapeLayer:(double *)layer inputPoint:;
 - (void)vsync;
 @end
 
@@ -42,18 +42,18 @@
 
 - (id)hoverDebugLayerColor
 {
-  if (a1)
+  if (self)
   {
     if (qword_1ED6A5160 != -1)
     {
       dispatch_once(&qword_1ED6A5160, &__block_literal_global_48);
     }
 
-    a1 = _MergedGlobals_143;
+    self = _MergedGlobals_143;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 void __41__PKHoverController_hoverDebugLayerColor__block_invoke()
@@ -66,11 +66,11 @@ void __41__PKHoverController_hoverDebugLayerColor__block_invoke()
 
 - ($FF38E1E694A259ECA75E65D4243A6BF6)currentInputPoint
 {
-  v4 = [*&self->_intentionalHoverStartTimestamp lastObject];
-  v6 = v4;
-  if (v4)
+  lastObject = [*&self->_intentionalHoverStartTimestamp lastObject];
+  v6 = lastObject;
+  if (lastObject)
   {
-    [v4 currentFilteredPoint];
+    [lastObject currentFilteredPoint];
   }
 
   else
@@ -89,7 +89,7 @@ void __41__PKHoverController_hoverDebugLayerColor__block_invoke()
   return result;
 }
 
-- (void)updateCurrentInputPointWithInputPoint:(id *)a3
+- (void)updateCurrentInputPointWithInputPoint:(id *)point
 {
   v32 = *MEMORY[0x1E69E9840];
   v27 = 0u;
@@ -112,18 +112,18 @@ void __41__PKHoverController_hoverDebugLayerColor__block_invoke()
         }
 
         v9 = *(*(&v27 + 1) + 8 * v8);
-        v10 = *&a3->var13;
-        v24 = *&a3->var11;
+        v10 = *&point->var13;
+        v24 = *&point->var11;
         v25 = v10;
-        var15 = a3->var15;
-        v11 = *&a3->var5;
-        v20 = *&a3->var3;
+        var15 = point->var15;
+        v11 = *&point->var5;
+        v20 = *&point->var3;
         v21 = v11;
-        v12 = *&a3->var9;
-        v22 = *&a3->var7;
+        v12 = *&point->var9;
+        v22 = *&point->var7;
         v23 = v12;
-        v13 = *&a3->var1;
-        var0 = a3->var0;
+        v13 = *&point->var1;
+        var0 = point->var0;
         v19 = v13;
         [v9 addInputPoint:&var0];
         if (v9)
@@ -145,19 +145,19 @@ void __41__PKHoverController_hoverDebugLayerColor__block_invoke()
         }
 
         v14 = v25;
-        *&a3->var11 = v24;
-        *&a3->var13 = v14;
-        a3->var15 = var15;
+        *&point->var11 = v24;
+        *&point->var13 = v14;
+        point->var15 = var15;
         v15 = v21;
-        *&a3->var3 = v20;
-        *&a3->var5 = v15;
+        *&point->var3 = v20;
+        *&point->var5 = v15;
         v16 = v23;
-        *&a3->var7 = v22;
-        *&a3->var9 = v16;
+        *&point->var7 = v22;
+        *&point->var9 = v16;
         v17 = v19;
         ++v8;
-        a3->var0 = var0;
-        *&a3->var1 = v17;
+        point->var0 = var0;
+        *&point->var1 = v17;
       }
 
       while (v6 != v8);
@@ -170,27 +170,27 @@ void __41__PKHoverController_hoverDebugLayerColor__block_invoke()
   ++self->_gestureRecognizer;
 }
 
-- (id)initWithDelegate:(void *)a3 view:
+- (id)initWithDelegate:(void *)delegate view:
 {
   v48[8] = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  delegateCopy = delegate;
+  if (self)
   {
-    v47.receiver = a1;
+    v47.receiver = self;
     v47.super_class = PKHoverController;
     v7 = objc_msgSendSuper2(&v47, sel_init);
     v8 = v7;
-    a1 = v7;
+    self = v7;
     if (v7)
     {
-      objc_storeWeak(v7 + 3, v6);
+      objc_storeWeak(v7 + 3, delegateCopy);
       objc_storeWeak(v8 + 55, v5);
-      *(a1 + 29) = vdupq_n_s64(0x7FF8000000000000uLL);
-      a1[31] = 0x7FF8000000000000;
-      *(a1 + 432) = 0;
-      a1[33] = 0;
-      *(a1 + 4) = a1[1] & 0xFFFE | objc_opt_respondsToSelector() & 1;
+      *(self + 29) = vdupq_n_s64(0x7FF8000000000000uLL);
+      self[31] = 0x7FF8000000000000;
+      *(self + 432) = 0;
+      self[33] = 0;
+      *(self + 4) = self[1] & 0xFFFE | objc_opt_respondsToSelector() & 1;
       if (objc_opt_respondsToSelector())
       {
         v9 = 4;
@@ -201,7 +201,7 @@ void __41__PKHoverController_hoverDebugLayerColor__block_invoke()
         v9 = 0;
       }
 
-      *(a1 + 4) = a1[1] & 0xFFFB | v9;
+      *(self + 4) = self[1] & 0xFFFB | v9;
       if (objc_opt_respondsToSelector())
       {
         v10 = 2;
@@ -212,7 +212,7 @@ void __41__PKHoverController_hoverDebugLayerColor__block_invoke()
         v10 = 0;
       }
 
-      *(a1 + 4) = a1[1] & 0xFFFD | v10;
+      *(self + 4) = self[1] & 0xFFFD | v10;
       if (objc_opt_respondsToSelector())
       {
         v11 = 8;
@@ -223,7 +223,7 @@ void __41__PKHoverController_hoverDebugLayerColor__block_invoke()
         v11 = 0;
       }
 
-      *(a1 + 4) = a1[1] & 0xFFF7 | v11;
+      *(self + 4) = self[1] & 0xFFF7 | v11;
       if (objc_opt_respondsToSelector())
       {
         v12 = 16;
@@ -234,7 +234,7 @@ void __41__PKHoverController_hoverDebugLayerColor__block_invoke()
         v12 = 0;
       }
 
-      *(a1 + 4) = a1[1] & 0xFFEF | v12;
+      *(self + 4) = self[1] & 0xFFEF | v12;
       if (objc_opt_respondsToSelector())
       {
         v13 = 32;
@@ -245,7 +245,7 @@ void __41__PKHoverController_hoverDebugLayerColor__block_invoke()
         v13 = 0;
       }
 
-      *(a1 + 4) = a1[1] & 0xFFDF | v13;
+      *(self + 4) = self[1] & 0xFFDF | v13;
       if (objc_opt_respondsToSelector())
       {
         v14 = 64;
@@ -256,7 +256,7 @@ void __41__PKHoverController_hoverDebugLayerColor__block_invoke()
         v14 = 0;
       }
 
-      *(a1 + 4) = a1[1] & 0xFFBF | v14;
+      *(self + 4) = self[1] & 0xFFBF | v14;
       if (objc_opt_respondsToSelector())
       {
         v15 = 128;
@@ -267,7 +267,7 @@ void __41__PKHoverController_hoverDebugLayerColor__block_invoke()
         v15 = 0;
       }
 
-      *(a1 + 4) = a1[1] & 0xFF7F | v15;
+      *(self + 4) = self[1] & 0xFF7F | v15;
       if (objc_opt_respondsToSelector())
       {
         v16 = 256;
@@ -278,7 +278,7 @@ void __41__PKHoverController_hoverDebugLayerColor__block_invoke()
         v16 = 0;
       }
 
-      *(a1 + 4) = a1[1] & 0xFEFF | v16;
+      *(self + 4) = self[1] & 0xFEFF | v16;
       if (objc_opt_respondsToSelector())
       {
         v17 = 512;
@@ -289,29 +289,29 @@ void __41__PKHoverController_hoverDebugLayerColor__block_invoke()
         v17 = 0;
       }
 
-      *(a1 + 4) = a1[1] & 0xFDFF | v17;
-      [a1 _setupHoverGestureRecognizerInView:v6];
+      *(self + 4) = self[1] & 0xFDFF | v17;
+      [self _setupHoverGestureRecognizerInView:delegateCopy];
       v18 = objc_alloc_init(PKInputPointAltitudeAndAzimuthNoiseFilter);
-      v19 = a1[38];
-      a1[38] = v18;
+      v19 = self[38];
+      self[38] = v18;
 
       v20 = objc_alloc_init(PKInputPointWeightedAverageFilter);
-      v21 = a1[37];
-      a1[37] = v20;
+      v21 = self[37];
+      self[37] = v20;
 
       v22 = objc_alloc_init(PKInputPointAltitudeAndAzimuthBucketingFilter);
-      v23 = a1[39];
-      a1[39] = v22;
+      v23 = self[39];
+      self[39] = v22;
 
       v24 = objc_alloc_init(PKInputPointAltitudeAndAzimuthZLimitFilter);
-      v25 = a1[40];
-      a1[40] = v24;
+      v25 = self[40];
+      self[40] = v24;
 
       v26 = v8[40];
       if (v26)
       {
         v26[21] = 0x400F6A7A2955385ELL;
-        v27 = a1[40];
+        v27 = self[40];
         if (v27)
         {
           v27[22] = 0;
@@ -319,18 +319,18 @@ void __41__PKHoverController_hoverDebugLayerColor__block_invoke()
       }
 
       v28 = objc_alloc_init(PKInputPointAltitudeAndAzimuthEdgeFilter);
-      v29 = a1[41];
-      a1[41] = v28;
+      v29 = self[41];
+      self[41] = v28;
 
       v30 = v8[41];
       if (v30)
       {
-        objc_storeWeak(v30 + 20, a1);
-        v31 = a1[41];
+        objc_storeWeak(v30 + 20, self);
+        v31 = self[41];
         if (v31)
         {
           v31[22] = 0x400F6A7A2955385ELL;
-          v32 = a1[41];
+          v32 = self[41];
           if (v32)
           {
             v32[23] = 0;
@@ -339,39 +339,39 @@ void __41__PKHoverController_hoverDebugLayerColor__block_invoke()
       }
 
       v33 = objc_alloc_init(PKInputPointExtraLatencyFilter);
-      v34 = a1[42];
-      a1[42] = v33;
+      v34 = self[42];
+      self[42] = v33;
 
       v35 = objc_alloc_init(PKInputPointReduceFramerateFilter);
-      v36 = a1[43];
-      a1[43] = v35;
+      v36 = self[43];
+      self[43] = v35;
 
       v37 = objc_alloc_init(PKInputPointPredictionFilter);
-      v38 = a1[44];
-      a1[44] = v37;
+      v38 = self[44];
+      self[44] = v37;
 
-      v39 = a1[37];
-      v40 = a1[41];
-      v41 = a1[42];
-      v48[0] = a1[38];
+      v39 = self[37];
+      v40 = self[41];
+      v41 = self[42];
+      v48[0] = self[38];
       v48[1] = v40;
-      v42 = a1[39];
-      v48[2] = a1[40];
+      v42 = self[39];
+      v48[2] = self[40];
       v48[3] = v39;
       v48[4] = v42;
       v48[5] = v41;
       v43 = v8[44];
-      v48[6] = a1[43];
+      v48[6] = self[43];
       v48[7] = v43;
       v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:8];
-      v45 = a1[45];
-      a1[45] = v44;
+      v45 = self[45];
+      self[45] = v44;
 
-      [a1 _updateInputPointFilters];
+      [self _updateInputPointFilters];
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)dealloc
@@ -386,24 +386,24 @@ void __41__PKHoverController_hoverDebugLayerColor__block_invoke()
   [(PKHoverController *)&v4 dealloc];
 }
 
-- (void)_setupHoverGestureRecognizerInView:(id)a3
+- (void)_setupHoverGestureRecognizerInView:(id)view
 {
-  v13 = a3;
+  viewCopy = view;
   v4 = [objc_alloc(MEMORY[0x1E69DCAA0]) initWithTarget:self action:sel__hoverGesture_];
   eventGeneratorTimer = self->_eventGeneratorTimer;
   self->_eventGeneratorTimer = v4;
 
   v6 = +[PKHoverSettings sharedSettings];
-  v7 = [v6 supportTouchPad];
+  supportTouchPad = [v6 supportTouchPad];
 
-  if ((v7 & 1) == 0)
+  if ((supportTouchPad & 1) == 0)
   {
     [(NSTimer *)self->_eventGeneratorTimer setAllowedTouchTypes:&unk_1F47C1AF0];
   }
 
-  [v13 addGestureRecognizer:self->_eventGeneratorTimer];
+  [viewCopy addGestureRecognizer:self->_eventGeneratorTimer];
   v8 = [PKPencilObserverGestureRecognizer pencilObserverWithDelegate:?];
-  [v13 addGestureRecognizer:v8];
+  [viewCopy addGestureRecognizer:v8];
   LOBYTE(self->_view) = self->_view & 0xFE | objc_opt_respondsToSelector() & 1;
   if (objc_opt_respondsToSelector())
   {
@@ -453,45 +453,45 @@ void __41__PKHoverController_hoverDebugLayerColor__block_invoke()
 
 - (id)hoverGestureRecognizer
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[34];
+    self = self[34];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)setShouldGenerate120HzEvents:(uint64_t)a1
+- (void)setShouldGenerate120HzEvents:(uint64_t)events
 {
-  if (a1)
+  if (events)
   {
-    if (*(a1 + 437) != a2)
+    if (*(events + 437) != a2)
     {
-      *(a1 + 437) = a2;
+      *(events + 437) = a2;
       if (a2)
       {
-        *(a1 + 416) = 0;
+        *(events + 416) = 0;
         if (_UIUpdateCycleEnabled())
         {
-          *(a1 + 416) = 1;
+          *(events + 416) = 1;
         }
 
-        if (!*(a1 + 408) && (*(a1 + 416) & 1) == 0)
+        if (!*(events + 408) && (*(events + 416) & 1) == 0)
         {
           v7 = objc_alloc_init(PKHoverControllerDisplayLinkDelegate);
-          [(PKHoverControllerDisplayLinkDelegate *)v7 setController:a1];
+          [(PKHoverControllerDisplayLinkDelegate *)v7 setController:events];
           v3 = [MEMORY[0x1E6979330] displayLinkWithTarget:v7 selector:sel_display_];
-          v4 = *(a1 + 408);
-          *(a1 + 408) = v3;
+          v4 = *(events + 408);
+          *(events + 408) = v3;
 
           v9 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-          [*(a1 + 408) setPreferredFrameRateRange:{*&v9.minimum, *&v9.maximum, *&v9.preferred}];
-          [*(a1 + 408) setHighFrameRateReason:1507329];
-          [*(a1 + 408) setPaused:1];
-          v5 = *(a1 + 408);
-          v6 = [MEMORY[0x1E695DFD0] currentRunLoop];
-          [v5 addToRunLoop:v6 forMode:*MEMORY[0x1E695DA28]];
+          [*(events + 408) setPreferredFrameRateRange:{*&v9.minimum, *&v9.maximum, *&v9.preferred}];
+          [*(events + 408) setHighFrameRateReason:1507329];
+          [*(events + 408) setPaused:1];
+          v5 = *(events + 408);
+          currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+          [v5 addToRunLoop:currentRunLoop forMode:*MEMORY[0x1E695DA28]];
         }
       }
     }
@@ -604,11 +604,11 @@ void __41__PKHoverController_hoverDebugLayerColor__block_invoke()
   }
 
   v22 = +[PKHoverSettings sharedSettings];
-  v23 = [v22 noiseIsHeightBased];
+  noiseIsHeightBased = [v22 noiseIsHeightBased];
   altitudeAndAzimuthBucketingFilter = self->_altitudeAndAzimuthBucketingFilter;
   if (altitudeAndAzimuthBucketingFilter)
   {
-    LOBYTE(altitudeAndAzimuthBucketingFilter[1].super._maxZDistance) = v23;
+    LOBYTE(altitudeAndAzimuthBucketingFilter[1].super._maxZDistance) = noiseIsHeightBased;
   }
 
   v25 = +[PKHoverSettings sharedSettings];
@@ -646,19 +646,19 @@ void __41__PKHoverController_hoverDebugLayerColor__block_invoke()
   }
 
   v37 = +[PKHoverSettings sharedSettings];
-  v38 = [v37 altitudeBuckets];
+  altitudeBuckets = [v37 altitudeBuckets];
   altitudeAndAzimuthZLimitFilter = self->_altitudeAndAzimuthZLimitFilter;
   if (altitudeAndAzimuthZLimitFilter)
   {
-    *&altitudeAndAzimuthZLimitFilter->_lastKnownAzimuth = v38;
+    *&altitudeAndAzimuthZLimitFilter->_lastKnownAzimuth = altitudeBuckets;
   }
 
   v40 = +[PKHoverSettings sharedSettings];
-  v41 = [v40 azimuthBuckets];
+  azimuthBuckets = [v40 azimuthBuckets];
   v42 = self->_altitudeAndAzimuthZLimitFilter;
   if (v42)
   {
-    *&v42->_altitudeAndAzimuthZLimit = v41;
+    *&v42->_altitudeAndAzimuthZLimit = azimuthBuckets;
   }
 
   v43 = +[PKHoverSettings sharedSettings];
@@ -684,19 +684,19 @@ void __41__PKHoverController_hoverDebugLayerColor__block_invoke()
   }
 
   v50 = +[PKHoverSettings sharedSettings];
-  v51 = [v50 numFramesExtraLatency];
+  numFramesExtraLatency = [v50 numFramesExtraLatency];
   reduceFramerateFilter = self->_reduceFramerateFilter;
   if (reduceFramerateFilter)
   {
-    *&reduceFramerateFilter[1].super._maxZDistance = v51;
+    *&reduceFramerateFilter[1].super._maxZDistance = numFramesExtraLatency;
   }
 
   v53 = +[PKHoverSettings sharedSettings];
-  v54 = [v53 numFramesReduceFramerate];
+  numFramesReduceFramerate = [v53 numFramesReduceFramerate];
   predictionFilter = self->_predictionFilter;
   if (predictionFilter)
   {
-    *&predictionFilter->_fullPredictionTimeIntervalPoint.var0.point.x = v54;
+    *&predictionFilter->_fullPredictionTimeIntervalPoint.var0.point.x = numFramesReduceFramerate;
   }
 
   if (isPencilGesture(self->_eventGeneratorTimer))
@@ -720,14 +720,14 @@ void __41__PKHoverController_hoverDebugLayerColor__block_invoke()
   }
 }
 
-- (void)_hoverGesture:(id)a3
+- (void)_hoverGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   BYTE1(self->_delegate) = 1;
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel_checkDidLiftAfterGestureEnd object:0];
-  if ([v4 state] == 1 || objc_msgSend(v4, "state") == 2)
+  if ([gestureCopy state] == 1 || objc_msgSend(gestureCopy, "state") == 2)
   {
-    if ([v4 state] == 1)
+    if ([gestureCopy state] == 1)
     {
       if ((*&self->_delegateFlags & 0x100) != 0)
       {
@@ -746,7 +746,7 @@ void __41__PKHoverController_hoverDebugLayerColor__block_invoke()
         v55[2] = __35__PKHoverController__hoverGesture___block_invoke;
         v55[3] = &unk_1E82D9C68;
         objc_copyWeak(v57, &location);
-        v56 = v4;
+        v56 = gestureCopy;
         v57[1] = isa;
         v8 = [v7 scheduledTimerWithTimeInterval:1 repeats:v55 block:*&isa];
         previousRollValue = self->_previousRollValue;
@@ -758,13 +758,13 @@ void __41__PKHoverController_hoverDebugLayerColor__block_invoke()
     }
 
     v10 = objc_loadWeakRetained(&self->_inputPoints.__begin_);
-    [v4 _preciseLocationInView:v10];
+    [gestureCopy _preciseLocationInView:v10];
     v12 = v11;
     v14 = v13;
 
     if ((self->_view & 8) != 0)
     {
-      [v4 zOffset];
+      [gestureCopy zOffset];
       v18 = v17;
       +[PKHoverSettings maxHoverHeight];
       v15 = v18 * v19;
@@ -784,10 +784,10 @@ LABEL_10:
 LABEL_13:
         v20 = [PKInputPointUtility timestampFromTouchTimestamp:v16];
         v21 = +[PKHoverSettings sharedSettings];
-        v22 = [v21 supportTouchPad];
+        supportTouchPad = [v21 supportTouchPad];
         if (v15 == 0.0)
         {
-          v23 = v22;
+          v23 = supportTouchPad;
         }
 
         else
@@ -806,7 +806,7 @@ LABEL_13:
         v27 = 0;
         if (+[PKHoverSettings isHoverActive]&& (self->_view & 2) != 0)
         {
-          [v4 altitudeAngle];
+          [gestureCopy altitudeAngle];
           if ((*&v28 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
           {
             if (v15 > 0.0 && v28 < 1.5 || v15 > 2.0 && fabs(v28 + -1.57079633) >= 0.00999999978)
@@ -833,8 +833,8 @@ LABEL_13:
           v32 = 3.92699082;
           if (self->_view)
           {
-            v33 = [v4 view];
-            [v4 azimuthAngleInView:v33];
+            view = [gestureCopy view];
+            [gestureCopy azimuthAngleInView:view];
             v35 = v34;
 
             if ((*&v35 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
@@ -866,7 +866,7 @@ LABEL_13:
 
         if ((self->_view & 0x10) != 0)
         {
-          [v4 _rollAngle];
+          [gestureCopy _rollAngle];
           v31 = v39;
         }
 
@@ -912,11 +912,11 @@ LABEL_13:
       }
     }
 
-    [v4 _hoverTouchTimestamp];
+    [gestureCopy _hoverTouchTimestamp];
     goto LABEL_13;
   }
 
-  if ([v4 state] == 3)
+  if ([gestureCopy state] == 3)
   {
     if ((*&self->_delegateFlags & 0x200) != 0)
     {
@@ -992,32 +992,32 @@ void __35__PKHoverController__hoverGesture___block_invoke(uint64_t a1)
 - (void)reset
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    [(PKHoverController *)a1 resetHoverHold];
-    if (*(a1 + 56) == 1 && (*(a1 + 8) & 4) != 0)
+    [(PKHoverController *)self resetHoverHold];
+    if (*(self + 56) == 1 && (*(self + 8) & 4) != 0)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 440));
-      [WeakRetained hoverControllerDidEnd:a1];
+      WeakRetained = objc_loadWeakRetained((self + 440));
+      [WeakRetained hoverControllerDidEnd:self];
     }
 
-    *(a1 + 392) = 0;
-    *(a1 + 400) = 0;
-    [a1 pauseDisplayLink];
-    *(a1 + 264) = 0;
-    *(a1 + 56) = 0;
-    *(a1 + 88) = 0;
-    std::vector<PKInputPoint>::resize((a1 + 32), 0);
-    [*(a1 + 280) invalidate];
-    v3 = *(a1 + 280);
-    *(a1 + 280) = 0;
+    *(self + 392) = 0;
+    *(self + 400) = 0;
+    [self pauseDisplayLink];
+    *(self + 264) = 0;
+    *(self + 56) = 0;
+    *(self + 88) = 0;
+    std::vector<PKInputPoint>::resize((self + 32), 0);
+    [*(self + 280) invalidate];
+    v3 = *(self + 280);
+    *(self + 280) = 0;
 
-    [a1 _endIntentionalHoverTracking];
+    [self _endIntentionalHoverTracking];
     v10 = 0u;
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v4 = *(a1 + 360);
+    v4 = *(self + 360);
     v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v5)
     {
@@ -1053,12 +1053,12 @@ void __35__PKHoverController__hoverGesture___block_invoke(uint64_t a1)
   }
 }
 
-- (void)didReceiveNormalTouch:(uint64_t)a1
+- (void)didReceiveNormalTouch:(uint64_t)touch
 {
   v16 = a2;
-  if (a1)
+  if (touch)
   {
-    [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:a1 selector:sel_checkDidLiftAfterGestureEnd object:0];
+    [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:touch selector:sel_checkDidLiftAfterGestureEnd object:0];
     if (v16)
     {
       if ([v16 type] != 2)
@@ -1068,7 +1068,7 @@ void __35__PKHoverController__hoverGesture___block_invoke(uint64_t a1)
 
       if ([v16 type] == 2)
       {
-        WeakRetained = objc_loadWeakRetained((a1 + 24));
+        WeakRetained = objc_loadWeakRetained((touch + 24));
         [v16 azimuthAngleInView:WeakRetained];
         v5 = v4;
 
@@ -1091,13 +1091,13 @@ void __35__PKHoverController__hoverGesture___block_invoke(uint64_t a1)
             v6 = 0.0;
           }
 
-          v9 = *(a1 + 320);
+          v9 = *(touch + 320);
           if (v9)
           {
             *(v9 + 168) = v6;
           }
 
-          v10 = *(a1 + 328);
+          v10 = *(touch + 328);
           if (v10)
           {
             *(v10 + 176) = v6;
@@ -1118,13 +1118,13 @@ void __35__PKHoverController__hoverGesture___block_invoke(uint64_t a1)
             }
           }
 
-          v14 = *(a1 + 320);
+          v14 = *(touch + 320);
           if (v14)
           {
             *(v14 + 176) = v13;
           }
 
-          v15 = *(a1 + 328);
+          v15 = *(touch + 328);
           if (v15)
           {
             *(v15 + 184) = v13;
@@ -1133,7 +1133,7 @@ void __35__PKHoverController__hoverGesture___block_invoke(uint64_t a1)
       }
     }
 
-    [(PKHoverController *)a1 reset];
+    [(PKHoverController *)touch reset];
   }
 
 LABEL_28:
@@ -1141,18 +1141,18 @@ LABEL_28:
 
 - (void)resetHoverHold
 {
-  if (a1)
+  if (self)
   {
-    *(a1 + 58) = 0;
-    if (*(a1 + 57) == 1)
+    *(self + 58) = 0;
+    if (*(self + 57) == 1)
     {
-      if (*(a1 + 8) & 0x20) == 0 || (WeakRetained = objc_loadWeakRetained((a1 + 440)), [WeakRetained hoverControllerHoldGestureEnded:a1], WeakRetained, (*(a1 + 57)))
+      if (*(self + 8) & 0x20) == 0 || (WeakRetained = objc_loadWeakRetained((self + 440)), [WeakRetained hoverControllerHoldGestureEnded:self], WeakRetained, (*(self + 57)))
       {
         v3 = [MEMORY[0x1E695DF00] now];
         [v3 timeIntervalSinceReferenceDate];
-        *(a1 + 80) = v4;
+        *(self + 80) = v4;
 
-        *(a1 + 57) = 0;
+        *(self + 57) = 0;
       }
     }
   }
@@ -1189,39 +1189,39 @@ void __37__PKHoverController_startDisplayLink__block_invoke(uint64_t a1)
   }
 }
 
-- (void)updateShapeLayer:(double *)a3 inputPoint:
+- (void)updateShapeLayer:(double *)layer inputPoint:
 {
   v12 = a2;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_9;
   }
 
   v5 = +[PKHoverSettings sharedSettings];
-  v6 = [v5 debugCursorType];
+  debugCursorType = [v5 debugCursorType];
 
-  switch(v6)
+  switch(debugCursorType)
   {
     case 0:
       v9 = 8.0;
       goto LABEL_8;
     case 1:
-      v9 = a3[7] + a3[7];
+      v9 = layer[7] + layer[7];
 LABEL_8:
-      v10 = [MEMORY[0x1E69DC728] bezierPathWithOvalInRect:{*a3 - v9 * 0.5, a3[1] - v9 * 0.5, v9, v9}];
+      v10 = [MEMORY[0x1E69DC728] bezierPathWithOvalInRect:{*layer - v9 * 0.5, layer[1] - v9 * 0.5, v9, v9}];
       [v12 setPath:{objc_msgSend(v10, "CGPath")}];
 
-      v11 = [(PKHoverController *)a1 hoverDebugLayerColor];
-      [v12 setStrokeColor:{objc_msgSend(v11, "CGColor")}];
+      hoverDebugLayerColor = [(PKHoverController *)self hoverDebugLayerColor];
+      [v12 setStrokeColor:{objc_msgSend(hoverDebugLayerColor, "CGColor")}];
 
       [v12 setLineWidth:1.0];
       break;
     case 2:
-      v7 = [MEMORY[0x1E69DC728] bezierPathWithRect:{*a3 + -0.5, a3[1] + -8.0, 1.0, 16.0}];
+      v7 = [MEMORY[0x1E69DC728] bezierPathWithRect:{*layer + -0.5, layer[1] + -8.0, 1.0, 16.0}];
       [v12 setPath:{objc_msgSend(v7, "CGPath")}];
 
-      v8 = [(PKHoverController *)a1 hoverDebugLayerColor];
-      [v12 setStrokeColor:{objc_msgSend(v8, "CGColor")}];
+      hoverDebugLayerColor2 = [(PKHoverController *)self hoverDebugLayerColor];
+      [v12 setStrokeColor:{objc_msgSend(hoverDebugLayerColor2, "CGColor")}];
 
       [v12 setLineWidth:1.0];
       break;
@@ -1386,25 +1386,25 @@ LABEL_11:
   *&self->_didReceiveNewPointToPredict = 0;
 }
 
-- (void)_trackIntentionalHover:(id *)a3
+- (void)_trackIntentionalHover:(id *)hover
 {
   if ((*&self->_delegateFlags & 0x40) != 0)
   {
     if (self->_intentionalHoverMinZValue == 0.0)
     {
-      self->_intentionalHoverMinZValue = a3->var7;
-      var6 = a3->var6;
+      self->_intentionalHoverMinZValue = hover->var7;
+      var6 = hover->var6;
       self->_intentionalHoverMaxZValue = var6;
       *&self->_didReceiveNewPointToPredict = var6;
     }
 
     else
     {
-      v5 = a3->var6;
+      v5 = hover->var6;
       intentionalHoverMaxZValue = self->_intentionalHoverMaxZValue;
       if (intentionalHoverMaxZValue >= v5)
       {
-        intentionalHoverMaxZValue = a3->var6;
+        intentionalHoverMaxZValue = hover->var6;
       }
 
       if (*&self->_didReceiveNewPointToPredict >= v5)
@@ -1437,12 +1437,12 @@ LABEL_11:
   }
 }
 
-- (void)_setupPredictorForNewPoint:(BOOL)a3
+- (void)_setupPredictorForNewPoint:(BOOL)point
 {
   allInputPointFilters = self->_allInputPointFilters;
   if (allInputPointFilters)
   {
-    LOBYTE(allInputPointFilters[55].super.isa) = BYTE5(self->_delegate) & a3;
+    LOBYTE(allInputPointFilters[55].super.isa) = BYTE5(self->_delegate) & point;
     if (allInputPointFilters[2].super.isa)
     {
       if (LOBYTE(allInputPointFilters[55].super.isa))
@@ -1460,30 +1460,30 @@ LABEL_11:
   }
 }
 
-- (void)_handleHoverInputPoint:(id *)a3
+- (void)_handleHoverInputPoint:(id *)point
 {
   if (self && BYTE4(self->_delegate) == 1)
   {
-    v5 = *&a3->var13;
-    v80 = *&a3->var11;
+    v5 = *&point->var13;
+    v80 = *&point->var11;
     v81 = v5;
-    var15 = a3->var15;
-    v6 = *&a3->var5;
-    v76 = *&a3->var3;
+    var15 = point->var15;
+    v6 = *&point->var5;
+    v76 = *&point->var3;
     v77 = v6;
-    v7 = *&a3->var9;
-    v78 = *&a3->var7;
+    v7 = *&point->var9;
+    v78 = *&point->var7;
     v79 = v7;
-    v8 = *&a3->var1;
-    var0 = a3->var0;
+    v8 = *&point->var1;
+    var0 = point->var0;
     v75 = v8;
     [(PKHoverController *)self logInputPoint:&var0];
   }
 
   if ((*&self->_delegateFlags & 0x80) != 0)
   {
-    x = a3->var0.var0.x;
-    y = a3->var0.var0.y;
+    x = point->var0.var0.x;
+    y = point->var0.var0.y;
     WeakRetained = objc_loadWeakRetained(&self->_currentLabel);
     v12 = [WeakRetained hoverController:self shouldBeActiveAt:{x, y}];
 
@@ -1504,39 +1504,39 @@ LABEL_11:
     }
   }
 
-  *&self->_cachedLatestInputPoint.var0.location.y = a3->var0;
-  v13 = *&a3->var1;
-  v14 = *&a3->var3;
-  v15 = *&a3->var7;
-  *&self->_cachedLatestInputPoint.zPosition = *&a3->var5;
+  *&self->_cachedLatestInputPoint.var0.location.y = point->var0;
+  v13 = *&point->var1;
+  v14 = *&point->var3;
+  v15 = *&point->var7;
+  *&self->_cachedLatestInputPoint.zPosition = *&point->var5;
   *&self->_cachedLatestInputPoint.predicted = v15;
   *&self->_cachedLatestInputPoint.azimuth = v13;
   *&self->_cachedLatestInputPoint.velocity = v14;
-  v16 = *&a3->var9;
-  v17 = *&a3->var11;
-  v18 = *&a3->var13;
-  *&self->_latestHoldLocation.x = a3->var15;
+  v16 = *&point->var9;
+  v17 = *&point->var11;
+  v18 = *&point->var13;
+  *&self->_latestHoldLocation.x = point->var15;
   *&self->_cachedLatestInputPoint.hasEstimatedAltitudeAndAzimuth = v17;
   *&self->_cachedLatestInputPoint.estimatedActiveInputProperties = v18;
   *&self->_cachedLatestInputPoint.length = v16;
-  var6 = a3->var6;
+  var6 = point->var6;
   v20 = +[PKHoverSettings sharedSettings];
   [v20 maxZDistance];
   v22 = v21;
   v23 = +[PKHoverSettings sharedSettings];
   [v23 deactivateExtraDistance];
-  v25 = *&a3->var13;
-  v80 = *&a3->var11;
+  v25 = *&point->var13;
+  v80 = *&point->var11;
   v81 = v25;
-  var15 = a3->var15;
-  v26 = *&a3->var5;
-  v76 = *&a3->var3;
+  var15 = point->var15;
+  v26 = *&point->var5;
+  v76 = *&point->var3;
   v77 = v26;
-  v27 = *&a3->var9;
-  v78 = *&a3->var7;
+  v27 = *&point->var9;
+  v78 = *&point->var7;
   v79 = v27;
-  v28 = *&a3->var1;
-  var0 = a3->var0;
+  v28 = *&point->var1;
+  var0 = point->var0;
   v75 = v28;
   v29 = [(PKHoverController *)self adjustedZLimitFromLimit:v22 + v24 inputPoint:?];
 
@@ -1562,7 +1562,7 @@ LABEL_9:
   }
 
 LABEL_11:
-  a3->var6 = var6;
+  point->var6 = var6;
   v32 = [MEMORY[0x1E695DF00] now];
   [v32 timeIntervalSinceReferenceDate];
   self->_latestHoldTimestamp = v33;
@@ -1604,18 +1604,18 @@ LABEL_11:
 
   if (end == cap)
   {
-    *cap = a3->var0;
-    v49 = *&a3->var1;
-    v50 = *&a3->var3;
-    v51 = *&a3->var7;
-    *(cap + 3) = *&a3->var5;
+    *cap = point->var0;
+    v49 = *&point->var1;
+    v50 = *&point->var3;
+    v51 = *&point->var7;
+    *(cap + 3) = *&point->var5;
     *(cap + 4) = v51;
     *(cap + 1) = v49;
     *(cap + 2) = v50;
-    v52 = *&a3->var9;
-    v53 = *&a3->var11;
-    v54 = *&a3->var13;
-    *(cap + 16) = a3->var15;
+    v52 = *&point->var9;
+    v53 = *&point->var11;
+    v54 = *&point->var13;
+    *(cap + 16) = point->var15;
     *(cap + 6) = v53;
     *(cap + 7) = v54;
     *(cap + 5) = v52;
@@ -1657,14 +1657,14 @@ LABEL_11:
       v38 = self->_inputPoints.__cap_;
     }
 
-    v55 = v38 <= a3 || end > a3;
+    v55 = v38 <= point || end > point;
     v56 = 1;
     if (v55)
     {
       v56 = 0;
     }
 
-    v57 = &a3[v56];
+    v57 = &point[v56];
     *end = v57->var0;
     v58 = *&v57->var1;
     v59 = *&v57->var3;
@@ -1689,18 +1689,18 @@ LABEL_11:
     [(PKHoverController *)self _triggerHoldGestureIfNecessary];
   }
 
-  v65 = *&a3->var13;
-  v80 = *&a3->var11;
+  v65 = *&point->var13;
+  v80 = *&point->var11;
   v81 = v65;
-  var15 = a3->var15;
-  v66 = *&a3->var5;
-  v76 = *&a3->var3;
+  var15 = point->var15;
+  v66 = *&point->var5;
+  v76 = *&point->var3;
   v77 = v66;
-  v67 = *&a3->var9;
-  v78 = *&a3->var7;
+  v67 = *&point->var9;
+  v78 = *&point->var7;
   v79 = v67;
-  v68 = *&a3->var1;
-  var0 = a3->var0;
+  v68 = *&point->var1;
+  var0 = point->var0;
   v75 = v68;
   [(PKHoverController *)self updateCurrentInputPointWithInputPoint:&var0];
   if (LOBYTE(self->_waitingForHoverHoldTimestamp))
@@ -1734,18 +1734,18 @@ LABEL_51:
     if (*&self->_delegateFlags)
     {
       v69 = objc_loadWeakRetained(&self->_currentLabel);
-      v70 = *&a3->var13;
-      v80 = *&a3->var11;
+      v70 = *&point->var13;
+      v80 = *&point->var11;
       v81 = v70;
-      var15 = a3->var15;
-      v71 = *&a3->var5;
-      v76 = *&a3->var3;
+      var15 = point->var15;
+      v71 = *&point->var5;
+      v76 = *&point->var3;
       v77 = v71;
-      v72 = *&a3->var9;
-      v78 = *&a3->var7;
+      v72 = *&point->var9;
+      v78 = *&point->var7;
       v79 = v72;
-      v73 = *&a3->var1;
-      var0 = a3->var0;
+      v73 = *&point->var1;
+      var0 = point->var0;
       v75 = v73;
       [v69 hoverController:self didBegin:&var0];
       goto LABEL_51;
@@ -1753,9 +1753,9 @@ LABEL_51:
   }
 }
 
-- (double)adjustedZLimitFromLimit:(double)a3 inputPoint:
+- (double)adjustedZLimitFromLimit:(double)limit inputPoint:
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
@@ -1785,8 +1785,8 @@ LABEL_51:
     v13 = *(a2 + 16);
     v18[0] = *a2;
     v18[1] = v13;
-    WeakRetained = objc_loadWeakRetained((a1 + 24));
-    v15 = [(PKHoverController *)a1 distanceFromEdgeOfScreen:v18 view:WeakRetained];
+    WeakRetained = objc_loadWeakRetained((self + 24));
+    v15 = [(PKHoverController *)self distanceFromEdgeOfScreen:v18 view:WeakRetained];
 
     v16 = v15 / v9;
     if (v15 / v9 > 1.0)
@@ -1794,74 +1794,74 @@ LABEL_51:
       v16 = 1.0;
     }
 
-    return v16 * a3;
+    return v16 * limit;
   }
 
-  return a3;
+  return limit;
 }
 
-- (void)_sendDidUpdateNow:(id *)a3
+- (void)_sendDidUpdateNow:(id *)now
 {
   if ((*&self->_delegateFlags & 2) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_currentLabel);
-    v6 = *&a3->var13;
-    v10[6] = *&a3->var11;
+    v6 = *&now->var13;
+    v10[6] = *&now->var11;
     v10[7] = v6;
-    var15 = a3->var15;
-    v7 = *&a3->var5;
-    v10[2] = *&a3->var3;
+    var15 = now->var15;
+    v7 = *&now->var5;
+    v10[2] = *&now->var3;
     v10[3] = v7;
-    v8 = *&a3->var9;
-    v10[4] = *&a3->var7;
+    v8 = *&now->var9;
+    v10[4] = *&now->var7;
     v10[5] = v8;
-    v9 = *&a3->var1;
-    v10[0] = a3->var0;
+    v9 = *&now->var1;
+    v10[0] = now->var0;
     v10[1] = v9;
     [WeakRetained hoverController:self didUpdate:v10];
   }
 
-  self->_cachedLatestInputPoint.var0.point.x = a3->var7;
+  self->_cachedLatestInputPoint.var0.point.x = now->var7;
 }
 
-- (void)showLabel:(double)a3 atLocation:(double)a4
+- (void)showLabel:(double)label atLocation:(double)location
 {
   v7 = a2;
-  if (a1)
+  if (self)
   {
     v9 = v7;
     v8 = [MEMORY[0x1E69DD250] pk_hoverAttributedStringFromString:v7];
     if (v8)
     {
-      [(PKHoverController *)a1 showAttributedLabel:v8 atLocation:a3, a4];
+      [(PKHoverController *)self showAttributedLabel:v8 atLocation:label, location];
     }
 
     else
     {
-      [a1 hideLabel];
+      [self hideLabel];
     }
 
     v7 = v9;
   }
 }
 
-- (void)showAttributedLabel:(double)a3 atLocation:(double)a4
+- (void)showAttributedLabel:(double)label atLocation:(double)location
 {
   v14 = a2;
-  if (a1)
+  if (self)
   {
-    [a1 hideLabel];
-    v8 = [MEMORY[0x1E69DD250] pk_hoverLabelFont];
-    WeakRetained = objc_loadWeakRetained((a1 + 24));
-    v10 = [WeakRetained traitCollection];
-    v11 = [(PKFloatingLabelView *)a3 floatingLabelViewWithAttributedString:a4 font:PKFloatingLabelView location:v14 traitCollection:v8, v10];
-    v12 = *(a1 + 256);
-    *(a1 + 256) = v11;
+    [self hideLabel];
+    pk_hoverLabelFont = [MEMORY[0x1E69DD250] pk_hoverLabelFont];
+    WeakRetained = objc_loadWeakRetained((self + 24));
+    traitCollection = [WeakRetained traitCollection];
+    v11 = [(PKFloatingLabelView *)label floatingLabelViewWithAttributedString:location font:PKFloatingLabelView location:v14 traitCollection:pk_hoverLabelFont, traitCollection];
+    v12 = *(self + 256);
+    *(self + 256) = v11;
 
-    v13 = objc_loadWeakRetained((a1 + 24));
-    [v13 addSubview:*(a1 + 256)];
+    v13 = objc_loadWeakRetained((self + 24));
+    [v13 addSubview:*(self + 256)];
 
-    objc_storeStrong((a1 + 448), a2);
+    objc_storeStrong((self + 448), a2);
   }
 }
 
@@ -1875,22 +1875,22 @@ LABEL_51:
   self->_currentInputPointCounter = 0;
 }
 
-- (double)distanceFromEdgeOfScreen:(void *)a3 view:
+- (double)distanceFromEdgeOfScreen:(void *)screen view:
 {
-  v5 = a3;
-  v6 = v5;
-  if (a1)
+  screenCopy = screen;
+  v6 = screenCopy;
+  if (self)
   {
     v7 = *a2;
     v8 = a2[1];
-    v9 = [v5 window];
-    [v6 convertPoint:v9 toView:{v7, v8}];
+    window = [screenCopy window];
+    [v6 convertPoint:window toView:{v7, v8}];
     v11 = v10;
     v13 = v12;
 
-    v14 = [v6 window];
+    window2 = [v6 window];
     v33 = v13;
-    [v14 bounds];
+    [window2 bounds];
     v16 = v15;
     v18 = v17;
     v20 = v19;
@@ -2077,35 +2077,35 @@ void __40__PKHoverController_pointsPerMillimeter__block_invoke()
   return result;
 }
 
-- (void)alphaFactorFromMovementSpeed:(uint64_t)a1
+- (void)alphaFactorFromMovementSpeed:(uint64_t)speed
 {
-  if (a1)
+  if (speed)
   {
     v1 = +[PKHoverSettings sharedSettings];
     [v1 toolShadowMovementSpeedHideThreshold];
   }
 }
 
-- (void)logInputPoint:(id *)a3
+- (void)logInputPoint:(id *)point
 {
   v33 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_inputPoints.__begin_);
-  x = a3->var0.var0.x;
-  y = a3->var0.var0.y;
+  x = point->var0.var0.x;
+  y = point->var0.var0.y;
   v7 = WeakRetained;
-  v8 = [v7 window];
-  [v7 convertPoint:v8 toView:{x, y}];
+  window = [v7 window];
+  [v7 convertPoint:window toView:{x, y}];
   v10 = v9;
   v12 = v11;
 
   v13 = os_log_create("com.apple.pencilkit", "Pencil Hover");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = a3->var3 * 57.2957795;
-    v15 = a3->var2 * 57.2957795;
-    v16 = a3->var13 * 57.2957795;
-    var6 = a3->var6;
-    var7 = a3->var7;
+    v14 = point->var3 * 57.2957795;
+    v15 = point->var2 * 57.2957795;
+    v16 = point->var13 * 57.2957795;
+    var6 = point->var6;
+    var7 = point->var7;
     v19 = 134219520;
     v20 = v10;
     v21 = 2048;
@@ -2124,20 +2124,20 @@ void __40__PKHoverController_pointsPerMillimeter__block_invoke()
   }
 }
 
-- (double)inputPointFilter:(id)a3 distanceToEdge:(id *)a4
+- (double)inputPointFilter:(id)filter distanceToEdge:(id *)edge
 {
-  v5 = *&a4->var13;
-  v12[6] = *&a4->var11;
+  v5 = *&edge->var13;
+  v12[6] = *&edge->var11;
   v12[7] = v5;
-  var15 = a4->var15;
-  v6 = *&a4->var5;
-  v12[2] = *&a4->var3;
+  var15 = edge->var15;
+  v6 = *&edge->var5;
+  v12[2] = *&edge->var3;
   v12[3] = v6;
-  v7 = *&a4->var9;
-  v12[4] = *&a4->var7;
+  v7 = *&edge->var9;
+  v12[4] = *&edge->var7;
   v12[5] = v7;
-  v8 = *&a4->var1;
-  v12[0] = a4->var0;
+  v8 = *&edge->var1;
+  v12[0] = edge->var0;
   v12[1] = v8;
   WeakRetained = objc_loadWeakRetained(&self->_inputPoints.__begin_);
   v10 = [(PKHoverController *)self distanceFromEdgeOfScreen:v12 view:WeakRetained];
@@ -2145,12 +2145,12 @@ void __40__PKHoverController_pointsPerMillimeter__block_invoke()
   return v10;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  if ([v5 type] == 2)
+  touchCopy = touch;
+  if ([touchCopy type] == 2)
   {
-    [(PKHoverController *)self didReceiveNormalTouch:v5];
+    [(PKHoverController *)self didReceiveNormalTouch:touchCopy];
   }
 
   return 0;

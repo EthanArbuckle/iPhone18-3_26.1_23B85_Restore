@@ -1,5 +1,5 @@
 @interface ARRemoteControl
-- (ARRemoteControl)initWithEndpoint:(id)a3;
+- (ARRemoteControl)initWithEndpoint:(id)endpoint;
 - (ARRemoteControlDelegate)delegate;
 - (void)dealloc;
 - (void)interruptionHandler;
@@ -9,9 +9,9 @@
 
 @implementation ARRemoteControl
 
-- (ARRemoteControl)initWithEndpoint:(id)a3
+- (ARRemoteControl)initWithEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v24.receiver = self;
   v24.super_class = ARRemoteControl;
   v5 = [(ARRemoteControl *)&v24 init];
@@ -19,9 +19,9 @@
   {
     v6 = objc_alloc(MEMORY[0x1E696B0B8]);
     v7 = v6;
-    if (v4)
+    if (endpointCopy)
     {
-      v8 = [v6 initWithListenerEndpoint:v4];
+      v8 = [v6 initWithListenerEndpoint:endpointCopy];
       connection = v5->_connection;
       v5->_connection = v8;
     }
@@ -39,11 +39,11 @@
     v5->_exportedObjectWeakReference = v12;
 
     [(NSXPCConnection *)v5->_connection setExportedObject:v5->_exportedObjectWeakReference];
-    v14 = [objc_opt_class() controlProxyInterface];
-    [(NSXPCConnection *)v5->_connection setExportedInterface:v14];
+    controlProxyInterface = [objc_opt_class() controlProxyInterface];
+    [(NSXPCConnection *)v5->_connection setExportedInterface:controlProxyInterface];
 
-    v15 = [objc_opt_class() controlInterface];
-    [(NSXPCConnection *)v5->_connection setRemoteObjectInterface:v15];
+    controlInterface = [objc_opt_class() controlInterface];
+    [(NSXPCConnection *)v5->_connection setRemoteObjectInterface:controlInterface];
 
     objc_initWeak(&location, v5);
     v21[0] = MEMORY[0x1E69E9820];
@@ -188,12 +188,12 @@ LABEL_8:
     v7 = 138543618;
     v8 = v5;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v3, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Control interrupted", &v7, 0x16u);
   }
 
-  v6 = [(ARRemoteControl *)self delegate];
-  [v6 connectionInterrupted];
+  delegate = [(ARRemoteControl *)self delegate];
+  [delegate connectionInterrupted];
 }
 
 - (void)invalidationHandler
@@ -207,7 +207,7 @@ LABEL_8:
     v6 = 138543618;
     v7 = v5;
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v3, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Control invalidated", &v6, 0x16u);
   }
 }

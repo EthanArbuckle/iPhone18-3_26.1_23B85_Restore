@@ -4,8 +4,8 @@
 - (BOOL)disallowFirewallAutoEnroll;
 - (BOOL)isFirewallEnabled;
 - (BOOL)needsLaunchOnNearbyDevicesChanged;
-- (IDSServiceProperties)initWithServiceDictionary:(id)a3;
-- (IDSServiceProperties)initWithServiceIdentifier:(id)a3;
+- (IDSServiceProperties)initWithServiceDictionary:(id)dictionary;
+- (IDSServiceProperties)initWithServiceIdentifier:(id)identifier;
 - (NSArray)allInterestedQueryServices;
 - (NSArray)duetIdentifiers;
 - (NSSet)allowedTrafficClasses;
@@ -13,12 +13,12 @@
 - (NSString)launchMachServiceNotification;
 - (NSString)legacyPreferencesDomain;
 - (NSString)preferencesDomain;
-- (id)_resolveProtocolName:(id)a3;
-- (id)_resolveShouldUseMachNotification:(id)a3;
-- (id)_stringToUseGivenName:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_resolveProtocolName:(id)name;
+- (id)_resolveShouldUseMachNotification:(id)notification;
+- (id)_stringToUseGivenName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)setNeedsLaunchOnNearbyDevicesChanged:(BOOL)a3;
+- (void)setNeedsLaunchOnNearbyDevicesChanged:(BOOL)changed;
 @end
 
 @implementation IDSServiceProperties
@@ -49,11 +49,11 @@
 
   else
   {
-    v5 = [(IDSServiceProperties *)self serviceName];
-    if (v5)
+    serviceName = [(IDSServiceProperties *)self serviceName];
+    if (serviceName)
     {
-      v6 = [(IDSServiceProperties *)self serviceName];
-      v8[0] = v6;
+      serviceName2 = [(IDSServiceProperties *)self serviceName];
+      v8[0] = serviceName2;
       v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
     }
 
@@ -91,26 +91,26 @@
     launchNotification = self->_launchNotification;
     if (!launchNotification)
     {
-      v3 = [(IDSServiceProperties *)self _identifierWithProtocolAndMachServiceSuffix];
+      _identifierWithProtocolAndMachServiceSuffix = [(IDSServiceProperties *)self _identifierWithProtocolAndMachServiceSuffix];
       goto LABEL_6;
     }
   }
 
-  v3 = launchNotification;
+  _identifierWithProtocolAndMachServiceSuffix = launchNotification;
 LABEL_6:
 
-  return v3;
+  return _identifierWithProtocolAndMachServiceSuffix;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(IDSServiceProperties *)self identifier];
-  v5 = [(IDSServiceProperties *)self displayName];
-  v6 = [(IDSServiceProperties *)self pushTopic];
-  v7 = [(IDSServiceProperties *)self serviceName];
-  v8 = [(IDSServiceProperties *)self protocolName];
-  v9 = [v3 stringWithFormat:@"IDSServiceProperties: %p [Identifier: %@ Display Name: %@ Topic: %@   Service: %@   Protocol: %@]", self, v4, v5, v6, v7, v8];
+  identifier = [(IDSServiceProperties *)self identifier];
+  displayName = [(IDSServiceProperties *)self displayName];
+  pushTopic = [(IDSServiceProperties *)self pushTopic];
+  serviceName = [(IDSServiceProperties *)self serviceName];
+  protocolName = [(IDSServiceProperties *)self protocolName];
+  v9 = [v3 stringWithFormat:@"IDSServiceProperties: %p [Identifier: %@ Display Name: %@ Topic: %@   Service: %@   Protocol: %@]", self, identifier, displayName, pushTopic, serviceName, protocolName];
 
   return v9;
 }
@@ -142,27 +142,27 @@ LABEL_6:
   return v5;
 }
 
-- (IDSServiceProperties)initWithServiceIdentifier:(id)a3
+- (IDSServiceProperties)initWithServiceIdentifier:(id)identifier
 {
-  v4 = _IDSServiceDictionaryForIdentifier(a3);
+  v4 = _IDSServiceDictionaryForIdentifier(identifier);
   if (v4)
   {
     self = [(IDSServiceProperties *)self initWithServiceDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (IDSServiceProperties)initWithServiceDictionary:(id)a3
+- (IDSServiceProperties)initWithServiceDictionary:(id)dictionary
 {
   v188 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v186.receiver = self;
   v186.super_class = IDSServiceProperties;
   v5 = [(IDSServiceProperties *)&v186 init];
@@ -173,37 +173,37 @@ LABEL_197:
     goto LABEL_198;
   }
 
-  v6 = [v4 objectForKey:@"Identifier"];
+  v6 = [dictionaryCopy objectForKey:@"Identifier"];
 
   if (v6)
   {
-    v7 = [(IDSServiceProperties *)v5 _resolveProtocolName:v4];
+    v7 = [(IDSServiceProperties *)v5 _resolveProtocolName:dictionaryCopy];
     protocolName = v5->_protocolName;
     v5->_protocolName = v7;
 
-    v9 = [v4 objectForKey:@"Identifier"];
+    v9 = [dictionaryCopy objectForKey:@"Identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v9;
 
-    v11 = [v4 objectForKey:@"ServiceName"];
+    v11 = [dictionaryCopy objectForKey:@"ServiceName"];
     v12 = [(IDSServiceProperties *)v5 _stringToUseGivenName:v11];
     serviceName = v5->_serviceName;
     v5->_serviceName = v12;
 
-    v14 = [v4 objectForKey:@"PushTopic"];
+    v14 = [dictionaryCopy objectForKey:@"PushTopic"];
     v15 = [(IDSServiceProperties *)v5 _stringToUseGivenName:v14];
     pushTopic = v5->_pushTopic;
     v5->_pushTopic = v15;
 
-    v17 = [v4 objectForKey:@"LegacyIdentifier"];
+    v17 = [dictionaryCopy objectForKey:@"LegacyIdentifier"];
     legacyIdentifier = v5->_legacyIdentifier;
     v5->_legacyIdentifier = v17;
 
-    v19 = [v4 objectForKey:@"DisplayName"];
+    v19 = [dictionaryCopy objectForKey:@"DisplayName"];
     displayName = v5->_displayName;
     v5->_displayName = v19;
 
-    v21 = [v4 objectForKey:@"DataProtectionClass"];
+    v21 = [dictionaryCopy objectForKey:@"DataProtectionClass"];
     v181 = v21;
     if (v21)
     {
@@ -211,8 +211,8 @@ LABEL_197:
     }
 
     v5->_dataProtectionClass = v21;
-    v22 = [v4 objectForKey:@"LaunchDarwinNotification"];
-    v23 = [v4 objectForKey:@"LaunchMachServiceNotification"];
+    v22 = [dictionaryCopy objectForKey:@"LaunchDarwinNotification"];
+    v23 = [dictionaryCopy objectForKey:@"LaunchMachServiceNotification"];
     v179 = v23;
     if (v23)
     {
@@ -225,24 +225,24 @@ LABEL_197:
       {
 LABEL_11:
         v180 = v22;
-        v27 = [v4 objectForKey:@"SuperService"];
+        v27 = [dictionaryCopy objectForKey:@"SuperService"];
         superService = v5->_superService;
         v5->_superService = v27;
 
-        v29 = [v4 objectForKey:@"DataUsageBundleID"];
+        v29 = [dictionaryCopy objectForKey:@"DataUsageBundleID"];
         dataUsageBundleID = v5->_dataUsageBundleID;
         v5->_dataUsageBundleID = v29;
 
-        v31 = [v4 objectForKey:@"AdHocServiceType"];
+        v31 = [dictionaryCopy objectForKey:@"AdHocServiceType"];
         v5->_adHocServiceType = [v31 unsignedIntValue];
 
-        v32 = [v4 objectForKey:@"ControlCategory"];
+        v32 = [dictionaryCopy objectForKey:@"ControlCategory"];
         v5->_controlCategory = [v32 unsignedIntValue];
 
-        v33 = [v4 objectForKey:@"ConstraintType"];
+        v33 = [dictionaryCopy objectForKey:@"ConstraintType"];
         v5->_constraintType = [v33 unsignedIntValue];
 
-        v34 = [v4 objectForKey:@"AllowedCommandCategories"];
+        v34 = [dictionaryCopy objectForKey:@"AllowedCommandCategories"];
         v178 = v34;
         if (v34)
         {
@@ -250,18 +250,18 @@ LABEL_11:
         }
 
         v5->_allowedCommandGroup = v34;
-        v35 = [v4 objectForKey:@"FirewallNotificationStyle"];
+        v35 = [dictionaryCopy objectForKey:@"FirewallNotificationStyle"];
         v5->_firewallNotificationStyle = [v35 unsignedIntValue];
 
-        v36 = [v4 objectForKey:@"FirewallNotificationRateLimitType"];
+        v36 = [dictionaryCopy objectForKey:@"FirewallNotificationRateLimitType"];
         v5->_firewallNotificationRateLimitType = [v36 unsignedIntValue];
 
-        v177 = [v4 objectForKey:@"AllowedTrafficClasses"];
+        v177 = [dictionaryCopy objectForKey:@"AllowedTrafficClasses"];
         v37 = sub_1A7AFED78(v177);
         allowedTrafficClassesIndices = v5->_allowedTrafficClassesIndices;
         v5->_allowedTrafficClassesIndices = v37;
 
-        v39 = [v4 objectForKey:@"AllowLocalDelivery"];
+        v39 = [dictionaryCopy objectForKey:@"AllowLocalDelivery"];
         if ([v39 BOOLValue])
         {
           v40 = 2;
@@ -274,7 +274,7 @@ LABEL_11:
 
         *(v5 + 52) = *(v5 + 52) & 0xFD | v40;
 
-        v41 = [v4 objectForKey:@"AllowPartialSendsToSucceed"];
+        v41 = [dictionaryCopy objectForKey:@"AllowPartialSendsToSucceed"];
         if ([v41 BOOLValue])
         {
           v42 = 16;
@@ -287,7 +287,7 @@ LABEL_11:
 
         *(v5 + 52) = *(v5 + 52) & 0xEF | v42;
 
-        v43 = [v4 objectForKey:@"CanUseLargePayload"];
+        v43 = [dictionaryCopy objectForKey:@"CanUseLargePayload"];
         if ([v43 BOOLValue])
         {
           v44 = 32;
@@ -300,7 +300,7 @@ LABEL_11:
 
         *(v5 + 52) = *(v5 + 52) & 0xDF | v44;
 
-        v45 = [v4 objectForKey:@"SendOnePerToken"];
+        v45 = [dictionaryCopy objectForKey:@"SendOnePerToken"];
         if ([v45 BOOLValue])
         {
           v46 = 64;
@@ -313,7 +313,7 @@ LABEL_11:
 
         *(v5 + 52) = *(v5 + 52) & 0xBF | v46;
 
-        v47 = [v4 objectForKey:@"SupportsPhoneNumberRegistration"];
+        v47 = [dictionaryCopy objectForKey:@"SupportsPhoneNumberRegistration"];
         if ([v47 BOOLValue])
         {
           v48 = 0x80;
@@ -326,10 +326,10 @@ LABEL_11:
 
         *(v5 + 52) = v48 & 0x80 | *(v5 + 52) & 0x7F;
 
-        v49 = [v4 objectForKey:@"iCloudService"];
+        v49 = [dictionaryCopy objectForKey:@"iCloudService"];
         *(v5 + 53) = *(v5 + 53) & 0xFE | [v49 BOOLValue];
 
-        v50 = [v4 objectForKey:@"TunnelService"];
+        v50 = [dictionaryCopy objectForKey:@"TunnelService"];
         if ([v50 BOOLValue])
         {
           v51 = 2;
@@ -342,7 +342,7 @@ LABEL_11:
 
         *(v5 + 53) = *(v5 + 53) & 0xFD | v51;
 
-        v52 = [v4 objectForKey:@"ShouldShowUsageNotifications"];
+        v52 = [dictionaryCopy objectForKey:@"ShouldShowUsageNotifications"];
         if ([v52 BOOLValue])
         {
           v53 = 8;
@@ -355,7 +355,7 @@ LABEL_11:
 
         *(v5 + 52) = *(v5 + 52) & 0xF7 | v53;
 
-        v54 = [v4 objectForKey:@"AutoConfigureVettedAddresses"];
+        v54 = [dictionaryCopy objectForKey:@"AutoConfigureVettedAddresses"];
         if ([v54 BOOLValue])
         {
           v55 = 8;
@@ -368,7 +368,7 @@ LABEL_11:
 
         *(v5 + 53) = *(v5 + 53) & 0xF7 | v55;
 
-        v56 = [v4 objectForKey:@"AutoConfigureDSID"];
+        v56 = [dictionaryCopy objectForKey:@"AutoConfigureDSID"];
         if ([v56 BOOLValue])
         {
           v57 = 16;
@@ -381,7 +381,7 @@ LABEL_11:
 
         *(v5 + 53) = *(v5 + 53) & 0xEF | v57;
 
-        v58 = [v4 objectForKey:@"SyncAccounts"];
+        v58 = [dictionaryCopy objectForKey:@"SyncAccounts"];
         if ([v58 BOOLValue])
         {
           v59 = 32;
@@ -394,7 +394,7 @@ LABEL_11:
 
         *(v5 + 53) = *(v5 + 53) & 0xDF | v59;
 
-        v60 = [v4 objectForKey:@"NoSyncPhoneNumberAccounts"];
+        v60 = [dictionaryCopy objectForKey:@"NoSyncPhoneNumberAccounts"];
         if ([v60 BOOLValue])
         {
           v61 = 64;
@@ -407,7 +407,7 @@ LABEL_11:
 
         *(v5 + 53) = *(v5 + 53) & 0xBF | v61;
 
-        v62 = [v4 objectForKey:@"AllowProxyDelivery"];
+        v62 = [dictionaryCopy objectForKey:@"AllowProxyDelivery"];
         if ([v62 BOOLValue])
         {
           v63 = 0x80;
@@ -420,10 +420,10 @@ LABEL_11:
 
         *(v5 + 53) = v63 & 0x80 | *(v5 + 53) & 0x7F;
 
-        v64 = [v4 objectForKey:@"WantsLocalReflectedSend"];
+        v64 = [dictionaryCopy objectForKey:@"WantsLocalReflectedSend"];
         *(v5 + 54) = *(v5 + 54) & 0xFE | [v64 BOOLValue];
 
-        v65 = [v4 objectForKey:@"WantsNetworkAvailableHint"];
+        v65 = [dictionaryCopy objectForKey:@"WantsNetworkAvailableHint"];
         if ([v65 BOOLValue])
         {
           v66 = 2;
@@ -436,10 +436,10 @@ LABEL_11:
 
         *(v5 + 54) = *(v5 + 54) & 0xFD | v66;
 
-        v67 = [v4 objectForKey:@"AllowLaunchOnNearbyDevicesChanged"];
+        v67 = [dictionaryCopy objectForKey:@"AllowLaunchOnNearbyDevicesChanged"];
         v5->_allowLaunchOnNearbyDevicesChanged = [v67 BOOLValue];
 
-        v68 = [v4 objectForKey:@"WatchOnlyService"];
+        v68 = [dictionaryCopy objectForKey:@"WatchOnlyService"];
         if ([v68 BOOLValue])
         {
           v69 = 4;
@@ -452,7 +452,7 @@ LABEL_11:
 
         *(v5 + 54) = *(v5 + 54) & 0xFB | v69;
 
-        v70 = [v4 objectForKey:@"AllowDuplicateMessages"];
+        v70 = [dictionaryCopy objectForKey:@"AllowDuplicateMessages"];
         if ([v70 BOOLValue])
         {
           v71 = 8;
@@ -465,7 +465,7 @@ LABEL_11:
 
         *(v5 + 54) = *(v5 + 54) & 0xF7 | v71;
 
-        v72 = [v4 objectForKey:@"UseiMessageCallerID"];
+        v72 = [dictionaryCopy objectForKey:@"UseiMessageCallerID"];
         if ([v72 BOOLValue])
         {
           v73 = 16;
@@ -478,7 +478,7 @@ LABEL_11:
 
         *(v5 + 54) = *(v5 + 54) & 0xEF | v73;
 
-        v74 = [v4 objectForKey:@"UseFaceTimeCallerID"];
+        v74 = [dictionaryCopy objectForKey:@"UseFaceTimeCallerID"];
         if ([v74 BOOLValue])
         {
           v75 = 32;
@@ -491,7 +491,7 @@ LABEL_11:
 
         *(v5 + 54) = *(v5 + 54) & 0xDF | v75;
 
-        v76 = [v4 objectForKey:@"AllowPendingMessagesForInactiveDevice"];
+        v76 = [dictionaryCopy objectForKey:@"AllowPendingMessagesForInactiveDevice"];
         if ([v76 BOOLValue])
         {
           v77 = 64;
@@ -504,7 +504,7 @@ LABEL_11:
 
         *(v5 + 54) = *(v5 + 54) & 0xBF | v77;
 
-        v78 = [v4 objectForKey:@"AllowSendingMessagesToInactiveDevice"];
+        v78 = [dictionaryCopy objectForKey:@"AllowSendingMessagesToInactiveDevice"];
         if ([v78 BOOLValue])
         {
           v79 = 0x80;
@@ -517,10 +517,10 @@ LABEL_11:
 
         *(v5 + 54) = v79 & 0x80 | *(v5 + 54) & 0x7F;
 
-        v80 = [v4 objectForKey:@"ClassAProtectedTraffic"];
+        v80 = [dictionaryCopy objectForKey:@"ClassAProtectedTraffic"];
         *(v5 + 55) = *(v5 + 55) & 0xFE | [v80 BOOLValue];
 
-        v81 = [v4 objectForKey:@"SilentlyFailMessagesOnSwitch"];
+        v81 = [dictionaryCopy objectForKey:@"SilentlyFailMessagesOnSwitch"];
         if ([v81 BOOLValue])
         {
           v82 = 2;
@@ -533,7 +533,7 @@ LABEL_11:
 
         *(v5 + 55) = *(v5 + 55) & 0xFD | v82;
 
-        v83 = [v4 objectForKey:@"AllowCloudDelivery"];
+        v83 = [dictionaryCopy objectForKey:@"AllowCloudDelivery"];
         if ([v83 BOOLValue])
         {
           v84 = 4;
@@ -553,11 +553,11 @@ LABEL_11:
 
         else
         {
-          v85 = [v4 objectForKey:@"AllowLiveMessageDelivery"];
+          v85 = [dictionaryCopy objectForKey:@"AllowLiveMessageDelivery"];
           *(v5 + 55) = *(v5 + 55) & 0xF7 | (8 * (v85 != 0));
         }
 
-        v86 = [v4 objectForKey:@"EnabledOnlyWhenPaired"];
+        v86 = [dictionaryCopy objectForKey:@"EnabledOnlyWhenPaired"];
         if ([v86 BOOLValue])
         {
           v87 = 16;
@@ -570,7 +570,7 @@ LABEL_11:
 
         *(v5 + 55) = *(v5 + 55) & 0xEF | v87;
 
-        v88 = [v4 objectForKey:@"forceHTTPQueries"];
+        v88 = [dictionaryCopy objectForKey:@"forceHTTPQueries"];
         if ([v88 BOOLValue])
         {
           v89 = 32;
@@ -583,7 +583,7 @@ LABEL_11:
 
         *(v5 + 55) = *(v5 + 55) & 0xDF | v89;
 
-        v90 = [v4 objectForKey:@"WantsRemoteErrors"];
+        v90 = [dictionaryCopy objectForKey:@"WantsRemoteErrors"];
         if ([v90 BOOLValue])
         {
           v91 = 64;
@@ -596,7 +596,7 @@ LABEL_11:
 
         *(v5 + 55) = *(v5 + 55) & 0xBF | v91;
 
-        v92 = [v4 objectForKey:@"UseTransportZone"];
+        v92 = [dictionaryCopy objectForKey:@"UseTransportZone"];
         if ([v92 BOOLValue])
         {
           v93 = 0x80;
@@ -609,10 +609,10 @@ LABEL_11:
 
         *(v5 + 55) = v93 & 0x80 | *(v5 + 55) & 0x7F;
 
-        v94 = [v4 objectForKey:@"DontFilterSelfMessagesForUnknownDevice"];
+        v94 = [dictionaryCopy objectForKey:@"DontFilterSelfMessagesForUnknownDevice"];
         *(v5 + 56) = *(v5 + 56) & 0xFE | [v94 BOOLValue];
 
-        v95 = [v4 objectForKey:@"PassThroughMessagesFromStorage"];
+        v95 = [dictionaryCopy objectForKey:@"PassThroughMessagesFromStorage"];
         if ([v95 BOOLValue])
         {
           v96 = 2;
@@ -625,7 +625,7 @@ LABEL_11:
 
         *(v5 + 56) = *(v5 + 56) & 0xFD | v96;
 
-        v97 = [v4 objectForKey:@"SkipServerStorageRetry"];
+        v97 = [dictionaryCopy objectForKey:@"SkipServerStorageRetry"];
         if ([v97 BOOLValue])
         {
           v98 = 4;
@@ -638,7 +638,7 @@ LABEL_11:
 
         *(v5 + 56) = *(v5 + 56) & 0xFB | v98;
 
-        v99 = [v4 objectForKey:@"PushToWakeDisabled"];
+        v99 = [dictionaryCopy objectForKey:@"PushToWakeDisabled"];
         if ([v99 BOOLValue])
         {
           v100 = 8;
@@ -651,7 +651,7 @@ LABEL_11:
 
         *(v5 + 56) = *(v5 + 56) & 0xF7 | v100;
 
-        v101 = [v4 objectForKey:@"DisableOnLowRAMDevice"];
+        v101 = [dictionaryCopy objectForKey:@"DisableOnLowRAMDevice"];
         if ([v101 BOOLValue])
         {
           v102 = 16;
@@ -671,7 +671,7 @@ LABEL_11:
 
         else
         {
-          v103 = [v4 objectForKey:@"AllowMagnetDelivery"];
+          v103 = [dictionaryCopy objectForKey:@"AllowMagnetDelivery"];
           if ([v103 BOOLValue])
           {
             LOBYTE(v104) = 4;
@@ -685,7 +685,7 @@ LABEL_11:
           *(v5 + 52) = *(v5 + 52) & 0xFB | v104;
         }
 
-        v105 = [v4 objectForKey:@"HoldMessagesUntilClassCUnlock"];
+        v105 = [dictionaryCopy objectForKey:@"HoldMessagesUntilClassCUnlock"];
         if ([v105 BOOLValue])
         {
           v106 = 4;
@@ -698,7 +698,7 @@ LABEL_11:
 
         *(v5 + 53) = *(v5 + 53) & 0xFB | v106;
 
-        v107 = [v4 objectForKey:@"WantsPendingMessageUpdates"];
+        v107 = [dictionaryCopy objectForKey:@"WantsPendingMessageUpdates"];
         if ([v107 BOOLValue])
         {
           v108 = 32;
@@ -711,7 +711,7 @@ LABEL_11:
 
         *(v5 + 56) = *(v5 + 56) & 0xDF | v108;
 
-        v109 = [v4 objectForKey:@"WantsPendingResourceUpdates"];
+        v109 = [dictionaryCopy objectForKey:@"WantsPendingResourceUpdates"];
         if ([v109 BOOLValue])
         {
           v110 = 0x80;
@@ -724,7 +724,7 @@ LABEL_11:
 
         *(v5 + 58) = v110 & 0x80 | *(v5 + 58) & 0x7F;
 
-        v111 = [v4 objectForKey:@"CrossAccountMessages"];
+        v111 = [dictionaryCopy objectForKey:@"CrossAccountMessages"];
         if ([v111 BOOLValue])
         {
           v112 = 4;
@@ -737,7 +737,7 @@ LABEL_11:
 
         *(v5 + 57) = *(v5 + 57) & 0xFB | v112;
 
-        v113 = [v4 objectForKey:@"BlockRemoteTimeouts"];
+        v113 = [dictionaryCopy objectForKey:@"BlockRemoteTimeouts"];
         if ([v113 BOOLValue])
         {
           v114 = 8;
@@ -750,7 +750,7 @@ LABEL_11:
 
         *(v5 + 57) = *(v5 + 57) & 0xF7 | v114;
 
-        v115 = [v4 objectForKey:@"AllowWakingMessages"];
+        v115 = [dictionaryCopy objectForKey:@"AllowWakingMessages"];
         if ([v115 BOOLValue])
         {
           v116 = 16;
@@ -763,7 +763,7 @@ LABEL_11:
 
         *(v5 + 57) = *(v5 + 57) & 0xEF | v116;
 
-        v117 = [v4 objectForKey:@"AllowUrgentMessages"];
+        v117 = [dictionaryCopy objectForKey:@"AllowUrgentMessages"];
         if ([v117 BOOLValue])
         {
           v118 = 32;
@@ -776,7 +776,7 @@ LABEL_11:
 
         *(v5 + 57) = *(v5 + 57) & 0xDF | v118;
 
-        v119 = [v4 objectForKey:@"PrototypingOnly"];
+        v119 = [dictionaryCopy objectForKey:@"PrototypingOnly"];
         if ([v119 BOOLValue])
         {
           v120 = 64;
@@ -789,7 +789,7 @@ LABEL_11:
 
         *(v5 + 57) = *(v5 + 57) & 0xBF | v120;
 
-        v121 = [v4 objectForKey:@"IsFamilyService"];
+        v121 = [dictionaryCopy objectForKey:@"IsFamilyService"];
         if ([v121 BOOLValue])
         {
           v122 = 0x80;
@@ -802,10 +802,10 @@ LABEL_11:
 
         *(v5 + 57) = v122 & 0x80 | *(v5 + 57) & 0x7F;
 
-        v123 = [v4 objectForKey:@"IsInvitationService"];
+        v123 = [dictionaryCopy objectForKey:@"IsInvitationService"];
         *(v5 + 58) = *(v5 + 58) & 0xFE | [v123 BOOLValue];
 
-        v124 = [v4 objectForKey:@"HadStandalonePreference"];
+        v124 = [dictionaryCopy objectForKey:@"HadStandalonePreference"];
         if ([v124 BOOLValue])
         {
           v125 = 4;
@@ -818,7 +818,7 @@ LABEL_11:
 
         *(v5 + 58) = *(v5 + 58) & 0xFB | v125;
 
-        v126 = [v4 objectForKey:@"RestrictedLogging"];
+        v126 = [dictionaryCopy objectForKey:@"RestrictedLogging"];
         if ([v126 BOOLValue])
         {
           v127 = 8;
@@ -831,7 +831,7 @@ LABEL_11:
 
         *(v5 + 58) = *(v5 + 58) & 0xF7 | v127;
 
-        v128 = [v4 objectForKey:@"FirewallAutoEnroll"];
+        v128 = [dictionaryCopy objectForKey:@"FirewallAutoEnroll"];
         if ([v128 BOOLValue])
         {
           v129 = 16;
@@ -844,7 +844,7 @@ LABEL_11:
 
         *(v5 + 58) = *(v5 + 58) & 0xEF | v129;
 
-        v130 = [v4 objectForKey:@"DisableFirewall"];
+        v130 = [dictionaryCopy objectForKey:@"DisableFirewall"];
         if ([v130 BOOLValue])
         {
           v131 = 32;
@@ -857,10 +857,10 @@ LABEL_11:
 
         *(v5 + 58) = *(v5 + 58) & 0xDF | v131;
 
-        v132 = [v4 objectForKey:@"SupportsOfflineDelivery"];
+        v132 = [dictionaryCopy objectForKey:@"SupportsOfflineDelivery"];
         *(v5 + 59) = *(v5 + 59) & 0xFE | [v132 BOOLValue];
 
-        v133 = [v4 objectForKey:@"SupportsBatchDelivery"];
+        v133 = [dictionaryCopy objectForKey:@"SupportsBatchDelivery"];
         if ([v133 BOOLValue])
         {
           v134 = 8;
@@ -873,42 +873,42 @@ LABEL_11:
 
         *(v5 + 59) = *(v5 + 59) & 0xF7 | v134;
 
-        v135 = [v4 objectForKey:@"ApplicationKeyIndex"];
-        v136 = [v135 unsignedIntValue];
-        if (v136)
+        v135 = [dictionaryCopy objectForKey:@"ApplicationKeyIndex"];
+        unsignedIntValue = [v135 unsignedIntValue];
+        if (unsignedIntValue)
         {
           if ([v135 unsignedIntValue] > 1)
           {
-            LOBYTE(v136) = 0;
+            LOBYTE(unsignedIntValue) = 0;
           }
 
           else
           {
-            LOBYTE(v136) = [v135 unsignedIntValue];
+            LOBYTE(unsignedIntValue) = [v135 unsignedIntValue];
           }
         }
 
-        v5->_applicationKeyIndex = v136;
-        v137 = [v4 objectForKey:@"KTRegistrationDataIndex"];
-        v138 = [v137 unsignedIntValue];
-        if (v138)
+        v5->_applicationKeyIndex = unsignedIntValue;
+        v137 = [dictionaryCopy objectForKey:@"KTRegistrationDataIndex"];
+        unsignedIntValue2 = [v137 unsignedIntValue];
+        if (unsignedIntValue2)
         {
           if ([v137 unsignedIntValue] > 3)
           {
-            LOBYTE(v138) = 0;
+            LOBYTE(unsignedIntValue2) = 0;
           }
 
           else
           {
-            LOBYTE(v138) = [v137 unsignedIntValue];
+            LOBYTE(unsignedIntValue2) = [v137 unsignedIntValue];
           }
         }
 
-        v5->_ktRegistrationDataIndex = v138;
-        v139 = [v4 objectForKey:@"TinkerMessagingOnly"];
+        v5->_ktRegistrationDataIndex = unsignedIntValue2;
+        v139 = [dictionaryCopy objectForKey:@"TinkerMessagingOnly"];
         *(v5 + 57) = *(v5 + 57) & 0xFE | [v139 BOOLValue];
 
-        v140 = [v4 objectForKey:@"DefaultSendModeNormal"];
+        v140 = [dictionaryCopy objectForKey:@"DefaultSendModeNormal"];
         if ([v140 BOOLValue])
         {
           v141 = 2;
@@ -922,7 +922,7 @@ LABEL_11:
         *(v5 + 58) = *(v5 + 58) & 0xFD | v141;
 
         v5->_linkedDeviceRelationships = 1;
-        v142 = [v4 objectForKey:@"LinkedDeviceRelationships"];
+        v142 = [dictionaryCopy objectForKey:@"LinkedDeviceRelationships"];
         v182 = 0u;
         v183 = 0u;
         v184 = 0u;
@@ -950,7 +950,7 @@ LABEL_11:
           while (v144);
         }
 
-        v147 = [v4 objectForKey:@"EnabledOnlyOnStandaloneDevices"];
+        v147 = [dictionaryCopy objectForKey:@"EnabledOnlyOnStandaloneDevices"];
         if ([v147 BOOLValue])
         {
           v148 = 0x80;
@@ -963,7 +963,7 @@ LABEL_11:
 
         *(v5 + 56) = v148 & 0x80 | *(v5 + 56) & 0x7F;
 
-        v149 = [v4 objectForKey:@"DisabledOnTinkerWatch"];
+        v149 = [dictionaryCopy objectForKey:@"DisabledOnTinkerWatch"];
         if ([v149 BOOLValue])
         {
           v150 = 64;
@@ -976,12 +976,12 @@ LABEL_11:
 
         *(v5 + 56) = *(v5 + 56) & 0xBF | v150;
 
-        v151 = [v4 objectForKey:@"DuetIdentifiers"];
+        v151 = [dictionaryCopy objectForKey:@"DuetIdentifiers"];
         v152 = sub_1A7AFED78(v151);
         duetIdentifiersIndices = v5->_duetIdentifiersIndices;
         v5->_duetIdentifiersIndices = v152;
 
-        v154 = [v4 objectForKey:@"MinCompatibilityVersion"];
+        v154 = [dictionaryCopy objectForKey:@"MinCompatibilityVersion"];
         v155 = v154;
         if (v154)
         {
@@ -989,7 +989,7 @@ LABEL_11:
         }
 
         v5->_minCompatibilityVersion = v154;
-        v156 = [v4 objectForKey:@"AccountSyncMinCompatibilityVersion"];
+        v156 = [dictionaryCopy objectForKey:@"AccountSyncMinCompatibilityVersion"];
         v157 = v156;
         if (v156)
         {
@@ -997,7 +997,7 @@ LABEL_11:
         }
 
         v5->_accountSyncMinCompatibilityVersion = v156;
-        v158 = [v4 objectForKey:@"QueryServiceName"];
+        v158 = [dictionaryCopy objectForKey:@"QueryServiceName"];
         queryService = v5->_queryService;
         v5->_queryService = v158;
 
@@ -1006,15 +1006,15 @@ LABEL_11:
           objc_storeStrong(&v5->_queryService, v5->_pushTopic);
         }
 
-        v160 = [v4 objectForKey:@"LinkedServices"];
+        v160 = [dictionaryCopy objectForKey:@"LinkedServices"];
         linkedServiceNames = v5->_linkedServiceNames;
         v5->_linkedServiceNames = v160;
 
-        v162 = [v4 objectForKey:@"QueryLinkedServices"];
+        v162 = [dictionaryCopy objectForKey:@"QueryLinkedServices"];
         queryLinkedServiceNames = v5->_queryLinkedServiceNames;
         v5->_queryLinkedServiceNames = v162;
 
-        v164 = [v4 objectForKey:@"IsUserDrivenRealTime"];
+        v164 = [dictionaryCopy objectForKey:@"IsUserDrivenRealTime"];
         if ([v164 BOOLValue])
         {
           v165 = 64;
@@ -1027,7 +1027,7 @@ LABEL_11:
 
         *(v5 + 58) = *(v5 + 58) & 0xBF | v165;
 
-        v166 = [v4 objectForKey:@"IsUltraConstrainedPushAllowed"];
+        v166 = [dictionaryCopy objectForKey:@"IsUltraConstrainedPushAllowed"];
         if ([v166 BOOLValue])
         {
           v167 = 2;
@@ -1040,7 +1040,7 @@ LABEL_11:
 
         *(v5 + 59) = *(v5 + 59) & 0xFD | v167;
 
-        v168 = [v4 objectForKey:@"RequiresPinnedIdentity"];
+        v168 = [dictionaryCopy objectForKey:@"RequiresPinnedIdentity"];
         if ([v168 BOOLValue])
         {
           v169 = 4;
@@ -1053,7 +1053,7 @@ LABEL_11:
 
         *(v5 + 59) = *(v5 + 59) & 0xFB | v169;
 
-        v170 = [v4 objectForKey:@"IgnoreServerStorageSSM"];
+        v170 = [dictionaryCopy objectForKey:@"IgnoreServerStorageSSM"];
         if ([v170 BOOLValue])
         {
           v171 = 16;
@@ -1066,7 +1066,7 @@ LABEL_11:
 
         *(v5 + 59) = *(v5 + 59) & 0xEF | v171;
 
-        v172 = [v4 objectForKey:@"IsInternalOnly"];
+        v172 = [dictionaryCopy objectForKey:@"IsInternalOnly"];
         if ([v172 BOOLValue])
         {
           v173 = 32;
@@ -1079,10 +1079,10 @@ LABEL_11:
 
         *(v5 + 59) = *(v5 + 59) & 0xDF | v173;
 
-        v174 = [v4 objectForKey:@"IPMessageFormat"];
+        v174 = [dictionaryCopy objectForKey:@"IPMessageFormat"];
         v5->_ipMessageFormat = [v174 unsignedCharValue];
 
-        v175 = [v4 objectForKey:@"allow-expensive-quality-metrics"];
+        v175 = [dictionaryCopy objectForKey:@"allow-expensive-quality-metrics"];
         v5->_allowExpensiveQualityMetrics = [v175 BOOLValue];
 
         goto LABEL_197;
@@ -1104,9 +1104,9 @@ LABEL_198:
   return v25;
 }
 
-- (id)_resolveProtocolName:(id)a3
+- (id)_resolveProtocolName:(id)name
 {
-  v3 = [a3 objectForKey:@"ProtocolName"];
+  v3 = [name objectForKey:@"ProtocolName"];
   v4 = v3;
   v5 = @"com.apple.private.alloy";
   if (v3 && ([v3 isEqualToString:@"com.apple.private.alloy"] & 1) == 0)
@@ -1117,10 +1117,10 @@ LABEL_198:
   return v5;
 }
 
-- (id)_stringToUseGivenName:(id)a3
+- (id)_stringToUseGivenName:(id)name
 {
-  v4 = a3;
-  if (!v4 || (v5 = [(NSString *)self->_identifier isEqualToString:v4], identifier = v4, v5))
+  nameCopy = name;
+  if (!nameCopy || (v5 = [(NSString *)self->_identifier isEqualToString:nameCopy], identifier = nameCopy, v5))
   {
     identifier = self->_identifier;
   }
@@ -1130,11 +1130,11 @@ LABEL_198:
   return v7;
 }
 
-- (id)_resolveShouldUseMachNotification:(id)a3
+- (id)_resolveShouldUseMachNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(IDSServiceProperties *)self _identifierWithProtocolAndMachServiceSuffix];
-  v6 = [v5 isEqualToString:v4];
+  notificationCopy = notification;
+  _identifierWithProtocolAndMachServiceSuffix = [(IDSServiceProperties *)self _identifierWithProtocolAndMachServiceSuffix];
+  v6 = [_identifierWithProtocolAndMachServiceSuffix isEqualToString:notificationCopy];
 
   if (v6)
   {
@@ -1143,61 +1143,61 @@ LABEL_198:
 
   else
   {
-    v7 = v4;
+    v7 = notificationCopy;
   }
 
   return v7;
 }
 
-- (void)setNeedsLaunchOnNearbyDevicesChanged:(BOOL)a3
+- (void)setNeedsLaunchOnNearbyDevicesChanged:(BOOL)changed
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E69A6180] sharedDefaults];
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  v7 = [(IDSServiceProperties *)self preferencesDomain];
-  [v5 setValue:v6 forKey:@"needsLaunchOnNearbyDevicesChanged" appID:v7];
+  changedCopy = changed;
+  mEMORY[0x1E69A6180] = [MEMORY[0x1E69A6180] sharedDefaults];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:changedCopy];
+  preferencesDomain = [(IDSServiceProperties *)self preferencesDomain];
+  [mEMORY[0x1E69A6180] setValue:v6 forKey:@"needsLaunchOnNearbyDevicesChanged" appID:preferencesDomain];
 
-  v9 = [MEMORY[0x1E69A6180] sharedDefaults];
-  v8 = [(IDSServiceProperties *)self preferencesDomain];
-  [v9 synchronizeAppID:v8];
+  mEMORY[0x1E69A6180]2 = [MEMORY[0x1E69A6180] sharedDefaults];
+  preferencesDomain2 = [(IDSServiceProperties *)self preferencesDomain];
+  [mEMORY[0x1E69A6180]2 synchronizeAppID:preferencesDomain2];
 }
 
 - (BOOL)needsLaunchOnNearbyDevicesChanged
 {
-  v3 = [(IDSServiceProperties *)self allowLaunchOnNearbyDevicesChanged];
-  if (v3)
+  allowLaunchOnNearbyDevicesChanged = [(IDSServiceProperties *)self allowLaunchOnNearbyDevicesChanged];
+  if (allowLaunchOnNearbyDevicesChanged)
   {
-    v4 = [MEMORY[0x1E69A6180] sharedDefaults];
-    v5 = [(IDSServiceProperties *)self preferencesDomain];
-    v6 = [v4 copyValueForKey:@"needsLaunchOnNearbyDevicesChanged" appID:v5];
-    v7 = [v6 BOOLValue];
+    mEMORY[0x1E69A6180] = [MEMORY[0x1E69A6180] sharedDefaults];
+    preferencesDomain = [(IDSServiceProperties *)self preferencesDomain];
+    v6 = [mEMORY[0x1E69A6180] copyValueForKey:@"needsLaunchOnNearbyDevicesChanged" appID:preferencesDomain];
+    bOOLValue = [v6 BOOLValue];
 
-    LOBYTE(v3) = v7;
+    LOBYTE(allowLaunchOnNearbyDevicesChanged) = bOOLValue;
   }
 
-  return v3;
+  return allowLaunchOnNearbyDevicesChanged;
 }
 
 - (NSString)preferencesDomain
 {
   v2 = MEMORY[0x1E696AEC0];
   v3 = qword_1EB2B3870;
-  v4 = [(IDSServiceProperties *)self identifier];
-  v5 = [v2 stringWithFormat:@"%@.%@", v3, v4];
+  identifier = [(IDSServiceProperties *)self identifier];
+  v5 = [v2 stringWithFormat:@"%@.%@", v3, identifier];
 
   return v5;
 }
 
 - (NSString)legacyPreferencesDomain
 {
-  v3 = [(IDSServiceProperties *)self legacyIdentifier];
+  legacyIdentifier = [(IDSServiceProperties *)self legacyIdentifier];
 
-  if (v3)
+  if (legacyIdentifier)
   {
     v4 = MEMORY[0x1E696AEC0];
     v5 = qword_1EB2B3870;
-    v6 = [(IDSServiceProperties *)self legacyIdentifier];
-    v7 = [v4 stringWithFormat:@"%@.%@", v5, v6];
+    legacyIdentifier2 = [(IDSServiceProperties *)self legacyIdentifier];
+    v7 = [v4 stringWithFormat:@"%@.%@", v5, legacyIdentifier2];
   }
 
   else
@@ -1273,7 +1273,7 @@ LABEL_198:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(IDSServiceProperties);
   [(IDSServiceProperties *)v4 setServiceName:self->_serviceName];

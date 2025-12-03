@@ -1,32 +1,32 @@
 @interface PKAccountWebServiceDailyCashEligibilityResponse
-- (PKAccountWebServiceDailyCashEligibilityResponse)initWithData:(id)a3;
+- (PKAccountWebServiceDailyCashEligibilityResponse)initWithData:(id)data;
 @end
 
 @implementation PKAccountWebServiceDailyCashEligibilityResponse
 
-- (PKAccountWebServiceDailyCashEligibilityResponse)initWithData:(id)a3
+- (PKAccountWebServiceDailyCashEligibilityResponse)initWithData:(id)data
 {
   v40 = *MEMORY[0x1E69E9840];
   v38.receiver = self;
   v38.super_class = PKAccountWebServiceDailyCashEligibilityResponse;
-  v3 = [(PKWebServiceResponse *)&v38 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v38 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 PKArrayForKey:@"destinations"];
-      v7 = [v5 PKStringForKey:@"localizedTitle"];
-      v8 = [v5 PKStringForKey:@"localizedFooter"];
-      v9 = [v5 PKStringForKey:@"currentDestination"];
+      v6 = [jSONObject PKArrayForKey:@"destinations"];
+      v7 = [jSONObject PKStringForKey:@"localizedTitle"];
+      v8 = [jSONObject PKStringForKey:@"localizedFooter"];
+      v9 = [jSONObject PKStringForKey:@"currentDestination"];
       v32 = PKAccountRewardRedemptionTypeFromString(v9);
 
       if ([v6 count])
       {
         v28 = v8;
-        v30 = v5;
+        v30 = jSONObject;
         v31 = v4;
         v33 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v34 = 0u;
@@ -91,7 +91,7 @@
         v31->_summary = v25;
 
         v6 = v29;
-        v5 = v30;
+        jSONObject = v30;
       }
     }
   }

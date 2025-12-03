@@ -1,24 +1,24 @@
 @interface MapsSubtitleHeaderView
 - (_TtP4Maps30MapsSubtitleHeaderViewDelegate_)delegate;
-- (void)setDelegate:(id)a3;
-- (void)setHeaderSize:(int64_t)a3;
-- (void)setParentViewController:(id)a3;
-- (void)setShowTitle:(BOOL)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setHeaderSize:(int64_t)size;
+- (void)setParentViewController:(id)controller;
+- (void)setShowTitle:(BOOL)title;
 @end
 
 @implementation MapsSubtitleHeaderView
 
-- (void)setHeaderSize:(int64_t)a3
+- (void)setHeaderSize:(int64_t)size
 {
-  *(self + OBJC_IVAR____TtC4Maps22MapsSubtitleHeaderView_headerSize) = a3;
-  v3 = self;
+  *(self + OBJC_IVAR____TtC4Maps22MapsSubtitleHeaderView_headerSize) = size;
+  selfCopy = self;
   sub_10018D9D4();
 }
 
-- (void)setShowTitle:(BOOL)a3
+- (void)setShowTitle:(BOOL)title
 {
-  *(self + OBJC_IVAR____TtC4Maps22MapsSubtitleHeaderView_showTitle) = a3;
-  v3 = self;
+  *(self + OBJC_IVAR____TtC4Maps22MapsSubtitleHeaderView_showTitle) = title;
+  selfCopy = self;
   sub_10018D9D4();
 }
 
@@ -29,22 +29,22 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  *(self + OBJC_IVAR____TtC4Maps22MapsSubtitleHeaderView_delegate) = a3;
+  *(self + OBJC_IVAR____TtC4Maps22MapsSubtitleHeaderView_delegate) = delegate;
   swift_unknownObjectRetain_n();
-  v4 = self;
+  selfCopy = self;
   swift_unknownObjectRelease();
   sub_10018D9D4();
   swift_unknownObjectRelease();
 }
 
-- (void)setParentViewController:(id)a3
+- (void)setParentViewController:(id)controller
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps22MapsSubtitleHeaderView_parentViewController);
-  *(self + OBJC_IVAR____TtC4Maps22MapsSubtitleHeaderView_parentViewController) = a3;
-  v5 = a3;
-  v6 = self;
+  *(self + OBJC_IVAR____TtC4Maps22MapsSubtitleHeaderView_parentViewController) = controller;
+  controllerCopy = controller;
+  selfCopy = self;
 
   sub_10018D9D4();
 }

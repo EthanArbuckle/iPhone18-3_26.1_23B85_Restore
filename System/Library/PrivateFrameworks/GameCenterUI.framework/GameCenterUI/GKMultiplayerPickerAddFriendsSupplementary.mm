@@ -1,9 +1,9 @@
 @interface GKMultiplayerPickerAddFriendsSupplementary
 + (NSString)reuseIdentifier;
-+ (double)preferredHeightFitting:(CGSize)a3 inTraitEnvironment:(id)a4;
++ (double)preferredHeightFitting:(CGSize)fitting inTraitEnvironment:(id)environment;
 - (id)addFriendsHandler;
 - (void)layoutSubviews;
-- (void)setAddFriendsHandler:(id)a3;
+- (void)setAddFriendsHandler:(id)handler;
 @end
 
 @implementation GKMultiplayerPickerAddFriendsSupplementary
@@ -38,9 +38,9 @@
   return v4;
 }
 
-- (void)setAddFriendsHandler:(id)a3
+- (void)setAddFriendsHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -53,21 +53,21 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   GKMultiplayerPickerAddFriendsSupplementary.addFriendsHandler.setter(v4, v5);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   GKMultiplayerPickerAddFriendsSupplementary.layoutSubviews()();
 }
 
-+ (double)preferredHeightFitting:(CGSize)a3 inTraitEnvironment:(id)a4
++ (double)preferredHeightFitting:(CGSize)fitting inTraitEnvironment:(id)environment
 {
-  width = a3.width;
+  width = fitting.width;
   swift_unknownObjectRetain();
-  static GKMultiplayerPickerAddFriendsSupplementary.preferredHeight(fitting:in:)(a4, width);
+  static GKMultiplayerPickerAddFriendsSupplementary.preferredHeight(fitting:in:)(environment, width);
   v7 = v6;
   swift_unknownObjectRelease();
   return v7;

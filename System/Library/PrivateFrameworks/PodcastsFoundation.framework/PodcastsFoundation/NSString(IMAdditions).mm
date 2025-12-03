@@ -65,7 +65,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) firstMatchInString:a1 options:0 range:{0, objc_msgSend(a1, "length", v16)}];
+        v13 = [*(*(&v16 + 1) + 8 * i) firstMatchInString:self options:0 range:{0, objc_msgSend(self, "length", v16)}];
 
         if (v13)
         {
@@ -90,7 +90,7 @@
     [NSString(IMAdditions) hasHTML];
   }
 
-  result = [a1 containsMatchIn:{hasHTML_trie, v16}];
+  result = [self containsMatchIn:{hasHTML_trie, v16}];
 LABEL_15:
   v15 = *MEMORY[0x1E69E9840];
   return result;
@@ -98,29 +98,29 @@ LABEL_15:
 
 - (id)stringByStrippingHTML
 {
-  if ([a1 length])
+  if ([self length])
   {
-    Memory = htmlReadMemory([a1 UTF8String], objc_msgSend(a1, "lengthOfBytesUsingEncoding:", 4), 0, "utf8", 2401);
-    v3 = [MEMORY[0x1E696AD60] string];
-    appendTextFromNodeRecursively(Memory, v3);
-    v4 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v5 = [v3 stringByTrimmingCharactersInSet:v4];
+    Memory = htmlReadMemory([self UTF8String], objc_msgSend(self, "lengthOfBytesUsingEncoding:", 4), 0, "utf8", 2401);
+    string = [MEMORY[0x1E696AD60] string];
+    appendTextFromNodeRecursively(Memory, string);
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    selfCopy = [string stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     xmlFreeDoc(Memory);
   }
 
   else
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (__CFString)im_stringByMemoryEfficientTrimmingCharactersInSet:()IMAdditions
 {
   v4 = a3;
-  v5 = [a1 length];
+  v5 = [self length];
   if (!v5)
   {
     goto LABEL_18;
@@ -130,7 +130,7 @@ LABEL_15:
   v7 = 0;
   v8 = -v5;
   v9 = &stru_1F548B930;
-  while ([v4 characterIsMember:{objc_msgSend(a1, "characterAtIndex:", v7)}])
+  while ([v4 characterIsMember:{objc_msgSend(self, "characterAtIndex:", v7)}])
   {
     ++v7;
     if (__CFADD__(v8++, 1))
@@ -153,7 +153,7 @@ LABEL_15:
   else
   {
     v12 = 0;
-    while ([v4 characterIsMember:{objc_msgSend(a1, "characterAtIndex:", v11)}])
+    while ([v4 characterIsMember:{objc_msgSend(self, "characterAtIndex:", v11)}])
     {
       ++v12;
       --v11;
@@ -174,16 +174,16 @@ LABEL_15:
 
   if (v7 | v12)
   {
-    v13 = [a1 substringWithRange:{v7, -(v12 + v8)}];
+    selfCopy = [self substringWithRange:{v7, -(v12 + v8)}];
   }
 
   else
   {
 LABEL_18:
-    v13 = a1;
+    selfCopy = self;
   }
 
-  v9 = v13;
+  v9 = selfCopy;
 LABEL_20:
 
   return v9;
@@ -191,17 +191,17 @@ LABEL_20:
 
 + (id)durationFormatter
 {
-  v0 = [MEMORY[0x1E696AF00] currentThread];
-  v1 = [v0 threadDictionary];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v2 = [v1 objectForKey:@"kIMDurationNumberFormatterKey"];
+  v2 = [threadDictionary objectForKey:@"kIMDurationNumberFormatterKey"];
   if (!v2)
   {
     v2 = objc_alloc_init(MEMORY[0x1E696ADA0]);
-    v3 = [MEMORY[0x1E695DF58] currentLocale];
-    [v2 setLocale:v3];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    [v2 setLocale:currentLocale];
 
-    [v1 setObject:v2 forKey:@"kIMDurationNumberFormatterKey"];
+    [threadDictionary setObject:v2 forKey:@"kIMDurationNumberFormatterKey"];
   }
 
   return v2;
@@ -209,15 +209,15 @@ LABEL_20:
 
 + (id)UUID
 {
-  v0 = [MEMORY[0x1E696AFB0] UUID];
-  v1 = [v0 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v1;
+  return uUIDString;
 }
 
 - (id)URLFragmentString
 {
-  v2 = [a1 rangeOfString:@"#"];
+  v2 = [self rangeOfString:@"#"];
   if (v2 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = 0;
@@ -225,7 +225,7 @@ LABEL_20:
 
   else
   {
-    v3 = [a1 substringFromIndex:v2 + 1];
+    v3 = [self substringFromIndex:v2 + 1];
   }
 
   return v3;
@@ -233,38 +233,38 @@ LABEL_20:
 
 - (id)stringByRemovingURLFragment
 {
-  v1 = a1;
-  v2 = [v1 rangeOfString:@"#"];
+  selfCopy = self;
+  v2 = [selfCopy rangeOfString:@"#"];
   if (v2 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = [v1 substringToIndex:v2];
+    v3 = [selfCopy substringToIndex:v2];
 
-    v1 = v3;
+    selfCopy = v3;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)stringByConvertingControlCharactersToSpace
 {
-  v2 = [MEMORY[0x1E696AB08] controlCharacterSet];
-  v3 = [a1 rangeOfCharacterFromSet:v2];
+  controlCharacterSet = [MEMORY[0x1E696AB08] controlCharacterSet];
+  v3 = [self rangeOfCharacterFromSet:controlCharacterSet];
   if (v3 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
   else
   {
     v6 = v3;
     v7 = v4;
-    v5 = [MEMORY[0x1E696AD60] stringWithString:a1];
+    selfCopy = [MEMORY[0x1E696AD60] stringWithString:self];
     v8 = v6 + v7;
-    v9 = [v5 length] - (v6 + v7);
+    v9 = [selfCopy length] - (v6 + v7);
     do
     {
-      [v5 replaceCharactersInRange:v6 withString:{v7, @" "}];
-      v10 = [v5 rangeOfCharacterFromSet:v2 options:0 range:{v8, v9}];
+      [selfCopy replaceCharactersInRange:v6 withString:{v7, @" "}];
+      v10 = [selfCopy rangeOfCharacterFromSet:controlCharacterSet options:0 range:{v8, v9}];
       v12 = v11 - (v6 + v7) + v10;
       v8 += v12;
       v9 -= v12;
@@ -275,29 +275,29 @@ LABEL_20:
     while (v10 != 0x7FFFFFFFFFFFFFFFLL);
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)stringByConvertingNewlineCharacterSetToSpace
 {
-  v2 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  v3 = [a1 rangeOfCharacterFromSet:v2];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  v3 = [self rangeOfCharacterFromSet:newlineCharacterSet];
   if (v3 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
   else
   {
     v6 = v3;
     v7 = v4;
-    v5 = [MEMORY[0x1E696AD60] stringWithString:a1];
+    selfCopy = [MEMORY[0x1E696AD60] stringWithString:self];
     v8 = v6 + v7;
-    v9 = [v5 length] - (v6 + v7);
+    v9 = [selfCopy length] - (v6 + v7);
     do
     {
-      [v5 replaceCharactersInRange:v6 withString:{v7, @" "}];
-      v10 = [v5 rangeOfCharacterFromSet:v2 options:0 range:{v8, v9}];
+      [selfCopy replaceCharactersInRange:v6 withString:{v7, @" "}];
+      v10 = [selfCopy rangeOfCharacterFromSet:newlineCharacterSet options:0 range:{v8, v9}];
       v12 = v11 - (v6 + v7) + v10;
       v8 += v12;
       v9 -= v12;
@@ -308,7 +308,7 @@ LABEL_20:
     while (v10 != 0x7FFFFFFFFFFFFFFFLL);
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (__CFString)pf_stringWithPercentEscape
@@ -327,8 +327,8 @@ LABEL_20:
 
 - (BOOL)isWhitespace
 {
-  v2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v3 = [a1 stringByTrimmingCharactersInSet:v2];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v3 = [self stringByTrimmingCharactersInSet:whitespaceCharacterSet];
   v4 = [v3 length] == 0;
 
   return v4;
@@ -336,48 +336,48 @@ LABEL_20:
 
 - (id)iTunesSortString
 {
-  v1 = [a1 copyWithoutInsignificantPrefixAndCharacters];
+  copyWithoutInsignificantPrefixAndCharacters = [self copyWithoutInsignificantPrefixAndCharacters];
 
-  return v1;
+  return copyWithoutInsignificantPrefixAndCharacters;
 }
 
 + (id)stringWithDuration:()IMAdditions
 {
   v2 = a2;
   v3 = (a2 / 60 % 60);
-  v4 = [a1 durationFormatter];
-  [v4 setMinimumIntegerDigits:1];
+  durationFormatter = [self durationFormatter];
+  [durationFormatter setMinimumIntegerDigits:1];
   v5 = [MEMORY[0x1E696AD98] numberWithInt:(v2 / 3600)];
-  v6 = [v4 stringFromNumber:v5];
+  v6 = [durationFormatter stringFromNumber:v5];
 
   if (v2 < 3600)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithInt:v3];
-    v8 = [v4 stringFromNumber:v13];
+    v8 = [durationFormatter stringFromNumber:v13];
 
-    [v4 setMaximumIntegerDigits:2];
-    [v4 setMinimumIntegerDigits:2];
+    [durationFormatter setMaximumIntegerDigits:2];
+    [durationFormatter setMinimumIntegerDigits:2];
     v14 = [MEMORY[0x1E696AD98] numberWithInt:(v2 % 60)];
-    v10 = [v4 stringFromNumber:v14];
+    v10 = [durationFormatter stringFromNumber:v14];
 
-    v15 = [MEMORY[0x1E696AAE8] podcastsFoundationBundle];
-    v12 = [v15 localizedStringForKey:@"DURATION_FORMAT_MINUTES" value:&stru_1F548B930 table:0];
+    podcastsFoundationBundle = [MEMORY[0x1E696AAE8] podcastsFoundationBundle];
+    v12 = [podcastsFoundationBundle localizedStringForKey:@"DURATION_FORMAT_MINUTES" value:&stru_1F548B930 table:0];
 
     [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v12 validFormatSpecifiers:@"%@ %@" error:0, v8, v10, v18];
   }
 
   else
   {
-    [v4 setMaximumIntegerDigits:2];
-    [v4 setMinimumIntegerDigits:2];
+    [durationFormatter setMaximumIntegerDigits:2];
+    [durationFormatter setMinimumIntegerDigits:2];
     v7 = [MEMORY[0x1E696AD98] numberWithInt:v3];
-    v8 = [v4 stringFromNumber:v7];
+    v8 = [durationFormatter stringFromNumber:v7];
 
     v9 = [MEMORY[0x1E696AD98] numberWithInt:(v2 % 60)];
-    v10 = [v4 stringFromNumber:v9];
+    v10 = [durationFormatter stringFromNumber:v9];
 
-    v11 = [MEMORY[0x1E696AAE8] podcastsFoundationBundle];
-    v12 = [v11 localizedStringForKey:@"DURATION_FORMAT_HOURS" value:&stru_1F548B930 table:0];
+    podcastsFoundationBundle2 = [MEMORY[0x1E696AAE8] podcastsFoundationBundle];
+    v12 = [podcastsFoundationBundle2 localizedStringForKey:@"DURATION_FORMAT_HOURS" value:&stru_1F548B930 table:0];
 
     [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v12 validFormatSpecifiers:@"%@ %@ %@" error:0, v6, v8, v10];
   }
@@ -393,42 +393,42 @@ LABEL_20:
   if ([v3 count])
   {
     v5 = [v3 objectAtIndex:{objc_msgSend(v3, "count") - 1}];
-    v6 = [v5 intValue];
+    intValue = [v5 intValue];
 
     if ([v3 count] < 2)
     {
-      v8 = 0;
+      intValue2 = 0;
     }
 
     else
     {
       v7 = [v3 objectAtIndex:{objc_msgSend(v3, "count") - 2}];
-      v8 = [v7 intValue];
+      intValue2 = [v7 intValue];
 
       if ([v3 count] >= 3)
       {
         v9 = [v3 objectAtIndex:{objc_msgSend(v3, "count") - 3}];
-        v10 = [v9 intValue];
+        intValue3 = [v9 intValue];
 
-        v4 = v10 * 60.0;
+        v4 = intValue3 * 60.0;
       }
     }
   }
 
   else
   {
-    v8 = 0;
-    v6 = 0;
+    intValue2 = 0;
+    intValue = 0;
   }
 
-  return (60 * v8) + v4 * 60.0 + v6;
+  return (60 * intValue2) + v4 * 60.0 + intValue;
 }
 
 - (id)dictionaryByDecomposingQueryStringWithURLDecode:()IMAdditions
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [a1 componentsSeparatedByString:@"&"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v6 = [self componentsSeparatedByString:@"&"];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -462,10 +462,10 @@ LABEL_20:
             v16 = v10;
             v17 = v6;
             v18 = a3;
-            v20 = v19 = v5;
+            v20 = v19 = dictionary;
 
             v13 = v20;
-            v5 = v19;
+            dictionary = v19;
             a3 = v18;
             v6 = v17;
             v10 = v16;
@@ -473,7 +473,7 @@ LABEL_20:
             v8 = v23;
           }
 
-          [v5 setObject:v14 forKey:v13];
+          [dictionary setObject:v14 forKey:v13];
         }
 
         ++v11;
@@ -488,7 +488,7 @@ LABEL_20:
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return dictionary;
 }
 
 - (uint64_t)rangeOfSignificantSubstring
@@ -502,7 +502,7 @@ LABEL_20:
   v13[1] = v13;
   v13[2] = 0x2020000000;
   v14 = 0;
-  v3 = [a1 length];
+  v3 = [self length];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __52__NSString_IMAdditions__rangeOfSignificantSubstring__block_invoke;
@@ -511,9 +511,9 @@ LABEL_20:
   v12 = v13;
   v4 = v2;
   v10 = v4;
-  [a1 enumerateSubstringsInRange:0 options:v3 usingBlock:{3, v9}];
+  [self enumerateSubstringsInRange:0 options:v3 usingBlock:{3, v9}];
   v5 = v16[3];
-  v6 = [a1 length];
+  v6 = [self length];
   v7 = v6 - v16[3];
 
   _Block_object_dispose(v13, 8);
@@ -524,23 +524,23 @@ LABEL_20:
 
 - (uint64_t)stringByRemovingInsignificantPrefix
 {
-  v3 = [a1 rangeOfSignificantSubstring];
+  rangeOfSignificantSubstring = [self rangeOfSignificantSubstring];
 
-  return [a1 substringWithRange:{v3, v2}];
+  return [self substringWithRange:{rangeOfSignificantSubstring, v2}];
 }
 
 - (uint64_t)tokenCountWithEnumerationOptions:()IMAdditions maxTokenCount:outLimitLength:
 {
   if (a5)
   {
-    *a5 = [a1 length];
+    *a5 = [self length];
   }
 
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v9 = [a1 length];
+  v9 = [self length];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __87__NSString_IMAdditions__tokenCountWithEnumerationOptions_maxTokenCount_outLimitLength___block_invoke;
@@ -548,7 +548,7 @@ LABEL_20:
   v12[4] = &v13;
   v12[5] = a4;
   v12[6] = a5;
-  [a1 enumerateSubstringsInRange:0 options:v9 usingBlock:{a3, v12}];
+  [self enumerateSubstringsInRange:0 options:v9 usingBlock:{a3, v12}];
   v10 = v14[3];
   _Block_object_dispose(&v13, 8);
   return v10;
@@ -557,9 +557,9 @@ LABEL_20:
 - (id)stringByTruncatingToLength:()IMAdditions options:truncationString:
 {
   v8 = a5;
-  if ([a1 length] <= a3)
+  if ([self length] <= a3)
   {
-    v13 = a1;
+    selfCopy = self;
   }
 
   else
@@ -568,7 +568,7 @@ LABEL_20:
     v21 = &v20;
     v22 = 0x2020000000;
     v23 = 0;
-    v9 = [a1 length];
+    v9 = [self length];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __77__NSString_IMAdditions__stringByTruncatingToLength_options_truncationString___block_invoke;
@@ -577,7 +577,7 @@ LABEL_20:
     v10 = v8;
     v17 = v10;
     v18 = &v20;
-    [a1 enumerateSubstringsInRange:0 options:v9 usingBlock:{a4, v16}];
+    [self enumerateSubstringsInRange:0 options:v9 usingBlock:{a4, v16}];
     v11 = v21[3];
     if (!v11)
     {
@@ -585,28 +585,28 @@ LABEL_20:
       v11 = a3;
     }
 
-    v12 = [a1 substringToIndex:v11];
-    v13 = v12;
+    v12 = [self substringToIndex:v11];
+    selfCopy = v12;
     if (v10)
     {
       v14 = [v12 stringByAppendingString:v10];
 
-      v13 = v14;
+      selfCopy = v14;
     }
 
     _Block_object_dispose(&v20, 8);
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (id)stringByEnclosingInQuotes
 {
-  v1 = [a1 stringByRemovingEnclosingQuotations];
+  stringByRemovingEnclosingQuotations = [self stringByRemovingEnclosingQuotations];
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 localizedStringForKey:@"Quoted_Text_Format" value:@"“%@”" table:0];
-  v5 = [v2 stringWithFormat:v4, v1];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v4 = [mainBundle localizedStringForKey:@"Quoted_Text_Format" value:@"“%@”" table:0];
+  v5 = [v2 stringWithFormat:v4, stringByRemovingEnclosingQuotations];
 
   return v5;
 }
@@ -616,12 +616,12 @@ LABEL_20:
   v4 = a3;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [a1 uppercaseStringWithLocale:v4];
+    v5 = [self uppercaseStringWithLocale:v4];
   }
 
   else
   {
-    v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:a1];
+    v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:self];
     CFStringUppercase(v5, v4);
   }
 
@@ -630,51 +630,51 @@ LABEL_20:
 
 - (id)stringByRemovingEnclosingQuotations
 {
-  v1 = a1;
+  selfCopy = self;
   v2 = MEMORY[0x1E696AB08];
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 localizedStringForKey:@"Quotes_Character_Set" value:@"“'‘’”" table:0];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v4 = [mainBundle localizedStringForKey:@"Quotes_Character_Set" value:@"“'‘’”" table:0];
   v5 = [v2 characterSetWithCharactersInString:v4];
 
-  v6 = [v1 rangeOfCharacterFromSet:v5 options:0 range:{0, 1}];
+  v6 = [selfCopy rangeOfCharacterFromSet:v5 options:0 range:{0, 1}];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [v1 stringByReplacingCharactersInRange:v6 withString:{v7, &stru_1F548B930}];
+    v8 = [selfCopy stringByReplacingCharactersInRange:v6 withString:{v7, &stru_1F548B930}];
 
-    v1 = v8;
+    selfCopy = v8;
   }
 
-  if ([v1 length] >= 2)
+  if ([selfCopy length] >= 2)
   {
-    v9 = [v1 rangeOfCharacterFromSet:v5 options:0 range:{objc_msgSend(v1, "length") - 1, 1}];
+    v9 = [selfCopy rangeOfCharacterFromSet:v5 options:0 range:{objc_msgSend(selfCopy, "length") - 1, 1}];
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = [v1 stringByReplacingCharactersInRange:v9 withString:{v10, &stru_1F548B930}];
+      v11 = [selfCopy stringByReplacingCharactersInRange:v9 withString:{v10, &stru_1F548B930}];
 
-      v1 = v11;
+      selfCopy = v11;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (unint64_t)unsignedLongLongValue
 {
-  v1 = [a1 UTF8String];
+  uTF8String = [self UTF8String];
 
-  return strtoull(v1, 0, 0);
+  return strtoull(uTF8String, 0, 0);
 }
 
 - (uint64_t)imIsDefaultWritingMode
 {
-  if ([a1 imIsVerticalWritingMode])
+  if ([self imIsVerticalWritingMode])
   {
     return 0;
   }
 
   else
   {
-    return [a1 imIsHorizontalWritingMode] ^ 1;
+    return [self imIsHorizontalWritingMode] ^ 1;
   }
 }
 

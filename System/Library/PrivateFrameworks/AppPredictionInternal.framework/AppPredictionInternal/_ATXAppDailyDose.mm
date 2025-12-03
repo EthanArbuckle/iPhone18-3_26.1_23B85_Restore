@@ -1,19 +1,19 @@
 @interface _ATXAppDailyDose
 + (void)deleteCurrentDoseFile;
-- (BOOL)_loadHistoricalDoseFrom:(id)a3;
+- (BOOL)_loadHistoricalDoseFrom:(id)from;
 - (_ATXAppDailyDose)init;
-- (_ATXAppDailyDose)initWithAppInFocusStream:(id)a3;
-- (_ATXAppDailyDose)initWithAppInFocusStream:(id)a3 timeZone:(id)a4 today:(id)a5 alpha:(double)a6 historicalDosePath:(id)a7 completion:(id)a8;
-- (double)getCurrentDoseForApp:(id)a3;
-- (id)getDoseForApp:(id)a3;
+- (_ATXAppDailyDose)initWithAppInFocusStream:(id)stream;
+- (_ATXAppDailyDose)initWithAppInFocusStream:(id)stream timeZone:(id)zone today:(id)today alpha:(double)alpha historicalDosePath:(id)path completion:(id)completion;
+- (double)getCurrentDoseForApp:(id)app;
+- (id)getDoseForApp:(id)app;
 - (id)previousBundleId;
-- (void)_asyncStopAppUsageAtDate:(id)a3 completion:(id)a4;
+- (void)_asyncStopAppUsageAtDate:(id)date completion:(id)completion;
 - (void)_backfillAppDurationMapDBForToday;
-- (void)_doTrainingOn:(id)a3 timeZone:(id)a4 completion:(id)a5;
-- (void)_recordAppDurationForApp:(id)a3 withStartTime:(id)a4 andEndTime:(id)a5;
-- (void)_writeHistoricalDoseWithCompletion:(id)a3;
-- (void)addLaunchForBundleId:(id)a3 date:(id)a4 completion:(id)a5;
-- (void)stopAppUsageAtDate:(id)a3;
+- (void)_doTrainingOn:(id)on timeZone:(id)zone completion:(id)completion;
+- (void)_recordAppDurationForApp:(id)app withStartTime:(id)time andEndTime:(id)endTime;
+- (void)_writeHistoricalDoseWithCompletion:(id)completion;
+- (void)addLaunchForBundleId:(id)id date:(id)date completion:(id)completion;
+- (void)stopAppUsageAtDate:(id)date;
 - (void)train;
 @end
 
@@ -27,15 +27,15 @@
   return v4;
 }
 
-- (_ATXAppDailyDose)initWithAppInFocusStream:(id)a3
+- (_ATXAppDailyDose)initWithAppInFocusStream:(id)stream
 {
-  v4 = a3;
-  if (!v4)
+  streamCopy = stream;
+  if (!streamCopy)
   {
     [_ATXAppDailyDose initWithAppInFocusStream:];
   }
 
-  v5 = [MEMORY[0x277CBEBB0] systemTimeZone];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
   v6 = [MEMORY[0x277CEB3C0] dictionaryWithLegacyPathForClass:objc_opt_class()];
   v7 = [v6 objectForKeyedSubscript:@"SmoothingAlpha"];
   if (!v7)
@@ -45,20 +45,20 @@
 
   [v7 doubleValue];
   v9 = v8;
-  v10 = [(_ATXAppDailyDose *)self todayWithTimeZone:v5];
-  v11 = [(_ATXAppDailyDose *)self initWithAppInFocusStream:v4 timeZone:v5 today:v10 alpha:0 historicalDosePath:0 completion:v9];
+  v10 = [(_ATXAppDailyDose *)self todayWithTimeZone:systemTimeZone];
+  v11 = [(_ATXAppDailyDose *)self initWithAppInFocusStream:streamCopy timeZone:systemTimeZone today:v10 alpha:0 historicalDosePath:0 completion:v9];
 
   return v11;
 }
 
-- (_ATXAppDailyDose)initWithAppInFocusStream:(id)a3 timeZone:(id)a4 today:(id)a5 alpha:(double)a6 historicalDosePath:(id)a7 completion:(id)a8
+- (_ATXAppDailyDose)initWithAppInFocusStream:(id)stream timeZone:(id)zone today:(id)today alpha:(double)alpha historicalDosePath:(id)path completion:(id)completion
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  if (!v15)
+  streamCopy = stream;
+  zoneCopy = zone;
+  todayCopy = today;
+  pathCopy = path;
+  completionCopy = completion;
+  if (!streamCopy)
   {
     [_ATXAppDailyDose initWithAppInFocusStream:timeZone:today:alpha:historicalDosePath:completion:];
   }
@@ -69,12 +69,12 @@
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_appInFocusStream, a3);
+    objc_storeStrong(&v20->_appInFocusStream, stream);
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
-    v24 = [v23 UTF8String];
+    uTF8String = [v23 UTF8String];
     v25 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v26 = dispatch_queue_create(v24, v25);
+    v26 = dispatch_queue_create(uTF8String, v25);
     queue = v21->_queue;
     v21->_queue = v26;
 
@@ -84,26 +84,26 @@
     currentDoseStore = v21->_currentDoseStore;
     v21->_currentDoseStore = v30;
 
-    v21->_alpha = a6;
+    v21->_alpha = alpha;
     v32 = MEMORY[0x277D42598];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __96___ATXAppDailyDose_initWithAppInFocusStream_timeZone_today_alpha_historicalDosePath_completion___block_invoke;
     v34[3] = &unk_27859A888;
     v35 = v21;
-    v36 = v18;
-    v37 = v17;
-    v38 = v16;
-    v39 = v19;
+    v36 = pathCopy;
+    v37 = todayCopy;
+    v38 = zoneCopy;
+    v39 = completionCopy;
     [v32 runBlockWhenDeviceIsClassCUnlocked:v34];
   }
 
   return v21;
 }
 
-- (id)getDoseForApp:(id)a3
+- (id)getDoseForApp:(id)app
 {
-  v4 = a3;
+  appCopy = app;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -115,10 +115,10 @@
   block[1] = 3221225472;
   block[2] = __34___ATXAppDailyDose_getDoseForApp___block_invoke;
   block[3] = &unk_27859A8B0;
-  v10 = v4;
+  v10 = appCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = appCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -127,11 +127,11 @@
   return v7;
 }
 
-- (double)getCurrentDoseForApp:(id)a3
+- (double)getCurrentDoseForApp:(id)app
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  appCopy = app;
+  v5 = appCopy;
+  if (appCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -144,7 +144,7 @@
     block[3] = &unk_27859A8B0;
     v11 = &v12;
     block[4] = self;
-    v10 = v4;
+    v10 = appCopy;
     dispatch_sync(queue, block);
     v7 = v13[3];
 
@@ -170,12 +170,12 @@
   dispatch_async(queue, block);
 }
 
-- (void)_doTrainingOn:(id)a3 timeZone:(id)a4 completion:(id)a5
+- (void)_doTrainingOn:(id)on timeZone:(id)zone completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  onCopy = on;
+  zoneCopy = zone;
+  completionCopy = completion;
   v11 = __atxlog_handle_default();
   v12 = os_signpost_id_generate(v11);
 
@@ -198,29 +198,29 @@
   v24[2] = __54___ATXAppDailyDose__doTrainingOn_timeZone_completion___block_invoke;
   v24[3] = &unk_27859A928;
   v24[4] = self;
-  v25 = v8;
-  v28 = v10;
+  v25 = onCopy;
+  v28 = completionCopy;
   v29 = v12;
-  v26 = v9;
+  v26 = zoneCopy;
   v27 = v15;
   v19 = v15;
-  v20 = v10;
-  v21 = v9;
-  v22 = v8;
+  v20 = completionCopy;
+  v21 = zoneCopy;
+  v22 = onCopy;
   dispatch_async(v18, v24);
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addLaunchForBundleId:(id)a3 date:(id)a4 completion:(id)a5
+- (void)addLaunchForBundleId:(id)id date:(id)date completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  idCopy = id;
+  dateCopy = date;
+  completionCopy = completion;
+  if (!idCopy)
   {
     [_ATXAppDailyDose addLaunchForBundleId:date:completion:];
-    if (v9)
+    if (dateCopy)
     {
       goto LABEL_3;
     }
@@ -230,7 +230,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v9)
+  if (!dateCopy)
   {
     goto LABEL_5;
   }
@@ -242,23 +242,23 @@ LABEL_3:
   v15[2] = __57___ATXAppDailyDose_addLaunchForBundleId_date_completion___block_invoke;
   v15[3] = &unk_27859A860;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = dateCopy;
+  v17 = idCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = idCopy;
+  v14 = dateCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)_recordAppDurationForApp:(id)a3 withStartTime:(id)a4 andEndTime:(id)a5
+- (void)_recordAppDurationForApp:(id)app withStartTime:(id)time andEndTime:(id)endTime
 {
-  v15 = a3;
+  appCopy = app;
   queue = self->_queue;
-  v9 = a5;
-  v10 = a4;
+  endTimeCopy = endTime;
+  timeCopy = time;
   dispatch_assert_queue_V2(queue);
-  [v9 timeIntervalSinceDate:v10];
+  [endTimeCopy timeIntervalSinceDate:timeCopy];
   v12 = v11;
 
   currentDoseStore = self->_currentDoseStore;
@@ -270,50 +270,50 @@ LABEL_3:
     [(_ATXAppDailyDose *)self _backfillAppDurationMapDBForToday];
   }
 
-  [(_ATXAppDailyDoseCurrentStore *)self->_currentDoseStore increaseDoseFor:v15 by:v12];
+  [(_ATXAppDailyDoseCurrentStore *)self->_currentDoseStore increaseDoseFor:appCopy by:v12];
 }
 
-- (void)stopAppUsageAtDate:(id)a3
+- (void)stopAppUsageAtDate:(id)date
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  dateCopy = date;
+  v5 = dateCopy;
+  if (!dateCopy)
   {
     [_ATXAppDailyDose stopAppUsageAtDate:];
-    v4 = 0;
+    dateCopy = 0;
   }
 
-  [(_ATXAppDailyDose *)self _asyncStopAppUsageAtDate:v4 completion:0];
+  [(_ATXAppDailyDose *)self _asyncStopAppUsageAtDate:dateCopy completion:0];
 }
 
-- (void)_asyncStopAppUsageAtDate:(id)a3 completion:(id)a4
+- (void)_asyncStopAppUsageAtDate:(id)date completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56___ATXAppDailyDose__asyncStopAppUsageAtDate_completion___block_invoke;
   block[3] = &unk_27859A950;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dateCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dateCopy;
   dispatch_sync(queue, block);
 }
 
 + (void)deleteCurrentDoseFile
 {
   v4 = objc_opt_new();
-  v3 = [a1 _defaultCurrentDosePath];
-  [v4 writeToFile:v3 atomically:0];
+  _defaultCurrentDosePath = [self _defaultCurrentDosePath];
+  [v4 writeToFile:_defaultCurrentDosePath atomically:0];
 }
 
-- (void)_writeHistoricalDoseWithCompletion:(id)a3
+- (void)_writeHistoricalDoseWithCompletion:(id)completion
 {
   v22[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v6 = objc_autoreleasePoolPush();
   v21[0] = @"appAverageDurationMapKey";
@@ -341,7 +341,7 @@ LABEL_3:
   v17[2] = __55___ATXAppDailyDose__writeHistoricalDoseWithCompletion___block_invoke;
   v17[3] = &unk_2785968C8;
   v18 = v9;
-  v14 = v5;
+  v14 = completionCopy;
   v19 = v14;
   v15 = v9;
   dispatch_async(v13, v17);
@@ -350,18 +350,18 @@ LABEL_3:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_loadHistoricalDoseFrom:(id)a3
+- (BOOL)_loadHistoricalDoseFrom:(id)from
 {
-  v4 = a3;
-  if (!v4)
+  fromCopy = from;
+  if (!fromCopy)
   {
-    v4 = +[_ATXAppDailyDose _defaultHistoricalDosePath];
+    fromCopy = +[_ATXAppDailyDose _defaultHistoricalDosePath];
   }
 
   dispatch_assert_queue_V2(self->_queue);
   v5 = objc_autoreleasePoolPush();
   v28 = 0;
-  v6 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:v4 options:0 error:&v28];
+  v6 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:fromCopy options:0 error:&v28];
   v7 = v28;
   v8 = v7;
   if (v6)
@@ -381,9 +381,9 @@ LABEL_3:
     if (v16)
     {
       v18 = [v16 objectForKeyedSubscript:@"modelVersion"];
-      v19 = [v18 integerValue];
+      integerValue = [v18 integerValue];
 
-      if (v19 < 1)
+      if (integerValue < 1)
       {
         v23 = 0;
         goto LABEL_18;
@@ -447,8 +447,8 @@ LABEL_20:
 {
   dispatch_assert_queue_V2(self->_queue);
   v3 = objc_opt_new();
-  v4 = [MEMORY[0x277CBEBB0] systemTimeZone];
-  v5 = [(_ATXAppDailyDose *)self todayWithTimeZone:v4];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+  v5 = [(_ATXAppDailyDose *)self todayWithTimeZone:systemTimeZone];
 
   v6 = [(_ATXAppDailyDose *)self now];
   if ([v5 compare:v6] == -1)

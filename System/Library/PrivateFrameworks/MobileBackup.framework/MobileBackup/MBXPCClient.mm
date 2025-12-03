@@ -1,121 +1,121 @@
 @interface MBXPCClient
 - (BOOL)_isBackupAgent2Running;
-- (BOOL)acquireLockWithBackupUDID:(id)a3 owner:(id)a4 timeout:(double)a5 error:(id *)a6;
+- (BOOL)acquireLockWithBackupUDID:(id)d owner:(id)owner timeout:(double)timeout error:(id *)error;
 - (BOOL)allowiTunesBackup;
-- (BOOL)archiveLogsTo:(id)a3 error:(id *)a4;
-- (BOOL)cancelApplicationRestoreWithBundleID:(id)a3 error:(id *)a4;
-- (BOOL)cancelDeviceTransferWithTaskType:(int64_t)a3 error:(id *)a4;
-- (BOOL)clearAllPendingFollowUpsWithError:(id *)a3;
+- (BOOL)archiveLogsTo:(id)to error:(id *)error;
+- (BOOL)cancelApplicationRestoreWithBundleID:(id)d error:(id *)error;
+- (BOOL)cancelDeviceTransferWithTaskType:(int64_t)type error:(id *)error;
+- (BOOL)clearAllPendingFollowUpsWithError:(id *)error;
 - (BOOL)countCameraRollQuota;
-- (BOOL)countCameraRollQuotaForBackupUDID:(id)a3 error:(id *)a4;
-- (BOOL)deleteAccountWithError:(id *)a3;
-- (BOOL)deleteBackupUDID:(id)a3 error:(id *)a4;
+- (BOOL)countCameraRollQuotaForBackupUDID:(id)d error:(id *)error;
+- (BOOL)deleteAccountWithError:(id *)error;
+- (BOOL)deleteBackupUDID:(id)d error:(id *)error;
 - (BOOL)discountCameraRollQuota;
-- (BOOL)discountCameraRollQuotaForBackupUDID:(id)a3 error:(id *)a4;
-- (BOOL)exitMegaBackupMode:(id *)a3;
-- (BOOL)inheritSnapshot:(id)a3 fromDevice:(id)a4 error:(id *)a5;
+- (BOOL)discountCameraRollQuotaForBackupUDID:(id)d error:(id *)error;
+- (BOOL)exitMegaBackupMode:(id *)mode;
+- (BOOL)inheritSnapshot:(id)snapshot fromDevice:(id)device error:(id *)error;
 - (BOOL)isBackupEnabled;
-- (BOOL)isBackupEnabledForDomainName:(id)a3;
-- (BOOL)isBackupOnCellularAllowedWithAccount:(id)a3 error:(id *)a4;
-- (BOOL)isBackupOnCellularEnabledWithError:(id *)a3;
-- (BOOL)isInitialMegaBackupCompleted:(id *)a3;
-- (BOOL)isLocalBackupPasswordSetWithError:(id *)a3;
-- (BOOL)isManualBackupOnCellularAllowedWithAccount:(id)a3 error:(id *)a4;
-- (BOOL)logPrebuddyFlowTelemetry:(int64_t)a3 error:(id *)a4;
-- (BOOL)mergeSnapshots:(id)a3 backupUUID:(id)a4 error:(id *)a5;
-- (BOOL)pinSnapshotID:(unint64_t)a3 backupUDID:(id)a4 error:(id *)a5;
-- (BOOL)postFollowUpForBackgroundRestoreProgress:(id)a3 error:(id *)a4;
-- (BOOL)postFollowUpForRestoreFailedWithDomainNames:(id)a3 error:(id *)a4;
-- (BOOL)postFollowUpForRestoreTimeoutWithError:(id *)a3;
-- (BOOL)prepareForBackgroundRestoreWithError:(id *)a3;
-- (BOOL)recordRestoreFailure:(id)a3 error:(id *)a4;
-- (BOOL)releaseLockWithBackupUDID:(id)a3 owner:(id)a4 error:(id *)a5;
-- (BOOL)removeDomainName:(id)a3 error:(id *)a4;
-- (BOOL)requestMegaBackupExpirationDate:(id)a3 error:(id *)a4;
-- (BOOL)restoreBookWithPath:(id)a3 context:(id)a4 error:(id *)a5;
-- (BOOL)restoreDataExistsForApplicationWithBundleID:(id)a3 size:(unint64_t *)a4;
-- (BOOL)restoreFileExistsWithPath:(id)a3;
-- (BOOL)restoreFileWithPath:(id)a3 context:(id)a4 error:(id *)a5;
-- (BOOL)restoreFilesWithPaths:(id)a3 context:(id)a4 error:(id *)a5;
-- (BOOL)restorePreviousSettingsEnabledForMegaBackup:(id *)a3;
+- (BOOL)isBackupEnabledForDomainName:(id)name;
+- (BOOL)isBackupOnCellularAllowedWithAccount:(id)account error:(id *)error;
+- (BOOL)isBackupOnCellularEnabledWithError:(id *)error;
+- (BOOL)isInitialMegaBackupCompleted:(id *)completed;
+- (BOOL)isLocalBackupPasswordSetWithError:(id *)error;
+- (BOOL)isManualBackupOnCellularAllowedWithAccount:(id)account error:(id *)error;
+- (BOOL)logPrebuddyFlowTelemetry:(int64_t)telemetry error:(id *)error;
+- (BOOL)mergeSnapshots:(id)snapshots backupUUID:(id)d error:(id *)error;
+- (BOOL)pinSnapshotID:(unint64_t)d backupUDID:(id)iD error:(id *)error;
+- (BOOL)postFollowUpForBackgroundRestoreProgress:(id)progress error:(id *)error;
+- (BOOL)postFollowUpForRestoreFailedWithDomainNames:(id)names error:(id *)error;
+- (BOOL)postFollowUpForRestoreTimeoutWithError:(id *)error;
+- (BOOL)prepareForBackgroundRestoreWithError:(id *)error;
+- (BOOL)recordRestoreFailure:(id)failure error:(id *)error;
+- (BOOL)releaseLockWithBackupUDID:(id)d owner:(id)owner error:(id *)error;
+- (BOOL)removeDomainName:(id)name error:(id *)error;
+- (BOOL)requestMegaBackupExpirationDate:(id)date error:(id *)error;
+- (BOOL)restoreBookWithPath:(id)path context:(id)context error:(id *)error;
+- (BOOL)restoreDataExistsForApplicationWithBundleID:(id)d size:(unint64_t *)size;
+- (BOOL)restoreFileExistsWithPath:(id)path;
+- (BOOL)restoreFileWithPath:(id)path context:(id)context error:(id *)error;
+- (BOOL)restoreFilesWithPaths:(id)paths context:(id)context error:(id *)error;
+- (BOOL)restorePreviousSettingsEnabledForMegaBackup:(id *)backup;
 - (BOOL)restoreSupportsBatching;
-- (BOOL)setEntryPointForMegaBackupTelemetry:(int64_t)a3 error:(id *)a4;
-- (BOOL)setPrebuddyUIDeltaTelemetry:(id)a3 date:(id)a4 error:(id *)a5;
-- (BOOL)setupBackupWithPasscode:(id)a3 error:(id *)a4;
-- (BOOL)startBackupWithError:(id *)a3;
-- (BOOL)startBackupWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)startDeviceTransferWithTaskType:(int64_t)a3 sessionInfo:(id)a4 error:(id *)a5;
-- (BOOL)startRestoreForBackupUDID:(id)a3 snapshotID:(unint64_t)a4 error:(id *)a5;
-- (BOOL)startScanForBundleIDs:(id)a3 error:(id *)a4;
-- (BOOL)startScanWithError:(id *)a3;
-- (BOOL)unpinSnapshotID:(unint64_t)a3 backupUDID:(id)a4 error:(id *)a5;
-- (BOOL)unsetLocalBackupPasswordWithError:(id *)a3;
-- (BOOL)updateMegaBackupExpirationDate:(id)a3 error:(id *)a4;
-- (BOOL)wasBackupEnabledForMegaBackup:(id *)a3;
-- (MBXPCClient)initWithAccount:(id)a3 delegate:(id)a4 eventQueue:(id)a5 error:(id *)a6;
-- (MBXPCClient)initWithDelegate:(id)a3 eventQueue:(id)a4 personaIdentifier:(id)a5;
+- (BOOL)setEntryPointForMegaBackupTelemetry:(int64_t)telemetry error:(id *)error;
+- (BOOL)setPrebuddyUIDeltaTelemetry:(id)telemetry date:(id)date error:(id *)error;
+- (BOOL)setupBackupWithPasscode:(id)passcode error:(id *)error;
+- (BOOL)startBackupWithError:(id *)error;
+- (BOOL)startBackupWithOptions:(id)options error:(id *)error;
+- (BOOL)startDeviceTransferWithTaskType:(int64_t)type sessionInfo:(id)info error:(id *)error;
+- (BOOL)startRestoreForBackupUDID:(id)d snapshotID:(unint64_t)iD error:(id *)error;
+- (BOOL)startScanForBundleIDs:(id)ds error:(id *)error;
+- (BOOL)startScanWithError:(id *)error;
+- (BOOL)unpinSnapshotID:(unint64_t)d backupUDID:(id)iD error:(id *)error;
+- (BOOL)unsetLocalBackupPasswordWithError:(id *)error;
+- (BOOL)updateMegaBackupExpirationDate:(id)date error:(id *)error;
+- (BOOL)wasBackupEnabledForMegaBackup:(id *)backup;
+- (MBXPCClient)initWithAccount:(id)account delegate:(id)delegate eventQueue:(id)queue error:(id *)error;
+- (MBXPCClient)initWithDelegate:(id)delegate eventQueue:(id)queue personaIdentifier:(id)identifier;
 - (id)_makeConnection;
-- (id)_sendRequest:(id)a3 arguments:(id)a4 error:(id *)a5;
-- (id)backgroundRestoreCellularAccessWithError:(id *)a3;
+- (id)_sendRequest:(id)request arguments:(id)arguments error:(id *)error;
+- (id)backgroundRestoreCellularAccessWithError:(id *)error;
 - (id)backgroundRestoreInfo;
 - (id)backupDeviceUUID;
 - (id)backupState;
-- (id)dateOfLastBackupWithError:(id *)a3;
-- (id)dateOfNextScheduledBackupWithError:(id *)a3;
-- (id)deviceLockInfosWithError:(id *)a3;
+- (id)dateOfLastBackupWithError:(id *)error;
+- (id)dateOfNextScheduledBackupWithError:(id *)error;
+- (id)deviceLockInfosWithError:(id *)error;
 - (id)disabledDomainInfos;
-- (id)domainInfoForName:(id)a3;
+- (id)domainInfoForName:(id)name;
 - (id)domainInfoList;
-- (id)filesForSnapshotID:(unint64_t)a3 backupUDID:(id)a4 error:(id *)a5;
-- (id)getAppleIDsMapForBackupUDID:(id)a3 snapshotID:(unint64_t)a4 activeAppleID:(id *)a5 error:(id *)a6;
-- (id)getBuddyDataStashForBackupUDID:(id)a3 snapshotID:(unint64_t)a4 error:(id *)a5;
-- (id)journalForBackupUUID:(id)a3 error:(id *)a4;
-- (id)journalLastModifiedForBackupUUID:(id)a3 error:(id *)a4;
+- (id)filesForSnapshotID:(unint64_t)d backupUDID:(id)iD error:(id *)error;
+- (id)getAppleIDsMapForBackupUDID:(id)d snapshotID:(unint64_t)iD activeAppleID:(id *)appleID error:(id *)error;
+- (id)getBuddyDataStashForBackupUDID:(id)d snapshotID:(unint64_t)iD error:(id *)error;
+- (id)journalForBackupUUID:(id)d error:(id *)error;
+- (id)journalLastModifiedForBackupUUID:(id)d error:(id *)error;
 - (id)nextBackupSizeInfo;
-- (id)pendingSnapshotForCurrentDeviceWithError:(id *)a3;
+- (id)pendingSnapshotForCurrentDeviceWithError:(id *)error;
 - (id)personalPersonaIdentifier;
-- (id)reservedBackupSizeListWithError:(id *)a3;
-- (id)restoreFailuresForDataclass:(id)a3 assetType:(id)a4 range:(_NSRange)a5;
+- (id)reservedBackupSizeListWithError:(id *)error;
+- (id)restoreFailuresForDataclass:(id)dataclass assetType:(id)type range:(_NSRange)range;
 - (id)restoreInfo;
-- (id)restoreStateWithError:(id *)a3;
-- (id)synchronizeFileListsWithDeviceUUID:(id)a3 commitID:(id)a4 error:(id *)a5;
+- (id)restoreStateWithError:(id *)error;
+- (id)synchronizeFileListsWithDeviceUUID:(id)d commitID:(id)iD error:(id *)error;
 - (unint64_t)_backupOnCellularSupport;
-- (unint64_t)backupOnCellularSupportWithAccount:(id)a3 error:(id *)a4;
-- (unint64_t)countOfRestoreFailuresForDataclass:(id)a3 assetType:(id)a4;
+- (unint64_t)backupOnCellularSupportWithAccount:(id)account error:(id *)error;
+- (unint64_t)countOfRestoreFailuresForDataclass:(id)dataclass assetType:(id)type;
 - (unint64_t)nextBackupSize;
-- (void)accountChanged:(id)a3;
-- (void)boostBackgroundRestoreWithCompletionHandler:(id)a3;
-- (void)boostManualBackupWithCompletionHandler:(id)a3;
+- (void)accountChanged:(id)changed;
+- (void)boostBackgroundRestoreWithCompletionHandler:(id)handler;
+- (void)boostManualBackupWithCompletionHandler:(id)handler;
 - (void)cancel;
 - (void)cancelRestore;
 - (void)clearRestoreSession;
-- (void)connection:(id)a3 didReceiveMessage:(id)a4;
-- (void)connectionWasInterrupted:(id)a3;
-- (void)connectionWasInvalidated:(id)a3;
+- (void)connection:(id)connection didReceiveMessage:(id)message;
+- (void)connectionWasInterrupted:(id)interrupted;
+- (void)connectionWasInvalidated:(id)invalidated;
 - (void)dealloc;
 - (void)deviceIsLocking;
 - (void)deviceIsUnlocked;
-- (void)fetchAppBundleIDsForSnapshot:(id)a3 completion:(id)a4;
-- (void)fetchBackgroundRestoreCellularAccessWithCompletion:(id)a3;
-- (void)fetchRestorableSnapshotsWithCompletion:(id)a3;
-- (void)fetchiCloudRestoreIsCompleteWithCompletion:(id)a3;
+- (void)fetchAppBundleIDsForSnapshot:(id)snapshot completion:(id)completion;
+- (void)fetchBackgroundRestoreCellularAccessWithCompletion:(id)completion;
+- (void)fetchRestorableSnapshotsWithCompletion:(id)completion;
+- (void)fetchiCloudRestoreIsCompleteWithCompletion:(id)completion;
 - (void)finishRestore;
 - (void)insufficientFreeSpaceToRestore;
 - (void)passcodeChanged;
-- (void)prioritizeRestoreFileWithPath:(id)a3;
+- (void)prioritizeRestoreFileWithPath:(id)path;
 - (void)repair;
-- (void)saveBackgroundRestoreCellularAccess:(id)a3 completion:(id)a4;
-- (void)saveBackupDomainsEnabledForMegaBackup:(id)a3;
+- (void)saveBackgroundRestoreCellularAccess:(id)access completion:(id)completion;
+- (void)saveBackupDomainsEnabledForMegaBackup:(id)backup;
 - (void)saveBackupEnabledForMegaBackup;
-- (void)saveSyncSettingsEnabledForMegaBackup:(id)a3;
-- (void)setRestoreQualityOfService:(int64_t)a3;
-- (void)setSupportsiTunes:(BOOL)a3;
-- (void)startDataTransferWithPreflightInfo:(id)a3 completionHandler:(id)a4;
-- (void)startKeychainDataImportWithKeychainInfo:(id)a3 completionHandler:(id)a4;
-- (void)startKeychainDataTransferWithCompletionHandler:(id)a3;
-- (void)startPreflightWithCompletionHandler:(id)a3;
-- (void)startRestoreForBackupUDID:(id)a3 snapshotID:(unint64_t)a4 options:(id)a5 completion:(id)a6;
-- (void)startRestoreForSnapshot:(id)a3 options:(id)a4 completion:(id)a5;
+- (void)saveSyncSettingsEnabledForMegaBackup:(id)backup;
+- (void)setRestoreQualityOfService:(int64_t)service;
+- (void)setSupportsiTunes:(BOOL)tunes;
+- (void)startDataTransferWithPreflightInfo:(id)info completionHandler:(id)handler;
+- (void)startKeychainDataImportWithKeychainInfo:(id)info completionHandler:(id)handler;
+- (void)startKeychainDataTransferWithCompletionHandler:(id)handler;
+- (void)startPreflightWithCompletionHandler:(id)handler;
+- (void)startRestoreForBackupUDID:(id)d snapshotID:(unint64_t)iD options:(id)options completion:(id)completion;
+- (void)startRestoreForSnapshot:(id)snapshot options:(id)options completion:(id)completion;
 - (void)startWatchingBackupAgent2;
 - (void)syncBackupEnabled;
 - (void)wakeUp;
@@ -126,90 +126,90 @@
 - (id)_makeConnection
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MBXPCClient *)v2 connection];
-  if (!v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  connection = [(MBXPCClient *)selfCopy connection];
+  if (!connection)
   {
     v4 = MBGetDefaultLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v14 = v2;
+      v14 = selfCopy;
       v15 = 2112;
       v16 = @"com.apple.backupd";
       _os_log_impl(&dword_1DEB5D000, v4, OS_LOG_TYPE_INFO, "%@ connecting to %@", buf, 0x16u);
-      _MBLog(@"I ", "%@ connecting to %@", v5, v6, v7, v8, v9, v10, v2);
+      _MBLog(@"I ", "%@ connecting to %@", v5, v6, v7, v8, v9, v10, selfCopy);
     }
 
-    v3 = [[MBConnection alloc] initWithServiceName:@"com.apple.backupd" delegate:v2 delegateQueue:v2->_eventQueue];
-    [(MBXPCClient *)v2 setConnection:v3];
-    [(MBConnection *)v3 resume];
+    connection = [[MBConnection alloc] initWithServiceName:@"com.apple.backupd" delegate:selfCopy delegateQueue:selfCopy->_eventQueue];
+    [(MBXPCClient *)selfCopy setConnection:connection];
+    [(MBConnection *)connection resume];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  if (!v3)
+  if (!connection)
   {
     [MBXPCClient _makeConnection];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return connection;
 }
 
-- (MBXPCClient)initWithDelegate:(id)a3 eventQueue:(id)a4 personaIdentifier:(id)a5
+- (MBXPCClient)initWithDelegate:(id)delegate eventQueue:(id)queue personaIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = MBXPCClient;
-  v11 = [(MBManager *)&v16 _init];
-  if (v11)
+  _init = [(MBManager *)&v16 _init];
+  if (_init)
   {
-    if (!v9)
+    if (!queueCopy)
     {
       v12 = objc_opt_class();
       Name = class_getName(v12);
       v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v9 = dispatch_queue_create(Name, v14);
+      queueCopy = dispatch_queue_create(Name, v14);
     }
 
-    objc_storeStrong(&v11->_eventQueue, v9);
-    v11->_enabledToken = -1;
-    v11->_enabledOverCellularToken = -1;
-    objc_storeStrong(&v11->_personaIdentifier, a5);
-    [(MBManager *)v11 setDelegate:v8];
+    objc_storeStrong(&_init->_eventQueue, queueCopy);
+    _init->_enabledToken = -1;
+    _init->_enabledOverCellularToken = -1;
+    objc_storeStrong(&_init->_personaIdentifier, identifier);
+    [(MBManager *)_init setDelegate:delegateCopy];
   }
 
-  return v11;
+  return _init;
 }
 
-- (MBXPCClient)initWithAccount:(id)a3 delegate:(id)a4 eventQueue:(id)a5 error:(id *)a6
+- (MBXPCClient)initWithAccount:(id)account delegate:(id)delegate eventQueue:(id)queue error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  accountCopy = account;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  if (!accountCopy)
   {
     [MBXPCClient initWithAccount:delegate:eventQueue:error:];
   }
 
-  v13 = v12;
-  v14 = [v10 personaIdentifier];
-  if ([v10 isDataSeparatedAccount])
+  v13 = queueCopy;
+  personaIdentifier = [accountCopy personaIdentifier];
+  if ([accountCopy isDataSeparatedAccount])
   {
-    if (!v14)
+    if (!personaIdentifier)
     {
-      if (a6)
+      if (error)
       {
         v15 = [MBError errorWithCode:1 format:@"Nil persona identifier for Data Separated account"];
-        v14 = 0;
+        personaIdentifier = 0;
 LABEL_11:
-        v16 = 0;
-        *a6 = v15;
+        selfCopy = 0;
+        *error = v15;
         goto LABEL_25;
       }
 
@@ -219,44 +219,44 @@ LABEL_11:
 
   else
   {
-    if (![v10 aa_isAccountClass:*MEMORY[0x1E698B760]])
+    if (![accountCopy aa_isAccountClass:*MEMORY[0x1E698B760]])
     {
-      if (a6)
+      if (error)
       {
         v15 = [MBError errorWithCode:1 format:@"ACAccount not eligible for backup"];
         goto LABEL_11;
       }
 
 LABEL_24:
-      v16 = 0;
+      selfCopy = 0;
       goto LABEL_25;
     }
 
-    if (!v14)
+    if (!personaIdentifier)
     {
       v17 = [MEMORY[0x1E69DF088] personaAttributesForPersonaType:0];
       v18 = v17;
       if (v17)
       {
-        v19 = [v17 userPersonaUniqueString];
-        if (v19)
+        userPersonaUniqueString = [v17 userPersonaUniqueString];
+        if (userPersonaUniqueString)
         {
-          v14 = v19;
+          personaIdentifier = userPersonaUniqueString;
 
           goto LABEL_8;
         }
 
-        if (a6)
+        if (error)
         {
-          *a6 = [MBError errorWithCode:1 format:@"Nil persona identifier for Primary account"];
+          *error = [MBError errorWithCode:1 format:@"Nil persona identifier for Primary account"];
         }
       }
 
       else
       {
-        if (a6)
+        if (error)
         {
-          *a6 = [MBError errorWithCode:1 format:@"Failed to fetch the attributes for personal persona"];
+          *error = [MBError errorWithCode:1 format:@"Failed to fetch the attributes for personal persona"];
         }
 
         v20 = MBGetDefaultLog();
@@ -269,23 +269,23 @@ LABEL_24:
       }
 
 LABEL_23:
-      v14 = 0;
+      personaIdentifier = 0;
       goto LABEL_24;
     }
   }
 
 LABEL_8:
-  self = [(MBXPCClient *)self initWithDelegate:v11 eventQueue:v13 personaIdentifier:v14];
-  v16 = self;
+  self = [(MBXPCClient *)self initWithDelegate:delegateCopy eventQueue:v13 personaIdentifier:personaIdentifier];
+  selfCopy = self;
 LABEL_25:
 
-  return v16;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v3 = [(MBXPCClient *)self connection];
-  [v3 cancel];
+  connection = [(MBXPCClient *)self connection];
+  [connection cancel];
 
   [(MBXPCClient *)self setConnection:0];
   iTunesRestoreStartedNotificationToken = self->_iTunesRestoreStartedNotificationToken;
@@ -448,11 +448,11 @@ void __40__MBXPCClient_startWatchingBackupAgent2__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setSupportsiTunes:(BOOL)a3
+- (void)setSupportsiTunes:(BOOL)tunes
 {
-  v3 = a3;
+  tunesCopy = tunes;
   [(MBXPCClient *)self setShouldSupportiTunes:?];
-  if (v3)
+  if (tunesCopy)
   {
     v5 = MBGetDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -462,14 +462,14 @@ void __40__MBXPCClient_startWatchingBackupAgent2__block_invoke(uint64_t a1)
       _MBLog(@"I ", "MBManager is now monitoring iTunes restores", v6, v7, v8, v9, v10, v11, v32[0]);
     }
 
-    v12 = [@"com.apple.private.restrict-post.MobileBackup.Drive.RestoreStarted" UTF8String];
+    uTF8String = [@"com.apple.private.restrict-post.MobileBackup.Drive.RestoreStarted" UTF8String];
     eventQueue = self->_eventQueue;
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __33__MBXPCClient_setSupportsiTunes___block_invoke;
     handler[3] = &unk_1E8684618;
     handler[4] = self;
-    if (notify_register_dispatch(v12, &self->_iTunesRestoreStartedNotificationToken, eventQueue, handler))
+    if (notify_register_dispatch(uTF8String, &self->_iTunesRestoreStartedNotificationToken, eventQueue, handler))
     {
       v14 = MBGetDefaultLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -480,14 +480,14 @@ void __40__MBXPCClient_startWatchingBackupAgent2__block_invoke(uint64_t a1)
       }
     }
 
-    v21 = [@"com.apple.private.restrict-post.MobileBackup.Drive.RestoreEnded" UTF8String];
+    uTF8String2 = [@"com.apple.private.restrict-post.MobileBackup.Drive.RestoreEnded" UTF8String];
     v22 = self->_eventQueue;
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __33__MBXPCClient_setSupportsiTunes___block_invoke_38;
     v32[3] = &unk_1E8684618;
     v32[4] = self;
-    if (notify_register_dispatch(v21, &self->_iTunesRestoreEndedNotificationToken, v22, v32))
+    if (notify_register_dispatch(uTF8String2, &self->_iTunesRestoreEndedNotificationToken, v22, v32))
     {
       v23 = MBGetDefaultLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -535,17 +535,17 @@ uint64_t __33__MBXPCClient_setSupportsiTunes___block_invoke_38(uint64_t a1)
   return MEMORY[0x1EEE66C30]();
 }
 
-- (BOOL)setupBackupWithPasscode:(id)a3 error:(id *)a4
+- (BOOL)setupBackupWithPasscode:(id)passcode error:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  passcodeCopy = passcode;
   v7 = _os_activity_create(&dword_1DEB5D000, "setupBackupWithPasscode:error:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v13.opaque[0] = 0;
   v13.opaque[1] = 0;
   os_activity_scope_enter(v7, &v13);
-  if (v6)
+  if (passcodeCopy)
   {
-    v14[0] = v6;
+    v14[0] = passcodeCopy;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   }
 
@@ -554,12 +554,12 @@ uint64_t __33__MBXPCClient_setSupportsiTunes___block_invoke_38(uint64_t a1)
     v8 = MEMORY[0x1E695E0F0];
   }
 
-  v9 = [(MBXPCClient *)self _sendRequest:@"kMBMessageSetupBackup" arguments:v8 error:a4];
-  v10 = [v9 BOOLValue];
+  v9 = [(MBXPCClient *)self _sendRequest:@"kMBMessageSetupBackup" arguments:v8 error:error];
+  bOOLValue = [v9 BOOLValue];
 
   os_activity_scope_leave(&v13);
   v11 = *MEMORY[0x1E69E9840];
-  return v10;
+  return bOOLValue;
 }
 
 - (BOOL)isBackupEnabled
@@ -574,23 +574,23 @@ uint64_t __33__MBXPCClient_setSupportsiTunes___block_invoke_38(uint64_t a1)
 
   if ((v5 & 1) == 0)
   {
-    LOBYTE(v9) = 0;
+    LOBYTE(bOOLValue) = 0;
     goto LABEL_8;
   }
 
-  v6 = [MEMORY[0x1E69DF078] currentPersona];
-  v7 = v6;
-  if (self->_personaIdentifier || ([v6 isPersonalPersona] & 1) == 0 && (objc_msgSend(v7, "isDefaultPersona") & 1) == 0 && !objc_msgSend(v7, "isSystemPersona"))
+  currentPersona = [MEMORY[0x1E69DF078] currentPersona];
+  v7 = currentPersona;
+  if (self->_personaIdentifier || ([currentPersona isPersonalPersona] & 1) == 0 && (objc_msgSend(v7, "isDefaultPersona") & 1) == 0 && !objc_msgSend(v7, "isSystemPersona"))
   {
     goto LABEL_3;
   }
 
-  v19 = self;
-  objc_sync_enter(v19);
-  enabledToken = v19->_enabledToken;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  enabledToken = selfCopy->_enabledToken;
   if (enabledToken == -1)
   {
-    v21 = notify_register_check("com.apple.private.restrict-post.MobileBackup.EnabledState", &v19->_enabledToken);
+    v21 = notify_register_check("com.apple.private.restrict-post.MobileBackup.EnabledState", &selfCopy->_enabledToken);
     if (v21)
     {
       v22 = MBGetDefaultLog();
@@ -603,16 +603,16 @@ uint64_t __33__MBXPCClient_setSupportsiTunes___block_invoke_38(uint64_t a1)
       }
 
       enabledToken = -1;
-      v19->_enabledToken = -1;
+      selfCopy->_enabledToken = -1;
     }
 
     else
     {
-      enabledToken = v19->_enabledToken;
+      enabledToken = selfCopy->_enabledToken;
     }
   }
 
-  objc_sync_exit(v19);
+  objc_sync_exit(selfCopy);
 
   if (enabledToken == -1)
   {
@@ -646,7 +646,7 @@ uint64_t __33__MBXPCClient_setSupportsiTunes___block_invoke_38(uint64_t a1)
 
   if (state64 == 1)
   {
-    LOBYTE(v9) = 1;
+    LOBYTE(bOOLValue) = 1;
     goto LABEL_6;
   }
 
@@ -654,27 +654,27 @@ uint64_t __33__MBXPCClient_setSupportsiTunes___block_invoke_38(uint64_t a1)
   {
 LABEL_3:
     v8 = [(MBXPCClient *)self _sendRequest:@"kMBMessageIsBackupEnabled" arguments:0];
-    v9 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
     v10 = MBGetDefaultLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 67109120;
-      LODWORD(v47) = v9;
+      LODWORD(v47) = bOOLValue;
       _os_log_impl(&dword_1DEB5D000, v10, OS_LOG_TYPE_INFO, "isBackupEnabled:%d", buf, 8u);
-      _MBLog(@"I ", "isBackupEnabled:%d", v11, v12, v13, v14, v15, v16, v9);
+      _MBLog(@"I ", "isBackupEnabled:%d", v11, v12, v13, v14, v15, v16, bOOLValue);
     }
 
     goto LABEL_6;
   }
 
-  LOBYTE(v9) = 0;
+  LOBYTE(bOOLValue) = 0;
 LABEL_6:
 
 LABEL_8:
   os_activity_scope_leave(&state);
 
   v17 = *MEMORY[0x1E69E9840];
-  return v9;
+  return bOOLValue;
 }
 
 - (void)syncBackupEnabled
@@ -687,51 +687,51 @@ LABEL_8:
   os_activity_scope_leave(&v5);
 }
 
-- (BOOL)isLocalBackupPasswordSetWithError:(id *)a3
+- (BOOL)isLocalBackupPasswordSetWithError:(id *)error
 {
   v5 = _os_activity_create(&dword_1DEB5D000, "isLocalBackupPasswordSetWithError:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v8.opaque[0] = 0;
   v8.opaque[1] = 0;
   os_activity_scope_enter(v5, &v8);
-  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageIsLocalBackupPasswordSet" arguments:0 error:a3];
-  LOBYTE(a3) = [v6 BOOLValue];
+  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageIsLocalBackupPasswordSet" arguments:0 error:error];
+  LOBYTE(error) = [v6 BOOLValue];
 
   os_activity_scope_leave(&v8);
-  return a3;
+  return error;
 }
 
-- (BOOL)unsetLocalBackupPasswordWithError:(id *)a3
+- (BOOL)unsetLocalBackupPasswordWithError:(id *)error
 {
   v5 = _os_activity_create(&dword_1DEB5D000, "unsetLocalBackupPasswordWithError:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v8.opaque[0] = 0;
   v8.opaque[1] = 0;
   os_activity_scope_enter(v5, &v8);
-  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageUnsetLocalBackupPassword" arguments:0 error:a3];
-  LOBYTE(a3) = [v6 BOOLValue];
+  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageUnsetLocalBackupPassword" arguments:0 error:error];
+  LOBYTE(error) = [v6 BOOLValue];
 
   os_activity_scope_leave(&v8);
-  return a3;
+  return error;
 }
 
-- (BOOL)inheritSnapshot:(id)a3 fromDevice:(id)a4 error:(id *)a5
+- (BOOL)inheritSnapshot:(id)snapshot fromDevice:(id)device error:(id *)error
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  snapshotCopy = snapshot;
+  deviceCopy = device;
   v10 = _os_activity_create(&dword_1DEB5D000, "inheritSnapshot:snapshotID:fromDevice:error", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v10, &state);
-  v16[0] = v8;
-  v16[1] = v9;
+  v16[0] = snapshotCopy;
+  v16[1] = deviceCopy;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
-  v12 = [(MBXPCClient *)self _sendRequest:@"kMBMessageInheritBackup" arguments:v11 error:a5];
+  v12 = [(MBXPCClient *)self _sendRequest:@"kMBMessageInheritBackup" arguments:v11 error:error];
 
-  LOBYTE(a5) = [v12 BOOLValue];
+  LOBYTE(error) = [v12 BOOLValue];
   os_activity_scope_leave(&state);
 
   v13 = *MEMORY[0x1E69E9840];
-  return a5;
+  return error;
 }
 
 - (id)backupState
@@ -753,38 +753,38 @@ LABEL_8:
   v7.opaque[1] = 0;
   os_activity_scope_enter(v3, &v7);
   v4 = [(MBXPCClient *)self _sendRequest:@"kMBMessageGetBackupDeviceUUID" arguments:0];
-  v5 = [v4 mb_backupIDByAddingCKPrefix];
+  mb_backupIDByAddingCKPrefix = [v4 mb_backupIDByAddingCKPrefix];
 
   os_activity_scope_leave(&v7);
 
-  return v5;
+  return mb_backupIDByAddingCKPrefix;
 }
 
-- (BOOL)startBackupWithOptions:(id)a3 error:(id *)a4
+- (BOOL)startBackupWithOptions:(id)options error:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  optionsCopy = options;
   v7 = _os_activity_create(&dword_1DEB5D000, "startBackupWithOptions:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v12.opaque[0] = 0;
   v12.opaque[1] = 0;
   os_activity_scope_enter(v7, &v12);
-  v13[0] = v6;
+  v13[0] = optionsCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-  v9 = [(MBXPCClient *)self _sendRequest:@"kMBMessageStartBackup" arguments:v8 error:a4];
+  v9 = [(MBXPCClient *)self _sendRequest:@"kMBMessageStartBackup" arguments:v8 error:error];
 
-  LOBYTE(a4) = [v9 BOOLValue];
+  LOBYTE(error) = [v9 BOOLValue];
   os_activity_scope_leave(&v12);
 
   v10 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
-- (BOOL)startBackupWithError:(id *)a3
+- (BOOL)startBackupWithError:(id *)error
 {
   v5 = objc_opt_new();
-  LOBYTE(a3) = [(MBXPCClient *)self startBackupWithOptions:v5 error:a3];
+  LOBYTE(error) = [(MBXPCClient *)self startBackupWithOptions:v5 error:error];
 
-  return a3;
+  return error;
 }
 
 - (void)cancel
@@ -807,7 +807,7 @@ LABEL_8:
   os_activity_scope_leave(&v5);
 }
 
-- (id)restoreStateWithError:(id *)a3
+- (id)restoreStateWithError:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
   v5 = _os_activity_create(&dword_1DEB5D000, "restoreState", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -842,10 +842,10 @@ LABEL_8:
   v21 = 0;
   v17 = [(MBXPCClient *)self _sendRequest:@"kMBMessageRestoreState" arguments:0 error:&v21];
   v18 = v21;
-  if (a3 && !v17)
+  if (error && !v17)
   {
     v18 = v18;
-    *a3 = v18;
+    *error = v18;
   }
 
 LABEL_13:
@@ -856,15 +856,15 @@ LABEL_13:
   return v17;
 }
 
-- (void)fetchiCloudRestoreIsCompleteWithCompletion:(id)a3
+- (void)fetchiCloudRestoreIsCompleteWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [MBXPCClient fetchiCloudRestoreIsCompleteWithCompletion:];
   }
 
-  v5 = v4;
+  v5 = completionCopy;
   v6 = dispatch_get_global_queue(17, 0);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -918,11 +918,11 @@ void __58__MBXPCClient_fetchiCloudRestoreIsCompleteWithCompletion___block_invoke
   return v4;
 }
 
-- (BOOL)restoreFileExistsWithPath:(id)a3
+- (BOOL)restoreFileExistsWithPath:(id)path
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  pathCopy = path;
+  if (!pathCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Null path"];
   }
@@ -931,42 +931,42 @@ void __58__MBXPCClient_fetchiCloudRestoreIsCompleteWithCompletion___block_invoke
   v11.opaque[0] = 0;
   v11.opaque[1] = 0;
   os_activity_scope_enter(v5, &v11);
-  v12[0] = v4;
+  v12[0] = pathCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   v7 = [(MBXPCClient *)self _sendRequest:@"kMBMessageFileExists" arguments:v6];
 
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
   os_activity_scope_leave(&v11);
 
   v9 = *MEMORY[0x1E69E9840];
-  return v8;
+  return bOOLValue;
 }
 
-- (BOOL)restoreDataExistsForApplicationWithBundleID:(id)a3 size:(unint64_t *)a4
+- (BOOL)restoreDataExistsForApplicationWithBundleID:(id)d size:(unint64_t *)size
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   v7 = _os_activity_create(&dword_1DEB5D000, "restoreDataExistsForApplicationWithBundleID:size:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v16.opaque[0] = 0;
   v16.opaque[1] = 0;
   os_activity_scope_enter(v7, &v16);
-  v17[0] = v6;
+  v17[0] = dCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
   v9 = [(MBXPCClient *)self _sendRequest:@"kMBMessageDataExistsForApp" arguments:v8];
 
   v10 = [v9 objectAtIndexedSubscript:0];
   v11 = [v9 objectAtIndexedSubscript:1];
   v12 = v11;
-  if (a4)
+  if (size)
   {
-    *a4 = [v11 unsignedLongLongValue];
+    *size = [v11 unsignedLongLongValue];
   }
 
-  v13 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
   os_activity_scope_leave(&v16);
   v14 = *MEMORY[0x1E69E9840];
-  return v13;
+  return bOOLValue;
 }
 
 void __74__MBXPCClient_restoreFilesForDomain_relativePath_pendingOnly_range_error___block_invoke(uint64_t a1, void *a2)
@@ -986,15 +986,15 @@ void __74__MBXPCClient_restoreFilesForDomain_relativePath_pendingOnly_range_erro
   [v3 addObjectsFromArray:v7];
 }
 
-- (void)prioritizeRestoreFileWithPath:(id)a3
+- (void)prioritizeRestoreFileWithPath:(id)path
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v5 = _os_activity_create(&dword_1DEB5D000, "prioritizeRestoreFileWithPath:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v9.opaque[0] = 0;
   v9.opaque[1] = 0;
   os_activity_scope_enter(v5, &v9);
-  v10[0] = v4;
+  v10[0] = pathCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   v7 = [(MBXPCClient *)self _sendRequest:@"kMBMessagePrioritizeRestoreFile" arguments:v6];
 
@@ -1002,20 +1002,20 @@ void __74__MBXPCClient_restoreFilesForDomain_relativePath_pendingOnly_range_erro
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)recordRestoreFailure:(id)a3 error:(id *)a4
+- (BOOL)recordRestoreFailure:(id)failure error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 identifier];
+  failureCopy = failure;
+  identifier = [failureCopy identifier];
 
-  if (!v7)
+  if (!identifier)
   {
     [MBXPCClient recordRestoreFailure:error:];
   }
 
-  v8 = [v6 dataclass];
+  dataclass = [failureCopy dataclass];
 
-  if (!v8)
+  if (!dataclass)
   {
     [MBXPCClient recordRestoreFailure:error:];
   }
@@ -1024,42 +1024,42 @@ void __74__MBXPCClient_restoreFilesForDomain_relativePath_pendingOnly_range_erro
   v15.opaque[0] = 0;
   v15.opaque[1] = 0;
   os_activity_scope_enter(v9, &v15);
-  v16[0] = v6;
+  v16[0] = failureCopy;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-  v11 = [(MBXPCClient *)self _sendRequest:@"kMBMessageReportRestoreFailure" arguments:v10 error:a4];
+  v11 = [(MBXPCClient *)self _sendRequest:@"kMBMessageReportRestoreFailure" arguments:v10 error:error];
 
-  v12 = [v11 BOOLValue];
+  bOOLValue = [v11 BOOLValue];
   os_activity_scope_leave(&v15);
 
   v13 = *MEMORY[0x1E69E9840];
-  return v12;
+  return bOOLValue;
 }
 
-- (id)restoreFailuresForDataclass:(id)a3 assetType:(id)a4 range:(_NSRange)a5
+- (id)restoreFailuresForDataclass:(id)dataclass assetType:(id)type range:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v20[3] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  dataclassCopy = dataclass;
+  typeCopy = type;
   v11 = _os_activity_create(&dword_1DEB5D000, "restoreFailuresForDataclass:assetType:range:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v19.opaque[0] = 0;
   v19.opaque[1] = 0;
   os_activity_scope_enter(v11, &v19);
-  v12 = v9;
-  if (!v9)
+  null = dataclassCopy;
+  if (!dataclassCopy)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20[0] = v12;
-  v13 = v10;
-  if (!v10)
+  v20[0] = null;
+  null2 = typeCopy;
+  if (!typeCopy)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20[1] = v13;
+  v20[1] = null2;
   v22.location = location;
   v22.length = length;
   v14 = NSStringFromRange(v22);
@@ -1067,11 +1067,11 @@ void __74__MBXPCClient_restoreFilesForDomain_relativePath_pendingOnly_range_erro
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:3];
   v16 = [(MBXPCClient *)self _sendRequest:@"kMBMessageListRestoreFailures" arguments:v15 error:0];
 
-  if (!v10)
+  if (!typeCopy)
   {
   }
 
-  if (!v9)
+  if (!dataclassCopy)
   {
   }
 
@@ -1082,48 +1082,48 @@ void __74__MBXPCClient_restoreFilesForDomain_relativePath_pendingOnly_range_erro
   return v16;
 }
 
-- (unint64_t)countOfRestoreFailuresForDataclass:(id)a3 assetType:(id)a4
+- (unint64_t)countOfRestoreFailuresForDataclass:(id)dataclass assetType:(id)type
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dataclassCopy = dataclass;
+  typeCopy = type;
   v8 = _os_activity_create(&dword_1DEB5D000, "countOfRestoreFailuresForDataclass:assetType", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
-  v9 = v6;
-  if (!v6)
+  null = dataclassCopy;
+  if (!dataclassCopy)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[0] = v9;
-  v10 = v7;
-  if (!v7)
+  v17[0] = null;
+  null2 = typeCopy;
+  if (!typeCopy)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[1] = v10;
+  v17[1] = null2;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
   v12 = [(MBXPCClient *)self _sendRequest:@"kMBMessageCountRestoreFailures" arguments:v11 error:0];
 
-  if (!v7)
+  if (!typeCopy)
   {
   }
 
-  if (!v6)
+  if (!dataclassCopy)
   {
   }
 
-  v13 = [v12 unsignedIntegerValue];
+  unsignedIntegerValue = [v12 unsignedIntegerValue];
 
   os_activity_scope_leave(&state);
   v14 = *MEMORY[0x1E69E9840];
-  return v13;
+  return unsignedIntegerValue;
 }
 
-- (id)dateOfLastBackupWithError:(id *)a3
+- (id)dateOfLastBackupWithError:(id *)error
 {
   if (dateOfLastBackupWithError__onceToken != -1)
   {
@@ -1135,7 +1135,7 @@ void __74__MBXPCClient_restoreFilesForDomain_relativePath_pendingOnly_range_erro
   v8.opaque[0] = 0;
   v8.opaque[1] = 0;
   os_activity_scope_enter(v5, &v8);
-  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageDateOfLastBackup" arguments:0 error:a3];
+  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageDateOfLastBackup" arguments:0 error:error];
   os_activity_scope_leave(&v8);
 
   dispatch_semaphore_signal(dateOfLastBackupWithError__dateOfLastBackupSemaphore);
@@ -1150,13 +1150,13 @@ uint64_t __41__MBXPCClient_dateOfLastBackupWithError___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)dateOfNextScheduledBackupWithError:(id *)a3
+- (id)dateOfNextScheduledBackupWithError:(id *)error
 {
   v5 = _os_activity_create(&dword_1DEB5D000, "dateOfNextScheduledBackup", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v8.opaque[0] = 0;
   v8.opaque[1] = 0;
   os_activity_scope_enter(v5, &v8);
-  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageDateOfNextBackup" arguments:0 error:a3];
+  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageDateOfNextBackup" arguments:0 error:error];
   os_activity_scope_leave(&v8);
 
   return v6;
@@ -1175,14 +1175,14 @@ uint64_t __41__MBXPCClient_dateOfLastBackupWithError___block_invoke()
   return self;
 }
 
-- (void)setRestoreQualityOfService:(int64_t)a3
+- (void)setRestoreQualityOfService:(int64_t)service
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v5 = _os_activity_create(&dword_1DEB5D000, "setRestoreQualityOfService:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v5, &v10);
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:service];
   v11[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   v8 = [(MBXPCClient *)self _sendRequest:@"kMBMessageSetRestoreQualityOfService" arguments:v7];
@@ -1191,20 +1191,20 @@ uint64_t __41__MBXPCClient_dateOfLastBackupWithError___block_invoke()
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)saveBackgroundRestoreCellularAccess:(id)a3 completion:(id)a4
+- (void)saveBackgroundRestoreCellularAccess:(id)access completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  accessCopy = access;
+  completionCopy = completion;
   v8 = dispatch_get_global_queue(17, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__MBXPCClient_saveBackgroundRestoreCellularAccess_completion___block_invoke;
   block[3] = &unk_1E8684668;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = accessCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = accessCopy;
   dispatch_async(v8, block);
 }
 
@@ -1230,17 +1230,17 @@ void __62__MBXPCClient_saveBackgroundRestoreCellularAccess_completion___block_in
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchBackgroundRestoreCellularAccessWithCompletion:(id)a3
+- (void)fetchBackgroundRestoreCellularAccessWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_get_global_queue(17, 0);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__MBXPCClient_fetchBackgroundRestoreCellularAccessWithCompletion___block_invoke;
   v7[3] = &unk_1E86843F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, v7);
 }
 
@@ -1261,7 +1261,7 @@ void __66__MBXPCClient_fetchBackgroundRestoreCellularAccessWithCompletion___bloc
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)backgroundRestoreCellularAccessWithError:(id *)a3
+- (id)backgroundRestoreCellularAccessWithError:(id *)error
 {
   v4 = _os_activity_create(&dword_1DEB5D000, "backgroundRestoreCellularAccessWithError:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
@@ -1274,9 +1274,9 @@ void __66__MBXPCClient_fetchBackgroundRestoreCellularAccessWithCompletion___bloc
   return v5;
 }
 
-- (BOOL)startRestoreForBackupUDID:(id)a3 snapshotID:(unint64_t)a4 error:(id *)a5
+- (BOOL)startRestoreForBackupUDID:(id)d snapshotID:(unint64_t)iD error:(id *)error
 {
-  v8 = a3;
+  dCopy = d;
   v9 = objc_opt_new();
   [v9 cellularAccess];
   if (objc_claimAutoreleasedReturnValue())
@@ -1299,12 +1299,12 @@ void __66__MBXPCClient_fetchBackgroundRestoreCellularAccessWithCompletion___bloc
   v17 = &v18;
   v11 = v10;
   v16 = v11;
-  [(MBXPCClient *)self startRestoreForBackupUDID:v8 snapshotID:a4 options:v9 completion:v15];
+  [(MBXPCClient *)self startRestoreForBackupUDID:dCopy snapshotID:iD options:v9 completion:v15];
   dispatch_group_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
   v12 = v19[5];
-  if (a5 && v12)
+  if (error && v12)
   {
-    *a5 = v12;
+    *error = v12;
     v12 = v19[5];
   }
 
@@ -1321,12 +1321,12 @@ void __58__MBXPCClient_startRestoreForBackupUDID_snapshotID_error___block_invoke
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)startRestoreForBackupUDID:(id)a3 snapshotID:(unint64_t)a4 options:(id)a5 completion:(id)a6
+- (void)startRestoreForBackupUDID:(id)d snapshotID:(unint64_t)iD options:(id)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (!v10)
+  dCopy = d;
+  optionsCopy = options;
+  completionCopy = completion;
+  if (!dCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"must provide a valid backup UDID"];
   }
@@ -1336,14 +1336,14 @@ void __58__MBXPCClient_startRestoreForBackupUDID_snapshotID_error___block_invoke
   block[1] = 3221225472;
   block[2] = __71__MBXPCClient_startRestoreForBackupUDID_snapshotID_options_completion___block_invoke;
   block[3] = &unk_1E86846B8;
-  v21 = v12;
-  v22 = a4;
-  v18 = v10;
-  v19 = self;
-  v20 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v21 = completionCopy;
+  iDCopy = iD;
+  v18 = dCopy;
+  selfCopy = self;
+  v20 = optionsCopy;
+  v14 = completionCopy;
+  v15 = optionsCopy;
+  v16 = dCopy;
   dispatch_async(v13, block);
 }
 
@@ -1372,29 +1372,29 @@ void __71__MBXPCClient_startRestoreForBackupUDID_snapshotID_options_completion__
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startRestoreForSnapshot:(id)a3 options:(id)a4 completion:(id)a5
+- (void)startRestoreForSnapshot:(id)snapshot options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  snapshotCopy = snapshot;
+  optionsCopy = options;
+  completionCopy = completion;
+  if (!snapshotCopy)
   {
     [MBXPCClient startRestoreForSnapshot:options:completion:];
   }
 
-  v11 = v10;
+  v11 = completionCopy;
   v12 = dispatch_get_global_queue(17, 0);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __58__MBXPCClient_startRestoreForSnapshot_options_completion___block_invoke;
   v16[3] = &unk_1E86846E0;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
+  v17 = snapshotCopy;
+  v18 = optionsCopy;
   v19 = v11;
   v13 = v11;
-  v14 = v9;
-  v15 = v8;
+  v14 = optionsCopy;
+  v15 = snapshotCopy;
   dispatch_async(v12, v16);
 }
 
@@ -1422,12 +1422,12 @@ void __58__MBXPCClient_startRestoreForSnapshot_options_completion___block_invoke
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)restoreFileWithPath:(id)a3 context:(id)a4 error:(id *)a5
+- (BOOL)restoreFileWithPath:(id)path context:(id)context error:(id *)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  pathCopy = path;
+  contextCopy = context;
+  if (!pathCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"must provide a valid file path"];
   }
@@ -1436,23 +1436,23 @@ void __58__MBXPCClient_startRestoreForSnapshot_options_completion___block_invoke
   v16.opaque[0] = 0;
   v16.opaque[1] = 0;
   os_activity_scope_enter(v10, &v16);
-  v17[0] = v8;
+  v17[0] = pathCopy;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-  v12 = [(MBXPCClient *)self _sendRequest:@"kMBMessageStartFileRestore" arguments:v11 error:a5];
+  v12 = [(MBXPCClient *)self _sendRequest:@"kMBMessageStartFileRestore" arguments:v11 error:error];
 
-  v13 = [v12 BOOLValue];
+  bOOLValue = [v12 BOOLValue];
   os_activity_scope_leave(&v16);
 
   v14 = *MEMORY[0x1E69E9840];
-  return v13;
+  return bOOLValue;
 }
 
-- (BOOL)restoreFilesWithPaths:(id)a3 context:(id)a4 error:(id *)a5
+- (BOOL)restoreFilesWithPaths:(id)paths context:(id)context error:(id *)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v8 || ![v8 count])
+  pathsCopy = paths;
+  contextCopy = context;
+  if (!pathsCopy || ![pathsCopy count])
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"must provide a valid array of file paths"];
   }
@@ -1461,42 +1461,42 @@ void __58__MBXPCClient_startRestoreForSnapshot_options_completion___block_invoke
   v16.opaque[0] = 0;
   v16.opaque[1] = 0;
   os_activity_scope_enter(v10, &v16);
-  v17[0] = v8;
+  v17[0] = pathsCopy;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-  v12 = [(MBXPCClient *)self _sendRequest:@"kMBMessageStartFilesRestore" arguments:v11 error:a5];
+  v12 = [(MBXPCClient *)self _sendRequest:@"kMBMessageStartFilesRestore" arguments:v11 error:error];
 
-  v13 = [v12 BOOLValue];
+  bOOLValue = [v12 BOOLValue];
   os_activity_scope_leave(&v16);
 
   v14 = *MEMORY[0x1E69E9840];
-  return v13;
+  return bOOLValue;
 }
 
-- (BOOL)restoreBookWithPath:(id)a3 context:(id)a4 error:(id *)a5
+- (BOOL)restoreBookWithPath:(id)path context:(id)context error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  contextCopy = context;
   v10 = _os_activity_create(&dword_1DEB5D000, "restoreBookWithPath:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v15.opaque[0] = 0;
   v15.opaque[1] = 0;
   os_activity_scope_enter(v10, &v15);
-  v16[0] = v8;
+  v16[0] = pathCopy;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-  v12 = [(MBXPCClient *)self _sendRequest:@"kMBMessageStartBookRestore" arguments:v11 error:a5];
+  v12 = [(MBXPCClient *)self _sendRequest:@"kMBMessageStartBookRestore" arguments:v11 error:error];
 
-  LOBYTE(a5) = [v12 BOOLValue];
+  LOBYTE(error) = [v12 BOOLValue];
   os_activity_scope_leave(&v15);
 
   v13 = *MEMORY[0x1E69E9840];
-  return a5;
+  return error;
 }
 
-- (BOOL)cancelApplicationRestoreWithBundleID:(id)a3 error:(id *)a4
+- (BOOL)cancelApplicationRestoreWithBundleID:(id)d error:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  dCopy = d;
+  if (!dCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"must provide a valid bundle id"];
   }
@@ -1505,14 +1505,14 @@ void __58__MBXPCClient_startRestoreForSnapshot_options_completion___block_invoke
   v13.opaque[0] = 0;
   v13.opaque[1] = 0;
   os_activity_scope_enter(v7, &v13);
-  v14[0] = v6;
+  v14[0] = dCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  v9 = [(MBXPCClient *)self _sendRequest:@"kMBMessageCancelAppRestore" arguments:v8 error:a4];
-  v10 = [v9 BOOLValue];
+  v9 = [(MBXPCClient *)self _sendRequest:@"kMBMessageCancelAppRestore" arguments:v8 error:error];
+  bOOLValue = [v9 BOOLValue];
 
   os_activity_scope_leave(&v13);
   v11 = *MEMORY[0x1E69E9840];
-  return v10;
+  return bOOLValue;
 }
 
 - (void)finishRestore
@@ -1561,15 +1561,15 @@ void __58__MBXPCClient_startRestoreForSnapshot_options_completion___block_invoke
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)accountChanged:(id)a3
+- (void)accountChanged:(id)changed
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changedCopy = changed;
   v5 = _os_activity_create(&dword_1DEB5D000, "accountChanged", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v5, &state);
-  v21[0] = v4;
+  v21[0] = changedCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
   v17 = 0;
   v7 = [(MBXPCClient *)self _sendRequest:@"kMBMessageAccountChanged" arguments:v6 error:&v17];
@@ -1647,19 +1647,19 @@ void __58__MBXPCClient_startRestoreForSnapshot_options_completion___block_invoke
 {
   v27[2] = *MEMORY[0x1E69E9840];
   v3 = CFPreferencesCopyValue(@"NotifyDaemonNextTimeKeyBagIsUnlocked", @"com.apple.MobileBackup", @"mobile", *MEMORY[0x1E695E8B0]);
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 67109378;
-    *&buf[4] = v4;
+    *&buf[4] = bOOLValue;
     LOWORD(v27[0]) = 2112;
     *(v27 + 2) = v3;
     _os_log_impl(&dword_1DEB5D000, v5, OS_LOG_TYPE_INFO, "kMBNotifyDaemonNextTimeDeviceIsUnlocked %d (%@)", buf, 0x12u);
-    _MBLog(@"I ", "kMBNotifyDaemonNextTimeDeviceIsUnlocked %d (%@)", v6, v7, v8, v9, v10, v11, v4);
+    _MBLog(@"I ", "kMBNotifyDaemonNextTimeDeviceIsUnlocked %d (%@)", v6, v7, v8, v9, v10, v11, bOOLValue);
   }
 
-  if (v4)
+  if (bOOLValue)
   {
     v12 = _os_activity_create(&dword_1DEB5D000, "deviceIsUnlocked", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     *buf = 0;
@@ -1686,24 +1686,24 @@ void __58__MBXPCClient_startRestoreForSnapshot_options_completion___block_invoke
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)deleteAccountWithError:(id *)a3
+- (BOOL)deleteAccountWithError:(id *)error
 {
   v5 = _os_activity_create(&dword_1DEB5D000, "deleteAccountWithError:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v8.opaque[0] = 0;
   v8.opaque[1] = 0;
   os_activity_scope_enter(v5, &v8);
-  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageDeleteAccount" arguments:0 error:a3];
-  LOBYTE(a3) = [v6 BOOLValue];
+  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageDeleteAccount" arguments:0 error:error];
+  LOBYTE(error) = [v6 BOOLValue];
 
   os_activity_scope_leave(&v8);
-  return a3;
+  return error;
 }
 
-- (BOOL)deleteBackupUDID:(id)a3 error:(id *)a4
+- (BOOL)deleteBackupUDID:(id)d error:(id *)error
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  dCopy = d;
+  if (!dCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"must provide a valid backup"];
   }
@@ -1712,25 +1712,25 @@ void __58__MBXPCClient_startRestoreForSnapshot_options_completion___block_invoke
   v14.opaque[0] = 0;
   v14.opaque[1] = 0;
   os_activity_scope_enter(v7, &v14);
-  v8 = [v6 mb_backupIDByRemovingCKPrefix];
+  mb_backupIDByRemovingCKPrefix = [dCopy mb_backupIDByRemovingCKPrefix];
 
-  v15[0] = v8;
+  v15[0] = mb_backupIDByRemovingCKPrefix;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v10 = [(MBXPCClient *)self _sendRequest:@"kMBMessageDeleteBackup" arguments:v9 error:a4];
+  v10 = [(MBXPCClient *)self _sendRequest:@"kMBMessageDeleteBackup" arguments:v9 error:error];
 
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
   os_activity_scope_leave(&v14);
 
   v12 = *MEMORY[0x1E69E9840];
-  return v11;
+  return bOOLValue;
 }
 
-- (id)journalLastModifiedForBackupUUID:(id)a3 error:(id *)a4
+- (id)journalLastModifiedForBackupUUID:(id)d error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (!v6 || ![v6 length])
+  dCopy = d;
+  v7 = dCopy;
+  if (!dCopy || ![dCopy length])
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"must provide a valid backup UDID"];
   }
@@ -1739,20 +1739,20 @@ void __58__MBXPCClient_startRestoreForSnapshot_options_completion___block_invoke
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
-  v9 = [v7 mb_backupIDByRemovingCKPrefix];
+  mb_backupIDByRemovingCKPrefix = [v7 mb_backupIDByRemovingCKPrefix];
 
   v10 = MBGetDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v9;
+    v24 = mb_backupIDByRemovingCKPrefix;
     _os_log_impl(&dword_1DEB5D000, v10, OS_LOG_TYPE_DEFAULT, "journalLastModifiedForBackupUUID: %@", buf, 0xCu);
-    _MBLog(@"Df", "journalLastModifiedForBackupUUID: %@", v11, v12, v13, v14, v15, v16, v9);
+    _MBLog(@"Df", "journalLastModifiedForBackupUUID: %@", v11, v12, v13, v14, v15, v16, mb_backupIDByRemovingCKPrefix);
   }
 
-  v22 = v9;
+  v22 = mb_backupIDByRemovingCKPrefix;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
-  v18 = [(MBXPCClient *)self _sendRequest:@"kMBMessageJournalLastModified" arguments:v17 error:a4];
+  v18 = [(MBXPCClient *)self _sendRequest:@"kMBMessageJournalLastModified" arguments:v17 error:error];
 
   os_activity_scope_leave(&state);
   v19 = *MEMORY[0x1E69E9840];
@@ -1760,12 +1760,12 @@ void __58__MBXPCClient_startRestoreForSnapshot_options_completion___block_invoke
   return v18;
 }
 
-- (id)journalForBackupUUID:(id)a3 error:(id *)a4
+- (id)journalForBackupUUID:(id)d error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (!v6 || ![v6 length])
+  dCopy = d;
+  v7 = dCopy;
+  if (!dCopy || ![dCopy length])
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"must provide a valid backup UDID"];
   }
@@ -1774,20 +1774,20 @@ void __58__MBXPCClient_startRestoreForSnapshot_options_completion___block_invoke
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
-  v9 = [v7 mb_backupIDByRemovingCKPrefix];
+  mb_backupIDByRemovingCKPrefix = [v7 mb_backupIDByRemovingCKPrefix];
 
   v10 = MBGetDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v9;
+    v24 = mb_backupIDByRemovingCKPrefix;
     _os_log_impl(&dword_1DEB5D000, v10, OS_LOG_TYPE_DEFAULT, "journalForBackup: backupUDID: %@", buf, 0xCu);
-    _MBLog(@"Df", "journalForBackup: backupUDID: %@", v11, v12, v13, v14, v15, v16, v9);
+    _MBLog(@"Df", "journalForBackup: backupUDID: %@", v11, v12, v13, v14, v15, v16, mb_backupIDByRemovingCKPrefix);
   }
 
-  v22 = v9;
+  v22 = mb_backupIDByRemovingCKPrefix;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
-  v18 = [(MBXPCClient *)self _sendRequest:@"kMBListJournalActions" arguments:v17 error:a4];
+  v18 = [(MBXPCClient *)self _sendRequest:@"kMBListJournalActions" arguments:v17 error:error];
 
   os_activity_scope_leave(&state);
   v19 = *MEMORY[0x1E69E9840];
@@ -1795,12 +1795,12 @@ void __58__MBXPCClient_startRestoreForSnapshot_options_completion___block_invoke
   return v18;
 }
 
-- (id)filesForSnapshotID:(unint64_t)a3 backupUDID:(id)a4 error:(id *)a5
+- (id)filesForSnapshotID:(unint64_t)d backupUDID:(id)iD error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = v8;
-  if (!v8 || ![v8 length])
+  iDCopy = iD;
+  v9 = iDCopy;
+  if (!iDCopy || ![iDCopy length])
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"must provide a valid backup UDID"];
   }
@@ -1809,24 +1809,24 @@ void __58__MBXPCClient_startRestoreForSnapshot_options_completion___block_invoke
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v10, &state);
-  v11 = [v9 mb_backupIDByRemovingCKPrefix];
+  mb_backupIDByRemovingCKPrefix = [v9 mb_backupIDByRemovingCKPrefix];
 
   v12 = MBGetDefaultLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v27 = a3;
+    dCopy = d;
     v28 = 2112;
-    v29 = v11;
+    v29 = mb_backupIDByRemovingCKPrefix;
     _os_log_impl(&dword_1DEB5D000, v12, OS_LOG_TYPE_DEFAULT, "filesForSnapshot (client): %ld backupUDID: %@", buf, 0x16u);
-    _MBLog(@"Df", "filesForSnapshot (client): %ld backupUDID: %@", v13, v14, v15, v16, v17, v18, a3);
+    _MBLog(@"Df", "filesForSnapshot (client): %ld backupUDID: %@", v13, v14, v15, v16, v17, v18, d);
   }
 
-  v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
   v25[0] = v19;
-  v25[1] = v11;
+  v25[1] = mb_backupIDByRemovingCKPrefix;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
-  v21 = [(MBXPCClient *)self _sendRequest:@"kMBMessageListSnapshotFiles" arguments:v20 error:a5];
+  v21 = [(MBXPCClient *)self _sendRequest:@"kMBMessageListSnapshotFiles" arguments:v20 error:error];
 
   os_activity_scope_leave(&state);
   v22 = *MEMORY[0x1E69E9840];
@@ -1834,39 +1834,39 @@ void __58__MBXPCClient_startRestoreForSnapshot_options_completion___block_invoke
   return v21;
 }
 
-- (BOOL)mergeSnapshots:(id)a3 backupUUID:(id)a4 error:(id *)a5
+- (BOOL)mergeSnapshots:(id)snapshots backupUUID:(id)d error:(id *)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  snapshotsCopy = snapshots;
+  dCopy = d;
   v10 = _os_activity_create(&dword_1DEB5D000, "mergeSnapshots:backupUUID:error:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v17.opaque[0] = 0;
   v17.opaque[1] = 0;
   os_activity_scope_enter(v10, &v17);
-  v11 = [v9 mb_backupIDByRemovingCKPrefix];
+  mb_backupIDByRemovingCKPrefix = [dCopy mb_backupIDByRemovingCKPrefix];
 
-  v18[0] = v11;
+  v18[0] = mb_backupIDByRemovingCKPrefix;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-  v13 = [v12 arrayByAddingObjectsFromArray:v8];
-  v14 = [(MBXPCClient *)self _sendRequest:@"kMBMessageMergeSnapshots" arguments:v13 error:a5];
-  LOBYTE(a5) = [v14 BOOLValue];
+  v13 = [v12 arrayByAddingObjectsFromArray:snapshotsCopy];
+  v14 = [(MBXPCClient *)self _sendRequest:@"kMBMessageMergeSnapshots" arguments:v13 error:error];
+  LOBYTE(error) = [v14 BOOLValue];
 
   os_activity_scope_leave(&v17);
   v15 = *MEMORY[0x1E69E9840];
-  return a5;
+  return error;
 }
 
-- (BOOL)acquireLockWithBackupUDID:(id)a3 owner:(id)a4 timeout:(double)a5 error:(id *)a6
+- (BOOL)acquireLockWithBackupUDID:(id)d owner:(id)owner timeout:(double)timeout error:(id *)error
 {
   v21[3] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  if (!v10)
+  dCopy = d;
+  ownerCopy = owner;
+  if (!dCopy)
   {
     [MBXPCClient acquireLockWithBackupUDID:owner:timeout:error:];
   }
 
-  if (!v11)
+  if (!ownerCopy)
   {
     [MBXPCClient acquireLockWithBackupUDID:owner:timeout:error:];
   }
@@ -1875,33 +1875,33 @@ void __58__MBXPCClient_startRestoreForSnapshot_options_completion___block_invoke
   v20.opaque[0] = 0;
   v20.opaque[1] = 0;
   os_activity_scope_enter(v12, &v20);
-  v13 = [v10 mb_backupIDByRemovingCKPrefix];
+  mb_backupIDByRemovingCKPrefix = [dCopy mb_backupIDByRemovingCKPrefix];
 
-  v21[0] = v13;
-  v21[1] = v11;
-  v14 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
+  v21[0] = mb_backupIDByRemovingCKPrefix;
+  v21[1] = ownerCopy;
+  v14 = [MEMORY[0x1E696AD98] numberWithDouble:timeout];
   v21[2] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:3];
-  v16 = [(MBXPCClient *)self _sendRequest:@"kMBMessageAcquireLock" arguments:v15 error:a6];
+  v16 = [(MBXPCClient *)self _sendRequest:@"kMBMessageAcquireLock" arguments:v15 error:error];
 
-  v17 = [v16 BOOLValue];
+  bOOLValue = [v16 BOOLValue];
   os_activity_scope_leave(&v20);
 
   v18 = *MEMORY[0x1E69E9840];
-  return v17;
+  return bOOLValue;
 }
 
-- (BOOL)releaseLockWithBackupUDID:(id)a3 owner:(id)a4 error:(id *)a5
+- (BOOL)releaseLockWithBackupUDID:(id)d owner:(id)owner error:(id *)error
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  dCopy = d;
+  ownerCopy = owner;
+  if (!dCopy)
   {
     [MBXPCClient releaseLockWithBackupUDID:owner:error:];
   }
 
-  if (!v9)
+  if (!ownerCopy)
   {
     [MBXPCClient releaseLockWithBackupUDID:owner:error:];
   }
@@ -1910,50 +1910,50 @@ void __58__MBXPCClient_startRestoreForSnapshot_options_completion___block_invoke
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v10, &state);
-  v11 = [v8 mb_backupIDByRemovingCKPrefix];
+  mb_backupIDByRemovingCKPrefix = [dCopy mb_backupIDByRemovingCKPrefix];
 
-  v18[0] = v11;
-  v18[1] = v9;
+  v18[0] = mb_backupIDByRemovingCKPrefix;
+  v18[1] = ownerCopy;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
-  v13 = [(MBXPCClient *)self _sendRequest:@"kMBMessageReleaseLock" arguments:v12 error:a5];
+  v13 = [(MBXPCClient *)self _sendRequest:@"kMBMessageReleaseLock" arguments:v12 error:error];
 
-  v14 = [v13 BOOLValue];
+  bOOLValue = [v13 BOOLValue];
   os_activity_scope_leave(&state);
 
   v15 = *MEMORY[0x1E69E9840];
-  return v14;
+  return bOOLValue;
 }
 
-- (id)deviceLockInfosWithError:(id *)a3
+- (id)deviceLockInfosWithError:(id *)error
 {
   v5 = _os_activity_create(&dword_1DEB5D000, "deviceLockInfosWithError:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v8.opaque[0] = 0;
   v8.opaque[1] = 0;
   os_activity_scope_enter(v5, &v8);
-  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageFetchDeviceLockInfos" arguments:0 error:a3];
+  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageFetchDeviceLockInfos" arguments:0 error:error];
   os_activity_scope_leave(&v8);
 
   return v6;
 }
 
-- (BOOL)startScanWithError:(id *)a3
+- (BOOL)startScanWithError:(id *)error
 {
   v5 = _os_activity_create(&dword_1DEB5D000, "startScanWithError:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v8.opaque[0] = 0;
   v8.opaque[1] = 0;
   os_activity_scope_enter(v5, &v8);
-  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageStartScan" arguments:0 error:a3];
-  LOBYTE(a3) = [v6 BOOLValue];
+  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageStartScan" arguments:0 error:error];
+  LOBYTE(error) = [v6 BOOLValue];
 
   os_activity_scope_leave(&v8);
-  return a3;
+  return error;
 }
 
-- (BOOL)startScanForBundleIDs:(id)a3 error:(id *)a4
+- (BOOL)startScanForBundleIDs:(id)ds error:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  dsCopy = ds;
+  if (!dsCopy)
   {
     [MBXPCClient startScanForBundleIDs:error:];
   }
@@ -1962,15 +1962,15 @@ void __58__MBXPCClient_startRestoreForSnapshot_options_completion___block_invoke
   v13.opaque[0] = 0;
   v13.opaque[1] = 0;
   os_activity_scope_enter(v7, &v13);
-  v14[0] = v6;
+  v14[0] = dsCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  v9 = [(MBXPCClient *)self _sendRequest:@"kMBMessageStartScanForBundleIDs" arguments:v8 error:a4];
+  v9 = [(MBXPCClient *)self _sendRequest:@"kMBMessageStartScanForBundleIDs" arguments:v8 error:error];
 
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
   os_activity_scope_leave(&v13);
 
   v11 = *MEMORY[0x1E69E9840];
-  return v10;
+  return bOOLValue;
 }
 
 - (unint64_t)nextBackupSize
@@ -1980,10 +1980,10 @@ void __58__MBXPCClient_startRestoreForSnapshot_options_completion___block_invoke
   v7.opaque[1] = 0;
   os_activity_scope_enter(v3, &v7);
   v4 = [(MBXPCClient *)self _sendRequest:@"kMBMessageNextBackupSize" arguments:0];
-  v5 = [v4 unsignedLongLongValue];
+  unsignedLongLongValue = [v4 unsignedLongLongValue];
 
   os_activity_scope_leave(&v7);
-  return v5;
+  return unsignedLongLongValue;
 }
 
 - (id)nextBackupSizeInfo
@@ -1998,15 +1998,15 @@ void __58__MBXPCClient_startRestoreForSnapshot_options_completion___block_invoke
   return v4;
 }
 
-- (id)domainInfoForName:(id)a3
+- (id)domainInfoForName:(id)name
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v5 = _os_activity_create(&dword_1DEB5D000, "domainInfoForName:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v5, &v10);
-  v11[0] = v4;
+  v11[0] = nameCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   v7 = [(MBXPCClient *)self _sendRequest:@"kMBMessageDomainInfo" arguments:v6];
 
@@ -2054,10 +2054,10 @@ uint64_t __29__MBXPCClient_domainInfoList__block_invoke()
   return v4;
 }
 
-- (BOOL)removeDomainName:(id)a3 error:(id *)a4
+- (BOOL)removeDomainName:(id)name error:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  nameCopy = name;
   if (removeDomainName_error__onceToken != -1)
   {
     [MBXPCClient removeDomainName:error:];
@@ -2068,16 +2068,16 @@ uint64_t __29__MBXPCClient_domainInfoList__block_invoke()
   v13.opaque[0] = 0;
   v13.opaque[1] = 0;
   os_activity_scope_enter(v7, &v13);
-  v14[0] = v6;
+  v14[0] = nameCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  v9 = [(MBXPCClient *)self _sendRequest:@"kMBMessageRemoveDomain" arguments:v8 error:a4];
+  v9 = [(MBXPCClient *)self _sendRequest:@"kMBMessageRemoveDomain" arguments:v8 error:error];
 
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
   os_activity_scope_leave(&v13);
 
   dispatch_semaphore_signal(removeDomainName_error__removeDomainSemaphore);
   v11 = *MEMORY[0x1E69E9840];
-  return v10;
+  return bOOLValue;
 }
 
 uint64_t __38__MBXPCClient_removeDomainName_error___block_invoke()
@@ -2087,27 +2087,27 @@ uint64_t __38__MBXPCClient_removeDomainName_error___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)reservedBackupSizeListWithError:(id *)a3
+- (id)reservedBackupSizeListWithError:(id *)error
 {
   v5 = _os_activity_create(&dword_1DEB5D000, "reservedBackupSizeList:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v8.opaque[0] = 0;
   v8.opaque[1] = 0;
   os_activity_scope_enter(v5, &v8);
-  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageReservedBackupSizeList" arguments:0 error:a3];
+  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageReservedBackupSizeList" arguments:0 error:error];
   os_activity_scope_leave(&v8);
 
   return v6;
 }
 
-- (BOOL)isBackupEnabledForDomainName:(id)a3
+- (BOOL)isBackupEnabledForDomainName:(id)name
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v5 = _os_activity_create(&dword_1DEB5D000, "isBackupEnabledForDomainName:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v5, &v10);
-  v11[0] = v4;
+  v11[0] = nameCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   v7 = [(MBXPCClient *)self _sendRequest:@"kMBMessageIsDomainEnabled" arguments:v6];
 
@@ -2118,11 +2118,11 @@ uint64_t __38__MBXPCClient_removeDomainName_error___block_invoke()
   return self;
 }
 
-- (id)getAppleIDsMapForBackupUDID:(id)a3 snapshotID:(unint64_t)a4 activeAppleID:(id *)a5 error:(id *)a6
+- (id)getAppleIDsMapForBackupUDID:(id)d snapshotID:(unint64_t)iD activeAppleID:(id *)appleID error:(id *)error
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  if (!v10)
+  dCopy = d;
+  if (!dCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"must provide a valid backup UDID"];
   }
@@ -2131,55 +2131,55 @@ uint64_t __38__MBXPCClient_removeDomainName_error___block_invoke()
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v11, &state);
-  v12 = [v10 mb_backupIDByRemovingCKPrefix];
+  mb_backupIDByRemovingCKPrefix = [dCopy mb_backupIDByRemovingCKPrefix];
 
-  v26[0] = v12;
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v26[0] = mb_backupIDByRemovingCKPrefix;
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:iD];
   v26[1] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
-  v15 = [(MBXPCClient *)self _sendRequest:@"kMBMessageGetAppleIDsMap" arguments:v14 error:a6];
+  v15 = [(MBXPCClient *)self _sendRequest:@"kMBMessageGetAppleIDsMap" arguments:v14 error:error];
 
-  v16 = [v15 firstObject];
-  v17 = [MEMORY[0x1E695DFB0] null];
-  if (v16 == v17)
+  firstObject = [v15 firstObject];
+  null = [MEMORY[0x1E695DFB0] null];
+  if (firstObject == null)
   {
-    v18 = 0;
+    firstObject2 = 0;
   }
 
   else
   {
-    v18 = [v15 firstObject];
+    firstObject2 = [v15 firstObject];
   }
 
-  v19 = [v15 lastObject];
-  v20 = [MEMORY[0x1E695DFB0] null];
-  if (v19 == v20)
+  lastObject = [v15 lastObject];
+  null2 = [MEMORY[0x1E695DFB0] null];
+  if (lastObject == null2)
   {
-    v21 = 0;
+    lastObject2 = 0;
   }
 
   else
   {
-    v21 = [v15 lastObject];
+    lastObject2 = [v15 lastObject];
   }
 
-  if (a5)
+  if (appleID)
   {
-    v22 = v21;
-    *a5 = v21;
+    v22 = lastObject2;
+    *appleID = lastObject2;
   }
 
   os_activity_scope_leave(&state);
   v23 = *MEMORY[0x1E69E9840];
 
-  return v18;
+  return firstObject2;
 }
 
-- (id)getBuddyDataStashForBackupUDID:(id)a3 snapshotID:(unint64_t)a4 error:(id *)a5
+- (id)getBuddyDataStashForBackupUDID:(id)d snapshotID:(unint64_t)iD error:(id *)error
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (!v8)
+  dCopy = d;
+  if (!dCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"must provide a valid backup UDID"];
   }
@@ -2188,13 +2188,13 @@ uint64_t __38__MBXPCClient_removeDomainName_error___block_invoke()
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v9, &state);
-  v10 = [v8 mb_backupIDByRemovingCKPrefix];
+  mb_backupIDByRemovingCKPrefix = [dCopy mb_backupIDByRemovingCKPrefix];
 
-  v17[0] = v10;
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v17[0] = mb_backupIDByRemovingCKPrefix;
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:iD];
   v17[1] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
-  v13 = [(MBXPCClient *)self _sendRequest:@"kMBMessageGetBuddyData" arguments:v12 error:a5];
+  v13 = [(MBXPCClient *)self _sendRequest:@"kMBMessageGetBuddyData" arguments:v12 error:error];
 
   os_activity_scope_leave(&state);
   v14 = *MEMORY[0x1E69E9840];
@@ -2260,18 +2260,18 @@ uint64_t __38__MBXPCClient_removeDomainName_error___block_invoke()
   return self;
 }
 
-- (BOOL)countCameraRollQuotaForBackupUDID:(id)a3 error:(id *)a4
+- (BOOL)countCameraRollQuotaForBackupUDID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v7 = _os_activity_create(&dword_1DEB5D000, "countCameraRollQuotaForBackupUDID:error:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v7, &v10);
-  v8 = [(MBXPCClient *)self _sendRequest:@"kMBMessageCountCameraRollQuota" arguments:0 error:a4];
-  LOBYTE(a4) = [v8 BOOLValue];
+  v8 = [(MBXPCClient *)self _sendRequest:@"kMBMessageCountCameraRollQuota" arguments:0 error:error];
+  LOBYTE(error) = [v8 BOOLValue];
 
   os_activity_scope_leave(&v10);
-  return a4;
+  return error;
 }
 
 - (BOOL)discountCameraRollQuota
@@ -2287,67 +2287,67 @@ uint64_t __38__MBXPCClient_removeDomainName_error___block_invoke()
   return self;
 }
 
-- (BOOL)discountCameraRollQuotaForBackupUDID:(id)a3 error:(id *)a4
+- (BOOL)discountCameraRollQuotaForBackupUDID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v7 = _os_activity_create(&dword_1DEB5D000, "discountCameraRollQuotaForBackupUDID:error:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v7, &v10);
-  v8 = [(MBXPCClient *)self _sendRequest:@"kMBMessageDiscountCameraRollQuota" arguments:0 error:a4];
-  LOBYTE(a4) = [v8 BOOLValue];
+  v8 = [(MBXPCClient *)self _sendRequest:@"kMBMessageDiscountCameraRollQuota" arguments:0 error:error];
+  LOBYTE(error) = [v8 BOOLValue];
 
   os_activity_scope_leave(&v10);
-  return a4;
+  return error;
 }
 
-- (BOOL)prepareForBackgroundRestoreWithError:(id *)a3
+- (BOOL)prepareForBackgroundRestoreWithError:(id *)error
 {
   v5 = _os_activity_create(&dword_1DEB5D000, "prepareForBackgroundRestoreWithError:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v8.opaque[0] = 0;
   v8.opaque[1] = 0;
   os_activity_scope_enter(v5, &v8);
-  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessagePrepareForBackgroundRestore" arguments:0 error:a3];
-  LOBYTE(a3) = [v6 BOOLValue];
+  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessagePrepareForBackgroundRestore" arguments:0 error:error];
+  LOBYTE(error) = [v6 BOOLValue];
 
   os_activity_scope_leave(&v8);
-  return a3;
+  return error;
 }
 
-- (BOOL)archiveLogsTo:(id)a3 error:(id *)a4
+- (BOOL)archiveLogsTo:(id)to error:(id *)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  toCopy = to;
   v7 = _os_activity_create(&dword_1DEB5D000, "archiveLogsTo:error:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v16.opaque[0] = 0;
   v16.opaque[1] = 0;
   os_activity_scope_enter(v7, &v16);
-  v19[0] = v6;
+  v19[0] = toCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-  v9 = [(MBXPCClient *)self _sendRequest:@"kMBMessageArchiveLogs" arguments:v8 error:a4];
-  v10 = [v9 intValue];
+  v9 = [(MBXPCClient *)self _sendRequest:@"kMBMessageArchiveLogs" arguments:v8 error:error];
+  intValue = [v9 intValue];
 
-  if (a4 && v10)
+  if (error && intValue)
   {
     v11 = MEMORY[0x1E696ABC0];
     v17 = @"status";
-    v12 = [MEMORY[0x1E696AD98] numberWithInt:v10];
+    v12 = [MEMORY[0x1E696AD98] numberWithInt:intValue];
     v18 = v12;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-    *a4 = [v11 errorWithDomain:@"MBErrorDomain" code:1 userInfo:v13];
+    *error = [v11 errorWithDomain:@"MBErrorDomain" code:1 userInfo:v13];
   }
 
   os_activity_scope_leave(&v16);
 
   v14 = *MEMORY[0x1E69E9840];
-  return v10 == 0;
+  return intValue == 0;
 }
 
-- (BOOL)pinSnapshotID:(unint64_t)a3 backupUDID:(id)a4 error:(id *)a5
+- (BOOL)pinSnapshotID:(unint64_t)d backupUDID:(id)iD error:(id *)error
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  if (!v8)
+  iDCopy = iD;
+  if (!iDCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"must provide a valid backup UDID"];
   }
@@ -2356,26 +2356,26 @@ uint64_t __38__MBXPCClient_removeDomainName_error___block_invoke()
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v9, &state);
-  v10 = [v8 mb_backupIDByRemovingCKPrefix];
+  mb_backupIDByRemovingCKPrefix = [iDCopy mb_backupIDByRemovingCKPrefix];
 
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
   v18[0] = v11;
-  v18[1] = v10;
+  v18[1] = mb_backupIDByRemovingCKPrefix;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
-  v13 = [(MBXPCClient *)self _sendRequest:@"kMBMessagePinSnapshot" arguments:v12 error:a5];
+  v13 = [(MBXPCClient *)self _sendRequest:@"kMBMessagePinSnapshot" arguments:v12 error:error];
 
-  v14 = [v13 BOOLValue];
+  bOOLValue = [v13 BOOLValue];
   os_activity_scope_leave(&state);
 
   v15 = *MEMORY[0x1E69E9840];
-  return v14;
+  return bOOLValue;
 }
 
-- (BOOL)unpinSnapshotID:(unint64_t)a3 backupUDID:(id)a4 error:(id *)a5
+- (BOOL)unpinSnapshotID:(unint64_t)d backupUDID:(id)iD error:(id *)error
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  if (!v8)
+  iDCopy = iD;
+  if (!iDCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"must provide a valid backup UDID"];
   }
@@ -2384,32 +2384,32 @@ uint64_t __38__MBXPCClient_removeDomainName_error___block_invoke()
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v9, &state);
-  v10 = [v8 mb_backupIDByRemovingCKPrefix];
+  mb_backupIDByRemovingCKPrefix = [iDCopy mb_backupIDByRemovingCKPrefix];
 
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
   v18[0] = v11;
-  v18[1] = v10;
+  v18[1] = mb_backupIDByRemovingCKPrefix;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
-  v13 = [(MBXPCClient *)self _sendRequest:@"kMBMessageUnpinSnapshot" arguments:v12 error:a5];
+  v13 = [(MBXPCClient *)self _sendRequest:@"kMBMessageUnpinSnapshot" arguments:v12 error:error];
 
-  v14 = [v13 BOOLValue];
+  bOOLValue = [v13 BOOLValue];
   os_activity_scope_leave(&state);
 
   v15 = *MEMORY[0x1E69E9840];
-  return v14;
+  return bOOLValue;
 }
 
-- (void)boostBackgroundRestoreWithCompletionHandler:(id)a3
+- (void)boostBackgroundRestoreWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_get_global_queue(17, 0);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__MBXPCClient_boostBackgroundRestoreWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E86843F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 
@@ -2430,17 +2430,17 @@ void __59__MBXPCClient_boostBackgroundRestoreWithCompletionHandler___block_invok
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)boostManualBackupWithCompletionHandler:(id)a3
+- (void)boostManualBackupWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_get_global_queue(17, 0);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__MBXPCClient_boostManualBackupWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E86843F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 
@@ -2461,20 +2461,20 @@ void __54__MBXPCClient_boostManualBackupWithCompletionHandler___block_invoke(uin
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)fetchAppBundleIDsForSnapshot:(id)a3 completion:(id)a4
+- (void)fetchAppBundleIDsForSnapshot:(id)snapshot completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  snapshotCopy = snapshot;
+  completionCopy = completion;
   v8 = dispatch_get_global_queue(17, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__MBXPCClient_fetchAppBundleIDsForSnapshot_completion___block_invoke;
   block[3] = &unk_1E8684668;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = snapshotCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = snapshotCopy;
   dispatch_async(v8, block);
 }
 
@@ -2500,17 +2500,17 @@ void __55__MBXPCClient_fetchAppBundleIDsForSnapshot_completion___block_invoke(vo
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchRestorableSnapshotsWithCompletion:(id)a3
+- (void)fetchRestorableSnapshotsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_get_global_queue(17, 0);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__MBXPCClient_fetchRestorableSnapshotsWithCompletion___block_invoke;
   v7[3] = &unk_1E86843F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, v7);
 }
 
@@ -2531,13 +2531,13 @@ void __54__MBXPCClient_fetchRestorableSnapshotsWithCompletion___block_invoke(uin
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)pendingSnapshotForCurrentDeviceWithError:(id *)a3
+- (id)pendingSnapshotForCurrentDeviceWithError:(id *)error
 {
   v5 = _os_activity_create(&dword_1DEB5D000, "pendingSnapshotForCurrentDeviceWithError", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v8.opaque[0] = 0;
   v8.opaque[1] = 0;
   os_activity_scope_enter(v5, &v8);
-  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessagePendingSnapshotForCurrentDevice" arguments:0 error:a3];
+  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessagePendingSnapshotForCurrentDevice" arguments:0 error:error];
   os_activity_scope_leave(&v8);
 
   return v6;
@@ -2545,49 +2545,49 @@ void __54__MBXPCClient_fetchRestorableSnapshotsWithCompletion___block_invoke(uin
 
 - (unint64_t)_backupOnCellularSupport
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MBXPCClient *)v2 cellularDataSubscriptionMonitor];
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cellularDataSubscriptionMonitor = [(MBXPCClient *)selfCopy cellularDataSubscriptionMonitor];
+  if (cellularDataSubscriptionMonitor)
   {
-    v4 = [(MBXPCClient *)v2 initialBackupOnCellularSupportGroup];
+    initialBackupOnCellularSupportGroup = [(MBXPCClient *)selfCopy initialBackupOnCellularSupportGroup];
   }
 
   else
   {
-    objc_initWeak(&location, v2);
-    v4 = dispatch_group_create();
-    [(MBXPCClient *)v2 setInitialBackupOnCellularSupportGroup:v4];
-    dispatch_group_enter(v4);
+    objc_initWeak(&location, selfCopy);
+    initialBackupOnCellularSupportGroup = dispatch_group_create();
+    [(MBXPCClient *)selfCopy setInitialBackupOnCellularSupportGroup:initialBackupOnCellularSupportGroup];
+    dispatch_group_enter(initialBackupOnCellularSupportGroup);
     v5 = objc_opt_class();
     Name = class_getName(v5);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create(Name, v7);
 
-    v3 = [[MBCellularDataSubscriptionMonitor alloc] initWithQueue:v8 timeout:30];
-    [(MBXPCClient *)v2 setCellularDataSubscriptionMonitor:v3];
+    cellularDataSubscriptionMonitor = [[MBCellularDataSubscriptionMonitor alloc] initWithQueue:v8 timeout:30];
+    [(MBXPCClient *)selfCopy setCellularDataSubscriptionMonitor:cellularDataSubscriptionMonitor];
     v11 = MEMORY[0x1E69E9820];
     v12 = 3221225472;
     v13 = __39__MBXPCClient__backupOnCellularSupport__block_invoke;
     v14 = &unk_1E86843A8;
     objc_copyWeak(&v15, &location);
-    [(MBCellularDataSubscriptionMonitor *)v3 setBackupOnCellularSupportHandler:&v11];
-    [(MBCellularDataSubscriptionMonitor *)v3 start:v11];
+    [(MBCellularDataSubscriptionMonitor *)cellularDataSubscriptionMonitor setBackupOnCellularSupportHandler:&v11];
+    [(MBCellularDataSubscriptionMonitor *)cellularDataSubscriptionMonitor start:v11];
     objc_destroyWeak(&v15);
 
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  if (v4)
+  if (initialBackupOnCellularSupportGroup)
   {
-    dispatch_group_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
+    dispatch_group_wait(initialBackupOnCellularSupportGroup, 0xFFFFFFFFFFFFFFFFLL);
   }
 
-  v9 = [(MBCellularDataSubscriptionMonitor *)v3 backupOnCellularSupport];
+  backupOnCellularSupport = [(MBCellularDataSubscriptionMonitor *)cellularDataSubscriptionMonitor backupOnCellularSupport];
 
-  return v9;
+  return backupOnCellularSupport;
 }
 
 void __39__MBXPCClient__backupOnCellularSupport__block_invoke(uint64_t a1)
@@ -2607,11 +2607,11 @@ void __39__MBXPCClient__backupOnCellularSupport__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)isBackupOnCellularAllowedWithAccount:(id)a3 error:(id *)a4
+- (BOOL)isBackupOnCellularAllowedWithAccount:(id)account error:(id *)error
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 aa_useCellularForDataclass:*MEMORY[0x1E6959600]])
+  accountCopy = account;
+  v6 = accountCopy;
+  if (accountCopy && [accountCopy aa_useCellularForDataclass:*MEMORY[0x1E6959600]])
   {
     v7 = ([(MBXPCClient *)self _backupOnCellularSupport]>> 1) & 1;
   }
@@ -2624,11 +2624,11 @@ void __39__MBXPCClient__backupOnCellularSupport__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (BOOL)isManualBackupOnCellularAllowedWithAccount:(id)a3 error:(id *)a4
+- (BOOL)isManualBackupOnCellularAllowedWithAccount:(id)account error:(id *)error
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 aa_useCellularForDataclass:*MEMORY[0x1E6959600]])
+  accountCopy = account;
+  v6 = accountCopy;
+  if (accountCopy && [accountCopy aa_useCellularForDataclass:*MEMORY[0x1E6959600]])
   {
     v7 = [(MBXPCClient *)self _backupOnCellularSupport]& 1;
   }
@@ -2641,38 +2641,38 @@ void __39__MBXPCClient__backupOnCellularSupport__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (unint64_t)backupOnCellularSupportWithAccount:(id)a3 error:(id *)a4
+- (unint64_t)backupOnCellularSupportWithAccount:(id)account error:(id *)error
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 aa_useCellularForDataclass:*MEMORY[0x1E6959600]])
+  accountCopy = account;
+  v6 = accountCopy;
+  if (accountCopy && [accountCopy aa_useCellularForDataclass:*MEMORY[0x1E6959600]])
   {
-    v7 = [(MBXPCClient *)self _backupOnCellularSupport];
+    _backupOnCellularSupport = [(MBXPCClient *)self _backupOnCellularSupport];
   }
 
   else
   {
-    v7 = 0;
+    _backupOnCellularSupport = 0;
   }
 
-  return v7;
+  return _backupOnCellularSupport;
 }
 
-- (BOOL)isBackupOnCellularEnabledWithError:(id *)a3
+- (BOOL)isBackupOnCellularEnabledWithError:(id *)error
 {
   state64[1] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E69DF078] currentPersona];
-  if (([v5 isPersonalPersona] & 1) == 0 && (objc_msgSend(v5, "isDefaultPersona") & 1) == 0 && !objc_msgSend(v5, "isSystemPersona"))
+  currentPersona = [MEMORY[0x1E69DF078] currentPersona];
+  if (([currentPersona isPersonalPersona] & 1) == 0 && (objc_msgSend(currentPersona, "isDefaultPersona") & 1) == 0 && !objc_msgSend(currentPersona, "isSystemPersona"))
   {
     goto LABEL_20;
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  enabledOverCellularToken = v6->_enabledOverCellularToken;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  enabledOverCellularToken = selfCopy->_enabledOverCellularToken;
   if (enabledOverCellularToken == -1)
   {
-    v8 = notify_register_check("com.apple.private.restrict-post.MobileBackup.BackupOverCellularEnabledState", &v6->_enabledOverCellularToken);
+    v8 = notify_register_check("com.apple.private.restrict-post.MobileBackup.BackupOverCellularEnabledState", &selfCopy->_enabledOverCellularToken);
     if (v8)
     {
       v9 = MBGetDefaultLog();
@@ -2685,16 +2685,16 @@ void __39__MBXPCClient__backupOnCellularSupport__block_invoke(uint64_t a1)
       }
 
       enabledOverCellularToken = -1;
-      v6->_enabledOverCellularToken = -1;
+      selfCopy->_enabledOverCellularToken = -1;
     }
 
     else
     {
-      enabledOverCellularToken = v6->_enabledOverCellularToken;
+      enabledOverCellularToken = selfCopy->_enabledOverCellularToken;
     }
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   if (enabledOverCellularToken == -1)
   {
@@ -2726,13 +2726,13 @@ void __39__MBXPCClient__backupOnCellularSupport__block_invoke(uint64_t a1)
 
   if (state64[0] == 1)
   {
-    LOBYTE(v31) = 1;
+    LOBYTE(bOOLValue) = 1;
     goto LABEL_24;
   }
 
   if (state64[0] == -1)
   {
-    LOBYTE(v31) = 0;
+    LOBYTE(bOOLValue) = 0;
   }
 
   else
@@ -2742,15 +2742,15 @@ LABEL_20:
     buf.opaque[0] = 0;
     buf.opaque[1] = 0;
     os_activity_scope_enter(v32, &buf);
-    v33 = [(MBXPCClient *)self _sendRequest:@"kMBMessageIsBackupOnCellularEnabled" arguments:0 error:a3];
-    v31 = [v33 BOOLValue];
+    v33 = [(MBXPCClient *)self _sendRequest:@"kMBMessageIsBackupOnCellularEnabled" arguments:0 error:error];
+    bOOLValue = [v33 BOOLValue];
     v34 = MBGetDefaultLog();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
     {
       LODWORD(state64[0]) = 67109120;
-      HIDWORD(state64[0]) = v31;
+      HIDWORD(state64[0]) = bOOLValue;
       _os_log_impl(&dword_1DEB5D000, v34, OS_LOG_TYPE_INFO, "Fetched backup enabled over cellular via XPC: %d", state64, 8u);
-      _MBLog(@"I ", "Fetched backup enabled over cellular via XPC: %d", v35, v36, v37, v38, v39, v40, v31);
+      _MBLog(@"I ", "Fetched backup enabled over cellular via XPC: %d", v35, v36, v37, v38, v39, v40, bOOLValue);
     }
 
     os_activity_scope_leave(&buf);
@@ -2759,101 +2759,101 @@ LABEL_20:
 LABEL_24:
 
   v41 = *MEMORY[0x1E69E9840];
-  return v31;
+  return bOOLValue;
 }
 
-- (BOOL)setEntryPointForMegaBackupTelemetry:(int64_t)a3 error:(id *)a4
+- (BOOL)setEntryPointForMegaBackupTelemetry:(int64_t)telemetry error:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v7 = _os_activity_create(&dword_1DEB5D000, "setEntryPointForMegaBackupTelemetry:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v13.opaque[0] = 0;
   v13.opaque[1] = 0;
   os_activity_scope_enter(v7, &v13);
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:telemetry];
   v14[0] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  v10 = [(MBXPCClient *)self _sendRequest:@"kMBMessageSetEntryPointForMegaBackupTelemetry" arguments:v9 error:a4];
+  v10 = [(MBXPCClient *)self _sendRequest:@"kMBMessageSetEntryPointForMegaBackupTelemetry" arguments:v9 error:error];
 
-  LOBYTE(a4) = [v10 BOOLValue];
+  LOBYTE(error) = [v10 BOOLValue];
   os_activity_scope_leave(&v13);
 
   v11 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
-- (BOOL)setPrebuddyUIDeltaTelemetry:(id)a3 date:(id)a4 error:(id *)a5
+- (BOOL)setPrebuddyUIDeltaTelemetry:(id)telemetry date:(id)date error:(id *)error
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  telemetryCopy = telemetry;
+  dateCopy = date;
   v10 = _os_activity_create(&dword_1DEB5D000, "setPrebuddyUIDeltaTelemetry:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v10, &state);
-  v16[0] = v8;
-  v16[1] = v9;
+  v16[0] = telemetryCopy;
+  v16[1] = dateCopy;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
-  v12 = [(MBXPCClient *)self _sendRequest:@"kMBMessageSetPrebuddyUIDeltaTelemetry" arguments:v11 error:a5];
+  v12 = [(MBXPCClient *)self _sendRequest:@"kMBMessageSetPrebuddyUIDeltaTelemetry" arguments:v11 error:error];
 
-  LOBYTE(a5) = [v12 BOOLValue];
+  LOBYTE(error) = [v12 BOOLValue];
   os_activity_scope_leave(&state);
 
   v13 = *MEMORY[0x1E69E9840];
-  return a5;
+  return error;
 }
 
-- (BOOL)logPrebuddyFlowTelemetry:(int64_t)a3 error:(id *)a4
+- (BOOL)logPrebuddyFlowTelemetry:(int64_t)telemetry error:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v7 = _os_activity_create(&dword_1DEB5D000, "logPrebuddyFlowTelemetry:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v13.opaque[0] = 0;
   v13.opaque[1] = 0;
   os_activity_scope_enter(v7, &v13);
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:telemetry];
   v14[0] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  v10 = [(MBXPCClient *)self _sendRequest:@"kMBMessageLogPrebuddyFlowTelemetry" arguments:v9 error:a4];
+  v10 = [(MBXPCClient *)self _sendRequest:@"kMBMessageLogPrebuddyFlowTelemetry" arguments:v9 error:error];
 
-  LOBYTE(a4) = [v10 BOOLValue];
+  LOBYTE(error) = [v10 BOOLValue];
   os_activity_scope_leave(&v13);
 
   v11 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
-- (id)synchronizeFileListsWithDeviceUUID:(id)a3 commitID:(id)a4 error:(id *)a5
+- (id)synchronizeFileListsWithDeviceUUID:(id)d commitID:(id)iD error:(id *)error
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v15[0] = a3;
-  v15[1] = a4;
+  v15[0] = d;
+  v15[1] = iD;
   v8 = MEMORY[0x1E695DEC8];
-  v9 = a4;
-  v10 = a3;
+  iDCopy = iD;
+  dCopy = d;
   v11 = [v8 arrayWithObjects:v15 count:2];
 
-  v12 = [(MBXPCClient *)self _sendRequest:@"kMBMessageSynchronizeFileLists" arguments:v11 error:a5];
+  v12 = [(MBXPCClient *)self _sendRequest:@"kMBMessageSynchronizeFileLists" arguments:v11 error:error];
 
   v13 = *MEMORY[0x1E69E9840];
 
   return v12;
 }
 
-- (BOOL)startDeviceTransferWithTaskType:(int64_t)a3 sessionInfo:(id)a4 error:(id *)a5
+- (BOOL)startDeviceTransferWithTaskType:(int64_t)type sessionInfo:(id)info error:(id *)error
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  if (!a3)
+  infoCopy = info;
+  if (!type)
   {
     [MBXPCClient startDeviceTransferWithTaskType:sessionInfo:error:];
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = infoCopy;
+  if (!infoCopy)
   {
     [MBXPCClient startDeviceTransferWithTaskType:sessionInfo:error:];
   }
 
-  if (!a5)
+  if (!error)
   {
     [MBXPCClient startDeviceTransferWithTaskType:sessionInfo:error:];
   }
@@ -2862,28 +2862,28 @@ LABEL_24:
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v10, &state);
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v18[0] = v11;
   v18[1] = v9;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
-  v13 = [(MBXPCClient *)self _sendRequest:@"kMBMessageStartDeviceTransfer" arguments:v12 error:a5];
+  v13 = [(MBXPCClient *)self _sendRequest:@"kMBMessageStartDeviceTransfer" arguments:v12 error:error];
 
-  v14 = [v13 BOOLValue];
+  bOOLValue = [v13 BOOLValue];
   os_activity_scope_leave(&state);
 
   v15 = *MEMORY[0x1E69E9840];
-  return v14;
+  return bOOLValue;
 }
 
-- (BOOL)cancelDeviceTransferWithTaskType:(int64_t)a3 error:(id *)a4
+- (BOOL)cancelDeviceTransferWithTaskType:(int64_t)type error:(id *)error
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!type)
   {
     [MBXPCClient cancelDeviceTransferWithTaskType:error:];
   }
 
-  if (!a4)
+  if (!error)
   {
     [MBXPCClient cancelDeviceTransferWithTaskType:error:];
   }
@@ -2892,29 +2892,29 @@ LABEL_24:
   v14.opaque[0] = 0;
   v14.opaque[1] = 0;
   os_activity_scope_enter(v7, &v14);
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v15[0] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v10 = [(MBXPCClient *)self _sendRequest:@"kMBMessageCancelDeviceTransfer" arguments:v9 error:a4];
+  v10 = [(MBXPCClient *)self _sendRequest:@"kMBMessageCancelDeviceTransfer" arguments:v9 error:error];
 
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
   os_activity_scope_leave(&v14);
 
   v12 = *MEMORY[0x1E69E9840];
-  return v11;
+  return bOOLValue;
 }
 
-- (void)startPreflightWithCompletionHandler:(id)a3
+- (void)startPreflightWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_get_global_queue(17, 0);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__MBXPCClient_startPreflightWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E86843F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 
@@ -2945,17 +2945,17 @@ void __51__MBXPCClient_startPreflightWithCompletionHandler___block_invoke(uint64
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)startKeychainDataTransferWithCompletionHandler:(id)a3
+- (void)startKeychainDataTransferWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_get_global_queue(17, 0);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__MBXPCClient_startKeychainDataTransferWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E86843F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 
@@ -2986,26 +2986,26 @@ void __62__MBXPCClient_startKeychainDataTransferWithCompletionHandler___block_in
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)startKeychainDataImportWithKeychainInfo:(id)a3 completionHandler:(id)a4
+- (void)startKeychainDataImportWithKeychainInfo:(id)info completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  infoCopy = info;
+  handlerCopy = handler;
+  if (!infoCopy)
   {
     [MBXPCClient startKeychainDataImportWithKeychainInfo:completionHandler:];
   }
 
-  v8 = v7;
+  v8 = handlerCopy;
   v9 = dispatch_get_global_queue(17, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __73__MBXPCClient_startKeychainDataImportWithKeychainInfo_completionHandler___block_invoke;
   block[3] = &unk_1E8684668;
   block[4] = self;
-  v13 = v6;
+  v13 = infoCopy;
   v14 = v8;
   v10 = v8;
-  v11 = v6;
+  v11 = infoCopy;
   dispatch_async(v9, block);
 }
 
@@ -3040,26 +3040,26 @@ void __73__MBXPCClient_startKeychainDataImportWithKeychainInfo_completionHandler
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startDataTransferWithPreflightInfo:(id)a3 completionHandler:(id)a4
+- (void)startDataTransferWithPreflightInfo:(id)info completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  infoCopy = info;
+  handlerCopy = handler;
+  if (!infoCopy)
   {
     [MBXPCClient startDataTransferWithPreflightInfo:completionHandler:];
   }
 
-  v8 = v7;
+  v8 = handlerCopy;
   v9 = dispatch_get_global_queue(17, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__MBXPCClient_startDataTransferWithPreflightInfo_completionHandler___block_invoke;
   block[3] = &unk_1E8684668;
   block[4] = self;
-  v13 = v6;
+  v13 = infoCopy;
   v14 = v8;
   v10 = v8;
-  v11 = v6;
+  v11 = infoCopy;
   dispatch_async(v9, block);
 }
 
@@ -3106,14 +3106,14 @@ void __68__MBXPCClient_startDataTransferWithPreflightInfo_completionHandler___bl
   return v4;
 }
 
-- (id)_sendRequest:(id)a3 arguments:(id)a4 error:(id *)a5
+- (id)_sendRequest:(id)request arguments:(id)arguments error:(id *)error
 {
   v49 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [MBMessage messageWithName:v8 arguments:a4 personaIdentifier:self->_personaIdentifier];
-  v10 = [(MBXPCClient *)self _makeConnection];
+  requestCopy = request;
+  v9 = [MBMessage messageWithName:requestCopy arguments:arguments personaIdentifier:self->_personaIdentifier];
+  _makeConnection = [(MBXPCClient *)self _makeConnection];
   v44 = 0;
-  v11 = [v10 sendMessageWithReplyAndSync:v9 error:&v44];
+  v11 = [_makeConnection sendMessageWithReplyAndSync:v9 error:&v44];
   v12 = v44;
 
   if (v11)
@@ -3129,31 +3129,31 @@ void __68__MBXPCClient_startDataTransferWithPreflightInfo_completionHandler___bl
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v46 = v8;
+      v46 = requestCopy;
       v47 = 2112;
       v48 = v12;
       _os_log_impl(&dword_1DEB5D000, v21, OS_LOG_TYPE_DEFAULT, "Failed to send %@ message - retrying once: %@", buf, 0x16u);
-      _MBLog(@"Df", "Failed to send %@ message - retrying once: %@", v22, v23, v24, v25, v26, v27, v8);
+      _MBLog(@"Df", "Failed to send %@ message - retrying once: %@", v22, v23, v24, v25, v26, v27, requestCopy);
     }
 
-    v28 = [(MBXPCClient *)self _makeConnection];
+    _makeConnection2 = [(MBXPCClient *)self _makeConnection];
     v43 = v12;
-    v11 = [v28 sendMessageWithReplyAndSync:v9 error:&v43];
+    v11 = [_makeConnection2 sendMessageWithReplyAndSync:v9 error:&v43];
     v29 = v43;
 
     if (v11)
     {
       v12 = v29;
 LABEL_2:
-      v13 = [v11 replyError];
-      v14 = v13;
-      if (a5 && v13)
+      replyError = [v11 replyError];
+      v14 = replyError;
+      if (error && replyError)
       {
-        v15 = v13;
-        *a5 = v14;
+        v15 = replyError;
+        *error = v14;
       }
 
-      v16 = [v11 reply];
+      reply = [v11 reply];
 
       goto LABEL_6;
     }
@@ -3162,22 +3162,22 @@ LABEL_2:
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v46 = v8;
+      v46 = requestCopy;
       v47 = 2112;
       v48 = v29;
       _os_log_impl(&dword_1DEB5D000, v36, OS_LOG_TYPE_ERROR, "Failed to send %@ message on retry: %@", buf, 0x16u);
-      _MBLog(@"E ", "Failed to send %@ message on retry: %@", v37, v38, v39, v40, v41, v42, v8);
+      _MBLog(@"E ", "Failed to send %@ message on retry: %@", v37, v38, v39, v40, v41, v42, requestCopy);
     }
 
-    if (a5)
+    if (error)
     {
       [MBError errorWithCode:19 error:v29 format:@"Connection to backupd interrupted"];
-      *a5 = v16 = 0;
+      *error = reply = 0;
     }
 
     else
     {
-      v16 = 0;
+      reply = 0;
     }
 
     v12 = v29;
@@ -3188,22 +3188,22 @@ LABEL_2:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v46 = v8;
+      v46 = requestCopy;
       v47 = 2112;
       v48 = v12;
       _os_log_impl(&dword_1DEB5D000, v21, OS_LOG_TYPE_ERROR, "Failed to send %@ message: %@", buf, 0x16u);
-      _MBLog(@"E ", "Failed to send %@ message: %@", v30, v31, v32, v33, v34, v35, v8);
+      _MBLog(@"E ", "Failed to send %@ message: %@", v30, v31, v32, v33, v34, v35, requestCopy);
     }
 
-    if (a5)
+    if (error)
     {
       [MBError errorWithCode:20 error:v12 format:@"Connection to backupd invalid"];
-      *a5 = v16 = 0;
+      *error = reply = 0;
     }
 
     else
     {
-      v16 = 0;
+      reply = 0;
     }
   }
 
@@ -3211,74 +3211,74 @@ LABEL_6:
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v16;
+  return reply;
 }
 
-- (void)connection:(id)a3 didReceiveMessage:(id)a4
+- (void)connection:(id)connection didReceiveMessage:(id)message
 {
   v61 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(MBManager *)self delegate];
-  if (v6)
+  messageCopy = message;
+  delegate = [(MBManager *)self delegate];
+  if (delegate)
   {
     dispatch_assert_queue_V2(self->_eventQueue);
-    v7 = [v5 name];
-    v8 = [v5 arguments];
-    v9 = [v5 error];
-    if ([(__CFString *)v7 isEqualToString:@"kMBMessageDidFinishBackup"])
+    name = [messageCopy name];
+    arguments = [messageCopy arguments];
+    error = [messageCopy error];
+    if ([(__CFString *)name isEqualToString:@"kMBMessageDidFinishBackup"])
     {
       if (objc_opt_respondsToSelector())
       {
-        [v6 managerDidFinishBackup:self];
+        [delegate managerDidFinishBackup:self];
       }
 
       goto LABEL_31;
     }
 
-    if ([(__CFString *)v7 isEqualToString:@"kMBMessageDidFinishScan"])
+    if ([(__CFString *)name isEqualToString:@"kMBMessageDidFinishScan"])
     {
       if (objc_opt_respondsToSelector())
       {
-        v10 = [v8 objectAtIndexedSubscript:0];
-        v11 = [v10 unsignedLongLongValue];
+        v10 = [arguments objectAtIndexedSubscript:0];
+        unsignedLongLongValue = [v10 unsignedLongLongValue];
 
-        [v6 managerDidFinishScan:self bytesUsed:v11];
+        [delegate managerDidFinishScan:self bytesUsed:unsignedLongLongValue];
       }
 
       if (objc_opt_respondsToSelector())
       {
-        [v6 managerDidFinishScan:self];
-      }
-
-      goto LABEL_31;
-    }
-
-    if ([(__CFString *)v7 isEqualToString:@"kMBMessageDidFinishVerification"])
-    {
-      if (objc_opt_respondsToSelector())
-      {
-        [v6 managerDidFinishVerification:self];
+        [delegate managerDidFinishScan:self];
       }
 
       goto LABEL_31;
     }
 
-    if ([(__CFString *)v7 isEqualToString:@"kMBMessageDidFinishRestore"])
+    if ([(__CFString *)name isEqualToString:@"kMBMessageDidFinishVerification"])
     {
       if (objc_opt_respondsToSelector())
       {
-        [v6 managerDidFinishRestore:self];
+        [delegate managerDidFinishVerification:self];
       }
 
       goto LABEL_31;
     }
 
-    if ([(__CFString *)v7 isEqualToString:@"kMBMessageDidFinishFileRestore"])
+    if ([(__CFString *)name isEqualToString:@"kMBMessageDidFinishRestore"])
     {
       if (objc_opt_respondsToSelector())
       {
-        v12 = [v8 objectAtIndexedSubscript:0];
-        [v6 manager:self didFinishRestoreForPath:v12];
+        [delegate managerDidFinishRestore:self];
+      }
+
+      goto LABEL_31;
+    }
+
+    if ([(__CFString *)name isEqualToString:@"kMBMessageDidFinishFileRestore"])
+    {
+      if (objc_opt_respondsToSelector())
+      {
+        firstObject = [arguments objectAtIndexedSubscript:0];
+        [delegate manager:self didFinishRestoreForPath:firstObject];
 LABEL_30:
       }
 
@@ -3287,233 +3287,233 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    if ([(__CFString *)v7 isEqualToString:@"kMBMessageDidScanBundle"])
+    if ([(__CFString *)name isEqualToString:@"kMBMessageDidScanBundle"])
     {
       if ((objc_opt_respondsToSelector() & 1) == 0)
       {
         goto LABEL_31;
       }
 
-      v12 = [v8 objectAtIndexedSubscript:0];
-      v13 = [v8 objectAtIndexedSubscript:1];
-      [v6 manager:self didScanBundleWithID:v12 bytesUsed:{objc_msgSend(v13, "unsignedLongLongValue")}];
+      firstObject = [arguments objectAtIndexedSubscript:0];
+      v13 = [arguments objectAtIndexedSubscript:1];
+      [delegate manager:self didScanBundleWithID:firstObject bytesUsed:{objc_msgSend(v13, "unsignedLongLongValue")}];
     }
 
     else
     {
-      if ([(__CFString *)v7 isEqualToString:@"kMBMessageDidScanDomainForBundle"])
+      if ([(__CFString *)name isEqualToString:@"kMBMessageDidScanDomainForBundle"])
       {
         if ((objc_opt_respondsToSelector() & 1) == 0)
         {
           goto LABEL_31;
         }
 
-        v12 = [v8 objectAtIndexedSubscript:0];
-        v13 = [v8 objectAtIndexedSubscript:1];
-        v14 = [v8 objectAtIndexedSubscript:2];
-        [v6 manager:self didScanDomainWithName:v12 forBundleID:v13 bytesUsed:{objc_msgSend(v14, "unsignedLongLongValue")}];
+        firstObject = [arguments objectAtIndexedSubscript:0];
+        v13 = [arguments objectAtIndexedSubscript:1];
+        v14 = [arguments objectAtIndexedSubscript:2];
+        [delegate manager:self didScanDomainWithName:firstObject forBundleID:v13 bytesUsed:{objc_msgSend(v14, "unsignedLongLongValue")}];
       }
 
       else
       {
-        if (![(__CFString *)v7 isEqualToString:@"kMBMessageDidScanFilesForBundle"])
+        if (![(__CFString *)name isEqualToString:@"kMBMessageDidScanFilesForBundle"])
         {
-          if ([(__CFString *)v7 isEqualToString:@"kMBMessageDidFailBackup"])
+          if ([(__CFString *)name isEqualToString:@"kMBMessageDidFailBackup"])
           {
             if (objc_opt_respondsToSelector())
             {
-              [v6 manager:self didFailBackupWithError:v9];
+              [delegate manager:self didFailBackupWithError:error];
             }
 
             goto LABEL_31;
           }
 
-          if ([(__CFString *)v7 isEqualToString:@"kMBMessageDidFailScan"])
+          if ([(__CFString *)name isEqualToString:@"kMBMessageDidFailScan"])
           {
             if (objc_opt_respondsToSelector())
             {
-              [v6 manager:self didFailScanWithError:v9];
+              [delegate manager:self didFailScanWithError:error];
             }
 
             goto LABEL_31;
           }
 
-          if ([(__CFString *)v7 isEqualToString:@"kMBMessageDidFailVerification"])
+          if ([(__CFString *)name isEqualToString:@"kMBMessageDidFailVerification"])
           {
             if (objc_opt_respondsToSelector())
             {
-              [v6 manager:self didFailVerificationWithError:v9];
+              [delegate manager:self didFailVerificationWithError:error];
             }
 
             goto LABEL_31;
           }
 
-          if ([(__CFString *)v7 isEqualToString:@"kMBMessageDidFailRestore"])
+          if ([(__CFString *)name isEqualToString:@"kMBMessageDidFailRestore"])
           {
             if (objc_opt_respondsToSelector())
             {
-              [v6 manager:self didFailRestoreWithError:v9];
+              [delegate manager:self didFailRestoreWithError:error];
             }
 
             goto LABEL_31;
           }
 
-          if ([(__CFString *)v7 isEqualToString:@"kMBMessageDidFailFileRestore"])
+          if ([(__CFString *)name isEqualToString:@"kMBMessageDidFailFileRestore"])
           {
             if ((objc_opt_respondsToSelector() & 1) == 0)
             {
               goto LABEL_31;
             }
 
-            v12 = [v8 objectAtIndexedSubscript:0];
-            [v6 manager:self didFailRestoreForPath:v12 withError:v9];
+            firstObject = [arguments objectAtIndexedSubscript:0];
+            [delegate manager:self didFailRestoreForPath:firstObject withError:error];
           }
 
           else
           {
-            if ([(__CFString *)v7 isEqualToString:@"kMBMessageDidCancelRestore"])
+            if ([(__CFString *)name isEqualToString:@"kMBMessageDidCancelRestore"])
             {
               if (objc_opt_respondsToSelector())
               {
-                [v6 managerDidCancelRestore:self];
+                [delegate managerDidCancelRestore:self];
               }
 
               goto LABEL_31;
             }
 
-            if ([(__CFString *)v7 isEqualToString:@"kMBMessageDidUpdateProgress"])
+            if ([(__CFString *)name isEqualToString:@"kMBMessageDidUpdateProgress"])
             {
-              v16 = [v8 objectAtIndexedSubscript:0];
+              v16 = [arguments objectAtIndexedSubscript:0];
               [v16 floatValue];
               v18 = v17;
 
-              v19 = [v8 objectAtIndexedSubscript:1];
-              v20 = [v19 unsignedIntegerValue];
+              v19 = [arguments objectAtIndexedSubscript:1];
+              unsignedIntegerValue = [v19 unsignedIntegerValue];
 
-              v21 = [v8 objectAtIndexedSubscript:2];
-              v22 = [v21 unsignedLongLongValue];
+              v21 = [arguments objectAtIndexedSubscript:2];
+              unsignedLongLongValue2 = [v21 unsignedLongLongValue];
 
-              v23 = [v8 objectAtIndexedSubscript:3];
+              v23 = [arguments objectAtIndexedSubscript:3];
               if (objc_opt_respondsToSelector())
               {
                 LODWORD(v24) = v18;
-                [v6 manager:self didUpdateProgress:v20 estimatedTimeRemaining:v24];
+                [delegate manager:self didUpdateProgress:unsignedIntegerValue estimatedTimeRemaining:v24];
               }
 
               else if (objc_opt_respondsToSelector())
               {
                 LODWORD(v25) = v18;
-                [v6 manager:self didUpdateProgress:v20 estimatedTimeRemaining:v22 bytesRemaining:v23 state:v25];
+                [delegate manager:self didUpdateProgress:unsignedIntegerValue estimatedTimeRemaining:unsignedLongLongValue2 bytesRemaining:v23 state:v25];
               }
 
               goto LABEL_31;
             }
 
-            if ([(__CFString *)v7 isEqualToString:@"kMBMessageDidSetBackupEnabled"])
+            if ([(__CFString *)name isEqualToString:@"kMBMessageDidSetBackupEnabled"])
             {
               if ((objc_opt_respondsToSelector() & 1) == 0)
               {
                 goto LABEL_31;
               }
 
-              v12 = [v8 objectAtIndexedSubscript:0];
-              [v6 manager:self didSetBackupEnabled:{objc_msgSend(v12, "BOOLValue")}];
+              firstObject = [arguments objectAtIndexedSubscript:0];
+              [delegate manager:self didSetBackupEnabled:{objc_msgSend(firstObject, "BOOLValue")}];
             }
 
             else
             {
-              if ([(__CFString *)v7 isEqualToString:@"kMBMessageDidUpdateBackgroundRestoreProgress"])
+              if ([(__CFString *)name isEqualToString:@"kMBMessageDidUpdateBackgroundRestoreProgress"])
               {
                 if (objc_opt_respondsToSelector())
                 {
-                  [v6 managerDidUpdateBackgroundRestoreProgress:self];
+                  [delegate managerDidUpdateBackgroundRestoreProgress:self];
                 }
 
                 goto LABEL_31;
               }
 
-              if ([(__CFString *)v7 isEqualToString:@"kMBMessageDidFinishDeviceTransfer"])
+              if ([(__CFString *)name isEqualToString:@"kMBMessageDidFinishDeviceTransfer"])
               {
                 v26 = MBGetDefaultLog();
                 if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138543362;
-                  v58 = @"kMBMessageDidFinishDeviceTransfer";
+                  connectionState = @"kMBMessageDidFinishDeviceTransfer";
                   _os_log_impl(&dword_1DEB5D000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
                   _MBLog(@"Df", "%{public}@", v27, v28, v29, v30, v31, v32, @"kMBMessageDidFinishDeviceTransfer");
                 }
 
                 if (objc_opt_respondsToSelector())
                 {
-                  [v6 manager:self didFinishDeviceTransferWithError:v9];
+                  [delegate manager:self didFinishDeviceTransferWithError:error];
                 }
 
                 goto LABEL_31;
               }
 
-              if ([(__CFString *)v7 isEqualToString:@"kMBMessageDidFinishDeviceTransferKeychainTransfer"])
+              if ([(__CFString *)name isEqualToString:@"kMBMessageDidFinishDeviceTransferKeychainTransfer"])
               {
                 if (objc_opt_respondsToSelector())
                 {
-                  [v6 manager:self didFinishDeviceTransferKeychainTransfer:0];
+                  [delegate manager:self didFinishDeviceTransferKeychainTransfer:0];
                 }
 
                 goto LABEL_31;
               }
 
-              if ([(__CFString *)v7 isEqualToString:@"kMBMessageDidUpdateDeviceTransferProgress"])
+              if ([(__CFString *)name isEqualToString:@"kMBMessageDidUpdateDeviceTransferProgress"])
               {
-                v12 = [v8 firstObject];
+                firstObject = [arguments firstObject];
                 v33 = MBGetDefaultLog();
                 if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
                 {
-                  [v12 progress];
+                  [firstObject progress];
                   *buf = 134217984;
-                  v58 = v34;
+                  connectionState = v34;
                   _os_log_impl(&dword_1DEB5D000, v33, OS_LOG_TYPE_DEFAULT, "p:%.2f", buf, 0xCu);
-                  [v12 progress];
+                  [firstObject progress];
                   _MBLog(@"Df", "p:%.2f", v35, v36, v37, v38, v39, v40, v41);
                 }
 
                 if (objc_opt_respondsToSelector())
                 {
-                  [v6 manager:self didUpdateDeviceTransferProgress:v12];
+                  [delegate manager:self didUpdateDeviceTransferProgress:firstObject];
                 }
               }
 
               else
               {
-                if (![(__CFString *)v7 isEqualToString:@"kMBMessageDidUpdateDeviceTransferConnectionInfo"])
+                if (![(__CFString *)name isEqualToString:@"kMBMessageDidUpdateDeviceTransferConnectionInfo"])
                 {
                   v50 = MBGetDefaultLog();
                   if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
                   {
                     *buf = 138412290;
-                    v58 = v7;
+                    connectionState = name;
                     _os_log_impl(&dword_1DEB5D000, v50, OS_LOG_TYPE_ERROR, "Unknown command '%@' from daemon", buf, 0xCu);
-                    _MBLog(@"E ", "Unknown command '%@' from daemon", v51, v52, v53, v54, v55, v56, v7);
+                    _MBLog(@"E ", "Unknown command '%@' from daemon", v51, v52, v53, v54, v55, v56, name);
                   }
 
                   goto LABEL_31;
                 }
 
-                v12 = [v8 firstObject];
+                firstObject = [arguments firstObject];
                 v42 = MBGetDefaultLog();
                 if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 134218240;
-                  v58 = [v12 connectionState];
+                  connectionState = [firstObject connectionState];
                   v59 = 2048;
-                  v60 = [v12 connectionType];
+                  connectionType = [firstObject connectionType];
                   _os_log_impl(&dword_1DEB5D000, v42, OS_LOG_TYPE_DEFAULT, "s:%ld, t:%ld", buf, 0x16u);
-                  v43 = [v12 connectionState];
-                  [v12 connectionType];
-                  _MBLog(@"Df", "s:%ld, t:%ld", v44, v45, v46, v47, v48, v49, v43);
+                  connectionState2 = [firstObject connectionState];
+                  [firstObject connectionType];
+                  _MBLog(@"Df", "s:%ld, t:%ld", v44, v45, v46, v47, v48, v49, connectionState2);
                 }
 
                 if (objc_opt_respondsToSelector())
                 {
-                  [v6 manager:self didUpdateDeviceTransferConnectionInfo:v12];
+                  [delegate manager:self didUpdateDeviceTransferConnectionInfo:firstObject];
                 }
               }
             }
@@ -3527,10 +3527,10 @@ LABEL_31:
           goto LABEL_31;
         }
 
-        v12 = [v8 objectAtIndexedSubscript:0];
-        v13 = [v8 objectAtIndexedSubscript:1];
-        v14 = [v8 objectAtIndexedSubscript:2];
-        [v6 manager:self didScanFiles:v12 forDomainWithName:v13 bundleID:v14];
+        firstObject = [arguments objectAtIndexedSubscript:0];
+        v13 = [arguments objectAtIndexedSubscript:1];
+        v14 = [arguments objectAtIndexedSubscript:2];
+        [delegate manager:self didScanFiles:firstObject forDomainWithName:v13 bundleID:v14];
       }
     }
 
@@ -3542,30 +3542,30 @@ LABEL_32:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connectionWasInterrupted:(id)a3
+- (void)connectionWasInterrupted:(id)interrupted
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MBManager *)self delegate];
-  if (v5)
+  interruptedCopy = interrupted;
+  delegate = [(MBManager *)self delegate];
+  if (delegate)
   {
     dispatch_assert_queue_V2(self->_eventQueue);
     if (objc_opt_respondsToSelector())
     {
-      v6 = [(MBXPCClient *)self connection];
+      connection = [(MBXPCClient *)self connection];
       v7 = MBGetDefaultLog();
       v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-      if (v6 == v4)
+      if (connection == interruptedCopy)
       {
         if (v8)
         {
           *buf = 138412290;
-          v23 = v4;
+          v23 = interruptedCopy;
           _os_log_impl(&dword_1DEB5D000, v7, OS_LOG_TYPE_DEFAULT, "Informing client connection was interrupted: %@", buf, 0xCu);
-          _MBLog(@"Df", "Informing client connection was interrupted: %@", v15, v16, v17, v18, v19, v20, v4);
+          _MBLog(@"Df", "Informing client connection was interrupted: %@", v15, v16, v17, v18, v19, v20, interruptedCopy);
         }
 
-        [v5 managerDidLoseConnectionToService:self];
+        [delegate managerDidLoseConnectionToService:self];
       }
 
       else
@@ -3573,11 +3573,11 @@ LABEL_32:
         if (v8)
         {
           *buf = 138412546;
-          v23 = v4;
+          v23 = interruptedCopy;
           v24 = 2112;
-          v25 = v6;
+          v25 = connection;
           _os_log_impl(&dword_1DEB5D000, v7, OS_LOG_TYPE_DEFAULT, "Not informing client connection was interrupted because there is a new connection already(%@ != %@)", buf, 0x16u);
-          _MBLog(@"Df", "Not informing client connection was interrupted because there is a new connection already(%@ != %@)", v9, v10, v11, v12, v13, v14, v4);
+          _MBLog(@"Df", "Not informing client connection was interrupted because there is a new connection already(%@ != %@)", v9, v10, v11, v12, v13, v14, interruptedCopy);
         }
       }
     }
@@ -3586,26 +3586,26 @@ LABEL_32:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connectionWasInvalidated:(id)a3
+- (void)connectionWasInvalidated:(id)invalidated
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(MBXPCClient *)v4 setConnection:0];
-  objc_sync_exit(v4);
+  invalidatedCopy = invalidated;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MBXPCClient *)selfCopy setConnection:0];
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)isInitialMegaBackupCompleted:(id *)a3
+- (BOOL)isInitialMegaBackupCompleted:(id *)completed
 {
   v5 = _os_activity_create(&dword_1DEB5D000, "isInitialMegaBackupCompleted", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v8.opaque[0] = 0;
   v8.opaque[1] = 0;
   os_activity_scope_enter(v5, &v8);
-  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageIsInitialMegaBackupCompleted" arguments:0 error:a3];
-  LOBYTE(a3) = [v6 BOOLValue];
+  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageIsInitialMegaBackupCompleted" arguments:0 error:completed];
+  LOBYTE(completed) = [v6 BOOLValue];
 
   os_activity_scope_leave(&v8);
-  return a3;
+  return completed;
 }
 
 - (void)saveBackupEnabledForMegaBackup
@@ -3618,28 +3618,28 @@ LABEL_32:
   os_activity_scope_leave(&v5);
 }
 
-- (BOOL)wasBackupEnabledForMegaBackup:(id *)a3
+- (BOOL)wasBackupEnabledForMegaBackup:(id *)backup
 {
   v5 = _os_activity_create(&dword_1DEB5D000, "wasBackupEnabledForMegaBackup:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v8.opaque[0] = 0;
   v8.opaque[1] = 0;
   os_activity_scope_enter(v5, &v8);
-  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageWasBackupEnabledForMegaBackup" arguments:0 error:a3];
-  LOBYTE(a3) = [v6 BOOLValue];
+  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageWasBackupEnabledForMegaBackup" arguments:0 error:backup];
+  LOBYTE(backup) = [v6 BOOLValue];
 
   os_activity_scope_leave(&v8);
-  return a3;
+  return backup;
 }
 
-- (void)saveSyncSettingsEnabledForMegaBackup:(id)a3
+- (void)saveSyncSettingsEnabledForMegaBackup:(id)backup
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  backupCopy = backup;
   v5 = _os_activity_create(&dword_1DEB5D000, "saveSyncSettingsEnabledForMegaBackup:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v9.opaque[0] = 0;
   v9.opaque[1] = 0;
   os_activity_scope_enter(v5, &v9);
-  v10[0] = v4;
+  v10[0] = backupCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   v7 = [(MBXPCClient *)self _sendRequest:@"kMBMessageSaveSyncSettingsEnabledForMegaBackup" arguments:v6];
 
@@ -3647,15 +3647,15 @@ LABEL_32:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)saveBackupDomainsEnabledForMegaBackup:(id)a3
+- (void)saveBackupDomainsEnabledForMegaBackup:(id)backup
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  backupCopy = backup;
   v5 = _os_activity_create(&dword_1DEB5D000, "saveBackupDomainsEnabledForMegaBackup:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v9.opaque[0] = 0;
   v9.opaque[1] = 0;
   os_activity_scope_enter(v5, &v9);
-  v10[0] = v4;
+  v10[0] = backupCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   v7 = [(MBXPCClient *)self _sendRequest:@"kMBMessageSaveBackupDomainsEnabledForMegaBackup" arguments:v6];
 
@@ -3663,113 +3663,113 @@ LABEL_32:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)restorePreviousSettingsEnabledForMegaBackup:(id *)a3
+- (BOOL)restorePreviousSettingsEnabledForMegaBackup:(id *)backup
 {
   v5 = _os_activity_create(&dword_1DEB5D000, "restorePreviousSettingsForMegaBackup:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v8.opaque[0] = 0;
   v8.opaque[1] = 0;
   os_activity_scope_enter(v5, &v8);
-  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageRestorePreviousSettingsEnabledForMegaBackup" arguments:0 error:a3];
-  LOBYTE(a3) = [v6 BOOLValue];
+  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageRestorePreviousSettingsEnabledForMegaBackup" arguments:0 error:backup];
+  LOBYTE(backup) = [v6 BOOLValue];
 
   os_activity_scope_leave(&v8);
-  return a3;
+  return backup;
 }
 
-- (BOOL)requestMegaBackupExpirationDate:(id)a3 error:(id *)a4
+- (BOOL)requestMegaBackupExpirationDate:(id)date error:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dateCopy = date;
   v7 = _os_activity_create(&dword_1DEB5D000, "requestMegaBackupExpirationDate:error:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v12.opaque[0] = 0;
   v12.opaque[1] = 0;
   os_activity_scope_enter(v7, &v12);
-  v13[0] = v6;
+  v13[0] = dateCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-  v9 = [(MBXPCClient *)self _sendRequest:@"kMBMessageRequestMegaBackupExpirationDate" arguments:v8 error:a4];
+  v9 = [(MBXPCClient *)self _sendRequest:@"kMBMessageRequestMegaBackupExpirationDate" arguments:v8 error:error];
 
-  LOBYTE(a4) = [v9 BOOLValue];
+  LOBYTE(error) = [v9 BOOLValue];
   os_activity_scope_leave(&v12);
 
   v10 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
-- (BOOL)updateMegaBackupExpirationDate:(id)a3 error:(id *)a4
+- (BOOL)updateMegaBackupExpirationDate:(id)date error:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dateCopy = date;
   v7 = _os_activity_create(&dword_1DEB5D000, "updateMegaBackupExpirationDate:error:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v12.opaque[0] = 0;
   v12.opaque[1] = 0;
   os_activity_scope_enter(v7, &v12);
-  v13[0] = v6;
+  v13[0] = dateCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-  v9 = [(MBXPCClient *)self _sendRequest:@"kMBMessageUpdateMegaBackupExpirationDate" arguments:v8 error:a4];
+  v9 = [(MBXPCClient *)self _sendRequest:@"kMBMessageUpdateMegaBackupExpirationDate" arguments:v8 error:error];
 
-  LOBYTE(a4) = [v9 BOOLValue];
+  LOBYTE(error) = [v9 BOOLValue];
   os_activity_scope_leave(&v12);
 
   v10 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
-- (BOOL)exitMegaBackupMode:(id *)a3
+- (BOOL)exitMegaBackupMode:(id *)mode
 {
   v5 = _os_activity_create(&dword_1DEB5D000, "exitMegaBackupMode", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v8.opaque[0] = 0;
   v8.opaque[1] = 0;
   os_activity_scope_enter(v5, &v8);
-  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageExitMegaBackupMode" arguments:0 error:a3];
-  LOBYTE(a3) = [v6 BOOLValue];
+  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageExitMegaBackupMode" arguments:0 error:mode];
+  LOBYTE(mode) = [v6 BOOLValue];
 
   os_activity_scope_leave(&v8);
-  return a3;
+  return mode;
 }
 
-- (BOOL)postFollowUpForRestoreTimeoutWithError:(id *)a3
+- (BOOL)postFollowUpForRestoreTimeoutWithError:(id *)error
 {
   v5 = _os_activity_create(&dword_1DEB5D000, "postFollowUpForRestoreTimeoutWithError:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v8.opaque[0] = 0;
   v8.opaque[1] = 0;
   os_activity_scope_enter(v5, &v8);
-  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessagePostFollowUpForRestoreTimeout" arguments:0 error:a3];
-  LOBYTE(a3) = [v6 BOOLValue];
+  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessagePostFollowUpForRestoreTimeout" arguments:0 error:error];
+  LOBYTE(error) = [v6 BOOLValue];
 
   os_activity_scope_leave(&v8);
-  return a3;
+  return error;
 }
 
-- (BOOL)postFollowUpForBackgroundRestoreProgress:(id)a3 error:(id *)a4
+- (BOOL)postFollowUpForBackgroundRestoreProgress:(id)progress error:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  progressCopy = progress;
   v7 = _os_activity_create(&dword_1DEB5D000, "postFollowUpForBackgroundRestoreProgress:error:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v12.opaque[0] = 0;
   v12.opaque[1] = 0;
   os_activity_scope_enter(v7, &v12);
-  v13[0] = v6;
+  v13[0] = progressCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-  v9 = [(MBXPCClient *)self _sendRequest:@"kMBMessagePostFollowUpForBackgroundRestoreProgress" arguments:v8 error:a4];
+  v9 = [(MBXPCClient *)self _sendRequest:@"kMBMessagePostFollowUpForBackgroundRestoreProgress" arguments:v8 error:error];
 
-  LOBYTE(a4) = [v9 BOOLValue];
+  LOBYTE(error) = [v9 BOOLValue];
   os_activity_scope_leave(&v12);
 
   v10 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
-- (BOOL)postFollowUpForRestoreFailedWithDomainNames:(id)a3 error:(id *)a4
+- (BOOL)postFollowUpForRestoreFailedWithDomainNames:(id)names error:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  namesCopy = names;
   v7 = _os_activity_create(&dword_1DEB5D000, "postFollowUpForRestoreFailedWithDomainNames:error:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v13.opaque[0] = 0;
   v13.opaque[1] = 0;
   os_activity_scope_enter(v7, &v13);
-  if (v6)
+  if (namesCopy)
   {
-    v14[0] = v6;
+    v14[0] = namesCopy;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   }
 
@@ -3778,29 +3778,29 @@ LABEL_32:
     v8 = 0;
   }
 
-  v9 = [(MBXPCClient *)self _sendRequest:@"kMBMessagePostFollowUpForRestoreFailed" arguments:v8 error:a4];
-  if (v6)
+  v9 = [(MBXPCClient *)self _sendRequest:@"kMBMessagePostFollowUpForRestoreFailed" arguments:v8 error:error];
+  if (namesCopy)
   {
   }
 
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
   os_activity_scope_leave(&v13);
   v11 = *MEMORY[0x1E69E9840];
-  return v10;
+  return bOOLValue;
 }
 
-- (BOOL)clearAllPendingFollowUpsWithError:(id *)a3
+- (BOOL)clearAllPendingFollowUpsWithError:(id *)error
 {
   v5 = _os_activity_create(&dword_1DEB5D000, "clearAllPendingFollowUpsWithError:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v8.opaque[0] = 0;
   v8.opaque[1] = 0;
   os_activity_scope_enter(v5, &v8);
-  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageClearAllPendingFollowUps" arguments:0 error:a3];
-  LOBYTE(a3) = [v6 BOOLValue];
+  v6 = [(MBXPCClient *)self _sendRequest:@"kMBMessageClearAllPendingFollowUps" arguments:0 error:error];
+  LOBYTE(error) = [v6 BOOLValue];
 
   os_activity_scope_leave(&v8);
-  return a3;
+  return error;
 }
 
 - (void)recordRestoreFailure:error:.cold.1()

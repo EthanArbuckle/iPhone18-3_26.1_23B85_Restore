@@ -1,20 +1,20 @@
 @interface SKUIJSTabBar
-- (SKUIJSTabBar)initWithAppContext:(id)a3 controller:(id)a4;
+- (SKUIJSTabBar)initWithAppContext:(id)context controller:(id)controller;
 - (SKUIJSTabBarItem)selectedTab;
-- (id)_selectedTabBarItemForIndex:(int64_t)a3;
-- (void)_reloadTabBarItemsWithPreludeMainThreadWork:(id)a3;
-- (void)sendOnNeedsContentForTabBarItem:(id)a3;
+- (id)_selectedTabBarItemForIndex:(int64_t)index;
+- (void)_reloadTabBarItemsWithPreludeMainThreadWork:(id)work;
+- (void)sendOnNeedsContentForTabBarItem:(id)item;
 - (void)sendOnUpdate;
-- (void)sendOnUpdateWithCompletion:(id)a3;
-- (void)setSelectedTab:(id)a3;
+- (void)sendOnUpdateWithCompletion:(id)completion;
+- (void)setSelectedTab:(id)tab;
 @end
 
 @implementation SKUIJSTabBar
 
-- (SKUIJSTabBar)initWithAppContext:(id)a3 controller:(id)a4
+- (SKUIJSTabBar)initWithAppContext:(id)context controller:(id)controller
 {
-  v6 = a3;
-  objc_initWeak(&location, a4);
+  contextCopy = context;
+  objc_initWeak(&location, controller);
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIJSTabBar initWithAppContext:controller:];
@@ -22,7 +22,7 @@
 
   v10.receiver = self;
   v10.super_class = SKUIJSTabBar;
-  v7 = [(IKJSObject *)&v10 initWithAppContext:v6];
+  v7 = [(IKJSObject *)&v10 initWithAppContext:contextCopy];
   if (v7)
   {
     v8 = objc_loadWeakRetained(&location);
@@ -36,18 +36,18 @@
   return v7;
 }
 
-- (void)sendOnNeedsContentForTabBarItem:(id)a3
+- (void)sendOnNeedsContentForTabBarItem:(id)item
 {
-  v4 = a3;
-  v5 = [(IKJSObject *)self appContext];
+  itemCopy = item;
+  appContext = [(IKJSObject *)self appContext];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__SKUIJSTabBar_sendOnNeedsContentForTabBarItem___block_invoke;
   v7[3] = &unk_2781F9618;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 evaluate:v7 completionBlock:0];
+  v8 = itemCopy;
+  v6 = itemCopy;
+  [appContext evaluate:v7 completionBlock:0];
 }
 
 void __48__SKUIJSTabBar_sendOnNeedsContentForTabBarItem___block_invoke(uint64_t a1)
@@ -122,19 +122,19 @@ LABEL_12:
 
 - (void)sendOnUpdate
 {
-  v3 = [(IKJSObject *)self appContext];
+  appContext = [(IKJSObject *)self appContext];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __28__SKUIJSTabBar_sendOnUpdate__block_invoke;
   v4[3] = &unk_2781FAE18;
   v4[4] = self;
-  [v3 evaluate:v4 completionBlock:0];
+  [appContext evaluate:v4 completionBlock:0];
 }
 
-- (void)sendOnUpdateWithCompletion:(id)a3
+- (void)sendOnUpdateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IKJSObject *)self appContext];
+  completionCopy = completion;
+  appContext = [(IKJSObject *)self appContext];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __43__SKUIJSTabBar_sendOnUpdateWithCompletion___block_invoke;
@@ -144,9 +144,9 @@ LABEL_12:
   v7[1] = 3221225472;
   v7[2] = __43__SKUIJSTabBar_sendOnUpdateWithCompletion___block_invoke_2;
   v7[3] = &unk_2781F85B8;
-  v8 = v4;
-  v6 = v4;
-  [v5 evaluate:v9 completionBlock:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [appContext evaluate:v9 completionBlock:v7];
 }
 
 void __43__SKUIJSTabBar_sendOnUpdateWithCompletion___block_invoke_2(uint64_t a1)
@@ -168,14 +168,14 @@ void __43__SKUIJSTabBar_sendOnUpdateWithCompletion___block_invoke_2(uint64_t a1)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0x7FFFFFFFFFFFFFFFLL;
-  v3 = [(IKJSObject *)self appContext];
+  appContext = [(IKJSObject *)self appContext];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __27__SKUIJSTabBar_selectedTab__block_invoke;
   v6[3] = &unk_2781FFFA0;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 evaluateDelegateBlockSync:v6];
+  [appContext evaluateDelegateBlockSync:v6];
 
   v4 = [(SKUIJSTabBar *)self _selectedTabBarItemForIndex:v8[3]];
   _Block_object_dispose(&v7, 8);
@@ -189,18 +189,18 @@ void __27__SKUIJSTabBar_selectedTab__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [WeakRetained _selectedTabBarIndex];
 }
 
-- (void)setSelectedTab:(id)a3
+- (void)setSelectedTab:(id)tab
 {
-  v4 = a3;
-  v5 = [(IKJSObject *)self appContext];
+  tabCopy = tab;
+  appContext = [(IKJSObject *)self appContext];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __31__SKUIJSTabBar_setSelectedTab___block_invoke;
   v7[3] = &unk_2781FAD00;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 evaluateDelegateBlockSync:v7];
+  v8 = tabCopy;
+  selfCopy = self;
+  v6 = tabCopy;
+  [appContext evaluateDelegateBlockSync:v7];
 }
 
 void __31__SKUIJSTabBar_setSelectedTab___block_invoke(uint64_t a1)
@@ -236,10 +236,10 @@ void __31__SKUIJSTabBar_setSelectedTab___block_invoke(uint64_t a1)
 LABEL_6:
 }
 
-- (void)_reloadTabBarItemsWithPreludeMainThreadWork:(id)a3
+- (void)_reloadTabBarItemsWithPreludeMainThreadWork:(id)work
 {
-  v4 = a3;
-  v5 = [(IKJSObject *)self appContext];
+  workCopy = work;
+  appContext = [(IKJSObject *)self appContext];
   v39[0] = 0;
   v39[1] = v39;
   v39[2] = 0x3032000000;
@@ -262,13 +262,13 @@ LABEL_6:
   v22[1] = 3221225472;
   v22[2] = __60__SKUIJSTabBar__reloadTabBarItemsWithPreludeMainThreadWork___block_invoke;
   v22[3] = &unk_2781FFFC8;
-  v6 = v4;
+  v6 = workCopy;
   v22[4] = self;
   v23 = v6;
   v24 = v39;
   v25 = &v33;
   v26 = &v27;
-  [v5 evaluateDelegateBlockSync:v22];
+  [appContext evaluateDelegateBlockSync:v22];
   v7 = objc_alloc(MEMORY[0x277CBEB18]);
   v8 = [v7 initWithCapacity:{objc_msgSend(v34[5], "count")}];
   v9 = v34[5];
@@ -278,7 +278,7 @@ LABEL_6:
   v18[3] = &unk_2781FFFF0;
   v21 = v39;
   v18[4] = self;
-  v10 = v5;
+  v10 = appContext;
   v19 = v10;
   v11 = v8;
   v20 = v11;
@@ -371,21 +371,21 @@ void __60__SKUIJSTabBar__reloadTabBarItemsWithPreludeMainThreadWork___block_invo
   [*(a1 + 48) addObject:v12];
 }
 
-- (id)_selectedTabBarItemForIndex:(int64_t)a3
+- (id)_selectedTabBarItemForIndex:(int64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = self->_transientTab;
   }
 
-  else if (a3 < 0 || [(NSArray *)self->_tabs count]<= a3)
+  else if (index < 0 || [(NSArray *)self->_tabs count]<= index)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [(NSArray *)self->_tabs objectAtIndexedSubscript:a3];
+    v4 = [(NSArray *)self->_tabs objectAtIndexedSubscript:index];
   }
 
   return v4;

@@ -1,65 +1,65 @@
 @interface CLKUIAnalogHandsView
-+ (double)hourHandAngleForDate:(id)a3;
-+ (double)minuteHandAngleForDate:(id)a3;
++ (double)hourHandAngleForDate:(id)date;
++ (double)minuteHandAngleForDate:(id)date;
 - (BOOL)_canRunTimeAnimation;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CLKUIAnalogHandsViewDelegate)delegate;
 - (UIView)minuteHandDot;
 - (UIView)secondHandDot;
 - (id)createHourHandView;
 - (id)createMinuteHandView;
 - (id)createSecondHandView;
-- (id)initForDevice:(id)a3;
-- (void)_enumerateHandViews:(id)a3;
-- (void)_enumerateShadowViews:(id)a3;
+- (id)initForDevice:(id)device;
+- (void)_enumerateHandViews:(id)views;
+- (void)_enumerateShadowViews:(id)views;
 - (void)_significantTimeChanged;
 - (void)_startNewTimeAnimation;
 - (void)_stopTimeAnimation;
-- (void)applyHourMinuteHandsStrokeColor:(id)a3 fillColor:(id)a4;
+- (void)applyHourMinuteHandsStrokeColor:(id)color fillColor:(id)fillColor;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutHandViews;
 - (void)layoutShadowViews;
 - (void)layoutSubviews;
-- (void)setFrozen:(BOOL)a3;
-- (void)setHourInlayColor:(id)a3;
-- (void)setInlayColor:(id)a3;
-- (void)setMinuteHandDotDiameter:(double)a3;
-- (void)setMinuteInlayColor:(id)a3;
-- (void)setSecondHandDisabled:(BOOL)a3;
-- (void)setSecondHandDotDiameter:(double)a3;
-- (void)setTimeZone:(id)a3;
-- (void)setUseDirectionalShadows:(BOOL)a3;
+- (void)setFrozen:(BOOL)frozen;
+- (void)setHourInlayColor:(id)color;
+- (void)setInlayColor:(id)color;
+- (void)setMinuteHandDotDiameter:(double)diameter;
+- (void)setMinuteInlayColor:(id)color;
+- (void)setSecondHandDisabled:(BOOL)disabled;
+- (void)setSecondHandDotDiameter:(double)diameter;
+- (void)setTimeZone:(id)zone;
+- (void)setUseDirectionalShadows:(BOOL)shadows;
 @end
 
 @implementation CLKUIAnalogHandsView
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v32.receiver = self;
   v32.super_class = CLKUIAnalogHandsView;
   v6 = [(CLKUIAnalogHandsView *)&v32 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
     calendar = v7->_calendar;
     v7->_calendar = v8;
 
     v7->_useDirectionalShadows = [(CLKUIAnalogHandsView *)v7 useDirectionalShadows];
-    v10 = [(CLKUIAnalogHandsView *)v7 createHourHandView];
+    createHourHandView = [(CLKUIAnalogHandsView *)v7 createHourHandView];
     hourHandView = v7->_hourHandView;
-    v7->_hourHandView = v10;
+    v7->_hourHandView = createHourHandView;
 
-    v12 = [(CLKUIAnalogHandsView *)v7 createMinuteHandView];
+    createMinuteHandView = [(CLKUIAnalogHandsView *)v7 createMinuteHandView];
     minuteHandView = v7->_minuteHandView;
-    v7->_minuteHandView = v12;
+    v7->_minuteHandView = createMinuteHandView;
 
-    v14 = [(CLKUIAnalogHandsView *)v7 createSecondHandView];
+    createSecondHandView = [(CLKUIAnalogHandsView *)v7 createSecondHandView];
     secondHandView = v7->_secondHandView;
-    v7->_secondHandView = v14;
+    v7->_secondHandView = createSecondHandView;
 
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
@@ -85,21 +85,21 @@
       [(CLKUIAnalogHandsView *)v19 layoutShadowViews];
     }
 
-    v20 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v20 addObserver:v16 selector:sel__significantTimeChanged name:*MEMORY[0x1E69DDB88] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v16 selector:sel__significantTimeChanged name:*MEMORY[0x1E69DDB88] object:0];
 
     [(CLKUIAnalogHandsView *)v16 setUserInteractionEnabled:0];
-    v21 = [(CLKUIAnalogHandsView *)v16 layer];
-    [v21 setAllowsHitTesting:0];
+    layer = [(CLKUIAnalogHandsView *)v16 layer];
+    [layer setAllowsHitTesting:0];
 
     v27 = 0u;
     memset(v26, 0, sizeof(v26));
-    ___LayoutConstants_block_invoke_5(v5, v26);
+    ___LayoutConstants_block_invoke_5(deviceCopy, v26);
     v22 = *v26;
     v16->_secondHandDotDiameter = *(&v27 + 1);
     v16->_minuteHandDotDiameter = v22;
-    v23 = [(CLKUIAnalogHandsView *)v16 minuteHandDot];
-    v24 = [(CLKUIAnalogHandsView *)v16 secondHandDot];
+    minuteHandDot = [(CLKUIAnalogHandsView *)v16 minuteHandDot];
+    secondHandDot = [(CLKUIAnalogHandsView *)v16 secondHandDot];
   }
 
   return v7;
@@ -115,8 +115,8 @@ void __38__CLKUIAnalogHandsView_initForDevice___block_invoke(uint64_t a1, void *
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDB88] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDB88] object:0];
 
   v4.receiver = self;
   v4.super_class = CLKUIAnalogHandsView;
@@ -167,8 +167,8 @@ void __39__CLKUIAnalogHandsView_layoutHandViews__block_invoke(uint64_t a1, void 
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(CLKUIAnalogHandsView *)self subviews];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  subviews = [(CLKUIAnalogHandsView *)self subviews];
+  v5 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -179,7 +179,7 @@ void __39__CLKUIAnalogHandsView_layoutHandViews__block_invoke(uint64_t a1, void 
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -192,7 +192,7 @@ void __39__CLKUIAnalogHandsView_layoutHandViews__block_invoke(uint64_t a1, void 
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -222,9 +222,9 @@ void __41__CLKUIAnalogHandsView_layoutShadowViews__block_invoke(uint64_t a1, voi
   [v11 setCenter:{v8, v10}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  MEMORY[0x1EEDB5430](self->_device, a2, a3, *&a3.height);
+  MEMORY[0x1EEDB5430](self->_device, a2, fits, *&fits.height);
   result.height = v4;
   result.width = v3;
   return result;
@@ -235,34 +235,34 @@ void __41__CLKUIAnalogHandsView_layoutShadowViews__block_invoke(uint64_t a1, voi
   v4.receiver = self;
   v4.super_class = CLKUIAnalogHandsView;
   [(CLKUIAnalogHandsView *)&v4 didMoveToWindow];
-  v3 = [(CLKUIAnalogHandsView *)self window];
+  window = [(CLKUIAnalogHandsView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(CLKUIAnalogHandsView *)self _startNewTimeAnimation];
   }
 }
 
-- (void)_enumerateHandViews:(id)a3
+- (void)_enumerateHandViews:(id)views
 {
-  v4 = a3;
-  [(CLKUIAnalogHandsView *)self _enumerateHourHandViewsWithBlock:v4];
-  [(CLKUIAnalogHandsView *)self _enumerateMinuteHandViewsWithBlock:v4];
+  viewsCopy = views;
+  [(CLKUIAnalogHandsView *)self _enumerateHourHandViewsWithBlock:viewsCopy];
+  [(CLKUIAnalogHandsView *)self _enumerateMinuteHandViewsWithBlock:viewsCopy];
   if (!self->_secondHandDisabled)
   {
-    [(CLKUIAnalogHandsView *)self _enumerateSecondHandViewsWithBlock:v4];
+    [(CLKUIAnalogHandsView *)self _enumerateSecondHandViewsWithBlock:viewsCopy];
   }
 }
 
-- (void)_enumerateShadowViews:(id)a3
+- (void)_enumerateShadowViews:(id)views
 {
-  v4 = a3;
+  viewsCopy = views;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__CLKUIAnalogHandsView__enumerateShadowViews___block_invoke;
   v6[3] = &unk_1E8762E10;
-  v7 = v4;
-  v5 = v4;
+  v7 = viewsCopy;
+  v5 = viewsCopy;
   [(CLKUIAnalogHandsView *)self _enumerateHandViews:v6];
 }
 
@@ -281,48 +281,48 @@ void __46__CLKUIAnalogHandsView__enumerateShadowViews___block_invoke(uint64_t a1
 
 - (id)createHourHandView
 {
-  v3 = [(CLKUIAnalogHandsView *)self hourHandConfiguration];
+  hourHandConfiguration = [(CLKUIAnalogHandsView *)self hourHandConfiguration];
   v4 = [objc_alloc(objc_msgSend(objc_opt_class() "handViewClass"))];
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  [v4 setColor:v5];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v4 setColor:whiteColor];
 
   [v4 anchorPointFromConfiguration];
   v7 = v6;
   v9 = v8;
-  v10 = [v4 layer];
-  [v10 setAnchorPoint:{v7, v9}];
+  layer = [v4 layer];
+  [layer setAnchorPoint:{v7, v9}];
 
   return v4;
 }
 
 - (id)createMinuteHandView
 {
-  v3 = [(CLKUIAnalogHandsView *)self minuteHandConfiguration];
+  minuteHandConfiguration = [(CLKUIAnalogHandsView *)self minuteHandConfiguration];
   v4 = [objc_alloc(objc_msgSend(objc_opt_class() "handViewClass"))];
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  [v4 setColor:v5];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v4 setColor:whiteColor];
 
   [v4 anchorPointFromConfiguration];
   v7 = v6;
   v9 = v8;
-  v10 = [v4 layer];
-  [v10 setAnchorPoint:{v7, v9}];
+  layer = [v4 layer];
+  [layer setAnchorPoint:{v7, v9}];
 
   return v4;
 }
 
 - (id)createSecondHandView
 {
-  v3 = [(CLKUIAnalogHandsView *)self secondHandConfiguration];
+  secondHandConfiguration = [(CLKUIAnalogHandsView *)self secondHandConfiguration];
   v4 = [objc_alloc(objc_msgSend(objc_opt_class() "handViewClass"))];
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  [v4 setColor:v5];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v4 setColor:whiteColor];
 
   [v4 anchorPointFromConfiguration];
   v7 = v6;
   v9 = v8;
-  v10 = [v4 layer];
-  [v10 setAnchorPoint:{v7, v9}];
+  layer = [v4 layer];
+  [layer setAnchorPoint:{v7, v9}];
 
   return v4;
 }
@@ -335,7 +335,7 @@ void __46__CLKUIAnalogHandsView__enumerateShadowViews___block_invoke(uint64_t a1
     v36 = 0;
     v37 = 0;
     v35 = 0;
-    v3 = [(CLKUIAnalogHandsView *)self displayTime];
+    displayTime = [(CLKUIAnalogHandsView *)self displayTime];
     CLKHourMinuteSecondAnglesForTime();
 
     v4 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform.rotation"];
@@ -355,7 +355,7 @@ void __46__CLKUIAnalogHandsView__enumerateShadowViews___block_invoke(uint64_t a1
     v10 = v4;
     v34 = v9;
     v31 = v10;
-    v32 = self;
+    selfCopy = self;
     v11 = _Block_copy(aBlock);
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
@@ -394,14 +394,14 @@ void __46__CLKUIAnalogHandsView__enumerateShadowViews___block_invoke(uint64_t a1
     {
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
-      v19 = [(NSCalendar *)self->_calendar timeZone];
-      v20 = [v19 name];
+      timeZone = [(NSCalendar *)self->_calendar timeZone];
+      name = [timeZone name];
       *buf = 138412802;
       v39 = v18;
       v40 = 2048;
       v41 = v8;
       v42 = 2112;
-      v43 = v20;
+      v43 = name;
       _os_log_impl(&dword_1E49C8000, v16, OS_LOG_TYPE_DEFAULT, "%@ started new time animation at %.0fFPS (for the second hand) for timezone: %@", buf, 0x20u);
     }
   }
@@ -496,18 +496,18 @@ void __42__CLKUIAnalogHandsView__stopTimeAnimation__block_invoke_2(uint64_t a1, 
     return 0;
   }
 
-  v3 = [(CLKUIAnalogHandsView *)self window];
-  v2 = v3 != 0;
+  window = [(CLKUIAnalogHandsView *)self window];
+  v2 = window != 0;
 
   return v2;
 }
 
-- (void)setFrozen:(BOOL)a3
+- (void)setFrozen:(BOOL)frozen
 {
-  if (self->_frozen != a3)
+  if (self->_frozen != frozen)
   {
-    self->_frozen = a3;
-    if (a3)
+    self->_frozen = frozen;
+    if (frozen)
     {
       [(CLKUIAnalogHandsView *)self _stopTimeAnimation];
     }
@@ -519,68 +519,68 @@ void __42__CLKUIAnalogHandsView__stopTimeAnimation__block_invoke_2(uint64_t a1, 
   }
 }
 
-- (void)setSecondHandDisabled:(BOOL)a3
+- (void)setSecondHandDisabled:(BOOL)disabled
 {
-  if (self->_secondHandDisabled != a3)
+  if (self->_secondHandDisabled != disabled)
   {
-    self->_secondHandDisabled = a3;
+    self->_secondHandDisabled = disabled;
     [(CLKUIHandView *)self->_secondHandView setHidden:?];
   }
 }
 
-- (void)applyHourMinuteHandsStrokeColor:(id)a3 fillColor:(id)a4
+- (void)applyHourMinuteHandsStrokeColor:(id)color fillColor:(id)fillColor
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(CLKUIAnalogHandsView *)self minuteHandView];
-  [v7 setColor:v6];
+  fillColorCopy = fillColor;
+  colorCopy = color;
+  minuteHandView = [(CLKUIAnalogHandsView *)self minuteHandView];
+  [minuteHandView setColor:colorCopy];
 
-  v8 = [(CLKUIAnalogHandsView *)self hourHandView];
-  [v8 setColor:v6];
+  hourHandView = [(CLKUIAnalogHandsView *)self hourHandView];
+  [hourHandView setColor:colorCopy];
 
-  [(CLKUIAnalogHandsView *)self setInlayColor:v9];
+  [(CLKUIAnalogHandsView *)self setInlayColor:fillColorCopy];
 }
 
-- (void)setInlayColor:(id)a3
+- (void)setInlayColor:(id)color
 {
-  objc_storeStrong(&self->_inlayColor, a3);
-  v5 = a3;
-  [(CLKUIHandView *)self->_hourHandView setInlayColor:v5];
-  [(CLKUIHandView *)self->_minuteHandView setInlayColor:v5];
-  v6 = [(CLKUIAnalogHandsView *)self minuteHandView];
-  [v6 setHandDotColor:v5];
+  objc_storeStrong(&self->_inlayColor, color);
+  colorCopy = color;
+  [(CLKUIHandView *)self->_hourHandView setInlayColor:colorCopy];
+  [(CLKUIHandView *)self->_minuteHandView setInlayColor:colorCopy];
+  minuteHandView = [(CLKUIAnalogHandsView *)self minuteHandView];
+  [minuteHandView setHandDotColor:colorCopy];
 }
 
-- (void)setHourInlayColor:(id)a3
+- (void)setHourInlayColor:(id)color
 {
-  objc_storeStrong(&self->_hourInlayColor, a3);
-  v5 = a3;
-  [(CLKUIHandView *)self->_hourHandView setInlayColor:v5];
+  objc_storeStrong(&self->_hourInlayColor, color);
+  colorCopy = color;
+  [(CLKUIHandView *)self->_hourHandView setInlayColor:colorCopy];
 }
 
-- (void)setMinuteInlayColor:(id)a3
+- (void)setMinuteInlayColor:(id)color
 {
-  v5 = a3;
-  objc_storeStrong(&self->_minuteInlayColor, a3);
+  colorCopy = color;
+  objc_storeStrong(&self->_minuteInlayColor, color);
   inlayColor = self->_inlayColor;
-  self->_inlayColor = v5;
-  v7 = v5;
+  self->_inlayColor = colorCopy;
+  v7 = colorCopy;
 
   [(CLKUIHandView *)self->_minuteHandView setInlayColor:v7];
-  v8 = [(CLKUIAnalogHandsView *)self minuteHandView];
-  [v8 setHandDotColor:v7];
+  minuteHandView = [(CLKUIAnalogHandsView *)self minuteHandView];
+  [minuteHandView setHandDotColor:v7];
 }
 
-- (void)setUseDirectionalShadows:(BOOL)a3
+- (void)setUseDirectionalShadows:(BOOL)shadows
 {
-  if (self->_useDirectionalShadows != a3)
+  if (self->_useDirectionalShadows != shadows)
   {
-    self->_useDirectionalShadows = a3;
+    self->_useDirectionalShadows = shadows;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __49__CLKUIAnalogHandsView_setUseDirectionalShadows___block_invoke;
     v5[3] = &__block_descriptor_33_e23_v16__0__CLKUIHandView_8l;
-    v6 = a3;
+    shadowsCopy = shadows;
     [(CLKUIAnalogHandsView *)self _enumerateHandViews:v5];
     if (self->_useDirectionalShadows)
     {
@@ -600,39 +600,39 @@ void __42__CLKUIAnalogHandsView__stopTimeAnimation__block_invoke_2(uint64_t a1, 
   }
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (![(NSTimeZone *)self->_timeZone isEqualToTimeZone:v5])
+  zoneCopy = zone;
+  if (![(NSTimeZone *)self->_timeZone isEqualToTimeZone:zoneCopy])
   {
     v6 = CLKLoggingObjectForDomain();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
-      v9 = [(NSCalendar *)self->_calendar timeZone];
-      v10 = [v9 name];
+      timeZone = [(NSCalendar *)self->_calendar timeZone];
+      name = [timeZone name];
       v16 = 138412546;
       v17 = v8;
       v18 = 2112;
-      v19 = v10;
+      v19 = name;
       _os_log_impl(&dword_1E49C8000, v6, OS_LOG_TYPE_DEFAULT, "%@ received manual timezone update with current timezone: %@", &v16, 0x16u);
     }
 
-    objc_storeStrong(&self->_timeZone, a3);
-    [(NSCalendar *)self->_calendar setTimeZone:v5];
+    objc_storeStrong(&self->_timeZone, zone);
+    [(NSCalendar *)self->_calendar setTimeZone:zoneCopy];
     v11 = CLKLoggingObjectForDomain();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
-      v14 = [(NSCalendar *)self->_calendar timeZone];
-      v15 = [v14 name];
+      timeZone2 = [(NSCalendar *)self->_calendar timeZone];
+      name2 = [timeZone2 name];
       v16 = 138412546;
       v17 = v13;
       v18 = 2112;
-      v19 = v15;
+      v19 = name2;
       _os_log_impl(&dword_1E49C8000, v11, OS_LOG_TYPE_DEFAULT, "%@ did set new timezone after manual timezone update to: %@", &v16, 0x16u);
     }
   }
@@ -640,9 +640,9 @@ void __42__CLKUIAnalogHandsView__stopTimeAnimation__block_invoke_2(uint64_t a1, 
 
 - (UIView)secondHandDot
 {
-  v3 = [(CLKUIHandView *)self->_secondHandView handDotView];
+  handDotView = [(CLKUIHandView *)self->_secondHandView handDotView];
 
-  if (!v3)
+  if (!handDotView)
   {
     secondHandView = self->_secondHandView;
     [(CLKUIAnalogHandsView *)self secondHandDotDiameter];
@@ -654,11 +654,11 @@ void __42__CLKUIAnalogHandsView__stopTimeAnimation__block_invoke_2(uint64_t a1, 
   return [(CLKUIHandView *)v5 handDotView];
 }
 
-- (void)setSecondHandDotDiameter:(double)a3
+- (void)setSecondHandDotDiameter:(double)diameter
 {
-  if (self->_secondHandDotDiameter != a3)
+  if (self->_secondHandDotDiameter != diameter)
   {
-    self->_secondHandDotDiameter = a3;
+    self->_secondHandDotDiameter = diameter;
     secondHandView = self->_secondHandView;
     [(CLKUIAnalogHandsView *)self secondHandDotDiameter];
 
@@ -668,9 +668,9 @@ void __42__CLKUIAnalogHandsView__stopTimeAnimation__block_invoke_2(uint64_t a1, 
 
 - (UIView)minuteHandDot
 {
-  v3 = [(CLKUIHandView *)self->_minuteHandView handDotView];
+  handDotView = [(CLKUIHandView *)self->_minuteHandView handDotView];
 
-  if (!v3)
+  if (!handDotView)
   {
     minuteHandView = self->_minuteHandView;
     [(CLKUIAnalogHandsView *)self minuteHandDotDiameter];
@@ -683,11 +683,11 @@ void __42__CLKUIAnalogHandsView__stopTimeAnimation__block_invoke_2(uint64_t a1, 
   return [(CLKUIHandView *)v5 handDotView];
 }
 
-- (void)setMinuteHandDotDiameter:(double)a3
+- (void)setMinuteHandDotDiameter:(double)diameter
 {
-  if (self->_minuteHandDotDiameter != a3)
+  if (self->_minuteHandDotDiameter != diameter)
   {
-    self->_minuteHandDotDiameter = a3;
+    self->_minuteHandDotDiameter = diameter;
     minuteHandView = self->_minuteHandView;
     [(CLKUIAnalogHandsView *)self minuteHandDotDiameter];
 
@@ -698,24 +698,24 @@ void __42__CLKUIAnalogHandsView__stopTimeAnimation__block_invoke_2(uint64_t a1, 
 - (void)_significantTimeChanged
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DFE8] systemTimeZone];
+  systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
   v4 = CLKLoggingObjectForDomain();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    v7 = [(NSCalendar *)self->_calendar timeZone];
-    v8 = [v7 name];
+    timeZone = [(NSCalendar *)self->_calendar timeZone];
+    name = [timeZone name];
     v14 = 138412546;
     v15 = v6;
     v16 = 2112;
-    v17 = v8;
+    v17 = name;
     _os_log_impl(&dword_1E49C8000, v4, OS_LOG_TYPE_DEFAULT, "%@ received significant time change with current timezone: %@", &v14, 0x16u);
   }
 
   if (!self->_timeZone)
   {
-    [(NSCalendar *)self->_calendar setTimeZone:v3];
+    [(NSCalendar *)self->_calendar setTimeZone:systemTimeZone];
   }
 
   v9 = CLKLoggingObjectForDomain();
@@ -723,27 +723,27 @@ void __42__CLKUIAnalogHandsView__stopTimeAnimation__block_invoke_2(uint64_t a1, 
   {
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    v12 = [(NSCalendar *)self->_calendar timeZone];
-    v13 = [v12 name];
+    timeZone2 = [(NSCalendar *)self->_calendar timeZone];
+    name2 = [timeZone2 name];
     v14 = 138412546;
     v15 = v11;
     v16 = 2112;
-    v17 = v13;
+    v17 = name2;
     _os_log_impl(&dword_1E49C8000, v9, OS_LOG_TYPE_DEFAULT, "%@ did set new timezone after significant time change to: %@", &v14, 0x16u);
   }
 }
 
-+ (double)hourHandAngleForDate:(id)a3
++ (double)hourHandAngleForDate:(id)date
 {
-  if (!a3)
+  if (!date)
   {
     return 0.0;
   }
 
   v3 = MEMORY[0x1E695DEE8];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 components:224 fromDate:v4];
+  dateCopy = date;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar components:224 fromDate:dateCopy];
 
   [v6 hour];
   [v6 minute];
@@ -753,20 +753,20 @@ void __42__CLKUIAnalogHandsView__stopTimeAnimation__block_invoke_2(uint64_t a1, 
   return v8;
 }
 
-+ (double)minuteHandAngleForDate:(id)a3
++ (double)minuteHandAngleForDate:(id)date
 {
-  if (!a3)
+  if (!date)
   {
     return 0.0;
   }
 
   v3 = MEMORY[0x1E695DEE8];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 components:224 fromDate:v4];
+  dateCopy = date;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar components:224 fromDate:dateCopy];
 
-  v7 = [v6 minute];
-  v8 = ([v6 second] / 60.0 + v7) * 6.0;
+  minute = [v6 minute];
+  v8 = ([v6 second] / 60.0 + minute) * 6.0;
 
   return v8;
 }

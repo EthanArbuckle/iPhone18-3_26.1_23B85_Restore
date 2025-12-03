@@ -1,23 +1,23 @@
 @interface PKBankAccountDataItem
-- (PKBankAccountDataItem)initWithModel:(id)a3;
+- (PKBankAccountDataItem)initWithModel:(id)model;
 - (PKBankAccountInformation)bankAccountInformation;
 @end
 
 @implementation PKBankAccountDataItem
 
-- (PKBankAccountDataItem)initWithModel:(id)a3
+- (PKBankAccountDataItem)initWithModel:(id)model
 {
   v4.receiver = self;
   v4.super_class = PKBankAccountDataItem;
-  return [(PKPaymentDataItem *)&v4 initWithModel:a3];
+  return [(PKPaymentDataItem *)&v4 initWithModel:model];
 }
 
 - (PKBankAccountInformation)bankAccountInformation
 {
-  v2 = [(PKPaymentDataItem *)self model];
-  v3 = [v2 bankAccount];
+  model = [(PKPaymentDataItem *)self model];
+  bankAccount = [model bankAccount];
 
-  return v3;
+  return bankAccount;
 }
 
 @end

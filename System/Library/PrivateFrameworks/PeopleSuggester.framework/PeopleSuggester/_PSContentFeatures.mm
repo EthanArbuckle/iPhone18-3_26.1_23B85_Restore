@@ -1,24 +1,24 @@
 @interface _PSContentFeatures
-+ (id)numberOfContentFromPredictionContext:(id)a3 contentType:(int)a4 candidates:(id)a5;
-+ (id)preservePrivacySourceBundleID:(id)a3;
-+ (id)preservePrivacyTopLevelDomain:(id)a3;
-+ (id)preservePrivacyUTIMapping:(id)a3;
-+ (id)sourceAppFromPredictionContext:(id)a3 candidates:(id)a4;
-+ (id)urlTopLevelDomainFromPredictionContext:(id)a3 candidates:(id)a4;
-+ (id)utiTypesFromPredictionContext:(id)a3 candidates:(id)a4;
++ (id)numberOfContentFromPredictionContext:(id)context contentType:(int)type candidates:(id)candidates;
++ (id)preservePrivacySourceBundleID:(id)d;
++ (id)preservePrivacyTopLevelDomain:(id)domain;
++ (id)preservePrivacyUTIMapping:(id)mapping;
++ (id)sourceAppFromPredictionContext:(id)context candidates:(id)candidates;
++ (id)urlTopLevelDomainFromPredictionContext:(id)context candidates:(id)candidates;
++ (id)utiTypesFromPredictionContext:(id)context candidates:(id)candidates;
 @end
 
 @implementation _PSContentFeatures
 
-+ (id)preservePrivacyUTIMapping:(id)a3
++ (id)preservePrivacyUTIMapping:(id)mapping
 {
-  v3 = a3;
+  mappingCopy = mapping;
   v4 = objc_autoreleasePoolPush();
   v5 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{@"public.file-url", @"public.url", @"public.image", @"public.jpeg, public.heic", @"public.jpeg", @"com.apple.live-photo, public.heic, public.jpeg", @"com.apple.avfoundation.urlasset, com.apple.quicktime-movie", @"public.plain-text", @"public.png", @"public.vcard", @"com.apple.active-webpage, public.url", @"public.url, com.apple.active-webpage", 0}];
   objc_autoreleasePoolPop(v4);
-  if ([v5 containsObject:v3])
+  if ([v5 containsObject:mappingCopy])
   {
-    v6 = v3;
+    v6 = mappingCopy;
   }
 
   else
@@ -29,9 +29,9 @@
   return v6;
 }
 
-+ (id)preservePrivacySourceBundleID:(id)a3
++ (id)preservePrivacySourceBundleID:(id)d
 {
-  v17 = a3;
+  dCopy = d;
   v18 = objc_autoreleasePoolPush();
   v16 = objc_alloc(MEMORY[0x1E695DFD8]);
   v3 = +[_PSConstants mobilePhotosBundleId];
@@ -47,9 +47,9 @@
   v12 = [v16 initWithObjects:{v3, v15, v4, v5, v6, v7, v8, v9, v10, v11, 0}];
 
   objc_autoreleasePoolPop(v18);
-  if ([v12 containsObject:v17])
+  if ([v12 containsObject:dCopy])
   {
-    v13 = v17;
+    v13 = dCopy;
   }
 
   else
@@ -60,12 +60,12 @@
   return v13;
 }
 
-+ (id)preservePrivacyTopLevelDomain:(id)a3
++ (id)preservePrivacyTopLevelDomain:(id)domain
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 length];
-  v5 = [v3 rangeOfString:@"www." options:11 range:{0, v4}];
+  domainCopy = domain;
+  v4 = [domainCopy length];
+  v5 = [domainCopy rangeOfString:@"www." options:11 range:{0, v4}];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = v4;
@@ -86,7 +86,7 @@
     v8 = v5 + v6;
   }
 
-  v9 = [v3 rangeOfString:@"." options:2 range:{v8, v7}];
+  v9 = [domainCopy rangeOfString:@"." options:2 range:{v8, v7}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -117,7 +117,7 @@
         }
 
         v16 = *(*(&v19 + 1) + 8 * i);
-        if (![v3 compare:v16 options:3 range:{v8, v12}])
+        if (![domainCopy compare:v16 options:3 range:{v8, v12}])
         {
           v14 = v16;
           goto LABEL_21;
@@ -146,18 +146,18 @@ LABEL_21:
   return v14;
 }
 
-+ (id)utiTypesFromPredictionContext:(id)a3 candidates:(id)a4
++ (id)utiTypesFromPredictionContext:(id)context candidates:(id)candidates
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  candidatesCopy = candidates;
   v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = [v5 attachments];
-  v9 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  attachments = [contextCopy attachments];
+  v9 = [attachments countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v9)
   {
     v10 = v9;
@@ -168,7 +168,7 @@ LABEL_21:
       {
         if (*v29 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(attachments);
         }
 
         v13 = *(*(&v28 + 1) + 8 * i);
@@ -181,7 +181,7 @@ LABEL_21:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v10 = [attachments countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v10);
@@ -189,11 +189,11 @@ LABEL_21:
 
   if ([v7 count])
   {
-    v16 = [v7 allObjects];
-    v17 = [v16 sortedArrayUsingSelector:sel_compare_];
+    allObjects = [v7 allObjects];
+    v17 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
     v18 = [v17 componentsJoinedByString:{@", "}];
-    v19 = [v6 allObjects];
+    allObjects2 = [candidatesCopy allObjects];
     v20 = [_PSFeatureDictionary alloc];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
@@ -201,8 +201,8 @@ LABEL_21:
     v26[3] = &unk_1E7C24EF8;
     v27 = v18;
     v21 = v18;
-    v22 = [v19 _pas_mappedArrayWithTransform:v26];
-    v23 = [(_PSFeatureDictionary *)v20 initWithObjects:v22 forKeys:v19];
+    v22 = [allObjects2 _pas_mappedArrayWithTransform:v26];
+    v23 = [(_PSFeatureDictionary *)v20 initWithObjects:v22 forKeys:allObjects2];
   }
 
   else
@@ -215,22 +215,22 @@ LABEL_21:
   return v23;
 }
 
-+ (id)sourceAppFromPredictionContext:(id)a3 candidates:(id)a4
++ (id)sourceAppFromPredictionContext:(id)context candidates:(id)candidates
 {
-  v5 = a3;
-  v6 = [a4 allObjects];
-  v7 = [v5 bundleID];
+  contextCopy = context;
+  allObjects = [candidates allObjects];
+  bundleID = [contextCopy bundleID];
 
-  if (v7)
+  if (bundleID)
   {
     v8 = [_PSFeatureDictionary alloc];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __64___PSContentFeatures_sourceAppFromPredictionContext_candidates___block_invoke;
     v12[3] = &unk_1E7C24EF8;
-    v13 = v5;
-    v9 = [v6 _pas_mappedArrayWithTransform:v12];
-    v10 = [(_PSFeatureDictionary *)v8 initWithObjects:v9 forKeys:v6];
+    v13 = contextCopy;
+    v9 = [allObjects _pas_mappedArrayWithTransform:v12];
+    v10 = [(_PSFeatureDictionary *)v8 initWithObjects:v9 forKeys:allObjects];
   }
 
   else
@@ -241,18 +241,18 @@ LABEL_21:
   return v10;
 }
 
-+ (id)numberOfContentFromPredictionContext:(id)a3 contentType:(int)a4 candidates:(id)a5
++ (id)numberOfContentFromPredictionContext:(id)context contentType:(int)type candidates:(id)candidates
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v26 = a5;
+  contextCopy = context;
+  candidatesCopy = candidates;
   v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v9 = [v7 attachments];
-  v10 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  attachments = [contextCopy attachments];
+  v10 = [attachments countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v10)
   {
     v11 = v10;
@@ -263,37 +263,37 @@ LABEL_21:
       {
         if (*v30 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(attachments);
         }
 
         v14 = *(*(&v29 + 1) + 8 * i);
-        switch(a4)
+        switch(type)
         {
           case 3:
             v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%li", objc_msgSend(*(*(&v29 + 1) + 8 * i), "hash")];
             [v8 addObject:v18];
             goto LABEL_15;
           case 1:
-            v17 = [*(*(&v29 + 1) + 8 * i) photoSceneDescriptors];
+            photoSceneDescriptors = [*(*(&v29 + 1) + 8 * i) photoSceneDescriptors];
 
-            if (!v17)
+            if (!photoSceneDescriptors)
             {
               continue;
             }
 
-            v16 = [v14 photoSceneDescriptors];
+            photoSceneDescriptors2 = [v14 photoSceneDescriptors];
 LABEL_13:
-            v18 = v16;
-            [v8 addObjectsFromArray:v16];
+            v18 = photoSceneDescriptors2;
+            [v8 addObjectsFromArray:photoSceneDescriptors2];
 LABEL_15:
 
             continue;
           case 0:
-            v15 = [*(*(&v29 + 1) + 8 * i) peopleInPhoto];
+            peopleInPhoto = [*(*(&v29 + 1) + 8 * i) peopleInPhoto];
 
-            if (v15)
+            if (peopleInPhoto)
             {
-              v16 = [v14 peopleInPhoto];
+              photoSceneDescriptors2 = [v14 peopleInPhoto];
               goto LABEL_13;
             }
 
@@ -301,13 +301,13 @@ LABEL_15:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v11 = [attachments countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v11);
   }
 
-  v19 = [v26 allObjects];
+  allObjects = [candidatesCopy allObjects];
   v20 = [_PSFeatureDictionary alloc];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
@@ -315,24 +315,24 @@ LABEL_15:
   v27[3] = &unk_1E7C24EF8;
   v28 = v8;
   v21 = v8;
-  v22 = [v19 _pas_mappedArrayWithTransform:v27];
-  v23 = [(_PSFeatureDictionary *)v20 initWithObjects:v22 forKeys:v19];
+  v22 = [allObjects _pas_mappedArrayWithTransform:v27];
+  v23 = [(_PSFeatureDictionary *)v20 initWithObjects:v22 forKeys:allObjects];
 
   v24 = *MEMORY[0x1E69E9840];
 
   return v23;
 }
 
-+ (id)urlTopLevelDomainFromPredictionContext:(id)a3 candidates:(id)a4
++ (id)urlTopLevelDomainFromPredictionContext:(id)context candidates:(id)candidates
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  candidatesCopy = candidates;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = [a3 attachments];
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  attachments = [context attachments];
+  v7 = [attachments countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
   {
     v8 = v7;
@@ -344,37 +344,37 @@ LABEL_15:
       {
         if (*v24 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(attachments);
         }
 
         v12 = *(*(&v23 + 1) + 8 * i);
-        v13 = [v12 contentURL];
+        contentURL = [v12 contentURL];
 
-        if (v13)
+        if (contentURL)
         {
-          v14 = [v12 contentURL];
-          v15 = [v14 host];
+          contentURL2 = [v12 contentURL];
+          host = [contentURL2 host];
 
-          if (v15)
+          if (host)
           {
 
-            v16 = [v5 allObjects];
+            allObjects = [candidatesCopy allObjects];
             v17 = [_PSFeatureDictionary alloc];
             v21[0] = MEMORY[0x1E69E9820];
             v21[1] = 3221225472;
             v21[2] = __72___PSContentFeatures_urlTopLevelDomainFromPredictionContext_candidates___block_invoke;
             v21[3] = &unk_1E7C24EF8;
-            v22 = v15;
-            v6 = v15;
-            v18 = [v16 _pas_mappedArrayWithTransform:v21];
-            v10 = [(_PSFeatureDictionary *)v17 initWithObjects:v18 forKeys:v16];
+            v22 = host;
+            attachments = host;
+            v18 = [allObjects _pas_mappedArrayWithTransform:v21];
+            v10 = [(_PSFeatureDictionary *)v17 initWithObjects:v18 forKeys:allObjects];
 
             goto LABEL_13;
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v8 = [attachments countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v8)
       {
         continue;

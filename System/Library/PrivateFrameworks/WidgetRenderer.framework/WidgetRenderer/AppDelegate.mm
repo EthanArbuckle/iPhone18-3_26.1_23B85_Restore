@@ -1,33 +1,33 @@
 @interface AppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 - (uint64_t)applicationDidReceiveMemoryWarning:;
 @end
 
 @implementation AppDelegate
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_1DAD66DBC(v9);
+  applicationCopy = application;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  v12 = sub_1DAD66DBC(sessionCopy);
 
   return v12;
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  if (a4)
+  if (options)
   {
     type metadata accessor for LaunchOptionsKey(0);
     sub_1DAD66C2C(&qword_1ECC07EE8, type metadata accessor for LaunchOptionsKey);
     sub_1DAED1C1C();
   }
 
-  v6 = a3;
-  v7 = self;
+  applicationCopy = application;
+  selfCopy = self;
   v8 = sub_1DAD94560();
 
   return v8 & 1;
@@ -53,8 +53,8 @@ LABEL_2:
     sub_1DAECED1C();
     sub_1DAECECFC();
     (*(v1 + 8))(v4, v0);
-    v5 = [objc_opt_self() sharedApplication];
-    v6 = [v5 connectedScenes];
+    sharedApplication = [objc_opt_self() sharedApplication];
+    connectedScenes = [sharedApplication connectedScenes];
 
     v0 = sub_1DAD674D4(0, qword_1EE00A898, 0x1E69DCE70);
     v4 = sub_1DAD8D6A4(&qword_1EE00A890, qword_1EE00A898, 0x1E69DCE70);

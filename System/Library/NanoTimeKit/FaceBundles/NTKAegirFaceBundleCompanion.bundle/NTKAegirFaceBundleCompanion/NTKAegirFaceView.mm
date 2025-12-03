@@ -1,88 +1,88 @@
 @interface NTKAegirFaceView
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
 - (BOOL)_styleOptionIsRandom;
 - (BOOL)_vistaOptionIsRandom;
-- (BOOL)_wheelChangedWithEvent:(id)a3;
+- (BOOL)_wheelChangedWithEvent:(id)event;
 - (CGRect)_topComplicationFrame;
-- (NTKAegirFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
+- (NTKAegirFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
 - (double)topComplicationFontSize;
-- (id)_centerTimeLabelStyleForViewMode:(int64_t)a3;
-- (id)_cornerTimeLabelStyleForViewMode:(int64_t)a3;
+- (id)_centerTimeLabelStyleForViewMode:(int64_t)mode;
+- (id)_cornerTimeLabelStyleForViewMode:(int64_t)mode;
 - (id)_createDigitalTimeLabel;
 - (id)_createVistaView;
 - (id)_date;
 - (id)_homeScreenDateLabelFont;
 - (id)_homeScreenTimeViewConfiguration;
-- (id)_numeralSwatchForNumeralOption:(id)a3 typefaceOption:(id)a4 vistaOption:(id)a5 styleOption:(id)a6;
-- (id)_renderNumeralSwatchForNumeralOption:(id)a3 typefaceOption:(id)a4 vistaOption:(id)a5 styleOption:(id)a6;
-- (id)_renderTypefaceSwatchForTypefaceOption:(id)a3 vistaOption:(id)a4 styleOption:(id)a5;
-- (id)_renderVistaSwatchForVistaOption:(id)a3 styleOption:(id)a4;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
-- (id)_typefaceSwatchForTypefaceOption:(id)a3 vistaOption:(id)a4 styleOption:(id)a5;
-- (id)_vistaSwatchForVistaOption:(id)a3 styleOption:(id)a4;
+- (id)_numeralSwatchForNumeralOption:(id)option typefaceOption:(id)typefaceOption vistaOption:(id)vistaOption styleOption:(id)styleOption;
+- (id)_renderNumeralSwatchForNumeralOption:(id)option typefaceOption:(id)typefaceOption vistaOption:(id)vistaOption styleOption:(id)styleOption;
+- (id)_renderTypefaceSwatchForTypefaceOption:(id)option vistaOption:(id)vistaOption styleOption:(id)styleOption;
+- (id)_renderVistaSwatchForVistaOption:(id)option styleOption:(id)styleOption;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
+- (id)_typefaceSwatchForTypefaceOption:(id)option vistaOption:(id)vistaOption styleOption:(id)styleOption;
+- (id)_vistaSwatchForVistaOption:(id)option styleOption:(id)styleOption;
 - (id)topComplicationFont;
-- (unint64_t)shuffledStyleForStyle:(unint64_t)a3 shuffle:(BOOL)a4;
-- (unint64_t)shuffledVistaForVista:(unint64_t)a3 shuffle:(BOOL)a4;
-- (void)_animateTransitionToViewMode:(int64_t)a3 completion:(id)a4;
+- (unint64_t)shuffledStyleForStyle:(unint64_t)style shuffle:(BOOL)shuffle;
+- (unint64_t)shuffledVistaForVista:(unint64_t)vista shuffle:(BOOL)shuffle;
+- (void)_animateTransitionToViewMode:(int64_t)mode completion:(id)completion;
 - (void)_applyDataMode;
-- (void)_applyDataModeAnimated:(BOOL)a3;
-- (void)_applyFromElementOrder:(unint64_t)a3 toElementOrder:(unint64_t)a4 fraction:(double)a5;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (void)_applyDataModeAnimated:(BOOL)animated;
+- (void)_applyFromElementOrder:(unint64_t)order toElementOrder:(unint64_t)elementOrder fraction:(double)fraction;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyShowContentForUnadornedSnapshot;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
-- (void)_applyViewMode:(int64_t)a3;
-- (void)_applyVista:(unint64_t)a3;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyViewMode:(int64_t)mode;
+- (void)_applyVista:(unint64_t)vista;
 - (void)_asyncUpdateLocale;
 - (void)_asyncUpdateTime;
 - (void)_becameActiveFace;
 - (void)_becameInactiveFace;
 - (void)_cleanupAfterEditing;
-- (void)_cleanupAfterTransitionToOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (void)_cleanupAfterTransitionToOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_cleanupAfterZoom;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_disableCrown;
-- (void)_enableCrownForAegirVista:(unint64_t)a3;
-- (void)_interpolateFromPose:(const NTKAegirFaceViewAnimationPose *)a3 toPose:(const NTKAegirFaceViewAnimationPose *)a4 progress:(float)a5;
+- (void)_enableCrownForAegirVista:(unint64_t)vista;
+- (void)_interpolateFromPose:(const NTKAegirFaceViewAnimationPose *)pose toPose:(const NTKAegirFaceViewAnimationPose *)toPose progress:(float)progress;
 - (void)_invalidateTimeLabelStyles;
 - (void)_layoutPhaseLabel;
-- (void)_layoutSpheroidLabel:(int)a3;
+- (void)_layoutSpheroidLabel:(int)label;
 - (void)_loadSnapshotContentViews;
 - (void)_physicalButtonDelayedBlockFired;
 - (void)_prepareForEditing;
 - (void)_prepareToZoom;
-- (void)_setElementOrder:(unint64_t)a3;
+- (void)_setElementOrder:(unint64_t)order;
 - (void)_setFaceViewModeActive;
 - (void)_setFaceViewModeDeactive;
 - (void)_setFaceViewModeInteractive;
 - (void)_setFaceViewModeSupplemental;
-- (void)_setNumerals:(unint64_t)a3;
-- (void)_setTypeface:(unint64_t)a3;
+- (void)_setNumerals:(unint64_t)numerals;
+- (void)_setTypeface:(unint64_t)typeface;
 - (void)_setUpViews;
-- (void)_setViewMode:(int64_t)a3;
+- (void)_setViewMode:(int64_t)mode;
 - (void)_shuffleStyleIfNecessary;
 - (void)_shuffleVistaIfNecessary;
 - (void)_unloadSnapshotContentViews;
 - (void)_wheelDelayedBlockFired;
-- (void)astronomyVistaControllerWillEnterInteractiveMode:(id)a3;
+- (void)astronomyVistaControllerWillEnterInteractiveMode:(id)mode;
 - (void)dealloc;
-- (void)exitInteractiveModeAnimated:(BOOL)a3 completion:(id)a4;
+- (void)exitInteractiveModeAnimated:(BOOL)animated completion:(id)completion;
 - (void)layoutSubviews;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setTimeOffset:(double)a3;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setTimeOffset:(double)offset;
 @end
 
 @implementation NTKAegirFaceView
 
-- (NTKAegirFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKAegirFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v17.receiver = self;
   v17.super_class = NTKAegirFaceView;
-  v9 = [(NTKAegirFaceView *)&v17 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKAegirFaceView *)&v17 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   if (v9)
   {
-    v10 = [[NTKAegirFaceViewComplicationFactory alloc] initForDevice:v8];
+    v10 = [[NTKAegirFaceViewComplicationFactory alloc] initForDevice:deviceCopy];
     v18[0] = NTKComplicationSlotBottom;
     v18[1] = NTKComplicationSlotTopRight;
     v11 = [NSArray arrayWithObjects:v18 count:2];
@@ -127,13 +127,13 @@
 
 - (void)_setUpViews
 {
-  v3 = [(NTKAegirFaceView *)self contentView];
+  contentView = [(NTKAegirFaceView *)self contentView];
   [(NTKAegirFaceView *)self bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(NTKAegirFaceView *)self device];
+  device = [(NTKAegirFaceView *)self device];
   self->_viewMode = 1;
   *(self + 328) &= ~1u;
   *(self + 328) &= ~2u;
@@ -156,14 +156,14 @@
   objc_storeStrong(&self->_scrubDateFormatter[3], self->_scrubDateFormatter[0]);
   objc_storeStrong(&self->_scrubDateFormatter[8], self->_scrubDateFormatter[0]);
   objc_storeStrong(&self->_scrubDateFormatter[9], self->_scrubDateFormatter[0]);
-  sub_22BC(v19, v12);
-  v20 = [(NTKAegirFaceView *)self _createVistaView];
-  [v3 addSubview:v20];
-  [v20 setObserver:self];
+  sub_22BC(v19, device);
+  _createVistaView = [(NTKAegirFaceView *)self _createVistaView];
+  [contentView addSubview:_createVistaView];
+  [_createVistaView setObserver:self];
   v21 = +[NTKLocationManager sharedLocationManager];
-  v22 = [v21 currentLocation];
+  currentLocation = [v21 currentLocation];
 
-  if (v22)
+  if (currentLocation)
   {
     [v21 currentLocation];
   }
@@ -176,44 +176,44 @@
   [v23 coordinate];
 
   astronomyController = self->_astronomyController;
-  v25 = [v21 currentLocation];
+  currentLocation2 = [v21 currentLocation];
   v87 = v21;
-  v26 = [v21 anyLocation];
-  [(NUNIAstronomyVistaController *)astronomyController updateLocation:v25 fallbackLocation:v26];
+  anyLocation = [v21 anyLocation];
+  [(NUNIAstronomyVistaController *)astronomyController updateLocation:currentLocation2 fallbackLocation:anyLocation];
 
-  v27 = [(NTKAegirFaceView *)self _createDigitalTimeLabel];
+  _createDigitalTimeLabel = [(NTKAegirFaceView *)self _createDigitalTimeLabel];
   centerTimeLabelFront = self->_centerTimeLabelFront;
-  self->_centerTimeLabelFront = v27;
+  self->_centerTimeLabelFront = _createDigitalTimeLabel;
 
-  v29 = [(NTKAegirFaceView *)self _createDigitalTimeLabel];
+  _createDigitalTimeLabel2 = [(NTKAegirFaceView *)self _createDigitalTimeLabel];
   centerTimeLabelBack = self->_centerTimeLabelBack;
-  self->_centerTimeLabelBack = v29;
+  self->_centerTimeLabelBack = _createDigitalTimeLabel2;
 
-  v31 = [(NTKAegirFaceView *)self _createDigitalTimeLabel];
+  _createDigitalTimeLabel3 = [(NTKAegirFaceView *)self _createDigitalTimeLabel];
   cornerTimeLabel = self->_cornerTimeLabel;
-  self->_cornerTimeLabel = v31;
+  self->_cornerTimeLabel = _createDigitalTimeLabel3;
 
-  v33 = [v20 quadViews];
-  v34 = [v33 firstObject];
+  quadViews = [_createVistaView quadViews];
+  firstObject = [quadViews firstObject];
 
-  [v20 insertSubview:self->_centerTimeLabelFront aboveSubview:v34];
-  v90 = v20;
-  v86 = v34;
-  [v20 insertSubview:self->_centerTimeLabelBack belowSubview:v34];
-  v88 = v12;
-  v35 = [NTKDigitalTimeLabelStyle smallInUpperRightCornerStyleForBounds:v12 weight:v5 forDevice:v7, v9, v11, UIFontWeightSemibold];
-  v36 = [v35 designatorFont];
-  [v36 pointSize];
+  [_createVistaView insertSubview:self->_centerTimeLabelFront aboveSubview:firstObject];
+  v90 = _createVistaView;
+  v86 = firstObject;
+  [_createVistaView insertSubview:self->_centerTimeLabelBack belowSubview:firstObject];
+  v88 = device;
+  uIFontWeightSemibold = [NTKDigitalTimeLabelStyle smallInUpperRightCornerStyleForBounds:device weight:v5 forDevice:v7, v9, v11, UIFontWeightSemibold];
+  designatorFont = [uIFontWeightSemibold designatorFont];
+  [designatorFont pointSize];
   v38 = v37;
 
   v39 = [CLKFont systemFontOfSize:v38 weight:UIFontWeightSemibold];
-  v40 = [v39 CLKFontWithMonospacedNumbers];
-  v41 = [v40 CLKFontWithAlternativePunctuation];
+  cLKFontWithMonospacedNumbers = [v39 CLKFontWithMonospacedNumbers];
+  cLKFontWithAlternativePunctuation = [cLKFontWithMonospacedNumbers CLKFontWithAlternativePunctuation];
 
-  v42 = [v41 CLKFontWithMonospacedNumbers];
-  v43 = [v42 CLKFontWithAlternativePunctuation];
+  cLKFontWithMonospacedNumbers2 = [cLKFontWithAlternativePunctuation CLKFontWithMonospacedNumbers];
+  cLKFontWithAlternativePunctuation2 = [cLKFontWithMonospacedNumbers2 CLKFontWithAlternativePunctuation];
 
-  v44 = self;
+  selfCopy = self;
   v45 = [CLKUIColoringLabel alloc];
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
@@ -222,7 +222,7 @@
   scrubLabel = self->_scrubLabel;
   self->_scrubLabel = v49;
 
-  [(CLKUIColoringLabel *)self->_scrubLabel setFont:v43];
+  [(CLKUIColoringLabel *)self->_scrubLabel setFont:cLKFontWithAlternativePunctuation2];
   [(CLKUIColoringLabel *)self->_scrubLabel setUsesLegibility:1];
   v51 = self->_scrubLabel;
   v52 = +[UIColor whiteColor];
@@ -232,14 +232,14 @@
   v54 = +[UIColor blackColor];
   [(CLKUIColoringLabel *)v53 setShadowColor:v54];
 
-  [v3 addSubview:self->_scrubLabel];
+  [contentView addSubview:self->_scrubLabel];
   v55 = [[CLKUIColoringLabel alloc] initWithFrame:0 options:{CGRectZero.origin.x, y, width, height}];
   phaseLabel = self->_phaseLabel;
   self->_phaseLabel = v55;
 
   [(CLKUIColoringLabel *)self->_phaseLabel setNumberOfLines:0];
   [(CLKUIColoringLabel *)self->_phaseLabel setUsesLegibility:1];
-  [(CLKUIColoringLabel *)self->_phaseLabel setFont:v43];
+  [(CLKUIColoringLabel *)self->_phaseLabel setFont:cLKFontWithAlternativePunctuation2];
   v57 = self->_phaseLabel;
   v58 = +[UIColor whiteColor];
   [(CLKUIColoringLabel *)v57 setTextColor:v58];
@@ -248,13 +248,13 @@
   v60 = +[UIColor blackColor];
   [(CLKUIColoringLabel *)v59 setShadowColor:v60];
 
-  [v3 addSubview:self->_phaseLabel];
+  [contentView addSubview:self->_phaseLabel];
   v61 = [[CLKUIColoringLabel alloc] initWithFrame:0 options:{CGRectZero.origin.x, y, width, height}];
   travelTimeLabel = self->_travelTimeLabel;
   self->_travelTimeLabel = v61;
 
   [(CLKUIColoringLabel *)self->_travelTimeLabel setTextAlignment:0];
-  [(CLKUIColoringLabel *)self->_travelTimeLabel setFont:v43];
+  [(CLKUIColoringLabel *)self->_travelTimeLabel setFont:cLKFontWithAlternativePunctuation2];
   [(CLKUIColoringLabel *)self->_travelTimeLabel setUsesLegibility:1];
   v63 = self->_travelTimeLabel;
   v64 = +[UIColor whiteColor];
@@ -264,9 +264,9 @@
   v66 = +[UIColor blackColor];
   [(CLKUIColoringLabel *)v65 setShadowColor:v66];
 
-  [v3 addSubview:self->_travelTimeLabel];
-  [(NTKDigitalTimeLabel *)self->_cornerTimeLabel setFont:v43];
-  [v3 addSubview:self->_cornerTimeLabel];
+  [contentView addSubview:self->_travelTimeLabel];
+  [(NTKDigitalTimeLabel *)self->_cornerTimeLabel setFont:cLKFontWithAlternativePunctuation2];
+  [contentView addSubview:self->_cornerTimeLabel];
   v67 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   v68 = [CLKFont systemFontOfSize:*&dword_1A230];
   [v67 setFont:v68];
@@ -274,8 +274,8 @@
   v69 = +[UIColor whiteColor];
   [v67 setTextColor:v69];
 
-  v89 = v44;
-  objc_initWeak(location, v44);
+  v89 = selfCopy;
+  objc_initWeak(location, selfCopy);
   for (i = 0; i != 8; ++i)
   {
     block[0] = _NSConcreteStackBlock;
@@ -286,20 +286,20 @@
     v95 = i;
     v71 = v67;
     v92 = v71;
-    v72 = v3;
+    v72 = contentView;
     v93 = v72;
     dispatch_async(&_dispatch_main_q, block);
 
     objc_destroyWeak(&v94);
   }
 
-  [(NTKAegirFaceView *)v44 _invalidateTimeLabelStyles];
-  [(NTKAegirFaceView *)v44 _applyVista:[(NUNIAstronomyVistaController *)v44->_astronomyController vista]];
-  [(NTKAegirFaceView *)v44 _applyViewMode:1];
-  [(NTKAegirFaceView *)v44 _applyDataModeAnimated:0];
-  [(NTKAegirFaceView *)v44 _updateLocaleAnimated:0];
+  [(NTKAegirFaceView *)selfCopy _invalidateTimeLabelStyles];
+  [(NTKAegirFaceView *)selfCopy _applyVista:[(NUNIAstronomyVistaController *)selfCopy->_astronomyController vista]];
+  [(NTKAegirFaceView *)selfCopy _applyViewMode:1];
+  [(NTKAegirFaceView *)selfCopy _applyDataModeAnimated:0];
+  [(NTKAegirFaceView *)selfCopy _updateLocaleAnimated:0];
   [v90 updateSunLocationAnimated:0];
-  [(NTKAegirFaceView *)v44 setNeedsLayout];
+  [(NTKAegirFaceView *)selfCopy setNeedsLayout];
   v73 = +[NSNotificationCenter defaultCenter];
   [v73 addObserver:v89 selector:"_asyncUpdateTime" name:UIApplicationSignificantTimeChangeNotification object:0];
   [v73 addObserver:v89 selector:"_asyncUpdateTime" name:NSCalendarDayChangedNotification object:0];
@@ -310,8 +310,8 @@
   v78 = v77;
   v80 = v79;
   v82 = v81;
-  v83 = [(NTKAegirFaceView *)v89 device];
-  v84 = [v74 initWithFrame:v83 forDeviceCornerRadius:{v76, v78, v80, v82}];
+  device2 = [(NTKAegirFaceView *)v89 device];
+  v84 = [v74 initWithFrame:device2 forDeviceCornerRadius:{v76, v78, v80, v82}];
   cornerOverlayView = v89->_cornerOverlayView;
   v89->_cornerOverlayView = v84;
 
@@ -355,8 +355,8 @@
   while (v7 != 10);
   [(NTKDigitalTimeLabel *)self->_centerTimeLabelFront removeFromSuperview];
   [(NTKDigitalTimeLabel *)self->_centerTimeLabelBack removeFromSuperview];
-  v10 = [(NUNIAstronomyVistaController *)self->_astronomyController vistaView];
-  [v10 removeFromSuperview];
+  vistaView = [(NUNIAstronomyVistaController *)self->_astronomyController vistaView];
+  [vistaView removeFromSuperview];
 
   [(CLKUIColoringLabel *)self->_scrubLabel removeFromSuperview];
   [(CLKUIColoringLabel *)self->_phaseLabel removeFromSuperview];
@@ -405,27 +405,27 @@
   while (v20 != 8);
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  v7 = a3;
-  v6 = [(NUNIAstronomyVistaController *)self->_astronomyController overrideDate];
+  dateCopy = date;
+  overrideDate = [(NUNIAstronomyVistaController *)self->_astronomyController overrideDate];
 
-  if (v6 != v7)
+  if (overrideDate != dateCopy)
   {
-    [(NUNIAstronomyVistaController *)self->_astronomyController setOverrideDate:v7 animated:a4 > 0.0];
-    [(NTKDigitalTimeLabel *)self->_centerTimeLabelFront setOverrideDate:v7 duration:0.0];
-    [(NTKDigitalTimeLabel *)self->_centerTimeLabelBack setOverrideDate:v7 duration:0.0];
-    [(NTKDigitalTimeLabel *)self->_cornerTimeLabel setOverrideDate:v7 duration:0.0];
+    [(NUNIAstronomyVistaController *)self->_astronomyController setOverrideDate:dateCopy animated:duration > 0.0];
+    [(NTKDigitalTimeLabel *)self->_centerTimeLabelFront setOverrideDate:dateCopy duration:0.0];
+    [(NTKDigitalTimeLabel *)self->_centerTimeLabelBack setOverrideDate:dateCopy duration:0.0];
+    [(NTKDigitalTimeLabel *)self->_cornerTimeLabel setOverrideDate:dateCopy duration:0.0];
   }
 }
 
-- (void)setTimeOffset:(double)a3
+- (void)setTimeOffset:(double)offset
 {
   [(NTKDigitalTimeLabel *)self->_centerTimeLabelFront setTimeOffset:?];
-  [(NTKDigitalTimeLabel *)self->_centerTimeLabelBack setTimeOffset:a3];
+  [(NTKDigitalTimeLabel *)self->_centerTimeLabelBack setTimeOffset:offset];
   cornerTimeLabel = self->_cornerTimeLabel;
 
-  [(NTKDigitalTimeLabel *)cornerTimeLabel setTimeOffset:a3];
+  [(NTKDigitalTimeLabel *)cornerTimeLabel setTimeOffset:offset];
 }
 
 - (void)_prepareForEditing
@@ -438,18 +438,18 @@
   [(NUNIAstronomyVistaController *)self->_astronomyController prepareForTransitions];
   [(NUNIAstronomyVistaController *)self->_astronomyController setVistaTransitionStyle:1];
   v3 = [UIImageView alloc];
-  v4 = [(NUNIAstronomyVistaController *)self->_astronomyController vistaView];
-  [v4 bounds];
+  vistaView = [(NUNIAstronomyVistaController *)self->_astronomyController vistaView];
+  [vistaView bounds];
   v5 = [v3 initWithFrame:?];
   randomVistaSnapshot = self->_randomVistaSnapshot;
   self->_randomVistaSnapshot = v5;
 
-  v7 = [(NTKAegirFaceView *)self _randomVistaImage];
-  [(UIImageView *)self->_randomVistaSnapshot setImage:v7];
+  _randomVistaImage = [(NTKAegirFaceView *)self _randomVistaImage];
+  [(UIImageView *)self->_randomVistaSnapshot setImage:_randomVistaImage];
   [(UIImageView *)self->_randomVistaSnapshot setUserInteractionEnabled:0];
   [(UIImageView *)self->_randomVistaSnapshot setAlpha:0.0];
-  v8 = [(NUNIAstronomyVistaController *)self->_astronomyController vistaView];
-  [v8 addSubview:self->_randomVistaSnapshot];
+  vistaView2 = [(NUNIAstronomyVistaController *)self->_astronomyController vistaView];
+  [vistaView2 addSubview:self->_randomVistaSnapshot];
 }
 
 - (void)_cleanupAfterEditing
@@ -466,20 +466,20 @@
   self->_randomVistaSnapshot = 0;
 }
 
-- (void)_cleanupAfterTransitionToOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_cleanupAfterTransitionToOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  [(NUNIAstronomyVistaController *)self->_astronomyController cleanUpAfterTransitions:a3];
+  [(NUNIAstronomyVistaController *)self->_astronomyController cleanUpAfterTransitions:option];
   astronomyController = self->_astronomyController;
 
   [(NUNIAstronomyVistaController *)astronomyController prepareForTransitions];
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   CLKInterpolateBetweenFloatsClipped();
   v7 = fmin(v6, self->_homeScreenAlphaOverride);
-  v8 = [(NUNIAstronomyVistaController *)self->_astronomyController vistaView];
-  [v8 setAlpha:v7];
+  vistaView = [(NUNIAstronomyVistaController *)self->_astronomyController vistaView];
+  [vistaView setAlpha:v7];
 
   self->_elementOrder;
   CLKInterpolateBetweenFloatsClipped();
@@ -494,24 +494,24 @@
   [(UIImageView *)randomVistaSnapshot setAlpha:?];
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
-  v5 = [(NUNIAstronomyVistaController *)self->_astronomyController vistaView];
-  v6 = v5;
+  vistaView = [(NUNIAstronomyVistaController *)self->_astronomyController vistaView];
+  v6 = vistaView;
   v7 = NTKEditModeBackgroundContentAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     v7 = 1.0;
   }
 
-  [v5 setAlpha:v7];
+  [vistaView setAlpha:v7];
 
   v8 = 0.0;
   v9 = 0.0;
   if (!self->_elementOrder)
   {
-    v10 = a3 == 13 || a3 == 0;
-    v11 = v10 || a3 == 19;
+    v10 = mode == 13 || mode == 0;
+    v11 = v10 || mode == 19;
     v9 = NTKEditModeDimmedAlpha;
     if (v11)
     {
@@ -523,7 +523,7 @@
   centerTimeLabelBack = self->_centerTimeLabelBack;
   if (self->_elementOrder == 1)
   {
-    if (a3 == 13 || a3 == 0 || a3 == 19)
+    if (mode == 13 || mode == 0 || mode == 19)
     {
       v8 = 1.0;
     }
@@ -539,21 +539,21 @@
   [(NTKDigitalTimeLabel *)centerTimeLabelBack setAlpha:v15];
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  if (a6 > 14)
+  optionCopy = option;
+  toOptionCopy = toOption;
+  slotCopy = slot;
+  if (mode > 14)
   {
-    if (a6 == 15)
+    if (mode == 15)
     {
-      v25 = -[NTKAegirFaceView shuffledStyleForStyle:shuffle:](self, "shuffledStyleForStyle:shuffle:", [v12 style], 0);
-      v26 = -[NTKAegirFaceView shuffledStyleForStyle:shuffle:](self, "shuffledStyleForStyle:shuffle:", [v13 style], 0);
-      [(NUNIAstronomyVistaController *)self->_astronomyController applyTransitionFraction:v25 fromStyle:v26 toStyle:a3];
+      v25 = -[NTKAegirFaceView shuffledStyleForStyle:shuffle:](self, "shuffledStyleForStyle:shuffle:", [optionCopy style], 0);
+      v26 = -[NTKAegirFaceView shuffledStyleForStyle:shuffle:](self, "shuffledStyleForStyle:shuffle:", [toOptionCopy style], 0);
+      [(NUNIAstronomyVistaController *)self->_astronomyController applyTransitionFraction:v25 fromStyle:v26 toStyle:fraction];
       if (((v25 & 0xFFFFFFFFFFFFFFFELL) == 2) != ((v26 & 0xFFFFFFFFFFFFFFFELL) == 2))
       {
-        [NTKAegirFaceView _applyFromElementOrder:"_applyFromElementOrder:toElementOrder:fraction:" toElementOrder:a3 fraction:?];
+        [NTKAegirFaceView _applyFromElementOrder:"_applyFromElementOrder:toElementOrder:fraction:" toElementOrder:fraction fraction:?];
       }
 
       else
@@ -564,25 +564,25 @@
       goto LABEL_34;
     }
 
-    if (a6 != 19)
+    if (mode != 19)
     {
       goto LABEL_34;
     }
 
-    v17 = [v12 numeralOption];
-    v18 = [v13 numeralOption];
-    if (v17 == v18)
+    numeralOption = [optionCopy numeralOption];
+    numeralOption2 = [toOptionCopy numeralOption];
+    if (numeralOption == numeralOption2)
     {
-      [(NTKAegirFaceView *)self _setNumerals:v17];
+      [(NTKAegirFaceView *)self _setNumerals:numeralOption];
       goto LABEL_34;
     }
 
-    if (a3 >= 0.5)
+    if (fraction >= 0.5)
     {
-      v33 = v18;
+      v33 = numeralOption2;
       CLKMapFractionIntoRange();
       v28 = v34;
-      v17 = v33;
+      numeralOption = v33;
     }
 
     else
@@ -594,31 +594,31 @@
     CLKMapFractionIntoRange();
     memset(&v40, 0, sizeof(v40));
     CGAffineTransformMakeScale(&v40, v35, v35);
-    [(NTKAegirFaceView *)self _setNumerals:v17];
+    [(NTKAegirFaceView *)self _setNumerals:numeralOption];
     goto LABEL_28;
   }
 
-  if (a6 != 12)
+  if (mode != 12)
   {
-    if (a6 != 13)
+    if (mode != 13)
     {
       goto LABEL_34;
     }
 
-    v15 = [v12 typeface];
-    v16 = [v13 typeface];
-    if (v15 == v16)
+    typeface = [optionCopy typeface];
+    typeface2 = [toOptionCopy typeface];
+    if (typeface == typeface2)
     {
-      [(NTKAegirFaceView *)self _setTypeface:v15];
+      [(NTKAegirFaceView *)self _setTypeface:typeface];
       goto LABEL_34;
     }
 
-    if (a3 >= 0.5)
+    if (fraction >= 0.5)
     {
-      v30 = v16;
+      v30 = typeface2;
       CLKMapFractionIntoRange();
       v28 = v31;
-      v15 = v30;
+      typeface = v30;
     }
 
     else
@@ -630,7 +630,7 @@
     CLKMapFractionIntoRange();
     memset(&v40, 0, sizeof(v40));
     CGAffineTransformMakeScale(&v40, v32, v32);
-    [(NTKAegirFaceView *)self _setTypeface:v15];
+    [(NTKAegirFaceView *)self _setTypeface:typeface];
 LABEL_28:
     v36 = fmin(v28, self->_homeScreenAlphaOverride);
     if (self->_elementOrder)
@@ -650,55 +650,55 @@ LABEL_28:
     goto LABEL_34;
   }
 
-  v19 = [v12 vista];
-  v20 = [v13 vista];
-  v21 = [(NTKAegirFaceView *)self shuffledVistaForVista:v19 shuffle:0];
-  v22 = [(NTKAegirFaceView *)self shuffledVistaForVista:v20 shuffle:0];
-  [(NUNIAstronomyVistaController *)self->_astronomyController applyTransitionFraction:v21 fromVista:v22 toVista:a3];
-  [(NTKAegirFaceView *)self _applyFromVista:v21 toVista:v22 fraction:a3];
-  if (v20 == &dword_8 + 2 && v19 == &dword_8 + 2)
+  vista = [optionCopy vista];
+  vista2 = [toOptionCopy vista];
+  v21 = [(NTKAegirFaceView *)self shuffledVistaForVista:vista shuffle:0];
+  v22 = [(NTKAegirFaceView *)self shuffledVistaForVista:vista2 shuffle:0];
+  [(NUNIAstronomyVistaController *)self->_astronomyController applyTransitionFraction:v21 fromVista:v22 toVista:fraction];
+  [(NTKAegirFaceView *)self _applyFromVista:v21 toVista:v22 fraction:fraction];
+  if (vista2 == &dword_8 + 2 && vista == &dword_8 + 2)
   {
-    [(NTKAegirFaceView *)self _applyOption:v12 forCustomEditMode:12 slot:0];
+    [(NTKAegirFaceView *)self _applyOption:optionCopy forCustomEditMode:12 slot:0];
     randomVistaSnapshot = self->_randomVistaSnapshot;
-    v24 = 1.0;
+    fractionCopy = 1.0;
   }
 
-  else if (v20 == &dword_8 + 2)
+  else if (vista2 == &dword_8 + 2)
   {
-    [(NTKAegirFaceView *)self _applyOption:v12 forCustomEditMode:12 slot:0];
+    [(NTKAegirFaceView *)self _applyOption:optionCopy forCustomEditMode:12 slot:0];
     randomVistaSnapshot = self->_randomVistaSnapshot;
-    v24 = a3;
+    fractionCopy = fraction;
   }
 
-  else if (v19 == &dword_8 + 2)
+  else if (vista == &dword_8 + 2)
   {
-    [(NTKAegirFaceView *)self _applyOption:v13 forCustomEditMode:12 slot:0];
-    v24 = 1.0 - a3;
+    [(NTKAegirFaceView *)self _applyOption:toOptionCopy forCustomEditMode:12 slot:0];
+    fractionCopy = 1.0 - fraction;
     randomVistaSnapshot = self->_randomVistaSnapshot;
   }
 
   else
   {
     randomVistaSnapshot = self->_randomVistaSnapshot;
-    v24 = 0.0;
+    fractionCopy = 0.0;
   }
 
-  [(UIImageView *)randomVistaSnapshot setAlpha:v24];
+  [(UIImageView *)randomVistaSnapshot setAlpha:fractionCopy];
 LABEL_34:
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v14 = a3;
-  v8 = a5;
-  if (a4 > 14)
+  optionCopy = option;
+  slotCopy = slot;
+  if (mode > 14)
   {
-    if (a4 == 15)
+    if (mode == 15)
     {
-      v11 = [v14 style];
-      v12 = [(NTKAegirFaceView *)self shuffledStyleForStyle:v11 shuffle:0];
+      style = [optionCopy style];
+      v12 = [(NTKAegirFaceView *)self shuffledStyleForStyle:style shuffle:0];
       [(NUNIAstronomyVistaController *)self->_astronomyController applyStyle:v12];
-      if (v11 != &dword_4 + 3)
+      if (style != &dword_4 + 3)
       {
         [(NTKAegirFaceView *)self shuffleRandomStyle];
       }
@@ -706,16 +706,16 @@ LABEL_34:
       [(NTKAegirFaceView *)self _setElementOrder:(v12 & 0xFFFFFFFFFFFFFFFELL) == 2];
     }
 
-    else if (a4 == 19)
+    else if (mode == 19)
     {
-      -[NTKAegirFaceView _setNumerals:](self, "_setNumerals:", [v14 numeralOption]);
+      -[NTKAegirFaceView _setNumerals:](self, "_setNumerals:", [optionCopy numeralOption]);
     }
   }
 
-  else if (a4 == 12)
+  else if (mode == 12)
   {
-    v9 = [v14 vista];
-    v10 = [(NTKAegirFaceView *)self shuffledVistaForVista:v9 shuffle:0];
+    vista = [optionCopy vista];
+    v10 = [(NTKAegirFaceView *)self shuffledVistaForVista:vista shuffle:0];
     if ([(NUNIAstronomyVistaController *)self->_astronomyController vista]!= v10)
     {
       if ([(NTKAegirFaceView *)self editing])
@@ -730,7 +730,7 @@ LABEL_34:
     }
 
     v13 = 0.0;
-    if (v9 == &dword_8 + 2)
+    if (vista == &dword_8 + 2)
     {
       v13 = 1.0;
     }
@@ -738,25 +738,25 @@ LABEL_34:
     [(UIImageView *)self->_randomVistaSnapshot setAlpha:v13];
   }
 
-  else if (a4 == 13)
+  else if (mode == 13)
   {
-    -[NTKAegirFaceView _setTypeface:](self, "_setTypeface:", [v14 typeface]);
+    -[NTKAegirFaceView _setTypeface:](self, "_setTypeface:", [optionCopy typeface]);
   }
 }
 
-- (unint64_t)shuffledVistaForVista:(unint64_t)a3 shuffle:(BOOL)a4
+- (unint64_t)shuffledVistaForVista:(unint64_t)vista shuffle:(BOOL)shuffle
 {
-  if (a3 > 5)
+  if (vista > 5)
   {
-    if (a3 <= 7)
+    if (vista <= 7)
     {
       v9 = 3;
-      if (a3 != 7)
+      if (vista != 7)
       {
         v9 = 0;
       }
 
-      if (a3 == 6)
+      if (vista == 6)
       {
         return 7;
       }
@@ -767,11 +767,11 @@ LABEL_34:
       }
     }
 
-    else if (a3 != 8 && a3 != 9)
+    else if (vista != 8 && vista != 9)
     {
-      if (a3 == 10)
+      if (vista == 10)
       {
-        if (a4)
+        if (shuffle)
         {
           [(NTKAegirFaceView *)self shuffleRandomVista];
         }
@@ -791,22 +791,22 @@ LABEL_34:
     v4 = 4;
     v5 = 5;
     v6 = 6;
-    if (a3 != 5)
+    if (vista != 5)
     {
       v6 = 0;
     }
 
-    if (a3 != 4)
+    if (vista != 4)
     {
       v5 = v6;
     }
 
-    if (a3 != 3)
+    if (vista != 3)
     {
       v4 = v5;
     }
 
-    if (a3 == 2)
+    if (vista == 2)
     {
       v7 = 2;
     }
@@ -816,12 +816,12 @@ LABEL_34:
       v7 = 0;
     }
 
-    if (a3 == 1)
+    if (vista == 1)
     {
       v7 = 1;
     }
 
-    if (a3 <= 2)
+    if (vista <= 2)
     {
       return v7;
     }
@@ -832,14 +832,14 @@ LABEL_34:
     }
   }
 
-  return a3;
+  return vista;
 }
 
-- (unint64_t)shuffledStyleForStyle:(unint64_t)a3 shuffle:(BOOL)a4
+- (unint64_t)shuffledStyleForStyle:(unint64_t)style shuffle:(BOOL)shuffle
 {
-  if (a3 <= 3)
+  if (style <= 3)
   {
-    if (a3 == 3)
+    if (style == 3)
     {
       v4 = 3;
     }
@@ -849,18 +849,18 @@ LABEL_34:
       v4 = 0;
     }
 
-    if (a3 == 2)
+    if (style == 2)
     {
       v4 = 2;
     }
 
-    v5 = a3 == 1;
+    v5 = style == 1;
     goto LABEL_13;
   }
 
-  if (a3 <= 5)
+  if (style <= 5)
   {
-    if (a3 == 5)
+    if (style == 5)
     {
       v4 = 5;
     }
@@ -870,21 +870,21 @@ LABEL_34:
       v4 = 0;
     }
 
-    v5 = a3 == 4;
+    v5 = style == 4;
 LABEL_13:
     if (!v5)
     {
       return v4;
     }
 
-    return a3;
+    return style;
   }
 
-  if (a3 != 6)
+  if (style != 6)
   {
-    if (a3 == 7)
+    if (style == 7)
     {
-      if (a4)
+      if (shuffle)
       {
         [(NTKAegirFaceView *)self shuffleRandomStyle];
       }
@@ -898,16 +898,16 @@ LABEL_13:
     }
   }
 
-  return a3;
+  return style;
 }
 
 - (void)_applyShowContentForUnadornedSnapshot
 {
   [(NTKDigitalTimeLabel *)self->_centerTimeLabelFront setHidden:[(NTKAegirFaceView *)self showContentForUnadornedSnapshot]];
   centerTimeLabelBack = self->_centerTimeLabelBack;
-  v4 = [(NTKAegirFaceView *)self showContentForUnadornedSnapshot];
+  showContentForUnadornedSnapshot = [(NTKAegirFaceView *)self showContentForUnadornedSnapshot];
 
-  [(NTKDigitalTimeLabel *)centerTimeLabelBack setHidden:v4];
+  [(NTKDigitalTimeLabel *)centerTimeLabelBack setHidden:showContentForUnadornedSnapshot];
 }
 
 - (void)layoutSubviews
@@ -934,21 +934,21 @@ LABEL_13:
     [(NTKAegirFaceView *)self invalidateComplicationLayout];
   }
 
-  v11 = [(NTKAegirFaceView *)self device];
+  device = [(NTKAegirFaceView *)self device];
   [(NTKAegirFaceView *)self bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(NUNIAstronomyVistaController *)self->_astronomyController vistaView];
-  [v20 setFrame:{v13, v15, v17, v19}];
+  vistaView = [(NUNIAstronomyVistaController *)self->_astronomyController vistaView];
+  [vistaView setFrame:{v13, v15, v17, v19}];
 
-  v21 = [NTKDigitalTimeLabelStyle smallInUpperRightCornerStyleForBounds:v11 weight:v13 forDevice:v15, v17, v19, UIFontWeightSemibold];
-  v22 = [v21 layoutRule];
-  [v22 referenceFrame];
+  uIFontWeightSemibold = [NTKDigitalTimeLabelStyle smallInUpperRightCornerStyleForBounds:device weight:v13 forDevice:v15, v17, v19, UIFontWeightSemibold];
+  layoutRule = [uIFontWeightSemibold layoutRule];
+  [layoutRule referenceFrame];
   v24 = v23;
 
-  v25 = [(CLKUIColoringLabel *)self->_travelTimeLabel text];
+  text = [(CLKUIColoringLabel *)self->_travelTimeLabel text];
   travelTimeLabel = self->_travelTimeLabel;
   v27 = sub_4820();
   [(CLKUIColoringLabel *)travelTimeLabel setText:v27];
@@ -956,9 +956,9 @@ LABEL_13:
   [(CLKUIColoringLabel *)self->_travelTimeLabel sizeToFit];
   [(CLKUIColoringLabel *)self->_travelTimeLabel frame];
   v29 = v28;
-  [(CLKUIColoringLabel *)self->_travelTimeLabel setText:v25];
-  v30 = [(NTKAegirFaceView *)self device];
-  sub_22BC(v30, v30);
+  [(CLKUIColoringLabel *)self->_travelTimeLabel setText:text];
+  device2 = [(NTKAegirFaceView *)self device];
+  sub_22BC(device2, device2);
   v31 = *&qword_1A248;
 
   [(CLKUIColoringLabel *)self->_travelTimeLabel setFrame:v31, v24, v31 * -2.0 + v17 * 0.75, v29];
@@ -1046,8 +1046,8 @@ LABEL_13:
 
 - (double)topComplicationFontSize
 {
-  v2 = [(NTKAegirFaceView *)self device];
-  sub_22BC(v2, v2);
+  device = [(NTKAegirFaceView *)self device];
+  sub_22BC(device, device);
 
   return *&qword_1A258;
 }
@@ -1055,11 +1055,11 @@ LABEL_13:
 - (CGRect)_topComplicationFrame
 {
   [(NTKAegirFaceView *)self bounds];
-  v3 = [(NTKAegirFaceView *)self device];
-  sub_22BC(v3, v3);
-  v4 = [(NTKAegirFaceView *)self topComplicationFont];
-  [v4 ascender];
-  [v4 descender];
+  device = [(NTKAegirFaceView *)self device];
+  sub_22BC(device, device);
+  topComplicationFont = [(NTKAegirFaceView *)self topComplicationFont];
+  [topComplicationFont ascender];
+  [topComplicationFont descender];
   CLKRoundForDevice();
   v6 = v5;
   CLKRoundForDevice();
@@ -1080,21 +1080,21 @@ LABEL_13:
   return result;
 }
 
-- (void)_setTypeface:(unint64_t)a3
+- (void)_setTypeface:(unint64_t)typeface
 {
-  if (self->_typeface != a3)
+  if (self->_typeface != typeface)
   {
-    self->_typeface = a3;
+    self->_typeface = typeface;
     [(NTKAegirFaceView *)self _invalidateTimeLabelStyles];
   }
 }
 
-- (void)_setNumerals:(unint64_t)a3
+- (void)_setNumerals:(unint64_t)numerals
 {
-  if (self->_numeralOption != a3)
+  if (self->_numeralOption != numerals)
   {
-    self->_numeralOption = a3;
-    v4 = [(NTKAegirFaceView *)self device];
+    self->_numeralOption = numerals;
+    device = [(NTKAegirFaceView *)self device];
     v5 = NTKShowIndicScriptNumerals();
 
     if (v5)
@@ -1105,18 +1105,18 @@ LABEL_13:
   }
 }
 
-- (void)_setElementOrder:(unint64_t)a3
+- (void)_setElementOrder:(unint64_t)order
 {
-  if (self->_elementOrder != a3)
+  if (self->_elementOrder != order)
   {
-    self->_elementOrder = a3;
-    v6 = [(NTKAegirFaceView *)self fromEditMode];
+    self->_elementOrder = order;
+    fromEditMode = [(NTKAegirFaceView *)self fromEditMode];
     v7 = 0.0;
     v8 = 0.0;
-    if (!a3)
+    if (!order)
     {
-      v9 = v6 == &dword_C + 1 || v6 == 0;
-      v10 = v9 || v6 == &dword_10 + 3;
+      v9 = fromEditMode == &dword_C + 1 || fromEditMode == 0;
+      v10 = v9 || fromEditMode == &dword_10 + 3;
       v8 = NTKEditModeDimmedAlpha;
       if (v10)
       {
@@ -1126,9 +1126,9 @@ LABEL_13:
 
     [(NTKDigitalTimeLabel *)self->_centerTimeLabelFront setAlpha:fmin(v8, self->_homeScreenAlphaOverride)];
     centerTimeLabelBack = self->_centerTimeLabelBack;
-    if (a3 == 1)
+    if (order == 1)
     {
-      if (v6 == &dword_C + 1 || v6 == 0 || v6 == &dword_10 + 3)
+      if (fromEditMode == &dword_C + 1 || fromEditMode == 0 || fromEditMode == &dword_10 + 3)
       {
         v7 = 1.0;
       }
@@ -1145,7 +1145,7 @@ LABEL_13:
   }
 }
 
-- (void)_applyFromElementOrder:(unint64_t)a3 toElementOrder:(unint64_t)a4 fraction:(double)a5
+- (void)_applyFromElementOrder:(unint64_t)order toElementOrder:(unint64_t)elementOrder fraction:(double)fraction
 {
   [(NTKAegirFaceView *)self fromEditMode];
   CLKInterpolateBetweenFloatsClipped();
@@ -1168,7 +1168,7 @@ LABEL_13:
 
   numeralOption = self->_numeralOption;
   v6 = CLKLocaleNumberSystemFromNumeralOption();
-  v7 = [(NTKAegirFaceView *)self device];
+  device = [(NTKAegirFaceView *)self device];
   v8 = NTKShowIndicScriptNumerals();
 
   if (!v8)
@@ -1182,18 +1182,18 @@ LABEL_13:
   [(NTKAegirFaceView *)self setNeedsLayout];
 }
 
-- (id)_centerTimeLabelStyleForViewMode:(int64_t)a3
+- (id)_centerTimeLabelStyleForViewMode:(int64_t)mode
 {
   [(NTKAegirFaceView *)self bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(NTKAegirFaceView *)self device];
-  v14 = v13;
-  if (a3 == 2)
+  device = [(NTKAegirFaceView *)self device];
+  v14 = device;
+  if (mode == 2)
   {
-    v15 = sub_5724(v13, v6, v8, v10, v12);
+    v15 = sub_5724(device, v6, v8, v10, v12);
     [v15 pointSize];
     v17 = sub_54F8(v16, v14, self->_typeface, self->_numeralOption);
     v18 = [NTKDigitalTimeLabelStyle smallInUpperRightCornerStyleForBounds:v17 withFont:v14 forDevice:v6, v8, v10, v12];
@@ -1201,27 +1201,27 @@ LABEL_13:
 
   else
   {
-    v15 = sub_54F8(round(v12 * 0.198660714), v13, self->_typeface, self->_numeralOption);
+    v15 = sub_54F8(round(v12 * 0.198660714), device, self->_typeface, self->_numeralOption);
     v18 = sub_564C(v14, v15, v6, v8, v10, v12);
   }
 
   return v18;
 }
 
-- (id)_cornerTimeLabelStyleForViewMode:(int64_t)a3
+- (id)_cornerTimeLabelStyleForViewMode:(int64_t)mode
 {
   [(NTKAegirFaceView *)self bounds];
   x = v5;
   y = v7;
   width = v9;
   height = v11;
-  v13 = [(NTKAegirFaceView *)self device];
-  v14 = v13;
-  if (a3 == 2)
+  device = [(NTKAegirFaceView *)self device];
+  v14 = device;
+  if (mode == 2)
   {
-    v15 = sub_5724(v13, x, y, width, height);
-    v16 = [(NTKAegirFaceView *)self device];
-    sub_22BC(v16, v16);
+    v15 = sub_5724(device, x, y, width, height);
+    device2 = [(NTKAegirFaceView *)self device];
+    sub_22BC(device2, device2);
 
     if (*&qword_1A248 > 0.0)
     {
@@ -1236,18 +1236,18 @@ LABEL_13:
       height = v23.size.height;
     }
 
-    v17 = [NTKDigitalTimeLabelStyle smallInUpperRightCornerStyleForBounds:v15 withFont:v14 forDevice:x, y, width, height];
+    height = [NTKDigitalTimeLabelStyle smallInUpperRightCornerStyleForBounds:v15 withFont:v14 forDevice:x, y, width, height];
   }
 
   else
   {
-    v18 = [(NTKAegirFaceView *)self device];
+    device3 = [(NTKAegirFaceView *)self device];
     v15 = sub_5994(round(height * 0.198660714));
 
-    v17 = sub_564C(v14, v15, x, y, width, height);
+    height = sub_564C(v14, v15, x, y, width, height);
   }
 
-  v19 = v17;
+  v19 = height;
 
   return v19;
 }
@@ -1257,10 +1257,10 @@ LABEL_13:
   v5.receiver = self;
   v5.super_class = NTKAegirFaceView;
   [(NTKAegirFaceView *)&v5 _prepareToZoom];
-  v3 = [(NUNIAstronomyVistaController *)self->_astronomyController vistaView];
-  v4 = [v3 scene];
+  vistaView = [(NUNIAstronomyVistaController *)self->_astronomyController vistaView];
+  scene = [vistaView scene];
 
-  [v4 setUpdatable:0];
+  [scene setUpdatable:0];
 }
 
 - (void)_cleanupAfterZoom
@@ -1268,15 +1268,15 @@ LABEL_13:
   v5.receiver = self;
   v5.super_class = NTKAegirFaceView;
   [(NTKAegirFaceView *)&v5 _cleanupAfterZoom];
-  v3 = [(NUNIAstronomyVistaController *)self->_astronomyController vistaView];
-  v4 = [v3 scene];
+  vistaView = [(NUNIAstronomyVistaController *)self->_astronomyController vistaView];
+  scene = [vistaView scene];
 
-  [v4 setUpdatable:1];
+  [scene setUpdatable:1];
 }
 
-- (BOOL)_wheelChangedWithEvent:(id)a3
+- (BOOL)_wheelChangedWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([(NTKAegirFaceView *)self _shouldHandleHardwareEvents]&& !self->_physicalButtonDelayedBlock)
   {
     if (![(NTKAegirFaceView *)self _canEnterInteractiveMode])
@@ -1309,20 +1309,20 @@ LABEL_4:
   return v5;
 }
 
-- (void)exitInteractiveModeAnimated:(BOOL)a3 completion:(id)a4
+- (void)exitInteractiveModeAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v7 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   if ([(NTKAegirFaceView *)self _styleOptionIsRandom])
   {
     [(NUNIAstronomyVistaController *)self->_astronomyController setStyle:self->_currentShuffledStyle];
   }
 
-  if (v4)
+  if (animatedCopy)
   {
-    [(NTKAegirFaceView *)self _animateTransitionToViewMode:0 completion:v7];
+    [(NTKAegirFaceView *)self _animateTransitionToViewMode:0 completion:completionCopy];
 LABEL_9:
-    v6 = v7;
+    v6 = completionCopy;
     goto LABEL_10;
   }
 
@@ -1332,10 +1332,10 @@ LABEL_9:
     [(NUNIAstronomyVistaController *)self->_astronomyController applyStyle:self->_currentShuffledStyle];
   }
 
-  v6 = v7;
-  if (v7)
+  v6 = completionCopy;
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7);
+    (*(completionCopy + 2))(completionCopy);
     goto LABEL_9;
   }
 
@@ -1361,7 +1361,7 @@ LABEL_10:
   _objc_release_x1();
 }
 
-- (void)_enableCrownForAegirVista:(unint64_t)a3
+- (void)_enableCrownForAegirVista:(unint64_t)vista
 {
   v5.receiver = self;
   v5.super_class = NTKAegirFaceView;
@@ -1391,7 +1391,7 @@ LABEL_10:
   [(NUNIAstronomyVistaController *)self->_astronomyController updateTimeAnimated:1];
 }
 
-- (void)astronomyVistaControllerWillEnterInteractiveMode:(id)a3
+- (void)astronomyVistaControllerWillEnterInteractiveMode:(id)mode
 {
   if ([(NTKAegirFaceView *)self _canEnterInteractiveMode])
   {
@@ -1400,58 +1400,58 @@ LABEL_10:
   }
 }
 
-- (void)_applyVista:(unint64_t)a3
+- (void)_applyVista:(unint64_t)vista
 {
-  [(NUNIAstronomyVistaController *)self->_astronomyController setVista:a3];
+  [(NUNIAstronomyVistaController *)self->_astronomyController setVista:vista];
   astronomyController = self->_astronomyController;
 
   [(NUNIAstronomyVistaController *)astronomyController updateTimeAnimated:0];
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
-  v6 = a4;
-  v7 = a3 - 12;
-  if (a3 - 12) < 8 && ((0x8Bu >> v7))
+  deviceCopy = device;
+  v7 = options - 12;
+  if (options - 12) < 8 && ((0x8Bu >> v7))
   {
     v8 = (&off_14760)[v7];
   }
 
   else
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &OBJC_METACLASS___NTKAegirFaceView;
-    v8 = objc_msgSendSuper2(&v10, "_swatchForEditModeDependsOnOptions:forDevice:", a3, v6);
+    v8 = objc_msgSendSuper2(&v10, "_swatchForEditModeDependsOnOptions:forDevice:", options, deviceCopy);
   }
 
   return v8;
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (a4 > 14)
+  optionCopy = option;
+  optionsCopy = options;
+  v10 = optionsCopy;
+  if (mode > 14)
   {
-    if (a4 != 15)
+    if (mode != 15)
     {
-      if (a4 == 19)
+      if (mode == 19)
       {
-        +[NTKEditOption sizeForSwatchStyle:](NTKEditOption, "sizeForSwatchStyle:", [v8 swatchStyle]);
+        +[NTKEditOption sizeForSwatchStyle:](NTKEditOption, "sizeForSwatchStyle:", [optionCopy swatchStyle]);
         v15 = v14;
         v17 = v16;
-        v18 = [(NTKAegirFaceView *)self device];
-        v19 = [NTKDigitalTimeLabelStyle smallInUpperRightCornerStyleForBounds:v18 weight:0.0 forDevice:0.0, v15, v17, UIFontWeightSemibold];
-        v20 = [v19 designatorFont];
-        [v20 pointSize];
+        device = [(NTKAegirFaceView *)self device];
+        uIFontWeightSemibold = [NTKDigitalTimeLabelStyle smallInUpperRightCornerStyleForBounds:device weight:0.0 forDevice:0.0, v15, v17, UIFontWeightSemibold];
+        designatorFont = [uIFontWeightSemibold designatorFont];
+        [designatorFont pointSize];
         v22 = v21;
 
-        v23 = [(NTKAegirFaceView *)self device];
-        v24 = sub_54F8(v22, v23, self->_typeface, [v8 numeralOption]);
+        device2 = [(NTKAegirFaceView *)self device];
+        v24 = sub_54F8(v22, device2, self->_typeface, [optionCopy numeralOption]);
 
-        v25 = [(NTKAegirFaceView *)self device];
-        v13 = [v8 swatchImageWithFont:v24 device:v25 baseline:0.3125];
+        device3 = [(NTKAegirFaceView *)self device];
+        v13 = [optionCopy swatchImageWithFont:v24 device:device3 baseline:0.3125];
 
         goto LABEL_16;
       }
@@ -1459,44 +1459,44 @@ LABEL_10:
       goto LABEL_8;
     }
 
-    v11 = [v9 objectForKeyedSubscript:&off_15788];
-    v27 = self;
+    v11 = [optionsCopy objectForKeyedSubscript:&off_15788];
+    selfCopy2 = self;
     v28 = v11;
-    v29 = v8;
+    v29 = optionCopy;
     goto LABEL_13;
   }
 
-  if (a4 == 12)
+  if (mode == 12)
   {
-    v11 = [v9 objectForKeyedSubscript:&off_157A0];
-    if ([v8 vista] == &dword_8 + 2)
+    v11 = [optionsCopy objectForKeyedSubscript:&off_157A0];
+    if ([optionCopy vista] == &dword_8 + 2)
     {
-      v26 = [(NTKAegirFaceView *)self _randomVistaImage];
+      _randomVistaImage = [(NTKAegirFaceView *)self _randomVistaImage];
 LABEL_14:
-      v13 = v26;
+      v13 = _randomVistaImage;
       goto LABEL_15;
     }
 
-    v27 = self;
-    v28 = v8;
+    selfCopy2 = self;
+    v28 = optionCopy;
     v29 = v11;
 LABEL_13:
-    v26 = [(NTKAegirFaceView *)v27 _vistaSwatchForVistaOption:v28 styleOption:v29];
+    _randomVistaImage = [(NTKAegirFaceView *)selfCopy2 _vistaSwatchForVistaOption:v28 styleOption:v29];
     goto LABEL_14;
   }
 
-  if (a4 != 13)
+  if (mode != 13)
   {
 LABEL_8:
     v31.receiver = self;
     v31.super_class = NTKAegirFaceView;
-    v13 = [(NTKAegirFaceView *)&v31 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:v9];
+    v13 = [(NTKAegirFaceView *)&v31 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy];
     goto LABEL_16;
   }
 
-  v11 = [v9 objectForKeyedSubscript:&off_15788];
+  v11 = [optionsCopy objectForKeyedSubscript:&off_15788];
   v12 = [v10 objectForKeyedSubscript:&off_157A0];
-  v13 = [(NTKAegirFaceView *)self _typefaceSwatchForTypefaceOption:v8 vistaOption:v11 styleOption:v12];
+  v13 = [(NTKAegirFaceView *)self _typefaceSwatchForTypefaceOption:optionCopy vistaOption:v11 styleOption:v12];
 
 LABEL_15:
 LABEL_16:
@@ -1504,62 +1504,62 @@ LABEL_16:
   return v13;
 }
 
-- (id)_numeralSwatchForNumeralOption:(id)a3 typefaceOption:(id)a4 vistaOption:(id)a5 styleOption:(id)a6
+- (id)_numeralSwatchForNumeralOption:(id)option typefaceOption:(id)typefaceOption vistaOption:(id)vistaOption styleOption:(id)styleOption
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  optionCopy = option;
+  typefaceOptionCopy = typefaceOption;
+  vistaOptionCopy = vistaOption;
+  styleOptionCopy = styleOption;
   if (qword_1A288 != -1)
   {
     sub_9AEC();
   }
 
-  v14 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v10 numeralOption]);
-  v15 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v12 vista]);
-  v16 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v13 style]);
+  v14 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [optionCopy numeralOption]);
+  v15 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [vistaOptionCopy vista]);
+  v16 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [styleOptionCopy style]);
   v17 = [NSString stringWithFormat:@"%@-%@-%@", v14, v15, v16];
 
   v18 = [qword_1A280 objectForKey:v17];
   if (!v18)
   {
-    v18 = [(NTKAegirFaceView *)self _renderNumeralSwatchForNumeralOption:v10 typefaceOption:v11 vistaOption:v12 styleOption:v13];
+    v18 = [(NTKAegirFaceView *)self _renderNumeralSwatchForNumeralOption:optionCopy typefaceOption:typefaceOptionCopy vistaOption:vistaOptionCopy styleOption:styleOptionCopy];
     [qword_1A280 setObject:v18 forKey:v17];
   }
 
   return v18;
 }
 
-- (id)_renderNumeralSwatchForNumeralOption:(id)a3 typefaceOption:(id)a4 vistaOption:(id)a5 styleOption:(id)a6
+- (id)_renderNumeralSwatchForNumeralOption:(id)option typefaceOption:(id)typefaceOption vistaOption:(id)vistaOption styleOption:(id)styleOption
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  styleOptionCopy = styleOption;
+  vistaOptionCopy = vistaOption;
+  typefaceOptionCopy = typefaceOption;
+  optionCopy = option;
   [(NTKAegirFaceView *)self bounds];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v22 = [NTKAegirFaceView alloc];
-  v23 = [(NTKAegirFaceView *)self device];
-  v24 = [(NTKAegirFaceView *)v22 initWithFaceStyle:44 forDevice:v23 clientIdentifier:0];
+  device = [(NTKAegirFaceView *)self device];
+  v24 = [(NTKAegirFaceView *)v22 initWithFaceStyle:44 forDevice:device clientIdentifier:0];
 
   [v24 setFrame:{v15, v17, v19, v21}];
   [v24 _loadSnapshotContentViews];
-  v25 = [v13 numeralOption];
+  numeralOption = [optionCopy numeralOption];
 
-  [v24 _setNumerals:v25];
-  [v24 setOption:v12 forCustomEditMode:13 slot:0];
+  [v24 _setNumerals:numeralOption];
+  [v24 setOption:typefaceOptionCopy forCustomEditMode:13 slot:0];
 
-  [v24 setOption:v11 forCustomEditMode:12 slot:0];
-  [v24 setOption:v10 forCustomEditMode:15 slot:0];
+  [v24 setOption:vistaOptionCopy forCustomEditMode:12 slot:0];
+  [v24 setOption:styleOptionCopy forCustomEditMode:15 slot:0];
   v26 = NTKIdealizedDate();
   [v24 setOverrideDate:v26 duration:0.0];
 
-  v27 = [(NTKAegirFaceView *)self _vistaSwatchForVistaOption:v11 styleOption:v10];
+  v27 = [(NTKAegirFaceView *)self _vistaSwatchForVistaOption:vistaOptionCopy styleOption:styleOptionCopy];
 
-  v28 = [v24[6] vistaView];
+  vistaView = [v24[6] vistaView];
   v29 = [[UIGraphicsImageRenderer alloc] initWithBounds:{v15, v17, v19, v21}];
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
@@ -1570,61 +1570,61 @@ LABEL_16:
   v39 = v19;
   v40 = v21;
   v35 = v27;
-  v36 = v28;
-  v30 = v28;
+  v36 = vistaView;
+  v30 = vistaView;
   v31 = v27;
   v32 = [v29 imageWithActions:v34];
 
   return v32;
 }
 
-- (id)_typefaceSwatchForTypefaceOption:(id)a3 vistaOption:(id)a4 styleOption:(id)a5
+- (id)_typefaceSwatchForTypefaceOption:(id)option vistaOption:(id)vistaOption styleOption:(id)styleOption
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  optionCopy = option;
+  vistaOptionCopy = vistaOption;
+  styleOptionCopy = styleOption;
   if (qword_1A298 != -1)
   {
     sub_9B00();
   }
 
-  v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 typeface]);
-  v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v9 vista]);
-  v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v10 style]);
+  v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [optionCopy typeface]);
+  v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [vistaOptionCopy vista]);
+  v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [styleOptionCopy style]);
   v14 = [NSString stringWithFormat:@"%@-%@-%@", v11, v12, v13];
 
   v15 = [qword_1A290 objectForKey:v14];
   if (!v15)
   {
-    v15 = [(NTKAegirFaceView *)self _renderTypefaceSwatchForTypefaceOption:v8 vistaOption:v9 styleOption:v10];
+    v15 = [(NTKAegirFaceView *)self _renderTypefaceSwatchForTypefaceOption:optionCopy vistaOption:vistaOptionCopy styleOption:styleOptionCopy];
     [qword_1A290 setObject:v15 forKey:v14];
   }
 
   return v15;
 }
 
-- (id)_renderTypefaceSwatchForTypefaceOption:(id)a3 vistaOption:(id)a4 styleOption:(id)a5
+- (id)_renderTypefaceSwatchForTypefaceOption:(id)option vistaOption:(id)vistaOption styleOption:(id)styleOption
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  +[NTKEditOption sizeForSwatchStyle:](NTKEditOption, "sizeForSwatchStyle:", [v10 swatchStyle]);
+  styleOptionCopy = styleOption;
+  vistaOptionCopy = vistaOption;
+  optionCopy = option;
+  +[NTKEditOption sizeForSwatchStyle:](NTKEditOption, "sizeForSwatchStyle:", [optionCopy swatchStyle]);
   v12 = v11;
   v14 = v13;
   v15 = [NTKAegirFaceView alloc];
-  v16 = [(NTKAegirFaceView *)self device];
-  v17 = [(NTKAegirFaceView *)v15 initWithFaceStyle:44 forDevice:v16 clientIdentifier:0];
+  device = [(NTKAegirFaceView *)self device];
+  v17 = [(NTKAegirFaceView *)v15 initWithFaceStyle:44 forDevice:device clientIdentifier:0];
 
   [v17 setFrame:{0.0, 0.0, v12, v14}];
   [v17 _loadSnapshotContentViews];
-  [v17 setOption:v10 forCustomEditMode:13 slot:0];
+  [v17 setOption:optionCopy forCustomEditMode:13 slot:0];
 
   v18 = NTKIdealizedDate();
   [v17 setOverrideDate:v18 duration:0.0];
 
-  v19 = [(NTKAegirFaceView *)self _vistaSwatchForVistaOption:v9 styleOption:v8];
+  v19 = [(NTKAegirFaceView *)self _vistaSwatchForVistaOption:vistaOptionCopy styleOption:styleOptionCopy];
 
-  v20 = [v17[6] vistaView];
+  vistaView = [v17[6] vistaView];
   v21 = [[UIGraphicsImageRenderer alloc] initWithBounds:{0.0, 0.0, v12, v14}];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
@@ -1635,43 +1635,43 @@ LABEL_16:
   v31 = v12;
   v32 = v14;
   v27 = v19;
-  v28 = v20;
-  v22 = v20;
+  v28 = vistaView;
+  v22 = vistaView;
   v23 = v19;
   v24 = [v21 imageWithActions:v26];
 
   return v24;
 }
 
-- (id)_vistaSwatchForVistaOption:(id)a3 styleOption:(id)a4
+- (id)_vistaSwatchForVistaOption:(id)option styleOption:(id)styleOption
 {
-  v6 = a3;
-  v7 = a4;
+  optionCopy = option;
+  styleOptionCopy = styleOption;
   if (qword_1A2A8 != -1)
   {
     sub_9B14();
   }
 
-  v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 vista]);
-  v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 style]);
+  v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [optionCopy vista]);
+  v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [styleOptionCopy style]);
   v10 = [NSString stringWithFormat:@"%@-%@", v8, v9];
 
   v11 = [qword_1A2A0 objectForKey:v10];
   if (!v11)
   {
-    v11 = [(NTKAegirFaceView *)self _renderVistaSwatchForVistaOption:v6 styleOption:v7];
+    v11 = [(NTKAegirFaceView *)self _renderVistaSwatchForVistaOption:optionCopy styleOption:styleOptionCopy];
     [qword_1A2A0 setObject:v11 forKey:v10];
   }
 
   return v11;
 }
 
-- (id)_renderVistaSwatchForVistaOption:(id)a3 styleOption:(id)a4
+- (id)_renderVistaSwatchForVistaOption:(id)option styleOption:(id)styleOption
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NTKAegirFaceView *)self device];
-  v9 = [[NTKAegirFaceView alloc] initWithFaceStyle:44 forDevice:v8 clientIdentifier:0];
+  optionCopy = option;
+  styleOptionCopy = styleOption;
+  device = [(NTKAegirFaceView *)self device];
+  v9 = [[NTKAegirFaceView alloc] initWithFaceStyle:44 forDevice:device clientIdentifier:0];
   [(NTKAegirFaceView *)self bounds];
   v11 = v10;
   v13 = v12;
@@ -1679,23 +1679,23 @@ LABEL_16:
   v17 = v16;
   [(NTKAegirFaceView *)v9 setFrame:?];
   [(NTKAegirFaceView *)v9 _loadSnapshotContentViews];
-  [(NTKAegirFaceView *)v9 setOption:v6 forCustomEditMode:12 slot:0];
-  [(NTKAegirFaceView *)v9 setOption:v7 forCustomEditMode:15 slot:0];
+  [(NTKAegirFaceView *)v9 setOption:optionCopy forCustomEditMode:12 slot:0];
+  [(NTKAegirFaceView *)v9 setOption:styleOptionCopy forCustomEditMode:15 slot:0];
 
   v18 = NTKIdealizedDate();
   [(NTKAegirFaceView *)v9 setOverrideDate:v18 duration:0.0];
 
-  v19 = [(NUNIAstronomyVistaController *)v9->_astronomyController vistaView];
-  v20 = [v19 quadViews];
-  v21 = [v20 lastObject];
+  vistaView = [(NUNIAstronomyVistaController *)v9->_astronomyController vistaView];
+  quadViews = [vistaView quadViews];
+  lastObject = [quadViews lastObject];
 
   objc_opt_class();
   v22 = 0;
   if (objc_opt_isKindOfClass())
   {
-    [v8 screenScale];
-    v24 = [v21 snapshotInRect:v11 scale:v13 time:{v15, v17, v23, 0.0}];
-    +[NTKEditOption sizeForSwatchStyle:](NTKEditOption, "sizeForSwatchStyle:", [v6 swatchStyle]);
+    [device screenScale];
+    v24 = [lastObject snapshotInRect:v11 scale:v13 time:{v15, v17, v23, 0.0}];
+    +[NTKEditOption sizeForSwatchStyle:](NTKEditOption, "sizeForSwatchStyle:", [optionCopy swatchStyle]);
     v26 = v25;
     v28 = v27;
     v29 = [[UIGraphicsImageRenderer alloc] initWithBounds:{0.0, 0.0, v25, v27}];
@@ -1717,8 +1717,8 @@ LABEL_16:
 
 - (id)_createDigitalTimeLabel
 {
-  v3 = [(NTKAegirFaceView *)self device];
-  v4 = [NTKDigitalTimeLabel labelWithOptions:1 forDevice:v3];
+  device = [(NTKAegirFaceView *)self device];
+  v4 = [NTKDigitalTimeLabel labelWithOptions:1 forDevice:device];
 
   [v4 setUsesLegibility:1];
   v5 = +[UIColor whiteColor];
@@ -1728,16 +1728,16 @@ LABEL_16:
   [v6 timeOffset];
   [v4 setTimeOffset:?];
 
-  v7 = [(NUNIAstronomyVistaController *)self->_astronomyController overrideDate];
-  [v4 setOverrideDate:v7 duration:0.0];
+  overrideDate = [(NUNIAstronomyVistaController *)self->_astronomyController overrideDate];
+  [v4 setOverrideDate:overrideDate duration:0.0];
 
   return v4;
 }
 
 - (id)_createVistaView
 {
-  v3 = [(NTKAegirFaceView *)self device];
-  sub_22BC(v3, v3);
+  device = [(NTKAegirFaceView *)self device];
+  sub_22BC(device, device);
   v4 = dword_1A234;
   v6 = dword_1A23C;
   v5 = dword_1A240;
@@ -1747,7 +1747,7 @@ LABEL_16:
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [NUNIAstronomyVistaConfiguration defaultConfigurationWithDevice:v3];
+  v16 = [NUNIAstronomyVistaConfiguration defaultConfigurationWithDevice:device];
   [v16 setRendererStyle:3];
   [v16 setTextureSuffix:@"calliope"];
   [v16 setColorSpace:2];
@@ -1784,16 +1784,16 @@ LABEL_16:
   return v17;
 }
 
-- (void)_interpolateFromPose:(const NTKAegirFaceViewAnimationPose *)a3 toPose:(const NTKAegirFaceViewAnimationPose *)a4 progress:(float)a5
+- (void)_interpolateFromPose:(const NTKAegirFaceViewAnimationPose *)pose toPose:(const NTKAegirFaceViewAnimationPose *)toPose progress:(float)progress
 {
-  v8 = [(NTKAegirFaceView *)self device];
-  sub_22BC(v8, v8);
+  device = [(NTKAegirFaceView *)self device];
+  sub_22BC(device, device);
 
   IsRTL = CLKLayoutIsRTL();
   if (IsRTL)
   {
-    v10 = [(NTKAegirFaceView *)self device];
-    [v10 screenBounds];
+    device2 = [(NTKAegirFaceView *)self device];
+    [device2 screenBounds];
     v12 = v11 - *&dword_1A238;
   }
 
@@ -1810,8 +1810,8 @@ LABEL_16:
     v16 = *&self->NTKFaceView_opaque[v14];
     if (v16)
     {
-      var1 = a3->var1;
-      v18 = a4->var1;
+      var1 = pose->var1;
+      v18 = toPose->var1;
       v19 = v16;
       CLKInterpolateBetweenFloatsClipped();
       [v19 setAlpha:?];
@@ -1819,8 +1819,8 @@ LABEL_16:
       v21 = v20;
       v23 = v22;
       v25 = v24;
-      var0 = a3->var0;
-      v27 = a4->var0;
+      var0 = pose->var0;
+      v27 = toPose->var0;
       CLKInterpolateBetweenFloatsClipped();
       if (IsRTL)
       {
@@ -1837,14 +1837,14 @@ LABEL_16:
   while (v15);
   if (([(NTKAegirFaceView *)self editing]& 1) == 0)
   {
-    var4 = a3->var4;
-    v30 = a4->var4;
+    var4 = pose->var4;
+    v30 = toPose->var4;
     CLKInterpolateBetweenFloatsClipped();
     v32 = v31;
     [(CLKUIColoringLabel *)self->_travelTimeLabel setAlpha:?];
     [(CLKUIColoringLabel *)self->_scrubLabel setAlpha:v32];
-    var3 = a3->var3;
-    v34 = a4->var3;
+    var3 = pose->var3;
+    v34 = toPose->var3;
     CLKInterpolateBetweenFloatsClipped();
     if (v32 <= v35)
     {
@@ -1902,13 +1902,13 @@ LABEL_16:
 
     [(NTKDigitalTimeLabel *)self->_centerTimeLabelBack setAlpha:v41 * v43];
     phaseLabel = self->_phaseLabel;
-    var6 = a3->var6;
-    v46 = a4->var6;
+    var6 = pose->var6;
+    v46 = toPose->var6;
     CLKInterpolateBetweenFloatsClipped();
     [(CLKUIColoringLabel *)phaseLabel setAlpha:?];
     complicationFactory = self->_complicationFactory;
-    var2 = a3->var2;
-    v49 = a4->var2;
+    var2 = pose->var2;
+    v49 = toPose->var2;
     CLKInterpolateBetweenFloatsClipped();
 
     [(NTKAegirFaceViewComplicationFactory *)complicationFactory setAlpha:self faceView:?];
@@ -1917,10 +1917,10 @@ LABEL_16:
 
 - (id)_date
 {
-  v3 = [(NUNIAstronomyVistaController *)self->_astronomyController overrideDate];
-  if (v3)
+  overrideDate = [(NUNIAstronomyVistaController *)self->_astronomyController overrideDate];
+  if (overrideDate)
   {
-    v4 = [(NUNIAstronomyVistaController *)self->_astronomyController overrideDate];
+    overrideDate2 = [(NUNIAstronomyVistaController *)self->_astronomyController overrideDate];
   }
 
   else
@@ -1928,27 +1928,27 @@ LABEL_16:
     crownDate = self->_crownDate;
     if (crownDate)
     {
-      v4 = crownDate;
+      overrideDate2 = crownDate;
     }
 
     else
     {
-      v4 = +[NTKDate faceDate];
+      overrideDate2 = +[NTKDate faceDate];
     }
   }
 
-  v6 = v4;
+  v6 = overrideDate2;
 
   return v6;
 }
 
-- (void)_animateTransitionToViewMode:(int64_t)a3 completion:(id)a4
+- (void)_animateTransitionToViewMode:(int64_t)mode completion:(id)completion
 {
-  v6 = a4;
-  v10 = v6;
+  completionCopy = completion;
+  v10 = completionCopy;
   if ((*(self + 328) & 1) == 0)
   {
-    if (self->_viewMode == a3)
+    if (self->_viewMode == mode)
     {
       goto LABEL_6;
     }
@@ -1956,11 +1956,11 @@ LABEL_16:
     goto LABEL_5;
   }
 
-  if (self->_animatingToViewMode != a3)
+  if (self->_animatingToViewMode != mode)
   {
 LABEL_5:
-    self->_animatingToViewMode = a3;
-    [(NUNIAstronomyVistaController *)self->_astronomyController animateTransitionToMode:a3];
+    self->_animatingToViewMode = mode;
+    [(NUNIAstronomyVistaController *)self->_astronomyController animateTransitionToMode:mode];
     [(NTKDelayedBlock *)self->_wheelDelayedBlock cancel];
     wheelDelayedBlock = self->_wheelDelayedBlock;
     self->_wheelDelayedBlock = 0;
@@ -1971,43 +1971,43 @@ LABEL_5:
 
     *(self + 328) |= 1u;
     [(NUNIAstronomyVistaController *)self->_astronomyController setVista:[(NUNIAstronomyVistaController *)self->_astronomyController vista]];
-    v9 = [(NUNIAstronomyVistaController *)self->_astronomyController vistaView];
-    [v9 showSupplemental:a3 == 3 animated:0];
+    vistaView = [(NUNIAstronomyVistaController *)self->_astronomyController vistaView];
+    [vistaView showSupplemental:mode == 3 animated:0];
 
     [(NTKAegirFaceView *)self _setIsAnimatingViewMode:0];
-    [(NTKAegirFaceView *)self _setViewMode:a3];
-    v6 = v10;
+    [(NTKAegirFaceView *)self _setViewMode:mode];
+    completionCopy = v10;
   }
 
 LABEL_6:
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v10);
-    v6 = v10;
+    completionCopy[2](v10);
+    completionCopy = v10;
   }
 }
 
-- (void)_setViewMode:(int64_t)a3
+- (void)_setViewMode:(int64_t)mode
 {
-  if (self->_viewMode != a3 || (*(self + 328) & 1) != 0)
+  if (self->_viewMode != mode || (*(self + 328) & 1) != 0)
   {
     [(NTKAegirFaceView *)self _applyViewMode:?];
   }
 }
 
-- (void)_applyViewMode:(int64_t)a3
+- (void)_applyViewMode:(int64_t)mode
 {
-  self->_viewMode = a3;
+  self->_viewMode = mode;
   [(NTKAegirFaceView *)self _invalidateTimeLabelStyles];
   *(self + 328) &= ~1u;
-  v5 = [(NTKAegirFaceView *)self delegate];
-  [v5 faceViewWantsStatusBarHidden:-[NTKAegirFaceView _shouldHideStatusBarForViewMode:](self animated:{"_shouldHideStatusBarForViewMode:", a3), 0}];
+  delegate = [(NTKAegirFaceView *)self delegate];
+  [delegate faceViewWantsStatusBarHidden:-[NTKAegirFaceView _shouldHideStatusBarForViewMode:](self animated:{"_shouldHideStatusBarForViewMode:", mode), 0}];
 
-  if (a3 <= 1)
+  if (mode <= 1)
   {
-    if (a3)
+    if (mode)
     {
-      if (a3 == 1)
+      if (mode == 1)
       {
         [(NTKAegirFaceView *)self _setFaceViewModeDeactive];
       }
@@ -2025,9 +2025,9 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  if (a3 != 2)
+  if (mode != 2)
   {
-    if (a3 == 3)
+    if (mode == 3)
     {
       [(NTKAegirFaceView *)self _setFaceViewModeSupplemental];
       p_astronomyController = &self->_astronomyController;
@@ -2041,9 +2041,9 @@ LABEL_9:
 
   [(NTKAegirFaceView *)self _setFaceViewModeInteractive];
   p_astronomyController = &self->_astronomyController;
-  v9 = [(NUNIAstronomyVistaController *)self->_astronomyController vista];
+  vista = [(NUNIAstronomyVistaController *)self->_astronomyController vista];
   v10 = 28;
-  if (v9 == &dword_0 + 1)
+  if (vista == &dword_0 + 1)
   {
     v10 = 56;
   }
@@ -2054,7 +2054,7 @@ LABEL_13:
   [(NTKAegirFaceView *)self _interpolateFromPose:v8 toPose:v8 progress:v7];
   v11 = *p_astronomyController;
 
-  [(NUNIAstronomyVistaController *)v11 applyMode:a3];
+  [(NUNIAstronomyVistaController *)v11 applyMode:mode];
 }
 
 - (void)_setFaceViewModeSupplemental
@@ -2111,39 +2111,39 @@ LABEL_13:
 - (void)_setFaceViewModeInteractive
 {
   [(NTKAegirFaceView *)self _setComplicationsInteractionEnabled:0];
-  v3 = [(NUNIAstronomyVistaController *)self->_astronomyController vista];
+  vista = [(NUNIAstronomyVistaController *)self->_astronomyController vista];
 
-  [(NTKAegirFaceView *)self _enableCrownForAegirVista:v3];
+  [(NTKAegirFaceView *)self _enableCrownForAegirVista:vista];
 }
 
 - (void)_applyDataMode
 {
-  v3 = [(NTKAegirFaceView *)self dataMode];
-  if (v3 == &dword_0 + 1)
+  dataMode = [(NTKAegirFaceView *)self dataMode];
+  if (dataMode == &dword_0 + 1)
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = v3 != &dword_0 + 2 && self->_previousDataMode == 1;
+    v4 = dataMode != &dword_0 + 2 && self->_previousDataMode == 1;
   }
 
   [(NTKAegirFaceView *)self _applyDataModeAnimated:v4];
 }
 
-- (void)_applyDataModeAnimated:(BOOL)a3
+- (void)_applyDataModeAnimated:(BOOL)animated
 {
   if (([(NTKAegirFaceView *)self zooming]& 1) == 0)
   {
     viewMode = self->_viewMode;
-    v6 = [(NTKAegirFaceView *)self dataMode];
-    if (self->_previousDataMode != v6)
+    dataMode = [(NTKAegirFaceView *)self dataMode];
+    if (self->_previousDataMode != dataMode)
     {
-      self->_previousDataMode = v6;
+      self->_previousDataMode = dataMode;
     }
 
-    if (v6 == &dword_0 + 1)
+    if (dataMode == &dword_0 + 1)
     {
       v7 = 0;
     }
@@ -2153,9 +2153,9 @@ LABEL_13:
       v7 = [(NTKAegirFaceView *)self editing]^ 1;
     }
 
-    if (((*(self + 328) & 1) != 0 || v7 != viewMode) && ((*(self + 328) & 1) == 0 || v7 != self->_animatingToViewMode || !a3))
+    if (((*(self + 328) & 1) != 0 || v7 != viewMode) && ((*(self + 328) & 1) == 0 || v7 != self->_animatingToViewMode || !animated))
     {
-      if (a3)
+      if (animated)
       {
 
         [(NTKAegirFaceView *)self _animateTransitionToViewMode:v7];
@@ -2163,8 +2163,8 @@ LABEL_13:
 
       else
       {
-        v8 = [(NUNIAstronomyVistaController *)self->_astronomyController vistaView];
-        [v8 updateSunLocationAnimated:0];
+        vistaView = [(NUNIAstronomyVistaController *)self->_astronomyController vistaView];
+        [vistaView updateSunLocationAnimated:0];
 
         [(NTKAegirFaceView *)self _applyViewMode:v7];
       }
@@ -2187,29 +2187,29 @@ LABEL_13:
   [(CLKUIColoringLabel *)phaseLabel setFrame:x, v10, width, v8];
 }
 
-- (void)_layoutSpheroidLabel:(int)a3
+- (void)_layoutSpheroidLabel:(int)label
 {
-  v5 = self->_spheroidLabels[a3];
+  v5 = self->_spheroidLabels[label];
   if (v5)
   {
     v18 = v5;
-    v6 = [(NTKAegirFaceView *)self device];
-    sub_22BC(v6, v6);
+    device = [(NTKAegirFaceView *)self device];
+    sub_22BC(device, device);
 
-    LODWORD(v6) = CLKLayoutIsRTL();
-    v7 = [(NTKAegirFaceView *)self device];
-    [v7 screenBounds];
+    LODWORD(device) = CLKLayoutIsRTL();
+    device2 = [(NTKAegirFaceView *)self device];
+    [device2 screenBounds];
     v9 = v8 - *&dword_1A23C - *&dword_1A240;
 
-    v10 = *&dword_1A23C + v9 / 7.0 * a3;
+    v10 = *&dword_1A23C + v9 / 7.0 * label;
     [(UIImageView *)v18 sizeToFit];
     [(UIImageView *)v18 frame];
     v12 = v11;
     v14 = v13;
-    if (v6)
+    if (device)
     {
-      v15 = [(NTKAegirFaceView *)self device];
-      [v15 screenBounds];
+      device3 = [(NTKAegirFaceView *)self device];
+      [device3 screenBounds];
       v17 = v16 - *&dword_1A238 - v12;
     }
 
@@ -2264,14 +2264,14 @@ LABEL_13:
 - (id)_homeScreenTimeViewConfiguration
 {
   v3 = objc_alloc_init(CLKUIDigitalClockViewConfiguration);
-  v4 = [(NTKAegirFaceView *)self device];
+  device = [(NTKAegirFaceView *)self device];
   [(NTKAegirFaceView *)self bounds];
-  v5 = [NTKDigitalTimeLabelStyle smallInUpperRightCornerStyleForBounds:"smallInUpperRightCornerStyleForBounds:weight:forDevice:" weight:v4 forDevice:?];
-  v6 = [v5 designatorFont];
-  [v6 pointSize];
+  v5 = [NTKDigitalTimeLabelStyle smallInUpperRightCornerStyleForBounds:"smallInUpperRightCornerStyleForBounds:weight:forDevice:" weight:device forDevice:?];
+  designatorFont = [v5 designatorFont];
+  [designatorFont pointSize];
   v8 = v7;
 
-  v9 = [(NTKAegirFaceView *)self device];
+  device2 = [(NTKAegirFaceView *)self device];
   LODWORD(v5) = NTKShowIndicScriptNumerals();
 
   if (v5)
@@ -2283,8 +2283,8 @@ LABEL_13:
     [v3 setForcedNumberSystem:v11];
   }
 
-  v12 = [(NTKAegirFaceView *)self device];
-  v13 = sub_54F8(v8, v12, 1, self->_numeralOption);
+  device3 = [(NTKAegirFaceView *)self device];
+  v13 = sub_54F8(v8, device3, 1, self->_numeralOption);
   [v3 setTimeLabelFont:v13];
 
   return v3;
@@ -2292,11 +2292,11 @@ LABEL_13:
 
 - (id)_homeScreenDateLabelFont
 {
-  v3 = [(NTKAegirFaceView *)self device];
+  device = [(NTKAegirFaceView *)self device];
   [(NTKAegirFaceView *)self bounds];
-  v4 = [NTKDigitalTimeLabelStyle smallInUpperRightCornerStyleForBounds:"smallInUpperRightCornerStyleForBounds:weight:forDevice:" weight:v3 forDevice:?];
-  v5 = [v4 designatorFont];
-  [v5 pointSize];
+  v4 = [NTKDigitalTimeLabelStyle smallInUpperRightCornerStyleForBounds:"smallInUpperRightCornerStyleForBounds:weight:forDevice:" weight:device forDevice:?];
+  designatorFont = [v4 designatorFont];
+  [designatorFont pointSize];
   v7 = v6;
 
   return [CLKFont systemFontOfSize:v7];

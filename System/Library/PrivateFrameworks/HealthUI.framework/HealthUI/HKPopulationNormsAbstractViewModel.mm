@@ -1,5 +1,5 @@
 @interface HKPopulationNormsAbstractViewModel
-- (HKPopulationNormsAbstractViewModel)initWithHealthStore:(id)a3;
+- (HKPopulationNormsAbstractViewModel)initWithHealthStore:(id)store;
 - (id)currentAgeInYears;
 - (id)currentLocalizedClassificationDescription;
 - (id)currentLocalizedClassificationName;
@@ -7,32 +7,32 @@
 - (id)localizedBiologicalSexTitles;
 - (id)userAgeBucketIndex;
 - (id)userLatestSampleValue;
-- (int64_t)_biologicalSexForSexSegmentIndex:(unint64_t)a3;
+- (int64_t)_biologicalSexForSexSegmentIndex:(unint64_t)index;
 - (int64_t)currentBiologicalSex;
-- (unint64_t)_biologicalSexSegmentIndexForSex:(int64_t)a3;
+- (unint64_t)_biologicalSexSegmentIndexForSex:(int64_t)sex;
 - (unint64_t)currentBiologicalSexSegmentIndex;
 - (unint64_t)currentClassificationIndex;
-- (void)_requireConcreteImplementationOfSelector:(SEL)a3;
+- (void)_requireConcreteImplementationOfSelector:(SEL)selector;
 - (void)clearUserCharacteristicCache;
 - (void)currentAgeInYears;
 - (void)currentBiologicalSexSegmentIndex;
-- (void)prepareUserCharacteristicCacheWithHandler:(id)a3;
-- (void)setBiologicalSexSegmentIndex:(unint64_t)a3;
-- (void)setClassificationIndex:(unint64_t)a3;
+- (void)prepareUserCharacteristicCacheWithHandler:(id)handler;
+- (void)setBiologicalSexSegmentIndex:(unint64_t)index;
+- (void)setClassificationIndex:(unint64_t)index;
 @end
 
 @implementation HKPopulationNormsAbstractViewModel
 
-- (HKPopulationNormsAbstractViewModel)initWithHealthStore:(id)a3
+- (HKPopulationNormsAbstractViewModel)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = HKPopulationNormsAbstractViewModel;
   v6 = [(HKPopulationNormsAbstractViewModel *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
     v8 = dispatch_get_global_queue(21, 0);
     sampleQueryQueue = v7->_sampleQueryQueue;
     v7->_sampleQueryQueue = v8;
@@ -41,11 +41,11 @@
   return v7;
 }
 
-- (void)_requireConcreteImplementationOfSelector:(SEL)a3
+- (void)_requireConcreteImplementationOfSelector:(SEL)selector
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D920];
-  v6 = NSStringFromSelector(a3);
+  v6 = NSStringFromSelector(selector);
   [v4 raise:v5 format:{@"-[%@ %@] not implemented", self, v6}];
 }
 
@@ -67,34 +67,34 @@
 
 - (id)currentLocalizedClassificationDescription
 {
-  v3 = [(HKPopulationNormsAbstractViewModel *)self currentClassificationIndex];
+  currentClassificationIndex = [(HKPopulationNormsAbstractViewModel *)self currentClassificationIndex];
 
-  return [(HKPopulationNormsAbstractViewModel *)self localizedClassificationDescriptionForIndex:v3];
+  return [(HKPopulationNormsAbstractViewModel *)self localizedClassificationDescriptionForIndex:currentClassificationIndex];
 }
 
 - (id)currentLocalizedClassificationTitle
 {
-  v3 = [(HKPopulationNormsAbstractViewModel *)self currentClassificationIndex];
+  currentClassificationIndex = [(HKPopulationNormsAbstractViewModel *)self currentClassificationIndex];
 
-  return [(HKPopulationNormsAbstractViewModel *)self localizedClassificationTitleForIndex:v3];
+  return [(HKPopulationNormsAbstractViewModel *)self localizedClassificationTitleForIndex:currentClassificationIndex];
 }
 
 - (id)currentLocalizedClassificationName
 {
-  v3 = [(HKPopulationNormsAbstractViewModel *)self currentClassificationIndex];
+  currentClassificationIndex = [(HKPopulationNormsAbstractViewModel *)self currentClassificationIndex];
 
-  return [(HKPopulationNormsAbstractViewModel *)self localizedClassificationNameForIndex:v3];
+  return [(HKPopulationNormsAbstractViewModel *)self localizedClassificationNameForIndex:currentClassificationIndex];
 }
 
-- (int64_t)_biologicalSexForSexSegmentIndex:(unint64_t)a3
+- (int64_t)_biologicalSexForSexSegmentIndex:(unint64_t)index
 {
   v3 = 2;
-  if (a3 != 1)
+  if (index != 1)
   {
     v3 = 3;
   }
 
-  if (a3)
+  if (index)
   {
     return v3;
   }
@@ -105,15 +105,15 @@
   }
 }
 
-- (unint64_t)_biologicalSexSegmentIndexForSex:(int64_t)a3
+- (unint64_t)_biologicalSexSegmentIndexForSex:(int64_t)sex
 {
   v3 = 1;
-  if (a3 != 2)
+  if (sex != 2)
   {
     v3 = 2;
   }
 
-  if (a3 == 1)
+  if (sex == 1)
   {
     return 0;
   }
@@ -126,9 +126,9 @@
 
 - (int64_t)currentBiologicalSex
 {
-  v3 = [(HKPopulationNormsAbstractViewModel *)self currentBiologicalSexSegmentIndex];
+  currentBiologicalSexSegmentIndex = [(HKPopulationNormsAbstractViewModel *)self currentBiologicalSexSegmentIndex];
 
-  return [(HKPopulationNormsAbstractViewModel *)self _biologicalSexForSexSegmentIndex:v3];
+  return [(HKPopulationNormsAbstractViewModel *)self _biologicalSexForSexSegmentIndex:currentBiologicalSexSegmentIndex];
 }
 
 - (unint64_t)currentBiologicalSexSegmentIndex
@@ -145,9 +145,9 @@
       if ([v5 biologicalSex])
       {
         v7 = MEMORY[0x1E696AD98];
-        v8 = [v5 biologicalSex];
+        biologicalSex = [v5 biologicalSex];
 LABEL_8:
-        v10 = [v7 numberWithUnsignedInteger:{-[HKPopulationNormsAbstractViewModel _biologicalSexSegmentIndexForSex:](self, "_biologicalSexSegmentIndexForSex:", v8)}];
+        v10 = [v7 numberWithUnsignedInteger:{-[HKPopulationNormsAbstractViewModel _biologicalSexSegmentIndexForSex:](self, "_biologicalSexSegmentIndexForSex:", biologicalSex)}];
         v11 = self->_cacheBiologicalSexSegmentIndex;
         self->_cacheBiologicalSexSegmentIndex = v10;
 
@@ -166,7 +166,7 @@ LABEL_8:
       }
     }
 
-    v8 = 0;
+    biologicalSex = 0;
     v7 = MEMORY[0x1E696AD98];
     goto LABEL_8;
   }
@@ -174,14 +174,14 @@ LABEL_8:
   return [(NSNumber *)cacheBiologicalSexSegmentIndex unsignedIntegerValue];
 }
 
-- (void)setBiologicalSexSegmentIndex:(unint64_t)a3
+- (void)setBiologicalSexSegmentIndex:(unint64_t)index
 {
-  if ([(HKPopulationNormsAbstractViewModel *)self numberOfBiologicalSexSegments]<= a3)
+  if ([(HKPopulationNormsAbstractViewModel *)self numberOfBiologicalSexSegments]<= index)
   {
     [(HKPopulationNormsAbstractViewModel *)a2 setBiologicalSexSegmentIndex:?];
   }
 
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   cacheBiologicalSexSegmentIndex = self->_cacheBiologicalSexSegmentIndex;
   self->_cacheBiologicalSexSegmentIndex = v6;
 
@@ -193,13 +193,13 @@ LABEL_8:
   cacheClassificationIndex = self->_cacheClassificationIndex;
   if (!cacheClassificationIndex)
   {
-    v4 = [(HKPopulationNormsAbstractViewModel *)self userLatestSampleValue];
-    v5 = [(HKPopulationNormsAbstractViewModel *)self currentAgeInYears];
-    v6 = v5;
-    if (v4 && v5)
+    userLatestSampleValue = [(HKPopulationNormsAbstractViewModel *)self userLatestSampleValue];
+    currentAgeInYears = [(HKPopulationNormsAbstractViewModel *)self currentAgeInYears];
+    v6 = currentAgeInYears;
+    if (userLatestSampleValue && currentAgeInYears)
     {
       v7 = [(HKPopulationNormsAbstractViewModel *)self _biologicalSexForSexSegmentIndex:[(HKPopulationNormsAbstractViewModel *)self currentBiologicalSexSegmentIndex]];
-      [v4 floatValue];
+      [userLatestSampleValue floatValue];
       v9 = -[HKPopulationNormsAbstractViewModel classificationIndexForSampleValue:age:sex:](self, "classificationIndexForSampleValue:age:sex:", [v6 integerValue], v7, v8);
       v10 = self->_cacheClassificationIndex;
       self->_cacheClassificationIndex = v9;
@@ -227,14 +227,14 @@ LABEL_8:
   return [(NSNumber *)cacheClassificationIndex unsignedIntegerValue];
 }
 
-- (void)setClassificationIndex:(unint64_t)a3
+- (void)setClassificationIndex:(unint64_t)index
 {
-  if ([(HKPopulationNormsAbstractViewModel *)self numberOfClassifications]<= a3)
+  if ([(HKPopulationNormsAbstractViewModel *)self numberOfClassifications]<= index)
   {
     [(HKPopulationNormsAbstractViewModel *)a2 setClassificationIndex:?];
   }
 
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   cacheClassificationIndex = self->_cacheClassificationIndex;
   self->_cacheClassificationIndex = v6;
 
@@ -253,8 +253,8 @@ LABEL_8:
     if (v5)
     {
       v7 = MEMORY[0x1E696AD98];
-      v8 = [MEMORY[0x1E695DF00] date];
-      v9 = [v7 numberWithInteger:{objc_msgSend(v5, "hk_ageWithCurrentDate:", v8)}];
+      date = [MEMORY[0x1E695DF00] date];
+      v9 = [v7 numberWithInteger:{objc_msgSend(v5, "hk_ageWithCurrentDate:", date)}];
       v10 = self->_cacheAgeInYears;
       self->_cacheAgeInYears = v9;
     }
@@ -278,12 +278,12 @@ LABEL_8:
 - (id)userAgeBucketIndex
 {
   v3 = *MEMORY[0x1E696C818];
-  v4 = [(HKPopulationNormsAbstractViewModel *)self currentAgeInYears];
-  v5 = [v4 unsignedIntegerValue];
+  currentAgeInYears = [(HKPopulationNormsAbstractViewModel *)self currentAgeInYears];
+  unsignedIntegerValue = [currentAgeInYears unsignedIntegerValue];
 
-  if (v3 <= v5)
+  if (v3 <= unsignedIntegerValue)
   {
-    v6 = v5;
+    v6 = unsignedIntegerValue;
   }
 
   else
@@ -291,9 +291,9 @@ LABEL_8:
     v6 = v3;
   }
 
-  v7 = [(HKPopulationNormsAbstractViewModel *)self currentDataForBiologicalSex];
-  v8 = [v7 allKeys];
-  v9 = [v8 sortedArrayUsingComparator:&__block_literal_global_25];
+  currentDataForBiologicalSex = [(HKPopulationNormsAbstractViewModel *)self currentDataForBiologicalSex];
+  allKeys = [currentDataForBiologicalSex allKeys];
+  v9 = [allKeys sortedArrayUsingComparator:&__block_literal_global_25];
 
   if ([v9 count])
   {
@@ -301,10 +301,10 @@ LABEL_8:
     while (1)
     {
       v11 = [v9 objectAtIndexedSubscript:v10];
-      v12 = [v11 rangeValue];
+      rangeValue = [v11 rangeValue];
       v14 = v13;
 
-      if (v6 >= v12 && v6 - v12 < v14)
+      if (v6 >= rangeValue && v6 - rangeValue < v14)
       {
         break;
       }
@@ -350,17 +350,17 @@ LABEL_9:
 
       dispatch_assert_queue_V2(self->_sampleQueryQueue);
       v4 = dispatch_semaphore_create(0);
-      v5 = [(HKPopulationNormsAbstractViewModel *)self associatedSampleType];
+      associatedSampleType = [(HKPopulationNormsAbstractViewModel *)self associatedSampleType];
       v6 = MEMORY[0x1E696C1C0];
       v10 = MEMORY[0x1E69E9820];
       v11 = 3221225472;
       v12 = __59__HKPopulationNormsAbstractViewModel_userLatestSampleValue__block_invoke;
       v13 = &unk_1E81B7778;
-      v14 = self;
+      selfCopy = self;
       v15 = v4;
       v7 = v4;
-      v8 = [v6 queryForMostRecentSampleOfType:v5 predicate:0 completion:&v10];
-      [(HKHealthStore *)self->_healthStore executeQuery:v8, v10, v11, v12, v13, v14];
+      v8 = [v6 queryForMostRecentSampleOfType:associatedSampleType predicate:0 completion:&v10];
+      [(HKHealthStore *)self->_healthStore executeQuery:v8, v10, v11, v12, v13, selfCopy];
       dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
 
       cacheLatestSampleValue = self->_cacheLatestSampleValue;
@@ -424,17 +424,17 @@ void __59__HKPopulationNormsAbstractViewModel_userLatestSampleValue__block_invok
   self->_userHasDataPointAvailable = 0;
 }
 
-- (void)prepareUserCharacteristicCacheWithHandler:(id)a3
+- (void)prepareUserCharacteristicCacheWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   sampleQueryQueue = self->_sampleQueryQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __80__HKPopulationNormsAbstractViewModel_prepareUserCharacteristicCacheWithHandler___block_invoke;
   v7[3] = &unk_1E81B5E48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(sampleQueryQueue, v7);
 }
 
@@ -458,7 +458,7 @@ void __80__HKPopulationNormsAbstractViewModel_prepareUserCharacteristicCacheWith
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1C3942000, a2, OS_LOG_TYPE_ERROR, "Unable to retrieve biological sex: %{public}@", &v2, 0xCu);
 }
 
@@ -478,7 +478,7 @@ void __80__HKPopulationNormsAbstractViewModel_prepareUserCharacteristicCacheWith
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1C3942000, a2, OS_LOG_TYPE_ERROR, "Unable to retrieve date of birth: %{public}@", &v2, 0xCu);
 }
 

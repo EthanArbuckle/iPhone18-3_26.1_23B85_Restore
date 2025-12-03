@@ -1,5 +1,5 @@
 @interface BSXPCServiceConnectionRootClientContext
-+ (void)uniqueClientContextWithEndpoint:(uint64_t)a1;
++ (void)uniqueClientContextWithEndpoint:(uint64_t)endpoint;
 - (BOOL)isNonLaunching;
 @end
 
@@ -16,7 +16,7 @@
   return endpoint & 1;
 }
 
-+ (void)uniqueClientContextWithEndpoint:(uint64_t)a1
++ (void)uniqueClientContextWithEndpoint:(uint64_t)endpoint
 {
   v44 = *MEMORY[0x1E69E9840];
   v2 = a2;
@@ -60,13 +60,13 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v22 = MEMORY[0x1E696AEC0];
-    v23 = [v4 classForCoder];
-    if (!v23)
+    classForCoder = [v4 classForCoder];
+    if (!classForCoder)
     {
-      v23 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v24 = NSStringFromClass(v23);
+    v24 = NSStringFromClass(classForCoder);
     v25 = objc_opt_class();
     v26 = NSStringFromClass(v25);
     v27 = [v22 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"endpoint", v24, v26];

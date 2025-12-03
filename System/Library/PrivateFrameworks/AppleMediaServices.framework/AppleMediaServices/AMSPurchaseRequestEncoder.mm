@@ -1,28 +1,28 @@
 @interface AMSPurchaseRequestEncoder
-+ (id)_bagURLKeysForPurchaseType:(int64_t)a3 withProductType:(id)a4 purchase:(id)a5 prefix:(id)a6;
-+ (id)_bagURLKeysFromPurchaseInfo:(id)a3;
-+ (id)_buyProductURLKeysForProductType:(id)a3 prefix:(id)a4;
-+ (id)_parametersFromPurchaseInfo:(id)a3;
-+ (id)bagURLFromPurchaseInfo:(id)a3 bag:(id)a4;
-+ (id)configureRequest:(id)a3 purchaseInfo:(id)a4 bag:(id)a5;
-+ (int64_t)_anisetteTypeFromAccount:(id)a3;
-- (AMSPurchaseRequestEncoder)initWithPurchaseInfo:(id)a3;
-- (AMSPurchaseRequestEncoder)initWithPurchaseInfo:(id)a3 bag:(id)a4;
++ (id)_bagURLKeysForPurchaseType:(int64_t)type withProductType:(id)productType purchase:(id)purchase prefix:(id)prefix;
++ (id)_bagURLKeysFromPurchaseInfo:(id)info;
++ (id)_buyProductURLKeysForProductType:(id)type prefix:(id)prefix;
++ (id)_parametersFromPurchaseInfo:(id)info;
++ (id)bagURLFromPurchaseInfo:(id)info bag:(id)bag;
++ (id)configureRequest:(id)request purchaseInfo:(id)info bag:(id)bag;
++ (int64_t)_anisetteTypeFromAccount:(id)account;
+- (AMSPurchaseRequestEncoder)initWithPurchaseInfo:(id)info;
+- (AMSPurchaseRequestEncoder)initWithPurchaseInfo:(id)info bag:(id)bag;
 - (id)encodeRequest;
 @end
 
 @implementation AMSPurchaseRequestEncoder
 
-- (AMSPurchaseRequestEncoder)initWithPurchaseInfo:(id)a3
+- (AMSPurchaseRequestEncoder)initWithPurchaseInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v11.receiver = self;
   v11.super_class = AMSPurchaseRequestEncoder;
   v6 = [(AMSURLRequestEncoder *)&v11 initWithBag:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_purchaseInfo, a3);
+    objc_storeStrong(&v6->_purchaseInfo, info);
     v8 = dispatch_queue_create("com.apple.PurchaseRequest", 0);
     purchaseRequestQueue = v7->_purchaseRequestQueue;
     v7->_purchaseRequestQueue = v8;
@@ -31,25 +31,25 @@
   return v7;
 }
 
-- (AMSPurchaseRequestEncoder)initWithPurchaseInfo:(id)a3 bag:(id)a4
+- (AMSPurchaseRequestEncoder)initWithPurchaseInfo:(id)info bag:(id)bag
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  infoCopy = info;
   v18.receiver = self;
   v18.super_class = AMSPurchaseRequestEncoder;
-  v8 = [(AMSURLRequestEncoder *)&v18 initWithBag:a4];
+  v8 = [(AMSURLRequestEncoder *)&v18 initWithBag:bag];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_purchaseInfo, a3);
+    objc_storeStrong(&v8->_purchaseInfo, info);
     v10 = dispatch_queue_create("com.apple.PurchaseRequest", 0);
     purchaseRequestQueue = v9->_purchaseRequestQueue;
     v9->_purchaseRequestQueue = v10;
 
-    v12 = [(AMSPurchaseRequestEncoder *)v9 purchaseInfo];
-    v13 = [v12 purchase];
-    v14 = [v13 buyParams];
-    v15 = [v14 objectForKeyedSubscript:0x1F0722118];
+    purchaseInfo = [(AMSPurchaseRequestEncoder *)v9 purchaseInfo];
+    purchase = [purchaseInfo purchase];
+    buyParams = [purchase buyParams];
+    v15 = [buyParams objectForKeyedSubscript:0x1F0722118];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -82,32 +82,32 @@ LABEL_8:
   return v9;
 }
 
-+ (id)configureRequest:(id)a3 purchaseInfo:(id)a4 bag:(id)a5
++ (id)configureRequest:(id)request purchaseInfo:(id)info bag:(id)bag
 {
   v55 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  requestCopy = request;
+  infoCopy = info;
   v11 = +[AMSLogConfig sharedPurchaseConfig];
   if (!v11)
   {
     v11 = +[AMSLogConfig sharedConfig];
   }
 
-  v12 = [v11 OSLogObject];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v11 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v10 purchase];
-    v14 = [v13 logUUID];
-    v15 = a1;
+    purchase = [infoCopy purchase];
+    logUUID = [purchase logUUID];
+    selfCopy = self;
     v16 = MEMORY[0x1E696AEC0];
-    v43 = v15;
+    v43 = selfCopy;
     v17 = objc_opt_class();
     v18 = v17;
-    if (v14)
+    if (logUUID)
     {
-      v5 = [v10 purchase];
-      v6 = [v5 logUUID];
-      [v16 stringWithFormat:@"%@: [%@] ", v18, v6];
+      purchase2 = [infoCopy purchase];
+      logUUID2 = [purchase2 logUUID];
+      [v16 stringWithFormat:@"%@: [%@] ", v18, logUUID2];
     }
 
     else
@@ -117,43 +117,43 @@ LABEL_8:
     v19 = ;
     *buf = 138543362;
     v54 = v19;
-    _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@Configuring request", buf, 0xCu);
-    if (v14)
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Configuring request", buf, 0xCu);
+    if (logUUID)
     {
 
-      v19 = v5;
+      v19 = purchase2;
     }
 
-    a1 = v43;
+    self = v43;
   }
 
-  [v9 setHTTPMethod:@"POST"];
-  v20 = [v10 account];
-  if (v20)
+  [requestCopy setHTTPMethod:@"POST"];
+  account = [infoCopy account];
+  if (account)
   {
-    v21 = v20;
-    v22 = [v10 account];
-    v23 = [v22 ams_isEphemeralAccount];
+    v21 = account;
+    account2 = [infoCopy account];
+    ams_isEphemeralAccount = [account2 ams_isEphemeralAccount];
 
-    if ((v23 & 1) == 0)
+    if ((ams_isEphemeralAccount & 1) == 0)
     {
-      v24 = [v10 account];
-      [v9 ams_addXTokenHeaderWithAccount:v24];
+      account3 = [infoCopy account];
+      [requestCopy ams_addXTokenHeaderWithAccount:account3];
     }
   }
 
-  v25 = [v10 additionalHeaders];
+  additionalHeaders = [infoCopy additionalHeaders];
 
-  if (v25)
+  if (additionalHeaders)
   {
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v26 = [v10 additionalHeaders];
-    v27 = [v26 keyEnumerator];
+    additionalHeaders2 = [infoCopy additionalHeaders];
+    keyEnumerator = [additionalHeaders2 keyEnumerator];
 
-    v28 = [v27 countByEnumeratingWithState:&v48 objects:v52 count:16];
+    v28 = [keyEnumerator countByEnumeratingWithState:&v48 objects:v52 count:16];
     if (v28)
     {
       v29 = v28;
@@ -164,23 +164,23 @@ LABEL_8:
         {
           if (*v49 != v30)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v32 = *(*(&v48 + 1) + 8 * i);
-          v33 = [v10 additionalHeaders];
-          v34 = [v33 objectForKeyedSubscript:v32];
-          [v9 setValue:v34 forHTTPHeaderField:v32];
+          additionalHeaders3 = [infoCopy additionalHeaders];
+          v34 = [additionalHeaders3 objectForKeyedSubscript:v32];
+          [requestCopy setValue:v34 forHTTPHeaderField:v32];
         }
 
-        v29 = [v27 countByEnumeratingWithState:&v48 objects:v52 count:16];
+        v29 = [keyEnumerator countByEnumeratingWithState:&v48 objects:v52 count:16];
       }
 
       while (v29);
     }
   }
 
-  v35 = [v10 purchase];
+  purchase3 = [infoCopy purchase];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -199,11 +199,11 @@ LABEL_8:
   v44[1] = 3221225472;
   v44[2] = __63__AMSPurchaseRequestEncoder_configureRequest_purchaseInfo_bag___block_invoke;
   v44[3] = &unk_1E73BB300;
-  v46 = v9;
-  v47 = a1;
-  v45 = v10;
-  v39 = v9;
-  v40 = v10;
+  v46 = requestCopy;
+  selfCopy2 = self;
+  v45 = infoCopy;
+  v39 = requestCopy;
+  v40 = infoCopy;
   v41 = [v38 continueWithBlock:v44];
 
   return v41;
@@ -309,8 +309,8 @@ id __63__AMSPurchaseRequestEncoder_configureRequest_purchaseInfo_bag___block_inv
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = AMSLogKey();
     v7 = MEMORY[0x1E696AEC0];
@@ -329,7 +329,7 @@ id __63__AMSPurchaseRequestEncoder_configureRequest_purchaseInfo_bag___block_inv
     v10 = ;
     *buf = 138543362;
     v20 = v10;
-    _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@encodeRequest invoked", buf, 0xCu);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@encodeRequest invoked", buf, 0xCu);
     if (v6)
     {
 
@@ -338,7 +338,7 @@ id __63__AMSPurchaseRequestEncoder_configureRequest_purchaseInfo_bag___block_inv
   }
 
   v11 = objc_alloc_init(AMSMutablePromise);
-  v12 = [(AMSPurchaseRequestEncoder *)self purchaseRequestQueue];
+  purchaseRequestQueue = [(AMSPurchaseRequestEncoder *)self purchaseRequestQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __42__AMSPurchaseRequestEncoder_encodeRequest__block_invoke;
@@ -346,7 +346,7 @@ id __63__AMSPurchaseRequestEncoder_configureRequest_purchaseInfo_bag___block_inv
   block[4] = self;
   v13 = v11;
   v18 = v13;
-  dispatch_async(v12, block);
+  dispatch_async(purchaseRequestQueue, block);
 
   v14 = v18;
   v15 = v13;
@@ -543,11 +543,11 @@ void __42__AMSPurchaseRequestEncoder_encodeRequest__block_invoke_2(uint64_t a1)
   [v3 addFinishBlock:v4];
 }
 
-+ (int64_t)_anisetteTypeFromAccount:(id)a3
++ (int64_t)_anisetteTypeFromAccount:(id)account
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 ams_isEphemeralAccount] & 1) == 0)
+  accountCopy = account;
+  v4 = accountCopy;
+  if (accountCopy && ([accountCopy ams_isEphemeralAccount] & 1) == 0)
   {
     if ([v4 ams_isLocalAccount])
     {
@@ -568,21 +568,21 @@ void __42__AMSPurchaseRequestEncoder_encodeRequest__block_invoke_2(uint64_t a1)
   return v5;
 }
 
-+ (id)_buyProductURLKeysForProductType:(id)a3 prefix:(id)a4
++ (id)_buyProductURLKeysForProductType:(id)type prefix:(id)prefix
 {
-  v5 = a4;
+  prefixCopy = prefix;
   v6 = MEMORY[0x1E695DF70];
-  v7 = a3;
+  typeCopy = type;
   v8 = objc_alloc_init(v6);
-  v9 = AMSBagKeyBuyProductOverrideForProductType(v7);
+  v9 = AMSBagKeyBuyProductOverrideForProductType(typeCopy);
 
-  if (v5 && v9)
+  if (prefixCopy && v9)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", v5, v9];
+    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", prefixCopy, v9];
     [v8 addObject:v10];
 
 LABEL_7:
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", v5, @"buyProduct"];
+    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", prefixCopy, @"buyProduct"];
     [v8 addObject:v11];
 
     goto LABEL_8;
@@ -593,7 +593,7 @@ LABEL_7:
     [v8 addObject:v9];
   }
 
-  if (v5)
+  if (prefixCopy)
   {
     goto LABEL_7;
   }
@@ -605,94 +605,94 @@ LABEL_8:
   return v12;
 }
 
-+ (id)_bagURLKeysForPurchaseType:(int64_t)a3 withProductType:(id)a4 purchase:(id)a5 prefix:(id)a6
++ (id)_bagURLKeysForPurchaseType:(int64_t)type withProductType:(id)productType purchase:(id)purchase prefix:(id)prefix
 {
   v36 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  productTypeCopy = productType;
+  purchaseCopy = purchase;
+  prefixCopy = prefix;
   v13 = +[AMSLogConfig sharedPurchaseConfig];
   if (!v13)
   {
     v13 = +[AMSLogConfig sharedConfig];
   }
 
-  v14 = [v13 OSLogObject];
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v13 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v29 = v10;
+    v29 = productTypeCopy;
     v15 = AMSLogKey();
     v16 = MEMORY[0x1E696AEC0];
-    v17 = a1;
+    selfCopy = self;
     v18 = objc_opt_class();
     v19 = v18;
     if (v15)
     {
-      a1 = AMSLogKey();
-      [v16 stringWithFormat:@"%@: [%@] ", v19, a1];
+      self = AMSLogKey();
+      [v16 stringWithFormat:@"%@: [%@] ", v19, self];
     }
 
     else
     {
       [v16 stringWithFormat:@"%@: ", v18];
     }
-    v20 = ;
+    selfCopy2 = ;
     *buf = 138543618;
-    v33 = v20;
+    v33 = selfCopy2;
     v34 = 2048;
-    v35 = a3;
-    _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@Creating bag URL keys from purchase type %tu", buf, 0x16u);
+    typeCopy = type;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Creating bag URL keys from purchase type %tu", buf, 0x16u);
     if (v15)
     {
 
-      v20 = a1;
+      selfCopy2 = self;
     }
 
-    a1 = v17;
-    v10 = v29;
+    self = selfCopy;
+    productTypeCopy = v29;
   }
 
-  v21 = [v11 URLBagKey];
+  uRLBagKey = [purchaseCopy URLBagKey];
 
-  if (v21)
+  if (uRLBagKey)
   {
-    v22 = [v11 URLBagKey];
-    v31 = v22;
+    uRLBagKey2 = [purchaseCopy URLBagKey];
+    v31 = uRLBagKey2;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1];
 LABEL_12:
     v24 = v23;
     goto LABEL_19;
   }
 
-  if (v12)
+  if (prefixCopy)
   {
-    v25 = [MEMORY[0x1E696AD60] stringWithFormat:@"%@/", v12];
+    prefixCopy = [MEMORY[0x1E696AD60] stringWithFormat:@"%@/", prefixCopy];
   }
 
   else
   {
-    v25 = objc_alloc_init(MEMORY[0x1E696AD60]);
+    prefixCopy = objc_alloc_init(MEMORY[0x1E696AD60]);
   }
 
-  v22 = v25;
-  if (a3)
+  uRLBagKey2 = prefixCopy;
+  if (type)
   {
-    v26 = AMSBagKeyForPurchaseType(a3);
-    [v22 appendString:v26];
+    v26 = AMSBagKeyForPurchaseType(type);
+    [uRLBagKey2 appendString:v26];
   }
 
   else
   {
-    if (v10)
+    if (productTypeCopy)
     {
-      v23 = [a1 _buyProductURLKeysForProductType:v10 prefix:v12];
+      v23 = [self _buyProductURLKeysForProductType:productTypeCopy prefix:prefixCopy];
       goto LABEL_12;
     }
 
-    [v25 appendString:@"buyProduct"];
+    [prefixCopy appendString:@"buyProduct"];
   }
 
-  v27 = [v22 copy];
+  v27 = [uRLBagKey2 copy];
   v30 = v27;
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
 
@@ -701,29 +701,29 @@ LABEL_19:
   return v24;
 }
 
-+ (id)_bagURLKeysFromPurchaseInfo:(id)a3
++ (id)_bagURLKeysFromPurchaseInfo:(id)info
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  infoCopy = info;
   v7 = +[AMSLogConfig sharedPurchaseConfig];
   if (!v7)
   {
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 purchase];
-    v10 = [v9 logUUID];
+    purchase = [infoCopy purchase];
+    logUUID = [purchase logUUID];
     v11 = MEMORY[0x1E696AEC0];
     v12 = objc_opt_class();
     v13 = v12;
-    if (v10)
+    if (logUUID)
     {
-      v3 = [v6 purchase];
-      v4 = [v3 logUUID];
-      [v11 stringWithFormat:@"%@: [%@] ", v13, v4];
+      purchase2 = [infoCopy purchase];
+      logUUID2 = [purchase2 logUUID];
+      [v11 stringWithFormat:@"%@: [%@] ", v13, logUUID2];
     }
 
     else
@@ -733,27 +733,27 @@ LABEL_19:
     v14 = ;
     *buf = 138543362;
     v36 = v14;
-    _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@Creating bag URL keys from purchase info", buf, 0xCu);
-    if (v10)
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Creating bag URL keys from purchase info", buf, 0xCu);
+    if (logUUID)
     {
 
-      v14 = v3;
+      v14 = purchase2;
     }
   }
 
   v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v16 = [v6 buyParams];
-  v17 = [v16 containsKey:@"pkPayment"];
+  buyParams = [infoCopy buyParams];
+  v17 = [buyParams containsKey:@"pkPayment"];
 
-  v18 = [v6 buyParams];
-  v19 = [v18 objectForKeyedSubscript:@"buyType"];
+  buyParams2 = [infoCopy buyParams];
+  v19 = [buyParams2 objectForKeyedSubscript:@"buyType"];
 
-  v20 = [v6 purchase];
-  v21 = [v20 purchaseType];
+  purchase3 = [infoCopy purchase];
+  purchaseType = [purchase3 purchaseType];
 
-  v22 = [v6 purchase];
-  v23 = [v22 buyParams];
-  v24 = [v23 objectForKeyedSubscript:0x1F0722118];
+  purchase4 = [infoCopy purchase];
+  buyParams3 = [purchase4 buyParams];
+  v24 = [buyParams3 objectForKeyedSubscript:0x1F0722118];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -783,12 +783,12 @@ LABEL_19:
     [v15 addObject:v28];
   }
 
-  v29 = [v6 purchase];
-  v30 = [a1 _bagURLKeysForPurchaseType:v21 withProductType:v25 purchase:v29 prefix:v27];
+  purchase5 = [infoCopy purchase];
+  v30 = [self _bagURLKeysForPurchaseType:purchaseType withProductType:v25 purchase:purchase5 prefix:v27];
   [v15 addObjectsFromArray:v30];
 
-  v31 = [v6 purchase];
-  v32 = [a1 _bagURLKeysForPurchaseType:v21 withProductType:v25 purchase:v31 prefix:0];
+  purchase6 = [infoCopy purchase];
+  v32 = [self _bagURLKeysForPurchaseType:purchaseType withProductType:v25 purchase:purchase6 prefix:0];
   [v15 addObjectsFromArray:v32];
 
   v33 = [v15 copy];
@@ -796,20 +796,20 @@ LABEL_19:
   return v33;
 }
 
-+ (id)bagURLFromPurchaseInfo:(id)a3 bag:(id)a4
++ (id)bagURLFromPurchaseInfo:(id)info bag:(id)bag
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _bagURLKeysFromPurchaseInfo:v6];
+  infoCopy = info;
+  bagCopy = bag;
+  v8 = [self _bagURLKeysFromPurchaseInfo:infoCopy];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __56__AMSPurchaseRequestEncoder_bagURLFromPurchaseInfo_bag___block_invoke;
   v15[3] = &unk_1E73BB378;
-  v16 = v7;
-  v17 = v6;
-  v18 = a1;
-  v9 = v6;
-  v10 = v7;
+  v16 = bagCopy;
+  v17 = infoCopy;
+  selfCopy = self;
+  v9 = infoCopy;
+  v10 = bagCopy;
   v11 = [v8 ams_mapWithTransformIgnoresNil:v15];
 
   v12 = [v11 ams_mapWithTransformIgnoresNil:&__block_literal_global_117];
@@ -879,12 +879,12 @@ id __56__AMSPurchaseRequestEncoder_bagURLFromPurchaseInfo_bag___block_invoke(uin
   return v7;
 }
 
-+ (id)_parametersFromPurchaseInfo:(id)a3
++ (id)_parametersFromPurchaseInfo:(id)info
 {
   v72 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 buyParams];
-  v6 = [v5 copy];
+  infoCopy = info;
+  buyParams = [infoCopy buyParams];
+  v6 = [buyParams copy];
   v7 = v6;
   if (v6)
   {
@@ -898,16 +898,16 @@ id __56__AMSPurchaseRequestEncoder_bagURLFromPurchaseInfo_bag___block_invoke(uin
 
   v9 = v8;
 
-  v10 = [v4 clientCorrelationKey];
-  [(AMSBuyParams *)v9 setParameter:v10 forKey:@"clientCorrelationKey"];
+  clientCorrelationKey = [infoCopy clientCorrelationKey];
+  [(AMSBuyParams *)v9 setParameter:clientCorrelationKey forKey:@"clientCorrelationKey"];
 
-  if ([v4 addKBSync])
+  if ([infoCopy addKBSync])
   {
-    v11 = [v4 account];
+    account = [infoCopy account];
     v12 = +[AMSKeybag sharedInstance];
-    v13 = [v11 ams_DSID];
+    ams_DSID = [account ams_DSID];
     v67 = 0;
-    v14 = [v12 keybagSyncDataWithAccountID:v13 transactionType:1 error:&v67];
+    v14 = [v12 keybagSyncDataWithAccountID:ams_DSID transactionType:1 error:&v67];
     v15 = v67;
 
     if (v14 && [v14 length])
@@ -928,23 +928,23 @@ LABEL_29:
         v16 = +[AMSLogConfig sharedConfig];
       }
 
-      v18 = [v16 OSLogObject];
-      if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v16 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_28;
       }
 
-      v56 = [v4 purchase];
-      v19 = [v56 logUUID];
+      purchase = [infoCopy purchase];
+      logUUID = [purchase logUUID];
       v54 = MEMORY[0x1E696AEC0];
       v20 = objc_opt_class();
       v21 = v20;
-      v57 = a1;
-      if (v19)
+      selfCopy = self;
+      if (logUUID)
       {
-        v52 = [v4 purchase];
-        v51 = [v52 logUUID];
-        [v54 stringWithFormat:@"%@: [%@] ", v21, v51];
+        purchase2 = [infoCopy purchase];
+        logUUID2 = [purchase2 logUUID];
+        [v54 stringWithFormat:@"%@: [%@] ", v21, logUUID2];
       }
 
       else
@@ -957,11 +957,11 @@ LABEL_29:
       v69 = v22;
       v70 = 2114;
       v71 = v30;
-      _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_ERROR, "%{public}@Failed to lookup kbsync due to error: %{public}@", buf, 0x16u);
-      if (v19)
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Failed to lookup kbsync due to error: %{public}@", buf, 0x16u);
+      if (logUUID)
       {
 
-        v22 = v52;
+        v22 = purchase2;
       }
     }
 
@@ -972,25 +972,25 @@ LABEL_29:
         v16 = +[AMSLogConfig sharedConfig];
       }
 
-      v18 = [v16 OSLogObject];
-      if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v16 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_28;
       }
 
-      v56 = [v4 purchase];
-      v23 = [v56 logUUID];
-      v24 = a1;
-      v25 = v23;
+      purchase = [infoCopy purchase];
+      logUUID3 = [purchase logUUID];
+      selfCopy2 = self;
+      v25 = logUUID3;
       v26 = MEMORY[0x1E696AEC0];
-      v57 = v24;
+      selfCopy = selfCopy2;
       v27 = objc_opt_class();
       v28 = v27;
       if (v25)
       {
-        v55 = [v4 purchase];
-        v53 = [v55 logUUID];
-        [v26 stringWithFormat:@"%@: [%@] ", v28, v53];
+        purchase3 = [infoCopy purchase];
+        logUUID4 = [purchase3 logUUID];
+        [v26 stringWithFormat:@"%@: [%@] ", v28, logUUID4];
       }
 
       else
@@ -1000,15 +1000,15 @@ LABEL_29:
       v29 = ;
       *buf = 138543362;
       v69 = v29;
-      _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_ERROR, "%{public}@Looking up kbsync returned no error or data", buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Looking up kbsync returned no error or data", buf, 0xCu);
       if (v25)
       {
 
-        v29 = v55;
+        v29 = purchase3;
       }
     }
 
-    a1 = v57;
+    self = selfCopy;
 LABEL_28:
 
     goto LABEL_29;
@@ -1023,19 +1023,19 @@ LABEL_30:
 
   if (+[AMSDevice deviceIsiPad](AMSDevice, "deviceIsiPad") || +[AMSDevice deviceIsiPhone])
   {
-    v32 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-    v33 = [v32 ams_activeiCloudAccount];
+    ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+    ams_activeiCloudAccount = [ams_sharedAccountStore ams_activeiCloudAccount];
 
-    if ([v33 isEnabledForDataclass:*MEMORY[0x1E6959AD8]])
+    if ([ams_activeiCloudAccount isEnabledForDataclass:*MEMORY[0x1E6959AD8]])
     {
       [(AMSBuyParams *)v9 setParameter:@"1" forKey:@"icloud-backup-enabled"];
     }
   }
 
-  v34 = [v4 account];
-  v35 = [v34 ams_isEphemeralAccount];
+  account2 = [infoCopy account];
+  ams_isEphemeralAccount = [account2 ams_isEphemeralAccount];
 
-  if (v35)
+  if (ams_isEphemeralAccount)
   {
     v36 = +[AMSLogConfig sharedPurchaseConfig];
     if (!v36)
@@ -1043,20 +1043,20 @@ LABEL_30:
       v36 = +[AMSLogConfig sharedConfig];
     }
 
-    v37 = [v36 OSLogObject];
-    if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
+    oSLogObject2 = [v36 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
-      v38 = [v4 purchase];
-      v39 = [v38 logUUID];
+      purchase4 = [infoCopy purchase];
+      logUUID5 = [purchase4 logUUID];
       v40 = MEMORY[0x1E696AEC0];
-      v58 = a1;
+      selfCopy3 = self;
       v41 = objc_opt_class();
       v42 = v41;
-      if (v39)
+      if (logUUID5)
       {
-        v56 = [v4 purchase];
-        a1 = [v56 logUUID];
-        [v40 stringWithFormat:@"%@: [%@] ", v42, a1];
+        purchase = [infoCopy purchase];
+        self = [purchase logUUID];
+        [v40 stringWithFormat:@"%@: [%@] ", v42, self];
       }
 
       else
@@ -1066,14 +1066,14 @@ LABEL_30:
       v43 = ;
       *buf = 138543362;
       v69 = v43;
-      _os_log_impl(&dword_192869000, v37, OS_LOG_TYPE_INFO, "%{public}@Skipping AFDS for Ephemeral Account.", buf, 0xCu);
-      if (v39)
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_INFO, "%{public}@Skipping AFDS for Ephemeral Account.", buf, 0xCu);
+      if (logUUID5)
       {
 
-        v43 = v56;
+        v43 = purchase;
       }
 
-      a1 = v58;
+      self = selfCopy3;
     }
 
     v46 = +[AMSBinaryPromise promiseWithSuccess];
@@ -1081,15 +1081,15 @@ LABEL_30:
 
   else
   {
-    v44 = [AMSFDSService cachedFDSForPurchaseInfo:v4];
+    v44 = [AMSFDSService cachedFDSForPurchaseInfo:infoCopy];
     v45 = [v44 promiseWithTimeout:4.0];
 
     v63[0] = MEMORY[0x1E69E9820];
     v63[1] = 3221225472;
     v63[2] = __57__AMSPurchaseRequestEncoder__parametersFromPurchaseInfo___block_invoke;
     v63[3] = &unk_1E73BB3E8;
-    v64 = v4;
-    v66 = a1;
+    v64 = infoCopy;
+    selfCopy4 = self;
     v65 = v9;
     v46 = [v45 continueWithBinaryPromiseBlock:v63];
   }
@@ -1099,10 +1099,10 @@ LABEL_30:
   v59[2] = __57__AMSPurchaseRequestEncoder__parametersFromPurchaseInfo___block_invoke_70;
   v59[3] = &unk_1E73BB410;
   v61 = v9;
-  v62 = a1;
-  v60 = v4;
+  selfCopy5 = self;
+  v60 = infoCopy;
   v47 = v9;
-  v48 = v4;
+  v48 = infoCopy;
   v49 = [v46 continueWithPromiseBlock:v59];
 
   return v49;

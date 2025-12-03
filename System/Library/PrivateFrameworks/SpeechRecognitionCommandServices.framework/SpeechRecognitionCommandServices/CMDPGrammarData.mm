@@ -1,23 +1,23 @@
 @interface CMDPGrammarData
-- (CMDPGrammarData)initWithGrammarDataWord:(id)a3 lmIdentifer:(id)a4 commandIdentifier:(id)a5;
+- (CMDPGrammarData)initWithGrammarDataWord:(id)word lmIdentifer:(id)identifer commandIdentifier:(id)identifier;
 @end
 
 @implementation CMDPGrammarData
 
-- (CMDPGrammarData)initWithGrammarDataWord:(id)a3 lmIdentifer:(id)a4 commandIdentifier:(id)a5
+- (CMDPGrammarData)initWithGrammarDataWord:(id)word lmIdentifer:(id)identifer commandIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  wordCopy = word;
+  identiferCopy = identifer;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = CMDPGrammarData;
   v12 = [(CMDPGrammarData *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_word, a3);
-    objc_storeStrong(&v13->_builtInLMIdentifier, a4);
-    objc_storeStrong(&v13->_commandIdentifier, a5);
+    objc_storeStrong(&v12->_word, word);
+    objc_storeStrong(&v13->_builtInLMIdentifier, identifer);
+    objc_storeStrong(&v13->_commandIdentifier, identifier);
   }
 
   return v13;

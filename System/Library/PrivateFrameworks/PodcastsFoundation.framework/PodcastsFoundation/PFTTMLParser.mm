@@ -1,37 +1,37 @@
 @interface PFTTMLParser
 - (BOOL)isDescriptor;
-- (PFTTMLParser)initWithContentsOfURL:(id)a3 delegate:(id)a4;
-- (PFTTMLParser)initWithData:(id)a3 delegate:(id)a4;
-- (PFTTMLParser)initWithStream:(id)a3 delegate:(id)a4;
+- (PFTTMLParser)initWithContentsOfURL:(id)l delegate:(id)delegate;
+- (PFTTMLParser)initWithData:(id)data delegate:(id)delegate;
+- (PFTTMLParser)initWithStream:(id)stream delegate:(id)delegate;
 - (PFTTMLParserDelegate)delegate;
-- (double)timeForElementAttribute:(int64_t)a3;
-- (id)stringForElementAttribute:(int64_t)a3;
+- (double)timeForElementAttribute:(int64_t)attribute;
+- (id)stringForElementAttribute:(int64_t)attribute;
 - (int64_t)unitForCurrentSpan;
 - (void)abortParsing;
 - (void)parse;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
-- (void)parser:(id)a3 foundCharacters:(id)a4;
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4;
-- (void)parser:(id)a3 validationErrorOccurred:(id)a4;
-- (void)parserDidEndDocument:(id)a3;
-- (void)parserDidStartDocument:(id)a3;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
+- (void)parser:(id)parser foundCharacters:(id)characters;
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred;
+- (void)parser:(id)parser validationErrorOccurred:(id)occurred;
+- (void)parserDidEndDocument:(id)document;
+- (void)parserDidStartDocument:(id)document;
 @end
 
 @implementation PFTTMLParser
 
-- (PFTTMLParser)initWithData:(id)a3 delegate:(id)a4
+- (PFTTMLParser)initWithData:(id)data delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = PFTTMLParser;
   v8 = [(PFTTMLParser *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v7);
-    v10 = [objc_alloc(MEMORY[0x1E696B0A8]) initWithData:v6];
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    v10 = [objc_alloc(MEMORY[0x1E696B0A8]) initWithData:dataCopy];
     parser = v9->_parser;
     v9->_parser = v10;
   }
@@ -39,18 +39,18 @@
   return v9;
 }
 
-- (PFTTMLParser)initWithStream:(id)a3 delegate:(id)a4
+- (PFTTMLParser)initWithStream:(id)stream delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  streamCopy = stream;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = PFTTMLParser;
   v8 = [(PFTTMLParser *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v7);
-    v10 = [objc_alloc(MEMORY[0x1E696B0A8]) initWithStream:v6];
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    v10 = [objc_alloc(MEMORY[0x1E696B0A8]) initWithStream:streamCopy];
     parser = v9->_parser;
     v9->_parser = v10;
   }
@@ -58,18 +58,18 @@
   return v9;
 }
 
-- (PFTTMLParser)initWithContentsOfURL:(id)a3 delegate:(id)a4
+- (PFTTMLParser)initWithContentsOfURL:(id)l delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = PFTTMLParser;
   v8 = [(PFTTMLParser *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v7);
-    v10 = [objc_alloc(MEMORY[0x1E696B0A8]) initWithContentsOfURL:v6];
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    v10 = [objc_alloc(MEMORY[0x1E696B0A8]) initWithContentsOfURL:lCopy];
     parser = v9->_parser;
     v9->_parser = v10;
   }
@@ -79,17 +79,17 @@
 
 - (void)parse
 {
-  v3 = [(PFTTMLParser *)self parser];
-  [v3 setDelegate:self];
+  parser = [(PFTTMLParser *)self parser];
+  [parser setDelegate:self];
 
-  v4 = [(PFTTMLParser *)self parser];
-  [v4 parse];
+  parser2 = [(PFTTMLParser *)self parser];
+  [parser2 parse];
 }
 
 - (void)abortParsing
 {
-  v2 = [(PFTTMLParser *)self parser];
-  [v2 abortParsing];
+  parser = [(PFTTMLParser *)self parser];
+  [parser abortParsing];
 }
 
 - (int64_t)unitForCurrentSpan
@@ -121,19 +121,19 @@
   return v3;
 }
 
-- (id)stringForElementAttribute:(int64_t)a3
+- (id)stringForElementAttribute:(int64_t)attribute
 {
   currentElementAttributes = self->_currentElementAttributes;
-  v4 = PFTTMLDictionaryKeyForStringAttribute(a3);
+  v4 = PFTTMLDictionaryKeyForStringAttribute(attribute);
   v5 = [(NSDictionary *)currentElementAttributes objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (double)timeForElementAttribute:(int64_t)a3
+- (double)timeForElementAttribute:(int64_t)attribute
 {
   currentElementAttributes = self->_currentElementAttributes;
-  v4 = PFTTMLDictionaryKeyForTimeAttribute(a3);
+  v4 = PFTTMLDictionaryKeyForTimeAttribute(attribute);
   v5 = [(NSDictionary *)currentElementAttributes objectForKeyedSubscript:v4];
   [v5 intervalFromTimecode];
   v7 = v6;
@@ -141,56 +141,56 @@
   return v7;
 }
 
-- (void)parserDidStartDocument:(id)a3
+- (void)parserDidStartDocument:(id)document
 {
-  v4 = [(PFTTMLParser *)self delegate];
-  [v4 parserDidStartDocument:self];
+  delegate = [(PFTTMLParser *)self delegate];
+  [delegate parserDidStartDocument:self];
 }
 
-- (void)parserDidEndDocument:(id)a3
+- (void)parserDidEndDocument:(id)document
 {
-  v4 = [(PFTTMLParser *)self delegate];
-  [v4 parserDidEndDocument:self];
+  delegate = [(PFTTMLParser *)self delegate];
+  [delegate parserDidEndDocument:self];
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v9 = a4;
-  [(PFTTMLParser *)self setCurrentElementAttributes:a7];
-  v10 = PFTTMLTypeForName(v9);
+  elementCopy = element;
+  [(PFTTMLParser *)self setCurrentElementAttributes:attributes];
+  v10 = PFTTMLTypeForName(elementCopy);
 
-  v11 = [(PFTTMLParser *)self delegate];
-  [v11 parser:self didStartElementType:v10];
+  delegate = [(PFTTMLParser *)self delegate];
+  [delegate parser:self didStartElementType:v10];
 
   [(PFTTMLParser *)self setCurrentElementAttributes:0];
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  v7 = PFTTMLTypeForName(a4);
-  v8 = [(PFTTMLParser *)self delegate];
-  [v8 parser:self didEndElementType:v7];
+  v7 = PFTTMLTypeForName(element);
+  delegate = [(PFTTMLParser *)self delegate];
+  [delegate parser:self didEndElementType:v7];
 }
 
-- (void)parser:(id)a3 foundCharacters:(id)a4
+- (void)parser:(id)parser foundCharacters:(id)characters
 {
-  v5 = a4;
-  v6 = [(PFTTMLParser *)self delegate];
-  [v6 parser:self foundCharacters:v5];
+  charactersCopy = characters;
+  delegate = [(PFTTMLParser *)self delegate];
+  [delegate parser:self foundCharacters:charactersCopy];
 }
 
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred
 {
-  v5 = a4;
-  v6 = [(PFTTMLParser *)self delegate];
-  [v6 parser:self parseErrorOccurred:v5];
+  occurredCopy = occurred;
+  delegate = [(PFTTMLParser *)self delegate];
+  [delegate parser:self parseErrorOccurred:occurredCopy];
 }
 
-- (void)parser:(id)a3 validationErrorOccurred:(id)a4
+- (void)parser:(id)parser validationErrorOccurred:(id)occurred
 {
-  v5 = a4;
-  v6 = [(PFTTMLParser *)self delegate];
-  [v6 parser:self validationErrorOccurred:v5];
+  occurredCopy = occurred;
+  delegate = [(PFTTMLParser *)self delegate];
+  [delegate parser:self validationErrorOccurred:occurredCopy];
 }
 
 - (PFTTMLParserDelegate)delegate

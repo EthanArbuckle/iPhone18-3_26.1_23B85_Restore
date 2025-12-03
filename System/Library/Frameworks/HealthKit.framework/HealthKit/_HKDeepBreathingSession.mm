@@ -2,28 +2,28 @@
 + (id)taskIdentifier;
 - (BOOL)_isServerAttached;
 - (NSString)description;
-- (_HKDeepBreathingSession)initWithHealthStore:(id)a3 configuration:(id)a4;
+- (_HKDeepBreathingSession)initWithHealthStore:(id)store configuration:(id)configuration;
 - (_HKDeepBreathingSessionDelegate)delegate;
 - (int64_t)serverState;
-- (void)_connectionDidEncounterError:(id)a3;
-- (void)_queue_alertDelegateDidEncounterError:(id)a3;
-- (void)_queue_alertDelegateDidReceiveHeartRate:(double)a3;
+- (void)_connectionDidEncounterError:(id)error;
+- (void)_queue_alertDelegateDidEncounterError:(id)error;
+- (void)_queue_alertDelegateDidReceiveHeartRate:(double)rate;
 - (void)_queue_deactivate;
-- (void)_queue_transitionToServerState:(int64_t)a3;
-- (void)clientRemote_sessionDidReceiveError:(id)a3;
-- (void)clientRemote_sessionDidReceiveHeartRate:(double)a3;
+- (void)_queue_transitionToServerState:(int64_t)state;
+- (void)clientRemote_sessionDidReceiveError:(id)error;
+- (void)clientRemote_sessionDidReceiveHeartRate:(double)rate;
 - (void)connectionInvalidated;
-- (void)endSessionWithEndReason:(int64_t)a3;
-- (void)fetchProxyWithHandler:(id)a3 errorHandler:(id)a4;
-- (void)startSessionWithStartDate:(id)a3 completion:(id)a4;
+- (void)endSessionWithEndReason:(int64_t)reason;
+- (void)fetchProxyWithHandler:(id)handler errorHandler:(id)errorHandler;
+- (void)startSessionWithStartDate:(id)date completion:(id)completion;
 @end
 
 @implementation _HKDeepBreathingSession
 
-- (_HKDeepBreathingSession)initWithHealthStore:(id)a3 configuration:(id)a4
+- (_HKDeepBreathingSession)initWithHealthStore:(id)store configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  configurationCopy = configuration;
   v20.receiver = self;
   v20.super_class = _HKDeepBreathingSession;
   v8 = [(_HKDeepBreathingSession *)&v20 init];
@@ -39,14 +39,14 @@
     v9->_clientQueue = v12;
 
     v14 = [HKTaskServerProxyProvider alloc];
-    v15 = [objc_opt_class() taskIdentifier];
-    v16 = [MEMORY[0x1E696AFB0] UUID];
-    v17 = [(HKTaskServerProxyProvider *)v14 initWithHealthStore:v6 taskIdentifier:v15 exportedObject:v9 taskUUID:v16];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v17 = [(HKTaskServerProxyProvider *)v14 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v9 taskUUID:uUID];
     proxyProvider = v9->_proxyProvider;
     v9->_proxyProvider = v17;
 
     [(HKProxyProvider *)v9->_proxyProvider setShouldRetryOnInterruption:0];
-    [(HKTaskServerProxyProvider *)v9->_proxyProvider setTaskConfiguration:v7];
+    [(HKTaskServerProxyProvider *)v9->_proxyProvider setTaskConfiguration:configurationCopy];
     v9->_serverState = 2;
   }
 
@@ -57,8 +57,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(_HKDeepBreathingSession *)self sessionConfiguration];
-  v6 = [v3 stringWithFormat:@"<%@:%p, configuration:%@>", v4, self, v5];
+  sessionConfiguration = [(_HKDeepBreathingSession *)self sessionConfiguration];
+  v6 = [v3 stringWithFormat:@"<%@:%p, configuration:%@>", v4, self, sessionConfiguration];
 
   return v6;
 }
@@ -81,24 +81,24 @@
   dispatch_async(queue, block);
 }
 
-- (void)startSessionWithStartDate:(id)a3 completion:(id)a4
+- (void)startSessionWithStartDate:(id)date completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __64___HKDeepBreathingSession_startSessionWithStartDate_completion___block_invoke;
   aBlock[3] = &unk_1E7378BE8;
   aBlock[4] = self;
-  v19 = v7;
-  v8 = v7;
+  v19 = completionCopy;
+  v8 = completionCopy;
   v9 = _Block_copy(aBlock);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __64___HKDeepBreathingSession_startSessionWithStartDate_completion___block_invoke_3;
   v14[3] = &unk_1E7380050;
-  v15 = v6;
-  v16 = self;
+  v15 = dateCopy;
+  selfCopy = self;
   v17 = v9;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -106,33 +106,33 @@
   v12[3] = &unk_1E7376960;
   v13 = v17;
   v10 = v17;
-  v11 = v6;
+  v11 = dateCopy;
   [(_HKDeepBreathingSession *)self fetchProxyWithHandler:v14 errorHandler:v12];
 }
 
-- (void)endSessionWithEndReason:(int64_t)a3
+- (void)endSessionWithEndReason:(int64_t)reason
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __51___HKDeepBreathingSession_endSessionWithEndReason___block_invoke;
   v3[3] = &__block_descriptor_40_e41_v16__0____HKDeepBreathingSessionServer__8l;
-  v3[4] = a3;
+  v3[4] = reason;
   [(_HKDeepBreathingSession *)self fetchProxyWithHandler:v3 errorHandler:&__block_literal_global_23_1];
 }
 
-- (void)fetchProxyWithHandler:(id)a3 errorHandler:(id)a4
+- (void)fetchProxyWithHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v9 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  errorHandlerCopy = errorHandler;
   if ([(_HKDeepBreathingSession *)self _isServerAttached])
   {
-    [(HKProxyProvider *)self->_proxyProvider fetchProxyWithHandler:v9 errorHandler:v7];
+    [(HKProxyProvider *)self->_proxyProvider fetchProxyWithHandler:handlerCopy errorHandler:errorHandlerCopy];
   }
 
   else
   {
     v8 = [MEMORY[0x1E696ABC0] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:{@"requested server proxy while server is not attached (%ld)", -[_HKDeepBreathingSession serverState](self, "serverState")}];
-    v7[2](v7, v8);
+    errorHandlerCopy[2](errorHandlerCopy, v8);
   }
 }
 
@@ -163,7 +163,7 @@
   return v3;
 }
 
-- (void)_queue_transitionToServerState:(int64_t)a3
+- (void)_queue_transitionToServerState:(int64_t)state
 {
   v13 = *MEMORY[0x1E69E9840];
   _HKInitializeLogging();
@@ -174,30 +174,30 @@
     v9 = 134218240;
     v10 = serverState;
     v11 = 2048;
-    v12 = a3;
+    stateCopy = state;
     _os_log_impl(&dword_19197B000, v6, OS_LOG_TYPE_DEFAULT, "transitioning server state (%ld -> %ld)", &v9, 0x16u);
   }
 
-  if (a3 == 3 && self->_serverState != 2)
+  if (state == 3 && self->_serverState != 2)
   {
     [(_HKDeepBreathingSession *)a2 _queue_transitionToServerState:?];
   }
 
-  self->_serverState = a3;
+  self->_serverState = state;
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_connectionDidEncounterError:(id)a3
+- (void)_connectionDidEncounterError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56___HKDeepBreathingSession__connectionDidEncounterError___block_invoke;
   v7[3] = &unk_1E7378400;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -220,7 +220,7 @@
   return v3;
 }
 
-- (void)clientRemote_sessionDidReceiveHeartRate:(double)a3
+- (void)clientRemote_sessionDidReceiveHeartRate:(double)rate
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -228,25 +228,25 @@
   v4[2] = __67___HKDeepBreathingSession_clientRemote_sessionDidReceiveHeartRate___block_invoke;
   v4[3] = &unk_1E7378630;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = rate;
   dispatch_sync(queue, v4);
 }
 
-- (void)clientRemote_sessionDidReceiveError:(id)a3
+- (void)clientRemote_sessionDidReceiveError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63___HKDeepBreathingSession_clientRemote_sessionDidReceiveError___block_invoke;
   v7[3] = &unk_1E7378400;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)_queue_alertDelegateDidReceiveHeartRate:(double)a3
+- (void)_queue_alertDelegateDidReceiveHeartRate:(double)rate
 {
   objc_copyWeak(&to, &self->_delegate);
   v5[0] = MEMORY[0x1E69E9820];
@@ -255,15 +255,15 @@
   v5[3] = &unk_1E73800B8;
   objc_copyWeak(v6, &to);
   v5[4] = self;
-  v6[1] = *&a3;
+  v6[1] = *&rate;
   dispatch_async(MEMORY[0x1E69E96A0], v5);
   objc_destroyWeak(v6);
   objc_destroyWeak(&to);
 }
 
-- (void)_queue_alertDelegateDidEncounterError:(id)a3
+- (void)_queue_alertDelegateDidEncounterError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_copyWeak(&to, &self->_delegate);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -271,8 +271,8 @@
   v6[3] = &unk_1E73800E0;
   objc_copyWeak(&v8, &to);
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = errorCopy;
+  v5 = errorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 
   objc_destroyWeak(&v8);

@@ -6,7 +6,7 @@
 - (id)_makePBResponse;
 - (void)dealloc;
 - (void)send;
-- (void)setPbResponse:(id)a3;
+- (void)setPbResponse:(id)response;
 @end
 
 @implementation NMSOutgoingResponse
@@ -35,31 +35,31 @@
 - (void)send
 {
   WeakRetained = objc_loadWeakRetained(&self->_request);
-  v4 = [WeakRetained messageCenter];
+  messageCenter = [WeakRetained messageCenter];
 
-  [v4 _sendResponse:self];
+  [messageCenter _sendResponse:self];
 }
 
-- (void)setPbResponse:(id)a3
+- (void)setPbResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   WeakRetained = objc_loadWeakRetained(&self->_request);
-  v5 = [WeakRetained messageCenter];
-  v6 = [v5 _pbMappingForMessageID:{objc_msgSend(WeakRetained, "messageID")}];
+  messageCenter = [WeakRetained messageCenter];
+  v6 = [messageCenter _pbMappingForMessageID:{objc_msgSend(WeakRetained, "messageID")}];
   pbResponse = self->_pbResponse;
-  self->_pbResponse = v4;
-  v8 = v4;
+  self->_pbResponse = responseCopy;
+  v8 = responseCopy;
 
-  v9 = [self->_pbResponse data];
+  data = [self->_pbResponse data];
   data = self->_data;
-  self->_data = v9;
+  self->_data = data;
 }
 
 - (id)_makePBResponse
 {
   WeakRetained = objc_loadWeakRetained(&self->_request);
-  v3 = [WeakRetained messageCenter];
-  v4 = [v3 _pbMappingForMessageID:{objc_msgSend(WeakRetained, "messageID")}];
+  messageCenter = [WeakRetained messageCenter];
+  v4 = [messageCenter _pbMappingForMessageID:{objc_msgSend(WeakRetained, "messageID")}];
   [v4 responseClass];
   v5 = objc_opt_new();
 
@@ -68,17 +68,17 @@
 
 - (NSString)description
 {
-  v3 = [(NMSOutgoingResponse *)self request];
+  request = [(NMSOutgoingResponse *)self request];
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v13.receiver = self;
   v13.super_class = NMSOutgoingResponse;
   v5 = [(NMSOutgoingResponse *)&v13 description];
   v6 = NMSPriorityString([(NMSOutgoingResponse *)self priority]);
-  v7 = [v3 messageID];
-  v8 = [(NMSOutgoingResponse *)self idsIdentifier];
-  v9 = [v3 idsIdentifier];
-  v10 = [(NMSOutgoingResponse *)self data];
-  v11 = [v4 initWithFormat:@"%@ {%@ priority, messageID=%hu, idsID=%@, requestID=%@, data=%lu bytes}", v5, v6, v7, v8, v9, objc_msgSend(v10, "length")];
+  messageID = [request messageID];
+  idsIdentifier = [(NMSOutgoingResponse *)self idsIdentifier];
+  idsIdentifier2 = [request idsIdentifier];
+  data = [(NMSOutgoingResponse *)self data];
+  v11 = [v4 initWithFormat:@"%@ {%@ priority, messageID=%hu, idsID=%@, requestID=%@, data=%lu bytes}", v5, v6, messageID, idsIdentifier, idsIdentifier2, objc_msgSend(data, "length")];
 
   return v11;
 }
@@ -94,11 +94,11 @@
   v6 = [(NMSOutgoingResponse *)&v18 debugDescription];
   [(NMSObfuscatableDescription *)v5 setPrefixString:v6];
 
-  v7 = [(NMSOutgoingResponse *)self request];
+  request = [(NMSOutgoingResponse *)self request];
   v8 = NMSPriorityString([(NMSOutgoingResponse *)self priority]);
   [(NMSObfuscatableDescription *)v5 addDescription:@"Priority" value:v8];
 
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(v7, "messageID")}];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(request, "messageID")}];
   [(NMSObfuscatableDescription *)v5 addDescription:@"Request messageID" value:v9];
 
   if (self->_pbResponse)
@@ -113,20 +113,20 @@
     [(NMSObfuscatableDescription *)v5 addDescription:@"Protobuf class" value:@"none"];
   }
 
-  v12 = [(NMSOutgoingResponse *)self idsIdentifier];
-  [(NMSObfuscatableDescription *)v5 addDescription:@"IDS ID" value:v12];
+  idsIdentifier = [(NMSOutgoingResponse *)self idsIdentifier];
+  [(NMSObfuscatableDescription *)v5 addDescription:@"IDS ID" value:idsIdentifier];
 
-  v13 = [v7 idsIdentifier];
-  [(NMSObfuscatableDescription *)v5 addDescription:@"Request IDS ID" value:v13];
+  idsIdentifier2 = [request idsIdentifier];
+  [(NMSObfuscatableDescription *)v5 addDescription:@"Request IDS ID" value:idsIdentifier2];
 
   v14 = [MEMORY[0x1E696AB70] localizedStringFromDateComponents:v3 unitsStyle:3];
   [(NMSObfuscatableDescription *)v5 addDescription:@"Send timeout" value:v14];
 
-  v15 = [(NMSOutgoingResponse *)self data];
-  [(NMSObfuscatableDescription *)v5 addObfuscatedDescription:@"Data" value:v15];
+  data = [(NMSOutgoingResponse *)self data];
+  [(NMSObfuscatableDescription *)v5 addObfuscatedDescription:@"Data" value:data];
 
-  v16 = [(NMSOutgoingResponse *)self persistentUserInfo];
-  [(NMSObfuscatableDescription *)v5 addDescription:@"User info" value:v16];
+  persistentUserInfo = [(NMSOutgoingResponse *)self persistentUserInfo];
+  [(NMSObfuscatableDescription *)v5 addDescription:@"User info" value:persistentUserInfo];
 
   return v5;
 }

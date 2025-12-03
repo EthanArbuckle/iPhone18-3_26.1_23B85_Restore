@@ -1,10 +1,10 @@
 @interface DTMemlimitAssertionFactory
-- (id)_removeMemoryLimitsForPid:(int)a3;
+- (id)_removeMemoryLimitsForPid:(int)pid;
 @end
 
 @implementation DTMemlimitAssertionFactory
 
-- (id)_removeMemoryLimitsForPid:(int)a3
+- (id)_removeMemoryLimitsForPid:(int)pid
 {
   *(&v11 + 4) = 0xFFFFFFFF00000000;
   LODWORD(v11) = -1;
@@ -16,7 +16,7 @@
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109376;
-      v13 = a3;
+      pidCopy2 = pid;
       v14 = 1024;
       v15 = v5;
       v6 = "DTMemlimitAssertionFactory: failed to remove active and inactive memory limits for pid %d (result = %d)";
@@ -34,7 +34,7 @@ LABEL_7:
     if (v9 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {
       *buf = 67109376;
-      v13 = a3;
+      pidCopy2 = pid;
       v14 = 1024;
       v15 = 0;
       v6 = "DTMemlimitAssertionFactory: removed active and inactive memory limits for pid %d (result = %d)";

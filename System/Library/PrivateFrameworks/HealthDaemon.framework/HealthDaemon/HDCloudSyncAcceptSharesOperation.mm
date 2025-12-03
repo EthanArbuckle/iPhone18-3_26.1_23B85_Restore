@@ -1,12 +1,12 @@
 @interface HDCloudSyncAcceptSharesOperation
-- (HDCloudSyncAcceptSharesOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
-- (HDCloudSyncAcceptSharesOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 shareURLs:(id)a5 invitationTokensByShareURL:(id)a6;
+- (HDCloudSyncAcceptSharesOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
+- (HDCloudSyncAcceptSharesOperation)initWithConfiguration:(id)configuration cloudState:(id)state shareURLs:(id)ls invitationTokensByShareURL:(id)l;
 - (void)main;
 @end
 
 @implementation HDCloudSyncAcceptSharesOperation
 
-- (HDCloudSyncAcceptSharesOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncAcceptSharesOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -16,20 +16,20 @@
   return 0;
 }
 
-- (HDCloudSyncAcceptSharesOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 shareURLs:(id)a5 invitationTokensByShareURL:(id)a6
+- (HDCloudSyncAcceptSharesOperation)initWithConfiguration:(id)configuration cloudState:(id)state shareURLs:(id)ls invitationTokensByShareURL:(id)l
 {
-  v10 = a5;
-  v11 = a6;
+  lsCopy = ls;
+  lCopy = l;
   v19.receiver = self;
   v19.super_class = HDCloudSyncAcceptSharesOperation;
-  v12 = [(HDCloudSyncOperation *)&v19 initWithConfiguration:a3 cloudState:a4];
+  v12 = [(HDCloudSyncOperation *)&v19 initWithConfiguration:configuration cloudState:state];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [lsCopy copy];
     shareURLs = v12->_shareURLs;
     v12->_shareURLs = v13;
 
-    v15 = [v11 copy];
+    v15 = [lCopy copy];
     invitationTokensByShareURLs = v12->_invitationTokensByShareURLs;
     v12->_invitationTokensByShareURLs = v15;
 
@@ -45,7 +45,7 @@
   v32 = *MEMORY[0x277D85DE8];
   if ([(NSArray *)self->_shareURLs count])
   {
-    v3 = [(NSDictionary *)self->_invitationTokensByShareURLs allKeys];
+    allKeys = [(NSDictionary *)self->_invitationTokensByShareURLs allKeys];
     _HKInitializeLogging();
     v4 = *MEMORY[0x277CCC328];
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
@@ -53,7 +53,7 @@
       shareURLs = self->_shareURLs;
       invitationTokensByShareURLs = self->_invitationTokensByShareURLs;
       *buf = 138543874;
-      v27 = self;
+      selfCopy = self;
       v28 = 2114;
       v29 = shareURLs;
       v30 = 2114;
@@ -61,7 +61,7 @@
       _os_log_impl(&dword_228986000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Accepting shares (%{public}@) with invitation tokens: %{public}@", buf, 0x20u);
     }
 
-    v7 = [objc_alloc(MEMORY[0x277CBC3F8]) initWithShareURLs:v3 invitationTokensByShareURL:self->_invitationTokensByShareURLs];
+    v7 = [objc_alloc(MEMORY[0x277CBC3F8]) initWithShareURLs:allKeys invitationTokensByShareURL:self->_invitationTokensByShareURLs];
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
@@ -75,18 +75,18 @@
     v19 = 3221225472;
     v20 = __40__HDCloudSyncAcceptSharesOperation_main__block_invoke_298;
     v21 = &unk_278619460;
-    v22 = self;
+    selfCopy2 = self;
     v23 = v9;
     v10 = v9;
     [v7 setFetchShareMetadataCompletionBlock:&v18];
     v11 = [(HDCloudSyncOperation *)self configuration:v18];
-    v12 = [v11 operationGroup];
-    [v7 setGroup:v12];
+    operationGroup = [v11 operationGroup];
+    [v7 setGroup:operationGroup];
 
-    v13 = [(HDCloudSyncOperation *)self configuration];
-    v14 = [v13 repository];
-    v15 = [v14 primaryCKContainer];
-    [v15 addOperation:v7];
+    configuration = [(HDCloudSyncOperation *)self configuration];
+    repository = [configuration repository];
+    primaryCKContainer = [repository primaryCKContainer];
+    [primaryCKContainer addOperation:v7];
 
     v16 = *MEMORY[0x277D85DE8];
   }

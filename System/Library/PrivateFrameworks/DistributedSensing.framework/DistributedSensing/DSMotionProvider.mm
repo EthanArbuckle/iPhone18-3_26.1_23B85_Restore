@@ -1,47 +1,47 @@
 @interface DSMotionProvider
-- (DSMotionProvider)initWithDelegate:(id)a3 queue:(id)a4;
+- (DSMotionProvider)initWithDelegate:(id)delegate queue:(id)queue;
 - (DSMotionProviderDelegate)delegate;
-- (void)failedToStartProviderWithOptions:(id)a3 error:(id)a4;
-- (void)requestedMotionDataWithOption:(id)a3;
-- (void)sendMotionData:(id)a3;
-- (void)startMotionDataProviderWithOptions:(id)a3;
-- (void)startedProviderWithOptions:(id)a3;
+- (void)failedToStartProviderWithOptions:(id)options error:(id)error;
+- (void)requestedMotionDataWithOption:(id)option;
+- (void)sendMotionData:(id)data;
+- (void)startMotionDataProviderWithOptions:(id)options;
+- (void)startedProviderWithOptions:(id)options;
 - (void)stopMotionDataProvider;
 - (void)stoppedProvider;
-- (void)subscribedToMotionDataWithOptions:(id)a3;
+- (void)subscribedToMotionDataWithOptions:(id)options;
 - (void)subscriptionExpired;
 - (void)unsubscribed;
 @end
 
 @implementation DSMotionProvider
 
-- (DSMotionProvider)initWithDelegate:(id)a3 queue:(id)a4
+- (DSMotionProvider)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = DSMotionProvider;
-  v7 = [(DSProvider *)&v10 initWithDispatchQueue:a4];
+  v7 = [(DSProvider *)&v10 initWithDispatchQueue:queue];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_delegate, v6);
+    objc_storeWeak(&v7->_delegate, delegateCopy);
   }
 
   return v8;
 }
 
-- (void)startMotionDataProviderWithOptions:(id)a3
+- (void)startMotionDataProviderWithOptions:(id)options
 {
   v3.receiver = self;
   v3.super_class = DSMotionProvider;
-  [(DSProvider *)&v3 startMotionDataProviderWithOptions:a3];
+  [(DSProvider *)&v3 startMotionDataProviderWithOptions:options];
 }
 
-- (void)sendMotionData:(id)a3
+- (void)sendMotionData:(id)data
 {
   v3.receiver = self;
   v3.super_class = DSMotionProvider;
-  [(DSProvider *)&v3 sendMotionData:a3];
+  [(DSProvider *)&v3 sendMotionData:data];
 }
 
 - (void)stopMotionDataProvider
@@ -51,90 +51,90 @@
   [(DSProvider *)&v2 stopMotionDataProvider];
 }
 
-- (void)startedProviderWithOptions:(id)a3
+- (void)startedProviderWithOptions:(id)options
 {
-  v4 = [(DSMotionProvider *)self delegate];
+  delegate = [(DSMotionProvider *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(DSMotionProvider *)self delegate];
-    [v6 dsmotionDidStartProvider:self];
+    delegate2 = [(DSMotionProvider *)self delegate];
+    [delegate2 dsmotionDidStartProvider:self];
   }
 }
 
-- (void)failedToStartProviderWithOptions:(id)a3 error:(id)a4
+- (void)failedToStartProviderWithOptions:(id)options error:(id)error
 {
-  v8 = a4;
-  v5 = [(DSMotionProvider *)self delegate];
+  errorCopy = error;
+  delegate = [(DSMotionProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(DSMotionProvider *)self delegate];
-    [v7 dsmotion:self didFailToStartProviderWithError:v8];
+    delegate2 = [(DSMotionProvider *)self delegate];
+    [delegate2 dsmotion:self didFailToStartProviderWithError:errorCopy];
   }
 }
 
-- (void)subscribedToMotionDataWithOptions:(id)a3
+- (void)subscribedToMotionDataWithOptions:(id)options
 {
-  v7 = a3;
-  v4 = [(DSMotionProvider *)self delegate];
+  optionsCopy = options;
+  delegate = [(DSMotionProvider *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(DSMotionProvider *)self delegate];
-    [v6 dsmotion:self didSubscribeToMotionDataWithOptions:v7];
+    delegate2 = [(DSMotionProvider *)self delegate];
+    [delegate2 dsmotion:self didSubscribeToMotionDataWithOptions:optionsCopy];
   }
 }
 
-- (void)requestedMotionDataWithOption:(id)a3
+- (void)requestedMotionDataWithOption:(id)option
 {
-  v7 = a3;
-  v4 = [(DSMotionProvider *)self delegate];
+  optionCopy = option;
+  delegate = [(DSMotionProvider *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(DSMotionProvider *)self delegate];
-    [v6 dsmotion:self didRequestMotionDataWithOptions:v7];
+    delegate2 = [(DSMotionProvider *)self delegate];
+    [delegate2 dsmotion:self didRequestMotionDataWithOptions:optionCopy];
   }
 }
 
 - (void)subscriptionExpired
 {
-  v3 = [(DSMotionProvider *)self delegate];
+  delegate = [(DSMotionProvider *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(DSMotionProvider *)self delegate];
-    [v5 dsmotionDidExpireMotionDataSubscription:self];
+    delegate2 = [(DSMotionProvider *)self delegate];
+    [delegate2 dsmotionDidExpireMotionDataSubscription:self];
   }
 }
 
 - (void)unsubscribed
 {
-  v3 = [(DSMotionProvider *)self delegate];
+  delegate = [(DSMotionProvider *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(DSMotionProvider *)self delegate];
-    [v5 dsmotionDidUnsubscribeToMotionData:self];
+    delegate2 = [(DSMotionProvider *)self delegate];
+    [delegate2 dsmotionDidUnsubscribeToMotionData:self];
   }
 }
 
 - (void)stoppedProvider
 {
-  v3 = [(DSMotionProvider *)self delegate];
+  delegate = [(DSMotionProvider *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(DSMotionProvider *)self delegate];
-    [v5 dsmotionDidStopProvider:self];
+    delegate2 = [(DSMotionProvider *)self delegate];
+    [delegate2 dsmotionDidStopProvider:self];
   }
 }
 

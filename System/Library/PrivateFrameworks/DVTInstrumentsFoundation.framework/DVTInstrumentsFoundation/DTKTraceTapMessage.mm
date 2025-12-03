@@ -8,156 +8,156 @@
 - (unint64_t)triggerCount;
 - (unint64_t)triggerIndex;
 - (unsigned)tapVersion;
-- (void)setCoreCount:(unint64_t)a3;
-- (void)setLocalFilePath:(id)a3;
-- (void)setLogicalProcessorCore:(unint64_t)a3;
-- (void)setRecordCount:(unint64_t)a3;
-- (void)setSessionMetadata:(id)a3;
-- (void)setTriggerCount:(unint64_t)a3;
-- (void)setTriggerIndex:(unint64_t)a3;
-- (void)setTriggerMetadata:(id)a3;
+- (void)setCoreCount:(unint64_t)count;
+- (void)setLocalFilePath:(id)path;
+- (void)setLogicalProcessorCore:(unint64_t)core;
+- (void)setRecordCount:(unint64_t)count;
+- (void)setSessionMetadata:(id)metadata;
+- (void)setTriggerCount:(unint64_t)count;
+- (void)setTriggerIndex:(unint64_t)index;
+- (void)setTriggerMetadata:(id)metadata;
 @end
 
 @implementation DTKTraceTapMessage
 
 - (unsigned)tapVersion
 {
-  v2 = [(DTTapMessage *)self plist];
-  v3 = [v2 objectForKey:@"tv"];
-  v4 = [v3 unsignedIntValue];
+  plist = [(DTTapMessage *)self plist];
+  v3 = [plist objectForKey:@"tv"];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (NSDictionary)sessionMetadata
 {
-  v2 = [(DTTapMessage *)self plist];
-  v3 = [v2 objectForKey:@"sm"];
+  plist = [(DTTapMessage *)self plist];
+  v3 = [plist objectForKey:@"sm"];
 
   return v3;
 }
 
-- (void)setSessionMetadata:(id)a3
+- (void)setSessionMetadata:(id)metadata
 {
-  v4 = a3;
-  v6 = [(DTTapMessage *)self plist];
-  v5 = [v4 copy];
+  metadataCopy = metadata;
+  plist = [(DTTapMessage *)self plist];
+  v5 = [metadataCopy copy];
 
-  [v6 setObject:v5 forKey:@"sm"];
+  [plist setObject:v5 forKey:@"sm"];
 }
 
 - (unint64_t)coreCount
 {
-  v2 = [(DTTapMessage *)self plist];
-  v3 = [v2 objectForKey:@"cc"];
-  v4 = [v3 unsignedIntegerValue];
+  plist = [(DTTapMessage *)self plist];
+  v3 = [plist objectForKey:@"cc"];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (void)setCoreCount:(unint64_t)a3
+- (void)setCoreCount:(unint64_t)count
 {
-  v5 = [(DTTapMessage *)self plist];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forKey:@"cc"];
+  plist = [(DTTapMessage *)self plist];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
+  [plist setObject:v4 forKey:@"cc"];
 }
 
 - (unint64_t)triggerCount
 {
-  v2 = [(DTTapMessage *)self plist];
-  v3 = [v2 objectForKey:@"tc"];
-  v4 = [v3 unsignedIntegerValue];
+  plist = [(DTTapMessage *)self plist];
+  v3 = [plist objectForKey:@"tc"];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (void)setTriggerCount:(unint64_t)a3
+- (void)setTriggerCount:(unint64_t)count
 {
-  v5 = [(DTTapMessage *)self plist];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forKey:@"tc"];
+  plist = [(DTTapMessage *)self plist];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
+  [plist setObject:v4 forKey:@"tc"];
 }
 
 - (unint64_t)triggerIndex
 {
-  v2 = [(DTTapMessage *)self plist];
-  v3 = [v2 objectForKey:@"ti"];
-  v4 = [v3 unsignedIntegerValue];
+  plist = [(DTTapMessage *)self plist];
+  v3 = [plist objectForKey:@"ti"];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (void)setTriggerIndex:(unint64_t)a3
+- (void)setTriggerIndex:(unint64_t)index
 {
-  v5 = [(DTTapMessage *)self plist];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forKey:@"ti"];
+  plist = [(DTTapMessage *)self plist];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
+  [plist setObject:v4 forKey:@"ti"];
 }
 
 - (unint64_t)logicalProcessorCore
 {
-  v2 = [(DTTapMessage *)self plist];
-  v3 = [v2 objectForKey:@"lc"];
-  v4 = [v3 unsignedIntegerValue];
+  plist = [(DTTapMessage *)self plist];
+  v3 = [plist objectForKey:@"lc"];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (void)setLogicalProcessorCore:(unint64_t)a3
+- (void)setLogicalProcessorCore:(unint64_t)core
 {
-  v5 = [(DTTapMessage *)self plist];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forKey:@"lc"];
+  plist = [(DTTapMessage *)self plist];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:core];
+  [plist setObject:v4 forKey:@"lc"];
 }
 
 - (unint64_t)recordCount
 {
-  v2 = [(DTTapMessage *)self plist];
-  v3 = [v2 objectForKey:@"rc"];
-  v4 = [v3 unsignedIntegerValue];
+  plist = [(DTTapMessage *)self plist];
+  v3 = [plist objectForKey:@"rc"];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (void)setRecordCount:(unint64_t)a3
+- (void)setRecordCount:(unint64_t)count
 {
-  v5 = [(DTTapMessage *)self plist];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forKey:@"rc"];
+  plist = [(DTTapMessage *)self plist];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
+  [plist setObject:v4 forKey:@"rc"];
 }
 
 - (NSDictionary)triggerMetadata
 {
-  v2 = [(DTTapMessage *)self plist];
-  v3 = [v2 objectForKey:@"tm"];
+  plist = [(DTTapMessage *)self plist];
+  v3 = [plist objectForKey:@"tm"];
 
   return v3;
 }
 
-- (void)setTriggerMetadata:(id)a3
+- (void)setTriggerMetadata:(id)metadata
 {
-  v4 = a3;
-  v6 = [(DTTapMessage *)self plist];
-  v5 = [v4 copy];
+  metadataCopy = metadata;
+  plist = [(DTTapMessage *)self plist];
+  v5 = [metadataCopy copy];
 
-  [v6 setObject:v5 forKey:@"tm"];
+  [plist setObject:v5 forKey:@"tm"];
 }
 
 - (NSString)localFilePath
 {
-  v2 = [(DTTapMessage *)self plist];
-  v3 = [v2 objectForKey:@"lfp"];
+  plist = [(DTTapMessage *)self plist];
+  v3 = [plist objectForKey:@"lfp"];
 
   return v3;
 }
 
-- (void)setLocalFilePath:(id)a3
+- (void)setLocalFilePath:(id)path
 {
-  v4 = a3;
-  v6 = [(DTTapMessage *)self plist];
-  v5 = [v4 copy];
+  pathCopy = path;
+  plist = [(DTTapMessage *)self plist];
+  v5 = [pathCopy copy];
 
-  [v6 setObject:v5 forKey:@"lfp"];
+  [plist setObject:v5 forKey:@"lfp"];
 }
 
 @end

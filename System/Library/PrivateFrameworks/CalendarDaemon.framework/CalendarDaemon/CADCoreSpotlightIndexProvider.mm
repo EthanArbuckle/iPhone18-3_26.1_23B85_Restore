@@ -1,13 +1,13 @@
 @interface CADCoreSpotlightIndexProvider
-- (id)newSpotlightIndexForBundleID:(id)a3;
+- (id)newSpotlightIndexForBundleID:(id)d;
 @end
 
 @implementation CADCoreSpotlightIndexProvider
 
-- (id)newSpotlightIndexForBundleID:(id)a3
+- (id)newSpotlightIndexForBundleID:(id)d
 {
-  v3 = a3;
-  v4 = [[CADCoreSpotlightIndex alloc] initWithBundleID:v3];
+  dCopy = d;
+  v4 = [[CADCoreSpotlightIndex alloc] initWithBundleID:dCopy];
 
   return v4;
 }

@@ -1,28 +1,28 @@
 @interface AWDCoreRoutineModelAlgorithmInstance
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDistanceFromTruth:(BOOL)a3;
-- (void)setHasEfficacy:(BOOL)a3;
-- (void)setHasIsRotted:(BOOL)a3;
-- (void)setHasPreviousType:(BOOL)a3;
-- (void)setHasSource:(BOOL)a3;
-- (void)setHasTruthSource:(BOOL)a3;
-- (void)setHasTruthType:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)setHasUncertainty:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDistanceFromTruth:(BOOL)truth;
+- (void)setHasEfficacy:(BOOL)efficacy;
+- (void)setHasIsRotted:(BOOL)rotted;
+- (void)setHasPreviousType:(BOOL)type;
+- (void)setHasSource:(BOOL)source;
+- (void)setHasTruthSource:(BOOL)source;
+- (void)setHasTruthType:(BOOL)type;
+- (void)setHasType:(BOOL)type;
+- (void)setHasUncertainty:(BOOL)uncertainty;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineModelAlgorithmInstance
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 256;
   }
@@ -35,9 +35,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasEfficacy:(BOOL)a3
+- (void)setHasEfficacy:(BOOL)efficacy
 {
-  if (a3)
+  if (efficacy)
   {
     v3 = 8;
   }
@@ -50,9 +50,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasSource:(BOOL)a3
+- (void)setHasSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 32;
   }
@@ -65,9 +65,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasUncertainty:(BOOL)a3
+- (void)setHasUncertainty:(BOOL)uncertainty
 {
-  if (a3)
+  if (uncertainty)
   {
     v3 = 4;
   }
@@ -80,9 +80,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasDistanceFromTruth:(BOOL)a3
+- (void)setHasDistanceFromTruth:(BOOL)truth
 {
-  if (a3)
+  if (truth)
   {
     v3 = 2;
   }
@@ -95,9 +95,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasPreviousType:(BOOL)a3
+- (void)setHasPreviousType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -110,9 +110,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasTruthType:(BOOL)a3
+- (void)setHasTruthType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 128;
   }
@@ -125,9 +125,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasTruthSource:(BOOL)a3
+- (void)setHasTruthSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 64;
   }
@@ -140,9 +140,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasIsRotted:(BOOL)a3
+- (void)setHasIsRotted:(BOOL)rotted
 {
-  if (a3)
+  if (rotted)
   {
     v3 = 512;
   }
@@ -164,11 +164,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 0x100) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_type), @"type"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_type), @"type"}];
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -187,7 +187,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_efficacy), @"efficacy"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_efficacy), @"efficacy"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -201,7 +201,7 @@ LABEL_4:
   }
 
 LABEL_15:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_source), @"source"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_source), @"source"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -215,7 +215,7 @@ LABEL_5:
   }
 
 LABEL_16:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithDouble:", self->_uncertainty), @"uncertainty"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithDouble:", self->_uncertainty), @"uncertainty"}];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -229,7 +229,7 @@ LABEL_6:
   }
 
 LABEL_17:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithDouble:", self->_distanceFromTruth), @"distanceFromTruth"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithDouble:", self->_distanceFromTruth), @"distanceFromTruth"}];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -243,7 +243,7 @@ LABEL_7:
   }
 
 LABEL_18:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_addressComponentMatches), @"addressComponentMatches"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_addressComponentMatches), @"addressComponentMatches"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -257,7 +257,7 @@ LABEL_8:
   }
 
 LABEL_19:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_previousType), @"previousType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_previousType), @"previousType"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -268,17 +268,17 @@ LABEL_9:
     }
 
 LABEL_21:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_truthSource), @"truthSource"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_truthSource), @"truthSource"}];
     if ((*&self->_has & 0x200) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_11;
   }
 
 LABEL_20:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_truthType), @"truthType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_truthType), @"truthType"}];
   has = self->_has;
   if ((has & 0x40) != 0)
   {
@@ -289,13 +289,13 @@ LABEL_10:
   if ((has & 0x200) != 0)
   {
 LABEL_11:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isRotted), @"isRotted"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isRotted), @"isRotted"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 0x100) != 0)
@@ -438,13 +438,13 @@ LABEL_21:
   PBDataWriterWriteBOOLField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 0x100) != 0)
   {
-    *(a3 + 13) = self->_type;
-    *(a3 + 30) |= 0x100u;
+    *(to + 13) = self->_type;
+    *(to + 30) |= 0x100u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -463,8 +463,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 8) = self->_efficacy;
-  *(a3 + 30) |= 8u;
+  *(to + 8) = self->_efficacy;
+  *(to + 30) |= 8u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -478,8 +478,8 @@ LABEL_4:
   }
 
 LABEL_14:
-  *(a3 + 10) = self->_source;
-  *(a3 + 30) |= 0x20u;
+  *(to + 10) = self->_source;
+  *(to + 30) |= 0x20u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -493,8 +493,8 @@ LABEL_5:
   }
 
 LABEL_15:
-  *(a3 + 3) = *&self->_uncertainty;
-  *(a3 + 30) |= 4u;
+  *(to + 3) = *&self->_uncertainty;
+  *(to + 30) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -508,8 +508,8 @@ LABEL_6:
   }
 
 LABEL_16:
-  *(a3 + 2) = *&self->_distanceFromTruth;
-  *(a3 + 30) |= 2u;
+  *(to + 2) = *&self->_distanceFromTruth;
+  *(to + 30) |= 2u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -523,8 +523,8 @@ LABEL_7:
   }
 
 LABEL_17:
-  *(a3 + 1) = self->_addressComponentMatches;
-  *(a3 + 30) |= 1u;
+  *(to + 1) = self->_addressComponentMatches;
+  *(to + 30) |= 1u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -538,8 +538,8 @@ LABEL_8:
   }
 
 LABEL_18:
-  *(a3 + 9) = self->_previousType;
-  *(a3 + 30) |= 0x10u;
+  *(to + 9) = self->_previousType;
+  *(to + 30) |= 0x10u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -553,8 +553,8 @@ LABEL_9:
   }
 
 LABEL_19:
-  *(a3 + 12) = self->_truthType;
-  *(a3 + 30) |= 0x80u;
+  *(to + 12) = self->_truthType;
+  *(to + 30) |= 0x80u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -565,23 +565,23 @@ LABEL_10:
     }
 
 LABEL_21:
-    *(a3 + 56) = self->_isRotted;
-    *(a3 + 30) |= 0x200u;
+    *(to + 56) = self->_isRotted;
+    *(to + 30) |= 0x200u;
     return;
   }
 
 LABEL_20:
-  *(a3 + 11) = self->_truthSource;
-  *(a3 + 30) |= 0x40u;
+  *(to + 11) = self->_truthSource;
+  *(to + 30) |= 0x40u;
   if ((*&self->_has & 0x200) != 0)
   {
     goto LABEL_21;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x100) != 0)
   {
@@ -723,29 +723,29 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 30);
+    v7 = *(equal + 30);
     if ((has & 0x100) != 0)
     {
-      if ((*(a3 + 30) & 0x100) == 0 || self->_type != *(a3 + 13))
+      if ((*(equal + 30) & 0x100) == 0 || self->_type != *(equal + 13))
       {
         goto LABEL_49;
       }
     }
 
-    else if ((*(a3 + 30) & 0x100) != 0)
+    else if ((*(equal + 30) & 0x100) != 0)
     {
       goto LABEL_49;
     }
 
     if ((has & 8) != 0)
     {
-      if ((v7 & 8) == 0 || self->_efficacy != *(a3 + 8))
+      if ((v7 & 8) == 0 || self->_efficacy != *(equal + 8))
       {
         goto LABEL_49;
       }
@@ -758,7 +758,7 @@ LABEL_11:
 
     if ((has & 0x20) != 0)
     {
-      if ((v7 & 0x20) == 0 || self->_source != *(a3 + 10))
+      if ((v7 & 0x20) == 0 || self->_source != *(equal + 10))
       {
         goto LABEL_49;
       }
@@ -771,7 +771,7 @@ LABEL_11:
 
     if ((has & 4) != 0)
     {
-      if ((v7 & 4) == 0 || self->_uncertainty != *(a3 + 3))
+      if ((v7 & 4) == 0 || self->_uncertainty != *(equal + 3))
       {
         goto LABEL_49;
       }
@@ -784,7 +784,7 @@ LABEL_11:
 
     if ((has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_distanceFromTruth != *(a3 + 2))
+      if ((v7 & 2) == 0 || self->_distanceFromTruth != *(equal + 2))
       {
         goto LABEL_49;
       }
@@ -797,7 +797,7 @@ LABEL_11:
 
     if (has)
     {
-      if ((v7 & 1) == 0 || self->_addressComponentMatches != *(a3 + 1))
+      if ((v7 & 1) == 0 || self->_addressComponentMatches != *(equal + 1))
       {
         goto LABEL_49;
       }
@@ -810,7 +810,7 @@ LABEL_11:
 
     if ((has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_previousType != *(a3 + 9))
+      if ((v7 & 0x10) == 0 || self->_previousType != *(equal + 9))
       {
         goto LABEL_49;
       }
@@ -823,7 +823,7 @@ LABEL_11:
 
     if ((has & 0x80) != 0)
     {
-      if ((v7 & 0x80) == 0 || self->_truthType != *(a3 + 12))
+      if ((v7 & 0x80) == 0 || self->_truthType != *(equal + 12))
       {
         goto LABEL_49;
       }
@@ -836,7 +836,7 @@ LABEL_11:
 
     if ((has & 0x40) != 0)
     {
-      if ((v7 & 0x40) == 0 || self->_truthSource != *(a3 + 11))
+      if ((v7 & 0x40) == 0 || self->_truthSource != *(equal + 11))
       {
         goto LABEL_49;
       }
@@ -850,7 +850,7 @@ LABEL_11:
     LOBYTE(v5) = (v7 & 0x200) == 0;
     if ((*&self->_has & 0x200) != 0)
     {
-      if ((*(a3 + 30) & 0x200) == 0)
+      if ((*(equal + 30) & 0x200) == 0)
       {
 LABEL_49:
         LOBYTE(v5) = 0;
@@ -859,13 +859,13 @@ LABEL_49:
 
       if (self->_isRotted)
       {
-        if ((*(a3 + 56) & 1) == 0)
+        if ((*(equal + 56) & 1) == 0)
         {
           goto LABEL_49;
         }
       }
 
-      else if (*(a3 + 56))
+      else if (*(equal + 56))
       {
         goto LABEL_49;
       }
@@ -1054,14 +1054,14 @@ LABEL_28:
   return v6 ^ v5 ^ v7 ^ v11 ^ v12 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 30);
+  v3 = *(from + 30);
   if ((v3 & 0x100) != 0)
   {
-    self->_type = *(a3 + 13);
+    self->_type = *(from + 13);
     *&self->_has |= 0x100u;
-    v3 = *(a3 + 30);
+    v3 = *(from + 30);
     if ((v3 & 8) == 0)
     {
 LABEL_3:
@@ -1079,9 +1079,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_efficacy = *(a3 + 8);
+  self->_efficacy = *(from + 8);
   *&self->_has |= 8u;
-  v3 = *(a3 + 30);
+  v3 = *(from + 30);
   if ((v3 & 0x20) == 0)
   {
 LABEL_4:
@@ -1094,9 +1094,9 @@ LABEL_4:
   }
 
 LABEL_14:
-  self->_source = *(a3 + 10);
+  self->_source = *(from + 10);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 30);
+  v3 = *(from + 30);
   if ((v3 & 4) == 0)
   {
 LABEL_5:
@@ -1109,9 +1109,9 @@ LABEL_5:
   }
 
 LABEL_15:
-  self->_uncertainty = *(a3 + 3);
+  self->_uncertainty = *(from + 3);
   *&self->_has |= 4u;
-  v3 = *(a3 + 30);
+  v3 = *(from + 30);
   if ((v3 & 2) == 0)
   {
 LABEL_6:
@@ -1124,9 +1124,9 @@ LABEL_6:
   }
 
 LABEL_16:
-  self->_distanceFromTruth = *(a3 + 2);
+  self->_distanceFromTruth = *(from + 2);
   *&self->_has |= 2u;
-  v3 = *(a3 + 30);
+  v3 = *(from + 30);
   if ((v3 & 1) == 0)
   {
 LABEL_7:
@@ -1139,9 +1139,9 @@ LABEL_7:
   }
 
 LABEL_17:
-  self->_addressComponentMatches = *(a3 + 1);
+  self->_addressComponentMatches = *(from + 1);
   *&self->_has |= 1u;
-  v3 = *(a3 + 30);
+  v3 = *(from + 30);
   if ((v3 & 0x10) == 0)
   {
 LABEL_8:
@@ -1154,9 +1154,9 @@ LABEL_8:
   }
 
 LABEL_18:
-  self->_previousType = *(a3 + 9);
+  self->_previousType = *(from + 9);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 30);
+  v3 = *(from + 30);
   if ((v3 & 0x80) == 0)
   {
 LABEL_9:
@@ -1169,9 +1169,9 @@ LABEL_9:
   }
 
 LABEL_19:
-  self->_truthType = *(a3 + 12);
+  self->_truthType = *(from + 12);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 30);
+  v3 = *(from + 30);
   if ((v3 & 0x40) == 0)
   {
 LABEL_10:
@@ -1181,15 +1181,15 @@ LABEL_10:
     }
 
 LABEL_21:
-    self->_isRotted = *(a3 + 56);
+    self->_isRotted = *(from + 56);
     *&self->_has |= 0x200u;
     return;
   }
 
 LABEL_20:
-  self->_truthSource = *(a3 + 11);
+  self->_truthSource = *(from + 11);
   *&self->_has |= 0x40u;
-  if ((*(a3 + 30) & 0x200) != 0)
+  if ((*(from + 30) & 0x200) != 0)
   {
     goto LABEL_21;
   }

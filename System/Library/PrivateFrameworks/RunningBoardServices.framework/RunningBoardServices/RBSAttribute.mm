@@ -1,8 +1,8 @@
 @interface RBSAttribute
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (RBSAttribute)init;
-- (RBSAttribute)initWithRBSXPCCoder:(id)a3;
+- (RBSAttribute)initWithRBSXPCCoder:(id)coder;
 - (id)_init;
 @end
 
@@ -26,15 +26,15 @@
 
 - (RBSAttribute)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"RBSAttribute.m" lineNumber:17 description:@"-init is not allowed on RBSAttribute"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"RBSAttribute.m" lineNumber:17 description:@"-init is not allowed on RBSAttribute"];
 
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -43,9 +43,9 @@
   return v3 == objc_opt_class();
 }
 
-- (RBSAttribute)initWithRBSXPCCoder:(id)a3
+- (RBSAttribute)initWithRBSXPCCoder:(id)coder
 {
-  v3 = self;
+  selfCopy = self;
   if ([(RBSAttribute *)self isMemberOfClass:objc_opt_class()])
   {
     v4 = rbs_assertion_log();
@@ -59,8 +59,8 @@
 
   else
   {
-    v3 = [(RBSAttribute *)v3 _init];
-    v5 = v3;
+    selfCopy = [(RBSAttribute *)selfCopy _init];
+    v5 = selfCopy;
   }
 
   return v5;

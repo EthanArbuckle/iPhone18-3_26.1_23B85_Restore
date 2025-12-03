@@ -1,18 +1,18 @@
 @interface PXHUDTimeIntervalVisualization
-+ (PXHUDTimeIntervalVisualization)visualizationWithTimeInterval:(id)a3;
-- (void)setTimeInterval:(id)a3;
++ (PXHUDTimeIntervalVisualization)visualizationWithTimeInterval:(id)interval;
+- (void)setTimeInterval:(id)interval;
 @end
 
 @implementation PXHUDTimeIntervalVisualization
 
-- (void)setTimeInterval:(id)a3
+- (void)setTimeInterval:(id)interval
 {
-  v5 = a3;
+  intervalCopy = interval;
   timeInterval = self->_timeInterval;
-  if (timeInterval != v5)
+  if (timeInterval != intervalCopy)
   {
     [(PXTimeInterval *)timeInterval removeStateTransitionHandler:self->_stateTransitionHandlerToken];
-    objc_storeStrong(&self->_timeInterval, a3);
+    objc_storeStrong(&self->_timeInterval, interval);
     objc_initWeak(&location, self);
     v7 = self->_timeInterval;
     v10 = MEMORY[0x1E69E9820];
@@ -36,11 +36,11 @@ void __50__PXHUDTimeIntervalVisualization_setTimeInterval___block_invoke(uint64_
   [WeakRetained _notifyDelegateVisualizationDidChange];
 }
 
-+ (PXHUDTimeIntervalVisualization)visualizationWithTimeInterval:(id)a3
++ (PXHUDTimeIntervalVisualization)visualizationWithTimeInterval:(id)interval
 {
-  v3 = a3;
+  intervalCopy = interval;
   v4 = objc_alloc_init(PXHUDTimeIntervalVisualization);
-  [(PXHUDTimeIntervalVisualization *)v4 setTimeInterval:v3];
+  [(PXHUDTimeIntervalVisualization *)v4 setTimeInterval:intervalCopy];
 
   return v4;
 }

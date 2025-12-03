@@ -1,25 +1,25 @@
 @interface ABPK2DDetectionPostprocessGPU
-- (ABPK2DDetectionPostprocessGPU)initWithNumberOfChannels:(unint64_t)a3;
-- (uint64_t)process:(double)a3 counter:(uint64_t)a4 shape:(__IOSurface *)a5;
-- (void)_copyToInputAsFloat16:(float *)a3 shape:(CGSize)a4;
+- (ABPK2DDetectionPostprocessGPU)initWithNumberOfChannels:(unint64_t)channels;
+- (uint64_t)process:(double)process counter:(uint64_t)counter shape:(__IOSurface *)shape;
+- (void)_copyToInputAsFloat16:(float *)float16 shape:(CGSize)shape;
 - (void)dealloc;
 @end
 
 @implementation ABPK2DDetectionPostprocessGPU
 
-- (ABPK2DDetectionPostprocessGPU)initWithNumberOfChannels:(unint64_t)a3
+- (ABPK2DDetectionPostprocessGPU)initWithNumberOfChannels:(unint64_t)channels
 {
   v27.receiver = self;
   v27.super_class = ABPK2DDetectionPostprocessGPU;
   v4 = [(ABPK2DDetectionPostprocessGPU *)&v27 init];
-  v4->_nChannels = a3;
+  v4->_nChannels = channels;
   v5 = MTLCreateSystemDefaultDevice();
   device = v4->_device;
   v4->_device = v5;
 
-  v7 = [(MTLDevice *)v4->_device newCommandQueue];
+  newCommandQueue = [(MTLDevice *)v4->_device newCommandQueue];
   commandQueue = v4->_commandQueue;
-  v4->_commandQueue = v7;
+  v4->_commandQueue = newCommandQueue;
 
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v10 = [v9 URLForResource:@"default" withExtension:@"metallib"];
@@ -67,12 +67,12 @@
   [(ABPK2DDetectionPostprocessGPU *)&v6 dealloc];
 }
 
-- (void)_copyToInputAsFloat16:(float *)a3 shape:(CGSize)a4
+- (void)_copyToInputAsFloat16:(float *)float16 shape:(CGSize)shape
 {
-  v5 = (a4.height * (a4.width * self->_nChannels * 0.125) * 0.125);
+  v5 = (shape.height * (shape.width * self->_nChannels * 0.125) * 0.125);
   for (i = [(MTLBuffer *)self->_input contents]; v5; --v5)
   {
-    v7 = *a3++;
+    v7 = *float16++;
     _S0 = v7;
     __asm { FCVT            H0, S0 }
 
@@ -80,66 +80,66 @@
   }
 }
 
-- (uint64_t)process:(double)a3 counter:(uint64_t)a4 shape:(__IOSurface *)a5
+- (uint64_t)process:(double)process counter:(uint64_t)counter shape:(__IOSurface *)shape
 {
-  v11 = [*(a1 + 16) newBufferWithIOSurface:?];
-  v12 = *(a1 + 48);
-  *(a1 + 48) = v11;
+  v11 = [*(self + 16) newBufferWithIOSurface:?];
+  v12 = *(self + 48);
+  *(self + 48) = v11;
 
-  bzero([*(a1 + 64) contents], objc_msgSend(*(a1 + 64), "length"));
-  v13 = [*(a1 + 24) commandBuffer];
-  [v13 setLabel:@"com.apple.abpk.2ddetectionpostprocessGPU.commandBuffer"];
+  bzero([*(self + 64) contents], objc_msgSend(*(self + 64), "length"));
+  commandBuffer = [*(self + 24) commandBuffer];
+  [commandBuffer setLabel:@"com.apple.abpk.2ddetectionpostprocessGPU.commandBuffer"];
   v14 = (a2 * 0.125);
-  v15 = (a3 * 0.125);
-  v34[0] = (a3 * 0.125);
-  v34[1] = a3;
-  v34[2] = IOSurfaceGetBytesPerRow(a5) >> 1;
+  v15 = (process * 0.125);
+  v34[0] = (process * 0.125);
+  v34[1] = process;
+  v34[2] = IOSurfaceGetBytesPerRow(shape) >> 1;
   v34[3] = a2;
-  v16 = [v13 computeCommandEncoder];
-  [v16 setLabel:@"com.apple.abpk.2ddetectionpostprocessGPU.interpolation"];
-  [v16 setComputePipelineState:*(a1 + 32)];
-  [v16 setBuffer:*(a1 + 48) offset:0 atIndex:0];
-  [v16 setBuffer:*(a1 + 56) offset:0 atIndex:1];
-  [v16 setBytes:&precomputedInterpolateBicubic length:96 atIndex:2];
-  [v16 setBytes:v34 length:16 atIndex:3];
-  v17 = [*(a1 + 32) threadExecutionWidth];
-  v18 = [*(a1 + 32) maxTotalThreadsPerThreadgroup];
-  v19 = *(a1 + 8);
+  computeCommandEncoder = [commandBuffer computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"com.apple.abpk.2ddetectionpostprocessGPU.interpolation"];
+  [computeCommandEncoder setComputePipelineState:*(self + 32)];
+  [computeCommandEncoder setBuffer:*(self + 48) offset:0 atIndex:0];
+  [computeCommandEncoder setBuffer:*(self + 56) offset:0 atIndex:1];
+  [computeCommandEncoder setBytes:&precomputedInterpolateBicubic length:96 atIndex:2];
+  [computeCommandEncoder setBytes:v34 length:16 atIndex:3];
+  threadExecutionWidth = [*(self + 32) threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup = [*(self + 32) maxTotalThreadsPerThreadgroup];
+  v19 = *(self + 8);
   v31 = scale * v14;
   v32 = scale * v15;
   v33 = v19;
-  v28 = v17;
-  v29 = v18 / v17;
+  v28 = threadExecutionWidth;
+  v29 = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
   v30 = 1;
-  [v16 dispatchThreads:&v31 threadsPerThreadgroup:&v28];
-  [v16 endEncoding];
+  [computeCommandEncoder dispatchThreads:&v31 threadsPerThreadgroup:&v28];
+  [computeCommandEncoder endEncoding];
 
-  v20 = [v13 computeCommandEncoder];
-  [v20 setLabel:@"com.apple.abpk.2ddetectionpostprocessGPU.maxfilter"];
-  [v20 setComputePipelineState:*(a1 + 40)];
-  [v20 setBuffer:*(a1 + 56) offset:0 atIndex:0];
-  [v20 setBuffer:*(a1 + 64) offset:0 atIndex:1];
-  v21 = [*(a1 + 16) newBufferWithBytes:a6 length:4 options:0];
-  [v20 setBuffer:v21 offset:0 atIndex:2];
-  v22 = [*(a1 + 16) newBufferWithBytes:v34 length:16 options:0];
-  [v20 setBuffer:v22 offset:0 atIndex:3];
-  v23 = [*(a1 + 40) threadExecutionWidth];
-  v24 = [*(a1 + 40) maxTotalThreadsPerThreadgroup];
-  v25 = *(a1 + 8);
+  computeCommandEncoder2 = [commandBuffer computeCommandEncoder];
+  [computeCommandEncoder2 setLabel:@"com.apple.abpk.2ddetectionpostprocessGPU.maxfilter"];
+  [computeCommandEncoder2 setComputePipelineState:*(self + 40)];
+  [computeCommandEncoder2 setBuffer:*(self + 56) offset:0 atIndex:0];
+  [computeCommandEncoder2 setBuffer:*(self + 64) offset:0 atIndex:1];
+  v21 = [*(self + 16) newBufferWithBytes:a6 length:4 options:0];
+  [computeCommandEncoder2 setBuffer:v21 offset:0 atIndex:2];
+  v22 = [*(self + 16) newBufferWithBytes:v34 length:16 options:0];
+  [computeCommandEncoder2 setBuffer:v22 offset:0 atIndex:3];
+  threadExecutionWidth2 = [*(self + 40) threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup2 = [*(self + 40) maxTotalThreadsPerThreadgroup];
+  v25 = *(self + 8);
   v31 = scale * v14;
   v32 = scale * v15;
   v33 = v25;
-  v28 = v23;
-  v29 = v24 / v23;
+  v28 = threadExecutionWidth2;
+  v29 = maxTotalThreadsPerThreadgroup2 / threadExecutionWidth2;
   v30 = 1;
-  [v20 dispatchThreads:&v31 threadsPerThreadgroup:&v28];
-  [v20 endEncoding];
-  [v13 commit];
-  [v13 waitUntilCompleted];
+  [computeCommandEncoder2 dispatchThreads:&v31 threadsPerThreadgroup:&v28];
+  [computeCommandEncoder2 endEncoding];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
   memcpy(a6, [v21 contents], objc_msgSend(v21, "length"));
-  v26 = [*(a1 + 64) contents];
+  contents = [*(self + 64) contents];
 
-  return v26;
+  return contents;
 }
 
 @end

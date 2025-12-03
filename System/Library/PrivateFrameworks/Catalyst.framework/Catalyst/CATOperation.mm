@@ -1,16 +1,16 @@
 @interface CATOperation
 + (id)callStackSymbols;
 - (BOOL)isReady;
-- (BOOL)whenStateIs:(int)a3 atomicallySwapWith:(int)a4;
+- (BOOL)whenStateIs:(int)is atomicallySwapWith:(int)with;
 - (CATOperation)init;
 - (id)description;
 - (id)stateDescription;
-- (void)addTarget:(id)a3 selector:(SEL)a4 forOperationEvents:(unint64_t)a5 userInfo:(id)a6 delegateQueue:(id)a7;
+- (void)addTarget:(id)target selector:(SEL)selector forOperationEvents:(unint64_t)events userInfo:(id)info delegateQueue:(id)queue;
 - (void)endOperationSuccessfullyIfNeeded;
-- (void)endOperationWithError:(id)a3;
-- (void)endOperationWithResultObject:(id)a3;
+- (void)endOperationWithError:(id)error;
+- (void)endOperationWithResultObject:(id)object;
 - (void)finalizeOperation;
-- (void)operationWillEnqueueOntoOperationQueue:(id)a3;
+- (void)operationWillEnqueueOntoOperationQueue:(id)queue;
 - (void)start;
 @end
 
@@ -23,13 +23,13 @@
   v2 = [(CATOperation *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     createdDate = v2->_createdDate;
-    v2->_createdDate = v3;
+    v2->_createdDate = date;
 
-    v5 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     UUID = v2->_UUID;
-    v2->_UUID = v5;
+    v2->_UUID = uUID;
 
     v2->_completedUnitCount = -1;
     v2->_totalUnitCount = -1;
@@ -52,11 +52,11 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CATOperation *)self name];
-  v6 = [(CATOperation *)self UUID];
-  v7 = [v6 UUIDString];
-  v8 = [(CATOperation *)self stateDescription];
-  v9 = [v3 stringWithFormat:@"<%@: %p { name = %@, ID = %@, state = %@, completed = %ld/%ld }>", v4, self, v5, v7, v8, -[CATOperation completedUnitCount](self, "completedUnitCount"), -[CATOperation totalUnitCount](self, "totalUnitCount")];
+  name = [(CATOperation *)self name];
+  uUID = [(CATOperation *)self UUID];
+  uUIDString = [uUID UUIDString];
+  stateDescription = [(CATOperation *)self stateDescription];
+  v9 = [v3 stringWithFormat:@"<%@: %p { name = %@, ID = %@, state = %@, completed = %ld/%ld }>", v4, self, name, uUIDString, stateDescription, -[CATOperation completedUnitCount](self, "completedUnitCount"), -[CATOperation totalUnitCount](self, "totalUnitCount")];
 
   return v9;
 }
@@ -73,8 +73,8 @@
 {
   if ([(CATOperation *)self whenStateIs:0 atomicallySwapWith:1])
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
-    [(CATOperation *)self setEnqueuedDate:v3];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(CATOperation *)self setEnqueuedDate:date];
 
     [(CATOperation *)self setPhase:1];
   }
@@ -87,9 +87,9 @@
 - (void)start
 {
   OUTLINED_FUNCTION_1();
-  v2 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v3 = atomic_load((v1 + 256));
-  [v2 handleFailureInMethod:v0 object:v1 file:@"CATOperation.m" lineNumber:250 description:{@"%@ cannot transition to '_CATOperationStateRunning' from state (%d).", v1, v3}];
+  [currentHandler handleFailureInMethod:v0 object:v1 file:@"CATOperation.m" lineNumber:250 description:{@"%@ cannot transition to '_CATOperationStateRunning' from state (%d).", v1, v3}];
 }
 
 - (void)endOperationSuccessfullyIfNeeded
@@ -109,16 +109,16 @@
   }
 }
 
-- (void)endOperationWithResultObject:(id)a3
+- (void)endOperationWithResultObject:(id)object
 {
-  v11 = a3;
-  v5 = [objc_opt_class() callStackSymbols];
+  objectCopy = object;
+  callStackSymbols = [objc_opt_class() callStackSymbols];
   [(NSLock *)self->mLock lock];
   if ([(CATOperation *)self whenStateIs:3 atomicallySwapWith:4])
   {
-    objc_storeStrong(&self->mCallStackSymbols, v5);
+    objc_storeStrong(&self->mCallStackSymbols, callStackSymbols);
     [(NSLock *)self->mLock unlock];
-    [(CATOperation *)self setResultObject:v11];
+    [(CATOperation *)self setResultObject:objectCopy];
     [(CATOperation *)self finalizeOperation];
   }
 
@@ -126,27 +126,27 @@
   {
     v6 = atomic_load(&self->mState);
     [(NSLock *)self->mLock unlock];
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = NSStringFromSelector(a2);
     v9 = v8;
     if (v6 > 4)
     {
-      [v7 handleFailureInMethod:a2 object:self file:@"CATOperation.m" lineNumber:311 description:{@"%@ cannot call %@ when operation is already finished. Previous call:\n%@", self, v8, self->mCallStackSymbols}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"CATOperation.m" lineNumber:311 description:{@"%@ cannot call %@ when operation is already finished. Previous call:\n%@", self, v8, self->mCallStackSymbols}];
     }
 
     else
     {
       v10 = atomic_load(&self->mState);
-      [v7 handleFailureInMethod:a2 object:self file:@"CATOperation.m" lineNumber:307 description:{@"%@ cannot call %@ when operation's state is %ld", self, v8, v10}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"CATOperation.m" lineNumber:307 description:{@"%@ cannot call %@ when operation's state is %ld", self, v8, v10}];
     }
   }
 }
 
-- (void)endOperationWithError:(id)a3
+- (void)endOperationWithError:(id)error
 {
-  v11 = a3;
-  v5 = [objc_opt_class() callStackSymbols];
-  if (!v11)
+  errorCopy = error;
+  callStackSymbols = [objc_opt_class() callStackSymbols];
+  if (!errorCopy)
   {
     [CATOperation endOperationWithError:];
   }
@@ -154,9 +154,9 @@
   [(NSLock *)self->mLock lock];
   if ([(CATOperation *)self whenStateIs:3 atomicallySwapWith:4])
   {
-    objc_storeStrong(&self->mCallStackSymbols, v5);
+    objc_storeStrong(&self->mCallStackSymbols, callStackSymbols);
     [(NSLock *)self->mLock unlock];
-    [(CATOperation *)self setError:v11];
+    [(CATOperation *)self setError:errorCopy];
     [(CATOperation *)self finalizeOperation];
   }
 
@@ -164,26 +164,26 @@
   {
     v6 = atomic_load(&self->mState);
     [(NSLock *)self->mLock unlock];
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = NSStringFromSelector(a2);
     v9 = v8;
     if (v6 > 4)
     {
-      [v7 handleFailureInMethod:a2 object:self file:@"CATOperation.m" lineNumber:336 description:{@"%@ cannot call %@ when operation is already finished. Previous call:\n%@", self, v8, self->mCallStackSymbols}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"CATOperation.m" lineNumber:336 description:{@"%@ cannot call %@ when operation is already finished. Previous call:\n%@", self, v8, self->mCallStackSymbols}];
     }
 
     else
     {
       v10 = atomic_load(&self->mState);
-      [v7 handleFailureInMethod:a2 object:self file:@"CATOperation.m" lineNumber:332 description:{@"%@ cannot call %@ when operation's state is %ld", self, v8, v10}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"CATOperation.m" lineNumber:332 description:{@"%@ cannot call %@ when operation's state is %ld", self, v8, v10}];
     }
   }
 }
 
 + (id)callStackSymbols
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"CATCaptureCallStackSymbols"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"CATCaptureCallStackSymbols"];
   v4 = v3;
   v5 = MEMORY[0x277CBEC28];
   if (v3)
@@ -193,11 +193,11 @@
 
   v6 = v5;
 
-  v7 = [v6 BOOLValue];
-  if (v7)
+  bOOLValue = [v6 BOOLValue];
+  if (bOOLValue)
   {
-    v8 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v9 = [v8 copy];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v9 = [callStackSymbols copy];
 
     v10 = [v9 subarrayWithRange:{1, objc_msgSend(v9, "count") - 1}];
   }
@@ -215,8 +215,8 @@
   [(CATOperation *)self operationWillFinish];
   if ([(CATOperation *)self whenStateIs:4 atomicallySwapWith:5])
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
-    [(CATOperation *)self setFinishedDate:v3];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(CATOperation *)self setFinishedDate:date];
 
     [(CATOperation *)self willChangeValueForKey:@"isExecuting"];
     [(CATOperation *)self willChangeValueForKey:@"isFinished"];
@@ -230,30 +230,30 @@
   }
 }
 
-- (void)operationWillEnqueueOntoOperationQueue:(id)a3
+- (void)operationWillEnqueueOntoOperationQueue:(id)queue
 {
   if ([(CATOperation *)self whenStateIs:0 atomicallySwapWith:1])
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
-    [(CATOperation *)self setEnqueuedDate:v4];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(CATOperation *)self setEnqueuedDate:date];
 
     [(CATOperation *)self setPhase:1];
   }
 }
 
-- (BOOL)whenStateIs:(int)a3 atomicallySwapWith:(int)a4
+- (BOOL)whenStateIs:(int)is atomicallySwapWith:(int)with
 {
-  v4 = a3;
-  atomic_compare_exchange_strong(&self->mState, &v4, a4);
-  return v4 == a3;
+  isCopy = is;
+  atomic_compare_exchange_strong(&self->mState, &isCopy, with);
+  return isCopy == is;
 }
 
-- (void)addTarget:(id)a3 selector:(SEL)a4 forOperationEvents:(unint64_t)a5 userInfo:(id)a6 delegateQueue:(id)a7
+- (void)addTarget:(id)target selector:(SEL)selector forOperationEvents:(unint64_t)events userInfo:(id)info delegateQueue:(id)queue
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a3;
-  v15 = [[_CATOperationTargetSelectorObserver alloc] initWithTarget:v14 selector:a4 events:a5 userInfo:v13 delegateQueue:v12];
+  queueCopy = queue;
+  infoCopy = info;
+  targetCopy = target;
+  v15 = [[_CATOperationTargetSelectorObserver alloc] initWithTarget:targetCopy selector:selector events:events userInfo:infoCopy delegateQueue:queueCopy];
 
   [(CATOperation *)self addObserver:v15];
 }

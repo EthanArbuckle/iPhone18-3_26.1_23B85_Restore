@@ -1,7 +1,7 @@
 @interface ICRegulatoryLogger
 - (ICRegulatoryLogger)init;
 - (void)dealloc;
-- (void)didReadAttachment:(id)a3;
+- (void)didReadAttachment:(id)attachment;
 @end
 
 @implementation ICRegulatoryLogger
@@ -14,11 +14,11 @@
   if (v2)
   {
     [(ICRegulatoryLogger *)v2 setGreenTeaLogger:ct_green_tea_logger_create_delayInitStub(v3)];
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v2 selector:sel_didReadAttachment_ name:@"ICRegulatoryLoggerAttachmentAddedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_didReadAttachment_ name:@"ICRegulatoryLoggerAttachmentAddedNotification" object:0];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel_didReadAttachment_ name:@"ICRegulatoryLoggerAttachmentPlayedNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_didReadAttachment_ name:@"ICRegulatoryLoggerAttachmentPlayedNotification" object:0];
   }
 
   return v2;
@@ -26,32 +26,32 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICRegulatoryLogger;
   [(ICRegulatoryLogger *)&v4 dealloc];
 }
 
-- (void)didReadAttachment:(id)a3
+- (void)didReadAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   objc_opt_class();
-  v5 = [v4 userInfo];
+  userInfo = [attachmentCopy userInfo];
 
-  v6 = [v5 objectForKeyedSubscript:@"ICRegulatoryLoggerAttachmentKey"];
+  v6 = [userInfo objectForKeyedSubscript:@"ICRegulatoryLoggerAttachmentKey"];
   v7 = ICDynamicCast();
 
-  v8 = [v7 managedObjectContext];
+  managedObjectContext = [v7 managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __40__ICRegulatoryLogger_didReadAttachment___block_invoke;
   v10[3] = &unk_278194AD8;
   v11 = v7;
-  v12 = self;
+  selfCopy = self;
   v9 = v7;
-  [v8 performBlock:v10];
+  [managedObjectContext performBlock:v10];
 }
 
 void __40__ICRegulatoryLogger_didReadAttachment___block_invoke(uint64_t a1)

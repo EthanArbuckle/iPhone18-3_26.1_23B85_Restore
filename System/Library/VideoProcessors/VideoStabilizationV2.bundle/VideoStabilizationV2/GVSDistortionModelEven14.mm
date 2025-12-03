@@ -1,9 +1,9 @@
 @interface GVSDistortionModelEven14
 - (GVSDistortionModelEven14)init;
-- (double)computeScalingAtPointsQuad:(float32x4_t)a3;
+- (double)computeScalingAtPointsQuad:(float32x4_t)quad;
 - (float)computeInverseScalingAtPoint:(GVSDistortionModelEven14 *)self;
 - (void)reset;
-- (void)updateWithCoefficients:(float *)a3 pixelSizeMm:(float)a4 center:;
+- (void)updateWithCoefficients:(float *)coefficients pixelSizeMm:(float)mm center:;
 @end
 
 @implementation GVSDistortionModelEven14
@@ -30,18 +30,18 @@
   self->_pixelSizeMmSq = 0.0;
 }
 
-- (void)updateWithCoefficients:(float *)a3 pixelSizeMm:(float)a4 center:
+- (void)updateWithCoefficients:(float *)coefficients pixelSizeMm:(float)mm center:
 {
-  if (a3)
+  if (coefficients)
   {
     coefficients = self->_coefficients;
     for (i = 7; i != -1; --i)
     {
-      *coefficients++ = a3[i] * 0.01;
+      *coefficients++ = coefficients[i] * 0.01;
     }
 
     self->_coefficients[7] = self->_coefficients[7] + 1.0;
-    self->_pixelSizeMmSq = a4 * a4;
+    self->_pixelSizeMmSq = mm * mm;
     *self->_distortionCenter = v4;
   }
 
@@ -66,19 +66,19 @@
   return result;
 }
 
-- (double)computeScalingAtPointsQuad:(float32x4_t)a3
+- (double)computeScalingAtPointsQuad:(float32x4_t)quad
 {
   v3 = 0;
-  v4 = *(a1 + 40);
+  v4 = *(self + 40);
   v5 = vsubq_f32(a2, vdupq_lane_s32(v4, 0));
-  v6 = (a1 + 8);
+  v6 = (self + 8);
   v7 = vld1q_dup_f32(v6);
-  v8 = vsubq_f32(a3, vdupq_lane_s32(v4, 1));
-  v9 = vmulq_n_f32(vmlaq_f32(vmulq_f32(v8, v8), v5, v5), *(a1 + 48));
+  v8 = vsubq_f32(quad, vdupq_lane_s32(v4, 1));
+  v9 = vmulq_n_f32(vmlaq_f32(vmulq_f32(v8, v8), v5, v5), *(self + 48));
   do
   {
     v10 = v7;
-    v11 = (a1 + 12 + v3);
+    v11 = (self + 12 + v3);
     v12 = vld1q_dup_f32(v11);
     v7 = vmlaq_f32(v12, v9, v10);
     v3 += 4;

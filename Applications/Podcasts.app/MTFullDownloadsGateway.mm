@@ -1,96 +1,96 @@
 @interface MTFullDownloadsGateway
-- (BOOL)resumeOrPauseEpisodeDownloadWithUuid:(id)a3;
-- (MTFullDownloadsGateway)initWithDownloadManager:(id)a3;
-- (id)cancelAllDownloadsUserInitiated:(BOOL)a3;
-- (id)episodeUuidForDownloadWithAdamID:(id)a3;
-- (void)addEpisodeAutoDownloads:(id)a3 completion:(id)a4;
-- (void)cancelDownloadsForEpisodeUuid:(id)a3 userInitiated:(BOOL)a4;
-- (void)downloadEpisode:(id)a3 isFromSaving:(BOOL)a4;
-- (void)removeDownload:(id)a3 shouldAllowAutomaticRedownloads:(BOOL)a4 completion:(id)a5;
-- (void)restoreDownloadedEpisodes:(id)a3 completion:(id)a4;
+- (BOOL)resumeOrPauseEpisodeDownloadWithUuid:(id)uuid;
+- (MTFullDownloadsGateway)initWithDownloadManager:(id)manager;
+- (id)cancelAllDownloadsUserInitiated:(BOOL)initiated;
+- (id)episodeUuidForDownloadWithAdamID:(id)d;
+- (void)addEpisodeAutoDownloads:(id)downloads completion:(id)completion;
+- (void)cancelDownloadsForEpisodeUuid:(id)uuid userInitiated:(BOOL)initiated;
+- (void)downloadEpisode:(id)episode isFromSaving:(BOOL)saving;
+- (void)removeDownload:(id)download shouldAllowAutomaticRedownloads:(BOOL)redownloads completion:(id)completion;
+- (void)restoreDownloadedEpisodes:(id)episodes completion:(id)completion;
 @end
 
 @implementation MTFullDownloadsGateway
 
-- (MTFullDownloadsGateway)initWithDownloadManager:(id)a3
+- (MTFullDownloadsGateway)initWithDownloadManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v8.receiver = self;
   v8.super_class = MTFullDownloadsGateway;
   v5 = [(MTFullDownloadsGateway *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MTFullDownloadsGateway *)v5 setDownloadManager:v4];
+    [(MTFullDownloadsGateway *)v5 setDownloadManager:managerCopy];
   }
 
   return v6;
 }
 
-- (void)addEpisodeAutoDownloads:(id)a3 completion:(id)a4
+- (void)addEpisodeAutoDownloads:(id)downloads completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTFullDownloadsGateway *)self downloadManager];
-  [v8 addEpisodeAutoDownloads:v7 completion:v6];
+  completionCopy = completion;
+  downloadsCopy = downloads;
+  downloadManager = [(MTFullDownloadsGateway *)self downloadManager];
+  [downloadManager addEpisodeAutoDownloads:downloadsCopy completion:completionCopy];
 }
 
-- (id)cancelAllDownloadsUserInitiated:(BOOL)a3
+- (id)cancelAllDownloadsUserInitiated:(BOOL)initiated
 {
-  v3 = a3;
-  v4 = [(MTFullDownloadsGateway *)self downloadManager];
-  v5 = [v4 cancelAllDownloadsUserInitiated:v3];
+  initiatedCopy = initiated;
+  downloadManager = [(MTFullDownloadsGateway *)self downloadManager];
+  v5 = [downloadManager cancelAllDownloadsUserInitiated:initiatedCopy];
 
   return v5;
 }
 
-- (void)cancelDownloadsForEpisodeUuid:(id)a3 userInitiated:(BOOL)a4
+- (void)cancelDownloadsForEpisodeUuid:(id)uuid userInitiated:(BOOL)initiated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(MTFullDownloadsGateway *)self downloadManager];
-  [v7 cancelDownloadsForEpisodeUuid:v6 userInitiated:v4];
+  initiatedCopy = initiated;
+  uuidCopy = uuid;
+  downloadManager = [(MTFullDownloadsGateway *)self downloadManager];
+  [downloadManager cancelDownloadsForEpisodeUuid:uuidCopy userInitiated:initiatedCopy];
 }
 
-- (void)downloadEpisode:(id)a3 isFromSaving:(BOOL)a4
+- (void)downloadEpisode:(id)episode isFromSaving:(BOOL)saving
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(MTFullDownloadsGateway *)self downloadManager];
-  [v7 downloadEpisode:v6 isFromSaving:v4];
+  savingCopy = saving;
+  episodeCopy = episode;
+  downloadManager = [(MTFullDownloadsGateway *)self downloadManager];
+  [downloadManager downloadEpisode:episodeCopy isFromSaving:savingCopy];
 }
 
-- (id)episodeUuidForDownloadWithAdamID:(id)a3
+- (id)episodeUuidForDownloadWithAdamID:(id)d
 {
-  v4 = a3;
-  v5 = [(MTFullDownloadsGateway *)self downloadManager];
-  v6 = [v5 episodeUuidForDownloadWithAdamID:v4];
+  dCopy = d;
+  downloadManager = [(MTFullDownloadsGateway *)self downloadManager];
+  v6 = [downloadManager episodeUuidForDownloadWithAdamID:dCopy];
 
   return v6;
 }
 
-- (void)removeDownload:(id)a3 shouldAllowAutomaticRedownloads:(BOOL)a4 completion:(id)a5
+- (void)removeDownload:(id)download shouldAllowAutomaticRedownloads:(BOOL)redownloads completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(MTFullDownloadsGateway *)self downloadManager];
-  [v10 removeDownload:v9 shouldAllowAutomaticRedownloads:v5 completion:v8];
+  redownloadsCopy = redownloads;
+  completionCopy = completion;
+  downloadCopy = download;
+  downloadManager = [(MTFullDownloadsGateway *)self downloadManager];
+  [downloadManager removeDownload:downloadCopy shouldAllowAutomaticRedownloads:redownloadsCopy completion:completionCopy];
 }
 
-- (void)restoreDownloadedEpisodes:(id)a3 completion:(id)a4
+- (void)restoreDownloadedEpisodes:(id)episodes completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTFullDownloadsGateway *)self downloadManager];
-  [v8 restoreDownloadedEpisodes:v7 completion:v6];
+  completionCopy = completion;
+  episodesCopy = episodes;
+  downloadManager = [(MTFullDownloadsGateway *)self downloadManager];
+  [downloadManager restoreDownloadedEpisodes:episodesCopy completion:completionCopy];
 }
 
-- (BOOL)resumeOrPauseEpisodeDownloadWithUuid:(id)a3
+- (BOOL)resumeOrPauseEpisodeDownloadWithUuid:(id)uuid
 {
-  v4 = a3;
-  v5 = [(MTFullDownloadsGateway *)self downloadManager];
-  v6 = [v5 resumeOrPauseEpisodeDownloadWithUuid:v4];
+  uuidCopy = uuid;
+  downloadManager = [(MTFullDownloadsGateway *)self downloadManager];
+  v6 = [downloadManager resumeOrPauseEpisodeDownloadWithUuid:uuidCopy];
 
   return v6;
 }

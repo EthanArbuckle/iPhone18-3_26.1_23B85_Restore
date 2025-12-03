@@ -1,21 +1,21 @@
 @interface KCSharingGroupManager
-- (void)fetchGroupParticipantsWithCompletionHandler:(id)a3;
-- (void)fetchParticipantHandleFor:(NSString *)a3 groupID:(NSString *)a4 currentUserParticipantID:(NSString *)a5 completionHandler:(id)a6;
+- (void)fetchGroupParticipantsWithCompletionHandler:(id)handler;
+- (void)fetchParticipantHandleFor:(NSString *)for groupID:(NSString *)d currentUserParticipantID:(NSString *)iD completionHandler:(id)handler;
 @end
 
 @implementation KCSharingGroupManager
 
-- (void)fetchParticipantHandleFor:(NSString *)a3 groupID:(NSString *)a4 currentUserParticipantID:(NSString *)a5 completionHandler:(id)a6
+- (void)fetchParticipantHandleFor:(NSString *)for groupID:(NSString *)d currentUserParticipantID:(NSString *)iD completionHandler:(id)handler
 {
   v11 = sub_1001AD17C(&unk_100372310, &qword_10029CEC0);
   v12 = *(*(v11 - 8) + 64);
   __chkstk_darwin(v11 - 8);
   v14 = &v24 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
-  v16[2] = a3;
-  v16[3] = a4;
-  v16[4] = a5;
+  v16[2] = for;
+  v16[3] = d;
+  v16[4] = iD;
   v16[5] = v15;
   v16[6] = self;
   v17 = type metadata accessor for TaskPriority();
@@ -30,20 +30,20 @@
   v19[3] = 0;
   v19[4] = &unk_10029E7C0;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = self;
+  forCopy = for;
+  dCopy = d;
+  iDCopy = iD;
+  selfCopy = self;
   sub_100244978(0, 0, v14, &unk_10029E7C8, v19);
 }
 
-- (void)fetchGroupParticipantsWithCompletionHandler:(id)a3
+- (void)fetchGroupParticipantsWithCompletionHandler:(id)handler
 {
   v5 = sub_1001AD17C(&unk_100372310, &qword_10029CEC0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -59,7 +59,7 @@
   v13[3] = 0;
   v13[4] = &unk_10029C6A0;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_100244978(0, 0, v8, &unk_10029CEE0, v13);
 }
 

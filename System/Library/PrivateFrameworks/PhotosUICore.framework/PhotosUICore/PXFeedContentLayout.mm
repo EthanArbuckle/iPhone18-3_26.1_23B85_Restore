@@ -1,44 +1,44 @@
 @interface PXFeedContentLayout
 - (PXFeedContentLayout)init;
-- (PXFeedContentLayout)initWithViewModel:(id)a3;
-- (PXSimpleIndexPath)indexPathClosestToIndexPath:(SEL)a3 inDirection:(PXSimpleIndexPath *)a4;
-- (id)itemPlacementControllerForItemReference:(id)a3;
-- (id)layout:(id)a3 createSublayoutAtIndex:(int64_t)a4;
+- (PXFeedContentLayout)initWithViewModel:(id)model;
+- (PXSimpleIndexPath)indexPathClosestToIndexPath:(SEL)path inDirection:(PXSimpleIndexPath *)direction;
+- (id)itemPlacementControllerForItemReference:(id)reference;
+- (id)layout:(id)layout createSublayoutAtIndex:(int64_t)index;
 - (int64_t)anchoredSublayoutIndex;
 - (int64_t)scrollableAxis;
-- (int64_t)sublayoutIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5;
+- (int64_t)sublayoutIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference;
 - (void)_invalidateCompositionParameters;
 - (void)_invalidateFeedSectionSublayouts;
 - (void)_invalidateFeedSelectionSnapshot;
 - (void)_updateCompositionParameters;
 - (void)_updateFeedSectionSublayouts;
 - (void)_updateFeedSelectionSnapshot;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)safeAreaInsetsDidChange;
 - (void)update;
 @end
 
 @implementation PXFeedContentLayout
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v10 = a3;
-  if (ViewModelObservationContext_215315 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (ViewModelObservationContext_215315 != context)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXFeedContentLayout.m" lineNumber:232 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedContentLayout.m" lineNumber:232 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((v6 & 2) != 0)
+  if ((changeCopy & 2) != 0)
   {
     [(PXFeedContentLayout *)self _invalidateFeedSectionSublayouts];
-    if ((v6 & 4) == 0)
+    if ((changeCopy & 4) == 0)
     {
 LABEL_4:
-      if ((v6 & 8) == 0)
+      if ((changeCopy & 8) == 0)
       {
         goto LABEL_6;
       }
@@ -47,13 +47,13 @@ LABEL_4:
     }
   }
 
-  else if ((v6 & 4) == 0)
+  else if ((changeCopy & 4) == 0)
   {
     goto LABEL_4;
   }
 
   [(PXFeedContentLayout *)self _invalidateFeedSelectionSnapshot];
-  if ((v6 & 8) != 0)
+  if ((changeCopy & 8) != 0)
   {
 LABEL_5:
     [(PXFeedContentLayout *)self _invalidateCompositionParameters];
@@ -62,18 +62,18 @@ LABEL_5:
 LABEL_6:
 }
 
-- (id)layout:(id)a3 createSublayoutAtIndex:(int64_t)a4
+- (id)layout:(id)layout createSublayoutAtIndex:(int64_t)index
 {
-  v6 = [(PXFeedContentLayout *)self viewModel];
-  v7 = [v6 dataSource];
-  v8 = [v7 identifier];
+  viewModel = [(PXFeedContentLayout *)self viewModel];
+  dataSource = [viewModel dataSource];
+  identifier = [dataSource identifier];
   v9 = [PXFeedSectionContentLayout alloc];
-  v14[0] = v8;
-  v14[1] = a4;
+  v14[0] = identifier;
+  v14[1] = index;
   v10.f64[0] = NAN;
   v10.f64[1] = NAN;
   v15 = vnegq_f64(v10);
-  v11 = [(PXFeedSectionContentLayout *)v9 initWithViewModel:v6 dataSource:v7 sectionIndexPath:v14];
+  v11 = [(PXFeedSectionContentLayout *)v9 initWithViewModel:viewModel dataSource:dataSource sectionIndexPath:v14];
   v12 = [[off_1E77215B0 alloc] initWithDecoratedLayout:v11];
   [v12 setActiveDecorations:&unk_1F19118C0];
   [v12 setContentSource:self->_decorationSource];
@@ -97,11 +97,11 @@ LABEL_6:
 
 - (void)_updateCompositionParameters
 {
-  v12 = [(PXGCompositeLayout *)self composition];
-  v3 = [(PXFeedContentLayout *)self viewModel];
-  v4 = [v3 wantsEmbeddedScrollView];
+  composition = [(PXGCompositeLayout *)self composition];
+  viewModel = [(PXFeedContentLayout *)self viewModel];
+  wantsEmbeddedScrollView = [viewModel wantsEmbeddedScrollView];
 
-  if (v4)
+  if (wantsEmbeddedScrollView)
   {
     [(PXFeedContentLayout *)self safeAreaInsets];
   }
@@ -114,11 +114,11 @@ LABEL_6:
     v8 = *(off_1E7721FA8 + 3);
   }
 
-  [v12 setPadding:{v5, v6, v7, v8}];
-  v9 = [(PXFeedContentLayout *)self viewModel];
-  v10 = [v9 spec];
-  v11 = [v10 scrollBehavior];
-  [v12 setAxis:{objc_msgSend(v11, "axis")}];
+  [composition setPadding:{v5, v6, v7, v8}];
+  viewModel2 = [(PXFeedContentLayout *)self viewModel];
+  spec = [viewModel2 spec];
+  scrollBehavior = [spec scrollBehavior];
+  [composition setAxis:{objc_msgSend(scrollBehavior, "axis")}];
 }
 
 - (void)_invalidateCompositionParameters
@@ -137,9 +137,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 4) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedContentLayout _invalidateCompositionParameters]"];
-      [v6 handleFailureInFunction:v7 file:@"PXFeedContentLayout.m" lineNumber:169 description:{@"invalidating %lu after it already has been updated", 4}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXFeedContentLayout.m" lineNumber:169 description:{@"invalidating %lu after it already has been updated", 4}];
 
       abort();
     }
@@ -163,9 +163,9 @@ LABEL_5:
 
 - (void)_updateFeedSelectionSnapshot
 {
-  v4 = [(PXFeedContentLayout *)self viewModel];
-  v3 = [v4 selectionSnapshot];
-  [(PXFeedItemDecorationSource *)self->_decorationSource setSelectionSnapshot:v3];
+  viewModel = [(PXFeedContentLayout *)self viewModel];
+  selectionSnapshot = [viewModel selectionSnapshot];
+  [(PXFeedItemDecorationSource *)self->_decorationSource setSelectionSnapshot:selectionSnapshot];
 }
 
 - (void)_invalidateFeedSelectionSnapshot
@@ -184,9 +184,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedContentLayout _invalidateFeedSelectionSnapshot]"];
-      [v6 handleFailureInFunction:v7 file:@"PXFeedContentLayout.m" lineNumber:160 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXFeedContentLayout.m" lineNumber:160 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -210,25 +210,25 @@ LABEL_5:
 
 - (void)_updateFeedSectionSublayouts
 {
-  v3 = [(PXFeedContentLayout *)self presentedDataSource];
-  v4 = [(PXFeedContentLayout *)self viewModel];
-  v5 = [v4 dataSource];
-  v6 = [v4 dataSourceChangeHistory];
-  v7 = [v6 coalescedChangeDetailsFromDataSourceIdentifier:objc_msgSend(v3 toDataSourceIdentifier:{"identifier"), objc_msgSend(v5, "identifier")}];
+  presentedDataSource = [(PXFeedContentLayout *)self presentedDataSource];
+  viewModel = [(PXFeedContentLayout *)self viewModel];
+  dataSource = [viewModel dataSource];
+  dataSourceChangeHistory = [viewModel dataSourceChangeHistory];
+  v7 = [dataSourceChangeHistory coalescedChangeDetailsFromDataSourceIdentifier:objc_msgSend(presentedDataSource toDataSourceIdentifier:{"identifier"), objc_msgSend(dataSource, "identifier")}];
 
-  v8 = [v7 sectionChanges];
-  -[PXFeedContentLayout applySublayoutChangeDetails:countAfterChanges:sublayoutProvider:](self, "applySublayoutChangeDetails:countAfterChanges:sublayoutProvider:", v8, [v5 numberOfSections], self);
-  v9 = [v7 sectionsWithItemChanges];
+  sectionChanges = [v7 sectionChanges];
+  -[PXFeedContentLayout applySublayoutChangeDetails:countAfterChanges:sublayoutProvider:](self, "applySublayoutChangeDetails:countAfterChanges:sublayoutProvider:", sectionChanges, [dataSource numberOfSections], self);
+  sectionsWithItemChanges = [v7 sectionsWithItemChanges];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __51__PXFeedContentLayout__updateFeedSectionSublayouts__block_invoke;
   v12[3] = &unk_1E774C1B0;
   v12[4] = self;
-  v13 = v5;
+  v13 = dataSource;
   v14 = v7;
   v10 = v7;
-  v11 = v5;
-  [v9 enumerateIndexesUsingBlock:v12];
+  v11 = dataSource;
+  [sectionsWithItemChanges enumerateIndexesUsingBlock:v12];
 
   [(PXFeedItemDecorationSource *)self->_decorationSource setDataSource:v11 section:0];
   [(PXFeedContentLayout *)self setPresentedDataSource:v11];
@@ -257,9 +257,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedContentLayout _invalidateFeedSectionSublayouts]"];
-      [v6 handleFailureInFunction:v7 file:@"PXFeedContentLayout.m" lineNumber:139 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXFeedContentLayout.m" lineNumber:139 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -290,9 +290,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedContentLayout update]"];
-      [v7 handleFailureInFunction:v8 file:@"PXFeedContentLayout.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v8 file:@"PXFeedContentLayout.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -305,9 +305,9 @@ LABEL_5:
       [(PXFeedContentLayout *)self _updateFeedSectionSublayouts];
       if (!p_updateFlags->isPerformingUpdate)
       {
-        v9 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedContentLayout update]"];
-        [v9 handleFailureInFunction:v10 file:@"PXFeedContentLayout.m" lineNumber:128 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v10 file:@"PXFeedContentLayout.m" lineNumber:128 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -321,9 +321,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedContentLayout update]"];
-      [v11 handleFailureInFunction:v12 file:@"PXFeedContentLayout.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v12 file:@"PXFeedContentLayout.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v6 = p_updateFlags->needsUpdate;
@@ -338,9 +338,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (v6)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedContentLayout update]"];
-      [v13 handleFailureInFunction:v14 file:@"PXFeedContentLayout.m" lineNumber:134 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler4 handleFailureInFunction:v14 file:@"PXFeedContentLayout.m" lineNumber:134 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -349,37 +349,37 @@ LABEL_5:
   [(PXGCompositeLayout *)&v15 update];
 }
 
-- (PXSimpleIndexPath)indexPathClosestToIndexPath:(SEL)a3 inDirection:(PXSimpleIndexPath *)a4
+- (PXSimpleIndexPath)indexPathClosestToIndexPath:(SEL)path inDirection:(PXSimpleIndexPath *)direction
 {
-  v10 = [(PXFeedContentLayout *)self viewModel];
-  v11 = [v10 dataSource];
-  v12 = *&a4->item;
-  v24[0] = *&a4->dataSourceIdentifier;
+  viewModel = [(PXFeedContentLayout *)self viewModel];
+  dataSource = [viewModel dataSource];
+  v12 = *&direction->item;
+  v24[0] = *&direction->dataSourceIdentifier;
   v24[1] = v12;
-  v13 = [v11 objectReferenceAtIndexPath:v24];
+  v13 = [dataSource objectReferenceAtIndexPath:v24];
 
   if (!v13)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a3 object:self file:@"PXFeedContentLayout.m" lineNumber:106 description:@"Cannot be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:path object:self file:@"PXFeedContentLayout.m" lineNumber:106 description:@"Cannot be nil"];
   }
 
   v23 = 0;
   v14 = [(PXFeedContentLayout *)self sublayoutAtIndex:[(PXFeedContentLayout *)self sublayoutIndexForObjectReference:v13 options:0 updatedObjectReference:&v23] loadIfNeeded:0];
   if (!v14)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a3 object:self file:@"PXFeedContentLayout.m" lineNumber:110 description:@"Cannot be nil"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:path object:self file:@"PXFeedContentLayout.m" lineNumber:110 description:@"Cannot be nil"];
   }
 
-  v15 = [v14 decoratedLayout];
-  if (!v15)
+  decoratedLayout = [v14 decoratedLayout];
+  if (!decoratedLayout)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a3 object:self file:@"PXFeedContentLayout.m" lineNumber:112 description:@"Cannot be nil"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:path object:self file:@"PXFeedContentLayout.m" lineNumber:112 description:@"Cannot be nil"];
   }
 
-  v16 = [v15 axSpriteIndexClosestToSpriteIndex:LODWORD(a4->item) inDirection:a5];
+  v16 = [decoratedLayout axSpriteIndexClosestToSpriteIndex:LODWORD(direction->item) inDirection:a5];
   if (v16 == -1)
   {
     v17 = *off_1E7722228;
@@ -388,9 +388,9 @@ LABEL_5:
 
   else
   {
-    a4->item = v16;
-    v17 = *&a4->dataSourceIdentifier;
-    v18 = *&a4->item;
+    direction->item = v16;
+    v17 = *&direction->dataSourceIdentifier;
+    v18 = *&direction->item;
   }
 
   *&retstr->dataSourceIdentifier = v17;
@@ -407,24 +407,24 @@ LABEL_5:
   [(PXFeedContentLayout *)self _invalidateCompositionParameters];
 }
 
-- (id)itemPlacementControllerForItemReference:(id)a3
+- (id)itemPlacementControllerForItemReference:(id)reference
 {
-  v5 = a3;
+  referenceCopy = reference;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [(PXFeedContentLayout *)self sublayoutDataStore];
+  sublayoutDataStore = [(PXFeedContentLayout *)self sublayoutDataStore];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __63__PXFeedContentLayout_itemPlacementControllerForItemReference___block_invoke;
   v15 = &unk_1E7746048;
-  v16 = self;
-  v17 = v5;
+  selfCopy = self;
+  v17 = referenceCopy;
   v18 = v6;
   v19 = a2;
   v8 = v6;
-  v9 = v5;
-  [v7 enumerateSublayoutsUsingBlock:&v12];
+  v9 = referenceCopy;
+  [sublayoutDataStore enumerateSublayoutsUsingBlock:&v12];
 
-  v10 = [off_1E7721650 itemPlacementControllerForItemPlacementControllers:{v8, v12, v13, v14, v15, v16}];
+  v10 = [off_1E7721650 itemPlacementControllerForItemPlacementControllers:{v8, v12, v13, v14, v15, selfCopy}];
 
   return v10;
 }
@@ -442,24 +442,24 @@ void __63__PXFeedContentLayout_itemPlacementControllerForItemReference___block_i
   }
 }
 
-- (int64_t)sublayoutIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5
+- (int64_t)sublayoutIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference
 {
-  v7 = a3;
+  referenceCopy = reference;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(PXFeedContentLayout *)self viewModel];
-    v9 = [v8 dataSource];
+    viewModel = [(PXFeedContentLayout *)self viewModel];
+    dataSource = [viewModel dataSource];
 
-    v10 = [v9 objectReferenceForObjectReference:v7];
+    v10 = [dataSource objectReferenceForObjectReference:referenceCopy];
     if (!v10)
     {
       goto LABEL_7;
     }
 
-    if (v9)
+    if (dataSource)
     {
-      [v9 indexPathForObjectReference:v10];
+      [dataSource indexPathForObjectReference:v10];
     }
 
     if (*off_1E7721F68)
@@ -467,7 +467,7 @@ void __63__PXFeedContentLayout_itemPlacementControllerForItemReference___block_i
       v11 = 0;
       v12 = v10;
 
-      v7 = v12;
+      referenceCopy = v12;
     }
 
     else
@@ -482,30 +482,30 @@ LABEL_7:
     v11 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v13 = v7;
-  *a5 = v7;
+  v13 = referenceCopy;
+  *objectReference = referenceCopy;
 
   return v11;
 }
 
 - (int64_t)scrollableAxis
 {
-  v2 = [(PXGCompositeLayout *)self composition];
-  v3 = [v2 axis];
+  composition = [(PXGCompositeLayout *)self composition];
+  axis = [composition axis];
 
-  return v3;
+  return axis;
 }
 
-- (PXFeedContentLayout)initWithViewModel:(id)a3
+- (PXFeedContentLayout)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v12.receiver = self;
   v12.super_class = PXFeedContentLayout;
   v6 = [(PXGCompositeLayout *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewModel, a3);
+    objc_storeStrong(&v6->_viewModel, model);
     [(PXFeedViewModel *)v7->_viewModel registerChangeObserver:v7 context:ViewModelObservationContext_215315];
     v8 = objc_alloc_init(PXFeedItemDecorationSource);
     decorationSource = v7->_decorationSource;
@@ -524,8 +524,8 @@ LABEL_7:
 
 - (PXFeedContentLayout)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXFeedContentLayout.m" lineNumber:46 description:{@"%s is not available as initializer", "-[PXFeedContentLayout init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedContentLayout.m" lineNumber:46 description:{@"%s is not available as initializer", "-[PXFeedContentLayout init]"}];
 
   abort();
 }

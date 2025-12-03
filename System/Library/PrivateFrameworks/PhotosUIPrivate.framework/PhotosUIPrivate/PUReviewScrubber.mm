@@ -1,42 +1,42 @@
 @interface PUReviewScrubber
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)isCompactHeight;
-- (CGPoint)contentOffsetForIndexPath:(id)a3 inCollectionView:(id)a4;
-- (CGPoint)contentOffsetForItemAtIndex:(int64_t)a3 ofScrollView:(id)a4;
+- (CGPoint)contentOffsetForIndexPath:(id)path inCollectionView:(id)view;
+- (CGPoint)contentOffsetForItemAtIndex:(int64_t)index ofScrollView:(id)view;
 - (CGSize)itemSize;
-- (PUReviewScrubber)initWithCoder:(id)a3;
-- (PUReviewScrubber)initWithFrame:(CGRect)a3;
+- (PUReviewScrubber)initWithCoder:(id)coder;
+- (PUReviewScrubber)initWithFrame:(CGRect)frame;
 - (PUReviewScrubberDataSource)dataSource;
 - (PUReviewScrubberDelegate)scrubberDelegate;
-- (id)_indexPathInCollectionView:(id)a3 closestToPoint:(CGPoint)a4 excludingIndexPath:(id)a5;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)indexPathUnderTickMarkInCollectionView:(id)a3 atContentOffset:(CGPoint)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
+- (id)_indexPathInCollectionView:(id)view closestToPoint:(CGPoint)point excludingIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)indexPathUnderTickMarkInCollectionView:(id)view atContentOffset:(CGPoint)offset;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
 - (void)_beginFeedbackInteraction;
 - (void)_commonPUReviewScrubberInitialization;
 - (void)_endFeedbackInteraction;
-- (void)_handleTapAtIndexPath:(id)a3;
-- (void)_handleTapOnReviewScrubber:(id)a3;
+- (void)_handleTapAtIndexPath:(id)path;
+- (void)_handleTapOnReviewScrubber:(id)scrubber;
 - (void)_notifyDelegateOfScrub;
 - (void)_notifyDelegateOfSelection;
 - (void)_playFeedbackIfNeeded;
-- (void)_updateContentOffsetForSelectedIndexPathAnimated:(BOOL)a3;
-- (void)_updateToSelectedIndexPath:(id)a3;
+- (void)_updateContentOffsetForSelectedIndexPathAnimated:(BOOL)animated;
+- (void)_updateToSelectedIndexPath:(id)path;
 - (void)beginInteractiveUpdate;
 - (void)dealloc;
 - (void)finishInteractiveUpdate;
 - (void)layoutSubviews;
 - (void)reloadData;
-- (void)reloadIndexPath:(id)a3 animated:(BOOL)a4;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setCellAspectRatio:(id)a3;
-- (void)setScrubberCellClass:(Class)a3;
-- (void)setSelectedIndexPath:(id)a3 animated:(BOOL)a4;
-- (void)toggleIndexPath:(id)a3 animated:(BOOL)a4;
-- (void)updateWithAbsoluteProgress:(double)a3;
+- (void)reloadIndexPath:(id)path animated:(BOOL)animated;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setCellAspectRatio:(id)ratio;
+- (void)setScrubberCellClass:(Class)class;
+- (void)setSelectedIndexPath:(id)path animated:(BOOL)animated;
+- (void)toggleIndexPath:(id)path animated:(BOOL)animated;
+- (void)updateWithAbsoluteProgress:(double)progress;
 @end
 
 @implementation PUReviewScrubber
@@ -55,52 +55,52 @@
   return WeakRetained;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUReviewScrubber *)self _collectionView];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  _collectionView = [(PUReviewScrubber *)self _collectionView];
   tapGestureRecognizer = self->__tapGestureRecognizer;
 
-  if (tapGestureRecognizer == v7)
+  if (tapGestureRecognizer == recognizerCopy)
   {
-    v11 = [v8 panGestureRecognizer];
-    if (v11 == v6)
+    panGestureRecognizer = [_collectionView panGestureRecognizer];
+    if (panGestureRecognizer == gestureRecognizerCopy)
     {
-      v10 = [v8 isDecelerating];
+      isDecelerating = [_collectionView isDecelerating];
     }
 
     else
     {
-      v10 = 0;
+      isDecelerating = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    isDecelerating = 0;
   }
 
-  return v10;
+  return isDecelerating;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUReviewScrubber *)self cellReuseIdentifier];
-  v9 = [v7 dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  cellReuseIdentifier = [(PUReviewScrubber *)self cellReuseIdentifier];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:cellReuseIdentifier forIndexPath:pathCopy];
 
-  v10 = [(PUReviewScrubber *)self scrubberDelegate];
-  if (v10 && (objc_opt_respondsToSelector() & 1) != 0)
+  scrubberDelegate = [(PUReviewScrubber *)self scrubberDelegate];
+  if (scrubberDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v10 reviewScrubber:self willDisplayCell:v9 atIndexPath:v6];
+    [scrubberDelegate reviewScrubber:self willDisplayCell:v9 atIndexPath:pathCopy];
   }
 
   return v9;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   if (!WeakRetained)
@@ -118,12 +118,12 @@
   }
 
   v10 = objc_loadWeakRetained(&self->_dataSource);
-  v11 = [v10 reviewScrubber:self numberOfItemsInSection:a4];
+  v11 = [v10 reviewScrubber:self numberOfItemsInSection:section];
 
   return v11;
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   if (!WeakRetained)
@@ -146,40 +146,40 @@
   return v9;
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  v7 = a3;
-  v16 = [v7 collectionViewLayout];
-  v8 = [(PUReviewScrubber *)self indexPathUnderTickMarkInCollectionView:v7 atContentOffset:a5->x, a5->y];
-  v9 = [v16 layoutAttributesForItemAtIndexPath:v8];
+  draggingCopy = dragging;
+  collectionViewLayout = [draggingCopy collectionViewLayout];
+  v8 = [(PUReviewScrubber *)self indexPathUnderTickMarkInCollectionView:draggingCopy atContentOffset:offset->x, offset->y];
+  v9 = [collectionViewLayout layoutAttributesForItemAtIndexPath:v8];
   [v9 frame];
   v11 = v10;
   v13 = v12;
-  [v7 contentInset];
+  [draggingCopy contentInset];
   v15 = v14;
 
-  a5->x = v11 - v15;
-  a5->y = v13;
+  offset->x = v11 - v15;
+  offset->y = v13;
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(PUReviewScrubber *)self _endFeedbackInteraction];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = v4;
+  scrollCopy = scroll;
+  v5 = scrollCopy;
   if (!self->__ignoreScrollViewDidScrollUpdate)
   {
-    v8 = v4;
-    v4 = [v4 isScrollAnimating];
+    v8 = scrollCopy;
+    scrollCopy = [scrollCopy isScrollAnimating];
     v5 = v8;
-    if ((v4 & 1) == 0)
+    if ((scrollCopy & 1) == 0)
     {
       v6 = v8;
       [v6 contentOffset];
@@ -193,27 +193,27 @@
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](scrollCopy, v5);
 }
 
 - (CGSize)itemSize
 {
-  v2 = [(PUReviewScrubber *)self cellAspectRatio];
-  [v2 doubleValue];
+  cellAspectRatio = [(PUReviewScrubber *)self cellAspectRatio];
+  [cellAspectRatio doubleValue];
 
   JUMPOUT(0x1B8C6D610);
 }
 
 - (void)_notifyDelegateOfSelection
 {
-  v3 = [(PUReviewScrubber *)self scrubberDelegate];
-  if (v3)
+  scrubberDelegate = [(PUReviewScrubber *)self scrubberDelegate];
+  if (scrubberDelegate)
   {
-    v5 = v3;
+    v5 = scrubberDelegate;
     if (objc_opt_respondsToSelector())
     {
-      v4 = [(PUReviewScrubber *)self selectedIndexPath];
-      [v5 reviewScrubberDidSelectItemAtIndexPath:v4];
+      selectedIndexPath = [(PUReviewScrubber *)self selectedIndexPath];
+      [v5 reviewScrubberDidSelectItemAtIndexPath:selectedIndexPath];
     }
   }
 
@@ -222,10 +222,10 @@
 
 - (void)_notifyDelegateOfScrub
 {
-  v3 = [(PUReviewScrubber *)self scrubberDelegate];
-  if (v3)
+  scrubberDelegate = [(PUReviewScrubber *)self scrubberDelegate];
+  if (scrubberDelegate)
   {
-    v4 = v3;
+    v4 = scrubberDelegate;
     if (objc_opt_respondsToSelector())
     {
       [v4 reviewScrubberDidScrub:self];
@@ -235,47 +235,47 @@
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)_updateToSelectedIndexPath:(id)a3
+- (void)_updateToSelectedIndexPath:(id)path
 {
-  v5 = a3;
-  v8 = v5;
-  if (!self->_selectedIndexPath || (v6 = [v5 compare:?], v7 = v8, v6))
+  pathCopy = path;
+  v8 = pathCopy;
+  if (!self->_selectedIndexPath || (v6 = [pathCopy compare:?], v7 = v8, v6))
   {
-    objc_storeStrong(&self->_selectedIndexPath, a3);
+    objc_storeStrong(&self->_selectedIndexPath, path);
     v7 = v8;
   }
 
   MEMORY[0x1EEE66BB8](v6, v7);
 }
 
-- (CGPoint)contentOffsetForItemAtIndex:(int64_t)a3 ofScrollView:(id)a4
+- (CGPoint)contentOffsetForItemAtIndex:(int64_t)index ofScrollView:(id)view
 {
-  v6 = a4;
-  [v6 contentInset];
+  viewCopy = view;
+  [viewCopy contentInset];
   v8 = v7;
   v10 = v9;
-  [v6 contentOffset];
+  [viewCopy contentOffset];
   v12 = v11;
 
   [(PUReviewScrubber *)self itemSize];
-  v14 = (v13 + 3.0) * a3 - v10;
+  v14 = (v13 + 3.0) * index - v10;
   v15 = v12 - v8;
   result.y = v15;
   result.x = v14;
   return result;
 }
 
-- (CGPoint)contentOffsetForIndexPath:(id)a3 inCollectionView:(id)a4
+- (CGPoint)contentOffsetForIndexPath:(id)path inCollectionView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 contentInset];
+  pathCopy = path;
+  viewCopy = view;
+  [viewCopy contentInset];
   v9 = v8;
   v11 = v10;
-  [v7 contentOffset];
+  [viewCopy contentOffset];
   v13 = v12;
-  v14 = [v7 collectionViewLayout];
-  v15 = [v14 layoutAttributesForItemAtIndexPath:v6];
+  collectionViewLayout = [viewCopy collectionViewLayout];
+  v15 = [collectionViewLayout layoutAttributesForItemAtIndexPath:pathCopy];
   v16 = v15;
   if (v15)
   {
@@ -286,19 +286,19 @@
 
   else
   {
-    v20 = [v6 item];
-    if ([v6 section] >= 1)
+    item = [pathCopy item];
+    if ([pathCopy section] >= 1)
     {
       v21 = 0;
       do
       {
-        v20 += [(PUReviewScrubber *)self collectionView:v7 numberOfItemsInSection:v21++];
+        item += [(PUReviewScrubber *)self collectionView:viewCopy numberOfItemsInSection:v21++];
       }
 
-      while (v21 < [v6 section]);
+      while (v21 < [pathCopy section]);
     }
 
-    [(PUReviewScrubber *)self contentOffsetForItemAtIndex:v20 ofScrollView:v7];
+    [(PUReviewScrubber *)self contentOffsetForItemAtIndex:item ofScrollView:viewCopy];
     v18 = v22;
     v19 = v23;
   }
@@ -310,19 +310,19 @@
   return result;
 }
 
-- (id)indexPathUnderTickMarkInCollectionView:(id)a3 atContentOffset:(CGPoint)a4
+- (id)indexPathUnderTickMarkInCollectionView:(id)view atContentOffset:(CGPoint)offset
 {
-  x = a4.x;
-  v6 = a3;
-  [v6 contentInset];
+  x = offset.x;
+  viewCopy = view;
+  [viewCopy contentInset];
   v8 = v7;
   v10 = v9;
   v12 = x + v11;
-  [v6 bounds];
+  [viewCopy bounds];
   v14 = (v13 - (v8 + v10)) * 0.5;
   [(PUReviewScrubber *)self itemSize];
   v16 = v12 + v15 * 0.5;
-  [v6 contentSize];
+  [viewCopy contentSize];
   v18 = v17;
   [(PUReviewScrubber *)self px_screenScale];
   v20 = v18 + -1.0 / v19;
@@ -332,13 +332,13 @@
   }
 
   v21 = fmax(v20, 0.0);
-  v22 = [v6 indexPathForItemAtPoint:{v21, v14}];
+  v22 = [viewCopy indexPathForItemAtPoint:{v21, v14}];
   if (!v22)
   {
-    v22 = [v6 indexPathForItemAtPoint:{v21 + 1.5, v14}];
+    v22 = [viewCopy indexPathForItemAtPoint:{v21 + 1.5, v14}];
     if (!v22)
     {
-      v22 = [v6 indexPathForItemAtPoint:{v21 + -1.5, v14}];
+      v22 = [viewCopy indexPathForItemAtPoint:{v21 + -1.5, v14}];
       if (!v22)
       {
         v22 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:0];
@@ -351,59 +351,59 @@
   return v23;
 }
 
-- (void)_updateContentOffsetForSelectedIndexPathAnimated:(BOOL)a3
+- (void)_updateContentOffsetForSelectedIndexPathAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PUReviewScrubber *)self _collectionView];
-  [(PUReviewScrubber *)self contentOffsetForIndexPath:self->_selectedIndexPath inCollectionView:v5];
-  [v5 setContentOffset:v3 animated:?];
+  animatedCopy = animated;
+  _collectionView = [(PUReviewScrubber *)self _collectionView];
+  [(PUReviewScrubber *)self contentOffsetForIndexPath:self->_selectedIndexPath inCollectionView:_collectionView];
+  [_collectionView setContentOffset:animatedCopy animated:?];
 }
 
-- (void)_handleTapOnReviewScrubber:(id)a3
+- (void)_handleTapOnReviewScrubber:(id)scrubber
 {
-  v4 = a3;
-  v17 = [(PUReviewScrubber *)self _collectionView];
-  [v4 locationInView:v17];
+  scrubberCopy = scrubber;
+  _collectionView = [(PUReviewScrubber *)self _collectionView];
+  [scrubberCopy locationInView:_collectionView];
   v6 = v5;
   v8 = v7;
 
-  v9 = [(PUReviewScrubber *)self _collectionViewLayout];
-  [v17 contentSize];
+  _collectionViewLayout = [(PUReviewScrubber *)self _collectionViewLayout];
+  [_collectionView contentSize];
   v11 = v10;
-  [v9 itemsContentInset];
+  [_collectionViewLayout itemsContentInset];
   v14 = v11 - fabs(v13);
   v15 = v6 > fabs(v12) && v6 < v14;
-  if (v15 && ([v17 isDecelerating] & 1) == 0)
+  if (v15 && ([_collectionView isDecelerating] & 1) == 0)
   {
-    v16 = [(PUReviewScrubber *)self _indexPathInCollectionView:v17 closestToPoint:0 excludingIndexPath:v6, v8];
+    v16 = [(PUReviewScrubber *)self _indexPathInCollectionView:_collectionView closestToPoint:0 excludingIndexPath:v6, v8];
     [(PUReviewScrubber *)self _handleTapAtIndexPath:v16];
   }
 }
 
-- (void)_handleTapAtIndexPath:(id)a3
+- (void)_handleTapAtIndexPath:(id)path
 {
-  [(PUReviewScrubber *)self _updateToSelectedIndexPath:a3];
+  [(PUReviewScrubber *)self _updateToSelectedIndexPath:path];
   [(PUReviewScrubber *)self _updateContentOffsetForSelectedIndexPathAnimated:1];
 
   [(PUReviewScrubber *)self _notifyDelegateOfSelection];
 }
 
-- (id)_indexPathInCollectionView:(id)a3 closestToPoint:(CGPoint)a4 excludingIndexPath:(id)a5
+- (id)_indexPathInCollectionView:(id)view closestToPoint:(CGPoint)point excludingIndexPath:(id)path
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 indexPathForItemAtPoint:{x, y}];
+  viewCopy = view;
+  pathCopy = path;
+  v10 = [viewCopy indexPathForItemAtPoint:{x, y}];
   if (!v10)
   {
-    v11 = [v8 visibleCells];
+    visibleCells = [viewCopy visibleCells];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    v12 = [visibleCells countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v12)
     {
       v13 = v12;
@@ -416,12 +416,12 @@
         {
           if (*v25 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(visibleCells);
           }
 
           v17 = *(*(&v24 + 1) + 8 * i);
-          v18 = [v8 indexPathForCell:v17];
-          if (([v9 isEqual:v18] & 1) == 0)
+          v18 = [viewCopy indexPathForCell:v17];
+          if (([pathCopy isEqual:v18] & 1) == 0)
           {
             [v17 center];
             v21 = (v20 - y) * (v20 - y) + (v19 - x) * (v19 - x);
@@ -435,7 +435,7 @@
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v13 = [visibleCells countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v13);
@@ -452,30 +452,30 @@
 
 - (void)_endFeedbackInteraction
 {
-  v3 = [(PUReviewScrubber *)self _impactFeedbackBehavior];
-  v4 = [v3 isActive];
+  _impactFeedbackBehavior = [(PUReviewScrubber *)self _impactFeedbackBehavior];
+  isActive = [_impactFeedbackBehavior isActive];
 
-  if (v4)
+  if (isActive)
   {
-    v5 = [(PUReviewScrubber *)self _impactFeedbackBehavior];
-    [v5 deactivate];
+    _impactFeedbackBehavior2 = [(PUReviewScrubber *)self _impactFeedbackBehavior];
+    [_impactFeedbackBehavior2 deactivate];
   }
 }
 
 - (void)_playFeedbackIfNeeded
 {
-  v3 = [(PUReviewScrubber *)self _impactFeedbackBehavior];
-  if (v3)
+  _impactFeedbackBehavior = [(PUReviewScrubber *)self _impactFeedbackBehavior];
+  if (_impactFeedbackBehavior)
   {
-    v9 = v3;
-    v4 = [(PUReviewScrubber *)self _collectionView];
-    [v4 contentOffset];
-    v5 = [(PUReviewScrubber *)self indexPathUnderTickMarkInCollectionView:v4 atContentOffset:?];
-    v6 = [(PUReviewScrubber *)self _indexPathForPreviousFeedbackQuery];
-    if (!v6 || [v5 compare:v6])
+    v9 = _impactFeedbackBehavior;
+    _collectionView = [(PUReviewScrubber *)self _collectionView];
+    [_collectionView contentOffset];
+    v5 = [(PUReviewScrubber *)self indexPathUnderTickMarkInCollectionView:_collectionView atContentOffset:?];
+    _indexPathForPreviousFeedbackQuery = [(PUReviewScrubber *)self _indexPathForPreviousFeedbackQuery];
+    if (!_indexPathForPreviousFeedbackQuery || [v5 compare:_indexPathForPreviousFeedbackQuery])
     {
-      v7 = [(PUReviewScrubber *)self dataSource];
-      v8 = [v7 reviewScrubber:self shouldProvideFeedbackForCellAtIndexPath:v5];
+      dataSource = [(PUReviewScrubber *)self dataSource];
+      v8 = [dataSource reviewScrubber:self shouldProvideFeedbackForCellAtIndexPath:v5];
 
       if (v8)
       {
@@ -485,22 +485,22 @@
       [(PUReviewScrubber *)self _setIndexPathForPreviousFeedbackQuery:v5];
     }
 
-    v3 = v9;
+    _impactFeedbackBehavior = v9;
   }
 }
 
 - (void)_beginFeedbackInteraction
 {
-  v3 = [(PUReviewScrubber *)self _impactFeedbackBehavior];
-  v4 = [v3 isActive];
+  _impactFeedbackBehavior = [(PUReviewScrubber *)self _impactFeedbackBehavior];
+  isActive = [_impactFeedbackBehavior isActive];
 
-  if (v4)
+  if (isActive)
   {
     [(PUReviewScrubber *)self _endFeedbackInteraction];
   }
 
-  v5 = [(PUReviewScrubber *)self _impactFeedbackBehavior];
-  [v5 activateWithCompletionBlock:0];
+  _impactFeedbackBehavior2 = [(PUReviewScrubber *)self _impactFeedbackBehavior];
+  [_impactFeedbackBehavior2 activateWithCompletionBlock:0];
 }
 
 - (void)finishInteractiveUpdate
@@ -516,7 +516,7 @@
   self->__performingInteractiveUpdate = 0;
 }
 
-- (void)updateWithAbsoluteProgress:(double)a3
+- (void)updateWithAbsoluteProgress:(double)progress
 {
   if (self->__performingInteractiveUpdate)
   {
@@ -526,10 +526,10 @@
     [(UICollectionView *)self->__collectionView contentOffset];
     v8 = v7;
     [(UICollectionView *)self->__collectionView contentInset];
-    v10 = v6 * a3 - v9;
+    v10 = v6 * progress - v9;
     v12 = v8 - v11;
-    v13 = [(PUReviewScrubber *)self _collectionView];
-    [v13 setContentOffset:{v10, v12}];
+    _collectionView = [(PUReviewScrubber *)self _collectionView];
+    [_collectionView setContentOffset:{v10, v12}];
 
     [(PUReviewScrubber *)self _playFeedbackIfNeeded];
     self->__ignoreScrollViewDidScrollUpdate = 0;
@@ -549,85 +549,85 @@
   [(PUReviewScrubber *)self _beginFeedbackInteraction];
 }
 
-- (void)setCellAspectRatio:(id)a3
+- (void)setCellAspectRatio:(id)ratio
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_cellAspectRatio != v5)
+  ratioCopy = ratio;
+  v6 = ratioCopy;
+  if (self->_cellAspectRatio != ratioCopy)
   {
-    v12 = v5;
-    v5 = [(NSNumber *)v5 isEqual:?];
+    v12 = ratioCopy;
+    ratioCopy = [(NSNumber *)ratioCopy isEqual:?];
     v6 = v12;
-    if ((v5 & 1) == 0)
+    if ((ratioCopy & 1) == 0)
     {
-      objc_storeStrong(&self->_cellAspectRatio, a3);
+      objc_storeStrong(&self->_cellAspectRatio, ratio);
       [(PUReviewScrubber *)self itemSize];
       v8 = v7;
       v10 = v9;
-      v11 = [(PUReviewScrubber *)self _collectionViewLayout];
-      [v11 setItemSize:{v8, v10}];
+      _collectionViewLayout = [(PUReviewScrubber *)self _collectionViewLayout];
+      [_collectionViewLayout setItemSize:{v8, v10}];
 
       v6 = v12;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](ratioCopy, v6);
 }
 
-- (void)reloadIndexPath:(id)a3 animated:(BOOL)a4
+- (void)reloadIndexPath:(id)path animated:(BOOL)animated
 {
-  v8 = a3;
-  v5 = [(PUReviewScrubber *)self _collectionView];
-  v6 = [v5 cellForItemAtIndexPath:v8];
+  pathCopy = path;
+  _collectionView = [(PUReviewScrubber *)self _collectionView];
+  v6 = [_collectionView cellForItemAtIndexPath:pathCopy];
 
   if (v6)
   {
-    v7 = [(PUReviewScrubber *)self scrubberDelegate];
-    if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+    scrubberDelegate = [(PUReviewScrubber *)self scrubberDelegate];
+    if (scrubberDelegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v7 reviewScrubber:self willDisplayCell:v6 atIndexPath:v8];
+      [scrubberDelegate reviewScrubber:self willDisplayCell:v6 atIndexPath:pathCopy];
     }
   }
 }
 
-- (void)toggleIndexPath:(id)a3 animated:(BOOL)a4
+- (void)toggleIndexPath:(id)path animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PUReviewScrubber *)self _collectionView];
-  v8 = [v7 cellForItemAtIndexPath:v6];
+  animatedCopy = animated;
+  pathCopy = path;
+  _collectionView = [(PUReviewScrubber *)self _collectionView];
+  v8 = [_collectionView cellForItemAtIndexPath:pathCopy];
 
   if (v8)
   {
-    [v8 setFavorite:objc_msgSend(v8 animated:{"isFavorite") ^ 1, v4}];
+    [v8 setFavorite:objc_msgSend(v8 animated:{"isFavorite") ^ 1, animatedCopy}];
   }
 }
 
 - (void)reloadData
 {
-  v2 = [(PUReviewScrubber *)self _collectionView];
-  [v2 reloadData];
+  _collectionView = [(PUReviewScrubber *)self _collectionView];
+  [_collectionView reloadData];
 }
 
-- (void)setSelectedIndexPath:(id)a3 animated:(BOOL)a4
+- (void)setSelectedIndexPath:(id)path animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_selectedIndexPath != v7)
+  animatedCopy = animated;
+  pathCopy = path;
+  if (self->_selectedIndexPath != pathCopy)
   {
-    v8 = v7;
-    objc_storeStrong(&self->_selectedIndexPath, a3);
-    [(PUReviewScrubber *)self _updateContentOffsetForSelectedIndexPathAnimated:v4];
+    v8 = pathCopy;
+    objc_storeStrong(&self->_selectedIndexPath, path);
+    [(PUReviewScrubber *)self _updateContentOffsetForSelectedIndexPathAnimated:animatedCopy];
     [(PUReviewScrubber *)self _setIndexPathForPreviousFeedbackQuery:v8];
-    v7 = v8;
+    pathCopy = v8;
   }
 }
 
-- (void)setScrubberCellClass:(Class)a3
+- (void)setScrubberCellClass:(Class)class
 {
-  if (self->_scrubberCellClass != a3)
+  if (self->_scrubberCellClass != class)
   {
-    objc_storeStrong(&self->_scrubberCellClass, a3);
+    objc_storeStrong(&self->_scrubberCellClass, class);
     v4 = NSStringFromClass(self->_scrubberCellClass);
     cellReuseIdentifier = self->_cellReuseIdentifier;
     self->_cellReuseIdentifier = v4;
@@ -659,8 +659,8 @@
   v8 = v7;
   v10 = v9;
   arrowImageView = self->__arrowImageView;
-  v12 = [MEMORY[0x1E69DC888] labelColor];
-  v13 = [v12 colorWithAlphaComponent:0.25];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v13 = [labelColor colorWithAlphaComponent:0.25];
   [(UIImageView *)arrowImageView setTintColor:v13];
 
   [(UIImageView *)self->__arrowImageView sizeToFit];
@@ -734,11 +734,11 @@
   [(PUReviewScrubber *)&v3 dealloc];
 }
 
-- (PUReviewScrubber)initWithCoder:(id)a3
+- (PUReviewScrubber)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = PUReviewScrubber;
-  v3 = [(PUReviewScrubber *)&v7 initWithCoder:a3];
+  v3 = [(PUReviewScrubber *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -749,11 +749,11 @@
   return v4;
 }
 
-- (PUReviewScrubber)initWithFrame:(CGRect)a3
+- (PUReviewScrubber)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PUReviewScrubber;
-  v3 = [(PUReviewScrubber *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUReviewScrubber *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -789,8 +789,8 @@
   self->__collectionView = v10;
 
   v12 = self->__collectionView;
-  v13 = [MEMORY[0x1E69DC888] clearColor];
-  [(UICollectionView *)v12 setBackgroundColor:v13];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UICollectionView *)v12 setBackgroundColor:clearColor];
 
   [(UICollectionView *)self->__collectionView setShowsVerticalScrollIndicator:0];
   [(UICollectionView *)self->__collectionView setShowsHorizontalScrollIndicator:0];

@@ -10,9 +10,9 @@
   v3 = [(SUTallLinkCellConfigurationAccessibility *)self safeValueForKey:@"_representedObject"];
   v4 = [v3 safeValueForKey:@"reviewStatistics"];
   v5 = [v4 safeValueForKey:@"numberOfUserRatings"];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
-  if (v6 < 1)
+  if (integerValue < 1)
   {
     v10 = 0;
   }
@@ -27,11 +27,11 @@
   }
 
   v11 = [(SUTallLinkCellConfigurationAccessibility *)self safeValueForKey:@"_accessibilityStringsArrayPointer"];
-  v12 = [v11 bytes];
-  v13 = *(v12 + 32);
-  v14 = *(v12 + 8);
-  v15 = *(v12 + 16);
-  v16 = *(v12 + 24);
+  bytes = [v11 bytes];
+  v13 = *(bytes + 32);
+  v14 = *(bytes + 8);
+  v15 = *(bytes + 16);
+  v16 = *(bytes + 24);
   v17 = v14;
   v18 = v13;
   v19 = __UIAXStringForVariables();

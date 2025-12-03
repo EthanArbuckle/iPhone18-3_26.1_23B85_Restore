@@ -1,15 +1,15 @@
 @interface GutterizedEventTrailingViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation GutterizedEventTrailingViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UpNext.VibrantLabel"];
-  [v3 validateClass:@"UpNext.GutterizedEventTrailingView" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UpNext.VibrantLabel"];
+  [validationsCopy validateClass:@"UpNext.GutterizedEventTrailingView" isKindOfClass:@"UIView"];
 }
 
 - (id)accessibilityLabel

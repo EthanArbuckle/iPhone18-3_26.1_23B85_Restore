@@ -1,11 +1,11 @@
 @interface JSAEnvironment
-+ (void)_exposeObjectsAndClassesToContext:(id)a3;
++ (void)_exposeObjectsAndClassesToContext:(id)context;
 - (JSAEnvironment)init;
 - (id)appForOwnership;
 - (void)dealloc;
-- (void)loadScript:(id)a3 name:(id)a4 version:(id)a5 isBundled:(BOOL)a6 completion:(id)a7;
-- (void)loadScriptFromPackage:(id)a3 completion:(id)a4;
-- (void)registerObjects:(id)a3;
+- (void)loadScript:(id)script name:(id)name version:(id)version isBundled:(BOOL)bundled completion:(id)completion;
+- (void)loadScriptFromPackage:(id)package completion:(id)completion;
+- (void)registerObjects:(id)objects;
 @end
 
 @implementation JSAEnvironment
@@ -55,10 +55,10 @@
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 removeObserver:self];
 
-  v4 = [(JSManagedValue *)self->_nativeJSObject value];
-  v5 = [v4 context];
-  v6 = [v5 virtualMachine];
-  [v6 removeManagedReference:self->_nativeJSObject withOwner:self];
+  value = [(JSManagedValue *)self->_nativeJSObject value];
+  context = [value context];
+  virtualMachine = [context virtualMachine];
+  [virtualMachine removeManagedReference:self->_nativeJSObject withOwner:self];
 
   v7.receiver = self;
   v7.super_class = JSAEnvironment;
@@ -67,14 +67,14 @@
 
 - (id)appForOwnership
 {
-  v3 = [(JSAEnvironment *)self context];
-  v4 = [v3 objectForKeyedSubscript:@"App"];
+  context = [(JSAEnvironment *)self context];
+  v4 = [context objectForKeyedSubscript:@"App"];
 
   v5 = [v4 toObjectOfClass:objc_opt_class()];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    globalObject = v5;
   }
 
   else
@@ -87,7 +87,7 @@
 
     if (+[JSADevice isInternalBuild])
     {
-      v12 = [(JSAEnvironment *)self context];
+      context2 = [(JSAEnvironment *)self context];
       BUReportAssertionFailureWithMessage();
 
       BUCrashBreakpoint();
@@ -98,35 +98,35 @@
         return result;
       }
 
-      v11 = [(JSAEnvironment *)self context];
+      context3 = [(JSAEnvironment *)self context];
       BUCrashFinalThrow();
     }
 
-    v10 = [(JSAEnvironment *)self context];
-    v7 = [v10 globalObject];
+    context4 = [(JSAEnvironment *)self context];
+    globalObject = [context4 globalObject];
   }
 
-  return v7;
+  return globalObject;
 }
 
-- (void)loadScriptFromPackage:(id)a3 completion:(id)a4
+- (void)loadScriptFromPackage:(id)package completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v11 = [v7 dataAtPath:@"app.js"];
-  v8 = [v7 nameForJSContext];
-  v9 = [v7 version];
-  v10 = [v7 isBundled];
+  completionCopy = completion;
+  packageCopy = package;
+  v11 = [packageCopy dataAtPath:@"app.js"];
+  nameForJSContext = [packageCopy nameForJSContext];
+  version = [packageCopy version];
+  isBundled = [packageCopy isBundled];
 
-  [(JSAEnvironment *)self loadScript:v11 name:v8 version:v9 isBundled:v10 completion:v6];
+  [(JSAEnvironment *)self loadScript:v11 name:nameForJSContext version:version isBundled:isBundled completion:completionCopy];
 }
 
-- (void)loadScript:(id)a3 name:(id)a4 version:(id)a5 isBundled:(BOOL)a6 completion:(id)a7
+- (void)loadScript:(id)script name:(id)name version:(id)version isBundled:(BOOL)bundled completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  scriptCopy = script;
+  nameCopy = name;
+  versionCopy = version;
+  completionCopy = completion;
   v16 = JSALog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -136,46 +136,46 @@
   }
 
   objc_initWeak(buf, self);
-  v17 = [(JSAEnvironment *)self thread];
+  thread = [(JSAEnvironment *)self thread];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_654C;
   v22[3] = &unk_B23D8;
   objc_copyWeak(&v27, buf);
-  v18 = v12;
+  v18 = scriptCopy;
   v23 = v18;
-  v19 = v13;
+  v19 = nameCopy;
   v24 = v19;
-  v20 = v14;
+  v20 = versionCopy;
   v25 = v20;
-  v28 = a6;
-  v21 = v15;
+  bundledCopy = bundled;
+  v21 = completionCopy;
   v26 = v21;
-  [v17 enqueueBlock:v22];
+  [thread enqueueBlock:v22];
 
   objc_destroyWeak(&v27);
   objc_destroyWeak(buf);
 }
 
-- (void)registerObjects:(id)a3
+- (void)registerObjects:(id)objects
 {
-  v4 = a3;
-  if ([v4 count])
+  objectsCopy = objects;
+  if ([objectsCopy count])
   {
-    v5 = [(JSAEnvironment *)self thread];
+    thread = [(JSAEnvironment *)self thread];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_6990;
     v6[3] = &unk_B2128;
     v6[4] = self;
-    v7 = v4;
-    [v5 enqueueBlock:v6];
+    v7 = objectsCopy;
+    [thread enqueueBlock:v6];
   }
 }
 
-+ (void)_exposeObjectsAndClassesToContext:(id)a3
++ (void)_exposeObjectsAndClassesToContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = JSASignpostExecution();
   v5 = os_signpost_id_generate(v4);
 
@@ -194,7 +194,7 @@
   v8 = objc_alloc_init(JSAFoundation);
   v31 = v8;
   v9 = objc_retainBlock(v30);
-  [v3 setObject:v9 forKeyedSubscript:@"setInterval"];
+  [contextCopy setObject:v9 forKeyedSubscript:@"setInterval"];
 
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
@@ -203,7 +203,7 @@
   v10 = v8;
   v29 = v10;
   v11 = objc_retainBlock(v28);
-  [v3 setObject:v11 forKeyedSubscript:@"clearInterval"];
+  [contextCopy setObject:v11 forKeyedSubscript:@"clearInterval"];
 
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
@@ -212,7 +212,7 @@
   v12 = v10;
   v27 = v12;
   v13 = objc_retainBlock(v26);
-  [v3 setObject:v13 forKeyedSubscript:@"setTimeout"];
+  [contextCopy setObject:v13 forKeyedSubscript:@"setTimeout"];
 
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
@@ -221,17 +221,17 @@
   v14 = v12;
   v25 = v14;
   v15 = objc_retainBlock(v24);
-  [v3 setObject:v15 forKeyedSubscript:@"clearTimeout"];
+  [contextCopy setObject:v15 forKeyedSubscript:@"clearTimeout"];
 
-  v16 = [JSValue valueWithNewObjectInContext:v3];
-  [v3 setObject:v16 forKeyedSubscript:@"native"];
+  v16 = [JSValue valueWithNewObjectInContext:contextCopy];
+  [contextCopy setObject:v16 forKeyedSubscript:@"native"];
   [v16 setObject:objc_opt_class() forKeyedSubscript:@"AccountController"];
   [v16 setObject:&stru_B2468 forKeyedSubscript:@"currentPackage"];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_74C0;
   v22[3] = &unk_B24E0;
-  v17 = v3;
+  v17 = contextCopy;
   v23 = v17;
   v18 = objc_retainBlock(v22);
   [v16 setObject:v18 forKeyedSubscript:@"templateRegistrationPromise"];

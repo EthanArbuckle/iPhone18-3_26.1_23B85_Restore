@@ -1,8 +1,8 @@
 @interface MADPhotosFaceBackgroundSystemTask
 + (id)producedResultIdentifiers;
 + (id)sharedTask;
-+ (id)taskWithPhotoLibraries:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6;
-+ (void)updateTaskSpecificBGSystemTaskRequest:(id)a3;
++ (id)taskWithPhotoLibraries:(id)libraries cancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
++ (void)updateTaskSpecificBGSystemTaskRequest:(id)request;
 @end
 
 @implementation MADPhotosFaceBackgroundSystemTask
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001A39F8;
   block[3] = &unk_100282998;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B8508 != -1)
   {
     dispatch_once(&qword_1002B8508, block);
@@ -24,24 +24,24 @@
   return v2;
 }
 
-+ (void)updateTaskSpecificBGSystemTaskRequest:(id)a3
++ (void)updateTaskSpecificBGSystemTaskRequest:(id)request
 {
-  v4 = a3;
-  v8.receiver = a1;
+  requestCopy = request;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___MADPhotosFaceBackgroundSystemTask;
-  objc_msgSendSuper2(&v8, "updateTaskSpecificBGSystemTaskRequest:", v4);
-  [v4 setResources:25];
+  objc_msgSendSuper2(&v8, "updateTaskSpecificBGSystemTaskRequest:", requestCopy);
+  [requestCopy setResources:25];
   if (MediaAnalysisLogLevel() >= 6)
   {
     v5 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v5))
     {
-      v6 = [a1 identifier];
-      v7 = [v4 resources];
+      identifier = [self identifier];
+      resources = [requestCopy resources];
       *buf = 138412546;
-      v10 = v6;
+      v10 = identifier;
       v11 = 2048;
-      v12 = v7;
+      v12 = resources;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "[%@] Updated BGSystemTaskRequest properties to %lu", buf, 0x16u);
     }
   }
@@ -54,11 +54,11 @@
   return v2;
 }
 
-+ (id)taskWithPhotoLibraries:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6
++ (id)taskWithPhotoLibraries:(id)libraries cancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
+  blockCopy = block;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v11 = _os_feature_enabled_impl();
   if (VCPMADUnifiedBackgroundProcessing())
   {
@@ -71,8 +71,8 @@
     v19[1] = 3221225472;
     v19[2] = sub_1001A3E8C;
     v19[3] = &unk_1002848F8;
-    v19[4] = v9;
-    v15 = [MADUnifiedProcessingTask taskWithCancelBlock:v8 options:v13 progressHandler:v19 andCompletionHandler:v10];
+    v19[4] = handlerCopy;
+    v15 = [MADUnifiedProcessingTask taskWithCancelBlock:blockCopy options:v13 progressHandler:v19 andCompletionHandler:completionHandlerCopy];
   }
 
   else
@@ -86,8 +86,8 @@
     v18[1] = 3221225472;
     v18[2] = sub_1001A3E9C;
     v18[3] = &unk_1002848F8;
-    v18[4] = v9;
-    v15 = [MADUnifiedProcessingTask taskWithCancelBlock:v8 taskID:3 options:v13 progressHandler:v18 andCompletionHandler:v10];
+    v18[4] = handlerCopy;
+    v15 = [MADUnifiedProcessingTask taskWithCancelBlock:blockCopy taskID:3 options:v13 progressHandler:v18 andCompletionHandler:completionHandlerCopy];
   }
 
   v16 = v15;

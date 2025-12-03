@@ -1,42 +1,42 @@
 @interface SKMediaKit
-+ (id)getFilesystem:(id)a3;
-+ (id)getMediaKitFilesystemInfo:(id)a3;
-+ (id)getMediaKitFilesystemType:(id)a3;
-+ (id)newMediaRefForDisk:(id)a3 options:(id)a4 error:(id *)a5;
++ (id)getFilesystem:(id)filesystem;
++ (id)getMediaKitFilesystemInfo:(id)info;
++ (id)getMediaKitFilesystemType:(id)type;
++ (id)newMediaRefForDisk:(id)disk options:(id)options error:(id *)error;
 @end
 
 @implementation SKMediaKit
 
-+ (id)getMediaKitFilesystemType:(id)a3
++ (id)getMediaKitFilesystemType:(id)type
 {
-  v3 = [SKMediaKit getMediaKitFilesystemInfo:a3];
+  v3 = [SKMediaKit getMediaKitFilesystemInfo:type];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 fsType];
-    if (v5)
+    fsType = [v3 fsType];
+    if (fsType)
     {
-      v6 = [v4 fsType];
+      fsType2 = [v4 fsType];
     }
 
     else
     {
-      v6 = 0;
+      fsType2 = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    fsType2 = 0;
   }
 
-  return v6;
+  return fsType2;
 }
 
-+ (id)getMediaKitFilesystemInfo:(id)a3
++ (id)getMediaKitFilesystemInfo:(id)info
 {
   v3 = *MEMORY[0x277CBECE8];
-  [a3 UTF8String];
+  [info UTF8String];
   v4 = MKMediaCreateWithPath();
   if (v4)
   {
@@ -56,12 +56,12 @@
   return v4;
 }
 
-+ (id)newMediaRefForDisk:(id)a3 options:(id)a4 error:(id *)a5
++ (id)newMediaRefForDisk:(id)disk options:(id)options error:(id *)error
 {
   v7 = MEMORY[0x277CCACA8];
-  v8 = a4;
-  v9 = [a3 diskIdentifier];
-  v10 = [v7 stringWithFormat:@"/dev/r%@", v9];
+  optionsCopy = options;
+  diskIdentifier = [disk diskIdentifier];
+  v10 = [v7 stringWithFormat:@"/dev/r%@", diskIdentifier];
 
   v11 = *MEMORY[0x277CBECE8];
   [v10 UTF8String];
@@ -69,17 +69,17 @@
 
   if (!v12)
   {
-    v12 = [SKError nilWithPOSIXCode:0 error:a5];
+    v12 = [SKError nilWithPOSIXCode:0 error:error];
   }
 
   return v12;
 }
 
-+ (id)getFilesystem:(id)a3
++ (id)getFilesystem:(id)filesystem
 {
   v22[14] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"/dev/%@", a3];
-  v4 = [SKMediaKit getMediaKitFilesystemInfo:v3];
+  filesystem = [MEMORY[0x277CCACA8] stringWithFormat:@"/dev/%@", filesystem];
+  v4 = [SKMediaKit getMediaKitFilesystemInfo:filesystem];
 
   if (v4)
   {
@@ -112,24 +112,24 @@
     v22[12] = @"ufs";
     v22[13] = @"cd9660";
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:14];
-    v6 = [v4 fsInfo];
-    v7 = [v6 objectForKey:@"Filesystem"];
+    fsInfo = [v4 fsInfo];
+    v7 = [fsInfo objectForKey:@"Filesystem"];
     v8 = [v5 objectForKey:v7];
 
-    v9 = [v4 fsInfo];
-    v10 = [v9 objectForKey:@"Attributes"];
+    fsInfo2 = [v4 fsInfo];
+    v10 = [fsInfo2 objectForKey:@"Attributes"];
     v11 = [v10 objectForKey:@"Case sensitive"];
-    v12 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
 
-    v13 = [SKFilesystem filesystemFor:v8 caseSensitive:v12];
+    v13 = [SKFilesystem filesystemFor:v8 caseSensitive:bOOLValue];
     if (v13)
     {
-      v14 = [v4 fsInfo];
-      v15 = [v14 objectForKey:@"Attributes"];
+      fsInfo3 = [v4 fsInfo];
+      v15 = [fsInfo3 objectForKey:@"Attributes"];
       v16 = [v15 objectForKey:@"Journaled"];
-      v17 = [v16 BOOLValue];
+      bOOLValue2 = [v16 BOOLValue];
 
-      [v13 setIsJournaled:v17];
+      [v13 setIsJournaled:bOOLValue2];
       v18 = v13;
     }
   }

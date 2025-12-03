@@ -1,33 +1,33 @@
 @interface _INPBScoredValue
-- (BOOL)isEqual:(id)a3;
-- (_INPBScoredValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBScoredValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setValue:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setValue:(id)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBScoredValue
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBScoredValue *)self hasScore])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[_INPBScoredValue score](self, "score")}];
-    [v3 setObject:v4 forKeyedSubscript:@"score"];
+    [dictionary setObject:v4 forKeyedSubscript:@"score"];
   }
 
   if (self->_value)
   {
-    v5 = [(_INPBScoredValue *)self value];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"value"];
+    value = [(_INPBScoredValue *)self value];
+    v6 = [value copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"value"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -45,23 +45,23 @@
   return [(NSString *)self->_value hash]^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBScoredValue *)self hasScore];
-    if (v5 == [v4 hasScore])
+    hasScore = [(_INPBScoredValue *)self hasScore];
+    if (hasScore == [equalCopy hasScore])
     {
-      if (!-[_INPBScoredValue hasScore](self, "hasScore") || ![v4 hasScore] || (score = self->_score, score == objc_msgSend(v4, "score")))
+      if (!-[_INPBScoredValue hasScore](self, "hasScore") || ![equalCopy hasScore] || (score = self->_score, score == objc_msgSend(equalCopy, "score")))
       {
-        v7 = [(_INPBScoredValue *)self value];
-        v8 = [v4 value];
-        v9 = v8;
-        if ((v7 != 0) != (v8 == 0))
+        value = [(_INPBScoredValue *)self value];
+        value2 = [equalCopy value];
+        v9 = value2;
+        if ((value != 0) != (value2 == 0))
         {
-          v10 = [(_INPBScoredValue *)self value];
-          if (!v10)
+          value3 = [(_INPBScoredValue *)self value];
+          if (!value3)
           {
 
 LABEL_14:
@@ -69,10 +69,10 @@ LABEL_14:
             goto LABEL_12;
           }
 
-          v11 = v10;
-          v12 = [(_INPBScoredValue *)self value];
-          v13 = [v4 value];
-          v14 = [v12 isEqual:v13];
+          v11 = value3;
+          value4 = [(_INPBScoredValue *)self value];
+          value5 = [equalCopy value];
+          v14 = [value4 isEqual:value5];
 
           if (v14)
           {
@@ -93,7 +93,7 @@ LABEL_12:
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBScoredValue allocWithZone:](_INPBScoredValue init];
   if ([(_INPBScoredValue *)self hasScore])
@@ -101,59 +101,59 @@ LABEL_12:
     [(_INPBScoredValue *)v5 setScore:[(_INPBScoredValue *)self score]];
   }
 
-  v6 = [(NSString *)self->_value copyWithZone:a3];
+  v6 = [(NSString *)self->_value copyWithZone:zone];
   [(_INPBScoredValue *)v5 setValue:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBScoredValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBScoredValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBScoredValue)initWithCoder:(id)a3
+- (_INPBScoredValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBScoredValue *)self initWithData:v6];
+    self = [(_INPBScoredValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(_INPBScoredValue *)self hasScore])
   {
     score = self->_score;
     PBDataWriterWriteInt64Field();
   }
 
-  v5 = [(_INPBScoredValue *)self value];
+  value = [(_INPBScoredValue *)self value];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (value)
   {
     value = self->_value;
     PBDataWriterWriteStringField();
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = [a3 copy];
+  v4 = [value copy];
   value = self->_value;
   self->_value = v4;
 

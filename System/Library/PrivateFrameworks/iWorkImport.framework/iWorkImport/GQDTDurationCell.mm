@@ -1,6 +1,6 @@
 @interface GQDTDurationCell
 - (__CFString)createStringValue;
-- (int)readAttributesForDurationCell:(_xmlTextReader *)a3;
+- (int)readAttributesForDurationCell:(_xmlTextReader *)cell;
 - (void)dealloc;
 @end
 
@@ -18,8 +18,8 @@
   mComputedFormat = self->mComputedFormat;
   if (!mComputedFormat || ![(GQDTComputedFormatSpec *)mComputedFormat isDurationFormat])
   {
-    v4 = [(GQDSStyle *)self->super.mStyle valueForObjectProperty:124];
-    if (!v4)
+    format = [(GQDSStyle *)self->super.mStyle valueForObjectProperty:124];
+    if (!format)
     {
       goto LABEL_7;
     }
@@ -27,28 +27,28 @@
     goto LABEL_6;
   }
 
-  v4 = [(GQDTComputedFormatSpec *)self->mComputedFormat format];
-  if (v4)
+  format = [(GQDTComputedFormatSpec *)self->mComputedFormat format];
+  if (format)
   {
 LABEL_6:
-    v4 = [(__CFString *)v4 formatString];
+    format = [(__CFString *)format formatString];
   }
 
 LABEL_7:
-  if (!v4)
+  if (!format)
   {
-    v4 = @"hhh mmm sss";
+    format = @"hhh mmm sss";
   }
 
   mValue = self->mValue;
   mProcessorBundle = self->mProcessorBundle;
 
-  return sub_4DCD0(v4, mProcessorBundle, mValue);
+  return sub_4DCD0(format, mProcessorBundle, mValue);
 }
 
-- (int)readAttributesForDurationCell:(_xmlTextReader *)a3
+- (int)readAttributesForDurationCell:(_xmlTextReader *)cell
 {
-  sub_4290C(a3, qword_A35E8, "du");
+  sub_4290C(cell, qword_A35E8, "du");
   self->mValue = v4;
   return 1;
 }

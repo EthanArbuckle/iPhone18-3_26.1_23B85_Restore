@@ -1,22 +1,22 @@
 @interface ACFHTTPTransport
 - (NSMutableArray)inProgressServerInvocations;
 - (NSMutableArray)queuedServerInvocations;
-- (id)requestString:(id)a3;
-- (id)urlWithRequest:(id)a3 address:(id)a4;
-- (void)addToQueuedServerInvocations:(id)a3;
+- (id)requestString:(id)string;
+- (id)urlWithRequest:(id)request address:(id)address;
+- (void)addToQueuedServerInvocations:(id)invocations;
 - (void)cancelAllInvocations;
 - (void)cancelRequest;
 - (void)dealloc;
-- (void)httpMethodInvocation:(id)a3 didFailWithError:(id)a4;
-- (void)httpMethodInvocation:(id)a3 didFinishWithResult:(id)a4;
-- (void)invocation:(id)a3 didFinishWithError:(id)a4 response:(id)a5;
+- (void)httpMethodInvocation:(id)invocation didFailWithError:(id)error;
+- (void)httpMethodInvocation:(id)invocation didFinishWithResult:(id)result;
+- (void)invocation:(id)invocation didFinishWithError:(id)error response:(id)response;
 - (void)performRequest;
-- (void)performRequestWithCompletionBlock:(id)a3;
-- (void)removeFromQueuedServerInvocations:(id)a3;
-- (void)scheduleInvocation:(id)a3;
+- (void)performRequestWithCompletionBlock:(id)block;
+- (void)removeFromQueuedServerInvocations:(id)invocations;
+- (void)scheduleInvocation:(id)invocation;
 - (void)scheduleNextQueuedRequest;
 - (void)scheduleTimerForNextAttempt;
-- (void)unscheduleInvocation:(id)a3;
+- (void)unscheduleInvocation:(id)invocation;
 @end
 
 @implementation ACFHTTPTransport
@@ -56,18 +56,18 @@
   return result;
 }
 
-- (void)addToQueuedServerInvocations:(id)a3
+- (void)addToQueuedServerInvocations:(id)invocations
 {
   objc_sync_enter(self);
-  [(NSMutableArray *)[(ACFHTTPTransport *)self queuedServerInvocations] addObject:a3];
+  [(NSMutableArray *)[(ACFHTTPTransport *)self queuedServerInvocations] addObject:invocations];
 
   objc_sync_exit(self);
 }
 
-- (void)removeFromQueuedServerInvocations:(id)a3
+- (void)removeFromQueuedServerInvocations:(id)invocations
 {
   objc_sync_enter(self);
-  [(NSMutableArray *)[(ACFHTTPTransport *)self queuedServerInvocations] removeObject:a3];
+  [(NSMutableArray *)[(ACFHTTPTransport *)self queuedServerInvocations] removeObject:invocations];
 
   objc_sync_exit(self);
 }
@@ -90,10 +90,10 @@
   return result;
 }
 
-- (void)scheduleInvocation:(id)a3
+- (void)scheduleInvocation:(id)invocation
 {
   objc_sync_enter(self);
-  if (([(NSMutableArray *)[(ACFHTTPTransport *)self inProgressServerInvocations] containsObject:a3]& 1) != 0)
+  if (([(NSMutableArray *)[(ACFHTTPTransport *)self inProgressServerInvocations] containsObject:invocation]& 1) != 0)
   {
 
     objc_sync_exit(self);
@@ -101,14 +101,14 @@
 
   else
   {
-    [(NSMutableArray *)[(ACFHTTPTransport *)self inProgressServerInvocations] addObject:a3];
+    [(NSMutableArray *)[(ACFHTTPTransport *)self inProgressServerInvocations] addObject:invocation];
     objc_sync_exit(self);
     [(ACFHTTPTransport *)self setTryCounter:[(ACFHTTPTransport *)self tryCounter]+ 1];
     v5[0] = MEMORY[0x29EDCA5F8];
     v5[1] = 3221225472;
     v5[2] = __39__ACFHTTPTransport_scheduleInvocation___block_invoke;
     v5[3] = &unk_29EE91778;
-    v5[4] = a3;
+    v5[4] = invocation;
     dispatch_async_on_main_thread(v5);
   }
 }
@@ -123,17 +123,17 @@ uint64_t __39__ACFHTTPTransport_scheduleInvocation___block_invoke(uint64_t a1)
   return [v4 invoke];
 }
 
-- (void)unscheduleInvocation:(id)a3
+- (void)unscheduleInvocation:(id)invocation
 {
   objc_sync_enter(self);
-  if ([(NSMutableArray *)[(ACFHTTPTransport *)self inProgressServerInvocations] containsObject:a3])
+  if ([(NSMutableArray *)[(ACFHTTPTransport *)self inProgressServerInvocations] containsObject:invocation])
   {
-    [(NSMutableArray *)[(ACFHTTPTransport *)self inProgressServerInvocations] removeObject:a3];
+    [(NSMutableArray *)[(ACFHTTPTransport *)self inProgressServerInvocations] removeObject:invocation];
     objc_sync_exit(self);
-    v5 = [MEMORY[0x29EDB8E48] currentRunLoop];
-    [a3 unscheduleFromRunLoop:v5 forMode:*MEMORY[0x29EDB8CC0]];
+    currentRunLoop = [MEMORY[0x29EDB8E48] currentRunLoop];
+    [invocation unscheduleFromRunLoop:currentRunLoop forMode:*MEMORY[0x29EDB8CC0]];
 
-    [a3 setDelegate:0];
+    [invocation setDelegate:0];
   }
 
   else
@@ -143,14 +143,14 @@ uint64_t __39__ACFHTTPTransport_scheduleInvocation___block_invoke(uint64_t a1)
   }
 }
 
-- (void)invocation:(id)a3 didFinishWithError:(id)a4 response:(id)a5
+- (void)invocation:(id)invocation didFinishWithError:(id)error response:(id)response
 {
   if (qword_2A1EB8FE8 && (ACFLogSettingsGetLevelMask() & 0x40) != 0)
   {
-    ACFLog(6, "-[ACFHTTPTransport invocation:didFinishWithError:response:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFHTTPTransport.m", 165, 0, "Received response from url %@", [a3 url]);
+    ACFLog(6, "-[ACFHTTPTransport invocation:didFinishWithError:response:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFHTTPTransport.m", 165, 0, "Received response from url %@", [invocation url]);
   }
 
-  [(ACFHTTPTransport *)self unscheduleInvocation:a3];
+  [(ACFHTTPTransport *)self unscheduleInvocation:invocation];
   if ([(ACFHTTPTransport *)self hasFinishedServerInvocations])
   {
     if (qword_2A1EB8FE8 && (ACFLogSettingsGetLevelMask() & 0x40) != 0)
@@ -160,8 +160,8 @@ uint64_t __39__ACFHTTPTransport_scheduleInvocation___block_invoke(uint64_t a1)
 
 LABEL_21:
     [(ACFHTTPTransport *)self didEnd];
-    v10 = [(ACFHTTPTransport *)self completionBlock];
-    if (v10[2](v10, a5, a4))
+    completionBlock = [(ACFHTTPTransport *)self completionBlock];
+    if (completionBlock[2](completionBlock, response, error))
     {
 
       [(ACFHTTPTransport *)self setCompletionBlock:0];
@@ -176,8 +176,8 @@ LABEL_21:
     return;
   }
 
-  v9 = [(ACFHTTPTransport *)self retryCheckBlock];
-  if ((v9[2](v9, a5, a4) & 1) == 0)
+  retryCheckBlock = [(ACFHTTPTransport *)self retryCheckBlock];
+  if ((retryCheckBlock[2](retryCheckBlock, response, error) & 1) == 0)
   {
     if (qword_2A1EB8FE8 && (ACFLogSettingsGetLevelMask() & 0x40) != 0)
     {
@@ -216,46 +216,46 @@ LABEL_21:
 {
   [(NSTimer *)[(ACFHTTPTransport *)self failoverTimer] invalidate];
   [(ACFHTTPTransport *)self setFailoverTimer:0];
-  v3 = [(NSMutableArray *)[(ACFHTTPTransport *)self inProgressServerInvocations] firstObject];
-  if (v3)
+  firstObject = [(NSMutableArray *)[(ACFHTTPTransport *)self inProgressServerInvocations] firstObject];
+  if (firstObject)
   {
-    v4 = v3;
+    firstObject2 = firstObject;
     do
     {
-      [v4 cancel];
-      [(ACFHTTPTransport *)self unscheduleInvocation:v4];
-      v4 = [(NSMutableArray *)[(ACFHTTPTransport *)self inProgressServerInvocations] firstObject];
+      [firstObject2 cancel];
+      [(ACFHTTPTransport *)self unscheduleInvocation:firstObject2];
+      firstObject2 = [(NSMutableArray *)[(ACFHTTPTransport *)self inProgressServerInvocations] firstObject];
     }
 
-    while (v4);
+    while (firstObject2);
   }
 
   [(ACFHTTPTransport *)self setInProgressServerInvocations:0];
-  v5 = [(NSMutableArray *)[(ACFHTTPTransport *)self queuedServerInvocations] firstObject];
-  if (v5)
+  firstObject3 = [(NSMutableArray *)[(ACFHTTPTransport *)self queuedServerInvocations] firstObject];
+  if (firstObject3)
   {
-    v6 = v5;
+    firstObject4 = firstObject3;
     do
     {
-      [(ACFHTTPTransport *)self removeFromQueuedServerInvocations:v6];
-      v6 = [(NSMutableArray *)[(ACFHTTPTransport *)self queuedServerInvocations] firstObject];
+      [(ACFHTTPTransport *)self removeFromQueuedServerInvocations:firstObject4];
+      firstObject4 = [(NSMutableArray *)[(ACFHTTPTransport *)self queuedServerInvocations] firstObject];
     }
 
-    while (v6);
+    while (firstObject4);
   }
 
   [(ACFHTTPTransport *)self setQueuedServerInvocations:0];
 }
 
-- (id)requestString:(id)a3
+- (id)requestString:(id)string
 {
   v21 = *MEMORY[0x29EDCA608];
-  v4 = [MEMORY[0x29EDBA050] string];
+  string = [MEMORY[0x29EDBA050] string];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [string countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -271,27 +271,27 @@ LABEL_21:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(string);
         }
 
         v12 = *(*(&v16 + 1) + 8 * v10);
         if (v11 != v10)
         {
-          [v4 appendString:@"&"];
+          [string appendString:@"&"];
         }
 
-        v13 = CFURLCreateStringByAddingPercentEscapes(v9, [a3 valueForKey:v12], 0, @":/?!$&'()*+,;=#[] ", 1u);
+        v13 = CFURLCreateStringByAddingPercentEscapes(v9, [string valueForKey:v12], 0, @":/?!$&'()*+,;=#[] ", 1u);
         if (!v13)
         {
           return 0;
         }
 
-        [v4 appendFormat:@"%@=%@", v12, v13];
+        [string appendFormat:@"%@=%@", v12, v13];
         ++v10;
       }
 
       while (v6 != v10);
-      v6 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [string countByEnumeratingWithState:&v16 objects:v20 count:16];
       v7 = v15;
       if (v6)
       {
@@ -302,44 +302,44 @@ LABEL_21:
     }
   }
 
-  return v4;
+  return string;
 }
 
-- (id)urlWithRequest:(id)a3 address:(id)a4
+- (id)urlWithRequest:(id)request address:(id)address
 {
   v6 = [(ACFHTTPTransport *)self requestString:?];
   v7 = [v6 length];
-  v8 = a4;
+  addressCopy = address;
   if (v7)
   {
-    v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@?%@", a4, v6];
+    addressCopy = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@?%@", address, v6];
   }
 
-  v9 = [MEMORY[0x29EDB8E70] URLWithString:v8];
+  v9 = [MEMORY[0x29EDB8E70] URLWithString:addressCopy];
   v10 = v9;
   if (qword_2A1EB8FE8 && !v9 && (ACFLogSettingsGetLevelMask() & 8) != 0)
   {
-    ACFLog(3, "[ACFHTTPTransport urlWithRequest:address:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFHTTPTransport.m", 285, 0, "Failed to create url with address: %@, parameters: %@", a4, a3);
+    ACFLog(3, "[ACFHTTPTransport urlWithRequest:address:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFHTTPTransport.m", 285, 0, "Failed to create url with address: %@, parameters: %@", address, request);
   }
 
   return v10;
 }
 
-- (void)performRequestWithCompletionBlock:(id)a3
+- (void)performRequestWithCompletionBlock:(id)block
 {
   if ([(NSArray *)[(ACFHTTPTransport *)self serverHosts] count])
   {
-    [(ACFHTTPTransport *)self setCompletionBlock:a3];
+    [(ACFHTTPTransport *)self setCompletionBlock:block];
 
     [(ACFHTTPTransport *)self performRequest];
   }
 
-  else if (a3)
+  else if (block)
   {
     v5 = [MEMORY[0x29EDB9FA0] errorWithDomain:@"com.apple.ist.ds.appleconnect.errordomain.HTTPMethodInvocation" code:65537 userInfo:0];
-    v6 = *(a3 + 2);
+    v6 = *(block + 2);
 
-    v6(a3, 0, v5);
+    v6(block, 0, v5);
   }
 }
 
@@ -380,8 +380,8 @@ LABEL_21:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(ACFHTTPTransport *)self serverHosts];
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  serverHosts = [(ACFHTTPTransport *)self serverHosts];
+  v6 = [(NSArray *)serverHosts countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -393,7 +393,7 @@ LABEL_13:
     {
       if (*v17 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(serverHosts);
       }
 
       v11 = qword_2A1EB8FE8;
@@ -425,7 +425,7 @@ LABEL_13:
       ++v8;
       if (v7 == ++v10)
       {
-        v7 = [(NSArray *)v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v7 = [(NSArray *)serverHosts countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v7)
         {
           goto LABEL_13;
@@ -474,11 +474,11 @@ LABEL_8:
     ACFLog(6, "[ACFHTTPTransport scheduleNextQueuedRequest]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFHTTPTransport.m", 388, 0, "Schedule next invocation from queue");
   }
 
-  v3 = [(NSMutableArray *)[(ACFHTTPTransport *)self queuedServerInvocations] firstObject];
-  if (v3)
+  firstObject = [(NSMutableArray *)[(ACFHTTPTransport *)self queuedServerInvocations] firstObject];
+  if (firstObject)
   {
-    v4 = v3;
-    [(ACFHTTPTransport *)self scheduleInvocation:v3];
+    v4 = firstObject;
+    [(ACFHTTPTransport *)self scheduleInvocation:firstObject];
     [(ACFHTTPTransport *)self removeFromQueuedServerInvocations:v4];
   }
 
@@ -490,29 +490,29 @@ LABEL_8:
   [(ACFHTTPTransport *)self setIsCanceled:1];
   [(ACFHTTPTransport *)self cancelAllInvocations];
   [(ACFHTTPTransport *)self didEnd];
-  v3 = [(ACFHTTPTransport *)self completionBlock];
+  completionBlock = [(ACFHTTPTransport *)self completionBlock];
 
   [(ACFHTTPTransport *)self setCompletionBlock:0];
 }
 
-- (void)httpMethodInvocation:(id)a3 didFinishWithResult:(id)a4
+- (void)httpMethodInvocation:(id)invocation didFinishWithResult:(id)result
 {
   if (qword_2A1EB8FE8 && (ACFLogSettingsGetLevelMask() & 0x80) != 0)
   {
-    ACFLog(7, "[ACFHTTPTransport httpMethodInvocation:didFinishWithResult:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFHTTPTransport.m", 415, 0, "method invocation did finish with result = %@", a4);
+    ACFLog(7, "[ACFHTTPTransport httpMethodInvocation:didFinishWithResult:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFHTTPTransport.m", 415, 0, "method invocation did finish with result = %@", result);
   }
 
-  [(ACFHTTPTransport *)self invocation:a3 didFinishWithError:0 response:a4];
+  [(ACFHTTPTransport *)self invocation:invocation didFinishWithError:0 response:result];
 }
 
-- (void)httpMethodInvocation:(id)a3 didFailWithError:(id)a4
+- (void)httpMethodInvocation:(id)invocation didFailWithError:(id)error
 {
   if (qword_2A1EB8FE8 && (ACFLogSettingsGetLevelMask() & 8) != 0)
   {
-    ACFLog(3, "[ACFHTTPTransport httpMethodInvocation:didFailWithError:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFHTTPTransport.m", 422, 0, "HTTP transport did fail with error = %@", a4);
+    ACFLog(3, "[ACFHTTPTransport httpMethodInvocation:didFailWithError:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFHTTPTransport.m", 422, 0, "HTTP transport did fail with error = %@", error);
   }
 
-  [(ACFHTTPTransport *)self invocation:a3 didFinishWithError:a4 response:0];
+  [(ACFHTTPTransport *)self invocation:invocation didFinishWithError:error response:0];
 }
 
 @end

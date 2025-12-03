@@ -1,19 +1,19 @@
 @interface CRKComposedView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CRKComposedView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CRKComposedView)initWithFrame:(CGRect)frame;
 - (NSArray)cardSectionSubviews;
 - (UIEdgeInsets)cardSectionContentMargins;
-- (void)addCardSectionSubview:(id)a3 withKeyline:(int64_t)a4;
-- (void)cardSectionSubviewWantsToBeRemovedFromHierarchy:(id)a3;
+- (void)addCardSectionSubview:(id)subview withKeyline:(int64_t)keyline;
+- (void)cardSectionSubviewWantsToBeRemovedFromHierarchy:(id)hierarchy;
 @end
 
 @implementation CRKComposedView
 
-- (CRKComposedView)initWithFrame:(CGRect)a3
+- (CRKComposedView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CRKComposedView;
-  v3 = [(CRKComposedView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CRKComposedView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -37,27 +37,27 @@
   return result;
 }
 
-- (void)addCardSectionSubview:(id)a3 withKeyline:(int64_t)a4
+- (void)addCardSectionSubview:(id)subview withKeyline:(int64_t)keyline
 {
-  if (a3)
+  if (subview)
   {
     mutableCardSectionSubviews = self->_mutableCardSectionSubviews;
-    v6 = a3;
-    [(NSMutableArray *)mutableCardSectionSubviews addObject:v6];
-    [(CRKComposedView *)self addSubview:v6];
-    [v6 setComposedSuperview:self];
+    subviewCopy = subview;
+    [(NSMutableArray *)mutableCardSectionSubviews addObject:subviewCopy];
+    [(CRKComposedView *)self addSubview:subviewCopy];
+    [subviewCopy setComposedSuperview:self];
 
     [(CRKComposedView *)self setNeedsLayout];
   }
 }
 
-- (void)cardSectionSubviewWantsToBeRemovedFromHierarchy:(id)a3
+- (void)cardSectionSubviewWantsToBeRemovedFromHierarchy:(id)hierarchy
 {
   mutableCardSectionSubviews = self->_mutableCardSectionSubviews;
-  v4 = a3;
-  [(NSMutableArray *)mutableCardSectionSubviews removeObject:v4];
-  [v4 removeFromSuperview];
-  [v4 setComposedSuperview:0];
+  hierarchyCopy = hierarchy;
+  [(NSMutableArray *)mutableCardSectionSubviews removeObject:hierarchyCopy];
+  [hierarchyCopy removeFromSuperview];
+  [hierarchyCopy setComposedSuperview:0];
 }
 
 - (NSArray)cardSectionSubviews
@@ -67,7 +67,7 @@
   return v2;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);

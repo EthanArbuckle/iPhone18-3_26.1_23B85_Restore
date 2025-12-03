@@ -1,25 +1,25 @@
 @interface WFCoreDataDatabaseResultConcatFetchRequestOperation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSEntityDescription)entity;
 - (NSString)description;
-- (WFCoreDataDatabaseResultConcatFetchRequestOperation)initWithFetchRequests:(id)a3 resultsLimit:(int64_t)a4;
-- (WFCoreDataDatabaseResultConcatFetchRequestOperation)initWithFetchRequests:(id)a3 resultsLimit:(int64_t)a4 relationshipKeysAffectingDescriptors:(id)a5;
-- (id)resultsWithContext:(id)a3 error:(id *)a4;
-- (int64_t)countWithContext:(id)a3 error:(id *)a4;
+- (WFCoreDataDatabaseResultConcatFetchRequestOperation)initWithFetchRequests:(id)requests resultsLimit:(int64_t)limit;
+- (WFCoreDataDatabaseResultConcatFetchRequestOperation)initWithFetchRequests:(id)requests resultsLimit:(int64_t)limit relationshipKeysAffectingDescriptors:(id)descriptors;
+- (id)resultsWithContext:(id)context error:(id *)error;
+- (int64_t)countWithContext:(id)context error:(id *)error;
 - (unint64_t)hash;
 @end
 
 @implementation WFCoreDataDatabaseResultConcatFetchRequestOperation
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -34,10 +34,10 @@
   }
 
   v6 = v5;
-  v7 = [(WFCoreDataDatabaseResultConcatFetchRequestOperation *)self fetchRequests];
-  v8 = [v6 fetchRequests];
-  v9 = v7;
-  v10 = v8;
+  fetchRequests = [(WFCoreDataDatabaseResultConcatFetchRequestOperation *)self fetchRequests];
+  fetchRequests2 = [v6 fetchRequests];
+  v9 = fetchRequests;
+  v10 = fetchRequests2;
   v11 = v10;
   if (v9 == v10)
   {
@@ -61,8 +61,8 @@ LABEL_14:
     }
   }
 
-  v13 = [(WFCoreDataDatabaseResultConcatFetchRequestOperation *)self resultsLimit];
-  v14 = v13 == [v6 resultsLimit];
+  resultsLimit = [(WFCoreDataDatabaseResultConcatFetchRequestOperation *)self resultsLimit];
+  v14 = resultsLimit == [v6 resultsLimit];
 LABEL_15:
 
   return v14;
@@ -70,17 +70,17 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v3 = [(WFCoreDataDatabaseResultConcatFetchRequestOperation *)self fetchRequests];
-  v4 = [v3 hash];
-  v5 = [(WFCoreDataDatabaseResultConcatFetchRequestOperation *)self resultsLimit];
+  fetchRequests = [(WFCoreDataDatabaseResultConcatFetchRequestOperation *)self fetchRequests];
+  v4 = [fetchRequests hash];
+  resultsLimit = [(WFCoreDataDatabaseResultConcatFetchRequestOperation *)self resultsLimit];
 
-  return v5 ^ v4;
+  return resultsLimit ^ v4;
 }
 
 - (NSString)description
 {
-  v3 = [(WFCoreDataDatabaseResultConcatFetchRequestOperation *)self fetchRequests];
-  v4 = [v3 valueForKeyPath:@"predicate.predicateFormat"];
+  fetchRequests = [(WFCoreDataDatabaseResultConcatFetchRequestOperation *)self fetchRequests];
+  v4 = [fetchRequests valueForKeyPath:@"predicate.predicateFormat"];
 
   v5 = MEMORY[0x1E696AEC0];
   v6 = objc_opt_class();
@@ -92,23 +92,23 @@ LABEL_15:
 
 - (NSEntityDescription)entity
 {
-  v2 = [(WFCoreDataDatabaseResultConcatFetchRequestOperation *)self fetchRequests];
-  v3 = [v2 firstObject];
-  v4 = [v3 entity];
+  fetchRequests = [(WFCoreDataDatabaseResultConcatFetchRequestOperation *)self fetchRequests];
+  firstObject = [fetchRequests firstObject];
+  entity = [firstObject entity];
 
-  return v4;
+  return entity;
 }
 
-- (int64_t)countWithContext:(id)a3 error:(id *)a4
+- (int64_t)countWithContext:(id)context error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [(WFCoreDataDatabaseResultConcatFetchRequestOperation *)self fetchRequests];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  fetchRequests = [(WFCoreDataDatabaseResultConcatFetchRequestOperation *)self fetchRequests];
+  v8 = [fetchRequests countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -120,13 +120,13 @@ LABEL_15:
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(fetchRequests);
         }
 
-        v10 += [v6 countForFetchRequest:*(*(&v16 + 1) + 8 * i) error:a4];
+        v10 += [contextCopy countForFetchRequest:*(*(&v16 + 1) + 8 * i) error:error];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [fetchRequests countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
@@ -139,10 +139,10 @@ LABEL_15:
 
   if ([(WFCoreDataDatabaseResultConcatFetchRequestOperation *)self resultsLimit]>= 1)
   {
-    v13 = [(WFCoreDataDatabaseResultConcatFetchRequestOperation *)self resultsLimit];
-    if (v10 >= v13)
+    resultsLimit = [(WFCoreDataDatabaseResultConcatFetchRequestOperation *)self resultsLimit];
+    if (v10 >= resultsLimit)
     {
-      v10 = v13;
+      v10 = resultsLimit;
     }
   }
 
@@ -150,17 +150,17 @@ LABEL_15:
   return v10;
 }
 
-- (id)resultsWithContext:(id)a3 error:(id *)a4
+- (id)resultsWithContext:(id)context error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = objc_opt_new();
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = [(WFCoreDataDatabaseResultConcatFetchRequestOperation *)self fetchRequests];
-  v9 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  fetchRequests = [(WFCoreDataDatabaseResultConcatFetchRequestOperation *)self fetchRequests];
+  v9 = [fetchRequests countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v9)
   {
     v10 = v9;
@@ -171,29 +171,29 @@ LABEL_15:
       {
         if (*v25 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(fetchRequests);
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
         if ([(WFCoreDataDatabaseResultConcatFetchRequestOperation *)self resultsLimit]>= 1)
         {
-          v14 = [(WFCoreDataDatabaseResultConcatFetchRequestOperation *)self resultsLimit];
-          v15 = v14 - [v7 count];
-          v16 = [v13 fetchLimit];
-          if (v16 >= v15)
+          resultsLimit = [(WFCoreDataDatabaseResultConcatFetchRequestOperation *)self resultsLimit];
+          v15 = resultsLimit - [v7 count];
+          fetchLimit = [v13 fetchLimit];
+          if (fetchLimit >= v15)
           {
             v17 = v15;
           }
 
           else
           {
-            v17 = v16;
+            v17 = fetchLimit;
           }
 
           [v13 setFetchLimit:v17];
         }
 
-        v18 = [v6 executeFetchRequest:v13 error:a4];
+        v18 = [contextCopy executeFetchRequest:v13 error:error];
         if (!v18)
         {
 
@@ -214,7 +214,7 @@ LABEL_15:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v10 = [fetchRequests countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v10)
       {
         continue;
@@ -234,21 +234,21 @@ LABEL_20:
   return v21;
 }
 
-- (WFCoreDataDatabaseResultConcatFetchRequestOperation)initWithFetchRequests:(id)a3 resultsLimit:(int64_t)a4 relationshipKeysAffectingDescriptors:(id)a5
+- (WFCoreDataDatabaseResultConcatFetchRequestOperation)initWithFetchRequests:(id)requests resultsLimit:(int64_t)limit relationshipKeysAffectingDescriptors:(id)descriptors
 {
-  v8 = a3;
-  v9 = a5;
+  requestsCopy = requests;
+  descriptorsCopy = descriptors;
   v17.receiver = self;
   v17.super_class = WFCoreDataDatabaseResultConcatFetchRequestOperation;
   v10 = [(WFCoreDataDatabaseResultConcatFetchRequestOperation *)&v17 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [requestsCopy copy];
     fetchRequests = v10->_fetchRequests;
     v10->_fetchRequests = v11;
 
-    v10->_resultsLimit = a4;
-    v13 = [v9 copy];
+    v10->_resultsLimit = limit;
+    v13 = [descriptorsCopy copy];
     relationshipKeysAffectingDescriptors = v10->_relationshipKeysAffectingDescriptors;
     v10->_relationshipKeysAffectingDescriptors = v13;
 
@@ -258,11 +258,11 @@ LABEL_20:
   return v10;
 }
 
-- (WFCoreDataDatabaseResultConcatFetchRequestOperation)initWithFetchRequests:(id)a3 resultsLimit:(int64_t)a4
+- (WFCoreDataDatabaseResultConcatFetchRequestOperation)initWithFetchRequests:(id)requests resultsLimit:(int64_t)limit
 {
-  v6 = a3;
+  requestsCopy = requests;
   v7 = objc_opt_new();
-  v8 = [(WFCoreDataDatabaseResultConcatFetchRequestOperation *)self initWithFetchRequests:v6 resultsLimit:a4 relationshipKeysAffectingDescriptors:v7];
+  v8 = [(WFCoreDataDatabaseResultConcatFetchRequestOperation *)self initWithFetchRequests:requestsCopy resultsLimit:limit relationshipKeysAffectingDescriptors:v7];
 
   return v8;
 }

@@ -2,7 +2,7 @@
 - ($44DB91ABE188F3342F2E860183E7D78B)boundingMapRect;
 - (CLLocationCoordinate2D)coordinate;
 - (_TtC9WorkoutUI18WKUIBreadcrumbPath)init;
-- (void)setCoordinate:(CLLocationCoordinate2D)a3;
+- (void)setCoordinate:(CLLocationCoordinate2D)coordinate;
 @end
 
 @implementation WKUIBreadcrumbPath
@@ -31,10 +31,10 @@
   return result;
 }
 
-- (void)setCoordinate:(CLLocationCoordinate2D)a3
+- (void)setCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v5 = (self + OBJC_IVAR____TtC9WorkoutUI18WKUIBreadcrumbPath_coordinate);
   swift_beginAccess();
   *v5 = latitude;

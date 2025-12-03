@@ -1,33 +1,33 @@
 @interface WFSettingsController
-- (WFSettingsController)initWithDetailsContext:(id)a3;
-- (WFSettingsController)initWithDetailsContext:(id)a3 appearanceProxy:(id)a4;
+- (WFSettingsController)initWithDetailsContext:(id)context;
+- (WFSettingsController)initWithDetailsContext:(id)context appearanceProxy:(id)proxy;
 - (void)_applySetupAppearances;
-- (void)_currentNetworkDidChange:(id)a3;
-- (void)_ipStateDidChange:(id)a3;
-- (void)_refreshSettingsConfig:(id)a3;
+- (void)_currentNetworkDidChange:(id)change;
+- (void)_ipStateDidChange:(id)change;
+- (void)_refreshSettingsConfig:(id)config;
 - (void)_startMontoringIPChanges;
 - (void)_stopMonitoringIPChanges;
 - (void)dealloc;
-- (void)networkSettingsViewController:(id)a3 saveConfig:(id)a4 errorHandler:(id)a5;
+- (void)networkSettingsViewController:(id)controller saveConfig:(id)config errorHandler:(id)handler;
 @end
 
 @implementation WFSettingsController
 
-- (WFSettingsController)initWithDetailsContext:(id)a3
+- (WFSettingsController)initWithDetailsContext:(id)context
 {
   v4 = MEMORY[0x277D7B980];
-  v5 = a3;
-  v6 = [v4 defaultAppearanceProxy];
-  v7 = [(WFSettingsController *)self initWithDetailsContext:v5 appearanceProxy:v6];
+  contextCopy = context;
+  defaultAppearanceProxy = [v4 defaultAppearanceProxy];
+  v7 = [(WFSettingsController *)self initWithDetailsContext:contextCopy appearanceProxy:defaultAppearanceProxy];
 
   return v7;
 }
 
-- (WFSettingsController)initWithDetailsContext:(id)a3 appearanceProxy:(id)a4
+- (WFSettingsController)initWithDetailsContext:(id)context appearanceProxy:(id)proxy
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  proxyCopy = proxy;
   v35.receiver = self;
   v35.super_class = WFSettingsController;
   v9 = [(WFSettingsController *)&v35 init];
@@ -37,7 +37,7 @@
     goto LABEL_24;
   }
 
-  if (!v7)
+  if (!contextCopy)
   {
     [WFSettingsController initWithDetailsContext:buf appearanceProxy:?];
 LABEL_23:
@@ -47,20 +47,20 @@ LABEL_24:
     goto LABEL_19;
   }
 
-  objc_storeStrong(&v9->_detailsContext, a3);
-  objc_storeStrong(&v10->_appearanceProxy, a4);
+  objc_storeStrong(&v9->_detailsContext, context);
+  objc_storeStrong(&v10->_appearanceProxy, proxy);
   [(WFAppearanceProxy *)v10->_appearanceProxy apply];
-  v11 = [(WFDetailsContext *)v10->_detailsContext network];
+  network = [(WFDetailsContext *)v10->_detailsContext network];
 
-  if (!v11)
+  if (!network)
   {
     [WFSettingsController initWithDetailsContext:buf appearanceProxy:?];
     goto LABEL_23;
   }
 
-  v12 = [(WFDetailsContext *)v10->_detailsContext network];
+  network2 = [(WFDetailsContext *)v10->_detailsContext network];
   network = v10->_network;
-  v10->_network = v12;
+  v10->_network = network2;
 
   v14 = WFLogForCategory(0);
   v15 = OSLogForWFLogLevel(3uLL);
@@ -69,11 +69,11 @@ LABEL_24:
     v16 = v14;
     if (os_log_type_enabled(v16, v15))
     {
-      v17 = [(WFDetailsContext *)v10->_detailsContext profile];
+      profile = [(WFDetailsContext *)v10->_detailsContext profile];
       *buf = 136315394;
       *&buf[4] = "[WFSettingsController initWithDetailsContext:appearanceProxy:]";
       v37 = 2112;
-      v38 = v17;
+      v38 = profile;
       _os_log_impl(&dword_273ECD000, v16, v15, "%s: provided profile %@", buf, 0x16u);
     }
   }
@@ -104,9 +104,9 @@ LABEL_24:
     _os_log_impl(&dword_273ECD000, v21, v22, "%s: cloudSyncRunning %d", buf, 0x12u);
   }
 
-  v24 = [(WFDetailsContext *)v10->_detailsContext ipMonitor];
+  ipMonitor = [(WFDetailsContext *)v10->_detailsContext ipMonitor];
   ipMonitor = v10->_ipMonitor;
-  v10->_ipMonitor = v24;
+  v10->_ipMonitor = ipMonitor;
 
   if (!v10->_ipMonitor)
   {
@@ -125,9 +125,9 @@ LABEL_24:
   }
 
   [(WFSettingsController *)v10 _refreshSettingsConfig:?];
-  v28 = [v7 hardwareMACAddress];
+  hardwareMACAddress = [contextCopy hardwareMACAddress];
   hardwareMACAddress = v10->_hardwareMACAddress;
-  v10->_hardwareMACAddress = v28;
+  v10->_hardwareMACAddress = hardwareMACAddress;
 
   v30 = [objc_alloc(MEMORY[0x277D7B9E8]) initWithConfig:v10->_config detailsContext:v10->_detailsContext hardwareMACAddress:v10->_hardwareMACAddress appearanceProxy:v10->_appearanceProxy];
   settingsViewController = v10->_settingsViewController;
@@ -140,8 +140,8 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v32 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v32 addObserver:v10 selector:sel__currentNetworkDidChange_ name:@"WFInterfaceNetworkChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v10 selector:sel__currentNetworkDidChange_ name:@"WFInterfaceNetworkChangedNotification" object:0];
 
   if ([(WFDetailsContext *)v10->_detailsContext isCurrent])
   {
@@ -156,8 +156,8 @@ LABEL_19:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"WFInterfaceNetworkChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"WFInterfaceNetworkChangedNotification" object:0];
 
   [(WFSettingsController *)self _stopMonitoringIPChanges];
   [(NSOperationQueue *)self->_queue cancelAllOperations];
@@ -166,20 +166,20 @@ LABEL_19:
   [(WFSettingsController *)&v4 dealloc];
 }
 
-- (void)_currentNetworkDidChange:(id)a3
+- (void)_currentNetworkDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v11 = [v4 objectForKeyedSubscript:@"WFInterfaceNetworkKey"];
+  userInfo = [change userInfo];
+  v11 = [userInfo objectForKeyedSubscript:@"WFInterfaceNetworkKey"];
 
-  v5 = [(WFSettingsController *)self detailsContext];
-  v6 = [v5 network];
-  v7 = [v6 isEquivalentRecord:v11];
+  detailsContext = [(WFSettingsController *)self detailsContext];
+  network = [detailsContext network];
+  v7 = [network isEquivalentRecord:v11];
 
   if (v7 != [(WFSettingsController *)self isCurrentNetwork])
   {
     self->_currentNetwork = v7;
-    v8 = [(WFSettingsController *)self network];
-    v9 = [(WFSettingsController *)self _baseConfigForNetwork:v8 current:v11 != 0];
+    network2 = [(WFSettingsController *)self network];
+    v9 = [(WFSettingsController *)self _baseConfigForNetwork:network2 current:v11 != 0];
 
     [(WFSettingsController *)self _refreshSettingsConfig:v9];
     monitorIPChanges = self->_monitorIPChanges;
@@ -210,8 +210,8 @@ LABEL_8:
 {
   if (self->_monitorIPChanges)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self name:@"WFIPMonitorStateChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:@"WFIPMonitorStateChangedNotification" object:0];
 
     self->_monitorIPChanges = 0;
   }
@@ -222,16 +222,16 @@ LABEL_8:
   if (!self->_monitorIPChanges)
   {
     self->_monitorIPChanges = 1;
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    v4 = [(WFSettingsController *)self ipMonitor];
-    [v5 addObserver:self selector:sel__ipStateDidChange_ name:@"WFIPMonitorStateChangedNotification" object:v4];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    ipMonitor = [(WFSettingsController *)self ipMonitor];
+    [defaultCenter addObserver:self selector:sel__ipStateDidChange_ name:@"WFIPMonitorStateChangedNotification" object:ipMonitor];
   }
 }
 
-- (void)_ipStateDidChange:(id)a3
+- (void)_ipStateDidChange:(id)change
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = WFLogForCategory(0);
   v6 = OSLogForWFLogLevel(4uLL);
   if (WFCurrentLogLevel() >= 4 && v5)
@@ -239,19 +239,19 @@ LABEL_8:
     v7 = v5;
     if (os_log_type_enabled(v7, v6))
     {
-      v8 = [v4 userInfo];
+      userInfo = [changeCopy userInfo];
       v12 = 136315394;
       v13 = "[WFSettingsController _ipStateDidChange:]";
       v14 = 2112;
-      v15 = v8;
+      v15 = userInfo;
       _os_log_impl(&dword_273ECD000, v7, v6, "%s- %@", &v12, 0x16u);
     }
   }
 
   if ([(WFSettingsController *)self isCurrentNetwork])
   {
-    v9 = [(WFSettingsController *)self network];
-    v10 = [(WFSettingsController *)self _baseConfigForNetwork:v9 current:[(WFSettingsController *)self isCurrentNetwork]];
+    network = [(WFSettingsController *)self network];
+    v10 = [(WFSettingsController *)self _baseConfigForNetwork:network current:[(WFSettingsController *)self isCurrentNetwork]];
 
     [(WFSettingsController *)self _refreshSettingsConfig:v10];
   }
@@ -259,17 +259,17 @@ LABEL_8:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_refreshSettingsConfig:(id)a3
+- (void)_refreshSettingsConfig:(id)config
 {
-  v4 = a3;
-  v5 = [(WFSettingsController *)self detailsContext];
-  v6 = [v5 interface];
-  v7 = [v6 interfaceName];
+  configCopy = config;
+  detailsContext = [(WFSettingsController *)self detailsContext];
+  interface = [detailsContext interface];
+  interfaceName = [interface interfaceName];
 
   v8 = [WFGetSettingsOperation alloc];
-  v9 = [(WFSettingsController *)self network];
-  v10 = [v9 ssid];
-  v11 = [(WFGetSettingsOperation *)v8 initWithSSID:v10 interfaceName:v7];
+  network = [(WFSettingsController *)self network];
+  ssid = [network ssid];
+  v11 = [(WFGetSettingsOperation *)v8 initWithSSID:ssid interfaceName:interfaceName];
 
   v26[0] = 0;
   v26[1] = v26;
@@ -278,7 +278,7 @@ LABEL_8:
   v26[4] = __Block_byref_object_dispose__10;
   v12 = v11;
   v27 = v12;
-  v13 = [v4 copy];
+  v13 = [configCopy copy];
   objc_initWeak(&location, self);
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
@@ -287,7 +287,7 @@ LABEL_8:
   v23 = v26;
   objc_copyWeak(&v24, &location);
   v20 = v13;
-  v21 = self;
+  selfCopy = self;
   v14 = v20;
   v22 = v14;
   [(WFGetSettingsOperation *)v12 setCompletionBlock:&v16];
@@ -1422,19 +1422,19 @@ void __47__WFSettingsController__refreshSettingsConfig___block_invoke_32(uint64_
   }
 }
 
-- (void)networkSettingsViewController:(id)a3 saveConfig:(id)a4 errorHandler:(id)a5
+- (void)networkSettingsViewController:(id)controller saveConfig:(id)config errorHandler:(id)handler
 {
   v181 = *MEMORY[0x277D85DE8];
-  v148 = a3;
-  v165 = a4;
-  v157 = a5;
+  controllerCopy = controller;
+  configCopy = config;
+  handlerCopy = handler;
   val = self;
-  v8 = [(WFSettingsController *)self config];
-  v149 = [v8 changesBetweenConfig:v165];
+  config = [(WFSettingsController *)self config];
+  v149 = [config changesBetweenConfig:configCopy];
 
   if ([v149 count])
   {
-    v158 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v171 = 0u;
     v172 = 0u;
     v169 = 0u;
@@ -1478,7 +1478,7 @@ LABEL_4:
             _os_log_impl(&dword_273ECD000, v21, v22, "IPv6 changes: %@", buf, 0xCu);
           }
 
-          if (([v165 validIPv6Configuration] & 1) == 0)
+          if (([configCopy validIPv6Configuration] & 1) == 0)
           {
             v23 = WFLogForCategory(0);
             v46 = OSLogForWFLogLevel(3uLL);
@@ -1493,62 +1493,62 @@ LABEL_4:
           }
 
           v23 = [v11 objectForKey:@"ipv6Config"];
-          if (v23 || (v24 = [0 integerValue], v24 == -1))
+          if (v23 || (ipv6Config = [0 integerValue], ipv6Config == -1))
           {
-            v24 = [v165 ipv6Config];
+            ipv6Config = [configCopy ipv6Config];
           }
 
-          switch(v24)
+          switch(ipv6Config)
           {
             case 2:
-              v59 = +[WFSettingsIPV6 linkLocalConfig];
-              [v158 addObject:v59];
+              ipv6AddressManual = +[WFSettingsIPV6 linkLocalConfig];
+              [array addObject:ipv6AddressManual];
               break;
             case 1:
-              v59 = [v165 ipv6AddressManual];
+              ipv6AddressManual = [configCopy ipv6AddressManual];
               v61 = [v11 objectForKey:@"ipv6AddressManual"];
 
               if (v61)
               {
                 v62 = [v11 objectForKey:@"ipv6AddressManual"];
 
-                v59 = v62;
+                ipv6AddressManual = v62;
               }
 
-              v63 = [v165 ipv6PrefixLengthManual];
+              ipv6PrefixLengthManual = [configCopy ipv6PrefixLengthManual];
               v64 = [v11 objectForKey:@"ipv6PrefixLengthManual"];
 
               if (v64)
               {
                 v65 = [v11 objectForKey:@"ipv6PrefixLengthManual"];
 
-                v63 = v65;
+                ipv6PrefixLengthManual = v65;
               }
 
-              v66 = [v165 ipv6RouterAddressManual];
+              ipv6RouterAddressManual = [configCopy ipv6RouterAddressManual];
               v67 = [v11 objectForKey:@"ipv6RouterAddressManual"];
 
               if (v67)
               {
                 v68 = [v11 objectForKey:@"ipv6RouterAddressManual"];
 
-                v66 = v68;
+                ipv6RouterAddressManual = v68;
               }
 
               v69 = [WFSettingsIPV6 alloc];
-              if (v59)
+              if (ipv6AddressManual)
               {
-                v174 = v59;
+                v174 = ipv6AddressManual;
                 v151 = [MEMORY[0x277CBEA60] arrayWithObjects:&v174 count:1];
                 v70 = v151;
-                if (v63)
+                if (ipv6PrefixLengthManual)
                 {
                   goto LABEL_93;
                 }
 
 LABEL_147:
-                v72 = [(WFSettingsIPV6 *)v69 initWithMethod:3 addresses:v70 prefixLengths:0 router:v66];
-                if (v59)
+                v72 = [(WFSettingsIPV6 *)v69 initWithMethod:3 addresses:v70 prefixLengths:0 router:ipv6RouterAddressManual];
+                if (ipv6AddressManual)
                 {
                   goto LABEL_148;
                 }
@@ -1557,17 +1557,17 @@ LABEL_147:
               else
               {
                 v70 = 0;
-                if (!v63)
+                if (!ipv6PrefixLengthManual)
                 {
                   goto LABEL_147;
                 }
 
 LABEL_93:
-                v173 = v63;
+                v173 = ipv6PrefixLengthManual;
                 v71 = [MEMORY[0x277CBEA60] arrayWithObjects:&v173 count:1];
-                v72 = [(WFSettingsIPV6 *)v69 initWithMethod:3 addresses:v70 prefixLengths:v71 router:v66];
+                v72 = [(WFSettingsIPV6 *)v69 initWithMethod:3 addresses:v70 prefixLengths:v71 router:ipv6RouterAddressManual];
 
-                if (v59)
+                if (ipv6AddressManual)
                 {
 LABEL_148:
                 }
@@ -1575,7 +1575,7 @@ LABEL_148:
 
               if (v72)
               {
-                [v158 addObject:v72];
+                [array addObject:v72];
               }
 
               else
@@ -1592,15 +1592,15 @@ LABEL_148:
 
               break;
             case 0:
-              v59 = +[WFSettingsIPV6 automaticConfig];
-              [v158 addObject:v59];
+              ipv6AddressManual = +[WFSettingsIPV6 automaticConfig];
+              [array addObject:ipv6AddressManual];
               break;
             default:
 LABEL_158:
-              v100 = [(WFSettingsController *)val config];
-              v101 = [v100 ipv6Config];
-              v102.i64[0] = v24;
-              v102.i64[1] = v101;
+              config2 = [(WFSettingsController *)val config];
+              ipv6Config2 = [config2 ipv6Config];
+              v102.i64[0] = ipv6Config;
+              v102.i64[1] = ipv6Config2;
               v103 = vdupq_n_s64(1uLL);
               v104 = vdupq_n_s64(2uLL);
               v105 = vcgtq_u64(v104, vaddq_s64(v102, v103));
@@ -1648,33 +1648,33 @@ LABEL_165:
             _os_log_impl(&dword_273ECD000, v25, v26, "DNS changes: %@", buf, 0xCu);
           }
 
-          v27 = [v165 dnsConfig];
+          dnsConfig = [configCopy dnsConfig];
           v28 = [v11 objectForKey:@"dnsConfig"];
 
           if (v28)
           {
             v29 = [v11 objectForKey:@"dnsConfig"];
-            v27 = [v29 integerValue];
+            dnsConfig = [v29 integerValue];
           }
 
-          if (v27)
+          if (dnsConfig)
           {
-            v30 = [v11 objectForKey:@"dnsServerAddresses"];
-            if (!v30)
+            dnsServerAddresses = [v11 objectForKey:@"dnsServerAddresses"];
+            if (!dnsServerAddresses)
             {
-              v30 = [v165 dnsServerAddresses];
+              dnsServerAddresses = [configCopy dnsServerAddresses];
             }
 
-            v31 = [v11 objectForKey:@"dnsSearchDomains"];
-            if (!v31)
+            dnsSearchDomains = [v11 objectForKey:@"dnsSearchDomains"];
+            if (!dnsSearchDomains)
             {
-              v31 = [v165 dnsSearchDomains];
+              dnsSearchDomains = [configCopy dnsSearchDomains];
             }
 
-            v32 = [[WFSettingsDNS alloc] initWithServerAddresses:v30 searchDomains:v31];
+            v32 = [[WFSettingsDNS alloc] initWithServerAddresses:dnsServerAddresses searchDomains:dnsSearchDomains];
             if (v32)
             {
-              [v158 addObject:v32];
+              [array addObject:v32];
             }
 
             else
@@ -1694,13 +1694,13 @@ LABEL_165:
 
           else
           {
-            v30 = +[WFSettingsDNS automaticConfig];
-            [v158 addObject:v30];
+            dnsServerAddresses = +[WFSettingsDNS automaticConfig];
+            [array addObject:dnsServerAddresses];
             v60 = 6;
           }
 
-          v77 = [(WFSettingsController *)val config];
-          if ([v77 dnsConfig])
+          config3 = [(WFSettingsController *)val config];
+          if ([config3 dnsConfig])
           {
             v78 = 7;
           }
@@ -1738,8 +1738,8 @@ LABEL_165:
         {
           v11 = [obj objectForKey:v10];
           v36 = [v11 mutableCopy];
-          v37 = [v36 allKeys];
-          v38 = [v37 containsObject:@"httpProxyPassword"];
+          allKeys = [v36 allKeys];
+          v38 = [allKeys containsObject:@"httpProxyPassword"];
 
           if (v38)
           {
@@ -1755,15 +1755,15 @@ LABEL_165:
             _os_log_impl(&dword_273ECD000, v39, v40, "Proxy changes: %@", buf, 0xCu);
           }
 
-          if (([v165 validProxyConfiguration] & 1) == 0)
+          if (([configCopy validProxyConfiguration] & 1) == 0)
           {
-            v73 = WFLogForCategory(0);
+            config4 = WFLogForCategory(0);
             v74 = OSLogForWFLogLevel(3uLL);
-            if (WFCurrentLogLevel() >= 3 && v73 && os_log_type_enabled(v73, v74))
+            if (WFCurrentLogLevel() >= 3 && config4 && os_log_type_enabled(config4, v74))
             {
               *buf = 138412290;
               *v179 = v11;
-              _os_log_impl(&dword_273ECD000, v73, v74, "Disregarding proxy edits %@, invalid configuration", buf, 0xCu);
+              _os_log_impl(&dword_273ECD000, config4, v74, "Disregarding proxy edits %@, invalid configuration", buf, 0xCu);
             }
 
             goto LABEL_210;
@@ -1771,16 +1771,16 @@ LABEL_165:
 
           v41 = [v11 objectForKey:@"httpProxyConfig"];
 
-          if (!v41 || ([v11 objectForKey:@"httpProxyConfig"], v42 = objc_claimAutoreleasedReturnValue(), v43 = objc_msgSend(v42, "integerValue"), v42, v43 == -1))
+          if (!v41 || ([v11 objectForKey:@"httpProxyConfig"], v42 = objc_claimAutoreleasedReturnValue(), httpProxyConfig = objc_msgSend(v42, "integerValue"), v42, httpProxyConfig == -1))
           {
-            v43 = [v165 httpProxyConfig];
+            httpProxyConfig = [configCopy httpProxyConfig];
           }
 
-          switch(v43)
+          switch(httpProxyConfig)
           {
             case 2:
-              v44 = [v11 objectForKey:@"httpProxyConfigPAC"];
-              if (![v44 length])
+              httpProxyServerAddress = [v11 objectForKey:@"httpProxyConfigPAC"];
+              if (![httpProxyServerAddress length])
               {
                 v116 = WFLogForCategory(0);
                 v117 = OSLogForWFLogLevel(3uLL);
@@ -1791,37 +1791,37 @@ LABEL_165:
                 }
               }
 
-              v118 = [[WFSettingsProxy alloc] initWithAutoConfigureURL:v44];
-              [v158 addObject:v118];
+              v118 = [[WFSettingsProxy alloc] initWithAutoConfigureURL:httpProxyServerAddress];
+              [array addObject:v118];
 
               v45 = 9;
               break;
             case 1:
-              v44 = [v11 objectForKey:@"httpProxyServerAddress"];
-              if (!v44)
+              httpProxyServerAddress = [v11 objectForKey:@"httpProxyServerAddress"];
+              if (!httpProxyServerAddress)
               {
-                v44 = [v165 httpProxyServerAddress];
+                httpProxyServerAddress = [configCopy httpProxyServerAddress];
               }
 
-              v150 = [v11 objectForKey:@"httpProxyServerPort"];
-              if (!v150)
+              httpProxyServerPort = [v11 objectForKey:@"httpProxyServerPort"];
+              if (!httpProxyServerPort)
               {
-                v150 = [v165 httpProxyServerPort];
+                httpProxyServerPort = [configCopy httpProxyServerPort];
               }
 
-              v113 = [v11 objectForKey:@"httpProxyUsername"];
-              if (!v113)
+              httpProxyUsername = [v11 objectForKey:@"httpProxyUsername"];
+              if (!httpProxyUsername)
               {
-                v113 = [v165 httpProxyUsername];
+                httpProxyUsername = [configCopy httpProxyUsername];
               }
 
-              v114 = [v11 objectForKey:@"httpProxyPassword"];
-              if (!v114)
+              httpProxyPassword = [v11 objectForKey:@"httpProxyPassword"];
+              if (!httpProxyPassword)
               {
-                v114 = [v165 httpProxyPassword];
+                httpProxyPassword = [configCopy httpProxyPassword];
               }
 
-              if (![v44 length] || !objc_msgSend(v150, "length") || objc_msgSend(v165, "httpProxyAuthenticationRequired") && (!objc_msgSend(v113, "length") || !objc_msgSend(v114, "length")))
+              if (![httpProxyServerAddress length] || !objc_msgSend(httpProxyServerPort, "length") || objc_msgSend(configCopy, "httpProxyAuthenticationRequired") && (!objc_msgSend(httpProxyUsername, "length") || !objc_msgSend(httpProxyPassword, "length")))
               {
                 v145 = WFLogForCategory(0);
                 v146 = OSLogForWFLogLevel(1uLL);
@@ -1831,14 +1831,14 @@ LABEL_165:
                   _os_log_impl(&dword_273ECD000, v145, v146, "Can't save proxy settings, missing fields", buf, 2u);
                 }
 
-                v133 = obj;
+                interfaceName = obj;
                 goto LABEL_235;
               }
 
-              v115 = [[WFSettingsProxy alloc] initWithManualServer:v44 port:v150 username:v113 password:v114];
-              if (v158)
+              v115 = [[WFSettingsProxy alloc] initWithManualServer:httpProxyServerAddress port:httpProxyServerPort username:httpProxyUsername password:httpProxyPassword];
+              if (array)
               {
-                [v158 addObject:v115];
+                [array addObject:v115];
               }
 
               else
@@ -1856,23 +1856,23 @@ LABEL_165:
               v45 = 10;
               break;
             case 0:
-              v44 = +[WFSettingsProxy offConfig];
-              [v158 addObject:v44];
+              httpProxyServerAddress = +[WFSettingsProxy offConfig];
+              [array addObject:httpProxyServerAddress];
               v45 = 8;
               break;
             default:
               v45 = -1;
 LABEL_200:
-              v73 = [(WFSettingsController *)val config];
-              v121 = [v73 httpProxyConfig];
-              if (v121 > 2)
+              config4 = [(WFSettingsController *)val config];
+              httpProxyConfig2 = [config4 httpProxyConfig];
+              if (httpProxyConfig2 > 2)
               {
                 v122 = -1;
               }
 
               else
               {
-                v122 = qword_273F75CC8[v121];
+                v122 = qword_273F75CC8[httpProxyConfig2];
               }
 
               if (v45 == v122)
@@ -1932,7 +1932,7 @@ LABEL_168:
         _os_log_impl(&dword_273ECD000, v12, v13, "IPv4 changes: %@", buf, 0xCu);
       }
 
-      if (([v165 validIPv4Configuration] & 1) == 0)
+      if (([configCopy validIPv4Configuration] & 1) == 0)
       {
         v33 = WFLogForCategory(0);
         v34 = OSLogForWFLogLevel(3uLL);
@@ -1945,23 +1945,23 @@ LABEL_168:
 
         v35 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.wifikit.error" code:1 userInfo:v11];
 
-        v157[2](v157, v35);
+        handlerCopy[2](handlerCopy, v35);
         goto LABEL_167;
       }
 
       v14 = [v11 objectForKey:@"ipv4Config"];
       v15 = v14;
-      if (!v14 || (v16 = [v14 integerValue], v16 == -1))
+      if (!v14 || (ipv4Config = [v14 integerValue], ipv4Config == -1))
       {
-        v16 = [v165 ipv4Config];
+        ipv4Config = [configCopy ipv4Config];
       }
 
-      if (v16 != 2)
+      if (ipv4Config != 2)
       {
-        if (v16 == 1)
+        if (ipv4Config == 1)
         {
-          v20 = +[WFSettingsIPV4 bootPConfig];
-          if (!v20)
+          ipv4AddressManual = +[WFSettingsIPV4 bootPConfig];
+          if (!ipv4AddressManual)
           {
             v82 = WFLogForCategory(0);
             v83 = OSLogForWFLogLevel(1uLL);
@@ -1978,13 +1978,13 @@ LABEL_168:
 
         else
         {
-          if (v16)
+          if (ipv4Config)
           {
 LABEL_134:
-            v86 = [(WFSettingsController *)val config];
-            v87 = [v86 ipv4Config];
-            v88.i64[0] = v16;
-            v88.i64[1] = v87;
+            config5 = [(WFSettingsController *)val config];
+            ipv4Config2 = [config5 ipv4Config];
+            v88.i64[0] = ipv4Config;
+            v88.i64[1] = ipv4Config2;
             v89 = vdupq_n_s64(1uLL);
             v90 = vceqq_s64(v88, v89);
             v91 = vbicq_s8(vbslq_s8(vceqq_s64(v88, v155), v155, vornq_s8(vandq_s8(v90, v89), v90)), vcgtq_u64(v155, vaddq_s64(v88, v89)));
@@ -2038,58 +2038,58 @@ LABEL_134:
           {
             v18 = [WFSettingsIPV4 alloc];
             v19 = [v11 objectForKey:@"dhcpClientID"];
-            v20 = [(WFSettingsIPV4 *)v18 initWithMethod:1 addresses:0 subnetMasks:0 router:0 dhcpClientID:v19];
+            ipv4AddressManual = [(WFSettingsIPV4 *)v18 initWithMethod:1 addresses:0 subnetMasks:0 router:0 dhcpClientID:v19];
           }
 
           else
           {
-            v20 = +[WFSettingsIPV4 automaticConfig];
+            ipv4AddressManual = +[WFSettingsIPV4 automaticConfig];
           }
         }
 
-        [v158 addObject:v20];
+        [array addObject:ipv4AddressManual];
 LABEL_133:
 
         goto LABEL_134;
       }
 
-      v20 = [v165 ipv4AddressManual];
+      ipv4AddressManual = [configCopy ipv4AddressManual];
       v47 = [v11 objectForKey:@"ipv4AddressManual"];
 
       if (v47)
       {
         v48 = [v11 objectForKey:@"ipv4AddressManual"];
 
-        v20 = v48;
+        ipv4AddressManual = v48;
       }
 
-      v49 = [v165 ipv4SubnetMaskManual];
+      ipv4SubnetMaskManual = [configCopy ipv4SubnetMaskManual];
       v50 = [v11 objectForKey:@"ipv4SubnetMaskManual"];
 
       if (v50)
       {
         v51 = [v11 objectForKey:@"ipv4SubnetMaskManual"];
 
-        v49 = v51;
+        ipv4SubnetMaskManual = v51;
       }
 
-      v52 = [v165 ipv4RouterAddressManual];
+      ipv4RouterAddressManual = [configCopy ipv4RouterAddressManual];
       v53 = [v11 objectForKey:@"ipv4RouterAddressManual"];
 
       if (v53)
       {
         v54 = [v11 objectForKey:@"ipv4RouterAddressManual"];
 
-        v52 = v54;
+        ipv4RouterAddressManual = v54;
       }
 
       v55 = [WFSettingsIPV4 alloc];
-      if (v20)
+      if (ipv4AddressManual)
       {
-        v176 = v20;
+        v176 = ipv4AddressManual;
         v152 = [MEMORY[0x277CBEA60] arrayWithObjects:&v176 count:1];
         v56 = v152;
-        if (v49)
+        if (ipv4SubnetMaskManual)
         {
           goto LABEL_77;
         }
@@ -2098,14 +2098,14 @@ LABEL_133:
       else
       {
         v56 = 0;
-        if (v49)
+        if (ipv4SubnetMaskManual)
         {
 LABEL_77:
-          v175 = v49;
+          v175 = ipv4SubnetMaskManual;
           v57 = [MEMORY[0x277CBEA60] arrayWithObjects:&v175 count:1];
-          v58 = [(WFSettingsIPV4 *)v55 initWithMethod:4 addresses:v56 subnetMasks:v57 router:v52 dhcpClientID:0];
+          v58 = [(WFSettingsIPV4 *)v55 initWithMethod:4 addresses:v56 subnetMasks:v57 router:ipv4RouterAddressManual dhcpClientID:0];
 
-          if (!v20)
+          if (!ipv4AddressManual)
           {
             goto LABEL_125;
           }
@@ -2114,13 +2114,13 @@ LABEL_77:
         }
       }
 
-      v58 = [(WFSettingsIPV4 *)v55 initWithMethod:4 addresses:v56 subnetMasks:0 router:v52 dhcpClientID:0];
-      if (!v20)
+      v58 = [(WFSettingsIPV4 *)v55 initWithMethod:4 addresses:v56 subnetMasks:0 router:ipv4RouterAddressManual dhcpClientID:0];
+      if (!ipv4AddressManual)
       {
 LABEL_125:
         if (v58)
         {
-          [v158 addObject:v58];
+          [array addObject:v58];
         }
 
         else
@@ -2146,16 +2146,16 @@ LABEL_124:
     v166 = 0;
 LABEL_219:
 
-    if ([v158 count])
+    if ([array count])
     {
-      v131 = [(WFSettingsController *)val detailsContext];
-      v132 = [v131 interface];
-      v133 = [v132 interfaceName];
+      detailsContext = [(WFSettingsController *)val detailsContext];
+      interface = [detailsContext interface];
+      interfaceName = [interface interfaceName];
 
       v134 = [WFSaveSettingsOperation alloc];
-      v135 = [(WFSettingsController *)val network];
-      v136 = [v135 ssid];
-      v137 = [(WFSaveSettingsOperation *)v134 initWithSSID:v136 interfaceName:v133 settings:v158];
+      network = [(WFSettingsController *)val network];
+      ssid = [network ssid];
+      v137 = [(WFSaveSettingsOperation *)v134 initWithSSID:ssid interfaceName:interfaceName settings:array];
 
       v138 = WFLogForCategory(0);
       v139 = OSLogForWFLogLevel(4uLL);
@@ -2164,12 +2164,12 @@ LABEL_219:
         v140 = v138;
         if (os_log_type_enabled(v140, v139))
         {
-          v141 = [(WFSettingsController *)val network];
-          v142 = [v141 ssid];
+          network2 = [(WFSettingsController *)val network];
+          ssid2 = [network2 ssid];
           *buf = 138412546;
-          *v179 = v158;
+          *v179 = array;
           *&v179[8] = 2112;
-          v180 = v142;
+          v180 = ssid2;
           _os_log_impl(&dword_273ECD000, v140, v139, "Saving new network settings %@ for %@", buf, 0x16u);
         }
       }
@@ -2182,8 +2182,8 @@ LABEL_219:
       v167[3] = &unk_279EBCEA0;
       objc_copyWeak(&v168, buf);
       [(WFSaveSettingsOperation *)v137 setCompletionBlock:v167];
-      v143 = [(WFSettingsController *)val queue];
-      [v143 addOperation:v137];
+      queue = [(WFSettingsController *)val queue];
+      [queue addOperation:v137];
 
       objc_destroyWeak(&v168);
       objc_destroyWeak(buf);
@@ -2191,18 +2191,18 @@ LABEL_219:
 
     else
     {
-      v133 = WFLogForCategory(0);
+      interfaceName = WFLogForCategory(0);
       v144 = OSLogForWFLogLevel(4uLL);
-      if (WFCurrentLogLevel() >= 4 && v133 && os_log_type_enabled(v133, v144))
+      if (WFCurrentLogLevel() >= 4 && interfaceName && os_log_type_enabled(interfaceName, v144))
       {
         *buf = 0;
-        _os_log_impl(&dword_273ECD000, v133, v144, "Bailing of saving, no setting changes to persist", buf, 2u);
+        _os_log_impl(&dword_273ECD000, interfaceName, v144, "Bailing of saving, no setting changes to persist", buf, 2u);
       }
     }
 
 LABEL_235:
 
-    v129 = v158;
+    v129 = array;
     goto LABEL_236;
   }
 
@@ -2213,11 +2213,11 @@ LABEL_235:
     v129 = v127;
     if (os_log_type_enabled(v129, v128))
     {
-      v130 = [(WFSettingsController *)val config];
+      config6 = [(WFSettingsController *)val config];
       *buf = 138412546;
-      *v179 = v130;
+      *v179 = config6;
       *&v179[8] = 2112;
-      v180 = v165;
+      v180 = configCopy;
       _os_log_impl(&dword_273ECD000, v129, v128, "No changes between configs (existing %@, new %@), nothing to do.", buf, 0x16u);
     }
 
@@ -2239,9 +2239,9 @@ void __78__WFSettingsController_networkSettingsViewController_saveConfig_errorHa
 
 - (void)_applySetupAppearances
 {
-  v3 = [MEMORY[0x277D75B48] appearance];
-  v2 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-  [v3 setBackgroundColor:v2];
+  appearance = [MEMORY[0x277D75B48] appearance];
+  secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+  [appearance setBackgroundColor:secondarySystemBackgroundColor];
 }
 
 - (void)initWithDetailsContext:(NSObject *)a1 appearanceProxy:.cold.1(NSObject **a1)

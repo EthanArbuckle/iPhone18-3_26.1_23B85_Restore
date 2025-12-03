@@ -1,29 +1,29 @@
 @interface CNVCardLine30SerializationStrategy
-- (id)detectedTypeOfData:(id)a3;
-- (void)_addAutomagicParametersForData:(id)a3;
-- (void)serializeArray:(id)a3 withItemSeparator:(id)a4;
-- (void)serializeData:(id)a3;
-- (void)serializeGroupedLines:(id)a3 withGroupingName:(id)a4;
-- (void)serializeGroupingName:(id)a3;
-- (void)serializeParameters:(id)a3;
-- (void)serializeString:(id)a3;
+- (id)detectedTypeOfData:(id)data;
+- (void)_addAutomagicParametersForData:(id)data;
+- (void)serializeArray:(id)array withItemSeparator:(id)separator;
+- (void)serializeData:(id)data;
+- (void)serializeGroupedLines:(id)lines withGroupingName:(id)name;
+- (void)serializeGroupingName:(id)name;
+- (void)serializeParameters:(id)parameters;
+- (void)serializeString:(id)string;
 @end
 
 @implementation CNVCardLine30SerializationStrategy
 
-- (void)serializeGroupingName:(id)a3
+- (void)serializeGroupingName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if (((*(*MEMORY[0x277CFBD30] + 16))() & 1) == 0)
   {
-    [(CNVCardSerializationStorage *)self->super._storage appendFormat:@"%@.", v4];
+    [(CNVCardSerializationStorage *)self->super._storage appendFormat:@"%@.", nameCopy];
   }
 }
 
-- (void)serializeParameters:(id)a3
+- (void)serializeParameters:(id)parameters
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = [a3 _cn_map:&__block_literal_global_8];
+  v4 = [parameters _cn_map:&__block_literal_global_8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -81,16 +81,16 @@ id __58__CNVCardLine30SerializationStrategy_serializeParameters___block_invoke(u
   return v7;
 }
 
-- (void)serializeGroupedLines:(id)a3 withGroupingName:(id)a4
+- (void)serializeGroupedLines:(id)lines withGroupingName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  linesCopy = lines;
+  nameCopy = name;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v8 = [linesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -102,17 +102,17 @@ id __58__CNVCardLine30SerializationStrategy_serializeParameters___block_invoke(u
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(linesCopy);
         }
 
         v12 = *(*(&v14 + 1) + 8 * v11);
-        [(CNVCardSerializationStorage *)self->super._storage appendFormat:@"%@.", v7];
+        [(CNVCardSerializationStorage *)self->super._storage appendFormat:@"%@.", nameCopy];
         [v12 serializeWithStrategy:self];
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [linesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -121,21 +121,21 @@ id __58__CNVCardLine30SerializationStrategy_serializeParameters___block_invoke(u
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)serializeString:(id)a3
+- (void)serializeString:(id)string
 {
   storage = self->super._storage;
-  v4 = [CNVCardValueEncoder encodeValue:a3];
+  v4 = [CNVCardValueEncoder encodeValue:string];
   [(CNVCardSerializationStorage *)storage appendFormat:@":%@", v4];
 }
 
-- (void)serializeArray:(id)a3 withItemSeparator:(id)a4
+- (void)serializeArray:(id)array withItemSeparator:(id)separator
 {
-  v6 = a4;
-  v7 = [a3 _cn_map:&__block_literal_global_106];
+  separatorCopy = separator;
+  v7 = [array _cn_map:&__block_literal_global_106];
   v10 = v7;
-  if (v6)
+  if (separatorCopy)
   {
-    v8 = v6;
+    v8 = separatorCopy;
   }
 
   else
@@ -147,23 +147,23 @@ id __58__CNVCardLine30SerializationStrategy_serializeParameters___block_invoke(u
   [(CNVCardSerializationStorage *)self->super._storage appendFormat:@":%@", v9];
 }
 
-- (void)serializeData:(id)a3
+- (void)serializeData:(id)data
 {
-  v4 = a3;
-  [(CNVCardLine30SerializationStrategy *)self _addAutomagicParametersForData:v4];
+  dataCopy = data;
+  [(CNVCardLine30SerializationStrategy *)self _addAutomagicParametersForData:dataCopy];
   [(CNVCardSerializationStorage *)self->super._storage appendString:@":"];
-  v6 = [v4 _cn_encodeVCardBase64DataWithInitialLength:{-[CNVCardSerializationStorage currentLength](self->super._storage, "currentLength") - self->_startingLineLength}];
+  v6 = [dataCopy _cn_encodeVCardBase64DataWithInitialLength:{-[CNVCardSerializationStorage currentLength](self->super._storage, "currentLength") - self->_startingLineLength}];
 
   v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v6 encoding:1];
   [(CNVCardSerializationStorage *)self->super._storage appendString:v5];
 }
 
-- (void)_addAutomagicParametersForData:(id)a3
+- (void)_addAutomagicParametersForData:(id)data
 {
   storage = self->super._storage;
-  v5 = a3;
+  dataCopy = data;
   [(CNVCardSerializationStorage *)storage appendString:@";ENCODING=b"];
-  v6 = [(CNVCardLine30SerializationStrategy *)self detectedTypeOfData:v5];
+  v6 = [(CNVCardLine30SerializationStrategy *)self detectedTypeOfData:dataCopy];
 
   if (v6)
   {
@@ -173,9 +173,9 @@ id __58__CNVCardLine30SerializationStrategy_serializeParameters___block_invoke(u
   MEMORY[0x2821F96F8]();
 }
 
-- (id)detectedTypeOfData:(id)a3
+- (id)detectedTypeOfData:(id)data
 {
-  if ([CNVCardData isJPEGData:a3])
+  if ([CNVCardData isJPEGData:data])
   {
     return @"JPEG";
   }

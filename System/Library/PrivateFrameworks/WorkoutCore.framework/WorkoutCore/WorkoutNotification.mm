@@ -1,5 +1,5 @@
 @interface WorkoutNotification
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (_TtC11WorkoutCore19WorkoutNotification)init;
 @end
@@ -8,7 +8,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = WorkoutNotification.description.getter();
   v5 = v4;
 
@@ -28,11 +28,11 @@
   return [(WorkoutNotification *)&v4 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -41,7 +41,7 @@
   else
   {
     memset(v11, 0, sizeof(v11));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   outlined init with copy of Any?(v11, v9);

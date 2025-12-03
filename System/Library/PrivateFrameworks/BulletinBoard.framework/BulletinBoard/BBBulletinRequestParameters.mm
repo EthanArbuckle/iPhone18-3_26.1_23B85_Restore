@@ -1,29 +1,29 @@
 @interface BBBulletinRequestParameters
-+ (id)requestParametersForDestination:(unint64_t)a3 withSinceDate:(id)a4 maximumCount:(int64_t)a5 enabledSectionIDs:(id)a6;
-- (BBBulletinRequestParameters)initWithCoder:(id)a3;
-- (BBBulletinRequestParameters)initWithDestination:(unint64_t)a3 sinceDate:(id)a4 maximumCount:(int64_t)a5 enabledSectionIDs:(id)a6;
++ (id)requestParametersForDestination:(unint64_t)destination withSinceDate:(id)date maximumCount:(int64_t)count enabledSectionIDs:(id)ds;
+- (BBBulletinRequestParameters)initWithCoder:(id)coder;
+- (BBBulletinRequestParameters)initWithDestination:(unint64_t)destination sinceDate:(id)date maximumCount:(int64_t)count enabledSectionIDs:(id)ds;
 - (NSSet)enabledSectionIDs;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BBBulletinRequestParameters
 
-+ (id)requestParametersForDestination:(unint64_t)a3 withSinceDate:(id)a4 maximumCount:(int64_t)a5 enabledSectionIDs:(id)a6
++ (id)requestParametersForDestination:(unint64_t)destination withSinceDate:(id)date maximumCount:(int64_t)count enabledSectionIDs:(id)ds
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = [objc_alloc(objc_opt_class()) initWithDestination:a3 sinceDate:v10 maximumCount:a5 enabledSectionIDs:v9];
+  dsCopy = ds;
+  dateCopy = date;
+  v11 = [objc_alloc(objc_opt_class()) initWithDestination:destination sinceDate:dateCopy maximumCount:count enabledSectionIDs:dsCopy];
 
   return v11;
 }
 
-- (BBBulletinRequestParameters)initWithDestination:(unint64_t)a3 sinceDate:(id)a4 maximumCount:(int64_t)a5 enabledSectionIDs:(id)a6
+- (BBBulletinRequestParameters)initWithDestination:(unint64_t)destination sinceDate:(id)date maximumCount:(int64_t)count enabledSectionIDs:(id)ds
 {
-  v10 = a4;
-  v11 = a6;
-  if (a3 != 2)
+  dateCopy = date;
+  dsCopy = ds;
+  if (destination != 2)
   {
     [BBBulletinRequestParameters initWithDestination:sinceDate:maximumCount:enabledSectionIDs:];
   }
@@ -34,13 +34,13 @@
   v13 = v12;
   if (v12)
   {
-    v12->_publisherDestination = a3;
-    v14 = [v10 copy];
+    v12->_publisherDestination = destination;
+    v14 = [dateCopy copy];
     sinceDate = v13->_sinceDate;
     v13->_sinceDate = v14;
 
-    v13->_maximumCount = a5;
-    v16 = [v11 copy];
+    v13->_maximumCount = count;
+    v16 = [dsCopy copy];
     enabledSectionIDs = v13->_enabledSectionIDs;
     v13->_enabledSectionIDs = v16;
   }
@@ -48,39 +48,39 @@
   return v13;
 }
 
-- (BBBulletinRequestParameters)initWithCoder:(id)a3
+- (BBBulletinRequestParameters)initWithCoder:(id)coder
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"BBPublisherDestination"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BBSinceDate"];
-  v7 = [v4 decodeIntegerForKey:@"BBMaximumCount"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"BBPublisherDestination"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BBSinceDate"];
+  v7 = [coderCopy decodeIntegerForKey:@"BBMaximumCount"];
   v8 = MEMORY[0x277CBEB98];
   v15[0] = objc_opt_class();
   v15[1] = objc_opt_class();
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
   v10 = [v8 setWithArray:v9];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"BBEnabledSectionIDs"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"BBEnabledSectionIDs"];
 
   v12 = [(BBBulletinRequestParameters *)self initWithDestination:v5 sinceDate:v6 maximumCount:v7 enabledSectionIDs:v11];
   v13 = *MEMORY[0x277D85DE8];
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:self->_publisherDestination forKey:@"BBPublisherDestination"];
-  [v5 encodeObject:self->_sinceDate forKey:@"BBSinceDate"];
-  [v5 encodeInteger:self->_maximumCount forKey:@"BBMaximumCount"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_publisherDestination forKey:@"BBPublisherDestination"];
+  [coderCopy encodeObject:self->_sinceDate forKey:@"BBSinceDate"];
+  [coderCopy encodeInteger:self->_maximumCount forKey:@"BBMaximumCount"];
   enabledSectionIDs = self->_enabledSectionIDs;
   if (enabledSectionIDs)
   {
-    [v5 encodeObject:enabledSectionIDs forKey:@"BBEnabledSectionIDs"];
+    [coderCopy encodeObject:enabledSectionIDs forKey:@"BBEnabledSectionIDs"];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   publisherDestination = self->_publisherDestination;

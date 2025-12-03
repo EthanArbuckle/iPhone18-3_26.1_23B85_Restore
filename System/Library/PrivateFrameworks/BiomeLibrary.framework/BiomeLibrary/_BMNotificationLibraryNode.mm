@@ -2,25 +2,25 @@
 + (id)Usage;
 + (id)configurationForUsage;
 + (id)storeConfigurationForUsage;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMNotificationLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"Usage"])
+  if ([name isEqualToString:@"Usage"])
   {
-    v4 = [a1 Usage];
+    usage = [self Usage];
   }
 
   else
   {
-    v4 = 0;
+    usage = 0;
   }
 
-  return v4;
+  return usage;
 }
 
 + (id)validKeyPaths
@@ -36,13 +36,13 @@
 
 + (id)configurationForUsage
 {
-  v3 = [a1 storeConfigurationForUsage];
-  v4 = [a1 syncPolicyForUsage];
+  storeConfigurationForUsage = [self storeConfigurationForUsage];
+  syncPolicyForUsage = [self syncPolicyForUsage];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"57691065-C964-4424-AF71-248D142918C5"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Notification.Usage" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3E8478 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Notification.Usage" eventClass:objc_opt_class() storeConfig:storeConfigurationForUsage syncPolicy:syncPolicyForUsage legacyNames:&unk_1EF3E8478 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -58,7 +58,7 @@
 + (id)Usage
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForUsage];
+  configurationForUsage = [self configurationForUsage];
   v3 = +[BMNotificationUsage columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -70,7 +70,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Notification.Usage" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Notification.Usage" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Notification.Usage" schema:v9 configuration:configurationForUsage];
 
   v11 = *MEMORY[0x1E69E9840];
 

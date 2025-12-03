@@ -7,8 +7,8 @@
 - (id)aa_HTTPBody
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = [a1 HTTPBody];
-  v3 = [v2 copy];
+  hTTPBody = [self HTTPBody];
+  v3 = [hTTPBody copy];
 
   if (v3)
   {
@@ -17,25 +17,25 @@
 
   else
   {
-    v5 = [a1 HTTPBodyStream];
-    if (v5)
+    hTTPBodyStream = [self HTTPBodyStream];
+    if (hTTPBodyStream)
     {
-      v6 = [a1 valueForHTTPHeaderField:@"Content-Length"];
-      v7 = [v6 integerValue];
+      v6 = [self valueForHTTPHeaderField:@"Content-Length"];
+      integerValue = [v6 integerValue];
 
-      v8 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:v7];
-      [v5 open];
-      if ([v5 hasBytesAvailable])
+      v8 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:integerValue];
+      [hTTPBodyStream open];
+      if ([hTTPBodyStream hasBytesAvailable])
       {
         do
         {
-          [v8 appendBytes:v11 length:{objc_msgSend(v5, "read:maxLength:", v11, 1024)}];
+          [v8 appendBytes:v11 length:{objc_msgSend(hTTPBodyStream, "read:maxLength:", v11, 1024)}];
         }
 
-        while (([v5 hasBytesAvailable] & 1) != 0);
+        while (([hTTPBodyStream hasBytesAvailable] & 1) != 0);
       }
 
-      [v5 close];
+      [hTTPBodyStream close];
       v4 = [v8 copy];
     }
 

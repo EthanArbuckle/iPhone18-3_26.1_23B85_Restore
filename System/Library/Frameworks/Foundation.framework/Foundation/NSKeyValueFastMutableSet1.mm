@@ -1,19 +1,19 @@
 @interface NSKeyValueFastMutableSet1
-- (id)_proxyInitWithContainer:(id)a3 getter:(id)a4;
+- (id)_proxyInitWithContainer:(id)container getter:(id)getter;
 - (void)_proxyNonGCFinalize;
 @end
 
 @implementation NSKeyValueFastMutableSet1
 
-- (id)_proxyInitWithContainer:(id)a3 getter:(id)a4
+- (id)_proxyInitWithContainer:(id)container getter:(id)getter
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = NSKeyValueFastMutableSet1;
-  v5 = [(NSKeyValueFastMutableSet *)&v7 _proxyInitWithContainer:a3 getter:?];
+  v5 = [(NSKeyValueFastMutableSet *)&v7 _proxyInitWithContainer:container getter:?];
   if (v5)
   {
-    v5[4] = [a4 nonmutatingMethods];
+    v5[4] = [getter nonmutatingMethods];
   }
 
   return v5;

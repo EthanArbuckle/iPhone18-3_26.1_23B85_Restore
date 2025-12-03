@@ -1,19 +1,19 @@
 @interface BKEventDeferringSelectionPathContainer
-- (BOOL)_removeNode:(id)a3;
-- (id)_keyForNode:(id)a3;
-- (id)constraintsForNode:(uint64_t)a1;
-- (id)initWithPathIdentifier:(id *)a1;
-- (id)modalitiesForNode:(uint64_t)a1;
+- (BOOL)_removeNode:(id)node;
+- (id)_keyForNode:(id)node;
+- (id)constraintsForNode:(uint64_t)node;
+- (id)initWithPathIdentifier:(id *)identifier;
+- (id)modalitiesForNode:(uint64_t)node;
 - (uint64_t)containsNode:(uint64_t)result;
 @end
 
 @implementation BKEventDeferringSelectionPathContainer
 
-- (id)_keyForNode:(id)a3
+- (id)_keyForNode:(id)node
 {
-  if (a3)
+  if (node)
   {
-    v3 = *(a3 + 2);
+    v3 = *(node + 2);
   }
 
   else
@@ -22,11 +22,11 @@
   }
 
   v4 = v3;
-  v5 = [v4 identity];
+  identity = [v4 identity];
 
-  if (v5)
+  if (identity)
   {
-    v6 = v5;
+    v6 = identity;
   }
 
   else
@@ -39,11 +39,11 @@
   return v6;
 }
 
-- (BOOL)_removeNode:(id)a3
+- (BOOL)_removeNode:(id)node
 {
-  if (a3)
+  if (node)
   {
-    v4 = *(a3 + 2);
+    v4 = *(node + 2);
   }
 
   else
@@ -52,32 +52,32 @@
   }
 
   v5 = v4;
-  v6 = [v5 identity];
+  identity = [v5 identity];
 
-  if (v6)
+  if (identity)
   {
-    [(NSMutableSet *)self->_includedIdentities removeObject:v6];
+    [(NSMutableSet *)self->_includedIdentities removeObject:identity];
   }
 
-  return v6 != 0;
+  return identity != 0;
 }
 
-- (id)initWithPathIdentifier:(id *)a1
+- (id)initWithPathIdentifier:(id *)identifier
 {
   v4 = a2;
-  if (a1)
+  if (identifier)
   {
-    v7.receiver = a1;
+    v7.receiver = identifier;
     v7.super_class = BKEventDeferringSelectionPathContainer;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    identifier = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
     }
   }
 
-  return a1;
+  return identifier;
 }
 
 - (uint64_t)containsNode:(uint64_t)result
@@ -96,8 +96,8 @@
     }
 
     v4 = v3;
-    v5 = [v4 identity];
-    v6 = [v2 containsObject:v5];
+    identity = [v4 identity];
+    v6 = [v2 containsObject:identity];
 
     return v6;
   }
@@ -105,11 +105,11 @@
   return result;
 }
 
-- (id)constraintsForNode:(uint64_t)a1
+- (id)constraintsForNode:(uint64_t)node
 {
-  if (a1)
+  if (node)
   {
-    v2 = [*(a1 + 32) objectForKey:a2];
+    v2 = [*(node + 32) objectForKey:a2];
     v3 = [v2 bs_map:&__block_literal_global_3029];
   }
 
@@ -121,11 +121,11 @@
   return v3;
 }
 
-- (id)modalitiesForNode:(uint64_t)a1
+- (id)modalitiesForNode:(uint64_t)node
 {
-  if (a1)
+  if (node)
   {
-    v2 = [*(a1 + 40) objectForKey:a2];
+    v2 = [*(node + 40) objectForKey:a2];
     v3 = [v2 bs_map:&__block_literal_global_6_3032];
   }
 

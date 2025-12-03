@@ -1,18 +1,18 @@
 @interface PVCGImageBufferImpl
 - (BOOL)canCreateCVPixelBuffer;
 - (CGSize)size;
-- (HGRef<HGBitmap>)hgBitmapWithColorSpace:(id)a3;
-- (HGRef<HGCVPixelBuffer>)cvPixelBufferWithColorSpace:(id)a3;
-- (PVCGImageBufferImpl)initWithCGImage:(CGImage *)a3;
-- (PVCGImageBufferImpl)initWithCGImage:(CGImage *)a3 withGainMap:(CGImage *)a4;
-- (PVCGImageBufferImpl)initWithCGImage:(CGImage *)a3 withSourceColorSpace:(id)a4;
+- (HGRef<HGBitmap>)hgBitmapWithColorSpace:(id)space;
+- (HGRef<HGCVPixelBuffer>)cvPixelBufferWithColorSpace:(id)space;
+- (PVCGImageBufferImpl)initWithCGImage:(CGImage *)image;
+- (PVCGImageBufferImpl)initWithCGImage:(CGImage *)image withGainMap:(CGImage *)map;
+- (PVCGImageBufferImpl)initWithCGImage:(CGImage *)image withSourceColorSpace:(id)space;
 - (id).cxx_construct;
 - (void)dealloc;
 @end
 
 @implementation PVCGImageBufferImpl
 
-- (PVCGImageBufferImpl)initWithCGImage:(CGImage *)a3
+- (PVCGImageBufferImpl)initWithCGImage:(CGImage *)image
 {
   v7.receiver = self;
   v7.super_class = PVCGImageBufferImpl;
@@ -20,34 +20,34 @@
   v5 = v4;
   if (v4)
   {
-    v4->_image = a3;
-    CGImageRetain(a3);
+    v4->_image = image;
+    CGImageRetain(image);
   }
 
   return v5;
 }
 
-- (PVCGImageBufferImpl)initWithCGImage:(CGImage *)a3 withGainMap:(CGImage *)a4
+- (PVCGImageBufferImpl)initWithCGImage:(CGImage *)image withGainMap:(CGImage *)map
 {
-  v5 = [(PVCGImageBufferImpl *)self initWithCGImage:a3];
+  v5 = [(PVCGImageBufferImpl *)self initWithCGImage:image];
   v6 = v5;
   if (v5)
   {
-    v5->_gainMap = a4;
-    CGImageRetain(a4);
+    v5->_gainMap = map;
+    CGImageRetain(map);
   }
 
   return v6;
 }
 
-- (PVCGImageBufferImpl)initWithCGImage:(CGImage *)a3 withSourceColorSpace:(id)a4
+- (PVCGImageBufferImpl)initWithCGImage:(CGImage *)image withSourceColorSpace:(id)space
 {
-  v7 = a4;
-  v8 = [(PVCGImageBufferImpl *)self initWithCGImage:a3];
+  spaceCopy = space;
+  v8 = [(PVCGImageBufferImpl *)self initWithCGImage:image];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_sourceColorSpace, a4);
+    objc_storeStrong(&v8->_sourceColorSpace, space);
   }
 
   return v9;
@@ -73,10 +73,10 @@
   return PVCanCreateCVPixelBuffer(*&v5);
 }
 
-- (HGRef<HGCVPixelBuffer>)cvPixelBufferWithColorSpace:(id)a3
+- (HGRef<HGCVPixelBuffer>)cvPixelBufferWithColorSpace:(id)space
 {
   v5 = v3;
-  v6 = a3;
+  spaceCopy = space;
   m_Obj = self->_generatedPixelBuffer.m_Obj;
   if (m_Obj)
   {
@@ -92,9 +92,9 @@
     goto LABEL_44;
   }
 
-  if (v6)
+  if (spaceCopy)
   {
-    v9 = v6;
+    v9 = spaceCopy;
 LABEL_6:
     v10 = v9;
     goto LABEL_9;
@@ -112,12 +112,12 @@ LABEL_9:
   v31 = 0;
   PVImagePropertiesForColorSpace(v10, 0, &v30);
   v11 = 0;
-  if (v6 && self->_sourceColorSpace)
+  if (spaceCopy && self->_sourceColorSpace)
   {
-    v11 = [v6 isProResLogColorSpace] ^ 1;
+    v11 = [spaceCopy isProResLogColorSpace] ^ 1;
   }
 
-  if ([v6 isProResLogColorSpace])
+  if ([spaceCopy isProResLogColorSpace])
   {
     NSLog(&cfstr_ProResLogAsAnO.isa);
   }
@@ -241,10 +241,10 @@ LABEL_44:
   return v24;
 }
 
-- (HGRef<HGBitmap>)hgBitmapWithColorSpace:(id)a3
+- (HGRef<HGBitmap>)hgBitmapWithColorSpace:(id)space
 {
   v5 = v3;
-  v6 = a3;
+  spaceCopy = space;
   m_Obj = self->_generatedBitmap.m_Obj;
   if (!m_Obj)
   {
@@ -255,9 +255,9 @@ LABEL_44:
       goto LABEL_19;
     }
 
-    if (v6)
+    if (spaceCopy)
     {
-      v9 = v6;
+      v9 = spaceCopy;
     }
 
     else

@@ -8,26 +8,26 @@
 
 - (void)_loadToolbarItem
 {
-  v2 = [[SFWebExtensionPageMenuController alloc] initWithExtension:a1];
-  [a1 setToolbarItem:v2];
+  v2 = [[SFWebExtensionPageMenuController alloc] initWithExtension:self];
+  [self setToolbarItem:v2];
 }
 
 - (void)_unloadToolbarItem
 {
-  v1 = [a1 toolbarItem];
-  [v1 dismissPopupImmediatelyIfNecessary];
+  toolbarItem = [self toolbarItem];
+  [toolbarItem dismissPopupImmediatelyIfNecessary];
 }
 
 - (void)_validateToolbarItemInAllWindows
 {
   v13 = *MEMORY[0x1E69E9840];
-  [a1 showOrHidePermissionRequestBannerIfNeeded];
+  [self showOrHidePermissionRequestBannerIfNeeded];
   v10 = 0u;
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v2 = [a1 extensionsController];
-  v3 = [v2 _allWindowsForWebExtension:a1];
+  extensionsController = [self extensionsController];
+  v3 = [extensionsController _allWindowsForWebExtension:self];
 
   v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
@@ -44,7 +44,7 @@
           objc_enumerationMutation(v3);
         }
 
-        [*(*(&v8 + 1) + 8 * v7++) validateToolbarItemForExtension:a1];
+        [*(*(&v8 + 1) + 8 * v7++) validateToolbarItemForExtension:self];
       }
 
       while (v5 != v7);

@@ -1,10 +1,10 @@
 @interface TSTTableSortTag
-- (TSTTableSortTag)initWithNumberOfSortRules:(unint64_t)a3;
+- (TSTTableSortTag)initWithNumberOfSortRules:(unint64_t)rules;
 @end
 
 @implementation TSTTableSortTag
 
-- (TSTTableSortTag)initWithNumberOfSortRules:(unint64_t)a3
+- (TSTTableSortTag)initWithNumberOfSortRules:(unint64_t)rules
 {
   v17.receiver = self;
   v17.super_class = TSTTableSortTag;
@@ -15,7 +15,7 @@
     reorganizeValues = v8->_reorganizeValues;
     v8->_reorganizeValues = v9;
 
-    for (; a3; --a3)
+    for (; rules; --rules)
     {
       v11 = v8->_reorganizeValues;
       v12 = objc_opt_new();

@@ -1,41 +1,41 @@
 @interface BMTextUnderstandingPoemBufferExtraction
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMTextUnderstandingPoemBufferExtraction)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMTextUnderstandingPoemBufferExtraction)initWithType:(int)a3 text:(id)a4 identifier:(id)a5 confidenceScore:(id)a6 contactIdentifier:(id)a7 role:(int)a8 isCoref:(id)a9;
-- (BOOL)isEqual:(id)a3;
+- (BMTextUnderstandingPoemBufferExtraction)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMTextUnderstandingPoemBufferExtraction)initWithType:(int)type text:(id)text identifier:(id)identifier confidenceScore:(id)score contactIdentifier:(id)contactIdentifier role:(int)role isCoref:(id)coref;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMTextUnderstandingPoemBufferExtraction
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMTextUnderstandingPoemBufferExtraction *)self type];
-    if (v6 == [v5 type])
+    v5 = equalCopy;
+    type = [(BMTextUnderstandingPoemBufferExtraction *)self type];
+    if (type == [v5 type])
     {
-      v7 = [(BMTextUnderstandingPoemBufferExtraction *)self text];
-      v8 = [v5 text];
-      v9 = v8;
-      if (v7 == v8)
+      text = [(BMTextUnderstandingPoemBufferExtraction *)self text];
+      text2 = [v5 text];
+      v9 = text2;
+      if (text == text2)
       {
       }
 
       else
       {
-        v10 = [(BMTextUnderstandingPoemBufferExtraction *)self text];
-        v11 = [v5 text];
-        v12 = [v10 isEqual:v11];
+        text3 = [(BMTextUnderstandingPoemBufferExtraction *)self text];
+        text4 = [v5 text];
+        v12 = [text3 isEqual:text4];
 
         if (!v12)
         {
@@ -43,18 +43,18 @@
         }
       }
 
-      v14 = [(BMTextUnderstandingPoemBufferExtraction *)self identifier];
-      v15 = [v5 identifier];
-      v16 = v15;
-      if (v14 == v15)
+      identifier = [(BMTextUnderstandingPoemBufferExtraction *)self identifier];
+      identifier2 = [v5 identifier];
+      v16 = identifier2;
+      if (identifier == identifier2)
       {
       }
 
       else
       {
-        v17 = [(BMTextUnderstandingPoemBufferExtraction *)self identifier];
-        v18 = [v5 identifier];
-        v19 = [v17 isEqual:v18];
+        identifier3 = [(BMTextUnderstandingPoemBufferExtraction *)self identifier];
+        identifier4 = [v5 identifier];
+        v19 = [identifier3 isEqual:identifier4];
 
         if (!v19)
         {
@@ -83,18 +83,18 @@
         }
       }
 
-      v23 = [(BMTextUnderstandingPoemBufferExtraction *)self contactIdentifier];
-      v24 = [v5 contactIdentifier];
-      v25 = v24;
-      if (v23 == v24)
+      contactIdentifier = [(BMTextUnderstandingPoemBufferExtraction *)self contactIdentifier];
+      contactIdentifier2 = [v5 contactIdentifier];
+      v25 = contactIdentifier2;
+      if (contactIdentifier == contactIdentifier2)
       {
       }
 
       else
       {
-        v26 = [(BMTextUnderstandingPoemBufferExtraction *)self contactIdentifier];
-        v27 = [v5 contactIdentifier];
-        v28 = [v26 isEqual:v27];
+        contactIdentifier3 = [(BMTextUnderstandingPoemBufferExtraction *)self contactIdentifier];
+        contactIdentifier4 = [v5 contactIdentifier];
+        v28 = [contactIdentifier3 isEqual:contactIdentifier4];
 
         if (!v28)
         {
@@ -102,8 +102,8 @@
         }
       }
 
-      v29 = [(BMTextUnderstandingPoemBufferExtraction *)self role];
-      if (v29 == [v5 role])
+      role = [(BMTextUnderstandingPoemBufferExtraction *)self role];
+      if (role == [v5 role])
       {
         if (!-[BMTextUnderstandingPoemBufferExtraction hasIsCoref](self, "hasIsCoref") && ![v5 hasIsCoref])
         {
@@ -113,8 +113,8 @@
 
         if (-[BMTextUnderstandingPoemBufferExtraction hasIsCoref](self, "hasIsCoref") && [v5 hasIsCoref])
         {
-          v30 = [(BMTextUnderstandingPoemBufferExtraction *)self isCoref];
-          v13 = v30 ^ [v5 isCoref] ^ 1;
+          isCoref = [(BMTextUnderstandingPoemBufferExtraction *)self isCoref];
+          v13 = isCoref ^ [v5 isCoref] ^ 1;
 LABEL_28:
 
           goto LABEL_29;
@@ -137,8 +137,8 @@ LABEL_29:
 {
   v26[7] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMTextUnderstandingPoemBufferExtraction type](self, "type")}];
-  v4 = [(BMTextUnderstandingPoemBufferExtraction *)self text];
-  v24 = [(BMTextUnderstandingPoemBufferExtraction *)self identifier];
+  text = [(BMTextUnderstandingPoemBufferExtraction *)self text];
+  identifier = [(BMTextUnderstandingPoemBufferExtraction *)self identifier];
   if (![(BMTextUnderstandingPoemBufferExtraction *)self hasConfidenceScore]|| ([(BMTextUnderstandingPoemBufferExtraction *)self confidenceScore], fabs(v5) == INFINITY))
   {
     v23 = 0;
@@ -152,7 +152,7 @@ LABEL_29:
     v23 = [v6 numberWithDouble:?];
   }
 
-  v7 = [(BMTextUnderstandingPoemBufferExtraction *)self contactIdentifier];
+  contactIdentifier = [(BMTextUnderstandingPoemBufferExtraction *)self contactIdentifier];
   v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMTextUnderstandingPoemBufferExtraction role](self, "role")}];
   if ([(BMTextUnderstandingPoemBufferExtraction *)self hasIsCoref])
   {
@@ -165,64 +165,64 @@ LABEL_29:
   }
 
   v25[0] = @"type";
-  v10 = v3;
+  null = v3;
   if (!v3)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v10;
-  v26[0] = v10;
+  v21 = null;
+  v26[0] = null;
   v25[1] = @"text";
-  v11 = v4;
-  if (!v4)
+  null2 = text;
+  if (!text)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v11;
-  v26[1] = v11;
+  v20 = null2;
+  v26[1] = null2;
   v25[2] = @"identifier";
-  v12 = v24;
-  if (!v24)
+  null3 = identifier;
+  if (!identifier)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[2] = v12;
+  v26[2] = null3;
   v25[3] = @"confidenceScore";
-  v13 = v23;
+  null4 = v23;
   if (!v23)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v22 = v3;
-  v26[3] = v13;
+  v26[3] = null4;
   v25[4] = @"contactIdentifier";
-  v14 = v7;
-  if (!v7)
+  null5 = contactIdentifier;
+  if (!contactIdentifier)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[4] = v14;
+  v26[4] = null5;
   v25[5] = @"role";
-  v15 = v8;
+  null6 = v8;
   if (!v8)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[5] = v15;
+  v26[5] = null6;
   v25[6] = @"isCoref";
-  v16 = v9;
+  null7 = v9;
   if (!v9)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[6] = v16;
+  v26[6] = null7;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:7];
   if (v9)
   {
@@ -233,7 +233,7 @@ LABEL_29:
 
 LABEL_34:
 
-    if (v7)
+    if (contactIdentifier)
     {
       goto LABEL_25;
     }
@@ -247,7 +247,7 @@ LABEL_34:
   }
 
 LABEL_24:
-  if (v7)
+  if (contactIdentifier)
   {
     goto LABEL_25;
   }
@@ -259,9 +259,9 @@ LABEL_25:
   {
   }
 
-  if (v24)
+  if (identifier)
   {
-    if (v4)
+    if (text)
     {
       goto LABEL_29;
     }
@@ -276,7 +276,7 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  if (!v4)
+  if (!text)
   {
     goto LABEL_37;
   }
@@ -295,23 +295,23 @@ LABEL_30:
   return v17;
 }
 
-- (BMTextUnderstandingPoemBufferExtraction)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMTextUnderstandingPoemBufferExtraction)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v73[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"type"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"type"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_9:
-    v10 = [v6 objectForKeyedSubscript:@"text"];
-    v54 = a4;
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"text"];
+    errorCopy = error;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v11 = 0;
           v22 = 0;
@@ -324,7 +324,7 @@ LABEL_9:
         v59 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"text"];
         v71 = v59;
         [MEMORY[0x1E695DF20] dictionaryWithObjects:&v71 forKeys:&v70 count:1];
-        v12 = v20 = a4;
+        v12 = v20 = error;
         v21 = [v58 initWithDomain:v19 code:2 userInfo:v12];
         v11 = 0;
         v22 = 0;
@@ -340,7 +340,7 @@ LABEL_9:
       v11 = 0;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"identifier"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
     v52 = v10;
     v53 = v7;
     v57 = v11;
@@ -349,7 +349,7 @@ LABEL_9:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v54)
+        if (!errorCopy)
         {
           v59 = 0;
           v22 = 0;
@@ -368,7 +368,7 @@ LABEL_9:
         v11 = v57;
         v59 = 0;
         v22 = 0;
-        *v54 = [v25 initWithDomain:v26 code:2 userInfo:v13];
+        *errorCopy = [v25 initWithDomain:v26 code:2 userInfo:v13];
 LABEL_54:
 
         v7 = v53;
@@ -385,13 +385,13 @@ LABEL_55:
       v59 = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"confidenceScore"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"confidenceScore"];
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v54)
+        if (!errorCopy)
         {
           v56 = 0;
           v22 = 0;
@@ -409,7 +409,7 @@ LABEL_55:
         v30 = [v29 initWithDomain:v28 code:2 userInfo:v14];
         v56 = 0;
         v22 = 0;
-        *v54 = v30;
+        *errorCopy = v30;
         goto LABEL_53;
       }
 
@@ -421,21 +421,21 @@ LABEL_55:
       v56 = 0;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"contactIdentifier"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"contactIdentifier"];
     v51 = v8;
     if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v54)
+        if (!errorCopy)
         {
           v55 = 0;
           v22 = 0;
           goto LABEL_53;
         }
 
-        v16 = self;
+        selfCopy3 = self;
         v31 = objc_alloc(MEMORY[0x1E696ABC0]);
         v32 = *MEMORY[0x1E698F240];
         v64 = *MEMORY[0x1E696A578];
@@ -445,10 +445,10 @@ LABEL_55:
         v33 = [v31 initWithDomain:v32 code:2 userInfo:v15];
         v55 = 0;
         v22 = 0;
-        *v54 = v33;
+        *errorCopy = v33;
 LABEL_52:
 
-        self = v16;
+        self = selfCopy3;
         v8 = v51;
         v10 = v52;
 LABEL_53:
@@ -465,10 +465,10 @@ LABEL_53:
       v55 = 0;
     }
 
-    v15 = [v6 objectForKeyedSubscript:@"role"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"role"];
     if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      v16 = self;
+      selfCopy3 = self;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -480,7 +480,7 @@ LABEL_53:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v54)
+          if (!errorCopy)
           {
             v17 = 0;
             v22 = 0;
@@ -496,7 +496,7 @@ LABEL_53:
           v47 = [v50 initWithDomain:v46 code:2 userInfo:v40];
           v17 = 0;
           v22 = 0;
-          *v54 = v47;
+          *errorCopy = v47;
           goto LABEL_51;
         }
 
@@ -508,17 +508,17 @@ LABEL_53:
 
     else
     {
-      v16 = self;
+      selfCopy3 = self;
       v17 = 0;
     }
 
-    v40 = [v6 objectForKeyedSubscript:@"isCoref"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"isCoref"];
     if (v40 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v54)
+        if (errorCopy)
         {
           v49 = objc_alloc(MEMORY[0x1E696ABC0]);
           v48 = *MEMORY[0x1E698F240];
@@ -526,7 +526,7 @@ LABEL_53:
           v44 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"isCoref"];
           v61 = v44;
           v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v61 forKeys:&v60 count:1];
-          *v54 = [v49 initWithDomain:v48 code:2 userInfo:v45];
+          *errorCopy = [v49 initWithDomain:v48 code:2 userInfo:v45];
         }
 
         v41 = 0;
@@ -542,8 +542,8 @@ LABEL_53:
       v41 = 0;
     }
 
-    v22 = -[BMTextUnderstandingPoemBufferExtraction initWithType:text:identifier:confidenceScore:contactIdentifier:role:isCoref:](v16, "initWithType:text:identifier:confidenceScore:contactIdentifier:role:isCoref:", [v51 intValue], v57, v59, v56, v55, objc_msgSend(v17, "intValue"), v41);
-    v16 = v22;
+    v22 = -[BMTextUnderstandingPoemBufferExtraction initWithType:text:identifier:confidenceScore:contactIdentifier:role:isCoref:](selfCopy3, "initWithType:text:identifier:confidenceScore:contactIdentifier:role:isCoref:", [v51 intValue], v57, v59, v56, v55, objc_msgSend(v17, "intValue"), v41);
+    selfCopy3 = v22;
 LABEL_51:
 
     goto LABEL_52;
@@ -565,7 +565,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v22 = 0;
@@ -584,7 +584,7 @@ LABEL_8:
   v11 = v36;
   v8 = 0;
   v22 = 0;
-  *a4 = [v38 initWithDomain:v39 code:2 userInfo:v37];
+  *error = [v38 initWithDomain:v39 code:2 userInfo:v37];
 LABEL_56:
 
 LABEL_57:
@@ -596,16 +596,16 @@ LABEL_57:
 {
   v3 = objc_opt_new();
   [(BMTextUnderstandingPoemBufferExtraction *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   type = self->_type;
-  v9 = v4;
+  v9 = toCopy;
   PBDataWriterWriteUint32Field();
   if (self->_text)
   {
@@ -637,9 +637,9 @@ LABEL_57:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v45.receiver = self;
   v45.super_class = BMTextUnderstandingPoemBufferExtraction;
   v5 = [(BMEventBase *)&v45 init];
@@ -648,12 +648,12 @@ LABEL_57:
     goto LABEL_79;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -664,18 +664,18 @@ LABEL_57:
       while (1)
       {
         LOBYTE(v46) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v46 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v46 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v46) & 0x7F) << v7;
@@ -693,9 +693,9 @@ LABEL_57:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -712,18 +712,18 @@ LABEL_16:
             while (1)
             {
               LOBYTE(v46) = 0;
-              v27 = [v4 position] + 1;
-              if (v27 >= [v4 position] && (v28 = objc_msgSend(v4, "position") + 1, v28 <= objc_msgSend(v4, "length")))
+              v27 = [fromCopy position] + 1;
+              if (v27 >= [fromCopy position] && (v28 = objc_msgSend(fromCopy, "position") + 1, v28 <= objc_msgSend(fromCopy, "length")))
               {
-                v29 = [v4 data];
-                [v29 getBytes:&v46 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v46 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v20 |= (LOBYTE(v46) & 0x7F) << v25;
@@ -740,7 +740,7 @@ LABEL_16:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v20 > 4)
+            if (([fromCopy hasError] & 1) != 0 || v20 > 4)
             {
 LABEL_65:
               LODWORD(v20) = 0;
@@ -776,18 +776,18 @@ LABEL_73:
             while (1)
             {
               LOBYTE(v46) = 0;
-              v35 = [v4 position] + 1;
-              if (v35 >= [v4 position] && (v36 = objc_msgSend(v4, "position") + 1, v36 <= objc_msgSend(v4, "length")))
+              v35 = [fromCopy position] + 1;
+              if (v35 >= [fromCopy position] && (v36 = objc_msgSend(fromCopy, "position") + 1, v36 <= objc_msgSend(fromCopy, "length")))
               {
-                v37 = [v4 data];
-                [v37 getBytes:&v46 range:{objc_msgSend(v4, "position"), 1}];
+                data3 = [fromCopy data];
+                [data3 getBytes:&v46 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v34 |= (LOBYTE(v46) & 0x7F) << v32;
@@ -805,7 +805,7 @@ LABEL_73:
               }
             }
 
-            v38 = (v34 != 0) & ~[v4 hasError];
+            v38 = (v34 != 0) & ~[fromCopy hasError];
 LABEL_68:
             v5->_isCoref = v38;
             goto LABEL_76;
@@ -828,18 +828,18 @@ LABEL_47:
           while (1)
           {
             LOBYTE(v46) = 0;
-            v21 = [v4 position] + 1;
-            if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+            v21 = [fromCopy position] + 1;
+            if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
             {
-              v23 = [v4 data];
-              [v23 getBytes:&v46 range:{objc_msgSend(v4, "position"), 1}];
+              data4 = [fromCopy data];
+              [data4 getBytes:&v46 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v20 |= (LOBYTE(v46) & 0x7F) << v18;
@@ -856,7 +856,7 @@ LABEL_47:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v20 > 3)
+          if (([fromCopy hasError] & 1) != 0 || v20 > 3)
           {
 LABEL_71:
             LODWORD(v20) = 0;
@@ -870,18 +870,18 @@ LABEL_71:
         {
           v5->_hasConfidenceScore = 1;
           v46 = 0.0;
-          v30 = [v4 position] + 8;
-          if (v30 >= [v4 position] && (v31 = objc_msgSend(v4, "position") + 8, v31 <= objc_msgSend(v4, "length")))
+          v30 = [fromCopy position] + 8;
+          if (v30 >= [fromCopy position] && (v31 = objc_msgSend(fromCopy, "position") + 8, v31 <= objc_msgSend(fromCopy, "length")))
           {
-            v41 = [v4 data];
-            [v41 getBytes:&v46 range:{objc_msgSend(v4, "position"), 8}];
+            data5 = [fromCopy data];
+            [data5 getBytes:&v46 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v5->_confidenceScore = v46;
@@ -901,13 +901,13 @@ LABEL_71:
       *(&v5->super.super.isa + v17) = v16;
 
 LABEL_76:
-      v42 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v42 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_78:
     v43 = 0;
@@ -926,39 +926,39 @@ LABEL_79:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = BMTextUnderstandingPoemBufferExtractionExtractionTypeAsString([(BMTextUnderstandingPoemBufferExtraction *)self type]);
-  v5 = [(BMTextUnderstandingPoemBufferExtraction *)self text];
-  v6 = [(BMTextUnderstandingPoemBufferExtraction *)self identifier];
+  text = [(BMTextUnderstandingPoemBufferExtraction *)self text];
+  identifier = [(BMTextUnderstandingPoemBufferExtraction *)self identifier];
   v7 = MEMORY[0x1E696AD98];
   [(BMTextUnderstandingPoemBufferExtraction *)self confidenceScore];
   v8 = [v7 numberWithDouble:?];
-  v9 = [(BMTextUnderstandingPoemBufferExtraction *)self contactIdentifier];
+  contactIdentifier = [(BMTextUnderstandingPoemBufferExtraction *)self contactIdentifier];
   v10 = BMTextUnderstandingPoemBufferExtractionRoleTypeAsString([(BMTextUnderstandingPoemBufferExtraction *)self role]);
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMTextUnderstandingPoemBufferExtraction isCoref](self, "isCoref")}];
-  v12 = [v3 initWithFormat:@"BMTextUnderstandingPoemBufferExtraction with type: %@, text: %@, identifier: %@, confidenceScore: %@, contactIdentifier: %@, role: %@, isCoref: %@", v4, v5, v6, v8, v9, v10, v11];
+  v12 = [v3 initWithFormat:@"BMTextUnderstandingPoemBufferExtraction with type: %@, text: %@, identifier: %@, confidenceScore: %@, contactIdentifier: %@, role: %@, isCoref: %@", v4, text, identifier, v8, contactIdentifier, v10, v11];
 
   return v12;
 }
 
-- (BMTextUnderstandingPoemBufferExtraction)initWithType:(int)a3 text:(id)a4 identifier:(id)a5 confidenceScore:(id)a6 contactIdentifier:(id)a7 role:(int)a8 isCoref:(id)a9
+- (BMTextUnderstandingPoemBufferExtraction)initWithType:(int)type text:(id)text identifier:(id)identifier confidenceScore:(id)score contactIdentifier:(id)contactIdentifier role:(int)role isCoref:(id)coref
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a9;
+  textCopy = text;
+  identifierCopy = identifier;
+  scoreCopy = score;
+  contactIdentifierCopy = contactIdentifier;
+  corefCopy = coref;
   v24.receiver = self;
   v24.super_class = BMTextUnderstandingPoemBufferExtraction;
   v20 = [(BMEventBase *)&v24 init];
   if (v20)
   {
     v20->_dataVersion = [objc_opt_class() latestDataVersion];
-    v20->_type = a3;
-    objc_storeStrong(&v20->_text, a4);
-    objc_storeStrong(&v20->_identifier, a5);
-    if (v17)
+    v20->_type = type;
+    objc_storeStrong(&v20->_text, text);
+    objc_storeStrong(&v20->_identifier, identifier);
+    if (scoreCopy)
     {
       v20->_hasConfidenceScore = 1;
-      [v17 doubleValue];
+      [scoreCopy doubleValue];
     }
 
     else
@@ -968,12 +968,12 @@ LABEL_79:
     }
 
     v20->_confidenceScore = v21;
-    objc_storeStrong(&v20->_contactIdentifier, a7);
-    v20->_role = a8;
-    if (v19)
+    objc_storeStrong(&v20->_contactIdentifier, contactIdentifier);
+    v20->_role = role;
+    if (corefCopy)
     {
       v20->_hasIsCoref = 1;
-      v20->_isCoref = [v19 BOOLValue];
+      v20->_isCoref = [corefCopy BOOLValue];
     }
 
     else
@@ -1033,9 +1033,9 @@ LABEL_79:
   return v9;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1043,8 +1043,8 @@ LABEL_79:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMTextUnderstandingPoemBufferExtraction alloc] initByReadFrom:v7];
     v4 = v8;

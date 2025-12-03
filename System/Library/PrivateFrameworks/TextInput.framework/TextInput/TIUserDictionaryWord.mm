@@ -1,56 +1,56 @@
 @interface TIUserDictionaryWord
-+ (BOOL)userWord:(id)a3 duplicatesTarget:(id)a4 andShortcut:(id)a5;
-+ (int64_t)validateTransaction:(id)a3 existingEntries:(id)a4;
++ (BOOL)userWord:(id)word duplicatesTarget:(id)target andShortcut:(id)shortcut;
++ (int64_t)validateTransaction:(id)transaction existingEntries:(id)entries;
 @end
 
 @implementation TIUserDictionaryWord
 
-+ (BOOL)userWord:(id)a3 duplicatesTarget:(id)a4 andShortcut:(id)a5
++ (BOOL)userWord:(id)word duplicatesTarget:(id)target andShortcut:(id)shortcut
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 phrase];
-  v11 = [v8 isEqualToString:v10];
+  shortcutCopy = shortcut;
+  targetCopy = target;
+  wordCopy = word;
+  phrase = [wordCopy phrase];
+  v11 = [targetCopy isEqualToString:phrase];
 
-  v12 = [v9 shortcut];
-  if ([v12 length])
+  shortcut = [wordCopy shortcut];
+  if ([shortcut length])
   {
-    [v9 shortcut];
+    [wordCopy shortcut];
   }
 
   else
   {
-    [v9 phrase];
+    [wordCopy phrase];
   }
   v13 = ;
 
-  v14 = [v7 compare:v13 options:1];
+  v14 = [shortcutCopy compare:v13 options:1];
   return ((v14 != 0) ^ ((v14 != 0) | v11)) & 1;
 }
 
-+ (int64_t)validateTransaction:(id)a3 existingEntries:(id)a4
++ (int64_t)validateTransaction:(id)transaction existingEntries:(id)entries
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 valueToInsert];
-  v8 = [v7 phrase];
+  transactionCopy = transaction;
+  entriesCopy = entries;
+  valueToInsert = [transactionCopy valueToInsert];
+  phrase = [valueToInsert phrase];
 
-  v9 = [v5 valueToInsert];
-  v10 = [v9 shortcut];
+  valueToInsert2 = [transactionCopy valueToInsert];
+  shortcut = [valueToInsert2 shortcut];
 
-  v11 = [v8 length];
-  v12 = [v8 _containsIdeographicCharacters];
+  v11 = [phrase length];
+  _containsIdeographicCharacters = [phrase _containsIdeographicCharacters];
   if (!v11)
   {
     v21 = 1;
     goto LABEL_51;
   }
 
-  v13 = v12;
-  v14 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v15 = [v8 stringByTrimmingCharactersInSet:v14];
+  v13 = _containsIdeographicCharacters;
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v15 = [phrase stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   v16 = [v15 length];
 
   if (!v16)
@@ -59,7 +59,7 @@
     goto LABEL_51;
   }
 
-  if ([v10 length])
+  if ([shortcut length])
   {
     v17 = 0;
   }
@@ -76,10 +76,10 @@
     goto LABEL_51;
   }
 
-  if (v10)
+  if (shortcut)
   {
-    v19 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v20 = [v10 rangeOfCharacterFromSet:v19];
+    whitespaceAndNewlineCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v20 = [shortcut rangeOfCharacterFromSet:whitespaceAndNewlineCharacterSet2];
 
     if (v20 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -88,16 +88,16 @@
     }
   }
 
-  if ([v10 _containsEmoji])
+  if ([shortcut _containsEmoji])
   {
     v21 = 9;
     goto LABEL_51;
   }
 
-  v22 = [v10 _containsCJKSymbolsAndPunctuation];
-  if (((v22 ^ 1) & v13) == 1)
+  _containsCJKSymbolsAndPunctuation = [shortcut _containsCJKSymbolsAndPunctuation];
+  if (((_containsCJKSymbolsAndPunctuation ^ 1) & v13) == 1)
   {
-    if (![v10 length])
+    if (![shortcut length])
     {
       v21 = 11;
       goto LABEL_51;
@@ -106,7 +106,7 @@
 
   else
   {
-    if (v22)
+    if (_containsCJKSymbolsAndPunctuation)
     {
       v21 = 10;
     }
@@ -116,25 +116,25 @@
       v21 = 0;
     }
 
-    if (v22)
+    if (_containsCJKSymbolsAndPunctuation)
     {
       goto LABEL_51;
     }
   }
 
-  if ([v10 _containsIdeographicCharacters])
+  if ([shortcut _containsIdeographicCharacters])
   {
     v21 = 8;
   }
 
   else
   {
-    if ([v10 _containsHiraganaKatakanaOrBopomofo])
+    if ([shortcut _containsHiraganaKatakanaOrBopomofo])
     {
       v23 = 1;
     }
 
-    else if ([v10 isEqualToString:@"☻"])
+    else if ([shortcut isEqualToString:@"☻"])
     {
       v23 = 1;
     }
@@ -144,14 +144,14 @@
       v23 = 2;
     }
 
-    if ([v10 length] && objc_msgSend(v10, "length") < v23)
+    if ([shortcut length] && objc_msgSend(shortcut, "length") < v23)
     {
       v21 = 6;
     }
 
     else
     {
-      v24 = v10;
+      v24 = shortcut;
       if ([v24 length])
       {
         v21 = 7;
@@ -159,7 +159,7 @@
 
       else
       {
-        v25 = v8;
+        v25 = phrase;
 
         v21 = 4;
         v24 = v25;
@@ -169,12 +169,12 @@
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      obj = v6;
+      obj = entriesCopy;
       v26 = [obj countByEnumeratingWithState:&v37 objects:v41 count:16];
       if (v26)
       {
         v27 = v26;
-        v34 = v6;
+        v34 = entriesCopy;
         v35 = v24;
         v28 = *v38;
 LABEL_40:
@@ -187,10 +187,10 @@ LABEL_40:
           }
 
           v30 = *(*(&v37 + 1) + 8 * v29);
-          v31 = [v5 valueToDelete];
-          v32 = [v31 matchesEntry:v30];
+          valueToDelete = [transactionCopy valueToDelete];
+          v32 = [valueToDelete matchesEntry:v30];
 
-          if ((v32 & 1) == 0 && [TIUserDictionaryWord userWord:v30 duplicatesTarget:v8 andShortcut:v35])
+          if ((v32 & 1) == 0 && [TIUserDictionaryWord userWord:v30 duplicatesTarget:phrase andShortcut:v35])
           {
             break;
           }
@@ -208,7 +208,7 @@ LABEL_40:
           }
         }
 
-        v6 = v34;
+        entriesCopy = v34;
         v24 = v35;
       }
 
